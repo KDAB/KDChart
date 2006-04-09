@@ -93,7 +93,7 @@ Widget::Widget( QWidget* parent ) :
  */
 Widget::~Widget()
 {
-    delete _d; _d = NULL;
+    delete _d; _d = 0;
 }
 
 void Widget::init()
@@ -330,7 +330,7 @@ void Widget::removeLegend( int position )
  */
 AbstractDiagram* Widget::diagram() const
 {
-    if ( coordinatePlane() == NULL )
+    if ( coordinatePlane() == 0 )
         qDebug() << "diagram(): coordinatePlane() was NULL";
 
     return coordinatePlane()->diagram();
