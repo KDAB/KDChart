@@ -7,8 +7,6 @@ KDChartAxis?
 
 KDChartCustomArea?
 
-PaintContext.h -> KDChartPaintContext.h
-
 KDTextDocument ?
 
 KDChartMeasure ?
