@@ -69,7 +69,7 @@ KDChartAxis::Private::Private() :
     areaMin( -100 ),
     areaMax( 0 ),
     trueAreaSize( 0 ),
-    trueAreaRect( QRect() ),
+    trueAreaRect( QRectF() ),
     useAvailableSpaceFrom( 0 ),
     useAvailableSpaceTo( -1000 ),
     calcMode( AxisCalcLinear ),
@@ -478,8 +478,8 @@ KDChartAxis * KDChartAxis::isometricReferenceAxis() const
 
 void KDChartAxis::setTrueAreaSize( int trueAreaSize ) { d->trueAreaSize = trueAreaSize; }
 int KDChartAxis::trueAreaSize() const { return d->trueAreaSize; }
-void KDChartAxis::setTrueAreaRect( const QRect& trueAreaRect ) { d->trueAreaRect = trueAreaRect; }
-QRect KDChartAxis::trueAreaRect() const { return d->trueAreaRect; }
+void KDChartAxis::setTrueAreaRect( const QRectF& trueAreaRect ) { d->trueAreaRect = trueAreaRect; }
+QRectF KDChartAxis::trueAreaRect() const { return d->trueAreaRect; }
 
 void KDChartAxis::setLineVisible( bool lineVisible )
 {

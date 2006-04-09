@@ -65,7 +65,7 @@ QSize KDChart::TextLayoutItem::sizeHint() const
 
 QSize KDChart::TextLayoutItem::calcSizeHint() const
 {
-    QSize ret = mMetrics.size( 0, mText );
+    QSize ret = mMetrics.size( 0, mText ).toSize();
     int frame = QApplication::style()->pixelMetric( QStyle::PM_ButtonMargin, 0, 0 );
     ret += QSize( frame, frame );
     return ret;

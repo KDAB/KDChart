@@ -28,7 +28,7 @@ private:
 
     // internal
     mutable KDTextDocument* textDoc;
-    QRect rect;
+    QRectF rect;
 };
 
 inline KDChart::HeaderFooter::HeaderFooter( Private* d, QWidget* parent )

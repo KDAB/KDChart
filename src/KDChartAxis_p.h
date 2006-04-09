@@ -45,7 +45,7 @@ private:
     int areaMin;
     int areaMax;
     int trueAreaSize;
-    QRect trueAreaRect;
+    QRectF trueAreaRect;
     int useAvailableSpaceFrom;
     int useAvailableSpaceTo;
     AxisCalcMode calcMode;

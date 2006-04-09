@@ -30,9 +30,9 @@
 #ifndef KDCHARTAREA_H
 #define KDCHARTAREA_H
 
-#include <QPoint>
-#include <QSize>
-#include <QRect>
+#include <QPointF>
+#include <QSizeF>
+#include <QRectF>
 #include <QWidget>
 
 #include "KDChartGlobal.h"
@@ -78,7 +78,7 @@ public:
       BottomRight
     };
 
-    void alignToDockingPoint( const QPoint & dockingPoint,
+    void alignToDockingPoint( const QPointF& dockingPoint,
                               DockingPointType dockingPointType,
                               Qt::Alignment alignmentFlags);
 
@@ -99,7 +99,7 @@ public:
 
     static void paintBackground( QPainter* painter,
                                  BackgroundAttributes attributes,
-                                 const QRect& rectangle );
+                                 const QRectF& rectangle );
 
 }; // End of class KDChartAreaDiagram
 

@@ -40,7 +40,7 @@ QSize KDTextDocument::sizeForWidth(int w)
     QPixmap *pix = lpixmap;
     int hextra = 2 * margin;
     int vextra = hextra;
-    QFontMetrics fm(q->fontMetrics());
+    QFontMetricsF fm(q->fontMetrics());
     int xw = fm.width('x');
     if (!mov && !pix && !pic) {
         int m = extraMargin;

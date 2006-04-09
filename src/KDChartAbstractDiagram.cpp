@@ -221,15 +221,15 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
         painter->setFont( ta.font() );
         painter->translate( pos );
         painter->rotate( ta.rotation() );
-        painter->drawText( QPoint(0, 0), QString::number( value ) );
+        painter->drawText( QPointF(0, 0), QString::number( value ) );
     }
     painter->restore();
-    
+
 }
 
 void AbstractDiagram::paintDataValueTexts( QPainter* painter )
 {
-    
+
     const int rowCount = model()->rowCount();
     const int colCount = model()->columnCount();
     for ( int i=0; i<colCount; ++i ) {
@@ -247,14 +247,14 @@ void AbstractDiagram::paintMarkers( QPainter* painter,
                                     const QPointF& pos,
                                     double value )
 {
-    
+
     DataValueAttributes a =
         model()->data( index, DataValueLabelAttributesRole ).value<DataValueAttributes>();
     if ( !a.isVisible() ) return;
     painter->save();
     const MarkerAttributes &ma = a.markerAttributes();
     if ( ma.isVisible() ) {
-        QSize maSize( ma.markerSize() ); 
+        QSizeF maSize( ma.markerSize() );
         QBrush indexBrush( brush( index ) );
         QPen indexPen( pen( index ) );
         if ( ma.markerColor().isValid() ) {
@@ -263,20 +263,20 @@ void AbstractDiagram::paintMarkers( QPainter* painter,
         }
         painter->setBrush( indexBrush );
         painter->setPen( indexPen );
-        painter->setRenderHint ( QPainter::Antialiasing ); 
+        painter->setRenderHint ( QPainter::Antialiasing );
         painter->translate( pos );
         switch ( ma.markerStyle() ) {
-        case MarkerAttributes::MarkerCircle: 
-            painter->drawEllipse( QRect( 0 - maSize.height()/2, 0 - maSize.width()/2,  
+        case MarkerAttributes::MarkerCircle:
+            painter->drawEllipse( QRectF( 0 - maSize.height()/2, 0 - maSize.width()/2,
                                          maSize.height(), maSize.width()) );
             break;
-        case MarkerAttributes::MarkerSquare: 
-            painter->fillRect( QRect( 0 - maSize.height()/2, 0 - maSize.width()/2,  
+        case MarkerAttributes::MarkerSquare:
+            painter->fillRect( QRectF( 0 - maSize.height()/2, 0 - maSize.width()/2,
                                       maSize.height(), maSize.width()), painter->brush() );
-            break; 
+            break;
         case MarkerAttributes::MarkerDiamond: {
-            QVector <QPointF > diamondPoints; 
-            QPointF top, left, bottom, right; 
+            QVector <QPointF > diamondPoints;
+            QPointF top, left, bottom, right;
             top    = QPointF( 0, 0 - maSize.height()/2 );
             left   = QPointF( 0 - maSize.width()/2, 0 );
             bottom = QPointF( 0, maSize.height()/2 );
@@ -285,23 +285,23 @@ void AbstractDiagram::paintMarkers( QPainter* painter,
             painter->drawPolygon( diamondPoints );
             break;
         }
-            //Pending Michel: do we need that? Ask: What is the idea about 
+            //Pending Michel: do we need that? Ask: What is the idea about
             // Marker1Pixel and Marker4Pixels.
         case MarkerAttributes::Marker1Pixel: {
             QSizeF pSize(4,4);
             QPen pen;
             pen.setColor( painter->background().color() );
-            QRectF centerRect( -pSize.height()/2, -pSize.width()/2, 
+            QRectF centerRect( -pSize.height()/2, -pSize.width()/2,
                                pSize.height(), pSize.width() );
             painter->setPen( pen );
             painter->drawEllipse( centerRect );
             break;
-        }           
+        }
         case MarkerAttributes::Marker4Pixels:{
             QSizeF pSize(8, 8);
             QPen pen;
             pen.setColor( painter->background().color() );
-            QRectF centerRect( -pSize.height()/2, -pSize.width()/2, 
+            QRectF centerRect( -pSize.height()/2, -pSize.width()/2,
                                pSize.height(), pSize.width() );
             painter->setPen( pen );
             painter->drawEllipse( centerRect );
@@ -309,18 +309,18 @@ void AbstractDiagram::paintMarkers( QPainter* painter,
         }
         case MarkerAttributes::MarkerRing:{
             painter->setBrush( Qt::NoBrush );
-            painter->drawEllipse( QRect( 0 - maSize.height()/2, 0 - maSize.width()/2,  
+            painter->drawEllipse( QRectF( 0 - maSize.height()/2, 0 - maSize.width()/2,
                                          maSize.height(), maSize.width()) );
         }
             break;
         case MarkerAttributes::MarkerCross:{
-            QVector <QPointF > crossPoints; 
+            QVector <QPointF > crossPoints;
             QPointF leftTop, leftBottom, centerBottomLeft, bottomLeft, bottomRight,
                 centerBottomRight,rightBottom, rightTop, centerTopRight, topRight, topLeft,
-                centerTopLeft; 
+                centerTopLeft;
             leftTop           = QPointF( -maSize.width()/2, -maSize.height()/4 );
             leftBottom        = QPointF( -maSize.width()/2, maSize.height()/4 );
-            centerBottomLeft  = QPointF( -maSize.width()/4, maSize.height()/4 ); 
+            centerBottomLeft  = QPointF( -maSize.width()/4, maSize.height()/4 );
             bottomLeft        = QPointF( -maSize.width()/4, maSize.height()/2 );
             bottomRight       = QPointF( maSize.width()/4,  maSize.height()/2 );
             centerBottomRight = QPointF( maSize.width()/4, maSize.height()/4 );
@@ -331,12 +331,12 @@ void AbstractDiagram::paintMarkers( QPainter* painter,
             topLeft           = QPointF( -maSize.width()/4, -maSize.height()/2 );
             centerTopLeft     = QPointF( -maSize.width()/4, -maSize.height()/4 );
 
-            crossPoints << leftTop << leftBottom << centerBottomLeft 
-                        << bottomLeft << bottomRight << centerBottomRight 
-                        << rightBottom << rightTop << centerTopRight 
+            crossPoints << leftTop << leftBottom << centerBottomLeft
+                        << bottomLeft << bottomRight << centerBottomRight
+                        << rightBottom << rightTop << centerTopRight
                         << topRight << topLeft << centerTopLeft;
 
-            painter->drawPolygon( crossPoints ); 
+            painter->drawPolygon( crossPoints );
         }
             break;
         case MarkerAttributes::MarkerFastCross:{
@@ -347,14 +347,14 @@ void AbstractDiagram::paintMarkers( QPainter* painter,
             bottom= QPointF( 0, maSize.height()/2 );
             painter->drawLine( left, right );
             painter->drawLine(  top, bottom );
-        }             
+        }
             break;
         default:
             Q_ASSERT_X ( false, "paintMarkers()",
-                         "Type item does not match a defined Marker Type." ); 
+                         "Type item does not match a defined Marker Type." );
         }
     }
-    painter->restore(); 
+    painter->restore();
 }
 
 void AbstractDiagram::paintMarkers( QPainter* painter )

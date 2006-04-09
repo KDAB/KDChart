@@ -147,9 +147,9 @@ inline const CLASS::Private * CLASS::d_func() const         \
 
 #if defined(Q_OS_WIN) && defined(QT_DLL)
 // workaround http://support.microsoft.com/default.aspx?scid=kb;en-us;309801
-#include <QPoint>
+#include <QPointF>
 #include <QVector>
-template class Q_DECL_IMPORT QVector<QPoint>;
+template class Q_DECL_IMPORT QVector<QPointF>;
 #endif
 
 #include <Qt>
@@ -162,7 +162,7 @@ enum DisplayRoles {
   DataValueLabelAttributesRole,
   ThreeDAttributesRole,
   LineAttributesRole,
-  ThreeDLineAttributesRole,  
+  ThreeDLineAttributesRole,
   BarAttributesRole,
   ThreeDBarAttributesRole
   };

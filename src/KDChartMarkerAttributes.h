@@ -31,7 +31,7 @@
 #define KDCHARTMARKERATTRIBUTES_H
 
 #include <QMetaType>
-#include <QSize>
+#include <QSizeF>
 #include "KDChartGlobal.h"
 
 class QColor;
@@ -68,10 +68,10 @@ public:
   void setMarkerStyle( const MarkerStyle style );
   MarkerStyle markerStyle() const;
 
-  void setMarkerSize( const QSize size );
-  QSize markerSize() const;
+  void setMarkerSize( const QSizeF& size );
+  QSizeF markerSize() const;
 
-  void setMarkerColor( const QColor color );
+  void setMarkerColor( const QColor& color );
   QColor markerColor() const;
 
   bool operator==( const MarkerAttributes& ) const;

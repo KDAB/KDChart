@@ -64,12 +64,12 @@ void KDChartArea::paint( QPainter* painter, const PaintContext & context ) const
 }
 #endif
 
-void KDChartArea::alignToDockingPoint( const QPoint & dockingPoint,
+void KDChartArea::alignToDockingPoint( const QPointF& dockingPoint,
                                        DockingPointType dockingPointType,
                                        Qt::Alignment alignmentFlags)
 {
     // PENDING(kalle) FIXME
-    qWarning( "Sorry, not implemented: void KDChartArea::alignToDockingPoint( const QPoint & dockingPoint,DockingPointType dockingPointType,Qt::Alignment alignmentFlags)" );
+    qWarning( "Sorry, not implemented: void KDChartArea::alignToDockingPoint( const QPointF& dockingPoint,DockingPointType dockingPointType,Qt::Alignment alignmentFlags)" );
 }
 
 void KDChartArea::setDockingPointPadding( int horizontalPadding,
@@ -122,7 +122,7 @@ BackgroundAttributes KDChartArea::backgroundAttributes() const
 
 void KDChartArea:: paintBackground( QPainter* painter,
                                     BackgroundAttributes attributes,
-                                    const QRect& rect )
+                                    const QRectF& rect )
 {
     if( !attributes.isVisible() )
         return;
@@ -131,17 +131,16 @@ void KDChartArea:: paintBackground( QPainter* painter,
     if( Qt::NoBrush != attributes.brush().style() ) {
         painter->save();
         painter->setPen( Qt::NoPen );
-        const QPoint newTopLeft( painter->deviceMatrix().map( rect.topLeft() ) );
-        painter->setBrushOrigin( newTopLeft.x(), newTopLeft.y() );
+        const QPointF newTopLeft( painter->deviceMatrix().map( rect.topLeft() ) );
+        painter->setBrushOrigin( newTopLeft );
         painter->setBrush( attributes.brush() );
-        painter->drawRect( rect.x(), rect.y(),
-                           rect.width(), rect.height() );
+        painter->drawRect( rect );
         painter->restore();
     }
     /* next draw the backPixmap over the brush */
     if( !attributes.pixmap().isNull() &&
         attributes.pixmapMode() != BackgroundAttributes::BackgroundPixmapModeNone ) {
-        QPoint ol = rect.topLeft();
+        QPointF ol = rect.topLeft();
         if( BackgroundAttributes::BackgroundPixmapModeCentered == attributes.pixmapMode() )
         {
             ol.setX( rect.center().x() - attributes.pixmap().width() / 2 );

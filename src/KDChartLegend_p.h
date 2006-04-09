@@ -43,7 +43,7 @@ private:
     KDChart::AbstractDiagram* diagram;
 
     // internal
-    QRect rect;
+    QRectF rect;
     mutable QStringList modelLabels;
     mutable QList<QBrush> modelBrushes;
     QVector<KDChart::LayoutItem*> layoutItems;

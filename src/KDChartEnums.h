@@ -31,7 +31,7 @@
 
 #include "KDChartGlobal.h"
 
-#include <QRect>
+#include <QRectF>
 #include <QObject>
 #include <QVector>
 
@@ -239,10 +239,10 @@ public:
     /**
       Returns the point representing a position of a rectangle.
       */
-    static QPoint positionFlagToPoint( const QRect& rect,
-                                      PositionFlag pos )
+    static QPointF positionFlagToPoint( const QRectF& rect,
+                                        PositionFlag pos )
     {
-        QPoint pt;
+        QPointF pt;
         if( rect.isValid() ) {
             switch( pos ) {
                 case KDChartEnums::PosTopLeft:
@@ -288,10 +288,10 @@ public:
 
       \note The array \c points <b>must</b> have at least nine elements.
       */
-    static QPoint positionFlagToPoint( const QVector<QPoint>& points,
+    static QPointF positionFlagToPoint( const QVector<QPointF>& points,
             PositionFlag pos )
     {
-        QPoint pt;
+        QPointF pt;
         if( 9 <= points.size() )
             pt = points[ pos ];
         return pt;

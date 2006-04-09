@@ -4,7 +4,7 @@
 #include <QLayoutItem>
 #include <QFont>
 #include <QBrush>
-#include <QFontMetrics>
+#include <QFontMetricsF>
 class QPainter;
 class KDTextDocument;
 
@@ -43,7 +43,7 @@ namespace KDChart {
         QRect mRect;
         QString mText;
         QFont mFont;
-        QFontMetrics mMetrics;
+        QFontMetricsF mMetrics;
         mutable QSize cachedSizeHint;
     };
 

@@ -17,7 +17,7 @@ private:
     bool visible;
     QMap<uint,MarkerStyle> markerStylesMap;
     MarkerStyle markerStyle;
-    QSize markerSize;
+    QSizeF markerSize;
     QColor markerColor;
 };
 
@@ -31,7 +31,7 @@ MarkerAttributes::MarkerAttributes()
 {
     setVisible( false );
     setMarkerStyle( MarkerSquare );
-    setMarkerSize( QSize(10,10) );
+    setMarkerSize( QSizeF(10,10) );
 }
 
 MarkerAttributes::MarkerAttributes( const MarkerAttributes& r )
@@ -96,17 +96,17 @@ MarkerAttributes::MarkerStyle MarkerAttributes::markerStyle() const
     return d->markerStyle;
 }
 
-void MarkerAttributes::setMarkerSize( const QSize size )
+void MarkerAttributes::setMarkerSize( const QSizeF& size )
 {
     d->markerSize = size;
 }
 
-QSize MarkerAttributes::markerSize() const
+QSizeF MarkerAttributes::markerSize() const
 {
     return d->markerSize;
 }
 
-void MarkerAttributes::setMarkerColor( const QColor color )
+void MarkerAttributes::setMarkerColor( const QColor& color )
 {
     d->markerColor = color;
 }

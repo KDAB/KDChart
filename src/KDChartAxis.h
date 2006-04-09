@@ -38,8 +38,8 @@
 #include "KDChartGlobal.h"
 
 class QPainter;
-class QSize;
-class QRect;
+class QSizeF;
+class QRectF;
 
 
 namespace KDChart {
@@ -291,8 +291,8 @@ public:
 
     void setTrueAreaSize( int trueAreaSize );
     int trueAreaSize() const;
-    void setTrueAreaRect( const QRect& trueAreaRect );
-    QRect trueAreaRect() const;
+    void setTrueAreaRect( const QRectF& trueAreaRect );
+    QRectF trueAreaRect() const;
 
   // line manipulation
   void setLineVisible( bool lineVisible );
