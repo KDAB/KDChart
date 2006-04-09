@@ -3,10 +3,10 @@ SOURCES = main.cpp mainwindow.cpp
 HEADERS = mainwindow.h
 
 KDCHART_PATH = ../..
-INCLUDEPATH += $$KDCHART_PATH/src \
+INCLUDEPATH += \
             $$KDCHART_PATH/include \
             $$KDCHART_PATH/examples/tools
-DEPENDPATH += $$KDCHART_PATH/src \
+DEPENDPATH += \
             $$KDCHART_PATH/include \
             $$KDCHART_PATH/examples/tools
 

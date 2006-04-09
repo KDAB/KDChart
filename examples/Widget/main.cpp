@@ -1,5 +1,5 @@
 #include <QApplication>
-#include <KDChartWidget.h>
+#include <KDChartWidget>
 
 #include <QDebug>
 #include <QVector>

@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 
-#include <KDChartWidget.h>
+#include <KDChartWidget>
 #include <QDebug>
 
 using namespace KDChart;
