@@ -246,9 +246,9 @@ void AbstractDiagram::paintDataValueTexts( QPainter* painter )
 
 
 
-void AbstractDiagram::paintMarkers( QPainter* painter,
-                                    const QModelIndex& index,
-                                    const QPointF& pos )
+void AbstractDiagram::paintMarker( QPainter* painter,
+                                   const QModelIndex& index,
+                                   const QPointF& pos )
 {
     if ( !checkInvariants() ) return;
     DataValueAttributes a =
@@ -386,7 +386,7 @@ void AbstractDiagram::paintMarkers( QPainter* painter )
            const QModelIndex index = model()->index( j, i, QModelIndex() );
            double value = model()->data( index ).toDouble();
            const QPointF pos = coordinatePlane()->translate( QPointF( j, value ) );
-           paintMarkers( painter, index, pos );
+           paintMarker( painter, index, pos );
        }
     }
 }

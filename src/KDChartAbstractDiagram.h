@@ -116,8 +116,8 @@ namespace KDChart {
         virtual void paintDataValueTexts( QPainter* painter );
         void paintDataValueText( QPainter* painter, const QModelIndex& index,
                                  const QPointF& pos, double value );
-        void paintMarkers(  QPainter* painter, const QModelIndex& index,
-                            const QPointF& pos );
+        void paintMarker(  QPainter* painter, const QModelIndex& index,
+                           const QPointF& pos );
         virtual void paintMarkers( QPainter* painter );
 
     signals:

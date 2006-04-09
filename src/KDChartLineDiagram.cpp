@@ -20,7 +20,7 @@
 using namespace KDChart;
 
 LineDiagram::Private::Private()
-   
+
 {
 }
 
@@ -29,7 +29,7 @@ LineDiagram::Private::~Private() {}
 
 #define d d_func()
 
- 
+
 LineDiagram::LineDiagram( CartesianCoordinatePlane* parent ) :
     AbstractCartesianDiagram( new Private(), parent )
 {
@@ -74,17 +74,17 @@ LineAttributes LineDiagram::lineAttributes( const QModelIndex & index ) const
 }
 
 void LineDiagram::setThreeDLineAttributes( const ThreeDLineAttributes & ta )
-{  
+{
   d->attributesModel->setModelData( QVariant::fromValue( ta ), ThreeDLineAttributesRole );
 }
 
 void LineDiagram::setThreeDLineAttributes( int column, const ThreeDLineAttributes & ta )
-{  
+{
     d->attributesModel->setHeaderData( column, Qt::Vertical, QVariant::fromValue( ta ), ThreeDLineAttributesRole );
 }
 
 void LineDiagram::setThreeDLineAttributes( const QModelIndex & index, const ThreeDLineAttributes & ta )
-{ 
+{
     model()->setData( index, QVariant::fromValue( ta ), ThreeDLineAttributesRole );
 }
 
@@ -106,10 +106,10 @@ const QPair<QPointF, QPointF> LineDiagram::dataBoundaries () const
     double xMax = rowCount -1;
     double yMin = 0, yMax = 0;
     LineAttributes la = lineAttributes(model()->index( 0, 0, QModelIndex() ) );
-    LineAttributes::LineType lineType = la.type(); 
-    ThreeDLineAttributes tda;   
+    LineAttributes::LineType lineType = la.type();
+    ThreeDLineAttributes tda;
 
-    // calculate boundaries for  different line types Normal - Stacked - Percent - Default Normal     
+    // calculate boundaries for  different line types Normal - Stacked - Percent - Default Normal
     switch ( lineType )
         {
         case LineAttributes::Normal:
@@ -124,11 +124,11 @@ const QPair<QPointF, QPointF> LineDiagram::dataBoundaries () const
         case LineAttributes::Stacked:
                 for ( int j=0; j< rowCount; ++j ) {
                     // calculate sum of values per column - Find out stacked Min/Max
-                    double stackedValues = 0;  
+                    double stackedValues = 0;
                     for ( int i=0; i<colCount ; ++i ) {
-                        stackedValues +=  model()->data( model()->index( j, i, QModelIndex() ) ).toDouble();  
+                        stackedValues +=  model()->data( model()->index( j, i, QModelIndex() ) ).toDouble();
                         yMin = qMin( yMin, stackedValues);
-                        yMax = qMax( yMax, stackedValues); 
+                        yMax = qMax( yMax, stackedValues);
                     }
                 }
             break;
@@ -150,23 +150,23 @@ const QPair<QPointF, QPointF> LineDiagram::dataBoundaries () const
     QPointF bottomLeft ( QPointF( xMin, yMin ) );
     QPointF topRight ( QPointF( xMax, yMax ) );
 
-    QPointF bottomLeftThreeD, topRightThreeD; 
+    QPointF bottomLeftThreeD, topRightThreeD;
     bool threeDBoundaries = false;
-    // ThreeD boundaries 
+    // ThreeD boundaries
     for ( int i=0; i<colCount; ++i ) {
         QModelIndex index = model()->index( 0, i, QModelIndex() );
-        tda = threeDLineAttributes( index ); 
+        tda = threeDLineAttributes( index );
         if ( tda.isEnabled() ) {
             threeDBoundaries = true;
             QPointF projLeft ( project(QPointF( xMin, yMin ), QPointF( xMin, yMin), tda.depth()/10 , index ) );
-            QPointF projRight( project(QPointF( xMax, yMax ), QPointF( xMax, yMax), tda.depth()/10, index ) ); 
-            projRight.x() > topRight.x()  ? topRightThreeD.setX( projRight.x() ): 
+            QPointF projRight( project(QPointF( xMax, yMax ), QPointF( xMax, yMax), tda.depth()/10, index ) );
+            projRight.x() > topRight.x()  ? topRightThreeD.setX( projRight.x() ):
                 topRightThreeD.setX( topRight.x() );
-            projRight.y() > topRight.y()  ? topRightThreeD.setY( projRight.y() ): 
+            projRight.y() > topRight.y()  ? topRightThreeD.setY( projRight.y() ):
                 topRightThreeD.setY( topRight.y() );
-            projLeft.x() > bottomLeft.x() ? bottomLeftThreeD.setX( bottomLeft.x() ): 
+            projLeft.x() > bottomLeft.x() ? bottomLeftThreeD.setX( bottomLeft.x() ):
                 bottomLeftThreeD.setX( projLeft.x() );
-            projLeft.y() > bottomLeft.y() ? bottomLeftThreeD.setY( bottomLeft.y() ): 
+            projLeft.y() > bottomLeft.y() ? bottomLeftThreeD.setY( bottomLeft.y() ):
                 bottomLeftThreeD.setY( projLeft.y() );
         }
     }
@@ -196,13 +196,13 @@ void LineDiagram::paint( PaintContext* ctx )
     LineAttributes::LineType lineType = la.type();
     double maxValue = 0;
     double sumValues = 0;
-    QVector <double > sumValuesVector; 
+    QVector <double > sumValuesVector;
     QModelIndex index;
     QPolygonF area;
     QBrush indexBrush;
     QPen indexPen;
 
-    // paint different line types Normal - Stacked - Percent - Default Normal     
+    // paint different line types Normal - Stacked - Percent - Default Normal
     switch ( lineType )
         {
         case LineAttributes::Normal:
@@ -222,28 +222,28 @@ void LineDiagram::paint( PaintContext* ctx )
                 //area can be set by column
                 LineAttributes laa = lineAttributes( model()->index( 0, i, QModelIndex() ) );
                 if ( laa.displayArea() )
-                    paintAreas( ctx, index, area, laa.transparency() );  
+                    paintAreas( ctx, index, area, laa.transparency() );
             }
             break;
         case LineAttributes::Stacked:
             for ( int i = 0; i<colCount; ++i ) {
                 area.clear();
-                for ( int j = 0; j< rowCount; ++j ) { 
+                for ( int j = 0; j< rowCount; ++j ) {
                     index = model()->index( j, i, QModelIndex() );
                     double value = 0, stackedValues = 0, nextValues = 0;
-                    QPointF nextPoint; 
+                    QPointF nextPoint;
                     value = model()->data( model()->index( j, i, QModelIndex() ) ).toDouble();
                     for ( int k = i; k >= 0 ; --k ) {
                         stackedValues += model()->data( model()->index( j, k, QModelIndex() ) ).toDouble();
-                        if ( j+1 < rowCount ) 
+                        if ( j+1 < rowCount )
                             nextValues +=  model()->data( model()->index( j+1, k, QModelIndex() ) ).toDouble();
                     }
                     nextPoint = coordinatePlane()->translate( QPointF( j, stackedValues ) );
                     area.append( nextPoint );
                     if ( j+1 < rowCount )
-                        lineList.append( LineAttributesInfo(  model()->index( j, i, QModelIndex() ), 
-                                                              stackedValues, nextValues ) );     
-                    list.append( DataValueTextInfo( model()->index( j, i, QModelIndex() ), nextPoint, value ) );    
+                        lineList.append( LineAttributesInfo(  model()->index( j, i, QModelIndex() ),
+                                                              stackedValues, nextValues ) );
+                    list.append( DataValueTextInfo( model()->index( j, i, QModelIndex() ), nextPoint, value ) );
                 }
                 LineAttributes laa = lineAttributes( model()->index ( 0, i, QModelIndex() ) );
                 if ( laa.displayArea() )
@@ -253,38 +253,38 @@ void LineDiagram::paint( PaintContext* ctx )
         case LineAttributes::Percent:
             // search for ordinate max value or 100 %
             for ( int i=0; i<colCount; ++i ) {
-                for ( int j=0; j< rowCount; ++j ) {                    
-                    double value = model()->data( model()->index( j, i, QModelIndex() ) ).toDouble();                   
-                    maxValue = qMax( maxValue, value );                           
-                }                        
-            }         
-            //calculate sum of values for each column and store 
-            for ( int j=0; j<rowCount; ++j ) {    
-                for ( int i=0; i<colCount; ++i ) {                  
-                    double tmpValue = model()->data( model()->index ( j, i, QModelIndex() ) ).toDouble();   
-                    if ( tmpValue > 0 ) 
+                for ( int j=0; j< rowCount; ++j ) {
+                    double value = model()->data( model()->index( j, i, QModelIndex() ) ).toDouble();
+                    maxValue = qMax( maxValue, value );
+                }
+            }
+            //calculate sum of values for each column and store
+            for ( int j=0; j<rowCount; ++j ) {
+                for ( int i=0; i<colCount; ++i ) {
+                    double tmpValue = model()->data( model()->index ( j, i, QModelIndex() ) ).toDouble();
+                    if ( tmpValue > 0 )
                         sumValues += tmpValue;
-                    if ( i == colCount-1 ) {                        
+                    if ( i == colCount-1 ) {
                         sumValuesVector <<  sumValues ;
                         sumValues = 0;
-                    }          
-                }            
+                    }
+                }
             }
             // calculate stacked percent value
-            for ( int i = 0; i<colCount; ++i ) {                             
-                area.clear(); 
+            for ( int i = 0; i<colCount; ++i ) {
+                area.clear();
                 for ( int j=0; j<rowCount ; ++j ) {
                     double value = 0, stackedValues = 0, nextValues = 0;
-                    QPointF nextPoint; 
+                    QPointF nextPoint;
                      index = model()->index( j, i, QModelIndex() );
-                    value = model()->data(  model()->index( j, i, QModelIndex() ) ).toDouble();                                   
+                    value = model()->data(  model()->index( j, i, QModelIndex() ) ).toDouble();
                     //calculate stacked percent value- we only take in account positives values for now.
                     for ( int k = i; k >= 0 ; --k ) {
-                        if ( model()->data( model()->index( j, k, QModelIndex() ) ).toDouble() > 0) 
-                            stackedValues += model()->data( model()->index( j, k, QModelIndex() ) ).toDouble();          
+                        if ( model()->data( model()->index( j, k, QModelIndex() ) ).toDouble() > 0)
+                            stackedValues += model()->data( model()->index( j, k, QModelIndex() ) ).toDouble();
                         if ( j+1 < rowCount ){
-                            if ( model()->data( model()->index( j+1, k, QModelIndex() ) ).toDouble() > 0 ) 
-                                nextValues += model()->data( model()->index( j+1, k, QModelIndex() ) ).toDouble(); 
+                            if ( model()->data( model()->index( j+1, k, QModelIndex() ) ).toDouble() > 0 )
+                                nextValues += model()->data( model()->index( j+1, k, QModelIndex() ) ).toDouble();
                         }
                     }
                     nextPoint = coordinatePlane()->translate( QPointF( j,  stackedValues/sumValuesVector.at(j)* maxValue ) );
@@ -302,7 +302,7 @@ void LineDiagram::paint( PaintContext* ctx )
             Q_ASSERT_X ( false, "paint()",
                          "Type item does not match a defined line chart Type." );
         }
-    // paint all lines and their attributes 
+    // paint all lines and their attributes
     if( !la.displayArea() ) {
         LineAttributesInfoListIterator itline ( lineList );
         while ( itline.hasNext() ) {
@@ -310,17 +310,17 @@ void LineDiagram::paint( PaintContext* ctx )
             paintLines( ctx,lineInfo.index, lineInfo.value, lineInfo.nextValue );
         }
     }
-    DataValueTextInfoListIterator it( list );    
+    DataValueTextInfoListIterator it( list );
     while ( it.hasNext() ) {
         const DataValueTextInfo& info = it.next();
         paintDataValueText( ctx->painter(), info.index, info.pos, info.value );
-        paintMarkers( ctx->painter(), info.index, info.pos );
+        paintMarker( ctx->painter(), info.index, info.pos );
     }
 }
 
 void LineDiagram::paintLines( PaintContext* ctx, const QModelIndex& index, double from, double to )
 {
-  ThreeDLineAttributes td = threeDLineAttributes(index);   
+  ThreeDLineAttributes td = threeDLineAttributes(index);
     if ( td.isEnabled() ) {
         const int lineDepth = td.depth();
         paintThreeDLines( ctx, index, from, to, lineDepth );
@@ -328,7 +328,7 @@ void LineDiagram::paintLines( PaintContext* ctx, const QModelIndex& index, doubl
     //get the brush and pen to be used from the AbstractDiagram methods
     QBrush indexBrush ( brush( index ) );
     ctx->painter()->save();
-    ctx->painter()->setRenderHint ( QPainter::Antialiasing ); 
+    ctx->painter()->setRenderHint ( QPainter::Antialiasing );
     ctx->painter()->setBrush( indexBrush );
     ctx->painter()->setPen( pen( index ) );
     if ( index.row() + 1 < model()->rowCount() ) {
@@ -342,7 +342,7 @@ void LineDiagram::paintLines( PaintContext* ctx, const QModelIndex& index, doubl
 
 void LineDiagram::paintAreas( PaintContext* ctx, const QModelIndex& index, const QPolygonF& area, const uint transparency )
 {
-    QPolygonF pol ( area ); 
+    QPolygonF pol ( area );
     const QPair<QPointF, QPointF> boundaries = dataBoundaries ();
     QPointF bottomLeft = boundaries.first;
     QPointF topRight = boundaries.second;
@@ -351,11 +351,11 @@ void LineDiagram::paintAreas( PaintContext* ctx, const QModelIndex& index, const
     trans.setAlpha( transparency );
     indexPen.setColor( trans );
     pol.insert( 0,  coordinatePlane()->translate( QPointF( bottomLeft.x(), 0 ) ) );
-    pol.append( coordinatePlane()->translate( QPointF( topRight.x(),0 ) ) );   
+    pol.append( coordinatePlane()->translate( QPointF( topRight.x(),0 ) ) );
     ctx->painter()->save();
-    ctx->painter()->setRenderHint ( QPainter::Antialiasing ); 
+    ctx->painter()->setRenderHint ( QPainter::Antialiasing );
     ctx->painter()->setPen( indexPen );
-    ctx->painter()->setBrush( trans ) ; 		  
+    ctx->painter()->setBrush( trans ) ;
     ctx->painter()->drawPolygon( pol );
     ctx->painter()->restore();
 }
@@ -369,7 +369,7 @@ void LineDiagram::paintAreas( PaintContext* ctx, const QModelIndex& index, const
 #define DEGTORAD(d) (d)*M_PI/180
 const QPointF LineDiagram::project( QPointF point, QPointF maxLimits, double z, const QModelIndex& index ) const
 {
-  ThreeDLineAttributes td = threeDLineAttributes( index );    
+  ThreeDLineAttributes td = threeDLineAttributes( index );
 
     //Pending Michel FIXME - the rotation does not work as expected atm
     double xrad = DEGTORAD( td.lineXRotation() );
@@ -380,10 +380,10 @@ const QPointF LineDiagram::project( QPointF point, QPointF maxLimits, double z, 
 
 void LineDiagram::paintThreeDLines(PaintContext* ctx, const QModelIndex& index, double from, double to, const int depth  )
 {
-    // retrieve the boundaries 
+    // retrieve the boundaries
     const QPair<QPointF, QPointF> boundaries = dataBoundaries ();
     QPointF maxLimits = boundaries.second;
-    QVector <QPointF > segmentPoints; 
+    QVector <QPointF > segmentPoints;
     QPointF bottomLeft = QPointF( index.row(), from);
     QPointF topLeft = project( QPointF( index.row(), from), maxLimits, depth/10, index  );
     QPointF bottomRight = QPointF( index.row()+1, to);
@@ -395,9 +395,9 @@ void LineDiagram::paintThreeDLines(PaintContext* ctx, const QModelIndex& index, 
     QPolygonF segment ( segmentPoints );
     QBrush indexBrush ( brush( index ) );
     ctx->painter()->save();
-    ctx->painter()->setRenderHint ( QPainter::Antialiasing ); 
+    ctx->painter()->setRenderHint ( QPainter::Antialiasing );
     ctx->painter()->setBrush( indexBrush );
-    ctx->painter()->setPen( pen( index ) ) ;   
+    ctx->painter()->setPen( pen( index ) ) ;
     ctx->painter()->drawPolygon( segment );
     ctx->painter()->restore();
 }
