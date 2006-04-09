@@ -78,6 +78,7 @@ static QRectF buildReferenceRect( const PolarCoordinatePlane* plane )
 
 void PieDiagram::paint( PaintContext* ctx )
 {
+    if ( !checkInvariants() ) return;
     const int colCount = model()->columnCount();
     QRectF contentsRect = buildReferenceRect( polarCoordinatePlane() );
     DataValueTextInfoList list;

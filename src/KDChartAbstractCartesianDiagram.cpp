@@ -4,7 +4,7 @@
 
 using namespace KDChart;
 AbstractCartesianDiagram::Private::Private()
-    : referenceDiagram(NULL)
+    : referenceDiagram( 0 )
 {
 }
 
@@ -26,7 +26,6 @@ AbstractCartesianDiagram::AbstractCartesianDiagram ( CartesianCoordinatePlane* p
 
 void AbstractCartesianDiagram::addAxes( CartesianAxis *axis )
 {
-   
     d->axesList.append( axis );
 }
 
