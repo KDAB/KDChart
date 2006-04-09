@@ -12,6 +12,11 @@ DEFINES += QT_NO_CAST_TO_ASCII
 
 *g++*:QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 
+linux-*:version_script {
+    QMAKE_LFLAGS += -Wl,--version-script=libkdchart.map
+    TARGETDEPS += libkdchart.map
+}
+
 HEADERS = \
            KDChartGlobal.h \
            CartesianCoordinateTransformation.h \
