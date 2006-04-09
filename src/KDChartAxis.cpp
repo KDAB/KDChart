@@ -3,7 +3,6 @@
 // #include <QtXml/QDomDocumentFragment>
 // #include <KDChartTextAttributes.h>
 // #include <QStringList>
-// #include <KDChartGridAttributes.h>
 // #include <qpen.h>
 // #include <qvariant.h>
 // #include <QDateTime>
@@ -49,7 +48,6 @@ KDChartAxis::Private::Private() :
     labels(),
     shortLabels(),
     labelTextAttributes(),
-    gridAttributes(),
     labelsTouchEdges( false ),
     startLabel(),
     endLabel(),
@@ -260,16 +258,6 @@ void KDChartAxis::setLabelTextAttributes( const TextAttributes& a )
 TextAttributes KDChartAxis::labelTextAttributes() const
 {
     return d->labelTextAttributes;
-}
-
-void KDChartAxis::setGridAttributes( const GridAttributes& a )
-{
-    d->gridAttributes = a;
-}
-
-GridAttributes KDChartAxis::gridAttributes() const
-{
-    return d->gridAttributes;
 }
 
 void KDChartAxis::setAxisLabelsTouchEdges( bool labelsTouchEdges )

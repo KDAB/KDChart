@@ -1,4 +1,5 @@
 #include "KDChartCoordinatePlane.h"
+#include "KDChartGridAttributes.h"
 
 using namespace KDChart;
 
@@ -6,7 +7,7 @@ class CoordinatePlane::Private
 {
 public:
     AbstractDiagramList diagrams;
-
+    GridAttributes gridAttributes;
 };
 
 CoordinatePlane::CoordinatePlane ( QWidget* parent )
@@ -85,4 +86,15 @@ QSizePolicy KDChart::CoordinatePlane::sizePolicy() const
 {
     return QSizePolicy( QSizePolicy::Expanding, QSizePolicy::Expanding );
 }
+
+void KDChart::CoordinatePlane::setGridAttributes( const GridAttributes& a )
+{
+    d->gridAttributes = a;
+}
+
+GridAttributes KDChart::CoordinatePlane::gridAttributes() const
+{
+    return d->gridAttributes;
+}
+
 

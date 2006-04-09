@@ -6,6 +6,7 @@
 #include "KDChartAbstractDiagram.h"
 
 namespace KDChart {
+    class GridAttributes;
 
     class KDCHART_EXPORT CoordinatePlane : public QWidget
     {
@@ -42,6 +43,8 @@ namespace KDChart {
 
         virtual void setZoomCenter( QPointF /* center */ ) {}
 
+        void setGridAttributes( const GridAttributes & );
+        GridAttributes gridAttributes() const;
     private:
         Private* d;
     };

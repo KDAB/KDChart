@@ -92,12 +92,9 @@ class QDateTime;
 
 namespace KDChart {
   class TextAttributes;
-  class GridAttributes;
 }
 
 using KDChart::TextAttributes;
-using KDChart::GridAttributes;
-
 
 class KDCHART_EXPORT KDChartAxis : public KDChartArea
 {
@@ -219,9 +216,6 @@ public:
 
     void setLabelTextAttributes( const TextAttributes & );
     TextAttributes labelTextAttributes() const;
-
-    void setGridAttributes( const GridAttributes & );
-    GridAttributes gridAttributes() const;
 
     void setAxisLabelsTouchEdges( bool labelsTouchEdges );
     bool axisLabelsTouchEdges() const;

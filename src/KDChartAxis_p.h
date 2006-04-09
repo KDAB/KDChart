@@ -3,7 +3,6 @@
 
 #include "KDChartArea_p.h"
 #include <KDChartTextAttributes.h>
-#include <KDChartGridAttributes.h>
 #include <QMap>
 #include <QVariant>
 #include <QDateTime>
@@ -25,7 +24,6 @@ private:
     QStringList labels;
     QStringList shortLabels;
     TextAttributes labelTextAttributes;
-    GridAttributes gridAttributes;
     bool labelsTouchEdges;
     QString startLabel;
     QString endLabel;
