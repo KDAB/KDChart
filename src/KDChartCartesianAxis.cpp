@@ -97,7 +97,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
 
     // set up a reference point,  a step vector and a unit vector for the drawing:
 
-    // FIXME do not be verbose
+#ifdef AXES_PAINTING_DEBUG
     qDebug() << "CartesianAxis::paint: reference values:" << endl
              << "-- range: " << range << endl
              << "-- absRange: " << absRange << endl
@@ -111,11 +111,11 @@ void CartesianAxis::paint ( PaintContext* context ) const
              << "-- drawHalfRulers: " << drawHalfRulers << endl
              << "-- drawFifthRulers: " << drawFifthRulers << endl
              << "-- ruler reference point:: " << rulerRef << endl;
-
+#endif
 
     ptr->setPen ( Qt::black );
     ptr->setBrush ( Qt::red );
-    ptr->drawRect ( d->geometry );
+    ptr->drawRect ( QRectF( rulerRef, QSizeF( 10, 10 ) ) );
 }
 #undef ptr
 
