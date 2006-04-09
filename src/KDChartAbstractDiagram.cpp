@@ -511,6 +511,16 @@ QList<QBrush> AbstractDiagram::datasetBrushes() const
     return ret;
 }
 
+QList<QPen> AbstractDiagram::datasetPens() const
+{
+    QList<QPen> ret;
+    for( int i = 0; i < model()->columnCount(); i++ ) {
+        QPen pen = model()->headerData( i, Qt::Vertical, DatasetPenRole ).value<QPen>();
+        ret << pen;
+    }
+    return ret;
+}
+
 QList<MarkerAttributes> AbstractDiagram::datasetMarkers() const
 {
     QList<MarkerAttributes> ret;

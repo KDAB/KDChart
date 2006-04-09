@@ -105,6 +105,7 @@ namespace KDChart {
 
         QStringList datasetLabels() const;
         QList<QBrush> datasetBrushes() const;
+        QList<QPen> datasetPens() const;
         QList<MarkerAttributes> datasetMarkers() const;
 
     protected:
