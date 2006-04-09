@@ -511,6 +511,20 @@ QList<QBrush> AbstractDiagram::datasetBrushes() const
     return ret;
 }
 
+QList<MarkerAttributes> AbstractDiagram::datasetMarkers() const
+{
+    QList<MarkerAttributes> ret;
+    for( int i = 0; i < model()->columnCount(); i++ ) {
+        DataValueAttributes a =
+            model()->headerData( i, Qt::Vertical, DataValueLabelAttributesRole ).value<DataValueAttributes>();
+        const MarkerAttributes &ma = a.markerAttributes();
+        ret << ma;
+    }
+    return ret;
+}
+
+
+
 
 bool AbstractDiagram::checkInvariants() const
 {

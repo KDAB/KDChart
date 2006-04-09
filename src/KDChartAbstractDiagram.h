@@ -6,8 +6,7 @@
 #include <QAbstractItemView>
 
 #include "KDChartGlobal.h"
-
-
+#include "KDChartMarkerAttributes.h"
 
 /**
  * AbstractDiagram defines the interface every diagram class 
@@ -106,6 +105,7 @@ namespace KDChart {
 
         QStringList datasetLabels() const;
         QList<QBrush> datasetBrushes() const;
+        QList<MarkerAttributes> datasetMarkers() const;
 
     protected:
         virtual bool checkInvariants() const;
