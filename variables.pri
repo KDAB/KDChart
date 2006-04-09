@@ -1,6 +1,6 @@
 CONFIG += qt warn_on zlib debug
 
-exists( g++.pri):include( g++.pri )
+exists( g++.pri ):include( g++.pri )
 
 # Note: The following KDCHART_MASTER_CVS definition is used to distinguish
 #       between Klaraelvdalens Datakonsult AB Master CVS and other CVS
