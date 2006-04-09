@@ -21,14 +21,12 @@ CoordinatePlane::~CoordinatePlane()
 
 void CoordinatePlane::addDiagram ( AbstractDiagram* diagram )
 {
-    Q_ASSERT_X ( diagram->parent() == this, "CoordinatePlane::addDiagram",
-                 "Diagrams have to be children of the coordinate plane." );
-
     // diagrams are invisible and paint through their paint() method
     diagram->hide();
 
     d->diagrams.append ( diagram );
     diagram->setParent ( this );
+    diagram->setCoordinatePlane( this );
     layoutDiagrams();
 }
 
@@ -41,6 +39,8 @@ void CoordinatePlane::replaceDiagram ( AbstractDiagram* diagram, int position )
     } else {
         diagram->hide();
         d->diagrams.replace( position, diagram );
+        diagram->setParent ( this );
+        diagram->setCoordinatePlane( this );
         layoutDiagrams();
     }
 }

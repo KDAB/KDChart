@@ -9,9 +9,9 @@
 
 
 
-/* Pure virtuals of QAbstractItemview are not implemented here, we just add
- * some more(for now). AbstractDiagram will just define the interface every
- * diagram class has to implement.
+/**
+ * AbstractDiagram defines the interface every diagram class 
+ * has to implement.
  */
 namespace KDChart {
 
@@ -21,7 +21,6 @@ namespace KDChart {
     class ThreeDLineAttributes;
     class PaintContext;
     class DatasetProxyModel;
-        
 
     // This class is internal; but it's exported for qtests/KDChartAttributesModel
     class KDCHART_EXPORT AbstractDiagram : public QAbstractItemView
@@ -35,13 +34,12 @@ namespace KDChart {
     public:
         virtual ~AbstractDiagram();
 
-        virtual CoordinatePlane* coordinatePlane();
 
         /*! Return the bottom left and top right data point the diagram will
          * display, in diagram coordinates.
          */
         virtual const QPair<QPointF, QPointF> dataBoundaries() const;
-        // calculate values to paint and stores      
+        // calculate values to paint and stores
         virtual void paint ( PaintContext* paintContext ) = 0;
         virtual void resize ( const QSizeF& area ) = 0;
 
@@ -68,6 +66,10 @@ namespace KDChart {
         /** \reimpl */
         virtual QRegion visualRegionForSelection(const QItemSelection &selection) const;
 
+        CoordinatePlane* coordinatePlane();
+
+        void setCoordinatePlane( CoordinatePlane* plane );
+
 
         // FIXME merge the rest from KDChartDiagram.h
         void setDataValueAttributes( const QModelIndex & index,
@@ -79,19 +81,18 @@ namespace KDChart {
 
         void setAllDataValueAttributes( const DataValueAttributes & a );
         KDChart::DataValueAttributes allDataValueAttributes() const;
-       
+
         //Pen
         void setPen( const QModelIndex& index, const QPen& pen );
-	void setPen( const QPen& pen );
+        void setPen( const QPen& pen );
         void setPen( int column, const QPen& pen );
-	QPen pen( const QModelIndex& index ) const; 
-	
+        QPen pen( const QModelIndex& index ) const; 
 
         void setBrush( const QModelIndex& index, const QBrush& brush);
-	void setBrush( const QBrush& brush);
+        void setBrush( const QBrush& brush);
         void setBrush( int column, const QBrush& brush );
         QBrush brush( const QModelIndex& index ) const;
-        
+
         void setAllowOverlappingDataValueTexts( bool allow );
         bool allowOverlappingDataValueTexts() const;
 
@@ -107,7 +108,6 @@ namespace KDChart {
         QList<QBrush> datasetBrushes() const;
 
     protected:
-        void setCoordinatePlane( CoordinatePlane* plane );
         virtual void paintDataValueTexts( QPainter* painter );
         void paintDataValueText( QPainter* painter, const QModelIndex& index,
                                  const QPointF& pos, double value );
