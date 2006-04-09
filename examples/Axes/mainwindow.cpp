@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 
 #include <KDChartChart>
-#include <KDChartDatasetProxyModel>
 #include <KDChartCoordinatePlane>
 #include <KDChartLineDiagram>
 #include <KDChartLineAttributes>
@@ -26,18 +25,11 @@ MainWindow::MainWindow( QWidget* parent ) :
     hSBar->setVisible( false );
     vSBar->setVisible( false );
 
-    // now configure the dataset:
-    m_datasetProxy = new DatasetProxyModel ( this );
-    m_datasetProxy->setSourceModel ( &m_model );
     m_model.loadFromCSV( ":/data" );
 
     // Set up the diagram
-    KDChart::CartesianCoordinatePlane* plane =
-        dynamic_cast<CartesianCoordinatePlane* >( m_chart->coordinatePlane() );
-    Q_ASSERT ( plane );
-    if ( !plane ) return;
-    m_lines = new LineDiagram( plane );
-    m_lines->setModel( m_datasetProxy );
+    m_lines = new LineDiagram();
+    m_lines->setModel( &m_model );
     //CartesianAxisList List = m_lines->axesList();
     CartesianAxis *xAxis = new CartesianAxis( m_lines );
     CartesianAxis *yAxis = new CartesianAxis ( m_lines );
@@ -53,8 +45,6 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_lines->addAxes( axisRight );
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
 }
-
-
 
 void MainWindow::on_lineTypeCB_currentIndexChanged( const QString & text )
 {
