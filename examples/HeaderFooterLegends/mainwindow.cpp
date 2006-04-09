@@ -47,29 +47,21 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_chart = new KDChart::Chart();
     chartLayout->addWidget( m_chart );
 
-    // now configure the dataset:
-    m_datasetProxy = new KDChart::DatasetProxyModel ( this );
-    m_datasetProxy->setSourceModel ( &m_model );
-
     m_model.loadFromCSV( ":/data" );
 
     // Set up the diagram
-    KDChart::CartesianCoordinatePlane* plane =
-        dynamic_cast<KDChart::CartesianCoordinatePlane* >( m_chart->coordinatePlane() );
-    Q_ASSERT ( plane );
-    if ( !plane ) return;
-    m_lines = new KDChart::LineDiagram( plane );
-    m_lines->setModel( m_datasetProxy );
-    m_chart->coordinatePlane()->removeDiagram( 1 );
+    m_lines = new KDChart::LineDiagram();
+    m_lines->setModel( &m_model );
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
 
     // Add at least one legend for starters
     KDChart::Legend* legend = new KDChart::Legend( m_lines, m_chart );
-    m_chart->addLegend( legend );
     legend->setPosition( KDChart::Legend::North );
     legend->setShowLines( false );
     legend->setTitleText( tr( "Legend Title" ) );
+    m_chart->addLegend( legend );
     legend->show();
+
     LegendItem* newItem = new LegendItem( legend, legendsTV );
     newItem->setText( 0, tr( "Top" ) );
     newItem->setText( 1, tr( "no" ) );
