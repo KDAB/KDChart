@@ -31,7 +31,7 @@
 #include <KDChartBarDiagram.h>
 #include <KDChartCartesianCoordinatePlane.h>
 #include <KDChartChart.h>
-#include <KDChartCoordinatePlane.h>
+#include <KDChartAbstractCoordinatePlane.h>
 #include <KDChartLineDiagram.h>
 #include <KDChartPieDiagram.h>
 #include <KDChartPolarCoordinatePlane.h>

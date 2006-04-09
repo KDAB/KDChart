@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 
 #include <KDChartChart>
-#include <KDChartCoordinatePlane>
+#include <KDChartAbstractCoordinatePlane>
 #include <KDChartLineDiagram>
 #include <KDChartLineAttributes>
 #include <KDChartTextAttributes>

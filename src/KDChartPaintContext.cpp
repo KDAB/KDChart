@@ -2,7 +2,7 @@
 #include <QPainter>
 
 #include "KDChartPaintContext.h"
-#include "KDChartCoordinatePlane.h"
+#include "KDChartAbstractCoordinatePlane.h"
 
 using namespace KDChart;
 

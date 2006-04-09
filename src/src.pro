@@ -22,6 +22,7 @@ HEADERS = \
            CartesianCoordinateTransformation.h \
            KDChartAbstractCartesianDiagram.h \
            KDChartAbstractCartesianDiagram_p.h \
+           KDChartAbstractCoordinatePlane.h \
            KDChartAbstractDiagram.h \
            KDChartAbstractDiagram_p.h \
            KDChartAbstractPieDiagram.h \
@@ -41,7 +42,6 @@ HEADERS = \
            KDChartCartesianAxis_p.h \
            KDChartCartesianCoordinatePlane.h \
            KDChartChart.h \
-           KDChartCoordinatePlane.h \
            KDChartDatasetProxyModel.h \
            KDChartDatasetSelector.h \
            KDChartDataValueAttributes.h \
@@ -83,6 +83,7 @@ HEADERS = \
 
 SOURCES = \
            KDChartAbstractCartesianDiagram.cpp \
+           KDChartAbstractCoordinatePlane.cpp \
            KDChartAbstractDiagram.cpp \
            KDChartAbstractPieDiagram.cpp \
            KDChartAbstractPolarDiagram.cpp \
@@ -95,7 +96,6 @@ SOURCES = \
            KDChartCartesianAxis.cpp \
            KDChartCartesianCoordinatePlane.cpp \
            KDChartChart.cpp \
-           KDChartCoordinatePlane.cpp \
            KDChartDatasetProxyModel.cpp \
            KDChartDatasetSelector.cpp \
            KDChartDataValueAttributes.cpp \

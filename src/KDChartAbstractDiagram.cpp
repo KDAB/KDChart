@@ -6,7 +6,7 @@
 #include <QStandardItemModel>
 #include <QSizeF>
 
-#include "KDChartCoordinatePlane.h"
+#include "KDChartAbstractCoordinatePlane.h"
 #include "KDChartDataValueAttributes.h"
 #include "KDChartTextAttributes.h"
 #include "KDChartMarkerAttributes.h"

@@ -1,7 +1,7 @@
 #ifndef KDCHART_POLAR_COORDINATEPLANE_H
 #define KDCHART_POLAR_COORDINATEPLANE_H
 
-#include "KDChartCoordinatePlane.h"
+#include "KDChartAbstractCoordinatePlane.h"
 
 namespace KDChart {
 

@@ -1,4 +1,4 @@
-#include "KDChartCoordinatePlane.h"
+#include "KDChartAbstractCoordinatePlane.h"
 #include "KDChartGridAttributes.h"
 
 using namespace KDChart;

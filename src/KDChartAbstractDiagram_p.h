@@ -1,7 +1,7 @@
 #ifndef KDCHARTABSTRACTDIAGRAM_P_H
 #define KDCHARTABSTRACTDIAGRAM_P_H
 
-#include "KDChartCoordinatePlane.h"
+#include "KDChartAbstractCoordinatePlane.h"
 
 namespace KDChart {
   class DefaultsModel;
