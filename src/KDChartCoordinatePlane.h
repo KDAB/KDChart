@@ -35,12 +35,12 @@ namespace KDChart {
         virtual double zoomFactorX() const { return 1.0; }
         virtual double zoomFactorY() const { return 1.0; }
 
-        virtual void setZoomFactorX( double factor ) {}
-        virtual void setZoomFactorY( double factor ) {}
+        virtual void setZoomFactorX( double /* factor */ ) {}
+        virtual void setZoomFactorY( double /* factor */ ) {}
 
         virtual QPointF zoomCenter() const { return QPointF(0.0, 0.0); }
 
-        virtual void setZoomCenter( QPointF center ) {}
+        virtual void setZoomCenter( QPointF /* center */ ) {}
 
     private:
         Private* d;
