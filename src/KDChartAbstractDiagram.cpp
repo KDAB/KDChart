@@ -69,7 +69,7 @@ const CoordinatePlane* AbstractDiagram::coordinatePlane() const
 
 const QPair<QPointF, QPointF> AbstractDiagram::dataBoundaries () const
 {
-    Q_ASSERT ( model() );
+    if ( !checkInvariants() ) return QPair<QPointF, QPointF>( QPointF( 0, 0 ), QPointF( 0, 0 ) );
     double xMin = 0, xMax = 0, yMin = 0, yMax = 0;
     const int rowCount = model()->rowCount();
     const int colCount = model()->columnCount();
@@ -509,5 +509,11 @@ QList<QBrush> AbstractDiagram::datasetBrushes() const
 
 bool AbstractDiagram::checkInvariants() const
 {
+    Q_ASSERT_X ( model(), "AbstractDiagram::checkInvariants()",
+                 "There is no usable model set, for the diagram." );
+
+    Q_ASSERT_X ( coordinatePlane(), "AbstractDiagram::checkInvariants()",
+                 "There is no usable coordinate plane set, for the diagram." );
+
     return model() && coordinatePlane();
 }
