@@ -314,7 +314,7 @@ void LineDiagram::paint( PaintContext* ctx )
     while ( it.hasNext() ) {
         const DataValueTextInfo& info = it.next();
         paintDataValueText( ctx->painter(), info.index, info.pos, info.value );
-        paintMarkers( ctx->painter(), info.index, info.pos, info.value);
+        paintMarkers( ctx->painter(), info.index, info.pos );
     }
 }
 

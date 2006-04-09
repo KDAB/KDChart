@@ -87,7 +87,7 @@ public:
 protected:
     void paintEvent ( QPaintEvent* );
     void resizeEvent ( QResizeEvent* );
-    virtual void paintMarkers( PaintContext* ctx, const QPolygonF& polygon );
+    virtual void paintPolarMarkers( PaintContext* ctx, const QPolygonF& polygon );
 
 }; // End of class PolarDiagram
 

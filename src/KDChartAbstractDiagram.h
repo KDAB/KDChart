@@ -113,8 +113,8 @@ namespace KDChart {
         void paintDataValueText( QPainter* painter, const QModelIndex& index,
                                  const QPointF& pos, double value );
         void paintMarkers(  QPainter* painter, const QModelIndex& index,
-                                 const QPointF& pos, double value );
-        virtual void paintMarkers( QPainter* painter ); 
+                            const QPointF& pos );
+        virtual void paintMarkers( QPainter* painter );
 
     signals:
         /** Diagrams are supposed to emit this signal when the layout of one

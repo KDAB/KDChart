@@ -98,7 +98,7 @@ void PolarDiagram::resizeEvent ( QResizeEvent*)
 {
 }
 
-void PolarDiagram::paintMarkers( PaintContext* ctx, const QPolygonF& polygon )
+void PolarDiagram::paintPolarMarkers( PaintContext* ctx, const QPolygonF& polygon )
 {
     const double markerSize = 4; // FIXME use real markers
     for ( int i=0; i<polygon.size(); ++i ) {
@@ -133,7 +133,7 @@ void PolarDiagram::paint( PaintContext* ctx )
         p.setWidth( 2 );// FIXME properties
         ctx->painter()->setPen( p );
         ctx->painter()->drawPolyline( polygon );
-        paintMarkers( ctx, polygon );
+        paintPolarMarkers( ctx, polygon );
         ctx->painter()->restore();
     }
     DataValueTextInfoListIterator it( list );
