@@ -92,6 +92,7 @@ SOURCES = \
            KDChartChart.cpp \
            KDChartCoordinatePlane.cpp \
            KDChartDatasetProxyModel.cpp \
+           KDChartDatasetSelector.cpp \
            KDChartDataValueAttributes.cpp \
            KDChartDefaultsModel.cpp \
            KDChartDiagramObserver.cpp \
