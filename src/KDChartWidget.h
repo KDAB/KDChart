@@ -33,8 +33,8 @@
 #include <QVector>
 #include <QWidget>
 
-#include <KDChartHeaderFooter.h>
-#include <KDChartLegend.h>
+#include "KDChartHeaderFooter.h"
+#include "KDChartLegend.h"
 
 namespace KDChart {
 

@@ -30,11 +30,12 @@
 #ifndef KDCHARTAREA_H
 #define KDCHARTAREA_H
 
-#include <KDChartGlobal.h>
 #include <QPoint>
 #include <QSize>
 #include <QRect>
 #include <QWidget>
+
+#include "KDChartGlobal.h"
 
 class QDomDocumentFragment;
 class QPainter;

@@ -48,7 +48,7 @@
 #endif
 #endif // useless_cruft
 
-#include <kdchart_export.h>
+#include "kdchart_export.h"
 
 
 

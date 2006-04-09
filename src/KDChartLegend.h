@@ -30,8 +30,8 @@
 #ifndef KDCHARTLEGEND_H
 #define KDCHARTLEGEND_H
 
-#include <KDChartArea.h>
-#include <KDChartMarkerAttributes.h>
+#include "KDChartArea.h"
+#include "KDChartMarkerAttributes.h"
 
 class QTextTable;
 class QDomDocumentFragment;
