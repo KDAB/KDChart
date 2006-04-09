@@ -56,6 +56,8 @@ bool RingDiagram::relativeThickness() const
 
 const QPair<QPointF, QPointF> RingDiagram::dataBoundaries () const
 {
+    if ( !checkInvariants() ) return QPair<QPointF, QPointF>( QPointF( 0, 0 ), QPointF( 0, 0 ) );
+
     QPointF bottomLeft ( QPointF( 0, 0 ) );
     QPointF topRight ( QPointF( 1, 1 ) );
     return QPair<QPointF, QPointF> ( bottomLeft,  topRight );
@@ -76,6 +78,7 @@ void RingDiagram::resizeEvent ( QResizeEvent*)
 
 void RingDiagram::paint( PaintContext* ctx )
 {
+    if ( !checkInvariants() ) return;
     const int colCount = model()->columnCount();
     DataValueTextInfoList list;
     for ( int j=0; j<colCount; ++j ) {

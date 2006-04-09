@@ -86,6 +86,7 @@ void BarDiagram::resizeEvent ( QResizeEvent*)
 
 const QPair<QPointF, QPointF> BarDiagram::dataBoundaries () const
 {
+    if ( !checkInvariants() ) return QPair<QPointF, QPointF>( QPointF( 0, 0 ), QPointF( 0, 0 ) );
     const int rowCount = model()->rowCount();
     const int colCount = model()->columnCount();
   
@@ -184,7 +185,7 @@ void BarDiagram::calculateValueAndGapWidths( int rowCount,int colCount,
 
 void BarDiagram::paint( PaintContext* ctx )
 {
-
+    if ( !checkInvariants() ) return;
     //calculates and stores the values
     const int rowCount = model()->rowCount();
     const int colCount = model()->columnCount();

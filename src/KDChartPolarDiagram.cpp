@@ -66,6 +66,7 @@ QDomDocumentFragment PolarDiagram::toXML() const
 
 const QPair<QPointF, QPointF> PolarDiagram::dataBoundaries () const
 {
+    if ( !checkInvariants() ) return QPair<QPointF, QPointF>( QPointF( 0, 0 ), QPointF( 0, 0 ) );
     const int rowCount = model()->rowCount();
     const int colCount = model()->columnCount();
     double xMin = 0.0;
@@ -110,6 +111,7 @@ void PolarDiagram::paintMarkers( PaintContext* ctx, const QPolygonF& polygon )
 
 void PolarDiagram::paint( PaintContext* ctx )
 {
+    if ( !checkInvariants() ) return;
     const int rowCount = model()->rowCount();
     const int colCount = model()->columnCount();
     DataValueTextInfoList list;
