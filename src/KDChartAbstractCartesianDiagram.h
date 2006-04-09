@@ -22,8 +22,11 @@ namespace KDChart {
         virtual const int numberOfAbscissaSegments () const = 0;
         virtual const int numberOfOrdinateSegments () const = 0;
         virtual void addAxes( CartesianAxis * axis );
-	virtual KDChart::CartesianAxisList axes () const = 0;
+        virtual KDChart::CartesianAxisList axes () const;
 
+        virtual void setReferenceDiagram( AbstractCartesianDiagram* diagarm, const QPointF& offset = QPointF() );
+	virtual AbstractCartesianDiagram* referenceDiagram() const;
+	virtual QPointF referenceDiagramOffset() const;
     };
 
 }

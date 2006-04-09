@@ -4,7 +4,7 @@
 
 using namespace KDChart;
 AbstractCartesianDiagram::Private::Private()
-   
+    : referenceDiagram(NULL)
 {
 }
 
@@ -33,4 +33,20 @@ void AbstractCartesianDiagram::addAxes( CartesianAxis *axis )
 KDChart::CartesianAxisList AbstractCartesianDiagram::axes( ) const 
 {
     return d->axesList;
+}
+
+void AbstractCartesianDiagram::setReferenceDiagram( AbstractCartesianDiagram* diagram, const QPointF& offset )
+{
+    d->referenceDiagram = diagram;
+    d->referenceDiagramOffset = offset;
+}
+
+AbstractCartesianDiagram* AbstractCartesianDiagram::referenceDiagram() const
+{
+    return d->referenceDiagram;
+}
+
+QPointF AbstractCartesianDiagram::referenceDiagramOffset() const
+{
+    return d->referenceDiagramOffset;
 }

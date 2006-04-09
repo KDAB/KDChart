@@ -10,7 +10,7 @@ DEPENDPATH += \
             $$KDCHART_PATH/include \
             $$KDCHART_PATH/examples/tools
 
-LIBS        += -L$$KDCHART_PATH/lib -lkdchart -ltesttools
+LIBS        += -L$$KDCHART_PATH/lib -lkdchart #-ltesttools
 
 
 

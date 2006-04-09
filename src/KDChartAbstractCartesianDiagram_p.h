@@ -17,6 +17,8 @@ public:
 
    CartesianAxisList axesList;
 
+   AbstractCartesianDiagram* referenceDiagram;
+   QPointF referenceDiagramOffset;
 };
 
 inline AbstractCartesianDiagram::AbstractCartesianDiagram( Private * p )
