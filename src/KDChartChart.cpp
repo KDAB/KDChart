@@ -298,7 +298,7 @@ void Chart::paintEvent( QPaintEvent* )
     if( legend() )
         qDebug() << "First legend = " << legend() << ", className = " << legend()->metaObject()->className() << ", geometry = " << legend()->geometry() << "sizeHint = " << legend()->sizeHint() << ", is visible = " << legend()->isVisible();
 
-	sInsidePaint = false;
+    sInsidePaint = false;
 }
 
 
