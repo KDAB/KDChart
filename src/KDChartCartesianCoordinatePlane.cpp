@@ -84,7 +84,7 @@ void CartesianCoordinatePlane::paintEvent ( QPaintEvent* )
         ctx.setRectangle ( d->drawingArea );
         ctx.setPainter ( &painter );
         ctx.setCoordinatePlane ( this );
-        paintRulers ( &ctx );
+        paintGrid( &ctx );
 
         // paint the axes:
         foreach ( AbstractDiagram* abstractDiagram, diagrams() )
@@ -108,7 +108,7 @@ void CartesianCoordinatePlane::paintEvent ( QPaintEvent* )
     }
 }
 
-void CartesianCoordinatePlane::paintRulers( PaintContext* ctx )
+void CartesianCoordinatePlane::paintGrid( PaintContext* ctx )
 {
     AbstractCartesianDiagram* dgr = dynamic_cast<AbstractCartesianDiagram*> (diagrams().first() );
     Q_ASSERT ( dgr ); // only cartesian diagrams are allowed here

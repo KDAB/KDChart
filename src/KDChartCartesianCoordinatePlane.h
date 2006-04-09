@@ -46,7 +46,7 @@ namespace KDChart {
         void slotLayoutChanged( AbstractDiagram* );
 
     private:
-        void paintRulers ( PaintContext* );
+        void paintGrid( PaintContext* );
 
         Private *d;
     };
