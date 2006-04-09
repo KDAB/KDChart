@@ -1,3 +1,4 @@
 TEMPLATE	= subdirs
-SUBDIRS		= tools Widget
+SUBDIRS		= tools Widget HeaderFooterLegends
+
 
