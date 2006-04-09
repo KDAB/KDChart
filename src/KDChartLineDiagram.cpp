@@ -316,7 +316,6 @@ void LineDiagram::paint( PaintContext* ctx )
         paintDataValueText( ctx->painter(), info.index, info.pos, info.value );
         paintMarkers( ctx->painter(), info.index, info.pos, info.value);
     }
-    axes();
 }
 
 void LineDiagram::paintLines( PaintContext* ctx, const QModelIndex& index, double from, double to )
@@ -405,11 +404,6 @@ void LineDiagram::paintThreeDLines(PaintContext* ctx, const QModelIndex& index, 
 
 void LineDiagram::resize ( const QSizeF& )
 {
-}
-
-CartesianAxisList LineDiagram::axes () const
-{
-    return KDChart::AbstractCartesianDiagram::axes();
 }
 
 const int LineDiagram::numberOfAbscissaSegments () const

@@ -39,8 +39,6 @@ class QPolygonF;
 
 namespace KDChart {
 
-   
-
 class KDCHART_EXPORT LineDiagram : public AbstractCartesianDiagram
 {
     Q_OBJECT
@@ -65,34 +63,30 @@ public:
                                   const ThreeDLineAttributes & a );
     ThreeDLineAttributes threeDLineAttributes( const QModelIndex & index ) const;
 
-    
-      // implement AbstractDiagram
-    /** \reimpl */
-    const QPair<QPointF, QPointF> dataBoundaries() const;   
+    // implement AbstractDiagram
+    /* reimpl */
+    const QPair<QPointF, QPointF> dataBoundaries() const;
+
     // implement AbstractCartesianDiagram
-    /** \reimpl */
+    /* reimpl */
     const int numberOfAbscissaSegments () const;
-    /** \reimpl */
+    /* reimpl */
     const int numberOfOrdinateSegments () const;
-    /** \reimpl */
-    CartesianAxisList axes () const;
 
     void paint ( PaintContext* paintContext );
     void resize ( const QSizeF& area );
-  
+
 protected:
     void paintEvent ( QPaintEvent* );
     void resizeEvent ( QResizeEvent* );
-    
+
 
 private:
     void paintLines( PaintContext* painter,const QModelIndex& index, double from, double to );
     const QPointF project( QPointF point, QPointF maxLimits, double z, const QModelIndex& index ) const;
     void paintThreeDLines( PaintContext* painter,const QModelIndex& index, double from, double to, const int depth );
     void paintAreas( PaintContext* painter, const QModelIndex& index, const QPolygonF& area, const uint transparency );
-   
-
-}; // End of class KDChartLineDiagram    
+}; // End of class KDChartLineDiagram
 
 }
 
