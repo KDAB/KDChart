@@ -9,7 +9,7 @@
 #include "KDChartMarkerAttributes.h"
 
 /**
- * AbstractDiagram defines the interface every diagram class 
+ * AbstractDiagram defines the interface every diagram class
  * has to implement.
  */
 namespace KDChart {
@@ -85,7 +85,7 @@ namespace KDChart {
         void setPen( const QModelIndex& index, const QPen& pen );
         void setPen( const QPen& pen );
         void setPen( int column, const QPen& pen );
-        QPen pen( const QModelIndex& index ) const; 
+        QPen pen( const QModelIndex& index ) const;
 
         void setBrush( const QModelIndex& index, const QBrush& brush);
         void setBrush( const QBrush& brush);
@@ -107,6 +107,9 @@ namespace KDChart {
         QList<QBrush> datasetBrushes() const;
         QList<QPen> datasetPens() const;
         QList<MarkerAttributes> datasetMarkers() const;
+
+        virtual void paintMarker( QPainter* painter, const MarkerAttributes& markerAttributes,
+                                  const QBrush& brush, const QPen&, const QPointF& point, const QSizeF& size );
 
     protected:
         virtual bool checkInvariants() const;

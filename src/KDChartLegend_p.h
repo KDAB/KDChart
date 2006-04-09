@@ -35,7 +35,8 @@ private:
     bool showLines;
     QMap<uint,QString> texts;
     QMap<uint,QBrush> brushes;
-    QMap<uint, MarkerAttributes::MarkerStyle> markers;
+    QMap<uint,QPen> pens;
+    QMap<uint, MarkerAttributes> markerAttributes;
     TextAttributes textAttributes;
     QString titleText;
     TextAttributes titleTextAttributes;
@@ -46,6 +47,8 @@ private:
     QRectF rect;
     mutable QStringList modelLabels;
     mutable QList<QBrush> modelBrushes;
+    mutable QList<QPen> modelPens;
+    mutable QList<MarkerAttributes> modelMarkers;
     QVector<KDChart::LayoutItem*> layoutItems;
     QGridLayout* layout;
     KDChart::DiagramObserver* observer;

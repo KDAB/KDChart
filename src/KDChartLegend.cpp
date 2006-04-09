@@ -236,20 +236,33 @@ void Legend::setBrushesFromDiagram( KDChart::AbstractDiagram* diagram )
 }
 
 
-void Legend::setMarker( uint dataset, MarkerAttributes::MarkerStyle marker )
+void Legend::setPen( uint dataset, const QPen& pen )
 {
-    d->markers[dataset] = marker;
+    d->pens[dataset] = pen;
+}
+
+QPen Legend::pen( uint dataset ) const
+{
+    if( d->pens.find( dataset ) != d->pens.end() )
+        return d->pens[dataset];
+    else
+        return d->modelPens[ dataset ];
+}
+
+
+void Legend::setMarkerAttributes( uint dataset, const MarkerAttributes& markerAttributes )
+{
+    d->markerAttributes[dataset] = markerAttributes;
 
     buildLegend();
 }
 
-MarkerAttributes::MarkerStyle Legend::marker( uint dataset ) const
+MarkerAttributes Legend::markerAttributes( uint dataset ) const
 {
-    if( d->markers.find( dataset ) != d->markers.end() )
-        return d->markers[dataset];
+    if( d->markerAttributes.find( dataset ) != d->markerAttributes.end() )
+        return d->markerAttributes[dataset];
     else
-        return MarkerAttributes::MarkerSquare;
-    // PENDING(kalle) Use marker from model
+        return d->modelMarkers[ dataset ];
 }
 
 void Legend::setTextAttributes( const TextAttributes &a )
@@ -422,6 +435,8 @@ void Legend::buildLegend()
     if( diagram() ) {
         d->modelLabels = diagram()->datasetLabels();
         d->modelBrushes = diagram()->datasetBrushes();
+        d->modelPens = diagram()->datasetPens();
+        d->modelMarkers = diagram()->datasetMarkers();
     }
     Q_ASSERT( d->modelLabels.count() == d->modelBrushes.count() );
 
@@ -436,8 +451,10 @@ void Legend::buildLegend()
 
     for ( int dataset = 0; dataset < d->modelLabels.count(); dataset++ ) {
         // PENDING(kalle) Properties
-        KDChart::MarkerLayoutItem* markerItem = new KDChart::MarkerLayoutItem( marker( dataset ),
+        KDChart::MarkerLayoutItem* markerItem = new KDChart::MarkerLayoutItem( diagram(),
+                                                                               markerAttributes( dataset ),
                                                                                brush( dataset ),
+                                                                               pen( dataset ),
                                                                                Qt::AlignLeft );
         d->layoutItems << markerItem;
         d->layout->addItem( markerItem, dataset+1 /*first row is title*/, 1, 1, 1, Qt::AlignCenter );

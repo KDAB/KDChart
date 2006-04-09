@@ -121,8 +121,11 @@ public:
     void setBrush( uint dataset, const QBrush& brush );
     QBrush brush( uint dataset ) const;
 
-    void setMarker( uint dataset, MarkerAttributes::MarkerStyle );
-    MarkerAttributes::MarkerStyle marker( uint dataset ) const;
+    void setPen( uint dataset, const QPen& pen );
+    QPen pen( uint dataset ) const;
+
+    void setMarkerAttributes( uint dataset, const MarkerAttributes& );
+    MarkerAttributes markerAttributes( uint dataset ) const;
 
     void setTextAttributes( const TextAttributes &a );
     TextAttributes textAttributes() const;

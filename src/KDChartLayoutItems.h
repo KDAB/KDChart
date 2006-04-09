@@ -4,11 +4,15 @@
 #include <QLayoutItem>
 #include <QFont>
 #include <QBrush>
+#include <QPen>
 #include <QFontMetricsF>
+#include "KDChartMarkerAttributes.h"
+
 class QPainter;
 class KDTextDocument;
 
 namespace KDChart {
+    class AbstractDiagram;
 
     /** \internal
      */
@@ -52,7 +56,9 @@ namespace KDChart {
     class MarkerLayoutItem : public LayoutItem
     {
     public:
-        MarkerLayoutItem( int marker, const QBrush& brush, Qt::Alignment alignment = 0 );
+        MarkerLayoutItem( AbstractDiagram* diagram, const MarkerAttributes& marker,
+                          const QBrush& brush, const QPen& pen,
+                          Qt::Alignment alignment = 0 );
 
         virtual Qt::Orientations expandingDirections() const;
         virtual QRect geometry() const;
@@ -65,9 +71,11 @@ namespace KDChart {
         virtual void paint( QPainter* );
 
     private:
+        AbstractDiagram* mDiagram;
         QRect mRect;
-        int mMarker;
+        MarkerAttributes mMarker;
         QBrush mBrush;
+        QPen mPen;
     };
 
 }

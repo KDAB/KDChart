@@ -243,6 +243,9 @@ void AbstractDiagram::paintDataValueTexts( QPainter* painter )
     }
 }
 
+
+
+
 void AbstractDiagram::paintMarkers( QPainter* painter,
                                     const QModelIndex& index,
                                     const QPointF& pos )
@@ -262,11 +265,21 @@ void AbstractDiagram::paintMarkers( QPainter* painter,
         indexBrush.setColor( ma.markerColor() );
         indexPen.setColor( ma.markerColor() );
     }
-    painter->setBrush( indexBrush );
-    painter->setPen( indexPen );
+
+    paintMarker( painter, ma, indexBrush, indexPen, pos, maSize );
+}
+
+
+void AbstractDiagram::paintMarker( QPainter* painter,
+                                   const MarkerAttributes& markerAttributes,
+                                   const QBrush& brush, const QPen& pen,
+                                   const QPointF& pos, const QSizeF& maSize )
+{
+    painter->setBrush( brush );
+    painter->setPen( pen );
     painter->setRenderHint ( QPainter::Antialiasing );
     painter->translate( pos );
-    switch ( ma.markerStyle() ) {
+    switch ( markerAttributes.markerStyle() ) {
         case MarkerAttributes::MarkerCircle:
             painter->drawEllipse( QRectF( 0 - maSize.height()/2, 0 - maSize.width()/2,
                         maSize.height(), maSize.width()) );
@@ -275,7 +288,7 @@ void AbstractDiagram::paintMarkers( QPainter* painter,
             painter->fillRect( QRectF( 0 - maSize.height()/2, 0 - maSize.width()/2,
                         maSize.height(), maSize.width()), painter->brush() );
             break;
-        case MarkerAttributes::MarkerDiamond: 
+        case MarkerAttributes::MarkerDiamond:
             {
                 QVector <QPointF > diamondPoints;
                 QPointF top, left, bottom, right;
@@ -289,7 +302,7 @@ void AbstractDiagram::paintMarkers( QPainter* painter,
             }
         //Pending Michel: do we need that? Ask: What is the idea about
         // Marker1Pixel and Marker4Pixels.
-        case MarkerAttributes::Marker1Pixel: 
+        case MarkerAttributes::Marker1Pixel:
             {
                 QSizeF pSize(4,4);
                 QPen pen;

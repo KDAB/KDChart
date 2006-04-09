@@ -1,5 +1,6 @@
 #include "KDChartLayoutItems.h"
 #include "KDTextDocument.h"
+#include "KDChartAbstractDiagram.h"
 #include <QTextCursor>
 #include <QTextBlockFormat>
 #include <QTextDocumentFragment>
@@ -80,9 +81,11 @@ void KDChart::TextLayoutItem::paint( QPainter* painter )
 
 
 
-KDChart::MarkerLayoutItem::MarkerLayoutItem( int marker, const QBrush& brush,
+KDChart::MarkerLayoutItem::MarkerLayoutItem( KDChart::AbstractDiagram* diagram,
+                                             const MarkerAttributes& marker,
+                                             const QBrush& brush, const QPen& pen,
                                              Qt::Alignment alignment ) :
-    LayoutItem( alignment ), mMarker( marker ), mBrush( brush )
+    LayoutItem( alignment ), mDiagram( diagram ), mMarker( marker ), mBrush( brush ), mPen( pen )
 {
 }
 
@@ -139,13 +142,7 @@ void KDChart::MarkerLayoutItem::paint( QPainter* painter )
     // of the marker, adjust again.
     pos += QPointF( static_cast<qreal>( sizeHint().width() ) / 2.0,
                     static_cast<qreal>( sizeHint().height() )/ 2.0 );
-/*
- * PENDING(till) use the helper from the new hierarchy
-     KDChartPainter::drawMarker( painter,
-                                 mMarker, mBrush,
-                                 pos.toPoint(),
-                                 sizeHint() );
 
-                                 */
+    mDiagram->paintMarker( painter, mMarker, mBrush, mPen, pos.toPoint(), sizeHint() );
 }
 
