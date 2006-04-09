@@ -1,0 +1,88 @@
+#include "KDChartCoordinatePlane.h"
+
+using namespace KDChart;
+
+class CoordinatePlane::Private
+{
+public:
+    AbstractDiagramList diagrams;
+
+};
+
+CoordinatePlane::CoordinatePlane ( QWidget* parent )
+    : QWidget ( parent )
+    , d ( new Private() )
+{
+}
+
+CoordinatePlane::~CoordinatePlane()
+{
+}
+
+void CoordinatePlane::addDiagram ( AbstractDiagram* diagram )
+{
+    Q_ASSERT_X ( diagram->parent() == this, "CoordinatePlane::addDiagram",
+                 "Diagrams have to be children of the coordinate plane." );
+
+    // diagrams are invisible and paint through their paint() method
+    diagram->hide();
+
+    d->diagrams.append ( diagram );
+    diagram->setParent ( this );
+    layoutDiagrams();
+}
+
+
+/*virtual*/
+void CoordinatePlane::replaceDiagram ( AbstractDiagram* diagram, int position )
+{
+    if ( d->diagrams.size() <= position ) {
+        addDiagram( diagram );
+    } else {
+        diagram->hide();
+        d->diagrams.replace( position, diagram );
+        layoutDiagrams();
+    }
+}
+
+
+/*virtual*/
+void CoordinatePlane::removeDiagram( int position/* = 0 */ )
+{
+    if ( position >= 0 && d->diagrams.size() > position ) {
+        d->diagrams.removeAt( position );
+        layoutDiagrams();
+    }
+}
+
+AbstractDiagram* CoordinatePlane::diagram()
+{
+    if ( d->diagrams.isEmpty() )
+    {
+        return 0;
+    } else {
+        return d->diagrams.first();
+    }
+}
+
+AbstractDiagramList CoordinatePlane::diagrams()
+{
+    return d->diagrams;
+}
+
+QSize KDChart::CoordinatePlane::sizeHint() const
+{
+    return QSize( 1000, 1000 );
+}
+
+QSize KDChart::CoordinatePlane::minimumSizeHint() const
+{
+    return QSize( 200, 200 );
+}
+
+
+QSizePolicy KDChart::CoordinatePlane::sizePolicy() const
+{
+    return QSizePolicy( QSizePolicy::Expanding, QSizePolicy::Expanding );
+}
+

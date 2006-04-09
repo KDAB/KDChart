@@ -1,0 +1,151 @@
+/* -*- Mode: C++ -*-
+   KDChart - a multi-platform charting engine
+   */
+
+/****************************************************************************
+ ** Copyright (C) 2005 KlarÃ¤lvdalens Datakonsult AB.  All rights reserved.
+ **
+ ** This file is part of the KDChart library.
+ **
+ ** This file may be distributed and/or modified under the terms of the
+ ** GNU General Public License version 2 as published by the Free Software
+ ** Foundation and appearing in the file LICENSE.GPL included in the
+ ** packaging of this file.
+ **
+ ** Licensees holding valid commercial KDChart licenses may use this file in
+ ** accordance with the KDChart Commercial License Agreement provided with
+ ** the Software.
+ **
+ ** This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
+ ** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ **
+ ** See http://www.klaralvdalens-datakonsult.se/?page=products for
+ **   information about KDChart Commercial License Agreements.
+ **
+ ** Contact info@klaralvdalens-datakonsult.se if any conditions of this
+ ** licensing are not clear to you.
+ **
+ **********************************************************************/
+
+#ifndef KDCHARTLEGEND_H
+#define KDCHARTLEGEND_H
+
+#include <KDChartArea.h>
+#include <KDChartMarkerAttributes.h>
+
+class QTextTable;
+class QDomDocumentFragment;
+
+namespace KDChart {
+
+    class AbstractDiagram;
+
+class KDCHART_EXPORT Legend : public KDChartArea
+{
+    Q_OBJECT
+
+    Q_DISABLE_COPY( Legend )
+    KDCHART_DECLARE_PRIVATE_DERIVED_QWIDGET( Legend )
+public:
+    Legend( QWidget* parent );
+    Legend( KDChart::AbstractDiagram* diagram, QWidget* parent );
+    virtual ~Legend();
+
+    virtual QDomDocumentFragment toXML() const;
+
+    virtual Legend * clone() const;
+
+    QSize calcSizeHint() const;
+    virtual void paintEvent( QPaintEvent* );
+
+    // FIXME convenience wrapper around setReferenceArea()?
+/*    enum LegendPosition { LegendTop,
+                          LegendBottom,
+                          LegendLeft,
+                          LegendRight,
+                          LegendTopLeft,
+                          LegendTopLeftTop,
+                          LegendTopLeftLeft,
+                          LegendTopRight,
+                          LegendTopRightTop,
+                          LegendTopRightRight,
+                          LegendBottomLeft,
+                          LegendBottomLeftBottom,
+                          LegendBottomLeftLeft,
+                          LegendBottomRight,
+                          LegendBottomRightBottom,
+                          LegendBottomRightRight }; */
+
+    enum LegendPosition { WestNorthWest,
+                          NorthWest,
+                          NorthNorthWest,
+                          North,
+                          NorthNorthEast,
+                          NorthEast,
+                          EastNorthEast,
+                          East,
+                          EastSouthEast,
+                          SouthEast,
+                          SouthSouthEast,
+                          South,
+                          SouthSouthWest,
+                          SouthWest,
+                          WestSouthWest,
+                          West };
+
+    void setDiagram( KDChart::AbstractDiagram* diagram );
+    KDChart::AbstractDiagram* diagram() const;
+
+    void setPosition( LegendPosition position );
+    LegendPosition position() const;
+
+    void setOrientation( Qt::Orientation orientation );
+    Qt::Orientation orientation() const;
+
+    void setShowLines( bool legendShowLines );
+    bool showLines() const;
+
+    void resetTexts();
+    void setText( uint dataset, const QString& text );
+    QString text( uint dataset ) const;
+
+    uint datasetCount() const;
+
+    void setDefaultColors();
+    void setRainbowColors();
+    void setSubduedColors( bool ordered = false );
+
+    void setBrushesFromDiagram( KDChart::AbstractDiagram* diagram );
+
+    void setColor( uint dataset, const QColor& color );
+    void setBrush( uint dataset, const QBrush& brush );
+    QBrush brush( uint dataset ) const;
+
+    void setMarker( uint dataset, MarkerAttributes::MarkerStyle );
+    MarkerAttributes::MarkerStyle marker( uint dataset ) const;
+
+    void setTextAttributes( const TextAttributes &a );
+    TextAttributes textAttributes() const;
+
+    void setTitleText( const QString& text );
+    QString titleText() const;
+
+    void setTitleTextAttributes( const TextAttributes &a );
+    TextAttributes titleTextAttributes() const;
+
+    // FIXME same as frameSettings()->padding()?
+    void setSpacing( uint space );
+    uint spacing() const;
+
+private:
+    bool mustDrawVerticalLegend() const;
+
+private slots:
+    void resetDiagram();
+    void buildLegend();
+}; // End of class Legend
+
+}
+
+
+#endif // KDCHARTLEGEND_H
