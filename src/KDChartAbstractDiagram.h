@@ -66,7 +66,7 @@ namespace KDChart {
         /** \reimpl */
         virtual QRegion visualRegionForSelection(const QItemSelection &selection) const;
 
-        CoordinatePlane* coordinatePlane();
+        const CoordinatePlane* coordinatePlane() const;
 
         void setCoordinatePlane( CoordinatePlane* plane );
 
@@ -108,6 +108,7 @@ namespace KDChart {
         QList<QBrush> datasetBrushes() const;
 
     protected:
+        virtual bool checkInvariants() const;
         virtual void paintDataValueTexts( QPainter* painter );
         void paintDataValueText( QPainter* painter, const QModelIndex& index,
                                  const QPointF& pos, double value );

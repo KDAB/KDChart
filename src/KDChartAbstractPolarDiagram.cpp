@@ -20,7 +20,7 @@ AbstractPolarDiagram::AbstractPolarDiagram ( PolarCoordinatePlane* parent )
 }
 
 
-PolarCoordinatePlane * AbstractPolarDiagram::polarCoordinatePlane()
+const PolarCoordinatePlane * AbstractPolarDiagram::polarCoordinatePlane() const
 {
-    return dynamic_cast<PolarCoordinatePlane*>( coordinatePlane() );
+    return dynamic_cast<const PolarCoordinatePlane*>( coordinatePlane() );
 }

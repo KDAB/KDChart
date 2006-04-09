@@ -64,7 +64,7 @@ void PieDiagram::resizeEvent ( QResizeEvent*)
 {
 }
 
-static QRectF buildReferenceRect( PolarCoordinatePlane* plane )
+static QRectF buildReferenceRect( const PolarCoordinatePlane* plane )
 {
     QRectF contentsRect;
     QPointF referencePointAtTop = plane->translate( QPointF( 1, 0 ) );

@@ -21,7 +21,8 @@
 using namespace KDChart;
 
 AbstractDiagram::Private::Private()
-  : defaultsModel( new DefaultsModel() )
+  : plane( 0 )
+  , defaultsModel( new DefaultsModel() )
   , attributesModel( 0 )
   , datasetProxy ( 0 )
   , allowOverlappingDataValueTexts( false )
@@ -61,7 +62,7 @@ void AbstractDiagram::init()
 }
 
 
-CoordinatePlane* AbstractDiagram::coordinatePlane()
+const CoordinatePlane* AbstractDiagram::coordinatePlane() const
 {
     return d->plane;
 }
@@ -229,7 +230,7 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
 
 void AbstractDiagram::paintDataValueTexts( QPainter* painter )
 {
-
+    if ( !checkInvariants() ) return;
     const int rowCount = model()->rowCount();
     const int colCount = model()->columnCount();
     for ( int i=0; i<colCount; ++i ) {
@@ -247,7 +248,7 @@ void AbstractDiagram::paintMarkers( QPainter* painter,
                                     const QPointF& pos,
                                     double value )
 {
-
+    if ( !checkInvariants() ) return;
     DataValueAttributes a =
         model()->data( index, DataValueLabelAttributesRole ).value<DataValueAttributes>();
     if ( !a.isVisible() ) return;
@@ -359,6 +360,7 @@ void AbstractDiagram::paintMarkers( QPainter* painter,
 
 void AbstractDiagram::paintMarkers( QPainter* painter )
 {
+    if ( !checkInvariants() ) return;
     const int rowCount = model()->rowCount();
     const int colCount = model()->columnCount();
     for ( int i=0; i<colCount; ++i ) {
@@ -504,3 +506,8 @@ QList<QBrush> AbstractDiagram::datasetBrushes() const
     return ret;
 }
 
+
+bool AbstractDiagram::checkInvariants() const
+{
+    return model() && coordinatePlane();
+}

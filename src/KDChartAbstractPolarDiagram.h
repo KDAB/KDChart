@@ -22,7 +22,7 @@ namespace KDChart {
         virtual double numberOfValuesPerDataset() const = 0;
         virtual double numberOfGridRings() const = 0;
 
-        PolarCoordinatePlane * polarCoordinatePlane();
+        const PolarCoordinatePlane * polarCoordinatePlane() const;
 
     };
 
