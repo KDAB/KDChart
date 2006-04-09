@@ -267,6 +267,7 @@ void AbstractDiagram::paintMarker( QPainter* painter,
     }
 
     paintMarker( painter, ma, indexBrush, indexPen, pos, maSize );
+    painter->restore();
 }
 
 
@@ -373,7 +374,6 @@ void AbstractDiagram::paintMarker( QPainter* painter,
             Q_ASSERT_X ( false, "paintMarkers()",
                          "Type item does not match a defined Marker Type." );
     }
-    painter->restore();
 }
 
 void AbstractDiagram::paintMarkers( QPainter* painter )
