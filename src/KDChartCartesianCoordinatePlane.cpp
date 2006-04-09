@@ -7,6 +7,7 @@
 #include "KDChartAbstractCartesianDiagram.h"
 #include "KDChartCartesianCoordinatePlane.h"
 #include "CartesianCoordinateTransformation.h"
+#include "KDChartGridAttributes.h"
 
 #include "KDChartPaintContext.h"
 
@@ -110,6 +111,8 @@ void CartesianCoordinatePlane::paintEvent ( QPaintEvent* )
 
 void CartesianCoordinatePlane::paintGrid( PaintContext* ctx )
 {
+    // FIXME accumulate over all diagrams
+    const GridAttributes a = gridAttributes();
     AbstractCartesianDiagram* dgr = dynamic_cast<AbstractCartesianDiagram*> (diagrams().first() );
     Q_ASSERT ( dgr ); // only cartesian diagrams are allowed here
 
@@ -161,11 +164,14 @@ void CartesianCoordinatePlane::paintGrid( PaintContext* ctx )
         y += step;
     }
 
-    ctx->painter()->setPen ( QColor ( Qt::lightGray ) );
-    ctx->painter()->drawLines ( rulers );
-    ctx->painter()->setPen ( QColor ( Qt::blue ) );
-    ctx->painter()->drawLines ( axes );
-
+    if ( a.isSubGridVisible() ) {
+        ctx->painter()->setPen ( a.subGridPen() );
+        ctx->painter()->drawLines ( rulers );
+    }
+    if ( a.isGridVisible() ) {
+        ctx->painter()->setPen ( a.gridPen() );
+        ctx->painter()->drawLines ( axes );
+    }
 }
 
 void CartesianCoordinatePlane::resizeEvent ( QResizeEvent* )

@@ -21,10 +21,10 @@ private:
 };
 
 GridAttributes::Private::Private()
-    : visible( false ),
-      pen( Qt::black ),
-      subVisible( false ),
-      subPen( Qt::black ),
+    : visible( true ),
+      pen( Qt::blue),
+      subVisible( true ),
+      subPen( Qt::lightGray ),
       zeroPen( QColor( 0x00, 0x00, 0x80 ) )
 {
 }
