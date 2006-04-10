@@ -3,11 +3,6 @@
 #include <KDChartChart>
 #include <KDChartAbstractCoordinatePlane>
 #include <KDChartLineDiagram>
-#include <KDChartLineAttributes>
-#include <KDChartTextAttributes>
-#include <KDChartDataValueAttributes>
-#include <KDChartThreeDLineAttributes>
-#include <KDChartMarkerAttributes>
 
 #include <QDebug>
 #include <QPainter>
@@ -29,23 +24,24 @@ MainWindow::MainWindow( QWidget* parent ) :
     // Set up the diagram
     m_lines = new LineDiagram();
     m_lines->setModel( &m_model );
-    
+
     m_lines2 = new LineDiagram();
     m_lines2->setModel( &m_model2 );
 
     plane = new CartesianCoordinatePlane( m_chart );
-    
+
     CartesianAxis *xAxis = new CartesianAxis( m_lines );
     CartesianAxis *yAxis = new CartesianAxis ( m_lines );
     CartesianAxis *yAxis2 = new CartesianAxis ( m_lines2 );
     xAxis->setPosition ( KDChart::CartesianAxis::Bottom );
     yAxis->setPosition ( KDChart::CartesianAxis::Left );
     yAxis2->setPosition ( KDChart::CartesianAxis::Right );
-    
+
     m_lines->addAxes( xAxis );
     m_lines2->addAxes( xAxis );
     m_lines->addAxes( yAxis );
     m_lines2->addAxes( yAxis2 );
+
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
     plane->replaceDiagram( m_lines2 );
     m_chart->addCoordinatePlane( plane/*, 1*/);
