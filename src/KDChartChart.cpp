@@ -66,6 +66,11 @@ CoordinatePlaneList Chart::coordinatePlanes()
     return p->coordinatePlanes;
 }
 
+void Chart::addCoordinatePlane( CoordinatePlane* plane )
+{
+    p->coordinatePlanes.append( plane );
+}
+
 void Chart::replaceCoordinatePlane( CoordinatePlane* plane, int position )
 {
     if ( position >=0 && position < p->coordinatePlanes.size() ) {
@@ -227,7 +232,11 @@ void Chart::paintEvent( QPaintEvent* )
         qDebug() << "First headerfooter = " << headerFooter() << ", className = " << headerFooter()->metaObject()->className() << ", geometry = " << headerFooter()->geometry() << ", sizeHint = " << headerFooter()->sizeHint();
 
     // the data+axes area
-    dataAndLegendLayout->addWidget( coordinatePlane(), 1, 1, Qt::AlignCenter );
+    
+    foreach (CoordinatePlane* plane, p->coordinatePlanes )
+        dataAndLegendLayout->addWidget( plane, 1, 1, Qt::AlignCenter );
+    
+    //dataAndLegendLayout->addWidget( coordinatePlane(), 1, 1, Qt::AlignCenter );
     dataAndLegendLayout->setRowStretch( 1, 2 );
     dataAndLegendLayout->setColumnStretch( 1, 2 );
 
