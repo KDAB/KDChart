@@ -1,0 +1,274 @@
+#include "mainwindow.h"
+
+#include <KDChartChart>
+#include <KDChartAbstractCoordinatePlane>
+#include <KDChartLineDiagram>
+#include <KDChartLineAttributes>
+#include <KDChartTextAttributes>
+#include <KDChartDataValueAttributes>
+#include <KDChartThreeDLineAttributes>
+#include <KDChartMarkerAttributes>
+
+#include <QDebug>
+#include <QPainter>
+
+using namespace KDChart;
+
+MainWindow::MainWindow( QWidget* parent ) :
+    QWidget( parent )
+{
+    setupUi( this );
+
+    QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
+    m_chart = new Chart();
+    chartLayout->addWidget( m_chart );
+    hSBar->setVisible( false );
+    vSBar->setVisible( false );
+
+    m_model.loadFromCSV( ":/data" );
+    m_model2.loadFromCSV( ":/data" );
+
+    // Set up the diagram
+    m_lines = new LineDiagram();
+    m_lines->setModel( &m_model );
+    
+    m_lines2 = new LineDiagram();
+    m_lines2->setModel( &m_model2 );
+
+    plane = new CartesianCoordinatePlane( m_chart );
+    
+    //CartesianAxisList List = m_lines->axesList();
+    CartesianAxis *xAxis = new CartesianAxis( m_lines );
+    CartesianAxis *yAxis = new CartesianAxis ( m_lines );
+    CartesianAxis *axisTop = new CartesianAxis ( m_lines );
+    CartesianAxis *axisRight = new CartesianAxis ( m_lines );
+    xAxis->setPosition ( KDChart::CartesianAxis::Bottom );
+    yAxis->setPosition ( KDChart::CartesianAxis::Left );
+    axisTop->setPosition( KDChart::CartesianAxis::Top );
+    axisRight->setPosition( KDChart::CartesianAxis::Right );
+    m_lines->addAxes( xAxis );
+    m_lines->addAxes( yAxis );
+    m_lines->addAxes( axisTop );
+    m_lines->addAxes( axisRight );
+    m_chart->coordinatePlane()->replaceDiagram( m_lines );
+    plane->replaceDiagram( m_lines2 );
+    m_chart->addCoordinatePlane( plane/*, 1*/);
+
+    qDebug() << m_chart->coordinatePlanes().size();
+}
+
+void MainWindow::on_lineTypeCB_currentIndexChanged( const QString & text )
+{
+    LineAttributes la = m_lines->lineAttributes( m_lines->model()->index( 0, 0, QModelIndex() ) );
+
+    if ( text == "Normal" )
+        la.setType( LineAttributes::Normal );
+    else if ( text == "Stacked" )
+        la.setType( LineAttributes::Stacked );
+    else if ( text == "Percent" )   
+        la.setType( LineAttributes::Percent );
+    else 
+        qWarning (" Does not match any type");      
+    m_lines->setLineAttributes( la );
+    m_chart->coordinatePlane()->replaceDiagram( m_lines );
+    m_chart->update();
+}
+
+void MainWindow::on_paintValuesCB_toggled( bool checked )
+{
+     
+    //testing 
+        const int rowCount = m_lines->model()->rowCount();
+        const int colCount = m_lines->model()->columnCount();
+        for ( int i = 0; i<colCount; ++i ) {
+            for ( int j=0; j< rowCount; ++j ) {
+                QModelIndex index = m_lines->model()->index( j, i, QModelIndex() );
+                QBrush brush = m_lines->model()->headerData( i, Qt::Vertical, DatasetBrushRole ).value<QBrush>();
+                DataValueAttributes a = m_lines->dataValueAttributes( index );
+                if ( !paintMarkersCB->isChecked() ) {
+                    MarkerAttributes ma = a.markerAttributes();   
+                    ma.setVisible( false );
+                    a.setMarkerAttributes( ma );
+                }
+                TextAttributes ta = a.textAttributes();            
+                ta.setRotation( 0 );
+                ta.setFont( QFont( "Comic", 10 ) );
+                ta .setColor( brush.color() );
+                if ( checked )
+                    ta.setVisible( true );
+                else 
+                    ta.setVisible( false );
+
+                a.setTextAttributes( ta );               
+                a.setVisible( true );
+                m_lines->setDataValueAttributes( index, a); 
+            } 
+        }
+        m_chart->update();       
+}
+
+
+void MainWindow::on_paintMarkersCB_toggled( bool checked )
+{
+   //testing 
+    const int rowCount = m_lines->model()->rowCount();
+    const int colCount = m_lines->model()->columnCount();
+    for ( int i = 0; i<colCount; ++i ) {
+        for ( int j=0; j< rowCount; ++j ) {
+            QModelIndex index = m_lines->model()->index( j, i, QModelIndex() );
+            QBrush brush = m_lines->model()->headerData( i, Qt::Vertical, DatasetBrushRole ).value<QBrush>();
+            double value = m_lines->model()->data( index ).toDouble();
+            DataValueAttributes a = m_lines->dataValueAttributes( index );             
+            // dont paint the values 
+            if ( !paintValuesCB->isChecked() ) {
+                TextAttributes ta = a.textAttributes(); 
+                ta.setVisible( false );
+                a.setTextAttributes( ta );
+            } 
+            MarkerAttributes ma = a.markerAttributes();  
+            switch ( markersStyleCB->currentIndex() ) {                 
+            case 0:{            
+                MarkerAttributes::MarkerStylesMap map;
+                map.insert( 0, MarkerAttributes::MarkerSquare );
+                map.insert( 1, MarkerAttributes::MarkerCircle );
+                map.insert( 2, MarkerAttributes::MarkerRing );
+                map.insert( 3, MarkerAttributes::MarkerCross );
+                map.insert( 4, MarkerAttributes::MarkerDiamond );
+                ma.setMarkerStylesMap( map ); 
+                ma.setMarkerStyle( ma.markerStylesMap().value(i) );
+                break; }
+            case 1:{
+                ma.setMarkerStyle( MarkerAttributes::MarkerCircle );
+                break; }
+            case 2:{
+                ma.setMarkerStyle( MarkerAttributes::MarkerSquare );
+                break; }
+            case 3:{
+                ma.setMarkerStyle( MarkerAttributes::MarkerDiamond );
+                break; }
+            case 4:{
+                ma.setMarkerStyle( MarkerAttributes::Marker1Pixel );
+                break; }
+            case 5:{
+                ma.setMarkerStyle( MarkerAttributes::Marker4Pixels );
+                break; }
+            case 6:{
+                ma.setMarkerStyle( MarkerAttributes::MarkerRing );
+                break; }
+            case 7:{
+                ma.setMarkerStyle( MarkerAttributes::MarkerCross );
+                break; }
+            case 8:{
+                ma.setMarkerStyle( MarkerAttributes::MarkerFastCross );
+                break; }
+            }
+            ma.setMarkerSize( QSize( markersWidthSB->value(), markersHeightSB->value() ) );
+            /* Set a specific color - marker for a specific value */ 
+            if ( value == 8 )
+                ma.setMarkerColor( Qt::yellow );
+            if ( checked ) 
+              ma.setVisible( true );
+            else               
+              ma.setVisible( false );
+   
+            a.setMarkerAttributes( ma );         
+            a.setVisible( true ); 
+            m_lines->setDataValueAttributes( index, a); 
+        } 
+    }
+    m_chart->update();    
+}
+
+void MainWindow::on_markersStyleCB_currentIndexChanged( const QString & /*text*/ )
+{
+    if ( paintMarkersCB->isChecked() )
+        on_paintMarkersCB_toggled( true );
+    else
+        return;
+}
+
+
+void MainWindow::on_markersWidthSB_valueChanged( int /*i*/ )
+{
+    markersHeightSB->setValue( markersWidthSB->value() );
+    if ( paintMarkersCB->isChecked() )
+        on_paintMarkersCB_toggled( true );
+    else
+        return;
+}
+
+void MainWindow::on_markersHeightSB_valueChanged( int /*i*/ )
+{
+    markersWidthSB->setValue( markersHeightSB->value() );
+    if ( paintMarkersCB->isChecked() )
+        on_paintMarkersCB_toggled( true );
+    else
+        return;
+}
+
+
+void MainWindow::on_displayAreasCB_toggled( bool checked )
+{
+    const int rowCount = m_lines->model()->rowCount();
+    const int colCount = m_lines->model()->columnCount();
+     for ( int i = 0; i<colCount; ++i ) {
+         QModelIndex index = m_lines->model()->index( 0, i, QModelIndex() );  
+         for ( int j=0; j< rowCount; ++j ) {             
+             LineAttributes la = m_lines->lineAttributes( index );    
+             if ( checked  ) {
+                 la.setDisplayArea( true );
+                 la.setTransparency( transparencySB->value() );
+             } else 
+                 la.setDisplayArea( false );
+             m_lines->setLineAttributes( i,  la );
+         }
+     }   
+     m_chart->update();
+}
+
+void MainWindow::on_transparencySB_valueChanged( int alpha )
+{
+    const int rowCount = m_lines->model()->rowCount();
+    const int colCount = m_lines->model()->columnCount();
+    for ( int i = 0; i<colCount; ++i ) {
+        QModelIndex index = m_lines->model()->index( 0, i, QModelIndex() );  
+        for ( int j=0; j< rowCount; ++j ) {
+            LineAttributes la = m_lines->lineAttributes( index ); 
+            la.setTransparency( alpha );
+            m_lines->setLineAttributes( la );
+        }
+    }
+    on_displayAreasCB_toggled( true );
+}
+
+void MainWindow::on_zoomFactorSB_valueChanged( double factor )
+{
+    if ( factor > 1 ) {
+        hSBar->setVisible( true );
+        vSBar->setVisible( true );
+    } else {
+        hSBar->setValue( 500 );
+        vSBar->setValue( 500 );
+        hSBar->setVisible( false );
+        vSBar->setVisible( false );
+    }
+    m_chart->coordinatePlane()->setZoomFactorX( factor );
+    m_chart->coordinatePlane()->setZoomFactorY( factor );
+    m_chart->coordinatePlane()->replaceDiagram( m_lines );
+    m_chart->update();
+}
+
+void MainWindow::on_hSBar_valueChanged( int hPos )
+{
+    m_chart->coordinatePlane()->setZoomCenter( QPointF(hPos/1000.0, vSBar->value()/1000.0) );
+    m_chart->coordinatePlane()->replaceDiagram( m_lines );
+    m_chart->update();
+}
+
+void MainWindow::on_vSBar_valueChanged( int vPos )
+{
+    m_chart->coordinatePlane()->setZoomCenter( QPointF( hSBar->value()/1000.0, vPos/1000.0) );
+    m_chart->coordinatePlane()->replaceDiagram( m_lines );
+    m_chart->update();
+}
+
