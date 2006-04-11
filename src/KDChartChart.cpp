@@ -260,10 +260,10 @@ void Chart::paintEvent( QPaintEvent* )
                     switch ( axis->position() )
                     {
                     case CartesianAxis::Top:
-                        p->planeLayout->addWidget( axis, 1, 0 );
+                        p->planeLayout->addWidget( axis, 0, 1 );
                         break;
                     case CartesianAxis::Bottom:
-                        p->planeLayout->addWidget( axis, 1, 2 );
+                        p->planeLayout->addWidget( axis, 2, 1 );
                         break;
                     case CartesianAxis::Left:
                         p->planeLayout->addWidget( axis, 1, 0 );
