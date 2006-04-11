@@ -44,6 +44,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
     Q_ASSERT ( d->diagram() );
     const int MinimumPixelsBetweenRulers = 5;
     const QPair<QPointF, QPointF> dataBoundaries = d->diagram()->dataBoundaries();
+    
     // preparations:
     // - calculate the range that will be displayed:
     double range;
@@ -53,6 +54,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
     } else {
         range = dataBoundaries.second.y() - dataBoundaries.first.y();
     }
+
     double absRange = qAbs ( range );
     // - calculate the decimal magnitude of the range and the basic distance we decorate:
     int magnitude = ( int )log10l ( absRange );
@@ -152,7 +154,10 @@ void CartesianAxis::paint ( PaintContext* context ) const
     QPointF fourthRulerRef ( rulerRef );
     QPointF halfRulerRef( rulerRef );
     QPointF unitRulerRef( rulerRef );
-   
+    /* Pending Michel: FixMe Percent */
+    int minValueY = qRound( dataBoundaries.first.y() );
+    int minValueX = qRound( dataBoundaries.first.x() ); 
+
     double step;
     if ( drawFourthRulers ) {
         //ptr->save();
@@ -201,18 +206,19 @@ void CartesianAxis::paint ( PaintContext* context ) const
                 QPointF topPoint ( unitRulerRef.x(), position() == Top ? unitRulerRef.y()-3 : unitRulerRef.y()+3 );
                 QPointF bottomPoint ( unitRulerRef.x(), unitRulerRef.y() );
                 ptr->drawLine( topPoint, bottomPoint );
-                #ifdef VALUES_PAINTING_DEBUG
-                if ( drawFourthRulers ) {
+                //#ifdef VALUES_PAINTING_DEBUG
+                if ( drawHalfRulers ) {
                     QFont textFont( QFont("comic", 5 ) );
                     topPoint.setX( topPoint.x() - textFont.pointSize() ); 
                     topPoint.setY( position() == Top ? topPoint.y()-textFont.pointSize():topPoint.y()+ (2 * textFont.pointSize()) ); 
                     ptr->save();
                     ptr->setPen( Qt::blue );
                     ptr->setFont( textFont );
-                    ptr->drawText( topPoint, QString::number( i ) );
+                    ptr->drawText( topPoint, QString::number( minValueX ) );
+                    minValueX += 1;
                     ptr->restore();
                 }
-                #endif
+                //#endif
                 unitRulerRef.setX( unitRulerRef.x() + step);
             }
           
@@ -221,18 +227,19 @@ void CartesianAxis::paint ( PaintContext* context ) const
                 QPointF leftPoint ( position() == Left ? unitRulerRef.x()-3 : unitRulerRef.x()+3, unitRulerRef.y() );
                 QPointF rightPoint ( unitRulerRef.x(), unitRulerRef.y() );
                 ptr->drawLine( leftPoint, rightPoint );
-                #ifdef VALUES_PAINTING_DEBUG
-                if ( drawFourthRulers ) {
+                //#ifdef VALUES_PAINTING_DEBUG
+                if ( drawHalfRulers ) {
                     QFont textFont( QFont("comic", 5 ) );
                     leftPoint.setX( position() == Left ? leftPoint.x()- (2*textFont.pointSize()) : leftPoint.x()+textFont.pointSize() ); 
                     leftPoint.setY( leftPoint.y() + textFont.pointSize()/2 );
                     ptr->save();
                     ptr->setPen( Qt::red );
                     ptr->setFont( textFont );
-                    ptr->drawText( leftPoint, QString::number( i ) );
+                    ptr->drawText( leftPoint, QString::number( minValueY  ) );
+                    minValueY += 1;
                     ptr->restore();
                 }
-                #endif
+                //#endif
                 unitRulerRef.setY( unitRulerRef.y() - step);
             }
            
