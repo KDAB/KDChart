@@ -18,8 +18,8 @@ MainWindow::MainWindow( QWidget* parent )
 
     connect( btnAddDataset, SIGNAL( clicked()), SLOT( addDataset() ));
     
-    connect( leadingSelector, SIGNAL( valueChanged( int )),
-		    this, SLOT( changeLeading( int )));
+/*    connect( leadingSelector, SIGNAL( valueChanged( int )),
+		    this, SLOT( changeLeading( int )));*/
 }
 
 void MainWindow::changeType()
@@ -42,7 +42,6 @@ void MainWindow::changeType()
 void MainWindow::changeLeading( int leading )
 {
     widget->setGlobalLeading( leading, leading, leading, leading );
-    widget->update();
 }
 
 void MainWindow::addDataset()

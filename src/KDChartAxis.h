@@ -33,7 +33,6 @@
 #include <QObject>
 #include <QRectF>
 #include <QtXml/QDomDocumentFragment>
-#include <QWidget>
 
 #include "kdchart_export.h"
 #include "KDChartGlobal.h"
@@ -51,7 +50,7 @@ namespace KDChart {
     class PaintContext;
     class AbstractDiagram;
 
-    class KDCHART_EXPORT Axis : public QWidget
+    class KDCHART_EXPORT Axis
     // : public KDChartArea FIXME maybe reintroduce later
     {
         Q_DISABLE_COPY( Axis )
