@@ -157,7 +157,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
     /* Pending Michel: FixMe Percent */
     int minValueY = qRound( dataBoundaries.first.y() );
     int minValueX = qRound( dataBoundaries.first.x() ); 
-
+    
     double step;
     if ( drawFourthRulers ) {
         //ptr->save();

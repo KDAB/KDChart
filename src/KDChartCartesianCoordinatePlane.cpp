@@ -230,7 +230,7 @@ void CartesianCoordinatePlane::layoutDiagrams()
             Q_ASSERT ( diagram );
             if ( diagram )
             {
-                axes << diagram->axes();
+    //            axes << diagram->axes();
             }
         }
 
