@@ -170,6 +170,8 @@ bool AttributesModel::setHeaderData ( int section, Qt::Orientation orientation,
             = orientation == Qt::Horizontal ? mHorizontalHeaderDataMap : mVerticalHeaderDataMap;
         QMap<int, QVariant> &dataMap = sectionDataMap[ section ];
         dataMap.insert( role, value );
+        emit attributesChanged( index( 0, section, QModelIndex() ),
+                                index( rowCount( QModelIndex() ), section, QModelIndex() ) );
         return true;
     }
 }
