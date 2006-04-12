@@ -247,12 +247,10 @@ void Chart::paintEvent( QPaintEvent* )
         {
             AbstractCartesianDiagram* diagram =
                 dynamic_cast<AbstractCartesianDiagram*> ( abstractDiagram );
-            Q_ASSERT ( diagram );
-            if ( diagram )
-            {
-                foreach ( CartesianAxis* axis, diagram->axes())
-                {
-		    Q_ASSERT ( axis );
+            if( diagram ) {
+                // If diagram == 0, we are probably polar and do not need any axes anyway.
+                foreach ( CartesianAxis* axis, diagram->axes()) {
+                    Q_ASSERT ( axis );
                     switch ( axis->position() )
                     {
                     case CartesianAxis::Top:
