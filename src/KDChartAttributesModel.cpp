@@ -180,6 +180,9 @@ bool AttributesModel::setHeaderData ( int section, Qt::Orientation orientation,
 bool KDChart::AttributesModel::setModelData( const QVariant value, int role )
 {
      mModelDataMap.insert( role, value );
+     emit attributesChanged( index( 0, 0, QModelIndex() ),
+                             index( rowCount( QModelIndex() ),
+                                    columnCount( QModelIndex() ), QModelIndex() ) );
      return true;
 }
 
