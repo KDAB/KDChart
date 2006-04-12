@@ -7,10 +7,13 @@ namespace KDChart {
 
     class PaintContext;
     class AbstractDiagram;
+    class CartesianAxis;
 
     class KDCHART_EXPORT CartesianCoordinatePlane : public CoordinatePlane
     {
         Q_OBJECT
+
+    friend class CartesianAxis;
 
     public:
         class Private;

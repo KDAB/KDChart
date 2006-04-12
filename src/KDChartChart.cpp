@@ -4,8 +4,9 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 
-#include "KDChartChart.h"
-#include "KDChartCartesianCoordinatePlane.h"
+#include <KDChartChart.h>
+#include <KDChartCartesianCoordinatePlane.h>
+#include <KDChartAbstractCartesianDiagram.h>
 #include <KDChartHeaderFooter.h>
 #include <KDChartLegend.h>
 #include <qlabel.h>
@@ -20,11 +21,13 @@ public:
     LegendList legends;
 
     QHBoxLayout* layout;
+    QGridLayout* planeLayout;
 
     int globalLeadingLeft, globalLeadingRight, globalLeadingTop, globalLeadingBottom;
 
     Private ()
         : layout( 0 ),
+          planeLayout( 0 ),
           globalLeadingLeft( 0 ),
           globalLeadingRight( 0 ),
           globalLeadingTop( 0 ),
@@ -141,6 +144,12 @@ void Chart::paintEvent( QPaintEvent* )
     if( p->layout )
         delete p->layout;
 
+/*    if( p->planeLayout )
+        delete p->planeLayout;*/
+
+    //if( !p->planeLayout)
+        p->planeLayout = new QGridLayout();
+
     // The HBox p->layout provides the left and right global leadings
     p->layout = new QHBoxLayout( this );
     p->layout->addSpacing( p->globalLeadingLeft );
@@ -232,9 +241,45 @@ void Chart::paintEvent( QPaintEvent* )
         qDebug() << "First headerfooter = " << headerFooter() << ", className = " << headerFooter()->metaObject()->className() << ", geometry = " << headerFooter()->geometry() << ", sizeHint = " << headerFooter()->sizeHint();
 
     // the data+axes area
+    dataAndLegendLayout->addLayout( p->planeLayout, 1, 1 );
     
     foreach (CoordinatePlane* plane, p->coordinatePlanes )
-        dataAndLegendLayout->addWidget( plane, 1, 1, Qt::AlignCenter );
+    {
+        p->planeLayout->addWidget( plane, 1, 1, Qt::AlignCenter );
+
+        foreach ( AbstractDiagram* abstractDiagram, plane->diagrams() )
+        {
+            AbstractCartesianDiagram* diagram =
+                dynamic_cast<AbstractCartesianDiagram*> ( abstractDiagram );
+            Q_ASSERT ( diagram );
+            if ( diagram )
+            {
+                foreach ( CartesianAxis* axis, diagram->axes())
+                {
+		    Q_ASSERT ( axis );
+                    switch ( axis->position() )
+                    {
+                    case CartesianAxis::Top:
+                        p->planeLayout->addWidget( axis, 0, 1 );
+                        break;
+                    case CartesianAxis::Bottom:
+                        p->planeLayout->addWidget( axis, 2, 1 );
+                        break;
+                    case CartesianAxis::Left:
+                        p->planeLayout->addWidget( axis, 1, 0 );
+                        break;
+                    case CartesianAxis::Right:
+                        p->planeLayout->addWidget( axis, 1, 2 );
+                        break;
+                    default:
+                        Q_ASSERT_X( false, "Chart::paintEvent",
+                                           "unknown axis position" );
+                        break;
+                    };
+                }
+            }
+        }
+    }
     
     //dataAndLegendLayout->addWidget( coordinatePlane(), 1, 1, Qt::AlignCenter );
     dataAndLegendLayout->setRowStretch( 1, 2 );

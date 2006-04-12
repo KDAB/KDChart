@@ -39,6 +39,8 @@ namespace KDChart {
 
     class KDCHART_EXPORT CartesianAxis : public Axis
     {
+        Q_OBJECT
+
         Q_DISABLE_COPY( CartesianAxis )
         KDCHART_DECLARE_PRIVATE_DERIVED( CartesianAxis )
 
@@ -57,7 +59,10 @@ namespace KDChart {
         ~CartesianAxis();
 
         void paint( PaintContext* ) const;
+	void paintEvent( QPaintEvent* event );
         QSize sizeHint() const;
+        QSize minimumSizeHint() const { return sizeHint(); }
+	QSizePolicy sizePolicy() const;
         void setGeometry( const QRectF& rect );
         QRectF geometry() const;
 

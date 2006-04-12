@@ -1,5 +1,7 @@
 #include "KDChartAxis.h"
 #include "KDChartAxis_p.h"
+#include <QDebug>
+#include <KDChartAbstractDiagram.h>
 // #include <QtXml/QDomDocumentFragment>
 // #include <KDChartTextAttributes.h>
 // #include <QStringList>
@@ -11,7 +13,7 @@
 using namespace KDChart;
 
 Axis::Axis ( AbstractDiagram* parent )
-    : _d ( new Private() )
+    : QWidget(parent), _d ( new Private() )
 {   // FIXME decide internal structure, how to save parent
     init();
 }

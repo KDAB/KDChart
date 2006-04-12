@@ -39,9 +39,25 @@ const CartesianAxis::Position CartesianAxis::position() const
     return d->position;
 }
 
+void CartesianAxis::paintEvent( QPaintEvent* event )
+{
+    PaintContext context;
+    QPainter painter( this );
+    context.setPainter( &painter );
+    AbstractDiagram* diag = d->diagram();
+    CoordinatePlane* plane = diag->coordinatePlane();
+    context.setCoordinatePlane( plane );
+    plane->layoutDiagrams();
+    QRectF rect = QRectF ( 1, 1, plane->width() - 3, plane->height() - 3 );
+    context.setRectangle( rect );
+    d->geometry.setSize( size() );
+    paint( &context );
+}
+
 #define ptr (context->painter())
 void CartesianAxis::paint ( PaintContext* context ) const
 {
+
     Q_ASSERT ( d->diagram() );
     const int MinimumPixelsBetweenRulers = 5;
     const QPair<QPointF, QPointF> dataBoundaries = d->diagram()->dataBoundaries();
@@ -90,6 +106,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
     // - calculate the absolute range in screen pixels:
     QPointF p1 = context->coordinatePlane()->translate( dataBoundaries.first );
     QPointF p2 = context->coordinatePlane()->translate( dataBoundaries.second );
+
     double screenRange;
     if ( position() == Bottom || position() == Top )
     {
@@ -97,7 +114,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
     } else {
         screenRange = qAbs ( p1.y() - p2.y() );
     }
-    qDebug() << "screenRange" << screenRange << "p1" << p1 << "p2" << p2;
+    
     bool drawUnitRulers = screenRange / numberOfUnitRulers > MinimumPixelsBetweenRulers;
     bool drawFourthRulers = screenRange / numberOfFourthRulers > MinimumPixelsBetweenRulers;
     bool drawHalfRulers = screenRange / numberOfHalfRulers > MinimumPixelsBetweenRulers;
@@ -260,15 +277,37 @@ QSize CartesianAxis::sizeHint() const
     {
     case Bottom:
     case Top:
-        result = QSize ( -1, 32 );
+        result = QSize ( 1, 32 );
         break;
     case Left:
     case Right:
-        result = QSize ( 32, -1 );
+        result = QSize ( 32, 1 );
         break;
     default:
         Q_ASSERT( false ); // all positions need to be handled
         break;
+    };
+
+    return result;
+}
+
+QSizePolicy CartesianAxis::sizePolicy() const
+{
+    QSizePolicy result;
+
+    switch ( position() )
+    {
+    case Bottom:
+    case Top:
+        result.setVerticalPolicy( QSizePolicy::Fixed );
+        break;
+    case Left:
+    case Right:
+        result.setHorizontalPolicy( QSizePolicy::Fixed );
+        break;
+    default:
+        Q_ASSERT( false ); // all positions need to be handeld
+	break;
     };
 
     return result;

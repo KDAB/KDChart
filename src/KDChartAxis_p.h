@@ -3,6 +3,7 @@
 
 #include "KDChartArea_p.h"
 #include <KDChartTextAttributes.h>
+#include <KDChartAbstractDiagram.h>
 #include <QMap>
 #include <QVariant>
 #include <QDateTime>
@@ -108,7 +109,7 @@ inline KDChart::Axis::Axis( Private * p )
 { init(); }
 
 inline KDChart::Axis::Axis( Private * p, AbstractDiagram* parent_ )
-    : _d( p )
+    : QWidget(parent_), _d( p )
 {
     _d->parent = parent_;
     init();

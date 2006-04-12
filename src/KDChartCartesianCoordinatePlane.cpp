@@ -87,7 +87,7 @@ void CartesianCoordinatePlane::paintEvent ( QPaintEvent* )
         paintGrid( &ctx );
 
         // paint the axes:
-        foreach ( AbstractDiagram* abstractDiagram, diagrams() )
+/*        foreach ( AbstractDiagram* abstractDiagram, diagrams() )
             {
                 AbstractCartesianDiagram* diagram = dynamic_cast<AbstractCartesianDiagram*> ( abstractDiagram );
                 Q_ASSERT ( diagram );
@@ -96,7 +96,7 @@ void CartesianCoordinatePlane::paintEvent ( QPaintEvent* )
                     {
                         axis->paint ( &ctx );
                     }
-            }
+            }*/
 
         // paint the diagrams:
         for ( int i = 0; i < diags.size(); i++ )
@@ -216,6 +216,8 @@ void CartesianCoordinatePlane::layoutDiagrams()
     dataBoundingRect.setBottomLeft ( smallestPoint );
     dataBoundingRect.setTopRight ( largestPoint );
 
+/*<<<<<<< .mine
+=======
     // lay out the diagrams and the axes:
     //
     // query and lay out the axes (make sure to keep this list stable, since
@@ -259,12 +261,11 @@ void CartesianCoordinatePlane::layoutDiagrams()
             };
         }
 
+>>>>>>> .r145*/
     // calculate the remaining rectangle, and use it as the diagram area:
     d->diagramArea = d->drawingArea;
-    d->diagramArea.setTopLeft ( QPointF ( d->drawingArea.left() + leftAxisWidth ,
-                                          d->drawingArea.top() + topAxisHeight ) );
-    d->diagramArea.setBottomRight ( QPointF ( d->drawingArea.right() - rightAxisWidth,
-                                              d->drawingArea.bottom() - bottomAxisHeight ) );
+    d->diagramArea.setTopLeft ( QPointF ( d->drawingArea.left(), d->drawingArea.top() ) );
+    d->diagramArea.setBottomRight ( QPointF ( d->drawingArea.right(), d->drawingArea.bottom() ) );
 
     // determine coordinate transformation:
     QPointF diagramTopLeft = dataBoundingRect.topLeft();
@@ -305,73 +306,6 @@ void CartesianCoordinatePlane::layoutDiagrams()
     //      adapt diagram area to effect of isometric scaling:
     d->diagramArea.setTopLeft( translate ( dataBoundingRect.topLeft() ) );
     d->diagramArea.setBottomRight ( translate ( dataBoundingRect.bottomRight() ) );
-
-    // calculate the rectangles, lay out the axes and the grid area, and draw
-    // the axes:
-    QRectF leftAxisRect;
-    leftAxisRect.setTopLeft ( QPointF( d->diagramArea.x() - leftAxisWidth,
-                                       d->diagramArea.y() ) );
-    leftAxisRect.setWidth ( leftAxisWidth );
-    leftAxisRect.setHeight ( d->diagramArea.height() );
-    QRectF rightAxisRect;
-    rightAxisRect.setTopLeft( QPointF ( d->diagramArea.right(),d->diagramArea.top() ) );
-    rightAxisRect.setWidth ( rightAxisWidth );
-    rightAxisRect.setHeight( d->diagramArea.height() );
-    QRectF topAxisRect;
-    topAxisRect.setTopLeft ( QPointF( d->diagramArea.left(), d->diagramArea.top() - topAxisHeight ) );
-    topAxisRect.setWidth( d->diagramArea.width() );
-    topAxisRect.setHeight( topAxisHeight );
-    QRectF bottomAxisRect;
-    bottomAxisRect.setTopLeft ( QPointF( d->diagramArea.left(), d->diagramArea.bottom() ) );
-    bottomAxisRect.setHeight( bottomAxisHeight );
-    bottomAxisRect.setWidth( d->diagramArea.width() );
-
-    // FIXME: calculate every axes rectangle (try with more than one)
-    QPointF leftTopLeft ( leftAxisRect.topRight() ),
-        leftBottomRight ( leftAxisRect.bottomRight() ),
-        topTopLeft ( topAxisRect.bottomLeft() ),
-        topBottomRight ( topAxisRect.bottomRight() ),
-        rightTopLeft ( rightAxisRect.topLeft() ),
-        rightBottomRight ( rightAxisRect.bottomLeft() ),
-        bottomTopLeft ( bottomAxisRect.topLeft() ),
-        bottomBottomRight ( bottomAxisRect.topRight() );
-
-    foreach ( CartesianAxis* axis, axes )
-        {
-            QSizeF sizehint = axis->sizeHint();
-            QRectF rect;
-            switch ( axis->position() ) {
-            case CartesianAxis::Left:
-                leftTopLeft.setX ( leftTopLeft.x() - sizehint.width() );
-                rect.setTopLeft ( leftTopLeft );
-                rect.setBottomRight( leftBottomRight );
-                axis->setGeometry ( rect );
-                leftBottomRight.setX ( leftBottomRight.x() - sizehint.width() );
-                break;
-            case CartesianAxis::Bottom:
-                bottomBottomRight.setY( bottomBottomRight.y() + sizehint.height() );
-                rect.setTopLeft ( bottomTopLeft );
-                rect.setBottomRight ( bottomBottomRight );
-                axis->setGeometry ( rect );
-                bottomTopLeft.setY ( bottomTopLeft.y() + sizehint.height() );
-                break;
-            case CartesianAxis::Top:
-                topTopLeft.setY( topTopLeft.y() - sizehint.height() );
-                rect.setTopLeft ( topTopLeft );
-                rect.setBottomRight ( topBottomRight );
-                axis->setGeometry ( rect );
-                topBottomRight.setY ( topBottomRight.y() - sizehint.height() );
-                break;
-            case CartesianAxis::Right:
-                rightBottomRight.setX( rightBottomRight.x() + sizehint.width() );
-                rect.setTopLeft ( rightTopLeft );
-                rect.setBottomRight ( rightBottomRight );
-                axis->setGeometry ( rect );
-                rightTopLeft.setX ( rightTopLeft.x() + sizehint.width() );
-                break;
-            }
-        }
-
 }
 
 const QPointF CartesianCoordinatePlane::translate( const QPointF& diagramPoint ) const

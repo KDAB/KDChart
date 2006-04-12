@@ -68,7 +68,7 @@ namespace KDChart {
         /** \reimpl */
         virtual QRegion visualRegionForSelection(const QItemSelection &selection) const;
 
-        const CoordinatePlane* coordinatePlane() const;
+        CoordinatePlane* coordinatePlane() const;
 
         void setCoordinatePlane( CoordinatePlane* plane );
 

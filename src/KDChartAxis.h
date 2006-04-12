@@ -33,6 +33,7 @@
 #include <QObject>
 #include <QRectF>
 #include <QtXml/QDomDocumentFragment>
+#include <QWidget>
 
 #include "kdchart_export.h"
 #include "KDChartGlobal.h"
@@ -50,9 +51,11 @@ namespace KDChart {
     class PaintContext;
     class AbstractDiagram;
 
-    class KDCHART_EXPORT Axis
+    class KDCHART_EXPORT Axis : public QWidget
     // : public KDChartArea FIXME maybe reintroduce later
     {
+        Q_OBJECT
+
         Q_DISABLE_COPY( Axis )
         KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC( Axis )
     protected:
@@ -67,8 +70,9 @@ namespace KDChart {
         // FIXME (Mirko) readd when needed
         // void copyRelevantDetailsFrom( const KDChartAxis* axis );
 
-        virtual void paint( PaintContext* ) const = 0;
-        virtual QSize sizeHint() const = 0;
+    /*    virtual void paint( PaintContext* ) const = 0;
+        virtual QSize sizeHint() const = 0;*/
+	//virtual void paintEvent( QPaintEvent* event) = 0;
         virtual void setGeometry( const QRectF& rect ) = 0;
         virtual QRectF geometry() const = 0;
 

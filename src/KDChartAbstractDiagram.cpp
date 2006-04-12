@@ -66,7 +66,7 @@ void AbstractDiagram::init()
 }
 
 
-const CoordinatePlane* AbstractDiagram::coordinatePlane() const
+CoordinatePlane* AbstractDiagram::coordinatePlane() const
 {
     return d->plane;
 }

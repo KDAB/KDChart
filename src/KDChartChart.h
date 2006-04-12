@@ -28,7 +28,7 @@ namespace KDChart {
 
         CoordinatePlane* coordinatePlane();
         void addCoordinatePlane( CoordinatePlane* );
-	void replaceCoordinatePlane( CoordinatePlane*, int position = 0 );
+        void replaceCoordinatePlane( CoordinatePlane*, int position = 0 );
         CoordinatePlaneList coordinatePlanes();
 
         void setGlobalLeading( int left, int top, int right, int bottom );
