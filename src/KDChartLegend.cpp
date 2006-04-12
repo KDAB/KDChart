@@ -67,10 +67,10 @@ Legend::~Legend()
 void Legend::init()
 {
     d->layout = new QGridLayout();
-    d->layout->setMargin( 0 );
+    d->layout->setMargin( 2 );
     d->layout->setSpacing( 1 );
-    d->layout->setColumnStretch( 0, 1 );
-    d->layout->setColumnStretch( 3, 1 );
+    d->layout->setColumnStretch( 0, 0 ); // markers don't stretch
+    d->layout->setColumnStretch( 3, 1 ); // texts stretch
     setLayout( d->layout );
 
     d->blockBuildLegend = true;
@@ -105,10 +105,12 @@ Legend* Legend::clone() const
 
 void Legend::paintEvent( QPaintEvent* evt )
 {
-    // Paint the background and frame first
-    KDChartArea::paintEvent( evt );
-
+    // Legend always has a frame around it, might be overpainted by Area afterwards.
     QPainter painter( this );
+    painter.drawRect( evt->rect().adjusted( 1, 1, -1, -1 ) );
+
+    // Paint the background and frame
+    KDChartArea::paintEvent( evt );
 
     // PENDING(kalle) Support palette
 
