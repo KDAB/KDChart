@@ -55,6 +55,10 @@ namespace KDChart {
         /** Overloaded from base class. */
         void setSourceModel(QAbstractItemModel *sourceModel);
 
+        /** Set the root index of the table in
+	    the source model */
+        void setSourceRootIndex(const QModelIndex& rootIdx);
+
 
     public slots:
 	    void testSlot();
@@ -143,6 +147,7 @@ namespace KDChart {
 
         int mProxyRowCount;
         int mProxyColumnCount;
+        QModelIndex mRootIndex;
     };
 
 }

@@ -45,6 +45,9 @@ namespace KDChart {
         /** \reimpl */
         virtual void setModel ( QAbstractItemModel * model );
 
+        /** \reimpl */
+        virtual void setRootIndex ( const QModelIndex& idx );
+
         // implement QAbstractItemView:
         /** \reimpl */
         virtual QRect visualRect(const QModelIndex &index) const;

@@ -67,14 +67,14 @@ QDomDocumentFragment PolarDiagram::toXML() const
 const QPair<QPointF, QPointF> PolarDiagram::dataBoundaries () const
 {
     if ( !checkInvariants() ) return QPair<QPointF, QPointF>( QPointF( 0, 0 ), QPointF( 0, 0 ) );
-    const int rowCount = model()->rowCount();
-    const int colCount = model()->columnCount();
+    const int rowCount = model()->rowCount(rootIndex());
+    const int colCount = model()->columnCount(rootIndex());
     double xMin = 0.0;
     double xMax = colCount;
     double yMin = 0, yMax = 0;
     for ( int j=0; j<colCount; ++j ) {
         for ( int i=0; i< rowCount; ++i ) {
-            double value = model()->data( model()->index( i, j, QModelIndex() ) ).toDouble();
+            double value = model()->data( model()->index( i, j, rootIndex() ) ).toDouble();
             yMax = qMax( yMax, value );
         }
     }
@@ -112,14 +112,14 @@ void PolarDiagram::paintPolarMarkers( PaintContext* ctx, const QPolygonF& polygo
 void PolarDiagram::paint( PaintContext* ctx )
 {
     if ( !checkInvariants() ) return;
-    const int rowCount = model()->rowCount();
-    const int colCount = model()->columnCount();
+    const int rowCount = model()->rowCount(rootIndex());
+    const int colCount = model()->columnCount(rootIndex());
     DataValueTextInfoList list;
     for ( int j=0; j<colCount; ++j ) {
         QBrush brush = model()->headerData( j, Qt::Vertical, KDChart::DatasetBrushRole ).value<QBrush>();
         QPolygonF polygon;
         for ( int i=0; i<rowCount; ++i ) {
-            QModelIndex index = model()->index( i, j, QModelIndex() );
+            QModelIndex index = model()->index( i, j, rootIndex() );
             const double value = model()->data( index ).toDouble();
             QPointF point = coordinatePlane()->translate( QPointF( value, i ) );
             polygon.append( point );
@@ -150,13 +150,13 @@ void PolarDiagram::resize ( const QSizeF& )
 /*virtual*/ 
 double PolarDiagram::valueTotals () const
 {
-    return model()->rowCount();
+    return model()->rowCount(rootIndex());
 }
 
 /*virtual*/
 double PolarDiagram::numberOfValuesPerDataset() const
 {
-    return model()->rowCount();
+    return model()->rowCount(rootIndex());
 }
 
 /*virtual*/ 

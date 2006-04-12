@@ -14,7 +14,7 @@ void DatasetProxyModel::setDatasetRowDescriptionVector (
 {
     Q_ASSERT_X ( sourceModel(), "DatasetProxyModel::setDatasetRowDescriptionVector",
                  "A source model must be set before the selection can be configured." );
-    initializeDatasetDecriptors ( configuration, sourceModel()->rowCount(),
+    initializeDatasetDecriptors ( configuration, sourceModel()->rowCount(mRootIndex),
                                   mRowSrcToProxyMap,  mRowProxyToSrcMap );
     clear(); // clear emits layoutChanged()
 }
@@ -24,7 +24,7 @@ void DatasetProxyModel::setDatasetColumnDescriptionVector (
 {
     Q_ASSERT_X ( sourceModel(), "DatasetProxyModel::setDatasetColumnDescriptionVector",
                  "A source model must be set before the selection can be configured." );
-    initializeDatasetDecriptors ( configuration, sourceModel()->columnCount(),
+    initializeDatasetDecriptors ( configuration, sourceModel()->columnCount(mRootIndex),
                                   mColSrcToProxyMap, mColProxyToSrcMap );
     clear(); // clear emits layoutChanged()
 }
@@ -77,7 +77,7 @@ bool DatasetProxyModel::filterAcceptsRow ( int sourceRow,
         return true;
     } else {
         Q_ASSERT ( sourceModel() );
-        Q_ASSERT ( mRowSrcToProxyMap.size() == sourceModel()->rowCount() );
+        Q_ASSERT ( mRowSrcToProxyMap.size() == sourceModel()->rowCount(mRootIndex) );
         if ( mRowSrcToProxyMap[sourceRow] == -1 )
         {   // this row is explicitly not accepted:
             return false;
@@ -97,7 +97,7 @@ bool DatasetProxyModel::filterAcceptsColumn ( int sourceColumn,
         return true;
     } else {
         Q_ASSERT ( sourceModel() );
-        Q_ASSERT ( mColSrcToProxyMap.size() == sourceModel()->columnCount() );
+        Q_ASSERT ( mColSrcToProxyMap.size() == sourceModel()->columnCount(mRootIndex) );
         if ( mColSrcToProxyMap[sourceColumn] == -1 )
         {   // this column is explicitly not accepted:
             return false;
@@ -224,6 +224,13 @@ void DatasetProxyModel::setSourceModel (QAbstractItemModel *sourceModel)
     
     resetDatasetDescriptions();
 }
+
+void DatasetProxyModel::setSourceRootIndex(const QModelIndex& rootIdx)
+{
+    mRootIndex = rootIdx;
+    resetDatasetDescriptions();  
+}
+
 
 void DatasetProxyModel::testSlot()
 {

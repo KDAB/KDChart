@@ -74,12 +74,12 @@ const QPair<QPointF, QPointF> AbstractDiagram::dataBoundaries () const
 {
     if ( !checkInvariants() ) return QPair<QPointF, QPointF>( QPointF( 0, 0 ), QPointF( 0, 0 ) );
     double xMin = 0, xMax = 0, yMin = 0, yMax = 0;
-    const int rowCount = model()->rowCount();
-    const int colCount = model()->columnCount();
+    const int rowCount = model()->rowCount(rootIndex());
+    const int colCount = model()->columnCount(rootIndex());
     xMax = rowCount-1; // since we start at 0
     for ( int i=0; i<colCount; ++i ) {
         for ( int j=0; j< rowCount; ++j ) {
-            double value = model()->data( model()->index( j, i, QModelIndex() ) ).toDouble();
+            double value = model()->data( model()->index( j, i, rootIndex() ) ).toDouble();
             yMin = qMin( yMin, value );
             yMax = qMax( yMax, value );
         }
@@ -128,6 +128,17 @@ void AbstractDiagram::setModel ( QAbstractItemModel * newModel )
         connect( newModel, SIGNAL( dataChanged ( const QModelIndex &, const QModelIndex &) ),
                  this, SLOT( slotModelReset() ) );
     }
+}
+
+void AbstractDiagram::setRootIndex ( const QModelIndex& idx )
+{
+  if( d->datasetProxy ) {
+    QAbstractItemView::setRootIndex( d->datasetProxy->mapFromSource(idx) );
+    d->datasetProxy->setSourceRootIndex(idx);
+  } else {    
+    QAbstractItemView::setRootIndex( d->defaultsModel->mapFromSource(d->attributesModel->mapFromSource(idx)) );
+  }
+  if( d->plane ) slotModelReset();
 }
 
 void AbstractDiagram::setCoordinatePlane( CoordinatePlane* parent )
@@ -264,11 +275,11 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
 void AbstractDiagram::paintDataValueTexts( QPainter* painter )
 {
     if ( !checkInvariants() ) return;
-    const int rowCount = model()->rowCount();
-    const int colCount = model()->columnCount();
+    const int rowCount = model()->rowCount(rootIndex());
+    const int colCount = model()->columnCount(rootIndex());
     for ( int i=0; i<colCount; ++i ) {
        for ( int j=0; j< rowCount; ++j ) {
-           const QModelIndex index = model()->index( j, i, QModelIndex() );
+           const QModelIndex index = model()->index( j, i, rootIndex() );
            double value = model()->data( index ).toDouble();
            const QPointF pos = coordinatePlane()->translate( QPointF( j, value ) );
            paintDataValueText( painter, index, pos, value );
@@ -412,11 +423,11 @@ void AbstractDiagram::paintMarker( QPainter* painter,
 void AbstractDiagram::paintMarkers( QPainter* painter )
 {
     if ( !checkInvariants() ) return;
-    const int rowCount = model()->rowCount();
-    const int colCount = model()->columnCount();
+    const int rowCount = model()->rowCount(rootIndex());
+    const int colCount = model()->columnCount(rootIndex());
     for ( int i=0; i<colCount; ++i ) {
        for ( int j=0; j< rowCount; ++j ) {
-           const QModelIndex index = model()->index( j, i, QModelIndex() );
+           const QModelIndex index = model()->index( j, i, rootIndex() );
            double value = model()->data( index ).toDouble();
            const QPointF pos = coordinatePlane()->translate( QPointF( j, value ) );
            paintMarker( painter, index, pos );

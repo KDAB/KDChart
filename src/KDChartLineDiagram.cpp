@@ -100,12 +100,12 @@ void LineDiagram::resizeEvent ( QResizeEvent* )
 const QPair<QPointF, QPointF> LineDiagram::dataBoundaries () const
 {
     if ( !checkInvariants() ) return QPair<QPointF, QPointF>( QPointF( 0, 0 ), QPointF( 0, 0 ) );
-    const int rowCount = model()->rowCount();
-    const int colCount = model()->columnCount();
+    const int rowCount = model()->rowCount(rootIndex());
+    const int colCount = model()->columnCount(rootIndex());
     double xMin = 0;
     double xMax = rowCount -1;
     double yMin = 0, yMax = 0;
-    LineAttributes la = lineAttributes(model()->index( 0, 0, QModelIndex() ) );
+    LineAttributes la = lineAttributes(model()->index( 0, 0, rootIndex() ) );
     LineAttributes::LineType lineType = la.type();
     ThreeDLineAttributes tda;
 
@@ -115,7 +115,7 @@ const QPair<QPointF, QPointF> LineDiagram::dataBoundaries () const
         case LineAttributes::Normal:
             for ( int i=0; i<colCount; ++i ) {
                 for ( int j=0; j< rowCount; ++j ) {
-                    double value = model()->data( model()->index( j, i, QModelIndex() ) ).toDouble();
+                    double value = model()->data( model()->index( j, i, rootIndex() ) ).toDouble();
                     yMin = qMin( yMin, value );
                     yMax = qMax( yMax, value );
                 }
@@ -126,7 +126,7 @@ const QPair<QPointF, QPointF> LineDiagram::dataBoundaries () const
                     // calculate sum of values per column - Find out stacked Min/Max
                     double stackedValues = 0;
                     for ( int i=0; i<colCount ; ++i ) {
-                        stackedValues +=  model()->data( model()->index( j, i, QModelIndex() ) ).toDouble();
+                        stackedValues +=  model()->data( model()->index( j, i, rootIndex() ) ).toDouble();
                         yMin = qMin( yMin, stackedValues);
                         yMax = qMax( yMax, stackedValues);
                     }
@@ -137,7 +137,7 @@ const QPair<QPointF, QPointF> LineDiagram::dataBoundaries () const
             for ( int i=0; i<colCount; ++i ) {
                 for ( int j=0; j< rowCount; ++j ) {
                     // Ordinate should begin at 0 the max value being the 100% pos
-                    double value = model()->data( model()->index( j, i, QModelIndex() ) ).toDouble();
+                    double value = model()->data( model()->index( j, i, rootIndex() ) ).toDouble();
                     yMax = qMax( yMax, value );
                 }
             }
@@ -154,7 +154,7 @@ const QPair<QPointF, QPointF> LineDiagram::dataBoundaries () const
     bool threeDBoundaries = false;
     // ThreeD boundaries
     for ( int i=0; i<colCount; ++i ) {
-        QModelIndex index = model()->index( 0, i, QModelIndex() );
+        QModelIndex index = model()->index( 0, i, rootIndex() );
         tda = threeDLineAttributes( index );
         if ( tda.isEnabled() ) {
             threeDBoundaries = true;
@@ -188,11 +188,11 @@ void LineDiagram::paint( PaintContext* ctx )
 {
     if ( !checkInvariants() ) return;
     //calculates and stores the values
-    const int rowCount = model()->rowCount();
-    const int colCount = model()->columnCount();
+    const int rowCount = model()->rowCount(rootIndex());
+    const int colCount = model()->columnCount(rootIndex());
     DataValueTextInfoList list;
     LineAttributesInfoList lineList;
-    LineAttributes la = lineAttributes( model()->index( 0, 0, QModelIndex() ) );
+    LineAttributes la = lineAttributes( model()->index( 0, 0, rootIndex() ) );
     LineAttributes::LineType lineType = la.type();
     double maxValue = 0;
     double sumValues = 0;
@@ -209,18 +209,18 @@ void LineDiagram::paint( PaintContext* ctx )
             for ( int i = 0; i<colCount; ++i ) {
                 area.clear();
                 for ( int j=0; j< rowCount; ++j ) {
-                    index = model()->index( j, i, QModelIndex() );
-                    double value = model()->data( model()->index( j, i, QModelIndex() ) ).toDouble();
+                    index = model()->index( j, i, rootIndex() );
+                    double value = model()->data( model()->index( j, i, rootIndex() ) ).toDouble();
                     QPointF nextPoint = coordinatePlane()->translate( QPointF( j, value ) );
                     area.append( nextPoint );
                     if ( j+1 < rowCount ) {
-                        double nextValue = model()->data( model()->index( j+1, i, QModelIndex() ) ).toDouble();
-                        lineList.append( LineAttributesInfo(  model()->index( j, i, QModelIndex() ), value, nextValue ) );
+                        double nextValue = model()->data( model()->index( j+1, i, rootIndex() ) ).toDouble();
+                        lineList.append( LineAttributesInfo(  model()->index( j, i, rootIndex() ), value, nextValue ) );
                     }
-                    list.append( DataValueTextInfo(  model()->index( j, i, QModelIndex() ), nextPoint, value ) );
+                    list.append( DataValueTextInfo(  model()->index( j, i, rootIndex() ), nextPoint, value ) );
                 }
                 //area can be set by column
-                LineAttributes laa = lineAttributes( model()->index( 0, i, QModelIndex() ) );
+                LineAttributes laa = lineAttributes( model()->index( 0, i, rootIndex() ) );
                 if ( laa.displayArea() )
                     paintAreas( ctx, index, area, laa.transparency() );
             }
@@ -229,23 +229,23 @@ void LineDiagram::paint( PaintContext* ctx )
             for ( int i = 0; i<colCount; ++i ) {
                 area.clear();
                 for ( int j = 0; j< rowCount; ++j ) {
-                    index = model()->index( j, i, QModelIndex() );
+                    index = model()->index( j, i, rootIndex() );
                     double value = 0, stackedValues = 0, nextValues = 0;
                     QPointF nextPoint;
-                    value = model()->data( model()->index( j, i, QModelIndex() ) ).toDouble();
+                    value = model()->data( model()->index( j, i, rootIndex() ) ).toDouble();
                     for ( int k = i; k >= 0 ; --k ) {
-                        stackedValues += model()->data( model()->index( j, k, QModelIndex() ) ).toDouble();
+                        stackedValues += model()->data( model()->index( j, k, rootIndex() ) ).toDouble();
                         if ( j+1 < rowCount )
-                            nextValues +=  model()->data( model()->index( j+1, k, QModelIndex() ) ).toDouble();
+                            nextValues +=  model()->data( model()->index( j+1, k, rootIndex() ) ).toDouble();
                     }
                     nextPoint = coordinatePlane()->translate( QPointF( j, stackedValues ) );
                     area.append( nextPoint );
                     if ( j+1 < rowCount )
-                        lineList.append( LineAttributesInfo(  model()->index( j, i, QModelIndex() ),
+                        lineList.append( LineAttributesInfo(  model()->index( j, i, rootIndex() ),
                                                               stackedValues, nextValues ) );
-                    list.append( DataValueTextInfo( model()->index( j, i, QModelIndex() ), nextPoint, value ) );
+                    list.append( DataValueTextInfo( model()->index( j, i, rootIndex() ), nextPoint, value ) );
                 }
-                LineAttributes laa = lineAttributes( model()->index ( 0, i, QModelIndex() ) );
+                LineAttributes laa = lineAttributes( model()->index ( 0, i, rootIndex() ) );
                 if ( laa.displayArea() )
                     paintAreas( ctx, index, area, laa.transparency() );
             }
@@ -254,14 +254,14 @@ void LineDiagram::paint( PaintContext* ctx )
             // search for ordinate max value or 100 %
             for ( int i=0; i<colCount; ++i ) {
                 for ( int j=0; j< rowCount; ++j ) {
-                    double value = model()->data( model()->index( j, i, QModelIndex() ) ).toDouble();
+                    double value = model()->data( model()->index( j, i, rootIndex() ) ).toDouble();
                     maxValue = qMax( maxValue, value );
                 }
             }
             //calculate sum of values for each column and store
             for ( int j=0; j<rowCount; ++j ) {
                 for ( int i=0; i<colCount; ++i ) {
-                    double tmpValue = model()->data( model()->index ( j, i, QModelIndex() ) ).toDouble();
+                    double tmpValue = model()->data( model()->index ( j, i, rootIndex() ) ).toDouble();
                     if ( tmpValue > 0 )
                         sumValues += tmpValue;
                     if ( i == colCount-1 ) {
@@ -276,24 +276,24 @@ void LineDiagram::paint( PaintContext* ctx )
                 for ( int j=0; j<rowCount ; ++j ) {
                     double value = 0, stackedValues = 0, nextValues = 0;
                     QPointF nextPoint;
-                     index = model()->index( j, i, QModelIndex() );
-                    value = model()->data(  model()->index( j, i, QModelIndex() ) ).toDouble();
+                     index = model()->index( j, i, rootIndex() );
+                    value = model()->data(  model()->index( j, i, rootIndex() ) ).toDouble();
                     //calculate stacked percent value- we only take in account positives values for now.
                     for ( int k = i; k >= 0 ; --k ) {
-                        if ( model()->data( model()->index( j, k, QModelIndex() ) ).toDouble() > 0)
-                            stackedValues += model()->data( model()->index( j, k, QModelIndex() ) ).toDouble();
+                        if ( model()->data( model()->index( j, k, rootIndex() ) ).toDouble() > 0)
+                            stackedValues += model()->data( model()->index( j, k, rootIndex() ) ).toDouble();
                         if ( j+1 < rowCount ){
-                            if ( model()->data( model()->index( j+1, k, QModelIndex() ) ).toDouble() > 0 )
-                                nextValues += model()->data( model()->index( j+1, k, QModelIndex() ) ).toDouble();
+                            if ( model()->data( model()->index( j+1, k, rootIndex() ) ).toDouble() > 0 )
+                                nextValues += model()->data( model()->index( j+1, k, rootIndex() ) ).toDouble();
                         }
                     }
                     nextPoint = coordinatePlane()->translate( QPointF( j,  stackedValues/sumValuesVector.at(j)* maxValue ) );
                     area.append( nextPoint );
                     if ( j+1 < rowCount )
-                        lineList.append( LineAttributesInfo( model()->index( j, i, QModelIndex() ), stackedValues/sumValuesVector.at(j)* maxValue, nextValues/sumValuesVector.at(j+1)* maxValue ) );
-                    list.append( DataValueTextInfo( model()->index( j, i, QModelIndex() ), nextPoint, value ) );
+                        lineList.append( LineAttributesInfo( model()->index( j, i, rootIndex() ), stackedValues/sumValuesVector.at(j)* maxValue, nextValues/sumValuesVector.at(j+1)* maxValue ) );
+                    list.append( DataValueTextInfo( model()->index( j, i, rootIndex() ), nextPoint, value ) );
                 }
-                LineAttributes laa = lineAttributes(  model()->index( 0, i, QModelIndex() ) );
+                LineAttributes laa = lineAttributes(  model()->index( 0, i, rootIndex() ) );
                 if ( laa.displayArea() )
                     paintAreas( ctx, index, area, laa.transparency() );
             }
@@ -331,7 +331,7 @@ void LineDiagram::paintLines( PaintContext* ctx, const QModelIndex& index, doubl
     ctx->painter()->setRenderHint ( QPainter::Antialiasing );
     ctx->painter()->setBrush( indexBrush );
     ctx->painter()->setPen( pen( index ) );
-    if ( index.row() + 1 < model()->rowCount() ) {
+    if ( index.row() + 1 < model()->rowCount(rootIndex()) ) {
         const QPointF posfrom = coordinatePlane()->translate( QPointF( index.row(), from) );
         const QPointF posto = coordinatePlane()->translate( QPointF( index.row()+1, to ) );
         ctx->painter()->drawLine( posfrom, posto);
@@ -408,12 +408,12 @@ void LineDiagram::resize ( const QSizeF& )
 
 const int LineDiagram::numberOfAbscissaSegments () const
 {
-    return model()->rowCount();
+    return model()->rowCount(rootIndex());
 }
 
 const int LineDiagram::numberOfOrdinateSegments () const
 {
-    return model()->columnCount();
+    return model()->columnCount(rootIndex());
 }
 
 //#endif
