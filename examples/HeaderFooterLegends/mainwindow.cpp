@@ -59,6 +59,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     legend->setPosition( KDChart::Legend::North );
     legend->setShowLines( false );
     legend->setTitleText( tr( "Legend" ) );
+    legend->setOrientation( Qt::Vertical );
     m_chart->addLegend( legend );
     legend->show();
 
@@ -66,6 +67,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     newItem->setText( 0, tr( "Top" ) );
     newItem->setText( 1, tr( "no" ) );
     newItem->setText( 2, tr( "Legend" ) );
+    newItem->setText( 3, tr( "Vertical" ) );
     m_chart->update();
 }
 
@@ -145,11 +147,13 @@ void MainWindow::on_addLegendPB_clicked()
         legend->setPosition( (KDChart::Legend::LegendPosition)conf.positionCO->currentIndex() );
         legend->setShowLines( conf.showLinesCB->isChecked() );
         legend->setTitleText( conf.titleTextED->text() );
+        legend->setOrientation( ( conf.orientationCO->currentIndex() == 0 ) ? Qt::Vertical : Qt::Horizontal );
         legend->show();
         LegendItem* newItem = new LegendItem( legend, legendsTV );
         newItem->setText( 0, conf.positionCO->currentText() );
         newItem->setText( 1, conf.showLinesCB->isChecked() ? "yes" : "no" );
         newItem->setText( 2, conf.titleTextED->text() );
+        newItem->setText( 3, conf.orientationCO->currentText() );
         m_chart->update();
     }
 }
@@ -170,9 +174,11 @@ void MainWindow::on_editLegendPB_clicked()
         legend->setPosition( (KDChart::Legend::LegendPosition)conf.positionCO->currentIndex() );
         legend->setShowLines( conf.showLinesCB->isChecked() );
         legend->setTitleText( conf.titleTextED->text() );
+        legend->setOrientation( ( conf.orientationCO->currentIndex() == 0 ) ? Qt::Vertical : Qt::Horizontal );
         item->setText( 0, conf.positionCO->currentText() );
         item->setText( 1, conf.showLinesCB->isChecked() ? "yes" : "no" );
         item->setText( 2, conf.titleTextED->text() );
+        item->setText( 3, conf.orientationCO->currentText() );
         m_chart->update();
     }
 }

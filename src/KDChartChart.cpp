@@ -134,7 +134,7 @@ void Chart::paintEvent( QPaintEvent* )
 {
 	// DF: this is ugly as hell, but it fixes the crash in Widget.exe
 	// Do *not* do layouting code in a paintEvent, since it triggers a paint event
-	// and you get: 
+	// and you get:
 	// QWidget::repaint: recursive repaint detected.
 	static bool sInsidePaint = false;
 	if (sInsidePaint) return;
@@ -176,7 +176,6 @@ void Chart::paintEvent( QPaintEvent* )
         HeaderFooter* hf = qobject_cast<HeaderFooter*>( *it );
         if( !hf )
             continue;
-        qDebug() << "Found a header";
         switch( hf->position() ) {
         case HeaderFooter::NorthWest:
             headerLayout->addWidget( hf /*new QLabel( "blah", this )*/, 0, 0, 1, 1, Qt::AlignLeft|Qt::AlignTop );
@@ -231,18 +230,15 @@ void Chart::paintEvent( QPaintEvent* )
             break;
         case HeaderFooter::SouthEast2:
             footerLayout->addWidget( hf, 2, 2, 1, 1, Qt::AlignRight|Qt::AlignBottom );
-            qDebug( "Adding Footer2Right" );
             break;
         default:
             qDebug( "Unknown header/footer position" );
         }
     }
-    if( headerFooter() )
-        qDebug() << "First headerfooter = " << headerFooter() << ", className = " << headerFooter()->metaObject()->className() << ", geometry = " << headerFooter()->geometry() << ", sizeHint = " << headerFooter()->sizeHint();
 
     // the data+axes area
     dataAndLegendLayout->addLayout( p->planeLayout, 1, 1 );
-    
+
     foreach (CoordinatePlane* plane, p->coordinatePlanes )
     {
         p->planeLayout->addWidget( plane, 1, 1, Qt::AlignCenter );
@@ -280,7 +276,7 @@ void Chart::paintEvent( QPaintEvent* )
             }
         }
     }
-    
+
     //dataAndLegendLayout->addWidget( coordinatePlane(), 1, 1, Qt::AlignCenter );
     dataAndLegendLayout->setRowStretch( 1, 2 );
     dataAndLegendLayout->setColumnStretch( 1, 2 );
@@ -288,7 +284,6 @@ void Chart::paintEvent( QPaintEvent* )
     // now the legends, depending on their position
     LegendList legendList = legends();
     for ( LegendList::iterator it = legendList.begin(), end = legendList.end() ; it != end ; ++it ) {
-        qDebug( "Found legend" );
         switch( (*it)->position() ) {
         case KDChart::Legend::North:
             dataAndLegendLayout->addWidget( *it, 0, 1, 1, 1, Qt::AlignCenter );
@@ -343,14 +338,7 @@ void Chart::paintEvent( QPaintEvent* )
         }
     }
 
-    qDebug() << "Before activate";
     p->layout->activate();
-    qDebug() << "After activate";
-
-    qDebug() << "Total chart area is " << geometry();
-    qDebug() << "Coordinate plane area is " << coordinatePlane()->geometry();
-    if( legend() )
-        qDebug() << "First legend = " << legend() << ", className = " << legend()->metaObject()->className() << ", geometry = " << legend()->geometry() << "sizeHint = " << legend()->sizeHint() << ", is visible = " << legend()->isVisible();
 
     sInsidePaint = false;
 }

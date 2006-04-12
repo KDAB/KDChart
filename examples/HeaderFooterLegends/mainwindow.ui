@@ -26,11 +26,11 @@
     <number>6</number>
    </property>
    <item>
-    <widget class="QSplitter" name="" >
+    <widget class="QSplitter" name="splitter" >
      <property name="orientation" >
       <enum>Qt::Horizontal</enum>
      </property>
-     <widget class="QSplitter" name="" >
+     <widget class="QSplitter" name="splitter" >
       <property name="orientation" >
        <enum>Qt::Vertical</enum>
       </property>
@@ -118,6 +118,11 @@
           <column>
            <property name="text" >
             <string>Title Text</string>
+           </property>
+          </column>
+          <column>
+           <property name="text" >
+            <string>Orientation</string>
            </property>
           </column>
          </widget>

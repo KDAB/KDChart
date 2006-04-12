@@ -321,28 +321,6 @@ uint Legend::spacing() const
     return d->spacing;
 }
 
-bool Legend::mustDrawVerticalLegend() const
-{
-    return orientation() == Qt::Vertical ||
-      position() == West ||
-      position() == East ||
-      position() == NorthWest ||
-      position() == NorthEast ||
-      position() == SouthWest ||
-      position() == SouthEast;
-
-    // PENDING(hansen)
-    /* TODO: Review */
-    /* Those positions seem not to be
-       part of the new API /steffen */
-    /* position() == LegendTopLeftLeft ||
-       position() == LegendTopRightRight ||
-        position() == LegendBottomLeftLeft ||
-        position() == LegendBottomRightRight;
-    */
-}
-
-
 void Legend::setDefaultColors()
 {
     setColor(  0, Qt::red );
@@ -429,8 +407,6 @@ void Legend::resetDiagram()
 
 void Legend::buildLegend()
 {
-    qDebug() << "************buildLegend()";
-
     if( d->blockBuildLegend )
         return;
 
@@ -456,7 +432,10 @@ void Legend::buildLegend()
                                                                           titleTextAttributes().color(),
                                                                           Qt::AlignCenter );
         d->layoutItems << titleItem;
-        d->layout->addItem( titleItem, 0, 0, 1, 4, Qt::AlignCenter );
+        if( orientation() == Qt::Vertical )
+            d->layout->addItem( titleItem, 0, 0, 1, 4, Qt::AlignCenter );
+        else
+            d->layout->addItem( titleItem, 0, 0, 1, d->modelLabels.count()*3, Qt::AlignCenter );
     }
 
     for ( int dataset = 0; dataset < d->modelLabels.count(); dataset++ ) {
@@ -467,8 +446,10 @@ void Legend::buildLegend()
                                                                                pen( dataset ),
                                                                                Qt::AlignLeft );
         d->layoutItems << markerItem;
-        d->layout->addItem( markerItem, dataset+1 /*first row is title*/, 1, 1, 1, Qt::AlignCenter );
-
+        if( orientation() == Qt::Vertical )
+            d->layout->addItem( markerItem, dataset+1 /*first row is title*/, 1, 1, 1, Qt::AlignCenter );
+        else
+            d->layout->addItem( markerItem, 1 /* all in row one */, dataset*3 );
 
         // PENDING(kalle) Other properties!
         KDChart::TextLayoutItem* labelItem = new KDChart::TextLayoutItem( text( dataset ),
@@ -476,20 +457,16 @@ void Legend::buildLegend()
                                                                           textAttributes().color(),
                                                                           Qt::AlignLeft );
         d->layoutItems << labelItem;
-        d->layout->addItem( labelItem, dataset+1 /*first row is title*/, 2 );
+        if( orientation() == Qt::Vertical )
+            d->layout->addItem( labelItem, dataset+1 /*first row is * title*/, 2 );
+        else
+            d->layout->addItem( labelItem, 1 /* all in row one */, dataset*3+1 );
+
+        if( orientation() != Qt::Vertical ) { // Horizontal needs a spacer
+            d->layout->addItem( new QSpacerItem( spacing(), qMax( markerItem->sizeHint().height(),
+                                                                  labelItem->sizeHint().height() ) ),
+                                1 /* all in row one */, dataset*3+2 );
+        }
     }
-
 }
 
-QSize KDChart::Legend::sizeHint() const
-{
-    QSize s = KDChartArea::sizeHint();
-    return s;
-}
-
-
-QSize KDChart::Legend::minimumSizeHint() const
-{
-    QSize s = KDChartArea::minimumSizeHint();
-    return s;
-}
