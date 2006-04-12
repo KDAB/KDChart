@@ -198,8 +198,6 @@ void MainWindow::on_markersStyleCB_currentIndexChanged( const QString & /*text*/
 {
     if ( paintMarkersCB->isChecked() )
         on_paintMarkersCB_toggled( true );
-    else
-        return;
 }
 
 
@@ -208,8 +206,6 @@ void MainWindow::on_markersWidthSB_valueChanged( int /*i*/ )
     markersHeightSB->setValue( markersWidthSB->value() );
     if ( paintMarkersCB->isChecked() )
         on_paintMarkersCB_toggled( true );
-    else
-        return;
 }
 
 void MainWindow::on_markersHeightSB_valueChanged( int /*i*/ )
@@ -217,8 +213,6 @@ void MainWindow::on_markersHeightSB_valueChanged( int /*i*/ )
     markersWidthSB->setValue( markersHeightSB->value() );
     if ( paintMarkersCB->isChecked() )
         on_paintMarkersCB_toggled( true );
-    else
-        return;
 }
 
 
