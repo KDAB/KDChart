@@ -33,7 +33,7 @@ Legend::Private::Private() :
     textAttributes(),
     titleText( QObject::tr( "Legend" ) ),
     titleTextAttributes(),
-    spacing( 20 ),
+    spacing( 1 ),
     observer( NULL ),
     blockBuildLegend( false )
 {
@@ -68,7 +68,7 @@ void Legend::init()
 {
     d->layout = new QGridLayout();
     d->layout->setMargin( 2 );
-    d->layout->setSpacing( 1 );
+    d->layout->setSpacing( d->spacing );
     d->layout->setColumnStretch( 0, 0 ); // markers don't stretch
     d->layout->setColumnStretch( 3, 1 ); // texts stretch
     setLayout( d->layout );
@@ -76,7 +76,7 @@ void Legend::init()
     d->blockBuildLegend = true;
     TextAttributes textAttrs;
     textAttrs.setColor( Qt::black );
-    textAttrs.setFont( QFont( "helvetica", 10, QFont::Bold, false ) );
+    textAttrs.setFont( QFont( "helvetica", 10, QFont::Normal, false ) );
     textAttrs.setRelativeSize( 16 );
     textAttrs.setUseRelativeSize( true );
     setTextAttributes( textAttrs );
@@ -139,7 +139,6 @@ void Legend::setDiagram( KDChart::AbstractDiagram* diagram )
         d->observer = new DiagramObserver( diagram, this );
         connect( d->observer, SIGNAL( diagramDestroyed(AbstractDiagram*) ),
                         SLOT( resetDiagram() ));
-        // PENDING(kalle) Connect to layout items
         connect( d->observer, SIGNAL( diagramDataChanged(AbstractDiagram*) ),
 			SLOT( buildLegend() ));
     }
@@ -306,6 +305,7 @@ TextAttributes Legend::titleTextAttributes() const
 void Legend::setSpacing( uint space )
 {
     d->spacing = space;
+    d->layout->setSpacing( space );
 
     buildLegend();
 }
@@ -336,8 +336,6 @@ bool Legend::mustDrawVerticalLegend() const
     */
 }
 
-
-// PENDING(kalle) Fold this together with the identical code in KDChartDiagram.cpp
 
 void Legend::setDefaultColors()
 {
@@ -444,8 +442,10 @@ void Legend::buildLegend()
 
     // legend caption
     if( !titleText().isEmpty() && titleTextAttributes().isVisible() ) {
-        // PENDING(kalle) Font and other properties!
-        KDChart::TextLayoutItem* titleItem = new KDChart::TextLayoutItem( titleText(), font(),
+        // PENDING(kalle) Other properties!
+        KDChart::TextLayoutItem* titleItem = new KDChart::TextLayoutItem( titleText(),
+                                                                          titleTextAttributes().font(),
+                                                                          titleTextAttributes().color(),
                                                                           Qt::AlignCenter );
         d->layoutItems << titleItem;
         d->layout->addItem( titleItem, 0, 0, 1, 4, Qt::AlignCenter );
@@ -463,7 +463,9 @@ void Legend::buildLegend()
 
 
         // PENDING(kalle) Font and other properties!
-        KDChart::TextLayoutItem* labelItem = new KDChart::TextLayoutItem( text( dataset ), font(),
+        KDChart::TextLayoutItem* labelItem = new KDChart::TextLayoutItem( text( dataset ),
+                                                                          textAttributes().font(),
+                                                                          textAttributes().color(),
                                                                           Qt::AlignLeft );
         d->layoutItems << labelItem;
         d->layout->addItem( labelItem, dataset+1 /*first row is title*/, 2 );

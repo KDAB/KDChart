@@ -29,7 +29,8 @@ namespace KDChart {
     class TextLayoutItem : public LayoutItem
     {
     public:
-        TextLayoutItem( const QString& text, const QFont& font, Qt::Alignment alignment = 0 );
+        TextLayoutItem( const QString& text, const QFont& font, const QColor& color,
+                        Qt::Alignment alignment = 0 );
 
         virtual Qt::Orientations expandingDirections() const;
         virtual QRect geometry() const;
@@ -48,6 +49,7 @@ namespace KDChart {
         QString mText;
         QFont mFont;
         QFontMetricsF mMetrics;
+        QColor mColor;
         mutable QSize cachedSizeHint;
     };
 

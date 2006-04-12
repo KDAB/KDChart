@@ -1,6 +1,7 @@
 #include "KDChartLayoutItems.h"
 #include "KDTextDocument.h"
 #include "KDChartAbstractDiagram.h"
+#include "KDChartPainterSaver_p.h"
 #include <QTextCursor>
 #include <QTextBlockFormat>
 #include <QTextDocumentFragment>
@@ -11,9 +12,9 @@
 #include <QApplication>
 #include <QStyle>
 
-KDChart::TextLayoutItem::TextLayoutItem( const QString& text, const QFont& font,
+KDChart::TextLayoutItem::TextLayoutItem( const QString& text, const QFont& font, const QColor& color,
                                          Qt::Alignment alignment ) :
-    LayoutItem( alignment ), mText( text ), mFont( font ), mMetrics( mFont )
+    LayoutItem( alignment ), mText( text ), mFont( font ), mMetrics( mFont ), mColor( color )
 {
 }
 
@@ -75,6 +76,9 @@ void KDChart::TextLayoutItem::paint( QPainter* painter )
 {
     Q_ASSERT( mRect.isValid() );
 
+    PainterSaver painterSaver( painter );
+    painter->setFont( mFont );
+    painter->setPen( mColor );
     painter->drawText( geometry(), Qt::AlignHCenter|Qt::AlignVCenter, mText );
 }
 
