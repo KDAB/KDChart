@@ -57,9 +57,9 @@ int main( int argc, char** argv ) {
     vec2.append( 125 );
     window.widget->setDataset( 2, vec2 );
    
-    window.widget->addHeaderFooter( "NorthWest", HeaderFooter::NorthWest );
-    window.widget->addHeaderFooter( "North", HeaderFooter::North );
-    window.widget->addHeaderFooter( "NorthEast", HeaderFooter::NorthEast );
+    window.widget->addHeaderFooter( "Zoom Example", HeaderFooter::NorthWest );
+    window.widget->addHeaderFooter( "zoom in/out: PageDn / PageUp", HeaderFooter::North );
+    window.widget->addHeaderFooter( "pan around: Left / Right / Up / Down", HeaderFooter::NorthEast );
     window.widget->addHeaderFooter( "SouthEast", HeaderFooter::SouthEast );
     window.widget->addHeaderFooter( "South", HeaderFooter::South );
     window.widget->addHeaderFooter( "SouthWest", HeaderFooter::SouthWest );

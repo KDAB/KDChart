@@ -12,6 +12,7 @@ public:
 
 protected:
     void wheelEvent( QWheelEvent* e );
+    void keyPressEvent( QKeyEvent* e );
 };
 
 
