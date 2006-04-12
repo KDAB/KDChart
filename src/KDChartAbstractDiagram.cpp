@@ -27,6 +27,9 @@ AbstractDiagram::Private::Private()
   , datasetProxy ( 0 )
   , allowOverlappingDataValueTexts( false )
   , usePrivateAttributesModel( false )
+  , xAxisResolution( 0.0 )
+  , yAxisResolution( 0.0 )
+  , percent( false )
 {
 }
 
@@ -179,6 +182,36 @@ void AbstractDiagram::setAllowOverlappingDataValueTexts( bool allow )
 bool AbstractDiagram::allowOverlappingDataValueTexts() const
 {
     return d->allowOverlappingDataValueTexts;
+}
+
+void AbstractDiagram::setOrdinateResolution( double resolution )
+{
+    d->yAxisResolution = resolution;
+}
+
+double AbstractDiagram::ordinateResolution() const
+{
+    return d->yAxisResolution;
+}
+
+void AbstractDiagram::setAbscissaResolution( double resolution )
+{
+    d->xAxisResolution = resolution;
+}
+
+double AbstractDiagram::abscissaResolution() const
+{
+    return d->xAxisResolution;
+}
+
+void AbstractDiagram::setPercentMode ( bool percent )
+{
+    d->percent = percent;
+}
+
+bool AbstractDiagram::percentMode() const
+{
+    return d->percent;
 }
 
 DatasetProxyModel* AbstractDiagram::datasetProxy()

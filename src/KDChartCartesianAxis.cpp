@@ -77,8 +77,12 @@ void CartesianAxis::paint ( PaintContext* context ) const
     int numberOfUnitRulers;
     if ( position() == Bottom || position() == Top )
         numberOfUnitRulers = d->diagram()->model()->rowCount() - 1;
-    else 
-        numberOfUnitRulers = ( int ) absRange;
+    else {
+        if ( d->diagram()->percentMode() )
+            numberOfUnitRulers = 10;
+        else
+            numberOfUnitRulers = ( int ) absRange;
+    }
     int numberOfFourthRulers = numberOfUnitRulers * 4;
     int numberOfHalfRulers = numberOfUnitRulers * 2;
 
@@ -92,6 +96,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
     } else {
         screenRange = qAbs ( p1.y() - p2.y() );
     }
+    qDebug() << "screenRange" << screenRange << "p1" << p1 << "p2" << p2;
     bool drawUnitRulers = screenRange / numberOfUnitRulers > MinimumPixelsBetweenRulers;
     bool drawFourthRulers = screenRange / numberOfFourthRulers > MinimumPixelsBetweenRulers;
     bool drawHalfRulers = screenRange / numberOfHalfRulers > MinimumPixelsBetweenRulers;
@@ -235,8 +240,8 @@ void CartesianAxis::paint ( PaintContext* context ) const
                     ptr->save();
                     ptr->setPen( Qt::red );
                     ptr->setFont( textFont );
-                    ptr->drawText( leftPoint, QString::number( minValueY  ) );
-                    minValueY += 1;
+                    ptr->drawText( leftPoint, QString::number( minValueY ) );
+                    d->diagram()->percentMode() ? minValueY += 10 : minValueY += 1;
                     ptr->restore();
                 }
                 //#endif

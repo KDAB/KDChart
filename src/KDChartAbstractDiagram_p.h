@@ -24,6 +24,9 @@ protected:
     DatasetProxyModel* datasetProxy;
     bool allowOverlappingDataValueTexts;
     bool usePrivateAttributesModel;
+    double xAxisResolution;
+    double yAxisResolution;
+    bool percent;
 };
 
 inline AbstractDiagram::AbstractDiagram( Private * p ) : _d( p ) { init(); }

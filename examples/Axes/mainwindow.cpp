@@ -54,8 +54,10 @@ void MainWindow::on_lineTypeCB_currentIndexChanged( const QString & text )
         la.setType( LineAttributes::Normal );
     else if ( text == "Stacked" )
         la.setType( LineAttributes::Stacked );
-    else if ( text == "Percent" )   
+    else if ( text == "Percent" ) {
         la.setType( LineAttributes::Percent );
+        m_lines->setPercentMode( true );
+    }
     else 
         qWarning (" Does not match any type");      
     m_lines->setLineAttributes( la );

@@ -81,7 +81,19 @@ namespace KDChart {
         void setAllDataValueAttributes( const DataValueAttributes & a );
         KDChart::DataValueAttributes allDataValueAttributes() const;
 
-        //Pen
+        /*PENDING Michel: FixMe -  Axes */
+
+        // configure the distance between 2 tickers on the axis
+        void setAbscissaResolution( double resolution ); 
+        double abscissaResolution() const;
+	void setOrdinateResolution( double resolution );
+        double ordinateResolution() const;
+        // configure the ordinate in percent mode - values 0 to 100 
+        void setPercentMode ( bool percent );
+        bool percentMode() const;
+
+
+        //Pen - Brush
         void setPen( const QModelIndex& index, const QPen& pen );
         void setPen( const QPen& pen );
         void setPen( int column, const QPen& pen );
