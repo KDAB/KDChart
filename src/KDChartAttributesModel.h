@@ -36,12 +36,15 @@
 #include <KDChartGlobal.h>
 
 namespace KDChart {
-  
+
 class AttributesModel : public QAbstractProxyModel
 {
+    Q_OBJECT
+
     AttributesModel ( QObject * parent = 0 );
     virtual ~AttributesModel ( );
-  public:
+
+public:
 
     static AttributesModel * instanceForModel( QAbstractItemModel* );
     static void deref( QAbstractItemModel* );
@@ -76,7 +79,11 @@ class AttributesModel : public QAbstractProxyModel
     bool setHeaderData ( int section, Qt::Orientation orientation, const QVariant & value, int role );
     /** \reimpl */
     void setSourceModel ( QAbstractItemModel* sourceModel );
-  private:
+
+signals:
+    void attributesChanged( const QModelIndex&, const QModelIndex& );
+
+private:
     QMap<int, QMap<int, QMap<int, QVariant> > > mDataMap;
     QMap<int, QMap<int, QVariant> > mHorizontalHeaderDataMap;
     QMap<int, QMap<int, QVariant> > mVerticalHeaderDataMap;

@@ -47,15 +47,18 @@ namespace KDChart {
         DiagramObserver( AbstractDiagram* diagram, QObject* parent = NULL );
 
     signals:
-        /** This signal is emitted immediately before the diagram is 
+        /** This signal is emitted immediately before the diagram is
 	 * being destroyed. */
         void diagramDestroyed( AbstractDiagram* diagram );
 	/** This signal is emitted whenever the data of the diagram changes. */
         void diagramDataChanged( AbstractDiagram* diagram );
+	/** This signal is emitted whenever the attributes of the diagram change. */
+        void diagramAttributesChanged( AbstractDiagram* diagram );
 
     private slots:
         void destroyed();
         void dataChanged();
+        void attributesChanged();
 
     private:
         AbstractDiagram* diagram;

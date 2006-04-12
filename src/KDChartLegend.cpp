@@ -439,7 +439,6 @@ void Legend::buildLegend()
     }
 
     for ( int dataset = 0; dataset < d->modelLabels.count(); dataset++ ) {
-        // PENDING(kalle) Properties
         KDChart::MarkerLayoutItem* markerItem = new KDChart::MarkerLayoutItem( diagram(),
                                                                                markerAttributes( dataset ),
                                                                                brush( dataset ),
@@ -468,5 +467,7 @@ void Legend::buildLegend()
                                 1 /* all in row one */, dataset*3+2 );
         }
     }
+
+    d->layout->activate();
 }
 

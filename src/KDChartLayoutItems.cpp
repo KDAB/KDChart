@@ -74,7 +74,8 @@ QSize KDChart::TextLayoutItem::calcSizeHint() const
 
 void KDChart::TextLayoutItem::paint( QPainter* painter )
 {
-    Q_ASSERT( mRect.isValid() );
+    if( !mRect.isValid() )
+        return;
 
     PainterSaver painterSaver( painter );
     painter->setFont( mFont );
@@ -132,7 +133,8 @@ QSize KDChart::MarkerLayoutItem::sizeHint() const
 
 void KDChart::MarkerLayoutItem::paint( QPainter* painter )
 {
-    Q_ASSERT( mRect.isValid() );
+    if( !mRect.isValid() )
+        return;
 
     // The layout management may assign a larger rect than what we
     // wanted. We need to adjust the position.

@@ -39,7 +39,9 @@ namespace KDChart {
 
 class KDCHART_EXPORT DefaultsModel : public QAbstractProxyModel
 {
-  public:
+    Q_OBJECT
+
+public:
     DefaultsModel ( QObject * parent = 0 );
     virtual ~DefaultsModel ( );
 
@@ -73,7 +75,11 @@ class KDCHART_EXPORT DefaultsModel : public QAbstractProxyModel
     bool setHeaderData ( int section, Qt::Orientation orientation, const QVariant & value, int role );
     /** \reimpl */
     void setSourceModel( QAbstractItemModel* sourceModel );
-  protected:
+
+signals:
+    void attributesChanged( const QModelIndex&, const QModelIndex& );
+
+protected:
     const AttributesModel* attributesModel() const;
     // helper
     QVariant defaultsForRole( int role ) const;

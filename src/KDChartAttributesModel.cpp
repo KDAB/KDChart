@@ -41,8 +41,8 @@ struct AttributesModelRegistryInfo {
 };
 
 static QHash< QAbstractItemModel*, AttributesModelRegistryInfo > s_buddyHash;
- 
-/*static*/ 
+
+/*static*/
 AttributesModel * AttributesModel::instanceForModel( QAbstractItemModel* model )
 {
     AttributesModelRegistryInfo info;
@@ -80,7 +80,7 @@ AttributesModel::~AttributesModel()
 {
 }
 
-/*virtual*/ 
+/*virtual*/
 QModelIndex AttributesModel::mapFromSource ( const QModelIndex & sourceIndex ) const
 {
     return createIndex( sourceIndex.row(), sourceIndex.column(), sourceIndex.internalPointer() );
@@ -119,7 +119,7 @@ QVariant AttributesModel::data( const QModelIndex& index, int role ) const
       const QMap< int,  QMap< int, QVariant> > &colDataMap = mDataMap[ index.column() ];
       if ( colDataMap.contains( index.row() ) ) {
           const QMap<int, QVariant> &dataMap = colDataMap[ index.row() ];
-          if ( dataMap.contains( role ) ) 
+          if ( dataMap.contains( role ) )
               return dataMap[ role ];
       }
   }
@@ -131,7 +131,7 @@ bool AttributesModel::isKnownAttributesRole( int role ) const
     bool oneOfOurs = false;
     switch( role ) {
       // fallthrough intended
-      case DataValueLabelAttributesRole: 
+      case DataValueLabelAttributesRole:
       case DatasetBrushRole:
       case DatasetPenRole:
       case ThreeDAttributesRole:
@@ -150,12 +150,14 @@ bool AttributesModel::setData ( const QModelIndex & index, const QVariant & valu
 {
     if ( !isKnownAttributesRole( role ) ) {
         return sourceModel()->setData( index, value, role );
+    } else {
+        QMap< int,  QMap< int, QVariant> > &colDataMap = mDataMap[ index.column() ];
+        QMap<int, QVariant> &dataMap = colDataMap[ index.row() ];
+        //qDebug() <<  "AttributesModel::setData" <<"role" << role << "value" << value;
+        dataMap.insert( role, value );
+        emit attributesChanged( index, index );
+        return true;
     }
-    QMap< int,  QMap< int, QVariant> > &colDataMap = mDataMap[ index.column() ];
-    QMap<int, QVariant> &dataMap = colDataMap[ index.row() ];
-    //qDebug() <<  "AttributesModel::setData" <<"role" << role << "value" << value;
-    dataMap.insert( role, value );
-    return true;
 }
 
 bool AttributesModel::setHeaderData ( int section, Qt::Orientation orientation,
@@ -163,12 +165,13 @@ bool AttributesModel::setHeaderData ( int section, Qt::Orientation orientation,
 {
     if ( !isKnownAttributesRole( role ) ) {
         return sourceModel()->setHeaderData( section, orientation, value, role );
+    } else {
+        QMap<int,  QMap<int, QVariant> > &sectionDataMap
+            = orientation == Qt::Horizontal ? mHorizontalHeaderDataMap : mVerticalHeaderDataMap;
+        QMap<int, QVariant> &dataMap = sectionDataMap[ section ];
+        dataMap.insert( role, value );
+        return true;
     }
-    QMap<int,  QMap<int, QVariant> > &sectionDataMap
-        = orientation == Qt::Horizontal ? mHorizontalHeaderDataMap : mVerticalHeaderDataMap;
-    QMap<int, QVariant> &dataMap = sectionDataMap[ section ];
-    dataMap.insert( role, value );
-    return true;
 }
 
 
@@ -210,10 +213,10 @@ int AttributesModel::columnCount( const QModelIndex& index ) const
 void AttributesModel::setSourceModel( QAbstractItemModel* sourceModel )
 {
     if( this->sourceModel() != 0 )
-        disconnect( this->sourceModel(), SIGNAL( dataChanged( const QModelIndex&, const QModelIndex&)), 
+        disconnect( this->sourceModel(), SIGNAL( dataChanged( const QModelIndex&, const QModelIndex&)),
                                    this, SIGNAL( dataChanged( const QModelIndex&, const QModelIndex&)));
     QAbstractProxyModel::setSourceModel( sourceModel );
     if( this->sourceModel() != NULL )
-        connect( this->sourceModel(), SIGNAL( dataChanged( const QModelIndex&, const QModelIndex&)), 
+        connect( this->sourceModel(), SIGNAL( dataChanged( const QModelIndex&, const QModelIndex&)),
                                 this, SIGNAL( dataChanged( const QModelIndex&, const QModelIndex&)));
 }

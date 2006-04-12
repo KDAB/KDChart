@@ -180,11 +180,21 @@ void DefaultsModel::setDefaultPaletteType( DefaultPaletteType type )
 
 void DefaultsModel::setSourceModel( QAbstractItemModel* sourceModel )
 {
-    if( this->sourceModel() != NULL )
+    if( this->sourceModel() != NULL ) {
         disconnect( this->sourceModel(), SIGNAL( dataChanged( const QModelIndex&, const QModelIndex&)),
                                    this, SIGNAL( dataChanged( const QModelIndex&, const QModelIndex&)));
+        if( this->sourceModel()->metaObject()->indexOfSignal( QMetaObject::normalizedSignature( "attributesChanged( const QModelIndex&, const QModelIndex& )" ) ) != -1 )
+            disconnect( this->sourceModel(), SIGNAL( attributesChanged( const QModelIndex&, const QModelIndex&)),
+                        this, SIGNAL( attributesChanged( const QModelIndex&, const QModelIndex&)));
+    }
+
     QAbstractProxyModel::setSourceModel( sourceModel );
-    if( this->sourceModel() != NULL )
+    if( this->sourceModel() != NULL ) {
         connect( this->sourceModel(), SIGNAL( dataChanged( const QModelIndex&, const QModelIndex&)),
                                 this, SIGNAL( dataChanged( const QModelIndex&, const QModelIndex&)));
+        if( this->sourceModel()->metaObject()->indexOfSignal( QMetaObject::normalizedSignature( "attributesChanged( const QModelIndex&, const QModelIndex& )" ) ) != -1 )
+            connect( this->sourceModel(), SIGNAL( attributesChanged( const QModelIndex&, const QModelIndex&)),
+                     this, SIGNAL( attributesChanged( const QModelIndex&, const QModelIndex&)));
+    }
 }
+

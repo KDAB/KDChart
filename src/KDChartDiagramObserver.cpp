@@ -38,6 +38,7 @@ namespace KDChart {
     {
        connect( diagram, SIGNAL(destroyed( QObject* )), SLOT(destroyed()));
        connect( diagram->model(), SIGNAL(dataChanged( const QModelIndex&, const QModelIndex&)), SLOT(dataChanged()));
+       connect( diagram->model(), SIGNAL(attributesChanged( const QModelIndex&, const QModelIndex&)), SLOT(attributesChanged()));
        connect( diagram->model(), SIGNAL(headerDataChanged( Qt::Orientation, int, int)), SLOT(dataChanged()));
     }
 
@@ -49,5 +50,10 @@ namespace KDChart {
     void DiagramObserver::dataChanged()
     {
         emit diagramDataChanged( diagram );
+    }
+
+    void DiagramObserver::attributesChanged()
+    {
+        emit diagramAttributesChanged( diagram );
     }
 }

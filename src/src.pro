@@ -151,3 +151,5 @@ KDAB_EVAL {
   SOURCES += ../evaldialog/evaldialog.cpp
   DEFINES += KDAB_EVAL
 }
+
+
