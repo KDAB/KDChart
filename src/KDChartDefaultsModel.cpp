@@ -1,4 +1,4 @@
-/* -*- Mode: C++ -*-
+#/* -*- Mode: C++ -*-
    KDChart - a multi-platform charting engine
    */
 
@@ -45,7 +45,7 @@ DefaultsModel::~DefaultsModel()
 {
 }
 
-/*virtual*/ 
+/*virtual*/
 QModelIndex DefaultsModel::mapFromSource ( const QModelIndex & sourceIndex ) const
 {
     return createIndex( sourceIndex.row(), sourceIndex.column(), sourceIndex.internalPointer() );
@@ -74,7 +74,7 @@ QVariant DefaultsModel::headerData ( int section,
         return header;
         break;
       }
-    case KDChart::DatasetBrushRole: 
+    case KDChart::DatasetBrushRole:
       {
         if ( mDefaultPaletteType == PaletteTypeSubdued )
             return Palette::subduedPalette().getBrush( section );
@@ -85,7 +85,7 @@ QVariant DefaultsModel::headerData ( int section,
         else
             qWarning("Unknown type of fallback palette!");
       }
-    case KDChart::DatasetPenRole: 
+    case KDChart::DatasetPenRole:
       {
           // default to the color set for the brush (or it's defaults)
           // but only if no per model override was set
@@ -104,7 +104,7 @@ QVariant DefaultsModel::headerData ( int section,
 QVariant DefaultsModel::data( const QModelIndex& index, int role ) const
 {
   // Check the underlying attributes model, and real source model
-  // If they have something suitable for this index, fine. 
+  // If they have something suitable for this index, fine.
   // Otherwise use defaults.
   QVariant sourceData = sourceModel()->data( index, role );
   if ( sourceData.isValid() ) return sourceData;

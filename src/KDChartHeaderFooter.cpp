@@ -126,10 +126,9 @@ QSize HeaderFooter::sizeHint() const
     if( d->textDoc )
         delete d->textDoc;
     d->textDoc = new KDTextDocument;
-    d->textDoc->setDefaultFont( font() );
+    d->textDoc->setDefaultFont( d->textAttributes.font() );
     QTextCursor cursor( d->textDoc );
 
-    // PENDING(kalle) Font!
     // PENDING(kalle) Other attributes!
     if( !text().isEmpty() ) {
         QTextBlockFormat bf;

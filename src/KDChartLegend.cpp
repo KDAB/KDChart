@@ -143,6 +143,8 @@ void Legend::setDiagram( KDChart::AbstractDiagram* diagram )
                         SLOT( resetDiagram() ));
         connect( d->observer, SIGNAL( diagramDataChanged(AbstractDiagram*) ),
 			SLOT( buildLegend() ));
+        connect( d->observer, SIGNAL( diagramAttributesChanged(AbstractDiagram*) ),
+			SLOT( buildLegend() ));
     }
 
     buildLegend();
@@ -427,7 +429,7 @@ void Legend::resetDiagram()
 
 void Legend::buildLegend()
 {
-    qDebug() << "buildLegend, d->blockBuildLegend = " << d->blockBuildLegend;
+    qDebug() << "************buildLegend()";
 
     if( d->blockBuildLegend )
         return;
@@ -457,8 +459,6 @@ void Legend::buildLegend()
         d->layout->addItem( titleItem, 0, 0, 1, 4, Qt::AlignCenter );
     }
 
-    qDebug() << "Legend has " << d->modelLabels.count() << " datasets";
-
     for ( int dataset = 0; dataset < d->modelLabels.count(); dataset++ ) {
         // PENDING(kalle) Properties
         KDChart::MarkerLayoutItem* markerItem = new KDChart::MarkerLayoutItem( diagram(),
@@ -484,7 +484,6 @@ void Legend::buildLegend()
 QSize KDChart::Legend::sizeHint() const
 {
     QSize s = KDChartArea::sizeHint();
-    qDebug() << "KDChartLegend::sizeHint() " << s;
     return s;
 }
 
@@ -492,6 +491,5 @@ QSize KDChart::Legend::sizeHint() const
 QSize KDChart::Legend::minimumSizeHint() const
 {
     QSize s = KDChartArea::minimumSizeHint();
-    qDebug() << "KDChartLegend::minimumSizeHint() " << s;
     return s;
 }
