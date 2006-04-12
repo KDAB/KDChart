@@ -179,77 +179,95 @@ void CartesianAxis::paint ( PaintContext* context ) const
     QPointF unitRulerRef( rulerRef );
     /* Pending Michel: FixMe Percent */
     int minValueY = qRound( dataBoundaries.first.y() );
+    int maxValueY = qRound( dataBoundaries.second.y() );
     int minValueX = qRound( dataBoundaries.first.x() );
+    int maxValueX = qRound( dataBoundaries.second.x() );
 
-    double step;
+
     if ( drawFourthRulers ) {
-        //ptr->save();
-        //ptr->setPen( Qt::red );
-        step = screenRange / numberOfFourthRulers;
         if ( position() == Top || position() == Bottom ) {
-            for ( int i = 0; i < numberOfFourthRulers; i++ ) {
-                QPointF topPoint ( fourthRulerRef.x(), position() == Top ? fourthRulerRef.y()-1 : fourthRulerRef.y()+1 );
-                QPointF bottomPoint ( fourthRulerRef.x(), fourthRulerRef.y() );
+            int tickLength = position() == Top ? -2 : 1;
+            for ( float f = minValueX; f <= maxValueX; f += 0.25 ) {
+                QPointF topPoint ( f, 0 );
+                QPointF bottomPoint ( f, 0 );
+                topPoint = context->coordinatePlane()->translate( topPoint );
+                bottomPoint = context->coordinatePlane()->translate( bottomPoint );
+                topPoint.setY( fourthRulerRef.y() + tickLength );
+                bottomPoint.setY( fourthRulerRef.y() );
                 ptr->drawLine( topPoint, bottomPoint );
-                fourthRulerRef.setX( fourthRulerRef.x() + step);
             }
         } else {
-            for ( int i = 0; i < numberOfFourthRulers; i++ ) {
-                QPointF leftPoint ( position() == Left ? fourthRulerRef.x()-1 : fourthRulerRef.x()+1, fourthRulerRef.y() );
-                QPointF rightPoint ( fourthRulerRef.x(), fourthRulerRef.y() );
+            int tickLength = position() == Left ? -1 : 1;
+            for ( float f = minValueY; f <= maxValueY; f += 0.25 ) {
+                QPointF leftPoint ( 0, f );
+                QPointF rightPoint ( 0, f );
+                leftPoint = context->coordinatePlane()->translate( leftPoint );
+                rightPoint = context->coordinatePlane()->translate( rightPoint );
+                leftPoint.setX( fourthRulerRef.x() + tickLength );
+                rightPoint.setX( fourthRulerRef.x() );
                 ptr->drawLine( leftPoint, rightPoint );
-                fourthRulerRef.setY( fourthRulerRef.y() - step);
-            }
-        }
-        //ptr->restore();
+           }
+       }
     }
 
     if ( drawHalfRulers ) {
-        step = screenRange / numberOfHalfRulers;
         if ( position() == Top || position() == Bottom ) {
-            for ( int i = 0; i < numberOfHalfRulers; i++ ) {
-                QPointF topPoint ( halfRulerRef.x(), position() == Top ? halfRulerRef.y()-2 : halfRulerRef.y()+2 );
-                QPointF bottomPoint ( halfRulerRef.x(), halfRulerRef.y() );
+            int tickLength = position() == Top ? -3 : 2;
+            for ( float f = minValueX; f <= maxValueX; f += 0.5 ) {
+                QPointF topPoint ( f, 0 );
+                QPointF bottomPoint ( f, 0 );
+                topPoint = context->coordinatePlane()->translate( topPoint );
+                bottomPoint = context->coordinatePlane()->translate( bottomPoint );
+                topPoint.setY( fourthRulerRef.y() + tickLength );
+                bottomPoint.setY( fourthRulerRef.y() );
                 ptr->drawLine( topPoint, bottomPoint );
-                halfRulerRef.setX( halfRulerRef.x() + step);
             }
         } else {
-            for ( int i = 0; i < numberOfHalfRulers; i++ ) {
-                QPointF leftPoint ( position() == Left ? halfRulerRef.x()-2 : halfRulerRef.x()+2, halfRulerRef.y() );
-                QPointF rightPoint ( halfRulerRef.x(), halfRulerRef.y() );
+            int tickLength = position() == Left ? -3 : 2;
+            for ( float f = minValueY; f <= maxValueY; f += 0.5 ) {
+                QPointF leftPoint ( 0, f );
+                QPointF rightPoint ( 0, f );
+                leftPoint = context->coordinatePlane()->translate( leftPoint );
+                rightPoint = context->coordinatePlane()->translate( rightPoint );
+                leftPoint.setX( fourthRulerRef.x() + tickLength );
+                rightPoint.setX( fourthRulerRef.x() );
                 ptr->drawLine( leftPoint, rightPoint );
-                halfRulerRef.setY( halfRulerRef.y() - step);
-            }
-        }
+           }
+       }
     }
+
     if ( drawUnitRulers ) {
-        step = screenRange / numberOfUnitRulers;
         if ( position() == Top || position() == Bottom ) {
-            for ( int i = 0; i <= numberOfUnitRulers; i++ ) {
-                QPointF topPoint ( unitRulerRef.x(), position() == Top ? unitRulerRef.y()-3 : unitRulerRef.y()+3 );
-                QPointF bottomPoint ( unitRulerRef.x(), unitRulerRef.y() );
+            int tickLength = position() == Top ? -4 : 3;
+            for ( int i = minValueX; i <= maxValueX; ++i ) {
+                QPointF topPoint ( i, 0 );
+                QPointF bottomPoint ( i, 0 );
+                topPoint = context->coordinatePlane()->translate( topPoint );
+                bottomPoint = context->coordinatePlane()->translate( bottomPoint );
+                topPoint.setY( fourthRulerRef.y() + tickLength );
+                bottomPoint.setY( fourthRulerRef.y() );
                 ptr->drawLine( topPoint, bottomPoint );
-                //#ifdef VALUES_PAINTING_DEBUG
                 if ( drawHalfRulers ) {
                     QFont textFont( QFont("comic", 5 ) );
                     topPoint.setX( topPoint.x() - textFont.pointSize() );
-                    topPoint.setY( position() == Top ? topPoint.y()-textFont.pointSize():topPoint.y()+ (2 * textFont.pointSize()) );
+                    topPoint.setY( position() == Top ? topPoint.y() - textFont.pointSize() : topPoint.y() + (2 * textFont.pointSize()) );
                     PainterSaver painterSaver( ptr );
                     ptr->setPen( Qt::blue );
                     ptr->setFont( textFont );
                     ptr->drawText( topPoint, QString::number( minValueX ) );
                     minValueX += 1;
                 }
-                //#endif
-                unitRulerRef.setX( unitRulerRef.x() + step);
             }
-
         } else {
-            for ( int i = 0; i <= numberOfUnitRulers; i++ ) {
-                QPointF leftPoint ( position() == Left ? unitRulerRef.x()-3 : unitRulerRef.x()+3, unitRulerRef.y() );
-                QPointF rightPoint ( unitRulerRef.x(), unitRulerRef.y() );
+            int tickLength = position() == Left ? -4 : 3;
+            for ( int i = minValueY; i <= maxValueY; ++i ) {
+                QPointF leftPoint ( 0, i );
+                QPointF rightPoint ( 0, i );
+                leftPoint = context->coordinatePlane()->translate( leftPoint );
+                rightPoint = context->coordinatePlane()->translate( rightPoint );
+                leftPoint.setX( fourthRulerRef.x() + tickLength );
+                rightPoint.setX( fourthRulerRef.x() );
                 ptr->drawLine( leftPoint, rightPoint );
-                //#ifdef VALUES_PAINTING_DEBUG
                 if ( drawHalfRulers ) {
                     QFont textFont( QFont("comic", 5 ) );
                     leftPoint.setX( position() == Left ? leftPoint.x()- (2*textFont.pointSize()) : leftPoint.x()+textFont.pointSize() );
@@ -260,11 +278,8 @@ void CartesianAxis::paint ( PaintContext* context ) const
                     ptr->drawText( leftPoint, QString::number( minValueY ) );
                     d->diagram()->percentMode() ? minValueY += 10 : minValueY += 1;
                 }
-                //#endif
-                unitRulerRef.setY( unitRulerRef.y() - step);
-            }
-
-        }
+           }
+       }
     }
 }
 #undef ptr

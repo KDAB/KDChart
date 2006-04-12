@@ -216,52 +216,6 @@ void CartesianCoordinatePlane::layoutDiagrams()
     dataBoundingRect.setBottomLeft ( smallestPoint );
     dataBoundingRect.setTopRight ( largestPoint );
 
-/*<<<<<<< .mine
-=======
-    // lay out the diagrams and the axes:
-    //
-    // query and lay out the axes (make sure to keep this list stable, since
-    // it already holds the order in which the axes are supposed to be painted):
-    CartesianAxisList axes;
-    foreach ( AbstractDiagram* abstractDiagram, diagrams() )
-        {
-            AbstractCartesianDiagram* diagram =
-                dynamic_cast<AbstractCartesianDiagram*> ( abstractDiagram );
-            Q_ASSERT ( diagram );
-            if ( diagram )
-            {
-                axes << diagram->axes();
-            }
-        }
-
-    double bottomAxisHeight = 0.0;
-    double leftAxisWidth = 0.0;
-    double rightAxisWidth = 0.0;
-    double topAxisHeight = 0.0;
-    foreach ( CartesianAxis* axis, axes )
-        {
-            switch ( axis->position() )
-            {
-            case CartesianAxis::Top:
-                topAxisHeight += axis->sizeHint().height();
-                break;
-            case CartesianAxis::Bottom:
-                bottomAxisHeight += axis->sizeHint().height();
-                break;
-            case CartesianAxis::Left:
-                leftAxisWidth += axis->sizeHint().width();
-                break;
-            case CartesianAxis::Right:
-                rightAxisWidth += axis->sizeHint().width();
-                break;
-            default:
-                Q_ASSERT_X( false, "CartesianCoordinatePlane::paintEvent",
-                            "unknown axis position" );
-                break;
-            };
-        }
-
->>>>>>> .r145*/
     // calculate the remaining rectangle, and use it as the diagram area:
     d->diagramArea = d->drawingArea;
     d->diagramArea.setTopLeft ( QPointF ( d->drawingArea.left(), d->drawingArea.top() ) );
