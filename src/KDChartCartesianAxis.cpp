@@ -8,6 +8,7 @@
 #include "KDChartCartesianAxis.h"
 #include "KDChartCartesianAxis_p.h"
 #include "KDChartAbstractCartesianDiagram.h"
+#include "KDChartPainterSaver_p.h"
 
 using namespace KDChart;
 
@@ -44,7 +45,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
     Q_ASSERT ( d->diagram() );
     const int MinimumPixelsBetweenRulers = 5;
     const QPair<QPointF, QPointF> dataBoundaries = d->diagram()->dataBoundaries();
-    
+
     // preparations:
     // - calculate the range that will be displayed:
     double range;
@@ -65,7 +66,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
      * line = rows
      * bar = groups
      */
-    /* 
+    /*
     int numberOfUnitRulers = ( int ) ( ( absRange + basicUnit * 1.05 ) / basicUnit );
     int numberOfFourthRulers = numberOfUnitRulers * 5 + 1;
     int numberOfHalfRulers = numberOfUnitRulers * 2 + 1;
@@ -73,7 +74,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
 
     // Fixme Michel: Need to find the type of chart here - Line or Bar
     // if Bars calculate the number of groups
-    
+
     int numberOfUnitRulers;
     if ( position() == Bottom || position() == Top )
         numberOfUnitRulers = d->diagram()->model()->rowCount() - 1;
@@ -110,26 +111,26 @@ void CartesianAxis::paint ( PaintContext* context ) const
 
     // FIXME references are of course different for all locations:
     rulerWidth = geoRect.width();
-    rulerHeight =  geoRect.height();   
+    rulerHeight =  geoRect.height();
     if ( position() == Top )
-    {                      
+    {
         rulerRef.setX( geoRect.topLeft().x() );
-        rulerRef.setY( geoRect.topLeft().y() + rulerHeight );              
-    } else if ( position() == Bottom ) {       
+        rulerRef.setY( geoRect.topLeft().y() + rulerHeight );
+    } else if ( position() == Bottom ) {
         rulerRef.setX( geoRect.bottomLeft().x() );
         rulerRef.setY( geoRect.bottomLeft().y() - rulerHeight );
     } else if ( position() == Right ) {
         rulerRef.setX( geoRect.bottomRight().x() - rulerWidth );
-        rulerRef.setY( geoRect.bottomRight().y() ); 
+        rulerRef.setY( geoRect.bottomRight().y() );
     } else {
         rulerRef.setX( geoRect.bottomLeft().x() + rulerWidth );
-        rulerRef.setY( geoRect.bottomLeft().y() );        
+        rulerRef.setY( geoRect.bottomLeft().y() );
     }
 
     // set up the lines to paint:
 
     // set up a map of integer positions,
-    
+
     // - starting with the fourth
     // - the the halfs
     // - then the tens
@@ -161,7 +162,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
     QPointF unitRulerRef( rulerRef );
     /* Pending Michel: FixMe Percent */
     int minValueY = qRound( dataBoundaries.first.y() );
-    int minValueX = qRound( dataBoundaries.first.x() ); 
+    int minValueX = qRound( dataBoundaries.first.x() );
 
     double step;
     if ( drawFourthRulers ) {
@@ -169,7 +170,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
         //ptr->setPen( Qt::red );
         step = screenRange / numberOfFourthRulers;
         if ( position() == Top || position() == Bottom ) {
-            for ( int i = 0; i < numberOfFourthRulers; i++ ) {                                
+            for ( int i = 0; i < numberOfFourthRulers; i++ ) {
                 QPointF topPoint ( fourthRulerRef.x(), position() == Top ? fourthRulerRef.y()-1 : fourthRulerRef.y()+1 );
                 QPointF bottomPoint ( fourthRulerRef.x(), fourthRulerRef.y() );
                 ptr->drawLine( topPoint, bottomPoint );
@@ -185,7 +186,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
         }
         //ptr->restore();
     }
-    
+
     if ( drawHalfRulers ) {
         step = screenRange / numberOfHalfRulers;
         if ( position() == Top || position() == Bottom ) {
@@ -214,19 +215,18 @@ void CartesianAxis::paint ( PaintContext* context ) const
                 //#ifdef VALUES_PAINTING_DEBUG
                 if ( drawHalfRulers ) {
                     QFont textFont( QFont("comic", 5 ) );
-                    topPoint.setX( topPoint.x() - textFont.pointSize() ); 
-                    topPoint.setY( position() == Top ? topPoint.y()-textFont.pointSize():topPoint.y()+ (2 * textFont.pointSize()) ); 
-                    ptr->save();
+                    topPoint.setX( topPoint.x() - textFont.pointSize() );
+                    topPoint.setY( position() == Top ? topPoint.y()-textFont.pointSize():topPoint.y()+ (2 * textFont.pointSize()) );
+                    PainterSaver painterSaver( ptr );
                     ptr->setPen( Qt::blue );
                     ptr->setFont( textFont );
                     ptr->drawText( topPoint, QString::number( minValueX ) );
                     minValueX += 1;
-                    ptr->restore();
                 }
                 //#endif
                 unitRulerRef.setX( unitRulerRef.x() + step);
             }
-          
+
         } else {
             for ( int i = 0; i <= numberOfUnitRulers; i++ ) {
                 QPointF leftPoint ( position() == Left ? unitRulerRef.x()-3 : unitRulerRef.x()+3, unitRulerRef.y() );
@@ -235,19 +235,18 @@ void CartesianAxis::paint ( PaintContext* context ) const
                 //#ifdef VALUES_PAINTING_DEBUG
                 if ( drawHalfRulers ) {
                     QFont textFont( QFont("comic", 5 ) );
-                    leftPoint.setX( position() == Left ? leftPoint.x()- (2*textFont.pointSize()) : leftPoint.x()+textFont.pointSize() ); 
+                    leftPoint.setX( position() == Left ? leftPoint.x()- (2*textFont.pointSize()) : leftPoint.x()+textFont.pointSize() );
                     leftPoint.setY( leftPoint.y() + textFont.pointSize()/2 );
-                    ptr->save();
+                    PainterSaver painterSaver( ptr );
                     ptr->setPen( Qt::red );
                     ptr->setFont( textFont );
                     ptr->drawText( leftPoint, QString::number( minValueY ) );
                     d->diagram()->percentMode() ? minValueY += 10 : minValueY += 1;
-                    ptr->restore();
                 }
                 //#endif
                 unitRulerRef.setY( unitRulerRef.y() - step);
             }
-           
+
         }
     }
 }

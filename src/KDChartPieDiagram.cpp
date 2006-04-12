@@ -5,6 +5,7 @@
 #include "KDChartPaintContext.h"
 #include "KDChartPieDiagram.h"
 #include "KDChartPieDiagram_p.h"
+#include "KDChartPainterSaver_p.h"
 
 using namespace KDChart;
 
@@ -88,7 +89,7 @@ void PieDiagram::paint( PaintContext* ctx )
         double spanAngle = polarCoordinatePlane()->translatePolar( QPointF( nextValue, 1 ) ).x();
         if ( spanAngle == 0 ) continue;
         QBrush brush = model()->headerData( j, Qt::Vertical, KDChart::DatasetBrushRole ).value<QBrush>();
-        ctx->painter()->save();
+        PainterSaver painterSaver( ctx->painter() );
         ctx->painter()->setRenderHint ( QPainter::Antialiasing );
         ctx->painter()->setBrush( brush );
         QPen p( ctx->painter()->pen() );
@@ -98,7 +99,6 @@ void PieDiagram::paint( PaintContext* ctx )
         ctx->painter()->setPen( p );
         //qDebug() << "startAngle: " << startAngle << " spanAngle: " << spanAngle;
         ctx->painter()->drawPie( contentsRect, ( int ) ((-startAngle + 90 ) * 16), ( int ) (-spanAngle * 16) );
-        ctx->painter()->restore();
         startAngle += spanAngle;
     }
     DataValueTextInfoListIterator it( list );

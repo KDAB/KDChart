@@ -4,6 +4,7 @@
 #include "KDChartPaintContext.h"
 #include "KDChartPolarDiagram.h"
 #include "KDChartPolarDiagram_p.h"
+#include "KDChartPainterSaver_p.h"
 
 using namespace KDChart;
 
@@ -125,7 +126,7 @@ void PolarDiagram::paint( PaintContext* ctx )
             polygon.append( point );
             list.append( DataValueTextInfo( index, point, value ) );
         }
-        ctx->painter()->save();
+        PainterSaver painterSaver( ctx->painter() );
         ctx->painter()->setRenderHint ( QPainter::Antialiasing );
         ctx->painter()->setBrush( brush );
         QPen p( ctx->painter()->pen() );
@@ -134,7 +135,6 @@ void PolarDiagram::paint( PaintContext* ctx )
         ctx->painter()->setPen( p );
         ctx->painter()->drawPolyline( polygon );
         paintPolarMarkers( ctx, polygon );
-        ctx->painter()->restore();
     }
     DataValueTextInfoListIterator it( list );
     while ( it.hasNext() ) {
@@ -147,7 +147,7 @@ void PolarDiagram::resize ( const QSizeF& )
 {
 }
 
-/*virtual*/ 
+/*virtual*/
 double PolarDiagram::valueTotals () const
 {
     return model()->rowCount(rootIndex());
@@ -159,7 +159,7 @@ double PolarDiagram::numberOfValuesPerDataset() const
     return model()->rowCount(rootIndex());
 }
 
-/*virtual*/ 
+/*virtual*/
 double PolarDiagram::numberOfGridRings() const
 {
     return 5; // FIXME

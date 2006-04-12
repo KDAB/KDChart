@@ -14,6 +14,7 @@
 #include "KDChartTextAttributes.h"
 #include "KDChartThreeDLineAttributes.h"
 #include "KDChartAttributesModel.h"
+#include "KDChartPainterSaver_p.h"
 
 
 
@@ -320,23 +321,22 @@ void LineDiagram::paint( PaintContext* ctx )
 
 void LineDiagram::paintLines( PaintContext* ctx, const QModelIndex& index, double from, double to )
 {
-  ThreeDLineAttributes td = threeDLineAttributes(index);
+    ThreeDLineAttributes td = threeDLineAttributes(index);
     if ( td.isEnabled() ) {
         const int lineDepth = td.depth();
         paintThreeDLines( ctx, index, from, to, lineDepth );
     }    else {
-    //get the brush and pen to be used from the AbstractDiagram methods
-    QBrush indexBrush ( brush( index ) );
-    ctx->painter()->save();
-    ctx->painter()->setRenderHint ( QPainter::Antialiasing );
-    ctx->painter()->setBrush( indexBrush );
-    ctx->painter()->setPen( pen( index ) );
-    if ( index.row() + 1 < model()->rowCount(rootIndex()) ) {
-        const QPointF posfrom = coordinatePlane()->translate( QPointF( index.row(), from) );
-        const QPointF posto = coordinatePlane()->translate( QPointF( index.row()+1, to ) );
-        ctx->painter()->drawLine( posfrom, posto);
-    }
-    ctx->painter()->restore();
+        //get the brush and pen to be used from the AbstractDiagram methods
+        QBrush indexBrush ( brush( index ) );
+        PainterSaver painterSaver( ctx->painter() );
+        ctx->painter()->setRenderHint ( QPainter::Antialiasing );
+        ctx->painter()->setBrush( indexBrush );
+        ctx->painter()->setPen( pen( index ) );
+        if ( index.row() + 1 < model()->rowCount(rootIndex()) ) {
+            const QPointF posfrom = coordinatePlane()->translate( QPointF( index.row(), from) );
+            const QPointF posto = coordinatePlane()->translate( QPointF( index.row()+1, to ) );
+            ctx->painter()->drawLine( posfrom, posto);
+        }
     }
 }
 
@@ -352,12 +352,11 @@ void LineDiagram::paintAreas( PaintContext* ctx, const QModelIndex& index, const
     indexPen.setColor( trans );
     pol.insert( 0,  coordinatePlane()->translate( QPointF( bottomLeft.x(), 0 ) ) );
     pol.append( coordinatePlane()->translate( QPointF( topRight.x(),0 ) ) );
-    ctx->painter()->save();
+    PainterSaver painterSaver( ctx->painter() );
     ctx->painter()->setRenderHint ( QPainter::Antialiasing );
     ctx->painter()->setPen( indexPen );
     ctx->painter()->setBrush( trans ) ;
     ctx->painter()->drawPolygon( pol );
-    ctx->painter()->restore();
 }
 
 /*!
@@ -394,12 +393,11 @@ void LineDiagram::paintThreeDLines(PaintContext* ctx, const QModelIndex& index, 
                   << coordinatePlane()->translate(topLeft);
     QPolygonF segment ( segmentPoints );
     QBrush indexBrush ( brush( index ) );
-    ctx->painter()->save();
+    PainterSaver painterSaver( ctx->painter() );
     ctx->painter()->setRenderHint ( QPainter::Antialiasing );
     ctx->painter()->setBrush( indexBrush );
     ctx->painter()->setPen( pen( index ) ) ;
     ctx->painter()->drawPolygon( segment );
-    ctx->painter()->restore();
 }
 
 void LineDiagram::resize ( const QSizeF& )

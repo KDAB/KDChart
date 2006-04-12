@@ -4,6 +4,7 @@
 #include "KDChartPaintContext.h"
 #include "KDChartRingDiagram.h"
 #include "KDChartRingDiagram_p.h"
+#include "KDChartPainterSaver_p.h"
 
 using namespace KDChart;
 
@@ -83,7 +84,7 @@ void RingDiagram::paint( PaintContext* ctx )
     DataValueTextInfoList list;
     for ( int j=0; j<colCount; ++j ) {
         QBrush brush = model()->headerData( j, Qt::Vertical, KDChart::DatasetBrushRole ).value<QBrush>();
-        ctx->painter()->save();
+        PainterSaver painterSaver( ctx->painter() );
         ctx->painter()->setRenderHint ( QPainter::Antialiasing );
         ctx->painter()->setBrush( brush );
         QPen p( ctx->painter()->pen() );
@@ -91,7 +92,6 @@ void RingDiagram::paint( PaintContext* ctx )
         p.setWidth( 2 );// FIXME properties, use DatasetPenRole
         ctx->painter()->setPen( p );
         //ctx->painter()->drawPolyline( polygon );
-        ctx->painter()->restore();
     }
     DataValueTextInfoListIterator it( list );
     while ( it.hasNext() ) {

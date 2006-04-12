@@ -9,6 +9,7 @@
 #include "KDChartAbstractDiagram.h"
 #include "KDChartAbstractPolarDiagram.h"
 #include "KDChartPolarCoordinatePlane.h"
+#include "KDChartPainterSaver_p.h"
 
 using namespace KDChart;
 
@@ -91,11 +92,10 @@ void PolarCoordinatePlane::paintEvent ( QPaintEvent* )
         for ( int i = 0; i < diags.size(); i++ )
         {
             p->currentTransformation = & ( p->coordinateTransformations[i] );
-            painter.save();
+            PainterSaver painterSaver( &painter );
             // paint the coordinate system rulers:
             paintRulers ( &ctx );
             diags[i]->paint ( &ctx );
-            painter.restore();
         }
         p->currentTransformation = 0;
     } // else: diagrams have not been set up yet

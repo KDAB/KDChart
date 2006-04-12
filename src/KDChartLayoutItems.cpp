@@ -45,7 +45,6 @@ QSize KDChart::TextLayoutItem::minimumSize() const
 void KDChart::TextLayoutItem::setGeometry( const QRect& r )
 {
     mRect = r;
-    qDebug() << "text item = " << r;
 }
 
 QSize KDChart::TextLayoutItem::sizeHint() const
@@ -117,7 +116,6 @@ QSize KDChart::MarkerLayoutItem::minimumSize() const
 void KDChart::MarkerLayoutItem::setGeometry( const QRect& r )
 {
     mRect = r;
-    qDebug() << "Marker item = " << r;
 }
 
 QSize KDChart::MarkerLayoutItem::sizeHint() const

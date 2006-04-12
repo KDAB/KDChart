@@ -17,6 +17,7 @@
 #include "KDChartDatasetProxyModel.h"
 #include "KDChartThreeDAttributes.h"
 #include "KDChartThreeDLineAttributes.h"
+#include "KDChartPainterSaver_p.h"
 
 using namespace KDChart;
 
@@ -256,7 +257,7 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
     DataValueAttributes a =
         model()->data( index, DataValueLabelAttributesRole ).value<DataValueAttributes>();
     if ( !a.isVisible() ) return;
-    painter->save();
+    PainterSaver painterSaver( painter );
     // FIXME draw the non-text bits, background, etc
     const TextAttributes &ta = a.textAttributes();
     if ( ta.isVisible() ) {
@@ -268,8 +269,6 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
         painter->rotate( ta.rotation() );
         painter->drawText( QPointF(0, 0), QString::number( value ) );
     }
-    painter->restore();
-
 }
 
 void AbstractDiagram::paintDataValueTexts( QPainter* painter )
@@ -301,7 +300,7 @@ void AbstractDiagram::paintMarker( QPainter* painter,
     const MarkerAttributes &ma = a.markerAttributes();
     if ( !ma.isVisible() ) return;
 
-    painter->save();
+    PainterSaver painterSaver( painter );
     QSizeF maSize( ma.markerSize() );
     QBrush indexBrush( brush( index ) );
     QPen indexPen( pen( index ) );
@@ -311,7 +310,6 @@ void AbstractDiagram::paintMarker( QPainter* painter,
     }
 
     paintMarker( painter, ma, indexBrush, indexPen, pos, maSize );
-    painter->restore();
 }
 
 
@@ -320,6 +318,7 @@ void AbstractDiagram::paintMarker( QPainter* painter,
                                    const QBrush& brush, const QPen& pen,
                                    const QPointF& pos, const QSizeF& maSize )
 {
+    PainterSaver painterSaver( painter );
     painter->setBrush( brush );
     painter->setPen( pen );
     painter->setRenderHint ( QPainter::Antialiasing );
@@ -329,10 +328,13 @@ void AbstractDiagram::paintMarker( QPainter* painter,
             painter->drawEllipse( QRectF( 0 - maSize.height()/2, 0 - maSize.width()/2,
                         maSize.height(), maSize.width()) );
             break;
-        case MarkerAttributes::MarkerSquare:
-            painter->fillRect( QRectF( 0 - maSize.height()/2, 0 - maSize.width()/2,
-                        maSize.height(), maSize.width()), painter->brush() );
-            break;
+    case MarkerAttributes::MarkerSquare:
+    {
+        QRectF rect( 0 - maSize.height()/2, 0 - maSize.width()/2,
+                     maSize.height(), maSize.width() );
+        painter->fillRect( rect, painter->brush() );
+        break;
+    }
         case MarkerAttributes::MarkerDiamond:
             {
                 QVector <QPointF > diamondPoints;

@@ -3,6 +3,7 @@
 #include <KDChartBackgroundAttributes.h>
 #include <KDChartFrameAttributes.h>
 #include <KDChartTextAttributes.h>
+#include "KDChartPainterSaver_p.h"
 #include <QtXml/QDomDocumentFragment>
 #include <QPainter>
 
@@ -129,13 +130,12 @@ void KDChartArea:: paintBackground( QPainter* painter,
 
     /* first draw the brush (may contain a pixmap)*/
     if( Qt::NoBrush != attributes.brush().style() ) {
-        painter->save();
+        KDChart::PainterSaver painterSaver( painter );
         painter->setPen( Qt::NoPen );
         const QPointF newTopLeft( painter->deviceMatrix().map( rect.topLeft() ) );
         painter->setBrushOrigin( newTopLeft );
         painter->setBrush( attributes.brush() );
         painter->drawRect( rect );
-        painter->restore();
     }
     /* next draw the backPixmap over the brush */
     if( !attributes.pixmap().isNull() &&

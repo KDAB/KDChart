@@ -8,8 +8,8 @@
 #include "KDChartCartesianCoordinatePlane.h"
 #include "CartesianCoordinateTransformation.h"
 #include "KDChartGridAttributes.h"
-
 #include "KDChartPaintContext.h"
+#include "KDChartPainterSaver_p.h"
 
 using namespace KDChart;
 
@@ -64,7 +64,7 @@ void CartesianCoordinatePlane::paintEvent ( QPaintEvent* )
     {
         QString text = tr( "CartesianCoordinatePlane" );
         if ( diagrams().isEmpty() ) text += tr ( " (no diagrams)" );
-        painter.save();
+        PainterSaver painterSaver( &painter );
         painter.setRenderHint ( QPainter::TextAntialiasing );
         painter.setPen ( "gold" );
         painter.setBrush (  Qt::NoBrush );
@@ -74,7 +74,6 @@ void CartesianCoordinatePlane::paintEvent ( QPaintEvent* )
         painter.setFont( font );
         painter.setPen ( Qt::lightGray );
         painter.drawText ( 0, 0, width() - 3 , height() - 3, Qt::AlignRight | Qt::AlignTop, text );
-        painter.restore();
     }
 #endif
     AbstractDiagramList diags = diagrams();
@@ -102,9 +101,8 @@ void CartesianCoordinatePlane::paintEvent ( QPaintEvent* )
         // paint the diagrams:
         for ( int i = 0; i < diags.size(); i++ )
         {
-            painter.save();
+            PainterSaver painterSaver( &painter );
             diags[i]->paint ( &ctx );
-            painter.restore();
         }
     }
 }
