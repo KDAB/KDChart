@@ -10,6 +10,7 @@ namespace KDChart {
     class LineDiagram;
     class LineAttributes;
     class CartesianAxis;
+    class Legend;
 }
 
 class MainWindow : public QWidget, private Ui::MainWindow
@@ -22,8 +23,9 @@ public:
 
 
 private slots:
-    
+
     void on_lineTypeCB_currentIndexChanged( const QString & text );
+    void on_paintLegendCB_toggled( bool checked );
     void on_paintValuesCB_toggled( bool checked );
     void on_paintMarkersCB_toggled( bool checked );
     void on_markersStyleCB_currentIndexChanged( const QString & text );
@@ -34,16 +36,17 @@ private slots:
     void on_zoomFactorSB_valueChanged( double factor );
     void on_hSBar_valueChanged( int value );
     void on_vSBar_valueChanged( int value );
-    
+
 
 private:
     KDChart::Chart* m_chart;
     TableModel m_model;
     KDChart::DatasetProxyModel* m_datasetProxy;
     KDChart::LineDiagram* m_lines;
+    KDChart::Legend* m_legend;
     // mutable KDChart::CartesianAxis xAxis;
     //mutable KDChart::CartesianAxis yAxis;
-    
+
 };
 
 

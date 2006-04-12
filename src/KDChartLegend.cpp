@@ -144,6 +144,8 @@ void Legend::setDiagram( KDChart::AbstractDiagram* diagram )
         connect( d->observer, SIGNAL( diagramDataChanged(AbstractDiagram*) ),
 			SLOT( buildLegend() ));
     }
+
+    buildLegend();
 }
 
 KDChart::AbstractDiagram* Legend::diagram() const
@@ -425,6 +427,8 @@ void Legend::resetDiagram()
 
 void Legend::buildLegend()
 {
+    qDebug() << "buildLegend, d->blockBuildLegend = " << d->blockBuildLegend;
+
     if( d->blockBuildLegend )
         return;
 
@@ -452,6 +456,8 @@ void Legend::buildLegend()
         d->layoutItems << titleItem;
         d->layout->addItem( titleItem, 0, 0, 1, 4, Qt::AlignCenter );
     }
+
+    qDebug() << "Legend has " << d->modelLabels.count() << " datasets";
 
     for ( int dataset = 0; dataset < d->modelLabels.count(); dataset++ ) {
         // PENDING(kalle) Properties

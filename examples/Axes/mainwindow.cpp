@@ -8,6 +8,7 @@
 #include <KDChartDataValueAttributes>
 #include <KDChartThreeDLineAttributes>
 #include <KDChartMarkerAttributes>
+#include <KDChartLegend>
 
 #include <QDebug>
 #include <QPainter>
@@ -44,6 +45,11 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_lines->addAxes( axisTop );
     m_lines->addAxes( axisRight );
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
+
+    // Set up the legend
+    m_legend = new Legend( m_lines, m_chart );
+    m_chart->addLegend( m_legend );
+    m_legend->hide();
 }
 
 void MainWindow::on_lineTypeCB_currentIndexChanged( const QString & text )
@@ -58,17 +64,24 @@ void MainWindow::on_lineTypeCB_currentIndexChanged( const QString & text )
         la.setType( LineAttributes::Percent );
         m_lines->setPercentMode( true );
     }
-    else 
-        qWarning (" Does not match any type");      
+    else
+        qWarning (" Does not match any type");
     m_lines->setLineAttributes( la );
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
     m_chart->update();
 }
 
+
+void MainWindow::on_paintLegendCB_toggled( bool checked )
+{
+    m_legend->setVisible( checked );
+    m_chart->update();
+}
+
 void MainWindow::on_paintValuesCB_toggled( bool checked )
 {
-     
-    //testing 
+
+    //testing
         const int rowCount = m_lines->model()->rowCount();
         const int colCount = m_lines->model()->columnCount();
         for ( int i = 0; i<colCount; ++i ) {
@@ -77,31 +90,31 @@ void MainWindow::on_paintValuesCB_toggled( bool checked )
                 QBrush brush = m_lines->model()->headerData( i, Qt::Vertical, DatasetBrushRole ).value<QBrush>();
                 DataValueAttributes a = m_lines->dataValueAttributes( index );
                 if ( !paintMarkersCB->isChecked() ) {
-                    MarkerAttributes ma = a.markerAttributes();   
+                    MarkerAttributes ma = a.markerAttributes();
                     ma.setVisible( false );
                     a.setMarkerAttributes( ma );
                 }
-                TextAttributes ta = a.textAttributes();            
+                TextAttributes ta = a.textAttributes();
                 ta.setRotation( 0 );
                 ta.setFont( QFont( "Comic", 10 ) );
                 ta .setColor( brush.color() );
                 if ( checked )
                     ta.setVisible( true );
-                else 
+                else
                     ta.setVisible( false );
 
-                a.setTextAttributes( ta );               
+                a.setTextAttributes( ta );
                 a.setVisible( true );
-                m_lines->setDataValueAttributes( index, a); 
-            } 
+                m_lines->setDataValueAttributes( index, a);
+            }
         }
-        m_chart->update();       
+        m_chart->update();
 }
 
 
 void MainWindow::on_paintMarkersCB_toggled( bool checked )
 {
-   //testing 
+   //testing
     const int rowCount = m_lines->model()->rowCount();
     const int colCount = m_lines->model()->columnCount();
     for ( int i = 0; i<colCount; ++i ) {
@@ -109,23 +122,23 @@ void MainWindow::on_paintMarkersCB_toggled( bool checked )
             QModelIndex index = m_lines->model()->index( j, i, QModelIndex() );
             QBrush brush = m_lines->model()->headerData( i, Qt::Vertical, DatasetBrushRole ).value<QBrush>();
             double value = m_lines->model()->data( index ).toDouble();
-            DataValueAttributes a = m_lines->dataValueAttributes( index );             
-            // dont paint the values 
+            DataValueAttributes a = m_lines->dataValueAttributes( index );
+            // dont paint the values
             if ( !paintValuesCB->isChecked() ) {
-                TextAttributes ta = a.textAttributes(); 
+                TextAttributes ta = a.textAttributes();
                 ta.setVisible( false );
                 a.setTextAttributes( ta );
-            } 
-            MarkerAttributes ma = a.markerAttributes();  
-            switch ( markersStyleCB->currentIndex() ) {                 
-            case 0:{            
+            }
+            MarkerAttributes ma = a.markerAttributes();
+            switch ( markersStyleCB->currentIndex() ) {
+            case 0:{
                 MarkerAttributes::MarkerStylesMap map;
                 map.insert( 0, MarkerAttributes::MarkerSquare );
                 map.insert( 1, MarkerAttributes::MarkerCircle );
                 map.insert( 2, MarkerAttributes::MarkerRing );
                 map.insert( 3, MarkerAttributes::MarkerCross );
                 map.insert( 4, MarkerAttributes::MarkerDiamond );
-                ma.setMarkerStylesMap( map ); 
+                ma.setMarkerStylesMap( map );
                 ma.setMarkerStyle( ma.markerStylesMap().value(i) );
                 break; }
             case 1:{
@@ -154,20 +167,20 @@ void MainWindow::on_paintMarkersCB_toggled( bool checked )
                 break; }
             }
             ma.setMarkerSize( QSize( markersWidthSB->value(), markersHeightSB->value() ) );
-            /* Set a specific color - marker for a specific value */ 
+            /* Set a specific color - marker for a specific value */
             if ( value == 8 )
                 ma.setMarkerColor( Qt::yellow );
-            if ( checked ) 
+            if ( checked )
               ma.setVisible( true );
-            else               
+            else
               ma.setVisible( false );
-   
-            a.setMarkerAttributes( ma );         
-            a.setVisible( true ); 
-            m_lines->setDataValueAttributes( index, a); 
-        } 
+
+            a.setMarkerAttributes( ma );
+            a.setVisible( true );
+            m_lines->setDataValueAttributes( index, a);
+        }
     }
-    m_chart->update();    
+    m_chart->update();
 }
 
 void MainWindow::on_markersStyleCB_currentIndexChanged( const QString & /*text*/ )
@@ -203,17 +216,17 @@ void MainWindow::on_displayAreasCB_toggled( bool checked )
     const int rowCount = m_lines->model()->rowCount();
     const int colCount = m_lines->model()->columnCount();
      for ( int i = 0; i<colCount; ++i ) {
-         QModelIndex index = m_lines->model()->index( 0, i, QModelIndex() );  
-         for ( int j=0; j< rowCount; ++j ) {             
-             LineAttributes la = m_lines->lineAttributes( index );    
+         QModelIndex index = m_lines->model()->index( 0, i, QModelIndex() );
+         for ( int j=0; j< rowCount; ++j ) {
+             LineAttributes la = m_lines->lineAttributes( index );
              if ( checked  ) {
                  la.setDisplayArea( true );
                  la.setTransparency( transparencySB->value() );
-             } else 
+             } else
                  la.setDisplayArea( false );
              m_lines->setLineAttributes( i,  la );
          }
-     }   
+     }
      m_chart->update();
 }
 
@@ -222,9 +235,9 @@ void MainWindow::on_transparencySB_valueChanged( int alpha )
     const int rowCount = m_lines->model()->rowCount();
     const int colCount = m_lines->model()->columnCount();
     for ( int i = 0; i<colCount; ++i ) {
-        QModelIndex index = m_lines->model()->index( 0, i, QModelIndex() );  
+        QModelIndex index = m_lines->model()->index( 0, i, QModelIndex() );
         for ( int j=0; j< rowCount; ++j ) {
-            LineAttributes la = m_lines->lineAttributes( index ); 
+            LineAttributes la = m_lines->lineAttributes( index );
             la.setTransparency( alpha );
             m_lines->setLineAttributes( la );
         }

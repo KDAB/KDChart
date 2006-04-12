@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>624</width>
-    <height>526</height>
+    <width>735</width>
+    <height>702</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -427,14 +427,28 @@
       </layout>
      </item>
      <item>
+      <widget class="Line" name="line_6" >
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="paintLegendCB" >
+       <property name="text" >
+        <string>Display Legend</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer>
        <property name="orientation" >
         <enum>Qt::Vertical</enum>
        </property>
        <property name="sizeHint" >
         <size>
-         <width>159</width>
-         <height>126</height>
+         <width>170</width>
+         <height>16</height>
         </size>
        </property>
       </spacer>
