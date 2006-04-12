@@ -66,7 +66,7 @@ QSize KDChart::TextLayoutItem::sizeHint() const
 
 QSize KDChart::TextLayoutItem::calcSizeHint() const
 {
-    QSize ret = mMetrics.size( 0, mText ).toSize();
+    QSize ret = mMetrics.boundingRect( mText ).toRect().size();
     int frame = QApplication::style()->pixelMetric( QStyle::PM_ButtonMargin, 0, 0 );
     ret += QSize( frame, frame );
     return ret;
@@ -124,7 +124,7 @@ void KDChart::MarkerLayoutItem::setGeometry( const QRect& r )
 
 QSize KDChart::MarkerLayoutItem::sizeHint() const
 {
-    return QSize( 16, 16 ); // PENDING(kalle) Variable?
+    return mMarker.markerSize().toSize();
 }
 
 // PENDING(kalle) Marker properties

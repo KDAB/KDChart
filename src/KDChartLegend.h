@@ -136,6 +136,10 @@ public:
     void setTitleTextAttributes( const TextAttributes &a );
     TextAttributes titleTextAttributes() const;
 
+    // PENDING(kalle) remove again
+    virtual QSize sizeHint() const;
+    virtual QSize minimumSizeHint() const;
+
     // FIXME same as frameSettings()->padding()?
     void setSpacing( uint space );
     uint spacing() const;

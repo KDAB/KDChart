@@ -66,6 +66,8 @@ Legend::~Legend()
 
 void Legend::init()
 {
+    setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed );
+
     d->layout = new QGridLayout();
     d->layout->setMargin( 2 );
     d->layout->setSpacing( d->spacing );
@@ -462,7 +464,7 @@ void Legend::buildLegend()
         d->layout->addItem( markerItem, dataset+1 /*first row is title*/, 1, 1, 1, Qt::AlignCenter );
 
 
-        // PENDING(kalle) Font and other properties!
+        // PENDING(kalle) Other properties!
         KDChart::TextLayoutItem* labelItem = new KDChart::TextLayoutItem( text( dataset ),
                                                                           textAttributes().font(),
                                                                           textAttributes().color(),
@@ -471,4 +473,19 @@ void Legend::buildLegend()
         d->layout->addItem( labelItem, dataset+1 /*first row is title*/, 2 );
     }
 
+}
+
+QSize KDChart::Legend::sizeHint() const
+{
+    QSize s = KDChartArea::sizeHint();
+    qDebug() << "KDChartLegend::sizeHint() " << s;
+    return s;
+}
+
+
+QSize KDChart::Legend::minimumSizeHint() const
+{
+    QSize s = KDChartArea::minimumSizeHint();
+    qDebug() << "KDChartLegend::minimumSizeHint() " << s;
+    return s;
 }

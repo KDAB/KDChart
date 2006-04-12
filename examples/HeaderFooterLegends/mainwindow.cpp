@@ -58,14 +58,14 @@ MainWindow::MainWindow( QWidget* parent ) :
     KDChart::Legend* legend = new KDChart::Legend( m_lines, m_chart );
     legend->setPosition( KDChart::Legend::North );
     legend->setShowLines( false );
-    legend->setTitleText( tr( "Legend Title" ) );
+    legend->setTitleText( tr( "Legend" ) );
     m_chart->addLegend( legend );
     legend->show();
 
     LegendItem* newItem = new LegendItem( legend, legendsTV );
     newItem->setText( 0, tr( "Top" ) );
     newItem->setText( 1, tr( "no" ) );
-    newItem->setText( 2, tr( "Legend Title" ) );
+    newItem->setText( 2, tr( "Legend" ) );
     m_chart->update();
 }
 
