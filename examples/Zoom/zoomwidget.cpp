@@ -14,11 +14,9 @@ void ZoomWidget::wheelEvent( QWheelEvent* e )
     qreal delta = static_cast<qreal>( e->delta() ) / 120.0 / 10.0;
     coordinatePlane()->setZoomFactorX( coordinatePlane()->zoomFactorX() + delta );
     coordinatePlane()->setZoomFactorY( coordinatePlane()->zoomFactorY() + delta );
-    qDebug() << "pos = " << e->pos();
     qreal zoomCenterX = static_cast<qreal>( e->pos().x() ) / static_cast<qreal>( width() );
     qreal zoomCenterY = static_cast<qreal>( e->pos().y() ) / static_cast<qreal>( height() );
     QPointF zoomCenter( zoomCenterX, zoomCenterY );
-    qDebug() << "zoom center = " << zoomCenter;
     coordinatePlane()->setZoomCenter( zoomCenter );
     update();
 }
@@ -54,7 +52,6 @@ void ZoomWidget::keyPressEvent( QKeyEvent* e )
         const double factor = qMax( 1.0, coordinatePlane()->zoomFactorX() + dZoom );
         const qreal x = coordinatePlane()->zoomCenter().x() + dX;
         const qreal y = coordinatePlane()->zoomCenter().y() + dY;
-qDebug("new zoom factor: %f   new center: (%f, %f)", factor, x, y);
         coordinatePlane()->setZoomFactorX( factor );
         coordinatePlane()->setZoomFactorY( factor );
         coordinatePlane()->setZoomCenter( QPointF(x,y) );
