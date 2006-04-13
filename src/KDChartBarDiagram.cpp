@@ -143,6 +143,10 @@ const QPair<QPointF, QPointF> BarDiagram::dataBoundaries () const
 
     QPointF bottomLeft ( QPointF( xMin, yMin ) );
     QPointF topRight ( QPointF( xMax, yMax ) );
+       if ( tda.isEnabled() ) {
+           // PENDING Michel fix threeDBoudaries
+       }
+
     return QPair<QPointF, QPointF> ( bottomLeft,  topRight );
 }
 
@@ -265,6 +269,7 @@ void BarDiagram::paint( PaintContext* ctx )
                     //barWidth =  ctx->rectangle().width() / (rowCount);
                     list.append( DataValueTextInfo( index, topPoint, value ) );
                     paintBars( ctx, index, QRectF( topPoint, QSizeF( barWidth, barHeight ) ) );
+                     
                     offset += barWidth + spaceBetweenBars;
                 }
             }
@@ -353,12 +358,25 @@ void BarDiagram::paint( PaintContext* ctx )
 
 void BarDiagram::paintBars( PaintContext* ctx, const QModelIndex& index, const QRectF& bar )
 {
+    QRectF isoRect;
+    QPolygonF topPoints, sidePoints;
+    ThreeDBarAttributes tda = threeDBarAttributes( index );
+    //Pending Michel: configure threeDBrush settings - shadowColor etc...
     QBrush indexBrush ( brush( index ) );
     QPen indexPen( pen( index ) );
     PainterSaver painterSaver( ctx->painter() );
     ctx->painter()->setRenderHint ( QPainter::Antialiasing );
     ctx->painter()->setBrush( indexBrush );
     ctx->painter()->setPen( indexPen );
+    if ( tda.isEnabled() ) {
+        isoRect = bar.translated( tda.depth()/4, - tda.depth()/4);
+        ctx->painter()->drawRect( isoRect );
+        topPoints << bar.topLeft() << bar.topRight() << isoRect.topRight() << isoRect.topLeft();
+        ctx->painter()->drawPolygon( topPoints );
+        sidePoints << bar.topRight() << isoRect.topRight() << isoRect.bottomRight() << bar.bottomRight();
+        ctx->painter()->drawPolygon( sidePoints );
+    }
+   
     ctx->painter()->drawRect( bar );
 }
 
