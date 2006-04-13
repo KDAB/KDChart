@@ -1,7 +1,7 @@
 HEADERS= mainwindow.h
 SOURCES= main.cpp mainwindow.cpp
 FORMS  = mainwindow.ui
-RESOURCES = LineChart.qrc
+RESOURCES = Axes.qrc
 
 KDCHART_PATH = ../..
 INCLUDEPATH += \
