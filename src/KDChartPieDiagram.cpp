@@ -89,14 +89,11 @@ void PieDiagram::paint( PaintContext* ctx )
         double spanAngle = polarCoordinatePlane()->translatePolar( QPointF( nextValue, 1 ) ).x();
         if ( spanAngle == 0 ) continue;
         QBrush brush = model()->headerData( j, Qt::Vertical, KDChart::DatasetBrushRole ).value<QBrush>();
+        QPen pen = model()->headerData( j, Qt::Vertical, KDChart::DatasetPenRole ).value<QPen>();
         PainterSaver painterSaver( ctx->painter() );
         ctx->painter()->setRenderHint ( QPainter::Antialiasing );
         ctx->painter()->setBrush( brush );
-        QPen p( ctx->painter()->pen() );
-        //p.setColor( brush.color() ); // By Default should not be set - To be defined as a property.
-        // FIXME use DatasetPenRole, actually - till
-        p.setWidth( 2 );// FIXME properties
-        ctx->painter()->setPen( p );
+        ctx->painter()->setPen( pen );
         //qDebug() << "startAngle: " << startAngle << " spanAngle: " << spanAngle;
         ctx->painter()->drawPie( contentsRect, ( int ) ((-startAngle + 90 ) * 16), ( int ) (-spanAngle * 16) );
         startAngle += spanAngle;
