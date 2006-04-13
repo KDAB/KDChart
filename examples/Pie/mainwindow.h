@@ -19,6 +19,7 @@ public:
 
 private slots:
     void on_startPositionSB_valueChanged( double pos );
+    void on_startPositionSL_valueChanged( int pos );
 
 private:
     KDChart::Chart* m_chart;

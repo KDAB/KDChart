@@ -36,7 +36,21 @@ MainWindow::MainWindow( QWidget* parent ) :
 
 void MainWindow::on_startPositionSB_valueChanged( double pos )
 {
+    int intValue = static_cast<int>( pos );
+    startPositionSL->blockSignals( true );
+    startPositionSL->setValue( intValue );
+    startPositionSL->blockSignals( false );
     m_pie->setStartPosition( pos );
+    update();
+}
+
+void MainWindow::on_startPositionSL_valueChanged( int pos )
+{
+    double doubleValue = static_cast<double>( pos );
+    startPositionSB->blockSignals( true );
+    startPositionSB->setValue( doubleValue  );
+    startPositionSB->blockSignals( false );
+    m_pie->setStartPosition( doubleValue );
     update();
 }
 

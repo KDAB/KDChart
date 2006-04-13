@@ -91,20 +91,38 @@
        <item>
         <widget class="QDoubleSpinBox" name="startPositionSB" >
          <property name="maximum" >
-          <double>360.0</double>
+          <double>360</double>
          </property>
          <property name="minimum" >
-          <double>0.0</double>
+          <double>0</double>
          </property>
          <property name="singleStep" >
-          <double>1.0</double>
+          <double>1</double>
          </property>
          <property name="value" >
-          <double>0.0</double>
+          <double>0</double>
          </property>
         </widget>
        </item>
       </layout>
+     </item>
+     <item>
+      <widget class="QSlider" name="startPositionSL" >
+       <property name="sizePolicy" >
+        <sizepolicy>
+         <hsizetype>1</hsizetype>
+         <vsizetype>0</vsizetype>
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximum" >
+        <number>360</number>
+       </property>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
      </item>
      <item>
       <spacer>
