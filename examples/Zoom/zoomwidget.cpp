@@ -1,6 +1,7 @@
 #include "zoomwidget.h"
 #include <KDChartAbstractCoordinatePlane>
 #include <QWheelEvent>
+#include <QDebug>
 
 ZoomWidget::ZoomWidget( QWidget* parent ) :
     KDChart::Widget( parent )
@@ -10,9 +11,11 @@ ZoomWidget::ZoomWidget( QWidget* parent ) :
 
 void ZoomWidget::wheelEvent( QWheelEvent* e )
 {
-    coordinatePlane()->setZoomFactorX( coordinatePlane()->zoomFactorX()+e->delta() );
-    coordinatePlane()->setZoomFactorY( coordinatePlane()->zoomFactorX()+e->delta() );
+    qreal delta = static_cast<qreal>( e->delta() ) / 120.0 / 10.0;
+    coordinatePlane()->setZoomFactorX( coordinatePlane()->zoomFactorX() + delta );
+    coordinatePlane()->setZoomFactorY( coordinatePlane()->zoomFactorY() + delta );
     coordinatePlane()->setZoomCenter( e->pos() );
+    update();
 }
 
 void ZoomWidget::keyPressEvent( QKeyEvent* e )
