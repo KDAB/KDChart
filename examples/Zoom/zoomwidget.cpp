@@ -17,13 +17,13 @@ QPointF ZoomWidget::findNewZoomCenter( QPoint pos )const
     const qreal coordWidth = 1.0;
     const qreal coordHeight = 1.0;
 
-    qDebug() << "pos = " << pos;
+//    qDebug() << "pos = " << pos;
     const qreal resX = static_cast<qreal>( coordWidth /coordinatePlane()->zoomFactorX() )/ width();
     const qreal resY = static_cast<qreal>( coordHeight/coordinatePlane()->zoomFactorY() )/ height();
-    qDebug() << "resX = " << resX << "  resY = " << resY;
+//    qDebug() << "resX = " << resX << "  resY = " << resY;
     const qreal dX = (pos.x() - 0.5*width() ) * resX;
     const qreal dY = (pos.y() - 0.5*height()) * resY;
-    qDebug() << "dX = " << dX << "  dY = " << dY;
+//    qDebug() << "dX = " << dX << "  dY = " << dY;
     const qreal zoomCenterX = coordinatePlane()->zoomCenter().x() + dX;
     const qreal zoomCenterY = coordinatePlane()->zoomCenter().y() + dY;
     return QPointF( zoomCenterX, zoomCenterY );
@@ -34,7 +34,7 @@ void ZoomWidget::mousePressEvent( QMouseEvent * e )
 {
     const QPointF zoomCenter( findNewZoomCenter( e->pos() ) );
     if( zoomCenter != coordinatePlane()->zoomCenter() ){
-        qDebug() << "zoom center = " << zoomCenter;
+//        qDebug() << "zoom center = " << zoomCenter;
         coordinatePlane()->setZoomCenter( zoomCenter );
         update();
     }
