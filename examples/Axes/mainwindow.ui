@@ -13,7 +13,7 @@
    </rect>
   </property>
   <property name="windowTitle" >
-   <string>Line Chart </string>
+   <string>Axes </string>
   </property>
   <property name="windowIcon" >
    <iconset/>
