@@ -191,6 +191,10 @@ void BarDiagram::calculateValueAndGapWidths( int rowCount,int colCount,
 void BarDiagram::paint( PaintContext* ctx )
 {
     if ( !checkInvariants() ) return;
+
+    // first draw the grid
+    drawGrid( ctx );
+    
     //calculates and stores the values
     const int rowCount = model()->rowCount(rootIndex());
     const int colCount = model()->columnCount(rootIndex());

@@ -7,6 +7,9 @@
 
 namespace KDChart {
 
+    class GridAttributes;
+    class PaintContext;
+
     class KDCHART_EXPORT AbstractCartesianDiagram : public AbstractDiagram
     {
         Q_OBJECT
@@ -14,6 +17,8 @@ namespace KDChart {
         KDCHART_DECLARE_PRIVATE_DERIVED( AbstractCartesianDiagram )
     protected:
         explicit inline AbstractCartesianDiagram( Private *p, CartesianCoordinatePlane* parent );
+
+	virtual void drawGrid( PaintContext* context );
 
     public:
         explicit AbstractCartesianDiagram ( CartesianCoordinatePlane* parent = 0 );
@@ -25,8 +30,11 @@ namespace KDChart {
         virtual KDChart::CartesianAxisList axes () const;
 
         virtual void setReferenceDiagram( AbstractCartesianDiagram* diagarm, const QPointF& offset = QPointF() );
-	virtual AbstractCartesianDiagram* referenceDiagram() const;
-	virtual QPointF referenceDiagramOffset() const;
+        virtual AbstractCartesianDiagram* referenceDiagram() const;
+        virtual QPointF referenceDiagramOffset() const;
+
+        virtual GridAttributes* gridAttributes();
+        virtual const GridAttributes* gridAttributes() const;
     };
 
 }

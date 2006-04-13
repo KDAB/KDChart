@@ -188,6 +188,10 @@ void LineDiagram::paintEvent ( QPaintEvent*)
 void LineDiagram::paint( PaintContext* ctx )
 {
     if ( !checkInvariants() ) return;
+
+    // draw the grid
+    drawGrid( ctx );
+ 
     //calculates and stores the values
     const int rowCount = model()->rowCount(rootIndex());
     const int colCount = model()->columnCount(rootIndex());

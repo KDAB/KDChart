@@ -1,8 +1,9 @@
 #ifndef KDCHARTABSTRACTCARTESIANDIAGRAM_P_H
 #define KDCHARTABSTRACTCARTESIANDIAGRAM_P_H
 
-#include "KDChartAbstractDiagram_p.h"
+#include <KDChartAbstractDiagram_p.h>
 #include <KDChartThreeDAttributes.h>
+#include <KDChartGridAttributes.h>
 
 namespace KDChart {
 
@@ -19,6 +20,8 @@ public:
 
    AbstractCartesianDiagram* referenceDiagram;
    QPointF referenceDiagramOffset;
+
+   GridAttributes gridAttributes;
 };
 
 inline AbstractCartesianDiagram::AbstractCartesianDiagram( Private * p )
