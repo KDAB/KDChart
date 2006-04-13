@@ -34,8 +34,9 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_chart->coordinatePlane()->replaceDiagram( m_pie );
 }
 
-void MainWindow::on_startPositionSB_valueChanged( int pos )
+void MainWindow::on_startPositionSB_valueChanged( double pos )
 {
-    qDebug( "Sorry, not implemented: MainWindow::on_startPositionSB_valueChanged()" );
+    m_pie->setStartPosition( pos );
+    update();
 }
 

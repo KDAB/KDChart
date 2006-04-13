@@ -20,7 +20,7 @@ private:
     QList<int> explodeValues;
     ExplodeFactorsMap explodeFactors;
     double explodeFactor;
-    int startPosition;
+    double startPosition;
 };
 
 inline AbstractPieDiagram::AbstractPieDiagram( Private * p, PolarCoordinatePlane* plane )

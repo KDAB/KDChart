@@ -18,7 +18,7 @@ public:
     MainWindow( QWidget* parent = 0 );
 
 private slots:
-    void on_startPositionSB_valueChanged( int pos );
+    void on_startPositionSB_valueChanged( double pos );
 
 private:
     KDChart::Chart* m_chart;

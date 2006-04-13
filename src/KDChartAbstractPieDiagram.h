@@ -65,8 +65,8 @@ public:
     void setExplodeFactor( double factor );
     double explodeFactor() const;
 
-    void setStartPosition( int degrees );
-    int startPosition() const;
+    void setStartPosition( double degrees );
+    double startPosition() const;
 
 }; // End of class KDChartAbstractPieDiagram
 

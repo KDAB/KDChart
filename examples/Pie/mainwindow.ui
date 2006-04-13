@@ -89,18 +89,18 @@
         </widget>
        </item>
        <item>
-        <widget class="QSpinBox" name="startPositionSB" >
+        <widget class="QDoubleSpinBox" name="startPositionSB" >
          <property name="maximum" >
-          <int>360</int>
+          <double>360.0</double>
          </property>
          <property name="minimum" >
-          <int>0</int>
+          <double>0.0</double>
          </property>
          <property name="singleStep" >
-          <int>1</int>
+          <double>1.0</double>
          </property>
          <property name="value" >
-          <int>0</int>
+          <double>0.0</double>
          </property>
         </widget>
        </item>

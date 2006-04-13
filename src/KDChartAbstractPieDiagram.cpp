@@ -13,7 +13,7 @@ AbstractPieDiagram::Private::Private() :
     explodeValues(),
     explodeFactors(),
     explodeFactor( 0.1 ),
-    startPosition( 0 )
+    startPosition( 0.0 )
 {
 }
 
@@ -85,12 +85,12 @@ double AbstractPieDiagram::explodeFactor() const
     return d->explodeFactor;
 }
 
-void AbstractPieDiagram::setStartPosition( int degrees )
+void AbstractPieDiagram::setStartPosition( double degrees )
 {
     d->startPosition = degrees;
 }
 
-int AbstractPieDiagram::startPosition() const
+double AbstractPieDiagram::startPosition() const
 {
     return d->startPosition;
 }
