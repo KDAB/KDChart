@@ -164,7 +164,8 @@ enum DisplayRoles {
   LineAttributesRole,
   ThreeDLineAttributesRole,
   BarAttributesRole,
-  ThreeDBarAttributesRole
+  ThreeDBarAttributesRole,
+  ExplodeFactorRole
   };
 }
 

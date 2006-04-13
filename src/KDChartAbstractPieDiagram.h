@@ -49,23 +49,33 @@ public:
 
     virtual QDomDocumentFragment toXML() const;
 
+    /** Enable or disable exploding pie pieces depending on
+     * the value of @param explode.  */
     void setExplode( bool explode );
+
+    /** @return whether pie pieces should be exploded.  */
     bool explode() const;
 
-    void setExplodeValues( const QList<int>& explodeList );
+    /** Set the explode factor for a dataset.
+     * The explode factor is a double between 0 and 1, and is interpreted
+     * as a percentage of the total available radius of the pie.  */
+    void setExplodeFactor( int dataset, double factor );
 
-    // Unfortunately this is not avaialble from QSA-
-    QList<int> explodeValues() const;
+    /** @return the explode factor for a dataset. */
+    double explodeFactor( int dataset ) const;
 
-    typedef QMap<int,double> ExplodeFactorsMap;
-
-    void setExplodeFactors( ExplodeFactorsMap factors );
-    ExplodeFactorsMap explodeFactors() const;
-
+    /** Set the explode factor to be used for all slices.
+     * The explode factor is a double between 0 and 1, and is interpreted
+     * as a percentage of the total available radius of the pie.  */
     void setExplodeFactor( double factor );
+
+    /** @return the explode factor for all datasets. */
     double explodeFactor() const;
 
+    /**  Set the starting angle for the first dataset. */
     void setStartPosition( double degrees );
+
+    /** @return the starting angle for the first dataset. */
     double startPosition() const;
 
 }; // End of class KDChartAbstractPieDiagram

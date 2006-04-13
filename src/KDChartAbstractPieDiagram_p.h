@@ -17,9 +17,6 @@ public:
 
 private:
     bool explode;
-    QList<int> explodeValues;
-    ExplodeFactorsMap explodeFactors;
-    double explodeFactor;
     double startPosition;
 };
 

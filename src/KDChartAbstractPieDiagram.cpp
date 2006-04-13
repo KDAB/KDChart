@@ -1,18 +1,14 @@
 #include <QMap>
 #include <QtXml/QDomDocumentFragment>
 
-#include <KDChartThreeDAttributes.h>
-
 #include "KDChartAbstractPieDiagram.h"
 #include "KDChartAbstractPieDiagram_p.h"
+#include "KDChartAttributesModel.h"
 
 using namespace KDChart;
 
 AbstractPieDiagram::Private::Private() :
     explode( false ),
-    explodeValues(),
-    explodeFactors(),
-    explodeFactor( 0.1 ),
     startPosition( 0.0 )
 {
 }
@@ -55,34 +51,24 @@ bool AbstractPieDiagram::explode() const
     return d->explode;
 }
 
-void AbstractPieDiagram::setExplodeValues( const QList<int>& explodeList )
-{
-    d->explodeValues = explodeList;
-}
-
-QList<int> AbstractPieDiagram::explodeValues() const
-{
-    return d->explodeValues;
-}
-
-void AbstractPieDiagram::setExplodeFactors( AbstractPieDiagram::ExplodeFactorsMap factors )
-{
-    d->explodeFactors = factors;
-}
-
-AbstractPieDiagram::ExplodeFactorsMap AbstractPieDiagram::explodeFactors() const
-{
-    return d->explodeFactors;
-}
-
 void AbstractPieDiagram::setExplodeFactor( double factor )
 {
-    d->explodeFactor = factor;
+    d->attributesModel->setModelData( factor, ExplodeFactorRole );
 }
 
 double AbstractPieDiagram::explodeFactor() const
 {
-    return d->explodeFactor;
+    return d->attributesModel->modelData( ExplodeFactorRole ).toDouble();
+}
+
+void AbstractPieDiagram::setExplodeFactor( int dataset, double factor )
+{
+    d->attributesModel->setHeaderData( dataset, Qt::Vertical, factor, ExplodeFactorRole );
+}
+
+double AbstractPieDiagram::explodeFactor( int dataset ) const
+{
+    return d->attributesModel->headerData( dataset, Qt::Vertical, ExplodeFactorRole ).toDouble();
 }
 
 void AbstractPieDiagram::setStartPosition( double degrees )

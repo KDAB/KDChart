@@ -139,6 +139,7 @@ bool AttributesModel::isKnownAttributesRole( int role ) const
       case ThreeDLineAttributesRole:
       case BarAttributesRole:
       case ThreeDBarAttributesRole:
+      case ExplodeFactorRole:
           oneOfOurs = true;
         default:
         break;
