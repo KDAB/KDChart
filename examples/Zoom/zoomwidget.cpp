@@ -14,7 +14,12 @@ void ZoomWidget::wheelEvent( QWheelEvent* e )
     qreal delta = static_cast<qreal>( e->delta() ) / 120.0 / 10.0;
     coordinatePlane()->setZoomFactorX( coordinatePlane()->zoomFactorX() + delta );
     coordinatePlane()->setZoomFactorY( coordinatePlane()->zoomFactorY() + delta );
-    coordinatePlane()->setZoomCenter( e->pos() );
+    qDebug() << "pos = " << e->pos();
+    qreal zoomCenterX = static_cast<qreal>( e->pos().x() ) / static_cast<qreal>( width() );
+    qreal zoomCenterY = static_cast<qreal>( e->pos().y() ) / static_cast<qreal>( height() );
+    QPointF zoomCenter( zoomCenterX, zoomCenterY );
+    qDebug() << "zoom center = " << zoomCenter;
+    coordinatePlane()->setZoomCenter( zoomCenter );
     update();
 }
 
