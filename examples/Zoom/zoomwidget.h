@@ -11,6 +11,8 @@ public:
     explicit ZoomWidget( QWidget* parent );
 
 protected:
+    QPointF findNewZoomCenter( QPoint pos )const;
+    void mousePressEvent( QMouseEvent * e );
     void wheelEvent( QWheelEvent* e );
     void keyPressEvent( QKeyEvent* e );
 };

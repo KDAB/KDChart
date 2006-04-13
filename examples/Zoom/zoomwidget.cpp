@@ -9,15 +9,56 @@ ZoomWidget::ZoomWidget( QWidget* parent ) :
     setFocusPolicy( Qt::WheelFocus );
 }
 
+
+QPointF ZoomWidget::findNewZoomCenter( QPoint pos )const
+{
+    if( ! height() || ! width() ) return coordinatePlane()->zoomCenter();
+
+    const qreal coordWidth = 1.0;
+    const qreal coordHeight = 1.0;
+
+    qDebug() << "pos = " << pos;
+    const qreal resX = static_cast<qreal>( coordWidth /coordinatePlane()->zoomFactorX() )/ width();
+    const qreal resY = static_cast<qreal>( coordHeight/coordinatePlane()->zoomFactorY() )/ height();
+    qDebug() << "resX = " << resX << "  resY = " << resY;
+    const qreal dX = (pos.x() - 0.5*width() ) * resX;
+    const qreal dY = (pos.y() - 0.5*height()) * resY;
+    qDebug() << "dX = " << dX << "  dY = " << dY;
+    const qreal zoomCenterX = coordinatePlane()->zoomCenter().x() + dX;
+    const qreal zoomCenterY = coordinatePlane()->zoomCenter().y() + dY;
+    return QPointF( zoomCenterX, zoomCenterY );
+}
+
+
+void ZoomWidget::mousePressEvent( QMouseEvent * e )
+{
+    const QPointF zoomCenter( findNewZoomCenter( e->pos() ) );
+    if( zoomCenter != coordinatePlane()->zoomCenter() ){
+        qDebug() << "zoom center = " << zoomCenter;
+        coordinatePlane()->setZoomCenter( zoomCenter );
+        update();
+    }
+}
+
+
 void ZoomWidget::wheelEvent( QWheelEvent* e )
 {
     qreal delta = static_cast<qreal>( e->delta() ) / 120.0 / 10.0;
     coordinatePlane()->setZoomFactorX( coordinatePlane()->zoomFactorX() + delta );
     coordinatePlane()->setZoomFactorY( coordinatePlane()->zoomFactorY() + delta );
+/* new:
+    const QPointF zoomCenter( findNewZoomCenter( e->pos() ) );
+    if( zoomCenter != coordinatePlane()->zoomCenter() ){
+        qDebug() << "zoom center = " << zoomCenter;
+        coordinatePlane()->setZoomCenter( zoomCenter );
+    }
+*/
+/* old:
     qreal zoomCenterX = static_cast<qreal>( e->pos().x() ) / static_cast<qreal>( width() );
     qreal zoomCenterY = static_cast<qreal>( e->pos().y() ) / static_cast<qreal>( height() );
     QPointF zoomCenter( zoomCenterX, zoomCenterY );
     coordinatePlane()->setZoomCenter( zoomCenter );
+*/
     update();
 }
 
