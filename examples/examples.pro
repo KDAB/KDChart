@@ -1,4 +1,4 @@
 TEMPLATE	= subdirs
-SUBDIRS		= tools Widget HeaderFooterLegends Axes SharedAbscissa Zoom # Pie
+SUBDIRS		= tools Widget HeaderFooterLegends Axes SharedAbscissa Zoom Pie
 
 
