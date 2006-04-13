@@ -27,7 +27,7 @@ int main( int argc, char** argv ) {
     vec0.append( 3 );
     vec0.append( 4 );
     vec0.append( 5 );
-    window.widget->setDataset( 0, vec0);
+    window.widget->setDataset( 0, vec0, "Linear" );
     
     QVector< double > vec1;
     vec1.append( 25 );
@@ -41,7 +41,7 @@ int main( int argc, char** argv ) {
     vec1.append( 9 );
     vec1.append( 16 );
     vec1.append( 25 );
-    window.widget->setDataset( 1, vec1 );
+    window.widget->setDataset( 1, vec1, "Quadratic" );
 
     QVector< double > vec2;
     vec2.append( -125 );
@@ -55,7 +55,7 @@ int main( int argc, char** argv ) {
     vec2.append( 27 );
     vec2.append( 64 );
     vec2.append( 125 );
-    window.widget->setDataset( 2, vec2 );
+    window.widget->setDataset( 2, vec2, "Cubic" );
    
     window.widget->addHeaderFooter( "NorthWest", HeaderFooter::NorthWest );
     window.widget->addHeaderFooter( "North", HeaderFooter::North );

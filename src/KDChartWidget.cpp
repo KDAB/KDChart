@@ -103,7 +103,7 @@ void Widget::init()
 /**
  * Sets the data in the given column using a QVector of double.
  */
-void Widget::setDataset( int column, const QVector< double > & data )
+void Widget::setDataset( int column, const QVector< double > & data, const QString& title ) 
 {
     if ( ! checkDatasetWidth( 1 ) )
         return;
@@ -118,13 +118,15 @@ void Widget::setDataset( int column, const QVector< double > & data )
         index = model->index( i, column );
         model->setData( index, QVariant( data[i] ), Qt::DisplayRole );
     }
+    if ( title != QString() )
+        model->setHeaderData( column, Qt::Vertical, QVariant( title ) );
 }
 
 /**
  * Sets the data in the given column using a QVector of QPairs
  * of double.
  */
-void Widget::setDataset( int column, const QVector< QPair< double, double > > & data )
+void Widget::setDataset( int column, const QVector< QPair< double, double > > & data, const QString& title )
 {
     if ( ! checkDatasetWidth( 2 ))
         return;
@@ -142,6 +144,8 @@ void Widget::setDataset( int column, const QVector< QPair< double, double > > & 
 	index = model->index( i, column * 2 + 1 );
 	model->setData( index, QVariant( data[i].second ), Qt::DisplayRole );
     }
+    if ( title != QString() )
+        model->setHeaderData( column * 2, Qt::Vertical, QVariant( title ) );
 }
 
 /**

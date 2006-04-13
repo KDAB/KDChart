@@ -70,10 +70,10 @@ namespace KDChart {
         /** Destructor. */
         ~Widget();
         /** Sets the data in the given column using a QVector of double. */
-        void setDataset( int column, const QVector< double > & data );
+        void setDataset( int column, const QVector< double > & data, const QString& title = QString()  );
         /** Sets the data in the given column using a QVector of QPairs
          *  of double. */
-        void setDataset( int column, const QVector< QPair< double, double > > &  data );
+        void setDataset( int column, const QVector< QPair< double, double > > &  data, const QString& title = QString() );
 
     public slots:
         /** Sets all global leadings (borders). */
