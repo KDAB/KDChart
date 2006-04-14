@@ -177,7 +177,6 @@ void CartesianAxis::paint ( PaintContext* context ) const
     QPointF fourthRulerRef ( rulerRef );
     QPointF halfRulerRef( rulerRef );
     QPointF unitRulerRef( rulerRef );
-    /* Pending Michel: FixMe Percent */
     int minValueY = qRound( dataBoundaries.first.y() );
     int maxValueY = qRound( dataBoundaries.second.y() );
     int minValueX = qRound( dataBoundaries.first.x() );
@@ -259,27 +258,38 @@ void CartesianAxis::paint ( PaintContext* context ) const
                 }
             }
         } else {
-            int tickLength = position() == Left ? -4 : 3;
-            for ( int i = minValueY; i <= maxValueY; ++i ) {
-                QPointF leftPoint ( 0, i );
-                QPointF rightPoint ( 0, i );
-                leftPoint = context->coordinatePlane()->translate( leftPoint );
-                rightPoint = context->coordinatePlane()->translate( rightPoint );
-                leftPoint.setX( fourthRulerRef.x() + tickLength );
-                rightPoint.setX( fourthRulerRef.x() );
-                ptr->drawLine( leftPoint, rightPoint );
-                if ( drawHalfRulers ) {
-                    QFont textFont( QFont("comic", 5 ) );
-                    leftPoint.setX( position() == Left ? leftPoint.x()- (2*textFont.pointSize()) : leftPoint.x()+textFont.pointSize() );
-                    leftPoint.setY( leftPoint.y() + textFont.pointSize()/2 );
-                    PainterSaver painterSaver( ptr );
-                    ptr->setPen( Qt::red );
-                    ptr->setFont( textFont );
-                    ptr->drawText( leftPoint, QString::number( minValueY ) );
-                    d->diagram()->percentMode() ? minValueY += 10 : minValueY += 1;
-                }
-           }
-       }
+          double maxLimit, steg;
+	  bool percent = d->diagram()->percentMode();
+	  int tickLength = position() == Left ? -4 : 3;
+          if ( percent ) {
+	    maxLimit = maxValueY*10;
+	    steg = maxValueY;
+	  } else {
+            maxLimit = maxValueY;
+            steg = 1.0;
+	  }
+	    for ( double f = minValueY; f <= maxLimit; f+= steg ) {
+	    QPointF leftPoint ( 0,  percent ? f/numberOfUnitRulers : f );
+	    QPointF rightPoint ( 0, percent ? f/numberOfUnitRulers : f );
+	    leftPoint = context->coordinatePlane()->translate( leftPoint );
+	    rightPoint = context->coordinatePlane()->translate( rightPoint );
+	    leftPoint.setX( fourthRulerRef.x() + tickLength );
+	    rightPoint.setX( fourthRulerRef.x() );
+	    ptr->drawLine( leftPoint, rightPoint );
+	    if ( drawHalfRulers ) {
+	      QFont textFont( QFont("comic", 5 ) );
+	      leftPoint.setX( position() == Left ? leftPoint.x()- (2*textFont.pointSize()) : leftPoint.x()+textFont.pointSize() );
+	      leftPoint.setY( leftPoint.y() + textFont.pointSize()/2 );
+	      PainterSaver painterSaver( ptr );
+	      ptr->setPen( Qt::red );
+	      ptr->setFont( textFont );
+	      ptr->drawText( leftPoint, QString::number( minValueY ) );
+	      d->diagram()->percentMode() ? minValueY += 10 : minValueY += 1;
+	    }
+	  }
+	    //Pending Michel: reset to default - is that really what we want?
+	    d->diagram()->setPercentMode( false );
+	}
     }
 }
 #undef ptr

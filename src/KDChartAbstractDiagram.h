@@ -92,7 +92,7 @@ namespace KDChart {
 	void setOrdinateResolution( double resolution );
         double ordinateResolution() const;
         // configure the ordinate in percent mode - values 0 to 100 
-        void setPercentMode ( bool percent );
+        void setPercentMode( bool percent );
         bool percentMode() const;
 
 

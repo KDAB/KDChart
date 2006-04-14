@@ -302,6 +302,8 @@ void LineDiagram::paint( PaintContext* ctx )
                 if ( laa.displayArea() )
                     paintAreas( ctx, index, area, laa.transparency() );
             }
+            // Axis settings - see AbstractDiagram and CartesianAxis  
+	    setPercentMode( true );
             break;
         default:
             Q_ASSERT_X ( false, "paint()",
