@@ -144,13 +144,19 @@ const QPair<QPointF, QPointF> BarDiagram::dataBoundaries () const
     QPointF bottomLeft ( QPointF( xMin, yMin ) );
     QPointF topRight ( QPointF( xMax, yMax ) );
        if ( tda.isEnabled() ) {
+         double percentx, percenty;
 	 //threeDBoundaries calculate a depth percent value and add it
 	 QPointF pTRTranslated = coordinatePlane()->translate( topRight );
          QPointF pBLTranslated = coordinatePlane()->translate( bottomLeft );
 	 //reserve some plane space for the top of the threeD bars
          //Pending Michel: why 4?
-         double percentx = ((tda.depth()*4)/ pTRTranslated.x());
-         double percenty = ((tda.depth()*4)/ pBLTranslated.y());
+         if ( barType != BarAttributes::Normal ) {
+	   percentx = ((tda.depth()*4)/ pTRTranslated.x());
+	   percenty = ((tda.depth()*4)/ pBLTranslated.y());
+	 } else {
+	   percentx = ((tda.depth())/ pTRTranslated.x());
+	   percenty = ((tda.depth())/ pBLTranslated.y());
+	 }
          topRight.setX( topRight.x() + percentx);
          topRight.setY( topRight.y() + percenty);
        }
