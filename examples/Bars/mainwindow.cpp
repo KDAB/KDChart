@@ -113,6 +113,7 @@ void MainWindow::on_paintThreeDBarsCB_toggled( bool checked )
             m_bars->setThreeDBarAttributes( index, td); 
         } 
     }
+    m_chart->coordinatePlane()->replaceDiagram( m_bars );
     m_chart->update();      
 }
 
