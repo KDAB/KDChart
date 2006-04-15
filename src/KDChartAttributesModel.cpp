@@ -35,13 +35,13 @@
 
 using namespace KDChart;
 
-struct AttributesModelRegistryInfo {
+struct AttributesModel::AttributesModelRegistryInfo {
   AttributesModel* attributeModel;
   int refcount;
 };
 
 namespace {
-    static QHash< QAbstractItemModel*, AttributesModelRegistryInfo > s_buddyHash;
+    static QHash< QAbstractItemModel*, AttributesModel::AttributesModelRegistryInfo > s_buddyHash;
 }
 
 /*static*/
