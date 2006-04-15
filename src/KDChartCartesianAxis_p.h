@@ -3,7 +3,7 @@
 
 #include "KDChartCartesianAxis.h"
 #include "KDChartAbstractCartesianDiagram.h"
-#include "KDChartAxis_p.h"
+#include "KDChartAbstractAxis_p.h"
 
 namespace KDChart {
 

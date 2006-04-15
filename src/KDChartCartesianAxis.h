@@ -31,7 +31,7 @@
 
 #include <QList>
 
-#include "KDChartAxis.h"
+#include "KDChartAbstractAxis.h"
 
 namespace KDChart {
 

@@ -16,8 +16,6 @@ HEADERS += KDChartGlobal.h \
            KDChartAbstractPolarDiagram.h \
            KDChartAbstractPolarDiagram_p.h \
            KDChartAttributesModel.h \
-           KDChartAxis.h \
-           KDChartAxis_p.h \
            KDChartBackgroundAttributes.h \
            KDChartBarAttributes.h \
            KDChartBarDiagram.h \
@@ -65,14 +63,15 @@ HEADERS += KDChartGlobal.h \
            KDChartWidget.h \
            KDChartWidget_p.h \
            KDChartAbstractArea_p.h \
-           KDChartAbstractArea.h 
+           KDChartAbstractArea.h \
+           KDChartAbstractAxis_p.h \
+           KDChartAbstractAxis.h 
 SOURCES += KDChartAbstractCartesianDiagram.cpp \
            KDChartAbstractCoordinatePlane.cpp \
            KDChartAbstractDiagram.cpp \
            KDChartAbstractPieDiagram.cpp \
            KDChartAbstractPolarDiagram.cpp \
            KDChartAttributesModel.cpp \
-           KDChartAxis.cpp \
            KDChartBackgroundAttributes.cpp \
            KDChartBarAttributes.cpp \
            KDChartBarDiagram.cpp \
@@ -106,7 +105,8 @@ SOURCES += KDChartAbstractCartesianDiagram.cpp \
            KDChartThreeDBarAttributes.cpp \
            KDChartThreeDLineAttributes.cpp \
            KDChartWidget.cpp \
-           KDChartAbstractArea.cpp 
+           KDChartAbstractArea.cpp \
+           KDChartAbstractAxis.cpp 
 include( ../variables.pri )
 DEFINES += KDCHART_BUILD_KDCHART_LIB
 TEMPLATE = lib

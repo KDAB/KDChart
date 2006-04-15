@@ -1,5 +1,5 @@
-#include "KDChartAxis.h"
-#include "KDChartAxis_p.h"
+#include "KDChartAbstractAxis.h"
+#include "KDChartAbstractAxis_p.h"
 #include <QDebug>
 #include <KDChartAbstractDiagram.h>
 // #include <QtXml/QDomDocumentFragment>
