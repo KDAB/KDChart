@@ -6,9 +6,11 @@
 #include <KDChartFrameAttributes.h>
 #include <KDChartBackgroundAttributes.h>
 
-class KDChartArea::Private
+namespace KDChart {
+
+class AbstractArea::Private
 {
-    friend class ::KDChartArea;
+    friend class AbstractArea;
 public:
     explicit Private();
     virtual ~Private();
@@ -24,8 +26,8 @@ private:
     KDChart::BackgroundAttributes backgroundAttributes;
 };
 
-inline KDChartArea::KDChartArea( KDChartArea::Private * p, QWidget* parent ) : QWidget( parent ),_d( p ) { init(); }
+inline AbstractArea::AbstractArea( AbstractArea::Private * p, QWidget* parent ) : QWidget( parent ),_d( p ) { init(); }
 
-
+}
 #endif /* KDCHARTDIAGRAM_P_H */
 

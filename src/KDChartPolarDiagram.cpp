@@ -30,22 +30,22 @@ PolarDiagram::~PolarDiagram()
 
 void PolarDiagram::init()
 {
-    setShowDelimitersAtPosition( KDChartArea::TopLeft, false );
-    setShowDelimitersAtPosition( KDChartArea::Top, true );
-    setShowDelimitersAtPosition( KDChartArea::TopRight, false );
-    setShowDelimitersAtPosition( KDChartArea::Left, false );
-    setShowDelimitersAtPosition( KDChartArea::Right, false );
-    setShowDelimitersAtPosition( KDChartArea::BottomLeft, false );
-    setShowDelimitersAtPosition( KDChartArea::Bottom, true );
-    setShowDelimitersAtPosition( KDChartArea::BottomRight, false );
-    setShowLabelsAtPosition( KDChartArea::TopLeft, false );
-    setShowLabelsAtPosition( KDChartArea::Top, true );
-    setShowLabelsAtPosition( KDChartArea::TopRight, false );
-    setShowLabelsAtPosition( KDChartArea::Left, false );
-    setShowLabelsAtPosition( KDChartArea::Right, false );
-    setShowLabelsAtPosition( KDChartArea::BottomLeft, false );
-    setShowLabelsAtPosition( KDChartArea::Bottom, true );
-    setShowLabelsAtPosition( KDChartArea::BottomRight, false );
+    setShowDelimitersAtPosition( AbstractArea::TopLeft, false );
+    setShowDelimitersAtPosition( AbstractArea::Top, true );
+    setShowDelimitersAtPosition( AbstractArea::TopRight, false );
+    setShowDelimitersAtPosition( AbstractArea::Left, false );
+    setShowDelimitersAtPosition( AbstractArea::Right, false );
+    setShowDelimitersAtPosition( AbstractArea::BottomLeft, false );
+    setShowDelimitersAtPosition( AbstractArea::Bottom, true );
+    setShowDelimitersAtPosition( AbstractArea::BottomRight, false );
+    setShowLabelsAtPosition( AbstractArea::TopLeft, false );
+    setShowLabelsAtPosition( AbstractArea::Top, true );
+    setShowLabelsAtPosition( AbstractArea::TopRight, false );
+    setShowLabelsAtPosition( AbstractArea::Left, false );
+    setShowLabelsAtPosition( AbstractArea::Right, false );
+    setShowLabelsAtPosition( AbstractArea::BottomLeft, false );
+    setShowLabelsAtPosition( AbstractArea::Bottom, true );
+    setShowLabelsAtPosition( AbstractArea::BottomRight, false );
 }
 
 
@@ -185,24 +185,24 @@ bool PolarDiagram::rotateCircularLabels() const
     return d->rotateCircularLabels;
 }
 
-void PolarDiagram::setShowDelimitersAtPosition( KDChartArea::DockingPointType position,
+void PolarDiagram::setShowDelimitersAtPosition( AbstractArea::DockingPointType position,
                                                        bool showDelimiters )
 {
     d->showDelimitersAtPosition[position] = showDelimiters;
 }
 
-void PolarDiagram::setShowLabelsAtPosition( KDChartArea::DockingPointType position,
+void PolarDiagram::setShowLabelsAtPosition( AbstractArea::DockingPointType position,
                                                    bool showLabels )
 {
     d->showLabelsAtPosition[position] = showLabels;
 }
 
-bool PolarDiagram::showDelimitersAtPosition( KDChartArea::DockingPointType position ) const
+bool PolarDiagram::showDelimitersAtPosition( AbstractArea::DockingPointType position ) const
 {
     return d->showDelimitersAtPosition[position];
 }
 
-bool PolarDiagram::showLabelsAtPosition( KDChartArea::DockingPointType position ) const
+bool PolarDiagram::showLabelsAtPosition( AbstractArea::DockingPointType position ) const
 {
     return d->showLabelsAtPosition[position];
 }

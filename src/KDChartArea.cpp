@@ -1,4 +1,4 @@
-#include <KDChartArea.h>
+#include "KDChartArea.h"
 #include "KDChartArea_p.h"
 #include <KDChartBackgroundAttributes.h>
 #include <KDChartFrameAttributes.h>
@@ -9,7 +9,7 @@
 
 using namespace KDChart;
 
-KDChartArea::Private::Private() :
+AbstractArea::Private::Private() :
     visible( true ),
     // PENDING(khz) dockingPointToPadding?, alignToDockingPoint?
     text(),
@@ -20,43 +20,43 @@ KDChartArea::Private::Private() :
 }
 
 
-KDChartArea::Private::~Private() {}
+AbstractArea::Private::~Private() {}
 
 
-void KDChartArea::Private::init()
+void AbstractArea::Private::init()
 {
 }
 
 
 
 
-KDChartArea::KDChartArea( QWidget* parent ) :
+AbstractArea::AbstractArea( QWidget* parent ) :
     QWidget( parent ), _d( new Private() )
 {
 }
 
-KDChartArea::~KDChartArea()
+AbstractArea::~AbstractArea()
 {
     delete _d; _d = 0;
 }
 
 
-void KDChartArea::init()
+void AbstractArea::init()
 {
 }
 
 
 #define d d_func()
 
-QDomDocumentFragment KDChartArea::toXML() const
+QDomDocumentFragment AbstractArea::toXML() const
 {
     // PENDING(kalle) FIXME
-    qWarning( "Sorry, not implemented: QDomDocumentFragment KDChartArea::toXML() const" );
+    qWarning( "Sorry, not implemented: QDomDocumentFragment AbstractArea::toXML() const" );
     return QDomDocumentFragment();
 }
 
 #ifdef TEMPORARILY_REMOVED
-void KDChartArea::paint( QPainter* painter, const PaintContext & context ) const
+void AbstractArea::paint( QPainter* painter, const PaintContext & context ) const
 {
     Q_UNUSED( context );
     paintBackground( painter, d->backgroundAttributes, geometry() );
@@ -65,63 +65,63 @@ void KDChartArea::paint( QPainter* painter, const PaintContext & context ) const
 }
 #endif
 
-void KDChartArea::alignToDockingPoint( const QPointF& dockingPoint,
+void AbstractArea::alignToDockingPoint( const QPointF& dockingPoint,
                                        DockingPointType dockingPointType,
                                        Qt::Alignment alignmentFlags)
 {
     // PENDING(kalle) FIXME
-    qWarning( "Sorry, not implemented: void KDChartArea::alignToDockingPoint( const QPointF& dockingPoint,DockingPointType dockingPointType,Qt::Alignment alignmentFlags)" );
+    qWarning( "Sorry, not implemented: void AbstractArea::alignToDockingPoint( const QPointF& dockingPoint,DockingPointType dockingPointType,Qt::Alignment alignmentFlags)" );
 }
 
-void KDChartArea::setDockingPointPadding( int horizontalPadding,
+void AbstractArea::setDockingPointPadding( int horizontalPadding,
                                           int verticalPadding,
                                           bool fixed )
 {
     // PENDING(kalle) FIXME
-    qWarning( "Sorry, not implemented: void KDChartArea::setDockingPointPadding( int horizontalPadding,int verticalPadding,bool fixed )" );
+    qWarning( "Sorry, not implemented: void AbstractArea::setDockingPointPadding( int horizontalPadding,int verticalPadding,bool fixed )" );
 }
 
-void KDChartArea::setText( const QString& text )
+void AbstractArea::setText( const QString& text )
 {
     d->text = text;
 }
 
-QString KDChartArea::text() const
+QString AbstractArea::text() const
 {
     return d->text;
 }
 
-void KDChartArea::setTextAttributes( const TextAttributes &a )
+void AbstractArea::setTextAttributes( const TextAttributes &a )
 {
     d->textAttributes = a;
 }
 
-TextAttributes KDChartArea::textAttributes() const
+TextAttributes AbstractArea::textAttributes() const
 {
     return d->textAttributes;
 }
 
-void KDChartArea::setFrameAttributes( const FrameAttributes &a )
+void AbstractArea::setFrameAttributes( const FrameAttributes &a )
 {
     d->frameAttributes = a;
 }
 
-FrameAttributes KDChartArea::frameAttributes() const
+FrameAttributes AbstractArea::frameAttributes() const
 {
     return d->frameAttributes;
 }
 
-void KDChartArea::setBackgroundAttributes( const BackgroundAttributes &a )
+void AbstractArea::setBackgroundAttributes( const BackgroundAttributes &a )
 {
     d->backgroundAttributes = a;
 }
 
-BackgroundAttributes KDChartArea::backgroundAttributes() const
+BackgroundAttributes AbstractArea::backgroundAttributes() const
 {
     return d->backgroundAttributes;
 }
 
-void KDChartArea:: paintBackground( QPainter* painter,
+void AbstractArea:: paintBackground( QPainter* painter,
                                     BackgroundAttributes attributes,
                                     const QRectF& rect )
 {

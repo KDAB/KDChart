@@ -3,7 +3,7 @@
    */
 
 /****************************************************************************
- ** Copyright (C) 2001-2003 Klarälvdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2001-2003 Klarï¿½vdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KDChart library.
  **
@@ -91,7 +91,7 @@ public:
     /**
       Measure calculation mode: the way how the absolute value of a KDChartMeasure is determined during KD Chart's internal geometry calculation time.
 
-      KDChartMeasure values either are relative (calculated in relation to a given KDChartArea), or they are absolute (used as fixed values).
+      KDChartMeasure values either are relative (calculated in relation to a given AbstractArea), or they are absolute (used as fixed values).
 
       Values stored in relative measure always are interpreted as per-mille of a reference area's height (or width, resp.) depending on the orientation set for the KDChartMeasure.
 

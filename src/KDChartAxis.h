@@ -52,7 +52,7 @@ namespace KDChart {
     class AbstractDiagram;
 
     class KDCHART_EXPORT AbstractAxis : public QWidget
-    // : public KDChartArea FIXME maybe reintroduce later
+    // : public AbstractArea FIXME maybe reintroduce later
     {
         Q_OBJECT
 
@@ -96,11 +96,13 @@ class QDateTime;
 
 namespace KDChart {
   class TextAttributes;
+  class AbstractArea;
 }
 
 using KDChart::TextAttributes;
+using KDChart::AbstractArea;
 
-class KDCHART_EXPORT KDChartAxis : public KDChartArea
+class KDCHART_EXPORT KDChartAxis : public AbstractArea
 {
     Q_DISABLE_COPY( KDChartAxis )
     KDCHART_DECLARE_PRIVATE_DERIVED_QWIDGET( KDChartAxis )
@@ -109,7 +111,7 @@ public:
     virtual ~KDChartAxis();
 
     // PENDING(kalle) Review
-//    virtual KDChartArea * clone() const;
+//    virtual AbstractArea * clone() const;
 
     void copyRelevantDetailsFrom( const KDChartAxis* axis );
 

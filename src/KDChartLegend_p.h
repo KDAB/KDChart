@@ -21,7 +21,7 @@ namespace KDChart {
 
 using KDChart::AbstractDiagram;
 
-class KDChart::Legend::Private : public KDChartArea::Private
+class KDChart::Legend::Private : public AbstractArea::Private
 {
     friend class KDChart::Legend;
 public:
@@ -56,11 +56,11 @@ private:
 };
 
 inline KDChart::Legend::Legend( Private* p, QWidget* parent )
-    : KDChartArea( p, parent ) { init(); }
+    : AbstractArea( p, parent ) { init(); }
 inline KDChart::Legend::Private * KDChart::Legend::d_func()
-{ return static_cast<Private*>( KDChartArea::d_func() ); }
+{ return static_cast<Private*>( AbstractArea::d_func() ); }
 inline const KDChart::Legend::Private * KDChart::Legend::d_func() const
-{ return static_cast<const Private*>( KDChartArea::d_func() ); }
+{ return static_cast<const Private*>( AbstractArea::d_func() ); }
 
 
 

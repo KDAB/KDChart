@@ -14,7 +14,7 @@ public:
 private:
     int value;
     KDChartEnums::MeasureCalculationMode mode;
-    KDChartArea* area;
+    AbstractArea* area;
     Qt::Orientation orientation;
 };
 
@@ -99,12 +99,12 @@ KDChartEnums::MeasureCalculationMode KDChartMeasure::calculationMode() const
     return d->mode;
 }
 
-void KDChartMeasure::setReferenceArea( KDChartArea * area )
+void KDChartMeasure::setReferenceArea( AbstractArea * area )
 {
     d->area = area;
 }
 
-KDChartArea * KDChartMeasure::referenceArea() const
+AbstractArea * KDChartMeasure::referenceArea() const
 {
     return d->area;
 }

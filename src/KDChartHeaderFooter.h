@@ -38,7 +38,7 @@ namespace KDChart {
 
     class TextAttributes;
 
-class KDCHART_EXPORT HeaderFooter : public KDChartArea
+class KDCHART_EXPORT HeaderFooter : public AbstractArea
 {
     Q_OBJECT
 

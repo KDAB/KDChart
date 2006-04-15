@@ -10,7 +10,7 @@
 
 // see new namespace KDChart::AbstractAxis::Private at the very end
 
-class KDChartAxis::Private : public KDChartArea::Private
+class KDChartAxis::Private : public AbstractArea::Private
 {
     friend class ::KDChartAxis;
 public:
@@ -78,11 +78,11 @@ private:
 };
 
 inline KDChartAxis::KDChartAxis( Private * p, QWidget* parent )
-    : KDChartArea( p, parent ) { init(); }
+    : AbstractArea( p, parent ) { init(); }
 inline KDChartAxis::Private * KDChartAxis::d_func()
-{ return static_cast<Private*>( KDChartArea::d_func() ); }
+{ return static_cast<Private*>( AbstractArea::d_func() ); }
 inline const KDChartAxis::Private * KDChartAxis::d_func() const
-{ return static_cast<const Private*>( KDChartArea::d_func() ); }
+{ return static_cast<const Private*>( AbstractArea::d_func() ); }
 
 
 ////////////////////////////////////////////////////////////////////////////////

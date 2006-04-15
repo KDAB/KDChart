@@ -35,7 +35,7 @@
 #include "KDChartEnums.h"
 
 class QDomDocumentFragment;
-class KDChartArea;
+class AbstractArea;
 
 class KDCHART_EXPORT KDChartMeasure
 {
@@ -55,8 +55,8 @@ public:
   void setCalculationMode( KDChartEnums::MeasureCalculationMode mode );
   KDChartEnums::MeasureCalculationMode calculationMode() const;
 
-  void setReferenceArea( KDChartArea * area );
-  KDChartArea * referenceArea() const;
+  void setReferenceArea( AbstractArea * area );
+  AbstractArea * referenceArea() const;
 
   void setReferenceOrientation( Qt::Orientation orientation );
   Qt::Orientation referenceOrientation() const;

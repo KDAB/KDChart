@@ -44,25 +44,22 @@ namespace KDChart {
     class TextAttributes;
     class BackgroundAttributes;
     class FrameAttributes;
-}
-using KDChart::TextAttributes;
-using KDChart::FrameAttributes;
-using KDChart::BackgroundAttributes;
 
-class KDCHART_EXPORT KDChartArea : public QWidget
+
+class KDCHART_EXPORT AbstractArea : public QWidget
 {
     Q_OBJECT
 
-    Q_DISABLE_COPY( KDChartArea )
-    KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC_QWIDGET( KDChartArea )
+    Q_DISABLE_COPY( AbstractArea )
+    KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC_QWIDGET( AbstractArea )
 
 public:
-    KDChartArea( QWidget* parent );
-    virtual ~KDChartArea();
+    AbstractArea( QWidget* parent );
+    virtual ~AbstractArea();
 
     virtual QDomDocumentFragment toXML() const;
 
-    virtual KDChartArea * clone() const = 0;
+    virtual AbstractArea * clone() const = 0;
 
     class PaintContext;
 
@@ -103,5 +100,5 @@ public:
 
 }; // End of class KDChartAreaDiagram
 
-
+}
 #endif // KDCHARTAREA_H

@@ -14,8 +14,8 @@ public:
 
 private:
     int zeroDegreePosition;
-    QMap<KDChartArea::DockingPointType,bool> showDelimitersAtPosition;
-    QMap<KDChartArea::DockingPointType,bool> showLabelsAtPosition;
+    QMap<AbstractArea::DockingPointType,bool> showDelimitersAtPosition;
+    QMap<AbstractArea::DockingPointType,bool> showLabelsAtPosition;
     bool rotateCircularLabels;
 };
 

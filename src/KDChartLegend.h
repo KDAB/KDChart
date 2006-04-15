@@ -40,7 +40,7 @@ namespace KDChart {
 
     class AbstractDiagram;
 
-class KDCHART_EXPORT Legend : public KDChartArea
+class KDCHART_EXPORT Legend : public AbstractArea
 {
     Q_OBJECT
 

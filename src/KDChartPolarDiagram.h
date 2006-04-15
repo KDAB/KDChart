@@ -30,7 +30,7 @@
 #ifndef KDCHARTPOLARDIAGRAM_H
 #define KDCHARTPOLARDIAGRAM_H
 
-#include <KDChartArea.h>
+#include "KDChartArea.h"
 #include "KDChartAbstractPolarDiagram.h"
 class QDomDocumentFragment;
 class QPolygonF;
@@ -75,14 +75,14 @@ public:
     void setRotateCircularLabels( bool rotateCircularLabels );
     bool rotateCircularLabels() const;
 
-    void setShowDelimitersAtPosition( KDChartArea::DockingPointType position,
+    void setShowDelimitersAtPosition( AbstractArea::DockingPointType position,
                                       bool showDelimiters );
-    void setShowLabelsAtPosition( KDChartArea::DockingPointType position,
+    void setShowLabelsAtPosition( AbstractArea::DockingPointType position,
                                   bool showLabels );
 
-    bool showDelimitersAtPosition( KDChartArea::DockingPointType position ) const;
+    bool showDelimitersAtPosition( AbstractArea::DockingPointType position ) const;
 
-    bool showLabelsAtPosition( KDChartArea::DockingPointType position ) const;
+    bool showLabelsAtPosition( AbstractArea::DockingPointType position ) const;
 
 protected:
     void paintEvent ( QPaintEvent* );

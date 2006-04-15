@@ -110,7 +110,7 @@ KDChartAxis::Private::~Private() {}
 #define d d_func()
 
 KDChartAxis::KDChartAxis( QWidget* parent ) :
-    KDChartArea( new Private(), parent )
+    AbstractArea( new Private(), parent )
 {
     init();
 }
@@ -126,7 +126,7 @@ void KDChartAxis::init()
 
 #ifdef TEMPORARILY_REMOVED
 
-KDChartArea * KDChartAxis::clone() const
+AbstractArea * KDChartAxis::clone() const
 {
     KDChartAxis * retVal = new KDChartAxis();
 

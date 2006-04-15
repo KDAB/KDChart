@@ -29,7 +29,7 @@ HeaderFooter::Private::~Private()
 #define d d_func()
 
 HeaderFooter::HeaderFooter( QWidget* parent ) :
-    KDChartArea( new Private(), parent  )
+    AbstractArea( new Private(), parent  )
 {
 }
 
@@ -64,7 +64,7 @@ HeaderFooter * HeaderFooter::clone() const
 void HeaderFooter::paintEvent( QPaintEvent* evt )
 {
     // Paint the background and frame first
-    KDChartArea::paintEvent( evt );
+    AbstractArea::paintEvent( evt );
 
     QPainter painter( this );
 

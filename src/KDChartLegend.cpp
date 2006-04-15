@@ -48,13 +48,13 @@ Legend::Private::~Private()
 #define d d_func()
 
 Legend::Legend( QWidget* parent ) :
-    KDChartArea( new Private(), parent )
+    AbstractArea( new Private(), parent )
 {
     init();
 }
 
 Legend::Legend( KDChart::AbstractDiagram* diagram, QWidget* parent ) :
-    KDChartArea( new Private(), parent )
+    AbstractArea( new Private(), parent )
 {
     init();
     setDiagram( diagram );
@@ -112,7 +112,7 @@ void Legend::paintEvent( QPaintEvent* evt )
     painter.drawRect( evt->rect().adjusted( 1, 1, -1, -1 ) );
 
     // Paint the background and frame
-    KDChartArea::paintEvent( evt );
+    AbstractArea::paintEvent( evt );
 
     // PENDING(kalle) Support palette
 
