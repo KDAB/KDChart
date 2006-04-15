@@ -2,7 +2,7 @@
 #define KDCHARTLEGEND_P_H
 
 #include "KDChartLegend.h"
-#include "KDChartArea_p.h"
+#include "KDChartAbstractArea_p.h"
 #include <KDChartTextAttributes.h>
 #include <KDChartMarkerAttributes.h>
 #include <QMap>

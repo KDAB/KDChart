@@ -1,5 +1,5 @@
-#include "KDChartArea.h"
-#include "KDChartArea_p.h"
+#include "KDChartAbstractArea.h"
+#include "KDChartAbstractArea_p.h"
 #include <KDChartBackgroundAttributes.h>
 #include <KDChartFrameAttributes.h>
 #include <KDChartTextAttributes.h>

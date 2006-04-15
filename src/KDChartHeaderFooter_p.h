@@ -2,7 +2,7 @@
 #define KDCHARTHEADERFOOTER_P_H
 
 #include "KDChartHeaderFooter.h"
-#include "KDChartArea_p.h"
+#include "KDChartAbstractArea_p.h"
 #include <QMap>
 class KDTextDocument;
 

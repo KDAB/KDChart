@@ -84,7 +84,7 @@ namespace KDChart {
 // all the following will be merged into the namespaced class and finally
 // removed:
 
-#include "KDChartArea.h"
+#include "KDChartAbstractArea.h"
 #include "KDChartPaintContext.h"
 #include <QString>
 #include <QChar>

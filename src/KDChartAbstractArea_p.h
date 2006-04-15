@@ -1,10 +1,10 @@
 #ifndef KDCHARTAREA_P_H
 #define KDCHARTAREA_P_H
 
-#include <KDChartArea.h>
-#include <KDChartTextAttributes.h>
-#include <KDChartFrameAttributes.h>
-#include <KDChartBackgroundAttributes.h>
+#include "KDChartAbstractArea.h"
+#include "KDChartTextAttributes.h"
+#include "KDChartFrameAttributes.h"
+#include "KDChartBackgroundAttributes.h"
 
 namespace KDChart {
 

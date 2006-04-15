@@ -30,7 +30,7 @@
 #ifndef KDCHARTHEADERFOOTER_H
 #define KDCHARTHEADERFOOTER_H
 
-#include "KDChartArea.h"
+#include "KDChartAbstractArea.h"
 
 class QDomDocumentFragment;
 

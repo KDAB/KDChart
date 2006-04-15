@@ -1,7 +1,7 @@
 #ifndef KDCHARTAXIS_P_H
 #define KDCHARTAXIS_P_H
 
-#include "KDChartArea_p.h"
+#include "KDChartAbstractArea_p.h"
 #include <KDChartTextAttributes.h>
 #include <KDChartAbstractDiagram.h>
 #include <QMap>

@@ -30,7 +30,7 @@
 #ifndef KDCHARTPOLARDIAGRAM_H
 #define KDCHARTPOLARDIAGRAM_H
 
-#include "KDChartArea.h"
+#include "KDChartAbstractArea.h"
 #include "KDChartAbstractPolarDiagram.h"
 class QDomDocumentFragment;
 class QPolygonF;
