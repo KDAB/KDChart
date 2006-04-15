@@ -82,6 +82,23 @@ void Chart::replaceCoordinatePlane( AbstractCoordinatePlane* plane, int position
         delete oldPlane;
     }
 }
+
+void Chart::removeCoordinatePlane( int position )
+{
+    if ( position >=0 && position < p->coordinatePlanes.size() ) {
+        AbstractCoordinatePlane* oldPlane = p->coordinatePlanes.at( position );
+        p->coordinatePlanes.removeAt( position );
+        delete oldPlane;
+    }
+}
+
+void Chart::removeCoordinatePlane( AbstractCoordinatePlane *plane )
+{
+    int idx = p->coordinatePlanes.indexOf( plane );
+    if ( idx >= 0 && idx < p->coordinatePlanes.size() )
+        delete p->coordinatePlanes.takeAt( idx );
+}
+
 void Chart::setGlobalLeading( int left, int top, int right, int bottom )
 {
     setGlobalLeadingLeft( left );
@@ -356,14 +373,16 @@ void Chart::replaceHeaderFooter( HeaderFooter* headerFooter, int position )
     if( p->headerFooters.size() <= position ) {
         addHeaderFooter( headerFooter );
     } else {
+        HeaderFooter *old = p->headerFooters.value( position );
         p->headerFooters.replace( position, headerFooter );
+        delete old;
     }
 }
 
 void Chart::removeHeaderFooter( int position )
 {
     if( position >= 0 && p->headerFooters.size() > position ) {
-        p->headerFooters.removeAt( position );
+        delete p->headerFooters.takeAt( position );
     }
 }
 
@@ -395,14 +414,16 @@ void Chart::replaceLegend( Legend* legend, int position )
     if( p->legends.size() <= position ) {
         addLegend( legend );
     } else {
+        Legend *old = p->legends.value( position );
         p->legends.replace( position, legend );
+        delete old;
     }
 }
 
 void Chart::removeLegend( int position )
 {
     if( position >= 0 && p->legends.size() > position ) {
-        p->legends.removeAt( position );
+        delete p->legends.takeAt( position );
     }
 }
 
@@ -420,3 +441,5 @@ LegendList Chart::legends()
 {
     return p->legends;
 }
+
+
