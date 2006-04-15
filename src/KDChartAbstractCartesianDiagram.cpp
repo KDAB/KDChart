@@ -1,5 +1,6 @@
 #include "KDChartAbstractCartesianDiagram.h"
 #include "KDChartAbstractCartesianDiagram_p.h"
+#include "KDChartPaintContext.h"
 #include <QDebug>
 #include <QPainter>
 
