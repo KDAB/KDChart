@@ -3,7 +3,7 @@
    */
 
 /****************************************************************************
- ** Copyright (C) 2001-2003 Klarälvdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2001-2003 Klarï¿½vdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KDChart library.
  **
@@ -33,9 +33,11 @@
 
 using namespace KDChart;
 
-static Palette * s_defaultPalette = 0;
-static Palette * s_subduedPalette = 0;
-static Palette * s_rainbowPalette = 0;
+namespace {
+    static Palette * s_defaultPalette = 0;
+    static Palette * s_subduedPalette = 0;
+    static Palette * s_rainbowPalette = 0;
+}
 
 #define d d_func()
 

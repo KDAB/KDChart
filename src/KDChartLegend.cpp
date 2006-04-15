@@ -20,11 +20,6 @@
 
 using namespace KDChart;
 
-static const int MarkerObjectType = 0x1000; // Qt 4.1.1 does not define a value from
-                                            // which user-defined object types start, but
-                                            // currently 0, 1, 2 are the only predefined
-                                            // ones, so this seems pretty safe.
-
 Legend::Private::Private() :
     position( East ),
     orientation( Qt::Vertical ),

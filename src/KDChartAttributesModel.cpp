@@ -40,7 +40,9 @@ struct AttributesModelRegistryInfo {
   int refcount;
 };
 
-static QHash< QAbstractItemModel*, AttributesModelRegistryInfo > s_buddyHash;
+namespace {
+    static QHash< QAbstractItemModel*, AttributesModelRegistryInfo > s_buddyHash;
+}
 
 /*static*/
 AttributesModel * AttributesModel::instanceForModel( QAbstractItemModel* model )
