@@ -13,14 +13,13 @@
 using namespace KDChart;
 
 AbstractAxis::AbstractAxis ( AbstractDiagram* parent )
-    : QWidget(parent), _d ( new Private() )
+    : AbstractArea( new Private(), parent )
 {   // FIXME decide internal structure, how to save parent
     init();
 }
 
 AbstractAxis::~AbstractAxis()
 {
-    delete _d; _d = 0;
 }
 
 AbstractAxis::Private::Private()

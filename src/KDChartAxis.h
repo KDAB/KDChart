@@ -37,6 +37,7 @@
 
 #include "kdchart_export.h"
 #include "KDChartGlobal.h"
+#include "KDChartAbstractArea.h"
 
 class QPainter;
 class QSizeF;
@@ -51,15 +52,13 @@ namespace KDChart {
     class PaintContext;
     class AbstractDiagram;
 
-    class KDCHART_EXPORT AbstractAxis : public QWidget
+    class KDCHART_EXPORT AbstractAxis : public AbstractArea
     // : public AbstractArea FIXME maybe reintroduce later
     {
         Q_OBJECT
 
         Q_DISABLE_COPY( AbstractAxis )
-        KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC( AbstractAxis )
-    protected:
-        explicit inline AbstractAxis( Private *p, AbstractDiagram* parent = 0 );
+        KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( AbstractAxis, AbstractDiagram* )
     public:
         explicit AbstractAxis( AbstractDiagram* parent = 0 );
         virtual ~AbstractAxis();
@@ -97,6 +96,7 @@ class QDateTime;
 namespace KDChart {
   class TextAttributes;
   class AbstractArea;
+  class PaintContext;
 }
 
 using KDChart::TextAttributes;
@@ -116,7 +116,7 @@ public:
     void copyRelevantDetailsFrom( const KDChartAxis* axis );
 
     // PENDING(kalle,miroslav) Review
-    virtual void paint( QPainter *, const PaintContext & context ) const;
+    virtual void paint( QPainter *, const KDChart::PaintContext & context ) const;
     virtual void setGeometry( const QRect& rect, double averageValueP1000 );
     virtual QRect geometry() const;
 

@@ -42,10 +42,7 @@ namespace KDChart {
         Q_OBJECT
 
         Q_DISABLE_COPY( CartesianAxis )
-        KDCHART_DECLARE_PRIVATE_DERIVED( CartesianAxis )
-
-    protected:
-        explicit inline CartesianAxis( Private* p, AbstractCartesianDiagram* parent = 0 );
+        KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( CartesianAxis, AbstractCartesianDiagram* )
 
     public:
         enum Position {

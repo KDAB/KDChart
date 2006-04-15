@@ -44,6 +44,7 @@ namespace KDChart {
     class TextAttributes;
     class BackgroundAttributes;
     class FrameAttributes;
+    class PaintContext;
 
 
 class KDCHART_EXPORT AbstractArea : public QWidget
@@ -59,9 +60,8 @@ public:
 
     virtual QDomDocumentFragment toXML() const;
 
-    virtual AbstractArea * clone() const = 0;
+//    virtual AbstractArea * clone() const = 0;
 
-    class PaintContext;
 
     enum DockingPointType {
       TopLeft,
@@ -98,7 +98,7 @@ public:
                                  BackgroundAttributes attributes,
                                  const QRectF& rectangle );
 
-}; // End of class KDChartAreaDiagram
+}; // End of class AbstractArea
 
 }
 #endif // KDCHARTAREA_H

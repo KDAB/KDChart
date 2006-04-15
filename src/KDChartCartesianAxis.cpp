@@ -5,10 +5,12 @@
 #include <QPen>
 #include <QBrush>
 
+#include "KDChartPaintContext.h"
 #include "KDChartCartesianAxis.h"
 #include "KDChartCartesianAxis_p.h"
 #include "KDChartAbstractCartesianDiagram.h"
 #include "KDChartPainterSaver_p.h"
+
 
 using namespace KDChart;
 

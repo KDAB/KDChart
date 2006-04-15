@@ -88,9 +88,9 @@ inline const KDChartAxis::Private * KDChartAxis::d_func() const
 ////////////////////////////////////////////////////////////////////////////////
 
 // new implementation:
-using namespace KDChart;
+namespace KDChart {
 
-class AbstractAxis::Private
+class AbstractAxis::Private : public AbstractArea::Private
 {
     friend class AbstractAxis;
 
@@ -104,21 +104,24 @@ private:
     AbstractDiagram* parent;
 };
 
-inline KDChart::AbstractAxis::AbstractAxis( Private * p )
-    : _d  ( p )
-{ init(); }
 
-inline KDChart::AbstractAxis::AbstractAxis( Private * p, AbstractDiagram* parent_ )
-    : QWidget(parent_), _d( p )
+inline AbstractAxis::AbstractAxis( Private * p, AbstractDiagram* parent_ )
+    :  AbstractArea( p, parent_ )
 {
-    _d->parent = parent_;
+    p->parent = parent_;
     init();
 }
 
-inline AbstractDiagram* KDChart::AbstractAxis::Private::diagram() const
+inline AbstractDiagram* AbstractAxis::Private::diagram() const
 {
     return parent;
 }
 
+inline AbstractAxis::Private * AbstractAxis::d_func()
+{ return static_cast<Private*>( AbstractArea::d_func() ); }
+inline const AbstractAxis::Private * AbstractAxis::d_func() const
+{ return static_cast<const Private*>( AbstractArea::d_func() ); }
+
+}
 #endif /* KDCHARTAREA_P_H */
 

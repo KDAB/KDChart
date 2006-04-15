@@ -20,15 +20,12 @@ namespace KDChart {
         QRectF geometry;
     };
 
-    inline CartesianAxis::Private* CartesianAxis::d_func()
-    {
-        return static_cast<Private*> ( AbstractAxis::d_func() );
-    }
-
-    inline const CartesianAxis::Private* CartesianAxis::d_func() const
-    {
-        return static_cast<const Private*> ( AbstractAxis::d_func() );
-    }
+    inline CartesianAxis::CartesianAxis( Private * p, AbstractCartesianDiagram* parent )
+    : AbstractAxis( p, parent ) { init(); }
+    inline CartesianAxis::Private * CartesianAxis::d_func()
+    { return static_cast<Private*>( AbstractAxis::d_func() ); }
+    inline const CartesianAxis::Private * CartesianAxis::d_func() const
+    { return static_cast<const Private*>( AbstractAxis::d_func() ); }
 
 }
 
