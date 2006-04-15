@@ -37,7 +37,7 @@ namespace KDChart {
 
     class AbstractCartesianDiagram;
 
-    class KDCHART_EXPORT CartesianAxis : public Axis
+    class KDCHART_EXPORT CartesianAxis : public AbstractAxis
     {
         Q_OBJECT
 

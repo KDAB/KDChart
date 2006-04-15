@@ -7,7 +7,7 @@
 
 namespace KDChart {
 
-    class CartesianAxis::Private : public Axis::Private
+    class CartesianAxis::Private : public AbstractAxis::Private
     {
         friend class CartesianAxis;
 
@@ -22,12 +22,12 @@ namespace KDChart {
 
     inline CartesianAxis::Private* CartesianAxis::d_func()
     {
-        return static_cast<Private*> ( Axis::d_func() );
+        return static_cast<Private*> ( AbstractAxis::d_func() );
     }
 
     inline const CartesianAxis::Private* CartesianAxis::d_func() const
     {
-        return static_cast<const Private*> ( Axis::d_func() );
+        return static_cast<const Private*> ( AbstractAxis::d_func() );
     }
 
 }

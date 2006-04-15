@@ -8,7 +8,7 @@
 #include <QVariant>
 #include <QDateTime>
 
-// see new namespace KDChart::Axis::Private at the very end
+// see new namespace KDChart::AbstractAxis::Private at the very end
 
 class KDChartAxis::Private : public KDChartArea::Private
 {
@@ -90,9 +90,9 @@ inline const KDChartAxis::Private * KDChartAxis::d_func() const
 // new implementation:
 using namespace KDChart;
 
-class Axis::Private
+class AbstractAxis::Private
 {
-    friend class Axis;
+    friend class AbstractAxis;
 
 public:
     Private();
@@ -104,18 +104,18 @@ private:
     AbstractDiagram* parent;
 };
 
-inline KDChart::Axis::Axis( Private * p )
+inline KDChart::AbstractAxis::AbstractAxis( Private * p )
     : _d  ( p )
 { init(); }
 
-inline KDChart::Axis::Axis( Private * p, AbstractDiagram* parent_ )
+inline KDChart::AbstractAxis::AbstractAxis( Private * p, AbstractDiagram* parent_ )
     : QWidget(parent_), _d( p )
 {
     _d->parent = parent_;
     init();
 }
 
-inline AbstractDiagram* KDChart::Axis::Private::diagram() const
+inline AbstractDiagram* KDChart::AbstractAxis::Private::diagram() const
 {
     return parent;
 }

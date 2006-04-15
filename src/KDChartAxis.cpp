@@ -12,30 +12,30 @@
 
 using namespace KDChart;
 
-Axis::Axis ( AbstractDiagram* parent )
+AbstractAxis::AbstractAxis ( AbstractDiagram* parent )
     : QWidget(parent), _d ( new Private() )
 {   // FIXME decide internal structure, how to save parent
     init();
 }
 
-Axis::~Axis()
+AbstractAxis::~AbstractAxis()
 {
     delete _d; _d = 0;
 }
 
-Axis::Private::Private()
+AbstractAxis::Private::Private()
 {
     // PENDING(miroslav) Code from KDChartAxis::Private::Private goes here
 }
 
 
-Axis::Private::~Private()
+AbstractAxis::Private::~Private()
 {
     // PENDING(miroslav) Code from KDChartAxis::Private::~Private goes here
 }
 
 
-void Axis::init()
+void AbstractAxis::init()
 {
 }
 

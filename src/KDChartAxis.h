@@ -51,18 +51,18 @@ namespace KDChart {
     class PaintContext;
     class AbstractDiagram;
 
-    class KDCHART_EXPORT Axis : public QWidget
+    class KDCHART_EXPORT AbstractAxis : public QWidget
     // : public KDChartArea FIXME maybe reintroduce later
     {
         Q_OBJECT
 
-        Q_DISABLE_COPY( Axis )
-        KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC( Axis )
+        Q_DISABLE_COPY( AbstractAxis )
+        KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC( AbstractAxis )
     protected:
-        explicit inline Axis( Private *p, AbstractDiagram* parent = 0 );
+        explicit inline AbstractAxis( Private *p, AbstractDiagram* parent = 0 );
     public:
-        explicit Axis( AbstractDiagram* parent = 0 );
-        virtual ~Axis();
+        explicit AbstractAxis( AbstractDiagram* parent = 0 );
+        virtual ~AbstractAxis();
 
         // FIXME implement when code os ready for it:
         // virtual Area* clone() const = 0;
