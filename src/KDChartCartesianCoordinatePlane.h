@@ -9,7 +9,7 @@ namespace KDChart {
     class AbstractDiagram;
     class CartesianAxis;
 
-    class KDCHART_EXPORT CartesianCoordinatePlane : public CoordinatePlane
+    class KDCHART_EXPORT CartesianCoordinatePlane : public AbstractCoordinatePlane
     {
         Q_OBJECT
 

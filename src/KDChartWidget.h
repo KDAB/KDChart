@@ -41,7 +41,7 @@ namespace KDChart {
     // some forward declarations
     class AbstractDiagram;
     class Chart;
-    class CoordinatePlane;
+    class AbstractCoordinatePlane;
     class TableModel;
 
     /**
@@ -130,7 +130,7 @@ namespace KDChart {
         /** Returns a pointer to the current diagram. */
         AbstractDiagram* diagram() const;
         /** Returns a pointer to the current coordinate plane. */
-        CoordinatePlane* coordinatePlane() const;
+        AbstractCoordinatePlane* coordinatePlane() const;
 
 
 	enum ChartType { NoType, Bar, Line, Pie, Ring, Polar };

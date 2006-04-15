@@ -51,7 +51,7 @@ Chart::~Chart()
 
 /*! Return the first (default) coordinate plane.
  */
-CoordinatePlane* Chart::coordinatePlane()
+AbstractCoordinatePlane* Chart::coordinatePlane()
 {
     if ( p->coordinatePlanes.isEmpty() )
     {
@@ -69,15 +69,15 @@ CoordinatePlaneList Chart::coordinatePlanes()
     return p->coordinatePlanes;
 }
 
-void Chart::addCoordinatePlane( CoordinatePlane* plane )
+void Chart::addCoordinatePlane( AbstractCoordinatePlane* plane )
 {
     p->coordinatePlanes.append( plane );
 }
 
-void Chart::replaceCoordinatePlane( CoordinatePlane* plane, int position )
+void Chart::replaceCoordinatePlane( AbstractCoordinatePlane* plane, int position )
 {
     if ( position >=0 && position < p->coordinatePlanes.size() ) {
-        CoordinatePlane* oldPlane = p->coordinatePlanes.at( position );
+        AbstractCoordinatePlane* oldPlane = p->coordinatePlanes.at( position );
         p->coordinatePlanes.replace ( position, plane );
         delete oldPlane;
     }
@@ -239,7 +239,7 @@ void Chart::paintEvent( QPaintEvent* )
     // the data+axes area
     dataAndLegendLayout->addLayout( p->planeLayout, 1, 1 );
 
-    foreach (CoordinatePlane* plane, p->coordinatePlanes )
+    foreach (AbstractCoordinatePlane* plane, p->coordinatePlanes )
     {
         p->planeLayout->addWidget( plane, 1, 1, Qt::AlignCenter );
 

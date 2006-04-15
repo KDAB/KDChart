@@ -17,8 +17,8 @@ public:
 
 protected:
     void init();
-    void init( CoordinatePlane* plane );
-    CoordinatePlane* plane;
+    void init( AbstractCoordinatePlane* plane );
+    AbstractCoordinatePlane* plane;
     DefaultsModel* defaultsModel;
     AttributesModel* attributesModel;
     DatasetProxyModel* datasetProxy;
@@ -30,7 +30,7 @@ protected:
 };
 
 inline AbstractDiagram::AbstractDiagram( Private * p ) : _d( p ) { init(); }
-inline AbstractDiagram::AbstractDiagram( Private * p, CoordinatePlane* plane )
+inline AbstractDiagram::AbstractDiagram( Private * p, AbstractCoordinatePlane* plane )
   : QAbstractItemView( plane ), _d( p ) { _d->init( plane ); }
 
 class DataValueTextInfo {

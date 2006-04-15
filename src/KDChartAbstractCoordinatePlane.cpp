@@ -3,24 +3,24 @@
 
 using namespace KDChart;
 
-class CoordinatePlane::Private
+class AbstractCoordinatePlane::Private
 {
 public:
     AbstractDiagramList diagrams;
     GridAttributes gridAttributes;
 };
 
-CoordinatePlane::CoordinatePlane ( QWidget* parent )
+AbstractCoordinatePlane::AbstractCoordinatePlane ( QWidget* parent )
     : QWidget ( parent )
     , d ( new Private() )
 {
 }
 
-CoordinatePlane::~CoordinatePlane()
+AbstractCoordinatePlane::~AbstractCoordinatePlane()
 {
 }
 
-void CoordinatePlane::addDiagram ( AbstractDiagram* diagram )
+void AbstractCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
 {
     // diagrams are invisible and paint through their paint() method
     diagram->hide();
@@ -33,7 +33,7 @@ void CoordinatePlane::addDiagram ( AbstractDiagram* diagram )
 
 
 /*virtual*/
-void CoordinatePlane::replaceDiagram ( AbstractDiagram* diagram, int position )
+void AbstractCoordinatePlane::replaceDiagram ( AbstractDiagram* diagram, int position )
 {
     if ( d->diagrams.size() <= position ) {
         addDiagram( diagram );
@@ -48,7 +48,7 @@ void CoordinatePlane::replaceDiagram ( AbstractDiagram* diagram, int position )
 
 
 /*virtual*/
-void CoordinatePlane::removeDiagram( int position/* = 0 */ )
+void AbstractCoordinatePlane::removeDiagram( int position/* = 0 */ )
 {
     if ( position >= 0 && d->diagrams.size() > position ) {
         d->diagrams.removeAt( position );
@@ -56,7 +56,7 @@ void CoordinatePlane::removeDiagram( int position/* = 0 */ )
     }
 }
 
-AbstractDiagram* CoordinatePlane::diagram()
+AbstractDiagram* AbstractCoordinatePlane::diagram()
 {
     if ( d->diagrams.isEmpty() )
     {
@@ -66,33 +66,33 @@ AbstractDiagram* CoordinatePlane::diagram()
     }
 }
 
-AbstractDiagramList CoordinatePlane::diagrams()
+AbstractDiagramList AbstractCoordinatePlane::diagrams()
 {
     return d->diagrams;
 }
 
-QSize KDChart::CoordinatePlane::sizeHint() const
+QSize KDChart::AbstractCoordinatePlane::sizeHint() const
 {
     return QSize( 1000, 1000 );
 }
 
-QSize KDChart::CoordinatePlane::minimumSizeHint() const
+QSize KDChart::AbstractCoordinatePlane::minimumSizeHint() const
 {
     return QSize( 200, 200 );
 }
 
 
-QSizePolicy KDChart::CoordinatePlane::sizePolicy() const
+QSizePolicy KDChart::AbstractCoordinatePlane::sizePolicy() const
 {
     return QSizePolicy( QSizePolicy::Expanding, QSizePolicy::Expanding );
 }
 
-void KDChart::CoordinatePlane::setGridAttributes( const GridAttributes& a )
+void KDChart::AbstractCoordinatePlane::setGridAttributes( const GridAttributes& a )
 {
     d->gridAttributes = a;
 }
 
-GridAttributes KDChart::CoordinatePlane::gridAttributes() const
+GridAttributes KDChart::AbstractCoordinatePlane::gridAttributes() const
 {
     return d->gridAttributes;
 }

@@ -59,7 +59,7 @@ public:
 
 
 PolarCoordinatePlane::PolarCoordinatePlane ( QWidget* parent )
-    : CoordinatePlane ( parent )
+    : AbstractCoordinatePlane ( parent )
     , p ( new Private() )
 {
     p->currentTransformation = 0;
@@ -74,7 +74,7 @@ void PolarCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
     Q_ASSERT_X ( dynamic_cast<AbstractPolarDiagram*> ( diagram ),
                  "PolarCoordinatePlane::addDiagram", "Only polar"
                  "diagrams can be added to a polar coordinate plane!" );
-    CoordinatePlane::addDiagram ( diagram );
+    AbstractCoordinatePlane::addDiagram ( diagram );
 }
 
 void PolarCoordinatePlane::paintEvent ( QPaintEvent* )

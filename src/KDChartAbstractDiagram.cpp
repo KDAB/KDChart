@@ -43,14 +43,14 @@ void AbstractDiagram::Private::init()
 {
 }
 
-void AbstractDiagram::Private::init( CoordinatePlane* newPlane )
+void AbstractDiagram::Private::init( AbstractCoordinatePlane* newPlane )
 {
   plane = newPlane;
 }
 
 #define d d_func()
 
-AbstractDiagram::AbstractDiagram ( CoordinatePlane* parent )
+AbstractDiagram::AbstractDiagram ( AbstractCoordinatePlane* parent )
     : QAbstractItemView ( parent ), _d( new Private() )
 {
     _d->init( parent );
@@ -66,7 +66,7 @@ void AbstractDiagram::init()
 }
 
 
-CoordinatePlane* AbstractDiagram::coordinatePlane() const
+AbstractCoordinatePlane* AbstractDiagram::coordinatePlane() const
 {
     return d->plane;
 }
@@ -142,7 +142,7 @@ void AbstractDiagram::setRootIndex ( const QModelIndex& idx )
   if( d->plane ) slotModelReset();
 }
 
-void AbstractDiagram::setCoordinatePlane( CoordinatePlane* parent )
+void AbstractDiagram::setCoordinatePlane( AbstractCoordinatePlane* parent )
 {
     d->plane = parent;
 }

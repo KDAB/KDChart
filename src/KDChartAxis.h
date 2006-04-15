@@ -47,7 +47,7 @@ namespace KDChart {
 
     class TextAttributes;
     class Area;
-    class CoordinatePlane;
+    class AbstractCoordinatePlane;
     class PaintContext;
     class AbstractDiagram;
 

@@ -7,7 +7,7 @@ namespace KDChart {
 
     class PaintContext;
 
-    class KDCHART_EXPORT PolarCoordinatePlane : public CoordinatePlane
+    class KDCHART_EXPORT PolarCoordinatePlane : public AbstractCoordinatePlane
     {
         Q_OBJECT
 

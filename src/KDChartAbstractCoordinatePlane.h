@@ -8,15 +8,15 @@
 namespace KDChart {
     class GridAttributes;
 
-    class KDCHART_EXPORT CoordinatePlane : public QWidget
+    class KDCHART_EXPORT AbstractCoordinatePlane : public QWidget
     {
         Q_OBJECT
 
     public:
         class Private;
 
-        explicit CoordinatePlane ( QWidget* parent = 0 );
-        virtual ~CoordinatePlane();
+        explicit AbstractCoordinatePlane ( QWidget* parent = 0 );
+        virtual ~AbstractCoordinatePlane();
 
         virtual void addDiagram ( AbstractDiagram* diagram );
         virtual void replaceDiagram ( AbstractDiagram* diagram, int position = 0 );

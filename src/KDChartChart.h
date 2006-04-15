@@ -8,11 +8,11 @@
 namespace KDChart {
 
     class AbstractDiagram;
-    class CoordinatePlane;
+    class AbstractCoordinatePlane;
     class HeaderFooter;
     class Legend;
 
-    class CoordinatePlaneList : public QList<CoordinatePlane*> {};
+    class CoordinatePlaneList : public QList<AbstractCoordinatePlane*> {};
     class HeaderFooterList : public QList<HeaderFooter*> {};
     class LegendList : public QList<Legend*> {};
 
@@ -26,9 +26,9 @@ namespace KDChart {
         explicit Chart ( QWidget* parent = 0 );
         virtual ~Chart();
 
-        CoordinatePlane* coordinatePlane();
-        void addCoordinatePlane( CoordinatePlane* );
-        void replaceCoordinatePlane( CoordinatePlane*, int position = 0 );
+        AbstractCoordinatePlane* coordinatePlane();
+        void addCoordinatePlane( AbstractCoordinatePlane* );
+        void replaceCoordinatePlane( AbstractCoordinatePlane*, int position = 0 );
         CoordinatePlaneList coordinatePlanes();
 
         void setGlobalLeading( int left, int top, int right, int bottom );

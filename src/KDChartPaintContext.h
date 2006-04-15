@@ -9,7 +9,7 @@ class QPainter;
 
 namespace KDChart {
 
-    class CoordinatePlane;
+    class AbstractCoordinatePlane;
 
     // This class is internal (and mostly related to AbstractDiagram)
     // but it's exported for examples/LineChart/SineFunctionPlotter.
@@ -24,8 +24,8 @@ namespace KDChart {
         QPainter* painter() const;
         void setPainter( QPainter* painter );
 
-        CoordinatePlane* coordinatePlane() const;
-        void setCoordinatePlane( CoordinatePlane* plane );
+        AbstractCoordinatePlane* coordinatePlane() const;
+        void setCoordinatePlane( AbstractCoordinatePlane* plane );
 
 
     private:

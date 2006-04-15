@@ -13,7 +13,7 @@ class PaintContext::Private {
 public:
     QPainter* painter;
     QRectF rect;
-    CoordinatePlane* plane;
+    AbstractCoordinatePlane* plane;
 
     Private()
         : painter( 0 )
@@ -46,12 +46,12 @@ void PaintContext::setPainter( QPainter* painter )
     d->painter = painter;
 }
 
-CoordinatePlane* PaintContext::coordinatePlane() const
+AbstractCoordinatePlane* PaintContext::coordinatePlane() const
 {
     return d->plane;
 }
 
-void PaintContext::setCoordinatePlane( CoordinatePlane* plane)
+void PaintContext::setCoordinatePlane( AbstractCoordinatePlane* plane)
 {
     d->plane = plane;
 }

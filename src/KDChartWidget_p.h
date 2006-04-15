@@ -35,7 +35,7 @@ class QStandardItemModel;
 
 namespace KDChart {
     class Chart;
-    class CoordinatePlane;
+    class AbstractCoordinatePlane;
 
     class Widget::Private
     {

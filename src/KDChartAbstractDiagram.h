@@ -14,7 +14,7 @@
  */
 namespace KDChart {
 
-    class CoordinatePlane;
+    class AbstractCoordinatePlane;
     class DataValueAttributes;
     class ThreeDAttributes;
     class ThreeDLineAttributes;
@@ -28,8 +28,8 @@ namespace KDChart {
         Q_DISABLE_COPY( AbstractDiagram )
         KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC( AbstractDiagram )
     protected:
-        explicit inline AbstractDiagram( Private *p, CoordinatePlane* parent );
-        explicit AbstractDiagram ( CoordinatePlane* plane = 0 );
+        explicit inline AbstractDiagram( Private *p, AbstractCoordinatePlane* parent );
+        explicit AbstractDiagram ( AbstractCoordinatePlane* plane = 0 );
     public:
         virtual ~AbstractDiagram();
 
@@ -68,9 +68,9 @@ namespace KDChart {
         /** \reimpl */
         virtual QRegion visualRegionForSelection(const QItemSelection &selection) const;
 
-        CoordinatePlane* coordinatePlane() const;
+        AbstractCoordinatePlane* coordinatePlane() const;
 
-        void setCoordinatePlane( CoordinatePlane* plane );
+        void setCoordinatePlane( AbstractCoordinatePlane* plane );
 
 
         // FIXME merge the rest from KDChartDiagram.h

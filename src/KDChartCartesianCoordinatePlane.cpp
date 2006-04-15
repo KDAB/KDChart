@@ -36,7 +36,7 @@ public:
 
 
 CartesianCoordinatePlane::CartesianCoordinatePlane ( QWidget* parent )
-    : CoordinatePlane ( parent )
+    : AbstractCoordinatePlane ( parent )
     , d ( new Private() )
 {
 }
@@ -50,7 +50,7 @@ void CartesianCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
     Q_ASSERT_X ( dynamic_cast<AbstractCartesianDiagram*> ( diagram ),
                  "CartesianCoordinatePlane::addDiagram", "Only cartesian "
                  "diagrams can be added to a cartesian coordinate plane!" );
-    CoordinatePlane::addDiagram ( diagram );
+    AbstractCoordinatePlane::addDiagram ( diagram );
     connect ( diagram,  SIGNAL ( layoutChanged ( AbstractDiagram* ) ),
               SLOT ( slotLayoutChanged ( AbstractDiagram* ) ) );
 }

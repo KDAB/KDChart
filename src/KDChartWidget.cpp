@@ -343,7 +343,7 @@ AbstractDiagram* Widget::diagram() const
 /**
  * Returns a pointer to the current coordinate plane.
  */
-CoordinatePlane* Widget::coordinatePlane() const
+AbstractCoordinatePlane* Widget::coordinatePlane() const
 {
     return d->m_chart->coordinatePlane();
 }
