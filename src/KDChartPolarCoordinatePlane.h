@@ -13,6 +13,8 @@ namespace KDChart {
 
     public:
         class Private;
+        struct CoordinateTransformation;
+        class CoordinateTransformationList;
 
         explicit PolarCoordinatePlane ( QWidget* parent = 0 );
         ~PolarCoordinatePlane();

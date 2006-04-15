@@ -20,7 +20,9 @@ static QPointF polarToCartesian( double R, double theta )
     return QPointF( R * cos( DEGTORAD( theta  ) ), R * sin( DEGTORAD( theta ) ) );
 }
 
-struct CoordinateTransformation {
+
+struct PolarCoordinatePlane::CoordinateTransformation
+{
     // represents the distance of the diagram coordinate origin to the
     // origin of the coordinate plane space:
     QPointF originTranslation;
@@ -42,7 +44,8 @@ struct CoordinateTransformation {
     }
 };
 
-class CoordinateTransformationList : public QList<CoordinateTransformation> {};
+class PolarCoordinatePlane::CoordinateTransformationList
+    : public QList<PolarCoordinatePlane::CoordinateTransformation> {};
 
 class PolarCoordinatePlane::Private
 {
