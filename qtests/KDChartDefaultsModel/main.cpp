@@ -12,7 +12,7 @@ private slots:
   void initTestCase()
   {
       TableModel *tableModel = new TableModel( this );
-      tableModel->loadFromCSV( "../tools/modeldata/KDChart-Test-Datatables.csv" );
+      tableModel->loadFromCSV( "../../examples/tools/modeldata/KDChart-Test-Datatables.csv" );
       tableModel->setSupplyHeaderData( false );
 
       DefaultsModel *defaultsModel = new DefaultsModel( this );
