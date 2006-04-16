@@ -40,128 +40,6 @@ Chart::Private::Private( Chart* chart_ )
     , globalLeadingTop( 0 )
     , globalLeadingBottom( 0 )
 {
-
-}
-
-/*! Chart is the central widget. */
-Chart::Chart ( QWidget* parent )
-    : QWidget ( parent )
-    , p ( new Private( this ) )
-{
-    p->coordinatePlanes.append ( new CartesianCoordinatePlane ( this ) );
-}
-
-/*! Destructor. */
-Chart::~Chart()
-{
-}
-
-/*! Return the first (default) coordinate plane.
- */
-AbstractCoordinatePlane* Chart::coordinatePlane()
-{
-    if ( p->coordinatePlanes.isEmpty() )
-    {
-        qWarning() << "Chart::coordinatePlane: warning: no coordinate plane defined.";
-        return 0;
-    } else {
-        return p->coordinatePlanes.first();
-    }
-}
-
-/*! Return all coordinate planes.
- */
-CoordinatePlaneList Chart::coordinatePlanes()
-{
-    return p->coordinatePlanes;
-}
-
-void Chart::addCoordinatePlane( AbstractCoordinatePlane* plane )
-{
-    connect( plane, SIGNAL( destroyedCoordinatePlane( AbstractCoordinatePlane* ) ),
-             p, SLOT( slotUnregisterDestroyedPlane( AbstractCoordinatePlane* ) ) );
-    p->coordinatePlanes.append( plane );
-    plane->setParent( this );
-    p->slotRelayout();
-}
-
-void Chart::replaceCoordinatePlane( AbstractCoordinatePlane* plane, int position )
-{
-    if ( position >=0 && position < p->coordinatePlanes.size() ) {
-        connect( plane, SIGNAL( destroyedCoordinatePlane( AbstractCoordinatePlane* ) ),
-                 p, SLOT( slotUnregisterDestroyedPlane( AbstractCoordinatePlane* ) ) );
-        AbstractCoordinatePlane* oldPlane = p->coordinatePlanes.at( position );
-        p->coordinatePlanes.replace ( position, plane );
-        disconnect( oldPlane, SIGNAL( destroyedCoordinatePlane( AbstractCoordinatePlane* ) ),
-                    p, SLOT( slotUnregisterDestroyedPlane( AbstractCoordinatePlane* ) ) );
-        delete oldPlane;
-    }
-    p->slotRelayout();
-}
-
-void Chart::removeCoordinatePlane( int position )
-{
-    if ( position >=0 && position < p->coordinatePlanes.size() ) {
-        AbstractCoordinatePlane* oldPlane = p->coordinatePlanes.at( position );
-        p->coordinatePlanes.removeAt( position );
-        disconnect( oldPlane, SIGNAL( destroyedCoordinatePlane( AbstractCoordinatePlane* ) ),
-                    p, SLOT( slotUnregisterDestroyedPlane( AbstractCoordinatePlane* ) ) );
-        delete oldPlane;
-    }
-    p->slotRelayout();
-}
-
-void Chart::setGlobalLeading( int left, int top, int right, int bottom )
-{
-    setGlobalLeadingLeft( left );
-    setGlobalLeadingTop( top );
-    setGlobalLeadingRight( right );
-    setGlobalLeadingBottom( bottom );
-    p->slotRelayout();
-}
-
-void Chart::setGlobalLeadingLeft( int leading )
-{
-    p->globalLeadingLeft = leading;
-    p->slotRelayout();
-}
-
-int Chart::globalLeadingLeft() const
-{
-    return p->globalLeadingLeft;
-}
-
-void Chart::setGlobalLeadingTop( int leading )
-{
-    p->globalLeadingTop = leading;
-    p->slotRelayout();
-}
-
-int Chart::globalLeadingTop() const
-{
-    return p->globalLeadingTop;
-}
-
-void Chart::setGlobalLeadingRight( int leading )
-{
-    p->globalLeadingRight = leading;
-    p->slotRelayout();
-}
-
-int Chart::globalLeadingRight() const
-{
-    return p->globalLeadingRight;
-}
-
-void Chart::setGlobalLeadingBottom( int leading )
-{
-    p->globalLeadingBottom = leading;
-    p->slotRelayout();
-}
-
-int Chart::globalLeadingBottom() const
-{
-    return p->globalLeadingBottom;
 }
 
 void Chart::Private::layoutHeadersAndFooters()
@@ -231,7 +109,7 @@ void Chart::Private::layoutHeadersAndFooters()
 
 void Chart::Private::layoutLegends()
 {
-     foreach ( Legend *legend, legends ) {
+    foreach ( Legend *legend, legends ) {
         switch( legend->position() ) {
             case KDChart::Legend::North:
                 dataAndLegendLayout->addWidget( legend, 0, 1, 1, 1, Qt::AlignCenter );
@@ -289,6 +167,11 @@ void Chart::Private::layoutLegends()
 
 void Chart::Private::layoutPlanes()
 {
+    if ( dataAndLegendLayout ) {
+        dataAndLegendLayout->removeItem( planeLayout );
+    }
+    delete planeLayout;
+    planeLayout = new QGridLayout();
     foreach (AbstractCoordinatePlane* plane, coordinatePlanes )
     {
         planeLayout->addWidget( plane, 1, 1, Qt::AlignCenter );
@@ -324,15 +207,20 @@ void Chart::Private::layoutPlanes()
             }
         }
     }
+    if ( dataAndLegendLayout )
+        dataAndLegendLayout->addLayout( planeLayout, 1, 1 );
 }
 
 void Chart::Private::createLayouts( QWidget* w )
 {
+    // layout for the planes is handled separately, so we don't want to delete it here
+    if ( dataAndLegendLayout) {
+        dataAndLegendLayout->removeItem( planeLayout );
+        planeLayout->setParent( 0 );
+    }
     // nuke the old bunch
     delete layout;
-
-    planeLayout = new QGridLayout();
-
+    
     // The HBox p->layout provides the left and right global leadings
     layout = new QHBoxLayout( w );
     layout->addSpacing( globalLeadingLeft );
@@ -362,10 +250,131 @@ void Chart::Private::slotRelayout()
 {
     createLayouts( chart );
     layoutHeadersAndFooters();
-    layoutPlanes();
     layoutLegends();
     layout->activate();
 }
+
+// ******** Chart interface implementation *********** 
+
+Chart::Chart ( QWidget* parent )
+    : QWidget ( parent )
+    , p ( new Private( this ) )
+{
+    p->coordinatePlanes.append ( new CartesianCoordinatePlane ( this ) );
+    p->layoutPlanes();
+}
+
+Chart::~Chart()
+{
+}
+
+AbstractCoordinatePlane* Chart::coordinatePlane()
+{
+    if ( p->coordinatePlanes.isEmpty() )
+    {
+        qWarning() << "Chart::coordinatePlane: warning: no coordinate plane defined.";
+        return 0;
+    } else {
+        return p->coordinatePlanes.first();
+    }
+}
+
+CoordinatePlaneList Chart::coordinatePlanes()
+{
+    return p->coordinatePlanes;
+}
+
+void Chart::addCoordinatePlane( AbstractCoordinatePlane* plane )
+{
+    connect( plane, SIGNAL( destroyedCoordinatePlane( AbstractCoordinatePlane* ) ),
+             p, SLOT( slotUnregisterDestroyedPlane( AbstractCoordinatePlane* ) ) );
+    p->coordinatePlanes.append( plane );
+    plane->setParent( this );
+    p->layoutPlanes();
+    p->slotRelayout();
+}
+
+void Chart::replaceCoordinatePlane( AbstractCoordinatePlane* plane, int position )
+{
+    if ( position >=0 && position < p->coordinatePlanes.size() ) {
+        connect( plane, SIGNAL( destroyedCoordinatePlane( AbstractCoordinatePlane* ) ),
+                 p, SLOT( slotUnregisterDestroyedPlane( AbstractCoordinatePlane* ) ) );
+        AbstractCoordinatePlane* oldPlane = p->coordinatePlanes.at( position );
+        p->coordinatePlanes.replace ( position, plane );
+        disconnect( oldPlane, SIGNAL( destroyedCoordinatePlane( AbstractCoordinatePlane* ) ),
+                    p, SLOT( slotUnregisterDestroyedPlane( AbstractCoordinatePlane* ) ) );
+        delete oldPlane;
+    }
+    p->layoutPlanes();
+    p->slotRelayout();
+}
+
+void Chart::removeCoordinatePlane( int position )
+{
+    if ( position >=0 && position < p->coordinatePlanes.size() ) {
+        AbstractCoordinatePlane* oldPlane = p->coordinatePlanes.at( position );
+        p->coordinatePlanes.removeAt( position );
+        disconnect( oldPlane, SIGNAL( destroyedCoordinatePlane( AbstractCoordinatePlane* ) ),
+                    p, SLOT( slotUnregisterDestroyedPlane( AbstractCoordinatePlane* ) ) );
+        delete oldPlane;
+    }
+    p->layoutPlanes();
+    p->slotRelayout();
+}
+
+void Chart::setGlobalLeading( int left, int top, int right, int bottom )
+{
+    setGlobalLeadingLeft( left );
+    setGlobalLeadingTop( top );
+    setGlobalLeadingRight( right );
+    setGlobalLeadingBottom( bottom );
+    p->slotRelayout();
+}
+
+void Chart::setGlobalLeadingLeft( int leading )
+{
+    p->globalLeadingLeft = leading;
+    p->slotRelayout();
+}
+
+int Chart::globalLeadingLeft() const
+{
+    return p->globalLeadingLeft;
+}
+
+void Chart::setGlobalLeadingTop( int leading )
+{
+    p->globalLeadingTop = leading;
+    p->slotRelayout();
+}
+
+int Chart::globalLeadingTop() const
+{
+    return p->globalLeadingTop;
+}
+
+void Chart::setGlobalLeadingRight( int leading )
+{
+    p->globalLeadingRight = leading;
+    p->slotRelayout();
+}
+
+int Chart::globalLeadingRight() const
+{
+    return p->globalLeadingRight;
+}
+
+void Chart::setGlobalLeadingBottom( int leading )
+{
+    p->globalLeadingBottom = leading;
+    p->slotRelayout();
+}
+
+int Chart::globalLeadingBottom() const
+{
+    return p->globalLeadingBottom;
+}
+
 
 void Chart::paintEvent( QPaintEvent* )
 {
