@@ -2,6 +2,7 @@
 #include <QtDebug>
 #include <QGridLayout>
 #include <QLabel>
+#include <QHash>
 
 #include "KDChartChart.h"
 #include "KDChartChart_p.h"
@@ -31,7 +32,7 @@ Chart::Private::Private( Chart* chart_ )
     : chart( chart_ )
     , layout( 0 )
     , vLayout( 0 )
-    , planeLayout( 0 )
+    , planesLayout( 0 )
     , headerLayout( 0 )
     , footerLayout( 0 )
     , dataAndLegendLayout( 0 )
@@ -165,58 +166,140 @@ void Chart::Private::layoutLegends()
     }
 }
 
+
+
+QHash<AbstractCoordinatePlane*, Chart::Private::PlaneInfo> Chart::Private::buildPlaneLayoutInfos()
+{
+    QHash<CartesianAxis*, AxisInfo> axisInfos;
+    QHash<AbstractCoordinatePlane*, PlaneInfo> planeInfos;
+    foreach (AbstractCoordinatePlane* plane, coordinatePlanes )
+    {
+        PlaneInfo p;
+        // first check if we share space with another plane
+       p.referencePlane = plane->referenceCoordinatePlane();
+       planeInfos.insert( plane, p );
+
+        foreach ( AbstractDiagram* abstractDiagram, plane->diagrams() ) {
+            AbstractCartesianDiagram* diagram =
+                    dynamic_cast<AbstractCartesianDiagram*> ( abstractDiagram );
+            if( !diagram ) continue;
+
+            foreach ( CartesianAxis* axis, diagram->axes() ) {
+                if ( !axisInfos.contains( axis ) ) {
+                    AxisInfo i;
+                    i.plane = plane;
+                    axisInfos.insert( axis, i );
+                } else {
+                    AxisInfo i = axisInfos[axis];
+                    if ( i.plane == plane ) continue; // we don't want duplicates, only shared
+ 
+                    /* The user expects diagrams to be added on top, and to the right
+                     * so that horizontally we need to move the new diagram, vertically
+                     * the reference one. */
+                    PlaneInfo pi = planeInfos[plane];
+                    if ( !pi.referencePlane ) { // plane-to-plane overrides linking via axes
+                        pi.referencePlane = i.plane;
+                        if ( axis->position() == CartesianAxis::Left
+                            ||  axis->position() == CartesianAxis::Right )
+                            pi.horizontalOffset += 1;
+                        planeInfos[plane] = pi;
+
+                        pi = planeInfos[i.plane];
+                        if ( axis->position() == CartesianAxis::Top
+                            || axis->position() == CartesianAxis::Bottom  )
+                            pi.verticalOffset += 1;
+
+                        planeInfos[i.plane] = pi;
+                    }
+                }
+            }
+        }
+        p = planeInfos[plane];
+        if ( p.referencePlane == 0 ) {
+            p.grid = new QGridLayout();
+            planeInfos[plane] = p;
+        }
+    }
+    return planeInfos;
+}
+
 void Chart::Private::layoutPlanes()
 {
     if ( dataAndLegendLayout ) {
-        dataAndLegendLayout->removeItem( planeLayout );
+        dataAndLegendLayout->removeItem( planesLayout );
     }
-    delete planeLayout;
-    planeLayout = new QGridLayout();
-    foreach (AbstractCoordinatePlane* plane, coordinatePlanes )
-    {
-        planeLayout->addWidget( plane, 1, 1, Qt::AlignCenter );
+    delete planesLayout;
+    planesLayout = new QVBoxLayout(); // FIXME is this the right default, I wonder?
+
+    QHash<AbstractCoordinatePlane*, PlaneInfo> planeInfos = buildPlaneLayoutInfos();
+    QHash<AbstractAxis*, AxisInfo> axisInfos;
+    foreach ( AbstractCoordinatePlane* plane, coordinatePlanes ) {
+        Q_ASSERT( planeInfos.contains(plane) );
+        const PlaneInfo pi = planeInfos[plane];
+        int column = pi.horizontalOffset;
+        int row = pi.verticalOffset;
+        QGridLayout *planeLayout = pi.grid;
+        if ( !planeLayout ) {
+            // this plane is sharing an axis with another one
+            planeLayout = planeInfos[pi.referencePlane].grid;
+        } else {
+            planesLayout->addLayout( planeLayout );
+        }
+        Q_ASSERT( planeLayout );
+        planeLayout->addWidget( plane, row, column, Qt::AlignCenter );
 
         foreach ( AbstractDiagram* abstractDiagram, plane->diagrams() )
         {
             AbstractCartesianDiagram* diagram =
                     dynamic_cast<AbstractCartesianDiagram*> ( abstractDiagram );
-            if( diagram ) {
-                // If diagram == 0, we are probably polar and do not need any axes anyway.
-                foreach ( CartesianAxis* axis, diagram->axes() ) {
-                    Q_ASSERT ( axis );
-                    switch ( axis->position() )
-                    {
-                        case CartesianAxis::Top:
-                            planeLayout->addWidget( axis, 0, 1 );
-                            break;
-                        case CartesianAxis::Bottom:
-                            planeLayout->addWidget( axis, 2, 1 );
-                            break;
-                        case CartesianAxis::Left:
-                            planeLayout->addWidget( axis, 1, 0 );
-                            break;
-                        case CartesianAxis::Right:
-                            planeLayout->addWidget( axis, 1, 2 );
-                            break;
-                        default:
-                            Q_ASSERT_X( false, "Chart::paintEvent",
-                                        "unknown axis position" );
-                            break;
-                    };
-                }
+            if( !diagram ) continue;  // FIXME polar ?
+            // collect all axes of a kind into sublayouts
+            QVBoxLayout *topAxes = new QVBoxLayout();
+            QVBoxLayout *bottomAxes = new QVBoxLayout();
+            QHBoxLayout *leftAxes = new QHBoxLayout();
+            QHBoxLayout *rightAxes = new QHBoxLayout();
+
+            foreach ( CartesianAxis* axis, diagram->axes() ) {
+                if ( axisInfos.contains( axis ) ) continue; // already layed this one out
+                Q_ASSERT ( axis );
+                switch ( axis->position() )
+                {
+                    case CartesianAxis::Top:
+                        topAxes->addWidget( axis );
+                        break;
+                    case CartesianAxis::Bottom:
+                        bottomAxes->addWidget( axis );
+                        break;
+                    case CartesianAxis::Left:
+                        leftAxes->addWidget( axis );
+                        break;
+                    case CartesianAxis::Right:
+                        rightAxes->addWidget( axis );
+                        break;
+                    default:
+                        Q_ASSERT_X( false, "Chart::paintEvent",
+                                    "unknown axis position" );
+                        break;
+                };
+                axisInfos.insert( axis, AxisInfo() );
             }
+            planeLayout->addLayout( topAxes, 0, 1 );
+            planeLayout->addLayout( bottomAxes, row + 1, 1 );
+            planeLayout->addLayout( leftAxes, row, 0 );
+            planeLayout->addLayout( rightAxes, row, column + 1);
         }
+
     }
     if ( dataAndLegendLayout )
-        dataAndLegendLayout->addLayout( planeLayout, 1, 1 );
+        dataAndLegendLayout->addLayout( planesLayout, 1, 1 );
 }
 
 void Chart::Private::createLayouts( QWidget* w )
 {
     // layout for the planes is handled separately, so we don't want to delete it here
     if ( dataAndLegendLayout) {
-        dataAndLegendLayout->removeItem( planeLayout );
-        planeLayout->setParent( 0 );
+        dataAndLegendLayout->removeItem( planesLayout );
+        planesLayout->setParent( 0 );
     }
     // nuke the old bunch
     delete layout;
@@ -240,7 +323,7 @@ void Chart::Private::createLayouts( QWidget* w )
     vLayout->addSpacing( globalLeadingBottom );
 
     // the data+axes area
-    dataAndLegendLayout->addLayout( planeLayout, 1, 1 );
+    dataAndLegendLayout->addLayout( planesLayout, 1, 1 );
     dataAndLegendLayout->setRowStretch( 1, 2 );
     dataAndLegendLayout->setColumnStretch( 1, 2 );
 

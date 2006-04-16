@@ -45,6 +45,9 @@ namespace KDChart {
 
         void setGridAttributes( const GridAttributes & );
         GridAttributes gridAttributes() const;
+
+        void setReferenceCoordinatePlane( AbstractCoordinatePlane * plane );
+        AbstractCoordinatePlane * referenceCoordinatePlane() const;
     signals:
         void destroyedCoordinatePlane( AbstractCoordinatePlane* );
     private:

@@ -9,8 +9,12 @@ using namespace KDChart;
 class AbstractCoordinatePlane::Private
 {
 public:
+    Private()
+    :referenceCoordinatePlane(0)
+    {}
     AbstractDiagramList diagrams;
     GridAttributes gridAttributes;
+    AbstractCoordinatePlane *referenceCoordinatePlane;
 };
 
 AbstractCoordinatePlane::AbstractCoordinatePlane ( QWidget* parent )
@@ -99,6 +103,16 @@ void KDChart::AbstractCoordinatePlane::setGridAttributes( const GridAttributes& 
 GridAttributes KDChart::AbstractCoordinatePlane::gridAttributes() const
 {
     return d->gridAttributes;
+}
+
+void KDChart::AbstractCoordinatePlane::setReferenceCoordinatePlane( AbstractCoordinatePlane * plane )
+{
+    d->referenceCoordinatePlane = plane;
+}
+
+AbstractCoordinatePlane * KDChart::AbstractCoordinatePlane::referenceCoordinatePlane( ) const
+{
+    return d->referenceCoordinatePlane;
 }
 
 
