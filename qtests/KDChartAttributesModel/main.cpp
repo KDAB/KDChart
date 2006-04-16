@@ -15,7 +15,7 @@ private slots:
   void initTestCase()
   {
       TableModel *tableModel = new TableModel( this );
-      tableModel->loadFromCSV( "../tools/modeldata/KDChart-Test-Datatables.csv" );
+      tableModel->loadFromCSV( "../../examples/tools/modeldata/KDChart-Test-Datatables.csv" );
       tableModel->setSupplyHeaderData( false );
       m_model = tableModel;
       m_plane = new CartesianCoordinatePlane(0);
@@ -27,17 +27,19 @@ private slots:
 
   void testKDChartAttributesModelSetSimpleData()
   {
-      DataValueAttributes a = m_bars->dataValueAttributes( 2 );
+      QModelIndex idx = m_model->index( 0, 2, QModelIndex() );
+      DataValueAttributes a = m_bars->dataValueAttributes( idx );
       QCOMPARE( a.isVisible(), false );
       a.setVisible( true );
       m_bars->setDataValueAttributes( 2, a );
-      a = m_bars->dataValueAttributes( 2 );
+      a = m_bars->dataValueAttributes( idx );
       QCOMPARE( a.isVisible(), true );
   }
 
   void testKDChartAttributesModelTestSharedModel()
   {
-      DataValueAttributes a = m_lines->dataValueAttributes( 2 );
+      QModelIndex idx = m_model->index( 0, 2, QModelIndex() );
+      DataValueAttributes a = m_lines->dataValueAttributes( idx );
       QCOMPARE( a.isVisible(), true );
   }
 
@@ -45,19 +47,20 @@ private slots:
   {
       m_lines->usePrivateAttributes( true );
       // now we should be getting defaults again
-      DataValueAttributes a = m_lines->dataValueAttributes( 2 );
+      QModelIndex idx = m_bars->model()->index( 0, 2, QModelIndex() );
+      DataValueAttributes a = m_lines->dataValueAttributes( idx );
       QCOMPARE( a.isVisible(), false );
       // set the defaults on the other model and make sure they have
       // an effect
       m_bars->setDataValueAttributes( 2, a );
-      DataValueAttributes b = m_bars->dataValueAttributes( 2 );
+      DataValueAttributes b = m_bars->dataValueAttributes( idx );
       QCOMPARE( b.isVisible(), false );
       // now change a, set it on the lines, check that the bars
       // didn't change
       a.setVisible( true );
       m_lines->setDataValueAttributes( 2, a );
       QCOMPARE( a.isVisible(), true );
-      b = m_bars->dataValueAttributes( 2 );
+      b = m_bars->dataValueAttributes( idx );
       QCOMPARE( b.isVisible(), false );
   }
 
@@ -73,12 +76,13 @@ private slots:
       m_lines = new LineDiagram( m_plane );
       m_lines->usePrivateAttributes( true );
       m_lines->setModel( m_model );
-
-      DataValueAttributes a = m_lines->dataValueAttributes( 2 );
+      
+      QModelIndex idx = m_bars->model()->index( 0, 2, QModelIndex() );
+      DataValueAttributes a = m_lines->dataValueAttributes( idx );
       QCOMPARE( a.isVisible(), false );
       a.setVisible( true );
       m_lines->setDataValueAttributes( 2, a );
-      DataValueAttributes b = m_bars->dataValueAttributes( 2 );
+      DataValueAttributes b = m_bars->dataValueAttributes( idx );
       QCOMPARE( a.isVisible(), true );
       QCOMPARE( b.isVisible(), false );
   }
@@ -87,12 +91,13 @@ private slots:
   {
       m_lines->usePrivateAttributes( false );
       m_bars->usePrivateAttributes( false );
-      DataValueAttributes a = m_lines->dataValueAttributes( 2 );
+      QModelIndex idx = m_lines->model()->index( 0, 2, QModelIndex() );
+      DataValueAttributes a = m_lines->dataValueAttributes( idx );
       QCOMPARE( a.isVisible(), false ); // we got a default model again
       a.setVisible( true );
       m_lines->setDataValueAttributes( 2, a );
       // should now have propagated to the bars
-      DataValueAttributes b = m_bars->dataValueAttributes( 2 );
+      DataValueAttributes b = m_bars->dataValueAttributes( idx );
       QCOMPARE( b.isVisible(), true );
   }
 
