@@ -49,7 +49,6 @@ void CartesianAxis::paintEvent( QPaintEvent* event )
     AbstractDiagram* diag = d->diagram();
     AbstractCoordinatePlane* plane = diag->coordinatePlane();
     context.setCoordinatePlane( plane );
-    plane->layoutDiagrams();
     QRectF rect = QRectF ( 1, 1, plane->width() - 3, plane->height() - 3 );
     context.setRectangle( rect );
     d->geometry.setSize( size() );
