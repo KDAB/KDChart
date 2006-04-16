@@ -89,17 +89,20 @@ MainWindow::MainWindow( QWidget* parent ) :
 
     CartesianAxis *xAxis = new CartesianAxis( m_lines );
     CartesianAxis *yAxis = new CartesianAxis ( m_lines );
+    CartesianAxis *yAxis3 = new CartesianAxis ( m_lines );
     xAxis->setPosition ( KDChart::CartesianAxis::Bottom );
     yAxis->setPosition ( KDChart::CartesianAxis::Left );
-    m_lines->addAxes( xAxis );
-    m_lines->addAxes( yAxis );
+    yAxis3->setPosition ( KDChart::CartesianAxis::Left );
 
     CartesianAxis *yAxis2 = new CartesianAxis ( m_bars );
     yAxis2->setPosition ( KDChart::CartesianAxis::Right );
+
+    // explicitely add it to the second diagram, we want to share it
     m_bars->addAxes( xAxis );
-    m_bars->addAxes( yAxis2 );
 
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
     plane->replaceDiagram( m_bars );
+    // We want both planes to use the same space.
+    plane->setReferenceCoordinatePlane( m_chart->coordinatePlane() );
     m_chart->addCoordinatePlane( plane/*, 1*/);
 }
