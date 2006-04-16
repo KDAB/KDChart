@@ -24,8 +24,6 @@ protected:
     DatasetProxyModel* datasetProxy;
     bool allowOverlappingDataValueTexts;
     bool usePrivateAttributesModel;
-    double xAxisResolution;
-    double yAxisResolution;
     bool percent;
 };
 

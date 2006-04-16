@@ -74,23 +74,17 @@ namespace KDChart {
 
 
         // FIXME merge the rest from KDChartDiagram.h
+        
         void setDataValueAttributes( const QModelIndex & index,
                                      const DataValueAttributes & a );
-        KDChart::DataValueAttributes dataValueAttributes( const QModelIndex & index ) const;
-
         void setDataValueAttributes( int column, const DataValueAttributes & a );
-        KDChart::DataValueAttributes dataValueAttributes( int column ) const;
+        DataValueAttributes dataValueAttributes( const QModelIndex & index ) const;
+        DataValueAttributes dataValueAttributes( int column ) const;
 
         void setAllDataValueAttributes( const DataValueAttributes & a );
-        KDChart::DataValueAttributes allDataValueAttributes() const;
+        DataValueAttributes allDataValueAttributes() const;
 
-        /*PENDING Michel: FixMe -  Axes */
 
-        // configure the distance between 2 tickers on the axis
-        void setAbscissaResolution( double resolution ); 
-        double abscissaResolution() const;
-	void setOrdinateResolution( double resolution );
-        double ordinateResolution() const;
         // configure the ordinate in percent mode - values 0 to 100 
         void setPercentMode( bool percent );
         bool percentMode() const;
@@ -98,13 +92,13 @@ namespace KDChart {
 
         //Pen - Brush
         void setPen( const QModelIndex& index, const QPen& pen );
-        void setPen( const QPen& pen );
         void setPen( int column, const QPen& pen );
+        void setPen( const QPen& pen );
         QPen pen( const QModelIndex& index ) const;
 
         void setBrush( const QModelIndex& index, const QBrush& brush);
-        void setBrush( const QBrush& brush);
         void setBrush( int column, const QBrush& brush );
+        void setBrush( const QBrush& brush);
         QBrush brush( const QModelIndex& index ) const;
 
         void setAllowOverlappingDataValueTexts( bool allow );
