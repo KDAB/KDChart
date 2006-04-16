@@ -33,14 +33,12 @@ MainWindow::MainWindow( QWidget* parent ) :
     CartesianAxis *xAxis = new CartesianAxis( m_lines );
     CartesianAxis *yAxis = new CartesianAxis ( m_lines );
     CartesianAxis *yAxis2 = new CartesianAxis ( m_lines2 );
-    xAxis->setPosition ( KDChart::CartesianAxis::Bottom );
+    
+    xAxis->setPosition ( KDChart::CartesianAxis::Top );
     yAxis->setPosition ( KDChart::CartesianAxis::Left );
     yAxis2->setPosition ( KDChart::CartesianAxis::Right );
 
-    m_lines->addAxes( xAxis );
     m_lines2->addAxes( xAxis );
-    m_lines->addAxes( yAxis );
-    m_lines2->addAxes( yAxis2 );
 
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
     plane->replaceDiagram( m_lines2 );
