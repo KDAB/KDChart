@@ -52,7 +52,6 @@ void MainWindow::on_barTypeCB_currentIndexChanged( const QString & text )
     QPen pen;
     pen.setColor( Qt::black );
      m_bars->setPen(pen );
-     m_chart->coordinatePlane()->replaceDiagram( m_bars );
      m_chart->update();
 }
 
@@ -86,26 +85,13 @@ void MainWindow::on_paintValuesCB_toggled( bool checked )
 
 void MainWindow::on_paintThreeDBarsCB_toggled( bool checked )
 {
-    const int rowCount = m_bars->model()->rowCount();
-    const int colCount = m_bars->model()->columnCount();
-    for ( int i = 0; i<colCount; ++i ) {
-        for ( int j=0; j< rowCount; ++j ) {
-            QModelIndex index = m_bars->model()->index( j, i, QModelIndex() );
-            QBrush brush = m_bars->model()->headerData( i, Qt::Vertical, DatasetBrushRole ).value<QBrush>();
-            QPen pen( Qt::black );
-            ThreeDBarAttributes td = m_bars->threeDBarAttributes( index );
-            if ( checked ) {
-                td.setEnabled( true );
-                m_bars->setPen( index, pen );
-            } else {
-                pen.setColor( brush.color() ); 
-                td.setEnabled( false );
-                m_bars->setPen( index, pen );
-            }
-            m_bars->setThreeDBarAttributes( index, td); 
-        }
+    ThreeDBarAttributes td;
+    if ( checked ) {
+        td.setEnabled( true );
+    } else {
+        td.setEnabled( false );
     }
-    m_chart->coordinatePlane()->replaceDiagram( m_bars );
+    m_bars->setThreeDBarAttributes( td );
     m_chart->update();
 }
 
