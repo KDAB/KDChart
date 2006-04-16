@@ -8,10 +8,7 @@
 #include "KDChartGlobal.h"
 #include "KDChartMarkerAttributes.h"
 
-/**
- * AbstractDiagram defines the interface every diagram class
- * has to implement.
- */
+
 namespace KDChart {
 
     class AbstractCoordinatePlane;
@@ -21,7 +18,14 @@ namespace KDChart {
     class PaintContext;
     class DatasetProxyModel;
 
-    // This class is internal; but it's exported for qtests/KDChartAttributesModel
+    /**
+     * @brief AbstractDiagram defines the interface for diagram classes
+     *
+     * AbstractDiagram is the base class for diagram classes ("chart types").
+     * It defines the interface that needs to be implemented for the diagram
+     * to function within the KDChart framework. It extends Interview's
+     * QAbstractItemView. 
+     */
     class KDCHART_EXPORT AbstractDiagram : public QAbstractItemView
     {
         Q_OBJECT
@@ -38,17 +42,52 @@ namespace KDChart {
          * display, in diagram coordinates.
          */
         virtual const QPair<QPointF, QPointF> dataBoundaries() const;
-        // calculate values to paint and stores
+
+        
+        /**
+         * Draw the diagram contents to the rectangle and painter that are
+         * passed in as part of the paint context.
+         * @param paintContext All information needed for painting.
+         */
         virtual void paint ( PaintContext* paintContext ) = 0;
+
+        
+        /**
+         * Called by the widget's sizeEvent. Adjust all internal structures that
+         * are sensitive to the size of the widget.
+         * @param area 
+         */
         virtual void resize ( const QSizeF& area ) = 0;
 
-        /** \reimpl */
+        /** Associate a model with the diagram. */
         virtual void setModel ( QAbstractItemModel * model );
 
-        /** \reimpl */
+
+        /**
+         * Return the proxy model responsible for selecing the data to be
+         * displayed by this diagram from the underlying real model, if there
+         * is one.
+         * @return The dataset proxy model associated with this diagram, or 0
+         * if there is none.
+         */
+        virtual DatasetProxyModel* datasetProxy ();
+
+                /**
+         * Set whether the diagram should use its own attributes model, or share one
+         * with all other diagrams showing the same data (using the same model).
+         * Per default this is false, which means if two diagrams show the same model
+         * data, and you set a certain pen or brush for a dataset, all diagrams will
+         * use that pen or brush to paint the dataset.
+         * @param privateAttributes Whether the diagram should use a private set of
+         * attributes and not share them with others showing the same data.
+                 */
+        void usePrivateAttributes( bool privateAttributes );
+
+
+       /** Set the root index in the model where the diagram starts
+        * referencing data for display. */
         virtual void setRootIndex ( const QModelIndex& idx );
 
-        // implement QAbstractItemView:
         /** \reimpl */
         virtual QRect visualRect(const QModelIndex &index) const;
         /** \reimpl */
@@ -68,54 +107,164 @@ namespace KDChart {
         /** \reimpl */
         virtual QRegion visualRegionForSelection(const QItemSelection &selection) const;
 
+        /**
+         * The coordinate plane associated with the diagram. This determines
+         * how coordinates in value space are mapped into pixel space. By default
+         * this is a CartesianCoordinatePlane.
+         * @return The coordinate plane associated with the diagram.
+         */
         AbstractCoordinatePlane* coordinatePlane() const;
 
+        /**
+         * Set the coordinate plane associated with the diagram. This determines
+         * how coordinates in value space are mapped into pixel space. The chart
+         * takes ownership.
+         * @return The coordinate plane associated with the diagram.
+         */
         void setCoordinatePlane( AbstractCoordinatePlane* plane );
 
 
-        // FIXME merge the rest from KDChartDiagram.h
-        
+        /**
+         * The the DataValueAttributes for the given index.
+         * @param index The datapoint to set the attributes for.
+         * @param a The attributes to set.
+         */
         void setDataValueAttributes( const QModelIndex & index,
                                      const DataValueAttributes & a );
-        void setDataValueAttributes( int column, const DataValueAttributes & a );
+
+        /**
+         * The the DataValueAttributes for the given dataset.
+         * @param dataset The dataset to set the attributes for.
+         * @param a The attributes to set.
+         */
+        void setDataValueAttributes( int dataset, const DataValueAttributes & a );
+
+        /**
+         * The the DataValueAttributes for all datapoints in the model.
+         * @param a The attributes to set.
+         */
+        void setDataValueAttributes( const DataValueAttributes & a );
+
+        /**
+         * Retrieve the DataValueAttributes for the given index. This will fall
+         * back automatically to what was set at dataset or model level, if there
+         * are no datapoint specific settings.
+         * @param index The datapoint to retrive the attributes for.
+         * @return The DataValueAttributes for the given index.
+         */
         DataValueAttributes dataValueAttributes( const QModelIndex & index ) const;
-        DataValueAttributes dataValueAttributes( int column ) const;
 
-        void setAllDataValueAttributes( const DataValueAttributes & a );
-        DataValueAttributes allDataValueAttributes() const;
-
-
-        // configure the ordinate in percent mode - values 0 to 100 
-        void setPercentMode( bool percent );
-        bool percentMode() const;
-
-
-        //Pen - Brush
+        /**
+         * Set the pen to be used for paiting the datapoint at the given index.
+         * @param index The datapoint's index in the model.
+         * @param pen The pen to use.
+         */
         void setPen( const QModelIndex& index, const QPen& pen );
-        void setPen( int column, const QPen& pen );
+
+        /**
+         * Set the pen to be used for paiting the given dataset.
+         * @param dataset The dataset's row in the model.
+         * @param pen The pen to use.
+         */
+        void setPen( int dataset, const QPen& pen );
+
+        /**
+         * Set the pen to be used for paiting all datasets in the model.
+         * @param pen The pen to use.
+         */
         void setPen( const QPen& pen );
+
+        /**
+         * Retrieve the pen to be used for painting the datapoint at the given
+         * index in the model.
+         * @param index The index of the datapoint in the model.
+         * @return The pen to use for painting.
+         */
         QPen pen( const QModelIndex& index ) const;
 
+        /**
+         * Set the brush to be used for paiting the datapoint at the given index.
+         * @param index The datapoint's index in the model.
+         * @param brush The brush to use.
+         */
         void setBrush( const QModelIndex& index, const QBrush& brush);
-        void setBrush( int column, const QBrush& brush );
+
+        /**
+         * Set the brush to be used for paiting the given dataset.
+         * @param dataset The dataset's row in the model.
+         * @param pen The brush to use.
+         */
+        void setBrush( int dataset, const QBrush& brush );
+
+        /**
+         * Set the brush to be used for paiting all datasets in the model.
+         * @param brush The brush to use.
+         */
         void setBrush( const QBrush& brush);
+
+        /**
+         * Retrieve the brush to be used for painting the datapoint at the given
+         * index in the model.
+         * @param index The index of the datapoint in the model.
+         * @return The brush to use for painting.
+         */
         QBrush brush( const QModelIndex& index ) const;
 
         void setAllowOverlappingDataValueTexts( bool allow );
         bool allowOverlappingDataValueTexts() const;
 
+        /**
+         * Set the palette to be used for painting datasets to the default
+         * palette. @see KDChart::Palette.
+         */
         void useDefaultColors();
+
+        /**
+         * Set the palette to be used for painting datasets to the rainbow
+         * palette. @see KDChart::Palette.
+         */
         void useRainbowColors();
+
+        /**
+         * Set the palette to be used for painting datasets to the subdued
+         * palette. @see KDChart::Palette.
+        */
         void useSubduedColors();
 
-        void usePrivateAttributes( bool privateAttributes );
-
-        virtual DatasetProxyModel* datasetProxy ();
-
+        /**
+         * The set of dataset labels currently displayed, for use in legends, etc.
+         * @return The set of dataset labels currently displayed.
+         */
         QStringList datasetLabels() const;
+
+        /**
+         * The set of dataset brushes currently used, for use in legends, etc. This
+         * ignores cell-level override brushes.
+         * @return The current set of dataset brushes.
+         */
         QList<QBrush> datasetBrushes() const;
+
+        /**
+         * The set of dataset pens currently used, for use in legends, etc. This
+         * ignores cell-level override pens.
+         * @return The current set of dataset pens.
+         */
         QList<QPen> datasetPens() const;
+
+        /**
+         * The set of dataset markers currently used, for use in legends, etc. This
+         * ignores cell-level override markers.
+         * @return The current set of dataset brushes.
+         */
         QList<MarkerAttributes> datasetMarkers() const;
+
+        
+        // configure the ordinate in percent mode - values 0 to 100 
+        void setPercentMode( bool percent );
+        bool percentMode() const;
+
+
+        // FIXME merge the rest from KDChartDiagram.h
 
         virtual void paintMarker( QPainter* painter, const MarkerAttributes& markerAttributes,
                                   const QBrush& brush, const QPen&, const QPointF& point, const QSizeF& size );

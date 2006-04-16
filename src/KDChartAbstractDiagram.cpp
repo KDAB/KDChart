@@ -157,11 +157,6 @@ void AbstractDiagram::setDataValueAttributes( const QModelIndex & index,
     model()->setData( index, QVariant::fromValue( a ), DataValueLabelAttributesRole );
 }
 
-DataValueAttributes AbstractDiagram::dataValueAttributes( int column ) const
-{
-    // FIXME throw exception if no model
-     return model()->headerData( column, Qt::Vertical, DataValueLabelAttributesRole ).value<DataValueAttributes>();
-}
 
 void AbstractDiagram::setDataValueAttributes( int column, const DataValueAttributes & a )
 {
@@ -174,14 +169,9 @@ DataValueAttributes AbstractDiagram::dataValueAttributes( const QModelIndex & in
     return model()->data( index, KDChart::DataValueLabelAttributesRole ).value<DataValueAttributes>();
 }
 
-void AbstractDiagram::setAllDataValueAttributes( const DataValueAttributes & a )
+void AbstractDiagram::setDataValueAttributes( const DataValueAttributes & a )
 {
     d->attributesModel->setModelData( QVariant::fromValue( a ), DataValueLabelAttributesRole );
-}
-
-DataValueAttributes AbstractDiagram::allDataValueAttributes() const
-{
-    return d->attributesModel->modelData( DataValueLabelAttributesRole ).value<DataValueAttributes>();
 }
 
 void AbstractDiagram::setAllowOverlappingDataValueTexts( bool allow )
