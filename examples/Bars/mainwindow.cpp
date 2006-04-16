@@ -23,19 +23,11 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_chart = new Chart();
     chartLayout->addWidget( m_chart );
 
-    // now configure the dataset:
-    m_datasetProxy = new DatasetProxyModel ( this );
-    m_datasetProxy->setSourceModel ( &m_model );
-
     m_model.loadFromCSV( ":/data" );
 
     // Set up the diagram
-    KDChart::CartesianCoordinatePlane* plane =
-        dynamic_cast<CartesianCoordinatePlane* >( m_chart->coordinatePlane() );
-    Q_ASSERT ( plane );
-    if ( !plane ) return;
-    m_bars = new BarDiagram( plane );
-    m_bars->setModel( m_datasetProxy );
+    m_bars = new BarDiagram();
+    m_bars->setModel( &m_model );
     QPen pen;
     pen.setColor( Qt::darkGray );
     pen.setWidth( 1 );
@@ -111,10 +103,10 @@ void MainWindow::on_paintThreeDBarsCB_toggled( bool checked )
                 m_bars->setPen( index, pen );
             }
             m_bars->setThreeDBarAttributes( index, td); 
-        } 
+        }
     }
     m_chart->coordinatePlane()->replaceDiagram( m_bars );
-    m_chart->update();      
+    m_chart->update();
 }
 
 void MainWindow::on_markColumnCB_toggled( bool checked )

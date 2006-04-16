@@ -6,7 +6,6 @@
 
 namespace KDChart {
     class Chart;
-    class DatasetProxyModel;
     class BarDiagram;
 }
 
@@ -16,8 +15,6 @@ class MainWindow : public QWidget, private Ui::MainWindow
 
 public:
     MainWindow( QWidget* parent = 0 );
-
-  
 
 private slots:
     
@@ -29,7 +26,6 @@ private slots:
    
 private:
     KDChart::Chart* m_chart;
-    KDChart::DatasetProxyModel* m_datasetProxy;
     KDChart::BarDiagram* m_bars;
     TableModel m_model;
 };
