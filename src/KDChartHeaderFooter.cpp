@@ -67,12 +67,12 @@ void HeaderFooter::paintEvent( QPaintEvent* evt )
     // Paint the background and frame first
     AbstractArea::paintEvent( evt );
 
-    QPainter painter( this );
-
-    Q_ASSERT( d->textDoc );
+//    Q_ASSERT( d->textDoc );
     if( !d->textDoc )
         return;
 
+    QPainter painter( this );
+    
     QAbstractTextDocumentLayout* layout = d->textDoc->documentLayout();
     d->textDoc->setPageSize( size() );
 
@@ -95,6 +95,7 @@ void HeaderFooter::paintEvent( QPaintEvent* evt )
 void HeaderFooter::setPosition( HeaderFooterPosition position )
 {
     d->position = position;
+    emit positionChanged( this );
 }
 
 HeaderFooter::HeaderFooterPosition HeaderFooter::position() const

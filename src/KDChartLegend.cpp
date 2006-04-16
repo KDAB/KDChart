@@ -156,6 +156,7 @@ void Legend::setPosition( LegendPosition position )
     d->position = position;
 
     buildLegend();
+    emit positionChanged( this );
 }
 
 Legend::LegendPosition Legend::position() const

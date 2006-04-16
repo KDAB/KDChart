@@ -1,3 +1,6 @@
+
+#include <QGridLayout>
+
 #include "KDChartAbstractCoordinatePlane.h"
 #include "KDChartGridAttributes.h"
 

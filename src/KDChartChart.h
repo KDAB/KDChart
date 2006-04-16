@@ -78,6 +78,9 @@ namespace KDChart {
          */
         void removeCoordinatePlane( int position );
 
+
+        void setCoordinatePlaneLayout( QLayout * layout );
+        
         /**
          * The first header or footer of the chart. By default there is none.
          * @return The first header or footer of the chart or 0 if there was none

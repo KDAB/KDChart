@@ -56,25 +56,6 @@ public:
     virtual QSize sizeHint() const;
     virtual void paintEvent( QPaintEvent* );
 
-    // FIXME convenience wrapper around setReferenceArea()?
-/*    enum HeaderFooterPosition { Header0Left,
-                                Header0Center,
-                                Header0Right,
-                                Header1Left,
-                                Header1Center,
-                                Header1Right,
-                                Header2Left,
-                                Header2Center,
-                                Header2Right,
-                                Footer0Left,
-                                Footer0Center,
-                                Footer0Right,
-                                Footer1Left,
-                                Footer1Center,
-                                Footer1Right,
-                                Footer2Left,
-                                Footer2Center,
-                                Footer2Right };*/
 
     enum HeaderFooterPosition { NorthWest,
                                 NorthWest1,

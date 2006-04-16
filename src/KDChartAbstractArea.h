@@ -108,6 +108,10 @@ public:
                                  BackgroundAttributes attributes,
                                  const QRectF& rectangle );
 
+signals:
+    void positionChanged( AbstractArea * );
+
+
 }; // End of class AbstractArea
 
 }
