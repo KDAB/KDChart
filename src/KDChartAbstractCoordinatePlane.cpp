@@ -37,6 +37,7 @@ void AbstractCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
     diagram->setParent ( this );
     diagram->setCoordinatePlane( this );
     layoutDiagrams();
+    emit diagramsChanged();
 }
 
 
@@ -51,6 +52,7 @@ void AbstractCoordinatePlane::replaceDiagram ( AbstractDiagram* diagram, int pos
         diagram->setParent ( this );
         diagram->setCoordinatePlane( this );
         layoutDiagrams();
+        emit diagramsChanged();
     }
 }
 
@@ -61,6 +63,7 @@ void AbstractCoordinatePlane::removeDiagram( int position/* = 0 */ )
     if ( position >= 0 && d->diagrams.size() > position ) {
         d->diagrams.removeAt( position );
         layoutDiagrams();
+        emit diagramsChanged();
     }
 }
 

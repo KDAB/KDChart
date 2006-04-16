@@ -223,7 +223,7 @@ QHash<AbstractCoordinatePlane*, Chart::Private::PlaneInfo> Chart::Private::build
     return planeInfos;
 }
 
-void Chart::Private::layoutPlanes()
+void Chart::Private::slotLayoutPlanes()
 {
     if ( dataAndLegendLayout ) {
         dataAndLegendLayout->removeItem( planesLayout );
@@ -292,6 +292,7 @@ void Chart::Private::layoutPlanes()
     }
     if ( dataAndLegendLayout )
         dataAndLegendLayout->addLayout( planesLayout, 1, 1 );
+    slotRelayout();
 }
 
 void Chart::Private::createLayouts( QWidget* w )
@@ -343,8 +344,7 @@ Chart::Chart ( QWidget* parent )
     : QWidget ( parent )
     , p ( new Private( this ) )
 {
-    p->coordinatePlanes.append ( new CartesianCoordinatePlane ( this ) );
-    p->layoutPlanes();
+    addCoordinatePlane( new CartesianCoordinatePlane ( this ) );
 }
 
 Chart::~Chart()
@@ -371,10 +371,11 @@ void Chart::addCoordinatePlane( AbstractCoordinatePlane* plane )
 {
     connect( plane, SIGNAL( destroyedCoordinatePlane( AbstractCoordinatePlane* ) ),
              p, SLOT( slotUnregisterDestroyedPlane( AbstractCoordinatePlane* ) ) );
+    connect( plane, SIGNAL( diagramsChanged() ),
+             p, SLOT( slotLayoutPlanes() ) );
     p->coordinatePlanes.append( plane );
     plane->setParent( this );
-    p->layoutPlanes();
-    p->slotRelayout();
+    p->slotLayoutPlanes();
 }
 
 void Chart::replaceCoordinatePlane( AbstractCoordinatePlane* plane, int position )
@@ -382,14 +383,15 @@ void Chart::replaceCoordinatePlane( AbstractCoordinatePlane* plane, int position
     if ( position >=0 && position < p->coordinatePlanes.size() ) {
         connect( plane, SIGNAL( destroyedCoordinatePlane( AbstractCoordinatePlane* ) ),
                  p, SLOT( slotUnregisterDestroyedPlane( AbstractCoordinatePlane* ) ) );
+        connect( plane, SIGNAL( diagramsChanged() ),
+                 p, SLOT( slotLayoutPlanes() ) );
         AbstractCoordinatePlane* oldPlane = p->coordinatePlanes.at( position );
         p->coordinatePlanes.replace ( position, plane );
         disconnect( oldPlane, SIGNAL( destroyedCoordinatePlane( AbstractCoordinatePlane* ) ),
                     p, SLOT( slotUnregisterDestroyedPlane( AbstractCoordinatePlane* ) ) );
         delete oldPlane;
     }
-    p->layoutPlanes();
-    p->slotRelayout();
+    p->slotLayoutPlanes();
 }
 
 void Chart::removeCoordinatePlane( int position )
@@ -401,8 +403,7 @@ void Chart::removeCoordinatePlane( int position )
                     p, SLOT( slotUnregisterDestroyedPlane( AbstractCoordinatePlane* ) ) );
         delete oldPlane;
     }
-    p->layoutPlanes();
-    p->slotRelayout();
+    p->slotLayoutPlanes();
 }
 
 void Chart::setGlobalLeading( int left, int top, int right, int bottom )

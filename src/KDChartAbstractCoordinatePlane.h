@@ -50,6 +50,7 @@ namespace KDChart {
         AbstractCoordinatePlane * referenceCoordinatePlane() const;
     signals:
         void destroyedCoordinatePlane( AbstractCoordinatePlane* );
+        void diagramsChanged();
     private:
         Private* d;
     };
