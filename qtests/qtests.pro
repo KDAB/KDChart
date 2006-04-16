@@ -1,5 +1,6 @@
 TEMPLATE = subdirs
-SUBDIRS += 
+SUBDIRS +=  ChartElementOwnership \
+            KDChartAttributesModel \
 
 test.target=test
 test.commands=for d in $${SUBDIRS}; do (cd "\$$d" && make test); done
