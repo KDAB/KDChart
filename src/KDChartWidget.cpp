@@ -399,6 +399,7 @@ void Widget::setType( ChartType chartType )
         foreach(Legend* l, legends)
             l->setDiagram( diag );
     }
+    coordinatePlane()->show();
 }
 
 /**
