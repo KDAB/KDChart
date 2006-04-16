@@ -1,40 +1,32 @@
 #include <QList>
 #include <QtDebug>
 #include <QGridLayout>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
+#include <QLabel>
 
-#include <KDChartChart.h>
-#include <KDChartCartesianCoordinatePlane.h>
-#include <KDChartAbstractCartesianDiagram.h>
-#include <KDChartHeaderFooter.h>
-#include <KDChartLegend.h>
-#include <qlabel.h>
+#include "KDChartChart.h"
+#include "KDChartChart_p.h"
+#include "KDChartCartesianCoordinatePlane.h"
+#include "KDChartAbstractCartesianDiagram.h"
+#include "KDChartHeaderFooter.h"
+#include "KDChartLegend.h"
 
 using namespace KDChart;
 
-class Chart::Private
+void Chart::Private::slotUnregisterDestroyedLegend( Legend *l )
 {
-public:
-    CoordinatePlaneList coordinatePlanes;
-    HeaderFooterList headerFooters;
-    LegendList legends;
+    legends.removeAll( l );
+}
 
-    QHBoxLayout* layout;
-    QGridLayout* planeLayout;
+void Chart::Private::slotUnregisterDestroyedHeaderFooter( HeaderFooter* hf )
+{
+    headerFooters.removeAll( hf );
+}
 
-    int globalLeadingLeft, globalLeadingRight, globalLeadingTop, globalLeadingBottom;
+void Chart::Private::slotUnregisterDestroyedPlane( AbstractCoordinatePlane* plane )
+{
+    coordinatePlanes.removeAll( plane );
+}
 
-    Private ()
-        : layout( 0 ),
-          planeLayout( 0 ),
-          globalLeadingLeft( 0 ),
-          globalLeadingRight( 0 ),
-          globalLeadingTop( 0 ),
-          globalLeadingBottom( 0 )
-    {}
-
-};
 
 /*! Chart is the central widget. */
 Chart::Chart ( QWidget* parent )
@@ -71,14 +63,21 @@ CoordinatePlaneList Chart::coordinatePlanes()
 
 void Chart::addCoordinatePlane( AbstractCoordinatePlane* plane )
 {
+    connect( plane, SIGNAL( destroyedCoordinatePlane( AbstractCoordinatePlane* ) ),
+             p, SLOT( slotUnregisterDestroyedPlane( AbstractCoordinatePlane* ) ) );
     p->coordinatePlanes.append( plane );
+    plane->setParent( this );
 }
 
 void Chart::replaceCoordinatePlane( AbstractCoordinatePlane* plane, int position )
 {
     if ( position >=0 && position < p->coordinatePlanes.size() ) {
+        connect( plane, SIGNAL( destroyedCoordinatePlane( AbstractCoordinatePlane* ) ),
+                 p, SLOT( slotUnregisterDestroyedPlane( AbstractCoordinatePlane* ) ) );
         AbstractCoordinatePlane* oldPlane = p->coordinatePlanes.at( position );
         p->coordinatePlanes.replace ( position, plane );
+        disconnect( oldPlane, SIGNAL( destroyedCoordinatePlane( AbstractCoordinatePlane* ) ),
+                    p, SLOT( slotUnregisterDestroyedPlane( AbstractCoordinatePlane* ) ) );
         delete oldPlane;
     }
 }
@@ -88,15 +87,10 @@ void Chart::removeCoordinatePlane( int position )
     if ( position >=0 && position < p->coordinatePlanes.size() ) {
         AbstractCoordinatePlane* oldPlane = p->coordinatePlanes.at( position );
         p->coordinatePlanes.removeAt( position );
+        disconnect( oldPlane, SIGNAL( destroyedCoordinatePlane( AbstractCoordinatePlane* ) ),
+                    p, SLOT( slotUnregisterDestroyedPlane( AbstractCoordinatePlane* ) ) );
         delete oldPlane;
     }
-}
-
-void Chart::removeCoordinatePlane( AbstractCoordinatePlane *plane )
-{
-    int idx = p->coordinatePlanes.indexOf( plane );
-    if ( idx >= 0 && idx < p->coordinatePlanes.size() )
-        delete p->coordinatePlanes.takeAt( idx );
 }
 
 void Chart::setGlobalLeading( int left, int top, int right, int bottom )
@@ -361,11 +355,10 @@ void Chart::paintEvent( QPaintEvent* )
 
 void Chart::addHeaderFooter( HeaderFooter* headerFooter )
 {
-    Q_ASSERT_X ( headerFooter->parent() == this, "KDChart::addHeaderFooter",
-                 "Headers/footers have to be children of the chart." );
-
     p->headerFooters.append( headerFooter );
     headerFooter->setParent( this );
+    connect( headerFooter, SIGNAL( destroyedHeaderFooter( HeaderFooter* ) ),
+             p, SLOT( slotUnregisterDestroyedHeaderFooter( HeaderFooter* ) ) );
 }
 
 void Chart::replaceHeaderFooter( HeaderFooter* headerFooter, int position )
@@ -375,13 +368,20 @@ void Chart::replaceHeaderFooter( HeaderFooter* headerFooter, int position )
     } else {
         HeaderFooter *old = p->headerFooters.value( position );
         p->headerFooters.replace( position, headerFooter );
+        disconnect( old, SIGNAL( destroyedHeaderFooter( HeaderFooter* ) ),
+                    p, SLOT( slotUnregisterDestroyedHeaderFooter( HeaderFooter* ) ) );
         delete old;
+        connect( headerFooter, SIGNAL( destroyedHeaderFooter( HeaderFooter* ) ),
+                 p, SLOT( slotUnregisterDestroyedHeaderFooter( HeaderFooter* ) ) );
     }
 }
 
 void Chart::removeHeaderFooter( int position )
 {
     if( position >= 0 && p->headerFooters.size() > position ) {
+        HeaderFooter * old = p->headerFooters.at( position );
+        disconnect( old, SIGNAL( destroyedHeaderFooter( HeaderFooter* ) ),
+                    p, SLOT( slotUnregisterDestroyedHeaderFooter( HeaderFooter* ) ) );
         delete p->headerFooters.takeAt( position );
     }
 }
@@ -402,11 +402,10 @@ HeaderFooterList Chart::headerFooters()
 
 void Chart::addLegend( Legend* legend )
 {
-    Q_ASSERT_X ( legend->parent() == this, "KDChart::addLegend",
-                 "Legends have to be children of the chart." );
-
     p->legends.append( legend );
     legend->setParent( this );
+    connect( legend, SIGNAL( destroyedLegend( Legend* ) ),
+             p, SLOT( slotUnregisterDestroyedLegend( Legend* ) ) );
 }
 
 void Chart::replaceLegend( Legend* legend, int position )
@@ -416,14 +415,21 @@ void Chart::replaceLegend( Legend* legend, int position )
     } else {
         Legend *old = p->legends.value( position );
         p->legends.replace( position, legend );
+        disconnect( old, SIGNAL( destroyedLegend( Legend* ) ),
+                    p, SLOT( slotUnregisterDestroyedLegend( Legend* ) ) );
         delete old;
+        connect( legend, SIGNAL( destroyedLegend( Legend* ) ),
+                 p, SLOT( slotUnregisterDestroyedLegend( Legend* ) ) );
     }
 }
 
 void Chart::removeLegend( int position )
 {
     if( position >= 0 && p->legends.size() > position ) {
-        delete p->legends.takeAt( position );
+        Legend *old = p->legends.value( position );
+        disconnect( old, SIGNAL( destroyedLegend( Legend* ) ),
+                    p, SLOT( slotUnregisterDestroyedLegend( Legend* ) ) );
+        delete old;
     }
 }
 

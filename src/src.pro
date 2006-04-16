@@ -65,7 +65,8 @@ HEADERS += KDChartGlobal.h \
            KDChartAbstractArea_p.h \
            KDChartAbstractArea.h \
            KDChartAbstractAxis_p.h \
-           KDChartAbstractAxis.h 
+           KDChartAbstractAxis.h \
+           KDChartChart_p.h 
 SOURCES += KDChartAbstractCartesianDiagram.cpp \
            KDChartAbstractCoordinatePlane.cpp \
            KDChartAbstractDiagram.cpp \

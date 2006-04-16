@@ -35,6 +35,7 @@ HeaderFooter::HeaderFooter( QWidget* parent ) :
 
 HeaderFooter::~HeaderFooter()
 {
+    emit destroyedHeaderFooter( this );
 }
 
 void HeaderFooter::init()

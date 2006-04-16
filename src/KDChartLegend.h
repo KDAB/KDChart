@@ -139,6 +139,8 @@ public:
     // FIXME same as frameSettings()->padding()?
     void setSpacing( uint space );
     uint spacing() const;
+signals:
+    void destroyedLegend( Legend* );
 
 private slots:
     void resetDiagram();

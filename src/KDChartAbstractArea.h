@@ -47,6 +47,14 @@ namespace KDChart {
     class PaintContext;
 
 
+    /**
+     * @class AbstractArea KDChartAbstractArea.h
+     * @brief An area in the chart with a background, a frame, etc.
+     *
+     * AbstractArea is the base class for all chart elements that have
+     * a set of background attributes and frame attributes, such as
+     * legends or axes.
+     */
 class KDCHART_EXPORT AbstractArea : public QWidget
 {
     Q_OBJECT
@@ -54,10 +62,12 @@ class KDCHART_EXPORT AbstractArea : public QWidget
     Q_DISABLE_COPY( AbstractArea )
     KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC_QWIDGET( AbstractArea )
 
-public:
-    AbstractArea( QWidget* parent );
-    virtual ~AbstractArea();
 
+protected:
+    AbstractArea( QWidget* parent );
+    virtual ~AbstractArea() ;
+
+public:
     virtual QDomDocumentFragment toXML() const;
 
 //    virtual AbstractArea * clone() const = 0;

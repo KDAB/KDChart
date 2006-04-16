@@ -57,6 +57,7 @@ Legend::Legend( KDChart::AbstractDiagram* diagram, QWidget* parent ) :
 
 Legend::~Legend()
 {
+    emit destroyedLegend( this );
 }
 
 void Legend::init()

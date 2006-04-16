@@ -33,6 +33,7 @@ AbstractAxis::AbstractAxis ( AbstractDiagram* parent )
 
 AbstractAxis::~AbstractAxis()
 {
+    emit destroyedAxis( this );
 }
 
 

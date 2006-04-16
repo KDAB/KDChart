@@ -18,6 +18,7 @@ AbstractCoordinatePlane::AbstractCoordinatePlane ( QWidget* parent )
 
 AbstractCoordinatePlane::~AbstractCoordinatePlane()
 {
+    emit destroyedCoordinatePlane( this );
 }
 
 void AbstractCoordinatePlane::addDiagram ( AbstractDiagram* diagram )

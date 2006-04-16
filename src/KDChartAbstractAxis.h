@@ -76,6 +76,8 @@ namespace KDChart {
         virtual QRectF geometry() const = 0;
 
         virtual QDomDocumentFragment toXML() const = 0;
+    signals:
+        void destroyedAxis( AbstractAxis* );
     };
 }
 

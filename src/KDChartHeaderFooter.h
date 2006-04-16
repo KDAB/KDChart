@@ -46,7 +46,7 @@ class KDCHART_EXPORT HeaderFooter : public AbstractArea
     KDCHART_DECLARE_PRIVATE_DERIVED_QWIDGET( HeaderFooter )
 
 public:
-    HeaderFooter( QWidget* parent );
+    HeaderFooter( QWidget* parent = 0 );
     virtual ~HeaderFooter();
 
     virtual QDomDocumentFragment toXML() const;
@@ -103,6 +103,8 @@ public:
 
     void setTextAttributes( const TextAttributes &a );
     TextAttributes textAttributes() const;
+signals:
+    void destroyedHeaderFooter( HeaderFooter* );
 
 private:
 }; // End of class HeaderFooter

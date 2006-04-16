@@ -79,13 +79,6 @@ namespace KDChart {
         void removeCoordinatePlane( int position );
 
         /**
-         * Remove the given coordinate plane, if it is owned by this chart.
-         * @param plane The plane to remove.
-         */
-        void removeCoordinatePlane( AbstractCoordinatePlane* plane );
-
-
-        /**
          * The first header or footer of the chart. By default there is none.
          * @return The first header or footer of the chart or 0 if there was none
          * added to the chart.
