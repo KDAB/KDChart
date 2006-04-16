@@ -71,8 +71,6 @@ public:
     const int numberOfAbscissaSegments () const;
     /** \reimpl */
     const int numberOfOrdinateSegments () const;
-    /** \reimpl */
-    CartesianAxisList axes () const;
 
     void paint ( PaintContext* paintContext );
     void resize ( const QSizeF& area );

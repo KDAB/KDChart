@@ -439,9 +439,4 @@ const int BarDiagram::numberOfOrdinateSegments () const
     return model()->columnCount(rootIndex());
 }
 
-CartesianAxisList BarDiagram::axes () const
-{
-    return CartesianAxisList();
-}
-
 #undef d
