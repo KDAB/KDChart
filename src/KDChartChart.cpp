@@ -170,6 +170,18 @@ void Chart::Private::layoutLegends()
 
 QHash<AbstractCoordinatePlane*, Chart::Private::PlaneInfo> Chart::Private::buildPlaneLayoutInfos()
 {
+    /* There are two ways in which planes can be caused to interact in
+     * where they are put layouting wise: The first is the reference plane. If
+     * such a reference plane is set, on a plane, it will use the same cell in the
+     * layout as that one. In addition to this, planes can share an axis. In that case
+     * they will be layed out in relation to each other as suggested by the position
+     * of the axis. If, for example Plane1 and Plane2 share an axis at position Left,
+     * that will result in the layout: Axis Plane1 Plane 2, vertically. If Plane1
+     * also happens to be Plane2's referece plane, both planes are drawn over each
+     * other. The reference plane concept allows two planes to share the same space
+     * even if neither has any axis, and in case there are shared axis, it is used
+     * to decided, whether the planes should be painted on top of each other or
+     * layed out vertically or horizontally next to each other. */
     QHash<CartesianAxis*, AxisInfo> axisInfos;
     QHash<AbstractCoordinatePlane*, PlaneInfo> planeInfos;
     foreach (AbstractCoordinatePlane* plane, coordinatePlanes )
@@ -186,6 +198,10 @@ QHash<AbstractCoordinatePlane*, Chart::Private::PlaneInfo> Chart::Private::build
 
             foreach ( CartesianAxis* axis, diagram->axes() ) {
                 if ( !axisInfos.contains( axis ) ) {
+                    /* If this is the first time we see this axis, add it, with the
+                     * current plane. The first plane added to the chart that has
+                     * the axis associated with it thus "owns" it, and decides about
+                     * layout. */
                     AxisInfo i;
                     i.plane = plane;
                     axisInfos.insert( axis, i );
@@ -197,7 +213,9 @@ QHash<AbstractCoordinatePlane*, Chart::Private::PlaneInfo> Chart::Private::build
                      * so that horizontally we need to move the new diagram, vertically
                      * the reference one. */
                     PlaneInfo pi = planeInfos[plane];
-                    if ( !pi.referencePlane ) { // plane-to-plane overrides linking via axes
+                    // plane-to-plane linking overrides linking via axes
+                    if ( !pi.referencePlane ) {
+                        // we're not the first plane to see this axis, mark us as a slave
                         pi.referencePlane = i.plane;
                         if ( axis->position() == CartesianAxis::Left
                             ||  axis->position() == CartesianAxis::Right )
@@ -214,6 +232,7 @@ QHash<AbstractCoordinatePlane*, Chart::Private::PlaneInfo> Chart::Private::build
                 }
             }
         }
+        // Create a new grid layout for each plane that has no reference.
         p = planeInfos[plane];
         if ( p.referencePlane == 0 ) {
             p.grid = new QGridLayout();
@@ -231,6 +250,9 @@ void Chart::Private::slotLayoutPlanes()
     delete planesLayout;
     planesLayout = new QVBoxLayout(); // FIXME is this the right default, I wonder?
 
+    /* First go through all planes and all axes and figure out whether the planes
+     * need to coordinate. If they do, they share a grid layout, if not, each
+     * get their own. See buildPlaneLayoutInfos() for more details. */
     QHash<AbstractCoordinatePlane*, PlaneInfo> planeInfos = buildPlaneLayoutInfos();
     QHash<AbstractAxis*, AxisInfo> axisInfos;
     foreach ( AbstractCoordinatePlane* plane, coordinatePlanes ) {
@@ -240,12 +262,16 @@ void Chart::Private::slotLayoutPlanes()
         int row = pi.verticalOffset;
         QGridLayout *planeLayout = pi.grid;
         if ( !planeLayout ) {
-            // this plane is sharing an axis with another one
+            // this plane is sharing an axis with another one, so use
+            // the grid of that one as well
             planeLayout = planeInfos[pi.referencePlane].grid;
         } else {
             planesLayout->addLayout( planeLayout );
         }
         Q_ASSERT( planeLayout );
+        /* Put the plane in the center of the layout. If this is our own, that's
+         * the middle of the layout, if we are sharing, it's a cell in the center
+         * column of the shared grid. */
         planeLayout->addWidget( plane, row, column, Qt::AlignCenter );
 
         foreach ( AbstractDiagram* abstractDiagram, plane->diagrams() )
@@ -283,6 +309,10 @@ void Chart::Private::slotLayoutPlanes()
                 };
                 axisInfos.insert( axis, AxisInfo() );
             }
+            /* Put each stack of axes-layouts in the cells surrounding the
+             * associated plane. We are laying out in the oder the planes
+             * were added, and the first one gets to lay out shared axes.
+             * Private axes go here as well, of course. */
             planeLayout->addLayout( topAxes, 0, 1 );
             planeLayout->addLayout( bottomAxes, row + 1, 1 );
             planeLayout->addLayout( leftAxes, row, 0 );
@@ -290,6 +320,7 @@ void Chart::Private::slotLayoutPlanes()
         }
 
     }
+    // re-add our grid(s) to the chart's layout
     if ( dataAndLegendLayout )
         dataAndLegendLayout->addLayout( planesLayout, 1, 1 );
     slotRelayout();
@@ -327,7 +358,6 @@ void Chart::Private::createLayouts( QWidget* w )
     dataAndLegendLayout->addLayout( planesLayout, 1, 1 );
     dataAndLegendLayout->setRowStretch( 1, 2 );
     dataAndLegendLayout->setColumnStretch( 1, 2 );
-
 }
 
 void Chart::Private::slotRelayout()
