@@ -39,20 +39,19 @@ MainWindow::MainWindow( QWidget* parent ) :
 
 void MainWindow::on_barTypeCB_currentIndexChanged( const QString & text )
 {
-    BarAttributes ba = m_bars->barAttributes( m_bars->model()->index( 0, 0, QModelIndex() ) );
     if ( text == "Normal" )
-        ba.setType( BarAttributes::Normal );
+        m_bars->setType( BarDiagram::Normal );
     else if ( text == "Stacked" )
-        ba.setType( BarAttributes::Stacked );
+        m_bars->setType( BarDiagram::Stacked );
     else if ( text == "Percent" )   
-        ba.setType( BarAttributes::Percent );
+        m_bars->setType( BarDiagram::Percent );
     else 
         qWarning (" Does not match any type");   
-    m_bars->setBarAttributes( ba );
+ 
     QPen pen;
     pen.setColor( Qt::black );
-     m_bars->setPen(pen );
-     m_chart->update();
+    m_bars->setPen(pen );
+    m_chart->update();
 }
 
 
