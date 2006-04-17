@@ -74,6 +74,11 @@ LineAttributes LineDiagram::lineAttributes( const QModelIndex & index ) const
     return model()->data( index, KDChart::LineAttributesRole ).value<LineAttributes>();
 }
 
+LineAttributes LineDiagram::lineAttributes( int column ) const
+{
+    return model()->headerData( column, Qt::Vertical, KDChart::LineAttributesRole ).value<LineAttributes>();
+}
+
 void LineDiagram::setThreeDLineAttributes( const ThreeDLineAttributes & ta )
 {
   d->attributesModel->setModelData( QVariant::fromValue( ta ), ThreeDLineAttributesRole );
@@ -225,7 +230,8 @@ void LineDiagram::paint( PaintContext* ctx )
                     list.append( DataValueTextInfo(  model()->index( j, i, rootIndex() ), nextPoint, value ) );
                 }
                 //area can be set by column
-                LineAttributes laa = lineAttributes( model()->index( 0, i, rootIndex() ) );
+                //LineAttributes laa = lineAttributes( model()->index( 0, i, rootIndex() ) );
+                LineAttributes laa = lineAttributes( i );
                 if ( laa.displayArea() )
                     paintAreas( ctx, index, area, laa.transparency() );
             }
