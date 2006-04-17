@@ -1,5 +1,7 @@
-#include "KDChartDataValueAttributes.h"
+
+#include <QVariant>
 #include <QtXml/QDomDocumentFragment>
+#include "KDChartDataValueAttributes.h"
 #include "KDChartRelativePosition.h"
 #include <KDChartTextAttributes.h>
 #include <KDChartFrameAttributes.h>
@@ -93,6 +95,13 @@ const DataValueAttributes& DataValueAttributes::defaultAttributes()
 {
     static const DataValueAttributes theDefaultDataValueAttributes;
     return theDefaultDataValueAttributes;
+}
+
+/*static*/
+const QVariant& DataValueAttributes::defaultAttributesAsVariant()
+{
+    static const QVariant theDefaultDataValueAttributesVariant = QVariant::fromValue(defaultAttributes());
+    return theDefaultDataValueAttributesVariant;
 }
 
 

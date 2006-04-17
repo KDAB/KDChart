@@ -92,6 +92,7 @@ public:
   KDChartRelativePosition positiveRelativePosition() const;
 
   static const DataValueAttributes& defaultAttributes();
+  static const QVariant& defaultAttributesAsVariant();
 
   bool operator==( const DataValueAttributes& ) const;
   inline bool operator!=( const DataValueAttributes& other ) const { return !operator==(other); }
