@@ -68,17 +68,17 @@ void AbstractCartesianDiagram::drawGrid( PaintContext* context )
 {
     if ( !gridAttributes()->isGridVisible() )
         return;
-
+    QPair<QPointF, QPointF> boundaries = dataBoundaries();
     const int MinimumPixelsBetweenLines = 10;
     
-    QPointF p1 = context->coordinatePlane()->translate( dataBoundaries().first );
-    QPointF p2 = context->coordinatePlane()->translate( dataBoundaries().second );
+    QPointF p1 = context->coordinatePlane()->translate( boundaries.first );
+    QPointF p2 = context->coordinatePlane()->translate( boundaries.second );
 
     double screenRangeX = qAbs ( p1.x() - p2.x() );
     double screenRangeY = qAbs ( p1.y() - p2.y() );
 
     int numberOfUnitLinesX = model()->rowCount() - 1;
-    int numberOfUnitLinesY = (int) (dataBoundaries().second.y() - dataBoundaries().first.y());
+    int numberOfUnitLinesY = (int) (boundaries.second.y() - boundaries.first.y());
     
     bool drawUnitLinesX = screenRangeX / numberOfUnitLinesX > MinimumPixelsBetweenLines;
     bool drawUnitLinesY = screenRangeY / numberOfUnitLinesY > MinimumPixelsBetweenLines;
@@ -99,10 +99,10 @@ void AbstractCartesianDiagram::drawGrid( PaintContext* context )
     bool drawFourthLinesX = screenRangeX / (numberOfUnitLinesX * 4) > MinimumPixelsBetweenLines && gridAttributes()->isSubGridVisible();
     bool drawFourthLinesY = screenRangeY / (numberOfUnitLinesY * 4) > MinimumPixelsBetweenLines && gridAttributes()->isSubGridVisible();
 
-    int minValueX = qRound( dataBoundaries().first.x() );
-    int maxValueX = qRound( dataBoundaries().second.x() );
-    int minValueY = qRound( dataBoundaries().first.y() );
-    int maxValueY = qRound( dataBoundaries().second.y() );
+    int minValueX = qRound( boundaries.first.x() );
+    int maxValueX = qRound( boundaries.second.x() );
+    int minValueY = qRound( boundaries.first.y() );
+    int maxValueY = qRound( boundaries.second.y() );
 
     if ( drawFourthLinesX ) {
         context->painter()->setPen( gridAttributes()->subGridPen() );
