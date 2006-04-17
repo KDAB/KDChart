@@ -185,7 +185,7 @@
          </widget>
         </item>
         <item row="3" column="0" >
-         <widget class="QCheckBox" name="animateCB" >
+         <widget class="QCheckBox" name="animateExplosionCB" >
           <property name="text" >
            <string>Animate</string>
           </property>
@@ -274,5 +274,54 @@
  <resources>
   <include location="BarChart" />
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>animateExplosionCB</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>explodeDatasetSB</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>65</x>
+     <y>190</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>119</x>
+     <y>106</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>animateExplosionCB</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>explodeFactorSB</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>86</x>
+     <y>189</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>125</x>
+     <y>132</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>animateExplosionCB</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>explodeSubmitPB</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>43</x>
+     <y>191</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>60</x>
+     <y>161</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

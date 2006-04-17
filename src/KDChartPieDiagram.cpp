@@ -60,7 +60,6 @@ const QPair<QPointF, QPointF> PieDiagram::dataBoundaries () const
         topRight = QPointF( 1.0+maxExplode, 1.0+maxExplode );
     } else
         topRight = QPointF( 1.0, 1.0 );
-    qDebug() << "topRight = " << topRight;
     return QPair<QPointF, QPointF> ( bottomLeft,  topRight );
 }
 

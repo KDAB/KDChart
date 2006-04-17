@@ -10,11 +10,12 @@
 
 #include <QDebug>
 #include <QPainter>
+#include <QTimer>
 
 using namespace KDChart;
 
 MainWindow::MainWindow( QWidget* parent ) :
-    QWidget( parent )
+    QWidget( parent ), m_currentFactor( 0 ), m_currentDirection( 1 ), m_currentSlice( 0 )
 {
     setupUi( this );
 
@@ -32,6 +33,9 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_pie = new PieDiagram();
     m_pie->setModel( &m_model );
     m_chart->coordinatePlane()->replaceDiagram( m_pie );
+
+    m_timer = new QTimer( this );
+    connect( m_timer, SIGNAL( timeout() ), this, SLOT( slotNextFrame() ) );
 }
 
 void MainWindow::on_startPositionSB_valueChanged( double pos )
@@ -63,6 +67,31 @@ void MainWindow::on_explodeGB_toggled( bool toggle )
 void MainWindow::on_explodeSubmitPB_clicked()
 {
     m_pie->setExplodeFactor( explodeDatasetSB->value(), explodeFactorSB->value() );
+    update();
+}
+
+void MainWindow::on_animateExplosionCB_toggled( bool toggle )
+{
+    if( toggle )
+        m_timer->start( 100 );
+    else
+        m_timer->stop();
+}
+
+void MainWindow::slotNextFrame()
+{
+    m_currentFactor += ( 1 * m_currentDirection );
+    if( m_currentFactor == 0 || m_currentFactor == 5 )
+        m_currentDirection = -m_currentDirection;
+
+    if( m_currentFactor == 0 ) {
+        m_pie->setExplodeFactor( m_currentSlice, 0.0 );
+        m_currentSlice++;
+        if( m_currentSlice == 4 )
+            m_currentSlice = 0;
+    }
+
+    m_pie->setExplodeFactor( m_currentSlice, static_cast<double>( m_currentFactor ) / 10.0 );
     update();
 }
 
