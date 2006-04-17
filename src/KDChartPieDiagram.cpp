@@ -50,7 +50,17 @@ QDomDocumentFragment PieDiagram::toXML() const
 const QPair<QPointF, QPointF> PieDiagram::dataBoundaries () const
 {
     QPointF bottomLeft ( QPointF( 0, 0 ) );
-    QPointF topRight ( QPointF( 1, 1 ) );
+    QPointF topRight;
+    // If we explode, we need extra space for the pie slice that has
+    // the largest explosion distance.
+    if( explode() ) {
+        double maxExplode = 0.0;
+        for( int j = 0; j < model()->columnCount(); j++ )
+            maxExplode = qMax( maxExplode, explodeFactor( j ) );
+        topRight = QPointF( 1.0+maxExplode, 1.0+maxExplode );
+    } else
+        topRight = QPointF( 1.0, 1.0 );
+    qDebug() << "topRight = " << topRight;
     return QPair<QPointF, QPointF> ( bottomLeft,  topRight );
 }
 
@@ -86,8 +96,9 @@ void PieDiagram::paint( PaintContext* ctx )
     QRectF contentsRect = buildReferenceRect( polarCoordinatePlane() );
     DataValueTextInfoList list;
     double startAngle = startPosition();
+    double startAngleValueSpace = startPosition();
     for ( int j=0; j<colCount; ++j ) {
-        const double nextValue = model()->data( model()->index( 0, j ) ).toDouble();
+        const double nextValue = qAbs( model()->data( model()->index( 0, j ) ).toDouble() );
         double spanAngle = polarCoordinatePlane()->translatePolar( QPointF( nextValue, 1 ) ).x();
         if ( spanAngle == 0 ) continue;
         QBrush brush = model()->headerData( j, Qt::Vertical, KDChart::DatasetBrushRole ).value<QBrush>();
@@ -101,22 +112,16 @@ void PieDiagram::paint( PaintContext* ctx )
         // Explosion support
         QRectF pieRect = contentsRect;
         if( explode() ) {
-            double sizeFactor = qMin( contentsRect.width(), contentsRect.height() );
-            // explosions turned on at all
-            double explodeAngle = ( startAngle + spanAngle / 2 ) / 16;
-            double explodeAngleRad = /*DEGTORAD(*/ explodeAngle/* )*/;
-            if( j == 0 ) {
-                qDebug() << "explodeAngle = " << explodeAngle << ", explodeAngleRad = " << explodeAngleRad;
-                qDebug() << "explodeFactor = " << explodeFactor( j ) << ", sizeFactor = " << sizeFactor;
-                qDebug() << "translate X = " << explodeFactor( j ) * sizeFactor * cos( explodeAngleRad );
-                qDebug() << "translate Y = " << explodeFactor( j ) * sizeFactor * -sin( explodeAngleRad );
-            }
-            pieRect.translate( explodeFactor( j ) * sizeFactor * cos( explodeAngleRad ),
-                               explodeFactor( j ) * sizeFactor * -sin( explodeAngleRad ) );
+            QPointF oldCenter = contentsRect.center();
+            QPointF newCenter = polarCoordinatePlane()->translate( QPointF( explodeFactor( j ),
+                                                                            startAngleValueSpace + nextValue/2.0 ) );
+            QPointF difference = newCenter - oldCenter;
+            pieRect.translate( difference );
         }
 
         ctx->painter()->drawPie( pieRect, ( int ) ((-startAngle + 90 ) * 16), ( int ) (-spanAngle * 16) );
         startAngle += spanAngle;
+        startAngleValueSpace += nextValue;
     }
     DataValueTextInfoListIterator it( list );
     while ( it.hasNext() ) {

@@ -46,9 +46,9 @@ namespace KDChart {
 
     /**
      * \class Widget KDChartWidget.h
-     * \brief The KDChart widget for usage without Interwiev.
+     * \brief The KD Chart widget for usage without InterView.
      *
-     * If you want to use KDChart with Interview, use KDChart::Chart instead.
+     * If you want to use KD Chart with InterView, use KDChart::Chart instead.
      */
     class KDCHART_EXPORT Widget : public QWidget
     {
@@ -111,7 +111,7 @@ namespace KDChart {
 
         void replaceHeaderFooter( HeaderFooter* header, int position = 0 );
 	void removeHeaderFooter( int position = 0 );
-	
+
         /** Returns the first of all legends. */
         KDChart::Legend* firstLegend() const;
         /** Returns a list with all legends. */
@@ -125,8 +125,8 @@ namespace KDChart {
 
         void replaceLegend( Legend* legend, int position = 0 );
 	void removeLegend( int position = 0 );
-	
-	
+
+
         /** Returns a pointer to the current diagram. */
         AbstractDiagram* diagram() const;
         /** Returns a pointer to the current coordinate plane. */

@@ -109,11 +109,10 @@
         <property name="spacing" >
          <number>6</number>
         </property>
-        <item row="0" column="0" >
-         <widget class="QLabel" name="label" >
-          <property name="text" >
-           <string>Dataset
-</string>
+        <item row="0" column="1" >
+         <widget class="QSpinBox" name="explodeDatasetSB" >
+          <property name="maximum" >
+           <number>4</number>
           </property>
          </widget>
         </item>
@@ -121,6 +120,14 @@
          <widget class="QLabel" name="label_2" >
           <property name="text" >
            <string>Factor</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0" >
+         <widget class="QLabel" name="label" >
+          <property name="text" >
+           <string>Dataset
+</string>
           </property>
          </widget>
         </item>
@@ -167,13 +174,6 @@
           </item>
          </layout>
         </item>
-        <item row="0" column="1" >
-         <widget class="QSpinBox" name="explodeDatasetSB" >
-          <property name="maximum" >
-           <number>4</number>
-          </property>
-         </widget>
-        </item>
         <item row="1" column="1" >
          <widget class="QDoubleSpinBox" name="explodeFactorSB" >
           <property name="maximum" >
@@ -181,6 +181,13 @@
           </property>
           <property name="singleStep" >
            <double>0.05</double>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0" >
+         <widget class="QCheckBox" name="animateCB" >
+          <property name="text" >
+           <string>Animate</string>
           </property>
          </widget>
         </item>
