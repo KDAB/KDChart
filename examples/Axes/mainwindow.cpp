@@ -258,21 +258,18 @@ void MainWindow::on_zoomFactorSB_valueChanged( double factor )
     }
     m_chart->coordinatePlane()->setZoomFactorX( factor );
     m_chart->coordinatePlane()->setZoomFactorY( factor );
-    m_chart->coordinatePlane()->replaceDiagram( m_lines );
     m_chart->update();
 }
 
 void MainWindow::on_hSBar_valueChanged( int hPos )
 {
     m_chart->coordinatePlane()->setZoomCenter( QPointF(hPos/1000.0, vSBar->value()/1000.0) );
-    m_chart->coordinatePlane()->replaceDiagram( m_lines );
     m_chart->update();
 }
 
 void MainWindow::on_vSBar_valueChanged( int vPos )
 {
     m_chart->coordinatePlane()->setZoomCenter( QPointF( hSBar->value()/1000.0, vPos/1000.0) );
-    m_chart->coordinatePlane()->replaceDiagram( m_lines );
     m_chart->update();
 }
 
