@@ -61,7 +61,8 @@ void LineDiagram::setLineAttributes( const LineAttributes & ta )
 
 void LineDiagram::setLineAttributes( int column, const LineAttributes & ta )
 {
-    d->attributesModel->setHeaderData( column, Qt::Vertical, QVariant::fromValue( ta ), LineAttributesRole );
+//    d->attributesModel->setHeaderData( column, Qt::Vertical, QVariant::fromValue( ta ), LineAttributesRole );
+    model()->setData( model()->index( 0, column, rootIndex() ), QVariant::fromValue( ta ), LineAttributesRolePerColumn );
 }
 
 void LineDiagram::setLineAttributes( const QModelIndex & index, const LineAttributes & ta )
@@ -76,7 +77,8 @@ LineAttributes LineDiagram::lineAttributes( const QModelIndex & index ) const
 
 LineAttributes LineDiagram::lineAttributes( int column ) const
 {
-    return model()->headerData( column, Qt::Vertical, KDChart::LineAttributesRole ).value<LineAttributes>();
+//    return model()->headerData( column, Qt::Vertical, KDChart::LineAttributesRole ).value<LineAttributes>();
+    return model()->data( model()->index( 0, column, rootIndex() ), LineAttributesRolePerColumn ).value<LineAttributes>();
 }
 
 void LineDiagram::setThreeDLineAttributes( const ThreeDLineAttributes & ta )
@@ -256,7 +258,8 @@ void LineDiagram::paint( PaintContext* ctx )
                                                               stackedValues, nextValues ) );
                     list.append( DataValueTextInfo( model()->index( j, i, rootIndex() ), nextPoint, value ) );
                 }
-                LineAttributes laa = lineAttributes( model()->index ( 0, i, rootIndex() ) );
+                //LineAttributes laa = lineAttributes( model()->index( 0, i, rootIndex() ) );
+                LineAttributes laa = lineAttributes( i );
                 if ( laa.displayArea() )
                     paintAreas( ctx, index, area, laa.transparency() );
             }
@@ -304,7 +307,8 @@ void LineDiagram::paint( PaintContext* ctx )
                         lineList.append( LineAttributesInfo( model()->index( j, i, rootIndex() ), stackedValues/sumValuesVector.at(j)* maxValue, nextValues/sumValuesVector.at(j+1)* maxValue ) );
                     list.append( DataValueTextInfo( model()->index( j, i, rootIndex() ), nextPoint, value ) );
                 }
-                LineAttributes laa = lineAttributes(  model()->index( 0, i, rootIndex() ) );
+                //LineAttributes laa = lineAttributes( model()->index( 0, i, rootIndex() ) );
+                LineAttributes laa = lineAttributes( i );
                 if ( laa.displayArea() )
                     paintAreas( ctx, index, area, laa.transparency() );
             }

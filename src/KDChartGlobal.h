@@ -3,7 +3,7 @@
    */
 
 /****************************************************************************
- ** Copyright (C) 2001-2003 Klarälvdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2001-2003 Klarï¿½vdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KDChart library.
  **
@@ -162,6 +162,7 @@ enum DisplayRoles {
   DataValueLabelAttributesRole,
   ThreeDAttributesRole,
   LineAttributesRole,
+  LineAttributesRolePerColumn,
   ThreeDLineAttributesRole,
   BarAttributesRole,
   ThreeDBarAttributesRole,
