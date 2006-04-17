@@ -50,6 +50,10 @@ class PolarCoordinatePlane::CoordinateTransformationList
 class PolarCoordinatePlane::Private
 {
 public:
+    Private()
+        :currentTransformation(0),
+        initialResizeEventReceived(false )
+        {}
     // the coordinate plane will calculate coordinate transformations for all
     // diagrams and store them here:
     CoordinateTransformationList coordinateTransformations;
@@ -58,6 +62,8 @@ public:
     CoordinateTransformation* currentTransformation;
     // the reactangle occupied by the diagrams, in plane coordinates
     QRectF contentRect;
+    // true after the first resize event came in
+    bool initialResizeEventReceived;
 };
 
 
@@ -65,7 +71,6 @@ PolarCoordinatePlane::PolarCoordinatePlane ( QWidget* parent )
     : AbstractCoordinatePlane ( parent )
     , p ( new Private() )
 {
-    p->currentTransformation = 0;
 }
 
 PolarCoordinatePlane::~PolarCoordinatePlane()
@@ -78,6 +83,9 @@ void PolarCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
                  "PolarCoordinatePlane::addDiagram", "Only polar"
                  "diagrams can be added to a polar coordinate plane!" );
     AbstractCoordinatePlane::addDiagram ( diagram );
+    connect ( diagram,  SIGNAL ( layoutChanged ( AbstractDiagram* ) ),
+              SLOT ( slotLayoutChanged ( AbstractDiagram* ) ) );
+
 }
 
 void PolarCoordinatePlane::paintEvent ( QPaintEvent* )
@@ -132,6 +140,7 @@ void PolarCoordinatePlane::paintRulers( PaintContext* ctx )
 
 void PolarCoordinatePlane::resizeEvent ( QResizeEvent* )
 {
+    p->initialResizeEventReceived = true;
     layoutDiagrams();
 }
 
@@ -183,4 +192,9 @@ const QPointF PolarCoordinatePlane::translatePolar( const QPointF& diagramPoint 
     Q_ASSERT_X ( p->currentTransformation != 0, "PolarCoordinatePlane::translate",
                  "Only call translate() from within paint()." );
     return  p->currentTransformation->translatePolar ( diagramPoint );
+}
+
+void PolarCoordinatePlane::slotLayoutChanged ( AbstractDiagram* )
+{
+    if ( p->initialResizeEventReceived ) layoutDiagrams();
 }

@@ -54,6 +54,7 @@ bool AbstractPieDiagram::explode() const
 void AbstractPieDiagram::setExplodeFactor( double factor )
 {
     d->attributesModel->setModelData( factor, ExplodeFactorRole );
+    emit layoutChanged( this );
 }
 
 double AbstractPieDiagram::explodeFactor() const
@@ -64,6 +65,7 @@ double AbstractPieDiagram::explodeFactor() const
 void AbstractPieDiagram::setExplodeFactor( int dataset, double factor )
 {
     d->attributesModel->setHeaderData( dataset, Qt::Vertical, factor, ExplodeFactorRole );
+    emit layoutChanged( this );
 }
 
 double AbstractPieDiagram::explodeFactor( int dataset ) const

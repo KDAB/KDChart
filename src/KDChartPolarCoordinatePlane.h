@@ -29,6 +29,8 @@ namespace KDChart {
         void resizeEvent ( QResizeEvent* );
 
         void layoutDiagrams();
+    protected slots:
+        void slotLayoutChanged( AbstractDiagram* diagram );
 
     private:
         void paintRulers ( PaintContext* );
