@@ -12,6 +12,7 @@
 using namespace KDChart;
 
 BarDiagram::Private::Private()
+  :barType( Normal )
 {
 }
 
@@ -39,6 +40,16 @@ BarDiagram * BarDiagram::clone() const
     // PENDING(kalle) FIXME
     qWarning( "Sorry, not implemented: BarDiagram * BarDiagram::clone() const" );
     return (BarDiagram*)0xdeadbeef;
+}
+
+void BarDiagram::setType( const BarType type )
+{
+   d->barType = type;
+}
+
+BarDiagram::BarType BarDiagram::type() const
+{
+   return d->barType;
 }
 
 void BarDiagram::setBarAttributes( const BarAttributes & ta )
@@ -95,14 +106,13 @@ const QPair<QPointF, QPointF> BarDiagram::dataBoundaries () const
     double xMax = rowCount;
     double yMin = 0, yMax = 0;
     BarAttributes ba = barAttributes( model()->index( 0, 0, rootIndex() ) );
-    BarAttributes::BarType barType = ba.type();
     ThreeDBarAttributes tda;
 
      // calculate boundaries for  different line types Normal - Stacked - Percent - Default Normal
-    switch ( barType )
+    switch ( type() )
         {
 
-        case BarAttributes::Normal:
+        case BarDiagram::Normal:
             for ( int i=0; i<colCount; ++i ) {
                 for ( int j=0; j< rowCount; ++j ) {
                     double value = model()->data( model()->index( j, i, rootIndex() ) ).toDouble();
@@ -113,7 +123,7 @@ const QPair<QPointF, QPointF> BarDiagram::dataBoundaries () const
                 }
             }
             break;
-        case BarAttributes::Stacked:
+        case BarDiagram::Stacked:
             for ( int j=0; j< rowCount; ++j ) {
                 // calculate sum of values per column - Find out stacked Min/Max
                 double stackedValues = 0;
@@ -125,7 +135,7 @@ const QPair<QPointF, QPointF> BarDiagram::dataBoundaries () const
                 }
             }
             break;
-        case BarAttributes::Percent:
+        case BarDiagram::Percent:
             for ( int i=0; i<colCount; ++i ) {
                 for ( int j=0; j< rowCount; ++j ) {
                     // Ordinate should begin at 0 the max value being the 100% pos
@@ -150,7 +160,7 @@ const QPair<QPointF, QPointF> BarDiagram::dataBoundaries () const
          QPointF pBLTranslated = coordinatePlane()->translate( bottomLeft );
 	 //reserve some plane space for the top of the threeD bars
          //Pending Michel: why 4?
-         if ( barType != BarAttributes::Normal ) {
+         if ( type() != BarDiagram::Normal ) {
 	   percentx = ((tda.depth()*4)/ pTRTranslated.x());
 	   percenty = ((tda.depth()*4)/ pBLTranslated.y());
 	 } else {
@@ -214,7 +224,6 @@ void BarDiagram::paint( PaintContext* ctx )
     const int colCount = model()->columnCount(rootIndex());
     DataValueTextInfoList list;
     BarAttributes ba = barAttributes( model()->index( 0, 0, rootIndex() ) );
-    BarAttributes::BarType barType = ba.type();
     double maxValue = 0;
     double sumValues = 0;
     QVector <double > sumValuesVector;
@@ -255,9 +264,9 @@ void BarDiagram::paint( PaintContext* ctx )
                                 barWidth, spaceBetweenBars, spaceBetweenGroups );
 
     // paint different bar types: Normal - Stacked - Percent
-    switch ( barType )
+    switch ( type() )
         {
-        case BarAttributes::Normal:
+        case BarDiagram::Normal:
             // we paint the bars for all series next to each other, then move to the next value
             for ( int i=0; i<rowCount; ++i ) {
                 double offset = -groupWidth/2 + spaceBetweenGroups/2;                
@@ -292,7 +301,7 @@ void BarDiagram::paint( PaintContext* ctx )
                 }
             }
             break;
-        case BarAttributes::Stacked:
+        case BarDiagram::Stacked:
             for ( int i = 0; i<colCount; ++i ) {                
 	      double offset =  spaceBetweenBars;
                 for ( int j = 0; j< rowCount; ++j ) {
@@ -317,7 +326,7 @@ void BarDiagram::paint( PaintContext* ctx )
                 }
             }
             break;
-        case BarAttributes::Percent:
+        case BarDiagram::Percent:
             // search for ordinate max value or 100 %
             for ( int i=0; i<colCount; ++i ) {
                 for ( int j=0; j< rowCount; ++j ) {
@@ -387,7 +396,6 @@ void BarDiagram::paintBars( PaintContext* ctx, const QModelIndex& index, const Q
     QRectF isoRect;
     QPolygonF topPoints, sidePoints;
     BarAttributes ba = barAttributes( index );
-    BarAttributes::BarType barType = ba.type();
     ThreeDBarAttributes tda = threeDBarAttributes( index );
     double usedDepth;
     //Pending Michel: configure threeDBrush settings - shadowColor etc...
@@ -399,15 +407,15 @@ void BarDiagram::paintBars( PaintContext* ctx, const QModelIndex& index, const Q
     ctx->painter()->setPen( indexPen );
     if ( tda.isEnabled() ) {
       //fixme adjust the painting to reasonable depth value
-      switch ( barType )
+      switch ( type() )
         {
-        case BarAttributes::Normal:
+        case BarDiagram::Normal:
 	  usedDepth = tda.depth()/4;
 	  break;
-        case BarAttributes::Stacked:
+        case BarDiagram::Stacked:
           usedDepth = tda.depth()/2;
           break;
-        case BarAttributes::Percent:
+        case BarDiagram::Percent:
 	  usedDepth = tda.depth();
           break;
 	default:

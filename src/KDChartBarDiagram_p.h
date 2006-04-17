@@ -17,7 +17,8 @@ public:
                                      double& barWidth,
                                      double& spaceBetweenBars,
                                      double& spaceBetweenGroups );
-  
+
+    BarType barType;
 };
 
 inline BarDiagram::BarDiagram( Private * p, CartesianCoordinatePlane* plane )

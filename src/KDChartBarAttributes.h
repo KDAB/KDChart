@@ -16,15 +16,6 @@ public:
 
     ~BarAttributes();
 
-
-    enum BarType { Normal,
-                   Stacked,
-                   Percent,
-                   Rows };
-
-    void setType( BarType type );
-    BarType type() const;
-
     void setFixedDataValueGap( double gap );
     double fixedDataValueGap() const;
 

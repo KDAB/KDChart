@@ -51,6 +51,14 @@ public:
 
     virtual BarDiagram * clone() const;
 
+    enum BarType { Normal,
+                   Stacked,
+                   Percent,
+                   Rows };
+
+    void setType( BarType type );
+    BarType type() const;
+
     void setBarAttributes( const BarAttributes & a );
     void setBarAttributes( int column, const BarAttributes & a );
     void setBarAttributes( const QModelIndex & index,

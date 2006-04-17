@@ -12,7 +12,6 @@ public:
     Private();
 
 private:
-    BarType barType;
     double datasetGap;
     bool useFixedDatasetGap;
     double valueBlockGap;
@@ -26,8 +25,7 @@ private:
 
 
 BarAttributes::Private::Private()
-    : barType ( Normal ),
-    datasetGap( 6 ),
+    :datasetGap( 6 ),
     useFixedDatasetGap( false ),
     valueBlockGap( 24 ),
     useFixedValueBlockGap( false ),
@@ -68,8 +66,7 @@ BarAttributes::~BarAttributes()
 
 bool BarAttributes::operator==( const BarAttributes& r ) const
 {
-    if( type() == r.type() &&
-        fixedDataValueGap() == r.fixedDataValueGap() &&
+    if( fixedDataValueGap() == r.fixedDataValueGap() &&
         useFixedDataValueGap() == r.useFixedDataValueGap() &&
         fixedValueBlockGap() == r.fixedValueBlockGap() &&
         useFixedValueBlockGap() == r.useFixedValueBlockGap() &&
@@ -81,17 +78,6 @@ bool BarAttributes::operator==( const BarAttributes& r ) const
         return true;
     else
         return false;
-}
-
-
-void BarAttributes::setType( const BarType type )
-{
-   d->barType = type;
-}
-
-BarAttributes::BarType BarAttributes::type() const
-{
-   return d->barType;
 }
 
 
