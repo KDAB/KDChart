@@ -16,15 +16,6 @@ public:
 
     ~LineAttributes();
 
-      enum LineType {
-        Normal =  0,
-        Stacked = 1,
-        Percent = 2
-    };
-
-
-    void setType( const LineType type );
-    LineType type() const;
 
     /* area chart - all types */
     void setDisplayArea( bool display );

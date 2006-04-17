@@ -12,22 +12,15 @@ public:
     Private();
 
 private:
-    LineType lineType;
     //Areas
     bool displayArea;
     uint transparency;
-    //ThreeDLines
-    //uint lineXRotation;
-    //uint lineYRotation;
 };
 
 
 LineAttributes::Private::Private()
-    : lineType ( Normal ),
-      displayArea( false ),
+    : displayArea( false ),
       transparency( 255 )
-      //lineXRotation( 15 ),
-      //lineYRotation( 15 )
 {
 }
 
@@ -57,29 +50,14 @@ LineAttributes::~LineAttributes()
     delete _d; _d = 0;
 }
 
-
 bool LineAttributes::operator==( const LineAttributes& r ) const
 {
-    if( type() == r.type() &&
-        displayArea() == r.displayArea() &&
+    if( displayArea() == r.displayArea() &&
         transparency() == r.transparency() )
         return true;
     else
         return false;
 }
-
-
-
-void LineAttributes::setType( const LineType type )
-{
-   d->lineType = type;
-}
-
-LineAttributes::LineType LineAttributes::type() const
-{
-   return d->lineType;
-}
-
 
 void LineAttributes::setDisplayArea( bool display )
 {
@@ -102,30 +80,6 @@ uint LineAttributes::transparency() const
 {
      return d->transparency;
 }
-
-#if 0
-
-void LineAttributes::setLineXRotation( uint degrees )
-{
-    d->lineXRotation = degrees;
-}
-
-uint LineAttributes::lineXRotation() const
-{
-    return d->lineXRotation;
-}
-
-void LineAttributes::setLineYRotation( uint degrees )
-{
-    d->lineYRotation = degrees;
-}
-
-uint LineAttributes::lineYRotation() const
-{
-    return d->lineYRotation;
-}
-#endif
-
 
 QDomDocumentFragment LineAttributes::toXML() const
 {

@@ -52,6 +52,16 @@ public:
 
     virtual LineDiagram * clone() const;
 
+      enum LineType {
+        Normal =  0,
+        Stacked = 1,
+        Percent = 2
+    };
+
+
+    void setType( const LineType type );
+    LineType type() const;
+
     void setLineAttributes( const LineAttributes & a );
     void setLineAttributes( int column, const LineAttributes & a );
     void setLineAttributes( const QModelIndex & index, const LineAttributes & a );
@@ -79,7 +89,6 @@ public:
 protected:
     void paintEvent ( QPaintEvent* );
     void resizeEvent ( QResizeEvent* );
-
 
 private:
     void paintLines( PaintContext* painter,const QModelIndex& index, double from, double to );

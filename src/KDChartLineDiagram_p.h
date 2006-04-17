@@ -15,6 +15,7 @@ public:
     Private();
     ~Private();
     
+    LineType lineType;
 };
 
 

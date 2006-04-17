@@ -21,7 +21,7 @@
 using namespace KDChart;
 
 LineDiagram::Private::Private()
-
+  :lineType ( Normal )
 {
 }
 
@@ -45,7 +45,6 @@ LineDiagram::~LineDiagram()
 {
 }
 
-
 LineDiagram * LineDiagram::clone() const
 {
     // PENDING(kalle) FIXME
@@ -53,6 +52,17 @@ LineDiagram * LineDiagram::clone() const
     return (LineDiagram*)0xdeadbeef;
 }
 
+void LineDiagram::setType( const LineType type )
+{
+   if ( d->lineType == type ) return;
+   d->lineType = type;
+   emit layoutChanged( this );
+}
+
+LineDiagram::LineType LineDiagram::type() const
+{
+   return d->lineType;
+}
 
 void LineDiagram::setLineAttributes( const LineAttributes & ta )
 {
@@ -107,13 +117,12 @@ const QPair<QPointF, QPointF> LineDiagram::dataBoundaries () const
     double xMax = rowCount -1;
     double yMin = 0, yMax = 0;
     LineAttributes la = lineAttributes(model()->index( 0, 0, rootIndex() ) );
-    LineAttributes::LineType lineType = la.type();
     ThreeDLineAttributes tda;
 
     // calculate boundaries for  different line types Normal - Stacked - Percent - Default Normal
-    switch ( lineType )
+    switch ( type() )
         {
-        case LineAttributes::Normal:
+        case LineDiagram::Normal:
             for ( int i=0; i<colCount; ++i ) {
                 for ( int j=0; j< rowCount; ++j ) {
                     double value = model()->data( model()->index( j, i, rootIndex() ) ).toDouble();
@@ -122,7 +131,7 @@ const QPair<QPointF, QPointF> LineDiagram::dataBoundaries () const
                 }
             }
             break;
-        case LineAttributes::Stacked:
+        case LineDiagram::Stacked:
                 for ( int j=0; j< rowCount; ++j ) {
                     // calculate sum of values per column - Find out stacked Min/Max
                     double stackedValues = 0;
@@ -133,7 +142,7 @@ const QPair<QPointF, QPointF> LineDiagram::dataBoundaries () const
                     }
                 }
             break;
-        case LineAttributes::Percent:
+        case LineDiagram::Percent:
 
             for ( int i=0; i<colCount; ++i ) {
                 for ( int j=0; j< rowCount; ++j ) {
@@ -198,7 +207,6 @@ void LineDiagram::paint( PaintContext* ctx )
     DataValueTextInfoList list;
     LineAttributesInfoList lineList;
     LineAttributes la = lineAttributes( model()->index( 0, 0, rootIndex() ) );
-    LineAttributes::LineType lineType = la.type();
     double maxValue = 0;
     double sumValues = 0;
     QVector <double > sumValuesVector;
@@ -208,9 +216,9 @@ void LineDiagram::paint( PaintContext* ctx )
     QPen indexPen;
 
     // paint different line types Normal - Stacked - Percent - Default Normal
-    switch ( lineType )
+    switch ( type() )
         {
-        case LineAttributes::Normal:
+        case LineDiagram::Normal:
             for ( int i = 0; i<colCount; ++i ) {
                 area.clear();
                 for ( int j=0; j< rowCount; ++j ) {
@@ -230,7 +238,7 @@ void LineDiagram::paint( PaintContext* ctx )
                     paintAreas( ctx, index, area, laa.transparency() );
             }
             break;
-        case LineAttributes::Stacked:
+        case LineDiagram::Stacked:
             for ( int i = 0; i<colCount; ++i ) {
                 area.clear();
                 for ( int j = 0; j< rowCount; ++j ) {
@@ -255,7 +263,7 @@ void LineDiagram::paint( PaintContext* ctx )
                     paintAreas( ctx, index, area, laa.transparency() );
             }
             break;
-        case LineAttributes::Percent:
+        case LineDiagram::Percent:
             // search for ordinate max value or 100 %
             for ( int i=0; i<colCount; ++i ) {
                 for ( int j=0; j< rowCount; ++j ) {
