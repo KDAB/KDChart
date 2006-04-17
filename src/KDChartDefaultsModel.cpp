@@ -126,7 +126,7 @@ QVariant DefaultsModel::defaultsForRole( int role ) const
 {
     switch ( role ) {
         case KDChart::DataValueLabelAttributesRole:
-            return QVariant::fromValue( DataValueAttributes::defaultAttributes() );
+            return DataValueAttributes::defaultAttributesAsVariant();
             // for the below there isn't a per-value default, since there's a per-column one
         case KDChart::DatasetBrushRole:
         case KDChart::DatasetPenRole:
