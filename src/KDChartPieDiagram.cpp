@@ -106,7 +106,6 @@ void PieDiagram::paint( PaintContext* ctx )
         ctx->painter()->setRenderHint ( QPainter::Antialiasing );
         ctx->painter()->setBrush( brush );
         ctx->painter()->setPen( pen );
-        //qDebug() << "startAngle: " << startAngle << " spanAngle: " << spanAngle;
 
         // Explosion support
         QRectF pieRect = contentsRect;
