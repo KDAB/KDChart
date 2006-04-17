@@ -41,20 +41,15 @@ MainWindow::MainWindow( QWidget* parent ) :
 
 void MainWindow::on_lineTypeCB_currentIndexChanged( const QString & text )
 {
-    const int colCount = m_lines->model()->columnCount();
-    for ( int i = 0; i<colCount; ++i ) {
-        LineAttributes la = m_lines->lineAttributes( m_lines->model()->index( 0, i, QModelIndex() ) );
-        if ( text == "Normal" )
-            la.setType( LineAttributes::Normal );
-        else if ( text == "Stacked" )
-            la.setType( LineAttributes::Stacked );
-        else if ( text == "Percent" )   
-            la.setType( LineAttributes::Percent );
-        else 
-            qWarning (" Does not match any type");   
+    if ( text == "Normal" )
+        m_lines->setType( LineDiagram::Normal );
+    else if ( text == "Stacked" )
+        m_lines->setType( LineDiagram::Stacked );
+    else if ( text == "Percent" )   
+        m_lines->setType( LineDiagram::Percent );
+    else 
+        qWarning (" Does not match any type");   
 
-        m_lines->setLineAttributes( i, la );
-    }
     m_chart->update();
 }
 

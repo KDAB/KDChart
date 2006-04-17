@@ -54,20 +54,15 @@ MainWindow::MainWindow( QWidget* parent ) :
 
 void MainWindow::on_lineTypeCB_currentIndexChanged( const QString & text )
 {
-    LineAttributes la = m_lines->lineAttributes( m_lines->model()->index( 0, 0, QModelIndex() ) );
-
     if ( text == "Normal" )
-        la.setType( LineAttributes::Normal );
+        m_lines->setType( LineDiagram::Normal );
     else if ( text == "Stacked" )
-        la.setType( LineAttributes::Stacked );
-    else if ( text == "Percent" ) {
-        la.setType( LineAttributes::Percent );
-        m_lines->setPercentMode( true );
-    }
-    else
-        qWarning (" Does not match any type");
-    m_lines->setLineAttributes( la );
-    m_chart->coordinatePlane()->replaceDiagram( m_lines );
+        m_lines->setType( LineDiagram::Stacked );
+    else if ( text == "Percent" )   
+        m_lines->setType( LineDiagram::Percent );
+    else 
+        qWarning (" Does not match any type");   
+
     m_chart->update();
 }
 
