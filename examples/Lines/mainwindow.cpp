@@ -86,8 +86,12 @@ void MainWindow::on_paintValuesCB_toggled( bool checked )
 
 void MainWindow::on_animateAreasCB_toggled( bool checked )
 {
-    if( checked )
+    if( checked ){
         highlightAreaCB->setCheckState( Qt::Unchecked );
+        m_curColumn = 0;
+    }else{
+        m_curColumn = -1;
+    }
     highlightAreaCB->setEnabled( ! checked );
     highlightAreaSB->setEnabled( ! checked );
     // un-highlight all previously highlighted columns
@@ -95,7 +99,6 @@ void MainWindow::on_animateAreasCB_toggled( bool checked )
     for ( int i = 0; i<colCount; ++i )
         setHighlightArea( i, 127, false, false );
     m_chart->update();
-    m_curColumn = 0;
     m_curOpacity = 0;
 }
 
