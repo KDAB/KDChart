@@ -39,51 +39,44 @@ MainWindow::MainWindow( QWidget* parent ) :
     timer->start(40);
 }
 
-
-static void setTypeFromText( LineAttributes& la, const QString& text )
-{
-    if ( text == "Normal" )
-        la.setType( LineAttributes::Normal );
-    else if ( text == "Stacked" )
-        la.setType( LineAttributes::Stacked );
-    else if ( text == "Percent" )   
-        la.setType( LineAttributes::Percent );
-    else 
-        qWarning (" Does not match any type");   
-}
-
 void MainWindow::on_lineTypeCB_currentIndexChanged( const QString & text )
 {
-    LineAttributes la = m_lines->lineAttributes( m_lines->model()->index( 0, 0, QModelIndex() ) );
-    setTypeFromText( la, text );
-    m_lines->setLineAttributes( la );
+    const int colCount = m_lines->model()->columnCount();
+    for ( int i = 0; i<colCount; ++i ) {
+        LineAttributes la = m_lines->lineAttributes( m_lines->model()->index( 0, i, QModelIndex() ) );
+        if ( text == "Normal" )
+            la.setType( LineAttributes::Normal );
+        else if ( text == "Stacked" )
+            la.setType( LineAttributes::Stacked );
+        else if ( text == "Percent" )   
+            la.setType( LineAttributes::Percent );
+        else 
+            qWarning (" Does not match any type");   
 
+        m_lines->setLineAttributes( i, la );
+    }
     m_chart->update();
 }
 
-
 void MainWindow::on_paintValuesCB_toggled( bool checked )
 {
-    const int rowCount = m_lines->model()->rowCount();
     const int colCount = m_lines->model()->columnCount();
     for ( int i = 0; i<colCount; ++i ) {
-        for ( int j=0; j< rowCount; ++j ) {
-            QModelIndex index = m_lines->model()->index( j, i, QModelIndex() );
-            QBrush brush = m_lines->model()->headerData( i, Qt::Vertical, DatasetBrushRole ).value<QBrush>();
-            DataValueAttributes a = m_lines->dataValueAttributes( index );
-            TextAttributes ta = a.textAttributes();
-            ta.setRotation( 0 );
-            ta.setFont( QFont( "Comic", 10 ) );
-            ta .setColor( brush.color() );
-            if ( checked )
-                ta.setVisible( true );
-            else
-                ta.setVisible( false );
+        QModelIndex index = m_lines->model()->index( 0, i, QModelIndex() );
+        DataValueAttributes a = m_lines->dataValueAttributes( index );
+        QBrush brush = m_lines->brush( index );
+        TextAttributes ta = a.textAttributes();
+        ta.setRotation( 0 );
+        ta.setFont( QFont( "Comic", 10 ) );
+        ta.setColor( brush.color() );
 
-            a.setTextAttributes( ta );
-            a.setVisible( true );
-            m_lines->setDataValueAttributes( index, a);
-        }
+        if ( checked )
+            ta.setVisible( true );
+        else
+            ta.setVisible( false );
+        a.setVisible( true );
+        a.setTextAttributes( ta );
+        m_lines->setDataValueAttributes( i, a );
     }
     m_chart->update();
 }
@@ -129,7 +122,6 @@ void MainWindow::setHighlightArea( int column, int opacity, bool checked, bool d
     }  else {
         la.setDisplayArea( false );
     }
-    setTypeFromText( la, lineTypeCB->currentText() );
     m_lines->setLineAttributes( column, la );
     if( doUpdate )
         m_chart->update();
