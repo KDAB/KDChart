@@ -44,7 +44,9 @@ BarDiagram * BarDiagram::clone() const
 
 void BarDiagram::setType( const BarType type )
 {
-   d->barType = type;
+    if ( type == d->barType ) return;
+    d->barType = type;
+    emit layoutChanged( this );
 }
 
 BarDiagram::BarType BarDiagram::type() const
