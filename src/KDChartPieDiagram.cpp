@@ -95,7 +95,7 @@ void PieDiagram::paint( PaintContext* ctx )
     QRectF contentsRect = buildReferenceRect( polarCoordinatePlane() );
     DataValueTextInfoList list;
     double startAngle = startPosition();
-    double startAngleValueSpace = startPosition();
+    double startAngleValueSpace = valueTotals() / 360 * startAngle;
     for ( int j=0; j<colCount; ++j ) {
         const double nextValue = qAbs( model()->data( model()->index( 0, j ) ).toDouble() );
         double spanAngle = polarCoordinatePlane()->translatePolar( QPointF( nextValue, 1 ) ).x();
