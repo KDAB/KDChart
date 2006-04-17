@@ -96,6 +96,7 @@ void MainWindow::on_addHeaderPB_clicked()
 
 void MainWindow::on_editHeaderPB_clicked()
 {
+    if ( headersTV->selectedItems().size() == 0 ) return;
     HeaderItem* item = static_cast<HeaderItem*>( headersTV->selectedItems().first() );
     KDChart::HeaderFooter* headerFooter = item->header();
     QDialog dlg;
@@ -118,6 +119,7 @@ void MainWindow::on_editHeaderPB_clicked()
 
 void MainWindow::on_removeHeaderPB_clicked()
 {
+    if ( headersTV->selectedItems().size() == 0 ) return;
     QList<QTreeWidgetItem*> items = headersTV->selectedItems();
     for( QList<QTreeWidgetItem*>::const_iterator it = items.begin();
          it != items.end(); ++it ) {
@@ -161,6 +163,7 @@ void MainWindow::on_addLegendPB_clicked()
 
 void MainWindow::on_editLegendPB_clicked()
 {
+    if ( legendsTV->selectedItems().size() == 0 ) return;
     LegendItem* item = static_cast<LegendItem*>( legendsTV->selectedItems().first() );
     KDChart::Legend* legend = item->legend();
     QDialog dlg;
@@ -187,6 +190,7 @@ void MainWindow::on_editLegendPB_clicked()
 
 void MainWindow::on_removeLegendPB_clicked()
 {
+    if ( legendsTV->selectedItems().size() == 0 ) return;
     QList<QTreeWidgetItem*> items = legendsTV->selectedItems();
     for( QList<QTreeWidgetItem*>::const_iterator it = items.begin();
          it != items.end(); ++it ) {
