@@ -310,12 +310,10 @@ void LineDiagram::paint( PaintContext* ctx )
                          "Type item does not match a defined line chart Type." );
         }
     // paint all lines and their attributes
-    if( !la.displayArea() ) {
-        LineAttributesInfoListIterator itline ( lineList );
-        while ( itline.hasNext() ) {
-            const LineAttributesInfo& lineInfo = itline.next();
-            paintLines( ctx,lineInfo.index, lineInfo.value, lineInfo.nextValue );
-        }
+    LineAttributesInfoListIterator itline ( lineList );
+    while ( itline.hasNext() ) {
+        const LineAttributesInfo& lineInfo = itline.next();
+        paintLines( ctx,lineInfo.index, lineInfo.value, lineInfo.nextValue );
     }
     DataValueTextInfoListIterator it( list );
     while ( it.hasNext() ) {
