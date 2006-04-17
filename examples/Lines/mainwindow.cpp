@@ -82,8 +82,7 @@ void MainWindow::on_animateAreasCB_toggled( bool checked )
 void MainWindow::on_highlightAreaCB_toggled( bool checked )
 {
     const int column = highlightAreaSB->value();
-    //LineAttributes la = m_lines->lineAttributes( m_lines->model()->index( 0, column, QModelIndex() ) );
-    LineAttributes la = m_lines->lineAttributes( column );
+    LineAttributes la = m_lines->lineAttributes( m_lines->model()->index( 0, column, QModelIndex() ) );
     if ( checked ) {
         la.setDisplayArea( true );
     }  else {
