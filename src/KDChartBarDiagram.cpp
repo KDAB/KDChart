@@ -77,16 +77,19 @@ BarAttributes BarDiagram::barAttributes( const QModelIndex & index ) const
 void BarDiagram::setThreeDBarAttributes( const ThreeDBarAttributes & tda )
 {
     d->attributesModel->setModelData( QVariant::fromValue( tda ), ThreeDBarAttributesRole );
+    emit layoutChanged( this );
 }
 
 void BarDiagram::setThreeDBarAttributes( int column, const ThreeDBarAttributes & tda )
 {
     d->attributesModel->setHeaderData( column, Qt::Vertical, QVariant::fromValue( tda ), ThreeDBarAttributesRole );
+    emit layoutChanged( this );
 }
 
 void BarDiagram::setThreeDBarAttributes( const QModelIndex & index, const ThreeDBarAttributes & tda )
 {
-   model()->setData( index, QVariant::fromValue( tda ), ThreeDBarAttributesRole );
+    model()->setData( index, QVariant::fromValue( tda ), ThreeDBarAttributesRole );
+    emit layoutChanged( this );
 }
 
 ThreeDBarAttributes BarDiagram::threeDBarAttributes( const QModelIndex & index ) const
