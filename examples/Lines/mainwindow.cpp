@@ -40,10 +40,8 @@ MainWindow::MainWindow( QWidget* parent ) :
 }
 
 
-
-void MainWindow::on_lineTypeCB_currentIndexChanged( const QString & text )
+static void setTypeFromText( LineAttributes& la, const QString& text )
 {
-    LineAttributes la = m_lines->lineAttributes( m_lines->model()->index( 0, 0, QModelIndex() ) );
     if ( text == "Normal" )
         la.setType( LineAttributes::Normal );
     else if ( text == "Stacked" )
@@ -52,6 +50,12 @@ void MainWindow::on_lineTypeCB_currentIndexChanged( const QString & text )
         la.setType( LineAttributes::Percent );
     else 
         qWarning (" Does not match any type");   
+}
+
+void MainWindow::on_lineTypeCB_currentIndexChanged( const QString & text )
+{
+    LineAttributes la = m_lines->lineAttributes( m_lines->model()->index( 0, 0, QModelIndex() ) );
+    setTypeFromText( la, text );
     m_lines->setLineAttributes( la );
 
     m_chart->update();
@@ -125,6 +129,7 @@ void MainWindow::setHighlightArea( int column, int opacity, bool checked, bool d
     }  else {
         la.setDisplayArea( false );
     }
+    setTypeFromText( la, lineTypeCB->currentText() );
     m_lines->setLineAttributes( column, la );
     if( doUpdate )
         m_chart->update();
