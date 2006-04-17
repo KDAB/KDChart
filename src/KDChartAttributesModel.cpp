@@ -138,7 +138,6 @@ bool AttributesModel::isKnownAttributesRole( int role ) const
       case DatasetPenRole:
       case ThreeDAttributesRole:
       case LineAttributesRole:
-      case LineAttributesRolePerColumn:
       case ThreeDLineAttributesRole:
       case BarAttributesRole:
       case ThreeDBarAttributesRole:

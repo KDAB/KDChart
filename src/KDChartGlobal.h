@@ -162,7 +162,6 @@ enum DisplayRoles {
   DataValueLabelAttributesRole,
   ThreeDAttributesRole,
   LineAttributesRole,
-  LineAttributesRolePerColumn,
   ThreeDLineAttributesRole,
   BarAttributesRole,
   ThreeDBarAttributesRole,
