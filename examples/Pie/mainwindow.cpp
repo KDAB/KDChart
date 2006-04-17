@@ -54,3 +54,16 @@ void MainWindow::on_startPositionSL_valueChanged( int pos )
     update();
 }
 
+void MainWindow::on_explodeGB_toggled( bool toggle )
+{
+    m_pie->setExplode( toggle );
+    update();
+}
+
+void MainWindow::on_explodeSubmitPB_clicked()
+{
+    m_pie->setExplodeFactor( explodeDatasetSB->value(), explodeFactorSB->value() );
+    update();
+}
+
+

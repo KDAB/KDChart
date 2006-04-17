@@ -7,6 +7,8 @@
 #include "KDChartPieDiagram_p.h"
 #include "KDChartPainterSaver_p.h"
 
+#define DEGTORAD(d) (d)*M_PI/180.0
+
 using namespace KDChart;
 
 PieDiagram::Private::Private()
@@ -95,7 +97,25 @@ void PieDiagram::paint( PaintContext* ctx )
         ctx->painter()->setBrush( brush );
         ctx->painter()->setPen( pen );
         //qDebug() << "startAngle: " << startAngle << " spanAngle: " << spanAngle;
-        ctx->painter()->drawPie( contentsRect, ( int ) ((-startAngle + 90 ) * 16), ( int ) (-spanAngle * 16) );
+
+        // Explosion support
+        QRectF pieRect = contentsRect;
+        if( explode() ) {
+            double sizeFactor = qMin( contentsRect.width(), contentsRect.height() );
+            // explosions turned on at all
+            double explodeAngle = ( startAngle + spanAngle / 2 ) / 16;
+            double explodeAngleRad = /*DEGTORAD(*/ explodeAngle/* )*/;
+            if( j == 0 ) {
+                qDebug() << "explodeAngle = " << explodeAngle << ", explodeAngleRad = " << explodeAngleRad;
+                qDebug() << "explodeFactor = " << explodeFactor( j ) << ", sizeFactor = " << sizeFactor;
+                qDebug() << "translate X = " << explodeFactor( j ) * sizeFactor * cos( explodeAngleRad );
+                qDebug() << "translate Y = " << explodeFactor( j ) * sizeFactor * -sin( explodeAngleRad );
+            }
+            pieRect.translate( explodeFactor( j ) * sizeFactor * cos( explodeAngleRad ),
+                               explodeFactor( j ) * sizeFactor * -sin( explodeAngleRad ) );
+        }
+
+        ctx->painter()->drawPie( pieRect, ( int ) ((-startAngle + 90 ) * 16), ( int ) (-spanAngle * 16) );
         startAngle += spanAngle;
     }
     DataValueTextInfoListIterator it( list );
