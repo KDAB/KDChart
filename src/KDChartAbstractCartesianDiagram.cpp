@@ -1,3 +1,28 @@
+/****************************************************************************
+ ** Copyright (C) 2006 Klarälvdalens Datakonsult AB.  All rights reserved.
+ **
+ ** This file is part of the KD Chart library.
+ **
+ ** This file may be distributed and/or modified under the terms of the
+ ** GNU General Public License version 2 as published by the Free Software
+ ** Foundation and appearing in the file LICENSE.GPL included in the
+ ** packaging of this file.
+ **
+ ** Licensees holding valid commercial KD Chart licenses may use this file in
+ ** accordance with the KD Chart Commercial License Agreement provided with
+ ** the Software.
+ **
+ ** This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
+ ** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ **
+ ** See http://www.kdab.net/kdchart for
+ **   information about KDChart Commercial License Agreements.
+ **
+ ** Contact info@kdab.net if any conditions of this
+ ** licensing are not clear to you.
+ **
+ **********************************************************************/
+
 #include "KDChartAbstractCartesianDiagram.h"
 #include "KDChartAbstractCartesianDiagram_p.h"
 #include "KDChartPaintContext.h"
@@ -10,9 +35,9 @@ AbstractCartesianDiagram::Private::Private()
 {
 }
 
-AbstractCartesianDiagram::Private::~Private() 
+AbstractCartesianDiagram::Private::~Private()
 {
- 
+
 }
 
 void AbstractCartesianDiagram::init()
@@ -33,7 +58,7 @@ void AbstractCartesianDiagram::addAxes( CartesianAxis *axis )
     axis->setParent( coordinatePlane() );
 }
 
-KDChart::CartesianAxisList AbstractCartesianDiagram::axes( ) const 
+KDChart::CartesianAxisList AbstractCartesianDiagram::axes( ) const
 {
     return d->axesList;
 }
@@ -70,7 +95,7 @@ void AbstractCartesianDiagram::drawGrid( PaintContext* context )
         return;
     QPair<QPointF, QPointF> boundaries = dataBoundaries();
     const int MinimumPixelsBetweenLines = 10;
-    
+
     QPointF p1 = context->coordinatePlane()->translate( boundaries.first );
     QPointF p2 = context->coordinatePlane()->translate( boundaries.second );
 
@@ -79,7 +104,7 @@ void AbstractCartesianDiagram::drawGrid( PaintContext* context )
 
     int numberOfUnitLinesX = model()->rowCount() - 1;
     int numberOfUnitLinesY = (int) (boundaries.second.y() - boundaries.first.y());
-    
+
     bool drawUnitLinesX = screenRangeX / numberOfUnitLinesX > MinimumPixelsBetweenLines;
     bool drawUnitLinesY = screenRangeY / numberOfUnitLinesY > MinimumPixelsBetweenLines;
     int unitFactorX = 1;

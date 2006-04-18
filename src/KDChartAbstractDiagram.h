@@ -1,3 +1,28 @@
+/****************************************************************************
+ ** Copyright (C) 2006 Klarälvdalens Datakonsult AB.  All rights reserved.
+ **
+ ** This file is part of the KD Chart library.
+ **
+ ** This file may be distributed and/or modified under the terms of the
+ ** GNU General Public License version 2 as published by the Free Software
+ ** Foundation and appearing in the file LICENSE.GPL included in the
+ ** packaging of this file.
+ **
+ ** Licensees holding valid commercial KD Chart licenses may use this file in
+ ** accordance with the KD Chart Commercial License Agreement provided with
+ ** the Software.
+ **
+ ** This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
+ ** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ **
+ ** See http://www.kdab.net/kdchart for
+ **   information about KDChart Commercial License Agreements.
+ **
+ ** Contact info@kdab.net if any conditions of this
+ ** licensing are not clear to you.
+ **
+ **********************************************************************/
+
 #ifndef KDCHARTABSTRACTDIAGRAM_H
 #define KDCHARTABSTRACTDIAGRAM_H
 
@@ -24,7 +49,7 @@ namespace KDChart {
      * AbstractDiagram is the base class for diagram classes ("chart types").
      * It defines the interface that needs to be implemented for the diagram
      * to function within the KDChart framework. It extends Interview's
-     * QAbstractItemView. 
+     * QAbstractItemView.
      */
     class KDCHART_EXPORT AbstractDiagram : public QAbstractItemView
     {
@@ -43,7 +68,7 @@ namespace KDChart {
          */
         virtual const QPair<QPointF, QPointF> dataBoundaries() const;
 
-        
+
         /**
          * Draw the diagram contents to the rectangle and painter that are
          * passed in as part of the paint context.
@@ -51,11 +76,11 @@ namespace KDChart {
          */
         virtual void paint ( PaintContext* paintContext ) = 0;
 
-        
+
         /**
          * Called by the widget's sizeEvent. Adjust all internal structures that
          * are sensitive to the size of the widget.
-         * @param area 
+         * @param area
          */
         virtual void resize ( const QSizeF& area ) = 0;
 
@@ -258,8 +283,8 @@ namespace KDChart {
          */
         QList<MarkerAttributes> datasetMarkers() const;
 
-        
-        // configure the ordinate in percent mode - values 0 to 100 
+
+        // configure the ordinate in percent mode - values 0 to 100
         void setPercentMode( bool percent );
         bool percentMode() const;
 

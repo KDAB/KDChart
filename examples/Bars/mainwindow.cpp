@@ -1,3 +1,28 @@
+/****************************************************************************
+ ** Copyright (C) 2006 Klarälvdalens Datakonsult AB.  All rights reserved.
+ **
+ ** This file is part of the KD Chart library.
+ **
+ ** This file may be distributed and/or modified under the terms of the
+ ** GNU General Public License version 2 as published by the Free Software
+ ** Foundation and appearing in the file LICENSE.GPL included in the
+ ** packaging of this file.
+ **
+ ** Licensees holding valid commercial KD Chart licenses may use this file in
+ ** accordance with the KD Chart Commercial License Agreement provided with
+ ** the Software.
+ **
+ ** This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
+ ** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ **
+ ** See http://www.kdab.net/kdchart for
+ **   information about KDChart Commercial License Agreements.
+ **
+ ** Contact info@kdab.net if any conditions of this
+ ** licensing are not clear to you.
+ **
+ **********************************************************************/
+
 #include "mainwindow.h"
 
 #include <KDChartChart>
@@ -43,11 +68,11 @@ void MainWindow::on_barTypeCB_currentIndexChanged( const QString & text )
         m_bars->setType( BarDiagram::Normal );
     else if ( text == "Stacked" )
         m_bars->setType( BarDiagram::Stacked );
-    else if ( text == "Percent" )   
+    else if ( text == "Percent" )
         m_bars->setType( BarDiagram::Percent );
-    else 
-        qWarning (" Does not match any type");   
- 
+    else
+        qWarning (" Does not match any type");
+
     QPen pen;
     pen.setColor( Qt::black );
     m_bars->setPen(pen );
@@ -57,7 +82,7 @@ void MainWindow::on_barTypeCB_currentIndexChanged( const QString & text )
 
 void MainWindow::on_paintValuesCB_toggled( bool checked )
 {
-    //testing 
+    //testing
         const int rowCount = m_bars->model()->rowCount();
         const int colCount = m_bars->model()->columnCount();
         for ( int i = 0; i<colCount; ++i ) {
@@ -71,13 +96,13 @@ void MainWindow::on_paintValuesCB_toggled( bool checked )
                 ta .setColor( brush.color() );
                 if ( checked )
                     ta.setVisible( true );
-                else 
+                else
                     ta.setVisible( false );
 
                 a.setTextAttributes( ta );
                 a.setVisible( true );
-                m_bars->setDataValueAttributes( index, a); 
-            } 
+                m_bars->setDataValueAttributes( index, a);
+            }
         }
         m_chart->update();
 }
@@ -107,7 +132,7 @@ void MainWindow::on_markColumnCB_toggled( bool checked )
          pen.setWidth( 1 );
          m_bars->setPen( markColumnSB->value(), pen );
     }
-  m_chart->update(); 
+  m_chart->update();
 }
 
 void MainWindow::on_markColumnSB_valueChanged( int /*i*/ )

@@ -3,26 +3,26 @@
    */
 
 /****************************************************************************
- ** Copyright (C) 2001-2003 Klarälvdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2001-2006 Klarälvdalens Datakonsult AB.  All rights reserved.
  **
- ** This file is part of the KDChart library.
+ ** This file is part of the KD Chart library.
  **
  ** This file may be distributed and/or modified under the terms of the
  ** GNU General Public License version 2 as published by the Free Software
  ** Foundation and appearing in the file LICENSE.GPL included in the
  ** packaging of this file.
  **
- ** Licensees holding valid commercial KDChart licenses may use this file in
- ** accordance with the KDChart Commercial License Agreement provided with
+ ** Licensees holding valid commercial KD Chart licenses may use this file in
+ ** accordance with the KD Chart Commercial License Agreement provided with
  ** the Software.
  **
  ** This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
  ** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  **
- ** See http://www.klaralvdalens-datakonsult.se/?page=products for
- **   information about KDChart Commercial License Agreements.
+ ** See http://www.kdab.net/kdchart for
+ **   information about KD Chart Commercial License Agreements.
  **
- ** Contact info@klaralvdalens-datakonsult.se if any conditions of this
+ ** Contact info@kdab.net if any conditions of this
  ** licensing are not clear to you.
  **
  **********************************************************************/
@@ -35,8 +35,8 @@
 
 namespace KDChart {
 
-  /** 
-   * \brief A Palette is a set of brushes (or colors) to be used 
+  /**
+   * \brief A Palette is a set of brushes (or colors) to be used
    * for painting data sets.
    *
    * The palette class encapsulates a colletion of brushes, which in
@@ -48,7 +48,7 @@ namespace KDChart {
    * set of colors, one with a subdued color selection, one with rainbow
    * colors.
    *
-   * When a palette changes, it emits a changed() signal. Hook up to it, if 
+   * When a palette changes, it emits a changed() signal. Hook up to it, if
    * you want to repaint when the color selection changes.
    */
 
@@ -75,11 +75,11 @@ public:
     /** Return the number of brushed in the palette.  */
     int size() const;
 
-    /** Adds a brush to the palette. If no position is specified, the 
+    /** Adds a brush to the palette. If no position is specified, the
      * brush is appended. */
     void addBrush( const QBrush & brush, int position = -1 );
 
-    /** 
+    /**
      * Query the palette for a brush at the specified position. If the
      * position exceeds the size of the palette, it wraps around.
      */

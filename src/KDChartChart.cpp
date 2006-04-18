@@ -1,3 +1,28 @@
+/****************************************************************************
+ ** Copyright (C) 2006 Klarälvdalens Datakonsult AB.  All rights reserved.
+ **
+ ** This file is part of the KD Chart library.
+ **
+ ** This file may be distributed and/or modified under the terms of the
+ ** GNU General Public License version 2 as published by the Free Software
+ ** Foundation and appearing in the file LICENSE.GPL included in the
+ ** packaging of this file.
+ **
+ ** Licensees holding valid commercial KD Chart licenses may use this file in
+ ** accordance with the KD Chart Commercial License Agreement provided with
+ ** the Software.
+ **
+ ** This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
+ ** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ **
+ ** See http://www.kdab.net/kdchart for
+ **   information about KDChart Commercial License Agreements.
+ **
+ ** Contact info@kdab.net if any conditions of this
+ ** licensing are not clear to you.
+ **
+ **********************************************************************/
+
 #include <QList>
 #include <QtDebug>
 #include <QGridLayout>
@@ -36,7 +61,7 @@ Chart::Private::Private( Chart* chart_ )
     , headerLayout( 0 )
     , footerLayout( 0 )
     , dataAndLegendLayout( 0 )
-    , globalLeadingLeft( 0 ) 
+    , globalLeadingLeft( 0 )
     , globalLeadingRight( 0 )
     , globalLeadingTop( 0 )
     , globalLeadingBottom( 0 )
@@ -208,7 +233,7 @@ QHash<AbstractCoordinatePlane*, Chart::Private::PlaneInfo> Chart::Private::build
                 } else {
                     AxisInfo i = axisInfos[axis];
                     if ( i.plane == plane ) continue; // we don't want duplicates, only shared
- 
+
                     /* The user expects diagrams to be added on top, and to the right
                      * so that horizontally we need to move the new diagram, vertically
                      * the reference one. */
@@ -335,7 +360,7 @@ void Chart::Private::createLayouts( QWidget* w )
     }
     // nuke the old bunch
     delete layout;
-    
+
     // The HBox p->layout provides the left and right global leadings
     layout = new QHBoxLayout( w );
     layout->addSpacing( globalLeadingLeft );
@@ -368,7 +393,7 @@ void Chart::Private::slotRelayout()
     layout->activate();
 }
 
-// ******** Chart interface implementation *********** 
+// ******** Chart interface implementation ***********
 
 Chart::Chart ( QWidget* parent )
     : QWidget ( parent )

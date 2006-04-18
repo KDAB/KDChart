@@ -3,26 +3,26 @@
    */
 
 /****************************************************************************
- ** Copyright (C) 2005 Klarälvdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2005-2006 Klarälvdalens Datakonsult AB.  All rights reserved.
  **
- ** This file is part of the KDChart library.
+ ** This file is part of the KD Chart library.
  **
  ** This file may be distributed and/or modified under the terms of the
  ** GNU General Public License version 2 as published by the Free Software
  ** Foundation and appearing in the file LICENSE.GPL included in the
  ** packaging of this file.
  **
- ** Licensees holding valid commercial KDChart licenses may use this file in
- ** accordance with the KDChart Commercial License Agreement provided with
+ ** Licensees holding valid commercial KD Chart licenses may use this file in
+ ** accordance with the KD Chart Commercial License Agreement provided with
  ** the Software.
  **
  ** This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
  ** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  **
- ** See http://www.klaralvdalens-datakonsult.se/?page=products for
- **   information about KDChart Commercial License Agreements.
+ ** See http://www.kdab.net/kdchart for
+ **   information about KD Chart Commercial License Agreements.
  **
- ** Contact info@klaralvdalens-datakonsult.se if any conditions of this
+ ** Contact info@kdab.net if any conditions of this
  ** licensing are not clear to you.
  **
  **********************************************************************/
@@ -69,7 +69,7 @@ public:
     void setThreeDBarAttributes( int column, const ThreeDBarAttributes & a );
     void setThreeDBarAttributes( const QModelIndex & index,
                                   const ThreeDBarAttributes & a );
-    ThreeDBarAttributes threeDBarAttributes( const QModelIndex & index ) const;    
+    ThreeDBarAttributes threeDBarAttributes( const QModelIndex & index ) const;
 
     // implement AbstractDiagram
     /** \reimpl */
@@ -106,7 +106,7 @@ protected:
 
 private:
     void paintBars( PaintContext* ctx, const QModelIndex& index, const QRectF& bar );
-    void calculateValueAndGapWidths( int rowCount, int colCount, 
+    void calculateValueAndGapWidths( int rowCount, int colCount,
                                      double groupWidth,
                                      double& barWidth,
                                      double& spaceBetweenBars,

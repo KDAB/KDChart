@@ -1,3 +1,28 @@
+/****************************************************************************
+ ** Copyright (C) 2006 Klarälvdalens Datakonsult AB.  All rights reserved.
+ **
+ ** This file is part of the KD Chart library.
+ **
+ ** This file may be distributed and/or modified under the terms of the
+ ** GNU General Public License version 2 as published by the Free Software
+ ** Foundation and appearing in the file LICENSE.GPL included in the
+ ** packaging of this file.
+ **
+ ** Licensees holding valid commercial KD Chart licenses may use this file in
+ ** accordance with the KD Chart Commercial License Agreement provided with
+ ** the Software.
+ **
+ ** This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
+ ** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ **
+ ** See http://www.kdab.net/kdchart for
+ **   information about KDChart Commercial License Agreements.
+ **
+ ** Contact info@kdab.net if any conditions of this
+ ** licensing are not clear to you.
+ **
+ **********************************************************************/
+
  #include <QtXml/QDomDocumentFragment>
 #include <QPainter>
 #include <QDebug>
@@ -223,7 +248,7 @@ void BarDiagram::paint( PaintContext* ctx )
 
     // first draw the grid
     drawGrid( ctx );
-    
+
     //calculates and stores the values
     const int rowCount = model()->rowCount(rootIndex());
     const int colCount = model()->columnCount(rootIndex());
@@ -274,18 +299,18 @@ void BarDiagram::paint( PaintContext* ctx )
         case BarDiagram::Normal:
             // we paint the bars for all series next to each other, then move to the next value
             for ( int i=0; i<rowCount; ++i ) {
-                double offset = -groupWidth/2 + spaceBetweenGroups/2;                
+                double offset = -groupWidth/2 + spaceBetweenGroups/2;
                 // case fixed data value gap - handles max and min limits as well
                 if ( ba.useFixedDataValueGap() ) {
                     if ( spaceBetweenBars > 0 ) {
 		      if ( ctx->rectangle().width() > maxLimit )
                             offset -= ba.fixedDataValueGap();
-		      else 
+		      else
 			offset -= ((ctx->rectangle().width()/rowCount) - groupWidth)/(colCount-1);
-		      
+
                     } else {
                         //allow reducing the gap until the bars are displayed next to each other - null gap
-                        offset += barWidth/2;                     
+                        offset += barWidth/2;
                     }
                 }
 
@@ -301,13 +326,13 @@ void BarDiagram::paint( PaintContext* ctx )
                     //barWidth =  ctx->rectangle().width() / (rowCount);
                     list.append( DataValueTextInfo( index, topPoint, value ) );
                     paintBars( ctx, index, QRectF( topPoint, QSizeF( barWidth, barHeight ) ) );
-                     
+
                     offset += barWidth + spaceBetweenBars;
                 }
             }
             break;
         case BarDiagram::Stacked:
-            for ( int i = 0; i<colCount; ++i ) {                
+            for ( int i = 0; i<colCount; ++i ) {
 	      double offset =  spaceBetweenBars;
                 for ( int j = 0; j< rowCount; ++j ) {
                     QModelIndex index = model()->index( j, i, rootIndex() );
@@ -317,7 +342,7 @@ void BarDiagram::paint( PaintContext* ctx )
                     if ( tda.isEnabled() )
 		      barWidth =  (ctx->rectangle().width() - ((offset+(tda.depth()/2))*rowCount))/ rowCount ;
 		    else
-		      barWidth =  (ctx->rectangle().width() - (offset*rowCount))/ rowCount ; 
+		      barWidth =  (ctx->rectangle().width() - (offset*rowCount))/ rowCount ;
                     value = model()->data( model()->index( j, i, rootIndex() ) ).toDouble();
                     for ( int k = i; k >= 0 ; --k )
                         stackedValues += model()->data( model()->index( j, k, rootIndex() ) ).toDouble();
@@ -361,7 +386,7 @@ void BarDiagram::paint( PaintContext* ctx )
 		    ThreeDBarAttributes tda = threeDBarAttributes( model()->index( j, i, rootIndex() ) );
 		    if ( tda.isEnabled() )
 		      barWidth =  (ctx->rectangle().width() - ((offset+tda.depth())*rowCount))/ rowCount;
-		    else 
+		    else
 		      barWidth = (ctx->rectangle().width() - (offset*rowCount))/ rowCount;
 
                     value = model()->data(  model()->index( j, i, rootIndex() ) ).toDouble();
@@ -434,7 +459,7 @@ void BarDiagram::paintBars( PaintContext* ctx, const QModelIndex& index, const Q
       sidePoints << bar.topRight() << isoRect.topRight() << isoRect.bottomRight() << bar.bottomRight();
       ctx->painter()->drawPolygon( sidePoints );
     }
-   
+
     ctx->painter()->drawRect( bar );
 }
 
