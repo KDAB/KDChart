@@ -29,7 +29,7 @@
 #ifndef __KDCHART_DEFAULTS_MODEL_H__
 #define __KDCHART_DEFAULTS_MODEL_H__
 
-#include <QAbstractProxyModel>
+#include "KDChartAbstractProxyModel.h"
 
 #include <KDChartGlobal.h>
 
@@ -37,7 +37,7 @@ namespace KDChart {
 
   class AttributesModel;
 
-class KDCHART_EXPORT DefaultsModel : public QAbstractProxyModel
+class KDCHART_EXPORT DefaultsModel : public AbstractProxyModel
 {
     Q_OBJECT
 
@@ -54,15 +54,7 @@ public:
     void setDefaultPaletteType( DefaultPaletteType type );
 
     /** \reimpl */
-    QModelIndex mapFromSource ( const QModelIndex & sourceIndex ) const;
-    /** \reimpl */
-    QModelIndex mapToSource ( const QModelIndex & proxyIndex ) const;
-    /** \reimpl */
     QVariant headerData ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
-    /** \reimpl */
-    QModelIndex index(int, int, const QModelIndex& ) const;
-    /** \reimpl */
-    QModelIndex parent(const QModelIndex& ) const;
     /** \reimpl */
     int rowCount(const QModelIndex& ) const;
     /** \reimpl */

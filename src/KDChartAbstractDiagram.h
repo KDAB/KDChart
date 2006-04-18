@@ -87,6 +87,7 @@ namespace KDChart {
         /** Associate a model with the diagram. */
         virtual void setModel ( QAbstractItemModel * model );
 
+        virtual QAbstractItemModel* model() const;
 
         /**
          * Return the proxy model responsible for selecing the data to be

@@ -37,26 +37,13 @@
 using namespace KDChart;
 
 DefaultsModel::DefaultsModel( QObject * parent/* = 0 */ )
-  : QAbstractProxyModel( parent ), mDefaultPaletteType( PaletteTypeDefault )
+  : AbstractProxyModel( parent ), mDefaultPaletteType( PaletteTypeDefault )
 {
 }
 
 DefaultsModel::~DefaultsModel()
 {
 }
-
-/*virtual*/
-QModelIndex DefaultsModel::mapFromSource ( const QModelIndex & sourceIndex ) const
-{
-    return createIndex( sourceIndex.row(), sourceIndex.column(), sourceIndex.internalPointer() );
-}
-
-/*virtual*/
-QModelIndex DefaultsModel::mapToSource ( const QModelIndex & proxyIndex ) const
-{
-    return createIndex( proxyIndex.row(), proxyIndex.column(), proxyIndex.internalPointer() );
-}
-
 
 QVariant DefaultsModel::headerData ( int section,
                                      Qt::Orientation orientation,
@@ -106,7 +93,7 @@ QVariant DefaultsModel::data( const QModelIndex& index, int role ) const
   // Check the underlying attributes model, and real source model
   // If they have something suitable for this index, fine.
   // Otherwise use defaults.
-  QVariant sourceData = sourceModel()->data( index, role );
+  QVariant sourceData = sourceModel()->data( mapToSource(index), role );
   if ( sourceData.isValid() ) return sourceData;
 
   if ( attributesModel()->isKnownAttributesRole( role ) ) {
@@ -138,7 +125,7 @@ QVariant DefaultsModel::defaultsForRole( int role ) const
 
 bool DefaultsModel::setData ( const QModelIndex & index, const QVariant & value, int role )
 {
-    return sourceModel()->setData( index, value, role );
+    return sourceModel()->setData( mapToSource(index), value, role );
 }
 
 bool DefaultsModel::setHeaderData ( int section, Qt::Orientation orientation,
@@ -147,24 +134,14 @@ bool DefaultsModel::setHeaderData ( int section, Qt::Orientation orientation,
     return sourceModel()->setHeaderData( section, orientation, value, role );
 }
 
-QModelIndex DefaultsModel::index( int row, int col, const QModelIndex& index ) const
-{
-    return sourceModel()->index( row, col, index );
-}
-
-QModelIndex DefaultsModel::parent( const QModelIndex& index ) const
-{
-    return sourceModel()->parent( index );
-}
-
 int DefaultsModel::rowCount( const QModelIndex& index ) const
 {
-    return sourceModel()->rowCount( index );
+    return sourceModel()->rowCount( mapToSource(index) );
 }
 
 int DefaultsModel::columnCount( const QModelIndex& index ) const
 {
-    return sourceModel()->columnCount( index );
+    return sourceModel()->columnCount( mapToSource(index) );
 }
 
 

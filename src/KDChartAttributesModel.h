@@ -29,7 +29,7 @@
 #ifndef __KDCHART_ATTRIBUTES_MODEL_H__
 #define __KDCHART_ATTRIBUTES_MODEL_H__
 
-#include <QAbstractProxyModel>
+#include "KDChartAbstractProxyModel.h"
 #include <QMap>
 #include <QVariant>
 
@@ -37,7 +37,7 @@
 
 namespace KDChart {
 
-class AttributesModel : public QAbstractProxyModel
+class AttributesModel : public AbstractProxyModel
 {
     Q_OBJECT
 
@@ -59,15 +59,7 @@ public:
     bool isKnownAttributesRole( int role ) const;
 
     /** \reimpl */
-    QModelIndex mapFromSource ( const QModelIndex & sourceIndex ) const;
-    /** \reimpl */
-    QModelIndex mapToSource ( const QModelIndex & proxyIndex ) const;
-    /** \reimpl */
     QVariant headerData ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
-    /** \reimpl */
-    QModelIndex index(int, int, const QModelIndex& ) const;
-    /** \reimpl */
-    QModelIndex parent(const QModelIndex& ) const;
     /** \reimpl */
     int rowCount(const QModelIndex& ) const;
     /** \reimpl */

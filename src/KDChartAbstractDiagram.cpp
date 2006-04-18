@@ -154,6 +154,22 @@ void AbstractDiagram::setModel ( QAbstractItemModel * newModel )
     }
 }
 
+QAbstractItemModel* AbstractDiagram::model() const
+{
+  /* This is unused for now, but we keep the
+     method for BC in case we need to change
+     something. /steffen
+  */
+#if 0
+  if( d->datasetProxy ) {
+    return d->datasetProxy->sourceModel();
+  } else {
+    return d->attributesModel->sourceModel();
+  }
+#endif
+  return QAbstractItemView::model();
+}
+
 void AbstractDiagram::setRootIndex ( const QModelIndex& idx )
 {
   if( d->datasetProxy ) {

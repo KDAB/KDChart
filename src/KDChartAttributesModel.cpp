@@ -74,26 +74,13 @@ void AttributesModel::deref( QAbstractItemModel* model )
 }
 
 AttributesModel::AttributesModel( QObject * parent/* = 0 */ )
-  : QAbstractProxyModel( parent )
+  : AbstractProxyModel( parent )
 {
 }
 
 AttributesModel::~AttributesModel()
 {
 }
-
-/*virtual*/
-QModelIndex AttributesModel::mapFromSource ( const QModelIndex & sourceIndex ) const
-{
-    return createIndex( sourceIndex.row(), sourceIndex.column(), sourceIndex.internalPointer() );
-}
-
-/*virtual*/
-QModelIndex AttributesModel::mapToSource ( const QModelIndex & proxyIndex ) const
-{
-    return createIndex( proxyIndex.row(), proxyIndex.column(), proxyIndex.internalPointer() );
-}
-
 
 QVariant AttributesModel::headerData ( int section,
                                        Qt::Orientation orientation,
@@ -114,7 +101,7 @@ QVariant AttributesModel::headerData ( int section,
 
 QVariant AttributesModel::data( const QModelIndex& index, int role ) const
 {
-  QVariant sourceData = sourceModel()->data( index, role );
+  QVariant sourceData = sourceModel()->data( mapToSource(index), role );
   if ( sourceData.isValid() ) return sourceData;
   // check if we are storing a value for this role at this index
   if ( mDataMap.contains( index.column() ) ) {
@@ -152,7 +139,7 @@ bool AttributesModel::isKnownAttributesRole( int role ) const
 bool AttributesModel::setData ( const QModelIndex & index, const QVariant & value, int role )
 {
     if ( !isKnownAttributesRole( role ) ) {
-        return sourceModel()->setData( index, value, role );
+        return sourceModel()->setData( mapToSource(index), value, role );
     } else {
         QMap< int,  QMap< int, QVariant> > &colDataMap = mDataMap[ index.column() ];
         QMap<int, QVariant> &dataMap = colDataMap[ index.row() ];
@@ -194,28 +181,16 @@ QVariant KDChart::AttributesModel::modelData( int role ) const
     return mModelDataMap.value( role, QVariant() );
 }
 
-QModelIndex AttributesModel::index( int row, int col, const QModelIndex& index ) const
-{
-    Q_ASSERT(sourceModel());
-    return sourceModel()->index( row, col, index );
-}
-
-QModelIndex AttributesModel::parent( const QModelIndex& index ) const
-{
-    Q_ASSERT(sourceModel());
-    return sourceModel()->parent( index );
-}
-
 int AttributesModel::rowCount( const QModelIndex& index ) const
 {
     Q_ASSERT(sourceModel());
-    return sourceModel()->rowCount( index );
+    return sourceModel()->rowCount( mapToSource(index) );
 }
 
 int AttributesModel::columnCount( const QModelIndex& index ) const
 {
     Q_ASSERT(sourceModel());
-    return sourceModel()->columnCount( index );
+    return sourceModel()->columnCount( mapToSource(index) );
 }
 
 void AttributesModel::setSourceModel( QAbstractItemModel* sourceModel )
