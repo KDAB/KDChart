@@ -28,6 +28,7 @@
 #include "mainwindow.h"
 
 #include <KDChartChart>
+#include <KDChartHeaderFooter>
 #include <KDChartDatasetProxyModel>
 #include <KDChartAbstractCoordinatePlane>
 #include <KDChartBarDiagram>
@@ -105,6 +106,10 @@ void MainWindow::setupViews()
 
     m_diagramView->datasetProxy()->setDatasetColumnDescriptionVector( columnConfig );
 
+    KDChart::HeaderFooter* headerFooter = new KDChart::HeaderFooter( m_chart );
+    headerFooter->setText("You can edit the table data, or select table cells with keyboard/mouse.");
+    headerFooter->setPosition( KDChart::HeaderFooter::North );
+    m_chart->addHeaderFooter( headerFooter );
     m_chart->coordinatePlane()->replaceDiagram( m_diagramView );
 
     m_tableView->setModel( m_model );
