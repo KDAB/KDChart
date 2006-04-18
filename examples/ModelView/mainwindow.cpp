@@ -123,33 +123,27 @@ void MainWindow::setupViews()
 void MainWindow::selectionChanged( const QItemSelection & selected, const QItemSelection & deselected )
 {
     if( deselected != selected ){
+
+        const QItemSelection * pItemSelection = &deselected;
         QPen pen( Qt::NoPen );
-        for (int i = 0; i < deselected.size(); ++i) {
-            QItemSelectionRange range( deselected.at(i) );
-            for( int iRow = range.topLeft().row(); iRow <= range.bottomRight().row(); ++iRow ){
-                for( int iColumn = range.topLeft().column(); iColumn <= range.bottomRight().column(); ++iColumn ){
-                    // ignore the first column: that's just the label texts to be shown in the table view
-                    if( iColumn )
-                        // disable the surrounding line around this bar
-                        m_diagramView->setPen( m_model->index(iRow, iColumn-1, QModelIndex()), pen );
-                }
-            }
-        }
-        pen.setColor( Qt::darkBlue );
-        pen.setStyle( Qt::DashLine );
-        pen.setWidth( 2 );
-        for (int i = 0; i < selected.size(); ++i) {
-            QItemSelectionRange range( selected.at(i) );
-            for( int iRow = range.topLeft().row(); iRow <= range.bottomRight().row(); ++iRow ){
-                for( int iColumn = range.topLeft().column(); iColumn <= range.bottomRight().column(); ++iColumn ){
-                    // ignore the first column: that's just the label texts to be shown in the table view
-                    if( iColumn ){
-                        // show a surrounding line around this bar
-                        m_diagramView->setPen( m_model->index(iRow, iColumn-1, QModelIndex()), pen );
+        for (int iItemSelection = 0; iItemSelection<2; ++iItemSelection){
+            for (int i = 0; i < pItemSelection->size(); ++i) {
+                QItemSelectionRange range( pItemSelection->at(i) );
+                for( int iRow = range.topLeft().row(); iRow <= range.bottomRight().row(); ++iRow ){
+                    for( int iColumn = range.topLeft().column(); iColumn <= range.bottomRight().column(); ++iColumn ){
+                        // ignore the first column: that's just the label texts to be shown in the table view
+                        if( iColumn )
+                            // disable the surrounding line around this bar
+                            m_diagramView->setPen( m_model->index(iRow, iColumn-1, QModelIndex()), pen );
                     }
                 }
             }
+            pItemSelection = &selected;
+            pen.setColor( Qt::darkBlue );
+            pen.setStyle( Qt::DashLine );
+            pen.setWidth( 2 );
         }
+
         m_chart->update();
     }
 }
