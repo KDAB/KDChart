@@ -34,5 +34,6 @@ complete.
 - Legends:       Separator lines in legends are not supported yet.
 - XML:           Saving chart configurations to XML has been
                  temporarily removed.
+- Designer:      A Designer plugin is not yet provided.
 
 
