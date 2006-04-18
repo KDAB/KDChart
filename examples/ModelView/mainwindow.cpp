@@ -74,7 +74,7 @@ void MainWindow::setupModel()
     m_model->setHeaderData(2, Qt::Horizontal, tr("Product A"));
 
     DatasetDescriptionVector columnConfig( columnCount-1 );
-    for( int iC=0; iC<columnConfig.size(); ++iC)
+    for( int iC=1; iC<columnConfig.size(); ++iC)
         columnConfig[iC] = iC+1;
 
     m_datasetProxy = new DatasetProxyModel();
