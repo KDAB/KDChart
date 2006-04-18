@@ -111,7 +111,6 @@ void MainWindow::setupViews()
 
     m_selectionModel = new QItemSelectionModel( m_model );
     m_tableView->setSelectionModel(   m_selectionModel );
-    //m_diagramView->setSelectionModel( selectionModel );
 
     setCentralWidget(splitter);
 }
