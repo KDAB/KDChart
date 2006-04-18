@@ -1,0 +1,56 @@
+Dear KD Chart Customer,
+
+after almost a year of development time, KDAB is proud to be able to
+present the first beta version of KD Chart 2.0, the next-generation
+charting component for Qt 4. KD Chart 2.0 has been redesigned and
+rewritten from the ground up so as to make optimal use of the new
+possibilities in Qt 4. Some of the major new features and advantages
+are:
+
+- Full Interview support - plug any QAbstractTableModel into KD Chart
+and have the data displayed.
+
+- Full Arthur support - make use of the fantastic new rendering
+possibilities in Qt 4.
+
+- Separation of diagrams and coordinate planes, allows very simple
+addition of custom chart types and axis scales.
+
+Please see the file doc/NEWS.txt for a more comprehensive list of
+advantages.
+
+In order to provide all these advantages and to be able to deliver a
+native Qt 4 solution, we had to redesign the KD Chart API
+completely. We have taken this opportunity because even the Qt API has
+been changed substantially, and any Qt 3 software requires some
+porting to Qt 4. With the new API, we hope to have a stable base for
+years to come.
+
+The documentation is currently being rewritten, but you can get
+started with the file doc/KDChart-2.0-API-Introduction as well as the
+sample code in the examples subdirectories.
+
+Some features that were present in KD Chart 1.x have been temporarily
+removed from KD Chart 2.0 beta 1, it is our intention to readd these
+before the final release. Please find a list of known missing features
+and deficiencies in doc/MISSING.txt.
+
+In order to ease the transition from KD Chart 1.x to KD Chart 2, a
+compatibility library will be provided. This library is currently
+under developing and will be included in one of the next beta
+versions.
+
+As a licensed customer, you are of course entitled to support even for
+this new version by sending an email message to
+kdchart-support@kdab.net. We would also appreciate any and all
+feedback you can give us about this new version, please send the
+feedback to kdchart-support@kdab.net as well.
+
+We hope that you will like the new KD Chart 2.0 and that it will give
+your application development a boost!
+
+The KD Chart Team at KDAB
+
+
+
+
