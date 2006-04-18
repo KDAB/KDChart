@@ -148,12 +148,12 @@ void AbstractCartesianDiagram::drawGrid( PaintContext* context )
 
     if ( drawUnitLinesX ) {
         context->painter()->setPen( gridAttributes()->gridPen() );
-        int minX = minValueX;
-        if ( minX % unitFactorX != 0 )
-            minX = minX + unitFactorX * (minX > 0 ? 1 : -1) - minX % unitFactorX;
-        for ( int i = minX; i <= maxValueX; i += unitFactorX ) {
-            QPointF topPoint( i, maxValueY );
-	    QPointF bottomPoint( i, minValueY );
+        float minX = minValueX;
+        if ( qRound( minX ) % unitFactorX != 0 )
+            minX = minX + unitFactorX * (minX > 0 ? 1 : -1) - qRound( minX ) % unitFactorX;
+        for ( float f = minX; f <= maxValueX; f += unitFactorX ) {
+            QPointF topPoint( f, maxValueY );
+	    QPointF bottomPoint( f, minValueY );
             topPoint = context->coordinatePlane()->translate( topPoint );
             bottomPoint = context->coordinatePlane()->translate( bottomPoint );
             context->painter()->drawLine( topPoint, bottomPoint );
@@ -161,12 +161,12 @@ void AbstractCartesianDiagram::drawGrid( PaintContext* context )
     }
     if ( drawUnitLinesY ) {
         context->painter()->setPen( gridAttributes()->gridPen() );
-        int minY = minValueY;
-        if ( minY % unitFactorY != 0 )
-            minY = minY + unitFactorY * (minY > 0 ? 1 : -1) - minY % unitFactorY;
-        for ( int i = minY; i <= maxValueY; i += unitFactorY ) {
-            QPointF leftPoint( minValueX, i );
-	    QPointF rightPoint( maxValueX, i );
+        float minY = minValueY;
+        if ( qRound( minY ) % unitFactorY != 0 )
+            minY = minY + unitFactorY * (minY > 0 ? 1 : -1) - qRound( minY ) % unitFactorY;
+        for ( float f = minY; f <= maxValueY; f += unitFactorY ) {
+            QPointF leftPoint( minValueX, f );
+	    QPointF rightPoint( maxValueX, f );
             leftPoint = context->coordinatePlane()->translate( leftPoint );
             rightPoint = context->coordinatePlane()->translate( rightPoint );
             context->painter()->drawLine( leftPoint, rightPoint );
