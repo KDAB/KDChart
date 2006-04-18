@@ -49,9 +49,9 @@ MainWindow::MainWindow()
     quitAction->setShortcut(QKeySequence(tr("Ctrl+Q")));
 
     setupModel();
+    initializeData();
     setupViews();
 
-    openFile(":/Charts/qtdata.cht");
 
     connect(openAction, SIGNAL(triggered()), this, SLOT(openFile()));
     connect(saveAction, SIGNAL(triggered()), this, SLOT(saveFile()));
@@ -73,13 +73,6 @@ void MainWindow::setupModel()
     m_model->setHeaderData(1, Qt::Horizontal, tr("Quantity"));
     m_model->setHeaderData(2, Qt::Horizontal, tr("Product A"));
 
-    DatasetDescriptionVector columnConfig( columnCount-1 );
-    for( int iC=1; iC<columnConfig.size(); ++iC)
-        columnConfig[iC-1] = iC;
-
-    m_datasetProxy = new DatasetProxyModel();
-    m_datasetProxy->setSourceModel( m_model );
-    m_datasetProxy->setDatasetColumnDescriptionVector( columnConfig );
 }
 
 void MainWindow::initializeData()
@@ -102,14 +95,20 @@ void MainWindow::setupViews()
     // Set up the diagram
     m_diagramView = new BarDiagram();
     m_diagramView->setModel( m_model );
-    m_diagramView->setDatasetProxy( m_datasetProxy );
+
+    DatasetDescriptionVector columnConfig( m_model->columnCount() - 1 );
+    for( int iC=1; iC<=columnConfig.size(); ++iC)
+        columnConfig[iC-1] = iC;
+
+    m_diagramView->datasetProxy()->setDatasetColumnDescriptionVector( columnConfig );
+
     m_chart->coordinatePlane()->replaceDiagram( m_diagramView );
 
     m_tableView->setModel( m_model );
 
     QItemSelectionModel *selectionModel = new QItemSelectionModel( m_model );
     m_tableView->setSelectionModel(   selectionModel );
-    m_diagramView->setSelectionModel( selectionModel );
+   // m_diagramView->setSelectionModel( selectionModel );
 
     setCentralWidget(splitter);
 }
