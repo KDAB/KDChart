@@ -137,7 +137,7 @@ void MainWindow::on_headersTV_itemSelectionChanged()
 }
 
 
-KDChart::Legend::LegendPosition posNameToKDCPosition( QString name )
+KDChart::Legend::LegendPosition posNameToKDChartPosition( QString name )
 {
     if( name =="Top" )
         return KDChart::Legend::North;
@@ -185,7 +185,7 @@ void MainWindow::on_addLegendPB_clicked()
         KDChart::Legend* legend = new KDChart::Legend( m_lines, m_chart );
         m_chart->addLegend( legend );
         //legend->setPosition( (KDChart::Legend::LegendPosition)conf.positionCO->currentIndex() );
-        legend->setPosition( posNameToKDCPosition( conf.positionCO->currentText() ) );
+        legend->setPosition( posNameToKDChartPosition( conf.positionCO->currentText() ) );
         legend->setShowLines( conf.showLinesCB->isChecked() );
         legend->setTitleText( conf.titleTextED->text() );
         legend->setOrientation( ( conf.orientationCO->currentIndex() == 0 ) ? Qt::Vertical : Qt::Horizontal );
@@ -214,7 +214,7 @@ void MainWindow::on_editLegendPB_clicked()
     conf.titleTextED->setText( legend->titleText() );
     if( dlg.exec() ) {
         //legend->setPosition( (KDChart::Legend::LegendPosition)conf.positionCO->currentIndex() );
-        legend->setPosition( posNameToKDCPosition( conf.positionCO->currentText() ) );
+        legend->setPosition( posNameToKDChartPosition( conf.positionCO->currentText() ) );
         legend->setShowLines( conf.showLinesCB->isChecked() );
         legend->setTitleText( conf.titleTextED->text() );
         legend->setOrientation( ( conf.orientationCO->currentIndex() == 0 ) ? Qt::Vertical : Qt::Horizontal );
