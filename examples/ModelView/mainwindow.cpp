@@ -123,6 +123,7 @@ void MainWindow::setupViews()
 void MainWindow::selectionChanged( const QItemSelection & selected, const QItemSelection & deselected )
 {
     if( deselected != selected ){
+        QPen pen( Qt::NoPen );
         for (int i = 0; i < deselected.size(); ++i) {
             QItemSelectionRange range( deselected.at(i) );
             for( int iRow = range.topLeft().row(); iRow <= range.bottomRight().row(); ++iRow ){
@@ -130,10 +131,13 @@ void MainWindow::selectionChanged( const QItemSelection & selected, const QItemS
                     // ignore the first column: that's just the label texts to be shown in the table view
                     if( iColumn )
                         // disable the surrounding line around this bar
-                        m_diagramView->setPen( m_model->index(iRow, iColumn-1, QModelIndex()), QPen( Qt::NoPen ) );
+                        m_diagramView->setPen( m_model->index(iRow, iColumn-1, QModelIndex()), pen );
                 }
             }
         }
+        pen.setColor( Qt::darkBlue );
+        pen.setStyle( Qt::DashLine );
+        pen.setWidth( 2 );
         for (int i = 0; i < selected.size(); ++i) {
             QItemSelectionRange range( selected.at(i) );
             for( int iRow = range.topLeft().row(); iRow <= range.bottomRight().row(); ++iRow ){
@@ -141,9 +145,6 @@ void MainWindow::selectionChanged( const QItemSelection & selected, const QItemS
                     // ignore the first column: that's just the label texts to be shown in the table view
                     if( iColumn ){
                         // show a surrounding line around this bar
-                        QPen pen( Qt::darkBlue );
-                        pen.setStyle( Qt::DashLine );
-                        pen.setWidth( 2 );
                         m_diagramView->setPen( m_model->index(iRow, iColumn-1, QModelIndex()), pen );
                     }
                 }
