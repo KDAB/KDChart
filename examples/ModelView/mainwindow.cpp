@@ -75,7 +75,7 @@ void MainWindow::setupModel()
 
     DatasetDescriptionVector columnConfig( columnCount-1 );
     for( int iC=1; iC<columnConfig.size(); ++iC)
-        columnConfig[iC-1] = iC+1;
+        columnConfig[iC-1] = iC;
 
     m_datasetProxy = new DatasetProxyModel();
     m_datasetProxy->setSourceModel( m_model );
