@@ -31,6 +31,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QItemSelection>
 #include <TableModel.h>
 
 namespace KDChart {
@@ -50,6 +51,9 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow();
+
+protected slots:
+    void selectionChanged( const QItemSelection & selected, const QItemSelection & deselected );
 
 private slots:
     void initializeData();

@@ -57,6 +57,9 @@ MainWindow::MainWindow()
     connect(saveAction, SIGNAL(triggered()), this, SLOT(saveFile()));
     connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
 
+    connect(m_selectionModel, SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
+            this,               SLOT(selectionChanged(const QItemSelection &, const QItemSelection &)));
+
     menuBar()->addMenu(fileMenu);
     statusBar();
 
@@ -106,11 +109,44 @@ void MainWindow::setupViews()
 
     m_tableView->setModel( m_model );
 
-    QItemSelectionModel *selectionModel = new QItemSelectionModel( m_model );
-    m_tableView->setSelectionModel(   selectionModel );
-   // m_diagramView->setSelectionModel( selectionModel );
+    m_selectionModel = new QItemSelectionModel( m_model );
+    m_tableView->setSelectionModel(   m_selectionModel );
+    //m_diagramView->setSelectionModel( selectionModel );
 
     setCentralWidget(splitter);
+}
+
+void MainWindow::selectionChanged( const QItemSelection & selected, const QItemSelection & deselected )
+{
+    if( deselected != selected ){
+        for (int i = 0; i < deselected.size(); ++i) {
+            QItemSelectionRange range( deselected.at(i) );
+            for( int iRow = range.topLeft().row(); iRow <= range.bottomRight().row(); ++iRow ){
+                for( int iColumn = range.topLeft().column(); iColumn <= range.bottomRight().column(); ++iColumn ){
+                    // ignore the first column: that's just the lable texts
+                    if( iColumn )
+                        // disable the surrounding line around this bar
+                        m_diagramView->setPen( m_model->index(iRow, iColumn-1, QModelIndex()), QPen( Qt::NoPen ) );
+                }
+            }
+        }
+        for (int i = 0; i < selected.size(); ++i) {
+            QItemSelectionRange range( selected.at(i) );
+            for( int iRow = range.topLeft().row(); iRow <= range.bottomRight().row(); ++iRow ){
+                for( int iColumn = range.topLeft().column(); iColumn <= range.bottomRight().column(); ++iColumn ){
+                    // ignore the first column: that's just the lable texts
+                    if( iColumn ){
+                        // show a surrounding line around this bar
+                        QPen pen( Qt::darkBlue );
+                        pen.setStyle( Qt::DashLine );
+                        pen.setWidth( 2 );
+                        m_diagramView->setPen( m_model->index(iRow, iColumn-1, QModelIndex()), pen );
+                    }
+                }
+            }
+        }
+        m_chart->update();
+    }
 }
 
 void MainWindow::openFile(const QString &path)
