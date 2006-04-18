@@ -1,0 +1,12 @@
+export KDCHARTDIR=`pwd`
+
+libdir="$KDCHARTDIR/lib"
+
+if [ ! `echo $LD_LIBRARY_PATH | grep $libdir` ] ; then
+  export LD_LIBRARY_PATH=$libdir:$LD_LIBRARY_PATH
+fi
+
+if [ ! `echo $DYLD_LIBRARY_PATH | grep $libdir` ] ; then
+  export DYLD_LIBRARY_PATH=$libdir:$DYLD_LIBRARY_PATH
+fi
+
