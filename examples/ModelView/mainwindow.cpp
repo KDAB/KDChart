@@ -133,7 +133,7 @@ void MainWindow::selectionChanged( const QItemSelection & selected, const QItemS
                     for( int iColumn = range.topLeft().column(); iColumn <= range.bottomRight().column(); ++iColumn ){
                         // ignore the first column: that's just the label texts to be shown in the table view
                         if( iColumn )
-                            // disable the surrounding line around this bar
+                            // enable (or disable, resp.) the surrounding line around this bar
                             m_diagramView->setPen( m_model->index(iRow, iColumn-1, QModelIndex()), pen );
                     }
                 }
