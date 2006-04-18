@@ -15,7 +15,7 @@ and API style found in Qt 4.
 
 Of course, this means breaking source compatibility in several places,
 but like Trolltech, we have made a conscious decision that it would be
-better to clean up the API now, then to carry it with us into the next
+better to clean up the API now, than to carry it with us into the next
 generation of KD Chart. Wherever possible, compatibility methods and
 classes have been, or will be, provided.
 
@@ -27,9 +27,9 @@ Overview:
 ---------
 
 The core of KDChart's 2.0 API is the KDChart::Chart class. It encapsulates the
-canvas the individual components of a chart are painted on, manages them and
+canvas onto which the individual components of a chart are painted, manages them and
 provides access to them. There can be more than one KDChart::Diagram on a
-KDChart::Chart, how they are layed out is determined by what axes, if any, 
+KDChart::Chart, how they are laid out is determined by which axes, if any, 
 they share. (More on axes management further down.)
 
 KDChart::Diagram subclasses for the various types of charts are provided, such as
@@ -74,14 +74,14 @@ drawn next to each other, or over each other, is determined by
 whether one of the coordinate planes is the reference plane of
 the other. To share an axis among two planes (and thus diagrams)
 they can simply be added to both diagrams. The Chart layouting
-engine will take of adjusting positions accordingly.
+engine will take care of adjusting positions accordingly.
 
 (see src/KDChartAbstractCoordinatePlane.h and 
  examples/SharedAbscissa/mainwindow.cpp)
 
 Apart from diagrams, a chart can have a number of optional components
-such as Legends, HeaderFooters or custom KDChart::Area subclasses that
-implement user defined elements. The API for manipulating those is
+such as Legends, Headers/Footers or custom KDChart::Area subclasses that
+implement user-defined elements. The API for manipulating these is
 similar for all of them.
 
 Adding an additional header, for example, looks like this:
@@ -103,41 +103,42 @@ by Qt 4:
 
 Any KDChart::AbstractDiagram subclass (since that is derived from 
 QAbstractItemView) can display data coming from any QAbstractItemModel.
-That means that in order to use your data with KDChart diagrams, you
+That means that in order to use your data with KD Chart diagrams, you
 will need to either use one of Qt's builtin models to manage your data,
 or provide the QAbstractItemModel interface on top of your already 
 existing data storage by implementing your own model, that talks to 
 that underlying storage.
 
-KDChart::Widget is a convenience class that provides
-a simpler,  but less flexible way of displaying data in a chart. It stores
-the data it displays itself, and thus does not need a QAbstractItemModel
-to do that. For many basic charting needs it should suffice, but it is
-not meant to handle very large amounts of data or be able to make use of
-user supplied chart types, for example.
+KDChart::Widget is a convenience class that provides a simpler, but
+less flexible way of displaying data in a chart. It stores the data it
+displays itself, and thus does not need a QAbstractItemModel. For many
+basic charting needs, it should suffice, but it is, for example, not
+meant to handle very large amounts of data or be able to make use of
+user-supplied chart types.
 
-KDChart::Widget is provided to  allow getting started easily without having to
-master the complexities of the new Interview framework in Qt 4. We
-would still advise to use KDChart::Chart so that you can make use of all
-the benefits that Interview brings you once you have mastered it.
+KDChart::Widget is provided in order to allow getting started easily
+without having to master the complexities of the new Interview
+framework in Qt 4. We would still advise to use KDChart::Chart so that
+you can make use of all the benefits that Interview brings you once
+you have mastered it.
 
-To understand the relationship between KDChartView and KDChartWidget
-better, compare, for example, KDChartView and KDChartWidget to
-QListView and QListWidget in Qt 4, and you will clearly notice the
-parallels.
+To understand the relationship between KDChart::View and
+KDChart::Widget better, compare, for example, KDChart::View and
+KDChart::Widget to QListView and QListWidget in Qt 4, and you will
+clearly notice the parallels.
 
 
 Attribute sets:
 ---------------
 
-The various components of a chart such as legends or axes have attribute
-sets associated with them that define the way they are laid out and
-painted. For example, both the chart itself and all areas have a set of
-KDChart::BackgroundAttributes, which govern whether there should be a background
-pixmap, or a solid background color. Other attribute sets are, for example,
-FrameAttributes or GridAttributes. The default attributes
-provide reasonable defaults, such as no visible background and no visible
-frame.
+The various components of a chart such as legends or axes have
+attribute sets associated with them that define the way they are laid
+out and painted. For example, both the chart itself and all areas have
+a set of KDChart::BackgroundAttributes, which govern whether there
+should be a background pixmap, or a solid background color. Other
+attribute sets include FrameAttributes or GridAttributes. The default
+attributes provide reasonable, unintrusive defaults, such as no
+visible background and no visible frame.
 
 These attribute sets are passed by value, they are intended to be used
 much like Qt's QPen or QBrush. For example:
@@ -147,18 +148,20 @@ ta.setPen( Qt::red );
 ta.setFont( QFont( "Helvetica" ) );
 chart->legend()->setTextAttributes( ta );
 
-All attribute sets can be set per cell, per column or per model, and only
-queried per cell. Access at the cell level only ensures that the proper fallback
-hierarchy can be observed. If there is a value set at cell level, it will be 
-used, otherwise the dataset (column) level is checked. If nothing was set 
-at dataset level, the model wide setting is used, and if there should be none,
-the default values will be applied. All of this happens automatically, so that
-the using code only has to ask the cell for it's attributes, and will get the
-correct values. This avoids duplicating the fallback logic all over the library
-and the application, and aoivds much (expensive) error handling.
+All attribute sets can be set per cell, per column or per model, and
+only be queried per cell. Access at the cell level only ensures that
+the proper fallback hierarchy can be observed. If there is a value set
+at cell level, it will be used, otherwise the dataset (column) level
+is checked. If nothing was set at dataset level, the model wide
+setting is used, and if there is none either, the default values will
+be applied. All of this happens automatically, so that the code using
+these values only has to ask the cell for its attributes, and will get
+the correct values. This avoids duplicating the fallback logic all
+over the library and the application, and avoids much (expensive)
+error handling.
 
-When using attributes sets, you need to be aware of this fallback hierarchy, 
-because per cell changes will hide per column changes, for example. 
+When using attributes sets, you need to be aware of this fallback
+hierarchy, because e.g. per-cell changes will hide per-column changes.
 
 (see files /src/KDChart*Attributes.h)
 
@@ -166,10 +169,10 @@ because per cell changes will hide per column changes, for example.
 Memory Management:
 -----------------
 
-As a general rule, everything in a KDChart::Chat is owned by the chart.
-Manipulation of the built-in components of a chart, such as a legend,
-happens through mutable pointers provided by the view, but those
-components can also be replaced. For example:
+As a general rule, everything in a KDChart::Chat is owned by the
+chart.  Manipulation of the built-in components of a chart, such as a
+legend, happens through mutable pointers provided by the view, but
+those components can also be replaced. For example:
 
 // set the built-in (default) legend visible
 view->legend()->setPosition( North );
@@ -178,7 +181,7 @@ view->legend()->setPosition( North );
 // take ownership of the allocated memory and free the old legend
 KDChart::Legend *myLegend = view->replaceLegend( new Legend );
 
-Similarly inserting new components into the view chart up their
+Similarly, inserting new components into the view chart up their
 ownership.
 
 // add an additional legend, chart takes ownership
@@ -186,7 +189,7 @@ chart->addLegend( Legend );
 
 Removing a component de-allocates it.
 
-In case a to-be-replaced or to-be-removed component is still needed later
+In case a component to be replaced or removed is still needed later
 on, it can be clone()'d, before it is destroyed, as is shown in the
 following code snippet:
 
@@ -202,7 +205,7 @@ chart->replaceLegend( oldLegend );
 
 Notice how this pointer-based access to the components of a chart is
 different from the value-based usage of the attribute classes; the
-latter can be copied around at leisure and are meant to be transient
+latter can be copied around freely, and are meant to be transient
 in your code; they will be copied internally as necessary. The reason
 for the difference, of course, is polymorphism.
 
