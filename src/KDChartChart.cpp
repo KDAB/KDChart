@@ -36,6 +36,10 @@
 #include "KDChartHeaderFooter.h"
 #include "KDChartLegend.h"
 
+#if defined KDAB_EVAL
+#include "../evaldialog/evaldialog.h"
+#endif
+
 using namespace KDChart;
 
 void Chart::Private::slotUnregisterDestroyedLegend( Legend *l )
@@ -399,6 +403,10 @@ Chart::Chart ( QWidget* parent )
     : QWidget ( parent )
     , p ( new Private( this ) )
 {
+#if defined KDAB_EVAL
+    EvalDialog::checkEvalLicense( "KD Chart" );
+#endif
+
     addCoordinatePlane( new CartesianCoordinatePlane ( this ) );
 }
 
