@@ -1,0 +1,36 @@
+The following features have been removed from KD Chart 2.0 Beta 1 as
+they have not been sufficiently tested, or their implementation is not
+complete.
+
+- Documentation: There is no updated Programmer's Manual yet.
+- Documentation: The API documentation is still incomplete.
+- Documentation: More example programs will be provided in future
+                 beta versions.
+- Compatibility: There is no compatibility library for supporting KD
+                 Chart 1.x code yet. This will be provided in a future
+                 beta version.
+- Chart types:   Ring charts are not included in this version.
+- Chart types:   Hi-Lo charts are not included in this version.
+- Chart types:   Box+Whisker charts are not included in this version.
+- Chart types:   3D pies are not included in this version (2D pies are
+                 fully supported)
+- Axes:          Only cartesian coordinate systems can be zoomed at
+                 the moment, zooming polar coordinate systems is still
+                 missing.
+- Axes:          It is not possible yet to set a string list with axis
+                 labels.
+- Axes:          Support for logarithmic axes has been temporarily
+                 removed.
+- Axes:          Data boundaries cannot be set manually
+                 yet. (Automatic computation of data boundaries is
+                 fully supported.)
+- Axes:          Support for decreasing axes has been temporarily
+                 removed.
+- Axes:          Zero line support has been temporarily removed.
+- Boxes:         Support for custom background in boxes has been
+                 removed.
+- Legends:       Legends do not support relative font sizes yet
+                 (absolute font sizes are fully supported).
+- Legends:       Separator lines in legends are not supported yet.
+
+
