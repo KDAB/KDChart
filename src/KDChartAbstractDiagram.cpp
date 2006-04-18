@@ -114,6 +114,12 @@ const QPair<QPointF, QPointF> AbstractDiagram::dataBoundaries () const
     return QPair<QPointF, QPointF> ( bottomLeft,  topRight );
 }
 
+
+void AbstractDiagram::setDatasetProxy( DatasetProxyModel* datasetProxy )
+{
+    d->datasetProxy = datasetProxy;
+}
+
 void AbstractDiagram::setModel ( QAbstractItemModel * newModel )
 {
     if ( d->datasetProxy )

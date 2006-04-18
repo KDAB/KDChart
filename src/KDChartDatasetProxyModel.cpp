@@ -189,7 +189,13 @@ void DatasetProxyModel::resetDatasetDescriptions()
 
 QVariant DatasetProxyModel::data(const QModelIndex &index, int role) const
 {
-    return sourceModel()->data( mapToSource ( index ), role );
+    //return sourceModel()->data( mapToSource ( index ), role );
+
+    if( mapProxyRowToSource (    index.row() )    == -1 ||
+        mapProxyColumnToSource ( index.column() ) == -1 )
+        return QVariant();
+    else
+        return sourceModel()->data( mapToSource ( index ), role );
 }
 
 QVariant DatasetProxyModel::headerData ( int section, Qt::Orientation orientation, int role ) const

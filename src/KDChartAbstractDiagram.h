@@ -96,6 +96,7 @@ namespace KDChart {
          * if there is none.
          */
         virtual DatasetProxyModel* datasetProxy ();
+        virtual void setDatasetProxy( DatasetProxyModel* datasetProxy );
 
                 /**
          * Set whether the diagram should use its own attributes model, or share one
