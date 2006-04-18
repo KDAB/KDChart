@@ -22,9 +22,9 @@ private:
 
 GridAttributes::Private::Private()
     : visible( true ),
-      pen( Qt::blue),
+      pen( QColor(0xa0, 0xa0, 0xa0 ) ),
       subVisible( true ),
-      subPen( Qt::lightGray ),
+      subPen( QColor(0xd0, 0xd0, 0xd0 ) ),
       zeroPen( QColor( 0x00, 0x00, 0x80 ) )
 {
 }
