@@ -114,12 +114,6 @@ const QPair<QPointF, QPointF> AbstractDiagram::dataBoundaries () const
     return QPair<QPointF, QPointF> ( bottomLeft,  topRight );
 }
 
-
-void AbstractDiagram::setDatasetProxy( DatasetProxyModel* datasetProxy )
-{
-    d->datasetProxy = datasetProxy;
-}
-
 void AbstractDiagram::setModel ( QAbstractItemModel * newModel )
 {
     if ( d->datasetProxy )
@@ -168,7 +162,7 @@ void AbstractDiagram::setRootIndex ( const QModelIndex& idx )
   } else {
     QAbstractItemView::setRootIndex( d->defaultsModel->mapFromSource(d->attributesModel->mapFromSource(idx)) );
   }
-  if( d->plane ) slotModelReset();
+  slotModelReset();
 }
 
 void AbstractDiagram::setCoordinatePlane( AbstractCoordinatePlane* parent )
@@ -178,8 +172,10 @@ void AbstractDiagram::setCoordinatePlane( AbstractCoordinatePlane* parent )
 
 void AbstractDiagram::slotModelReset()
 {
-    d->plane->layoutDiagrams();
-    d->plane->update();
+    if ( d->plane ) {
+        d->plane->layoutDiagrams();
+        d->plane->update();
+    }
 }
 
 void AbstractDiagram::setDataValueAttributes( const QModelIndex & index,
