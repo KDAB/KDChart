@@ -62,10 +62,25 @@ void DatasetProxyModel::setDatasetDescriptionVectors (
     setDatasetColumnDescriptionVector ( columnConfig );
 }
 
+QModelIndex DatasetProxyModel::index( int row, int column, 
+                                      const QModelIndex &parent ) const
+{
+    return mapFromSource( sourceModel()->index( mapProxyRowToSource(row),
+                                                mapProxyColumnToSource(column),
+                                                parent ) );
+}
+
+QModelIndex DatasetProxyModel::parent( const QModelIndex& child ) const
+{
+    return mapFromSource( sourceModel()->parent( child ) );
+}
+
 QModelIndex DatasetProxyModel::mapFromSource ( const QModelIndex & sourceIndex ) const
 {
     Q_ASSERT_X ( sourceModel(), "DatasetProxyModel::mapFromSource", "A source "
                  "model must be set before the selection can be configured." );
+
+    if ( !sourceIndex.isValid() ) return sourceIndex;
 
     if ( mRowSrcToProxyMap.size() == 0 && mColSrcToProxyMap.size() == 0 )
     {
@@ -83,6 +98,7 @@ QModelIndex DatasetProxyModel::mapToSource ( const QModelIndex& proxyIndex ) con
     Q_ASSERT_X ( sourceModel(), "DatasetProxyModel::mapToSource", "A source "
                  "model must be set before the selection can be configured." );
 
+    if ( !proxyIndex.isValid() ) return proxyIndex;
     if ( mRowSrcToProxyMap.size() == 0 && mColSrcToProxyMap.size() == 0 )
     {
         return createIndex ( proxyIndex.row(),  proxyIndex.column(),
@@ -189,13 +205,7 @@ void DatasetProxyModel::resetDatasetDescriptions()
 
 QVariant DatasetProxyModel::data(const QModelIndex &index, int role) const
 {
-    //return sourceModel()->data( mapToSource ( index ), role );
-
-    if( mapProxyRowToSource (    index.row() )    == -1 ||
-        mapProxyColumnToSource ( index.column() ) == -1 )
-        return QVariant();
-    else
-        return sourceModel()->data( mapToSource ( index ), role );
+   return sourceModel()->data( mapToSource ( index ), role );
 }
 
 QVariant DatasetProxyModel::headerData ( int section, Qt::Orientation orientation, int role ) const
@@ -251,8 +261,6 @@ void DatasetProxyModel::setSourceModel (QAbstractItemModel *sourceModel)
     connect ( sourceModel,  SIGNAL ( layoutChanged() ),
               SLOT( resetDatasetDescriptions() ) );
 
-    connect (sourceModel, SIGNAL ( dataChanged( const QModelIndex&, const QModelIndex&) ), SLOT(testSlot() ));
-
     resetDatasetDescriptions();
 }
 
@@ -262,8 +270,3 @@ void DatasetProxyModel::setSourceRootIndex(const QModelIndex& rootIdx)
     resetDatasetDescriptions();
 }
 
-
-void DatasetProxyModel::testSlot()
-{
-    qDebug() << "fooooooooooooooooooooooooobbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbaaaaaaaaaaaaaaaaaaaaaaaarrrrrrrrrrrrrrrrrrrrr";
-}
