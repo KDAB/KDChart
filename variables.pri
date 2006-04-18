@@ -1,4 +1,4 @@
-CONFIG += qt warn_on zlib debug
+CONFIG += qt warn_on zlib
 
 exists( g++.pri ):include( g++.pri )
 
