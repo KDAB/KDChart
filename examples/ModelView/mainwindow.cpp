@@ -62,24 +62,24 @@ MainWindow::MainWindow()
 
     setWindowTitle(tr("KD Chart used as item viewer together with a QTableView"));
     resize(740, 480);
-    //QTimer::singleShot(200, this, SLOT(initializeData()));
 }
 
 void MainWindow::setupModel()
 {
-    m_model = new QStandardItemModel(8, 3, this);
+    const int rowCount = 8;
+    const int columnCount = 3;
+    m_model = new QStandardItemModel(rowCount, columnCount, this);
     m_model->setHeaderData(0, Qt::Horizontal, tr("Label"));
     m_model->setHeaderData(1, Qt::Horizontal, tr("Quantity"));
     m_model->setHeaderData(2, Qt::Horizontal, tr("Product A"));
 
-    // you might want to add some dummy data:
-    /*
-    for( int row=0; row<8; ++row){
-        m_model->setData(m_model->index(row, 0, QModelIndex()), 1);
-        m_model->setData(m_model->index(row, 1, QModelIndex()), 2);
-        m_model->setData(m_model->index(row, 2, QModelIndex()), 3);
-    }
-    */
+    DatasetDescriptionVector columnConfig( columnCount-1 );
+    for( int iC=0; iC<columnConfig.size(); ++iC)
+        columnConfig[iC] = iC+1;
+
+    m_datasetProxy = new DatasetProxyModel();
+    m_datasetProxy->setSourceModel( m_model );
+    m_datasetProxy->setDatasetColumnDescriptionVector( columnConfig );
 }
 
 void MainWindow::initializeData()
@@ -102,7 +102,8 @@ void MainWindow::setupViews()
     // Set up the diagram
     m_diagramView = new BarDiagram();
     m_diagramView->setModel( m_model );
-    m_chart->coordinatePlane()->replaceDiagram( static_cast<BarDiagram *>(m_diagramView) );
+    m_diagramView->setDatasetProxy( m_datasetProxy );
+    m_chart->coordinatePlane()->replaceDiagram( m_diagramView );
 
     m_tableView->setModel( m_model );
 

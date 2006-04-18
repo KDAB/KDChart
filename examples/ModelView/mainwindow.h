@@ -35,6 +35,8 @@
 
 namespace KDChart {
     class Chart;
+    class BarDiagram;
+    class DatasetProxyModel;
 }
 
 class QAbstractItemView;
@@ -59,9 +61,10 @@ private:
     void setupViews();
 
     KDChart::Chart* m_chart;
+    KDChart::DatasetProxyModel* m_datasetProxy;
 
     QStandardItemModel  *m_model;
-    QAbstractItemView   *m_diagramView;
+    KDChart::BarDiagram *m_diagramView;
     QTableView          *m_tableView;
     QItemSelectionModel *m_selectionModel;
 };
