@@ -99,10 +99,10 @@ void AbstractCartesianDiagram::drawGrid( PaintContext* context )
     bool drawFourthLinesX = screenRangeX / (numberOfUnitLinesX * 4) > MinimumPixelsBetweenLines && gridAttributes()->isSubGridVisible();
     bool drawFourthLinesY = screenRangeY / (numberOfUnitLinesY * 4) > MinimumPixelsBetweenLines && gridAttributes()->isSubGridVisible();
 
-    int minValueX = qRound( boundaries.first.x() );
-    int maxValueX = qRound( boundaries.second.x() );
-    int minValueY = qRound( boundaries.first.y() );
-    int maxValueY = qRound( boundaries.second.y() );
+    float minValueX = boundaries.first.x();
+    float maxValueX = boundaries.second.x();
+    float minValueY = boundaries.first.y();
+    float maxValueY = boundaries.second.y();
 
     if ( drawFourthLinesX ) {
         context->painter()->setPen( gridAttributes()->subGridPen() );
