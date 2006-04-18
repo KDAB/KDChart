@@ -49,6 +49,16 @@ namespace KDChart {
         const QPointF translate ( const QPointF& diagramPoint ) const;
         const QPointF translatePolar ( const QPointF& diagramPoint ) const;
 
+        virtual double zoomFactorX() const;
+        virtual double zoomFactorY() const;
+
+        virtual void setZoomFactorX( double factor );
+        virtual void setZoomFactorY( double factor );
+
+        virtual QPointF zoomCenter() const;
+
+        virtual void setZoomCenter( QPointF center );
+
     protected:
         void paintEvent ( QPaintEvent* );
         void resizeEvent ( QResizeEvent* );

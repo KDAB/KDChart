@@ -35,6 +35,7 @@
 #include "KDChartAbstractPolarDiagram.h"
 #include "KDChartPolarCoordinatePlane.h"
 #include "KDChartPainterSaver_p.h"
+#include "KDChartZoomParameters.h"
 
 using namespace KDChart;
 
@@ -46,6 +47,29 @@ static QPointF polarToCartesian( double R, double theta )
 }
 
 
+/*struct PolarCoordinatePlane::CoordinateTransformation
+{
+    // represents the distance of the diagram coordinate origin to the
+    // origin of the coordinate plane space:
+    QPointF originTranslation;
+    double radiusUnit;
+    double angleUnit;
+
+    inline const QPointF translate( const QPointF& diagramPoint ) const
+    {
+      // calculate the polar coordinates
+      const double x = diagramPoint.x() * radiusUnit;
+      const double y = ( diagramPoint.y() * angleUnit) - 90;
+      // convert to cartesian coordinates
+      return originTranslation + polarToCartesian( x, y );
+    }
+
+    inline const QPointF translatePolar( const QPointF& diagramPoint ) const
+    {
+        return QPointF( diagramPoint.x() * angleUnit, diagramPoint.y() * radiusUnit );
+    }
+};*/
+
 struct PolarCoordinatePlane::CoordinateTransformation
 {
     // represents the distance of the diagram coordinate origin to the
@@ -53,6 +77,8 @@ struct PolarCoordinatePlane::CoordinateTransformation
     QPointF originTranslation;
     double radiusUnit;
     double angleUnit;
+
+    ZoomParameters zoom;
 
     inline const QPointF translate( const QPointF& diagramPoint ) const
     {
@@ -199,7 +225,8 @@ void PolarCoordinatePlane::layoutDiagrams()
             CoordinateTransformation diagramTransposition = {
                 coordinateOrigin,
                 radiusUnit,
-                angleUnit
+                angleUnit,
+                ZoomParameters()
             };
             p->coordinateTransformations.append( diagramTransposition );
         }
@@ -222,4 +249,35 @@ const QPointF PolarCoordinatePlane::translatePolar( const QPointF& diagramPoint 
 void PolarCoordinatePlane::slotLayoutChanged ( AbstractDiagram* )
 {
     if ( p->initialResizeEventReceived ) layoutDiagrams();
+}
+
+double PolarCoordinatePlane::zoomFactorX() const
+{
+    return p->currentTransformation->zoom.xFactor;
+}
+
+double PolarCoordinatePlane::zoomFactorY() const
+{
+    return p->currentTransformation->zoom.yFactor;
+}
+
+void PolarCoordinatePlane::setZoomFactorX( double factor )
+{
+    p->currentTransformation->zoom.xFactor = factor;
+}
+
+void PolarCoordinatePlane::setZoomFactorY( double factor )
+{
+    p->currentTransformation->zoom.yFactor = factor;
+}
+
+QPointF PolarCoordinatePlane::zoomCenter() const
+{
+    return QPointF( p->currentTransformation->zoom.xCenter, p->currentTransformation->zoom.yCenter );
+}
+
+void PolarCoordinatePlane::setZoomCenter( QPointF center )
+{
+    p->currentTransformation->zoom.xCenter = center.x();
+    p->currentTransformation->zoom.yCenter = center.y();
 }

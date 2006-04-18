@@ -30,25 +30,9 @@
 #include <QRectF>
 #include <QPointF>
 
+#include "KDChartZoomParameters.h"
+
 namespace KDChart {
-
-    class ZoomParameters {
-    public:
-        ZoomParameters()
-        {
-            xFactor = 1;
-	    yFactor = 1;
-	    xCenter = 0.5;
-            yCenter = 0.5;
-        }
-
-//    private:
-        double xFactor;
-        double yFactor;
-
-        double xCenter;
-	double yCenter;
-    };
 
     // FIXME: if this struct is used more often, we need to make it a class
     // with proper accessor methods:

@@ -43,8 +43,8 @@ MainWindow::MainWindow( QWidget* parent )
 
     connect( btnAddDataset, SIGNAL( clicked()), SLOT( addDataset() ));
 
-/*    connect( leadingSelector, SIGNAL( valueChanged( int )),
-		    this, SLOT( changeLeading( int )));*/
+    connect( leadingSelector, SIGNAL( valueChanged( int )),
+		    this, SLOT( changeLeading( int )));
 }
 
 void MainWindow::changeType()
