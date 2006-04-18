@@ -9,7 +9,7 @@ INCLUDEPATH += \
             $$KDCHART_PATH/examples/tools
 DEPENDPATH += \
             $$KDCHART_PATH/include \
-            $$KDCHART_PATH/examles/tools
+            $$KDCHART_PATH/examples/tools
 
 LIBS        += -L$$KDCHART_PATH/lib -lkdchart -ltesttools
 
