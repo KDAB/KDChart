@@ -1,5 +1,5 @@
 /****************************************************************************
- ** Copyright (C) 2006 Klarälvdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2006 Klarï¿½vdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KD Chart library.
  **
@@ -32,6 +32,15 @@
 #include "KDChartPieDiagram_p.h"
 #include "KDChartPainterSaver_p.h"
 
+#if defined ( SUN7 ) || defined (_SGIAPI) || defined ( Q_WS_WIN)
+  #include <math.h>
+#else
+  #include <cmath>
+  #include <stdlib.h>
+#endif
+
+
+//#define M_PI 3.14159265358979323846
 #define DEGTORAD(d) (d)*M_PI/180.0
 
 using namespace KDChart;
