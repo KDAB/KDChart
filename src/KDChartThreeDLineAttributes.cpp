@@ -39,13 +39,13 @@ ThreeDLineAttributes::Private::Private()
 
 
 ThreeDLineAttributes::ThreeDLineAttributes()
-    : ThreeDAttributes( new Private() )
+    : AbstractThreeDAttributes( new Private() )
 {
 
 }
 
 ThreeDLineAttributes::ThreeDLineAttributes( const ThreeDLineAttributes& r )
-    : ThreeDAttributes( new Private( *r.d) )
+    : AbstractThreeDAttributes( new Private( *r.d) )
 {
 }
 
@@ -72,7 +72,7 @@ bool ThreeDLineAttributes::operator==( const ThreeDLineAttributes& r ) const
 {
     return ( lineXRotation() == r.lineXRotation() &&
              lineYRotation() == r.lineYRotation() &&
-             ThreeDAttributes::operator==(r));
+             AbstractThreeDAttributes::operator==(r));
 }
 
 

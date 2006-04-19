@@ -28,12 +28,12 @@
 
 #include <QMetaType>
 #include <QtXml/QDomDocumentFragment>
-#include "KDChartThreeDAttributes.h"
+#include "KDChartAbstractThreeDAttributes.h"
 #include "KDChartGlobal.h"
 
 namespace KDChart {
 
-  class KDCHART_EXPORT ThreeDBarAttributes : public ThreeDAttributes
+  class KDCHART_EXPORT ThreeDBarAttributes : public AbstractThreeDAttributes
   {
   public:
     ThreeDBarAttributes();

@@ -34,6 +34,7 @@
 class QDomDocumentFragment;
 
 namespace KDChart {
+    class ThreeDPieAttributes;
 
 class KDCHART_EXPORT AbstractPieDiagram : public AbstractPolarDiagram
 {
@@ -76,6 +77,11 @@ public:
     /** @return the starting angle for the first dataset. */
     double startPosition() const;
 
+    void setThreeDPieAttributes( const ThreeDPieAttributes & a );
+    void setThreeDPieAttributes( int column, const ThreeDPieAttributes & a );
+    void setThreeDPieAttributes( const QModelIndex & index,
+                                 const ThreeDPieAttributes & a );
+    ThreeDPieAttributes threeDPieAttributes( const QModelIndex & index ) const;
 }; // End of class KDChartAbstractPieDiagram
 
 }

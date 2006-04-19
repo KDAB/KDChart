@@ -23,8 +23,8 @@
  **
  **********************************************************************/
 
-#ifndef KDCHARTTHREEDLINEATTRIBUTES_H
-#define KDCHARTTHREEDLINEATTRIBUTES_H
+#ifndef KDCHARTTHREEDPIEATTRIBUTES_H
+#define KDCHARTTHREEDPIEATTRIBUTES_H
 
 #include <QMetaType>
 #include <QtXml/QDomDocumentFragment>
@@ -33,33 +33,31 @@
 
 namespace KDChart {
 
-  class KDCHART_EXPORT ThreeDLineAttributes : public AbstractThreeDAttributes
+  class KDCHART_EXPORT ThreeDPieAttributes : public AbstractThreeDAttributes
   {
   public:
-    ThreeDLineAttributes();
-    ThreeDLineAttributes( const ThreeDLineAttributes& );
-    ThreeDLineAttributes &operator= ( const ThreeDLineAttributes& );
+    ThreeDPieAttributes();
+    ThreeDPieAttributes( const ThreeDPieAttributes& );
+    ThreeDPieAttributes &operator= ( const ThreeDPieAttributes& );
 
-    ~ThreeDLineAttributes();
+    ~ThreeDPieAttributes();
 
-    /* threeD lines specific */
-    void setLineXRotation( const uint degrees );
-    uint lineXRotation() const;
-    void setLineYRotation( const uint degrees );
-    uint lineYRotation() const;
+    /* threeD Pies specific */
+    void setUseShadowColors( bool useShadowColors );
+    bool useShadowColors() const;
 
-    bool operator==( const ThreeDLineAttributes& ) const;
-    inline bool operator!=( const ThreeDLineAttributes& other ) const { return !operator==(other); }
+    bool operator==( const ThreeDPieAttributes& ) const;
+    inline bool operator!=( const ThreeDPieAttributes& other ) const { return !operator==(other); }
 
     // XML serialization
     QDomDocumentFragment toXML() const;
 
-    KDCHART_DECLARE_PRIVATE_DERIVED(ThreeDLineAttributes)
+    KDCHART_DECLARE_PRIVATE_DERIVED(ThreeDPieAttributes)
 
-  }; // End of class ThreeDLineAttributes
+  }; // End of class ThreeDPieAttributes
 
 }
 
-Q_DECLARE_METATYPE( KDChart::ThreeDLineAttributes )
+Q_DECLARE_METATYPE( KDChart::ThreeDPieAttributes )
 
-#endif // KDCHARTTHREEDLINEATTRIBUTES_H
+#endif // KDCHARTTHREEDPIEATTRIBUTES_H

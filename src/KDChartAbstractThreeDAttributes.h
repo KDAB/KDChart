@@ -27,28 +27,42 @@
  **
  **********************************************************************/
 
-#ifndef KDCHARTTHREEDLINESATTRIBUTES_P_H
-#define KDCHARTTHREEDLINESATTRIBUTES_P_H
+#ifndef KDCHARTABSTRACTTHREEDATTRIBUTES_H
+#define KDCHARTABSTRACTTHREEDATTRIBUTES_H
 
-#include <KDChartAbstractThreeDAttributes_p.h>
+#include <QMetaType>
+#include <QtXml/QDomDocumentFragment>
+#include "KDChartGlobal.h"
 
 namespace KDChart {
 
-class ThreeDLineAttributes::Private : public AbstractThreeDAttributes::Private
+class KDCHART_EXPORT AbstractThreeDAttributes
 {
-    friend class ThreeDLineAttributes;
 public:
-    Private();
+    AbstractThreeDAttributes();
+    AbstractThreeDAttributes( const AbstractThreeDAttributes& );
+    AbstractThreeDAttributes &operator= ( const AbstractThreeDAttributes& );
 
-private:
-    //ThreeDLines
-    uint lineXRotation;
-    uint lineYRotation;
-};
+    virtual ~AbstractThreeDAttributes() = 0;
 
-KDCHART_DERIVED_PRIVATE_FOOTER(ThreeDLineAttributes, AbstractThreeDAttributes)
+    void setEnabled( bool enabled );
+    bool isEnabled() const;
+    /*PENDING(michel) What do we use height attribute for?*/
+    void setHeight( int pixels );
+    int height() const;
+
+    void setDepth( int depth );
+    int depth() const;
+
+    bool operator==( const AbstractThreeDAttributes& ) const;
+    inline bool operator!=( const AbstractThreeDAttributes& other ) const { return !operator==(other); }
+
+    // XML serialization
+    QDomDocumentFragment toXML() const;
+
+    KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC(AbstractThreeDAttributes)
+}; // End of class AbstractThreeDAttributes
 
 }
 
-
-#endif // KDCHARTTHREEDLINESATTRIBUTES_P_H
+#endif // KDCHARTABSTRACTTHREEDATTRIBUTES_H

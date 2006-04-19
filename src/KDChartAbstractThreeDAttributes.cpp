@@ -23,8 +23,8 @@
  **
  **********************************************************************/
 
-#include "KDChartThreeDAttributes.h"
-#include "KDChartThreeDAttributes_p.h"
+#include "KDChartAbstractThreeDAttributes.h"
+#include "KDChartAbstractThreeDAttributes_p.h"
 #include <qglobal.h>
 
 #define d d_func()
@@ -32,7 +32,7 @@
 using namespace KDChart;
 
 
-ThreeDAttributes::Private::Private()
+AbstractThreeDAttributes::Private::Private()
     : enabled( false ),
       height( 20 ),
       depth( 20 )
@@ -40,17 +40,17 @@ ThreeDAttributes::Private::Private()
 }
 
 
-ThreeDAttributes::ThreeDAttributes()
+AbstractThreeDAttributes::AbstractThreeDAttributes()
     : _d( new Private() )
 {
 }
 
-ThreeDAttributes::ThreeDAttributes( const ThreeDAttributes& r )
+AbstractThreeDAttributes::AbstractThreeDAttributes( const AbstractThreeDAttributes& r )
     : _d( new Private( *r.d ) )
 {
 }
 
-ThreeDAttributes& ThreeDAttributes::operator= ( const ThreeDAttributes& r )
+AbstractThreeDAttributes& AbstractThreeDAttributes::operator= ( const AbstractThreeDAttributes& r )
 {
     if( this == &r )
         return *this;
@@ -60,13 +60,13 @@ ThreeDAttributes& ThreeDAttributes::operator= ( const ThreeDAttributes& r )
     return *this;
 }
 
-ThreeDAttributes::~ThreeDAttributes()
+AbstractThreeDAttributes::~AbstractThreeDAttributes()
 {
     delete _d; _d = 0;
 }
 
 
-bool ThreeDAttributes::operator==( const ThreeDAttributes& r ) const
+bool AbstractThreeDAttributes::operator==( const AbstractThreeDAttributes& r ) const
 {
     if( isEnabled() == r.isEnabled() &&
         height() == r.height() &&
@@ -77,47 +77,47 @@ bool ThreeDAttributes::operator==( const ThreeDAttributes& r ) const
 }
 
 
-void ThreeDAttributes::init( )
+void AbstractThreeDAttributes::init( )
 {
 
 }
 
-void ThreeDAttributes::setEnabled( bool enabled )
+void AbstractThreeDAttributes::setEnabled( bool enabled )
 {
     d->enabled = enabled;
 }
 
-bool ThreeDAttributes::isEnabled() const
+bool AbstractThreeDAttributes::isEnabled() const
 {
     return d->enabled;
 }
 
-void ThreeDAttributes::setHeight( int pixels )
+void AbstractThreeDAttributes::setHeight( int pixels )
 {
     d->height = pixels;
 }
 
-int ThreeDAttributes::height() const
+int AbstractThreeDAttributes::height() const
 {
     return d->height;
 }
 
-void ThreeDAttributes::setDepth( int depth )
+void AbstractThreeDAttributes::setDepth( int depth )
 {
     d->depth = depth;
 }
 
 
-int ThreeDAttributes::depth() const
+int AbstractThreeDAttributes::depth() const
 {
     return d->depth;
 }
 
 
-QDomDocumentFragment ThreeDAttributes::toXML() const
+QDomDocumentFragment AbstractThreeDAttributes::toXML() const
 {
     // PENDING(kalle) FIXME
-    qWarning( "Sorry, not implemented: ThreeDAttributes::toXML()" );
+    qWarning( "Sorry, not implemented: AbstractThreeDAttributes::toXML()" );
     return QDomDocumentFragment();
 }
 

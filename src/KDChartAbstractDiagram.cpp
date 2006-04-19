@@ -40,7 +40,7 @@
 #include "KDChartDefaultsModel.h"
 #include "KDChartAttributesModel.h"
 #include "KDChartDatasetProxyModel.h"
-#include "KDChartThreeDAttributes.h"
+#include "KDChartAbstractThreeDAttributes.h"
 #include "KDChartThreeDLineAttributes.h"
 #include "KDChartPainterSaver_p.h"
 

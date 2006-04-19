@@ -29,6 +29,7 @@
 #include "KDChartAbstractPieDiagram.h"
 #include "KDChartAbstractPieDiagram_p.h"
 #include "KDChartAttributesModel.h"
+#include "KDChartThreeDPieAttributes.h"
 
 using namespace KDChart;
 
@@ -108,6 +109,29 @@ double AbstractPieDiagram::startPosition() const
     return d->startPosition;
 }
 
+
+void AbstractPieDiagram::setThreeDPieAttributes( const ThreeDPieAttributes & tda )
+{
+    d->attributesModel->setModelData( QVariant::fromValue( tda ), ThreeDPieAttributesRole );
+    emit layoutChanged( this );
+}
+
+void AbstractPieDiagram::setThreeDPieAttributes( int column, const ThreeDPieAttributes & tda )
+{
+    d->attributesModel->setHeaderData( column, Qt::Vertical, QVariant::fromValue( tda ), ThreeDPieAttributesRole );
+    emit layoutChanged( this );
+}
+
+void AbstractPieDiagram::setThreeDPieAttributes( const QModelIndex & index, const ThreeDPieAttributes & tda )
+{
+    model()->setData( index, QVariant::fromValue( tda ), ThreeDPieAttributesRole );
+    emit layoutChanged( this );
+}
+
+ThreeDPieAttributes AbstractPieDiagram::threeDPieAttributes( const QModelIndex & index ) const
+{
+    return qVariantValue<ThreeDPieAttributes>( model()->data( index, KDChart::ThreeDPieAttributesRole ) );
+}
 
 
 

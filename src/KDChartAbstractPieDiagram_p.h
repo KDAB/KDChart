@@ -27,7 +27,7 @@
 #define KDCHARTABSTRACTPIEDIAGRAM_P_H
 
 #include "KDChartAbstractPolarDiagram_p.h"
-#include <KDChartThreeDAttributes.h>
+#include <KDChartAbstractThreeDAttributes.h>
 
 namespace KDChart {
 

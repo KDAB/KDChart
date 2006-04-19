@@ -165,8 +165,9 @@ enum DisplayRoles {
   ThreeDLineAttributesRole,
   BarAttributesRole,
   ThreeDBarAttributesRole,
-  ExplodeFactorRole
-  };
+  ExplodeFactorRole,
+  ThreeDPieAttributesRole
+};
 }
 
 #endif // __KDCHARTGLOBAL_H__

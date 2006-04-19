@@ -27,42 +27,27 @@
  **
  **********************************************************************/
 
-#ifndef KDCHARTTHREEDATTRIBUTES_H
-#define KDCHARTTHREEDATTRIBUTES_H
+#ifndef KDCHARTABSTRACTTHREEDATTRIBUTES_P_H
+#define KDCHARTABSTRACTTHREEDATTRIBUTES_P_H
 
-#include <QMetaType>
-#include <QtXml/QDomDocumentFragment>
-#include "KDChartGlobal.h"
+#include <KDChartAbstractThreeDAttributes.h>
 
 namespace KDChart {
 
-class KDCHART_EXPORT ThreeDAttributes
+class AbstractThreeDAttributes::Private
 {
+    friend class AbstractThreeDAttributes;
 public:
-    ThreeDAttributes();
-    ThreeDAttributes( const ThreeDAttributes& );
-    ThreeDAttributes &operator= ( const ThreeDAttributes& );
+    Private();
 
-    virtual ~ThreeDAttributes() = 0;
+private:
+    bool enabled;
+    int height;
+    int depth;
+};
 
-    void setEnabled( bool enabled );
-    bool isEnabled() const;
-    /*what do we use height attribute for?*/
-    void setHeight( int pixels );
-    int height() const;
-
-    void setDepth( int depth );
-    int depth() const;
-
-    bool operator==( const ThreeDAttributes& ) const;
-    inline bool operator!=( const ThreeDAttributes& other ) const { return !operator==(other); }
-
-    // XML serialization
-    QDomDocumentFragment toXML() const;
-
-    KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC(ThreeDAttributes)
-}; // End of class ThreeDAttributes
+inline AbstractThreeDAttributes::AbstractThreeDAttributes( Private * p ) : _d( p ) { init(); }
 
 }
 
-#endif // KDCHARTTHREEDATTRIBUTES_H
+#endif // KDCHARTABSTRACTTHREEDATTRIBUTES_P_H

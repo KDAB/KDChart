@@ -27,7 +27,7 @@
 #define KDCHARTABSTRACTCARTESIANDIAGRAM_P_H
 
 #include <KDChartAbstractDiagram_p.h>
-#include <KDChartThreeDAttributes.h>
+#include <KDChartAbstractThreeDAttributes.h>
 #include <KDChartGridAttributes.h>
 
 namespace KDChart {

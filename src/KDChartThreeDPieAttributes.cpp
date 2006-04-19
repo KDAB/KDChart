@@ -23,33 +23,32 @@
  **
  **********************************************************************/
 
-#include "KDChartThreeDBarAttributes.h"
-#include "KDChartThreeDBarAttributes_p.h"
+#include "KDChartThreeDPieAttributes.h"
+#include "KDChartThreeDPieAttributes_p.h"
 #include <qglobal.h>
 
 #define d d_func()
 
 using namespace KDChart;
 
-ThreeDBarAttributes::Private::Private()
-    : useShadowColors( true ),
-      angle( 45 )
+ThreeDPieAttributes::Private::Private()
+    : useShadowColors( true )
 {
 }
 
 
-ThreeDBarAttributes::ThreeDBarAttributes()
+ThreeDPieAttributes::ThreeDPieAttributes()
     : AbstractThreeDAttributes( new Private() )
 {
 
 }
 
-ThreeDBarAttributes::ThreeDBarAttributes( const ThreeDBarAttributes& r )
+ThreeDPieAttributes::ThreeDPieAttributes( const ThreeDPieAttributes& r )
     : AbstractThreeDAttributes( new Private( *r.d) )
 {
 }
 
-ThreeDBarAttributes& ThreeDBarAttributes::operator= ( const ThreeDBarAttributes& r )
+ThreeDPieAttributes& ThreeDPieAttributes::operator= ( const ThreeDPieAttributes& r )
 {
     if( this == &r )
         return *this;
@@ -59,49 +58,37 @@ ThreeDBarAttributes& ThreeDBarAttributes::operator= ( const ThreeDBarAttributes&
     return *this;
 }
 
-ThreeDBarAttributes::~ThreeDBarAttributes()
+ThreeDPieAttributes::~ThreeDPieAttributes()
 {
 }
 
-void ThreeDBarAttributes::init()
+void ThreeDPieAttributes::init()
 {
 }
 
 
-bool ThreeDBarAttributes::operator==( const ThreeDBarAttributes& r ) const
+bool ThreeDPieAttributes::operator==( const ThreeDPieAttributes& r ) const
 {
     return ( useShadowColors() == r.useShadowColors() &&
-             angle() == r.angle() &&
              AbstractThreeDAttributes::operator==(r));
 }
 
 
 
-void ThreeDBarAttributes::setUseShadowColors( bool shadowColors )
+void ThreeDPieAttributes::setUseShadowColors( bool shadowColors )
 {
     d->useShadowColors = shadowColors;
 }
 
-bool ThreeDBarAttributes::useShadowColors() const
+bool ThreeDPieAttributes::useShadowColors() const
 {
     return d->useShadowColors;
 }
 
-void ThreeDBarAttributes::setAngle( uint threeDAngle )
-{
-    d->angle = threeDAngle;
-}
-
-uint ThreeDBarAttributes::angle() const
-{
-    return d->angle;
-}
-
-
-QDomDocumentFragment ThreeDBarAttributes::toXML() const
+QDomDocumentFragment ThreeDPieAttributes::toXML() const
 {
     // PENDING(kalle) FIXME
-    qWarning( "Sorry, not implemented: ThreeDBarAttribute::toXML()" );
+    qWarning( "Sorry, not implemented: ThreeDPieAttribute::toXML()" );
     return QDomDocumentFragment();
 }
 

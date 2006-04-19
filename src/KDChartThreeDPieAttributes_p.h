@@ -3,7 +3,7 @@
    */
 
 /****************************************************************************
- ** Copyright (C) 2005-2006 Klar√§lvdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2005-2006 Klar‰lvdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KD Chart library.
  **
@@ -27,27 +27,26 @@
  **
  **********************************************************************/
 
-#ifndef KDCHARTTHREEDATTRIBUTES_P_H
-#define KDCHARTTHREEDATTRIBUTES_P_H
+#ifndef KDCHARTTHREEDPIEATTRIBUTES_P_H
+#define KDCHARTTHREEDPIEATTRIBUTES_P_H
 
-#include <KDChartThreeDAttributes.h>
+#include <KDChartAbstractThreeDAttributes_p.h>
 
 namespace KDChart {
 
-class ThreeDAttributes::Private
+class ThreeDPieAttributes::Private : public AbstractThreeDAttributes::Private
 {
-    friend class ThreeDAttributes;
+    friend class ThreeDPieAttributes;
 public:
     Private();
 
 private:
-    bool enabled;
-    int height;
-    int depth;
+    bool useShadowColors;
 };
 
-inline ThreeDAttributes::ThreeDAttributes( Private * p ) : _d( p ) { init(); }
+KDCHART_DERIVED_PRIVATE_FOOTER(ThreeDPieAttributes, AbstractThreeDAttributes)
 
 }
 
-#endif // KDCHARTTHREEDATTRIBUTES_P_H
+
+#endif // KDCHARTTHREEDPIEATTRIBUTES_P_H

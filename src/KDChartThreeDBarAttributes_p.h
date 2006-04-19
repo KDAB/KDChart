@@ -30,23 +30,22 @@
 #ifndef KDCHARTTHREEDBARATTRIBUTES_P_H
 #define KDCHARTTHREEDBARATTRIBUTES_P_H
 
-#include <KDChartThreeDAttributes_p.h>
+#include <KDChartAbstractThreeDAttributes_p.h>
 
 namespace KDChart {
 
-class ThreeDBarAttributes::Private : public ThreeDAttributes::Private
+class ThreeDBarAttributes::Private : public AbstractThreeDAttributes::Private
 {
     friend class ThreeDBarAttributes;
 public:
     Private();
 
 private:
-    //ThreeDLines
     bool useShadowColors;
     uint angle;
 };
 
-KDCHART_DERIVED_PRIVATE_FOOTER(ThreeDBarAttributes, ThreeDAttributes)
+KDCHART_DERIVED_PRIVATE_FOOTER(ThreeDBarAttributes, AbstractThreeDAttributes)
 
 }
 

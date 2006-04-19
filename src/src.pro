@@ -55,12 +55,14 @@ HEADERS += KDChartGlobal.h \
            KDChartRingDiagram_p.h \
            KDChartTextAttributes.h \
            KDTextDocument.h \
-           KDChartThreeDAttributes.h \
-           KDChartThreeDAttributes_p.h \
+           KDChartAbstractThreeDAttributes.h \
+           KDChartAbstractThreeDAttributes_p.h \
            KDChartThreeDBarAttributes.h \
            KDChartThreeDBarAttributes_p.h \
            KDChartThreeDLineAttributes.h \
            KDChartThreeDLineAttributes_p.h \
+           KDChartThreeDPieAttributes.h \
+           KDChartThreeDPieAttributes_p.h \
            KDChartWidget.h \
            KDChartWidget_p.h \
            KDChartAbstractArea_p.h \
@@ -104,9 +106,10 @@ SOURCES += KDChartAbstractCartesianDiagram.cpp \
            KDChartRingDiagram.cpp \
            KDTextDocument.cpp \
            KDChartTextAttributes.cpp \
-           KDChartThreeDAttributes.cpp \
+           KDChartAbstractThreeDAttributes.cpp \
            KDChartThreeDBarAttributes.cpp \
            KDChartThreeDLineAttributes.cpp \
+           KDChartThreeDPieAttributes.cpp \
            KDChartWidget.cpp \
            KDChartAbstractArea.cpp \
            KDChartAbstractAxis.cpp 
