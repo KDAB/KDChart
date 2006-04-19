@@ -23,7 +23,7 @@
  **
  **********************************************************************/
 
- #include <QtXml/QDomDocumentFragment>
+#include <QtXml/QDomDocumentFragment>
 #include <QPainter>
 #include <QDebug>
 

@@ -32,12 +32,7 @@
 #include "KDChartPieDiagram_p.h"
 #include "KDChartPainterSaver_p.h"
 
-#if defined ( SUN7 ) || defined (_SGIAPI) || defined ( Q_WS_WIN)
-  #include <math.h>
-#else
-  #include <cmath>
-  #include <stdlib.h>
-#endif
+#include <cmath>
 
 
 //#define M_PI 3.14159265358979323846
