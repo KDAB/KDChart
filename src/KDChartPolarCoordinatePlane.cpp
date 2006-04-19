@@ -41,10 +41,7 @@ using namespace KDChart;
 
 #define DEGTORAD(d) (d)*M_PI/180
 
-static QPointF polarToCartesian( double R, double theta )
-{
-    return QPointF( R * cos( DEGTORAD( theta  ) ), R * sin( DEGTORAD( theta ) ) );
-}
+
 
 
 /*struct PolarCoordinatePlane::CoordinateTransformation
@@ -80,13 +77,26 @@ struct PolarCoordinatePlane::CoordinateTransformation
 
     ZoomParameters zoom;
 
+    static QPointF polarToCartesian( double R, double theta )
+    {
+        return QPointF( R * cos( DEGTORAD( theta  ) ), R * sin( DEGTORAD( theta ) ) );
+    }
+
     inline const QPointF translate( const QPointF& diagramPoint ) const
     {
-      // calculate the polar coordinates
-      const double x = diagramPoint.x() * radiusUnit;
-      const double y = ( diagramPoint.y() * angleUnit) - 90;
-      // convert to cartesian coordinates
-      return originTranslation + polarToCartesian( x, y );
+        // calculate the polar coordinates
+        const double x = diagramPoint.x() * radiusUnit;
+        const double y = ( diagramPoint.y() * angleUnit) - 90;
+        // convert to cartesian coordinates
+        QPointF cartesianPoint = polarToCartesian( x, y );
+        cartesianPoint.setX( cartesianPoint.x() * zoom.xFactor );
+        cartesianPoint.setY( cartesianPoint.y() * zoom.yFactor );
+	
+	QPointF newOrigin = originTranslation;
+        newOrigin.setX( newOrigin.x() * ( 1 - zoom.xCenter ) / 0.5 );
+        newOrigin.setY( newOrigin.y() * ( 1 - zoom.yCenter ) / 0.5 );
+	
+        return newOrigin + cartesianPoint;
     }
 
     inline const QPointF translatePolar( const QPointF& diagramPoint ) const
@@ -172,19 +182,31 @@ void PolarCoordinatePlane::paintRulers( PaintContext* ctx )
     Q_ASSERT ( dgr ); // only polar diagrams are allowed here
 
     ctx->painter()->setPen ( QColor ( Qt::lightGray ) );
-    QPointF origin = translate( QPointF(0,0) );
+    QPointF origin = translate( QPointF( 0,0 ) );
     const int numberOfSpokes = ( int ) ( 360 / p->currentTransformation->angleUnit );
     const double r = dgr->dataBoundaries().second.y(); // use the full extents
-    for ( int i=0; i<numberOfSpokes ; ++i ) {
+    for ( int i = 0; i < numberOfSpokes ; ++i ) {
         ctx->painter()->drawLine( origin, p->currentTransformation->translate( QPointF( r, i ) ) );
     }
     const int numberOfGridRings = ( int ) dgr->numberOfGridRings();
-    for ( int i=0; i<numberOfGridRings; ++i ) {
-        const double ringRadius = ( (i+1)*r/numberOfGridRings ) * p->currentTransformation->radiusUnit;
-        if ( ringRadius == 0 ) continue;
+    for ( int i = 0; i < numberOfGridRings; ++i ) {
+        const double rad = ( ( i + 1) * r / numberOfGridRings );
+
+        if ( rad == 0 )
+            continue;
+        
         QRectF rect;
-        rect.setTopLeft( p->currentTransformation->originTranslation + QPointF( -ringRadius, -ringRadius ) );
-        rect.setBottomRight( p->currentTransformation->originTranslation + QPointF( ringRadius, ringRadius ) );
+        QPointF topLeftPoint;
+        QPointF bottomRightPoint;
+
+        topLeftPoint = p->currentTransformation->translate( QPointF( rad, 0 ) );
+        topLeftPoint.setX( p->currentTransformation->translate( QPointF( rad, 90 / p->currentTransformation->angleUnit ) ).x() );
+        bottomRightPoint = p->currentTransformation->translate( QPointF( rad, 180 / p->currentTransformation->angleUnit ) );
+        bottomRightPoint.setX( p->currentTransformation->translate( QPointF( rad, 270 / p->currentTransformation->angleUnit ) ).x() );
+
+        rect.setTopLeft( topLeftPoint );
+        rect.setBottomRight( bottomRightPoint );
+
         ctx->painter()->drawEllipse( rect );
     }
 }
@@ -252,32 +274,32 @@ void PolarCoordinatePlane::slotLayoutChanged ( AbstractDiagram* )
 }
 
 double PolarCoordinatePlane::zoomFactorX() const
-{
-    return p->currentTransformation->zoom.xFactor;
+{   
+    return p->coordinateTransformations[0].zoom.xFactor;
 }
 
 double PolarCoordinatePlane::zoomFactorY() const
 {
-    return p->currentTransformation->zoom.yFactor;
+    return p->coordinateTransformations[0].zoom.yFactor;
 }
 
 void PolarCoordinatePlane::setZoomFactorX( double factor )
 {
-    p->currentTransformation->zoom.xFactor = factor;
+    p->coordinateTransformations[0].zoom.xFactor = factor;
 }
 
 void PolarCoordinatePlane::setZoomFactorY( double factor )
 {
-    p->currentTransformation->zoom.yFactor = factor;
+    p->coordinateTransformations[0].zoom.yFactor = factor;
 }
 
 QPointF PolarCoordinatePlane::zoomCenter() const
 {
-    return QPointF( p->currentTransformation->zoom.xCenter, p->currentTransformation->zoom.yCenter );
+    return QPointF( p->coordinateTransformations[0].zoom.xCenter, p->coordinateTransformations[0].zoom.yCenter );
 }
 
 void PolarCoordinatePlane::setZoomCenter( QPointF center )
 {
-    p->currentTransformation->zoom.xCenter = center.x();
-    p->currentTransformation->zoom.yCenter = center.y();
+    p->coordinateTransformations[0].zoom.xCenter = center.x();
+    p->coordinateTransformations[0].zoom.yCenter = center.y();
 }
