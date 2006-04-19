@@ -32,6 +32,7 @@
 #include <KDChartDataValueAttributes>
 #include <KDChartMarkerAttributes>
 #include <KDChartLegend>
+#include <KDChartThreeDPieAttributes>
 
 #include <QDebug>
 #include <QPainter>
@@ -122,12 +123,20 @@ void MainWindow::slotNextFrame()
 
 void MainWindow::on_threeDGB_toggled( bool toggle )
 {
-    // PENDING(kalle) Implement this
+    ThreeDPieAttributes attrs;
+    attrs.setEnabled( toggle );
+    attrs.setDepth( threeDFactorSB->value() );
+    m_pie->setThreeDPieAttributes( attrs );
+    update();
 }
 
 void MainWindow::on_threeDFactorSB_valueChanged( int factor )
 {
-    // PENDING(kalle) Implement this
+    ThreeDPieAttributes attrs;
+    attrs.setEnabled( threeDGB->isChecked() );
+    attrs.setDepth( factor );
+    m_pie->setThreeDPieAttributes( attrs );
+    update();
 }
 
 

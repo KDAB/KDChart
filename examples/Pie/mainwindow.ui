@@ -99,6 +99,9 @@
        <property name="checkable" >
         <bool>true</bool>
        </property>
+       <property name="checked" >
+        <bool>false</bool>
+       </property>
        <layout class="QHBoxLayout" >
         <property name="margin" >
          <number>9</number>

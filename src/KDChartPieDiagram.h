@@ -68,6 +68,8 @@ protected:
     void paintEvent( QPaintEvent* );
     void resizeEvent( QResizeEvent* );
 
+private:
+    QPointF pointOnCircle( const QRectF& rect, qreal angle );
 }; // End of class KDChartPieDiagram
 
 }

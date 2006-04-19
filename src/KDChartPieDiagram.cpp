@@ -182,6 +182,17 @@ double PieDiagram::numberOfGridRings() const
 
 
 
+QPointF PieDiagram::pointOnCircle( const QRectF& rect, qreal angle )
+{
+    qreal angleRad = DEGTORAD( angle );
+    qreal cosAngle = cos( angleRad );
+    qreal sinAngle = -sin( angleRad );
+    qreal posX = cosAngle * rect.width() / 2.0;
+    qreal posY = sinAngle * rect.height() / 2.0;
+    return QPointF( posX + rect.center().x(),
+                   posY + rect.center().y() );
+
+}
 
 
 
