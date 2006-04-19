@@ -1,5 +1,5 @@
 /****************************************************************************
- ** Copyright (C) 2006 Klarälvdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2006 KlarÃ¤lvdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KD Chart library.
  **
@@ -38,8 +38,6 @@ namespace KDChart {
 
     class AbstractCoordinatePlane;
     class DataValueAttributes;
-    class ThreeDAttributes;
-    class ThreeDLineAttributes;
     class PaintContext;
     class DatasetProxyModel;
 

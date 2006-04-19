@@ -56,6 +56,10 @@ private slots:
     // animation
     void slotNextFrame();
 
+    // 3D
+    void on_threeDGB_toggled( bool toggle );
+    void on_threeDFactorSB_valueChanged( int factor );
+
 private:
     KDChart::Chart* m_chart;
     TableModel m_model;

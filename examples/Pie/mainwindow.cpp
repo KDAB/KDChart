@@ -120,4 +120,14 @@ void MainWindow::slotNextFrame()
     update();
 }
 
+void MainWindow::on_threeDGB_toggled( bool toggle )
+{
+    // PENDING(kalle) Implement this
+}
+
+void MainWindow::on_threeDFactorSB_valueChanged( int factor )
+{
+    // PENDING(kalle) Implement this
+}
+
 

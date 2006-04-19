@@ -35,8 +35,6 @@ class QDomDocumentFragment;
 
 namespace KDChart {
 
-class ThreeDAttributes;
-
 class KDCHART_EXPORT AbstractPieDiagram : public AbstractPolarDiagram
 {
     Q_OBJECT

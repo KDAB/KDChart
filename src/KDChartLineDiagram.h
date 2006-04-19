@@ -39,6 +39,8 @@ class QPolygonF;
 
 namespace KDChart {
 
+    class ThreeDLineAttributes;
+
 class KDCHART_EXPORT LineDiagram : public AbstractCartesianDiagram
 {
     Q_OBJECT
