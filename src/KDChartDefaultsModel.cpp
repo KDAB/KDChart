@@ -59,8 +59,7 @@ QVariant DefaultsModel::headerData ( int section,
       {
         QString header = ( ( orientation == Qt::Vertical ) ?  "Series " : "Item " ) + QString::number( section );
         return header;
-        break;
-      }
+       }
     case KDChart::DatasetBrushRole:
       {
         if ( mDefaultPaletteType == PaletteTypeSubdued )

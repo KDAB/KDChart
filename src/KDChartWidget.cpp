@@ -407,16 +407,15 @@ void Widget::setType( ChartType chartType )
  */
 Widget::ChartType Widget::type() const
 {
-    AbstractDiagram* diag;
-    if ( ( diag = qobject_cast< BarDiagram* >( diagram() ) ) )
+    if ( qobject_cast< BarDiagram* >( diagram() ) )
         return Bar;
-    else if ( ( diag = qobject_cast< LineDiagram* >( diagram() ) ) )
+    else if ( qobject_cast< LineDiagram* >( diagram() ) )
         return Line;
-    else if( ( diag = qobject_cast< PieDiagram* >( diagram() ) ) )
+    else if( qobject_cast< PieDiagram* >( diagram() ) )
         return Pie;
-    else if( ( diag = qobject_cast< PolarDiagram* >( diagram() ) ) )
+    else if( qobject_cast< PolarDiagram* >( diagram() ) )
         return Polar;
-    else if( ( diag = qobject_cast< RingDiagram* >( diagram() ) ) )
+    else if( qobject_cast< RingDiagram* >( diagram() ) )
         return Ring;
     else
         return NoType;

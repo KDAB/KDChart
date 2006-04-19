@@ -236,7 +236,6 @@ void CartesianCoordinatePlane::layoutDiagrams()
 
     // determine coordinate transformation:
     QPointF diagramTopLeft = dataBoundingRect.topLeft();
-    QPointF diagramBottomRight = dataBoundingRect.bottomRight();
     double diagramWidth = dataBoundingRect.width();
     double diagramHeight = dataBoundingRect.height();
     double planeWidth = d->diagramArea.width();

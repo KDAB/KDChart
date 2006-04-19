@@ -94,6 +94,9 @@ void AbstractArea::alignToDockingPoint( const QPointF& dockingPoint,
                                        DockingPointType dockingPointType,
                                        Qt::Alignment alignmentFlags)
 {
+    Q_UNUSED( dockingPoint );
+    Q_UNUSED( dockingPointType );
+    Q_UNUSED( alignmentFlags );
     // PENDING(kalle) FIXME
     qWarning( "Sorry, not implemented: void AbstractArea::alignToDockingPoint( const QPointF& dockingPoint,DockingPointType dockingPointType,Qt::Alignment alignmentFlags)" );
 }
@@ -102,6 +105,9 @@ void AbstractArea::setDockingPointPadding( int horizontalPadding,
                                           int verticalPadding,
                                           bool fixed )
 {
+    Q_UNUSED( horizontalPadding );
+    Q_UNUSED( verticalPadding );
+    Q_UNUSED( fixed );
     // PENDING(kalle) FIXME
     qWarning( "Sorry, not implemented: void AbstractArea::setDockingPointPadding( int horizontalPadding,int verticalPadding,bool fixed )" );
 }

@@ -69,6 +69,8 @@ const CartesianAxis::Position CartesianAxis::position() const
 
 void CartesianAxis::paintEvent( QPaintEvent* event )
 {
+    Q_UNUSED( event );
+
     PaintContext context;
     QPainter painter( this );
     context.setPainter( &painter );
@@ -100,10 +102,6 @@ void CartesianAxis::paint ( PaintContext* context ) const
     }
 
     double absRange = qAbs ( range );
-    // - calculate the decimal magnitude of the range and the basic distance we decorate:
-    int magnitude = ( int )log10l ( absRange );
-    //Pending Michel: Probably not needed
-    double basicUnit = powl ( 10, magnitude );
     // - calculate the number of unit, fifth and half measure rulers we will draw:
     /* for line and bar charts the number of rulers should depend of the number of
      * line = rows
@@ -202,8 +200,6 @@ void CartesianAxis::paint ( PaintContext* context ) const
     ptr->setPen ( Qt::black );
     ptr->setBrush ( Qt::red );
     QPointF fourthRulerRef ( rulerRef );
-    QPointF halfRulerRef( rulerRef );
-    QPointF unitRulerRef( rulerRef );
     int minValueY = qRound( dataBoundaries.first.y() );
     int maxValueY = qRound( dataBoundaries.second.y() );
     int minValueX = qRound( dataBoundaries.first.x() );

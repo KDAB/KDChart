@@ -61,6 +61,8 @@ QSize KDTextDocument::minimumSizeHint()
 
 QSize KDTextDocument::sizeForWidth(int w)
 {
+    Q_UNUSED( w );
+
     setPageSize(QSize(0, 100000));
 
     return documentLayout()->documentSize().toSize();

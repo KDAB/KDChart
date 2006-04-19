@@ -96,7 +96,6 @@ void BackgroundAttributes::setVisible( bool visible )
 bool BackgroundAttributes::isVisible() const
 {
     return d->visible;
-    return false;
 }
 
 void BackgroundAttributes::setBrush( const QBrush &brush )

@@ -141,7 +141,6 @@ const QPair<QPointF, QPointF> LineDiagram::dataBoundaries () const
     double xMin = 0;
     double xMax = rowCount -1;
     double yMin = 0, yMax = 0;
-    LineAttributes la = lineAttributes(model()->index( 0, 0, rootIndex() ) );
     ThreeDLineAttributes tda;
 
     // calculate boundaries for  different line types Normal - Stacked - Percent - Default Normal
@@ -231,7 +230,6 @@ void LineDiagram::paint( PaintContext* ctx )
     const int colCount = model()->columnCount(rootIndex());
     DataValueTextInfoList list;
     LineAttributesInfoList lineList;
-    LineAttributes la = lineAttributes( model()->index( 0, 0, rootIndex() ) );
     double maxValue = 0;
     double sumValues = 0;
     QVector <double > sumValuesVector;
@@ -402,10 +400,12 @@ void LineDiagram::paintAreas( PaintContext* ctx, const QModelIndex& index, const
   resp. y axis.
 */
 
-#define DEGTORAD(d) (d)*M_PI/180
+#define DEGTORAD(d) (d)*M_PI/180.0
 const QPointF LineDiagram::project( QPointF point, QPointF maxLimits, double z, const QModelIndex& index ) const
 {
-  ThreeDLineAttributes td = threeDLineAttributes( index );
+    Q_UNUSED( maxLimits );
+
+    ThreeDLineAttributes td = threeDLineAttributes( index );
 
     //Pending Michel FIXME - the rotation does not work as expected atm
     double xrad = DEGTORAD( td.lineXRotation() );

@@ -363,22 +363,22 @@ void AbstractDiagram::paintMarker( QPainter* painter,
         case MarkerAttributes::Marker1Pixel:
             {
                 QSizeF pSize(4,4);
-                QPen pen;
-                pen.setColor( painter->background().color() );
+                QPen pen1Pixel;
+                pen1Pixel.setColor( painter->background().color() );
                 QRectF centerRect( -pSize.height()/2, -pSize.width()/2,
                                    pSize.height(), pSize.width() );
-                painter->setPen( pen );
+                painter->setPen( pen1Pixel );
                 painter->drawEllipse( centerRect );
                 break;
             }
         case MarkerAttributes::Marker4Pixels:
             {
                 QSizeF pSize(8, 8);
-                QPen pen;
-                pen.setColor( painter->background().color() );
+                QPen pen4Pixel;
+                pen4Pixel.setColor( painter->background().color() );
                 QRectF centerRect( -pSize.height()/2, -pSize.width()/2,
                                    pSize.height(), pSize.width() );
-                painter->setPen( pen );
+                painter->setPen( pen4Pixel );
                 painter->drawEllipse( centerRect );
                 break;
             }

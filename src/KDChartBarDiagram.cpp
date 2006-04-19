@@ -135,7 +135,6 @@ const QPair<QPointF, QPointF> BarDiagram::dataBoundaries () const
     double xMin = 0;
     double xMax = rowCount;
     double yMin = 0, yMax = 0;
-    BarAttributes ba = barAttributes( model()->index( 0, 0, rootIndex() ) );
     ThreeDBarAttributes tda;
 
      // calculate boundaries for  different line types Normal - Stacked - Percent - Default Normal
@@ -219,7 +218,9 @@ void BarDiagram::calculateValueAndGapWidths( int rowCount,int colCount,
                                              double& outSpaceBetweenBars,
                                              double& outSpaceBetweenGroups )
 {
-     BarAttributes ba = barAttributes( model()->index( 0, 0, rootIndex() ) );
+    Q_UNUSED( rowCount );
+
+    BarAttributes ba = barAttributes( model()->index( 0, 0, rootIndex() ) );
 
     // Pending Michel Fixme
     /* We are colCount groups to paint. Each group is centered around the
@@ -425,7 +426,6 @@ void BarDiagram::paintBars( PaintContext* ctx, const QModelIndex& index, const Q
 {
     QRectF isoRect;
     QPolygonF topPoints, sidePoints;
-    BarAttributes ba = barAttributes( index );
     ThreeDBarAttributes tda = threeDBarAttributes( index );
     double usedDepth;
     //Pending Michel: configure threeDBrush settings - shadowColor etc...
