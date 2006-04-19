@@ -46,7 +46,7 @@ namespace KDChart {
     /*! \reimp*/ QModelIndex index( int row, int col, const QModelIndex& index ) const;
     /*! \reimp*/ QModelIndex parent( const QModelIndex& index ) const;
   };
-};
+}
 
 #endif /* KDCHARTABSTRACTPROXYMODEL_H */
 
