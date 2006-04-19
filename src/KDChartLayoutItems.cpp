@@ -153,9 +153,6 @@ QSize KDChart::MarkerLayoutItem::sizeHint() const
     return mMarker.markerSize().toSize();
 }
 
-// PENDING(kalle) Marker properties
-
-
 void KDChart::MarkerLayoutItem::paint( QPainter* painter )
 {
     if( !mRect.isValid() )
@@ -173,5 +170,107 @@ void KDChart::MarkerLayoutItem::paint( QPainter* painter )
                     static_cast<qreal>( sizeHint().height() )/ 2.0 );
 
     mDiagram->paintMarker( painter, mMarker, mBrush, mPen, pos.toPoint(), sizeHint() );
+}
+
+
+KDChart::HorizontalLineLayoutItem::HorizontalLineLayoutItem() :
+    LayoutItem( Qt::AlignCenter )
+{
+}
+
+Qt::Orientations KDChart::HorizontalLineLayoutItem::expandingDirections() const
+{
+    return Qt::Vertical|Qt::Horizontal; // Grow neither vertically nor horizontally
+}
+
+QRect KDChart::HorizontalLineLayoutItem::geometry() const
+{
+    return mRect;
+}
+
+bool KDChart::HorizontalLineLayoutItem::isEmpty() const
+{
+    return false; // never empty, otherwise the layout item would not exist
+}
+
+QSize KDChart::HorizontalLineLayoutItem::maximumSize() const
+{
+    return QSize( QWIDGETSIZE_MAX, QWIDGETSIZE_MAX );
+}
+
+QSize KDChart::HorizontalLineLayoutItem::minimumSize() const
+{
+    return QSize( 0, 0 );
+}
+
+void KDChart::HorizontalLineLayoutItem::setGeometry( const QRect& r )
+{
+    mRect = r;
+}
+
+QSize KDChart::HorizontalLineLayoutItem::sizeHint() const
+{
+    return QSize( -1, 3 ); // see qframe.cpp
+}
+
+
+void KDChart::HorizontalLineLayoutItem::paint( QPainter* painter )
+{
+    if( !mRect.isValid() )
+        return;
+
+    painter->drawLine( QPointF( mRect.left(), mRect.center().y() ),
+                       QPointF( mRect.right(), mRect.center().y() ) );
+}
+
+
+KDChart::VerticalLineLayoutItem::VerticalLineLayoutItem() :
+    LayoutItem( Qt::AlignCenter )
+{
+}
+
+Qt::Orientations KDChart::VerticalLineLayoutItem::expandingDirections() const
+{
+    return Qt::Vertical|Qt::Vertical; // Grow neither vertically nor horizontally
+}
+
+QRect KDChart::VerticalLineLayoutItem::geometry() const
+{
+    return mRect;
+}
+
+bool KDChart::VerticalLineLayoutItem::isEmpty() const
+{
+    return false; // never empty, otherwise the layout item would not exist
+}
+
+QSize KDChart::VerticalLineLayoutItem::maximumSize() const
+{
+    return QSize( QWIDGETSIZE_MAX, QWIDGETSIZE_MAX );
+}
+
+QSize KDChart::VerticalLineLayoutItem::minimumSize() const
+{
+    return QSize( 0, 0 );
+}
+
+void KDChart::VerticalLineLayoutItem::setGeometry( const QRect& r )
+{
+    mRect = r;
+}
+
+QSize KDChart::VerticalLineLayoutItem::sizeHint() const
+{
+    return QSize( 3, -1 ); // see qframe.cpp
+}
+
+
+void KDChart::VerticalLineLayoutItem::paint( QPainter* painter )
+{
+    if( !mRect.isValid() )
+        return;
+
+    painter->drawLine( QPointF( mRect.center().x(), mRect.top() ),
+                       QPointF( mRect.center().x(), mRect.bottom() ) );
 }
 

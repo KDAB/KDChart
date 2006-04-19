@@ -105,6 +105,48 @@ namespace KDChart {
         QPen mPen;
     };
 
+    /** \internal
+     */
+    class HorizontalLineLayoutItem : public LayoutItem
+    {
+    public:
+        HorizontalLineLayoutItem();
+
+        virtual Qt::Orientations expandingDirections() const;
+        virtual QRect geometry() const;
+        virtual bool isEmpty() const;
+        virtual QSize maximumSize() const;
+        virtual QSize minimumSize() const;
+        virtual void setGeometry( const QRect& r );
+        virtual QSize sizeHint() const;
+
+        virtual void paint( QPainter* );
+
+    private:
+        QRect mRect;
+    };
+
+    /** \internal
+     */
+    class VerticalLineLayoutItem : public LayoutItem
+    {
+    public:
+        VerticalLineLayoutItem();
+
+        virtual Qt::Orientations expandingDirections() const;
+        virtual QRect geometry() const;
+        virtual bool isEmpty() const;
+        virtual QSize maximumSize() const;
+        virtual QSize minimumSize() const;
+        virtual void setGeometry( const QRect& r );
+        virtual QSize sizeHint() const;
+
+        virtual void paint( QPainter* );
+
+    private:
+        QRect mRect;
+    };
+
 }
 
 #endif /* KDCHARTLAYOUTITEMS_H */
