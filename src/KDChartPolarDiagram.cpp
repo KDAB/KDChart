@@ -142,7 +142,7 @@ void PolarDiagram::paint( PaintContext* ctx )
     const int colCount = model()->columnCount(rootIndex());
     DataValueTextInfoList list;
     for ( int j=0; j<colCount; ++j ) {
-        QBrush brush = model()->headerData( j, Qt::Vertical, KDChart::DatasetBrushRole ).value<QBrush>();
+        QBrush brush = qVariantValue<QBrush>( model()->headerData( j, Qt::Vertical, KDChart::DatasetBrushRole ) );
         QPolygonF polygon;
         for ( int i=0; i<rowCount; ++i ) {
             QModelIndex index = model()->index( i, j, rootIndex() );

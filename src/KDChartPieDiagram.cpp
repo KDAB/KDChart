@@ -125,8 +125,8 @@ void PieDiagram::paint( PaintContext* ctx )
         const double nextValue = qAbs( model()->data( model()->index( 0, j ) ).toDouble() );
         double spanAngle = polarCoordinatePlane()->translatePolar( QPointF( nextValue, 1 ) ).x();
         if ( spanAngle == 0 ) continue;
-        QBrush brush = model()->headerData( j, Qt::Vertical, KDChart::DatasetBrushRole ).value<QBrush>();
-        QPen pen = model()->headerData( j, Qt::Vertical, KDChart::DatasetPenRole ).value<QPen>();
+        QBrush brush = qVariantValue<QBrush>( model()->headerData( j, Qt::Vertical, KDChart::DatasetBrushRole ) );
+        QPen pen = qVariantValue<QPen>( model()->headerData( j, Qt::Vertical, KDChart::DatasetPenRole ) );
         PainterSaver painterSaver( ctx->painter() );
         ctx->painter()->setRenderHint ( QPainter::Antialiasing );
         ctx->painter()->setBrush( brush );

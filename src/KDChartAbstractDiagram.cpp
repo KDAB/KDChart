@@ -209,7 +209,7 @@ void AbstractDiagram::setDataValueAttributes( int column, const DataValueAttribu
 
 DataValueAttributes AbstractDiagram::dataValueAttributes( const QModelIndex & index ) const
 {
-    return model()->data( index, KDChart::DataValueLabelAttributesRole ).value<DataValueAttributes>();
+    return qVariantValue<DataValueAttributes>( model()->data( index, KDChart::DataValueLabelAttributesRole ) );
 }
 
 void AbstractDiagram::setDataValueAttributes( const DataValueAttributes & a )
@@ -266,7 +266,7 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
 {
     // paint one data series
     DataValueAttributes a =
-        model()->data( index, DataValueLabelAttributesRole ).value<DataValueAttributes>();
+        qVariantValue<DataValueAttributes>( model()->data( index, DataValueLabelAttributesRole ) );
     if ( !a.isVisible() ) return;
     PainterSaver painterSaver( painter );
     // FIXME draw the non-text bits, background, etc
@@ -306,7 +306,7 @@ void AbstractDiagram::paintMarker( QPainter* painter,
 {
     if ( !checkInvariants() ) return;
     DataValueAttributes a =
-        model()->data( index, DataValueLabelAttributesRole ).value<DataValueAttributes>();
+        qVariantValue<DataValueAttributes>( model()->data( index, DataValueLabelAttributesRole ) );
     if ( !a.isVisible() ) return;
     const MarkerAttributes &ma = a.markerAttributes();
     if ( !ma.isVisible() ) return;
@@ -466,7 +466,7 @@ void AbstractDiagram::setPen( int column,const QPen& pen )
 
 QPen AbstractDiagram::pen( const QModelIndex& index ) const
 {
-  return model()->data( index, DatasetPenRole ).value<QPen>();
+    return qVariantValue<QPen>( model()->data( index, DatasetPenRole ) );
 }
 
 void AbstractDiagram::setBrush( const QModelIndex& index, const QBrush& brush )
@@ -486,7 +486,7 @@ void AbstractDiagram::setBrush( int column, const QBrush& brush )
 
 QBrush AbstractDiagram::brush( const QModelIndex& index ) const
 {
-  return model()->data( index, DatasetBrushRole ).value<QBrush>();
+    return qVariantValue<QBrush>( model()->data( index, DatasetBrushRole ) );
 }
 
 // implement QAbstractItemView:
@@ -571,10 +571,8 @@ QStringList AbstractDiagram::datasetLabels() const
 QList<QBrush> AbstractDiagram::datasetBrushes() const
 {
     QList<QBrush> ret;
-//    qDebug() << "AbstractDiagram::datasetBrushes(): " << model()->columnCount() << "entries";
     for( int i = 0; i < model()->columnCount(); i++ ) {
-        QBrush brush = model()->headerData( i, Qt::Vertical, DatasetBrushRole ).value<QBrush>();
-//        qDebug() << "Brush = " << brush;
+        QBrush brush = qVariantValue<QBrush>( model()->headerData( i, Qt::Vertical, DatasetBrushRole ) );
         ret << brush;
     }
 
@@ -585,7 +583,7 @@ QList<QPen> AbstractDiagram::datasetPens() const
 {
     QList<QPen> ret;
     for( int i = 0; i < model()->columnCount(); i++ ) {
-        QPen pen = model()->headerData( i, Qt::Vertical, DatasetPenRole ).value<QPen>();
+        QPen pen = qVariantValue<QPen>( model()->headerData( i, Qt::Vertical, DatasetPenRole ) );
         ret << pen;
     }
     return ret;
@@ -596,7 +594,7 @@ QList<MarkerAttributes> AbstractDiagram::datasetMarkers() const
     QList<MarkerAttributes> ret;
     for( int i = 0; i < model()->columnCount(); i++ ) {
         DataValueAttributes a =
-            model()->headerData( i, Qt::Vertical, DataValueLabelAttributesRole ).value<DataValueAttributes>();
+            qVariantValue<DataValueAttributes>( model()->headerData( i, Qt::Vertical, DataValueLabelAttributesRole ) );
         const MarkerAttributes &ma = a.markerAttributes();
         ret << ma;
     }

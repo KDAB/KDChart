@@ -106,7 +106,7 @@ void LineDiagram::setLineAttributes( const QModelIndex & index, const LineAttrib
 
 LineAttributes LineDiagram::lineAttributes( const QModelIndex & index ) const
 {
-    return model()->data( index, KDChart::LineAttributesRole ).value<LineAttributes>();
+    return qVariantValue<LineAttributes>( model()->data( index, KDChart::LineAttributesRole ) );
 }
 
 void LineDiagram::setThreeDLineAttributes( const ThreeDLineAttributes & ta )
@@ -126,7 +126,7 @@ void LineDiagram::setThreeDLineAttributes( const QModelIndex & index, const Thre
 
 ThreeDLineAttributes LineDiagram::threeDLineAttributes( const QModelIndex & index ) const
 {
-    return model()->data( index, KDChart::ThreeDLineAttributesRole ).value<ThreeDLineAttributes>();
+    return qVariantValue<ThreeDLineAttributes>( model()->data( index, KDChart::ThreeDLineAttributesRole ) );
 }
 
 void LineDiagram::resizeEvent ( QResizeEvent* )

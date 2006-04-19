@@ -88,7 +88,7 @@ void MainWindow::on_paintValuesCB_toggled( bool checked )
         for ( int i = 0; i<colCount; ++i ) {
             for ( int j=0; j< rowCount; ++j ) {
                 QModelIndex index = m_bars->model()->index( j, i, QModelIndex() );
-                QBrush brush = m_bars->model()->headerData( i, Qt::Vertical, DatasetBrushRole ).value<QBrush>();
+                QBrush brush = qVariantValue<QBrush>( m_bars->model()->headerData( i, Qt::Vertical, DatasetBrushRole ) );
                 DataValueAttributes a = m_bars->dataValueAttributes( index );
                 TextAttributes ta = a.textAttributes();
                 ta.setRotation( 0 );

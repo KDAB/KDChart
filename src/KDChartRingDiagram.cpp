@@ -108,7 +108,7 @@ void RingDiagram::paint( PaintContext* ctx )
     const int colCount = model()->columnCount();
     DataValueTextInfoList list;
     for ( int j=0; j<colCount; ++j ) {
-        QBrush brush = model()->headerData( j, Qt::Vertical, KDChart::DatasetBrushRole ).value<QBrush>();
+        QBrush brush = qVariantValue<QBrush>( model()->headerData( j, Qt::Vertical, KDChart::DatasetBrushRole ) );
         PainterSaver painterSaver( ctx->painter() );
         ctx->painter()->setRenderHint ( QPainter::Antialiasing );
         ctx->painter()->setBrush( brush );

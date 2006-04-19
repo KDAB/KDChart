@@ -104,7 +104,7 @@ void MainWindow::on_paintValuesCB_toggled( bool checked )
     const int colCount = m_lines->model()->columnCount();
     for ( int i = 0; i<colCount; ++i ) {
         QModelIndex index = m_lines->model()->index( 0, i, QModelIndex() );
-        QBrush brush = m_lines->model()->headerData( i, Qt::Vertical, DatasetBrushRole ).value<QBrush>();
+        QBrush brush = qVariantValue<QBrush>( m_lines->model()->headerData( i, Qt::Vertical, DatasetBrushRole ) );
         DataValueAttributes a = m_lines->dataValueAttributes( index );
         if ( !paintMarkersCB->isChecked() ) {
             MarkerAttributes ma = a.markerAttributes();
@@ -202,7 +202,7 @@ void MainWindow::on_paintMarkersCB_toggled( bool checked )
         }
         for ( int j=0; j< rowCount; ++j ) {
             QModelIndex index = m_lines->model()->index( j, i, QModelIndex() );
-            QBrush brush = m_lines->model()->headerData( i, Qt::Vertical, DatasetBrushRole ).value<QBrush>();
+            QBrush brush = qVariantValue<QBrush>( m_lines->model()->headerData( i, Qt::Vertical, DatasetBrushRole ) );
             double value = m_lines->model()->data( index ).toDouble();
             /* Set a specific color - marker for a specific value */
             if ( value == 8 ) {

@@ -41,7 +41,7 @@ private slots:
   {
       QVariant value = m_model->headerData( 0, Qt::Vertical, DatasetBrushRole );
       QCOMPARE( value.isValid(), true );
-      QBrush brush = value.value<QBrush>();
+      QBrush brush = qVariantValue<QBrush>( value );
       bool isItTheSame = brush == Qt::red;
       QCOMPARE( isItTheSame, true );
   }

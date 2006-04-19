@@ -96,7 +96,7 @@ void BarDiagram::setBarAttributes( const QModelIndex & index, const BarAttribute
 
 BarAttributes BarDiagram::barAttributes( const QModelIndex & index ) const
 {
-    return model()->data( index, KDChart::BarAttributesRole ).value<BarAttributes>();
+    return qVariantValue<BarAttributes>( model()->data( index, KDChart::BarAttributesRole ) );
 }
 
 void BarDiagram::setThreeDBarAttributes( const ThreeDBarAttributes & tda )
@@ -119,7 +119,7 @@ void BarDiagram::setThreeDBarAttributes( const QModelIndex & index, const ThreeD
 
 ThreeDBarAttributes BarDiagram::threeDBarAttributes( const QModelIndex & index ) const
 {
-    return model()->data( index, KDChart::ThreeDBarAttributesRole ).value<ThreeDBarAttributes>();
+    return qVariantValue<ThreeDBarAttributes>( model()->data( index, KDChart::ThreeDBarAttributesRole ) );
 }
 
 void BarDiagram::resizeEvent ( QResizeEvent*)

@@ -77,7 +77,7 @@ QVariant DefaultsModel::headerData ( int section,
           // default to the color set for the brush (or it's defaults)
           // but only if no per model override was set
           if ( !attributesModel()->modelData( role ).isValid() ) {
-              QBrush brush = headerData( section, orientation, DatasetBrushRole ).value<QBrush>();
+              QBrush brush = qVariantValue<QBrush>( headerData( section, orientation, DatasetBrushRole ) );
               return QPen( brush.color() );
           }
       }
