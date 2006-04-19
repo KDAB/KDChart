@@ -41,32 +41,6 @@ using namespace KDChart;
 
 #define DEGTORAD(d) (d)*M_PI/180
 
-
-
-
-/*struct PolarCoordinatePlane::CoordinateTransformation
-{
-    // represents the distance of the diagram coordinate origin to the
-    // origin of the coordinate plane space:
-    QPointF originTranslation;
-    double radiusUnit;
-    double angleUnit;
-
-    inline const QPointF translate( const QPointF& diagramPoint ) const
-    {
-      // calculate the polar coordinates
-      const double x = diagramPoint.x() * radiusUnit;
-      const double y = ( diagramPoint.y() * angleUnit) - 90;
-      // convert to cartesian coordinates
-      return originTranslation + polarToCartesian( x, y );
-    }
-
-    inline const QPointF translatePolar( const QPointF& diagramPoint ) const
-    {
-        return QPointF( diagramPoint.x() * angleUnit, diagramPoint.y() * radiusUnit );
-    }
-};*/
-
 struct PolarCoordinatePlane::CoordinateTransformation
 {
     // represents the distance of the diagram coordinate origin to the
