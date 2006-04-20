@@ -65,11 +65,12 @@ struct PolarCoordinatePlane::CoordinateTransformation
         QPointF cartesianPoint = polarToCartesian( x, y );
         cartesianPoint.setX( cartesianPoint.x() * zoom.xFactor );
         cartesianPoint.setY( cartesianPoint.y() * zoom.yFactor );
-	
-	QPointF newOrigin = originTranslation;
-        newOrigin.setX( newOrigin.x() * ( 1 - zoom.xCenter ) / 0.5 );
-        newOrigin.setY( newOrigin.y() * ( 1 - zoom.yCenter ) / 0.5 );
-	
+
+        QPointF newOrigin = originTranslation;
+        double minOrigin = qMin( newOrigin.x(), newOrigin.y() );
+        newOrigin.setX( newOrigin.x() + minOrigin * ( 1 - zoom.xCenter * 2 ) * zoom.xFactor );
+        newOrigin.setY( newOrigin.y() + minOrigin * ( 1 - zoom.yCenter * 2 ) * zoom.yFactor );
+
         return newOrigin + cartesianPoint;
     }
 
