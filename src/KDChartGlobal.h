@@ -155,6 +155,7 @@ private:                                              \
     void init();                                      \
     Private * _d;
 #else
+#define KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC_QWIDGET( X ) \
 protected:                                        \
     class Private;                                    \
     Private * d_func() { return _d; }                 \
