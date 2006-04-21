@@ -102,8 +102,13 @@ void AbstractCartesianDiagram::drawGrid( PaintContext* context )
     double screenRangeX = qAbs ( p1.x() - p2.x() );
     double screenRangeY = qAbs ( p1.y() - p2.y() );
 
-    int numberOfUnitLinesX = model()->rowCount() - 1;
+    int numberOfUnitLinesX = model()->rowCount(rootIndex()) - 1;
     int numberOfUnitLinesY = (int) (boundaries.second.y() - boundaries.first.y());
+
+    /* Dunno if this is correct, but we get a SIGFPE later
+       if we dont bail out */
+    if( numberOfUnitLinesX <= 0 ) return;
+    if( numberOfUnitLinesY <= 0 ) return;
 
     bool drawUnitLinesX = screenRangeX / numberOfUnitLinesX > MinimumPixelsBetweenLines;
     bool drawUnitLinesY = screenRangeY / numberOfUnitLinesY > MinimumPixelsBetweenLines;
