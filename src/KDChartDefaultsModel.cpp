@@ -97,7 +97,8 @@ QVariant DefaultsModel::data( const QModelIndex& index, int role ) const
 
   if ( attributesModel()->isKnownAttributesRole( role ) ) {
       // check if there is something set for the column (dataset)
-      QVariant v = headerData( index.column(), Qt::Vertical, role );
+      QVariant v;
+      if( index.isValid() ) v = headerData( index.column(), Qt::Vertical, role );
       if ( !v.isValid() )
           v = attributesModel()->modelData( role );
       if ( !v.isValid() )
