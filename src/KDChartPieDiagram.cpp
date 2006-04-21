@@ -34,8 +34,10 @@
 
 #include <cmath>
 
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
 
-//#define M_PI 3.14159265358979323846
 #define DEGTORAD(d) (d)*M_PI/180.0
 
 using namespace KDChart;

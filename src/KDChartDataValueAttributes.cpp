@@ -41,7 +41,7 @@ using namespace KDChart;
 
 class DataValueAttributes::Private
 {
-    friend class ::DataValueAttributes;
+    friend class DataValueAttributes;
 public:
     Private();
 private:
@@ -125,7 +125,7 @@ const DataValueAttributes& DataValueAttributes::defaultAttributes()
 /*static*/
 const QVariant& DataValueAttributes::defaultAttributesAsVariant()
 {
-    static const QVariant theDefaultDataValueAttributesVariant = QVariant::fromValue(defaultAttributes());
+    static const QVariant theDefaultDataValueAttributesVariant = qVariantFromValue(defaultAttributes());
     return theDefaultDataValueAttributesVariant;
 }
 

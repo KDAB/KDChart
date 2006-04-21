@@ -81,17 +81,17 @@ BarDiagram::BarType BarDiagram::type() const
 
 void BarDiagram::setBarAttributes( const BarAttributes & ta )
 {
-    d->attributesModel->setModelData( QVariant::fromValue( ta ), BarAttributesRole );
+    d->attributesModel->setModelData( qVariantFromValue( ta ), BarAttributesRole );
 }
 
 void BarDiagram::setBarAttributes( int column, const BarAttributes & ta )
 {
-    d->attributesModel->setHeaderData( column, Qt::Vertical, QVariant::fromValue( ta ), BarAttributesRole );
+    d->attributesModel->setHeaderData( column, Qt::Vertical, qVariantFromValue( ta ), BarAttributesRole );
 }
 
 void BarDiagram::setBarAttributes( const QModelIndex & index, const BarAttributes & ta )
 {
-   model()->setData( index, QVariant::fromValue( ta ), BarAttributesRole );
+   model()->setData( index, qVariantFromValue( ta ), BarAttributesRole );
 }
 
 BarAttributes BarDiagram::barAttributes( const QModelIndex & index ) const
@@ -101,19 +101,19 @@ BarAttributes BarDiagram::barAttributes( const QModelIndex & index ) const
 
 void BarDiagram::setThreeDBarAttributes( const ThreeDBarAttributes & tda )
 {
-    d->attributesModel->setModelData( QVariant::fromValue( tda ), ThreeDBarAttributesRole );
+    d->attributesModel->setModelData( qVariantFromValue( tda ), ThreeDBarAttributesRole );
     emit layoutChanged( this );
 }
 
 void BarDiagram::setThreeDBarAttributes( int column, const ThreeDBarAttributes & tda )
 {
-    d->attributesModel->setHeaderData( column, Qt::Vertical, QVariant::fromValue( tda ), ThreeDBarAttributesRole );
+    d->attributesModel->setHeaderData( column, Qt::Vertical, qVariantFromValue( tda ), ThreeDBarAttributesRole );
     emit layoutChanged( this );
 }
 
 void BarDiagram::setThreeDBarAttributes( const QModelIndex & index, const ThreeDBarAttributes & tda )
 {
-    model()->setData( index, QVariant::fromValue( tda ), ThreeDBarAttributesRole );
+    model()->setData( index, qVariantFromValue( tda ), ThreeDBarAttributesRole );
     emit layoutChanged( this );
 }
 

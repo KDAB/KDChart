@@ -197,14 +197,14 @@ void AbstractDiagram::slotModelReset()
 void AbstractDiagram::setDataValueAttributes( const QModelIndex & index,
                                               const DataValueAttributes & a )
 {
-    model()->setData( index, QVariant::fromValue( a ), DataValueLabelAttributesRole );
+    model()->setData( index, qVariantFromValue( a ), DataValueLabelAttributesRole );
 }
 
 
 void AbstractDiagram::setDataValueAttributes( int column, const DataValueAttributes & a )
 {
 
-    model()->setHeaderData( column, Qt::Vertical, QVariant::fromValue( a ), DataValueLabelAttributesRole );
+    model()->setHeaderData( column, Qt::Vertical, qVariantFromValue( a ), DataValueLabelAttributesRole );
 }
 
 DataValueAttributes AbstractDiagram::dataValueAttributes( const QModelIndex & index ) const
@@ -214,7 +214,7 @@ DataValueAttributes AbstractDiagram::dataValueAttributes( const QModelIndex & in
 
 void AbstractDiagram::setDataValueAttributes( const DataValueAttributes & a )
 {
-    d->attributesModel->setModelData( QVariant::fromValue( a ), DataValueLabelAttributesRole );
+    d->attributesModel->setModelData( qVariantFromValue( a ), DataValueLabelAttributesRole );
 }
 
 void AbstractDiagram::setAllowOverlappingDataValueTexts( bool allow )
@@ -451,17 +451,17 @@ void AbstractDiagram::paintMarkers( QPainter* painter )
 
 void AbstractDiagram::setPen( const QModelIndex& index, const QPen& pen )
 {
-     model()->setData( index, QVariant::fromValue( pen ), DatasetPenRole );
+     model()->setData( index, qVariantFromValue( pen ), DatasetPenRole );
 }
 
 void AbstractDiagram::setPen( const QPen& pen )
 {
-    d->attributesModel->setModelData( QVariant::fromValue( pen ), DatasetPenRole );
+    d->attributesModel->setModelData( qVariantFromValue( pen ), DatasetPenRole );
 }
 
 void AbstractDiagram::setPen( int column,const QPen& pen )
 {
-    model()->setHeaderData( column, Qt::Vertical, QVariant::fromValue( pen ), DatasetPenRole );
+    model()->setHeaderData( column, Qt::Vertical, qVariantFromValue( pen ), DatasetPenRole );
 }
 
 QPen AbstractDiagram::pen( const QModelIndex& index ) const
@@ -471,17 +471,17 @@ QPen AbstractDiagram::pen( const QModelIndex& index ) const
 
 void AbstractDiagram::setBrush( const QModelIndex& index, const QBrush& brush )
 {
-     model()->setData( index, QVariant::fromValue( brush ), DatasetBrushRole );
+     model()->setData( index, qVariantFromValue( brush ), DatasetBrushRole );
 }
 
 void AbstractDiagram::setBrush( const QBrush& brush )
 {
-  d->attributesModel->setModelData( QVariant::fromValue( brush ), DatasetBrushRole );
+  d->attributesModel->setModelData( qVariantFromValue( brush ), DatasetBrushRole );
 }
 
 void AbstractDiagram::setBrush( int column, const QBrush& brush )
 {
-  model()->setHeaderData( column, Qt::Vertical, QVariant::fromValue( brush ), DatasetBrushRole );
+  model()->setHeaderData( column, Qt::Vertical, qVariantFromValue( brush ), DatasetBrushRole );
 }
 
 QBrush AbstractDiagram::brush( const QModelIndex& index ) const

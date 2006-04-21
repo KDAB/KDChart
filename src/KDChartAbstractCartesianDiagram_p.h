@@ -33,6 +33,7 @@
 namespace KDChart {
 
   class CartesianCoordinatePlane;
+  using KDChart::AbstractDiagram;
 
 class AbstractCartesianDiagram::Private : public AbstractDiagram::Private
 {

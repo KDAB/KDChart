@@ -32,7 +32,7 @@ using namespace KDChart;
 
 class LineAttributes::Private
 {
-    friend class ::LineAttributes;
+    friend class LineAttributes;
 public:
     Private();
 

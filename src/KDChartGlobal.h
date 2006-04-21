@@ -64,6 +64,17 @@
 #include <QVector>
 #endif // useless_cruft
 
+#if _MSC_VER < 1300
+#define KDCHART_DECLARE_PRIVATE_DERIVED( X )      \
+public:                                           \
+    class Private;                                \
+protected:                                        \
+    inline Private * d_func();                    \
+    inline const Private * d_func() const;        \
+    explicit inline X( Private * );               \
+private:                                          \
+    void init();
+#else
 #define KDCHART_DECLARE_PRIVATE_DERIVED( X )      \
 protected:                                        \
     class Private;                                \
@@ -72,7 +83,19 @@ protected:                                        \
     explicit inline X( Private * );               \
 private:                                          \
     void init();
+#endif
 
+#if _MSC_VER < 1300
+#define KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( X, ParentType )      \
+public:                                           \
+    class Private;                                \
+protected:                                        \
+    inline Private * d_func();                    \
+    inline const Private * d_func() const;        \
+    explicit inline X( Private *, ParentType );   \
+private:                                          \
+    void init();
+#else
 #define KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( X, ParentType )      \
 protected:                                        \
     class Private;                                \
@@ -81,6 +104,7 @@ protected:                                        \
     explicit inline X( Private *, ParentType );   \
 private:                                          \
     void init();
+#endif
 
 #define KDCHART_DECLARE_PRIVATE_DERIVED_QWIDGET( X )      \
     KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( X, QWidget* )
@@ -96,6 +120,18 @@ private:                                          \
     void init();                                  \
     Private * _d;
 
+#if _MSC_VER < 1300
+#define KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC( X ) \
+public:                                           \
+    class Private;                                    \
+protected:                                        \
+    Private * d_func() { return _d; }                 \
+    const Private * d_func() const { return _d; }     \
+    explicit inline X( Private * );                   \
+private:                                              \
+    void init();                                      \
+    Private * _d;
+#else
 #define KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC( X ) \
 protected:                                        \
     class Private;                                    \
@@ -105,8 +141,20 @@ protected:                                        \
 private:                                              \
     void init();                                      \
     Private * _d;
+#endif
 
+#if _MSC_VER < 1300
 #define KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC_QWIDGET( X ) \
+public:                                           \
+    class Private;                                    \
+protected:                                        \
+    Private * d_func() { return _d; }                 \
+    const Private * d_func() const { return _d; }     \
+    explicit inline X( Private *, QWidget* );                  \
+private:                                              \
+    void init();                                      \
+    Private * _d;
+#else
 protected:                                        \
     class Private;                                    \
     Private * d_func() { return _d; }                 \
@@ -115,6 +163,7 @@ protected:                                        \
 private:                                              \
     void init();                                      \
     Private * _d;
+#endif
 
 
 #define KDCHART_DERIVED_PRIVATE_FOOTER( CLASS, PARENT )     \

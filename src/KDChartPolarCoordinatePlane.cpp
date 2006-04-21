@@ -39,6 +39,9 @@
 
 using namespace KDChart;
 
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
 #define DEGTORAD(d) (d)*M_PI/180
 
 struct PolarCoordinatePlane::CoordinateTransformation
@@ -219,12 +222,11 @@ void PolarCoordinatePlane::layoutDiagrams()
             QPointF coordinateOrigin = QPointF ( planeWidth / 2, planeHeight / 2 );
             coordinateOrigin += p->contentRect.topLeft();
 
-            CoordinateTransformation diagramTransposition = {
-                coordinateOrigin,
-                radiusUnit,
-                angleUnit,
-                ZoomParameters()
-            };
+            CoordinateTransformation diagramTransposition;
+	    diagramTransposition.originTranslation = coordinateOrigin;
+	    diagramTransposition.radiusUnit = radiusUnit;
+	    diagramTransposition.angleUnit = angleUnit;
+	    diagramTransposition.zoom = ZoomParameters();
             p->coordinateTransformations.append( diagramTransposition );
         }
 }

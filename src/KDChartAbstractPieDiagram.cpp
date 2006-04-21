@@ -112,19 +112,19 @@ double AbstractPieDiagram::startPosition() const
 
 void AbstractPieDiagram::setThreeDPieAttributes( const ThreeDPieAttributes & tda )
 {
-    d->attributesModel->setModelData( QVariant::fromValue( tda ), ThreeDPieAttributesRole );
+    d->attributesModel->setModelData( qVariantFromValue( tda ), ThreeDPieAttributesRole );
     emit layoutChanged( this );
 }
 
 void AbstractPieDiagram::setThreeDPieAttributes( int column, const ThreeDPieAttributes & tda )
 {
-    d->attributesModel->setHeaderData( column, Qt::Vertical, QVariant::fromValue( tda ), ThreeDPieAttributesRole );
+    d->attributesModel->setHeaderData( column, Qt::Vertical, qVariantFromValue( tda ), ThreeDPieAttributesRole );
     emit layoutChanged( this );
 }
 
 void AbstractPieDiagram::setThreeDPieAttributes( const QModelIndex & index, const ThreeDPieAttributes & tda )
 {
-    model()->setData( index, QVariant::fromValue( tda ), ThreeDPieAttributesRole );
+    model()->setData( index, qVariantFromValue( tda ), ThreeDPieAttributesRole );
     emit layoutChanged( this );
 }
 

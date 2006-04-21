@@ -32,7 +32,7 @@ using namespace KDChart;
 
 class BarAttributes::Private
 {
-    friend class ::BarAttributes;
+    friend class BarAttributes;
 public:
     Private();
 

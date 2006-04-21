@@ -41,6 +41,9 @@
 #include "KDChartAttributesModel.h"
 #include "KDChartPainterSaver_p.h"
 
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
 
 
 using namespace KDChart;
@@ -91,17 +94,17 @@ LineDiagram::LineType LineDiagram::type() const
 
 void LineDiagram::setLineAttributes( const LineAttributes & ta )
 {
-     d->attributesModel->setModelData( QVariant::fromValue( ta ), LineAttributesRole );
+     d->attributesModel->setModelData( qVariantFromValue( ta ), LineAttributesRole );
 }
 
 void LineDiagram::setLineAttributes( int column, const LineAttributes & ta )
 {
-    d->attributesModel->setHeaderData( column, Qt::Vertical, QVariant::fromValue( ta ), LineAttributesRole );
+    d->attributesModel->setHeaderData( column, Qt::Vertical, qVariantFromValue( ta ), LineAttributesRole );
 }
 
 void LineDiagram::setLineAttributes( const QModelIndex & index, const LineAttributes & ta )
 {
-    model()->setData( index, QVariant::fromValue( ta ), LineAttributesRole );
+    model()->setData( index, qVariantFromValue( ta ), LineAttributesRole );
 }
 
 LineAttributes LineDiagram::lineAttributes( const QModelIndex & index ) const
@@ -111,17 +114,17 @@ LineAttributes LineDiagram::lineAttributes( const QModelIndex & index ) const
 
 void LineDiagram::setThreeDLineAttributes( const ThreeDLineAttributes & ta )
 {
-  d->attributesModel->setModelData( QVariant::fromValue( ta ), ThreeDLineAttributesRole );
+  d->attributesModel->setModelData( qVariantFromValue( ta ), ThreeDLineAttributesRole );
 }
 
 void LineDiagram::setThreeDLineAttributes( int column, const ThreeDLineAttributes & ta )
 {
-    d->attributesModel->setHeaderData( column, Qt::Vertical, QVariant::fromValue( ta ), ThreeDLineAttributesRole );
+    d->attributesModel->setHeaderData( column, Qt::Vertical, qVariantFromValue( ta ), ThreeDLineAttributesRole );
 }
 
 void LineDiagram::setThreeDLineAttributes( const QModelIndex & index, const ThreeDLineAttributes & ta )
 {
-    model()->setData( index, QVariant::fromValue( ta ), ThreeDLineAttributesRole );
+    model()->setData( index, qVariantFromValue( ta ), ThreeDLineAttributesRole );
 }
 
 ThreeDLineAttributes LineDiagram::threeDLineAttributes( const QModelIndex & index ) const
