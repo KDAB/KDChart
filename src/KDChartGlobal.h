@@ -64,7 +64,7 @@
 #include <QVector>
 #endif // useless_cruft
 
-#if _MSC_VER < 1300
+#if defined(_MSC_VER) && _MSC_VER < 1300
 #define KDCHART_DECLARE_PRIVATE_DERIVED( X )      \
 public:                                           \
     class Private;                                \
@@ -85,7 +85,7 @@ private:                                          \
     void init();
 #endif
 
-#if _MSC_VER < 1300
+#if defined(_MSC_VER) && _MSC_VER < 1300
 #define KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( X, ParentType )      \
 public:                                           \
     class Private;                                \
@@ -120,7 +120,7 @@ private:                                          \
     void init();                                  \
     Private * _d;
 
-#if _MSC_VER < 1300
+#if defined(_MSC_VER) && _MSC_VER < 1300
 #define KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC( X ) \
 public:                                           \
     class Private;                                    \
@@ -143,7 +143,7 @@ private:                                              \
     Private * _d;
 #endif
 
-#if _MSC_VER < 1300
+#if defined(_MSC_VER) && _MSC_VER < 1300
 #define KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC_QWIDGET( X ) \
 public:                                           \
     class Private;                                    \
