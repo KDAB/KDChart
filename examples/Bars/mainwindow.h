@@ -48,6 +48,8 @@ private slots:
     void on_paintThreeDBarsCB_toggled( bool checked );
     void on_markColumnCB_toggled( bool checked );
     void on_markColumnSB_valueChanged( int i );
+    void on_threeDDepthCB_toggled( bool checked );
+    void on_depthSB_valueChanged( int i );
 
 private:
     KDChart::Chart* m_chart;

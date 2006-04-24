@@ -88,7 +88,9 @@ void MainWindow::on_paintValuesCB_toggled( bool checked )
         for ( int i = 0; i<colCount; ++i ) {
             for ( int j=0; j< rowCount; ++j ) {
                 QModelIndex index = m_bars->model()->index( j, i, QModelIndex() );
-                QBrush brush = qVariantValue<QBrush>( m_bars->model()->headerData( i, Qt::Vertical, DatasetBrushRole ) );
+                //QBrush brush = qVariantValue<QBrush>( m_bars->model()->headerData( i, Qt::Vertical, DatasetBrushRole ) );
+                //Make it nicer
+                QBrush brush = m_bars->brush( index );
                 DataValueAttributes a = m_bars->dataValueAttributes( index );
                 TextAttributes ta = a.textAttributes();
                 ta.setRotation( 0 );
@@ -110,8 +112,13 @@ void MainWindow::on_paintValuesCB_toggled( bool checked )
 void MainWindow::on_paintThreeDBarsCB_toggled( bool checked )
 {
     ThreeDBarAttributes td;
+    int defaultDepth = td.depth();
     if ( checked ) {
         td.setEnabled( true );
+        if ( threeDDepthCB->isChecked() )
+            td.setDepth( depthSB->value() ); 
+        else 
+            td.setDepth( defaultDepth );
     } else {
         td.setEnabled( false );
     }
@@ -133,6 +140,18 @@ void MainWindow::on_markColumnCB_toggled( bool checked )
          m_bars->setPen( markColumnSB->value(), pen );
     }
   m_chart->update();
+}
+
+void MainWindow::on_depthSB_valueChanged( int /*i*/ )
+{
+    if ( threeDDepthCB->isChecked() && paintThreeDBarsCB->isChecked() )
+         on_paintThreeDBarsCB_toggled( true );
+}
+
+void MainWindow::on_threeDDepthCB_toggled( bool /*checked*/ )
+{
+        if ( paintThreeDBarsCB->isChecked() )
+            on_paintThreeDBarsCB_toggled( true );
 }
 
 void MainWindow::on_markColumnSB_valueChanged( int /*i*/ )

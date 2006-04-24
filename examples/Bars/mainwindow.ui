@@ -168,6 +168,20 @@
          <property name="spacing" >
           <number>6</number>
          </property>
+         <item>
+          <widget class="QCheckBox" name="threeDDepthCB" >
+           <property name="text" >
+            <string>Bars Depth</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="depthSB" >
+           <property name="value" >
+            <number>20</number>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
       </layout>
@@ -179,8 +193,8 @@
        </property>
        <property name="sizeHint" >
         <size>
-         <width>159</width>
-         <height>61</height>
+         <width>171</width>
+         <height>128</height>
         </size>
        </property>
       </spacer>
