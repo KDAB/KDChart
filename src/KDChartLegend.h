@@ -58,24 +58,6 @@ public:
     QSize calcSizeHint() const;
     virtual void paintEvent( QPaintEvent* );
 
-    // FIXME convenience wrapper around setReferenceArea()?
-/*    enum LegendPosition { LegendTop,
-                          LegendBottom,
-                          LegendLeft,
-                          LegendRight,
-                          LegendTopLeft,
-                          LegendTopLeftTop,
-                          LegendTopLeftLeft,
-                          LegendTopRight,
-                          LegendTopRightTop,
-                          LegendTopRightRight,
-                          LegendBottomLeft,
-                          LegendBottomLeftBottom,
-                          LegendBottomLeftLeft,
-                          LegendBottomRight,
-                          LegendBottomRightBottom,
-                          LegendBottomRightRight }; */
-
     enum LegendPosition { WestNorthWest,
                           NorthWest,
                           NorthNorthWest,

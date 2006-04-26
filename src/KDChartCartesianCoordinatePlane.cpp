@@ -331,3 +331,13 @@ double CartesianCoordinatePlane::zoomFactorY() const
 {
     return d->coordinateTransformation.zoom.yFactor;
 }
+
+CartesianCoordinatePlane::AxesCalcMode CartesianCoordinatePlane::axesCalcMode() const
+{
+    return d->coordinateTransformation.axesCalcMode;
+}
+
+void CartesianCoordinatePlane::setAxesCalcMode( AxesCalcMode mode )
+{
+    d->coordinateTransformation.axesCalcMode = mode;
+}

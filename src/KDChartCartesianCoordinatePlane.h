@@ -64,6 +64,11 @@ namespace KDChart {
 
         virtual void setZoomCenter( QPointF center );
 
+        enum AxesCalcMode { Linear, Logarithmic };
+
+        AxesCalcMode axesCalcMode() const;
+	void setAxesCalcMode( AxesCalcMode mode );
+
     protected:
         void paintEvent ( QPaintEvent* );
         void resizeEvent ( QResizeEvent* );

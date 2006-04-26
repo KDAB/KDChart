@@ -32,6 +32,8 @@
 
 #include "KDChartZoomParameters.h"
 
+#include <math.h>
+
 namespace KDChart {
 
     // FIXME: if this struct is used more often, we need to make it a class
@@ -48,25 +50,37 @@ namespace KDChart {
         double isoScaleX;
         double isoScaleY;
 
+        CartesianCoordinatePlane::AxesCalcMode axesCalcMode;
+
         ZoomParameters zoom;
 
         inline const QPointF translate( const QPointF& diagramPoint ) //const
         {
             QPointF result = originTranslation;
+            QPointF tempPoint = diagramPoint;
+            double relation = diagramRect.y() / log10( diagramRect.y() );
 
-	    QPointF tempPoint = diagramPoint;
-	    tempPoint.setX( tempPoint.x() + diagramRect.width() / (2*zoom.xFactor) );
-	    tempPoint.setY( tempPoint.y() + diagramRect.height() / (2*zoom.yFactor ) );
+	    if ( axesCalcMode == CartesianCoordinatePlane::Logarithmic )
+            {
+                if (tempPoint.y() > 0 )
+                    tempPoint.setY( log10( tempPoint.y() ) * relation );
+                else if (tempPoint.y() < 0 )
+                    tempPoint.setY( -log10( -tempPoint.y() ) * relation );
+            }
+ 
+            tempPoint.setX( tempPoint.x() + diagramRect.width() / (2 * zoom.xFactor) );
+            tempPoint.setY( tempPoint.y() + diagramRect.height() / (2 * zoom.yFactor ) );
 
-	    tempPoint.setX( tempPoint.x() - diagramRect.width() * zoom.xCenter );
-	    tempPoint.setY( tempPoint.y() - diagramRect.height() * zoom.yCenter );
+            tempPoint.setX( tempPoint.x() - diagramRect.width() * zoom.xCenter );
+            tempPoint.setY( tempPoint.y() - diagramRect.height() * zoom.yCenter );
 
-	    result.setX( result.x() + isoScaleX * unitVectorX * tempPoint.x() );
-	    result.setY( result.y() + isoScaleY * unitVectorY * tempPoint.y() );
+            result.setX( result.x() + isoScaleX * unitVectorX * tempPoint.x() );
+            result.setY( result.y() + isoScaleY * unitVectorY * tempPoint.y() );
 
-	    result.setX( result.x() * zoom.xFactor );
-	    result.setY( result.y() * zoom.yFactor );
-	    return result;
+            result.setX( result.x() * zoom.xFactor );
+            result.setY( result.y() * zoom.yFactor );
+
+            return result;
         }
     };
 
