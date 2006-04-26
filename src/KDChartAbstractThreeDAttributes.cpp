@@ -102,13 +102,13 @@ int AbstractThreeDAttributes::height() const
     return d->height;
 }
 
-void AbstractThreeDAttributes::setDepth( int depth )
+void AbstractThreeDAttributes::setDepth( double depth )
 {
     d->depth = depth;
 }
 
 
-int AbstractThreeDAttributes::depth() const
+double AbstractThreeDAttributes::depth() const
 {
     return d->depth;
 }

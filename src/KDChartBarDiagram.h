@@ -105,12 +105,13 @@ protected:
     void resizeEvent ( QResizeEvent* );
 
 private:
-    void paintBars( PaintContext* ctx, const QModelIndex& index, const QRectF& bar );
+    void paintBars( PaintContext* ctx, const QModelIndex& index, const QRectF& bar, double& maxDepth );
     void calculateValueAndGapWidths( int rowCount, int colCount,
                                      double groupWidth,
                                      double& barWidth,
                                      double& spaceBetweenBars,
                                      double& spaceBetweenGroups );
+    double m_maxDepth;
 }; // End of class BarDiagram
 
 }

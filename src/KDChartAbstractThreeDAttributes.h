@@ -51,8 +51,8 @@ public:
     void setHeight( int pixels );
     int height() const;
 
-    void setDepth( int depth );
-    int depth() const;
+    void setDepth( double depth );
+    double depth() const;
 
     bool operator==( const AbstractThreeDAttributes& ) const;
     inline bool operator!=( const AbstractThreeDAttributes& other ) const { return !operator==(other); }
