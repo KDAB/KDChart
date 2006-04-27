@@ -3,7 +3,7 @@
    */
 
 /****************************************************************************
- ** Copyright (C) 2005-2006 Klarälvdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2005-2006 Klarï¿½vdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KD Chart library.
  **
@@ -121,6 +121,10 @@ public:
     // FIXME same as frameSettings()->padding()?
     void setSpacing( uint space );
     uint spacing() const;
+
+/*public static*/
+    static LegendPosition fromName( QString name, bool* ok=0 );
+
 signals:
     void destroyedLegend( Legend* );
 

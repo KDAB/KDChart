@@ -182,6 +182,53 @@ void Legend::setPosition( LegendPosition position )
     emit positionChanged( this );
 }
 
+/**
+    \brief Return a \c KDChart::Legend::LegendPosition value for the given string.
+
+    If the string does not match any of the enum values, KDChart::Legend::North is returned.
+    The boolean \c ok parameter is set to accordingly, if not Zero.
+*/
+Legend::LegendPosition Legend::fromName( QString name, bool* ok )
+{
+    if( ok )
+        *ok = true;
+    if( name=="North" )
+        return North;
+    if( name=="South" )
+        return South;
+    if( name=="West" )
+        return West;
+    if( name=="East" )
+        return East;
+    if( name=="NorthWest" )
+        return NorthWest;
+    if( name=="NorthNorthWest" )
+        return NorthNorthWest;
+    if( name=="WestNorthWest" )
+        return WestNorthWest;
+    if( name=="NorthEast" )
+        return NorthEast;
+    if( name=="NorthNorthEast" )
+        return NorthNorthEast;
+    if( name=="EastNorthEast" )
+        return EastNorthEast;
+    if( name=="SouthWest" )
+        return SouthWest;
+    if( name=="SouthSouthWest" )
+        return SouthSouthWest;
+    if( name=="WestSouthWest" )
+        return WestSouthWest;
+    if( name=="SouthEast" )
+        return SouthEast;
+    if( name=="SouthSouthEast" )
+        return SouthSouthEast;
+    if( name=="EastSouthEast" )
+        return EastSouthEast;
+    if( ok )
+        *ok = false;
+    return North;
+}
+
 Legend::LegendPosition Legend::position() const
 {
     return d->position;
