@@ -1,5 +1,5 @@
 /****************************************************************************
- ** Copyright (C) 2006 Klarälvdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2006 Klarï¿½vdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KD Chart library.
  **
@@ -462,16 +462,17 @@ void Legend::buildLegend()
             d->layout->addItem( titleItem, 0, 0, 1, 5, Qt::AlignCenter );
         else
             d->layout->addItem( titleItem, 0, 0, 1, d->modelLabels.count()*4, Qt::AlignCenter );
-    }
 
-    // The line between the title and the legend items, if any.
-    if( showLines() ) {
-        KDChart::HorizontalLineLayoutItem* lineItem = new KDChart::HorizontalLineLayoutItem();
-        d->layoutItems << lineItem;
-        if( orientation() == Qt::Vertical )
-            d->layout->addItem( lineItem, 1, 0, 1, 5, Qt::AlignCenter );
-        else
-            d->layout->addItem( lineItem, 1, 0, 1, d->modelLabels.count()*4, Qt::AlignCenter );
+        // The line between the title and the legend items, if any.
+        if( showLines() ) {
+            KDChart::HorizontalLineLayoutItem* lineItem = new KDChart::HorizontalLineLayoutItem();
+            d->layoutItems << lineItem;
+            if( orientation() == Qt::Vertical )
+                d->layout->addItem( lineItem, 1, 0, 1, 5, Qt::AlignCenter );
+            else
+                d->layout->addItem( lineItem, 1, 0, 1, d->modelLabels.count()*4, Qt::AlignCenter );
+        }
+    
     }
 
     for ( int dataset = 0; dataset < d->modelLabels.count(); dataset++ ) {
