@@ -162,14 +162,14 @@ void MainWindow::on_headersTV_itemSelectionChanged()
 }
 
 
-KDChart::Legend::LegendPosition posNameToKDChartPosition( QString name )
+KDChart::Legend::LegendPosition posStringToKDChartPosition( QString name )
 {
-    // In this example we are using legens position names, that match
+    // In this example we are using legend position names, that match
     // exactly the names in KDChart::Legend::LegendPosition,
     // so we can use a shortcut here, and there is no need to specify
     // a boolean ok parameter:
 
-    return KDChart::Legend::fromName( name );
+    return KDChart::Legend::fromString( name );
 }
 
 
@@ -183,7 +183,7 @@ void MainWindow::on_addLegendPB_clicked()
         KDChart::Legend* legend = new KDChart::Legend( m_lines, m_chart );
         m_chart->addLegend( legend );
         //legend->setPosition( (KDChart::Legend::LegendPosition)conf.positionCO->currentIndex() );
-        legend->setPosition( posNameToKDChartPosition( conf.positionCO->currentText() ) );
+        legend->setPosition( posStringToKDChartPosition( conf.positionCO->currentText() ) );
         legend->setShowLines( conf.showLinesCB->isChecked() );
         legend->setTitleText( conf.titleTextED->text() );
         legend->setOrientation( ( conf.orientationCO->currentIndex() == 0 ) ? Qt::Vertical : Qt::Horizontal );
@@ -212,7 +212,7 @@ void MainWindow::on_editLegendPB_clicked()
     conf.titleTextED->setText( legend->titleText() );
     if( dlg.exec() ) {
         //legend->setPosition( (KDChart::Legend::LegendPosition)conf.positionCO->currentIndex() );
-        legend->setPosition( posNameToKDChartPosition( conf.positionCO->currentText() ) );
+        legend->setPosition( posStringToKDChartPosition( conf.positionCO->currentText() ) );
         legend->setShowLines( conf.showLinesCB->isChecked() );
         legend->setTitleText( conf.titleTextED->text() );
         legend->setOrientation( ( conf.orientationCO->currentIndex() == 0 ) ? Qt::Vertical : Qt::Horizontal );
