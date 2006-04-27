@@ -89,7 +89,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     legend->show();
 
     LegendItem* newItem = new LegendItem( legend, legendsTV );
-    newItem->setText( 0, tr( "Top" ) );
+    newItem->setText( 0, tr( "North" ) );
     newItem->setText( 1, tr( "no" ) );
     newItem->setText( 2, tr( "Legend" ) );
     newItem->setText( 3, tr( "Vertical" ) );
@@ -164,37 +164,37 @@ void MainWindow::on_headersTV_itemSelectionChanged()
 
 KDChart::Legend::LegendPosition posNameToKDChartPosition( QString name )
 {
-    if( name =="Top" )
+    if( name ==                "North" )
         return KDChart::Legend::North;
-    if( name =="Bottom" )
+    if( name ==                "South" )
         return KDChart::Legend::South;
-    if( name =="Left" )
+    if( name ==                "West" )
         return KDChart::Legend::West;
-    if( name =="Right" )
+    if( name ==                "East" )
         return KDChart::Legend::East;
-    if( name =="TopLeft" )
+    if( name ==                "NorthWest" )
         return KDChart::Legend::NorthWest;
-    if( name =="TopLeftTop" )
+    if( name ==                "NorthNorthWest" )
         return KDChart::Legend::NorthNorthWest;
-    if( name =="TopLeftLeft" )
+    if( name ==                "WestNorthWest" )
         return KDChart::Legend::WestNorthWest;
-    if( name =="TopRight" )
+    if( name ==                "NorthEast" )
         return KDChart::Legend::NorthEast;
-    if( name =="TopRightTop" )
+    if( name ==                "NorthNorthEast" )
         return KDChart::Legend::NorthNorthEast;
-    if( name =="TopRightRight" )
+    if( name ==                "EastNorthEast" )
         return KDChart::Legend::EastNorthEast;
-    if( name =="BottomLeft" )
+    if( name ==                "SouthWest" )
         return KDChart::Legend::SouthWest;
-    if( name =="BottomLeftBottom" )
+    if( name ==                "SouthSouthWest" )
         return KDChart::Legend::SouthSouthWest;
-    if( name =="BottomLeftLeft" )
+    if( name ==                "WestSouthWest" )
         return KDChart::Legend::WestSouthWest;
-    if( name =="BottomRight" )
+    if( name ==                "SouthEast" )
         return KDChart::Legend::SouthEast;
-    if( name =="BottomRightBottom" )
+    if( name ==                "SouthSouthEast" )
         return KDChart::Legend::SouthSouthEast;
-    if( name =="BottomRightRight" )
+    if( name ==                "EastSouthEast" )
         return KDChart::Legend::EastSouthEast;
     return KDChart::Legend::North;
 }

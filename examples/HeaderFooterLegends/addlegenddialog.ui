@@ -55,82 +55,82 @@
       <widget class="QComboBox" name="positionCO" >
        <item>
         <property name="text" >
-         <string>Top</string>
+         <string>North</string>
         </property>
        </item>
        <item>
         <property name="text" >
-         <string>Bottom</string>
+         <string>South</string>
         </property>
        </item>
        <item>
         <property name="text" >
-         <string>Left</string>
+         <string>West</string>
         </property>
        </item>
        <item>
         <property name="text" >
-         <string>Right</string>
+         <string>East</string>
         </property>
        </item>
        <item>
         <property name="text" >
-         <string>TopLeft</string>
+         <string>NorthWest</string>
         </property>
        </item>
        <item>
         <property name="text" >
-         <string>TopLeftTop</string>
+         <string>NorthNorthWest</string>
         </property>
        </item>
        <item>
         <property name="text" >
-         <string>TopLeftLeft</string>
+         <string>WestNorthWest</string>
         </property>
        </item>
        <item>
         <property name="text" >
-         <string>TopRight</string>
+         <string>NorthEast</string>
         </property>
        </item>
        <item>
         <property name="text" >
-         <string>TopRightTop</string>
+         <string>NorthNorthEast</string>
         </property>
        </item>
        <item>
         <property name="text" >
-         <string>TopRightRight</string>
+         <string>EastNorthEast</string>
         </property>
        </item>
        <item>
         <property name="text" >
-         <string>BottomLeft</string>
+         <string>SouthWest</string>
         </property>
        </item>
        <item>
         <property name="text" >
-         <string>BottomLeftBottom</string>
+          <string>SouthSouthWest</string>
         </property>
        </item>
        <item>
         <property name="text" >
-         <string>BottomLeftLeft</string>
+          <string>WestSouthWest</string>
         </property>
        </item>
        <item>
         <property name="text" >
-         <string>BottomRight</string>
+          <string>SouthEast</string>
         </property>
        </item>
        <item>
         <property name="text" >
-         <string>BottomRightBottom</string>
+         <string>SouthSouthEast</string>
         </property>
        </item>
        <item>
         <property name="text" >
-         <string>BottomRightRight</string>
+         <string>EastSouthEast</string>
         </property>
        </item>
       </widget>
