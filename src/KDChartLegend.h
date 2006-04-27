@@ -122,6 +122,8 @@ public:
     void setSpacing( uint space );
     uint spacing() const;
 
+    QString positionToString() const;
+
 /*public static*/
     static LegendPosition fromString( QString name, bool* ok=0 );
 

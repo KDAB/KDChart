@@ -183,10 +183,55 @@ void Legend::setPosition( LegendPosition position )
 }
 
 /**
+    \brief Return a string, matching the legend's position.
+
+    \sa fromString
+*/
+QString Legend::positionToString() const
+{
+    if( d->position == North )
+        return        "North";
+    if( d->position == South )
+        return        "South";
+    if( d->position == West )
+        return        "West";
+    if( d->position == East )
+        return        "East";
+    if( d->position == NorthWest )
+        return        "NorthWest";
+    if( d->position == NorthNorthWest )
+        return        "NorthNorthWest";
+    if( d->position == WestNorthWest )
+        return        "WestNorthWest";
+    if( d->position == NorthEast )
+        return        "NorthEast";
+    if( d->position == NorthNorthEast )
+        return        "NorthNorthEast";
+    if( d->position == EastNorthEast )
+        return        "EastNorthEast";
+    if( d->position == SouthWest )
+        return        "SouthWest";
+    if( d->position == SouthSouthWest )
+        return        "SouthSouthWest";
+    if( d->position == WestSouthWest )
+        return        "WestSouthWest";
+    if( d->position == SouthEast )
+        return        "SouthEast";
+    if( d->position == SouthSouthEast )
+        return        "SouthSouthEast";
+    if( d->position == EastSouthEast )
+        return        "EastSouthEast";
+    qDebug("Error: Enum value not supported by KDChartLegend::positionToString().");
+    return "North";
+}
+
+/**
     \brief Return a \c KDChart::Legend::LegendPosition value for the given string.
 
     If the string does not match any of the enum values, KDChart::Legend::North is returned.
     The boolean \c ok parameter is set to accordingly, if not Zero.
+
+    \sa positionToString
 */
 Legend::LegendPosition Legend::fromString( QString name, bool* ok )
 {
