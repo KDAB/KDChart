@@ -164,39 +164,12 @@ void MainWindow::on_headersTV_itemSelectionChanged()
 
 KDChart::Legend::LegendPosition posNameToKDChartPosition( QString name )
 {
-    if( name ==                "North" )
-        return KDChart::Legend::North;
-    if( name ==                "South" )
-        return KDChart::Legend::South;
-    if( name ==                "West" )
-        return KDChart::Legend::West;
-    if( name ==                "East" )
-        return KDChart::Legend::East;
-    if( name ==                "NorthWest" )
-        return KDChart::Legend::NorthWest;
-    if( name ==                "NorthNorthWest" )
-        return KDChart::Legend::NorthNorthWest;
-    if( name ==                "WestNorthWest" )
-        return KDChart::Legend::WestNorthWest;
-    if( name ==                "NorthEast" )
-        return KDChart::Legend::NorthEast;
-    if( name ==                "NorthNorthEast" )
-        return KDChart::Legend::NorthNorthEast;
-    if( name ==                "EastNorthEast" )
-        return KDChart::Legend::EastNorthEast;
-    if( name ==                "SouthWest" )
-        return KDChart::Legend::SouthWest;
-    if( name ==                "SouthSouthWest" )
-        return KDChart::Legend::SouthSouthWest;
-    if( name ==                "WestSouthWest" )
-        return KDChart::Legend::WestSouthWest;
-    if( name ==                "SouthEast" )
-        return KDChart::Legend::SouthEast;
-    if( name ==                "SouthSouthEast" )
-        return KDChart::Legend::SouthSouthEast;
-    if( name ==                "EastSouthEast" )
-        return KDChart::Legend::EastSouthEast;
-    return KDChart::Legend::North;
+    // In this example we are using legens position names, that match
+    // exactly the names in KDChart::Legend::LegendPosition,
+    // so we can use a shortcut here, and there is no need to specify
+    // a boolean ok parameter:
+
+    return KDChart::Legend::fromName( name );
 }
 
 
