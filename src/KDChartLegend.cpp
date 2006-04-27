@@ -188,7 +188,7 @@ void Legend::setPosition( LegendPosition position )
     If the string does not match any of the enum values, KDChart::Legend::North is returned.
     The boolean \c ok parameter is set to accordingly, if not Zero.
 */
-Legend::LegendPosition Legend::fromName( QString name, bool* ok )
+Legend::LegendPosition Legend::fromString( QString name, bool* ok )
 {
     if( ok )
         *ok = true;

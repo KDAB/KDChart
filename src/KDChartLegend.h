@@ -123,7 +123,7 @@ public:
     uint spacing() const;
 
 /*public static*/
-    static LegendPosition fromName( QString name, bool* ok=0 );
+    static LegendPosition fromString( QString name, bool* ok=0 );
 
 signals:
     void destroyedLegend( Legend* );
