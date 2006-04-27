@@ -207,9 +207,16 @@ void MainWindow::on_editLegendPB_clicked()
     Ui::AddLegendDialog conf;
     conf.setupUi( &dlg );
     conf.titleTextED->setFocus();
-    conf.positionCO->setCurrentIndex( legend->position() );
     conf.showLinesCB->setChecked( legend->showLines() );
     conf.titleTextED->setText( legend->titleText() );
+
+    // In this example we are using legend position names, that match
+    // exactly the names in KDChart::Legend::LegendPosition,
+    // so we can use a shortcut here, to set the respective name in
+    // the dialog's list, and we need no error checking for findText():
+    conf.positionCO->setCurrentIndex(
+        conf.positionCO->findText( legend->positionToString() ) );
+
     if( dlg.exec() ) {
         //legend->setPosition( (KDChart::Legend::LegendPosition)conf.positionCO->currentIndex() );
         legend->setPosition( posStringToKDChartPosition( conf.positionCO->currentText() ) );
