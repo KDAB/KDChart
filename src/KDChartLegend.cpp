@@ -161,9 +161,9 @@ void Legend::setDiagram( KDChart::AbstractDiagram* diagram )
         connect( d->observer, SIGNAL( diagramDestroyed(AbstractDiagram*) ),
                         SLOT( resetDiagram() ));
         connect( d->observer, SIGNAL( diagramDataChanged(AbstractDiagram*) ),
-			SLOT( buildLegend() ));
+                        SLOT( buildLegend() ));
         connect( d->observer, SIGNAL( diagramAttributesChanged(AbstractDiagram*) ),
-			SLOT( buildLegend() ));
+                        SLOT( buildLegend() ));
     }
 
     buildLegend();
@@ -472,7 +472,7 @@ void Legend::buildLegend()
             else
                 d->layout->addItem( lineItem, 1, 0, 1, d->modelLabels.count()*4, Qt::AlignCenter );
         }
-    
+
     }
 
     for ( int dataset = 0; dataset < d->modelLabels.count(); dataset++ ) {
