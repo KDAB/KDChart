@@ -33,22 +33,22 @@
 #include <QMap>
 #include <QVariant>
 
-#include <KDChartGlobal.h>
+#include "KDChartGlobal.h"
 
 namespace KDChart {
 
 class AttributesModel : public AbstractProxyModel
 {
     Q_OBJECT
-
-    AttributesModel ( QObject * parent = 0 );
-    virtual ~AttributesModel ( );
-
 public:
-    struct AttributesModelRegistryInfo;
+    enum PaletteType {
+        PaletteTypeDefault = 0,
+        PaletteTypeRainbow = 1,
+        PaletteTypeSubdued = 2
+    };
 
-    static AttributesModel * instanceForModel( QAbstractItemModel* );
-    static void deref( QAbstractItemModel* );
+    explicit AttributesModel( QAbstractItemModel* model, QObject * parent = 0 );
+    virtual ~AttributesModel();
 
     /* Attributes Model specific API */
     bool setModelData( const QVariant value, int role );
@@ -58,6 +58,10 @@ public:
      * internally used ones. */
     bool isKnownAttributesRole( int role ) const;
 
+    /** Sets the palettetype used by this attributesmodel */
+    void setPaletteType( PaletteType type );
+    PaletteType paletteType() const;
+
     /** \reimpl */
     QVariant headerData ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
     /** \reimpl */
@@ -65,11 +69,12 @@ public:
     /** \reimpl */
     int columnCount(const QModelIndex& ) const;
     /** \reimpl */
-    QVariant data(const QModelIndex&, int ) const;
+  QVariant data(const QModelIndex&, int role = Qt::DisplayRole) const;
     /** \reimpl */
-    bool setData ( const QModelIndex & index, const QVariant & value, int role );
+    bool setData ( const QModelIndex & index, const QVariant & value, int role = Qt::DisplayRole);
     /** \reimpl */
-    bool setHeaderData ( int section, Qt::Orientation orientation, const QVariant & value, int role );
+    bool setHeaderData ( int section, Qt::Orientation orientation, const QVariant & value, 
+			 int role = Qt::DisplayRole);
     /** \reimpl */
     void setSourceModel ( QAbstractItemModel* sourceModel );
 
@@ -77,10 +82,14 @@ signals:
     void attributesChanged( const QModelIndex&, const QModelIndex& );
 
 private:
+    // helper
+    QVariant defaultsForRole( int role ) const;
+
     QMap<int, QMap<int, QMap<int, QVariant> > > mDataMap;
     QMap<int, QMap<int, QVariant> > mHorizontalHeaderDataMap;
     QMap<int, QMap<int, QVariant> > mVerticalHeaderDataMap;
     QMap<int, QVariant> mModelDataMap;
+    PaletteType mPaletteType;
 };
 
 }

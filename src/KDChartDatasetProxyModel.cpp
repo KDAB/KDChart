@@ -258,6 +258,7 @@ void DatasetProxyModel::initializeDatasetDecriptors (
 void DatasetProxyModel::setSourceModel (QAbstractItemModel *sourceModel)
 {
     QSortFilterProxyModel::setSourceModel ( sourceModel );
+    mRootIndex = QModelIndex();
     connect ( sourceModel,  SIGNAL ( layoutChanged() ),
               SLOT( resetDatasetDescriptions() ) );
 

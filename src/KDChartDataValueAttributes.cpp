@@ -25,6 +25,7 @@
 
 
 #include <QVariant>
+#include <QDebug>
 #include <QtXml/QDomDocumentFragment>
 #include "KDChartDataValueAttributes.h"
 #include "KDChartRelativePosition.h"
@@ -256,3 +257,8 @@ KDChartRelativePosition DataValueAttributes::positiveRelativePosition() const
     return d->positiveRelPos;
 }
 
+QDebug& operator<<(QDebug& dbg, const KDChart::DataValueAttributes& val )
+{
+    dbg.nospace() << "KDChartRelativePosition DataValueAttributes("<<val.isVisible()<<")";
+    return dbg;
+}

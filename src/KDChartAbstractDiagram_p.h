@@ -28,10 +28,11 @@
 
 #include "KDChartAbstractCoordinatePlane.h"
 
+#include <QPointer>
+
 namespace KDChart {
   class DefaultsModel;
   class AttributesModel;
-  class DatasetProxyModel;
 
 class KDChart::AbstractDiagram::Private
 {
@@ -43,10 +44,10 @@ public:
 protected:
     void init();
     void init( AbstractCoordinatePlane* plane );
-    AbstractCoordinatePlane* plane;
-    DefaultsModel* defaultsModel;
-    AttributesModel* attributesModel;
-    DatasetProxyModel* datasetProxy;
+    QPointer<AbstractCoordinatePlane> plane;
+    QModelIndex attributesModelRootIndex;
+    QPointer<AttributesModel> attributesModel;
+    bool hasPrivateAttributesModel;
     bool allowOverlappingDataValueTexts;
     bool usePrivateAttributesModel;
     bool percent;

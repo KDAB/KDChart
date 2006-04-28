@@ -80,9 +80,10 @@ void MainWindow::on_lineTypeCB_currentIndexChanged( const QString & text )
 
 void MainWindow::on_paintValuesCB_toggled( bool checked )
 {
-    const int colCount = m_lines->model()->columnCount();
+    qDebug() << "MainWindow::on_paintValuesCB_toggled("<<checked<<")";
+    const int colCount = m_lines->model()->columnCount(m_lines->rootIndex());
     for ( int i = 0; i<colCount; ++i ) {
-        QModelIndex index = m_lines->model()->index( 0, i, QModelIndex() );
+        QModelIndex index = m_lines->model()->index( 0, i, m_lines->rootIndex());
         DataValueAttributes a = m_lines->dataValueAttributes( index );
         QBrush brush = m_lines->brush( index );
         TextAttributes ta = a.textAttributes();
@@ -127,7 +128,7 @@ void MainWindow::slot_timerFired()
         setHighlightArea( m_curColumn, 127, false, false );
         m_curOpacity = 0;
         ++m_curColumn;
-        if( m_curColumn >= m_lines->model()->columnCount() )
+        if( m_curColumn >= m_lines->model()->columnCount(m_lines->rootIndex()) )
             m_curColumn = 0;
     }
     setHighlightArea( m_curColumn, m_curOpacity, true, true );
@@ -135,7 +136,7 @@ void MainWindow::slot_timerFired()
 
 void MainWindow::setHighlightArea( int column, int opacity, bool checked, bool doUpdate )
 {
-    LineAttributes la = m_lines->lineAttributes( m_lines->model()->index( 0, column, QModelIndex() ) );
+    LineAttributes la = m_lines->lineAttributes( m_lines->model()->index( 0, column, m_lines->rootIndex() ) );
     if ( checked ) {
         la.setDisplayArea( true );
         la.setTransparency( opacity );

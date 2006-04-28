@@ -107,6 +107,8 @@ private:
 
 }
 
+QDebug& KDCHART_EXPORT operator<<(QDebug&, const KDChart::DataValueAttributes& );
+
 Q_DECLARE_METATYPE( KDChart::DataValueAttributes )
 
 #endif // KDCHARTDATAVALUEATTRIBUTES_H

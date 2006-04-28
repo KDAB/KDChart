@@ -4,8 +4,9 @@
 
 CONFIG+=qtestlib kdchart
 TEMPLATE = app
-DEPENDPATH += . ../../src ../../lib
-INCLUDEPATH += . ../../examples/tools ../../include ../../src
+DEPENDPATH +=  ../../include ../../src ../../lib
+INCLUDEPATH +=  ../../examples/tools ../../include
+INCLUDEPATH -= .
 
 test.target = test
 test.commands = LD_LIBRARY_PATH=../../lib ./$(TARGET)

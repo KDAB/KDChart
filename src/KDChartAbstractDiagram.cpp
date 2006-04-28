@@ -37,9 +37,7 @@
 #include "KDChartMarkerAttributes.h"
 #include "KDChartAbstractDiagram.h"
 #include "KDChartAbstractDiagram_p.h"
-#include "KDChartDefaultsModel.h"
 #include "KDChartAttributesModel.h"
-#include "KDChartDatasetProxyModel.h"
 #include "KDChartAbstractThreeDAttributes.h"
 #include "KDChartThreeDLineAttributes.h"
 #include "KDChartPainterSaver_p.h"
@@ -48,9 +46,8 @@ using namespace KDChart;
 
 AbstractDiagram::Private::Private()
   : plane( 0 )
-  , defaultsModel( new DefaultsModel() )
-  , attributesModel( 0 )
-  , datasetProxy ( 0 )
+  , attributesModel( new AttributesModel(0) )
+  , hasPrivateAttributesModel( true )
   , allowOverlappingDataValueTexts( false )
   , usePrivateAttributesModel( false )
   , percent( false )
@@ -59,7 +56,7 @@ AbstractDiagram::Private::Private()
 
 AbstractDiagram::Private::~Private()
 {
-  delete defaultsModel;
+  if( hasPrivateAttributesModel ) delete attributesModel;
 }
 
 void AbstractDiagram::Private::init()
@@ -116,69 +113,57 @@ const QPair<QPointF, QPointF> AbstractDiagram::dataBoundaries () const
 
 void AbstractDiagram::setModel ( QAbstractItemModel * newModel )
 {
-    if ( d->datasetProxy )
-    {
-        if ( newModel != d->datasetProxy->sourceModel() )
-        {
-            d->datasetProxy->setSourceModel( newModel );
-        }
-    } else {
-        QAbstractItemModel *oldSourceModel =
-            d->attributesModel ? d->attributesModel->sourceModel() : 0;
-        if ( !newModel || newModel == oldSourceModel ) return;
-
-        // see usePrivateAttributesModel(bool) for details
-        if( d->usePrivateAttributesModel ) {
-            if ( !d->attributesModel )
-                d->attributesModel = AttributesModel::instanceForModel( d->defaultsModel );
-        } else {
-            d->attributesModel = AttributesModel::instanceForModel( newModel );
-            AttributesModel::deref( oldSourceModel );
-        }
-        d->defaultsModel->setSourceModel( d->attributesModel );
-        d->attributesModel->setSourceModel( newModel );
-        QAbstractItemView::setModel( d->defaultsModel );
-
-        if ( oldSourceModel ) {
-            disconnect( oldSourceModel, SIGNAL( modelReset() ),
-                        this, SLOT( slotModelReset() ) );
-            disconnect( oldSourceModel, SIGNAL( layoutChanged() ),
-                        this, SLOT( slotModelReset() ) );
-            disconnect( oldSourceModel, SIGNAL( dataChanged ( const QModelIndex &, const QModelIndex &) ),
-                        this, SLOT( slotModelReset() ) );
-        }
-        connect( newModel, SIGNAL( modelReset() ), this, SLOT( slotModelReset() ) );
-        connect( newModel, SIGNAL( layoutChanged() ), this, SLOT( slotModelReset() ) );
-        connect( newModel, SIGNAL( dataChanged ( const QModelIndex &, const QModelIndex &) ),
-                 this, SLOT( slotModelReset() ) );
-    }
+  QAbstractItemView::setModel( newModel );
+  AttributesModel* amodel = new AttributesModel(newModel,this);
+  setAttributesModel( amodel );
+  d->hasPrivateAttributesModel = true;
 }
 
-QAbstractItemModel* AbstractDiagram::model() const
+/*! Sets an external AttributesModel on this diagram. By default, a diagram has it's 
+  own internal set of attributes, but an external one can be set. This can be used to 
+  share attributes between several diagrams. The diagram does not take ownership of the 
+  attributesmodel.
+*/
+void AbstractDiagram::setAttributesModel( AttributesModel* amodel )
 {
-  /* This is unused for now, but we keep the
-     method for BC in case we need to change
-     something. /steffen
-  */
-#if 0
-  if( d->datasetProxy ) {
-    return d->datasetProxy->sourceModel();
-  } else {
-    return d->attributesModel->sourceModel();
-  }
-#endif
-  return QAbstractItemView::model();
+    if( amodel->sourceModel() != model() ) {
+	qWarning("KDChart::AbstractDiagram::setAttributesModel() failed: "
+		 "Trying to set an attributesmodel which works on a different "
+		 "model than the diagram.");
+	return;
+    }
+    if( d->hasPrivateAttributesModel ) {
+	delete d->attributesModel;
+	d->hasPrivateAttributesModel = false;
+    }
+    d->attributesModel = amodel;
 }
 
+/*! \returns a pointer to the AttributesModel currently used by this diagram. */
+AttributesModel* AbstractDiagram::attributesModel() const
+{
+    return d->attributesModel;
+}
+
+/*! \reimp */
 void AbstractDiagram::setRootIndex ( const QModelIndex& idx )
 {
-  if( d->datasetProxy ) {
-    QAbstractItemView::setRootIndex( d->datasetProxy->mapFromSource(idx) );
-    d->datasetProxy->setSourceRootIndex(idx);
-  } else {
-    QAbstractItemView::setRootIndex( d->defaultsModel->mapFromSource(d->attributesModel->mapFromSource(idx)) );
-  }
+    QAbstractItemView::setRootIndex(idx);
+    setAttributesModelRootIndex( d->attributesModel->mapFromSource(idx) );
+}
+
+/*! \internal */
+void AbstractDiagram::setAttributesModelRootIndex( const QModelIndex& idx )
+{
+  d->attributesModelRootIndex=idx;
   slotModelReset();
+}
+
+/*! returns a QModelIndex pointing into the DefaultsModel that corresponds to the
+  root index of the diagram. */
+QModelIndex AbstractDiagram::attributesModelRootIndex() const
+{
+  return d->attributesModelRootIndex;
 }
 
 void AbstractDiagram::setCoordinatePlane( AbstractCoordinatePlane* parent )
@@ -197,19 +182,21 @@ void AbstractDiagram::slotModelReset()
 void AbstractDiagram::setDataValueAttributes( const QModelIndex & index,
                                               const DataValueAttributes & a )
 {
-    model()->setData( index, qVariantFromValue( a ), DataValueLabelAttributesRole );
+    d->attributesModel->setData( d->attributesModel->mapFromSource(index), 
+				qVariantFromValue( a ), DataValueLabelAttributesRole );
 }
 
 
 void AbstractDiagram::setDataValueAttributes( int column, const DataValueAttributes & a )
 {
 
-    model()->setHeaderData( column, Qt::Vertical, qVariantFromValue( a ), DataValueLabelAttributesRole );
+    d->attributesModel->setHeaderData( column, Qt::Vertical, qVariantFromValue( a ), DataValueLabelAttributesRole );
 }
 
 DataValueAttributes AbstractDiagram::dataValueAttributes( const QModelIndex & index ) const
 {
-    return qVariantValue<DataValueAttributes>( model()->data( index, KDChart::DataValueLabelAttributesRole ) );
+    return qVariantValue<DataValueAttributes>( attributesModel()->data( attributesModel()->mapFromSource(index), 
+									KDChart::DataValueLabelAttributesRole ) );
 }
 
 void AbstractDiagram::setDataValueAttributes( const DataValueAttributes & a )
@@ -220,6 +207,7 @@ void AbstractDiagram::setDataValueAttributes( const DataValueAttributes & a )
 void AbstractDiagram::setAllowOverlappingDataValueTexts( bool allow )
 {
     d->allowOverlappingDataValueTexts = allow;
+    // update() missing ???
 }
 
 bool AbstractDiagram::allowOverlappingDataValueTexts() const
@@ -237,36 +225,13 @@ bool AbstractDiagram::percentMode() const
     return d->percent;
 }
 
-DatasetProxyModel* AbstractDiagram::datasetProxy()
-{
-    if ( d->datasetProxy == 0 )
-    {
-        QStandardItemModel temp;
-        DatasetProxyModel* proxy = new DatasetProxyModel ( this );
-
-        QAbstractItemModel *oldSourceModel =
-            d->attributesModel ? d->attributesModel->sourceModel() : 0;
-        if ( oldSourceModel )
-        {
-            setModel ( &temp );
-            proxy->setSourceModel ( oldSourceModel );
-        }
-
-        setModel ( proxy );
-        d->datasetProxy = proxy;
-    }
-
-    return d->datasetProxy;
-}
-
 void AbstractDiagram::paintDataValueText( QPainter* painter,
                                           const QModelIndex& index,
                                           const QPointF& pos,
                                           double value )
 {
     // paint one data series
-    DataValueAttributes a =
-        qVariantValue<DataValueAttributes>( model()->data( index, DataValueLabelAttributesRole ) );
+    DataValueAttributes a = dataValueAttributes(index);
     if ( !a.isVisible() ) return;
     PainterSaver painterSaver( painter );
     // FIXME draw the non-text bits, background, etc
@@ -298,15 +263,12 @@ void AbstractDiagram::paintDataValueTexts( QPainter* painter )
 }
 
 
-
-
 void AbstractDiagram::paintMarker( QPainter* painter,
                                    const QModelIndex& index,
                                    const QPointF& pos )
 {
     if ( !checkInvariants() ) return;
-    DataValueAttributes a =
-        qVariantValue<DataValueAttributes>( model()->data( index, DataValueLabelAttributesRole ) );
+    DataValueAttributes a = dataValueAttributes(index);
     if ( !a.isVisible() ) return;
     const MarkerAttributes &ma = a.markerAttributes();
     if ( !ma.isVisible() ) return;
@@ -451,7 +413,8 @@ void AbstractDiagram::paintMarkers( QPainter* painter )
 
 void AbstractDiagram::setPen( const QModelIndex& index, const QPen& pen )
 {
-     model()->setData( index, qVariantFromValue( pen ), DatasetPenRole );
+    attributesModel()->setData( attributesModel()->mapFromSource(index), 
+				qVariantFromValue( pen ), DatasetPenRole );
 }
 
 void AbstractDiagram::setPen( const QPen& pen )
@@ -461,32 +424,35 @@ void AbstractDiagram::setPen( const QPen& pen )
 
 void AbstractDiagram::setPen( int column,const QPen& pen )
 {
-    model()->setHeaderData( column, Qt::Vertical, qVariantFromValue( pen ), DatasetPenRole );
+    d->attributesModel->setHeaderData( column, Qt::Vertical, qVariantFromValue( pen ), DatasetPenRole );
 }
 
 QPen AbstractDiagram::pen( const QModelIndex& index ) const
 {
-    return qVariantValue<QPen>( model()->data( index, DatasetPenRole ) );
+    return qVariantValue<QPen>( attributesModel()->data( attributesModel()->mapFromSource(index), 
+							 DatasetPenRole ) );
 }
 
 void AbstractDiagram::setBrush( const QModelIndex& index, const QBrush& brush )
 {
-     model()->setData( index, qVariantFromValue( brush ), DatasetBrushRole );
+    attributesModel()->setData( attributesModel()->mapFromSource(index), 
+				qVariantFromValue( brush ), DatasetBrushRole );
 }
 
 void AbstractDiagram::setBrush( const QBrush& brush )
 {
-  d->attributesModel->setModelData( qVariantFromValue( brush ), DatasetBrushRole );
+    attributesModel()->setModelData( qVariantFromValue( brush ), DatasetBrushRole );
 }
 
 void AbstractDiagram::setBrush( int column, const QBrush& brush )
 {
-  model()->setHeaderData( column, Qt::Vertical, qVariantFromValue( brush ), DatasetBrushRole );
+    attributesModel()->setHeaderData( column, Qt::Vertical, qVariantFromValue( brush ), DatasetBrushRole );
 }
 
 QBrush AbstractDiagram::brush( const QModelIndex& index ) const
 {
-    return qVariantValue<QBrush>( model()->data( index, DatasetBrushRole ) );
+    return qVariantValue<QBrush>( attributesModel()->data( attributesModel()->mapFromSource(index), 
+							   DatasetBrushRole ) );
 }
 
 // implement QAbstractItemView:
@@ -520,59 +486,34 @@ QRegion AbstractDiagram::visualRegionForSelection(const QItemSelection &) const
 
 void KDChart::AbstractDiagram::useDefaultColors( )
 {
-    d->defaultsModel->setDefaultPaletteType( DefaultsModel::PaletteTypeDefault );
+    d->attributesModel->setPaletteType( AttributesModel::PaletteTypeDefault );
 }
 
 void KDChart::AbstractDiagram::useSubduedColors( )
 {
-    d->defaultsModel->setDefaultPaletteType( DefaultsModel::PaletteTypeSubdued );
+    d->attributesModel->setPaletteType( AttributesModel::PaletteTypeSubdued );
 }
 
 void KDChart::AbstractDiagram::useRainbowColors( )
 {
-    d->defaultsModel->setDefaultPaletteType( DefaultsModel::PaletteTypeRainbow );
+    d->attributesModel->setPaletteType( AttributesModel::PaletteTypeRainbow );
 }
-
-void AbstractDiagram::usePrivateAttributes( bool privateAttributes )
-{
-    // If we already have on set, adjust, otherwise setModel must be called
-    // eventually and will take care of things. The defaults model is used
-    // as reference model in place of the real source model, since we know
-    // there is exactly one per diagram.
-    if( d->attributesModel ) {
-        QAbstractItemModel *sourceModel = d->attributesModel->sourceModel();
-        if( d->usePrivateAttributesModel && !privateAttributes ) {
-            // we no longer use a private one, share the one of our source
-            AttributesModel::deref( d->defaultsModel );
-            d->attributesModel = AttributesModel::instanceForModel( sourceModel );
-        } else if ( !d->usePrivateAttributesModel && privateAttributes ) {
-            AttributesModel::deref( sourceModel );
-            d->attributesModel = AttributesModel::instanceForModel( d->defaultsModel );
-        }
-        d->attributesModel->setSourceModel( sourceModel );
-        d->defaultsModel->setSourceModel( d->attributesModel );
-    }
-    d->usePrivateAttributesModel = privateAttributes;
-}
-
-
 
 QStringList AbstractDiagram::datasetLabels() const
 {
     QStringList ret;
-//    qDebug() << "AbstractDiagram::datasetLabels(): " << model()->columnCount() << "entries";
-    for( int i = 0; i < model()->columnCount(); i++ )
-        ret << model()->headerData( i, Qt::Vertical, Qt::DisplayRole ).toString();
+//    qDebug() << "AbstractDiagram::datasetLabels(): " << defaultsModel()->columnCount() << "entries";
+    for( int i = 0; i < attributesModel()->columnCount(attributesModelRootIndex()); i++ )
+        ret << attributesModel()->headerData( i, Qt::Vertical, Qt::DisplayRole ).toString();
 
     return ret;
 }
 
-
 QList<QBrush> AbstractDiagram::datasetBrushes() const
 {
     QList<QBrush> ret;
-    for( int i = 0; i < model()->columnCount(); i++ ) {
-        QBrush brush = qVariantValue<QBrush>( model()->headerData( i, Qt::Vertical, DatasetBrushRole ) );
+    for( int i = 0; i < attributesModel()->columnCount(attributesModelRootIndex()); i++ ) {
+        QBrush brush = qVariantValue<QBrush>( attributesModel()->headerData( i, Qt::Vertical, DatasetBrushRole ) );
         ret << brush;
     }
 
@@ -582,8 +523,8 @@ QList<QBrush> AbstractDiagram::datasetBrushes() const
 QList<QPen> AbstractDiagram::datasetPens() const
 {
     QList<QPen> ret;
-    for( int i = 0; i < model()->columnCount(); i++ ) {
-        QPen pen = qVariantValue<QPen>( model()->headerData( i, Qt::Vertical, DatasetPenRole ) );
+    for( int i = 0; i < attributesModel()->columnCount(attributesModelRootIndex()); i++ ) {
+        QPen pen = qVariantValue<QPen>( attributesModel()->headerData( i, Qt::Vertical, DatasetPenRole ) );
         ret << pen;
     }
     return ret;
@@ -592,25 +533,23 @@ QList<QPen> AbstractDiagram::datasetPens() const
 QList<MarkerAttributes> AbstractDiagram::datasetMarkers() const
 {
     QList<MarkerAttributes> ret;
-    for( int i = 0; i < model()->columnCount(); i++ ) {
+    for( int i = 0; i < attributesModel()->columnCount(attributesModelRootIndex()); i++ ) {
         DataValueAttributes a =
-            qVariantValue<DataValueAttributes>( model()->headerData( i, Qt::Vertical, DataValueLabelAttributesRole ) );
+            qVariantValue<DataValueAttributes>( attributesModel()->headerData( i, Qt::Vertical, DataValueLabelAttributesRole ) );
         const MarkerAttributes &ma = a.markerAttributes();
         ret << ma;
     }
     return ret;
 }
 
-
-
-
 bool AbstractDiagram::checkInvariants() const
 {
+#if 1
     Q_ASSERT_X ( model(), "AbstractDiagram::checkInvariants()",
                  "There is no usable model set, for the diagram." );
 
     Q_ASSERT_X ( coordinatePlane(), "AbstractDiagram::checkInvariants()",
                  "There is no usable coordinate plane set, for the diagram." );
-
+#endif
     return model() && coordinatePlane();
 }

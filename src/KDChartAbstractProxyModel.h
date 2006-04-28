@@ -32,7 +32,7 @@
 
 #include <QAbstractProxyModel>
 
-#include <KDChartGlobal.h>
+#include "KDChartGlobal.h"
 
 namespace KDChart {
   class KDCHART_EXPORT AbstractProxyModel : public QAbstractProxyModel {

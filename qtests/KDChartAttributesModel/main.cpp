@@ -1,10 +1,11 @@
 #include <QtTest/QtTest>
 #include <TableModel.h>
-#include <KDChartGlobal.h>
-#include <KDChartBarDiagram.h>
-#include <KDChartLineDiagram.h>
-#include <KDChartCartesianCoordinatePlane.h>
-#include <KDChartDataValueAttributes.h>
+#include <KDChartGlobal>
+#include <../../src/KDChartAttributesModel.h> /* Bah! */
+#include <KDChartBarDiagram>
+#include <KDChartLineDiagram>
+#include <KDChartCartesianCoordinatePlane>
+#include <KDChartDataValueAttributes>
 
 using namespace KDChart;
 
@@ -36,16 +37,10 @@ private slots:
       QCOMPARE( a.isVisible(), true );
   }
 
-  void testKDChartAttributesModelTestSharedModel()
-  {
-      QModelIndex idx = m_model->index( 0, 2, QModelIndex() );
-      DataValueAttributes a = m_lines->dataValueAttributes( idx );
-      QCOMPARE( a.isVisible(), true );
-  }
-
   void testKDChartAttributesModelTestPrivateModel()
   {
-      m_lines->usePrivateAttributes( true );
+      // Private is now default
+      //m_lines->usePrivateAttributes( true );
       // now we should be getting defaults again
       QModelIndex idx = m_bars->model()->index( 0, 2, QModelIndex() );
       DataValueAttributes a = m_lines->dataValueAttributes( idx );
@@ -64,33 +59,46 @@ private slots:
       QCOMPARE( b.isVisible(), false );
   }
 
-  void testKDChartAttributesModelTestPrivateFromStart()
+  void testKDChartAttributesModelTestSharedModel()
+  {
+      AttributesModel* attrsmodel = m_lines->attributesModel();
+      m_bars->setAttributesModel(attrsmodel);
+      QModelIndex idx = m_model->index( 0, 2, QModelIndex() );
+      DataValueAttributes a = m_lines->dataValueAttributes( idx );
+      QCOMPARE( a.isVisible(), true );
+  }
+
+  void testKDChartAttributesModelTestSharedFromStart()
   {
       delete m_lines;
       delete m_bars;
       delete m_plane;
       m_plane = new CartesianCoordinatePlane(0);
       m_bars = new BarDiagram( m_plane );
-      m_bars->usePrivateAttributes( true );
       m_bars->setModel( m_model );
       m_lines = new LineDiagram( m_plane );
-      m_lines->usePrivateAttributes( true );
       m_lines->setModel( m_model );
+
+      AttributesModel* attrsmodel = new AttributesModel( m_model, m_plane );
+      m_lines->setAttributesModel(attrsmodel);
+      m_bars->setAttributesModel(attrsmodel);
       
       QModelIndex idx = m_bars->model()->index( 0, 2, QModelIndex() );
       DataValueAttributes a = m_lines->dataValueAttributes( idx );
-      QCOMPARE( a.isVisible(), false );
-      a.setVisible( true );
-      m_lines->setDataValueAttributes( 2, a );
       DataValueAttributes b = m_bars->dataValueAttributes( idx );
-      QCOMPARE( a.isVisible(), true );
+      QCOMPARE( a.isVisible(), false );
       QCOMPARE( b.isVisible(), false );
+      a.setVisible( true );
+      QCOMPARE( a.isVisible(), true );
+      m_lines->setDataValueAttributes( 2, a );
+      b = m_bars->dataValueAttributes( idx );
+      QCOMPARE( b.isVisible(), true ); // Should be true by sharing
   }
 
-  void testKDChartAttributesModelTestPrivateToShared()
+  void testKDChartAttributesModelTestPrivate()
   {
-      m_lines->usePrivateAttributes( false );
-      m_bars->usePrivateAttributes( false );
+      m_lines->setAttributesModel( new AttributesModel(m_model,m_lines) );
+      m_bars->setAttributesModel( new AttributesModel(m_model,m_bars) );
       QModelIndex idx = m_lines->model()->index( 0, 2, QModelIndex() );
       DataValueAttributes a = m_lines->dataValueAttributes( idx );
       QCOMPARE( a.isVisible(), false ); // we got a default model again
@@ -98,7 +106,7 @@ private slots:
       m_lines->setDataValueAttributes( 2, a );
       // should now have propagated to the bars
       DataValueAttributes b = m_bars->dataValueAttributes( idx );
-      QCOMPARE( b.isVisible(), true );
+      QCOMPARE( b.isVisible(), false ); // No sharing
   }
 
 

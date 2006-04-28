@@ -28,7 +28,6 @@ HEADERS += KDChartGlobal.h \
            KDChartDatasetProxyModel.h \
            KDChartDatasetSelector.h \
            KDChartDataValueAttributes.h \
-           KDChartDefaultsModel.h \
            KDChartDiagramObserver.h \
            KDChartEnums.h \
            KDChartFrameAttributes.h \
@@ -86,7 +85,6 @@ SOURCES += KDChartAbstractCartesianDiagram.cpp \
            KDChartDatasetProxyModel.cpp \
            KDChartDatasetSelector.cpp \
            KDChartDataValueAttributes.cpp \
-           KDChartDefaultsModel.cpp \
            KDChartDiagramObserver.cpp \
            KDChartFrameAttributes.cpp \
            KDChartGridAttributes.cpp \

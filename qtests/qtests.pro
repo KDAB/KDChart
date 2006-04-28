@@ -1,7 +1,6 @@
 TEMPLATE = subdirs
 SUBDIRS +=  ChartElementOwnership \
             KDChartAttributesModel \
-            KDChartDefaultsModel \
             KDChartPalette \
 
 test.target=test

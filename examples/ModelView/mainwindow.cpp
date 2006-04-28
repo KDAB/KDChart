@@ -98,13 +98,17 @@ void MainWindow::setupViews()
 
     // Set up the diagram
     m_diagramView = new BarDiagram();
-    m_diagramView->setModel( m_model );
 
     DatasetDescriptionVector columnConfig( m_model->columnCount() - 1 );
     for( int iC=1; iC<=columnConfig.size(); ++iC)
         columnConfig[iC-1] = iC;
 
-    m_diagramView->datasetProxy()->setDatasetColumnDescriptionVector( columnConfig );
+    qDebug() << "("<<m_model->rowCount() << ","<<m_model->columnCount()<<")";
+
+    KDChart::DatasetProxyModel* dproxy = new KDChart::DatasetProxyModel(this);
+    dproxy->setSourceModel(m_model);
+    dproxy->setDatasetColumnDescriptionVector( columnConfig );
+    m_diagramView->setModel( dproxy );
 
     KDChart::HeaderFooter* headerFooter = new KDChart::HeaderFooter( m_chart );
     headerFooter->setText("You can edit the table data, or select table cells with keyboard/mouse.");
@@ -134,7 +138,7 @@ void MainWindow::selectionChanged( const QItemSelection & selected, const QItemS
                         // ignore the first column: that's just the label texts to be shown in the table view
                         if( iColumn )
                             // enable (or disable, resp.) the surrounding line around this bar
-                            m_diagramView->setPen( m_model->index(iRow, iColumn-1, QModelIndex()), pen );
+			    m_diagramView->setPen( m_diagramView->model()->index(iRow, iColumn-1, m_diagramView->rootIndex()), pen );
                     }
                 }
             }

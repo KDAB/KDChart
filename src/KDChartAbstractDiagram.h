@@ -37,9 +37,9 @@
 namespace KDChart {
 
     class AbstractCoordinatePlane;
+    class AttributesModel;
     class DataValueAttributes;
     class PaintContext;
-    class DatasetProxyModel;
 
     /**
      * @brief AbstractDiagram defines the interface for diagram classes
@@ -85,28 +85,8 @@ namespace KDChart {
         /** Associate a model with the diagram. */
         virtual void setModel ( QAbstractItemModel * model );
 
-        virtual QAbstractItemModel* model() const;
-
-        /**
-         * Return the proxy model responsible for selecing the data to be
-         * displayed by this diagram from the underlying real model, if there
-         * is one.
-         * @return The dataset proxy model associated with this diagram, or 0
-         * if there is none.
-         */
-        virtual DatasetProxyModel* datasetProxy ();
-
-                /**
-         * Set whether the diagram should use its own attributes model, or share one
-         * with all other diagrams showing the same data (using the same model).
-         * Per default this is false, which means if two diagrams show the same model
-         * data, and you set a certain pen or brush for a dataset, all diagrams will
-         * use that pen or brush to paint the dataset.
-         * @param privateAttributes Whether the diagram should use a private set of
-         * attributes and not share them with others showing the same data.
-                 */
-        void usePrivateAttributes( bool privateAttributes );
-
+        virtual void setAttributesModel( AttributesModel* model );
+        virtual AttributesModel* attributesModel() const;
 
        /** Set the root index in the model where the diagram starts
         * referencing data for display. */
@@ -301,6 +281,8 @@ namespace KDChart {
         void paintMarker(  QPainter* painter, const QModelIndex& index,
                            const QPointF& pos );
         virtual void paintMarkers( QPainter* painter );
+	void setAttributesModelRootIndex( const QModelIndex& );
+	QModelIndex attributesModelRootIndex() const;
 
     signals:
         /** Diagrams are supposed to emit this signal when the layout of one
