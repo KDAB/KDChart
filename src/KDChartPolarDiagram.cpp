@@ -26,6 +26,7 @@
 
 #include <QPainter>
 #include <QtXml/QDomDocumentFragment>
+#include "KDChartAttributesModel.h"
 #include "KDChartPaintContext.h"
 #include "KDChartPolarDiagram.h"
 #include "KDChartPolarDiagram_p.h"
@@ -142,7 +143,7 @@ void PolarDiagram::paint( PaintContext* ctx )
     const int colCount = model()->columnCount(rootIndex());
     DataValueTextInfoList list;
     for ( int j=0; j<colCount; ++j ) {
-        QBrush brush = qVariantValue<QBrush>( model()->headerData( j, Qt::Vertical, KDChart::DatasetBrushRole ) );
+        QBrush brush = qVariantValue<QBrush>( attributesModel()->headerData( j, Qt::Vertical, KDChart::DatasetBrushRole ) );
         QPolygonF polygon;
         for ( int i=0; i<rowCount; ++i ) {
             QModelIndex index = model()->index( i, j, rootIndex() );

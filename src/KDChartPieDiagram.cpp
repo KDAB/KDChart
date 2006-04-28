@@ -27,6 +27,7 @@
 #include <QDebug>
 #include <QtXml/QDomDocumentFragment>
 
+#include "KDChartAttributesModel.h"
 #include "KDChartPaintContext.h"
 #include "KDChartPieDiagram.h"
 #include "KDChartPieDiagram_p.h"
@@ -86,7 +87,7 @@ const QPair<QPointF, QPointF> PieDiagram::dataBoundaries () const
     // the largest explosion distance.
     if( explode() ) {
         double maxExplode = 0.0;
-        for( int j = 0; j < model()->columnCount(); j++ )
+        for( int j = 0; j < model()->columnCount(rootIndex()); j++ )
             maxExplode = qMax( maxExplode, explodeFactor( j ) );
         topRight = QPointF( 1.0+maxExplode, 1.0+maxExplode );
     } else
@@ -122,17 +123,17 @@ static QRectF buildReferenceRect( const PolarCoordinatePlane* plane )
 void PieDiagram::paint( PaintContext* ctx )
 {
     if ( !checkInvariants() ) return;
-    const int colCount = model()->columnCount();
+    const int colCount = model()->columnCount(rootIndex());
     QRectF contentsRect = buildReferenceRect( polarCoordinatePlane() );
     DataValueTextInfoList list;
     double startAngle = startPosition();
     double startAngleValueSpace = valueTotals() / 360 * startAngle;
     for ( int j=0; j<colCount; ++j ) {
-        const double nextValue = qAbs( model()->data( model()->index( 0, j ) ).toDouble() );
+      const double nextValue = qAbs( model()->data( model()->index( 0, j,rootIndex() ) ).toDouble() );
         double spanAngle = polarCoordinatePlane()->translatePolar( QPointF( nextValue, 1 ) ).x();
         if ( spanAngle == 0 ) continue;
-        QBrush brush = qVariantValue<QBrush>( model()->headerData( j, Qt::Vertical, KDChart::DatasetBrushRole ) );
-        QPen pen = qVariantValue<QPen>( model()->headerData( j, Qt::Vertical, KDChart::DatasetPenRole ) );
+        QBrush brush = qVariantValue<QBrush>( attributesModel()->headerData( j, Qt::Vertical, KDChart::DatasetBrushRole ) );
+        QPen pen = qVariantValue<QPen>( attributesModel()->headerData( j, Qt::Vertical, KDChart::DatasetPenRole ) );
         PainterSaver painterSaver( ctx->painter() );
         ctx->painter()->setRenderHint ( QPainter::Antialiasing );
         ctx->painter()->setBrush( brush );
@@ -167,9 +168,9 @@ void PieDiagram::resize ( const QSizeF& )
 double PieDiagram::valueTotals () const
 {
     double total = 0;
-    const int colCount = model()->columnCount();
+    const int colCount = model()->columnCount(rootIndex());
     for ( int j=0; j<colCount; ++j ) {
-        total += model()->data( model()->index( 0, j ) ).toDouble();
+      total += model()->data( model()->index( 0, j, rootIndex() ) ).toDouble();
     }
     return total;
 }

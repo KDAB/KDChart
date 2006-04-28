@@ -26,6 +26,7 @@
 #include <QtXml/QDomDocumentFragment>
 #include <QPainter>
 
+#include "KDChartAttributesModel.h"
 #include "KDChartPaintContext.h"
 #include "KDChartRingDiagram.h"
 #include "KDChartRingDiagram_p.h"
@@ -105,10 +106,10 @@ void RingDiagram::resizeEvent ( QResizeEvent*)
 void RingDiagram::paint( PaintContext* ctx )
 {
     if ( !checkInvariants() ) return;
-    const int colCount = model()->columnCount();
+    const int colCount = model()->columnCount(rootIndex());
     DataValueTextInfoList list;
     for ( int j=0; j<colCount; ++j ) {
-        QBrush brush = qVariantValue<QBrush>( model()->headerData( j, Qt::Vertical, KDChart::DatasetBrushRole ) );
+        QBrush brush = qVariantValue<QBrush>( attributesModel()->headerData( j, Qt::Vertical, KDChart::DatasetBrushRole ) );
         PainterSaver painterSaver( ctx->painter() );
         ctx->painter()->setRenderHint ( QPainter::Antialiasing );
         ctx->painter()->setBrush( brush );
@@ -133,9 +134,9 @@ void RingDiagram::resize ( const QSizeF& )
 double RingDiagram::valueTotals () const
 {
     double total = 0;
-    const int colCount = model()->columnCount();
+    const int colCount = model()->columnCount(rootIndex());
     for ( int j=0; j<colCount; ++j ) {
-        total += model()->data( model()->index( 0, j ) ).toDouble();
+      total += model()->data( model()->index( 0, j, rootIndex() ) ).toDouble();
     }
     return total;
 }
@@ -143,7 +144,7 @@ double RingDiagram::valueTotals () const
 /*virtual*/
 double RingDiagram::numberOfValuesPerDataset() const
 {
-    return model()->columnCount();
+    return model()->columnCount(rootIndex());
 }
 
 /*virtual*/
