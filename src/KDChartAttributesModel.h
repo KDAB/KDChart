@@ -69,12 +69,12 @@ public:
     /** \reimpl */
     int columnCount(const QModelIndex& ) const;
     /** \reimpl */
-  QVariant data(const QModelIndex&, int role = Qt::DisplayRole) const;
+    QVariant data(const QModelIndex&, int role = Qt::DisplayRole) const;
     /** \reimpl */
     bool setData ( const QModelIndex & index, const QVariant & value, int role = Qt::DisplayRole);
     /** \reimpl */
     bool setHeaderData ( int section, Qt::Orientation orientation, const QVariant & value, 
-			 int role = Qt::DisplayRole);
+                         int role = Qt::DisplayRole);
     /** \reimpl */
     void setSourceModel ( QAbstractItemModel* sourceModel );
 

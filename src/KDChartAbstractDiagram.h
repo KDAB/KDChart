@@ -1,5 +1,5 @@
 /****************************************************************************
- ** Copyright (C) 2006 KlarÃ¤lvdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2006 Klarälvdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KD Chart library.
  **
@@ -272,6 +272,25 @@ namespace KDChart {
 
         virtual void paintMarker( QPainter* painter, const MarkerAttributes& markerAttributes,
                                   const QBrush& brush, const QPen&, const QPointF& point, const QSizeF& size );
+
+        /**
+         * The dataset dimension of a diagram determines how many value dimensions
+         * it expects each datapoint to have. For each dimension it will expect
+         * one column of values in the model. If the dimensionality is 1, automatic
+         * values will be used for the abscissa. For example a chart with the default
+         * dimension of 1, will have one column per datapoint (the y values) and will
+         * use automatic values for the x axis (1, 2, 3, ... n). If the dimension is
+         * set to 2, it will use the first, third, fith, etc columns as x values,
+         * and the second, fourth, sixth etc column as y values.
+         * @return The dataset dimension of the diagram.
+         */
+        int datasetDimension() const;
+
+        /**
+         * Sets the dataset dimension of the diagram. @see datasetDimension.
+         * @param dimension 
+         */
+        void setDatasetDimension( int dimension );
 
     protected:
         virtual bool checkInvariants() const;

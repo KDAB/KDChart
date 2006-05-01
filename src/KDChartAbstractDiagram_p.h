@@ -31,7 +31,6 @@
 #include <QPointer>
 
 namespace KDChart {
-  class DefaultsModel;
   class AttributesModel;
 
 class KDChart::AbstractDiagram::Private
@@ -51,6 +50,7 @@ protected:
     bool allowOverlappingDataValueTexts;
     bool usePrivateAttributesModel;
     bool percent;
+    int datasetDimension;
 };
 
 inline AbstractDiagram::AbstractDiagram( Private * p ) : _d( p ) { init(); }

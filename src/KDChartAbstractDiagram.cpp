@@ -1,5 +1,5 @@
 /****************************************************************************
- ** Copyright (C) 2006 Klarälvdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2006 Klarï¿½vdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KD Chart library.
  **
@@ -51,6 +51,7 @@ AbstractDiagram::Private::Private()
   , allowOverlappingDataValueTexts( false )
   , usePrivateAttributesModel( false )
   , percent( false )
+  , datasetDimension( 1 )
 {
 }
 
@@ -159,7 +160,7 @@ void AbstractDiagram::setAttributesModelRootIndex( const QModelIndex& idx )
   slotModelReset();
 }
 
-/*! returns a QModelIndex pointing into the DefaultsModel that corresponds to the
+/*! returns a QModelIndex pointing into the AttributesModel that corresponds to the
   root index of the diagram. */
 QModelIndex AbstractDiagram::attributesModelRootIndex() const
 {
@@ -553,3 +554,16 @@ bool AbstractDiagram::checkInvariants() const
 #endif
     return model() && coordinatePlane();
 }
+
+int KDChart::AbstractDiagram::datasetDimension( ) const
+{
+    return d->datasetDimension;
+}
+
+void KDChart::AbstractDiagram::setDatasetDimension( int dimension )
+{
+    if ( d->datasetDimension == dimension ) return;
+    d->datasetDimension = dimension;
+    emit layoutChanged( this );
+}
+
