@@ -3,7 +3,7 @@
    */
 
 /****************************************************************************
- ** Copyright (C) 2001-2006 Klar‰lvdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2001-2006 Klar√§vdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KD Chart library.
  **
@@ -29,6 +29,7 @@
 
 #include <KDChartAbstractDiagram.h>
 #include <KDChartDiagramObserver.h>
+#include <KDChartAttributesModel.h>
 
 #include <QDebug>
 
@@ -38,7 +39,7 @@ namespace KDChart {
     {
        connect( diagram, SIGNAL(destroyed( QObject* )), SLOT(destroyed()));
        connect( diagram->model(), SIGNAL(dataChanged( const QModelIndex&, const QModelIndex&)), SLOT(dataChanged()));
-       connect( diagram->model(), SIGNAL(attributesChanged( const QModelIndex&, const QModelIndex&)), SLOT(attributesChanged()));
+       connect( diagram->attributesModel(), SIGNAL(attributesChanged( const QModelIndex&, const QModelIndex&)), SLOT(attributesChanged()));
        connect( diagram->model(), SIGNAL(headerDataChanged( Qt::Orientation, int, int)), SLOT(dataChanged()));
     }
 
