@@ -1,2 +1,2 @@
 TEMPLATE=subdirs
-SUBDIRS+=RootIndex
+SUBDIRS+=RootIndex DelayedData
