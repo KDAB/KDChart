@@ -248,7 +248,7 @@ void CartesianCoordinatePlane::layoutDiagrams()
     double diagramYUnitInCoordinatePlane;
 
     diagramXUnitInCoordinatePlane = diagramWidth != 0 ? planeWidth / diagramWidth : 1;
-    diagramYUnitInCoordinatePlane = digramHeight != 0 ? planeHeight / diagramHeight : 1;
+    diagramYUnitInCoordinatePlane = diagramHeight != 0 ? planeHeight / diagramHeight : 1;
     // calculate diagram origin in plane coordinates:
     QPointF coordinateOrigin = QPointF (
         diagramTopLeft.x() * -diagramXUnitInCoordinatePlane,
