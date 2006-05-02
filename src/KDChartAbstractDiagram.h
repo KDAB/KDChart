@@ -110,6 +110,8 @@ namespace KDChart {
         virtual void setSelection(const QRect &rect, QItemSelectionModel::SelectionFlags command);
         /** \reimpl */
         virtual QRegion visualRegionForSelection(const QItemSelection &selection) const;
+	    /** \reimp */
+	    virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 
         /**
          * The coordinate plane associated with the diagram. This determines

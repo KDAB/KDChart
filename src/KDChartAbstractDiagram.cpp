@@ -138,6 +138,7 @@ void AbstractDiagram::setAttributesModel( AttributesModel* amodel )
 	d->hasPrivateAttributesModel = false;
     }
     d->attributesModel = amodel;
+    slotModelReset();
 }
 
 /*! \returns a pointer to the AttributesModel currently used by this diagram. */
@@ -178,6 +179,12 @@ void AbstractDiagram::slotModelReset()
         d->plane->layoutDiagrams();
         d->plane->update();
     }
+}
+
+void AbstractDiagram::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
+{
+  // We are still too dumb to do intelligent updates...
+  slotModelReset();
 }
 
 void AbstractDiagram::setDataValueAttributes( const QModelIndex & index,
