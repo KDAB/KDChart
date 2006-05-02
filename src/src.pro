@@ -115,6 +115,11 @@ include( ../variables.pri )
 DEFINES += KDCHART_BUILD_KDCHART_LIB
 TEMPLATE = lib
 TARGET = kdchart
+
+CONFIG(debug, debug|release) {
+    !unix: TARGET = $$join(TARGET,,d)
+}
+
 DESTDIR = ../lib
 DEFINES += QT_NO_CAST_TO_ASCII
 DEPENDPATH = ../include $(QTDIR)/src/3rdparty/zlib .
