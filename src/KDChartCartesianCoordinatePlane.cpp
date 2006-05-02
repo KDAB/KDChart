@@ -64,6 +64,7 @@ CartesianCoordinatePlane::CartesianCoordinatePlane ( QWidget* parent )
     : AbstractCoordinatePlane ( parent )
     , d ( new Private() )
 {
+    setAxesCalcMode( Linear );
 }
 
 CartesianCoordinatePlane::~CartesianCoordinatePlane()
@@ -243,8 +244,11 @@ void CartesianCoordinatePlane::layoutDiagrams()
     double scaleX;
     double scaleY;
 
-    double diagramXUnitInCoordinatePlane = planeWidth / diagramWidth;
-    double diagramYUnitInCoordinatePlane = planeHeight / diagramHeight;
+    double diagramXUnitInCoordinatePlane;
+    double diagramYUnitInCoordinatePlane;
+
+    diagramXUnitInCoordinatePlane = diagramWidth != 0 ? planeWidth / diagramWidth : 1;
+    diagramYUnitInCoordinatePlane = digramHeight != 0 ? planeHeight / diagramHeight : 1;
     // calculate diagram origin in plane coordinates:
     QPointF coordinateOrigin = QPointF (
         diagramTopLeft.x() * -diagramXUnitInCoordinatePlane,
