@@ -138,7 +138,7 @@ void AbstractDiagram::setAttributesModel( AttributesModel* amodel )
 	d->hasPrivateAttributesModel = false;
     }
     d->attributesModel = amodel;
-    slotModelReset();
+    scheduleDelayedItemsLayout();
 }
 
 /*! \returns a pointer to the AttributesModel currently used by this diagram. */
@@ -158,7 +158,7 @@ void AbstractDiagram::setRootIndex ( const QModelIndex& idx )
 void AbstractDiagram::setAttributesModelRootIndex( const QModelIndex& idx )
 {
   d->attributesModelRootIndex=idx;
-  slotModelReset();
+  scheduleDelayedItemsLayout();
 }
 
 /*! returns a QModelIndex pointing into the AttributesModel that corresponds to the
@@ -173,18 +173,19 @@ void AbstractDiagram::setCoordinatePlane( AbstractCoordinatePlane* parent )
     d->plane = parent;
 }
 
-void AbstractDiagram::slotModelReset()
+void AbstractDiagram::doItemsLayout()
 {
     if ( d->plane ) {
         d->plane->layoutDiagrams();
         d->plane->update();
     }
+    QAbstractItemView::doItemsLayout();
 }
 
 void AbstractDiagram::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
   // We are still too dumb to do intelligent updates...
-  slotModelReset();
+  scheduleDelayedItemsLayout();
 }
 
 void AbstractDiagram::setDataValueAttributes( const QModelIndex & index,

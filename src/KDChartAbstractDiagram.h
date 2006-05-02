@@ -110,8 +110,10 @@ namespace KDChart {
         virtual void setSelection(const QRect &rect, QItemSelectionModel::SelectionFlags command);
         /** \reimpl */
         virtual QRegion visualRegionForSelection(const QItemSelection &selection) const;
-	    /** \reimp */
-	    virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+        /** \reimp */
+        virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+        /** \reimp */
+        virtual void doItemsLayout();
 
         /**
          * The coordinate plane associated with the diagram. This determines
@@ -314,9 +316,6 @@ namespace KDChart {
             geometry. Changes in the diagrams coordinate system also require
             to emit layoutChanged(). */
         void layoutChanged( AbstractDiagram* );
-
-    protected slots:
-        void slotModelReset();
     };
 
     class AbstractDiagramList : public QList<AbstractDiagram*> {};
