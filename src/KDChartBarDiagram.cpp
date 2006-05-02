@@ -37,7 +37,8 @@
 using namespace KDChart;
 
 BarDiagram::Private::Private()
-    :barType( Normal )
+    : barType( Normal )
+    , maxDepth ( 0 )
 {
 }
 
@@ -54,7 +55,6 @@ BarDiagram::BarDiagram( CartesianCoordinatePlane* parent ) :
 
 void BarDiagram::init()
 {
-    m_maxDepth = 0;
 }
 
 BarDiagram::~BarDiagram()
@@ -87,19 +87,19 @@ void BarDiagram::setBarAttributes( const BarAttributes & ta )
 
 void BarDiagram::setBarAttributes( int column, const BarAttributes & ta )
 {
-    d->attributesModel->setHeaderData( column, Qt::Vertical, qVariantFromValue( ta ), 
+    d->attributesModel->setHeaderData( column, Qt::Vertical, qVariantFromValue( ta ),
 				       BarAttributesRole );
 }
 
 void BarDiagram::setBarAttributes( const QModelIndex & index, const BarAttributes & ta )
 {
-    attributesModel()->setData( d->attributesModel->mapFromSource(index), qVariantFromValue( ta ), 
+    attributesModel()->setData( d->attributesModel->mapFromSource(index), qVariantFromValue( ta ),
 			      BarAttributesRole );
 }
 
 BarAttributes BarDiagram::barAttributes( const QModelIndex & index ) const
 {
-    return qVariantValue<BarAttributes>( d->attributesModel->data( d->attributesModel->mapFromSource(index), 
+    return qVariantValue<BarAttributes>( d->attributesModel->data( d->attributesModel->mapFromSource(index),
 								KDChart::BarAttributesRole ) );
 }
 
@@ -117,20 +117,20 @@ void BarDiagram::setThreeDBarAttributes( int column, const ThreeDBarAttributes &
 
 void BarDiagram::setThreeDBarAttributes( const QModelIndex & index, const ThreeDBarAttributes & tda )
 {
-    d->attributesModel->setData( d->attributesModel->mapFromSource(index), 
+    d->attributesModel->setData( d->attributesModel->mapFromSource(index),
 			      qVariantFromValue( tda ), ThreeDBarAttributesRole );
     emit layoutChanged( this );
 }
 
 ThreeDBarAttributes BarDiagram::threeDBarAttributes( const QModelIndex & index ) const
 {
-    return qVariantValue<ThreeDBarAttributes>( d->attributesModel->data( d->attributesModel->mapFromSource(index), 
+    return qVariantValue<ThreeDBarAttributes>( d->attributesModel->data( d->attributesModel->mapFromSource(index),
 								      KDChart::ThreeDBarAttributesRole ) );
 }
 
 void BarDiagram::resizeEvent ( QResizeEvent*)
 {
-   
+
 }
 
 const QPair<QPointF, QPointF> BarDiagram::dataBoundaries () const
@@ -197,9 +197,9 @@ const QPair<QPointF, QPointF> BarDiagram::dataBoundaries () const
 	 QPointF pTRTranslated = coordinatePlane()->translate( topRight );
          QPointF pBLTranslated = coordinatePlane()->translate( bottomLeft );
 	 //reserve some plane space for the top of the threeD bars
-         //Pending Michel: fixme 4 - 8?        
-         if ( m_maxDepth )
-             tda.setDepth( m_maxDepth );
+         //Pending Michel: fixme 4 - 8?
+         if ( d->maxDepth )
+             tda.setDepth( d->maxDepth );
          if ( type() == BarDiagram::Normal ) {
              percentx = ((tda.depth())/ pTRTranslated.x());
              percenty = ((tda.depth())/ pBLTranslated.y());
@@ -208,12 +208,12 @@ const QPair<QPointF, QPointF> BarDiagram::dataBoundaries () const
              percenty = ((tda.depth()*8) / pBLTranslated.y());
 	 } else {
              percentx = ((tda.depth())/ pTRTranslated.x());
-             percenty = ((tda.depth()*4)/ pBLTranslated.y());  
+             percenty = ((tda.depth()*4)/ pBLTranslated.y());
          }
          topRight.setX( topRight.x() + percentx);
          topRight.setY( topRight.y() + percenty);
        }
-       
+
        return QPair<QPointF, QPointF> ( bottomLeft,  topRight );
 }
 
@@ -263,11 +263,11 @@ void BarDiagram::paint( PaintContext* ctx )
 
     // first draw the grid
     drawGrid( ctx );
-    // Calculate width 
+    // Calculate width
     QPointF boundLeft, boundRight;
     boundLeft = coordinatePlane()->translate( dataBoundaries().first );
     boundRight = coordinatePlane()->translate( dataBoundaries().second );
-    double width = boundRight.x() - boundLeft.x(); 
+    double width = boundRight.x() - boundLeft.x();
     //calculates and stores the values
     const int rowCount = d->attributesModel->rowCount(attributesModelRootIndex());
     const int colCount = d->attributesModel->columnCount(attributesModelRootIndex());
@@ -281,7 +281,7 @@ void BarDiagram::paint( PaintContext* ctx )
     double spaceBetweenBars = 0;
     double spaceBetweenGroups = 0;
     double groupWidth =  /*ctx->rectangle().width() / ( rowCount + 2 )*/ width/ (rowCount + 2);
-    
+
 
     if ( ba.useFixedBarWidth() ) {
         barWidth = ba.fixedBarWidth();
@@ -359,28 +359,28 @@ void BarDiagram::paint( PaintContext* ctx )
                    ThreeDBarAttributes tda = threeDBarAttributes( index );
                    double value = 0, stackedValues = 0;
                    QPointF point, previousPoint;
-                 
+
                    if ( tda.isEnabled() ) {
-                       if ( barWidth > 0 ) 
-                           barWidth =  (width - ((offset+(tda.depth()))*rowCount))/ rowCount;           
+                       if ( barWidth > 0 )
+                           barWidth =  (width - ((offset+(tda.depth()))*rowCount))/ rowCount;
                        if ( barWidth <= 0 ) {
                            barWidth = 0;
-                           maxDepth = offset - (width/rowCount); 
-                       }                                            
+                           maxDepth = offset - (width/rowCount);
+                       }
                    } else
                        barWidth =  (ctx->rectangle().width() - (offset*rowCount))/ rowCount ;
 
                    value = model()->data( index ).toDouble();
                    for ( int k = i; k >= 0 ; --k )
                        stackedValues += model()->data( model()->index( j, k, rootIndex() ) ).toDouble();
-                   point = coordinatePlane()->translate( QPointF( j, stackedValues ) );                   
+                   point = coordinatePlane()->translate( QPointF( j, stackedValues ) );
                    point.setX( point.x() + offset/2 );
                    previousPoint = coordinatePlane()->translate( QPointF( j, stackedValues - value ) );
                    const double barHeight = previousPoint.y() - point.y();
                    list.append( DataValueTextInfo( index, point, value ) );
-                   paintBars( ctx, index, QRectF( point, QSizeF( barWidth , barHeight ) ), maxDepth );                                     
+                   paintBars( ctx, index, QRectF( point, QSizeF( barWidth , barHeight ) ), maxDepth );
                }
-               
+
            }
            break;
         case BarDiagram::Percent:
@@ -411,13 +411,13 @@ void BarDiagram::paint( PaintContext* ctx )
                     QPointF point, previousPoint;
                     QModelIndex index = model()->index( j, i, rootIndex() );
 		    ThreeDBarAttributes tda = threeDBarAttributes( index );
-                    
+
 		    if ( tda.isEnabled() ) {
-                        if ( barWidth > 0 ) 
+                        if ( barWidth > 0 )
                             barWidth =  (width - ((offset+(tda.depth()))*rowCount))/ rowCount;
                         if ( barWidth <= 0 ) {
                             barWidth = 0;
-                          maxDepth = offset - ( width/rowCount);                          
+                          maxDepth = offset - ( width/rowCount);
                         }
                     }
 		    else
@@ -437,9 +437,9 @@ void BarDiagram::paint( PaintContext* ctx )
                     const double barHeight = previousPoint.y() - point.y();
 
                     list.append( DataValueTextInfo( index, point, value ) );
-                    paintBars( ctx, index, QRectF( point, QSizeF( barWidth, barHeight ) ), maxDepth );                    
-                    
-                }               
+                    paintBars( ctx, index, QRectF( point, QSizeF( barWidth, barHeight ) ), maxDepth );
+
+                }
             }
             break;
         default:
@@ -492,12 +492,12 @@ void BarDiagram::paintBars( PaintContext* ctx, const QModelIndex& index, const Q
       topPoints << bar.topLeft() << bar.topRight() << isoRect.topRight() << isoRect.topLeft();
       ctx->painter()->drawPolygon( topPoints );
       sidePoints << bar.topRight() << isoRect.topRight() << isoRect.bottomRight() << bar.bottomRight();
-      ctx->painter()->drawPolygon( sidePoints );      
+      ctx->painter()->drawPolygon( sidePoints );
     }
-    
+
     ctx->painter()->drawRect( bar );
     // reset
-    m_maxDepth = tda.depth();
+    d->maxDepth = tda.depth();
 }
 
 void BarDiagram::resize ( const QSizeF& )

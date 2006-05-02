@@ -44,8 +44,8 @@ public:
                                      double& spaceBetweenGroups );
 
     BarType barType;
-    private:
-    double m_maxDepth;
+private:
+    double maxDepth;
 };
 
 inline BarDiagram::BarDiagram( Private * p, CartesianCoordinatePlane* plane )

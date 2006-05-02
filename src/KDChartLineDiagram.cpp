@@ -124,13 +124,13 @@ void LineDiagram::setThreeDLineAttributes( int column, const ThreeDLineAttribute
 
 void LineDiagram::setThreeDLineAttributes( const QModelIndex & index, const ThreeDLineAttributes & ta )
 {
-    d->attributesModel->setData( d->attributesModel->mapFromSource(index), 
+    d->attributesModel->setData( d->attributesModel->mapFromSource(index),
 			      qVariantFromValue( ta ), ThreeDLineAttributesRole );
 }
 
 ThreeDLineAttributes LineDiagram::threeDLineAttributes( const QModelIndex & index ) const
 {
-    return qVariantValue<ThreeDLineAttributes>( d->attributesModel->data( d->attributesModel->mapFromSource(index), 
+    return qVariantValue<ThreeDLineAttributes>( d->attributesModel->data( d->attributesModel->mapFromSource(index),
 								       KDChart::ThreeDLineAttributesRole ) );
 }
 
@@ -324,7 +324,7 @@ void LineDiagram::paint( PaintContext* ctx )
                         if ( val > 0)
                             stackedValues += val;
                         if ( j+1 < rowCount ){
-			    val = d->attributesModel->data( d->attributesModel->index( j+1, k, attributesModelRootIndex() ) ).toDouble(); 
+			    val = d->attributesModel->data( d->attributesModel->index( j+1, k, attributesModelRootIndex() ) ).toDouble();
                             if ( val > 0 )
                                 nextValues += val;
                         }
@@ -364,7 +364,7 @@ void LineDiagram::paintLines( PaintContext* ctx, const QModelIndex& index, doubl
 {
     ThreeDLineAttributes td = threeDLineAttributes(index);
     if ( td.isEnabled() ) {
-        const int lineDepth = td.depth();
+        const double lineDepth = td.depth();
         paintThreeDLines( ctx, index, from, to, lineDepth );
     }    else {
         //get the brush and pen to be used from the AbstractDiagram methods

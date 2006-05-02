@@ -220,6 +220,7 @@ namespace KDChart {
         /**
          * Set the palette to be used for painting datasets to the default
          * palette. @see KDChart::Palette.
+         * FIXME: fold into one usePalette (KDChart::Palette&) method
          */
         void useDefaultColors();
 
@@ -288,7 +289,7 @@ namespace KDChart {
 
         /**
          * Sets the dataset dimension of the diagram. @see datasetDimension.
-         * @param dimension 
+         * @param dimension
          */
         void setDatasetDimension( int dimension );
 

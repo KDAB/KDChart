@@ -46,7 +46,7 @@ class KDCHART_EXPORT BarDiagram : public AbstractCartesianDiagram
     Q_DISABLE_COPY( BarDiagram )
     KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( BarDiagram, CartesianCoordinatePlane * )
 public:
-    BarDiagram( CartesianCoordinatePlane* plane = 0 );
+    explicit BarDiagram( CartesianCoordinatePlane* plane = 0 );
     virtual ~BarDiagram();
 
     virtual BarDiagram * clone() const;
@@ -111,7 +111,6 @@ private:
                                      double& barWidth,
                                      double& spaceBetweenBars,
                                      double& spaceBetweenGroups );
-    double m_maxDepth;
 }; // End of class BarDiagram
 
 }
