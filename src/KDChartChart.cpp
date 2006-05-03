@@ -145,7 +145,7 @@ void Chart::Private::layoutLegends()
             else
                 column = 1;
 
-            if( row == 1 && column == 1 ){
+            if( legend->position() == Position::Center ){
                 qDebug( "Sorry: Legend position Center not supported." );
             }else{
                 Qt::Alignment hAlign, vAlign;
@@ -159,17 +159,19 @@ void Chart::Private::layoutLegends()
                         vAlign = Qt::AlignVCenter;
                     }else{
                         if( legend->useHorizontalSpace() ){
-                            vAlign = Qt::AlignVCenter;
-                            if( pos.isWestSide() )
-                                hAlign = Qt::AlignLeft;
-                            else
-                                hAlign = Qt::AlignRight;
-                        }else if( legend->useVerticalSpace() ){
                             hAlign = Qt::AlignHCenter;
+                            row    = 1;
                             if( pos.isNorthSide() )
                                 vAlign = Qt::AlignTop;
                             else
                                 vAlign = Qt::AlignBottom;
+                        }else if( legend->useVerticalSpace() ){
+                            vAlign = Qt::AlignVCenter;
+                            column = 1;
+                            if( pos.isWestSide() )
+                                hAlign = Qt::AlignLeft;
+                            else
+                                hAlign = Qt::AlignRight;
 
                         }else{
                             // Floating legend are not suppored yet.
