@@ -255,7 +255,8 @@ void Widget::addHeaderFooter( const QString& text,
     newHeader->setType( type );
     newHeader->setPosition( position );
     newHeader->setText( text );
-    addHeaderFooter( newHeader );
+
+    d->m_chart->addHeaderFooter( newHeader ); // we need this explicit call !
 }
 
 /**
