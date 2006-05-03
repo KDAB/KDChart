@@ -28,6 +28,8 @@
 #include <KDChartChart>
 #include <KDChartAbstractCoordinatePlane>
 #include <KDChartLineDiagram>
+#include <KDChartMarkerAttributes>
+#include <KDChartDataValueAttributes>
 
 #include <QDebug>
 #include <QPainter>
@@ -48,6 +50,15 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_lines = new LineDiagram();
     m_lines->setDatasetDimension(2);
     m_lines->setModel( &m_model );
+    m_lines->setPen( Qt::NoPen );
+
+    DataValueAttributes dva;
+    dva.setVisible( true );
+    MarkerAttributes ma;
+    ma.setVisible( true );
+    ma.setMarkerStyle( MarkerAttributes::Marker4Pixels );
+    dva.setMarkerAttributes( ma );
+    m_lines->setDataValueAttributes( dva );
 
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
 }
