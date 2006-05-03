@@ -186,61 +186,6 @@ void Chart::Private::layoutLegends()
         else{
             qDebug( "Unknown legend position" );
         }
-
-        /*
-        switch( legend->position() ) {
-            case Position::North:
-                dataAndLegendLayout->addWidget( legend, 0, 1, 1, 1, Qt::AlignCenter );
-                break;
-            case Position::South:
-                dataAndLegendLayout->addWidget( legend, 2, 1, 1, 1, Qt::AlignCenter );
-                break;
-            case Position::West:
-                dataAndLegendLayout->addWidget( legend, 1, 0, 1, 1, Qt::AlignCenter );
-                break;
-            case Position::East:
-                dataAndLegendLayout->addWidget( legend, 1, 2, 1, 1, Qt::AlignCenter );
-                break;
-            case Position::NorthWest:
-                dataAndLegendLayout->addWidget( legend, 0, 0, 1, 1, Qt::AlignCenter );
-                break;
-            case Position::NorthNorthWest:
-                dataAndLegendLayout->addWidget( legend, 0, 1, 1, 1, Qt::AlignVCenter|Qt::AlignLeft );
-                break;
-            case Position::WestNorthWest:
-                dataAndLegendLayout->addWidget( legend, 1, 0, 1, 1, Qt::AlignHCenter|Qt::AlignTop );
-                break;
-            case Position::NorthEast:
-                dataAndLegendLayout->addWidget( legend, 0, 2, 1, 1, Qt::AlignCenter );
-                break;
-            case Position::NorthNorthEast:
-                dataAndLegendLayout->addWidget( legend, 0, 1, 1, 1, Qt::AlignVCenter|Qt::AlignRight );
-                break;
-            case Position::EastNorthEast:
-                dataAndLegendLayout->addWidget( legend, 1, 2, 1, 1, Qt::AlignHCenter|Qt::AlignTop );
-                break;
-            case Position::SouthWest:
-                dataAndLegendLayout->addWidget( legend, 2, 0, 1, 1, Qt::AlignCenter );
-                break;
-            case Position::SouthSouthWest:
-                dataAndLegendLayout->addWidget( legend, 2, 1, 1, 1, Qt::AlignVCenter|Qt::AlignLeft );
-                break;
-            case Position::WestSouthWest:
-                dataAndLegendLayout->addWidget( legend, 1, 0, 1, 1, Qt::AlignHCenter|Qt::AlignBottom );
-                break;
-            case Position::SouthEast:
-                dataAndLegendLayout->addWidget( legend, 2, 2, 1, 1, Qt::AlignCenter );
-                break;
-            case Position::SouthSouthEast:
-                dataAndLegendLayout->addWidget( legend, 2, 1, 1, 1, Qt::AlignVCenter|Qt::AlignRight );
-                break;
-            case Position::EastSouthEast:
-                dataAndLegendLayout->addWidget( legend, 1, 2, 1, 1, Qt::AlignHCenter|Qt::AlignBottom );
-                break;
-            default:
-                Q_ASSERT( !"Undefined legend position" );
-        }
-        */
     }
 }
 
