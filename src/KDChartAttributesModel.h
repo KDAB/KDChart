@@ -37,7 +37,7 @@
 
 namespace KDChart {
 
-class AttributesModel : public AbstractProxyModel
+class KDCHART_EXPORT AttributesModel : public AbstractProxyModel
 {
     Q_OBJECT
 public:
