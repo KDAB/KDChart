@@ -21,6 +21,10 @@ linux-g++:QMAKE_CXXFLAGS += -pedantic -Wno-long-long
 
 CONFIG += depend_includepath
 
+staticlib {
+	DEFINES += KDCHART_NODLL
+}
+
 # If CONFIG += qsa is set, KDChart will be compiled for QSA
 qsa {
   load(qsa)
