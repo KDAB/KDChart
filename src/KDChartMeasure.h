@@ -35,33 +35,37 @@
 #include "KDChartEnums.h"
 
 class QDomDocumentFragment;
-class AbstractArea;
 
-class KDCHART_EXPORT KDChartMeasure
+namespace KDChart {
+
+    class AbstractArea;
+
+
+class KDCHART_EXPORT Measure
 {
 public:
-  KDChartMeasure();
-  KDChartMeasure( int value, KDChartEnums::MeasureCalculationMode mode = KDChartEnums::MeasureCalculationModeAuto );
-  KDChartMeasure( const KDChartMeasure& );
-  KDChartMeasure &operator= ( const KDChartMeasure& );
+    Measure();
+    Measure( int value, KDChartEnums::MeasureCalculationMode mode = KDChartEnums::MeasureCalculationModeAuto );
+    Measure( const Measure& );
+    Measure &operator= ( const Measure& );
 
-  ~KDChartMeasure();
+    ~Measure();
 
-  QDomDocumentFragment toXML() const;
+    QDomDocumentFragment toXML() const;
 
-  void setValue( int value );
-  int value() const;
+    void setValue( int value );
+    int value() const;
 
-  void setCalculationMode( KDChartEnums::MeasureCalculationMode mode );
-  KDChartEnums::MeasureCalculationMode calculationMode() const;
+    void setCalculationMode( KDChartEnums::MeasureCalculationMode mode );
+    KDChartEnums::MeasureCalculationMode calculationMode() const;
 
-  void setReferenceArea( AbstractArea * area );
-  AbstractArea * referenceArea() const;
+    void setReferenceArea( AbstractArea * area );
+    AbstractArea * referenceArea() const;
 
-  void setReferenceOrientation( Qt::Orientation orientation );
-  Qt::Orientation referenceOrientation() const;
+    void setReferenceOrientation( Qt::Orientation orientation );
+    Qt::Orientation referenceOrientation() const;
 
-    bool operator==( const KDChartMeasure& );
+    bool operator==( const Measure& );
 
 private:
     class Private;
@@ -69,7 +73,8 @@ private:
     Private * d_func() { return _d; }
     const Private * d_func() const { return _d; }
 
-}; // End of class KDChartMeasure
+}; // End of class Measure
 
+}
 
 #endif // KDCHARTMEASURE_H

@@ -30,7 +30,7 @@
      <property name="orientation" >
       <enum>Qt::Horizontal</enum>
      </property>
-     <widget class="QSplitter" name="splitter" >
+     <widget class="QSplitter" name="splitter2" >
       <property name="orientation" >
        <enum>Qt::Vertical</enum>
       </property>
@@ -50,6 +50,11 @@
           <column>
            <property name="text" >
             <string>Text</string>
+           </property>
+          </column>
+          <column>
+           <property name="text" >
+            <string>Type</string>
            </property>
           </column>
           <column>
@@ -117,12 +122,22 @@
           </column>
           <column>
            <property name="text" >
-            <string>Title Text</string>
+            <string>Title</string>
            </property>
           </column>
           <column>
            <property name="text" >
             <string>Orientation</string>
+           </property>
+          </column>
+          <column>
+           <property name="text" >
+            <string>Hor. Sp.</string>
+           </property>
+          </column>
+          <column>
+           <property name="text" >
+            <string>Vert. Sp.</string>
            </property>
           </column>
          </widget>

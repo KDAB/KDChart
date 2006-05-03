@@ -248,11 +248,14 @@ int Widget::headerFooterCount() const
  * Adds a new header/footer with the given text to the position.
  */
 void Widget::addHeaderFooter( const QString& text,
-                HeaderFooter::HeaderFooterPosition position)
+                              HeaderFooter::HeaderFooterType type,
+                              Position position)
 {
     HeaderFooter* newHeader = new HeaderFooter( d->m_chart );
+    newHeader->setType( type );
     newHeader->setPosition( position );
     newHeader->setText( text );
+    addHeaderFooter( newHeader );
 }
 
 /**
@@ -301,7 +304,7 @@ int Widget::legendCount() const
 /**
  * Adds an empty legend on the given position.
  */
-void Widget::addLegend( Legend::LegendPosition position )
+void Widget::addLegend( Position position )
 {
     Legend* legend = new Legend( diagram(), d->m_chart );
     d->m_chart->addLegend( legend );

@@ -90,26 +90,11 @@ void AbstractArea::paint( QPainter* painter, const PaintContext & context ) cons
 }
 #endif
 
-void AbstractArea::alignToDockingPoint( const QPointF& dockingPoint,
-                                       DockingPointType dockingPointType,
-                                       Qt::Alignment alignmentFlags)
+void AbstractArea::alignToReferencePoint( const KDChartRelativePosition& position )
 {
-    Q_UNUSED( dockingPoint );
-    Q_UNUSED( dockingPointType );
-    Q_UNUSED( alignmentFlags );
+    Q_UNUSED( position );
     // PENDING(kalle) FIXME
-    qWarning( "Sorry, not implemented: void AbstractArea::alignToDockingPoint( const QPointF& dockingPoint,DockingPointType dockingPointType,Qt::Alignment alignmentFlags)" );
-}
-
-void AbstractArea::setDockingPointPadding( int horizontalPadding,
-                                          int verticalPadding,
-                                          bool fixed )
-{
-    Q_UNUSED( horizontalPadding );
-    Q_UNUSED( verticalPadding );
-    Q_UNUSED( fixed );
-    // PENDING(kalle) FIXME
-    qWarning( "Sorry, not implemented: void AbstractArea::setDockingPointPadding( int horizontalPadding,int verticalPadding,bool fixed )" );
+    qWarning( "Sorry, not implemented: void AbstractArea::alignToReferencePoint( const KDChartRelativePosition& position )" );
 }
 
 void AbstractArea::setText( const QString& text )

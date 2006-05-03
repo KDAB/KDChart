@@ -46,7 +46,7 @@
 using namespace KDChart;
 
 Legend::Private::Private() :
-    position( East ),
+    position( Position::East ),
     orientation( Qt::Vertical ),
     showLines( false ),
     texts(),
@@ -108,6 +108,10 @@ void Legend::init()
     titleTextAttrs.setUseRelativeSize( true );
     setTitleTextAttributes( titleTextAttrs );
     d->blockBuildLegend = false;
+
+    d->position = Position::NorthEast;
+    d->useHorizontalSpace = true;
+    d->useVerticalSpace   = false;
 }
 
 QDomDocumentFragment Legend::toXML() const
@@ -174,7 +178,7 @@ KDChart::AbstractDiagram* Legend::diagram() const
     return d->diagram;
 }
 
-void Legend::setPosition( LegendPosition position )
+void Legend::setPosition( Position position )
 {
     d->position = position;
 
@@ -182,101 +186,38 @@ void Legend::setPosition( LegendPosition position )
     emit positionChanged( this );
 }
 
-/**
-    \brief Return a string, matching the legend's position.
 
-    \sa fromString
-*/
-QString Legend::positionToString() const
-{
-    if( d->position == North )
-        return        "North";
-    if( d->position == South )
-        return        "South";
-    if( d->position == West )
-        return        "West";
-    if( d->position == East )
-        return        "East";
-    if( d->position == NorthWest )
-        return        "NorthWest";
-    if( d->position == NorthNorthWest )
-        return        "NorthNorthWest";
-    if( d->position == WestNorthWest )
-        return        "WestNorthWest";
-    if( d->position == NorthEast )
-        return        "NorthEast";
-    if( d->position == NorthNorthEast )
-        return        "NorthNorthEast";
-    if( d->position == EastNorthEast )
-        return        "EastNorthEast";
-    if( d->position == SouthWest )
-        return        "SouthWest";
-    if( d->position == SouthSouthWest )
-        return        "SouthSouthWest";
-    if( d->position == WestSouthWest )
-        return        "WestSouthWest";
-    if( d->position == SouthEast )
-        return        "SouthEast";
-    if( d->position == SouthSouthEast )
-        return        "SouthSouthEast";
-    if( d->position == EastSouthEast )
-        return        "EastSouthEast";
-    qDebug("Error: Enum value not supported by KDChartLegend::positionToString().");
-    return "North";
-}
-
-/**
-    \brief Return a \c KDChart::Legend::LegendPosition value for the given string.
-
-    If the string does not match any of the enum values, KDChart::Legend::North is returned.
-    The boolean \c ok parameter is set to accordingly, if not Zero.
-
-    \sa positionToString
-*/
-Legend::LegendPosition Legend::fromString( QString name, bool* ok )
-{
-    if( ok )
-        *ok = true;
-    if( name=="North" )
-        return North;
-    if( name=="South" )
-        return South;
-    if( name=="West" )
-        return West;
-    if( name=="East" )
-        return East;
-    if( name=="NorthWest" )
-        return NorthWest;
-    if( name=="NorthNorthWest" )
-        return NorthNorthWest;
-    if( name=="WestNorthWest" )
-        return WestNorthWest;
-    if( name=="NorthEast" )
-        return NorthEast;
-    if( name=="NorthNorthEast" )
-        return NorthNorthEast;
-    if( name=="EastNorthEast" )
-        return EastNorthEast;
-    if( name=="SouthWest" )
-        return SouthWest;
-    if( name=="SouthSouthWest" )
-        return SouthSouthWest;
-    if( name=="WestSouthWest" )
-        return WestSouthWest;
-    if( name=="SouthEast" )
-        return SouthEast;
-    if( name=="SouthSouthEast" )
-        return SouthSouthEast;
-    if( name=="EastSouthEast" )
-        return EastSouthEast;
-    if( ok )
-        *ok = false;
-    return North;
-}
-
-Legend::LegendPosition Legend::position() const
+Position Legend::position() const
 {
     return d->position;
+}
+
+void Legend::setUseHorizontalSpace( bool value )
+{
+    d->useHorizontalSpace = value;
+    // Since we don't support floating legends yet, we make sure,
+    // the legend is allways using space, in at least one direction:
+    if( !value )
+        d->useVerticalSpace = true;
+}
+
+bool Legend::useHorizontalSpace() const
+{
+    return d->useHorizontalSpace;
+}
+
+void Legend::setUseVerticalSpace( bool value )
+{
+    d->useVerticalSpace = value;
+    // Since we don't support floating legends yet, we make sure,
+    // the legend is allways using space, in at least one direction:
+    if( !value )
+        d->useHorizontalSpace = true;
+}
+
+bool Legend::useVerticalSpace() const
+{
+    return d->useVerticalSpace;
 }
 
 void Legend::setOrientation( Qt::Orientation orientation )

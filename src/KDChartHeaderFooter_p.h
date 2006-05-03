@@ -47,7 +47,8 @@ public:
 
 private:
     // user-settable
-    HeaderFooterPosition position;
+    HeaderFooterType type;
+    Position position;
     QString text;
     TextAttributes textAttributes;
 

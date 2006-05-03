@@ -25,42 +25,54 @@
 
 #include "KDChartRelativePosition.h"
 #include <QtXml/QDomDocumentFragment>
+#include <KDChartAbstractArea.h>
 #include <KDChartMeasure.h>
 #include <KDChartTextAttributes.h>
 #include <KDChartFrameAttributes.h>
 #include <KDChartBackgroundAttributes.h>
 
+
+namespace KDChart {
+
+
 #define d d_func()
 
 class KDChartRelativePosition::Private
 {
-    friend class ::KDChartRelativePosition;
+    friend class KDChartRelativePosition;
 public:
     Private();
 private:
+    AbstractArea* area;
+    Position position;
     Qt::Alignment alignment;
-    KDChartMeasure horizontalPadding;
-    KDChartMeasure verticalPadding;
+    Measure horizontalPadding;
+    Measure verticalPadding;
     int rotation;
 };
 
 KDChartRelativePosition::Private::Private() :
+    area( 0 ),
+    position(),
     alignment( Qt::AlignCenter ),
     horizontalPadding(),
     verticalPadding(),
     rotation( 0 )
 {
+    //this line left empty intentionally
 }
 
 
 KDChartRelativePosition::KDChartRelativePosition()
     : _d( new Private() )
 {
+    //this line left empty intentionally
 }
 
 KDChartRelativePosition::KDChartRelativePosition( const KDChartRelativePosition& r )
     : _d( new Private( *r.d ) )
 {
+    //this line left empty intentionally
 }
 
 KDChartRelativePosition & KDChartRelativePosition::operator=( const KDChartRelativePosition& r )
@@ -81,10 +93,12 @@ KDChartRelativePosition::~KDChartRelativePosition()
 
 bool KDChartRelativePosition::operator==( const KDChartRelativePosition& r )
 {
-    if( alignment() == r.alignment() &&
+    if( referenceArea()     == r.referenceArea() &&
+        referencePosition() == r.referencePosition() &&
+        alignment()         == r.alignment() &&
         horizontalPadding() == r.horizontalPadding() &&
-        verticalPadding() == r.verticalPadding() &&
-        rotation() == r.rotation() )
+        verticalPadding()   == r.verticalPadding() &&
+        rotation()          == r.rotation() )
         return true;
     else
         return false;
@@ -99,6 +113,27 @@ QDomDocumentFragment KDChartRelativePosition::toXML() const
     return QDomDocumentFragment();
 }
 
+
+void KDChartRelativePosition::setReferenceArea( AbstractArea* area )
+{
+    d->area = area;
+}
+
+AbstractArea* KDChartRelativePosition::referenceArea() const
+{
+    return d->area;
+}
+
+void KDChartRelativePosition::setReferencePosition( const Position& position )
+{
+    d->position = position;
+}
+
+Position KDChartRelativePosition::referencePosition() const
+{
+    return d->position;
+}
+
 void KDChartRelativePosition::setAlignment( Qt::Alignment flags )
 {
     d->alignment = flags;
@@ -109,22 +144,22 @@ Qt::Alignment KDChartRelativePosition::alignment() const
     return d->alignment;
 }
 
-void KDChartRelativePosition::setHorizontalPadding( const KDChartMeasure& padding )
+void KDChartRelativePosition::setHorizontalPadding( const Measure& padding )
 {
     d->horizontalPadding = padding;
 }
 
-KDChartMeasure KDChartRelativePosition::horizontalPadding() const
+Measure KDChartRelativePosition::horizontalPadding() const
 {
     return d->horizontalPadding;
 }
 
-void KDChartRelativePosition::setVerticalPadding( const KDChartMeasure& padding )
+void KDChartRelativePosition::setVerticalPadding( const Measure& padding )
 {
     d->verticalPadding = padding;
 }
 
-KDChartMeasure KDChartRelativePosition::verticalPadding() const
+Measure KDChartRelativePosition::verticalPadding() const
 {
     return d->verticalPadding;
 }
@@ -139,3 +174,4 @@ int KDChartRelativePosition::rotation() const
     return d->rotation;
 }
 
+}

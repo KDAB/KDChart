@@ -36,6 +36,8 @@
 #include <QWidget>
 
 #include "KDChartGlobal.h"
+#include "KDChartRelativePosition.h"
+
 
 class QDomDocumentFragment;
 class QPainter;
@@ -73,25 +75,8 @@ public:
 //    virtual AbstractArea * clone() const = 0;
 
 
-    enum DockingPointType {
-      TopLeft,
-      Top,
-      TopRight,
-      Left,
-      Center,
-      Right,
-      BottomLeft,
-      Bottom,
-      BottomRight
-    };
+    void alignToReferencePoint( const KDChartRelativePosition& position );
 
-    void alignToDockingPoint( const QPointF& dockingPoint,
-                              DockingPointType dockingPointType,
-                              Qt::Alignment alignmentFlags);
-
-    void setDockingPointPadding( int horizontalPadding,
-                                 int verticalPadding,
-                                 bool fixed );
     void setText( const QString& text );
     QString text() const;
 

@@ -26,7 +26,11 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QDialog>
+
 #include "ui_mainwindow.h"
+#include "ui_addheaderdialog.h"
+#include "ui_addlegenddialog.h"
 #include <TableModel.h>
 
 namespace KDChart {
@@ -53,6 +57,9 @@ private slots:
     void on_legendsTV_itemSelectionChanged();
 
 private:
+    void setupAddHeaderDialog( QDialog* dlg, Ui::AddHeaderDialog& conf ) const;
+    void setupAddLegendDialog( QDialog* dlg, Ui::AddLegendDialog& conf ) const;
+
     KDChart::Chart* m_chart;
     TableModel m_model;
     KDChart::DatasetProxyModel* m_datasetProxy;

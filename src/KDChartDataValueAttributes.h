@@ -30,15 +30,19 @@
 #ifndef KDCHARTDATAVALUEATTRIBUTES_H
 #define KDCHARTDATAVALUEATTRIBUTES_H
 
+
 #include <Qt>
 #include <QMetaType>
 #include "KDChartGlobal.h"
 #include "KDChartEnums.h"
+#include "KDChartRelativePosition.h"
 
-class KDChartRelativePosition;
+
 class QDomDocumentFragment;
 
+
 namespace KDChart {
+
   class TextAttributes;
   class BackgroundAttributes;
   class FrameAttributes;

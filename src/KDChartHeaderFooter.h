@@ -31,6 +31,7 @@
 #define KDCHARTHEADERFOOTER_H
 
 #include "KDChartAbstractArea.h"
+#include "KDChartPosition.h"
 
 class QDomDocumentFragment;
 
@@ -57,27 +58,14 @@ public:
     virtual void paintEvent( QPaintEvent* );
 
 
-    enum HeaderFooterPosition { NorthWest,
-                                NorthWest1,
-                                NorthWest2,
-                                North,
-                                North1,
-                                North2,
-                                NorthEast,
-                                NorthEast1,
-                                NorthEast2,
-                                SouthEast,
-                                SouthEast1,
-                                SouthEast2,
-                                South,
-                                South1,
-                                South2,
-                                SouthWest,
-                                SouthWest1,
-                                SouthWest2 };
+    enum HeaderFooterType{ Header,
+                           Footer };
 
-    void setPosition( HeaderFooterPosition position );
-    HeaderFooterPosition position() const;
+    void setType( HeaderFooterType type );
+    HeaderFooterType type() const;
+
+    void setPosition( Position position );
+    Position position() const;
 
     void setText( const QString& text );
     QString text() const;

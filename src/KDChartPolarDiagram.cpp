@@ -1,5 +1,5 @@
 /****************************************************************************
- ** Copyright (C) 2006 Klarälvdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2006 Klarï¿½vdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KD Chart library.
  **
@@ -56,22 +56,22 @@ PolarDiagram::~PolarDiagram()
 
 void PolarDiagram::init()
 {
-    setShowDelimitersAtPosition( AbstractArea::TopLeft, false );
-    setShowDelimitersAtPosition( AbstractArea::Top, true );
-    setShowDelimitersAtPosition( AbstractArea::TopRight, false );
-    setShowDelimitersAtPosition( AbstractArea::Left, false );
-    setShowDelimitersAtPosition( AbstractArea::Right, false );
-    setShowDelimitersAtPosition( AbstractArea::BottomLeft, false );
-    setShowDelimitersAtPosition( AbstractArea::Bottom, true );
-    setShowDelimitersAtPosition( AbstractArea::BottomRight, false );
-    setShowLabelsAtPosition( AbstractArea::TopLeft, false );
-    setShowLabelsAtPosition( AbstractArea::Top, true );
-    setShowLabelsAtPosition( AbstractArea::TopRight, false );
-    setShowLabelsAtPosition( AbstractArea::Left, false );
-    setShowLabelsAtPosition( AbstractArea::Right, false );
-    setShowLabelsAtPosition( AbstractArea::BottomLeft, false );
-    setShowLabelsAtPosition( AbstractArea::Bottom, true );
-    setShowLabelsAtPosition( AbstractArea::BottomRight, false );
+    setShowDelimitersAtPosition( Position::NorthWest, false );
+    setShowDelimitersAtPosition( Position::North, true );
+    setShowDelimitersAtPosition( Position::NorthEast, false );
+    setShowDelimitersAtPosition( Position::West, false );
+    setShowDelimitersAtPosition( Position::East, false );
+    setShowDelimitersAtPosition( Position::SouthWest, false );
+    setShowDelimitersAtPosition( Position::South, true );
+    setShowDelimitersAtPosition( Position::SouthEast, false );
+    setShowLabelsAtPosition( Position::NorthWest, false );
+    setShowLabelsAtPosition( Position::North, true );
+    setShowLabelsAtPosition( Position::NorthEast, false );
+    setShowLabelsAtPosition( Position::West, false );
+    setShowLabelsAtPosition( Position::East, false );
+    setShowLabelsAtPosition( Position::SouthWest, false );
+    setShowLabelsAtPosition( Position::South, true );
+    setShowLabelsAtPosition( Position::SouthEast, false );
 }
 
 
@@ -211,50 +211,27 @@ bool PolarDiagram::rotateCircularLabels() const
     return d->rotateCircularLabels;
 }
 
-void PolarDiagram::setShowDelimitersAtPosition( AbstractArea::DockingPointType position,
+void PolarDiagram::setShowDelimitersAtPosition( Position position,
                                                        bool showDelimiters )
 {
-    d->showDelimitersAtPosition[position] = showDelimiters;
+    d->showDelimitersAtPosition[position.value()] = showDelimiters;
 }
 
-void PolarDiagram::setShowLabelsAtPosition( AbstractArea::DockingPointType position,
+void PolarDiagram::setShowLabelsAtPosition( Position position,
                                                    bool showLabels )
 {
-    d->showLabelsAtPosition[position] = showLabels;
+    d->showLabelsAtPosition[position.value()] = showLabels;
 }
 
-bool PolarDiagram::showDelimitersAtPosition( AbstractArea::DockingPointType position ) const
+bool PolarDiagram::showDelimitersAtPosition( Position position ) const
 {
-    return d->showDelimitersAtPosition[position];
+    return d->showDelimitersAtPosition[position.value()];
 }
 
-bool PolarDiagram::showLabelsAtPosition( AbstractArea::DockingPointType position ) const
+bool PolarDiagram::showLabelsAtPosition( Position position ) const
 {
-    return d->showLabelsAtPosition[position];
+    return d->showLabelsAtPosition[position.value()];
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

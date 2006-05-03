@@ -105,12 +105,13 @@ namespace KDChart {
         int headerFooterCount() const;
         /** Adds a new header/footer with the given text to the position. */
         void addHeaderFooter( const QString& text,
-                        HeaderFooter::HeaderFooterPosition position);
+                              HeaderFooter::HeaderFooterType type,
+                              Position position );
         /** Adds an existing header / footer object. */
         void addHeaderFooter( HeaderFooter* header );
 
         void replaceHeaderFooter( HeaderFooter* header, int position = 0 );
-	void removeHeaderFooter( int position = 0 );
+        void removeHeaderFooter( int position = 0 );
 
         /** Returns the first of all legends. */
         KDChart::Legend* firstLegend() const;
@@ -119,7 +120,7 @@ namespace KDChart {
         /** Returns the count over all legends. */
         int legendCount() const;
         /** Adds an empty legend on the given position. */
-        void addLegend( Legend::LegendPosition position );
+        void addLegend( Position position );
         /** Adds a new, already existing, legend. */
         void addLegend (Legend* legend );
 

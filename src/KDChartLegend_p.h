@@ -55,7 +55,9 @@ public:
 
 private:
     // user-settable
-    LegendPosition position;
+    Position position;
+    bool useHorizontalSpace;
+    bool useVerticalSpace;
     Qt::Orientation orientation;
     bool showLines;
     QMap<uint,QString> texts;

@@ -49,6 +49,7 @@ HEADERS += KDChartGlobal.h \
            KDChartPolarCoordinatePlane.h \
            KDChartPolarDiagram.h \
            KDChartPolarDiagram_p.h \
+           KDChartPosition.h \
            KDChartRelativePosition.h \
            KDChartRingDiagram.h \
            KDChartRingDiagram_p.h \
@@ -100,6 +101,7 @@ SOURCES += KDChartAbstractCartesianDiagram.cpp \
            KDChartPieDiagram.cpp \
            KDChartPolarCoordinatePlane.cpp \
            KDChartPolarDiagram.cpp \
+           KDChartPosition.cpp \
            KDChartRelativePosition.cpp \
            KDChartRingDiagram.cpp \
            KDTextDocument.cpp \

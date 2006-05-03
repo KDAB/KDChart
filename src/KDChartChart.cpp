@@ -1,5 +1,5 @@
 /****************************************************************************
- ** Copyright (C) 2006 Klarälvdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2006 Klarï¿½vdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KD Chart library.
  **
@@ -76,63 +76,52 @@ void Chart::Private::layoutHeadersAndFooters()
 {
     foreach ( HeaderFooter *hf, headerFooters ) {
 
-        switch( hf->position() ) {
-            case HeaderFooter::NorthWest:
-                headerLayout->addWidget( hf /*new QLabel( "blah", this )*/, 0, 0, 1, 1, Qt::AlignLeft|Qt::AlignTop );
+        // for now, there are only two types of Header/Footer,
+        // we use a pointer to the right layout, depending on the type():
+        QGridLayout * headerFooterLayout;
+        switch( hf->type() ){
+            case HeaderFooter::Header:
+                headerFooterLayout = headerLayout;
                 break;
-            case HeaderFooter::North:
-                headerLayout->addWidget( hf, 0, 1, 1, 1, Qt::AlignHCenter|Qt::AlignTop );
-                break;
-            case HeaderFooter::NorthEast:
-                headerLayout->addWidget( hf, 0, 2, 1, 1, Qt::AlignRight|Qt::AlignTop );
-                break;
-            case HeaderFooter::NorthWest1:
-                headerLayout->addWidget( hf, 1, 0, 1, 1, Qt::AlignLeft|Qt::AlignVCenter );
-                break;
-            case HeaderFooter::North1:
-                headerLayout->addWidget( hf, 1, 1, 1, 1, Qt::AlignHCenter|Qt::AlignVCenter );
-                break;
-            case HeaderFooter::NorthEast1:
-                headerLayout->addWidget( hf, 1, 2, 1, 1, Qt::AlignRight|Qt::AlignVCenter );
-                break;
-            case HeaderFooter::NorthWest2:
-                headerLayout->addWidget( hf, 2, 0, 1, 1, Qt::AlignLeft|Qt::AlignBottom );
-                break;
-            case HeaderFooter::North2:
-                headerLayout->addWidget( hf, 2, 1, 1, 1, Qt::AlignHCenter|Qt::AlignBottom );
-                break;
-            case HeaderFooter::NorthEast2:
-                headerLayout->addWidget( hf, 2, 2, 1, 1, Qt::AlignRight|Qt::AlignBottom );
-                break;
-            case HeaderFooter::SouthWest:
-                footerLayout->addWidget( hf, 0, 0, 1, 1, Qt::AlignLeft|Qt::AlignTop );
-                break;
-            case HeaderFooter::South:
-                footerLayout->addWidget( hf, 0, 1, 1, 1, Qt::AlignHCenter|Qt::AlignTop );
-                break;
-            case HeaderFooter::SouthEast:
-                footerLayout->addWidget( hf, 0, 2, 1, 1, Qt::AlignRight|Qt::AlignTop );
-                break;
-            case HeaderFooter::SouthWest1:
-                footerLayout->addWidget( hf, 1, 0, 1, 1, Qt::AlignLeft|Qt::AlignVCenter );
-                break;
-            case HeaderFooter::South1:
-                footerLayout->addWidget( hf, 1, 1, 1, 1, Qt::AlignHCenter|Qt::AlignVCenter );
-                break;
-            case HeaderFooter::SouthEast1:
-                footerLayout->addWidget( hf, 1, 2, 1, 1, Qt::AlignRight|Qt::AlignVCenter );
-                break;
-            case HeaderFooter::SouthWest2:
-                footerLayout->addWidget( hf, 2, 0, 1, 1, Qt::AlignLeft|Qt::AlignBottom );
-                break;
-            case HeaderFooter::South2:
-                footerLayout->addWidget( hf, 2, 1, 1, 1, Qt::AlignHCenter|Qt::AlignBottom );
-                break;
-            case HeaderFooter::SouthEast2:
-                footerLayout->addWidget( hf, 2, 2, 1, 1, Qt::AlignRight|Qt::AlignBottom );
+            case HeaderFooter::Footer:
+                headerFooterLayout = footerLayout;
                 break;
             default:
-                qDebug( "Unknown header/footer position" );
+                Q_ASSERT( false ); // all types need to be handled
+                break;
+        };
+
+        if( hf->position() != Position::Unknown ) {
+            int row, column;
+            Qt::Alignment hAlign, vAlign;
+            if( hf->position().isNorthSide() ){
+                row = 0;
+                vAlign = Qt::AlignTop;
+            }
+            else if( hf->position().isSouthSide() ){
+                row = 2;
+                vAlign = Qt::AlignBottom;
+            }
+            else{
+                row = 1;
+                vAlign = Qt::AlignVCenter;
+            }
+            if( hf->position().isWestSide() ){
+                column = 0;
+                hAlign = Qt::AlignLeft;
+            }
+            else if( hf->position().isEastSide() ){
+                column = 2;
+                hAlign = Qt::AlignRight;
+            }
+            else{
+                column = 1;
+                hAlign = Qt::AlignHCenter;
+            }
+            headerFooterLayout->addWidget( hf, row, column, 1, 1, hAlign|vAlign );
+        }
+        else{
+            qDebug( "Unknown header/footer position" );
         }
     }
 }
@@ -140,58 +129,116 @@ void Chart::Private::layoutHeadersAndFooters()
 void Chart::Private::layoutLegends()
 {
     foreach ( Legend *legend, legends ) {
+
+        if( legend->position() != Position::Unknown ) {
+            int row, column;
+            if( legend->position().isNorthSide() )
+                row = 0;
+            else if( legend->position().isSouthSide() )
+                row = 2;
+            else
+                row = 1;
+            if( legend->position().isWestSide() )
+                column = 0;
+            else if( legend->position().isEastSide() )
+                column = 2;
+            else
+                column = 1;
+
+            if( row == 1 && column == 1 ){
+                qDebug( "Sorry: Legend position Center not supported." );
+            }else{
+                Qt::Alignment hAlign, vAlign;
+                const Position& pos = legend->position();
+                if( ! pos.isCorner() ){
+                    hAlign = Qt::AlignHCenter;
+                    vAlign = Qt::AlignVCenter;
+                }else{
+                    if( legend->useHorizontalSpace() && legend->useVerticalSpace() ){
+                        hAlign = Qt::AlignHCenter;
+                        vAlign = Qt::AlignVCenter;
+                    }else{
+                        if( legend->useHorizontalSpace() ){
+                            vAlign = Qt::AlignVCenter;
+                            if( pos.isWestSide() )
+                                hAlign = Qt::AlignLeft;
+                            else
+                                hAlign = Qt::AlignRight;
+                        }else if( legend->useVerticalSpace() ){
+                            hAlign = Qt::AlignHCenter;
+                            if( pos.isNorthSide() )
+                                vAlign = Qt::AlignTop;
+                            else
+                                vAlign = Qt::AlignBottom;
+
+                        }else{
+                            // Floating legend are not suppored yet.
+                            hAlign = Qt::AlignHCenter;
+                            vAlign = Qt::AlignVCenter;
+                        }
+                    }
+                }
+                dataAndLegendLayout->addWidget( legend, row, column, 1, 1, hAlign|vAlign );
+            }
+        }
+        else{
+            qDebug( "Unknown legend position" );
+        }
+
+        /*
         switch( legend->position() ) {
-            case KDChart::Legend::North:
+            case Position::North:
                 dataAndLegendLayout->addWidget( legend, 0, 1, 1, 1, Qt::AlignCenter );
                 break;
-            case KDChart::Legend::South:
+            case Position::South:
                 dataAndLegendLayout->addWidget( legend, 2, 1, 1, 1, Qt::AlignCenter );
                 break;
-            case KDChart::Legend::West:
+            case Position::West:
                 dataAndLegendLayout->addWidget( legend, 1, 0, 1, 1, Qt::AlignCenter );
                 break;
-            case KDChart::Legend::East:
+            case Position::East:
                 dataAndLegendLayout->addWidget( legend, 1, 2, 1, 1, Qt::AlignCenter );
                 break;
-            case KDChart::Legend::NorthWest:
+            case Position::NorthWest:
                 dataAndLegendLayout->addWidget( legend, 0, 0, 1, 1, Qt::AlignCenter );
                 break;
-            case KDChart::Legend::NorthNorthWest:
+            case Position::NorthNorthWest:
                 dataAndLegendLayout->addWidget( legend, 0, 1, 1, 1, Qt::AlignVCenter|Qt::AlignLeft );
                 break;
-            case KDChart::Legend::WestNorthWest:
+            case Position::WestNorthWest:
                 dataAndLegendLayout->addWidget( legend, 1, 0, 1, 1, Qt::AlignHCenter|Qt::AlignTop );
                 break;
-            case KDChart::Legend::NorthEast:
+            case Position::NorthEast:
                 dataAndLegendLayout->addWidget( legend, 0, 2, 1, 1, Qt::AlignCenter );
                 break;
-            case KDChart::Legend::NorthNorthEast:
+            case Position::NorthNorthEast:
                 dataAndLegendLayout->addWidget( legend, 0, 1, 1, 1, Qt::AlignVCenter|Qt::AlignRight );
                 break;
-            case KDChart::Legend::EastNorthEast:
+            case Position::EastNorthEast:
                 dataAndLegendLayout->addWidget( legend, 1, 2, 1, 1, Qt::AlignHCenter|Qt::AlignTop );
                 break;
-            case KDChart::Legend::SouthWest:
+            case Position::SouthWest:
                 dataAndLegendLayout->addWidget( legend, 2, 0, 1, 1, Qt::AlignCenter );
                 break;
-            case KDChart::Legend::SouthSouthWest:
+            case Position::SouthSouthWest:
                 dataAndLegendLayout->addWidget( legend, 2, 1, 1, 1, Qt::AlignVCenter|Qt::AlignLeft );
                 break;
-            case KDChart::Legend::WestSouthWest:
+            case Position::WestSouthWest:
                 dataAndLegendLayout->addWidget( legend, 1, 0, 1, 1, Qt::AlignHCenter|Qt::AlignBottom );
                 break;
-            case KDChart::Legend::SouthEast:
+            case Position::SouthEast:
                 dataAndLegendLayout->addWidget( legend, 2, 2, 1, 1, Qt::AlignCenter );
                 break;
-            case KDChart::Legend::SouthSouthEast:
+            case Position::SouthSouthEast:
                 dataAndLegendLayout->addWidget( legend, 2, 1, 1, 1, Qt::AlignVCenter|Qt::AlignRight );
                 break;
-            case KDChart::Legend::EastSouthEast:
+            case Position::EastSouthEast:
                 dataAndLegendLayout->addWidget( legend, 1, 2, 1, 1, Qt::AlignHCenter|Qt::AlignBottom );
                 break;
             default:
                 Q_ASSERT( !"Undefined legend position" );
         }
+        */
     }
 }
 

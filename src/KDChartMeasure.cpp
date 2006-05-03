@@ -29,11 +29,15 @@
 #include <KDChartFrameAttributes.h>
 #include <KDChartBackgroundAttributes.h>
 
+
+namespace KDChart {
+
+
 #define d d_func()
 
-class KDChartMeasure::Private
+class Measure::Private
 {
-    friend class ::KDChartMeasure;
+    friend class Measure;
 public:
     Private();
 private:
@@ -43,7 +47,7 @@ private:
     Qt::Orientation orientation;
 };
 
-KDChartMeasure::Private::Private() :
+Measure::Private::Private() :
     value( 0 ),
     mode( KDChartEnums::MeasureCalculationModeAuto ),
     area(  0 ),
@@ -52,24 +56,24 @@ KDChartMeasure::Private::Private() :
 }
 
 
-KDChartMeasure::KDChartMeasure()
+Measure::Measure()
     : _d( new Private() )
 {
 }
 
-KDChartMeasure::KDChartMeasure( int value, KDChartEnums::MeasureCalculationMode mode )
+Measure::Measure( int value, KDChartEnums::MeasureCalculationMode mode )
     : _d( new Private() )
 {
     _d->value = value;
     _d->mode = mode;
 }
 
-KDChartMeasure::KDChartMeasure( const KDChartMeasure& r )
+Measure::Measure( const Measure& r )
     : _d( new Private( *r.d ) )
 {
 }
 
-KDChartMeasure & KDChartMeasure::operator=( const KDChartMeasure& r )
+Measure & Measure::operator=( const Measure& r )
 {
     if( this == &r )
         return *this;
@@ -79,13 +83,13 @@ KDChartMeasure & KDChartMeasure::operator=( const KDChartMeasure& r )
     return *this;
 }
 
-KDChartMeasure::~KDChartMeasure()
+Measure::~Measure()
 {
     delete _d; _d = 0;
 }
 
 
-bool KDChartMeasure::operator==( const KDChartMeasure& r )
+bool Measure::operator==( const Measure& r )
 {
     if( value() == r.value() &&
         calculationMode() == r.calculationMode() &&
@@ -99,48 +103,50 @@ bool KDChartMeasure::operator==( const KDChartMeasure& r )
 
 
 
-QDomDocumentFragment KDChartMeasure::toXML() const
+QDomDocumentFragment Measure::toXML() const
 {
     return QDomDocumentFragment();
 }
 
-void KDChartMeasure::setValue( int value )
+void Measure::setValue( int value )
 {
     d->value = value;
 }
 
-int KDChartMeasure::value() const
+int Measure::value() const
 {
     return d->value;
 }
 
-void KDChartMeasure::setCalculationMode( KDChartEnums::MeasureCalculationMode mode )
+void Measure::setCalculationMode( KDChartEnums::MeasureCalculationMode mode )
 {
     d->mode = mode;
 }
 
-KDChartEnums::MeasureCalculationMode KDChartMeasure::calculationMode() const
+KDChartEnums::MeasureCalculationMode Measure::calculationMode() const
 {
     return d->mode;
 }
 
-void KDChartMeasure::setReferenceArea( AbstractArea * area )
+void Measure::setReferenceArea( AbstractArea * area )
 {
     d->area = area;
 }
 
-AbstractArea * KDChartMeasure::referenceArea() const
+AbstractArea * Measure::referenceArea() const
 {
     return d->area;
 }
 
-void KDChartMeasure::setReferenceOrientation( Qt::Orientation orientation )
+void Measure::setReferenceOrientation( Qt::Orientation orientation )
 {
     d->orientation = orientation;
 }
 
-Qt::Orientation KDChartMeasure::referenceOrientation() const
+Qt::Orientation Measure::referenceOrientation() const
 {
     return d->orientation;
 }
 
+
+}

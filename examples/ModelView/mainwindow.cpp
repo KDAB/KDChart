@@ -112,7 +112,8 @@ void MainWindow::setupViews()
 
     KDChart::HeaderFooter* headerFooter = new KDChart::HeaderFooter( m_chart );
     headerFooter->setText("You can edit the table data, or select table cells with keyboard/mouse.");
-    headerFooter->setPosition( KDChart::HeaderFooter::North );
+    headerFooter->setType( HeaderFooter::Header );
+    headerFooter->setPosition( Position::North );
     m_chart->addHeaderFooter( headerFooter );
     m_chart->coordinatePlane()->replaceDiagram( m_diagramView );
 

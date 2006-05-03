@@ -28,15 +28,13 @@
 #include <KDChartChart>
 #include <KDChartHeaderFooter>
 #include <KDChartLegend>
+#include <KDChartPosition>
 #include <KDChartCartesianCoordinatePlane>
 #include <KDChartLineDiagram>
 #include <KDChartTextAttributes>
 #include <KDChartDatasetProxyModel>
-#include <QDialog>
 #include <QComboBox>
 #include <QLineEdit>
-#include "ui_addheaderdialog.h"
-#include "ui_addlegenddialog.h"
 
 class HeaderItem : public QTreeWidgetItem
 {
@@ -81,7 +79,9 @@ MainWindow::MainWindow( QWidget* parent ) :
 
     // Add at least one legend for starters
     KDChart::Legend* legend = new KDChart::Legend( m_lines, m_chart );
-    legend->setPosition( KDChart::Legend::North );
+    legend->setPosition( KDChart::Position::NorthEast );
+    legend->setUseHorizontalSpace( true );
+    legend->setUseVerticalSpace( false );
     legend->setShowLines( false );
     legend->setTitleText( tr( "Legend" ) );
     legend->setOrientation( Qt::Vertical );
@@ -89,19 +89,31 @@ MainWindow::MainWindow( QWidget* parent ) :
     legend->show();
 
     LegendItem* newItem = new LegendItem( legend, legendsTV );
-    newItem->setText( 0, tr( "North" ) );
+    newItem->setText( 0, tr( "NorthEast" ) );
     newItem->setText( 1, tr( "no" ) );
     newItem->setText( 2, tr( "Legend" ) );
     newItem->setText( 3, tr( "Vertical" ) );
+    newItem->setText( 4, tr( "yes" ) );
+    newItem->setText( 5, tr( "no" ) );
     m_chart->update();
 }
+
+
+void MainWindow::setupAddHeaderDialog( QDialog* dlg, Ui::AddHeaderDialog& conf )const
+{
+    conf.setupUi( dlg );
+    conf.textED->setFocus();
+    conf.positionCO->addItems( KDChart::Position::printableNames(true) );
+}
+
 
 void MainWindow::on_addHeaderPB_clicked()
 {
     QDialog dlg;
     Ui::AddHeaderDialog conf;
-    conf.setupUi( &dlg );
-    conf.textED->setFocus();
+    setupAddHeaderDialog( &dlg, conf );
+    conf.typeCO->setCurrentIndex( 0 ); // let us start with "Header"
+    conf.positionCO->setCurrentIndex( 0 );
     if( dlg.exec() ) {
         KDChart::HeaderFooter* headerFooter = new KDChart::HeaderFooter( m_chart );
         m_chart->addHeaderFooter( headerFooter );
@@ -109,11 +121,19 @@ void MainWindow::on_addHeaderPB_clicked()
         KDChart::TextAttributes attrs;
         attrs.setColor( Qt::red );
         headerFooter->setTextAttributes( attrs );
-        headerFooter->setPosition( (KDChart::HeaderFooter::HeaderFooterPosition)conf.positionCO->currentIndex() );
+        headerFooter->setType(
+            conf.typeCO->currentText() == "Header"
+            ? KDChart::HeaderFooter::Header
+            : KDChart::HeaderFooter::Footer );
+        headerFooter->setPosition(
+            KDChart::Position::fromPrintableName( conf.positionCO->currentText() ) );
         headerFooter->show();
         HeaderItem* newItem = new HeaderItem( headerFooter, headersTV );
         newItem->setText( 0, conf.textED->text() );
-        newItem->setText( 1, conf.positionCO->currentText() );
+        newItem->setText( 1, headerFooter->type() == KDChart::HeaderFooter::Header
+                        ? tr("Header")
+                        : tr("Footer") );
+        newItem->setText( 2, conf.positionCO->currentText() );
         m_chart->update();
     }
 }
@@ -126,15 +146,26 @@ void MainWindow::on_editHeaderPB_clicked()
     KDChart::HeaderFooter* headerFooter = item->header();
     QDialog dlg;
     Ui::AddHeaderDialog conf;
-    conf.setupUi( &dlg );
+    setupAddHeaderDialog( &dlg, conf );
     conf.textED->setText( headerFooter->text() );
-    conf.textED->setFocus();
-    conf.positionCO->setCurrentIndex( headerFooter->position() );
+    conf.typeCO->setCurrentIndex(
+        headerFooter->type() == KDChart::HeaderFooter::Header
+            ? 0 : 1 );
+    conf.positionCO->setCurrentIndex(
+        conf.positionCO->findText( headerFooter->position().printableName() ) );
     if( dlg.exec() ) {
         headerFooter->setText( conf.textED->text() );
-        headerFooter->setPosition( (KDChart::HeaderFooter::HeaderFooterPosition)conf.positionCO->currentIndex() );
+        headerFooter->setType(
+            conf.typeCO->currentText() == "Header"
+            ? KDChart::HeaderFooter::Header
+            : KDChart::HeaderFooter::Footer );
+        headerFooter->setPosition(
+            KDChart::Position::fromPrintableName( conf.positionCO->currentText() ) );
         item->setText( 0, conf.textED->text() );
-        item->setText( 1, conf.positionCO->currentText() );
+        item->setText( 1, headerFooter->type() == KDChart::HeaderFooter::Header
+            ? tr("Header")
+            : tr("Footer") );
+        item->setText( 2, conf.positionCO->currentText() );
         m_chart->update();
     }
 }
@@ -162,28 +193,27 @@ void MainWindow::on_headersTV_itemSelectionChanged()
 }
 
 
-KDChart::Legend::LegendPosition posStringToKDChartPosition( QString name )
+void MainWindow::setupAddLegendDialog( QDialog* dlg, Ui::AddLegendDialog& conf )const
 {
-    // In this example we are using legend position names, that match
-    // exactly the names in KDChart::Legend::LegendPosition,
-    // so we can use a shortcut here, and there is no need to specify
-    // a boolean ok parameter:
-
-    return KDChart::Legend::fromString( name );
+    conf.setupUi( dlg );
+    conf.titleTextED->setFocus();
+    conf.positionCO->addItems( KDChart::Position::printableNames(false) );
 }
-
 
 void MainWindow::on_addLegendPB_clicked()
 {
     QDialog dlg;
     Ui::AddLegendDialog conf;
-    conf.setupUi( &dlg );
-    conf.titleTextED->setFocus();
+    setupAddLegendDialog( &dlg, conf );
+    conf.useHorzSpaceCB->setChecked( false );
+    conf.useVertSpaceCB->setChecked( false );
     if( dlg.exec() ) {
         KDChart::Legend* legend = new KDChart::Legend( m_lines, m_chart );
         m_chart->addLegend( legend );
-        //legend->setPosition( (KDChart::Legend::LegendPosition)conf.positionCO->currentIndex() );
-        legend->setPosition( posStringToKDChartPosition( conf.positionCO->currentText() ) );
+        legend->setPosition(
+            KDChart::Position::fromPrintableName( conf.positionCO->currentText() ) );
+        legend->setUseHorizontalSpace( conf.useHorzSpaceCB->isChecked() );
+        legend->setUseVerticalSpace(   conf.useVertSpaceCB->isChecked() );
         legend->setShowLines( conf.showLinesCB->isChecked() );
         legend->setTitleText( conf.titleTextED->text() );
         legend->setOrientation( ( conf.orientationCO->currentIndex() == 0 ) ? Qt::Vertical : Qt::Horizontal );
@@ -205,9 +235,10 @@ void MainWindow::on_editLegendPB_clicked()
     KDChart::Legend* legend = item->legend();
     QDialog dlg;
     Ui::AddLegendDialog conf;
-    conf.setupUi( &dlg );
-    conf.titleTextED->setFocus();
+    setupAddLegendDialog( &dlg, conf );
     conf.showLinesCB->setChecked( legend->showLines() );
+    conf.useHorzSpaceCB->setChecked( legend->useHorizontalSpace() );
+    conf.useVertSpaceCB->setChecked( legend->useVerticalSpace() );
     conf.titleTextED->setText( legend->titleText() );
 
     // In this example we are using legend position names, that match
@@ -215,11 +246,14 @@ void MainWindow::on_editLegendPB_clicked()
     // so we can use a shortcut here, to set the respective name in
     // the dialog's list, and we need no error checking for findText():
     conf.positionCO->setCurrentIndex(
-        conf.positionCO->findText( legend->positionToString() ) );
+            conf.positionCO->findText( legend->position().printableName() ) );
 
     if( dlg.exec() ) {
         //legend->setPosition( (KDChart::Legend::LegendPosition)conf.positionCO->currentIndex() );
-        legend->setPosition( posStringToKDChartPosition( conf.positionCO->currentText() ) );
+        legend->setPosition(
+            KDChart::Position::fromPrintableName( conf.positionCO->currentText() ) );
+        legend->setUseHorizontalSpace( conf.useHorzSpaceCB->isChecked() );
+        legend->setUseVerticalSpace(   conf.useVertSpaceCB->isChecked() );
         legend->setShowLines( conf.showLinesCB->isChecked() );
         legend->setTitleText( conf.titleTextED->text() );
         legend->setOrientation( ( conf.orientationCO->currentIndex() == 0 ) ? Qt::Vertical : Qt::Horizontal );

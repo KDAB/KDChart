@@ -82,14 +82,14 @@ int main( int argc, char** argv ) {
     vec2.append( 125 );
     window.widget->setDataset( 2, vec2, "Cubic" );
 
-    window.widget->addHeaderFooter( "NorthWest", HeaderFooter::NorthWest );
-    window.widget->addHeaderFooter( "North", HeaderFooter::North );
-    window.widget->addHeaderFooter( "NorthEast", HeaderFooter::NorthEast );
-    window.widget->addHeaderFooter( "SouthEast", HeaderFooter::SouthEast );
-    window.widget->addHeaderFooter( "South", HeaderFooter::South );
-    window.widget->addHeaderFooter( "SouthWest", HeaderFooter::SouthWest );
+    window.widget->addHeaderFooter( "Header West",   HeaderFooter::Header, Position::West );
+    window.widget->addHeaderFooter( "Header Center", HeaderFooter::Header, Position::Center );
+    window.widget->addHeaderFooter( "Header East",   HeaderFooter::Header, Position::East );
+    window.widget->addHeaderFooter( "Footer West",   HeaderFooter::Footer, Position::West );
+    window.widget->addHeaderFooter( "Footer Center", HeaderFooter::Footer, Position::Center );
+    window.widget->addHeaderFooter( "Footer East",   HeaderFooter::Footer, Position::East );
 
-    window.widget->addLegend( Legend::East );
+    window.widget->addLegend( Position::East );
 
     //window.widget->setType( Widget::Polar );
 

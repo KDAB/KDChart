@@ -39,8 +39,8 @@ public:
 
 private:
     int zeroDegreePosition;
-    QMap<AbstractArea::DockingPointType,bool> showDelimitersAtPosition;
-    QMap<AbstractArea::DockingPointType,bool> showLabelsAtPosition;
+    QMap<int,bool> showDelimitersAtPosition;
+    QMap<int,bool> showLabelsAtPosition;
     bool rotateCircularLabels;
 };
 

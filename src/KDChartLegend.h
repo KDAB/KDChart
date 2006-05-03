@@ -31,6 +31,7 @@
 #define KDCHARTLEGEND_H
 
 #include "KDChartAbstractArea.h"
+#include "KDChartPosition.h"
 #include "KDChartMarkerAttributes.h"
 
 class QTextTable;
@@ -58,28 +59,17 @@ public:
     QSize calcSizeHint() const;
     virtual void paintEvent( QPaintEvent* );
 
-    enum LegendPosition { WestNorthWest,
-                          NorthWest,
-                          NorthNorthWest,
-                          North,
-                          NorthNorthEast,
-                          NorthEast,
-                          EastNorthEast,
-                          East,
-                          EastSouthEast,
-                          SouthEast,
-                          SouthSouthEast,
-                          South,
-                          SouthSouthWest,
-                          SouthWest,
-                          WestSouthWest,
-                          West };
-
     void setDiagram( KDChart::AbstractDiagram* diagram );
     KDChart::AbstractDiagram* diagram() const;
 
-    void setPosition( LegendPosition position );
-    LegendPosition position() const;
+    void setPosition( Position position );
+    Position position() const;
+
+    void setUseHorizontalSpace( bool );
+    bool useHorizontalSpace() const;
+
+    void setUseVerticalSpace( bool );
+    bool useVerticalSpace() const;
 
     void setOrientation( Qt::Orientation orientation );
     Qt::Orientation orientation() const;
@@ -122,10 +112,8 @@ public:
     void setSpacing( uint space );
     uint spacing() const;
 
-    QString positionToString() const;
-
 /*public static*/
-    static LegendPosition fromString( QString name, bool* ok=0 );
+//    static LegendPosition stringToPosition( QString name, bool* ok=0 );
 
 signals:
     void destroyedLegend( Legend* );

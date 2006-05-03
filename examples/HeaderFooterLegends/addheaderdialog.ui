@@ -9,7 +9,7 @@
     <x>0</x>
     <y>0</y>
     <width>333</width>
-    <height>108</height>
+    <height>140</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -48,95 +48,28 @@
       </widget>
      </item>
      <item row="1" column="1" >
-      <widget class="QComboBox" name="positionCO" >
+      <widget class="QComboBox" name="positionCO" />
+     </item>
+     <item row="2" column="0" >
+      <widget class="QLabel" name="label_3" >
+       <property name="text" >
+        <string>T&amp;ype:</string>
+       </property>
+       <property name="buddy" >
+        <cstring>typeCO</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1" >
+      <widget class="QComboBox" name="typeCO" >
        <item>
         <property name="text" >
-         <string>Header0Left</string>
+         <string>Header</string>
         </property>
        </item>
        <item>
         <property name="text" >
-         <string>Header0Center</string>
-        </property>
-       </item>
-       <item>
-        <property name="text" >
-         <string>Header0Right</string>
-        </property>
-       </item>
-       <item>
-        <property name="text" >
-         <string>Header1Left</string>
-        </property>
-       </item>
-       <item>
-        <property name="text" >
-         <string>Header1Center</string>
-        </property>
-       </item>
-       <item>
-        <property name="text" >
-         <string>Header1Right</string>
-        </property>
-       </item>
-       <item>
-        <property name="text" >
-         <string>Header2Left</string>
-        </property>
-       </item>
-       <item>
-        <property name="text" >
-         <string>Header2Center</string>
-        </property>
-       </item>
-       <item>
-        <property name="text" >
-         <string>Header2Right</string>
-        </property>
-       </item>
-       <item>
-        <property name="text" >
-         <string>Footer0Left</string>
-        </property>
-       </item>
-       <item>
-        <property name="text" >
-         <string>Footer0Center</string>
-        </property>
-       </item>
-       <item>
-        <property name="text" >
-         <string>Footer0Right</string>
-        </property>
-       </item>
-       <item>
-        <property name="text" >
-         <string>Footer1Left</string>
-        </property>
-       </item>
-       <item>
-        <property name="text" >
-         <string>Footer1Center</string>
-        </property>
-       </item>
-       <item>
-        <property name="text" >
-         <string>Footer1Right</string>
-        </property>
-       </item>
-       <item>
-        <property name="text" >
-         <string>Footer2Left</string>
-        </property>
-       </item>
-       <item>
-        <property name="text" >
-         <string>Footer2Center</string>
-        </property>
-       </item>
-       <item>
-        <property name="text" >
-         <string>Footer2Right</string>
+         <string>Footer</string>
         </property>
        </item>
       </widget>

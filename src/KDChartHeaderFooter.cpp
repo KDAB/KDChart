@@ -1,5 +1,5 @@
 /****************************************************************************
- ** Copyright (C) 2006 Klarälvdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2006 Klarï¿½vdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KD Chart library.
  **
@@ -38,7 +38,8 @@
 using namespace KDChart;
 
 HeaderFooter::Private::Private() :
-    position( North ),
+    type( Header ),
+    position( Position::North ),
     text( QObject::tr( "Header/Footer" ) ),
     textAttributes(),
     textDoc( 0 )
@@ -117,13 +118,24 @@ void HeaderFooter::paintEvent( QPaintEvent* evt )
     // PENDING(kalle) Support rotation
 }
 
-void HeaderFooter::setPosition( HeaderFooterPosition position )
+void HeaderFooter::setType( HeaderFooterType type )
+{
+    d->type = type;
+    emit positionChanged( this );
+}
+
+HeaderFooter::HeaderFooterType HeaderFooter::type() const
+{
+    return d->type;
+}
+
+void HeaderFooter::setPosition( Position position )
 {
     d->position = position;
     emit positionChanged( this );
 }
 
-HeaderFooter::HeaderFooterPosition HeaderFooter::position() const
+Position HeaderFooter::position() const
 {
     return d->position;
 }

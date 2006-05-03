@@ -89,17 +89,17 @@ public:
 
 
     /**
-      Measure calculation mode: the way how the absolute value of a KDChartMeasure is determined during KD Chart's internal geometry calculation time.
+      Measure calculation mode: the way how the absolute value of a KDChart::Measure is determined during KD Chart's internal geometry calculation time.
 
-      KDChartMeasure values either are relative (calculated in relation to a given AbstractArea), or they are absolute (used as fixed values).
+      KDChart::Measure values either are relative (calculated in relation to a given AbstractArea), or they are absolute (used as fixed values).
 
-      Values stored in relative measure always are interpreted as per-mille of a reference area's height (or width, resp.) depending on the orientation set for the KDChartMeasure.
+      Values stored in relative measure always are interpreted as per-mille of a reference area's height (or width, resp.) depending on the orientation set for the KDChart::Measure.
 
       \li \c MeasureCalculationAbsolute Use the stored value without modifying it.
       \li \c MeasureCalculationAuto Automatically determine which reference area is to be used.
       \li \c MeasureCalculationArea Use a reference area that was specified by the user.
 
-      \sa KDChartMeasure::setCalculationMode
+      \sa KDChart::Measure::setCalculationMode
       */
     enum MeasureCalculationMode { MeasureCalculationModeAbsolute,
         MeasureCalculationModeAuto,
