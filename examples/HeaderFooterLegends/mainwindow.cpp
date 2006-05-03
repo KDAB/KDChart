@@ -220,9 +220,11 @@ void MainWindow::on_addLegendPB_clicked()
         legend->show();
         LegendItem* newItem = new LegendItem( legend, legendsTV );
         newItem->setText( 0, conf.positionCO->currentText() );
-        newItem->setText( 1, conf.showLinesCB->isChecked() ? "yes" : "no" );
+        newItem->setText( 1, conf.showLinesCB->isChecked() ? tr("yes") : tr("no") );
         newItem->setText( 2, conf.titleTextED->text() );
         newItem->setText( 3, conf.orientationCO->currentText() );
+        newItem->setText( 4, conf.useHorzSpaceCB->isChecked() ? tr("yes") : tr("no") );
+        newItem->setText( 5, conf.useHorzSpaceCB->isChecked() ? tr("yes") : tr("no") );
         m_chart->update();
     }
 }
@@ -261,6 +263,8 @@ void MainWindow::on_editLegendPB_clicked()
         item->setText( 1, conf.showLinesCB->isChecked() ? "yes" : "no" );
         item->setText( 2, conf.titleTextED->text() );
         item->setText( 3, conf.orientationCO->currentText() );
+        item->setText( 4, conf.useHorzSpaceCB->isChecked() ? tr("yes") : tr("no") );
+        item->setText( 5, conf.useHorzSpaceCB->isChecked() ? tr("yes") : tr("no") );
         m_chart->update();
     }
 }
