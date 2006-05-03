@@ -260,7 +260,7 @@ void MainWindow::on_editLegendPB_clicked()
         legend->setTitleText( conf.titleTextED->text() );
         legend->setOrientation( ( conf.orientationCO->currentIndex() == 0 ) ? Qt::Vertical : Qt::Horizontal );
         item->setText( 0, conf.positionCO->currentText() );
-        item->setText( 1, conf.showLinesCB->isChecked() ? "yes" : "no" );
+        item->setText( 1, conf.showLinesCB->isChecked() ? tr("yes") : tr("no") );
         item->setText( 2, conf.titleTextED->text() );
         item->setText( 3, conf.orientationCO->currentText() );
         item->setText( 4, conf.useHorzSpaceCB->isChecked() ? tr("yes") : tr("no") );
