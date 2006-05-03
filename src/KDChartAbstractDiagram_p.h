@@ -76,12 +76,12 @@ typedef QVectorIterator<DataValueTextInfo> DataValueTextInfoListIterator;
 class LineAttributesInfo {
 public :
   LineAttributesInfo() {}
-  LineAttributesInfo( const QModelIndex _index, double _value, double _nextValue )
+  LineAttributesInfo( const QModelIndex _index, const QPointF& _value, const QPointF& _nextValue )
     :index( _index ), value ( _value ), nextValue ( _nextValue )  {}
 
   QModelIndex index;
-  double value;
-  double nextValue;
+  QPointF value;
+  QPointF nextValue;
 };
 
 typedef QVector<LineAttributesInfo> LineAttributesInfoList;

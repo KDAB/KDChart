@@ -99,7 +99,7 @@ const QPair<QPointF, QPointF> AbstractDiagram::dataBoundaries () const
     const int rowCount = model()->rowCount(rootIndex());
     const int colCount = model()->columnCount(rootIndex());
     xMax = rowCount-1; // since we start at 0
-    for ( int i=0; i<colCount; ++i ) {
+    for ( int i=datasetDimension()-1; i<colCount; i += datasetDimension() ) {
         for ( int j=0; j< rowCount; ++j ) {
             double value = model()->data( model()->index( j, i, rootIndex() ) ).toDouble();
             yMin = qMin( yMin, value );
@@ -261,7 +261,7 @@ void AbstractDiagram::paintDataValueTexts( QPainter* painter )
     if ( !checkInvariants() ) return;
     const int rowCount = model()->rowCount(rootIndex());
     const int colCount = model()->columnCount(rootIndex());
-    for ( int i=0; i<colCount; ++i ) {
+    for ( int i=datasetDimension()-1; i<colCount; i += datasetDimension() ) {
        for ( int j=0; j< rowCount; ++j ) {
            const QModelIndex index = model()->index( j, i, rootIndex() );
            double value = model()->data( index ).toDouble();
@@ -409,7 +409,7 @@ void AbstractDiagram::paintMarkers( QPainter* painter )
     if ( !checkInvariants() ) return;
     const int rowCount = model()->rowCount(rootIndex());
     const int colCount = model()->columnCount(rootIndex());
-    for ( int i=0; i<colCount; ++i ) {
+    for ( int i=datasetDimension()-1; i<colCount; i += datasetDimension() ) {
        for ( int j=0; j< rowCount; ++j ) {
            const QModelIndex index = model()->index( j, i, rootIndex() );
            double value = model()->data( index ).toDouble();
@@ -512,7 +512,8 @@ QStringList AbstractDiagram::datasetLabels() const
 {
     QStringList ret;
 //    qDebug() << "AbstractDiagram::datasetLabels(): " << defaultsModel()->columnCount() << "entries";
-    for( int i = 0; i < attributesModel()->columnCount(attributesModelRootIndex()); i++ )
+    const int colCount = attributesModel()->columnCount(attributesModelRootIndex());
+    for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() )
         ret << attributesModel()->headerData( i, Qt::Vertical, Qt::DisplayRole ).toString();
 
     return ret;
@@ -521,7 +522,8 @@ QStringList AbstractDiagram::datasetLabels() const
 QList<QBrush> AbstractDiagram::datasetBrushes() const
 {
     QList<QBrush> ret;
-    for( int i = 0; i < attributesModel()->columnCount(attributesModelRootIndex()); i++ ) {
+    const int colCount = attributesModel()->columnCount(attributesModelRootIndex());
+    for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
         QBrush brush = qVariantValue<QBrush>( attributesModel()->headerData( i, Qt::Vertical, DatasetBrushRole ) );
         ret << brush;
     }
@@ -532,7 +534,8 @@ QList<QBrush> AbstractDiagram::datasetBrushes() const
 QList<QPen> AbstractDiagram::datasetPens() const
 {
     QList<QPen> ret;
-    for( int i = 0; i < attributesModel()->columnCount(attributesModelRootIndex()); i++ ) {
+    const int colCount = attributesModel()->columnCount(attributesModelRootIndex());
+    for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
         QPen pen = qVariantValue<QPen>( attributesModel()->headerData( i, Qt::Vertical, DatasetPenRole ) );
         ret << pen;
     }
@@ -542,7 +545,8 @@ QList<QPen> AbstractDiagram::datasetPens() const
 QList<MarkerAttributes> AbstractDiagram::datasetMarkers() const
 {
     QList<MarkerAttributes> ret;
-    for( int i = 0; i < attributesModel()->columnCount(attributesModelRootIndex()); i++ ) {
+    const int colCount = attributesModel()->columnCount(attributesModelRootIndex());
+    for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
         DataValueAttributes a =
             qVariantValue<DataValueAttributes>( attributesModel()->headerData( i, Qt::Vertical, DataValueLabelAttributesRole ) );
         const MarkerAttributes &ma = a.markerAttributes();
@@ -563,15 +567,20 @@ bool AbstractDiagram::checkInvariants() const
     return model() && coordinatePlane();
 }
 
-int KDChart::AbstractDiagram::datasetDimension( ) const
+int AbstractDiagram::datasetDimension( ) const
 {
     return d->datasetDimension;
 }
 
-void KDChart::AbstractDiagram::setDatasetDimension( int dimension )
+void AbstractDiagram::setDatasetDimension( int dimension )
 {
     if ( d->datasetDimension == dimension ) return;
     d->datasetDimension = dimension;
     emit layoutChanged( this );
 }
 
+double AbstractDiagram::valueForCell( int row, int column ) const
+{
+    return d->attributesModel->data(
+            d->attributesModel->index( row, column, attributesModelRootIndex() ) ).toDouble();
+}

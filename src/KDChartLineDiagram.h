@@ -93,10 +93,13 @@ protected:
     void resizeEvent ( QResizeEvent* );
 
 private:
-    void paintLines( PaintContext* painter,const QModelIndex& index, double from, double to );
+    void paintLines( PaintContext* painter,const QModelIndex& index,
+                     const QPointF& from, const QPointF& to );
     const QPointF project( QPointF point, QPointF maxLimits, double z, const QModelIndex& index ) const;
-    void paintThreeDLines( PaintContext* painter,const QModelIndex& index, double from, double to, const int depth );
-    void paintAreas( PaintContext* painter, const QModelIndex& index, const QPolygonF& area, const uint transparency );
+    void paintThreeDLines( PaintContext* painter,const QModelIndex& index,
+                           double from, double to, double depth );
+    void paintAreas( PaintContext* painter, const QModelIndex& index,
+                     const QPolygonF& area, const uint transparency );
 }; // End of class KDChartLineDiagram
 
 }

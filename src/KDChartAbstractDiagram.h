@@ -307,6 +307,13 @@ namespace KDChart {
         virtual void paintMarkers( QPainter* painter );
 	void setAttributesModelRootIndex( const QModelIndex& );
 	QModelIndex attributesModelRootIndex() const;
+        /**
+         * Helper method that retrieves the data value (DisplayRole) for a given row and column
+         * @param row The row to query.
+         * @param column The column to query.
+         * @return The value of the display role at the given row and column as a double.
+         */
+        double valueForCell( int row, int column ) const;
 
     signals:
         /** Diagrams are supposed to emit this signal when the layout of one
