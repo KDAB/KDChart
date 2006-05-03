@@ -26,7 +26,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "ui_mainwindow.h"
+#include <QWidget>
 #include <TableModel.h>
 
 namespace KDChart {
@@ -44,6 +44,7 @@ class MainWindow : public QWidget
 
 public:
     MainWindow( QWidget* parent = 0 );
+    virtual ~MainWindow() { }
 
 private:
     KDChart::Chart* m_chart;

@@ -31,6 +31,7 @@
 
 #include <QDebug>
 #include <QPainter>
+#include <QHBoxLayout>
 
 using namespace KDChart;
 
