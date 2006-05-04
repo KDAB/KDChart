@@ -153,6 +153,11 @@ bool Position::isCorner() const
             m_value == Position::SouthEast.value() ||
             m_value == Position::SouthWest.value();
 }
+bool Position::isPole() const
+{
+    return  m_value == Position::North.value() ||
+            m_value == Position::South.value();
+}
 
 /**
  * Returns a non-translated string in English language, corresponding to this Position.

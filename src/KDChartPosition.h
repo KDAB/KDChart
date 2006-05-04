@@ -74,6 +74,7 @@ public:
     bool isSouthSide() const;
 
     bool isCorner() const;
+    bool isPole() const;
 
     static const Position& Unknown;
     static const Position& Center;
