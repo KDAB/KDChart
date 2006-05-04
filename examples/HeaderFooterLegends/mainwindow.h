@@ -30,7 +30,7 @@
 
 #include "ui_mainwindow.h"
 #include "ui_addheaderdialog.h"
-#include "ui_addlegenddialog.h"
+#include "derivedaddlegenddialog.h"
 #include <TableModel.h>
 
 namespace KDChart {
@@ -58,7 +58,7 @@ private slots:
 
 private:
     void setupAddHeaderDialog( QDialog* dlg, Ui::AddHeaderDialog& conf ) const;
-    void setupAddLegendDialog( QDialog* dlg, Ui::AddLegendDialog& conf ) const;
+    void setupAddLegendDialog( QDialog* dlg, DerivedAddLegendDialog& conf ) const;
 
     KDChart::Chart* m_chart;
     TableModel m_model;

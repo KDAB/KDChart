@@ -193,7 +193,7 @@ void MainWindow::on_headersTV_itemSelectionChanged()
 }
 
 
-void MainWindow::setupAddLegendDialog( QDialog* dlg, Ui::AddLegendDialog& conf )const
+void MainWindow::setupAddLegendDialog( QDialog* dlg, DerivedAddLegendDialog& conf )const
 {
     conf.setupUi( dlg );
     conf.titleTextED->setFocus();
@@ -203,7 +203,7 @@ void MainWindow::setupAddLegendDialog( QDialog* dlg, Ui::AddLegendDialog& conf )
 void MainWindow::on_addLegendPB_clicked()
 {
     QDialog dlg;
-    Ui::AddLegendDialog conf;
+    DerivedAddLegendDialog conf;
     setupAddLegendDialog( &dlg, conf );
     conf.useHorzSpaceCB->setChecked( false );
     conf.useVertSpaceCB->setChecked( false );
@@ -236,7 +236,7 @@ void MainWindow::on_editLegendPB_clicked()
     LegendItem* item = static_cast<LegendItem*>( legendsTV->selectedItems().first() );
     KDChart::Legend* legend = item->legend();
     QDialog dlg;
-    Ui::AddLegendDialog conf;
+    DerivedAddLegendDialog conf;
     setupAddLegendDialog( &dlg, conf );
     conf.showLinesCB->setChecked( legend->showLines() );
     conf.useHorzSpaceCB->setChecked( legend->useHorizontalSpace() );

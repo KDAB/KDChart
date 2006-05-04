@@ -1,6 +1,11 @@
-HEADERS= mainwindow.h
-SOURCES= main.cpp mainwindow.cpp
-FORMS  = mainwindow.ui addlegenddialog.ui addheaderdialog.ui
+HEADERS= mainwindow.h \
+         derivedaddlegenddialog.h
+SOURCES= main.cpp \
+         mainwindow.cpp \
+         derivedaddlegenddialog.cpp
+FORMS  = mainwindow.ui \
+         addlegenddialog.ui \
+         addheaderdialog.ui
 RESOURCES = HeaderFooterLegends.qrc
 
 KDCHART_PATH = ../..
