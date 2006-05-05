@@ -17,6 +17,7 @@ protected:
 
     QPointF translate ( const QPointF& diagramPoint, double perspective );
     inline QPointF translate ( const QPointF& diagramPoint );
+    inline double translateDistance ( const QPointF&, const QPointF& );
 
 private:
     mutable KDChart::CoordinateTransformation transformation;
@@ -28,6 +29,7 @@ private:
     const QPointF m_topRight;
 
     void drawBar ( QPainter& painter, int position, double value );
+    void drawAbscissaMarker ( QPainter& painter, int position, const QString& text );
 };
 
 #endif
