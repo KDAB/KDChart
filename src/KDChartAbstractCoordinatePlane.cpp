@@ -37,6 +37,7 @@ public:
     Private()
     :referenceCoordinatePlane(0)
     {}
+
     AbstractDiagramList diagrams;
     GridAttributes gridAttributes;
     AbstractCoordinatePlane *referenceCoordinatePlane;
@@ -142,5 +143,3 @@ AbstractCoordinatePlane * KDChart::AbstractCoordinatePlane::referenceCoordinateP
 {
     return d->referenceCoordinatePlane;
 }
-
-

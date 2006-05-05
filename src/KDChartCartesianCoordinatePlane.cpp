@@ -81,7 +81,7 @@ void CartesianCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
               SLOT ( slotLayoutChanged ( AbstractDiagram* ) ) );
 }
 
-#define DEBUG_PAINTING 0
+#define DEBUG_PAINTING 1
 void CartesianCoordinatePlane::paintEvent ( QPaintEvent* )
 {
     QPainter painter ( this );
@@ -201,7 +201,7 @@ void CartesianCoordinatePlane::layoutDiagrams()
 {
     if ( diagrams().isEmpty() )
     {   // FIXME evaluate what can still be prepared
-        return;
+        // FIXME decide default dimension if no diagrams are present (to make empty planes useable)
     }
     // the rectangle the diagrams cover in the *plane*:
     // (Why -3? We save 1px on each side for the antialiased drawing, and
