@@ -1,2 +1,2 @@
 TEMPLATE	= subdirs
-SUBDIRS		= CoordinatePlane
+SUBDIRS		= CoordinatePlane AlternatingColumnsProxyModel

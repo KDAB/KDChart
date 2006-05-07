@@ -5,4 +5,5 @@
 - it should be simple to make the coordinate plane only display the upper
   right quadrant, possibly with 3D decorations like in the example (used in
   most diagrams, I guess)
-
+- 3D diagrams look good if they are drawn without isometric distortion,
+  otherwise they quickly look ugly
