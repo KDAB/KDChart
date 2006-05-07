@@ -3,6 +3,8 @@
 
 #include <QAbstractProxyModel>
 
+// this proxy model maps data provided alternatingly between two rows into two
+// columns with consecutive data
 class AlternatingColumnsProxyModel : public QAbstractProxyModel
 {
     Q_OBJECT
@@ -18,5 +20,6 @@ public:
     QModelIndex mapToSource(const QModelIndex &proxyIndex) const;
     QModelIndex mapFromSource(const QModelIndex &sourceIndex) const;
 };
+
 
 #endif
