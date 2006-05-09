@@ -60,7 +60,7 @@ class KDCHART_EXPORT Position
 {
 public:
     Position();
-    Position(int value);
+    explicit Position(int value);
 
     int value() const;
 
