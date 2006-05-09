@@ -97,7 +97,6 @@ public:
     bool operator!=( const Position& );
 
 private:
-    static const char *m_names[];
     int m_value;
 }; // End of class Position
 

@@ -41,7 +41,7 @@ namespace KDChart {
  * \internal
  * Static strings, to be translated in printable()
  */
-const char *Position::m_names[] = {
+static const char * staticPositionNames[] = {
     QT_TR_NOOP("unknown Position"),
     QT_TR_NOOP("Center"),
     QT_TR_NOOP("NorthWest"),
@@ -164,7 +164,7 @@ bool Position::isPole() const
  */
 QString Position::name() const
 {
-    return m_names[m_value];
+    return staticPositionNames[m_value];
 }
 
 /**
@@ -172,7 +172,7 @@ QString Position::name() const
  */
 QString Position::printableName() const
 {
-    return QObject::tr(m_names[m_value]);
+    return QObject::tr(staticPositionNames[m_value]);
 }
 
 
