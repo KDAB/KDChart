@@ -29,20 +29,13 @@
 
 
 DerivedAddLegendDialog::DerivedAddLegendDialog( QWidget* parent ) :
-    QWidget( parent )
+    QDialog( parent )
 {
-    // this bloc left empty intentionally
-}
-
-
-void DerivedAddLegendDialog::setupUi(QDialog* dialog)
-{
-    AddLegendDialog::setupUi( dialog );
+    setupUi(this);
     connect(positionCO, SIGNAL(currentIndexChanged( int )), SLOT(positionChanged( int )));
     connect(useHorzSpaceCB, SIGNAL(stateChanged( int )), SLOT(horizChanged( int )));
     connect(useVertSpaceCB, SIGNAL(stateChanged( int )), SLOT(vertChanged( int )));
 }
-
 
 void DerivedAddLegendDialog::positionChanged( int index )
 {

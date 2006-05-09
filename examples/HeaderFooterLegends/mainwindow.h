@@ -58,7 +58,6 @@ private slots:
 
 private:
     void setupAddHeaderDialog( QDialog* dlg, Ui::AddHeaderDialog& conf ) const;
-    void setupAddLegendDialog( QDialog* dlg, DerivedAddLegendDialog& conf ) const;
 
     KDChart::Chart* m_chart;
     TableModel m_model;

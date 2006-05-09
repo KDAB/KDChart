@@ -192,22 +192,14 @@ void MainWindow::on_headersTV_itemSelectionChanged()
     removeHeaderPB->setEnabled( headersTV->selectedItems().count() == 1 );
 }
 
-
-void MainWindow::setupAddLegendDialog( QDialog* dlg, DerivedAddLegendDialog& conf )const
-{
-    conf.setupUi( dlg );
-    conf.titleTextED->setFocus();
-    conf.positionCO->addItems( KDChart::Position::printableNames(false) );
-}
-
 void MainWindow::on_addLegendPB_clicked()
 {
-    QDialog dlg;
     DerivedAddLegendDialog conf;
-    setupAddLegendDialog( &dlg, conf );
+    conf.titleTextED->setFocus();
+    conf.positionCO->addItems( KDChart::Position::printableNames(false) );
     conf.useHorzSpaceCB->setChecked( false );
     conf.useVertSpaceCB->setChecked( false );
-    if( dlg.exec() ) {
+    if( conf.exec() == QDialog::Accepted ) {
         KDChart::Legend* legend = new KDChart::Legend( m_lines, m_chart );
         m_chart->addLegend( legend );
         legend->setPosition(
@@ -235,9 +227,9 @@ void MainWindow::on_editLegendPB_clicked()
     if ( legendsTV->selectedItems().size() == 0 ) return;
     LegendItem* item = static_cast<LegendItem*>( legendsTV->selectedItems().first() );
     KDChart::Legend* legend = item->legend();
-    QDialog dlg;
     DerivedAddLegendDialog conf;
-    setupAddLegendDialog( &dlg, conf );
+    conf.titleTextED->setFocus();
+    conf.positionCO->addItems( KDChart::Position::printableNames(false) );
     conf.showLinesCB->setChecked( legend->showLines() );
     conf.useHorzSpaceCB->setChecked( legend->useHorizontalSpace() );
     conf.useVertSpaceCB->setChecked( legend->useVerticalSpace() );
@@ -249,8 +241,9 @@ void MainWindow::on_editLegendPB_clicked()
     // the dialog's list, and we need no error checking for findText():
     conf.positionCO->setCurrentIndex(
             conf.positionCO->findText( legend->position().printableName() ) );
+    conf.orientationCO->setCurrentIndex( (legend->orientation()==Qt::Vertical)?0:1 );
 
-    if( dlg.exec() ) {
+    if( conf.exec() == QDialog::Accepted ) {
         //legend->setPosition( (KDChart::Legend::LegendPosition)conf.positionCO->currentIndex() );
         legend->setPosition(
             KDChart::Position::fromPrintableName( conf.positionCO->currentText() ) );

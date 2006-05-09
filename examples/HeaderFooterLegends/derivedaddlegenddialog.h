@@ -28,13 +28,12 @@
 
 #include "ui_addlegenddialog.h"
 
-class DerivedAddLegendDialog : public QWidget, public Ui::AddLegendDialog
+class DerivedAddLegendDialog : public QDialog, public Ui::AddLegendDialog
 {
     Q_OBJECT
 
 public:
     DerivedAddLegendDialog( QWidget* parent = 0 );
-    void setupUi(QDialog* dialog);
 
 private slots:
     void positionChanged(int);
