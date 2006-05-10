@@ -2,28 +2,14 @@
 #include <QtDebug>
 #include <QPainter>
 
+#include <KDChartPainterSaver_p.h>
+#include <KDChartPaintContext.h>
+#include <KDChartAbstractDiagram.h>
 #include "CoordinatePlane.h"
 
-CoordinatePlane::CoordinatePlane ()
-    : KDChart::CartesianCoordinatePlane()
-    , m_bottomLeft ( -1.0, -1.0 )
-    , m_topRight ( 11.0, 11.0 )
+CoordinatePlane::CoordinatePlane ( QWidget* parent )
+    : KDChart::CartesianCoordinatePlane( parent )
 {
-}
-
-void CoordinatePlane::resizeEvent ( QResizeEvent*  )
-{
-    // set up the coordinate transformation:
-    const QPointF center ( widthF()/2, heightF()/2 );
-
-    transformation.diagramRect = QRectF ( 10.0, 10.0, width() - 20, height() - 20 );
-    transformation.unitVectorX = ( 1.0 * transformation.diagramRect.width() ) / widthF();
-    transformation.unitVectorY = ( -1.0 * transformation.diagramRect.height() ) / heightF();
-    transformation.originTranslation = QPointF (
-        m_bottomLeft.x() * -transformation.unitVectorX + transformation.diagramRect.x(),
-        m_topRight.y() * -transformation.unitVectorY + transformation.diagramRect.y() );
-    transformation.isoScaleX = 1.0;
-    transformation.isoScaleY = 1.0;
 }
 
 const double CoordinatePlane::widthF()
@@ -34,6 +20,63 @@ const double CoordinatePlane::widthF()
 const double CoordinatePlane::heightF()
 {
     return m_topRight.x() - m_bottomLeft.x();
+}
+
+void CoordinatePlane::layoutDiagrams()
+{
+    // Note:
+    // - all variables that start with "client" are in diagram coordinates
+    // - all variable that start with "window" are in QWidget coordinates
+    // - for now we assume that we do only regular 45 degree based 3D projection
+    // ----- determine union of the rectangles of all involved diagrams:
+    const double clientMinZCoordinate = -1.0; // temp: use real values later
+    const double clientMaxZCoordinate = 0.0; // temp: use real values later
+    Q_UNUSED ( clientMaxZCoordinate ); // FIXME add support for objects
+                                       // intruding Z plane
+    double clientMinXCoordinate = 0.0;
+    double clientMaxXCoordinate = 0.0;
+    double clientMinYCoordinate = 0.0;
+    double clientMaxYCoordinate = 0.0;
+
+    foreach ( KDChart::AbstractDiagram* diagram, diagrams() )
+        {
+            QPair<QPointF, QPointF> dataBoundariesPair = diagram->dataBoundaries();
+            Q_ASSERT_X ( dataBoundariesPair.first.x() <= dataBoundariesPair.second.x()
+                         && dataBoundariesPair.first.y() <= dataBoundariesPair.second.y(),
+                         "CoordinatePlane::layoutDiagrams", "first point of diagram data boundaries must "
+                         "be lower-right or equal to second point" );
+
+            clientMinXCoordinate = qMin ( dataBoundariesPair.first.x(), clientMinXCoordinate );
+            clientMaxXCoordinate = qMax ( dataBoundariesPair.second.x(), clientMaxXCoordinate );
+            clientMinYCoordinate = qMin ( dataBoundariesPair.first.y(), clientMinYCoordinate );
+            clientMaxYCoordinate = qMax ( dataBoundariesPair.second.y(),  clientMinYCoordinate );
+        }
+    //       FIXME: use a default rectangle if there are no diagrams?
+
+    // ----- translate the 3D space required for the diagrams into screen coordinates:
+    //       calculate total width needed for the 3D projected diagram space
+    //       (basically, the visible length of the X and Y axes)
+    double clientMinVisibleXCoordinate = clientMinXCoordinate + clientMinZCoordinate / 2;
+    double clientMinVisibleYCoordinate = clientMinYCoordinate + clientMinZCoordinate / 2;
+    double clientTotalVisibleWidth = clientMaxXCoordinate - clientMinVisibleXCoordinate;
+    double clientTotalVisibleHeight = clientMaxYCoordinate - clientMinVisibleYCoordinate;
+
+    // ----- set up the coordinate transformation:
+    const int UnusedPixelMargin = 10; // temp, should be 3 at the end
+    m_topRight = QPointF ( clientMaxXCoordinate, clientMaxYCoordinate );
+    m_bottomLeft = QPointF ( clientMinXCoordinate,  clientMinYCoordinate );
+    transformation.diagramRect =
+        QRectF ( UnusedPixelMargin, UnusedPixelMargin,
+                 width() - 2 * UnusedPixelMargin, height() - 2 * UnusedPixelMargin );
+    transformation.unitVectorX = transformation.diagramRect.width() / clientTotalVisibleWidth;
+    transformation.unitVectorY = -transformation.diagramRect.height() / clientTotalVisibleHeight;
+    transformation.originTranslation = QPointF (
+        clientMinVisibleXCoordinate * -transformation.unitVectorX + transformation.diagramRect.x(),
+        clientMaxYCoordinate * -transformation.unitVectorY + transformation.diagramRect.y() );
+    transformation.isoScaleX = 1.0;
+    transformation.isoScaleY = 1.0;
+
+    KDChart::CartesianCoordinatePlane::layoutDiagrams();
 }
 
 void CoordinatePlane::paintEvent( QPaintEvent* e )
@@ -82,6 +125,7 @@ void CoordinatePlane::paintEvent( QPaintEvent* e )
                           translate ( QPointF ( 0.0, 0.0 ), -1.0 ) );
     }
 
+/*
     QFont font = painter.font();
     font.setPointSize ( 8 );
     painter.setFont ( font );
@@ -90,6 +134,25 @@ void CoordinatePlane::paintEvent( QPaintEvent* e )
     {
         drawBar ( painter, i, i );
         drawAbscissaMarker ( painter, i, QString().setNum( i ) );
+    }
+*/
+    // ----- paint the diagrams:
+    KDChart::AbstractDiagramList diags = diagrams();
+    if ( !diags.isEmpty() )
+    {
+        // paint the coordinate system rulers:
+        KDChart::PaintContext ctx;
+        ctx.setRectangle ( transformation.diagramRect );
+        ctx.setPainter ( &painter );
+        ctx.setCoordinatePlane ( this );
+        //paintGrid( &ctx );
+
+        // paint the diagrams:
+        for ( int i = 0; i < diags.size(); i++ )
+        {
+            KDChart::PainterSaver painterSaver( &painter );
+            diags[i]->paint ( &ctx );
+        }
     }
 }
 

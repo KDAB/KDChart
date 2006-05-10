@@ -7,3 +7,7 @@
   most diagrams, I guess)
 - 3D diagrams look good if they are drawn without isometric distortion,
   otherwise they quickly look ugly
+- 2D and 3D diagrams of the same logical type (bar diagrams, line diagrams)
+  should possibly be done as different diagram types that share private helper
+  functions, or use separate drawing delegates for the same type
+

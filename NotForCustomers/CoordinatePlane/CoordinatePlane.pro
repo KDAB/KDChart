@@ -9,5 +9,5 @@ INCLUDEPATH += ../../include ../../src .
 LIBS += -L../../lib -lkdchart
 
 # Input
-HEADERS += CoordinatePlane.h
-SOURCES += CoordinatePlane.cpp main.cpp
+HEADERS += CoordinatePlane.h BarDiagram.h
+SOURCES += CoordinatePlane.cpp BarDiagram.cpp main.cpp
