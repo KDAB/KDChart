@@ -58,16 +58,16 @@ namespace KDChart {
         {
             QPointF result = originTranslation;
             QPointF tempPoint = diagramPoint;
-            double relation = diagramRect.y() / log10( diagramRect.y() );
-
 	    if ( axesCalcMode == CartesianCoordinatePlane::Logarithmic )
             {
+                double relation = diagramRect.y() / log10( diagramRect.y() );
+
                 if (tempPoint.y() > 0 )
                     tempPoint.setY( log10( tempPoint.y() ) * relation );
                 else if (tempPoint.y() < 0 )
                     tempPoint.setY( -log10( -tempPoint.y() ) * relation );
             }
- 
+
             tempPoint.setX( tempPoint.x() + diagramRect.width() / (2 * zoom.xFactor) );
             tempPoint.setY( tempPoint.y() + diagramRect.height() / (2 * zoom.yFactor ) );
 
