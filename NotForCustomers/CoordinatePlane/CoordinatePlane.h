@@ -14,11 +14,11 @@ public:
 protected:
     void paintEvent ( QPaintEvent* e );
 
-    inline QPointF translate ( const QPointF& diagramPoint, double perspective );
-    inline QPointF translate ( const QPointF& diagramPoint );
-    inline double translateDistance ( const QPointF&, const QPointF& );
-    inline double translateVerticalDistance ( const double& p1, const double& p2 );
-    inline double translateHorizontalDistance ( const double& p1, const double& p2 );
+    const QPointF translate ( const QPointF& diagramPoint, double perspective ) const;
+    const QPointF translate ( const QPointF& diagramPoint ) const;
+    double translateDistance ( const QPointF&, const QPointF& ) const;
+    double translateVerticalDistance ( const double& p1, const double& p2 ) const;
+    double translateHorizontalDistance ( const double& p1, const double& p2 ) const;
 
 protected:
     void layoutDiagrams();
@@ -32,8 +32,10 @@ private:
     QPointF m_bottomLeft;
     QPointF m_topRight;
 
+    void drawGrid ( QPainter& painter );
     // FIXME does not belong into coordinate plane, temp only
     void drawBar ( QPainter& painter, int position, double value );
+
     void drawAbscissaMarker ( QPainter& painter, int position, const QString& text );
 };
 

@@ -9,8 +9,8 @@
 
 int main ( int argc,  char** argv )
 {
-    const int NumberOfColumns = 2;
-    const int NumberOfRows = 5;
+    const int NumberOfColumns = 3;
+    const int NumberOfRows = 20;
 
     QApplication app( argc,  argv );
     QSplitter splitter;
@@ -24,7 +24,18 @@ int main ( int argc,  char** argv )
         for ( int column = 0; column < NumberOfColumns; ++column )
         {
             QModelIndex index = model.index ( row, column );
-            const int value = column % 2 == 0 ? row + 1 : NumberOfRows - row;
+            int value;
+            switch ( column ) {
+            case 0:
+                value = row + 1;
+                break;
+            case 1:
+                value = NumberOfRows - row;
+                break;
+            case 2:
+                value = NumberOfRows / 2;
+                break;
+            }
             model.setData ( index, QVariant( value) );
         }
     }
@@ -36,7 +47,7 @@ int main ( int argc,  char** argv )
 
     splitter.resize ( 800, 800 );
     splitter.show();
-    table.hide(); // comment out to see the table :-)
+//    table.hide(); // comment out to see the table :-)
     return app.exec();
 }
 

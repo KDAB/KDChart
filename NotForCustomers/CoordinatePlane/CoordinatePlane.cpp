@@ -82,12 +82,49 @@ void CoordinatePlane::layoutDiagrams()
 void CoordinatePlane::paintEvent( QPaintEvent* e )
 {
     KDChart::CartesianCoordinatePlane::paintEvent ( e );
-    QColor gridColor ( "darkkhaki" );
-    QColor lineColor ( "navy" );
 
     QPainter painter ( this );
+    drawGrid ( painter );
+/*
+    QFont font = painter.font();
+    font.setPointSize ( 8 );
+    painter.setFont ( font );
+
+    for ( int i = 1; i <= 10; ++i )
+    {
+        drawBar ( painter, i, i );
+        drawAbscissaMarker ( painter, i, QString().setNum( i ) );
+    }
+*/
+    // ----- paint the diagrams:
+    KDChart::AbstractDiagramList diags = diagrams();
+    if ( !diags.isEmpty() )
+    {
+        // paint the coordinate system rulers:
+        KDChart::PaintContext ctx;
+        ctx.setRectangle ( transformation.diagramRect );
+        ctx.setPainter ( &painter );
+        ctx.setCoordinatePlane ( this );
+        //paintGrid( &ctx );
+
+        // paint the diagrams:
+        for ( int i = 0; i < diags.size(); i++ )
+        {
+            KDChart::PainterSaver painterSaver( &painter );
+            diags[i]->paint ( &ctx );
+        }
+    }
+}
+
+void CoordinatePlane::drawGrid (  QPainter& painter )
+{
+    KDChart::PainterSaver saver( &painter );
+
     painter.setRenderHint( QPainter::Antialiasing );
     painter.setRenderHint( QPainter::TextAntialiasing );
+
+    QColor gridColor ( "darkkhaki" );
+    QColor lineColor ( "navy" );
 
     { // the grid lines:
         QVector<QLineF> lines;
@@ -123,36 +160,6 @@ void CoordinatePlane::paintEvent( QPaintEvent* e )
                           translate ( QPointF ( 0.0, 0.0 ) ) );
         painter.drawLine( translate ( QPointF( 0.0, 0.0 ) ),
                           translate ( QPointF ( 0.0, 0.0 ), -1.0 ) );
-    }
-
-/*
-    QFont font = painter.font();
-    font.setPointSize ( 8 );
-    painter.setFont ( font );
-
-    for ( int i = 1; i <= 10; ++i )
-    {
-        drawBar ( painter, i, i );
-        drawAbscissaMarker ( painter, i, QString().setNum( i ) );
-    }
-*/
-    // ----- paint the diagrams:
-    KDChart::AbstractDiagramList diags = diagrams();
-    if ( !diags.isEmpty() )
-    {
-        // paint the coordinate system rulers:
-        KDChart::PaintContext ctx;
-        ctx.setRectangle ( transformation.diagramRect );
-        ctx.setPainter ( &painter );
-        ctx.setCoordinatePlane ( this );
-        //paintGrid( &ctx );
-
-        // paint the diagrams:
-        for ( int i = 0; i < diags.size(); i++ )
-        {
-            KDChart::PainterSaver painterSaver( &painter );
-            diags[i]->paint ( &ctx );
-        }
     }
 }
 
@@ -243,7 +250,7 @@ void CoordinatePlane::drawAbscissaMarker ( QPainter& painter,  int position,  co
     painter.drawText( textRectangle, Qt::AlignHCenter | Qt::AlignTop, text );
 }
 
-QPointF CoordinatePlane::translate ( const QPointF& diagramPoint, double perspective )
+const QPointF CoordinatePlane::translate ( const QPointF& diagramPoint, double perspective ) const
 {
     static const double PerspectiveCorrection = 1.0;
 
@@ -254,12 +261,12 @@ QPointF CoordinatePlane::translate ( const QPointF& diagramPoint, double perspec
     return transformation.translate ( point );
 }
 
-QPointF CoordinatePlane::translate (  const QPointF& diagramPoint )
+const QPointF CoordinatePlane::translate (  const QPointF& diagramPoint ) const
 {
     return transformation.translate( diagramPoint );
 }
 
-double CoordinatePlane::translateDistance ( const QPointF& p1, const QPointF& p2 )
+double CoordinatePlane::translateDistance ( const QPointF& p1, const QPointF& p2 ) const
 {   // FIXME: it may make sense to add straight abscissa or ordinate
     // distances, since those do not require pythagoras calculation:
     QPointF t1 = translate ( p1 );

@@ -74,7 +74,6 @@ namespace KDChart {
 
     protected:
         void paintEvent ( QPaintEvent* );
-        // void resizeEvent ( QResizeEvent* );
 
     private:
         void paintBars( PaintContext* ctx, const QModelIndex& index, const QRectF& bar, double& maxDepth );

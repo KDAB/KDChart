@@ -70,9 +70,11 @@ Bar2Diagram * Bar2Diagram::clone() const
 
 void Bar2Diagram::setType( const BarType type )
 {
-    if ( type == d->barType ) return;
-    d->barType = type;
-    emit layoutChanged( this );
+    if ( type != d->barType )
+    {
+        d->barType = type;
+        emit layoutChanged( this );
+    }
 }
 
 Bar2Diagram::BarType Bar2Diagram::type() const
@@ -82,12 +84,12 @@ Bar2Diagram::BarType Bar2Diagram::type() const
 
 void Bar2Diagram::setBarAttributes( const BarAttributes & ta )
 {
-    d->attributesModel->setModelData( qVariantFromValue( ta ), BarAttributesRole );
+    attributesModel()->setModelData( qVariantFromValue( ta ), BarAttributesRole );
 }
 
 void Bar2Diagram::setBarAttributes( int column, const BarAttributes & ta )
 {
-    d->attributesModel->setHeaderData( column, Qt::Vertical, qVariantFromValue( ta ),
+    attributesModel()->setHeaderData( column, Qt::Vertical, qVariantFromValue( ta ),
 				       BarAttributesRole );
 }
 
@@ -99,46 +101,42 @@ void Bar2Diagram::setBarAttributes( const QModelIndex & index, const BarAttribut
 
 BarAttributes Bar2Diagram::barAttributes( const QModelIndex & index ) const
 {
-    return qVariantValue<BarAttributes>( d->attributesModel->data( d->attributesModel->mapFromSource(index),
+    return qVariantValue<BarAttributes>( attributesModel()->data( attributesModel()->mapFromSource(index),
 								KDChart::BarAttributesRole ) );
 }
 
 void Bar2Diagram::setThreeDBarAttributes( const ThreeDBarAttributes & tda )
 {
-    d->attributesModel->setModelData( qVariantFromValue( tda ), ThreeDBarAttributesRole );
+    attributesModel()->setModelData( qVariantFromValue( tda ), ThreeDBarAttributesRole );
     emit layoutChanged( this );
 }
 
 void Bar2Diagram::setThreeDBarAttributes( int column, const ThreeDBarAttributes & tda )
 {
-    d->attributesModel->setHeaderData( column, Qt::Vertical, qVariantFromValue( tda ), ThreeDBarAttributesRole );
+    attributesModel()->setHeaderData( column, Qt::Vertical, qVariantFromValue( tda ), ThreeDBarAttributesRole );
     emit layoutChanged( this );
 }
 
 void Bar2Diagram::setThreeDBarAttributes( const QModelIndex & index, const ThreeDBarAttributes & tda )
 {
-    d->attributesModel->setData( d->attributesModel->mapFromSource(index),
+    attributesModel()->setData( attributesModel()->mapFromSource(index),
 			      qVariantFromValue( tda ), ThreeDBarAttributesRole );
     emit layoutChanged( this );
 }
 
 ThreeDBarAttributes Bar2Diagram::threeDBarAttributes( const QModelIndex & index ) const
 {
-    return qVariantValue<ThreeDBarAttributes>( d->attributesModel->data( d->attributesModel->mapFromSource(index),
-								      KDChart::ThreeDBarAttributesRole ) );
+    return qVariantValue<ThreeDBarAttributes>( attributesModel()->data( attributesModel()->mapFromSource(index),
+                                                                        KDChart::ThreeDBarAttributesRole ) );
 }
-
-// void Bar2Diagram::resizeEvent ( QResizeEvent*)
-// {
-
-// }
 
 const QPair<QPointF, QPointF> Bar2Diagram::dataBoundaries () const
 {
+    // FIXME cache values and reset on model changes:
     if ( !checkInvariants() ) return QPair<QPointF, QPointF>( QPointF( 0, 0 ), QPointF( 0, 0 ) );
 
-    const int rowCount = d->attributesModel->rowCount(attributesModelRootIndex());
-    const int colCount = d->attributesModel->columnCount(attributesModelRootIndex());
+    const int rowCount = attributesModel()->rowCount(attributesModelRootIndex());
+    const int colCount = attributesModel()->columnCount(attributesModelRootIndex());
 
     double xMin = 0;
     double xMax = rowCount;
@@ -192,7 +190,11 @@ const QPair<QPointF, QPointF> Bar2Diagram::dataBoundaries () const
 
     QPointF bottomLeft ( QPointF( xMin, yMin ) );
     QPointF topRight ( QPointF( xMax, yMax ) );
-       if ( tda.isEnabled() ) {
+
+/*  we do not have to add space for 3D anymore, we just need to tell the
+    coordinate plane that we do use the Z direction - later:
+
+    if ( tda.isEnabled() ) {
          double percentx, percenty;
 	 //threeDBoundaries calculate a depth percent value and add it
 	 QPointF pTRTranslated = coordinatePlane()->translate( topRight );
@@ -214,8 +216,8 @@ const QPair<QPointF, QPointF> Bar2Diagram::dataBoundaries () const
          topRight.setX( topRight.x() + percentx);
          topRight.setY( topRight.y() + percenty);
        }
-
-       return QPair<QPointF, QPointF> ( bottomLeft,  topRight );
+*/
+    return QPair<QPointF, QPointF> ( bottomLeft,  topRight );
 }
 
 void Bar2Diagram::paintEvent ( QPaintEvent*)
@@ -265,9 +267,9 @@ void Bar2Diagram::paint( PaintContext* ctx )
     // first draw the grid
     //     drawGrid( ctx );
     // Calculate width
-    QPointF boundLeft, boundRight;
-    boundLeft = coordinatePlane()->translate( dataBoundaries().first );
-    boundRight = coordinatePlane()->translate( dataBoundaries().second );
+    QPointF boundLeft = coordinatePlane()->translate( dataBoundaries().first );
+    QPointF boundRight = coordinatePlane()->translate( dataBoundaries().second );
+
     double width = boundRight.x() - boundLeft.x();
     //calculates and stores the values
     const int rowCount = d->attributesModel->rowCount(attributesModelRootIndex());
