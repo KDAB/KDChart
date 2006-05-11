@@ -11,14 +11,14 @@ class CoordinatePlane : public KDChart::CartesianCoordinatePlane
 public:
     explicit CoordinatePlane( QWidget* parent );
 
-protected:
-    void paintEvent ( QPaintEvent* e );
-
     const QPointF translate ( const QPointF& diagramPoint, double perspective ) const;
     const QPointF translate ( const QPointF& diagramPoint ) const;
     double translateDistance ( const QPointF&, const QPointF& ) const;
     double translateVerticalDistance ( const double& p1, const double& p2 ) const;
     double translateHorizontalDistance ( const double& p1, const double& p2 ) const;
+
+protected:
+    void paintEvent ( QPaintEvent* e );
 
 protected:
     void layoutDiagrams();

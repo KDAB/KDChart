@@ -34,6 +34,9 @@
 #include "KDChartPaintContext.h"
 #include "KDChartPainterSaver_p.h"
 
+// temp:
+#include "CoordinatePlane.h"
+
 using namespace KDChart;
 
 /* ModelDataCache provides information about the model that is valid as
@@ -91,7 +94,7 @@ public:
                 const int rowCount = model->rowCount( root );
                 const int columnCount = model->columnCount ( root );
                 double xMin = 0;
-                double xMax = rowCount;
+                double xMax = 1.0 + rowCount;
                 double yMin = 0;
                 double yMax = 0;
 
@@ -306,201 +309,232 @@ void Bar2Diagram::calculateValueAndGapWidths( int rowCount,int colCount,
     outSpaceBetweenGroups += unitWidth * ba.groupGapFactor();
 }
 
+struct KDChart::BarInfo {
+    double clientXCenter;
+    double clientYNull; // bottom line y coordinate
+    double clientBarWidth;
+    double clientBarHeight;
+};
+
 void Bar2Diagram::paint( PaintContext* ctx )
 {
     if ( !checkInvariants() ) return;
 
-    // first draw the grid
-    //     drawGrid( ctx );
-    // Calculate width
-    QPointF boundLeft = coordinatePlane()->translate( dataBoundaries().first );
-    QPointF boundRight = coordinatePlane()->translate( dataBoundaries().second );
-
-    double width = boundRight.x() - boundLeft.x();
-    //calculates and stores the values
-    const int rowCount = d->attributesModel->rowCount(attributesModelRootIndex());
-    const int colCount = d->attributesModel->columnCount(attributesModelRootIndex());
-    DataValueTextInfoList list;
-    BarAttributes ba = barAttributes( model()->index( 0, 0, rootIndex() ) );
-    double maxValue = 0;
-    double sumValues = 0;
-    QVector <double > sumValuesVector;
-    double barWidth = 0;
-    double maxDepth = 0;
-    double spaceBetweenBars = 0;
-    double spaceBetweenGroups = 0;
-    double groupWidth =  /*ctx->rectangle().width() / ( rowCount + 2 )*/ width/ (rowCount + 2);
-
-
-    if ( ba.useFixedBarWidth() ) {
-        barWidth = ba.fixedBarWidth();
-        groupWidth += barWidth;
-
-        // Pending Michel set a min and max value for the groupWidth related to the area.width
-        // FixMe
-        if ( groupWidth < 0 )
-            groupWidth = 0;
-
-        if ( groupWidth  * rowCount > ctx->rectangle().width() )
-            groupWidth = ctx->rectangle().width() / rowCount;
-    }
-
-    // maxLimit: allow the space between bars to be larger until area.width() is covered by the groups.
-    double maxLimit = rowCount * (groupWidth + ((colCount-1) * ba.fixedDataValueGap()) );
-
-    //Pending Michel: FixMe
-    if ( ba.useFixedDataValueGap() ) {
-        if ( ctx->rectangle().width() > maxLimit )
-            spaceBetweenBars += ba.fixedDataValueGap();
-        else
-            spaceBetweenBars = ((ctx->rectangle().width()/rowCount) - groupWidth)/(colCount-1);
-    }
-
-    //Pending Michel: FixMe
-    if ( ba.useFixedValueBlockGap() )
-        spaceBetweenGroups += ba.fixedValueBlockGap();
-
-    calculateValueAndGapWidths( rowCount, colCount,groupWidth,
-                                barWidth, spaceBetweenBars, spaceBetweenGroups );
-
-    // paint different bar types: Normal - Stacked - Percent
-    switch ( type() )
+    Q_ASSERT ( type() == Bar2Diagram::Normal ); // ni for other types
+    // steps:
+    // (1) calculate the bar positions, widths and heights
+    // (2) draw the diagram
+    // And no, we do not draw the grid. We align to decimal positions, and the
+    // grid is drawn by the coordinate plane (we assume).
+    // ----- set up the bars:
+    const int rowCount = attributesModel()->rowCount(attributesModelRootIndex());
+    const int columnCount = attributesModel()->columnCount(attributesModelRootIndex());
+    for ( int row = 0; row < rowCount; ++row )
     {
-    case Bar2Diagram::Normal:
-        // we paint the bars for all series next to each other, then move to the next value
-        for ( int i=0; i<rowCount; ++i ) {
-            double offset = -groupWidth/2 + spaceBetweenGroups/2;
-            // case fixed data value gap - handles max and min limits as well
-            if ( ba.useFixedDataValueGap() ) {
-                if ( spaceBetweenBars > 0 ) {
-                    if ( ctx->rectangle().width() > maxLimit )
-                        offset -= ba.fixedDataValueGap();
-                    else
-			offset -= ((ctx->rectangle().width()/rowCount) - groupWidth)/(colCount-1);
-
-                } else {
-                    //allow reducing the gap until the bars are displayed next to each other - null gap
-                    offset += barWidth/2;
-                }
-            }
-
-            for ( int j=0; j< colCount; ++j ) {
-                // paint one group
-                const double value = d->attributesModel->data( d->attributesModel->index( i, j, attributesModelRootIndex() ) ).toDouble();
-                QPointF topPoint = coordinatePlane()->translate( QPointF( i + 0.5, value ) );
-                QPointF bottomPoint = coordinatePlane()->translate( QPointF( i, 0 ) );
-                const double barHeight = bottomPoint.y() - topPoint.y();
-                topPoint.setX( topPoint.x() + offset );
-                //PENDING Michel: FIXME barWidth
-                QModelIndex index = model()->index( i, j, rootIndex() );
-                list.append( DataValueTextInfo( index, topPoint, value ) );
-                paintBars( ctx, index, QRectF( topPoint, QSizeF( barWidth, barHeight ) ), maxDepth );
-
-                offset += barWidth + spaceBetweenBars;
-            }
-        }
-        break;
-    case Bar2Diagram::Stacked:
-        for ( int i = 0; i<colCount; ++i ) {
-            double offset = spaceBetweenGroups;
-            for ( int j = 0; j< rowCount; ++j ) {
-                QModelIndex index = model()->index( j, i, rootIndex() );
-                ThreeDBarAttributes tda = threeDBarAttributes( index );
-                double value = 0, stackedValues = 0;
-                QPointF point, previousPoint;
-
-                if ( tda.isEnabled() ) {
-                    if ( barWidth > 0 )
-                        barWidth =  (width - ((offset+(tda.depth()))*rowCount))/ rowCount;
-                    if ( barWidth <= 0 ) {
-                        barWidth = 0;
-                        maxDepth = offset - (width/rowCount);
-                    }
-                } else
-                    barWidth =  (ctx->rectangle().width() - (offset*rowCount))/ rowCount ;
-
-                value = model()->data( index ).toDouble();
-                for ( int k = i; k >= 0 ; --k )
-                    stackedValues += model()->data( model()->index( j, k, rootIndex() ) ).toDouble();
-                point = coordinatePlane()->translate( QPointF( j, stackedValues ) );
-                point.setX( point.x() + offset/2 );
-                previousPoint = coordinatePlane()->translate( QPointF( j, stackedValues - value ) );
-                const double barHeight = previousPoint.y() - point.y();
-                list.append( DataValueTextInfo( index, point, value ) );
-                paintBars( ctx, index, QRectF( point, QSizeF( barWidth , barHeight ) ), maxDepth );
-            }
-
-        }
-        break;
-    case Bar2Diagram::Percent:
-        // search for ordinate max value or 100 %
-        for ( int i=0; i<colCount; ++i ) {
-            for ( int j=0; j< rowCount; ++j ) {
-                double value = model()->data( model()->index( j, i, rootIndex() ) ).toDouble();
-                maxValue = qMax( maxValue, value );
-            }
-        }
-        //calculate sum of values for each column and store
-        for ( int j=0; j<rowCount; ++j ) {
-            for ( int i=0; i<colCount; ++i ) {
-                double tmpValue = model()->data( model()->index( j, i, rootIndex() ) ).toDouble();
-                if ( tmpValue > 0 )
-                    sumValues += tmpValue;
-                if ( i == colCount-1 ) {
-                    sumValuesVector <<  sumValues ;
-                    sumValues = 0;
-                }
-            }
-        }
-        // calculate stacked percent value
-        for ( int i = 0; i<colCount; ++i ) {
-            double offset = spaceBetweenGroups;
-            for ( int j=0; j<rowCount ; ++j ) {
-                double value = 0, stackedValues = 0;
-                QPointF point, previousPoint;
-                QModelIndex index = model()->index( j, i, rootIndex() );
-                ThreeDBarAttributes tda = threeDBarAttributes( index );
-
-                if ( tda.isEnabled() ) {
-                    if ( barWidth > 0 )
-                        barWidth =  (width - ((offset+(tda.depth()))*rowCount))/ rowCount;
-                    if ( barWidth <= 0 ) {
-                        barWidth = 0;
-                        maxDepth = offset - ( width/rowCount);
-                    }
-                }
-                else
-                    barWidth = (ctx->rectangle().width() - (offset*rowCount))/ rowCount;
-
-                value = model()->data( index ).toDouble();
-                //calculate stacked percent value- we only take in account positives values for now.
-                for ( int k = i; k >= 0 ; --k ) {
-                    double val = model()->data( model()->index( j, k, rootIndex() ) ).toDouble();
-                    if ( val > 0)
-                        stackedValues += val;
-                }
-                point = coordinatePlane()->translate( QPointF( j,  stackedValues/sumValuesVector.at(j)* maxValue ) );
-                point.setX( point.x() + offset/2 );
-
-                previousPoint = coordinatePlane()->translate( QPointF( j, (stackedValues - value)/sumValuesVector.at(j)* maxValue ) );
-                const double barHeight = previousPoint.y() - point.y();
-
-                list.append( DataValueTextInfo( index, point, value ) );
-                paintBars( ctx, index, QRectF( point, QSizeF( barWidth, barHeight ) ), maxDepth );
-
-            }
-        }
-        break;
-    default:
-        Q_ASSERT_X ( false, "paint()",
-                     "Type item does not match a defined bar chart Type." );
+        // we just draw the first column for now
+        // for ( int column = 0; column < columnCount; ++column )
+        const double value = attributesModel()->data(
+            attributesModel()->index( row, 0, attributesModelRootIndex() ) ).toDouble();
+        BarInfo bar = {
+            1.0 + row, 0.0,
+            0.6,
+            value
+        };
+        drawBar2D ( bar, *ctx );
     }
 
-    DataValueTextInfoListIterator it( list );
-    while ( it.hasNext() ) {
-        const DataValueTextInfo& info = it.next();
-        paintDataValueText( ctx->painter(), info.index, info.pos, info.value );
-    }
+//     // first draw the grid
+//     //     drawGrid( ctx );
+//     // Calculate width
+//     QPointF boundLeft = coordinatePlane()->translate( dataBoundaries().first );
+//     QPointF boundRight = coordinatePlane()->translate( dataBoundaries().second );
+
+//     double width = boundRight.x() - boundLeft.x();
+//     //calculates and stores the values
+//     const int rowCount = d->attributesModel->rowCount(attributesModelRootIndex());
+//     const int colCount = d->attributesModel->columnCount(attributesModelRootIndex());
+//     DataValueTextInfoList list;
+//     BarAttributes ba = barAttributes( model()->index( 0, 0, rootIndex() ) );
+//     double maxValue = 0;
+//     double sumValues = 0;
+//     QVector <double > sumValuesVector;
+//     double barWidth = 0;
+//     double maxDepth = 0;
+//     double spaceBetweenBars = 0;
+//     double spaceBetweenGroups = 0;
+//     double groupWidth =  /*ctx->rectangle().width() / ( rowCount + 2 )*/ width/ (rowCount + 2);
+
+
+//     if ( ba.useFixedBarWidth() ) {
+//         barWidth = ba.fixedBarWidth();
+//         groupWidth += barWidth;
+
+//         // Pending Michel set a min and max value for the groupWidth related to the area.width
+//         // FixMe
+//         if ( groupWidth < 0 )
+//             groupWidth = 0;
+
+//         if ( groupWidth  * rowCount > ctx->rectangle().width() )
+//             groupWidth = ctx->rectangle().width() / rowCount;
+//     }
+
+//     // maxLimit: allow the space between bars to be larger until area.width() is covered by the groups.
+//     double maxLimit = rowCount * (groupWidth + ((colCount-1) * ba.fixedDataValueGap()) );
+
+//     //Pending Michel: FixMe
+//     if ( ba.useFixedDataValueGap() ) {
+//         if ( ctx->rectangle().width() > maxLimit )
+//             spaceBetweenBars += ba.fixedDataValueGap();
+//         else
+//             spaceBetweenBars = ((ctx->rectangle().width()/rowCount) - groupWidth)/(colCount-1);
+//     }
+
+//     //Pending Michel: FixMe
+//     if ( ba.useFixedValueBlockGap() )
+//         spaceBetweenGroups += ba.fixedValueBlockGap();
+
+//     calculateValueAndGapWidths( rowCount, colCount,groupWidth,
+//                                 barWidth, spaceBetweenBars, spaceBetweenGroups );
+
+//     // paint different bar types: Normal - Stacked - Percent
+//     switch ( type() )
+//     {
+//     case Bar2Diagram::Normal:
+//         // we paint the bars for all series next to each other, then move to the next value
+//         for ( int i=0; i<rowCount; ++i ) {
+//             double offset = -groupWidth/2 + spaceBetweenGroups/2;
+//             // case fixed data value gap - handles max and min limits as well
+//             if ( ba.useFixedDataValueGap() ) {
+//                 if ( spaceBetweenBars > 0 ) {
+//                     if ( ctx->rectangle().width() > maxLimit )
+//                         offset -= ba.fixedDataValueGap();
+//                     else
+// 			offset -= ((ctx->rectangle().width()/rowCount) - groupWidth)/(colCount-1);
+
+//                 } else {
+//                     //allow reducing the gap until the bars are displayed next to each other - null gap
+//                     offset += barWidth/2;
+//                 }
+//             }
+
+//             for ( int j=0; j< colCount; ++j ) {
+//                 // paint one group
+//                 const double value = d->attributesModel->data( d->attributesModel->index( i, j, attributesModelRootIndex() ) ).toDouble();
+//                 QPointF topPoint = coordinatePlane()->translate( QPointF( i + 0.5, value ) );
+//                 QPointF bottomPoint = coordinatePlane()->translate( QPointF( i, 0 ) );
+//                 const double barHeight = bottomPoint.y() - topPoint.y();
+//                 topPoint.setX( topPoint.x() + offset );
+//                 //PENDING Michel: FIXME barWidth
+//                 QModelIndex index = model()->index( i, j, rootIndex() );
+//                 list.append( DataValueTextInfo( index, topPoint, value ) );
+//                 paintBars( ctx, index, QRectF( topPoint, QSizeF( barWidth, barHeight ) ), maxDepth );
+
+//                 offset += barWidth + spaceBetweenBars;
+//             }
+//         }
+//         break;
+//     case Bar2Diagram::Stacked:
+//         for ( int i = 0; i<colCount; ++i ) {
+//             double offset = spaceBetweenGroups;
+//             for ( int j = 0; j< rowCount; ++j ) {
+//                 QModelIndex index = model()->index( j, i, rootIndex() );
+//                 ThreeDBarAttributes tda = threeDBarAttributes( index );
+//                 double value = 0, stackedValues = 0;
+//                 QPointF point, previousPoint;
+
+//                 if ( tda.isEnabled() ) {
+//                     if ( barWidth > 0 )
+//                         barWidth =  (width - ((offset+(tda.depth()))*rowCount))/ rowCount;
+//                     if ( barWidth <= 0 ) {
+//                         barWidth = 0;
+//                         maxDepth = offset - (width/rowCount);
+//                     }
+//                 } else
+//                     barWidth =  (ctx->rectangle().width() - (offset*rowCount))/ rowCount ;
+
+//                 value = model()->data( index ).toDouble();
+//                 for ( int k = i; k >= 0 ; --k )
+//                     stackedValues += model()->data( model()->index( j, k, rootIndex() ) ).toDouble();
+//                 point = coordinatePlane()->translate( QPointF( j, stackedValues ) );
+//                 point.setX( point.x() + offset/2 );
+//                 previousPoint = coordinatePlane()->translate( QPointF( j, stackedValues - value ) );
+//                 const double barHeight = previousPoint.y() - point.y();
+//                 list.append( DataValueTextInfo( index, point, value ) );
+//                 paintBars( ctx, index, QRectF( point, QSizeF( barWidth , barHeight ) ), maxDepth );
+//             }
+
+//         }
+//         break;
+//     case Bar2Diagram::Percent:
+//         // search for ordinate max value or 100 %
+//         for ( int i=0; i<colCount; ++i ) {
+//             for ( int j=0; j< rowCount; ++j ) {
+//                 double value = model()->data( model()->index( j, i, rootIndex() ) ).toDouble();
+//                 maxValue = qMax( maxValue, value );
+//             }
+//         }
+//         //calculate sum of values for each column and store
+//         for ( int j=0; j<rowCount; ++j ) {
+//             for ( int i=0; i<colCount; ++i ) {
+//                 double tmpValue = model()->data( model()->index( j, i, rootIndex() ) ).toDouble();
+//                 if ( tmpValue > 0 )
+//                     sumValues += tmpValue;
+//                 if ( i == colCount-1 ) {
+//                     sumValuesVector <<  sumValues ;
+//                     sumValues = 0;
+//                 }
+//             }
+//         }
+//         // calculate stacked percent value
+//         for ( int i = 0; i<colCount; ++i ) {
+//             double offset = spaceBetweenGroups;
+//             for ( int j=0; j<rowCount ; ++j ) {
+//                 double value = 0, stackedValues = 0;
+//                 QPointF point, previousPoint;
+//                 QModelIndex index = model()->index( j, i, rootIndex() );
+//                 ThreeDBarAttributes tda = threeDBarAttributes( index );
+
+//                 if ( tda.isEnabled() ) {
+//                     if ( barWidth > 0 )
+//                         barWidth =  (width - ((offset+(tda.depth()))*rowCount))/ rowCount;
+//                     if ( barWidth <= 0 ) {
+//                         barWidth = 0;
+//                         maxDepth = offset - ( width/rowCount);
+//                     }
+//                 }
+//                 else
+//                     barWidth = (ctx->rectangle().width() - (offset*rowCount))/ rowCount;
+
+//                 value = model()->data( index ).toDouble();
+//                 //calculate stacked percent value- we only take in account positives values for now.
+//                 for ( int k = i; k >= 0 ; --k ) {
+//                     double val = model()->data( model()->index( j, k, rootIndex() ) ).toDouble();
+//                     if ( val > 0)
+//                         stackedValues += val;
+//                 }
+//                 point = coordinatePlane()->translate( QPointF( j,  stackedValues/sumValuesVector.at(j)* maxValue ) );
+//                 point.setX( point.x() + offset/2 );
+
+//                 previousPoint = coordinatePlane()->translate( QPointF( j, (stackedValues - value)/sumValuesVector.at(j)* maxValue ) );
+//                 const double barHeight = previousPoint.y() - point.y();
+
+//                 list.append( DataValueTextInfo( index, point, value ) );
+//                 paintBars( ctx, index, QRectF( point, QSizeF( barWidth, barHeight ) ), maxDepth );
+
+//             }
+//         }
+//         break;
+//     default:
+//         Q_ASSERT_X ( false, "paint()",
+//                      "Type item does not match a defined bar chart Type." );
+//     }
+//     */
+
+//     DataValueTextInfoListIterator it( list );
+//     while ( it.hasNext() ) {
+//         const DataValueTextInfo& info = it.next();
+//         paintDataValueText( ctx->painter(), info.index, info.pos, info.value );
+//     }
 }
 
 void Bar2Diagram::paintBars( PaintContext* ctx, const QModelIndex& index, const QRectF& bar, double& maxDepth )
@@ -561,6 +595,28 @@ const int Bar2Diagram::numberOfAbscissaSegments () const
 const int Bar2Diagram::numberOfOrdinateSegments () const
 {
     return d->attributesModel->columnCount(attributesModelRootIndex());
+}
+
+void Bar2Diagram::drawBar2D ( const BarInfo& bar,  PaintContext& ctx )
+{
+    // we will draw using the new 3D enabled Coordinate Plane:
+    CoordinatePlane* plane = dynamic_cast<CoordinatePlane*> ( coordinatePlane() );
+    Q_ASSERT ( plane );
+
+    const QPointF bottomLeft ( - bar.clientBarWidth/2.0 + bar.clientXCenter, bar.clientYNull );
+    const QPointF bottomRight ( bar.clientBarWidth/2.0 + bar.clientXCenter, bar.clientYNull );
+    const QPointF topLeft ( bottomLeft.x(), bar.clientYNull + bar.clientBarHeight );
+    const QPointF topRight( bottomRight.x(), bar.clientYNull + bar.clientBarHeight );
+    const QSizeF barSize ( plane->translateDistance ( bottomRight, bottomLeft ),
+                           plane->translateDistance ( topRight, bottomRight ) );
+
+    QColor barColor ( "black" ); // a decent reminder to put the brush
+                                 // attibute in
+    barColor.setAlphaF ( 0.75 );
+
+    QRectF barRect ( plane->translate ( topLeft ), barSize );
+
+    ctx.painter()->drawRect ( barRect );
 }
 
 #include "BarDiagram.moc"

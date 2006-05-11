@@ -11,6 +11,7 @@ class QPainter;
 namespace KDChart {
 
     class ModelDataCache;
+    class BarInfo;
 
     class Bar2Diagram : public AbstractCartesianDiagram
     {
@@ -64,6 +65,7 @@ namespace KDChart {
         void paintEvent ( QPaintEvent* );
 
     private:
+        void drawBar2D ( const BarInfo&, PaintContext& );
         void paintBars( PaintContext* ctx, const QModelIndex& index, const QRectF& bar, double& maxDepth );
         void calculateValueAndGapWidths( int rowCount, int colCount,
                                          double groupWidth,
