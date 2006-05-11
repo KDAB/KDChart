@@ -26,36 +26,40 @@
 #ifndef KDCHARTBARDIAGRAM_P_H
 #define KDCHARTBARDIAGRAM_P_H
 
+#include "KDChartAttributesModel.h"
 #include "KDChartAbstractCartesianDiagram_p.h"
 
 namespace KDChart {
 
-class Bar2Diagram::Private : public AbstractCartesianDiagram::Private
-{
-    friend class Bar2Diagram;
-public:
-    Private();
-    ~Private();
+    class ModelDataCache;
 
-    void calculateValueAndGapWidths( int rowCount, int colCount,
-                                     double groupWidth,
-                                     double& barWidth,
-                                     double& spaceBetweenBars,
-                                     double& spaceBetweenGroups );
+    class Bar2Diagram::Private : public AbstractCartesianDiagram::Private
+    {
+        friend class Bar2Diagram;
+    public:
+        Private();
+        ~Private();
 
-    BarType barType;
-private:
-    double maxDepth;
-};
+        void calculateValueAndGapWidths( int rowCount, int colCount,
+                                         double groupWidth,
+                                         double& barWidth,
+                                         double& spaceBetweenBars,
+                                         double& spaceBetweenGroups );
 
-inline Bar2Diagram::Bar2Diagram( Private * p, CartesianCoordinatePlane* plane )
-    : AbstractCartesianDiagram( p, plane ) { init(); }
-inline Bar2Diagram::Private * Bar2Diagram::d_func()
-{ return static_cast<Private*>( AbstractCartesianDiagram::d_func() ); }
-inline const Bar2Diagram::Private * Bar2Diagram::d_func() const
-{ return static_cast<const Private*>( AbstractCartesianDiagram::d_func() ); }
+        BarType barType;
+        ModelDataCache* modelDataCache;
+    private:
+        double maxDepth;
+
+    };
+
+    inline Bar2Diagram::Bar2Diagram( Private * p, CartesianCoordinatePlane* plane )
+        : AbstractCartesianDiagram( p, plane ) { init(); }
+    inline Bar2Diagram::Private * Bar2Diagram::d_func()
+    { return static_cast<Private*>( AbstractCartesianDiagram::d_func() ); }
+    inline const Bar2Diagram::Private * Bar2Diagram::d_func() const
+    { return static_cast<const Private*>( AbstractCartesianDiagram::d_func() ); }
 
 }
 
 #endif /* KDCHARTBARDIAGRAM_P_H */
-

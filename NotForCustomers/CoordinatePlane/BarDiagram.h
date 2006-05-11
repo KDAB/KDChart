@@ -10,12 +10,16 @@ class QPainter;
 
 namespace KDChart {
 
+    class ModelDataCache;
+
     class Bar2Diagram : public AbstractCartesianDiagram
     {
         Q_OBJECT;
 
         Q_DISABLE_COPY( Bar2Diagram );
         KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( Bar2Diagram, CartesianCoordinatePlane * );
+
+        friend class ModelDataCache;
 
     public:
         explicit Bar2Diagram( CartesianCoordinatePlane* plane = 0 );
@@ -28,6 +32,7 @@ namespace KDChart {
                        Percent,
                        Rows };
 
+        void setModel ( QAbstractItemModel* model );
         void setType( BarType type );
         BarType type() const;
 
@@ -54,23 +59,6 @@ namespace KDChart {
 
         void paint ( PaintContext* paintContext );
         void resize ( const QSizeF& area );
-
-#if 0
-        // FIXME merge with 3DAttributes?
-        void setThreeDimensionalBars( bool threeDBars );
-        bool threeDimensionalBars() const;
-
-        void setThreeDimensionalBarsShadowColors( bool shadow );
-        bool threeDimensionalBarsShadowColors() const;
-
-        void setThreeDimensionalBarAngle( uint angle );
-        uint threeDimensionalBarAngle() const;
-
-        void setThreeDimensionalBarDepth( double depth );
-        double threeDimensionalBarDepth() const;
-
-#endif
-
 
     protected:
         void paintEvent ( QPaintEvent* );
