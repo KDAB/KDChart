@@ -69,10 +69,12 @@ public:
     const QPair<QPointF,  QPointF>& dataBoundaries()
     {   // FIXME implement for other chart types than normal,  this is
         // just a demo :-)
+        Q_ASSERT_X ( diagram()->type() == Bar2Diagram::Normal, "ModelDataCache",
+                     "sorry, not implemented: other types than Normal" );
 
 #ifdef DEBUG_HIT_COUNT
         static int hitCount;
-        ++hitCount;
+        static int missCount;
 #endif
         if ( m_cachedDataBoundariesValid == false )
         {
@@ -81,39 +83,45 @@ public:
             // ----- calculate model data bounds:
             QModelIndex root = diagram()->rootIndex();
             QAbstractItemModel* model = diagram()->model();
-            AttributesModel* attributesModel = diagram()->attributesModel();
+            if ( model )
+            {
+                AttributesModel* attributesModel = diagram()->attributesModel();
+                Q_ASSERT ( attributesModel && "attributes model should always be valid" );
 
-            Q_ASSERT ( model && "should have a model if the root index is valid" );
-            Q_ASSERT ( attributesModel && "attributes model should always be valid" );
+                const int rowCount = model->rowCount( root );
+                const int columnCount = model->columnCount ( root );
+                double xMin = 0;
+                double xMax = rowCount;
+                double yMin = 0;
+                double yMax = 0;
 
-            const int rowCount = model->rowCount( root );
-            const int columnCount = model->columnCount ( root );
-            double xMin = 0;
-            double xMax = rowCount;
-            double yMin = 0;
-            double yMax = 0;
-
-            for ( int i=0; i<columnCount; ++i ) {
-                for ( int j=0; j< rowCount; ++j ) {
-                    QModelIndex index = attributesModel->index( j, i, diagram()->attributesModelRootIndex() );
-                    double value = attributesModel->data( index ).toDouble();
+                for ( int i=0; i<columnCount; ++i ) {
+                    for ( int j=0; j< rowCount; ++j ) {
+                        QModelIndex index = attributesModel->index( j, i, diagram()->attributesModelRootIndex() );
+                        double value = attributesModel->data( index ).toDouble();
                     yMin = qMin( yMin, value );
                     yMax = qMax( yMax, value );
+                    }
                 }
-            }
-            m_cachedDataBoundaries = QPair <QPointF, QPointF> (
-                QPointF( xMin, yMin ), QPointF( xMax, yMax ) );
+                m_cachedDataBoundaries = QPair <QPointF, QPointF> (
+                    QPointF( xMin, yMin ), QPointF( xMax, yMax ) );
+            } // else: keep the empty range
 
             //       take note that the cache is valid:
             m_cachedDataBoundariesValid = true;
 #ifdef DEBUG_HIT_COUNT
-            hitCount = 0;
+            ++missCount;
 #endif
         }
+#ifdef DEBUG_HIT_COUNT
+        else {
+            ++hitCount;
+        }
+#endif
 
 #ifdef DEBUG_HIT_COUNT
         qDebug() << "ModelDataCache::dataBoundaries: returning " << m_cachedDataBoundaries
-                 << " (" << hitCount << " cache hits)";
+                 << " (cache hit ratio: " << ( 1.0*hitCount ) / missCount << " hits/miss)";
 #endif
         return m_cachedDataBoundaries;
     }
@@ -170,7 +178,7 @@ Bar2Diagram::Bar2Diagram( CartesianCoordinatePlane* parent ) :
 void Bar2Diagram::init()
 {
     d->barType = Bar2Diagram::Normal;
-    d->modelDataCache = 0;
+    d->modelDataCache = new ModelDataCache ( this );
 }
 
 Bar2Diagram::~Bar2Diagram()
@@ -255,99 +263,7 @@ ThreeDBarAttributes Bar2Diagram::threeDBarAttributes( const QModelIndex & index 
 
 const QPair<QPointF, QPointF> Bar2Diagram::dataBoundaries () const
 {
-    if ( d->modelDataCache )
-    {
-        return d->modelDataCache->dataBoundaries();
-    } else {
-        return QPair<QPointF, QPointF>( QPointF( 0, 0 ), QPointF( 0, 0 ) );
-    }
-
-//     // FIXME cache values and reset on model changes:
-//     if ( !checkInvariants() ) return QPair<QPointF, QPointF>( QPointF( 0, 0 ), QPointF( 0, 0 ) );
-
-//     const int rowCount = attributesModel()->rowCount(attributesModelRootIndex());
-//     const int colCount = attributesModel()->columnCount(attributesModelRootIndex());
-
-//     double xMin = 0;
-//     double xMax = rowCount;
-//     double yMin = 0, yMax = 0;
-//     ThreeDBarAttributes tda;
-
-//     // calculate boundaries for  different line types Normal - Stacked - Percent - Default Normal
-//     switch ( type() )
-//     {
-
-//     case Bar2Diagram::Normal:
-//         for ( int i=0; i<colCount; ++i ) {
-//             for ( int j=0; j< rowCount; ++j ) {
-//                 double value = d->attributesModel->data( d->attributesModel->index( j, i, attributesModelRootIndex() ) ).toDouble();
-//                 yMin = qMin( yMin, value );
-//                 yMax = qMax( yMax, value );
-
-//                 tda = threeDBarAttributes( model()->index( j, i, rootIndex() ) );
-//             }
-//         }
-//         break;
-//     case Bar2Diagram::Stacked:
-//         for ( int j=0; j< rowCount; ++j ) {
-//             // calculate sum of values per column - Find out stacked Min/Max
-//             double stackedValues = 0;
-//             for ( int i=0; i<colCount ; ++i ) {
-//                 QModelIndex idx = model()->index( j, i, rootIndex() );
-//                 stackedValues +=  model()->data( idx ).toDouble();
-//                 yMin = qMin( yMin, stackedValues);
-//                 yMax = qMax( yMax, stackedValues);
-//                 tda = threeDBarAttributes( idx );
-//             }
-//         }
-//         break;
-//     case Bar2Diagram::Percent:
-//         for ( int i=0; i<colCount; ++i ) {
-//             for ( int j=0; j< rowCount; ++j ) {
-//                 // Ordinate should begin at 0 the max value being the 100% pos
-//                 QModelIndex idx = model()->index( j, i, rootIndex() );
-//                 double value = model()->data( idx ).toDouble();
-//                 yMax = qMax( yMax, value );
-//                 tda = threeDBarAttributes( idx );
-//             }
-//         }
-//         break;
-
-//     default:
-//         Q_ASSERT_X ( false, "dataBoundaries()",
-//                      "Type item does not match a defined bar chart Type." );
-//     }
-
-//     QPointF bottomLeft ( QPointF( xMin, yMin ) );
-//     QPointF topRight ( QPointF( xMax, yMax ) );
-
-// /*  we do not have to add space for 3D anymore, we just need to tell the
-//     coordinate plane that we do use the Z direction - later:
-
-//     if ( tda.isEnabled() ) {
-//     double percentx, percenty;
-//     //threeDBoundaries calculate a depth percent value and add it
-//     QPointF pTRTranslated = coordinatePlane()->translate( topRight );
-//     QPointF pBLTranslated = coordinatePlane()->translate( bottomLeft );
-//     //reserve some plane space for the top of the threeD bars
-//     //Pending Michel: fixme 4 - 8?
-//     if ( d->maxDepth )
-//     tda.setDepth( d->maxDepth );
-//     if ( type() == Bar2Diagram::Normal ) {
-//     percentx = ((tda.depth())/ pTRTranslated.x());
-//     percenty = ((tda.depth())/ pBLTranslated.y());
-//     } else if ( type() == Bar2Diagram::Stacked ){
-//     percentx = ((tda.depth())/ pTRTranslated.x());
-//     percenty = ((tda.depth()*8) / pBLTranslated.y());
-//     } else {
-//     percentx = ((tda.depth())/ pTRTranslated.x());
-//     percenty = ((tda.depth()*4)/ pBLTranslated.y());
-//     }
-//     topRight.setX( topRight.x() + percentx);
-//     topRight.setY( topRight.y() + percenty);
-//     }
-// */
-//     return QPair<QPointF, QPointF> ( bottomLeft,  topRight );
+    return d->modelDataCache->dataBoundaries();
 }
 
 void Bar2Diagram::paintEvent ( QPaintEvent*)
