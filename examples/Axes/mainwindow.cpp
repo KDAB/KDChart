@@ -65,10 +65,10 @@ MainWindow::MainWindow( QWidget* parent ) :
     yAxis->setPosition ( KDChart::CartesianAxis::Left );
     axisTop->setPosition( KDChart::CartesianAxis::Top );
     axisRight->setPosition( KDChart::CartesianAxis::Right );
-    m_lines->addAxes( xAxis );
-    m_lines->addAxes( yAxis );
-    m_lines->addAxes( axisTop );
-    m_lines->addAxes( axisRight );
+    m_lines->addAxis( xAxis );
+    m_lines->addAxis( yAxis );
+    m_lines->addAxis( axisTop );
+    m_lines->addAxis( axisRight );
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
 
     // Set up the legend

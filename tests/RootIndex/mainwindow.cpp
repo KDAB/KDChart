@@ -98,7 +98,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     yAxis2->setPosition ( KDChart::CartesianAxis::Right );
 
     // explicitely add it to the second diagram, we want to share it
-    m_bars->addAxes( xAxis );
+    m_bars->addAxis( xAxis );
 
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
     plane->replaceDiagram( m_bars );

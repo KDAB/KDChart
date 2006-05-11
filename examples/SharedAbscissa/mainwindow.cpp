@@ -63,7 +63,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     yAxis->setPosition ( KDChart::CartesianAxis::Left );
     yAxis2->setPosition ( KDChart::CartesianAxis::Right );
 
-    m_lines2->addAxes( xAxis );
+    m_lines2->addAxis( xAxis );
 
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
     plane->replaceDiagram( m_lines2 );

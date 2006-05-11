@@ -45,7 +45,7 @@ CartesianAxis::CartesianAxis ( AbstractCartesianDiagram* parent )
     : AbstractAxis ( new Private(), parent )
 {
     init();
-    parent->addAxes( this );
+    parent->addAxis( this );
 }
 
 CartesianAxis::~CartesianAxis ()

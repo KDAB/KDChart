@@ -51,7 +51,7 @@ AbstractCartesianDiagram::AbstractCartesianDiagram ( CartesianCoordinatePlane* p
 {
 }
 
-void AbstractCartesianDiagram::addAxes( CartesianAxis *axis )
+void AbstractCartesianDiagram::addAxis( CartesianAxis *axis )
 {
     d->axesList.append( axis );
     // Hack alert. Internally we pretend that the axes are owned by the plane.
