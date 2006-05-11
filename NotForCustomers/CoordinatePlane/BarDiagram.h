@@ -66,7 +66,6 @@ namespace KDChart {
 
     private:
         void drawBar2D ( const BarInfo&, PaintContext& );
-        void paintBars( PaintContext* ctx, const QModelIndex& index, const QRectF& bar, double& maxDepth );
         void calculateValueAndGapWidths( int rowCount, int colCount,
                                          double groupWidth,
                                          double& barWidth,

@@ -9,7 +9,7 @@
 
 int main ( int argc,  char** argv )
 {
-    const int NumberOfColumns = 3;
+    const int NumberOfColumns = 5;
     const int NumberOfRows = 20;
 
     QApplication app( argc,  argv );
@@ -30,10 +30,16 @@ int main ( int argc,  char** argv )
                 value = row + 1;
                 break;
             case 1:
-                value = NumberOfRows - row;
+                value = NumberOfRows / ( row + 1 );
                 break;
             case 2:
+                value = NumberOfRows - row;
+                break;
+            case 3:
                 value = NumberOfRows / 2;
+                break;
+            case 4:
+                value = NumberOfRows / ( NumberOfRows - row );
                 break;
             }
             model.setData ( index, QVariant( value) );

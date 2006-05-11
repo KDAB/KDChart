@@ -329,18 +329,23 @@ void Bar2Diagram::paint( PaintContext* ctx )
     // ----- set up the bars:
     const int rowCount = attributesModel()->rowCount(attributesModelRootIndex());
     const int columnCount = attributesModel()->columnCount(attributesModelRootIndex());
+
+    const double clientTotalBarWidth = 0.6;
+    const double clientBarGap = ( 1.0 - clientTotalBarWidth ) / ( 2 + columnCount - 1 );
+    const double clientBarWidth = clientTotalBarWidth / columnCount;
     for ( int row = 0; row < rowCount; ++row )
     {
-        // we just draw the first column for now
-        // for ( int column = 0; column < columnCount; ++column )
-        const double value = attributesModel()->data(
-            attributesModel()->index( row, 0, attributesModelRootIndex() ) ).toDouble();
-        BarInfo bar = {
-            1.0 + row, 0.0,
-            0.6,
-            value
-        };
-        drawBar2D ( bar, *ctx );
+        for ( int column = 0; column < columnCount; ++column )
+        {
+            const double value = attributesModel()->data(
+            attributesModel()->index( row, column, attributesModelRootIndex() ) ).toDouble();
+            BarInfo bar = {
+                1.0 + row - 0.5 + clientBarGap + column * ( clientBarWidth + clientBarGap ) + clientBarWidth / 2, 0.0,
+                clientBarWidth,
+                value
+            };
+            drawBar2D ( bar, *ctx );
+        }
     }
 
 //     // first draw the grid
@@ -537,52 +542,6 @@ void Bar2Diagram::paint( PaintContext* ctx )
 //     }
 }
 
-void Bar2Diagram::paintBars( PaintContext* ctx, const QModelIndex& index, const QRectF& bar, double& maxDepth )
-{
-    QRectF isoRect;
-    QPolygonF topPoints, sidePoints;
-    ThreeDBarAttributes tda = threeDBarAttributes( index );
-    double usedDepth;
-    //Pending Michel: configure threeDBrush settings - shadowColor etc...
-    QBrush indexBrush ( brush( index ) );
-    QPen indexPen( pen( index ) );
-    PainterSaver painterSaver( ctx->painter() );
-    ctx->painter()->setRenderHint ( QPainter::Antialiasing );
-    ctx->painter()->setBrush( indexBrush );
-    ctx->painter()->setPen( indexPen );
-    if ( tda.isEnabled() ) {
-        if ( maxDepth )
-            tda.setDepth( -maxDepth );
-        QPointF boundRight = coordinatePlane()->translate( dataBoundaries().second );
-        //fixme adjust the painting to reasonable depth value
-        switch ( type() )
-        {
-        case Bar2Diagram::Normal:
-            usedDepth = tda.depth()/4;
-            break;
-        case Bar2Diagram::Stacked:
-            usedDepth = tda.depth();
-            break;
-        case Bar2Diagram::Percent:
-            usedDepth = tda.depth();
-            break;
-	default:
-            Q_ASSERT_X ( false, "dataBoundaries()",
-                         "Type item does not match a defined bar chart Type." );
-        }
-        isoRect =  bar.translated( usedDepth, -usedDepth );
-        ctx->painter()->drawRect( isoRect );
-        topPoints << bar.topLeft() << bar.topRight() << isoRect.topRight() << isoRect.topLeft();
-        ctx->painter()->drawPolygon( topPoints );
-        sidePoints << bar.topRight() << isoRect.topRight() << isoRect.bottomRight() << bar.bottomRight();
-        ctx->painter()->drawPolygon( sidePoints );
-    }
-
-    ctx->painter()->drawRect( bar );
-    // reset
-    d->maxDepth = tda.depth();
-}
-
 void Bar2Diagram::resize ( const QSizeF& )
 {
 }
@@ -616,6 +575,7 @@ void Bar2Diagram::drawBar2D ( const BarInfo& bar,  PaintContext& ctx )
 
     QRectF barRect ( plane->translate ( topLeft ), barSize );
 
+    ctx.painter()->setBrush ( barColor );
     ctx.painter()->drawRect ( barRect );
 }
 
