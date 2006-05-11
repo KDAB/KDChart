@@ -9,7 +9,7 @@
 
 int main ( int argc,  char** argv )
 {
-    const int NumberOfColumns = 5;
+    const int NumberOfColumns = 2;
     const int NumberOfRows = 20;
 
     QApplication app( argc,  argv );

@@ -66,6 +66,7 @@ namespace KDChart {
 
     private:
         void drawBar2D ( const BarInfo&, PaintContext& );
+        void drawBar3D ( const BarInfo&, PaintContext& );
         void calculateValueAndGapWidths( int rowCount, int colCount,
                                          double groupWidth,
                                          double& barWidth,

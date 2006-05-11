@@ -344,7 +344,12 @@ void Bar2Diagram::paint( PaintContext* ctx )
                 clientBarWidth,
                 value
             };
-            drawBar2D ( bar, *ctx );
+            if ( column % 2 )
+            {
+                drawBar2D ( bar, *ctx );
+            } else {
+                drawBar3D ( bar, *ctx );
+            }
         }
     }
 
@@ -561,6 +566,8 @@ void Bar2Diagram::drawBar2D ( const BarInfo& bar,  PaintContext& ctx )
     // we will draw using the new 3D enabled Coordinate Plane:
     CoordinatePlane* plane = dynamic_cast<CoordinatePlane*> ( coordinatePlane() );
     Q_ASSERT ( plane );
+    // FIXME remove when the std cartesian coordinate plane supports those
+    // operations ^^^
 
     const QPointF bottomLeft ( - bar.clientBarWidth/2.0 + bar.clientXCenter, bar.clientYNull );
     const QPointF bottomRight ( bar.clientBarWidth/2.0 + bar.clientXCenter, bar.clientYNull );
@@ -577,6 +584,77 @@ void Bar2Diagram::drawBar2D ( const BarInfo& bar,  PaintContext& ctx )
 
     ctx.painter()->setBrush ( barColor );
     ctx.painter()->drawRect ( barRect );
+}
+
+void Bar2Diagram::drawBar3D ( const BarInfo& bar,   PaintContext& ctx )
+{
+    // we will draw using the new 3D enabled Coordinate Plane:
+    CoordinatePlane* plane = dynamic_cast<CoordinatePlane*> ( coordinatePlane() );
+    Q_ASSERT ( plane );
+    // FIXME remove when the std cartesian coordinate plane supports those
+    // operations ^^^
+
+    QPainter& painter ( *ctx.painter() ); // this should be optimized away,
+                                          // right?
+    PainterSaver saver ( &painter );
+    painter.setRenderHint( QPainter::Antialiasing );
+
+    const QPointF bottomLeft ( - bar.clientBarWidth/2.0 + bar.clientXCenter, bar.clientYNull );
+    const QPointF bottomRight ( bar.clientBarWidth/2.0 + bar.clientXCenter, bar.clientYNull );
+    const QPointF topLeft ( bottomLeft.x(), bar.clientYNull + bar.clientBarHeight );
+    const QPointF topRight( bottomRight.x(), bar.clientYNull + bar.clientBarHeight );
+    const QSizeF barSize ( plane->translateDistance ( bottomRight, bottomLeft ),
+                           plane->translateDistance ( topRight, bottomRight ) );
+
+    QColor barColor ( "green" );
+    barColor.setAlphaF ( 0.75 );
+
+    // draw the hidden lines (no fill color):
+    QVector<QLineF> lines;
+    lines.append( QLineF ( plane->translate ( bottomLeft, bar.clientYNull ),
+                           plane->translate ( bottomRight, bar.clientYNull ) ) );
+    lines.append( QLineF ( plane->translate ( bottomLeft, bar.clientYNull ),
+                           plane->translate ( bottomLeft, -bar.clientBarWidth ) ) );
+    lines.append( QLineF ( plane->translate ( bottomLeft, bar.clientYNull ),
+                           plane->translate( topLeft, bar.clientYNull ) ) );
+    ctx.painter()->setPen ( barColor.dark() );
+    ctx.painter()->drawLines ( lines );
+
+    { // right side plane:
+        QPointF points[4];
+        points[0] = plane->translate( bottomRight, bar.clientYNull );
+        points[1] = plane->translate( bottomRight, -bar.clientBarWidth );
+        points[2] = plane->translate( topRight, -bar.clientBarWidth );
+        points[3] = plane->translate( topRight, bar.clientYNull );
+
+        ctx.painter()->setPen( barColor.dark() );
+        ctx.painter()->setBrush ( barColor );
+        ctx.painter()->drawPolygon ( points, 4 );
+    }
+
+    { // top side plane:
+        QPointF points[4];
+        points[0] = plane->translate( topRight, bar.clientYNull );
+        points[1] = plane->translate( topRight, -bar.clientBarWidth );
+        points[2] = plane->translate( topLeft, -bar.clientBarWidth );
+        points[3] = plane->translate( topLeft, bar.clientYNull );
+
+        ctx.painter()->setPen( barColor.dark() );
+        ctx.painter()->setBrush ( barColor );
+        ctx.painter()->drawPolygon ( points, 4 );
+    }
+
+    { // front side plane:
+        QPointF points[4];
+        points[0] = plane->translate( topRight, -bar.clientBarWidth );
+        points[1] = plane->translate( topLeft, -bar.clientBarWidth );
+        points[2] = plane->translate( bottomLeft, -bar.clientBarWidth );
+        points[3] = plane->translate( bottomRight, -bar.clientBarWidth );
+
+        ctx.painter()->setPen( barColor.dark() );
+        ctx.painter()->setBrush ( barColor.light( 125 ) );
+        ctx.painter()->drawPolygon ( points, 4 );
+    }
 }
 
 #include "BarDiagram.moc"
