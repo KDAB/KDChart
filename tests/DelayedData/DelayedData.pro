@@ -10,8 +10,6 @@ DEPENDPATH += \
 
 LIBS        += -L$$KDCHART_PATH/lib -lkdchart -ltesttools
 
-
-
 unix {
   MOC_DIR = .moc
   OBJECTS_DIR = .obj
