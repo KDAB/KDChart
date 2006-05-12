@@ -37,7 +37,9 @@ namespace KDChart {
         friend class CartesianAxis;
 
     public:
-        Private() {};
+        Private( AbstractCartesianDiagram* parent_ )
+        :AbstractAxis::Private( parent_ )
+        {};
         ~Private() {};
 
     private:

@@ -31,21 +31,25 @@
 using namespace KDChart;
 
 
-AbstractAxis::Private::Private()
+AbstractAxis::Private::Private( AbstractDiagram* parent_ )
 {
     // PENDING(miroslav) Code from KDChartAxis::Private::Private goes here
+    parent = parent_;
+    observer = new DiagramObserver( parent_ );
 }
 
 
 AbstractAxis::Private::~Private()
 {
     // PENDING(miroslav) Code from KDChartAxis::Private::~Private goes here
+    delete observer;
+    observer = 0;
 }
 
 
 AbstractAxis::AbstractAxis ( AbstractDiagram* parent )
-    : AbstractArea( new Private(), parent )
-{   // FIXME decide internal structure, how to save parent
+    : AbstractArea( new Private( parent ), parent )
+{
     init();
 }
 
@@ -57,4 +61,6 @@ AbstractAxis::~AbstractAxis()
 
 void AbstractAxis::init()
 {
+    connect( d_func()->observer, SIGNAL( diagramDataChanged( AbstractDiagram *) ),
+             this, SLOT( update() ) );
 }

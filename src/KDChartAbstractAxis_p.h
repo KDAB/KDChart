@@ -29,6 +29,7 @@
 #include "KDChartAbstractArea_p.h"
 #include <KDChartTextAttributes.h>
 #include <KDChartAbstractDiagram.h>
+#include <KDChartDiagramObserver.h>
 
 
 namespace KDChart {
@@ -38,11 +39,12 @@ class AbstractAxis::Private : public AbstractArea::Private
     friend class AbstractAxis;
 
 public:
-    Private();
+    Private( AbstractDiagram* parent );
     ~Private();
 
     AbstractDiagram* diagram() const;
 
+    DiagramObserver* observer;
 private:
     AbstractDiagram* parent;
 };
@@ -51,7 +53,6 @@ private:
 inline AbstractAxis::AbstractAxis( Private * p, AbstractDiagram* parent_ )
     :  AbstractArea( p, parent_ )
 {
-    p->parent = parent_;
     init();
 }
 

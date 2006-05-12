@@ -42,7 +42,7 @@ using namespace KDChart;
 #define d (d_func())
 
 CartesianAxis::CartesianAxis ( AbstractCartesianDiagram* parent )
-    : AbstractAxis ( new Private(), parent )
+    : AbstractAxis ( new Private( parent ), parent )
 {
     init();
     parent->addAxis( this );
