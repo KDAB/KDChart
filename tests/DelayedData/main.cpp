@@ -1,6 +1,7 @@
 #include <QtGui>
 #include <KDChartChart>
 #include <KDChartBarDiagram>
+#include <KDChartCartesianAxis>
 #include <KDChartCartesianCoordinatePlane>
 
 class ChartWidget : public QWidget {
@@ -12,8 +13,17 @@ public:
     m_model.insertColumns( 0, 10, QModelIndex() );
     KDChart::BarDiagram* diagram = new KDChart::BarDiagram;
     diagram->setModel(&m_model);    
-    m_chart.coordinatePlane()->replaceDiagram(diagram);
 
+    KDChart::CartesianAxis* abcissa = new KDChart::CartesianAxis(diagram);
+    abcissa->setPosition( KDChart::CartesianAxis::Bottom );
+    KDChart::CartesianAxis* ordinate = new KDChart::CartesianAxis(diagram);
+    ordinate->setPosition( KDChart::CartesianAxis::Left );
+    diagram->addAxis(abcissa);
+    diagram->addAxis(ordinate);
+
+    // NOTE: If this is done before adding axes,
+    // the axes dont show up at all
+    m_chart.coordinatePlane()->replaceDiagram(diagram);
 
     m_button.setText( tr("Add data") );
     connect( &m_button, SIGNAL(clicked()),
