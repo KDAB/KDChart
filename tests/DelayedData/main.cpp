@@ -11,7 +11,7 @@ public:
   explicit ChartWidget(QWidget* parent=0)
     : QWidget(parent)
   {
-    m_model.insertColumns( 0, 10, QModelIndex() );
+    m_model.insertRows( 0, 0, QModelIndex() );
     KDChart::BarDiagram* diagram = new KDChart::BarDiagram;
     diagram->setModel(&m_model);    
 
@@ -39,30 +39,42 @@ public:
     // the axes dont show up at all
     m_chart.coordinatePlane()->replaceDiagram(diagram);
 
-    m_button.setText( tr("Add data") );
-    connect( &m_button, SIGNAL(clicked()),
-	     this, SLOT(addData()));
+    m_rowbutton.setText( tr("Add rows") );
+    m_colbutton.setText( tr("Add columns") );
+    connect( &m_rowbutton, SIGNAL(clicked()),
+	     this, SLOT(addRows()));
+    connect( &m_colbutton, SIGNAL(clicked()),
+	     this, SLOT(addCols()));
 
     QVBoxLayout* l = new QVBoxLayout(this);
     l->addWidget(&m_chart);
-    l->addWidget(&m_button);
+    l->addWidget(&m_rowbutton);
+    l->addWidget(&m_colbutton);
 
     setLayout(l);
   }
 
 private slots:
 
-  void addData()
+  void addRows()
   {
     m_model.insertRows(m_model.rowCount(),1);
-    for( int i = 0; i < 7; ++i ) {
-      m_model.setData( m_model.index(m_model.rowCount()-1, i), i );
+    for( int i = 0; i m_model.columnCount()< ; ++i ) {
+      m_model.setData( m_model.index(m_model.rowCount()-1,i), i );
+    }
+  }
+  void addCols()
+  {
+    m_model.insertColumns(m_model.columnCount(),1);
+    for( int i = 0; i < m_model.rowCount(); ++i ) {
+      m_model.setData( m_model.index(i,m_model.columnCount()-1), i );
     }
   }
 
 private:
   KDChart::Chart m_chart;
-  QPushButton m_button;
+  QPushButton m_rowbutton;
+  QPushButton m_colbutton;
   QStandardItemModel m_model;
 };
 
