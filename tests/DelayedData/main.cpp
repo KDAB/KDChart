@@ -3,6 +3,7 @@
 #include <KDChartBarDiagram>
 #include <KDChartCartesianAxis>
 #include <KDChartCartesianCoordinatePlane>
+#include <KDChartLegend>
 
 class ChartWidget : public QWidget {
   Q_OBJECT
@@ -13,6 +14,19 @@ public:
     m_model.insertColumns( 0, 10, QModelIndex() );
     KDChart::BarDiagram* diagram = new KDChart::BarDiagram;
     diagram->setModel(&m_model);    
+
+    KDChart::Legend* legend = new KDChart::Legend(diagram,diagram);
+    m_chart.addLegend(legend);
+
+    // The code below doesn't work, but it would 
+    // be nice if it did:
+#if 0
+    KDChart::Legend* legend = new KDChart::Legend;
+    legend->addDiagram(diagram1);
+    legend->addDiagram(diagram2);
+    ...
+    m_chart.addLegend(legend);
+#endif
 
     KDChart::CartesianAxis* abcissa = new KDChart::CartesianAxis(diagram);
     abcissa->setPosition( KDChart::CartesianAxis::Bottom );
@@ -41,7 +55,7 @@ private slots:
   void addData()
   {
     m_model.insertRows(m_model.rowCount(),1);
-    for( int i = 0; i < 10; ++i ) {
+    for( int i = 0; i < 7; ++i ) {
       m_model.setData( m_model.index(m_model.rowCount()-1, i), i );
     }
   }
