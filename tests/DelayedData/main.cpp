@@ -59,7 +59,7 @@ private slots:
   void addRows()
   {
     m_model.insertRows(m_model.rowCount(),1);
-    for( int i = 0; i m_model.columnCount()< ; ++i ) {
+    for( int i = 0; i < m_model.columnCount(); ++i ) {
       m_model.setData( m_model.index(m_model.rowCount()-1,i), i );
     }
   }
