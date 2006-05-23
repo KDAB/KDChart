@@ -54,6 +54,8 @@ namespace KDChart {
         virtual void addAxis( CartesianAxis * axis );
         virtual KDChart::CartesianAxisList axes () const;
 
+        virtual void setCoordinatePlane( AbstractCoordinatePlane* plane );
+
         virtual void setReferenceDiagram( AbstractCartesianDiagram* diagarm, const QPointF& offset = QPointF() );
         virtual AbstractCartesianDiagram* referenceDiagram() const;
         virtual QPointF referenceDiagramOffset() const;

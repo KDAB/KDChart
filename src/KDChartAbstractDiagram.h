@@ -129,7 +129,7 @@ namespace KDChart {
          * takes ownership.
          * @return The coordinate plane associated with the diagram.
          */
-        void setCoordinatePlane( AbstractCoordinatePlane* plane );
+        virtual void setCoordinatePlane( AbstractCoordinatePlane* plane );
 
 
         /**
