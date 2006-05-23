@@ -272,7 +272,7 @@ void Chart::Private::layoutLegends()
                                 if( info.hAlign == Qt::AlignHCenter )
                                     midLayout->addWidget( info.legend, 0, Qt::AlignHCenter );
                             }
-                            gridLayout->addLayout( leftLayout, 0, 1, Qt::AlignHCenter|Qt::AlignTop );
+                            gridLayout->addLayout( midLayout, 0, 1, Qt::AlignHCenter|Qt::AlignTop );
 
                             QVBoxLayout* rightLayout = new QVBoxLayout();
                             for (int i = 0; i < count; ++i) {
@@ -280,7 +280,7 @@ void Chart::Private::layoutLegends()
                                 if( info.hAlign == Qt::AlignRight )
                                     rightLayout->addWidget( info.legend, 0, Qt::AlignHCenter );
                             }
-                            gridLayout->addLayout( leftLayout, 0, 2, Qt::AlignRight|Qt::AlignTop );
+                            gridLayout->addLayout( rightLayout, 0, 2, Qt::AlignRight|Qt::AlignTop );
 
                         // middle of left side, or middle of right side:
                         }else{
