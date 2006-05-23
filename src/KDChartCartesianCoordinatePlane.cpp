@@ -276,6 +276,7 @@ void CartesianCoordinatePlane::layoutDiagrams()
     //      adapt diagram area to effect of isometric scaling:
     d->diagramArea.setTopLeft( translate ( dataBoundingRect.topLeft() ) );
     d->diagramArea.setBottomRight ( translate ( dataBoundingRect.bottomRight() ) );
+    update();
 }
 
 const QPointF CartesianCoordinatePlane::translate( const QPointF& diagramPoint ) const
