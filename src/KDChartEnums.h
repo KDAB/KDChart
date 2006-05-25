@@ -96,18 +96,18 @@ public:
       Values stored in relative measure always are interpreted as per-mille of a reference area's height (or width, resp.) depending on the orientation set for the KDChart::Measure.
 
       \li \c MeasureCalculationAbsolute Value set by setValue() is absolute, to be used unchanged.
+      \li \c MeasureCalculationRelative Value is relative, the reference area is specified by setReferenceArea(), and orientation specified by setOrientation().
       \li \c MeasureCalculationAuto Value is relative, KD Chart will automatically determine which reference area to use, and it will determine the orientation too.
       \li \c MeasureCalculationAutoArea Value is relative, Orientation is specified by setOrientation(), and KD Chart will automatically determine which reference area to use.
       \li \c MeasureCalculationAutoOrientation Value is relative, Area is specified by setReferenceArea(), and KD Chart will automatically determine which orientation to use.
-      \li \c MeasureCalculationArea Value is relative, the reference area is specified by setReferenceArea(), and orientation specified by setOrientation().
 
       \sa KDChart::Measure::setCalculationMode
       */
     enum MeasureCalculationMode { MeasureCalculationModeAbsolute,
+        MeasureCalculationModeRelative,
         MeasureCalculationModeAuto,
         MeasureCalculationModeAutoArea,
-        MeasureCalculationModeAutoOrientation,
-        MeasureCalculationModeArea };
+        MeasureCalculationModeAutoOrientation };
 
     /**
       Converts the specified measure calculation mode enum to a
@@ -126,8 +126,8 @@ public:
                 return QString::fromLatin1("MeasureCalculationModeAutoArea");
             case MeasureCalculationModeAutoOrientation:
                 return QString::fromLatin1("MeasureCalculationModeAutoOrientation");
-            case MeasureCalculationModeArea:
-                return QString::fromLatin1("MeasureCalculationModeArea");
+            case MeasureCalculationModeRelative:
+                return QString::fromLatin1("MeasureCalculationModeRelative");
             default: // should not happen
         qDebug( "Unknown measure calculation mode" );
         return QString::fromLatin1("JustOverwrite");
@@ -150,8 +150,8 @@ public:
           return MeasureCalculationModeAutoArea;
       if( string == QString::fromLatin1("MeasureCalculationModeAutoOrientation") )
           return MeasureCalculationModeAutoOrientation;
-      if( string == QString::fromLatin1("MeasureCalculationModeArea") )
-          return MeasureCalculationModeArea;
+      if( string == QString::fromLatin1("MeasureCalculationModeRelative") )
+          return MeasureCalculationModeRelative;
       // default, should not happen
       return MeasureCalculationModeAuto;
     }
