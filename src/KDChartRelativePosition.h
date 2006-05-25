@@ -34,6 +34,7 @@
 #include <Qt>
 #include "KDChartGlobal.h"
 #include "KDChartEnums.h"
+#include "KDChartMeasure.h"
 #include "KDChartPosition.h"
 
 class QDomDocumentFragment;
@@ -42,7 +43,6 @@ class QDomDocumentFragment;
 namespace KDChart {
 
     class AbstractArea;
-    class Measure;
 
 
 /**
@@ -62,7 +62,6 @@ class KDCHART_EXPORT RelativePosition
 public:
     RelativePosition();
     RelativePosition( const RelativePosition& );
-    RelativePosition &operator= ( const RelativePosition& );
 
     ~RelativePosition();
 
@@ -89,11 +88,12 @@ public:
     bool operator==( const RelativePosition& );
 
 private:
-    class Private;
-    Private * _d;
-    Private * d_func() { return _d; }
-    const Private * d_func() const { return _d; }
-
+    AbstractArea* m_area;
+    Position m_position;
+    Qt::Alignment m_alignment;
+    Measure m_horizontalPadding;
+    Measure m_verticalPadding;
+    int m_rotation;
 }; // End of class RelativePosition
 
 }

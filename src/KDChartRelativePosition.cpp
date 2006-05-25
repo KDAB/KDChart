@@ -25,69 +25,27 @@
 
 #include "KDChartRelativePosition.h"
 #include <QtXml/QDomDocumentFragment>
-#include <KDChartAbstractArea.h>
-#include <KDChartMeasure.h>
-#include <KDChartTextAttributes.h>
-#include <KDChartFrameAttributes.h>
-#include <KDChartBackgroundAttributes.h>
-
 
 namespace KDChart {
 
-
-#define d d_func()
-
-class RelativePosition::Private
-{
-    friend class RelativePosition;
-public:
-    Private();
-private:
-    AbstractArea* area;
-    Position position;
-    Qt::Alignment alignment;
-    Measure horizontalPadding;
-    Measure verticalPadding;
-    int rotation;
-};
-
-RelativePosition::Private::Private() :
-    area( 0 ),
-    position(),
-    alignment( Qt::AlignCenter ),
-    horizontalPadding(),
-    verticalPadding(),
-    rotation( 0 )
-{
-    //this line left empty intentionally
-}
-
-
 RelativePosition::RelativePosition()
-    : _d( new Private() )
+    : m_area(0),
+      m_alignment(Qt::AlignCenter),
+      m_rotation(0)
 {
     //this line left empty intentionally
 }
 
 RelativePosition::RelativePosition( const RelativePosition& r )
-    : _d( new Private( *r.d ) )
+    : m_area(0),
+      m_alignment(Qt::AlignCenter),
+      m_rotation(0)
 {
     //this line left empty intentionally
 }
 
-RelativePosition & RelativePosition::operator=( const RelativePosition& r )
-{
-    if( this == &r )
-        return *this;
-
-    *d = *r.d;
-
-    return *this;
-}
-
 RelativePosition::~RelativePosition()
 {
-    delete _d; _d = 0;
 }
 
 
@@ -116,62 +74,62 @@ QDomDocumentFragment RelativePosition::toXML() const
 
 void RelativePosition::setReferenceArea( AbstractArea* area )
 {
-    d->area = area;
+    m_area = area;
 }
 
 AbstractArea* RelativePosition::referenceArea() const
 {
-    return d->area;
+    return m_area;
 }
 
 void RelativePosition::setReferencePosition( const Position& position )
 {
-    d->position = position;
+    m_position = position;
 }
 
 Position RelativePosition::referencePosition() const
 {
-    return d->position;
+    return m_position;
 }
 
 void RelativePosition::setAlignment( Qt::Alignment flags )
 {
-    d->alignment = flags;
+    m_alignment = flags;
 }
 
 Qt::Alignment RelativePosition::alignment() const
 {
-    return d->alignment;
+    return m_alignment;
 }
 
 void RelativePosition::setHorizontalPadding( const Measure& padding )
 {
-    d->horizontalPadding = padding;
+    m_horizontalPadding = padding;
 }
 
 Measure RelativePosition::horizontalPadding() const
 {
-    return d->horizontalPadding;
+    return m_horizontalPadding;
 }
 
 void RelativePosition::setVerticalPadding( const Measure& padding )
 {
-    d->verticalPadding = padding;
+    m_verticalPadding = padding;
 }
 
 Measure RelativePosition::verticalPadding() const
 {
-    return d->verticalPadding;
+    return m_verticalPadding;
 }
 
 void RelativePosition::setRotation( int rotation )
 {
-    d->rotation = rotation;
+    m_rotation = rotation;
 }
 
 int RelativePosition::rotation() const
 {
-    return d->rotation;
+    return m_rotation;
 }
 
 }
