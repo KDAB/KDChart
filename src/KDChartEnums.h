@@ -95,9 +95,9 @@ public:
 
       Values stored in relative measure always are interpreted as per-mille of a reference area's height (or width, resp.) depending on the orientation set for the KDChart::Measure.
 
-      \li \c MeasureCalculationAbsolute Use the stored value without modifying it.
-      \li \c MeasureCalculationAuto Automatically determine which reference area is to be used.
-      \li \c MeasureCalculationArea Use a reference area that was specified by the user.
+      \li \c MeasureCalculationAbsolute Value set by setValue() is absolute, to be used unchanged.
+      \li \c MeasureCalculationAuto Value is relative, KD Chart will automatically determine which reference area to use.
+      \li \c MeasureCalculationArea Value is relative, the reference area is specified by setReferenceArea().
 
       \sa KDChart::Measure::setCalculationMode
       */
