@@ -30,6 +30,7 @@
 #ifndef KDCHARTFRAMEATTRIBUTES_H
 #define KDCHARTFRAMEATTRIBUTES_H
 
+#include <QDebug>
 #include <QMetaType>
 #include <QPen>
 #include "KDChartGlobal.h"
@@ -71,6 +72,10 @@ private:
 }; // End of class FrameAttributes
 
 }
+
+#if !defined(QT_NO_DEBUG_STREAM)
+KDCHART_EXPORT QDebug operator<<(QDebug, const KDChart::FrameAttributes& );
+#endif /* QT_NO_DEBUG_STREAM */
 
 Q_DECLARE_METATYPE( KDChart::FrameAttributes )
 

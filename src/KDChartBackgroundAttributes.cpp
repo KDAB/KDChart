@@ -135,20 +135,15 @@ QDomDocumentFragment BackgroundAttributes::toXML() const
     return QDomDocumentFragment();
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#if !defined(QT_NO_DEBUG_STREAM)
+QDebug operator<<(QDebug dbg, const KDChart::BackgroundAttributes& ba)
+{
+    dbg << "KDChart::BackgroundAttributes("
+	<< "visible="<<ba.isVisible()
+	<< "brush="<<ba.brush()
+	<< "pixmapmode="<<ba.pixmapMode()
+	<< "pixmap="<<ba.pixmap()
+	<< ")";
+    return dbg;
+}
+#endif /* QT_NO_DEBUG_STREAM */

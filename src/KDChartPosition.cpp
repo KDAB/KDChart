@@ -245,3 +245,12 @@ QDomDocumentFragment Position::toXML() const
 
 
 }
+
+#if !defined(QT_NO_DEBUG_STREAM)
+QDebug operator<<(QDebug dbg, const KDChart::Position& p )
+{
+    dbg << "KDChart::Position("
+	<< p.name() << ")";
+    return dbg;
+}
+#endif /* QT_NO_DEBUG_STREAM */

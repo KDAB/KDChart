@@ -111,7 +111,9 @@ private:
 
 }
 
-KDCHART_EXPORT QDebug& operator<<(QDebug&, const KDChart::DataValueAttributes& );
+#if !defined(QT_NO_DEBUG_STREAM)
+KDCHART_EXPORT QDebug operator<<(QDebug, const KDChart::DataValueAttributes& );
+#endif /* QT_NO_DEBUG_STREAM */
 
 Q_DECLARE_METATYPE( KDChart::DataValueAttributes )
 

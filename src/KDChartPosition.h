@@ -30,6 +30,7 @@
 #ifndef KDCHARTPOSITION_H
 #define KDCHARTPOSITION_H
 
+#include <QDebug>
 #include <Qt>
 #include <QStringList>
 #include "KDChartGlobal.h"
@@ -102,5 +103,8 @@ private:
 
 }
 
+#if !defined(QT_NO_DEBUG_STREAM)
+KDCHART_EXPORT QDebug operator<<(QDebug, const KDChart::Position& );
+#endif /* QT_NO_DEBUG_STREAM */
 
 #endif // KDCHARTPOSITION_H

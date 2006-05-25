@@ -30,6 +30,7 @@
 #ifndef KDCHARTREALTIVEPOSITION_H
 #define KDCHARTREALTIVEPOSITION_H
 
+#include <QDebug>
 #include <Qt>
 #include "KDChartGlobal.h"
 #include "KDChartEnums.h"
@@ -96,6 +97,10 @@ private:
 }; // End of class KDChartRelativePosition
 
 }
+
+#if !defined(QT_NO_DEBUG_STREAM)
+KDCHART_EXPORT QDebug operator<<(QDebug, const KDChart::KDChartRelativePosition& );
+#endif /* QT_NO_DEBUG_STREAM */
 
 
 #endif // KDCHARTREALTIVEPOSITION_H

@@ -30,6 +30,7 @@
 #ifndef KDCHARTTEXTATTRIBUTES_H
 #define KDCHARTTEXTATTRIBUTES_H
 
+#include <QDebug>
 #include <QMetaType>
 #include "KDChartGlobal.h"
 
@@ -93,6 +94,10 @@ private:
 }; // End of class TextAttributes
 
 }
+
+#if !defined(QT_NO_DEBUG_STREAM)
+KDCHART_EXPORT QDebug operator<<(QDebug, const KDChart::TextAttributes& );
+#endif /* QT_NO_DEBUG_STREAM */
 
 Q_DECLARE_METATYPE( KDChart::TextAttributes )
 

@@ -257,8 +257,22 @@ KDChartRelativePosition DataValueAttributes::positiveRelativePosition() const
     return d->positiveRelPos;
 }
 
-QDebug& operator<<(QDebug& dbg, const KDChart::DataValueAttributes& val )
+#if !defined(QT_NO_DEBUG_STREAM)
+QDebug operator<<(QDebug dbg, const KDChart::DataValueAttributes& val )
 {
-    dbg.nospace() << "KDChartRelativePosition DataValueAttributes("<<val.isVisible()<<")";
+    dbg << "KDChartRelativePosition DataValueAttributes("
+	<< "visible="<<val.isVisible()
+	<< "textattributes="<<val.textAttributes()
+	<< "frameattributes="<<val.frameAttributes()
+	<< "backgroundattributes="<<val.backgroundAttributes()
+	<< "decimaldigits="<<val.decimalDigits()
+	<< "poweroftendivisor="<<val.powerOfTenDivisor()
+	<< "showinfinite="<<val.showInfinite()
+	<< "negativeanchorposition="<<val.negativeAnchorPosition()
+	<< "positiveanchorposition="<<val.positiveAnchorPosition()
+	<< "negativerelativeposition="<<val.negativeRelativePosition()
+	<< "positiverelativeposition="<<val.positiveRelativePosition()      
+	<<")";
     return dbg;
 }
+#endif /* QT_NO_DEBUG_STREAM */

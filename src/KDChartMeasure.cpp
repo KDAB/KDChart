@@ -150,3 +150,16 @@ Qt::Orientation Measure::referenceOrientation() const
 
 
 }
+
+#if !defined(QT_NO_DEBUG_STREAM)
+QDebug operator<<(QDebug dbg, const KDChart::Measure& m)
+{
+    dbg << "KDChart::Measure("
+	<< "value="<<m.value()
+	<< "calculationmode="<<m.calculationMode()
+	<< "referencearea="<<m.referenceArea()
+	<< "referenceorientation="<<m.referenceOrientation()
+	<< ")";
+    return dbg;
+}
+#endif /* QT_NO_DEBUG_STREAM */

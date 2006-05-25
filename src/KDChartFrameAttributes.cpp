@@ -121,17 +121,14 @@ QDomDocumentFragment FrameAttributes::toXML() const
     return QDomDocumentFragment();
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#if !defined(QT_NO_DEBUG_STREAM)
+QDebug operator<<(QDebug dbg, const KDChart::FrameAttributes& fa)
+{
+    dbg << "KDChart::FrameAttributes("
+	<< "visible="<<fa.isVisible()
+	<< "pen="<<fa.pen()
+	<< "padding="<<fa.padding()
+	<< ")";
+    return dbg;
+}
+#endif /* QT_NO_DEBUG_STREAM */

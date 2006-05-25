@@ -175,3 +175,18 @@ int KDChartRelativePosition::rotation() const
 }
 
 }
+
+#if !defined(QT_NO_DEBUG_STREAM)
+QDebug operator<<(QDebug dbg, const KDChart::KDChartRelativePosition& rp)
+{
+    dbg << "KDChart::KDChartRelativePosition("
+	<< "referencearea="<<rp.referenceArea()
+	<< "referenceposition="<<rp.referencePosition()
+	<< "alignment="<<rp.alignment()
+	<< "horizontalpadding="<<rp.horizontalPadding()
+	<< "verticalpadding="<<rp.verticalPadding()
+	<< "rotation="<<rp.rotation()
+	<< ")";
+    return dbg;
+}
+#endif /* QT_NO_DEBUG_STREAM */

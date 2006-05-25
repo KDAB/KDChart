@@ -30,6 +30,7 @@
 #ifndef KDCHARTBACKGROUNDATTRIBUTES_H
 #define KDCHARTBACKGROUNDATTRIBUTES_H
 
+#include <QDebug>
 #include <QMetaType>
 #include <QBrush>
 #include "KDChartGlobal.h"
@@ -79,6 +80,10 @@ private:
 }; // End of class BackgroundAttributes
 
 }
+
+#if !defined(QT_NO_DEBUG_STREAM)
+KDCHART_EXPORT QDebug operator<<(QDebug, const KDChart::BackgroundAttributes& );
+#endif /* QT_NO_DEBUG_STREAM */
 
 Q_DECLARE_METATYPE( KDChart::BackgroundAttributes )
 

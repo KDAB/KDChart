@@ -203,40 +203,20 @@ QDomDocumentFragment TextAttributes::toXML() const
     return QDomDocumentFragment();
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#if !defined(QT_NO_DEBUG_STREAM)
+QDebug operator<<(QDebug dbg, const KDChart::TextAttributes& ta)
+{
+    dbg << "KDChart::TextAttributes("
+	<< "visible="<<ta.isVisible()
+	<< "font="<<ta.font().toString() /* What? No QDebug for QFont? */
+	<< "userelativesize="<<ta.useRelativeSize()
+	<< "relativesize="<<ta.relativeSize()
+	<< "minimalsize="<<ta.minimalSize()
+	<< "autorotate="<<ta.autoRotate()
+	<< "autoshrink="<<ta.autoShrink()
+	<< "rotation="<<ta.rotation()
+	<< "color="<<ta.color()
+	<< ")";
+    return dbg;
+}
+#endif /* QT_NO_DEBUG_STREAM */
