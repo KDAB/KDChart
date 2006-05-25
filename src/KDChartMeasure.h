@@ -46,7 +46,7 @@ class KDCHART_EXPORT Measure
 {
 public:
     Measure();
-    Measure( double value, KDChartEnums::MeasureCalculationMode mode = KDChartEnums::MeasureCalculationModeAuto );
+    Measure( qreal value, KDChartEnums::MeasureCalculationMode mode = KDChartEnums::MeasureCalculationModeAuto );
     Measure( const Measure& );
     Measure &operator= ( const Measure& );
 
@@ -54,8 +54,8 @@ public:
 
     QDomDocumentFragment toXML() const;
 
-    void setValue( double value );
-    double value() const;
+    void setValue( qreal value );
+    qreal value() const;
 
     void setCalculationMode( KDChartEnums::MeasureCalculationMode mode );
     KDChartEnums::MeasureCalculationMode calculationMode() const;
@@ -69,10 +69,10 @@ public:
     bool operator==( const Measure& );
 
 private:
-    class Private;
-    Private * _d;
-    Private * d_func() { return _d; }
-    const Private * d_func() const { return _d; }
+    qreal m_value;
+    KDChartEnums::MeasureCalculationMode m_mode;
+    AbstractArea*   m_area;
+    Qt::Orientation m_orientation;
 
 }; // End of class Measure
 

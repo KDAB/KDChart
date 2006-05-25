@@ -37,26 +37,30 @@ RelativePosition::RelativePosition()
 }
 
 RelativePosition::RelativePosition( const RelativePosition& r )
-    : m_area(0),
-      m_alignment(Qt::AlignCenter),
-      m_rotation(0)
+    : m_area(              r.referenceArea() ),
+      m_position(          r.referencePosition() ),
+      m_alignment(         r.alignment() ),
+      m_horizontalPadding( r.horizontalPadding() ),
+      m_verticalPadding(   r.verticalPadding() ),
+      m_rotation(          r.rotation() )
 {
     //this line left empty intentionally
 }
 
 RelativePosition::~RelativePosition()
 {
+    // this bloc left empty intentionally
 }
 
 
 bool RelativePosition::operator==( const RelativePosition& r )
 {
-    return( referenceArea()     == r.referenceArea() &&
-	    referencePosition() == r.referencePosition() &&
-	    alignment()         == r.alignment() &&
-	    horizontalPadding() == r.horizontalPadding() &&
-	    verticalPadding()   == r.verticalPadding() &&
-	    rotation()          == r.rotation() );
+    return( m_area              == r.referenceArea() &&
+            m_position          == r.referencePosition() &&
+            m_alignment         == r.alignment() &&
+            m_horizontalPadding == r.horizontalPadding() &&
+            m_verticalPadding   == r.verticalPadding() &&
+            m_rotation          == r.rotation() );
 }
 
 

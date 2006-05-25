@@ -33,73 +33,58 @@
 namespace KDChart {
 
 
-#define d d_func()
-
-class Measure::Private
-{
-    friend class Measure;
-public:
-    Private();
-private:
-    double value;
-    KDChartEnums::MeasureCalculationMode mode;
-    AbstractArea* area;
-    Qt::Orientation orientation;
-};
-
-Measure::Private::Private() :
-    value( 0 ),
-    mode( KDChartEnums::MeasureCalculationModeAuto ),
-    area(  0 ),
-    orientation( Qt::Horizontal )
-{
-}
-
-
 Measure::Measure()
-    : _d( new Private() )
+  : m_value( 0 ),
+    m_mode(  KDChartEnums::MeasureCalculationModeAuto ),
+    m_area(  0 ),
+    m_orientation( Qt::Horizontal )
 {
+    // this bloc left empty intentionally
 }
 
-Measure::Measure( double value, KDChartEnums::MeasureCalculationMode mode )
-    : _d( new Private() )
+Measure::Measure( qreal value, KDChartEnums::MeasureCalculationMode mode )
+  : m_value( value ),
+    m_mode(  mode ),
+    m_area(  0 ),
+    m_orientation( Qt::Horizontal )
 {
-    _d->value = value;
-    _d->mode = mode;
+    // this bloc left empty intentionally
 }
 
 Measure::Measure( const Measure& r )
-    : _d( new Private( *r.d ) )
+  : m_value( r.value() ),
+    m_mode(  r.calculationMode() ),
+    m_area(  r.referenceArea() ),
+    m_orientation( r.referenceOrientation() )
 {
+    // this bloc left empty intentionally
 }
 
 Measure & Measure::operator=( const Measure& r )
 {
-    if( this == &r )
-        return *this;
-
-    *d = *r.d;
+    if( this != &r ){
+        m_value = r.value();
+        m_mode  = r.calculationMode();
+        m_area  = r.referenceArea();
+        m_orientation = r.referenceOrientation();
+    }
 
     return *this;
 }
 
 Measure::~Measure()
 {
-    delete _d; _d = 0;
+    // this bloc left empty intentionally
 }
 
 
 bool Measure::operator==( const Measure& r )
 {
-    if( value() == r.value() &&
-        calculationMode() == r.calculationMode() &&
-        referenceArea() == r.referenceArea() &&
-        referenceOrientation() == r.referenceOrientation() )
-        return true;
-    else
-        return false;
+    return( m_value == r.value() &&
+            m_mode  == r.calculationMode() &&
+            m_area  == r.referenceArea() &&
+            m_orientation == r.referenceOrientation() );
 }
-
 
 
 
@@ -108,44 +93,44 @@ QDomDocumentFragment Measure::toXML() const
     return QDomDocumentFragment();
 }
 
-void Measure::setValue( double value )
+void Measure::setValue( qreal value )
 {
-    d->value = value;
+    m_value = value;
 }
 
-double Measure::value() const
+qreal Measure::value() const
 {
-    return d->value;
+    return m_value;
 }
 
 void Measure::setCalculationMode( KDChartEnums::MeasureCalculationMode mode )
 {
-    d->mode = mode;
+    m_mode = mode;
 }
 
 KDChartEnums::MeasureCalculationMode Measure::calculationMode() const
 {
-    return d->mode;
+    return m_mode;
 }
 
 void Measure::setReferenceArea( AbstractArea * area )
 {
-    d->area = area;
+    m_area = area;
 }
 
 AbstractArea * Measure::referenceArea() const
 {
-    return d->area;
+    return m_area;
 }
 
 void Measure::setReferenceOrientation( Qt::Orientation orientation )
 {
-    d->orientation = orientation;
+    m_orientation = orientation;
 }
 
 Qt::Orientation Measure::referenceOrientation() const
 {
-    return d->orientation;
+    return m_orientation;
 }
 
 
