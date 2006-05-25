@@ -82,8 +82,8 @@ public:
     void setVerticalPadding( const Measure& padding ) { m_verticalPadding = padding; }
     Measure verticalPadding() const { return m_verticalPadding; }
 
-    void setRotation( int rot ) { m_rotation = rot; }
-    int rotation() const { return m_rotation; }
+    void setRotation( double rot ) { m_rotation = rot; }
+    double rotation() const { return m_rotation; }
 
     bool operator==( const RelativePosition& );
 
@@ -93,7 +93,7 @@ private:
     Qt::Alignment m_alignment;
     Measure m_horizontalPadding;
     Measure m_verticalPadding;
-    int m_rotation;
+    double m_rotation;
 }; // End of class RelativePosition
 
 }
