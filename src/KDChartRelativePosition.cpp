@@ -51,15 +51,12 @@ RelativePosition::~RelativePosition()
 
 bool RelativePosition::operator==( const RelativePosition& r )
 {
-    if( referenceArea()     == r.referenceArea() &&
-        referencePosition() == r.referencePosition() &&
-        alignment()         == r.alignment() &&
-        horizontalPadding() == r.horizontalPadding() &&
-        verticalPadding()   == r.verticalPadding() &&
-        rotation()          == r.rotation() )
-        return true;
-    else
-        return false;
+    return( referenceArea()     == r.referenceArea() &&
+	    referencePosition() == r.referencePosition() &&
+	    alignment()         == r.alignment() &&
+	    horizontalPadding() == r.horizontalPadding() &&
+	    verticalPadding()   == r.verticalPadding() &&
+	    rotation()          == r.rotation() );
 }
 
 
@@ -70,68 +67,6 @@ QDomDocumentFragment RelativePosition::toXML() const
     // PENDING(kalle) Implement this
     return QDomDocumentFragment();
 }
-
-
-void RelativePosition::setReferenceArea( AbstractArea* area )
-{
-    m_area = area;
-}
-
-AbstractArea* RelativePosition::referenceArea() const
-{
-    return m_area;
-}
-
-void RelativePosition::setReferencePosition( const Position& position )
-{
-    m_position = position;
-}
-
-Position RelativePosition::referencePosition() const
-{
-    return m_position;
-}
-
-void RelativePosition::setAlignment( Qt::Alignment flags )
-{
-    m_alignment = flags;
-}
-
-Qt::Alignment RelativePosition::alignment() const
-{
-    return m_alignment;
-}
-
-void RelativePosition::setHorizontalPadding( const Measure& padding )
-{
-    m_horizontalPadding = padding;
-}
-
-Measure RelativePosition::horizontalPadding() const
-{
-    return m_horizontalPadding;
-}
-
-void RelativePosition::setVerticalPadding( const Measure& padding )
-{
-    m_verticalPadding = padding;
-}
-
-Measure RelativePosition::verticalPadding() const
-{
-    return m_verticalPadding;
-}
-
-void RelativePosition::setRotation( int rotation )
-{
-    m_rotation = rotation;
-}
-
-int RelativePosition::rotation() const
-{
-    return m_rotation;
-}
-
 }
 
 #if !defined(QT_NO_DEBUG_STREAM)

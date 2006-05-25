@@ -67,23 +67,23 @@ public:
 
     QDomDocumentFragment toXML() const;
 
-    void setReferenceArea( AbstractArea* area );
-    AbstractArea* referenceArea() const;
+    void setReferenceArea( AbstractArea* area ) { m_area = area; }
+    AbstractArea* referenceArea() const { return m_area; }
 
-    void setReferencePosition( const Position& position );
-    Position referencePosition() const;
+    void setReferencePosition( const Position& position ) { m_position = position; }
+    Position referencePosition() const { return m_position; }
 
-    void setAlignment( Qt::Alignment flags );
-    Qt::Alignment alignment() const;
+    void setAlignment( Qt::Alignment flags ) { m_alignment = flags; }
+    Qt::Alignment alignment() const { return m_alignment; }
 
-    void setHorizontalPadding( const Measure& padding );
-    Measure horizontalPadding() const;
+    void setHorizontalPadding( const Measure& padding ) { m_horizontalPadding = padding; }
+    Measure horizontalPadding() const { return m_horizontalPadding; }
 
-    void setVerticalPadding( const Measure& padding );
-    Measure verticalPadding() const;
+    void setVerticalPadding( const Measure& padding ) { m_verticalPadding = padding; }
+    Measure verticalPadding() const { return m_verticalPadding; }
 
-    void setRotation( int rotation );
-    int rotation() const;
+    void setRotation( int rotation ) { m_rotation = rotation; }
+    int rotation() const { return m_rotation; }
 
     bool operator==( const RelativePosition& );
 
