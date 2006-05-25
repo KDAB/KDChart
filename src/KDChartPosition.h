@@ -50,11 +50,11 @@ namespace KDChart {
  * compass to navigate on a map.
  *
  * \Note Often you will declare a \c Position together with the
- * KDChartRelativePosition class, to specify a logical point,
+ * RelativePosition class, to specify a logical point,
  * which then will be used to layout your chart at runtime,
  * e.g. for specifying the location of a floating Legend box.
  *
- * \sa KDChartRelativePosition
+ * \sa RelativePosition
  */
 
 class KDCHART_EXPORT Position

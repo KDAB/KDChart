@@ -86,14 +86,14 @@ public:
   void setNegativeAnchorPosition( KDChartEnums::PositionFlag anchorPosition );
   KDChartEnums::PositionFlag negativeAnchorPosition() const;
 
-  void setNegativeRelativePosition( const KDChartRelativePosition& relPosition );
-  KDChartRelativePosition negativeRelativePosition() const;
+  void setNegativeRelativePosition( const RelativePosition& relPosition );
+  RelativePosition negativeRelativePosition() const;
 
   void setPositiveAnchorPosition( KDChartEnums::PositionFlag anchorPosition );
   KDChartEnums::PositionFlag positiveAnchorPosition() const;
 
-  void setPositiveRelativePosition( const KDChartRelativePosition& relPosition );
-  KDChartRelativePosition positiveRelativePosition() const;
+  void setPositiveRelativePosition( const RelativePosition& relPosition );
+  RelativePosition positiveRelativePosition() const;
 
   static const DataValueAttributes& defaultAttributes();
   static const QVariant& defaultAttributesAsVariant();

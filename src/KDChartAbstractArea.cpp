@@ -90,11 +90,11 @@ void AbstractArea::paint( QPainter* painter, const PaintContext & context ) cons
 }
 #endif
 
-void AbstractArea::alignToReferencePoint( const KDChartRelativePosition& position )
+void AbstractArea::alignToReferencePoint( const RelativePosition& position )
 {
     Q_UNUSED( position );
     // PENDING(kalle) FIXME
-    qWarning( "Sorry, not implemented: void AbstractArea::alignToReferencePoint( const KDChartRelativePosition& position )" );
+    qWarning( "Sorry, not implemented: void AbstractArea::alignToReferencePoint( const RelativePosition& position )" );
 }
 
 void AbstractArea::setText( const QString& text )

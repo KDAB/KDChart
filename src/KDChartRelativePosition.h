@@ -46,25 +46,25 @@ namespace KDChart {
 
 
 /**
-  \class KDChartRelativePosition KDChartRelativePosition.h
+  \class RelativePosition KDChartRelativePosition.h
   \brief Defines relative position information: reference area, position
   in this area, horizontal / vertical padding, and rotating.
 
-  \Note Using KDChartRelativePosition you can specify the relative parts
+  \Note Using RelativePosition you can specify the relative parts
   of some position information, and you can specify the absolute parts:
   the reference area, and the position in this area.
   To get an absolute position, you will need to declare both, the relative
   and the absolute parts, otherwise the specification is incomplete and
   KD Chart will ignore it.
   */
-class KDCHART_EXPORT KDChartRelativePosition
+class KDCHART_EXPORT RelativePosition
 {
 public:
-    KDChartRelativePosition();
-    KDChartRelativePosition( const KDChartRelativePosition& );
-    KDChartRelativePosition &operator= ( const KDChartRelativePosition& );
+    RelativePosition();
+    RelativePosition( const RelativePosition& );
+    RelativePosition &operator= ( const RelativePosition& );
 
-    ~KDChartRelativePosition();
+    ~RelativePosition();
 
     QDomDocumentFragment toXML() const;
 
@@ -86,7 +86,7 @@ public:
     void setRotation( int rotation );
     int rotation() const;
 
-    bool operator==( const KDChartRelativePosition& );
+    bool operator==( const RelativePosition& );
 
 private:
     class Private;
@@ -94,12 +94,12 @@ private:
     Private * d_func() { return _d; }
     const Private * d_func() const { return _d; }
 
-}; // End of class KDChartRelativePosition
+}; // End of class RelativePosition
 
 }
 
 #if !defined(QT_NO_DEBUG_STREAM)
-KDCHART_EXPORT QDebug operator<<(QDebug, const KDChart::KDChartRelativePosition& );
+KDCHART_EXPORT QDebug operator<<(QDebug, const KDChart::RelativePosition& );
 #endif /* QT_NO_DEBUG_STREAM */
 
 

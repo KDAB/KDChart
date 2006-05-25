@@ -75,7 +75,7 @@ public:
 //    virtual AbstractArea * clone() const = 0;
 
 
-    void alignToReferencePoint( const KDChartRelativePosition& position );
+    void alignToReferencePoint( const RelativePosition& position );
 
     void setText( const QString& text );
     QString text() const;

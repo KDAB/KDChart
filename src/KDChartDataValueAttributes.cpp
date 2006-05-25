@@ -55,9 +55,9 @@ private:
     int powerOfTenDivisor;
     bool showInfinite;
     KDChartEnums::PositionFlag negativeAnchorPos;
-    KDChartRelativePosition    negativeRelPos;
+    RelativePosition    negativeRelPos;
     KDChartEnums::PositionFlag positiveAnchorPos;
-    KDChartRelativePosition    positiveRelPos;
+    RelativePosition    positiveRelPos;
 };
 
 DataValueAttributes::Private::Private() :
@@ -227,12 +227,12 @@ KDChartEnums::PositionFlag DataValueAttributes::negativeAnchorPosition() const
     return d->negativeAnchorPos;
 }
 
-void DataValueAttributes::setNegativeRelativePosition( const KDChartRelativePosition& relPosition )
+void DataValueAttributes::setNegativeRelativePosition( const RelativePosition& relPosition )
 {
     d->negativeRelPos = relPosition;
 }
 
-KDChartRelativePosition DataValueAttributes::negativeRelativePosition() const
+RelativePosition DataValueAttributes::negativeRelativePosition() const
 {
     return d->negativeRelPos;
 }
@@ -247,12 +247,12 @@ KDChartEnums::PositionFlag DataValueAttributes::positiveAnchorPosition() const
     return d->positiveAnchorPos;
 }
 
-void DataValueAttributes::setPositiveRelativePosition( const KDChartRelativePosition& relPosition )
+void DataValueAttributes::setPositiveRelativePosition( const RelativePosition& relPosition )
 {
     d->positiveRelPos = relPosition;
 }
 
-KDChartRelativePosition DataValueAttributes::positiveRelativePosition() const
+RelativePosition DataValueAttributes::positiveRelativePosition() const
 {
     return d->positiveRelPos;
 }
@@ -260,7 +260,7 @@ KDChartRelativePosition DataValueAttributes::positiveRelativePosition() const
 #if !defined(QT_NO_DEBUG_STREAM)
 QDebug operator<<(QDebug dbg, const KDChart::DataValueAttributes& val )
 {
-    dbg << "KDChartRelativePosition DataValueAttributes("
+    dbg << "RelativePosition DataValueAttributes("
 	<< "visible="<<val.isVisible()
 	<< "textattributes="<<val.textAttributes()
 	<< "frameattributes="<<val.frameAttributes()

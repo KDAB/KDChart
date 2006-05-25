@@ -37,9 +37,9 @@ namespace KDChart {
 
 #define d d_func()
 
-class KDChartRelativePosition::Private
+class RelativePosition::Private
 {
-    friend class KDChartRelativePosition;
+    friend class RelativePosition;
 public:
     Private();
 private:
@@ -51,7 +51,7 @@ private:
     int rotation;
 };
 
-KDChartRelativePosition::Private::Private() :
+RelativePosition::Private::Private() :
     area( 0 ),
     position(),
     alignment( Qt::AlignCenter ),
@@ -63,19 +63,19 @@ KDChartRelativePosition::Private::Private() :
 }
 
 
-KDChartRelativePosition::KDChartRelativePosition()
+RelativePosition::RelativePosition()
     : _d( new Private() )
 {
     //this line left empty intentionally
 }
 
-KDChartRelativePosition::KDChartRelativePosition( const KDChartRelativePosition& r )
+RelativePosition::RelativePosition( const RelativePosition& r )
     : _d( new Private( *r.d ) )
 {
     //this line left empty intentionally
 }
 
-KDChartRelativePosition & KDChartRelativePosition::operator=( const KDChartRelativePosition& r )
+RelativePosition & RelativePosition::operator=( const RelativePosition& r )
 {
     if( this == &r )
         return *this;
@@ -85,13 +85,13 @@ KDChartRelativePosition & KDChartRelativePosition::operator=( const KDChartRelat
     return *this;
 }
 
-KDChartRelativePosition::~KDChartRelativePosition()
+RelativePosition::~RelativePosition()
 {
     delete _d; _d = 0;
 }
 
 
-bool KDChartRelativePosition::operator==( const KDChartRelativePosition& r )
+bool RelativePosition::operator==( const RelativePosition& r )
 {
     if( referenceArea()     == r.referenceArea() &&
         referencePosition() == r.referencePosition() &&
@@ -107,69 +107,69 @@ bool KDChartRelativePosition::operator==( const KDChartRelativePosition& r )
 
 
 
-QDomDocumentFragment KDChartRelativePosition::toXML() const
+QDomDocumentFragment RelativePosition::toXML() const
 {
     // PENDING(kalle) Implement this
     return QDomDocumentFragment();
 }
 
 
-void KDChartRelativePosition::setReferenceArea( AbstractArea* area )
+void RelativePosition::setReferenceArea( AbstractArea* area )
 {
     d->area = area;
 }
 
-AbstractArea* KDChartRelativePosition::referenceArea() const
+AbstractArea* RelativePosition::referenceArea() const
 {
     return d->area;
 }
 
-void KDChartRelativePosition::setReferencePosition( const Position& position )
+void RelativePosition::setReferencePosition( const Position& position )
 {
     d->position = position;
 }
 
-Position KDChartRelativePosition::referencePosition() const
+Position RelativePosition::referencePosition() const
 {
     return d->position;
 }
 
-void KDChartRelativePosition::setAlignment( Qt::Alignment flags )
+void RelativePosition::setAlignment( Qt::Alignment flags )
 {
     d->alignment = flags;
 }
 
-Qt::Alignment KDChartRelativePosition::alignment() const
+Qt::Alignment RelativePosition::alignment() const
 {
     return d->alignment;
 }
 
-void KDChartRelativePosition::setHorizontalPadding( const Measure& padding )
+void RelativePosition::setHorizontalPadding( const Measure& padding )
 {
     d->horizontalPadding = padding;
 }
 
-Measure KDChartRelativePosition::horizontalPadding() const
+Measure RelativePosition::horizontalPadding() const
 {
     return d->horizontalPadding;
 }
 
-void KDChartRelativePosition::setVerticalPadding( const Measure& padding )
+void RelativePosition::setVerticalPadding( const Measure& padding )
 {
     d->verticalPadding = padding;
 }
 
-Measure KDChartRelativePosition::verticalPadding() const
+Measure RelativePosition::verticalPadding() const
 {
     return d->verticalPadding;
 }
 
-void KDChartRelativePosition::setRotation( int rotation )
+void RelativePosition::setRotation( int rotation )
 {
     d->rotation = rotation;
 }
 
-int KDChartRelativePosition::rotation() const
+int RelativePosition::rotation() const
 {
     return d->rotation;
 }
@@ -177,9 +177,9 @@ int KDChartRelativePosition::rotation() const
 }
 
 #if !defined(QT_NO_DEBUG_STREAM)
-QDebug operator<<(QDebug dbg, const KDChart::KDChartRelativePosition& rp)
+QDebug operator<<(QDebug dbg, const KDChart::RelativePosition& rp)
 {
-    dbg << "KDChart::KDChartRelativePosition("
+    dbg << "KDChart::RelativePosition("
 	<< "referencearea="<<rp.referenceArea()
 	<< "referenceposition="<<rp.referencePosition()
 	<< "alignment="<<rp.alignment()
