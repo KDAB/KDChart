@@ -54,17 +54,17 @@ public:
 
     QDomDocumentFragment toXML() const;
 
-    void setValue( qreal value );
-    qreal value() const;
+    void setValue( qreal value ){ m_value = value; }
+    qreal value() const { return m_value; }
 
-    void setCalculationMode( KDChartEnums::MeasureCalculationMode mode );
-    KDChartEnums::MeasureCalculationMode calculationMode() const;
+    void setCalculationMode( KDChartEnums::MeasureCalculationMode mode ){ m_mode = mode; }
+    KDChartEnums::MeasureCalculationMode calculationMode() const { return m_mode; }
 
-    void setReferenceArea( AbstractArea * area );
-    AbstractArea * referenceArea() const;
+    void setReferenceArea( AbstractArea * area ){ m_area = area; }
+    AbstractArea * referenceArea() const { return m_area; }
 
-    void setReferenceOrientation( Qt::Orientation orientation );
-    Qt::Orientation referenceOrientation() const;
+    void setReferenceOrientation( Qt::Orientation orientation ){ m_orientation = orientation; }
+    Qt::Orientation referenceOrientation() const { return m_orientation; }
 
     bool operator==( const Measure& );
 

@@ -93,46 +93,6 @@ QDomDocumentFragment Measure::toXML() const
     return QDomDocumentFragment();
 }
 
-void Measure::setValue( qreal value )
-{
-    m_value = value;
-}
-
-qreal Measure::value() const
-{
-    return m_value;
-}
-
-void Measure::setCalculationMode( KDChartEnums::MeasureCalculationMode mode )
-{
-    m_mode = mode;
-}
-
-KDChartEnums::MeasureCalculationMode Measure::calculationMode() const
-{
-    return m_mode;
-}
-
-void Measure::setReferenceArea( AbstractArea * area )
-{
-    m_area = area;
-}
-
-AbstractArea * Measure::referenceArea() const
-{
-    return m_area;
-}
-
-void Measure::setReferenceOrientation( Qt::Orientation orientation )
-{
-    m_orientation = orientation;
-}
-
-Qt::Orientation Measure::referenceOrientation() const
-{
-    return m_orientation;
-}
-
 
 }
 
