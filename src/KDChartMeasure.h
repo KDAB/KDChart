@@ -46,7 +46,7 @@ class KDCHART_EXPORT Measure
 {
 public:
     Measure();
-    Measure( int value, KDChartEnums::MeasureCalculationMode mode = KDChartEnums::MeasureCalculationModeAuto );
+    Measure( double value, KDChartEnums::MeasureCalculationMode mode = KDChartEnums::MeasureCalculationModeAuto );
     Measure( const Measure& );
     Measure &operator= ( const Measure& );
 
@@ -54,8 +54,8 @@ public:
 
     QDomDocumentFragment toXML() const;
 
-    void setValue( int value );
-    int value() const;
+    void setValue( double value );
+    double value() const;
 
     void setCalculationMode( KDChartEnums::MeasureCalculationMode mode );
     KDChartEnums::MeasureCalculationMode calculationMode() const;

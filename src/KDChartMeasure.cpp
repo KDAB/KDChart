@@ -41,7 +41,7 @@ class Measure::Private
 public:
     Private();
 private:
-    int value;
+    double value;
     KDChartEnums::MeasureCalculationMode mode;
     AbstractArea* area;
     Qt::Orientation orientation;
@@ -61,7 +61,7 @@ Measure::Measure()
 {
 }
 
-Measure::Measure( int value, KDChartEnums::MeasureCalculationMode mode )
+Measure::Measure( double value, KDChartEnums::MeasureCalculationMode mode )
     : _d( new Private() )
 {
     _d->value = value;
@@ -108,12 +108,12 @@ QDomDocumentFragment Measure::toXML() const
     return QDomDocumentFragment();
 }
 
-void Measure::setValue( int value )
+void Measure::setValue( double value )
 {
     d->value = value;
 }
 
-int Measure::value() const
+double Measure::value() const
 {
     return d->value;
 }
