@@ -82,7 +82,7 @@ public:
     void setVerticalPadding( const Measure& padding ) { m_verticalPadding = padding; }
     Measure verticalPadding() const { return m_verticalPadding; }
 
-    void setRotation( int rotation ) { m_rotation = rotation; }
+    void setRotation( int rot ) { m_rotation = rot; }
     int rotation() const { return m_rotation; }
 
     bool operator==( const RelativePosition& );
