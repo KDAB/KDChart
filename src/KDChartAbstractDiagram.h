@@ -323,6 +323,8 @@ namespace KDChart {
             geometry. Changes in the diagrams coordinate system also require
             to emit layoutChanged(). */
         void layoutChanged( AbstractDiagram* );
+        /** This signal is emitted when the model or atributesmodel is replaced */
+        void modelsChanged();
     };
 
     class AbstractDiagramList : public QList<AbstractDiagram*> {};

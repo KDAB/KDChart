@@ -118,6 +118,7 @@ void AbstractDiagram::setModel ( QAbstractItemModel * newModel )
   AttributesModel* amodel = new AttributesModel(newModel,this);
   setAttributesModel( amodel );
   d->hasPrivateAttributesModel = true;
+  emit modelsChanged();
 }
 
 /*! Sets an external AttributesModel on this diagram. By default, a diagram has it's 
@@ -139,6 +140,7 @@ void AbstractDiagram::setAttributesModel( AttributesModel* amodel )
     }
     d->attributesModel = amodel;
     scheduleDelayedItemsLayout();
+    emit modelsChanged();
 }
 
 /*! \returns a pointer to the AttributesModel currently used by this diagram. */

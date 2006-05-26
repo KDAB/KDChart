@@ -30,6 +30,8 @@
 #define __KDCHARTDIAGRAMOBSERVER_H_
 
 #include <QObject>
+#include <QAbstractItemModel>
+#include <QPointer>
 
 namespace KDChart {
     class AbstractDiagram;
@@ -59,10 +61,15 @@ namespace KDChart {
         void destroyed();
         void dataChanged();
         void attributesChanged();
+	void modelsChanged();
 
     private:
-        AbstractDiagram* diagram;
-    };
+	void init();
+
+        AbstractDiagram* m_diagram;
+	QPointer<QAbstractItemModel> m_model;
+	QPointer<QAbstractItemModel> m_attributesmodel;	
+   };
 }
 
 #endif // KDChartDiagramObserver_H

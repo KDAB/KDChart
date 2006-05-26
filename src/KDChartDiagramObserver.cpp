@@ -35,26 +35,49 @@
 
 namespace KDChart {
     DiagramObserver::DiagramObserver( AbstractDiagram* diagram, QObject* parent )
-    : QObject( parent ), diagram(diagram)
+    : QObject( parent ), m_diagram(diagram)
     {
-       connect( diagram, SIGNAL(destroyed( QObject* )), SLOT(destroyed()));
-       connect( diagram->model(), SIGNAL(dataChanged( const QModelIndex&, const QModelIndex&)), SLOT(dataChanged()));
-       connect( diagram->attributesModel(), SIGNAL(attributesChanged( const QModelIndex&, const QModelIndex&)), SLOT(attributesChanged()));
-       connect( diagram->model(), SIGNAL(headerDataChanged( Qt::Orientation, int, int)), SLOT(dataChanged()));
+       connect( m_diagram, SIGNAL(destroyed(QObject*)), SLOT(destroyed()));
+       connect( m_diagram, SIGNAL(modelsChanged()), SLOT(modelsChanged()));
+    }
+
+    void DiagramObserver::init()
+    {
+	if( !m_model.isNull() ) {
+	    disconnect(m_model);	    
+	}
+	if( !m_attributesmodel.isNull() ) {
+	    disconnect(m_attributesmodel);
+	}
+	connect( m_diagram->model(), SIGNAL(dataChanged(const QModelIndex&,const QModelIndex&)), 
+		 SLOT(dataChanged()));
+	connect( m_diagram->attributesModel(), SIGNAL(attributesChanged(const QModelIndex&,const QModelIndex&)), 
+		 SLOT(attributesChanged()));
+	connect( m_diagram->model(), SIGNAL(headerDataChanged(Qt::Orientation,int,int)),
+		 SLOT(dataChanged()));
+	m_model = m_diagram->model();
+	m_attributesmodel = m_diagram->attributesModel();
     }
 
     void DiagramObserver::destroyed()
     {
-        emit diagramDestroyed( diagram );
+        emit diagramDestroyed( m_diagram );
+    }
+
+    void DiagramObserver::modelsChanged()
+    {
+	init();
+	dataChanged();
+	attributesChanged();	
     }
 
     void DiagramObserver::dataChanged()
     {
-        emit diagramDataChanged( diagram );
+        emit diagramDataChanged( m_diagram );
     }
 
     void DiagramObserver::attributesChanged()
     {
-        emit diagramAttributesChanged( diagram );
+        emit diagramAttributesChanged( m_diagram );
     }
 }
