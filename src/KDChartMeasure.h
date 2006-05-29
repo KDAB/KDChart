@@ -54,7 +54,7 @@ public:
 
     QDomDocumentFragment toXML() const;
 
-    void setValue( qreal avalue ){ m_value = avalue; }
+    void setValue( qreal val ){ m_value = val; }
     qreal value() const { return m_value; }
 
     void setCalculationMode( KDChartEnums::MeasureCalculationMode mode ){ m_mode = mode; }
