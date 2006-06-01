@@ -83,6 +83,17 @@ void CartesianAxis::paintEvent( QPaintEvent* event )
     paint( &context );
 }
 
+
+bool CartesianAxis::isAbscissa() const
+{
+    return position() == Bottom || position() == Top;
+}
+
+bool CartesianAxis::isOrdinate() const
+{
+    return position() == Left || position() == Right;
+}
+
 #define ptr (context->painter())
 void CartesianAxis::paint ( PaintContext* context ) const
 {
@@ -133,16 +144,23 @@ void CartesianAxis::paint ( PaintContext* context ) const
     QPointF p2 = context->coordinatePlane()->translate( dataBoundaries.second );
 
     double screenRange;
-    if ( position() == Bottom || position() == Top )
+    if ( isAbscissa() )
     {
         screenRange = qAbs ( p1.x() - p2.x() );
     } else {
         screenRange = qAbs ( p1.y() - p2.y() );
     }
 
+    const bool useItemCountLabels = isAbscissa() && d->diagram()->datasetDimension() == 1;
+
     bool drawUnitRulers = screenRange / numberOfUnitRulers > MinimumPixelsBetweenRulers;
-    bool drawFourthRulers = screenRange / numberOfFourthRulers > MinimumPixelsBetweenRulers;
-    bool drawHalfRulers = screenRange / numberOfHalfRulers > MinimumPixelsBetweenRulers;
+    // for the next two lines please note:
+    // There is no such thing as "half an Item 1"
+    bool drawFourthRulers = screenRange / numberOfFourthRulers > MinimumPixelsBetweenRulers && ! useItemCountLabels;
+    bool drawHalfRulers = screenRange / numberOfHalfRulers > MinimumPixelsBetweenRulers && ! useItemCountLabels;
+    // FIXME: make this dependent on config. options too:
+    bool drawLabels = screenRange / numberOfHalfRulers > MinimumPixelsBetweenRulers;
+
     // - find the reference point at which to start drawing and the increment (line distance);
     QPointF rulerRef;
     QRectF geoRect( d->geometry );
@@ -193,6 +211,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
             << "-- screenRange: " << screenRange << endl
             << "-- drawUnitRulers: " << drawUnitRulers << endl
             << "-- drawHalfRulers: " << drawHalfRulers << endl
+            << "-- drawLabels: " << drawLabels << endl
             << "-- drawFourthRulers: " << drawFourthRulers << endl
             << "-- ruler reference point:: " << rulerRef << endl;
     #endif
@@ -200,10 +219,10 @@ void CartesianAxis::paint ( PaintContext* context ) const
     ptr->setPen ( Qt::black );
     ptr->setBrush ( Qt::red );
     QPointF fourthRulerRef ( rulerRef );
-    int minValueY = qRound( dataBoundaries.first.y() );
-    int maxValueY = qRound( dataBoundaries.second.y() );
-    int minValueX = qRound( dataBoundaries.first.x() );
-    int maxValueX = qRound( dataBoundaries.second.x() );
+    qreal minValueY = dataBoundaries.first.y();
+    qreal maxValueY = dataBoundaries.second.y();
+    qreal minValueX = dataBoundaries.first.x();
+    qreal maxValueX = dataBoundaries.second.x();
 
 
     if ( drawFourthRulers ) {
@@ -259,57 +278,127 @@ void CartesianAxis::paint ( PaintContext* context ) const
     }
 
     if ( drawUnitRulers ) {
-        if ( position() == Top || position() == Bottom ) {
+        const int hardLabelsCount  = labels().count();
+        const int shortLabelsCount = shortLabels().count();
+        bool useShortLabels = false;
+
+        QStringList headerLabels;
+        if( useItemCountLabels ){
+            headerLabels = d->diagram()->datasetLabels();
+        }
+        const int headerLabelsCount = headerLabels.count();
+
+        if ( isAbscissa() ) {
             int tickLength = position() == Top ? -4 : 3;
-            for ( int i = minValueX; i <= maxValueX; ++i ) {
-                QPointF topPoint ( i, 0 );
-                QPointF bottomPoint ( i, 0 );
+            QFont textFont( QFont("comic", 5 ) );
+
+            // If we have a labels list AND a short labels list, we first find out,
+            // if there is enough space for the labels: if not, use the short labels.
+            if( drawLabels && hardLabelsCount && shortLabelsCount ){
+                PainterSaver painterSaver( ptr );
+                ptr->setFont( textFont );
+                const QFontMetrics met( ptr->fontMetrics() );
+                bool labelsAreOverlapping = false;
+                QRegion combinedRegion;
+                int iLabel = 0;
+                for ( qreal i = minValueX; i <= maxValueX && ! labelsAreOverlapping; i+=1.0 ) {
+                    QPointF topPoint ( i, 0.0 );
+                    topPoint = context->coordinatePlane()->translate( topPoint );
+                    topPoint.setX( topPoint.x() - textFont.pointSize() );
+                    topPoint.setY( fourthRulerRef.y() + tickLength );
+                    topPoint.setY( position() == Top ? topPoint.y() - textFont.pointSize() : topPoint.y() + (2 * textFont.pointSize()) );
+                    const QRegion region( met.boundingRect( labels()[ iLabel ] )
+                        .translated( static_cast<int>(topPoint.x()), static_cast<int>(topPoint.y()) )
+                        .adjusted( -1,-1,1,1) ); // "adjusted" gives us a minimum of 2 pixels between the labels
+                    labelsAreOverlapping = ! combinedRegion.intersect( region ).isEmpty();
+                    combinedRegion += region;
+                    if( iLabel >= hardLabelsCount-1 )
+                        iLabel = 0;
+                    else
+                        ++iLabel;
+                }
+                useShortLabels = labelsAreOverlapping;
+            }
+
+            PainterSaver painterSaver( ptr );
+            ptr->setPen( Qt::blue );
+            ptr->setFont( textFont );
+            const QFontMetrics metrics( ptr->fontMetrics() );
+
+            int iLabel = 0;
+            for ( qreal i = minValueX; i <= maxValueX; i+=1.0 ) {
+                QPointF topPoint ( i + (useItemCountLabels ? 0.5 : 0.0), 0.0 );
+                QPointF bottomPoint ( topPoint );
                 topPoint = context->coordinatePlane()->translate( topPoint );
                 bottomPoint = context->coordinatePlane()->translate( bottomPoint );
                 topPoint.setY( fourthRulerRef.y() + tickLength );
                 bottomPoint.setY( fourthRulerRef.y() );
                 ptr->drawLine( topPoint, bottomPoint );
-                if ( drawHalfRulers ) {
-                    QFont textFont( QFont("comic", 5 ) );
-                    topPoint.setX( topPoint.x() - textFont.pointSize() );
+                if ( drawLabels ) {
+//                    topPoint.setX( topPoint.x() - textFont.pointSize() );
                     topPoint.setY( position() == Top ? topPoint.y() - textFont.pointSize() : topPoint.y() + (2 * textFont.pointSize()) );
-                    PainterSaver painterSaver( ptr );
-                    ptr->setPen( Qt::blue );
-                    ptr->setFont( textFont );
-                    ptr->drawText( topPoint, QString::number( minValueX ) );
-                    minValueX += 1;
+                    QString label( hardLabelsCount
+                        ? ( useShortLabels    ? shortLabels()[ iLabel ] : labels()[ iLabel ] )
+                        : ( headerLabelsCount ? headerLabels[  iLabel ] : QString::number( minValueX ) ) );
+                    const QSizeF size( metrics.boundingRect( label ).size() );
+                    topPoint.setX( topPoint.x() - size.width() / 2.0 );
+                    ptr->drawText( QRectF(topPoint, size), Qt::AlignCenter, label);
+                    if( hardLabelsCount ){
+                        if( iLabel >= hardLabelsCount-1 )
+                            iLabel = 0;
+                        else
+                            ++iLabel;
+                    }else
+                    if( headerLabelsCount ){
+                        if( iLabel >= headerLabelsCount-1 )
+                            iLabel = 0;
+                        else
+                            ++iLabel;
+                    }else{
+                        minValueX += 1.0;
+                    }
                 }
             }
         } else {
-          double maxLimit, steg;
-          bool percent = d->diagram()->percentMode();
-          int tickLength = position() == Left ? -4 : 3;
-          if ( percent ) {
-            maxLimit = maxValueY*10;
-            steg = maxValueY;
-          } else {
-            maxLimit = maxValueY;
-            steg = 1.0;
-          }
-            for ( double f = minValueY; f <= maxLimit; f+= steg ) {
-            QPointF leftPoint ( 0,  percent ? f/numberOfUnitRulers : f );
-            QPointF rightPoint ( 0, percent ? f/numberOfUnitRulers : f );
-            leftPoint = context->coordinatePlane()->translate( leftPoint );
-            rightPoint = context->coordinatePlane()->translate( rightPoint );
-            leftPoint.setX( fourthRulerRef.x() + tickLength );
-            rightPoint.setX( fourthRulerRef.x() );
-            ptr->drawLine( leftPoint, rightPoint );
-            if ( drawHalfRulers ) {
-              QFont textFont( QFont("comic", 5 ) );
-              leftPoint.setX( position() == Left ? leftPoint.x()- (2*textFont.pointSize()) : leftPoint.x()+textFont.pointSize() );
-              leftPoint.setY( leftPoint.y() + textFont.pointSize()/2 );
-              PainterSaver painterSaver( ptr );
-              ptr->setPen( Qt::red );
-              ptr->setFont( textFont );
-              ptr->drawText( leftPoint, QString::number( minValueY ) );
-              d->diagram()->percentMode() ? minValueY += 10 : minValueY += 1;
+            double maxLimit, steg;
+            bool percent = d->diagram()->percentMode();
+            int tickLength = position() == Left ? -4 : 3;
+            if ( percent ) {
+                maxLimit = maxValueY*10.0;
+                steg = maxValueY;
+            } else {
+                maxLimit = maxValueY;
+                steg = 1.0;
             }
-          }
+            int iLabel = 0;
+            for ( qreal f = minValueY; f <= maxLimit; f+= steg ) {
+                QPointF leftPoint (  0.0,  percent ? f/numberOfUnitRulers : f );
+                QPointF rightPoint ( 0.0, percent ? f/numberOfUnitRulers : f );
+                leftPoint = context->coordinatePlane()->translate( leftPoint );
+                rightPoint = context->coordinatePlane()->translate( rightPoint );
+                leftPoint.setX( fourthRulerRef.x() + tickLength );
+                rightPoint.setX( fourthRulerRef.x() );
+                ptr->drawLine( leftPoint, rightPoint );
+                if ( drawLabels ) {
+                    QFont textFont( QFont("comic", 5 ) );
+                    leftPoint.setX( position() == Left ? leftPoint.x()- (2*textFont.pointSize()) : leftPoint.x()+textFont.pointSize() );
+                    leftPoint.setY( leftPoint.y() + textFont.pointSize()/2 );
+                    PainterSaver painterSaver( ptr );
+                    ptr->setPen( Qt::red );
+                    ptr->setFont( textFont );
+                    ptr->drawText( leftPoint,
+                        hardLabelsCount ? labels()[ iLabel ] : QString::number( minValueX ) );
+                    if( hardLabelsCount ){
+                        if( iLabel >= hardLabelsCount-1 )
+                            iLabel = 0;
+                        else
+                            ++iLabel;
+                    }else{
+                        minValueX += 1.0;
+                    }
+                    d->diagram()->percentMode() ? minValueY += 10.0 : minValueY += 1.0;
+                }
+            }
             //Pending Michel: reset to default - is that really what we want?
             d->diagram()->setPercentMode( false );
         }

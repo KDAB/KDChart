@@ -72,6 +72,12 @@ void AbstractAxis::init()
   If a non-empty list is passed, KD Chart will use these strings as axis labels,
   instead of calculating them.
 
+  If you a smaller number of strings than the number od labels drawn at this
+  axis, KD Chart will iterate over the list, repeating the strings, until all
+  labels are drawn.
+  As an example you could specify the seven days of the week as abscissa labels,
+  which would be repeatedly used then.
+
   By passing an empty QStringList you can reset the default behaviour.
 
   \sa labels, setShortLabels

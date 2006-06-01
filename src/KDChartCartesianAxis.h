@@ -63,11 +63,12 @@ namespace KDChart {
         void setGeometry( const QRectF& rect );
         QRectF geometry() const;
 
-
         QDomDocumentFragment toXML() const;
 
         virtual void setPosition ( Position p );
         virtual const Position position () const;
+        virtual bool isAbscissa() const;
+        virtual bool isOrdinate() const;
     };
 
     class CartesianAxisList : public QList<CartesianAxis*> {};
