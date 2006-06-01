@@ -68,6 +68,7 @@ void AbstractAxis::init()
 /**
   \brief Use this to specify your own set of strings, to be used as axis labels.
 
+  Labels specified via setLabels take precedence:
   If a non-empty list is passed, KD Chart will use these strings as axis labels,
   instead of calculating them.
 
