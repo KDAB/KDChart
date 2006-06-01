@@ -45,6 +45,10 @@ public:
     AbstractDiagram* diagram() const;
 
     DiagramObserver* observer;
+
+    QStringList hardLabels;
+    QStringList hardShortLabels;
+
 private:
     AbstractDiagram* parent;
 };

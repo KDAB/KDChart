@@ -64,3 +64,57 @@ void AbstractAxis::init()
     connect( d_func()->observer, SIGNAL( diagramDataChanged( AbstractDiagram *) ),
              this, SLOT( update() ) );
 }
+
+/**
+  \brief Use this to specify your own set of strings, to be used as axis labels.
+
+  If a non-empty list is passed, KD Chart will use these strings as axis labels,
+  instead of calculating them.
+
+  By passing an empty QStringList you can reset the default behaviour.
+
+  \sa labels, setShortLabels
+*/
+void AbstractAxis::setLabels( const QStringList& list )
+{
+    d_func()->hardLabels = list;
+}
+
+/**
+  Returns a list of strings, that are used as axis labels, as set via setLabels.
+
+  \sa setLabels
+*/
+QStringList AbstractAxis::labels() const
+{
+    return d_func()->hardLabels;
+}
+
+/**
+  \brief Use this to specify your own set of strings, to be used as axis labels,
+  in case the normal labels are too long.
+
+  \note Setting done via setShortLabels will be ignored, if you did not pass
+  a non-empty string list via setLabels too!
+
+  By passing an empty QStringList you can reset the default behaviour.
+
+  \sa shortLabels, setLabels
+*/
+void AbstractAxis::setShortLabels( const QStringList& list )
+{
+    d_func()->hardShortLabels = list;
+}
+
+/**
+  Returns a list of strings, that are used as axis labels, as set via setShortLabels.
+
+  \note Setting done via setShortLabels will be ignored, if you did not pass
+  a non-empty string list via setLabels too!
+
+  \sa setShortLabels
+*/
+QStringList AbstractAxis::shortLabels() const
+{
+    return d_func()->hardShortLabels;
+}

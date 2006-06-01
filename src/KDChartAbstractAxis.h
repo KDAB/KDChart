@@ -72,6 +72,12 @@ namespace KDChart {
     /*    virtual void paint( PaintContext* ) const = 0;
         virtual QSize sizeHint() const = 0;*/
 	//virtual void paintEvent( QPaintEvent* event) = 0;
+
+        void setLabels( const QStringList& list );
+        QStringList labels() const;
+        void setShortLabels( const QStringList& list );
+        QStringList shortLabels() const;
+
         virtual void setGeometry( const QRectF& rect ) = 0;
         virtual QRectF geometry() const = 0;
 
