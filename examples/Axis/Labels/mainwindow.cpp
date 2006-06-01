@@ -62,14 +62,17 @@ MainWindow::MainWindow( QWidget* parent ) :
     CartesianAxis *yAxis = new CartesianAxis ( m_bars );
     xAxis->setPosition ( KDChart::CartesianAxis::Bottom );
     yAxis->setPosition ( KDChart::CartesianAxis::Left );
-/*
+
+// set the following to 0, to see the default Abscissa labels (== X headers, as read from the data file)
+#if 1
     QStringList daysOfWeek;
     daysOfWeek << "Monday" << "Tuesday" << "Wednesday" << "Thursday" << "Friday" << "Saturday" << "Sunday";
     xAxis->setLabels( daysOfWeek );
     QStringList shortDays;
     shortDays << "Mon" << "Tue" << "Wed" << "Thu" << "Fri" << "Sat" << "Sun";
     xAxis->setShortLabels( shortDays );
-*/
+#endif
+
     m_bars->addAxis( xAxis );
     m_bars->addAxis( yAxis );
     m_chart->coordinatePlane()->replaceDiagram( m_bars );
