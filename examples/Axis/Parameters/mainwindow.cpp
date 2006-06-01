@@ -65,6 +65,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     yAxis->setPosition ( KDChart::CartesianAxis::Left );
     axisTop->setPosition( KDChart::CartesianAxis::Top );
     axisRight->setPosition( KDChart::CartesianAxis::Right );
+
     m_lines->addAxis( xAxis );
     m_lines->addAxis( yAxis );
     m_lines->addAxis( axisTop );

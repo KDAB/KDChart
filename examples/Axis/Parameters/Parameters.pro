@@ -1,9 +1,11 @@
+TARGET = AxisParameters
+
 HEADERS= mainwindow.h
 SOURCES= main.cpp mainwindow.cpp
 FORMS  = mainwindow.ui
 RESOURCES = Axes.qrc
 
-KDCHART_PATH = ../..
+KDCHART_PATH = ../../..
 INCLUDEPATH += \
             $$KDCHART_PATH/include \
             $$KDCHART_PATH/examples/tools
