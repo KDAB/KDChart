@@ -154,11 +154,12 @@ void CartesianAxis::paint ( PaintContext* context ) const
     const bool useItemCountLabels = isAbscissa() && d->diagram()->datasetDimension() == 1;
 
     bool drawUnitRulers = screenRange / numberOfUnitRulers > MinimumPixelsBetweenRulers;
-    // for the next two lines please note:
-    // There is no such thing as "half an Item 1"
+    // for the next two lines, please note:
+    // There are no such things as "half of Item 1" or "0.75 times Thursday"
     bool drawFourthRulers = screenRange / numberOfFourthRulers > MinimumPixelsBetweenRulers && ! useItemCountLabels;
     bool drawHalfRulers = screenRange / numberOfHalfRulers > MinimumPixelsBetweenRulers && ! useItemCountLabels;
-    // FIXME: make this dependent on config. options too:
+
+    // PENDING(khz) FIXME: make this dependent on config. options too:
     bool drawLabels = screenRange / numberOfHalfRulers > MinimumPixelsBetweenRulers;
 
     // - find the reference point at which to start drawing and the increment (line distance);
@@ -335,22 +336,18 @@ void CartesianAxis::paint ( PaintContext* context ) const
                 bottomPoint.setY( fourthRulerRef.y() );
                 ptr->drawLine( topPoint, bottomPoint );
                 if ( drawLabels ) {
-//                    topPoint.setX( topPoint.x() - textFont.pointSize() );
-                    topPoint.setY( position() == Top ? topPoint.y() - textFont.pointSize() : topPoint.y() + (2 * textFont.pointSize()) );
+                    topPoint.setY(
+                          (position() == Top)
+                        ? (topPoint.y() - textFont.pointSize())
+                        : (topPoint.y() + (2 * textFont.pointSize())) );
                     QString label( hardLabelsCount
                         ? ( useShortLabels    ? shortLabels()[ iLabel ] : labels()[ iLabel ] )
                         : ( headerLabelsCount ? headerLabels[  iLabel ] : QString::number( minValueX ) ) );
                     const QSizeF size( metrics.boundingRect( label ).size() );
                     topPoint.setX( topPoint.x() - size.width() / 2.0 );
                     ptr->drawText( QRectF(topPoint, size), Qt::AlignCenter, label);
-                    if( hardLabelsCount ){
-                        if( iLabel >= hardLabelsCount-1 )
-                            iLabel = 0;
-                        else
-                            ++iLabel;
-                    }else
-                    if( headerLabelsCount ){
-                        if( iLabel >= headerLabelsCount-1 )
+                    if( ( hardLabelsCount   && iLabel >= hardLabelsCount  -1 )  ||
+                        ( headerLabelsCount && iLabel >= headerLabelsCount-1 ) )
                             iLabel = 0;
                         else
                             ++iLabel;
