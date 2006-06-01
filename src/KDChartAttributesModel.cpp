@@ -67,25 +67,25 @@ QVariant AttributesModel::headerData ( int section,
   switch ( role ) {
   case Qt::DisplayRole: {
       QString header = ( ( orientation == Qt::Vertical ) ?  "Series " : "Item " ) 
-	  + QString::number( section );
+          + QString::number( section );
       return header;
   }
   case KDChart::DatasetBrushRole: {
       if ( paletteType() == PaletteTypeSubdued )
-	  return Palette::subduedPalette().getBrush( section );
+          return Palette::subduedPalette().getBrush( section );
       else if ( paletteType() == PaletteTypeRainbow )
-	  return Palette::rainbowPalette().getBrush( section );
+          return Palette::rainbowPalette().getBrush( section );
       else if ( paletteType() == PaletteTypeDefault )
-	  return Palette::defaultPalette().getBrush( section );
+          return Palette::defaultPalette().getBrush( section );
       else
-	  qWarning("Unknown type of fallback palette!");
+          qWarning("Unknown type of fallback palette!");
   }
   case KDChart::DatasetPenRole: {
       // default to the color set for the brush (or it's defaults)
       // but only if no per model override was set
       if ( !modelData( role ).isValid() ) {
-	  QBrush brush = qVariantValue<QBrush>( headerData( section, orientation, DatasetBrushRole ) );
-	  return QPen( brush.color() );
+          QBrush brush = qVariantValue<QBrush>( headerData( section, orientation, DatasetBrushRole ) );
+          return QPen( brush.color() );
       }
   }
   default:
@@ -98,7 +98,7 @@ QVariant AttributesModel::headerData ( int section,
 QVariant AttributesModel::data( const QModelIndex& index, int role ) const
 {
   //qDebug() << "AttributesModel::data(" << index << role << ")";
-  if( index.isValid() ) { 
+  if( index.isValid() ) {
     Q_ASSERT( index.model() == this );
   }
   QVariant sourceData = sourceModel()->data( mapToSource(index), role );
@@ -117,9 +117,9 @@ QVariant AttributesModel::data( const QModelIndex& index, int role ) const
       QVariant v;
       if( index.isValid() ) v = headerData( index.column(), Qt::Vertical, role );
       if ( !v.isValid() )
-	  v = modelData( role );
+          v = modelData( role );
       if ( !v.isValid() )
-	  v = defaultsForRole( role );
+          v = defaultsForRole( role );
       return v;
   }
 
@@ -196,18 +196,18 @@ void AttributesModel::setPaletteType( AttributesModel::PaletteType type )
     mPaletteType = type;
 }
 
-AttributesModel::PaletteType AttributesModel::paletteType() const 
-{ 
-    return mPaletteType; 
+AttributesModel::PaletteType AttributesModel::paletteType() const
+{
+    return mPaletteType;
 }
 
 bool KDChart::AttributesModel::setModelData( const QVariant value, int role )
 {
-     mModelDataMap.insert( role, value );
-     emit attributesChanged( index( 0, 0, QModelIndex() ),
-                             index( rowCount( QModelIndex() ),
+    mModelDataMap.insert( role, value );
+    emit attributesChanged( index( 0, 0, QModelIndex() ),
+                            index( rowCount( QModelIndex() ),
                                     columnCount( QModelIndex() ), QModelIndex() ) );
-     return true;
+    return true;
 }
 
 QVariant KDChart::AttributesModel::modelData( int role ) const
@@ -231,7 +231,7 @@ void AttributesModel::setSourceModel( QAbstractItemModel* sourceModel )
 {
     if( this->sourceModel() != 0 )
         disconnect( this->sourceModel(), SIGNAL( dataChanged( const QModelIndex&, const QModelIndex&)),
-                                   this, SIGNAL( dataChanged( const QModelIndex&, const QModelIndex&)));
+                                  this, SIGNAL( dataChanged( const QModelIndex&, const QModelIndex&)));
     QAbstractProxyModel::setSourceModel( sourceModel );
     if( this->sourceModel() != NULL )
         connect( this->sourceModel(), SIGNAL( dataChanged( const QModelIndex&, const QModelIndex&)),
