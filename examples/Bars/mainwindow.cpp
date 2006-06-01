@@ -113,7 +113,7 @@ void MainWindow::on_paintValuesCB_toggled( bool checked )
 void MainWindow::on_paintThreeDBarsCB_toggled( bool checked )
 {
     ThreeDBarAttributes td;
-    int defaultDepth = static_cast<int>(td.depth());
+    double defaultDepth = td.depth();
     if ( checked ) {
         td.setEnabled( true );
         if ( threeDDepthCB->isChecked() )
