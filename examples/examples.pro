@@ -2,7 +2,7 @@ TEMPLATE	= subdirs
 SUBDIRS		= tools \
                   Widget \
                   HeaderFooterLegends \
-                  Axes \
+                  Axis \
                   SharedAbscissa \
                   Zoom \
                   Pie \
