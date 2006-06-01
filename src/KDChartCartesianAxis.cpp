@@ -1,27 +1,27 @@
 /****************************************************************************
- ** Copyright (C) 2006 Klarälvdalens Datakonsult AB.  All rights reserved.
- **
- ** This file is part of the KD Chart library.
- **
- ** This file may be distributed and/or modified under the terms of the
- ** GNU General Public License version 2 as published by the Free Software
- ** Foundation and appearing in the file LICENSE.GPL included in the
- ** packaging of this file.
- **
- ** Licensees holding valid commercial KD Chart licenses may use this file in
- ** accordance with the KD Chart Commercial License Agreement provided with
- ** the Software.
- **
- ** This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
- ** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
- **
- ** See http://www.kdab.net/kdchart for
- **   information about KDChart Commercial License Agreements.
- **
- ** Contact info@kdab.net if any conditions of this
- ** licensing are not clear to you.
- **
- **********************************************************************/
+** Copyright (C) 2006 Klarï¿½vdalens Datakonsult AB.  All rights reserved.
+**
+** This file is part of the KD Chart library.
+**
+** This file may be distributed and/or modified under the terms of the
+** GNU General Public License version 2 as published by the Free Software
+** Foundation and appearing in the file LICENSE.GPL included in the
+** packaging of this file.
+**
+** Licensees holding valid commercial KD Chart licenses may use this file in
+** accordance with the KD Chart Commercial License Agreement provided with
+** the Software.
+**
+** This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
+** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+**
+** See http://www.kdab.net/kdchart for
+**   information about KDChart Commercial License Agreements.
+**
+** Contact info@kdab.net if any conditions of this
+** licensing are not clear to you.
+**
+**********************************************************************/
 
 #include <cmath>
 
@@ -104,9 +104,9 @@ void CartesianAxis::paint ( PaintContext* context ) const
     double absRange = qAbs ( range );
     // - calculate the number of unit, fifth and half measure rulers we will draw:
     /* for line and bar charts the number of rulers should depend of the number of
-     * line = rows
-     * bar = groups
-     */
+    * line = rows
+    * bar = groups
+    */
     /*
     int numberOfUnitRulers = ( int ) ( ( absRange + basicUnit * 1.05 ) / basicUnit );
     int numberOfFourthRulers = numberOfUnitRulers * 5 + 1;
@@ -183,18 +183,18 @@ void CartesianAxis::paint ( PaintContext* context ) const
 
     #ifdef AXES_PAINTING_DEBUG
     qDebug() << "CartesianAxis::paint: reference values:" << endl
-             << "-- range: " << range << endl
-             << "-- absRange: " << absRange << endl
-             << "-- magnitude: " << magnitude << endl
-             << "-- basicUnit: " << basicUnit << endl
-             << "-- numberOfUnitRulers: " << numberOfUnitRulers << endl
-             << "-- numberOfHalfRulers: " << numberOfHalfRulers << endl
-             << "-- numberOfFourthRulers: " << numberOfFourthRulers << endl
-             << "-- screenRange: " << screenRange << endl
-             << "-- drawUnitRulers: " << drawUnitRulers << endl
-             << "-- drawHalfRulers: " << drawHalfRulers << endl
-             << "-- drawFourthRulers: " << drawFourthRulers << endl
-             << "-- ruler reference point:: " << rulerRef << endl;
+            << "-- range: " << range << endl
+            << "-- absRange: " << absRange << endl
+            << "-- magnitude: " << magnitude << endl
+            << "-- basicUnit: " << basicUnit << endl
+            << "-- numberOfUnitRulers: " << numberOfUnitRulers << endl
+            << "-- numberOfHalfRulers: " << numberOfHalfRulers << endl
+            << "-- numberOfFourthRulers: " << numberOfFourthRulers << endl
+            << "-- screenRange: " << screenRange << endl
+            << "-- drawUnitRulers: " << drawUnitRulers << endl
+            << "-- drawHalfRulers: " << drawHalfRulers << endl
+            << "-- drawFourthRulers: " << drawFourthRulers << endl
+            << "-- ruler reference point:: " << rulerRef << endl;
     #endif
 
     ptr->setPen ( Qt::black );
@@ -228,8 +228,8 @@ void CartesianAxis::paint ( PaintContext* context ) const
                 leftPoint.setX( fourthRulerRef.x() + tickLength );
                 rightPoint.setX( fourthRulerRef.x() );
                 ptr->drawLine( leftPoint, rightPoint );
-           }
-       }
+          }
+      }
     }
 
     if ( drawHalfRulers ) {
@@ -254,8 +254,8 @@ void CartesianAxis::paint ( PaintContext* context ) const
                 leftPoint.setX( fourthRulerRef.x() + tickLength );
                 rightPoint.setX( fourthRulerRef.x() );
                 ptr->drawLine( leftPoint, rightPoint );
-           }
-       }
+          }
+      }
     }
 
     if ( drawUnitRulers ) {
@@ -282,37 +282,37 @@ void CartesianAxis::paint ( PaintContext* context ) const
             }
         } else {
           double maxLimit, steg;
-	  bool percent = d->diagram()->percentMode();
-	  int tickLength = position() == Left ? -4 : 3;
+          bool percent = d->diagram()->percentMode();
+          int tickLength = position() == Left ? -4 : 3;
           if ( percent ) {
-	    maxLimit = maxValueY*10;
-	    steg = maxValueY;
-	  } else {
+            maxLimit = maxValueY*10;
+            steg = maxValueY;
+          } else {
             maxLimit = maxValueY;
             steg = 1.0;
-	  }
-	    for ( double f = minValueY; f <= maxLimit; f+= steg ) {
-	    QPointF leftPoint ( 0,  percent ? f/numberOfUnitRulers : f );
-	    QPointF rightPoint ( 0, percent ? f/numberOfUnitRulers : f );
-	    leftPoint = context->coordinatePlane()->translate( leftPoint );
-	    rightPoint = context->coordinatePlane()->translate( rightPoint );
-	    leftPoint.setX( fourthRulerRef.x() + tickLength );
-	    rightPoint.setX( fourthRulerRef.x() );
-	    ptr->drawLine( leftPoint, rightPoint );
-	    if ( drawHalfRulers ) {
-	      QFont textFont( QFont("comic", 5 ) );
-	      leftPoint.setX( position() == Left ? leftPoint.x()- (2*textFont.pointSize()) : leftPoint.x()+textFont.pointSize() );
-	      leftPoint.setY( leftPoint.y() + textFont.pointSize()/2 );
-	      PainterSaver painterSaver( ptr );
-	      ptr->setPen( Qt::red );
-	      ptr->setFont( textFont );
-	      ptr->drawText( leftPoint, QString::number( minValueY ) );
-	      d->diagram()->percentMode() ? minValueY += 10 : minValueY += 1;
-	    }
-	  }
-	    //Pending Michel: reset to default - is that really what we want?
-	    d->diagram()->setPercentMode( false );
-	}
+          }
+            for ( double f = minValueY; f <= maxLimit; f+= steg ) {
+            QPointF leftPoint ( 0,  percent ? f/numberOfUnitRulers : f );
+            QPointF rightPoint ( 0, percent ? f/numberOfUnitRulers : f );
+            leftPoint = context->coordinatePlane()->translate( leftPoint );
+            rightPoint = context->coordinatePlane()->translate( rightPoint );
+            leftPoint.setX( fourthRulerRef.x() + tickLength );
+            rightPoint.setX( fourthRulerRef.x() );
+            ptr->drawLine( leftPoint, rightPoint );
+            if ( drawHalfRulers ) {
+              QFont textFont( QFont("comic", 5 ) );
+              leftPoint.setX( position() == Left ? leftPoint.x()- (2*textFont.pointSize()) : leftPoint.x()+textFont.pointSize() );
+              leftPoint.setY( leftPoint.y() + textFont.pointSize()/2 );
+              PainterSaver painterSaver( ptr );
+              ptr->setPen( Qt::red );
+              ptr->setFont( textFont );
+              ptr->drawText( leftPoint, QString::number( minValueY ) );
+              d->diagram()->percentMode() ? minValueY += 10 : minValueY += 1;
+            }
+          }
+            //Pending Michel: reset to default - is that really what we want?
+            d->diagram()->setPercentMode( false );
+        }
     }
 }
 #undef ptr
@@ -355,7 +355,7 @@ QSizePolicy CartesianAxis::sizePolicy() const
         break;
     default:
         Q_ASSERT( false ); // all positions need to be handeld
-	break;
+        break;
     };
 
     return result;
