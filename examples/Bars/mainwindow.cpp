@@ -53,6 +53,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     // Set up the diagram
     m_bars = new BarDiagram();
     m_bars->setModel( &m_model );
+
     QPen pen;
     pen.setColor( Qt::darkGray );
     pen.setWidth( 1 );
@@ -112,7 +113,7 @@ void MainWindow::on_paintValuesCB_toggled( bool checked )
 void MainWindow::on_paintThreeDBarsCB_toggled( bool checked )
 {
     ThreeDBarAttributes td;
-    int defaultDepth = td.depth();
+    int defaultDepth = static_cast<int>(td.depth());
     if ( checked ) {
         td.setEnabled( true );
         if ( threeDDepthCB->isChecked() )
