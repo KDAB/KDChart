@@ -372,8 +372,8 @@ void CartesianAxis::paint ( PaintContext* context ) const
                 maxLimit = maxValueY;
                 steg = 1.0;
             }
-            int iLabel = 0;
             for ( qreal f = minValueY; f <= maxLimit; f+= steg ) {
+//qDebug("f: %f",f);
                 QPointF leftPoint (  0.0,  percent ? f/numberOfUnitRulers : f );
                 QPointF rightPoint ( 0.0, percent ? f/numberOfUnitRulers : f );
                 leftPoint = context->coordinatePlane()->translate( leftPoint );
@@ -388,16 +388,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
                     PainterSaver painterSaver( ptr );
                     ptr->setPen( Qt::red );
                     ptr->setFont( textFont );
-                    ptr->drawText( leftPoint,
-                        hardLabelsCount ? labels()[ iLabel ] : QString::number( minValueX ) );
-                    if( hardLabelsCount ){
-                        if( iLabel >= hardLabelsCount-1 )
-                            iLabel = 0;
-                        else
-                            ++iLabel;
-                    }else{
-                        minValueX += 1.0;
-                    }
+                    ptr->drawText( leftPoint, QString::number( minValueY ) );
                     d->diagram()->percentMode() ? minValueY += 10.0 : minValueY += 1.0;
                 }
             }
