@@ -1,27 +1,27 @@
 /****************************************************************************
- ** Copyright (C) 2006 Klarälvdalens Datakonsult AB.  All rights reserved.
- **
- ** This file is part of the KD Chart library.
- **
- ** This file may be distributed and/or modified under the terms of the
- ** GNU General Public License version 2 as published by the Free Software
- ** Foundation and appearing in the file LICENSE.GPL included in the
- ** packaging of this file.
- **
- ** Licensees holding valid commercial KD Chart licenses may use this file in
- ** accordance with the KD Chart Commercial License Agreement provided with
- ** the Software.
- **
- ** This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
- ** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
- **
- ** See http://www.kdab.net/kdchart for
- **   information about KDChart Commercial License Agreements.
- **
- ** Contact info@kdab.net if any conditions of this
- ** licensing are not clear to you.
- **
- **********************************************************************/
+** Copyright (C) 2006 Klarälvdalens Datakonsult AB.  All rights reserved.
+**
+** This file is part of the KD Chart library.
+**
+** This file may be distributed and/or modified under the terms of the
+** GNU General Public License version 2 as published by the Free Software
+** Foundation and appearing in the file LICENSE.GPL included in the
+** packaging of this file.
+**
+** Licensees holding valid commercial KD Chart licenses may use this file in
+** accordance with the KD Chart Commercial License Agreement provided with
+** the Software.
+**
+** This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
+** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+**
+** See http://www.kdab.net/kdchart for
+**   information about KDChart Commercial License Agreements.
+**
+** Contact info@kdab.net if any conditions of this
+** licensing are not clear to you.
+**
+**********************************************************************/
 
 #include "KDChartAbstractCartesianDiagram.h"
 #include "KDChartAbstractCartesianDiagram_p.h"
@@ -66,7 +66,7 @@ KDChart::CartesianAxisList AbstractCartesianDiagram::axes( ) const
 void KDChart::AbstractCartesianDiagram::setCoordinatePlane( AbstractCoordinatePlane* plane )
 {
   AbstractDiagram::setCoordinatePlane(plane);
-  // Hack alert. Internally we pretend that the axes are owned by the plane.  
+  // Hack alert. Internally we pretend that the axes are owned by the plane.
   foreach( CartesianAxis* axis, d->axesList ) {
     axis->setParent(plane);
     axis->show();
@@ -116,7 +116,7 @@ void AbstractCartesianDiagram::drawGrid( PaintContext* context )
     int numberOfUnitLinesY = (int) (boundaries.second.y() - boundaries.first.y());
 
     /* Dunno if this is correct, but we get a SIGFPE later
-       if we dont bail out */
+      if we dont bail out */
     if( numberOfUnitLinesX <= 0 ) return;
     if( numberOfUnitLinesY <= 0 ) return;
 
@@ -148,7 +148,7 @@ void AbstractCartesianDiagram::drawGrid( PaintContext* context )
         context->painter()->setPen( gridAttributes()->subGridPen() );
         for ( float f = minValueX; f <= maxValueX; f += 0.25 ) {
             QPointF topPoint( f, maxValueY );
-	    QPointF bottomPoint( f, minValueY );
+            QPointF bottomPoint( f, minValueY );
             topPoint = context->coordinatePlane()->translate( topPoint );
             bottomPoint = context->coordinatePlane()->translate( bottomPoint );
             context->painter()->drawLine( topPoint, bottomPoint );
@@ -158,7 +158,7 @@ void AbstractCartesianDiagram::drawGrid( PaintContext* context )
         context->painter()->setPen( gridAttributes()->subGridPen() );
         for ( float f = minValueY; f <= maxValueY; f += 0.25 ) {
             QPointF leftPoint( minValueX, f );
-	    QPointF rightPoint( maxValueX, f );
+            QPointF rightPoint( maxValueX, f );
             leftPoint = context->coordinatePlane()->translate( leftPoint );
             rightPoint = context->coordinatePlane()->translate( rightPoint );
             context->painter()->drawLine( leftPoint, rightPoint );
@@ -169,7 +169,7 @@ void AbstractCartesianDiagram::drawGrid( PaintContext* context )
         context->painter()->setPen( gridAttributes()->subGridPen() );
         for ( float f = minValueX; f <= maxValueX; f += 0.5 ) {
             QPointF topPoint( f, maxValueY );
-	    QPointF bottomPoint( f, minValueY );
+            QPointF bottomPoint( f, minValueY );
             topPoint = context->coordinatePlane()->translate( topPoint );
             bottomPoint = context->coordinatePlane()->translate( bottomPoint );
             context->painter()->drawLine( topPoint, bottomPoint );
@@ -179,7 +179,7 @@ void AbstractCartesianDiagram::drawGrid( PaintContext* context )
         context->painter()->setPen( gridAttributes()->subGridPen() );
         for ( float f = minValueY; f <= maxValueY; f += 0.5 ) {
             QPointF leftPoint( minValueX, f );
-	    QPointF rightPoint( maxValueX, f );
+            QPointF rightPoint( maxValueX, f );
             leftPoint = context->coordinatePlane()->translate( leftPoint );
             rightPoint = context->coordinatePlane()->translate( rightPoint );
             context->painter()->drawLine( leftPoint, rightPoint );
@@ -193,7 +193,7 @@ void AbstractCartesianDiagram::drawGrid( PaintContext* context )
             minX = minX + unitFactorX * (minX > 0 ? 1 : -1) - qRound( minX ) % unitFactorX;
         for ( float f = minX; f <= maxValueX; f += unitFactorX ) {
             QPointF topPoint( f, maxValueY );
-	    QPointF bottomPoint( f, minValueY );
+            QPointF bottomPoint( f, minValueY );
             topPoint = context->coordinatePlane()->translate( topPoint );
             bottomPoint = context->coordinatePlane()->translate( bottomPoint );
             context->painter()->drawLine( topPoint, bottomPoint );
@@ -206,7 +206,7 @@ void AbstractCartesianDiagram::drawGrid( PaintContext* context )
             minY = minY + unitFactorY * (minY > 0 ? 1 : -1) - qRound( minY ) % unitFactorY;
         for ( float f = minY; f <= maxValueY; f += unitFactorY ) {
             QPointF leftPoint( minValueX, f );
-	    QPointF rightPoint( maxValueX, f );
+            QPointF rightPoint( maxValueX, f );
             leftPoint = context->coordinatePlane()->translate( leftPoint );
             rightPoint = context->coordinatePlane()->translate( rightPoint );
             context->painter()->drawLine( leftPoint, rightPoint );
