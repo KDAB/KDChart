@@ -42,9 +42,8 @@ public:
 private:
     bool visible;
     QFont font;
-    bool useRelativeSize;
-    int relativeSize;
-    int minimalSize;
+    Measure fontSize;
+    Measure minimalFontSize;
     bool autoRotate;
     bool autoShrink;
     int rotation;
@@ -61,9 +60,6 @@ TextAttributes::TextAttributes()
 {
     setVisible( true );
     setFont( QApplication::font() );
-    setUseRelativeSize( false );
-    setRelativeSize( -1 );
-    setMinimalSize( -1 );
     setAutoRotate( false );
     setAutoShrink( false );
     setRotation( 0 );
@@ -96,9 +92,8 @@ bool TextAttributes::operator==( const TextAttributes& r ) const
 {
     return ( isVisible() == r.isVisible() &&
 	     font() == r.font() &&
-	     useRelativeSize() == r.useRelativeSize() &&
-	     relativeSize() == r.relativeSize() &&
-	     minimalSize() == r.minimalSize() &&
+	     fontSize() == r.fontSize() &&
+	     minimalFontSize() == r.minimalFontSize() &&
 	     autoRotate() == r.autoRotate() &&
 	     autoShrink() == r.autoShrink() &&
 	     rotation() == rotation() &&
@@ -126,34 +121,24 @@ QFont TextAttributes::font() const
     return d->font;
 }
 
-void TextAttributes::setUseRelativeSize( bool useRelativeSize )
+void TextAttributes::setFontSize( const Measure & measure )
 {
-    d->useRelativeSize = useRelativeSize;
+    d->fontSize = measure;
 }
 
-bool TextAttributes::useRelativeSize() const
+Measure TextAttributes::fontSize() const
 {
-    return d->useRelativeSize;
+    return d->fontSize;
 }
 
-void TextAttributes::setRelativeSize( int relativeSize )
+void TextAttributes::setMinimalFontSize( const Measure & measure )
 {
-    d->relativeSize = relativeSize;
+    d->minimalFontSize = measure;
 }
 
-int TextAttributes::relativeSize() const
+Measure TextAttributes::minimalFontSize() const
 {
-    return d->relativeSize;
-}
-
-void TextAttributes::setMinimalSize( int minimalSize )
-{
-    d->minimalSize = minimalSize;
-}
-
-int TextAttributes::minimalSize() const
-{
-    return d->minimalSize;
+    return d->minimalFontSize;
 }
 
 void TextAttributes::setAutoRotate( bool autoRotate )
@@ -209,9 +194,8 @@ QDebug operator<<(QDebug dbg, const KDChart::TextAttributes& ta)
     dbg << "KDChart::TextAttributes("
 	<< "visible="<<ta.isVisible()
 	<< "font="<<ta.font().toString() /* What? No QDebug for QFont? */
-	<< "userelativesize="<<ta.useRelativeSize()
-	<< "relativesize="<<ta.relativeSize()
-	<< "minimalsize="<<ta.minimalSize()
+	<< "fontsize="<<ta.fontSize()
+	<< "minimalfontsize="<<ta.minimalFontSize()
 	<< "autorotate="<<ta.autoRotate()
 	<< "autoshrink="<<ta.autoShrink()
 	<< "rotation="<<ta.rotation()

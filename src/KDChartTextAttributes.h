@@ -3,7 +3,7 @@
    */
 
 /****************************************************************************
- ** Copyright (C) 2005-2006 Klarälvdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2005-2006 Klarï¿½vdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KD Chart library.
  **
@@ -33,6 +33,7 @@
 #include <QDebug>
 #include <QMetaType>
 #include "KDChartGlobal.h"
+#include "KDChartMeasure.h"
 
 class QColor;
 class QFont;
@@ -55,14 +56,11 @@ public:
   void setFont( const QFont& font );
   QFont font() const;
 
-  void setUseRelativeSize( bool useRelativeSize );
-  bool useRelativeSize() const;
+  void setFontSize( const Measure & measure );
+  Measure fontSize() const;
 
-  void setRelativeSize( int relativeSize );
-  int relativeSize() const;
-
-  void setMinimalSize( int minimalSize );
-  int minimalSize() const;
+  void setMinimalFontSize( const Measure & measure );
+  Measure minimalFontSize() const;
 
   void setAutoRotate( bool autoRotate );
   bool autoRotate() const;

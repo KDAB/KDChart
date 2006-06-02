@@ -69,8 +69,7 @@ void HeaderFooter::init()
     TextAttributes textAttrs;
     textAttrs.setColor( Qt::black );
     textAttrs.setFont( QFont( "helvetica", 10, QFont::Bold, false ) );
-    textAttrs.setRelativeSize( 16 );
-    textAttrs.setUseRelativeSize( true );
+    textAttrs.setFontSize( 16 );
     setTextAttributes( textAttrs );
 }
 

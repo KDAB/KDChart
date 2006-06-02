@@ -98,14 +98,12 @@ void Legend::init()
     TextAttributes textAttrs;
     textAttrs.setColor( Qt::black );
     textAttrs.setFont( QFont( "helvetica", 10, QFont::Normal, false ) );
-    textAttrs.setRelativeSize( 16 );
-    textAttrs.setUseRelativeSize( true );
+    textAttrs.setFontSize( 16 );
     setTextAttributes( textAttrs );
     TextAttributes titleTextAttrs;
     titleTextAttrs.setColor( Qt::black );
     titleTextAttrs.setFont( QFont( "helvetica", 12, QFont::Bold, false ) );
-    titleTextAttrs.setRelativeSize( 20 );
-    titleTextAttrs.setUseRelativeSize( true );
+    titleTextAttrs.setFontSize( 20 );
     setTitleTextAttributes( titleTextAttrs );
     d->blockBuildLegend = false;
 
