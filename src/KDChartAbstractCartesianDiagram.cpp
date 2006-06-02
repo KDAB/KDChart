@@ -29,6 +29,8 @@
 #include <QDebug>
 #include <QPainter>
 
+#include <cmath>
+
 using namespace KDChart;
 AbstractCartesianDiagram::Private::Private()
     : referenceDiagram( 0 )
@@ -104,49 +106,49 @@ void AbstractCartesianDiagram::drawGrid( PaintContext* context )
     if ( !gridAttributes()->isGridVisible() )
         return;
     QPair<QPointF, QPointF> boundaries = dataBoundaries();
-    const int MinimumPixelsBetweenLines = 10;
 
-    QPointF p1 = context->coordinatePlane()->translate( boundaries.first );
-    QPointF p2 = context->coordinatePlane()->translate( boundaries.second );
+    // PENDING(khz) FIXME: make numberOfUnitLinesX work for data with X coordinates too:
+    const qreal numberOfUnitLinesX = model()->rowCount(rootIndex()) - 1.0;
+    const qreal numberOfUnitLinesY = qAbs( boundaries.second.y() - boundaries.first.y() );
 
-    double screenRangeX = qAbs ( p1.x() - p2.x() );
-    double screenRangeY = qAbs ( p1.y() - p2.y() );
+    // do not draw a Zero size grid (and do not divide by Zero)
+    if( numberOfUnitLinesX <= 0.0 || numberOfUnitLinesY <= 0.0 ) return;
 
-    int numberOfUnitLinesX = model()->rowCount(rootIndex()) - 1;
-    int numberOfUnitLinesY = (int) (boundaries.second.y() - boundaries.first.y());
 
-    /* Dunno if this is correct, but we get a SIGFPE later
-      if we dont bail out */
-    if( numberOfUnitLinesX <= 0 ) return;
-    if( numberOfUnitLinesY <= 0 ) return;
+    const QPointF p1 = context->coordinatePlane()->translate( boundaries.first );
+    const QPointF p2 = context->coordinatePlane()->translate( boundaries.second );
 
+    const qreal screenRangeX = qAbs ( p1.x() - p2.x() );
+    const qreal screenRangeY = qAbs ( p1.y() - p2.y() );
+
+    const qreal MinimumPixelsBetweenLines = 10.0;
+
+    qreal unitFactorX = 1.0;
+    qreal unitFactorY = 1.0;
     bool drawUnitLinesX = screenRangeX / numberOfUnitLinesX > MinimumPixelsBetweenLines;
     bool drawUnitLinesY = screenRangeY / numberOfUnitLinesY > MinimumPixelsBetweenLines;
-    int unitFactorX = 1;
-    int unitFactorY = 1;
-
     while ( !drawUnitLinesX ) {
-        unitFactorX *= 10;
+        unitFactorX *= 10.0;
         drawUnitLinesX = screenRangeX / (numberOfUnitLinesX / unitFactorX) > MinimumPixelsBetweenLines;
     }
     while ( !drawUnitLinesY ) {
-        unitFactorY *= 10;
+        unitFactorY *= 10.0;
         drawUnitLinesY = screenRangeY / (numberOfUnitLinesY / unitFactorY) > MinimumPixelsBetweenLines;
     }
 
-    bool drawHalfLinesX = screenRangeX / (numberOfUnitLinesX * 2) > MinimumPixelsBetweenLines && gridAttributes()->isSubGridVisible();
-    bool drawHalfLinesY = screenRangeY / (numberOfUnitLinesY * 2) > MinimumPixelsBetweenLines && gridAttributes()->isSubGridVisible();
-    bool drawFourthLinesX = screenRangeX / (numberOfUnitLinesX * 4) > MinimumPixelsBetweenLines && gridAttributes()->isSubGridVisible();
-    bool drawFourthLinesY = screenRangeY / (numberOfUnitLinesY * 4) > MinimumPixelsBetweenLines && gridAttributes()->isSubGridVisible();
+    bool drawHalfLinesX = screenRangeX / (numberOfUnitLinesX * 2.0) > MinimumPixelsBetweenLines && gridAttributes()->isSubGridVisible();
+    bool drawHalfLinesY = screenRangeY / (numberOfUnitLinesY * 2.0) > MinimumPixelsBetweenLines && gridAttributes()->isSubGridVisible();
+    bool drawFourthLinesX = screenRangeX / (numberOfUnitLinesX * 4.0) > MinimumPixelsBetweenLines && gridAttributes()->isSubGridVisible();
+    bool drawFourthLinesY = screenRangeY / (numberOfUnitLinesY * 4.0) > MinimumPixelsBetweenLines && gridAttributes()->isSubGridVisible();
 
-    float minValueX = boundaries.first.x();
-    float maxValueX = boundaries.second.x();
-    float minValueY = boundaries.first.y();
-    float maxValueY = boundaries.second.y();
+    const qreal minValueX = boundaries.first.x();
+    const qreal maxValueX = boundaries.second.x();
+    const qreal minValueY = boundaries.first.y();
+    const qreal maxValueY = boundaries.second.y();
 
     if ( drawFourthLinesX ) {
         context->painter()->setPen( gridAttributes()->subGridPen() );
-        for ( float f = minValueX; f <= maxValueX; f += 0.25 ) {
+        for ( qreal f = minValueX; f <= maxValueX; f += 0.25 ) {
             QPointF topPoint( f, maxValueY );
             QPointF bottomPoint( f, minValueY );
             topPoint = context->coordinatePlane()->translate( topPoint );
@@ -156,7 +158,7 @@ void AbstractCartesianDiagram::drawGrid( PaintContext* context )
     }
     if ( drawFourthLinesY ) {
         context->painter()->setPen( gridAttributes()->subGridPen() );
-        for ( float f = minValueY; f <= maxValueY; f += 0.25 ) {
+        for ( qreal f = minValueY; f <= maxValueY; f += 0.25 ) {
             QPointF leftPoint( minValueX, f );
             QPointF rightPoint( maxValueX, f );
             leftPoint = context->coordinatePlane()->translate( leftPoint );
@@ -167,7 +169,7 @@ void AbstractCartesianDiagram::drawGrid( PaintContext* context )
 
     if ( drawHalfLinesX ) {
         context->painter()->setPen( gridAttributes()->subGridPen() );
-        for ( float f = minValueX; f <= maxValueX; f += 0.5 ) {
+        for ( qreal f = minValueX; f <= maxValueX; f += 0.5 ) {
             QPointF topPoint( f, maxValueY );
             QPointF bottomPoint( f, minValueY );
             topPoint = context->coordinatePlane()->translate( topPoint );
@@ -177,7 +179,7 @@ void AbstractCartesianDiagram::drawGrid( PaintContext* context )
     }
     if ( drawHalfLinesY ) {
         context->painter()->setPen( gridAttributes()->subGridPen() );
-        for ( float f = minValueY; f <= maxValueY; f += 0.5 ) {
+        for ( qreal f = minValueY; f <= maxValueY; f += 0.5 ) {
             QPointF leftPoint( minValueX, f );
             QPointF rightPoint( maxValueX, f );
             leftPoint = context->coordinatePlane()->translate( leftPoint );
@@ -185,26 +187,37 @@ void AbstractCartesianDiagram::drawGrid( PaintContext* context )
             context->painter()->drawLine( leftPoint, rightPoint );
         }
     }
-
+QPen pen(Qt::red);
+pen.setWidth(5);
     if ( drawUnitLinesX ) {
         context->painter()->setPen( gridAttributes()->gridPen() );
-        float minX = minValueX;
-        if ( qRound( minX ) % unitFactorX != 0 )
-            minX = minX + unitFactorX * (minX > 0 ? 1 : -1) - qRound( minX ) % unitFactorX;
-        for ( float f = minX; f <= maxValueX; f += unitFactorX ) {
+        qreal minX = minValueX;
+        // PENDING(khz) FIXME: calculate the start value in a *way* more sophisticated way:
+        if ( fmod( minX , unitFactorX ) != 0.0 )
+            minX = unitFactorX * trunc( minX / unitFactorX );
+        for ( qreal f = minX; f <= maxValueX; f += unitFactorX ) {
             QPointF topPoint( f, maxValueY );
             QPointF bottomPoint( f, minValueY );
             topPoint = context->coordinatePlane()->translate( topPoint );
             bottomPoint = context->coordinatePlane()->translate( bottomPoint );
+            const bool zeroLineHere = f == 0.0;
+            if ( zeroLineHere )
+                context->painter()->setPen( pen );
+                //context->painter()->setPen( gridAttributes()->gridPen() );
             context->painter()->drawLine( topPoint, bottomPoint );
+            if ( zeroLineHere )
+                context->painter()->setPen( gridAttributes()->gridPen() );
         }
     }
     if ( drawUnitLinesY ) {
         context->painter()->setPen( gridAttributes()->gridPen() );
-        float minY = minValueY;
-        if ( qRound( minY ) % unitFactorY != 0 )
-            minY = minY + unitFactorY * (minY > 0 ? 1 : -1) - qRound( minY ) % unitFactorY;
-        for ( float f = minY; f <= maxValueY; f += unitFactorY ) {
+        qreal minY = minValueY;
+        // PENDING(khz) FIXME: calculate the start value in a *way* more sophisticated way:
+        if ( fmod( minY , unitFactorY ) != 0.0 )
+            minY = unitFactorY * trunc( minY / unitFactorY );
+        //if ( qRound( minY ) % unitFactorY != 0 )
+        //    minY = minY + unitFactorY * (minY > 0 ? 1 : -1) - qRound( minY ) % unitFactorY;
+        for ( qreal f = minY; f <= maxValueY; f += unitFactorY ) {
             QPointF leftPoint( minValueX, f );
             QPointF rightPoint( maxValueX, f );
             leftPoint = context->coordinatePlane()->translate( leftPoint );
@@ -214,10 +227,10 @@ void AbstractCartesianDiagram::drawGrid( PaintContext* context )
     }
 
     context->painter()->setPen( gridAttributes()->zeroLinePen() );
-    QPointF topPoint( 0, maxValueY );
-    QPointF bottomPoint( 0, minValueY );
-    QPointF leftPoint( minValueX, 0 );
-    QPointF rightPoint( maxValueX, 0 );
+    QPointF topPoint(    0.0, maxValueY );
+    QPointF bottomPoint( 0.0, minValueY );
+    QPointF leftPoint(   minValueX, 0.0 );
+    QPointF rightPoint(  maxValueX, 0.0 );
     topPoint = context->coordinatePlane()->translate( topPoint );
     bottomPoint = context->coordinatePlane()->translate( bottomPoint );
     leftPoint = context->coordinatePlane()->translate( leftPoint );
