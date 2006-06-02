@@ -194,9 +194,6 @@ void AbstractCartesianDiagram::drawGrid( PaintContext* context )
         gridAttributes()->zeroLinePen().style() != Qt::NoPen;
     const bool drawZeroLineY = gridAttributes()->zeroLinePen().style() != Qt::NoPen;
 
-// next 2 lines for testing only, of course
-QPen pen(Qt::red);
-pen.setWidth(5);
     if ( drawUnitLinesX || drawXZeroLineX ) {
         if ( drawUnitLinesX )
             context->painter()->setPen( gridAttributes()->gridPen() );
@@ -207,7 +204,7 @@ pen.setWidth(5);
 
         for ( qreal f = minX; f <= maxValueX; f += unitFactorX ) {
             // PENDING(khz) FIXME: make draving/not drawing of Zero line more sophisticated?:
-            const bool zeroLineHere = drawXZeroLineX && f == 0.0;
+            const bool zeroLineHere = drawXZeroLineX && (f == 0.0);
             if ( drawUnitLinesX || zeroLineHere ){
                 QPointF topPoint( f, maxValueY );
                 QPointF bottomPoint( f, minValueY );
@@ -231,32 +228,19 @@ pen.setWidth(5);
 
         for ( qreal f = minY; f <= maxValueY; f += unitFactorY ) {
             // PENDING(khz) FIXME: make draving/not drawing of Zero line more sophisticated?:
-            const bool zeroLineHere = f == 0.0;
+//qDebug("f: %f",f);
+            const bool zeroLineHere = (f == 0.0);
             if ( drawUnitLinesY || zeroLineHere ){
                 QPointF leftPoint( minValueX, f );
                 QPointF rightPoint( maxValueX, f );
                 leftPoint = context->coordinatePlane()->translate( leftPoint );
                 rightPoint = context->coordinatePlane()->translate( rightPoint );
                 if ( zeroLineHere )
-                    context->painter()->setPen( pen );
-                    //context->painter()->setPen( gridAttributes()->zeroLinePen() );
+                    context->painter()->setPen( gridAttributes()->zeroLinePen() );
                 context->painter()->drawLine( leftPoint, rightPoint );
                 if ( zeroLineHere )
                     context->painter()->setPen( gridAttributes()->gridPen() );
             }
         }
     }
-/*
-    context->painter()->setPen( gridAttributes()->zeroLinePen() );
-    QPointF topPoint(    0.0, maxValueY );
-    QPointF bottomPoint( 0.0, minValueY );
-    QPointF leftPoint(   minValueX, 0.0 );
-    QPointF rightPoint(  maxValueX, 0.0 );
-    topPoint = context->coordinatePlane()->translate( topPoint );
-    bottomPoint = context->coordinatePlane()->translate( bottomPoint );
-    leftPoint = context->coordinatePlane()->translate( leftPoint );
-    rightPoint = context->coordinatePlane()->translate( rightPoint );
-    context->painter()->drawLine( topPoint, bottomPoint );
-    context->painter()->drawLine( leftPoint, rightPoint );
-*/
 }
