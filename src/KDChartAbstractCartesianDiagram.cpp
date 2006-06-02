@@ -107,6 +107,8 @@ void AbstractCartesianDiagram::drawGrid( PaintContext* context )
         return;
     QPair<QPointF, QPointF> boundaries = dataBoundaries();
 
+    const bool hasXCoordinates = datasetDimension() > 1;
+
     // PENDING(khz) FIXME: make numberOfUnitLinesX work for data with X coordinates too:
     const qreal numberOfUnitLinesX = model()->rowCount(rootIndex()) - 1.0;
     const qreal numberOfUnitLinesY = qAbs( boundaries.second.y() - boundaries.first.y() );
@@ -187,45 +189,64 @@ void AbstractCartesianDiagram::drawGrid( PaintContext* context )
             context->painter()->drawLine( leftPoint, rightPoint );
         }
     }
+
+    const bool drawXZeroLineX = hasXCoordinates &&
+        gridAttributes()->zeroLinePen().style() != Qt::NoPen;
+    const bool drawZeroLineY = gridAttributes()->zeroLinePen().style() != Qt::NoPen;
+
+// next 2 lines for testing only, of course
 QPen pen(Qt::red);
 pen.setWidth(5);
-    if ( drawUnitLinesX ) {
-        context->painter()->setPen( gridAttributes()->gridPen() );
+    if ( drawUnitLinesX || drawXZeroLineX ) {
+        if ( drawUnitLinesX )
+            context->painter()->setPen( gridAttributes()->gridPen() );
         qreal minX = minValueX;
         // PENDING(khz) FIXME: calculate the start value in a *way* more sophisticated way:
         if ( fmod( minX , unitFactorX ) != 0.0 )
             minX = unitFactorX * trunc( minX / unitFactorX );
+
         for ( qreal f = minX; f <= maxValueX; f += unitFactorX ) {
-            QPointF topPoint( f, maxValueY );
-            QPointF bottomPoint( f, minValueY );
-            topPoint = context->coordinatePlane()->translate( topPoint );
-            bottomPoint = context->coordinatePlane()->translate( bottomPoint );
-            const bool zeroLineHere = f == 0.0;
-            if ( zeroLineHere )
-                context->painter()->setPen( pen );
-                //context->painter()->setPen( gridAttributes()->gridPen() );
-            context->painter()->drawLine( topPoint, bottomPoint );
-            if ( zeroLineHere )
-                context->painter()->setPen( gridAttributes()->gridPen() );
+            // PENDING(khz) FIXME: make draving/not drawing of Zero line more sophisticated?:
+            const bool zeroLineHere = drawXZeroLineX && f == 0.0;
+            if ( drawUnitLinesX || zeroLineHere ){
+                QPointF topPoint( f, maxValueY );
+                QPointF bottomPoint( f, minValueY );
+                topPoint = context->coordinatePlane()->translate( topPoint );
+                bottomPoint = context->coordinatePlane()->translate( bottomPoint );
+                if ( zeroLineHere )
+                    context->painter()->setPen( gridAttributes()->zeroLinePen() );
+                context->painter()->drawLine( topPoint, bottomPoint );
+                if ( zeroLineHere )
+                    context->painter()->setPen( gridAttributes()->gridPen() );
+            }
         }
     }
-    if ( drawUnitLinesY ) {
-        context->painter()->setPen( gridAttributes()->gridPen() );
+    if ( drawUnitLinesY || drawZeroLineY ) {
+        if ( drawUnitLinesY )
+            context->painter()->setPen( gridAttributes()->gridPen() );
         qreal minY = minValueY;
         // PENDING(khz) FIXME: calculate the start value in a *way* more sophisticated way:
         if ( fmod( minY , unitFactorY ) != 0.0 )
             minY = unitFactorY * trunc( minY / unitFactorY );
-        //if ( qRound( minY ) % unitFactorY != 0 )
-        //    minY = minY + unitFactorY * (minY > 0 ? 1 : -1) - qRound( minY ) % unitFactorY;
+
         for ( qreal f = minY; f <= maxValueY; f += unitFactorY ) {
-            QPointF leftPoint( minValueX, f );
-            QPointF rightPoint( maxValueX, f );
-            leftPoint = context->coordinatePlane()->translate( leftPoint );
-            rightPoint = context->coordinatePlane()->translate( rightPoint );
-            context->painter()->drawLine( leftPoint, rightPoint );
+            // PENDING(khz) FIXME: make draving/not drawing of Zero line more sophisticated?:
+            const bool zeroLineHere = f == 0.0;
+            if ( drawUnitLinesY || zeroLineHere ){
+                QPointF leftPoint( minValueX, f );
+                QPointF rightPoint( maxValueX, f );
+                leftPoint = context->coordinatePlane()->translate( leftPoint );
+                rightPoint = context->coordinatePlane()->translate( rightPoint );
+                if ( zeroLineHere )
+                    context->painter()->setPen( pen );
+                    //context->painter()->setPen( gridAttributes()->zeroLinePen() );
+                context->painter()->drawLine( leftPoint, rightPoint );
+                if ( zeroLineHere )
+                    context->painter()->setPen( gridAttributes()->gridPen() );
+            }
         }
     }
-
+/*
     context->painter()->setPen( gridAttributes()->zeroLinePen() );
     QPointF topPoint(    0.0, maxValueY );
     QPointF bottomPoint( 0.0, minValueY );
@@ -237,4 +258,5 @@ pen.setWidth(5);
     rightPoint = context->coordinatePlane()->translate( rightPoint );
     context->painter()->drawLine( topPoint, bottomPoint );
     context->painter()->drawLine( leftPoint, rightPoint );
+*/
 }
