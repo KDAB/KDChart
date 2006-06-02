@@ -346,8 +346,13 @@ void CartesianAxis::paint ( PaintContext* context ) const
                     const QSizeF size( metrics.boundingRect( label ).size() );
                     topPoint.setX( topPoint.x() - size.width() / 2.0 );
                     ptr->drawText( QRectF(topPoint, size), Qt::AlignCenter, label);
-                    if( ( hardLabelsCount   && iLabel >= hardLabelsCount  -1 )  ||
-                        ( headerLabelsCount && iLabel >= headerLabelsCount-1 ) )
+                    if( hardLabelsCount ){
+                        if( iLabel >= hardLabelsCount  -1 )
+                            iLabel = 0;
+                        else
+                            ++iLabel;
+                    }else if( headerLabelsCount ){
+                        if( iLabel >= headerLabelsCount-1 )
                             iLabel = 0;
                         else
                             ++iLabel;
