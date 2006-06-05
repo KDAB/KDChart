@@ -31,6 +31,11 @@
 
 #include <cmath>
 
+static int _trunc( qreal v )
+{
+    return static_cast<int>( ( v > 0 ) ? floor( v ) : ceil(  v ) );
+}
+
 using namespace KDChart;
 AbstractCartesianDiagram::Private::Private()
     : referenceDiagram( 0 )
@@ -200,7 +205,7 @@ void AbstractCartesianDiagram::drawGrid( PaintContext* context )
         qreal minX = minValueX;
         // PENDING(khz) FIXME: calculate the start value in a *way* more sophisticated way:
         if ( fmod( minX , unitFactorX ) != 0.0 )
-            minX = unitFactorX * trunc( minX / unitFactorX );
+            minX = unitFactorX * _trunc( minX / unitFactorX );
 
         for ( qreal f = minX; f <= maxValueX; f += unitFactorX ) {
             // PENDING(khz) FIXME: make draving/not drawing of Zero line more sophisticated?:
@@ -224,7 +229,7 @@ void AbstractCartesianDiagram::drawGrid( PaintContext* context )
         qreal minY = minValueY;
         // PENDING(khz) FIXME: calculate the start value in a *way* more sophisticated way:
         if ( fmod( minY , unitFactorY ) != 0.0 )
-            minY = unitFactorY * trunc( minY / unitFactorY );
+            minY = unitFactorY * _trunc( minY / unitFactorY );
 
         for ( qreal f = minY; f <= maxValueY; f += unitFactorY ) {
             // PENDING(khz) FIXME: make draving/not drawing of Zero line more sophisticated?:
