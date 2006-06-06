@@ -50,10 +50,10 @@ namespace KDChart {
             QLayoutItem( alignment ),
             mParent( 0 ) {}
         virtual void paint( QPainter* ) = 0;
-        virtual void setParentWidget( const QWidget* widget );
+        virtual void setParentWidget( QWidget* widget );
         virtual void sizeHintChanged();
     protected:
-        const QWidget* mParent;
+        QWidget* mParent;
     };
 
     /** \internal

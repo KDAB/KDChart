@@ -47,7 +47,7 @@
     Thus, you need to call setParentWidget on every item, that
     has a non-fixed size.
   */
-void KDChart::LayoutItem::setParentWidget( const QWidget* widget )
+void KDChart::LayoutItem::setParentWidget( QWidget* widget )
 {
     mParent = widget;
 }
@@ -60,9 +60,7 @@ void KDChart::LayoutItem::sizeHintChanged()
 {
     if( mParent ){
         QEvent event( QEvent::LayoutRequest );
-        QCoreApplication::sendEvent(
-            (const_cast<QWidget*>(mParent)),
-            &event );
+        QCoreApplication::sendEvent( mParent, &event );
     }
 }
 
