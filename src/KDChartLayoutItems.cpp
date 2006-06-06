@@ -31,11 +31,27 @@
 #include <QTextBlockFormat>
 #include <QTextDocumentFragment>
 #include <QAbstractTextDocumentLayout>
+#include <QLayout>
 #include <QPainter>
 #include <QDebug>
 #include <QCoreApplication>
 #include <QApplication>
 #include <QStyle>
+
+
+/**
+    Report changed size hint: ask the parent widget to recalculate the layout.
+  */
+void KDChart::LayoutItem::sizeHintChanged()
+{
+    if( layout() ){
+        QEvent event( QEvent::LayoutRequest );
+        QCoreApplication::sendEvent(
+            qobject_cast<QWidget*>( layout()->parentWidget() ),
+            &event );
+    }
+}
+
 
 KDChart::TextLayoutItem::TextLayoutItem( const QString& text,
                                          const KDChart::TextAttributes& attributes,
@@ -118,6 +134,7 @@ QSize KDChart::TextLayoutItem::sizeHint() const
             cachedFont.setPointSizeF( fntSiz );
         }
         cachedSizeHint = calcSizeHint( cachedFont );
+        (const_cast<KDChart::TextLayoutItem*>(this))->sizeHintChanged();
     }
     //qDebug("cachedSizeHint.width(): %i",cachedSizeHint.width());
     return cachedSizeHint;

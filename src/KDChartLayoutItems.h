@@ -49,6 +49,7 @@ namespace KDChart {
         LayoutItem( Qt::Alignment alignment = 0 ) :
             QLayoutItem( alignment ) {}
         virtual void paint( QPainter* ) = 0;
+        virtual void sizeHintChanged();
     };
 
     /** \internal
