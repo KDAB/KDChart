@@ -527,6 +527,7 @@ void Legend::buildLegend()
                 referenceArea(),
                 Qt::Horizontal,
                 Qt::AlignCenter );
+        titleItem->setParentWidget( this );
 
         d->layoutItems << titleItem;
         if( orientation() == Qt::Vertical )
@@ -570,6 +571,7 @@ void Legend::buildLegend()
                 referenceArea(),
                 Qt::Horizontal,
                 Qt::AlignLeft );
+        labelItem->setParentWidget( this );
 
         d->layoutItems << labelItem;
         if( orientation() == Qt::Vertical )

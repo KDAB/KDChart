@@ -40,14 +40,28 @@
 
 
 /**
+    Inform the item about its widget: This enables the item,
+    to send a LayoutRequest to that widget, whenever the size
+    has changed.
+
+    Thus, you need to call setParentWidget on every item, that
+    has a non-fixed size.
+  */
+void KDChart::LayoutItem::setParentWidget( const QWidget* widget )
+{
+    mParent = widget;
+}
+
+
+/**
     Report changed size hint: ask the parent widget to recalculate the layout.
   */
 void KDChart::LayoutItem::sizeHintChanged()
 {
-    if( layout() ){
+    if( mParent ){
         QEvent event( QEvent::LayoutRequest );
         QCoreApplication::sendEvent(
-            qobject_cast<QWidget*>( layout()->parentWidget() ),
+            (const_cast<QWidget*>(mParent)),
             &event );
     }
 }

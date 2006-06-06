@@ -47,9 +47,13 @@ namespace KDChart {
     {
     public:
         LayoutItem( Qt::Alignment alignment = 0 ) :
-            QLayoutItem( alignment ) {}
+            QLayoutItem( alignment ),
+            mParent( 0 ) {}
         virtual void paint( QPainter* ) = 0;
+        virtual void setParentWidget( const QWidget* widget );
         virtual void sizeHintChanged();
+    protected:
+        const QWidget* mParent;
     };
 
     /** \internal
@@ -59,8 +63,8 @@ namespace KDChart {
     public:
         TextLayoutItem( const QString& text,
                         const TextAttributes& attributes,
-                        const QWidget* area,
-                        Qt::Orientation orientation,
+                        const QWidget*  autoReferenceArea,
+                        Qt::Orientation autoReferenceOrientation,
                         Qt::Alignment alignment = 0 );
 
         QString text() const;
