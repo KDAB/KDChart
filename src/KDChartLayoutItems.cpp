@@ -119,7 +119,7 @@ QSize KDChart::TextLayoutItem::sizeHint() const
         }
         cachedSizeHint = calcSizeHint( cachedFont );
     }
-
+    //qDebug("cachedSizeHint.width(): %i",cachedSizeHint.width());
     return cachedSizeHint;
 }
 

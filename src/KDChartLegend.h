@@ -56,7 +56,7 @@ public:
 
     virtual Legend * clone() const;
 
-    QSize calcSizeHint() const;
+    //QSize calcSizeHint() const;
     virtual void paintEvent( QPaintEvent* );
 
     void setReferenceArea( const QWidget* area );
