@@ -44,7 +44,9 @@ class KDCHART_EXPORT Measure
 {
 public:
     Measure();
-    Measure( qreal value, KDChartEnums::MeasureCalculationMode mode = KDChartEnums::MeasureCalculationModeAuto );
+    Measure( qreal value,
+             KDChartEnums::MeasureCalculationMode mode = KDChartEnums::MeasureCalculationModeAuto,
+             KDChartEnums::MeasureOrientation orientation = KDChartEnums::MeasureOrientationAuto );
     Measure( const Measure& );
     Measure &operator= ( const Measure& );
 
@@ -57,7 +59,7 @@ public:
     KDChartEnums::MeasureCalculationMode calculationMode() const { return mMode; }
 
     void setRelativeMode( const QWidget & area,
-                          Qt::Orientation orientation )
+                          KDChartEnums::MeasureOrientation orientation )
     {
         mMode = KDChartEnums::MeasureCalculationModeRelative;
         mArea = &area;
@@ -67,10 +69,10 @@ public:
     void setReferenceArea( const QWidget * area ){ mArea = area; }
     const QWidget * referenceArea() const { return mArea; }
 
-    void setReferenceOrientation( Qt::Orientation orientation ){ mOrientation = orientation; }
-    Qt::Orientation referenceOrientation() const { return mOrientation; }
+    void setReferenceOrientation( KDChartEnums::MeasureOrientation orientation ){ mOrientation = orientation; }
+    KDChartEnums::MeasureOrientation referenceOrientation() const { return mOrientation; }
 
-    qreal calculatedValue( const QWidget * autoArea, Qt::Orientation autoOrientation ) const;
+    qreal calculatedValue( const QWidget * autoArea, KDChartEnums::MeasureOrientation autoOrientation ) const;
 
     bool operator==( const Measure& );
 
@@ -78,7 +80,7 @@ private:
     qreal mValue;
     KDChartEnums::MeasureCalculationMode mMode;
     const QWidget* mArea;
-    Qt::Orientation mOrientation;
+    KDChartEnums::MeasureOrientation mOrientation;
 }; // End of class Measure
 
 }

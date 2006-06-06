@@ -71,7 +71,7 @@ void KDChart::LayoutItem::sizeHintChanged()
 KDChart::TextLayoutItem::TextLayoutItem( const QString& text,
                                          const KDChart::TextAttributes& attributes,
                                          const QWidget* area,
-                                         Qt::Orientation orientation,
+                                         KDChartEnums::MeasureOrientation orientation,
                                          Qt::Alignment alignment )
     : LayoutItem( alignment )
     , mText( text )

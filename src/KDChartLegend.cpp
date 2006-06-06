@@ -525,7 +525,9 @@ void Legend::buildLegend()
             new KDChart::TextLayoutItem( titleText(),
                 titleTextAttributes(),
                 referenceArea(),
-                Qt::Horizontal,
+                (orientation() == Qt::Vertical)
+                ? KDChartEnums::MeasureOrientationMinimum
+                : KDChartEnums::MeasureOrientationHorizontal,
                 Qt::AlignCenter );
         titleItem->setParentWidget( this );
 
@@ -569,7 +571,9 @@ void Legend::buildLegend()
             new KDChart::TextLayoutItem( text( dataset ),
                 textAttributes(),
                 referenceArea(),
-                Qt::Horizontal,
+                (orientation() == Qt::Vertical)
+                ? KDChartEnums::MeasureOrientationMinimum
+                : KDChartEnums::MeasureOrientationHorizontal,
                 Qt::AlignLeft );
         labelItem->setParentWidget( this );
 

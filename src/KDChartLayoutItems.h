@@ -64,7 +64,7 @@ namespace KDChart {
         TextLayoutItem( const QString& text,
                         const TextAttributes& attributes,
                         const QWidget*  autoReferenceArea,
-                        Qt::Orientation autoReferenceOrientation,
+                        KDChartEnums::MeasureOrientation autoReferenceOrientation,
                         Qt::Alignment alignment = 0 );
 
         QString text() const;
@@ -88,7 +88,7 @@ namespace KDChart {
         QString mText;
         TextAttributes mAttributes;
         const QWidget* mAutoReferenceArea;
-        Qt::Orientation mAutoReferenceOrientation;
+        KDChartEnums::MeasureOrientation mAutoReferenceOrientation;
         mutable QSize cachedSizeHint;
         mutable qreal cachedFontSize;
         mutable QFont cachedFont;

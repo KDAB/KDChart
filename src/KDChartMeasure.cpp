@@ -38,16 +38,18 @@ Measure::Measure()
   : mValue( 0.0 ),
     mMode(  KDChartEnums::MeasureCalculationModeAuto ),
     mArea(  0 ),
-    mOrientation( Qt::Horizontal )
+    mOrientation( KDChartEnums::MeasureOrientationAuto )
 {
     // this bloc left empty intentionally
 }
 
-Measure::Measure( qreal value, KDChartEnums::MeasureCalculationMode mode )
+Measure::Measure( qreal value,
+    KDChartEnums::MeasureCalculationMode mode,
+    KDChartEnums::MeasureOrientation orientation )
   : mValue( value ),
     mMode(  mode ),
     mArea(  0 ),
-    mOrientation( Qt::Horizontal )
+    mOrientation( orientation )
 {
     // this bloc left empty intentionally
 }
@@ -75,14 +77,14 @@ Measure & Measure::operator=( const Measure& r )
 
 
 qreal Measure::calculatedValue( const QWidget* autoArea,
-                                Qt::Orientation autoOrientation) const
+                                KDChartEnums::MeasureOrientation autoOrientation) const
 {
     if( mMode == KDChartEnums::MeasureCalculationModeAbsolute ){
         return mValue;
     }else{
         qreal value = 0.0;
         const QWidget* area = mArea ? mArea : autoArea;
-        Qt::Orientation orientation = mOrientation;
+        KDChartEnums::MeasureOrientation orientation = mOrientation;
         switch( mMode ){
             case KDChartEnums::MeasureCalculationModeAuto:
                 area = autoArea;
@@ -100,10 +102,23 @@ qreal Measure::calculatedValue( const QWidget* autoArea,
         }
         if( area ){
             const QSize size( area->geometry().size() );
-            value = mValue / 1000.0 * (
-                  (orientation == Qt::Horizontal)
-                ? size.width()
-                : size.height() );
+            qreal referenceValue;
+            switch( orientation ){
+                case KDChartEnums::MeasureOrientationAuto: // fall through intended
+                case KDChartEnums::MeasureOrientationMinimum:
+                    referenceValue = qMin( size.width(), size.height() );
+                    break;
+                case KDChartEnums::MeasureOrientationMaximum:
+                    referenceValue = qMax( size.width(), size.height() );
+                    break;
+                case KDChartEnums::MeasureOrientationHorizontal:
+                    referenceValue = size.width();
+                    break;
+                case KDChartEnums::MeasureOrientationVertical:
+                    referenceValue = size.height();
+                    break;
+            }
+            value = mValue / 1000.0 * referenceValue;
         }
         return value;
     }

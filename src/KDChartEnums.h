@@ -130,7 +130,7 @@ public:
                 return QString::fromLatin1("MeasureCalculationModeRelative");
             default: // should not happen
         qDebug( "Unknown measure calculation mode" );
-        return QString::fromLatin1("JustOverwrite");
+        return QString::fromLatin1("MeasureCalculationModeAuto");
         }
     }
 
@@ -154,6 +154,75 @@ public:
           return MeasureCalculationModeRelative;
       // default, should not happen
       return MeasureCalculationModeAuto;
+    }
+
+    /**
+      Measure orientation mode: the way how the absolute value of a KDChart::Measure is determined during KD Chart's internal geometry calculation time.
+
+      KDChart::Measure values either are relative (calculated in relation to a given AbstractArea), or they are absolute (used as fixed values).
+
+      Values stored in relative measure take into account the width (and/or the height, resp.) of a so-called reference area,
+      that is either specified by KDChart::Measure::setReferenceArea, or determined by KD Chart automatically, respectively.
+
+      \li \c MeasureOrientationAuto Value is calculated, based upon the width (or on the height, resp.) of the reference area: KD Chart will automatically determie an appropriate way.
+      \li \c MeasureOrientationHorizontal Value is calculated, based upon the width of the reference area.
+      \li \c MeasureOrientationVertical Value is calculated, based upon the height of the reference area.
+      \li \c MeasureOrientationMinimum Value is calculated, based upon the width (or on the height, resp.) of the reference area - which ever is smaller.
+      \li \c MeasureOrientationMaximum Value is calculated, based upon the width (or on the height, resp.) of the reference area - which ever is smaller.
+
+      \sa KDChart::Measure::setOrientationMode
+      */
+    enum MeasureOrientation { MeasureOrientationAuto,
+        MeasureOrientationHorizontal,
+        MeasureOrientationVertical,
+        MeasureOrientationMinimum,
+        MeasureOrientationMaximum };
+
+    /**
+      Converts the specified measure orientation enum to a
+      string representation.
+
+      \param type the measure orientation to convert
+      \return the string representation of the measure orientation enum
+      */
+    static QString MeasureOrientationToString( MeasureOrientation mode ) {
+        switch( mode ) {
+            case MeasureOrientationAuto:
+                return QString::fromLatin1("MeasureOrientationAuto");
+            case MeasureOrientationHorizontal:
+                return QString::fromLatin1("MeasureOrientationHorizontal");
+            case MeasureOrientationVertical:
+                return QString::fromLatin1("MeasureOrientationVertical");
+            case MeasureOrientationMinimum:
+                return QString::fromLatin1("MeasureOrientationMinimum");
+            case MeasureOrientationMaximum:
+                return QString::fromLatin1("MeasureOrientationMaximum");
+            default: // should not happen
+        qDebug( "Unknown measure orientation mode" );
+        return QString::fromLatin1("MeasureOrientationAuto");
+        }
+    }
+
+
+    /**
+      Converts the specified string to a measure orientation enum value.
+
+      \param string the string to convert
+      \return the measure orientation enum value
+      */
+    static MeasureOrientation stringToMeasureOrientation( const QString& string ) {
+      if( string == QString::fromLatin1("MeasureOrientationAuto") )
+          return MeasureOrientationAuto;
+      if( string == QString::fromLatin1("MeasureOrientationHorizontal") )
+          return MeasureOrientationHorizontal;
+      if( string == QString::fromLatin1("MeasureOrientationVertical") )
+          return MeasureOrientationVertical;
+      if( string == QString::fromLatin1("MeasureOrientationMinimum") )
+          return MeasureOrientationMinimum;
+      if( string == QString::fromLatin1("MeasureOrientationMaximum") )
+          return MeasureOrientationMaximum;
+      // default, should not happen
+      return MeasureOrientationAuto;
     }
 
 
