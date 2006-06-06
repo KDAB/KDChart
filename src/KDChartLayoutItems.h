@@ -31,7 +31,9 @@
 #include <QBrush>
 #include <QPen>
 #include <QFontMetricsF>
+#include "KDChartTextAttributes.h"
 #include "KDChartMarkerAttributes.h"
+#include "KDChartAbstractArea.h"
 
 class QPainter;
 class KDTextDocument;
@@ -54,8 +56,14 @@ namespace KDChart {
     class TextLayoutItem : public LayoutItem
     {
     public:
-        TextLayoutItem( const QString& text, const QFont& font, const QColor& color,
+        TextLayoutItem( const QString& text,
+                        const TextAttributes& attributes,
+                        const QWidget* area,
+                        Qt::Orientation orientation,
                         Qt::Alignment alignment = 0 );
+
+        QString text() const;
+        TextAttributes attributes() const;
 
         virtual Qt::Orientations expandingDirections() const;
         virtual QRect geometry() const;
@@ -63,19 +71,22 @@ namespace KDChart {
         virtual QSize maximumSize() const;
         virtual QSize minimumSize() const;
         virtual void setGeometry( const QRect& r );
+        virtual qreal realFontSize() const;
         virtual QSize sizeHint() const;
 
         virtual void paint( QPainter* );
 
     private:
-        QSize calcSizeHint() const;
+        QSize calcSizeHint( QFont fnt ) const;
 
         QRect mRect;
         QString mText;
-        QFont mFont;
-        QFontMetricsF mMetrics;
-        QColor mColor;
+        TextAttributes mAttributes;
+        const QWidget* mAutoReferenceArea;
+        Qt::Orientation mAutoReferenceOrientation;
         mutable QSize cachedSizeHint;
+        mutable qreal cachedFontSize;
+        mutable QFont cachedFont;
     };
 
     /** \internal

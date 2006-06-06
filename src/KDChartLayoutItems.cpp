@@ -1,5 +1,5 @@
 /****************************************************************************
- ** Copyright (C) 2006 Klarälvdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2006 Klarï¿½vdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KD Chart library.
  **
@@ -37,11 +37,33 @@
 #include <QApplication>
 #include <QStyle>
 
-KDChart::TextLayoutItem::TextLayoutItem( const QString& text, const QFont& font, const QColor& color,
-                                         Qt::Alignment alignment ) :
-    LayoutItem( alignment ), mText( text ), mFont( font ), mMetrics( mFont ), mColor( color )
+KDChart::TextLayoutItem::TextLayoutItem( const QString& text,
+                                         const KDChart::TextAttributes& attributes,
+                                         const QWidget* area,
+                                         Qt::Orientation orientation,
+                                         Qt::Alignment alignment )
+    : LayoutItem( alignment )
+    , mText( text )
+    , mAttributes( attributes )
+    , mAutoReferenceArea( area )
+    , mAutoReferenceOrientation(  orientation)
+    , cachedSizeHint( QSize() ) // default this to invalid to force real-time calculation before first use of sizeHint()
+    , cachedFontSize( 0.0 )
+    , cachedFont( attributes.font() )
 {
 }
+
+
+QString KDChart::TextLayoutItem::text() const
+{
+    return mText;
+}
+
+KDChart::TextAttributes KDChart::TextLayoutItem::attributes() const
+{
+    return mAttributes;
+}
+
 
 Qt::Orientations KDChart::TextLayoutItem::expandingDirections() const
 {
@@ -73,38 +95,60 @@ void KDChart::TextLayoutItem::setGeometry( const QRect& r )
     mRect = r;
 }
 
+
+qreal KDChart::TextLayoutItem::realFontSize() const
+{
+    return qMax(
+        mAttributes.fontSize().calculatedValue(
+            mAutoReferenceArea,
+            mAutoReferenceOrientation ),
+        mAttributes.minimalFontSize().calculatedValue(
+            mAutoReferenceArea,
+            mAutoReferenceOrientation ) );
+}
+
+
 QSize KDChart::TextLayoutItem::sizeHint() const
 {
-    if( ! cachedSizeHint.isValid() )
-        cachedSizeHint = calcSizeHint();
+    const qreal fntSiz = realFontSize();
+    if( ( ! cachedSizeHint.isValid() ) ||
+        ( cachedFontSize != fntSiz   ) ){
+        if( fntSiz > 0.0 ){
+            cachedFontSize = fntSiz;
+            cachedFont.setPointSizeF( fntSiz );
+        }
+        cachedSizeHint = calcSizeHint( cachedFont );
+    }
 
     return cachedSizeHint;
 }
 
 
-// PENDING(kalle) Support relative size
-// PENDING(kalle) Support minimal size
 // PENDING(kalle) Support auto rotate
 // PENDING(kalle) Support auto shrink
 // PENDING(kalle) Support rotation
 
 
-QSize KDChart::TextLayoutItem::calcSizeHint() const
+QSize KDChart::TextLayoutItem::calcSizeHint( QFont fnt ) const
 {
-    QSize ret = mMetrics.boundingRect( mText ).toRect().size();
-    int frame = QApplication::style()->pixelMetric( QStyle::PM_ButtonMargin, 0, 0 );
+    const QFontMetricsF met( fnt );
+    QSize ret = met.boundingRect( mText ).toRect().size();
+    const int frame = QApplication::style()->pixelMetric( QStyle::PM_ButtonMargin, 0, 0 );
     ret += QSize( frame, frame );
     return ret;
 }
 
 void KDChart::TextLayoutItem::paint( QPainter* painter )
 {
+    // make sure, cached font is updated, if needed:
+    sizeHint();
+
     if( !mRect.isValid() )
         return;
 
     PainterSaver painterSaver( painter );
-    painter->setFont( mFont );
-    painter->setPen( mColor );
+    painter->setFont( cachedFont );
+    painter->setPen(  mAttributes.color() );
     painter->drawText( geometry(), Qt::AlignHCenter|Qt::AlignVCenter, mText );
 }
 

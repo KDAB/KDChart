@@ -55,6 +55,7 @@ public:
 
 private:
     // user-settable
+    const QWidget* referenceArea;
     Position position;
     bool useHorizontalSpace;
     bool useVerticalSpace;

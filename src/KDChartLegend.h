@@ -59,6 +59,9 @@ public:
     QSize calcSizeHint() const;
     virtual void paintEvent( QPaintEvent* );
 
+    void setReferenceArea( const QWidget* area );
+    const QWidget* referenceArea() const;
+
     void setDiagram( KDChart::AbstractDiagram* diagram );
     KDChart::AbstractDiagram* diagram() const;
 

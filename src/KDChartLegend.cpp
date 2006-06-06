@@ -46,6 +46,7 @@
 using namespace KDChart;
 
 Legend::Private::Private() :
+    referenceArea(0),
     position( Position::East ),
     orientation( Qt::Vertical ),
     showLines( false ),
@@ -70,12 +71,14 @@ Legend::Private::~Private()
 Legend::Legend( QWidget* parent ) :
     AbstractArea( new Private(), parent )
 {
+    d->referenceArea = parent;
     init();
 }
 
 Legend::Legend( KDChart::AbstractDiagram* diagram, QWidget* parent ) :
     AbstractArea( new Private(), parent )
 {
+    d->referenceArea = parent;
     init();
     setDiagram( diagram );
 }
@@ -147,6 +150,40 @@ uint Legend::datasetCount() const
 {
     Q_ASSERT( d->modelLabels.count() == d->modelBrushes.count() );
     return d->modelLabels.count();
+}
+
+
+/**
+    Specifies the reference area for font size of title text,
+    and for font size of the item texts, IF automatic area
+    detection is set.
+
+    \note This parameter is ignored, if the Measure given for
+    setTitleTextAttributes (or setTextAttributes, resp.) is
+    not specifying automatic area detection.
+
+    If no reference area is specified, but automatic area
+    detection is set, then the size of the legend's parent
+    widget will be used.
+
+    \sa KDChart::Measure, KDChartEnums::MeasureCalculationMode
+ */
+void Legend::setReferenceArea( const QWidget* area )
+{
+    d->referenceArea = area;
+}
+
+
+/**
+    Returns the reference area, that is used for font size of title text,
+    and for font size of the item texts, IF automatic area
+    detection is set.
+
+    \sa setReferenceArea
+ */
+const QWidget* Legend::referenceArea() const
+{
+    return (d->referenceArea ? d->referenceArea : static_cast<const QWidget*>(parent()));
 }
 
 
@@ -484,10 +521,13 @@ void Legend::buildLegend()
     // legend caption
     if( !titleText().isEmpty() && titleTextAttributes().isVisible() ) {
         // PENDING(kalle) Other properties!
-        KDChart::TextLayoutItem* titleItem = new KDChart::TextLayoutItem( titleText(),
-                                                                          titleTextAttributes().font(),
-                                                                          titleTextAttributes().color(),
-                                                                          Qt::AlignCenter );
+        KDChart::TextLayoutItem* titleItem =
+            new KDChart::TextLayoutItem( titleText(),
+                titleTextAttributes(),
+                referenceArea(),
+                Qt::Horizontal,
+                Qt::AlignCenter );
+
         d->layoutItems << titleItem;
         if( orientation() == Qt::Vertical )
             d->layout->addItem( titleItem, 0, 0, 1, 5, Qt::AlignCenter );
@@ -514,39 +554,58 @@ void Legend::buildLegend()
                                                                                Qt::AlignLeft );
         d->layoutItems << markerItem;
         if( orientation() == Qt::Vertical )
-            d->layout->addItem( markerItem, dataset*2+2 /*first row is title, second is line*/, 1, 1, 1, Qt::AlignCenter );
+            d->layout->addItem( markerItem,
+                                dataset*2+2, // first row is title, second is line
+                                1,
+                                1, 1, Qt::AlignCenter );
         else
-            d->layout->addItem( markerItem, 2 /* all in row two */, dataset*4 );
+            d->layout->addItem( markerItem,
+                                2, // all in row two
+                                dataset*4 );
 
         // PENDING(kalle) Other properties!
-        KDChart::TextLayoutItem* labelItem = new KDChart::TextLayoutItem( text( dataset ),
-                                                                          textAttributes().font(),
-                                                                          textAttributes().color(),
-                                                                          Qt::AlignLeft );
+        KDChart::TextLayoutItem* labelItem =
+            new KDChart::TextLayoutItem( text( dataset ),
+                textAttributes(),
+                referenceArea(),
+                Qt::Horizontal,
+                Qt::AlignLeft );
+
         d->layoutItems << labelItem;
         if( orientation() == Qt::Vertical )
-            d->layout->addItem( labelItem, dataset*2+2 /*first row is title, second is line */, 3 );
+            d->layout->addItem( labelItem,
+                                dataset*2+2, // first row is title, second is line
+                                3 );
         else
-            d->layout->addItem( labelItem, 2 /* all in row two */, dataset*4+1 );
+            d->layout->addItem( labelItem,
+                                2, // all in row two
+                                dataset*4+1 );
 
         // horizontal lines (only in vertical mode, and not after the last item)
         if( orientation() == Qt::Vertical && showLines() && dataset != ( d->modelLabels.count()-1 ) ) {
             KDChart::HorizontalLineLayoutItem* lineItem = new KDChart::HorizontalLineLayoutItem();
             d->layoutItems << lineItem;
-            d->layout->addItem( lineItem, dataset*2+1+2, 0, 1, 5, Qt::AlignCenter );
+            d->layout->addItem( lineItem,
+                                dataset*2+1+2,
+                                0,
+                                1, 5, Qt::AlignCenter );
         }
 
         // vertical lines (only in horizontal mode, and not after the last item)
         if( orientation() == Qt::Horizontal && showLines() && dataset != ( d->modelLabels.count()-1 ) ) {
             KDChart::VerticalLineLayoutItem* lineItem = new KDChart::VerticalLineLayoutItem();
             d->layoutItems << lineItem;
-            d->layout->addItem( lineItem, 2 /* all in row two */, dataset*4+2, 1, 1, Qt::AlignCenter );
+            d->layout->addItem( lineItem,
+                                2, // all in row two
+                                dataset*4+2,
+                                1, 1, Qt::AlignCenter );
         }
 
         if( orientation() != Qt::Vertical ) { // Horizontal needs a spacer
             d->layout->addItem( new QSpacerItem( spacing(), qMax( markerItem->sizeHint().height(),
                                                                   labelItem->sizeHint().height() ) ),
-                                2 /* all in row two */, dataset*4+3 );
+                                2, // all in row two
+                                dataset*4+3 );
         }
     }
 

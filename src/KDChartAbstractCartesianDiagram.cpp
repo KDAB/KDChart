@@ -31,9 +31,9 @@
 
 #include <cmath>
 
-static int _trunc( qreal v )
+static qreal _trunc( qreal v )
 {
-    return static_cast<int>( ( v > 0 ) ? floor( v ) : ceil(  v ) );
+    return (( v > 0.0 ) ? floor( v ) : ceil(  v ));
 }
 
 using namespace KDChart;

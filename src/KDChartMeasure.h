@@ -39,8 +39,6 @@ class QDomDocumentFragment;
 
 namespace KDChart {
 
-    class AbstractArea;
-
 
 class KDCHART_EXPORT Measure
 {
@@ -50,30 +48,37 @@ public:
     Measure( const Measure& );
     Measure &operator= ( const Measure& );
 
-    ~Measure();
-
     QDomDocumentFragment toXML() const;
 
-    void setValue( qreal val ){ m_value = val; }
-    qreal value() const { return m_value; }
+    void setValue( qreal val ){ mValue = val; }
+    qreal value() const { return mValue; }
 
-    void setCalculationMode( KDChartEnums::MeasureCalculationMode mode ){ m_mode = mode; }
-    KDChartEnums::MeasureCalculationMode calculationMode() const { return m_mode; }
+    void setCalculationMode( KDChartEnums::MeasureCalculationMode mode ){ mMode = mode; }
+    KDChartEnums::MeasureCalculationMode calculationMode() const { return mMode; }
 
-    void setReferenceArea( AbstractArea * area ){ m_area = area; }
-    AbstractArea * referenceArea() const { return m_area; }
+    void setRelativeMode( const QWidget & area,
+                          Qt::Orientation orientation )
+    {
+        mMode = KDChartEnums::MeasureCalculationModeRelative;
+        mArea = &area;
+        mOrientation = orientation;
+    }
 
-    void setReferenceOrientation( Qt::Orientation orientation ){ m_orientation = orientation; }
-    Qt::Orientation referenceOrientation() const { return m_orientation; }
+    void setReferenceArea( const QWidget * area ){ mArea = area; }
+    const QWidget * referenceArea() const { return mArea; }
+
+    void setReferenceOrientation( Qt::Orientation orientation ){ mOrientation = orientation; }
+    Qt::Orientation referenceOrientation() const { return mOrientation; }
+
+    qreal calculatedValue( const QWidget * autoArea, Qt::Orientation autoOrientation ) const;
 
     bool operator==( const Measure& );
 
 private:
-    qreal m_value;
-    KDChartEnums::MeasureCalculationMode m_mode;
-    AbstractArea*   m_area;
-    Qt::Orientation m_orientation;
-
+    qreal mValue;
+    KDChartEnums::MeasureCalculationMode mMode;
+    const QWidget* mArea;
+    Qt::Orientation mOrientation;
 }; // End of class Measure
 
 }

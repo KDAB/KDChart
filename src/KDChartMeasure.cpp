@@ -25,6 +25,7 @@
 
 #include "KDChartMeasure.h"
 #include <QtXml/QDomDocumentFragment>
+#include <KDChartAbstractArea.h>
 #include <KDChartTextAttributes.h>
 #include <KDChartFrameAttributes.h>
 #include <KDChartBackgroundAttributes.h>
@@ -34,28 +35,28 @@ namespace KDChart {
 
 
 Measure::Measure()
-  : m_value( 0 ),
-    m_mode(  KDChartEnums::MeasureCalculationModeAuto ),
-    m_area(  0 ),
-    m_orientation( Qt::Horizontal )
+  : mValue( 0.0 ),
+    mMode(  KDChartEnums::MeasureCalculationModeAuto ),
+    mArea(  0 ),
+    mOrientation( Qt::Horizontal )
 {
     // this bloc left empty intentionally
 }
 
 Measure::Measure( qreal value, KDChartEnums::MeasureCalculationMode mode )
-  : m_value( value ),
-    m_mode(  mode ),
-    m_area(  0 ),
-    m_orientation( Qt::Horizontal )
+  : mValue( value ),
+    mMode(  mode ),
+    mArea(  0 ),
+    mOrientation( Qt::Horizontal )
 {
     // this bloc left empty intentionally
 }
 
 Measure::Measure( const Measure& r )
-  : m_value( r.value() ),
-    m_mode(  r.calculationMode() ),
-    m_area(  r.referenceArea() ),
-    m_orientation( r.referenceOrientation() )
+  : mValue( r.value() ),
+    mMode(  r.calculationMode() ),
+    mArea(  r.referenceArea() ),
+    mOrientation( r.referenceOrientation() )
 {
     // this bloc left empty intentionally
 }
@@ -63,27 +64,58 @@ Measure::Measure( const Measure& r )
 Measure & Measure::operator=( const Measure& r )
 {
     if( this != &r ){
-        m_value = r.value();
-        m_mode  = r.calculationMode();
-        m_area  = r.referenceArea();
-        m_orientation = r.referenceOrientation();
+        mValue = r.value();
+        mMode  = r.calculationMode();
+        mArea  = r.referenceArea();
+        mOrientation = r.referenceOrientation();
     }
 
     return *this;
 }
 
-Measure::~Measure()
+
+qreal Measure::calculatedValue( const QWidget* autoArea,
+                                Qt::Orientation autoOrientation) const
 {
-    // this bloc left empty intentionally
+    if( mMode == KDChartEnums::MeasureCalculationModeAbsolute ){
+        return mValue;
+    }else{
+        qreal value = 0.0;
+        const QWidget* area = mArea ? mArea : autoArea;
+        Qt::Orientation orientation = mOrientation;
+        switch( mMode ){
+            case KDChartEnums::MeasureCalculationModeAuto:
+                area = autoArea;
+                orientation = autoOrientation;
+                break;
+            case KDChartEnums::MeasureCalculationModeAutoArea:
+                area = autoArea;
+                break;
+            case KDChartEnums::MeasureCalculationModeAutoOrientation:
+                orientation = autoOrientation;
+                break;
+            case KDChartEnums::MeasureCalculationModeAbsolute: // fall through intended
+            case KDChartEnums::MeasureCalculationModeRelative:
+                break;
+        }
+        if( area ){
+            const QSize size( area->geometry().size() );
+            value = mValue / 1000.0 * (
+                  (orientation == Qt::Horizontal)
+                ? size.width()
+                : size.height() );
+        }
+        return value;
+    }
 }
 
 
 bool Measure::operator==( const Measure& r )
 {
-    return( m_value == r.value() &&
-            m_mode  == r.calculationMode() &&
-            m_area  == r.referenceArea() &&
-            m_orientation == r.referenceOrientation() );
+    return( mValue == r.value() &&
+            mMode  == r.calculationMode() &&
+            mArea  == r.referenceArea() &&
+            mOrientation == r.referenceOrientation() );
 }
 
 
