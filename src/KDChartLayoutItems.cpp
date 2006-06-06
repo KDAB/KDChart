@@ -58,10 +58,12 @@ void KDChart::LayoutItem::setParentWidget( QWidget* widget )
   */
 void KDChart::LayoutItem::sizeHintChanged()
 {
-    if( mParent && mParent->layout() ){
-        //QEvent event( QEvent::LayoutRequest );
-        //QCoreApplication::sendEvent( mParent, &event );
-        mParent->layout()->update();
+    // This is exactly like what QWidget::updateGeometry does.
+    if( mParent ) {
+        if ( mParent->layout() )
+            mParent->layout()->invalidate();
+        else
+            QApplication::postEvent( mParent, new QEvent( QEvent::LayoutRequest ) );
     }
 }
 
