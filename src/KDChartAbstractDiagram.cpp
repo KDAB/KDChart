@@ -312,13 +312,13 @@ void AbstractDiagram::paintMarker( QPainter* painter,
             painter->drawEllipse( QRectF( 0 - maSize.height()/2, 0 - maSize.width()/2,
                         maSize.height(), maSize.width()) );
             break;
-    case MarkerAttributes::MarkerSquare:
-    {
-        QRectF rect( 0 - maSize.height()/2, 0 - maSize.width()/2,
-                     maSize.height(), maSize.width() );
-        painter->fillRect( rect, painter->brush() );
-        break;
-    }
+        case MarkerAttributes::MarkerSquare:
+            {
+                QRectF rect( 0 - maSize.height()/2, 0 - maSize.width()/2,
+                            maSize.height(), maSize.width() );
+                painter->fillRect( rect, painter->brush() );
+                break;
+            }
         case MarkerAttributes::MarkerDiamond:
             {
                 QVector <QPointF > diamondPoints;

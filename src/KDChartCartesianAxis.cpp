@@ -291,6 +291,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
 
         if ( isAbscissa() ) {
             int tickLength = position() == Top ? -4 : 3;
+            // PENDING(khz) FIXME: use TextAttributes, to fix bug #2348
             QFont textFont( QFont("comic", 5 ) );
 
             // If we have a labels list AND a short labels list, we first find out,
@@ -298,6 +299,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
             if( drawLabels && hardLabelsCount && shortLabelsCount ){
                 PainterSaver painterSaver( ptr );
                 ptr->setFont( textFont );
+                // PENDING(khz) FIXME: use rel. font size from KDChartMeasure, to fix bug #2347
                 const QFontMetrics met( ptr->fontMetrics() );
                 bool labelsAreOverlapping = false;
                 QRegion combinedRegion;
@@ -324,6 +326,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
             PainterSaver painterSaver( ptr );
             ptr->setPen( Qt::blue );
             ptr->setFont( textFont );
+            // PENDING(khz) FIXME: use rel. font size from KDChartMeasure, to fix bug #2347
             const QFontMetrics metrics( ptr->fontMetrics() );
 
             int iLabel = 0;
@@ -382,6 +385,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
                 rightPoint.setX( fourthRulerRef.x() );
                 ptr->drawLine( leftPoint, rightPoint );
                 if ( drawLabels ) {
+                    // PENDING(khz) FIXME: use TextAttributes, to fix bug #2348
                     QFont textFont( QFont("comic", 5 ) );
                     leftPoint.setX( position() == Left ? leftPoint.x()- (2*textFont.pointSize()) : leftPoint.x()+textFont.pointSize() );
                     leftPoint.setY( leftPoint.y() + textFont.pointSize()/2 );
