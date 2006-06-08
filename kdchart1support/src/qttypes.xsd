@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v3.5 NT (http://www.xmlspy.com) by Matthias Kalle Dalheimer (Klarälvdalens Datakonsult AB) -->
+<xsd:schema targetNamespace="http://www.klaralvdalens-datakonsult.se/qt" xmlns="http://www.klaralvdalens-datakonsult.se/qt" xmlns:xsd="http://www.w3.org/2000/10/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+    <xsd:complexType name="PenStyle">
+        <xsd:annotation>
+            <xsd:documentation>The Qt type Qt::PenStyle</xsd:documentation>
+        </xsd:annotation>
+        <xsd:attribute name="Style" use="required">
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:NMTOKEN">
+                    <xsd:enumeration value="NoPen"/>
+                    <xsd:enumeration value="SolidLine"/>
+                    <xsd:enumeration value="DashLine"/>
+                    <xsd:enumeration value="DotLine"/>
+                    <xsd:enumeration value="DashDotLine"/>
+                    <xsd:enumeration value="DashDotDotLine"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:attribute>
+    </xsd:complexType>
+    <xsd:complexType name="BrushStyle">
+        <xsd:annotation>
+            <xsd:documentation>The Qt type Qt::BrushStyle</xsd:documentation>
+        </xsd:annotation>
+        <xsd:attribute name="Style">
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:NMTOKEN">
+                    <xsd:enumeration value="NoBrush"/>
+                    <xsd:enumeration value="SolidPattern"/>
+                    <xsd:enumeration value="Dense1Pattern"/>
+                    <xsd:enumeration value="Dense2Pattern"/>
+                    <xsd:enumeration value="Dense3Pattern"/>
+                    <xsd:enumeration value="Dense4Pattern"/>
+                    <xsd:enumeration value="Dense5Pattern"/>
+                    <xsd:enumeration value="Dense6Pattern"/>
+                    <xsd:enumeration value="Dense7Pattern"/>
+                    <xsd:enumeration value="HorPattern"/>
+                    <xsd:enumeration value="VerPattern"/>
+                    <xsd:enumeration value="CrossPattern"/>
+                    <xsd:enumeration value="BDiagPattern"/>
+                    <xsd:enumeration value="FDiagPattern"/>
+                    <xsd:enumeration value="CrossPattern"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:attribute>
+    </xsd:complexType>
+</xsd:schema>
