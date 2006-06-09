@@ -139,10 +139,10 @@ void Widget::setDataset( int column, const QVector< QPair< double, double > > & 
     for( int i = 0; i < data.size(); ++i )
     {
         index = model->index( i, column * 2 );
-	model->setData( index, QVariant( data[i].first ), Qt::DisplayRole );
+        model->setData( index, QVariant( data[i].first ), Qt::DisplayRole );
 
-	index = model->index( i, column * 2 + 1 );
-	model->setData( index, QVariant( data[i].second ), Qt::DisplayRole );
+        index = model->index( i, column * 2 + 1 );
+        model->setData( index, QVariant( data[i].second ), Qt::DisplayRole );
     }
     if ( title != QString() )
         model->setHeaderData( column * 2, Qt::Vertical, QVariant( title ) );
