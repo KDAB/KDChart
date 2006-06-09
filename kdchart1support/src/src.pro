@@ -58,7 +58,6 @@ HEADERS= KDDrawText1.h \
         ../include/KDChart1Widget.h \
         ../include/KDFrame1.h \
         ../include/KDFrame1ProfileSection.h \
-        ../include/KDChart1ListTable.h \
         ../include/KDChart1TableBase.h \
         ../include/KDChart1VectorTable.h \
         ../include/KDChart1Enums.h
