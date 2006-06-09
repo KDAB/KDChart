@@ -56,6 +56,7 @@ KDChart1Widget::Private::Private() :
     data( 0 ),
     defaultData( 0 ),
     activeData( false ),
+    doubleBuffered( false ),
     mousePressedOnRegion( 0 )
 {
     // this bloc left empty intentionally
@@ -108,7 +109,6 @@ KDChart1Widget::KDChart1Widget( QWidget* parent, const char* name ) :
     d( new Private() )
 {
     Q_UNUSED(name);
-    setDoubleBuffered( true );
     setBackgroundRole( QPalette::NoRole );
 
     // Let us the default chart, we used to have in KD Chart 1.x:
@@ -143,9 +143,8 @@ KDChart1Widget::KDChart1Widget( KDChart1Params* params,
     Q_UNUSED(name);
     setParams( params );
     setData( data );
-    setDoubleBuffered( true );
     setBackgroundRole( QPalette::NoRole );
-    addLegend( Position::East );
+//    addLegend( Position::East );
 }
 
 
