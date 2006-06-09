@@ -40,8 +40,6 @@ class KDChart1Widget::Private
     friend class KDChart1Widget;
 public:
     Private();
-    Private( KDChart1Params* params,
-             KDChart1TableDataBase* data );
     ~Private();
 private:
     KDChart1Params* params;
@@ -56,17 +54,6 @@ private:
 KDChart1Widget::Private::Private() :
     params( 0 ),
     data( 0 ),
-    defaultData( 0 ),
-    activeData( false ),
-    mousePressedOnRegion( 0 )
-{
-    // this bloc left empty intentionally
-}
-
-KDChart1Widget::Private::Private( KDChart1Params* params,
-             KDChart1TableDataBase* data ) :
-    params( params ),
-    data( data ),
     defaultData( 0 ),
     activeData( false ),
     mousePressedOnRegion( 0 )
@@ -150,9 +137,11 @@ KDChart1Widget::KDChart1Widget( KDChart1Params* params,
         KDChart1TableDataBase* data,
         QWidget* parent, const char* name ) :
     KDChart::Widget( parent ),
-    d( new Private(params, data) )
+    d( new Private() )
 {
     Q_UNUSED(name);
+    setParams( params );
+    setData( data );
     setDoubleBuffered( true );
     setBackgroundRole( QPalette::NoRole );
 }
@@ -379,6 +368,7 @@ void KDChart1Widget::setData( KDChart1TableDataBase* data )
 
     const int nRows = data->rows();
     const int nCols = data->cols();
+qDebug("nCols: %i",nCols);
 
     QVariant variantY, variantX;
     for( int iRow=0; iRow < nRows; ++iRow ){
