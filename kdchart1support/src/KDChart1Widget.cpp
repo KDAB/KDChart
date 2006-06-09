@@ -311,16 +311,10 @@ bool KDChart1Widget::isActiveData() const
 
 
 /**
-  If \a doublebuffered is true, the widget will double-buffer
-  everything while drawing which reduces flicker a lot, but requires
-  more memory as an off-screen buffer of the same size as the widget
-  needs to be kept around. However, in most cases, it is worth
-  spending the extra memory. Double-buffering is on by
-  default. Turning double-buffering on or off does not trigger a
-  repaint.
+  This method implemented for compatibility to KD Chart 1.x only,
+  the parameter being ignored, since Qt 4.0 (and later) is doing internal double
+  buffering.
 
-  \param doublebuffered if true, turns double-buffering on, if false,
-  turns double-buffering off
   \sa isDoubleBuffered
   */
 void KDChart1Widget::setDoubleBuffered( bool doublebuffered )
@@ -332,10 +326,11 @@ void KDChart1Widget::setDoubleBuffered( bool doublebuffered )
 
 
 /**
-  Returns whether the widget uses double-buffering for drawing. See
-  \a setDoubleBuffered() for an explanation of double-buffering.
+  This method implemented for compatibility to KD Chart 1.x only,
+  return value is always true, since Qt 4.0 (and later) is doing internal double
+  buffering now.
 
-  \return true if double-buffering is turned on, false otherwise
+  \return true
   */
 bool KDChart1Widget::isDoubleBuffered() const
 {

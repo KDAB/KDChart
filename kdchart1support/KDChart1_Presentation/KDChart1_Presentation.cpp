@@ -133,7 +133,7 @@ KDChart1PresentationWidget::KDChart1PresentationWidget( int argc, char **argv )
     _kdc(   0 ),
     _tId(  -1 ),
     _defaultSize0( 16 ),
-_defaultSize1( 16 )
+    _defaultSize1( 16 )
 {
     // minimal data and parameter initialisation:
     resetData( 1, 1 );
@@ -209,7 +209,6 @@ _defaultSize1( 16 )
     hLay->addWidget( _run );
     _run->setText( "&Go" );
     _run->setToolButtonStyle( Qt::ToolButtonTextOnly );
-    //_run->setToggleButton( true );
     _run->setCheckable( true );
     _run->setChecked( false );
 
