@@ -120,6 +120,8 @@ KDChart1Widget::KDChart1Widget( QWidget* parent, const char* name ) :
         // 3rd series
     d->defaultData->setCell( 2, 0,    15.0   );
     setData( d->defaultData );
+    setBackgroundRole( QPalette::NoRole );
+//    addLegend( Position::East );
 }
 
 
@@ -143,6 +145,7 @@ KDChart1Widget::KDChart1Widget( KDChart1Params* params,
     setData( data );
     setDoubleBuffered( true );
     setBackgroundRole( QPalette::NoRole );
+    addLegend( Position::East );
 }
 
 
