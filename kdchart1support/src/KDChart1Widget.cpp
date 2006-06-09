@@ -112,7 +112,6 @@ KDChart1Widget::KDChart1Widget( QWidget* parent, const char* name ) :
     setBackgroundRole( QPalette::NoRole );
 
     // Let us the default chart, we used to have in KD Chart 1.x:
-    justifyModelSize( 3, 1 );
     d->defaultData = new KDChart1TableData( 3, 1 );
         // 1st series
     d->defaultData->setCell( 0, 0,    12.5   );
@@ -368,7 +367,7 @@ void KDChart1Widget::setData( KDChart1TableDataBase* data )
 
     const int nRows = data->rows();
     const int nCols = data->cols();
-qDebug("nCols: %i",nCols);
+    qDebug("nRows: %i   nCols: %i",nRows,nCols);
 
     QVariant variantY, variantX;
     for( int iRow=0; iRow < nRows; ++iRow ){
