@@ -235,8 +235,8 @@ _defaultSize1( 16 )
         _l->addItem( examples [ i ] );
     _l->setCurrentRow( 0 );
 
-    connect( _l,    SIGNAL( selectionChanged( QListWidgetItem * ) ),
-            this,  SLOT(   setConfiguration( QListWidgetItem * ) ) );
+    connect( _l,    SIGNAL( currentItemChanged( QListWidgetItem *, QListWidgetItem * ) ),
+            this,  SLOT(   setConfiguration( QListWidgetItem *, QListWidgetItem * ) ) );
 
     _l->setFocus();
 #endif
@@ -285,7 +285,7 @@ void KDChart1PresentationWidget::timerEvent( QTimerEvent *e )
 #endif
 #ifdef QWS
         if ( !_splash ) {
-            int i = _box->currentItem() + 1;
+            int i = _l->currentRow() + 1;
             if ( _box->count() == i+1 )
                 i = 0;
             else
@@ -294,8 +294,10 @@ void KDChart1PresentationWidget::timerEvent( QTimerEvent *e )
         }
         setConfiguration( _box->currentText() );
 #else
+        QListWidgetItem* prevItem = 0;
         int i = _l->currentRow();
         if ( !_splash ) {
+            prevItem = _l->currentItem();
             if ( static_cast < int > ( _l->count() ) == i+1 )
                 i = 0;
             else
@@ -303,7 +305,7 @@ void KDChart1PresentationWidget::timerEvent( QTimerEvent *e )
             _l->setCurrentRow( i );
         }
         else
-            setConfiguration( _l->item( i ) );
+            setConfiguration( _l->item( i ), prevItem );
 #endif
     }
 }
@@ -467,7 +469,8 @@ void KDChart1PresentationWidget::resetData( uint rows, uint cols )
 void KDChart1PresentationWidget::setConfiguration( const QString& txt)
 {
     QListWidgetItem lbi( txt );
-    setConfiguration( &lbi );
+    QListWidgetItem prev( "" );
+    setConfiguration( &lbi, &prev );
 }
 
 void functionA( double t, double& x, double& y )
@@ -493,8 +496,9 @@ double getGridPlotValue( double y, double x )
     return sin(x) + sin(y);
 }
 
-void KDChart1PresentationWidget::setConfiguration( QListWidgetItem * item )
+void KDChart1PresentationWidget::setConfiguration( QListWidgetItem * item, QListWidgetItem * prevItem )
 {
+    Q_UNUSED(prevItem);
     bool wasAuto = _auto;
     _auto = false;
     if ( _splash ) {

@@ -65,7 +65,7 @@ class KDChart1PresentationWidget : public QWidget
         void slotMouseRightPressed(   uint row, uint col );
         /*    void slotMouseRightReleased(  uint row, uint col );
               void slotMouseRightClicked(   uint row, uint col );   */
-        void setConfiguration ( QListWidgetItem * item );
+        void setConfiguration ( QListWidgetItem * item, QListWidgetItem * prevItem );
         void setConfiguration( const QString & );
         void runClicked ();
         void sizeEdited(int value);

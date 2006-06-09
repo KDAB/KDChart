@@ -365,8 +365,8 @@ void KDChart1Widget::setData( KDChart1TableDataBase* data )
         data->cellsHaveSeveralCoordinates( &typeX )
             && ( QVariant::Double == typeX );
 
-    const int nRows = data->rows();
-    const int nCols = data->cols();
+    const int nRows = data->usedRows();
+    const int nCols = data->usedCols();
     qDebug("nRows: %i   nCols: %i",nRows,nCols);
 
     QVariant variantY, variantX;
@@ -385,7 +385,6 @@ void KDChart1Widget::setData( KDChart1TableDataBase* data )
                         if( foundY )
                             valueX = variantX.toDouble();
                         rowData.append( qMakePair( valueX, valueY ) );
-qDebug("iCol: %i",iCol);
                     }
                 }
             }
@@ -396,10 +395,8 @@ qDebug("iCol: %i",iCol);
                 if( data->cellCoord( iRow, iCol, variantY ) &&
                     ( QVariant::Double == variantY.type() ) ){
                     rowData.append( variantY.toDouble() );
-qDebug("iCol: %i",iCol);
                     }
             setDataset( iRow, rowData );
-qDebug("iRow: %i",iRow);
         }
     }
 }
