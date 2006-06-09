@@ -148,6 +148,16 @@ void Widget::setDataset( int column, const QVector< QPair< double, double > > & 
         model->setHeaderData( column * 2, Qt::Vertical, QVariant( title ) );
 }
 
+/*
+ * Resets all data.
+ */
+void Widget::resetData()
+{
+    d->m_model->removeRows( 0, d->m_model->rowCount() );
+    d->m_model->removeColumns( 0, d->m_model->columnCount() );
+    d->usedDatasetWidth = 0;
+}
+
 /**
  * Sets all global leadings (borders).
  */

@@ -74,6 +74,8 @@ namespace KDChart {
         /** Sets the data in the given column using a QVector of QPairs
          *  of double. */
         void setDataset( int column, const QVector< QPair< double, double > > &  data, const QString& title = QString() );
+        /** Resets all data. */
+        void resetData();
 
     public slots:
         /** Sets all global leadings (borders). */
