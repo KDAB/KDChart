@@ -44,27 +44,32 @@ public:
              KDChart1TableDataBase* data );
     ~Private();
 private:
-    KDChart1Params* _params;
-    KDChart1TableDataBase* _data;
-    bool _activeData;
-    bool _doubleBuffered;
-    KDChart1DataRegion* _mousePressedOnRegion;
-    KDChart1DataRegionList _dataRegions;
+    KDChart1Params* params;
+    KDChart1TableDataBase* data;
+    KDChart1TableDataBase* defaultData;
+    bool activeData;
+    bool doubleBuffered;
+    KDChart1DataRegion* mousePressedOnRegion;
+    KDChart1DataRegionList dataRegions;
 };
 
 KDChart1Widget::Private::Private() :
-    _params( 0 ),
-    _data( 0 ),
-    _activeData( false ),
-    _mousePressedOnRegion( 0 )
+    params( 0 ),
+    data( 0 ),
+    defaultData( 0 ),
+    activeData( false ),
+    mousePressedOnRegion( 0 )
 {
     // this bloc left empty intentionally
 }
 
 KDChart1Widget::Private::Private( KDChart1Params* params,
              KDChart1TableDataBase* data ) :
-    _params( params ),
-    _data( data )
+    params( params ),
+    data( data ),
+    defaultData( 0 ),
+    activeData( false ),
+    mousePressedOnRegion( 0 )
 {
     // this bloc left empty intentionally
 }
@@ -72,8 +77,9 @@ KDChart1Widget::Private::Private( KDChart1Params* params,
 KDChart1Widget::Private::~Private()
 {
     // delete any regions that might still be registered
-    qDeleteAll( _dataRegions );
-    _dataRegions.clear();
+    qDeleteAll( dataRegions );
+    dataRegions.clear();
+    delete defaultData;
 }
 
 
@@ -117,6 +123,17 @@ KDChart1Widget::KDChart1Widget( QWidget* parent, const char* name ) :
     Q_UNUSED(name);
     setDoubleBuffered( true );
     setBackgroundRole( QPalette::NoRole );
+
+    // Let us the default chart, we used to have in KD Chart 1.x:
+    justifyModelSize( 3, 1 );
+    d->defaultData = new KDChart1TableData( 3, 1 );
+        // 1st series
+    d->defaultData->setCell( 0, 0,    12.5   );
+        // 2nd series
+    d->defaultData->setCell( 1, 0,     8.0   );
+        // 3rd series
+    d->defaultData->setCell( 2, 0,    15.0   );
+    setData( d->defaultData );
 }
 
 
@@ -154,7 +171,7 @@ KDChart1Widget::~KDChart1Widget()
 void KDChart1Widget::paintTo( QPainter& painter,
         const QRect* rect )
 {
-    KDChart1::paint( &painter, _params, _data, &_dataRegions, rect );
+    KDChart1::paint( &painter, params, data, &dataRegions, rect );
 }
 
 
@@ -162,28 +179,28 @@ void KDChart1Widget::print( QPainter& painter,
         const QRect* rect )
 {
     bool oldOpt=true;
-    if( _params ){
-        oldOpt = _params->optimizeOutputForScreen();
-        _params->setOptimizeOutputForScreen( false );
+    if( params ){
+        oldOpt = params->optimizeOutputForScreen();
+        params->setOptimizeOutputForScreen( false );
     }
-    bool bOldBuf = _doubleBuffered;
-    _doubleBuffered = false;
+    bool bOldBuf = doubleBuffered;
+    doubleBuffered = false;
     paintTo( painter, rect );
-    _doubleBuffered = bOldBuf;
-    if( _params )
-        _params->setOptimizeOutputForScreen( oldOpt );
+    doubleBuffered = bOldBuf;
+    if( params )
+        params->setOptimizeOutputForScreen( oldOpt );
 }
 
 
 void KDChart1Widget::paintEvent( QPaintEvent* event )
 {
-    if( _doubleBuffered ) {
+    if( doubleBuffered ) {
         // if double-buffering, paint onto the pixmap and copy
         // afterwards
-        _buffer.fill( backgroundColor() );
-        QPainter painter( &_buffer );
+        buffer.fill( backgroundColor() );
+        QPainter painter( &buffer );
         paintTo( painter );
-        bitBlt( this, event->rect().topLeft(), &_buffer, event->rect() );
+        bitBlt( this, event->rect().topLeft(), &buffer, event->rect() );
     } else {
         // if not double-buffering, paint directly into the window
         QPainter painter( this );
@@ -199,16 +216,16 @@ void KDChart1Widget::mousePressEvent( QMouseEvent* event )
 {
     Q_UNUSED(event);
     /*
-    if ( !d->_activeData )
+    if ( !d->activeData )
         return ;
 
-    d->_mousePressedOnRegion = 0;
+    d->mousePressedOnRegion = 0;
     KDChart1DataRegion* current = 0;
-    //QPtrListIterator < KDChart1DataRegion > it( _dataRegions );
-    for( current = d->_dataRegions.last(); current; current = d->_dataRegions.prev() ){
+    //QPtrListIterator < KDChart1DataRegion > it( dataRegions );
+    for( current = d->dataRegions.last(); current; current = d->dataRegions.prev() ){
     //while ( ( current = it.current() ) ) {
         if ( current->contains( event->pos() ) ) {
-            d->_mousePressedOnRegion = current;
+            d->mousePressedOnRegion = current;
             if ( event->button() == LeftButton ){
                 emit dataLeftPressed( current->row, current->col );
                 emit dataLeftPressed( event->pos() );
@@ -233,32 +250,32 @@ void KDChart1Widget::mouseReleaseEvent( QMouseEvent* event )
 {
     Q_UNUSED(event);
     /*
-    if ( !d->_activeData )
+    if ( !d->activeData )
         return ;
 
     KDChart1DataRegion* current = 0;
-    QPtrListIterator < KDChart1DataRegion > it( _dataRegions );
+    QPtrListIterator < KDChart1DataRegion > it( dataRegions );
     while ( ( current = it.current() ) ) {
         ++it;
         if ( current->contains( event->pos() ) ) {
             if ( event->button() == LeftButton ) {
                 emit dataLeftReleased( current->row, current->col );
                 emit dataLeftReleased( event->pos() );
-                if ( _mousePressedOnRegion == current ){
+                if ( mousePressedOnRegion == current ){
                     emit dataLeftClicked( current->row, current->col );
                     emit dataLeftClicked( event->pos() );
                 }
             } else if ( event->button() == MidButton ) {
                 emit dataMiddleReleased( current->row, current->col );
                 emit dataMiddleReleased( event->pos() );
-                if ( _mousePressedOnRegion == current ){
+                if ( mousePressedOnRegion == current ){
                     emit dataMiddleClicked( current->row, current->col );
                     emit dataMiddleClicked( event->pos() );
                 }
             } else {
                 emit dataRightReleased( current->row, current->col );
                 emit dataRightReleased( event->pos() );
-                if ( _mousePressedOnRegion == current ){
+                if ( mousePressedOnRegion == current ){
                     emit dataRightClicked( current->row, current->col );
                     emit dataRightClicked( event->pos() );
                 }
@@ -287,7 +304,7 @@ void KDChart1Widget::mouseReleaseEvent( QMouseEvent* event )
   */
 void KDChart1Widget::setActiveData( bool active )
 {
-    d->_activeData = active;
+    d->activeData = active;
 }
 
 
@@ -301,7 +318,7 @@ void KDChart1Widget::setActiveData( bool active )
   */
 bool KDChart1Widget::isActiveData() const
 {
-    return d->_activeData;
+    return d->activeData;
 }
 
 
@@ -321,7 +338,7 @@ bool KDChart1Widget::isActiveData() const
 void KDChart1Widget::setDoubleBuffered( bool doublebuffered )
 {
     Q_UNUSED(doublebuffered);
-    d->_doubleBuffered = false;
+    d->doubleBuffered = false;
     // Double buffering is done by Qt now.
 }
 
@@ -346,7 +363,7 @@ bool KDChart1Widget::isDoubleBuffered() const
   */
 void KDChart1Widget::setParams( KDChart1Params* params )
 {
-    d->_params = params;
+    d->params = params;
 }
 
 /**
@@ -354,7 +371,31 @@ void KDChart1Widget::setParams( KDChart1Params* params )
   */
 void KDChart1Widget::setData( KDChart1TableDataBase* data )
 {
-    d->_data = data;
+    d->data = data;
+    QVariant::Type typeX;
+    const bool hasXValues =
+        data->cellsHaveSeveralCoordinates( &typeX )
+            && ( QVariant::Double == typeX );
+
+    const int nRows = data->rows();
+    const int nCols = data->cols();
+    QVariant valueX, valueY;
+    for( int iRow=0; iRow < nRows; ++iRow ){
+        QVector< double > rowData;
+        for( int iCol=0; iCol < nCols; ++iCol ){
+            if( data->cellCoords( iRow, iCol, valueY, valueX ) ){
+                if( QVariant::Double == valueY.type() ){
+                    rowData << valueY.toDouble();
+                }else{
+
+                }
+                if( hasXValues ){
+
+                }
+            }
+        }
+        setDataset( iRow, rowData );
+    }
 }
 
 /**
@@ -362,7 +403,7 @@ void KDChart1Widget::setData( KDChart1TableDataBase* data )
   */
 KDChart1Params* KDChart1Widget::params() const
 {
-    return d->_params;
+    return d->params;
 }
 
 /**
@@ -370,13 +411,13 @@ KDChart1Params* KDChart1Widget::params() const
   */
 KDChart1TableDataBase* KDChart1Widget::data() const
 {
-    return d->_data;
+    return d->data;
 }
 
 
 const KDChart1DataRegionList* KDChart1Widget::dataRegions() const
 {
-     return &d->_dataRegions;
+     return &d->dataRegions;
 }
 
 /**
