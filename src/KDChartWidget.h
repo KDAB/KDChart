@@ -125,7 +125,7 @@ namespace KDChart {
         void addLegend (Legend* legend );
 
         void replaceLegend( Legend* legend, int position = 0 );
-	void removeLegend( int position = 0 );
+        void removeLegend( int position = 0 );
 
 
         /** Returns a pointer to the current diagram. */
@@ -134,7 +134,7 @@ namespace KDChart {
         AbstractCoordinatePlane* coordinatePlane() const;
 
 
-	enum ChartType { NoType, Bar, Line, Pie, Ring, Polar };
+        enum ChartType { NoType, Bar, Line, Pie, Ring, Polar };
 
         /** Returns the type of the chart. */
         ChartType type() const;
