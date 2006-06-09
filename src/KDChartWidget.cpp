@@ -153,8 +153,7 @@ void Widget::setDataset( int column, const QVector< QPair< double, double > > & 
  */
 void Widget::resetData()
 {
-    d->m_model->removeRows( 0, d->m_model->rowCount() );
-    d->m_model->removeColumns( 0, d->m_model->columnCount() );
+    d->m_model->clear();
     d->usedDatasetWidth = 0;
 }
 
