@@ -356,9 +356,20 @@ void KDChart1Widget::setParams( KDChart1Params* params )
 
 /**
   Set an entire new data table.
+
+  Make sure to call setData every time, when your data have changed,
+  since the KDChart1Widget (being a compatibility class only)
+  needs to copy them into the internal data structures of KD Chart 2.x.
+
+  \note If you need to dynamically change your data, you might want to
+  consider porting your code to using the KDChart 2.0 classes instead:
+  A proxy model would enable you to adjust the data much faster, than
+  you could do by using the KDChart1Widget.
   */
 void KDChart1Widget::setData( KDChart1TableDataBase* data )
 {
+    resetData();
+
     d->data = data;
     QVariant::Type typeX;
     const bool hasXValues =
