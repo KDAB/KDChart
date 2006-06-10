@@ -26,6 +26,8 @@
 #include "mainwindow.h"
 
 #include <KDChart1Widget.h>
+#include <KDChart1Params.h>
+
 #include <QDebug>
 
 MainWindow::MainWindow( QWidget* parent )
@@ -47,21 +49,19 @@ MainWindow::MainWindow( QWidget* parent )
 
 void MainWindow::changeType()
 {
-    /*
     QString text = typeSelector->currentText();
     if ( text == "Widget::Bar" )
-        widget->setType( Widget::Bar );
+        widget->params()->setChartType( KDChart1Params::Bar );
     else if ( text == "Widget::Line" )
-        widget->setType( Widget::Line );
+        widget->params()->setChartType( KDChart1Params::Line );
     else if ( text == "Widget::Pie" )
-        widget->setType( Widget::Pie );
+        widget->params()->setChartType( KDChart1Params::Pie );
     else if ( text == "Widget::Polar" )
-        widget->setType( Widget::Polar );
+        widget->params()->setChartType( KDChart1Params::Polar );
     else if ( text == "Widget::Ring" )
-        widget->setType( Widget::Ring );
+        widget->params()->setChartType( KDChart1Params::Ring );
     else
-        widget->setType( Widget::NoType );
-    */
+        widget->params()->setChartType( KDChart1Params::NoType );
 }
 
 void MainWindow::changeLeading( int leading )

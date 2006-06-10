@@ -2,6 +2,8 @@ FORMS   = mainwindow.ui
 SOURCES = main.cpp mainwindow.cpp
 HEADERS = mainwindow.h
 
+QT += xml
+
 KDCHART_PATH        = ../../..
 KDCHART_COMPAT_PATH = ../..
 

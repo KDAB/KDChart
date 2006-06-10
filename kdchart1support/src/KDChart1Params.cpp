@@ -34,6 +34,8 @@
 #include <KDChart1TextPiece.h>
 //#include <KDXMLTools1.h>
 
+#include <KDChartWidget>
+
 class KDChart1Data;
 
 //#include <qdom.h>
@@ -80,6 +82,13 @@ void KDChart1AutoColor::freeInstance()
 }
 
 
+
+enum K2SettingsTypes {
+    K2Type = 0,
+    K2FooterFont = 99,
+    K2LastValue = K2FooterFont
+};
+
 /*
 static QColor defaultColor;
 QT_STATIC_CONST_IMPL QColor & KDChart1Params_AutoColor = defaultColor;
@@ -90,6 +99,7 @@ QT_STATIC_CONST_IMPL QColor & KDChart1Params_AutoColor = defaultColor;
   */
 KDChart1Params::KDChart1Params()
 {
+    _K2Widget = 0;
     tempPropSetA = new KDChart1PropertySet();
     tempPropSetB = new KDChart1PropertySet();
 
@@ -9536,4 +9546,61 @@ int KDChart1Params::axisTitleFontRelSize( uint n ) const
         }
     }
     return 18;
+}
+
+
+
+
+void KDChart1Params::updateAllK2Settings()
+{
+    if( ! _K2Widget ) return;
+    for( int i=0; i<=K2LastValue; ++i )
+        updateK2Setting( i );
+}
+
+void KDChart1Params::updateK2Setting( int type )
+{
+    if( ! _K2Widget ) return;
+
+    KDChart::Widget & k2( *_K2Widget );
+    switch( type ){
+        case K2Type:
+            switch( chartType() ){
+                case NoType:
+                    k2.setType( KDChart::Widget::NoType );
+                    break;
+                case Bar:
+                    k2.setType( KDChart::Widget::Bar );
+                    break;
+                case Line:
+                    k2.setType( KDChart::Widget::Line );
+                break;
+                case Area:
+                    qDebug("Sorry: KDChart1Params::setChartType( Area ) is not implemented yet.");
+                    //k2.setType( KDChart::Widget::Area );
+                break;
+                case Pie:
+                    k2.setType( KDChart::Widget::Pie );
+                break;
+                case HiLo:
+                    qDebug("Sorry: KDChart1Params::setChartType( HiLo ) is not implemented yet.");
+                    //k2.setType( KDChart::Widget::HiLo );
+                break;
+                case Ring:
+                    k2.setType( KDChart::Widget::Ring );
+                break;
+                case Polar:
+                    k2.setType( KDChart::Widget::Polar );
+                break;
+                case BoxWhisker:
+                    qDebug("Sorry: KDChart1Params::setChartType( BoxWhisker ) is not implemented yet.");
+                    //k2.setType( KDChart::Widget::BoxWhisker );
+                break;
+                default:
+                    qDebug("Sorry: KDChart1Params::setChartType() was called for not supported type.");
+            }
+            break;
+        default:
+            qDebug("Sorry: updateK2Settings( %i ) not implemented yet.", type);
+    }
 }

@@ -43,6 +43,7 @@ public:
     ~Private();
 private:
     KDChart1Params* params;
+    KDChart1Params* defaultParams;
     KDChart1TableDataBase* data;
     KDChart1TableDataBase* defaultData;
     bool activeData;
@@ -53,6 +54,7 @@ private:
 
 KDChart1Widget::Private::Private() :
     params( 0 ),
+    defaultParams( 0 ),
     data( 0 ),
     defaultData( 0 ),
     activeData( false ),
@@ -66,9 +68,13 @@ KDChart1Widget::Private::~Private()
 {
     // delete any regions that might still be registered
     qDeleteAll( dataRegions );
+
+    delete defaultParams;
+
     dataRegions.clear();
     delete defaultData;
 }
+
 
 
 /**
@@ -110,6 +116,9 @@ KDChart1Widget::KDChart1Widget( QWidget* parent, const char* name ) :
 {
     Q_UNUSED(name);
     setBackgroundRole( QPalette::NoRole );
+
+    d->defaultParams = new KDChart1Params();
+    setParams( d->defaultParams );
 
     // Let us the default chart, we used to have in KD Chart 1.x:
     d->defaultData = new KDChart1TableData( 3, 1 );
@@ -342,26 +351,36 @@ bool KDChart1Widget::isDoubleBuffered() const
 
 
 /**
-  Set an entire new parameter set.
-  (Normally you might prefer modifying the existing parameters
-  rather than specifying a new set.)
+    Set an entire new parameter set.
+
+    \note Normally you might prefer modifying the existing parameters
+    rather than specifying a new set. Calling one of the KDChart1Params
+    setter methods will automatically adjust the respective setting in
+    the KD Chart 2.x domain, so there is NO need to call setParams
+    every time again: Calling it once is enough.
+
+    \sa KDChart1Params, setData
   */
 void KDChart1Widget::setParams( KDChart1Params* params )
 {
     d->params = params;
+    d->params->setKDChartWidget( this );
+    d->params->updateAllK2Settings();
 }
 
 /**
-  Set an entire new data table.
+    Set an entire new data table.
 
-  Make sure to call setData every time, when your data have changed,
-  since the KDChart1Widget (being a compatibility class only)
-  needs to copy them into the internal data structures of KD Chart 2.x.
+    \note Make sure to call setData EVERY time, when your data have changed,
+    since the KDChart1Widget (being a compatibility class only)
+    needs to copy them into the internal data structures of KD Chart 2.x.
 
-  \note If you need to dynamically change your data, you might want to
-  consider porting your code to using the KDChart 2.0 classes instead:
-  A proxy model would enable you to adjust the data much faster, than
-  you could do by using the KDChart1Widget.
+    If you need to dynamically change your data, you might want to
+    consider porting your code to using the KDChart 2.0 classes instead:
+    A proxy model would enable you to adjust the data much faster, than
+    you could do by using the KDChart1Widget.
+
+    \sa setParams
   */
 void KDChart1Widget::setData( KDChart1TableDataBase* data )
 {

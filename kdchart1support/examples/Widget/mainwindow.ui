@@ -49,32 +49,32 @@
     <widget class="QComboBox" name="typeSelector" >
      <item>
       <property name="text" >
-       <string>Widget::NoType</string>
+       <string>KDChart1Params::NoType</string>
       </property>
      </item>
      <item>
       <property name="text" >
-       <string>Widget::Bar</string>
+        <string>KDChart1Params::Bar</string>
       </property>
      </item>
      <item>
       <property name="text" >
-       <string>Widget::Line</string>
+        <string>KDChart1Params::Line</string>
       </property>
      </item>
      <item>
       <property name="text" >
-       <string>Widget::Pie</string>
+        <string>KDChart1Params::Pie</string>
       </property>
      </item>
      <item>
       <property name="text" >
-       <string>Widget::Ring</string>
+        <string>KDChart1Params::Ring</string>
       </property>
      </item>
      <item>
       <property name="text" >
-       <string>Widget::Polar</string>
+        <string>KDChart1Params::Polar</string>
       </property>
      </item>
     </widget>

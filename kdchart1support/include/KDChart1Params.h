@@ -132,10 +132,17 @@ private:
 // #define KDCHART1_DATA_VALUE_AUTO_COLOR KDChart1Params_KDChart1AutoColor
 */
 
+namespace KDChart {
+    class Widget;
+}
+
 
 class KDCHART1_EXPORT KDChart1Params : public QObject
 {
     Q_OBJECT
+
+friend class KDChart1Widget;
+
     Q_ENUMS(ChartType)
     Q_ENUMS(SourceMode)
     Q_ENUMS(BarChartSubType)
@@ -2458,17 +2465,27 @@ signals:
 
 
 protected:
+    // this called by KDChart1Widget:
+    void setKDChartWidget( KDChart::Widget * widget )
+    {
+        _K2Widget = widget;
+    }
+
     void setBarsDisplayed( int barsDisplayed )
-        {
-            _barsDisplayed = barsDisplayed;
-        }
+    {
+        _barsDisplayed = barsDisplayed;
+    }
     void setBarsLeft( int barsLeft )
-        {
-            _barsLeft = barsLeft;
-        }
+    {
+        _barsLeft = barsLeft;
+    }
 
 
 private:
+    void updateAllK2Settings();
+    void updateK2Setting( int type );
+    KDChart::Widget * _K2Widget;
+
     QString dataRegionFrameAreaName( uint dataRow,
                              uint dataCol,
                              uint data3rd );
