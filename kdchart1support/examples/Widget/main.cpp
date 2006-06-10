@@ -26,6 +26,7 @@
 #include <QApplication>
 
 #include <KDChart1Widget.h>
+#include <KDChart1Table.h>
 
 #include <QDebug>
 #include <QVector>
@@ -39,47 +40,48 @@ int main( int argc, char** argv ) {
 
     window.resize( 800, 600 );
 
-    QVector< double > vec0;
-    vec0.append( -5 );
-    vec0.append( -4 );
-    vec0.append( -3 );
-    vec0.append( -2 );
-    vec0.append( -1 );
-    vec0.append( 0 );
-    vec0.append( 1 );
-    vec0.append( 2 );
-    vec0.append( 3 );
-    vec0.append( 4 );
-    vec0.append( 5 );
-    window.widget->setDataset( 0, vec0, "Linear" );
+    KDChart1TableData d( 3, 11 );
+    // 1st series
+    d.setCell( 0, 0,   -5      );
+    d.setCell( 0, 1,   -4      );
+    d.setCell( 0, 2,   -3      );
+    d.setCell( 0, 3,   -2      );
+    d.setCell( 0, 4,   -1      );
+    d.setCell( 0, 5,    0      );
+    d.setCell( 0, 6,    1      );
+    d.setCell( 0, 7,    2      );
+    d.setCell( 0, 8,    3      );
+    d.setCell( 0, 9,    4      );
+    d.setCell( 0,10,    5      );
 
-    QVector< double > vec1;
-    vec1.append( 25 );
-    vec1.append( 16 );
-    vec1.append( 9 );
-    vec1.append( 4 );
-    vec1.append( 1 );
-    vec1.append( 0 );
-    vec1.append( 1 );
-    vec1.append( 4 );
-    vec1.append( 9 );
-    vec1.append( 16 );
-    vec1.append( 25 );
-    window.widget->setDataset( 1, vec1, "Quadratic" );
+    // 2nd series
+    d.setCell( 1, 0,   25      );
+    d.setCell( 1, 1,   16      );
+    d.setCell( 1, 2,    9      );
+    d.setCell( 1, 3,    4      );
+    d.setCell( 1, 4,    1      );
+    d.setCell( 1, 5,    0      );
+    d.setCell( 1, 6,    1      );
+    d.setCell( 1, 7,    4      );
+    d.setCell( 1, 8,    9      );
+    d.setCell( 1, 9,   16      );
+    d.setCell( 1,10,   25      );
 
-    QVector< double > vec2;
-    vec2.append( -125 );
-    vec2.append( -64 );
-    vec2.append( -27 );
-    vec2.append( -8 );
-    vec2.append( -1 );
-    vec2.append( 0 );
-    vec2.append( 1 );
-    vec2.append( 8 );
-    vec2.append( 27 );
-    vec2.append( 64 );
-    vec2.append( 125 );
-    window.widget->setDataset( 2, vec2, "Cubic" );
+    // 3rd series
+    d.setCell( 2, 0, -125      );
+    d.setCell( 2, 1,  -64      );
+    d.setCell( 2, 2,  -27      );
+    d.setCell( 2, 3,   -8      );
+    d.setCell( 2, 4,   -1      );
+    d.setCell( 2, 5,    0      );
+    d.setCell( 2, 6,    1      );
+    d.setCell( 2, 7,    8      );
+    d.setCell( 2, 8,   27      );
+    d.setCell( 2, 9,   64      );
+    d.setCell( 2,10,  125      );
+
+
+    window.widget->setData( &d );
     /*
     window.widget->addHeaderFooter( "Header West",   HeaderFooter::Header, Position::West );
     window.widget->addHeaderFooter( "Header Center", HeaderFooter::Header, Position::Center );
