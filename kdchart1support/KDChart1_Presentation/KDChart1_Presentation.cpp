@@ -529,7 +529,8 @@ void KDChart1PresentationWidget::setConfiguration( QListWidgetItem * item, QList
                 Qt::NoPen,
                 QBrush( __chamois ) );
 
-        KDChart1TextPiece textPiece2( QString::fromUtf8("<b>Klarälvdalens&nbsp;Datakonsult&nbsp;AB</b>"),
+        const QString company( QString::fromUtf8("Klarälvdalens Datakonsult AB") );
+        KDChart1TextPiece textPiece2( QString("<b>%1</b>").arg(company).replace(" ","&nbsp;"),
                                      QFont( "helvetica", 1, QFont::Normal, true ) );
         KDChart1CustomBox customBox2(
             textPiece2,
