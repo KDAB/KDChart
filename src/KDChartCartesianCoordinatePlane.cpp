@@ -1,5 +1,5 @@
 /****************************************************************************
- ** Copyright (C) 2006 Klar‰lvdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2006 Klar√§lvdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KD Chart library.
  **
@@ -81,27 +81,9 @@ void CartesianCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
               SLOT ( slotLayoutChanged ( AbstractDiagram* ) ) );
 }
 
-#define DEBUG_PAINTING 1
 void CartesianCoordinatePlane::paintEvent ( QPaintEvent* )
 {
     QPainter painter ( this );
-#ifdef DEBUG_PAINTING
-    if ( true ) // this should be a little helper method somewhere:
-    {
-        QString text = tr( "CartesianCoordinatePlane" );
-        if ( diagrams().isEmpty() ) text += tr ( " (no diagrams)" );
-        PainterSaver painterSaver( &painter );
-        painter.setRenderHint ( QPainter::TextAntialiasing );
-        painter.setPen ( "gold" );
-        painter.setBrush (  Qt::NoBrush );
-        painter.drawRect ( 0, 0, width() - 1,  height() - 1);
-        QFont font = painter.font();
-        font.setPointSize ( 7 );
-        painter.setFont( font );
-        painter.setPen ( Qt::lightGray );
-        painter.drawText ( 0, 0, width() - 3 , height() - 3, Qt::AlignRight | Qt::AlignTop, text );
-    }
-#endif
     AbstractDiagramList diags = diagrams();
     if ( !diags.isEmpty() )
     {
