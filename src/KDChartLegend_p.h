@@ -80,7 +80,7 @@ private:
     QVector<KDChart::LayoutItem*> layoutItems;
     QGridLayout* layout;
     KDChart::DiagramObserver* observer;
-    bool blockBuildLegend;
+    bool needRebuild; // set to TRUE by all of the Legend's setter functions
 };
 
 inline KDChart::Legend::Legend( Private* p, QWidget* parent )
