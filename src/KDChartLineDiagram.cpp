@@ -234,6 +234,7 @@ void LineDiagram::paintEvent ( QPaintEvent*)
 void LineDiagram::paint( PaintContext* ctx )
 {
     if ( !checkInvariants() ) return;
+    if ( !isBoundariesValid(dataBoundaries()) ) return;
 
     // draw the grid
     drawGrid( ctx );

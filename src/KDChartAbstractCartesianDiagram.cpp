@@ -120,7 +120,7 @@ void AbstractCartesianDiagram::drawGrid( PaintContext* context )
 
     // do not draw a Zero size grid (and do not divide by Zero)
     if( numberOfUnitLinesX <= 0.0 || numberOfUnitLinesY <= 0.0 ) return;
-
+    if( !isBoundariesValid(boundaries) ) return;
 
     const QPointF p1 = context->coordinatePlane()->translate( boundaries.first );
     const QPointF p2 = context->coordinatePlane()->translate( boundaries.second );

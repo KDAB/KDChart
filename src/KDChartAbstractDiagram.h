@@ -66,6 +66,9 @@ namespace KDChart {
          */
         virtual const QPair<QPointF, QPointF> dataBoundaries() const;
 
+        /*! Returns true is the boundaries b correspond to
+	  a valid rectangle */
+        static bool isBoundariesValid(const QPair<QPointF,QPointF>& b );
 
         /**
          * Draw the diagram contents to the rectangle and painter that are

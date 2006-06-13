@@ -112,6 +112,14 @@ const QPair<QPointF, QPointF> AbstractDiagram::dataBoundaries () const
     return QPair<QPointF, QPointF> ( bottomLeft,  topRight );
 }
 
+bool AbstractDiagram::isBoundariesValid(const QPair<QPointF,QPointF>& b )
+{
+  return !(isnan(b.first.x())||isnan(b.first.y())||
+	   isinf(b.first.x())||isinf(b.first.y())||
+	   isnan(b.second.x())||isnan(b.second.y())||
+	   isinf(b.second.x())||isinf(b.second.y()));
+}
+
 void AbstractDiagram::setModel ( QAbstractItemModel * newModel )
 {
   QAbstractItemView::setModel( newModel );

@@ -265,8 +265,10 @@ void BarDiagram::paint( PaintContext* ctx )
     drawGrid( ctx );
     // Calculate width
     QPointF boundLeft, boundRight;
-    boundLeft = coordinatePlane()->translate( dataBoundaries().first );
-    boundRight = coordinatePlane()->translate( dataBoundaries().second );
+    QPair<QPointF,QPointF> boundaries = dataBoundaries();
+    if( !isBoundariesValid(boundaries) ) return;
+    boundLeft = coordinatePlane()->translate( boundaries.first );
+    boundRight = coordinatePlane()->translate( boundaries.second );
     double width = boundRight.x() - boundLeft.x();
     //calculates and stores the values
     const int rowCount = d->attributesModel->rowCount(attributesModelRootIndex());
