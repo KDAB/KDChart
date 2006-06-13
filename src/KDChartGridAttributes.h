@@ -31,7 +31,7 @@
 #define KDCHARTGRIDATTRIBUTES_H
 
 #include <QMetaType>
-#include <KDChartGlobal.h>
+#include "KDChartGlobal.h"
 
 class QDomDocumentFragment;
 class QPen;
