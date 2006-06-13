@@ -37,8 +37,6 @@ using namespace KDChart;
 AbstractArea::Private::Private() :
     visible( true ),
     // PENDING(khz) dockingPointToPadding?, alignToDockingPoint?
-    text(),
-    textAttributes(),
     frameAttributes(),
     backgroundAttributes()
 {
@@ -95,26 +93,6 @@ void AbstractArea::alignToReferencePoint( const RelativePosition& position )
     Q_UNUSED( position );
     // PENDING(kalle) FIXME
     qWarning( "Sorry, not implemented: void AbstractArea::alignToReferencePoint( const RelativePosition& position )" );
-}
-
-void AbstractArea::setText( const QString& text )
-{
-    d->text = text;
-}
-
-QString AbstractArea::text() const
-{
-    return d->text;
-}
-
-void AbstractArea::setTextAttributes( const TextAttributes &a )
-{
-    d->textAttributes = a;
-}
-
-TextAttributes AbstractArea::textAttributes() const
-{
-    return d->textAttributes;
 }
 
 void AbstractArea::setFrameAttributes( const FrameAttributes &a )

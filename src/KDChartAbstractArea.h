@@ -77,12 +77,6 @@ public:
 
     void alignToReferencePoint( const RelativePosition& position );
 
-    void setText( const QString& text );
-    QString text() const;
-
-    void setTextAttributes( const TextAttributes &a );
-    TextAttributes textAttributes() const;
-
     void setFrameAttributes( const FrameAttributes &a );
     FrameAttributes frameAttributes() const;
 

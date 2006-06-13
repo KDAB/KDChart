@@ -45,8 +45,6 @@ protected:
 
 private:
     bool visible;
-    QString text;
-    KDChart::TextAttributes textAttributes;
     KDChart::FrameAttributes frameAttributes;
     KDChart::BackgroundAttributes backgroundAttributes;
 };

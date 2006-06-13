@@ -55,6 +55,7 @@ public:
     virtual HeaderFooter * clone() const;
 
     virtual QSize sizeHint() const;
+    virtual QSize minimumSizeHint() const;
     virtual void paintEvent( QPaintEvent* );
 
 

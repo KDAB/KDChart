@@ -48,9 +48,25 @@ HeaderFooter::Private::Private() :
 
 HeaderFooter::Private::~Private()
 {
+    delete textDoc;
 }
 
+void HeaderFooter::Private::updateTextDoc()
+{
+    if( textDoc )
+        delete textDoc;
+    textDoc = new KDTextDocument;
+    textDoc->setDefaultFont( textAttributes.font() );
+    QTextCursor cursor( textDoc );
 
+    // PENDING(kalle) Other attributes!
+    if( !text.isEmpty() ) {
+        QTextBlockFormat bf;
+        bf.setNonBreakableLines( true );
+        cursor.insertBlock( bf );
+        cursor.insertFragment( QTextDocumentFragment::fromHtml( text ) );
+    }
+}
 
 #define d d_func()
 
@@ -142,6 +158,8 @@ Position HeaderFooter::position() const
 void HeaderFooter::setText( const QString& text )
 {
     d->text = text;
+    d->updateTextDoc();
+    updateGeometry();
 }
 
 QString HeaderFooter::text() const
@@ -152,6 +170,8 @@ QString HeaderFooter::text() const
 void HeaderFooter::setTextAttributes( const TextAttributes &a )
 {
     d->textAttributes = a;
+    d->updateTextDoc();
+    updateGeometry();
 }
 
 TextAttributes HeaderFooter::textAttributes() const
@@ -161,21 +181,11 @@ TextAttributes HeaderFooter::textAttributes() const
 
 QSize HeaderFooter::sizeHint() const
 {
-    if( d->textDoc )
-        delete d->textDoc;
-    d->textDoc = new KDTextDocument;
-    d->textDoc->setDefaultFont( d->textAttributes.font() );
-    QTextCursor cursor( d->textDoc );
-
-    // PENDING(kalle) Other attributes!
-    if( !text().isEmpty() ) {
-        QTextBlockFormat bf;
-        bf.setNonBreakableLines( true );
-        cursor.insertBlock( bf );
-        cursor.insertFragment( QTextDocumentFragment::fromHtml( text() ) );
-    }
-
-    return d->textDoc->sizeHint();
+    if( d->textDoc ) return d->textDoc->sizeHint();
+    else return AbstractArea::sizeHint();
 }
 
-
+QSize HeaderFooter::minimumSizeHint() const
+{
+    return sizeHint();
+}

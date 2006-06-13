@@ -45,6 +45,8 @@ public:
     Private();
     ~Private();
 
+    void updateTextDoc();
+
 private:
     // user-settable
     HeaderFooterType type;
