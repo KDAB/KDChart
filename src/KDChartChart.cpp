@@ -74,9 +74,7 @@ Chart::Private::Private( Chart* chart_ )
 
 void Chart::Private::layoutHeadersAndFooters()
 {
-  qDebug() << "Chart::Private::layoutHeadersAndFooters()";
     foreach ( HeaderFooter *hf, headerFooters ) {
-      qDebug() << "Layout out " << hf->text();
         // for now, there are only two types of Header/Footer,
         // we use a pointer to the right layout, depending on the type():
         QGridLayout * headerFooterLayout;
@@ -140,7 +138,6 @@ struct LegendPosInfo{
 
 void Chart::Private::layoutLegends()
 {
-  qDebug() << "Chart::Private::layoutLegends()";
     // To support more than one Legend, we first collect them all
     // in little lists: one list per grid position.
     // Since the dataAndLegendLayout is a 3x3 grid, we need 9 little lists.
@@ -148,7 +145,6 @@ void Chart::Private::layoutLegends()
     QList<LegendPosInfo> infos[3][3];
 
     foreach ( Legend *legend, legends ) {
-      qDebug() << "Laying out " << legend->titleText();
 
         if( legend->position() != Position::Unknown ) {
             int row, column;
@@ -209,7 +205,6 @@ void Chart::Private::layoutLegends()
             qDebug( "Unknown legend position" );
         }
     }
-    qDebug() << "Done with legends list";
     // We have collected all legend information,
     // so we can design their layout now.
     for (int iR = 0; iR < 3; ++iR) {
@@ -321,7 +316,6 @@ void Chart::Private::layoutLegends()
             }
         }
     }
-    qDebug() << "DONE";
 }
 
 
