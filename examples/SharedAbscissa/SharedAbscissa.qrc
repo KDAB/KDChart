@@ -2,5 +2,6 @@
 <RCC>
   <qresource>
     <file alias="data">../tools/modeldata/KDChart-Test-Linear.csv</file>
+    <file alias="data2">../tools/modeldata/KDChart-Test_Linear_Two_Columns.csv</file>
   </qresource>
 </RCC>

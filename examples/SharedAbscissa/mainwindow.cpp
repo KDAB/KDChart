@@ -44,7 +44,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     chartLayout->addWidget( m_chart );
 
     m_model.loadFromCSV( ":/data" );
-    m_model2.loadFromCSV( ":/data" );
+    m_model2.loadFromCSV( ":/data2" );
 
     // Set up the diagram
     m_lines = new LineDiagram();
