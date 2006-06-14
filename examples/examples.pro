@@ -1,7 +1,8 @@
 TEMPLATE	= subdirs
 SUBDIRS		= tools \
                   Widget \
-                  HeaderFooterLegends \
+                  HeadersFooters \
+                  Legends \
                   Axis \
                   SharedAbscissa \
                   Zoom \

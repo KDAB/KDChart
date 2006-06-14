@@ -31,7 +31,6 @@
 
 #include "ui_mainwindow.h"
 #include "ui_addheaderdialog.h"
-#include "derivedaddlegenddialog.h"
 #include <TableModel.h>
 
 namespace KDChart {
@@ -52,21 +51,14 @@ private slots:
     void on_editHeaderPB_clicked();
     void on_removeHeaderPB_clicked();
     void on_headersTV_itemSelectionChanged();
-    void on_addLegendPB_clicked();
-    void on_editLegendPB_clicked();
-    void on_removeLegendPB_clicked();
-    void on_legendsTV_itemSelectionChanged();
 
 private:
     void setupAddHeaderDialog( QDialog* dlg, Ui::AddHeaderDialog& conf ) const;
-    void initAddLegendDialog( DerivedAddLegendDialog& conf,
-                              Qt::Alignment alignment ) const;
 
     KDChart::Chart* m_chart;
     TableModel m_model;
     KDChart::DatasetProxyModel* m_datasetProxy;
     KDChart::LineDiagram* m_lines;
-    QMap<Qt::Alignment, QString> alignmentMap;
 };
 
 

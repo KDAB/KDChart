@@ -26,7 +26,6 @@
 #include "mainwindow.h"
 
 #include <KDChartChart>
-#include <KDChartHeaderFooter>
 #include <KDChartLegend>
 #include <KDChartPosition>
 #include <KDChartCartesianCoordinatePlane>
@@ -35,18 +34,6 @@
 #include <KDChartDatasetProxyModel>
 #include <QComboBox>
 #include <QLineEdit>
-
-class HeaderItem : public QTreeWidgetItem
-{
-public:
-    HeaderItem( KDChart::HeaderFooter* header, QTreeWidget* parent ) :
-        QTreeWidgetItem( parent ), m_header( header ) {}
-
-    KDChart::HeaderFooter* header() const { return m_header; }
-
-private:
-    KDChart::HeaderFooter* m_header;
-};
 
 class LegendItem : public QTreeWidgetItem
 {
@@ -107,99 +94,6 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_chart->update();
 }
 
-
-void MainWindow::setupAddHeaderDialog( QDialog* dlg, Ui::AddHeaderDialog& conf )const
-{
-    conf.setupUi( dlg );
-    conf.textED->setFocus();
-    conf.positionCO->addItems( KDChart::Position::printableNames(true) );
-}
-
-
-void MainWindow::on_addHeaderPB_clicked()
-{
-    QDialog dlg;
-    Ui::AddHeaderDialog conf;
-    setupAddHeaderDialog( &dlg, conf );
-    conf.typeCO->setCurrentIndex( 0 ); // let us start with "Header"
-    conf.positionCO->setCurrentIndex( 0 );
-    if( dlg.exec() ) {
-        KDChart::HeaderFooter* headerFooter = new KDChart::HeaderFooter( m_chart );
-        m_chart->addHeaderFooter( headerFooter );
-        headerFooter->setText( conf.textED->text() );
-        KDChart::TextAttributes attrs;
-        attrs.setColor( Qt::red );
-        headerFooter->setTextAttributes( attrs );
-        headerFooter->setType(
-            conf.typeCO->currentText() == "Header"
-            ? KDChart::HeaderFooter::Header
-            : KDChart::HeaderFooter::Footer );
-        headerFooter->setPosition(
-            KDChart::Position::fromPrintableName( conf.positionCO->currentText() ) );
-        headerFooter->show();
-        HeaderItem* newItem = new HeaderItem( headerFooter, headersTV );
-        newItem->setText( 0, conf.textED->text() );
-        newItem->setText( 1, headerFooter->type() == KDChart::HeaderFooter::Header
-                        ? tr("Header")
-                        : tr("Footer") );
-        newItem->setText( 2, conf.positionCO->currentText() );
-        m_chart->update();
-    }
-}
-
-
-void MainWindow::on_editHeaderPB_clicked()
-{
-    if ( headersTV->selectedItems().size() == 0 ) return;
-    HeaderItem* item = static_cast<HeaderItem*>( headersTV->selectedItems().first() );
-    KDChart::HeaderFooter* headerFooter = item->header();
-    QDialog dlg;
-    Ui::AddHeaderDialog conf;
-    setupAddHeaderDialog( &dlg, conf );
-    conf.textED->setText( headerFooter->text() );
-    conf.typeCO->setCurrentIndex(
-        headerFooter->type() == KDChart::HeaderFooter::Header
-            ? 0 : 1 );
-    conf.positionCO->setCurrentIndex(
-        conf.positionCO->findText( headerFooter->position().printableName() ) );
-    if( dlg.exec() ) {
-        headerFooter->setText( conf.textED->text() );
-        headerFooter->setType(
-            conf.typeCO->currentText() == "Header"
-            ? KDChart::HeaderFooter::Header
-            : KDChart::HeaderFooter::Footer );
-        headerFooter->setPosition(
-            KDChart::Position::fromPrintableName( conf.positionCO->currentText() ) );
-        item->setText( 0, conf.textED->text() );
-        item->setText( 1, headerFooter->type() == KDChart::HeaderFooter::Header
-            ? tr("Header")
-            : tr("Footer") );
-        item->setText( 2, conf.positionCO->currentText() );
-        m_chart->update();
-    }
-}
-
-
-
-
-void MainWindow::on_removeHeaderPB_clicked()
-{
-    if ( headersTV->selectedItems().size() == 0 ) return;
-    QList<QTreeWidgetItem*> items = headersTV->selectedItems();
-    for( QList<QTreeWidgetItem*>::const_iterator it = items.begin();
-         it != items.end(); ++it ) {
-        delete static_cast<HeaderItem*>( (*it) )->header();
-        delete (*it);
-    }
-    m_chart->update();
-}
-
-
-void MainWindow::on_headersTV_itemSelectionChanged()
-{
-    removeHeaderPB->setEnabled( headersTV->selectedItems().count() > 0 );
-    removeHeaderPB->setEnabled( headersTV->selectedItems().count() == 1 );
-}
 
 void MainWindow::initAddLegendDialog( DerivedAddLegendDialog& conf,
                                       Qt::Alignment alignment ) const

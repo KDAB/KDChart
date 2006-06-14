@@ -1,12 +1,9 @@
-HEADERS= mainwindow.h \
-         derivedaddlegenddialog.h
+HEADERS= mainwindow.h
 SOURCES= main.cpp \
-         mainwindow.cpp \
-         derivedaddlegenddialog.cpp
+         mainwindow.cpp
 FORMS  = mainwindow.ui \
-         addlegenddialog.ui \
          addheaderdialog.ui
-RESOURCES = HeaderFooterLegends.qrc
+RESOURCES = HeadersFooters.qrc
 
 KDCHART_PATH = ../..
 INCLUDEPATH += $$KDCHART_PATH/include \
