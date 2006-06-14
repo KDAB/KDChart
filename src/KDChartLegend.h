@@ -58,6 +58,7 @@ public:
 
     //QSize calcSizeHint() const;
     virtual void paintEvent( QPaintEvent* );
+    virtual void paintIntoRect( QPainter& painter, const QRect& rect );
 
     void setReferenceArea( const QWidget* area );
     const QWidget* referenceArea() const;
@@ -68,11 +69,8 @@ public:
     void setPosition( Position position );
     Position position() const;
 
-    void setUseHorizontalSpace( bool );
-    bool useHorizontalSpace() const;
-
-    void setUseVerticalSpace( bool );
-    bool useVerticalSpace() const;
+    void setAlignment( Qt::Alignment );
+    Qt::Alignment alignment() const;
 
     void setOrientation( Qt::Orientation orientation );
     Qt::Orientation orientation() const;
@@ -120,6 +118,9 @@ public:
 
 signals:
     void destroyedLegend( Legend* );
+
+protected:
+    void paintIntoRect( QPainter& painter, const QRect& rect, bool adjustGeometry );
 
 private slots:
     void resetDiagram();

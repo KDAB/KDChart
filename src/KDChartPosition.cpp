@@ -31,6 +31,7 @@
 #include <QString>
 
 #include <KDChartPosition.h>
+#include <KDChartEnums.h>
 #include <QtXml/QDomDocumentFragment>
 
 
@@ -59,16 +60,16 @@ static const char * staticPositionNames[] = {
  * \internal
  * One value for unknown positions, and nine values for predefined positions.
  */
-static Position staticPositionUnknown   = Position(0);
-static Position staticPositionCenter    = Position(1);
-static Position staticPositionNorthWest = Position(2);
-static Position staticPositionNorth     = Position(3);
-static Position staticPositionNorthEast = Position(4);
-static Position staticPositionEast      = Position(5);
-static Position staticPositionSouthEast = Position(6);
-static Position staticPositionSouth     = Position(7);
-static Position staticPositionSouthWest = Position(8);
-static Position staticPositionWest      = Position(9);
+static Position staticPositionUnknown   = Position( KDChartEnums::PositionUnknown );
+static Position staticPositionCenter    = Position( KDChartEnums::PositionCenter );
+static Position staticPositionNorthWest = Position( KDChartEnums::PositionNorthWest );
+static Position staticPositionNorth     = Position( KDChartEnums::PositionNorth );
+static Position staticPositionNorthEast = Position( KDChartEnums::PositionNorthEast );
+static Position staticPositionEast      = Position( KDChartEnums::PositionEast );
+static Position staticPositionSouthEast = Position( KDChartEnums::PositionSouthEast );
+static Position staticPositionSouth     = Position( KDChartEnums::PositionSouth );
+static Position staticPositionSouthWest = Position( KDChartEnums::PositionSouthWest );
+static Position staticPositionWest      = Position( KDChartEnums::PositionWest );
 
 static int maxPositionValue = 9;
 
@@ -228,6 +229,12 @@ Position Position::fromPrintableName(const QString& printableName)
 bool Position::operator==( const Position& r )
 {
     return ( value() == r.value() );
+}
+
+
+bool Position::operator==( const int& value_ )
+{
+    return ( value() == value_ );
 }
 
 

@@ -29,11 +29,16 @@
 #include <QLabel>
 #include <QHash>
 
+#include <QPainter>
+#include <QPaintEvent>
+#include <QLayoutItem>
+
 #include "KDChartChart.h"
 #include "KDChartChart_p.h"
 #include "KDChartCartesianCoordinatePlane.h"
 #include "KDChartAbstractCartesianDiagram.h"
 #include "KDChartHeaderFooter.h"
+#include "KDChartEnums.h"
 #include "KDChartLegend.h"
 
 #if defined KDAB_EVAL
@@ -126,98 +131,60 @@ void Chart::Private::layoutHeadersAndFooters()
 }
 
 
-struct LegendPosInfo{
-    LegendPosInfo( Legend* legend_, Qt::Alignment hAlign_, Qt::Alignment vAlign_ )
-        : legend(legend_)
-        , hAlign(hAlign_)
-        , vAlign(vAlign_){}
-    Legend* legend;
-    Qt::Alignment hAlign;
-    Qt::Alignment vAlign;
-};
-
 void Chart::Private::layoutLegends()
 {
     // To support more than one Legend, we first collect them all
     // in little lists: one list per grid position.
     // Since the dataAndLegendLayout is a 3x3 grid, we need 9 little lists.
     // (the middle field, will be used by floating legends, once they are impl'ed)
-    QList<LegendPosInfo> infos[3][3];
+    QList<Legend*> infos[3][3];
 
     foreach ( Legend *legend, legends ) {
 
-        if( legend->position() != Position::Unknown ) {
-            int row, column;
-            if( legend->position().isNorthSide() )
-                row = 0;
-            else if( legend->position().isSouthSide() )
-                row = 2;
-            else
-                row = 1;
-            if( legend->position().isWestSide() )
-                column = 0;
-            else if( legend->position().isEastSide() )
-                column = 2;
-            else
-                column = 1;
-
-            if( legend->position() == Position::Center ){
-                qDebug( "Sorry: Legend position Center not supported." );
-            }else{
-                Qt::Alignment hAlign, vAlign;
-                const Position& pos = legend->position();
-                if( pos.isCorner() ){
-                    if( legend->useHorizontalSpace() && legend->useVerticalSpace() ){
-                        hAlign = Qt::AlignHCenter;
-                        vAlign = Qt::AlignVCenter;
-                    }else{
-                        if( legend->useHorizontalSpace() ){
-                            hAlign = Qt::AlignHCenter;
-                            row    = 1;
-                            if( pos.isNorthSide() )
-                                vAlign = Qt::AlignTop;
-                            else
-                                vAlign = Qt::AlignBottom;
-                        }else if( legend->useVerticalSpace() ){
-                            vAlign = Qt::AlignVCenter;
-                            column = 1;
-                            if( pos.isWestSide() )
-                                hAlign = Qt::AlignLeft;
-                            else
-                                hAlign = Qt::AlignRight;
-
-                        }else{
-                            // Floating legend is not supported yet.
-                            hAlign = Qt::AlignHCenter;
-                            vAlign = Qt::AlignVCenter;
-                        }
-                    }
-                }else{
-                    // Legend is not positioned in a corner,
-                    // so it is in the middle of a side.
-                    hAlign = Qt::AlignHCenter;
-                    vAlign = Qt::AlignVCenter;
-                }
-                infos[row][column] << LegendPosInfo( legend, hAlign, vAlign );
-            }
+        bool bOK = true;
+        int row, column;
+        switch( legend->position().value() ) {
+            case KDChartEnums::PositionNorthWest:  row = 0;  column = 0;
+                break;
+            case KDChartEnums::PositionNorth:      row = 0;  column = 1;
+                break;
+            case KDChartEnums::PositionNorthEast:  row = 0;  column = 2;
+                break;
+            case KDChartEnums::PositionEast:       row = 1;  column = 2;
+                break;
+            case KDChartEnums::PositionSouthEast:  row = 2;  column = 2;
+                break;
+            case KDChartEnums::PositionSouth:      row = 2;  column = 1;
+                break;
+            case KDChartEnums::PositionSouthWest:  row = 2;  column = 0;
+                break;
+            case KDChartEnums::PositionWest:       row = 1;  column = 0;
+                break;
+            case KDChartEnums::PositionCenter:
+                qDebug( "Sorry: Legend not shown, because position Center is not supported." );
+                bOK = false;
+                break;
+            default:
+                qDebug( "Sorry: Legend not shown, because of unknown legend position." );
+                bOK = false;
+                break;
         }
-        else{
-            qDebug( "Unknown legend position" );
-        }
+        if( bOK )
+            infos[row][column] << legend;
     }
     // We have collected all legend information,
     // so we can design their layout now.
     for (int iR = 0; iR < 3; ++iR) {
         for (int iC = 0; iC < 3; ++iC) {
-            QList<LegendPosInfo>& list = infos[iR][iC];
+            QList<Legend*>& list = infos[iR][iC];
             const int count = list.size();
             switch( count ){
             case 0:
                 break;
             case 1: {
-                    const LegendPosInfo& info = list.first();
+                    Legend* legend = list.first();
                     dataAndLegendLayout->addWidget(
-                        info.legend, iR, iC, 1, 1, info.hAlign|info.vAlign );
+                        legend, iR, iC, 1, 1, legend->alignment() );
                 }
                 break;
             default: {
@@ -232,14 +199,12 @@ void Chart::Private::layoutLegends()
                     // If not al of the legends are aligned the same way,
                     // there will be a grid with 3 cells: for left/mid/right side
                     // (or top/mid/bottom side, resp.) legends
-                    LegendPosInfo& info = list.first();
-                    Qt::Alignment hAlign = info.hAlign;
-                    Qt::Alignment vAlign = info.vAlign;
+                    Legend* legend = list.first();
+                    Qt::Alignment alignment = legend->alignment();
                     bool haveSameAlign = true;
                     for (int i = 1; i < count; ++i) {
-                        info = list.at(i);
-                        if( hAlign != info.hAlign ||
-                            vAlign != info.vAlign ){
+                        legend = list.at(i);
+                        if( alignment != legend->alignment() ){
                             haveSameAlign = false;
                             break;
                         }
@@ -248,68 +213,32 @@ void Chart::Private::layoutLegends()
                         QVBoxLayout* vLayout = new QVBoxLayout();
                         for (int i = 0; i < count; ++i) {
                             vLayout->addWidget(
-                                list.at(i).legend, 0, Qt::AlignLeft );
+                                list.at(i), 0, Qt::AlignLeft );
                         }
-                        dataAndLegendLayout->addLayout( vLayout, iR, iC, 1, 1, hAlign|vAlign );
+                        dataAndLegendLayout->addLayout( vLayout, iR, iC, 1, 1, alignment );
                     }else{
                         QGridLayout* gridLayout = new QGridLayout();
-                        // middle top cell, or middle bottom cell:
-                        if( iC == 1 ){
-                            // first we add all left-side legends, then the middle legends,
-                            // then the right-side ones:
-                            QVBoxLayout* leftLayout = new QVBoxLayout();
-                            for (int i = 0; i < count; ++i) {
-                                info = list.at(i);
-                                if( info.hAlign == Qt::AlignLeft )
-                                    leftLayout->addWidget( info.legend, 0, Qt::AlignLeft );
-                            }
-                            gridLayout->addLayout( leftLayout, 0, 0, Qt::AlignLeft|Qt::AlignTop );
+#define ADD_VBOX_WITH_LEGENDS(row, column, align) \
+{ \
+    QVBoxLayout* innerLayout = new QVBoxLayout(); \
+    for (int i = 0; i < count; ++i) { \
+        legend = list.at(i); \
+        if( legend->alignment() == align ) \
+            innerLayout->addWidget( legend, 0, Qt::AlignLeft ); \
+    } \
+    gridLayout->addLayout( innerLayout, row, column, align ); \
+}
+                        ADD_VBOX_WITH_LEGENDS( 0, 0, Qt::AlignTop     | Qt::AlignLeft )
+                        ADD_VBOX_WITH_LEGENDS( 0, 1, Qt::AlignTop     | Qt::AlignHCenter )
+                        ADD_VBOX_WITH_LEGENDS( 0, 2, Qt::AlignTop     | Qt::AlignRight )
 
-                            QVBoxLayout* midLayout = new QVBoxLayout();
-                            for (int i = 0; i < count; ++i) {
-                                info = list.at(i);
-                                if( info.hAlign == Qt::AlignHCenter )
-                                    midLayout->addWidget( info.legend, 0, Qt::AlignHCenter );
-                            }
-                            gridLayout->addLayout( midLayout, 0, 1, Qt::AlignHCenter|Qt::AlignTop );
+                        ADD_VBOX_WITH_LEGENDS( 1, 0, Qt::AlignVCenter | Qt::AlignLeft )
+                        ADD_VBOX_WITH_LEGENDS( 1, 2, Qt::AlignVCenter | Qt::AlignRight )
 
-                            QVBoxLayout* rightLayout = new QVBoxLayout();
-                            for (int i = 0; i < count; ++i) {
-                                info = list.at(i);
-                                if( info.hAlign == Qt::AlignRight )
-                                    rightLayout->addWidget( info.legend, 0, Qt::AlignHCenter );
-                            }
-                            gridLayout->addLayout( rightLayout, 0, 2, Qt::AlignRight|Qt::AlignTop );
+                        ADD_VBOX_WITH_LEGENDS( 2, 0, Qt::AlignBottom  | Qt::AlignLeft )
+                        ADD_VBOX_WITH_LEGENDS( 2, 1, Qt::AlignBottom  | Qt::AlignHCenter )
+                        ADD_VBOX_WITH_LEGENDS( 2, 2, Qt::AlignBottom  | Qt::AlignRight )
 
-                        // middle of left side, or middle of right side:
-                        }else{
-                            // first we add all top legends, then the middle legends,
-                            // then the bottom ones:
-                            QVBoxLayout* topLayout = new QVBoxLayout();
-                            for (int i = 0; i < count; ++i) {
-                                info = list.at(i);
-                                if( info.hAlign == Qt::AlignTop )
-                                    topLayout->addWidget( info.legend, 0, Qt::AlignLeft );
-                            }
-                            gridLayout->addLayout( topLayout, 0, 0, Qt::AlignTop|Qt::AlignLeft );
-
-                            QVBoxLayout* midLayout = new QVBoxLayout();
-                            for (int i = 0; i < count; ++i) {
-                                info = list.at(i);
-                                if( info.hAlign == Qt::AlignVCenter )
-                                    midLayout->addWidget( info.legend, 0, Qt::AlignLeft );
-                            }
-                            gridLayout->addLayout( midLayout, 1, 0, Qt::AlignVCenter|Qt::AlignLeft );
-
-                            QVBoxLayout* bottomLayout = new QVBoxLayout();
-                            for (int i = 0; i < count; ++i) {
-                                info = list.at(i);
-                                if( info.hAlign == Qt::AlignBottom )
-                                    bottomLayout->addWidget( info.legend, 0, Qt::AlignLeft );
-                            }
-                            gridLayout->addLayout( bottomLayout, 2, 0, Qt::AlignBottom|Qt::AlignLeft );
-
-                        }
                         dataAndLegendLayout->addLayout( gridLayout, iR, iC, 1, 1 );
                     }
                 }
@@ -646,10 +575,29 @@ int Chart::globalLeadingBottom() const
 }
 
 
-void Chart::paintEvent( QPaintEvent* )
+void Chart::paint( QPainter* painter )
 {
+
 }
 
+static void paintLayout(QPainter *painter, QLayoutItem *item)
+{
+    QLayout *layout = item->layout();
+    if (layout) {
+        for (int i = 0; i < layout->count(); ++i)
+            paintLayout(painter, layout->itemAt(i));
+    }
+    painter->drawRect(item->geometry());
+}
+
+void Chart::paintEvent( QPaintEvent* e )
+{
+//    e->accept();
+//    QPainter painter(this);
+//    if (layout())
+//        paintLayout(&painter, layout());
+
+}
 
 void Chart::addHeaderFooter( HeaderFooter* headerFooter )
 {

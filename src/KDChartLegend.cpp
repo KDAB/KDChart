@@ -48,6 +48,7 @@ using namespace KDChart;
 Legend::Private::Private() :
     referenceArea(0),
     position( Position::East ),
+    alignment( Qt::AlignRight ),
     orientation( Qt::Vertical ),
     showLines( false ),
     texts(),
@@ -109,8 +110,7 @@ void Legend::init()
     setTitleTextAttributes( titleTextAttrs );
 
     d->position = Position::NorthEast;
-    d->useHorizontalSpace = true;
-    d->useVerticalSpace   = false;
+    d->alignment = Qt::AlignCenter;
 }
 
 QDomDocumentFragment Legend::toXML() const
@@ -129,15 +129,30 @@ Legend* Legend::clone() const
 
 void Legend::paintEvent( QPaintEvent* evt )
 {
-    // re-calculate/re-position the Legend's layout and contents, if needed:
+    QPainter painter( this );
+    paintIntoRect( painter, rect(), false );
+}
+
+void Legend::paintIntoRect( QPainter& painter, const QRect& rect )
+{
+    // PENDING(khz) Test this code!
+    qWarning( "Careful, Legend::paintIntoRect() is experimental code - not fully implemented yet." );
+    paintIntoRect( painter, rect, true );
+}
+
+void Legend::paintIntoRect( QPainter& painter, const QRect& rect, bool adjustGeometry )
+{
+    if( adjustGeometry && geometry() != rect )
+        setGeometry( rect );
+
+    // re-calculate/adjust the Legend's internal layout and contents, if needed:
     buildLegend();
 
     // Legend always has a frame around it, might be overpainted by Area afterwards.
-    QPainter painter( this );
-    painter.drawRect( evt->rect().adjusted( 1, 1, -1, -1 ) );
+    painter.drawRect( rect.adjusted( 1, 1, -1, -1 ) );
 
     // Paint the background and frame
-    AbstractArea::paintEvent( evt );
+    AbstractArea::paintIntoRect( painter, rect );
 
     // PENDING(kalle) Support palette
 
@@ -228,34 +243,15 @@ Position Legend::position() const
     return d->position;
 }
 
-void Legend::setUseHorizontalSpace( bool value )
+void Legend::setAlignment( Qt::Alignment alignment )
 {
-    d->useHorizontalSpace = value;
-    // Since we don't support floating legends yet, we make sure,
-    // the legend is allways using space, in at least one direction:
-    if( !value )
-        d->useVerticalSpace = true;
+    d->alignment = alignment;
     d->needRebuild = true;
 }
 
-bool Legend::useHorizontalSpace() const
+Qt::Alignment Legend::alignment() const
 {
-    return d->useHorizontalSpace;
-}
-
-void Legend::setUseVerticalSpace( bool value )
-{
-    d->useVerticalSpace = value;
-    // Since we don't support floating legends yet, we make sure,
-    // the legend is allways using space, in at least one direction:
-    if( !value )
-        d->useHorizontalSpace = true;
-    d->needRebuild = true;
-}
-
-bool Legend::useVerticalSpace() const
-{
-    return d->useVerticalSpace;
+    return d->alignment;
 }
 
 void Legend::setOrientation( Qt::Orientation orientation )

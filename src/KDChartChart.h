@@ -241,8 +241,14 @@ namespace KDChart {
          */
         int globalLeadingBottom() const;
 
-    protected:
-        void paintEvent( QPaintEvent* );
+        /**
+            Paints all the contents of the chart. Use this method, to make KD Chart
+            draw into your QPainter.
+        */
+        void paint( QPainter* painter );
+
+        protected:
+        virtual void paintEvent( QPaintEvent* e );
 
     private:
         Private* p;

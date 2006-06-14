@@ -54,7 +54,19 @@ namespace KDChart {
  * which then will be used to layout your chart at runtime,
  * e.g. for specifying the location of a floating Legend box.
  *
- * \sa RelativePosition
+ * For comparing a Position's value with a switch() statement,
+ * you can use numeric values defined in KDChartEnums, like this:
+\verbatim
+switch( yourPosition().value() ) {
+    case KDChartEnums::PositionNorthWest:
+        // your code ...
+        break;
+    case KDChartEnums::PositionNorth:
+        // your code ...
+        break;
+}
+\endverbatim
+ * \sa RelativePosition, KDChartEnums::PositionValue
  */
 
 class KDCHART_EXPORT Position
@@ -95,6 +107,7 @@ public:
     static Position fromPrintableName(const QString& printableName);
 
     bool operator==( const Position& );
+    bool operator==( const int& );
     bool operator!=( const Position& );
 
 private:

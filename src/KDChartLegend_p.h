@@ -57,8 +57,7 @@ private:
     // user-settable
     const QWidget* referenceArea;
     Position position;
-    bool useHorizontalSpace;
-    bool useVerticalSpace;
+    Qt::Alignment alignment;
     Qt::Orientation orientation;
     bool showLines;
     QMap<uint,QString> texts;

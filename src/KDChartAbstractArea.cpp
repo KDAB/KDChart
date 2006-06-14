@@ -78,6 +78,13 @@ QDomDocumentFragment AbstractArea::toXML() const
     return QDomDocumentFragment();
 }
 
+void AbstractArea::paintIntoRect( QPainter& painter, const QRect& rect )
+{
+    paintBackground( &painter, d->backgroundAttributes, rect );
+
+    // PENDING(khz) Paint frame
+}
+
 #ifdef TEMPORARILY_REMOVED
 void AbstractArea::paint( QPainter* painter, const PaintContext & context ) const
 {

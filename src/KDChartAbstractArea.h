@@ -83,6 +83,8 @@ public:
     void setBackgroundAttributes( const BackgroundAttributes &a );
     BackgroundAttributes backgroundAttributes() const;
 
+    virtual void paintIntoRect( QPainter& painter, const QRect& rect );
+
     static void paintBackground( QPainter* painter,
                                  BackgroundAttributes attributes,
                                  const QRectF& rectangle );

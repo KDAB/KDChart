@@ -89,6 +89,25 @@ public:
 
 
     /**
+        Numerical values of the static KDChart::Position instances,
+        for using a Position::value() with a switch() statement.
+
+        \sa Position
+    */
+    enum PositionValue {
+        PositionUnknown   = 0,
+        PositionCenter    = 1,
+        PositionNorthWest = 2,
+        PositionNorth     = 3,
+        PositionNorthEast = 4,
+        PositionEast      = 5,
+        PositionSouthEast = 6,
+        PositionSouth     = 7,
+        PositionSouthWest = 8,
+        PositionWest      = 9 };
+
+
+    /**
       Measure calculation mode: the way how the absolute value of a KDChart::Measure is determined during KD Chart's internal geometry calculation time.
 
       KDChart::Measure values either are relative (calculated in relation to a given AbstractArea), or they are absolute (used as fixed values).
