@@ -13,7 +13,7 @@
    </rect>
   </property>
   <property name="windowTitle" >
-   <string>Headers, Footers, and Legends</string>
+   <string>KD Chart 2 example: Legends</string>
   </property>
   <property name="windowIcon" >
    <iconset/>
