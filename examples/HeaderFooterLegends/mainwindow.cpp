@@ -80,8 +80,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     // Add at least one legend for starters
     KDChart::Legend* legend = new KDChart::Legend( m_lines, m_chart );
     legend->setPosition( KDChart::Position::NorthEast );
-    legend->setUseHorizontalSpace( true );
-    legend->setUseVerticalSpace( false );
+    legend->setAlignment( Qt::AlignCenter );
     legend->setShowLines( false );
     legend->setTitleText( tr( "Legend" ) );
     legend->setOrientation( Qt::Vertical );
@@ -93,8 +92,18 @@ MainWindow::MainWindow( QWidget* parent ) :
     newItem->setText( 1, tr( "no" ) );
     newItem->setText( 2, tr( "Legend" ) );
     newItem->setText( 3, tr( "Vertical" ) );
-    newItem->setText( 4, tr( "yes" ) );
-    newItem->setText( 5, tr( "no" ) );
+    newItem->setText( 4, tr("Center") );
+
+    alignmentMap[ Qt::AlignTop     | Qt::AlignLeft]    = tr("Top + Left");
+    alignmentMap[ Qt::AlignTop     | Qt::AlignHCenter] = tr("Top + HCenter");
+    alignmentMap[ Qt::AlignTop     | Qt::AlignRight]   = tr("Top + Right");
+    alignmentMap[ Qt::AlignVCenter | Qt::AlignRight]   = tr("VCenter + Right");
+    alignmentMap[ Qt::AlignBottom  | Qt::AlignRight]   = tr("Bottom + Right");
+    alignmentMap[ Qt::AlignBottom  | Qt::AlignHCenter] = tr("Bottom + HCenter");
+    alignmentMap[ Qt::AlignBottom  | Qt::AlignLeft]    = tr("Bottom + Left");
+    alignmentMap[ Qt::AlignVCenter | Qt::AlignLeft]    = tr("VCenter + Left");
+    alignmentMap[ Qt::AlignCenter]                     = tr("Center");
+
     m_chart->update();
 }
 
@@ -192,20 +201,42 @@ void MainWindow::on_headersTV_itemSelectionChanged()
     removeHeaderPB->setEnabled( headersTV->selectedItems().count() == 1 );
 }
 
+void MainWindow::initAddLegendDialog( DerivedAddLegendDialog& conf,
+                                      Qt::Alignment alignment ) const
+{
+    conf.titleTextED->setFocus();
+    conf.positionCO->addItems( KDChart::Position::printableNames(false) );
+    QMap<Qt::Alignment, QString>::const_iterator i = alignmentMap.constBegin();
+    while (i != alignmentMap.constEnd()) {
+        conf.alignmentCO->addItem( i.value() );
+        ++i;
+    }
+    const int idx = conf.alignmentCO->findText( alignmentMap[ alignment ] );
+    if( idx > -1 )
+        conf.alignmentCO->setCurrentIndex( idx );
+}
+
 void MainWindow::on_addLegendPB_clicked()
 {
     DerivedAddLegendDialog conf;
-    conf.titleTextED->setFocus();
-    conf.positionCO->addItems( KDChart::Position::printableNames(false) );
-    conf.useHorzSpaceCB->setChecked( false );
-    conf.useVertSpaceCB->setChecked( false );
+    initAddLegendDialog( conf, Qt::AlignCenter );
     if( conf.exec() == QDialog::Accepted ) {
         KDChart::Legend* legend = new KDChart::Legend( m_lines, m_chart );
         m_chart->addLegend( legend );
         legend->setPosition(
             KDChart::Position::fromPrintableName( conf.positionCO->currentText() ) );
-        legend->setUseHorizontalSpace( conf.useHorzSpaceCB->isChecked() );
-        legend->setUseVerticalSpace(   conf.useVertSpaceCB->isChecked() );
+        // get the alignment
+        Qt::Alignment alignment = Qt::AlignCenter;
+        const QString selectedAlignment( conf.alignmentCO->currentText() );
+        QMap<Qt::Alignment, QString>::const_iterator i = alignmentMap.constBegin();
+        while (i != alignmentMap.constEnd()) {
+            if (  i.value() == selectedAlignment ){
+                alignment = i.key();
+                break;
+            }
+            ++i;
+        }
+        legend->setAlignment( alignment );
         legend->setShowLines( conf.showLinesCB->isChecked() );
         legend->setTitleText( conf.titleTextED->text() );
         legend->setOrientation( ( conf.orientationCO->currentIndex() == 0 ) ? Qt::Vertical : Qt::Horizontal );
@@ -215,8 +246,7 @@ void MainWindow::on_addLegendPB_clicked()
         newItem->setText( 1, conf.showLinesCB->isChecked() ? tr("yes") : tr("no") );
         newItem->setText( 2, conf.titleTextED->text() );
         newItem->setText( 3, conf.orientationCO->currentText() );
-        newItem->setText( 4, conf.useHorzSpaceCB->isChecked() ? tr("yes") : tr("no") );
-        newItem->setText( 5, conf.useHorzSpaceCB->isChecked() ? tr("yes") : tr("no") );
+        newItem->setText( 4, selectedAlignment );
         m_chart->update();
     }
 }
@@ -228,11 +258,8 @@ void MainWindow::on_editLegendPB_clicked()
     LegendItem* item = static_cast<LegendItem*>( legendsTV->selectedItems().first() );
     KDChart::Legend* legend = item->legend();
     DerivedAddLegendDialog conf;
-    conf.titleTextED->setFocus();
-    conf.positionCO->addItems( KDChart::Position::printableNames(false) );
+    initAddLegendDialog( conf, legend->alignment() );
     conf.showLinesCB->setChecked( legend->showLines() );
-    conf.useHorzSpaceCB->setChecked( legend->useHorizontalSpace() );
-    conf.useVertSpaceCB->setChecked( legend->useVerticalSpace() );
     conf.titleTextED->setText( legend->titleText() );
 
     // In this example we are using legend position names, that match
@@ -247,8 +274,18 @@ void MainWindow::on_editLegendPB_clicked()
         //legend->setPosition( (KDChart::Legend::LegendPosition)conf.positionCO->currentIndex() );
         legend->setPosition(
             KDChart::Position::fromPrintableName( conf.positionCO->currentText() ) );
-        legend->setUseHorizontalSpace( conf.useHorzSpaceCB->isChecked() );
-        legend->setUseVerticalSpace(   conf.useVertSpaceCB->isChecked() );
+        // get the alignment
+        Qt::Alignment alignment = Qt::AlignCenter;
+        const QString selectedAlignment( conf.alignmentCO->currentText() );
+        QMap<Qt::Alignment, QString>::const_iterator i = alignmentMap.constBegin();
+        while (i != alignmentMap.constEnd()) {
+            if (  i.value() == selectedAlignment ){
+                alignment = i.key();
+                break;
+            }
+            ++i;
+        }
+        legend->setAlignment( alignment );
         legend->setShowLines( conf.showLinesCB->isChecked() );
         legend->setTitleText( conf.titleTextED->text() );
         legend->setOrientation( ( conf.orientationCO->currentIndex() == 0 ) ? Qt::Vertical : Qt::Horizontal );
@@ -256,8 +293,7 @@ void MainWindow::on_editLegendPB_clicked()
         item->setText( 1, conf.showLinesCB->isChecked() ? tr("yes") : tr("no") );
         item->setText( 2, conf.titleTextED->text() );
         item->setText( 3, conf.orientationCO->currentText() );
-        item->setText( 4, conf.useHorzSpaceCB->isChecked() ? tr("yes") : tr("no") );
-        item->setText( 5, conf.useHorzSpaceCB->isChecked() ? tr("yes") : tr("no") );
+        item->setText( 4, selectedAlignment );
         m_chart->update();
     }
 }

@@ -34,12 +34,6 @@ class DerivedAddLegendDialog : public QDialog, public Ui::AddLegendDialog
 
 public:
     DerivedAddLegendDialog( QWidget* parent = 0 );
-
-private slots:
-    void positionChanged(int);
-    void horizChanged(int);
-    void vertChanged(int);
-    void horizVertChanged(bool, int);
 };
 
 #endif // DERIVEDADDLEGENDDIALOG_H

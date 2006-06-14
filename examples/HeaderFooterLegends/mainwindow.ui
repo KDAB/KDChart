@@ -132,12 +132,7 @@
           </column>
           <column>
            <property name="text" >
-            <string>Hor. Sp.</string>
-           </property>
-          </column>
-          <column>
-           <property name="text" >
-            <string>Vert. Sp.</string>
+            <string>Alignment</string>
            </property>
           </column>
          </widget>
