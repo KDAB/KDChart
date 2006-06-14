@@ -217,9 +217,9 @@ void Legend::setDiagram( KDChart::AbstractDiagram* diagram )
         connect( d->observer, SIGNAL( diagramDestroyed(AbstractDiagram*) ),
                         SLOT( resetDiagram() ));
         connect( d->observer, SIGNAL( diagramDataChanged(AbstractDiagram*) ),
-                        SLOT( buildLegend() ));
+                        SLOT( setNeedRebuild() ));
         connect( d->observer, SIGNAL( diagramAttributesChanged(AbstractDiagram*) ),
-                        SLOT( buildLegend() ));
+                        SLOT( setNeedRebuild() ));
     }
     d->needRebuild = true;
 }
@@ -227,6 +227,11 @@ void Legend::setDiagram( KDChart::AbstractDiagram* diagram )
 KDChart::AbstractDiagram* Legend::diagram() const
 {
     return d->diagram;
+}
+
+void Legend::setNeedRebuild()
+{
+    d->needRebuild = true;
 }
 
 void Legend::setPosition( Position position )

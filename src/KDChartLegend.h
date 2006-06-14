@@ -124,6 +124,7 @@ protected:
 
 private slots:
     void resetDiagram();
+    void setNeedRebuild();
     void buildLegend();
 }; // End of class Legend
 
