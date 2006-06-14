@@ -48,7 +48,7 @@ using namespace KDChart;
 Legend::Private::Private() :
     referenceArea(0),
     position( Position::East ),
-    alignment( Qt::AlignRight ),
+    alignment( Qt::AlignCenter ),
     orientation( Qt::Vertical ),
     showLines( false ),
     texts(),
