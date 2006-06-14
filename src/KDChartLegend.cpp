@@ -252,6 +252,7 @@ void Legend::setAlignment( Qt::Alignment alignment )
 {
     d->alignment = alignment;
     d->needRebuild = true;
+    emit positionChanged( this );
 }
 
 Qt::Alignment Legend::alignment() const
