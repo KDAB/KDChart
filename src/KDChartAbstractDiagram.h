@@ -66,7 +66,7 @@ namespace KDChart {
          */
         virtual const QPair<QPointF, QPointF> dataBoundaries() const;
 
-        /*! Returns true is the boundaries b correspond to
+        /*! Returns true if the boundaries b correspond to
 	  a valid rectangle */
         static bool isBoundariesValid(const QPair<QPointF,QPointF>& b );
 
@@ -88,7 +88,17 @@ namespace KDChart {
         /** Associate a model with the diagram. */
         virtual void setModel ( QAbstractItemModel * model );
 
+        /**
+         * Associate and AttributesModel with this diagram.
+         * @param model The AttributesModel to use for this diagram.
+         * @see AttributesModel
+         */
         virtual void setAttributesModel( AttributesModel* model );
+
+        /**
+         * Returns the AttributesModel that is used by this diagram.
+         * @return The AttributesModel associated with the diagram.
+         */
         virtual AttributesModel* attributesModel() const;
 
        /** Set the root index in the model where the diagram starts
@@ -221,7 +231,15 @@ namespace KDChart {
          */
         QBrush brush( const QModelIndex& index ) const;
 
+        /**
+         * Set whether data value labels are allowed to overlap.
+         * @param allow Whether overlap is allowed.
+         */
         void setAllowOverlappingDataValueTexts( bool allow );
+
+        /**
+         * @return Whether data value labels are allowed to overlap.
+         */
         bool allowOverlappingDataValueTexts() const;
 
         /**
@@ -275,9 +293,6 @@ namespace KDChart {
         void setPercentMode( bool percent );
         bool percentMode() const;
 
-
-        // FIXME merge the rest from KDChartDiagram.h
-
         virtual void paintMarker( QPainter* painter, const MarkerAttributes& markerAttributes,
                                   const QBrush& brush, const QPen&, const QPointF& point, const QSizeF& size );
 
@@ -326,6 +341,7 @@ namespace KDChart {
             geometry. Changes in the diagrams coordinate system also require
             to emit layoutChanged(). */
         void layoutChanged( AbstractDiagram* );
+
         /** This signal is emitted when the model or atributesmodel is replaced */
         void modelsChanged();
     };
