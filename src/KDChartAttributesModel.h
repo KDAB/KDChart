@@ -57,7 +57,7 @@ public:
     /* Copies the internal data (maps and palette) of another
        AttributesModel* into this one.
     */
-    void initializeFrom( const AttributesModel* other );
+    void initFrom( const AttributesModel* other );
 
     /* Attributes Model specific API */
     bool setModelData( const QVariant value, int role );
@@ -90,24 +90,14 @@ public:
 signals:
     void attributesChanged( const QModelIndex&, const QModelIndex& );
 
-protected:
-#define DataMap QMap<int, QMap<int, QMap<int, QVariant> > >
-#define HeaderDataMap QMap<int, QMap<int, QVariant> >
-#define ModelDataMap QMap<int, QVariant>
-    // helper, used by clone()
-    void setInternalMaps( const DataMap& dataMap,
-                          const HeaderDataMap& horizontalHeaderDataMap,
-                          const HeaderDataMap& verticalHeaderDataMap,
-                          const ModelDataMap& modelDataMap );
-
 private:
     // helper
     QVariant defaultsForRole( int role ) const;
 
-    DataMap       mDataMap;
-    HeaderDataMap mHorizontalHeaderDataMap;
-    HeaderDataMap mVerticalHeaderDataMap;
-    ModelDataMap  mModelDataMap;
+    QMap<int, QMap<int, QMap<int, QVariant> > > mDataMap;
+    QMap<int, QMap<int, QVariant> > mHorizontalHeaderDataMap;
+    QMap<int, QMap<int, QVariant> > mVerticalHeaderDataMap;
+    QMap<int, QVariant> mModelDataMap;
     PaletteType mPaletteType;
     bool mShared;
 };

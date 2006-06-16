@@ -49,30 +49,17 @@ AttributesModel::~AttributesModel()
 {
 }
 
-
-void AttributesModel::initializeFrom( const AttributesModel* other )
+void AttributesModel::initFrom( const AttributesModel* other )
 {
     if( other == this || ! other ) return;
 
-    setInternalMaps( other->mDataMap,
-                     other->mHorizontalHeaderDataMap,
-                     other->mVerticalHeaderDataMap,
-                     other->mModelDataMap );
+    mDataMap = other->mDataMap;
+    mHorizontalHeaderDataMap = other->mHorizontalHeaderDataMap;
+    mVerticalHeaderDataMap = other->mVerticalHeaderDataMap;
+    mModelDataMap = other->mModelDataMap;
+
     setPaletteType( other->paletteType() );
 }
-
-
-void AttributesModel::setInternalMaps( const DataMap& dataMap,
-                                       const HeaderDataMap& horizontalHeaderDataMap,
-                                       const HeaderDataMap& verticalHeaderDataMap,
-                                       const ModelDataMap& modelDataMap )
-{
-    mDataMap = dataMap;
-    mHorizontalHeaderDataMap = horizontalHeaderDataMap;
-    mVerticalHeaderDataMap = verticalHeaderDataMap;
-    mModelDataMap = modelDataMap;
-}
-
 
 QVariant AttributesModel::headerData ( int section,
                                        Qt::Orientation orientation,
