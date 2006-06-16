@@ -125,7 +125,13 @@ namespace KDChart {
 
         /**
          * Returns the AttributesModel, that is used by this diagram.
+         * By default each diagram owns its own AttributesModel, which
+         * should never be deleted. Only if a user-supplied AttributesModel
+         * has been set does the pointer returned here not belong to the
+         * diagram.
+         *
          * @return The AttributesModel associated with the diagram.
+         * @see setAttributesModel
          */
         virtual AttributesModel* attributesModel() const;
 
