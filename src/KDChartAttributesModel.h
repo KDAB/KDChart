@@ -48,12 +48,12 @@ public:
     };
 
     explicit AttributesModel( QAbstractItemModel* model, QObject * parent = 0 );
-    virtual ~AttributesModel();
+    ~AttributesModel();
 
-    /* Returns a new AttributesModel* having the same settings
-       as the current one.
+    /* Copies the internal data (maps and palette) of another
+       AttributesModel* into this one.
     */
-    virtual AttributesModel * clone() const;
+    void initializeFrom( const AttributesModel* other );
 
     /* Attributes Model specific API */
     bool setModelData( const QVariant value, int role );

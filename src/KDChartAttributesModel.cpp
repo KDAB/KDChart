@@ -49,15 +49,15 @@ AttributesModel::~AttributesModel()
 }
 
 
-AttributesModel * AttributesModel::clone() const
+void AttributesModel::initializeFrom( const AttributesModel* other )
 {
-    AttributesModel* newModel = new AttributesModel(sourceModel(), 0);
-    newModel->setInternalMaps( mDataMap,
-                               mHorizontalHeaderDataMap,
-                               mVerticalHeaderDataMap,
-                               mModelDataMap );
-    newModel->setPaletteType( paletteType() );
-    return newModel;
+    if( other == this || ! other ) return;
+
+    setInternalMaps( other->mDataMap,
+                     other->mHorizontalHeaderDataMap,
+                     other->mVerticalHeaderDataMap,
+                     other->mModelDataMap );
+    setPaletteType( other->paletteType() );
 }
 
 

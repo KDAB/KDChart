@@ -123,7 +123,8 @@ bool AbstractDiagram::isBoundariesValid(const QPair<QPointF,QPointF>& b )
 void AbstractDiagram::setModel ( QAbstractItemModel * newModel )
 {
   QAbstractItemView::setModel( newModel );
-  AttributesModel* amodel = d->attributesModel->clone(); // new AttributesModel(newModel,this);
+  AttributesModel* amodel = new AttributesModel(newModel,this);
+  amodel->initializeFrom( d->attributesModel );
   setAttributesModel( amodel );
   d->hasPrivateAttributesModel = true;
   emit modelsChanged();
