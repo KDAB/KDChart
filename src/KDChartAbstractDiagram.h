@@ -45,7 +45,8 @@ namespace KDChart {
      * @brief AbstractDiagram defines the interface for diagram classes
      *
      * AbstractDiagram is the base class for diagram classes ("chart types").
-     * It defines the interface that needs to be implemented for the diagram
+     *
+     * It defines the interface, that needs to be implemented for the diagram,
      * to function within the KDChart framework. It extends Interview's
      * QAbstractItemView.
      */
@@ -61,26 +62,30 @@ namespace KDChart {
         virtual ~AbstractDiagram();
 
 
-        /*! Return the bottom left and top right data point the diagram will
-         * display, in diagram coordinates.
+        /**
+         * @brief Return the bottom left and top right data point, that the diagram will
+         * display.
+         *
+         * Returned value is in diagram coordinates.
          */
         virtual const QPair<QPointF, QPointF> dataBoundaries() const;
 
-        /*! Returns true if the boundaries b correspond to
-	  a valid rectangle */
+        /** Returns true, if the boundaries b correspond to a valid rectangle */
         static bool isBoundariesValid(const QPair<QPointF,QPointF>& b );
 
         /**
-         * Draw the diagram contents to the rectangle and painter that are
+         * Draw the diagram contents to the rectangle and painter, that are
          * passed in as part of the paint context.
+         *
          * @param paintContext All information needed for painting.
          */
         virtual void paint ( PaintContext* paintContext ) = 0;
 
 
         /**
-         * Called by the widget's sizeEvent. Adjust all internal structures that
-         * are sensitive to the size of the widget.
+         * Called by the widget's sizeEvent. Adjust all internal structures,
+         * that are calculated, dependending on the size of the widget.
+         *
          * @param area
          */
         virtual void resize ( const QSizeF& area ) = 0;
@@ -89,19 +94,19 @@ namespace KDChart {
         virtual void setModel ( QAbstractItemModel * model );
 
         /**
-         * Associate and AttributesModel with this diagram.
+         * Associate an AttributesModel with this diagram.
          * @param model The AttributesModel to use for this diagram.
          * @see AttributesModel
          */
         virtual void setAttributesModel( AttributesModel* model );
 
         /**
-         * Returns the AttributesModel that is used by this diagram.
+         * Returns the AttributesModel, that is used by this diagram.
          * @return The AttributesModel associated with the diagram.
          */
         virtual AttributesModel* attributesModel() const;
 
-       /** Set the root index in the model where the diagram starts
+       /** Set the root index in the model, where the diagram starts
         * referencing data for display. */
         virtual void setRootIndex ( const QModelIndex& idx );
 
@@ -146,7 +151,7 @@ namespace KDChart {
 
 
         /**
-         * The the DataValueAttributes for the given index.
+         * Set the DataValueAttributes for the given index.
          * @param index The datapoint to set the attributes for.
          * @param a The attributes to set.
          */
@@ -154,14 +159,14 @@ namespace KDChart {
                                      const DataValueAttributes & a );
 
         /**
-         * The the DataValueAttributes for the given dataset.
+         * Set the DataValueAttributes for the given dataset.
          * @param dataset The dataset to set the attributes for.
          * @param a The attributes to set.
          */
         void setDataValueAttributes( int dataset, const DataValueAttributes & a );
 
         /**
-         * The the DataValueAttributes for all datapoints in the model.
+         * Set the DataValueAttributes for all datapoints in the model.
          * @param a The attributes to set.
          */
         void setDataValueAttributes( const DataValueAttributes & a );
@@ -170,33 +175,33 @@ namespace KDChart {
          * Retrieve the DataValueAttributes for the given index. This will fall
          * back automatically to what was set at dataset or model level, if there
          * are no datapoint specific settings.
-         * @param index The datapoint to retrive the attributes for.
+         * @param index The datapoint to retrieve the attributes for.
          * @return The DataValueAttributes for the given index.
          */
         DataValueAttributes dataValueAttributes( const QModelIndex & index ) const;
 
         /**
-         * Set the pen to be used for paiting the datapoint at the given index.
+         * Set the pen to be used, for painting the datapoint at the given index.
          * @param index The datapoint's index in the model.
          * @param pen The pen to use.
          */
         void setPen( const QModelIndex& index, const QPen& pen );
 
         /**
-         * Set the pen to be used for paiting the given dataset.
+         * Set the pen to be used, for painting the given dataset.
          * @param dataset The dataset's row in the model.
          * @param pen The pen to use.
          */
         void setPen( int dataset, const QPen& pen );
 
         /**
-         * Set the pen to be used for paiting all datasets in the model.
+         * Set the pen to be used, for painting all datasets in the model.
          * @param pen The pen to use.
          */
         void setPen( const QPen& pen );
 
         /**
-         * Retrieve the pen to be used for painting the datapoint at the given
+         * Retrieve the pen to be used, for painting the datapoint at the given
          * index in the model.
          * @param index The index of the datapoint in the model.
          * @return The pen to use for painting.
@@ -204,27 +209,27 @@ namespace KDChart {
         QPen pen( const QModelIndex& index ) const;
 
         /**
-         * Set the brush to be used for paiting the datapoint at the given index.
+         * Set the brush to be used, for painting the datapoint at the given index.
          * @param index The datapoint's index in the model.
          * @param brush The brush to use.
          */
         void setBrush( const QModelIndex& index, const QBrush& brush);
 
         /**
-         * Set the brush to be used for paiting the given dataset.
-         * @param dataset The dataset's row in the model.
+         * Set the brush to be used, for painting the given dataset.
+         * @param dataset The dataset's column in the model.
          * @param pen The brush to use.
          */
         void setBrush( int dataset, const QBrush& brush );
 
         /**
-         * Set the brush to be used for paiting all datasets in the model.
+         * Set the brush to be used, for painting all datasets in the model.
          * @param brush The brush to use.
          */
         void setBrush( const QBrush& brush);
 
         /**
-         * Retrieve the brush to be used for painting the datapoint at the given
+         * Retrieve the brush to be used, for painting the datapoint at the given
          * index in the model.
          * @param index The index of the datapoint in the model.
          * @return The brush to use for painting.
@@ -233,7 +238,7 @@ namespace KDChart {
 
         /**
          * Set whether data value labels are allowed to overlap.
-         * @param allow Whether overlap is allowed.
+         * @param allow True means that overlapping labels are allowed.
          */
         void setAllowOverlappingDataValueTexts( bool allow );
 
@@ -243,21 +248,24 @@ namespace KDChart {
         bool allowOverlappingDataValueTexts() const;
 
         /**
-         * Set the palette to be used for painting datasets to the default
-         * palette. @see KDChart::Palette.
+         * Set the palette to be used, for painting datasets to the default
+         * palette.
+         * @see KDChart::Palette.
          * FIXME: fold into one usePalette (KDChart::Palette&) method
          */
         void useDefaultColors();
 
         /**
-         * Set the palette to be used for painting datasets to the rainbow
-         * palette. @see KDChart::Palette.
+         * Set the palette to be used, for painting datasets to the rainbow
+         * palette.
+         * @see KDChart::Palette.
          */
         void useRainbowColors();
 
         /**
-         * Set the palette to be used for painting datasets to the subdued
-         * palette. @see KDChart::Palette.
+         * Set the palette to be used, for painting datasets to the subdued
+         * palette.
+         * @see KDChart::Palette.
         */
         void useSubduedColors();
 
@@ -268,22 +276,34 @@ namespace KDChart {
         QStringList datasetLabels() const;
 
         /**
-         * The set of dataset brushes currently used, for use in legends, etc. This
-         * ignores cell-level override brushes.
+         * The set of dataset brushes currently used, for use in legends, etc.
+         *
+         * @note Cell-level override brushes, if set, take precedence over the
+         * dataset values, so you might need to check these too, in order to find
+         * the brush, that is used for a single cell.
+         *
          * @return The current set of dataset brushes.
          */
         QList<QBrush> datasetBrushes() const;
 
         /**
-         * The set of dataset pens currently used, for use in legends, etc. This
-         * ignores cell-level override pens.
+         * The set of dataset pens currently used, for use in legends, etc.
+         *
+         * @note Cell-level override pens, if set, take precedence over the
+         * dataset values, so you might need to check these too, in order to find
+         * the pens, that is used for a single cell.
+         *
          * @return The current set of dataset pens.
          */
         QList<QPen> datasetPens() const;
 
         /**
-         * The set of dataset markers currently used, for use in legends, etc. This
-         * ignores cell-level override markers.
+         * The set of dataset markers currently used, for use in legends, etc.
+         *
+         * @note Cell-level override markers, if set, take precedence over the
+         * dataset values, so you might need to check these too, in order to find
+         * the marker, that is shown for a single cell.
+         *
          * @return The current set of dataset brushes.
          */
         QList<MarkerAttributes> datasetMarkers() const;
@@ -297,20 +317,24 @@ namespace KDChart {
                                   const QBrush& brush, const QPen&, const QPointF& point, const QSizeF& size );
 
         /**
-         * The dataset dimension of a diagram determines how many value dimensions
-         * it expects each datapoint to have. For each dimension it will expect
-         * one column of values in the model. If the dimensionality is 1, automatic
-         * values will be used for the abscissa. For example a chart with the default
-         * dimension of 1, will have one column per datapoint (the y values) and will
-         * use automatic values for the x axis (1, 2, 3, ... n). If the dimension is
-         * set to 2, it will use the first, third, fith, etc columns as x values,
-         * and the second, fourth, sixth etc column as y values.
+         * The dataset dimension of a diagram determines, how many value dimensions
+         * it expects each datapoint to have.
+         * For each dimension it will expect one column of values in the model.
+         * If the dimensionality is 1, automatic values will be used for the abscissa.
+         *
+         * For example a diagram with the default dimension of 1, will have one column
+         * per datapoint (the y values) and will use automatic values for the x axis
+         * (1, 2, 3, ... n).
+         * If the dimension is  2, the diagram will use the first, (and the third,
+         * fifth, etc) columns as X values, and the second, (and the fourth, sixth,
+         * etc) column as Y values.
          * @return The dataset dimension of the diagram.
          */
         int datasetDimension() const;
 
         /**
-         * Sets the dataset dimension of the diagram. @see datasetDimension.
+         * Sets the dataset dimension of the diagram.
+         * @see datasetDimension.
          * @param dimension
          */
         void setDatasetDimension( int dimension );
@@ -326,7 +350,7 @@ namespace KDChart {
 	void setAttributesModelRootIndex( const QModelIndex& );
 	QModelIndex attributesModelRootIndex() const;
         /**
-         * Helper method that retrieves the data value (DisplayRole) for a given row and column
+         * Helper method, retrieving the data value (DisplayRole) for a given row and column
          * @param row The row to query.
          * @param column The column to query.
          * @return The value of the display role at the given row and column as a double.
@@ -334,15 +358,17 @@ namespace KDChart {
         double valueForCell( int row, int column ) const;
 
     signals:
-        /** Diagrams are supposed to emit this signal when the layout of one
+        /** Diagrams are supposed to emit this signal, when the layout of one
             of their element changes. Layouts can change, for example, when
-            axes are added or removed or the configuration changed in a way that
-            the axes or the diagram itself are displayed in a different
-            geometry. Changes in the diagrams coordinate system also require
-            to emit layoutChanged(). */
+            axes are added or removed, or when the configuration was changed
+            in a way that the axes or the diagram itself are displayed in a
+            different geometry.
+            Changes in the diagrams coordinate system also result
+            in the layoutChanged() signal being emitted.
+        */
         void layoutChanged( AbstractDiagram* );
 
-        /** This signal is emitted when the model or atributesmodel is replaced */
+        /** This signal is emitted, when either the model or the AttributesModel is replaced. */
         void modelsChanged();
     };
 

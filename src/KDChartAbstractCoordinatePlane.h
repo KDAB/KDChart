@@ -50,8 +50,8 @@ namespace KDChart {
         virtual void addDiagram ( AbstractDiagram* diagram );
 
         /**
-         * Replaces the diagram at the given position or appends, it there is no
-         * diagram at that position yet.
+         * Replaces the diagram at the given position, or appends the
+         * diagram, it there is none at that position yet.
          * @param diagram The diagram to put at the given position.
          * @param position The position to put the new diagram at.
          */
@@ -94,32 +94,32 @@ namespace KDChart {
         virtual QSizePolicy sizePolicy() const;
 
         /**
-         * @return The zoom factor in horizontal diretion that is applied
+         * @return The zoom factor in horizontal direction, that is applied
          * to all coordinate transformations.
          */
         virtual double zoomFactorX() const { return 1.0; }
 
         /**
-         * @return The zoom factor in vertical direction that is applied
+         * @return The zoom factor in vertical direction, that is applied
          * to all coordinate transformations.
          */
         virtual double zoomFactorY() const { return 1.0; }
 
         /**
-         * Sets the zoom factor in horizontal direction that is applied
+         * Sets the zoom factor in horizontal direction, that is applied
          * to all coordinate transformations.
          */
         virtual void setZoomFactorX( double /* factor */ ) {}
 
         /**
-         * Sets the zoom factor in vertical direction that is applied
+         * Sets the zoom factor in vertical direction, that is applied
          * to all coordinate transformations.
          */
         virtual void setZoomFactorY( double /* factor */ ) {}
 
         /**
          * @return The center point (in value coordinates) of the
-         * coordinate plane that is used for zoom operations.
+         * coordinate plane, that is used for zoom operations.
          */
         virtual QPointF zoomCenter() const { return QPointF(0.0, 0.0); }
 
@@ -156,14 +156,14 @@ namespace KDChart {
         void setReferenceCoordinatePlane( AbstractCoordinatePlane * plane );
 
         /**
-         * There are two ways in which planes can be caused to interact in
+         * There are two ways, in which planes can be caused to interact, in
          * where they are put layouting wise: The first is the reference plane. If
          * such a reference plane is set, on a plane, it will use the same cell in the
          * layout as that one. In addition to this, planes can share an axis. In that case
          * they will be layed out in relation to each other as suggested by the position
          * of the axis. If, for example Plane1 and Plane2 share an axis at position Left,
          * that will result in the layout: Axis Plane1 Plane 2, vertically. If Plane1
-         * also happens to be Plane2's referece plane, both planes are drawn over each
+         * also happens to be Plane2's reference plane, both planes are drawn over each
          * other. The reference plane concept allows two planes to share the same space
          * even if neither has any axis, and in case there are shared axis, it is used
          * to decided, whether the planes should be painted on top of each other or
