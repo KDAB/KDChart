@@ -38,7 +38,7 @@
 using namespace KDChart;
 
 AttributesModel::AttributesModel( QAbstractItemModel* model, QObject * parent/* = 0 */ )
-  : AbstractProxyModel( parent ), 
+  : AbstractProxyModel( parent ),
     mPaletteType( PaletteTypeDefault )
 {
   setSourceModel(model);
@@ -47,6 +47,31 @@ AttributesModel::AttributesModel( QAbstractItemModel* model, QObject * parent/* 
 AttributesModel::~AttributesModel()
 {
 }
+
+
+AttributesModel * AttributesModel::clone() const
+{
+    AttributesModel* newModel = new AttributesModel(sourceModel(), QObject::parent());
+    newModel->setInternalMaps( mDataMap,
+                               mHorizontalHeaderDataMap,
+                               mVerticalHeaderDataMap,
+                               mModelDataMap );
+    newModel->setPaletteType( paletteType() );
+    return newModel;
+}
+
+
+void AttributesModel::setInternalMaps( const DataMap& dataMap,
+                                       const HeaderDataMap& horizontalHeaderDataMap,
+                                       const HeaderDataMap& verticalHeaderDataMap,
+                                       const ModelDataMap& modelDataMap )
+{
+    mDataMap = dataMap;
+    mHorizontalHeaderDataMap = horizontalHeaderDataMap;
+    mVerticalHeaderDataMap = verticalHeaderDataMap;
+    mModelDataMap = modelDataMap;
+}
+
 
 QVariant AttributesModel::headerData ( int section,
                                        Qt::Orientation orientation,
@@ -66,7 +91,7 @@ QVariant AttributesModel::headerData ( int section,
   // Default values if nothing else matches
   switch ( role ) {
   case Qt::DisplayRole: {
-      QString header = ( ( orientation == Qt::Vertical ) ?  "Series " : "Item " ) 
+      QString header = ( ( orientation == Qt::Vertical ) ?  "Series " : "Item " )
           + QString::number( section );
       return header;
   }

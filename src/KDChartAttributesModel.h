@@ -50,6 +50,11 @@ public:
     explicit AttributesModel( QAbstractItemModel* model, QObject * parent = 0 );
     virtual ~AttributesModel();
 
+    /* Returns a new AttributesModel* having the same settings
+       as the current one.
+    */
+    virtual AttributesModel * clone() const;
+
     /* Attributes Model specific API */
     bool setModelData( const QVariant value, int role );
     QVariant modelData( int role ) const;
@@ -73,7 +78,7 @@ public:
     /** \reimpl */
     bool setData ( const QModelIndex & index, const QVariant & value, int role = Qt::DisplayRole);
     /** \reimpl */
-    bool setHeaderData ( int section, Qt::Orientation orientation, const QVariant & value, 
+    bool setHeaderData ( int section, Qt::Orientation orientation, const QVariant & value,
                          int role = Qt::DisplayRole);
     /** \reimpl */
     void setSourceModel ( QAbstractItemModel* sourceModel );
@@ -81,14 +86,24 @@ public:
 signals:
     void attributesChanged( const QModelIndex&, const QModelIndex& );
 
+protected:
+#define DataMap QMap<int, QMap<int, QMap<int, QVariant> > >
+#define HeaderDataMap QMap<int, QMap<int, QVariant> >
+#define ModelDataMap QMap<int, QVariant>
+    // helper, used by clone()
+    void setInternalMaps( const DataMap& dataMap,
+                          const HeaderDataMap& horizontalHeaderDataMap,
+                          const HeaderDataMap& verticalHeaderDataMap,
+                          const ModelDataMap& modelDataMap );
+
 private:
     // helper
     QVariant defaultsForRole( int role ) const;
 
-    QMap<int, QMap<int, QMap<int, QVariant> > > mDataMap;
-    QMap<int, QMap<int, QVariant> > mHorizontalHeaderDataMap;
-    QMap<int, QMap<int, QVariant> > mVerticalHeaderDataMap;
-    QMap<int, QVariant> mModelDataMap;
+    DataMap       mDataMap;
+    HeaderDataMap mHorizontalHeaderDataMap;
+    HeaderDataMap mVerticalHeaderDataMap;
+    ModelDataMap  mModelDataMap;
     PaletteType mPaletteType;
 };
 

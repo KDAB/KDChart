@@ -123,15 +123,15 @@ bool AbstractDiagram::isBoundariesValid(const QPair<QPointF,QPointF>& b )
 void AbstractDiagram::setModel ( QAbstractItemModel * newModel )
 {
   QAbstractItemView::setModel( newModel );
-  AttributesModel* amodel = new AttributesModel(newModel,this);
+  AttributesModel* amodel = d->attributesModel->clone(); // new AttributesModel(newModel,this);
   setAttributesModel( amodel );
   d->hasPrivateAttributesModel = true;
   emit modelsChanged();
 }
 
-/*! Sets an external AttributesModel on this diagram. By default, a diagram has it's 
-  own internal set of attributes, but an external one can be set. This can be used to 
-  share attributes between several diagrams. The diagram does not take ownership of the 
+/*! Sets an external AttributesModel on this diagram. By default, a diagram has it's
+  own internal set of attributes, but an external one can be set. This can be used to
+  share attributes between several diagrams. The diagram does not take ownership of the
   attributesmodel.
 */
 void AbstractDiagram::setAttributesModel( AttributesModel* amodel )
@@ -201,7 +201,7 @@ void AbstractDiagram::dataChanged(const QModelIndex &topLeft, const QModelIndex 
 void AbstractDiagram::setDataValueAttributes( const QModelIndex & index,
                                               const DataValueAttributes & a )
 {
-    d->attributesModel->setData( d->attributesModel->mapFromSource(index), 
+    d->attributesModel->setData( d->attributesModel->mapFromSource(index),
 				qVariantFromValue( a ), DataValueLabelAttributesRole );
 }
 
@@ -214,7 +214,7 @@ void AbstractDiagram::setDataValueAttributes( int column, const DataValueAttribu
 
 DataValueAttributes AbstractDiagram::dataValueAttributes( const QModelIndex & index ) const
 {
-    return qVariantValue<DataValueAttributes>( attributesModel()->data( attributesModel()->mapFromSource(index), 
+    return qVariantValue<DataValueAttributes>( attributesModel()->data( attributesModel()->mapFromSource(index),
 									KDChart::DataValueLabelAttributesRole ) );
 }
 
@@ -432,7 +432,7 @@ void AbstractDiagram::paintMarkers( QPainter* painter )
 
 void AbstractDiagram::setPen( const QModelIndex& index, const QPen& pen )
 {
-    attributesModel()->setData( attributesModel()->mapFromSource(index), 
+    attributesModel()->setData( attributesModel()->mapFromSource(index),
 				qVariantFromValue( pen ), DatasetPenRole );
 }
 
@@ -448,13 +448,13 @@ void AbstractDiagram::setPen( int column,const QPen& pen )
 
 QPen AbstractDiagram::pen( const QModelIndex& index ) const
 {
-    return qVariantValue<QPen>( attributesModel()->data( attributesModel()->mapFromSource(index), 
+    return qVariantValue<QPen>( attributesModel()->data( attributesModel()->mapFromSource(index),
 							 DatasetPenRole ) );
 }
 
 void AbstractDiagram::setBrush( const QModelIndex& index, const QBrush& brush )
 {
-    attributesModel()->setData( attributesModel()->mapFromSource(index), 
+    attributesModel()->setData( attributesModel()->mapFromSource(index),
 				qVariantFromValue( brush ), DatasetBrushRole );
 }
 
@@ -470,7 +470,7 @@ void AbstractDiagram::setBrush( int column, const QBrush& brush )
 
 QBrush AbstractDiagram::brush( const QModelIndex& index ) const
 {
-    return qVariantValue<QBrush>( attributesModel()->data( attributesModel()->mapFromSource(index), 
+    return qVariantValue<QBrush>( attributesModel()->data( attributesModel()->mapFromSource(index),
 							   DatasetBrushRole ) );
 }
 
