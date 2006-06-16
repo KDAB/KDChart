@@ -51,7 +51,7 @@ AttributesModel::~AttributesModel()
 
 AttributesModel * AttributesModel::clone() const
 {
-    AttributesModel* newModel = new AttributesModel(sourceModel(), QObject::parent());
+    AttributesModel* newModel = new AttributesModel(sourceModel(), 0);
     newModel->setInternalMaps( mDataMap,
                                mHorizontalHeaderDataMap,
                                mVerticalHeaderDataMap,
