@@ -127,6 +127,7 @@ QSizePolicy KDChart::AbstractCoordinatePlane::sizePolicy() const
 void KDChart::AbstractCoordinatePlane::setGridAttributes( const GridAttributes& a )
 {
     d->gridAttributes = a;
+    update();
 }
 
 GridAttributes KDChart::AbstractCoordinatePlane::gridAttributes() const
