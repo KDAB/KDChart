@@ -40,13 +40,14 @@ public:
     explicit Private();
     virtual ~Private();
 
+    void setAttributesModel( AttributesModel* );
+
 protected:
     void init();
     void init( AbstractCoordinatePlane* plane );
     QPointer<AbstractCoordinatePlane> plane;
     QModelIndex attributesModelRootIndex;
     QPointer<AttributesModel> attributesModel;
-    bool hasPrivateAttributesModel;
     bool allowOverlappingDataValueTexts;
     bool usePrivateAttributesModel;
     bool percent;

@@ -47,8 +47,12 @@ public:
         PaletteTypeSubdued = 2
     };
 
-    explicit AttributesModel( QAbstractItemModel* model, QObject * parent = 0 );
+    explicit AttributesModel( QAbstractItemModel* model, QObject * parent = 0, bool shared=true );
     ~AttributesModel();
+
+    /* Returns false if the model is owned by a diagram and 
+       should not be shared */
+    bool isShared() const { return mShared; }
 
     /* Copies the internal data (maps and palette) of another
        AttributesModel* into this one.
@@ -105,6 +109,7 @@ private:
     HeaderDataMap mVerticalHeaderDataMap;
     ModelDataMap  mModelDataMap;
     PaletteType mPaletteType;
+    bool mShared;
 };
 
 }

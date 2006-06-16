@@ -37,9 +37,10 @@
 
 using namespace KDChart;
 
-AttributesModel::AttributesModel( QAbstractItemModel* model, QObject * parent/* = 0 */ )
+AttributesModel::AttributesModel( QAbstractItemModel* model, QObject * parent/* = 0 */, bool shared )
   : AbstractProxyModel( parent ),
-    mPaletteType( PaletteTypeDefault )
+    mPaletteType( PaletteTypeDefault ),
+    mShared(shared)
 {
   setSourceModel(model);
 }

@@ -46,8 +46,7 @@ using namespace KDChart;
 
 AbstractDiagram::Private::Private()
   : plane( 0 )
-  , attributesModel( new AttributesModel(0) )
-  , hasPrivateAttributesModel( true )
+  , attributesModel( new AttributesModel(0,0,false) )
   , allowOverlappingDataValueTexts( false )
   , usePrivateAttributesModel( false )
   , percent( false )
@@ -57,7 +56,7 @@ AbstractDiagram::Private::Private()
 
 AbstractDiagram::Private::~Private()
 {
-  if( hasPrivateAttributesModel ) delete attributesModel;
+  if( attributesModel && !attributesModel->isShared() ) delete attributesModel;
 }
 
 void AbstractDiagram::Private::init()
@@ -67,6 +66,14 @@ void AbstractDiagram::Private::init()
 void AbstractDiagram::Private::init( AbstractCoordinatePlane* newPlane )
 {
   plane = newPlane;
+}
+
+void AbstractDiagram::Private::setAttributesModel( AttributesModel* amodel )
+{
+    if( !attributesModel.isNull() && !attributesModel->isShared() ) {
+	delete attributesModel;
+    }
+    attributesModel = amodel;
 }
 
 #define d d_func()
@@ -123,10 +130,10 @@ bool AbstractDiagram::isBoundariesValid(const QPair<QPointF,QPointF>& b )
 void AbstractDiagram::setModel ( QAbstractItemModel * newModel )
 {
   QAbstractItemView::setModel( newModel );
-  AttributesModel* amodel = new AttributesModel(newModel,this);
+  AttributesModel* amodel = new AttributesModel(newModel,this,false);
   amodel->initializeFrom( d->attributesModel );
-  setAttributesModel( amodel );
-  d->hasPrivateAttributesModel = true;
+  d->setAttributesModel(amodel);
+  scheduleDelayedItemsLayout();
   emit modelsChanged();
 }
 
@@ -143,11 +150,12 @@ void AbstractDiagram::setAttributesModel( AttributesModel* amodel )
 		 "model than the diagram.");
 	return;
     }
-    if( d->hasPrivateAttributesModel ) {
-	delete d->attributesModel;
-	d->hasPrivateAttributesModel = false;
+    if( !amodel->isShared() ) {
+	qWarning("KDChart::AbstractDiagram::setAttributesModel() failed: "
+		 "Trying to set an attributesmodel that is private to another diagram.");
+	return;
     }
-    d->attributesModel = amodel;
+    d->setAttributesModel(amodel);
     scheduleDelayedItemsLayout();
     emit modelsChanged();
 }
