@@ -104,7 +104,7 @@ namespace KDChart {
          * Correct:
          *
          * \code
-         * AttributesModel *am = new AttributesModel( model, 0, true );
+         * AttributesModel *am = new AttributesModel( model, 0 );
          * diagram1->setAttributesModel( am );
          * diagram2->setAttributesModel( am );
          *
