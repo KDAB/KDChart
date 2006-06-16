@@ -35,6 +35,13 @@ namespace KDChart {
     class GridAttributes;
     class PaintContext;
 
+    /**
+     * @brief Base class for diagrams based on a cartesian coordianate system.
+     *
+     * The AbstractCartesianDiagram interface adds those elements that are
+     * specific to diagrams based on a cartesian coordinate system to the
+     * basic AbstractDiagram interface.
+     */
     class KDCHART_EXPORT AbstractCartesianDiagram : public AbstractDiagram
     {
         Q_OBJECT
