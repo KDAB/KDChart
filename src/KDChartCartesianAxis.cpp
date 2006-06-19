@@ -45,7 +45,8 @@ CartesianAxis::CartesianAxis ( AbstractCartesianDiagram* parent )
     : AbstractAxis ( new Private( parent ), parent )
 {
     init();
-    parent->addAxis( this );
+    if( parent )
+        parent->addAxis( this );
 }
 
 CartesianAxis::~CartesianAxis ()
@@ -74,7 +75,7 @@ void CartesianAxis::paintEvent( QPaintEvent* event )
     PaintContext context;
     QPainter painter( this );
     context.setPainter( &painter );
-    AbstractDiagram* diag = d->diagram();
+    AbstractDiagram* diag = d->diagram;
     AbstractCoordinatePlane* plane = diag->coordinatePlane();
     context.setCoordinatePlane( plane );
     QRectF rect = QRectF ( 1, 1, plane->width() - 3, plane->height() - 3 );
@@ -98,9 +99,9 @@ bool CartesianAxis::isOrdinate() const
 void CartesianAxis::paint ( PaintContext* context ) const
 {
 
-    Q_ASSERT ( d->diagram() );
+    Q_ASSERT ( d->diagram );
     const int MinimumPixelsBetweenRulers = 5;
-    const QPair<QPointF, QPointF> dataBoundaries = d->diagram()->dataBoundaries();
+    const QPair<QPointF, QPointF> dataBoundaries = d->diagram->dataBoundaries();
 
     // preparations:
     // - calculate the range that will be displayed:
@@ -129,9 +130,9 @@ void CartesianAxis::paint ( PaintContext* context ) const
 
     int numberOfUnitRulers;
     if ( position() == Bottom || position() == Top )
-        numberOfUnitRulers = d->diagram()->model()->rowCount() - 1;
+        numberOfUnitRulers = d->diagram->model()->rowCount() - 1;
     else {
-        if ( d->diagram()->percentMode() )
+        if ( d->diagram->percentMode() )
             numberOfUnitRulers = 10;
         else
             numberOfUnitRulers = ( int ) absRange;
@@ -151,7 +152,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
         screenRange = qAbs ( p1.y() - p2.y() );
     }
 
-    const bool useItemCountLabels = isAbscissa() && d->diagram()->datasetDimension() == 1;
+    const bool useItemCountLabels = isAbscissa() && d->diagram->datasetDimension() == 1;
 
     bool drawUnitRulers = screenRange / numberOfUnitRulers > MinimumPixelsBetweenRulers;
     // for the next two lines, please note:
@@ -285,7 +286,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
 
         QStringList headerLabels;
         if( useItemCountLabels ){
-            headerLabels = d->diagram()->datasetLabels();
+            headerLabels = d->diagram->datasetLabels();
         }
         const int headerLabelsCount = headerLabels.count();
 
@@ -366,7 +367,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
             }
         } else {
             double maxLimit, steg;
-            bool percent = d->diagram()->percentMode();
+            bool percent = d->diagram->percentMode();
             int tickLength = position() == Left ? -4 : 3;
             if ( percent ) {
                 maxLimit = maxValueY*10.0;
@@ -393,11 +394,11 @@ void CartesianAxis::paint ( PaintContext* context ) const
                     ptr->setPen( Qt::red );
                     ptr->setFont( textFont );
                     ptr->drawText( leftPoint, QString::number( minValueY ) );
-                    d->diagram()->percentMode() ? minValueY += 10.0 : minValueY += 1.0;
+                    d->diagram->percentMode() ? minValueY += 10.0 : minValueY += 1.0;
                 }
             }
             //Pending Michel: reset to default - is that really what we want?
-            d->diagram()->setPercentMode( false );
+            d->diagram->setPercentMode( false );
         }
     }
 }

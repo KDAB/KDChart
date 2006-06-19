@@ -39,30 +39,22 @@ class AbstractAxis::Private : public AbstractArea::Private
     friend class AbstractAxis;
 
 public:
-    Private( AbstractDiagram* parent );
+    Private( AbstractDiagram* diagram );
     ~Private();
-
-    AbstractDiagram* diagram() const;
 
     DiagramObserver* observer;
 
     QStringList hardLabels;
     QStringList hardShortLabels;
 
-private:
-    AbstractDiagram* parent;
+    AbstractDiagram* diagram;
 };
 
 
-inline AbstractAxis::AbstractAxis( Private * p, AbstractDiagram* parent_ )
-    :  AbstractArea( p, parent_ )
+inline AbstractAxis::AbstractAxis( Private * p, AbstractDiagram* diagram_ )
+    :  AbstractArea( p, diagram_ )
 {
     init();
-}
-
-inline AbstractDiagram* AbstractAxis::Private::diagram() const
-{
-    return parent;
 }
 
 inline AbstractAxis::Private * AbstractAxis::d_func()

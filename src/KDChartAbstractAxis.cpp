@@ -31,26 +31,32 @@
 using namespace KDChart;
 
 
-AbstractAxis::Private::Private( AbstractDiagram* parent_ )
+AbstractAxis::Private::Private( AbstractDiagram* diagram_ )
+    : diagram( diagram_ )
 {
     // PENDING(miroslav) Code from KDChartAxis::Private::Private goes here
-    parent = parent_;
-    observer = new DiagramObserver( parent_ );
+    if( diagram )
+        observer = new DiagramObserver( *diagram );
+    else
+        observer = 0;
 }
 
 
 AbstractAxis::Private::~Private()
 {
     // PENDING(miroslav) Code from KDChartAxis::Private::~Private goes here
-    delete observer;
-    observer = 0;
+    if( observer ){
+      delete observer;
+      observer = 0;
+    }
 }
 
 
-AbstractAxis::AbstractAxis ( AbstractDiagram* parent )
-    : AbstractArea( new Private( parent ), parent )
+AbstractAxis::AbstractAxis ( AbstractDiagram* diagram )
+    : AbstractArea( new Private( diagram ), diagram )
 {
     init();
+    setDiagram( diagram );
 }
 
 AbstractAxis::~AbstractAxis()
@@ -61,8 +67,28 @@ AbstractAxis::~AbstractAxis()
 
 void AbstractAxis::init()
 {
+    connectSignals();
+}
+
+void AbstractAxis::connectSignals()
+{
     connect( d_func()->observer, SIGNAL( diagramDataChanged( AbstractDiagram *) ),
              this, SLOT( update() ) );
+}
+
+void AbstractAxis::setDiagram( KDChart::AbstractDiagram* diagram )
+{
+    d_func()->diagram = diagram;
+    if ( d_func()->observer )
+    {
+        delete d_func()->observer; d_func()->observer = NULL;
+    }
+    if ( diagram )
+    {
+        d_func()->observer = new DiagramObserver( *diagram, this );
+        connectSignals();
+    }
+    // Could/should we use such a flag: d->needRebuild = true;   ??
 }
 
 /**

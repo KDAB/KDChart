@@ -207,13 +207,13 @@ const QWidget* Legend::referenceArea() const
 void Legend::setDiagram( KDChart::AbstractDiagram* diagram )
 {
     d->diagram = diagram;
-    if ( d->observer != NULL )
+    if ( d->observer )
     {
         delete d->observer; d->observer = NULL;
     }
-    if ( diagram != NULL )
+    if ( diagram )
     {
-        d->observer = new DiagramObserver( diagram, this );
+        d->observer = new DiagramObserver( *diagram, this );
         connect( d->observer, SIGNAL( diagramDestroyed(AbstractDiagram*) ),
                         SLOT( resetDiagram() ));
         connect( d->observer, SIGNAL( diagramDataChanged(AbstractDiagram*) ),
@@ -491,7 +491,7 @@ static const QColor SUBDUEDCOLORS[ NUM_SUBDUEDCOLORS ] = {
 
 void Legend::resetDiagram()
 {
-    setDiagram( NULL );
+    setDiagram( 0 );
 }
 
 

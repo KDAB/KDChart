@@ -43,32 +43,30 @@ namespace KDChart {
        /**
          * Constructur.
          * Constructs a new observer observing the given diagram.
-         * The observer is made a child of the diagram, so it will
-         * be removed automagically.
          */
-        DiagramObserver( AbstractDiagram* diagram, QObject* parent = NULL );
+        DiagramObserver( AbstractDiagram& diagram, QObject* parent = NULL );
 
     signals:
         /** This signal is emitted immediately before the diagram is
-	 * being destroyed. */
+          * being destroyed. */
         void diagramDestroyed( AbstractDiagram* diagram );
-	/** This signal is emitted whenever the data of the diagram changes. */
+        /** This signal is emitted whenever the data of the diagram changes. */
         void diagramDataChanged( AbstractDiagram* diagram );
-	/** This signal is emitted whenever the attributes of the diagram change. */
+        /** This signal is emitted whenever the attributes of the diagram change. */
         void diagramAttributesChanged( AbstractDiagram* diagram );
 
     private slots:
         void destroyed();
         void dataChanged();
         void attributesChanged();
-	void modelsChanged();
+        void modelsChanged();
 
     private:
-	void init();
+        void init();
 
-        AbstractDiagram* m_diagram;
-	QPointer<QAbstractItemModel> m_model;
-	QPointer<QAbstractItemModel> m_attributesmodel;	
+        AbstractDiagram& m_diagram;
+        QPointer<QAbstractItemModel> m_model;
+        QPointer<QAbstractItemModel> m_attributesmodel;
    };
 }
 

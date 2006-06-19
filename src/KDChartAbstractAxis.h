@@ -60,7 +60,7 @@ namespace KDChart {
         Q_DISABLE_COPY( AbstractAxis )
         KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( AbstractAxis, AbstractDiagram* )
     public:
-        explicit AbstractAxis( AbstractDiagram* parent = 0 );
+        explicit AbstractAxis( AbstractDiagram* diagram = 0 );
         virtual ~AbstractAxis();
 
         // FIXME implement when code os ready for it:
@@ -72,6 +72,9 @@ namespace KDChart {
     /*    virtual void paint( PaintContext* ) const = 0;
         virtual QSize sizeHint() const = 0;*/
 	//virtual void paintEvent( QPaintEvent* event) = 0;
+
+        void connectSignals();
+        void setDiagram( KDChart::AbstractDiagram* diagram );
 
         void setLabels( const QStringList& list );
         QStringList labels() const;
