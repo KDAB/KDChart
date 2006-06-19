@@ -609,31 +609,31 @@ void Chart::addHeaderFooter( HeaderFooter* headerFooter )
     p->slotRelayout();
 }
 
-void Chart::replaceHeaderFooter( HeaderFooter* headerFooter, int position )
+void Chart::replaceHeaderFooter( HeaderFooter* headerFooter,
+                                 HeaderFooter* oldHeaderFooter )
 {
-    if( p->headerFooters.size() <= position ) {
+    if( headerFooter && oldHeaderFooter != headerFooter ){
+        if( p->headerFooters.count() ){
+            if( ! oldHeaderFooter )
+                takeHeaderFooter( p->headerFooters.first() );
+            else
+                takeHeaderFooter( oldHeaderFooter );
+        }
+        delete oldHeaderFooter;
         addHeaderFooter( headerFooter );
-    } else {
-        HeaderFooter *old = p->headerFooters.value( position );
-        p->headerFooters.replace( position, headerFooter );
-        disconnect( old, SIGNAL( destroyedHeaderFooter( HeaderFooter* ) ),
-                    p, SLOT( slotUnregisterDestroyedHeaderFooter( HeaderFooter* ) ) );
-        delete old;
-        connect( headerFooter, SIGNAL( destroyedHeaderFooter( HeaderFooter* ) ),
-                 p, SLOT( slotUnregisterDestroyedHeaderFooter( HeaderFooter* ) ) );
     }
-    p->slotRelayout();
 }
 
-void Chart::removeHeaderFooter( int position )
+void Chart::takeHeaderFooter( HeaderFooter* headerFooter )
 {
-    if( position >= 0 && p->headerFooters.size() > position ) {
-        HeaderFooter * old = p->headerFooters.at( position );
-        disconnect( old, SIGNAL( destroyedHeaderFooter( HeaderFooter* ) ),
+    const int idx = p->headerFooters.indexOf( headerFooter );
+    if( idx != -1 ){
+        p->headerFooters.takeAt( idx );
+        disconnect( headerFooter, SIGNAL( destroyedHeaderFooter( HeaderFooter* ) ),
                     p, SLOT( slotUnregisterDestroyedHeaderFooter( HeaderFooter* ) ) );
-        delete p->headerFooters.takeAt( position );
+        headerFooter->setParent( 0 );
     }
-    p->slotRelayout();
+    p->slotLayoutPlanes();
 }
 
 HeaderFooter* Chart::headerFooter()

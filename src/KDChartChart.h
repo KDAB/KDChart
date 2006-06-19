@@ -137,25 +137,42 @@ namespace KDChart {
         HeaderFooterList headerFooters();
 
         /**
-         * Add a header or footer to the chart. The chart takes ownership.
-         * @param headerFooter The header or footer to add.
+         * Adds a header or a footer to the chart. The chart takes ownership.
+         * @param headerFooter The header (or footer, resp.) to add.
+         *
+         * \sa replaceHeaderFooter, takeHeaderFooter
          */
         virtual void addHeaderFooter( HeaderFooter* headerFooter );
 
         /**
-         * Replace the header or footer to the chart at the given position.
-         * The chart takes ownership. If there is no header or footer at the
-         * given position, the header or footer is appended. The chart takes ownership.
-         * @param headerFooter The header or footer to add.
-         * @param position The position at which to add the header or footer.
+         * Replaces the old header (or footer, resp.), or appends the
+         * new header or footer, it there is none yet.
+         *
+         * @param plane The header or footer to be used instead of the old one.
+         * This parameter must not be zero, or the method will do nothing.
+         *
+         * @param oldPlane The header or footer to be removed by the new one. This
+         * header or footer will be deleted automatically. If the parameter is omitted,
+         * the very first header or footer will be replaced. In case, there was no
+         * header and no footer yet, the new header or footer will just be added.
+         *
+         * \note If you want to re-use the old header or footer, call takeHeaderFooter and
+         * addHeaderFooter, instead of using replaceHeaderFooter.
+         *
+         * \sa addHeaderFooter, takeHeaderFooter
          */
-        virtual void replaceHeaderFooter ( HeaderFooter* headerFooter, int position = 0 );
+        virtual void replaceHeaderFooter ( HeaderFooter* headerFooter,
+                                           HeaderFooter* oldHeaderFooter = 0 );
 
         /**
-         * Remove the header or footer at the given position, if there is one.
-         * @param position The position at which to remove the header or footer.
+         * Removes the header (or footer, resp.) from the chart, without deleting it.
+         *
+         * The chart no longer owns the header or footer, so it is
+         * the caller's responsibility to delete the header or footer.
+         *
+         * \sa addHeaderFooter, replaceHeaderFooter
          */
-        virtual void removeHeaderFooter( int position = 0 );
+        virtual void takeHeaderFooter( HeaderFooter* headerFooter );
 
         /**
          * The first legend of the chart or 0 if there was none added to the chart.

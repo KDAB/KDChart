@@ -276,15 +276,15 @@ void Widget::addHeaderFooter( HeaderFooter* header )
     d->m_chart->addHeaderFooter( header ); // we need this explicit call !
 }
 
-void Widget::replaceHeaderFooter( HeaderFooter* header, int position )
+void Widget::replaceHeaderFooter( HeaderFooter* header, HeaderFooter* oldHeader )
 {
     header->setParent( d->m_chart );
-    d->m_chart->replaceHeaderFooter( header, position );
+    d->m_chart->replaceHeaderFooter( header, oldHeader );
 }
 
-void Widget::removeHeaderFooter( int position )
+void Widget::takeHeaderFooter( HeaderFooter* header )
 {
-    d->m_chart->removeHeaderFooter( position );
+    d->m_chart->takeHeaderFooter( header );
 }
 
 /**

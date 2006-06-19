@@ -112,8 +112,14 @@ namespace KDChart {
         /** Adds an existing header / footer object. */
         void addHeaderFooter( HeaderFooter* header );
 
-        void replaceHeaderFooter( HeaderFooter* header, int position = 0 );
-        void removeHeaderFooter( int position = 0 );
+        void replaceHeaderFooter( HeaderFooter* header,
+                                  HeaderFooter* oldHeader = 0 );
+        /** Remove the header (or footer, resp.) from the widget,
+         * without deleting it.
+         * The chart no longer owns the header or footer, so it is
+         * the caller's responsibility to delete the header or footer.
+         */
+        void takeHeaderFooter( HeaderFooter* header );
 
         /** Returns the first of all legends. */
         KDChart::Legend* firstLegend() const;
