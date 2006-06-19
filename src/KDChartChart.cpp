@@ -493,30 +493,29 @@ void Chart::addCoordinatePlane( AbstractCoordinatePlane* plane )
     p->slotLayoutPlanes();
 }
 
-void Chart::replaceCoordinatePlane( AbstractCoordinatePlane* plane, int position )
+void Chart::replaceCoordinatePlane( AbstractCoordinatePlane* plane,
+                                    AbstractCoordinatePlane* oldPlane )
 {
-    if ( position >=0 && position < p->coordinatePlanes.size() ) {
-        connect( plane, SIGNAL( destroyedCoordinatePlane( AbstractCoordinatePlane* ) ),
-                 p, SLOT( slotUnregisterDestroyedPlane( AbstractCoordinatePlane* ) ) );
-        connect( plane, SIGNAL( diagramsChanged() ),
-                 p, SLOT( slotLayoutPlanes() ) );
-        AbstractCoordinatePlane* oldPlane = p->coordinatePlanes.at( position );
-        p->coordinatePlanes.replace ( position, plane );
-        disconnect( oldPlane, SIGNAL( destroyedCoordinatePlane( AbstractCoordinatePlane* ) ),
-                    p, SLOT( slotUnregisterDestroyedPlane( AbstractCoordinatePlane* ) ) );
+    if( plane && oldPlane != plane ){
+        if( p->coordinatePlanes.count() ){
+            if( ! oldPlane )
+                takeCoordinatePlane( p->coordinatePlanes.first() );
+            else
+                takeCoordinatePlane( oldPlane );
+        }
         delete oldPlane;
+        addCoordinatePlane( plane );
     }
-    p->slotLayoutPlanes();
 }
 
-void Chart::removeCoordinatePlane( int position )
+void Chart::takeCoordinatePlane( AbstractCoordinatePlane* plane )
 {
-    if ( position >=0 && position < p->coordinatePlanes.size() ) {
-        AbstractCoordinatePlane* oldPlane = p->coordinatePlanes.at( position );
-        p->coordinatePlanes.removeAt( position );
-        disconnect( oldPlane, SIGNAL( destroyedCoordinatePlane( AbstractCoordinatePlane* ) ),
+    const int idx = p->coordinatePlanes.indexOf( plane );
+    if( idx != -1 ){
+        p->coordinatePlanes.takeAt( idx );
+        disconnect( plane, SIGNAL( destroyedCoordinatePlane( AbstractCoordinatePlane* ) ),
                     p, SLOT( slotUnregisterDestroyedPlane( AbstractCoordinatePlane* ) ) );
-        delete oldPlane;
+        plane->setParent( 0 );
     }
     p->slotLayoutPlanes();
 }

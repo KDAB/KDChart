@@ -52,8 +52,8 @@ namespace KDChart {
         virtual void addDiagram ( AbstractDiagram* diagram );
 
         /**
-         * Replaces the diagram at the given position, or appends the
-         * diagram, it there is none at that position yet.
+         * Replaces the old diagram, or appends the
+         * diagram, it there is none yet.
          *
          * @param diagram The diagram to be used instead of the old diagram.
          * This parameter must not be zero, or the method will do nothing.

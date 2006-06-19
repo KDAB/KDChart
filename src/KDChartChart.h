@@ -85,23 +85,40 @@ namespace KDChart {
         /**
          * Adds a coordinate plane to the chart. The chart takes ownership.
          * @param plane The coordinate plane to add.
+         *
+         * \sa replaceCoordinatePlane, takeCoordinatePlane
          */
         void addCoordinatePlane( AbstractCoordinatePlane* plane );
 
         /**
-         * Replaces the coordinate plane at the given position with the
-         * given coordinate plane. If there is no plane at the
-         * specified position, the plane is appended. The chart takes ownership.
-         * @param plane The coordinate plane to add.
-         * @param position The position at which to replace the plane.
+         * Replaces the old coordinate plane, or appends the
+         * plane, it there is none yet.
+         *
+         * @param plane The coordinate plane to be used instead of the old plane.
+         * This parameter must not be zero, or the method will do nothing.
+         *
+         * @param oldPlane The coordinate plane to be removed by the new plane. This
+         * plane will be deleted automatically. If the parameter is omitted,
+         * the very first coordinate plane will be replaced. In case, there was no
+         * plane yet, the new plane will just be added.
+         *
+         * \note If you want to re-use the old coordinate plane, call takeCoordinatePlane and
+         * addCoordinatePlane, instead of using replaceCoordinatePlane.
+         *
+         * \sa addCoordinatePlane, takeCoordinatePlane
          */
-        void replaceCoordinatePlane( AbstractCoordinatePlane* plane, int position = 0 );
+        void replaceCoordinatePlane( AbstractCoordinatePlane* plane,
+                                     AbstractCoordinatePlane* oldPlane = 0 );
 
         /**
-         * Remove the coordinate plane at the given position, if there is one.
-         * @param position The position at which to remove the plane.
+         * Removes the coordinate plane from the chart, without deleting it.
+         *
+         * The chart no longer owns the plane, so it is
+         * the caller's responsibility to delete the plane.
+         *
+         * \sa addCoordinatePlane, takeCoordinatePlane
          */
-        void removeCoordinatePlane( int position );
+        void takeCoordinatePlane( AbstractCoordinatePlane* plane );
 
 
         void setCoordinatePlaneLayout( QLayout * layout );
