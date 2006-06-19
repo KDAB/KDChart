@@ -84,7 +84,18 @@ void KDChart1AutoColor::freeInstance()
 
 
 enum K2SettingsTypes {
-    K2Type = 0,
+    K2ChartType = 0,
+    K2AdditionalChartType = 1,
+    K2GlobalLeading = 2,
+    K2PropertySet = 3,
+    K2Frame = 4,
+    K2ChartSourceMode = 5,
+    K2NumValues = 6,
+    K2DataColor = 7,
+    K2DataDefaultColor =  8,
+    K2DataRainbowColor =  9,
+    K2DataSubduedColor = 10,
+
     K2FooterFont = 99,
     K2LastValue = K2FooterFont
 };
@@ -530,6 +541,8 @@ void KDChart1Params::setProperties( int id, KDChart1PropertySet& rSet )
 {
     rSet.mOwnID = id;
     _propertySetList[ rSet.mOwnID ] = rSet.clone();
+
+    updateK2Setting( K2PropertySet );
 }
 
 /**
@@ -1470,7 +1483,10 @@ void KDChart1Params::setChartSourceMode( SourceMode mode,
         _setChartSourceModeWasUsed = false;
     }
 
+    updateK2Setting( K2ChartSourceMode );
+    /*
     emit changed();
+    */
 }
 
 
@@ -1715,7 +1731,10 @@ void KDChart1Params::setDataColor( uint dataset, QColor color )
     _dataColorsShadow2[ dataset ] = shadow2;
     _maxDatasetColor = qMax( _maxDatasetColor, dataset );
 
+    updateK2Setting( K2DataColor );
+    /*
     emit changed();
+    */
 }
 
 /**
@@ -1729,6 +1748,8 @@ void KDChart1Params::setDataColor( uint dataset, QColor color )
   */
 void KDChart1Params::setDataDefaultColors()
 {
+    updateK2Setting( K2DataDefaultColor );
+    /*
     setDataColor(  0, Qt::red );
     setDataColor(  1, Qt::green );
     setDataColor(  2, Qt::blue );
@@ -1741,6 +1762,7 @@ void KDChart1Params::setDataDefaultColors()
     setDataColor(  9, Qt::darkCyan );
     setDataColor( 10, Qt::darkMagenta );
     setDataColor( 11, Qt::darkYellow );
+    */
 }
 
 /**
@@ -1755,6 +1777,8 @@ void KDChart1Params::setDataDefaultColors()
   */
 void KDChart1Params::setDataRainbowColors()
 {
+    updateK2Setting( K2DataDefaultColor );
+    /*
     setDataColor(  0, QColor(255,  0,196) );
     setDataColor(  1, QColor(255,  0, 96) );
     setDataColor(  2, QColor(255, 128,64) );
@@ -1765,6 +1789,7 @@ void KDChart1Params::setDataRainbowColors()
     setDataColor(  7, QColor(160,  0,255) );
     for( int i=8; i<16; ++i )
         setDataColor( i, dataColor(i-8).light() );
+    */
 }
 
 /**
@@ -1785,6 +1810,8 @@ void KDChart1Params::setDataRainbowColors()
   */
 void KDChart1Params::setDataSubduedColors( bool ordered )
 {
+    updateK2Setting( K2DataSubduedColor );
+    /*
 static const int NUM_SUBDUEDCOLORS = 18;
 static const QColor SUBDUEDCOLORS[ NUM_SUBDUEDCOLORS ] = {
     QColor( 0xe0,0x7f,0x70 ),
@@ -1829,6 +1856,7 @@ static const QColor SUBDUEDCOLORS[ NUM_SUBDUEDCOLORS ] = {
         setDataColor(16, SUBDUEDCOLORS[ 8] );
         setDataColor(17, SUBDUEDCOLORS[13] );
     }
+    */
 }
 
 
@@ -2314,13 +2342,15 @@ void KDChart1Params::setGlobalLeading( int left, int top, int right, int bottom 
     _globalLeadingTop    = top;
     _globalLeadingRight  = right;
     _globalLeadingBottom = bottom;
+
+    updateK2Setting( K2GlobalLeading );
+    /*
     emit changed();
+    */
 }
 
 
 /**
-  \fn void KDChart1Params::setGlobalLeadingLeft( int )
-
   Specifies the distance between the chart and the left border of the
   painter area.  If \c leading is a negative value it is interpreted
   as per-mille value of the painter area, the true offset will then
@@ -2331,11 +2361,18 @@ void KDChart1Params::setGlobalLeading( int left, int top, int right, int bottom 
   \sa globalLeadingLeft, globalLeadingTop, globalLeadingRight,
   globalLeadingBottom
   */
+void KDChart1Params::setGlobalLeadingLeft( int leading )
+{
+    _globalLeadingLeft = leading;
+
+    updateK2Setting( K2GlobalLeading );
+    /*
+    emit changed();
+    */
+}
 
 
 /**
-  \fn void KDChart1Params::setGlobalLeadingTop( int )
-
   Specifies the distance between the chart and the upper border of
   the painter area. If \c leading is a negative value it is
   interpreted as per-mille value of the painter area, the true offset
@@ -2346,11 +2383,18 @@ void KDChart1Params::setGlobalLeading( int left, int top, int right, int bottom 
   \sa globalLeadingLeft, globalLeadingTop, globalLeadingRight,
   globalLeadingBottom
   */
+void KDChart1Params::setGlobalLeadingTop( int leading )
+{
+    _globalLeadingTop = leading;
+
+    updateK2Setting( K2GlobalLeading );
+    /*
+    emit changed();
+    */
+}
 
 
 /**
-  \fn void KDChart1Params::setGlobalLeadingRight( int )
-
   Specifies the distance between the chart and the right border
   of the painter area.  If \c leading is a negative value it is
   interpreted as per-mille value of the painter area, the true
@@ -2361,11 +2405,18 @@ void KDChart1Params::setGlobalLeading( int left, int top, int right, int bottom 
   \sa globalLeadingLeft, globalLeadingTop, globalLeadingRight,
   globalLeadingBottom
   */
+void KDChart1Params::setGlobalLeadingRight( int leading )
+{
+    _globalLeadingRight = leading;
+
+    updateK2Setting( K2GlobalLeading );
+    /*
+    emit changed();
+    */
+}
 
 
 /**
-  \fn void KDChart1Params::setGlobalLeadingBottom( int )
-
   Specifies the distance between the chart and the lower border of
   the painter area.  If \c leading is a negative value it is
   interpreted as per-mille value of the painter area, the true offset
@@ -2376,6 +2427,15 @@ void KDChart1Params::setGlobalLeading( int left, int top, int right, int bottom 
   \sa globalLeadingLeft, globalLeadingTop, globalLeadingRight,
   globalLeadingBottom
   */
+void KDChart1Params::setGlobalLeadingBottom( int leading )
+{
+    _globalLeadingBottom = leading;
+
+    updateK2Setting( K2GlobalLeading );
+    /*
+    emit changed();
+    */
+}
 
 
 /**
@@ -2435,9 +2495,6 @@ void KDChart1Params::setGlobalLeading( int left, int top, int right, int bottom 
 
 
 /**
-  \fn void KDChart1Params::setFrame( uint, const KDFrame1&, int, int,
-  int, int, bool, bool )
-
   \ifnot v200
   \deprecated Feature scheduled for future release, at present not implemented.
   \else
@@ -2465,6 +2522,30 @@ void KDChart1Params::setGlobalLeading( int left, int top, int right, int bottom 
   \sa setSimpleFrame, frameSettings
   \endif
   */
+  void KDChart1Params::setFrame( uint           area,
+                const KDFrame1& frame,
+                int            outerGapX,
+                int            outerGapY,
+                int            innerGapX,
+                int            innerGapY,
+                bool           addFrameWidthToLayout = true,
+                bool           addFrameHeightToLayout = true )
+{
+    _areaDict.insert( QString( "%1/-----/-----/-----" ).arg( area, 5 ),
+                      new KDChart1FrameSettings(0,0,0,
+                              frame,
+                              outerGapX,
+                              outerGapY,
+                              innerGapX,
+                              innerGapY,
+                              addFrameWidthToLayout,
+                              addFrameHeightToLayout ) );
+
+    updateK2Setting( K2Frame );
+    /*
+    emit changed();
+    */
+}
 
 /**
   \fn void KDChart1Params::setSimpleFrame( uint, int, int, int, int,
@@ -2516,10 +2597,6 @@ void KDChart1Params::setGlobalLeading( int left, int top, int right, int bottom 
 
 
 /**
-  \fn void KDChart1Params::setDataRegionFrame( uint, uint, uint, int, int, int, int,
-  bool, bool, KDFrame1::SimpleFrame, int, int, QPen, QBrush, const
-  QPixmap*, KDFrame1::BackPixmapMode, int, KDFrame1::CornerName )
-
   Select a pre-defined frame setting to be used for one of the data representations
   (e.g. to have the frame surrounding one of the bars in a Bar chart).
 
@@ -2553,6 +2630,49 @@ void KDChart1Params::setGlobalLeading( int left, int top, int right, int bottom 
   it to \c KDFrame1::CornerTopLeft.
   \endif
   */
+void KDChart1Params::setDataRegionFrame( uint dataRow,
+                        uint dataCol,
+                        uint, // important: we ignore the data3rd parameter for now!
+                        int  innerGapX = 0,
+                        int  innerGapY = 0,
+                        bool addFrameWidthToLayout      = true,
+                        bool addFrameHeightToLayout     = true,
+                        KDFrame1::SimpleFrame    simpleFrame    = KDFrame1::FrameFlat,
+                        int                     lineWidth      = 1,
+                        int                     midLineWidth   = 0,
+                        QPen                    pen            = QPen(),
+                        int                     shadowWidth    = 0,
+                        KDFrame1::CornerName     sunPos         = KDFrame1::CornerTopLeft )
+{
+
+    KDFrame1 frame( QRect(0,0,0,0),
+                    simpleFrame,
+                    lineWidth,
+                    midLineWidth,
+                    pen,
+                    QBrush( Qt::NoBrush ),
+                    0,
+                    KDFrame1::PixStretched,
+                    shadowWidth,
+                    sunPos );
+
+    _areaDict.insert(
+            dataRegionFrameAreaName( dataRow, dataCol, 0 ), //data3rd 5 ),
+            new KDChart1FrameSettings( dataRow,
+                                dataCol,
+                                0, // important: we ignore the data3rd parameter for now!
+                                frame,
+                                0,
+                                0,
+                                innerGapX,
+                                innerGapY,
+                                addFrameWidthToLayout,
+                                addFrameHeightToLayout ) );
+    updateK2Setting( K2Frame );
+    /*
+    emit changed();
+    */
+}
 
 
 /**
@@ -2848,6 +2968,11 @@ void KDChart1Params::setChartType( ChartType chartType )
 {
     _chartType = chartType;
 
+    updateK2Setting( K2ChartType );
+
+    /*
+    old kdc-1 code:
+
     // de-activate 2nd axis that might have been set automatically
     // by a previous call of \c setAdditionalChartType()
     setAxisVisible( KDChart1AxisParams::AxisPosRight, false );
@@ -2871,6 +2996,7 @@ void KDChart1Params::setChartType( ChartType chartType )
          && printDataValuesWithDefaultFontParams( 0 ) )
         setPrintDataValues( true, 0 );
     emit changed();
+    */
 }
 
 
@@ -3002,7 +3128,10 @@ void KDChart1Params::setAdditionalChartType( ChartType chartType )
              && printDataValuesWithDefaultFontParams( 1 ) )
             setPrintDataValues( true, 1 );
     }
+    updateK2Setting( K2AdditionalChartType );
+    /*
     emit changed();
+    */
 }
 
 
@@ -3041,14 +3170,20 @@ void KDChart1Params::setAdditionalChartType( ChartType chartType )
   */
 
 /**
-  \fn void KDChart1Params::setNumValues( uint )
-
   Specifies how many of the values should be shown. -1 means all
   available values.
 
   \param numValues the number of values to be shown
   \sa numValues
   */
+void KDChart1Params::setNumValues( uint numValues )
+{
+    _numValues = numValues;
+    updateK2Setting( K2NumValues );
+    /*
+    emit changed();
+    */
+}
 
 /**
   \fn int KDChart1Params::numValues() const
@@ -9564,7 +9699,7 @@ void KDChart1Params::updateK2Setting( int type )
 
     KDChart::Widget & k2( *_K2Widget );
     switch( type ){
-        case K2Type:
+        case K2ChartType:
             switch( chartType() ){
                 case NoType:
                     k2.setType( KDChart::Widget::NoType );
@@ -9600,7 +9735,52 @@ void KDChart1Params::updateK2Setting( int type )
                     qDebug("Sorry: KDChart1Params::setChartType() was called for not supported type.");
             }
             break;
+        case K2AdditionalType:
+            qDebug("Sorry: KDChart1Params::setAdditionalChartType() not implemented yet.");
+            // Note: Setting the additional chart type can NOT be done via KDChart::Widget,
+            //       but only by adding a second diagram to KDChart::Chart directly.
+            //       (see KDAB bugzilla issue #2362)
+            break;
+        case K2GlobalLeading:
+            k2.setGlobalLeading(
+                globalLeadingLeft(),
+                globalLeadingTop(),
+                globalLeadingRight(),
+                globalLeadingBottom() );
+            break;
+        case K2PropertySet:
+            qDebug("Sorry: updateK2Setting( K2PropertySet ) not implemented yet.");
+            break;
+        case K2Frame:
+            qDebug("Sorry: updateK2Setting( K2Frame ) not implemented yet.");
+            break;
+        case K2ChartSourceMode:
+            qDebug("Sorry: updateK2Setting( K2ChartSourceMode ) not implemented yet.");
+            break;
+        case K2NumValues:
+            qDebug("Sorry: updateK2Setting( K2NumValues ) not implemented yet.");
+            break;
+        case K2DataColor:
+            // Note: Use KDChartAbstractDiagram::usePalette (KDChart::Palette&),
+            //       once that method is implemented.
+            qDebug("Sorry: updateK2Setting( K2DataColor ) not implemented yet.");
+            break;
+        case K2DataDefaultColor:
+            //FIXME(khz): Use KDChartAbstractDiagram::usePalette (KDChart::Palette&),
+            //            once that method is implemented.
+            K2.diagram->useDefaultColors();
+            break;
+        case K2DataRainbowColor:
+            //FIXME(khz): Use KDChartAbstractDiagram::usePalette (KDChart::Palette&),
+            //            once that method is implemented.
+            K2.diagram->useDefaultColors();
+            break;
+        case K2DataSubduedColor:
+            //FIXME(khz): Use KDChartAbstractDiagram::usePalette (KDChart::Palette&),
+            //            once that method is implemented.
+            K2.diagram->useDefaultColors();
+            break;
         default:
-            qDebug("Sorry: updateK2Settings( %i ) not implemented yet.", type);
+            qDebug("Sorry: updateK2Setting( %i ) not implemented yet.", type);
     }
 }

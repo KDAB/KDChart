@@ -178,26 +178,10 @@ public slots: // PENDING(blackie) merge public slots into one section.
 
     void setGlobalLeading( int left, int top, int right, int bottom );
 
-    void setGlobalLeadingLeft( int leading )
-        {
-            _globalLeadingLeft = leading;
-            emit changed();
-        }
-    void setGlobalLeadingTop( int leading )
-        {
-            _globalLeadingTop = leading;
-            emit changed();
-        }
-    void setGlobalLeadingRight( int leading )
-        {
-            _globalLeadingRight = leading;
-            emit changed();
-        }
-    void setGlobalLeadingBottom( int leading )
-        {
-            _globalLeadingBottom = leading;
-            emit changed();
-        }
+    void setGlobalLeadingLeft( int leading );
+    void setGlobalLeadingTop( int leading );
+    void setGlobalLeadingRight( int leading );
+    void setGlobalLeadingBottom( int leading );
     int globalLeadingLeft() const
         {
             return _globalLeadingLeft;
@@ -390,20 +374,7 @@ public slots:
                    int            innerGapX,
                    int            innerGapY,
                    bool           addFrameWidthToLayout = true,
-                   bool           addFrameHeightToLayout = true )
-        {
-
-            _areaDict.insert( QString( "%1/-----/-----/-----" ).arg( area, 5 ),
-                              new KDChart1FrameSettings(0,0,0,
-                                                       frame,
-                                                       outerGapX,
-                                                       outerGapY,
-                                                       innerGapX,
-                                                       innerGapY,
-                                                       addFrameWidthToLayout,
-                                                       addFrameHeightToLayout ) );
-            emit changed();
-        }
+                   bool           addFrameHeightToLayout = true ){};
 
 
     // Note if you change the parameters here, then you must also change them in wrappers/KDChart1ParametersWrapper.h
@@ -424,7 +395,6 @@ public slots:
                          int                     shadowWidth    = 0,
                          KDFrame1::CornerName     sunPos         = KDFrame1::CornerTopLeft )
         {
-
             KDFrame1 frame( QRect(0,0,0,0),
                      simpleFrame,
                      lineWidth,
@@ -435,16 +405,10 @@ public slots:
                      backPixmapMode,
                      shadowWidth,
                            sunPos );
-
-            _areaDict.insert( QString( "%1/-----/-----/-----" ).arg( area, 5 ),
-                              new KDChart1FrameSettings( 0,0,0, frame,
-                                                        outerGapX,
-                                                        outerGapY,
-                                                        innerGapX,
-                                                        innerGapY,
-                                                        addFrameWidthToLayout,
-                                                        addFrameHeightToLayout ) );
-            emit changed();
+            setFrame( area,
+                      frame,
+                      outerGapX, outerGapY, innerGapX, innerGapY,
+                      addFrameWidthToLayout, addFrameHeightToLayout = true
         }
 
 
@@ -461,34 +425,7 @@ public slots:
                              int                     midLineWidth   = 0,
                              QPen                    pen            = QPen(),
                              int                     shadowWidth    = 0,
-                             KDFrame1::CornerName     sunPos         = KDFrame1::CornerTopLeft )
-        {
-
-            KDFrame1 frame( QRect(0,0,0,0),
-                           simpleFrame,
-                           lineWidth,
-                           midLineWidth,
-                           pen,
-                           QBrush( Qt::NoBrush ),
-                           0,
-                           KDFrame1::PixStretched,
-                           shadowWidth,
-                           sunPos );
-
-            _areaDict.insert(
-                dataRegionFrameAreaName( dataRow, dataCol, 0 ), //data3rd 5 ),
-                new KDChart1FrameSettings( dataRow,
-                                          dataCol,
-                                          0, // important: we ignore the data3rd parameter for now!
-                                          frame,
-                                          0,
-                                          0,
-                                          innerGapX,
-                                          innerGapY,
-                                          addFrameWidthToLayout,
-                                          addFrameHeightToLayout ) );
-            emit changed();
-        }
+                             KDFrame1::CornerName     sunPos         = KDFrame1::CornerTopLeft ){};
 
 
     // Note if you change the parameters here, then you must also change them in wrappers/KDChart1ParametersWrapper.h
@@ -599,12 +536,7 @@ public slots:
     void activateDefaultAxes();
 
 
-    void setNumValues( uint numValues )
-        {
-            _numValues = numValues;
-            emit changed();
-        }
-
+    void setNumValues( uint numValues );
 
     int numValues() const
         {

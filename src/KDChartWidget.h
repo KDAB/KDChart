@@ -105,19 +105,44 @@ namespace KDChart {
         const QList<KDChart::HeaderFooter*> allHeadersFooters() const;
         /** Returns the count over all headers. */
         int headerFooterCount() const;
+
         /** Adds a new header/footer with the given text to the position. */
         void addHeaderFooter( const QString& text,
                               HeaderFooter::HeaderFooterType type,
                               Position position );
-        /** Adds an existing header / footer object. */
+
+        /**
+          * Adds an existing header / footer object.
+          * \sa replaceHeaderFooter, takeHeaderFooter
+        */
         void addHeaderFooter( HeaderFooter* header );
 
+        /**
+         * Replaces the old header (or footer, resp.), or appends the
+         * new header or footer, it there is none yet.
+         *
+         * @param plane The header or footer to be used instead of the old one.
+         * This parameter must not be zero, or the method will do nothing.
+         *
+         * @param oldPlane The header or footer to be removed by the new one. This
+         * header or footer will be deleted automatically. If the parameter is omitted,
+         * the very first header or footer will be replaced. In case, there was no
+         * header and no footer yet, the new header or footer will just be added.
+         *
+         * \note If you want to re-use the old header or footer, call takeHeaderFooter and
+         * addHeaderFooter, instead of using replaceHeaderFooter.
+         *
+         * \sa addHeaderFooter, takeHeaderFooter
+         */
         void replaceHeaderFooter( HeaderFooter* header,
                                   HeaderFooter* oldHeader = 0 );
+
         /** Remove the header (or footer, resp.) from the widget,
          * without deleting it.
          * The chart no longer owns the header or footer, so it is
          * the caller's responsibility to delete the header or footer.
+         *
+         * \sa addHeaderFooter, replaceHeaderFooter
          */
         void takeHeaderFooter( HeaderFooter* header );
 
