@@ -121,10 +121,10 @@ namespace KDChart {
          * Replaces the old header (or footer, resp.), or appends the
          * new header or footer, it there is none yet.
          *
-         * @param plane The header or footer to be used instead of the old one.
+         * @param headerFooter The header or footer to be used instead of the old one.
          * This parameter must not be zero, or the method will do nothing.
          *
-         * @param oldPlane The header or footer to be removed by the new one. This
+         * @param oldHeaderFooter The header or footer to be removed by the new one. This
          * header or footer will be deleted automatically. If the parameter is omitted,
          * the very first header or footer will be replaced. In case, there was no
          * header and no footer yet, the new header or footer will just be added.
@@ -157,8 +157,8 @@ namespace KDChart {
         /** Adds a new, already existing, legend. */
         void addLegend (Legend* legend );
 
-        void replaceLegend( Legend* legend, int position = 0 );
-        void removeLegend( int position = 0 );
+        void replaceLegend( Legend* legend, Legend* oldLegend = 0 );
+        void takeLegend( Legend* legend );
 
 
         /** Returns a pointer to the current diagram. */

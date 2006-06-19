@@ -633,7 +633,7 @@ void Chart::takeHeaderFooter( HeaderFooter* headerFooter )
                     p, SLOT( slotUnregisterDestroyedHeaderFooter( HeaderFooter* ) ) );
         headerFooter->setParent( 0 );
     }
-    p->slotLayoutPlanes();
+    p->slotRelayout();
 }
 
 HeaderFooter* Chart::headerFooter()
@@ -661,29 +661,28 @@ void Chart::addLegend( Legend* legend )
     p->slotRelayout();
 }
 
-void Chart::replaceLegend( Legend* legend, int position )
+void Chart::replaceLegend( Legend* legend, Legend* oldLegend )
 {
-    if( p->legends.size() <= position ) {
+    if( legend && oldLegend != legend ){
+        if( p->legends.count() ){
+            if( ! oldLegend )
+                takeLegend( p->legends.first() );
+            else
+                takeLegend( oldLegend );
+        }
+        delete oldLegend;
         addLegend( legend );
-    } else {
-        Legend *old = p->legends.value( position );
-        p->legends.replace( position, legend );
-        disconnect( old, SIGNAL( destroyedLegend( Legend* ) ),
-                    p, SLOT( slotUnregisterDestroyedLegend( Legend* ) ) );
-        delete old;
-        connect( legend, SIGNAL( destroyedLegend( Legend* ) ),
-                 p, SLOT( slotUnregisterDestroyedLegend( Legend* ) ) );
     }
-    p->slotRelayout();
 }
 
-void Chart::removeLegend( int position )
+void Chart::takeLegend( Legend* legend )
 {
-    if( position >= 0 && p->legends.size() > position ) {
-        Legend *old = p->legends.value( position );
-        disconnect( old, SIGNAL( destroyedLegend( Legend* ) ),
+    const int idx = p->legends.indexOf( legend );
+    if( idx != -1 ){
+        p->legends.takeAt( idx );
+        disconnect( legend, SIGNAL( destroyedLegend( Legend* ) ),
                     p, SLOT( slotUnregisterDestroyedLegend( Legend* ) ) );
-        delete old;
+        legend->setParent( 0 );
     }
     p->slotRelayout();
 }

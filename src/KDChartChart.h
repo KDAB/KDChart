@@ -148,10 +148,10 @@ namespace KDChart {
          * Replaces the old header (or footer, resp.), or appends the
          * new header or footer, it there is none yet.
          *
-         * @param plane The header or footer to be used instead of the old one.
+         * @param headerFooter The header or footer to be used instead of the old one.
          * This parameter must not be zero, or the method will do nothing.
          *
-         * @param oldPlane The header or footer to be removed by the new one. This
+         * @param oldHeaderFooter The header or footer to be removed by the new one. This
          * header or footer will be deleted automatically. If the parameter is omitted,
          * the very first header or footer will be replaced. In case, there was no
          * header and no footer yet, the new header or footer will just be added.
@@ -189,21 +189,39 @@ namespace KDChart {
         /**
          * Add the given legend to the chart. The chart takes ownership.
          * @param legend The legend to add.
+         *
+         * \sa replaceLegend, takeLegend
          */
         virtual void addLegend( Legend* legend );
 
         /**
-         * Replace the legend at the given position. The chart takes ownership.
-         * @param legend The legend to replace with.
-         * @param position The position at which to replace the legend.
+         * Replaces the old legend, or appends the
+         * new legend, it there is none yet.
+         *
+         * @param legend The legend to be used instead of the old one.
+         * This parameter must not be zero, or the method will do nothing.
+         *
+         * @param oldLegend The legend to be removed by the new one. This
+         * legend will be deleted automatically. If the parameter is omitted,
+         * the very first legend will be replaced. In case, there was no
+         * legend yet, the new legend will just be added.
+         *
+         * \note If you want to re-use the old legend, call takeLegend and
+         * addLegend, instead of using replaceLegend.
+         *
+         * \sa addLegend, takeLegend
          */
-        virtual void replaceLegend ( Legend* legend, int position = 0 );
+        virtual void replaceLegend ( Legend* legend, Legend* oldLegend = 0 );
 
         /**
-         * Remove the legend at the given position, if there is one.
-         * @param position The position at which to remove the legend.
+         * Removes the legend from the chart, without deleting it.
+         *
+         * The chart no longer owns the legend, so it is
+         * the caller's responsibility to delete the legend.
+         *
+         * \sa addLegend, takeLegend
          */
-        virtual void removeLegend( int position = 0 );
+        virtual void takeLegend( Legend* legend );
 
         /**
          * Set the padding between the margin of the widget and the area that

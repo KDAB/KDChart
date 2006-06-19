@@ -317,8 +317,8 @@ int Widget::legendCount() const
 void Widget::addLegend( Position position )
 {
     Legend* legend = new Legend( diagram(), d->m_chart );
-    d->m_chart->addLegend( legend );
     legend->setPosition( position );
+    d->m_chart->addLegend( legend );
 }
 
 /**
@@ -330,16 +330,16 @@ void Widget::addLegend (Legend* legend )
     legend->setParent( d->m_chart );
 }
 
-void Widget::replaceLegend( Legend* legend, int position )
+void Widget::replaceLegend( Legend* legend, Legend* oldLegend )
 {
     legend->setDiagram( diagram() );
     legend->setParent( d->m_chart );
-    d->m_chart->replaceLegend( legend, position );
+    d->m_chart->replaceLegend( legend, oldLegend );
 }
 
-void Widget::removeLegend( int position )
+void Widget::takeLegend( Legend* legend )
 {
-    d->m_chart->removeLegend( position );
+    d->m_chart->takeLegend( legend );
 }
 
 /**
