@@ -63,6 +63,15 @@ void AbstractCartesianDiagram::addAxis( CartesianAxis *axis )
     d->axesList.append( axis );
     // Hack alert. Internally we pretend that the axes are owned by the plane.
     axis->setParent( coordinatePlane() );
+    axis->createObserver( this );
+}
+
+void AbstractCartesianDiagram::takeAxis( CartesianAxis *axis )
+{
+    const int idx = d->axesList.indexOf( axis );
+    if( idx != -1 )
+        d->axesList.takeAt( idx );
+    axis->setParent( 0 );
 }
 
 KDChart::CartesianAxisList AbstractCartesianDiagram::axes( ) const

@@ -37,6 +37,14 @@ namespace KDChart {
 
     class AbstractCartesianDiagram;
 
+    /**
+      * The class for cartesian axes.
+      *
+      * For being useful, axes need to be assigned to a diagram, see
+      * AbstractCartesianDiagram::addAxis and AbstractCartesianDiagram::takeAxis.
+      *
+      * \sa PolarAxis, AbstractCartesianDiagram
+      */
     class KDCHART_EXPORT CartesianAxis : public AbstractAxis
     {
         Q_OBJECT
@@ -52,7 +60,15 @@ namespace KDChart {
             Left
         };
 
-        CartesianAxis ( AbstractCartesianDiagram* parent = 0 );
+        /**
+          * C'tor of the class for cartesian axes.
+          *
+          * \note If using a zero parent for the constructor, you NEED to call
+          * your diagram's addAxis function to add your axis to the diagram.
+          *
+          * \sa AbstractCartesianDiagram::addAxis
+          */
+        CartesianAxis ( AbstractCartesianDiagram* diagram = 0 );
         ~CartesianAxis();
 
         void paint( PaintContext* ) const;

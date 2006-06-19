@@ -52,6 +52,14 @@ namespace KDChart {
     class PaintContext;
     class AbstractDiagram;
 
+    /**
+      * The base class for axes.
+      *
+      * For being useful, axes need to be assigned to a diagram, see
+      * AbstractCartesianDiagram::addAxis and AbstractCartesianDiagram::takeAxis.
+      *
+      * \sa PolarAxis, AbstractCartesianDiagram
+      */
     class KDCHART_EXPORT AbstractAxis : public AbstractArea
     // : public AbstractArea FIXME maybe reintroduce later
     {
@@ -73,8 +81,9 @@ namespace KDChart {
         virtual QSize sizeHint() const = 0;*/
 	//virtual void paintEvent( QPaintEvent* event) = 0;
 
-        void connectSignals();
-        void setDiagram( KDChart::AbstractDiagram* diagram );
+        void createObserver( KDChart::AbstractDiagram* diagram );
+        void deleteObserver();
+        virtual void connectSignals();
 
         void setLabels( const QStringList& list );
         QStringList labels() const;

@@ -27,6 +27,7 @@
 #include "KDChartAbstractAxis_p.h"
 #include <QDebug>
 #include <KDChartAbstractDiagram.h>
+#include "KDChartAbstractCartesianDiagram.h"
 
 using namespace KDChart;
 
@@ -52,11 +53,22 @@ AbstractAxis::Private::~Private()
 }
 
 
+/**
+  * C'tor of the base class for axes.
+  *
+  * \note If using a zero parent for the constructor, you NEED to call
+  * your diagram's addAxis function to add your axis to the diagram.
+  * Otherwise, there is no need to call addAxis, since the constructor
+  * does that automatically for you, if you pass a parent as parameter.
+  *
+  * \sa AbstractCartesianDiagram::addAxis
+  */
 AbstractAxis::AbstractAxis ( AbstractDiagram* diagram )
     : AbstractArea( new Private( diagram ), diagram )
 {
     init();
-    setDiagram( diagram );
+    if( diagram )
+        createObserver( diagram );
 }
 
 AbstractAxis::~AbstractAxis()
@@ -67,17 +79,23 @@ AbstractAxis::~AbstractAxis()
 
 void AbstractAxis::init()
 {
-    connectSignals();
+    // this bloc left empty intentionally
 }
 
-void AbstractAxis::connectSignals()
+/**
+  * \internal
+  *
+  * Method invoked by AbstractCartesianDiagram::addAxis().
+  *
+  * You should not call this function, unless you know exactly,
+  * what you are doing.
+  *
+  * \sa connectSignals(), AbstractCartesianDiagram::addAxis()
+  */
+void AbstractAxis::createObserver( KDChart::AbstractDiagram* diagram )
 {
-    connect( d_func()->observer, SIGNAL( diagramDataChanged( AbstractDiagram *) ),
-             this, SLOT( update() ) );
-}
+    if( d_func()->diagram == diagram ) return;
 
-void AbstractAxis::setDiagram( KDChart::AbstractDiagram* diagram )
-{
     d_func()->diagram = diagram;
     if ( d_func()->observer )
     {
@@ -88,8 +106,48 @@ void AbstractAxis::setDiagram( KDChart::AbstractDiagram* diagram )
         d_func()->observer = new DiagramObserver( *diagram, this );
         connectSignals();
     }
-    // Could/should we use such a flag: d->needRebuild = true;   ??
 }
+
+/**
+  * \internal
+  *
+  * Method invoked by AbstractCartesianDiagram::takeAxis().
+  *
+  * You should not call this function, unless you know exactly,
+  * what you are doing.
+  *
+  * \sa AbstractCartesianDiagram::takeAxis()
+  */
+void AbstractAxis::deleteObserver()
+{
+    d_func()->diagram = 0;
+    if ( d_func()->observer )
+    {
+        delete d_func()->observer; d_func()->observer = NULL;
+    }
+}
+
+/**
+  * Wireing the signal/slot connections.
+  *
+  * This method gets called automatically, each time, when you assign
+  * the axis to a diagram, either by passing a diagram* to the c'tor,
+  * or by calling the diagram's setAxis method, resp.
+  *
+  * If overwriting this method in derived classes, make sure to call
+  * this base method AbstractAxis::connectSignals(), so your axis
+  * gets connected to the diagram's built-in signals.
+  *
+  * \sa AbstractCartesianDiagram::addAxis()
+  */
+void AbstractAxis::connectSignals()
+{
+    if( d_func()->observer ){
+        connect( d_func()->observer, SIGNAL( diagramDataChanged( AbstractDiagram *) ),
+                this, SLOT( update() ) );
+    }
+}
+
 
 /**
   \brief Use this to specify your own set of strings, to be used as axis labels.

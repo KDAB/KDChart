@@ -41,12 +41,12 @@ using namespace KDChart;
 
 #define d (d_func())
 
-CartesianAxis::CartesianAxis ( AbstractCartesianDiagram* parent )
-    : AbstractAxis ( new Private( parent ), parent )
+CartesianAxis::CartesianAxis ( AbstractCartesianDiagram* diagram )
+    : AbstractAxis ( new Private( diagram ), diagram )
 {
     init();
-    if( parent )
-        parent->addAxis( this );
+    if( diagram )
+        diagram->addAxis( this );
 }
 
 CartesianAxis::~CartesianAxis ()
@@ -72,11 +72,12 @@ void CartesianAxis::paintEvent( QPaintEvent* event )
 {
     Q_UNUSED( event );
 
+    if( ! d->diagram ) return;
+
     PaintContext context;
     QPainter painter( this );
     context.setPainter( &painter );
-    AbstractDiagram* diag = d->diagram;
-    AbstractCoordinatePlane* plane = diag->coordinatePlane();
+    AbstractCoordinatePlane* plane = d->diagram->coordinatePlane();
     context.setCoordinatePlane( plane );
     QRectF rect = QRectF ( 1, 1, plane->width() - 3, plane->height() - 3 );
     context.setRectangle( rect );

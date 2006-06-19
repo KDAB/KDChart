@@ -58,7 +58,25 @@ namespace KDChart {
 
         virtual const int numberOfAbscissaSegments () const = 0;
         virtual const int numberOfOrdinateSegments () const = 0;
+        /**
+         * Add the axis to the diagram. The diagram takes ownership of the axis
+         * and will delete it.
+         *
+         * To gain back ownership (e.g. for assigning the axis to another diagram)
+         * use the takeAxis method, before calling addAxis on the other diagram.
+         *
+         * \sa takeAxis
+        */
         virtual void addAxis( CartesianAxis * axis );
+        /**
+         * Removes the axis from the diagram, without deleting it.
+         *
+         * The diagram no longer owns the axis, so it is
+         * the caller's responsibility to delete the axis.
+         *
+         * \sa addAxis
+        */
+        virtual void takeAxis( CartesianAxis * axis );
         virtual KDChart::CartesianAxisList axes () const;
 
         virtual void setCoordinatePlane( AbstractCoordinatePlane* plane );
