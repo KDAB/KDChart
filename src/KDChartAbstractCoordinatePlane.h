@@ -46,22 +46,39 @@ namespace KDChart {
         /**
          * Adds a diagram to this coordinate plane.
          * @param diagram The diagram to add.
+         *
+         * \sa replaceDiagram, takeDiagram
          */
         virtual void addDiagram ( AbstractDiagram* diagram );
 
         /**
          * Replaces the diagram at the given position, or appends the
          * diagram, it there is none at that position yet.
-         * @param diagram The diagram to put at the given position.
-         * @param position The position to put the new diagram at.
+         *
+         * @param diagram The diagram to be used instead of the old diagram.
+         * This parameter must not be zero, or the method will do nothing.
+         *
+         * @param oldDiagram The diagram to be removed by the new diagram. This
+         * diagram will be deleted automatically. If the parameter is omitted,
+         * the very first diagram will be replaced. In case, there was no
+         * diagram yet, the new diagram will just be added.
+         *
+         * \note If you want to re-use the old diagram, call takeDiagram and
+         * addDiagram, instead of using replaceDiagram.
+         *
+         * \sa addDiagram, takeDiagram
          */
-        virtual void replaceDiagram ( AbstractDiagram* diagram, int position = 0 );
+        virtual void replaceDiagram ( AbstractDiagram* diagram, AbstractDiagram* oldDiagram = 0 );
 
         /**
-         * Remove the diagram at the given position, if there is one.
-         * @param position The position at which to remove the diagram.
-         */
-        virtual void removeDiagram( int position = 0 );
+         * Removes the diagram from the plane, without deleting it.
+         *
+         * The plane no longer owns the diagram, so it is
+         * the caller's responsibility to delete the diagram.
+         *
+         * \sa addDiagram, replaceDiagram
+        */
+        virtual void takeDiagram( AbstractDiagram* diagram );
 
         /**
          * @return The first diagram associated with this coordinate plane.

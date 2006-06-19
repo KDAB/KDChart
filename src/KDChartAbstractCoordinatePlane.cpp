@@ -66,32 +66,29 @@ void AbstractCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
     emit diagramsChanged();
 }
 
-
 /*virtual*/
-void AbstractCoordinatePlane::replaceDiagram ( AbstractDiagram* diagram, int position )
+void AbstractCoordinatePlane::replaceDiagram ( AbstractDiagram* diagram, AbstractDiagram* oldDiagram )
 {
-    if ( d->diagrams.size() <= position ) {
+    if( diagram && oldDiagram != diagram ){
+        if( d->diagrams.count() ){
+            if( ! oldDiagram )
+                takeDiagram( d->diagrams.first() );
+            else
+                takeDiagram( oldDiagram );
+        }
+        delete oldDiagram;
         addDiagram( diagram );
-    } else {
-        diagram->hide();
-        d->diagrams.replace( position, diagram );
-        diagram->setParent ( this );
-        diagram->setCoordinatePlane( this );
-        layoutDiagrams();
-        emit diagramsChanged();
     }
 }
-
 
 /*virtual*/
-void AbstractCoordinatePlane::removeDiagram( int position/* = 0 */ )
+void AbstractCoordinatePlane::takeDiagram ( AbstractDiagram* diagram )
 {
-    if ( position >= 0 && d->diagrams.size() > position ) {
-        d->diagrams.removeAt( position );
-        layoutDiagrams();
-        emit diagramsChanged();
-    }
+    const int idx = d->diagrams.indexOf( diagram );
+    if( idx != -1 )
+        d->diagrams.takeAt( idx );
 }
+
 
 AbstractDiagram* AbstractCoordinatePlane::diagram()
 {
