@@ -50,11 +50,19 @@
 
 using namespace KDChart;
 
+namespace KDChart {
+  class PrivateAttributesModel : public AttributesModel {
+    Q_OBJECT
+  public:
+        explicit PrivateAttributesModel( QAbstractItemModel* model, QObject * parent = 0 )
+	  : AttributesModel(model,parent) {}
+  };
+}
+
 AbstractDiagram::Private::Private()
   : plane( 0 )
-  , attributesModel( new AttributesModel(0,0,false) )
+  , attributesModel( new PrivateAttributesModel(0,0) )
   , allowOverlappingDataValueTexts( false )
-  , usePrivateAttributesModel( false )
   , percent( false )
   , datasetDimension( 1 )
 {
@@ -62,7 +70,8 @@ AbstractDiagram::Private::Private()
 
 AbstractDiagram::Private::~Private()
 {
-  if( attributesModel && !attributesModel->isShared() ) delete attributesModel;
+  if( attributesModel && qobject_cast<PrivateAttributesModel*>(attributesModel) ) 
+    delete attributesModel;
 }
 
 void AbstractDiagram::Private::init()
@@ -76,7 +85,8 @@ void AbstractDiagram::Private::init( AbstractCoordinatePlane* newPlane )
 
 void AbstractDiagram::Private::setAttributesModel( AttributesModel* amodel )
 {
-    if( !attributesModel.isNull() && !attributesModel->isShared() ) {
+    if( !attributesModel.isNull() && 
+	qobject_cast<PrivateAttributesModel*>(attributesModel) ) {
 	delete attributesModel;
     }
     attributesModel = amodel;
@@ -136,7 +146,7 @@ bool AbstractDiagram::isBoundariesValid(const QPair<QPointF,QPointF>& b )
 void AbstractDiagram::setModel ( QAbstractItemModel * newModel )
 {
   QAbstractItemView::setModel( newModel );
-  AttributesModel* amodel = new AttributesModel( newModel, this, false );
+  AttributesModel* amodel = new PrivateAttributesModel( newModel, this );
   amodel->initFrom( d->attributesModel );
   d->setAttributesModel(amodel);
   scheduleDelayedItemsLayout();
@@ -156,7 +166,7 @@ void AbstractDiagram::setAttributesModel( AttributesModel* amodel )
 		 "model than the diagram.");
 	return;
     }
-    if( !amodel->isShared() ) {
+    if( qobject_cast<PrivateAttributesModel*>(amodel) ) {
 	qWarning("KDChart::AbstractDiagram::setAttributesModel() failed: "
 		 "Trying to set an attributesmodel that is private to another diagram.");
 	return;
@@ -609,3 +619,5 @@ double AbstractDiagram::valueForCell( int row, int column ) const
     return d->attributesModel->data(
             d->attributesModel->index( row, column, attributesModelRootIndex() ) ).toDouble();
 }
+
+#include "KDChartAbstractDiagram.moc"

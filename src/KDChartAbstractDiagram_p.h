@@ -49,7 +49,6 @@ protected:
     QModelIndex attributesModelRootIndex;
     QPointer<AttributesModel> attributesModel;
     bool allowOverlappingDataValueTexts;
-    bool usePrivateAttributesModel;
     bool percent;
     int datasetDimension;
 };
@@ -106,4 +105,3 @@ typedef QVectorIterator<DataValueMarkerInfo> DataValueMarkerInfoListIterator;
 
 }
 #endif /* KDCHARTDIAGRAM_P_H */
-
