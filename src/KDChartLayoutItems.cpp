@@ -85,6 +85,12 @@ KDChart::TextLayoutItem::TextLayoutItem( const QString& text,
 }
 
 
+void KDChart::TextLayoutItem::setText(const QString & text)
+{
+    mText = text;
+    cachedSizeHint = QSize();
+}
+
 QString KDChart::TextLayoutItem::text() const
 {
     return mText;

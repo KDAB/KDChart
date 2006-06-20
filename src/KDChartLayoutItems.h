@@ -67,6 +67,7 @@ namespace KDChart {
                         KDChartEnums::MeasureOrientation autoReferenceOrientation,
                         Qt::Alignment alignment = 0 );
 
+        void setText(const QString & text);
         QString text() const;
         TextAttributes attributes() const;
 

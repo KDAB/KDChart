@@ -29,6 +29,7 @@
 #include <QPainter>
 #include <QPen>
 #include <QBrush>
+#include <QApplication>
 
 #include "KDChartPaintContext.h"
 #include "KDChartCartesianAxis.h"
@@ -369,6 +370,23 @@ void CartesianAxis::paint ( PaintContext* context ) const
                 }
             }
         } else {
+            TextLayoutItem* labelItem =
+                drawLabels
+                ? new TextLayoutItem( QString::number( minValueY ),
+                          ta,
+                          this,
+                          KDChartEnums::MeasureOrientationVertical,
+                          Qt::AlignLeft )
+                : 0;
+            const qreal labelFontSize(
+                drawLabels
+                ? labelItem->realFontSize()
+                : 0.0 );
+            const QFontMetricsF met(
+                drawLabels
+                ? labelItem->realFont()
+                : QFontMetricsF( QApplication::font() ) );
+
             double maxLimit, steg;
             bool percent = d->diagram->percentMode();
             int tickLength = position() == Left ? -4 : 3;
@@ -390,17 +408,10 @@ void CartesianAxis::paint ( PaintContext* context ) const
                 rightPoint.setX( fourthRulerRef.x() );
                 ptr->drawLine( leftPoint, rightPoint );
                 if ( drawLabels ) {
-                    TextLayoutItem* labelItem =
-                        new TextLayoutItem( QString::number( minValueY ),
-                            ta,
-                            this,
-                            KDChartEnums::MeasureOrientationVertical,
-                            Qt::AlignLeft );
+                    labelItem->setText( QString::number( minValueY ) );
                     // No need to call labelItem->setParentWidget(), since we are using
                     // the layout item temporarily only.
                     const QSize labelSize(     labelItem->sizeHint() );
-                    const qreal labelFontSize( labelItem->realFontSize() );
-                    const QFontMetricsF met(   labelItem->realFont() );
                     leftPoint.setX(
                         (position() == Left)
                         ? ( leftPoint.x()  - labelFontSize * 0.75 )
@@ -431,6 +442,8 @@ void CartesianAxis::paint ( PaintContext* context ) const
             }
             //Pending Michel: reset to default - is that really what we want?
             d->diagram->setPercentMode( false );
+            if( labelItem )
+                delete labelItem;
         }
     }
 }
