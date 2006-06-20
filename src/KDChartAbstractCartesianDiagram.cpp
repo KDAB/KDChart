@@ -91,6 +91,9 @@ void KDChart::AbstractCartesianDiagram::setCoordinatePlane( AbstractCoordinatePl
     if( plane )
         foreach( CartesianAxis* axis, d->axesList )
             axis->show();
+    else
+        foreach( CartesianAxis* axis, d->axesList )
+            axis->hide();
 }
 
 void AbstractCartesianDiagram::setReferenceDiagram( AbstractCartesianDiagram* diagram, const QPointF& offset )
