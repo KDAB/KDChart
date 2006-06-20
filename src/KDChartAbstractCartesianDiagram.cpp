@@ -81,12 +81,12 @@ KDChart::CartesianAxisList AbstractCartesianDiagram::axes( ) const
 
 void KDChart::AbstractCartesianDiagram::setCoordinatePlane( AbstractCoordinatePlane* plane )
 {
-  AbstractDiagram::setCoordinatePlane(plane);
-  // Hack alert. Internally we pretend that the axes are owned by the plane.
-  foreach( CartesianAxis* axis, d->axesList ) {
-    axis->setParent(plane);
-    axis->show();
-  }
+    AbstractDiagram::setCoordinatePlane(plane);
+    // Hack alert. Internally we pretend that the axes are owned by the plane.
+    foreach( CartesianAxis* axis, d->axesList ) {
+        axis->setParent(plane);
+        axis->show();
+    }
 }
 
 void AbstractCartesianDiagram::setReferenceDiagram( AbstractCartesianDiagram* diagram, const QPointF& offset )
@@ -117,8 +117,8 @@ const GridAttributes* AbstractCartesianDiagram::gridAttributes() const
 
 void AbstractCartesianDiagram::drawGrid( PaintContext* context )
 {
-    if ( !gridAttributes()->isGridVisible() )
-        return;
+    if ( !checkInvariants() || !gridAttributes()->isGridVisible() ) return;
+
     QPair<QPointF, QPointF> boundaries = dataBoundaries();
 
     const bool hasXCoordinates = datasetDimension() > 1;

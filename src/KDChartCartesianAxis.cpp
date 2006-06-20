@@ -72,7 +72,7 @@ void CartesianAxis::paintEvent( QPaintEvent* event )
 {
     Q_UNUSED( event );
 
-    if( ! d->diagram ) return;
+    if( ! d->diagram || ! d->diagram->coordinatePlane() ) return;
 
     PaintContext context;
     QPainter painter( this );
