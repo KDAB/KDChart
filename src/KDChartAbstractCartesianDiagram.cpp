@@ -83,10 +83,14 @@ void KDChart::AbstractCartesianDiagram::setCoordinatePlane( AbstractCoordinatePl
 {
     AbstractDiagram::setCoordinatePlane(plane);
     // Hack alert. Internally we pretend that the axes are owned by the plane.
-    foreach( CartesianAxis* axis, d->axesList ) {
-        axis->setParent(plane);
-        axis->show();
-    }
+    foreach( CartesianAxis* axis, d->axesList )
+        axis->setParent( plane );
+
+    // show the axes, after all have been adjusted
+    // (because they might be dependend on each other)
+    if( plane )
+        foreach( CartesianAxis* axis, d->axesList )
+            axis->show();
 }
 
 void AbstractCartesianDiagram::setReferenceDiagram( AbstractCartesianDiagram* diagram, const QPointF& offset )
