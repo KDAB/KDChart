@@ -389,8 +389,16 @@ void CartesianAxis::paint ( PaintContext* context ) const
                 if ( drawLabels ) {
                     // PENDING(khz) FIXME: use TextAttributes, to fix bug #2348
                     QFont textFont( QFont("comic", 5 ) );
-                    leftPoint.setX( position() == Left ? leftPoint.x()- (2*textFont.pointSize()) : leftPoint.x()+textFont.pointSize() );
+                    leftPoint.setX( position() ==
+                        Left
+                        ? ( leftPoint.x() - (2*textFont.pointSize()) )
+                        : ( leftPoint.x()  +   textFont.pointSize() ) );
                     leftPoint.setY( leftPoint.y() + textFont.pointSize()/2 );
+                    if( f + steg > maxLimit ){
+                        // last label of the ordinate?
+                        // shift it down a bit, to prevent it from being clipped away
+                        leftPoint.setY( leftPoint.y() + textFont.pointSize()/2 );
+                    }
                     PainterSaver painterSaver( ptr );
                     ptr->setPen( Qt::red );
                     ptr->setFont( textFont );
