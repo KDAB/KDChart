@@ -77,11 +77,13 @@ namespace KDChart {
         virtual QSize minimumSize() const;
         virtual void setGeometry( const QRect& r );
         virtual qreal realFontSize() const;
+        virtual QFont realFont() const;
         virtual QSize sizeHint() const;
 
         virtual void paint( QPainter* );
 
     private:
+        bool realFontWasRecalculated() const;
         QSize calcSizeHint( QFont fnt ) const;
 
         QRect mRect;

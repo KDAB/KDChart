@@ -139,15 +139,31 @@ qreal KDChart::TextLayoutItem::realFontSize() const
 }
 
 
-QSize KDChart::TextLayoutItem::sizeHint() const
+bool KDChart::TextLayoutItem::realFontWasRecalculated() const
 {
     const qreal fntSiz = realFontSize();
-    if( ( ! cachedSizeHint.isValid() ) ||
-        ( cachedFontSize != fntSiz   ) ){
-        if( fntSiz > 0.0 ){
-            cachedFontSize = fntSiz;
-            cachedFont.setPointSizeF( fntSiz );
-        }
+    bool bRecalcDone =
+        ( ( ! cachedSizeHint.isValid() ) ||
+          ( cachedFontSize != fntSiz   ) );
+
+    if( bRecalcDone &&  fntSiz > 0.0 ){
+        cachedFontSize = fntSiz;
+        cachedFont.setPointSizeF( fntSiz );
+    }
+    return bRecalcDone;
+}
+
+
+QFont KDChart::TextLayoutItem::realFont() const
+{
+    realFontWasRecalculated(); // we can safely ignore the boolean return value
+    return cachedFont;
+}
+
+
+QSize KDChart::TextLayoutItem::sizeHint() const
+{
+    if( realFontWasRecalculated() ){
         cachedSizeHint = calcSizeHint( cachedFont );
         (const_cast<KDChart::TextLayoutItem*>(this))->sizeHintChanged();
     }

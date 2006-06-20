@@ -114,11 +114,11 @@ public:
 
       Values stored in relative measure always are interpreted as per-mille of a reference area's height (or width, resp.) depending on the orientation set for the KDChart::Measure.
 
-      \li \c MeasureCalculationAbsolute Value set by setValue() is absolute, to be used unchanged.
-      \li \c MeasureCalculationRelative Value is relative, the reference area is specified by setReferenceArea(), and orientation specified by setOrientation().
-      \li \c MeasureCalculationAuto Value is relative, KD Chart will automatically determine which reference area to use, and it will determine the orientation too.
-      \li \c MeasureCalculationAutoArea Value is relative, Orientation is specified by setOrientation(), and KD Chart will automatically determine which reference area to use.
-      \li \c MeasureCalculationAutoOrientation Value is relative, Area is specified by setReferenceArea(), and KD Chart will automatically determine which orientation to use.
+      \li \c MeasureCalculationModeAbsolute Value set by setValue() is absolute, to be used unchanged.
+      \li \c MeasureCalculationModeRelative Value is relative, the reference area is specified by setReferenceArea(), and orientation specified by setOrientation().
+      \li \c MeasureCalculationModeAuto Value is relative, KD Chart will automatically determine which reference area to use, and it will determine the orientation too.
+      \li \c MeasureCalculationModeAutoArea Value is relative, Orientation is specified by setOrientation(), and KD Chart will automatically determine which reference area to use.
+      \li \c MeasureCalculationModeAutoOrientation Value is relative, Area is specified by setReferenceArea(), and KD Chart will automatically determine which orientation to use.
 
       \sa KDChart::Measure::setCalculationMode
       */

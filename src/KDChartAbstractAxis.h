@@ -38,6 +38,8 @@
 #include "kdchart_export.h"
 #include "KDChartGlobal.h"
 #include "KDChartAbstractArea.h"
+#include "KDChartTextAttributes.h"
+
 
 class QPainter;
 class QSizeF;
@@ -84,6 +86,9 @@ namespace KDChart {
         void createObserver( KDChart::AbstractDiagram* diagram );
         void deleteObserver();
         virtual void connectSignals();
+
+        void setTextAttributes( const TextAttributes &a );
+        TextAttributes textAttributes() const;
 
         void setLabels( const QStringList& list );
         QStringList labels() const;

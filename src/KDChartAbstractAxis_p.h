@@ -44,6 +44,8 @@ public:
 
     DiagramObserver* observer;
 
+    TextAttributes textAttributes;
+
     QStringList hardLabels;
     QStringList hardShortLabels;
 

@@ -35,6 +35,7 @@
 #include "KDChartCartesianAxis_p.h"
 #include "KDChartAbstractCartesianDiagram.h"
 #include "KDChartPainterSaver_p.h"
+#include "KDChartLayoutItems.h"
 
 
 using namespace KDChart;
@@ -161,8 +162,8 @@ void CartesianAxis::paint ( PaintContext* context ) const
     bool drawFourthRulers = screenRange / numberOfFourthRulers > MinimumPixelsBetweenRulers && ! useItemCountLabels;
     bool drawHalfRulers = screenRange / numberOfHalfRulers > MinimumPixelsBetweenRulers && ! useItemCountLabels;
 
-    // PENDING(khz) FIXME: make this dependent on config. options too:
-    bool drawLabels = screenRange / numberOfHalfRulers > MinimumPixelsBetweenRulers;
+    const TextAttributes ta = textAttributes();
+    const bool drawLabels = ta.isVisible() && (screenRange / numberOfHalfRulers > MinimumPixelsBetweenRulers);
 
     // - find the reference point at which to start drawing and the increment (line distance);
     QPointF rulerRef;
@@ -294,7 +295,8 @@ void CartesianAxis::paint ( PaintContext* context ) const
         if ( isAbscissa() ) {
             int tickLength = position() == Top ? -4 : 3;
             // PENDING(khz) FIXME: use TextAttributes, to fix bug #2348
-            QFont textFont( QFont("comic", 5 ) );
+            const QFont textFont( ta.font() );
+
 
             // If we have a labels list AND a short labels list, we first find out,
             // if there is enough space for the labels: if not, use the short labels.
@@ -377,33 +379,54 @@ void CartesianAxis::paint ( PaintContext* context ) const
                 maxLimit = maxValueY;
                 steg = 1.0;
             }
+            bool bFirstLabel = true;
             for ( qreal f = minValueY; f <= maxLimit; f+= steg ) {
 //qDebug("f: %f",f);
-                QPointF leftPoint (  0.0,  percent ? f/numberOfUnitRulers : f );
+                QPointF leftPoint (  0.0, percent ? f/numberOfUnitRulers : f );
                 QPointF rightPoint ( 0.0, percent ? f/numberOfUnitRulers : f );
-                leftPoint = context->coordinatePlane()->translate( leftPoint );
+                leftPoint  = context->coordinatePlane()->translate( leftPoint );
                 rightPoint = context->coordinatePlane()->translate( rightPoint );
                 leftPoint.setX( fourthRulerRef.x() + tickLength );
                 rightPoint.setX( fourthRulerRef.x() );
                 ptr->drawLine( leftPoint, rightPoint );
                 if ( drawLabels ) {
-                    // PENDING(khz) FIXME: use TextAttributes, to fix bug #2348
-                    QFont textFont( QFont("comic", 5 ) );
-                    leftPoint.setX( position() ==
-                        Left
-                        ? ( leftPoint.x() - (2*textFont.pointSize()) )
-                        : ( leftPoint.x()  +   textFont.pointSize() ) );
-                    leftPoint.setY( leftPoint.y() + textFont.pointSize()/2 );
-                    if( f + steg > maxLimit ){
+                    TextLayoutItem* labelItem =
+                        new TextLayoutItem( QString::number( minValueY ),
+                            ta,
+                            this,
+                            KDChartEnums::MeasureOrientationVertical,
+                            Qt::AlignLeft );
+                    // No need to call labelItem->setParentWidget(), since we are using
+                    // the layout item temporarily only.
+                    const QSize labelSize(     labelItem->sizeHint() );
+                    const qreal labelFontSize( labelItem->realFontSize() );
+                    const QFontMetricsF met(   labelItem->realFont() );
+                    leftPoint.setX(
+                        (position() == Left)
+                        ? ( leftPoint.x()  - labelFontSize * 0.75 )
+                        : ( leftPoint.x() + labelFontSize * 0.75 ) );
+                    int x = static_cast<int>( leftPoint.x() );
+                    if( position() == Left )
+                        x -= labelSize.width();
+                    int y;
+                    if( bFirstLabel ){
+                        // first label of the ordinate?
+                        // shift it up a bit, to prevent it from being clipped away
+                        y = static_cast<int>( leftPoint.y() - met.ascent() * 0.70 );
+                    }else if( f + steg > maxLimit ){
                         // last label of the ordinate?
                         // shift it down a bit, to prevent it from being clipped away
-                        leftPoint.setY( leftPoint.y() + textFont.pointSize()/2 );
+                        y = static_cast<int>( leftPoint.y() - met.ascent() * 0.20 );
+                    }else{
+                        y = static_cast<int>( leftPoint.y() - met.ascent() * 0.5 );
                     }
-                    PainterSaver painterSaver( ptr );
-                    ptr->setPen( Qt::red );
-                    ptr->setFont( textFont );
-                    ptr->drawText( leftPoint, QString::number( minValueY ) );
+                    --y;
+
+                    labelItem->setGeometry( QRect( QPoint(x, y), labelSize ) );
+                    labelItem->paint( ptr );
+
                     d->diagram->percentMode() ? minValueY += 10.0 : minValueY += 1.0;
+                    bFirstLabel = false;
                 }
             }
             //Pending Michel: reset to default - is that really what we want?

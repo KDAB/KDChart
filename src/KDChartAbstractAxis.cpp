@@ -28,6 +28,8 @@
 #include <QDebug>
 #include <KDChartAbstractDiagram.h>
 #include "KDChartAbstractCartesianDiagram.h"
+#include "KDChartEnums.h"
+#include "KDChartMeasure.h"
 
 using namespace KDChart;
 
@@ -79,7 +81,15 @@ AbstractAxis::~AbstractAxis()
 
 void AbstractAxis::init()
 {
-    // this bloc left empty intentionally
+    Measure m(
+        15,
+        KDChartEnums::MeasureCalculationModeAutoOrientation,
+        KDChartEnums::MeasureOrientationAuto );
+    m.setReferenceArea( this );
+    d_func()->textAttributes.setFontSize( m  );
+    m.setValue( 5 );
+    m.setCalculationMode( KDChartEnums::MeasureCalculationModeAbsolute );
+    d_func()->textAttributes.setMinimalFontSize( m  );
 }
 
 /**
@@ -148,6 +158,26 @@ void AbstractAxis::connectSignals()
     }
 }
 
+
+/**
+  \brief Use this to specify the text attributes to be used for axis labels.
+
+  \sa textAttributes, setLabels
+*/
+void AbstractAxis::setTextAttributes( const TextAttributes &a )
+{
+    d_func()->textAttributes = a;
+}
+
+/**
+  \brief Returns the text attributes to be used for axis labels.
+
+  \sa setTextAttributes
+*/
+TextAttributes AbstractAxis::textAttributes() const
+{
+    return d_func()->textAttributes;
+}
 
 /**
   \brief Use this to specify your own set of strings, to be used as axis labels.
