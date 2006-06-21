@@ -48,29 +48,16 @@ AbstractAxis::Private::Private( AbstractDiagram* diagram_ )
 AbstractAxis::Private::~Private()
 {
     // PENDING(miroslav) Code from KDChartAxis::Private::~Private goes here
-    if( observer ){
-      delete observer;
-      observer = 0;
-    }
+    delete observer;
+    observer = 0;
 }
 
 
-/**
-  * C'tor of the base class for axes.
-  *
-  * \note If using a zero parent for the constructor, you NEED to call
-  * your diagram's addAxis function to add your axis to the diagram.
-  * Otherwise, there is no need to call addAxis, since the constructor
-  * does that automatically for you, if you pass a parent as parameter.
-  *
-  * \sa AbstractCartesianDiagram::addAxis
-  */
+
 AbstractAxis::AbstractAxis ( AbstractDiagram* diagram )
-    : AbstractArea( new Private( diagram ), diagram )
+    : AbstractArea( new Private( diagram ), 0 )
 {
     init();
-    if( diagram )
-        createObserver( diagram );
 }
 
 AbstractAxis::~AbstractAxis()
