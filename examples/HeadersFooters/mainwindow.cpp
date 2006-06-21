@@ -86,7 +86,7 @@ void MainWindow::on_addHeaderPB_clicked()
         KDChart::HeaderFooter* headerFooter = new KDChart::HeaderFooter( m_chart );
         m_chart->addHeaderFooter( headerFooter );
         headerFooter->setText( conf.textED->text() );
-        KDChart::TextAttributes attrs;
+        KDChart::TextAttributes attrs( headerFooter->textAttributes() );
         attrs.setColor( Qt::red );
         headerFooter->setTextAttributes( attrs );
         headerFooter->setType(
