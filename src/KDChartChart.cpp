@@ -354,8 +354,8 @@ void Chart::Private::slotLayoutPlanes()
          * the middle of the layout, if we are sharing, it's a cell in the center
          * column of the shared grid. */
         planeLayout->addWidget( plane, row, column, Qt::AlignLeft | Qt::AlignVCenter );
-        //planeLayout->setRowStretch( row, 100 );
-        //planeLayout->setColumnStretch( column, 100 );
+        planeLayout->setRowStretch( row, 1000 );
+        planeLayout->setColumnStretch( column, 1000 );
 
         foreach ( AbstractDiagram* abstractDiagram, plane->diagrams() )
         {
