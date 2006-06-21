@@ -108,7 +108,7 @@ namespace KDChart {
         /** \reimp */
         //virtual QSize minimumSizeHint() const;
         /** \reimp */
-        //virtual QSizePolicy sizePolicy() const;
+        virtual QSizePolicy sizePolicy() const;
 
         /**
          * @return The zoom factor in horizontal direction, that is applied

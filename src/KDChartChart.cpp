@@ -353,7 +353,7 @@ void Chart::Private::slotLayoutPlanes()
         /* Put the plane in the center of the layout. If this is our own, that's
          * the middle of the layout, if we are sharing, it's a cell in the center
          * column of the shared grid. */
-        planeLayout->addWidget( plane, row, column, Qt::AlignLeft | Qt::AlignVCenter );
+        planeLayout->addWidget( plane, row, column, 0 );
         //planeLayout->setRowStretch( row, 10000 );
         //planeLayout->setColumnStretch( column, 10000 );
 
@@ -404,8 +404,11 @@ void Chart::Private::slotLayoutPlanes()
 
     }
     // re-add our grid(s) to the chart's layout
-    if ( dataAndLegendLayout )
+    if ( dataAndLegendLayout ){
         dataAndLegendLayout->addLayout( planesLayout, 1, 1 );
+        dataAndLegendLayout->setRowStretch(    1, 2 );
+        dataAndLegendLayout->setColumnStretch( 1, 2 );
+    }
 
     slotRelayout();
 }
