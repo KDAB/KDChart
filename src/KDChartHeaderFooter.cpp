@@ -37,12 +37,14 @@
 
 using namespace KDChart;
 
-HeaderFooter::Private::Private() :
+HeaderFooter::Private::Private( QWidget* parent_ ) :
+    parent( parent_ ),
     type( Header ),
     position( Position::North ),
     text( QObject::tr( "Header/Footer" ) ),
-    textAttributes(),
-    textDoc( 0 )
+    textAttrs(),
+    textDoc( 0 ),
+    cachedSize(0,0)
 {
 }
 
@@ -53,10 +55,19 @@ HeaderFooter::Private::~Private()
 
 void HeaderFooter::Private::updateTextDoc()
 {
+    qreal fntSize = qMax(
+        textAttrs.fontSize().calculatedValue(
+            parent,
+            KDChartEnums::MeasureOrientationMinimum ),
+        textAttrs.minimalFontSize().calculatedValue(
+            parent,
+            KDChartEnums::MeasureOrientationMinimum ) );
+    QFont fnt( textAttrs.font() );
+    fnt.setPointSizeF( fntSize );
     if( textDoc )
         delete textDoc;
     textDoc = new KDTextDocument;
-    textDoc->setDefaultFont( textAttributes.font() );
+    textDoc->setDefaultFont( fnt );
     QTextCursor cursor( textDoc );
 
     // PENDING(kalle) Other attributes!
@@ -71,8 +82,9 @@ void HeaderFooter::Private::updateTextDoc()
 #define d d_func()
 
 HeaderFooter::HeaderFooter( QWidget* parent ) :
-    AbstractArea( new Private(), parent  )
+    AbstractArea( new Private( parent ), parent  )
 {
+    init();
 }
 
 HeaderFooter::~HeaderFooter()
@@ -82,11 +94,19 @@ HeaderFooter::~HeaderFooter()
 
 void HeaderFooter::init()
 {
-    TextAttributes textAttrs;
-    textAttrs.setColor( Qt::black );
-    textAttrs.setFont( QFont( "helvetica", 10, QFont::Bold, false ) );
-    textAttrs.setFontSize( 16 );
-    setTextAttributes( textAttrs );
+    TextAttributes ta;
+    ta.setColor( Qt::black );
+    ta.setFont( QFont( "helvetica", 10, QFont::Bold, false ) );
+
+    Measure m( 35.0 );
+    m.setRelativeMode( *d->parent, KDChartEnums::MeasureOrientationMinimum );
+    ta.setFontSize( m );
+
+    m.setValue( 8.0 );
+    m.setCalculationMode( KDChartEnums::MeasureCalculationModeAbsolute );
+    ta.setMinimalFontSize( m  );
+
+    setTextAttributes( ta );
 }
 
 QDomDocumentFragment HeaderFooter::toXML() const
@@ -103,10 +123,16 @@ HeaderFooter * HeaderFooter::clone() const
     return (HeaderFooter*)0xdeadbeef;
 }
 
+
 void HeaderFooter::paintEvent( QPaintEvent* evt )
 {
     // Paint the background and frame first
     AbstractArea::paintEvent( evt );
+
+    if( ! d->textAttrs.hasAbsoluteFontSize() && d->parent->size() != d->cachedSize ){
+        d->cachedSize = d->parent->size();
+        d->updateTextDoc();
+    }
 
 //    Q_ASSERT( d->textDoc );
     if( !d->textDoc )
@@ -167,16 +193,33 @@ QString HeaderFooter::text() const
     return d->text;
 }
 
+/**
+  \brief Use this to specify the text attributes to be used for this header
+  (or footer, resp.).
+
+  By default, the reference area will be set at painting time.
+  It will be the parent widget of this header/footer,
+  so normally, it will be the KDChart::Chart.
+  Thus all of your headers, and all of your footers
+  within that Chart will be drawn in same font size, by default.
+
+  \sa textAttributes, setLabels
+*/
 void HeaderFooter::setTextAttributes( const TextAttributes &a )
 {
-    d->textAttributes = a;
+    d->textAttrs = a;
     d->updateTextDoc();
     updateGeometry();
 }
 
+/**
+  Returns the text attributes to be used for this header (or footer, resp.).
+
+  \sa setTextAttributes
+*/
 TextAttributes HeaderFooter::textAttributes() const
 {
-    return d->textAttributes;
+    return d->textAttrs;
 }
 
 QSize HeaderFooter::sizeHint() const

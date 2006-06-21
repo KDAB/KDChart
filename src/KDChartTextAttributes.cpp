@@ -141,6 +141,12 @@ Measure TextAttributes::minimalFontSize() const
     return d->minimalFontSize;
 }
 
+bool TextAttributes::hasAbsoluteFontSize() const
+{
+    return d->fontSize.calculationMode() == KDChartEnums::MeasureCalculationModeAbsolute
+        && d->minimalFontSize.calculationMode() == KDChartEnums::MeasureCalculationModeAbsolute;
+}
+
 void TextAttributes::setAutoRotate( bool autoRotate )
 {
     d->autoRotate = autoRotate;

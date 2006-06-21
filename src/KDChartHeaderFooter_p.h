@@ -42,21 +42,22 @@ class KDChart::HeaderFooter::Private : public AbstractArea::Private
 {
     friend class KDChart::HeaderFooter;
 public:
-    Private();
+    Private( QWidget* parent_ );
     ~Private();
 
     void updateTextDoc();
 
 private:
     // user-settable
+    QWidget* parent;
     HeaderFooterType type;
     Position position;
     QString text;
-    TextAttributes textAttributes;
+    TextAttributes textAttrs;
 
     // internal
     mutable KDTextDocument* textDoc;
-    QRectF rect;
+    QSize cachedSize;
 };
 
 inline KDChart::HeaderFooter::HeaderFooter( Private* d, QWidget* parent )

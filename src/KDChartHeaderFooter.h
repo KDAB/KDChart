@@ -58,7 +58,6 @@ public:
     virtual QSize minimumSizeHint() const;
     virtual void paintEvent( QPaintEvent* );
 
-
     enum HeaderFooterType{ Header,
                            Footer };
 

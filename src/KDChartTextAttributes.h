@@ -62,6 +62,8 @@ public:
   void setMinimalFontSize( const Measure & measure );
   Measure minimalFontSize() const;
 
+  bool hasAbsoluteFontSize() const;
+
   void setAutoRotate( bool autoRotate );
   bool autoRotate() const;
 
