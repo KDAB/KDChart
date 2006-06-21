@@ -32,8 +32,8 @@
 namespace KDChart {
     class Chart;
     class DatasetProxyModel;
-    class BarDiagram;
-    class BarAttributes;
+    class LineDiagram;
+    class LineAttributes;
     class CartesianAxis;
     class Legend;
 }
@@ -59,15 +59,15 @@ private slots:
     void on_displayAreasCB_toggled( bool checked );
     void on_transparencySB_valueChanged( int i );
     void on_zoomFactorSB_valueChanged( double factor );
-    void on_hSBar_valueChanged( int value );
-    void on_vSBar_valueChanged( int value );
+    void on_hSLine_valueChanged( int value );
+    void on_vSLine_valueChanged( int value );
 */
 
 private:
     KDChart::Chart* m_chart;
     TableModel m_model;
     KDChart::DatasetProxyModel* m_datasetProxy;
-    KDChart::BarDiagram* m_bars;
+    KDChart::LineDiagram* m_lines;
     KDChart::Legend* m_legend;
     // mutable KDChart::CartesianAxis xAxis;
     //mutable KDChart::CartesianAxis yAxis;

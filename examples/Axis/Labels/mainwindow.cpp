@@ -27,11 +27,11 @@
 
 #include <KDChartChart>
 #include <KDChartAbstractCoordinatePlane>
-#include <KDChartBarDiagram>
-#include <KDChartBarAttributes>
+#include <KDChartLineDiagram>
+#include <KDChartLineAttributes>
 #include <KDChartTextAttributes>
 #include <KDChartDataValueAttributes>
-#include <KDChartThreeDBarAttributes>
+#include <KDChartThreeDLineAttributes>
 #include <KDChartMarkerAttributes>
 #include <KDChartLegend>
 
@@ -54,12 +54,12 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_model.loadFromCSV( ":/data" );
 
     // Set up the diagram
-    m_bars = new BarDiagram();
-    m_bars->setModel( &m_model );
-    //CartesianAxisList List = m_bars->axesList();
+    m_lines = new LineDiagram();
+    m_lines->setModel( &m_model );
+    //CartesianAxisList List = m_lines->axesList();
 
-    CartesianAxis *xAxis = new CartesianAxis( m_bars );
-    CartesianAxis *yAxis = new CartesianAxis ( m_bars );
+    CartesianAxis *xAxis = new CartesianAxis( m_lines );
+    CartesianAxis *yAxis = new CartesianAxis ( m_lines );
     xAxis->setPosition ( KDChart::CartesianAxis::Bottom );
     yAxis->setPosition ( KDChart::CartesianAxis::Left );
 
@@ -73,12 +73,12 @@ MainWindow::MainWindow( QWidget* parent ) :
     xAxis->setShortLabels( shortDays );
 #endif
 
-    m_bars->addAxis( xAxis );
-    m_bars->addAxis( yAxis );
-    m_chart->coordinatePlane()->replaceDiagram( m_bars );
+    m_lines->addAxis( xAxis );
+    m_lines->addAxis( yAxis );
+    m_chart->coordinatePlane()->replaceDiagram( m_lines );
 
     // Set up the legend
-    m_legend = new Legend( m_bars, m_chart );
+    m_legend = new Legend( m_lines, m_chart );
     m_chart->addLegend( m_legend );
     m_legend->hide();
 }
@@ -86,11 +86,11 @@ MainWindow::MainWindow( QWidget* parent ) :
 void MainWindow::on_lineTypeCB_currentIndexChanged( const QString & text )
 {
     if ( text == "Normal" )
-        m_bars->setType( LineDiagram::Normal );
+        m_lines->setType( LineDiagram::Normal );
     else if ( text == "Stacked" )
-        m_bars->setType( LineDiagram::Stacked );
+        m_lines->setType( LineDiagram::Stacked );
     else if ( text == "Percent" )
-        m_bars->setType( LineDiagram::Percent );
+        m_lines->setType( LineDiagram::Percent );
     else
         qWarning (" Does not match any type");
 
@@ -107,11 +107,11 @@ void MainWindow::on_paintLegendCB_toggled( bool checked )
 void MainWindow::on_paintValuesCB_toggled( bool checked )
 {
     //testing
-    const int colCount = m_bars->model()->columnCount();
+    const int colCount = m_lines->model()->columnCount();
     for ( int i = 0; i<colCount; ++i ) {
-        QModelIndex index = m_bars->model()->index( 0, i, QModelIndex() );
-        QBrush brush = qVariantValue<QBrush>( m_bars->model()->headerData( i, Qt::Vertical, DatasetBrushRole ) );
-        DataValueAttributes a = m_bars->dataValueAttributes( index );
+        QModelIndex index = m_lines->model()->index( 0, i, QModelIndex() );
+        QBrush brush = qVariantValue<QBrush>( m_lines->model()->headerData( i, Qt::Vertical, DatasetBrushRole ) );
+        DataValueAttributes a = m_lines->dataValueAttributes( index );
         if ( !paintMarkersCB->isChecked() ) {
             MarkerAttributes ma = a.markerAttributes();
             ma.setVisible( false );
@@ -128,7 +128,7 @@ void MainWindow::on_paintValuesCB_toggled( bool checked )
 
         a.setTextAttributes( ta );
         a.setVisible( true );
-        m_bars->setDataValueAttributes( i, a);
+        m_lines->setDataValueAttributes( i, a);
     }
     m_chart->update();
 }
@@ -197,8 +197,8 @@ void MainWindow::on_paintMarkersCB_toggled( bool checked )
     yellowMarker.setMarkerColor( Qt::yellow );
     yellowAttributes.setMarkerAttributes( yellowMarker );
 
-    const int rowCount = m_bars->model()->rowCount();
-    const int colCount = m_bars->model()->columnCount();
+    const int rowCount = m_lines->model()->rowCount();
+    const int colCount = m_lines->model()->columnCount();
     for ( int i = 0; i<colCount; ++i ) {
         DataValueAttributes colAttributes(a);
         if ( markersStyleCB->currentIndex() == 0 ) {
@@ -207,15 +207,15 @@ void MainWindow::on_paintMarkersCB_toggled( bool checked )
             colAttributes.setMarkerAttributes( ma );
         }
         for ( int j=0; j< rowCount; ++j ) {
-            QModelIndex index = m_bars->model()->index( j, i, QModelIndex() );
-            QBrush brush = qVariantValue<QBrush>( m_bars->model()->headerData( i, Qt::Vertical, DatasetBrushRole ) );
-            double value = m_bars->model()->data( index ).toDouble();
+            QModelIndex index = m_lines->model()->index( j, i, QModelIndex() );
+            QBrush brush = qVariantValue<QBrush>( m_lines->model()->headerData( i, Qt::Vertical, DatasetBrushRole ) );
+            double value = m_lines->model()->data( index ).toDouble();
             // Set a specific color - marker for a specific value
             if ( value == 8 ) {
-                m_bars->setDataValueAttributes( index, yellowAttributes );
+                m_lines->setDataValueAttributes( index, yellowAttributes );
             }
         }
-        m_bars->setDataValueAttributes( i, colAttributes );
+        m_lines->setDataValueAttributes( i, colAttributes );
     }
     m_chart->update();
 }
@@ -247,18 +247,18 @@ void MainWindow::on_markersHeightSB_valueChanged( int i )
 
 void MainWindow::on_displayAreasCB_toggled( bool checked )
 {
-    const int rowCount = m_bars->model()->rowCount();
-    const int colCount = m_bars->model()->columnCount();
+    const int rowCount = m_lines->model()->rowCount();
+    const int colCount = m_lines->model()->columnCount();
      for ( int i = 0; i<colCount; ++i ) {
-         QModelIndex index = m_bars->model()->index( 0, i, QModelIndex() );
+         QModelIndex index = m_lines->model()->index( 0, i, QModelIndex() );
          for ( int j=0; j< rowCount; ++j ) {
-             LineAttributes la = m_bars->lineAttributes( index );
+             LineAttributes la = m_lines->lineAttributes( index );
              if ( checked  ) {
                  la.setDisplayArea( true );
                  la.setTransparency( transparencySB->value() );
              } else
                  la.setDisplayArea( false );
-             m_bars->setLineAttributes( i,  la );
+             m_lines->setLineAttributes( i,  la );
          }
      }
      m_chart->update();
@@ -266,14 +266,14 @@ void MainWindow::on_displayAreasCB_toggled( bool checked )
 
 void MainWindow::on_transparencySB_valueChanged( int alpha )
 {
-    const int rowCount = m_bars->model()->rowCount();
-    const int colCount = m_bars->model()->columnCount();
+    const int rowCount = m_lines->model()->rowCount();
+    const int colCount = m_lines->model()->columnCount();
     for ( int i = 0; i<colCount; ++i ) {
-        QModelIndex index = m_bars->model()->index( 0, i, QModelIndex() );
+        QModelIndex index = m_lines->model()->index( 0, i, QModelIndex() );
         for ( int j=0; j< rowCount; ++j ) {
-            LineAttributes la = m_bars->lineAttributes( index );
+            LineAttributes la = m_lines->lineAttributes( index );
             la.setTransparency( alpha );
-            m_bars->setLineAttributes( la );
+            m_lines->setLineAttributes( la );
         }
     }
     on_displayAreasCB_toggled( true );
@@ -282,28 +282,28 @@ void MainWindow::on_transparencySB_valueChanged( int alpha )
 void MainWindow::on_zoomFactorSB_valueChanged( double factor )
 {
     if ( factor > 1 ) {
-        hSBar->setVisible( true );
-        vSBar->setVisible( true );
+        hSLine->setVisible( true );
+        vSLine->setVisible( true );
     } else {
-        hSBar->setValue( 500 );
-        vSBar->setValue( 500 );
-        hSBar->setVisible( false );
-        vSBar->setVisible( false );
+        hSLine->setValue( 500 );
+        vSLine->setValue( 500 );
+        hSLine->setVisible( false );
+        vSLine->setVisible( false );
     }
     m_chart->coordinatePlane()->setZoomFactorX( factor );
     m_chart->coordinatePlane()->setZoomFactorY( factor );
     m_chart->update();
 }
 
-void MainWindow::on_hSBar_valueChanged( int hPos )
+void MainWindow::on_hSLine_valueChanged( int hPos )
 {
-    m_chart->coordinatePlane()->setZoomCenter( QPointF(hPos/1000.0, vSBar->value()/1000.0) );
+    m_chart->coordinatePlane()->setZoomCenter( QPointF(hPos/1000.0, vSLine->value()/1000.0) );
     m_chart->update();
 }
 
-void MainWindow::on_vSBar_valueChanged( int vPos )
+void MainWindow::on_vSLine_valueChanged( int vPos )
 {
-    m_chart->coordinatePlane()->setZoomCenter( QPointF( hSBar->value()/1000.0, vPos/1000.0) );
+    m_chart->coordinatePlane()->setZoomCenter( QPointF( hSLine->value()/1000.0, vPos/1000.0) );
     m_chart->update();
 }
 */
