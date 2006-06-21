@@ -104,9 +104,7 @@ namespace KDChart {
         virtual const QPointF translate ( const QPointF& diagramPoint ) const = 0;
 
         /** \reimp */
-        //virtual QSize sizeHint() const;
-        /** \reimp */
-        //virtual QSize minimumSizeHint() const;
+        virtual QSize minimumSizeHint() const;
         /** \reimp */
         virtual QSizePolicy sizePolicy() const;
 

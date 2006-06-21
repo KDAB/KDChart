@@ -47,7 +47,6 @@ AbstractCoordinatePlane::AbstractCoordinatePlane ( QWidget* parent )
     : QWidget ( parent )
     , d ( new Private() )
 {
-    setMinimumSize(QSize(200, 200));
 }
 
 AbstractCoordinatePlane::~AbstractCoordinatePlane()
@@ -108,21 +107,16 @@ AbstractDiagramList AbstractCoordinatePlane::diagrams()
 {
     return d->diagrams;
 }
-/*
-QSize KDChart::AbstractCoordinatePlane::sizeHint() const
-{
-    return QSize( 1000, 1000 );
-}
 
 QSize KDChart::AbstractCoordinatePlane::minimumSizeHint() const
 {
     return QSize( 200, 200 );
 }
-*/
+
 
 QSizePolicy KDChart::AbstractCoordinatePlane::sizePolicy() const
 {
-    return QSizePolicy( QSizePolicy::Expanding, QSizePolicy::Expanding );
+    return QSizePolicy( QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding );
 }
 
 void KDChart::AbstractCoordinatePlane::setGridAttributes( const GridAttributes& a )
