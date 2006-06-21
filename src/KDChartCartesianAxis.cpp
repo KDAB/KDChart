@@ -406,7 +406,19 @@ void CartesianAxis::paint ( PaintContext* context ) const
                 maxLimit = maxValueY;
                 steg = 1.0;
             }
-            bool bFirstLabel = true;
+            int maxLabelsWidth = 0;
+            qreal labelValue;
+            if( drawLabels && isRight ){
+                // Find the wides label, so we to know how much we need to right-shift
+                // our labels, to get them drawn right aligned:
+                labelValue = minValueY;
+                for ( qreal f = minValueY; f <= maxLimit; f+= steg ) {
+                    labelItem->setText( QString::number( labelValue ) );
+                    maxLabelsWidth = qMax( maxLabelsWidth, labelItem->sizeHint().width() );
+                    d->diagram->percentMode() ? labelValue += 10.0 : labelValue += 1.0;
+                }
+            }
+            labelValue = minValueY;
             for ( qreal f = minValueY; f <= maxLimit; f+= steg ) {
 //qDebug("f: %f",f);
                 QPointF leftPoint (  0.0, percent ? f/numberOfUnitRulers : f );
@@ -417,7 +429,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
                 rightPoint.setX( fourthRulerRef.x() );
                 ptr->drawLine( leftPoint, rightPoint );
                 if ( drawLabels ) {
-                    labelItem->setText( QString::number( minValueY ) );
+                    labelItem->setText( QString::number( labelValue ) );
                     // No need to call labelItem->setParentWidget(), since we are using
                     // the layout item temporarily only.
                     const QSize labelSize(     labelItem->sizeHint() );
@@ -425,9 +437,9 @@ void CartesianAxis::paint ( PaintContext* context ) const
                          );
                     const int x =
                         static_cast<int>( leftPoint.x() + met.height() * (isLeft ? -0.5 : 0.5) )
-                        - (isLeft ? labelSize.width() : 0);
+                        - ( isLeft ? labelSize.width() : (labelSize.width() - maxLabelsWidth) );
                     int y;
-                    if( bFirstLabel ){
+                    if( f == minValueY ){
                         // first label of the ordinate?
                         // shift it up a bit, to prevent it from being clipped away
                         y = static_cast<int>( leftPoint.y() - met.ascent() * 0.7 );
@@ -443,8 +455,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
                     labelItem->setGeometry( QRect( QPoint(x, y), labelSize ) );
                     labelItem->paint( ptr );
 
-                    d->diagram->percentMode() ? minValueY += 10.0 : minValueY += 1.0;
-                    bFirstLabel = false;
+                    d->diagram->percentMode() ? labelValue += 10.0 : labelValue += 1.0;
                 }
             }
             //Pending Michel: reset to default - is that really what we want?
