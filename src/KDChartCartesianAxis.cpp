@@ -294,7 +294,10 @@ void CartesianAxis::paint ( PaintContext* context ) const
 
         QStringList headerLabels;
         if( useItemCountLabels ){
-            headerLabels = d->diagram->datasetLabels();
+            headerLabels =
+                isOrdinate()
+                ? d->diagram->datasetLabels()
+                : d->diagram->itemRowLabels();
         }
         const int headerLabelsCount = headerLabels.count();
 
@@ -318,32 +321,30 @@ void CartesianAxis::paint ( PaintContext* context ) const
 
         if ( isAbscissa() ) {
             int tickLength = isTop ? -4 : 3;
-            // PENDING(khz) FIXME: use TextAttributes, to fix bug #2348
-            const QFont textFont( ta.font() );
-
 
             // If we have a labels list AND a short labels list, we first find out,
             // if there is enough space for the labels: if not, use the short labels.
             if( drawLabels && hardLabelsCount && shortLabelsCount ){
-                PainterSaver painterSaver( ptr );
-                ptr->setFont( textFont );
-                // PENDING(khz) FIXME: use rel. font size from KDChartMeasure, to fix bug #2347
-                const QFontMetrics met( ptr->fontMetrics() );
                 bool labelsAreOverlapping = false;
                 QRegion combinedRegion;
                 int iLabel = 0;
                 for ( qreal i = minValueX; i <= maxValueX && ! labelsAreOverlapping; i+=1.0 ) {
+                    labelItem->setText( labels()[ iLabel ] );
+                    // No need to call labelItem->setParentWidget(), since we are using
+                    // the layout item temporarily only.
                     QPointF topPoint ( i, 0.0 );
                     topPoint = context->coordinatePlane()->translate( topPoint );
-                    topPoint.setX( topPoint.x() - textFont.pointSize() );
+                    topPoint.setX( topPoint.x() - met.height() );
                     topPoint.setY( fourthRulerRef.y() + tickLength );
                     topPoint.setY(
                         isTop
-                        ? ( topPoint.y()      - textFont.pointSize()  )
-                        : ( topPoint.y() + (2 * textFont.pointSize()) ) );
-                    const QRegion region( met.boundingRect( labels()[ iLabel ] )
-                        .translated( static_cast<int>(topPoint.x()), static_cast<int>(topPoint.y()) )
-                        .adjusted( -1,-1,1,1) ); // "adjusted" gives us a minimum of 2 pixels between the labels
+                        ? ( topPoint.y() -        met.height()  )
+                        : ( topPoint.y() + (2.0 * met.height()) ) );
+
+                    const QRegion region( QRect(
+                        QPoint( static_cast<int>(topPoint.x()), static_cast<int>(topPoint.y()) ),
+                        labelItem->sizeHint() ).adjusted( -1,-1,1,1) // a minimum of 2 pixels between the labels
+                        );
                     labelsAreOverlapping = ! combinedRegion.intersect( region ).isEmpty();
                     combinedRegion += region;
                     if( iLabel >= hardLabelsCount-1 )
@@ -353,12 +354,6 @@ void CartesianAxis::paint ( PaintContext* context ) const
                 }
                 useShortLabels = labelsAreOverlapping;
             }
-
-            PainterSaver painterSaver( ptr );
-            ptr->setPen( Qt::blue );
-            ptr->setFont( textFont );
-            // PENDING(khz) FIXME: use rel. font size from KDChartMeasure, to fix bug #2347
-            const QFontMetrics metrics( ptr->fontMetrics() );
 
             int iLabel = 0;
             for ( qreal i = minValueX; i <= maxValueX; i+=1.0 ) {
@@ -370,16 +365,20 @@ void CartesianAxis::paint ( PaintContext* context ) const
                 bottomPoint.setY( fourthRulerRef.y() );
                 ptr->drawLine( topPoint, bottomPoint );
                 if ( drawLabels ) {
-                    topPoint.setY(
-                          isTop
-                        ? (topPoint.y() - textFont.pointSize())
-                        : (topPoint.y() + (2 * textFont.pointSize())) );
-                    QString label( hardLabelsCount
+                    labelItem->setText( hardLabelsCount
                         ? ( useShortLabels    ? shortLabels()[ iLabel ] : labels()[ iLabel ] )
                         : ( headerLabelsCount ? headerLabels[  iLabel ] : QString::number( minValueX ) ) );
-                    const QSizeF size( metrics.boundingRect( label ).size() );
-                    topPoint.setX( topPoint.x() - size.width() / 2.0 );
-                    ptr->drawText( QRectF(topPoint, size), Qt::AlignCenter, label);
+                    // No need to call labelItem->setParentWidget(), since we are using
+                    // the layout item temporarily only.
+                    const QSize size( labelItem->sizeHint() );
+                    labelItem->setGeometry(
+                        QRect(
+                            QPoint(
+                                static_cast<int>( topPoint.x() - size.width() / 2 ),
+                                static_cast<int>( topPoint.y()
+                                    + met.height() * (isBottom ? 0.5 : -1.5 )) ),
+                            size ) );
+                    labelItem->paint( ptr );
                     if( hardLabelsCount ){
                         if( iLabel >= hardLabelsCount  -1 )
                             iLabel = 0;
@@ -432,7 +431,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
                     labelItem->setText( QString::number( labelValue ) );
                     // No need to call labelItem->setParentWidget(), since we are using
                     // the layout item temporarily only.
-                    const QSize labelSize(     labelItem->sizeHint() );
+                    const QSize labelSize( labelItem->sizeHint() );
                     leftPoint.setX( leftPoint.x()
                          );
                     const int x =

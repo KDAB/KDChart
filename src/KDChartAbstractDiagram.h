@@ -299,6 +299,12 @@ namespace KDChart {
         void useSubduedColors();
 
         /**
+         * The set of item row labels currently displayed, for use in Abscissa axes, etc.
+         * @return The set of item row labels currently displayed.
+         */
+        QStringList itemRowLabels() const;
+
+        /**
          * The set of dataset labels currently displayed, for use in legends, etc.
          * @return The set of dataset labels currently displayed.
          */
