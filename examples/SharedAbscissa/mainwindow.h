@@ -52,7 +52,7 @@ private:
     KDChart::DatasetProxyModel* m_datasetProxy;
     KDChart::LineDiagram* m_lines;
     KDChart::LineDiagram* m_lines2;
-    KDChart::CartesianCoordinatePlane* plane;
+    KDChart::CartesianCoordinatePlane* plane2;
     // mutable KDChart::CartesianAxis xAxis;
     //mutable KDChart::CartesianAxis yAxis;
 

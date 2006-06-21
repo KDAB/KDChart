@@ -53,7 +53,9 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_lines2 = new LineDiagram();
     m_lines2->setModel( &m_model2 );
 
-    plane = new CartesianCoordinatePlane( m_chart );
+    // We call this "plane2" just for remembering, that we use it
+    // in addition to the plane, that's built-in by default.
+    plane2 = new CartesianCoordinatePlane( m_chart );
 
     CartesianAxis *xAxis = new CartesianAxis( m_lines );
     CartesianAxis *yAxis = new CartesianAxis ( m_lines );
@@ -66,6 +68,6 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_lines2->addAxis( xAxis );
 
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
-    plane->replaceDiagram( m_lines2 );
-    m_chart->addCoordinatePlane( plane/*, 1*/);
+    plane2->replaceDiagram( m_lines2 );
+    m_chart->addCoordinatePlane( plane2/*, 1*/);
 }
