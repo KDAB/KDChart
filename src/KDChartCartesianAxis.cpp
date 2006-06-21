@@ -315,8 +315,6 @@ void CartesianAxis::paint ( PaintContext* context ) const
             drawLabels
             ? labelItem->realFont()
             : QFontMetricsF( QApplication::font() ) );
-        const qreal labelFontSize( met.height() );
-
 
         if ( isAbscissa() ) {
             int tickLength = isTop ? -4 : 3;
@@ -423,10 +421,8 @@ void CartesianAxis::paint ( PaintContext* context ) const
                     // No need to call labelItem->setParentWidget(), since we are using
                     // the layout item temporarily only.
                     const QSize labelSize(     labelItem->sizeHint() );
-                    leftPoint.setX(
-                        isLeft
-                        ? ( leftPoint.x()  - labelFontSize * 0.75 )
-                        : ( leftPoint.x() + labelFontSize * 0.75 ) );
+                    leftPoint.setX( leftPoint.x()
+                        + met.height() * (isLeft ? -0.5 : 0.5) );
                     int x = static_cast<int>( leftPoint.x() );
                     if( isLeft )
                         x -= labelSize.width();
