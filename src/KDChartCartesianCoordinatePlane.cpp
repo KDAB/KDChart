@@ -101,6 +101,7 @@ void CartesianCoordinatePlane::paintEvent ( QPaintEvent* )
             diags[i]->paint ( &ctx );
         }
     }
+    //for debugging: painter.drawRect(d->drawingArea);
 }
 
 void CartesianCoordinatePlane::paintGrid( PaintContext* ctx )

@@ -101,7 +101,6 @@ bool CartesianAxis::isOrdinate() const
 #define ptr (context->painter())
 void CartesianAxis::paint ( PaintContext* context ) const
 {
-
     Q_ASSERT ( d->diagram );
     const int MinimumPixelsBetweenRulers = 5;
     const QPair<QPointF, QPointF> dataBoundaries = d->diagram->dataBoundaries();
@@ -463,6 +462,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
         if( labelItem )
             delete labelItem;
     }
+    //for debugging: ptr->drawRect(geoRect);
 }
 #undef ptr
 
