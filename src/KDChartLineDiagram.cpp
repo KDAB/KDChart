@@ -247,7 +247,7 @@ void LineDiagram::paint( PaintContext* ctx )
 
     // paint different line types Normal - Stacked - Percent - Default Normal
     switch ( type() )
-        {
+    {
         case LineDiagram::Normal:
             for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
                 QPolygonF area;
@@ -358,7 +358,7 @@ void LineDiagram::paint( PaintContext* ctx )
         default:
             Q_ASSERT_X ( false, "paint()",
                          "Type item does not match a defined line chart Type." );
-        }
+    }
     // paint all lines and their attributes
     LineAttributesInfoListIterator itline ( lineList );
     while ( itline.hasNext() ) {
