@@ -106,10 +106,15 @@ void CartesianAxis::paint ( PaintContext* context ) const
     const int MinimumPixelsBetweenRulers = 5;
     const QPair<QPointF, QPointF> dataBoundaries = d->diagram->dataBoundaries();
 
+    const bool isLeft   = position() == Left;
+    const bool isRight  = position() == Right;
+    const bool isTop    = position() == Top;
+    const bool isBottom = position() == Bottom;
+
     // preparations:
     // - calculate the range that will be displayed:
     double range;
-    if ( position() == Bottom || position() == Top )
+    if ( isAbscissa() )
     {
         range = dataBoundaries.second.x() - dataBoundaries.first.x();
     } else {
@@ -132,7 +137,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
     // if Bars calculate the number of groups
 
     int numberOfUnitRulers;
-    if ( position() == Bottom || position() == Top )
+    if ( isAbscissa() )
         numberOfUnitRulers = d->diagram->model()->rowCount() - 1;
     else {
         if ( d->diagram->percentMode() )
@@ -177,14 +182,14 @@ void CartesianAxis::paint ( PaintContext* context ) const
     // FIXME references are of course different for all locations:
     rulerWidth = geoRect.width();
     rulerHeight =  geoRect.height();
-    if ( position() == Top )
+    if ( isTop )
     {
         rulerRef.setX( geoRect.topLeft().x() );
         rulerRef.setY( geoRect.topLeft().y() + rulerHeight );
-    } else if ( position() == Bottom ) {
+    } else if ( isBottom ) {
         rulerRef.setX( geoRect.bottomLeft().x() );
         rulerRef.setY( geoRect.bottomLeft().y() - rulerHeight );
-    } else if ( position() == Right ) {
+    } else if ( isRight ) {
         rulerRef.setX( geoRect.bottomRight().x() - rulerWidth );
         rulerRef.setY( geoRect.bottomRight().y() );
     } else {
@@ -231,8 +236,8 @@ void CartesianAxis::paint ( PaintContext* context ) const
 
 
     if ( drawFourthRulers ) {
-        if ( position() == Top || position() == Bottom ) {
-            int tickLength = position() == Top ? -2 : 1;
+        if ( isAbscissa() ) {
+            int tickLength = isTop ? -2 : 1;
             for ( float f = minValueX; f <= maxValueX; f += 0.25 ) {
                 QPointF topPoint ( f, 0 );
                 QPointF bottomPoint ( f, 0 );
@@ -243,7 +248,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
                 ptr->drawLine( topPoint, bottomPoint );
             }
         } else {
-            int tickLength = position() == Left ? -1 : 1;
+            int tickLength = isLeft ? -1 : 1;
             for ( float f = minValueY; f <= maxValueY; f += 0.25 ) {
                 QPointF leftPoint ( 0, f );
                 QPointF rightPoint ( 0, f );
@@ -257,8 +262,8 @@ void CartesianAxis::paint ( PaintContext* context ) const
     }
 
     if ( drawHalfRulers ) {
-        if ( position() == Top || position() == Bottom ) {
-            int tickLength = position() == Top ? -3 : 2;
+        if ( isAbscissa() ) {
+            int tickLength = isTop ? -3 : 2;
             for ( float f = minValueX; f <= maxValueX; f += 0.5 ) {
                 QPointF topPoint ( f, 0 );
                 QPointF bottomPoint ( f, 0 );
@@ -269,7 +274,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
                 ptr->drawLine( topPoint, bottomPoint );
             }
         } else {
-            int tickLength = position() == Left ? -3 : 2;
+            int tickLength = isLeft ? -3 : 2;
             for ( float f = minValueY; f <= maxValueY; f += 0.5 ) {
                 QPointF leftPoint ( 0, f );
                 QPointF rightPoint ( 0, f );
@@ -293,8 +298,26 @@ void CartesianAxis::paint ( PaintContext* context ) const
         }
         const int headerLabelsCount = headerLabels.count();
 
+        TextLayoutItem* labelItem =
+            drawLabels
+            ? new TextLayoutItem( QString::number( minValueY ),
+                      ta,
+                      this,
+                      KDChartEnums::MeasureOrientationVertical,
+                      Qt::AlignLeft )
+            : 0;
+        const qreal labelFontSize(
+            drawLabels
+            ? labelItem->realFontSize()
+            : 0.0 );
+        const QFontMetricsF met(
+            drawLabels
+            ? labelItem->realFont()
+            : QFontMetricsF( QApplication::font() ) );
+
+
         if ( isAbscissa() ) {
-            int tickLength = position() == Top ? -4 : 3;
+            int tickLength = isTop ? -4 : 3;
             // PENDING(khz) FIXME: use TextAttributes, to fix bug #2348
             const QFont textFont( ta.font() );
 
@@ -314,7 +337,10 @@ void CartesianAxis::paint ( PaintContext* context ) const
                     topPoint = context->coordinatePlane()->translate( topPoint );
                     topPoint.setX( topPoint.x() - textFont.pointSize() );
                     topPoint.setY( fourthRulerRef.y() + tickLength );
-                    topPoint.setY( position() == Top ? topPoint.y() - textFont.pointSize() : topPoint.y() + (2 * textFont.pointSize()) );
+                    topPoint.setY(
+                        isTop
+                        ? ( topPoint.y()      - textFont.pointSize()  )
+                        : ( topPoint.y() + (2 * textFont.pointSize()) ) );
                     const QRegion region( met.boundingRect( labels()[ iLabel ] )
                         .translated( static_cast<int>(topPoint.x()), static_cast<int>(topPoint.y()) )
                         .adjusted( -1,-1,1,1) ); // "adjusted" gives us a minimum of 2 pixels between the labels
@@ -345,7 +371,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
                 ptr->drawLine( topPoint, bottomPoint );
                 if ( drawLabels ) {
                     topPoint.setY(
-                          (position() == Top)
+                          isTop
                         ? (topPoint.y() - textFont.pointSize())
                         : (topPoint.y() + (2 * textFont.pointSize())) );
                     QString label( hardLabelsCount
@@ -370,26 +396,9 @@ void CartesianAxis::paint ( PaintContext* context ) const
                 }
             }
         } else {
-            TextLayoutItem* labelItem =
-                drawLabels
-                ? new TextLayoutItem( QString::number( minValueY ),
-                          ta,
-                          this,
-                          KDChartEnums::MeasureOrientationVertical,
-                          Qt::AlignLeft )
-                : 0;
-            const qreal labelFontSize(
-                drawLabels
-                ? labelItem->realFontSize()
-                : 0.0 );
-            const QFontMetricsF met(
-                drawLabels
-                ? labelItem->realFont()
-                : QFontMetricsF( QApplication::font() ) );
-
             double maxLimit, steg;
             bool percent = d->diagram->percentMode();
-            int tickLength = position() == Left ? -4 : 3;
+            int tickLength = isLeft ? -4 : 3;
             if ( percent ) {
                 maxLimit = maxValueY*10.0;
                 steg = maxValueY;
@@ -413,11 +422,11 @@ void CartesianAxis::paint ( PaintContext* context ) const
                     // the layout item temporarily only.
                     const QSize labelSize(     labelItem->sizeHint() );
                     leftPoint.setX(
-                        (position() == Left)
+                        isLeft
                         ? ( leftPoint.x()  - labelFontSize * 0.75 )
                         : ( leftPoint.x() + labelFontSize * 0.75 ) );
                     int x = static_cast<int>( leftPoint.x() );
-                    if( position() == Left )
+                    if( isLeft )
                         x -= labelSize.width();
                     int y;
                     if( bFirstLabel ){
@@ -442,9 +451,9 @@ void CartesianAxis::paint ( PaintContext* context ) const
             }
             //Pending Michel: reset to default - is that really what we want?
             d->diagram->setPercentMode( false );
-            if( labelItem )
-                delete labelItem;
         }
+        if( labelItem )
+            delete labelItem;
     }
 }
 #undef ptr
