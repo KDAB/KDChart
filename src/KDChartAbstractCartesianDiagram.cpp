@@ -53,16 +53,14 @@ void AbstractCartesianDiagram::init()
 
 #define d d_func()
 
-AbstractCartesianDiagram::AbstractCartesianDiagram ( CartesianCoordinatePlane* parent )
-    : AbstractDiagram ( new Private(), parent )
+AbstractCartesianDiagram::AbstractCartesianDiagram ( CartesianCoordinatePlane* diagram )
+    : AbstractDiagram ( new Private(), diagram )
 {
 }
 
 void AbstractCartesianDiagram::addAxis( CartesianAxis *axis )
 {
     d->axesList.append( axis );
-    // Hack alert. Internally we pretend that the axes are owned by the plane.
-    axis->setParent( coordinatePlane() );
     axis->createObserver( this );
 }
 
@@ -71,6 +69,7 @@ void AbstractCartesianDiagram::takeAxis( CartesianAxis *axis )
     const int idx = d->axesList.indexOf( axis );
     if( idx != -1 )
         d->axesList.takeAt( idx );
+    axis->deleteObserver();
     axis->setParent( 0 );
 }
 
@@ -82,10 +81,7 @@ KDChart::CartesianAxisList AbstractCartesianDiagram::axes( ) const
 void KDChart::AbstractCartesianDiagram::setCoordinatePlane( AbstractCoordinatePlane* plane )
 {
     AbstractDiagram::setCoordinatePlane(plane);
-    // Hack alert. Internally we pretend that the axes are owned by the plane.
-    foreach( CartesianAxis* axis, d->axesList )
-        axis->setParent( plane );
-
+    
     // show the axes, after all have been adjusted
     // (because they might be dependend on each other)
     if( plane )
@@ -94,6 +90,7 @@ void KDChart::AbstractCartesianDiagram::setCoordinatePlane( AbstractCoordinatePl
     else
         foreach( CartesianAxis* axis, d->axesList )
             axis->hide();
+    
 }
 
 void AbstractCartesianDiagram::setReferenceDiagram( AbstractCartesianDiagram* diagram, const QPointF& offset )

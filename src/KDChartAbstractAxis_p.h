@@ -54,7 +54,7 @@ public:
 
 
 inline AbstractAxis::AbstractAxis( Private * p, AbstractDiagram* diagram_ )
-    :  AbstractArea( p, diagram_ )
+    :  AbstractArea( p, 0 )
 {
     init();
 }
