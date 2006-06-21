@@ -48,7 +48,6 @@ class QRectF;
 
 namespace KDChart {
 
-    class TextAttributes;
     class Area;
     class AbstractCoordinatePlane;
     class PaintContext;
@@ -97,6 +96,8 @@ namespace KDChart {
 
         virtual void setGeometry( const QRectF& rect ) = 0;
         virtual QRectF geometry() const = 0;
+
+        const AbstractCoordinatePlane* coordinatePlane() const;
 
         virtual QDomDocumentFragment toXML() const = 0;
     signals:

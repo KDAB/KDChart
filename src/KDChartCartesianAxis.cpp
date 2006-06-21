@@ -298,12 +298,17 @@ void CartesianAxis::paint ( PaintContext* context ) const
         }
         const int headerLabelsCount = headerLabels.count();
 
+        const AbstractCoordinatePlane* plane = coordinatePlane();
+        const QWidget* referenceArea =
+            plane
+            ? static_cast<QWidget *>( plane->parent() )
+            : static_cast<QWidget *>( parent() );
         TextLayoutItem* labelItem =
             drawLabels
             ? new TextLayoutItem( QString::number( minValueY ),
                       ta,
-                      this,
-                      KDChartEnums::MeasureOrientationVertical,
+                      referenceArea,
+                      KDChartEnums::MeasureOrientationMinimum,
                       Qt::AlignLeft )
             : 0;
         const qreal labelFontSize(

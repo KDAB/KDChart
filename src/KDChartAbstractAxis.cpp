@@ -82,10 +82,11 @@ AbstractAxis::~AbstractAxis()
 void AbstractAxis::init()
 {
     Measure m(
-        15,
-        KDChartEnums::MeasureCalculationModeAutoOrientation,
+        12.5,
+        KDChartEnums::MeasureCalculationModeAuto,
         KDChartEnums::MeasureOrientationAuto );
-    m.setReferenceArea( this );
+    // Note: Reference area will be set at painting time.
+    //       It will be the then-valid coordinate plane's parent widget.
     d_func()->textAttributes.setFontSize( m  );
     m.setValue( 5 );
     m.setCalculationMode( KDChartEnums::MeasureCalculationModeAbsolute );
@@ -161,6 +162,12 @@ void AbstractAxis::connectSignals()
 
 /**
   \brief Use this to specify the text attributes to be used for axis labels.
+
+  By default, the reference area will be set at painting time.
+  It will be the then-valid coordinate plane's parent widget,
+  so normally, it will be the KDChart::Chart.
+  Thus the labels of all of your axes in all of your diagrams
+  within that Chart will be drawn in same font size, by default.
 
   \sa textAttributes, setLabels
 */
@@ -238,4 +245,16 @@ void AbstractAxis::setShortLabels( const QStringList& list )
 QStringList AbstractAxis::shortLabels() const
 {
     return d_func()->hardShortLabels;
+}
+
+/**
+    \brief Convenience function, returns the coordinate plane, in which this axis is used.
+
+    If the axis is not used in a coordinate plane, the return value is zero.
+ */
+const AbstractCoordinatePlane* AbstractAxis::coordinatePlane() const
+{
+    if( d_func()->diagram )
+        return d_func()->diagram->coordinatePlane();
+    return 0;
 }
