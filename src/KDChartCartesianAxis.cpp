@@ -422,10 +422,10 @@ void CartesianAxis::paint ( PaintContext* context ) const
                     // the layout item temporarily only.
                     const QSize labelSize(     labelItem->sizeHint() );
                     leftPoint.setX( leftPoint.x()
-                        + met.height() * (isLeft ? -0.5 : 0.5) );
-                    int x = static_cast<int>( leftPoint.x() );
-                    if( isLeft )
-                        x -= labelSize.width();
+                         );
+                    const int x =
+                        static_cast<int>( leftPoint.x() + met.height() * (isLeft ? -0.5 : 0.5) )
+                        - (isLeft ? labelSize.width() : 0);
                     int y;
                     if( bFirstLabel ){
                         // first label of the ordinate?
