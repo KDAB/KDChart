@@ -85,8 +85,6 @@ void AbstractAxis::init()
         12.5,
         KDChartEnums::MeasureCalculationModeAuto,
         KDChartEnums::MeasureOrientationAuto );
-    // Note: Reference area will be set at painting time.
-    //       It will be the then-valid coordinate plane's parent widget.
     d_func()->textAttributes.setFontSize( m  );
     m.setValue( 5 );
     m.setCalculationMode( KDChartEnums::MeasureCalculationModeAbsolute );
