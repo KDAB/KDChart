@@ -62,7 +62,6 @@ namespace KDChart {
       * \sa PolarAxis, AbstractCartesianDiagram
       */
     class KDCHART_EXPORT AbstractAxis : public AbstractArea
-    // : public AbstractArea FIXME maybe reintroduce later
     {
         Q_OBJECT
 
