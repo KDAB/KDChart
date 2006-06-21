@@ -78,6 +78,8 @@ void AbstractCoordinatePlane::replaceDiagram ( AbstractDiagram* diagram, Abstrac
         }
         delete oldDiagram;
         addDiagram( diagram );
+        layoutDiagrams();
+        emit diagramsChanged();
     }
 }
 
@@ -86,9 +88,11 @@ void AbstractCoordinatePlane::takeDiagram ( AbstractDiagram* diagram )
 {
     const int idx = d->diagrams.indexOf( diagram );
     if( idx != -1 ){
-        d->diagrams.takeAt( idx );
+        d->diagrams.removeAt( idx );
         diagram->setParent ( 0 );
         diagram->setCoordinatePlane( 0 );
+        layoutDiagrams();
+        emit diagramsChanged();
     }
 }
 

@@ -33,6 +33,7 @@
 
 using namespace KDChart;
 
+#define d d_func()
 
 AbstractAxis::Private::Private( AbstractDiagram* diagram_ )
     : diagram( diagram_ )
@@ -88,19 +89,21 @@ void AbstractAxis::init()
   *
   * \sa connectSignals(), AbstractCartesianDiagram::addAxis()
   */
-void AbstractAxis::createObserver( KDChart::AbstractDiagram* diagram )
+void AbstractAxis::createObserver( AbstractDiagram* diagram )
 {
-    if( d_func()->diagram == diagram ) return;
+    if( d->diagram == diagram ) return;
 
-    d_func()->diagram = diagram;
-    if ( d_func()->observer )
-    {
-        delete d_func()->observer; d_func()->observer = NULL;
-    }
-    if ( diagram )
-    {
-        d_func()->observer = new DiagramObserver( *diagram, this );
-        connectSignals();
+    if( d->secondaryDiagrams.contains( diagram ) ) return;
+
+    if ( !d->diagram ) {
+        d->diagram = diagram;
+        if ( diagram ) {
+            d->observer = new DiagramObserver( *diagram, this );
+            connectSignals();
+        }
+    } else {
+        if ( diagram )
+            d->secondaryDiagrams.enqueue( diagram );
     }
 }
 
@@ -114,12 +117,18 @@ void AbstractAxis::createObserver( KDChart::AbstractDiagram* diagram )
   *
   * \sa AbstractCartesianDiagram::takeAxis()
   */
-void AbstractAxis::deleteObserver()
+void AbstractAxis::deleteObserver( AbstractDiagram* diagram )
 {
-    d_func()->diagram = 0;
-    if ( d_func()->observer )
-    {
-        delete d_func()->observer; d_func()->observer = NULL;
+    if ( diagram == d->diagram ) {
+        d->diagram = 0;
+        delete d->observer;
+        d->observer = 0;
+    } else {
+        d->secondaryDiagrams.removeAll( diagram );
+    }
+    if( !d->secondaryDiagrams.isEmpty() ) {
+        AbstractDiagram *nextDiagram = d->secondaryDiagrams.dequeue();
+        createObserver( nextDiagram );
     }
 }
 
@@ -242,4 +251,14 @@ const AbstractCoordinatePlane* AbstractAxis::coordinatePlane() const
     if( d_func()->diagram )
         return d_func()->diagram->coordinatePlane();
     return 0;
+}
+
+AbstractDiagram * KDChart::AbstractAxis::diagram() const
+{
+    return d->diagram;
+}
+
+bool KDChart::AbstractAxis::observedBy( AbstractDiagram * diagram ) const
+{
+    return diagram == d->diagram || d->secondaryDiagrams.contains( diagram );
 }

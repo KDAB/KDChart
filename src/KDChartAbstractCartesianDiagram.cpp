@@ -69,7 +69,7 @@ void AbstractCartesianDiagram::takeAxis( CartesianAxis *axis )
     const int idx = d->axesList.indexOf( axis );
     if( idx != -1 )
         d->axesList.takeAt( idx );
-    axis->deleteObserver();
+    axis->deleteObserver( this );
     axis->setParent( 0 );
 }
 
@@ -81,16 +81,17 @@ KDChart::CartesianAxisList AbstractCartesianDiagram::axes( ) const
 void KDChart::AbstractCartesianDiagram::setCoordinatePlane( AbstractCoordinatePlane* plane )
 {
     AbstractDiagram::setCoordinatePlane(plane);
-    
+
     // show the axes, after all have been adjusted
     // (because they might be dependend on each other)
+    /*
     if( plane )
         foreach( CartesianAxis* axis, d->axesList )
             axis->show();
     else
         foreach( CartesianAxis* axis, d->axesList )
             axis->hide();
-    
+    */
 }
 
 void AbstractCartesianDiagram::setReferenceDiagram( AbstractCartesianDiagram* diagram, const QPointF& offset )

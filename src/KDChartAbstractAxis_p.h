@@ -26,6 +26,8 @@
 #ifndef KDCHARTAXIS_P_H
 #define KDCHARTAXIS_P_H
 
+#include <QQueue>
+
 #include "KDChartAbstractArea_p.h"
 #include <KDChartTextAttributes.h>
 #include <KDChartAbstractDiagram.h>
@@ -50,6 +52,7 @@ public:
     QStringList hardShortLabels;
 
     AbstractDiagram* diagram;
+    QQueue<AbstractDiagram*> secondaryDiagrams;
 };
 
 

@@ -81,8 +81,10 @@ namespace KDChart {
         virtual QSize sizeHint() const = 0;*/
 	//virtual void paintEvent( QPaintEvent* event) = 0;
 
-        void createObserver( KDChart::AbstractDiagram* diagram );
-        void deleteObserver();
+        void createObserver( AbstractDiagram* diagram );
+        void deleteObserver( AbstractDiagram* diagram );
+        AbstractDiagram* diagram() const;
+        bool observedBy( AbstractDiagram* diagram ) const;
         virtual void connectSignals();
 
         void setTextAttributes( const TextAttributes &a );
