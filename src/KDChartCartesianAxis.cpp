@@ -311,14 +311,11 @@ void CartesianAxis::paint ( PaintContext* context ) const
                       KDChartEnums::MeasureOrientationMinimum,
                       Qt::AlignLeft )
             : 0;
-        const qreal labelFontSize(
-            drawLabels
-            ? labelItem->realFontSize()
-            : 0.0 );
         const QFontMetricsF met(
             drawLabels
             ? labelItem->realFont()
             : QFontMetricsF( QApplication::font() ) );
+        const qreal labelFontSize( met.height() );
 
 
         if ( isAbscissa() ) {
@@ -437,11 +434,11 @@ void CartesianAxis::paint ( PaintContext* context ) const
                     if( bFirstLabel ){
                         // first label of the ordinate?
                         // shift it up a bit, to prevent it from being clipped away
-                        y = static_cast<int>( leftPoint.y() - met.ascent() * 0.70 );
+                        y = static_cast<int>( leftPoint.y() - met.ascent() * 0.7 );
                     }else if( f + steg > maxLimit ){
                         // last label of the ordinate?
                         // shift it down a bit, to prevent it from being clipped away
-                        y = static_cast<int>( leftPoint.y() - met.ascent() * 0.20 );
+                        y = static_cast<int>( leftPoint.y() - met.ascent() * 0.35 );
                     }else{
                         y = static_cast<int>( leftPoint.y() - met.ascent() * 0.5 );
                     }
