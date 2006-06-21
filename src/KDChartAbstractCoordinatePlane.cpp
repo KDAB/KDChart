@@ -121,7 +121,7 @@ QSize KDChart::AbstractCoordinatePlane::minimumSizeHint() const
 
 QSizePolicy KDChart::AbstractCoordinatePlane::sizePolicy() const
 {
-    return QSizePolicy( QSizePolicy::Expanding, QSizePolicy::Expanding );
+    return QSizePolicy( QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding );
 }
 
 void KDChart::AbstractCoordinatePlane::setGridAttributes( const GridAttributes& a )
