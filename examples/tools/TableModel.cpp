@@ -77,7 +77,7 @@ QVariant TableModel::headerData ( int section, Qt::Orientation orientation, int 
                 result = m_rows[0][section + 1];
             } else {
                 // row header data:
-                result =m_rows[section + 1][0];
+                result = m_rows[section + 1][0];
             }
         }
         break;
