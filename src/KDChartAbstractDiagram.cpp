@@ -603,15 +603,15 @@ QList<MarkerAttributes> AbstractDiagram::datasetMarkers() const
     return ret;
 }
 
-bool AbstractDiagram::checkInvariants() const
+bool AbstractDiagram::checkInvariants( bool justReturnTheStatus ) const
 {
-#if 1
-    Q_ASSERT_X ( model(), "AbstractDiagram::checkInvariants()",
-                 "There is no usable model set, for the diagram." );
-
-    Q_ASSERT_X ( coordinatePlane(), "AbstractDiagram::checkInvariants()",
-                 "There is no usable coordinate plane set, for the diagram." );
-#endif
+    if( ! justReturnTheStatus ){
+        Q_ASSERT_X ( model(), "AbstractDiagram::checkInvariants()",
+                    "There is no usable model set, for the diagram." );
+    
+        Q_ASSERT_X ( coordinatePlane(), "AbstractDiagram::checkInvariants()",
+                    "There is no usable coordinate plane set, for the diagram." );
+    }
     return model() && coordinatePlane();
 }
 

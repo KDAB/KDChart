@@ -375,7 +375,7 @@ namespace KDChart {
         void setDatasetDimension( int dimension );
 
     protected:
-        virtual bool checkInvariants() const;
+        virtual bool checkInvariants( bool justReturnTheStatus=false ) const;
         virtual void paintDataValueTexts( QPainter* painter );
         void paintDataValueText( QPainter* painter, const QModelIndex& index,
                                  const QPointF& pos, double value );

@@ -145,7 +145,8 @@ void LineDiagram::resizeEvent ( QResizeEvent* )
 
 const QPair<QPointF, QPointF> LineDiagram::dataBoundaries () const
 {
-    if ( !checkInvariants() ) return QPair<QPointF, QPointF>( QPointF( 0, 0 ), QPointF( 0, 0 ) );
+    if ( !checkInvariants( true ) ) return QPair<QPointF, QPointF>( QPointF( 0, 0 ), QPointF( 0, 0 ) );
+
     const int rowCount = d->attributesModel->rowCount(attributesModelRootIndex());
     const int colCount = d->attributesModel->columnCount(attributesModelRootIndex());
     double xMin = 0;
@@ -233,7 +234,7 @@ void LineDiagram::paintEvent ( QPaintEvent*)
 
 void LineDiagram::paint( PaintContext* ctx )
 {
-    if ( !checkInvariants() ) return;
+    if ( !checkInvariants( true ) ) return;
     if ( !isBoundariesValid(dataBoundaries()) ) return;
 
     // draw the grid
