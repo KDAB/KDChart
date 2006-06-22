@@ -53,8 +53,8 @@ void AbstractCartesianDiagram::init()
 
 #define d d_func()
 
-AbstractCartesianDiagram::AbstractCartesianDiagram ( CartesianCoordinatePlane* diagram )
-    : AbstractDiagram ( new Private(), diagram )
+AbstractCartesianDiagram::AbstractCartesianDiagram ( CartesianCoordinatePlane* plane )
+    : AbstractDiagram ( new Private(), plane )
 {
 }
 
