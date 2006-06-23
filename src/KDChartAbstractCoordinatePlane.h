@@ -91,6 +91,11 @@ namespace KDChart {
         AbstractDiagramList diagrams();
 
         /**
+         * @return The list of diagrams associated with this coordinate plane.
+         */
+        ConstAbstractDiagramList diagrams() const;
+
+        /**
          * Distribute the available space among the diagrams and axes.
          */
         virtual void layoutDiagrams() = 0;

@@ -408,6 +408,17 @@ namespace KDChart {
     };
 
     class AbstractDiagramList : public QList<AbstractDiagram*> {};
+    class ConstAbstractDiagramList : public QList<const AbstractDiagram*>
+    {
+    public:
+        ConstAbstractDiagramList( const AbstractDiagramList &nonConst )
+        {
+            foreach( AbstractDiagram* diagram, nonConst )
+            {
+                append( diagram );
+            }
+        }
+    };
 
 }
 

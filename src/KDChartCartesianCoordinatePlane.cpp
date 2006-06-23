@@ -53,9 +53,16 @@ public:
     // true if the coordinate plane scales isometrically
     bool isometricScaling;
 
+    qreal horizontalMin;
+    qreal horizontalMax;
+    qreal verticalMin;
+    qreal verticalMax;
+
     Private()
         : initialResizeEventReceived ( false )
         , isometricScaling ( false )
+        , horizontalMin(0), horizontalMax(0)
+        , verticalMin(0), verticalMax(0)
     {}
 };
 
@@ -180,6 +187,40 @@ void CartesianCoordinatePlane::slotLayoutChanged ( AbstractDiagram* )
     if ( d->initialResizeEventReceived ) layoutDiagrams();
 }
 
+QRectF CartesianCoordinatePlane::calculateDataBoundingRect() const
+{
+    // determine unit of the rectangles of all involved diagrams:
+    QPointF smallestPoint;
+    QPointF largestPoint;
+    foreach ( const AbstractDiagram* diagram, diagrams() )
+    {
+        QPair<QPointF, QPointF> dataBoundariesPair = diagram->dataBoundaries();
+        if ( dataBoundariesPair.first.x() < smallestPoint.x() )
+            smallestPoint.setX( dataBoundariesPair.first.x() );
+        if ( dataBoundariesPair.first.y() < smallestPoint.y() )
+            smallestPoint.setY( dataBoundariesPair.first.y() );
+        if ( dataBoundariesPair.second.x() > largestPoint.x() )
+            largestPoint.setX( dataBoundariesPair.second.x() );
+        if ( dataBoundariesPair.second.y() > largestPoint.y() )
+            largestPoint.setY( dataBoundariesPair.second.y() );
+    }
+
+    // if custom boundaries are set on the plane, use them
+    if ( d->horizontalMin != d->horizontalMax  ) ) {
+        smallestPoint.setX( d->horizontalMin );
+        largestPoint.setX( d->horizontalMax );
+    }
+    if ( d->verticalMin != d->verticalMax ) {
+        smallestPoint.setY( d->verticalMin );
+        largestPoint.setY( d->verticalMax );
+    }
+
+    QRectF dataBoundingRect;
+    dataBoundingRect.setBottomLeft ( smallestPoint );
+    dataBoundingRect.setTopRight ( largestPoint );
+    return dataBoundingRect;
+}
+
 void CartesianCoordinatePlane::layoutDiagrams()
 {
     if ( diagrams().isEmpty() )
@@ -194,24 +235,7 @@ void CartesianCoordinatePlane::layoutDiagrams()
     // than 1 are used, this may not be sufficient.
     d->drawingArea = QRectF ( 1, 1, width() - 3, height() - 3 );
 
-    // determine unit of the rectangles of all involved diagrams:
-    QPointF smallestPoint;
-    QPointF largestPoint;
-    foreach ( AbstractDiagram* diagram, diagrams() )
-        {
-            QPair<QPointF, QPointF> dataBoundariesPair = diagram->dataBoundaries();
-            if ( dataBoundariesPair.first.x() < smallestPoint.x() )
-              smallestPoint.setX( dataBoundariesPair.first.x() );
-            if ( dataBoundariesPair.first.y() < smallestPoint.y() )
-              smallestPoint.setY( dataBoundariesPair.first.y() );
-            if ( dataBoundariesPair.second.x() > largestPoint.x() )
-              largestPoint.setX( dataBoundariesPair.second.x() );
-            if ( dataBoundariesPair.second.y() > largestPoint.y() )
-              largestPoint.setY( dataBoundariesPair.second.y() );
-        }
-    QRectF dataBoundingRect;
-    dataBoundingRect.setBottomLeft ( smallestPoint );
-    dataBoundingRect.setTopRight ( largestPoint );
+    QRectF  dataBoundingRect = calculateDataBoundingRect();
 
     // calculate the remaining rectangle, and use it as the diagram area:
     d->diagramArea = d->drawingArea;
@@ -328,4 +352,30 @@ CartesianCoordinatePlane::AxesCalcMode CartesianCoordinatePlane::axesCalcMode() 
 void CartesianCoordinatePlane::setAxesCalcMode( AxesCalcMode mode )
 {
     d->coordinateTransformation.axesCalcMode = mode;
+}
+
+void KDChart::CartesianCoordinatePlane::setHorizontalRange( const QPair< qreal, qreal > & range )
+{
+    if ( d->horizontalMin != range.first || d->horizontalMax != range.second ) {
+        d->horizontalMin = range.first;
+        d->horizontalMax = range.second;
+    }
+}
+
+void KDChart::CartesianCoordinatePlane::setVerticalRange( const QPair< qreal, qreal > & range )
+{
+    if ( d->verticalMin != range.first || d->verticalMax != range.second ) {
+        d->verticalMin = range.first;
+        d->verticalMax = range.second;
+    }
+}
+
+QPair< qreal, qreal > KDChart::CartesianCoordinatePlane::horizontalRange( ) const
+{
+    return QPair<qreal, qreal>( d->horizontalMin, d->horizontalMax );
+}
+
+QPair< qreal, qreal > KDChart::CartesianCoordinatePlane::verticalRange( ) const
+{
+    return QPair<qreal, qreal>( d->verticalMin, d->verticalMax );
 }

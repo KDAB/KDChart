@@ -64,6 +64,45 @@ namespace KDChart {
 
         virtual void setZoomCenter( QPointF center );
 
+
+        /**
+         * Allows setting the boundaries of the visible value space area
+         * that the plane displays in horizontal direction. The horizontal
+         * viewport. To disable use of this range, set both values to the same
+         * thing, which constiutes a null range.
+         * @param  A pair of values representing the smalles and the largest
+         * horizontal value space coordinate that are still visible.
+         */
+        void setHorizontalRange( const QPair<qreal, qreal> & );
+
+        /**
+         * Allows setting the boundaries of the visible value space area
+         * that the plane displays in vertical direction. The vertical
+         * viewport. To disable use of this range, set both values to the same
+         * thing, which constiutes a null range.
+         * @param  A pair of values representing the smalles and the largest
+         * vertical value space coordinate that are still visible.
+         */
+        void setVerticalRange( const QPair<qreal, qreal> & );
+
+        /**
+         * @return The largest and smallest visible horizontal value space
+         * value. If this is not explicitely set,or if both values are the same,
+         * the plane will use the union of the dataBoundaries of all
+         * associated diagrams.
+         * \see KDChart::AbstractDiagram::dataBoundaries
+         */
+        QPair<qreal, qreal> horizontalRange() const;
+
+        /**
+         * @return The largest and smallest visible horizontal value space
+         * value. If this is not explicitely set, or if both values are the same,
+         * the plane will use the union of the dataBoundaries of all
+         * associated diagrams.
+         * \see KDChart::AbstractDiagram::dataBoundaries
+         */
+        QPair<qreal, qreal> verticalRange() const;
+
         enum AxesCalcMode { Linear, Logarithmic };
 
         AxesCalcMode axesCalcMode() const;
@@ -80,6 +119,7 @@ namespace KDChart {
 
     private:
         void paintGrid( PaintContext* );
+        QRectF calculateDataBoundingRect() const;
 
         Private *d;
     };

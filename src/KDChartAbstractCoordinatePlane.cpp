@@ -112,6 +112,11 @@ AbstractDiagramList AbstractCoordinatePlane::diagrams()
     return d->diagrams;
 }
 
+ConstAbstractDiagramList AbstractCoordinatePlane::diagrams() const
+{
+    return d->diagrams;
+}
+
 QSize KDChart::AbstractCoordinatePlane::minimumSizeHint() const
 {
     return QSize( 200, 200 );
@@ -143,3 +148,4 @@ AbstractCoordinatePlane * KDChart::AbstractCoordinatePlane::referenceCoordinateP
 {
     return d->referenceCoordinatePlane;
 }
+
