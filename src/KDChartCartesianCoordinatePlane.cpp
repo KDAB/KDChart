@@ -31,6 +31,7 @@
 #include "KDChartAbstractDiagram.h"
 #include "KDChartAbstractCartesianDiagram.h"
 #include "KDChartCartesianCoordinatePlane.h"
+#include "KDChartCartesianCoordinatePlane_p.h"
 #include "CartesianCoordinateTransformation.h"
 #include "KDChartGridAttributes.h"
 #include "KDChartPaintContext.h"
@@ -38,38 +39,10 @@
 
 using namespace KDChart;
 
-class CartesianCoordinatePlane::Private
-{
-public:
-    // the coordinate plane will calculate the coordinate transformation:
-    CoordinateTransformation coordinateTransformation;
-    // the whole drawing area, includes diagrams and axes, but maybe smaller
-    // than (width, height):
-    QRectF drawingArea;
-    // the reactangle occupied by the diagrams, in plane coordinates
-    QRectF diagramArea;
-    // true after the first resize event came in
-    bool initialResizeEventReceived;
-    // true if the coordinate plane scales isometrically
-    bool isometricScaling;
-
-    qreal horizontalMin;
-    qreal horizontalMax;
-    qreal verticalMin;
-    qreal verticalMax;
-
-    Private()
-        : initialResizeEventReceived ( false )
-        , isometricScaling ( false )
-        , horizontalMin(0), horizontalMax(0)
-        , verticalMin(0), verticalMax(0)
-    {}
-};
-
+#define d d_func()
 
 CartesianCoordinatePlane::CartesianCoordinatePlane ( QWidget* parent )
-    : AbstractCoordinatePlane ( parent )
-    , d ( new Private() )
+    : AbstractCoordinatePlane ( new Private(), parent )
 {
     setAxesCalcMode( Linear );
 }
@@ -206,7 +179,7 @@ QRectF CartesianCoordinatePlane::calculateDataBoundingRect() const
     }
 
     // if custom boundaries are set on the plane, use them
-    if ( d->horizontalMin != d->horizontalMax  ) ) {
+    if ( d->horizontalMin != d->horizontalMax  ) {
         smallestPoint.setX( d->horizontalMin );
         largestPoint.setX( d->horizontalMax );
     }
@@ -379,3 +352,4 @@ QPair< qreal, qreal > KDChart::CartesianCoordinatePlane::verticalRange( ) const
 {
     return QPair<qreal, qreal>( d->verticalMin, d->verticalMax );
 }
+

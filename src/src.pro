@@ -9,6 +9,7 @@ HEADERS += KDChartGlobal.h \
            KDChartAbstractCartesianDiagram.h \
            KDChartAbstractCartesianDiagram_p.h \
            KDChartAbstractCoordinatePlane.h \
+           KDChartAbstractCoordinatePlane_p.h \
            KDChartAbstractDiagram.h \
            KDChartAbstractDiagram_p.h \
            KDChartAbstractPieDiagram.h \
@@ -24,6 +25,7 @@ HEADERS += KDChartGlobal.h \
            KDChartCartesianAxis.h \
            KDChartCartesianAxis_p.h \
            KDChartCartesianCoordinatePlane.h \
+           KDChartCartesianCoordinatePlane_p.h \
            KDChartChart.h \
            KDChartDatasetProxyModel.h \
            KDChartDatasetSelector.h \

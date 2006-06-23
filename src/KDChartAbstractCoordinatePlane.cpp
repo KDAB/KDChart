@@ -27,25 +27,15 @@
 #include <QGridLayout>
 
 #include "KDChartAbstractCoordinatePlane.h"
+#include "KDChartAbstractCoordinatePlane_p.h"
 #include "KDChartGridAttributes.h"
 
 using namespace KDChart;
 
-class AbstractCoordinatePlane::Private
-{
-public:
-    Private()
-    :referenceCoordinatePlane(0)
-    {}
-
-    AbstractDiagramList diagrams;
-    GridAttributes gridAttributes;
-    AbstractCoordinatePlane *referenceCoordinatePlane;
-};
 
 AbstractCoordinatePlane::AbstractCoordinatePlane ( QWidget* parent )
     : QWidget ( parent )
-    , d ( new Private() )
+    , _d ( new Private() )
 {
 }
 
@@ -59,7 +49,7 @@ void AbstractCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
     // diagrams are invisible and paint through their paint() method
     diagram->hide();
 
-    d->diagrams.append ( diagram );
+    _d->diagrams.append ( diagram );
     diagram->setParent ( this );
     diagram->setCoordinatePlane( this );
     layoutDiagrams();
@@ -70,9 +60,9 @@ void AbstractCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
 void AbstractCoordinatePlane::replaceDiagram ( AbstractDiagram* diagram, AbstractDiagram* oldDiagram )
 {
     if( diagram && oldDiagram != diagram ){
-        if( d->diagrams.count() ){
+        if( _d->diagrams.count() ){
             if( ! oldDiagram )
-                takeDiagram( d->diagrams.first() );
+                takeDiagram( _d->diagrams.first() );
             else
                 takeDiagram( oldDiagram );
         }
@@ -86,9 +76,9 @@ void AbstractCoordinatePlane::replaceDiagram ( AbstractDiagram* diagram, Abstrac
 /*virtual*/
 void AbstractCoordinatePlane::takeDiagram ( AbstractDiagram* diagram )
 {
-    const int idx = d->diagrams.indexOf( diagram );
+    const int idx = _d->diagrams.indexOf( diagram );
     if( idx != -1 ){
-        d->diagrams.removeAt( idx );
+        _d->diagrams.removeAt( idx );
         diagram->setParent ( 0 );
         diagram->setCoordinatePlane( 0 );
         layoutDiagrams();
@@ -99,22 +89,22 @@ void AbstractCoordinatePlane::takeDiagram ( AbstractDiagram* diagram )
 
 AbstractDiagram* AbstractCoordinatePlane::diagram()
 {
-    if ( d->diagrams.isEmpty() )
+    if ( _d->diagrams.isEmpty() )
     {
         return 0;
     } else {
-        return d->diagrams.first();
+        return _d->diagrams.first();
     }
 }
 
 AbstractDiagramList AbstractCoordinatePlane::diagrams()
 {
-    return d->diagrams;
+    return _d->diagrams;
 }
 
 ConstAbstractDiagramList AbstractCoordinatePlane::diagrams() const
 {
-    return d->diagrams;
+    return _d->diagrams;
 }
 
 QSize KDChart::AbstractCoordinatePlane::minimumSizeHint() const
@@ -130,22 +120,22 @@ QSizePolicy KDChart::AbstractCoordinatePlane::sizePolicy() const
 
 void KDChart::AbstractCoordinatePlane::setGridAttributes( const GridAttributes& a )
 {
-    d->gridAttributes = a;
+    _d->gridAttributes = a;
     update();
 }
 
 GridAttributes KDChart::AbstractCoordinatePlane::gridAttributes() const
 {
-    return d->gridAttributes;
+    return _d->gridAttributes;
 }
 
 void KDChart::AbstractCoordinatePlane::setReferenceCoordinatePlane( AbstractCoordinatePlane * plane )
 {
-    d->referenceCoordinatePlane = plane;
+    _d->referenceCoordinatePlane = plane;
 }
 
 AbstractCoordinatePlane * KDChart::AbstractCoordinatePlane::referenceCoordinatePlane( ) const
 {
-    return d->referenceCoordinatePlane;
+    return _d->referenceCoordinatePlane;
 }
 

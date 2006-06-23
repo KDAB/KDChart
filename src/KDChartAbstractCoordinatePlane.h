@@ -36,11 +36,13 @@ namespace KDChart {
     class KDCHART_EXPORT AbstractCoordinatePlane : public QWidget
     {
         Q_OBJECT
+        Q_DISABLE_COPY( AbstractCoordinatePlane )
+        KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC( AbstractCoordinatePlane )
+    protected:
+        explicit inline AbstractCoordinatePlane ( Private *, QWidget* parent = 0 );
+        explicit AbstractCoordinatePlane ( QWidget* parent = 0 );
 
     public:
-        class Private;
-
-        explicit AbstractCoordinatePlane ( QWidget* parent = 0 );
         virtual ~AbstractCoordinatePlane();
 
         /**
@@ -197,8 +199,6 @@ namespace KDChart {
 
         /** Emitted when the associated diagrams change. */
         void diagramsChanged();
-    private:
-        Private* d;
     };
 
 }

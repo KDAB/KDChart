@@ -54,7 +54,7 @@ namespace KDChart {
 
         ZoomParameters zoom;
 
-        inline const QPointF translate( const QPointF& diagramPoint ) //const
+        inline const QPointF translate( const QPointF& diagramPoint ) const
         {
             QPointF result = originTranslation;
             QPointF tempPoint = diagramPoint;
