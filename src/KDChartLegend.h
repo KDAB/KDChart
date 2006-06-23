@@ -41,6 +41,23 @@ namespace KDChart {
 
     class AbstractDiagram;
 
+/**
+  * @brief Legend defines the interface for the legend drawing class.
+  *
+  * Legend is the class for drawing legends for all kinds of diagrams ("chart types").
+  *
+  * Legend is drawn on chart level, not per diagram, but you can have more than one
+  * legend per chart, using KDChart::Chart::addLegend().
+  *
+  * \note Legend is different from all other classes ofd KD Chart, since it can be
+  * displayed outside of the Chart's area.  If you want to, you can embedd the legend
+  * into your own widget, or into another part of a bigger grid, into which you might
+  * have inserted the Chart.
+  *
+  * On the other hand, please note that you MUST call Chart::addLegend to get your
+  * legend positioned into the correct place of your chart - if you want to have
+  * the legend shown inside of the chart (that's probably true for most cases).
+  */
 class KDCHART_EXPORT Legend : public AbstractArea
 {
     Q_OBJECT
