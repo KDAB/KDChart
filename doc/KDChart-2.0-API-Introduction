@@ -187,19 +187,9 @@ ownership.
 // add an additional legend, chart takes ownership
 chart->addLegend( Legend );
 
-Removing a component de-allocates it.
-
-In case a component to be replaced or removed is still needed later
-on, it can be clone()'d, before it is destroyed, as is shown in the
-following code snippet:
-
-KDChart::Legend *oldLegend = chart->legend()->clone();
-KDChart::Legend *newLegend = chart->replaceLegend( oldLegend->clone() );
-newLegend->setTextAttributes( fancy );
-
-... a bit later ...
-
-chart->replaceLegend( oldLegend );
+Removing a component does not de-allocate it. If you "take" a 
+component from a chart or diagram, you are responsible for freeing
+it as appropriate.
 
 (see files /src/{KDChartChart.h,KDChartLegend.h})
 
