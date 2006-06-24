@@ -273,9 +273,7 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
     // FIXME draw the non-text bits, background, etc
     const TextAttributes &ta = a.textAttributes();
     if ( ta.isVisible() ) {
-        QPen pen = painter->pen();
-        pen.setColor( ta.color() );
-        painter->setPen( pen );
+        painter->setPen( ta.pen() );
         painter->setFont( ta.font() );
         painter->translate( pos );
         painter->rotate( ta.rotation() );

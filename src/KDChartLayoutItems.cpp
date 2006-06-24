@@ -202,7 +202,7 @@ void KDChart::TextLayoutItem::paint( QPainter* painter )
 
     PainterSaver painterSaver( painter );
     painter->setFont( cachedFont );
-    painter->setPen(  mAttributes.color() );
+    painter->setPen(  mAttributes.pen() );
     painter->drawText( geometry(), Qt::AlignHCenter|Qt::AlignVCenter, mText );
 }
 

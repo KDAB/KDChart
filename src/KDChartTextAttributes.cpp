@@ -25,7 +25,7 @@
 
 #include "KDChartTextAttributes.h"
 #include <QFont>
-#include <QColor>
+#include <QPen>
 #include <QtXml/QDomDocumentFragment>
 #include <qglobal.h>
 #include <QApplication>
@@ -47,7 +47,7 @@ private:
     bool autoRotate;
     bool autoShrink;
     int rotation;
-    QColor color;
+    QPen pen;
 };
 
 TextAttributes::Private::Private()
@@ -63,7 +63,7 @@ TextAttributes::TextAttributes()
     setAutoRotate( false );
     setAutoShrink( false );
     setRotation( 0 );
-    setColor( Qt::black );
+    setPen( QPen( Qt::black ) );
 }
 
 TextAttributes::TextAttributes( const TextAttributes& r )
@@ -97,7 +97,7 @@ bool TextAttributes::operator==( const TextAttributes& r ) const
 	     autoRotate() == r.autoRotate() &&
 	     autoShrink() == r.autoShrink() &&
 	     rotation() == rotation() &&
-	     color() == r.color() );
+	     pen() == r.pen() );
 }
 
 
@@ -177,14 +177,14 @@ int TextAttributes::rotation() const
     return d->rotation;
 }
 
-void TextAttributes::setColor( const QColor& color )
+void TextAttributes::setPen( const QPen& pen )
 {
-    d->color = color;
+    d->pen = pen;
 }
 
-QColor TextAttributes::color() const
+QPen TextAttributes::pen() const
 {
-    return d->color;
+    return d->pen;
 }
 
 QDomDocumentFragment TextAttributes::toXML() const
@@ -205,7 +205,7 @@ QDebug operator<<(QDebug dbg, const KDChart::TextAttributes& ta)
 	<< "autorotate="<<ta.autoRotate()
 	<< "autoshrink="<<ta.autoShrink()
 	<< "rotation="<<ta.rotation()
-	<< "color="<<ta.color()
+	<< "pen="<<ta.pen()
 	<< ")";
     return dbg;
 }

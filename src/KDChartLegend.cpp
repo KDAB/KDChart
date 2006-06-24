@@ -99,12 +99,12 @@ void Legend::init()
     setLayout( d->layout );
 
     TextAttributes textAttrs;
-    textAttrs.setColor( Qt::black );
+    textAttrs.setPen( QPen( Qt::black ) );
     textAttrs.setFont( QFont( "helvetica", 10, QFont::Normal, false ) );
     textAttrs.setFontSize( 16 );
     setTextAttributes( textAttrs );
     TextAttributes titleTextAttrs;
-    titleTextAttrs.setColor( Qt::black );
+    titleTextAttrs.setPen( QPen( Qt::black ) );
     titleTextAttrs.setFont( QFont( "helvetica", 12, QFont::Bold, false ) );
     titleTextAttrs.setFontSize( 20 );
     setTitleTextAttributes( titleTextAttrs );

@@ -95,7 +95,7 @@ HeaderFooter::~HeaderFooter()
 void HeaderFooter::init()
 {
     TextAttributes ta;
-    ta.setColor( Qt::black );
+    ta.setPen( QPen(Qt::black) );
     ta.setFont( QFont( "helvetica", 10, QFont::Bold, false ) );
 
     Measure m( 35.0 );
@@ -144,11 +144,11 @@ void HeaderFooter::paintEvent( QPaintEvent* evt )
     d->textDoc->setPageSize( size() );
 
 //    painter.drawRect( rect().adjusted( 0, 0, -1, -1 ) );
-    painter.setPen( textAttributes().color() );
+    painter.setPen( textAttributes().pen() );
 
     if( textAttributes().isVisible() ) {
         QAbstractTextDocumentLayout::PaintContext ctx;
-        ctx.palette.setColor( QPalette::Text, textAttributes().color() );
+        ctx.palette.setColor( QPalette::Text, textAttributes().pen().color() );
         layout->draw( &painter, ctx );
     }
 

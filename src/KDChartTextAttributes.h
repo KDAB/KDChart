@@ -3,7 +3,7 @@
    */
 
 /****************************************************************************
- ** Copyright (C) 2005-2006 Klar�vdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2005-2006 Klarävdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KD Chart library.
  **
@@ -35,54 +35,135 @@
 #include "KDChartGlobal.h"
 #include "KDChartMeasure.h"
 
-class QColor;
+class QPen;
 class QFont;
 class QDomDocumentFragment;
 
 namespace KDChart {
 
+    /**
+     * \brief A set of text attributes.
+     *
+     * TextAttributes encapsulates settings that have to do with
+     * text. This includes font, fontsize, color, whether the text
+     * is rotated, etc
+     */
 class KDCHART_EXPORT TextAttributes
 {
 public:
   TextAttributes();
   TextAttributes( const TextAttributes& );
   TextAttributes &operator= ( const TextAttributes& );
+  bool operator==( const TextAttributes& ) const;
+  inline bool operator!=( const TextAttributes& other ) const
+  { return !operator==(other); }
 
   ~TextAttributes();
 
+  /**
+   * Set whether the text is to be rendered at all.
+   * \param visible Whether the text is visible.
+   */
   void setVisible( bool visible );
+
+  /**
+   * \return Whether the text is visible.
+   */
   bool isVisible() const;
 
+  /**
+   * Set the font to be used for rendering the text.
+   * \param font The font to use.
+   */
   void setFont( const QFont& font );
+
+  /**
+   * \return The font that is used for rendering text.
+   */
   QFont font() const;
 
+  /**
+   * Set the size of the font used for rendering text.
+   * \param measure The measure to use.
+   * \see Measure
+   */
   void setFontSize( const Measure & measure );
+
+  /**
+   * \return The measure used for the font size.
+   */
   Measure fontSize() const;
 
+  /**
+   * Set the minimal size of the font used for rendering text.
+   * \param measure The measure to use.
+   * \see Measure
+   */
   void setMinimalFontSize( const Measure & measure );
+
+  /**
+   * \return The measure used for the minimal font size.
+   */
   Measure minimalFontSize() const;
 
+  /**
+   * \return Whether the text has an absolute font size set.
+   */
   bool hasAbsoluteFontSize() const;
 
+  /**
+   * Set whether the text should be automatically rotated as
+   * needed when space is constraint.
+   * \param autoRotate Whether text should be automatically rotated.
+   */
   void setAutoRotate( bool autoRotate );
+
+  /**
+   * \return Whether text is automatically rotated when space is
+   * constrained.
+   */
   bool autoRotate() const;
 
+  /**
+   * Set whether the text should automatically be shrunk, if
+   * space is constraint.
+   * \param autoShrink Whether text should be auto-shrunk.
+   */
   void setAutoShrink( bool autoShrink );
+
+  /**
+   * \return Whether text is automatically shrunk if space is
+   * constraint.
+   */
   bool autoShrink() const;
 
+  /**
+   * Set the rotation angle to use for the text.
+   * \param rotation The rotation angle.
+   */
   void setRotation( int rotation );
+
+  /**
+   * \return The rotation angle used for rendering the text.
+   */
   int rotation() const;
 
-  void setColor( const QColor& color );
-  QColor color() const;
+  /**
+   * Set the pen to use for rendering the text.
+   * \param rotation The pen to use.
+   */
+  void setPen( const QPen& pen );
 
-  bool operator==( const TextAttributes& ) const;
-  inline bool operator!=( const TextAttributes& other ) const { return !operator==(other); }
+  /**
+   * \return The pen used for rendering the text.
+   */
+  QPen pen() const;
 
-  // XML serialization
+  /**
+   * Serialize the the attributes into XML.
+   */
   QDomDocumentFragment toXML() const;
-  // FIXME QPen?
-  //
+
   // FIXME KDChartEnums::TextLayoutPolicy?
 
 private:
