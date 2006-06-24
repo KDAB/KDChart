@@ -286,3 +286,13 @@ void PolarCoordinatePlane::setZoomCenter( QPointF center )
     d->coordinateTransformations[0].zoom.xCenter = center.x();
     d->coordinateTransformations[0].zoom.yCenter = center.y();
 }
+
+DataDimensionsList PolarCoordinatePlane::getDataDimensionsList() const
+{
+    DataDimensionsList l;
+
+    //FIXME(khz): do the real calculation
+
+    return l;
+}
+

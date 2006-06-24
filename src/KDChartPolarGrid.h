@@ -50,18 +50,13 @@ namespace KDChart {
     {
         // Q_OBJECT
     public:
-        PolarGrid ()
-            : AbstractGrid()
-            {}
-        virtual ~PolarGrid()
-            {}
-
-        virtual void calculateGrid(
-            qreal initialStart,
-            qreal initialEnd,
-            qreal initialFontSize );
+        PolarGrid() : AbstractGrid(){}
+        virtual ~PolarGrid(){}
 
         virtual void drawGrid( PaintContext* context );
+
+    private:
+        virtual DataDimensionsList calculateGrid( const DataDimensionsList& rawDataDimensions );
     };
 
 }

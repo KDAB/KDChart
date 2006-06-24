@@ -39,12 +39,17 @@ static qreal _trunc( qreal v )
 
 using namespace KDChart;
 
-void CartesianGrid::calculateGrid(
-            qreal initialStart,
-            qreal initialEnd,
-            qreal initialFontSize )
+
+DataDimensionsList CartesianGrid::calculateGrid( const DataDimensionsList& rawDataDimensions )
 {
     qDebug("Calling CartesianGrid::calculateGrid()");
+    DataDimensionsList l;
+
+    //FIXME(khz): do the real calculation
+
+    l = rawDataDimensions;
+
+    return l;
 }
 
 
@@ -56,35 +61,20 @@ void CartesianGrid::drawGrid( PaintContext* context )
 
     if ( !gridAttributes.isGridVisible() ) return;
 
-
-    /*
-    const QPair< qreal, qreal > verticalRange   = plane->verticalRange();
-    const QPair< qreal, qreal > horizontalRange = plane->horizontalRange();
-
-    qDebug() << "verticalRange:" << verticalRange.first << verticalRange.second
-             << "  horizontalRange:" << horizontalRange.first << horizontalRange.second;
-
-    if( horizontalRange.first == 0.0 && horizontalRange.second == 0.0 &&
-        verticalRange.first   == 0.0 && verticalRange.second   == 0.0 ) return;
-
+    updateData( plane );
+    Q_ASSERT_X ( mData.count() == 2, "CartesianGrid::drawGrid",
+                 "Error: updateData did not return exactly two dimensions." );
+    const DataDimension& dimX = mData.first();
+    const DataDimension& dimY  = mData.last();
     const QRectF boundaries(
-        QPointF( horizontalRange.first,
-                 verticalRange.first ),
-        QSizeF(  horizontalRange.second - horizontalRange.first + 1,
-                 verticalRange.second   - verticalRange.first   + 1 ) );
-
-
-    // PENDING(khz) FIXME: make numberOfUnitLinesX work for data with X coordinates too:
-//  const qreal numberOfUnitLinesX = model()->rowCount(rootIndex()) - 1.0;
-
-    const qreal numberOfUnitLinesX = qAbs( verticalRange.second   - verticalRange.first );
-    const qreal numberOfUnitLinesY = qAbs( horizontalRange.second - horizontalRange.first );
-    */
+        QPointF(dimX.start, dimY.start),
+        QSizeF( dimX.distance(), dimY.distance()));
 
 
     //const bool hasXCoordinates = datasetDimension() > 1;
 
-    const QRectF boundaries = plane->calculateDataBoundingRect();
+    // PENDING(khz) FIXME: make numberOfUnitLinesX work for data with X coordinates too:
+//  const qreal numberOfUnitLinesX = model()->rowCount(rootIndex()) - 1.0;
 
     const qreal numberOfUnitLinesX = qAbs( boundaries.width() );
     const qreal numberOfUnitLinesY = qAbs( boundaries.height() );

@@ -49,18 +49,13 @@ namespace KDChart {
     {
         // Q_OBJECT
     public:
-        CartesianGrid ()
-            : AbstractGrid()
-            {}
-        virtual ~CartesianGrid()
-            {}
-
-        virtual void calculateGrid(
-            qreal initialStart,
-            qreal initialEnd,
-            qreal initialFontSize );
+        CartesianGrid() : AbstractGrid(){}
+        virtual ~CartesianGrid(){}
 
         virtual void drawGrid( PaintContext* context );
+
+    private:
+        virtual DataDimensionsList calculateGrid( const DataDimensionsList& rawDataDimensions );
     };
 
 }

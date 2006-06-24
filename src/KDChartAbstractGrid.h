@@ -38,6 +38,7 @@ namespace KDChart {
 
     class PaintContext;
 
+
     /**
      * \internal
      *
@@ -55,23 +56,42 @@ namespace KDChart {
     protected:
         AbstractGrid ();
 
-    public:
-        static bool isBoundariesValid(const QRectF& r );
-        static bool isBoundariesValid(const QPair<QPointF,QPointF>& b );
 
-        virtual void calculateGrid(
-            qreal initialStart,
-            qreal initialEnd,
-            qreal initialFontSize );
+    public:
+        /** \brief Returns the cached result of data calculation.
+          *
+          * For this, all derived classes need to implement the
+          * pure-virtual calculateGrid() method.
+          */
+        DataDimensionsList updateData( AbstractCoordinatePlane* plane );
 
         virtual void drawGrid( PaintContext* context ) = 0;
 
-        AbstractCoordinatePlane* plane;
+        static bool isBoundariesValid(const QRectF& r );
+        static bool isBoundariesValid(const QPair<QPointF,QPointF>& b );
+        static bool isBoundariesValid(const DataDimensionsList& l );
+        static bool isValueValid(const qreal& r );
+
         GridAttributes gridAttributes;
 
-        qreal startValue;
-        qreal endValue;
-        qreal stepWidth;
+    protected:
+        DataDimensionsList mData;
+
+    private:
+        /**
+          * \brief Calculates the grid start/end/step width values.
+          *
+          * Gets the raw data dimensions - e.g. the data model's boundaries,
+          * together with their isCalculated flags.
+          *
+          * Returns the calculated start/end values for the grid, and their
+          * respective step widths.
+          *
+          * \note This function needs to be implemented by all derived classes,
+          * like CartesianGrid, PolarGrid, ...
+          */
+        virtual DataDimensionsList calculateGrid( const DataDimensionsList& rawDataDimensions ) = 0;
+        DataDimensionsList mCachedRawDataDimensions;
     };
 
 }

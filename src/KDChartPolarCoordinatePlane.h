@@ -61,6 +61,7 @@ namespace KDChart {
         virtual void setZoomCenter( QPointF center );
 
     protected:
+        virtual DataDimensionsList getDataDimensionsList() const;
         void paintEvent ( QPaintEvent* );
         void resizeEvent ( QResizeEvent* );
 

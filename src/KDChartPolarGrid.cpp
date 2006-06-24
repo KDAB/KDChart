@@ -28,13 +28,19 @@
 
 using namespace KDChart;
 
-void PolarGrid::calculateGrid(
-            qreal initialStart,
-            qreal initialEnd,
-            qreal initialFontSize )
+
+DataDimensionsList PolarGrid::calculateGrid( const DataDimensionsList& rawDataDimensions )
 {
     qDebug("Calling PolarGrid::calculateGrid()");
+    DataDimensionsList l;
+
+    //FIXME(khz): do the real calculation
+
+    l = rawDataDimensions;
+
+    return l;
 }
+
 
 void PolarGrid::drawGrid( PaintContext* context )
 {

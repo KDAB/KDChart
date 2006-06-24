@@ -27,17 +27,75 @@
 #define KDCHARTCOORDINATEPLANE_H
 
 #include <QWidget>
+#include <QList>
 
 #include "KDChartAbstractDiagram.h"
 
 namespace KDChart {
     class GridAttributes;
 
+
+    /**
+     * \brief Helper class for one dimension of data, e.g. for the rows in a data model,
+     * or for the labels of an axis, or for the vertical lines in a grid.
+     *
+     * Step width is an optional parameter, to be omitted (or set to Zero, resp.)
+     * if the step width is unknown.
+     *
+     * isCalculated specifies whether this dimension's values are calculated or counted.
+     * (counted == "Item 1", "Item 2", "Item 3" ...)
+     *
+     * The default c'tor just gets you counted values from 1..10, using step width 1,
+     * used by the CartesianGrid, when showing an empty plane without any diagrams.
+     */
+    class DataDimension{
+    public:
+        DataDimension()
+            : start(         1.0 )
+            , end(          10.0 )
+            , isCalculated( false )
+            , stepWidth(    1.0 )
+        {}
+        DataDimension( qreal start_, qreal end_, bool isCalculated_, qreal stepWidth_=0.0  )
+            : start(        start_ )
+            , end(          end_ )
+            , isCalculated( isCalculated_ )
+            , stepWidth(    stepWidth_ )
+        {}
+        /**
+          * Returns the size of the distance,
+          * equivalent to the width() (or height(), resp.) of a QRectF.
+          *
+          * Note that this value can be negative, e.g. indicating axis labels
+          * going in reversed direction.
+          */
+        qreal distance()const
+        {
+            return end-start;
+        }
+        bool operator==( const DataDimension& r )
+        {
+            return
+                (start        == r.start) &&
+                (end          == r.end) &&
+                (isCalculated == r.isCalculated) &&
+                (stepWidth    == r.stepWidth);
+        }
+        qreal start;
+        qreal end;
+        bool  isCalculated;
+        qreal stepWidth;
+    };
+    typedef QList<DataDimension> DataDimensionsList;
+
+
     class KDCHART_EXPORT AbstractCoordinatePlane : public QWidget
     {
         Q_OBJECT
         Q_DISABLE_COPY( AbstractCoordinatePlane )
         KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC( AbstractCoordinatePlane )
+    friend class AbstractGrid;
+
     protected:
         explicit inline AbstractCoordinatePlane ( Private *, QWidget* parent = 0 );
         explicit AbstractCoordinatePlane ( QWidget* parent = 0 );
@@ -199,6 +257,9 @@ namespace KDChart {
 
         /** Emitted when the associated diagrams change. */
         void diagramsChanged();
+
+    protected:
+        virtual DataDimensionsList getDataDimensionsList() const = 0;
     };
 
 }

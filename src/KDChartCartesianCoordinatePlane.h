@@ -110,7 +110,8 @@ namespace KDChart {
 	void setAxesCalcMode( AxesCalcMode mode );
 
     protected:
-        QRectF calculateDataBoundingRect() const;
+        virtual QRectF calculateDataBoundingRect() const;
+        virtual DataDimensionsList getDataDimensionsList() const;
         void paintEvent ( QPaintEvent* );
         void resizeEvent ( QResizeEvent* );
 

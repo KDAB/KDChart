@@ -195,6 +195,21 @@ QRectF CartesianCoordinatePlane::calculateDataBoundingRect() const
     return dataBoundingRect;
 }
 
+DataDimensionsList CartesianCoordinatePlane::getDataDimensionsList() const
+{
+    DataDimensionsList l;
+    const AbstractCartesianDiagram* dgr = dynamic_cast<const AbstractCartesianDiagram*> (diagrams().first() );
+    if( dgr ){
+        QRectF r( CartesianCoordinatePlane::calculateDataBoundingRect() );
+        l.append( DataDimension(r.left(), r.right(), dgr->datasetDimension() > 1) );
+        l.append( DataDimension(r.bottom(), r.top(), true) );
+    }else{
+        l.append( DataDimension() ); // This gets us the default 1..0 / 1..0 grid
+        l.append( DataDimension() ); // shown, if there is no diagram on this plane.
+    }
+    return l;
+}
+
 void CartesianCoordinatePlane::layoutDiagrams()
 {
     if ( diagrams().isEmpty() )

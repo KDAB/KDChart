@@ -38,8 +38,6 @@ using namespace KDChart;
 
 
 AbstractGrid::AbstractGrid ()
-    : plane( 0 )
-
 {
     //this bloc left empty intentionally
 }
@@ -47,6 +45,19 @@ AbstractGrid::AbstractGrid ()
 AbstractGrid::~AbstractGrid()
 {
     //this bloc left empty intentionally
+}
+
+DataDimensionsList AbstractGrid::updateData( AbstractCoordinatePlane* plane )
+{
+
+    if( plane ){
+        const DataDimensionsList rawDataDimensions( plane->getDataDimensionsList() );
+        if( rawDataDimensions != mCachedRawDataDimensions ){
+            mCachedRawDataDimensions = rawDataDimensions;
+            mData = calculateGrid( rawDataDimensions );
+        }
+    }
+    return mData;
 }
 
 bool AbstractGrid::isBoundariesValid(const QRectF& r )
@@ -57,17 +68,19 @@ bool AbstractGrid::isBoundariesValid(const QRectF& r )
 
 bool AbstractGrid::isBoundariesValid(const QPair<QPointF,QPointF>& b )
 {
-  return !(isnan(b.first.x())||isnan(b.first.y())||
-           isinf(b.first.x())||isinf(b.first.y())||
-           isnan(b.second.x())||isnan(b.second.y())||
-           isinf(b.second.x())||isinf(b.second.y()));
+  return isValueValid( b.first.x() )  && isValueValid( b.first.y() ) &&
+         isValueValid( b.second.x() ) && isValueValid( b.second.y() );
 }
 
-
-void AbstractGrid::calculateGrid(
-            qreal initialStart,
-            qreal initialEnd,
-            qreal initialFontSize )
+bool AbstractGrid::isBoundariesValid(const DataDimensionsList& l )
 {
-    qDebug("Calling AbstractGrid::calculateGrid()");
+    for (int i = 0; i < l.size(); ++i)
+        if ( ! isValueValid( l.at(i).start ) || ! ! isValueValid( l.at(i).end ) )
+            return false;
+    return true;
+}
+
+bool AbstractGrid::isValueValid(const qreal& r )
+{
+  return !(isnan(r) || isinf(r));
 }
