@@ -47,7 +47,33 @@ the "KDChart" prefix in the name. The defintion of KDChart::BarDiagram
 is thus in file KDChartBarDiagram.h..
 
 
-########### FIXME add a note on linking and include paths
+Also note that KD Chart does not require any extra installation step,
+but you just build it from sources, as you would build any other
+Qt library.
+
+In the following we assume that $KDCHARTDIR is set to your KD Chart's
+main directory, that's the top directory, that gets created, when you
+unpack the KD Chart distribution archive - so building the library
+goes like this:
+
+cd $KDCHARTDIR
+qmake kdchart.pro
+make
+
+Once you have build the library, you can link your own application
+with it, by adding the following lines to your .pro files
+
+
+KDCHARTDIR = $$(KDCHARTDIR)
+isEmpty( KDCHARTDIR ) {
+   error( "You need to set the KDCHARTDIR environment variable to point to a KD Chart installation" )
+}
+KDCHARTDIR = "$$KDCHARTDIR"
+INCLUDEPATH+= $$KDCHARTDIR/include
+DEPENDPATH += $$KDCHARTDIR/include
+LIBS      += -L$$KDCHARTDIR/lib -lkdchart
+
+
 
 
 KDChart::Widget
