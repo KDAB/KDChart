@@ -96,7 +96,7 @@ void MainWindow::on_paintValuesCB_toggled( bool checked )
                 TextAttributes ta = a.textAttributes();
                 ta.setRotation( 0 );
                 ta.setFont( QFont( "Comic", 10 ) );
-                ta .setColor( brush.color() );
+                ta .setPen( QPen( brush.color() ) );
                 if ( checked )
                     ta.setVisible( true );
                 else

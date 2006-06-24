@@ -34,6 +34,7 @@
 #include <KDChartDatasetProxyModel>
 #include <QComboBox>
 #include <QLineEdit>
+#include <QPen>
 
 class HeaderItem : public QTreeWidgetItem
 {
@@ -87,7 +88,7 @@ void MainWindow::on_addHeaderPB_clicked()
         m_chart->addHeaderFooter( headerFooter );
         headerFooter->setText( conf.textED->text() );
         KDChart::TextAttributes attrs( headerFooter->textAttributes() );
-        attrs.setColor( Qt::red );
+        attrs.setPen( QPen( Qt::red ) );
         headerFooter->setTextAttributes( attrs );
         headerFooter->setType(
             conf.typeCO->currentText() == "Header"
