@@ -1,6 +1,3 @@
-/* -*- Mode: C++ -*-
-   KDChart - a multi-platform charting engine
-   */
 
 /****************************************************************************
  ** Copyright (C) 2005-2006 Klarälvdalens Datakonsult AB.  All rights reserved.
@@ -30,16 +27,13 @@
 #ifndef KDCHARTDATAVALUEATTRIBUTES_H
 #define KDCHARTDATAVALUEATTRIBUTES_H
 
-
 #include <Qt>
 #include <QMetaType>
 #include "KDChartGlobal.h"
 #include "KDChartEnums.h"
 #include "KDChartRelativePosition.h"
 
-
 class QDomDocumentFragment;
-
 
 namespace KDChart {
 
@@ -48,33 +42,108 @@ namespace KDChart {
   class FrameAttributes;
   class MarkerAttributes;
 
+  /**
+   * \brief Diagram attributes dealing with data value labels.
+   *
+   * The DataValueAttributes group all properties that can be set
+   * wrt data value labels and if and how they are displayed. This
+   * includes things like the text attributes (font, color), what
+   * markers are used, howmany decimal digits are displayed, etc.
+   */
 class KDCHART_EXPORT DataValueAttributes
 {
 public:
   DataValueAttributes();
   DataValueAttributes( const DataValueAttributes& );
   DataValueAttributes &operator= ( const DataValueAttributes& );
+  bool operator==( const DataValueAttributes& ) const;
+  inline bool operator!=( const DataValueAttributes& other ) const { return !operator==(other); }
 
   ~DataValueAttributes();
 
+  static const DataValueAttributes& defaultAttributes();
+  static const QVariant& defaultAttributesAsVariant();
+
+  /** Set whether data value labels should be displayed.
+   * \param visible Whether data value labels should be displayed.
+   */
   void setVisible( bool visible );
+  
+  /**
+   * @return Whether data value labels should be displayed.
+   */
   bool isVisible() const;
 
+  /**
+   * Persist the set of attributes to XML.
+   */
   QDomDocumentFragment toXML() const;
 
+  /**
+   * Set the text attributes to use for the data value labels.
+   * \param a The text attributes to set.
+   * \see TextAttributes
+   */
   void setTextAttributes( const TextAttributes &a );
+
+  /**
+   * \return The text attributes used for painting data value labels.
+   */
   TextAttributes textAttributes() const;
 
+  /**
+   * Set the frame attributes to use for the data value labels area.
+   * \param a The frame attributes to set.
+   * \see FrameAttributes
+   */
   void setFrameAttributes( const FrameAttributes &a );
+
+  /**
+   * \return The frame attributes used for painting the data
+   * value labels area.
+   * \see FrameAttributes
+   */
   FrameAttributes frameAttributes() const;
 
+  /**
+   * Set the background attributes to use for the data value labels area.
+   * \param a The background attributes to set.
+   * \see BackgroundAttributes
+   */
   void setBackgroundAttributes( const BackgroundAttributes &a );
+
+  /**
+   * \return The background attributes used for painting the data
+   * value labels area.
+   * \see BackgroundAttributes
+   */
   BackgroundAttributes backgroundAttributes() const;
 
+  /**
+   * Set the marker attributes to use for the data values. This includes
+   * the marker type.
+   * \param a The marker attributes to set.
+   * \see MarkerAttributes
+   */
   void setMarkerAttributes( const MarkerAttributes &a );
+
+  /**
+   * \return The marker attributes used for decorating the data
+   * values.
+   * \see MarkerAttributes
+   */
   MarkerAttributes markerAttributes() const;
 
+  /**
+   * Set how  many decimal digits to use when rendering the data value
+   * labels.
+   * \param digits The number of decimal digits to use.
+   */
   void setDecimalDigits( int digits );
+
+  /**
+   * \return The number of decimal digits used.
+   */
   int decimalDigits() const;
 
   void setPowerOfTenDivisor( int powerOfTenDivisor );
@@ -94,12 +163,6 @@ public:
 
   void setPositiveRelativePosition( const RelativePosition& relPosition );
   RelativePosition positiveRelativePosition() const;
-
-  static const DataValueAttributes& defaultAttributes();
-  static const QVariant& defaultAttributesAsVariant();
-
-  bool operator==( const DataValueAttributes& ) const;
-  inline bool operator!=( const DataValueAttributes& other ) const { return !operator==(other); }
 
 private:
     class Private;
