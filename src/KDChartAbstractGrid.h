@@ -50,21 +50,11 @@ namespace KDChart {
     class AbstractGrid // : public QObject
     {
         // Q_OBJECT
-    public:
-/*
-        explicit AbstractGrid ( AbstractCoordinatePlane* plane_ )
-            : plane( plane_ )
-        {
-            Q_ASSERT_X ( plane, "AbstractGrid()",
-                         "Bad function call: no plane" );
-        }
-*/
-        AbstractGrid ()
-            : plane( 0 )
-            {}
-        virtual ~AbstractGrid()
-            {}
+    protected:
+        AbstractGrid ();
+        virtual ~AbstractGrid();
 
+    public:
         static bool isBoundariesValid(const QRectF& r );
         static bool isBoundariesValid(const QPair<QPointF,QPointF>& b );
 

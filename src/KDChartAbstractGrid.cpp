@@ -37,6 +37,18 @@
 using namespace KDChart;
 
 
+AbstractGrid::AbstractGrid ()
+    : plane( 0 )
+
+{
+    //this bloc left empty intentionally
+}
+
+AbstractGrid::~AbstractGrid()
+{
+    //this bloc left empty intentionally
+}
+
 bool AbstractGrid::isBoundariesValid(const QRectF& r )
 {
   return isBoundariesValid(

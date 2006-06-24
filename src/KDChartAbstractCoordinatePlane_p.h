@@ -37,15 +37,13 @@ class AbstractCoordinatePlane::Private
 protected:
     explicit Private()
         : grid( 0 )
-        , referenceCoordinatePlane( 0 )
-    {}
-    virtual ~Private()
-    { delete grid; };
+        , referenceCoordinatePlane( 0 ){}
+    virtual ~Private(){};
 
     virtual void initializeGrid()
     {
         qDebug("Calling AbstractCoordinatePlane::Private::initializeGrid()");
-        grid = new AbstractGrid();
+        // can not call the base class: grid = new AbstractGrid();
     }
 
     AbstractGrid* grid;
