@@ -38,7 +38,9 @@ protected:
     explicit Private()
         : grid( 0 )
         , referenceCoordinatePlane( 0 ){}
-    virtual ~Private(){};
+    virtual ~Private(){ 
+        delete grid;
+    };
 
     virtual void initializeGrid()
     {

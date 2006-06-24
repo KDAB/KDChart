@@ -50,9 +50,10 @@ namespace KDChart {
     class AbstractGrid // : public QObject
     {
         // Q_OBJECT
+    public:
+        virtual ~AbstractGrid();
     protected:
         AbstractGrid ();
-        virtual ~AbstractGrid();
 
     public:
         static bool isBoundariesValid(const QRectF& r );
