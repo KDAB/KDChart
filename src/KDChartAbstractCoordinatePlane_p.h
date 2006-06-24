@@ -27,6 +27,7 @@
 #define KDCHARTABSTRACTCOORDINATEPLANE_P_H
 
 #include <KDChartGridAttributes.h>
+#include <KDChartAbstractGrid.h>
 
 namespace KDChart {
 
@@ -35,18 +36,34 @@ class AbstractCoordinatePlane::Private
     friend class AbstractCoordinatePlane;
 protected:
     explicit Private()
-        :referenceCoordinatePlane(0)
+        : grid( 0 )
+        , referenceCoordinatePlane( 0 )
     {}
-    virtual ~Private() {};
+    virtual ~Private()
+    { delete grid; };
 
+    virtual void initializeGrid()
+    {
+        qDebug("Calling AbstractCoordinatePlane::Private::initializeGrid()");
+        grid = new AbstractGrid();
+    }
+
+    AbstractGrid* grid;
     AbstractDiagramList diagrams;
     GridAttributes gridAttributes;
     AbstractCoordinatePlane *referenceCoordinatePlane;
 };
 
-inline AbstractCoordinatePlane::AbstractCoordinatePlane( Private * p ) : _d( p ) {}
+inline AbstractCoordinatePlane::AbstractCoordinatePlane( Private * p ) : _d( p )
+{
+    _d->initializeGrid(); // virtual method to init the correct grid: cartesian, polar, ...
+}
+
 inline AbstractCoordinatePlane::AbstractCoordinatePlane( Private * p, QWidget* parent )
-  : QWidget( parent ), _d( p ) {}
+  : QWidget( parent ), _d( p )
+{
+    _d->initializeGrid(); // virtual method to init the correct grid: cartesian, polar, ...
+}
 
 }
 #endif /* KDCHARTABSTRACTCOORDINATEPLANE_P_H*/

@@ -33,6 +33,8 @@
 #include "KDChartAttributesModel.h"
 #include "KDChartPaintContext.h"
 #include "KDChartPainterSaver_p.h"
+#include "KDChartAbstractGrid.h"
+
 
 using namespace KDChart;
 
@@ -261,12 +263,10 @@ void BarDiagram::paint( PaintContext* ctx )
 {
     if ( !checkInvariants() ) return;
 
-    // first draw the grid
-    drawGrid( ctx );
     // Calculate width
     QPointF boundLeft, boundRight;
     QPair<QPointF,QPointF> boundaries = dataBoundaries();
-    if( !isBoundariesValid(boundaries) ) return;
+    if( !AbstractGrid::isBoundariesValid(boundaries) ) return;
     boundLeft = coordinatePlane()->translate( boundaries.first );
     boundRight = coordinatePlane()->translate( boundaries.second );
     double width = boundRight.x() - boundLeft.x();

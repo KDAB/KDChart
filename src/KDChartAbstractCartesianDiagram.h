@@ -50,8 +50,6 @@ namespace KDChart {
     protected:
         explicit inline AbstractCartesianDiagram( Private *p, CartesianCoordinatePlane* parent );
 
-	virtual void drawGrid( PaintContext* context );
-
     public:
         explicit AbstractCartesianDiagram ( CartesianCoordinatePlane* parent = 0 );
         virtual ~AbstractCartesianDiagram() {}

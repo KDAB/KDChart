@@ -35,9 +35,10 @@ namespace KDChart {
     class KDCHART_EXPORT PolarCoordinatePlane : public AbstractCoordinatePlane
     {
         Q_OBJECT
+        Q_DISABLE_COPY( PolarCoordinatePlane )
+        KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( PolarCoordinatePlane, QWidget* )
 
     public:
-        class Private;
         struct CoordinateTransformation;
         class CoordinateTransformationList;
 
@@ -66,11 +67,6 @@ namespace KDChart {
         void layoutDiagrams();
     protected slots:
         void slotLayoutChanged( AbstractDiagram* diagram );
-
-    private:
-        void paintRulers ( PaintContext* );
-
-        Private *p;
     };
 
 }

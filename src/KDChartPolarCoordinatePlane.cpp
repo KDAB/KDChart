@@ -1,5 +1,5 @@
 /****************************************************************************
- ** Copyright (C) 2006 Klarälvdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2006 Klarï¿½vdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KD Chart library.
  **
@@ -34,11 +34,14 @@
 #include "KDChartAbstractDiagram.h"
 #include "KDChartAbstractPolarDiagram.h"
 #include "KDChartPolarCoordinatePlane.h"
+#include "KDChartPolarCoordinatePlane_p.h"
 #include "KDChartPainterSaver_p.h"
-#include "KDChartZoomParameters.h"
 
 using namespace KDChart;
 
+#define d d_func()
+
+/*
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
@@ -93,6 +96,8 @@ public:
         :currentTransformation(0),
         initialResizeEventReceived(false )
         {}
+
+
     // the coordinate plane will calculate coordinate transformations for all
     // diagrams and store them here:
     CoordinateTransformationList coordinateTransformations;
@@ -104,11 +109,10 @@ public:
     // true after the first resize event came in
     bool initialResizeEventReceived;
 };
-
+*/
 
 PolarCoordinatePlane::PolarCoordinatePlane ( QWidget* parent )
-    : AbstractCoordinatePlane ( parent )
-    , p ( new Private() )
+    : AbstractCoordinatePlane ( new Private(), parent )
 {
 }
 
@@ -129,31 +133,32 @@ void PolarCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
 
 void PolarCoordinatePlane::paintEvent ( QPaintEvent* )
 {
-    QPainter painter ( this );
-    PaintContext ctx;
-    ctx.setPainter( &painter );
-    ctx.setCoordinatePlane ( this );
-    ctx.setRectangle( p->contentRect );
+    AbstractDiagramList diags = diagrams();
+    if ( d->coordinateTransformations.size() == diags.size() )
+    {
+        QPainter painter ( this );
+        PaintContext ctx;
+        ctx.setPainter ( &painter );
+        ctx.setCoordinatePlane ( this );
+        ctx.setRectangle ( d->contentRect );
+
+        // paint the coordinate system rulers:
+        d->grid->drawGrid( &ctx );
 
         // paint the diagrams:
-    AbstractDiagramList diags = diagrams();
-    if ( p->coordinateTransformations.size() == diags.size() )
-    {
         for ( int i = 0; i < diags.size(); i++ )
         {
-            p->currentTransformation = & ( p->coordinateTransformations[i] );
+            d->currentTransformation = & ( d->coordinateTransformations[i] );
             PainterSaver painterSaver( &painter );
-            // paint the coordinate system rulers:
-            paintRulers ( &ctx );
             diags[i]->paint ( &ctx );
         }
-        p->currentTransformation = 0;
+        d->currentTransformation = 0;
     } // else: diagrams have not been set up yet
 }
-
-void PolarCoordinatePlane::paintRulers( PaintContext* ctx )
+/*
+void PolarCoordinatePlane::paintGrid( PaintContext* ctx )
 {
-    if ( p->coordinateTransformations.size () <= 0 ) return;
+    if ( d->coordinateTransformations.size () <= 0 ) return;
 
     // FIXME: we paint the rulers to the settings of the first diagram for now:
     AbstractPolarDiagram* dgr = dynamic_cast<AbstractPolarDiagram*> (diagrams().first() );
@@ -161,10 +166,10 @@ void PolarCoordinatePlane::paintRulers( PaintContext* ctx )
 
     ctx->painter()->setPen ( QColor ( Qt::lightGray ) );
     QPointF origin = translate( QPointF( 0,0 ) );
-    const int numberOfSpokes = ( int ) ( 360 / p->currentTransformation->angleUnit );
+    const int numberOfSpokes = ( int ) ( 360 / d->currentTransformation->angleUnit );
     const double r = dgr->dataBoundaries().second.y(); // use the full extents
     for ( int i = 0; i < numberOfSpokes ; ++i ) {
-        ctx->painter()->drawLine( origin, p->currentTransformation->translate( QPointF( r, i ) ) );
+        ctx->painter()->drawLine( origin, d->currentTransformation->translate( QPointF( r, i ) ) );
     }
     const int numberOfGridRings = ( int ) dgr->numberOfGridRings();
     for ( int i = 0; i < numberOfGridRings; ++i ) {
@@ -177,10 +182,10 @@ void PolarCoordinatePlane::paintRulers( PaintContext* ctx )
         QPointF topLeftPoint;
         QPointF bottomRightPoint;
 
-        topLeftPoint = p->currentTransformation->translate( QPointF( rad, 0 ) );
-        topLeftPoint.setX( p->currentTransformation->translate( QPointF( rad, 90 / p->currentTransformation->angleUnit ) ).x() );
-        bottomRightPoint = p->currentTransformation->translate( QPointF( rad, 180 / p->currentTransformation->angleUnit ) );
-        bottomRightPoint.setX( p->currentTransformation->translate( QPointF( rad, 270 / p->currentTransformation->angleUnit ) ).x() );
+        topLeftPoint = d->currentTransformation->translate( QPointF( rad, 0 ) );
+        topLeftPoint.setX( d->currentTransformation->translate( QPointF( rad, 90 / d->currentTransformation->angleUnit ) ).x() );
+        bottomRightPoint = d->currentTransformation->translate( QPointF( rad, 180 / d->currentTransformation->angleUnit ) );
+        bottomRightPoint.setX( d->currentTransformation->translate( QPointF( rad, 270 / d->currentTransformation->angleUnit ) ).x() );
 
         rect.setTopLeft( topLeftPoint );
         rect.setBottomRight( bottomRightPoint );
@@ -188,10 +193,11 @@ void PolarCoordinatePlane::paintRulers( PaintContext* ctx )
         ctx->painter()->drawEllipse( rect );
     }
 }
+*/
 
 void PolarCoordinatePlane::resizeEvent ( QResizeEvent* )
 {
-    p->initialResizeEventReceived = true;
+    d->initialResizeEventReceived = true;
     layoutDiagrams();
 }
 
@@ -203,10 +209,10 @@ void PolarCoordinatePlane::layoutDiagrams()
     // size is the rectangle size plus the pen width). This way, most clipping
     // for regular pens should be avoided. When pens with a penWidth or larger
     // than 1 are used, this may not b sufficient.
-    p->contentRect = QRectF ( 1, 1, width() - 3, height() - 3 );
+    d->contentRect = QRectF ( 1, 1, width() - 3, height() - 3 );
 
     // FIXME distribute space according to options:
-    p->coordinateTransformations.clear();
+    d->coordinateTransformations.clear();
     foreach ( AbstractDiagram* diagram, diagrams() )
         {
             AbstractPolarDiagram *polarDiagram = dynamic_cast<AbstractPolarDiagram*>( diagram );
@@ -216,67 +222,67 @@ void PolarCoordinatePlane::layoutDiagrams()
             const double angleUnit = 360 / polarDiagram->valueTotals();
             const double radius = dataBoundariesPair.second.y();
             const double diagramWidth = radius * 2; // == height
-            const double planeWidth = p->contentRect.width();
-            const double planeHeight = p->contentRect.height();
+            const double planeWidth = d->contentRect.width();
+            const double planeHeight = d->contentRect.height();
             const double radiusUnit = qMin( planeWidth, planeHeight ) / diagramWidth;
             QPointF coordinateOrigin = QPointF ( planeWidth / 2, planeHeight / 2 );
-            coordinateOrigin += p->contentRect.topLeft();
+            coordinateOrigin += d->contentRect.topLeft();
 
             CoordinateTransformation diagramTransposition;
 	    diagramTransposition.originTranslation = coordinateOrigin;
 	    diagramTransposition.radiusUnit = radiusUnit;
 	    diagramTransposition.angleUnit = angleUnit;
 	    diagramTransposition.zoom = ZoomParameters();
-            p->coordinateTransformations.append( diagramTransposition );
+            d->coordinateTransformations.append( diagramTransposition );
         }
 }
 
 const QPointF PolarCoordinatePlane::translate( const QPointF& diagramPoint ) const
 {
-    Q_ASSERT_X ( p->currentTransformation != 0, "PolarCoordinatePlane::translate",
+    Q_ASSERT_X ( d->currentTransformation != 0, "PolarCoordinatePlane::translate",
                  "Only call translate() from within paint()." );
-    return  p->currentTransformation->translate ( diagramPoint );
+    return  d->currentTransformation->translate ( diagramPoint );
 }
 
 const QPointF PolarCoordinatePlane::translatePolar( const QPointF& diagramPoint ) const
 {
-    Q_ASSERT_X ( p->currentTransformation != 0, "PolarCoordinatePlane::translate",
+    Q_ASSERT_X ( d->currentTransformation != 0, "PolarCoordinatePlane::translate",
                  "Only call translate() from within paint()." );
-    return  p->currentTransformation->translatePolar ( diagramPoint );
+    return  d->currentTransformation->translatePolar ( diagramPoint );
 }
 
 void PolarCoordinatePlane::slotLayoutChanged ( AbstractDiagram* )
 {
-    if ( p->initialResizeEventReceived ) layoutDiagrams();
+    if ( d->initialResizeEventReceived ) layoutDiagrams();
 }
 
 double PolarCoordinatePlane::zoomFactorX() const
 {   
-    return p->coordinateTransformations[0].zoom.xFactor;
+    return d->coordinateTransformations[0].zoom.xFactor;
 }
 
 double PolarCoordinatePlane::zoomFactorY() const
 {
-    return p->coordinateTransformations[0].zoom.yFactor;
+    return d->coordinateTransformations[0].zoom.yFactor;
 }
 
 void PolarCoordinatePlane::setZoomFactorX( double factor )
 {
-    p->coordinateTransformations[0].zoom.xFactor = factor;
+    d->coordinateTransformations[0].zoom.xFactor = factor;
 }
 
 void PolarCoordinatePlane::setZoomFactorY( double factor )
 {
-    p->coordinateTransformations[0].zoom.yFactor = factor;
+    d->coordinateTransformations[0].zoom.yFactor = factor;
 }
 
 QPointF PolarCoordinatePlane::zoomCenter() const
 {
-    return QPointF( p->coordinateTransformations[0].zoom.xCenter, p->coordinateTransformations[0].zoom.yCenter );
+    return QPointF( d->coordinateTransformations[0].zoom.xCenter, d->coordinateTransformations[0].zoom.yCenter );
 }
 
 void PolarCoordinatePlane::setZoomCenter( QPointF center )
 {
-    p->coordinateTransformations[0].zoom.xCenter = center.x();
-    p->coordinateTransformations[0].zoom.yCenter = center.y();
+    d->coordinateTransformations[0].zoom.xCenter = center.x();
+    d->coordinateTransformations[0].zoom.yCenter = center.y();
 }

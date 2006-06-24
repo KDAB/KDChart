@@ -28,6 +28,7 @@
 
 #include "KDChartAbstractCoordinatePlane_p.h"
 #include "CartesianCoordinateTransformation.h"
+#include "KDChartCartesianGrid.h"
 
 namespace KDChart {
 
@@ -43,6 +44,12 @@ public:
     {}
 
     virtual ~Private() { }
+
+    virtual void initializeGrid()
+    {
+        grid = new CartesianGrid();
+    }
+
 
     // the coordinate plane will calculate the coordinate transformation:
     CoordinateTransformation coordinateTransformation;

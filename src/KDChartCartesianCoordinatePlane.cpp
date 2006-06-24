@@ -63,16 +63,17 @@ void CartesianCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
 
 void CartesianCoordinatePlane::paintEvent ( QPaintEvent* )
 {
-    QPainter painter ( this );
     AbstractDiagramList diags = diagrams();
     if ( !diags.isEmpty() )
     {
-        // paint the coordinate system rulers:
+        QPainter painter ( this );
         PaintContext ctx;
-        ctx.setRectangle ( d->drawingArea );
         ctx.setPainter ( &painter );
         ctx.setCoordinatePlane ( this );
-        //paintGrid( &ctx );
+        ctx.setRectangle ( d->drawingArea );
+
+        // paint the coordinate system rulers:
+        d->grid->drawGrid( &ctx );
 
         // paint the diagrams:
         for ( int i = 0; i < diags.size(); i++ )
@@ -83,7 +84,7 @@ void CartesianCoordinatePlane::paintEvent ( QPaintEvent* )
     }
     //for debugging: painter.drawRect(d->drawingArea);
 }
-
+/*
 void CartesianCoordinatePlane::paintGrid( PaintContext* ctx )
 {
     // FIXME accumulate over all diagrams
@@ -148,7 +149,7 @@ void CartesianCoordinatePlane::paintGrid( PaintContext* ctx )
         ctx->painter()->drawLines ( axes );
     }
 }
-
+*/
 void CartesianCoordinatePlane::resizeEvent ( QResizeEvent* )
 {
     d->initialResizeEventReceived = true;
@@ -208,7 +209,7 @@ void CartesianCoordinatePlane::layoutDiagrams()
     // than 1 are used, this may not be sufficient.
     d->drawingArea = QRectF ( 1, 1, width() - 3, height() - 3 );
 
-    QRectF  dataBoundingRect = calculateDataBoundingRect();
+    QRectF dataBoundingRect = calculateDataBoundingRect();
 
     // calculate the remaining rectangle, and use it as the diagram area:
     d->diagramArea = d->drawingArea;

@@ -29,13 +29,6 @@
 #include <QDebug>
 #include <QPainter>
 
-#include <cmath>
-
-static qreal _trunc( qreal v )
-{
-    return (( v > 0.0 ) ? floor( v ) : ceil(  v ));
-}
-
 using namespace KDChart;
 AbstractCartesianDiagram::Private::Private()
     : referenceDiagram( 0 )
@@ -119,7 +112,7 @@ const GridAttributes* AbstractCartesianDiagram::gridAttributes() const
 {
     return &(d->gridAttributes);
 }
-
+/*
 void AbstractCartesianDiagram::drawGrid( PaintContext* context )
 {
     if ( !checkInvariants() || !gridAttributes()->isGridVisible() ) return;
@@ -263,3 +256,5 @@ void AbstractCartesianDiagram::drawGrid( PaintContext* context )
         }
     }
 }
+*/
+

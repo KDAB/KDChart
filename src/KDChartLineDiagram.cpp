@@ -40,6 +40,7 @@
 #include "KDChartThreeDLineAttributes.h"
 #include "KDChartAttributesModel.h"
 #include "KDChartPainterSaver_p.h"
+#include "KDChartAbstractGrid.h"
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
@@ -235,10 +236,7 @@ void LineDiagram::paintEvent ( QPaintEvent*)
 void LineDiagram::paint( PaintContext* ctx )
 {
     if ( !checkInvariants( true ) ) return;
-    if ( !isBoundariesValid(dataBoundaries()) ) return;
-
-    // draw the grid
-    drawGrid( ctx );
+    if ( !AbstractGrid::isBoundariesValid(dataBoundaries()) ) return;
 
     //calculates and stores the values
     const int rowCount = d->attributesModel->rowCount(attributesModelRootIndex());

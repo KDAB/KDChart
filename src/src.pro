@@ -17,6 +17,9 @@ HEADERS += KDChartGlobal.h \
            KDChartAbstractPolarDiagram.h \
            KDChartAbstractPolarDiagram_p.h \
            KDChartAbstractProxyModel.h \
+           KDChartAbstractGrid.h \
+           KDChartCartesianGrid.h \
+           KDChartPolarGrid.h \
            KDChartAttributesModel.h \
            KDChartBackgroundAttributes.h \
            KDChartBarAttributes.h \
@@ -78,6 +81,9 @@ SOURCES += KDChartAbstractCartesianDiagram.cpp \
            KDChartAbstractPieDiagram.cpp \
            KDChartAbstractPolarDiagram.cpp \
            KDChartAbstractProxyModel.cpp \
+           KDChartAbstractGrid.cpp \
+           KDChartCartesianGrid.cpp \
+           KDChartPolarGrid.cpp \
            KDChartAttributesModel.cpp \
            KDChartBackgroundAttributes.cpp \
            KDChartBarAttributes.cpp \

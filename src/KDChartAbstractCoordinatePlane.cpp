@@ -37,6 +37,7 @@ AbstractCoordinatePlane::AbstractCoordinatePlane ( QWidget* parent )
     : QWidget ( parent )
     , _d ( new Private() )
 {
+    _d->initializeGrid(); // virtual method to init the correct grid: cartesian, polar, ...
 }
 
 AbstractCoordinatePlane::~AbstractCoordinatePlane()
