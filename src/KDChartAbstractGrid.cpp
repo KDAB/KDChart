@@ -71,8 +71,3 @@ void AbstractGrid::calculateGrid(
 {
     qDebug("Calling AbstractGrid::calculateGrid()");
 }
-
-void AbstractGrid::drawGrid( PaintContext* context )
-{
-    qDebug("Calling AbstractGrid::drawGrid()");
-}

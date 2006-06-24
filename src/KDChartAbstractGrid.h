@@ -63,7 +63,7 @@ namespace KDChart {
             qreal initialEnd,
             qreal initialFontSize );
 
-        virtual void drawGrid( PaintContext* context );
+        virtual void drawGrid( PaintContext* context ) = 0;
 
         AbstractCoordinatePlane* plane;
         GridAttributes gridAttributes;
