@@ -1,0 +1,168 @@
+Getting Started with KDChart 2
+==============================
+
+The following is a step-by-step tutorial on how to get a basic diagram
+set up and displayed. KDChart 2 was designed to fit into the Qt Interview 
+framework for Model/View programming, and thus is intented to be used 
+with a QAbstractItemModel implementation providing the data to it. To 
+reduce some of the complexity involved with that KDChart (like Qt itself) provides
+a convenience wrapper called KDChartWidget that can be used for straight
+forward charting use cases, especially if the data to be charted is not already
+provided by an Interview model.
+
+After some general remarks applicabale to both ways of using KDChart 2, 
+the second section below describes this KDChart::Widget class and how to use it,
+while the following third section of this guide describes the basic steps of
+working with the full KDChart 2 API.
+
+General Information:
+===============
+
+All class in the KDChart 2 API are in the KDChart namespace, to allow short
+and clear class names, while still avoiding name clashes. Unless you prefer
+to use the KDChart:: prefix on all class names in your code, you can add the
+following line at the top of your implemenetation files, to make all names in the
+KDChart namespace available in that file:
+
+using namespace KDChart;
+
+Like Qt, KDChart provides STL-style forwarding headers, that allow you to omit
+the ".h" suffix when including headers. To bring the bar diagram header into your
+implementation flie, you could therefore write:
+
+#include <KDChartBarDiagram>
+
+or 
+
+#include <KDChartBarDiagram.h>
+
+Note that the file names of header and implementation files all have the KDChart
+prefix in the name. The defintion of KDChart::BarDiagram is thus in file
+KDChartBarDiagram.h..
+
+########### FIXME add a note on linking and include paths
+
+KDChart::Widget:
+=============
+
+To use the KDChart::Widget class, you first need to include the appropriate header file,
+and bring the KDChart namespace in.
+
+#include <KDChartWidget>
+using namespace KDChart;
+
+Adding the widget to your dialog work just like for any other QWidget:
+
+    QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
+    widget = new Widget( chartFrame );
+    chartLayout->addWidget( widget );
+
+The Widget can be used in one of several builtin chart type modes. To
+set it to line diagram mode, write:
+
+     widget->setType( Widget::Line );
+
+If you have one dimensional data to chart, such as a collection of measurement 
+datasets, each in a list or vector, you can use the following method to add the data
+to the charting widget for display:
+
+     QVector< double > data;
+     data << 1.1 << 2.2 << 3.3 << 4.4;
+     const QString title = "First set of data";
+     setDataset( column,  data,  title );
+
+If the data to plot is two dimensional (x and y values) you can use the setDataset
+version that takes a vector of pairs of doubles, but otherwise works the same way.
+
+KDChart::Widget also contains methods for adding legends, headers or footers and
+axes to the chart. To add a legend, write:
+
+    Legend* l = new Legend();
+    addLegend( l );
+
+Note that the chart takes ownership of elements such as legends, so you must not
+delete them.
+
+For more details, please refer to the KDChart::Widget API documentation and the
+example code in the examples/Widget subdirectory of your KDChart distribution
+package.
+
+
+KDChart and Interview:
+=================
+
+A prerequisite for using KDChart's full API is that the data to be charted is provided
+by a class implementing the QAbstractItemModel interface. The following example
+assumes such a model to be present and filled with data.
+
+As in the Widget case, you need to include the appropriate headers, and bring in
+the KDChart namespace:
+
+#include <KDChartChart>
+#include <KDChartLineDiagram>
+using namespace KDChart;
+
+The central widget object that acts as a container for all the charting elements, including
+the diagrams themselves is called Chart. Adding it to a dialog works like for any other
+QWidget:
+
+    QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
+    m_chart = new Chart();
+    chartLayout->addWidget( m_chart );
+
+A chart can hold several coordinate planes (cartesian or polar) each of which can hold
+several diagrams. A coordinate plane represents the entity that is responsible for 
+mapping the values into positions on the widget. A diagram is the actual plot, the bars, 
+lines etc that represent the data. In this example we only create a single line diagram,
+and use the default cartesian coordinate plane, that an empty Chart already contains.
+
+    // Create a bar diagram and associate the model with the data to render with it
+    m_lines = new LineDiagram();
+    m_lines->setModel( &m_model );
+
+    // Replace the default provided diagram of the default coordinate plane with our 
+    // newly created one. Note that the plane takes ownership of the diagram, it must
+    // therefore not be deleted
+    m_chart->coordinatePlane()->replaceDiagram( m_lines );
+
+Adding elements such as axes or legends is straight forward as well:
+
+    CartesianAxis *yAxis = new CartesianAxis ( m_lines );
+    yAxis->setPosition ( KDChart::CartesianAxis::Left );
+ 
+    // the diagram takes ownershpi of the Axis
+    m_bars->addAxis( yAxis );
+
+    legend = new Legend( m_lines, m_chart );
+    m_chart->addLegend( legend );
+
+Various aspects of the diagrams, planes, legends, etc can be adjusted. Much like
+Qt itself KDChart uses a value based approach to these attributes. In the case of
+diagrams, most aspects can be adjusted at three different levels of granularity.
+The QPen that is used for drawing datasets (lines, bars, etc) can be set either for
+one datapoint within a dataset, for a dataset or for the whole diagram:
+
+KDChartAbstractDiagram.h:        void setPen( const QModelIndex& index, const QPen& pen );
+KDChartAbstractDiagram.h:        void setPen( int dataset, const QPen& pen );
+KDChartAbstractDiagram.h:        void setPen( const QPen& pen );
+
+To use a dark gray color for all lines in our example chart, you could write:
+
+    QPen pen;
+    pen.setColor( Qt::darkGray );
+    pen.setWidth( 1 );
+    m_lines->setPen( pen );
+
+Attributes that form logical groupings are combined into collection classes, such
+as GridAttributes, DataValueAttributes, TextAttributes, etc. This allows it to keep
+sets of such properties around and swap them in one go, based on program state.
+To use a special font for drawing a legend, for example, write:
+
+    TextAttributes ta;
+     ta.setFont( myfont );
+     legend->setTextAttributes( ta );
+
+For more detailed information please refer to the API documentation of the Chart,
+AbstractDiagram, AbstractCartesianDiagram, AbstractCoordinatePlane, Legend,
+CartesianAxis etc classes, and the example code in the examples subdirectory
+of your KDChart distribution package.
