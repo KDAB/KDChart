@@ -165,4 +165,5 @@ To use a special font for drawing a legend, for example, write:
 For more detailed information please refer to the API documentation of the Chart,
 AbstractDiagram, AbstractCartesianDiagram, AbstractCoordinatePlane, Legend,
 CartesianAxis etc classes, and the example code in the examples subdirectory
-of your KDChart distribution package.
+of your KDChart distribution package. A more in-depth introduction to the API
+can be found in the file doc/KDChart-2.0-API-Introduction.
