@@ -1,0 +1,122 @@
+/****************************************************************************
+ ** Copyright (C) 2006 Klarälvdalens Datakonsult AB.  All rights reserved.
+ **
+ ** This file is part of the KD Chart library.
+ **
+ ** This file may be distributed and/or modified under the terms of the
+ ** GNU General Public License version 2 as published by the Free Software
+ ** Foundation and appearing in the file LICENSE.GPL included in the
+ ** packaging of this file.
+ **
+ ** Licensees holding valid commercial KD Chart licenses may use this file in
+ ** accordance with the KD Chart Commercial License Agreement provided with
+ ** the Software.
+ **
+ ** This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
+ ** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ **
+ ** See http://www.kdab.net/kdchart for
+ **   information about KDChart Commercial License Agreements.
+ **
+ ** Contact info@kdab.net if any conditions of this
+ ** licensing are not clear to you.
+ **
+ **********************************************************************/
+
+#ifndef KDCHARTPOLARCOORDINATEPLANE_P_H
+#define KDCHARTPOLARCOORDINATEPLANE_P_H
+
+#include "KDChartAbstractCoordinatePlane_p.h"
+#include "KDChartZoomParameters.h"
+#include "KDChartPolarGrid.h"
+
+namespace KDChart {
+
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+#define DEGTORAD(d) (d)*M_PI/180
+
+struct PolarCoordinatePlane::CoordinateTransformation
+{
+    // represents the distance of the diagram coordinate origin to the
+    // origin of the coordinate plane space:
+    QPointF originTranslation;
+    double radiusUnit;
+    double angleUnit;
+
+    ZoomParameters zoom;
+
+    static QPointF polarToCartesian( double R, double theta )
+    {
+        return QPointF( R * cos( DEGTORAD( theta  ) ), R * sin( DEGTORAD( theta ) ) );
+    }
+
+    inline const QPointF translate( const QPointF& diagramPoint ) const
+    {
+        // calculate the polar coordinates
+        const double x = diagramPoint.x() * radiusUnit;
+        const double y = ( diagramPoint.y() * angleUnit) - 90;
+        // convert to cartesian coordinates
+        QPointF cartesianPoint = polarToCartesian( x, y );
+        cartesianPoint.setX( cartesianPoint.x() * zoom.xFactor );
+        cartesianPoint.setY( cartesianPoint.y() * zoom.yFactor );
+
+        QPointF newOrigin = originTranslation;
+        double minOrigin = qMin( newOrigin.x(), newOrigin.y() );
+        newOrigin.setX( newOrigin.x() + minOrigin * ( 1 - zoom.xCenter * 2 ) * zoom.xFactor );
+        newOrigin.setY( newOrigin.y() + minOrigin * ( 1 - zoom.yCenter * 2 ) * zoom.yFactor );
+
+        return newOrigin + cartesianPoint;
+    }
+
+    inline const QPointF translatePolar( const QPointF& diagramPoint ) const
+    {
+        return QPointF( diagramPoint.x() * angleUnit, diagramPoint.y() * radiusUnit );
+    }
+};
+
+class PolarCoordinatePlane::CoordinateTransformationList
+    : public QList<PolarCoordinatePlane::CoordinateTransformation> {};
+
+class PolarCoordinatePlane::Private : public AbstractCoordinatePlane::Private
+{
+    friend class PolarCoordinatePlane;
+public:
+    explicit Private()
+        :currentTransformation(0),
+        initialResizeEventReceived(false )
+    {}
+
+    virtual ~Private() { }
+
+    virtual void initializeGrid()
+    {
+        qDebug("Calling PolarCoordinatePlane::Private::initializeGrid()");
+        grid = new PolarGrid();
+    }
+
+    // the coordinate plane will calculate coordinate transformations for all
+    // diagrams and store them here:
+    CoordinateTransformationList coordinateTransformations;
+    // when painting, this pointer selects the coordinate transformation for
+    // the current diagram:
+    CoordinateTransformation* currentTransformation;
+    // the reactangle occupied by the diagrams, in plane coordinates
+    QRectF contentRect;
+    // true after the first resize event came in
+    bool initialResizeEventReceived;
+};
+
+
+inline PolarCoordinatePlane::PolarCoordinatePlane( Private * p, QWidget * parent )
+    : AbstractCoordinatePlane( p, parent ) {}
+inline PolarCoordinatePlane::Private * PolarCoordinatePlane::d_func()
+{ return static_cast<Private*>( AbstractCoordinatePlane::d_func() ); }
+inline const PolarCoordinatePlane::Private * PolarCoordinatePlane::d_func() const
+{ return static_cast<const Private*>( AbstractCoordinatePlane::d_func() ); }
+
+}
+
+#endif /* KDCHARTBARDIAGRAM_P_H */
+
