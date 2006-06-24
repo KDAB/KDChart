@@ -1,7 +1,3 @@
-/* -*- Mode: C++ -*-
-   KDChart - a multi-platform charting engine
-   */
-
 /****************************************************************************
  ** Copyright (C) 2001-2006 Klarälvdalens Datakonsult AB.  All rights reserved.
  **
@@ -36,12 +32,15 @@
 namespace KDChart {
     class AbstractDiagram;
 
+    /**
+     * \brief A DiagramObserver watches the associated diagram for
+     * changes and deletion and emits corresponsing signals.
+     */
     class DiagramObserver : public QObject
     {
         Q_OBJECT
     public:
        /**
-         * Constructur.
          * Constructs a new observer observing the given diagram.
          */
         DiagramObserver( AbstractDiagram& diagram, QObject* parent = NULL );
