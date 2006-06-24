@@ -44,6 +44,7 @@ void CartesianGrid::calculateGrid(
             qreal initialEnd,
             qreal initialFontSize )
 {
+    qDebug("Calling CartesianGrid::calculateGrid()");
 }
 
 
@@ -87,8 +88,7 @@ void CartesianGrid::drawGrid( PaintContext* context )
 
     const qreal numberOfUnitLinesX = qAbs( boundaries.width() );
     const qreal numberOfUnitLinesY = qAbs( boundaries.height() );
-    qDebug("numberOfUnitLinesX: %f    numberOfUnitLinesY: %f",numberOfUnitLinesX,numberOfUnitLinesY);
-
+//  qDebug("numberOfUnitLinesX: %f    numberOfUnitLinesY: %f",numberOfUnitLinesX,numberOfUnitLinesY);
     // do not draw a Zero size grid (and do not divide by Zero)
     if( numberOfUnitLinesX <= 0.0 || numberOfUnitLinesY <= 0.0 ) return;
     if( !isBoundariesValid(boundaries) ) return;
@@ -119,10 +119,10 @@ void CartesianGrid::drawGrid( PaintContext* context )
     bool drawFourthLinesX = screenRangeX / (numberOfUnitLinesX * 4.0) > MinimumPixelsBetweenLines && gridAttributes.isSubGridVisible();
     bool drawFourthLinesY = screenRangeY / (numberOfUnitLinesY * 4.0) > MinimumPixelsBetweenLines && gridAttributes.isSubGridVisible();
 
-    const qreal minValueX = boundaries.left();
-    const qreal maxValueX = boundaries.right();
-    const qreal minValueY = boundaries.top();
-    const qreal maxValueY = boundaries.bottom();
+    const qreal minValueX = qMin( boundaries.left(), boundaries.right() );
+    const qreal maxValueX = qMax( boundaries.left(), boundaries.right() );
+    const qreal minValueY = qMin( boundaries.top(), boundaries.bottom() );
+    const qreal maxValueY = qMax( boundaries.top(), boundaries.bottom() );
 
     if ( drawFourthLinesX ) {
         context->painter()->setPen( gridAttributes.subGridPen() );
@@ -203,6 +203,7 @@ void CartesianGrid::drawGrid( PaintContext* context )
         if ( fmod( minY , unitFactorY ) != 0.0 )
             minY = unitFactorY * _trunc( minY / unitFactorY );
 
+//qDebug("minY: %f   maxValueY: %f   unitFactorY: %f",minY,maxValueY,unitFactorY);
         for ( qreal f = minY; f <= maxValueY; f += unitFactorY ) {
             // PENDING(khz) FIXME: make draving/not drawing of Zero line more sophisticated?:
 //qDebug("f: %f",f);
