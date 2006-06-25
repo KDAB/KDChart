@@ -54,6 +54,12 @@ namespace KDChart {
 
     private:
         virtual DataDimensionsList calculateGrid( const DataDimensionsList& rawDataDimensions );
+        /**
+          * Classes derived from CartesianGrid can overwrite calculateGridXY() if they need
+          * a different way of calculating the start/end/step width of their Absicissa grid
+          * (or Ordinate grid, resp.)
+          */
+        virtual DataDimension calculateGridXY( const DataDimension& rawDataDimension, bool isX );
     };
 
 }

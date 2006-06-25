@@ -94,6 +94,8 @@ namespace KDChart {
           *
           * Returns the calculated start/end values for the grid, and their
           * respective step widths.
+          * If at least one of the step widths is Zero, all dimensions of
+          * the returned list are considered invalid!
           *
           * \note This function needs to be implemented by all derived classes,
           * like CartesianGrid, PolarGrid, ...

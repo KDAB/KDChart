@@ -39,11 +39,11 @@ namespace KDChart {
      * \brief Helper class for one dimension of data, e.g. for the rows in a data model,
      * or for the labels of an axis, or for the vertical lines in a grid.
      *
-     * Step width is an optional parameter, to be omitted (or set to Zero, resp.)
-     * if the step width is unknown.
-     *
      * isCalculated specifies whether this dimension's values are calculated or counted.
      * (counted == "Item 1", "Item 2", "Item 3" ...)
+     *
+     * Step width is an optional parameter, to be omitted (or set to Zero, resp.)
+     * if the step width is unknown.
      *
      * The default c'tor just gets you counted values from 1..10, using step width 1,
      * used by the CartesianGrid, when showing an empty plane without any diagrams.

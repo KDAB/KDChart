@@ -40,15 +40,27 @@ static qreal _trunc( qreal v )
 using namespace KDChart;
 
 
+DataDimension CartesianGrid::calculateGridXY( const DataDimension& rawDataDimension, bool isX )
+{
+    DataDimension dim( rawDataDimension );
+    dim.stepWidth = 1.0;
+    return dim;
+}
+
+
 DataDimensionsList CartesianGrid::calculateGrid( const DataDimensionsList& rawDataDimensions )
 {
-    qDebug("Calling CartesianGrid::calculateGrid()");
+    Q_ASSERT_X ( rawDataDimensions.count() == 2, "CartesianGrid::calculateGrid",
+                 "Error: calculateGrid() expects a list with exactly two entries." );
     DataDimensionsList l;
-
-    //FIXME(khz): do the real calculation
-
-    l = rawDataDimensions;
-
+    const DataDimension dimX = calculateGridXY( rawDataDimensions.first(), true );
+    if( dimX.stepWidth ){
+        const DataDimension dimY = calculateGridXY( rawDataDimensions.last(), false );
+        if( dimY.stepWidth ){
+            l.append( dimX );
+            l.append( dimY );
+        }
+    }
     return l;
 }
 
