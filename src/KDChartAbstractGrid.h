@@ -26,7 +26,6 @@
 #ifndef KDCHARTABSTRACTGRID_H
 #define KDCHARTABSTRACTGRID_H
 
-// #include <QObject>
 #include <QPair>
 
 #include "KDChartAbstractCoordinatePlane.h"
@@ -42,15 +41,14 @@ namespace KDChart {
     /**
      * \internal
      *
-     * \brief Base class for grid classes: cartesian, polar, ...
+     * \brief Abstract base class for grid classes: cartesian, polar, ...
      *
      * The AbstractGrid interface is the base class used by
      * AbstractCoordinatePlane, for calculating and for drawing
      * the grid lines of the plane.
      */
-    class AbstractGrid // : public QObject
+    class AbstractGrid
     {
-        // Q_OBJECT
     public:
         virtual ~AbstractGrid();
     protected:
@@ -65,6 +63,16 @@ namespace KDChart {
           */
         DataDimensionsList updateData( AbstractCoordinatePlane* plane );
 
+        /**
+          * Doing the actual drawing.
+          *
+          * Every derived class must implement this.
+          *
+          * \note When implementing drawGrid():  Before you start drawing,
+          * make sure to call updateData(), to get the data boundaries
+          * recalculated.
+          * For an example, see the implementation of CartesianGrid:drawGrid().
+          */
         virtual void drawGrid( PaintContext* context ) = 0;
 
         static bool isBoundariesValid(const QRectF& r );

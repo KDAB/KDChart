@@ -26,8 +26,6 @@
 #ifndef KDCHARTCARTESIANGRID_H
 #define KDCHARTCARTESIANGRID_H
 
-// #include <QObject>
-
 #include "KDChartCartesianCoordinatePlane.h"
 #include "KDChartAbstractGrid.h"
 
@@ -47,7 +45,6 @@ namespace KDChart {
      */
     class CartesianGrid : public AbstractGrid
     {
-        // Q_OBJECT
     public:
         CartesianGrid() : AbstractGrid(){}
         virtual ~CartesianGrid(){}

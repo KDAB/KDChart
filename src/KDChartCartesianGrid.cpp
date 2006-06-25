@@ -61,6 +61,8 @@ void CartesianGrid::drawGrid( PaintContext* context )
 
     if ( !gridAttributes.isGridVisible() ) return;
 
+    // important: Make sure to update the calculated mData,
+    //            before you start using it!
     updateData( plane );
     Q_ASSERT_X ( mData.count() == 2, "CartesianGrid::drawGrid",
                  "Error: updateData did not return exactly two dimensions." );

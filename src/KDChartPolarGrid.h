@@ -26,8 +26,6 @@
 #ifndef KDCHARTPOLARGrid_H
 #define KDCHARTPOLARGrid_H
 
-// #include <QObject>
-
 #include "KDChartPolarCoordinatePlane.h"
 #include "KDChartAbstractGrid.h"
 
@@ -48,7 +46,6 @@ namespace KDChart {
      */
     class PolarGrid : public AbstractGrid
     {
-        // Q_OBJECT
     public:
         PolarGrid() : AbstractGrid(){}
         virtual ~PolarGrid(){}
