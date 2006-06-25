@@ -39,6 +39,7 @@ public:
     Private();
 private:
     bool visible;
+    GranularitySequence sequence;
     QPen pen;
     bool subVisible;
     QPen subPen;
@@ -47,6 +48,7 @@ private:
 
 GridAttributes::Private::Private()
     : visible( true ),
+      sequence( GranularitySequence_10_20 ),
       pen( QColor(0xa0, 0xa0, 0xa0 ) ),
       subVisible( true ),
       subPen( QColor(0xd0, 0xd0, 0xd0 ) ),
@@ -84,6 +86,7 @@ GridAttributes::~GridAttributes()
 bool GridAttributes::operator==( const GridAttributes& r ) const
 {
     return ( isGridVisible() == r.isGridVisible() &&
+             granularitySequence() == r.granularitySequence() &&
 	     gridPen() == r.gridPen() &&
 	     isSubGridVisible() == r.isSubGridVisible() &&
 	     subGridPen() == r.subGridPen() &&
@@ -100,6 +103,68 @@ bool GridAttributes::isGridVisible() const
 {
     return d->visible;
 }
+
+/**
+  * Specifies the step width to be used for calculating
+  * the grid lines.
+  *
+  * By default the GridAttributes class does not use a fixed step width,
+  * but it uses GranularitySequence_10_20.
+  *
+  * \param stepWidth the step width to be used.
+  * If this parameter is omitted (or set to Zero, resp.)
+  * the automatic step width calculation will be done,
+  * using the granularity sequence specified.
+  * This is the default.
+  *
+  * \sa gridStepWidth, setGranularitySequence
+  */
+void GridAttributes::setGridStepWidth( qreal stepWidth )
+{
+    d->stepWidth = stepWidth
+}
+
+/**
+  * Returns the step width to be used for calculating
+  * the grid lines.
+  *
+  * \sa setGridStepWidth
+  */
+qreal GridAttributes::gridStepWidth() const
+{
+    return d->stepWidth;
+}
+
+/**
+  * Specifies the granularity sequence to be used for calculating
+  * the grid lines.
+  *
+  * By default the GridAttributes class uses GranularitySequence_10_20.
+  * 
+  * \note The sequence specified by this method is ignored, if
+  * a fixed step width was specified via setStepWidth.
+  * 
+  * \param GranularitySequence one of the sequences declared in
+  * KDChartEnums::GranularitySequence.
+  *
+  * \sa gridGranularitySequence, setStepWidth
+  */
+void GridAttributes::setGridGranularitySequence( GranularitySequence sequence )
+{
+    d->sequence = sequence;
+}
+
+/**
+  * Returns the granularity sequence to be used for calculating
+  * the grid lines.
+  *
+  * \sa setGridGranularitySequence
+  */
+GranularitySequence GridAttributes::gridGranularitySequence() const
+{
+    return d->sequence;
+}
+
 
 void GridAttributes::setGridPen( const QPen & pen )
 {

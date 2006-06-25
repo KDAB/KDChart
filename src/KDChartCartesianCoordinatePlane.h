@@ -104,6 +104,56 @@ namespace KDChart {
          */
         QPair<qreal, qreal> verticalRange() const;
 
+        /**
+         * Set the attributes to be used for grid lines drawn in horizontal
+         * direction (or in vertical direction, resp.).
+         *
+         * To disable horizontal grid painting, for example, your code should like this:
+         * \code
+         * GridAttributes ga = plane->gridAttributes( Qt::Horizontal );
+         * ga.setGridVisible( false );
+         * plane-setGridAttributes( Qt::Horizontal, ga );
+         * \endcode
+         *
+         * \note setGridAttributes overwrites the global
+         * GridAttributes that
+         * were set by AbstractCoordinatePlane::setGridAttributes.
+         * To re-activate these global attributes you can call
+         * resetGridAttributes.
+         *
+         * \sa resetGridAttributes, gridAttributes
+         * \sa AbstractCoordinatePlane::setGridAttributes
+         */
+        void setGridAttributes( Qt::Orientation orientation, const GridAttributes & );
+
+        /**
+         * Reset the attributes to be used for grid lines drawn in horizontal
+         * direction (or in vertical direction, resp.)
+         * to the global GridAttributes that were set by
+         * AbstractCoordinatePlane::setGridAttributes.
+         *
+         * \sa setGridAttributes, gridAttributes
+         * \sa AbstractCoordinatePlane::gridAttributes
+         */
+        void resetGridAttributes( Qt::Orientation orientation );
+
+        /**
+         * \return The attributes used for grid lines drawn in horizontal
+         * direction (or in vertical direction, resp.).
+         *
+         * \note This function alwqays returns a valid set of grid attributes:
+         * If no special grid attributes were set foe this orientation
+         * the global attributes are returned, as returned by
+         * AbstractCoordinatePlane::gridAttributes.
+         *
+         * \sa setGridAttributes
+         * \sa resetGridAttributes
+         * \sa AbstractCoordinatePlane::gridAttributes
+         * \sa gridAttributesVertical
+         */
+        GridAttributes gridAttributes( Qt::Orientation orientation ) const;
+
+
         enum AxesCalcMode { Linear, Logarithmic };
 
         AxesCalcMode axesCalcMode() const;

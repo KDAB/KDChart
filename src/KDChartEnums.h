@@ -52,6 +52,94 @@ class KDCHART_EXPORT KDChartEnums :public QObject
 
 public:
     /**
+      GranularitySequence specifies the values, that may be applied,
+      to determine a step width within a given data range.
+
+      Value occuring in the GranularitySequence names only are showing
+      their respective relation ship.  For real data they will most times not
+      be used directly, but be multiplied by positive (or negative, resp.)
+      powers of ten.
+
+      A granularity sequence is a sequence of values from the following set:
+      1, 2, 2.5, 5.
+
+      The reason for using one of the following three pre-defined granularity
+      sequences (instead of just using the best matching step width) is to
+      follow a simple rule: If scaling becomes finer (== smaller step width)
+      no value, that has been on a grid line before, shall loose its line
+      and be NOT on a grid line anymore!
+
+      This means: Smaller step width may not remove any grid lines, but it
+      may add additional lines in between.
+
+      \li \c GranularitySequence_10_20 Step widths can be 1, or 2, but they never can be 2.5 nor 5.
+      \li \c GranularitySequence_10_50 Step widths can be 1, or 5, but they never can be 2, nor 2.5.
+      \li \c GranularitySequence_25_50 Step widths can be 2.5, or 5, but they never can be 1, nor 2.
+      \li \c GranularitySequenceIrregular Step widths can be all of these values: 1, or 2, or 2.5, or 5.
+
+      \note When ever possible, try to avoid using GranularitySequenceIrregular!
+      Allowing all possible step values, using this granularity sequence involves a
+      serious risk: Your users might be irritated due to 'jumping' grid lines, when step size
+      is changed from 2.5 to 2 (or vice versa, resp.).
+
+      Since you probably like having the value 1 as an allowed step width,
+      the granularity sequence decision boils down to a boolean question:
+      \li To get ten divided by five you use GranularitySequence_10_20, while
+      \li for having it divided by two GranularitySequence_10_50 is your choice.
+
+      \sa KDChartParams::setPrintDataValues
+      */
+    enum GranularitySequence {
+        GranularitySequence_10_20,
+        GranularitySequence_10_50,
+        GranularitySequence_25_50,
+        GranularitySequenceIrregular };
+
+    /**
+      Converts the specified granularity sequence enum to a
+      string representation.
+
+      \param type the granularity sequence enum to convert
+      \return the string representation of the granularity sequence
+      */
+    static QString granularitySequenceToString( GranularitySequence sequence ) {
+        switch( sequence ) {
+            case GranularitySequence_10_20:
+                return QString::fromLatin1("GranularitySequence_10_20");
+            case GranularitySequence_10_50:
+                return QString::fromLatin1("GranularitySequence_10_50");
+            case GranularitySequence_25_50:
+                return QString::fromLatin1("GranularitySequence_25_50");
+            case GranularitySequenceIrregular:
+                return QString::fromLatin1("GranularitySequenceIrregular");
+            default: // should not happen
+        qDebug( "Unknown granularity sequence" );
+        return QString::fromLatin1("GranularitySequence_10_20");
+        }
+    }
+
+
+    /**
+      Converts the specified string to a granularity sequence enum value.
+
+      \param string the string to convert
+      \return the granularity sequence enum value
+      */
+    static GranularitySequence stringToGranularitySequence( const QString& string ) {
+      if( string == QString::fromLatin1("GranularitySequence_10_20") )
+          return GranularitySequence_10_20;
+      if( string == QString::fromLatin1("GranularitySequence_10_50") )
+          return GranularitySequence_10_50;
+      if( string == QString::fromLatin1("GranularitySequence_25_50") )
+          return GranularitySequence_25_50;
+      if( string == QString::fromLatin1("GranularitySequenceIrregular") )
+          return GranularitySequenceIrregular;
+      // default, should not happen
+      return GranularitySequence_10_20;
+    }
+
+
+    /**
       Text layout policy: what to do if text that is to be drawn would
       cover neighboring text or neighboring areas.
 

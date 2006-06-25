@@ -42,6 +42,9 @@ namespace KDChart {
      * isCalculated specifies whether this dimension's values are calculated or counted.
      * (counted == "Item 1", "Item 2", "Item 3" ...)
      *
+     * sequence is the GranularitySequence, as specified at for the respective
+     * coordinate plane.
+     *
      * Step width is an optional parameter, to be omitted (or set to Zero, resp.)
      * if the step width is unknown.
      *
@@ -54,12 +57,17 @@ namespace KDChart {
             : start(         1.0 )
             , end(          10.0 )
             , isCalculated( false )
+            , sequence( GranularitySequence_10_20 )
             , stepWidth(    1.0 )
         {}
-        DataDimension( qreal start_, qreal end_, bool isCalculated_, qreal stepWidth_=0.0  )
+        DataDimension( qreal start_, qreal end_,
+                       bool isCalculated_,
+                       GranularitySequence sequence_,
+                       qreal stepWidth_=0.0  )
             : start(        start_ )
             , end(          end_ )
             , isCalculated( isCalculated_ )
+            , sequence(     sequence_ )
             , stepWidth(    stepWidth_ )
         {}
         /**
@@ -84,6 +92,7 @@ namespace KDChart {
         qreal start;
         qreal end;
         bool  isCalculated;
+        GranularitySequence sequence;
         qreal stepWidth;
     };
     typedef QList<DataDimension> DataDimensionsList;

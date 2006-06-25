@@ -47,9 +47,16 @@ public:
 
     ~GridAttributes();
 
-
     void setGridVisible( bool visible );
     bool isGridVisible() const;
+
+
+    void setGridStepWidth( qreal stepWidth=0.0 );
+    qreal gridStepWidth() const;
+
+    void setGridGranularitySequence( GranularitySequence sequence );
+    GranularitySequence gridGranularitySequence() const;
+
 
     void setGridPen( const QPen & pen );
     QPen gridPen() const;
