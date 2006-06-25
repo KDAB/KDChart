@@ -43,7 +43,12 @@ using namespace KDChart;
 DataDimension CartesianGrid::calculateGridXY( const DataDimension& rawDataDimension, bool isX )
 {
     DataDimension dim( rawDataDimension );
-    dim.stepWidth = 1.0;
+    if( dim.isCalculated ){
+        // find out the best values for start/end/step width
+        dim.stepWidth = 1.0;
+    }else{
+        dim.stepWidth = 1.0;
+    }
     return dim;
 }
 
@@ -73,32 +78,35 @@ void CartesianGrid::drawGrid( PaintContext* context )
 
     if ( !gridAttributes.isGridVisible() ) return;
 
-    // important: Make sure to update the calculated mData,
-    //            before you start using it!
+    // important: Need to update the calculated mData,
+    //            before we may use it!
     updateData( plane );
+
+    // test for programming errors: critical
     Q_ASSERT_X ( mData.count() == 2, "CartesianGrid::drawGrid",
                  "Error: updateData did not return exactly two dimensions." );
     const DataDimension& dimX = mData.first();
-    const DataDimension& dimY  = mData.last();
-    const QRectF boundaries(
-        QPointF(dimX.start, dimY.start),
-        QSizeF( dimX.distance(), dimY.distance()));
+    const DataDimension& dimY = mData.last();
+    Q_ASSERT_X ( dimX.stepWidth, "CartesianGrid::drawGrid",
+                 "Error: updateData returned a Zero step width for the X grid." );
+    Q_ASSERT_X ( dimY.stepWidth, "CartesianGrid::drawGrid",
+                 "Error: updateData returned a Zero step width for the Y grid." );
 
-
-    //const bool hasXCoordinates = datasetDimension() > 1;
+    // test for invalid boundaries: non-critical
+    if( !isBoundariesValid( mData ) ) return;
 
     // PENDING(khz) FIXME: make numberOfUnitLinesX work for data with X coordinates too:
 //  const qreal numberOfUnitLinesX = model()->rowCount(rootIndex()) - 1.0;
 
-    const qreal numberOfUnitLinesX = qAbs( boundaries.width() );
-    const qreal numberOfUnitLinesY = qAbs( boundaries.height() );
+    const qreal numberOfUnitLinesX = qAbs( dimX.distance() / dimX.stepWidth );
+    const qreal numberOfUnitLinesY = qAbs( dimY.distance() / dimY.stepWidth );
 //  qDebug("numberOfUnitLinesX: %f    numberOfUnitLinesY: %f",numberOfUnitLinesX,numberOfUnitLinesY);
+
     // do not draw a Zero size grid (and do not divide by Zero)
     if( numberOfUnitLinesX <= 0.0 || numberOfUnitLinesY <= 0.0 ) return;
-    if( !isBoundariesValid(boundaries) ) return;
 
-    const QPointF p1 = plane->translate( boundaries.topLeft() );
-    const QPointF p2 = plane->translate( boundaries.bottomRight() );
+    const QPointF p1 = plane->translate( QPointF(dimX.start, dimY.start) );
+    const QPointF p2 = plane->translate( QPointF(dimX.end, dimX.end) );
 
     const qreal screenRangeX = qAbs ( p1.x() - p2.x() );
     const qreal screenRangeY = qAbs ( p1.y() - p2.y() );
@@ -123,10 +131,10 @@ void CartesianGrid::drawGrid( PaintContext* context )
     bool drawFourthLinesX = screenRangeX / (numberOfUnitLinesX * 4.0) > MinimumPixelsBetweenLines && gridAttributes.isSubGridVisible();
     bool drawFourthLinesY = screenRangeY / (numberOfUnitLinesY * 4.0) > MinimumPixelsBetweenLines && gridAttributes.isSubGridVisible();
 
-    const qreal minValueX = qMin( boundaries.left(), boundaries.right() );
-    const qreal maxValueX = qMax( boundaries.left(), boundaries.right() );
-    const qreal minValueY = qMin( boundaries.top(), boundaries.bottom() );
-    const qreal maxValueY = qMax( boundaries.top(), boundaries.bottom() );
+    const qreal minValueX = qMin( dimX.start, dimX.end );
+    const qreal maxValueX = qMax( dimX.start, dimX.end );
+    const qreal minValueY = qMin( dimY.start, dimY.end );
+    const qreal maxValueY = qMax( dimY.start, dimY.end );
 
     if ( drawFourthLinesX ) {
         context->painter()->setPen( gridAttributes.subGridPen() );
@@ -170,10 +178,12 @@ void CartesianGrid::drawGrid( PaintContext* context )
         }
     }
 
-    //FIXME(khz): Find a way to determine, if we need to draw the Abscissa zero line
-    const bool drawXZeroLineX = /* hasXCoordinates &&*/
+    const bool drawXZeroLineX
+        = dimX.isCalculated &&
         gridAttributes.zeroLinePen().style() != Qt::NoPen;
-    const bool drawZeroLineY = gridAttributes.zeroLinePen().style() != Qt::NoPen;
+
+    const bool drawZeroLineY
+        = gridAttributes.zeroLinePen().style() != Qt::NoPen;
 
     if ( drawUnitLinesX || drawXZeroLineX ) {
         if ( drawUnitLinesX )

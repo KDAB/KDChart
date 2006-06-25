@@ -75,7 +75,7 @@ bool AbstractGrid::isBoundariesValid(const QPair<QPointF,QPointF>& b )
 bool AbstractGrid::isBoundariesValid(const DataDimensionsList& l )
 {
     for (int i = 0; i < l.size(); ++i)
-        if ( ! isValueValid( l.at(i).start ) || ! ! isValueValid( l.at(i).end ) )
+        if ( ! isValueValid( l.at(i).start ) || ! isValueValid( l.at(i).end ) )
             return false;
     return true;
 }
