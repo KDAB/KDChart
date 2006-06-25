@@ -72,10 +72,10 @@ INCLUDEPATH+= $$KDCHARTDIR/include
 DEPENDPATH += $$KDCHARTDIR/include
 LIBS      += -L$$KDCHARTDIR/lib -lkdchart
 
-( The first one of the lines shown above will the value of your
-  the environment variable KDCHARTDIR into a qmake variable of
-  the same name and put " around it, so that's why the "$$(..)"
-  syntax is used in that line only. )
+( The first one of these lines copies the value of environment
+  variable KDCHARTDIR into a qmake variable of the same name,
+  and it puts " around it, so that's why the "$$(..)" syntax is
+  used in that line only. )
 
 
 KDChart::Widget
