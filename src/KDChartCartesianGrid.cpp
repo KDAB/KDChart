@@ -44,8 +44,14 @@ DataDimension CartesianGrid::calculateGridXY( const DataDimension& rawDataDimens
 {
     DataDimension dim( rawDataDimension );
     if( dim.isCalculated ){
-        // find out the best values for start/end/step width
+        // PENDING(khz) FIXME: calculate the step width in a *real* way:
         dim.stepWidth = 1.0;
+
+        // if needed, adjust start/end to match the step width:
+        if ( fmod( dim.start, dim.stepWidth ) != 0.0 )
+            dim.start = dim.stepWidth * _trunc( dim.start / dim.stepWidth );
+        if ( fmod( dim.end, dim.stepWidth ) != 0.0 )
+            dim.end = dim.stepWidth * (_trunc( dim.end / dim.stepWidth ) + 1.0);
     }else{
         dim.stepWidth = 1.0;
     }
@@ -58,14 +64,18 @@ DataDimensionsList CartesianGrid::calculateGrid( const DataDimensionsList& rawDa
     Q_ASSERT_X ( rawDataDimensions.count() == 2, "CartesianGrid::calculateGrid",
                  "Error: calculateGrid() expects a list with exactly two entries." );
     DataDimensionsList l;
-    const DataDimension dimX = calculateGridXY( rawDataDimensions.first(), true );
-    if( dimX.stepWidth ){
-        const DataDimension dimY = calculateGridXY( rawDataDimensions.last(), false );
-        if( dimY.stepWidth ){
-            l.append( dimX );
-            l.append( dimY );
+    if( isBoundariesValid( rawDataDimensions ) ) {
+        const DataDimension dimX = calculateGridXY( rawDataDimensions.first(), true );
+        if( dimX.stepWidth ){
+            const DataDimension dimY = calculateGridXY( rawDataDimensions.last(), false );
+            if( dimY.stepWidth ){
+                l.append( dimX );
+                l.append( dimY );
+            }
         }
     }
+    // rule:  Returned list is either empty, or it is providing two
+    //        valid dimensions, complete with two non-Zero step widths.
     return l;
 }
 
@@ -95,9 +105,6 @@ void CartesianGrid::drawGrid( PaintContext* context )
     // test for invalid boundaries: non-critical
     if( !isBoundariesValid( mData ) ) return;
 
-    // PENDING(khz) FIXME: make numberOfUnitLinesX work for data with X coordinates too:
-//  const qreal numberOfUnitLinesX = model()->rowCount(rootIndex()) - 1.0;
-
     const qreal numberOfUnitLinesX = qAbs( dimX.distance() / dimX.stepWidth );
     const qreal numberOfUnitLinesY = qAbs( dimY.distance() / dimY.stepWidth );
 //  qDebug("numberOfUnitLinesX: %f    numberOfUnitLinesY: %f",numberOfUnitLinesX,numberOfUnitLinesY);
@@ -113,10 +120,11 @@ void CartesianGrid::drawGrid( PaintContext* context )
 
     const qreal MinimumPixelsBetweenLines = 10.0;
 
-    qreal unitFactorX = 1.0;
-    qreal unitFactorY = 1.0;
-    bool drawUnitLinesX = screenRangeX / numberOfUnitLinesX > MinimumPixelsBetweenLines;
-    bool drawUnitLinesY = screenRangeY / numberOfUnitLinesY > MinimumPixelsBetweenLines;
+//    qreal unitFactorX = 1.0;
+//    qreal unitFactorY = 1.0;
+    bool drawUnitLinesX = (screenRangeX / numberOfUnitLinesX > MinimumPixelsBetweenLines);
+    bool drawUnitLinesY = (screenRangeY / numberOfUnitLinesY > MinimumPixelsBetweenLines);
+/*
     while ( !drawUnitLinesX ) {
         unitFactorX *= 10.0;
         drawUnitLinesX = screenRangeX / (numberOfUnitLinesX / unitFactorX) > MinimumPixelsBetweenLines;
@@ -125,7 +133,7 @@ void CartesianGrid::drawGrid( PaintContext* context )
         unitFactorY *= 10.0;
         drawUnitLinesY = screenRangeY / (numberOfUnitLinesY / unitFactorY) > MinimumPixelsBetweenLines;
     }
-
+*/
     bool drawHalfLinesX = screenRangeX / (numberOfUnitLinesX * 2.0) > MinimumPixelsBetweenLines && gridAttributes.isSubGridVisible();
     bool drawHalfLinesY = screenRangeY / (numberOfUnitLinesY * 2.0) > MinimumPixelsBetweenLines && gridAttributes.isSubGridVisible();
     bool drawFourthLinesX = screenRangeX / (numberOfUnitLinesX * 4.0) > MinimumPixelsBetweenLines && gridAttributes.isSubGridVisible();
@@ -188,12 +196,9 @@ void CartesianGrid::drawGrid( PaintContext* context )
     if ( drawUnitLinesX || drawXZeroLineX ) {
         if ( drawUnitLinesX )
             context->painter()->setPen( gridAttributes.gridPen() );
-        qreal minX = minValueX;
-        // PENDING(khz) FIXME: calculate the start value in a *way* more sophisticated way:
-        if ( fmod( minX , unitFactorX ) != 0.0 )
-            minX = unitFactorX * _trunc( minX / unitFactorX );
+        const qreal minX = dimX.start;
 
-        for ( qreal f = minX; f <= maxValueX; f += unitFactorX ) {
+        for ( qreal f = minX; f <= maxValueX; f += dimX.stepWidth ) {
             // PENDING(khz) FIXME: make draving/not drawing of Zero line more sophisticated?:
             const bool zeroLineHere = drawXZeroLineX && (f == 0.0);
             if ( drawUnitLinesX || zeroLineHere ){
@@ -212,13 +217,10 @@ void CartesianGrid::drawGrid( PaintContext* context )
     if ( drawUnitLinesY || drawZeroLineY ) {
         if ( drawUnitLinesY )
             context->painter()->setPen( gridAttributes.gridPen() );
-        qreal minY = minValueY;
-        // PENDING(khz) FIXME: calculate the start value in a *way* more sophisticated way:
-        if ( fmod( minY , unitFactorY ) != 0.0 )
-            minY = unitFactorY * _trunc( minY / unitFactorY );
+        const qreal minY = dimY.start;
 
 //qDebug("minY: %f   maxValueY: %f   unitFactorY: %f",minY,maxValueY,unitFactorY);
-        for ( qreal f = minY; f <= maxValueY; f += unitFactorY ) {
+        for ( qreal f = minY; f <= maxValueY; f += dimY.stepWidth ) {
             // PENDING(khz) FIXME: make draving/not drawing of Zero line more sophisticated?:
 //qDebug("f: %f",f);
             const bool zeroLineHere = (f == 0.0);
