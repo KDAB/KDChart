@@ -198,7 +198,7 @@ void CartesianGrid::drawGrid( PaintContext* context )
             context->painter()->setPen( gridAttributes.gridPen() );
         const qreal minX = dimX.start;
 
-        for ( qreal f = minX; f <= maxValueX; f += dimX.stepWidth ) {
+        for ( qreal f = minX; f <= maxValueX; f += qAbs( dimX.stepWidth ) ) {
             // PENDING(khz) FIXME: make draving/not drawing of Zero line more sophisticated?:
             const bool zeroLineHere = drawXZeroLineX && (f == 0.0);
             if ( drawUnitLinesX || zeroLineHere ){
@@ -220,7 +220,7 @@ void CartesianGrid::drawGrid( PaintContext* context )
         const qreal minY = dimY.start;
 
 //qDebug("minY: %f   maxValueY: %f   unitFactorY: %f",minY,maxValueY,unitFactorY);
-        for ( qreal f = minY; f <= maxValueY; f += dimY.stepWidth ) {
+        for ( qreal f = minY; f <= maxValueY; f += qAbs( dimY.stepWidth ) ) {
             // PENDING(khz) FIXME: make draving/not drawing of Zero line more sophisticated?:
 //qDebug("f: %f",f);
             const bool zeroLineHere = (f == 0.0);
