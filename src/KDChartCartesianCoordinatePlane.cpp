@@ -201,6 +201,10 @@ DataDimensionsList CartesianCoordinatePlane::getDataDimensionsList() const
     const AbstractCartesianDiagram* dgr = dynamic_cast<const AbstractCartesianDiagram*> (diagrams().first() );
     if( dgr ){
         const QRectF r( calculateDataBoundingRect() );
+        // note:
+        // We do *not* access d->gridAttributesHorizontal here, but
+        // we use the getter function, to get the global attrs, if no
+        // special ones have been set for the respective orientation.
         const GridAttributes gaH( gridAttributes( Qt::Horizontal ) );
         const GridAttributes gaV( gridAttributes( Qt::Vertical ) );
         l.append(
