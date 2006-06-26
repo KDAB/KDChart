@@ -294,6 +294,27 @@ DataDimensionsList CartesianGrid::calculateGrid(
 }
 
 
+void adjustUpperLowerRange( qreal& start, qreal& end, qreal stepWidth )
+{
+    if ( fmod( start, stepWidth ) != 0.0 )
+        start = stepWidth * _trunc( start / stepWidth );
+    if ( fmod( end, stepWidth ) != 0.0 )
+        end = stepWidth * (_trunc( end / stepWidth ) + 1.0);
+}
+double fastPow10( int x )
+{
+    double res = 1.0;
+    if( 0 <= x ){
+        for( int i = 1; i <= x; ++i )
+            res *= 10.0;
+    }else{
+        for( int i = -1; i >= x; --i )
+            res /= 10.0;
+    }
+    return res;
+}
+
+
 DataDimension CartesianGrid::calculateGridXY(
     const DataDimension& rawDataDimension,
     Qt::Orientation orientation ) const
@@ -325,10 +346,7 @@ DataDimension CartesianGrid::calculateGridXY(
                     orientation );
         }
         // if needed, adjust start/end to match the step width:
-        if ( fmod( dim.start, dim.stepWidth ) != 0.0 )
-            dim.start = dim.stepWidth * _trunc( dim.start / dim.stepWidth );
-        if ( fmod( dim.end, dim.stepWidth ) != 0.0 )
-            dim.end = dim.stepWidth * (_trunc( dim.end / dim.stepWidth ) + 1.0);
+        adjustUpperLowerRange( dim.start, dim.end, dim.stepWidth );
     }else{
         dim.stepWidth = 1.0;
     }
@@ -336,16 +354,77 @@ DataDimension CartesianGrid::calculateGridXY(
 }
 
 
+void calculateSteps(
+    qreal start_, qreal end_, const QList<qreal>& list, qreal minSteps,
+    int power,
+    qreal& steps, qreal& stepWidth )
+{
+    steps = 0.0;
+    for( int i=0; i<list.count(); ++i){
+        const qreal testStepWidth = list.at( i ) * fastPow10( power );
+        qreal start = qMin( start_, end_ );
+        qreal end   = qMax( start_, end_ );
+        adjustUpperLowerRange( start, end, testStepWidth );
+
+        const qreal testSteps = end/testStepWidth - start/testStepWidth;
+
+        if( (steps == 0.0) || (minSteps <= testSteps && testSteps < steps) ){
+            steps = testSteps;
+            stepWidth = testStepWidth;
+        }
+    }
+}
+
+
 qreal CartesianGrid::calculateStepWidth(
-            qreal start, qreal end,
-            const QList<qreal>& granularities,
-            Qt::Orientation orientation ) const
+    qreal start_, qreal end_,
+    const QList<qreal>& granularities,
+    Qt::Orientation orientation ) const
 {
     Q_ASSERT_X ( granularities.count(), "CartesianGrid::calculateStepWidth",
                 "Error: The list of GranularitySequence values is empty." );
-    qreal stepWidth = granularities.first();
-    // PENDING(khz) FIXME: calculate the step width in a *real* way:
+    QList<qreal> list( granularities );
+    qSort( list );
+    const qreal start = qMin( start_, end_);
+    const qreal end   = qMax( start_, end_);
+
+    // For now, we set the minimal number of steps to two,
+    // we later could (should?) make thjis configurable by the user.
+    const int minSteps = 2;
+
+    qreal steps,       steps0,       steps1;
+    qreal stepWidth,   stepWidth0,   stepWidth1;
+    // find out in which direction we will find a matching step width:
+    calculateSteps( start, end, list, minSteps, 0, steps0, stepWidth0 );
+    calculateSteps( start, end, list, minSteps, 1, steps1, stepWidth1 );
+    if( steps0 >= minSteps && steps1 <= minSteps ){
+        // That was quick success: we found it already!
+        if( steps1 == minSteps ){
+            steps     = steps1;
+            stepWidth = stepWidth1;
+        }else{
+            steps     = steps0;
+            stepWidth = stepWidth0;
+        }
+    }else if( steps0 >= minSteps && steps1 >= minSteps ){
+        // both values are at least minSteps --> increase the power-of-ten
+        int power = 1;
+        do{
+            steps     = steps1;
+            stepWidth = stepWidth1;
+            ++power;
+            calculateSteps( start, end, list, minSteps, power, steps1, stepWidth1 );
+        }while( steps1 >= minSteps );
+    }else{
+        // both values are at smaller thas minSteps --> decrease the power-of-ten
+        int power = 0;
+        do{
+            steps     = steps1;
+            stepWidth = stepWidth1;
+            --power;
+            calculateSteps( start, end, list, minSteps, power, steps1, stepWidth1 );
+        }while( steps1 < minSteps );
+    }
 
     return stepWidth;
 }
-
