@@ -413,7 +413,7 @@ qreal CartesianGrid::calculateStepWidth(
         ++power;
     };
     // Now let us have the sequence *two* times in the calculation test list,
-    // so we will be sure find the best match:
+    // so we will be sure to find the best match:
     const int count = list.count();
     for( int i = 0;  i < count;  ++i )
         list.append( list.at(i) * 0.1 );
