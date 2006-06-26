@@ -32,6 +32,7 @@
 
 #include <QMetaType>
 #include "KDChartGlobal.h"
+#include "KDChartEnums.h"
 
 class QDomDocumentFragment;
 class QPen;
@@ -54,8 +55,8 @@ public:
     void setGridStepWidth( qreal stepWidth=0.0 );
     qreal gridStepWidth() const;
 
-    void setGridGranularitySequence( GranularitySequence sequence );
-    GranularitySequence gridGranularitySequence() const;
+    void setGridGranularitySequence( KDChartEnums::GranularitySequence sequence );
+    KDChartEnums::GranularitySequence gridGranularitySequence() const;
 
 
     void setGridPen( const QPen & pen );

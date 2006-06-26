@@ -39,7 +39,8 @@ public:
     Private();
 private:
     bool visible;
-    GranularitySequence sequence;
+    KDChartEnums::GranularitySequence sequence;
+    qreal stepWidth;
     QPen pen;
     bool subVisible;
     QPen subPen;
@@ -48,18 +49,21 @@ private:
 
 GridAttributes::Private::Private()
     : visible( true ),
-      sequence( GranularitySequence_10_20 ),
+      sequence( KDChartEnums::GranularitySequence_10_20 ),
+      stepWidth( 0.0 ),
       pen( QColor(0xa0, 0xa0, 0xa0 ) ),
       subVisible( true ),
       subPen( QColor(0xd0, 0xd0, 0xd0 ) ),
       zeroPen( QColor( 0x00, 0x00, 0x80 ) )
 {
+    // this bloc left empty intentionally
 }
 
 
 GridAttributes::GridAttributes()
     : _d( new Private() )
 {
+    // this bloc left empty intentionally
 }
 
 GridAttributes::GridAttributes( const GridAttributes& r )
@@ -86,7 +90,7 @@ GridAttributes::~GridAttributes()
 bool GridAttributes::operator==( const GridAttributes& r ) const
 {
     return ( isGridVisible() == r.isGridVisible() &&
-             granularitySequence() == r.granularitySequence() &&
+             gridGranularitySequence() == r.gridGranularitySequence() &&
 	     gridPen() == r.gridPen() &&
 	     isSubGridVisible() == r.isSubGridVisible() &&
 	     subGridPen() == r.subGridPen() &&
@@ -109,7 +113,7 @@ bool GridAttributes::isGridVisible() const
   * the grid lines.
   *
   * By default the GridAttributes class does not use a fixed step width,
-  * but it uses GranularitySequence_10_20.
+  * but it uses KDChartEnums::GranularitySequence_10_20.
   *
   * \param stepWidth the step width to be used.
   * If this parameter is omitted (or set to Zero, resp.)
@@ -121,7 +125,7 @@ bool GridAttributes::isGridVisible() const
   */
 void GridAttributes::setGridStepWidth( qreal stepWidth )
 {
-    d->stepWidth = stepWidth
+    d->stepWidth = stepWidth;
 }
 
 /**
@@ -139,17 +143,17 @@ qreal GridAttributes::gridStepWidth() const
   * Specifies the granularity sequence to be used for calculating
   * the grid lines.
   *
-  * By default the GridAttributes class uses GranularitySequence_10_20.
+  * By default the GridAttributes class uses KDChartEnums::GranularitySequence_10_20.
   * 
   * \note The sequence specified by this method is ignored, if
   * a fixed step width was specified via setStepWidth.
   * 
-  * \param GranularitySequence one of the sequences declared in
+  * \param sequence one of the sequences declared in
   * KDChartEnums::GranularitySequence.
   *
   * \sa gridGranularitySequence, setStepWidth
   */
-void GridAttributes::setGridGranularitySequence( GranularitySequence sequence )
+void GridAttributes::setGridGranularitySequence( KDChartEnums::GranularitySequence sequence )
 {
     d->sequence = sequence;
 }
@@ -160,7 +164,7 @@ void GridAttributes::setGridGranularitySequence( GranularitySequence sequence )
   *
   * \sa setGridGranularitySequence
   */
-GranularitySequence GridAttributes::gridGranularitySequence() const
+KDChartEnums::GranularitySequence GridAttributes::gridGranularitySequence() const
 {
     return d->sequence;
 }

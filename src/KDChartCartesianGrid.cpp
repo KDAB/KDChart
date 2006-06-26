@@ -44,9 +44,11 @@ DataDimension CartesianGrid::calculateGridXY( const DataDimension& rawDataDimens
 {
     DataDimension dim( rawDataDimension );
     if( dim.isCalculated ){
-        // PENDING(khz) FIXME: calculate the step width in a *real* way:
-        dim.stepWidth = 1.0;
+        if( dim.stepWidth == 0.0 ){
+            // PENDING(khz) FIXME: calculate the step width in a *real* way:
+            dim.stepWidth = 1.0;
 
+        }
         // if needed, adjust start/end to match the step width:
         if ( fmod( dim.start, dim.stepWidth ) != 0.0 )
             dim.start = dim.stepWidth * _trunc( dim.start / dim.stepWidth );

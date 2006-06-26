@@ -115,25 +115,26 @@ namespace KDChart {
          * plane-setGridAttributes( Qt::Horizontal, ga );
          * \endcode
          *
-         * \note setGridAttributes overwrites the global
-         * GridAttributes that
-         * were set by AbstractCoordinatePlane::setGridAttributes.
+         * \note setGridAttributes overwrites the global attributes that
+         * were set by AbstractCoordinatePlane::setGlobalGridAttributes.
          * To re-activate these global attributes you can call
          * resetGridAttributes.
          *
          * \sa resetGridAttributes, gridAttributes
-         * \sa AbstractCoordinatePlane::setGridAttributes
+         * \sa AbstractCoordinatePlane::setGlobalGridAttributes
+         * \sa hasOwnGridAttributes
          */
         void setGridAttributes( Qt::Orientation orientation, const GridAttributes & );
 
         /**
          * Reset the attributes to be used for grid lines drawn in horizontal
-         * direction (or in vertical direction, resp.)
-         * to the global GridAttributes that were set by
-         * AbstractCoordinatePlane::setGridAttributes.
+         * direction (or in vertical direction, resp.).
+         * By calling this method you specify that the global attributes set by
+         * AbstractCoordinatePlane::setGlobalGridAttributes be used.
          *
          * \sa setGridAttributes, gridAttributes
-         * \sa AbstractCoordinatePlane::gridAttributes
+         * \sa AbstractCoordinatePlane::globalGridAttributes
+         * \sa hasOwnGridAttributes
          */
         void resetGridAttributes( Qt::Orientation orientation );
 
@@ -141,18 +142,31 @@ namespace KDChart {
          * \return The attributes used for grid lines drawn in horizontal
          * direction (or in vertical direction, resp.).
          *
-         * \note This function alwqays returns a valid set of grid attributes:
+         * \note This function always returns a valid set of grid attributes:
          * If no special grid attributes were set foe this orientation
          * the global attributes are returned, as returned by
-         * AbstractCoordinatePlane::gridAttributes.
+         * AbstractCoordinatePlane::globalGridAttributes.
          *
          * \sa setGridAttributes
          * \sa resetGridAttributes
-         * \sa AbstractCoordinatePlane::gridAttributes
-         * \sa gridAttributesVertical
+         * \sa AbstractCoordinatePlane::globalGridAttributes
+         * \sa hasOwnGridAttributes
          */
         GridAttributes gridAttributes( Qt::Orientation orientation ) const;
 
+        /**
+         * \return Returns whether the grid attributes have been set for the
+         * respective direction via setGridAttributes( orientation ).
+         *
+         * If false, the grid will use the global attributes set
+         * by AbstractCoordinatePlane::globalGridAttributes (or the default
+         * attributes, resp.)
+         *
+         * \sa setGridAttributes
+         * \sa resetGridAttributes
+         * \sa AbstractCoordinatePlane::globalGridAttributes
+         */
+        bool hasOwnGridAttributes( Qt::Orientation orientation ) const;
 
         enum AxesCalcMode { Linear, Logarithmic };
 
@@ -169,6 +183,10 @@ namespace KDChart {
 
     protected slots:
         void slotLayoutChanged( AbstractDiagram* );
+
+    private:
+        void setHasOwnGridAttributes(
+            Qt::Orientation orientation, bool on );
     };
 
 }

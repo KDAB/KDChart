@@ -30,6 +30,7 @@
 #include <QList>
 
 #include "KDChartAbstractDiagram.h"
+#include "KDChartEnums.h"
 
 namespace KDChart {
     class GridAttributes;
@@ -57,12 +58,13 @@ namespace KDChart {
             : start(         1.0 )
             , end(          10.0 )
             , isCalculated( false )
-            , sequence( GranularitySequence_10_20 )
+            , sequence( KDChartEnums::GranularitySequence_10_20 )
             , stepWidth(    1.0 )
         {}
-        DataDimension( qreal start_, qreal end_,
+        DataDimension( qreal start_,
+                       qreal end_,
                        bool isCalculated_,
-                       GranularitySequence sequence_,
+                       KDChartEnums::GranularitySequence sequence_,
                        qreal stepWidth_=0.0  )
             : start(        start_ )
             , end(          end_ )
@@ -86,13 +88,14 @@ namespace KDChart {
             return
                 (start        == r.start) &&
                 (end          == r.end) &&
+                (sequence     == r.sequence) &&
                 (isCalculated == r.isCalculated) &&
                 (stepWidth    == r.stepWidth);
         }
         qreal start;
         qreal end;
         bool  isCalculated;
-        GranularitySequence sequence;
+        KDChartEnums::GranularitySequence sequence;
         qreal stepWidth;
     };
     typedef QList<DataDimension> DataDimensionsList;
@@ -223,17 +226,21 @@ namespace KDChart {
          * Set the grid attributes to be used by this coordinate plane.
          * To disable grid painting, for example, your code should like this:
          * \code
-         * GridAttributes ga = plane->gridAttributes();
-         * ga.setGridVisible( false );
-         * plane-setGridAttributes( ga );
+         * GridAttributes ga = plane->globalGridAttributes();
+         * ga.setGlobalGridVisible( false );
+         * plane->setGlobalGridAttributes( ga );
          * \endcode
+         * \sa globalGridAttributes
+         * \sa CartesianCoordinatePlane::setGridAttributes
          */
-        void setGridAttributes( const GridAttributes & );
+        void setGlobalGridAttributes( const GridAttributes & );
 
         /**
          * @return The grid attributes used by this coordinate plane.
+         * \sa setGlobalGridAttributes
+         * \sa CartesianCoordinatePlane::gridAttributes
          */
-        GridAttributes gridAttributes() const;
+        GridAttributes globalGridAttributes() const;
 
         /**
          * Set another coordinate plane to be used as the reference plane

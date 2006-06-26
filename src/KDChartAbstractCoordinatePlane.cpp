@@ -119,13 +119,13 @@ QSizePolicy KDChart::AbstractCoordinatePlane::sizePolicy() const
     return QSizePolicy( QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding );
 }
 
-void KDChart::AbstractCoordinatePlane::setGridAttributes( const GridAttributes& a )
+void KDChart::AbstractCoordinatePlane::setGlobalGridAttributes( const GridAttributes& a )
 {
     _d->gridAttributes = a;
     update();
 }
 
-GridAttributes KDChart::AbstractCoordinatePlane::gridAttributes() const
+GridAttributes KDChart::AbstractCoordinatePlane::globalGridAttributes() const
 {
     return _d->gridAttributes;
 }

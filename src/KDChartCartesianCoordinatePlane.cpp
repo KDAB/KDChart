@@ -200,9 +200,21 @@ DataDimensionsList CartesianCoordinatePlane::getDataDimensionsList() const
     DataDimensionsList l;
     const AbstractCartesianDiagram* dgr = dynamic_cast<const AbstractCartesianDiagram*> (diagrams().first() );
     if( dgr ){
-        QRectF r( CartesianCoordinatePlane::calculateDataBoundingRect() );
-        l.append( DataDimension(r.left(), r.right(), dgr->datasetDimension() > 1) );
-        l.append( DataDimension(r.bottom(), r.top(), true) );
+        const QRectF r( calculateDataBoundingRect() );
+        const GridAttributes gaH( gridAttributes( Qt::Horizontal ) );
+        const GridAttributes gaV( gridAttributes( Qt::Vertical ) );
+        l.append(
+            DataDimension(
+                r.left(), r.right(),
+                dgr->datasetDimension() > 1,
+                gaH.gridGranularitySequence(),
+                gaH.gridStepWidth() ) );
+        l.append(
+            DataDimension(
+                r.bottom(), r.top(),
+                true,
+                gaV.gridGranularitySequence(),
+                gaV.gridStepWidth() ) );
     }else{
         l.append( DataDimension() ); // This gets us the default 1..0 / 1..0 grid
         l.append( DataDimension() ); // shown, if there is no diagram on this plane.
@@ -367,5 +379,55 @@ QPair< qreal, qreal > KDChart::CartesianCoordinatePlane::horizontalRange( ) cons
 QPair< qreal, qreal > KDChart::CartesianCoordinatePlane::verticalRange( ) const
 {
     return QPair<qreal, qreal>( d->verticalMin, d->verticalMax );
+}
+
+void KDChart::CartesianCoordinatePlane::setGridAttributes(
+    Qt::Orientation orientation,
+    const GridAttributes& a )
+{
+    if( orientation == Qt::Horizontal )
+        d->gridAttributesHorizontal = a;
+    else
+        d->gridAttributesVertical = a;
+    setHasOwnGridAttributes( orientation, true );
+    update();
+}
+
+void KDChart::CartesianCoordinatePlane::resetGridAttributes(
+    Qt::Orientation orientation )
+{
+    setHasOwnGridAttributes( orientation, false );
+    update();
+}
+
+GridAttributes KDChart::CartesianCoordinatePlane::gridAttributes(
+    Qt::Orientation orientation ) const
+{
+    if( hasOwnGridAttributes( orientation ) ){
+        if( orientation == Qt::Horizontal )
+            return d->gridAttributesHorizontal;
+        else
+            return d->gridAttributesVertical;
+    }else{
+        return globalGridAttributes();
+    }
+}
+
+void KDChart::CartesianCoordinatePlane::setHasOwnGridAttributes(
+    Qt::Orientation orientation, bool on )
+{
+        if( orientation == Qt::Horizontal )
+            d->hasOwnGridAttributesHorizontal = on;
+        else
+            d->hasOwnGridAttributesVertical = on;
+}
+
+bool KDChart::CartesianCoordinatePlane::hasOwnGridAttributes(
+    Qt::Orientation orientation ) const
+{
+    return
+        ( orientation == Qt::Horizontal )
+        ? d->hasOwnGridAttributesHorizontal
+        : d->hasOwnGridAttributesVertical;
 }
 

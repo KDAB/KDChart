@@ -37,7 +37,9 @@ class CartesianCoordinatePlane::Private : public AbstractCoordinatePlane::Privat
     friend class CartesianCoordinatePlane;
 public:
     explicit Private()
-        : initialResizeEventReceived ( false )
+        : hasOwnGridAttributesHorizontal ( false )
+        , hasOwnGridAttributesVertical ( false )
+        , initialResizeEventReceived ( false )
         , isometricScaling ( false )
         , horizontalMin(0), horizontalMax(0)
         , verticalMin(0), verticalMax(0)
@@ -58,10 +60,17 @@ public:
     QRectF drawingArea;
     // the reactangle occupied by the diagrams, in plane coordinates
     QRectF diagramArea;
+    // true after setGridAttributes( Qt::Orientation ) was used,
+    // false if resetGridAttributes( Qt::Orientation ) was called
+    bool hasOwnGridAttributesHorizontal;
+    bool hasOwnGridAttributesVertical;
     // true after the first resize event came in
     bool initialResizeEventReceived;
     // true if the coordinate plane scales isometrically
     bool isometricScaling;
+
+    GridAttributes gridAttributesHorizontal;
+    GridAttributes gridAttributesVertical;
 
     qreal horizontalMin;
     qreal horizontalMax;
@@ -80,4 +89,3 @@ inline const CartesianCoordinatePlane::Private * CartesianCoordinatePlane::d_fun
 }
 
 #endif /* KDCHARTBARDIAGRAM_P_H */
-
