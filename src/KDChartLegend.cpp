@@ -142,6 +142,9 @@ void Legend::paintIntoRect( QPainter& painter, const QRect& rect )
 
 void Legend::paintIntoRect( QPainter& painter, const QRect& rect, bool adjustGeometry )
 {
+    // rule: We do not show a legend, if there is no diagram.
+    if( ! diagram() ) return;
+
     if( adjustGeometry && geometry() != rect )
         setGeometry( rect );
 

@@ -60,8 +60,9 @@ namespace KDChart {
           * Helper function called by calculateGrid().
           *
           * Classes derived from CartesianGrid can overwrite calculateGridXY() if they need
-          * a different way of calculating the start/end/step width of their horizontal grid
-          * lines (or of their vertical grid lines, resp.).
+          * a way of calculating the start/end/step width of their horizontal grid
+          * lines (or of their vertical grid lines, resp.), that is different from the
+          * default implementation of this method.
           */
         virtual DataDimension calculateGridXY(
             const DataDimension& rawDataDimension,
@@ -71,8 +72,16 @@ namespace KDChart {
           * Helper function called by calculateGridXY().
           *
           * Classes derived from CartesianGrid can overwrite calculateStepWidth() if they need
-          * a different way of calculating the step width, based upon given start/end values
-          * for their horizontal grid lines (or for their vertical grid lines, resp.).
+          * a way of calculating the step width, based upon given start/end values
+          * for their horizontal grid lines (or for their vertical grid lines, resp.),
+          * that is different from the default implementation of this method.
+          *
+          * \param start The raw start value of the data range.
+          * \param end The raw end value of the data range.
+          * \param granularities The list of allowed granularities.
+          *
+          * \returns One of the values from the granularities list, optionally multiplied
+          * by a positive (or negative, resp.) power of ten.
           */
         virtual qreal calculateStepWidth(
             qreal start, qreal end,
