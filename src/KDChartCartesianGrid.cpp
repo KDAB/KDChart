@@ -40,14 +40,48 @@ static qreal _trunc( qreal v )
 using namespace KDChart;
 
 
-DataDimension CartesianGrid::calculateGridXY( const DataDimension& rawDataDimension, bool isX )
+qreal CartesianGrid::calculateStepWidth(
+            qreal start, qreal end,
+            const QList<qreal>& granularities,
+            Qt::Orientation orientation ) const
+{
+    Q_ASSERT_X ( granularities.count(), "CartesianGrid::calculateStepWidth",
+                "Error: The list of GranularitySequence values is empty." );
+    qreal stepWidth = granularities.first();
+    // PENDING(khz) FIXME: calculate the step width in a *real* way:
+
+    return stepWidth;
+}
+
+DataDimension CartesianGrid::calculateGridXY(
+    const DataDimension& rawDataDimension,
+    Qt::Orientation orientation ) const
 {
     DataDimension dim( rawDataDimension );
     if( dim.isCalculated ){
         if( dim.stepWidth == 0.0 ){
-            // PENDING(khz) FIXME: calculate the step width in a *real* way:
-            dim.stepWidth = 1.0;
-
+            QList<qreal> granularities;
+            switch( dim.sequence ){
+                case KDChartEnums::GranularitySequence_10_20:
+                    granularities << 1.0 << 2.0;
+                    break;
+                case KDChartEnums::GranularitySequence_10_50:
+                    granularities << 1.0 << 5.0;
+                    break;
+                case KDChartEnums::GranularitySequence_25_50:
+                    granularities << 2.5 << 5.0;
+                    break;
+                case KDChartEnums::GranularitySequenceIrregular:
+                    granularities << 1.0 << 2.0 << 2.5 << 5.0;
+                    break;
+                default:
+                    break;
+            }
+            dim.stepWidth
+                = calculateStepWidth(
+                    dim.start, dim.end,
+                    granularities,
+                    orientation );
         }
         // if needed, adjust start/end to match the step width:
         if ( fmod( dim.start, dim.stepWidth ) != 0.0 )
@@ -61,15 +95,18 @@ DataDimension CartesianGrid::calculateGridXY( const DataDimension& rawDataDimens
 }
 
 
-DataDimensionsList CartesianGrid::calculateGrid( const DataDimensionsList& rawDataDimensions )
+DataDimensionsList CartesianGrid::calculateGrid(
+    const DataDimensionsList& rawDataDimensions ) const
 {
     Q_ASSERT_X ( rawDataDimensions.count() == 2, "CartesianGrid::calculateGrid",
                  "Error: calculateGrid() expects a list with exactly two entries." );
     DataDimensionsList l;
     if( isBoundariesValid( rawDataDimensions ) ) {
-        const DataDimension dimX = calculateGridXY( rawDataDimensions.first(), true );
+        const DataDimension dimX
+            = calculateGridXY( rawDataDimensions.first(), Qt::Vertical );
         if( dimX.stepWidth ){
-            const DataDimension dimY = calculateGridXY( rawDataDimensions.last(), false );
+            const DataDimension dimY
+                = calculateGridXY( rawDataDimensions.last(), Qt::Horizontal );
             if( dimY.stepWidth ){
                 l.append( dimX );
                 l.append( dimY );

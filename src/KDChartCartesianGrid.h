@@ -53,13 +53,31 @@ namespace KDChart {
         virtual void drawGrid( PaintContext* context );
 
     private:
-        virtual DataDimensionsList calculateGrid( const DataDimensionsList& rawDataDimensions );
+        virtual DataDimensionsList calculateGrid(
+              const DataDimensionsList& rawDataDimensions ) const;
+
         /**
+          * Helper function called by calculateGrid().
+          *
           * Classes derived from CartesianGrid can overwrite calculateGridXY() if they need
-          * a different way of calculating the start/end/step width of their Absicissa grid
-          * (or Ordinate grid, resp.)
+          * a different way of calculating the start/end/step width of their horizontal grid
+          * lines (or of their vertical grid lines, resp.).
           */
-        virtual DataDimension calculateGridXY( const DataDimension& rawDataDimension, bool isX );
+        virtual DataDimension calculateGridXY(
+            const DataDimension& rawDataDimension,
+            Qt::Orientation orientation ) const;
+
+        /**
+          * Helper function called by calculateGridXY().
+          *
+          * Classes derived from CartesianGrid can overwrite calculateStepWidth() if they need
+          * a different way of calculating the step width, based upon given start/end values
+          * for their horizontal grid lines (or for their vertical grid lines, resp.).
+          */
+        virtual qreal calculateStepWidth(
+            qreal start, qreal end,
+            const QList<qreal>& granularities,
+            Qt::Orientation orientation ) const;
     };
 
 }

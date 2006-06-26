@@ -29,7 +29,8 @@
 using namespace KDChart;
 
 
-DataDimensionsList PolarGrid::calculateGrid( const DataDimensionsList& rawDataDimensions )
+DataDimensionsList PolarGrid::calculateGrid(
+    const DataDimensionsList& rawDataDimensions ) const
 {
     qDebug("Calling PolarGrid::calculateGrid()");
     DataDimensionsList l;

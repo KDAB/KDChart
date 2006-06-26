@@ -53,7 +53,8 @@ namespace KDChart {
         virtual void drawGrid( PaintContext* context );
 
     private:
-        virtual DataDimensionsList calculateGrid( const DataDimensionsList& rawDataDimensions );
+        virtual DataDimensionsList calculateGrid(
+            const DataDimensionsList& rawDataDimensions ) const;
     };
 
 }
