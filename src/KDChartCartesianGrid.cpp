@@ -356,24 +356,34 @@ DataDimension CartesianGrid::calculateGridXY(
 
 
 void calculateSteps(
-    qreal start_, qreal end_, const QList<qreal>& list, qreal minSteps,
+    qreal start_, qreal end_, const QList<qreal>& list,
+    int minSteps, int maxSteps,
     int power,
     qreal& steps, qreal& stepWidth )
 {
+    //qDebug("-----------------------------------\nstart: %f   end: %f   power-of-ten: %i", start_, end_, power);
+
+    qreal distance;
     steps = 0.0;
-    for( int i=0; i<list.count(); ++i){
-        const qreal testStepWidth = list.at( i ) * fastPow10( power );
+
+    const int lastIdx = list.count()-1;
+    for( int i = 0;  i <= lastIdx;  ++i ){
+        const qreal testStepWidth = list.at(lastIdx - i) * fastPow10( power );
+        //qDebug( "testing step width: %f", testStepWidth);
         qreal start = qMin( start_, end_ );
         qreal end   = qMax( start_, end_ );
-//qDebug("start: %f   end: %f", start, end);
         adjustUpperLowerRange( start, end, testStepWidth );
-//qDebug("start: %f   end: %f\n---------------------------------", start, end);
 
-        const qreal testSteps = end/testStepWidth - start/testStepWidth;
+        const qreal testDistance = qAbs(end - start);
+        const qreal testSteps    = testDistance / testStepWidth;
 
-        if( (steps == 0.0) || (minSteps <= testSteps && testSteps < steps) ){
-            steps = testSteps;
+        if( (minSteps <= testSteps) && (testSteps <= maxSteps)
+              && ( (steps == 0.0) || (testDistance < distance) ) ){
+            steps     = testSteps;
             stepWidth = testStepWidth;
+            distance  = testDistance;
+            //qDebug( "start: %f   end: %f   step width: %f   steps: %f   distance: %f",
+            //        start, end, stepWidth, steps, distance);
         }
     }
 }
@@ -388,46 +398,31 @@ qreal CartesianGrid::calculateStepWidth(
                 "Error: The list of GranularitySequence values is empty." );
     QList<qreal> list( granularities );
     qSort( list );
+
     const qreal start = qMin( start_, end_);
     const qreal end   = qMax( start_, end_);
 
-    // For now, we set the minimal number of steps to two,
-    // we later could (should?) make thjis configurable by the user.
+    //FIXME(khz): make minSteps and maxSteps configurable by the user.
     const int minSteps = 2;
+    const int maxSteps = 12;
 
-    qreal steps,       steps0,       steps1;
-    qreal stepWidth,   stepWidth0,   stepWidth1;
-    // find out in which direction we will find a matching step width:
-    calculateSteps( start, end, list, minSteps, 0, steps0, stepWidth0 );
-    calculateSteps( start, end, list, minSteps, 1, steps1, stepWidth1 );
-    if( steps0 >= minSteps && steps1 <= minSteps ){
-        // That was quick success: we found it already!
-        if( steps1 == minSteps ){
-            steps     = steps1;
-            stepWidth = stepWidth1;
-        }else{
-            steps     = steps0;
-            stepWidth = stepWidth0;
-        }
-    }else if( steps0 >= minSteps && steps1 >= minSteps ){
-        // both values are at least minSteps --> increase the power-of-ten
-        int power = 1;
-        do{
-            steps     = steps1;
-            stepWidth = stepWidth1;
-            ++power;
-            calculateSteps( start, end, list, minSteps, power, steps1, stepWidth1 );
-        }while( steps1 >= minSteps );
-    }else{
-        // both values are at smaller thas minSteps --> decrease the power-of-ten
-        int power = 0;
-        do{
-            steps     = steps1;
-            stepWidth = stepWidth1;
-            --power;
-            calculateSteps( start, end, list, minSteps, power, steps1, stepWidth1 );
-        }while( steps1 < minSteps );
-    }
-qDebug("stepWidth: %f   steps: %f", stepWidth, steps);
+    qreal steps;
+    qreal stepWidth;
+    int power = 0;
+    while( fastPow10( power ) < list.last() * end ){
+        ++power;
+    };
+    // Now let us have the sequence *two* times in the calculation test list,
+    // so we will be sure find the best match:
+    const int count = list.count();
+    for( int i = 0;  i < count;  ++i )
+        list.append( list.at(i) * 0.1 );
+    qSort( list );
+    do{
+        calculateSteps( start, end, list, minSteps, maxSteps, power, steps, stepWidth );
+        --power;
+    }while( steps == 0.0 );
+
+    //qDebug("CartesianGrid::calculateStepWidth() finds stepWidth: %f   (%f steps)", stepWidth, steps);
     return stepWidth;
 }
