@@ -166,17 +166,19 @@ QRectF CartesianCoordinatePlane::calculateDataBoundingRect() const
     // determine unit of the rectangles of all involved diagrams:
     QPointF smallestPoint;
     QPointF largestPoint;
+    bool bStarting = true;
     foreach ( const AbstractDiagram* diagram, diagrams() )
     {
         QPair<QPointF, QPointF> dataBoundariesPair = diagram->dataBoundaries();
-        if ( dataBoundariesPair.first.x() < smallestPoint.x() )
+        if ( bStarting || dataBoundariesPair.first.x() < smallestPoint.x() )
             smallestPoint.setX( dataBoundariesPair.first.x() );
-        if ( dataBoundariesPair.first.y() < smallestPoint.y() )
+        if ( bStarting || dataBoundariesPair.first.y() < smallestPoint.y() )
             smallestPoint.setY( dataBoundariesPair.first.y() );
-        if ( dataBoundariesPair.second.x() > largestPoint.x() )
+        if ( bStarting || dataBoundariesPair.second.x() > largestPoint.x() )
             largestPoint.setX( dataBoundariesPair.second.x() );
-        if ( dataBoundariesPair.second.y() > largestPoint.y() )
+        if ( bStarting || dataBoundariesPair.second.y() > largestPoint.y() )
             largestPoint.setY( dataBoundariesPair.second.y() );
+        bStarting = false;
     }
 
     // if custom boundaries are set on the plane, use them
@@ -192,6 +194,7 @@ QRectF CartesianCoordinatePlane::calculateDataBoundingRect() const
     QRectF dataBoundingRect;
     dataBoundingRect.setBottomLeft ( smallestPoint );
     dataBoundingRect.setTopRight ( largestPoint );
+qDebug() << "CartesianCoordinatePlane::calculateDataBoundingRect() returns" << dataBoundingRect;
     return dataBoundingRect;
 }
 

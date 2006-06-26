@@ -179,10 +179,10 @@ void CartesianGrid::drawGrid( PaintContext* context )
             context->painter()->setPen( gridAttributes.gridPen() );
         const qreal minY = dimY.start;
 
-//qDebug("minY: %f   maxValueY: %f   unitFactorY: %f",minY,maxValueY,unitFactorY);
+qDebug("minY: %f   maxValueY: %f   dimY.stepWidth: %f",minY,maxValueY,dimY.stepWidth);
         for ( qreal f = minY; f <= maxValueY; f += qAbs( dimY.stepWidth ) ) {
             // PENDING(khz) FIXME: make draving/not drawing of Zero line more sophisticated?:
-//qDebug("f: %f",f);
+qDebug("f: %f",f);
             const bool zeroLineHere = (f == 0.0);
             if ( drawUnitLinesY || zeroLineHere ){
                 QPointF leftPoint( minValueX, f );
@@ -339,6 +339,7 @@ DataDimension CartesianGrid::calculateGridXY(
                 default:
                     break;
             }
+//qDebug("dim.start: %f   dim.end: %f", dim.start, dim.end);
             dim.stepWidth
                 = calculateStepWidth(
                     dim.start, dim.end,
@@ -364,7 +365,9 @@ void calculateSteps(
         const qreal testStepWidth = list.at( i ) * fastPow10( power );
         qreal start = qMin( start_, end_ );
         qreal end   = qMax( start_, end_ );
+//qDebug("start: %f   end: %f", start, end);
         adjustUpperLowerRange( start, end, testStepWidth );
+//qDebug("start: %f   end: %f\n---------------------------------", start, end);
 
         const qreal testSteps = end/testStepWidth - start/testStepWidth;
 
@@ -425,6 +428,6 @@ qreal CartesianGrid::calculateStepWidth(
             calculateSteps( start, end, list, minSteps, power, steps1, stepWidth1 );
         }while( steps1 < minSteps );
     }
-
+qDebug("stepWidth: %f   steps: %f", stepWidth, steps);
     return stepWidth;
 }

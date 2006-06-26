@@ -150,14 +150,21 @@ const QPair<QPointF, QPointF> BarDiagram::dataBoundaries () const
     switch ( type() )
         {
 
-        case BarDiagram::Normal:
-            for ( int i=0; i<colCount; ++i ) {
-                for ( int j=0; j< rowCount; ++j ) {
-                    double value = d->attributesModel->data( d->attributesModel->index( j, i, attributesModelRootIndex() ) ).toDouble();
-                    yMin = qMin( yMin, value );
-                    yMax = qMax( yMax, value );
-
-                    tda = threeDBarAttributes( model()->index( j, i, rootIndex() ) );
+        case BarDiagram::Normal: {
+                bool bStarting = true;
+                for ( int i=0; i<colCount; ++i ) {
+                    for ( int j=0; j< rowCount; ++j ) {
+                        double value = d->attributesModel->data( d->attributesModel->index( j, i, attributesModelRootIndex() ) ).toDouble();
+                        if( bStarting ){
+                            bStarting = false;
+                            yMin = value;
+                            yMax = value;
+                        }else{
+                            yMin = qMin( yMin, value );
+                            yMax = qMax( yMax, value );
+                        }
+                        tda = threeDBarAttributes( model()->index( j, i, rootIndex() ) );
+                    }
                 }
             }
             break;
@@ -215,6 +222,8 @@ const QPair<QPointF, QPointF> BarDiagram::dataBoundaries () const
          topRight.setX( topRight.x() + percentx);
          topRight.setY( topRight.y() + percenty);
        }
+
+//qDebug() << "BarDiagram::dataBoundaries () returns ( " << bottomLeft << topRight <<")";
 
        return QPair<QPointF, QPointF> ( bottomLeft,  topRight );
 }
