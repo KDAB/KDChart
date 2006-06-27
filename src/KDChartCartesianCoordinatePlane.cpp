@@ -161,7 +161,7 @@ void CartesianCoordinatePlane::slotLayoutChanged ( AbstractDiagram* )
     if ( d->initialResizeEventReceived ) layoutDiagrams();
 }
 
-QRectF CartesianCoordinatePlane::calculateDataBoundingRect() const
+QRectF CartesianCoordinatePlane::calculateRawDataBoundingRect() const
 {
     // determine unit of the rectangles of all involved diagrams:
     QPointF smallestPoint;
@@ -194,7 +194,7 @@ QRectF CartesianCoordinatePlane::calculateDataBoundingRect() const
     QRectF dataBoundingRect;
     dataBoundingRect.setBottomLeft ( smallestPoint );
     dataBoundingRect.setTopRight ( largestPoint );
-    //qDebug() << "CartesianCoordinatePlane::calculateDataBoundingRect() returns" << dataBoundingRect;
+    //qDebug() << "CartesianCoordinatePlane::calculateRawDataBoundingRect() returns" << dataBoundingRect;
     return dataBoundingRect;
 }
 
@@ -203,7 +203,7 @@ DataDimensionsList CartesianCoordinatePlane::getDataDimensionsList() const
     DataDimensionsList l;
     const AbstractCartesianDiagram* dgr = dynamic_cast<const AbstractCartesianDiagram*> (diagrams().first() );
     if( dgr ){
-        const QRectF r( calculateDataBoundingRect() );
+        const QRectF r( calculateRawDataBoundingRect() );
         // note:
         // We do *not* access d->gridAttributesHorizontal here, but
         // we use the getter function, to get the global attrs, if no
