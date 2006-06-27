@@ -112,7 +112,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
     const DataDimensionsList dimensions( plane->gridDimensionsList() );
     // test for programming errors: critical
     Q_ASSERT_X ( dimensions.count() == 2, "CartesianAxis::paint",
-                 "Error: plane->getDataDimensionsList() did not return exactly two dimensions." );
+                 "Error: plane->gridDimensionsList() did not return exactly two dimensions." );
     const DataDimension dimX = dimensions.first();
     const DataDimension dimY = dimensions.last();
 
