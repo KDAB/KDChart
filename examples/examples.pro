@@ -11,5 +11,6 @@ SUBDIRS		= tools \
                   Lines \
                   ModelView \
                   MultidimensionalData \
+                  EmptyValues \
 
 
