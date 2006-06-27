@@ -244,7 +244,7 @@ QStringList AbstractAxis::shortLabels() const
 /**
     \brief Convenience function, returns the coordinate plane, in which this axis is used.
 
-    If the axis is not used in a coordinate plane, the return value is zero.
+    If the axis is not used in a coordinate plane, the return value is Zero.
  */
 const AbstractCoordinatePlane* AbstractAxis::coordinatePlane() const
 {
