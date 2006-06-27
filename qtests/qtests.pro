@@ -1,6 +1,6 @@
 TEMPLATE = subdirs
 SUBDIRS +=  ChartElementOwnership \
-            AxisOwnership \
+            #AxisOwnership \
             KDChartAttributesModel \
             KDChartPalette \
 
