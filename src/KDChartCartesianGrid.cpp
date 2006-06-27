@@ -52,6 +52,9 @@ void CartesianGrid::drawGrid( PaintContext* context )
     //            before we may use it!
     updateData( plane );
 
+    // test for invalid boundaries: non-critical
+    if( !isBoundariesValid( mData ) ) return;
+
     // test for programming errors: critical
     Q_ASSERT_X ( mData.count() == 2, "CartesianGrid::drawGrid",
                  "Error: updateData did not return exactly two dimensions." );
@@ -62,8 +65,6 @@ void CartesianGrid::drawGrid( PaintContext* context )
     Q_ASSERT_X ( dimY.stepWidth, "CartesianGrid::drawGrid",
                  "Error: updateData returned a Zero step width for the Y grid." );
 
-    // test for invalid boundaries: non-critical
-    if( !isBoundariesValid( mData ) ) return;
 
     const qreal numberOfUnitLinesX = qAbs( dimX.distance() / dimX.stepWidth );
     const qreal numberOfUnitLinesY = qAbs( dimY.distance() / dimY.stepWidth );
@@ -307,7 +308,7 @@ DataDimension CartesianGrid::calculateGridXY(
     Qt::Orientation orientation ) const
 {
     DataDimension dim( rawDataDimension );
-    if( dim.isCalculated ){
+    if( dim.isCalculated && dim.start != dim.end ){
         if( dim.stepWidth == 0.0 ){
             QList<qreal> granularities;
             switch( dim.sequence ){
