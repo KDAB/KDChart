@@ -243,7 +243,15 @@ void CartesianCoordinatePlane::layoutDiagrams()
     // than 1 are used, this may not be sufficient.
     d->drawingArea = QRectF ( 1, 1, width() - 3, height() - 3 );
 
-    QRectF dataBoundingRect = calculateDataBoundingRect();
+    const DataDimensionsList dimensions( gridDimensionsList() );
+    // test for programming errors: critical
+    Q_ASSERT_X ( dimensions.count() == 2, "CartesianAxis::paint",
+                 "Error: plane->getDataDimensionsList() did not return exactly two dimensions." );
+    const DataDimension dimX = dimensions.first();
+    const DataDimension dimY = dimensions.last();
+    const QRectF dataBoundingRect(
+        QPointF(dimX.start, dimY.start),
+        QSizeF( dimX.distance(), dimY.distance() ) );
 
     // calculate the remaining rectangle, and use it as the diagram area:
     d->diagramArea = d->drawingArea;
