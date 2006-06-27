@@ -1,6 +1,10 @@
-The following features have been removed from KD Chart 2.0 Beta 1 as
-they have not been sufficiently tested, or their implementation is not
-complete.
+The following features have been removed from KD Chart 2.0 Beta 2
+as they have not been sufficiently tested, or their implementation
+is not complete.
+
+[ Note: There will be at least Beta 3, and perhaps even one
+        more Beta release, before the KD Chart 2.0 release. ]
+
 
 - Documentation: There is no updated Programmer's Manual yet.
 - Documentation: The API documentation is still incomplete.
@@ -11,29 +15,22 @@ complete.
                  beta version.
 - Chart types:   Ring charts are not included in this version.
 - Chart types:   Hi-Lo charts are not included in this version.
-- Chart types:   Box+Whisker charts are not included in this version.
-- Chart types:   3D pies are not included in this version (2D pies are
-                 fully supported)
+- Chart types:   Box+Whisker charts are not included in this
+                 version yet.
+- Chart types:   3D pies are not included in this version, but 2D
+                 pies are fully supported.
 - Axes:          Only cartesian coordinate systems can be zoomed at
-                 the moment, zooming polar coordinate systems is still
-                 missing.
-- Axes:          It is not possible yet to set a string list with axis
-                 labels.
+                 the moment, zooming polar coordinate systems is
+                 still missing.
+- Axes:          Automatic detection of best matching scale as of
+                 yet has been implemented for Ordinate axes only.
+                 Abscissa axes will be supported by the next Beta.
 - Axes:          Support for logarithmic axes has been temporarily
                  removed.
-- Axes:          Data boundaries cannot be set manually
-                 yet. (Automatic computation of data boundaries is
-                 fully supported.)
 - Axes:          Support for decreasing axes has been temporarily
                  removed.
-- Axes:          Zero line support has been temporarily removed.
 - Boxes:         Support for custom background in boxes has been
                  removed.
-- Legends:       Legends do not support relative font sizes yet
-                 (absolute font sizes are fully supported).
-- Legends:       Separator lines in legends are not supported yet.
 - XML:           Saving chart configurations to XML has been
                  temporarily removed.
 - Designer:      A Designer plugin is not yet provided.
-
-
