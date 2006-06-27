@@ -281,10 +281,12 @@ DataDimensionsList CartesianGrid::calculateGrid(
 
 void adjustUpperLowerRange( qreal& start, qreal& end, qreal stepWidth )
 {
+    const qreal startAdjust = ( start >= 0.0 ) ? 0.0 : -1.0;
+    const qreal endAdjust   = ( end   >= 0.0 ) ? 1.0 :  0.0;
     if ( fmod( start, stepWidth ) != 0.0 )
-        start = stepWidth * _trunc( start / stepWidth );
+        start = stepWidth * (_trunc( start / stepWidth ) + startAdjust);
     if ( fmod( end, stepWidth ) != 0.0 )
-        end = stepWidth * (_trunc( end / stepWidth ) + 1.0);
+        end = stepWidth * (_trunc( end / stepWidth ) + endAdjust);
 }
 double fastPow10( int x )
 {
@@ -355,7 +357,9 @@ void calculateSteps(
         //qDebug( "testing step width: %f", testStepWidth);
         qreal start = qMin( start_, end_ );
         qreal end   = qMax( start_, end_ );
+        //qDebug("pre adjusting    start: %f   end: %f", start, end);
         adjustUpperLowerRange( start, end, testStepWidth );
+        //qDebug("post adjusting   start: %f   end: %f", start, end);
 
         const qreal testDistance = qAbs(end - start);
         const qreal testSteps    = testDistance / testStepWidth;
@@ -385,6 +389,7 @@ void CartesianGrid::calculateStepWidth(
 
     const qreal start = qMin( start_, end_);
     const qreal end   = qMax( start_, end_);
+    //qDebug( "raw data start: %f   end: %f", start, end);
 
     //FIXME(khz): make minSteps and maxSteps configurable by the user.
     const int minSteps = 2;
