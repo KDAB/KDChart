@@ -245,7 +245,7 @@ void CartesianCoordinatePlane::layoutDiagrams()
 
     const DataDimensionsList dimensions( gridDimensionsList() );
     // test for programming errors: critical
-    Q_ASSERT_X ( dimensions.count() == 2, "CartesianAxis::paint",
+    Q_ASSERT_X ( dimensions.count() == 2, "CartesianCoordinatePlane::layoutDiagrams",
                  "Error: plane->getDataDimensionsList() did not return exactly two dimensions." );
     const DataDimension dimX = dimensions.first();
     const DataDimension dimY = dimensions.last();
