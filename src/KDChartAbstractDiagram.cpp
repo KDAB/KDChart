@@ -125,6 +125,11 @@ const QPair<QPointF, QPointF> AbstractDiagram::dataBoundaries () const
     return d->databoundaries;
 }
 
+void AbstractDiagram::setDataBoundariesDirty() const
+{
+    d->databoundariesDirty = true;
+}
+
 const QPair<QPointF, QPointF> AbstractDiagram::calculateDataBoundaries () const
 {
     if ( !checkInvariants() )

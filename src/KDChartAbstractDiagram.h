@@ -71,6 +71,8 @@ namespace KDChart {
          * Classes derived from AbstractDiagram must implement the
          * calculateDataBoundaries function, to specify their own
          * way of calculating the data boundaries.
+         * If derived classes want to force recalculation of the
+         * data boundaries, they can call setDataBoundariesDirty()
          *
          * Returned value is in diagram coordinates.
          */
@@ -380,6 +382,7 @@ namespace KDChart {
     protected:
         virtual bool checkInvariants( bool justReturnTheStatus=false ) const;
         virtual const QPair<QPointF, QPointF> calculateDataBoundaries() const;
+        void setDataBoundariesDirty() const;
         virtual void paintDataValueTexts( QPainter* painter );
         void paintDataValueText( QPainter* painter, const QModelIndex& index,
                                  const QPointF& pos, double value );
