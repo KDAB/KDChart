@@ -52,5 +52,10 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_bars->addAxis( new CartesianAxis( m_bars ) );
 
     m_chart->coordinatePlane()->replaceDiagram( m_bars );
+
+    CartesianCoordinatePlane *plane 
+            = dynamic_cast<CartesianCoordinatePlane*>( m_chart->coordinatePlane() );
+    Q_ASSERT( plane );
+    plane->setVerticalRange( QPair<qreal, qreal>( -2.0, 2.0 ) );
 }
 
