@@ -52,29 +52,39 @@ void CartesianGrid::drawGrid( PaintContext* context )
     //            before we may use it!
     updateData( plane );
 
-    // test for invalid boundaries: non-critical
-    if( !isBoundariesValid( mData ) ) return;
-
     // test for programming errors: critical
     Q_ASSERT_X ( mData.count() == 2, "CartesianGrid::drawGrid",
                  "Error: updateData did not return exactly two dimensions." );
+
+    // test for invalid boundaries: non-critical
+    if( !isBoundariesValid( mData ) ) return;
+
     const DataDimension& dimX = mData.first();
     const DataDimension& dimY = mData.last();
+    // test for other programming errors: critical
     Q_ASSERT_X ( dimX.stepWidth, "CartesianGrid::drawGrid",
                  "Error: updateData returned a Zero step width for the X grid." );
     Q_ASSERT_X ( dimY.stepWidth, "CartesianGrid::drawGrid",
                  "Error: updateData returned a Zero step width for the Y grid." );
 
 
-    const qreal numberOfUnitLinesX = qAbs( dimX.distance() / dimX.stepWidth );
-    const qreal numberOfUnitLinesY = qAbs( dimY.distance() / dimY.stepWidth );
-//  qDebug("numberOfUnitLinesX: %f    numberOfUnitLinesY: %f",numberOfUnitLinesX,numberOfUnitLinesY);
+    const qreal numberOfUnitLinesX =
+        qAbs( dimX.distance() / dimX.stepWidth )
+        + (dimX.isCalculated ? 1.0 : 0.0);
+    const qreal numberOfUnitLinesY =
+        qAbs( dimY.distance() / dimY.stepWidth )
+        + (dimY.isCalculated ? 1.0 : 0.0);
+    //qDebug("numberOfUnitLinesX: %f    numberOfUnitLinesY: %f",numberOfUnitLinesX,numberOfUnitLinesY);
 
     // do not draw a Zero size grid (and do not divide by Zero)
     if( numberOfUnitLinesX <= 0.0 || numberOfUnitLinesY <= 0.0 ) return;
 
     const QPointF p1 = plane->translate( QPointF(dimX.start, dimY.start) );
     const QPointF p2 = plane->translate( QPointF(dimX.end, dimX.end) );
+qDebug() << "dimX.isCalculated:" << dimX.isCalculated << "dimY.isCalculated:" << dimY.isCalculated;
+qDebug() << "dimX.start: " << dimX.start << "dimX.end: " << dimX.end;
+qDebug() << "dimY.start: " << dimY.start << "dimY.end: " << dimY.end;
+qDebug() << "p1:" << p1 << "  p2:" << p2;
 
     const qreal screenRangeX = qAbs ( p1.x() - p2.x() );
     const qreal screenRangeY = qAbs ( p1.y() - p2.y() );
@@ -166,14 +176,14 @@ void CartesianGrid::drawGrid( PaintContext* context )
         const qreal minY = dimY.start;
 
         //qDebug("minY: %f   maxValueY: %f   dimY.stepWidth: %f",minY,maxValueY,dimY.stepWidth);
-        for ( qreal f = minY; f <= maxValueY; f += qAbs( dimY.stepWidth ) ) {
+        for ( qreal f = minValueY; f <= maxValueY; f += qAbs( dimY.stepWidth ) ) {
             // PENDING(khz) FIXME: make draving/not drawing of Zero line more sophisticated?:
-            //qDebug("main grid line Y at: %f",f);
+            qDebug("main grid line Y at: %f",f);
             const bool zeroLineHere = (f == 0.0);
             if ( drawUnitLinesY || zeroLineHere ){
-                QPointF leftPoint( minValueX, f );
+                QPointF leftPoint(  minValueX, f );
                 QPointF rightPoint( maxValueX, f );
-                leftPoint = plane->translate( leftPoint );
+                leftPoint  = plane->translate( leftPoint );
                 rightPoint = plane->translate( rightPoint );
                 if ( zeroLineHere )
                     context->painter()->setPen( gridAttributes.zeroLinePen() );
