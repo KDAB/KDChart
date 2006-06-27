@@ -223,10 +223,10 @@ void Chart::Private::layoutLegends()
     QVBoxLayout* innerLayout = new QVBoxLayout(); \
     for (int i = 0; i < count; ++i) { \
         legend = list.at(i); \
-        if( legend->alignment() == align ) \
+        if( legend->alignment() == ( align ) ) \
             innerLayout->addWidget( legend, 0, Qt::AlignLeft ); \
     } \
-    gridLayout->addLayout( innerLayout, row, column, align ); \
+    gridLayout->addLayout( innerLayout, row, column, ( align  ) ); \
 }
                         ADD_VBOX_WITH_LEGENDS( 0, 0, Qt::AlignTop     | Qt::AlignLeft )
                         ADD_VBOX_WITH_LEGENDS( 0, 1, Qt::AlignTop     | Qt::AlignHCenter )
