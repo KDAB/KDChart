@@ -113,8 +113,9 @@ void CartesianAxis::paint ( PaintContext* context ) const
     // test for programming errors: critical
     Q_ASSERT_X ( dimensions.count() == 2, "CartesianAxis::paint",
                  "Error: plane->gridDimensionsList() did not return exactly two dimensions." );
-    const DataDimension dimX = dimensions.first();
-    const DataDimension dimY = dimensions.last();
+    const DataDimension& dimX = dimensions.first();
+    const DataDimension& dimY = dimensions.last();
+    const DataDimension& dim = (isAbscissa() ? dimensions.first() : dimensions.last());
 
     const bool isLeft   = position() == Left;
     const bool isRight  = position() == Right;
@@ -123,7 +124,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
 
     // preparations:
     // - calculate the range that will be displayed:
-    const qreal absRange = qAbs ( isAbscissa() ? dimX.distance() : dimY.distance() );
+    const qreal absRange = qAbs( dim.distance() );
 
     // - calculate the number of unit, fifth and half measure rulers we will draw:
     /* for line and bar charts the number of rulers should depend of the number of
@@ -150,6 +151,17 @@ void CartesianAxis::paint ( PaintContext* context ) const
             qDebug() << "absRange" << absRange << "dimY.stepWidth:" << dimY.stepWidth << "numberOfUnitRulers:" << numberOfUnitRulers;
         }
     }
+    qreal numberOfSubUnitRulers;
+    if ( isAbscissa() )
+        numberOfSubUnitRulers = 0.0;
+    else {
+        if ( d->diagram->percentMode() )
+            numberOfSubUnitRulers = 20.0;
+        else{
+            numberOfSubUnitRulers = absRange / qAbs( dimY.subStepWidth ) + 1.0;
+            qDebug() << "dimY.subStepWidth:" << dimY.stepWidth << "numberOfSubUnitRulers:" << numberOfSubUnitRulers;
+        }
+    }
 /*
     int numberOfFourthRulers = numberOfUnitRulers * 4;
     int numberOfHalfRulers = numberOfUnitRulers * 2;
@@ -168,8 +180,11 @@ void CartesianAxis::paint ( PaintContext* context ) const
 
     const bool useItemCountLabels = isAbscissa() && d->diagram->datasetDimension() == 1;
 
-    bool drawUnitRulers = screenRange / numberOfUnitRulers > MinimumPixelsBetweenRulers;
-
+    const bool drawUnitRulers = screenRange / numberOfUnitRulers > MinimumPixelsBetweenRulers;
+    const bool drawSubUnitRulers =
+        (numberOfSubUnitRulers != 0.0) &&
+        (screenRange / numberOfSubUnitRulers > MinimumPixelsBetweenRulers);
+    
 /*
     // for the next two lines, please note:
     // There are no such things as "half of Item 1" or "0.75 times Thursday"
@@ -241,7 +256,6 @@ void CartesianAxis::paint ( PaintContext* context ) const
     qreal maxValueY = dimY.end;
     qreal minValueX = dimX.start;
     qreal maxValueX = dimX.end;
-
 /*
     if ( drawFourthRulers ) {
         if ( isAbscissa() ) {
@@ -268,11 +282,11 @@ void CartesianAxis::paint ( PaintContext* context ) const
           }
       }
     }
-
-    if ( drawHalfRulers ) {
+*/
+    if ( drawSubUnitRulers ) {
         if ( isAbscissa() ) {
             int tickLength = isTop ? -3 : 2;
-            for ( float f = minValueX; f <= maxValueX; f += 0.5 ) {
+            for ( float f = minValueX; f <= maxValueX; f += dimX.subStepWidth ) {
                 QPointF topPoint ( f, 0 );
                 QPointF bottomPoint ( f, 0 );
                 topPoint = plane->translate( topPoint );
@@ -283,7 +297,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
             }
         } else {
             int tickLength = isLeft ? -3 : 2;
-            for ( float f = minValueY; f <= maxValueY; f += 0.5 ) {
+            for ( float f = minValueY; f <= maxValueY; f += dimY.subStepWidth ) {
                 QPointF leftPoint ( 0, f );
                 QPointF rightPoint ( 0, f );
                 leftPoint = plane->translate( leftPoint );
@@ -294,7 +308,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
           }
       }
     }
-*/
+
     if ( drawUnitRulers ) {
 qDebug() << isOrdinate();
         const int hardLabelsCount  = labels().count();

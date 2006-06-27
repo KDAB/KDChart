@@ -93,8 +93,8 @@ qDebug() << "p1:" << p1 << "  p2:" << p2;
 
 //    qreal unitFactorX = 1.0;
 //    qreal unitFactorY = 1.0;
-    bool drawUnitLinesX = (screenRangeX / numberOfUnitLinesX > MinimumPixelsBetweenLines);
-    bool drawUnitLinesY = (screenRangeY / numberOfUnitLinesY > MinimumPixelsBetweenLines);
+    const bool drawUnitLinesX = (screenRangeX / numberOfUnitLinesX > MinimumPixelsBetweenLines);
+    const bool drawUnitLinesY = (screenRangeY / numberOfUnitLinesY > MinimumPixelsBetweenLines);
 /*
     while ( !drawUnitLinesX ) {
         unitFactorX *= 10.0;
@@ -106,10 +106,10 @@ qDebug() << "p1:" << p1 << "  p2:" << p2;
     }
 */
 
-    bool drawSubGridLinesX = (dimX.subStepWidth != 0.0) &&
+    const bool drawSubGridLinesX = (dimX.subStepWidth != 0.0) &&
         (screenRangeX / (numberOfUnitLinesX / dimX.stepWidth * dimX.subStepWidth) > MinimumPixelsBetweenLines) &&
         gridAttributes.isSubGridVisible();
-    bool drawSubGridLinesY = (dimY.subStepWidth != 0.0) &&
+    const bool drawSubGridLinesY = (dimY.subStepWidth != 0.0) &&
         (screenRangeY / (numberOfUnitLinesY / dimY.stepWidth * dimY.subStepWidth) > MinimumPixelsBetweenLines) &&
         gridAttributes.isSubGridVisible();
 
@@ -173,7 +173,7 @@ qDebug() << "p1:" << p1 << "  p2:" << p2;
     if ( drawUnitLinesY || drawZeroLineY ) {
         if ( drawUnitLinesY )
             context->painter()->setPen( gridAttributes.gridPen() );
-        const qreal minY = dimY.start;
+        //const qreal minY = dimY.start;
 
         //qDebug("minY: %f   maxValueY: %f   dimY.stepWidth: %f",minY,maxValueY,dimY.stepWidth);
         for ( qreal f = minValueY; f <= maxValueY; f += qAbs( dimY.stepWidth ) ) {
