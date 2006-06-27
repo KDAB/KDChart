@@ -28,6 +28,7 @@
 
 #include "KDChartAbstractCoordinatePlane.h"
 
+#include <QPoint>
 #include <QPointer>
 
 namespace KDChart {
@@ -51,6 +52,8 @@ protected:
     bool allowOverlappingDataValueTexts;
     bool percent;
     int datasetDimension;
+    mutable QPair<QPointF,QPointF> databoundaries;
+    mutable bool databoundariesDirty;
 };
 
 inline AbstractDiagram::AbstractDiagram( Private * p ) : _d( p ) { init(); }

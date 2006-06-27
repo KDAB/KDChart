@@ -65,6 +65,7 @@ AbstractDiagram::Private::Private()
   , allowOverlappingDataValueTexts( false )
   , percent( false )
   , datasetDimension( 1 )
+  , databoundariesDirty(true)
 {
 }
 
@@ -118,21 +119,25 @@ AbstractCoordinatePlane* AbstractDiagram::coordinatePlane() const
 const QPair<QPointF, QPointF> AbstractDiagram::dataBoundaries () const
 {
     if ( !checkInvariants() ) return QPair<QPointF, QPointF>( QPointF( 0, 0 ), QPointF( 0, 0 ) );
-    double xMin = 0, xMax = 0, yMin = 0, yMax = 0;
-    const int rowCount = model()->rowCount(rootIndex());
-    const int columnCount = model()->columnCount(rootIndex());
-    xMax = rowCount-1; // since we start at 0
-    for ( int i=datasetDimension()-1; i<columnCount; i += datasetDimension() ) {
+    if( d->databoundariesDirty ) {
+      double xMin = 0, xMax = 0, yMin = 0, yMax = 0;
+      const int rowCount = model()->rowCount(rootIndex());
+      const int columnCount = model()->columnCount(rootIndex());
+      xMax = rowCount-1; // since we start at 0
+      for ( int i=datasetDimension()-1; i<columnCount; i += datasetDimension() ) {
         for ( int j=0; j< rowCount; ++j ) {
-            double value = model()->data( model()->index( j, i, rootIndex() ) ).toDouble();
-            yMin = qMin( yMin, value );
-            yMax = qMax( yMax, value );
+	  double value = model()->data( model()->index( j, i, rootIndex() ) ).toDouble();
+	  yMin = qMin( yMin, value );
+	  yMax = qMax( yMax, value );
         }
+      }
+      
+      QPointF bottomLeft( xMin, yMin );
+      QPointF topRight( xMax, yMax );
+      d->databoundaries = qMakePair( bottomLeft,  topRight );
+      d->databoundariesDirty = false;
     }
-
-    QPointF bottomLeft ( QPointF( xMin, yMin ) );
-    QPointF topRight ( QPointF( xMax, yMax ) );
-    return QPair<QPointF, QPointF> ( bottomLeft,  topRight );
+    return d->databoundaries;
 }
 
 void AbstractDiagram::setModel ( QAbstractItemModel * newModel )
@@ -142,6 +147,7 @@ void AbstractDiagram::setModel ( QAbstractItemModel * newModel )
   amodel->initFrom( d->attributesModel );
   d->setAttributesModel(amodel);
   scheduleDelayedItemsLayout();
+  d->databoundariesDirty = true;
   emit modelsChanged();
 }
 
@@ -165,6 +171,7 @@ void AbstractDiagram::setAttributesModel( AttributesModel* amodel )
     }
     d->setAttributesModel(amodel);
     scheduleDelayedItemsLayout();
+    d->databoundariesDirty = true;
     emit modelsChanged();
 }
 
@@ -185,6 +192,7 @@ void AbstractDiagram::setRootIndex ( const QModelIndex& idx )
 void AbstractDiagram::setAttributesModelRootIndex( const QModelIndex& idx )
 {
   d->attributesModelRootIndex=idx;
+  d->databoundariesDirty = true;
   scheduleDelayedItemsLayout();
 }
 
@@ -212,6 +220,7 @@ void AbstractDiagram::doItemsLayout()
 void AbstractDiagram::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
   // We are still too dumb to do intelligent updates...
+  d->databoundariesDirty = true;
   scheduleDelayedItemsLayout();
 }
 
@@ -614,6 +623,7 @@ void AbstractDiagram::setDatasetDimension( int dimension )
 {
     if ( d->datasetDimension == dimension ) return;
     d->datasetDimension = dimension;
+    d->databoundariesDirty = true;
     emit layoutChanged( this );
 }
 

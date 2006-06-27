@@ -194,7 +194,7 @@ QRectF CartesianCoordinatePlane::calculateDataBoundingRect() const
     QRectF dataBoundingRect;
     dataBoundingRect.setBottomLeft ( smallestPoint );
     dataBoundingRect.setTopRight ( largestPoint );
-qDebug() << "CartesianCoordinatePlane::calculateDataBoundingRect() returns" << dataBoundingRect;
+    //qDebug() << "CartesianCoordinatePlane::calculateDataBoundingRect() returns" << dataBoundingRect;
     return dataBoundingRect;
 }
 
