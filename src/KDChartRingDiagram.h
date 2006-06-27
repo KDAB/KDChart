@@ -50,8 +50,6 @@ public:
     virtual void paint ( PaintContext* paintContext );
     /** \reimpl */
     virtual void resize ( const QSizeF& area );
-    /** \reimpl */
-    virtual const QPair<QPointF, QPointF> dataBoundaries() const;
 
     // Implement AbstractPolarDiagram
     /** \reimpl */
@@ -68,6 +66,8 @@ public:
     void setRelativeThickness( bool relativeThickness );
     bool relativeThickness() const;
 protected:
+    /** \reimpl */
+    virtual const QPair<QPointF, QPointF> calculateDataBoundaries() const;
     void paintEvent( QPaintEvent* );
     void resizeEvent( QResizeEvent* );
 

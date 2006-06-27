@@ -71,9 +71,6 @@ public:
                                   const ThreeDBarAttributes & a );
     ThreeDBarAttributes threeDBarAttributes( const QModelIndex & index ) const;
 
-    // implement AbstractDiagram
-    /** \reimpl */
-    const QPair<QPointF, QPointF> dataBoundaries() const;
     // implement AbstractCartesianDiagram
     /** \reimpl */
     const int numberOfAbscissaSegments () const;
@@ -101,6 +98,8 @@ public:
 
 
 protected:
+    /** \reimpl */
+    const QPair<QPointF, QPointF> calculateDataBoundaries() const;
     void paintEvent ( QPaintEvent* );
     void resizeEvent ( QResizeEvent* );
 

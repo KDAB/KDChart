@@ -135,7 +135,7 @@ void BarDiagram::resizeEvent ( QResizeEvent*)
 
 }
 
-const QPair<QPointF, QPointF> BarDiagram::dataBoundaries () const
+const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries  () const
 {
     if ( !checkInvariants() ) return QPair<QPointF, QPointF>( QPointF( 0, 0 ), QPointF( 0, 0 ) );
     const int rowCount = d->attributesModel->rowCount(attributesModelRootIndex());
@@ -194,7 +194,7 @@ const QPair<QPointF, QPointF> BarDiagram::dataBoundaries () const
             break;
 
          default:
-             Q_ASSERT_X ( false, "dataBoundaries()",
+             Q_ASSERT_X ( false, "calculateDataBoundaries()",
                          "Type item does not match a defined bar chart Type." );
         }
 
@@ -223,7 +223,7 @@ const QPair<QPointF, QPointF> BarDiagram::dataBoundaries () const
          topRight.setY( topRight.y() + percenty);
        }
 
-//qDebug() << "BarDiagram::dataBoundaries () returns ( " << bottomLeft << topRight <<")";
+//qDebug() << "BarDiagram::calculateDataBoundaries () returns ( " << bottomLeft << topRight <<")";
 
        return QPair<QPointF, QPointF> ( bottomLeft,  topRight );
 }

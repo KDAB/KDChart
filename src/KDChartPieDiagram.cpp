@@ -79,7 +79,7 @@ QDomDocumentFragment PieDiagram::toXML() const
     return QDomDocumentFragment();
 }
 
-const QPair<QPointF, QPointF> PieDiagram::dataBoundaries () const
+const QPair<QPointF, QPointF> PieDiagram::calculateDataBoundaries () const
 {
     QPointF bottomLeft ( QPointF( 0, 0 ) );
     QPointF topRight;

@@ -58,8 +58,6 @@ public:
     virtual void paint ( PaintContext* paintContext );
     /** \reimpl */
     virtual void resize ( const QSizeF& area );
-    /** \reimpl */
-    virtual const QPair<QPointF, QPointF> dataBoundaries() const;
 
     // Implement AbstractPolarDiagram
     /** \reimpl */
@@ -89,6 +87,8 @@ public:
     bool showLabelsAtPosition( Position position ) const;
 
 protected:
+    /** \reimpl */
+    virtual const QPair<QPointF, QPointF> calculateDataBoundaries() const;
     void paintEvent ( QPaintEvent* );
     void resizeEvent ( QResizeEvent* );
     virtual void paintPolarMarkers( PaintContext* ctx, const QPolygonF& polygon );

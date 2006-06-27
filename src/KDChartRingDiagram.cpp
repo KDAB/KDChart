@@ -81,7 +81,7 @@ bool RingDiagram::relativeThickness() const
     return d->relativeThickness;
 }
 
-const QPair<QPointF, QPointF> RingDiagram::dataBoundaries () const
+const QPair<QPointF, QPointF> RingDiagram::calculateDataBoundaries () const
 {
     if ( !checkInvariants() ) return QPair<QPointF, QPointF>( QPointF( 0, 0 ), QPointF( 0, 0 ) );
 

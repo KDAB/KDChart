@@ -144,7 +144,7 @@ void LineDiagram::resizeEvent ( QResizeEvent* )
 {
 }
 
-const QPair<QPointF, QPointF> LineDiagram::dataBoundaries () const
+const QPair<QPointF, QPointF> LineDiagram::calculateDataBoundaries () const
 {
     if ( !checkInvariants( true ) ) return QPair<QPointF, QPointF>( QPointF( 0, 0 ), QPointF( 0, 0 ) );
 
@@ -191,7 +191,7 @@ const QPair<QPointF, QPointF> LineDiagram::dataBoundaries () const
             }
             break;
         default:
-            Q_ASSERT_X ( false, "dataBoundaries()",
+            Q_ASSERT_X ( false, "calculateDataBoundaries()",
                          "Type item does not match a defined line chart Type." );
         }
 

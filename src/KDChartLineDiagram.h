@@ -75,10 +75,6 @@ public:
                                   const ThreeDLineAttributes & a );
     ThreeDLineAttributes threeDLineAttributes( const QModelIndex & index ) const;
 
-    // implement AbstractDiagram
-    /* reimpl */
-    const QPair<QPointF, QPointF> dataBoundaries() const;
-
     // implement AbstractCartesianDiagram
     /* reimpl */
     const int numberOfAbscissaSegments () const;
@@ -89,6 +85,8 @@ public:
     void resize ( const QSizeF& area );
 
 protected:
+    /** \reimpl */
+    virtual const QPair<QPointF, QPointF> calculateDataBoundaries() const;
     void paintEvent ( QPaintEvent* );
     void resizeEvent ( QResizeEvent* );
 

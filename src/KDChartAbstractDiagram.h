@@ -63,12 +63,18 @@ namespace KDChart {
 
 
         /**
-         * @brief Return the bottom left and top right data point, that the diagram will
-         * display.
+         * @brief Return the bottom left and top right data point, that the
+         * diagram will display (unless the grid adjusts these values).
+         *
+         * This method returns a chached result of calculations done by
+         * calculateDataBoundaries.
+         * Classes derived from AbstractDiagram must implement the
+         * calculateDataBoundaries function, to specify their own
+         * way of calculating the data boundaries.
          *
          * Returned value is in diagram coordinates.
          */
-        virtual const QPair<QPointF, QPointF> dataBoundaries() const;
+        const QPair<QPointF, QPointF> dataBoundaries() const;
 
         /**
          * Draw the diagram contents to the rectangle and painter, that are
@@ -373,6 +379,7 @@ namespace KDChart {
 
     protected:
         virtual bool checkInvariants( bool justReturnTheStatus=false ) const;
+        virtual const QPair<QPointF, QPointF> calculateDataBoundaries() const;
         virtual void paintDataValueTexts( QPainter* painter );
         void paintDataValueText( QPainter* painter, const QModelIndex& index,
                                  const QPointF& pos, double value );

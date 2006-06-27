@@ -91,7 +91,7 @@ QDomDocumentFragment PolarDiagram::toXML() const
     return QDomDocumentFragment();
 }
 
-const QPair<QPointF, QPointF> PolarDiagram::dataBoundaries () const
+const QPair<QPointF, QPointF> PolarDiagram::calculateDataBoundaries () const
 {
     if ( !checkInvariants() ) return QPair<QPointF, QPointF>( QPointF( 0, 0 ), QPointF( 0, 0 ) );
     const int rowCount = model()->rowCount(rootIndex());
