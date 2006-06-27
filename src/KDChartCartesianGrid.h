@@ -76,17 +76,24 @@ namespace KDChart {
           * for their horizontal grid lines (or for their vertical grid lines, resp.),
           * that is different from the default implementation of this method.
           *
+          * \note The CartesianGrid class tries to keep the displayed range as near to
+          * the raw data range as possible, so in most cases there should be no reason
+          * to change the default implementation:  Adjusting
+          * KDChart::GridAttributes::setGridGranularitySequence should be sufficient.
+          *
           * \param start The raw start value of the data range.
           * \param end The raw end value of the data range.
           * \param granularities The list of allowed granularities.
           *
-          * \returns One of the values from the granularities list, optionally multiplied
-          * by a positive (or negative, resp.) power of ten.
+          * \returns stepWidth: One of the values from the granularities
+          * list, optionally multiplied by a positive (or negative, resp.)
+          * power of ten. subStepWidth: The matching width for sub-grid lines.
           */
-        virtual qreal calculateStepWidth(
+        virtual void calculateStepWidth(
             qreal start, qreal end,
             const QList<qreal>& granularities,
-            Qt::Orientation orientation ) const;
+            Qt::Orientation orientation,
+            qreal& stepWidth, qreal& subStepWidth ) const;
     };
 
 }

@@ -94,50 +94,35 @@ void CartesianGrid::drawGrid( PaintContext* context )
         drawUnitLinesY = screenRangeY / (numberOfUnitLinesY / unitFactorY) > MinimumPixelsBetweenLines;
     }
 */
-    bool drawHalfLinesX = screenRangeX / (numberOfUnitLinesX * 2.0) > MinimumPixelsBetweenLines && gridAttributes.isSubGridVisible();
-    bool drawHalfLinesY = screenRangeY / (numberOfUnitLinesY * 2.0) > MinimumPixelsBetweenLines && gridAttributes.isSubGridVisible();
-    bool drawFourthLinesX = screenRangeX / (numberOfUnitLinesX * 4.0) > MinimumPixelsBetweenLines && gridAttributes.isSubGridVisible();
-    bool drawFourthLinesY = screenRangeY / (numberOfUnitLinesY * 4.0) > MinimumPixelsBetweenLines && gridAttributes.isSubGridVisible();
+
+    bool drawSubGridLinesX = (dimX.subStepWidth != 0.0) &&
+        (screenRangeX / (numberOfUnitLinesX / dimX.stepWidth * dimX.subStepWidth) > MinimumPixelsBetweenLines) &&
+        gridAttributes.isSubGridVisible();
+    bool drawSubGridLinesY = (dimY.subStepWidth != 0.0) &&
+        (screenRangeY / (numberOfUnitLinesY / dimY.stepWidth * dimY.subStepWidth) > MinimumPixelsBetweenLines) &&
+        gridAttributes.isSubGridVisible();
 
     const qreal minValueX = qMin( dimX.start, dimX.end );
     const qreal maxValueX = qMax( dimX.start, dimX.end );
     const qreal minValueY = qMin( dimY.start, dimY.end );
     const qreal maxValueY = qMax( dimY.start, dimY.end );
 
-    if ( drawFourthLinesX ) {
+    if ( drawSubGridLinesX ) {
         context->painter()->setPen( gridAttributes.subGridPen() );
-        for ( qreal f = minValueX; f <= maxValueX; f += 0.25 ) {
+        for ( qreal f = minValueX; f <= maxValueX; f += dimX.subStepWidth ) {
+            //qDebug() << "sub grid lines X at" << f;
             QPointF topPoint( f, maxValueY );
             QPointF bottomPoint( f, minValueY );
             topPoint = plane->translate( topPoint );
             bottomPoint = plane->translate( bottomPoint );
             context->painter()->drawLine( topPoint, bottomPoint );
-        }
-    }
-    if ( drawFourthLinesY ) {
-        context->painter()->setPen( gridAttributes.subGridPen() );
-        for ( qreal f = minValueY; f <= maxValueY; f += 0.25 ) {
-            QPointF leftPoint( minValueX, f );
-            QPointF rightPoint( maxValueX, f );
-            leftPoint = plane->translate( leftPoint );
-            rightPoint = plane->translate( rightPoint );
-            context->painter()->drawLine( leftPoint, rightPoint );
         }
     }
 
-    if ( drawHalfLinesX ) {
+    if ( drawSubGridLinesY ) {
         context->painter()->setPen( gridAttributes.subGridPen() );
-        for ( qreal f = minValueX; f <= maxValueX; f += 0.5 ) {
-            QPointF topPoint( f, maxValueY );
-            QPointF bottomPoint( f, minValueY );
-            topPoint = plane->translate( topPoint );
-            bottomPoint = plane->translate( bottomPoint );
-            context->painter()->drawLine( topPoint, bottomPoint );
-        }
-    }
-    if ( drawHalfLinesY ) {
-        context->painter()->setPen( gridAttributes.subGridPen() );
-        for ( qreal f = minValueY; f <= maxValueY; f += 0.5 ) {
+        for ( qreal f = minValueY; f <= maxValueY; f += dimY.subStepWidth ) {
+            //qDebug() << "sub grid lines Y at" << f;
             QPointF leftPoint( minValueX, f );
             QPointF rightPoint( maxValueX, f );
             leftPoint = plane->translate( leftPoint );
@@ -179,10 +164,10 @@ void CartesianGrid::drawGrid( PaintContext* context )
             context->painter()->setPen( gridAttributes.gridPen() );
         const qreal minY = dimY.start;
 
-qDebug("minY: %f   maxValueY: %f   dimY.stepWidth: %f",minY,maxValueY,dimY.stepWidth);
+        //qDebug("minY: %f   maxValueY: %f   dimY.stepWidth: %f",minY,maxValueY,dimY.stepWidth);
         for ( qreal f = minY; f <= maxValueY; f += qAbs( dimY.stepWidth ) ) {
             // PENDING(khz) FIXME: make draving/not drawing of Zero line more sophisticated?:
-qDebug("f: %f",f);
+            //qDebug("main grid line Y at: %f",f);
             const bool zeroLineHere = (f == 0.0);
             if ( drawUnitLinesY || zeroLineHere ){
                 QPointF leftPoint( minValueX, f );
@@ -339,12 +324,10 @@ DataDimension CartesianGrid::calculateGridXY(
                 default:
                     break;
             }
-//qDebug("dim.start: %f   dim.end: %f", dim.start, dim.end);
-            dim.stepWidth
-                = calculateStepWidth(
-                    dim.start, dim.end,
-                    granularities,
-                    orientation );
+            //qDebug("dim.start: %f   dim.end: %f", dim.start, dim.end);
+            calculateStepWidth(
+                dim.start, dim.end, granularities, orientation,
+                dim.stepWidth, dim.subStepWidth );
         }
         // if needed, adjust start/end to match the step width:
         adjustUpperLowerRange( dim.start, dim.end, dim.stepWidth );
@@ -389,10 +372,11 @@ void calculateSteps(
 }
 
 
-qreal CartesianGrid::calculateStepWidth(
+void CartesianGrid::calculateStepWidth(
     qreal start_, qreal end_,
     const QList<qreal>& granularities,
-    Qt::Orientation orientation ) const
+    Qt::Orientation orientation,
+    qreal& stepWidth, qreal& subStepWidth ) const
 {
     Q_ASSERT_X ( granularities.count(), "CartesianGrid::calculateStepWidth",
                 "Error: The list of GranularitySequence values is empty." );
@@ -407,22 +391,42 @@ qreal CartesianGrid::calculateStepWidth(
     const int maxSteps = 12;
 
     qreal steps;
-    qreal stepWidth;
     int power = 0;
     while( fastPow10( power ) < list.last() * end ){
         ++power;
     };
-    // Now let us have the sequence *two* times in the calculation test list,
+    // We have the sequence *two* times in the calculation test list,
     // so we will be sure to find the best match:
     const int count = list.count();
+    QList<qreal> testList;
     for( int i = 0;  i < count;  ++i )
-        list.append( list.at(i) * 0.1 );
-    qSort( list );
+        testList << list.at(i) * 0.1;
+    testList << list;
     do{
-        calculateSteps( start, end, list, minSteps, maxSteps, power, steps, stepWidth );
+        calculateSteps( start, end, testList, minSteps, maxSteps, power, steps, stepWidth );
         --power;
     }while( steps == 0.0 );
+    ++power;
 
-    //qDebug("CartesianGrid::calculateStepWidth() finds stepWidth: %f   (%f steps)", stepWidth, steps);
-    return stepWidth;
+    // find the matching sub-grid line width
+    if( stepWidth == list.first() * fastPow10( power ) ){
+        subStepWidth = list.last() * fastPow10( power-1 );
+    }else if( stepWidth == list.first() * fastPow10( power-1 ) ){
+        subStepWidth = list.last() * fastPow10( power-2 );
+    }else{
+        qreal smallerStepWidth = list.first();
+        for( int i = 1;  i < list.count();  ++i ){
+            if( stepWidth == list.at( i ) * fastPow10( power ) ){
+                subStepWidth = smallerStepWidth * fastPow10( power );
+                break;
+            }
+            if( stepWidth == list.at( i ) * fastPow10( power-1 ) ){
+                subStepWidth = smallerStepWidth * fastPow10( power-1 );
+                break;
+            }
+            smallerStepWidth = list.at( i );
+        }
+    }
+    //qDebug("CartesianGrid::calculateStepWidth() found stepWidth %f (%f steps) and sub-stepWidth %f",
+    //        stepWidth, steps, subStepWidth);
 }

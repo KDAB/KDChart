@@ -60,17 +60,20 @@ namespace KDChart {
             , isCalculated( false )
             , sequence( KDChartEnums::GranularitySequence_10_20 )
             , stepWidth(    1.0 )
+            , subStepWidth( 0.0 )
         {}
         DataDimension( qreal start_,
                        qreal end_,
                        bool isCalculated_,
                        KDChartEnums::GranularitySequence sequence_,
-                       qreal stepWidth_=0.0  )
+                       qreal stepWidth_=0.0,
+                       qreal subStepWidth_=0.0 )
             : start(        start_ )
             , end(          end_ )
             , isCalculated( isCalculated_ )
             , sequence(     sequence_ )
             , stepWidth(    stepWidth_ )
+            , subStepWidth( subStepWidth_ )
         {}
         /**
           * Returns the size of the distance,
@@ -90,13 +93,15 @@ namespace KDChart {
                 (end          == r.end) &&
                 (sequence     == r.sequence) &&
                 (isCalculated == r.isCalculated) &&
-                (stepWidth    == r.stepWidth);
+                (stepWidth    == r.stepWidth) &&
+                (subStepWidth    == r.subStepWidth);
         }
         qreal start;
         qreal end;
         bool  isCalculated;
         KDChartEnums::GranularitySequence sequence;
         qreal stepWidth;
+        qreal subStepWidth;
     };
     typedef QList<DataDimension> DataDimensionsList;
 
