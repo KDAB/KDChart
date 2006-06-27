@@ -274,6 +274,9 @@ namespace KDChart {
         /** Emitted when the associated diagrams change. */
         void diagramsChanged();
 
+        /** Emitted when the value range of this plane changes */
+        void rangeChanged();
+
     protected:
         virtual DataDimensionsList getDataDimensionsList() const = 0;
     };

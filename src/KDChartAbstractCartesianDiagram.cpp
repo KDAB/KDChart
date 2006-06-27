@@ -73,7 +73,9 @@ KDChart::CartesianAxisList AbstractCartesianDiagram::axes( ) const
 
 void KDChart::AbstractCartesianDiagram::setCoordinatePlane( AbstractCoordinatePlane* plane )
 {
+    if( coordinatePlane() ) disconnect( coordinatePlane() );
     AbstractDiagram::setCoordinatePlane(plane);
+    connect( plane, SIGNAL(rangeChanged()), this, SLOT(slotRangeChanged()) );
 
     // show the axes, after all have been adjusted
     // (because they might be dependend on each other)
@@ -85,6 +87,13 @@ void KDChart::AbstractCartesianDiagram::setCoordinatePlane( AbstractCoordinatePl
         foreach( CartesianAxis* axis, d->axesList )
             axis->hide();
     */
+}
+
+void AbstractCartesianDiagram::slotRangeChanged()
+{
+    foreach( CartesianAxis* a, d->axesList ) {
+	a->update();
+    }
 }
 
 void AbstractCartesianDiagram::setReferenceDiagram( AbstractCartesianDiagram* diagram, const QPointF& offset )

@@ -367,6 +367,9 @@ void KDChart::CartesianCoordinatePlane::setHorizontalRange( const QPair< qreal, 
     if ( d->horizontalMin != range.first || d->horizontalMax != range.second ) {
         d->horizontalMin = range.first;
         d->horizontalMax = range.second;
+	// Is there no better way to do this???
+	layoutDiagrams();
+	emit rangeChanged();
     }
 }
 
@@ -375,6 +378,9 @@ void KDChart::CartesianCoordinatePlane::setVerticalRange( const QPair< qreal, qr
     if ( d->verticalMin != range.first || d->verticalMax != range.second ) {
         d->verticalMin = range.first;
         d->verticalMax = range.second;
+	// Is there no better way to do this???
+	layoutDiagrams();
+	emit rangeChanged();
     }
 }
 

@@ -85,6 +85,8 @@ namespace KDChart {
 
         virtual GridAttributes* gridAttributes();
         virtual const GridAttributes* gridAttributes() const;
+    private slots:
+        void slotRangeChanged();
     };
 
 }
