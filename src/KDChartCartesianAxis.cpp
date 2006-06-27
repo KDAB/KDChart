@@ -101,9 +101,20 @@ bool CartesianAxis::isOrdinate() const
 #define ptr (context->painter())
 void CartesianAxis::paint ( PaintContext* context ) const
 {
-    Q_ASSERT ( d->diagram );
+    Q_ASSERT_X ( d->diagram, "CartesianAxis::paint",
+                 "Function call not allowed: The axis is not assigned to any diagram." );
+
+    CartesianCoordinatePlane* plane = dynamic_cast<CartesianCoordinatePlane*>(context->coordinatePlane());
+    Q_ASSERT_X ( plane, "CartesianAxis::paint",
+                 "Bad function call: PaintContext::coodinatePlane() NOT a cartesian plane." );
+
     const int MinimumPixelsBetweenRulers = 5;
-    const QPair<QPointF, QPointF> dataBoundaries = d->diagram->dataBoundaries();
+    const DataDimensionsList dimensions( plane->gridDimensionsList() );
+    // test for programming errors: critical
+    Q_ASSERT_X ( dimensions.count() == 2, "CartesianAxis::paint",
+                 "Error: plane->getDataDimensionsList() did not return exactly two dimensions." );
+    const DataDimension& dimX( dimensions.first() );
+    const DataDimension& dimY( dimensions.last() );
 
     const bool isLeft   = position() == Left;
     const bool isRight  = position() == Right;
@@ -112,15 +123,8 @@ void CartesianAxis::paint ( PaintContext* context ) const
 
     // preparations:
     // - calculate the range that will be displayed:
-    double range;
-    if ( isAbscissa() )
-    {
-        range = dataBoundaries.second.x() - dataBoundaries.first.x();
-    } else {
-        range = dataBoundaries.second.y() - dataBoundaries.first.y();
-    }
+    const qreal absRange = qAbs ( isAbscissa() ? dimX.distance() : dimY.distance() );
 
-    double absRange = qAbs ( range );
     // - calculate the number of unit, fifth and half measure rulers we will draw:
     /* for line and bar charts the number of rulers should depend of the number of
     * line = rows
@@ -135,21 +139,24 @@ void CartesianAxis::paint ( PaintContext* context ) const
     // Fixme Michel: Need to find the type of chart here - Line or Bar
     // if Bars calculate the number of groups
 
-    int numberOfUnitRulers;
+    qreal numberOfUnitRulers;
     if ( isAbscissa() )
-        numberOfUnitRulers = d->diagram->model()->rowCount() - 1;
+        numberOfUnitRulers = d->diagram->model()->rowCount() - 1.0;
     else {
         if ( d->diagram->percentMode() )
-            numberOfUnitRulers = 10;
-        else
-            numberOfUnitRulers = ( int ) absRange;
+            numberOfUnitRulers = 10.0;
+        else{
+            numberOfUnitRulers = absRange / qAbs( dimY.stepWidth ) + 1.0;
+            qDebug() << "absRange" << absRange << "dimY.stepWidth:" << dimY.stepWidth << "numberOfUnitRulers:" << numberOfUnitRulers;
+        }
     }
+/*
     int numberOfFourthRulers = numberOfUnitRulers * 4;
     int numberOfHalfRulers = numberOfUnitRulers * 2;
-
+*/
     // - calculate the absolute range in screen pixels:
-    QPointF p1 = context->coordinatePlane()->translate( dataBoundaries.first );
-    QPointF p2 = context->coordinatePlane()->translate( dataBoundaries.second );
+    const QPointF p1 = plane->translate( QPointF(dimX.start, dimY.start) );
+    const QPointF p2 = plane->translate( QPointF(dimX.end, dimX.end) );
 
     double screenRange;
     if ( isAbscissa() )
@@ -162,13 +169,15 @@ void CartesianAxis::paint ( PaintContext* context ) const
     const bool useItemCountLabels = isAbscissa() && d->diagram->datasetDimension() == 1;
 
     bool drawUnitRulers = screenRange / numberOfUnitRulers > MinimumPixelsBetweenRulers;
+
+/*
     // for the next two lines, please note:
     // There are no such things as "half of Item 1" or "0.75 times Thursday"
     bool drawFourthRulers = screenRange / numberOfFourthRulers > MinimumPixelsBetweenRulers && ! useItemCountLabels;
     bool drawHalfRulers = screenRange / numberOfHalfRulers > MinimumPixelsBetweenRulers && ! useItemCountLabels;
-
+*/
     const TextAttributes ta = textAttributes();
-    const bool drawLabels = ta.isVisible() && (screenRange / numberOfHalfRulers > MinimumPixelsBetweenRulers);
+    const bool drawLabels = ta.isVisible();/* && (screenRange / numberOfHalfRulers > MinimumPixelsBetweenRulers)*/;
 
     // - find the reference point at which to start drawing and the increment (line distance);
     QPointF rulerRef;
@@ -210,38 +219,38 @@ void CartesianAxis::paint ( PaintContext* context ) const
 
     #ifdef AXES_PAINTING_DEBUG
     qDebug() << "CartesianAxis::paint: reference values:" << endl
-            << "-- range: " << range << endl
+            << "-- range: " << dimension.distance() << endl
             << "-- absRange: " << absRange << endl
             << "-- magnitude: " << magnitude << endl
             << "-- basicUnit: " << basicUnit << endl
             << "-- numberOfUnitRulers: " << numberOfUnitRulers << endl
-            << "-- numberOfHalfRulers: " << numberOfHalfRulers << endl
-            << "-- numberOfFourthRulers: " << numberOfFourthRulers << endl
+//            << "-- numberOfHalfRulers: " << numberOfHalfRulers << endl
+//            << "-- numberOfFourthRulers: " << numberOfFourthRulers << endl
             << "-- screenRange: " << screenRange << endl
             << "-- drawUnitRulers: " << drawUnitRulers << endl
-            << "-- drawHalfRulers: " << drawHalfRulers << endl
+//            << "-- drawHalfRulers: " << drawHalfRulers << endl
             << "-- drawLabels: " << drawLabels << endl
-            << "-- drawFourthRulers: " << drawFourthRulers << endl
+//            << "-- drawFourthRulers: " << drawFourthRulers << endl
             << "-- ruler reference point:: " << rulerRef << endl;
     #endif
 
     ptr->setPen ( Qt::black );
     ptr->setBrush ( Qt::red );
     QPointF fourthRulerRef ( rulerRef );
-    qreal minValueY = dataBoundaries.first.y();
-    qreal maxValueY = dataBoundaries.second.y();
-    qreal minValueX = dataBoundaries.first.x();
-    qreal maxValueX = dataBoundaries.second.x();
+    qreal minValueY = dimY.start;
+    qreal maxValueY = dimY.end;
+    qreal minValueX = dimX.start;
+    qreal maxValueX = dimX.end;
 
-
+/*
     if ( drawFourthRulers ) {
         if ( isAbscissa() ) {
             int tickLength = isTop ? -2 : 1;
             for ( float f = minValueX; f <= maxValueX; f += 0.25 ) {
                 QPointF topPoint ( f, 0 );
                 QPointF bottomPoint ( f, 0 );
-                topPoint = context->coordinatePlane()->translate( topPoint );
-                bottomPoint = context->coordinatePlane()->translate( bottomPoint );
+                topPoint = plane->translate( topPoint );
+                bottomPoint = plane->translate( bottomPoint );
                 topPoint.setY( fourthRulerRef.y() + tickLength );
                 bottomPoint.setY( fourthRulerRef.y() );
                 ptr->drawLine( topPoint, bottomPoint );
@@ -251,8 +260,8 @@ void CartesianAxis::paint ( PaintContext* context ) const
             for ( float f = minValueY; f <= maxValueY; f += 0.25 ) {
                 QPointF leftPoint ( 0, f );
                 QPointF rightPoint ( 0, f );
-                leftPoint = context->coordinatePlane()->translate( leftPoint );
-                rightPoint = context->coordinatePlane()->translate( rightPoint );
+                leftPoint = plane->translate( leftPoint );
+                rightPoint = plane->translate( rightPoint );
                 leftPoint.setX( fourthRulerRef.x() + tickLength );
                 rightPoint.setX( fourthRulerRef.x() );
                 ptr->drawLine( leftPoint, rightPoint );
@@ -266,8 +275,8 @@ void CartesianAxis::paint ( PaintContext* context ) const
             for ( float f = minValueX; f <= maxValueX; f += 0.5 ) {
                 QPointF topPoint ( f, 0 );
                 QPointF bottomPoint ( f, 0 );
-                topPoint = context->coordinatePlane()->translate( topPoint );
-                bottomPoint = context->coordinatePlane()->translate( bottomPoint );
+                topPoint = plane->translate( topPoint );
+                bottomPoint = plane->translate( bottomPoint );
                 topPoint.setY( fourthRulerRef.y() + tickLength );
                 bottomPoint.setY( fourthRulerRef.y() );
                 ptr->drawLine( topPoint, bottomPoint );
@@ -277,16 +286,17 @@ void CartesianAxis::paint ( PaintContext* context ) const
             for ( float f = minValueY; f <= maxValueY; f += 0.5 ) {
                 QPointF leftPoint ( 0, f );
                 QPointF rightPoint ( 0, f );
-                leftPoint = context->coordinatePlane()->translate( leftPoint );
-                rightPoint = context->coordinatePlane()->translate( rightPoint );
+                leftPoint = plane->translate( leftPoint );
+                rightPoint = plane->translate( rightPoint );
                 leftPoint.setX( fourthRulerRef.x() + tickLength );
                 rightPoint.setX( fourthRulerRef.x() );
                 ptr->drawLine( leftPoint, rightPoint );
           }
       }
     }
-
+*/
     if ( drawUnitRulers ) {
+qDebug() << isOrdinate();
         const int hardLabelsCount  = labels().count();
         const int shortLabelsCount = shortLabels().count();
         bool useShortLabels = false;
@@ -332,7 +342,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
                     // No need to call labelItem->setParentWidget(), since we are using
                     // the layout item temporarily only.
                     QPointF topPoint ( i, 0.0 );
-                    topPoint = context->coordinatePlane()->translate( topPoint );
+                    topPoint = plane->translate( topPoint );
                     topPoint.setX( topPoint.x() - met.height() );
                     topPoint.setY( fourthRulerRef.y() + tickLength );
                     topPoint.setY(
@@ -359,8 +369,8 @@ void CartesianAxis::paint ( PaintContext* context ) const
             for ( qreal i = minValueX; i <= maxValueX; i+=1.0 ) {
                 QPointF topPoint ( i + (useItemCountLabels ? 0.5 : 0.0), 0.0 );
                 QPointF bottomPoint ( topPoint );
-                topPoint = context->coordinatePlane()->translate( topPoint );
-                bottomPoint = context->coordinatePlane()->translate( bottomPoint );
+                topPoint = plane->translate( topPoint );
+                bottomPoint = plane->translate( bottomPoint );
                 topPoint.setY( fourthRulerRef.y() + tickLength );
                 bottomPoint.setY( fourthRulerRef.y() );
                 ptr->drawLine( topPoint, bottomPoint );
@@ -403,7 +413,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
                 steg = maxValueY;
             } else {
                 maxLimit = maxValueY;
-                steg = 1.0;
+                steg = dimY.stepWidth;
             }
             int maxLabelsWidth = 0;
             qreal labelValue;
@@ -414,16 +424,17 @@ void CartesianAxis::paint ( PaintContext* context ) const
                 for ( qreal f = minValueY; f <= maxLimit; f+= steg ) {
                     labelItem->setText( QString::number( labelValue ) );
                     maxLabelsWidth = qMax( maxLabelsWidth, labelItem->sizeHint().width() );
-                    d->diagram->percentMode() ? labelValue += 10.0 : labelValue += 1.0;
+                    d->diagram->percentMode() ? labelValue += 10.0 : labelValue += dimY.stepWidth;
                 }
             }
             labelValue = minValueY;
+qDebug("minValueY: %f   maxLimit: %f   steg: %f", minValueY, maxLimit, steg);
             for ( qreal f = minValueY; f <= maxLimit; f+= steg ) {
-//qDebug("f: %f",f);
+qDebug("f: %f",f);
                 QPointF leftPoint (  0.0, percent ? f/numberOfUnitRulers : f );
                 QPointF rightPoint ( 0.0, percent ? f/numberOfUnitRulers : f );
-                leftPoint  = context->coordinatePlane()->translate( leftPoint );
-                rightPoint = context->coordinatePlane()->translate( rightPoint );
+                leftPoint  = plane->translate( leftPoint );
+                rightPoint = plane->translate( rightPoint );
                 leftPoint.setX( fourthRulerRef.x() + tickLength );
                 rightPoint.setX( fourthRulerRef.x() );
                 ptr->drawLine( leftPoint, rightPoint );
@@ -454,7 +465,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
                     labelItem->setGeometry( QRect( QPoint(x, y), labelSize ) );
                     labelItem->paint( ptr );
 
-                    d->diagram->percentMode() ? labelValue += 10.0 : labelValue += 1.0;
+                    d->diagram->percentMode() ? labelValue += 10.0 : labelValue += dimY.stepWidth;
                 }
             }
             //Pending Michel: reset to default - is that really what we want?

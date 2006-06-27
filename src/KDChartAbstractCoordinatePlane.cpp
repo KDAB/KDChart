@@ -130,6 +130,11 @@ GridAttributes KDChart::AbstractCoordinatePlane::globalGridAttributes() const
     return _d->gridAttributes;
 }
 
+KDChart::DataDimensionsList KDChart::AbstractCoordinatePlane::gridDimensionsList()
+{
+    return _d->grid->updateData( this );
+}
+
 void KDChart::AbstractCoordinatePlane::setReferenceCoordinatePlane( AbstractCoordinatePlane * plane )
 {
     _d->referenceCoordinatePlane = plane;

@@ -248,6 +248,11 @@ namespace KDChart {
         GridAttributes globalGridAttributes() const;
 
         /**
+         * @return The dimensions used for drawing the grid lines.
+          */
+        DataDimensionsList gridDimensionsList();
+
+        /**
          * Set another coordinate plane to be used as the reference plane
          * for this one.
          * @param plane The coordinate plane to be used the reference plane
