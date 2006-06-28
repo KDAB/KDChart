@@ -251,9 +251,9 @@ void CartesianCoordinatePlane::layoutDiagrams()
     const DataDimension dimY = dimensions.last();
     const qreal distX = dimX.distance();
     const qreal distY = dimY.distance();
-    const QRectF dataBoundingRect(
-        QPointF(qMin(dimX.start, dimX.end), qMax(dimY.start, dimY.end)),
-        QSizeF( qAbs(distX), -qAbs(distY) ) );
+    const QPointF pt(qMin(dimX.start, dimX.end), qMax(dimY.start, dimY.end));
+    const QSizeF siz( qAbs(distX), -qAbs(distY) );
+    const QRectF dataBoundingRect( pt, siz );
 
     // calculate the remaining rectangle, and use it as the diagram area:
     d->diagramArea = d->drawingArea;
