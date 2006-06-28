@@ -249,9 +249,11 @@ void CartesianCoordinatePlane::layoutDiagrams()
                  "Error: gridDimensionsList() did not return exactly two dimensions." );
     const DataDimension dimX = dimensions.first();
     const DataDimension dimY = dimensions.last();
+    const qreal distX = dimX.distance();
+    const qreal distY = dimY.distance();
     const QRectF dataBoundingRect(
         QPointF(qMin(dimX.start, dimX.end), qMax(dimY.start, dimY.end)),
-        QSizeF( qAbs(dimX.distance()), -qAbs(dimY.distance()) ) );
+        QSizeF( qAbs(distX), -qAbs(distY) ) );
 
     // calculate the remaining rectangle, and use it as the diagram area:
     d->diagramArea = d->drawingArea;
