@@ -75,7 +75,8 @@ void KDChart::AbstractCartesianDiagram::setCoordinatePlane( AbstractCoordinatePl
 {
     if( coordinatePlane() ) disconnect( coordinatePlane() );
     AbstractDiagram::setCoordinatePlane(plane);
-    connect( plane, SIGNAL(rangeChanged()), this, SLOT(slotRangeChanged()) );
+    if( plane )
+        connect( plane, SIGNAL(rangeChanged()), this, SLOT(slotRangeChanged()) );
 
     // show the axes, after all have been adjusted
     // (because they might be dependend on each other)
