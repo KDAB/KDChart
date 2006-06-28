@@ -201,7 +201,8 @@ QRectF CartesianCoordinatePlane::calculateRawDataBoundingRect() const
 DataDimensionsList CartesianCoordinatePlane::getDataDimensionsList() const
 {
     DataDimensionsList l;
-    const AbstractCartesianDiagram* dgr = dynamic_cast<const AbstractCartesianDiagram*> (diagrams().first() );
+    const AbstractCartesianDiagram* dgr
+        = diagrams().count() ? dynamic_cast<const AbstractCartesianDiagram*> (diagrams().first() ) : 0;
     if( dgr ){
         const QRectF r( calculateRawDataBoundingRect() );
         // note:
