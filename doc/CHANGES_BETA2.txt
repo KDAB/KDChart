@@ -1,0 +1,260 @@
+
+
+   Note: The file doc/GettingStartedGuide.txt is a good
+         starting point to learn how to use KD Chart 2.0.
+
+
+
+The following is a short list of the most important new
+implementation / fixed issues in KD Chart Beta 2, as
+compared to the Beta 1 release:
+
+
+
+Compiling / linking
+-------------------
+
+* On Windows KD Chart is using an appended 'd' (file name is
+  kdchartd.dll for the debug version, to avoid clashes when
+  compiling with debug+release, and to do like Qt.
+
+* KD Chart's global file qmake configuration variables.pri has
+  been adjusted to support static builds.
+
+* We use a simple define, to get isnan and isinf on Windows.
+
+
+
+General Ownership Policy
+------------------------
+
+* Small change in the general policy: For the component classes
+  (like diagrams, axes, legends ...) we had (and we still have)
+  this rule:
+  1. Ownership is passed to the receiving class, if its add...()
+     setter method is called.
+     Thus the Chart will become the owner of the HeaderFooter
+     if you call addheaderFooter( pointer ).
+  Due to this, you are not allowed to delete a component, once
+  you have added it to one of KD Chart's classes.
+
+  We now are introducing a secomd rule, to increase usefulnes:
+  2. By calling the respective take...() method, you can get
+     ownership of a component back.
+
+  This allows for things like this:
+     myChart->addHeaderFooter( myHeader );
+     (...)
+     myChart->takeHeaderFooter( myHeader );
+     (...)
+     myOtherChart->addHeaderFooter( myHeader );
+
+  Note: Listening to our users' wishes, we also changed the
+        respective replace...() methods, to make them use
+        two pointers instead of an index, so they now are
+        more convenient to use.
+
+
+
+Data Models / Proxies
+---------------------
+
+* KD Chart can handle data models with Zero values in all cells.
+
+* To avoid killing ourselves on large datasets we use delayed
+  computation, like the other (Qt-) itemviews do.
+
+* Changed the way proxies are used:
+  DefaultsModel has been merged with AttributesModel;
+  DatasetProxyModel is now a model that the user can explicitly
+  create.
+  Private AttributesModel is existing per now default, but it can
+  be set to be shared between diagrams by the user.
+
+* Data model now supporting more than one dimension:
+  AbstractDiagram now has a datasetDimension property, which
+  determines how may columns per datapoint the view expects to
+  get from the model.
+  If dimensionality is 1 (the default), automatic values are used
+  for the Abscissa axis.
+
+
+
+Positioning and specifying of sizes
+-----------------------------------
+
+* New class KDChart::Position allows different ways of relative
+  (and/or absolute, resp.) positioning.
+
+* New class KDChart::Measure allows different ways of relative
+  (and/or absolute, resp.) measure specifications.
+
+* New class KDChart::RelativePosition to be used together with
+  the two before mentioned classes.
+
+
+
+Relative font sizes
+-------------------
+
+* All displayed texts can be shown in relative (or, if you
+  prefer, in absolute, resp.) font sizes.
+  Normally the KDChartTextAttributes class is used for this,
+  allowing to specify both, a normal font size, and a minimal
+  font size (the later often will be an absolute size).
+
+
+
+Coordinate planes and the grid
+------------------------------
+
+* You now can set horizontal and vertical ranges on a cartesian
+  coordiante plane.
+  The plane now first takes the union of all diagram data
+  boundaries, and then applies it these.
+  Next the internal grid calculation might adjust these global
+  boundaries and define the new boundaries.
+  All of the axes then adjust their label positions to these
+  new boundaries and display themselves accordingly.
+
+* New class KDChart::GridAttributes used to specify grid
+  attributes - you guessed it.
+  This involves several different options, please read the API
+  documentation -- we suggest you begin with
+  KDChart::AbstractCoordinatePlane::setGlobalGridAttriutes().
+
+* Fix the grid start/end/stepWidth calculation.
+  New rule is:
+      Make the difference between displayed range and
+      raw data range as small as possible, while STILL
+      making sure, that the number of grid steps is
+      between minSteps and maxSteps.
+  For now, minSteps is 2, maxSteps 12, but (if required) this
+  could be made configurable by the user.
+
+  see KDChart::GridAttributes::setGridGranularitySequence()
+
+
+
+Axes
+----
+
+* User defined axis labels / short axis labels now supported
+  (as of yet for the Abscissa axis only).
+
+* Abscissa axis labels are now using the data model's
+  header texts, if no user defined labels were specified.
+
+* Abscissa item labels now shown correctly (bug was that
+  dataset labels were shown instead).
+
+* Abscissa axis will NOT dissappear, if there are too many
+  labels, but it will show the numbers from 10, 20, 30, ...
+  (or 100, 200, 300, ..., or ...)  depending on how many
+  labels there are.
+
+* Zero lines are now drawn correctly.
+
+* Top-most and bottom-most ordinate axis labels now are
+  shifted a bit, so they do not get cut through in half,
+  due to axis area clipping.
+
+* Right-sided ordinate axes now showing their labels
+  right-aligned, to have trailing digits shown exactly in
+  one vertical line.
+
+
+
+Bar charts
+----------
+
+* Data labels are now shown in different positions, according to the
+  respective user settings.
+
+
+
+Line charts
+-----------
+
+* Supporting two dimensional data models.
+  (as of yet for Normal mode only, not for percent/stacked mode yet)
+
+
+
+Three-D charts
+--------------
+
+* setDepth() can be used to specify the depth of the three-D effect.
+  (as of yet for normal charts only, but not for percent/stacked)
+
+* Large amounts of three-D bars can be displayed on Windows too,
+  without Windows running out of Shared GUI Objects.
+
+
+
+Legends
+-------
+
+* Separator lines can be optionally displayed, both for vertical
+  and for horizonlat legends.
+
+* Use the new class KDChart::Position, to store its place within
+  the 3x3 fields grid holding Legend(s) and Data+Axes area.
+
+* Use a Qt::Alignment, to specify its horiz/vert alignment within
+  the field specified by the Position.
+
+* You may now have more that one legend in the same field, both
+  using the same, or different alignment flags: Legends will then
+  be positioned within a small, unvisible box layout.
+
+* When legend is using relative font size (for the title's and/or
+  or for the normal texts' font) its size is adjusted to changing
+  font sizes automatically.
+
+* Legend's default font size setting has been changed, it now is:
+  Relative to the reference area's width for horizontal legends,
+  but relative to the reference area's qMin(width, height) for
+  vertical legends.
+
+* Dataset labels now shown correctly (bug was that item labels
+  were shown instead).
+
+
+Headers / Footers
+-----------------
+
+* Use the new KDChart::Position class, to store their position.
+
+
+
+The KDChart::Widget
+-------------------
+
+* addHeaderFooter( const QString& text, ...) and also
+  addHeaderFooter( HeaderFooter * header ) now working as planned.
+
+* New method resetData() can be used to remove all data.
+
+
+
+Example programs
+----------------
+
+* New example: Multi dimensional data looking like a Scatter Plot.
+
+* Remove HeaderFooterLegends, dividing it into a two new
+  examples: HeadersFooters and Legends example.
+  The later showing how to use the new ways of positioning 
+  and aligning the legends.
+
+* Adjusting the other examples.
+
+* New example Axis/Parameters and ew example Axis/Labels, the
+  later using user-defined short/long labels for the Abscissa.
+
+
+... and many small (and some larger) bugs have been fixed now,
+    ... many little details adjusted (like TextAttributes
+                     using a QPen instead of a simple QColor),
+        ... and also a lot of new API documentation was added.
