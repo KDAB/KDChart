@@ -109,11 +109,11 @@ void CartesianAxis::paint ( PaintContext* context ) const
                  "Bad function call: PaintContext::coodinatePlane() NOT a cartesian plane." );
 
     const int MinimumPixelsBetweenRulers = 5;
-    const DataDimensionsList dimensions( plane->gridDimensionsList() );
+    DataDimensionsList dimensions( plane->gridDimensionsList() );
     // test for programming errors: critical
     Q_ASSERT_X ( dimensions.count() == 2, "CartesianAxis::paint",
                  "Error: plane->gridDimensionsList() did not return exactly two dimensions." );
-    const DataDimension& dimX = dimensions.first();
+    DataDimension& dimX = dimensions.first();
     const DataDimension& dimY = dimensions.last();
     const DataDimension& dim = (isAbscissa() ? dimensions.first() : dimensions.last());
 
@@ -180,11 +180,26 @@ void CartesianAxis::paint ( PaintContext* context ) const
 
     const bool useItemCountLabels = isAbscissa() && d->diagram->datasetDimension() == 1;
 
+
+
+
+    //FIXME(khz): Remove this code, and do the calculation in the grid calc function
+    if( isAbscissa() && ! dimX.isCalculated ){
+        dimX.stepWidth = 1.0;
+        while( screenRange / numberOfUnitRulers <= MinimumPixelsBetweenRulers ){
+            dimX.stepWidth *= 10.0;
+            //qDebug() << "adjusting dimX.stepWidth to" << dimX.stepWidth;
+            numberOfUnitRulers = qAbs( dimX.distance() / dimX.stepWidth );
+        }
+    }
+
+
+
     const bool drawUnitRulers = screenRange / numberOfUnitRulers > MinimumPixelsBetweenRulers;
     const bool drawSubUnitRulers =
         (numberOfSubUnitRulers != 0.0) &&
         (screenRange / numberOfSubUnitRulers > MinimumPixelsBetweenRulers);
-    
+
 /*
     // for the next two lines, please note:
     // There are no such things as "half of Item 1" or "0.75 times Thursday"
@@ -310,7 +325,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
     }
 
     if ( drawUnitRulers ) {
-qDebug() << isOrdinate();
+//qDebug() << isOrdinate();
         const int hardLabelsCount  = labels().count();
         const int shortLabelsCount = shortLabels().count();
         bool useShortLabels = false;
@@ -351,8 +366,11 @@ qDebug() << isOrdinate();
                 bool labelsAreOverlapping = false;
                 QRegion combinedRegion;
                 int iLabel = 0;
-                for ( qreal i = minValueX; i <= maxValueX && ! labelsAreOverlapping; i+=1.0 ) {
-                    labelItem->setText( labels()[ iLabel ] );
+                for ( qreal i = minValueX; i <= maxValueX && ! labelsAreOverlapping; i+=dimX.stepWidth ) {
+                    if( (dimX.stepWidth != 1.0) && ! dimX.isCalculated )
+                        labelItem->setText( QString::number(i, 'f', 0) );
+                    else
+                        labelItem->setText( labels()[ iLabel ] );
                     // No need to call labelItem->setParentWidget(), since we are using
                     // the layout item temporarily only.
                     QPointF topPoint ( i, 0.0 );
@@ -380,7 +398,7 @@ qDebug() << isOrdinate();
             }
 
             int iLabel = 0;
-            for ( qreal i = minValueX; i <= maxValueX; i+=1.0 ) {
+            for ( qreal i = minValueX; i <= maxValueX; i+=dimX.stepWidth ) {
                 QPointF topPoint ( i + (useItemCountLabels ? 0.5 : 0.0), 0.0 );
                 QPointF bottomPoint ( topPoint );
                 topPoint = plane->translate( topPoint );
@@ -389,9 +407,12 @@ qDebug() << isOrdinate();
                 bottomPoint.setY( fourthRulerRef.y() );
                 ptr->drawLine( topPoint, bottomPoint );
                 if ( drawLabels ) {
-                    labelItem->setText( hardLabelsCount
-                        ? ( useShortLabels    ? shortLabels()[ iLabel ] : labels()[ iLabel ] )
-                        : ( headerLabelsCount ? headerLabels[  iLabel ] : QString::number( minValueX ) ) );
+                    if( (dimX.stepWidth != 1.0) && ! dimX.isCalculated )
+                        labelItem->setText( QString::number(i, 'f', 0) );
+                    else
+                        labelItem->setText( hardLabelsCount
+                            ? ( useShortLabels    ? shortLabels()[ iLabel ] : labels()[ iLabel ] )
+                            : ( headerLabelsCount ? headerLabels[  iLabel ] : QString::number( minValueX ) ) );
                     // No need to call labelItem->setParentWidget(), since we are using
                     // the layout item temporarily only.
                     const QSize size( labelItem->sizeHint() );
@@ -414,7 +435,7 @@ qDebug() << isOrdinate();
                         else
                             ++iLabel;
                     }else{
-                        minValueX += 1.0;
+                        minValueX += dimX.stepWidth;
                     }
                 }
             }

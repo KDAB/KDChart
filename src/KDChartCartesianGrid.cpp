@@ -59,7 +59,7 @@ void CartesianGrid::drawGrid( PaintContext* context )
     // test for invalid boundaries: non-critical
     if( !isBoundariesValid( mData ) ) return;
 
-    const DataDimension& dimX = mData.first();
+    DataDimension& dimX = mData.first();
     const DataDimension& dimY = mData.last();
     // test for other programming errors: critical
     Q_ASSERT_X ( dimX.stepWidth, "CartesianGrid::drawGrid",
@@ -68,10 +68,10 @@ void CartesianGrid::drawGrid( PaintContext* context )
                  "Error: updateData returned a Zero step width for the Y grid." );
 
 
-    const qreal numberOfUnitLinesX =
+    qreal numberOfUnitLinesX =
         qAbs( dimX.distance() / dimX.stepWidth )
         + (dimX.isCalculated ? 1.0 : 0.0);
-    const qreal numberOfUnitLinesY =
+    qreal numberOfUnitLinesY =
         qAbs( dimY.distance() / dimY.stepWidth )
         + (dimY.isCalculated ? 1.0 : 0.0);
     //qDebug("numberOfUnitLinesX: %f    numberOfUnitLinesY: %f",numberOfUnitLinesX,numberOfUnitLinesY);
@@ -93,6 +93,15 @@ qDebug() << "p1:" << p1 << "  p2:" << p2;
 
 //    qreal unitFactorX = 1.0;
 //    qreal unitFactorY = 1.0;
+
+    //FIXME(khz): Remove this code, and do the calculation in the grid calc function
+    if( ! dimX.isCalculated ){
+        while( screenRangeX / numberOfUnitLinesX <= MinimumPixelsBetweenLines ){
+            dimX.stepWidth *= 10.0;
+            qDebug() << "adjusting dimX.stepWidth to" << dimX.stepWidth;
+            numberOfUnitLinesX = qAbs( dimX.distance() / dimX.stepWidth );
+        }
+    }
     const bool drawUnitLinesX = (screenRangeX / numberOfUnitLinesX > MinimumPixelsBetweenLines);
     const bool drawUnitLinesY = (screenRangeY / numberOfUnitLinesY > MinimumPixelsBetweenLines);
 /*
