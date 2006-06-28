@@ -98,10 +98,12 @@ qDebug() << "p1:" << p1 << "  p2:" << p2;
     if( ! dimX.isCalculated ){
         while( screenRangeX / numberOfUnitLinesX <= MinimumPixelsBetweenLines ){
             dimX.stepWidth *= 10.0;
-            qDebug() << "adjusting dimX.stepWidth to" << dimX.stepWidth;
+            dimX.subStepWidth *= 10.0;
+            //qDebug() << "adjusting dimX.stepWidth to" << dimX.stepWidth;
             numberOfUnitLinesX = qAbs( dimX.distance() / dimX.stepWidth );
         }
     }
+
     const bool drawUnitLinesX = (screenRangeX / numberOfUnitLinesX > MinimumPixelsBetweenLines);
     const bool drawUnitLinesY = (screenRangeY / numberOfUnitLinesY > MinimumPixelsBetweenLines);
 /*
@@ -280,18 +282,24 @@ DataDimensionsList CartesianGrid::calculateGrid(
 {
     Q_ASSERT_X ( rawDataDimensions.count() == 2, "CartesianGrid::calculateGrid",
                  "Error: calculateGrid() expects a list with exactly two entries." );
-    DataDimensionsList l;
+    DataDimensionsList l( rawDataDimensions );
     // rule:  Returned list is either empty, or it is providing two
     //        valid dimensions, complete with two non-Zero step widths.
-    if( isBoundariesValid( rawDataDimensions ) ) {
+    if( isBoundariesValid( l ) ) {
         const DataDimension dimX
-            = calculateGridXY( rawDataDimensions.first(), Qt::Vertical );
+            = calculateGridXY( l.first(), Qt::Vertical );
         if( dimX.stepWidth ){
             const DataDimension dimY
-                = calculateGridXY( rawDataDimensions.last(), Qt::Horizontal );
+                = calculateGridXY( l.last(), Qt::Horizontal );
             if( dimY.stepWidth ){
-                l.append( dimX );
-                l.append( dimY );
+                l.first().start        = dimX.start;
+                l.first().end          = dimX.end;
+                l.first().stepWidth    = dimX.stepWidth;
+                l.first().subStepWidth = dimX.subStepWidth;
+                l.last().start        = dimY.start;
+                l.last().end          = dimY.end;
+                l.last().stepWidth    = dimY.stepWidth;
+                l.last().subStepWidth = dimY.subStepWidth;
             }
         }
     }
