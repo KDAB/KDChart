@@ -25,10 +25,12 @@
 
 #include <cmath>
 
+#include <qglobal.h>
+
 #include "KDChartAbstractGrid.h"
 #include "KDChartPaintContext.h"
 
-#ifdef WIN32
+#ifdef Q_OS_WIN
 #include <float.h>
 #define isnan(x ) _isnan(x )
 #define isinf(x ) (!(_finite(x ) + _isnan(x ) ) )
