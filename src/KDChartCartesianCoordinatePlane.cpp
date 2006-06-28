@@ -202,7 +202,7 @@ DataDimensionsList CartesianCoordinatePlane::getDataDimensionsList() const
 {
     DataDimensionsList l;
     const AbstractCartesianDiagram* dgr
-        = diagrams().count() ? dynamic_cast<const AbstractCartesianDiagram*> (diagrams().first() ) : 0;
+        = diagrams().isEmpty() ? 0 : dynamic_cast<const AbstractCartesianDiagram*> (diagrams().first() );
     if( dgr ){
         const QRectF r( calculateRawDataBoundingRect() );
         // note:
