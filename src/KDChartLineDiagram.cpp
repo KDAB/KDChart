@@ -90,6 +90,7 @@ void LineDiagram::setType( const LineType type )
        return;
    }
    d->lineType = type;
+   setDataBoundariesDirty();
    emit layoutChanged( this );
 }
 
@@ -120,16 +121,19 @@ LineAttributes LineDiagram::lineAttributes( const QModelIndex & index ) const
 
 void LineDiagram::setThreeDLineAttributes( const ThreeDLineAttributes & ta )
 {
+    setDataBoundariesDirty();
     d->attributesModel->setModelData( qVariantFromValue( ta ), ThreeDLineAttributesRole );
 }
 
 void LineDiagram::setThreeDLineAttributes( int column, const ThreeDLineAttributes & ta )
 {
+    setDataBoundariesDirty();
     d->attributesModel->setHeaderData( column, Qt::Vertical, qVariantFromValue( ta ), ThreeDLineAttributesRole );
 }
 
 void LineDiagram::setThreeDLineAttributes( const QModelIndex & index, const ThreeDLineAttributes & ta )
 {
+    setDataBoundariesDirty();
     d->attributesModel->setData( d->attributesModel->mapFromSource(index),
 			      qVariantFromValue( ta ), ThreeDLineAttributesRole );
 }
@@ -177,9 +181,9 @@ const QPair<QPointF, QPointF> LineDiagram::calculateDataBoundaries () const
                     double stackedValues = 0;
                     for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
                         stackedValues +=  valueForCell( j, i );
-                        yMin = qMin( yMin, stackedValues );
-                        yMax = qMax( yMax, stackedValues );
                     }
+                    yMin = qMin( yMin, stackedValues );
+                    yMax = qMax( yMax, stackedValues );
                 }
             break;
         case LineDiagram::Percent:

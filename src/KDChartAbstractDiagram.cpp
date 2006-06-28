@@ -130,25 +130,6 @@ void AbstractDiagram::setDataBoundariesDirty() const
     d->databoundariesDirty = true;
 }
 
-const QPair<QPointF, QPointF> AbstractDiagram::calculateDataBoundaries () const
-{
-    if ( !checkInvariants() )
-        return QPair<QPointF, QPointF>( QPointF( 0, 0 ), QPointF( 0, 0 ) );
-
-    double xMin = 0, xMax = 0, yMin = 0, yMax = 0;
-    const int rowCount = model()->rowCount(rootIndex());
-    const int columnCount = model()->columnCount(rootIndex());
-    xMax = rowCount-1; // since we start at 0
-    for ( int i=datasetDimension()-1; i<columnCount; i += datasetDimension() ) {
-      for ( int j=0; j< rowCount; ++j ) {
-        double value = model()->data( model()->index( j, i, rootIndex() ) ).toDouble();
-        yMin = qMin( yMin, value );
-        yMax = qMax( yMax, value );
-      }
-    }
-    return qMakePair( QPointF( xMin, yMin ),  QPointF( xMax, yMax ) );
-}
-
 void AbstractDiagram::setModel ( QAbstractItemModel * newModel )
 {
   QAbstractItemView::setModel( newModel );

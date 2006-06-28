@@ -74,6 +74,7 @@ void BarDiagram::setType( const BarType type )
 {
     if ( type == d->barType ) return;
     d->barType = type;
+    setDataBoundariesDirty();
     emit layoutChanged( this );
 }
 
@@ -107,18 +108,21 @@ BarAttributes BarDiagram::barAttributes( const QModelIndex & index ) const
 
 void BarDiagram::setThreeDBarAttributes( const ThreeDBarAttributes & tda )
 {
+    setDataBoundariesDirty();
     d->attributesModel->setModelData( qVariantFromValue( tda ), ThreeDBarAttributesRole );
     emit layoutChanged( this );
 }
 
 void BarDiagram::setThreeDBarAttributes( int column, const ThreeDBarAttributes & tda )
 {
+    setDataBoundariesDirty();
     d->attributesModel->setHeaderData( column, Qt::Vertical, qVariantFromValue( tda ), ThreeDBarAttributesRole );
     emit layoutChanged( this );
 }
 
 void BarDiagram::setThreeDBarAttributes( const QModelIndex & index, const ThreeDBarAttributes & tda )
 {
+    setDataBoundariesDirty();
     d->attributesModel->setData( d->attributesModel->mapFromSource(index),
 			      qVariantFromValue( tda ), ThreeDBarAttributesRole );
     emit layoutChanged( this );

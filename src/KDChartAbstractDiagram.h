@@ -381,7 +381,7 @@ namespace KDChart {
 
     protected:
         virtual bool checkInvariants( bool justReturnTheStatus=false ) const;
-        virtual const QPair<QPointF, QPointF> calculateDataBoundaries() const;
+        virtual const QPair<QPointF, QPointF> calculateDataBoundaries() const = 0;
         void setDataBoundariesDirty() const;
         virtual void paintDataValueTexts( QPainter* painter );
         void paintDataValueText( QPainter* painter, const QModelIndex& index,
