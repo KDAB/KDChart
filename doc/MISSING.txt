@@ -29,8 +29,16 @@ is not complete.
                  removed.
 - Axes:          Support for decreasing axes has been temporarily
                  removed.
+- Bar diagrams   Three-dimensional look for bar diagrams is broken,
+                 but we did NOT remove it from the released Beta code,
+                 because there is a work-around for some of the cases:
+                 wrong:  Top-most bar are higher than the data area.
+                 work-around: Set the start/end of the Ordinate axis
+                 manually, to a fixed value, to increase its size.
 - Boxes:         Support for custom background in boxes has been
                  removed.
+- Pie charts     Three-dimensional pie charts are not displayed
+                 correctly.
 - XML:           Saving chart configurations to XML has been
                  temporarily removed.
 - Designer:      A Designer plugin is not yet provided.
