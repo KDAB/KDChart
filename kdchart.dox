@@ -478,7 +478,7 @@ RECURSIVE              = YES
 # be excluded from the INPUT source files. This way you can easily exclude a 
 # subdirectory from a directory tree whose root is specified with the INPUT tag.
 
-EXCLUDE                = .moc .obj .ui kdchart_export.h
+EXCLUDE                = .moc .obj .ui
 
 # The EXCLUDE_SYMLINKS tag can be used to select whether or not files or 
 # directories that are symbolic links (a Unix filesystem feature) are excluded 
@@ -495,7 +495,7 @@ EXCLUDE_SYMLINKS       = NO
 # khz: Note that all *Grid.cpp/*Grid.h classes are internal, since users
 #      are supposed to use the coordinate plane's accessor methods only.
 
-EXCLUDE_PATTERNS       = moc_* *.moc *_p.h ui_*.h *Grid.* CartesianCoordinateTransformation.*
+EXCLUDE_PATTERNS       = moc_* *.moc *_p.h ui_*.h *Grid.* CartesianCoordinateTransformation.* kdchart_export.*
 
 # The EXAMPLE_PATH tag can be used to specify one or more files or 
 # directories that contain example code fragments that are included (see 
