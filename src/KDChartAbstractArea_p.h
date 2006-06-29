@@ -37,6 +37,10 @@
 // We mean it.
 //
 
+/** \file KDChartAbstractArea_p.h
+ *  \internal
+ */
+
 #include "KDChartAbstractArea.h"
 #include "KDChartTextAttributes.h"
 #include "KDChartFrameAttributes.h"
