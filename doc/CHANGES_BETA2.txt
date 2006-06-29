@@ -3,8 +3,13 @@ What is new in KD Chart 2.0 Beta 2
 ==================================
 
 
-   Note: The file doc/GettingStartedGuide.txt is a good
-         starting point to learn how to use KD Chart 2.0.
+  Note: The file doc/GettingStartedGuide.txt is a good
+        starting point to learn how to use KD Chart 2.0.
+
+        To browse the API Reference Documentation
+        start with this file:
+
+        doc/refman/index.html
 
 
 
