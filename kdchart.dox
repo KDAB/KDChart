@@ -478,7 +478,7 @@ RECURSIVE              = YES
 # be excluded from the INPUT source files. This way you can easily exclude a 
 # subdirectory from a directory tree whose root is specified with the INPUT tag.
 
-EXCLUDE                = .moc .obj .ui
+EXCLUDE                = .moc .obj .ui kdchart_export.h
 
 # The EXCLUDE_SYMLINKS tag can be used to select whether or not files or 
 # directories that are symbolic links (a Unix filesystem feature) are excluded 
