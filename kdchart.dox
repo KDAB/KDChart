@@ -491,8 +491,11 @@ EXCLUDE_SYMLINKS       = NO
 # certain files from those directories. Note that the wildcards are matched 
 # against the file with absolute path, so to exclude all test directories 
 # for example use the pattern */test/*
+#
+# khz: Note that all *Grid.cpp/*Grid.h classes are internal, since users
+#      are supposed to use the coordinate plane's accessor methods only.
 
-EXCLUDE_PATTERNS       = moc_* *.moc *_p.h ui_*.h
+EXCLUDE_PATTERNS       = moc_* *.moc *_p.h ui_*.h *Grid.* CartesianCoordinateTransformation.*
 
 # The EXAMPLE_PATH tag can be used to specify one or more files or 
 # directories that contain example code fragments that are included (see 
