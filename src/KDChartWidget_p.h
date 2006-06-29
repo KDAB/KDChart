@@ -48,6 +48,9 @@ namespace KDChart {
     class Chart;
     class AbstractCoordinatePlane;
 
+    /**
+    * \internal
+    */
     class Widget::Private
     {
         friend class Widget;

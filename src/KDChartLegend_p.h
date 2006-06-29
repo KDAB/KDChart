@@ -57,6 +57,9 @@ namespace KDChart {
 
 using KDChart::AbstractDiagram;
 
+/**
+ * \internal
+ */
 class KDChart::Legend::Private : public AbstractArea::Private
 {
     friend class KDChart::Legend;

@@ -42,6 +42,8 @@
 namespace KDChart {
 
 /**
+   \internal
+
    @short Resource Allocation Is Initialization for QPainter::save and
    restore
 

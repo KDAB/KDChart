@@ -44,6 +44,9 @@
 
 namespace KDChart {
 
+/**
+ * \internal
+ */
 class AbstractArea::Private
 {
     friend class AbstractArea;

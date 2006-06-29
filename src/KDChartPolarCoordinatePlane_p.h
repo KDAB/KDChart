@@ -48,6 +48,9 @@ namespace KDChart {
 #endif
 #define DEGTORAD(d) (d)*M_PI/180
 
+/**
+ * \internal
+ */
 struct PolarCoordinatePlane::CoordinateTransformation
 {
     // represents the distance of the diagram coordinate origin to the

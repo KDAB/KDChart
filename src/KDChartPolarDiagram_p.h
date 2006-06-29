@@ -41,6 +41,9 @@
 
 namespace KDChart {
 
+/**
+ * \internal
+ */
 class PolarDiagram::Private : public AbstractPolarDiagram::Private
 {
     friend class PolarDiagram;

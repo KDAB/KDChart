@@ -41,6 +41,9 @@
 
 namespace KDChart {
 
+/**
+ * \internal
+ */
 class PieDiagram::Private : public AbstractPieDiagram::Private
 {
     friend class PieDiagram;

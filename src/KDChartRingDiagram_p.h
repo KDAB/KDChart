@@ -41,6 +41,9 @@
 
 namespace KDChart {
 
+/**
+ * \internal
+ */
 class RingDiagram::Private : public AbstractPieDiagram::Private
 {
     friend class RingDiagram;

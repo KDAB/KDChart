@@ -43,6 +43,9 @@
 
 namespace KDChart {
 
+/**
+ * \internal
+ */
 class CartesianCoordinatePlane::Private : public AbstractCoordinatePlane::Private
 {
     friend class CartesianCoordinatePlane;

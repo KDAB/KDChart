@@ -38,6 +38,10 @@ namespace KDChart {
 
     // FIXME: if this struct is used more often, we need to make it a class
     // with proper accessor methods:
+
+    /**
+      * \internal
+      */
     struct CoordinateTransformation {
         QRectF diagramRect;
         // represents the distance of the diagram coordinate origin to the

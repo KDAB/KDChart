@@ -28,6 +28,10 @@
 
 #include <QTextDocument>
 
+
+/**
+  * \internal
+  */
 class KDTextDocument : public QTextDocument
 {
     Q_OBJECT

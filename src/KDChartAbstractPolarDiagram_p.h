@@ -43,6 +43,9 @@ namespace KDChart {
 
   class PolarCoordinatePlane;
 
+/**
+ * \internal
+ */
 class AbstractPolarDiagram::Private : public AbstractDiagram::Private
 {
     friend class AbstractPolarDiagram;

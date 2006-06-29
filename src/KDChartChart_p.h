@@ -46,6 +46,9 @@
 namespace KDChart {
 
 
+/**
+ * \internal
+ */
 class Chart::Private : public QObject
 {
     Q_OBJECT

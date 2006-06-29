@@ -42,6 +42,9 @@
 
 namespace KDChart {
 
+/**
+ * \internal
+ */
 class AbstractCoordinatePlane::Private
 {
     friend class AbstractCoordinatePlane;

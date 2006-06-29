@@ -41,6 +41,9 @@
 
 namespace KDChart {
 
+/**
+ * \internal
+ */
 class BarDiagram::Private : public AbstractCartesianDiagram::Private
 {
     friend class BarDiagram;

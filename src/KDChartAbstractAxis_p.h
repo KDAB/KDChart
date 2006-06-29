@@ -47,6 +47,9 @@
 
 namespace KDChart {
 
+/**
+ * \internal
+ */
 class AbstractAxis::Private : public AbstractArea::Private
 {
     friend class AbstractAxis;

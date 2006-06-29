@@ -43,6 +43,9 @@
 
 namespace KDChart {
 
+    /**
+     * \internal
+     */
     class CartesianAxis::Private : public AbstractAxis::Private
     {
         friend class CartesianAxis;

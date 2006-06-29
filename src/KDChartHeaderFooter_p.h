@@ -49,6 +49,9 @@ namespace KDChart {
 using KDChart::TextAttributes;
 using KDChart::HeaderFooter;
 
+/**
+ * \internal
+ */
 class KDChart::HeaderFooter::Private : public AbstractArea::Private
 {
     friend class KDChart::HeaderFooter;

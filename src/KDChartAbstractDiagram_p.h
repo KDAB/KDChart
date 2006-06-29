@@ -45,6 +45,9 @@
 namespace KDChart {
   class AttributesModel;
 
+/**
+ * \internal
+ */
 class KDChart::AbstractDiagram::Private
 {
     friend class AbstractDiagram;
