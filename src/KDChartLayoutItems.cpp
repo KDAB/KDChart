@@ -172,7 +172,6 @@ QSize KDChart::TextLayoutItem::sizeHint() const
     if( realFontWasRecalculated() ){
         cachedSizeHint = calcSizeHint( cachedFont );
         sizeHintChanged();
-        //(const_cast<KDChart::TextLayoutItem*>(this))->sizeHintChanged();
     }
     //qDebug("cachedSizeHint.width(): %i",cachedSizeHint.width());
     return cachedSizeHint;
