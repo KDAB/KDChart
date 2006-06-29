@@ -1,13 +1,13 @@
 
----=== KDChart 2.0 Beta 1 API Introduction ===---
+---=== KD Chart 2.0 Beta 1 API Introduction ===---
 
-KDChart 2.0 and Qt 4:
+KD Chart 2.0 and Qt 4:
 ---------------------
 
-Version 2.0 of KDChart fully supports and builds on the technologies
+Version 2.0 of KD Chart fully supports and builds on the technologies
 introduced with Qt 4. The charting engine makes use of the Arthur and
 Scribe painting and text rendering frameworks to achieve high quality
-visual results. KDChart 2.0 integrates with the Interview framework
+visual results. KD Chart 2.0 integrates with the Interview framework
 for model/view separation and, much like Qt 4 itself, provides a
 convenience Widget class for those cases where that is too complex.
 The overall API strives for maximum consistency with the concepts
@@ -26,10 +26,10 @@ release, not all of it is actually implemented yet.
 Overview:
 ---------
 
-The core of KDChart's 2.0 API is the KDChart::Chart class. It encapsulates the
+The core of KD Chart's 2.0 API is the KDChart::Chart class. It encapsulates the
 canvas onto which the individual components of a chart are painted, manages them and
 provides access to them. There can be more than one KDChart::Diagram on a
-KDChart::Chart, how they are laid out is determined by which axes, if any, 
+KDChart::Chart, how they are laid out is determined by which axes, if any,
 they share. (More on axes management further down.)
 
 KDChart::Diagram subclasses for the various types of charts are provided, such as
@@ -76,7 +76,7 @@ the other. To share an axis among two planes (and thus diagrams)
 they can simply be added to both diagrams. The Chart layouting
 engine will take care of adjusting positions accordingly.
 
-(see src/KDChartAbstractCoordinatePlane.h and 
+(see src/KDChartAbstractCoordinatePlane.h and
  examples/SharedAbscissa/mainwindow.cpp)
 
 Apart from diagrams, a chart can have a number of optional components
@@ -101,7 +101,7 @@ Qt 4 Interview Support:
 KD Chart 2.0 now follows the Interview model/view paradigm introduced
 by Qt 4:
 
-Any KDChart::AbstractDiagram subclass (since that is derived from 
+Any KDChart::AbstractDiagram subclass (since that is derived from
 QAbstractItemView) can display data coming from any QAbstractItemModel.
 That means that in order to use your data with KD Chart diagrams, you
 will need to either use one of Qt's builtin models to manage your data,
@@ -191,7 +191,7 @@ Removing a component does not de-allocate it. If you "take" a
 component from a chart or diagram, you are responsible for freeing
 it as appropriate.
 
-(see files /src/{KDChartChart.h,KDChartLegend.h})
+(see files /src/{KDChartChart.h, KDChartLegend.h})
 
 Notice how this pointer-based access to the components of a chart is
 different from the value-based usage of the attribute classes; the
