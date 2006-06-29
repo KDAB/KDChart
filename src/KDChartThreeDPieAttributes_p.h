@@ -3,7 +3,7 @@
    */
 
 /****************************************************************************
- ** Copyright (C) 2005-2006 Klarälvdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2005-2006 Klarï¿½vdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KD Chart library.
  **
@@ -29,6 +29,17 @@
 
 #ifndef KDCHARTTHREEDPIEATTRIBUTES_P_H
 #define KDCHARTTHREEDPIEATTRIBUTES_P_H
+
+//
+//  W A R N I N G
+//  -------------
+//
+// This file is not part of the KD Chart API.  It exists purely as an
+// implementation detail.  This header file may change from version to
+// version without notice, or even be removed.
+//
+// We mean it.
+//
 
 #include <KDChartAbstractThreeDAttributes_p.h>
 
