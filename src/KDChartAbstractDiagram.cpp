@@ -171,7 +171,7 @@ AttributesModel* AbstractDiagram::attributesModel() const
     return d->attributesModel;
 }
 
-/*! \reimp */
+/*! \reimpl */
 void AbstractDiagram::setRootIndex ( const QModelIndex& idx )
 {
     QAbstractItemView::setRootIndex(idx);
