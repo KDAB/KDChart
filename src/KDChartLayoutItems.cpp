@@ -56,7 +56,7 @@ void KDChart::LayoutItem::setParentWidget( QWidget* widget )
 /**
     Report changed size hint: ask the parent widget to recalculate the layout.
   */
-void KDChart::LayoutItem::sizeHintChanged()
+void KDChart::LayoutItem::sizeHintChanged()const
 {
     // This is exactly like what QWidget::updateGeometry does.
     if( mParent ) {
@@ -171,7 +171,8 @@ QSize KDChart::TextLayoutItem::sizeHint() const
 {
     if( realFontWasRecalculated() ){
         cachedSizeHint = calcSizeHint( cachedFont );
-        (const_cast<KDChart::TextLayoutItem*>(this))->sizeHintChanged();
+        sizeHintChanged();
+        //(const_cast<KDChart::TextLayoutItem*>(this))->sizeHintChanged();
     }
     //qDebug("cachedSizeHint.width(): %i",cachedSizeHint.width());
     return cachedSizeHint;
