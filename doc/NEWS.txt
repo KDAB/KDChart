@@ -11,7 +11,7 @@ not use the Qt3Support library so that it can be used in
 fully native Qt 4 code.
 
 - Interview support
-The data model in KD Chart 2.0 is completely Interview based.
+The data model in KD Chart 2.0 is completely Interview-based.
 Any QAbstractTableModel (such as a QSqlRelationalTableModel
 for charting database data) can be used in order to supply
 data to KD Chart 2.0, and a number of specialized models are
@@ -46,9 +46,9 @@ and coordinate planes, which yields a number of great benefits:
   * You can develop your own scales (in addition to the set of
     scales built into KD Chart 2.0) easily.
 
-  * Two much requested features, zooming and panning, are now
-    available and will automatically work even with new diagram
-    types.
+  * Two features that had been requested a lot, zooming and
+    panning, are now available and will automatically work
+    even with new diagram types.
 
   * It is a lot easier now to find a certain data value for a
     specified pixel coordinate, i.e., in order to implement
