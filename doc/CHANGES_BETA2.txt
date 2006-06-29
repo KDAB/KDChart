@@ -1,4 +1,7 @@
 
+What is new in KD Chart 2.0 Beta 2
+==================================
+
 
    Note: The file doc/GettingStartedGuide.txt is a good
          starting point to learn how to use KD Chart 2.0.
@@ -31,14 +34,14 @@ General Ownership Policy
 * Small change in the general policy: For the component classes
   (like diagrams, axes, legends ...) we had (and we still have)
   this rule:
-  1. Ownership is passed to the receiving class, if its add...()
+  1. Ownership is passed to the receiving class, if an add...()
      setter method is called.
      Thus the Chart will become the owner of the HeaderFooter
      if you call addheaderFooter( pointer ).
   Due to this, you are not allowed to delete a component, once
   you have added it to one of KD Chart's classes.
 
-  We now are introducing a secomd rule, to increase usefulnes:
+  We now are introducing a second rule, to increase usefulnes:
   2. By calling the respective take...() method, you can get
      ownership of a component back.
 
@@ -100,11 +103,11 @@ Positioning and specifying of sizes
 Relative font sizes
 -------------------
 
-* All displayed texts can be shown in relative (or, if you
-  prefer, in absolute, resp.) font sizes.
-  Normally the KDChartTextAttributes class is used for this,
+* All displayed texts can be shown in relative font sizes (or, if
+  you prefer, in absolute font sizes, resp.).
+  See the KDChartTextAttributes class, normally used for this,
   allowing to specify both, a normal font size, and a minimal
-  font size (the later often will be an absolute size).
+  font size: the later often will be an absolute size.
 
 
 
@@ -115,16 +118,21 @@ Coordinate planes and the grid
   coordiante plane.
   The plane now first takes the union of all diagram data
   boundaries, and then applies the specified range limits.
-  Next the internal grid calculation might adjust these global
-  boundaries and define the new boundaries.
+  Next the internal grid calculation might adjust these raw
+  boundaries and define the new boundaries, for drawing the grid
+  lines (and sub-grid lines, if any).
   All of the axes then adjust their label positions to these
   new boundaries and display themselves accordingly.
 
-* A new class KDChart::GridAttributes was introducd to specify grid
-  attributes.
+* A new class KDChart::GridAttributes was introducd to specify
+  grid attributes used by coordinate planes.
+  This involves several different options, please read the API
+  documentation; we suggest you start reading API documentation
+  for this setter method:
+  KDChart::AbstractCoordinatePlane::setGlobalGridAttributes().
 
 * Fix the grid start/end/stepWidth calculation.
-  New rule is:
+  The general rule:
       Make the difference between displayed range and
       raw data range as small as possible, while still
       making sure, that the number of grid steps is
@@ -140,24 +148,23 @@ Axes
 ----
 
 * User defined axis labels / short axis labels now supported
-  (as of yet for the Abscissa axis only).
+  for Abscissa axes (Ordinate axes will be supported soon).
 
 * Abscissa axis labels are now using the data model's
-  header texts, if no user defined labels were specified.
+  header texts, if no user defined labels were specified:
+  In this case the *item* labels now shown correctly (bug was
+  that dataset labels were shown instead).
 
-* Abscissa item labels now shown correctly (bug was that
-  dataset labels were shown instead).
+* Abscissa axes now can handle large numbers of items: If
+  there are too many labels they will show item numbers from
+  10, 20, 30, ...  (or 100, 200, 300, ..., or ...) depending
+  on the total number of labels.
 
-* Abscissa axis will not dissappear, if there are too many
-  labels, but it will show the numbers from 10, 20, 30, ...
-  (or 100, 200, 300, ..., or ...) depending on how many
-  labels there are.
+* Zero lines are drawn correctly now.
 
-* Zero lines are now drawn correctly.
-
-* Top-most and bottom-most ordinate axis labels now are
-  shifted a bit, so they do not get cut through in half,
-  due to axis area clipping.
+* Both, the top-most and the bottom-most ordinate axis label
+  now are shifted a bit, so they do not get cut through in
+  half due to axis area clipping.
 
 * Right-sided ordinate axes now showing their labels
   right-aligned, to have trailing digits shown exactly in
@@ -168,8 +175,8 @@ Axes
 Bar charts
 ----------
 
-* Data labels are now shown in different positions, according to the
-  respective user settings.
+* Data labels are now shown at different positions, according to
+  the respective user settings.
 
 
 
@@ -195,30 +202,34 @@ Three-D charts
 Legends
 -------
 
-* Separator lines can be optionally displayed, both for vertical
-  and for horizonlat legends.
+* Legend is showing *dataset* labels now (bug was that item labels
+  were shown instead).
 
-* Use the new class KDChart::Position, to store its place within
-  the 3x3 fields grid holding Legend(s) and Data+Axes area.
+* Separator lines can be displayed optionally, both for vertical
+  and for horizontal legends.
 
-* Use a Qt::Alignment, to specify its horiz/vert alignment within
-  the field specified by the Position.
+* Use the new class KDChart::Position, to define the place within
+  the 3x3 fields grid containing the Legend(s) and the Data+Axes:
+  Data+Axes are in the center field, Legend(s) can be in one or
+  several of the eight other fields.
+
+* Use a Qt::Alignment, to specify its horizontal/vertical alignment
+  within the field specified by the setPosition().
 
 * You may now have more that one legend in the same field, both
-  using the same, or different alignment flags: Legends will then
-  be positioned within a small, unvisible box layout.
+  using the same (or different, resp.) alignment flags: Legends
+  will then be positioned within a small, unvisible box layout.
 
-* When legend is using relative font size (for the title's and/or
-  or for the normal texts' font) its size is adjusted to changing
-  font sizes automatically.
+* When legend is using relative font size (for the title's font
+  and/or for the normal texts' font) its size is adjusted to
+  changing font sizes automatically.
 
-* Legend's default font size setting has been changed, it now is:
-  Relative to the reference area's width for horizontal legends,
-  but relative to the reference area's qMin(width, height) for
-  vertical legends.
+* Default font size settings are depending on the orientation.
+  Horizontal legends:
+      relative to the reference area's width
+  Vertical legends:
+      relative to the reference area's qMin(width, height).
 
-* Dataset labels now shown correctly (bug was that item labels
-  were shown instead).
 
 
 Headers / Footers
@@ -232,7 +243,7 @@ The KDChart::Widget
 -------------------
 
 * addHeaderFooter( const QString& text, ...) and also
-  addHeaderFooter( HeaderFooter * header ) now working as planned.
+  addHeaderFooter( HeaderFooter * header ) now working.
 
 * New method resetData() can be used to remove all data.
 
@@ -243,23 +254,20 @@ Example programs
 
 * New example: Multi dimensional data looking like a Scatter Plot.
 
-* Remove HeaderFooterLegends, dividing it into a two new
-  examples: HeadersFooters and Legends example.
+* Remove HeaderFooterLegends, dividing it into two new
+  examples: HeadersFooters and Legends.
   The later showing how to use the new ways of positioning 
   and aligning the legends.
 
 * Adjusting the other examples.
 
-* New example Axis/Parameters and ew example Axis/Labels, the
+* New example Axis/Parameters and new example Axis/Labels, the
   later using user-defined short/long labels for the Abscissa.
 
 
 Miscellaneous
--------------
+--------------
 Many small (and some larger) bugs have been fixed.
-Many small details adjusted (like TextAttributes using a QPen 
+Many small details adjusted (like TextAttributes using a QPen
 instead of a simple QColor).
 A lot of new API documentation was added.
-
-
-
