@@ -68,10 +68,13 @@ Data Models / Proxies
   DefaultsModel has been merged with AttributesModel;
   DatasetProxyModel is now a model that the user can explicitly
   create.
-  Private AttributesModel is existing per now default, but it can
-  be set to be shared between diagrams by the user.
+  The AttributesModel of each diagram is now private to that diagram
+  per default, but it can be set to be shared between diagrams
+  by the user. Note that you  must instantiate your own AttributesModel
+  in order to share it, it is not valid to share one diagram's builtin
+  AttributesModel with another diagram.
 
-* Data model now supporting more than one dimension:
+* Data model now supports more than one dimension:
   AbstractDiagram now has a datasetDimension property, which
   determines how may columns per datapoint the view expects to
   get from the model.
@@ -111,22 +114,19 @@ Coordinate planes and the grid
 * You now can set horizontal and vertical ranges on a cartesian
   coordiante plane.
   The plane now first takes the union of all diagram data
-  boundaries, and then applies it these.
+  boundaries, and then applies the specified range limits.
   Next the internal grid calculation might adjust these global
   boundaries and define the new boundaries.
   All of the axes then adjust their label positions to these
   new boundaries and display themselves accordingly.
 
-* New class KDChart::GridAttributes used to specify grid
-  attributes - you guessed it.
-  This involves several different options, please read the API
-  documentation -- we suggest you begin with
-  KDChart::AbstractCoordinatePlane::setGlobalGridAttriutes().
+* A new class KDChart::GridAttributes was introducd to specify grid
+  attributes.
 
 * Fix the grid start/end/stepWidth calculation.
   New rule is:
       Make the difference between displayed range and
-      raw data range as small as possible, while STILL
+      raw data range as small as possible, while still
       making sure, that the number of grid steps is
       between minSteps and maxSteps.
   For now, minSteps is 2, maxSteps 12, but (if required) this
@@ -148,9 +148,9 @@ Axes
 * Abscissa item labels now shown correctly (bug was that
   dataset labels were shown instead).
 
-* Abscissa axis will NOT dissappear, if there are too many
+* Abscissa axis will not dissappear, if there are too many
   labels, but it will show the numbers from 10, 20, 30, ...
-  (or 100, 200, 300, ..., or ...)  depending on how many
+  (or 100, 200, 300, ..., or ...) depending on how many
   labels there are.
 
 * Zero lines are now drawn correctly.
@@ -254,7 +254,12 @@ Example programs
   later using user-defined short/long labels for the Abscissa.
 
 
-... and many small (and some larger) bugs have been fixed now,
-    ... many little details adjusted (like TextAttributes
-                     using a QPen instead of a simple QColor),
-        ... and also a lot of new API documentation was added.
+Miscellaneous
+-------------
+Many small (and some larger) bugs have been fixed.
+Many small details adjusted (like TextAttributes using a QPen 
+instead of a simple QColor).
+A lot of new API documentation was added.
+
+
+
