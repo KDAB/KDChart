@@ -428,7 +428,7 @@ void CartesianGrid::calculateStepWidth(
 
     qreal steps;
     int power = 0;
-    while( list.first() * fastPow10( power ) < distance ){
+    while( list.last() * fastPow10( power ) < distance ){
         ++power;
     };
     // We have the sequence *two* times in the calculation test list,
