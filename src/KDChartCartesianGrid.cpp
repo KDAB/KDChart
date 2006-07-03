@@ -83,8 +83,8 @@ void CartesianGrid::drawGrid( PaintContext* context )
     const QPointF p2 = plane->translate( QPointF(dimX.end, dimX.end) );
 //qDebug() << "dimX.isCalculated:" << dimX.isCalculated << "dimY.isCalculated:" << dimY.isCalculated;
 //qDebug() << "dimX.start: " << dimX.start << "dimX.end: " << dimX.end;
-qDebug() << "dimY.start: " << dimY.start << "dimY.end: " << dimY.end;
-qDebug() << "p1:" << p1 << "  p2:" << p2;
+//qDebug() << "dimY.start: " << dimY.start << "dimY.end: " << dimY.end;
+//qDebug() << "p1:" << p1 << "  p2:" << p2;
 
     const qreal screenRangeX = qAbs ( p1.x() - p2.x() );
     const qreal screenRangeY = qAbs ( p1.y() - p2.y() );
@@ -189,7 +189,7 @@ qDebug() << "p1:" << p1 << "  p2:" << p2;
         //qDebug("minY: %f   maxValueY: %f   dimY.stepWidth: %f",minY,maxValueY,dimY.stepWidth);
         for ( qreal f = minValueY; f <= maxValueY; f += qAbs( dimY.stepWidth ) ) {
             // PENDING(khz) FIXME: make draving/not drawing of Zero line more sophisticated?:
-            qDebug("main grid line Y at: %f",f);
+            //qDebug("main grid line Y at: %f",f);
             const bool zeroLineHere = (f == 0.0);
             if ( drawUnitLinesY || zeroLineHere ){
                 QPointF leftPoint(  minValueX, f );
@@ -286,11 +286,11 @@ DataDimensionsList CartesianGrid::calculateGrid(
     // rule:  Returned list is either empty, or it is providing two
     //        valid dimensions, complete with two non-Zero step widths.
     if( isBoundariesValid( l ) ) {
-        qDebug("CartesianGrid::calculateGrid()   l.first().start: %f   l.first().end: %f", l.first().start, l.first().end);
+        //qDebug("CartesianGrid::calculateGrid()   l.first().start: %f   l.first().end: %f", l.first().start, l.first().end);
         const DataDimension dimX
             = calculateGridXY( l.first(), Qt::Vertical );
         if( dimX.stepWidth ){
-            qDebug("CartesianGrid::calculateGrid()   l.last().start: %f   l.last().end: %f", l.last().start, l.last().end);
+            //qDebug("CartesianGrid::calculateGrid()   l.last().start: %f   l.last().end: %f", l.last().start, l.last().end);
             const DataDimension dimY
                 = calculateGridXY( l.last(), Qt::Horizontal );
             if( dimY.stepWidth ){
@@ -356,7 +356,7 @@ DataDimension CartesianGrid::calculateGridXY(
                 default:
                     break;
             }
-            qDebug("CartesianGrid::calculateGridXY()   dim.start: %f   dim.end: %f", dim.start, dim.end);
+            //qDebug("CartesianGrid::calculateGridXY()   dim.start: %f   dim.end: %f", dim.start, dim.end);
             calculateStepWidth(
                 dim.start, dim.end, granularities, orientation,
                 dim.stepWidth, dim.subStepWidth );
@@ -419,6 +419,7 @@ void CartesianGrid::calculateStepWidth(
 
     const qreal start = qMin( start_, end_);
     const qreal end   = qMax( start_, end_);
+    const qreal distance = end - start;
     //qDebug( "raw data start: %f   end: %f", start, end);
 
     //FIXME(khz): make minSteps and maxSteps configurable by the user.
@@ -427,7 +428,7 @@ void CartesianGrid::calculateStepWidth(
 
     qreal steps;
     int power = 0;
-    while( fastPow10( power ) < list.last() * end ){
+    while( fastPow10( power ) < list.last() * distance ){
         ++power;
     };
     // We have the sequence *two* times in the calculation test list,
@@ -438,16 +439,21 @@ void CartesianGrid::calculateStepWidth(
         testList << list.at(i) * 0.1;
     testList << list;
     do{
+        //qDebug() << "list:" << testList;
+        //qDebug( "calculating steps: power: %i", power);
         calculateSteps( start, end, testList, minSteps, maxSteps, power, steps, stepWidth );
         --power;
     }while( steps == 0.0 );
     ++power;
+    //qDebug( "steps calculated:  stepWidth: %f   steps: %f", stepWidth, steps);
 
     // find the matching sub-grid line width
     if( stepWidth == list.first() * fastPow10( power ) ){
         subStepWidth = list.last() * fastPow10( power-1 );
+        //qDebug("A");
     }else if( stepWidth == list.first() * fastPow10( power-1 ) ){
         subStepWidth = list.last() * fastPow10( power-2 );
+        //qDebug("B");
     }else{
         qreal smallerStepWidth = list.first();
         for( int i = 1;  i < list.count();  ++i ){
@@ -461,6 +467,7 @@ void CartesianGrid::calculateStepWidth(
             }
             smallerStepWidth = list.at( i );
         }
+        //qDebug("C");
     }
     //qDebug("CartesianGrid::calculateStepWidth() found stepWidth %f (%f steps) and sub-stepWidth %f",
     //        stepWidth, steps, subStepWidth);
