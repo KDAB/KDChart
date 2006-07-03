@@ -81,8 +81,8 @@ void CartesianGrid::drawGrid( PaintContext* context )
 
     const QPointF p1 = plane->translate( QPointF(dimX.start, dimY.start) );
     const QPointF p2 = plane->translate( QPointF(dimX.end, dimX.end) );
-qDebug() << "dimX.isCalculated:" << dimX.isCalculated << "dimY.isCalculated:" << dimY.isCalculated;
-qDebug() << "dimX.start: " << dimX.start << "dimX.end: " << dimX.end;
+//qDebug() << "dimX.isCalculated:" << dimX.isCalculated << "dimY.isCalculated:" << dimY.isCalculated;
+//qDebug() << "dimX.start: " << dimX.start << "dimX.end: " << dimX.end;
 qDebug() << "dimY.start: " << dimY.start << "dimY.end: " << dimY.end;
 qDebug() << "p1:" << p1 << "  p2:" << p2;
 
@@ -286,9 +286,11 @@ DataDimensionsList CartesianGrid::calculateGrid(
     // rule:  Returned list is either empty, or it is providing two
     //        valid dimensions, complete with two non-Zero step widths.
     if( isBoundariesValid( l ) ) {
+        qDebug("CartesianGrid::calculateGrid()   l.first().start: %f   l.first().end: %f", l.first().start, l.first().end);
         const DataDimension dimX
             = calculateGridXY( l.first(), Qt::Vertical );
         if( dimX.stepWidth ){
+            qDebug("CartesianGrid::calculateGrid()   l.last().start: %f   l.last().end: %f", l.last().start, l.last().end);
             const DataDimension dimY
                 = calculateGridXY( l.last(), Qt::Horizontal );
             if( dimY.stepWidth ){
@@ -354,7 +356,7 @@ DataDimension CartesianGrid::calculateGridXY(
                 default:
                     break;
             }
-            //qDebug("dim.start: %f   dim.end: %f", dim.start, dim.end);
+            qDebug("CartesianGrid::calculateGridXY()   dim.start: %f   dim.end: %f", dim.start, dim.end);
             calculateStepWidth(
                 dim.start, dim.end, granularities, orientation,
                 dim.stepWidth, dim.subStepWidth );

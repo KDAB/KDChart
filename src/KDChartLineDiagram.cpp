@@ -157,20 +157,33 @@ const QPair<QPointF, QPointF> LineDiagram::calculateDataBoundaries () const
     double xMin = 0;
     double xMax = rowCount -1;
     double yMin = 0, yMax = 0;
-
+//qDebug() << "LineDiagram::calculateDataBoundaries ()";
     // calculate boundaries for  different line types Normal - Stacked - Percent - Default Normal
     switch ( type() )
         {
-        case LineDiagram::Normal:
-            for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
-                for ( int j=0; j< rowCount; ++j ) {
-                    double value = valueForCell( j, i );
-                    yMin = qMin( yMin, value );
-                    yMax = qMax( yMax, value );
-                    if ( datasetDimension() > 1 ) {
-                        double xvalue = valueForCell( j, i-1);
-                        xMin = qMin( xMin, xvalue );
-                        xMax = qMax( xMax, xvalue );
+        case LineDiagram::Normal:{
+                bool bStarting = true;
+                for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
+                    for ( int j=0; j< rowCount; ++j ) {
+                        double value = valueForCell( j, i );
+                        if( bStarting ){
+                            yMin = value;
+                            yMax = value;
+                        }else{
+                          yMin = qMin( yMin, value );
+                          yMax = qMax( yMax, value );
+                        }
+                        if ( datasetDimension() > 1 ) {
+                            double xvalue = valueForCell( j, i-1);
+                            if( bStarting ){
+                                xMin = xvalue;
+                                xMax = xvalue;
+                            }else{
+                                xMin = qMin( xMin, xvalue );
+                                xMax = qMax( xMax, xvalue );
+                            }
+                        }
+                        bStarting = false;
                     }
                 }
             }

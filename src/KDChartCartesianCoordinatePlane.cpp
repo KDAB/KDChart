@@ -170,6 +170,7 @@ QRectF CartesianCoordinatePlane::calculateRawDataBoundingRect() const
     foreach ( const AbstractDiagram* diagram, diagrams() )
     {
         QPair<QPointF, QPointF> dataBoundariesPair = diagram->dataBoundaries();
+        //qDebug() << "CartesianCoordinatePlane::calculateRawDataBoundingRect() gets diagram->dataBoundaries: " << dataBoundariesPair.first << dataBoundariesPair.second;
         if ( bStarting || dataBoundariesPair.first.x() < smallestPoint.x() )
             smallestPoint.setX( dataBoundariesPair.first.x() );
         if ( bStarting || dataBoundariesPair.first.y() < smallestPoint.y() )
