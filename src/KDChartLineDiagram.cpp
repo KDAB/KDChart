@@ -236,7 +236,7 @@ const QPair<QPointF, QPointF> LineDiagram::calculateDataBoundaries() const
     // ThreeD boundaries
     for ( int i=0; i<colCount; ++i ) {
         QModelIndex index = model()->index( 0, i, rootIndex() );
-        const ThreeDLineAttributes &tda = threeDLineAttributes( index );
+        const ThreeDLineAttributes tda( threeDLineAttributes( index ) );
         if ( tda.isEnabled() ) {
             threeDBoundaries = true;
             QPointF projLeft ( project(QPointF( xMin, yMin ), QPointF( xMin, yMin), tda.depth()/10 , index ) );
