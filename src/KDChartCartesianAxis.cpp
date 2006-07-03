@@ -148,7 +148,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
             numberOfUnitRulers = 10.0;
         else{
             numberOfUnitRulers = absRange / qAbs( dimY.stepWidth ) + 1.0;
-            qDebug() << "absRange" << absRange << "dimY.stepWidth:" << dimY.stepWidth << "numberOfUnitRulers:" << numberOfUnitRulers;
+            //qDebug() << "absRange" << absRange << "dimY.stepWidth:" << dimY.stepWidth << "numberOfUnitRulers:" << numberOfUnitRulers;
         }
     }
     qreal numberOfSubUnitRulers;
@@ -159,7 +159,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
             numberOfSubUnitRulers = 20.0;
         else{
             numberOfSubUnitRulers = absRange / qAbs( dimY.subStepWidth ) + 1.0;
-            qDebug() << "dimY.subStepWidth:" << dimY.stepWidth << "numberOfSubUnitRulers:" << numberOfSubUnitRulers;
+            //qDebug() << "dimY.subStepWidth:" << dimY.stepWidth << "numberOfSubUnitRulers:" << numberOfSubUnitRulers;
         }
     }
 /*
@@ -463,9 +463,9 @@ void CartesianAxis::paint ( PaintContext* context ) const
                 }
             }
             labelValue = minValueY;
-qDebug("minValueY: %f   maxLimit: %f   steg: %f", minValueY, maxLimit, steg);
+//qDebug("minValueY: %f   maxLimit: %f   steg: %f", minValueY, maxLimit, steg);
             for ( qreal f = minValueY; f <= maxLimit; f+= steg ) {
-qDebug("f: %f",f);
+//qDebug("f: %f",f);
                 QPointF leftPoint (  0.0, percent ? f/numberOfUnitRulers : f );
                 QPointF rightPoint ( 0.0, percent ? f/numberOfUnitRulers : f );
                 leftPoint  = plane->translate( leftPoint );
