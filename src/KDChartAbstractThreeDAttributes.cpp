@@ -114,6 +114,12 @@ double AbstractThreeDAttributes::depth() const
 }
 
 
+double AbstractThreeDAttributes::validDepth() const
+{
+    return isEnabled() ? d->depth : 0.0;
+}
+
+
 QDomDocumentFragment AbstractThreeDAttributes::toXML() const
 {
     // PENDING(kalle) FIXME

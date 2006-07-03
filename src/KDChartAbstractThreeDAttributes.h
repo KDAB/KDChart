@@ -54,6 +54,9 @@ public:
     void setDepth( double depth );
     double depth() const;
 
+    // returns the depth(), if is isEnabled() is true, otherwise returns 0.0
+    double validDepth() const;
+
     bool operator==( const AbstractThreeDAttributes& ) const;
     inline bool operator!=( const AbstractThreeDAttributes& other ) const { return !operator==(other); }
 

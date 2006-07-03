@@ -98,6 +98,8 @@ public:
 
 
 protected:
+    virtual double threeDItemDepth( const QModelIndex & index ) const;
+    virtual double threeDItemDepth( int column ) const;
     /** \reimpl */
     const QPair<QPointF, QPointF> calculateDataBoundaries() const;
     void paintEvent ( QPaintEvent* );

@@ -134,6 +134,20 @@ ThreeDBarAttributes BarDiagram::threeDBarAttributes( const QModelIndex & index )
 								      KDChart::ThreeDBarAttributesRole ) );
 }
 
+double BarDiagram::threeDItemDepth( const QModelIndex & index ) const
+{
+    return threeDBarAttributes( index ).validDepth();
+}
+
+double BarDiagram::threeDItemDepth( int column ) const
+{
+    return qVariantValue<ThreeDBarAttributes>(
+        d->attributesModel->headerData (
+            column,
+            Qt::Vertical,
+            KDChart::ThreeDBarAttributesRole ) ).validDepth();
+}
+
 void BarDiagram::resizeEvent ( QResizeEvent*)
 {
 
@@ -148,7 +162,9 @@ const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries  () const
     double xMin = 0;
     double xMax = rowCount;
     double yMin = 0, yMax = 0;
-    ThreeDBarAttributes tda;
+    double maxThreeDDepth   = 0.0;
+    double firstThreeDDepth = 0.0;
+    double lastThreeDDepth  = 0.0;
 
     bool bStarting = true;
      // calculate boundaries for  different line types Normal - Stacked - Percent - Default Normal
@@ -164,10 +180,14 @@ const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries  () const
                         yMin = qMin( yMin, value );
                         yMax = qMax( yMax, value );
                     }
+                    const double depth = threeDItemDepth( model()->index( j, i, rootIndex() ) );
+                    if( depth > 0.0 ){
+                        maxThreeDDepth = qMax( maxThreeDDepth, depth );
+                        if( bStarting )
+                            firstThreeDDepth = depth;
+                        lastThreeDDepth = depth;
+                    }
                     bStarting = false;
-                    ThreeDBarAttributes a( threeDBarAttributes( model()->index( j, i, rootIndex() ) ) );
-                    if( a.isEnabled() )
-                        tda = a;
                 }
             }
             break;
@@ -185,10 +205,14 @@ const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries  () const
                         yMin = qMin( yMin, stackedValues);
                         yMax = qMax( yMax, stackedValues);
                     }
+                    const double depth = threeDItemDepth( idx );
+                    if( depth > 0.0 ){
+                        maxThreeDDepth = qMax( maxThreeDDepth, depth );
+                        if( bStarting )
+                            firstThreeDDepth = depth;
+                        lastThreeDDepth = depth;
+                    }
                     bStarting = false;
-                    ThreeDBarAttributes a( threeDBarAttributes( idx ) );
-                    if( a.isEnabled() )
-                        tda = a;
                 }
             }
             break;
@@ -202,10 +226,14 @@ const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries  () const
                         yMax = value;
                     else
                         yMax = qMax( yMax, value );
+                    const double depth = threeDItemDepth( idx );
+                    if( depth > 0.0 ){
+                        maxThreeDDepth = qMax( maxThreeDDepth, depth );
+                        if( bStarting )
+                            firstThreeDDepth = depth;
+                        lastThreeDDepth = depth;
+                    }
                     bStarting = false;
-                    ThreeDBarAttributes a( threeDBarAttributes( idx ) );
-                    if( a.isEnabled() )
-                        tda = a;
                 }
             }
             break;
@@ -224,7 +252,7 @@ const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries  () const
     //            but we are ignoring all ThreeDBarAttributes that might have been set
     //            at a header (using the setter that takes a column as parameter).
     // see: LineDiagram::calculateDataBoundaries ()
-    if ( tda.isEnabled() ) {
+    if ( maxThreeDDepth > 0.0 ) {
         double percentx, percenty;
         //threeDBoundaries calculate a depth percent value and add it
         QPointF pTRTranslated = coordinatePlane()->translate( topRight );
@@ -232,16 +260,16 @@ const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries  () const
         //reserve some plane space for the top of the threeD bars
         //Pending Michel: fixme 4 - 8?
         if ( d->maxDepth )
-            tda.setDepth( d->maxDepth );
+            maxThreeDDepth = d->maxDepth;
         if ( type() == BarDiagram::Normal ) {
-            percentx = ((tda.depth())/ pTRTranslated.x());
-            percenty = ((tda.depth())/ pBLTranslated.y());
+            percentx = (maxThreeDDepth / pTRTranslated.x());
+            percenty = (maxThreeDDepth / pBLTranslated.y());
         } else if ( type() == BarDiagram::Stacked ){
-            percentx = ((tda.depth())/ pTRTranslated.x());
-            percenty = ((tda.depth()*8) / pBLTranslated.y());
+            percentx = ( maxThreeDDepth    / pTRTranslated.x());
+            percenty = ((maxThreeDDepth*8) / pBLTranslated.y());
         } else {
-            percentx = ((tda.depth())/ pTRTranslated.x());
-            percenty = ((tda.depth()*4)/ pBLTranslated.y());
+            percentx = ( maxThreeDDepth    / pTRTranslated.x());
+            percenty = ((maxThreeDDepth*4) / pBLTranslated.y());
         }
             topRight.setX( topRight.x() + percentx);
             topRight.setY( topRight.y() + percenty);

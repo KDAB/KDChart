@@ -101,47 +101,94 @@ LineDiagram::LineType LineDiagram::type() const
 
 void LineDiagram::setLineAttributes( const LineAttributes & ta )
 {
-     d->attributesModel->setModelData( qVariantFromValue( ta ), LineAttributesRole );
+     d->attributesModel->setModelData(
+        qVariantFromValue( ta ),
+        LineAttributesRole );
 }
 
-void LineDiagram::setLineAttributes( int column, const LineAttributes & ta )
+void LineDiagram::setLineAttributes(
+    int column,
+    const LineAttributes & ta )
 {
-    d->attributesModel->setHeaderData( column, Qt::Vertical, qVariantFromValue( ta ), LineAttributesRole );
+    d->attributesModel->setHeaderData(
+        column,
+        Qt::Vertical,
+        qVariantFromValue( ta ),
+        LineAttributesRole );
 }
 
-void LineDiagram::setLineAttributes( const QModelIndex & index, const LineAttributes & ta )
+void LineDiagram::setLineAttributes(
+    const QModelIndex & index,
+    const LineAttributes & ta )
 {
-    d->attributesModel->setData( d->attributesModel->mapFromSource(index), qVariantFromValue( ta ), LineAttributesRole );
+    d->attributesModel->setData(
+        d->attributesModel->mapFromSource(index),
+        qVariantFromValue( ta ),
+        LineAttributesRole );
 }
 
-LineAttributes LineDiagram::lineAttributes( const QModelIndex & index ) const
+LineAttributes LineDiagram::lineAttributes(
+    const QModelIndex & index ) const
 {
-    return qVariantValue<LineAttributes>( d->attributesModel->data( d->attributesModel->mapFromSource(index), KDChart::LineAttributesRole ) );
+    return qVariantValue<LineAttributes>(
+        d->attributesModel->data(
+            d->attributesModel->mapFromSource(index),
+            KDChart::LineAttributesRole ) );
 }
 
-void LineDiagram::setThreeDLineAttributes( const ThreeDLineAttributes & ta )
+void LineDiagram::setThreeDLineAttributes(
+    const ThreeDLineAttributes & ta )
 {
     setDataBoundariesDirty();
-    d->attributesModel->setModelData( qVariantFromValue( ta ), ThreeDLineAttributesRole );
+    d->attributesModel->setModelData(
+        qVariantFromValue( ta ),
+        ThreeDLineAttributesRole );
 }
 
-void LineDiagram::setThreeDLineAttributes( int column, const ThreeDLineAttributes & ta )
+void LineDiagram::setThreeDLineAttributes(
+    int column,
+    const ThreeDLineAttributes & ta )
 {
     setDataBoundariesDirty();
-    d->attributesModel->setHeaderData( column, Qt::Vertical, qVariantFromValue( ta ), ThreeDLineAttributesRole );
+    d->attributesModel->setHeaderData(
+        column,
+        Qt::Vertical,
+        qVariantFromValue( ta ),
+        ThreeDLineAttributesRole );
 }
 
-void LineDiagram::setThreeDLineAttributes( const QModelIndex & index, const ThreeDLineAttributes & ta )
+void LineDiagram::setThreeDLineAttributes(
+    const QModelIndex & index,
+    const ThreeDLineAttributes & ta )
 {
     setDataBoundariesDirty();
-    d->attributesModel->setData( d->attributesModel->mapFromSource(index),
-			      qVariantFromValue( ta ), ThreeDLineAttributesRole );
+    d->attributesModel->setData(
+        d->attributesModel->mapFromSource(index),
+        qVariantFromValue( ta ),
+        ThreeDLineAttributesRole );
 }
 
-ThreeDLineAttributes LineDiagram::threeDLineAttributes( const QModelIndex & index ) const
+ThreeDLineAttributes LineDiagram::threeDLineAttributes(
+    const QModelIndex & index ) const
 {
-    return qVariantValue<ThreeDLineAttributes>( d->attributesModel->data( d->attributesModel->mapFromSource(index),
-								       KDChart::ThreeDLineAttributesRole ) );
+    return qVariantValue<ThreeDLineAttributes>(
+        d->attributesModel->data(
+            d->attributesModel->mapFromSource( index ),
+            KDChart::ThreeDLineAttributesRole ) );
+}
+
+double LineDiagram::threeDItemDepth( const QModelIndex & index ) const
+{
+    return threeDLineAttributes( index ).validDepth();
+}
+
+double LineDiagram::threeDItemDepth( int column ) const
+{
+    return qVariantValue<ThreeDLineAttributes>(
+        d->attributesModel->headerData (
+            column,
+            Qt::Vertical,
+            KDChart::ThreeDLineAttributesRole ) ).validDepth();
 }
 
 void LineDiagram::resizeEvent ( QResizeEvent* )

@@ -57,7 +57,7 @@ public:
 private:
     bool enabled;
     int height;
-    int depth;
+    double depth;
 };
 
 inline AbstractThreeDAttributes::AbstractThreeDAttributes( Private * p ) : _d( p ) { init(); }

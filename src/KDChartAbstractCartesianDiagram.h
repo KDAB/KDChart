@@ -85,6 +85,11 @@ namespace KDChart {
 
         virtual GridAttributes* gridAttributes();
         virtual const GridAttributes* gridAttributes() const;
+
+    protected:
+        virtual double threeDItemDepth( const QModelIndex & index ) const = 0;
+        virtual double threeDItemDepth( int column ) const = 0;
+
     private slots:
         void slotRangeChanged();
     };
