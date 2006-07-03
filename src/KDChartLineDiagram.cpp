@@ -148,7 +148,7 @@ void LineDiagram::resizeEvent ( QResizeEvent* )
 {
 }
 
-const QPair<QPointF, QPointF> LineDiagram::calculateDataBoundaries () const
+const QPair<QPointF, QPointF> LineDiagram::calculateDataBoundaries() const
 {
     if ( !checkInvariants( true ) ) return QPair<QPointF, QPointF>( QPointF( 0, 0 ), QPointF( 0, 0 ) );
 
@@ -157,65 +157,81 @@ const QPair<QPointF, QPointF> LineDiagram::calculateDataBoundaries () const
     double xMin = 0;
     double xMax = rowCount -1;
     double yMin = 0, yMax = 0;
+    bool bStarting = true;
 //qDebug() << "LineDiagram::calculateDataBoundaries ()";
     // calculate boundaries for  different line types Normal - Stacked - Percent - Default Normal
-    switch ( type() )
-        {
-        case LineDiagram::Normal:{
-                bool bStarting = true;
-                for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
-                    for ( int j=0; j< rowCount; ++j ) {
-                        double value = valueForCell( j, i );
-                        if( bStarting ){
-                            yMin = value;
-                            yMax = value;
-                        }else{
-                          yMin = qMin( yMin, value );
-                          yMax = qMax( yMax, value );
-                        }
-                        if ( datasetDimension() > 1 ) {
-                            double xvalue = valueForCell( j, i-1);
-                            if( bStarting ){
-                                xMin = xvalue;
-                                xMax = xvalue;
-                            }else{
-                                xMin = qMin( xMin, xvalue );
-                                xMax = qMax( xMax, xvalue );
-                            }
-                        }
-                        bStarting = false;
+    switch ( type() ){
+        case LineDiagram::Normal:
+            for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
+                for ( int j=0; j< rowCount; ++j ) {
+                    const double value = valueForCell( j, i );
+                    if( bStarting ){
+                        yMin = value;
+                        yMax = value;
+                    }else{
+                      yMin = qMin( yMin, value );
+                      yMax = qMax( yMax, value );
                     }
+                    if ( datasetDimension() > 1 ) {
+                        const double xvalue = valueForCell( j, i-1);
+                        if( bStarting ){
+                            xMin = xvalue;
+                            xMax = xvalue;
+                        }else{
+                            xMin = qMin( xMin, xvalue );
+                            xMax = qMax( xMax, xvalue );
+                        }
+                    }
+                    bStarting = false;
                 }
             }
             break;
         case LineDiagram::Stacked:
-                for ( int j=0; j< rowCount; ++j ) {
-                    // calculate sum of values per column - Find out stacked Min/Max
-                    double stackedValues = 0;
-                    for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
-                        stackedValues +=  valueForCell( j, i );
-                    }
+            for ( int j=0; j< rowCount; ++j ) {
+                // calculate sum of values per column - Find out stacked Min/Max
+                double stackedValues = 0;
+                for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
+                    stackedValues +=  valueForCell( j, i );
+                }
+                if( bStarting ){
+                    yMin = stackedValues;
+                    yMax = stackedValues;
+                }else{
                     yMin = qMin( yMin, stackedValues );
                     yMax = qMax( yMax, stackedValues );
                 }
+                bStarting = false;
+            }
             break;
         case LineDiagram::Percent:
             for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
                 for ( int j=0; j< rowCount; ++j ) {
                     // Ordinate should begin at 0 the max value being the 100% pos
-                    yMax = qMax( yMax, valueForCell( j, i ) );
+                    const double value = valueForCell( j, i );
+                    if( bStarting )
+                        yMax = value;
+                    else
+                        yMax = qMax( yMax, value );
+                    bStarting = false;
                 }
             }
             break;
         default:
             Q_ASSERT_X ( false, "calculateDataBoundaries()",
                          "Type item does not match a defined line chart Type." );
-        }
+    }
 
     QPointF bottomLeft ( QPointF( xMin, yMin ) );
     QPointF topRight ( QPointF( xMax, yMax ) );
 
     QPointF bottomLeftThreeD, topRightThreeD;
+
+    //FIXME(khz): Verify, if this code is right: We are taking
+    //            ThreeDBarAttributes that might have been set
+    //            at a header (using the setter that takes a column as parameter),
+    //            but we are ignoring 'any' ThreeDBarAttributes, that might have
+    //            been specified for an individual cell.
+    // see: BarDiagram::calculateDataBoundaries ()
     bool threeDBoundaries = false;
     // ThreeD boundaries
     for ( int i=0; i<colCount; ++i ) {
