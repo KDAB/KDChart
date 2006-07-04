@@ -251,9 +251,10 @@ namespace KDChart {
          * Returns the dimensions used for drawing the grid lines.
          *
          * Returned data is the result of (cached) grid calculations,
-         * so make sure to call this function again, if you need that information
-         * for your own purposes, since grid calculation based upon the data range,
-         * thus grid start/end can change if the data have changed.
+         * so - if you need that information for your own tasks - make sure to
+         * call again this function after every data modification that has changed
+         * the data range, since grid calculation is based upon the data range,
+         * thus the grid start/end might have changed if the data was changed.
          *
          * @note Returned list will contain different numbers of DataDimension,
          * depending on the kind of coordinate plane used.
