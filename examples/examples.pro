@@ -1,6 +1,7 @@
 TEMPLATE	= subdirs
 SUBDIRS		= tools \
                   Widget \
+                  DrawIntoPainter \
                   HeadersFooters \
                   Legends \
                   Axis \
