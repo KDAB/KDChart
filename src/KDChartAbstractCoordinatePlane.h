@@ -248,8 +248,22 @@ namespace KDChart {
         GridAttributes globalGridAttributes() const;
 
         /**
+         * Returns the dimensions used for drawing the grid lines.
+         *
+         * Returned data is the result of (cached) grid calculations,
+         * so make sure to call this function again, if you need that information
+         * for your own purposes, since grid calculation based upon the data range,
+         * thus grid start/end can change if the data have changed.
+         *
+         * @note Returned list will contain different numbers of DataDimension,
+         * depending on the kind of coordinate plane used.
+         * For CartesianCoordinatePlane two DataDimension are returned: the first
+         * representing grid lines in X direction (matching the Abscissa axes)
+         * and the second indicating vertical grid lines (or Ordinate axes, resp.).
+         *
          * @return The dimensions used for drawing the grid lines.
-          */
+         * @sa DataDimension
+         */
         DataDimensionsList gridDimensionsList();
 
         /**
