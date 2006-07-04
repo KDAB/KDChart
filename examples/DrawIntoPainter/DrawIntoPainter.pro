@@ -12,8 +12,8 @@ CONFIG(debug, debug|release) {
 
 TARGET = DrawIntoPainter
 
-HEADERS= mainwindow.h
-SOURCES= main.cpp mainwindow.cpp
+HEADERS= mainwindow.h framewidget.h
+SOURCES= main.cpp mainwindow.cpp framewidget.cpp
 FORMS  = mainwindow.ui
 RESOURCES = DrawIntoPainter.qrc
 

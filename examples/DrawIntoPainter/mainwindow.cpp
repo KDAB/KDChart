@@ -24,6 +24,7 @@
  **********************************************************************/
 
 #include "mainwindow.h"
+#include "framewidget.h"
 
 #include <KDChartChart>
 #include <KDChartAbstractCoordinatePlane>
@@ -46,8 +47,8 @@ MainWindow::MainWindow( QWidget* parent ) :
     setupUi( this );
 
     QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
-    m_chart = new Chart();
-    chartLayout->addWidget( m_chart );
+    FrameWidget* chartFrameWidget = new FrameWidget();
+    chartLayout->addWidget( chartFrameWidget );
     hSBar->setVisible( false );
     vSBar->setVisible( false );
 
@@ -70,6 +71,8 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_lines->addAxis( yAxis );
     m_lines->addAxis( axisTop );
     m_lines->addAxis( axisRight );
+    m_chart = new Chart();
+    chartFrameWidget->setChart( m_chart );
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
 
     // Set up the legend
