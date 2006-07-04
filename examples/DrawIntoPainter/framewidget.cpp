@@ -43,12 +43,13 @@ void FrameWidget::paintEvent( QPaintEvent* e )
         QWidget::paintEvent( e );
     }else{
         QPainter painter( this );
+
+        const int wid=64;
+        const QRect  r( rect() );
         const QPen   oldPen(   painter.pen() );
         const QBrush oldBrush( painter.brush() );
         painter.setPen( QPen(Qt::darkBlue, 1) );
         painter.setBrush( QBrush(Qt::yellow, Qt::DiagCrossPattern ));
-        QRect r( rect() );
-        const int wid=64;
         painter.drawEllipse(r.left(),                r.top(),                 wid,wid);
         painter.drawEllipse(r.left()+r.width()-wid-1,r.top(),                 wid,wid);
         painter.drawEllipse(r.left(),                r.top()+r.height()-wid-1,wid,wid);
