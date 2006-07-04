@@ -230,6 +230,9 @@ namespace KDChart {
          * @param top The padding at the top.
          * @param right The padding on the left hand side.
          * @param bottom The padding on the bottom.
+         *
+         * \sa setGlobalLeadingTop, setGlobalLeadingBottom, setGlobalLeadingLeft, setGlobalLeadingRight
+         * \sa globalLeadingTop, globalLeadingBottom, globalLeadingLeft, globalLeadingRight
          */
         void setGlobalLeading( int left, int top, int right, int bottom );
 
@@ -237,6 +240,8 @@ namespace KDChart {
          * Set the padding between the start of the widget and the start
          * of the area that is used for drawing on the left.
          * @param leading The padding value.
+         *
+         * \sa setGlobalLeading
          */
         void setGlobalLeadingLeft( int leading );
 
@@ -245,6 +250,8 @@ namespace KDChart {
          * of the area that is used for drawing on the left.
          * @return The padding between the start of the widget and the start
          * of the area that is used for drawing on the left.
+         *
+         * \sa setGlobalLeading
          */
         int globalLeadingLeft() const;
 
@@ -252,6 +259,8 @@ namespace KDChart {
          * Set the padding between the start of the widget and the start
          * of the area that is used for drawing at the top.
          * @param leading The padding value.
+         *
+         * \sa setGlobalLeading
          */
         void setGlobalLeadingTop( int leading );
 
@@ -260,6 +269,8 @@ namespace KDChart {
          * of the area that is used for drawing at the top.
          * @return The padding between the start of the widget and the start
          * of the area that is used for drawing at the top.
+         *
+         * \sa setGlobalLeading
          */
         int globalLeadingTop() const;
 
@@ -267,6 +278,8 @@ namespace KDChart {
          * Set the padding between the start of the widget and the start
          * of the area that is used for drawing on the right.
          * @param leading The padding value.
+         *
+         * \sa setGlobalLeading
          */
         void setGlobalLeadingRight( int leading );
 
@@ -275,6 +288,8 @@ namespace KDChart {
          * of the area that is used for drawing on the right.
          * @return The padding between the start of the widget and the start
          * of the area that is used for drawing on the right.
+         *
+         * \sa setGlobalLeading
          */
         int globalLeadingRight() const;
 
@@ -282,6 +297,8 @@ namespace KDChart {
          * Set the padding between the start of the widget and the start
          * of the area that is used for drawing on the bottom.
          * @param leading The padding value.
+         *
+         * \sa setGlobalLeading
          */
         void setGlobalLeadingBottom( int leading );
 
@@ -290,14 +307,25 @@ namespace KDChart {
          * of the area that is used for drawing at the bottom.
          * @return The padding between the start of the widget and the start
          * of the area that is used for drawing at the bottom.
+         *
+         * \sa setGlobalLeading
          */
         int globalLeadingBottom() const;
 
         /**
-            Paints all the contents of the chart. Use this method, to make KD Chart
-            draw into your QPainter.
-        */
-        void paint( QPainter* painter );
+          * Paints all the contents of the chart. Use this method, to make KD Chart
+          * draw into your QPainter.
+          *
+          * \note Any global leading settings will be used by the paint method too,
+          * so make sure to set them to zero, if you want the drawing to have the exact
+          * size of the target rectangle.
+          *
+          * \param painter The painter to be drawn into.
+          * \param target The rectangle to be filled by the Chart's drawing.
+          *
+          * \sa setGlobalLeading
+          */
+        void paint( QPainter* painter, const QRect& target );
 
         protected:
         virtual void paintEvent( QPaintEvent* e );

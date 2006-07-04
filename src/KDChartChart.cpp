@@ -580,7 +580,7 @@ int Chart::globalLeadingBottom() const
 }
 
 
-void Chart::paint( QPainter* painter )
+void Chart::paint( QPainter* painter, const QRect& target )
 {
 
 }
