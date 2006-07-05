@@ -58,14 +58,14 @@ void AbstractCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
 }
 
 /*virtual*/
-void AbstractCoordinatePlane::replaceDiagram ( AbstractDiagram* diagram, AbstractDiagram* oldDiagram )
+void AbstractCoordinatePlane::replaceDiagram ( AbstractDiagram* diagram, AbstractDiagram* oldDiagram_ )
 {
     if( diagram && oldDiagram != diagram ){
+        AbstractDiagram* oldDiagram = oldDiagram_;
         if( _d->diagrams.count() ){
             if( ! oldDiagram )
-                takeDiagram( _d->diagrams.first() );
-            else
-                takeDiagram( oldDiagram );
+                oldDiagram = _d->diagrams.first();
+            takeDiagram( oldDiagram );
         }
         delete oldDiagram;
         addDiagram( diagram );
