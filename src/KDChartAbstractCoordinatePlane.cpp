@@ -60,7 +60,7 @@ void AbstractCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
 /*virtual*/
 void AbstractCoordinatePlane::replaceDiagram ( AbstractDiagram* diagram, AbstractDiagram* oldDiagram_ )
 {
-    if( diagram && oldDiagram != diagram ){
+    if( diagram && oldDiagram_ != diagram ){
         AbstractDiagram* oldDiagram = oldDiagram_;
         if( _d->diagrams.count() ){
             if( ! oldDiagram )
