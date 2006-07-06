@@ -59,12 +59,16 @@ private:
     double startPosition;
 };
 
-inline AbstractPieDiagram::AbstractPieDiagram( Private * p, PolarCoordinatePlane* plane )
-    : AbstractPolarDiagram( p, plane ) { init(); }
+KDCHART_IMPL_DERIVED_DIAGRAM( AbstractPieDiagram, AbstractPolarDiagram, PolarCoordinatePlane )
+/*
+inline AbstractPieDiagram::AbstractPieDiagram(
+    Private * p, QWidget* parent, PolarCoordinatePlane* plane )
+    : AbstractPolarDiagram( p, parent, plane ) { init(); }
 inline AbstractPieDiagram::Private * AbstractPieDiagram::d_func()
 { return static_cast<Private*>( AbstractPolarDiagram::d_func() ); }
 inline const AbstractPieDiagram::Private * AbstractPieDiagram::d_func() const
 { return static_cast<const Private*>( AbstractPolarDiagram::d_func() ); }
+*/
 
 }
 #endif /* KDCHARTABSTRACTPIEDIAGRAM_P_H */

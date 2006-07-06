@@ -81,7 +81,7 @@ void AbstractDiagram::Private::init()
 
 void AbstractDiagram::Private::init( AbstractCoordinatePlane* newPlane )
 {
-  plane = newPlane;
+    plane = newPlane;
 }
 
 void AbstractDiagram::Private::setAttributesModel( AttributesModel* amodel )
@@ -95,10 +95,10 @@ void AbstractDiagram::Private::setAttributesModel( AttributesModel* amodel )
 
 #define d d_func()
 
-AbstractDiagram::AbstractDiagram ( AbstractCoordinatePlane* parent )
+AbstractDiagram::AbstractDiagram ( QWidget* parent, AbstractCoordinatePlane* plane )
     : QAbstractItemView ( parent ), _d( new Private() )
 {
-    _d->init( parent );
+    _d->init( plane );
 }
 
 AbstractDiagram::~AbstractDiagram()

@@ -58,11 +58,11 @@ namespace KDChart {
 
     private:
         Position position;
-        QRectF geometry;
+        QRect geometry;
     };
 
-    inline CartesianAxis::CartesianAxis( Private * p, AbstractCartesianDiagram* parent )
-    : AbstractAxis( p, parent ) { init(); }
+    inline CartesianAxis::CartesianAxis( Private * p )
+    : AbstractAxis( p ) { init(); }
     inline CartesianAxis::Private * CartesianAxis::d_func()
     { return static_cast<Private*>( AbstractAxis::d_func() ); }
     inline const CartesianAxis::Private * CartesianAxis::d_func() const

@@ -23,8 +23,8 @@
  **
  **********************************************************************/
 
-#ifndef KDCHARTAREA_P_H
-#define KDCHARTAREA_P_H
+#ifndef KDCHARTABSTRACTAREA_P_H
+#define KDCHARTABSTRACTAREA_P_H
 
 //
 //  W A R N I N G
@@ -42,33 +42,41 @@
  */
 
 #include "KDChartAbstractArea.h"
-#include "KDChartTextAttributes.h"
-#include "KDChartFrameAttributes.h"
-#include "KDChartBackgroundAttributes.h"
+#include "KDChartAbstractAreaBase_p.h"
 
 namespace KDChart {
 
 /**
  * \internal
  */
-class AbstractArea::Private
+class AbstractArea::Private : public AbstractAreaBase::Private
 {
     friend class AbstractArea;
 public:
     explicit Private();
     virtual ~Private();
-
-protected:
-    void init();
-
-private:
-    bool visible;
-    KDChart::FrameAttributes frameAttributes;
-    KDChart::BackgroundAttributes backgroundAttributes;
 };
 
-inline AbstractArea::AbstractArea( AbstractArea::Private * p, QWidget* parent ) : QWidget( parent ),_d( p ) { init(); }
+
+inline AbstractArea::AbstractArea( Private * p )
+  : AbstractAreaBase( p ), AbstractLayoutItem(), QObject()
+{
+    init();
+}
+inline AbstractArea::Private * AbstractArea::d_func()
+{
+    return static_cast<Private*>( AbstractAreaBase::d_func() );
+}
+inline const AbstractArea::Private * AbstractArea::d_func() const
+{
+    return static_cast<const Private*>( AbstractAreaBase::d_func() );
+}
+
+/*inline AbstractArea::AbstractArea( AbstractArea::Private * p ) :
+    _d( p ) { init(); }
+*/
 
 }
-#endif /* KDCHARTDIAGRAM_P_H */
+
+#endif /* KDCHARTABSTRACTAREA_P_H */
 

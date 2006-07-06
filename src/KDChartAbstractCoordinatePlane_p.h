@@ -37,6 +37,7 @@
 // We mean it.
 //
 
+#include "KDChartAbstractArea_p.h"
 #include <KDChartGridAttributes.h>
 #include <KDChartAbstractGrid.h>
 
@@ -45,7 +46,7 @@ namespace KDChart {
 /**
  * \internal
  */
-class AbstractCoordinatePlane::Private
+class AbstractCoordinatePlane::Private : public AbstractArea::Private
 {
     friend class AbstractCoordinatePlane;
 protected:
@@ -68,16 +69,40 @@ protected:
     AbstractCoordinatePlane *referenceCoordinatePlane;
 };
 
+
+//KDCHART_DERIVED_PRIVATE_FOOTER(AbstractCoordinatePlane, AbstractArea)
+inline AbstractCoordinatePlane::AbstractCoordinatePlane( Private * p )
+    : AbstractArea( p )
+{
+    init();
+}
+void AbstractCoordinatePlane::init()
+{
+    // this bloc left empty intentionally
+}
+/*
+inline AbstractCoordinatePlane::Private * AbstractCoordinatePlane::d_func()
+{
+    return static_cast<Private*>( AbstractArea::d_func() );
+}
+inline const AbstractCoordinatePlane::Private * AbstractCoordinatePlane::d_func() const
+{
+    return static_cast<const Private*>( AbstractArea::d_func() );
+}
+*/
+
+/*
 inline AbstractCoordinatePlane::AbstractCoordinatePlane( Private * p ) : _d( p )
 {
     _d->initializeGrid(); // virtual method to init the correct grid: cartesian, polar, ...
 }
 
-inline AbstractCoordinatePlane::AbstractCoordinatePlane( Private * p, QWidget* parent )
-  : QWidget( parent ), _d( p )
+inline AbstractCoordinatePlane::AbstractCoordinatePlane( Private * p )
+  : AbstractArea(), _d( p )
 {
     _d->initializeGrid(); // virtual method to init the correct grid: cartesian, polar, ...
 }
+*/
 
 }
 #endif /* KDCHARTABSTRACTCOORDINATEPLANE_P_H*/

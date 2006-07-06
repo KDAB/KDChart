@@ -40,6 +40,7 @@
 #include "KDChartHeaderFooter.h"
 #include "KDChartEnums.h"
 #include "KDChartLegend.h"
+#include "KDChartLayoutItems.h"
 
 #if defined KDAB_EVAL
 #include "../evaldialog/evaldialog.h"
@@ -122,7 +123,10 @@ void Chart::Private::layoutHeadersAndFooters()
                 column = 1;
                 hAlign = Qt::AlignHCenter;
             }
-            headerFooterLayout->addWidget( hf, row, column, 1, 1, hAlign|vAlign );
+            //KDChart::AbstractArea* p = hf;
+            layoutItems << hf;
+            hf->setParentLayout( headerFooterLayout );
+            headerFooterLayout->addItem( hf, row, column, 1, 1, hAlign|vAlign );
         }
         else{
             qDebug( "Unknown header/footer position" );
@@ -316,7 +320,7 @@ QHash<AbstractCoordinatePlane*, Chart::Private::PlaneInfo> Chart::Private::build
         // Create a new grid layout for each plane that has no reference.
         p = planeInfos[plane];
         if ( p.referencePlane == 0 ) {
-            p.grid = new QGridLayout();
+            p.gridLayout = new QGridLayout();
             planeInfos[plane] = p;
         }
     }
@@ -325,6 +329,12 @@ QHash<AbstractCoordinatePlane*, Chart::Private::PlaneInfo> Chart::Private::build
 
 void Chart::Private::slotLayoutPlanes()
 {
+    foreach( KDChart::AbstractCoordinatePlane* plane, planeLayoutItems ) {
+        plane->removeFromParentLayout();
+    }
+    qDeleteAll( planeLayoutItems );
+    planeLayoutItems.clear();
+
     if ( dataAndLegendLayout ) {
         dataAndLegendLayout->removeItem( planesLayout );
     }
@@ -341,11 +351,11 @@ void Chart::Private::slotLayoutPlanes()
         const PlaneInfo pi = planeInfos[plane];
         int column = pi.horizontalOffset;
         int row = pi.verticalOffset;
-        QGridLayout *planeLayout = pi.grid;
+        QGridLayout *planeLayout = pi.gridLayout;
         if ( !planeLayout ) {
             // this plane is sharing an axis with another one, so use
             // the grid of that one as well
-            planeLayout = planeInfos[pi.referencePlane].grid;
+            planeLayout = planeInfos[pi.referencePlane].gridLayout;
         } else {
             planesLayout->addLayout( planeLayout );
         }
@@ -353,7 +363,8 @@ void Chart::Private::slotLayoutPlanes()
         /* Put the plane in the center of the layout. If this is our own, that's
          * the middle of the layout, if we are sharing, it's a cell in the center
          * column of the shared grid. */
-        planeLayout->addWidget( plane, row, column, 0 );
+        planeLayoutItems << plane;
+        planeLayout->addItem( plane, row, column, 0 );
         planeLayout->setRowStretch(    row,    2 );
         planeLayout->setColumnStretch( column, 2 );
 
@@ -363,27 +374,32 @@ void Chart::Private::slotLayoutPlanes()
                     dynamic_cast<AbstractCartesianDiagram*> ( abstractDiagram );
             if( !diagram ) continue;  // FIXME polar ?
             // collect all axes of a kind into sublayouts
-            QVBoxLayout *topAxes = new QVBoxLayout();
-            QVBoxLayout *bottomAxes = new QVBoxLayout();
-            QHBoxLayout *leftAxes = new QHBoxLayout();
-            QHBoxLayout *rightAxes = new QHBoxLayout();
+            QVBoxLayout *topAxesLayout = new QVBoxLayout();
+            QVBoxLayout *bottomAxesLayout = new QVBoxLayout();
+            QHBoxLayout *leftAxesLayout = new QHBoxLayout();
+            QHBoxLayout *rightAxesLayout = new QHBoxLayout();
 
             foreach ( CartesianAxis* axis, diagram->axes() ) {
                 if ( axisInfos.contains( axis ) ) continue; // already layed this one out
                 Q_ASSERT ( axis );
+                layoutItems << axis;
                 switch ( axis->position() )
                 {
                     case CartesianAxis::Top:
-                        topAxes->addWidget( axis );
+                        axis->setParentLayout( topAxesLayout );
+                        topAxesLayout->addItem( axis );
                         break;
                     case CartesianAxis::Bottom:
-                        bottomAxes->addWidget( axis );
+                        axis->setParentLayout( bottomAxesLayout );
+                        bottomAxesLayout->addItem( axis );
                         break;
                     case CartesianAxis::Left:
-                        leftAxes->addWidget( axis );
+                        axis->setParentLayout( leftAxesLayout );
+                        leftAxesLayout->addItem( axis );
                         break;
                     case CartesianAxis::Right:
-                        rightAxes->addWidget( axis );
+                        axis->setParentLayout( rightAxesLayout );
+                        rightAxesLayout->addItem( axis );
                         break;
                     default:
                         Q_ASSERT_X( false, "Chart::paintEvent",
@@ -396,10 +412,10 @@ void Chart::Private::slotLayoutPlanes()
              * associated plane. We are laying out in the oder the planes
              * were added, and the first one gets to lay out shared axes.
              * Private axes go here as well, of course. */
-            planeLayout->addLayout( topAxes, 0, 1 );
-            planeLayout->addLayout( bottomAxes, row + 1, 1 );
-            planeLayout->addLayout( leftAxes, row, 0 );
-            planeLayout->addLayout( rightAxes, row, column + 1);
+            planeLayout->addLayout( topAxesLayout, 0, 1 );
+            planeLayout->addLayout( bottomAxesLayout, row + 1, 1 );
+            planeLayout->addLayout( leftAxesLayout, row, 0 );
+            planeLayout->addLayout( rightAxesLayout, row, column + 1);
         }
 
     }
@@ -415,6 +431,12 @@ void Chart::Private::slotLayoutPlanes()
 
 void Chart::Private::createLayouts( QWidget* w )
 {
+    foreach( QLayoutItem* layoutItem, layoutItems ) {
+        layoutItem->removeFromParentLayout();
+    }
+    qDeleteAll( layoutItems );
+    layoutItems.clear();
+
     // layout for the planes is handled separately, so we don't want to delete it here
     if ( dataAndLegendLayout) {
         dataAndLegendLayout->removeItem( planesLayout );
@@ -423,7 +445,7 @@ void Chart::Private::createLayouts( QWidget* w )
     // nuke the old bunch
     delete layout;
 
-    // The HBox p->layout provides the left and right global leadings
+    // The HBox d->layout provides the left and right global leadings
     layout = new QHBoxLayout( w );
     layout->addSpacing( globalLeadingLeft );
 
@@ -474,40 +496,42 @@ Chart::~Chart()
 
 AbstractCoordinatePlane* Chart::coordinatePlane()
 {
-    if ( p->coordinatePlanes.isEmpty() )
+    if ( d->coordinatePlanes.isEmpty() )
     {
         qWarning() << "Chart::coordinatePlane: warning: no coordinate plane defined.";
         return 0;
     } else {
-        return p->coordinatePlanes.first();
+        return d->coordinatePlanes.first();
     }
 }
 
 CoordinatePlaneList Chart::coordinatePlanes()
 {
-    return p->coordinatePlanes;
+    return d->coordinatePlanes;
 }
 
 void Chart::addCoordinatePlane( AbstractCoordinatePlane* plane )
 {
     connect( plane, SIGNAL( destroyedCoordinatePlane( AbstractCoordinatePlane* ) ),
-             p, SLOT( slotUnregisterDestroyedPlane( AbstractCoordinatePlane* ) ) );
+             d, SLOT( slotUnregisterDestroyedPlane( AbstractCoordinatePlane* ) ) );
     connect( plane, SIGNAL( diagramsChanged() ),
-             p, SLOT( slotLayoutPlanes() ) );
-    p->coordinatePlanes.append( plane );
+             d, SLOT( slotLayoutPlanes() ) );
+    connect( plane, SIGNAL(needUpdate()),  this, SLOT(update()) );
+    connect( plane, SIGNAL(gridChanged()), this, SLOT(update()) );
+    d->coordinatePlanes.append( plane );
     plane->setParent( this );
-    p->slotLayoutPlanes();
+    d->slotLayoutPlanes();
 }
 
 void Chart::replaceCoordinatePlane( AbstractCoordinatePlane* plane,
-                                    AbstractCoordinatePlane* oldPlane )
+                                    AbstractCoordinatePlane* oldPlane_ )
 {
-    if( plane && oldPlane != plane ){
-        if( p->coordinatePlanes.count() ){
+    if( plane && oldPlane_ != plane ){
+        AbstractCoordinatePlane* oldPlane = oldPlane_;
+        if( d->coordinatePlanes.count() ){
             if( ! oldPlane )
-                takeCoordinatePlane( p->coordinatePlanes.first() );
-            else
-                takeCoordinatePlane( oldPlane );
+                oldPlane = d->coordinatePlanes.first();
+            takeCoordinatePlane( oldPlane );
         }
         delete oldPlane;
         addCoordinatePlane( plane );
@@ -516,14 +540,14 @@ void Chart::replaceCoordinatePlane( AbstractCoordinatePlane* plane,
 
 void Chart::takeCoordinatePlane( AbstractCoordinatePlane* plane )
 {
-    const int idx = p->coordinatePlanes.indexOf( plane );
+    const int idx = d->coordinatePlanes.indexOf( plane );
     if( idx != -1 ){
-        p->coordinatePlanes.takeAt( idx );
+        d->coordinatePlanes.takeAt( idx );
         disconnect( plane, SIGNAL( destroyedCoordinatePlane( AbstractCoordinatePlane* ) ),
-                    p, SLOT( slotUnregisterDestroyedPlane( AbstractCoordinatePlane* ) ) );
+                    d, SLOT( slotUnregisterDestroyedPlane( AbstractCoordinatePlane* ) ) );
         plane->setParent( 0 );
     }
-    p->slotLayoutPlanes();
+    d->slotLayoutPlanes();
 }
 
 void Chart::setGlobalLeading( int left, int top, int right, int bottom )
@@ -532,59 +556,82 @@ void Chart::setGlobalLeading( int left, int top, int right, int bottom )
     setGlobalLeadingTop( top );
     setGlobalLeadingRight( right );
     setGlobalLeadingBottom( bottom );
-    p->slotRelayout();
+    d->slotRelayout();
 }
 
 void Chart::setGlobalLeadingLeft( int leading )
 {
-    p->globalLeadingLeft = leading;
-    p->slotRelayout();
+    d->globalLeadingLeft = leading;
+    d->slotRelayout();
 }
 
 int Chart::globalLeadingLeft() const
 {
-    return p->globalLeadingLeft;
+    return d->globalLeadingLeft;
 }
 
 void Chart::setGlobalLeadingTop( int leading )
 {
-    p->globalLeadingTop = leading;
-    p->slotRelayout();
+    d->globalLeadingTop = leading;
+    d->slotRelayout();
 }
 
 int Chart::globalLeadingTop() const
 {
-    return p->globalLeadingTop;
+    return d->globalLeadingTop;
 }
 
 void Chart::setGlobalLeadingRight( int leading )
 {
-    p->globalLeadingRight = leading;
-    p->slotRelayout();
+    d->globalLeadingRight = leading;
+    d->slotRelayout();
 }
 
 int Chart::globalLeadingRight() const
 {
-    return p->globalLeadingRight;
+    return d->globalLeadingRight;
 }
 
 void Chart::setGlobalLeadingBottom( int leading )
 {
-    p->globalLeadingBottom = leading;
-    p->slotRelayout();
+    d->globalLeadingBottom = leading;
+    d->slotRelayout();
 }
 
 int Chart::globalLeadingBottom() const
 {
-    return p->globalLeadingBottom;
+    return d->globalLeadingBottom;
 }
 
 
 void Chart::paint( QPainter* painter, const QRect& target )
 {
+    if( target.isEmpty() || !painter) return;
 
+    const QRect oldGeometry( geometry() );
+    if( target != oldGeometry ){
+        setGeometry( target );
+        // Do we need that?
+        //p->slotRelayout();
+    }
+    //painter->drawRect( geometry() );
+
+    foreach( KDChart::LayoutItem* layoutItem, layoutItems ) {
+        layoutItem->paint( painter );
+    }
+    foreach( KDChart::LayoutItem* planeLayoutItem, planeLayoutItems ) {
+        planeLayoutItem->paint( painter );
+    }
+    foreach ( Legend *legend, legends ) {
+    }
+
+    if( target != oldGeometry ){
+        setGeometry( oldGeometry );
+    }
 }
 
+
+/*
 static void paintLayout(QPainter *painter, QLayoutItem *item)
 {
     QLayout *layout = item->layout();
@@ -594,36 +641,28 @@ static void paintLayout(QPainter *painter, QLayoutItem *item)
     }
     painter->drawRect(item->geometry());
 }
-
-void Chart::paintEvent( QPaintEvent* e )
-{
-//    e->accept();
-//    QPainter painter(this);
-//    if (layout())
-//        paintLayout(&painter, layout());
-
-}
+*/
 
 void Chart::addHeaderFooter( HeaderFooter* headerFooter )
 {
-    p->headerFooters.append( headerFooter );
+    d->headerFooters.append( headerFooter );
     headerFooter->setParent( this );
     connect( headerFooter, SIGNAL( destroyedHeaderFooter( HeaderFooter* ) ),
-             p, SLOT( slotUnregisterDestroyedHeaderFooter( HeaderFooter* ) ) );
+             d, SLOT( slotUnregisterDestroyedHeaderFooter( HeaderFooter* ) ) );
     connect( headerFooter, SIGNAL( positionChanged( AbstractArea* ) ),
-             p, SLOT( slotRelayout() ) );
-    p->slotRelayout();
+             d, SLOT( slotRelayout() ) );
+    d->slotRelayout();
 }
 
 void Chart::replaceHeaderFooter( HeaderFooter* headerFooter,
-                                 HeaderFooter* oldHeaderFooter )
+                                 HeaderFooter* oldHeaderFooter_ )
 {
-    if( headerFooter && oldHeaderFooter != headerFooter ){
-        if( p->headerFooters.count() ){
+    if( headerFooter && oldHeaderFooter_ != headerFooter ){
+        HeaderFooter* oldHeaderFooter = oldHeaderFooter_;
+        if( d->headerFooters.count() ){
             if( ! oldHeaderFooter )
-                takeHeaderFooter( p->headerFooters.first() );
-            else
-                takeHeaderFooter( oldHeaderFooter );
+                oldHeaderFooter =  d->headerFooters.first();
+            takeHeaderFooter( oldHeaderFooter );
         }
         delete oldHeaderFooter;
         addHeaderFooter( headerFooter );
@@ -632,49 +671,49 @@ void Chart::replaceHeaderFooter( HeaderFooter* headerFooter,
 
 void Chart::takeHeaderFooter( HeaderFooter* headerFooter )
 {
-    const int idx = p->headerFooters.indexOf( headerFooter );
+    const int idx = d->headerFooters.indexOf( headerFooter );
     if( idx != -1 ){
-        p->headerFooters.takeAt( idx );
+        d->headerFooters.takeAt( idx );
         disconnect( headerFooter, SIGNAL( destroyedHeaderFooter( HeaderFooter* ) ),
-                    p, SLOT( slotUnregisterDestroyedHeaderFooter( HeaderFooter* ) ) );
+                    d, SLOT( slotUnregisterDestroyedHeaderFooter( HeaderFooter* ) ) );
         headerFooter->setParent( 0 );
     }
-    p->slotRelayout();
+    d->slotRelayout();
 }
 
 HeaderFooter* Chart::headerFooter()
 {
-    if( p->headerFooters.isEmpty() ) {
+    if( d->headerFooters.isEmpty() ) {
         return 0;
     } else {
-        return p->headerFooters.first();
+        return d->headerFooters.first();
     }
 }
 
 HeaderFooterList Chart::headerFooters()
 {
-    return p->headerFooters;
+    return d->headerFooters;
 }
 
 void Chart::addLegend( Legend* legend )
 {
-    p->legends.append( legend );
+    d->legends.append( legend );
     legend->setParent( this );
     connect( legend, SIGNAL( destroyedLegend( Legend* ) ),
-             p, SLOT( slotUnregisterDestroyedLegend( Legend* ) ) );
+             d, SLOT( slotUnregisterDestroyedLegend( Legend* ) ) );
     connect( legend, SIGNAL( positionChanged( AbstractArea* ) ),
-             p, SLOT( slotRelayout() ) );
-    p->slotRelayout();
+             d, SLOT( slotRelayout() ) );
+    d->slotRelayout();
 }
 
-void Chart::replaceLegend( Legend* legend, Legend* oldLegend )
+void Chart::replaceLegend( Legend* legend, Legend* oldLegend_ )
 {
-    if( legend && oldLegend != legend ){
-        if( p->legends.count() ){
+    if( legend && oldLegend_ != legend ){
+        Legend* oldLegend = oldLegend_;
+        if( d->legends.count() ){
             if( ! oldLegend )
-                takeLegend( p->legends.first() );
-            else
-                takeLegend( oldLegend );
+                oldLegend = d->legends.first();
+            takeLegend( oldLegend );
         }
         delete oldLegend;
         addLegend( legend );
@@ -683,29 +722,29 @@ void Chart::replaceLegend( Legend* legend, Legend* oldLegend )
 
 void Chart::takeLegend( Legend* legend )
 {
-    const int idx = p->legends.indexOf( legend );
+    const int idx = d->legends.indexOf( legend );
     if( idx != -1 ){
-        p->legends.takeAt( idx );
+        d->legends.takeAt( idx );
         disconnect( legend, SIGNAL( destroyedLegend( Legend* ) ),
-                    p, SLOT( slotUnregisterDestroyedLegend( Legend* ) ) );
+                    d, SLOT( slotUnregisterDestroyedLegend( Legend* ) ) );
         legend->setParent( 0 );
     }
-    p->slotRelayout();
+    d->slotRelayout();
 }
 
 Legend* Chart::legend()
 {
-    if ( p->legends.isEmpty() )
+    if ( d->legends.isEmpty() )
     {
         return 0;
     } else {
-        return p->legends.first();
+        return d->legends.first();
     }
 }
 
 LegendList Chart::legends()
 {
-    return p->legends;
+    return d->legends;
 }
 
 

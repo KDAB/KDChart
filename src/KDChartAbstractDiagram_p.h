@@ -70,9 +70,16 @@ protected:
     mutable bool databoundariesDirty;
 };
 
-inline AbstractDiagram::AbstractDiagram( Private * p ) : _d( p ) { init(); }
-inline AbstractDiagram::AbstractDiagram( Private * p, AbstractCoordinatePlane* plane )
-  : QAbstractItemView( plane ), _d( p ) { _d->init( plane ); }
+inline AbstractDiagram::AbstractDiagram( Private * p ) : _d( p )
+{
+    init();
+}
+inline AbstractDiagram::AbstractDiagram(
+    Private * p, QWidget* parent, AbstractCoordinatePlane* plane )
+  : QAbstractItemView( parent ), _d( p )
+{
+    _d->init( plane );
+}
 
 class DataValueTextInfo {
 public:

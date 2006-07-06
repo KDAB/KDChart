@@ -49,8 +49,8 @@ BarDiagram::Private::~Private() {}
 #define d d_func()
 
 
-BarDiagram::BarDiagram( CartesianCoordinatePlane* parent ) :
-    AbstractCartesianDiagram( new Private(), parent )
+BarDiagram::BarDiagram( QWidget* parent, CartesianCoordinatePlane* plane ) :
+    AbstractCartesianDiagram( new Private(), parent, plane )
 {
     init();
 }

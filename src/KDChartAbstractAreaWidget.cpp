@@ -23,39 +23,30 @@
  **
  **********************************************************************/
 
-#include "KDChartAbstractArea.h"
-#include "KDChartAbstractArea_p.h"
+#include "KDChartAbstractAreaWidget.h"
 
 using namespace KDChart;
 
-AbstractArea::Private::Private() :
-    AbstractAreaBase::Private()
-{
-    // this bloc left empty intentionally
-}
-
-
-AbstractArea::Private::~Private()
-{
-    // this bloc left empty intentionally
-}
-
-
-AbstractArea::AbstractArea()
+AbstractAreaWidget::AbstractAreaWidget( QWidget* parent )
     : KDChart::AbstractAreaBase()
-    , KDChart::AbstractLayoutItem()
-    , QObject()
+    , QWidget( parent )
 {
     // this bloc left empty intentionally
 }
 
-AbstractArea::~AbstractArea()
+AbstractAreaWidget::~AbstractAreaWidget()
 {
     // this bloc left empty intentionally
 }
 
+void AbstractAreaWidget::paintEvent( QPaintEvent* event )
+{
+    Q_UNUSED( event );)
+    QPainter painter( this );
+    paintAll( painter );
+}
 
-void AbstractArea::paintIntoRect( QPainter& painter, const QRect& rect )
+void AbstractAreaWidget::paintIntoRect( QPainter& painter, const QRect& rect )
 {
     const QRect oldGeometry( geometry() );
     if( oldGeometry != rect )
@@ -67,11 +58,11 @@ void AbstractArea::paintIntoRect( QPainter& painter, const QRect& rect )
         setGeometry( oldGeometry );
 }
 
-void AbstractArea::paintAll( QPainter& painter )
+void AbstractAreaWidget::paintAll( QPainter& painter )
 {
     // Paint the background and frame
-    paintBackground( painter, geometry() );
-    paintFrame(      painter, geometry() );
+    paintBackground( painter, rect() );
+    paintFrame(      painter, rect() );
 
     // temporarily adjust the widget size, to be sure all content gets calculated
     // to fit into the inner rectangle
@@ -86,12 +77,12 @@ void AbstractArea::paintAll( QPainter& painter )
         setGeometry( oldGeometry );
 }
 
-const QRect& AbstractArea::areaGeometry() const
+const QRect& AbstractAreaWidget::areaGeometry() const
 {
     return geometry();
 }
 
-void AbstractArea::positionHasChanged()
+void AbstractAreaWidget::positionHasChanged()
 {
     emit positionChanged( this );
 }

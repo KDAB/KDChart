@@ -23,8 +23,8 @@
  **
  **********************************************************************/
 
-#ifndef KDCHARTHEADERFOOTER_P_H
-#define KDCHARTHEADERFOOTER_P_H
+#ifndef KDCHARTABSTRACTAREABASE_P_H
+#define KDCHARTABSTRACTAREABASE_P_H
 
 //
 //  W A R N I N G
@@ -37,55 +37,39 @@
 // We mean it.
 //
 
-#include "KDChartHeaderFooter.h"
-#include "KDChartAbstractArea_p.h"
-#include <QMap>
-class KDTextDocument;
+/** \file KDChartAbstractAreaBase_p.h
+ *  \internal
+ */
+
+#include "KDChartAbstractAreaBase.h"
+#include "KDChartTextAttributes.h"
+#include "KDChartFrameAttributes.h"
+#include "KDChartBackgroundAttributes.h"
 
 namespace KDChart {
-    class TextAttributes;
-    class HeaderFooter;
-}
-using KDChart::TextAttributes;
-using KDChart::HeaderFooter;
 
 /**
  * \internal
  */
-class KDChart::HeaderFooter::Private : public AbstractArea::Private
+class AbstractAreaBase::Private
 {
-    friend class KDChart::HeaderFooter;
+    friend class AbstractAreaBase;
 public:
-    //old:Private( QWidget* parent_ );
-    Private();
-    ~Private();
+    explicit Private();
+    virtual ~Private();
 
-    void updateTextDoc();
+protected:
+    void init();
 
 private:
-    // user-settable
-    //QWidget* parent;
-    HeaderFooterType type;
-    Position position;
-    QString text;
-    TextAttributes textAttrs;
-
-    // internal
-    mutable KDTextDocument* textDoc;
-    QSize cachedSize;
+    bool visible;
+    KDChart::FrameAttributes frameAttributes;
+    KDChart::BackgroundAttributes backgroundAttributes;
 };
 
-//inline KDChart::HeaderFooter::HeaderFooter( Private* d, QWidget* parent )
-//    : AbstractArea( d, parent ) { init(); }
-inline KDChart::HeaderFooter::HeaderFooter( Private* d )
-    : AbstractArea( d ) { init(); }
-inline KDChart::HeaderFooter::Private * KDChart::HeaderFooter::d_func()
-{ return static_cast<Private*>( AbstractArea::d_func() ); }
-inline const KDChart::HeaderFooter::Private * KDChart::HeaderFooter::d_func() const
-{ return static_cast<const Private*>( AbstractArea::d_func() ); }
+inline AbstractAreaBase::AbstractAreaBase( AbstractAreaBase::Private * p ) :
+    _d( p ) { init(); }
 
-
-
-
-#endif /* KDCHARTHEADERFOOTER_P_H */
+}
+#endif /* KDCHARTABSTRACTAREABASE_P_H */
 

@@ -60,8 +60,8 @@ LineDiagram::Private::~Private() {}
 #define d d_func()
 
 
-LineDiagram::LineDiagram( CartesianCoordinatePlane* parent ) :
-    AbstractCartesianDiagram( new Private(), parent )
+LineDiagram::LineDiagram( QWidget* parent, CartesianCoordinatePlane* plane ) :
+    AbstractCartesianDiagram( new Private(), parent, plane )
 {
     init();
 }

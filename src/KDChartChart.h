@@ -327,11 +327,8 @@ namespace KDChart {
           */
         void paint( QPainter* painter, const QRect& target );
 
-        protected:
-        virtual void paintEvent( QPaintEvent* e );
-
     private:
-        Private* p;
+        Private* d;
     };
 
 }

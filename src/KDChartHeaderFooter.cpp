@@ -37,8 +37,9 @@
 
 using namespace KDChart;
 
-HeaderFooter::Private::Private( QWidget* parent_ ) :
-    parent( parent_ ),
+//HeaderFooter::Private::Private( QWidget* parent_ ) :
+//    parent( parent_ ),
+HeaderFooter::Private::Private() :
     type( Header ),
     position( Position::North ),
     text( QObject::tr( "Header/Footer" ) ),

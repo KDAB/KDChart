@@ -26,13 +26,15 @@
 #ifndef KDCHARTCOORDINATEPLANE_H
 #define KDCHARTCOORDINATEPLANE_H
 
-#include <QWidget>
+#include <QObject>
 #include <QList>
 
+#include "KDChartAbstractArea.h"
 #include "KDChartAbstractDiagram.h"
 #include "KDChartEnums.h"
 
 namespace KDChart {
+
     class GridAttributes;
 
 
@@ -106,16 +108,17 @@ namespace KDChart {
     typedef QList<DataDimension> DataDimensionsList;
 
 
-    class KDCHART_EXPORT AbstractCoordinatePlane : public QWidget
+    class KDCHART_EXPORT AbstractCoordinatePlane : public AbstractArea
     {
         Q_OBJECT
+
         Q_DISABLE_COPY( AbstractCoordinatePlane )
         KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC( AbstractCoordinatePlane )
+
     friend class AbstractGrid;
 
     protected:
-        explicit inline AbstractCoordinatePlane ( Private *, QWidget* parent = 0 );
-        explicit AbstractCoordinatePlane ( QWidget* parent = 0 );
+        explicit AbstractCoordinatePlane ();
 
     public:
         virtual ~AbstractCoordinatePlane();
@@ -292,18 +295,31 @@ namespace KDChart {
          * @return The reference coordinate plane associated with this one.
          */
         AbstractCoordinatePlane * referenceCoordinatePlane() const;
+
+        /**
+          * Calling update() on the plane triggers the global KDChart::Chart::update()
+          */
+        void update();
+
     signals:
         /** Emitted when this coordinate plane is destroyed. */
         void destroyedCoordinatePlane( AbstractCoordinatePlane* );
 
+        /** Emitted when plane needs to update its drawings for other
+          * reasons than changed grid range/attributes.
+          */
+        void needUpdate();
+
+        /** Emitted when the grid attributes and/or grid ranges change. */
+        void gridChanged();
+
         /** Emitted when the associated diagrams change. */
         void diagramsChanged();
 
-        /** Emitted when the value range of this plane changes */
-        void rangeChanged();
-
     protected:
         virtual DataDimensionsList getDataDimensionsList() const = 0;
+
+        //KDCHART_DECLARE_PRIVATE_DERIVED( AbstractCoordinatePlane )
     };
 
 }

@@ -70,8 +70,8 @@ public:
 };
 
 
-inline AbstractAxis::AbstractAxis( Private * p, AbstractDiagram* diagram_ )
-    :  AbstractArea( p, 0 )
+inline AbstractAxis::AbstractAxis( Private * p )
+    :  AbstractArea( p )
 {
     init();
 }

@@ -41,8 +41,8 @@ AbstractPieDiagram::Private::Private() :
 
 AbstractPieDiagram::Private::~Private() {}
 
-AbstractPieDiagram::AbstractPieDiagram( PolarCoordinatePlane *parent ) :
-    AbstractPolarDiagram( new Private(), parent )
+AbstractPieDiagram::AbstractPieDiagram( QWidget* parent, PolarCoordinatePlane *plane ) :
+    AbstractPolarDiagram( new Private(), parent, plane )
 {
     init();
 }

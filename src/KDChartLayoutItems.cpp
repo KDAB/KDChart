@@ -26,6 +26,7 @@
 #include "KDChartLayoutItems.h"
 #include "KDTextDocument.h"
 #include "KDChartAbstractDiagram.h"
+#include "KDChartPaintContext.h"
 #include "KDChartPainterSaver_p.h"
 #include <QTextCursor>
 #include <QTextBlockFormat>
@@ -47,16 +48,23 @@
     Thus, you need to call setParentWidget on every item, that
     has a non-fixed size.
   */
-void KDChart::LayoutItem::setParentWidget( QWidget* widget )
+void KDChart::AbstractLayoutItem::setParentWidget( QWidget* widget )
 {
     mParent = widget;
 }
 
+/**
+  * Default impl: Paint the complete item using its layouted position and size.
+  */
+void KDChart::AbstractLayoutItem::paintCtx( PaintContext* context ) const
+{
+    paint( context->painter() );
+}
 
 /**
     Report changed size hint: ask the parent widget to recalculate the layout.
   */
-void KDChart::LayoutItem::sizeHintChanged()const
+void KDChart::AbstractLayoutItem::sizeHintChanged()const
 {
     // This is exactly like what QWidget::updateGeometry does.
     if( mParent ) {
@@ -73,7 +81,7 @@ KDChart::TextLayoutItem::TextLayoutItem( const QString& text,
                                          const QWidget* area,
                                          KDChartEnums::MeasureOrientation orientation,
                                          Qt::Alignment alignment )
-    : LayoutItem( alignment )
+    : AbstractLayoutItem( alignment )
     , mText( text )
     , mAttributes( attributes )
     , mAutoReferenceArea( area )
@@ -211,8 +219,12 @@ void KDChart::TextLayoutItem::paint( QPainter* painter )
 KDChart::MarkerLayoutItem::MarkerLayoutItem( KDChart::AbstractDiagram* diagram,
                                              const MarkerAttributes& marker,
                                              const QBrush& brush, const QPen& pen,
-                                             Qt::Alignment alignment ) :
-    LayoutItem( alignment ), mDiagram( diagram ), mMarker( marker ), mBrush( brush ), mPen( pen )
+                                             Qt::Alignment alignment )
+    : AbstractLayoutItem( alignment )
+    , mDiagram( diagram )
+    , mMarker( marker )
+    , mBrush( brush )
+    , mPen( pen )
 {
 }
 
@@ -272,7 +284,7 @@ void KDChart::MarkerLayoutItem::paint( QPainter* painter )
 
 
 KDChart::HorizontalLineLayoutItem::HorizontalLineLayoutItem() :
-    LayoutItem( Qt::AlignCenter )
+    AbstractLayoutItem( Qt::AlignCenter )
 {
 }
 
@@ -323,7 +335,7 @@ void KDChart::HorizontalLineLayoutItem::paint( QPainter* painter )
 
 
 KDChart::VerticalLineLayoutItem::VerticalLineLayoutItem() :
-    LayoutItem( Qt::AlignCenter )
+    AbstractLayoutItem( Qt::AlignCenter )
 {
 }
 

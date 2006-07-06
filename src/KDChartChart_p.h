@@ -42,6 +42,7 @@
 #include <QVBoxLayout>
 
 #include "KDChartChart.h"
+#include "KDChartLayoutItems.h"
 
 namespace KDChart {
 
@@ -60,10 +61,13 @@ class Chart::Private : public QObject
         Chart* chart;
         QHBoxLayout* layout;
         QVBoxLayout* vLayout;
-        QBoxLayout* planesLayout;
+        QBoxLayout*  planesLayout;
         QGridLayout* headerLayout;
         QGridLayout* footerLayout;
         QGridLayout* dataAndLegendLayout;
+
+        QVector<KDChart::AbstractLayoutItem*> layoutItems;
+        QVector<KDChart::AbstractCoordinatePlane*> planeLayoutItems;
 
         int globalLeadingLeft, globalLeadingRight, globalLeadingTop, globalLeadingBottom;
 
@@ -87,12 +91,12 @@ class Chart::Private : public QObject
                 : referencePlane(0)
                     , horizontalOffset(1)
                     , verticalOffset(1)
-                    , grid( 0 )
+                    , gridLayout( 0 )
                     {}
                     AbstractCoordinatePlane *referencePlane;
                     int horizontalOffset;
                     int verticalOffset;
-                    QGridLayout *grid;
+                    QGridLayout *gridLayout;
         };
 
         QHash<AbstractCoordinatePlane*, PlaneInfo> buildPlaneLayoutInfos();

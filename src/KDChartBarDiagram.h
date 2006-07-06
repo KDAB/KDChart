@@ -44,9 +44,11 @@ class KDCHART_EXPORT BarDiagram : public AbstractCartesianDiagram
     Q_OBJECT
 
     Q_DISABLE_COPY( BarDiagram )
-    KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( BarDiagram, CartesianCoordinatePlane * )
+//    KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( BarDiagram, CartesianCoordinatePlane * )
+    KDCHART_DECLARE_DERIVED_DIAGRAM( BarDiagram, CartesianCoordinatePlane )
+
 public:
-    explicit BarDiagram( CartesianCoordinatePlane* plane = 0 );
+    explicit BarDiagram( QWidget* parent = 0, CartesianCoordinatePlane* plane = 0 );
     virtual ~BarDiagram();
 
     virtual BarDiagram * clone() const;

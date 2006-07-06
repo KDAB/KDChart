@@ -33,7 +33,7 @@
 #include <QObject>
 #include <QRectF>
 #include <QtXml/QDomDocumentFragment>
-#include <QWidget>
+//#include <QWidget>
 
 #include "kdchart_export.h"
 #include "KDChartGlobal.h"
@@ -66,7 +66,8 @@ namespace KDChart {
         Q_OBJECT
 
         Q_DISABLE_COPY( AbstractAxis )
-        KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( AbstractAxis, AbstractDiagram* )
+        //old: KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( AbstractAxis, AbstractDiagram* )
+        KDCHART_DECLARE_PRIVATE_DERIVED( AbstractAxis )
     public:
         explicit AbstractAxis( AbstractDiagram* diagram = 0 );
         virtual ~AbstractAxis();
@@ -95,8 +96,8 @@ namespace KDChart {
         void setShortLabels( const QStringList& list );
         QStringList shortLabels() const;
 
-        virtual void setGeometry( const QRectF& rect ) = 0;
-        virtual QRectF geometry() const = 0;
+        virtual void setGeometry( const QRect& rect ) = 0;
+        virtual QRect geometry() const = 0;
 
         const AbstractCoordinatePlane* coordinatePlane() const;
 

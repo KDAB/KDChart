@@ -80,9 +80,10 @@ HEADERS += KDChartGlobal.h \
            KDChartThreeDPieAttributes_p.h \
            KDChartWidget.h \
            KDChartWidget_p.h \
-           KDChartAbstractArea_p.h \
+           KDChartAbstractAreaBase_p.h \
+           KDChartAbstractAreaBase.h \
            KDChartAbstractArea.h \
-           KDChartAbstractAxis_p.h \
+           KDChartAbstractAreaWidget.h \
            KDChartAbstractAxis.h \
            KDChartChart_p.h 
 SOURCES += KDChartAbstractCartesianDiagram.cpp \
@@ -129,8 +130,10 @@ SOURCES += KDChartAbstractCartesianDiagram.cpp \
            KDChartThreeDLineAttributes.cpp \
            KDChartThreeDPieAttributes.cpp \
            KDChartWidget.cpp \
+           KDChartAbstractAreaBase.cpp \
            KDChartAbstractArea.cpp \
-           KDChartAbstractAxis.cpp 
+           KDChartAbstractAreaWidget.cpp \
+           KDChartAbstractAxis.cpp
 include( ../variables.pri )
 DEFINES += KDCHART_BUILD_KDCHART_LIB
 TEMPLATE = lib

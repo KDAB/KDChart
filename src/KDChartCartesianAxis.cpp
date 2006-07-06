@@ -44,7 +44,7 @@ using namespace KDChart;
 #define d (d_func())
 
 CartesianAxis::CartesianAxis ( AbstractCartesianDiagram* diagram )
-    : AbstractAxis ( new Private( diagram ), diagram )
+    : AbstractAxis ( new Private( diagram ) )
 {
     init();
     if( diagram )
@@ -69,7 +69,7 @@ const CartesianAxis::Position CartesianAxis::position() const
 {
     return d->position;
 }
-
+/*
 void CartesianAxis::paintEvent( QPaintEvent* event )
 {
     Q_UNUSED( event );
@@ -84,9 +84,9 @@ void CartesianAxis::paintEvent( QPaintEvent* event )
     QRectF rect = QRectF ( 1, 1, plane->width() - 3, plane->height() - 3 );
     context.setRectangle( rect );
     d->geometry.setSize( size() );
-    paint( &context );
+    paintCtx( &context );
 }
-
+*/
 
 bool CartesianAxis::isAbscissa() const
 {
@@ -99,7 +99,7 @@ bool CartesianAxis::isOrdinate() const
 }
 
 #define ptr (context->painter())
-void CartesianAxis::paint ( PaintContext* context ) const
+void CartesianAxis::paintCtx( PaintContext* context ) const
 {
     Q_ASSERT_X ( d->diagram, "CartesianAxis::paint",
                  "Function call not allowed: The axis is not assigned to any diagram." );
@@ -211,7 +211,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
 
     // - find the reference point at which to start drawing and the increment (line distance);
     QPointF rulerRef;
-    QRectF geoRect( d->geometry );
+    QRect geoRect( d->geometry );
     QRectF rulerRect;
     double rulerWidth;
     double rulerHeight;
@@ -343,7 +343,7 @@ void CartesianAxis::paint ( PaintContext* context ) const
         const QWidget* referenceArea =
             plane
             ? static_cast<QWidget *>( plane->parent() )
-            : static_cast<QWidget *>( parent() );
+            : static_cast<QWidget *>( d->diagram );
         TextLayoutItem* labelItem =
             drawLabels
             ? new TextLayoutItem( QString::number( minValueY ),
@@ -557,12 +557,12 @@ QSizePolicy CartesianAxis::sizePolicy() const
     return result;
 }
 
-void CartesianAxis::setGeometry ( const QRectF& rect )
+void CartesianAxis::setGeometry ( const QRect& rect )
 {
     d->geometry = rect;
 }
 
-QRectF CartesianAxis::geometry() const
+QRect CartesianAxis::geometry() const
 {
     return d->geometry;
 }

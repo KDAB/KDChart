@@ -70,14 +70,14 @@ Legend::Private::~Private()
 #define d d_func()
 
 Legend::Legend( QWidget* parent ) :
-    AbstractArea( new Private(), parent )
+    AbstractAreaWidget( new Private(), parent )
 {
     d->referenceArea = parent;
     init();
 }
 
 Legend::Legend( KDChart::AbstractDiagram* diagram, QWidget* parent ) :
-    AbstractArea( new Private(), parent )
+    AbstractAreaWidget( new Private(), parent )
 {
     d->referenceArea = parent;
     init();
@@ -127,35 +127,17 @@ Legend* Legend::clone() const
     return (Legend*)0xdeadbeef;
 }
 
-void Legend::paintEvent( QPaintEvent* evt )
-{
-    QPainter painter( this );
-    paintIntoRect( painter, rect(), false );
-}
-
-void Legend::paintIntoRect( QPainter& painter, const QRect& rect )
-{
-    // PENDING(khz) Test this code!
-    qWarning( "Careful, Legend::paintIntoRect() is experimental code - not fully implemented yet." );
-    paintIntoRect( painter, rect, true );
-}
-
-void Legend::paintIntoRect( QPainter& painter, const QRect& rect, bool adjustGeometry )
+void Legend::paint( QPainter* painter )
 {
     // rule: We do not show a legend, if there is no diagram.
     if( ! diagram() ) return;
-
-    if( adjustGeometry && geometry() != rect )
-        setGeometry( rect );
 
     // re-calculate/adjust the Legend's internal layout and contents, if needed:
     buildLegend();
 
     // Legend always has a frame around it, might be overpainted by Area afterwards.
-    painter.drawRect( rect.adjusted( 1, 1, -1, -1 ) );
+    painter.drawRect( rect().adjusted( 1, 1, -1, -1 ) );
 
-    // Paint the background and frame
-    AbstractArea::paintIntoRect( painter, rect );
 
     // PENDING(kalle) Support palette
 

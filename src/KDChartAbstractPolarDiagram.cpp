@@ -39,8 +39,9 @@ void AbstractPolarDiagram::init()
 
 #define d d_func()
 
-AbstractPolarDiagram::AbstractPolarDiagram ( PolarCoordinatePlane* parent )
-    : AbstractDiagram ( new Private(), parent )
+AbstractPolarDiagram::AbstractPolarDiagram (
+    QWidget* parent, PolarCoordinatePlane* plane )
+    : AbstractDiagram ( new Private(), parent, plane )
 {
 }
 

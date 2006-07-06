@@ -27,60 +27,78 @@
  **
  **********************************************************************/
 
-#ifndef KDCHARTABSTRACTAREA_H
-#define KDCHARTABSTRACTAREA_H
+#ifndef KDCHARTABSTRACTAREAWIDGET_H
+#define KDCHARTABSTRACTAREAWIDGET_H
 
-#include <QObject>
+#include <QWidget>
+#include <QPaintEvent>
+#include <QPainter>
+#include <QRect>
 
-#include "KDChartGlobal.h"
 #include "KDChartAbstractAreaBase.h"
-#include "KDChartLayoutItems.h"
 
 namespace KDChart {
 
 
 /**
-  * @class AbstractArea KDChartAbstractArea.h
+  * @class AbstractAreaWidget KDChartAbstractArea.h
   * @brief An area in the chart with a background, a frame, etc.
   *
-  * AbstractArea is the base class for all non-widget chart elements that have
+  * AbstractAreaWidget is the base for all widget classes that have
   * a set of background attributes and frame attributes, such as
-  * headers or axes.
-  *
-  * @note This class inherits from AbstractAreaBase, AbstractLayoutItem, QObject.
-  * The reason for this tripple inheritance is that neither AbstractAreaBase nor
-  * AbstractLayoutItem are QObject.
+  * KDChart::Chart and KDChart::Legend.
   */
-class KDCHART_EXPORT AbstractArea : public AbstractAreaBase, public AbstractLayoutItem, public QObject
+class KDCHART_EXPORT AbstractAreaWidget : public AbstractAreaBase, public QWidget
 {
     Q_OBJECT
 
-    Q_DISABLE_COPY( AbstractArea )
-    KDCHART_DECLARE_PRIVATE_DERIVED( AbstractArea )
-
+    Q_DISABLE_COPY( AbstractAreaWidget )
 
 public:
-//    virtual AbstractArea * clone() const = 0;
     /**
       * @brief Draws the background and frame, then calls paint().
       *
       * In most cases there is no need to overwrite this method in a derived
-      * class, but you would overwrite AbstractLayoutItem::paint() instead.
+      * class, but you would overwrite paint() instead.
+      * @sa paint
+      */
+    virtual void paintEvent( QPaintEvent* event );
+
+    /**
+      * @brief Draws the background and frame, then calls paint().
+      *
+      * In most cases there is no need to overwrite this method in a derived
+      * class, but you would overwrite paint() instead.
       */
     virtual void paintIntoRect( QPainter& painter, const QRect& rect );
 
+    /**
+      * Overwrite this to paint the inner contents of your widget.
+      *
+      * @note When overriding this method, please let your widget draw
+      * itself at the top/left corner of the painter.  You should call rect()
+      * (or width(), height(), resp.) to find the drawable area's size:
+      * While the paint() method is being executed the frame of the widget
+      * is outside of its rect(), so you can use all of rect() for
+      * your custom drawing!
+      * @sa paint, paintIntoRect
+      */
+    virtual void paint( QPainter* painter ) = 0;
+
 protected:
-    AbstractArea();
-    virtual ~AbstractArea() ;
+    AbstractAreaWidget();
+    virtual ~AbstractAreaWidget() ;
     void paintAll( QPainter& painter );
     virtual const QRect& areaGeometry() const;
     virtual void positionHasChanged();
 
-signals:
-    void positionChanged( AbstractArea * );
+public:
+//    virtual AbstractAreaWidget * clone() const = 0;
 
-    //KDCHART_DECLARE_PRIVATE_DERIVED(AbstractArea)
-}; // End of class AbstractArea
+signals:
+    void positionChanged( AbstractAreaWidget * );
+
+}; // End of class AbstractAreaWidget
 
 }
-#endif // KDCHARTABSTRACTAREA_H
+#endif // KDCHARTABSTRACTAREAWIDGET_H

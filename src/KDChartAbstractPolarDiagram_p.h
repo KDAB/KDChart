@@ -55,14 +55,18 @@ public:
 
 };
 
+KDCHART_IMPL_DERIVED_DIAGRAM( AbstractPolarDiagram, AbstractDiagram, PolarCoordinatePlane )
+/*
 inline AbstractPolarDiagram::AbstractPolarDiagram( Private * p )
     : AbstractDiagram( p ) { init(); }
-inline AbstractPolarDiagram::AbstractPolarDiagram( Private * p, PolarCoordinatePlane* parent )
-    : AbstractDiagram( p, parent ) { init(); }
+inline AbstractPolarDiagram::AbstractPolarDiagram(
+    Private *p, QWidget* parent, PolarCoordinatePlane* plane )
+    : AbstractDiagram( p, parent, plane ) { init(); }
 inline AbstractPolarDiagram::Private * AbstractPolarDiagram::d_func()
 { return static_cast<Private*>( AbstractDiagram::d_func() ); }
 inline const AbstractPolarDiagram::Private * AbstractPolarDiagram::d_func() const
 { return static_cast<const Private*>( AbstractDiagram::d_func() ); }
+*/
 
 }
 #endif /* KDCHARTABSTRACTCARTESIANDIAGRAM_P_H */

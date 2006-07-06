@@ -46,10 +46,11 @@ class KDCHART_EXPORT LineDiagram : public AbstractCartesianDiagram
     Q_OBJECT
 
     Q_DISABLE_COPY( LineDiagram )
-    KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( LineDiagram, CartesianCoordinatePlane * )
+//    KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( LineDiagram, CartesianCoordinatePlane * )
+    KDCHART_DECLARE_DERIVED_DIAGRAM( LineDiagram, CartesianCoordinatePlane )
 
 public:
-    LineDiagram( CartesianCoordinatePlane* plane = 0 );
+    LineDiagram( QWidget* parent = 0, CartesianCoordinatePlane* plane = 0 );
     virtual ~LineDiagram();
 
     virtual LineDiagram * clone() const;

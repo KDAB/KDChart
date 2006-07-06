@@ -56,13 +56,15 @@ public:
     LineType lineType;
 };
 
-
+KDCHART_IMPL_DERIVED_DIAGRAM( LineDiagram, AbstractCartesianDiagram, CartesianCoordinatePlane )
+/*
 inline LineDiagram::LineDiagram( Private * p, CartesianCoordinatePlane* plane )
   : AbstractCartesianDiagram( p, plane ) { init(); }
 inline LineDiagram::Private * LineDiagram::d_func()
 { return static_cast<Private*>( AbstractCartesianDiagram::d_func() ); }
 inline const LineDiagram::Private * LineDiagram::d_func() const
 { return static_cast<const Private*>( AbstractCartesianDiagram::d_func() ); }
+*/
 
 }
 

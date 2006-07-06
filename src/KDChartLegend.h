@@ -30,7 +30,7 @@
 #ifndef KDCHARTLEGEND_H
 #define KDCHARTLEGEND_H
 
-#include "KDChartAbstractArea.h"
+#include "KDChartAbstractAreaWidget.h"
 #include "KDChartPosition.h"
 #include "KDChartMarkerAttributes.h"
 
@@ -58,7 +58,7 @@ namespace KDChart {
   * legend positioned into the correct place of your chart - if you want to have
   * the legend shown inside of the chart (that's probably true for most cases).
   */
-class KDCHART_EXPORT Legend : public AbstractArea
+class KDCHART_EXPORT Legend : public AbstractAreaWidget
 {
     Q_OBJECT
 
@@ -74,8 +74,8 @@ public:
     virtual Legend * clone() const;
 
     //QSize calcSizeHint() const;
-    virtual void paintEvent( QPaintEvent* );
-    virtual void paintIntoRect( QPainter& painter, const QRect& rect );
+
+    virtual void paint( QPainter* painter );
 
     void setReferenceArea( const QWidget* area );
     const QWidget* referenceArea() const;
@@ -135,9 +135,6 @@ public:
 
 signals:
     void destroyedLegend( Legend* );
-
-protected:
-    void paintIntoRect( QPainter& painter, const QRect& rect, bool adjustGeometry );
 
 private slots:
     void resetDiagram();

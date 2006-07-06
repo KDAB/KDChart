@@ -46,8 +46,8 @@ void AbstractCartesianDiagram::init()
 
 #define d d_func()
 
-AbstractCartesianDiagram::AbstractCartesianDiagram ( CartesianCoordinatePlane* plane )
-    : AbstractDiagram ( new Private(), plane )
+AbstractCartesianDiagram::AbstractCartesianDiagram ( QWidget* parent, CartesianCoordinatePlane* plane )
+    : AbstractDiagram ( new Private(), parent, plane )
 {
 }
 
@@ -63,7 +63,7 @@ void AbstractCartesianDiagram::takeAxis( CartesianAxis *axis )
     if( idx != -1 )
         d->axesList.takeAt( idx );
     axis->deleteObserver( this );
-    axis->setParent( 0 );
+    axis->setParentWidget( 0 );
 }
 
 KDChart::CartesianAxisList AbstractCartesianDiagram::axes( ) const
@@ -92,9 +92,10 @@ void KDChart::AbstractCartesianDiagram::setCoordinatePlane( AbstractCoordinatePl
 
 void AbstractCartesianDiagram::slotRangeChanged()
 {
-    foreach( CartesianAxis* a, d->axesList ) {
-	a->update();
-    }
+// no need to update the axes: we are updating the complete Chart now
+//    foreach( CartesianAxis* a, d->axesList ) {
+//	a->update();
+//    }
 }
 
 void AbstractCartesianDiagram::setReferenceDiagram( AbstractCartesianDiagram* diagram, const QPointF& offset )

@@ -35,12 +35,11 @@ namespace KDChart {
     {
         Q_OBJECT
         Q_DISABLE_COPY( AbstractPolarDiagram )
-        KDCHART_DECLARE_PRIVATE_DERIVED( AbstractPolarDiagram )
-    protected:
-        explicit inline AbstractPolarDiagram( Private *p, PolarCoordinatePlane* parent );
+        KDCHART_DECLARE_DERIVED_DIAGRAM( AbstractPolarDiagram, PolarCoordinatePlane )
 
     public:
-        explicit AbstractPolarDiagram ( PolarCoordinatePlane* parent = 0 );
+        explicit AbstractPolarDiagram (
+            QWidget* parent = 0, PolarCoordinatePlane* plane = 0 );
         virtual ~AbstractPolarDiagram() {}
 
         virtual double valueTotals () const = 0;

@@ -56,8 +56,10 @@ namespace KDChart {
         Q_DISABLE_COPY( AbstractDiagram )
         KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC( AbstractDiagram )
     protected:
-        explicit inline AbstractDiagram( Private *p, AbstractCoordinatePlane* parent );
-        explicit AbstractDiagram ( AbstractCoordinatePlane* plane = 0 );
+        explicit inline AbstractDiagram(
+            Private *p, QWidget* parent, AbstractCoordinatePlane* plane );
+        explicit AbstractDiagram (
+            QWidget* parent = 0, AbstractCoordinatePlane* plane = 0 );
     public:
         virtual ~AbstractDiagram();
 

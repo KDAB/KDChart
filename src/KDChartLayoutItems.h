@@ -26,39 +26,56 @@
 #ifndef KDCHARTLAYOUTITEMS_H
 #define KDCHARTLAYOUTITEMS_H
 
-#include <QLayoutItem>
-#include <QFont>
 #include <QBrush>
-#include <QPen>
+#include <QFont>
 #include <QFontMetricsF>
+#include <QLayout>
+#include <QLayoutItem>
+#include <QPen>
+
 #include "KDChartTextAttributes.h"
 #include "KDChartMarkerAttributes.h"
-#include "KDChartAbstractArea.h"
 
 class QPainter;
 class KDTextDocument;
 
 namespace KDChart {
     class AbstractDiagram;
+    class PaintContext;
 
     /** \internal
      */
-    class LayoutItem : public QLayoutItem
+    class KDCHART_EXPORT AbstractLayoutItem : public QLayoutItem
     {
+        Q_OBJECT
+
     public:
-        LayoutItem( Qt::Alignment alignment = 0 ) :
+        AbstractLayoutItem( Qt::Alignment alignment = 0 ) :
             QLayoutItem( alignment ),
-            mParent( 0 ) {}
+            mParent( 0 ),
+            mParentLayout( 0 ) {}
         virtual void paint( QPainter* ) = 0;
+        virtual void paintCtx( PaintContext* context ) const;
         virtual void setParentWidget( QWidget* widget );
         virtual void sizeHintChanged()const;
+
+        void setParentLayout( QLayout* layout )
+        {
+            mParentLayout = layout;
+        }
+        void removeFromParentLayout()
+        {
+            if( mParentLayout )
+                mParentLayout->removeItem( this );
+        }
     protected:
         QWidget* mParent;
+        QLayout* mParentLayout;
     };
 
     /** \internal
      */
-    class TextLayoutItem : public LayoutItem
+    class TextLayoutItem : public AbstractLayoutItem
     {
     public:
         TextLayoutItem( const QString& text,
@@ -99,7 +116,7 @@ namespace KDChart {
 
     /** \internal
      */
-    class MarkerLayoutItem : public LayoutItem
+    class MarkerLayoutItem : public AbstractLayoutItem
     {
     public:
         MarkerLayoutItem( AbstractDiagram* diagram, const MarkerAttributes& marker,
@@ -126,7 +143,7 @@ namespace KDChart {
 
     /** \internal
      */
-    class HorizontalLineLayoutItem : public LayoutItem
+    class HorizontalLineLayoutItem : public AbstractLayoutItem
     {
     public:
         HorizontalLineLayoutItem();
@@ -147,7 +164,7 @@ namespace KDChart {
 
     /** \internal
      */
-    class VerticalLineLayoutItem : public LayoutItem
+    class VerticalLineLayoutItem : public AbstractLayoutItem
     {
     public:
         VerticalLineLayoutItem();

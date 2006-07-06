@@ -33,8 +33,8 @@
 using namespace KDChart;
 
 
-AbstractCoordinatePlane::AbstractCoordinatePlane ( QWidget* parent )
-    : QWidget ( parent )
+AbstractCoordinatePlane::AbstractCoordinatePlane()
+    : AbstractArea()
     , _d ( new Private() )
 {
     _d->initializeGrid(); // virtual method to init the correct grid: cartesian, polar, ...
@@ -51,7 +51,7 @@ void AbstractCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
     diagram->hide();
 
     _d->diagrams.append ( diagram );
-    diagram->setParent ( this );
+    //diagram->setParent ( this );
     diagram->setCoordinatePlane( this );
     layoutDiagrams();
     emit diagramsChanged();
@@ -80,7 +80,7 @@ void AbstractCoordinatePlane::takeDiagram ( AbstractDiagram* diagram )
     const int idx = _d->diagrams.indexOf( diagram );
     if( idx != -1 ){
         _d->diagrams.removeAt( idx );
-        diagram->setParent ( 0 );
+        //diagram->setParent ( 0 );
         diagram->setCoordinatePlane( 0 );
         layoutDiagrams();
         emit diagramsChanged();
@@ -122,7 +122,7 @@ QSizePolicy KDChart::AbstractCoordinatePlane::sizePolicy() const
 void KDChart::AbstractCoordinatePlane::setGlobalGridAttributes( const GridAttributes& a )
 {
     _d->gridAttributes = a;
-    update();
+    emit gridChanged();
 }
 
 GridAttributes KDChart::AbstractCoordinatePlane::globalGridAttributes() const
@@ -145,3 +145,7 @@ AbstractCoordinatePlane * KDChart::AbstractCoordinatePlane::referenceCoordinateP
     return _d->referenceCoordinatePlane;
 }
 
+void KDChart::AbstractCoordinatePlane::update()
+{
+    emit needUpdate();
+}

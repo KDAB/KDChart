@@ -50,7 +50,7 @@ namespace KDChart {
         Q_OBJECT
 
         Q_DISABLE_COPY( CartesianAxis )
-        KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( CartesianAxis, AbstractCartesianDiagram* )
+        KDCHART_DECLARE_PRIVATE_DERIVED( CartesianAxis )
 
     public:
         enum Position {
@@ -73,13 +73,15 @@ namespace KDChart {
         CartesianAxis ( AbstractCartesianDiagram* diagram = 0 );
         ~CartesianAxis();
 
-        void paint( PaintContext* ) const;
-	void paintEvent( QPaintEvent* event );
+        /** reimpl */
+        void paintCtx( PaintContext* ) const;
+
+	//void paintEvent( QPaintEvent* event );
         QSize sizeHint() const;
         QSize minimumSizeHint() const { return sizeHint(); }
 	QSizePolicy sizePolicy() const;
-        void setGeometry( const QRectF& rect );
-        QRectF geometry() const;
+        void setGeometry( const QRect& rect );
+        QRect geometry() const;
 
         QDomDocumentFragment toXML() const;
 

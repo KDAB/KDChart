@@ -44,10 +44,10 @@ class KDCHART_EXPORT HeaderFooter : public AbstractArea
     Q_OBJECT
 
     Q_DISABLE_COPY( HeaderFooter )
-    KDCHART_DECLARE_PRIVATE_DERIVED_QWIDGET( HeaderFooter )
+    KDCHART_DECLARE_PRIVATE_DERIVED( HeaderFooter )
 
 public:
-    HeaderFooter( QWidget* parent = 0 );
+    HeaderFooter();
     virtual ~HeaderFooter();
 
     virtual QDomDocumentFragment toXML() const;
