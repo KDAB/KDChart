@@ -93,13 +93,15 @@ public:
 };
 
 
+KDCHART_DERIVED_PRIVATE_FOOTER(CartesianCoordinatePlane, AbstractCoordinatePlane)
+/*
 inline CartesianCoordinatePlane::CartesianCoordinatePlane( Private * p, QWidget * parent )
     : AbstractCoordinatePlane( p, parent ) {}
 inline CartesianCoordinatePlane::Private * CartesianCoordinatePlane::d_func()
 { return static_cast<Private*>( AbstractCoordinatePlane::d_func() ); }
 inline const CartesianCoordinatePlane::Private * CartesianCoordinatePlane::d_func() const
 { return static_cast<const Private*>( AbstractCoordinatePlane::d_func() ); }
-
+*/
 }
 
 #endif /* KDCHARTBARDIAGRAM_P_H */

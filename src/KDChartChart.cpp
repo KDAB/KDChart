@@ -431,7 +431,7 @@ void Chart::Private::slotLayoutPlanes()
 
 void Chart::Private::createLayouts( QWidget* w )
 {
-    foreach( QLayoutItem* layoutItem, layoutItems ) {
+    foreach( KDChart::AbstractLayoutItem* layoutItem, layoutItems ) {
         layoutItem->removeFromParentLayout();
     }
     qDeleteAll( layoutItems );
@@ -481,7 +481,7 @@ void Chart::Private::slotRelayout()
 
 Chart::Chart ( QWidget* parent )
     : QWidget ( parent )
-    , p ( new Private( this ) )
+    , _d( new Private( this ) )
 {
 #if defined KDAB_EVAL
     EvalDialog::checkEvalLicense( "KD Chart" );
@@ -612,14 +612,14 @@ void Chart::paint( QPainter* painter, const QRect& target )
     if( target != oldGeometry ){
         setGeometry( target );
         // Do we need that?
-        //p->slotRelayout();
+        //d->slotRelayout();
     }
     //painter->drawRect( geometry() );
 
-    foreach( KDChart::LayoutItem* layoutItem, layoutItems ) {
+    foreach( KDChart::AbstractLayoutItem* layoutItem, layoutItems ) {
         layoutItem->paint( painter );
     }
-    foreach( KDChart::LayoutItem* planeLayoutItem, planeLayoutItems ) {
+    foreach( KDChart::AbstractCoordinatePlane* planeLayoutItem, planeLayoutItems ) {
         planeLayoutItem->paint( painter );
     }
     foreach ( Legend *legend, legends ) {

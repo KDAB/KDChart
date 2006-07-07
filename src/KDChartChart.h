@@ -29,6 +29,7 @@
 #include <QWidget>
 
 #include "kdchart_export.h"
+#include "KDChartGlobal.h"
 
 namespace KDChart {
 
@@ -61,9 +62,9 @@ namespace KDChart {
     {
         Q_OBJECT
 
-    public:
-        class Private;
+        KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC_QWIDGET( Chart )
 
+    public:
         explicit Chart ( QWidget* parent = 0 );
         virtual ~Chart();
 
@@ -326,9 +327,6 @@ namespace KDChart {
           * \sa setGlobalLeading
           */
         void paint( QPainter* painter, const QRect& target );
-
-    private:
-        Private* d;
     };
 
 }

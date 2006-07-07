@@ -41,8 +41,8 @@ using namespace KDChart;
 
 #define d d_func()
 
-CartesianCoordinatePlane::CartesianCoordinatePlane ( QWidget* parent )
-    : AbstractCoordinatePlane ( new Private(), parent )
+CartesianCoordinatePlane::CartesianCoordinatePlane ()
+    : AbstractCoordinatePlane ( new Private() )
 {
     setAxesCalcMode( Linear );
 }
@@ -61,6 +61,30 @@ void CartesianCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
               SLOT ( slotLayoutChanged ( AbstractDiagram* ) ) );
 }
 
+void CartesianCoordinatePlane::paint ( QPainter* painter )
+{
+    AbstractDiagramList diags = diagrams();
+    if ( !diags.isEmpty() )
+    {
+        PaintContext ctx;
+        ctx.setPainter ( painter );
+        ctx.setCoordinatePlane ( this );
+        ctx.setRectangle ( d->drawingArea );
+
+        // paint the coordinate system rulers:
+        d->grid->drawGrid( &ctx );
+
+        // paint the diagrams:
+        for ( int i = 0; i < diags.size(); i++ )
+        {
+            PainterSaver painterSaver( painter );
+            diags[i]->paint ( &ctx );
+        }
+    }
+    //for debugging: painter.drawRect(d->drawingArea);
+}
+
+/*
 void CartesianCoordinatePlane::paintEvent ( QPaintEvent* )
 {
     AbstractDiagramList diags = diagrams();
@@ -84,6 +108,8 @@ void CartesianCoordinatePlane::paintEvent ( QPaintEvent* )
     }
     //for debugging: painter.drawRect(d->drawingArea);
 }
+*/
+
 /*
 void CartesianCoordinatePlane::paintGrid( PaintContext* ctx )
 {
@@ -243,7 +269,8 @@ void CartesianCoordinatePlane::layoutDiagrams()
     // size is the rectangle size plus the pen width). This way, most clipping
     // for regular pens should be avoided. When pens with a penWidth or larger
     // than 1 are used, this may not be sufficient.
-    d->drawingArea = QRectF ( 1, 1, width() - 3, height() - 3 );
+    const QRect rect( areaGeometry() );
+    d->drawingArea = QRectF ( 1, 1, rect.width() - 3, rect.height() - 3 );
 
     const DataDimensionsList dimensions( gridDimensionsList() );
     // test for programming errors: critical
@@ -381,7 +408,7 @@ void KDChart::CartesianCoordinatePlane::setHorizontalRange( const QPair< qreal, 
         d->horizontalMax = range.second;
 	// Is there no better way to do this???
 	layoutDiagrams();
-	emit rangeChanged();
+	emit gridChanged();
     }
 }
 
@@ -392,7 +419,7 @@ void KDChart::CartesianCoordinatePlane::setVerticalRange( const QPair< qreal, qr
         d->verticalMax = range.second;
 	// Is there no better way to do this???
 	layoutDiagrams();
-	emit rangeChanged();
+	emit gridChanged();
     }
 }
 

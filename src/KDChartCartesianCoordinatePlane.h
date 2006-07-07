@@ -39,12 +39,13 @@ namespace KDChart {
     {
         Q_OBJECT
         Q_DISABLE_COPY( CartesianCoordinatePlane )
-        KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( CartesianCoordinatePlane, QWidget* )
+        KDCHART_DECLARE_PRIVATE_DERIVED( CartesianCoordinatePlane )
+
     friend class CartesianAxis;
     friend class CartesianGrid;
 
     public:
-        explicit CartesianCoordinatePlane ( QWidget* parent = 0 );
+        explicit CartesianCoordinatePlane ();
         ~CartesianCoordinatePlane();
 
         void addDiagram ( AbstractDiagram* diagram );
@@ -172,6 +173,9 @@ namespace KDChart {
 
         AxesCalcMode axesCalcMode() const;
 	void setAxesCalcMode( AxesCalcMode mode );
+
+        /** reimpl */
+        virtual void paint( QPainter* );
 
     protected:
         virtual QRectF calculateRawDataBoundingRect() const;

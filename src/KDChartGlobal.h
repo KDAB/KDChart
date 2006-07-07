@@ -177,25 +177,25 @@ inline const CLASS::Private * CLASS::d_func() const         \
 
 
 #if defined(_MSC_VER) && _MSC_VER < 1300
-#define KDCHART_DECLARE_DERIVED_DIAGRAM( X, PlaneType )      \
-public:                                           \
-    class Private;                                \
-protected:                                        \
-    inline Private * d_func();                    \
-    inline const Private * d_func() const;        \
-    explicit inline X( Private * );               \
-    explicit inline X( Private *, QWidget *, PlaneType * );   \
-private:                                          \
+#define KDCHART_DECLARE_DERIVED_DIAGRAM( X, PLANE )     \
+public:                                                 \
+    class Private;                                      \
+protected:                                              \
+    inline Private * d_func();                          \
+    inline const Private * d_func() const;              \
+    explicit inline X( Private * );                     \
+    explicit inline X( Private *, QWidget *, PLANE * ); \
+private:                                                \
     void init();
 #else
-#define KDCHART_DECLARE_DERIVED_DIAGRAM( X, PlaneType )      \
-protected:                                        \
-    class Private;                                \
-    inline Private * d_func();                    \
-    inline const Private * d_func() const;        \
-    explicit inline X( Private * );               \
-    explicit inline X( Private *, QWidget *, PlaneType * );   \
-private:                                          \
+#define KDCHART_DECLARE_DERIVED_DIAGRAM( X, PLANE )     \
+protected:                                              \
+    class Private;                                      \
+    inline Private * d_func();                          \
+    inline const Private * d_func() const;              \
+    explicit inline X( Private * );                     \
+    explicit inline X( Private *, QWidget *, PLANE * ); \
+private:                                                \
     void init();
 #endif
 
