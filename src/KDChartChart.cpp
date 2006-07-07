@@ -494,6 +494,8 @@ Chart::~Chart()
 {
 }
 
+#define d d_func()
+
 AbstractCoordinatePlane* Chart::coordinatePlane()
 {
     if ( d->coordinatePlanes.isEmpty() )
@@ -612,14 +614,14 @@ void Chart::paint( QPainter* painter, const QRect& target )
     if( target != oldGeometry ){
         setGeometry( target );
         // Do we need that?
-        //d->slotRelayout();
+        // d->slotRelayout();
     }
     //painter->drawRect( geometry() );
 
-    foreach( KDChart::AbstractLayoutItem* layoutItem, layoutItems ) {
+    foreach( KDChart::AbstractLayoutItem* layoutItem, d->layoutItems ) {
         layoutItem->paint( painter );
     }
-    foreach( KDChart::AbstractCoordinatePlane* planeLayoutItem, planeLayoutItems ) {
+    foreach( KDChart::AbstractCoordinatePlane* planeLayoutItem, d->planeLayoutItems ) {
         planeLayoutItem->paint( painter );
     }
     foreach ( Legend *legend, legends ) {

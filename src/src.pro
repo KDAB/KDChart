@@ -20,6 +20,10 @@ HEADERS += KDChartGlobal.h \
            KDChartAbstractCartesianDiagram_p.h \
            KDChartAbstractCoordinatePlane.h \
            KDChartAbstractCoordinatePlane_p.h \
+           KDChartPolarCoordinatePlane.h \
+           KDChartPolarCoordinatePlane_p.h \
+           KDChartCartesianCoordinatePlane.h \
+           KDChartCartesianCoordinatePlane_p.h \
            KDChartAbstractDiagram.h \
            KDChartAbstractDiagram_p.h \
            KDChartAbstractPieDiagram.h \
@@ -37,8 +41,6 @@ HEADERS += KDChartGlobal.h \
            KDChartBarDiagram_p.h \
            KDChartCartesianAxis.h \
            KDChartCartesianAxis_p.h \
-           KDChartCartesianCoordinatePlane.h \
-           KDChartCartesianCoordinatePlane_p.h \
            KDChartChart.h \
            KDChartDatasetProxyModel.h \
            KDChartDatasetSelector.h \
@@ -61,7 +63,6 @@ HEADERS += KDChartGlobal.h \
            KDChartPalette.h \
            KDChartPieDiagram.h \
            KDChartPieDiagram_p.h \
-           KDChartPolarCoordinatePlane.h \
            KDChartPolarDiagram.h \
            KDChartPolarDiagram_p.h \
            KDChartPosition.h \
@@ -88,6 +89,8 @@ HEADERS += KDChartGlobal.h \
            KDChartChart_p.h 
 SOURCES += KDChartAbstractCartesianDiagram.cpp \
            KDChartAbstractCoordinatePlane.cpp \
+           KDChartPolarCoordinatePlane.cpp \
+           KDChartCartesianCoordinatePlane.cpp \
            KDChartAbstractDiagram.cpp \
            KDChartAbstractPieDiagram.cpp \
            KDChartAbstractPolarDiagram.cpp \
@@ -100,7 +103,6 @@ SOURCES += KDChartAbstractCartesianDiagram.cpp \
            KDChartBarAttributes.cpp \
            KDChartBarDiagram.cpp \
            KDChartCartesianAxis.cpp \
-           KDChartCartesianCoordinatePlane.cpp \
            KDChartChart.cpp \
            KDChartDatasetProxyModel.cpp \
            KDChartDatasetSelector.cpp \
@@ -118,7 +120,6 @@ SOURCES += KDChartAbstractCartesianDiagram.cpp \
            KDChartPaintContext.cpp \
            KDChartPalette.cpp \
            KDChartPieDiagram.cpp \
-           KDChartPolarCoordinatePlane.cpp \
            KDChartPolarDiagram.cpp \
            KDChartPosition.cpp \
            KDChartRelativePosition.cpp \

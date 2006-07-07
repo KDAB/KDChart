@@ -41,8 +41,8 @@ using namespace KDChart;
 
 #define d d_func()
 
-CartesianCoordinatePlane::CartesianCoordinatePlane ()
-    : AbstractCoordinatePlane ( new Private() )
+CartesianCoordinatePlane::CartesianCoordinatePlane ( QWidget* parent )
+    : AbstractCoordinatePlane ( new Private(), parent )
 {
     setAxesCalcMode( Linear );
 }
@@ -64,6 +64,8 @@ void CartesianCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
 void CartesianCoordinatePlane::paint ( QPainter* painter )
 {
     AbstractDiagramList diags = diagrams();
+    //FIXME(khz): make this also work in no diagrams are there
+    // (commenting out the following line should do it)
     if ( !diags.isEmpty() )
     {
         PaintContext ctx;
@@ -483,3 +485,23 @@ bool KDChart::CartesianCoordinatePlane::hasOwnGridAttributes(
         : d->hasOwnGridAttributesVertical;
 }
 
+/* pure virtual in QLayoutItem */
+QSize KDChart::CartesianCoordinatePlane::maximumSize() const
+{
+}
+/* pure virtual in QLayoutItem */
+QSize KDChart::CartesianCoordinatePlane::minimumSize() const
+{
+}
+/* pure virtual in QLayoutItem */
+QSize KDChart::CartesianCoordinatePlane::sizeHint() const
+{
+}
+/* pure virtual in QLayoutItem */
+void KDChart::CartesianCoordinatePlane::setGeometry( const QRect& r )
+{
+}
+/* pure virtual in QLayoutItem */
+QRect KDChart::CartesianCoordinatePlane::geometry() const
+{
+}

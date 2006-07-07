@@ -88,15 +88,23 @@ namespace KDChart {
         QString text() const;
         TextAttributes attributes() const;
 
-        virtual Qt::Orientations expandingDirections() const;
-        virtual QRect geometry() const;
+        /** pure virtual in QLayoutItem */
         virtual bool isEmpty() const;
+        /** pure virtual in QLayoutItem */
+        virtual Qt::Orientations expandingDirections() const;
+        /** pure virtual in QLayoutItem */
         virtual QSize maximumSize() const;
+        /** pure virtual in QLayoutItem */
         virtual QSize minimumSize() const;
+        /** pure virtual in QLayoutItem */
+        virtual QSize sizeHint() const;
+        /** pure virtual in QLayoutItem */
         virtual void setGeometry( const QRect& r );
+        /** pure virtual in QLayoutItem */
+        virtual QRect geometry() const;
+
         virtual qreal realFontSize() const;
         virtual QFont realFont() const;
-        virtual QSize sizeHint() const;
 
         virtual void paint( QPainter* );
 

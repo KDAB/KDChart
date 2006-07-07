@@ -51,7 +51,8 @@ class AbstractCoordinatePlane::Private : public AbstractArea::Private
     friend class AbstractCoordinatePlane;
 protected:
     explicit Private()
-        : grid( 0 )
+        : parent( 0 )
+        , grid( 0 )
         , referenceCoordinatePlane( 0 ){}
     virtual ~Private(){ 
         delete grid;
@@ -63,6 +64,7 @@ protected:
         // can not call the base class: grid = new AbstractGrid();
     }
 
+    QWidget* parent;
     AbstractGrid* grid;
     AbstractDiagramList diagrams;
     GridAttributes gridAttributes;
@@ -70,16 +72,28 @@ protected:
 };
 
 
-//KDCHART_DERIVED_PRIVATE_FOOTER(AbstractCoordinatePlane, AbstractArea)
-inline AbstractCoordinatePlane::AbstractCoordinatePlane( Private * p )
-    : AbstractArea( p )
-{
-    init();
-}
 void AbstractCoordinatePlane::init()
 {
     // this bloc left empty intentionally
 }
+
+
+inline AbstractCoordinatePlane::AbstractCoordinatePlane( Private * p, QWidget* parent )
+    : AbstractArea( p )
+{
+    if( p )
+        p->parent = parent;
+    init();
+}
+inline AbstractCoordinatePlane::Private * AbstractCoordinatePlane::d_func()
+{
+    return static_cast<Private*>( AbstractArea::d_func() );
+}
+inline const AbstractCoordinatePlane::Private * AbstractCoordinatePlane::d_func() const
+{
+    return static_cast<const Private*>( AbstractArea::d_func() );
+}
+
 /*
 inline AbstractCoordinatePlane::Private * AbstractCoordinatePlane::d_func()
 {

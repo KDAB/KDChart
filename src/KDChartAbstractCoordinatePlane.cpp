@@ -32,12 +32,13 @@
 
 using namespace KDChart;
 
+#define d d_func()
 
-AbstractCoordinatePlane::AbstractCoordinatePlane()
-    : AbstractArea()
-    , _d ( new Private() )
+AbstractCoordinatePlane::AbstractCoordinatePlane ( QWidget* parent )
+    : AbstractArea ( new Private() )
 {
-    _d->initializeGrid(); // virtual method to init the correct grid: cartesian, polar, ...
+    d->parent = parent;
+    d->initializeGrid(); // virtual method to init the correct grid: cartesian, polar, ...
 }
 
 AbstractCoordinatePlane::~AbstractCoordinatePlane()
@@ -50,7 +51,7 @@ void AbstractCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
     // diagrams are invisible and paint through their paint() method
     diagram->hide();
 
-    _d->diagrams.append ( diagram );
+    d->diagrams.append ( diagram );
     //diagram->setParent ( this );
     diagram->setCoordinatePlane( this );
     layoutDiagrams();
@@ -62,9 +63,9 @@ void AbstractCoordinatePlane::replaceDiagram ( AbstractDiagram* diagram, Abstrac
 {
     if( diagram && oldDiagram_ != diagram ){
         AbstractDiagram* oldDiagram = oldDiagram_;
-        if( _d->diagrams.count() ){
+        if( d->diagrams.count() ){
             if( ! oldDiagram )
-                oldDiagram = _d->diagrams.first();
+                oldDiagram = d->diagrams.first();
             takeDiagram( oldDiagram );
         }
         delete oldDiagram;
@@ -77,9 +78,9 @@ void AbstractCoordinatePlane::replaceDiagram ( AbstractDiagram* diagram, Abstrac
 /*virtual*/
 void AbstractCoordinatePlane::takeDiagram ( AbstractDiagram* diagram )
 {
-    const int idx = _d->diagrams.indexOf( diagram );
+    const int idx = d->diagrams.indexOf( diagram );
     if( idx != -1 ){
-        _d->diagrams.removeAt( idx );
+        d->diagrams.removeAt( idx );
         //diagram->setParent ( 0 );
         diagram->setCoordinatePlane( 0 );
         layoutDiagrams();
@@ -90,22 +91,22 @@ void AbstractCoordinatePlane::takeDiagram ( AbstractDiagram* diagram )
 
 AbstractDiagram* AbstractCoordinatePlane::diagram()
 {
-    if ( _d->diagrams.isEmpty() )
+    if ( d->diagrams.isEmpty() )
     {
         return 0;
     } else {
-        return _d->diagrams.first();
+        return d->diagrams.first();
     }
 }
 
 AbstractDiagramList AbstractCoordinatePlane::diagrams()
 {
-    return _d->diagrams;
+    return d->diagrams;
 }
 
 ConstAbstractDiagramList AbstractCoordinatePlane::diagrams() const
 {
-    return _d->diagrams;
+    return d->diagrams;
 }
 
 QSize KDChart::AbstractCoordinatePlane::minimumSizeHint() const
@@ -121,31 +122,52 @@ QSizePolicy KDChart::AbstractCoordinatePlane::sizePolicy() const
 
 void KDChart::AbstractCoordinatePlane::setGlobalGridAttributes( const GridAttributes& a )
 {
-    _d->gridAttributes = a;
+    d->gridAttributes = a;
     emit gridChanged();
 }
 
 GridAttributes KDChart::AbstractCoordinatePlane::globalGridAttributes() const
 {
-    return _d->gridAttributes;
+    return d->gridAttributes;
 }
 
 KDChart::DataDimensionsList KDChart::AbstractCoordinatePlane::gridDimensionsList()
 {
-    return _d->grid->updateData( this );
+    return d->grid->updateData( this );
 }
 
 void KDChart::AbstractCoordinatePlane::setReferenceCoordinatePlane( AbstractCoordinatePlane * plane )
 {
-    _d->referenceCoordinatePlane = plane;
+    d->referenceCoordinatePlane = plane;
 }
 
 AbstractCoordinatePlane * KDChart::AbstractCoordinatePlane::referenceCoordinatePlane( ) const
 {
-    return _d->referenceCoordinatePlane;
+    return d->referenceCoordinatePlane;
 }
 
 void KDChart::AbstractCoordinatePlane::update()
 {
     emit needUpdate();
 }
+
+/* pure virtual in QLayoutItem */
+bool KDChart::AbstractCoordinatePlane::isEmpty() const
+{
+    return false; // never empty!
+    // coordinate planes with no associated diagrams
+    // are showing a default grid of ()1..10, 1..10) stepWidth 1
+}
+
+/* pure virtual in QLayoutItem */
+Qt::Orientations KDChart::AbstractCoordinatePlane::expandingDirections() const
+{
+    return Qt::Vertical | Qt::Horizontal;
+}
+
+void KDChart::AbstractCoordinatePlane::setParent( QWidget* parent )
+{
+    d->parent = parent;
+}
+
+#undef d

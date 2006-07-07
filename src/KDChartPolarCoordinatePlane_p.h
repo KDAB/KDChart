@@ -123,12 +123,7 @@ public:
 };
 
 
-inline PolarCoordinatePlane::PolarCoordinatePlane( Private * p, QWidget * parent )
-    : AbstractCoordinatePlane( p, parent ) {}
-inline PolarCoordinatePlane::Private * PolarCoordinatePlane::d_func()
-{ return static_cast<Private*>( AbstractCoordinatePlane::d_func() ); }
-inline const PolarCoordinatePlane::Private * PolarCoordinatePlane::d_func() const
-{ return static_cast<const Private*>( AbstractCoordinatePlane::d_func() ); }
+KDCHART_IMPL_DERIVED_PLANE(PolarCoordinatePlane, AbstractCoordinatePlane)
 
 }
 

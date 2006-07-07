@@ -36,7 +36,7 @@ namespace KDChart {
     {
         Q_OBJECT
         Q_DISABLE_COPY( PolarCoordinatePlane )
-        KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( PolarCoordinatePlane, QWidget* )
+        KDCHART_DECLARE_PRIVATE_DERIVED_QWIDGET( PolarCoordinatePlane )
 
     public:
         struct CoordinateTransformation;
@@ -59,6 +59,9 @@ namespace KDChart {
         virtual QPointF zoomCenter() const;
 
         virtual void setZoomCenter( QPointF center );
+
+        /** reimpl */
+        virtual void paint( QPainter* );
 
     protected:
         virtual DataDimensionsList getDataDimensionsList() const;

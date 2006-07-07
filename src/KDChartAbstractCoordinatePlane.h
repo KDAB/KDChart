@@ -113,12 +113,12 @@ namespace KDChart {
         Q_OBJECT
 
         Q_DISABLE_COPY( AbstractCoordinatePlane )
-        KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC( AbstractCoordinatePlane )
+        KDCHART_DECLARE_PRIVATE_DERIVED_QWIDGET( AbstractCoordinatePlane )
 
     friend class AbstractGrid;
 
     protected:
-        explicit AbstractCoordinatePlane ();
+        explicit AbstractCoordinatePlane ( QWidget* parent );
 
     public:
         virtual ~AbstractCoordinatePlane();
@@ -300,6 +300,16 @@ namespace KDChart {
           * Calling update() on the plane triggers the global KDChart::Chart::update()
           */
         void update();
+
+        /** pure virtual in QLayoutItem */
+        virtual bool isEmpty() const;
+        /** pure virtual in QLayoutItem */
+        virtual Qt::Orientations expandingDirections() const;
+
+        /**
+          * Called internally by KDChart::Chart
+          */
+        void setParent( QWidget* parent );
 
     signals:
         /** Emitted when this coordinate plane is destroyed. */

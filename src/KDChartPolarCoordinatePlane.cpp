@@ -131,6 +131,31 @@ void PolarCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
 
 }
 
+void PolarCoordinatePlane::paint ( QPainter* painter )
+{
+    AbstractDiagramList diags = diagrams();
+    if ( d->coordinateTransformations.size() == diags.size() )
+    {
+        PaintContext ctx;
+        ctx.setPainter ( painter );
+        ctx.setCoordinatePlane ( this );
+        ctx.setRectangle ( d->contentRect );
+
+        // paint the coordinate system rulers:
+        d->grid->drawGrid( &ctx );
+
+        // paint the diagrams:
+        for ( int i = 0; i < diags.size(); i++ )
+        {
+            d->currentTransformation = & ( d->coordinateTransformations[i] );
+            PainterSaver painterSaver( painter );
+            diags[i]->paint ( &ctx );
+        }
+        d->currentTransformation = 0;
+    } // else: diagrams have not been set up yet
+}
+
+/*
 void PolarCoordinatePlane::paintEvent ( QPaintEvent* )
 {
     AbstractDiagramList diags = diagrams();
@@ -155,6 +180,7 @@ void PolarCoordinatePlane::paintEvent ( QPaintEvent* )
         d->currentTransformation = 0;
     } // else: diagrams have not been set up yet
 }
+*/
 /*
 void PolarCoordinatePlane::paintGrid( PaintContext* ctx )
 {
@@ -209,7 +235,8 @@ void PolarCoordinatePlane::layoutDiagrams()
     // size is the rectangle size plus the pen width). This way, most clipping
     // for regular pens should be avoided. When pens with a penWidth or larger
     // than 1 are used, this may not b sufficient.
-    d->contentRect = QRectF ( 1, 1, width() - 3, height() - 3 );
+    const QRect rect( areaGeometry() );
+    d->contentRect = QRectF ( 1, 1, rect.width() - 3, rect.height() - 3 );
 
     // FIXME distribute space according to options:
     d->coordinateTransformations.clear();

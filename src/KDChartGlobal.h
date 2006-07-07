@@ -211,6 +211,15 @@ inline const CLASS::Private * CLASS::d_func() const          \
     { return static_cast<const Private *>( PARENT::d_func() ); }
 
 
+#define KDCHART_IMPL_DERIVED_PLANE( CLASS, BASEPLANE )        \
+inline CLASS::CLASS( Private * p, QWidget* parent )           \
+    : BASEPLANE( p, parent ) { init(); }                      \
+inline CLASS::Private * CLASS::d_func()                       \
+    { return static_cast<Private *>( BASEPLANE::d_func() ); } \
+inline const CLASS::Private * CLASS::d_func() const           \
+    { return static_cast<const Private *>( BASEPLANE::d_func() ); }
+
+
 #include <QtAlgorithms> // qSwap
 #ifndef QT_NO_STL
 #include <algorithm>
