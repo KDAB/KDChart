@@ -175,10 +175,6 @@ namespace KDChart {
 	void setAxesCalcMode( AxesCalcMode mode );
 
         /** pure virtual in QLayoutItem */
-        virtual QSize maximumSize() const;
-        /** pure virtual in QLayoutItem */
-        virtual QSize minimumSize() const;
-        /** pure virtual in QLayoutItem */
         virtual QSize sizeHint() const;
         /** pure virtual in QLayoutItem */
         virtual void setGeometry( const QRect& r );

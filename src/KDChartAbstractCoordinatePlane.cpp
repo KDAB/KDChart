@@ -151,6 +151,11 @@ void KDChart::AbstractCoordinatePlane::update()
     emit needUpdate();
 }
 
+void KDChart::AbstractCoordinatePlane::setParent( QWidget* parent )
+{
+    d->parent = parent;
+}
+
 /* pure virtual in QLayoutItem */
 bool KDChart::AbstractCoordinatePlane::isEmpty() const
 {
@@ -158,16 +163,26 @@ bool KDChart::AbstractCoordinatePlane::isEmpty() const
     // coordinate planes with no associated diagrams
     // are showing a default grid of ()1..10, 1..10) stepWidth 1
 }
-
 /* pure virtual in QLayoutItem */
 Qt::Orientations KDChart::AbstractCoordinatePlane::expandingDirections() const
 {
     return Qt::Vertical | Qt::Horizontal;
 }
-
-void KDChart::AbstractCoordinatePlane::setParent( QWidget* parent )
+/* pure virtual in QLayoutItem */
+QSize KDChart::AbstractCoordinatePlane::maximumSize() const
 {
-    d->parent = parent;
+    if( d->parent )
+        return d->parent->size();
+    // Note: At external layut calculation time the coord.plane *will*
+    //       have a parent widget, so returning a default size here
+    //       will not affect its real drawing size.
+    return QSize(1000, 1000);
+}
+
+/* pure virtual in QLayoutItem */
+QSize KDChart::AbstractCoordinatePlane::minimumSize() const
+{
+    return QSize(60, 60); // this default can be overwritten by derived classes
 }
 
 #undef d

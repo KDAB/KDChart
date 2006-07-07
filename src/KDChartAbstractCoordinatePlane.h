@@ -305,6 +305,10 @@ namespace KDChart {
         virtual bool isEmpty() const;
         /** pure virtual in QLayoutItem */
         virtual Qt::Orientations expandingDirections() const;
+        /** pure virtual in QLayoutItem */
+        virtual QSize maximumSize() const;
+        /** pure virtual in QLayoutItem */
+        virtual QSize minimumSize() const;
 
         /**
           * Called internally by KDChart::Chart

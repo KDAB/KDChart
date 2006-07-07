@@ -486,14 +486,6 @@ bool KDChart::CartesianCoordinatePlane::hasOwnGridAttributes(
 }
 
 /* pure virtual in QLayoutItem */
-QSize KDChart::CartesianCoordinatePlane::maximumSize() const
-{
-}
-/* pure virtual in QLayoutItem */
-QSize KDChart::CartesianCoordinatePlane::minimumSize() const
-{
-}
-/* pure virtual in QLayoutItem */
 QSize KDChart::CartesianCoordinatePlane::sizeHint() const
 {
 }
