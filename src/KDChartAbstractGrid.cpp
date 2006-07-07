@@ -30,10 +30,16 @@
 #include "KDChartAbstractGrid.h"
 #include "KDChartPaintContext.h"
 
-#ifdef Q_OS_WIN
+#if defined Q_OS_WIN
 #include <float.h>
-#define isnan(x ) _isnan(x )
-#define isinf(x ) (!(_finite(x ) + _isnan(x ) ) )
+#define ISNAN(x ) _isnan(x )
+#define ISINF(x ) (!(_finite(x ) + _isnan(x ) ) )
+#elif defined Q_OS_DARWIN
+#define ISNAN(x) std::isnan(x)
+#define ISINF(x) std::isinf(x)
+#else
+#define ISNAN(x) isnan(x)
+#define ISINF(x) isinf(x)
 #endif
 
 using namespace KDChart;
@@ -84,5 +90,5 @@ bool AbstractGrid::isBoundariesValid(const DataDimensionsList& l )
 
 bool AbstractGrid::isValueValid(const qreal& r )
 {
-  return !(isnan(r) || isinf(r));
+  return !(ISNAN(r) || ISINF(r));
 }
