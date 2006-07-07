@@ -42,11 +42,6 @@
 #include "KDChartThreeDLineAttributes.h"
 #include "KDChartPainterSaver_p.h"
 
-#ifdef WIN32
-#include <float.h>
-#define isnan(x ) _isnan(x )
-#define isinf(x ) (!(_finite(x ) + _isnan(x ) ) )
-#endif
 
 using namespace KDChart;
 
