@@ -56,8 +56,10 @@
 
 
 // We wrap every if() by extra { } to work around
-// the scope bug for loop counters in some compilers.
+// the scope bug for loop counters in MS Visual C++
+#if defined(Q_CC_MSVC) && !defined(Q_CC_MSVC_NET)
 #define for if (0) {} else for
+#endif
 
 
 #endif
