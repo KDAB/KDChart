@@ -12,8 +12,7 @@ CONFIG(debug, debug|release) {
 }
 
 
-
-FORMS += KDChartDatasetSelector.ui 
+FORMS += KDChartDatasetSelector.ui
 HEADERS += KDChartGlobal.h \
            CartesianCoordinateTransformation.h \
            KDChartAbstractCartesianDiagram.h \
@@ -135,7 +134,10 @@ SOURCES += KDChartAbstractCartesianDiagram.cpp \
            KDChartAbstractArea.cpp \
            KDChartAbstractAreaWidget.cpp \
            KDChartAbstractAxis.cpp
+
+CONFIG += warn-on
 include( ../variables.pri )
+
 DEFINES += KDCHART_BUILD_KDCHART_LIB
 TEMPLATE = lib
 
