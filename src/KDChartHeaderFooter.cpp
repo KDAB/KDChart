@@ -35,6 +35,9 @@
 #include <QLabel>
 #include "KDTextDocument.h"
 
+//FIXME(khz): use an internal libfakes library instead of this internal haeder file
+#include "kdchart_platformdef.h"
+
 using namespace KDChart;
 
 //HeaderFooter::Private::Private( QWidget* parent_ ) :

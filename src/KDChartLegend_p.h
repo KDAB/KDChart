@@ -45,6 +45,11 @@
 #include <QAbstractTextDocumentLayout>
 #include <QPainter>
 #include <QVector>
+
+//FIXME(khz): use an internal libfakes library instead of this internal header file
+#include "kdchart_platformdef.h"
+
+
 class QGridLayout;
 class KDTextDocument;
 class QTextDocument;

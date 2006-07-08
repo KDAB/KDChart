@@ -32,6 +32,10 @@
 #include <QtXml/QDomDocumentFragment>
 #include <QPainter>
 
+//FIXME(khz): use an internal libfakes library instead of this internal header file
+#include "kdchart_platformdef.h"
+
+
 using namespace KDChart;
 
 AbstractAreaBase::Private::Private() :

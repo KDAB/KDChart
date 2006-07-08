@@ -40,6 +40,11 @@
 #include "KDChartHeaderFooter.h"
 #include "KDChartAbstractArea_p.h"
 #include <QMap>
+
+//FIXME(khz): use an internal libfakes library instead of this internal header file
+#include "kdchart_platformdef.h"
+
+
 class KDTextDocument;
 
 namespace KDChart {

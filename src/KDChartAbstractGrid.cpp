@@ -23,24 +23,14 @@
  **
  **********************************************************************/
 
-#include <cmath>
-
 #include <qglobal.h>
 
 #include "KDChartAbstractGrid.h"
 #include "KDChartPaintContext.h"
 
-#if defined Q_OS_WIN
-#include <float.h>
-#define ISNAN(x ) _isnan(x )
-#define ISINF(x ) (!(_finite(x ) + _isnan(x ) ) )
-#elif defined Q_OS_DARWIN
-#define ISNAN(x) std::isnan(x)
-#define ISINF(x) std::isinf(x)
-#else
-#define ISNAN(x) isnan(x)
-#define ISINF(x) isinf(x)
-#endif
+//FIXME(khz): use an internal libfakes library instead of this internal header file
+#include "kdchart_platformdef.h"
+
 
 using namespace KDChart;
 

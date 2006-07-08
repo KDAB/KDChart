@@ -29,6 +29,9 @@
 
 #include "ui_KDChartDatasetSelector.h"
 
+//FIXME(khz): use an internal libfakes library instead of this internal haeder file
+#include "kdchart_platformdef.h"
+
 using namespace KDChart;
 
 DatasetSelectorWidget::DatasetSelectorWidget ( QWidget* parent )

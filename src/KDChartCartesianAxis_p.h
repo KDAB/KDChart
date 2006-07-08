@@ -41,6 +41,10 @@
 #include "KDChartAbstractCartesianDiagram.h"
 #include "KDChartAbstractAxis_p.h"
 
+//FIXME(khz): use an internal libfakes library instead of this internal header file
+#include "kdchart_platformdef.h"
+
+
 namespace KDChart {
 
     /**

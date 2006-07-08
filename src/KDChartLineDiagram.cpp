@@ -42,9 +42,8 @@
 #include "KDChartPainterSaver_p.h"
 #include "KDChartAbstractGrid.h"
 
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
-#endif
+//FIXME(khz): use an internal libfakes library instead of this internal haeder file
+#include "kdchart_platformdef.h"
 
 
 using namespace KDChart;

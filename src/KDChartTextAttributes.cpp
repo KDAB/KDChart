@@ -30,6 +30,9 @@
 #include <qglobal.h>
 #include <QApplication>
 
+//FIXME(khz): use an internal libfakes library instead of this internal haeder file
+#include "kdchart_platformdef.h"
+
 #define d d_func()
 
 using namespace KDChart;

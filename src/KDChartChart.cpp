@@ -46,6 +46,10 @@
 #include "../evaldialog/evaldialog.h"
 #endif
 
+//FIXME(khz): use an internal libfakes library instead of this internal haeder file
+#include "kdchart_platformdef.h"
+
+
 using namespace KDChart;
 
 void Chart::Private::slotUnregisterDestroyedLegend( Legend *l )

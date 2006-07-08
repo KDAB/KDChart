@@ -41,12 +41,11 @@
 #include "KDChartZoomParameters.h"
 #include "KDChartPolarGrid.h"
 
-namespace KDChart {
+//FIXME(khz): use an internal libfakes library instead of this internal header file
+#include "kdchart_platformdef.h"
 
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
-#endif
-#define DEGTORAD(d) (d)*M_PI/180
+
+namespace KDChart {
 
 /**
  * \internal

@@ -31,6 +31,9 @@
 #include <KDChartDiagramObserver.h>
 #include <KDChartAttributesModel.h>
 
+//FIXME(khz): use an internal libfakes library instead of this internal haeder file
+#include "kdchart_platformdef.h"
+
 #include <QDebug>
 
 namespace KDChart {
