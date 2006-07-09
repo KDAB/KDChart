@@ -62,10 +62,12 @@ Legend::Private::Private() :
     observer( NULL ),
     needRebuild( false )
 {
+    // this bloc left empty intentionally
 }
 
 Legend::Private::~Private()
 {
+    // this bloc left empty intentionally
 }
 
 

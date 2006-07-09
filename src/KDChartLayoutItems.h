@@ -55,7 +55,7 @@ namespace KDChart {
             mParent( 0 ),
             mParentLayout( 0 ) {}
         virtual void paint( QPainter* ) = 0;
-        virtual void paintCtx( PaintContext* context ) const;
+        virtual void paintCtx( PaintContext* context );
         virtual void setParentWidget( QWidget* widget );
         virtual void sizeHintChanged()const;
 

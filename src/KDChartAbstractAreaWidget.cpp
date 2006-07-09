@@ -31,8 +31,20 @@
 
 using namespace KDChart;
 
-AbstractAreaWidget::AbstractAreaWidget( QWidget* parent )
-    : KDChart::AbstractAreaBase()
+
+AbstractAreaWidget::Private::Private()
+{
+    // this bloc left empty intentionally
+}
+
+AbstractAreaWidget::Private::~Private()
+{
+    // this bloc left empty intentionally
+}
+
+
+AbstractAreaWidget::AbstractAreaWidget( QWidget* parent = 0 )
+    : AbstractAreaBase()
     , QWidget( parent )
 {
     // this bloc left empty intentionally
@@ -41,6 +53,15 @@ AbstractAreaWidget::AbstractAreaWidget( QWidget* parent )
 AbstractAreaWidget::~AbstractAreaWidget()
 {
     // this bloc left empty intentionally
+}
+
+#define d d_func()
+
+AbstractAreaWidget::AbstractAreaWidget( QWidget* parent ) :
+    AbstractAreaBase( new Private() )
+{
+    d->parent = parent;
+    init();
 }
 
 void AbstractAreaWidget::paintEvent( QPaintEvent* event )

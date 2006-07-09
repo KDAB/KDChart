@@ -23,8 +23,8 @@
  **
  **********************************************************************/
 
-#ifndef KDCHARTHEADERFOOTER_P_H
-#define KDCHARTHEADERFOOTER_P_H
+#ifndef KDCHARTABSTRACTAREAWIDGET_P_H
+#define KDCHARTABSTRACTAREAWIDGET_P_H
 
 //
 //  W A R N I N G
@@ -37,64 +37,47 @@
 // We mean it.
 //
 
-#include "KDChartHeaderFooter.h"
-#include "KDChartAbstractArea_p.h"
-#include <QMap>
+/** \file KDChartAbstractAreaWidget_p.h
+ *  \internal
+ */
+
+#include "KDChartAbstractAreaWidget.h"
+#include "KDChartAbstractAreaBase_p.h"
 
 //FIXME(khz): use an internal libfakes library instead of this internal header file
 #include "kdchart_platformdef.h"
 
 
-class KDTextDocument;
-
 namespace KDChart {
-    class Chart;
-    class TextAttributes;
-    class HeaderFooter;
-}
-using KDChart::TextAttributes;
-using KDChart::HeaderFooter;
 
 /**
  * \internal
  */
-class KDChart::HeaderFooter::Private : public AbstractArea::Private
+class AbstractAreaWidget::Private : public AbstractAreaBase::Private
 {
-    friend class KDChart::HeaderFooter;
+    friend class AbstractAreaWidget;
 public:
-    explicit Private( KDChart::Chart* parent_ );
-    ~Private();
-
-    void updateTextDoc();
-
-private:
-    // user-settable
-    KDChart::Chart* parent;
-    HeaderFooterType type;
-    Position position;
-    QString text;
-    TextAttributes textAttrs;
-
-    // internal
-    mutable KDTextDocument* textDoc;
-    QSize cachedSize;
+    explicit Private();
+    virtual ~Private();
 };
 
-inline KDChart::HeaderFooter::HeaderFooter( Private* d, KDChart::Chart* parent )
-    : AbstractArea( d )
+
+inline AbstractAreaWidget::AbstractAreaWidget( AbstractAreaWidget::Private * p )
+  : AbstractAreaBase( p ), QWidget()
 {
-    if( d )
-        d->parent = parent;
     init();
 }
-inline KDChart::HeaderFooter::Private * KDChart::HeaderFooter::d_func()
+inline AbstractAreaWidget::Private * AbstractAreaWidget::d_func()
 {
-    return static_cast<Private*>( AbstractArea::d_func() );
+    return static_cast<Private*>( AbstractAreaBase::d_func() );
 }
-inline const KDChart::HeaderFooter::Private * KDChart::HeaderFooter::d_func() const
+inline const AbstractAreaWidget::Private * AbstractAreaWidget::d_func() const
 {
-    return static_cast<const Private*>( AbstractArea::d_func() );
+    return static_cast<const Private*>( AbstractAreaBase::d_func() );
 }
 
 
-#endif /* KDCHARTHEADERFOOTER_P_H */
+}
+
+#endif /* KDCHARTABSTRACTAREAWIDGET_P_H */
+

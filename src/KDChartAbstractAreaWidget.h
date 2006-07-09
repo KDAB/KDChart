@@ -53,8 +53,11 @@ class KDCHART_EXPORT AbstractAreaWidget : public AbstractAreaBase, public QWidge
     Q_OBJECT
 
     Q_DISABLE_COPY( AbstractAreaWidget )
+    KDCHART_DECLARE_PRIVATE_DERIVED_QWIDGET( AbstractAreaWidget )
 
 public:
+    explicit AbstractAreaWidget( QWidget* parent = 0 );
+
     /**
       * @brief Draws the background and frame, then calls paint().
       *
@@ -88,7 +91,7 @@ public:
 protected:
     AbstractAreaWidget();
     virtual ~AbstractAreaWidget() ;
-    void paintAll( QPainter& painter );
+    void paint( QPainter& painter );
     virtual const QRect& areaGeometry() const;
     virtual void positionHasChanged();
 

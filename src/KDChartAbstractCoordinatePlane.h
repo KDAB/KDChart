@@ -35,6 +35,7 @@
 
 namespace KDChart {
 
+    class Chart;
     class GridAttributes;
 
 
@@ -113,12 +114,12 @@ namespace KDChart {
         Q_OBJECT
 
         Q_DISABLE_COPY( AbstractCoordinatePlane )
-        KDCHART_DECLARE_PRIVATE_DERIVED_QWIDGET( AbstractCoordinatePlane )
+        KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( AbstractCoordinatePlane, Chart* )
 
     friend class AbstractGrid;
 
     protected:
-        explicit AbstractCoordinatePlane ( QWidget* parent );
+        explicit AbstractCoordinatePlane ( Chart* parent );
 
     public:
         virtual ~AbstractCoordinatePlane();
@@ -309,11 +310,18 @@ namespace KDChart {
         virtual QSize maximumSize() const;
         /** pure virtual in QLayoutItem */
         virtual QSize minimumSize() const;
+        /** pure virtual in QLayoutItem */
+        virtual QSize sizeHint() const;
+        /** pure virtual in QLayoutItem */
+        virtual void setGeometry( const QRect& r );
+        /** pure virtual in QLayoutItem */
+        virtual QRect geometry() const;
+
 
         /**
           * Called internally by KDChart::Chart
           */
-        void setParent( QWidget* parent );
+        void setParent( Chart* parent );
 
     signals:
         /** Emitted when this coordinate plane is destroyed. */

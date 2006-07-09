@@ -14,6 +14,7 @@ CONFIG(debug, debug|release) {
 
 FORMS += KDChartDatasetSelector.ui
 HEADERS += KDChartGlobal.h \
+           KDChartMeasure.h \
            CartesianCoordinateTransformation.h \
            KDChartAbstractCartesianDiagram.h \
            KDChartAbstractCartesianDiagram_p.h \
@@ -57,7 +58,6 @@ HEADERS += KDChartGlobal.h \
            KDChartLineDiagram.h \
            KDChartLineDiagram_p.h \
            KDChartMarkerAttributes.h \
-           KDChartMeasure.h \
            KDChartPaintContext.h \
            KDChartPalette.h \
            KDChartPieDiagram.h \
@@ -80,16 +80,20 @@ HEADERS += KDChartGlobal.h \
            KDChartThreeDPieAttributes_p.h \
            KDChartWidget.h \
            KDChartWidget_p.h \
-           KDChartAbstractAreaBase_p.h \
            KDChartAbstractAreaBase.h \
+           KDChartAbstractAreaBase_p.h \
            KDChartAbstractArea.h \
+           KDChartAbstractArea_h.h \
            KDChartAbstractAreaWidget.h \
+           KDChartAbstractAreaWidget_p.h \
            KDChartAbstractAxis.h \
            KDChartChart_p.h 
 # FIXME(khz): use an internal libfakes library instead of this internal haeder file
 HEADERS += kdchart_platformdef.h
 
-SOURCES += KDChartAbstractCartesianDiagram.cpp \
+SOURCES += \
+           KDChartMeasure.cpp \
+           KDChartAbstractCartesianDiagram.cpp \
            KDChartAbstractCoordinatePlane.cpp \
            KDChartPolarCoordinatePlane.cpp \
            KDChartCartesianCoordinatePlane.cpp \
@@ -118,7 +122,6 @@ SOURCES += KDChartAbstractCartesianDiagram.cpp \
            KDChartLineAttributes.cpp \
            KDChartLineDiagram.cpp \
            KDChartMarkerAttributes.cpp \
-           KDChartMeasure.cpp \
            KDChartPaintContext.cpp \
            KDChartPalette.cpp \
            KDChartPieDiagram.cpp \

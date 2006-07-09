@@ -102,7 +102,7 @@ bool CartesianAxis::isOrdinate() const
 }
 
 #define ptr (context->painter())
-void CartesianAxis::paintCtx( PaintContext* context ) const
+void CartesianAxis::paintCtx( PaintContext* context )
 {
     Q_ASSERT_X ( d->diagram, "CartesianAxis::paint",
                  "Function call not allowed: The axis is not assigned to any diagram." );

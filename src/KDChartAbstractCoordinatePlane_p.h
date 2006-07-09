@@ -68,8 +68,9 @@ protected:
         // can not call the base class: grid = new AbstractGrid();
     }
 
-    QWidget* parent;
+    KDChart::Chart* parent;
     AbstractGrid* grid;
+    QRect geometry;
     AbstractDiagramList diagrams;
     GridAttributes gridAttributes;
     AbstractCoordinatePlane *referenceCoordinatePlane;
@@ -82,7 +83,7 @@ void AbstractCoordinatePlane::init()
 }
 
 
-inline AbstractCoordinatePlane::AbstractCoordinatePlane( Private * p, QWidget* parent )
+inline AbstractCoordinatePlane::AbstractCoordinatePlane( Private * p, KDChart::Chart* parent )
     : AbstractArea( p )
 {
     if( p )

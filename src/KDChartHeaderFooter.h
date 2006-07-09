@@ -37,6 +37,7 @@ class QDomDocumentFragment;
 
 namespace KDChart {
 
+    class Chart;
     class TextAttributes;
 
 class KDCHART_EXPORT HeaderFooter : public AbstractArea
@@ -44,10 +45,10 @@ class KDCHART_EXPORT HeaderFooter : public AbstractArea
     Q_OBJECT
 
     Q_DISABLE_COPY( HeaderFooter )
-    KDCHART_DECLARE_PRIVATE_DERIVED( HeaderFooter )
+    KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( HeaderFooter, Chart* )
 
 public:
-    HeaderFooter();
+    HeaderFooter( Chart* parent );
     virtual ~HeaderFooter();
 
     virtual QDomDocumentFragment toXML() const;
@@ -56,7 +57,7 @@ public:
 
     virtual QSize sizeHint() const;
     virtual QSize minimumSizeHint() const;
-    virtual void paintEvent( QPaintEvent* );
+    virtual void paint( QPainter* );
 
     enum HeaderFooterType{ Header,
                            Footer };
@@ -72,6 +73,12 @@ public:
 
     void setTextAttributes( const TextAttributes &a );
     TextAttributes textAttributes() const;
+
+    /**
+      * Called internally by KDChart::Chart
+      */
+    void setParent( Chart* parent );
+
 signals:
     void destroyedHeaderFooter( HeaderFooter* );
 

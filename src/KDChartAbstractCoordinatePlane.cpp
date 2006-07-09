@@ -26,6 +26,7 @@
 
 #include <QGridLayout>
 
+#include "KDChartChart.h"
 #include "KDChartAbstractCoordinatePlane.h"
 #include "KDChartAbstractCoordinatePlane_p.h"
 #include "KDChartGridAttributes.h"
@@ -38,7 +39,7 @@ using namespace KDChart;
 
 #define d d_func()
 
-AbstractCoordinatePlane::AbstractCoordinatePlane ( QWidget* parent )
+AbstractCoordinatePlane::AbstractCoordinatePlane ( KDChart::Chart* parent )
     : AbstractArea ( new Private() )
 {
     d->parent = parent;
@@ -155,7 +156,7 @@ void KDChart::AbstractCoordinatePlane::update()
     emit needUpdate();
 }
 
-void KDChart::AbstractCoordinatePlane::setParent( QWidget* parent )
+void KDChart::AbstractCoordinatePlane::setParent( KDChart::Chart* parent )
 {
     d->parent = parent;
 }
@@ -182,11 +183,30 @@ QSize KDChart::AbstractCoordinatePlane::maximumSize() const
     //       will not affect its real drawing size.
     return QSize(1000, 1000);
 }
-
 /* pure virtual in QLayoutItem */
 QSize KDChart::AbstractCoordinatePlane::minimumSize() const
 {
     return QSize(60, 60); // this default can be overwritten by derived classes
+}
+/* pure virtual in QLayoutItem */
+QSize KDChart::AbstractCoordinatePlane::sizeHint() const
+{
+    // we return our maxiumu (which is the full size of the Chart)
+    // even if we know the plane will be smaller
+    return maximumSize();
+}
+/* pure virtual in QLayoutItem */
+void KDChart::AbstractCoordinatePlane::setGeometry( const QRect& r )
+{
+    if( geometry() != r ){
+        d->geometry = r;
+        emit needUpdate();
+    }
+}
+/* pure virtual in QLayoutItem */
+QRect KDChart::AbstractCoordinatePlane::geometry() const
+{
+    return d->geometry;
 }
 
 #undef d

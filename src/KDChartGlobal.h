@@ -212,7 +212,7 @@ inline const CLASS::Private * CLASS::d_func() const          \
 
 
 #define KDCHART_IMPL_DERIVED_PLANE( CLASS, BASEPLANE )        \
-inline CLASS::CLASS( Private * p, QWidget* parent )           \
+inline CLASS::CLASS( Private * p, Chart* parent )           \
     : BASEPLANE( p, parent ) { init(); }                      \
 inline CLASS::Private * CLASS::d_func()                       \
     { return static_cast<Private *>( BASEPLANE::d_func() ); } \

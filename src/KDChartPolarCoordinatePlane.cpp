@@ -30,6 +30,7 @@
 #include <QtDebug>
 #include <QPainter>
 
+#include "KDChartChart.h"
 #include "KDChartPaintContext.h"
 #include "KDChartAbstractDiagram.h"
 #include "KDChartAbstractPolarDiagram.h"
@@ -114,7 +115,7 @@ public:
 };
 */
 
-PolarCoordinatePlane::PolarCoordinatePlane ( QWidget* parent )
+PolarCoordinatePlane::PolarCoordinatePlane ( Chart* parent )
     : AbstractCoordinatePlane ( new Private(), parent )
 {
 }

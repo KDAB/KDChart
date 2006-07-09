@@ -59,9 +59,10 @@ void KDChart::AbstractLayoutItem::setParentWidget( QWidget* widget )
 /**
   * Default impl: Paint the complete item using its layouted position and size.
   */
-void KDChart::AbstractLayoutItem::paintCtx( PaintContext* context ) const
+void KDChart::AbstractLayoutItem::paintCtx( PaintContext* context )
 {
-    paint( context->painter() );
+    if( context )
+        paint( context->painter() );
 }
 
 /**

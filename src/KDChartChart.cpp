@@ -628,7 +628,8 @@ void Chart::paint( QPainter* painter, const QRect& target )
     foreach( KDChart::AbstractCoordinatePlane* planeLayoutItem, d->planeLayoutItems ) {
         planeLayoutItem->paint( painter );
     }
-    foreach ( Legend *legend, legends ) {
+    foreach ( Legend *legend, d->legendLayoutItems ) {
+        legend->paint( painter );
     }
 
     if( target != oldGeometry ){

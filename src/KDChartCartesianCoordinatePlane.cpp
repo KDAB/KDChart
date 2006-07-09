@@ -45,7 +45,7 @@ using namespace KDChart;
 
 #define d d_func()
 
-CartesianCoordinatePlane::CartesianCoordinatePlane ( QWidget* parent )
+CartesianCoordinatePlane::CartesianCoordinatePlane ( Chart* parent )
     : AbstractCoordinatePlane ( new Private(), parent )
 {
     setAxesCalcMode( Linear );
@@ -487,17 +487,4 @@ bool KDChart::CartesianCoordinatePlane::hasOwnGridAttributes(
         ( orientation == Qt::Horizontal )
         ? d->hasOwnGridAttributesHorizontal
         : d->hasOwnGridAttributesVertical;
-}
-
-/* pure virtual in QLayoutItem */
-QSize KDChart::CartesianCoordinatePlane::sizeHint() const
-{
-}
-/* pure virtual in QLayoutItem */
-void KDChart::CartesianCoordinatePlane::setGeometry( const QRect& r )
-{
-}
-/* pure virtual in QLayoutItem */
-QRect KDChart::CartesianCoordinatePlane::geometry() const
-{
 }

@@ -23,6 +23,8 @@
  **
  **********************************************************************/
 
+#include <QWidget>
+
 #include "KDChartMeasure.h"
 #include <QtXml/QDomDocumentFragment>
 #include <KDChartAbstractArea.h>
@@ -79,14 +81,14 @@ Measure & Measure::operator=( const Measure& r )
 }
 
 
-qreal Measure::calculatedValue( const QWidget* autoArea,
+qreal Measure::calculatedValue( const QObject* autoArea,
                                 KDChartEnums::MeasureOrientation autoOrientation) const
 {
     if( mMode == KDChartEnums::MeasureCalculationModeAbsolute ){
         return mValue;
     }else{
         qreal value = 0.0;
-        const QWidget* area = mArea ? mArea : autoArea;
+        const QObject* area = mArea ? mArea : autoArea;
         KDChartEnums::MeasureOrientation orientation = mOrientation;
         switch( mMode ){
             case KDChartEnums::MeasureCalculationModeAuto:
@@ -104,7 +106,19 @@ qreal Measure::calculatedValue( const QWidget* autoArea,
                 break;
         }
         if( area ){
-            const QSize size( area->geometry().size() );
+            QSize size;
+            const QWidget* widget = dynamic_cast<const QWidget*>(area);
+            if( widget ){
+                size = widget->geometry().size();
+            }else{
+                const AbstractArea* kdcArea = dynamic_cast<const AbstractArea*>(area);
+                if( kdcArea ){
+                    size = kdcArea->geometry().size();
+                }else if( mMode != KDChartEnums::MeasureCalculationModeAbsolute ){
+                    qDebug("Measure::calculatedValue() has no reference area.");
+                    return 1.0;
+                }
+            }
             qreal referenceValue;
             switch( orientation ){
                 case KDChartEnums::MeasureOrientationAuto: // fall through intended

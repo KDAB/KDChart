@@ -23,6 +23,7 @@
  **
  **********************************************************************/
 
+#include "KDChartChart.h"
 #include "KDChartHeaderFooter.h"
 #include "KDChartHeaderFooter_p.h"
 #include <QtXml/QDomDocumentFragment>
@@ -40,9 +41,9 @@
 
 using namespace KDChart;
 
-//HeaderFooter::Private::Private( QWidget* parent_ ) :
-//    parent( parent_ ),
-HeaderFooter::Private::Private() :
+HeaderFooter::Private::Private( Chart* parent_ ) :
+    parent( parent_ ),
+//HeaderFooter::Private::Private() :
     type( Header ),
     position( Position::North ),
     text( QObject::tr( "Header/Footer" ) ),
@@ -85,8 +86,8 @@ void HeaderFooter::Private::updateTextDoc()
 
 #define d d_func()
 
-HeaderFooter::HeaderFooter( QWidget* parent ) :
-    AbstractArea( new Private( parent ), parent  )
+HeaderFooter::HeaderFooter( Chart* parent ) :
+    AbstractArea( new Private( parent ) )
 {
     init();
 }
@@ -103,7 +104,7 @@ void HeaderFooter::init()
     ta.setFont( QFont( "helvetica", 10, QFont::Bold, false ) );
 
     Measure m( 35.0 );
-    m.setRelativeMode( *d->parent, KDChartEnums::MeasureOrientationMinimum );
+    m.setRelativeMode( d->parent, KDChartEnums::MeasureOrientationMinimum );
     ta.setFontSize( m );
 
     m.setValue( 8.0 );
@@ -128,10 +129,10 @@ HeaderFooter * HeaderFooter::clone() const
 }
 
 
-void HeaderFooter::paintEvent( QPaintEvent* evt )
+void HeaderFooter::paint( QPainter* painter )
 {
     // Paint the background and frame first
-    AbstractArea::paintEvent( evt );
+    AbstractArea::paint( painter );
 
     if( ! d->textAttrs.hasAbsoluteFontSize() && d->parent->size() != d->cachedSize ){
         d->cachedSize = d->parent->size();
@@ -142,18 +143,16 @@ void HeaderFooter::paintEvent( QPaintEvent* evt )
     if( !d->textDoc )
         return;
 
-    QPainter painter( this );
-
     QAbstractTextDocumentLayout* layout = d->textDoc->documentLayout();
-    d->textDoc->setPageSize( size() );
+    d->textDoc->setPageSize( geometry().size() );
 
-//    painter.drawRect( rect().adjusted( 0, 0, -1, -1 ) );
-    painter.setPen( textAttributes().pen() );
+//    painter->drawRect( rect().adjusted( 0, 0, -1, -1 ) );
+    painter->setPen( textAttributes().pen() );
 
     if( textAttributes().isVisible() ) {
         QAbstractTextDocumentLayout::PaintContext ctx;
         ctx.palette.setColor( QPalette::Text, textAttributes().pen().color() );
-        layout->draw( &painter, ctx );
+        layout->draw( painter, ctx );
     }
 
     // PENDING(kalle) Support relative size
@@ -189,7 +188,8 @@ void HeaderFooter::setText( const QString& text )
 {
     d->text = text;
     d->updateTextDoc();
-    updateGeometry();
+    if( d->parent )
+        d->parent->update();
 }
 
 QString HeaderFooter::text() const
@@ -213,7 +213,8 @@ void HeaderFooter::setTextAttributes( const TextAttributes &a )
 {
     d->textAttrs = a;
     d->updateTextDoc();
-    updateGeometry();
+    if( d->parent )
+        d->parent->update();
 }
 
 /**
@@ -224,6 +225,11 @@ void HeaderFooter::setTextAttributes( const TextAttributes &a )
 TextAttributes HeaderFooter::textAttributes() const
 {
     return d->textAttrs;
+}
+
+void HeaderFooter::setParent( Chart* parent )
+{
+    d->parent = parent;
 }
 
 QSize HeaderFooter::sizeHint() const

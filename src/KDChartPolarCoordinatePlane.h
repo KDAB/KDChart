@@ -30,19 +30,20 @@
 
 namespace KDChart {
 
+    class Chart;
     class PaintContext;
 
     class KDCHART_EXPORT PolarCoordinatePlane : public AbstractCoordinatePlane
     {
         Q_OBJECT
         Q_DISABLE_COPY( PolarCoordinatePlane )
-        KDCHART_DECLARE_PRIVATE_DERIVED_QWIDGET( PolarCoordinatePlane )
+        KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( PolarCoordinatePlane, Chart* )
 
     public:
         struct CoordinateTransformation;
         class CoordinateTransformationList;
 
-        explicit PolarCoordinatePlane ( QWidget* parent = 0 );
+        explicit PolarCoordinatePlane ( Chart* parent = 0 );
         ~PolarCoordinatePlane();
 
         void addDiagram ( AbstractDiagram* diagram );

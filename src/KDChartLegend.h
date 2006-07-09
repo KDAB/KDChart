@@ -64,9 +64,10 @@ class KDCHART_EXPORT Legend : public AbstractAreaWidget
 
     Q_DISABLE_COPY( Legend )
     KDCHART_DECLARE_PRIVATE_DERIVED_QWIDGET( Legend )
+
 public:
-    Legend( QWidget* parent );
-    Legend( KDChart::AbstractDiagram* diagram, QWidget* parent );
+    explicit Legend( QWidget* parent );
+    explicit Legend( KDChart::AbstractDiagram* diagram, QWidget* parent );
     virtual ~Legend();
 
     virtual QDomDocumentFragment toXML() const;

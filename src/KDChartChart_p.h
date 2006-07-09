@@ -72,6 +72,7 @@ class Chart::Private : public QObject
 
         QVector<KDChart::AbstractLayoutItem*> layoutItems;
         QVector<KDChart::AbstractCoordinatePlane*> planeLayoutItems;
+        QVector<KDChart::Legend*> legendLayoutItems;
 
         int globalLeadingLeft, globalLeadingRight, globalLeadingTop, globalLeadingBottom;
 

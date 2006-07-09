@@ -38,7 +38,7 @@
 //
 
 #include "KDChartLegend.h"
-#include "KDChartAbstractArea_p.h"
+#include "KDChartAbstractAreaWidget_p.h"
 #include <KDChartTextAttributes.h>
 #include <KDChartMarkerAttributes.h>
 #include <QMap>
@@ -65,7 +65,7 @@ using KDChart::AbstractDiagram;
 /**
  * \internal
  */
-class KDChart::Legend::Private : public AbstractArea::Private
+class KDChart::Legend::Private : public AbstractAreaWidget::Private
 {
     friend class KDChart::Legend;
 public:

@@ -74,7 +74,7 @@ namespace KDChart {
         ~CartesianAxis();
 
         /** reimpl */
-        void paintCtx( PaintContext* ) const;
+        void paintCtx( PaintContext* );
 
 	//void paintEvent( QPaintEvent* event );
         QSize sizeHint() const;
