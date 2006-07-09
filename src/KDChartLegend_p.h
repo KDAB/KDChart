@@ -57,7 +57,7 @@ class QTextDocument;
 namespace KDChart {
     class AbstractDiagram;
     class DiagramObserver;
-    class LayoutItem;
+    class AbstractLayoutItem;
 }
 
 using KDChart::AbstractDiagram;
@@ -95,18 +95,18 @@ private:
     mutable QList<QBrush> modelBrushes;
     mutable QList<QPen> modelPens;
     mutable QList<MarkerAttributes> modelMarkers;
-    QVector<KDChart::LayoutItem*> layoutItems;
+    QVector<KDChart::AbstractLayoutItem*> layoutItems;
     QGridLayout* layout;
     KDChart::DiagramObserver* observer;
     bool needRebuild; // set to TRUE by all of the Legend's setter functions
 };
 
 inline KDChart::Legend::Legend( Private* p, QWidget* parent )
-    : AbstractArea( p, parent ) { init(); }
+    : AbstractAreaWidget( p, parent ) { init(); }
 inline KDChart::Legend::Private * KDChart::Legend::d_func()
-{ return static_cast<Private*>( AbstractArea::d_func() ); }
+{ return static_cast<Private*>( AbstractAreaWidget::d_func() ); }
 inline const KDChart::Legend::Private * KDChart::Legend::d_func() const
-{ return static_cast<const Private*>( AbstractArea::d_func() ); }
+{ return static_cast<const Private*>( AbstractAreaWidget::d_func() ); }
 
 
 

@@ -36,13 +36,6 @@
 //FIXME(khz): use an internal libfakes library instead of this internal haeder file
 #include "kdchart_platformdef.h"
 
-#include <cmath>
-
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
-#endif
-
-#define DEGTORAD(d) (d)*M_PI/180.0
 
 using namespace KDChart;
 

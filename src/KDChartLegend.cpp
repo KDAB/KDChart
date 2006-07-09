@@ -141,13 +141,13 @@ void Legend::paint( QPainter* painter )
     buildLegend();
 
     // Legend always has a frame around it, might be overpainted by Area afterwards.
-    painter.drawRect( rect().adjusted( 1, 1, -1, -1 ) );
+    painter->drawRect( rect().adjusted( 1, 1, -1, -1 ) );
 
 
     // PENDING(kalle) Support palette
 
-    foreach( KDChart::LayoutItem* layoutItem, d->layoutItems ) {
-        layoutItem->paint( &painter );
+    foreach( KDChart::AbstractLayoutItem* layoutItem, d->layoutItems ) {
+        layoutItem->paint( painter );
     }
 }
 

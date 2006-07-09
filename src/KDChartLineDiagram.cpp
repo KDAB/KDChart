@@ -23,8 +23,6 @@
  **
  **********************************************************************/
 
-#include <math.h>
-
 #include <QtXml/QDomDocumentFragment>
 #include <QDebug>
 #include <QPainter>
@@ -496,7 +494,6 @@ void LineDiagram::paintAreas( PaintContext* ctx, const QModelIndex& index, const
   resp. y axis.
 */
 
-#define DEGTORAD(d) (d)*M_PI/180.0
 const QPointF LineDiagram::project( QPointF point, QPointF maxLimits, double z, const QModelIndex& index ) const
 {
     Q_UNUSED( maxLimits );
