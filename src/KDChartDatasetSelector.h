@@ -30,9 +30,6 @@
 
 #include "KDChartDatasetProxyModel.h"
 
-#ifdef __GNUC__
-#warning For this to become useful, it has to be connected to the proxy model it configures!
-#endif
 
 namespace Ui {
     class DatasetSelector;
