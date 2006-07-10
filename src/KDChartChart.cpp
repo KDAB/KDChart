@@ -435,7 +435,7 @@ void Chart::Private::slotLayoutPlanes()
 
 void Chart::Private::createLayouts( QWidget* w )
 {
-    foreach( KDChart::AbstractLayoutItem* layoutItem, layoutItems ) {
+    foreach( KDChart::AbstractArea* layoutItem, layoutItems ) {
         layoutItem->removeFromParentLayout();
     }
     qDeleteAll( layoutItems );
@@ -622,14 +622,14 @@ void Chart::paint( QPainter* painter, const QRect& target )
     }
     //painter->drawRect( geometry() );
 
-    foreach( KDChart::AbstractLayoutItem* layoutItem, d->layoutItems ) {
-        layoutItem->paint( painter );
+    foreach( KDChart::AbstractArea* layoutItem, d->layoutItems ) {
+        layoutItem->paintAll( *painter );
     }
     foreach( KDChart::AbstractCoordinatePlane* planeLayoutItem, d->planeLayoutItems ) {
-        planeLayoutItem->paint( painter );
+        planeLayoutItem->paintAll( *painter );
     }
     foreach ( Legend *legend, d->legendLayoutItems ) {
-        legend->paint( painter );
+        legend->paintAll( *painter );
     }
 
     if( target != oldGeometry ){

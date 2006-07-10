@@ -60,6 +60,8 @@ class KDCHART_EXPORT AbstractArea : public QObject, public AbstractAreaBase, pub
 
 
 public:
+    virtual ~AbstractArea() ;
+
 //    virtual AbstractArea * clone() const = 0;
     /**
       * @brief Draws the background and frame, then calls paint().
@@ -69,10 +71,14 @@ public:
       */
     virtual void paintIntoRect( QPainter& painter, const QRect& rect );
 
+    /**
+      * Call paintAll, if you want the background and the frame to be drawn
+      * before the normal paint() is invoked automatically.
+      */
+    void paintAll( QPainter& painter );
+
 protected:
     AbstractArea();
-    virtual ~AbstractArea() ;
-    void paintAll( QPainter& painter );
     virtual const QRect areaGeometry() const;
     virtual void positionHasChanged();
 

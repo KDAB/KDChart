@@ -131,9 +131,6 @@ HeaderFooter * HeaderFooter::clone() const
 
 void HeaderFooter::paint( QPainter* painter )
 {
-    // Paint the background and frame first
-    AbstractArea::paint( painter );
-
     if( ! d->textAttrs.hasAbsoluteFontSize() && d->parent->size() != d->cachedSize ){
         d->cachedSize = d->parent->size();
         d->updateTextDoc();

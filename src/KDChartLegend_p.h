@@ -95,6 +95,7 @@ private:
     mutable QList<QBrush> modelBrushes;
     mutable QList<QPen> modelPens;
     mutable QList<MarkerAttributes> modelMarkers;
+    //QVector<KDChart::AbstractLayoutItem*> layoutItems;
     QVector<KDChart::AbstractLayoutItem*> layoutItems;
     QGridLayout* layout;
     KDChart::DiagramObserver* observer;

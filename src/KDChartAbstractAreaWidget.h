@@ -88,10 +88,15 @@ public:
       */
     virtual void paint( QPainter* painter ) = 0;
 
+    /**
+      * Call paintAll, if you want the background and the frame to be drawn
+      * before the normal paint() is invoked automatically.
+      */
+    void paintAll( QPainter& painter );
+
 protected:
     AbstractAreaWidget();
     virtual ~AbstractAreaWidget() ;
-    void paintAll( QPainter& painter );
     virtual const QRect areaGeometry() const;
     virtual void positionHasChanged();
 
