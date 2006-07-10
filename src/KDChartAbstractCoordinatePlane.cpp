@@ -166,6 +166,16 @@ void KDChart::AbstractCoordinatePlane::setParent( KDChart::Chart* parent )
     d->parent = parent;
 }
 
+const KDChart::Chart* KDChart::AbstractCoordinatePlane::parent() const
+{
+    return d->parent;
+}
+
+KDChart::Chart* KDChart::AbstractCoordinatePlane::parent()
+{
+    return d->parent;
+}
+
 /* pure virtual in QLayoutItem */
 bool KDChart::AbstractCoordinatePlane::isEmpty() const
 {

@@ -322,6 +322,8 @@ namespace KDChart {
           * Called internally by KDChart::Chart
           */
         void setParent( Chart* parent );
+        Chart* parent();
+        const Chart* parent() const;
 
     signals:
         /** Emitted when this coordinate plane is destroyed. */

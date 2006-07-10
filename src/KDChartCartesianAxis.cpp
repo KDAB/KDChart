@@ -32,6 +32,7 @@
 #include <QApplication>
 
 #include "KDChartPaintContext.h"
+#include "KDChartChart.h"
 #include "KDChartCartesianAxis.h"
 #include "KDChartCartesianAxis_p.h"
 #include "KDChartAbstractCartesianDiagram.h"
@@ -355,10 +356,11 @@ void CartesianAxis::paintCtx( PaintContext* context )
         const int headerLabelsCount = headerLabels.count();
 
         const AbstractCoordinatePlane* plane = coordinatePlane();
-        const QObject* referenceArea =
-            ( plane
-            ? plane->parent()
-            : d->diagram() );
+        const QObject* referenceArea;
+        if ( plane )
+            referenceArea = plane->parent();
+        else
+            referenceArea = d->diagram();
         TextLayoutItem* labelItem =
             drawLabels
             ? new TextLayoutItem( QString::number( minValueY ),

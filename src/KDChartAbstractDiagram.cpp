@@ -30,6 +30,7 @@
 #include <QSizeF>
 
 #include "KDChartAbstractCoordinatePlane.h"
+#include "KDChartChart.h"
 #include "KDChartDataValueAttributes.h"
 #include "KDChartTextAttributes.h"
 #include "KDChartMarkerAttributes.h"
@@ -90,6 +91,12 @@ void AbstractDiagram::Private::setAttributesModel( AttributesModel* amodel )
 }
 
 #define d d_func()
+
+AbstractDiagram::AbstractDiagram ( AbstractCoordinatePlane* plane )
+    : QAbstractItemView ( plane ? plane->parent() : 0 ), _d( new Private() )
+{
+    _d->init( plane );
+}
 
 AbstractDiagram::AbstractDiagram ( QWidget* parent, AbstractCoordinatePlane* plane )
     : QAbstractItemView ( parent ), _d( new Private() )
