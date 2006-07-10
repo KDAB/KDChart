@@ -1082,7 +1082,7 @@
             </para>
         </sect1>
     </chapter>
-        <chapter id="chapter_customizing">
+    <chapter id="chapter_customizing">
         <title id="chtxt_customizing">Customizing your Chart</title>
         <titleabbrev id="chnum_customizing">Chapter 5</titleabbrev>
 	<para>
@@ -1230,40 +1230,141 @@
             </para>
         </sect1>
     </chapter>
+    <chapter id="chapter_headersfooters">
+        <title id="chtxt_headersfooters">Header and Footers</title>
+        <titleabbrev id="chnum_headersfooters">Chapter 6</titleabbrev>
+	<para>
+          Introduction text
+        </para>
+	<sect1>
+            <title id="headersfootershowtoconfigure">How to configure</title>
+            <para>
+                Text ...
+            </para>  
+            <sect2>
+                <title id="headersfootersconfiguresample" xreflabel="codexample">Headers and Footers Example</title>
+                <para>
+                    Let us make this more concrete by looking at the following
+                    lines of code.
+		    <!--
+                    <link linkend=""></link>
+		    <link linkend=""></link>
+                    -->
+                </para>
+                <!--
+                <programlisting linenumbering="numbered" id="">
+                <textobject>
+                <textdata fileref="../../examples/..."/>
+	        </textobject>
+	        </programlisting>
+                -->
+                <para>
+                    More explanation?
+                </para>
+            </sect2>
+        </sect1>
+	<sect1>
+            <title id="headersandfooterstips">Tips</title>
+            <para>
+                Text ...
+            </para>  
+            <sect2>
+                <title id="headersfooterstipsample" xreflabel="codexample">A cool headers and footers Example</title>
+                <para>
+                    Let us make this more concrete by looking at the following
+                    lines of code.
+		    <!--
+                    <link linkend=""></link>
+		    <link linkend=""></link>
+                    -->
+                </para>
+                <!--
+                <programlisting linenumbering="numbered" id="">
+                <textobject>
+                <textdata fileref="../../examples/..."/>
+	        </textobject>
+	        </programlisting>
+                -->
+                <para>
+                    More explanation?
+                </para>
+            </sect2>
+        </sect1>
+        <sect1>
+            <title>What's next</title>
+            <para>
+                Legends.
+            </para>
+        </sect1>
+    </chapter>
+    <chapter id="chapter_legends">
+        <title id="chtxt_legends">Legends</title>
+        <titleabbrev id="chnum_legends">Chapter 7</titleabbrev>
+	<para>
+          Introduction text
+        </para>
+	<sect1>
+            <title id="legendshowtoconfigure">How to configure</title>
+            <para>
+                Text ...
+            </para>  
+            <sect2>
+                <title id="legendsconfiguresample" xreflabel="codexample">Legend Example</title>
+                <para>
+                    Let us make this more concrete by looking at the following
+                    lines of code.
+		    <!--
+                    <link linkend=""></link>
+		    <link linkend=""></link>
+                    -->
+                </para>
+                <!--
+                <programlisting linenumbering="numbered" id="">
+                <textobject>
+                <textdata fileref="../../examples/..."/>
+	        </textobject>
+	        </programlisting>
+                -->
+                <para>
+                    More explanation?
+                </para>
+            </sect2>
+        </sect1>
+	<sect1>
+            <title id="legendstips">Tips</title>
+            <para>
+                Text ...
+            </para>  
+            <sect2>
+                <title id="legendtipsample" xreflabel="codexample">Legend Example</title>
+                <para>
+                    Let us make this more concrete by looking at the following
+                    lines of code.
+		    <!--
+                    <link linkend=""></link>
+		    <link linkend=""></link>
+                    -->
+                </para>
+                <!--
+                <programlisting linenumbering="numbered" id="">
+                <textobject>
+                <textdata fileref="../../examples/..."/>
+	        </textobject>
+	        </programlisting>
+                -->
+                <para>
+                    More explanation?
+                </para>
+            </sect2>
+        </sect1>
+        <sect1>
+            <title>What's next</title>
+            <para>
+                Axes.
+            </para>
+        </sect1>
+    </chapter>
 
-
-6/ Header and Footers
-
-	Text....
-
-	    6.1 HowTo configure
-	    Text...
-   
-		6.1.1 Example code
-		....May be more examples
-
-	    6.2 Tips and notes
-	    Some tips and notes
-
-		6.2.1...A cool example 
-
-7/ Legends
-
-	Text....
-
-	    7.1 HowTo configure
-	    Text...
-   
-		7.1.1 Example code
-		....May be more examples
-
-	    7.2 Tips and notes
-	    Some tips and notes
-
-		7.2.1 ...A cool example 	 
-
-	    7.3 What's next
-	    text / Axes
 
 8/ Axes
 
