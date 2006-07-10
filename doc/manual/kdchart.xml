@@ -1364,51 +1364,303 @@
             </para>
         </sect1>
     </chapter>
-
-
-8/ Axes
-
-        Text....
-
-	    8.1 HowTo configure
-	    Text...
-
-		8.1.1 Example code
-		....May be more examples
-
-	    8.2 Tips and tricks
-	    Some tips and tricks
-		8.2.1 ...Some cool example
-
-	    8.3 What's next
-	    text / Advanced Charting
-
-9/ Advanced Charting
-
-        Text ...
-
-	     9.1 Frame and background
-	     text and example(s)
-
-	     9.2 Data Value manipulation
-	     text and example(s)
-
-	     9.3 Axis manipulation
-	     text and example(s)
-
-	     9.4 Grid manipulation
-	     text and example(s)
-
-	     9.5 Interactive Charts
-	     text and example(s) 
-
-	     9.6 Multiple charts
-	     text and example(s) 
-
-             9.7 Zooming
-	     text and example(s)
-
-10/ FAQ
-
-        Questions and answers
-
+    <chapter id="chapter_axes">
+        <title id="chtxt_axes">Axes</title>
+        <titleabbrev id="chnum_axes">Chapter 8</titleabbrev>
+	<para>
+          Introduction text
+        </para>
+	<sect1>
+            <title id="axeshowtoconfigure">How to configure</title>
+            <para>
+                Text ...
+            </para>  
+            <sect2>
+                <title id="axesconfiguresample" xreflabel="codexample">Axes Example</title>
+                <para>
+                    Let us make this more concrete by looking at the following
+                    lines of code.
+		    <!--
+                    <link linkend=""></link>
+		    <link linkend=""></link>
+                    -->
+                </para>
+                <!--
+                <programlisting linenumbering="numbered" id="">
+                <textobject>
+                <textdata fileref="../../examples/..."/>
+	        </textobject>
+	        </programlisting>
+                -->
+                <para>
+                    More explanation?
+                </para>
+            </sect2>
+        </sect1>
+	<sect1>
+            <title id="axestips">Tips</title>
+            <para>
+                Text ...
+            </para>  
+            <sect2>
+                <title id="axestipsample" xreflabel="codexample">A cool Axes Example</title>
+                <para>
+                    Let us make this more concrete by looking at the following
+                    lines of code.
+		    <!--
+                    <link linkend=""></link>
+		    <link linkend=""></link>
+                    -->
+                </para>
+                <!--
+                <programlisting linenumbering="numbered" id="">
+                <textobject>
+                <textdata fileref="../../examples/..."/>
+	        </textobject>
+	        </programlisting>
+                -->
+                <para>
+                    More explanation?
+                </para>
+            </sect2>
+        </sect1>
+        <sect1>
+            <title>What's next</title>
+            <para>
+                Advanced Charting.
+            </para>
+        </sect1>
+    </chapter>
+    <chapter id="chapter_advancedcharting">
+        <title id="chtxt_advancedcharting">Advanced Charting</title>
+        <titleabbrev id="chnum_advancedcharting">Chapter 9</titleabbrev>
+	<para>
+          Introduction text
+        </para>
+	<sect1>
+            <title id="framebackground">Frame and Background</title>
+            <para>
+                Text ...
+            </para>  
+            <sect2>
+                <title id="framebackgroundsample" xreflabel="codexample">Frame and Background Example</title>
+                <para>
+                    Let us make this more concrete by looking at the following
+                    lines of code.
+		    <!--
+                    <link linkend=""></link>
+		    <link linkend=""></link>
+                    -->
+                </para>
+                <!--
+                <programlisting linenumbering="numbered" id="">
+                <textobject>
+                <textdata fileref="../../examples/..."/>
+	        </textobject>
+	        </programlisting>
+                -->
+                <para>
+                    More explanation?
+                </para>
+            </sect2>
+        </sect1>
+	<sect1>
+            <title id="datavaluemanipulation">Data Value Manipulation</title>
+            <para>
+                Text ...
+            </para>  
+            <sect2>
+                <title id="datavaluemanipulationsample" xreflabel="codexample">Data Value Manipulation Example</title>
+                <para>
+                    Let us make this more concrete by looking at the following
+                    lines of code.
+		    <!--
+                    <link linkend=""></link>
+		    <link linkend=""></link>
+                    -->
+                </para>
+                <!--
+                <programlisting linenumbering="numbered" id="">
+                <textobject>
+                <textdata fileref="../../examples/..."/>
+	        </textobject>
+	        </programlisting>
+                -->
+                <para>
+                    More explanation?
+                </para>
+            </sect2>
+        </sect1>
+        <sect1>
+            <title id="axismanipulation">Axis Manipulation</title>
+            <para>
+                Text ...
+            </para>  
+            <sect2>
+                <title id="axismanipulationsample" xreflabel="codexample">Axis Manipulation Example</title>
+                <para>
+                    Let us make this more concrete by looking at the following
+                    lines of code.
+		    <!--
+                    <link linkend=""></link>
+		    <link linkend=""></link>
+                    -->
+                </para>
+                <!--
+                <programlisting linenumbering="numbered" id="">
+                <textobject>
+                <textdata fileref="../../examples/..."/>
+	        </textobject>
+	        </programlisting>
+                -->
+                <para>
+                    More explanation?
+                </para>
+            </sect2>
+        </sect1>
+	<sect1>
+            <title id="gridmanipulation">Grid Manipulation</title>
+            <para>
+                Text ...
+            </para>  
+            <sect2>
+                <title id="gridmanipulationsample" xreflabel="codexample">Grid Manipulation Example</title>
+                <para>
+                    Let us make this more concrete by looking at the following
+                    lines of code.
+		    <!--
+                    <link linkend=""></link>
+		    <link linkend=""></link>
+                    -->
+                </para>
+                <!--
+                <programlisting linenumbering="numbered" id="">
+                <textobject>
+                <textdata fileref="../../examples/..."/>
+	        </textobject>
+	        </programlisting>
+                -->
+                <para>
+                    More explanation?
+                </para>
+            </sect2>
+        </sect1>
+	<sect1>
+            <title id="interactivecharts">Interactive Charts</title>
+            <para>
+                Text ...
+            </para>  
+            <sect2>
+                <title id="interactivechartssample" xreflabel="codexample">Interactive Chart Example</title>
+                <para>
+                    Let us make this more concrete by looking at the following
+                    lines of code.
+		    <!--
+                    <link linkend=""></link>
+		    <link linkend=""></link>
+                    -->
+                </para>
+                <!--
+                <programlisting linenumbering="numbered" id="">
+                <textobject>
+                <textdata fileref="../../examples/..."/>
+	        </textobject>
+	        </programlisting>
+                -->
+                <para>
+                    More explanation?
+                </para>
+            </sect2>
+        </sect1>
+	<sect1>
+            <title id="multiplechart">Multiple Charts</title>
+            <para>
+                Text ...
+            </para>  
+            <sect2>
+                <title id="multiplechartsample" xreflabel="codexample">Multiple Chart Example</title>
+                <para>
+                    Let us make this more concrete by looking at the following
+                    lines of code.
+		    <!--
+                    <link linkend=""></link>
+		    <link linkend=""></link>
+                    -->
+                </para>
+                <!--
+                <programlisting linenumbering="numbered" id="">
+                <textobject>
+                <textdata fileref="../../examples/..."/>
+	        </textobject>
+	        </programlisting>
+                -->
+                <para>
+                    More explanation?
+                </para>
+            </sect2>
+        </sect1>
+	<sect1>
+            <title id="zooming">Zooming</title>
+            <para>
+                Text ...
+            </para>  
+            <sect2>
+                <title id="zoomingsample" xreflabel="codexample">Zooming Example</title>
+                <para>
+                    Let us make this more concrete by looking at the following
+                    lines of code.
+		    <!--
+                    <link linkend=""></link>
+		    <link linkend=""></link>
+                    -->
+                </para>
+                <!--
+                <programlisting linenumbering="numbered" id="">
+                <textobject>
+                <textdata fileref="../../examples/..."/>
+	        </textobject>
+	        </programlisting>
+                -->
+                <para>
+                    More explanation?
+                </para>
+            </sect2>
+        </sect1>
+        <sect1>
+            <title>What's next</title>
+            <para>
+                FAQ.
+            </para>
+        </sect1>
+    </chapter>    
+    <appendix id="appendix_qanda">
+        <title>Q&amp;A section</title>
+        <titleabbrev>Appendix A</titleabbrev>
+        <qandaset defaultlabel="number">
+            </qandadiv>
+        </qandaset>
+        <note>
+            <para>
+                This section will grow further according to the most frequently
+                asked questions to our support.
+            </para>
+        </note>
+    </appendix>
+</book>
+<!-- Keep this comment at the end of the file
+Local variables:
+mode: xml
+sgml-omittag:nil
+sgml-shorttag:nil
+sgml-namecase-general:nil
+sgml-general-insert-case:lower
+sgml-minimize-attributes:nil
+sgml-always-quote-attributes:t
+sgml-indent-step:4
+sgml-indent-data:t
+sgml-parent-document:nil
+sgml-exposed-tags:nil
+sgml-local-catalogs:nil
+sgml-local-ecat-files:nil
+End:
+-->
