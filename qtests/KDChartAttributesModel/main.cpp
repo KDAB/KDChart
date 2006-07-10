@@ -2,7 +2,6 @@
 #include <TableModel.h>
 #include <KDChartGlobal>
 #include <../../src/KDChartAttributesModel.h> /* Bah! */
-#include <KDChartAbstractDiagram>
 #include <KDChartBarDiagram>
 #include <KDChartLineDiagram>
 #include <KDChartCartesianCoordinatePlane>
