@@ -55,8 +55,6 @@ public:
 
     virtual HeaderFooter * clone() const;
 
-    virtual QSize sizeHint() const;
-    virtual QSize minimumSizeHint() const;
     virtual void paint( QPainter* );
 
     enum HeaderFooterType{ Header,
@@ -73,6 +71,22 @@ public:
 
     void setTextAttributes( const TextAttributes &a );
     TextAttributes textAttributes() const;
+
+    /** pure virtual in QLayoutItem */
+    virtual bool isEmpty() const;
+    /** pure virtual in QLayoutItem */
+    virtual Qt::Orientations expandingDirections() const;
+    /** pure virtual in QLayoutItem */
+    virtual QSize maximumSize() const;
+    /** pure virtual in QLayoutItem */
+    virtual QSize minimumSize() const;
+    /** pure virtual in QLayoutItem */
+    virtual QSize sizeHint() const;
+    /** pure virtual in QLayoutItem */
+    virtual void setGeometry( const QRect& r );
+    /** pure virtual in QLayoutItem */
+    virtual QRect geometry() const;
+
 
     /**
       * Called internally by KDChart::Chart

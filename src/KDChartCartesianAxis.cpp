@@ -47,7 +47,7 @@ using namespace KDChart;
 #define d (d_func())
 
 CartesianAxis::CartesianAxis ( AbstractCartesianDiagram* diagram )
-    : AbstractAxis ( new Private( diagram ) )
+    : AbstractAxis ( new Private( diagram, this ), diagram )
 {
     init();
     if( diagram )
@@ -77,12 +77,12 @@ void CartesianAxis::paintEvent( QPaintEvent* event )
 {
     Q_UNUSED( event );
 
-    if( ! d->diagram || ! d->diagram->coordinatePlane() ) return;
+    if( ! d->diagram() || ! d->diagram()->coordinatePlane() ) return;
 
     PaintContext context;
     QPainter painter( this );
     context.setPainter( &painter );
-    AbstractCoordinatePlane* plane = d->diagram->coordinatePlane();
+    AbstractCoordinatePlane* plane = d->diagram()->coordinatePlane();
     context.setCoordinatePlane( plane );
     QRectF rect = QRectF ( 1, 1, plane->width() - 3, plane->height() - 3 );
     context.setRectangle( rect );
@@ -104,7 +104,7 @@ bool CartesianAxis::isOrdinate() const
 #define ptr (context->painter())
 void CartesianAxis::paintCtx( PaintContext* context )
 {
-    Q_ASSERT_X ( d->diagram, "CartesianAxis::paint",
+    Q_ASSERT_X ( d->diagram(), "CartesianAxis::paint",
                  "Function call not allowed: The axis is not assigned to any diagram." );
 
     CartesianCoordinatePlane* plane = dynamic_cast<CartesianCoordinatePlane*>(context->coordinatePlane());
@@ -145,9 +145,9 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
     qreal numberOfUnitRulers;
     if ( isAbscissa() )
-        numberOfUnitRulers = d->diagram->model()->rowCount() - 1.0;
+        numberOfUnitRulers = d->diagram()->model()->rowCount() - 1.0;
     else {
-        if ( d->diagram->percentMode() )
+        if ( d->diagram()->percentMode() )
             numberOfUnitRulers = 10.0;
         else{
             numberOfUnitRulers = absRange / qAbs( dimY.stepWidth ) + 1.0;
@@ -158,7 +158,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
     if ( isAbscissa() )
         numberOfSubUnitRulers = 0.0;
     else {
-        if ( d->diagram->percentMode() )
+        if ( d->diagram()->percentMode() )
             numberOfSubUnitRulers = 20.0;
         else{
             numberOfSubUnitRulers = absRange / qAbs( dimY.subStepWidth ) + 1.0;
@@ -181,7 +181,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
         screenRange = qAbs ( p1.y() - p2.y() );
     }
 
-    const bool useItemCountLabels = isAbscissa() && d->diagram->datasetDimension() == 1;
+    const bool useItemCountLabels = isAbscissa() && d->diagram()->datasetDimension() == 1;
 
 
 
@@ -337,16 +337,16 @@ void CartesianAxis::paintCtx( PaintContext* context )
         if( useItemCountLabels ){
             headerLabels =
                 isOrdinate()
-                ? d->diagram->datasetLabels()
-                : d->diagram->itemRowLabels();
+                ? d->diagram()->datasetLabels()
+                : d->diagram()->itemRowLabels();
         }
         const int headerLabelsCount = headerLabels.count();
 
         const AbstractCoordinatePlane* plane = coordinatePlane();
-        const QWidget* referenceArea =
-            plane
-            ? static_cast<QWidget *>( plane->parent() )
-            : static_cast<QWidget *>( d->diagram );
+        const QObject* referenceArea =
+            ( plane
+            ? plane->parent()
+            : d->diagram() );
         TextLayoutItem* labelItem =
             drawLabels
             ? new TextLayoutItem( QString::number( minValueY ),
@@ -444,7 +444,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
             }
         } else {
             double maxLimit, steg;
-            bool percent = d->diagram->percentMode();
+            bool percent = d->diagram()->percentMode();
             int tickLength = isLeft ? -4 : 3;
             if ( percent ) {
                 maxLimit = maxValueY*10.0;
@@ -462,7 +462,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 for ( qreal f = minValueY; f <= maxLimit; f+= steg ) {
                     labelItem->setText( QString::number( labelValue ) );
                     maxLabelsWidth = qMax( maxLabelsWidth, labelItem->sizeHint().width() );
-                    d->diagram->percentMode() ? labelValue += 10.0 : labelValue += dimY.stepWidth;
+                    d->diagram()->percentMode() ? labelValue += 10.0 : labelValue += dimY.stepWidth;
                 }
             }
             labelValue = minValueY;
@@ -503,11 +503,11 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     labelItem->setGeometry( QRect( QPoint(x, y), labelSize ) );
                     labelItem->paint( ptr );
 
-                    d->diagram->percentMode() ? labelValue += 10.0 : labelValue += dimY.stepWidth;
+                    d->diagram()->percentMode() ? labelValue += 10.0 : labelValue += dimY.stepWidth;
                 }
             }
             //Pending Michel: reset to default - is that really what we want?
-            d->diagram->setPercentMode( false );
+            //d->diagram()->setPercentMode( false );
         }
         if( labelItem )
             delete labelItem;

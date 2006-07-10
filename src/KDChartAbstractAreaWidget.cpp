@@ -24,6 +24,7 @@
  **********************************************************************/
 
 #include "KDChartAbstractAreaWidget.h"
+#include "KDChartAbstractAreaWidget_p.h"
 
 //FIXME(khz): use an internal libfakes library instead of this internal header file
 #include "kdchart_platformdef.h"
@@ -43,11 +44,11 @@ AbstractAreaWidget::Private::~Private()
 }
 
 
-AbstractAreaWidget::AbstractAreaWidget( QWidget* parent = 0 )
-    : AbstractAreaBase()
-    , QWidget( parent )
+AbstractAreaWidget::AbstractAreaWidget( QWidget* parent )
+    : QWidget( parent )
+    , AbstractAreaBase( new Private() )
 {
-    // this bloc left empty intentionally
+    init();
 }
 
 AbstractAreaWidget::~AbstractAreaWidget()
@@ -57,16 +58,9 @@ AbstractAreaWidget::~AbstractAreaWidget()
 
 #define d d_func()
 
-AbstractAreaWidget::AbstractAreaWidget( QWidget* parent ) :
-    AbstractAreaBase( new Private() )
-{
-    d->parent = parent;
-    init();
-}
-
 void AbstractAreaWidget::paintEvent( QPaintEvent* event )
 {
-    Q_UNUSED( event );)
+    Q_UNUSED( event );
     QPainter painter( this );
     paintAll( painter );
 }
@@ -92,17 +86,17 @@ void AbstractAreaWidget::paintAll( QPainter& painter )
     // temporarily adjust the widget size, to be sure all content gets calculated
     // to fit into the inner rectangle
     const QRect oldGeometry( geometry()  );
-    const QRect innerRect(   innerRect() );
-    if( oldGeometry != innerRect )
-        setGeometry( innerRect );
-    painter.translate( innerRect.left(), innerRect.top() );
+    const QRect inner( innerRect() );
+    if( oldGeometry != inner )
+        setGeometry( inner );
+    painter.translate( inner.left(), inner.top() );
     paint( &painter );
-    painter.translate( -innerRect.left(), -innerRect.top() );
-    if( oldGeometry != innerRect )
+    painter.translate( -inner.left(), -inner.top() );
+    if( oldGeometry != inner )
         setGeometry( oldGeometry );
 }
 
-const QRect& AbstractAreaWidget::areaGeometry() const
+const QRect AbstractAreaWidget::areaGeometry() const
 {
     return geometry();
 }

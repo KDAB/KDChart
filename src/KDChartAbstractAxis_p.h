@@ -40,6 +40,7 @@
 #include <QQueue>
 
 #include "KDChartAbstractArea_p.h"
+#include "KDChartAbstractDiagram.h"
 #include <KDChartTextAttributes.h>
 #include <KDChartAbstractDiagram.h>
 #include <KDChartDiagramObserver.h>
@@ -58,24 +59,37 @@ class AbstractAxis::Private : public AbstractArea::Private
     friend class AbstractAxis;
 
 public:
-    Private( AbstractDiagram* diagram );
+    Private( AbstractDiagram* diagram, AbstractAxis* axis );
     ~Private();
+
+    bool setDiagram(   AbstractDiagram* diagram, AbstractAxis* axis );
+    void unsetDiagram( AbstractDiagram* diagram, AbstractAxis* axis );
+    const AbstractDiagram* diagram() const
+    {
+        return mDiagram;
+    }
+    bool hasDiagram( AbstractDiagram* diagram ) const;
 
     DiagramObserver* observer;
 
     TextAttributes textAttributes;
-
     QStringList hardLabels;
     QStringList hardShortLabels;
-
-    AbstractDiagram* diagram;
     QQueue<AbstractDiagram*> secondaryDiagrams;
+
+private:
+    AbstractDiagram* mDiagram;
 };
 
 
-inline AbstractAxis::AbstractAxis( Private * p )
+inline AbstractAxis::AbstractAxis( Private * p, AbstractDiagram* diagram )
     :  AbstractArea( p )
 {
+    // We call setDiagram(), even if (most likely) that's not needed
+    // since the c'tor of Private already did it:  It does no harm
+    // b/c setDiagram() will test for diagram already having been set.
+    if( p )
+        p->setDiagram( diagram, this );
     init();
 }
 

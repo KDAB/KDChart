@@ -50,7 +50,7 @@ namespace KDChart {
         Q_OBJECT
 
         Q_DISABLE_COPY( CartesianAxis )
-        KDCHART_DECLARE_PRIVATE_DERIVED( CartesianAxis )
+        KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( CartesianAxis, AbstractDiagram* )
 
     public:
         enum Position {
@@ -70,7 +70,7 @@ namespace KDChart {
           *
           * \sa AbstractCartesianDiagram::addAxis
           */
-        CartesianAxis ( AbstractCartesianDiagram* diagram = 0 );
+        explicit CartesianAxis ( AbstractCartesianDiagram* diagram = 0 );
         ~CartesianAxis();
 
         /** reimpl */

@@ -26,6 +26,11 @@
 #include "KDChartAbstractArea.h"
 #include "KDChartAbstractArea_p.h"
 
+#include <qglobal.h>
+
+#include <QPainter>
+#include <QRect>
+
 //FIXME(khz): use an internal libfakes library instead of this internal header file
 #include "kdchart_platformdef.h"
 
@@ -46,9 +51,9 @@ AbstractArea::Private::~Private()
 
 
 AbstractArea::AbstractArea()
-    : KDChart::AbstractAreaBase()
+    : QObject()
+    , KDChart::AbstractAreaBase()
     , KDChart::AbstractLayoutItem()
-    , QObject()
 {
     // this bloc left empty intentionally
 }
@@ -80,17 +85,17 @@ void AbstractArea::paintAll( QPainter& painter )
     // temporarily adjust the widget size, to be sure all content gets calculated
     // to fit into the inner rectangle
     const QRect oldGeometry( geometry()  );
-    const QRect innerRect(   innerRect() );
-    if( oldGeometry != innerRect )
-        setGeometry( innerRect );
-    painter.translate( innerRect.left(), innerRect.top() );
+    const QRect inner( innerRect() );
+    if( oldGeometry != inner )
+        setGeometry( inner );
+    painter.translate( inner.left(), inner.top() );
     paint( &painter );
-    painter.translate( -innerRect.left(), -innerRect.top() );
-    if( oldGeometry != innerRect )
+    painter.translate( -inner.left(), -inner.top() );
+    if( oldGeometry != inner )
         setGeometry( oldGeometry );
 }
 
-const QRect& AbstractArea::areaGeometry() const
+const QRect AbstractArea::areaGeometry() const
 {
     return geometry();
 }

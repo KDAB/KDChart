@@ -119,7 +119,7 @@ namespace KDChart {
     friend class AbstractGrid;
 
     protected:
-        explicit AbstractCoordinatePlane ( Chart* parent );
+        explicit AbstractCoordinatePlane ( Chart* parent = 0 );
 
     public:
         virtual ~AbstractCoordinatePlane();

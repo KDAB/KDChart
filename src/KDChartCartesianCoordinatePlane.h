@@ -46,7 +46,7 @@ namespace KDChart {
     friend class CartesianGrid;
 
     public:
-        explicit CartesianCoordinatePlane ( Chart* parent );
+        explicit CartesianCoordinatePlane ( Chart* parent = 0 );
         ~CartesianCoordinatePlane();
 
         void addDiagram ( AbstractDiagram* diagram );

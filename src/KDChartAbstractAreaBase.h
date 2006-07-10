@@ -89,8 +89,8 @@ public:
     void setBackgroundAttributes( const BackgroundAttributes &a );
     BackgroundAttributes backgroundAttributes() const;
 
-    virtual void paintBackground( QPainter* painter, const QRect& rectangle );
-    virtual void paintFrame( QPainter* painter, const QRect& rectangle );
+    virtual void paintBackground( QPainter& painter, const QRect& rectangle );
+    virtual void paintFrame( QPainter& painter, const QRect& rectangle );
 
 
 protected:
@@ -108,7 +108,7 @@ protected:
       * to find out the real widget size.
       * \sa AbstractArea, AbstractAreaWidget
       */
-    virtual const QRect& areaGeometry() const = 0;
+    virtual const QRect areaGeometry() const = 0;
 
     /** \internal
       * This internal method can be overwritten by derived classes,

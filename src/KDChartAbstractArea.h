@@ -51,7 +51,7 @@ namespace KDChart {
   * The reason for this tripple inheritance is that neither AbstractAreaBase nor
   * AbstractLayoutItem are QObject.
   */
-class KDCHART_EXPORT AbstractArea : public AbstractAreaBase, public AbstractLayoutItem, public QObject
+class KDCHART_EXPORT AbstractArea : public QObject, public AbstractAreaBase, public AbstractLayoutItem
 {
     Q_OBJECT
 
@@ -73,7 +73,7 @@ protected:
     AbstractArea();
     virtual ~AbstractArea() ;
     void paintAll( QPainter& painter );
-    virtual const QRect& areaGeometry() const;
+    virtual const QRect areaGeometry() const;
     virtual void positionHasChanged();
 
 signals:

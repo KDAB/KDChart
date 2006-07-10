@@ -63,7 +63,7 @@ public:
 
 
 inline AbstractAreaWidget::AbstractAreaWidget( AbstractAreaWidget::Private * p, QWidget* parent )
-  : AbstractAreaBase( p ), QWidget( parent )
+  : QWidget( parent ), AbstractAreaBase( p )
 {
     init();
 }

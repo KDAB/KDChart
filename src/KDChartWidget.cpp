@@ -379,29 +379,29 @@ void Widget::setType( ChartType chartType )
     switch ( chartType )
     {
         case Bar:
-           cartPlane = new CartesianCoordinatePlane();
+           cartPlane = new CartesianCoordinatePlane( d->m_chart );
            d->m_chart->replaceCoordinatePlane( cartPlane );
-           diag = new BarDiagram( cartPlane );
+           diag = new BarDiagram( d->m_chart, cartPlane );
            break;
         case Line:
-           cartPlane = new CartesianCoordinatePlane();
+           cartPlane = new CartesianCoordinatePlane( d->m_chart );
            d->m_chart->replaceCoordinatePlane( cartPlane );
-           diag = new LineDiagram( cartPlane );
+           diag = new LineDiagram( d->m_chart, cartPlane );
            break;
         case Pie:
-           polPlane = new PolarCoordinatePlane();
+           polPlane = new PolarCoordinatePlane( d->m_chart );
            d->m_chart->replaceCoordinatePlane( polPlane );
-           diag = new PieDiagram( polPlane );
+           diag = new PieDiagram( d->m_chart, polPlane );
            break;
         case Polar:
-           polPlane = new PolarCoordinatePlane();
+           polPlane = new PolarCoordinatePlane( d->m_chart );
            d->m_chart->replaceCoordinatePlane( polPlane );
-           diag = new PolarDiagram( polPlane );
+           diag = new PolarDiagram( d->m_chart, polPlane );
            break;
         case Ring:
-           polPlane = new PolarCoordinatePlane();
+           polPlane = new PolarCoordinatePlane( d->m_chart );
            d->m_chart->replaceCoordinatePlane( polPlane );
-           diag = new RingDiagram( polPlane );
+           diag = new RingDiagram( d->m_chart, polPlane );
            break;
         case NoType:
            break;
@@ -415,7 +415,7 @@ void Widget::setType( ChartType chartType )
         foreach(Legend* l, legends)
             l->setDiagram( diag );
     }
-    coordinatePlane()->show();
+//    coordinatePlane()->show();
 }
 
 /**

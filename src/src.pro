@@ -30,6 +30,13 @@ HEADERS += KDChartGlobal.h \
            KDChartAbstractPieDiagram_p.h \
            KDChartAbstractPolarDiagram.h \
            KDChartAbstractPolarDiagram_p.h \
+           KDChartAbstractAreaBase.h \
+           KDChartAbstractAreaBase_p.h \
+           KDChartAbstractArea.h \
+           KDChartAbstractArea_p.h \
+           KDChartAbstractAreaWidget.h \
+           KDChartAbstractAreaWidget_p.h \
+           KDChartAbstractAxis.h \
            KDChartAbstractProxyModel.h \
            KDChartAbstractGrid.h \
            KDChartCartesianGrid.h \
@@ -80,14 +87,7 @@ HEADERS += KDChartGlobal.h \
            KDChartThreeDPieAttributes_p.h \
            KDChartWidget.h \
            KDChartWidget_p.h \
-           KDChartAbstractAreaBase.h \
-           KDChartAbstractAreaBase_p.h \
-           KDChartAbstractArea.h \
-           KDChartAbstractArea_h.h \
-           KDChartAbstractAreaWidget.h \
-           KDChartAbstractAreaWidget_p.h \
-           KDChartAbstractAxis.h \
-           KDChartChart_p.h 
+           KDChartChart_p.h
 # FIXME(khz): use an internal libfakes library instead of this internal haeder file
 HEADERS += kdchart_platformdef.h
 
@@ -100,6 +100,10 @@ SOURCES += \
            KDChartAbstractDiagram.cpp \
            KDChartAbstractPieDiagram.cpp \
            KDChartAbstractPolarDiagram.cpp \
+           KDChartAbstractAreaBase.cpp \
+           KDChartAbstractArea.cpp \
+           KDChartAbstractAreaWidget.cpp \
+           KDChartAbstractAxis.cpp \
            KDChartAbstractProxyModel.cpp \
            KDChartAbstractGrid.cpp \
            KDChartCartesianGrid.cpp \
@@ -135,11 +139,7 @@ SOURCES += \
            KDChartThreeDBarAttributes.cpp \
            KDChartThreeDLineAttributes.cpp \
            KDChartThreeDPieAttributes.cpp \
-           KDChartWidget.cpp \
-           KDChartAbstractAreaBase.cpp \
-           KDChartAbstractArea.cpp \
-           KDChartAbstractAreaWidget.cpp \
-           KDChartAbstractAxis.cpp
+           KDChartWidget.cpp
 
 CONFIG += warn-on
 include( ../variables.pri )

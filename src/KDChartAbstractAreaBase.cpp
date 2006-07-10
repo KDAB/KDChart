@@ -115,16 +115,16 @@ void AbstractAreaBase::paintBackground( QPainter& painter, const QRect& rect )
 {
     const BackgroundAttributes& attributes = d->backgroundAttributes;
 
-    if( !painter || !attributes.isVisible() ) return;
+    if( !attributes.isVisible() ) return;
 
     /* first draw the brush (may contain a pixmap)*/
     if( Qt::NoBrush != attributes.brush().style() ) {
-        KDChart::PainterSaver painterSaver( painter );
-        painter->setPen( Qt::NoPen );
-        const QPointF newTopLeft( painter->deviceMatrix().map( rect.topLeft() ) );
-        painter->setBrushOrigin( newTopLeft );
-        painter->setBrush( attributes.brush() );
-        painter->drawRect( rect );
+        KDChart::PainterSaver painterSaver( &painter );
+        painter.setPen( Qt::NoPen );
+        const QPointF newTopLeft( painter.deviceMatrix().map( rect.topLeft() ) );
+        painter.setBrushOrigin( newTopLeft );
+        painter.setBrush( attributes.brush() );
+        painter.drawRect( rect );
     }
     /* next draw the backPixmap over the brush */
     if( !attributes.pixmap().isNull() &&
@@ -134,7 +134,7 @@ void AbstractAreaBase::paintBackground( QPainter& painter, const QRect& rect )
         {
             ol.setX( rect.center().x() - attributes.pixmap().width() / 2 );
             ol.setY( rect.center().y() - attributes.pixmap().height()/ 2 );
-            painter->drawPixmap( ol, attributes.pixmap() );
+            painter.drawPixmap( ol, attributes.pixmap() );
         } else {
             QMatrix m;
             double zW = (double)rect.width()  / (double)attributes.pixmap().width();
@@ -156,7 +156,7 @@ void AbstractAreaBase::paintBackground( QPainter& painter, const QRect& rect )
             QPixmap pm = attributes.pixmap().transformed( m );
             ol.setX( rect.center().x() - pm.width() / 2 );
             ol.setY( rect.center().y() - pm.height()/ 2 );
-            painter->drawPixmap( ol, pm );
+            painter.drawPixmap( ol, pm );
         }
     }
 }
@@ -166,12 +166,12 @@ void AbstractAreaBase::paintFrame( QPainter& painter, const QRect& rect )
 {
     const FrameAttributes& attributes = d->frameAttributes;
 
-    if( !painter || !attributes.isVisible() ) return;
+    if( !attributes.isVisible() ) return;
 
-    const QPen oldPen( painter->pen() );
-    painter->setPen( attributes.pen() );
-    painter->drawRect( rect() );
-    painter->setPen( oldPen );
+    const QPen oldPen( painter.pen() );
+    painter.setPen( attributes.pen() );
+    painter.drawRect( rect );
+    painter.setPen( oldPen );
 }
 
 
@@ -182,7 +182,7 @@ QRect AbstractAreaBase::innerRect() const
         ? qMax( d->frameAttributes.padding(), 0 ) : 0;
     return
         QRect( QPoint(0,0), areaGeometry().size() )
-            .adjusted( padding, padding, -padding, -padding ) );
+            .adjusted( padding, padding, -padding, -padding );
 }
 
 void AbstractAreaBase::positionHasChanged()

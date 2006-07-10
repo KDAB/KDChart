@@ -47,30 +47,33 @@
 
 namespace KDChart {
 
-    /**
-     * \internal
-     */
-    class CartesianAxis::Private : public AbstractAxis::Private
-    {
-        friend class CartesianAxis;
+/**
+  * \internal
+  */
+class CartesianAxis::Private : public AbstractAxis::Private
+{
+    friend class CartesianAxis;
 
-    public:
-        Private( AbstractCartesianDiagram* parent_ )
-        :AbstractAxis::Private( parent_ )
-        {};
-        ~Private() {};
+public:
+    Private( AbstractCartesianDiagram* diagram, AbstractAxis* axis )
+        :AbstractAxis::Private( diagram, axis )
+    {};
+    ~Private() {};
 
-    private:
-        Position position;
-        QRect geometry;
-    };
+private:
+    Position position;
+    QRect geometry;
+};
 
-    inline CartesianAxis::CartesianAxis( Private * p )
-    : AbstractAxis( p ) { init(); }
-    inline CartesianAxis::Private * CartesianAxis::d_func()
-    { return static_cast<Private*>( AbstractAxis::d_func() ); }
-    inline const CartesianAxis::Private * CartesianAxis::d_func() const
-    { return static_cast<const Private*>( AbstractAxis::d_func() ); }
+inline CartesianAxis::CartesianAxis( Private * p, AbstractDiagram* diagram )
+    : AbstractAxis( p, diagram )
+{
+    init();
+}
+inline CartesianAxis::Private * CartesianAxis::d_func()
+{ return static_cast<Private*>( AbstractAxis::d_func() ); }
+inline const CartesianAxis::Private * CartesianAxis::d_func() const
+{ return static_cast<const Private*>( AbstractAxis::d_func() ); }
 
 }
 

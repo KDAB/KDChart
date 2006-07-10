@@ -66,8 +66,8 @@ namespace KDChart {
         Q_OBJECT
 
         Q_DISABLE_COPY( AbstractAxis )
-        //old: KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( AbstractAxis, AbstractDiagram* )
-        KDCHART_DECLARE_PRIVATE_DERIVED( AbstractAxis )
+        KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( AbstractAxis, AbstractDiagram* )
+
     public:
         explicit AbstractAxis( AbstractDiagram* diagram = 0 );
         virtual ~AbstractAxis();
@@ -84,7 +84,7 @@ namespace KDChart {
 
         void createObserver( AbstractDiagram* diagram );
         void deleteObserver( AbstractDiagram* diagram );
-        AbstractDiagram* diagram() const;
+        const AbstractDiagram* diagram() const;
         bool observedBy( AbstractDiagram* diagram ) const;
         virtual void connectSignals();
 

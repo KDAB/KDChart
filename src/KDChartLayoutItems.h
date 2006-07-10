@@ -47,8 +47,6 @@ namespace KDChart {
      */
     class KDCHART_EXPORT AbstractLayoutItem : public QLayoutItem
     {
-        Q_OBJECT
-
     public:
         AbstractLayoutItem( Qt::Alignment alignment = 0 ) :
             QLayoutItem( alignment ),
@@ -80,7 +78,7 @@ namespace KDChart {
     public:
         TextLayoutItem( const QString& text,
                         const TextAttributes& attributes,
-                        const QWidget*  autoReferenceArea,
+                        const QObject*  autoReferenceArea,
                         KDChartEnums::MeasureOrientation autoReferenceOrientation,
                         Qt::Alignment alignment = 0 );
 
@@ -115,7 +113,7 @@ namespace KDChart {
         QRect mRect;
         QString mText;
         TextAttributes mAttributes;
-        const QWidget* mAutoReferenceArea;
+        const QObject* mAutoReferenceArea;
         KDChartEnums::MeasureOrientation mAutoReferenceOrientation;
         mutable QSize cachedSizeHint;
         mutable qreal cachedFontSize;

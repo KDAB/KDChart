@@ -232,13 +232,46 @@ void HeaderFooter::setParent( Chart* parent )
     d->parent = parent;
 }
 
-QSize HeaderFooter::sizeHint() const
+/* pure virtual in QLayoutItem */
+bool HeaderFooter::isEmpty() const
+{
+    return ( d->textDoc != 0 );
+}
+/* pure virtual in QLayoutItem */
+Qt::Orientations HeaderFooter::expandingDirections() const
+{
+    return Qt::Vertical | Qt::Horizontal;
+}
+/* pure virtual in QLayoutItem */
+QSize HeaderFooter::maximumSize() const
 {
     if( d->textDoc ) return d->textDoc->sizeHint();
-    else return AbstractArea::sizeHint();
+    return QSize(0,0);
 }
-
-QSize HeaderFooter::minimumSizeHint() const
+/* pure virtual in QLayoutItem */
+QSize HeaderFooter::minimumSize() const
 {
-    return sizeHint();
+    return maximumSize();
+}
+/* pure virtual in QLayoutItem */
+QSize HeaderFooter::sizeHint() const
+{
+    return maximumSize();
+}
+/* pure virtual in QLayoutItem */
+void HeaderFooter::setGeometry( const QRect& r )
+{
+    if( d->textDoc )
+        d->textDoc->setPageSize( QSize( r.size() ) );
+}
+/* pure virtual in QLayoutItem */
+QRect HeaderFooter::geometry() const
+{
+    if( d->textDoc ){
+        const QSizeF siz( d->textDoc->pageSize() );
+        return QRect( QPoint(0, 0),
+            QSize( static_cast<int>(siz.width()),
+                   static_cast<int>(siz.height()) ) );
+    }
+    return QRect( QPoint(0, 0), sizeHint() );
 }

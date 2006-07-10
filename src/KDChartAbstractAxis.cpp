@@ -39,16 +39,11 @@ using namespace KDChart;
 
 #define d d_func()
 
-AbstractAxis::Private::Private( AbstractDiagram* diagram_ )
-    : diagram( diagram_ )
+AbstractAxis::Private::Private( AbstractDiagram* diagram, AbstractAxis* axis )
+    : observer( 0 )
 {
-    // PENDING(miroslav) Code from KDChartAxis::Private::Private goes here
-    if( diagram )
-        observer = new DiagramObserver( *diagram );
-    else
-        observer = 0;
+    setDiagram( diagram, axis );
 }
-
 
 AbstractAxis::Private::~Private()
 {
@@ -57,10 +52,54 @@ AbstractAxis::Private::~Private()
     observer = 0;
 }
 
+bool AbstractAxis::Private::setDiagram( AbstractDiagram* diagram, AbstractAxis* axis )
+{
+    // do not set a diagram again that was already set
+    if (  diagram &&
+        ((diagram == mDiagram) || secondaryDiagrams.contains( diagram )) )
+        return false;
+
+    bool bNewDiagramStored = false;
+    if ( ! mDiagram ) {
+        mDiagram = diagram;
+        delete observer;
+        if ( mDiagram ) {
+            observer = new DiagramObserver( *mDiagram, axis );
+            bNewDiagramStored = true;
+        }else{
+            observer = 0;
+        }
+    } else {
+        if ( diagram )
+            secondaryDiagrams.enqueue( diagram );
+    }
+    return bNewDiagramStored;
+}
+
+void AbstractAxis::Private::unsetDiagram( AbstractDiagram* diagram, AbstractAxis* axis )
+{
+    if ( diagram == mDiagram ) {
+        mDiagram = 0;
+        delete observer;
+        observer = 0;
+    } else {
+        secondaryDiagrams.removeAll( diagram );
+    }
+    if( !secondaryDiagrams.isEmpty() ) {
+        AbstractDiagram *nextDiagram = secondaryDiagrams.dequeue();
+        setDiagram( nextDiagram, axis );
+    }
+}
+
+bool AbstractAxis::Private::hasDiagram( AbstractDiagram* diagram ) const
+{
+    return diagram == mDiagram || secondaryDiagrams.contains( diagram );
+}
+
 
 
 AbstractAxis::AbstractAxis ( AbstractDiagram* diagram )
-    : AbstractArea( new Private( diagram ), 0 )
+    : AbstractArea( new Private( diagram, this ) )
 {
     init();
 }
@@ -77,10 +116,10 @@ void AbstractAxis::init()
         12.5,
         KDChartEnums::MeasureCalculationModeAuto,
         KDChartEnums::MeasureOrientationAuto );
-    d_func()->textAttributes.setFontSize( m  );
+    d->textAttributes.setFontSize( m  );
     m.setValue( 5 );
     m.setCalculationMode( KDChartEnums::MeasureCalculationModeAbsolute );
-    d_func()->textAttributes.setMinimalFontSize( m  );
+    d->textAttributes.setMinimalFontSize( m  );
 }
 
 /**
@@ -95,20 +134,8 @@ void AbstractAxis::init()
   */
 void AbstractAxis::createObserver( AbstractDiagram* diagram )
 {
-    if( d->diagram == diagram ) return;
-
-    if( d->secondaryDiagrams.contains( diagram ) ) return;
-
-    if ( !d->diagram ) {
-        d->diagram = diagram;
-        if ( diagram ) {
-            d->observer = new DiagramObserver( *diagram, this );
-            connectSignals();
-        }
-    } else {
-        if ( diagram )
-            d->secondaryDiagrams.enqueue( diagram );
-    }
+    if( d->setDiagram( diagram, this ) )
+        connectSignals();
 }
 
 /**
@@ -123,17 +150,7 @@ void AbstractAxis::createObserver( AbstractDiagram* diagram )
   */
 void AbstractAxis::deleteObserver( AbstractDiagram* diagram )
 {
-    if ( diagram == d->diagram ) {
-        d->diagram = 0;
-        delete d->observer;
-        d->observer = 0;
-    } else {
-        d->secondaryDiagrams.removeAll( diagram );
-    }
-    if( !d->secondaryDiagrams.isEmpty() ) {
-        AbstractDiagram *nextDiagram = d->secondaryDiagrams.dequeue();
-        createObserver( nextDiagram );
-    }
+    d->unsetDiagram( diagram, this );
 }
 
 /**
@@ -151,8 +168,8 @@ void AbstractAxis::deleteObserver( AbstractDiagram* diagram )
   */
 void AbstractAxis::connectSignals()
 {
-    if( d_func()->observer ){
-        connect( d_func()->observer, SIGNAL( diagramDataChanged( AbstractDiagram *) ),
+    if( d->observer ){
+        connect( d->observer, SIGNAL( diagramDataChanged( AbstractDiagram *) ),
                 this, SLOT( update() ) );
     }
 }
@@ -171,7 +188,7 @@ void AbstractAxis::connectSignals()
 */
 void AbstractAxis::setTextAttributes( const TextAttributes &a )
 {
-    d_func()->textAttributes = a;
+    d->textAttributes = a;
 }
 
 /**
@@ -181,7 +198,7 @@ void AbstractAxis::setTextAttributes( const TextAttributes &a )
 */
 TextAttributes AbstractAxis::textAttributes() const
 {
-    return d_func()->textAttributes;
+    return d->textAttributes;
 }
 
 /**
@@ -203,7 +220,7 @@ TextAttributes AbstractAxis::textAttributes() const
 */
 void AbstractAxis::setLabels( const QStringList& list )
 {
-    d_func()->hardLabels = list;
+    d->hardLabels = list;
 }
 
 /**
@@ -213,7 +230,7 @@ void AbstractAxis::setLabels( const QStringList& list )
 */
 QStringList AbstractAxis::labels() const
 {
-    return d_func()->hardLabels;
+    return d->hardLabels;
 }
 
 /**
@@ -229,7 +246,7 @@ QStringList AbstractAxis::labels() const
 */
 void AbstractAxis::setShortLabels( const QStringList& list )
 {
-    d_func()->hardShortLabels = list;
+    d->hardShortLabels = list;
 }
 
 /**
@@ -242,7 +259,7 @@ void AbstractAxis::setShortLabels( const QStringList& list )
 */
 QStringList AbstractAxis::shortLabels() const
 {
-    return d_func()->hardShortLabels;
+    return d->hardShortLabels;
 }
 
 /**
@@ -252,17 +269,17 @@ QStringList AbstractAxis::shortLabels() const
  */
 const AbstractCoordinatePlane* AbstractAxis::coordinatePlane() const
 {
-    if( d_func()->diagram )
-        return d_func()->diagram->coordinatePlane();
+    if( d->diagram() )
+        return d->diagram()->coordinatePlane();
     return 0;
 }
 
-AbstractDiagram * KDChart::AbstractAxis::diagram() const
+const AbstractDiagram * KDChart::AbstractAxis::diagram() const
 {
-    return d->diagram;
+    return d->diagram();
 }
 
 bool KDChart::AbstractAxis::observedBy( AbstractDiagram * diagram ) const
 {
-    return diagram == d->diagram || d->secondaryDiagrams.contains( diagram );
+    return d->hasDiagram( diagram );
 }

@@ -48,7 +48,7 @@ namespace KDChart {
   * a set of background attributes and frame attributes, such as
   * KDChart::Chart and KDChart::Legend.
   */
-class KDCHART_EXPORT AbstractAreaWidget : public AbstractAreaBase, public QWidget
+class KDCHART_EXPORT AbstractAreaWidget : public QWidget, public AbstractAreaBase
 {
     Q_OBJECT
 
@@ -91,8 +91,8 @@ public:
 protected:
     AbstractAreaWidget();
     virtual ~AbstractAreaWidget() ;
-    void paint( QPainter& painter );
-    virtual const QRect& areaGeometry() const;
+    void paintAll( QPainter& painter );
+    virtual const QRect areaGeometry() const;
     virtual void positionHasChanged();
 
 public:

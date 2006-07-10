@@ -63,7 +63,7 @@ public:
 
 
 inline AbstractArea::AbstractArea( Private * p )
-  : AbstractAreaBase( p ), AbstractLayoutItem(), QObject()
+  :  QObject(), AbstractAreaBase( p ), AbstractLayoutItem()
 {
     init();
 }
