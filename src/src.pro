@@ -20,10 +20,10 @@ HEADERS += KDChartGlobal.h \
            KDChartAbstractCartesianDiagram_p.h \
            KDChartAbstractCoordinatePlane.h \
            KDChartAbstractCoordinatePlane_p.h \
-           KDChartPolarCoordinatePlane.h \
-           KDChartPolarCoordinatePlane_p.h \
            KDChartCartesianCoordinatePlane.h \
            KDChartCartesianCoordinatePlane_p.h \
+           KDChartPolarCoordinatePlane.h \
+           KDChartPolarCoordinatePlane_p.h \
            KDChartAbstractDiagram.h \
            KDChartAbstractDiagram_p.h \
            KDChartAbstractPieDiagram.h \
@@ -95,8 +95,8 @@ SOURCES += \
            KDChartMeasure.cpp \
            KDChartAbstractCartesianDiagram.cpp \
            KDChartAbstractCoordinatePlane.cpp \
-           KDChartPolarCoordinatePlane.cpp \
            KDChartCartesianCoordinatePlane.cpp \
+           KDChartPolarCoordinatePlane.cpp \
            KDChartAbstractDiagram.cpp \
            KDChartAbstractPieDiagram.cpp \
            KDChartAbstractPolarDiagram.cpp \

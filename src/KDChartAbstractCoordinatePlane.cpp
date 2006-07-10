@@ -51,6 +51,11 @@ AbstractCoordinatePlane::~AbstractCoordinatePlane()
     emit destroyedCoordinatePlane( this );
 }
 
+void AbstractCoordinatePlane::init()
+{
+    // this bloc left empty intentionally
+}
+
 void AbstractCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
 {
     // diagrams are invisible and paint through their paint() method

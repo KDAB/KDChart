@@ -23,8 +23,8 @@
  **
  **********************************************************************/
 
-#ifndef KDCHARTCOORDINATEPLANE_H
-#define KDCHARTCOORDINATEPLANE_H
+#ifndef KDCHARTABSTRCOORDINATEPLANE_H
+#define KDCHARTABSTRCOORDINATEPLANE_H
 
 #include <QObject>
 #include <QList>

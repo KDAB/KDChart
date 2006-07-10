@@ -39,6 +39,7 @@ namespace KDChart {
     class KDCHART_EXPORT CartesianCoordinatePlane : public AbstractCoordinatePlane
     {
         Q_OBJECT
+
         Q_DISABLE_COPY( CartesianCoordinatePlane )
         KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( CartesianCoordinatePlane, Chart* )
 

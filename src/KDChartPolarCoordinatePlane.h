@@ -36,6 +36,7 @@ namespace KDChart {
     class KDCHART_EXPORT PolarCoordinatePlane : public AbstractCoordinatePlane
     {
         Q_OBJECT
+
         Q_DISABLE_COPY( PolarCoordinatePlane )
         KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( PolarCoordinatePlane, Chart* )
 

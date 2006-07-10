@@ -64,6 +64,11 @@ AbstractArea::~AbstractArea()
 }
 
 
+void AbstractArea::init()
+{
+    // this bloc left empty intentionally
+}
+
 void AbstractArea::paintIntoRect( QPainter& painter, const QRect& rect )
 {
     const QRect oldGeometry( geometry() );

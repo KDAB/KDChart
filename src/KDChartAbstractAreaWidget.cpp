@@ -56,6 +56,11 @@ AbstractAreaWidget::~AbstractAreaWidget()
     // this bloc left empty intentionally
 }
 
+void AbstractAreaWidget::init()
+{
+    // this bloc left empty intentionally
+}
+
 #define d d_func()
 
 void AbstractAreaWidget::paintEvent( QPaintEvent* event )

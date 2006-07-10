@@ -23,8 +23,8 @@
  **
  **********************************************************************/
 
-#ifndef KDCHARTABSTRACTCOORDINATEPLANE_P_H
-#define KDCHARTABSTRACTCOORDINATEPLANE_P_H
+#ifndef KDCHARTABSTRCOORDINATEPLANE_P_H
+#define KDCHARTABSTRCOORDINATEPLANE_P_H
 
 //
 //  W A R N I N G
@@ -77,12 +77,6 @@ protected:
 };
 
 
-void AbstractCoordinatePlane::init()
-{
-    // this bloc left empty intentionally
-}
-
-
 inline AbstractCoordinatePlane::AbstractCoordinatePlane( Private * p, KDChart::Chart* parent )
     : AbstractArea( p )
 {
@@ -99,29 +93,7 @@ inline const AbstractCoordinatePlane::Private * AbstractCoordinatePlane::d_func(
     return static_cast<const Private*>( AbstractArea::d_func() );
 }
 
-/*
-inline AbstractCoordinatePlane::Private * AbstractCoordinatePlane::d_func()
-{
-    return static_cast<Private*>( AbstractArea::d_func() );
-}
-inline const AbstractCoordinatePlane::Private * AbstractCoordinatePlane::d_func() const
-{
-    return static_cast<const Private*>( AbstractArea::d_func() );
-}
-*/
-
-/*
-inline AbstractCoordinatePlane::AbstractCoordinatePlane( Private * p ) : _d( p )
-{
-    _d->initializeGrid(); // virtual method to init the correct grid: cartesian, polar, ...
-}
-
-inline AbstractCoordinatePlane::AbstractCoordinatePlane( Private * p )
-  : AbstractArea(), _d( p )
-{
-    _d->initializeGrid(); // virtual method to init the correct grid: cartesian, polar, ...
-}
-*/
 
 }
+
 #endif /* KDCHARTABSTRACTCOORDINATEPLANE_P_H*/
