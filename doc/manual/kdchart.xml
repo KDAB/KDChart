@@ -132,14 +132,18 @@
                 <para>
                     Let us make this somewhat abstract description more
                     concrete by looking at the following lines of code.
+		    <!--
                     <link linkend=""></link>
                     <link linkend=""></link>
+		    -->
                 </para>
+		<!--
                 <programlisting linenumbering="numbered" id="">
                     <textobject>
                         <textdata fileref="../../examples/..."/>
                     </textobject>
                 </programlisting>
+		-->
                 <para>
                     More explanation?
                 </para>
@@ -583,7 +587,7 @@
 		</sect3>
 	    </sect2>
 	    <sect2>
-		<title id="bars">Area Charts</title>
+		<title id="areas">Area Charts</title>
 		<para>
 		    Text info to Areas...
 		</para>	    
@@ -664,7 +668,7 @@
 		</sect3>
 	    </sect2>
 	    <sect2>
-		<title id="bars">High/Low Charts</title>
+		<title id="highlow">High/Low Charts</title>
 		<para>
 		    Text info to High/Low...
 		</para>	    
@@ -745,12 +749,12 @@
 		</sect3>
 	    </sect2>
 	    <sect2>
-		<title id="bars">Box&Whisker Charts</title>
+		<title id="boxwhisker">Box and Whisker Charts</title>
 		<para>
 		    Text info to Box and Whisker...
 		</para>	    
 		<sect3>
-		    <title id="bwsample" xreflabel="codexample">Box & Whisker Example</title>
+		    <title id="bwsample" xreflabel="codexample">Box and Whisker Example</title>
 		    <para>
 			Let us make this more concrete by looking at the 
 			following lines of code.
@@ -771,12 +775,12 @@
 		    </para>   
 		</sect3>
 		<sect3>
-		    <title id="bwattributes">Box & Whisker Attributes</title>
+		    <title id="bwattributes">Box and Whisker Attributes</title>
 		    <para>
 			Text ...
 		    </para>	
 		    <sect4>
-			<title id="bwattributessample" xreflabel="codexample">Box & Whisker Example</title>
+			<title id="bwattributessample" xreflabel="codexample">Box and Whisker Example</title>
 			<para>
 			    Let us make this more concrete by looking at the 
 			    following lines of code.
@@ -803,7 +807,7 @@
 			Some tips and tricks
 		    </para>	
 		    <sect4>
-			<title id="bwtipssample" xreflabel="codexample">A complete Box & Whisker Example</title>
+			<title id="bwtipssample" xreflabel="codexample">A complete Box and Whisker Example</title>
 			<para>
 			    Let us make this more concrete by looking at the 
 			    following lines of code.
@@ -1635,10 +1639,7 @@
     </chapter>    
     <appendix id="appendix_qanda">
         <title>Q&amp;A section</title>
-        <titleabbrev>Appendix A</titleabbrev>
-        <qandaset defaultlabel="number">
-            </qandadiv>
-        </qandaset>
+        <titleabbrev>Appendix A</titleabbrev>       
         <note>
             <para>
                 This section will grow further according to the most frequently
