@@ -1,0 +1,1199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+"/usr/share/xml/docbook/schema/dtd/4.2/docbookx.dtd" [
+        <!ENTITY auml "&#x00E4;">
+        <!ENTITY mdash "&#x2014;">
+        <!ENTITY nbsp "&#x00A0;">
+        <!ENTITY kdchart "KD&#x00A0;Chart">
+]>
+<book>
+    <bookinfo>
+	<title>&kdchart; Programmer's Manual</title>
+	<corpauthor>The &kdchart; Team</corpauthor>
+	<corpname>Klar&auml;lvdalens Datakonsult AB</corpname>
+        <releaseinfo>Version 2.0</releaseinfo>
+        <legalnotice>
+            <para>
+                The contents of this manual and the associated &kdchart;
+                software are the property of Klar&auml;lvdalens Datakonsult AB
+                and are copyrighted. Any reproduction in whole or in part is
+                strictly prohibited without prior written permission by
+                Klar&auml;lvdalens Datakonsult AB.
+            </para>    
+	    <para>
+                &kdchart; and the &kdchart; logo are trademarks or registered
+                trademarks of Klar&auml;lvdalens Datakonsult AB in the European
+                Union, the United States, and/or other countries. Other
+                product and company names and logos may be trademarks or 
+		registered trademarks of their respective companies.
+            </para>
+        </legalnotice>
+        <copyright>
+            <year>2001&mdash;2006</year>
+            <holder>Klar&auml;lvdalens Datakonsult AB</holder>
+        </copyright>
+    </bookinfo>
+
+    <!-- =====================Introduction============================== -->
+
+    <chapter       id="chapter_introduction">
+        <title       id="chtxt_introduction">Introduction</title>
+        <titleabbrev id="chnum_introduction">Chapter 1</titleabbrev>
+        <para>
+            This is the &kdchart; Programmer's Manual. It will get you
+            started with creating your charts and provides lots of pointers
+	    to its many advanced features.
+        </para>
+        <itemizedlist>
+            <listitem>
+                <para>
+                    Depending on your &kdchart; version, you will find
+                    different <filename>INSTALL</filename> files that explain
+                    how to install &kdchart; on your platform or how to build
+                    it from sources.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    &kdchart; also comes with an extensive Reference Manual
+                    that is generated directly from the source code itself.
+                </para>
+            </listitem>
+        </itemizedlist>
+        <para>
+            You should refer to it in conjunction with this Programmer's
+            Manual.
+        </para>
+        <itemizedlist>
+         <listitem>
+                <para>
+                    What is &kdchart;? (Quick description)
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    What can we use &kdchart; for?
+                    * Demonstrate in short sentences associated to screenshots
+                    that kdc can be used for both business charts and
+                    engineering charts.
+                    * Display a view with small diagrams and arrows showing
+                    how the main classes work together
+                </para>
+            </listitem>
+        </itemizedlist>
+        <sect1>
+            <title id="prerequisites">What You Should Know</title>
+            <para>
+                You should be familiar with writing Qt applications, as
+                well as have a working C++ knowledge. When you are in
+                doubt about how a Qt4 class mentioned in this Programmer's 
+		Guide works, please check the Qt4 reference documentation or 
+		a good book about Qt4.
+            </para>
+            <para>
+                Add some general information from the Getting Started File.
+            </para>
+        </sect1>
+        <sect1>
+            <title id="structure">The Structure of This Manual</title>
+            <para>
+                How we will proceed to present &kdchart; for Qt4
+            </para>
+            <para>
+                We provide you with lots of sample code and screenshots.
+                We recommend our readers to try and run the sample code and
+                experiment with the various settings.
+            </para>
+        </sect1>
+        <sect1>
+            <title>What's next</title>
+            <para>
+                In the next chapter we introduce you to &kdchart; 2.0 new API.
+            </para>
+       </sect1>
+    </chapter>
+
+    <!-- ============ KD Chart 2.0 API Introduction ============= -->
+
+    <chapter       id="chapter_api">
+        <title       id="chtxt_api">KD Chart 2 API Introduction</title>
+        <titleabbrev id="chnum_api">Chapter 2</titleabbrev>
+        <para>
+            Text.....
+        </para>
+        <sect1>
+            <title id="apioverview">Overview</title>
+            <para>
+                Text.....
+            </para>
+            <sect2>
+                <title id="apisample" xreflabel="codexample">Code Example</title
+>
+                <para>
+                    Let us make this somewhat abstract description more
+                    concrete by looking at the following lines of code.
+                    <link linkend=""></link>
+                    <link linkend=""></link>
+                </para>
+                <programlisting linenumbering="numbered" id="">
+                    <textobject>
+                        <textdata fileref="../../examples/..."/>
+                    </textobject>
+                </programlisting>
+                <para>
+                    More explanation?
+                </para>
+            </sect2>
+        </sect1>
+        <sect1>
+            <title id="apihandling">Ownership and Parameters Handling</title>
+            <para>
+                Text: Shift the following sections: Handling of value
+                parameters (e.g Text Attributes) vs Pointer classes.
+            </para>
+            <sect2>
+                <title id="handlingsample" xreflabel="codexample">Code Example</title>
+                            <para>
+                    Let us make this more concrete by looking at the following
+                    lines of code.
+                   <!--
+                    <link linkend=""></link>
+                    <link linkend=""></link>
+                    -->
+                </para>
+                <!--
+                <programlisting linenumbering="numbered" id="">
+                    <textobject>
+                        <textdata fileref="../../examples/..."/>
+                    </textobject>
+                </programlisting>
+                -->
+                <para>
+                    More explanation?
+                </para>
+            </sect2>
+        </sect1>
+        <sect1>
+            <title id="apiinterview">Qt4 Interview support</title>
+            <para>
+                        Text .....
+            </para>
+             <sect2>
+                <title id="interviewsample" xreflabel="codexample">Code Example</title>
+                <para>
+                    Let us make this more concrete by looking at the following
+                    lines of code.
+                   <!--
+                    <link linkend=""></link>
+                    <link linkend=""></link>
+                    -->
+                </para>
+                <!--
+                <programlisting linenumbering="numbered" id="">
+                    <textobject>
+                        <textdata fileref="../../examples/..."/>
+                    </textobject>
+                </programlisting>
+                -->
+                <para>
+                    More explanation?
+                </para>
+                               </sect2>
+        </sect1>
+        <sect1>
+            <title id="apiattribute">Attribute sets</title>
+            <para>
+                Text .....
+            </para>
+             <sect2>
+                <title id="attributesample" xreflabel="codexample">Code Example</title>
+                <para>
+                    Let us make this more concrete by looking at the following
+                    lines of code.
+                   <!--
+                    <link linkend=""></link>
+                    <link linkend=""></link>
+                    -->
+                </para>
+                <!--
+                <programlisting linenumbering="numbered" id="">
+                    <textobject>
+                        <textdata fileref="../../examples/..."/>
+                    </textobject>
+               </programlisting>
+                -->
+                <para>
+                    More explanation?
+                </para>
+                </sect2>
+        </sect1>
+        <sect1>
+            <title id="apimemory">Memory management</title>
+            <para>
+                Text .....
+            </para>
+             <sect2>
+                <title id="memorysample" xreflabel="codexample">Code Example</title>
+                <para>
+                    Let us make this more concrete by looking at the following
+                    lines of code.
+                   <!--
+                    <link linkend=""></link>
+                    <link linkend=""></link>
+                    -->
+                </para>
+                <!--
+                <programlisting linenumbering="numbered" id="">
+                    <textobject>
+                        <textdata fileref="../../examples/..."/>
+                    </textobject>
+                </programlisting>
+                -->
+                <para>
+                    More explanation?
+                </para>
+            </sect2>
+        </sect1>
+        <sect1>
+            <title>What's next</title>
+            <para>
+                Basic steps to create your Chart Widget.
+            </para>
+        </sect1>
+    </chapter>
+    <chapter id="chapter_basicsteps">
+        <title id="chtxt_basicsteps">Basic steps to Create your Chart Widget</title>
+        <titleabbrev id="chnum_basicsteps">Chapter 3</titleabbrev>
+	<para>
+          Introcuction text
+        </para>
+         <sect1>
+            <title id="basictwoways">Two ways</title>
+            <para>
+                Text ...
+            </para>
+        </sect1>
+        <sect1>
+            <title id="basicprocedure">The Procedure</title>
+            <para>
+                Text ...KDChartWidget vs. KDChart::Chart own Widget.
+            </para>
+            <sect2>
+                <title id="widgetsample" xreflabel="codexample">Widget Example</title>
+                <para>
+                    Let us make this more concrete by looking at the following
+                    lines of code.
+                   <!--
+                    <link linkend=""></link>
+                              <link linkend=""></link>
+                    -->
+                </para>
+                <!--
+                <programlisting linenumbering="numbered" id="">
+                <textobject>
+                <textdata fileref="../../examples/..."/>
+                </textobject>
+                </programlisting>
+                -->
+                <para>
+                    More explanation?
+                </para>
+            </sect2>
+	    <sect2>
+                <title id="chartsample" xreflabel="codexample">Chart Example</title>
+                <para>
+                    Let us make this more concrete by looking at the following
+                    lines of code.
+                   <!--
+                    <link linkend=""></link>
+                    <link linkend=""></link>
+                     -->
+                </para>
+                <!--
+                <programlisting linenumbering="numbered" id="">
+                    <textobject>
+                        <textdata fileref="../../examples/..."/>
+                    </textobject>
+                </programlisting>
+                -->
+                <para>
+                    More explanation?
+                </para>
+            </sect2>
+        </sect1>
+        <sect1>
+            <title>What's next</title>
+            <para>
+                Coordinate planes and diagrams.
+            </para>
+        </sect1>
+    </chapter>
+     <chapter id="chapter_planesanddiagrams">
+        <title id="chtxt_planesanddiagrams">Coordinate planes and Diagrams</title>
+        <titleabbrev id="chnum_planesanddiagrams">Chapter 4</titleabbrev>
+	<para>
+          Introduction text
+        </para>
+        <sect1>
+            <title id="cartesianplane">Cartesian coordinate plane</title>
+            <para>
+                Text ...
+            </para>
+	    <sect2>
+		<title id="bars">Bar Charts</title>
+		<para>
+		    Text info to Bars...
+		</para>	    
+		<sect3>
+		    <title id="barsample" xreflabel="codexample">Bar Example</title>
+		    <para>
+			Let us make this more concrete by looking at the 
+			following lines of code.
+			<!--
+			<link linkend=""></link>
+			<link linkend=""></link>
+			-->
+		    </para>
+		    <!--
+		    <programlisting linenumbering="numbered" id="">
+                    <textobject>
+		    <textdata fileref="../../examples/..."/>
+		    </textobject>
+                    </programlisting>
+		    -->
+		    <para>
+			More explanation?
+		    </para>   
+		</sect3>
+		<sect3>
+		    <title id="barsattributes">Bars Attributes</title>
+		    <para>
+			Text ...
+		    </para>	
+		    <sect4>
+			<title id="barattributessample" xreflabel="codexample">Bar Example</title>
+			<para>
+			    Let us make this more concrete by looking at the 
+			    following lines of code.
+			    <!--
+			    <link linkend=""></link>
+			    <link linkend=""></link>
+			    -->
+			</para>
+			<!--
+			<programlisting linenumbering="numbered" id="">
+			<textobject>
+			<textdata fileref="../../examples/..."/>
+		        </textobject>
+                        </programlisting>
+			-->
+			<para>
+			    More explanation?
+			</para>   
+		    </sect4>	
+		</sect3>
+		<sect3>
+		   <title id="barstips">Tips and Tricks</title>
+		    <para>
+			Some tips and tricks
+		    </para>	
+		    <sect4>
+			<title id="bartipssample" xreflabel="codexample">A complete Bar Example</title>
+			<para>
+			    Let us make this more concrete by looking at the 
+			    following lines of code.
+			    <!--
+			    <link linkend=""></link>
+			    <link linkend=""></link>
+			    -->
+			</para>
+			<!--
+			<programlisting linenumbering="numbered" id="">
+			<textobject>
+			<textdata fileref="../../examples/..."/>
+		        </textobject>
+                        </programlisting>
+			-->
+			<para>
+			    More explanation?
+			</para>   
+		    </sect4>	  
+		</sect3>
+	    </sect2>
+            <sect2>
+		<title id="lines">Line Charts</title>
+		<para>
+		    Text info Lines...
+		</para>	    
+		<sect3>
+		    <title id="linesample" xreflabel="codexample">Line Example</title>
+		    <para>
+			Let us make this more concrete by looking at the 
+			following lines of code.
+			<!--
+			<link linkend=""></link>
+			<link linkend=""></link>
+			-->
+		    </para>
+		    <!--
+		    <programlisting linenumbering="numbered" id="">
+                    <textobject>
+		    <textdata fileref="../../examples/..."/>
+		    </textobject>
+                    </programlisting>
+		    -->
+		    <para>
+			More explanation?
+		    </para>   
+		</sect3>
+		<sect3>
+		    <title id="linesattributes">Lines Attributes</title>
+		    <para>
+			Text ...
+		    </para>	
+		    <sect4>
+			<title id="lineattributessample" xreflabel="codexample">Line Example</title>
+			<para>
+			    Let us make this more concrete by looking at the 
+			    following lines of code.
+			    <!--
+			    <link linkend=""></link>
+			    <link linkend=""></link>
+			    -->
+			</para>
+			<!--
+			<programlisting linenumbering="numbered" id="">
+			<textobject>
+			<textdata fileref="../../examples/..."/>
+		        </textobject>
+                        </programlisting>
+			-->
+			<para>
+			    More explanation?
+			</para>   
+		    </sect4>	
+		</sect3>
+		<sect3>
+		   <title id="linestips">Tips and Tricks</title>
+		    <para>
+			Some tips and tricks
+		    </para>	
+		    <sect4>
+			<title id="linetipssample" xreflabel="codexample">A complete Line Example</title>
+			<para>
+			    Let us make this more concrete by looking at the 
+			    following lines of code.
+			    <!--
+			    <link linkend=""></link>
+			    <link linkend=""></link>
+			    -->
+			</para>
+			<!--
+			<programlisting linenumbering="numbered" id="">
+			<textobject>
+			<textdata fileref="../../examples/..."/>
+		        </textobject>
+                        </programlisting>
+			-->
+			<para>
+			    More explanation?
+			</para>   
+		    </sect4>	  
+		</sect3>
+	    </sect2>
+            <sect2>
+		<title id="points">Point Charts</title>
+		<para>
+		    Text info Points...
+		</para>	    
+		<sect3>
+		    <title id="pointsample" xreflabel="codexample">Point Example</title>
+		    <para>
+			Let us make this more concrete by looking at the 
+			following lines of code.
+			<!--
+			<link linkend=""></link>
+			<link linkend=""></link>
+			-->
+		    </para>
+		    <!--
+		    <programlisting linenumbering="numbered" id="">
+                    <textobject>
+		    <textdata fileref="../../examples/..."/>
+		    </textobject>
+                    </programlisting>
+		    -->
+		    <para>
+			More explanation?
+		    </para>   
+		</sect3>
+		<sect3>
+		    <title id="pointsattributes">Points Attributes</title>
+		    <para>
+			Text ...
+		    </para>	
+		    <sect4>
+			<title id="pointattributessample" xreflabel="codexample">Point Example</title>
+			<para>
+			    Let us make this more concrete by looking at the 
+			    following lines of code.
+			    <!--
+			    <link linkend=""></link>
+			    <link linkend=""></link>
+			    -->
+			</para>
+			<!--
+			<programlisting linenumbering="numbered" id="">
+			<textobject>
+			<textdata fileref="../../examples/..."/>
+		        </textobject>
+                        </programlisting>
+			-->
+			<para>
+			    More explanation?
+			</para>   
+		    </sect4>	
+		</sect3>
+		<sect3>
+		   <title id="pointstips">Tips and Tricks</title>
+		    <para>
+			Some tips and tricks
+		    </para>	
+		    <sect4>
+			<title id="pointtipssample" xreflabel="codexample">A complete Point Example</title>
+			<para>
+			    Let us make this more concrete by looking at the 
+			    following lines of code.
+			    <!--
+			    <link linkend=""></link>
+			    <link linkend=""></link>
+			    -->
+			</para>
+			<!--
+			<programlisting linenumbering="numbered" id="">
+			<textobject>
+			<textdata fileref="../../examples/..."/>
+		        </textobject>
+                        </programlisting>
+			-->
+			<para>
+			    More explanation?
+			</para>   
+		    </sect4>	  
+		</sect3>
+	    </sect2>
+	    <sect2>
+		<title id="bars">Area Charts</title>
+		<para>
+		    Text info to Areas...
+		</para>	    
+		<sect3>
+		    <title id="areasample" xreflabel="codexample">Area Example</title>
+		    <para>
+			Let us make this more concrete by looking at the 
+			following lines of code.
+			<!--
+			<link linkend=""></link>
+			<link linkend=""></link>
+			-->
+		    </para>
+		    <!--
+		    <programlisting linenumbering="numbered" id="">
+                    <textobject>
+		    <textdata fileref="../../examples/..."/>
+		    </textobject>
+                    </programlisting>
+		    -->
+		    <para>
+			More explanation?
+		    </para>   
+		</sect3>
+		<sect3>
+		    <title id="areaattributes">area Attributes</title>
+		    <para>
+			Text ...
+		    </para>	
+		    <sect4>
+			<title id="areaattributessample" xreflabel="codexample">Area Example</title>
+			<para>
+			    Let us make this more concrete by looking at the 
+			    following lines of code.
+			    <!--
+			    <link linkend=""></link>
+			    <link linkend=""></link>
+			    -->
+			</para>
+			<!--
+			<programlisting linenumbering="numbered" id="">
+			<textobject>
+			<textdata fileref="../../examples/..."/>
+		        </textobject>
+                        </programlisting>
+			-->
+			<para>
+			    More explanation?
+			</para>   
+		    </sect4>	
+		</sect3>
+		<sect3>
+		   <title id="areatips">Tips and Tricks</title>
+		    <para>
+			Some tips and tricks
+		    </para>	
+		    <sect4>
+			<title id="areatipssample" xreflabel="codexample">A complete Area Example</title>
+			<para>
+			    Let us make this more concrete by looking at the 
+			    following lines of code.
+			    <!--
+			    <link linkend=""></link>
+			    <link linkend=""></link>
+			    -->
+			</para>
+			<!--
+			<programlisting linenumbering="numbered" id="">
+			<textobject>
+			<textdata fileref="../../examples/..."/>
+		        </textobject>
+                        </programlisting>
+			-->
+			<para>
+			    More explanation?
+			</para>   
+		    </sect4>	  
+		</sect3>
+	    </sect2>
+	    <sect2>
+		<title id="bars">High/Low Charts</title>
+		<para>
+		    Text info to High/Low...
+		</para>	    
+		<sect3>
+		    <title id="hlsample" xreflabel="codexample">High/Low Example</title>
+		    <para>
+			Let us make this more concrete by looking at the 
+			following lines of code.
+			<!--
+			<link linkend=""></link>
+			<link linkend=""></link>
+			-->
+		    </para>
+		    <!--
+		    <programlisting linenumbering="numbered" id="">
+                    <textobject>
+		    <textdata fileref="../../examples/..."/>
+		    </textobject>
+                    </programlisting>
+		    -->
+		    <para>
+			More explanation?
+		    </para>   
+		</sect3>
+		<sect3>
+		    <title id="hlattributes">High Low Attributes</title>
+		    <para>
+			Text ...
+		    </para>	
+		    <sect4>
+			<title id="hlattributessample" xreflabel="codexample">High/Low Example</title>
+			<para>
+			    Let us make this more concrete by looking at the 
+			    following lines of code.
+			    <!--
+			    <link linkend=""></link>
+			    <link linkend=""></link>
+			    -->
+			</para>
+			<!--
+			<programlisting linenumbering="numbered" id="">
+			<textobject>
+			<textdata fileref="../../examples/..."/>
+		        </textobject>
+                        </programlisting>
+			-->
+			<para>
+			    More explanation?
+			</para>   
+		    </sect4>	
+		</sect3>
+		<sect3>
+		   <title id="hltips">Tips and Tricks</title>
+		    <para>
+			Some tips and tricks
+		    </para>	
+		    <sect4>
+			<title id="hltipssample" xreflabel="codexample">A complete High/Low Example</title>
+			<para>
+			    Let us make this more concrete by looking at the 
+			    following lines of code.
+			    <!--
+			    <link linkend=""></link>
+			    <link linkend=""></link>
+			    -->
+			</para>
+			<!--
+			<programlisting linenumbering="numbered" id="">
+			<textobject>
+			<textdata fileref="../../examples/..."/>
+		        </textobject>
+                        </programlisting>
+			-->
+			<para>
+			    More explanation?
+			</para>   
+		    </sect4>	  
+		</sect3>
+	    </sect2>
+	    <sect2>
+		<title id="bars">Box&Whisker Charts</title>
+		<para>
+		    Text info to Box and Whisker...
+		</para>	    
+		<sect3>
+		    <title id="bwsample" xreflabel="codexample">Box & Whisker Example</title>
+		    <para>
+			Let us make this more concrete by looking at the 
+			following lines of code.
+			<!--
+			<link linkend=""></link>
+			<link linkend=""></link>
+			-->
+		    </para>
+		    <!--
+		    <programlisting linenumbering="numbered" id="">
+                    <textobject>
+		    <textdata fileref="../../examples/..."/>
+		    </textobject>
+                    </programlisting>
+		    -->
+		    <para>
+			More explanation?
+		    </para>   
+		</sect3>
+		<sect3>
+		    <title id="bwattributes">Box & Whisker Attributes</title>
+		    <para>
+			Text ...
+		    </para>	
+		    <sect4>
+			<title id="bwattributessample" xreflabel="codexample">Box & Whisker Example</title>
+			<para>
+			    Let us make this more concrete by looking at the 
+			    following lines of code.
+			    <!--
+			    <link linkend=""></link>
+			    <link linkend=""></link>
+			    -->
+			</para>
+			<!--
+			<programlisting linenumbering="numbered" id="">
+			<textobject>
+			<textdata fileref="../../examples/..."/>
+		        </textobject>
+                        </programlisting>
+			-->
+			<para>
+			    More explanation?
+			</para>   
+		    </sect4>	
+		</sect3>
+		<sect3>
+		   <title id="bwtips">Tips and Tricks</title>
+		    <para>
+			Some tips and tricks
+		    </para>	
+		    <sect4>
+			<title id="bwtipssample" xreflabel="codexample">A complete Box & Whisker Example</title>
+			<para>
+			    Let us make this more concrete by looking at the 
+			    following lines of code.
+			    <!--
+			    <link linkend=""></link>
+			    <link linkend=""></link>
+			    -->
+			</para>
+			<!--
+			<programlisting linenumbering="numbered" id="">
+			<textobject>
+			<textdata fileref="../../examples/..."/>
+		        </textobject>
+                        </programlisting>
+			-->
+			<para>
+			    More explanation?
+			</para>   
+		    </sect4>	  
+		</sect3>
+	    </sect2>
+	</sect1>
+	<sect1>
+            <title id="polarplane">Polar coordinate plane</title>
+            <para>
+                Text ...
+            </para>
+	    <sect2>
+		<title id="pies">Pie Charts</title>
+		<para>
+		    Text info Pie...
+		</para>	    
+		<sect3>
+		    <title id="piesample" xreflabel="codexample">Pie Example</title>
+		    <para>
+			Let us make this more concrete by looking at the 
+			following lines of code.
+			<!--
+			<link linkend=""></link>
+			<link linkend=""></link>
+			-->
+		    </para>
+		    <!--
+		    <programlisting linenumbering="numbered" id="">
+                    <textobject>
+		    <textdata fileref="../../examples/..."/>
+		    </textobject>
+                    </programlisting>
+		    -->
+		    <para>
+			More explanation?
+		    </para>   
+		</sect3>
+		<sect3>
+		    <title id="pieattributes">Pies Attributes</title>
+		    <para>
+			Text ...
+		    </para>	
+		    <sect4>
+			<title id="pieattributessample" xreflabel="codexample">Pie Example</title>
+			<para>
+			    Let us make this more concrete by looking at the 
+			    following lines of code.
+			    <!--
+			    <link linkend=""></link>
+			    <link linkend=""></link>
+			    -->
+			</para>
+			<!--
+			<programlisting linenumbering="numbered" id="">
+			<textobject>
+			<textdata fileref="../../examples/..."/>
+		        </textobject>
+                        </programlisting>
+			-->
+			<para>
+			    More explanation?
+			</para>   
+		    </sect4>	
+		</sect3>
+		<sect3>
+		   <title id="pietips">Tips and Tricks</title>
+		    <para>
+			Some tips and tricks
+		    </para>	
+		    <sect4>
+			<title id="pietipssample" xreflabel="codexample">A complete Pie Example</title>
+			<para>
+			    Let us make this more concrete by looking at the 
+			    following lines of code.
+			    <!--
+			    <link linkend=""></link>
+			    <link linkend=""></link>
+			    -->
+			</para>
+			<!--
+			<programlisting linenumbering="numbered" id="">
+			<textobject>
+			<textdata fileref="../../examples/..."/>
+		        </textobject>
+                        </programlisting>
+			-->
+			<para>
+			    More explanation?
+			</para>   
+		    </sect4>	  
+		</sect3>
+	    </sect2>
+            <sect2>
+		<title id="rings">Ring Charts</title>
+		<para>
+		    Text info Lines...
+		</para>	    
+		<sect3>
+		    <title id="ringsample" xreflabel="codexample">Ring Example</title>
+		    <para>
+			Let us make this more concrete by looking at the 
+			following lines of code.
+			<!--
+			<link linkend=""></link>
+			<link linkend=""></link>
+			-->
+		    </para>
+		    <!--
+		    <programlisting linenumbering="numbered" id="">
+                    <textobject>
+		    <textdata fileref="../../examples/..."/>
+		    </textobject>
+                    </programlisting>
+		    -->
+		    <para>
+			More explanation?
+		    </para>   
+		</sect3>
+		<sect3>
+		    <title id="ringsattributes">Rings Attributes</title>
+		    <para>
+			Text ...
+		    </para>	
+		    <sect4>
+			<title id="ringattributessample" xreflabel="codexample">Ring Example</title>
+			<para>
+			    Let us make this more concrete by looking at the 
+			    following lines of code.
+			    <!--
+			    <link linkend=""></link>
+			    <link linkend=""></link>
+			    -->
+			</para>
+			<!--
+			<programlisting linenumbering="numbered" id="">
+			<textobject>
+			<textdata fileref="../../examples/..."/>
+		        </textobject>
+                        </programlisting>
+			-->
+			<para>
+			    More explanation?
+			</para>   
+		    </sect4>	
+		</sect3>
+		<sect3>
+		   <title id="ringstips">Tips and Tricks</title>
+		    <para>
+			Some tips and tricks
+		    </para>	
+		    <sect4>
+			<title id="ringtipssample" xreflabel="codexample">A complete Ring Example</title>
+			<para>
+			    Let us make this more concrete by looking at the 
+			    following lines of code.
+			    <!--
+			    <link linkend=""></link>
+			    <link linkend=""></link>
+			    -->
+			</para>
+			<!--
+			<programlisting linenumbering="numbered" id="">
+			<textobject>
+			<textdata fileref="../../examples/..."/>
+		        </textobject>
+                        </programlisting>
+			-->
+			<para>
+			    More explanation?
+			</para>   
+		    </sect4>	  
+		</sect3>
+	    </sect2>
+            <sect2>
+		<title id="polars">Polar Charts</title>
+		<para>
+		    Text info Polar...
+		</para>	    
+		<sect3>
+		    <title id="polarsample" xreflabel="codexample">Polar Example</title>
+		    <para>
+			Let us make this more concrete by looking at the 
+			following lines of code.
+			<!--
+			<link linkend=""></link>
+			<link linkend=""></link>
+			-->
+		    </para>
+		    <!--
+		    <programlisting linenumbering="numbered" id="">
+                    <textobject>
+		    <textdata fileref="../../examples/..."/>
+		    </textobject>
+                    </programlisting>
+		    -->
+		    <para>
+			More explanation?
+		    </para>   
+		</sect3>
+		<sect3>
+		    <title id="polarsattributes">Polars Attributes</title>
+		    <para>
+			Text ...
+		    </para>	
+		    <sect4>
+			<title id="polarattributessample" xreflabel="codexample">Polar Example</title>
+			<para>
+			    Let us make this more concrete by looking at the 
+			    following lines of code.
+			    <!--
+			    <link linkend=""></link>
+			    <link linkend=""></link>
+			    -->
+			</para>
+			<!--
+			<programlisting linenumbering="numbered" id="">
+			<textobject>
+			<textdata fileref="../../examples/..."/>
+		        </textobject>
+                        </programlisting>
+			-->
+			<para>
+			    More explanation?
+			</para>   
+		    </sect4>	
+		</sect3>
+		<sect3>
+		   <title id="polarstips">Tips and Tricks</title>
+		    <para>
+			Some tips and tricks
+		    </para>	
+		    <sect4>
+			<title id="polartipssample" xreflabel="codexample">A complete Polar Example</title>
+			<para>
+			    Let us make this more concrete by looking at the 
+			    following lines of code.
+			    <!--
+			    <link linkend=""></link>
+			    <link linkend=""></link>
+			    -->
+			</para>
+			<!--
+			<programlisting linenumbering="numbered" id="">
+			<textobject>
+			<textdata fileref="../../examples/..."/>
+		        </textobject>
+                        </programlisting>
+			-->
+			<para>
+			    More explanation?
+			</para>   
+		    </sect4>	  
+		</sect3>
+	    </sect2>
+	</sect1>
+	<sect1>
+            <title>What's next</title>
+            <para>
+                Customizing your chart - Tips
+            </para>
+        </sect1>
+    </chapter>
+    
+5/ Customizing your Chart
+
+        Text (Common and per types' attributes)
+
+            5.1 Colors        
+	    Text....
+
+	        5.1.1 Example code
+	        ... May be more examples 
+	    5.2 Fonts
+	    Text....
+
+	        5.2.1 Example code
+		....May be more example
+
+	    5.3 Markers
+	    Text....
+
+		5.3.1 Example code
+		... May be more examples
+
+            5.4 ThreeD Charts
+	    Text....
+
+		5.4.1 Example code 
+		....May be more examples 
+
+	    5.5 Tips and Tricks
+	    Some tips and notes
+
+		5.5.1 ... Some cool examples using the attributes
+
+	    5.6 What is next
+	    text / Headers and footers
+
+6/ Header and Footers
+
+	Text....
+
+	    6.1 HowTo configure
+	    Text...
+   
+		6.1.1 Example code
+		....May be more examples
+
+	    6.2 Tips and notes
+	    Some tips and notes
+
+		6.2.1...A cool example 
+
+7/ Legends
+
+	Text....
+
+	    7.1 HowTo configure
+	    Text...
+   
+		7.1.1 Example code
+		....May be more examples
+
+	    7.2 Tips and notes
+	    Some tips and notes
+
+		7.2.1 ...A cool example 	 
+
+	    7.3 What's next
+	    text / Axes
+
+8/ Axes
+
+        Text....
+
+	    8.1 HowTo configure
+	    Text...
+
+		8.1.1 Example code
+		....May be more examples
+
+	    8.2 Tips and tricks
+	    Some tips and tricks
+		8.2.1 ...Some cool example
+
+	    8.3 What's next
+	    text / Advanced Charting
+
+9/ Advanced Charting
+
+        Text ...
+
+	     9.1 Frame and background
+	     text and example(s)
+
+	     9.2 Data Value manipulation
+	     text and example(s)
+
+	     9.3 Axis manipulation
+	     text and example(s)
+
+	     9.4 Grid manipulation
+	     text and example(s)
+
+	     9.5 Interactive Charts
+	     text and example(s) 
+
+	     9.6 Multiple charts
+	     text and example(s) 
+
+             9.7 Zooming
+	     text and example(s)
+
+10/ FAQ
+
+        Questions and answers
+
