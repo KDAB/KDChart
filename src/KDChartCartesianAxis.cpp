@@ -101,6 +101,18 @@ bool CartesianAxis::isOrdinate() const
     return position() == Left || position() == Right;
 }
 
+void CartesianAxis::paint( QPainter* painter )
+{
+    PaintContext ctx;
+    ctx.setPainter ( painter );
+    const QRect rect( areaGeometry() );
+    ctx.setRectangle(
+        QRectF (
+            QPointF(0, 0),
+            QSizeF(rect.width(), rect.height() ) ) );
+    paintCtx( &ctx );
+}
+
 #define ptr (context->painter())
 void CartesianAxis::paintCtx( PaintContext* context )
 {
@@ -516,8 +528,41 @@ void CartesianAxis::paintCtx( PaintContext* context )
 }
 #undef ptr
 
-QSize CartesianAxis::sizeHint() const
-{   // FIXME return real values:
+QDomDocumentFragment CartesianAxis::toXML() const
+{
+    Q_ASSERT_X ( false, "CartesianAxis::toXML()", "not implemented" );
+    return QDomDocumentFragment();
+}
+
+/* pure virtual in QLayoutItem */
+bool CartesianAxis::isEmpty() const
+{
+    return false; // if the axis exists, it has some (perhaps default) content
+}
+/* pure virtual in QLayoutItem */
+Qt::Orientations CartesianAxis::expandingDirections() const
+{
+    Qt::Orientations ret;
+    switch ( position() )
+    {
+    case Bottom:
+    case Top:
+        ret = Qt::Horizontal;
+        break;
+    case Left:
+    case Right:
+        ret = Qt::Vertical;
+        break;
+    default:
+        Q_ASSERT( false ); // all positions need to be handeld
+        break;
+    };
+    return ret;
+}
+/* pure virtual in QLayoutItem */
+QSize CartesianAxis::maximumSize() const
+{
+    // FIXME return real values:
     QSize result;
 
     switch ( position() )
@@ -537,41 +582,23 @@ QSize CartesianAxis::sizeHint() const
 
     return result;
 }
-
-QSizePolicy CartesianAxis::sizePolicy() const
+/* pure virtual in QLayoutItem */
+QSize CartesianAxis::minimumSize() const
 {
-    QSizePolicy result;
-
-    switch ( position() )
-    {
-    case Bottom:
-    case Top:
-        result.setVerticalPolicy( QSizePolicy::Fixed );
-        break;
-    case Left:
-    case Right:
-        result.setHorizontalPolicy( QSizePolicy::Fixed );
-        break;
-    default:
-        Q_ASSERT( false ); // all positions need to be handeld
-        break;
-    };
-
-    return result;
+    return maximumSize();
 }
-
-void CartesianAxis::setGeometry ( const QRect& rect )
+/* pure virtual in QLayoutItem */
+QSize CartesianAxis::sizeHint() const
 {
-    d->geometry = rect;
+    return maximumSize();
 }
-
+/* pure virtual in QLayoutItem */
+void CartesianAxis::setGeometry( const QRect& r )
+{
+    d->geometry = r;
+}
+/* pure virtual in QLayoutItem */
 QRect CartesianAxis::geometry() const
 {
     return d->geometry;
-}
-
-QDomDocumentFragment CartesianAxis::toXML() const
-{
-    Q_ASSERT_X ( false, "CartesianAxis::toXML()", "not implemented" );
-    return QDomDocumentFragment();
 }

@@ -74,14 +74,9 @@ namespace KDChart {
         ~CartesianAxis();
 
         /** reimpl */
-        void paintCtx( PaintContext* );
-
-	//void paintEvent( QPaintEvent* event );
-        QSize sizeHint() const;
-        QSize minimumSizeHint() const { return sizeHint(); }
-	QSizePolicy sizePolicy() const;
-        void setGeometry( const QRect& rect );
-        QRect geometry() const;
+        virtual void paint( QPainter* );
+        /** reimpl */
+        virtual void paintCtx( PaintContext* );
 
         QDomDocumentFragment toXML() const;
 
@@ -89,6 +84,22 @@ namespace KDChart {
         virtual const Position position () const;
         virtual bool isAbscissa() const;
         virtual bool isOrdinate() const;
+
+        /** pure virtual in QLayoutItem */
+        virtual bool isEmpty() const;
+        /** pure virtual in QLayoutItem */
+        virtual Qt::Orientations expandingDirections() const;
+        /** pure virtual in QLayoutItem */
+        virtual QSize maximumSize() const;
+        /** pure virtual in QLayoutItem */
+        virtual QSize minimumSize() const;
+        /** pure virtual in QLayoutItem */
+        virtual QSize sizeHint() const;
+        /** pure virtual in QLayoutItem */
+        virtual void setGeometry( const QRect& r );
+        /** pure virtual in QLayoutItem */
+        virtual QRect geometry() const;
+
     };
 
     class CartesianAxisList : public QList<CartesianAxis*> {};

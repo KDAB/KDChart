@@ -96,7 +96,7 @@ void MainWindow::on_addHeaderPB_clicked()
             : KDChart::HeaderFooter::Footer );
         headerFooter->setPosition(
             KDChart::Position::fromPrintableName( conf.positionCO->currentText() ) );
-        headerFooter->show();
+        //headerFooter->show();
         HeaderItem* newItem = new HeaderItem( headerFooter, headersTV );
         newItem->setText( 0, conf.textED->text() );
         newItem->setText( 1, headerFooter->type() == KDChart::HeaderFooter::Header
