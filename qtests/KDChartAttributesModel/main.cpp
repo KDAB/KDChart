@@ -2,6 +2,7 @@
 #include <TableModel.h>
 #include <KDChartGlobal>
 #include <../../src/KDChartAttributesModel.h> /* Bah! */
+#include <KDChartAbstractDiagram>
 #include <KDChartBarDiagram>
 #include <KDChartLineDiagram>
 #include <KDChartCartesianCoordinatePlane>
@@ -20,9 +21,9 @@ private slots:
       tableModel->setSupplyHeaderData( false );
       m_model = tableModel;
       m_plane = new CartesianCoordinatePlane(0);
-      m_bars = new BarDiagram( m_plane );
+      m_bars = new BarDiagram();
       m_bars->setModel( m_model );
-      m_lines = new LineDiagram( m_plane );
+      m_lines = new LineDiagram();
       m_lines->setModel( m_model );
   }
 
@@ -74,9 +75,9 @@ private slots:
       delete m_bars;
       delete m_plane;
       m_plane = new CartesianCoordinatePlane(0);
-      m_bars = new BarDiagram( m_plane );
+      m_bars = new BarDiagram();
       m_bars->setModel( m_model );
-      m_lines = new LineDiagram( m_plane );
+      m_lines = new LineDiagram();
       m_lines->setModel( m_model );
 
       AttributesModel* attrsmodel = new AttributesModel( m_model, m_plane );

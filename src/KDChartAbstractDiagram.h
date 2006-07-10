@@ -60,8 +60,6 @@ namespace KDChart {
             Private *p, QWidget* parent, AbstractCoordinatePlane* plane );
         explicit AbstractDiagram (
             QWidget* parent = 0, AbstractCoordinatePlane* plane = 0 );
-        explicit AbstractDiagram (
-            AbstractCoordinatePlane* plane = 0 );
     public:
         virtual ~AbstractDiagram();
 
