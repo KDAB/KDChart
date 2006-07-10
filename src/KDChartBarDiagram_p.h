@@ -67,14 +67,6 @@ private:
 };
 
 KDCHART_IMPL_DERIVED_DIAGRAM( BarDiagram, AbstractCartesianDiagram, CartesianCoordinatePlane )
-/*
-inline BarDiagram::BarDiagram( Private * p, CartesianCoordinatePlane* plane )
-    : AbstractCartesianDiagram( p, plane ) { init(); }
-inline BarDiagram::Private * BarDiagram::d_func()
-{ return static_cast<Private*>( AbstractCartesianDiagram::d_func() ); }
-inline const BarDiagram::Private * BarDiagram::d_func() const
-{ return static_cast<const Private*>( AbstractCartesianDiagram::d_func() ); }
-*/
 
 }
 

@@ -47,8 +47,8 @@ PieDiagram::Private::~Private() {}
 
 #define d d_func()
 
-PieDiagram::PieDiagram( PolarCoordinatePlane* parent ) :
-    AbstractPieDiagram( new Private(), parent )
+PieDiagram::PieDiagram( QWidget* parent, PolarCoordinatePlane* plane ) :
+    AbstractPieDiagram( new Private(), parent, plane )
 {
     init();
 }

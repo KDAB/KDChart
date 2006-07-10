@@ -46,11 +46,11 @@ class KDCHART_EXPORT PolarDiagram : public AbstractPolarDiagram
     Q_OBJECT
 
     Q_DISABLE_COPY( PolarDiagram )
-    KDCHART_DECLARE_PRIVATE_DERIVED( PolarDiagram )
-protected:
-    explicit inline PolarDiagram( Private *p, PolarCoordinatePlane *parent );
+    KDCHART_DECLARE_DERIVED_DIAGRAM( PolarDiagram, PolarCoordinatePlane )
+
 public:
-    PolarDiagram( PolarCoordinatePlane* plane = 0 );
+    explicit PolarDiagram(
+        QWidget* parent = 0, PolarCoordinatePlane* plane = 0 );
     virtual ~PolarDiagram();
 
     // Implement AbstractDiagram

@@ -47,8 +47,8 @@ PolarDiagram::Private::~Private() {}
 
 #define d d_func()
 
-PolarDiagram::PolarDiagram( PolarCoordinatePlane* plane ) :
-    AbstractPolarDiagram( new Private( ), plane )
+PolarDiagram::PolarDiagram( QWidget* parent, PolarCoordinatePlane* plane ) :
+    AbstractPolarDiagram( new Private( ), parent, plane )
 {
 }
 

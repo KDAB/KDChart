@@ -58,13 +58,8 @@ public:
 private:
 };
 
-inline PieDiagram::PieDiagram( Private * p, PolarCoordinatePlane* plane )
-    : AbstractPieDiagram( p, plane ) { init(); }
-inline PieDiagram::Private * PieDiagram::d_func()
-{ return static_cast<Private*>( AbstractPieDiagram::d_func() ); }
-inline const PieDiagram::Private * PieDiagram::d_func() const
-{ return static_cast<const Private*>( AbstractPieDiagram::d_func() ); }
+KDCHART_IMPL_DERIVED_DIAGRAM( PieDiagram, AbstractPieDiagram, PolarCoordinatePlane )
 
 }
-#endif /* KDCHARTPIEDIAGRAM_P_H */
 
+#endif /* KDCHARTPIEDIAGRAM_P_H */

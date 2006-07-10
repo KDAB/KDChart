@@ -40,9 +40,11 @@ class KDCHART_EXPORT RingDiagram : public AbstractPieDiagram
     Q_OBJECT
 
     Q_DISABLE_COPY( RingDiagram )
-    KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( RingDiagram, PolarCoordinatePlane * )
+    KDCHART_DECLARE_DERIVED_DIAGRAM( RingDiagram, PolarCoordinatePlane )
+
 public:
-    RingDiagram( PolarCoordinatePlane* plane = 0 );
+    explicit RingDiagram(
+        QWidget* parent = 0, PolarCoordinatePlane* plane = 0 );
     virtual ~RingDiagram();
 
     // Implement AbstractDiagram

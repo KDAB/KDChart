@@ -40,9 +40,11 @@ class KDCHART_EXPORT PieDiagram : public AbstractPieDiagram
     Q_OBJECT
 
     Q_DISABLE_COPY( PieDiagram )
-    KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( PieDiagram, PolarCoordinatePlane * )
+    KDCHART_DECLARE_DERIVED_DIAGRAM( PieDiagram, PolarCoordinatePlane )
+
 public:
-    PieDiagram( PolarCoordinatePlane* plane = 0 );
+    explicit PieDiagram(
+        QWidget* parent = 0, PolarCoordinatePlane* plane = 0 );
     virtual ~PieDiagram();
 
     // Implement AbstractDiagram

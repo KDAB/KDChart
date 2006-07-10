@@ -42,6 +42,7 @@ class KDCHART_EXPORT AbstractPieDiagram : public AbstractPolarDiagram
 
     Q_DISABLE_COPY( AbstractPieDiagram )
     KDCHART_DECLARE_DERIVED_DIAGRAM( AbstractPieDiagram, PolarCoordinatePlane )
+
 public:
     explicit AbstractPieDiagram(
         QWidget* parent = 0, PolarCoordinatePlane* plane = 0 );

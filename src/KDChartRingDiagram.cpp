@@ -46,8 +46,8 @@ RingDiagram::Private::~Private() {}
 
 #define d d_func()
 
-RingDiagram::RingDiagram( PolarCoordinatePlane* parent ) :
-    AbstractPieDiagram( new Private(), parent )
+RingDiagram::RingDiagram( QWidget* parent, PolarCoordinatePlane* plane ) :
+    AbstractPieDiagram( new Private(), parent, plane )
 {
     init();
 }

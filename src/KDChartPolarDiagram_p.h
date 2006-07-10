@@ -62,16 +62,8 @@ private:
     bool rotateCircularLabels;
 };
 
-inline PolarDiagram::PolarDiagram( Private * p )
-    : AbstractPolarDiagram( p ) { init(); }
-inline PolarDiagram::PolarDiagram( Private * p, PolarCoordinatePlane* plane )
-    : AbstractPolarDiagram( p, plane ) { init(); }
-inline PolarDiagram::Private * PolarDiagram::d_func()
-{ return static_cast<Private*>( AbstractPolarDiagram::d_func() ); }
-inline const PolarDiagram::Private * PolarDiagram::d_func() const
-{ return static_cast<const Private*>( AbstractPolarDiagram::d_func() ); }
+KDCHART_IMPL_DERIVED_DIAGRAM( PolarDiagram, AbstractPolarDiagram, PolarCoordinatePlane )
 
 }
 
 #endif /* KDCHARTPOLARDIAGRAM_P_H */
-

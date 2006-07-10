@@ -59,14 +59,8 @@ private:
     bool relativeThickness;
 };
 
-inline RingDiagram::RingDiagram( Private * p, PolarCoordinatePlane* plane )
-    : AbstractPieDiagram( p, plane ) { init(); }
-inline RingDiagram::Private * RingDiagram::d_func()
-{ return static_cast<Private*>( AbstractPieDiagram::d_func() ); }
-inline const RingDiagram::Private * RingDiagram::d_func() const
-{ return static_cast<const Private*>( AbstractPieDiagram::d_func() ); }
+KDCHART_IMPL_DERIVED_DIAGRAM( RingDiagram, AbstractPieDiagram, PolarCoordinatePlane )
 
 }
 
 #endif /* KDCHARTRINGDIAGRAM_P_H */
-
