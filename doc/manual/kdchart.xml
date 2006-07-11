@@ -78,7 +78,7 @@
 		    Besides having all the standard features, it also enables 
 		    the developer to design and manage a large number of axes 
 		    and provide sophisticated means of layout customization.
-		    Since all configuration settings have reasonnable defaults
+		    Since all configuration settings have reasonable defaults
 		    you can usually get by with setting only a handful of 
 		    parameters and relying on the defaults for the rest.
 		</para>    
@@ -99,13 +99,14 @@
 		-->
 		<para>
 		    The above example shows how &kdchart; is used for 
-		    vizualizing flood events in a river; other samples on our 
-		    website at <filename>http://www.kdab.net/kdchart</filename>
+		    visualizing flood events in a river; other samples on our 
+		    web site at <filename>http://www.kdab.net/kdchart</filename>
 		    show how &kdchart; is used for monitoring seismic activity.
                     It is no coincidence that the current version of the 
 		    KOffice productivity suite uses our library.
 		</para>
-		<para>                       
+		<para>    
+		    <!-- Pending Michel -->
                     * Display a view with small diagrams and arrows showing
                     how the main classes work together
                 </para>
@@ -118,19 +119,48 @@
                 well as have a working C++ knowledge. When you are in
                 doubt about how a Qt4 class mentioned in this Programmer's 
 		Guide works, please check the Qt4 reference documentation or 
-		a good book about Qt4.
-            </para>
-            <para>
-                Add some general information from the Getting Started File.
+		a good book about Qt4. A more in-depth introduction to the 
+		API can be found in the file 
+		<filename>doc/KDChart-2.0-API-Introduction</filename>.
+                Also to browse &kdchart; API Reference documentation start 
+		with this file: <filename>doc/refman/index.html</filename>.
             </para>
         </sect1>
         <sect1>
             <title id="structure">The Structure of This Manual</title>
             <para>
-                How we will proceed to present &kdchart; for Qt4
+                How we will proceed to present &kdchart; for Qt4?
             </para>
             <para>
-                We provide you with lots of sample code and screen-shots.
+		This manual starts with an introduction to &kdchart;2.0 API
+		before going through the basic steps and methods for the user 
+		to create hers own chart.
+            </para>
+	    <para>
+		The following Chapter 4 <filename>Coordinate planes and 
+		Diagrams</filename> will provide the reader with more details 
+		about the different chart types supported and the information 
+		you need to know in order to use &kdchart;'s features the best
+		way.
+	    </para>
+	    <para>
+		The subsequent chapters contain more advanced customizing 
+		material like how to specify colors, fonts and other attributes
+		if you don't want to use &kdchart;'s default settings. How to 
+		create and display headers and footers, legends and configure 
+		your chart axes.
+	    </para>
+	    <para>
+		Chapter 9 <filename>Advanced Charting</filename>, will guide 
+		you through &kdchart; other more advanced features and 
+		describe the way to use them (frames and backgrounds, 
+		data values, axis and grid manipulations etc...). It will also
+		show in details different interesting features like 
+		Interactive and Multiple charts or Zooming.		
+	    </para>
+	    <para>
+                We provide you with lots of sample code combined with 
+		screen-shots that show the resulting display. 
                 We recommend our readers to try and run the sample code and
                 experiment with the various settings.
             </para>
