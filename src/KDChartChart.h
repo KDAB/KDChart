@@ -327,6 +327,15 @@ namespace KDChart {
           * \sa setGlobalLeading
           */
         void paint( QPainter* painter, const QRect& target );
+
+        /**
+          * @brief Draws the background and frame, then calls paint().
+          *
+          * In most cases there is no need to overwrite this method in a derived
+          * class, but you would overwrite paint() instead.
+          * @sa paint
+          */
+        virtual void paintEvent( QPaintEvent* event );
     };
 
 }

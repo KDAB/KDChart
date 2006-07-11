@@ -528,7 +528,7 @@ void Chart::addCoordinatePlane( AbstractCoordinatePlane* plane )
     connect( plane, SIGNAL( destroyedCoordinatePlane( AbstractCoordinatePlane* ) ),
              d, SLOT( slotUnregisterDestroyedPlane( AbstractCoordinatePlane* ) ) );
     connect( plane, SIGNAL( diagramsChanged() ), this, SLOT( update() ) );
-//  connect( plane, SIGNAL( diagramsChanged() ), d, SLOT( slotLayoutPlanes() ) );
+//    connect( plane, SIGNAL( diagramsChanged() ), d, SLOT( slotLayoutPlanes() ) );
     connect( plane, SIGNAL(needUpdate()),  this, SLOT(update()) );
     connect( plane, SIGNAL(gridChanged()), this, SLOT(update()) );
     d->coordinatePlanes.append( plane );
@@ -619,6 +619,7 @@ int Chart::globalLeadingBottom() const
 
 void Chart::paint( QPainter* painter, const QRect& target )
 {
+qDebug( "Chart::paint() called.");
     if( target.isEmpty() || !painter) return;
 
     const QRect oldGeometry( geometry() );
@@ -642,6 +643,17 @@ void Chart::paint( QPainter* painter, const QRect& target )
     if( target != oldGeometry ){
         setGeometry( oldGeometry );
     }
+}
+
+
+void Chart::paintEvent( QPaintEvent* event )
+{
+    Q_UNUSED( event );
+    QPainter painter( this );
+    //FIXME(khz): Paint the background/frame too!
+    //            (can we derive Chart from AreaWidget ??))
+    //paintAll( painter );
+    paint( &painter, rect() );
 }
 
 
