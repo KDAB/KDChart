@@ -339,10 +339,11 @@ void Chart::Private::slotLayoutPlanes()
     qDeleteAll( planeLayoutItems );
     planeLayoutItems.clear();
 
-    if ( dataAndLegendLayout && planesLayout ) {
-        dataAndLegendLayout->removeItem( planesLayout );
+    if ( planesLayout ) {
+        if ( dataAndLegendLayout )
+            dataAndLegendLayout->removeItem( planesLayout );
+        delete planesLayout;
     }
-    delete planesLayout;
     planesLayout = new QVBoxLayout(); // FIXME is this the right default, I wonder?
 
     /* First go through all planes and all axes and figure out whether the planes

@@ -48,7 +48,7 @@ class KDCHART_EXPORT HeaderFooter : public AbstractArea
     KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( HeaderFooter, Chart* )
 
 public:
-    HeaderFooter( Chart* parent );
+    HeaderFooter( Chart* parent = 0 );
     virtual ~HeaderFooter();
 
     virtual QDomDocumentFragment toXML() const;
