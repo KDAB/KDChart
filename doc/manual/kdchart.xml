@@ -182,16 +182,16 @@
             Version 2.0 of KD Chart fully supports and builds on the 
 	    technologies introduced with Qt 4. The charting engine makes use 
 	    of the Arthur and Scribe painting and text rendering frameworks 
-	    to achieve high quality visual results. KD Chart 2.0 integrates 
-	    with the Interview framework for model/view separation and, much 
-	    like Qt 4 itself, provides a convenience Widget class for those 
-	    cases where that is too complex.
+	    to achieve high quality visual results. KD Chart 2.0 also 
+	    integrates with the Interview framework for model/view separation 
+	    and, much like Qt 4 itself, provides a convenience Widget class 
+	    for those cases where that is too complex.
         </para>
         <sect1>
             <title id="apioverview">Overview</title>
             <para>
-		&kdchart;2.0 overall API strives for maximum consistency with 
-		the concepts and API style found in Qt 4.Of course, this 
+		&kdchart; 2.0 overall API strives for maximum consistency with 
+		the concepts and API style found in Qt 4. Of course, this 
 		means breaking source compatibility in several places, but 
 		like Trolltech, we have made a conscious decision that it 
 		would be better to clean up the API now, than to carry it 
@@ -229,6 +229,7 @@
 >
 		<programlisting>
 		    using namespace KDChart;
+
 		    BarDiagram *bars = new BarDiagram;
 		    bars->setModel( &amp;m_model );
 		    bars->setType( BarDiagram::Stacked );
@@ -251,15 +252,19 @@
 		</programlisting>
                 <para>
                     Let us make this somewhat abstract description more
-                    concrete by looking at the following lines of code.
+                    concrete by looking at the following lines of code and 
+		    its resulting display.
+		</para>
+		<para>
+		    * We display some example code and a screen-shot here
 		    <!--
-		    Pending Michel dispaly code and/or screen-shot
+		    Pending Michel display code and screen-shot
                     <link linkend=""></link>
                     <link linkend=""></link>
 		    -->
                 </para>
                 <para>
-		    Each diagram has an associated CoordinatePlane (cartesian
+		    Each diagram has an associated Coordinate Plane (Cartesian
 		    by default), which is responsible for the translation of 
 		    data values into pixel positions. It defines the scale of 
 		    the diagram, and all axes that are associated with it. 
@@ -279,7 +284,7 @@
 		<para>
 		    To share an axis among two planes (and also diagrams)
 		    we just need to add it to both diagrams. The Chart 
-		    layouting engine will take care of adjusting positions 
+		    lay-outing engine will take care of adjusting positions 
 		    accordingly.
 		</para>
 		 <!--
@@ -310,12 +315,44 @@
 		</programlisting>
 		<para>
 		    We will explain further on how ownership of such 
-		    components is handled. 
+		    components is handled (next section).
 		</para>
 		<!--
                 Pending Michel: point to those files
 		(see src/{KDChartChart.h|KDChartLegend.h|KDChartHeaderFooter.h)
 		-->
+		<para>
+		    Finally and to conclude this overview, all classes in the 
+		    KD Chart 2 API are in the "KDChart" namespace, to allow 
+		    short and clear class names, while still avoiding name
+		    clashes. Unless you prefer to use the "KDChart::" prefix 
+		    on all class names in your code, you can add the following
+		    line at the top of your implementation files, to make all 
+		    names in the "KDChart" namespace available in that file:
+		</para>
+		<programlisting>
+		    using namespace KDChart;
+		</programlisting>
+		<para>
+		    Like Qt, KD Chart provides STL-style forwarding headers, 
+		    allowing you to omit the ".h" suffix when including 
+		    headers. To bring the bar diagram header into your 
+		    implementation file, you could therefore write:
+		</para>
+		<programlisting>
+		    #include &lt;KDChartBarDiagram&gt;
+		    or 
+		    #include &lt;KDChartBarDiagram.h&gt;
+		</programlisting>
+		<note>
+		    <para>
+			File names of header and implementation files all
+			have the "KDChart" prefix in the name. The definition 
+			of <classname>KDChart::BarDiagram</classname> is 
+			thus located in the file 
+			<filename>KDChartBarDiagram.h</filename>.
+		    </para>	
+		</note>    
             </sect2>
         </sect1>
         <sect1>
