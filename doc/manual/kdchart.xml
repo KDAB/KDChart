@@ -39,7 +39,10 @@
     <chapter       id="chapter_introduction">
         <title       id="chtxt_introduction">Introduction</title>
         <titleabbrev id="chnum_introduction">Chapter 1</titleabbrev>
+
         <para>
+	    &kdchart; is Klar&auml;lvdalens Datakonsult AB's charting package 
+	    for Qt applications.
             This is the &kdchart; Programmer's Manual. It will get you
             started with creating your charts and provides lots of pointers
 	    to its many advanced features.
@@ -49,14 +52,14 @@
                 <para>
                     Depending on your &kdchart; version, you will find
                     different <filename>INSTALL</filename> files that explain
-                    how to install &kdchart; on your platform or how to build
-                    it from sources.
+                    how to install &kdchart; on your platform and a step by 
+		    step description about how to build  it from sources.
                 </para>
             </listitem>
             <listitem>
                 <para>
                     &kdchart; also comes with an extensive Reference Manual
-                    that is generated directly from the source code itself.
+                    generated directly from the source code itself.
                 </para>
             </listitem>
         </itemizedlist>
@@ -67,15 +70,42 @@
         <itemizedlist>
          <listitem>
                 <para>
-                    What is &kdchart;? (Quick description)
+                    What is &kdchart;?
                 </para>
+		<para>
+		    &kdchart; is a tool for creating business and engineering
+		    charts, and is the most powerful Qt component of its kind.
+		    Besides having all the standard features, it also enables 
+		    the developer to design and manage a large number of axes 
+		    and provide sophisticated means of layout customization.
+		    Since all configuration settings have reasonnable defaults
+		    you can usually get by with setting only a handful of 
+		    parameters and relying on the defaults for the rest.
+		</para>    
             </listitem>
             <listitem>
                 <para>
                     What can we use &kdchart; for?
-                    * Demonstrate in short sentences associated to screenshots
+		</para>
+		<para>
+		    &kdchart; is used by a variety of programs for many 
+		    different purposes. 
+		</para>
+		<!-- Pending Michel: insert screen-shot -->
+		<!--
+                 * Demonstrate in short sentences associated to screen-shots
                     that kdc can be used for both business charts and
                     engineering charts.
+		-->
+		<para>
+		    The above example shows how &kdchart; is used for 
+		    vizualizing flood events in a river; other samples on our 
+		    website at <filename>http://www.kdab.net/kdchart</filename>
+		    show how &kdchart; is used for monitoring seismic activity.
+                    It is no coincidence that the current version of the 
+		    KOffice productivity suite uses our library.
+		</para>
+		<para>                       
                     * Display a view with small diagrams and arrows showing
                     how the main classes work together
                 </para>
@@ -100,7 +130,7 @@
                 How we will proceed to present &kdchart; for Qt4
             </para>
             <para>
-                We provide you with lots of sample code and screenshots.
+                We provide you with lots of sample code and screen-shots.
                 We recommend our readers to try and run the sample code and
                 experiment with the various settings.
             </para>
@@ -269,7 +299,7 @@
         <title id="chtxt_basicsteps">Basic steps to Create your Chart Widget</title>
         <titleabbrev id="chnum_basicsteps">Chapter 3</titleabbrev>
 	<para>
-          Introcuction text
+          Introduction text
         </para>
          <sect1>
             <title id="basictwoways">Two ways</title>
