@@ -62,9 +62,9 @@ protected:
         delete grid;
     };
 
-    virtual void initializeGrid()
+    virtual void initialize()
     {
-        qDebug("Calling AbstractCoordinatePlane::Private::initializeGrid()");
+        qDebug("ERROR: Calling AbstractCoordinatePlane::Private::initialize()");
         // can not call the base class: grid = new AbstractGrid();
     }
 

@@ -103,7 +103,7 @@ public:
 
     virtual ~Private() { }
 
-    virtual void initializeGrid()
+    virtual void initialize()
     {
         qDebug("Calling PolarCoordinatePlane::Private::initializeGrid()");
         grid = new PolarGrid();

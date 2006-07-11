@@ -118,10 +118,12 @@ public:
 PolarCoordinatePlane::PolarCoordinatePlane ( Chart* parent )
     : AbstractCoordinatePlane ( new Private(), parent )
 {
+    // this bloc left empty intentionally
 }
 
 PolarCoordinatePlane::~PolarCoordinatePlane()
 {
+    // this bloc left empty intentionally
 }
 
 void PolarCoordinatePlane::addDiagram ( AbstractDiagram* diagram )

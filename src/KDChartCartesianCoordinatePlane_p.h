@@ -65,8 +65,9 @@ public:
 
     virtual ~Private() { }
 
-    virtual void initializeGrid()
+    virtual void initialize()
     {
+        coordinateTransformation.axesCalcMode = Linear;
         grid = new CartesianGrid();
     }
 

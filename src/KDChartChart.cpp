@@ -339,7 +339,7 @@ void Chart::Private::slotLayoutPlanes()
     qDeleteAll( planeLayoutItems );
     planeLayoutItems.clear();
 
-    if ( dataAndLegendLayout ) {
+    if ( dataAndLegendLayout && planesLayout ) {
         dataAndLegendLayout->removeItem( planesLayout );
     }
     delete planesLayout;

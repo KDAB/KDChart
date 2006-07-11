@@ -48,11 +48,12 @@ using namespace KDChart;
 CartesianCoordinatePlane::CartesianCoordinatePlane ( Chart* parent )
     : AbstractCoordinatePlane ( new Private(), parent )
 {
-    setAxesCalcMode( Linear );
+    // this bloc left empty intentionally
 }
 
 CartesianCoordinatePlane::~CartesianCoordinatePlane()
 {
+    // this bloc left empty intentionally
 }
 
 void CartesianCoordinatePlane::addDiagram ( AbstractDiagram* diagram )

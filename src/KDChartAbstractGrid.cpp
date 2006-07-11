@@ -50,7 +50,7 @@ DataDimensionsList AbstractGrid::updateData( AbstractCoordinatePlane* plane )
 
     if( plane ){
         const DataDimensionsList rawDataDimensions( plane->getDataDimensionsList() );
-        if( rawDataDimensions != mCachedRawDataDimensions ){
+        if( mCachedRawDataDimensions.empty() || (rawDataDimensions != mCachedRawDataDimensions) ){
             mCachedRawDataDimensions = rawDataDimensions;
             mData = calculateGrid( rawDataDimensions );
         }

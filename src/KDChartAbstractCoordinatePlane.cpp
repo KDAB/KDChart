@@ -43,7 +43,7 @@ AbstractCoordinatePlane::AbstractCoordinatePlane ( KDChart::Chart* parent )
     : AbstractArea ( new Private() )
 {
     d->parent = parent;
-    d->initializeGrid(); // virtual method to init the correct grid: cartesian, polar, ...
+    d->init();
 }
 
 AbstractCoordinatePlane::~AbstractCoordinatePlane()
@@ -53,7 +53,7 @@ AbstractCoordinatePlane::~AbstractCoordinatePlane()
 
 void AbstractCoordinatePlane::init()
 {
-    // this bloc left empty intentionally
+    d->initialize();  // virtual method to init the correct grid: cartesian, polar, ...
 }
 
 void AbstractCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
