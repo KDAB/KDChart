@@ -179,34 +179,143 @@
         <title       id="chtxt_api">KD Chart 2 API Introduction</title>
         <titleabbrev id="chnum_api">Chapter 2</titleabbrev>
         <para>
-            Text.....
+            Version 2.0 of KD Chart fully supports and builds on the 
+	    technologies introduced with Qt 4. The charting engine makes use 
+	    of the Arthur and Scribe painting and text rendering frameworks 
+	    to achieve high quality visual results. KD Chart 2.0 integrates 
+	    with the Interview framework for model/view separation and, much 
+	    like Qt 4 itself, provides a convenience Widget class for those 
+	    cases where that is too complex.
         </para>
         <sect1>
             <title id="apioverview">Overview</title>
             <para>
-                Text.....
-            </para>
+		&kdchart;2.0 overall API strives for maximum consistency with 
+		the concepts and API style found in Qt 4.Of course, this 
+		means breaking source compatibility in several places, but 
+		like Trolltech, we have made a conscious decision that it 
+		would be better to clean up the API now, than to carry it 
+		with us into the next &kdchart; generation. 
+	    </para>
+	    <note>
+		<para>
+		    Wherever possible, compatibility methods and classes have 
+		    been, or will be, provided.		
+		</para>
+	    </note>
+	    <para>
+		The core of &kdchart;'s 2.0 API is the 
+		<classname>KDChart::Chart</classname> class.
+		It encapsulates the canvas onto which the individual 
+		components of a chart are painted, manages them and provides 
+		access to them. There can be more than one 
+		<classname>KDChart::Diagram</classname> on a 
+		<classname>KDChart::Chart</classname>, how they are laid out 
+		is determined by which axes, if any, they share (more on axes 
+		further below).
+	    </para>
+	    <para>
+		<classname>KDChart::Diagram</classname> subclasses for the 
+		various types of charts are provided, such as 
+                <classname>KDChart::PieDiagram</classname>, and users can 
+		subclass <classname>KDChart::AbstractDiagram</classname> (or 
+		one of the other Diagram classes starting with Abstract, 
+		which are designed to be base classes) to implement custom 
+		chart types. A typical use of a simple BarDiagram looks like 
+		this:
+	    </para>
             <sect2>
                 <title id="apisample" xreflabel="codexample">Code Example</title
 >
+		<programlisting>
+		    using namespace KDChart;
+		    BarDiagram *bars = new BarDiagram;
+		    bars->setModel( &amp;m_model );
+		    bars->setType( BarDiagram::Stacked );
+		    bars->setDataSubduedColors(); // not bar specific
+		    QPen pen;
+		    pen.setColor( Qt::darkGray );
+		    pen.setWidth( 1 );
+		    bars->setPen( pen );
+		    chart->coordinatePlane()->replaceDiagram( ars );
+		</programlisting>
+		<para>
+		    You could also use the following way, to prevent your 
+		    compiler from complaining about instance bars not being 
+		    free'ed:
+		</para>
+		<programlisting>
+		    BarDiagram *bars = 
+		    static_cast &lt;BarDiagram *&gt;(myChart->replaceDiagram( new BarDiagram ));
+		    //now call the setter methods ... 
+		</programlisting>
                 <para>
                     Let us make this somewhat abstract description more
                     concrete by looking at the following lines of code.
 		    <!--
+		    Pending Michel dispaly code and/or screen-shot
                     <link linkend=""></link>
                     <link linkend=""></link>
 		    -->
                 </para>
-		<!--
+                <para>
+		    Each diagram has an associated CoordinatePlane (cartesian
+		    by default), which is responsible for the translation of 
+		    data values into pixel positions. It defines the scale of 
+		    the diagram, and all axes that are associated with it. 
+		    This makes implementing diagram subclasses (types) much 
+		    easier, since the drawing code can leave all of the  
+		    coordinate calculation work to the coordinate plane. 
+                </para>
+		<para>
+		    Each coordinate plane can have one or more diagram 
+		    associated to it. Those diagrams will share the scale 
+		    provided by the plan. Also a chart can have more than 
+		    one coordinate plane. This makes it possible to have 
+		    multiple diagrams (e.g a line and a bar chart) using the 
+		    same or different scales and displayed next to, or on top 
+		    of each other in the same chart. 
+		</para>
+		<para>
+		    To share an axis among two planes (and also diagrams)
+		    we just need to add it to both diagrams. The Chart 
+		    layouting engine will take care of adjusting positions 
+		    accordingly.
+		</para>
+		 <!--
+                Pending Michel link:
+		(see src/KDChartAbstractCoordinatePlane.h and
+		examples/SharedAbscissa/mainwindow.cpp)
                 <programlisting linenumbering="numbered" id="">
                     <textobject>
                         <textdata fileref="../../examples/..."/>
                     </textobject>
                 </programlisting>
+                -->
+		<para>
+		    A chart can also have a number of optional components
+		    such as Legends, Headers/Footers or custom 
+		    <classname>KDChart::Area</classname> subclasses that
+		    implement user-defined elements. The API for manipulating 
+		    these is similar for all of them.
+		</para>
+		<para>
+		    To add an additional header for example, you may proceed 
+		    as follow:
+		</para>
+		<programlisting>
+		    HeaderFooter * additionalHeader = new HeaderFooter;
+		    additionalHeader->setPosition( NorthWest );
+		    chart->addHeaderFooter( additionalHeader  );
+		</programlisting>
+		<para>
+		    We will explain further on how ownership of such 
+		    components is handled. 
+		</para>
+		<!--
+                Pending Michel: point to those files
+		(see src/{KDChartChart.h|KDChartLegend.h|KDChartHeaderFooter.h)
 		-->
-                <para>
-                    More explanation?
-                </para>
             </sect2>
         </sect1>
         <sect1>
@@ -217,7 +326,7 @@
             </para>
             <sect2>
                 <title id="handlingsample" xreflabel="codexample">Code Example</title>
-                            <para>
+		<para>
                     Let us make this more concrete by looking at the following
                     lines of code.
                    <!--
