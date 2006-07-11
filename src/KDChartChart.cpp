@@ -333,17 +333,23 @@ QHash<AbstractCoordinatePlane*, Chart::Private::PlaneInfo> Chart::Private::build
 
 void Chart::Private::slotLayoutPlanes()
 {
+    if ( planesLayout && dataAndLegendLayout )
+        dataAndLegendLayout->removeItem( planesLayout );
+
     foreach( KDChart::AbstractCoordinatePlane* plane, planeLayoutItems ) {
         plane->removeFromParentLayout();
     }
-    qDeleteAll( planeLayoutItems );
-    planeLayoutItems.clear();
+    //qDeleteAll( planeLayoutItems );
+    //delete planesLayout;
 
+    planeLayoutItems.clear();
+/*
     if ( planesLayout ) {
         if ( dataAndLegendLayout )
             dataAndLegendLayout->removeItem( planesLayout );
         delete planesLayout;
     }
+*/
     planesLayout = new QVBoxLayout(); // FIXME is this the right default, I wonder?
 
     /* First go through all planes and all axes and figure out whether the planes
@@ -521,8 +527,8 @@ void Chart::addCoordinatePlane( AbstractCoordinatePlane* plane )
 {
     connect( plane, SIGNAL( destroyedCoordinatePlane( AbstractCoordinatePlane* ) ),
              d, SLOT( slotUnregisterDestroyedPlane( AbstractCoordinatePlane* ) ) );
-    connect( plane, SIGNAL( diagramsChanged() ),
-             d, SLOT( slotLayoutPlanes() ) );
+    connect( plane, SIGNAL( diagramsChanged() ), this, SLOT( update() ) );
+//  connect( plane, SIGNAL( diagramsChanged() ), d, SLOT( slotLayoutPlanes() ) );
     connect( plane, SIGNAL(needUpdate()),  this, SLOT(update()) );
     connect( plane, SIGNAL(gridChanged()), this, SLOT(update()) );
     d->coordinatePlanes.append( plane );
