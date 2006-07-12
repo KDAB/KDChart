@@ -355,6 +355,7 @@
 		</note>    
             </sect2>
         </sect1>
+<!-- Pending Michel: No much to say here for now - Shall we remove this section?
         <sect1>
             <title id="apihandling">Ownership and Parameters Handling</title>
             <para>
@@ -365,32 +366,63 @@
                 <title id="handlingsample" xreflabel="codexample">Code Example</title>
 		<para>
                     Let us make this more concrete by looking at the following
-                    lines of code.
-                   <!--
-                    <link linkend=""></link>
-                    <link linkend=""></link>
-                    -->
+                    lines of code........                  
                 </para>
-                <!--
-                <programlisting linenumbering="numbered" id="">
-                    <textobject>
-                        <textdata fileref="../../examples/..."/>
-                    </textobject>
-                </programlisting>
-                -->
                 <para>
                     More explanation?
                 </para>
             </sect2>
         </sect1>
+-->
         <sect1>
-            <title id="apiinterview">Qt4 Interview support</title>
+            <title id="apiinterview">KD Chart and Interview </title>
             <para>
-                        Text .....
+		KD Chart 2.0 follows the Interview model/view paradigm 
+		introduced by Qt 4:
+	    </para>	
+	    <para>
+		Any <classname>KDChart::AbstractDiagram</classname> subclass 
+		(since that is derived from 
+		<classname>QAbstractItemView</classname>) can display data 
+		coming from any <classname>QAbstractItemModel</classname>.
+		In order to use your data with KD Chart diagrams, you need 
+		to either use one of Qt's builtin models to manage it, or 
+		provide the <classname>QAbstractItemModel</classname> 
+		interface on top of your already existing data storage by 
+		implementing your own model that talks to that underlying 
+		storage. 
             </para>
+	    <para>
+		<classname>KDChart::Widget</classname> is a convenience class 
+		that provides a simpler, but less flexible way of displaying 
+		data in a chart. It stores the data it displays itself, and 
+		thus does not need a <classname>QAbstractItemModel</classname>.
+		It should be sufficient for many basic charting needs but it 
+		is not meant to handle very large amounts of data or to make 
+		use of user-supplied chart types.
+	    </para>
+	    <para>
+		<classname>KDChart::Widget</classname> is provided in order to 
+		allow getting started easily without having to master the 
+		complexities of the new Interview framework in Qt 4. We would 
+		still advise to use KDChart::Chart so that you can make use of
+		all the benefits that Interview brings you once you have 
+		mastered it.
+	    </para>
+	    <para>
+		To understand the relationship between 
+		<classname>KDChart::View</classname>
+		and <classname>KDChart::Widget</classname> better, compare for
+		example <classname>KDChart::View</classname> and
+		<classname>KDChart::Widget</classname> to 
+		<classname>QListView</classname> and 
+		<classname>QListWidget</classname> in the Qt 4 documentation. 
+		You will clearly notice the parallels.
+	    </para>	   
              <sect2>
                 <title id="interviewsample" xreflabel="codexample">Code Example</title>
                 <para>
+		    <!-- Pending Michel: Insert some piece of code here -->
                     Let us make this more concrete by looking at the following
                     lines of code.
                    <!--
@@ -408,32 +440,55 @@
                 <para>
                     More explanation?
                 </para>
-                               </sect2>
+	    </sect2>
         </sect1>
         <sect1>
             <title id="apiattribute">Attribute sets</title>
             <para>
-                Text .....
+                The various components of a chart such as legends or axes have
+		attribute sets associated with them that define the way they 
+		are laid out and painted. For example, both the chart itself 
+		and all areas have a set of 
+		<classname>KDChart::BackgroundAttributes</classname>, which 
+		govern whether there should be a background pixmap, or a solid
+		background color. Other attribute sets include FrameAttributes
+		or GridAttributes. The default attributes provide reasonable, 
+		unintrusive settings, such as no visible background and no 
+		visible frame.
             </para>
+	    <para>
+		These attribute sets are passed by value, they are intended to
+		be used much like Qt's QPen or QBrush. As shown below:
+	    </para>
              <sect2>
                 <title id="attributesample" xreflabel="codexample">Code Example</title>
+		<programlisting>
+		    KDChart::TextAttributes ta;
+		    ta.setPen( Qt::red );
+		    ta.setFont( QFont( "Helvetica" ) );
+		    chart->legend()->setTextAttributes( ta );
+		</programlisting>
                 <para>
-                    Let us make this more concrete by looking at the following
-                    lines of code.
-                   <!--
-                    <link linkend=""></link>
-                    <link linkend=""></link>
-                    -->
+		    All attribute sets can be set per cell, per column or per 
+		    model, and only be queried per cell. Access at the cell 
+		    level only ensures that the proper fallback hierarchy can 
+		    be observed. If there is a value set at cell level, it 
+		    will be used, otherwise the dataset (column) level is 
+		    checked. If nothing was set at dataset level, the model 
+		    wide setting is used, and if there is none either, the 
+		    default values will be applied. 
+		    All of this happens automatically, so that the code using
+		    these values only has to ask the cell for its attributes, 
+		    and will get the correct values. This avoids duplicating 
+		    the fallback logic all over the library and 
+		    the application, and avoids (expensive) error handling.
                 </para>
-                <!--
-                <programlisting linenumbering="numbered" id="">
-                    <textobject>
-                        <textdata fileref="../../examples/..."/>
-                    </textobject>
-               </programlisting>
-                -->
                 <para>
-                    More explanation?
+                    When using attributes sets, you need to be aware of this 
+		    fallback hierarchy, because e.g. per-cell changes will 
+		    hide per-column changes.
+		    <!-- Pending Michel: Add some code sample here -->
+		    (see files /src/KDChart*Attributes.h)
                 </para>
                 </sect2>
         </sect1>
