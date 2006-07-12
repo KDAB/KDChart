@@ -610,132 +610,133 @@
                 <!-- Text ...KDChartWidget vs. KDChart::Chart own Widget. -->
 		Let us now build a chart. more text to come...
             </para>
-            <sect2>
-                <title id="chartsample" xreflabel="codexample">Chart Example</title>
-                <para>
-                    As in the Widget-using case, you need to include the 
-		    appropriate headers, and bring in the "KDChart" namespace:
-                </para>
-		<programlisting>
-		    #include &lt;KDChartChart&gt;
-		    #include &lt;KDChartLineDiagram&gt;
-		    using namespace KDChart;
-    
-                    //Add the widget to your layout like for any other QWidget:
-    
-		    QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
-                    m_chart = new Chart();
-                    chartLayout->addWidget( m_chart );
-                </programlisting>
-                <para>
-                    In this example, you only create a single line diagram,
-		    and use the default cartesian coordinate plane, which is 
-		    already contained in an empty Chart.
-                </para>
-		<programlisting>
-		    // Create a bar diagram and associate the data model to it
-		    m_lines = new LineDiagram();
-		    m_lines->setModel( &amp;m_model );
-    
-		    // Replace the default diagram of the default coordinate
-		    // plane with your newly created one.
-		    // Note that the plane takes ownership of the diagram,
-		    // so you are not allowed to delete it.
-		    m_chart->coordinatePlane()->replaceDiagram( m_lines );
-                </programlisting>
-		<para>
-		    Adding elements such as axes or legends is 
-		    straightforward as well:
-		</para>
-		<programlisting>
-		    CartesianAxis *yAxis = new CartesianAxis ( m_lines );
-		    yAxis->setPosition ( KDChart::CartesianAxis::Left );
-    
-		    // the diagram takes ownership of the Axis
-		    m_lines->addAxis( yAxis );
-    
-		    legend = new Legend( m_lines, m_chart );
-		    m_chart->addLegend( legend );
-		</programlisting> 
-		<para>
-		    You can adjust and fine-tune various aspects of the 
-		    diagrams, planes, legends, etc...
-		</para>
-		<para>
-		    Much like Qt itself, KD Chart uses a value-based approach 
-		    to these attributes. In the case of diagrams, most aspects
-		    can be adjusted at different levels of granularity.
-		    The QPen that is used for drawing datasets (lines, bars, 
-		    etc...) can be set either for one datapoint within a 
-		    dataset, for a dataset or for the whole diagram. see file 
-		    <filename>KDChartAbstractDiagram.h</filename>:
-		</para>
-		<programlisting>
-		    void setPen( const QModelIndex&amp; index, const QPen&amp; pen );
-		    void setPen( int dataset, const QPen&amp; pen );
-		    void setPen( const QPen&amp; pen );
-		</programlisting> 
-		<para>
-		    To use a dark gray color for all lines in your example 
-		    chart, you would write:
-		</para>
-		<programlisting>
-		    QPen pen;
-		    pen.setColor( Qt::darkGray );
-		    pen.setWidth( 1 );
-		    m_lines->setPen( pen );
-		</programlisting> 
-		<para>
-		    Attributes that form logical groupings are combined into
-		    collection classes, such as 
-		    <classname>GridAttributes</classname>, 
-		    <classname>DataValueAttributes</classname>,
-		    <classname>TextAttributes</classname>, etc....
-		</para>
-		<para>
-		    This makes it possible to keep sets of such properties 
-		    around and swap them in one step, based on program state.
-		    However, you might often want to adjust just one or a few 
-		    of the default settings, rather than specifying a complete
-		    new set. Thus in most cases, using the copy constructor of
-		    the settings class might be appropriate, so to use a 
-		    special font for drawing a legend, for example, you would 
-		    just write:    
-		</para>    
-		<programlisting>
-		    TextAttributes ta( legend->textAttributes() );
-		    ta.setFont( myfont );
-		    legend->setTextAttributes( ta );
-		</programlisting>
-		<para>
-		    We will continue with more examples and more detailled 
-		    information about all those points in the next section
-		    and the next chapters.
-		    Also we recommend you to consult and run the examples 
-		    send together with your KD Chart distribution package.
-		</para>
-            </sect2>
-	    <sect2>
-                <title id="widgetsample" xreflabel="codexample">Widget Example</title>
-                <para>
-                    Let us make this more concrete by looking at the following
-                    lines of code.
-                   <!--
-                    <link linkend=""></link>
-                    <link linkend=""></link>
-                     -->
-                </para>
-                <!--
-                <programlisting linenumbering="numbered" id="">
-                    <textobject>
-                        <textdata fileref="../../examples/..."/>
-                    </textobject>
-                </programlisting>
-                -->
-                <para>
-                    More explanation?
-                </para>
-            </sect2>
+	    <para>
+		As in the Widget-using case, you need to include the 
+		appropriate headers, and bring in the "KDChart" namespace:
+	    </para>
+	    <programlisting>
+		#include &lt;KDChartChart&gt;
+		#include &lt;KDChartLineDiagram&gt;
+		using namespace KDChart;
+		
+		//Add the widget to your layout like for any other QWidget:
+		
+		QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
+		m_chart = new Chart();
+		chartLayout->addWidget( m_chart );
+	    </programlisting>
+	    <para>
+		In this example, you only create a single line diagram,
+		and use the default cartesian coordinate plane, which is 
+		already contained in an empty Chart.
+	    </para>
+	    <programlisting>
+		// Create a bar diagram and associate the data model to it
+		m_lines = new LineDiagram();
+		m_lines->setModel( &amp;m_model );
+		
+		// Replace the default diagram of the default coordinate
+		// plane with your newly created one.
+		// Note that the plane takes ownership of the diagram,
+		// so you are not allowed to delete it.
+		m_chart->coordinatePlane()->replaceDiagram( m_lines );
+	    </programlisting>
+	    <para>
+		Adding elements such as axes or legends is 
+		straightforward as well:
+	    </para>
+	    <programlisting>
+		CartesianAxis *yAxis = new CartesianAxis ( m_lines );
+		yAxis->setPosition ( KDChart::CartesianAxis::Left );
+		
+		// the diagram takes ownership of the Axis
+		m_lines->addAxis( yAxis );
+		
+		legend = new Legend( m_lines, m_chart );
+		m_chart->addLegend( legend );
+	    </programlisting> 
+	    <para>
+		You can adjust and fine-tune various aspects of the 
+		diagrams, planes, legends, etc...
+	    </para>
+	    <para>
+		Much like Qt itself, KD Chart uses a value-based approach 
+		to these attributes. In the case of diagrams, most aspects
+		can be adjusted at different levels of granularity.
+		The QPen that is used for drawing datasets (lines, bars, 
+		etc...) can be set either for one datapoint within a 
+		dataset, for a dataset or for the whole diagram. see file 
+		<filename>KDChartAbstractDiagram.h</filename>:
+	    </para>
+	    <programlisting>
+		void setPen( const QModelIndex&amp; index, const QPen&amp; pen );
+		void setPen( int dataset, const QPen&amp; pen );
+		void setPen( const QPen&amp; pen );
+	    </programlisting> 
+	    <para>
+		To use a dark gray color for all lines in your example 
+		chart, you would write:
+	    </para>
+	    <programlisting>
+		QPen pen;
+		pen.setColor( Qt::darkGray );
+		pen.setWidth( 1 );
+		m_lines->setPen( pen );
+	    </programlisting> 
+	    <para>
+		Attributes that form logical groupings are combined into
+		collection classes, such as 
+		<classname>GridAttributes</classname>, 
+		<classname>DataValueAttributes</classname>,
+		<classname>TextAttributes</classname>, etc....
+	    </para>
+	    <para>
+		This makes it possible to keep sets of such properties 
+		around and swap them in one step, based on program state.
+		However, you might often want to adjust just one or a few 
+		of the default settings, rather than specifying a complete
+		new set. Thus in most cases, using the copy constructor of
+		the settings class might be appropriate, so to use a 
+		special font for drawing a legend, for example, you would 
+		just write:    
+	    </para>    
+	    <programlisting>
+		TextAttributes ta( legend->textAttributes() );
+		ta.setFont( myfont );
+		legend->setTextAttributes( ta );
+	    </programlisting>
+	    <para>
+		We will continue with more examples and more detailled 
+		information about all those points in the next section
+		and the next chapters.
+		Also we recommend you to consult and run the examples 
+		send together with your KD Chart distribution package.
+	    </para>
+	    <para>
+		Compile and run the following example
+	    </para>
+<!--
+	    <link linkend="mainwindow_h">mainwindow.h</link> 
+-->	    
+	    <programlisting linenumbering="numbered" id="mainwindow_h">
+		<textobject><textdata
+				fileref="../../examples/Widget/mainwindow.h"/>
+		</textobject>
+	    </programlisting>                
+
+	    <para>
+		More explanation h file?
+	    </para>		
+	    <figure float="0" id="fig-simplewidget">
+		<title>A Simple Chart Widget</title>
+		<mediaobject>
+		    <imageobject>
+			<imagedata
+                            fileref="images/simplewidget.png"
+                            width="3in" scalefit="1"/>
+		    </imageobject>
+		</mediaobject>
+	    </figure>
         </sect1>
         <sect1>
             <title>What's next</title>
