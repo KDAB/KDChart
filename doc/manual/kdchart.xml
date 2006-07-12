@@ -495,28 +495,52 @@
         <sect1>
             <title id="apimemory">Memory management</title>
             <para>
-                Text .....
+                As a general rule, everything in a KDChart::Chat is owned by 
+		the chart. Manipulation of the built-in components of a chart,
+		such as for example a legend, happens through mutable pointers
+		provided by the view, but those components can also be 
+		replaced. 
             </para>
              <sect2>
                 <title id="memorysample" xreflabel="codexample">Code Example</title>
                 <para>
                     Let us make this more concrete by looking at the following
-                    lines of code.
-                   <!--
-                    <link linkend=""></link>
-                    <link linkend=""></link>
-                    -->
+                    lines of code.                   
                 </para>
-                <!--
-                <programlisting linenumbering="numbered" id="">
-                    <textobject>
-                        <textdata fileref="../../examples/..."/>
-                    </textobject>
+		<programlisting>
+		    // set the built-in (default) legend visible
+		    view->legend()->setPosition( North );
+
+		    // replace the default legend with a custom one 
+		    //the view will take ownership of the allocated 
+		    //memory and free the old legend
+		    KDChart::Legend *myLegend = 
+		    view->replaceLegend( new Legend );
                 </programlisting>
-                -->
                 <para>
-                    More explanation?
+		    Similarly, inserting new components into the view chart up
+		    their ownership.
                 </para>
+		<programlisting>
+		    // add an additional legend, chart takes ownership
+		    chart->addLegend( Legend );
+                </programlisting>
+		<para>
+		    Removing a component does not de-allocate it. If you "take"
+		    a component from a chart or diagram, you are responsible 
+		    for freeing it as appropriate.
+		</para> 
+		<para>
+		    (see files /src/{KDChartChart.h, KDChartLegend.h})
+		</para>
+		<para>
+		    Notice how this pointer-based access to the components of a
+		    chart is different from the value-based usage of the 
+		    attribute classes; the latter can be copied around freely, 
+		    and are meant to be transient in your code; they will be 
+		    copied internally as necessary. The reason for the 
+		    difference, of course, is polymorphism.
+		</para>
             </sect2>
         </sect1>
         <sect1>
