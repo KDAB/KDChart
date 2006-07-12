@@ -381,6 +381,8 @@ namespace KDChart {
          */
         void setDatasetDimension( int dimension );
 
+        void update() const;
+
     protected:
         virtual bool checkInvariants( bool justReturnTheStatus=false ) const;
         virtual const QPair<QPointF, QPointF> calculateDataBoundaries() const = 0;

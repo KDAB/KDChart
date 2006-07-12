@@ -79,6 +79,7 @@ Chart::Private::Private( Chart* chart_ )
     , globalLeadingRight( 0 )
     , globalLeadingTop( 0 )
     , globalLeadingBottom( 0 )
+    , inPaint( false )
 {
 }
 
@@ -482,10 +483,12 @@ void Chart::Private::createLayouts( QWidget* w )
 
 void Chart::Private::slotRelayout()
 {
+qDebug() << "Chart relayouting started.";
     createLayouts( chart );
     layoutHeadersAndFooters();
     layoutLegends();
     layout->activate();
+qDebug() << "Chart relayouting done.";
 }
 
 // ******** Chart interface implementation ***********
@@ -526,11 +529,9 @@ CoordinatePlaneList Chart::coordinatePlanes()
 void Chart::addCoordinatePlane( AbstractCoordinatePlane* plane )
 {
     connect( plane, SIGNAL( destroyedCoordinatePlane( AbstractCoordinatePlane* ) ),
-             d, SLOT( slotUnregisterDestroyedPlane( AbstractCoordinatePlane* ) ) );
-    connect( plane, SIGNAL( diagramsChanged() ), this, SLOT( update() ) );
-//    connect( plane, SIGNAL( diagramsChanged() ), d, SLOT( slotLayoutPlanes() ) );
-    connect( plane, SIGNAL(needUpdate()),  this, SLOT(update()) );
-    connect( plane, SIGNAL(gridChanged()), this, SLOT(update()) );
+             d,   SLOT( slotUnregisterDestroyedPlane( AbstractCoordinatePlane* ) ) );
+    connect( plane, SIGNAL( needUpdate() ),
+             this,    SLOT( update() ) );
     d->coordinatePlanes.append( plane );
     plane->setParent( this );
     d->slotLayoutPlanes();
@@ -615,18 +616,20 @@ int Chart::globalLeadingBottom() const
 {
     return d->globalLeadingBottom;
 }
-
-
+static int nPaint=0;
 void Chart::paint( QPainter* painter, const QRect& target )
 {
-qDebug( "Chart::paint() called.");
-    if( target.isEmpty() || !painter) return;
+qDebug() << "KDChart::Chart::paint() called, inPaint: " << d->inPaint;
+++nPaint;
+if( 30<nPaint)
+    qFatal("nPaint > 30");
+    if( d->inPaint || target.isEmpty() || !painter ) return;
 
+    d->inPaint = true;
     const QRect oldGeometry( geometry() );
     if( target != oldGeometry ){
         setGeometry( target );
-        // Do we need that?
-        // d->slotRelayout();
+        d->slotRelayout();
     }
     //painter->drawRect( geometry() );
 
@@ -643,12 +646,15 @@ qDebug( "Chart::paint() called.");
     if( target != oldGeometry ){
         setGeometry( oldGeometry );
     }
+    d->inPaint = false;
+qDebug() << "KDChart::Chart::paint() done.\n";
 }
 
 
 void Chart::paintEvent( QPaintEvent* event )
 {
-    Q_UNUSED( event );
+    event->accept();
+
     QPainter painter( this );
     //FIXME(khz): Paint the background/frame too!
     //            (can we derive Chart from AreaWidget ??))

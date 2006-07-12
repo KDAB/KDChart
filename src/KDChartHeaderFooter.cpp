@@ -185,8 +185,7 @@ void HeaderFooter::setText( const QString& text )
 {
     d->text = text;
     d->updateTextDoc();
-    if( d->parent )
-        d->parent->update();
+    update();
 }
 
 QString HeaderFooter::text() const
@@ -210,8 +209,7 @@ void HeaderFooter::setTextAttributes( const TextAttributes &a )
 {
     d->textAttrs = a;
     d->updateTextDoc();
-    if( d->parent )
-        d->parent->update();
+    update();
 }
 
 /**
@@ -271,4 +269,11 @@ QRect HeaderFooter::geometry() const
                    static_cast<int>(siz.height()) ) );
     }
     return QRect( QPoint(0, 0), sizeHint() );
+}
+
+void HeaderFooter::update()
+{
+    qDebug("KDChart::HeaderFooter::update() called");
+    if( d->parent )
+        d->parent->update();
 }

@@ -102,8 +102,12 @@ namespace KDChart {
         const AbstractCoordinatePlane* coordinatePlane() const;
 
         virtual QDomDocumentFragment toXML() const = 0;
+
     signals:
         void destroyedAxis( AbstractAxis* );
+
+    public slots:
+        void update();
     };
 }
 

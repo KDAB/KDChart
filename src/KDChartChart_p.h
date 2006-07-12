@@ -77,6 +77,8 @@ class Chart::Private : public QObject
 
         int globalLeadingLeft, globalLeadingRight, globalLeadingTop, globalLeadingBottom;
 
+        bool inPaint;
+
         Private ( Chart* );
 
         virtual ~Private() {}

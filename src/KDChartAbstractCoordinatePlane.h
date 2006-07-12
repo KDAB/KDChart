@@ -297,11 +297,6 @@ namespace KDChart {
          */
         AbstractCoordinatePlane * referenceCoordinatePlane() const;
 
-        /**
-          * Calling update() on the plane triggers the global KDChart::Chart::update()
-          */
-        void update();
-
         /** pure virtual in QLayoutItem */
         virtual bool isEmpty() const;
         /** pure virtual in QLayoutItem */
@@ -312,7 +307,12 @@ namespace KDChart {
         virtual QSize minimumSize() const;
         /** pure virtual in QLayoutItem */
         virtual QSize sizeHint() const;
-        /** pure virtual in QLayoutItem */
+        /** pure virtual in QLayoutItem
+          *
+          * \note Do not call this function directly, unless you know
+          * exactly what you are doing.  Geometry management is done
+          * by KD Chart's internal layouting measures.
+          */
         virtual void setGeometry( const QRect& r );
         /** pure virtual in QLayoutItem */
         virtual QRect geometry() const;
@@ -325,20 +325,18 @@ namespace KDChart {
         Chart* parent();
         const Chart* parent() const;
 
+    public slots:
+        /**
+          * Calling update() on the plane triggers the global KDChart::Chart::update()
+          */
+        void update();
+
     signals:
         /** Emitted when this coordinate plane is destroyed. */
         void destroyedCoordinatePlane( AbstractCoordinatePlane* );
 
-        /** Emitted when plane needs to update its drawings for other
-          * reasons than changed grid range/attributes.
-          */
+        /** Emitted when plane needs to update its drawings. */
         void needUpdate();
-
-        /** Emitted when the grid attributes and/or grid ranges change. */
-        void gridChanged();
-
-        /** Emitted when the associated diagrams change. */
-        void diagramsChanged();
 
     protected:
         virtual DataDimensionsList getDataDimensionsList() const = 0;

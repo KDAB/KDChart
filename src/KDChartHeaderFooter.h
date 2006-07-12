@@ -93,10 +93,12 @@ public:
       */
     void setParent( Chart* parent );
 
+public slots:
+    void update();
+
 signals:
     void destroyedHeaderFooter( HeaderFooter* );
 
-private:
 }; // End of class HeaderFooter
 
 }

@@ -65,7 +65,7 @@ void AbstractCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
     diagram->setParent( d->parent );
     diagram->setCoordinatePlane( this );
     layoutDiagrams();
-    emit diagramsChanged();
+    update();
 }
 
 /*virtual*/
@@ -81,7 +81,7 @@ void AbstractCoordinatePlane::replaceDiagram ( AbstractDiagram* diagram, Abstrac
         delete oldDiagram;
         addDiagram( diagram );
         layoutDiagrams();
-        emit diagramsChanged();
+        update();
     }
 }
 
@@ -94,7 +94,7 @@ void AbstractCoordinatePlane::takeDiagram ( AbstractDiagram* diagram )
         diagram->setParent( 0 );
         diagram->setCoordinatePlane( 0 );
         layoutDiagrams();
-        emit diagramsChanged();
+        update();
     }
 }
 
@@ -133,7 +133,7 @@ QSizePolicy KDChart::AbstractCoordinatePlane::sizePolicy() const
 void KDChart::AbstractCoordinatePlane::setGlobalGridAttributes( const GridAttributes& a )
 {
     d->gridAttributes = a;
-    emit gridChanged();
+    update();
 }
 
 GridAttributes KDChart::AbstractCoordinatePlane::globalGridAttributes() const
@@ -154,11 +154,6 @@ void KDChart::AbstractCoordinatePlane::setReferenceCoordinatePlane( AbstractCoor
 AbstractCoordinatePlane * KDChart::AbstractCoordinatePlane::referenceCoordinatePlane( ) const
 {
     return d->referenceCoordinatePlane;
-}
-
-void KDChart::AbstractCoordinatePlane::update()
-{
-    emit needUpdate();
 }
 
 void KDChart::AbstractCoordinatePlane::setParent( KDChart::Chart* parent )
@@ -215,13 +210,20 @@ void KDChart::AbstractCoordinatePlane::setGeometry( const QRect& r )
 {
     if( geometry() != r ){
         d->geometry = r;
-        emit needUpdate();
+        // Note: We do *not* call update() here
+        //       because it would invoke KDChart::update() recursively.
     }
 }
 /* pure virtual in QLayoutItem */
 QRect KDChart::AbstractCoordinatePlane::geometry() const
 {
     return d->geometry;
+}
+
+void KDChart::AbstractCoordinatePlane::update()
+{
+    qDebug("KDChart::AbstractCoordinatePlane::update() called");
+    emit needUpdate();
 }
 
 #undef d

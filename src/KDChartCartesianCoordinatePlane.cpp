@@ -415,7 +415,7 @@ void KDChart::CartesianCoordinatePlane::setHorizontalRange( const QPair< qreal, 
         d->horizontalMax = range.second;
 	// Is there no better way to do this???
 	layoutDiagrams();
-	emit gridChanged();
+	update();
     }
 }
 
@@ -426,7 +426,7 @@ void KDChart::CartesianCoordinatePlane::setVerticalRange( const QPair< qreal, qr
         d->verticalMax = range.second;
 	// Is there no better way to do this???
 	layoutDiagrams();
-	emit gridChanged();
+	update();
     }
 }
 

@@ -283,3 +283,10 @@ bool KDChart::AbstractAxis::observedBy( AbstractDiagram * diagram ) const
 {
     return d->hasDiagram( diagram );
 }
+
+void KDChart::AbstractAxis::update()
+{
+    qDebug("KDChart::AbstractAxis::update() called");
+    if( d->diagram() )
+        d->diagram()->update();
+}

@@ -199,7 +199,7 @@ void AbstractDiagram::doItemsLayout()
 {
     if ( d->plane ) {
         d->plane->layoutDiagrams();
-        d->plane->update();
+        update();
     }
     QAbstractItemView::doItemsLayout();
 }
@@ -239,7 +239,7 @@ void AbstractDiagram::setDataValueAttributes( const DataValueAttributes & a )
 void AbstractDiagram::setAllowOverlappingDataValueTexts( bool allow )
 {
     d->allowOverlappingDataValueTexts = allow;
-    // update() missing ???
+    update();
 }
 
 bool AbstractDiagram::allowOverlappingDataValueTexts() const
@@ -619,5 +619,13 @@ double AbstractDiagram::valueForCell( int row, int column ) const
     return d->attributesModel->data(
             d->attributesModel->index( row, column, attributesModelRootIndex() ) ).toDouble();
 }
+
+void AbstractDiagram::update() const
+{
+    qDebug("KDChart::AbstractDiagram::update() called");
+    if( d->plane )
+        d->plane->update();
+}
+
 
 #include "KDChartAbstractDiagram.moc"
