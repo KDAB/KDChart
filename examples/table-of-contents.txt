@@ -1,7 +1,7 @@
 
- KD Chart 2 examples
- ===================
- (Table of Contents)
+  KD Chart 2 examples
+  ===================
+  (Table of Contents)
 
 
 >> examples/Axis/ - adding axes and setting them up
