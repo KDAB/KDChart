@@ -13,7 +13,7 @@
    </rect>
   </property>
   <property name="windowTitle" >
-   <string>Axes </string>
+   <string>KD Chart drawing into a foreign QPainter </string>
   </property>
   <property name="windowIcon" >
    <iconset/>
