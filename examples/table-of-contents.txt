@@ -1,150 +1,166 @@
 
-This Table of Contents list the examples and the features they are 
-demonstrating so that you find what you are looking for quicker.
+ KD Chart 2 examples
+ ===================
+ (Table of Contents)
 
 
-1/ Axis
-
-a/Labels 
-
-AxisLabels:
-
-Featuring:
-- Use of KDChart::Chart together with a TableModel (QAbstractTableModel)
-- Set up a line diagram
-- Create Axes ( X - bottom, Y Left ) and add it to the diagram
-- Configure and set the Abscissa labels
-- set up a legend
-
-b/Parameters
-
-AxisParameters
-
-Featuring:
-- Use of KDChart::Chart together with a TableModel (QAbstractTableModel)
-- Set up a line diagram
-- Create Axes ( X - bottom, Y Left - top and right ) and add it to the diagram
-- Display or hide data values 
-- Shift line chart types ( Normal / Stacked / Percent )
-- Paint markers and change their style
-- Display area charts with transparency
-- Demonstrate zooming 
-- set up a legend and display it or hide it
+>> examples/Axis/ - How to adding axes, and set them up
 
 
-2/ Bars
+>> examples/Axis/Labels/ - how to specify/configure axis labels
 
-Featuring:
- 
-- Use of KDChart::Chart together with a TableModel (QAbstractTableModel) 
-- Set up a Bar diagram
-- Display or hide data values 
-- Shift Bar chart types ( Normal / Stacked / Percent )
-- Demonstrate Pen settings
-- Display ThreeD Bars and set the depth
+   featuring:
 
-3/ EmptyValues
-
-Featuring:
-
-- Use of KDChart::Chart together with a TableModel (QAbstractTableModel) 
-- Set up a Bar diagram
-- Demonstrate how to handle a plane when the values in the model are all zero
+ - Use of KDChart::Chart together with a TableModel
+   (QAbstractTableModel)
+ - Set up a line diagram
+ - Create two axes, and add them to the diagram
+ - Configure and set the abscissa labels
+ - Set up a legend
 
 
-4/ HeadersFooters
+>> examples/Axis/Parameters/ - fine-tuning the axis parameters
 
-Featuring:
+   featuring:
 
-- Use of KDChart::Chart together with a TableModel (QAbstractTableModel) 
-- Headers and footers handling - Add, Edit, and Remove one or several Headers 
-  and footers at different locations
-
-5/ Legends
-
-Featuring:
-
-- Use of KDChart::Chart together with a TableModel (QAbstractTableModel) 
-- Legends handling - Add, Edit, and Remove one or several Legends at different
-  locations
-  
-6/ Lines
-
-Featuring:
-
-- Use of KDChart::Chart together with a TableModel (QAbstractTableModel) 
-- Display or hide data values
-- Show the use of DataValueAttributes and TextAttributes 
-- Shift line chart types ( Normal / Stacked / Percent )
-- Highlight Areas
-- Highlight Areas animation
-
- 
-7/ ModelView
-
-Featuring:
-
-- Use of KDChart::Chart together with a QStandardItemModel,  
-  QItemSelectionModel and a QTableView.
-- Load and save your data
-- Select and change the values interactively 
-- Pen settings
+ - Use of KDChart::Chart together with a TableModel
+   (QAbstractTableModel)
+ - Set up a line diagram
+ - Create two axes, and add them to the diagram
+ - Display or hide data values
+ - Shift line chart types ( Normal / Stacked / Percent )
+ - Paint markers and change their style
+ - Display area charts with transparency
+ - Demonstrate zooming 
+ - Set up a legend and display it or hide it
 
 
-8/ MultidimensionalData
+>> examples/Bars/ - sub types of the bar diagram class
 
-Featuring:
+   featuring:
 
-- Use of KDChart::Chart together with a TableModel (QAbstractTableModel)  
-- Demonstrate the use of several dataset in the data model
-  e.g setDatasetDimension(2) informs the diagram that 2 columns in the 
-  data model are used for a dataset. 0 + 1 == first dataset - 2 + 3 second
-  dataset.
-- Show how to use DataValueAttributes and MarkerAttributes
-
- 
-9/ Pie
-
-Featuring:
-
-- Use of KDChart::Chart together with a TableModel (QAbstractTableModel)  
-- Set up a Pie diagram
-- Demonstrate several configuration possibilities:
-  * start position 
-  * exploding
-- Exploding Animation
-  
-
-10/ SharedAbscissa
-
-Featuring:
-
-- Use of KDChart::Chart together with a TableModel (QAbstractTableModel)  
-- Show a chart with two diagrams having each its own model
-- Demonstrate how to share the Abscissa
-- Display two diagrams on top of each other with different Y axis in the same 
-  plane (left and right)
+ - Use of KDChart::Chart together with a TableModel
+   (QAbstractTableModel)
+ - Set up a Bar diagram
+ - Display or hide data values 
+ - Shift Bar chart types ( Normal / Stacked / Percent )
+ - Demonstrate Pen settings
+ - Display ThreeD Bars and set the depth
 
 
-11/ Widget 
+>> examples/EmptyValues/ - having zero values in all cells
 
-Featuring: 
+   featuring:
 
-- Use of KDChart::Widget  
-- Add values and set datasets using a QVector 
-- Headers and Footers set up and configuration
-- Handle Legends set up 
-- Chart type configuration
+ - Use of KDChart::Chart together with a TableModel
+   (QAbstractTableModel)
+ - Set up a Bar diagram
+ - Demonstrate how to handle a plane when the values in
+   the model are all zero
 
 
-12/ Zoom
+>> examples/HeadersFooters/ - adding headers and/or footers
 
-Featuring:
+   featuring:
 
-- Use of KDChart::Widget
-- Use of KDChart::Widget  
-- Add values and set datasets using a QVector 
-- Headers and Footers set up and configuration
-- Handle Legends set up 
-- Show some zooming functionalities using:
-  Mouse Press-Event - Mouse Wheel-Event and Key Press-Event 
+ - Use of KDChart::Chart together with a TableModel
+   (QAbstractTableModel)
+ - Headers and footers handling:  Add, edit, and remove one
+   or several headers / footers at different locations
+
+
+examples/Legends/ - positioning one or several legends
+
+   featuring:
+
+ - Use of KDChart::Chart together with a TableModel
+   (QAbstractTableModel)
+ - Legends handling - Add, edit, and remove one or several
+   legends at different locations
+
+
+>> examples/Lines/ - sub types of the lines diagram class
+
+   featuring:
+
+ - Use of KDChart::Chart together with a TableModel
+   (QAbstractTableModel)
+ - Display or hide data values
+ - Show the use of DataValueAttributes and TextAttributes 
+ - Shift line chart types ( Normal / Stacked / Percent )
+ - Highlight areas
+ - Animate highlighting of areas
+
+
+>> examples/ModelView - using Qt Interview with KD Chart 2
+
+   featuring:
+
+ - Use of KDChart::Chart together with a QStandardItemModel,
+   QItemSelectionModel, and a QTableView
+ - Load and save your data
+ - Select and change the values interactively 
+ - Pen settings
+
+
+>> examples/MultidimensionalData/ - diagrams with Y / X coordinates
+
+   featuring:
+
+ - Use of KDChart::Chart together with a TableModel
+   (QAbstractTableModel)
+ - Demonstrate the use of several dataset in the data model
+   e.g setDatasetDimension( 2 ) informs the diagram that
+       two columns in the data model are used for a dataset.
+       0 + 1 == first dataset, and 2 + 3 == second dataset.
+ - Show usage of DataValueAttributes and MarkerAttributes
+
+
+>> examples/Pie/ - sub types of the pie diagram class
+
+   featuring:
+
+ - Use of KDChart::Chart together with a TableModel
+   (QAbstractTableModel)
+ - Set up a pie diagram
+ - Demonstrate several configuration possibilities:
+     - start position
+     - exploding
+ - Animate exploding of pie slices
+
+
+>> examples/SharedAbscissa/ - one axis used by two diagrams
+
+   featuring:
+
+ - Use of KDChart::Chart together with a TableModel
+   (QAbstractTableModel)
+ - Show a chart with two diagrams having each its own model
+ - Demonstrate how to share the abscissa axis
+ - Display two diagrams on top of each other with different
+   ordinates in the same plane (left side/right side)
+
+
+>> examples/Widget/ - the convenience widget class
+
+   featuring:
+
+ - Use of KDChart::Widget  
+ - Add values and set datasets using a QVector 
+ - Headers and footers set up and configuration
+ - Set up the legends
+ - Specify the chart type
+
+
+>> examples/Zoom/ - mouse handling and zooming
+
+   featuring:
+
+ - Use of KDChart::Widget
+ - Use of KDChart::Widget  
+ - Add values and set datasets using a QVector 
+ - Headers and footers set up and configuration
+ - Set up the legends
+ - Show some zooming functionalities using mouse press event,
+   mouse wheel event, and key press event
+
