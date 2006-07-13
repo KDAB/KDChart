@@ -4,7 +4,7 @@
  (Table of Contents)
 
 
->> examples/Axis/ - How to adding axes, and set them up
+>> examples/Axis/ - How to add axes and set them up
 
 
 >> examples/Axis/Labels/ - how to specify/configure axis labels
