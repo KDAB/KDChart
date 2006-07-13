@@ -74,11 +74,7 @@ public:
 
     // the coordinate plane will calculate the coordinate transformation:
     CoordinateTransformation coordinateTransformation;
-    // the whole drawing area, includes diagrams and axes, but maybe smaller
-    // than (width, height):
-    QRectF drawingArea;
-    // the reactangle occupied by the diagrams, in plane coordinates
-    QRectF diagramArea;
+
     // true after setGridAttributes( Qt::Orientation ) was used,
     // false if resetGridAttributes( Qt::Orientation ) was called
     bool hasOwnGridAttributesHorizontal;

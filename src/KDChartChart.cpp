@@ -632,12 +632,13 @@ qDebug() << "KDChart::Chart::paint() called, inPaint: " << d->inPaint;
 
     d->inPaint = true;
     const QRect oldGeometry( geometry() );
+    //painter->drawRect( oldGeometry );
     if( target != oldGeometry ){
         qDebug() << "KDChart::Chart::paint() calling new setGeometry(" << target << ")";
         setGeometry( target );
+        painter->drawRect( target );
         d->slotRelayout();
     }
-    //painter->drawRect( geometry() );
 
     foreach( KDChart::AbstractArea* layoutItem, d->layoutItems ) {
         layoutItem->paintAll( *painter );

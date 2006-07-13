@@ -82,7 +82,8 @@ void CartesianCoordinatePlane::paint ( QPainter* painter )
         PaintContext ctx;
         ctx.setPainter ( painter );
         ctx.setCoordinatePlane ( this );
-        ctx.setRectangle ( d->drawingArea );
+        const QRectF drawArea( drawingArea() );
+        ctx.setRectangle ( drawArea );
 
         // paint the coordinate system rulers:
         d->grid->drawGrid( &ctx );
@@ -93,8 +94,11 @@ void CartesianCoordinatePlane::paint ( QPainter* painter )
             PainterSaver painterSaver( painter );
             diags[i]->paint ( &ctx );
         }
+        //for debugging:
+            painter->drawRect( drawArea.adjusted(4,4,4,4) );
+            painter->drawRect( drawArea.adjusted(2,2,2,2) );
+            painter->drawRect( drawArea );
     }
-    //for debugging: painter->drawRect(d->drawingArea);
     qDebug("KDChart::CartesianCoordinatePlane::paint() done.");
 }
 
@@ -108,7 +112,8 @@ void CartesianCoordinatePlane::paintEvent ( QPaintEvent* )
         PaintContext ctx;
         ctx.setPainter ( &painter );
         ctx.setCoordinatePlane ( this );
-        ctx.setRectangle ( d->drawingArea );
+        const QRectF drawArea( drawingArea() );
+        ctx.setRectangle ( drawArea );
 
         // paint the coordinate system rulers:
         d->grid->drawGrid( &ctx );
@@ -120,7 +125,7 @@ void CartesianCoordinatePlane::paintEvent ( QPaintEvent* )
             diags[i]->paint ( &ctx );
         }
     }
-    //for debugging: painter.drawRect(d->drawingArea);
+    //for debugging: painter.drawRect(drawArea);
 }
 */
 
@@ -271,6 +276,12 @@ DataDimensionsList CartesianCoordinatePlane::getDataDimensionsList() const
     return l;
 }
 
+QRectF CartesianCoordinatePlane::drawingArea() const
+{
+    const QRect rect( areaGeometry() );
+    return QRectF ( 1, 1, rect.width() - 3, rect.height() - 3 );
+}
+
 void CartesianCoordinatePlane::layoutDiagrams()
 {
     qDebug("KDChart::CartesianCoordinatePlane::layoutDiagrams() called.");
@@ -284,9 +295,8 @@ void CartesianCoordinatePlane::layoutDiagrams()
     // size is the rectangle size plus the pen width). This way, most clipping
     // for regular pens should be avoided. When pens with a penWidth or larger
     // than 1 are used, this may not be sufficient.
-    const QRect rect( areaGeometry() );
-    qDebug() << "areaGeometry() returns" << rect;
-    d->drawingArea = QRectF ( 1, 1, rect.width() - 3, rect.height() - 3 );
+    const QRectF drawArea( drawingArea() );
+    qDebug() << "drawingArea() returns" << drawArea;
 
     const DataDimensionsList dimensions( gridDimensionsList() );
     // test for programming errors: critical
@@ -301,16 +311,16 @@ void CartesianCoordinatePlane::layoutDiagrams()
     const QRectF dataBoundingRect( pt, siz );
 
     // calculate the remaining rectangle, and use it as the diagram area:
-    d->diagramArea = d->drawingArea;
-    d->diagramArea.setTopLeft ( QPointF ( d->drawingArea.left(), d->drawingArea.top() ) );
-    d->diagramArea.setBottomRight ( QPointF ( d->drawingArea.right(), d->drawingArea.bottom() ) );
+    QRectF diagramArea = drawArea;
+    diagramArea.setTopLeft ( QPointF ( drawArea.left(), drawArea.top() ) );
+    diagramArea.setBottomRight ( QPointF ( drawArea.right(), drawArea.bottom() ) );
 
     // determine coordinate transformation:
     QPointF diagramTopLeft = dataBoundingRect.topLeft();
     double diagramWidth = dataBoundingRect.width();
     double diagramHeight = dataBoundingRect.height();
-    double planeWidth = d->diagramArea.width();
-    double planeHeight = d->diagramArea.height();
+    double planeWidth = diagramArea.width();
+    double planeHeight = diagramArea.height();
     double scaleX;
     double scaleY;
 
@@ -323,7 +333,7 @@ void CartesianCoordinatePlane::layoutDiagrams()
     QPointF coordinateOrigin = QPointF (
         diagramTopLeft.x() * -diagramXUnitInCoordinatePlane,
         diagramTopLeft.y() * -diagramYUnitInCoordinatePlane );
-    coordinateOrigin += d->diagramArea.topLeft();
+    coordinateOrigin += diagramArea.topLeft();
     // calculate isometric scaling factor to maxscale the diagram into
     // the coordinate system:
     if ( d->isometricScaling )
@@ -344,8 +354,8 @@ void CartesianCoordinatePlane::layoutDiagrams()
     d->coordinateTransformation.isoScaleX = scaleX;
     d->coordinateTransformation.isoScaleY = scaleY;
     //      adapt diagram area to effect of isometric scaling:
-    d->diagramArea.setTopLeft( translate ( dataBoundingRect.topLeft() ) );
-    d->diagramArea.setBottomRight ( translate ( dataBoundingRect.bottomRight() ) );
+    diagramArea.setTopLeft( translate ( dataBoundingRect.topLeft() ) );
+    diagramArea.setBottomRight ( translate ( dataBoundingRect.bottomRight() ) );
     update();
     qDebug("KDChart::CartesianCoordinatePlane::layoutDiagrams() done.");
 }

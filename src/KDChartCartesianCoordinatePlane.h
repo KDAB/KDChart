@@ -182,9 +182,11 @@ namespace KDChart {
     protected:
         virtual QRectF calculateRawDataBoundingRect() const;
         virtual DataDimensionsList getDataDimensionsList() const;
+        // the whole drawing area, includes diagrams and axes, but maybe smaller
+        // than (width, height):
+        virtual QRectF drawingArea() const;
         void paintEvent ( QPaintEvent* );
         void resizeEvent ( QResizeEvent* );
-
         void layoutDiagrams();
 
     protected slots:
