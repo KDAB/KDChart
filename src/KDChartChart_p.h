@@ -51,6 +51,31 @@
 
 namespace KDChart {
 
+/*
+  struct PlaneInfo can't be declared inside Chart::Private, otherwise MSVC.net says:
+  qhash.h(195) : error C2248: 'KDChart::Chart::Private' : cannot access protected class declared in class 'KDChart::Chart'
+  KDChartChart_p.h(58) : see declaration of 'KDChart::Chart::Private'
+  KDChartChart.h(61) : see declaration of 'KDChart::Chart'
+  KDChartChart.cpp(262) : see reference to class template instantiation 'QHash<Key,T>' being compiled, with
+            Key=KDChart::AbstractCoordinatePlane *,
+            T=KDChart::Chart::Private::PlaneInfo
+*/
+/**
+ * \internal
+ */
+struct PlaneInfo {
+    PlaneInfo()
+        : referencePlane(0)
+            , horizontalOffset(1)
+            , verticalOffset(1)
+            , gridLayout( 0 )
+            {}
+            AbstractCoordinatePlane *referencePlane;
+            int horizontalOffset;
+            int verticalOffset;
+            QGridLayout *gridLayout;
+};
+
 
 /**
  * \internal
@@ -94,19 +119,6 @@ class Chart::Private : public QObject
             AbstractCoordinatePlane *plane;
         };
 
-        struct PlaneInfo {
-            PlaneInfo()
-                : referencePlane(0)
-                    , horizontalOffset(1)
-                    , verticalOffset(1)
-                    , gridLayout( 0 )
-                    {}
-                    AbstractCoordinatePlane *referencePlane;
-                    int horizontalOffset;
-                    int verticalOffset;
-                    QGridLayout *gridLayout;
-        };
-
         QHash<AbstractCoordinatePlane*, PlaneInfo> buildPlaneLayoutInfos();
 
     public slots:
@@ -115,7 +127,6 @@ class Chart::Private : public QObject
         void slotUnregisterDestroyedLegend( Legend * legend );
         void slotUnregisterDestroyedHeaderFooter( HeaderFooter* headerFooter );
         void slotUnregisterDestroyedPlane( AbstractCoordinatePlane* plane );
-
 };
 
 }

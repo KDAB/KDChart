@@ -95,7 +95,6 @@ public:
     void paintAll( QPainter& painter );
 
 protected:
-    AbstractAreaWidget();
     virtual ~AbstractAreaWidget() ;
     virtual const QRect areaGeometry() const;
     virtual void positionHasChanged();

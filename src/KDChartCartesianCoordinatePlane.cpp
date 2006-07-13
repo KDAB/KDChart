@@ -56,6 +56,11 @@ CartesianCoordinatePlane::~CartesianCoordinatePlane()
     // this bloc left empty intentionally
 }
 
+void CartesianCoordinatePlane::init()
+{
+    // this bloc left empty intentionally
+}
+
 void CartesianCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
 {
     Q_ASSERT_X ( dynamic_cast<AbstractCartesianDiagram*> ( diagram ),

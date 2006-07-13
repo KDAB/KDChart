@@ -258,7 +258,7 @@ void Chart::Private::layoutLegends()
 
 
 
-QHash<AbstractCoordinatePlane*, Chart::Private::PlaneInfo> Chart::Private::buildPlaneLayoutInfos()
+QHash<AbstractCoordinatePlane*, PlaneInfo> Chart::Private::buildPlaneLayoutInfos()
 {
     /* There are two ways in which planes can be caused to interact in
      * where they are put layouting wise: The first is the reference plane. If

@@ -126,6 +126,11 @@ PolarCoordinatePlane::~PolarCoordinatePlane()
     // this bloc left empty intentionally
 }
 
+void PolarCoordinatePlane::init()
+{
+    // this bloc left empty intentionally
+}
+
 void PolarCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
 {
     Q_ASSERT_X ( dynamic_cast<AbstractPolarDiagram*> ( diagram ),
@@ -209,7 +214,7 @@ void PolarCoordinatePlane::paintGrid( PaintContext* ctx )
 
         if ( rad == 0 )
             continue;
-        
+
         QRectF rect;
         QPointF topLeftPoint;
         QPointF bottomRightPoint;
@@ -290,7 +295,7 @@ void PolarCoordinatePlane::slotLayoutChanged ( AbstractDiagram* )
 }
 
 double PolarCoordinatePlane::zoomFactorX() const
-{   
+{
     return d->coordinateTransformations[0].zoom.xFactor;
 }
 
