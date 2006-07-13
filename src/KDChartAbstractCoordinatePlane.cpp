@@ -208,6 +208,7 @@ QSize KDChart::AbstractCoordinatePlane::sizeHint() const
 /* pure virtual in QLayoutItem */
 void KDChart::AbstractCoordinatePlane::setGeometry( const QRect& r )
 {
+    qDebug() << "KDChart::AbstractCoordinatePlane::setGeometry(" << r << ") called";
     if( geometry() != r ){
         d->geometry = r;
         // Note: We do *not* call update() here

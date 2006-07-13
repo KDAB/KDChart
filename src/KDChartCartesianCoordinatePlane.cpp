@@ -73,6 +73,7 @@ void CartesianCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
 
 void CartesianCoordinatePlane::paint ( QPainter* painter )
 {
+    qDebug("KDChart::CartesianCoordinatePlane::paint() called");
     AbstractDiagramList diags = diagrams();
     //FIXME(khz): make this also work in no diagrams are there
     // (commenting out the following line should do it)
@@ -93,7 +94,8 @@ void CartesianCoordinatePlane::paint ( QPainter* painter )
             diags[i]->paint ( &ctx );
         }
     }
-    //for debugging: painter.drawRect(d->drawingArea);
+    //for debugging: painter->drawRect(d->drawingArea);
+    qDebug("KDChart::CartesianCoordinatePlane::paint() done.");
 }
 
 /*
@@ -271,6 +273,7 @@ DataDimensionsList CartesianCoordinatePlane::getDataDimensionsList() const
 
 void CartesianCoordinatePlane::layoutDiagrams()
 {
+    qDebug("KDChart::CartesianCoordinatePlane::layoutDiagrams() called.");
     if ( diagrams().isEmpty() )
     {   // FIXME evaluate what can still be prepared
         // FIXME decide default dimension if no diagrams are present (to make empty planes useable)
@@ -282,6 +285,7 @@ void CartesianCoordinatePlane::layoutDiagrams()
     // for regular pens should be avoided. When pens with a penWidth or larger
     // than 1 are used, this may not be sufficient.
     const QRect rect( areaGeometry() );
+    qDebug() << "areaGeometry() returns" << rect;
     d->drawingArea = QRectF ( 1, 1, rect.width() - 3, rect.height() - 3 );
 
     const DataDimensionsList dimensions( gridDimensionsList() );
@@ -343,6 +347,7 @@ void CartesianCoordinatePlane::layoutDiagrams()
     d->diagramArea.setTopLeft( translate ( dataBoundingRect.topLeft() ) );
     d->diagramArea.setBottomRight ( translate ( dataBoundingRect.bottomRight() ) );
     update();
+    qDebug("KDChart::CartesianCoordinatePlane::layoutDiagrams() done.");
 }
 
 const QPointF CartesianCoordinatePlane::translate( const QPointF& diagramPoint ) const

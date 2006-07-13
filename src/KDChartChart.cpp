@@ -334,6 +334,7 @@ QHash<AbstractCoordinatePlane*, PlaneInfo> Chart::Private::buildPlaneLayoutInfos
 
 void Chart::Private::slotLayoutPlanes()
 {
+    qDebug() << "KDChart::Chart is layouting the planes";
     if ( planesLayout && dataAndLegendLayout )
         dataAndLegendLayout->removeItem( planesLayout );
 
@@ -376,7 +377,9 @@ void Chart::Private::slotLayoutPlanes()
          * the middle of the layout, if we are sharing, it's a cell in the center
          * column of the shared grid. */
         planeLayoutItems << plane;
-        planeLayout->addItem( plane, row, column, 0 );
+qDebug() << "A";
+        planeLayout->addItem( plane, row, column, 1, 1, 0 );
+qDebug() << "B";
         planeLayout->setRowStretch(    row,    2 );
         planeLayout->setColumnStretch( column, 2 );
 
@@ -439,6 +442,7 @@ void Chart::Private::slotLayoutPlanes()
     }
 
     slotRelayout();
+    qDebug() << "KDChart::Chart finished layouting the planes.";
 }
 
 void Chart::Private::createLayouts( QWidget* w )
@@ -617,13 +621,13 @@ int Chart::globalLeadingBottom() const
     return d->globalLeadingBottom;
 }
 
-static int nPaint=0;
+//static int nPaint=0;
 void Chart::paint( QPainter* painter, const QRect& target )
 {
 qDebug() << "KDChart::Chart::paint() called, inPaint: " << d->inPaint;
-++nPaint;
-if( 30<nPaint)
-    qFatal("nPaint > 30");
+//++nPaint;
+//if( 30<nPaint)
+//    qFatal("nPaint > 30");
     if( d->inPaint || target.isEmpty() || !painter ) return;
 
     d->inPaint = true;
