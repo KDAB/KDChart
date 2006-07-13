@@ -51,8 +51,6 @@ CartesianAxis::CartesianAxis ( AbstractCartesianDiagram* diagram )
     : AbstractAxis ( new Private( diagram, this ), diagram )
 {
     init();
-    if( diagram )
-        diagram->addAxis( this );
 }
 
 CartesianAxis::~CartesianAxis ()

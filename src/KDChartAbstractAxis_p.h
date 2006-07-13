@@ -38,6 +38,7 @@
 //
 
 #include <QQueue>
+#include <QTimer>
 
 #include "KDChartAbstractArea_p.h"
 #include "KDChartAbstractDiagram.h"
@@ -62,7 +63,7 @@ public:
     Private( AbstractDiagram* diagram, AbstractAxis* axis );
     ~Private();
 
-    bool setDiagram(   AbstractDiagram* diagram, AbstractAxis* axis );
+    bool setDiagram(   AbstractDiagram* diagram, AbstractAxis* axis, bool delayedInit = false );
     void unsetDiagram( AbstractDiagram* diagram, AbstractAxis* axis );
     const AbstractDiagram* diagram() const
     {
@@ -79,18 +80,15 @@ public:
 
 private:
     AbstractDiagram* mDiagram;
+    AbstractAxis*    mAxis;
 };
 
 
 inline AbstractAxis::AbstractAxis( Private * p, AbstractDiagram* diagram )
     :  AbstractArea( p )
 {
-    // We call setDiagram(), even if (most likely) that's not needed
-    // since the c'tor of Private already did it:  It does no harm
-    // b/c setDiagram() will test for diagram already having been set.
-    if( p )
-        p->setDiagram( diagram, this );
     init();
+    QTimer::singleShot(0, this, SLOT(delayedInit()));
 }
 
 inline AbstractAxis::Private * AbstractAxis::d_func()

@@ -41,9 +41,11 @@ using namespace KDChart;
 
 AbstractAxis::Private::Private( AbstractDiagram* diagram, AbstractAxis* axis )
     : observer( 0 )
-    , mDiagram( 0 )
+    , mDiagram( diagram )
+    , mAxis(    axis )
 {
-    setDiagram( diagram, axis );
+    // Note: We do NOT call setDiagram( diagram, axis );
+    //       but it is called in AbstractAxis::delayedInit() instead!
 }
 
 AbstractAxis::Private::~Private()
@@ -53,8 +55,18 @@ AbstractAxis::Private::~Private()
     observer = 0;
 }
 
-bool AbstractAxis::Private::setDiagram( AbstractDiagram* diagram, AbstractAxis* axis )
+bool AbstractAxis::Private::setDiagram(
+    AbstractDiagram* diagram_,
+    AbstractAxis* axis_,
+    bool delayedInit )
 {
+    AbstractDiagram* diagram = delayedInit ? mDiagram : diagram_;
+    AbstractAxis*    axis    = delayedInit ? mAxis    : axis_;
+    if( delayedInit ){
+        mDiagram = 0;
+        mAxis = 0;
+    }
+
     // do not set a diagram again that was already set
     if (  diagram &&
         ((diagram == mDiagram) || secondaryDiagrams.contains( diagram )) )
@@ -65,6 +77,7 @@ bool AbstractAxis::Private::setDiagram( AbstractDiagram* diagram, AbstractAxis* 
         mDiagram = diagram;
         delete observer;
         if ( mDiagram ) {
+qDebug() << "axis" << (axis != 0);
             observer = new DiagramObserver( *mDiagram, axis );
             bNewDiagramStored = true;
         }else{
@@ -103,6 +116,7 @@ AbstractAxis::AbstractAxis ( AbstractDiagram* diagram )
     : AbstractArea( new Private( diagram, this ) )
 {
     init();
+    QTimer::singleShot(0, this, SLOT(delayedInit()));
 }
 
 AbstractAxis::~AbstractAxis()
@@ -121,6 +135,14 @@ void AbstractAxis::init()
     m.setValue( 5 );
     m.setCalculationMode( KDChartEnums::MeasureCalculationModeAbsolute );
     d->textAttributes.setMinimalFontSize( m  );
+}
+
+void AbstractAxis::delayedInit()
+{
+    // We call setDiagram() here, because the c'tor of Private
+    // only has stored the pointers, but it did not call setDiagram().
+    if( d )
+        d->setDiagram( 0, 0, true );
 }
 
 /**

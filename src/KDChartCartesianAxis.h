@@ -99,7 +99,6 @@ namespace KDChart {
         virtual void setGeometry( const QRect& r );
         /** pure virtual in QLayoutItem */
         virtual QRect geometry() const;
-
     };
 
     class CartesianAxisList : public QList<CartesianAxis*> {};
