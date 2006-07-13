@@ -1,0 +1,105 @@
+
+This Table of Contents list the examples and the features they are 
+demonstrating so that you find what you are looking for quicker.
+
+
+1/ Axis
+
+a/Labels 
+
+AxisLabels:
+
+Featuring:
+- Use of KDChart::Chart together with a TableModel (QAbstractTableModel)
+- Set up a line diagram
+- Create Axes ( X - bottom, Y Left ) and add it to the diagram
+- Configure and set the Abscissa labels
+- set up a legend
+
+b/Parameters
+
+AxisParameters
+
+Featuring:
+- Use of KDChart::Chart together with a TableModel (QAbstractTableModel)
+- Set up a line diagram
+- Create Axes ( X - bottom, Y Left - top and right ) and add it to the diagram
+- Display or hide data values 
+- Shift line chart types ( Normal / Stacked / Percent )
+- Paint markers and change their style
+- Display area charts with transparency
+- Demonstrate zooming 
+- set up a legend and display it or hide it
+
+
+2/ Bars
+
+Featuring:
+ 
+- Use of KDChart::Chart together with a TableModel (QAbstractTableModel) 
+- Set up a Bar diagram
+- Display or hide data values 
+- Shift Bar chart types ( Normal / Stacked / Percent )
+- Demonstrate Pen settings
+- Display ThreeD Bars and set the depth
+
+3/ EmptyValues
+
+Featuring:
+
+- Use of KDChart::Chart together with a TableModel (QAbstractTableModel) 
+- Set up a Bar diagram
+- Demonstrate how to handle a plane when the values in the model are all zero
+
+
+4/ HeadersFooters
+
+Featuring:
+
+- Use of KDChart::Chart together with a TableModel (QAbstractTableModel) 
+- Headers and footers handling - Add, Edit, and Remove one or several Headers 
+  and footers at diffrent locations
+
+5/ Legends
+
+Featuring:
+
+- Use of KDChart::Chart together with a TableModel (QAbstractTableModel) 
+- Legends handling - Add, Edit, and Remove one or several Legends at diffrent
+  locations
+  
+6/ Lines
+
+Featuring:
+
+- Use of KDChart::Chart together with a TableModel (QAbstractTableModel) 
+- Display or hide data values
+- Show the use of DataValueAttributes and TextAttributes 
+- Shift line chart types ( Normal / Stacked / Percent )
+- HighLight Areas
+- Highlight Areas animation
+
+ 
+7/ ModelView
+
+Featuring:
+
+- Use of KDChart::Chart together with a QStandardItemModel,  
+  QItemSelectionModel and a QTableView.
+- Load and save your data
+- Select and change the values interactively 
+- Pen settings
+
+
+8/ MultidimensionalData
+
+Featuring:
+
+- Use of KDChart::Chart together with a TableModel (QAbstractTableModel)  
+- Demonstrate the use of several dataset in the data model
+  e.g setDatasetDimension(2) informs the diagram that 2 columns in the 
+  data model are used for a dataset. 0 + 1 == first dataset - 2 + 3 second
+  dataset.
+- Show how to use DataValueAttributes and MarkerAttributes
+
+ 
