@@ -41,6 +41,7 @@ using namespace KDChart;
 
 AbstractAxis::Private::Private( AbstractDiagram* diagram, AbstractAxis* axis )
     : observer( 0 )
+    , mDiagram( 0 )
 {
     setDiagram( diagram, axis );
 }
