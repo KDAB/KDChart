@@ -4,10 +4,10 @@
   (Table of Contents)
 
 
->> examples/Axis/ - adding axes and setting them up
+examples/Axis/ - adding axes and setting them up
 
 
->> examples/Axis/Labels/ - how to specify/configure axis labels
+examples/Axis/Labels/ - how to specify/configure axis labels
 
    featuring:
 
@@ -19,7 +19,7 @@
  - Set up a legend
 
 
->> examples/Axis/Parameters/ - fine-tuning the axis parameters
+examples/Axis/Parameters/ - fine-tuning the axis parameters
 
    featuring:
 
@@ -35,7 +35,7 @@
  - Set up a legend and display it or hide it
 
 
->> examples/Bars/ - sub types of the bar diagram class
+examples/Bars/ - sub types of the bar diagram class
 
    featuring:
 
@@ -48,7 +48,7 @@
  - Display ThreeD Bars and set the depth
 
 
->> examples/EmptyValues/ - having zero values in all cells
+examples/EmptyValues/ - having zero values in all cells
 
    featuring:
 
@@ -59,7 +59,7 @@
    the model are all zero
 
 
->> examples/HeadersFooters/ - adding headers and/or footers
+examples/HeadersFooters/ - adding headers and/or footers
 
    featuring:
 
@@ -79,7 +79,7 @@ examples/Legends/ - positioning one or several legends
    legends at different locations
 
 
->> examples/Lines/ - sub types of the lines diagram class
+examples/Lines/ - sub types of the lines diagram class
 
    featuring:
 
@@ -92,7 +92,7 @@ examples/Legends/ - positioning one or several legends
  - Animate highlighting of areas
 
 
->> examples/ModelView - using Qt Interview with KD Chart 2
+examples/ModelView - using Qt Interview with KD Chart 2
 
    featuring:
 
@@ -103,7 +103,7 @@ examples/Legends/ - positioning one or several legends
  - Pen settings
 
 
->> examples/MultidimensionalData/ - diagrams with Y / X coordinates
+examples/MultidimensionalData/ - diagrams with Y / X coordinates
 
    featuring:
 
@@ -116,7 +116,7 @@ examples/Legends/ - positioning one or several legends
  - Show usage of DataValueAttributes and MarkerAttributes
 
 
->> examples/Pie/ - sub types of the pie diagram class
+examples/Pie/ - sub types of the pie diagram class
 
    featuring:
 
@@ -129,7 +129,7 @@ examples/Legends/ - positioning one or several legends
  - Animate exploding of pie slices
 
 
->> examples/SharedAbscissa/ - one axis used by two diagrams
+examples/SharedAbscissa/ - one axis used by two diagrams
 
    featuring:
 
@@ -141,7 +141,7 @@ examples/Legends/ - positioning one or several legends
    ordinates in the same plane (left side/right side)
 
 
->> examples/Widget/ - the convenience widget class
+examples/Widget/ - the convenience widget class
 
    featuring:
 
@@ -152,7 +152,7 @@ examples/Legends/ - positioning one or several legends
  - Specify the chart type
 
 
->> examples/Zoom/ - mouse handling and zooming
+examples/Zoom/ - mouse handling and zooming
 
    featuring:
 
