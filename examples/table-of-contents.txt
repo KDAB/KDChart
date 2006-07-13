@@ -58,14 +58,14 @@ Featuring:
 
 - Use of KDChart::Chart together with a TableModel (QAbstractTableModel) 
 - Headers and footers handling - Add, Edit, and Remove one or several Headers 
-  and footers at diffrent locations
+  and footers at different locations
 
 5/ Legends
 
 Featuring:
 
 - Use of KDChart::Chart together with a TableModel (QAbstractTableModel) 
-- Legends handling - Add, Edit, and Remove one or several Legends at diffrent
+- Legends handling - Add, Edit, and Remove one or several Legends at different
   locations
   
 6/ Lines
@@ -76,7 +76,7 @@ Featuring:
 - Display or hide data values
 - Show the use of DataValueAttributes and TextAttributes 
 - Shift line chart types ( Normal / Stacked / Percent )
-- HighLight Areas
+- Highlight Areas
 - Highlight Areas animation
 
  
@@ -103,3 +103,48 @@ Featuring:
 - Show how to use DataValueAttributes and MarkerAttributes
 
  
+9/ Pie
+
+Featuring:
+
+- Use of KDChart::Chart together with a TableModel (QAbstractTableModel)  
+- Set up a Pie diagram
+- Demonstrate several configuration possibilities:
+  * start position 
+  * exploding
+- Exploding Animation
+  
+
+10/ SharedAbscissa
+
+Featuring:
+
+- Use of KDChart::Chart together with a TableModel (QAbstractTableModel)  
+- Show a chart with two diagrams having each its own model
+- Demonstrate how to share the Abscissa
+- Display two diagrams on top of each other with different Y axis in the same 
+  plane (left and right)
+
+
+11/ Widget 
+
+Featuring: 
+
+- Use of KDChart::Widget  
+- Add values and set datasets using a QVector 
+- Headers and Footers set up and configuration
+- Handle Legends set up 
+- Chart type configuration
+
+
+12/ Zoom
+
+Featuring:
+
+- Use of KDChart::Widget
+- Use of KDChart::Widget  
+- Add values and set datasets using a QVector 
+- Headers and Footers set up and configuration
+- Handle Legends set up 
+- Show some zooming functionalities using:
+  Mouse Press-Event - Mouse Wheel-Event and Key Press-Event 
