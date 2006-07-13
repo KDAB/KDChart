@@ -4,8 +4,8 @@
 
 CONFIG+=qtestlib
 TEMPLATE = app
-DEPENDPATH += . ../../src ../../lib
 INCLUDEPATH +=  ../../examples/tools ../../include
+DEPENDPATH += . ../../src ../../lib ../../examples/tools ../../include
 
 test.target = test
 test.commands = LD_LIBRARY_PATH=../../lib ./$(TARGET)
