@@ -616,6 +616,7 @@ int Chart::globalLeadingBottom() const
 {
     return d->globalLeadingBottom;
 }
+
 static int nPaint=0;
 void Chart::paint( QPainter* painter, const QRect& target )
 {
@@ -628,6 +629,7 @@ if( 30<nPaint)
     d->inPaint = true;
     const QRect oldGeometry( geometry() );
     if( target != oldGeometry ){
+        qDebug() << "KDChart::Chart::paint() calling new setGeometry(" << target << ")";
         setGeometry( target );
         d->slotRelayout();
     }
@@ -644,6 +646,7 @@ if( 30<nPaint)
     }
 
     if( target != oldGeometry ){
+        qDebug() << "KDChart::Chart::paint() calling new setGeometry(" << oldGeometry << ")";
         setGeometry( oldGeometry );
     }
     d->inPaint = false;
@@ -659,7 +662,7 @@ void Chart::paintEvent( QPaintEvent* event )
     //FIXME(khz): Paint the background/frame too!
     //            (can we derive Chart from AreaWidget ??))
     //paintAll( painter );
-    paint( &painter, rect() );
+    paint( &painter, geometry() );
 }
 
 
