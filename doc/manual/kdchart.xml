@@ -8,9 +8,9 @@
 ]>
 <book>
     <bookinfo>
-        <title>&kdchart; Programmer's Manual</title>
-        <corpauthor>The &kdchart; Team</corpauthor>
-        <corpname>Klar&auml;lvdalens Datakonsult AB</corpname>
+	<title>&kdchart; Programmer's Manual</title>
+	<corpauthor>The &kdchart; Team</corpauthor>
+	<corpname>Klar&auml;lvdalens Datakonsult AB</corpname>
         <releaseinfo>Version 2.0</releaseinfo>
         <legalnotice>
             <para>
@@ -19,13 +19,13 @@
                 and are copyrighted. Any reproduction in whole or in part is
                 strictly prohibited without prior written permission by
                 Klar&auml;lvdalens Datakonsult AB.
-            </para>
-            <para>
+            </para>    
+	    <para>
                 &kdchart; and the &kdchart; logo are trademarks or registered
                 trademarks of Klar&auml;lvdalens Datakonsult AB in the European
                 Union, the United States, and/or other countries. Other
-                product and company names and logos may be trademarks or
-                registered trademarks of their respective companies.
+                product and company names and logos may be trademarks or 
+		registered trademarks of their respective companies.
             </para>
         </legalnotice>
         <copyright>
@@ -36,24 +36,24 @@
 
     <!-- =====================Introduction============================== -->
 
-    <chapter       id="chapter_introduction">
-        <title       id="chtxt_introduction">Introduction</title>
+    <chapter id="chapter_introduction">
+        <title id="chtxt_introduction">Introduction</title>
         <titleabbrev id="chnum_introduction">Chapter 1</titleabbrev>
 
         <para>
-            &kdchart; is Klar&auml;lvdalens Datakonsult AB's charting package
-            for Qt applications.
+	    &kdchart; is Klar&auml;lvdalens Datakonsult AB's charting package 
+	    for Qt applications.
             This is the &kdchart; Programmer's Manual. It will get you
             started with creating your charts and provides lots of pointers
-            to its many advanced features.
+	    to its many advanced features.
         </para>
         <itemizedlist>
             <listitem>
                 <para>
                     Depending on your &kdchart; version, you will find
                     different <filename>INSTALL</filename> files that explain
-                    how to install &kdchart; on your platform and a step by
-                    step description about how to build  it from sources.
+                    how to install &kdchart; on your platform and a step by 
+		    step description about how to build  it from sources.
                 </para>
             </listitem>
             <listitem>
@@ -68,45 +68,45 @@
             Manual.
         </para>
         <itemizedlist>
-        <listitem>
+         <listitem>
                 <para>
                     What is &kdchart;?
                 </para>
-                <para>
-                    &kdchart; is a tool for creating business and engineering
-                    charts, and is the most powerful Qt component of its kind.
-                    Besides having all the standard features, it also enables
-                    the developer to design and manage a large number of axes
-                    and provide sophisticated means of layout customization.
-                    Since all configuration settings have reasonable defaults
-                    you can usually get by with setting only a handful of
-                    parameters and relying on the defaults for the rest.
-                </para>
+		<para>
+		    &kdchart; is a tool for creating business and engineering
+		    charts, and is the most powerful Qt component of its kind.
+		    Besides having all the standard features, it also enables 
+		    the developer to design and manage a large number of axes 
+		    and provide sophisticated means of layout customization.
+		    Since all configuration settings have reasonable defaults
+		    you can usually get by with setting only a handful of 
+		    parameters and relying on the defaults for the rest.
+		</para>    
             </listitem>
             <listitem>
                 <para>
                     What can we use &kdchart; for?
-                </para>
-                <para>
-                    &kdchart; is used by a variety of programs for many
-                    different purposes.
-                </para>
-                <!-- Pending Michel: insert screen-shot -->
-                <!--
-                * Demonstrate in short sentences associated to screen-shots
+		</para>
+		<para>
+		    &kdchart; is used by a variety of programs for many 
+		    different purposes. 
+		</para>
+		<!-- Pending Michel: insert screen-shot -->
+		<!--
+                 * Demonstrate in short sentences associated to screen-shots
                     that kdc can be used for both business charts and
                     engineering charts.
-                -->
-                <para>
-                    The above example shows how &kdchart; is used for
-                    visualizing flood events in a river; other samples on our
-                    web site at <filename>http://www.kdab.net/kdchart</filename>
-                    show how &kdchart; is used for monitoring seismic activity.
-                    It is no coincidence that the current version of the
-                    KOffice productivity suite uses our library.
-                </para>
-                <para>
-                    <!-- Pending Michel -->
+		-->
+		<para>
+		    The above example shows how &kdchart; is used for 
+		    visualizing flood events in a river; other samples on our 
+		    web site at <filename>http://www.kdab.net/kdchart</filename>
+		    show how &kdchart; is used for monitoring seismic activity.
+                    It is no coincidence that the current version of the 
+		    KOffice productivity suite uses our library.
+		</para>
+		<para>    
+		    <!-- Pending Michel -->
                     * Display a view with small diagrams and arrows showing
                     how the main classes work together
                 </para>
@@ -117,13 +117,13 @@
             <para>
                 You should be familiar with writing Qt applications, as
                 well as have a working C++ knowledge. When you are in
-                doubt about how a Qt4 class mentioned in this Programmer's
-                Guide works, please check the Qt4 reference documentation or
-                a good book about Qt4. A more in-depth introduction to the
-                API can be found in the file
-                <filename>doc/KDChart-2.0-API-Introduction</filename>.
-                Also to browse &kdchart; API Reference documentation start
-                with this file: <filename>doc/refman/index.html</filename>.
+                doubt about how a Qt4 class mentioned in this Programmer's 
+		Guide works, please check the Qt4 reference documentation or 
+		a good book about Qt4. A more in-depth introduction to the 
+		API can be found in the file 
+		<filename>doc/KDChart-2.0-API-Introduction</filename>.
+                Also to browse &kdchart; API Reference documentation start 
+		with this file: <filename>doc/refman/index.html</filename>.
             </para>
         </sect1>
         <sect1>
@@ -132,35 +132,35 @@
                 How we will proceed to present &kdchart; for Qt4?
             </para>
             <para>
-                This manual starts with an introduction to &kdchart;2.0 API
-                before going through the basic steps and methods for the user
-                to create hers own chart.
+		This manual starts with an introduction to &kdchart;2.0 API
+		before going through the basic steps and methods for the user 
+		to create hers own chart.
             </para>
-            <para>
-                The following Chapter 4 <filename>Coordinate planes and
-                Diagrams</filename> will provide the reader with more details
-                about the different chart types supported and the information
-                you need to know in order to use &kdchart;'s features the best
-                way.
-            </para>
-            <para>
-                The subsequent chapters contain more advanced customizing
-                material like how to specify colors, fonts and other attributes
-                if you don't want to use &kdchart;'s default settings. How to
-                create and display headers and footers, legends and configure
-                your chart axes.
-            </para>
-            <para>
-                Chapter 9 <filename>Advanced Charting</filename>, will guide
-                you through &kdchart; other more advanced features and
-                describe the way to use them (frames and backgrounds,
-                data values, axis and grid manipulations etc...). It will also
-                show in details different interesting features like
-                Interactive and Multiple charts or Zooming.
-            </para>
-            <para>
-                We provide you with lots of sample code combined with
-                screen-shots that show the resulting display.
+	    <para>
+		The following Chapter 4 <filename>Coordinate planes and 
+		Diagrams</filename> will provide the reader with more details 
+		about the different chart types supported and the information 
+		you need to know in order to use &kdchart;'s features the best
+		way.
+	    </para>
+	    <para>
+		The subsequent chapters contain more advanced customizing 
+		material like how to specify colors, fonts and other attributes
+		if you don't want to use &kdchart;'s default settings. How to 
+		create and display headers and footers, legends and configure 
+		your chart axes.
+	    </para>
+	    <para>
+		Chapter 9 <filename>Advanced Charting</filename>, will guide 
+		you through &kdchart; other more advanced features and 
+		describe the way to use them (frames and backgrounds, 
+		data values, axis and grid manipulations etc...). It will also
+		show in details different interesting features like 
+		Interactive and Multiple charts or Zooming.		
+	    </para>
+	    <para>
+                We provide you with lots of sample code combined with 
+		screen-shots that show the resulting display. 
                 We recommend our readers to try and run the sample code and
                 experiment with the various settings.
             </para>
@@ -170,189 +170,188 @@
             <para>
                 In the next chapter we introduce you to &kdchart; 2.0 new API.
             </para>
-      </sect1>
+       </sect1>
     </chapter>
 
     <!-- ============ KD Chart 2.0 API Introduction ============= -->
 
-    <chapter       id="chapter_api">
-        <title       id="chtxt_api">KD Chart 2 API Introduction</title>
+    <chapter id="chapter_api">
+        <title id="chtxt_api">KD Chart 2 API Introduction</title>
         <titleabbrev id="chnum_api">Chapter 2</titleabbrev>
         <para>
-            Version 2.0 of KD Chart fully supports and builds on the
-            technologies introduced with Qt 4. The charting engine makes use
-            of the Arthur and Scribe painting and text rendering frameworks
-            to achieve high quality visual results. KD Chart 2.0 also
-            integrates with the Interview framework for model/view separation
-            and, much like Qt 4 itself, provides a convenience Widget class
-            for those cases where that is too complex.
+            Version 2.0 of KD Chart fully supports and builds on the 
+	    technologies introduced with Qt 4. The charting engine makes use 
+	    of the Arthur and Scribe painting and text rendering frameworks 
+	    to achieve high quality visual results. KD Chart 2.0 also 
+	    integrates with the Interview framework for model/view separation 
+	    and, much like Qt 4 itself, provides a convenience Widget class 
+	    for those cases where that is too complex.
         </para>
         <sect1>
             <title id="apioverview">Overview</title>
             <para>
-                &kdchart; 2.0 overall API strives for maximum consistency with
-                the concepts and API style found in Qt 4. Of course, this
-                means breaking source compatibility in several places, but
-                like Trolltech, we have made a conscious decision that it
-                would be better to clean up the API now, than to carry it
-                with us into the next &kdchart; generation.
-            </para>
-            <note>
-                <para>
-                    Wherever possible, compatibility methods and classes have
-                    been, or will be, provided.
-                </para>
-            </note>
-            <para>
-                The core of &kdchart;'s 2.0 API is the
-                <classname>KDChart::Chart</classname> class.
-                It encapsulates the canvas onto which the individual
-                components of a chart are painted, manages them and provides
-                access to them. There can be more than one
-                <classname>KDChart::Diagram</classname> on a
-                <classname>KDChart::Chart</classname>, how they are laid out
-                is determined by which axes, if any, they share (more on axes
-                further below).
-            </para>
-            <para>
-                <classname>KDChart::Diagram</classname> subclasses for the
-                various types of charts are provided, such as
-                <classname>KDChart::PieDiagram</classname>, and users can
-                subclass <classname>KDChart::AbstractDiagram</classname> (or
-                one of the other Diagram classes starting with Abstract,
-                which are designed to be base classes) to implement custom
-                chart types. A typical use of a simple BarDiagram looks like
-                this:
-            </para>
+		&kdchart; 2.0 overall API strives for maximum consistency with 
+		the concepts and API style found in Qt 4. Of course, this 
+		means breaking source compatibility in several places, but 
+		like Trolltech, we have made a conscious decision that it 
+		would be better to clean up the API now, than to carry it 
+		with us into the next &kdchart; generation. 
+	    </para>
+	    <note>
+		<para>
+		    Wherever possible, compatibility methods and classes have 
+		    been, or will be, provided.		
+		</para>
+	    </note>
+	    <para>
+		The core of &kdchart;'s 2.0 API is the 
+		<classname>KDChart::Chart</classname> class.
+		It encapsulates the canvas onto which the individual 
+		components of a chart are painted, manages them and provides 
+		access to them. There can be more than one 
+		<classname>KDChart::Diagram</classname> on a 
+		<classname>KDChart::Chart</classname>, how they are laid out 
+		is determined by which axes, if any, they share (more on axes 
+		further below).
+	    </para>
+	    <para>
+		<classname>KDChart::Diagram</classname> subclasses for the 
+		various types of charts are provided, such as 
+                <classname>KDChart::PieDiagram</classname>, and users can 
+		subclass <classname>KDChart::AbstractDiagram</classname> (or 
+		one of the other Diagram classes starting with Abstract, 
+		which are designed to be base classes) to implement custom 
+		chart types. A typical use of a simple BarDiagram looks like 
+		this:
+	    </para>
             <sect2>
-                <title id="apisample" xreflabel="codexample">Code Example</title
->
-                <programlisting>
-                    using namespace KDChart;
+                <title id="apisample" xreflabel="codexample">Code Example</title>
+		<programlisting>
+		    using namespace KDChart;
 
-                    BarDiagram *bars = new BarDiagram;
-                    bars->setModel( &amp;m_model );
-                    bars->setType( BarDiagram::Stacked );
-                    bars->setDataSubduedColors(); // not bar specific
-                    QPen pen;
-                    pen.setColor( Qt::darkGray );
-                    pen.setWidth( 1 );
-                    bars->setPen( pen );
-                    chart->coordinatePlane()->replaceDiagram( ars );
-                </programlisting>
-                <para>
-                    You could also use the following way, to prevent your
-                    compiler from complaining about instance bars not being
-                    free'ed:
-                </para>
-                <programlisting>
-                    BarDiagram *bars =
-                    static_cast &lt;BarDiagram *&gt;(myChart->replaceDiagram( new BarDiagram ));
-                    //now call the setter methods ...
-                </programlisting>
+		    BarDiagram *bars = new BarDiagram;
+		    bars->setModel( &amp;m_model );
+		    bars->setType( BarDiagram::Stacked );
+		    bars->setDataSubduedColors(); // not bar specific
+		    QPen pen;
+		    pen.setColor( Qt::darkGray );
+		    pen.setWidth( 1 );
+		    bars->setPen( pen );
+		    chart->coordinatePlane()->replaceDiagram( ars );
+		</programlisting>
+		<para>
+		    You could also use the following way, to prevent your 
+		    compiler from complaining about instance bars not being 
+		    free'ed:
+		</para>
+		<programlisting>
+		    BarDiagram *bars = 
+		    static_cast &lt;BarDiagram *&gt;(myChart->replaceDiagram( new BarDiagram ));
+		    //now call the setter methods ... 
+		</programlisting>
                 <para>
                     Let us make this somewhat abstract description more
-                    concrete by looking at the following lines of code and
-                    its resulting display.
-                </para>
-                <para>
-                    * We display some example code and a screen-shot here
-                    <!--
-                    Pending Michel display code and screen-shot
+                    concrete by looking at the following lines of code and 
+		    its resulting display.
+		</para>
+		<para>
+		    * We display some example code and a screen-shot here
+		    <!--
+		    Pending Michel display code and screen-shot
                     <link linkend=""></link>
                     <link linkend=""></link>
-                    -->
+		    -->
                 </para>
                 <para>
-                    Each diagram has an associated Coordinate Plane (Cartesian
-                    by default), which is responsible for the translation of
-                    data values into pixel positions. It defines the scale of
-                    the diagram, and all axes that are associated with it.
-                    This makes implementing diagram subclasses (types) much
-                    easier, since the drawing code can leave all of the
-                    coordinate calculation work to the coordinate plane.
+		    Each diagram has an associated Coordinate Plane (Cartesian
+		    by default), which is responsible for the translation of 
+		    data values into pixel positions. It defines the scale of 
+		    the diagram, and all axes that are associated with it. 
+		    This makes implementing diagram subclasses (types) much 
+		    easier, since the drawing code can leave all of the  
+		    coordinate calculation work to the coordinate plane. 
                 </para>
-                <para>
-                    Each coordinate plane can have one or more diagram
-                    associated to it. Those diagrams will share the scale
-                    provided by the plan. Also a chart can have more than
-                    one coordinate plane. This makes it possible to have
-                    multiple diagrams (e.g a line and a bar chart) using the
-                    same or different scales and displayed next to, or on top
-                    of each other in the same chart.
-                </para>
-                <para>
-                    To share an axis among two planes (and also diagrams)
-                    we just need to add it to both diagrams. The Chart
-                    lay-outing engine will take care of adjusting positions
-                    accordingly.
-                </para>
-                <!--
+		<para>
+		    Each coordinate plane can have one or more diagram 
+		    associated to it. Those diagrams will share the scale 
+		    provided by the plan. Also a chart can have more than 
+		    one coordinate plane. This makes it possible to have 
+		    multiple diagrams (e.g a line and a bar chart) using the 
+		    same or different scales and displayed next to, or on top 
+		    of each other in the same chart. 
+		</para>
+		<para>
+		    To share an axis among two planes (and also diagrams)
+		    we just need to add it to both diagrams. The Chart 
+		    lay-outing engine will take care of adjusting positions 
+		    accordingly.
+		</para>
+		 <!--
                 Pending Michel link:
-                (see src/KDChartAbstractCoordinatePlane.h and
-                examples/SharedAbscissa/mainwindow.cpp)
+		(see src/KDChartAbstractCoordinatePlane.h and
+		examples/SharedAbscissa/mainwindow.cpp)
                 <programlisting linenumbering="numbered" id="">
                     <textobject>
                         <textdata fileref="../../examples/..."/>
                     </textobject>
                 </programlisting>
                 -->
-                <para>
-                    A chart can also have a number of optional components
-                    such as Legends, Headers/Footers or custom
-                    <classname>KDChart::Area</classname> subclasses that
-                    implement user-defined elements. The API for manipulating
-                    these is similar for all of them.
-                </para>
-                <para>
-                    To add an additional header for example, you may proceed
-                    as follow:
-                </para>
-                <programlisting>
-                    HeaderFooter * additionalHeader = new HeaderFooter;
-                    additionalHeader->setPosition( NorthWest );
-                    chart->addHeaderFooter( additionalHeader  );
-                </programlisting>
-                <para>
-                    We will explain further on how ownership of such
-                    components is handled (next section).
-                </para>
-                <!--
+		<para>
+		    A chart can also have a number of optional components
+		    such as Legends, Headers/Footers or custom 
+		    <classname>KDChart::Area</classname> subclasses that
+		    implement user-defined elements. The API for manipulating 
+		    these is similar for all of them.
+		</para>
+		<para>
+		    To add an additional header for example, you may proceed 
+		    as follow:
+		</para>
+		<programlisting>
+		    HeaderFooter * additionalHeader = new HeaderFooter;
+		    additionalHeader->setPosition( NorthWest );
+		    chart->addHeaderFooter( additionalHeader  );
+		</programlisting>
+		<para>
+		    We will explain further on how ownership of such 
+		    components is handled (next section).
+		</para>
+		<!--
                 Pending Michel: point to those files
-                (see src/{KDChartChart.h|KDChartLegend.h|KDChartHeaderFooter.h)
-                -->
-                <para>
-                    Finally and to conclude this overview, all classes in the
-                    KD Chart 2 API are in the "KDChart" namespace, to allow
-                    short and clear class names, while still avoiding name
-                    clashes. Unless you prefer to use the "KDChart::" prefix
-                    on all class names in your code, you can add the following
-                    line at the top of your implementation files, to make all
-                    names in the "KDChart" namespace available in that file:
-                </para>
-                <programlisting>
-                    using namespace KDChart;
-                </programlisting>
-                <para>
-                    Like Qt, KD Chart provides STL-style forwarding headers,
-                    allowing you to omit the ".h" suffix when including
-                    headers. To bring the bar diagram header into your
-                    implementation file, you could therefore write:
-                </para>
-                <programlisting>
-                    #include &lt;KDChartBarDiagram&gt;
-                    or
-                    #include &lt;KDChartBarDiagram.h&gt;
-                </programlisting>
-                <note>
-                    <para>
-                        File names of header and implementation files all
-                        have the "KDChart" prefix in the name. The definition
-                        of <classname>KDChart::BarDiagram</classname> is
-                        thus located in the file
-                        <filename>KDChartBarDiagram.h</filename>.
-                    </para>
-                </note>
+		(see src/{KDChartChart.h|KDChartLegend.h|KDChartHeaderFooter.h)
+		-->
+		<para>
+		    Finally and to conclude this overview, all classes in the 
+		    KD Chart 2 API are in the "KDChart" namespace, to allow 
+		    short and clear class names, while still avoiding name
+		    clashes. Unless you prefer to use the "KDChart::" prefix 
+		    on all class names in your code, you can add the following
+		    line at the top of your implementation files, to make all 
+		    names in the "KDChart" namespace available in that file:
+		</para>
+		<programlisting>
+		    using namespace KDChart;
+		</programlisting>
+		<para>
+		    Like Qt, KD Chart provides STL-style forwarding headers, 
+		    allowing you to omit the ".h" suffix when including 
+		    headers. To bring the bar diagram header into your 
+		    implementation file, you could therefore write:
+		</para>
+		<programlisting>
+		    #include &lt;KDChartBarDiagram&gt;
+		    or 
+		    #include &lt;KDChartBarDiagram.h&gt;
+		</programlisting>
+		<note>
+		    <para>
+			File names of header and implementation files all
+			have the "KDChart" prefix in the name. The definition 
+			of <classname>KDChart::BarDiagram</classname> is 
+			thus located in the file 
+			<filename>KDChartBarDiagram.h</filename>.
+		    </para>	
+		</note>    
             </sect2>
         </sect1>
 <!-- Pending Michel: No much to say here for now - Shall we remove this section?
@@ -364,9 +363,9 @@
             </para>
             <sect2>
                 <title id="handlingsample" xreflabel="codexample">Code Example</title>
-                <para>
+		<para>
                     Let us make this more concrete by looking at the following
-                    lines of code........
+                    lines of code........                  
                 </para>
                 <para>
                     More explanation?
@@ -377,56 +376,56 @@
         <sect1>
             <title id="apiinterview">KD Chart and Interview </title>
             <para>
-
-                KD Chart 2.0 follows the Interview model/view paradigm
-                introduced by Qt 4:
+		
+		KD Chart 2.0 follows the Interview model/view paradigm 
+		introduced by Qt 4:
+	    </para>	
+	    <para>
+		Any <classname>KDChart::AbstractDiagram</classname> subclass 
+		(since that is derived from 
+		<classname>QAbstractItemView</classname>) can display data 
+		coming from any <classname>QAbstractItemModel</classname>.
+		In order to use your data with KD Chart diagrams, you need 
+		to either use one of Qt's builtin models to manage it, or 
+		provide the <classname>QAbstractItemModel</classname> 
+		interface on top of your already existing data storage by 
+		implementing your own model that talks to that underlying 
+		storage. 
             </para>
-            <para>
-                Any <classname>KDChart::AbstractDiagram</classname> subclass
-                (since that is derived from
-                <classname>QAbstractItemView</classname>) can display data
-                coming from any <classname>QAbstractItemModel</classname>.
-                In order to use your data with KD Chart diagrams, you need
-                to either use one of Qt's builtin models to manage it, or
-                provide the <classname>QAbstractItemModel</classname>
-                interface on top of your already existing data storage by
-                implementing your own model that talks to that underlying
-                storage.
-            </para>
-            <para>
-                <classname>KDChart::Widget</classname> is a convenience class
-                that provides a simpler, but less flexible way of displaying
-                data in a chart. It stores the data it displays itself, and
-                thus does not need a <classname>QAbstractItemModel</classname>.
-                It should be sufficient for many basic charting needs but it
-                is not meant to handle very large amounts of data or to make
-                use of user-supplied chart types.
-            </para>
-            <para>
-                <classname>KDChart::Widget</classname> is provided in order to
-                allow getting started easily without having to master the
-                complexities of the new Interview framework in Qt 4. We would
-                still advise to use KDChart::Chart so that you can make use of
-                all the benefits that Interview brings you once you have
-                mastered it.
-            </para>
-            <para>
-                To understand the relationship between
-                <classname>KDChart::View</classname>
-                and <classname>KDChart::Widget</classname> better, compare for
-                example <classname>KDChart::View</classname> and
-                <classname>KDChart::Widget</classname> to
-                <classname>QListView</classname> and
-                <classname>QListWidget</classname> in the Qt 4 documentation.
-                You will clearly notice the parallels.
-            </para>
-            <sect2>
+	    <para>
+		<classname>KDChart::Widget</classname> is a convenience class 
+		that provides a simpler, but less flexible way of displaying 
+		data in a chart. It stores the data it displays itself, and 
+		thus does not need a <classname>QAbstractItemModel</classname>.
+		It should be sufficient for many basic charting needs but it 
+		is not meant to handle very large amounts of data or to make 
+		use of user-supplied chart types.
+	    </para>
+	    <para>
+		<classname>KDChart::Widget</classname> is provided in order to 
+		allow getting started easily without having to master the 
+		complexities of the new Interview framework in Qt 4. We would 
+		still advise to use KDChart::Chart so that you can make use of
+		all the benefits that Interview brings you once you have 
+		mastered it.
+	    </para>
+	    <para>
+		To understand the relationship between 
+		<classname>KDChart::View</classname>
+		and <classname>KDChart::Widget</classname> better, compare for
+		example <classname>KDChart::View</classname> and
+		<classname>KDChart::Widget</classname> to 
+		<classname>QListView</classname> and 
+		<classname>QListWidget</classname> in the Qt 4 documentation. 
+		You will clearly notice the parallels.
+	    </para>	   
+             <sect2>
                 <title id="interviewsample" xreflabel="codexample">Code Example</title>
                 <para>
-                    <!-- Pending Michel: Insert some piece of code here -->
+		    <!-- Pending Michel: Insert some piece of code here -->
                     Let us make this more concrete by looking at the following
                     lines of code.
-                  <!--
+                   <!--
                     <link linkend=""></link>
                     <link linkend=""></link>
                     -->
@@ -441,107 +440,107 @@
                 <para>
                     More explanation?
                 </para>
-            </sect2>
+	    </sect2>
         </sect1>
         <sect1>
             <title id="apiattribute">Attribute sets</title>
             <para>
                 The various components of a chart such as legends or axes have
-                attribute sets associated with them that define the way they
-                are laid out and painted. For example, both the chart itself
-                and all areas have a set of
-                <classname>KDChart::BackgroundAttributes</classname>, which
-                govern whether there should be a background pixmap, or a solid
-                background color. Other attribute sets include FrameAttributes
-                or GridAttributes. The default attributes provide reasonable,
-                unintrusive settings, such as no visible background and no
-                visible frame.
+		attribute sets associated with them that define the way they 
+		are laid out and painted. For example, both the chart itself 
+		and all areas have a set of 
+		<classname>KDChart::BackgroundAttributes</classname>, which 
+		govern whether there should be a background pixmap, or a solid
+		background color. Other attribute sets include FrameAttributes
+		or GridAttributes. The default attributes provide reasonable, 
+		unintrusive settings, such as no visible background and no 
+		visible frame.
             </para>
-            <para>
-                These attribute sets are passed by value, they are intended to
-                be used much like Qt's QPen or QBrush. As shown below:
-            </para>
-            <sect2>
+	    <para>
+		These attribute sets are passed by value, they are intended to
+		be used much like Qt's QPen or QBrush. As shown below:
+	    </para>
+             <sect2>
                 <title id="attributesample" xreflabel="codexample">Code Example</title>
-                <programlisting>
-                    KDChart::TextAttributes ta;
-                    ta.setPen( Qt::red );
-                    ta.setFont( QFont( "Helvetica" ) );
-                    chart->legend()->setTextAttributes( ta );
-                </programlisting>
+		<programlisting>
+		    KDChart::TextAttributes ta;
+		    ta.setPen( Qt::red );
+		    ta.setFont( QFont( "Helvetica" ) );
+		    chart->legend()->setTextAttributes( ta );
+		</programlisting>
                 <para>
-                    All attribute sets can be set per cell, per column or per
-                    model, and only be queried per cell. Access at the cell
-                    level only ensures that the proper fallback hierarchy can
-                    be observed. If there is a value set at cell level, it
-                    will be used, otherwise the dataset (column) level is
-                    checked. If nothing was set at dataset level, the model
-                    wide setting is used, and if there is none either, the
-                    default values will be applied.
-                    All of this happens automatically, so that the code using
-                    these values only has to ask the cell for its attributes,
-                    and will get the correct values. This avoids duplicating
-                    the fallback logic all over the library and
-                    the application, and avoids (expensive) error handling.
+		    All attribute sets can be set per cell, per column or per 
+		    model, and only be queried per cell. Access at the cell 
+		    level only ensures that the proper fallback hierarchy can 
+		    be observed. If there is a value set at cell level, it 
+		    will be used, otherwise the dataset (column) level is 
+		    checked. If nothing was set at dataset level, the model 
+		    wide setting is used, and if there is none either, the 
+		    default values will be applied. 
+		    All of this happens automatically, so that the code using
+		    these values only has to ask the cell for its attributes, 
+		    and will get the correct values. This avoids duplicating 
+		    the fallback logic all over the library and 
+		    the application, and avoids (expensive) error handling.
                 </para>
                 <para>
-                    When using attributes sets, you need to be aware of this
-                    fallback hierarchy, because e.g. per-cell changes will
-                    hide per-column changes.
-                    <!-- Pending Michel: Add some code sample here -->
-                    (see files /src/KDChart*Attributes.h)
+                    When using attributes sets, you need to be aware of this 
+		    fallback hierarchy, because e.g. per-cell changes will 
+		    hide per-column changes.
+		    <!-- Pending Michel: Add some code sample here -->
+		    (see files /src/KDChart*Attributes.h)
                 </para>
                 </sect2>
         </sect1>
         <sect1>
             <title id="apimemory">Memory management</title>
             <para>
-                As a general rule, everything in a KDChart::Chat is owned by
-                the chart. Manipulation of the built-in components of a chart,
-                such as for example a legend, happens through mutable pointers
-                provided by the view, but those components can also be
-                replaced.
+                As a general rule, everything in a KDChart::Chat is owned by 
+		the chart. Manipulation of the built-in components of a chart,
+		such as for example a legend, happens through mutable pointers
+		provided by the view, but those components can also be 
+		replaced. 
             </para>
-            <sect2>
+             <sect2>
                 <title id="memorysample" xreflabel="codexample">Code Example</title>
                 <para>
                     Let us make this more concrete by looking at the following
-                    lines of code.
+                    lines of code.                   
                 </para>
-                <programlisting>
-                    // set the built-in (default) legend visible
-                    view->legend()->setPosition( North );
+		<programlisting>
+		    // set the built-in (default) legend visible
+		    view->legend()->setPosition( North );
 
-                    // replace the default legend with a custom one
-                    //the view will take ownership of the allocated
-                    //memory and free the old legend
-                    KDChart::Legend *myLegend =
-                    view->replaceLegend( new Legend );
+		    // replace the default legend with a custom one 
+		    //the view will take ownership of the allocated 
+		    //memory and free the old legend
+		    KDChart::Legend *myLegend = 
+		    view->replaceLegend( new Legend );
                 </programlisting>
                 <para>
-                    Similarly, inserting new components into the view chart up
-                    their ownership.
+		    Similarly, inserting new components into the view chart up
+		    their ownership.
                 </para>
-                <programlisting>
-                    // add an additional legend, chart takes ownership
-                    chart->addLegend( Legend );
+		<programlisting>
+		    // add an additional legend, chart takes ownership
+		    chart->addLegend( Legend );
                 </programlisting>
-                <para>
-                    Removing a component does not de-allocate it. If you "take"
-                    a component from a chart or diagram, you are responsible
-                    for freeing it as appropriate.
-                </para>
-                <para>
-                    (see files /src/{KDChartChart.h, KDChartLegend.h})
-                </para>
-                <para>
-                    Notice how this pointer-based access to the components of a
-                    chart is different from the value-based usage of the
-                    attribute classes; the latter can be copied around freely,
-                    and are meant to be transient in your code; they will be
-                    copied internally as necessary. The reason for the
-                    difference, of course, is polymorphism.
-                </para>
+		<para>
+		    Removing a component does not de-allocate it. If you "take"
+		    a component from a chart or diagram, you are responsible 
+		    for freeing it as appropriate.
+		</para> 
+		<para>
+		    (see files /src/{KDChartChart.h, KDChartLegend.h})
+		</para>
+		<para>
+		    Notice how this pointer-based access to the components of a
+		    chart is different from the value-based usage of the 
+		    attribute classes; the latter can be copied around freely, 
+		    and are meant to be transient in your code; they will be 
+		    copied internally as necessary. The reason for the 
+		    difference, of course, is polymorphism.
+		</para>
             </sect2>
         </sect1>
         <sect1>
@@ -554,189 +553,254 @@
     <chapter id="chapter_basicsteps">
         <title id="chtxt_basicsteps">Basic steps: Create a Chart</title>
         <titleabbrev id="chnum_basicsteps">Chapter 3</titleabbrev>
-        <para>
-          Introduction text
-        </para>
-        <sect1>
-            <title id="basictwoways">Two ways</title>
+	<para>
+	    There are two ways to create a chart <classname>KDChart::Widget</classname> 
+	    is providing a limited set of functions  as can be seen in 
+	    <filename>KDChartWidget.h</filename> its purpose is a convenient and simple 
+	    way of getting a chart, for people who do not want to learn about the new 
+	    Qt Interview concept or who do not care about more complicated details like 
+	    the Coordinate Plane and other classes provided by KD Chart 2 API.
+	</para>
+	<para>
+	    Basically, <classname>KDChart::Widget</classname> has been designed for 
+	    starters, while <classname>KDChart::Chart</classname> is destinated for 
+	    the experienced user and/or for users who wants to use the full power of 
+	    both the new Qt and the new KD Chart. I would recommend you to read both 
+	    interfaces for <filename>KDChartWidget.h</filename> and 
+	    <filename>KDChartChart.h</filename> for you to get a better idea.
+	</para>
+	<sect1>          
+	    <title id="basicprerequiste">Prerequisite</title>
             <para>
-                As described above (Section KD Chart and Interview) a
-                prerequisite for using KD Chart's full API is that the data to
-                be charted is provided by you through a class implementing the
-                <classname>QAbstractItemModel</classname> interface.
-                Before looking at code lines, let us present you a few top
-                level classes of the KD Chart 2 API:
+		As described above (Section KD Chart and Interview) a
+		prerequisite for using KD Chart's full API is that the data to
+		be charted is provided by you through a class implementing the
+		<classname>QAbstractItemModel</classname> interface.
+		Before looking at code lines, let us present you a few top 
+		level classes of the KD Chart 2 API:
             </para>
-            <para>
-                <itemizedlist>
-                    <listitem>
-                        <para>
-                            The "chart" is the central widget acting as a
-                            container for all of the charting elements,
-                            including the diagrams themselves, its class is
-                            called <classname>KDChart::Chart</classname>.
-                        </para>
-                        <para>
-                            A "chart" can hold several coordinate planes
-                            (e.g cartesian and polar coordinates are supported
-                            at the moment) each of which can hold several
-                            diagrams.
-                        </para>
-                    </listitem>
-                    <listitem>
-                        <para>
-                            The "coordinate plane" (often called the "plane")
-                            represents the entity that is responsible for
-                            mapping the values into positions on the widget.
-                            The plane is also showing the (sub-)grid lines.
-                            There can be several planes per chart.
-                        </para>
-                    </listitem>
-                    <listitem>
-                        <para>
-                            The "diagram" is the actual plot, bars, lines and
-                            other chart types representing the data.There can
-                            be several diagrams per coordinate plane.
-                        </para>
-                    </listitem>
-                </itemizedlist>
-            </para>
+	    <para>
+		<itemizedlist>
+		    <listitem>
+			<para>
+			    The "chart" is the central widget acting as a 
+			    container for all of the charting elements, 
+			    including the diagrams themselves, its class is 
+			    called <classname>KDChart::Chart</classname>.
+			</para>
+			<para>
+			    A "chart" can hold several coordinate planes
+			    (e.g cartesian and polar coordinates are supported
+			    at the moment) each of which can hold several 
+			    diagrams.
+			</para>    
+		    </listitem>
+		    <listitem>
+			<para>
+			    The "coordinate plane" (often called the "plane")
+			    represents the entity that is responsible for 
+			    mapping the values into positions on the widget.
+			    The plane is also showing the (sub-)grid lines.
+			    There can be several planes per chart.
+			</para>	
+		    </listitem>
+		    <listitem>
+			<para>
+			    The "diagram" is the actual plot, bars, lines and 
+			    other chart types representing the data.There can 
+			    be several diagrams per coordinate plane.
+			</para>	
+		    </listitem>
+		</itemizedlist>
+	    </para>	
         </sect1>
         <sect1>
             <title id="basicprocedure">The Procedure</title>
-            <para>
-                <!-- Pending Michel - show both widget and chart -->
-                <!-- with screen-shots -->
-                <!-- Text ...KDChartWidget vs. KDChart::Chart own Widget. -->
-                Let us now build a chart. more text to come...
-            </para>
-            <para>
-                As in the Widget-using case, you need to include the
-                appropriate headers, and bring in the "KDChart" namespace:
-            </para>
-            <programlisting>
-                #include &lt;KDChartChart&gt;
-                #include &lt;KDChartLineDiagram&gt;
-                using namespace KDChart;
-
-                //Add the widget to your layout like for any other QWidget:
-
-                QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
-                m_chart = new Chart();
-                chartLayout->addWidget( m_chart );
-            </programlisting>
-            <para>
-                In this example, you only create a single line diagram,
-                and use the default cartesian coordinate plane, which is
-                already contained in an empty Chart.
-            </para>
-            <programlisting>
-                // Create a bar diagram and associate the data model to it
-                m_lines = new LineDiagram();
-                m_lines->setModel( &amp;m_model );
-
-                // Replace the default diagram of the default coordinate
-                // plane with your newly created one.
-                // Note that the plane takes ownership of the diagram,
-                // so you are not allowed to delete it.
-                m_chart->coordinatePlane()->replaceDiagram( m_lines );
-            </programlisting>
-            <para>
-                Adding elements such as axes or legends is
-                straightforward as well:
-            </para>
-            <programlisting>
-                CartesianAxis *yAxis = new CartesianAxis ( m_lines );
-                yAxis->setPosition ( KDChart::CartesianAxis::Left );
-
-                // the diagram takes ownership of the Axis
-                m_lines->addAxis( yAxis );
-
-                legend = new Legend( m_lines, m_chart );
-                m_chart->addLegend( legend );
-            </programlisting>
-            <para>
-                You can adjust and fine-tune various aspects of the
-                diagrams, planes, legends, etc...
-            </para>
-            <para>
-                Much like Qt itself, KD Chart uses a value-based approach
-                to these attributes. In the case of diagrams, most aspects
-                can be adjusted at different levels of granularity.
-                The QPen that is used for drawing datasets (lines, bars,
-                etc...) can be set either for one datapoint within a
-                dataset, for a dataset or for the whole diagram. see file
-                <filename>KDChartAbstractDiagram.h</filename>:
-            </para>
-            <programlisting>
-                void setPen( const QModelIndex&amp; index, const QPen&amp; pen );
-                void setPen( int dataset, const QPen&amp; pen );
-                void setPen( const QPen&amp; pen );
-            </programlisting>
-            <para>
-                To use a dark gray color for all lines in your example
-                chart, you would write:
-            </para>
-            <programlisting>
-                QPen pen;
-                pen.setColor( Qt::darkGray );
-                pen.setWidth( 1 );
-                m_lines->setPen( pen );
-            </programlisting>
-            <para>
-                Attributes that form logical groupings are combined into
-                collection classes, such as
-                <classname>GridAttributes</classname>,
-                <classname>DataValueAttributes</classname>,
-                <classname>TextAttributes</classname>, etc....
-            </para>
-            <para>
-                This makes it possible to keep sets of such properties
-                around and swap them in one step, based on program state.
-                However, you might often want to adjust just one or a few
-                of the default settings, rather than specifying a complete
-                new set. Thus in most cases, using the copy constructor of
-                the settings class might be appropriate, so to use a
-                special font for drawing a legend, for example, you would
-                just write:
-            </para>
-            <programlisting>
-                TextAttributes ta( legend->textAttributes() );
-                ta.setFont( myfont );
-                legend->setTextAttributes( ta );
-            </programlisting>
-            <para>
-                We will continue with more examples and more detailled
-                information about all those points in the next section
-                and the next chapters.
-                Also we recommend you to consult and run the examples
-                send together with your KD Chart distribution package.
-            </para>
-            <para>
-                Compile and run the following example
-            </para>
+            
+		<!-- Pending Michel - show both widget and chart -->
+		<!-- with screen-shots -->
+                <!-- Text ...KDChartWidget vs. KDChart::Chart own Widget. -->		
+	    <para>
+		As in the Widget-using case, you need to include the 
+		appropriate headers, and bring in the "KDChart" namespace:
+	    </para>
+	    <programlisting>
+		#include &lt;KDChartChart&gt;
+		#include &lt;KDChartLineDiagram&gt;
+		using namespace KDChart;
+		
+		//Add the widget to your layout like for any other QWidget:
+		
+		QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
+		m_chart = new Chart();
+		chartLayout->addWidget( m_chart );
+	    </programlisting>
+	    <para>
+		In this example, you only create a single line diagram,
+		and use the default cartesian coordinate plane, which is 
+		already contained in an empty Chart.
+	    </para>
+	    <programlisting>
+		// Create a bar diagram and associate the data model to it
+		m_lines = new LineDiagram();
+		m_lines->setModel( &amp;m_model );
+		
+		// Replace the default diagram of the default coordinate
+		// plane with your newly created one.
+		// Note that the plane takes ownership of the diagram,
+		// so you are not allowed to delete it.
+		m_chart->coordinatePlane()->replaceDiagram( m_lines );
+	    </programlisting>
+	    <para>
+		Adding elements such as axes or legends is 
+		straightforward as well:
+	    </para>
+	    <programlisting>
+		CartesianAxis *yAxis = new CartesianAxis ( m_lines );
+		yAxis->setPosition ( KDChart::CartesianAxis::Left );
+		
+		// the diagram takes ownership of the Axis
+		m_lines->addAxis( yAxis );
+		
+		legend = new Legend( m_lines, m_chart );
+		m_chart->addLegend( legend );
+	    </programlisting> 
+	    <para>
+		You can adjust and fine-tune various aspects of the 
+		diagrams, planes, legends, etc...
+	    </para>
+	    <para>
+		Much like Qt itself, KD Chart uses a value-based approach 
+		to these attributes. In the case of diagrams, most aspects
+		can be adjusted at different levels of granularity.
+		The QPen that is used for drawing datasets (lines, bars, 
+		etc...) can be set either for one datapoint within a 
+		dataset, for a dataset or for the whole diagram. see file 
+		<filename>KDChartAbstractDiagram.h</filename>:
+	    </para>
+	    <programlisting>
+		void setPen( const QModelIndex&amp; index, const QPen&amp; pen );
+		void setPen( int dataset, const QPen&amp; pen );
+		void setPen( const QPen&amp; pen );
+	    </programlisting> 
+	    <para>
+		To use a dark gray color for all lines in your example 
+		chart, you would write:
+	    </para>
+	    <programlisting>
+		QPen pen;
+		pen.setColor( Qt::darkGray );
+		pen.setWidth( 1 );
+		m_lines->setPen( pen );
+	    </programlisting> 
+	    <para>
+		Attributes that form logical groupings are combined into
+		collection classes, such as 
+		<classname>GridAttributes</classname>, 
+		<classname>DataValueAttributes</classname>,
+		<classname>TextAttributes</classname>, etc....
+	    </para>
+	    <para>
+		This makes it possible to keep sets of such properties 
+		around and swap them in one step, based on program state.
+		However, you might often want to adjust just one or a few 
+		of the default settings, rather than specifying a complete
+		new set. Thus in most cases, using the copy constructor of
+		the settings class might be appropriate, so to use a 
+		special font for drawing a legend, for example, you would 
+		just write:    
+	    </para>    
+	    <programlisting>
+		TextAttributes ta( legend->textAttributes() );
+		ta.setFont( myfont );
+		legend->setTextAttributes( ta );
+	    </programlisting>
+	    <para>
+		We will continue with more examples and more detailled 
+		information about all those points in the next section
+		and the next chapters.
+		Also we recommend you to consult and run the examples 
+		send together with your KD Chart distribution package.
+	    </para>
+	</sect1>
+	<sect1>
+	    <title id="basictwoways">Two ways</title> 
+	    <para>
+		We will now go through the basic steps for creating a simple chart widget 
+		using both first <classname>KDChart::Chart</classname> and 
+		<classname>KDChart::Chart</classname> and give you some example code about 
+		how to proceed. 
+	    </para>
+	    <sect2>
+                <title id="basicwidget" xreflabel="codexample">Chart Widget Example</title>
+		<para>
+		We recommend you to read, compile and run the following example. 
+		</para>
 <!--
-            <link linkend="mainwindow_h">mainwindow.h</link>
--->
-            <programlisting linenumbering="numbered" id="mainwindow_h">
-                <textobject><textdata
-                                fileref="../../examples/Widget/mainwindow.h"/>
-                </textobject>
-            </programlisting>
-
-            <para>
-                More explanation h file?
-            </para>
-            <figure float="0" id="fig-simplewidget">
-                <title>A Simple Chart Widget</title>
-                <mediaobject>
-                    <imageobject>
-                        <imagedata
-                            fileref="images/simplewidget.png"
-                            width="3in" scalefit="1"/>
-                    </imageobject>
-                </mediaobject>
-            </figure>
+	    <link linkend="mainwindow_h">mainwindow.h</link> 
+-->	    
+		<!-- Pending Michel: Write a new very simple Widget example -->
+		<programlisting linenumbering="numbered" id="widget_mainwindow_h">
+		    <textobject><textdata fileref="../../examples/Widget/mainwindow.h"/>
+		    </textobject>
+		</programlisting>                
+		<para>
+		    More explanation h file?
+		</para>
+		<programlisting linenumbering="numbered" id="widget_mainwindow_cpp">
+		    <textobject><textdata fileref="../../examples/Widget/mainwindow.cpp"/>
+		    </textobject>
+		</programlisting>
+		<para>
+		    More explanation cpp file?
+		</para>
+		<figure float="0" id="fig-simplewidget">
+		    <title>A Simple Chart Widget</title>
+		    <mediaobject>
+			<imageobject>
+			    <imagedata width="3in" scalefit="1" fileref="images/simplewidget.png"/>
+			</imageobject>
+		    </mediaobject>
+		</figure>
+		<para>
+		    Conclude widget example 
+		</para>
+	    </sect2>
+	    <sect2>
+		<!-- Pending Michel: write a simple chart example -->
+                <title id="basicchart" xreflabel="codexample">Chart Example</title>
+		<para>
+		We recommend you to read, compile and run the following example. 
+		</para>
+<!--
+	    <link linkend="mainwindow_h">mainwindow.h</link> 
+-->	    	
+		<programlisting linenumbering="numbered" id="chart_mainwindow_h">
+		    <textobject><textdata fileref="../../examples/Widget/mainwindow.h"/>
+		    </textobject>
+		</programlisting>                
+		<para>
+		    More explanation h file?
+		</para>
+		<programlisting linenumbering="numbered" id="chart_mainwindow_cpp">
+		    <textobject><textdata fileref="../../examples/Widget/mainwindow.cpp"/>
+		    </textobject>
+		</programlisting>
+		<para>
+		    More explanation cpp file?
+		</para>
+		<figure float="0" id="fig-simplechart">
+		    <title>A Simple Chart</title>
+		    <mediaobject>
+			<imageobject>
+			    <imagedata width="3in" scalefit="1" fileref="images/simplechart.png"/>
+			</imageobject>
+		    </mediaobject>
+		</figure>
+		<para>
+		    Conclude chart example 
+		</para>
+	    </sect2>
         </sect1>
         <sect1>
             <title>What's next</title>
@@ -748,7 +812,7 @@
     <chapter id="chapter_planesanddiagrams">
         <title id="chtxt_planesanddiagrams">Coordinate planes and Diagrams</title>
         <titleabbrev id="chnum_planesanddiagrams">Chapter 4</titleabbrev>
-        <para>
+	<para>
           Introduction text
         </para>
         <sect1>
@@ -756,743 +820,743 @@
             <para>
                 Text ...
             </para>
-            <sect2>
-                <title id="bars">Bar Charts</title>
-                <para>
-                    Text info to Bars...
-                </para>
-                <sect3>
-                    <title id="barsample" xreflabel="codexample">Bar Example</title>
-                    <para>
-                        Let us make this more concrete by looking at the
-                        following lines of code.
-                        <!--
-                        <link linkend=""></link>
-                        <link linkend=""></link>
-                        -->
-                    </para>
-                    <!--
-                    <programlisting linenumbering="numbered" id="">
+	    <sect2>
+		<title id="bars">Bar Charts</title>
+		<para>
+		    Text info to Bars...
+		</para>	    
+		<sect3>
+		    <title id="barsample" xreflabel="codexample">Bar Example</title>
+		    <para>
+			Let us make this more concrete by looking at the 
+			following lines of code.
+			<!--
+			<link linkend=""></link>
+			<link linkend=""></link>
+			-->
+		    </para>
+		    <!--
+		    <programlisting linenumbering="numbered" id="">
                     <textobject>
-                    <textdata fileref="../../examples/..."/>
-                    </textobject>
+		    <textdata fileref="../../examples/..."/>
+		    </textobject>
                     </programlisting>
-                    -->
-                    <para>
-                        More explanation?
-                    </para>
-                </sect3>
-                <sect3>
-                    <title id="barsattributes">Bars Attributes</title>
-                    <para>
-                        Text ...
-                    </para>
-                    <sect4>
-                        <title id="barattributessample" xreflabel="codexample">Bar Example</title>
-                        <para>
-                            Let us make this more concrete by looking at the
-                            following lines of code.
-                            <!--
-                            <link linkend=""></link>
-                            <link linkend=""></link>
-                            -->
-                        </para>
-                        <!--
-                        <programlisting linenumbering="numbered" id="">
-                        <textobject>
-                        <textdata fileref="../../examples/..."/>
-                        </textobject>
+		    -->
+		    <para>
+			More explanation?
+		    </para>   
+		</sect3>
+		<sect3>
+		    <title id="barsattributes">Bars Attributes</title>
+		    <para>
+			Text ...
+		    </para>	
+		    <sect4>
+			<title id="barattributessample" xreflabel="codexample">Bar Example</title>
+			<para>
+			    Let us make this more concrete by looking at the 
+			    following lines of code.
+			    <!--
+			    <link linkend=""></link>
+			    <link linkend=""></link>
+			    -->
+			</para>
+			<!--
+			<programlisting linenumbering="numbered" id="">
+			<textobject>
+			<textdata fileref="../../examples/..."/>
+		        </textobject>
                         </programlisting>
-                        -->
-                        <para>
-                            More explanation?
-                        </para>
-                    </sect4>
-                </sect3>
-                <sect3>
-                  <title id="barstips">Tips and Tricks</title>
-                    <para>
-                        Some tips and tricks
-                    </para>
-                    <sect4>
-                        <title id="bartipssample" xreflabel="codexample">A complete Bar Example</title>
-                        <para>
-                            Let us make this more concrete by looking at the
-                            following lines of code.
-                            <!--
-                            <link linkend=""></link>
-                            <link linkend=""></link>
-                            -->
-                        </para>
-                        <!--
-                        <programlisting linenumbering="numbered" id="">
-                        <textobject>
-                        <textdata fileref="../../examples/..."/>
-                        </textobject>
+			-->
+			<para>
+			    More explanation?
+			</para>   
+		    </sect4>	
+		</sect3>
+		<sect3>
+		   <title id="barstips">Tips and Tricks</title>
+		    <para>
+			Some tips and tricks
+		    </para>	
+		    <sect4>
+			<title id="bartipssample" xreflabel="codexample">A complete Bar Example</title>
+			<para>
+			    Let us make this more concrete by looking at the 
+			    following lines of code.
+			    <!--
+			    <link linkend=""></link>
+			    <link linkend=""></link>
+			    -->
+			</para>
+			<!--
+			<programlisting linenumbering="numbered" id="">
+			<textobject>
+			<textdata fileref="../../examples/..."/>
+		        </textobject>
                         </programlisting>
-                        -->
-                        <para>
-                            More explanation?
-                        </para>
-                    </sect4>
-                </sect3>
-            </sect2>
+			-->
+			<para>
+			    More explanation?
+			</para>   
+		    </sect4>	  
+		</sect3>
+	    </sect2>
             <sect2>
-                <title id="lines">Line Charts</title>
-                <para>
-                    Text info Lines...
-                </para>
-                <sect3>
-                    <title id="linesample" xreflabel="codexample">Line Example</title>
-                    <para>
-                        Let us make this more concrete by looking at the
-                        following lines of code.
-                        <!--
-                        <link linkend=""></link>
-                        <link linkend=""></link>
-                        -->
-                    </para>
-                    <!--
-                    <programlisting linenumbering="numbered" id="">
+		<title id="lines">Line Charts</title>
+		<para>
+		    Text info Lines...
+		</para>	    
+		<sect3>
+		    <title id="linesample" xreflabel="codexample">Line Example</title>
+		    <para>
+			Let us make this more concrete by looking at the 
+			following lines of code.
+			<!--
+			<link linkend=""></link>
+			<link linkend=""></link>
+			-->
+		    </para>
+		    <!--
+		    <programlisting linenumbering="numbered" id="">
                     <textobject>
-                    <textdata fileref="../../examples/..."/>
-                    </textobject>
+		    <textdata fileref="../../examples/..."/>
+		    </textobject>
                     </programlisting>
-                    -->
-                    <para>
-                        More explanation?
-                    </para>
-                </sect3>
-                <sect3>
-                    <title id="linesattributes">Lines Attributes</title>
-                    <para>
-                        Text ...
-                    </para>
-                    <sect4>
-                        <title id="lineattributessample" xreflabel="codexample">Line Example</title>
-                        <para>
-                            Let us make this more concrete by looking at the
-                            following lines of code.
-                            <!--
-                            <link linkend=""></link>
-                            <link linkend=""></link>
-                            -->
-                        </para>
-                        <!--
-                        <programlisting linenumbering="numbered" id="">
-                        <textobject>
-                        <textdata fileref="../../examples/..."/>
-                        </textobject>
+		    -->
+		    <para>
+			More explanation?
+		    </para>   
+		</sect3>
+		<sect3>
+		    <title id="linesattributes">Lines Attributes</title>
+		    <para>
+			Text ...
+		    </para>	
+		    <sect4>
+			<title id="lineattributessample" xreflabel="codexample">Line Example</title>
+			<para>
+			    Let us make this more concrete by looking at the 
+			    following lines of code.
+			    <!--
+			    <link linkend=""></link>
+			    <link linkend=""></link>
+			    -->
+			</para>
+			<!--
+			<programlisting linenumbering="numbered" id="">
+			<textobject>
+			<textdata fileref="../../examples/..."/>
+		        </textobject>
                         </programlisting>
-                        -->
-                        <para>
-                            More explanation?
-                        </para>
-                    </sect4>
-                </sect3>
-                <sect3>
-                  <title id="linestips">Tips and Tricks</title>
-                    <para>
-                        Some tips and tricks
-                    </para>
-                    <sect4>
-                        <title id="linetipssample" xreflabel="codexample">A complete Line Example</title>
-                        <para>
-                            Let us make this more concrete by looking at the
-                            following lines of code.
-                            <!--
-                            <link linkend=""></link>
-                            <link linkend=""></link>
-                            -->
-                        </para>
-                        <!--
-                        <programlisting linenumbering="numbered" id="">
-                        <textobject>
-                        <textdata fileref="../../examples/..."/>
-                        </textobject>
+			-->
+			<para>
+			    More explanation?
+			</para>   
+		    </sect4>	
+		</sect3>
+		<sect3>
+		   <title id="linestips">Tips and Tricks</title>
+		    <para>
+			Some tips and tricks
+		    </para>	
+		    <sect4>
+			<title id="linetipssample" xreflabel="codexample">A complete Line Example</title>
+			<para>
+			    Let us make this more concrete by looking at the 
+			    following lines of code.
+			    <!--
+			    <link linkend=""></link>
+			    <link linkend=""></link>
+			    -->
+			</para>
+			<!--
+			<programlisting linenumbering="numbered" id="">
+			<textobject>
+			<textdata fileref="../../examples/..."/>
+		        </textobject>
                         </programlisting>
-                        -->
-                        <para>
-                            More explanation?
-                        </para>
-                    </sect4>
-                </sect3>
-            </sect2>
+			-->
+			<para>
+			    More explanation?
+			</para>   
+		    </sect4>	  
+		</sect3>
+	    </sect2>
             <sect2>
-                <title id="points">Point Charts</title>
-                <para>
-                    Text info Points...
-                </para>
-                <sect3>
-                    <title id="pointsample" xreflabel="codexample">Point Example</title>
-                    <para>
-                        Let us make this more concrete by looking at the
-                        following lines of code.
-                        <!--
-                        <link linkend=""></link>
-                        <link linkend=""></link>
-                        -->
-                    </para>
-                    <!--
-                    <programlisting linenumbering="numbered" id="">
+		<title id="points">Point Charts</title>
+		<para>
+		    Text info Points...
+		</para>	    
+		<sect3>
+		    <title id="pointsample" xreflabel="codexample">Point Example</title>
+		    <para>
+			Let us make this more concrete by looking at the 
+			following lines of code.
+			<!--
+			<link linkend=""></link>
+			<link linkend=""></link>
+			-->
+		    </para>
+		    <!--
+		    <programlisting linenumbering="numbered" id="">
                     <textobject>
-                    <textdata fileref="../../examples/..."/>
-                    </textobject>
+		    <textdata fileref="../../examples/..."/>
+		    </textobject>
                     </programlisting>
-                    -->
-                    <para>
-                        More explanation?
-                    </para>
-                </sect3>
-                <sect3>
-                    <title id="pointsattributes">Points Attributes</title>
-                    <para>
-                        Text ...
-                    </para>
-                    <sect4>
-                        <title id="pointattributessample" xreflabel="codexample">Point Example</title>
-                        <para>
-                            Let us make this more concrete by looking at the
-                            following lines of code.
-                            <!--
-                            <link linkend=""></link>
-                            <link linkend=""></link>
-                            -->
-                        </para>
-                        <!--
-                        <programlisting linenumbering="numbered" id="">
-                        <textobject>
-                        <textdata fileref="../../examples/..."/>
-                        </textobject>
+		    -->
+		    <para>
+			More explanation?
+		    </para>   
+		</sect3>
+		<sect3>
+		    <title id="pointsattributes">Points Attributes</title>
+		    <para>
+			Text ...
+		    </para>	
+		    <sect4>
+			<title id="pointattributessample" xreflabel="codexample">Point Example</title>
+			<para>
+			    Let us make this more concrete by looking at the 
+			    following lines of code.
+			    <!--
+			    <link linkend=""></link>
+			    <link linkend=""></link>
+			    -->
+			</para>
+			<!--
+			<programlisting linenumbering="numbered" id="">
+			<textobject>
+			<textdata fileref="../../examples/..."/>
+		        </textobject>
                         </programlisting>
-                        -->
-                        <para>
-                            More explanation?
-                        </para>
-                    </sect4>
-                </sect3>
-                <sect3>
-                  <title id="pointstips">Tips and Tricks</title>
-                    <para>
-                        Some tips and tricks
-                    </para>
-                    <sect4>
-                        <title id="pointtipssample" xreflabel="codexample">A complete Point Example</title>
-                        <para>
-                            Let us make this more concrete by looking at the
-                            following lines of code.
-                            <!--
-                            <link linkend=""></link>
-                            <link linkend=""></link>
-                            -->
-                        </para>
-                        <!--
-                        <programlisting linenumbering="numbered" id="">
-                        <textobject>
-                        <textdata fileref="../../examples/..."/>
-                        </textobject>
+			-->
+			<para>
+			    More explanation?
+			</para>   
+		    </sect4>	
+		</sect3>
+		<sect3>
+		   <title id="pointstips">Tips and Tricks</title>
+		    <para>
+			Some tips and tricks
+		    </para>	
+		    <sect4>
+			<title id="pointtipssample" xreflabel="codexample">A complete Point Example</title>
+			<para>
+			    Let us make this more concrete by looking at the 
+			    following lines of code.
+			    <!--
+			    <link linkend=""></link>
+			    <link linkend=""></link>
+			    -->
+			</para>
+			<!--
+			<programlisting linenumbering="numbered" id="">
+			<textobject>
+			<textdata fileref="../../examples/..."/>
+		        </textobject>
                         </programlisting>
-                        -->
-                        <para>
-                            More explanation?
-                        </para>
-                    </sect4>
-                </sect3>
-            </sect2>
-            <sect2>
-                <title id="areas">Area Charts</title>
-                <para>
-                    Text info to Areas...
-                </para>
-                <sect3>
-                    <title id="areasample" xreflabel="codexample">Area Example</title>
-                    <para>
-                        Let us make this more concrete by looking at the
-                        following lines of code.
-                        <!--
-                        <link linkend=""></link>
-                        <link linkend=""></link>
-                        -->
-                    </para>
-                    <!--
-                    <programlisting linenumbering="numbered" id="">
+			-->
+			<para>
+			    More explanation?
+			</para>   
+		    </sect4>	  
+		</sect3>
+	    </sect2>
+	    <sect2>
+		<title id="areas">Area Charts</title>
+		<para>
+		    Text info to Areas...
+		</para>	    
+		<sect3>
+		    <title id="areasample" xreflabel="codexample">Area Example</title>
+		    <para>
+			Let us make this more concrete by looking at the 
+			following lines of code.
+			<!--
+			<link linkend=""></link>
+			<link linkend=""></link>
+			-->
+		    </para>
+		    <!--
+		    <programlisting linenumbering="numbered" id="">
                     <textobject>
-                    <textdata fileref="../../examples/..."/>
-                    </textobject>
+		    <textdata fileref="../../examples/..."/>
+		    </textobject>
                     </programlisting>
-                    -->
-                    <para>
-                        More explanation?
-                    </para>
-                </sect3>
-                <sect3>
-                    <title id="areaattributes">area Attributes</title>
-                    <para>
-                        Text ...
-                    </para>
-                    <sect4>
-                        <title id="areaattributessample" xreflabel="codexample">Area Example</title>
-                        <para>
-                            Let us make this more concrete by looking at the
-                            following lines of code.
-                            <!--
-                            <link linkend=""></link>
-                            <link linkend=""></link>
-                            -->
-                        </para>
-                        <!--
-                        <programlisting linenumbering="numbered" id="">
-                        <textobject>
-                        <textdata fileref="../../examples/..."/>
-                        </textobject>
+		    -->
+		    <para>
+			More explanation?
+		    </para>   
+		</sect3>
+		<sect3>
+		    <title id="areaattributes">area Attributes</title>
+		    <para>
+			Text ...
+		    </para>	
+		    <sect4>
+			<title id="areaattributessample" xreflabel="codexample">Area Example</title>
+			<para>
+			    Let us make this more concrete by looking at the 
+			    following lines of code.
+			    <!--
+			    <link linkend=""></link>
+			    <link linkend=""></link>
+			    -->
+			</para>
+			<!--
+			<programlisting linenumbering="numbered" id="">
+			<textobject>
+			<textdata fileref="../../examples/..."/>
+		        </textobject>
                         </programlisting>
-                        -->
-                        <para>
-                            More explanation?
-                        </para>
-                    </sect4>
-                </sect3>
-                <sect3>
-                  <title id="areatips">Tips and Tricks</title>
-                    <para>
-                        Some tips and tricks
-                    </para>
-                    <sect4>
-                        <title id="areatipssample" xreflabel="codexample">A complete Area Example</title>
-                        <para>
-                            Let us make this more concrete by looking at the
-                            following lines of code.
-                            <!--
-                            <link linkend=""></link>
-                            <link linkend=""></link>
-                            -->
-                        </para>
-                        <!--
-                        <programlisting linenumbering="numbered" id="">
-                        <textobject>
-                        <textdata fileref="../../examples/..."/>
-                        </textobject>
+			-->
+			<para>
+			    More explanation?
+			</para>   
+		    </sect4>	
+		</sect3>
+		<sect3>
+		   <title id="areatips">Tips and Tricks</title>
+		    <para>
+			Some tips and tricks
+		    </para>	
+		    <sect4>
+			<title id="areatipssample" xreflabel="codexample">A complete Area Example</title>
+			<para>
+			    Let us make this more concrete by looking at the 
+			    following lines of code.
+			    <!--
+			    <link linkend=""></link>
+			    <link linkend=""></link>
+			    -->
+			</para>
+			<!--
+			<programlisting linenumbering="numbered" id="">
+			<textobject>
+			<textdata fileref="../../examples/..."/>
+		        </textobject>
                         </programlisting>
-                        -->
-                        <para>
-                            More explanation?
-                        </para>
-                    </sect4>
-                </sect3>
-            </sect2>
-            <sect2>
-                <title id="highlow">High/Low Charts</title>
-                <para>
-                    Text info to High/Low...
-                </para>
-                <sect3>
-                    <title id="hlsample" xreflabel="codexample">High/Low Example</title>
-                    <para>
-                        Let us make this more concrete by looking at the
-                        following lines of code.
-                        <!--
-                        <link linkend=""></link>
-                        <link linkend=""></link>
-                        -->
-                    </para>
-                    <!--
-                    <programlisting linenumbering="numbered" id="">
+			-->
+			<para>
+			    More explanation?
+			</para>   
+		    </sect4>	  
+		</sect3>
+	    </sect2>
+	    <sect2>
+		<title id="highlow">High/Low Charts</title>
+		<para>
+		    Text info to High/Low...
+		</para>	    
+		<sect3>
+		    <title id="hlsample" xreflabel="codexample">High/Low Example</title>
+		    <para>
+			Let us make this more concrete by looking at the 
+			following lines of code.
+			<!--
+			<link linkend=""></link>
+			<link linkend=""></link>
+			-->
+		    </para>
+		    <!--
+		    <programlisting linenumbering="numbered" id="">
                     <textobject>
-                    <textdata fileref="../../examples/..."/>
-                    </textobject>
+		    <textdata fileref="../../examples/..."/>
+		    </textobject>
                     </programlisting>
-                    -->
-                    <para>
-                        More explanation?
-                    </para>
-                </sect3>
-                <sect3>
-                    <title id="hlattributes">High Low Attributes</title>
-                    <para>
-                        Text ...
-                    </para>
-                    <sect4>
-                        <title id="hlattributessample" xreflabel="codexample">High/Low Example</title>
-                        <para>
-                            Let us make this more concrete by looking at the
-                            following lines of code.
-                            <!--
-                            <link linkend=""></link>
-                            <link linkend=""></link>
-                            -->
-                        </para>
-                        <!--
-                        <programlisting linenumbering="numbered" id="">
-                        <textobject>
-                        <textdata fileref="../../examples/..."/>
-                        </textobject>
+		    -->
+		    <para>
+			More explanation?
+		    </para>   
+		</sect3>
+		<sect3>
+		    <title id="hlattributes">High Low Attributes</title>
+		    <para>
+			Text ...
+		    </para>	
+		    <sect4>
+			<title id="hlattributessample" xreflabel="codexample">High/Low Example</title>
+			<para>
+			    Let us make this more concrete by looking at the 
+			    following lines of code.
+			    <!--
+			    <link linkend=""></link>
+			    <link linkend=""></link>
+			    -->
+			</para>
+			<!--
+			<programlisting linenumbering="numbered" id="">
+			<textobject>
+			<textdata fileref="../../examples/..."/>
+		        </textobject>
                         </programlisting>
-                        -->
-                        <para>
-                            More explanation?
-                        </para>
-                    </sect4>
-                </sect3>
-                <sect3>
-                  <title id="hltips">Tips and Tricks</title>
-                    <para>
-                        Some tips and tricks
-                    </para>
-                    <sect4>
-                        <title id="hltipssample" xreflabel="codexample">A complete High/Low Example</title>
-                        <para>
-                            Let us make this more concrete by looking at the
-                            following lines of code.
-                            <!--
-                            <link linkend=""></link>
-                            <link linkend=""></link>
-                            -->
-                        </para>
-                        <!--
-                        <programlisting linenumbering="numbered" id="">
-                        <textobject>
-                        <textdata fileref="../../examples/..."/>
-                        </textobject>
+			-->
+			<para>
+			    More explanation?
+			</para>   
+		    </sect4>	
+		</sect3>
+		<sect3>
+		   <title id="hltips">Tips and Tricks</title>
+		    <para>
+			Some tips and tricks
+		    </para>	
+		    <sect4>
+			<title id="hltipssample" xreflabel="codexample">A complete High/Low Example</title>
+			<para>
+			    Let us make this more concrete by looking at the 
+			    following lines of code.
+			    <!--
+			    <link linkend=""></link>
+			    <link linkend=""></link>
+			    -->
+			</para>
+			<!--
+			<programlisting linenumbering="numbered" id="">
+			<textobject>
+			<textdata fileref="../../examples/..."/>
+		        </textobject>
                         </programlisting>
-                        -->
-                        <para>
-                            More explanation?
-                        </para>
-                    </sect4>
-                </sect3>
-            </sect2>
-            <sect2>
-                <title id="boxwhisker">Box and Whisker Charts</title>
-                <para>
-                    Text info to Box and Whisker...
-                </para>
-                <sect3>
-                    <title id="bwsample" xreflabel="codexample">Box and Whisker Example</title>
-                    <para>
-                        Let us make this more concrete by looking at the
-                        following lines of code.
-                        <!--
-                        <link linkend=""></link>
-                        <link linkend=""></link>
-                        -->
-                    </para>
-                    <!--
-                    <programlisting linenumbering="numbered" id="">
+			-->
+			<para>
+			    More explanation?
+			</para>   
+		    </sect4>	  
+		</sect3>
+	    </sect2>
+	    <sect2>
+		<title id="boxwhisker">Box and Whisker Charts</title>
+		<para>
+		    Text info to Box and Whisker...
+		</para>	    
+		<sect3>
+		    <title id="bwsample" xreflabel="codexample">Box and Whisker Example</title>
+		    <para>
+			Let us make this more concrete by looking at the 
+			following lines of code.
+			<!--
+			<link linkend=""></link>
+			<link linkend=""></link>
+			-->
+		    </para>
+		    <!--
+		    <programlisting linenumbering="numbered" id="">
                     <textobject>
-                    <textdata fileref="../../examples/..."/>
-                    </textobject>
+		    <textdata fileref="../../examples/..."/>
+		    </textobject>
                     </programlisting>
-                    -->
-                    <para>
-                        More explanation?
-                    </para>
-                </sect3>
-                <sect3>
-                    <title id="bwattributes">Box and Whisker Attributes</title>
-                    <para>
-                        Text ...
-                    </para>
-                    <sect4>
-                        <title id="bwattributessample" xreflabel="codexample">Box and Whisker Example</title>
-                        <para>
-                            Let us make this more concrete by looking at the
-                            following lines of code.
-                            <!--
-                            <link linkend=""></link>
-                            <link linkend=""></link>
-                            -->
-                        </para>
-                        <!--
-                        <programlisting linenumbering="numbered" id="">
-                        <textobject>
-                        <textdata fileref="../../examples/..."/>
-                        </textobject>
+		    -->
+		    <para>
+			More explanation?
+		    </para>   
+		</sect3>
+		<sect3>
+		    <title id="bwattributes">Box and Whisker Attributes</title>
+		    <para>
+			Text ...
+		    </para>	
+		    <sect4>
+			<title id="bwattributessample" xreflabel="codexample">Box and Whisker Example</title>
+			<para>
+			    Let us make this more concrete by looking at the 
+			    following lines of code.
+			    <!--
+			    <link linkend=""></link>
+			    <link linkend=""></link>
+			    -->
+			</para>
+			<!--
+			<programlisting linenumbering="numbered" id="">
+			<textobject>
+			<textdata fileref="../../examples/..."/>
+		        </textobject>
                         </programlisting>
-                        -->
-                        <para>
-                            More explanation?
-                        </para>
-                    </sect4>
-                </sect3>
-                <sect3>
-                  <title id="bwtips">Tips and Tricks</title>
-                    <para>
-                        Some tips and tricks
-                    </para>
-                    <sect4>
-                        <title id="bwtipssample" xreflabel="codexample">A complete Box and Whisker Example</title>
-                        <para>
-                            Let us make this more concrete by looking at the
-                            following lines of code.
-                            <!--
-                            <link linkend=""></link>
-                            <link linkend=""></link>
-                            -->
-                        </para>
-                        <!--
-                        <programlisting linenumbering="numbered" id="">
-                        <textobject>
-                        <textdata fileref="../../examples/..."/>
-                        </textobject>
+			-->
+			<para>
+			    More explanation?
+			</para>   
+		    </sect4>	
+		</sect3>
+		<sect3>
+		   <title id="bwtips">Tips and Tricks</title>
+		    <para>
+			Some tips and tricks
+		    </para>	
+		    <sect4>
+			<title id="bwtipssample" xreflabel="codexample">A complete Box and Whisker Example</title>
+			<para>
+			    Let us make this more concrete by looking at the 
+			    following lines of code.
+			    <!--
+			    <link linkend=""></link>
+			    <link linkend=""></link>
+			    -->
+			</para>
+			<!--
+			<programlisting linenumbering="numbered" id="">
+			<textobject>
+			<textdata fileref="../../examples/..."/>
+		        </textobject>
                         </programlisting>
-                        -->
-                        <para>
-                            More explanation?
-                        </para>
-                    </sect4>
-                </sect3>
-            </sect2>
-        </sect1>
-        <sect1>
+			-->
+			<para>
+			    More explanation?
+			</para>   
+		    </sect4>	  
+		</sect3>
+	    </sect2>
+	</sect1>
+	<sect1>
             <title id="polarplane">Polar coordinate plane</title>
             <para>
                 Text ...
             </para>
-            <sect2>
-                <title id="pies">Pie Charts</title>
-                <para>
-                    Text info Pie...
-                </para>
-                <sect3>
-                    <title id="piesample" xreflabel="codexample">Pie Example</title>
-                    <para>
-                        Let us make this more concrete by looking at the
-                        following lines of code.
-                        <!--
-                        <link linkend=""></link>
-                        <link linkend=""></link>
-                        -->
-                    </para>
-                    <!--
-                    <programlisting linenumbering="numbered" id="">
+	    <sect2>
+		<title id="pies">Pie Charts</title>
+		<para>
+		    Text info Pie...
+		</para>	    
+		<sect3>
+		    <title id="piesample" xreflabel="codexample">Pie Example</title>
+		    <para>
+			Let us make this more concrete by looking at the 
+			following lines of code.
+			<!--
+			<link linkend=""></link>
+			<link linkend=""></link>
+			-->
+		    </para>
+		    <!--
+		    <programlisting linenumbering="numbered" id="">
                     <textobject>
-                    <textdata fileref="../../examples/..."/>
-                    </textobject>
+		    <textdata fileref="../../examples/..."/>
+		    </textobject>
                     </programlisting>
-                    -->
-                    <para>
-                        More explanation?
-                    </para>
-                </sect3>
-                <sect3>
-                    <title id="pieattributes">Pies Attributes</title>
-                    <para>
-                        Text ...
-                    </para>
-                    <sect4>
-                        <title id="pieattributessample" xreflabel="codexample">Pie Example</title>
-                        <para>
-                            Let us make this more concrete by looking at the
-                            following lines of code.
-                            <!--
-                            <link linkend=""></link>
-                            <link linkend=""></link>
-                            -->
-                        </para>
-                        <!--
-                        <programlisting linenumbering="numbered" id="">
-                        <textobject>
-                        <textdata fileref="../../examples/..."/>
-                        </textobject>
+		    -->
+		    <para>
+			More explanation?
+		    </para>   
+		</sect3>
+		<sect3>
+		    <title id="pieattributes">Pies Attributes</title>
+		    <para>
+			Text ...
+		    </para>	
+		    <sect4>
+			<title id="pieattributessample" xreflabel="codexample">Pie Example</title>
+			<para>
+			    Let us make this more concrete by looking at the 
+			    following lines of code.
+			    <!--
+			    <link linkend=""></link>
+			    <link linkend=""></link>
+			    -->
+			</para>
+			<!--
+			<programlisting linenumbering="numbered" id="">
+			<textobject>
+			<textdata fileref="../../examples/..."/>
+		        </textobject>
                         </programlisting>
-                        -->
-                        <para>
-                            More explanation?
-                        </para>
-                    </sect4>
-                </sect3>
-                <sect3>
-                  <title id="pietips">Tips and Tricks</title>
-                    <para>
-                        Some tips and tricks
-                    </para>
-                    <sect4>
-                        <title id="pietipssample" xreflabel="codexample">A complete Pie Example</title>
-                        <para>
-                            Let us make this more concrete by looking at the
-                            following lines of code.
-                            <!--
-                            <link linkend=""></link>
-                            <link linkend=""></link>
-                            -->
-                        </para>
-                        <!--
-                        <programlisting linenumbering="numbered" id="">
-                        <textobject>
-                        <textdata fileref="../../examples/..."/>
-                        </textobject>
+			-->
+			<para>
+			    More explanation?
+			</para>   
+		    </sect4>	
+		</sect3>
+		<sect3>
+		   <title id="pietips">Tips and Tricks</title>
+		    <para>
+			Some tips and tricks
+		    </para>	
+		    <sect4>
+			<title id="pietipssample" xreflabel="codexample">A complete Pie Example</title>
+			<para>
+			    Let us make this more concrete by looking at the 
+			    following lines of code.
+			    <!--
+			    <link linkend=""></link>
+			    <link linkend=""></link>
+			    -->
+			</para>
+			<!--
+			<programlisting linenumbering="numbered" id="">
+			<textobject>
+			<textdata fileref="../../examples/..."/>
+		        </textobject>
                         </programlisting>
-                        -->
-                        <para>
-                            More explanation?
-                        </para>
-                    </sect4>
-                </sect3>
-            </sect2>
+			-->
+			<para>
+			    More explanation?
+			</para>   
+		    </sect4>	  
+		</sect3>
+	    </sect2>
             <sect2>
-                <title id="rings">Ring Charts</title>
-                <para>
-                    Text info Lines...
-                </para>
-                <sect3>
-                    <title id="ringsample" xreflabel="codexample">Ring Example</title>
-                    <para>
-                        Let us make this more concrete by looking at the
-                        following lines of code.
-                        <!--
-                        <link linkend=""></link>
-                        <link linkend=""></link>
-                        -->
-                    </para>
-                    <!--
-                    <programlisting linenumbering="numbered" id="">
+		<title id="rings">Ring Charts</title>
+		<para>
+		    Text info Lines...
+		</para>	    
+		<sect3>
+		    <title id="ringsample" xreflabel="codexample">Ring Example</title>
+		    <para>
+			Let us make this more concrete by looking at the 
+			following lines of code.
+			<!--
+			<link linkend=""></link>
+			<link linkend=""></link>
+			-->
+		    </para>
+		    <!--
+		    <programlisting linenumbering="numbered" id="">
                     <textobject>
-                    <textdata fileref="../../examples/..."/>
-                    </textobject>
+		    <textdata fileref="../../examples/..."/>
+		    </textobject>
                     </programlisting>
-                    -->
-                    <para>
-                        More explanation?
-                    </para>
-                </sect3>
-                <sect3>
-                    <title id="ringsattributes">Rings Attributes</title>
-                    <para>
-                        Text ...
-                    </para>
-                    <sect4>
-                        <title id="ringattributessample" xreflabel="codexample">Ring Example</title>
-                        <para>
-                            Let us make this more concrete by looking at the
-                            following lines of code.
-                            <!--
-                            <link linkend=""></link>
-                            <link linkend=""></link>
-                            -->
-                        </para>
-                        <!--
-                        <programlisting linenumbering="numbered" id="">
-                        <textobject>
-                        <textdata fileref="../../examples/..."/>
-                        </textobject>
+		    -->
+		    <para>
+			More explanation?
+		    </para>   
+		</sect3>
+		<sect3>
+		    <title id="ringsattributes">Rings Attributes</title>
+		    <para>
+			Text ...
+		    </para>	
+		    <sect4>
+			<title id="ringattributessample" xreflabel="codexample">Ring Example</title>
+			<para>
+			    Let us make this more concrete by looking at the 
+			    following lines of code.
+			    <!--
+			    <link linkend=""></link>
+			    <link linkend=""></link>
+			    -->
+			</para>
+			<!--
+			<programlisting linenumbering="numbered" id="">
+			<textobject>
+			<textdata fileref="../../examples/..."/>
+		        </textobject>
                         </programlisting>
-                        -->
-                        <para>
-                            More explanation?
-                        </para>
-                    </sect4>
-                </sect3>
-                <sect3>
-                  <title id="ringstips">Tips and Tricks</title>
-                    <para>
-                        Some tips and tricks
-                    </para>
-                    <sect4>
-                        <title id="ringtipssample" xreflabel="codexample">A complete Ring Example</title>
-                        <para>
-                            Let us make this more concrete by looking at the
-                            following lines of code.
-                            <!--
-                            <link linkend=""></link>
-                            <link linkend=""></link>
-                            -->
-                        </para>
-                        <!--
-                        <programlisting linenumbering="numbered" id="">
-                        <textobject>
-                        <textdata fileref="../../examples/..."/>
-                        </textobject>
+			-->
+			<para>
+			    More explanation?
+			</para>   
+		    </sect4>	
+		</sect3>
+		<sect3>
+		   <title id="ringstips">Tips and Tricks</title>
+		    <para>
+			Some tips and tricks
+		    </para>	
+		    <sect4>
+			<title id="ringtipssample" xreflabel="codexample">A complete Ring Example</title>
+			<para>
+			    Let us make this more concrete by looking at the 
+			    following lines of code.
+			    <!--
+			    <link linkend=""></link>
+			    <link linkend=""></link>
+			    -->
+			</para>
+			<!--
+			<programlisting linenumbering="numbered" id="">
+			<textobject>
+			<textdata fileref="../../examples/..."/>
+		        </textobject>
                         </programlisting>
-                        -->
-                        <para>
-                            More explanation?
-                        </para>
-                    </sect4>
-                </sect3>
-            </sect2>
+			-->
+			<para>
+			    More explanation?
+			</para>   
+		    </sect4>	  
+		</sect3>
+	    </sect2>
             <sect2>
-                <title id="polars">Polar Charts</title>
-                <para>
-                    Text info Polar...
-                </para>
-                <sect3>
-                    <title id="polarsample" xreflabel="codexample">Polar Example</title>
-                    <para>
-                        Let us make this more concrete by looking at the
-                        following lines of code.
-                        <!--
-                        <link linkend=""></link>
-                        <link linkend=""></link>
-                        -->
-                    </para>
-                    <!--
-                    <programlisting linenumbering="numbered" id="">
+		<title id="polars">Polar Charts</title>
+		<para>
+		    Text info Polar...
+		</para>	    
+		<sect3>
+		    <title id="polarsample" xreflabel="codexample">Polar Example</title>
+		    <para>
+			Let us make this more concrete by looking at the 
+			following lines of code.
+			<!--
+			<link linkend=""></link>
+			<link linkend=""></link>
+			-->
+		    </para>
+		    <!--
+		    <programlisting linenumbering="numbered" id="">
                     <textobject>
-                    <textdata fileref="../../examples/..."/>
-                    </textobject>
+		    <textdata fileref="../../examples/..."/>
+		    </textobject>
                     </programlisting>
-                    -->
-                    <para>
-                        More explanation?
-                    </para>
-                </sect3>
-                <sect3>
-                    <title id="polarsattributes">Polars Attributes</title>
-                    <para>
-                        Text ...
-                    </para>
-                    <sect4>
-                        <title id="polarattributessample" xreflabel="codexample">Polar Example</title>
-                        <para>
-                            Let us make this more concrete by looking at the
-                            following lines of code.
-                            <!--
-                            <link linkend=""></link>
-                            <link linkend=""></link>
-                            -->
-                        </para>
-                        <!--
-                        <programlisting linenumbering="numbered" id="">
-                        <textobject>
-                        <textdata fileref="../../examples/..."/>
-                        </textobject>
+		    -->
+		    <para>
+			More explanation?
+		    </para>   
+		</sect3>
+		<sect3>
+		    <title id="polarsattributes">Polars Attributes</title>
+		    <para>
+			Text ...
+		    </para>	
+		    <sect4>
+			<title id="polarattributessample" xreflabel="codexample">Polar Example</title>
+			<para>
+			    Let us make this more concrete by looking at the 
+			    following lines of code.
+			    <!--
+			    <link linkend=""></link>
+			    <link linkend=""></link>
+			    -->
+			</para>
+			<!--
+			<programlisting linenumbering="numbered" id="">
+			<textobject>
+			<textdata fileref="../../examples/..."/>
+		        </textobject>
                         </programlisting>
-                        -->
-                        <para>
-                            More explanation?
-                        </para>
-                    </sect4>
-                </sect3>
-                <sect3>
-                  <title id="polarstips">Tips and Tricks</title>
-                    <para>
-                        Some tips and tricks
-                    </para>
-                    <sect4>
-                        <title id="polartipssample" xreflabel="codexample">A complete Polar Example</title>
-                        <para>
-                            Let us make this more concrete by looking at the
-                            following lines of code.
-                            <!--
-                            <link linkend=""></link>
-                            <link linkend=""></link>
-                            -->
-                        </para>
-                        <!--
-                        <programlisting linenumbering="numbered" id="">
-                        <textobject>
-                        <textdata fileref="../../examples/..."/>
-                        </textobject>
+			-->
+			<para>
+			    More explanation?
+			</para>   
+		    </sect4>	
+		</sect3>
+		<sect3>
+		   <title id="polarstips">Tips and Tricks</title>
+		    <para>
+			Some tips and tricks
+		    </para>	
+		    <sect4>
+			<title id="polartipssample" xreflabel="codexample">A complete Polar Example</title>
+			<para>
+			    Let us make this more concrete by looking at the 
+			    following lines of code.
+			    <!--
+			    <link linkend=""></link>
+			    <link linkend=""></link>
+			    -->
+			</para>
+			<!--
+			<programlisting linenumbering="numbered" id="">
+			<textobject>
+			<textdata fileref="../../examples/..."/>
+		        </textobject>
                         </programlisting>
-                        -->
-                        <para>
-                            More explanation?
-                        </para>
-                    </sect4>
-                </sect3>
-            </sect2>
-        </sect1>
-        <sect1>
+			-->
+			<para>
+			    More explanation?
+			</para>   
+		    </sect4>	  
+		</sect3>
+	    </sect2>
+	</sect1>
+	<sect1>
             <title>What's next</title>
             <para>
                 Customizing your chart - Tips
@@ -1502,138 +1566,138 @@
     <chapter id="chapter_customizing">
         <title id="chtxt_customizing">Customizing your Chart</title>
         <titleabbrev id="chnum_customizing">Chapter 5</titleabbrev>
-        <para>
+	<para>
           Introduction text
         </para>
-        <sect1>
+	<sect1>
             <title id="customizingcolors">Colors</title>
             <para>
                 Text ...
-            </para>
+            </para>  
             <sect2>
                 <title id="colorsample" xreflabel="codexample">Colors Example</title>
                 <para>
                     Let us make this more concrete by looking at the following
                     lines of code.
-                    <!--
+		    <!--
                     <link linkend=""></link>
-                    <link linkend=""></link>
+		    <link linkend=""></link>
                     -->
                 </para>
                 <!--
                 <programlisting linenumbering="numbered" id="">
                 <textobject>
                 <textdata fileref="../../examples/..."/>
-                </textobject>
-                </programlisting>
+	        </textobject>
+	        </programlisting>
                 -->
                 <para>
                     More explanation?
                 </para>
             </sect2>
         </sect1>
-        <sect1>
+	<sect1>
             <title id="customizingfonts">Fonts</title>
             <para>
                 Text ...
-            </para>
+            </para>  
             <sect2>
                 <title id="fontsample" xreflabel="codexample">Font Example</title>
                 <para>
                     Let us make this more concrete by looking at the following
                     lines of code.
-                    <!--
+		    <!--
                     <link linkend=""></link>
-                    <link linkend=""></link>
+		    <link linkend=""></link>
                     -->
                 </para>
                 <!--
                 <programlisting linenumbering="numbered" id="">
                 <textobject>
                 <textdata fileref="../../examples/..."/>
-                </textobject>
-                </programlisting>
+	        </textobject>
+	        </programlisting>
                 -->
                 <para>
                     More explanation?
                 </para>
             </sect2>
-        </sect1>
-        <sect1>
+        </sect1>	
+	<sect1>
             <title id="customizingmarkers">Markers</title>
             <para>
                 Text ...
-            </para>
+            </para>  
             <sect2>
                 <title id="markersample" xreflabel="codexample">Markers Example</title>
                 <para>
                     Let us make this more concrete by looking at the following
                     lines of code.
-                    <!--
+		    <!--
                     <link linkend=""></link>
-                    <link linkend=""></link>
+		    <link linkend=""></link>
                     -->
                 </para>
                 <!--
                 <programlisting linenumbering="numbered" id="">
                 <textobject>
                 <textdata fileref="../../examples/..."/>
-                </textobject>
-                </programlisting>
+	        </textobject>
+	        </programlisting>
                 -->
                 <para>
                     More explanation?
                 </para>
             </sect2>
         </sect1>
-        <sect1>
+	<sect1>
             <title id="customizingthreed">ThreeD</title>
             <para>
                 Text ...
-            </para>
+            </para>  
             <sect2>
                 <title id="threedsample" xreflabel="codexample">ThreeD Example</title>
                 <para>
                     Let us make this more concrete by looking at the following
                     lines of code.
-                    <!--
+		    <!--
                     <link linkend=""></link>
-                    <link linkend=""></link>
+		    <link linkend=""></link>
                     -->
                 </para>
                 <!--
                 <programlisting linenumbering="numbered" id="">
                 <textobject>
                 <textdata fileref="../../examples/..."/>
-                </textobject>
-                </programlisting>
+	        </textobject>
+	        </programlisting>
                 -->
                 <para>
                     More explanation?
                 </para>
             </sect2>
         </sect1>
-        <sect1>
+	<sect1>
             <title id="customizingtips">Tips</title>
             <para>
                 Text ...
-            </para>
+            </para>  
             <sect2>
                 <title id="tipsample" xreflabel="codexample">A cool Example</title>
                 <para>
                     Let us make this more concrete by looking at the following
                     lines of code.
-                    <!--
+		    <!--
                     <link linkend=""></link>
-                    <link linkend=""></link>
+		    <link linkend=""></link>
                     -->
                 </para>
                 <!--
                 <programlisting linenumbering="numbered" id="">
                 <textobject>
                 <textdata fileref="../../examples/..."/>
-                </textobject>
-                </programlisting>
+	        </textobject>
+	        </programlisting>
                 -->
                 <para>
                     More explanation?
@@ -1650,57 +1714,57 @@
     <chapter id="chapter_headersfooters">
         <title id="chtxt_headersfooters">Header and Footers</title>
         <titleabbrev id="chnum_headersfooters">Chapter 6</titleabbrev>
-        <para>
+	<para>
           Introduction text
         </para>
-        <sect1>
+	<sect1>
             <title id="headersfootershowtoconfigure">How to configure</title>
             <para>
                 Text ...
-            </para>
+            </para>  
             <sect2>
                 <title id="headersfootersconfiguresample" xreflabel="codexample">Headers and Footers Example</title>
                 <para>
                     Let us make this more concrete by looking at the following
                     lines of code.
-                    <!--
+		    <!--
                     <link linkend=""></link>
-                    <link linkend=""></link>
+		    <link linkend=""></link>
                     -->
                 </para>
                 <!--
                 <programlisting linenumbering="numbered" id="">
                 <textobject>
                 <textdata fileref="../../examples/..."/>
-                </textobject>
-                </programlisting>
+	        </textobject>
+	        </programlisting>
                 -->
                 <para>
                     More explanation?
                 </para>
             </sect2>
         </sect1>
-        <sect1>
+	<sect1>
             <title id="headersandfooterstips">Tips</title>
             <para>
                 Text ...
-            </para>
+            </para>  
             <sect2>
                 <title id="headersfooterstipsample" xreflabel="codexample">A cool headers and footers Example</title>
                 <para>
                     Let us make this more concrete by looking at the following
                     lines of code.
-                    <!--
+		    <!--
                     <link linkend=""></link>
-                    <link linkend=""></link>
+		    <link linkend=""></link>
                     -->
                 </para>
                 <!--
                 <programlisting linenumbering="numbered" id="">
                 <textobject>
                 <textdata fileref="../../examples/..."/>
-                </textobject>
-                </programlisting>
+	        </textobject>
+	        </programlisting>
                 -->
                 <para>
                     More explanation?
@@ -1717,57 +1781,57 @@
     <chapter id="chapter_legends">
         <title id="chtxt_legends">Legends</title>
         <titleabbrev id="chnum_legends">Chapter 7</titleabbrev>
-        <para>
+	<para>
           Introduction text
         </para>
-        <sect1>
+	<sect1>
             <title id="legendshowtoconfigure">How to configure</title>
             <para>
                 Text ...
-            </para>
+            </para>  
             <sect2>
                 <title id="legendsconfiguresample" xreflabel="codexample">Legend Example</title>
                 <para>
                     Let us make this more concrete by looking at the following
                     lines of code.
-                    <!--
+		    <!--
                     <link linkend=""></link>
-                    <link linkend=""></link>
+		    <link linkend=""></link>
                     -->
                 </para>
                 <!--
                 <programlisting linenumbering="numbered" id="">
                 <textobject>
                 <textdata fileref="../../examples/..."/>
-                </textobject>
-                </programlisting>
+	        </textobject>
+	        </programlisting>
                 -->
                 <para>
                     More explanation?
                 </para>
             </sect2>
         </sect1>
-        <sect1>
+	<sect1>
             <title id="legendstips">Tips</title>
             <para>
                 Text ...
-            </para>
+            </para>  
             <sect2>
                 <title id="legendtipsample" xreflabel="codexample">Legend Example</title>
                 <para>
                     Let us make this more concrete by looking at the following
                     lines of code.
-                    <!--
+		    <!--
                     <link linkend=""></link>
-                    <link linkend=""></link>
+		    <link linkend=""></link>
                     -->
                 </para>
                 <!--
                 <programlisting linenumbering="numbered" id="">
                 <textobject>
                 <textdata fileref="../../examples/..."/>
-                </textobject>
-                </programlisting>
+	        </textobject>
+	        </programlisting>
                 -->
                 <para>
                     More explanation?
@@ -1784,57 +1848,57 @@
     <chapter id="chapter_axes">
         <title id="chtxt_axes">Axes</title>
         <titleabbrev id="chnum_axes">Chapter 8</titleabbrev>
-        <para>
+	<para>
           Introduction text
         </para>
-        <sect1>
+	<sect1>
             <title id="axeshowtoconfigure">How to configure</title>
             <para>
                 Text ...
-            </para>
+            </para>  
             <sect2>
                 <title id="axesconfiguresample" xreflabel="codexample">Axes Example</title>
                 <para>
                     Let us make this more concrete by looking at the following
                     lines of code.
-                    <!--
+		    <!--
                     <link linkend=""></link>
-                    <link linkend=""></link>
+		    <link linkend=""></link>
                     -->
                 </para>
                 <!--
                 <programlisting linenumbering="numbered" id="">
                 <textobject>
                 <textdata fileref="../../examples/..."/>
-                </textobject>
-                </programlisting>
+	        </textobject>
+	        </programlisting>
                 -->
                 <para>
                     More explanation?
                 </para>
             </sect2>
         </sect1>
-        <sect1>
+	<sect1>
             <title id="axestips">Tips</title>
             <para>
                 Text ...
-            </para>
+            </para>  
             <sect2>
                 <title id="axestipsample" xreflabel="codexample">A cool Axes Example</title>
                 <para>
                     Let us make this more concrete by looking at the following
                     lines of code.
-                    <!--
+		    <!--
                     <link linkend=""></link>
-                    <link linkend=""></link>
+		    <link linkend=""></link>
                     -->
                 </para>
                 <!--
                 <programlisting linenumbering="numbered" id="">
                 <textobject>
                 <textdata fileref="../../examples/..."/>
-                </textobject>
-                </programlisting>
+	        </textobject>
+	        </programlisting>
                 -->
                 <para>
                     More explanation?
@@ -1851,57 +1915,57 @@
     <chapter id="chapter_advancedcharting">
         <title id="chtxt_advancedcharting">Advanced Charting</title>
         <titleabbrev id="chnum_advancedcharting">Chapter 9</titleabbrev>
-        <para>
+	<para>
           Introduction text
         </para>
-        <sect1>
+	<sect1>
             <title id="framebackground">Frame and Background</title>
             <para>
                 Text ...
-            </para>
+            </para>  
             <sect2>
                 <title id="framebackgroundsample" xreflabel="codexample">Frame and Background Example</title>
                 <para>
                     Let us make this more concrete by looking at the following
                     lines of code.
-                    <!--
+		    <!--
                     <link linkend=""></link>
-                    <link linkend=""></link>
+		    <link linkend=""></link>
                     -->
                 </para>
                 <!--
                 <programlisting linenumbering="numbered" id="">
                 <textobject>
                 <textdata fileref="../../examples/..."/>
-                </textobject>
-                </programlisting>
+	        </textobject>
+	        </programlisting>
                 -->
                 <para>
                     More explanation?
                 </para>
             </sect2>
         </sect1>
-        <sect1>
+	<sect1>
             <title id="datavaluemanipulation">Data Value Manipulation</title>
             <para>
                 Text ...
-            </para>
+            </para>  
             <sect2>
                 <title id="datavaluemanipulationsample" xreflabel="codexample">Data Value Manipulation Example</title>
                 <para>
                     Let us make this more concrete by looking at the following
                     lines of code.
-                    <!--
+		    <!--
                     <link linkend=""></link>
-                    <link linkend=""></link>
+		    <link linkend=""></link>
                     -->
                 </para>
                 <!--
                 <programlisting linenumbering="numbered" id="">
                 <textobject>
                 <textdata fileref="../../examples/..."/>
-                </textobject>
-                </programlisting>
+	        </textobject>
+	        </programlisting>
                 -->
                 <para>
                     More explanation?
@@ -1912,131 +1976,131 @@
             <title id="axismanipulation">Axis Manipulation</title>
             <para>
                 Text ...
-            </para>
+            </para>  
             <sect2>
                 <title id="axismanipulationsample" xreflabel="codexample">Axis Manipulation Example</title>
                 <para>
                     Let us make this more concrete by looking at the following
                     lines of code.
-                    <!--
+		    <!--
                     <link linkend=""></link>
-                    <link linkend=""></link>
+		    <link linkend=""></link>
                     -->
                 </para>
                 <!--
                 <programlisting linenumbering="numbered" id="">
                 <textobject>
                 <textdata fileref="../../examples/..."/>
-                </textobject>
-                </programlisting>
+	        </textobject>
+	        </programlisting>
                 -->
                 <para>
                     More explanation?
                 </para>
             </sect2>
         </sect1>
-        <sect1>
+	<sect1>
             <title id="gridmanipulation">Grid Manipulation</title>
             <para>
                 Text ...
-            </para>
+            </para>  
             <sect2>
                 <title id="gridmanipulationsample" xreflabel="codexample">Grid Manipulation Example</title>
                 <para>
                     Let us make this more concrete by looking at the following
                     lines of code.
-                    <!--
+		    <!--
                     <link linkend=""></link>
-                    <link linkend=""></link>
+		    <link linkend=""></link>
                     -->
                 </para>
                 <!--
                 <programlisting linenumbering="numbered" id="">
                 <textobject>
                 <textdata fileref="../../examples/..."/>
-                </textobject>
-                </programlisting>
+	        </textobject>
+	        </programlisting>
                 -->
                 <para>
                     More explanation?
                 </para>
             </sect2>
         </sect1>
-        <sect1>
+	<sect1>
             <title id="interactivecharts">Interactive Charts</title>
             <para>
                 Text ...
-            </para>
+            </para>  
             <sect2>
                 <title id="interactivechartssample" xreflabel="codexample">Interactive Chart Example</title>
                 <para>
                     Let us make this more concrete by looking at the following
                     lines of code.
-                    <!--
+		    <!--
                     <link linkend=""></link>
-                    <link linkend=""></link>
+		    <link linkend=""></link>
                     -->
                 </para>
                 <!--
                 <programlisting linenumbering="numbered" id="">
                 <textobject>
                 <textdata fileref="../../examples/..."/>
-                </textobject>
-                </programlisting>
+	        </textobject>
+	        </programlisting>
                 -->
                 <para>
                     More explanation?
                 </para>
             </sect2>
         </sect1>
-        <sect1>
+	<sect1>
             <title id="multiplechart">Multiple Charts</title>
             <para>
                 Text ...
-            </para>
+            </para>  
             <sect2>
                 <title id="multiplechartsample" xreflabel="codexample">Multiple Chart Example</title>
                 <para>
                     Let us make this more concrete by looking at the following
                     lines of code.
-                    <!--
+		    <!--
                     <link linkend=""></link>
-                    <link linkend=""></link>
+		    <link linkend=""></link>
                     -->
                 </para>
                 <!--
                 <programlisting linenumbering="numbered" id="">
                 <textobject>
                 <textdata fileref="../../examples/..."/>
-                </textobject>
-                </programlisting>
+	        </textobject>
+	        </programlisting>
                 -->
                 <para>
                     More explanation?
                 </para>
             </sect2>
         </sect1>
-        <sect1>
+	<sect1>
             <title id="zooming">Zooming</title>
             <para>
                 Text ...
-            </para>
+            </para>  
             <sect2>
                 <title id="zoomingsample" xreflabel="codexample">Zooming Example</title>
                 <para>
                     Let us make this more concrete by looking at the following
                     lines of code.
-                    <!--
+		    <!--
                     <link linkend=""></link>
-                    <link linkend=""></link>
+		    <link linkend=""></link>
                     -->
                 </para>
                 <!--
                 <programlisting linenumbering="numbered" id="">
                 <textobject>
                 <textdata fileref="../../examples/..."/>
-                </textobject>
-                </programlisting>
+	        </textobject>
+	        </programlisting>
                 -->
                 <para>
                     More explanation?
@@ -2049,10 +2113,10 @@
                 FAQ.
             </para>
         </sect1>
-    </chapter>
+    </chapter>    
     <appendix id="appendix_qanda">
         <title>Q&amp;A section</title>
-        <titleabbrev>Appendix A</titleabbrev>
+        <titleabbrev>Appendix A</titleabbrev>       
         <note>
             <para>
                 This section will grow further according to the most frequently
