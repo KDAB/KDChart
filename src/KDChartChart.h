@@ -329,6 +329,11 @@ namespace KDChart {
         void paint( QPainter* painter, const QRect& target );
 
         /**
+          * Adjusts the internal layout when the chart is resized.
+          */
+        virtual void resizeEvent ( QResizeEvent * event );
+
+        /**
           * @brief Draws the background and frame, then calls paint().
           *
           * In most cases there is no need to overwrite this method in a derived

@@ -639,7 +639,6 @@ qDebug() << "KDChart::Chart::paint() called, inPaint: " << d->inPaint;
         qDebug() << "KDChart::Chart::paint() calling new setGeometry(" << target << ")";
         setGeometry( target );
         painter->drawRect( target );
-        d->slotRelayout();
     }
 
     foreach( KDChart::AbstractArea* layoutItem, d->layoutItems ) {
@@ -660,6 +659,11 @@ qDebug() << "KDChart::Chart::paint() called, inPaint: " << d->inPaint;
 qDebug() << "KDChart::Chart::paint() done.\n";
 }
 
+
+void Chart::resizeEvent ( QResizeEvent * event )
+{
+    d->slotRelayout();
+}
 
 void Chart::paintEvent( QPaintEvent* event )
 {
