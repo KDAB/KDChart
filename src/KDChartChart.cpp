@@ -489,6 +489,8 @@ qDebug() << "Chart relayouting started.";
     //dataAndLegendLayout->activate();
     foreach (AbstractCoordinatePlane* plane, coordinatePlanes )
         plane->layoutDiagrams();
+    layout->activate();
+    //dataAndLegendLayout->activate();
 
 qDebug() << "Chart relayouting done.";
 }
@@ -676,6 +678,7 @@ qFatal("nPaint > 100");
 void Chart::resizeEvent ( QResizeEvent * event )
 {
     d->slotLayoutPlanes();
+    
     //d->slotRelayout();
 }
 
