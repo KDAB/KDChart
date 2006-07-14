@@ -280,7 +280,7 @@ QRectF CartesianCoordinatePlane::drawingArea() const
 
 void CartesianCoordinatePlane::layoutDiagrams()
 {
-    qDebug("KDChart::CartesianCoordinatePlane::layoutDiagrams() called --------------------------------------------------------");
+    qDebug("KDChart::CartesianCoordinatePlane::layoutDiagrams() called");
     if ( diagrams().isEmpty() )
     {   // FIXME evaluate what can still be prepared
         // FIXME decide default dimension if no diagrams are present (to make empty planes useable)
@@ -429,9 +429,7 @@ void KDChart::CartesianCoordinatePlane::setHorizontalRange( const QPair< qreal, 
     if ( d->horizontalMin != range.first || d->horizontalMax != range.second ) {
         d->horizontalMin = range.first;
         d->horizontalMax = range.second;
-	// Is there no better way to do this???
-	layoutDiagrams();
-	update();
+        layoutDiagrams();
     }
 }
 
@@ -440,9 +438,7 @@ void KDChart::CartesianCoordinatePlane::setVerticalRange( const QPair< qreal, qr
     if ( d->verticalMin != range.first || d->verticalMax != range.second ) {
         d->verticalMin = range.first;
         d->verticalMax = range.second;
-	// Is there no better way to do this???
-	layoutDiagrams();
-	update();
+        layoutDiagrams();
     }
 }
 

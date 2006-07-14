@@ -672,8 +672,7 @@ void Chart::paintEvent( QPaintEvent* event )
 
     QPainter painter( this );
     //FIXME(khz): Paint the background/frame too!
-    //            (can we derive Chart from AreaWidget ??))
-    //paintAll( painter );
+    //            (can we derive Chart from AreaWidget ??)
     paint( &painter, geometry() );
 }
 
