@@ -672,11 +672,9 @@ qFatal("nPaint > 100");
     qDebug() << "KDChart::Chart::paint() done.\n";
 }
 
-static int nummm=0;
+
 void Chart::resizeEvent ( QResizeEvent * event )
 {
-++nummm;
-if( nummm < 3 ) return;
     d->slotLayoutPlanes();
     //d->slotRelayout();
 }

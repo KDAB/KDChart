@@ -103,7 +103,7 @@ void CartesianAxis::paintEvent( QPaintEvent* event )
 
 void CartesianAxis::paint( QPainter* painter )
 {
-    qDebug() << "KDChart::CartesianAxis::paint() called =============================================================";
+    qDebug() << "KDChart::CartesianAxis::paint() called";
     if( ! d->diagram() || ! d->diagram()->coordinatePlane() ) return;
     PaintContext ctx;
     ctx.setPainter ( painter );
@@ -121,7 +121,7 @@ void CartesianAxis::paint( QPainter* painter )
 #define ptr (context->painter())
 void CartesianAxis::paintCtx( PaintContext* context )
 {
-    qDebug() << "KDChart::CartesianAxis::paintCtx() called =============================================================";
+    qDebug() << "KDChart::CartesianAxis::paintCtx() called";
 
     Q_ASSERT_X ( d->diagram(), "CartesianAxis::paint",
                  "Function call not allowed: The axis is not assigned to any diagram." );
