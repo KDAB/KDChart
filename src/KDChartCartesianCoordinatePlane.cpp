@@ -95,9 +95,9 @@ void CartesianCoordinatePlane::paint ( QPainter* painter )
             diags[i]->paint ( &ctx );
         }
         //for debugging:
-            painter->drawRect( drawArea.adjusted(4,4,4,4) );
-            painter->drawRect( drawArea.adjusted(2,2,2,2) );
-            painter->drawRect( drawArea );
+        //    painter->drawRect( drawArea.adjusted(4,4,4,4) );
+        //    painter->drawRect( drawArea.adjusted(2,2,2,2) );
+        //    painter->drawRect( drawArea );
     }
     qDebug("KDChart::CartesianCoordinatePlane::paint() done.");
 }
