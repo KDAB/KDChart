@@ -186,7 +186,6 @@ namespace KDChart {
         // than (width, height):
         virtual QRectF drawingArea() const;
         void paintEvent ( QPaintEvent* );
-        void resizeEvent ( QResizeEvent* );
         void layoutDiagrams();
 
     protected slots:

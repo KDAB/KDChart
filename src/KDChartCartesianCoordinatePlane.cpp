@@ -195,15 +195,11 @@ void CartesianCoordinatePlane::paintGrid( PaintContext* ctx )
     }
 }
 */
-void CartesianCoordinatePlane::resizeEvent ( QResizeEvent* )
-{
-    d->initialResizeEventReceived = true;
-    layoutDiagrams();
-}
 
 void CartesianCoordinatePlane::slotLayoutChanged ( AbstractDiagram* )
 {
-    if ( d->initialResizeEventReceived ) layoutDiagrams();
+    // old: if ( d->initialResizeEventReceived )
+    layoutDiagrams();
 }
 
 QRectF CartesianCoordinatePlane::calculateRawDataBoundingRect() const
@@ -279,12 +275,12 @@ DataDimensionsList CartesianCoordinatePlane::getDataDimensionsList() const
 QRectF CartesianCoordinatePlane::drawingArea() const
 {
     const QRect rect( areaGeometry() );
-    return QRectF ( 1, 1, rect.width() - 3, rect.height() - 3 );
+    return QRectF ( rect.left()+1, rect.top()+1, rect.width() - 3, rect.height() - 3 );
 }
 
 void CartesianCoordinatePlane::layoutDiagrams()
 {
-    qDebug("KDChart::CartesianCoordinatePlane::layoutDiagrams() called.");
+    qDebug("KDChart::CartesianCoordinatePlane::layoutDiagrams() called --------------------------------------------------------");
     if ( diagrams().isEmpty() )
     {   // FIXME evaluate what can still be prepared
         // FIXME decide default dimension if no diagrams are present (to make empty planes useable)

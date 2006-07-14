@@ -57,7 +57,7 @@ public:
     explicit Private()
         : hasOwnGridAttributesHorizontal ( false )
         , hasOwnGridAttributesVertical ( false )
-        , initialResizeEventReceived ( false )
+        // old: , initialResizeEventReceived ( false )
         , isometricScaling ( false )
         , horizontalMin(0), horizontalMax(0)
         , verticalMin(0), verticalMax(0)
@@ -79,8 +79,10 @@ public:
     // false if resetGridAttributes( Qt::Orientation ) was called
     bool hasOwnGridAttributesHorizontal;
     bool hasOwnGridAttributesVertical;
+
     // true after the first resize event came in
-    bool initialResizeEventReceived;
+    // bool initialResizeEventReceived;
+
     // true if the coordinate plane scales isometrically
     bool isometricScaling;
 

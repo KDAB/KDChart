@@ -492,6 +492,8 @@ qDebug() << "Chart relayouting started.";
     layoutHeadersAndFooters();
     layoutLegends();
     layout->activate();
+    foreach (AbstractCoordinatePlane* plane, coordinatePlanes )
+        plane->layoutDiagrams();
 qDebug() << "Chart relayouting done.";
 }
 
