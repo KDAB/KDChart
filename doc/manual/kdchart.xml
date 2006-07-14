@@ -739,7 +739,7 @@
 <!--
 	    <link linkend="mainwindow_h">mainwindow.h</link> 
 -->	    
-		<!-- Pending Michel: Write a new very simple Widget example -->
+		<!-- Pending Michel: Write a new very simple Widget example with a legend -->
 		<programlisting linenumbering="numbered" id="widget_mainwindow_h">
 		    <textobject><textdata fileref="../../examples/Widget/mainwindow.h"/>
 		    </textobject>
@@ -767,7 +767,7 @@
 		</para>
 	    </sect2>
 	    <sect2>
-		<!-- Pending Michel: write a simple chart example -->
+		<!-- Pending Michel: write a simple line chart example with a legend -->
                 <title id="basicchart" xreflabel="codexample">Chart Example</title>
 		<para>
 		We recommend you to read, compile and run the following example. 
@@ -793,7 +793,7 @@
 		    <title>A Simple Chart</title>
 		    <mediaobject>
 			<imageobject>
-			    <imagedata width="3in" scalefit="1" fileref="images/simplechart.png"/>
+			    <imagedata width="3in" scalefit="1" fileref="images/simpleline.png"/>
 			</imageobject>
 		    </mediaobject>
 		</figure>
@@ -888,18 +888,50 @@
 			    <para>Percent</para>
 			</listitem>		
 		    </itemizedlist>
-		</para>  
-	    </sect2>	   
+		</para> 
+		<note>
+		    <para>
+			Three-dimensional look of the bars is no special feature you can enable it
+			for all types (<literal>Normal</literal>, <literal>Stacked</literal> or
+			<literal>Percent</literal>) by setting its ThreeD attributes, we will 
+			describe that in the "Bars Attributes" section further on.
+		    </para>
+		</note>
+	    </sect2>
 	    <sect2>
-		<title id="barsample" xreflabel="codexample">Bar Example</title>
+		<title id="barsample" xreflabel="codexample">Bar Example</title>	
 		<para>
-		    Let us make this more concrete by looking at the 
+		    For now let us make the above description  more concrete by looking at the 
 		    following example:		    
 		</para>
-		
+		<para>
+		    It is recommended for you to read, compile and run this example.
+		</para>
+<!--
+	    <link linkend="mainwindow_h">mainwindow.h</link> 
+-->	    	
+		<programlisting linenumbering="numbered" id="bar_mainwindow_h">
+		    <textobject><textdata fileref="../../examples/Bars/mainwindow.h"/>
+		    </textobject>
+		</programlisting>                
+		<para>
+		    More explanation h file?
+		</para>
+		<programlisting linenumbering="numbered" id="bar_mainwindow_cpp">
+		    <textobject><textdata fileref="../../examples/Bars/mainwindow.cpp"/>
+		    </textobject>
+		</programlisting>
 		<para>
 		    More explanation?
-		</para>   
+		</para>
+		<figure float="0" id="fig-simplebar">
+		    <title>A Simple Bar Widget</title>
+		    <mediaobject>
+			<imageobject>
+			    <imagedata width="3in" scalefit="1" fileref="images/simplechart.png"/>
+			</imageobject>
+		    </mediaobject>
+		</figure>
 	    </sect2>
 	    <sect2>
 		<title id="barsattributes">Bars Attributes</title>
