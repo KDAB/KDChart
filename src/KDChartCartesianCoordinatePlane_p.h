@@ -54,15 +54,7 @@ class CartesianCoordinatePlane::Private : public AbstractCoordinatePlane::Privat
 {
     friend class CartesianCoordinatePlane;
 public:
-    explicit Private()
-        : hasOwnGridAttributesHorizontal ( false )
-        , hasOwnGridAttributesVertical ( false )
-        // old: , initialResizeEventReceived ( false )
-        , isometricScaling ( false )
-        , horizontalMin(0), horizontalMax(0)
-        , verticalMin(0), verticalMax(0)
-    {}
-
+    explicit Private();
     virtual ~Private() { }
 
     virtual void initialize()

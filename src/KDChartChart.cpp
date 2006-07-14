@@ -338,21 +338,13 @@ void Chart::Private::slotLayoutPlanes()
     if ( planesLayout && dataAndLegendLayout )
         dataAndLegendLayout->removeItem( planesLayout );
 
-    foreach( KDChart::AbstractCoordinatePlane* plane, planeLayoutItems ) {
+    foreach( KDChart::AbstractArea* plane, planeLayoutItems ) {
         plane->removeFromParentLayout();
     }
-    //qDeleteAll( planeLayoutItems );
-    //delete planesLayout;
-
     planeLayoutItems.clear();
-/*
-    if ( planesLayout ) {
-        if ( dataAndLegendLayout )
-            dataAndLegendLayout->removeItem( planesLayout );
-        delete planesLayout;
-    }
-*/
-    planesLayout = new QVBoxLayout(); // FIXME is this the right default, I wonder?
+
+    delete planesLayout;
+    planesLayout = new QVBoxLayout();
 
     /* First go through all planes and all axes and figure out whether the planes
      * need to coordinate. If they do, they share a grid layout, if not, each
@@ -377,9 +369,8 @@ void Chart::Private::slotLayoutPlanes()
          * the middle of the layout, if we are sharing, it's a cell in the center
          * column of the shared grid. */
         planeLayoutItems << plane;
-qDebug() << "A";
+        plane->setParentLayout( planeLayout );
         planeLayout->addItem( plane, row, column, 1, 1, 0 );
-qDebug() << "B";
         planeLayout->setRowStretch(    row,    2 );
         planeLayout->setColumnStretch( column, 2 );
 
@@ -387,7 +378,9 @@ qDebug() << "B";
         {
             AbstractCartesianDiagram* diagram =
                     dynamic_cast<AbstractCartesianDiagram*> ( abstractDiagram );
+            //qDebug() << "--------------- diagram ???????????????????? -----------------";
             if( !diagram ) continue;  // FIXME polar ?
+            //qDebug() << "--------------- diagram ! ! ! ! ! ! ! ! ! !  -----------------";
             // collect all axes of a kind into sublayouts
             QVBoxLayout *topAxesLayout = new QVBoxLayout();
             QVBoxLayout *bottomAxesLayout = new QVBoxLayout();
@@ -397,7 +390,8 @@ qDebug() << "B";
             foreach ( CartesianAxis* axis, diagram->axes() ) {
                 if ( axisInfos.contains( axis ) ) continue; // already layed this one out
                 Q_ASSERT ( axis );
-                layoutItems << axis;
+                qDebug() << "--------------- axis added to planeLayoutItems  -----------------";
+                planeLayoutItems << axis;
                 switch ( axis->position() )
                 {
                     case CartesianAxis::Top:
@@ -427,10 +421,10 @@ qDebug() << "B";
              * associated plane. We are laying out in the oder the planes
              * were added, and the first one gets to lay out shared axes.
              * Private axes go here as well, of course. */
-            planeLayout->addLayout( topAxesLayout, 0, 1 );
+            planeLayout->addLayout( topAxesLayout,    0,       1 );
             planeLayout->addLayout( bottomAxesLayout, row + 1, 1 );
-            planeLayout->addLayout( leftAxesLayout, row, 0 );
-            planeLayout->addLayout( rightAxesLayout, row, column + 1);
+            planeLayout->addLayout( leftAxesLayout,   row,     0 );
+            planeLayout->addLayout( rightAxesLayout,  row,     column + 1);
         }
 
     }
@@ -450,7 +444,6 @@ void Chart::Private::createLayouts( QWidget* w )
     foreach( KDChart::AbstractArea* layoutItem, layoutItems ) {
         layoutItem->removeFromParentLayout();
     }
-    qDeleteAll( layoutItems );
     layoutItems.clear();
 
     // layout for the planes is handled separately, so we don't want to delete it here
@@ -489,11 +482,14 @@ void Chart::Private::slotRelayout()
 {
 qDebug() << "Chart relayouting started.";
     createLayouts( chart );
+
     layoutHeadersAndFooters();
     layoutLegends();
     layout->activate();
+    //dataAndLegendLayout->activate();
     foreach (AbstractCoordinatePlane* plane, coordinatePlanes )
         plane->layoutDiagrams();
+
 qDebug() << "Chart relayouting done.";
 }
 
@@ -623,15 +619,15 @@ int Chart::globalLeadingBottom() const
     return d->globalLeadingBottom;
 }
 
-#define debug_recursive_paint 1
+//#define debug_recursive_paint
 #ifdef debug_recursive_paint
 static int nPaint=0;
 #endif
 
 void Chart::paint( QPainter* painter, const QRect& target_ )
 {
+    qDebug() << "KDChart::Chart::paint() called, inPaint: " << d->inPaint;
 #ifdef debug_recursive_paint
-qDebug() << "KDChart::Chart::paint() called, inPaint: " << d->inPaint;
 ++nPaint;
 if( 100<nPaint)
 qFatal("nPaint > 100");
@@ -639,10 +635,12 @@ qFatal("nPaint > 100");
     if( d->inPaint || target_.isEmpty() || !painter ) return;
 
     d->inPaint = true;
+
     const QRect oldGeometry( geometry() );
     //painter->drawRect( oldGeometry );
     QRect target( target_ );
     QPoint translation(0,0);
+
     if( target != oldGeometry ){
         qDebug() << "KDChart::Chart::paint() calling new setGeometry(" << target << ")";
         setGeometry( target );
@@ -656,7 +654,7 @@ qFatal("nPaint > 100");
     foreach( KDChart::AbstractArea* layoutItem, d->layoutItems ) {
         layoutItem->paintAll( *painter );
     }
-    foreach( KDChart::AbstractCoordinatePlane* planeLayoutItem, d->planeLayoutItems ) {
+    foreach( KDChart::AbstractArea* planeLayoutItem, d->planeLayoutItems ) {
         planeLayoutItem->paintAll( *painter );
     }
     foreach ( Legend *legend, d->legendLayoutItems ) {
@@ -669,16 +667,18 @@ qFatal("nPaint > 100");
         if( ! translation.isNull() )
             painter->translate( -translation.x(), -translation.y() );
     }
+
     d->inPaint = false;
-#ifdef debug_recursive_paint
-qDebug() << "KDChart::Chart::paint() done.\n";
-#endif
+    qDebug() << "KDChart::Chart::paint() done.\n";
 }
 
-
+static int nummm=0;
 void Chart::resizeEvent ( QResizeEvent * event )
 {
-    d->slotRelayout();
+++nummm;
+if( nummm < 3 ) return;
+    d->slotLayoutPlanes();
+    //d->slotRelayout();
 }
 
 void Chart::paintEvent( QPaintEvent* event )
@@ -762,7 +762,7 @@ void Chart::addLegend( Legend* legend )
     legend->setParent( this );
     connect( legend, SIGNAL( destroyedLegend( Legend* ) ),
              d, SLOT( slotUnregisterDestroyedLegend( Legend* ) ) );
-    connect( legend, SIGNAL( positionChanged( AbstractArea* ) ),
+    connect( legend, SIGNAL( positionChanged( AbstractAreaWidget* ) ),
              d, SLOT( slotRelayout() ) );
     d->slotRelayout();
 }

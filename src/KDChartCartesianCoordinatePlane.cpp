@@ -45,6 +45,21 @@ using namespace KDChart;
 
 #define d d_func()
 
+CartesianCoordinatePlane::Private::Private()
+    : AbstractCoordinatePlane::Private()
+    , hasOwnGridAttributesHorizontal ( false )
+    , hasOwnGridAttributesVertical ( false )
+    // old: , initialResizeEventReceived ( false )
+    , isometricScaling ( false )
+    , horizontalMin(0)
+    , horizontalMax(0)
+    , verticalMin(0)
+    , verticalMax(0)
+{
+    // this bloc left empty intentionally
+}
+
+
 CartesianCoordinatePlane::CartesianCoordinatePlane ( Chart* parent )
     : AbstractCoordinatePlane ( new Private(), parent )
 {
@@ -352,8 +367,8 @@ void CartesianCoordinatePlane::layoutDiagrams()
     //      adapt diagram area to effect of isometric scaling:
     diagramArea.setTopLeft( translate ( dataBoundingRect.topLeft() ) );
     diagramArea.setBottomRight ( translate ( dataBoundingRect.bottomRight() ) );
+    qDebug("KDChart::CartesianCoordinatePlane::layoutDiagrams() done,\ncalling update() now:");
     update();
-    qDebug("KDChart::CartesianCoordinatePlane::layoutDiagrams() done.");
 }
 
 const QPointF CartesianCoordinatePlane::translate( const QPointF& diagramPoint ) const

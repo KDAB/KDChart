@@ -65,8 +65,12 @@ namespace KDChart {
         }
         void removeFromParentLayout()
         {
-            if( mParentLayout )
-                mParentLayout->removeItem( this );
+            if( mParentLayout ){
+                if( widget() )
+                    mParentLayout->removeWidget( widget() );
+                else
+                    mParentLayout->removeItem( this );
+            }
         }
     protected:
         QWidget* mParent;

@@ -39,6 +39,16 @@ using namespace KDChart;
 
 #define d d_func()
 
+AbstractCoordinatePlane::Private::Private()
+    : AbstractArea::Private()
+    , parent( 0 )
+    , grid( 0 )
+    , referenceCoordinatePlane( 0 )
+{
+    // this bloc left empty intentionally
+}
+
+
 AbstractCoordinatePlane::AbstractCoordinatePlane ( KDChart::Chart* parent )
     : AbstractArea ( new Private() )
 {
@@ -209,7 +219,7 @@ QSize KDChart::AbstractCoordinatePlane::sizeHint() const
 void KDChart::AbstractCoordinatePlane::setGeometry( const QRect& r )
 {
     qDebug() << "KDChart::AbstractCoordinatePlane::setGeometry(" << r << ") called";
-    if( geometry() != r ){
+    if( d->geometry != r ){
         d->geometry = r;
         // Note: We do *not* call update() here
         //       because it would invoke KDChart::update() recursively.

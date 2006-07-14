@@ -39,11 +39,10 @@
 using namespace KDChart;
 
 AbstractAreaBase::Private::Private() :
-    visible( true ),
+    visible( true )
     // PENDING(khz) dockingPointToPadding?, alignToDockingPoint?
-    frameAttributes(),
-    backgroundAttributes()
 {
+    init();
 }
 
 
@@ -113,7 +112,10 @@ BackgroundAttributes AbstractAreaBase::backgroundAttributes() const
 
 void AbstractAreaBase::paintBackground( QPainter& painter, const QRect& rect )
 {
-    const BackgroundAttributes& attributes = d->backgroundAttributes;
+    Q_ASSERT_X ( d != 0, "AbstractAreaBase::paintBackground()",
+                "Private class was now initialized!" );
+
+#define attributes d->backgroundAttributes
 
     if( !attributes.isVisible() ) return;
 
@@ -159,12 +161,16 @@ void AbstractAreaBase::paintBackground( QPainter& painter, const QRect& rect )
             painter.drawPixmap( ol, pm );
         }
     }
+#undef attributes
 }
 
 
 void AbstractAreaBase::paintFrame( QPainter& painter, const QRect& rect )
 {
-    const FrameAttributes& attributes = d->frameAttributes;
+    Q_ASSERT_X ( d != 0, "AbstractAreaBase::paintFrame()",
+                "Private class was now initialized!" );
+
+#define attributes d->frameAttributes
 
     if( !attributes.isVisible() ) return;
 
@@ -172,11 +178,15 @@ void AbstractAreaBase::paintFrame( QPainter& painter, const QRect& rect )
     painter.setPen( attributes.pen() );
     painter.drawRect( rect );
     painter.setPen( oldPen );
+#undef attributes
 }
 
 
 QRect AbstractAreaBase::innerRect() const
 {
+    Q_ASSERT_X ( d != 0, "AbstractAreaBase::innerRect()",
+                "Private class was now initialized!" );
+
     const int padding
         = d->frameAttributes.isVisible()
         ? qMax( d->frameAttributes.padding(), 0 ) : 0;

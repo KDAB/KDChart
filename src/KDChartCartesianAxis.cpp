@@ -71,6 +71,17 @@ const CartesianAxis::Position CartesianAxis::position() const
 {
     return d->position;
 }
+
+bool CartesianAxis::isAbscissa() const
+{
+    return position() == Bottom || position() == Top;
+}
+
+bool CartesianAxis::isOrdinate() const
+{
+    return position() == Left || position() == Right;
+}
+
 /*
 void CartesianAxis::paintEvent( QPaintEvent* event )
 {
@@ -90,31 +101,28 @@ void CartesianAxis::paintEvent( QPaintEvent* event )
 }
 */
 
-bool CartesianAxis::isAbscissa() const
-{
-    return position() == Bottom || position() == Top;
-}
-
-bool CartesianAxis::isOrdinate() const
-{
-    return position() == Left || position() == Right;
-}
-
 void CartesianAxis::paint( QPainter* painter )
 {
+    qDebug() << "KDChart::CartesianAxis::paint() called =============================================================";
+    if( ! d->diagram() || ! d->diagram()->coordinatePlane() ) return;
     PaintContext ctx;
     ctx.setPainter ( painter );
+    ctx.setCoordinatePlane( d->diagram()->coordinatePlane() );
     const QRect rect( areaGeometry() );
     ctx.setRectangle(
         QRectF (
-            QPointF(0, 0),
+            //QPointF(0, 0),
+            QPointF(rect.left(), rect.top()),
             QSizeF(rect.width(), rect.height() ) ) );
     paintCtx( &ctx );
+    qDebug() << "KDChart::CartesianAxis::paint() done.";
 }
 
 #define ptr (context->painter())
 void CartesianAxis::paintCtx( PaintContext* context )
 {
+    qDebug() << "KDChart::CartesianAxis::paintCtx() called =============================================================";
+
     Q_ASSERT_X ( d->diagram(), "CartesianAxis::paint",
                  "Function call not allowed: The axis is not assigned to any diagram." );
 
@@ -525,6 +533,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
             delete labelItem;
     }
     //for debugging: ptr->drawRect(geoRect);
+    qDebug() << "KDChart::CartesianAxis::paintCtx() done.";
 }
 #undef ptr
 
@@ -569,11 +578,11 @@ QSize CartesianAxis::maximumSize() const
     {
     case Bottom:
     case Top:
-        result = QSize ( 1, 32 );
+        result = QSize ( 1000, 100 );
         break;
     case Left:
     case Right:
-        result = QSize ( 32, 1 );
+        result = QSize ( 100, 1000 );
         break;
     default:
         Q_ASSERT( false ); // all positions need to be handled

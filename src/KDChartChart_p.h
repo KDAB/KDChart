@@ -97,7 +97,7 @@ class Chart::Private : public QObject
         QGridLayout* dataAndLegendLayout;
 
         QVector<KDChart::AbstractArea*> layoutItems;
-        QVector<KDChart::AbstractCoordinatePlane*> planeLayoutItems;
+        QVector<KDChart::AbstractArea*> planeLayoutItems;
         QVector<KDChart::Legend*> legendLayoutItems;
 
         int globalLeadingLeft, globalLeadingRight, globalLeadingTop, globalLeadingBottom;

@@ -76,10 +76,6 @@ inline const AbstractArea::Private * AbstractArea::d_func() const
     return static_cast<const Private*>( AbstractAreaBase::d_func() );
 }
 
-/*inline AbstractArea::AbstractArea( AbstractArea::Private * p ) :
-    _d( p ) { init(); }
-*/
-
 }
 
 #endif /* KDCHARTABSTRACTAREA_P_H */
