@@ -624,22 +624,27 @@ int Chart::globalLeadingBottom() const
 }
 
 //static int nPaint=0;
-void Chart::paint( QPainter* painter, const QRect& target )
+void Chart::paint( QPainter* painter, const QRect& target_ )
 {
 qDebug() << "KDChart::Chart::paint() called, inPaint: " << d->inPaint;
 //++nPaint;
 //if( 30<nPaint)
 //    qFatal("nPaint > 30");
-    if( d->inPaint || target.isEmpty() || !painter ) return;
+    if( d->inPaint || target_.isEmpty() || !painter ) return;
 
     d->inPaint = true;
     const QRect oldGeometry( geometry() );
     //painter->drawRect( oldGeometry );
+    QRect target( target_ );
+    QPoint translation(0,0);
     if( target != oldGeometry ){
         qDebug() << "KDChart::Chart::paint() calling new setGeometry(" << target << ")";
         setGeometry( target );
-        d->slotRelayout();
         painter->drawRect( target );
+        d->slotRelayout();
+        translation.setX( target_.left() );
+        translation.setY( target_.left() );
+        painter->translate( translation );
     }
 
     foreach( KDChart::AbstractArea* layoutItem, d->layoutItems ) {
@@ -652,9 +657,11 @@ qDebug() << "KDChart::Chart::paint() called, inPaint: " << d->inPaint;
         legend->paintAll( *painter );
     }
 
-    if( target != oldGeometry ){
+    if( target_ != oldGeometry ){
         qDebug() << "KDChart::Chart::paint() calling new setGeometry(" << oldGeometry << ")";
         setGeometry( oldGeometry );
+        if( ! translation.isNull() )
+            painter->translate( -translation.x(), -translation.y() );
     }
     d->inPaint = false;
 qDebug() << "KDChart::Chart::paint() done.\n";
