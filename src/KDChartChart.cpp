@@ -638,6 +638,7 @@ qDebug() << "KDChart::Chart::paint() called, inPaint: " << d->inPaint;
     if( target != oldGeometry ){
         qDebug() << "KDChart::Chart::paint() calling new setGeometry(" << target << ")";
         setGeometry( target );
+        d->slotRelayout();
         painter->drawRect( target );
     }
 
