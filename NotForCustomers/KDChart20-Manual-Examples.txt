@@ -1,0 +1,19 @@
+
+This is a list of examples and screen-shots needed for the Programmer Manual
+
+1/ Chapt3 
+
+1/SimpleWidget example (very simple widget - may be with a Legend)
+  * screen-shot: simplewidget.png
+
+Suggested location: /examples/Widget/SimpleWidget
+
+2/SimpleChart example (very simple bar chart)
+  * screen-shot: simplechart.png 
+
+Suggested location /example/Chart/SimpleChart
+ 
+
+
+
+
