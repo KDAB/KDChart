@@ -80,11 +80,9 @@ void AbstractArea::paintIntoRect( QPainter& painter, const QRect& rect )
     if( oldGeometry != rect )
         setGeometry( oldGeometry );
 }
-// for debugging:  #define geometry() QRect(1,1,100,100)
+
 void AbstractArea::paintAll( QPainter& painter )
 {
-    int x = 5;
-    ++x;
     // Paint the background and frame
     paintBackground( painter, geometry() );
     paintFrame(      painter, geometry() );
@@ -95,7 +93,7 @@ void AbstractArea::paintAll( QPainter& painter )
     const QRect inner( innerRect() );
     if( oldGeometry != inner )
         setGeometry( inner );
-    painter.translate( inner.left(), inner.top()+x );
+    painter.translate( inner.left(), inner.top() );
     paint( &painter );
     painter.translate( -inner.left(), -inner.top() );
     if( oldGeometry != inner )
