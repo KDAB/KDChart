@@ -637,7 +637,7 @@
 	    </programlisting>
 	    <para>
 		In this example, you only create a single line diagram,
-		and use the default cartesian coordinate plane, which is 
+		and use the default Cartesian coordinate plane, which is 
 		already contained in an empty Chart.
 	    </para>
 	    <programlisting>
@@ -716,7 +716,7 @@
 		legend->setTextAttributes( ta );
 	    </programlisting>
 	    <para>
-		We will continue with more examples and more detailled 
+		We will continue with more examples and more detailed 
 		information about all those points in the next section
 		and the next chapters.
 		Also we recommend you to consult and run the examples 
@@ -805,28 +805,109 @@
         <sect1>
             <title>What's next</title>
             <para>
-                Coordinate planes and diagrams.
+                In the next chapter we describe the different chart types (diagrams) and their 
+		coordinate planes.
             </para>
         </sect1>
     </chapter>
     <chapter id="chapter_planesanddiagrams">
-        <title id="chtxt_planesanddiagrams">Coordinate planes and Diagrams</title>
+        <title id="chtxt_planesanddiagrams">Planes and Diagrams</title>
         <titleabbrev id="chnum_planesanddiagrams">Chapter 4</titleabbrev>
 	<para>
-          Introduction text
+	    KD Chart supports at the moment two types of plane in order to display different types 
+	    of diagrams.
         </para>
+	 <itemizedlist>
+            <listitem>
+                <para>
+                    A Cartesian coordinate plane, formed by a horizontal axis and a vertical axis, 
+		    often labeled the x-axis and y-axis. 
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    A Polar coordinate plane which make use of the radius or the polar angle, 
+		    that define the position of a point in a plane.
+                </para>
+		<para>
+		    This chapter tells you how to change the chart type from the default to either
+		    one of the other types. All of the chart types provided by &kdchart; are 
+		    presented here with the help some basic sample programs and their  screen shots.
+		</para>
+		<para>
+		    It will also speaks about which chart type might be appropriate for a 
+		    specific purpose and provides information on the features that are 
+		    available each type.
+		</para>
+            </listitem>
+        </itemizedlist>
         <sect1>
             <title id="cartesianplane">Cartesian coordinate plane</title>
             <para>
-                Text ...
+                KD Chart uses the Cartesian coordinate system, and in particular its 
+		<classname>KDChart::CartesianCoordinatePlane</classname> class for displaying 
+		chart types like ( e.g: Lines, Bars, Points, etc...).
             </para>
+	    <para>
+		In this section we will describe and present each chart type which uses the default 
+		Cartesian coordinate plane.
+	    </para>
+	    <para>
+		In general to select the chart type just call the 
+		<classname>KDChart[type]Diagram</classname> function 
+		<methodname>setType()</methodname> and specify the appropriate value. 		
+	    </para>
 	    <sect2>
 		<title id="bars">Bar Charts</title>
+		<tip>
+		    <para>
+			Bar charts are the most common type of charts and can be used for 
+			visualizing almost any kind of data. Like the Line Charts, the bar 
+			charts can be the ideal choice to compare multiple series of data.
+		    </para>
+		    <para>
+			A good example for using a bar chart would be a comparison of the sales 
+			figures in different departments, perhaps accompanied by a 
+			High/Low Chart showing each day's key 
+			figures.
+		    </para>
+		</tip>
+		<?page-break?>
 		<para>
-		    Text info to Bars...
-		</para>	    
+		    Your Bar Chart can be configured with the following types:
+		</para>
+		<para>		    
+		    <itemizedlist>
+			<listitem>
+			    <para>Normal</para>
+			</listitem>
+			<listitem>
+			    <para>Stacked</para>
+			</listitem>
+			<listitem>
+			    <para>Percent</para>
+			</listitem>		
+		    </itemizedlist>
+		</para>  
+	    </sect2>	   
+	    <sect2>
+		<title id="barsample" xreflabel="codexample">Bar Example</title>
+		<para>
+		    Let us make this more concrete by looking at the 
+		    following example:		    
+		</para>
+		
+		<para>
+		    More explanation?
+		</para>   
+	    </sect2>
+	    <sect2>
+		<title id="barsattributes">Bars Attributes</title>
+		<para>
+		    Text ...
+		</para>	
 		<sect3>
-		    <title id="barsample" xreflabel="codexample">Bar Example</title>
+		    <title id="barattributessample" xreflabel="codexample">Bar Example</title>
 		    <para>
 			Let us make this more concrete by looking at the 
 			following lines of code.
@@ -837,70 +918,43 @@
 		    </para>
 		    <!--
 		    <programlisting linenumbering="numbered" id="">
-                    <textobject>
+		    <textobject>
 		    <textdata fileref="../../examples/..."/>
-		    </textobject>
-                    </programlisting>
+		</textobject>
+		</programlisting>
 		    -->
 		    <para>
 			More explanation?
 		    </para>   
-		</sect3>
-		<sect3>
-		    <title id="barsattributes">Bars Attributes</title>
-		    <para>
-			Text ...
-		    </para>	
-		    <sect4>
-			<title id="barattributessample" xreflabel="codexample">Bar Example</title>
-			<para>
-			    Let us make this more concrete by looking at the 
-			    following lines of code.
-			    <!--
-			    <link linkend=""></link>
-			    <link linkend=""></link>
-			    -->
-			</para>
-			<!--
-			<programlisting linenumbering="numbered" id="">
-			<textobject>
-			<textdata fileref="../../examples/..."/>
-		        </textobject>
-                        </programlisting>
-			-->
-			<para>
-			    More explanation?
-			</para>   
-		    </sect4>	
-		</sect3>
-		<sect3>
-		   <title id="barstips">Tips and Tricks</title>
-		    <para>
-			Some tips and tricks
-		    </para>	
-		    <sect4>
-			<title id="bartipssample" xreflabel="codexample">A complete Bar Example</title>
-			<para>
-			    Let us make this more concrete by looking at the 
-			    following lines of code.
-			    <!--
-			    <link linkend=""></link>
-			    <link linkend=""></link>
-			    -->
-			</para>
-			<!--
-			<programlisting linenumbering="numbered" id="">
-			<textobject>
-			<textdata fileref="../../examples/..."/>
-		        </textobject>
-                        </programlisting>
-			-->
-			<para>
-			    More explanation?
-			</para>   
-		    </sect4>	  
-		</sect3>
+		</sect3>	
 	    </sect2>
+	    <sect2>
+		<title id="barstips">Tips and Tricks</title>
+		<para>
+		    Some tips and tricks
+		</para>	
+		<sect3>
+		    <title id="bartipssample" xreflabel="codexample">A complete Bar Example</title>
+		    <para>
+			Let us make this more concrete by looking at the 
+			following lines of code.
+			<!--
+			<link linkend=""></link>
+			<link linkend=""></link>
+			-->
+		    </para>
+		    <!--
+		    <programlisting linenumbering="numbered" id="">
+		    <textobject>
+		    <textdata fileref="../../examples/..."/>
+		</textobject>
+		</programlisting>
+		    -->
+		    <para>
+			More explanation?
+		    </para>   
+		</sect3>	  
+	    </sect2>	    
             <sect2>
 		<title id="lines">Line Charts</title>
 		<para>
