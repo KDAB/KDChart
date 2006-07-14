@@ -623,13 +623,19 @@ int Chart::globalLeadingBottom() const
     return d->globalLeadingBottom;
 }
 
-//static int nPaint=0;
+#define debug_recursive_paint 1
+#ifdef debug_recursive_paint
+static int nPaint=0;
+#endif
+
 void Chart::paint( QPainter* painter, const QRect& target_ )
 {
+#ifdef debug_recursive_paint
 qDebug() << "KDChart::Chart::paint() called, inPaint: " << d->inPaint;
-//++nPaint;
-//if( 30<nPaint)
-//    qFatal("nPaint > 30");
+++nPaint;
+if( 100<nPaint)
+qFatal("nPaint > 100");
+#endif
     if( d->inPaint || target_.isEmpty() || !painter ) return;
 
     d->inPaint = true;
@@ -664,7 +670,9 @@ qDebug() << "KDChart::Chart::paint() called, inPaint: " << d->inPaint;
             painter->translate( -translation.x(), -translation.y() );
     }
     d->inPaint = false;
+#ifdef debug_recursive_paint
 qDebug() << "KDChart::Chart::paint() done.\n";
+#endif
 }
 
 

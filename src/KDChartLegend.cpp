@@ -114,6 +114,12 @@ void Legend::init()
     titleTextAttrs.setFontSize( 20 );
     setTitleTextAttributes( titleTextAttrs );
 
+    FrameAttributes frameAttrs;
+    frameAttrs.setVisible( true );
+    frameAttrs.setPen( QPen( Qt::black ) );
+    frameAttrs.setPadding( 1 );
+    setFrameAttributes( frameAttrs );
+
     d->position = Position::NorthEast;
     d->alignment = Qt::AlignCenter;
 }
@@ -136,19 +142,17 @@ void Legend::paint( QPainter* painter )
 {
     // rule: We do not show a legend, if there is no diagram.
     if( ! diagram() ) return;
+    qDebug() << "KDChart::Legend::paint() called";
 
     // re-calculate/adjust the Legend's internal layout and contents, if needed:
     buildLegend();
-
-    // Legend always has a frame around it, might be overpainted by Area afterwards.
-    painter->drawRect( rect().adjusted( 1, 1, -1, -1 ) );
-
 
     // PENDING(kalle) Support palette
 
     foreach( KDChart::AbstractLayoutItem* layoutItem, d->layoutItems ) {
         layoutItem->paint( painter );
     }
+    qDebug() << "KDChart::Legend::paint() done.";
 }
 
 
@@ -614,6 +618,7 @@ void Legend::buildLegend()
         d->layout->addItem( lineItem, 2, 2, d->modelLabels.count()*2, 1 );
     }
 
-    d->layout->activate();
+    //FIXME(khz): Find out if we really need that call:
+    //d->layout->activate();
 }
 
