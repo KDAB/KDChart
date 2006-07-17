@@ -1240,7 +1240,7 @@
 		    <title>A Stacked Line Chart</title>
 		    <mediaobject>
 			<imageobject>
-			    <imagedata width="3in" scalefit="1" fileref="images/stackedline.png"/>
+			    <imagedata width="3in" scalefit="1" fileref="images/linestacked.png"/>
 			</imageobject>
 		    </mediaobject>
 		</figure>
@@ -1283,17 +1283,54 @@
 	    <sect2>
 		<title id="linesample" xreflabel="codexample">Line Example</title>
 		<para>
-		    Let us make this more concrete by looking at the 
-		    following lines of code.		    
-		</para>
+		    Let us make this more concrete by looking at the following lines of code.
+		</para>		
 		<para>
-		    More explanation?
-		</para>   
+		    We recommended you to read, compile and run the following example.
+		</para> 
+		<programlisting linenumbering="numbered" id="simple_line__mainwindow_h">
+		    <textobject><textdata fileref="../../examples/Lines/mainwindow.h"/>
+		    </textobject>
+		</programlisting>                
+		<para>
+		    More explanation h file?
+		</para>
+		<programlisting linenumbering="numbered" id="simple_line__mainwindow_cpp">
+		    <textobject><textdata fileref="../../examples/Lines/mainwindow.cpp"/>
+		    </textobject>
+		</programlisting>
+		<para>
+		    More explanation cpp file?
+		</para>
+		<figure float="0" id="fig-simpleline">
+		    <title>A Simple Line Chart</title>
+		    <mediaobject>
+			<imageobject>
+			    <imagedata width="3in" scalefit="1" fileref="images/simpleline.png"/>
+			</imageobject>
+		    </mediaobject>
+		</figure>
 	    </sect2>
 	    <sect2>
 		<title id="linesattributes">Lines Attributes</title>
 		<para>
-		    Text ...
+		    There are only a few attributes specific to a line chart as it is using a Pen 
+		    to draw the lines. Pen and Brush are generic attributes common to all types of 
+		    diagrams and are handled by <classname>KDChartAbstractDiagram</classname> from 
+		    which <classname>KDChartLineDiagram</classname> is derived indirectly.
+		</para>
+		<para>
+		    However to make it simple for the user we have added some convenient functions 
+		    to the <classname>KDChartLineAttributes</classname> in order to be able to 
+		    display Areas and set transparency for all subtypes of a line chart. We will 
+		    go through those methods further on in our Area charts section in this Chapter. 
+		</para>
+		<para>
+		    <classname>KDChartLineDiagram</classname> combined with its attributes or 
+		    combined together with <classname>KDChartMarkerAttributes</classname> let us 
+		    display the line chart subtypes as described above as well as Area Charts and 
+		    Point charts the easy way. We will of course present all those alternatives 
+		    with some sample code and ready to use examples in the next sections.
 		</para>
 	    </sect2>	
 	    <sect2>
