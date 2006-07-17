@@ -1121,7 +1121,7 @@
 		    see NotForCustomers/KDChart20-Manual-Examples.txt  -->
 		    In the following implementation we want to be able to:
 		</para>
-			<itemizedlist>
+		<itemizedlist>
 		    <listitem>
 			<para>
 			   Display the data values.
@@ -1173,10 +1173,112 @@
 		    Line charts usually show numerical values and their development in time.
                     Like the Bar Charts they can be used to compare multiple series of data.
 		</para>
+		<para>
+		    An example might be the development of stock values over a longer period of 
+		    time or the water level rise on several gauges.	
+		</para>
 		</tip>
 		<para>
-		    
+		    As for Bar types, &kdchart; can generate line charts of different kind of line 
+		    charts. <classname>KDChartLineDiagram</classname> supports the following 
+		    subtypes explained below:
 		</para>
+		<itemizedlist>
+		    <listitem>
+			<para>
+			    Normal Line Chart
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>
+			    Stacked Line Chart 
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>
+			    Percent Line chart
+			</para>
+		    </listitem>
+		</itemizedlist>
+	    </sect2>	   
+	     <sect2>
+		<title id="linenormal">Normal Line Charts</title>
+		<tip>
+		    <para>
+			Normal line charts are the most common type of line charts and are used 
+			when the datasets are compared to each other individually. For example, if 
+			you want to visualize the development of sales figures over time for each 
+			department separately, you might have one line per department.
+                    </para>
+		</tip>
+		<figure float="0" id="fig-linenormal">
+		    <title>A Normal Line Chart</title>
+		    <mediaobject>
+			<imageobject>
+			    <imagedata width="3in" scalefit="1" fileref="images/simpleline.png"/>
+			</imageobject>
+		    </mediaobject>
+		</figure>
+		<para>
+		    &kdchart; draws normal line charts by default when in line chart mode so no 
+		    method needs to be called to get one, however after having used your 
+                   <classname>KDChartLineDiagram</classname> to display another line chart subtype 
+		    you can reset it by calling <methodname>setType( Normal )</methodname>.
+		</para>	    
+	    </sect2>
+	    <sect2>
+		<title id="linestacked">Stacked Line Charts</title>
+		<tip>
+		    <para>
+			Stacked line charts allow you to compare the development of a series of 
+			values summarized over all datasets. You could use this if you are only 
+			interested in the development of total sales figures in your company, but 
+			have the data split up by department.
+                    </para>
+		</tip>
+		<figure float="0" id="fig-linestacked">
+		    <title>A Stacked Line Chart</title>
+		    <mediaobject>
+			<imageobject>
+			    <imagedata width="3in" scalefit="1" fileref="images/stackedline.png"/>
+			</imageobject>
+		    </mediaobject>
+		</figure>
+		<para>
+		   Stacked mode for line charts is activated by calling the 
+		    <classname>KDChartLineDiagram</classname> method 
+		    <methodname>setType( Stacked )</methodname>.
+		</para>	    
+	    </sect2>
+	    <sect2>
+		<title id="linepercent">Percent Line Charts</title>    
+		<tip>
+		    <para>
+			Percent line charts show how much each value contributes to the total sum, 
+			similar to percent bar charts.
+                    </para>
+		</tip>
+		<figure float="0" id="fig-linepercent">
+		    <title>A Percent Line Chart</title>
+		    <mediaobject>
+			<imageobject>
+			    <imagedata width="3in" scalefit="1" fileref="images/linepercent.png"/>
+			</imageobject>
+		    </mediaobject>
+		</figure>
+		<para>
+		    Percent: Percentage mode for bar charts is activated by calling
+		    the <classname>KDChartLineDiagram</classname> function
+		    <methodname>setType( Percent )</methodname>.
+		</para>		
+		<note>
+		    <para>
+			Three-dimensional look of the lines is no special feature you can enable it
+			for all types (<literal>Normal</literal>, <literal>Stacked</literal> or
+			<literal>Percent</literal>) by setting its ThreeD attributes, we will 
+			describe that in the "Line Attributes" section further on.
+		    </para>
+		</note>
 	    </sect2>
 	    <sect2>
 		<title id="linesample" xreflabel="codexample">Line Example</title>
