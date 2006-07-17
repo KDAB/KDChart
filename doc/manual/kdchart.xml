@@ -964,21 +964,75 @@
 			    Assign it to your Diagram with the help of one of the setters available 
 			    in <classname>KDChart::BarDiagram</classname>. All the attributes can be
 			    configured to be applied for the whole diagram, for a column, or at a 
-			    specified index. (<classname>QModelIndex</classname>).
+			    specified index (<classname>QModelIndex</classname>).
 			</para>
 		    </listitem>
 		</itemizedlist>
 		<para>
+		    KD Chart 2.0 supports the following attributes for the Bar chart type. 
+		    Each of those attributes can be set and retrieved the way we describe it in our 
+		    example below:
 		</para>
+		<itemizedlist>
+		    <listitem>
+			<para>
+			   DataValueGap: Gap between two values
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>
+			   ValueBlockGap: Gap betwwen each block of values
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>
+			    BarWidth: Specifie the with of the bars
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>
+			    GroupGapFactor: ...txt...
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>
+			    BarGapFactor: ...txt ...
+			</para>
+		    </listitem>
+		    <!-- Pending Michel is that still actual? - I guess so -->
+		    <listitem>
+			<para>
+			    DrawSolidExcessArrow: Specify whether the arrows showing excess values
+			    should be drawn solidly or split.
+			</para>
+		    </listitem>
+		</itemizedlist>
 	    </sect2>
 	    <sect2>
 		<title id="barattributessample" xreflabel="codexample">Bar Example</title>
 		<para>
-		    Let us make this more concrete by looking at the 
-		    following lines of code.		  
+		    Let us make this more concrete by looking at the following lines of code.
+		</para>
+		<programlisting>
+		    // 1 - Create a Bar Attributes object
+		    BarAttributes ba = m_bars->BarAttributes( index );
+                    // 2 - Configure the width of the bars and enable 
+		    ba.setFixedBarWidth( 5.0 );
+                    ba.setUseFixedBarWidth( true ); 
+                    ... other settings 
+		    // 3 - Assign to your diagram
+		    m_bars->setBarAttributes( index, ba );
+                </programlisting>
+                <para>
+		    The above procedure can be applied to any of the supported attributes relative 
+		    to the bar chart. We recommend you to have a look at the BarAttributes 
+		    interface to learn more about what can be done.
+                </para>
+		<para>
+		    (see files /src/{KDChartBarAttributes.h})
 		</para>
 		<para>
-		    More explanation?
+		    Make a note concerning the ThreeD attributes here.
 		</para>   
 	    </sect2>		    
 	    <sect2>
