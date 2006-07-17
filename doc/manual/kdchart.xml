@@ -874,21 +874,80 @@
 		</tip>
 		<?page-break?>
 		<para>
-		    Your Bar Chart can be configured with the following types:
+		    Your Bar Chart can be configured with the following types as described in 
+		    details below: Normal, Stacked or Percent.
 		</para>
-		<para>		    
-		    <itemizedlist>
-			<listitem>
-			    <para>Normal</para>
-			</listitem>
-			<listitem>
-			    <para>Stacked</para>
-			</listitem>
-			<listitem>
-			    <para>Percent</para>
-			</listitem>		
-		    </itemizedlist>
-		</para> 
+	    </sect2>
+	    <sect2>
+		<title id="barnormal">Normal Bar Charts</title>
+		<tip>
+		    <para>
+			In a normal bar chart, each individual value is displayed as a bar by 
+			itself. This flexibility allows to compare both the values in one series 
+			and values of different series.
+                    </para>
+		</tip>
+		<figure float="0" id="fig-barnormal">
+		    <title>A Normal Bar Chart</title>
+		    <mediaobject>
+			<imageobject>
+			    <imagedata width="3in" scalefit="1" fileref="images/simplechart.png"/>
+			</imageobject>
+		    </mediaobject>
+		</figure>
+		<para>
+		    &kdchart;'s default type is the normal bar chart so no method needs to be 
+		    called to get one, however after having used your 
+		    <classname>KDChartBarDiagram</classname> to display another bar chart subtype 
+		    you can return to the normal one by calling 
+		    <methodname>setType( Normal )</methodname>.
+		</para>	    
+	    </sect2>
+	    <sect2>
+		<title id="barstacked">Stacked Bar Charts</title>
+		<tip>
+		    <para>
+			Stacked bar charts focus on comparing the sums of the individual values in 
+			each data series, but also show how much each individual value contributes 
+			to its sum.
+                    </para>
+		</tip>
+		<figure float="0" id="fig-barstacked">
+		    <title>A Stacked Bar Chart</title>
+		    <mediaobject>
+			<imageobject>
+			    <imagedata width="3in" scalefit="1" fileref="images/barstacked.png"/>
+			</imageobject>
+		    </mediaobject>
+		</figure>
+		<para>
+		    Stacked mode for bar charts is activated by calling the 
+		    <classname>KDChartBarDiagram</classname> function
+		    <methodname>setType( Stacked  )</methodname>.
+		</para>
+	    </sect2>
+	    <sect2>
+		<title id="barpercent">Percent Bar Charts</title>    
+		<tip>
+		    <para>
+			Unlike stacked bar charts, percent bar charts are not suitable for 
+			comparing the sums of the data series, but rather focus on the respective 
+			contributions of their individual values.
+                    </para>
+		</tip>
+		<figure float="0" id="fig-barpercent">
+		    <title>A Percent Bar Chart</title>
+		    <mediaobject>
+			<imageobject>
+			    <imagedata width="3in" scalefit="1" fileref="images/barpercent.png"/>
+			</imageobject>
+		    </mediaobject>
+		</figure>
+		<para>
+		    Percent: Percentage mode for bar charts is activated by calling
+		    the <classname>KDChartBarDiagram</classname> function
+		    <methodname>setType( Percent )</methodname>.
+		</para>		
 		<note>
 		    <para>
 			Three-dimensional look of the bars is no special feature you can enable it
@@ -1109,8 +1168,14 @@
 	    </sect2>	  	    	    
             <sect2>
 		<title id="lines">Line Charts</title>
+		<tip>
 		<para>
-		    Text info Lines...
+		    Line charts usually show numerical values and their development in time.
+                    Like the Bar Charts they can be used to compare multiple series of data.
+		</para>
+		</tip>
+		<para>
+		    
 		</para>
 	    </sect2>
 	    <sect2>
