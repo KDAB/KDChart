@@ -11,14 +11,26 @@ Suggested location: /examples/Widget/SimpleWidget
 2/SimpleChart example (very simple bar chart)
   * screen-shot: simplechart.png 
 
-Suggested location /example/Chart/SimpleChart
+Suggested location /examples/Chart/SimpleChart
 
 3/FullFeaturedBarChart example.
 
  * for the tips and trick section of the bar chart 
 
-Suggested location /example/Bars/BarsFullFeatured
+Suggested location /examples/Bars/BarsFullFeatured
 
+
+4/SimpleLineChart Example (very simple line chart)
+
+ * for Line example
+
+Suggested location /examples/Lines/SimpleLine
+
+5/FullFeaturedLineChart example
+
+* for the tips and trick section of the line chart
+
+Suggested location /examples/Lines/LinesFullFeatured
 
  
 
