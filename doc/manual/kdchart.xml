@@ -1030,22 +1030,35 @@
                 </para>
 		<para>
 		    (see files /src/{KDChartBarAttributes.h})
-		</para>
+		</para>		
 		<para>
-		    Make a note concerning the ThreeD attributes here.
-		</para>   
+		    The subtype of a bar chart (Normal, Stacked or Percent) is not set via its 
+		    attribute class, but directly by using the diagram 
+		    <methodname>KDChartBarDiagram::setType</methodname> method.  
+		</para>
+		<note>
+		    <para>
+			ThreeDAttibutes for the different chart types are implemented has an own
+			class, the same way as for the other attributes. We will talk more in 
+			details about KD Chart 2.0 ThreeD features in the ThreeD section, Chapter 5
+			- Customizing your Chart.  
+	 	    </para>	
+		</note>
 	    </sect2>		    
 	    <sect2>
 		<title id="barstips">Tips and Tricks</title>
 		<para>
-		    Some tips and tricks
+		    In this section we want to give you some example about how to use some 
+		    interesting features offered by the KD Chart 2.0 API. We will study some example
+		    code and display a screen-shot showing the resulting widget.
 		</para>	
 	    </sect2>
 	    <sect2>
 		<title id="bartipssample" xreflabel="codexample">A complete Bar Example</title>
 		<para>
-		    Let us make this more concrete by looking at the 
-		    following lines of code.		 
+		    <!-- pending michel show a nice full featured bar chart with as many 
+		    attributes as possible -->
+		    Text ....
 		</para>	
 		<para>
 		    More explanation?
