@@ -905,7 +905,7 @@
 		    following example:		    
 		</para>
 		<para>
-		    It is recommended for you to read, compile and run this example.
+		    We recommended you to read, compile and run this example.
 		</para>	    	
 		<programlisting linenumbering="numbered" id="bar_mainwindow_h">
 		    <textobject><textdata fileref="../../examples/Bars/mainwindow.h"/>
@@ -933,8 +933,43 @@
 	    <sect2>
 		<title id="barsattributes">Bars Attributes</title>
 		<para>
-		    Present the attributes for Bar types...
-		</para>	
+		    By "Bars attributes" we are talking about all parameters that can be 
+		    configured and set by the user and which are specifics to the Bar Chart type.
+		    KD Chart 2.0 API separates the attributes specifics to a chart type itself and 
+		    the generic attributes which are common to all chart types as for example the 
+		    setters and getters for a brush or a pen.		    
+		</para>
+		<para>
+		    All those attributes have a reasonnable default value that can simply be 
+		    modified by the user by calling one of the diagram set function implemented on 
+		    this purpose <methodname>KDChartBarDiagram::setBarAttributes()</methodname>.
+		</para>
+		<para>
+		    The procedure is straight forward:
+		</para>
+		<itemizedlist>
+		    <listitem>
+			<para>
+			    Create a <classname>KDChart::BarAttributes</classname> of object by 
+			    calling <methodname>KDChartBarDiagram::barAttributes</methodname>.  
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>
+			    Configure this object using the setters available.
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>
+			    Assign it to your Diagram with the help of one of the setters available 
+			    in <classname>KDChart::BarDiagram</classname>. All the attributes can be
+			    configured to be applied for the whole diagram, for a column, or at a 
+			    specified index. (<classname>QModelIndex</classname>).
+			</para>
+		    </listitem>
+		</itemizedlist>
+		<para>
+		</para>
 	    </sect2>
 	    <sect2>
 		<title id="barattributessample" xreflabel="codexample">Bar Example</title>
