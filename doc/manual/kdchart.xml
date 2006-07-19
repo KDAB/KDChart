@@ -1405,7 +1405,7 @@
 	    </sect2>
 	    <sect2>
 		<title id="linetipssample" xreflabel="codexample">A complete Line Example</title>
-			<para>
+		<para>
 		    <!-- Pending michel show a nice full featured line chart with as many 
 		    attributes as possible - The following text and list has to be modified 
 		    after we have written our own more complete example - 
@@ -1513,8 +1513,8 @@
                     m_lines = new LineDiagram();
 		    m_lines->setPen( Qt::NoPen );
                     // 2 - Configure and display its data values markers
-                    // we will see more in details how to handle MarkerAttributes later on
-		    // Chapter 5 - Customizing your Charts - Section Markers
+                    // we will see more in details how to handle DataValueAttribute
+		    // and its MarkerAttributes
 		    DataValueAttributes dva;
 		    MarkerAttributes ma = dva.markerAttributes();
 		    ma->setVisible( true );
@@ -1552,30 +1552,36 @@
 	    <sect2>
 		<title id="pointsattributes">Points Attributes</title>
 		<para>
-		    Text ...
+		    As you have probably deduced from the section above, point charts are line 
+		    charts configured with no pen to avoid displaying the lines and using the 
+		    generic classes <classname>KDChartDataValueAttributes</classname> and its 
+		    <classname>KDChartMarkerAttributes</classname> available to all other diagram
+		    types supported by KD Chart 2.0.
+		</para>	
+		<para>
+		    For this reason we will for now point you to the sections related to those 
+		    subject and in particular to Chapter 5 - Customizing your Chart - Section 
+		    Markers or Chapter 9 - Advanced Charting - Section Data Value Manipulation
+		    and finalize this section by implementing a full featured point chart in the 
+		    Tips section below.
+		</para>
+	    </sect2>	    
+	    <sect2>
+		<title id="pointstips">Tips and Tricks</title>
+		<para>
+		    In this section we want to give you some example about how to use some 
+		    interesting features offered by the KD Chart 2.0 API. We will study the 
+		    code and display a screen-shot showing the resulting widget.  
 		</para>	
 	    </sect2>
 	    <sect2>
-		<title id="pointattributessample" xreflabel="codexample">Point Example</title>
-		<para>
-		    Let us make this more concrete by looking at the 
-		    following lines of code.
-		</para>
-		<para>
-		    More explanation?
-		</para>   
-	    </sect2>	
-		<sect2>
-		<title id="pointstips">Tips and Tricks</title>
-		<para>
-		    Some tips and tricks
-		</para>	
-		</sect2>
-	    <sect2>
 		<title id="pointtipssample" xreflabel="codexample">A complete Point Example</title>
 		<para>
-		    Let us make this more concrete by looking at the 
-		    following lines of code.			
+		    <!-- Pending michel show a nice full featured point chart with as many 
+		    attributes as possible - The following text and list has to be modified 
+		    after we have written our own more complete example - 
+		    see NotForCustomers/KDChart20-Manual-Examples.txt  -->
+		    In the following implementation we want to be able to:			
 		</para>			
 		<para>
 		    More explanation?
