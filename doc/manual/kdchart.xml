@@ -1762,33 +1762,70 @@
 		    generic attributes common to all chart types are availables, which give us full
 		    flexibility to configure our area chart.
 		</para>	
-	    </sect2>
-	    <sect2>
-		<title id="areaattributessample" xreflabel="codexample">Area Example</title>
-		<para>
-		    Let us make this more concrete by looking at the 
-		    following lines of code.	
-		</para>			
-		<para>
-		    More explanation?
-		</para>   
-	    </sect2>	
+	    </sect2>	    	
 	    <sect2>
 		<title id="areatips">Tips and Tricks</title>
 		<para>
-		    Some tips and tricks
+		    In this section we want to give you some example about how to use some 
+		    interesting features offered by the KD Chart 2.0 API. We will study the 
+		    code and display a screen-shot showing the resulting widget.  
 		</para>	
 	    </sect2>
 	    <sect2>
 		<title id="areatipssample" xreflabel="codexample">A complete Area Example</title>
-		<para>
-		    Let us make this more concrete by looking at the 
-		    following lines of code.
+			<para>
+		    <!-- Pending michel show a nice full featured area chart with as many 
+		    attributes as possible - The following text and list has to be modified 
+		    after we have written our own more complete example - 
+		    see NotForCustomers/KDChart20-Manual-Examples.txt  -->
+		    In the following implementation we want to be able to:			
 		</para>
+		<itemizedlist>
+		    <!-- Pending Michel to be implemented -->
+		    <listitem>
+			<para>
+			   Display data values or markers and hide
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>
+			   Shift line types (Normal, stacked, Percent, points)
+			</para>
+		    </listitem>
+		    <listitem>			
+			<para>
+			  Display areas for each dataset on its own and for the whole diagram
+			</para>
+		    </listitem>			   
+		    <listitem>
+			<para>			    
+			  run the area animation 
+			</para>
+		    </listitem>		   
+		</itemizedlist>
+		<programlisting linenumbering="numbered" id="fullarea_mainwindow_h">
+		    <textobject><textdata fileref="../../examples/Lines/mainwindow.h"/>
+		    </textobject>
+		</programlisting>                
+		<para>
+		    More explanation h file?
+		</para>
+		<programlisting linenumbering="numbered" id="fullarea_mainwindow_cpp">
+		    <textobject><textdata fileref="../../examples/Lines/mainwindow.cpp"/>
+		    </textobject>
+		</programlisting>
 		<para>
 		    More explanation?
-		</para>   
-	    </sect2>
+		</para>
+		<figure float="0" id="fig-fullarea">
+		    <title>A Full featured Area Chart</title>
+		    <mediaobject>
+			<imageobject>			    
+			    <imagedata width="3in" scalefit="1" fileref="images/fullareachart.png"/>
+			</imageobject>
+		    </mediaobject>
+		</figure>
+	    </sect2>	  	
 	    <sect2>
 		<title id="highlow">High/Low Charts</title>
 		<para>
