@@ -1673,13 +1673,8 @@
 			<para>
 			   Percent Line Area.
 			</para>
-		    </listitem>
-		    <listitem>			
-			<para>
-			  Even Point Area charts are possible of course
-			</para>
-		    </listitem>			   
-		</itemizedlist>
+		    </listitem>		    			   
+		</itemizedlist>	
 		<figure float="0" id="fig-simpleareachart">
                 <title>An Area Chart</title>
                 <mediaobject>
@@ -1789,7 +1784,7 @@
 		    </listitem>
 		    <listitem>
 			<para>
-			   Shift line types (Normal, stacked, Percent, points)
+			   Shift line types (Normal, Stacked, Percent)
 			</para>
 		    </listitem>
 		    <listitem>			
@@ -1828,9 +1823,43 @@
 	    </sect2>	  	
 	    <sect2>
 		<title id="highlow">High/Low Charts</title>
+		<!-- Pending Michel: this is not implemented yet - just filling in with 
+		kdc11 material -->
+		<tip>
+		    <para>
+			High/low charts could be useful if your value's evolution during a time 
+			period should be visualized looking at small segments of this time.  
+			Often they are used to display a share's opening and closing value per day,
+			as well as each day's maximum and minimum.  Other possible uses of high/low
+			charts include the changing temperature during the months: open/close would
+			stand for a month's first and last day then.
+		    </para>
+		</tip>
 		<para>
-		    Text info to High/Low...
-		</para>	    
+		    Typically high/low charts are used to display one value evolving over the 
+		    time&mdash;for showing more than one value consider using another chart type 
+		    or use a second <classname>KDChartWidget</classname> positioned next to the
+		    first one. Another option might be to show a line chart for all of your values 
+		    and draw special attention to one of them by adding an extra high/low chart 
+		    featuring this value.The high/low chart could be positioned above the line
+		    chart&mdash;sharing its abscissa axis.
+		</para>	 
+		<para>
+		    High/low charts are the most simple ones of &kdchart;'s statistical chart types
+		    and unlike the sophisticated Box&amp;Whisker Charts they do not calculateeach 
+		    dataset's high/low/open/close values but it is your obligation to pass these 
+		    numbers into the data cells. This is done for optimization: most likely you 
+		    have these figures anyway, if not it is extremely easy to determine them.
+		    <!-- Pending Michel: we will need some code sample here to demo the above 
+		    if it is still actual -->
+		</para>
+		<para>
+		   <!-- Pending Michel check if that is still true -->
+		    The advantage of not stuffing all your data values into &kdchart; is that such 
+		    very small datasets (holding just four cells each) enable your high/low charts 
+		    to be displayed very quickly and even when representing a large number of days 
+		    they will not consume too  much memory.
+		</para>
 	    </sect2>
 	    <sect2>
 		<title id="hlsample" xreflabel="codexample">High/Low Example</title>
