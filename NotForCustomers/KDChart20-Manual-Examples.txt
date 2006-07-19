@@ -61,3 +61,16 @@ Playing with line/point types transparency - animation etc...
 
 Suggested location /examples/Lines/AreaFullFeatured
 
+10/SimpleHighLowExample 
+
+ *for HighLow example
+
+Suggested location /examples/HighLow/SimpleHL
+
+9/FullFeaturedHighLowexample 
+
+* for the tips and tricks section of the HighLow charts 
+
+
+Suggested location /examples/HighLow/HLFullFeatured
+
