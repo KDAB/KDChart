@@ -1267,10 +1267,10 @@
 		    </mediaobject>
 		</figure>
 		<para>
-		    Percent: Percentage mode for bar charts is activated by calling
+		    Percent: Percentage mode for line charts is activated by calling
 		    the <classname>KDChartLineDiagram</classname> function
 		    <methodname>setType( Percent )</methodname>.
-		</para>		
+		</para>
 		<note>
 		    <para>
 			Three-dimensional look of the lines is no special feature you can enable it
@@ -1278,7 +1278,7 @@
 			<literal>Percent</literal>) by setting its ThreeD attributes, we will 
 			describe that in the "Line Attributes" section further on.
 		    </para>
-		</note>
+		</note>			
 	    </sect2>
 	    <sect2>
 		<title id="linesample" xreflabel="codexample">Line Example</title>
@@ -1332,33 +1332,132 @@
 		    Point charts the easy way. We will of course present all those alternatives 
 		    with some sample code and ready to use examples in the next sections.
 		</para>
+		<para>
+		    The use of LineAttributes is as simple as for the other chart types:
+		</para>
+		<itemizedlist>
+		    <listitem>
+			<para>
+			    Create a <classname>KDChart::LineAttributes</classname> object by 
+			    calling <methodname>KDChartLineDiagram::lineAttributes</methodname>.  
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>
+			    Configure this object using the setters available.
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>
+			    Assign it to your Diagram with the help of one of the setters available 
+			    in <classname>KDChart::LineDiagram</classname>. All the attributes can 
+			    be configured to be applied for the whole diagram, for a column, or at 
+			    a specified index (<classname>QModelIndex</classname>).
+			</para>
+		    </listitem>
+		</itemizedlist>
+		<para>
+		    KD Chart 2.0 supports the following attributes for the Line chart type. 
+		    Each of those attributes can be set and retrieved the way we describe it in our 
+		    example below:
+		</para>
+		<itemizedlist>
+		    <listitem>
+			<para>
+			  Display area: paint the area for a dataset. 
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>
+			  Area transparency: set the transparency for the displayed area color. 
+			</para>
+		    </listitem>
+		</itemizedlist>
 	    </sect2>	
 	    <sect2>
 		<title id="lineattributessample" xreflabel="codexample">Line Example</title>
 		<para>
-		    Let us make this more concrete by looking at the 
-		    following lines of code.
-		</para>    
+		    Let us make this more concrete by looking at the following lines of code.
+		</para>
+		<programlisting>
+		    // 1 - Create a Line Attributes object
+		    LineAttributes la = m_lines->lineAttributes( index );
+                    // 2 - Display area at this index
+		    la.setDisplayArea( true );
+		    // 3 - Configure the transparency e.g. using the value 
+		    // returned by a Spin box
+                    la.setTransparency( transparencySB->value() );                    
+		    // 3 - Assign to your diagram
+		    m_lines->setLineAttributes( index, la );
+                </programlisting>
 		<para>
-		    More explanation?
+		    Of course the attributes can be set or retrieved for a column, at a given 
+		    index, or for the whole diagram as for all the other chart types.
 		</para>   
 	    </sect2>	
 	    <sect2>
 		<title id="linestips">Tips and Tricks</title>
 		<para>
-		    Some tips and tricks
+		    In this section we want to give you some example about how to use some 
+		    interesting features offered by the KD Chart 2.0 API. We will study the 
+		    code and display a screen-shot showing the resulting widget. 
 		</para>	
 	    </sect2>
 	    <sect2>
 		<title id="linetipssample" xreflabel="codexample">A complete Line Example</title>
+			<para>
+		    <!-- Pending michel show a nice full featured line chart with as many 
+		    attributes as possible - The following text and list has to be modified 
+		    after we have written our own more complete example - 
+		    see NotForCustomers/KDChart20-Manual-Examples.txt  -->
+		    In the following implementation we want to be able to:
+		</para>
+		<itemizedlist>
+		    <listitem>
+			<para>
+			   Display the data values.
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>
+			   Change the bar chart subtype (Normal, percent, Stacked).
+			</para>
+		    </listitem>
+		    <listitem>
+			<!-- Pending Michel to be implemented -->
+			<para>
+			  Change the line color and style for a dataset or a section of a dataset
+			</para>
+		    </listitem>			   
+		    <listitem>
+			<para>			    
+			   Display Areas and set their tranparency for one or several dataset(s). 
+			</para>
+		    </listitem>		   
+		</itemizedlist>
+		<programlisting linenumbering="numbered" id="fullline_mainwindow_h">
+		    <textobject><textdata fileref="../../examples/Axis/Parameters/mainwindow.h"/>
+		    </textobject>
+		</programlisting>                
 		<para>
-		    Let us make this more concrete by looking at the 
-		    following lines of code.		    
-		</para>			
+		    More explanation h file?
+		</para>
+		<programlisting linenumbering="numbered" id="fullline_mainwindow_cpp">
+		    <textobject><textdata fileref="../../examples/Axis/Parameters/mainwindow.cpp"/>
+		    </textobject>
+		</programlisting>
 		<para>
-		    More explanation?
-		</para>   		
-	    </sect2>
+		    More explanation cpp file?
+		</para>
+		<figure float="0" id="fig-fullline">
+		    <title>A Full featured Line Chart</title>
+		    <mediaobject>
+			<imageobject>
+			    <imagedata width="3in" scalefit="1" fileref="images/fulllinechart.png"/>
+			</imageobject>
+		    </mediaobject>
+		</figure>
+	    </sect2>	  	
             <sect2>
 		<title id="points">Point Charts</title>
 		<para>
