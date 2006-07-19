@@ -62,6 +62,47 @@ void CartesianAxis::init ()
     d->position = Bottom;
 }
 
+void CartesianAxis::setTitleText( const QString& text )
+{
+    d->titleText = text;
+    //d->needRebuild = true;
+}
+
+QString CartesianAxis::titleText() const
+{
+    return d->titleText;
+}
+
+void CartesianAxis::setTitleTextAttributes( const TextAttributes &a )
+{
+    d->titleTextAttributes = a;
+    d->useDefaultTextAttributes = false;
+    //d->needRebuild = true;
+}
+
+TextAttributes CartesianAxis::titleTextAttributes() const
+{
+    if( hasDefaultTitleTextAttributes() ){
+        TextAttributes ta( textAttributes() );
+        Measure me( ta.fontSize() );
+        me.setValue( me.value() * 1.5 );
+        ta.setFontSize( me );
+        return ta;
+    }
+    return d->titleTextAttributes;
+}
+
+void CartesianAxis::resetTitleTextAttributes()
+{
+    d->useDefaultTextAttributes = true;
+    //d->needRebuild = true;
+}
+
+bool CartesianAxis::hasDefaultTitleTextAttributes() const
+{
+    return d->useDefaultTextAttributes;
+}
+
 void CartesianAxis::setPosition ( Position p )
 {
     d->position = p;
@@ -148,17 +189,6 @@ void CartesianAxis::paintCtx( PaintContext* context )
     // - calculate the range that will be displayed:
     const qreal absRange = qAbs( dim.distance() );
 
-    // - calculate the number of unit, fifth and half measure rulers we will draw:
-    /* for line and bar charts the number of rulers should depend of the number of
-    * line = rows
-    * bar = groups
-    */
-    /*
-    int numberOfUnitRulers = ( int ) ( ( absRange + basicUnit * 1.05 ) / basicUnit );
-    int numberOfFourthRulers = numberOfUnitRulers * 5 + 1;
-    int numberOfHalfRulers = numberOfUnitRulers * 2 + 1;
-    */
-
     // Fixme Michel: Need to find the type of chart here - Line or Bar
     // if Bars calculate the number of groups
 
@@ -184,10 +214,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
             //qDebug() << "dimY.subStepWidth:" << dimY.stepWidth << "numberOfSubUnitRulers:" << numberOfSubUnitRulers;
         }
     }
-/*
-    int numberOfFourthRulers = numberOfUnitRulers * 4;
-    int numberOfHalfRulers = numberOfUnitRulers * 2;
-*/
+
     // - calculate the absolute range in screen pixels:
     const QPointF p1 = plane->translate( QPointF(dimX.start, dimY.start) );
     const QPointF p2 = plane->translate( QPointF(dimX.end, dimX.end) );
@@ -222,14 +249,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
         (numberOfSubUnitRulers != 0.0) &&
         (screenRange / numberOfSubUnitRulers > MinimumPixelsBetweenRulers);
 
-/*
-    // for the next two lines, please note:
-    // There are no such things as "half of Item 1" or "0.75 times Thursday"
-    bool drawFourthRulers = screenRange / numberOfFourthRulers > MinimumPixelsBetweenRulers && ! useItemCountLabels;
-    bool drawHalfRulers = screenRange / numberOfHalfRulers > MinimumPixelsBetweenRulers && ! useItemCountLabels;
-*/
-    const TextAttributes ta = textAttributes();
-    const bool drawLabels = ta.isVisible();/* && (screenRange / numberOfHalfRulers > MinimumPixelsBetweenRulers)*/;
+    const TextAttributes labelTA = textAttributes();
+    const bool drawLabels = labelTA.isVisible();
 
     // - find the reference point at which to start drawing and the increment (line distance);
     QPointF rulerRef;
@@ -276,13 +297,9 @@ void CartesianAxis::paintCtx( PaintContext* context )
             << "-- magnitude: " << magnitude << endl
             << "-- basicUnit: " << basicUnit << endl
             << "-- numberOfUnitRulers: " << numberOfUnitRulers << endl
-//            << "-- numberOfHalfRulers: " << numberOfHalfRulers << endl
-//            << "-- numberOfFourthRulers: " << numberOfFourthRulers << endl
             << "-- screenRange: " << screenRange << endl
             << "-- drawUnitRulers: " << drawUnitRulers << endl
-//            << "-- drawHalfRulers: " << drawHalfRulers << endl
             << "-- drawLabels: " << drawLabels << endl
-//            << "-- drawFourthRulers: " << drawFourthRulers << endl
             << "-- ruler reference point:: " << rulerRef << endl;
     #endif
 
@@ -293,33 +310,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
     qreal maxValueY = dimY.end;
     qreal minValueX = dimX.start;
     qreal maxValueX = dimX.end;
-/*
-    if ( drawFourthRulers ) {
-        if ( isAbscissa() ) {
-            int tickLength = isTop ? -2 : 1;
-            for ( float f = minValueX; f <= maxValueX; f += 0.25 ) {
-                QPointF topPoint ( f, 0 );
-                QPointF bottomPoint ( f, 0 );
-                topPoint = plane->translate( topPoint );
-                bottomPoint = plane->translate( bottomPoint );
-                topPoint.setY( fourthRulerRef.y() + tickLength );
-                bottomPoint.setY( fourthRulerRef.y() );
-                ptr->drawLine( topPoint, bottomPoint );
-            }
-        } else {
-            int tickLength = isLeft ? -1 : 1;
-            for ( float f = minValueY; f <= maxValueY; f += 0.25 ) {
-                QPointF leftPoint ( 0, f );
-                QPointF rightPoint ( 0, f );
-                leftPoint = plane->translate( leftPoint );
-                rightPoint = plane->translate( rightPoint );
-                leftPoint.setX( fourthRulerRef.x() + tickLength );
-                rightPoint.setX( fourthRulerRef.x() );
-                ptr->drawLine( leftPoint, rightPoint );
-          }
-      }
-    }
-*/
+
     if ( drawSubUnitRulers ) {
         if ( isAbscissa() ) {
             int tickLength = isTop ? -3 : 2;
@@ -346,6 +337,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
       }
     }
 
+    const QObject* referenceArea = plane->parent();
+
     if ( drawUnitRulers ) {
 //qDebug() << isOrdinate();
         const int hardLabelsCount  = labels().count();
@@ -361,16 +354,10 @@ void CartesianAxis::paintCtx( PaintContext* context )
         }
         const int headerLabelsCount = headerLabels.count();
 
-        const AbstractCoordinatePlane* plane = coordinatePlane();
-        const QObject* referenceArea;
-        if ( plane )
-            referenceArea = plane->parent();
-        else
-            referenceArea = d->diagram();
         TextLayoutItem* labelItem =
             drawLabels
             ? new TextLayoutItem( QString::number( minValueY ),
-                      ta,
+                      labelTA,
                       referenceArea,
                       KDChartEnums::MeasureOrientationMinimum,
                       Qt::AlignLeft )
@@ -532,6 +519,47 @@ void CartesianAxis::paintCtx( PaintContext* context )
         if( labelItem )
             delete labelItem;
     }
+
+    if( ! titleText().isEmpty() ){
+        const TextAttributes titleTA( titleTextAttributes() );
+        Qt::Alignment align;
+        if( isTop ){
+            align = Qt::AlignLeft | Qt::AlignTop;
+        }else if( isBottom ){
+            align = Qt::AlignLeft | Qt::AlignBottom;
+        }else if( isLeft ){
+            align = Qt::AlignLeft | Qt::AlignTop;
+        }else /*if( isRight )*/ {
+            align = Qt::AlignLeft | Qt::AlignBottom;
+        }
+        TextLayoutItem titleItem( titleText(),
+                      titleTA,
+                      referenceArea,
+                      KDChartEnums::MeasureOrientationMinimum,
+                      align );
+        QPointF point;
+        const QSize size( titleItem.sizeHint() );
+        if( isTop ){
+            point.setX( geoRect.left() + geoRect.width() / 2.0 - size.width() / 2.0 );
+            point.setY( geoRect.top() );
+        }else if( isBottom ){
+            point.setX( geoRect.left() + geoRect.width() / 2.0 - size.width() / 2.0 );
+            point.setY( geoRect.bottom() );
+        }else if( isLeft ){
+            point.setX( geoRect.left() );
+            point.setY( geoRect.top() + geoRect.height() / 2.0 + size.width() / 2.0 );
+        }else /*if( isRight )*/ {
+            point.setX( geoRect.right() );
+            point.setY( geoRect.top() + geoRect.height() / 2.0 + size.width() / 2.0 );
+        }
+        PainterSaver painterSaver( ptr );
+        ptr->translate( point );
+        if( isOrdinate() )
+            ptr->rotate( 270.0 );
+        titleItem.setGeometry( QRect( QPoint(0,0), size ) );
+        titleItem.paint( ptr );
+    }
+
     //for debugging: ptr->drawRect(geoRect);
     qDebug() << "KDChart::CartesianAxis::paintCtx() done.";
 }

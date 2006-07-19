@@ -80,6 +80,27 @@ namespace KDChart {
 
         QDomDocumentFragment toXML() const;
 
+        void setTitleText( const QString& text );
+        QString titleText() const;
+
+        void setTitleTextAttributes( const TextAttributes &a );
+        /**
+          * Returns the text attributes that will be used for displaying the
+          * title text.
+          * This is either the text attributes as specified by setTitleTextAttributes,
+          * or (if setTitleTextAttributes() was not called) the default text attributes.
+          * \sa resetTitleTextAttributes, hasDefaultTitleTextAttributes
+          */
+        TextAttributes titleTextAttributes() const;
+        /**
+          * Reset the title text attributes to the built-in default:
+          *
+          * Same font and pen as AbstractAxis::textAttributes()
+          * and 1.5 times their size.
+          */
+        void resetTitleTextAttributes();
+        bool hasDefaultTitleTextAttributes() const;
+
         virtual void setPosition ( Position p );
         virtual const Position position () const;
         virtual bool isAbscissa() const;

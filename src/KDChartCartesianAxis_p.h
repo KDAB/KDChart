@@ -56,11 +56,15 @@ class CartesianAxis::Private : public AbstractAxis::Private
 
 public:
     Private( AbstractCartesianDiagram* diagram, AbstractAxis* axis )
-        :AbstractAxis::Private( diagram, axis )
+        : AbstractAxis::Private( diagram, axis )
+        , useDefaultTextAttributes( true )
     {};
     ~Private() {};
 
 private:
+    QString titleText;
+    TextAttributes titleTextAttributes;
+    bool useDefaultTextAttributes;
     Position position;
     QRect geometry;
 };
