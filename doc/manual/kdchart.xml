@@ -1680,6 +1680,16 @@
 			</para>
 		    </listitem>			   
 		</itemizedlist>
+		<figure float="0" id="fig-simpleareachart">
+                <title>An Area Chart</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata
+                        fileref="images/simplearea.png"
+                        width="3in" scalefit="1"/>
+                    </imageobject>
+                </mediaobject>
+		</figure>
 		<note>
 		    <para>&kdchart; uses the term &quot;area&quot; in two different
 			ways which can be distinguished easily:
@@ -1707,21 +1717,50 @@
 			manual it just means a part of a chart.
 		    </para>
 		</note>
+		<para>
+		    Displaying the area for a dataset or the whole diagram is straight forward:
+		</para>
+		<itemizedlist>
+		    <listitem>
+			<para>
+			    Create a LineAttribute object by calling 
+			    <methodname>KDChartLineDiagram::lineAttributes</methodname>
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>
+			    Display it. You can also configure the level of transparency. 
+			</para>
+		    </listitem>
+		</itemizedlist>
 	    </sect2>
 	    <sect2>
 		<title id="areasample" xreflabel="codexample">Area Example</title>
 		<para>
-		    Let us make this more concrete by looking at the 
-		    following lines of code.		   
+		    Let us make this more concrete by looking at the following lines of code:	   
 		</para>
+		<programlisting>
+		    // Create a LineAttribute object
+		    LineAttributes la = m_lines->lineAttributes( index );  	    	
+                    // set Display implicitely 
+		    la.setDisplayArea( true );
+		    // Assign to the diagram 
+		    m_lines->setLineAttributes( index, la );
+                </programlisting>
 		<para>
-		    More explanation?
+		    Of course Brush and Pen settings as well as all other configurable attributes 
+		    accessible by the diagram itself can be set, which give the user a lot of 
+		    flexibility ( display or hide data values, markers, lines, configure colors 
+		    etc ...). 
 		</para>   
 	    </sect2>
 	    <sect2>
 		<title id="areaattributes">area Attributes</title>
 		<para>
-		    Text ...
+		    There are no specifical attributes related to the Area chart. As explained 
+		    above Area charts displaying is implemented as a Line Attribute. Of course the 
+		    generic attributes common to all chart types are availables, which give us full
+		    flexibility to configure our area chart.
 		</para>	
 	    </sect2>
 	    <sect2>
