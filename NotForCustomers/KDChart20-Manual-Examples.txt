@@ -65,12 +65,12 @@ Suggested location /examples/Lines/AreaFullFeatured
 
  *for HighLow example
 
-Suggested location /examples/HighLow/SimpleHL
+Suggested location /examples/HighLow/SimpleHilo
 
 9/FullFeaturedHighLowexample 
 
 * for the tips and tricks section of the HighLow charts 
 
 
-Suggested location /examples/HighLow/HLFullFeatured
+Suggested location /examples/HighLow/HiLoFullFeatured
 
