@@ -33,7 +33,17 @@ Suggested location /examples/Lines/SimpleLine
 Suggested location /examples/Lines/LinesFullFeatured
 
  
+6/SimplePointChartExample 
+
+ *for point example
+
+Suggested location /examples/Lines/SimplePoint
+
+7/FullFeaturedPointexample 
+
+* for the tips and tricks section of the point charts 
+Playing with display values and markers styles
 
 
-
+Suggested location /examples/Lines/PointsFullFeatured
 
