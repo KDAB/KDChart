@@ -1582,10 +1582,52 @@
 		    after we have written our own more complete example - 
 		    see NotForCustomers/KDChart20-Manual-Examples.txt  -->
 		    In the following implementation we want to be able to:			
-		</para>			
+		</para>
+		<itemizedlist>
+		    <!-- Pending Michel to be implemented -->
+		    <listitem>
+			<para>
+			   Be able to configure the points styles, color and size.
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>
+			   Display data values or hide it.
+			</para>
+		    </listitem>
+		    <listitem>			
+			<para>
+			  Display areas for each dataset on its own
+			</para>
+		    </listitem>			   
+		    <listitem>
+			<para>			    
+			  Shift between points and lines charts
+			</para>
+		    </listitem>		   
+		</itemizedlist>
+		<programlisting linenumbering="numbered" id="fullline_mainwindow_h">
+		    <textobject><textdata fileref="../../examples/Axis/Parameters/mainwindow.h"/>
+		    </textobject>
+		</programlisting>                
+		<para>
+		    More explanation h file?
+		</para>
+		<programlisting linenumbering="numbered" id="fullline_mainwindow_cpp">
+		    <textobject><textdata fileref="../../examples/Axis/Parameters/mainwindow.cpp"/>
+		    </textobject>
+		</programlisting>
 		<para>
 		    More explanation?
-		</para>   
+		</para>
+		<figure float="0" id="fig-fullpoint">
+		    <title>A Full featured Point Chart</title>
+		    <mediaobject>
+			<imageobject>			    
+			    <imagedata width="3in" scalefit="1" fileref="images/simplepoint.png"/>
+			</imageobject>
+		    </mediaobject>
+		</figure>
 	    </sect2>	  
 	    <sect2>
 		<title id="areas">Area Charts</title>
