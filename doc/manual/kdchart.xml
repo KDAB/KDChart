@@ -1606,14 +1606,14 @@
 			</para>
 		    </listitem>		   
 		</itemizedlist>
-		<programlisting linenumbering="numbered" id="fullline_mainwindow_h">
+		<programlisting linenumbering="numbered" id="fullpoint_mainwindow_h">
 		    <textobject><textdata fileref="../../examples/Axis/Parameters/mainwindow.h"/>
 		    </textobject>
 		</programlisting>                
 		<para>
 		    More explanation h file?
 		</para>
-		<programlisting linenumbering="numbered" id="fullline_mainwindow_cpp">
+		<programlisting linenumbering="numbered" id="fullpoint_mainwindow_cpp">
 		    <textobject><textdata fileref="../../examples/Axis/Parameters/mainwindow.cpp"/>
 		    </textobject>
 		</programlisting>
@@ -1631,9 +1631,82 @@
 	    </sect2>	  
 	    <sect2>
 		<title id="areas">Area Charts</title>
+		<tip>
+		    <para>
+			Even more than a Line Chart (of which they are attributes) an area chart 
+			can give a good visual impression of different datasets and their relation
+			to each other.
+		    </para>
+		    <para>
+			For example the area chart type might be the best choice for showing how 
+			several sources contributed to increasing ozone values in a conurbation
+			during a summer's months.
+		    </para>
+		</tip>
 		<para>
-		    Text info to Areas...
-		</para>	    
+		    Area charts are Line Charts and thus based upon several points which are 
+		    connected by lines&mdash;the difference to the line chart is that the area 
+		    below a line is filled by the respective dataset's color. This gives a clear
+		    appreciation of each dataset's relative values.
+	        </para>
+		<para>
+		    In order to make it possible to see all points, since some are covered by 
+		    another dataset's area, we have introduced an attribute which allow the user 
+		    to configure the level of transparency (more about that into the Attributes 
+		    paragraph of this section.
+		    KD Chart 2.0 supports of course Area display for all subtypes of line charts 
+		    and thus allow also the user to display the non-overlapping line types. The 
+		    following types can be displayed very simply in Area mode:
+		</para>
+		<itemizedlist>		   
+		    <listitem>
+			<para>
+			    Normal Line Area 
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>
+			   Stacked Line Area.
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>
+			   Percent Line Area.
+			</para>
+		    </listitem>
+		    <listitem>			
+			<para>
+			  Even Point Area charts are possible of course
+			</para>
+		    </listitem>			   
+		</itemizedlist>
+		<note>
+		    <para>&kdchart; uses the term &quot;area&quot; in two different
+			ways which can be distinguished easily:
+		    </para>
+		    <itemizedlist>
+			<listitem>
+			    <para>
+				In this chapter it stands for a special chart type or even more
+				accurately as a line diagram attribute.
+			    </para>
+			</listitem>
+			<listitem>
+			    <para>
+				In other context it can also point to the different (normally 
+				rectangular) parts of a chart like for example the 
+				<emphasis>legend area</emphasis> or the 
+				<emphasis>headers area</emphasis>.
+			    </para>
+			</listitem>
+		    </itemizedlist>
+		    <para>
+			This varying usage of the word &quot;area&quot; should Not cause a lack 
+			of clarity: In the context of this special section on 
+			<emphasis>area charts</emphasis> the word is clear, in the rest of the 
+			manual it just means a part of a chart.
+		    </para>
+		</note>
 	    </sect2>
 	    <sect2>
 		<title id="areasample" xreflabel="codexample">Area Example</title>
