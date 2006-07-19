@@ -1460,19 +1460,94 @@
 	    </sect2>	  	
             <sect2>
 		<title id="points">Point Charts</title>
+		<tip>
+		    <para>
+			Point charts often are used to visualize a big number of data in 
+			one or several datasets. A well known point chart example is the 
+			historical first Herzsprung-Russel diagram from 1914 where circles
+			represented stars with directly measured parallaxes and crosses were 
+			used for guessed values of stars from star clusters similar to the 
+			following simple chart.
+		    </para>
+		</tip>
+		<figure float="0" id="fig-simplepointchart">
+                <title>A Point Chart</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata
+                        fileref="images/simplepoint.png"
+                        width="3in" scalefit="1"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
 		<para>
-		    Text info Points...
+		    Unlike the other chart types in &kdchart; the point chart is not a type of 
+		    its own but actually a special kind of Line Chart. The resulting display is 
+		    obtained by painting markers instead of lines as we will see in the following 
+		    code sample. 
 		</para>
+		<para>
+		    The process for creating a point chart is very simple as described below:
+		</para>
+		<itemizedlist>
+		    <listitem>
+			<para>
+			    Set up a line chart and set its pen to Qt::NoPen.
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>
+			    Configure and display its data values markers. 
+			</para>
+		    </listitem>
+		</itemizedlist>
 	    </sect2>
 	    <sect2>
 		<title id="pointsample" xreflabel="codexample">Point Example</title>
 		<para>
-		    Let us make this more concrete by looking at the 
-		    following lines of code.
+		    The following code sample is going through the process above in order to 
+		    create a point chart.
 		</para>
+		<programlisting>
+		    // 1 - Set up a line chart and set its pen to Qt::NoPen
+                    m_lines = new LineDiagram();
+		    m_lines->setPen( Qt::NoPen );
+                    // 2 - Configure and display its data values markers
+                    // we will see more in details how to handle MarkerAttributes later on
+		    // Chapter 5 - Customizing your Charts - Section Markers
+		    DataValueAttributes dva;
+		    MarkerAttributes ma = dva.markerAttributes();
+		    ma->setVisible( true );
+		    // store several styles if needed
+		    // we can use a style for each dataset for example
+		    MarkerAttributes::MarkerStylesMap map;
+		    map.insert( 0, MarkerAttributes::MarkerSquare );
+		    map.insert( 1, MarkerAttributes::MarkerCircle );
+		    ....etc
+		    ma.setMarkerStylesMap( map );
+		    dva.setMarkerAttributes( ma );
+		    dva.setVisible( true );                    
+		    //3 - Paint different markers style for each dataset	     		    
+		    const int colCount = m_lines->model()->columnCount();
+		    for ( int i = 0; i &lt; colCount; ++i ) {			
+			ma.setMarkerStyle( ma.markerStylesMap().value(i) );
+			colAttributes.setMarkerAttributes( ma );
+		    }
+		    // Assign to the diagram
+		    m_lines->setDataValueAttributes( i, dva );			    	
+                </programlisting>
 		<para>
-		    More explanation?
-		</para>   
+		    After assigning your markersattributes setting to the diagram you may need
+		    to run <methodname>KDChartChart::update</methodname> as follow, in order to 
+		    force a re-paint depending of your implementation. 		   
+		</para> 
+		<programlisting>
+		    m_chart->update();		    	
+                </programlisting>
+		<para>
+		    We recommend you to run the complete example presented in the following Tips 
+		    section.
+		</para>
 	    </sect2>
 	    <sect2>
 		<title id="pointsattributes">Points Attributes</title>
