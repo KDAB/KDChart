@@ -47,3 +47,17 @@ Playing with display values and markers styles
 
 Suggested location /examples/Lines/PointsFullFeatured
 
+8/SimpleAreaChartExample 
+
+ *for area example
+
+Suggested location /examples/Lines/SimpleArea
+
+9/FullFeaturedAreaexample 
+
+* for the tips and tricks section of the area charts 
+Playing with line/point types transparency - animation etc...
+
+
+Suggested location /examples/Lines/AreaFullFeatured
+
