@@ -66,6 +66,19 @@ MainWindow::MainWindow( QWidget* parent ) :
     axisTop->setPosition( KDChart::CartesianAxis::Top );
     axisRight->setPosition( KDChart::CartesianAxis::Right );
 
+    xAxis->setTitleText ( "Abscissa axis at the bottom" );
+    yAxis->setTitleText ( "Ordinate axis at the left side" );
+    axisTop->setTitleText ( "Abscissa axis at the top" );
+    axisRight->setTitleText ( "Ordinate axis at the right side" );
+    TextAttributes taTop ( xAxis->titleTextAttributes () );
+    taTop.setPen( QPen( Qt::red ) );
+    axisTop->setTitleTextAttributes ( taTop );
+    TextAttributes taRight ( xAxis->titleTextAttributes () );
+    Measure me( taRight.fontSize() );
+    me.setValue( me.value() * 1.5 );
+    taRight.setFontSize( me );
+    axisRight->setTitleTextAttributes ( taRight );
+
     m_lines->addAxis( xAxis );
     m_lines->addAxis( yAxis );
     m_lines->addAxis( axisTop );
