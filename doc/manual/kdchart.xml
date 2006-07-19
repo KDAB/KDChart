@@ -1860,6 +1860,101 @@
 		    to be displayed very quickly and even when representing a large number of days 
 		    they will not consume too  much memory.
 		</para>
+		<para>
+		    High Low Charts can be configured with the following sub types as described in 
+		    details below: Simple and Open/Close.
+		</para>		
+	    </sect2>
+	    <sect2>
+		<title id="hilosimple">Simple High/Low Charts</title>
+                <tip>
+                    <para>
+			Simple high/low charts (not showing open nor close values) can be useful to
+			give an overview about an item's largest and smallest values per 
+			time-segment. You can use such a chart if your values beginning and end 
+			values are not interesting because the important information is 
+			represented by its minima and maxima: e.g. this might be the highest/lowest
+			temperature reached in a year where your chart might show the evolution of 
+			these values during a span of some 100 years.
+                    </para>    
+                </tip>		
+		<!-- Commented for now until the feature is implemented -->
+		<!--
+		<figure float="0" id="fig-hilosimple">
+		    <title>A Simple High/Low Chart</title>
+		    <mediaobject>
+			<imageobject>
+			    <imagedata width="3in" scalefit="1" fileref="images/simplehilo.png"/>
+			</imageobject>
+		    </mediaobject>
+		</figure>
+		-->		
+		<para>
+		    &kdchart; by default draws normal high/low charts without showing any open or 
+		    close marks when in High/Low Chart mode so no methods need to be called to get 
+		    such charts, however after having used your 
+		    <!-- <classname>KDChartParams</classname> --> to display another high/low chart
+		    type you can call 
+		    <!-- <methodname>setHiLoChartSubType( KDChart::HiLoNormal )</methodname>-->
+                    to return to the default subtype.
+		</para>	    
+	    </sect2>
+	    <sect2>
+		<title id="hiloopenclose">Open/Close High/Low Charts</title>
+		<tip>
+                    <para>
+			Extended open/close high/low charts provide a view on the start and end 
+			values as well as on the maximal and minimal values of a specific item
+			per time-segment. This kind of chart is useful if your item's start and 
+			end value is of special importance too, e.g. typically such charts are
+			used to visualize the evolution of per-day figures in a financial share 
+			value diagram displaying one or several weeks.
+                    </para>
+                </tip>
+		<!-- Commented for now until the feature is implemented -->
+		<!--
+		 <figure float="0" id="fig-openclosehilo">
+                    <title>An Open/Close High/Low Chart </title>
+		    <mediaobject>
+			<imageobject>
+			    <imagedata width="3in" scalefit="1" fileref="images/openclosehilo.png"/>
+			</imageobject>
+		    </mediaobject>
+		</figure>
+		-->
+		<para>
+		    To make  draw the open and close lines too you call the "classname"
+		    <!-- <classname>KDChartParams</classname> --> function
+                    <!-- <methodname>setHiLoChartType( KDChart::HiLoOpenClose )</methodname> -->
+		    "methodname". In case you are not interested in the open value (e.g. because 
+		    this would always be identical to the respective previous close value) just 
+		    use <literal>HiLoClose</literal> instead.  
+		</para>
+	    </sect2>
+	    <sect2>
+		<title id="hilolabels">High/Low Charts with Custom Data Labels</title>
+		<tip>
+                    <para>
+			Adding data labels to your High/Low chart can be useful if your chart is 
+			displaying a rather limited number items: otherwise it might be a better 
+			idea to draw the lines without showing the data labels but show a few 
+			labels instead using "method".
+                    </para>
+                </tip>
+		<!-- Commented for now until the feature is implemented -->
+		<!--
+                <figure float="0" id="fig-hilocustom">
+                    <title>A High/Low Chart With Custom Data Labels</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata
+                            fileref="images/hilowithvalues.png"
+                            width="3in" scalefit="1"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+		-->
+		<!-- Pending Michel: check if the printing tips are still actual -->
 	    </sect2>
 	    <sect2>
 		<title id="hlsample" xreflabel="codexample">High/Low Example</title>
