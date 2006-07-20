@@ -82,6 +82,7 @@ void HeaderFooter::Private::updateTextDoc()
         cursor.insertBlock( bf );
         cursor.insertFragment( QTextDocumentFragment::fromHtml( text ) );
         //qDebug() << "HeaderFooter::Private::updateTextDoc() has added:" << cursor.block().text();
+        //textDoc->setModified( true );
     }
 }
 
@@ -241,23 +242,17 @@ Qt::Orientations HeaderFooter::expandingDirections() const
 /* pure virtual in QLayoutItem */
 QSize HeaderFooter::maximumSize() const
 {
-//    QSize s( d->textDoc ? d->textDoc->sizeHint() : QSize(0,0) );
     if( isEmpty() )
         return QSize(0,0);
-//    return d->textDoc->sizeHint();
-    QAbstractTextDocumentLayout* layout = d->textDoc->documentLayout();
-/*
-    QSizeF s( layout->documentSize() );
-    return QSize( static_cast<int>(s.width()),
-                  static_cast<int>(s.height()) );
-*/
 
+    // Set the page width: So the layout can calculate the bounding rect
+    d->textDoc->setPageSize( QSizeF( d->geometry.width(), 10000.0 ) );
     QTextCursor cursor( d->textDoc );
     cursor.movePosition( QTextCursor::NextBlock );
     const QTextBlock block( cursor.block() );
-    qDebug() << "HeaderFooter::maximumSize() found text:" << block.text();
-    const QRectF r( layout->blockBoundingRect( block ) );
-    qDebug() << "KDChart::HeaderFooter::maximumSize() found bounding rect" << r;
+    //qDebug() << "HeaderFooter::maximumSize() found text:" << block.text();
+    const QRectF r( d->textDoc->documentLayout()->blockBoundingRect( block ) );
+    //qDebug() << "KDChart::HeaderFooter::maximumSize() found bounding rect" << r;
     return QSize( static_cast<int>(r.width()),
                   static_cast<int>(r.height()) );
 }
@@ -274,7 +269,7 @@ QSize HeaderFooter::sizeHint() const
 /* pure virtual in QLayoutItem */
 void HeaderFooter::setGeometry( const QRect& r )
 {
-    qDebug() << "KDChart::HeaderFooter::setGeometry(" << r << ") called";
+    //qDebug() << "KDChart::HeaderFooter::setGeometry(" << r << ") called";
     d->geometry = r;
     if( d->textDoc )
         d->textDoc->setPageSize( QSize( r.size() ) );
@@ -283,16 +278,7 @@ void HeaderFooter::setGeometry( const QRect& r )
 QRect HeaderFooter::geometry() const
 {
     QRect r( d->geometry );
-    /*QRect r( d->geometry.topLeft(), QSize(1,1) );
-    if( d->textDoc ){
-        const QSizeF siz( d->textDoc->documentLayout()->documentSize() );
-        r.setSize(
-            QSize( static_cast<int>(siz.width()),
-                   static_cast<int>(siz.height()) ) );
-    }else{
-        r.setSize( sizeHint() );
-    }*/
-    qDebug() << "KDChart::HeaderFooter::geometry() returning" << r;
+    //qDebug() << "KDChart::HeaderFooter::geometry() returning" << r;
     return r;
 }
 
