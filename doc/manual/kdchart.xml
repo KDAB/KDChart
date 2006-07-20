@@ -1956,6 +1956,8 @@
 		-->
 		<!-- Pending Michel: check if the printing tips are still actual -->
 	    </sect2>
+	    <!-- Re-open when HiLo are implemented -->
+	    <!--
 	    <sect2>
 		<title id="hlsample" xreflabel="codexample">High/Low Example</title>
 		<para>
@@ -1997,13 +1999,247 @@
 		<para>
 		    More explanation?
 		</para>   
-	    </sect2>	  
+	    </sect2>
+	    -->
 	    <sect2>
 		<title id="boxwhisker">Box and Whisker Charts</title>
 		<para>
-		    Text info to Box and Whisker...
-		</para>	    
-	    </sect2>
+		    This chart is called box&amp;whisker because of its look: a box in the middle 
+		    and two lines looking like whiskers on each side.  While the box surrounds the
+		    center half of your spreading values, the upper and lower whisker ends are 
+		    framing all or most of the values, except from a few outliers indicated 
+		    separately.
+		</para>
+		<para>
+		    Box&amp;whisker charts provide detailed descriptive statistics of a variable: 
+		    The height of the box shows how close together the main part of your values are
+		    and the length of the whiskers indicate how far the other values spread.
+		</para>
+		<tip>
+		    <para>
+			Since box&amp;whisker charts give an overview of your values distribution 
+			(plus their mean and average value) they can be used for a quick estimate 
+			without looking into your statistical tables. An example might be a 
+			comparison of the number of failures in a device, perhaps three datasets 
+			of some 30 computer chips each to compare their errors at three different 
+			temperatures. Each of the data cells containing the number of failures
+			shown by one chip your chart would show three boxes: you might expect both 
+			a lower error number (with the box being drawn nearer to the abscissa axis)
+			and less variation (smaller box and whiskers) at lower temperature.
+		    </para>
+		</tip>
+		<para>
+		    Box&amp;whisker charts are the most sophisticated ones of &kdchart;'s 
+		    statistical chart types: unlike the simple High/Low Charts 
+		    <emphasis>they calculate</emphasis> each dataset's statistical values 
+		    themselves.
+		</para>
+		<para>
+		    You can activate the box&amp;whisker chart mode by calling the 
+		    "classname" <!-- <classname>KDChartParams</classname> --> function
+		    "methodname" 
+		    <!-- <methodname>setChartType( KDChartParams::BoxWhisker )</methodname>. -->
+		</para>
+		<!-- Commented for now until the feature is implemented -->
+		<!--
+		<note>
+                  <para>
+		      Some notes about configuring colors and lines width
+	          </para>
+                </note>
+		-->
+	    </sect2>	    
+	    <sect2>
+		<title id="bwnormal">Normal Box&amp;Whisker Charts</title>
+                <tip>
+                    <para>
+			Normal box&amp;whisker charts are used to get a quick overview about your 
+			spreading data and see the show outliers.
+                    </para>
+                </tip>
+		<!-- Commented for now until the feature is implemented -->
+		<!--
+		<figure float="0" id="fig-simplebwchart">
+                    <title>A Normal Box&amp;Whisker Chart</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata
+				fileref="images/simplebwchart.png"
+				width="3in" scalefit="1"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+		-->
+		<!-- More para and notes about the view above -->
+            </sect2>
+	    <sect2>
+                <title id="bwstripped">Box&amp;Whisker Charts without Outliers</title>
+                <tip>
+                    <para>
+			If outlier values would dilute the message of your chart or simply be 
+			visually unpleasant, you can turn them off as described here.
+                    </para>
+                </tip>
+		<!-- Commented for now until the feature is implemented -->
+		<!--
+                <figure float="0" id="fig-bwstripped">
+                    <title>A Box&amp;Whisker Chart Without Outliers</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata
+                            fileref="images/bwstripped.png"
+                            width="3in" scalefit="1"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+		-->
+                <para>
+		    To suppress drawing of any markers for <emphasis>outliers</emphasis> or
+                    <emphasis>extremes</emphasis> just set their size to zero by calling
+		    "methodname" <!-- <methodname>setBWChartOutValMarkerSize( 0 )</methodname> -->
+                    as demonstrated by the tutorial file "filename", of course you could also use 
+		    a value different from zero to set them to a specific size:
+                    "methodename" <!-- <methodname>setBWChartOutValMarkerSize( -50
+                        )</methodname> --> would increase their dynamic size by factor two since 
+		    -25 is the default setting (a quarter of the box width), while "methodname"
+		    <!-- <methodname>setBWChartOutValMarkerSize( 15 )</methodname> --> would set 
+		    them to a fixed size of 15pt ignoring the size of the widget.
+               </para>
+                <note>
+                    <para>This special mode might require some additional explanation to tell your 
+			users that the outliers and extremes are suppressed: otherwise the chart
+                        might be interpreted wrongly since it looks like 
+			<emphasis>there are no</emphasis> outliers but all values are within the 
+			inner fences or the box area.
+                    </para>
+                </note>
+            </sect2>
+	     <sect2>
+                <title id="bwstatistics">Box&amp;Whisker Charts with Statistics</title>
+                <tip>
+                    <para>
+			By showing statistical values in your box&amp;whisker charts, you can make 
+			your charts even more expressive - at the possible expense of readability.
+                    </para>
+                </tip>
+		<!-- Commented for now until the feature is implemented -->
+		<!--
+                <figure float="0" id="fig-bwstatistics">
+                    <title>A Box&amp;Whisker Chart With Statistical Values</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata
+                            fileref="images/bwstatistics.png"
+                            width="3in" scalefit="1"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+		-->
+                <para>
+		    Box&amp;whisker charts can print up to ten different statistical figures next 
+		    to the respective boxes&mdash;each of which can be shown using specific fonts, 
+		    text color,and background colors.
+                </para>
+                <para>
+		    Printing of a statistical value is enabled by passing one of the
+                    <literal>KDChartParams::BWStatVal</literal> enum's descriptive names
+                    (<literal>UpperOuterFence</literal>, <literal>UpperInnerFence</literal>,
+                    <literal>Quartile3</literal>, <literal>Median</literal>,
+                    <literal>Quartile1</literal>, <literal>LowerInnerFence</literal>,
+                    <literal>LowerOuterFence</literal>, <literal>MaxValue</literal>,
+                    <literal>MeanValue</literal>, <literal>MinValue</literal>)
+                    to the following function:
+                </para>
+		<!-- Fill in when implemented -->
+		<!--
+		<programlisting>
+		    void KDChartParams::setBWChartPrintStatistics( BWStatVal statValue,
+		    bool active,
+		    QFont* font = 0,
+		    int size = 24,
+		    QColor* color = 0,
+		    QBrush* brush = 0 );
+		</programlisting>
+		-->
+                <para>
+		    Parameters:
+		</para>
+                <variablelist>
+		    <varlistentry>
+			<term><literal>statValue</literal></term>
+			<listitem>
+			    <para>one of the enum values listed above</para>
+			</listitem>
+		    </varlistentry>
+		    <varlistentry>
+			<term><literal>active</literal></term>
+			<listitem>
+			    <para>set to true to have the <literal>statValue</literal>
+				printed using either the default fond and color or the
+				settings specified by the following parameters
+			    </para>
+			</listitem>
+		    </varlistentry>
+		    <varlistentry>
+			<term><literal>font</literal></term>
+                    <listitem>
+			    <para>if not zero the font will be used for this
+				statistical value
+			    </para>
+			</listitem>
+		    </varlistentry>
+		    <varlistentry>
+			<term><literal>size</literal></term>
+			<listitem>
+			    <para>if not zero this value will be interpreted as
+				percent of the actual box width: font size will
+				be calculated dynamically then instead of using
+				the <literal>font</literal> parameter's fixed size
+			    </para>
+			</listitem>
+		    </varlistentry>
+		    <varlistentry>
+			<term><literal>color</literal></term>
+			<listitem>
+			    <para>the text color of this statistical value</para>
+			</listitem>
+		    </varlistentry>
+		    <varlistentry>
+			<term><literal>brush</literal></term>
+			<listitem>
+			    <para>the color of the background of this statistical
+				value, if set to Qt::NoBrush the background is
+				<emphasis>not</emphasis> erased before the text
+				is printed
+			    </para>
+			</listitem>
+		    </varlistentry>
+                </variablelist>
+                <para>
+		    Compile and run the tutorial file
+                    <!-- <ulink url="../../doc/tutorial/step01w/kdchart_step01w.cpp"> 
+                        <filename>kdchart_step01w.cpp</filename>
+                    </ulink>
+		    -->
+                    to see a box&amp;whisker chart featuring all possible statistical value texts 
+		    using custom font settings and a special background color for the boxes 
+		    <!-- (see also <xref linkend="fig-bwstatistics"/>).-->
+                </para>
+                <note>
+                    <para>
+			No fence values are printed for the middle series in our sample 
+			<!-- (<xref linkend="fig-bwstatistics"/>) --> because they are outside of 
+			the chart's data area.  This can occur if all values of a series are in 
+			the inner fences and the box.  Since in this case there is no need to show 
+			the fence values the range of the ordinate axis is <emphasis>not</emphasis>
+			extended but the chart uses the available space to have more room for 
+			displaying the other datasets which otherwise would have less vertical 
+			space to draw their boxes and whiskers.
+                    </para>
+                </note>
+            </sect2>
+	    <!-- commented for now until this is implemented -->
+	    <!--
 	    <sect2>
 		<title id="bwsample" xreflabel="codexample">Box and Whisker Example</title>
 		<para>
@@ -2045,7 +2281,8 @@
 		<para>
 		    More explanation?
 		</para>   
-	    </sect2>	  
+	    </sect2>
+	    -->	   
 	</sect1>
 	<sect1>
             <title id="polarplane">Polar coordinate plane</title>
