@@ -2870,15 +2870,59 @@
 	    </sect2>
 	    <sect2>
 		<title id="polarchart">Polar Charts</title>
-		<para>
-		    Text...
-		</para>
+		 <tip>
+		    <para>
+			Polar charts got their name from displaying &quot;polar coordinates&quot; 
+			instead of Cartesian coordinates. Currently only normalized polar charts 
+			can be shown: all values advance by the same number of polar degrees
+			and there is no way to specify a data cell's angle individually. While 
+			this is ideal for some situations it is not possible to display true world 
+			map data like this since you can not specify each cell's rotation angle.
+			Transforming your coordinates to the Cartesian system and using a
+			Point Chart might be a solution in such cases.
+		    </para>
+		</tip>
+		<para>		    
+		    To activate the ring chart mode simply call the 
+		    <classname>KDChartWidget</classname> function 
+		    <methodname>setType(Widget::Polar)</methodname> or create an object of type 
+		    <classname>KDChartPolarDiagram</classname>
+		</para>	
 	    </sect2>
 	    <sect2>
 		<title id="simplepolarchart">A Simple Polar Charts</title>
 		<para>
-		    Text...
+		    Just like the Line Charts to which they can be compared the polar chart type is
+		    divided into three sub types which can be activated by calling 
+		    <methodname>setType( KDChartPolarDiagram::Normal )</methodname>
+		    or <literal>Stacked</literal> or <literal>Percent</literal>.
 		</para>
+		<para>
+		    Compile and run the example file "PolarSimple" to see a normal polar chart as 
+		    shown below. 		
+		</para>
+		<!-- temporarely commented until we have an example to show -->
+		<!--
+		 <figure float="0" id="fig-simplepolarchart">
+                <title>A Normal Polar Chart</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata
+                        fileref="images/simplepolar.png"
+                        width="3in" scalefit="1"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+		-->
+		<note>
+		    <para>
+			Data Values are shown by default in polar charts even if drawing of the 
+			markers is suppressed by <methodname>setPolarMarker( false )</methodname>, 
+			you can  hide them by calling the 
+			<classname>KDChartPolarAttributes</classname> function 
+			<methodname>setPrintDataValues( false )</methodname>.
+		    </para>
+		</note>
 	    </sect2>
 	    <sect2>
 		<title id="polarsattributes">Polars Attributes</title>
