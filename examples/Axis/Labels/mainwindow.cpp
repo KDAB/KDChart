@@ -62,6 +62,8 @@ MainWindow::MainWindow( QWidget* parent ) :
     CartesianAxis *yAxis = new CartesianAxis ( m_lines );
     xAxis->setPosition ( KDChart::CartesianAxis::Bottom );
     yAxis->setPosition ( KDChart::CartesianAxis::Left );
+    xAxis->setTitleText ( "Abscissa axis at the bottom" );
+    yAxis->setTitleText ( "Ordinate axis at the left side" );
 
 // set the following to 0, to see the default Abscissa labels (== X headers, as read from the data file)
 #if 1
