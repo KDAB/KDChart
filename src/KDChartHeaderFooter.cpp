@@ -32,6 +32,7 @@
 #include <QPainter>
 #include <QAbstractTextDocumentLayout>
 #include <QTextDocumentFragment>
+#include <QTextBlock>
 #include <QtDebug>
 #include <QLabel>
 #include "KDTextDocument.h"
@@ -80,6 +81,7 @@ void HeaderFooter::Private::updateTextDoc()
         bf.setNonBreakableLines( true );
         cursor.insertBlock( bf );
         cursor.insertFragment( QTextDocumentFragment::fromHtml( text ) );
+        //qDebug() << "HeaderFooter::Private::updateTextDoc() has added:" << cursor.block().text();
     }
 }
 
@@ -229,19 +231,35 @@ void HeaderFooter::setParent( Chart* parent )
 /* pure virtual in QLayoutItem */
 bool HeaderFooter::isEmpty() const
 {
-    return ( d->textDoc != 0 );
+    return ( d->textDoc == 0 );
 }
 /* pure virtual in QLayoutItem */
 Qt::Orientations HeaderFooter::expandingDirections() const
 {
-    return Qt::Vertical | Qt::Horizontal;
+    return (Qt::Vertical | Qt::Horizontal);
 }
 /* pure virtual in QLayoutItem */
 QSize HeaderFooter::maximumSize() const
 {
-    QSize s( d->textDoc ? d->textDoc->sizeHint() : QSize(0,0) );
-    qDebug() << "KDChart::HeaderFooter::maximumSize() returning" << s;
-    return s;
+//    QSize s( d->textDoc ? d->textDoc->sizeHint() : QSize(0,0) );
+    if( isEmpty() )
+        return QSize(0,0);
+//    return d->textDoc->sizeHint();
+    QAbstractTextDocumentLayout* layout = d->textDoc->documentLayout();
+/*
+    QSizeF s( layout->documentSize() );
+    return QSize( static_cast<int>(s.width()),
+                  static_cast<int>(s.height()) );
+*/
+
+    QTextCursor cursor( d->textDoc );
+    cursor.movePosition( QTextCursor::NextBlock );
+    const QTextBlock block( cursor.block() );
+    qDebug() << "HeaderFooter::maximumSize() found text:" << block.text();
+    const QRectF r( layout->blockBoundingRect( block ) );
+    qDebug() << "KDChart::HeaderFooter::maximumSize() found bounding rect" << r;
+    return QSize( static_cast<int>(r.width()),
+                  static_cast<int>(r.height()) );
 }
 /* pure virtual in QLayoutItem */
 QSize HeaderFooter::minimumSize() const
@@ -264,14 +282,16 @@ void HeaderFooter::setGeometry( const QRect& r )
 /* pure virtual in QLayoutItem */
 QRect HeaderFooter::geometry() const
 {
-    QRect r( d->geometry.topLeft(), QSize(1,1) );
+    QRect r( d->geometry );
+    /*QRect r( d->geometry.topLeft(), QSize(1,1) );
     if( d->textDoc ){
-        const QSizeF siz( d->textDoc->pageSize() );
+        const QSizeF siz( d->textDoc->documentLayout()->documentSize() );
         r.setSize(
             QSize( static_cast<int>(siz.width()),
                    static_cast<int>(siz.height()) ) );
-    }
-    r.setSize( sizeHint() );
+    }else{
+        r.setSize( sizeHint() );
+    }*/
     qDebug() << "KDChart::HeaderFooter::geometry() returning" << r;
     return r;
 }

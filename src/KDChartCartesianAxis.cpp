@@ -64,6 +64,7 @@ void CartesianAxis::init ()
 
 void CartesianAxis::setTitleText( const QString& text )
 {
+    //FIXME(khz): Call update al all places where axis internals are changed!
     d->titleText = text;
     //d->needRebuild = true;
 }
