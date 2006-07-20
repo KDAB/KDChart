@@ -2341,8 +2341,8 @@
 		<note>
 		    <para>
 			Three-dimensional look of the pies is no special feature you can enable 
-			by setting its ThreeD attributes, we will describe that in the 
-			"Pies Attributes" section further on.
+			by setting its ThreeD attributes, we will describe that more in details
+			Chapter 5 - Customizing your Chart - ThreeD section further on.
 		    </para>
 		</note>
 	    </sect2>
@@ -2391,8 +2391,78 @@
                             width="3in" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
-                </figure>                
+                </figure>                                
                 <para>
+                    We will go through all the configuration possibilities in the Pie Attributes
+		    section below.
+                </para>
+            </sect2>
+	    <sect2>
+		<title id="pieattributes">Pies Attributes</title>
+		<para>
+		    By "Pie attributes" we are talking about all parameters that can be 
+		    configured and set by the user and which are specifics to the Pie Chart type.
+		    KD Chart 2.0 API separates the attributes specifics to a chart type itself and 
+		    the generic attributes which are common to all chart types as for example the 
+		    setters and getters for a brush or a pen.		    
+		</para>
+		<para>
+		    All those attributes have a reasonnable default value that can simply be 
+		    modified by the user by calling one of the diagram set function implemented on 
+		    this purpose <methodname>KDChartPieDiagram::setPieAttributes()</methodname>.
+		</para>
+		<para>
+		    The procedure is straight forward:
+		</para>
+		<itemizedlist>
+		    <listitem>
+			<para>
+			    Create a <classname>KDChart::PieAttributes</classname> object by 
+			    calling <methodname>KDChartPieDiagram::pieAttributes</methodname>.  
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>
+			    Configure this object using the setters available.
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>
+			    Assign it to your Diagram with the help of one of the setters available 
+			    in <classname>KDChart::PieDiagram</classname>. All the attributes can be
+			    configured to be applied for the whole diagram, for a column, or at a 
+			    specified index (<classname>QModelIndex</classname>).
+			</para>
+		    </listitem>
+		</itemizedlist>
+		<para>
+		    KD Chart 2.0 supports the following attributes for the Pie chart type. 
+		    Each of those attributes can be set and retrieved the way we describe it in our 
+		    example below:
+		</para>
+		<itemizedlist>
+		    <listitem>
+			<para>
+			   Explode: Enable/Disable exploding one or several datasets
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>
+			   Explode factor: Set the explode factor for a dataset or for all slices
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>
+			   StartPosition: Set the starting angle for the first dataset 
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>
+			    ThreeDPieAttributes: Enable/Disable threeD
+			</para>
+		    </listitem>
+		</itemizedlist>
+		<para>
 		    To get a pie chart like the one presented above (having one or several of the 
 		    pieces separated from the others in <emphasis>exploded</emphasis> mode) you 
 		    would have to set its attributes and implicitely enable exploding, by calling  
@@ -2410,64 +2480,91 @@
 		    // 3 - Assign to your diagram
 		    m_pie->setPieAttributes( index, pa);
 		</programlisting>
-                <para>
-                    We will go through all the configuration possibilities in the Pie Attributes
-		    section below.
-                </para>
-            </sect2>
-	    <sect2>
-		<title id="pieattributes">Pies Attributes</title>
-		<para>
-		    Text ...
-		</para>
-	    </sect2>	
-	    <sect2>
-		<title id="pieattributessample" xreflabel="codexample">Pie Example</title>
-		<para>
-		    Let us make this more concrete by looking at the 
-		    following lines of code.
-		    <!--
-		    <link linkend=""></link>
-		    <link linkend=""></link>
-		    -->
-		</para>
-		<!--
-		<programlisting linenumbering="numbered" id="">
-		<textobject>
-		<textdata fileref="../../examples/..."/>
-	        </textobject>
-	        </programlisting>
-		-->
-		<para>
-		    More explanation?
-		</para>   
+		<note>
+		    <para>
+			Three-dimensional look of the pies can be enable and configured  
+			by setting its ThreeD attributes the same way as we are setting the 
+			PieAttributes in the code sample above, we will describe that more in 
+			details	Chapter 5 - Customizing your Chart - ThreeD section further on.
+		    </para>
+		</note>		
 	    </sect2>
 	    <sect2>
 		<title id="pietips">Tips and Tricks</title>
 		<para>
-		    Some tips and tricks
+		    In this section we want to go through some examples about how to use some 
+		    interesting features offered by the KD Chart 2.0 API. We will study the 
+		    code and display a screen-shot showing the resulting widget.   
 		</para>	
 	    </sect2>
 	    <sect2>
-		<title id="pietipssample" xreflabel="codexample">A complete Pie Example</title>
+		<title id="pietipsample" xreflabel="codexample">A complete Pie Example</title>
 		<para>
-		    Let us make this more concrete by looking at the 
-		    following lines of code.
-		    <!--
-		    <link linkend=""></link>
-		    <link linkend=""></link>
-		    -->
+		    <!-- Pending michel show a nice full featured Pie chart with as many 
+		    attributes as possible - The following text and list has to be modified 
+		    after we have written our own more complete example - 
+		    see NotForCustomers/KDChart20-Manual-Examples.txt  -->
+		    In the following implementation we want to be able to:
 		</para>
-		<!--
-		<programlisting linenumbering="numbered" id="">
-		<textobject>
-		<textdata fileref="../../examples/..."/>
-	        </textobject>
-	        </programlisting>
-		-->
+		<itemizedlist>
+		    <listitem>
+			<para>
+			   Display the data values.
+			</para>
+		    </listitem>
+		     <listitem>
+			<para>
+			   Configure the Start position .
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>
+			   Display a Pie chart and shift between normal and threeD look.
+			</para>
+		    </listitem>
+		     <listitem>
+			<para>
+			   Enable or disable the use of shadow colors when in threeD mode 
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>
+			  Set the surrounding lines width and color
+			</para>
+		    </listitem>			   
+		    <listitem>
+			<para>			    
+			   Explode one or several slices. 
+			</para>
+		    </listitem>	
+		    <listitem>
+			<para>			    
+			   Run an animation (exploding). 
+			</para>
+		    </listitem>
+		</itemizedlist>
+		<programlisting linenumbering="numbered" id="fullpie_mainwindow_h">
+		    <textobject><textdata fileref="../../examples/Pie/mainwindow.h"/>
+		    </textobject>
+		</programlisting>                
 		<para>
-		    More explanation?
-		</para>   
+		    More explanation h file?
+		</para>
+		<programlisting linenumbering="numbered" id="fullpie_mainwindow_cpp">
+		    <textobject><textdata fileref="../../examples/Pie/mainwindow.cpp"/>
+		    </textobject>
+		</programlisting>
+		<para>
+		    More explanation cpp file?
+		</para>
+		<figure float="0" id="fig-fullpie">
+		    <title>A Full featured Pie Chart</title>
+		    <mediaobject>
+			<imageobject>
+			    <imagedata width="3in" scalefit="1" fileref="images/fullpiechart.png"/>
+			</imageobject>
+		    </mediaobject>
+		</figure>	    	  	
 	    </sect2>	  
             <sect2>
 		<title id="rings">Ring Charts</title>
