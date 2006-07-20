@@ -71,7 +71,7 @@ void KDChart::AbstractLayoutItem::paintCtx( PaintContext* context )
 void KDChart::AbstractLayoutItem::sizeHintChanged()const
 {
     // This is exactly like what QWidget::updateGeometry does.
-    qDebug("KDChart::AbstractLayoutItem::sizeHintChanged() called");
+//  qDebug("KDChart::AbstractLayoutItem::sizeHintChanged() called");
     if( mParent ) {
         if ( mParent->layout() )
             mParent->layout()->invalidate();

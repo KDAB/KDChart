@@ -86,18 +86,37 @@ void AbstractArea::paintAll( QPainter& painter )
     // Paint the background and frame
     paintBackground( painter, geometry() );
     paintFrame(      painter, geometry() );
+/*
+    // temporarily adjust the margins, to be sure all content gets calculated
+    // to fit into the inner rectangle
+    const QRect oldGeometry( areaGeometry()  );
+    const QRect inner( innerRect() );
+    if( contentsRect() != inner ){
+        //qDebug() << "contentsRect():" << contentsRect() << "  inner:" << inner;
+        setContentsMargins(
+            inner.left(),
+            inner.top(),
+            oldGeometry.width() -inner.width(),
+            oldGeometry.height()-inner.height() );
+    }
+    paint( &painter );
+*/
 
     // temporarily adjust the widget size, to be sure all content gets calculated
     // to fit into the inner rectangle
-    const QRect oldGeometry( geometry()  );
+    const QRect oldGeometry( areaGeometry()  );
     const QRect inner( innerRect() );
-    if( oldGeometry != inner )
+    const bool needAdjustGeometry = oldGeometry != inner;
+    if( needAdjustGeometry )
         setGeometry( inner );
-    painter.translate( inner.left(), inner.top() );
+    const int rightShift = oldGeometry.left() + inner.left();
+    const int downShift  = oldGeometry.top()  + inner.top();
+    painter.translate( rightShift, downShift );
     paint( &painter );
-    painter.translate( -inner.left(), -inner.top() );
-    if( oldGeometry != inner )
+    painter.translate( -rightShift, -downShift );
+    if( needAdjustGeometry )
         setGeometry( oldGeometry );
+    //qDebug() << "AbstractAreaWidget::paintAll() done.";
 }
 
 const QRect AbstractArea::areaGeometry() const

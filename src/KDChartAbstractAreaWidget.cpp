@@ -89,9 +89,9 @@ void AbstractAreaWidget::paintAll( QPainter& painter )
     paintBackground( painter, rect() );
     paintFrame(      painter, rect().adjusted(0,0,-1,-1) );
 
-    // temporarily adjust the widget size, to be sure all content gets calculated
+    // temporarily adjust the margins, to be sure all content gets calculated
     // to fit into the inner rectangle
-    const QRect oldGeometry( geometry()  );
+    const QRect oldGeometry( areaGeometry()  );
     const QRect inner( innerRect() );
     if( contentsRect() != inner ){
         //qDebug() << "contentsRect():" << contentsRect() << "  inner:" << inner;

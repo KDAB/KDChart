@@ -254,11 +254,13 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
     // - find the reference point at which to start drawing and the increment (line distance);
     QPointF rulerRef;
-    QRect geoRect( d->geometry );
+    QRect geoRect( areaGeometry() );
     QRectF rulerRect;
     double rulerWidth;
     double rulerHeight;
 
+    //for debugging: if( isAbscissa() )ptr->drawRect(geoRect);
+    qDebug() << "         " << (isAbscissa() ? "Abscissa":"Ordinate") << "axis painting with geometry" << geoRect;
 
     // FIXME references are of course different for all locations:
     rulerWidth = geoRect.width();
@@ -550,7 +552,6 @@ void CartesianAxis::paintCtx( PaintContext* context )
         titleItem.paint( ptr );
     }
 
-    //for debugging: ptr->drawRect(geoRect);
     qDebug() << "KDChart::CartesianAxis::paintCtx() done.";
 }
 #undef ptr
@@ -622,7 +623,18 @@ QSize CartesianAxis::sizeHint() const
 /* pure virtual in QLayoutItem */
 void CartesianAxis::setGeometry( const QRect& r )
 {
-    d->geometry = r;
+    qDebug() << "KDChart::CartesianAxis::setGeometry(" << r << ") called"
+             << (isAbscissa() ? "for Abscissa":"for Ordinate") << "axis";
+    if( d->geometry != r ){
+        d->geometry = r;
+//if(isAbscissa() && ! r.left()) qFatal("got you!");
+/*        if( d->diagram() &&
+            d->diagram()->coordinatePlane() &&
+            d->diagram()->coordinatePlane()->parent() )
+            d->diagram()->coordinatePlane()->parent()->update();
+//            QApplication::postEvent( d->diagram()->coordinatePlane()->parent(), new QEvent( QEvent::LayoutRequest ) );*/
+//            d->diagram()->coordinatePlane()->update();
+    }
 }
 /* pure virtual in QLayoutItem */
 QRect CartesianAxis::geometry() const
