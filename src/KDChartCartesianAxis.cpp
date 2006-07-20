@@ -522,41 +522,31 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
     if( ! titleText().isEmpty() ){
         const TextAttributes titleTA( titleTextAttributes() );
-        Qt::Alignment align;
-        if( isTop ){
-            align = Qt::AlignLeft | Qt::AlignTop;
-        }else if( isBottom ){
-            align = Qt::AlignLeft | Qt::AlignBottom;
-        }else if( isLeft ){
-            align = Qt::AlignLeft | Qt::AlignTop;
-        }else /*if( isRight )*/ {
-            align = Qt::AlignLeft | Qt::AlignBottom;
-        }
         TextLayoutItem titleItem( titleText(),
                       titleTA,
                       referenceArea,
                       KDChartEnums::MeasureOrientationMinimum,
-                      align );
+                      Qt::AlignHCenter|Qt::AlignVCenter );
         QPointF point;
         const QSize size( titleItem.sizeHint() );
         if( isTop ){
-            point.setX( geoRect.left() + geoRect.width() / 2.0 - size.width() / 2.0 );
+            point.setX( geoRect.left() + geoRect.width() / 2.0);
             point.setY( geoRect.top() );
         }else if( isBottom ){
-            point.setX( geoRect.left() + geoRect.width() / 2.0 - size.width() / 2.0 );
-            point.setY( geoRect.bottom() );
+            point.setX( geoRect.left() + geoRect.width() / 2.0);
+            point.setY( geoRect.bottom() - size.height() );
         }else if( isLeft ){
             point.setX( geoRect.left() );
-            point.setY( geoRect.top() + geoRect.height() / 2.0 + size.width() / 2.0 );
+            point.setY( geoRect.top() + geoRect.height() / 2.0);
         }else /*if( isRight )*/ {
-            point.setX( geoRect.right() );
-            point.setY( geoRect.top() + geoRect.height() / 2.0 + size.width() / 2.0 );
+            point.setX( geoRect.right() - size.height() );
+            point.setY( geoRect.top() + geoRect.height() / 2.0);
         }
         PainterSaver painterSaver( ptr );
         ptr->translate( point );
         if( isOrdinate() )
             ptr->rotate( 270.0 );
-        titleItem.setGeometry( QRect( QPoint(0,0), size ) );
+        titleItem.setGeometry( QRect( QPoint(-size.width() / 2, 0), size ) );
         titleItem.paint( ptr );
     }
 
