@@ -2814,54 +2814,78 @@
 	     <sect2>
 		<title id="ringstips">Tips and Tricks</title>
 		<para>
-		    Some tips and tricks
+		    In this section we want to go through some examples about how to use some 
+		    interesting features offered by the KD Chart 2.0 API. We will study the 
+		    code and display a screen-shot showing the resulting widget.   
 		</para>	
 	    </sect2>
 	    <sect2>
-		<title id="ringtipssample" xreflabel="codexample">A complete Ring Example</title>
+		<title id="ringtipsample" xreflabel="codexample">A complete Ring Example</title>
 		<para>
-		    Let us make this more concrete by looking at the 
-		    following lines of code.		    
+		    <!-- Pending michel show a nice full featured Ring chart with as many 
+		    attributes as possible - The following text and list has to be modified 
+		    after we have written our own more complete example - 
+		    see NotForCustomers/KDChart20-Manual-Examples.txt  -->
+		    In the following implementation we want to be able to:
 		</para>
-		<!--
-		<programlisting linenumbering="numbered" id="">
-		<textobject>
-		<textdata fileref="../../examples/..."/>
-	        </textobject>
-	        </programlisting>
-		-->
+		<itemizedlist>
+		    <listitem>
+			<para>
+			   Display the data values.
+			</para>
+		    </listitem>
+		     <listitem>
+			<para>
+			   Display a ring using most of its attributes
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>			    
+			   Run an animation (exploding). 
+			</para>
+		    </listitem>
+		</itemizedlist>
+		<programlisting linenumbering="numbered" id="fullring_mainwindow_h">
+		    <textobject><textdata fileref="../../examples/Pie/mainwindow.h"/>
+		    </textobject>
+		</programlisting>                
 		<para>
-		    More explanation?
-		</para>   
+		    More explanation h file?
+		</para>
+		<programlisting linenumbering="numbered" id="fullring_mainwindow_cpp">
+		    <textobject><textdata fileref="../../examples/Pie/mainwindow.cpp"/>
+		    </textobject>
+		</programlisting>
+		<para>
+		    More explanation cpp file?
+		</para>
+		<figure float="0" id="fig-fullring">
+		    <title>A Full featured Ring Chart</title>
+		    <mediaobject>
+			<imageobject>
+			    <imagedata width="3in" scalefit="1" fileref="images/fullpiechart.png"/>
+			</imageobject>
+		    </mediaobject>
+		</figure>	    	  	
+	    </sect2>
+	    <sect2>
+		<title id="polarchart">Polar Charts</title>
+		<para>
+		    Text...
+		</para>
+	    </sect2>
+	    <sect2>
+		<title id="simplepolarchart">A Simple Polar Charts</title>
+		<para>
+		    Text...
+		</para>
 	    </sect2>
 	    <sect2>
 		<title id="polarsattributes">Polars Attributes</title>
 		<para>
 		    Text ...
 		</para>
-	    </sect2>
-	    <sect2>
-		<title id="polarattributessample" xreflabel="codexample">Polar Example</title>
-		<para>
-		    Let us make this more concrete by looking at the 
-		    following lines of code.
-		    <!--
-		    <link linkend=""></link>
-		    <link linkend=""></link>
-		    -->
-		</para>
-		<!--
-		<programlisting linenumbering="numbered" id="">
-		<textobject>
-		<textdata fileref="../../examples/..."/>
-	        </textobject>
-	        </programlisting>
-		-->
-		<para>
-		    More explanation?
-		</para>   
-		
-	    </sect2>
+	    </sect2>	    
 	    <sect2>
 		<title id="polarstips">Tips and Tricks</title>
 		<para>
