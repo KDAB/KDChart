@@ -625,16 +625,7 @@ void CartesianAxis::setGeometry( const QRect& r )
 {
     qDebug() << "KDChart::CartesianAxis::setGeometry(" << r << ") called"
              << (isAbscissa() ? "for Abscissa":"for Ordinate") << "axis";
-    if( d->geometry != r ){
-        d->geometry = r;
-//if(isAbscissa() && ! r.left()) qFatal("got you!");
-/*        if( d->diagram() &&
-            d->diagram()->coordinatePlane() &&
-            d->diagram()->coordinatePlane()->parent() )
-            d->diagram()->coordinatePlane()->parent()->update();
-//            QApplication::postEvent( d->diagram()->coordinatePlane()->parent(), new QEvent( QEvent::LayoutRequest ) );*/
-//            d->diagram()->coordinatePlane()->update();
-    }
+    d->geometry = r;
 }
 /* pure virtual in QLayoutItem */
 QRect CartesianAxis::geometry() const

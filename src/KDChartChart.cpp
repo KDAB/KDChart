@@ -651,7 +651,6 @@ qFatal("nPaint > 100");
         painter->translate( translation );
     }
 
-    //d->planesLayout->itemAt(0)->layout()->activate();
     foreach( KDChart::AbstractArea* layoutItem, d->layoutItems ) {
         layoutItem->paintAll( *painter );
     }
