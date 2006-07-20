@@ -2252,11 +2252,11 @@
 		</para>   
 	    </sect2>
 	    <sect2>
-		<title id="bwattributes">Box and Whisker Attributes</title>
+	        <title id="bwattributes">Box and Whisker Attributes</title>
 		<para>
-		    Text ...
-		</para>	
-		</sect2>
+	        Text ...
+	        </para>	 
+	    </sect2>
 	    <sect2>
 		<title id="bwattributessample" xreflabel="codexample">Box and Whisker Example</title>
 		<para>
@@ -2671,18 +2671,8 @@
 		    to set its attributes and implicitely enable exploding, by calling  
 		    <methodname>KDChartPieAttributes::setExplode </methodname> and then use the 
 		    available methods to set the exploding factor for a particular dataset. 
-		    as shown in the following code sample 
-                </para>
-		<programlisting>
-		    // 1 - Create a RingAttributes object
-		    RingAttributes ra = m_ring->RingAttributes( index );
-		    // 2 - Enable exploding, point to a dataset and give the 
-		    // explode factor passing the dataset number and the factor 
-		    ra.setExplode( true );
-		    ra.setExplodeFactor( 2, 0.5 );
-		    // 3 - Assign to your diagram
-		    m_ring->setRingAttributes( index, pa);
-		</programlisting>                
+		    as shown in the Ring Attribute section coming next. 
+                </para>	        
                 <para>
 		    In case you want to apply <emphasis>different</emphasis> explode factors to the
                     segments just call the 
@@ -2692,6 +2682,12 @@
 		    chart has exploded all segments with values less than their ring's average 
 		    while the smallest value is exploded even more.
                 </para>
+		<tip>
+		    <para>
+			You will find all you need to know for configuring your ring chart in our 
+			Ring Attribute section below.
+		    </para>    
+		</tip>
 		<!-- disabling for now no example available yet -->
 		<!-- 
                 <figure float="0" id="fig-ringexplode">
@@ -2709,63 +2705,113 @@
 		    Compile and run the example RingExploded to see a ring chart featuring both 
 		    relative thickness  of the rings and differently exploded segments on the 
                     outer ring. 
+                </para>                
+            </sect2>
+	    <!-- commenting this part until we have something to show -->
+	    <!--
+	    <sect2>
+		<title id="ringsample" xreflabel="codexample">Ring Example</title>
+		<para>
+		    Let us make this more concrete by looking at the 
+		    following lines of code.		   
+		</para>		
+		<para>
+		    More explanation?
+		</para>   
+	    </sect2>
+	    -->
+	    <sect2>
+		<title id="ringsattributes">Rings Attributes</title>
+		<para>
+		    By "Ring Attributes" we are talking about all parameters that can be 
+		    configured and set by the user and which are specifics to the Ring Chart type.
+		    KD Chart 2.0 API separates the attributes specifics to a chart type itself and 
+		    the generic attributes which are common to all chart types as for example the 
+		    setters and getters for a brush or a pen.		    
+		</para>
+		<para>
+		    All those attributes have a reasonnable default value that can simply be 
+		    modified by the user by calling one of the diagram set function implemented on 
+		    this purpose <methodname>KDChartRingDiagram::setRingAttributes()</methodname>.
+		</para>
+		<para>
+		    The procedure is straight forward:
+		</para>
+		<itemizedlist>
+		    <listitem>
+			<para>
+			    Create a <classname>KDChart::RingAttributes</classname> object by 
+			    calling <methodname>KDChartRingDiagram::ringAttributes</methodname>.  
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>
+			    Configure this object using the setters available.
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>
+			    Assign it to your Diagram with the help of one of the setters available 
+			    in <classname>KDChart::RingDiagram</classname>. All the attributes can 
+			    be configured to be applied for the whole diagram, for a column, or at 
+			    a specified index (<classname>QModelIndex</classname>).
+			</para>
+		    </listitem>
+		</itemizedlist>
+		<para>
+		    KD Chart 2.0 supports the following attributes for the Ring chart type. 
+		    Each of those attributes can be set and retrieved the way we describe it in our 
+		    example below:
+		</para>
+		<itemizedlist>
+		    <listitem>
+			<para>
+			   Not implemented yet
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>
+			    Not implemented yet
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>
+			   Not implemented yet 
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>
+			    Not implemented yet
+			</para>
+		    </listitem>
+		</itemizedlist>
+		<para>
+		    To get a ring chart like the one presented above (having one or several of the 
+		    pieces separated from the others in <emphasis>exploded</emphasis> mode) you 
+		    would have to set its attributes and implicitely enable exploding, by calling  
+		    <methodname>KDChartRingAttributes::setExplode </methodname> and then use the 
+		    available methods to set the exploding factor for a particular dataset. 
+		    as shown in the following code sample 
                 </para>
-                <note>
+		<programlisting>
+		    // 1 - Create a RingAttributes object
+		    RingAttributes ra = m_ring->RingAttributes( index );
+		    // 2 - Enable exploding, point to a dataset and give the 
+		    // explode factor passing the dataset number and the factor 
+		    ra.setExplode( true );
+		    ra.setExplodeFactor( 2, 0.5 );
+		    // 3 - Assign to your diagram
+		    m_ring->setRingAttributes( index, pa);
+		</programlisting>  
+      		<!-- Pending Michel Is that still true ? -->
+		<note>
                     <para>
 			Only segments that are located on the <emphasis>outer</emphasis>
                         ring can be exploded.
                     </para>
                 </note>
-            </sect2>
-	    <sect2>
-		<title id="ringsample" xreflabel="codexample">Ring Example</title>
-		<para>
-		    Let us make this more concrete by looking at the 
-		    following lines of code.
-		    <!--
-		    <link linkend=""></link>
-		    <link linkend=""></link>
-		    -->
-		</para>
-		<!--
-		<programlisting linenumbering="numbered" id="">
-		<textobject>
-		<textdata fileref="../../examples/..."/>
-	        </textobject>
-	        </programlisting>
-		-->
-		<para>
-		    More explanation?
-		</para>   
 	    </sect2>
-	    <sect2>
-		<title id="ringsattributes">Rings Attributes</title>
-		<para>
-		    Text ...
-		</para>	
-	    </sect2>
-	    <sect2>
-		<title id="ringattributessample" xreflabel="codexample">Ring Example</title>
-		<para>
-		    Let us make this more concrete by looking at the 
-		    following lines of code.
-		    <!--
-		    <link linkend=""></link>
-		    <link linkend=""></link>
-		    -->
-		</para>
-		<!--
-		<programlisting linenumbering="numbered" id="">
-		<textobject>
-		<textdata fileref="../../examples/..."/>
-	        </textobject>
-	        </programlisting>
-		-->
-		<para>
-		    More explanation?
-		</para>   		
-	    </sect2>
-	    <sect2>
+	     <sect2>
 		<title id="ringstips">Tips and Tricks</title>
 		<para>
 		    Some tips and tricks
@@ -2775,38 +2821,7 @@
 		<title id="ringtipssample" xreflabel="codexample">A complete Ring Example</title>
 		<para>
 		    Let us make this more concrete by looking at the 
-		    following lines of code.
-		    <!--
-		    <link linkend=""></link>
-		    <link linkend=""></link>
-		    -->
-		</para>
-		<!--
-		<programlisting linenumbering="numbered" id="">
-		<textobject>
-		<textdata fileref="../../examples/..."/>
-	        </textobject>
-	        </programlisting>
-		-->
-		<para>
-		    More explanation?
-		</para>   
-	    </sect2>
-            <sect2>
-		<title id="polars">Polar Charts</title>
-		<para>
-		    Text info Polar...
-		</para>	 
-	    </sect2>
-	    <sect2>
-		<title id="polarsample" xreflabel="codexample">Polar Example</title>
-		<para>
-		    Let us make this more concrete by looking at the 
-		    following lines of code.
-		    <!--
-		    <link linkend=""></link>
-		    <link linkend=""></link>
-		    -->
+		    following lines of code.		    
 		</para>
 		<!--
 		<programlisting linenumbering="numbered" id="">
