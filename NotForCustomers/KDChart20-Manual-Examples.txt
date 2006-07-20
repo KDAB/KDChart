@@ -80,10 +80,30 @@ Suggested location /examples/HighLow/HiLoFullFeatured
 
 Suggested location /examples/BWCharts/SimpleBW
 
-11/FullFeaturedBWexample 
+13/FullFeaturedBWexample 
 
 * for the tips and tricks section of the BW charts 
 
 
 Suggested location /examples/BWCharts/BWFullFeatured
+
+12/SimplePieExample 
+
+ *for simple pie example (shall display values and have legend)
+
+Suggested location /examples/Pie/SimplePie
+
+13/SimplePieexploded in threed mode
+
+ *for simple pie exploded in ThreeD mode 
+ * should display datavalue and have a legend and a title 
+
+Suggested location /examples/Pie/ThreeDPieExploded
+
+14/FullFeaturedPieexample 
+
+* for the tips and tricks section of the Pie charts 
+
+
+Suggested location /examples/Pie/PieFullFeatured
 
