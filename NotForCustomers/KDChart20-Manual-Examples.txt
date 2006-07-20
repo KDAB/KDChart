@@ -67,10 +67,23 @@ Suggested location /examples/Lines/AreaFullFeatured
 
 Suggested location /examples/HighLow/SimpleHilo
 
-9/FullFeaturedHighLowexample 
+11/FullFeaturedHighLowexample 
 
 * for the tips and tricks section of the HighLow charts 
 
 
 Suggested location /examples/HighLow/HiLoFullFeatured
+
+12/SimpleBWExample 
+
+ *for BW example
+
+Suggested location /examples/BWCharts/SimpleBW
+
+11/FullFeaturedBWexample 
+
+* for the tips and tricks section of the BW charts 
+
+
+Suggested location /examples/BWCharts/BWFullFeatured
 
