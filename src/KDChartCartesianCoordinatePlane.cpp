@@ -88,7 +88,7 @@ void CartesianCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
 
 void CartesianCoordinatePlane::paint ( QPainter* painter )
 {
-    qDebug("KDChart::CartesianCoordinatePlane::paint() called");
+    //qDebug("KDChart::CartesianCoordinatePlane::paint() called");
     AbstractDiagramList diags = diagrams();
     //FIXME(khz): make this also work in no diagrams are there
     // (commenting out the following line should do it)
@@ -114,7 +114,7 @@ void CartesianCoordinatePlane::paint ( QPainter* painter )
         //    painter->drawRect( drawArea.adjusted(2,2,2,2) );
         //    painter->drawRect( drawArea );
     }
-    qDebug("KDChart::CartesianCoordinatePlane::paint() done.");
+    //qDebug("KDChart::CartesianCoordinatePlane::paint() done.");
 }
 
 /*
@@ -295,7 +295,7 @@ QRectF CartesianCoordinatePlane::drawingArea() const
 
 void CartesianCoordinatePlane::layoutDiagrams()
 {
-    qDebug("KDChart::CartesianCoordinatePlane::layoutDiagrams() called");
+    //qDebug("KDChart::CartesianCoordinatePlane::layoutDiagrams() called");
     if ( diagrams().isEmpty() )
     {   // FIXME evaluate what can still be prepared
         // FIXME decide default dimension if no diagrams are present (to make empty planes useable)
@@ -307,7 +307,7 @@ void CartesianCoordinatePlane::layoutDiagrams()
     // for regular pens should be avoided. When pens with a penWidth or larger
     // than 1 are used, this may not be sufficient.
     const QRectF drawArea( drawingArea() );
-    qDebug() << "drawingArea() returns" << drawArea;
+    //qDebug() << "drawingArea() returns" << drawArea;
 
     const DataDimensionsList dimensions( gridDimensionsList() );
     // test for programming errors: critical
@@ -367,7 +367,7 @@ void CartesianCoordinatePlane::layoutDiagrams()
     //      adapt diagram area to effect of isometric scaling:
     diagramArea.setTopLeft( translate ( dataBoundingRect.topLeft() ) );
     diagramArea.setBottomRight ( translate ( dataBoundingRect.bottomRight() ) );
-    qDebug("KDChart::CartesianCoordinatePlane::layoutDiagrams() done,\ncalling update() now:");
+    //qDebug("KDChart::CartesianCoordinatePlane::layoutDiagrams() done,\ncalling update() now:");
     update();
 }
 

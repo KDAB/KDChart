@@ -623,8 +623,8 @@ QSize CartesianAxis::sizeHint() const
 /* pure virtual in QLayoutItem */
 void CartesianAxis::setGeometry( const QRect& r )
 {
-    qDebug() << "KDChart::CartesianAxis::setGeometry(" << r << ") called"
-             << (isAbscissa() ? "for Abscissa":"for Ordinate") << "axis";
+//    qDebug() << "KDChart::CartesianAxis::setGeometry(" << r << ") called"
+//             << (isAbscissa() ? "for Abscissa":"for Ordinate") << "axis";
     d->geometry = r;
 }
 /* pure virtual in QLayoutItem */

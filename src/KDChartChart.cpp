@@ -128,9 +128,9 @@ void Chart::Private::layoutHeadersAndFooters()
                 column = 1;
                 hAlign = Qt::AlignHCenter;
             }
-            //KDChart::AbstractArea* p = hf;
             layoutItems << hf;
             hf->setParentLayout( headerFooterLayout );
+            //qDebug() << "hd/ft at " << row <<"/"<<column;
             headerFooterLayout->addItem( hf, row, column, 1, 1, hAlign|vAlign );
         }
         else{
@@ -334,7 +334,7 @@ QHash<AbstractCoordinatePlane*, PlaneInfo> Chart::Private::buildPlaneLayoutInfos
 
 void Chart::Private::slotLayoutPlanes()
 {
-    qDebug() << "KDChart::Chart is layouting the planes";
+    //qDebug() << "KDChart::Chart is layouting the planes";
     if ( planesLayout && dataAndLegendLayout )
         dataAndLegendLayout->removeItem( planesLayout );
 
@@ -390,7 +390,7 @@ void Chart::Private::slotLayoutPlanes()
             foreach ( CartesianAxis* axis, diagram->axes() ) {
                 if ( axisInfos.contains( axis ) ) continue; // already layed this one out
                 Q_ASSERT ( axis );
-                qDebug() << "--------------- axis added to planeLayoutItems  -----------------";
+                //qDebug() << "--------------- axis added to planeLayoutItems  -----------------";
                 planeLayoutItems << axis;
                 switch ( axis->position() )
                 {
@@ -436,7 +436,7 @@ void Chart::Private::slotLayoutPlanes()
     }
 
     slotRelayout();
-    qDebug() << "KDChart::Chart finished layouting the planes.";
+    //qDebug() << "KDChart::Chart finished layouting the planes.";
 }
 
 void Chart::Private::createLayouts( QWidget* w )
@@ -463,13 +463,19 @@ void Chart::Private::createLayouts( QWidget* w )
     vLayout = new QVBoxLayout();
     layout->addLayout( vLayout, 2 );
     layout->addSpacing( globalLeadingRight );
+
+    // 1. the gap above the top edge of the headers area
     vLayout->addSpacing( globalLeadingTop );
+    // 2. the header(s) area
     headerLayout = new QGridLayout();
     vLayout->addLayout( headerLayout );
+    // 3. the area containing coordinate plane(s), axes, legend(s)
     dataAndLegendLayout = new QGridLayout();
     vLayout->addLayout( dataAndLegendLayout, 2 );
+    // 4. the footer(s) area
     footerLayout = new QGridLayout();
     vLayout->addLayout( footerLayout );
+    // 5. the gap below the bottom edge of the headers area
     vLayout->addSpacing( globalLeadingBottom );
 
     // the data+axes area
@@ -480,7 +486,7 @@ void Chart::Private::createLayouts( QWidget* w )
 
 void Chart::Private::slotRelayout()
 {
-qDebug() << "Chart relayouting started.";
+    //qDebug() << "Chart relayouting started.";
     createLayouts( chart );
 
     layoutHeadersAndFooters();
@@ -490,7 +496,7 @@ qDebug() << "Chart relayouting started.";
     foreach (AbstractCoordinatePlane* plane, coordinatePlanes )
         plane->layoutDiagrams();
 
-qDebug() << "Chart relayouting done.";
+    //qDebug() << "Chart relayouting done.";
 }
 
 // ******** Chart interface implementation ***********
@@ -626,7 +632,7 @@ static int nPaint=0;
 
 void Chart::paint( QPainter* painter, const QRect& target_ )
 {
-    qDebug() << "KDChart::Chart::paint() called, inPaint: " << d->inPaint;
+    //qDebug() << "KDChart::Chart::paint() called, inPaint: " << d->inPaint;
 #ifdef debug_recursive_paint
 ++nPaint;
 if( 100<nPaint)
@@ -642,7 +648,7 @@ qFatal("nPaint > 100");
     QPoint translation(0,0);
 
     if( target != oldGeometry ){
-        qDebug() << "KDChart::Chart::paint() calling new setGeometry(" << target << ")";
+        //qDebug() << "KDChart::Chart::paint() calling new setGeometry(" << target << ")";
         setGeometry( target );
         painter->drawRect( target );
         d->slotRelayout();
@@ -662,14 +668,14 @@ qFatal("nPaint > 100");
     }
 
     if( target_ != oldGeometry ){
-        qDebug() << "KDChart::Chart::paint() calling new setGeometry(" << oldGeometry << ")";
+        //qDebug() << "KDChart::Chart::paint() calling new setGeometry(" << oldGeometry << ")";
         setGeometry( oldGeometry );
         if( ! translation.isNull() )
             painter->translate( -translation.x(), -translation.y() );
     }
 
     d->inPaint = false;
-    qDebug() << "KDChart::Chart::paint() done.\n";
+    //qDebug() << "KDChart::Chart::paint() done.\n";
 }
 
 

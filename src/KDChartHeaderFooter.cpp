@@ -43,7 +43,6 @@ using namespace KDChart;
 
 HeaderFooter::Private::Private( Chart* parent_ ) :
     parent( parent_ ),
-//HeaderFooter::Private::Private() :
     type( Header ),
     position( Position::North ),
     text( QObject::tr( "Header/Footer" ) ),
@@ -240,8 +239,9 @@ Qt::Orientations HeaderFooter::expandingDirections() const
 /* pure virtual in QLayoutItem */
 QSize HeaderFooter::maximumSize() const
 {
-    if( d->textDoc ) return d->textDoc->sizeHint();
-    return QSize(0,0);
+    QSize s( d->textDoc ? d->textDoc->sizeHint() : QSize(0,0) );
+    qDebug() << "KDChart::HeaderFooter::maximumSize() returning" << s;
+    return s;
 }
 /* pure virtual in QLayoutItem */
 QSize HeaderFooter::minimumSize() const
@@ -256,24 +256,29 @@ QSize HeaderFooter::sizeHint() const
 /* pure virtual in QLayoutItem */
 void HeaderFooter::setGeometry( const QRect& r )
 {
+    qDebug() << "KDChart::HeaderFooter::setGeometry(" << r << ") called";
+    d->geometry = r;
     if( d->textDoc )
         d->textDoc->setPageSize( QSize( r.size() ) );
 }
 /* pure virtual in QLayoutItem */
 QRect HeaderFooter::geometry() const
 {
+    QRect r( d->geometry.topLeft(), QSize(1,1) );
     if( d->textDoc ){
         const QSizeF siz( d->textDoc->pageSize() );
-        return QRect( QPoint(0, 0),
+        r.setSize(
             QSize( static_cast<int>(siz.width()),
                    static_cast<int>(siz.height()) ) );
     }
-    return QRect( QPoint(0, 0), sizeHint() );
+    r.setSize( sizeHint() );
+    qDebug() << "KDChart::HeaderFooter::geometry() returning" << r;
+    return r;
 }
 
 void HeaderFooter::update()
 {
-    qDebug("KDChart::HeaderFooter::update() called");
+    //qDebug("KDChart::HeaderFooter::update() called");
     if( d->parent )
         d->parent->update();
 }

@@ -74,6 +74,7 @@ private:
     Position position;
     QString text;
     TextAttributes textAttrs;
+    QRect geometry;
 
     // internal
     mutable KDTextDocument* textDoc;
