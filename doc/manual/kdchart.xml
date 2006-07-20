@@ -2366,7 +2366,9 @@
                 </figure>
                 <para>
 		    &kdchart; by default draws two-dimensional pie charts when in pie chart mode 
-		    so no method needs to be called to get one.
+		    so no method needs to be called to get one. We are describing more in details
+		    about how to obtain three dimensional look for a pie chart in the following 
+		    Pie Attributes section.
                 </para>		
                 <para>
 		    Compile and run the example "examples/Pie" to build a normal pie chart as 
@@ -2374,26 +2376,45 @@
                 </para>
 	    </sect2>
 	    <sect2>
-		<title id="piesample" xreflabel="codexample">Pie Example</title>
-		<para>
-		    Let us make this more concrete by looking at the 
-		    following lines of code.
-		    <!--
-		    <link linkend=""></link>
-		    <link linkend=""></link>
-		    -->
-		</para>
-		<!--
-		<programlisting linenumbering="numbered" id="">
-		<textobject>
-		<textdata fileref="../../examples/..."/>
-	        </textobject>
-	        </programlisting>
-		-->
-		<para>
-		    More explanation?
-		</para>   
-	    </sect2>
+                <title id="pieexploding">Exploding Pie Charts</title>
+                <tip>
+                    <para>
+			Exploding individual segments allows to emphasize individual data.
+                    </para>
+                </tip>
+                <figure float="0" id="fig-pieexplode">
+                    <title>An Exploding Pie Chart</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata
+                            fileref="images/pieexploding.png"
+                            width="3in" scalefit="1"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>                
+                <para>
+		    To get a pie chart like the one presented above (having one or several of the 
+		    pieces separated from the others in <emphasis>exploded</emphasis> mode) you 
+		    would have to set its attributes and implicitely enable exploding, by calling  
+		    <methodname>KDChartPieAttributes::setExplode </methodname> and then use the 
+		    available methods to set the exploding factor for a particular dataset. 
+		    as shown in the following code sample 
+                </para>
+		<programlisting>
+		    // 1 - Create a PieAttribute object
+		    PieAttributes pa = m_pie->PieAttributes( index );
+		    // 2 - Enable exploding, point to a dataset and give the 
+		    // explode factor passing the dataset number and the factor 
+		    pa.setExplode( true );
+		    pa.setExplodeFactor( 2, 0.5 );
+		    // 3 - Assign to your diagram
+		    m_pie->setPieAttributes( index, pa);
+		</programlisting>
+                <para>
+                    We will go through all the configuration possibilities in the Pie Attributes
+		    section below.
+                </para>
+            </sect2>
 	    <sect2>
 		<title id="pieattributes">Pies Attributes</title>
 		<para>
