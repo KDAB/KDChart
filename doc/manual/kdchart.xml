@@ -853,9 +853,11 @@
 		Cartesian coordinate plane.
 	    </para>
 	    <para>
-		In general to select the chart type just call the 
-		<classname>KDChart[type]Diagram</classname> function 
-		<methodname>setType()</methodname> and specify the appropriate value. 		
+		In general to implement a particular type of chart, just create an object of this  
+		type by calling <classname>KDChart[type]Diagram</classname>, or if your are using 
+		<classname>KDChartWidget</classname> you will need to call its 
+		<methodname>setType()</methodname> and specify the appropriate chart type.
+ 		(e.g Widget::Bar, Widget::Line etc...)		
 	    </para>
 	    <sect2>
 		<title id="bars">Bar Charts</title>
@@ -871,8 +873,7 @@
 			High/Low Chart showing each day's key 
 			figures.
 		    </para>
-		</tip>
-		<?page-break?>
+		</tip>		
 		<para>
 		    Your Bar Chart can be configured with the following types as described in 
 		    details below: Normal, Stacked or Percent.
@@ -2286,251 +2287,295 @@
 	</sect1>
 	<sect1>
             <title id="polarplane">Polar coordinate plane</title>
-            <para>
-                Text ...
+	    <para>
+                KD Chart makes use of the Polar coordinate system, and in particular its 
+		<classname>KDChart::PolarCoordinatePlane</classname> class for displaying 
+		chart types like Pie, Polar and Ring.
             </para>
+	    <para>
+		In this section we will describe and present each of the chart types which uses 
+		the Polar coordinate plane.
+	    </para>
+	    <para>		
+		In general to implement a particular type of chart, just create an object of this  
+		type by calling <classname>KDChart[type]Diagram</classname>, or if your are using 
+		<classname>KDChartWidget</classname> you will need to call its 
+		<methodname>setType()</methodname> and specify the appropriate chart type.
+ 		(e.g Widget::Pie, Widget::Polar etc...)
+	    </para>
 	    <sect2>
-		<title id="pies">Pie Charts</title>
-		<para>
-		    Text info Pie...
-		</para>	    
-		<sect3>
-		    <title id="piesample" xreflabel="codexample">Pie Example</title>
+		<title id="piecharts">Pie Charts</title>	    
+		<tip>
 		    <para>
-			Let us make this more concrete by looking at the 
-			following lines of code.
-			<!--
-			<link linkend=""></link>
-			<link linkend=""></link>
-			-->
+			Pie charts can be used to visualize the relative values of a few data 
+			cells (typically 2..20 values). Larger amounts of items can be hard to 
+			distinguish in a pie chart, so a Percent Bar Chart might fit your needs 
+			better then. Pie charts are most suitable if one of the data elements 
+			covers at least one forth, preferably even more of the total area.
 		    </para>
-		    <!--
-		    <programlisting linenumbering="numbered" id="">
-                    <textobject>
-		    <textdata fileref="../../examples/..."/>
-		    </textobject>
-                    </programlisting>
-		    -->
 		    <para>
-			More explanation?
-		    </para>   
-		</sect3>
-		<sect3>
-		    <title id="pieattributes">Pies Attributes</title>
+			A good example is the distribution of market shares among
+			products or vendors.
+		    </para>
 		    <para>
-			Text ...
-		    </para>	
-		    <sect4>
-			<title id="pieattributessample" xreflabel="codexample">Pie Example</title>
-			<para>
-			    Let us make this more concrete by looking at the 
-			    following lines of code.
-			    <!--
-			    <link linkend=""></link>
-			    <link linkend=""></link>
-			    -->
-			</para>
-			<!--
-			<programlisting linenumbering="numbered" id="">
-			<textobject>
-			<textdata fileref="../../examples/..."/>
-		        </textobject>
-                        </programlisting>
-			-->
-			<para>
-			    More explanation?
-			</para>   
-		    </sect4>	
-		</sect3>
-		<sect3>
-		   <title id="pietips">Tips and Tricks</title>
+			While pie charts are nice for displaying <emphasis>one</emphasis>
+			dataset there is a complementary chart type you might choose
+			to visualize several datasets: the Ring Chart.
+		    </para>
+		</tip>
+		<note>
 		    <para>
-			Some tips and tricks
-		    </para>	
-		    <sect4>
-			<title id="pietipssample" xreflabel="codexample">A complete Pie Example</title>
-			<para>
-			    Let us make this more concrete by looking at the 
-			    following lines of code.
-			    <!--
-			    <link linkend=""></link>
-			    <link linkend=""></link>
-			    -->
-			</para>
-			<!--
-			<programlisting linenumbering="numbered" id="">
-			<textobject>
-			<textdata fileref="../../examples/..."/>
-		        </textobject>
-                        </programlisting>
-			-->
-			<para>
-			    More explanation?
-			</para>   
-		    </sect4>	  
-		</sect3>
+			The Ring Charts section describes a circular 
+			<emphasis>multi-dataset</emphasis> chart type.
+		    </para>
+		</note>
+		<para>
+		    Pie charts typically consist of two or more pieces any number of which can be 
+		    shown 'exploded' (shifted away from the center) at different amounts, starting
+		    position of the first pie can be specified and your pie chart can be drawn in 
+		    three-D look. Activating the pie chart mode is done by calling the 
+		    <classname>KDChartWidget</classname> function 
+		    <methodname>setType( KDChartWidget::Pie )</methodname> or by creating an object
+		    of this type using the <classname>KDChartPieDiagram</classname> class.
+		</para>
 	    </sect2>
+	    <sect2>
+		<title id="piesample" xreflabel="codexample">Pie Example</title>
+		<para>
+		    Let us make this more concrete by looking at the 
+		    following lines of code.
+		    <!--
+		    <link linkend=""></link>
+		    <link linkend=""></link>
+		    -->
+		</para>
+		<!--
+		<programlisting linenumbering="numbered" id="">
+		<textobject>
+		<textdata fileref="../../examples/..."/>
+	        </textobject>
+	        </programlisting>
+		-->
+		<para>
+		    More explanation?
+		</para>   
+	    </sect2>
+	    <sect2>
+		<title id="pieattributes">Pies Attributes</title>
+		<para>
+		    Text ...
+		</para>
+	    </sect2>	
+	    <sect2>
+		<title id="pieattributessample" xreflabel="codexample">Pie Example</title>
+		<para>
+		    Let us make this more concrete by looking at the 
+		    following lines of code.
+		    <!--
+		    <link linkend=""></link>
+		    <link linkend=""></link>
+		    -->
+		</para>
+		<!--
+		<programlisting linenumbering="numbered" id="">
+		<textobject>
+		<textdata fileref="../../examples/..."/>
+	        </textobject>
+	        </programlisting>
+		-->
+		<para>
+		    More explanation?
+		</para>   
+	    </sect2>
+	    <sect2>
+		<title id="pietips">Tips and Tricks</title>
+		<para>
+		    Some tips and tricks
+		</para>	
+	    </sect2>
+	    <sect2>
+		<title id="pietipssample" xreflabel="codexample">A complete Pie Example</title>
+		<para>
+		    Let us make this more concrete by looking at the 
+		    following lines of code.
+		    <!--
+		    <link linkend=""></link>
+		    <link linkend=""></link>
+		    -->
+		</para>
+		<!--
+		<programlisting linenumbering="numbered" id="">
+		<textobject>
+		<textdata fileref="../../examples/..."/>
+	        </textobject>
+	        </programlisting>
+		-->
+		<para>
+		    More explanation?
+		</para>   
+	    </sect2>	  
             <sect2>
 		<title id="rings">Ring Charts</title>
 		<para>
 		    Text info Lines...
-		</para>	    
-		<sect3>
-		    <title id="ringsample" xreflabel="codexample">Ring Example</title>
-		    <para>
-			Let us make this more concrete by looking at the 
-			following lines of code.
-			<!--
-			<link linkend=""></link>
-			<link linkend=""></link>
-			-->
-		    </para>
+		</para>
+	    </sect2>	    
+	    <sect2>
+		<title id="ringsample" xreflabel="codexample">Ring Example</title>
+		<para>
+		    Let us make this more concrete by looking at the 
+		    following lines of code.
 		    <!--
-		    <programlisting linenumbering="numbered" id="">
-                    <textobject>
-		    <textdata fileref="../../examples/..."/>
-		    </textobject>
-                    </programlisting>
+		    <link linkend=""></link>
+		    <link linkend=""></link>
 		    -->
-		    <para>
-			More explanation?
-		    </para>   
-		</sect3>
-		<sect3>
-		    <title id="ringsattributes">Rings Attributes</title>
-		    <para>
-			Text ...
-		    </para>	
-		    <sect4>
-			<title id="ringattributessample" xreflabel="codexample">Ring Example</title>
-			<para>
-			    Let us make this more concrete by looking at the 
-			    following lines of code.
-			    <!--
-			    <link linkend=""></link>
-			    <link linkend=""></link>
-			    -->
-			</para>
-			<!--
-			<programlisting linenumbering="numbered" id="">
-			<textobject>
-			<textdata fileref="../../examples/..."/>
-		        </textobject>
-                        </programlisting>
-			-->
-			<para>
-			    More explanation?
-			</para>   
-		    </sect4>	
-		</sect3>
-		<sect3>
-		   <title id="ringstips">Tips and Tricks</title>
-		    <para>
-			Some tips and tricks
-		    </para>	
-		    <sect4>
-			<title id="ringtipssample" xreflabel="codexample">A complete Ring Example</title>
-			<para>
-			    Let us make this more concrete by looking at the 
-			    following lines of code.
-			    <!--
-			    <link linkend=""></link>
-			    <link linkend=""></link>
-			    -->
-			</para>
-			<!--
-			<programlisting linenumbering="numbered" id="">
-			<textobject>
-			<textdata fileref="../../examples/..."/>
-		        </textobject>
-                        </programlisting>
-			-->
-			<para>
-			    More explanation?
-			</para>   
-		    </sect4>	  
-		</sect3>
+		</para>
+		<!--
+		<programlisting linenumbering="numbered" id="">
+		<textobject>
+		<textdata fileref="../../examples/..."/>
+	        </textobject>
+	        </programlisting>
+		-->
+		<para>
+		    More explanation?
+		</para>   
+	    </sect2>
+	    <sect2>
+		<title id="ringsattributes">Rings Attributes</title>
+		<para>
+		    Text ...
+		</para>	
+	    </sect2>
+	    <sect2>
+		<title id="ringattributessample" xreflabel="codexample">Ring Example</title>
+		<para>
+		    Let us make this more concrete by looking at the 
+		    following lines of code.
+		    <!--
+		    <link linkend=""></link>
+		    <link linkend=""></link>
+		    -->
+		</para>
+		<!--
+		<programlisting linenumbering="numbered" id="">
+		<textobject>
+		<textdata fileref="../../examples/..."/>
+	        </textobject>
+	        </programlisting>
+		-->
+		<para>
+		    More explanation?
+		</para>   		
+	    </sect2>
+	    <sect2>
+		<title id="ringstips">Tips and Tricks</title>
+		<para>
+		    Some tips and tricks
+		</para>	
+	    </sect2>
+	    <sect2>
+		<title id="ringtipssample" xreflabel="codexample">A complete Ring Example</title>
+		<para>
+		    Let us make this more concrete by looking at the 
+		    following lines of code.
+		    <!--
+		    <link linkend=""></link>
+		    <link linkend=""></link>
+		    -->
+		</para>
+		<!--
+		<programlisting linenumbering="numbered" id="">
+		<textobject>
+		<textdata fileref="../../examples/..."/>
+	        </textobject>
+	        </programlisting>
+		-->
+		<para>
+		    More explanation?
+		</para>   
 	    </sect2>
             <sect2>
 		<title id="polars">Polar Charts</title>
 		<para>
 		    Text info Polar...
-		</para>	    
-		<sect3>
-		    <title id="polarsample" xreflabel="codexample">Polar Example</title>
-		    <para>
-			Let us make this more concrete by looking at the 
-			following lines of code.
-			<!--
-			<link linkend=""></link>
-			<link linkend=""></link>
-			-->
-		    </para>
+		</para>	 
+	    </sect2>
+	    <sect2>
+		<title id="polarsample" xreflabel="codexample">Polar Example</title>
+		<para>
+		    Let us make this more concrete by looking at the 
+		    following lines of code.
 		    <!--
-		    <programlisting linenumbering="numbered" id="">
-                    <textobject>
-		    <textdata fileref="../../examples/..."/>
-		    </textobject>
-                    </programlisting>
+		    <link linkend=""></link>
+		    <link linkend=""></link>
 		    -->
-		    <para>
-			More explanation?
-		    </para>   
-		</sect3>
-		<sect3>
-		    <title id="polarsattributes">Polars Attributes</title>
-		    <para>
-			Text ...
-		    </para>	
-		    <sect4>
-			<title id="polarattributessample" xreflabel="codexample">Polar Example</title>
-			<para>
-			    Let us make this more concrete by looking at the 
-			    following lines of code.
-			    <!--
-			    <link linkend=""></link>
-			    <link linkend=""></link>
-			    -->
-			</para>
-			<!--
-			<programlisting linenumbering="numbered" id="">
-			<textobject>
-			<textdata fileref="../../examples/..."/>
-		        </textobject>
-                        </programlisting>
-			-->
-			<para>
-			    More explanation?
-			</para>   
-		    </sect4>	
-		</sect3>
-		<sect3>
-		   <title id="polarstips">Tips and Tricks</title>
-		    <para>
-			Some tips and tricks
-		    </para>	
-		    <sect4>
-			<title id="polartipssample" xreflabel="codexample">A complete Polar Example</title>
-			<para>
-			    Let us make this more concrete by looking at the 
-			    following lines of code.
-			    <!--
-			    <link linkend=""></link>
-			    <link linkend=""></link>
-			    -->
-			</para>
-			<!--
-			<programlisting linenumbering="numbered" id="">
-			<textobject>
-			<textdata fileref="../../examples/..."/>
-		        </textobject>
-                        </programlisting>
-			-->
-			<para>
-			    More explanation?
-			</para>   
-		    </sect4>	  
-		</sect3>
+		</para>
+		<!--
+		<programlisting linenumbering="numbered" id="">
+		<textobject>
+		<textdata fileref="../../examples/..."/>
+	        </textobject>
+	        </programlisting>
+		-->
+		<para>
+		    More explanation?
+		</para>   
+	    </sect2>
+	    <sect2>
+		<title id="polarsattributes">Polars Attributes</title>
+		<para>
+		    Text ...
+		</para>
+	    </sect2>
+	    <sect2>
+		<title id="polarattributessample" xreflabel="codexample">Polar Example</title>
+		<para>
+		    Let us make this more concrete by looking at the 
+		    following lines of code.
+		    <!--
+		    <link linkend=""></link>
+		    <link linkend=""></link>
+		    -->
+		</para>
+		<!--
+		<programlisting linenumbering="numbered" id="">
+		<textobject>
+		<textdata fileref="../../examples/..."/>
+	        </textobject>
+	        </programlisting>
+		-->
+		<para>
+		    More explanation?
+		</para>   
+		
+	    </sect2>
+	    <sect2>
+		<title id="polarstips">Tips and Tricks</title>
+		<para>
+		    Some tips and tricks
+		</para>
+	    </sect2>
+	    <sect2>
+		<title id="polartipssample" xreflabel="codexample">A complete Polar Example</title>
+		<para>
+		    Let us make this more concrete by looking at the 
+		    following lines of code.
+		    <!--
+		    <link linkend=""></link>
+		    <link linkend=""></link>
+		    -->
+		</para>
+		<!--
+		<programlisting linenumbering="numbered" id="">
+		<textobject>
+		<textdata fileref="../../examples/..."/>
+	        </textobject>
+	        </programlisting>
+		-->
+		<para>
+		    More explanation?
+		</para>   	
 	    </sect2>
 	</sect1>
 	<sect1>
