@@ -2338,6 +2338,40 @@
 		    <methodname>setType( KDChartWidget::Pie )</methodname> or by creating an object
 		    of this type using the <classname>KDChartPieDiagram</classname> class.
 		</para>
+		<note>
+		    <para>
+			Three-dimensional look of the pies is no special feature you can enable 
+			by setting its ThreeD attributes, we will describe that in the 
+			"Pies Attributes" section further on.
+		    </para>
+		</note>
+	    </sect2>
+	    <sect2>
+		<title id="piesimple">Simple Pie Charts</title>
+                <tip>
+                    <para>
+			A simple pie chart shows the data without emphasizing a special item.
+                    </para>
+                </tip>
+		<!-- change this example against one with legends and datavalue display -->
+                <figure float="0" id="fig-simplepiechart">
+                    <title>A Simple Pie Chart</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata
+                            fileref="images/simplepie.png"
+                            width="3in" scalefit="1"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+                <para>
+		    &kdchart; by default draws two-dimensional pie charts when in pie chart mode 
+		    so no method needs to be called to get one.
+                </para>		
+                <para>
+		    Compile and run the example "examples/Pie" to build a normal pie chart as 
+		    presented above
+                </para>
 	    </sect2>
 	    <sect2>
 		<title id="piesample" xreflabel="codexample">Pie Example</title>
