@@ -2568,10 +2568,155 @@
 	    </sect2>	  
             <sect2>
 		<title id="rings">Ring Charts</title>
+		 <tip>
+		    <para>
+			While a Pie Chart might be a good choice when displaying a single data 
+			series, using a ring chart might be ideal for visualizing a small amount 
+			of data cells stored in several datasets: ring charts can show both the
+			relative values of the cells compared to their dataset's total value 
+			<emphasis>and</emphasis> the relation of the series totals compared to 
+			each other. This is done by using relative ring widths as shown below.
+		    </para>
+		</tip>
 		<para>
-		    Text info Lines...
+		    Ring charts (like Pie Charts ) typically consist of two or more segments any 
+		    number of which can be shown 'exploded' (shifted away from the center).
+		    To activate the ring chart mode simple call the 
+		    <classname>KDChartWidget</classname> function 
+		    <methodname>setType(Widget::Ring)</methodname> or create an object of type 
+		    <classname>KDChartRingDiagram</classname>
 		</para>
-	    </sect2>	    
+	    </sect2>
+	     <sect2>
+                <title id="ringsimple">Simple Ring Charts</title>
+                <tip>
+                    <para>
+			If you do not care about the relative size of the sums of values in each 
+			datasets, simple ring charts are is the good choice.
+                    </para>
+                </tip>
+		<!-- disabling for now no example available yet -->
+		<!-- 
+                <figure float="0" id="fig-simpleringchart">
+                    <title>A Simple Ring Chart</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata
+                            fileref="images/simplering.png"
+                            width="3in" scalefit="1"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+		-->
+                <para>
+		    &kdchart; by default draws non-exploded rings with equal thickness when in 
+		    ring chart mode so no methods need to be called.
+                </para>
+                <para>
+		    Compile and run the example file "SimpleRing" to see obtain normal ring chart.
+                </para>
+            </sect2>
+	    <sect2>
+                <title id="ringrelative">Ring Charts with Relative Thickness</title>
+                <tip>
+                    <para>
+			Looking similar to a tree's annual rings these charts might be a good 
+			choice for displaying several years-related volumes of data like sales
+			numbers.  The segments could stand for the different product lines in a 
+			sortiment of goods. Looking at a ring's thicknesses you then could see
+			the change in sales for <emphasis>all</emphasis> of your goods while a 
+			segment's length would show you how much this product line has contributed 
+			to the respective year's total turnover&mdash;compared to your other 
+			products.
+                    </para>
+                </tip>
+		<!-- disabling for now no example available yet -->
+		<!-- 
+                <figure float="0" id="fig-ringrelative">
+                    <title>A Ring Chart With Relative Thickness</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata
+                            fileref="images/ringrelativethickness.png"
+                            width="3in" scalefit="1"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+		-->
+                <para>
+		    Relative thickness mode is activated by calling the 
+		    <classname>KDChartRingAttributes</classname> function 
+                    <methodname>setRelativeThickness( true )</methodname>
+                    where each ring represents one dataset and the ring widths show the relations 
+		    of the dataset totals to each other.
+                </para>
+                <para>
+		    Compile and run the example RingRelativeThickness to see a ring chart 
+		    featuring three datasets: the thickness of the middle ring shows clearly 
+		    that this series represents the biggest total value.
+                </para>
+            </sect2>
+	     <sect2>
+                <title id="ringexploding">Ring Charts Exploding Segments</title>
+                <tip>
+                    <para>
+			<emphasis>Explode</emphasis> one or several of the segments of your ring 
+			chart to emphasize the respective data cell(s).  You might use this for
+                        drawing attention to sales figures below a critical level of for 
+			highlighting a very successful item.
+                    </para>
+                </tip>
+                <para>
+		    To have one or several segments of your ring chart shown exploded you need to
+		    to set its attributes and implicitely enable exploding, by calling  
+		    <methodname>KDChartPieAttributes::setExplode </methodname> and then use the 
+		    available methods to set the exploding factor for a particular dataset. 
+		    as shown in the following code sample 
+                </para>
+		<programlisting>
+		    // 1 - Create a RingAttributes object
+		    RingAttributes ra = m_ring->RingAttributes( index );
+		    // 2 - Enable exploding, point to a dataset and give the 
+		    // explode factor passing the dataset number and the factor 
+		    ra.setExplode( true );
+		    ra.setExplodeFactor( 2, 0.5 );
+		    // 3 - Assign to your diagram
+		    m_ring->setRingAttributes( index, pa);
+		</programlisting>                
+                <para>
+		    In case you want to apply <emphasis>different</emphasis> explode factors to the
+                    segments just call the 
+		    <methodname>KDChartRingAttributes::setExplodeFactors()</methodname> function 
+		    and pass to it a <literal>KDChartRingAttributes::ExplodeFactorsMap</literal>
+                    with one <literal>double</literal> value for every segment. The following ring 
+		    chart has exploded all segments with values less than their ring's average 
+		    while the smallest value is exploded even more.
+                </para>
+		<!-- disabling for now no example available yet -->
+		<!-- 
+                <figure float="0" id="fig-ringexplode">
+                    <title>A Ring Chart With Exploding Segments</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata
+                            fileref="images/ringexploded.png"
+                            width="3in" scalefit="1"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+		-->
+                <para>
+		    Compile and run the example RingExploded to see a ring chart featuring both 
+		    relative thickness  of the rings and differently exploded segments on the 
+                    outer ring. 
+                </para>
+                <note>
+                    <para>
+			Only segments that are located on the <emphasis>outer</emphasis>
+                        ring can be exploded.
+                    </para>
+                </note>
+            </sect2>
 	    <sect2>
 		<title id="ringsample" xreflabel="codexample">Ring Example</title>
 		<para>
