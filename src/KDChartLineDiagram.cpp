@@ -202,31 +202,36 @@ const QPair<QPointF, QPointF> LineDiagram::calculateDataBoundaries() const
     double xMax = rowCount -1;
     double yMin = 0, yMax = 0;
     bool bStarting = true;
+    bool bOK;
 //qDebug() << "LineDiagram::calculateDataBoundaries ()";
     // calculate boundaries for  different line types Normal - Stacked - Percent - Default Normal
     switch ( type() ){
         case LineDiagram::Normal:
             for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
                 for ( int j=0; j< rowCount; ++j ) {
-                    const double value = valueForCell( j, i );
-                    if( bStarting ){
-                        yMin = value;
-                        yMax = value;
-                    }else{
-                      yMin = qMin( yMin, value );
-                      yMax = qMax( yMax, value );
-                    }
-                    if ( datasetDimension() > 1 ) {
-                        const double xvalue = valueForCell( j, i-1);
+                    const double value = valueForCell( j, i, bOK );
+                    double xvalue;
+                    if( datasetDimension() > 1 && bOK )
+                        xvalue = valueForCell( j, i-1, bOK );
+                    if( bOK ){
                         if( bStarting ){
-                            xMin = xvalue;
-                            xMax = xvalue;
+                            yMin = value;
+                            yMax = value;
                         }else{
-                            xMin = qMin( xMin, xvalue );
-                            xMax = qMax( xMax, xvalue );
+                          yMin = qMin( yMin, value );
+                          yMax = qMax( yMax, value );
                         }
+                        if ( datasetDimension() > 1 ) {
+                            if( bStarting ){
+                                xMin = xvalue;
+                                xMax = xvalue;
+                            }else{
+                                xMin = qMin( xMin, xvalue );
+                                xMax = qMax( xMax, xvalue );
+                            }
+                        }
+                        bStarting = false;
                     }
-                    bStarting = false;
                 }
             }
             break;
@@ -235,7 +240,9 @@ const QPair<QPointF, QPointF> LineDiagram::calculateDataBoundaries() const
                 // calculate sum of values per column - Find out stacked Min/Max
                 double stackedValues = 0;
                 for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
-                    stackedValues +=  valueForCell( j, i );
+                    const double value = valueForCell( j, i, bOK );
+                    if( bOK )
+                        stackedValues += value;
                 }
                 if( bStarting ){
                     yMin = stackedValues;
@@ -251,12 +258,14 @@ const QPair<QPointF, QPointF> LineDiagram::calculateDataBoundaries() const
             for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
                 for ( int j=0; j< rowCount; ++j ) {
                     // Ordinate should begin at 0 the max value being the 100% pos
-                    const double value = valueForCell( j, i );
-                    if( bStarting )
-                        yMax = value;
-                    else
-                        yMax = qMax( yMax, value );
-                    bStarting = false;
+                    const double value = valueForCell( j, i, bOK );
+                    if( bOK ){
+                        if( bStarting )
+                            yMax = value;
+                        else
+                            yMax = qMax( yMax, value );
+                        bStarting = false;
+                    }
                 }
             }
             break;
@@ -310,6 +319,42 @@ void LineDiagram::paintEvent ( QPaintEvent*)
 }
 
 
+double LineDiagram::valueForCell( int row, int column, bool& bOK ) const
+{
+    double value =
+        d->attributesModel->data(
+            d->attributesModel->index( row, column, attributesModelRootIndex() )
+        ).toDouble( &bOK );
+    if( ! bOK )
+        value = 0.0;
+    return value;
+}
+
+
+LineAttributes::MissingValuesPolicy LineDiagram::getCellValues(
+      int row, int column,
+      double& valueX, double& valueY ) const
+{
+    LineAttributes::MissingValuesPolicy policy;
+
+    bool bOK = true;
+    valueX = ( datasetDimension() == 1 && column > 0 )
+           ? valueForCell(row, column-1, bOK)
+           : row;
+    if( bOK )
+        valueY = valueForCell(row, column, bOK);
+    if( bOK ){
+        policy = LineAttributes::MissingValuesPolicyIgnored;
+    }else{
+        // missing value: find out the policy
+        QModelIndex index = model()->index( row, column, rootIndex() );
+        LineAttributes la = lineAttributes( index );
+        policy = la.missingValuesPolicy();
+    }
+    return policy;
+}
+
+
 void LineDiagram::paint( PaintContext* ctx )
 {
     if ( !checkInvariants( true ) ) return;
@@ -320,34 +365,91 @@ void LineDiagram::paint( PaintContext* ctx )
     const int colCount = d->attributesModel->columnCount(attributesModelRootIndex());
     DataValueTextInfoList list;
     LineAttributesInfoList lineList;
+    LineAttributes::MissingValuesPolicy policy;
 
     // paint different line types Normal - Stacked - Percent - Default Normal
     switch ( type() )
     {
         case LineDiagram::Normal:
-            for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
+            for( int iColumn = datasetDimension()-1;
+                     iColumn < colCount;  iColumn += datasetDimension() ) {
                 QPolygonF area;
-                for ( int j=0; j< rowCount; ++j ) {
-                    QModelIndex index = model()->index( j, i, rootIndex() );
-                    double value = valueForCell( j, i );
-                    double xvalue = datasetDimension() == 1 ? j : valueForCell(j, i-1);
-                    QPointF fromPoint = coordinatePlane()->translate( QPointF( xvalue, value ) );
-                    area.append( fromPoint );
-                    if ( j+1 < rowCount ) {
-                        double nextValue = valueForCell( j+1, i);
-                        double nextXValue = datasetDimension() == 1 ? j+1 : valueForCell( j+1, i-1 );
-                        QPointF toPoint = coordinatePlane()->translate( QPointF( nextXValue, nextValue ) );
-                        lineList.append( LineAttributesInfo( index, fromPoint, toPoint ) );
+                bool bValuesFound = false;
+                double lastValueX, lastValueY;
+                double valueX, valueY;
+                for ( int iRow = 0; iRow < rowCount; ++iRow ) {
+                    bool skipThisCell = false;
+                    // trying to find a fromPoint
+                    policy = getCellValues( iRow, iColumn, valueX, valueY );
+                    switch( policy ){
+                        case LineAttributes::MissingValuesAreBridged:
+                            if( bValuesFound ){
+                                valueX = lastValueX;
+                                valueY = lastValueY;
+                            }else{
+                                skipThisCell = true;
+                            }
+                            break;
+                        case LineAttributes::MissingValuesHideSegments:
+                            skipThisCell = true;
+                            break;
+                        case LineAttributes::MissingValuesShownAsZero:
+                            // fall through intended
+                        case LineAttributes::MissingValuesPolicyIgnored:
+                            lastValueX = valueX;
+                            lastValueY = valueY;
+                            bValuesFound = true;
+                            break;
                     }
-                    list.append( DataValueTextInfo( index, fromPoint, value ) );
+                    if( ! skipThisCell ){
+                        // trying to find a toPoint
+                        double nextValueX, nextValueY;
+                        bool foundToPoint = false;
+                        int iNextRow = iRow+1;
+                        while ( ! (foundToPoint || skipThisCell || iNextRow >= rowCount) ) {
+                            policy = getCellValues( iNextRow, iColumn, nextValueX, nextValueY );
+                            switch( policy ){
+                                case LineAttributes::MissingValuesAreBridged:
+                                    // The cell has no valid value, so we  make sure that
+                                    // this cell will not be processed by the next iteration
+                                    // of the iRow loop:
+                                    ++iRow;
+                                    break;
+                                case LineAttributes::MissingValuesHideSegments:
+                                    // The cell has no valid value, so we  make sure that
+                                    // this cell will not be processed by the next iteration
+                                    // of the iRow loop:
+                                    skipThisCell = true;
+                                    ++iRow;
+                                    break;
+                                case LineAttributes::MissingValuesShownAsZero:
+                                    // fall through intended
+                                case LineAttributes::MissingValuesPolicyIgnored:
+                                    foundToPoint = true;
+                                    break;
+                            }
+                            ++iNextRow;
+                        }
+                        if( ! skipThisCell ){
+                            QModelIndex index = model()->index( iRow, iColumn, rootIndex() );
+                            QPointF fromPoint = coordinatePlane()->translate( QPointF( valueX, valueY ) );
+                            area.append( fromPoint );
+                            if( foundToPoint ){
+                                QPointF toPoint = coordinatePlane()->translate( QPointF( nextValueX, nextValueY ) );
+                                lineList.append( LineAttributesInfo( index, fromPoint, toPoint ) );
+                            }
+                            list.append( DataValueTextInfo( index, fromPoint, valueY ) );
+                        }
+                    }
                 }
                 //area can be set by column
-                QModelIndex index = model()->index( 0, i, rootIndex() );
+                QModelIndex index = model()->index( 0, iColumn, rootIndex() );
                 LineAttributes laa = lineAttributes( index );
                 if ( laa.displayArea() )
                     paintAreas( ctx, index, area, laa.transparency() );
             }
             break;
+/*
         case LineDiagram::Stacked:
             for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
                 QPolygonF area;
@@ -431,6 +533,7 @@ void LineDiagram::paint( PaintContext* ctx )
 	    setPercentMode( true );
             break;
         }
+*/
         default:
             Q_ASSERT_X ( false, "paint()",
                          "Type item does not match a defined line chart Type." );

@@ -87,7 +87,6 @@ public:
       \li To get ten divided by five you use GranularitySequence_10_20, while
       \li for having it divided by two GranularitySequence_10_50 is your choice.
 
-      \sa KDChartParams::setPrintDataValues
       */
     enum GranularitySequence {
         GranularitySequence_10_20,

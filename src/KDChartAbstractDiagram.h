@@ -383,6 +383,7 @@ namespace KDChart {
 
         void update() const;
 
+        QModelIndex attributesModelRootIndex() const;
     protected:
         virtual bool checkInvariants( bool justReturnTheStatus=false ) const;
         virtual const QPair<QPointF, QPointF> calculateDataBoundaries() const = 0;
@@ -394,7 +395,6 @@ namespace KDChart {
                            const QPointF& pos );
         virtual void paintMarkers( QPainter* painter );
 	void setAttributesModelRootIndex( const QModelIndex& );
-	QModelIndex attributesModelRootIndex() const;
         /**
          * Helper method, retrieving the data value (DisplayRole) for a given row and column
          * @param row The row to query.

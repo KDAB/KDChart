@@ -35,12 +35,39 @@ namespace KDChart {
 class KDCHART_EXPORT LineAttributes
 {
 public:
+    /**
+      \brief MissingValuesPolicy specifies how a missing value will be shown in a line diagram.
+
+      Missing value is assumed if the data cell contains a QVariant that can not be
+      interpreted as a double.
+
+      \li \c MissingValuesAreBridged the default: No markers will be shown for missing values
+      but the line will be bridged if there is at least one valid cell before and after
+      the missing value(s), otherwise the segment will be hidden.
+      \li \c MissingValuesHideSegments Line segments starting with a missing value will
+      not be shown, and no markers will be shown for missing values, so this will look like
+      a piece of the line is missing.
+      \li \c MissingValuesShownAsZero Missing value(s) will be treated like normal zero values,
+      and markers will shown for them too, so there will be no visible difference between a
+      zero value and a missing value.
+      \li \c MissingValuesPolicyIgnored (internal value, do not use)
+
+      */
+    enum MissingValuesPolicy {
+        MissingValuesAreBridged,
+        MissingValuesHideSegments,
+        MissingValuesShownAsZero,
+        MissingValuesPolicyIgnored };
+
     LineAttributes();
     LineAttributes( const LineAttributes& );
     LineAttributes &operator= ( const LineAttributes& );
 
     ~LineAttributes();
 
+    /* line chart and area chart - all types */
+    void setMissingValuesPolicy( MissingValuesPolicy policy );
+    MissingValuesPolicy missingValuesPolicy() const;
 
     /* area chart - all types */
     void setDisplayArea( bool display );

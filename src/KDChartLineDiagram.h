@@ -55,7 +55,7 @@ public:
 
     virtual LineDiagram * clone() const;
 
-      enum LineType {
+    enum LineType {
         Normal =  0,
         Stacked = 1,
         Percent = 2
@@ -68,7 +68,7 @@ public:
     void setLineAttributes( const LineAttributes & a );
     void setLineAttributes( int column, const LineAttributes & a );
     void setLineAttributes( const QModelIndex & index, const LineAttributes & a );
-    LineAttributes lineAttributes(  const QModelIndex & index ) const;
+    LineAttributes lineAttributes( const QModelIndex & index ) const;
 
     void setThreeDLineAttributes( const ThreeDLineAttributes & a );
     void setThreeDLineAttributes( int column, const ThreeDLineAttributes & a );
@@ -86,6 +86,11 @@ public:
     void resize ( const QSizeF& area );
 
 protected:
+    double valueForCell( int row, int column, bool& bOK ) const;
+    LineAttributes::MissingValuesPolicy getCellValues(
+        int row, int column,
+        double& valueX, double& valueY ) const;
+
     virtual double threeDItemDepth( const QModelIndex & index ) const;
     virtual double threeDItemDepth( int column ) const;
     /** \reimpl */

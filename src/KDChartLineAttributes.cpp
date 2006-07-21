@@ -41,14 +41,16 @@ public:
 
 private:
     //Areas
+    MissingValuesPolicy missingValuesPolicy;
     bool displayArea;
     uint transparency;
 };
 
 
 LineAttributes::Private::Private()
-    : displayArea( false ),
-      transparency( 255 )
+    : missingValuesPolicy( MissingValuesAreBridged )
+    , displayArea( false )
+    , transparency( 255 )
 {
 }
 
@@ -80,11 +82,20 @@ LineAttributes::~LineAttributes()
 
 bool LineAttributes::operator==( const LineAttributes& r ) const
 {
-    if( displayArea() == r.displayArea() &&
-        transparency() == r.transparency() )
-        return true;
-    else
-        return false;
+    return
+        missingValuesPolicy() == r.missingValuesPolicy() &&
+        displayArea() == r.displayArea() &&
+        transparency() == r.transparency();
+}
+
+void LineAttributes::setMissingValuesPolicy( MissingValuesPolicy policy )
+{
+    d->missingValuesPolicy = policy;
+}
+
+LineAttributes::MissingValuesPolicy LineAttributes::missingValuesPolicy() const
+{
+    return d->missingValuesPolicy;
 }
 
 void LineAttributes::setDisplayArea( bool display )
