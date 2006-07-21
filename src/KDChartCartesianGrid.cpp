@@ -47,7 +47,10 @@ void CartesianGrid::drawGrid( PaintContext* context )
     Q_ASSERT_X ( plane, "CartesianGrid::drawGrid",
                  "Bad function call: PaintContext::coodinatePlane() NOT a cartesian plane." );
 
-    if ( !gridAttributes.isGridVisible() ) return;
+    const GridAttributes gridAttrsX( plane->gridAttributes( Qt::Horizontal ) );
+    const GridAttributes gridAttrsY( plane->gridAttributes( Qt::Vertical ) );
+
+    if ( !gridAttrsX.isGridVisible() && !gridAttrsY.isGridVisible() ) return;
 
     // important: Need to update the calculated mData,
     //            before we may use it!
@@ -120,10 +123,10 @@ void CartesianGrid::drawGrid( PaintContext* context )
 
     const bool drawSubGridLinesX = (dimX.subStepWidth != 0.0) &&
         (screenRangeX / (numberOfUnitLinesX / dimX.stepWidth * dimX.subStepWidth) > MinimumPixelsBetweenLines) &&
-        gridAttributes.isSubGridVisible();
+        gridAttrsX.isSubGridVisible();
     const bool drawSubGridLinesY = (dimY.subStepWidth != 0.0) &&
         (screenRangeY / (numberOfUnitLinesY / dimY.stepWidth * dimY.subStepWidth) > MinimumPixelsBetweenLines) &&
-        gridAttributes.isSubGridVisible();
+        gridAttrsY.isSubGridVisible();
 
     const qreal minValueX = qMin( dimX.start, dimX.end );
     const qreal maxValueX = qMax( dimX.start, dimX.end );
@@ -131,7 +134,7 @@ void CartesianGrid::drawGrid( PaintContext* context )
     const qreal maxValueY = qMax( dimY.start, dimY.end );
 
     if ( drawSubGridLinesX ) {
-        context->painter()->setPen( gridAttributes.subGridPen() );
+        context->painter()->setPen( gridAttrsX.subGridPen() );
         for ( qreal f = minValueX; f <= maxValueX; f += dimX.subStepWidth ) {
             //qDebug() << "sub grid lines X at" << f;
             QPointF topPoint( f, maxValueY );
@@ -143,7 +146,7 @@ void CartesianGrid::drawGrid( PaintContext* context )
     }
 
     if ( drawSubGridLinesY ) {
-        context->painter()->setPen( gridAttributes.subGridPen() );
+        context->painter()->setPen( gridAttrsY.subGridPen() );
         for ( qreal f = minValueY; f <= maxValueY; f += dimY.subStepWidth ) {
             //qDebug() << "sub grid lines Y at" << f;
             QPointF leftPoint( minValueX, f );
@@ -156,14 +159,14 @@ void CartesianGrid::drawGrid( PaintContext* context )
 
     const bool drawXZeroLineX
         = dimX.isCalculated &&
-        gridAttributes.zeroLinePen().style() != Qt::NoPen;
+        gridAttrsX.zeroLinePen().style() != Qt::NoPen;
 
     const bool drawZeroLineY
-        = gridAttributes.zeroLinePen().style() != Qt::NoPen;
+        = gridAttrsY.zeroLinePen().style() != Qt::NoPen;
 
     if ( drawUnitLinesX || drawXZeroLineX ) {
         if ( drawUnitLinesX )
-            context->painter()->setPen( gridAttributes.gridPen() );
+            context->painter()->setPen( gridAttrsX.gridPen() );
         const qreal minX = dimX.start;
 
         for ( qreal f = minX; f <= maxValueX; f += qAbs( dimX.stepWidth ) ) {
@@ -175,16 +178,16 @@ void CartesianGrid::drawGrid( PaintContext* context )
                 topPoint = plane->translate( topPoint );
                 bottomPoint = plane->translate( bottomPoint );
                 if ( zeroLineHere )
-                    context->painter()->setPen( gridAttributes.zeroLinePen() );
+                    context->painter()->setPen( gridAttrsX.zeroLinePen() );
                 context->painter()->drawLine( topPoint, bottomPoint );
                 if ( zeroLineHere )
-                    context->painter()->setPen( gridAttributes.gridPen() );
+                    context->painter()->setPen( gridAttrsX.gridPen() );
             }
         }
     }
     if ( drawUnitLinesY || drawZeroLineY ) {
         if ( drawUnitLinesY )
-            context->painter()->setPen( gridAttributes.gridPen() );
+            context->painter()->setPen( gridAttrsY.gridPen() );
         //const qreal minY = dimY.start;
 
         //qDebug("minY: %f   maxValueY: %f   dimY.stepWidth: %f",minY,maxValueY,dimY.stepWidth);
@@ -198,84 +201,14 @@ void CartesianGrid::drawGrid( PaintContext* context )
                 leftPoint  = plane->translate( leftPoint );
                 rightPoint = plane->translate( rightPoint );
                 if ( zeroLineHere )
-                    context->painter()->setPen( gridAttributes.zeroLinePen() );
+                    context->painter()->setPen( gridAttrsY.zeroLinePen() );
                 context->painter()->drawLine( leftPoint, rightPoint );
                 if ( zeroLineHere )
-                    context->painter()->setPen( gridAttributes.gridPen() );
+                    context->painter()->setPen( gridAttrsY.gridPen() );
             }
         }
     }
 }
-
-
-
-
-/*
-void CartesianGrid::paintGrid( PaintContext* ctx )
-{
-    // FIXME accumulate over all diagrams
-    const GridAttributes a = gridAttributes();
-    AbstractCartesianDiagram* dgr = dynamic_cast<AbstractCartesianDiagram*> (plane->diagrams().first() );
-    Q_ASSERT ( dgr ); // only cartesian diagrams are allowed here
-
-    const int numberOfAbscissaSegments = dgr->numberOfAbscissaSegments();
-    const int numberOfOrdinateSegments = dgr->numberOfOrdinateSegments();
-    QRectF diagramRect = d->coordinateTransformation.diagramRect;
-    bool hasVisibleAbscissa = ( d->coordinateTransformation.unitVectorX
-                                * ( diagramRect.left() - diagramRect.right() ) ) <= 0;
-    bool hasVisibleOrdinate = ( d->coordinateTransformation.unitVectorY
-                                * ( diagramRect.top() - diagramRect.bottom () ) ) <= 0;
-
-
-    // the axes and rulers to draw, this can be cached:
-    QVector<QLineF> axes;
-    QVector<QLineF> rulers;
-
-    // draw the abscissa and ordinate, if they are in the visible range:
-    if ( hasVisibleAbscissa )
-    {
-        QLineF l2r ( translate ( QPointF ( diagramRect.left(), 0 ) ),
-                     translate ( QPointF ( diagramRect.right(), 0 ) ) );
-        axes.append ( l2r );
-    }
-
-    if ( hasVisibleOrdinate )
-    {
-        QLineF t2b ( translate ( QPointF ( 0, diagramRect.top() ) ),
-                     translate ( QPointF ( 0, diagramRect.bottom() ) ) );
-        axes.append ( t2b );
-    }
-
-    double step = diagramRect.width() / ( numberOfAbscissaSegments - 1 );
-    double x = diagramRect.left();
-    for ( int i = 0; i < numberOfAbscissaSegments; ++i )
-    {
-        QLineF l ( translate ( QPointF ( x, diagramRect.top() ) ),
-                   translate ( QPointF ( x,  diagramRect.bottom() ) ) );
-        rulers.append (l );
-        x += step;
-    }
-
-    step = diagramRect.height() / ( numberOfOrdinateSegments - 1 );
-    double y = diagramRect.top();
-    for ( int i = 0; i < numberOfOrdinateSegments; ++i )
-    {
-        QLineF l ( translate ( QPointF ( diagramRect.left(), y ) ),
-                   translate ( QPointF ( diagramRect.right(), y ) ) );
-        rulers.append (l );
-        y += step;
-    }
-
-    if ( a.isSubGridVisible() ) {
-        ctx->painter()->setPen ( a.subGridPen() );
-        ctx->painter()->drawLines ( rulers );
-    }
-    if ( a.isGridVisible() ) {
-        ctx->painter()->setPen ( a.gridPen() );
-        ctx->painter()->drawLines ( axes );
-    }
-}
-*/
 
 
 DataDimensionsList CartesianGrid::calculateGrid(

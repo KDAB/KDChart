@@ -59,7 +59,9 @@ GridAttributes::Private::Private()
       subPen( QColor(0xd0, 0xd0, 0xd0 ) ),
       zeroPen( QColor( 0x00, 0x00, 0x80 ) )
 {
-    // this bloc left empty intentionally
+    pen.setCapStyle(     Qt::FlatCap );
+    subPen.setCapStyle(  Qt::FlatCap );
+    zeroPen.setCapStyle( Qt::FlatCap );
 }
 
 
@@ -176,6 +178,7 @@ KDChartEnums::GranularitySequence GridAttributes::gridGranularitySequence() cons
 void GridAttributes::setGridPen( const QPen & pen )
 {
     d->pen = pen;
+    d->pen.setCapStyle( Qt::FlatCap );
 }
 
 QPen GridAttributes::gridPen() const
@@ -196,6 +199,7 @@ bool GridAttributes::isSubGridVisible() const
 void GridAttributes::setSubGridPen( const QPen & pen )
 {
     d->subPen = pen;
+    d->subPen.setCapStyle( Qt::FlatCap );
 }
 
 QPen GridAttributes::subGridPen() const
@@ -206,6 +210,7 @@ QPen GridAttributes::subGridPen() const
 void GridAttributes::setZeroLinePen( const QPen & pen )
 {
     d->zeroPen = pen;
+    d->zeroPen.setCapStyle( Qt::FlatCap );
 }
 
 QPen GridAttributes::zeroLinePen() const
