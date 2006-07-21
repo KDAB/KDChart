@@ -332,6 +332,27 @@ QHash<AbstractCoordinatePlane*, PlaneInfo> Chart::Private::buildPlaneLayoutInfos
     return planeInfos;
 }
 
+template <typename T>
+static T* findOrCreateLayoutByObjectName( QLayout * parentLayout, const char* name )
+{
+    T *box = qFindChild<T*>( parentLayout, name );
+    if ( !box ) {
+        box = new T();
+        box->setObjectName( name );
+    }
+    return box;
+}
+
+static QVBoxLayout* findOrCreateVBoxLayoutByObjectName( QLayout* parentLayout, const char* name )
+{
+    return findOrCreateLayoutByObjectName<QVBoxLayout>( parentLayout, name );
+}
+
+static QHBoxLayout* findOrCreateHBoxLayoutByObjectName( QLayout* parentLayout, const char* name )
+{
+    return findOrCreateLayoutByObjectName<QHBoxLayout>( parentLayout, name );
+}
+
 void Chart::Private::slotLayoutPlanes()
 {
     //qDebug() << "KDChart::Chart is layouting the planes";
@@ -383,10 +404,10 @@ void Chart::Private::slotLayoutPlanes()
             if( !diagram ) continue;  // FIXME polar ?
             //qDebug() << "--------------- diagram ! ! ! ! ! ! ! ! ! !  -----------------";
             // collect all axes of a kind into sublayouts
-            QVBoxLayout *topAxesLayout = new QVBoxLayout();
-            QVBoxLayout *bottomAxesLayout = new QVBoxLayout();
-            QHBoxLayout *leftAxesLayout = new QHBoxLayout();
-            QHBoxLayout *rightAxesLayout = new QHBoxLayout();
+            QVBoxLayout *topAxesLayout = findOrCreateVBoxLayoutByObjectName( planeLayout, "topAxesLayout" );
+            QVBoxLayout *bottomAxesLayout = findOrCreateVBoxLayoutByObjectName( planeLayout, "bottomAxesLayout" );
+            QHBoxLayout *leftAxesLayout = findOrCreateHBoxLayoutByObjectName( planeLayout, "leftAxesLayout" );
+            QHBoxLayout *rightAxesLayout = findOrCreateHBoxLayoutByObjectName( planeLayout, "rightAxesLayout" );
 
             foreach ( CartesianAxis* axis, diagram->axes() ) {
                 if ( axisInfos.contains( axis ) ) continue; // already layed this one out
@@ -422,10 +443,14 @@ void Chart::Private::slotLayoutPlanes()
              * associated plane. We are laying out in the oder the planes
              * were added, and the first one gets to lay out shared axes.
              * Private axes go here as well, of course. */
-            planeLayout->addLayout( topAxesLayout,    0,       1 );
-            planeLayout->addLayout( bottomAxesLayout, row + 1, 1 );
-            planeLayout->addLayout( leftAxesLayout,   row,     0 );
-            planeLayout->addLayout( rightAxesLayout,  row,     column + 1);
+            if ( !topAxesLayout->parent() )
+                planeLayout->addLayout( topAxesLayout,    0,       1 );
+            if ( !bottomAxesLayout->parent() )
+                planeLayout->addLayout( bottomAxesLayout, row + 1, 1 );
+            if ( !leftAxesLayout->parent() )
+                planeLayout->addLayout( leftAxesLayout,   row,     0 );
+            if ( !rightAxesLayout->parent() )
+                planeLayout->addLayout( rightAxesLayout,  row,     column + 1);
         }
 
     }
