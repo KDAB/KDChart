@@ -40,6 +40,7 @@ class QDomDocumentFragment;
 namespace KDChart {
 
     class AbstractDiagram;
+    class DiagramList : public QList<AbstractDiagram*> {};
 
 /**
   * @brief Legend defines the interface for the legend drawing class.
@@ -78,11 +79,95 @@ public:
 
     virtual void paint( QPainter* painter );
 
+    /**
+        Specifies the reference area for font size of title text,
+        and for font size of the item texts, IF automatic area
+        detection is set.
+
+        \note This parameter is ignored, if the Measure given for
+        setTitleTextAttributes (or setTextAttributes, resp.) is
+        not specifying automatic area detection.
+
+        If no reference area is specified, but automatic area
+        detection is set, then the size of the legend's parent
+        widget will be used.
+
+        \sa KDChart::Measure, KDChartEnums::MeasureCalculationMode
+    */
     void setReferenceArea( const QWidget* area );
+    /**
+        Returns the reference area, that is used for font size of title text,
+        and for font size of the item texts, IF automatic area
+        detection is set.
+
+        \sa setReferenceArea
+    */
     const QWidget* referenceArea() const;
 
-    void setDiagram( KDChart::AbstractDiagram* diagram );
+    /**
+      * The first diagram of the legend or 0 if there was none added to the legend.
+      * @return The first diagram of the legend or 0.
+      *
+      * \sa diagrams, addDiagram, removeDiagram, removeDiagrams, replaceDiagram, setDiagram
+      */
     KDChart::AbstractDiagram* diagram() const;
+
+    /**
+      * The list of all diagrams associated with the legend.
+      * @return The list of all diagrams associated with the legend.
+      *
+      * \sa diagram, addDiagram, removeDiagram, removeDiagrams, replaceDiagram, setDiagram
+      */
+    DiagramList diagrams() const;
+
+    /**
+      * Add the given diagram to the legend.
+      * @param newDiagram The diagram to add.
+      *
+      * \sa diagram, diagrams, removeDiagram, removeDiagrams, replaceDiagram, setDiagram
+      */
+    void addDiagram( KDChart::AbstractDiagram* newDiagram );
+
+    /**
+      * Removes the diagram from the legend's list of diagrams.
+      *
+      * \sa diagram, diagrams, addDiagram, removeDiagrams, replaceDiagram, setDiagram
+      */
+    void removeDiagram( KDChart::AbstractDiagram* oldDiagram );
+
+    /**
+      * Removes all of the diagram from the legend's list of diagrams.
+      *
+      * \sa diagram, diagrams, addDiagram, removeDiagram, replaceDiagram, setDiagram
+      */
+    void removeDiagrams();
+
+    /**
+      * Replaces the old diagram, or appends the
+      * new diagram, it there is none yet.
+      *
+      * @param newDiagram The diagram to be used instead of the old one.
+      * If this parameter is zero, the first diagram will just be removed.
+      *
+      * @param oldDiagram The diagram to be removed by the new one. This
+      * diagram will be deleted automatically. If the parameter is omitted,
+      * the very first diagram will be replaced. In case, there was no
+      * diagram yet, the new diagram will just be added.
+      *
+      * \sa diagram, diagrams, addDiagram, removeDiagram, removeDiagrams, setDiagram
+      */
+    void replaceDiagram( KDChart::AbstractDiagram* newDiagram,
+                         KDChart::AbstractDiagram* oldDiagram = 0 );
+
+    /**
+      * @brief A convenience method doing the same as replaceDiagram( newDiagram, 0 );
+      *
+      * Replaces the first diagram by the given diagram.
+      * If the legend's list of diagram is empty the given diagram is added to the list.
+      *
+      * \sa diagram, diagrams, addDiagram, removeDiagram, removeDiagrams, replaceDiagram
+      */
+    void setDiagram( KDChart::AbstractDiagram* newDiagram );
 
     void setPosition( Position position );
     Position position() const;
@@ -138,7 +223,7 @@ signals:
     void destroyedLegend( Legend* );
 
 private slots:
-    void resetDiagram();
+    void resetDiagram( AbstractDiagram* );
     void setNeedRebuild();
     void buildLegend();
 }; // End of class Legend

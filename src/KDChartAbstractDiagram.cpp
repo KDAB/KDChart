@@ -318,8 +318,10 @@ void AbstractDiagram::paintMarker( QPainter* painter,
 
 void AbstractDiagram::paintMarker( QPainter* painter,
                                    const MarkerAttributes& markerAttributes,
-                                   const QBrush& brush, const QPen& pen,
-                                   const QPointF& pos, const QSizeF& maSize )
+                                   const QBrush& brush,
+                                   const QPen& pen,
+                                   const QPointF& pos,
+                                   const QSizeF& maSize )
 {
     PainterSaver painterSaver( painter );
     painter->setBrush( brush );

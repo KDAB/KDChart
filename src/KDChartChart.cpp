@@ -371,6 +371,7 @@ void Chart::Private::slotLayoutPlanes()
         planeLayoutItems << plane;
         plane->setParentLayout( planeLayout );
         planeLayout->addItem( plane, row, column, 1, 1, 0 );
+        //qDebug() << "Chart slotLayoutPlanes() calls planeLayout->addItem("<< row << column << ")";
         planeLayout->setRowStretch(    row,    2 );
         planeLayout->setColumnStretch( column, 2 );
 

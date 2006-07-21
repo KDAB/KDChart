@@ -59,7 +59,6 @@ Legend::Private::Private() :
     titleText( QObject::tr( "Legend" ) ),
     titleTextAttributes(),
     spacing( 1 ),
-    observer( NULL ),
     needRebuild( false )
 {
     // this bloc left empty intentionally
@@ -163,65 +162,97 @@ uint Legend::datasetCount() const
 }
 
 
-/**
-    Specifies the reference area for font size of title text,
-    and for font size of the item texts, IF automatic area
-    detection is set.
-
-    \note This parameter is ignored, if the Measure given for
-    setTitleTextAttributes (or setTextAttributes, resp.) is
-    not specifying automatic area detection.
-
-    If no reference area is specified, but automatic area
-    detection is set, then the size of the legend's parent
-    widget will be used.
-
-    \sa KDChart::Measure, KDChartEnums::MeasureCalculationMode
- */
 void Legend::setReferenceArea( const QWidget* area )
 {
     d->referenceArea = area;
     d->needRebuild = true;
 }
 
-
-/**
-    Returns the reference area, that is used for font size of title text,
-    and for font size of the item texts, IF automatic area
-    detection is set.
-
-    \sa setReferenceArea
- */
 const QWidget* Legend::referenceArea() const
 {
     return (d->referenceArea ? d->referenceArea : static_cast<const QWidget*>(parent()));
 }
 
 
-void Legend::setDiagram( KDChart::AbstractDiagram* diagram )
+AbstractDiagram* Legend::diagram() const
 {
-    d->diagram = diagram;
-    if ( d->observer )
-    {
-        delete d->observer; d->observer = NULL;
-    }
-    if ( diagram )
-    {
-        d->observer = new DiagramObserver( *diagram, this );
-        connect( d->observer, SIGNAL( diagramDestroyed(AbstractDiagram*) ),
-                        SLOT( resetDiagram() ));
-        connect( d->observer, SIGNAL( diagramDataChanged(AbstractDiagram*) ),
-                        SLOT( setNeedRebuild() ));
-        connect( d->observer, SIGNAL( diagramAttributesChanged(AbstractDiagram*) ),
-                        SLOT( setNeedRebuild() ));
-    }
-    d->needRebuild = true;
+    if( d->observers.isEmpty() )
+        return 0;
+    return d->observers.constBegin().key();
 }
 
-KDChart::AbstractDiagram* Legend::diagram() const
+DiagramList Legend::diagrams() const
 {
-    return d->diagram;
+    DiagramList list;
+    DiagramsObserversMap::const_iterator i = d->observers.constBegin();
+    while (i != d->observers.constEnd()) {
+        list << i.key();
+        ++i;
+    }
+    return list;
 }
+
+void Legend::addDiagram( AbstractDiagram* newDiagram )
+{
+    if ( newDiagram )
+    {
+        if ( d->observers.contains( newDiagram ) )
+            delete d->observers[ newDiagram ];
+        DiagramObserver* observer = new DiagramObserver( *newDiagram, this );
+        d->observers[ newDiagram ] = observer;
+        connect( observer, SIGNAL( diagramDestroyed(AbstractDiagram*) ),
+                        SLOT( resetDiagram(AbstractDiagram*) ));
+        connect( observer, SIGNAL( diagramDataChanged(AbstractDiagram*) ),
+                        SLOT( setNeedRebuild() ));
+        connect( observer, SIGNAL( diagramAttributesChanged(AbstractDiagram*) ),
+                        SLOT( setNeedRebuild() ));
+        d->needRebuild = true;
+    }
+}
+
+void Legend::removeDiagram( AbstractDiagram* oldDiagram )
+{
+    if( oldDiagram ){
+        if ( d->observers.contains( oldDiagram ) )
+        {
+            delete d->observers[ oldDiagram ];
+            d->observers.remove( oldDiagram );
+        }
+        d->needRebuild = true;
+    }
+}
+
+void Legend::removeDiagrams()
+{
+    DiagramsObserversMap::const_iterator i = d->observers.constBegin();
+    while (i != d->observers.constEnd()) {
+        removeDiagram( i.key() );
+        ++i;
+    }
+}
+
+void Legend::replaceDiagram( AbstractDiagram* newDiagram,
+                             AbstractDiagram* oldDiagram )
+{
+    KDChart::AbstractDiagram* old = oldDiagram;
+    if( ! d->observers.isEmpty() && ! old )
+        old = d->observers.constBegin().key();
+    if( old )
+        removeDiagram( old );
+    if( newDiagram )
+        addDiagram( newDiagram );
+}
+
+void Legend::setDiagram( KDChart::AbstractDiagram* newDiagram )
+{
+    replaceDiagram( newDiagram );
+}
+
+void Legend::resetDiagram( AbstractDiagram* oldDiagram )
+{
+    removeDiagram( oldDiagram );
+}
+
 
 void Legend::setNeedRebuild()
 {
@@ -483,12 +514,6 @@ static const QColor SUBDUEDCOLORS[ NUM_SUBDUEDCOLORS ] = {
     }
 }
 
-void Legend::resetDiagram()
-{
-    setDiagram( 0 );
-}
-
-
 void Legend::buildLegend()
 {
     if( ! d->needRebuild ) return;
@@ -506,11 +531,17 @@ void Legend::buildLegend()
         d->layout->setColumnStretch( 4, 0 );
     }
 
-    if( diagram() ) {
-        d->modelLabels = diagram()->datasetLabels();
-        d->modelBrushes = diagram()->datasetBrushes();
-        d->modelPens = diagram()->datasetPens();
-        d->modelMarkers = diagram()->datasetMarkers();
+    d->modelLabels.clear();
+    d->modelBrushes.clear();
+    d->modelPens.clear();
+    d->modelMarkers.clear();
+    DiagramsObserversMap::const_iterator i = d->observers.constBegin();
+    while (i != d->observers.constEnd()) {
+        d->modelLabels  += i.key()->datasetLabels();
+        d->modelBrushes += i.key()->datasetBrushes();
+        d->modelPens    += i.key()->datasetPens();
+        d->modelMarkers += i.key()->datasetMarkers();
+        ++i;
     }
     Q_ASSERT( d->modelLabels.count() == d->modelBrushes.count() );
 
@@ -546,6 +577,8 @@ void Legend::buildLegend()
     }
 
     for ( int dataset = 0; dataset < d->modelLabels.count(); dataset++ ) {
+        // Note: We may use diagram() for all of the MarkerLayoutItem instances,
+        //       since all they need the diagram for is to invoke mDiagram->paintMarker()
         KDChart::MarkerLayoutItem* markerItem = new KDChart::MarkerLayoutItem( diagram(),
                                                                                markerAttributes( dataset ),
                                                                                brush( dataset ),

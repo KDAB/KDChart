@@ -58,6 +58,8 @@ namespace KDChart {
     class AbstractDiagram;
     class DiagramObserver;
     class AbstractLayoutItem;
+
+    class DiagramsObserversMap : public QMap<AbstractDiagram*, DiagramObserver*> {};
 }
 
 using KDChart::AbstractDiagram;
@@ -87,7 +89,6 @@ private:
     QString titleText;
     TextAttributes titleTextAttributes;
     uint spacing;
-    KDChart::AbstractDiagram* diagram;
 
     // internal
     QRectF rect;
@@ -98,7 +99,7 @@ private:
     //QVector<KDChart::AbstractLayoutItem*> layoutItems;
     QVector<KDChart::AbstractLayoutItem*> layoutItems;
     QGridLayout* layout;
-    KDChart::DiagramObserver* observer;
+    DiagramsObserversMap observers;
     bool needRebuild; // set to TRUE by all of the Legend's setter functions
 };
 

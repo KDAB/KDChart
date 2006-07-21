@@ -145,7 +145,7 @@ void CartesianAxis::paintEvent( QPaintEvent* event )
 
 void CartesianAxis::paint( QPainter* painter )
 {
-    qDebug() << "KDChart::CartesianAxis::paint() called";
+    //qDebug() << "KDChart::CartesianAxis::paint() called";
     if( ! d->diagram() || ! d->diagram()->coordinatePlane() ) return;
     PaintContext ctx;
     ctx.setPainter ( painter );
@@ -157,13 +157,13 @@ void CartesianAxis::paint( QPainter* painter )
             QPointF(rect.left(), rect.top()),
             QSizeF(rect.width(), rect.height() ) ) );
     paintCtx( &ctx );
-    qDebug() << "KDChart::CartesianAxis::paint() done.";
+    //qDebug() << "KDChart::CartesianAxis::paint() done.";
 }
 
 #define ptr (context->painter())
 void CartesianAxis::paintCtx( PaintContext* context )
 {
-    qDebug() << "KDChart::CartesianAxis::paintCtx() called";
+    //qDebug() << "KDChart::CartesianAxis::paintCtx() called";
 
     Q_ASSERT_X ( d->diagram(), "CartesianAxis::paint",
                  "Function call not allowed: The axis is not assigned to any diagram." );
@@ -261,7 +261,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
     double rulerHeight;
 
     //for debugging: if( isAbscissa() )ptr->drawRect(geoRect);
-    qDebug() << "         " << (isAbscissa() ? "Abscissa":"Ordinate") << "axis painting with geometry" << geoRect;
+    //qDebug() << "         " << (isAbscissa() ? "Abscissa":"Ordinate") << "axis painting with geometry" << geoRect;
 
     // FIXME references are of course different for all locations:
     rulerWidth = geoRect.width();
@@ -553,7 +553,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
         titleItem.paint( ptr );
     }
 
-    qDebug() << "KDChart::CartesianAxis::paintCtx() done.";
+    //qDebug() << "KDChart::CartesianAxis::paintCtx() done.";
 }
 #undef ptr
 
