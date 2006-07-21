@@ -338,7 +338,7 @@ LineAttributes::MissingValuesPolicy LineDiagram::getCellValues(
     LineAttributes::MissingValuesPolicy policy;
 
     bool bOK = true;
-    valueX = ( datasetDimension() == 1 && column > 0 )
+    valueX = ( datasetDimension() > 1 && column > 0 )
            ? valueForCellTesting(row, column-1, bOK)
            : row;
     if( bOK )
