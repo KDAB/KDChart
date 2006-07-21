@@ -209,10 +209,10 @@ const QPair<QPointF, QPointF> LineDiagram::calculateDataBoundaries() const
         case LineDiagram::Normal:
             for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
                 for ( int j=0; j< rowCount; ++j ) {
-                    const double value = valueForCell( j, i, bOK );
+                    const double value = valueForCellTesting( j, i, bOK );
                     double xvalue;
                     if( datasetDimension() > 1 && bOK )
-                        xvalue = valueForCell( j, i-1, bOK );
+                        xvalue = valueForCellTesting( j, i-1, bOK );
                     if( bOK ){
                         if( bStarting ){
                             yMin = value;
@@ -240,7 +240,7 @@ const QPair<QPointF, QPointF> LineDiagram::calculateDataBoundaries() const
                 // calculate sum of values per column - Find out stacked Min/Max
                 double stackedValues = 0;
                 for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
-                    const double value = valueForCell( j, i, bOK );
+                    const double value = valueForCellTesting( j, i, bOK );
                     if( bOK )
                         stackedValues += value;
                 }
@@ -258,7 +258,7 @@ const QPair<QPointF, QPointF> LineDiagram::calculateDataBoundaries() const
             for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
                 for ( int j=0; j< rowCount; ++j ) {
                     // Ordinate should begin at 0 the max value being the 100% pos
-                    const double value = valueForCell( j, i, bOK );
+                    const double value = valueForCellTesting( j, i, bOK );
                     if( bOK ){
                         if( bStarting )
                             yMax = value;
@@ -319,7 +319,7 @@ void LineDiagram::paintEvent ( QPaintEvent*)
 }
 
 
-double LineDiagram::valueForCell( int row, int column, bool& bOK ) const
+double LineDiagram::valueForCellTesting( int row, int column, bool& bOK ) const
 {
     double value =
         d->attributesModel->data(
@@ -339,10 +339,10 @@ LineAttributes::MissingValuesPolicy LineDiagram::getCellValues(
 
     bool bOK = true;
     valueX = ( datasetDimension() == 1 && column > 0 )
-           ? valueForCell(row, column-1, bOK)
+           ? valueForCellTesting(row, column-1, bOK)
            : row;
     if( bOK )
-        valueY = valueForCell(row, column, bOK);
+        valueY = valueForCellTesting(row, column, bOK);
     if( bOK ){
         policy = LineAttributes::MissingValuesPolicyIgnored;
     }else{
@@ -449,8 +449,8 @@ void LineDiagram::paint( PaintContext* ctx )
                     paintAreas( ctx, index, area, laa.transparency() );
             }
             break;
-/*
         case LineDiagram::Stacked:
+            //FIXME(khz): add LineAttributes::MissingValuesPolicy support for LineDiagram::Stacked
             for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
                 QPolygonF area;
                 for ( int j = 0; j< rowCount; ++j ) {
@@ -476,6 +476,7 @@ void LineDiagram::paint( PaintContext* ctx )
             break;
         case LineDiagram::Percent:
         {
+            //FIXME(khz): add LineAttributes::MissingValuesPolicy support for LineDiagram::Percent
             double maxValue = 0;
             double sumValues = 0;
             QVector <double > sumValuesVector;
@@ -533,7 +534,6 @@ void LineDiagram::paint( PaintContext* ctx )
 	    setPercentMode( true );
             break;
         }
-*/
         default:
             Q_ASSERT_X ( false, "paint()",
                          "Type item does not match a defined line chart Type." );
