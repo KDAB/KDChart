@@ -598,11 +598,11 @@ QSize CartesianAxis::maximumSize() const
     {
     case Bottom:
     case Top:
-        result = QSize ( 1000, 100 );
+        result = QSize ( 100, 100 );
         break;
     case Left:
     case Right:
-        result = QSize ( 100, 1000 );
+        result = QSize ( 100, 100 );
         break;
     default:
         Q_ASSERT( false ); // all positions need to be handled
