@@ -128,7 +128,7 @@ void Chart::Private::layoutHeadersAndFooters()
                 column = 1;
                 hAlign = Qt::AlignHCenter;
             }
-            layoutItems << hf;
+            textLayoutItems << hf;
             hf->setParentLayout( headerFooterLayout );
             //qDebug() << "hd/ft at " << row <<"/"<<column;
             headerFooterLayout->addItem( hf, row, column, 1, 1, hAlign|vAlign );
@@ -441,6 +441,11 @@ void Chart::Private::slotLayoutPlanes()
 
 void Chart::Private::createLayouts( QWidget* w )
 {
+    foreach( KDChart::TextArea* textLayoutItem, textLayoutItems ) {
+        textLayoutItem->removeFromParentLayout();
+    }
+    textLayoutItems.clear();
+
     foreach( KDChart::AbstractArea* layoutItem, layoutItems ) {
         layoutItem->removeFromParentLayout();
     }
@@ -663,6 +668,9 @@ qFatal("nPaint > 100");
     foreach( KDChart::AbstractArea* planeLayoutItem, d->planeLayoutItems ) {
         planeLayoutItem->paintAll( *painter );
     }
+    foreach( KDChart::TextArea* textLayoutItem, d->textLayoutItems ) {
+        textLayoutItem->paintAll( *painter );
+    }
     foreach ( Legend *legend, d->legendLayoutItems ) {
         legend->paintAll( *painter );
     }
@@ -715,7 +723,7 @@ void Chart::addHeaderFooter( HeaderFooter* headerFooter )
     headerFooter->setParent( this );
     connect( headerFooter, SIGNAL( destroyedHeaderFooter( HeaderFooter* ) ),
              d, SLOT( slotUnregisterDestroyedHeaderFooter( HeaderFooter* ) ) );
-    connect( headerFooter, SIGNAL( positionChanged( AbstractArea* ) ),
+    connect( headerFooter, SIGNAL( positionChanged( HeaderFooter* ) ),
              d, SLOT( slotRelayout() ) );
     d->slotRelayout();
 }

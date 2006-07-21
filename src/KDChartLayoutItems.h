@@ -82,15 +82,21 @@ namespace KDChart {
     class TextLayoutItem : public AbstractLayoutItem
     {
     public:
+        TextLayoutItem();
         TextLayoutItem( const QString& text,
                         const TextAttributes& attributes,
-                        const QObject*  autoReferenceArea,
+                        const QObject* autoReferenceArea,
                         KDChartEnums::MeasureOrientation autoReferenceOrientation,
                         Qt::Alignment alignment = 0 );
 
+        void setAutoReferenceArea( const QObject* area );
+        const QObject* autoReferenceArea() const;
+
         void setText(const QString & text);
         QString text() const;
-        TextAttributes attributes() const;
+
+        void setTextAttributes( const TextAttributes &a );
+        TextAttributes textAttributes() const;
 
         /** pure virtual in QLayoutItem */
         virtual bool isEmpty() const;

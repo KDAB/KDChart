@@ -90,18 +90,42 @@ KDChart::TextLayoutItem::TextLayoutItem( const QString& text,
     , mText( text )
     , mAttributes( attributes )
     , mAutoReferenceArea( area )
-    , mAutoReferenceOrientation(  orientation)
+    , mAutoReferenceOrientation( orientation )
     , cachedSizeHint( QSize() ) // default this to invalid to force real-time calculation before first use of sizeHint()
     , cachedFontSize( 0.0 )
     , cachedFont( attributes.font() )
 {
 }
 
+KDChart::TextLayoutItem::TextLayoutItem()
+    : AbstractLayoutItem( Qt::AlignLeft )
+    , mText( "" )
+    , mAttributes()
+    , mAutoReferenceArea( 0 )
+    , mAutoReferenceOrientation( KDChartEnums::MeasureOrientationHorizontal )
+    , cachedSizeHint( QSize() ) // default this to invalid to force real-time calculation before first use of sizeHint()
+    , cachedFontSize( 0.0 )
+{
+    cachedFont = mAttributes.font();
+}
+
+void KDChart::TextLayoutItem::setAutoReferenceArea( const QObject* area )
+{
+    mAutoReferenceArea = area;
+    cachedSizeHint = QSize();
+    sizeHint();
+}
+
+const QObject* KDChart::TextLayoutItem::autoReferenceArea() const
+{
+    return mAutoReferenceArea;
+}
 
 void KDChart::TextLayoutItem::setText(const QString & text)
 {
     mText = text;
     cachedSizeHint = QSize();
+    sizeHint();
 }
 
 QString KDChart::TextLayoutItem::text() const
@@ -109,7 +133,24 @@ QString KDChart::TextLayoutItem::text() const
     return mText;
 }
 
-KDChart::TextAttributes KDChart::TextLayoutItem::attributes() const
+/**
+  \brief Use this to specify the text attributes to be used for this item.
+
+  \sa textAttributes
+*/
+void KDChart::TextLayoutItem::setTextAttributes( const TextAttributes &a )
+{
+    mAttributes = a;
+    cachedSizeHint = QSize();
+    sizeHint();
+}
+
+/**
+  Returns the text attributes to be used for this item.
+
+  \sa setTextAttributes
+*/
+KDChart::TextAttributes KDChart::TextLayoutItem::textAttributes() const
 {
     return mAttributes;
 }

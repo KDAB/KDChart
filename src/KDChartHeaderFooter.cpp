@@ -42,22 +42,17 @@
 
 using namespace KDChart;
 
-HeaderFooter::Private::Private( Chart* parent_ ) :
-    parent( parent_ ),
+HeaderFooter::Private::Private() :
     type( Header ),
-    position( Position::North ),
-    text( QObject::tr( "Header/Footer" ) ),
-    textAttrs(),
-    textDoc( 0 ),
-    cachedSize(0,0)
+    position( Position::North )
 {
 }
 
 HeaderFooter::Private::~Private()
 {
-    delete textDoc;
 }
 
+/*
 void HeaderFooter::Private::updateTextDoc()
 {
     qreal fntSize = qMax(
@@ -82,21 +77,29 @@ void HeaderFooter::Private::updateTextDoc()
         cursor.insertBlock( bf );
         cursor.insertFragment( QTextDocumentFragment::fromHtml( text ) );
         //qDebug() << "HeaderFooter::Private::updateTextDoc() has added:" << cursor.block().text();
-        //textDoc->setModified( true );
     }
 }
+*/
 
 #define d d_func()
 
 HeaderFooter::HeaderFooter( Chart* parent ) :
-    AbstractArea( new Private( parent ) )
+    TextArea( new Private() )
 {
+    setParent( parent );
     init();
 }
 
 HeaderFooter::~HeaderFooter()
 {
     emit destroyedHeaderFooter( this );
+}
+
+void HeaderFooter::setParent( QObject* parent )
+{
+    QObject::setParent( parent );
+    if( parent && ! autoReferenceArea() )
+        setAutoReferenceArea( parent );
 }
 
 void HeaderFooter::init()
@@ -106,7 +109,7 @@ void HeaderFooter::init()
     ta.setFont( QFont( "helvetica", 10, QFont::Bold, false ) );
 
     Measure m( 35.0 );
-    m.setRelativeMode( d->parent, KDChartEnums::MeasureOrientationMinimum );
+    m.setRelativeMode( autoReferenceArea(), KDChartEnums::MeasureOrientationMinimum );
     ta.setFontSize( m );
 
     m.setValue( 8.0 );
@@ -128,37 +131,6 @@ HeaderFooter * HeaderFooter::clone() const
     // PENDING(kalle) FIXME
     qWarning( "Sorry, not implemented: HeaderFooter * HeaderFooter::clone() const" );
     return (HeaderFooter*)0xdeadbeef;
-}
-
-
-void HeaderFooter::paint( QPainter* painter )
-{
-    if( ! d->textAttrs.hasAbsoluteFontSize() && d->parent->size() != d->cachedSize ){
-        d->cachedSize = d->parent->size();
-        d->updateTextDoc();
-    }
-
-//    Q_ASSERT( d->textDoc );
-    if( !d->textDoc )
-        return;
-
-    QAbstractTextDocumentLayout* layout = d->textDoc->documentLayout();
-    d->textDoc->setPageSize( geometry().size() );
-
-//    painter->drawRect( rect().adjusted( 0, 0, -1, -1 ) );
-    painter->setPen( textAttributes().pen() );
-
-    if( textAttributes().isVisible() ) {
-        QAbstractTextDocumentLayout::PaintContext ctx;
-        ctx.palette.setColor( QPalette::Text, textAttributes().pen().color() );
-        layout->draw( painter, ctx );
-    }
-
-    // PENDING(kalle) Support relative size
-    // PENDING(kalle) Support minimal size
-    // PENDING(kalle) Support auto rotate
-    // PENDING(kalle) Support auto shrink
-    // PENDING(kalle) Support rotation
 }
 
 void HeaderFooter::setType( HeaderFooterType type )
@@ -183,108 +155,12 @@ Position HeaderFooter::position() const
     return d->position;
 }
 
-void HeaderFooter::setText( const QString& text )
-{
-    d->text = text;
-    d->updateTextDoc();
-    update();
-}
-
-QString HeaderFooter::text() const
-{
-    return d->text;
-}
-
-/**
-  \brief Use this to specify the text attributes to be used for this header
-  (or footer, resp.).
-
-  By default, the reference area will be set at painting time.
-  It will be the parent widget of this header/footer,
-  so normally, it will be the KDChart::Chart.
-  Thus all of your headers, and all of your footers
-  within that Chart will be drawn in same font size, by default.
-
-  \sa textAttributes, setLabels
-*/
-void HeaderFooter::setTextAttributes( const TextAttributes &a )
-{
-    d->textAttrs = a;
-    d->updateTextDoc();
-    update();
-}
-
-/**
-  Returns the text attributes to be used for this header (or footer, resp.).
-
-  \sa setTextAttributes
-*/
-TextAttributes HeaderFooter::textAttributes() const
-{
-    return d->textAttrs;
-}
-
-void HeaderFooter::setParent( Chart* parent )
-{
-    d->parent = parent;
-}
-
-/* pure virtual in QLayoutItem */
-bool HeaderFooter::isEmpty() const
-{
-    return ( d->textDoc == 0 );
-}
-/* pure virtual in QLayoutItem */
-Qt::Orientations HeaderFooter::expandingDirections() const
-{
-    return (Qt::Vertical | Qt::Horizontal);
-}
-/* pure virtual in QLayoutItem */
-QSize HeaderFooter::maximumSize() const
-{
-    if( isEmpty() )
-        return QSize(0,0);
-
-    // Set the page width: So the layout can calculate the bounding rect
-    d->textDoc->setPageSize( QSizeF( d->geometry.width(), 10000.0 ) );
-    QTextCursor cursor( d->textDoc );
-    cursor.movePosition( QTextCursor::NextBlock );
-    const QTextBlock block( cursor.block() );
-    //qDebug() << "HeaderFooter::maximumSize() found text:" << block.text();
-    const QRectF r( d->textDoc->documentLayout()->blockBoundingRect( block ) );
-    //qDebug() << "KDChart::HeaderFooter::maximumSize() found bounding rect" << r;
-    return QSize( static_cast<int>(r.width()),
-                  static_cast<int>(r.height()) );
-}
-/* pure virtual in QLayoutItem */
-QSize HeaderFooter::minimumSize() const
-{
-    return maximumSize();
-}
-/* pure virtual in QLayoutItem */
-QSize HeaderFooter::sizeHint() const
-{
-    return maximumSize();
-}
-/* pure virtual in QLayoutItem */
-void HeaderFooter::setGeometry( const QRect& r )
-{
-    //qDebug() << "KDChart::HeaderFooter::setGeometry(" << r << ") called";
-    d->geometry = r;
-    if( d->textDoc )
-        d->textDoc->setPageSize( QSize( r.size() ) );
-}
-/* pure virtual in QLayoutItem */
-QRect HeaderFooter::geometry() const
-{
-    QRect r( d->geometry );
-    //qDebug() << "KDChart::HeaderFooter::geometry() returning" << r;
-    return r;
-}
-
+/*
 void HeaderFooter::update()
 {
     //qDebug("KDChart::HeaderFooter::update() called");
-    if( d->parent )
+    if( d->parent ){
         d->parent->update();
+    }
 }
+*/

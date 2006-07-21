@@ -27,8 +27,8 @@
  **
  **********************************************************************/
 
-#ifndef KDCHARTABSTRACTAREA_H
-#define KDCHARTABSTRACTAREA_H
+#ifndef KDCHART_TEXT_AREA_H
+#define KDCHART_TEXT_AREA_H
 
 #include <QObject>
 
@@ -40,34 +40,34 @@ namespace KDChart {
 
 
 /**
-  * @class AbstractArea KDChartAbstractArea.h
-  * @brief An area in the chart with a background, a frame, etc.
+  * @class TextArea KDChartTextArea.h
+  * @brief A text area in the chart with a background, a frame, etc.
   *
-  * AbstractArea is the base class for all non-widget chart elements that have
-  * a set of background attributes and frame attributes, such as
-  * coordinate planes or axes.
+  * TextArea is the base class for all text containing non-widget chart elements
+  * that have a set of background attributes and frame attributes, such as
+  * headers or footers.
   *
-  * @note This class inherits from AbstractAreaBase, AbstractLayoutItem, QObject.
+  * @note This class inherits from AbstractAreaBase, TextLayoutItem, QObject.
   * The reason for this tripple inheritance is that neither AbstractAreaBase nor
-  * AbstractLayoutItem are QObject.
+  * TextLayoutItem are QObject.
   */
-class KDCHART_EXPORT AbstractArea : public QObject, public AbstractAreaBase, public AbstractLayoutItem
+class KDCHART_EXPORT TextArea : public QObject, public AbstractAreaBase, public TextLayoutItem
 {
     Q_OBJECT
 
-    Q_DISABLE_COPY( AbstractArea )
-    KDCHART_DECLARE_PRIVATE_DERIVED( AbstractArea )
+    Q_DISABLE_COPY( TextArea )
+    KDCHART_DECLARE_PRIVATE_DERIVED( TextArea )
 
 
 public:
-    virtual ~AbstractArea() ;
+    virtual ~TextArea() ;
 
-//    virtual AbstractArea * clone() const = 0;
+//    virtual TextArea * clone() const = 0;
     /**
       * @brief Draws the background and frame, then calls paint().
       *
       * In most cases there is no need to overwrite this method in a derived
-      * class, but you would overwrite AbstractLayoutItem::paint() instead.
+      * class, but you would overwrite TextLayoutItem::paint() instead.
       */
     virtual void paintIntoRect( QPainter& painter, const QRect& rect );
 
@@ -78,15 +78,15 @@ public:
     void paintAll( QPainter& painter );
 
 protected:
-    AbstractArea();
+    TextArea();
     virtual const QRect areaGeometry() const;
     virtual void positionHasChanged();
 
 signals:
-    void positionChanged( AbstractArea * );
+    void positionChanged( TextArea * );
 
-    //KDCHART_DECLARE_PRIVATE_DERIVED(AbstractArea)
-}; // End of class AbstractArea
+    //KDCHART_DECLARE_PRIVATE_DERIVED(TextArea)
+}; // End of class TextArea
 
 }
-#endif // KDCHARTABSTRACTAREA_H
+#endif // KDCHART_TEXT_AREA_H

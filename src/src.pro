@@ -34,6 +34,8 @@ HEADERS += KDChartGlobal.h \
            KDChartAbstractAreaBase_p.h \
            KDChartAbstractArea.h \
            KDChartAbstractArea_p.h \
+           KDChartTextArea.h \
+           KDChartTextArea_p.h \
            KDChartAbstractAreaWidget.h \
            KDChartAbstractAreaWidget_p.h \
            KDChartAbstractAxis.h \
@@ -102,6 +104,7 @@ SOURCES += \
            KDChartAbstractPolarDiagram.cpp \
            KDChartAbstractAreaBase.cpp \
            KDChartAbstractArea.cpp \
+           KDChartTextArea.cpp \
            KDChartAbstractAreaWidget.cpp \
            KDChartAbstractAxis.cpp \
            KDChartAbstractProxyModel.cpp \

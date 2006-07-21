@@ -43,6 +43,7 @@
 
 #include "KDChartChart.h"
 #include "KDChartAbstractArea.h"
+#include "KDChartTextArea.h"
 #include "KDChartLayoutItems.h"
 
 //FIXME(khz): use an internal libfakes library instead of this internal header file
@@ -96,6 +97,7 @@ class Chart::Private : public QObject
         QGridLayout* footerLayout;
         QGridLayout* dataAndLegendLayout;
 
+        QVector<KDChart::TextArea*> textLayoutItems;
         QVector<KDChart::AbstractArea*> layoutItems;
         QVector<KDChart::AbstractArea*> planeLayoutItems;
         QVector<KDChart::Legend*> legendLayoutItems;

@@ -23,8 +23,8 @@
  **
  **********************************************************************/
 
-#ifndef KDCHARTHEADERFOOTER_P_H
-#define KDCHARTHEADERFOOTER_P_H
+#ifndef KDCHART_TEXT_AREA_P_H
+#define KDCHART_TEXT_AREA_P_H
 
 //
 //  W A R N I N G
@@ -37,56 +37,46 @@
 // We mean it.
 //
 
-#include "KDChartHeaderFooter.h"
-#include "KDChartTextArea_p.h"
-#include <QMap>
+/** \file KDChartTextArea_p.h
+ *  \internal
+ */
+
+#include "KDChartTextArea.h"
+#include "KDChartAbstractAreaBase_p.h"
 
 //FIXME(khz): use an internal libfakes library instead of this internal header file
 #include "kdchart_platformdef.h"
 
 
-class KDTextDocument;
-
 namespace KDChart {
-    class Chart;
-    class TextAttributes;
-    class HeaderFooter;
-}
-using KDChart::TextAttributes;
-using KDChart::HeaderFooter;
 
 /**
  * \internal
  */
-class KDChart::HeaderFooter::Private : public KDChart::TextArea::Private
+class TextArea::Private : public AbstractAreaBase::Private
 {
-    friend class KDChart::HeaderFooter;
+    friend class TextArea;
 public:
     explicit Private();
-    ~Private();
-
-    void updateTextDoc();
-
-private:
-    // user-settable
-    HeaderFooterType type;
-    Position position;
+    virtual ~Private();
 };
 
-inline KDChart::HeaderFooter::HeaderFooter( Private* d, KDChart::Chart* parent )
-    : TextArea( d )
+
+inline TextArea::TextArea( Private * p )
+  :  QObject(), AbstractAreaBase( p ), TextLayoutItem()
 {
-    setParent( parent );
     init();
 }
-inline KDChart::HeaderFooter::Private * KDChart::HeaderFooter::d_func()
+inline TextArea::Private * TextArea::d_func()
 {
-    return static_cast<Private*>( TextArea::d_func() );
+    return static_cast<Private*>( AbstractAreaBase::d_func() );
 }
-inline const KDChart::HeaderFooter::Private * KDChart::HeaderFooter::d_func() const
+inline const TextArea::Private * TextArea::d_func() const
 {
-    return static_cast<const Private*>( TextArea::d_func() );
+    return static_cast<const Private*>( AbstractAreaBase::d_func() );
 }
 
+}
 
-#endif /* KDCHARTHEADERFOOTER_P_H */
+#endif /* KDCHART_TEXT_AREA_P_H */
+

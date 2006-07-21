@@ -30,7 +30,7 @@
 #ifndef KDCHARTHEADERFOOTER_H
 #define KDCHARTHEADERFOOTER_H
 
-#include "KDChartAbstractArea.h"
+#include "KDChartTextArea.h"
 #include "KDChartPosition.h"
 
 class QDomDocumentFragment;
@@ -40,7 +40,7 @@ namespace KDChart {
     class Chart;
     class TextAttributes;
 
-class KDCHART_EXPORT HeaderFooter : public AbstractArea
+class KDCHART_EXPORT HeaderFooter : public TextArea
 {
     Q_OBJECT
 
@@ -55,8 +55,6 @@ public:
 
     virtual HeaderFooter * clone() const;
 
-    virtual void paint( QPainter* );
-
     enum HeaderFooterType{ Header,
                            Footer };
 
@@ -66,38 +64,14 @@ public:
     void setPosition( Position position );
     Position position() const;
 
-    void setText( const QString& text );
-    QString text() const;
+    void setParent( QObject* parent );
 
-    void setTextAttributes( const TextAttributes &a );
-    TextAttributes textAttributes() const;
-
-    /** pure virtual in QLayoutItem */
-    virtual bool isEmpty() const;
-    /** pure virtual in QLayoutItem */
-    virtual Qt::Orientations expandingDirections() const;
-    /** pure virtual in QLayoutItem */
-    virtual QSize maximumSize() const;
-    /** pure virtual in QLayoutItem */
-    virtual QSize minimumSize() const;
-    /** pure virtual in QLayoutItem */
-    virtual QSize sizeHint() const;
-    /** pure virtual in QLayoutItem */
-    virtual void setGeometry( const QRect& r );
-    /** pure virtual in QLayoutItem */
-    virtual QRect geometry() const;
-
-
-    /**
-      * Called internally by KDChart::Chart
-      */
-    void setParent( Chart* parent );
-
-public slots:
-    void update();
+//public slots:
+    //void update();
 
 signals:
     void destroyedHeaderFooter( HeaderFooter* );
+    void positionChanged( HeaderFooter* );
 
 }; // End of class HeaderFooter
 
