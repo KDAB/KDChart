@@ -66,9 +66,6 @@ public:
 
     void setParent( QObject* parent );
 
-//public slots:
-    //void update();
-
 signals:
     void destroyedHeaderFooter( HeaderFooter* );
     void positionChanged( HeaderFooter* );

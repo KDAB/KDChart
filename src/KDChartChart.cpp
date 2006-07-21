@@ -690,8 +690,6 @@ qFatal("nPaint > 100");
 void Chart::resizeEvent ( QResizeEvent * event )
 {
     d->slotLayoutPlanes();
-    
-    //d->slotRelayout();
 }
 
 void Chart::paintEvent( QPaintEvent* event )
@@ -703,19 +701,6 @@ void Chart::paintEvent( QPaintEvent* event )
     //            (can we derive Chart from AreaWidget ??)
     paint( &painter, geometry() );
 }
-
-
-/*
-static void paintLayout(QPainter *painter, QLayoutItem *item)
-{
-    QLayout *layout = item->layout();
-    if (layout) {
-        for (int i = 0; i < layout->count(); ++i)
-            paintLayout(painter, layout->itemAt(i));
-    }
-    painter->drawRect(item->geometry());
-}
-*/
 
 void Chart::addHeaderFooter( HeaderFooter* headerFooter )
 {
@@ -820,5 +805,3 @@ LegendList Chart::legends()
 {
     return d->legends;
 }
-
-

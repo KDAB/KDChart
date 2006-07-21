@@ -52,35 +52,6 @@ HeaderFooter::Private::~Private()
 {
 }
 
-/*
-void HeaderFooter::Private::updateTextDoc()
-{
-    qreal fntSize = qMax(
-        textAttrs.fontSize().calculatedValue(
-            parent,
-            KDChartEnums::MeasureOrientationMinimum ),
-        textAttrs.minimalFontSize().calculatedValue(
-            parent,
-            KDChartEnums::MeasureOrientationMinimum ) );
-    QFont fnt( textAttrs.font() );
-    fnt.setPointSizeF( fntSize );
-    if( textDoc )
-        delete textDoc;
-    textDoc = new KDTextDocument;
-    textDoc->setDefaultFont( fnt );
-    QTextCursor cursor( textDoc );
-
-    // PENDING(kalle) Other attributes!
-    if( !text.isEmpty() ) {
-        QTextBlockFormat bf;
-        bf.setNonBreakableLines( true );
-        cursor.insertBlock( bf );
-        cursor.insertFragment( QTextDocumentFragment::fromHtml( text ) );
-        //qDebug() << "HeaderFooter::Private::updateTextDoc() has added:" << cursor.block().text();
-    }
-}
-*/
-
 #define d d_func()
 
 HeaderFooter::HeaderFooter( Chart* parent ) :
@@ -154,13 +125,3 @@ Position HeaderFooter::position() const
 {
     return d->position;
 }
-
-/*
-void HeaderFooter::update()
-{
-    //qDebug("KDChart::HeaderFooter::update() called");
-    if( d->parent ){
-        d->parent->update();
-    }
-}
-*/
