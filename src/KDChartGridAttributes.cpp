@@ -28,8 +28,7 @@
 #include <QPen>
 #include <QDomDocumentFragment>
 
-//FIXME(khz): use an internal libfakes library instead of this internal haeder file
-#include "kdchart_platformdef.h"
+#include <KDABLibFakes>
 
 #define d d_func()
 

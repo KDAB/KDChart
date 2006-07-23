@@ -34,8 +34,7 @@
 #include <KDChartBackgroundAttributes.h>
 #include <KDChartMarkerAttributes.h>
 
-//FIXME(khz): use an internal libfakes library instead of this internal haeder file
-#include "kdchart_platformdef.h"
+#include <KDABLibFakes>
 
 // FIXME till
 #define KDCHART_DATA_VALUE_AUTO_DIGITS 4

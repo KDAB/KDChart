@@ -38,8 +38,7 @@
 #include "KDChartPolarCoordinatePlane_p.h"
 #include "KDChartPainterSaver_p.h"
 
-//FIXME(khz): use an internal libfakes library instead of this internal haeder file
-#include "kdchart_platformdef.h"
+#include <KDABLibFakes>
 
 using namespace KDChart;
 

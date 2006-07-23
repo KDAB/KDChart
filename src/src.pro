@@ -1,6 +1,7 @@
 # Subdir relative project main directory: ./src
 # Target is a library:  kdchart
 
+LIBFAKES_PATH = ../kdablibfakes
 
 
 # Use the filename "kdchartd.dll" (or "kdchartd.lib") on Windows
@@ -90,8 +91,6 @@ HEADERS += KDChartGlobal.h \
            KDChartWidget.h \
            KDChartWidget_p.h \
            KDChartChart_p.h
-# FIXME(khz): use an internal libfakes library instead of this internal haeder file
-HEADERS += kdchart_platformdef.h
 
 SOURCES += \
            KDChartMeasure.cpp \
@@ -152,8 +151,15 @@ TEMPLATE = lib
 
 DESTDIR = ../lib
 DEFINES += QT_NO_CAST_TO_ASCII
-DEPENDPATH = ../include $(QTDIR)/src/3rdparty/zlib .
-INCLUDEPATH = ../include $(QTDIR)/src/3rdparty/zlib .
+
+DEPENDPATH = ../include \
+            $$LIBFAKES_PATH/include \
+            $(QTDIR)/src/3rdparty/zlib \
+            .
+INCLUDEPATH = ../include \
+              $$LIBFAKES_PATH/include \
+              $(QTDIR)/src/3rdparty/zlib \
+              .
 linux-*{
   version_script{
     QMAKE_LFLAGS += -Wl,--version-script=libkdchart.map

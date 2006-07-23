@@ -1,21 +1,40 @@
+/*
+    =========================================================
+
+      This file is part of the library KDABLibFakes,
+      used internally for compiling and building the
+      projects of Klaraelvdalens Datakonsult AB.
+      (visit http://www.kdab.net for information)
+
+      KDABLibFakes is matter of change without notification!
+
+      Do *not* include this library into your own projects!
+
+    =========================================================
+*/
+
+
 /****************************************************************************
  ** Copyright (C) 2006 Klarälvdalens Datakonsult AB.  All rights reserved.
  **
- ** This file is part of the KD Chart library.
+ ** This file is part of the KDAB auxiliary library of internal defines.
+ **
+ **      It is  N O T  to be included into user projects,
+ **      but internally used by KD AB projects only.
  **
  ** This file may be distributed and/or modified under the terms of the
  ** GNU General Public License version 2 as published by the Free Software
  ** Foundation and appearing in the file LICENSE.GPL included in the
  ** packaging of this file.
  **
- ** Licensees holding valid commercial KD Chart licenses may use this file in
- ** accordance with the KD Chart Commercial License Agreement provided with
- ** the Software.
+ ** Licensees holding valid commercial licenses from Klarälvdalens
+ ** Datakonsult AB may use this file in accordance with the respective
+ ** License Agreement provided with the Software.
  **
  ** This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
  ** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  **
- ** See http://www.kdab.net/kdchart for
+ ** As an example see http://www.kdab.net/kdchart for
  **   information about KDChart Commercial License Agreements.
  **
  ** Contact info@kdab.net if any conditions of this
@@ -23,8 +42,8 @@
  **
  **********************************************************************/
 
-#ifndef KDCHART_PLATFORMDEF_H
-#define KDCHART_PLATFORMDEF_H
+#ifndef KDAB_LIB_FAKES_H
+#define KDAB_LIB_FAKES_H
 
 #include <cmath>
 

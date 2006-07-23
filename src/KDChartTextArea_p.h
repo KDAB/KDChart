@@ -44,8 +44,7 @@
 #include "KDChartTextArea.h"
 #include "KDChartAbstractAreaBase_p.h"
 
-//FIXME(khz): use an internal libfakes library instead of this internal header file
-#include "kdchart_platformdef.h"
+#include <KDABLibFakes>
 
 
 namespace KDChart {

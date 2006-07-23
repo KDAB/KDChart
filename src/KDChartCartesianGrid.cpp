@@ -28,8 +28,7 @@
 
 #include <QPainter>
 
-//FIXME(khz): use an internal libfakes library instead of this internal haeder file
-#include "kdchart_platformdef.h"
+#include <KDABLibFakes>
 
 
 static qreal _trunc( qreal v )

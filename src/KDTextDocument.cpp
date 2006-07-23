@@ -29,8 +29,7 @@
 #include <QtDebug>
 #include <QTextBlock>
 
-//FIXME(khz): use an internal libfakes library instead of this internal haeder file
-#include "kdchart_platformdef.h"
+#include <KDABLibFakes>
 
 // This is an internal class that mimicks some of the behavior of a
 // QLabel with rich text assigned, this is mostly a workaround around
