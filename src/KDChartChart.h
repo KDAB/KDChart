@@ -38,9 +38,9 @@ namespace KDChart {
     class HeaderFooter;
     class Legend;
 
-    class CoordinatePlaneList : public QList<AbstractCoordinatePlane*> {};
-    class HeaderFooterList : public QList<HeaderFooter*> {};
-    class LegendList : public QList<Legend*> {};
+    typedef QList<AbstractCoordinatePlane*> CoordinatePlaneList;
+    typedef QList<HeaderFooter*> HeaderFooterList;
+    typedef QList<Legend*> LegendList;
 
     /**
      * @brief A chart with one or more diagrams.

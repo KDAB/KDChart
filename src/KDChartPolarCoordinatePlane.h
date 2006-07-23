@@ -42,7 +42,7 @@ namespace KDChart {
 
     public:
         struct CoordinateTransformation;
-        class CoordinateTransformationList;
+        typedef QList<CoordinateTransformation> CoordinateTransformationList;
 
         explicit PolarCoordinatePlane ( Chart* parent = 0 );
         ~PolarCoordinatePlane();

@@ -60,6 +60,7 @@ namespace KDChart {
 
         inline const QPointF translate( const QPointF& diagramPoint ) const
         {
+            // ### de-inline me
             QPointF result = originTranslation;
             QPointF tempPoint = diagramPoint;
 	    if ( axesCalcMode == CartesianCoordinatePlane::Logarithmic )
@@ -88,7 +89,7 @@ namespace KDChart {
         }
     };
 
-    class CoordinateTransformationList : public QList<CoordinateTransformation> {};
+    typedef QList<CoordinateTransformation> CoordinateTransformationList;
 
 }
 

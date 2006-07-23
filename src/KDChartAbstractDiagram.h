@@ -103,7 +103,7 @@ namespace KDChart {
         /**
          * Associate an AttributesModel with this diagram. Note that
          * the diagram does _not_ take ownership of the AttributesModel.
-         * This should thus only be used with AttributesModels that 
+         * This should thus only be used with AttributesModels that
          * have been explicitely created by the user, and are owned
          * by her. Setting an AttributesModel that is internal to
          * another diagram is an error.
@@ -418,18 +418,8 @@ namespace KDChart {
         void modelsChanged();
     };
 
-    class AbstractDiagramList : public QList<AbstractDiagram*> {};
-    class ConstAbstractDiagramList : public QList<const AbstractDiagram*>
-    {
-    public:
-        ConstAbstractDiagramList( const AbstractDiagramList &nonConst )
-        {
-            foreach( AbstractDiagram* diagram, nonConst )
-            {
-                append( diagram );
-            }
-        }
-    };
+    typedef QList<AbstractDiagram*> AbstractDiagramList;
+    typedef QList<const AbstractDiagram*> ConstAbstractDiagramList;
 
 }
 

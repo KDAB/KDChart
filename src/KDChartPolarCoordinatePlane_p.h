@@ -61,11 +61,13 @@ struct PolarCoordinatePlane::CoordinateTransformation
 
     static QPointF polarToCartesian( double R, double theta )
     {
+        // de-inline me
         return QPointF( R * cos( DEGTORAD( theta  ) ), R * sin( DEGTORAD( theta ) ) );
     }
 
     inline const QPointF translate( const QPointF& diagramPoint ) const
     {
+        // ### de-inline me
         // calculate the polar coordinates
         const double x = diagramPoint.x() * radiusUnit;
         const double y = ( diagramPoint.y() * angleUnit) - 90;
@@ -84,12 +86,10 @@ struct PolarCoordinatePlane::CoordinateTransformation
 
     inline const QPointF translatePolar( const QPointF& diagramPoint ) const
     {
+        // ### de-inline me
         return QPointF( diagramPoint.x() * angleUnit, diagramPoint.y() * radiusUnit );
     }
 };
-
-class PolarCoordinatePlane::CoordinateTransformationList
-    : public QList<PolarCoordinatePlane::CoordinateTransformation> {};
 
 class PolarCoordinatePlane::Private : public AbstractCoordinatePlane::Private
 {

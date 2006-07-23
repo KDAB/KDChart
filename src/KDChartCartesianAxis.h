@@ -122,7 +122,7 @@ namespace KDChart {
         virtual QRect geometry() const;
     };
 
-    class CartesianAxisList : public QList<CartesianAxis*> {};
+    typedef QList<CartesianAxis*> CartesianAxisList;
 }
 
 #endif

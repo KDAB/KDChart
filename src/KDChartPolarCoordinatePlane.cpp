@@ -89,9 +89,6 @@ struct PolarCoordinatePlane::CoordinateTransformation
     }
 };
 
-class PolarCoordinatePlane::CoordinateTransformationList
-    : public QList<PolarCoordinatePlane::CoordinateTransformation> {};
-
 class PolarCoordinatePlane::Private
 {
 public:

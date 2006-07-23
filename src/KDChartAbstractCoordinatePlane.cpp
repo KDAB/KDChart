@@ -125,7 +125,14 @@ AbstractDiagramList AbstractCoordinatePlane::diagrams()
 
 ConstAbstractDiagramList AbstractCoordinatePlane::diagrams() const
 {
-    return d->diagrams;
+    ConstAbstractDiagramList list;
+#ifndef QT_NO_STL
+    qCopy( d->diagrams.begin(), d->diagrams.end(), std::back_inserter( list ) );
+#else
+    list.resize( d->diagrams.size() );
+    qCopy( d->diagrams.begin(), d->diagrams.end(), list.begin() );
+#endif
+    return list;
 }
 
 QSize KDChart::AbstractCoordinatePlane::minimumSizeHint() const

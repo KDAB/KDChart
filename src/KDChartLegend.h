@@ -40,7 +40,7 @@ class QDomDocumentFragment;
 namespace KDChart {
 
     class AbstractDiagram;
-    class DiagramList : public QList<AbstractDiagram*> {};
+    typedef QList<AbstractDiagram*> DiagramList;
 
 /**
   * @brief Legend defines the interface for the legend drawing class.
