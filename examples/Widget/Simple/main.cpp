@@ -26,8 +26,6 @@
 #include <QApplication>
 #include <KDChartWidget>
 
-#include <QDebug>
-#include <QVector>
 
 using namespace KDChart;
 
