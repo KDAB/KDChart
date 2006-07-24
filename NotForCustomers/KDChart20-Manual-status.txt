@@ -1,0 +1,154 @@
+That is a short status about where we are when it comes to the programer manual
+
+You can also visualize its last state by opening the kdchart.pdf file 
+in this repository.
+
+
+Table of content will need to be restructured when the manual is completed.
+
+
+
+It is especially important to review the sample code and screen shots presented(most of it will probably need to be replaced).This is true for all sections and sub-sections atm.
+
+
+Chapter1 
+What you should know = 100 % done - to review
+The structure of this manual = 100% done - to review
+What's Next = done
+
+Chapter2
+OverView = 100 % done - to review 
+KD Chart and Interview = 100 % done - to review
+Attribute Sets = 100 % done - to review
+Memory Management = 100 % done - to review
+What's next = 100 % done - to review
+
+Chapter3 
+Prerequisite = 100 % done - to review
+The Procedure = 100 % done - to review 
+Two ways = 100 % done - to review
+
+
+Chapter 4 Planes and Diagrams
+
+Section: Cartesian Coordinate Plane
+
+Sub:
+Bar Charts = 90 % done - to review
+Normal Bar Charts = 100 % done - to review
+Stacked Bar Charts = 100 % done - to review
+Percent Bar Charts = 100 % done - to review
+Bar Example = 0 % done - to be changed
+Bar Attributes = 100 % done to review 
+Bar Example = 100 % done to review
+Tips = 100 % done to review
+A complete Bar Example = 0 % done to be changed
+
+Line Charts = 90 % done - to review
+Normal Line Charts = 100 % done - to review
+Stacked Line Charts = 100 % done - to review
+Percent Line Charts = 100 % done - to review
+Line Example = 0 % done - to be changed
+Line Attributes = 100 % done to review 
+Line Example = 100 % done to review
+Tips = 100 % done to review
+A complete Line Example = 0 % done to be changed
+
+Point Charts = 90 % done (change the screen-shot)
+Point Example = 80 % done to be reviewed 
+Point Attributes = 100 % done - to review
+Tips = 100% done to be reviewed
+A complete Point Example = 0 % done to be changed
+
+Area Charts = 90 % done (change the screen-shot)
+Area Example = 80 % done to be reviewed 
+Area Attributes = 100 % done - to review
+Tips = 100% done to be reviewed
+A complete Area Example = 0 % done to be changed
+
+High/Low Charts
+Simple High/Low = 50 % done (text there but no screen-shots or sample code)
+Open/Close High/Low = 50 % (same as above) 
+High/Low with Custom Data Labels = 50 % done (same as above)
+High/Low Attributes= 0% done (not implemented)
+Tips = 0% done (not implemented)
+A Complete HiLO example = 0% done (not implemented)
+
+Box&Whiskers Charts
+Normal B&W = 50 % done (text there but no screen-shots or sample code)
+B&W without Outliers (text there but no screen-shots or sample code)
+B&W with Statistics (text there but no screen-shots or sample code)
+B&W Attributes= 0% done (not implemented)
+Tips = 0% done (not implemented)
+A Complete B&W example = 0% done (not implemented)
+
+
+Section Polar Coordinate Plane 
+
+Sub
+Pie Charts = 90 % done - to review
+Simple Pie Chart = 50% done (change the screen-shot)
+Exploding Pie Chart = 50 % done Change the screen-shot)
+Pie Attributes = 100 % done (but attributes are not implemented yet)
+Tips = 100% done - to review
+A Complete Pie Example = 0 % (we need to change the example) 
+
+Ring Charts
+Simple Ring Charts = 50 % done (text there but no screen-shots or sample code)
+Ring Chart With Relative Thickness = same as above
+Ring Chart with Exploding Segments = same as above 
+Ring Attributes = 0 % done ( not implemented yet )
+Tips = 100% done 
+A Complete Ring Example = 0% done not implemented yet 
+ 
+Polar Charts
+A Simple Polar Chart = 50 % done ( text but no screen-shots )
+Polar Attributes = 0 % done (not implemented yet)
+Tips = 0 % done 
+A Complete Polar Example = 0 % done 
+
+What's Next = 100 % done 
+
+
+I would need help on every point below at the moment.
+
+Chapter 5 Customizing your Chart Needs to be done
+
+Colors = 0% done 
+Fonts = 0% done
+Markers = 0% done
+ThreeD = 0% done 
+Tips = 0% done
+
+Chapter 6 Headers and Footers
+
+How to configure = 0% done
+Tips = 0% done
+
+Chapter 7 Legends
+
+How to configure = 0% done
+Tips = 0% done
+
+Chapter 8 Axes 
+
+How to configure = 0% done 
+Tips = 0% done
+
+Chapter 9 Advanced Charting 
+Here the idea was to have a bit of  introduction text with some commented code sample and a complete example (with screen-shot) for each section 
+
+
+Frame and Background = 0 % done
+DataValue Manipulation = 0 % done
+Axis Manipulation = 0 % done 
+Grid Manipulation = 0 % done 
+Interactive Chart = 0 % done
+Multiple Chart = 0 % done
+Zooming = 0 % done 
+
+
+  
+
+
+
