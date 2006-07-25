@@ -423,26 +423,56 @@
 		You will clearly notice the parallels.
 	    </para>	   
              <sect2>
-                <title id="interviewsample" xreflabel="codexample">Code Example</title>
-                <para>
-		    <!-- Pending Michel: Insert some piece of code here -->
+                <title id="interviewsample" xreflabel="codesample">Code Sample</title>
+                <para>		  
                     Let us make this more concrete by looking at the following
-                    lines of code.
-                   <!--
-                    <link linkend=""></link>
-                    <link linkend=""></link>
-                    -->
-                </para>
-                <!--
-                <programlisting linenumbering="numbered" id="">
-                    <textobject>
-                        <textdata fileref="../../examples/..."/>
-                    </textobject>
-                </programlisting>
-                -->
+                    lines of code where we are using  
+		    <classname>QStandardItemModel</classname> to store the 
+		    data which will be displayed by the diagram in a 
+		    <classname>KDChartChart</classname> widget. 
+                </para>                
+                <programlisting>
+                    // set up your model
+		    m_model.insertRows( 0, 2, QModelIndex() );
+		    m_model.insertColumns(  0,  3,  QModelIndex() );
+		    for (int row = 0; row < 3; ++row) {
+		       for (int column = 0; column < 3; ++column) {
+		          QModelIndex index = 
+		          m_model.index(row, column, QModelIndex());
+		          m_model.setData(index, QVariant(row+1 * column) );
+                       } 
+                    }
+                </programlisting>                
                 <para>
-                    More explanation?
+                    In order to assign the model above to your diagram and 
+		    display it you would proceed as follow:
                 </para>
+		<programlisting>
+		    KDChart::BarDiagram* diagram = new KDChart::BarDiagram;
+		    diagram->setModel(&m_model);
+		    m_chart.coordinatePlane()->replaceDiagram(diagram);
+                </programlisting>
+		<para>
+		    Using <classname>KDChartWidget</classname> we would proceed
+		    as follow:
+		</para>
+		<programlisting>
+                    KDChartWidget widget;
+		    QVector< double > vec0,  vec1,  vec2;
+		    vec0 << -5 << -4 << -3 << -2 << -1 << 0 ...;
+		    vec1 << 25 << 16 << 9 << 4 << 1 << 0 ...;      
+		    widget.setDataset( 0, vec0, "Linear" );
+		    widget.setDataset( 1, vec1, "Quadratic" );
+		    widget.show();
+                </programlisting> 
+		<para>
+		    We recommend you to consult 
+		    <filename>KDChartChart.h</filename> and 
+		    <filename>KDChartWidget.h</filename> to learn more about 
+		    those classes and what they can do. Also compile and run 
+		    the complete examples that describe very simply the two 
+		    ways you may use to display a Chart.
+		</para>
 	    </sect2>
         </sect1>
         <sect1>
@@ -464,7 +494,7 @@
 		be used much like Qt's QPen or QBrush. As shown below:
 	    </para>
              <sect2>
-                <title id="attributesample" xreflabel="codexample">Code Example</title>
+                <title id="attributesample" xreflabel="codesample">Code Sample</title>
 		<programlisting>
 		    KDChart::TextAttributes ta;
 		    ta.setPen( Qt::red );
