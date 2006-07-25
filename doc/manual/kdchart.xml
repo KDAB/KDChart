@@ -588,20 +588,34 @@
         <title id="chtxt_basicsteps">Basic steps: Create a Chart</title>
         <titleabbrev id="chnum_basicsteps">Chapter 3</titleabbrev>
 	<para>
-	    There are two ways to create a chart <classname>KDChart::Widget</classname> 
-	    is providing a limited set of functions  as can be seen in 
-	    <filename>KDChartWidget.h</filename> its purpose is a convenient and simple 
-	    way of getting a chart, for people who do not want to learn about the new 
-	    Qt Interview concept or who do not care about more complicated details like 
-	    the Coordinate Plane and other classes provided by KD Chart 2 API.
+	    As specified in the above Chapter, there are two ways to create a chart:
 	</para>
+	<itemizedlist>
+	    <listitem>
+		<para>
+		    <classname>KDChart::Widget</classname> is providing a limited set of 
+		    functions  as can be seen in <filename>KDChartWidget.h</filename> its 
+		    purpose is a convenient and simple way of getting a chart, for people 
+		    who do not want to learn about the new Qt Interview concept or who do 
+		    not care about more complicated details like the Coordinate Plane and 
+		    other classes provided by KD Chart 2 API.
+		</para>
+	    </listitem>
+	    <listitem>
+		<para>
+		   <classname>KDChart::Chart</classname> purpose is to allow the user to
+		    use the full power of both the new Qt and the new KD Chart.		
+		</para>
+	    </listitem>
+	 </itemizedlist>
 	<para>
 	    Basically, <classname>KDChart::Widget</classname> has been designed for 
 	    starters, while <classname>KDChart::Chart</classname> is destinated for 
-	    the experienced user and/or for users who wants to use the full power of 
-	    both the new Qt and the new KD Chart. I would recommend you to read both 
-	    interfaces for <filename>KDChartWidget.h</filename> and 
-	    <filename>KDChartChart.h</filename> for you to get a better idea.
+	    the experienced user and/or for users who need more features and flexibility.
+	    Once again we recommend you to read both interfaces for those classes in order
+	    to make yourself an opinion about what you would need while developping your 
+	    application.( See <filename>KDChartWidget.h</filename> and 
+	    <filename>KDChartChart.h</filename> ).
 	</para>
 	<sect1>          
 	    <title id="basicprerequiste">Prerequisite</title>
@@ -640,8 +654,8 @@
 		    </listitem>
 		    <listitem>
 			<para>
-			    The "diagram" is the actual plot, bars, lines and 
-			    other chart types representing the data.There can 
+			    The "diagram" is the actual plot (bars, lines and 
+			    other chart types) representing the data.There can 
 			    be several diagrams per coordinate plane.
 			</para>	
 		    </listitem>
