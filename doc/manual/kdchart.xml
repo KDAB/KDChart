@@ -782,9 +782,12 @@
 		us an overview about how to proceed in both cases.
 	    </para>
 	    <sect2>
-                <title id="basicwidget" xreflabel="codexample">Chart Widget Example</title>
+                <title id="basicwidget" xreflabel="codexample">Widget Example</title>
 		<para>
-		    We recommend you to read, compile and run the following example. 		</para>				
+		    We recommend you to read, compile and run the following example.
+		    It is available at the following location of your KD Chart 
+		    installation: <filename>examples/Widget/Simple</filename>.
+		</para>				
 		<programlisting linenumbering="numbered" id="widget_simple">
 		    <textobject>
 			<textdata fileref="../../examples/Widget/Simple/main.cpp"/>
@@ -822,7 +825,7 @@
 		    </listitem>	
 		</itemizedlist>
 		<figure float="0" id="fig-simplewidget">
-		    <title>A Simple Chart Widget</title>
+		    <title>A Simple Widget</title>
 		    <mediaobject>
 			<imageobject>
 			    <imagedata width="3in" scalefit="1" fileref="images/simplewidget.png"/>
@@ -830,41 +833,35 @@
 		    </mediaobject>
 		</figure>
 		<para>
-		    Of course it is possible to add new elements like Title, Headers and footers,
-		    legends or axes to this very simple widget as we will see later on more in 
-		    details. Noice also that the default diagram displayed by a 
+		    Of course it is possible to add new elements like Title, Headers, Footers,
+		    Legends or Axes ...etc to this very simple widget as we will see later on more in 
+		    details. Notice also that the default diagram displayed by a 
 		    <classname>KDChartWidget</classname> is a 
 		    <classname>KDChartLineDiagram</classname>.
+		    In the following example we will look at the way to display a Chart widget using
+		    <classname>KDChartChart</classname>.
 		</para>
 	    </sect2>
-	    <sect2>
-		<!-- Pending Michel: write a simple line chart example with a legend -->
+	    <sect2>	
                 <title id="basicchart" xreflabel="codexample">Chart Example</title>
 		<para>
-		We recommend you to read, compile and run the following example. 
+		    We recommend you to read, compile and run the following example. It is available
+		    at the following location of your KD Chart installation: 
+		    <filename>/examples/Charts/simple</filename>		   
 		</para>
-<!--
-	    <link linkend="mainwindow_h">mainwindow.h</link> 
--->	    	
-		<programlisting linenumbering="numbered" id="chart_mainwindow_h">
-		    <textobject><textdata fileref="../../examples/Widget/mainwindow.h"/>
+		<programlisting linenumbering="numbered" id="chart_main">
+		    <textobject>
+			<textdata fileref="../../examples/Charts/simple/main.cpp"/>
 		    </textobject>
 		</programlisting>                
 		<para>
-		    More explanation h file?
-		</para>
-		<programlisting linenumbering="numbered" id="chart_mainwindow_cpp">
-		    <textobject><textdata fileref="../../examples/Widget/mainwindow.cpp"/>
-		    </textobject>
-		</programlisting>
-		<para>
-		    More explanation cpp file?
+		    More explanation....
 		</para>
 		<figure float="0" id="fig-simplechart">
 		    <title>A Simple Chart</title>
 		    <mediaobject>
 			<imageobject>
-			    <imagedata width="3in" scalefit="1" fileref="images/simpleline.png"/>
+			    <imagedata width="3in" scalefit="1" fileref="images/simplechart.png"/>
 			</imageobject>
 		    </mediaobject>
 		</figure>
@@ -963,7 +960,7 @@
 		    <title>A Normal Bar Chart</title>
 		    <mediaobject>
 			<imageobject>
-			    <imagedata width="3in" scalefit="1" fileref="images/simplechart.png"/>
+			    <imagedata width="3in" scalefit="1" fileref="images/simplebar.png"/>
 			</imageobject>
 		    </mediaobject>
 		</figure>
