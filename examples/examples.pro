@@ -13,5 +13,6 @@ SUBDIRS		= tools \
                   ModelView \
                   MultidimensionalData \
                   EmptyValues \
+	          Charts 
 
 
