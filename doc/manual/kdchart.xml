@@ -225,19 +225,14 @@
 		this:
 	    </para>
             <sect2>
-                <title id="apisample" xreflabel="codexample">Code Example</title>
+                <title id="apisample" xreflabel="codesample">Code Sample</title>
 		<programlisting>
 		    using namespace KDChart;
-
+		    ......
 		    BarDiagram *bars = new BarDiagram;
-		    bars->setModel( &amp;m_model );
-		    bars->setType( BarDiagram::Stacked );
-		    bars->setDataSubduedColors(); // not bar specific
-		    QPen pen;
-		    pen.setColor( Qt::darkGray );
-		    pen.setWidth( 1 );
-		    bars->setPen( pen );
-		    chart->coordinatePlane()->replaceDiagram( ars );
+		    bars->setModel( &amp;m_model );		    
+		    chart->coordinatePlane()->replaceDiagram( bars );
+		    .....
 		</programlisting>
 		<para>
 		    You could also use the following way, to prevent your 
@@ -245,47 +240,55 @@
 		    free'ed:
 		</para>
 		<programlisting>
-		    BarDiagram *bars = 
-		    static_cast &lt;BarDiagram *&gt;(myChart->replaceDiagram( new BarDiagram ));
+		    BarDiagram *bars = static_cast &lt;BarDiagram *&gt;
+		    (myChart->replaceDiagram( new BarDiagram ));
 		    //now call the setter methods ... 
 		</programlisting>
                 <para>
-                    Let us make this somewhat abstract description more
-                    concrete by looking at the following lines of code and 
-		    its resulting display.
+                    In Chapter 3 
+		    <filename>Basic steps: Create a Chart</filename> we will 
+		    make this somewhat abstract description more concrete by 
+		    looking at some complete examples (Widget and Charts), 
+		    which we recommend you to compile and run.
 		</para>
 		<para>
-		    * We display some example code and a screen-shot here
-		    <!--
-		    Pending Michel display code and screen-shot
-                    <link linkend=""></link>
-                    <link linkend=""></link>
-		    -->
-                </para>
-                <para>
-		    Each diagram has an associated Coordinate Plane (Cartesian
-		    by default), which is responsible for the translation of 
-		    data values into pixel positions. It defines the scale of 
-		    the diagram, and all axes that are associated with it. 
-		    This makes implementing diagram subclasses (types) much 
-		    easier, since the drawing code can leave all of the  
-		    coordinate calculation work to the coordinate plane. 
-                </para>
-		<para>
-		    Each coordinate plane can have one or more diagram 
-		    associated to it. Those diagrams will share the scale 
-		    provided by the plan. Also a chart can have more than 
-		    one coordinate plane. This makes it possible to have 
-		    multiple diagrams (e.g a line and a bar chart) using the 
-		    same or different scales and displayed next to, or on top 
-		    of each other in the same chart. 
-		</para>
-		<para>
-		    To share an axis among two planes (and also diagrams)
-		    we just need to add it to both diagrams. The Chart 
-		    lay-outing engine will take care of adjusting positions 
-		    accordingly.
-		</para>
+		    For now, in order for you to have an understanding about  
+		    KD Chart 2.0 API and its features to know the following:   
+		</para> 
+		<itemizedlist>
+		    <listitem>
+			<para>
+			    Each diagram has an associated Coordinate Plane 
+			    (Cartesian by default), which is responsible for 
+			    the translation of data values into pixel 
+			    positions. It defines the scale of the diagram, 
+			    and all axes that are associated with it. This 
+			    makes implementing diagram subclasses (types) much
+			    easier, since the drawing code can leave all of the
+			    coordinate calculation work to the coordinate 
+			    plane. 
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>
+			    Each coordinate plane can have one or more diagram 
+			    associated to it. Those diagrams will share the scale 
+			    provided by the plan. Also a chart can have more than 
+			    one coordinate plane. This makes it possible to have 
+			    multiple diagrams (e.g a line and a bar chart) using the 
+			    same or different scales and displayed next to, or on top 
+			    of each other in the same chart. 
+			</para>
+		    </listitem>		
+		    <listitem>
+			<para>
+			    To share an axis among two planes (and also diagrams)
+			    we just need to add it to both diagrams. The Chart 
+			    lay-outing engine will take care of adjusting positions 
+			    accordingly.
+			</para>
+		    </listitem>
+		    </itemizedlist>
 		 <!--
                 Pending Michel link:
 		(see src/KDChartAbstractCoordinatePlane.h and
