@@ -594,7 +594,7 @@
 	    <listitem>
 		<para>
 		    <classname>KDChart::Widget</classname> is providing a limited set of 
-		    functions  as can be seen in <filename>KDChartWidget.h</filename> its 
+		    functions  as can be seen in <filename>KDChartWidget.h</filename>. Its 
 		    purpose is a convenient and simple way of getting a chart, for people 
 		    who do not want to learn about the new Qt Interview concept or who do 
 		    not care about more complicated details like the Coordinate Plane and 
@@ -664,13 +664,16 @@
         </sect1>
         <sect1>
             <title id="basicprocedure">The Procedure</title>
-            
-		<!-- Pending Michel - show both widget and chart -->
-		<!-- with screen-shots -->
-                <!-- Text ...KDChartWidget vs. KDChart::Chart own Widget. -->		
+            <para>
+		Let us go through the general procedure for creating a chart, 
+		without taking care about the details. We will then build 
+		complete example and create a small application displaying a 
+		chart using <classname>KDChartWidget</classname> and 
+		<classname>KDChartChart</classname> respectively.
+	    </para>
 	    <para>
-		As in the Widget-using case, you need to include the 
-		appropriate headers, and bring in the "KDChart" namespace:
+		First of all we need to include the appropriate headers, and 
+		bring in the "KDChart" namespace:
 	    </para>
 	    <programlisting>
 		#include &lt;KDChartChart&gt;
@@ -678,18 +681,17 @@
 		using namespace KDChart;
 		
 		//Add the widget to your layout like for any other QWidget:
-		
 		QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
 		m_chart = new Chart();
 		chartLayout->addWidget( m_chart );
 	    </programlisting>
 	    <para>
-		In this example, you only create a single line diagram,
+		In this example, we will create a single line diagram,
 		and use the default Cartesian coordinate plane, which is 
 		already contained in an empty Chart.
 	    </para>
 	    <programlisting>
-		// Create a bar diagram and associate the data model to it
+		// Create a line diagram and associate the data model to it
 		m_lines = new LineDiagram();
 		m_lines->setModel( &amp;m_model );
 		
@@ -723,7 +725,7 @@
 		can be adjusted at different levels of granularity.
 		The QPen that is used for drawing datasets (lines, bars, 
 		etc...) can be set either for one datapoint within a 
-		dataset, for a dataset or for the whole diagram. see file 
+		dataset, for a dataset or for the whole diagram. See file 
 		<filename>KDChartAbstractDiagram.h</filename>:
 	    </para>
 	    <programlisting>
@@ -765,43 +767,60 @@
 	    </programlisting>
 	    <para>
 		We will continue with more examples and more detailed 
-		information about all those points in the next section
+		information about all those points in the next sections
 		and the next chapters.
 		Also we recommend you to consult and run the examples 
-		send together with your KD Chart distribution package.
+		sent together with your KD Chart distribution package.
 	    </para>
 	</sect1>
 	<sect1>
 	    <title id="basictwoways">Two ways</title> 
 	    <para>
-		We will now go through the basic steps for creating a simple chart widget 
-		using both first <classname>KDChart::Chart</classname> and 
-		<classname>KDChart::Chart</classname> and give you some example code about 
-		how to proceed. 
+		We will now go through the basic steps for creating a simple 
+		chart widget using first <classname>KDChart::Widget</classname>
+		and then <classname>KDChart::Chart</classname>, that will give
+		us an overview about how to proceed in both cases.
 	    </para>
 	    <sect2>
                 <title id="basicwidget" xreflabel="codexample">Chart Widget Example</title>
 		<para>
-		We recommend you to read, compile and run the following example. 
-		</para>
-<!--
-	    <link linkend="mainwindow_h">mainwindow.h</link> 
--->	    
-		<!-- Pending Michel: Write a new very simple Widget example with a legend -->
-		<programlisting linenumbering="numbered" id="widget_mainwindow_h">
-		    <textobject><textdata fileref="../../examples/Widget/mainwindow.h"/>
+		    We recommend you to read, compile and run the following example. 		</para>				
+		<programlisting linenumbering="numbered" id="widget_simple">
+		    <textobject>
+			<textdata fileref="../../examples/Widget/Simple/main.cpp"/>
 		    </textobject>
 		</programlisting>                
 		<para>
-		    More explanation h file?
-		</para>
-		<programlisting linenumbering="numbered" id="widget_mainwindow_cpp">
-		    <textobject><textdata fileref="../../examples/Widget/mainwindow.cpp"/>
-		    </textobject>
-		</programlisting>
+		    The result of the the code above will display the very simple 
+		    widget presented in the screen-shot below.
+		</para>	
 		<para>
-		    More explanation cpp file?
+		    As we can see the code code is straight forward:
 		</para>
+		<itemizedlist>
+		    <listitem>
+			<para>
+			    Include the headers and bring the Chart namespace.
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>
+			    Declare your <classname>KDChartWiget</classname>
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>
+			    Use a <classname>QVector</classname> to store the data to be displayed.
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>
+			    Assign the stored data to the widget, using one of
+			    the available <methodname>setDataset</methodname> 
+			    method to do so.
+			</para>
+		    </listitem>	
+		</itemizedlist>
 		<figure float="0" id="fig-simplewidget">
 		    <title>A Simple Chart Widget</title>
 		    <mediaobject>
@@ -811,7 +830,11 @@
 		    </mediaobject>
 		</figure>
 		<para>
-		    Conclude widget example 
+		    Of course it is possible to add new elements like Title, Headers and footers,
+		    legends or axes to this very simple widget as we will see later on more in 
+		    details. Noice also that the default diagram displayed by a 
+		    <classname>KDChartWidget</classname> is a 
+		    <classname>KDChartLineDiagram</classname>.
 		</para>
 	    </sect2>
 	    <sect2>
