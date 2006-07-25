@@ -435,8 +435,8 @@
                     // set up your model
 		    m_model.insertRows( 0, 2, QModelIndex() );
 		    m_model.insertColumns(  0,  3,  QModelIndex() );
-		    for (int row = 0; row < 3; ++row) {
-		       for (int column = 0; column < 3; ++column) {
+		    for (int row = 0; row &lt; 3; ++row) {
+		       for (int column = 0; column &lt; 3; ++column) {
 		          QModelIndex index = 
 		          m_model.index(row, column, QModelIndex());
 		          m_model.setData(index, QVariant(row+1 * column) );
@@ -449,7 +449,7 @@
                 </para>
 		<programlisting>
 		    KDChart::BarDiagram* diagram = new KDChart::BarDiagram;
-		    diagram->setModel(&m_model);
+		    diagram->setModel(&amp;m_model);
 		    m_chart.coordinatePlane()->replaceDiagram(diagram);
                 </programlisting>
 		<para>
@@ -458,9 +458,9 @@
 		</para>
 		<programlisting>
                     KDChartWidget widget;
-		    QVector< double > vec0,  vec1,  vec2;
-		    vec0 << -5 << -4 << -3 << -2 << -1 << 0 ...;
-		    vec1 << 25 << 16 << 9 << 4 << 1 << 0 ...;      
+		    QVector&lt; double &gt; vec0,  vec1;
+		    vec0 &lt;&lt; -5 &lt;&lt; -4 &lt;&lt; -3 &lt;&lt; -2 &lt;&lt; -1 &lt;&lt; 0 ...;
+		    vec1 &lt;&lt; 25 &lt;&lt; 16 &lt;&lt; 9 &lt;&lt; 4 &lt;&lt; 1 &lt;&lt; 0 ...;      
 		    widget.setDataset( 0, vec0, "Linear" );
 		    widget.setDataset( 1, vec1, "Quadratic" );
 		    widget.show();
