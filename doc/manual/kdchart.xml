@@ -847,7 +847,7 @@
 		<para>
 		    We recommend you to read, compile and run the following example. It is available
 		    at the following location of your KD Chart installation: 
-		    <filename>/examples/Charts/simple</filename>		   
+		    <filename>/examples/Charts/simple</filename>	    
 		</para>
 		<programlisting linenumbering="numbered" id="chart_main">
 		    <textobject>
@@ -855,7 +855,12 @@
 		    </textobject>
 		</programlisting>                
 		<para>
-		    More explanation....
+		    In this example we are making use of a 
+		    <classname>QStandardItemModel</classname> to insert and 
+		    store the data to be displayed by the diagram. We are also
+		    implicitely using a <classname>KDChartBarDiagram</classname>
+		    to which we assign the model. See below the resulting chart 
+		    widget displayed by this implementation. 
 		</para>
 		<figure float="0" id="fig-simplechart">
 		    <title>A Simple Chart</title>
@@ -866,15 +871,21 @@
 		    </mediaobject>
 		</figure>
 		<para>
-		    Conclude chart example 
+		    We could if we wished too add more elements to this chart and 
+		    change its default attributes as described above in the section 
+		    intituled <filename>The Procedure</filename>. 
+		</para>
+		<para>
+		    We will see more in details how to configure those attributes and 
+		    add the divers elements (Legend, Headers etc...) later on.
 		</para>
 	    </sect2>
         </sect1>
         <sect1>
             <title>What's next</title>
             <para>
-                In the next chapter we describe the different chart types (diagrams) and their 
-		coordinate planes.
+                In the next chapter we describe the different chart types (diagrams) 
+		available and their coordinate planes.
             </para>
         </sect1>
     </chapter>
