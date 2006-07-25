@@ -528,31 +528,32 @@
         <sect1>
             <title id="apimemory">Memory management</title>
             <para>
-                As a general rule, everything in a KDChart::Chat is owned by 
+                As a general rule, everything in a KDChart::Chart is owned by 
 		the chart. Manipulation of the built-in components of a chart,
 		such as for example a legend, happens through mutable pointers
 		provided by the view, but those components can also be 
 		replaced. 
             </para>
              <sect2>
-                <title id="memorysample" xreflabel="codexample">Code Example</title>
+                <title id="memorysample" xreflabel="codesample">Code Sample</title>
                 <para>
                     Let us make this more concrete by looking at the following
                     lines of code.                   
                 </para>
 		<programlisting>
 		    // set the built-in (default) legend visible
-		    view->legend()->setPosition( North );
+		    m_chart->legend()->setPosition( North );
 
 		    // replace the default legend with a custom one 
-		    //the view will take ownership of the allocated 
+		    //the chart view will take ownership of the allocated 
 		    //memory and free the old legend
 		    KDChart::Legend *myLegend = 
-		    view->replaceLegend( new Legend );
+		    m_chart->replaceLegend( new Legend );
                 </programlisting>
                 <para>
 		    Similarly, inserting new components into the view chart up
-		    their ownership.
+		    their ownership. Note that the same procedure has to be 
+		    applied for a diagram too. 		    
                 </para>
 		<programlisting>
 		    // add an additional legend, chart takes ownership
