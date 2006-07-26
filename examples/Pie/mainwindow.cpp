@@ -1,5 +1,5 @@
 /****************************************************************************
- ** Copyright (C) 2006 Klarälvdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2006 Klarï¿½vdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KD Chart library.
  **
@@ -32,6 +32,7 @@
 #include <KDChartDataValueAttributes>
 #include <KDChartMarkerAttributes>
 #include <KDChartLegend>
+#include <KDChartPieAttributes>
 #include <KDChartThreeDPieAttributes>
 
 #include <QDebug>
@@ -66,11 +67,14 @@ MainWindow::MainWindow( QWidget* parent ) :
 
 void MainWindow::on_startPositionSB_valueChanged( double pos )
 {
-    int intValue = static_cast<int>( pos );
+    const int intValue = static_cast<int>( pos );
     startPositionSL->blockSignals( true );
     startPositionSL->setValue( intValue );
     startPositionSL->blockSignals( false );
-    m_pie->setStartPosition( pos );
+    PieAttributes attrs(
+        m_pie->pieAttributes( m_pie->model()->index( 0, 0, m_pie->rootIndex() ) ) );
+    attrs.setStartPosition( pos );
+    m_pie->setPieAttributes( attrs );
     update();
 }
 
@@ -80,20 +84,27 @@ void MainWindow::on_startPositionSL_valueChanged( int pos )
     startPositionSB->blockSignals( true );
     startPositionSB->setValue( doubleValue  );
     startPositionSB->blockSignals( false );
-    m_pie->setStartPosition( doubleValue );
-    update();
-}
-
-void MainWindow::on_explodeGB_toggled( bool toggle )
-{
-    m_pie->setExplode( toggle );
+    PieAttributes attrs(
+        m_pie->pieAttributes(
+            m_pie->model()->index( 0, 0, m_pie->rootIndex() ) ) );
+    attrs.setStartPosition( pos );
+    m_pie->setPieAttributes( attrs );
     update();
 }
 
 void MainWindow::on_explodeSubmitPB_clicked()
 {
-    m_pie->setExplodeFactor( explodeDatasetSB->value(), explodeFactorSB->value() );
+    setExplodeFactor( explodeDatasetSB->value(), explodeFactorSB->value() );
     update();
+}
+
+void MainWindow::setExplodeFactor( int column, double value )
+{
+    PieAttributes attrs(
+        m_pie->pieAttributes(
+            m_pie->model()->index( 0, column, m_pie->rootIndex() ) ) );
+    attrs.setExplodeFactor( value );
+    m_pie->setPieAttributes( column, attrs );
 }
 
 void MainWindow::on_animateExplosionCB_toggled( bool toggle )
@@ -111,13 +122,15 @@ void MainWindow::slotNextFrame()
         m_currentDirection = -m_currentDirection;
 
     if( m_currentFactor == 0 ) {
-        m_pie->setExplodeFactor( m_currentSlice, 0.0 );
+        setExplodeFactor( m_currentSlice, 0.0 );
         m_currentSlice++;
         if( m_currentSlice == 4 )
             m_currentSlice = 0;
     }
 
-    m_pie->setExplodeFactor( m_currentSlice, static_cast<double>( m_currentFactor ) / 10.0 );
+    setExplodeFactor(
+        m_currentSlice,
+        static_cast<double>( m_currentFactor ) / 10.0 );
     update();
 }
 

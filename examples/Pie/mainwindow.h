@@ -1,5 +1,5 @@
 /****************************************************************************
- ** Copyright (C) 2006 Klarälvdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2006 Klarï¿½vdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KD Chart library.
  **
@@ -49,9 +49,9 @@ private slots:
     void on_startPositionSL_valueChanged( int pos );
 
     // explode
-    void on_explodeGB_toggled( bool toggle );
     void on_explodeSubmitPB_clicked();
     void on_animateExplosionCB_toggled( bool toggle );
+    void setExplodeFactor( int column, double value );
 
     // animation
     void slotNextFrame();
