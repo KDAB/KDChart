@@ -181,8 +181,9 @@ void PieDiagram::paint( PaintContext* ctx )
     const int colCount = columnCount();
 
     QRectF contentsRect = buildReferenceRect( polarCoordinatePlane() );
-
-    if( !contentsRect.isValid() );
+//    contentsRect = geometry();
+//qDebug() << contentsRect;
+    if( contentsRect.isEmpty() )
         return;
 
     DataValueTextInfoList list;
@@ -466,7 +467,7 @@ void PieDiagram::drawOnePie( QPainter* painter,
             bool perfectMatch = false;
             while ( degree <= angleLen ){
                 poly[ iPoint ] = pointOnCircle( drawPosition, startAngle + degree );
-qDebug() << poly[ iPoint ];
+//qDebug() << degree << angleLen << poly[ iPoint ];
                 perfectMatch = (degree == angleLen);
                 degree += stepWidth;
                 ++iPoint;
@@ -474,18 +475,18 @@ qDebug() << poly[ iPoint ];
             // if necessary add one more point to fill the last small gap
             if( ! perfectMatch ){
                 poly[ iPoint ] = pointOnCircle( drawPosition, startAngle + angleLen );
-qDebug() << poly[ iPoint ];
+//qDebug() << "adding" << poly[ iPoint ];
                 // add the center point of the piece
                 poly.append( drawPosition.center() );
-qDebug() << poly[ ++iPoint ];
+//qDebug() << "center:" << poly[ ++iPoint ];
             }else{
                 poly[ iPoint ] = drawPosition.center();
-qDebug() << poly[ iPoint ];
+//qDebug() << "center:" << poly[ iPoint ];
             }
 
-qDebug() << "a";
-return;
+//qDebug() << "a";
             painter->drawPolygon( poly );
+
 
 //if( bHelp ){
 //              painter->drawPolyline( collect );
