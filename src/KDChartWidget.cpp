@@ -344,9 +344,6 @@ void Widget::takeLegend( Legend* legend )
     d->m_chart->takeLegend( legend );
 }
 
-/**
- * Returns a pointer to the current diagram.
- */
 AbstractDiagram* Widget::diagram() const
 {
     if ( coordinatePlane() == 0 )
@@ -355,9 +352,27 @@ AbstractDiagram* Widget::diagram() const
     return coordinatePlane()->diagram();
 }
 
-/**
- * Returns a pointer to the current coordinate plane.
- */
+BarDiagram* Widget::barDiagram() const
+{
+    return dynamic_cast<BarDiagram*>( diagram() );
+}
+LineDiagram* Widget::lineDiagram() const
+{
+    return dynamic_cast<LineDiagram*>( diagram() );
+}
+PieDiagram* Widget::pieDiagram() const
+{
+    return dynamic_cast<PieDiagram*>( diagram() );
+}
+RingDiagram* Widget::ringDiagram() const
+{
+    return dynamic_cast<RingDiagram*>( diagram() );
+}
+PolarDiagram* Widget::polarDiagram() const
+{
+    return dynamic_cast<PolarDiagram*>( diagram() );
+}
+
 AbstractCoordinatePlane* Widget::coordinatePlane() const
 {
     return d->m_chart->coordinatePlane();

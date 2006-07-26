@@ -163,6 +163,28 @@ namespace KDChart {
 
         /** Returns a pointer to the current diagram. */
         AbstractDiagram* diagram() const;
+
+        /** If the current diagram is a BarDiagram, it is returnd; otherwise 0 is returned.
+          * This function provides type-safe casting.
+          */
+        BarDiagram* barDiagram() const;
+        /** If the current diagram is a LineDiagram, it is returnd; otherwise 0 is returned.
+          * This function provides type-safe casting.
+          */
+        LineDiagram* lineDiagram() const;
+        /** If the current diagram is a PieDiagram, it is returnd; otherwise 0 is returned.
+          * This function provides type-safe casting.
+          */
+        PieDiagram* pieDiagram() const;
+        /** If the current diagram is a RingDiagram, it is returnd; otherwise 0 is returned.
+          * This function provides type-safe casting.
+          */
+        RingDiagram* ringDiagram() const;
+        /** If the current diagram is a PolarDiagram, it is returnd; otherwise 0 is returned.
+          * This function provides type-safe casting.
+          */
+        PolarDiagram* polarDiagram() const;
+
         /** Returns a pointer to the current coordinate plane. */
         AbstractCoordinatePlane* coordinatePlane() const;
 
