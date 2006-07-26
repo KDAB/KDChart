@@ -43,6 +43,11 @@ namespace KDChart {
     class Chart;
     class AbstractCoordinatePlane;
     class TableModel;
+    class BarDiagram;
+    class LineDiagram;
+    class PieDiagram;
+    class RingDiagram;
+    class PolarDiagram;
 
     /**
      * \class Widget KDChartWidget.h
