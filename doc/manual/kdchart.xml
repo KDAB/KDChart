@@ -871,13 +871,14 @@
 		    </mediaobject>
 		</figure>
 		<para>
-		    We could if we wished too add more elements to this chart and 
-		    change its default attributes as described above in the section 
-		    intituled <filename>The Procedure</filename>. 
-		</para>
+		    We can of course add more elements to this chart and change its default 
+		    attributes as described above in the section intituled 
+		    <filename>The Procedure</filename>. 
+		</para>		
 		<para>
-		    We will see more in details how to configure those attributes and 
-		    add the divers elements (Legend, Headers etc...) later on.
+		    We will see more in details how to configure those attributes 
+		    (Pen, Color, etc ...)and add the divers elements (Axes, Legend, Headers 
+		    etc...) further on.
 		</para>
 	    </sect2>
         </sect1>
@@ -885,7 +886,9 @@
             <title>What's next</title>
             <para>
                 In the next chapter we describe the different chart types (diagrams) 
-		available and their coordinate planes.
+		available and their coordinate planes. For each chart type we will study 
+		the attributes available for this special type and give a few example to 
+		make it clear.
             </para>
         </sect1>
     </chapter>
@@ -893,14 +896,14 @@
         <title id="chtxt_planesanddiagrams">Planes and Diagrams</title>
         <titleabbrev id="chnum_planesanddiagrams">Chapter 4</titleabbrev>
 	<para>
-	    KD Chart supports at the moment two types of plane in order to display different types 
-	    of diagrams.
+	    KD Chart supports at the moment two types of plane in order to display 
+	    the different types of diagrams it supports.
         </para>
 	 <itemizedlist>
             <listitem>
                 <para>
-                    A Cartesian coordinate plane, formed by a horizontal axis and a vertical axis, 
-		    often labeled the x-axis and y-axis. 
+                    A Cartesian coordinate plane, formed by a horizontal axis and a vertical 
+		    axis, often labeled the x-axis and y-axis. 
                 </para>
             </listitem>
             <listitem>
@@ -909,14 +912,15 @@
 		    that define the position of a point in a plane.
                 </para>
 		<para>
-		    This chapter tells you how to change the chart type from the default to either
+		    This chapter tells you how to change the chart type from the default to any
 		    one of the other types. All of the chart types provided by &kdchart; are 
-		    presented here with the help some basic sample programs and their  screen shots.
+		    presented here with the help some sample code and/or small programs and their 
+		    screen shots.
 		</para>
 		<para>
-		    It will also speaks about which chart type might be appropriate for a 
-		    specific purpose and provides information on the features that are 
-		    available each type.
+		    It will also give us an idea about which chart type might be appropriate for a 
+		    specific purpose and provides information on the features that are available for 
+		    each type of chart.
 		</para>
             </listitem>
         </itemizedlist>
@@ -954,9 +958,26 @@
 		    </para>
 		</tip>		
 		<para>
-		    Your Bar Chart can be configured with the following types as described in 
-		    details below: Normal, Stacked or Percent.
+		    Your Bar Chart can be configured with the following (sub-)types as described in 
+		    details in the following sections: 
 		</para>
+		<itemizedlist>
+		    <listitem>
+			<para>
+			    Normal
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>
+			    Stacked
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>
+			    Percent
+			</para>
+		    </listitem>
+		</itemizedlist>
 	    </sect2>
 	    <sect2>
 		<title id="barnormal">Normal Bar Charts</title>
@@ -978,7 +999,7 @@
 		<para>
 		    &kdchart;'s default type is the normal bar chart so no method needs to be 
 		    called to get one, however after having used your 
-		    <classname>KDChartBarDiagram</classname> to display another bar chart subtype 
+		    <classname>KDChartBarDiagram</classname>. To display another sub-type 
 		    you can return to the normal one by calling 
 		    <methodname>setType( Normal )</methodname>.
 		</para>	    
@@ -1038,33 +1059,111 @@
 		</note>
 	    </sect2>
 	    <sect2>
-		<title id="barsample" xreflabel="codexample">Bar Example</title>	
+		<title id="barsample" xreflabel="codesample">Code Sample</title>	
 		<para>
 		    For now let us make the above description  more concrete by looking at the 
-		    following example:		    
-		</para>
+		    following code sample based on the <filename>Simple Widget</filename> example we 
+		    have been demonstrating above. In this example we show how to configure your 
+		    bar diagram and change its attributes when working with a 
+		    <classname>KDChartWidget</classname>.
+		</para>	
 		<para>
-		    We recommended you to read, compile and run this example.
+		    First include the appropriate headers and bring in the "KDChart namespace":
 		</para>	    	
-		<programlisting linenumbering="numbered" id="bar_mainwindow_h">
-		    <textobject><textdata fileref="../../examples/Bars/mainwindow.h"/>
-		    </textobject>
+		<programlisting>
+		    #include &lt;QApplication&gt;
+		    #include &lt;KDChartWidget&gt;
+                    #include &lt;KDChartBarDiagram&gt;
+                    #include &lt;QPen&gt;
+
+	            using namespace KDChart;			    
 		</programlisting>                
 		<para>
-		    More explanation h file?
+		    We need to include <classname>KDChartBarDiagram</classname> in order to be able
+		    to configure some of its attributes as we will see further on. 
 		</para>
-		<programlisting linenumbering="numbered" id="bar_mainwindow_cpp">
-		    <textobject><textdata fileref="../../examples/Bars/mainwindow.cpp"/>
-		    </textobject>
+		<programlisting>
+		    int main( int argc, char** argv ) {
+		    QApplication app( argc, argv );                    
+		    Widget widget;
+		    // our Widget can be configured 
+		    // as any Qt Widget 
+		    widget.resize( 600, 600 );		    
+                    // store the data and assign it
+		    QVector&lt; double &gt; vec0,  vec1;
+		    vec0 &lt;&lt; 5 &lt;&lt; 4 &lt;&lt; 3 &lt;&lt; 2 &lt;&lt; 1 &lt;&lt; 0
+		    &lt;&lt; 1 &lt;&lt; 2 &lt;&lt; 3 &lt;&lt; 4 &lt;&lt; 5;
+		    vec1 &lt;&lt; 25 &lt;&lt; 16 &lt;&lt; 9 &lt;&lt; 4 &lt;&lt; 1 &lt;&lt; 0
+		    &lt;&lt; 1 &lt;&lt; 4 &lt;&lt; 9 &lt;&lt; 16 &lt;&lt; 25;		    
+		    widget.setDataset( 0, vec0, "vec0" );
+		    widget.setDataset( 1, vec1, "vec1" );
 		</programlisting>
 		<para>
-		    More explanation?
+		    We want to change the default line chart type to a bar chart type. In this
+		    case we also want to display it in stacked mode. 
+		    <classname>KDChartWidget</classname> with its <methodname>setType</methodname>
+		    and <methodname>setSubType</methodname> methods allow us to achieve that 
+		    the easy way.		    
 		</para>
-		<figure float="0" id="fig-simplebar">
+		<programlisting>
+		    widget.setType( Widget::Bar , Widget::Stacked );
+		</programlisting>
+		<para>
+		    The default type being Normal type for the widget, we need to implicitely pass 
+		    the second parameter when calling <methodname>KDChartWidget::setType()</methodname>
+		    We can also change the sub-type of our bar chart further on by calling for example 
+		    <methodname>setSubType( Widget::Percent )</methodname>.		    
+		</para>
+		<programlisting>
+		    //Configure a pen and draw a line
+		    //surrounding the bars
+		    QPen pen;
+		    pen.setWidth( 2 );
+		    pen.setColor(  Qt::darkGray );
+		    // call your diagram and set the new pen
+		    widget.barDiagram()->setPen(  pen );
+		</programlisting>
+		<para>
+		    In the above code our intention is to draw a gray line around the bars to make it
+		    nicer. That is what we call configuring the attributes in a diagram.
+		    To do so we configure a QPen and then assign it to our diagram. 
+		    <methodname>KDChartWidget::barDiagram()</methodname> allow us to get a pointer to 
+		    our widget diagram. As you can see it is very simple to assign a new pen to our 
+		    diagram by calling the diagram <methodname>KDChartAbstractDiagram::setPen()</methodname>
+		    method.
+		</para>
+		<programlisting>
+		    //Set up your ThreeDAttributes
+		    //display in ThreeD mode
+		    ThreeDBarAttributes td;
+		    td.setDepth(  15 );
+		    td.setEnabled(  true );
+		    widget.barDiagram()->setThreeDBarAttributes( td );
+		</programlisting>
+		<para>
+		    We want our bar chart to be displayed in ThreeD mode and need to configure some 
+		    ThreeDBarAttributes and assing them to our diagram. Here we are configuring the 
+		    depth of the ThreeD bars and enabling ThreeD mode.
+		    Depth is an attribute specific to Bar charts and its setter and getter are implemented 
+		    into the <classname>KDChartThreeDBarAttributes</classname>, when the 
+		    <methodname>KDChartAbstractThreeDAttributes::setEnabled()</methodname> is a generic 
+		    attributes available to all chart types. Both of those attribute are set very simply 
+		    but are implemented at different level for a better code structure. 
+		</para>
+		<programlisting>
+		    widget.show();
+
+		    return app.exec();
+		    }
+		</programlisting>
+		<para>
+		    See the screen-shot below to view The resulting chart displayed by the above code. 
+		</para>
+		<figure float="0" id="fig-widgetbar">
 		    <title>A Simple Bar Chart</title>
 		    <mediaobject>
 			<imageobject>
-			    <imagedata width="3in" scalefit="1" fileref="images/simplechart.png"/>
+			    <imagedata width="3in" scalefit="1" fileref="images/widgetparameters.png"/>
 			</imageobject>
 		    </mediaobject>
 		</figure>
