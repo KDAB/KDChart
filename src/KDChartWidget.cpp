@@ -363,55 +363,56 @@ AbstractCoordinatePlane* Widget::coordinatePlane() const
     return d->m_chart->coordinatePlane();
 }
 
-void Widget::setType( ChartType chartType, SubType subType )
+void Widget::setType( ChartType chartType, SubType chartSubType )
 {
     AbstractDiagram* diag = 0;
     CartesianCoordinatePlane* cartPlane = 0;
     PolarCoordinatePlane* polPlane = 0;
 
-    if ( chartType == type() )
-        return;
+    if ( chartType != type() ){
+        switch ( chartType )
+        {
+            case Bar:
+              cartPlane = new CartesianCoordinatePlane( d->m_chart );
+              d->m_chart->replaceCoordinatePlane( cartPlane );
+              diag = new BarDiagram( d->m_chart, cartPlane );
+              break;
+            case Line:
+              cartPlane = new CartesianCoordinatePlane( d->m_chart );
+              d->m_chart->replaceCoordinatePlane( cartPlane );
+              diag = new LineDiagram( d->m_chart, cartPlane );
+              break;
+            case Pie:
+              polPlane = new PolarCoordinatePlane( d->m_chart );
+              d->m_chart->replaceCoordinatePlane( polPlane );
+              diag = new PieDiagram( d->m_chart, polPlane );
+              break;
+            case Polar:
+              polPlane = new PolarCoordinatePlane( d->m_chart );
+              d->m_chart->replaceCoordinatePlane( polPlane );
+              diag = new PolarDiagram( d->m_chart, polPlane );
+              break;
+            case Ring:
+              polPlane = new PolarCoordinatePlane( d->m_chart );
+              d->m_chart->replaceCoordinatePlane( polPlane );
+              diag = new RingDiagram( d->m_chart, polPlane );
+              break;
+            case NoType:
+              break;
+        }
+        if ( diag != NULL )
+        {
+            diag->setModel( d->m_model );
+            coordinatePlane()->replaceDiagram( diag );
 
-    switch ( chartType )
-    {
-        case Bar:
-           cartPlane = new CartesianCoordinatePlane( d->m_chart );
-           d->m_chart->replaceCoordinatePlane( cartPlane );
-           diag = new BarDiagram( d->m_chart, cartPlane );
-           break;
-        case Line:
-           cartPlane = new CartesianCoordinatePlane( d->m_chart );
-           d->m_chart->replaceCoordinatePlane( cartPlane );
-           diag = new LineDiagram( d->m_chart, cartPlane );
-           break;
-        case Pie:
-           polPlane = new PolarCoordinatePlane( d->m_chart );
-           d->m_chart->replaceCoordinatePlane( polPlane );
-           diag = new PieDiagram( d->m_chart, polPlane );
-           break;
-        case Polar:
-           polPlane = new PolarCoordinatePlane( d->m_chart );
-           d->m_chart->replaceCoordinatePlane( polPlane );
-           diag = new PolarDiagram( d->m_chart, polPlane );
-           break;
-        case Ring:
-           polPlane = new PolarCoordinatePlane( d->m_chart );
-           d->m_chart->replaceCoordinatePlane( polPlane );
-           diag = new RingDiagram( d->m_chart, polPlane );
-           break;
-        case NoType:
-           break;
+            LegendList legends = d->m_chart->legends();
+            foreach(Legend* l, legends)
+                l->setDiagram( diag );
+        }
     }
-    if ( diag != NULL )
-    {
-        diag->setModel( d->m_model );
-        coordinatePlane()->replaceDiagram( diag );
-        setSubType( subType );
 
-        LegendList legends = d->m_chart->legends();
-        foreach(Legend* l, legends)
-            l->setDiagram( diag );
-    }
+    if ( chartSubType != subType() )
+        setSubType( chartSubType );
 //    coordinatePlane()->show();
 }
 
