@@ -25,6 +25,10 @@ HEADERS += KDChartGlobal.h \
            KDChartCartesianCoordinatePlane_p.h \
            KDChartPolarCoordinatePlane.h \
            KDChartPolarCoordinatePlane_p.h \
+           KDChartChart.h \
+           KDChartChart_p.h \
+           KDChartWidget.h \
+           KDChartWidget_p.h \
            KDChartAbstractDiagram.h \
            KDChartAbstractDiagram_p.h \
            KDChartAbstractPieDiagram.h \
@@ -51,7 +55,6 @@ HEADERS += KDChartGlobal.h \
            KDChartBarDiagram_p.h \
            KDChartCartesianAxis.h \
            KDChartCartesianAxis_p.h \
-           KDChartChart.h \
            KDChartDatasetProxyModel.h \
            KDChartDatasetSelector.h \
            KDChartDataValueAttributes.h \
@@ -80,6 +83,8 @@ HEADERS += KDChartGlobal.h \
            KDChartRingDiagram_p.h \
            KDChartTextAttributes.h \
            KDTextDocument.h \
+           KDChartPieAttributes.h \
+           KDChartPieAttributes_p.h \
            KDChartAbstractThreeDAttributes.h \
            KDChartAbstractThreeDAttributes_p.h \
            KDChartThreeDBarAttributes.h \
@@ -87,10 +92,7 @@ HEADERS += KDChartGlobal.h \
            KDChartThreeDLineAttributes.h \
            KDChartThreeDLineAttributes_p.h \
            KDChartThreeDPieAttributes.h \
-           KDChartThreeDPieAttributes_p.h \
-           KDChartWidget.h \
-           KDChartWidget_p.h \
-           KDChartChart_p.h
+           KDChartThreeDPieAttributes_p.h
 
 SOURCES += \
            KDChartMeasure.cpp \
@@ -98,6 +100,8 @@ SOURCES += \
            KDChartAbstractCoordinatePlane.cpp \
            KDChartCartesianCoordinatePlane.cpp \
            KDChartPolarCoordinatePlane.cpp \
+           KDChartChart.cpp \
+           KDChartWidget.cpp \
            KDChartAbstractDiagram.cpp \
            KDChartAbstractPieDiagram.cpp \
            KDChartAbstractPolarDiagram.cpp \
@@ -115,7 +119,6 @@ SOURCES += \
            KDChartBarAttributes.cpp \
            KDChartBarDiagram.cpp \
            KDChartCartesianAxis.cpp \
-           KDChartChart.cpp \
            KDChartDatasetProxyModel.cpp \
            KDChartDatasetSelector.cpp \
            KDChartDataValueAttributes.cpp \
@@ -137,11 +140,11 @@ SOURCES += \
            KDChartRingDiagram.cpp \
            KDTextDocument.cpp \
            KDChartTextAttributes.cpp \
+           KDChartPieAttributes.cpp \
            KDChartAbstractThreeDAttributes.cpp \
            KDChartThreeDBarAttributes.cpp \
            KDChartThreeDLineAttributes.cpp \
-           KDChartThreeDPieAttributes.cpp \
-           KDChartWidget.cpp
+           KDChartThreeDPieAttributes.cpp
 
 CONFIG += warn-on
 include( ../variables.pri )

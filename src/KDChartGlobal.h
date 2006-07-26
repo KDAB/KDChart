@@ -260,7 +260,7 @@ enum DisplayRoles {
   ThreeDLineAttributesRole,
   BarAttributesRole,
   ThreeDBarAttributesRole,
-  ExplodeFactorRole,
+  PieAttributesRole,
   ThreeDPieAttributesRole
 };
 }

@@ -1,5 +1,9 @@
+/* -*- Mode: C++ -*-
+   KDChart - a multi-platform charting engine
+   */
+
 /****************************************************************************
- ** Copyright (C) 2006 Klarälvdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2005-2006 Klarälvdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KD Chart library.
  **
@@ -16,46 +20,49 @@
  ** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  **
  ** See http://www.kdab.net/kdchart for
- **   information about KDChart Commercial License Agreements.
+ **   information about KD Chart Commercial License Agreements.
  **
  ** Contact info@kdab.net if any conditions of this
  ** licensing are not clear to you.
  **
  **********************************************************************/
 
-#include "KDChartAbstractPolarDiagram.h"
-#include "KDChartAbstractPolarDiagram_p.h"
+//
+//  W A R N I N G
+//  -------------
+//
+// This file is not part of the KD Chart API.  It exists purely as an
+// implementation detail.  This header file may change from version to
+// version without notice, or even be removed.
+//
+// We mean it.
+//
+
+#ifndef KDCHART_PIE_ATTRIBUTES_P_H
+#define KDCHART_PIE_ATTRIBUTES_P_H
+
+#include <KDChartPieAttributes.h>
 
 #include <KDABLibFakes>
 
 
-using namespace KDChart;
+namespace KDChart {
 
-AbstractPolarDiagram::Private::Private()
+/**
+ * \internal
+ */
+class PieAttributes::Private
 {
+    friend class PieAttributes;
+public:
+    Private();
+
+    double explodeFactor;
+    double startPosition;
+};
+
+inline PieAttributes::PieAttributes( Private * p ) : _d( p ) { init(); }
+
 }
 
-AbstractPolarDiagram::Private::~Private() {}
-
-void AbstractPolarDiagram::init()
-{
-}
-
-#define d d_func()
-
-AbstractPolarDiagram::AbstractPolarDiagram (
-    QWidget* parent, PolarCoordinatePlane* plane )
-    : AbstractDiagram ( new Private(), parent, plane )
-{
-}
-
-
-const PolarCoordinatePlane * AbstractPolarDiagram::polarCoordinatePlane() const
-{
-    return dynamic_cast<const PolarCoordinatePlane*>( coordinatePlane() );
-}
-
-int AbstractPolarDiagram::columnCount() const
-{
-    return static_cast<int>( numberOfValuesPerDataset() );
-}
+#endif // KDCHART_PIE_ATTRIBUTES_P_H

@@ -54,7 +54,12 @@ public:
     Private();
     ~Private();
 
-private:
+protected:
+    // this information needed temporarily at drawing time
+    QVector < qreal > startAngles;
+    QVector < qreal > angleLens;
+    QRectF position;
+    qreal size;
 };
 
 KDCHART_IMPL_DERIVED_DIAGRAM( PieDiagram, AbstractPieDiagram, PolarCoordinatePlane )

@@ -29,6 +29,7 @@
 #include "KDChartAbstractPieDiagram.h"
 #include "KDChartAbstractPieDiagram_p.h"
 #include "KDChartAttributesModel.h"
+#include "KDChartPieAttributes.h"
 #include "KDChartThreeDPieAttributes.h"
 
 #include <KDABLibFakes>
@@ -70,46 +71,23 @@ QDomDocumentFragment AbstractPieDiagram::toXML() const
     return QDomDocumentFragment();
 }
 
-void AbstractPieDiagram::setExplode( bool explode )
-{
-    d->explode = explode;
-}
 
-bool AbstractPieDiagram::explode() const
+void AbstractPieDiagram::setPieAttributes( const PieAttributes & attrs )
 {
-    return d->explode;
-}
-
-void AbstractPieDiagram::setExplodeFactor( double factor )
-{
-    d->attributesModel->setModelData( factor, ExplodeFactorRole );
+    d->attributesModel->setModelData( qVariantFromValue( attrs ), PieAttributesRole );
     emit layoutChanged( this );
 }
 
-double AbstractPieDiagram::explodeFactor() const
+void AbstractPieDiagram::setPieAttributes( int column, const PieAttributes & attrs )
 {
-    return d->attributesModel->modelData( ExplodeFactorRole ).toDouble();
-}
-
-void AbstractPieDiagram::setExplodeFactor( int dataset, double factor )
-{
-    d->attributesModel->setHeaderData( dataset, Qt::Vertical, factor, ExplodeFactorRole );
+    d->attributesModel->setHeaderData(
+        column, Qt::Vertical, qVariantFromValue( attrs ), PieAttributesRole );
     emit layoutChanged( this );
 }
 
-double AbstractPieDiagram::explodeFactor( int dataset ) const
+PieAttributes AbstractPieDiagram::pieAttributes( const QModelIndex & index ) const
 {
-    return d->attributesModel->headerData( dataset, Qt::Vertical, ExplodeFactorRole ).toDouble();
-}
-
-void AbstractPieDiagram::setStartPosition( double degrees )
-{
-    d->startPosition = degrees;
-}
-
-double AbstractPieDiagram::startPosition() const
-{
-    return d->startPosition;
+    return qVariantValue<PieAttributes>( model()->data( index, KDChart::PieAttributesRole ) );
 }
 
 
@@ -135,28 +113,4 @@ ThreeDPieAttributes AbstractPieDiagram::threeDPieAttributes( const QModelIndex &
 {
     return qVariantValue<ThreeDPieAttributes>( model()->data( index, KDChart::ThreeDPieAttributesRole ) );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

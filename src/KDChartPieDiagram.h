@@ -71,6 +71,26 @@ protected:
     void resizeEvent( QResizeEvent* );
 
 private:
+    void drawOnePie( QPainter* painter,
+        uint dataset, uint pie,
+        qreal threeDPieHeight );
+    void draw3DEffect( QPainter* painter,
+        const QRectF& drawPosition,
+        uint dataset, uint pie,
+        const ThreeDPieAttributes& threeDAttrs,
+        bool /*explode*/ );
+    void drawStraightEffectSegment( QPainter* painter,
+        const QRectF& rect,
+        qreal threeDHeight,
+        qreal angle );
+    void drawArcEffectSegment( QPainter* painter,
+        const QRectF& rect,
+        qreal threeDHeight,
+        qreal startAngle,
+        qreal endAngle );
+    uint findPieAt( qreal angle, int columnCount );
+    uint findLeftPie( uint pie, int columnCount );
+    uint findRightPie( uint pie, int columnCount );
     QPointF pointOnCircle( const QRectF& rect, qreal angle );
 }; // End of class KDChartPieDiagram
 

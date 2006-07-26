@@ -34,6 +34,7 @@
 class QDomDocumentFragment;
 
 namespace KDChart {
+    class PieAttributes;
     class ThreeDPieAttributes;
 
 class KDCHART_EXPORT AbstractPieDiagram : public AbstractPolarDiagram
@@ -50,37 +51,14 @@ public:
 
     virtual QDomDocumentFragment toXML() const;
 
-    /** Enable or disable exploding pie pieces depending on
-     * the value of @param explode.  */
-    void setExplode( bool explode );
-
-    /** @return whether pie pieces should be exploded.  */
-    bool explode() const;
-
-    /** Set the explode factor for a dataset.
-     * The explode factor is a double between 0 and 1, and is interpreted
-     * as a percentage of the total available radius of the pie.  */
-    void setExplodeFactor( int dataset, double factor );
-
-    /** @return the explode factor for a dataset. */
-    double explodeFactor( int dataset ) const;
-
-    /** Set the explode factor to be used for all slices.
-     * The explode factor is a double between 0 and 1, and is interpreted
-     * as a percentage of the total available radius of the pie.  */
-    void setExplodeFactor( double factor );
-
-    /** @return the explode factor for all datasets. */
-    double explodeFactor() const;
-
-    /**  Set the starting angle for the first dataset. */
-    void setStartPosition( double degrees );
-
-    /** @return the starting angle for the first dataset. */
-    double startPosition() const;
+    void setPieAttributes( const PieAttributes & a );
+    void setPieAttributes( int   column,
+                           const PieAttributes & a );
+    PieAttributes pieAttributes( const QModelIndex & index ) const;
 
     void setThreeDPieAttributes( const ThreeDPieAttributes & a );
-    void setThreeDPieAttributes( int column, const ThreeDPieAttributes & a );
+    void setThreeDPieAttributes( int   column,
+                                 const ThreeDPieAttributes & a );
     void setThreeDPieAttributes( const QModelIndex & index,
                                  const ThreeDPieAttributes & a );
     ThreeDPieAttributes threeDPieAttributes( const QModelIndex & index ) const;
