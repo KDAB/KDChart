@@ -1,5 +1,6 @@
 TEMPLATE	= subdirs
 SUBDIRS		= Simple \
-                  Advanced
+                  Advanced \
+	          Parameters
 
 
