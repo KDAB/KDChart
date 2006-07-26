@@ -405,8 +405,8 @@ void Widget::setType( ChartType chartType, SubType subType )
     if ( diag != NULL )
     {
         diag->setModel( d->m_model );
-        setSubType( subType );
         coordinatePlane()->replaceDiagram( diag );
+        setSubType( subType );
 
         LegendList legends = d->m_chart->legends();
         foreach(Legend* l, legends)
