@@ -47,9 +47,6 @@ int main( int argc, char** argv ) {
     widget.setDataset( 0, vec0, "vec0" );
     widget.setDataset( 1, vec1, "vec1" );
     widget.setType( Widget::Bar ,  Widget::Stacked );
-    widget.setSubType( Widget::Stacked );
-
-    //BarDiagram * bars = dynamic_cast<BarDiagram*> ( widget.diagram() );
 
     //Configure a pen surrounding the bars
     QPen pen;
