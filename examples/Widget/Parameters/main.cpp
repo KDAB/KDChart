@@ -26,7 +26,6 @@
 #include <QApplication>
 #include <KDChartWidget>
 #include <KDChartBarDiagram>
-//#include <KDChartThreeDBarAttributes>
 #include <QPen>
 
 
@@ -47,22 +46,22 @@ int main( int argc, char** argv ) {
 
     widget.setDataset( 0, vec0, "vec0" );
     widget.setDataset( 1, vec1, "vec1" );
-    widget.setType( Widget::Bar );
+    widget.setType( Widget::Bar ,  Widget::Stacked );
     widget.setSubType( Widget::Stacked );
 
-    BarDiagram * bars = dynamic_cast<BarDiagram*> ( widget.diagram() );
+    //BarDiagram * bars = dynamic_cast<BarDiagram*> ( widget.diagram() );
 
     //Configure a pen surrounding the bars
     QPen pen;
     pen.setWidth( 2 );
     pen.setColor(  Qt::darkGray );
-    bars->setPen(  pen );
+    widget.barDiagram()->setPen(  pen );
 
     //Set up your ThreeDAttributes
     ThreeDBarAttributes td;
     td.setDepth(  15 );
     td.setEnabled(  true );
-    bars->setThreeDBarAttributes( td );
+    widget.barDiagram()->setThreeDBarAttributes( td );
 
     widget.show();
 
