@@ -1160,13 +1160,26 @@
 		    See the screen-shot below to view The resulting chart displayed by the above code. 
 		</para>
 		<figure float="0" id="fig-widgetbar">
-		    <title>A Simple Bar Chart</title>
+		    <title>A Simple Bar ChartWidget</title>
 		    <mediaobject>
 			<imageobject>
 			    <imagedata width="3in" scalefit="1" fileref="images/widgetparameters.png"/>
 			</imageobject>
 		    </mediaobject>
 		</figure>
+		<para>
+		    This example can be compiled and run from the following location of your KD Chart
+		    installation <filename>examples/Widget/Parameters</filename>
+		</para>
+		<note>
+		    <para>
+			Configuring the attributes for a <classname>KDChartBarDiagram</classname> making use
+			of a <classname>KDChartChart</classname> is done the same way as for a 
+			<classname>KDChartWidget</classname>. You just need to assign the configured attributes 
+			to your bar diagram and assign it to the chart by calling 
+			<methodname>KDChartChart::replaceDiagram()</methodname>.
+		    </para>
+		</note>
 	    </sect2>
 	    <sect2>
 		<title id="barsattributes">Bars Attributes</title>
