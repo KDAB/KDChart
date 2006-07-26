@@ -172,9 +172,26 @@ namespace KDChart {
         /** Returns the type of the chart. */
         ChartType type() const;
 
+        /** Sub type values, matching the values defines for the respective Diagram classes. */
+        enum SubType { Normal, Stacked, Percent, Rows };
+
+        /** Returns the sub-type of the chart. */
+        SubType subType() const;
+
     public slots:
         /** Sets the type of the chart. */
-        void setType( ChartType chartType );
+        void setType( ChartType chartType, SubType subType=Normal );
+        /** \brief Sets the type of the chart without changing the main type.
+          *
+          * Make sure to use a sub-type that matches the main type,
+          * so e.g. setting sub-type Rows makes sense for Bar charts only,
+          * and it will be ignored for all other chart types.
+          *
+          * \sa KDChartBarDiagram::BarType, KDChartLineDiagram::LineType
+          * \sa KDChartPieDiagram::PieType, KDChartRingDiagram::RingType
+          * \sa KDChartPolarDiagram::PolarType
+          */
+        void setSubType( SubType subType );
 
     private:
         /** Justifies the model, so that the given rows and columns fit into it. */
