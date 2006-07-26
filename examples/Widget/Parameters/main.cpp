@@ -37,7 +37,7 @@ int main( int argc, char** argv ) {
     Widget widget;
     widget.resize( 600, 600 );
 
-    QVector< double > vec0,  vec1,  vec2;
+    QVector< double > vec0,  vec1;
 
     vec0 << 5 << 4 << 3 << 2 << 1 << 0
          << 1 << 2 << 3 << 4 << 5;
@@ -48,13 +48,16 @@ int main( int argc, char** argv ) {
     widget.setDataset( 1, vec1, "vec1" );
     widget.setType( Widget::Bar ,  Widget::Stacked );
 
-    //Configure a pen surrounding the bars
+    //Configure a pen and draw a line
+    //surrounding the bars
     QPen pen;
     pen.setWidth( 2 );
     pen.setColor(  Qt::darkGray );
+    // call your diagram and set the new pen
     widget.barDiagram()->setPen(  pen );
 
     //Set up your ThreeDAttributes
+    //display in ThreeD mode
     ThreeDBarAttributes td;
     td.setDepth(  15 );
     td.setEnabled(  true );
