@@ -1186,22 +1186,33 @@
 		<para>
 		    By "Bars attributes" we are talking about all parameters that can be 
 		    configured and set by the user and which are specifics to the Bar Chart type.
-		    KD Chart 2.0 API separates the attributes specifics to a chart type itself and 
-		    the generic attributes which are common to all chart types as for example the 
-		    setters and getters for a brush or a pen.		    
+		    The "getters" and "setters" for those attributes can be consulted by looking at
+		    <filename>KDChartBarAttributes.h</filename> to get an idea about what can be 
+		    configured there. 
 		</para>
+		<note>
+		    <para>
+			KD Chart 2.0 API separates the attributes specifics to a chart type itself and
+			the generic attributes which are common to all chart types as for example the 
+			setters and getters for a brush or a pen and that are accessible from the
+			<classname>KDChartAbstractDiagram</classname> interface.  		    
+		    </para>
+		</note>
 		<para>
 		    All those attributes have a reasonnable default value that can simply be 
 		    modified by the user by calling one of the diagram set function implemented on 
-		    this purpose <methodname>KDChartBarDiagram::setBarAttributes()</methodname>.
+		    this purpose <methodname>KDChartBarDiagram::setBarAttributes()</methodname> or 
+		    for example (to change the default Pen) directly by calling the 
+		    <methodname>KDChartAbstractDiagram::setPen()</methodname> method.
 		</para>
 		<para>
-		    The procedure is straight forward:
+		    The procedure is straight forward on both cases. Let us discuss the types 
+		    specifics attributes first:
 		</para>
 		<itemizedlist>
 		    <listitem>
 			<para>
-			    Create a <classname>KDChart::BarAttributes</classname> of object by 
+			    Create a <classname>KDChart::BarAttributes</classname> object by 
 			    calling <methodname>KDChartBarDiagram::barAttributes</methodname>.  
 			</para>
 		    </listitem>
@@ -1225,6 +1236,7 @@
 		    example below:
 		</para>
 		<itemizedlist>
+<!-- we will not use that in the future
 		    <listitem>
 			<para>
 			   DataValueGap: Gap between two values
@@ -1232,22 +1244,23 @@
 		    </listitem>
 		    <listitem>
 			<para>
-			   ValueBlockGap: Gap betwwen each block of values
+			   ValueBlockGap: Gap betwen each block of values
+			</para>
+		    </listitem>
+-->
+		    <listitem>
+			<para>
+			    BarWidth: Specifies the width of the bars
 			</para>
 		    </listitem>
 		    <listitem>
 			<para>
-			    BarWidth: Specifie the with of the bars
+			    GroupGapFactor: Configure the gap between groups of bars. 
 			</para>
 		    </listitem>
 		    <listitem>
 			<para>
-			    GroupGapFactor: ...txt...
-			</para>
-		    </listitem>
-		    <listitem>
-			<para>
-			    BarGapFactor: ...txt ...
+			    BarGapFactor: Configure the gap between Bars within a group
 			</para>
 		    </listitem>
 		    <!-- Pending Michel is that still actual? - I guess so -->
@@ -1260,28 +1273,196 @@
 		</itemizedlist>
 	    </sect2>
 	    <sect2>
-		<title id="barattributessample" xreflabel="codexample">Bar Example</title>
+		<title id="barattributessample" xreflabel="codesample">Bar Attributes Sample</title>
 		<para>
-		    Let us make this more concrete by looking at the following lines of code.
+		    Let us make this more concrete by looking at the following sample code that 
+		    describes the above process. We recommand you to compile and run the following 
+		    example which is located into the <filename>examples/Bars/Parameters</filename>
+		    directory of your KD Chart installation.
+		</para>
+		<para>
+		    First of all we are including the header files we need and bring KD Chart namespace.
 		</para>
 		<programlisting>
-		    // 1 - Create a Bar Attributes object
-		    BarAttributes ba = m_bars->BarAttributes( index );
-                    // 2 - Configure the width of the bars and enable 
-		    ba.setFixedBarWidth( 5.0 );
-                    ba.setUseFixedBarWidth( true ); 
-                    ... other settings 
-		    // 3 - Assign to your diagram
-		    m_bars->setBarAttributes( index, ba );
+		    #include &lt;QtGui&gt;
+		    #include &lt;KDChartChart&gt;
+                    #include &lt;KDChartBarDiagram&gt;
+                    #include &lt;KDChartDataValueAttributes&gt;
+
+                    using namespace KDChart;		    
                 </programlisting>
+		<para>
+		    We have included <classname>KDChartDataValueAttributes</classname> to be able 
+		    to display our data values. Those attributes are of course used by all types of
+		    charts and are not specifical to the Bar diagrams.
+		</para>
+		<para>
+		    In this example we are using a <classname>KDChartChart</classname> class as well
+		    as a <classname>QStandardItemModel</classname> in order to store the data which 
+		    will be assigned to our diagram
+		</para>
+		<programlisting>
+		    class ChartWidget : public QWidget {
+		    Q_OBJECT
+		    public:
+		    explicit ChartWidget(QWidget* parent=0)
+		    : QWidget(parent)
+		    {
+		    
+		    m_model.insertRows( 0, 2, QModelIndex() );
+		    m_model.insertColumns(  0,  3,  QModelIndex() );
+		    for (int row = 0; row &lt; 3; ++row) {
+		      for (int column = 0; column &lt; 3; ++column) {
+		        QModelIndex index = m_model.index(row, column, QModelIndex());
+		        m_model.setData(index, QVariant(row+1 * column) );
+		      }
+		    }
+
+		    BarDiagram* diagram = new KDChart::BarDiagram;
+		    diagram->setModel(&amp;m_model);
+                </programlisting>
+		<para>
+		    After having store our data into the model, we create a diagram, in this 
+		    case, we want to display a <classname>KDChartBarDiagram</classname> and 
+		    assing the model to our diagram. The procedure is of course similar for 
+		    all types of diagrams. 
+		</para>
+		<para>
+		    We are no ready to configure our bar specifics attributes using a 
+		    <classname>KDChartBarAttributes</classname> to do so. 
+		</para>
+		<programlisting>
+		    BarAttributes ba;
+		    //set the bar width and
+		    //implicitely enable it
+		    ba.setFixedBarWidth( 500 );
+		    ba.setUseFixedBarWidth( true );
+		    //configure gab between values
+		    //and blocks
+		    ba.setGroupGapFactor( 0.50 );
+		    ba.setBarGapFactor( 0.125 );
+		    
+		    //assign to the diagram
+		    diagram->setBarAttributes(  ba );
+                </programlisting>
+		<para>
+		    We want to configure our bars width so that they get displayed a bit larger.
+		    The Width of a bar is calculated automatically depending on the gaps between 
+		    each bar and the gaps between groups of bars as well as the space available 
+		    horizontally in the plane. So those values interact with each other so that 
+		    your bars does not exceed the plane surface horizontally.
+		    Here we are increasing the value of my bars width and at the same time set 
+		    some lower values for the gaps. Which will give us larger bars	    
+		</para>
+		<note>
+		    <para>
+			After having configured our attributes we need to assign the 
+			<classname>BarAttributes</classname> object to the diagram.
+			This can be done for the whole diagram, at a specific index 
+			or for a column. See <filename>KDChartBarDiagram.h</filename> and
+			look at the methods available there to find out those setters and
+			getters.
+		    </para>   
+		</note>
+		<para>
+		    We will now display the data values related to each bar making use of
+		    KD Chart 2.0 API <classname>KDChartDataValueAttributes</classname>. Those
+		    attributes are not specifics to the Bar Chart types but can be used by any 
+		    type of charts. The procedure is very similar.
+		</para>
+		<programlisting>
+		 // display the values
+		    DataValueAttributes dva;
+		    TextAttributes ta = dva.textAttributes();
+		    //rotate if you wish
+		    //ta.setRotation( 0 );
+		    ta.setFont( QFont( "Comic", 9 ) );
+		    ta .setPen( QPen( QColor( Qt::darkGreen ) ) );
+		    ta.setVisible( true );
+		    dva.setTextAttributes( ta );
+		    dva.setVisible( true );
+		    diagram->setDataValueAttributes( dva );
+		</programlisting>
+		<para>
+		    We could have displayed the data values without caring about settings its 
+		    <classname>KDChartTextAttributes</classname>, but we wanted to do so in 
+		    order to demonstrate this feature too. Notice that you have to implicitely
+		    enable your attributes ( DataValue and Text) by calling their 
+		    <methodname>setVisible()</methodname> methods. After it is configured as we
+		    want it is just to assign to the diagram as for all other attributes.  
+		</para>
+		<para>
+		    Finally I want to paint a ligne around one of the datasets bars. In order to
+		    keep the attention of the public on this specific set of data. To do so I need to 
+		    change the default pen used by my bars for this data set exclusively. Of course we
+		    could  also have changed the pen for all datasets or for a specifical index or value.
+		</para>
+		<programlisting>
+		     //draw a surrounding line around bars
+		    QPen linePen;
+		    linePen.setColor( Qt::magenta );
+		    linePen.setWidth( 4 );
+		    linePen.setStyle( Qt::DotLine );
+		    //draw only around a dataset
+		    //to draw around all the bars
+		    // call setPen( myPen );
+		    diagram->setPen( 1,  linePen );
+		</programlisting>
+		<note>
+		    <para>
+			The Pen and the Brush setters and getters are implemented at a lower level in 
+			our <classname>KDChartAbstractDiagram</classname> class for a cleaner code 
+			structure. Those methods are of course used by all types of diagram and their 
+			configuration is very simple and straight forward as you can see in the above 
+			sample code. Create a Pen, configure it, call one of the setters methods 
+			available (See <filename>KDChartAbstractDiagram.h</filename> about those 
+			methods).		
+		    </para>
+		</note>
+		<para>
+		    Our attribute having been configured and assigned we just need to assign the Bar 
+		    diagram to our chart and conclude the implementation.
+		</para>
+		<programlisting>
+		    m_chart.coordinatePlane()->replaceDiagram(diagram);
+
+		    QVBoxLayout* l = new QVBoxLayout(this);
+		    l->addWidget(&amp;m_chart);
+		    setLayout(l);
+		    }
+
+		    private:
+		    Chart m_chart;
+		    QStandardItemModel m_model;
+		    };
+
+		    int main( int argc, char** argv ) {
+		    QApplication app( argc, argv );
+
+		    ChartWidget w;
+		    w.show();
+
+		    return app.exec();
+		    }
+
+		    #include "main.moc"
+		</programlisting>
                 <para>
 		    The above procedure can be applied to any of the supported attributes relative 
-		    to the bar chart. We recommend you to have a look at the BarAttributes 
-		    interface to learn more about what can be done.
+		    to the chart types. The resulting display of the code we have gone through can be 
+		    seen in the following screen-shot. We also recommend you to compile and run the 
+		    example related to this section and located in the 
+		    <filename>examples/Bars/Parameters</filename> directory of your KD Chart 
+		    installation.
                 </para>
-		<para>
-		    (see files /src/{KDChartBarAttributes.h})
-		</para>		
+		<figure float="0" id="fig-barparameters">
+		    <title>Bar with Configured Attributes</title>
+		    <mediaobject>
+			<imageobject>
+			    <imagedata width="3in" scalefit="1" fileref="images/barparameters.png"/>
+			</imageobject>
+		    </mediaobject>
+		</figure>
 		<para>
 		    The subtype of a bar chart (Normal, Stacked or Percent) is not set via its 
 		    attribute class, but directly by using the diagram 
@@ -1336,14 +1517,14 @@
 		    </listitem>		   
 		</itemizedlist>
 		<programlisting linenumbering="numbered" id="fullbar_mainwindow_h">
-		    <textobject><textdata fileref="../../examples/Bars/mainwindow.h"/>
+		    <textobject><textdata fileref="../../examples/Bars/Advanced/mainwindow.h"/>
 		    </textobject>
 		</programlisting>                
 		<para>
 		    More explanation h file?
 		</para>
 		<programlisting linenumbering="numbered" id="fullbar_mainwindow_cpp">
-		    <textobject><textdata fileref="../../examples/Bars/mainwindow.cpp"/>
+		    <textobject><textdata fileref="../../examples/Bars/Advanced/mainwindow.cpp"/>
 		    </textobject>
 		</programlisting>
 		<para>
