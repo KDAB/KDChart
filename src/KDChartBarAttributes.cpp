@@ -40,15 +40,15 @@ public:
     Private();
 
 private:
-    double datasetGap;
+    qreal datasetGap;
     bool useFixedDatasetGap;
-    double valueBlockGap;
+    qreal valueBlockGap;
     bool useFixedValueBlockGap;
-    double barWidth;
+    qreal barWidth;
     bool useFixedBarWidth;
     bool drawSolidExcessArrows;
-    double groupGapFactor;
-    double barGapFactor;
+    qreal groupGapFactor;
+    qreal barGapFactor;
 };
 
 
@@ -109,12 +109,12 @@ bool BarAttributes::operator==( const BarAttributes& r ) const
 }
 
 
-void BarAttributes::setFixedDataValueGap( double gap )
+void BarAttributes::setFixedDataValueGap( qreal gap )
 {
     d->datasetGap = gap;
 }
 
-double BarAttributes::fixedDataValueGap() const
+qreal BarAttributes::fixedDataValueGap() const
 {
     return d->datasetGap;
 }
@@ -129,12 +129,12 @@ bool BarAttributes::useFixedDataValueGap() const
     return d->useFixedDatasetGap;
 }
 
-void BarAttributes::setFixedValueBlockGap( double gap )
+void BarAttributes::setFixedValueBlockGap( qreal gap )
 {
     d->valueBlockGap = gap;
 }
 
-double BarAttributes::fixedValueBlockGap() const
+qreal BarAttributes::fixedValueBlockGap() const
 {
     return d->valueBlockGap;
 }
@@ -149,12 +149,12 @@ bool BarAttributes::useFixedValueBlockGap() const
     return d->useFixedValueBlockGap;
 }
 
-void BarAttributes::setFixedBarWidth( double width )
+void BarAttributes::setFixedBarWidth( qreal width )
 {
     d->barWidth = width;
 }
 
-double BarAttributes::fixedBarWidth() const
+qreal BarAttributes::fixedBarWidth() const
 {
 
     return d->barWidth;
@@ -170,22 +170,22 @@ bool BarAttributes::useFixedBarWidth() const
     return d->useFixedBarWidth;
 }
 
-void BarAttributes::setGroupGapFactor( double gapFactor )
+void BarAttributes::setGroupGapFactor( qreal gapFactor )
 {
     d->groupGapFactor = gapFactor;
 }
 
-double BarAttributes::groupGapFactor() const
+qreal BarAttributes::groupGapFactor() const
 {
     return d->groupGapFactor;
 }
 
-void BarAttributes::setBarGapFactor( double gapFactor )
+void BarAttributes::setBarGapFactor( qreal gapFactor )
 {
     d->barGapFactor = gapFactor;
 }
 
-double BarAttributes::barGapFactor() const
+qreal BarAttributes::barGapFactor() const
 {
     return d->barGapFactor;
 }

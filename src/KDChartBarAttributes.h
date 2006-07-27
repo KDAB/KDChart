@@ -41,29 +41,29 @@ public:
 
     ~BarAttributes();
 
-    void setFixedDataValueGap( double gap );
-    double fixedDataValueGap() const;
+    void setFixedDataValueGap( qreal gap );
+    qreal fixedDataValueGap() const;
 
     void setUseFixedDataValueGap( bool gapIsFixed );
     bool useFixedDataValueGap() const;
 
-    void setFixedValueBlockGap( double gap );
-    double fixedValueBlockGap() const;
+    void setFixedValueBlockGap( qreal gap );
+    qreal fixedValueBlockGap() const;
 
     void setUseFixedValueBlockGap( bool gapIsFixed );
     bool useFixedValueBlockGap() const;
 
-    void setFixedBarWidth( double width );
-    double fixedBarWidth() const;
+    void setFixedBarWidth( qreal width );
+    qreal fixedBarWidth() const;
 
     void setUseFixedBarWidth( bool useFixedBarWidth );
     bool useFixedBarWidth() const;
 
-    void setGroupGapFactor ( double gapFactor );
-    double groupGapFactor() const;
+    void setGroupGapFactor ( qreal gapFactor );
+    qreal groupGapFactor() const;
 
-    void setBarGapFactor( double gapFactor );
-    double barGapFactor() const;
+    void setBarGapFactor( qreal gapFactor );
+    qreal barGapFactor() const;
 
     void setDrawSolidExcessArrows( bool solidArrows );
     bool drawSolidExcessArrows() const;
