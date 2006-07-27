@@ -1,7 +1,6 @@
 #include <QtGui>
 #include <KDChartChart>
 #include <KDChartBarDiagram>
-#include <KDChartBarAttributes>
 #include <KDChartDataValueAttributes>
 
 using namespace KDChart;
@@ -21,7 +20,6 @@ public:
                 m_model.setData(index, QVariant(row+1 * column) );
             }
     }
-
 
     BarDiagram* diagram = new KDChart::BarDiagram;
     diagram->setModel(&m_model);
@@ -69,7 +67,7 @@ public:
   }
 
 private:
-  KDChart::Chart m_chart;
+  Chart m_chart;
   QStandardItemModel m_model;
 };
 
