@@ -142,20 +142,26 @@ void MainWindow::on_markColumnCB_toggled( bool checked )
     m_chart->update();
 }
 
-void MainWindow::on_depthSB_valueChanged( int /*i*/ )
+void MainWindow::on_depthSB_valueChanged( int i )
 {
+     Q_UNUSED( i );
+
     if ( threeDDepthCB->isChecked() && paintThreeDBarsCB->isChecked() )
         on_paintThreeDBarsCB_toggled( true );
 }
 
-void MainWindow::on_threeDDepthCB_toggled( bool /*checked*/ )
+void MainWindow::on_threeDDepthCB_toggled( bool checked )
 {
+     Q_UNUSED( checked );
+
     if ( paintThreeDBarsCB->isChecked() )
         on_paintThreeDBarsCB_toggled( true );
 }
 
-void MainWindow::on_markColumnSB_valueChanged( int /*i*/ )
+void MainWindow::on_markColumnSB_valueChanged( int i )
 {
+     Q_UNUSED( i );
+
     if ( markColumnCB->isChecked() )
         on_markColumnCB_toggled( true );
     else
@@ -164,35 +170,25 @@ void MainWindow::on_markColumnSB_valueChanged( int /*i*/ )
 
 void MainWindow::on_widthSB_valueChanged( int value )
 {
-    const int rowCount = m_bars->model()->rowCount();
-    const int colCount = m_bars->model()->columnCount();
-    for ( int i = 0; i<colCount; ++i ) {
-        for ( int j=0; j< rowCount; ++j ) {
-            QModelIndex index = m_bars->model()->index( j, i, QModelIndex() );
-            BarAttributes ba = m_bars->barAttributes( index );
-            ba.setFixedBarWidth( value );
-            ba.setUseFixedBarWidth( true );
-            m_bars->setBarAttributes( index , ba  );
-        }
+    if (  widthCB->isChecked() ) {
+        BarAttributes ba;
+        ba.setFixedBarWidth( value );
+        ba.setUseFixedBarWidth( true );
+        m_bars->setBarAttributes( ba  );
     }
-    m_chart->update();
+    m_bars->update();
 }
 
 void MainWindow::on_widthCB_toggled( bool checked )
 {
-    const int rowCount = m_bars->model()->rowCount();
-    const int colCount = m_bars->model()->columnCount();
+     Q_UNUSED( checked );
+
     if (  widthCB->isChecked() )
         on_widthSB_valueChanged( widthSB->value() );
     else {
-        for ( int i = 0; i<colCount; ++i ) {
-            for ( int j=0; j< rowCount; ++j ) {
-                QModelIndex index = m_bars->model()->index( j, i, QModelIndex() );
-                BarAttributes ba = m_bars->barAttributes( index );
-                ba.setUseFixedBarWidth( false );
-                m_bars->setBarAttributes( index , ba  );
-            }
-        }
+        BarAttributes ba;
+        ba.setUseFixedBarWidth( false );
+        m_bars->setBarAttributes( ba  );
         m_bars->update();
     }
 }
