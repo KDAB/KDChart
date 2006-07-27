@@ -83,31 +83,28 @@ void MainWindow::on_barTypeCB_currentIndexChanged( const QString & text )
 
 void MainWindow::on_paintValuesCB_toggled( bool checked )
 {
-    //testing
-        const int rowCount = m_bars->model()->rowCount();
-        const int colCount = m_bars->model()->columnCount();
-        for ( int i = 0; i<colCount; ++i ) {
-            for ( int j=0; j< rowCount; ++j ) {
-                QModelIndex index = m_bars->model()->index( j, i, QModelIndex() );
-                //QBrush brush = qVariantValue<QBrush>( m_bars->model()->headerData( i, Qt::Vertical, DatasetBrushRole ) );
-                //Make it nicer
-                QBrush brush = m_bars->brush( index );
-                DataValueAttributes a = m_bars->dataValueAttributes( index );
-                TextAttributes ta = a.textAttributes();
-                ta.setRotation( 0 );
-                ta.setFont( QFont( "Comic", 10 ) );
-                ta .setPen( QPen( brush.color() ) );
-                if ( checked )
-                    ta.setVisible( true );
-                else
-                    ta.setVisible( false );
+    const int rowCount = m_bars->model()->rowCount();
+    const int colCount = m_bars->model()->columnCount();
+    for ( int i = 0; i<colCount; ++i ) {
+        for ( int j=0; j< rowCount; ++j ) {
+            QModelIndex index = m_bars->model()->index( j, i, QModelIndex() );
+            QBrush brush = m_bars->brush( index );
+            DataValueAttributes a = m_bars->dataValueAttributes( index );
+            TextAttributes ta = a.textAttributes();
+            ta.setRotation( 0 );
+            ta.setFont( QFont( "Comic", 10 ) );
+            ta .setPen( QPen( brush.color() ) );
+            if ( checked )
+                ta.setVisible( true );
+            else
+                ta.setVisible( false );
 
-                a.setTextAttributes( ta );
-                a.setVisible( true );
-                m_bars->setDataValueAttributes( index, a);
-            }
+            a.setTextAttributes( ta );
+            a.setVisible( true );
+            m_bars->setDataValueAttributes( index, a);
         }
-        m_chart->update();
+    }
+    m_chart->update();
 }
 
 void MainWindow::on_paintThreeDBarsCB_toggled( bool checked )
@@ -117,8 +114,8 @@ void MainWindow::on_paintThreeDBarsCB_toggled( bool checked )
     if ( checked ) {
         td.setEnabled( true );
         if ( threeDDepthCB->isChecked() )
-            td.setDepth( depthSB->value() ); 
-        else 
+            td.setDepth( depthSB->value() );
+        else
             td.setDepth( defaultDepth );
     } else {
         td.setEnabled( false );
@@ -136,29 +133,64 @@ void MainWindow::on_markColumnCB_toggled( bool checked )
         pen.setWidth( 3 );
         m_bars->setPen( markColumnSB->value(), pen );
     }  else {
-         pen.setColor( Qt::darkGray );
-         pen.setWidth( 1 );
-         m_bars->setPen( markColumnSB->value(), pen );
+        pen.setColor( Qt::darkGray );
+        pen.setWidth( 1 );
+        m_bars->setPen( markColumnSB->value(), pen );
     }
-  m_chart->update();
+    m_chart->update();
 }
 
 void MainWindow::on_depthSB_valueChanged( int /*i*/ )
 {
     if ( threeDDepthCB->isChecked() && paintThreeDBarsCB->isChecked() )
-         on_paintThreeDBarsCB_toggled( true );
+        on_paintThreeDBarsCB_toggled( true );
 }
 
 void MainWindow::on_threeDDepthCB_toggled( bool /*checked*/ )
 {
-        if ( paintThreeDBarsCB->isChecked() )
-            on_paintThreeDBarsCB_toggled( true );
+    if ( paintThreeDBarsCB->isChecked() )
+        on_paintThreeDBarsCB_toggled( true );
 }
 
 void MainWindow::on_markColumnSB_valueChanged( int /*i*/ )
 {
- if ( markColumnCB->isChecked() )
+    if ( markColumnCB->isChecked() )
         on_markColumnCB_toggled( true );
     else
         on_markColumnCB_toggled( false);
+}
+
+void MainWindow::on_widthSB_valueChanged( int value )
+{
+    const int rowCount = m_bars->model()->rowCount();
+    const int colCount = m_bars->model()->columnCount();
+    for ( int i = 0; i<colCount; ++i ) {
+        for ( int j=0; j< rowCount; ++j ) {
+            QModelIndex index = m_bars->model()->index( j, i, QModelIndex() );
+            BarAttributes ba = m_bars->barAttributes( index );
+            ba.setFixedBarWidth( value );
+            ba.setUseFixedBarWidth( true );
+            m_bars->setBarAttributes( index , ba  );
+        }
+    }
+    m_chart->update();
+}
+
+void MainWindow::on_widthCB_toggled( bool checked )
+{
+    const int rowCount = m_bars->model()->rowCount();
+    const int colCount = m_bars->model()->columnCount();
+    if (  widthCB->isChecked() )
+        on_widthSB_valueChanged( widthSB->value() );
+    else {
+        for ( int i = 0; i<colCount; ++i ) {
+            for ( int j=0; j< rowCount; ++j ) {
+                QModelIndex index = m_bars->model()->index( j, i, QModelIndex() );
+                BarAttributes ba = m_bars->barAttributes( index );
+                ba.setUseFixedBarWidth( false );
+                m_bars->setBarAttributes( index , ba  );
+            }
+        }
+        m_bars_chart->update();
+    }
 }

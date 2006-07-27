@@ -187,6 +187,50 @@
       </layout>
      </item>
      <item>
+      <widget class="Line" name="line_4" >
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" >
+       <property name="margin" >
+        <number>0</number>
+       </property>
+       <property name="spacing" >
+        <number>6</number>
+       </property>
+       <item>
+        <widget class="QLabel" name="widthLB" >
+         <property name="text" >
+          <string>Configure Width</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" >
+         <property name="margin" >
+          <number>0</number>
+         </property>
+         <property name="spacing" >
+          <number>6</number>
+         </property>
+         <item>
+          <widget class="QCheckBox" name="widthCB" >
+           <property name="text" >
+            <string>Bars Width</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="widthSB" />
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+     <item>
       <spacer>
        <property name="orientation" >
         <enum>Qt::Vertical</enum>
@@ -194,7 +238,7 @@
        <property name="sizeHint" >
         <size>
          <width>171</width>
-         <height>128</height>
+         <height>51</height>
         </size>
        </property>
       </spacer>
