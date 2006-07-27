@@ -191,6 +191,6 @@ void MainWindow::on_widthCB_toggled( bool checked )
                 m_bars->setBarAttributes( index , ba  );
             }
         }
-        m_bars_chart->update();
+        m_bars->update();
     }
 }
