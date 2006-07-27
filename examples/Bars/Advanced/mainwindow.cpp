@@ -83,6 +83,8 @@ void MainWindow::on_barTypeCB_currentIndexChanged( const QString & text )
 
 void MainWindow::on_paintValuesCB_toggled( bool checked )
 {
+    Q_UNUSED( checked );
+
     const int rowCount = m_bars->model()->rowCount();
     const int colCount = m_bars->model()->columnCount();
     for ( int i = 0; i<colCount; ++i ) {
