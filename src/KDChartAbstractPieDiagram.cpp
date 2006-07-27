@@ -87,7 +87,9 @@ void AbstractPieDiagram::setPieAttributes( int column, const PieAttributes & att
 
 PieAttributes AbstractPieDiagram::pieAttributes( const QModelIndex & index ) const
 {
-    return qVariantValue<PieAttributes>( model()->data( index, KDChart::PieAttributesRole ) );
+    return qVariantValue<PieAttributes>(
+        d->attributesModel->data(
+            d->attributesModel->mapFromSource( index ), PieAttributesRole ) );
 }
 
 
@@ -99,7 +101,8 @@ void AbstractPieDiagram::setThreeDPieAttributes( const ThreeDPieAttributes & tda
 
 void AbstractPieDiagram::setThreeDPieAttributes( int column, const ThreeDPieAttributes & tda )
 {
-    d->attributesModel->setHeaderData( column, Qt::Vertical, qVariantFromValue( tda ), ThreeDPieAttributesRole );
+    d->attributesModel->setHeaderData(
+        column, Qt::Vertical, qVariantFromValue( tda ), ThreeDPieAttributesRole );
     emit layoutChanged( this );
 }
 
@@ -111,6 +114,8 @@ void AbstractPieDiagram::setThreeDPieAttributes( const QModelIndex & index, cons
 
 ThreeDPieAttributes AbstractPieDiagram::threeDPieAttributes( const QModelIndex & index ) const
 {
-    return qVariantValue<ThreeDPieAttributes>( model()->data( index, KDChart::ThreeDPieAttributesRole ) );
+    return qVariantValue<ThreeDPieAttributes>(
+        d->attributesModel->data(
+            d->attributesModel->mapFromSource( index ), KDChart::ThreeDPieAttributesRole ) );
 }
 

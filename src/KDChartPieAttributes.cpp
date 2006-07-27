@@ -85,12 +85,12 @@ void PieAttributes::init( )
 
 void PieAttributes::setExplode( bool enabled )
 {
-    d->explodeFactor = enabled ? 0.1 : 0.0;
+    d->explodeFactor = (enabled ? 0.1 : 0.0);
 }
 
 bool PieAttributes::explode() const
 {
-    return d->explodeFactor != 0.0;
+    return (d->explodeFactor != 0.0);
 }
 
 void PieAttributes::setExplodeFactor( double factor )
