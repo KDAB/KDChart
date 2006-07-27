@@ -78,13 +78,31 @@ QDomDocumentFragment PieDiagram::toXML() const
     return QDomDocumentFragment();
 }
 
+
 const QPair<QPointF, QPointF> PieDiagram::calculateDataBoundaries () const
 {
     if ( !checkInvariants( true ) ) return QPair<QPointF, QPointF>( QPointF( 0, 0 ), QPointF( 0, 0 ) );
 
-    //FIXME(khz): return the real data boundaries
-    return QPair<QPointF, QPointF>( QPointF( 0, 0 ), QPointF( 0, 0 ) );
+    const PieAttributes attrs( pieAttributes( model()->index( 0, 0, rootIndex() ) ) );
+
+    QPointF bottomLeft ( QPointF( 0, 0 ) );
+    QPointF topRight;
+    // If we explode, we need extra space for the pie slice that has
+    // the largest explosion distance.
+    if ( attrs.explode() ) {
+        const int colCount = columnCount();
+        qreal maxExplode = 0.0;
+        for( int j = 0; j < colCount; ++j ){
+            const PieAttributes columnAttrs( pieAttributes( model()->index( 0, j, rootIndex() ) ) );
+            maxExplode = qMax( maxExplode, columnAttrs.explodeFactor() );
+        }
+        topRight = QPointF( 1.0+maxExplode, 1.0+maxExplode );
+    }else{
+        topRight = QPointF( 1.0, 1.0 );
+    }
+    return QPair<QPointF, QPointF> ( bottomLeft,  topRight );
 }
+
 
 void PieDiagram::paintEvent( QPaintEvent* )
 {
@@ -106,12 +124,14 @@ void PieDiagram::resize ( const QSizeF& )
 static QRectF buildReferenceRect( const PolarCoordinatePlane* plane )
 {
     QRectF contentsRect;
+//qDebug() << "..........................................";
     QPointF referencePointAtTop = plane->translate( QPointF( 1, 0 ) );
     QPointF temp = plane->translate( QPointF( 0, 0 ) ) - referencePointAtTop;
     const double offset = temp.y();
     referencePointAtTop.setX( referencePointAtTop.x() - offset );
     contentsRect.setTopLeft( referencePointAtTop );
     contentsRect.setBottomRight( referencePointAtTop + QPointF( 2*offset, 2*offset) );
+//qDebug() << contentsRect;
     return contentsRect;
 }
 /*
@@ -180,7 +200,7 @@ void PieDiagram::paint( PaintContext* ctx )
 
     const int colCount = columnCount();
 
-    QRectF contentsRect = buildReferenceRect( polarCoordinatePlane() );
+    QRectF contentsRect( buildReferenceRect( polarCoordinatePlane() ) );
 //    contentsRect = geometry();
 //qDebug() << contentsRect;
     if( contentsRect.isEmpty() )

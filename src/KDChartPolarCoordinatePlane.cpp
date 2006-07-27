@@ -254,11 +254,14 @@ void PolarCoordinatePlane::layoutDiagrams()
             QPair<QPointF, QPointF> dataBoundariesPair = polarDiagram->dataBoundaries();
 
             const double angleUnit = 360 / polarDiagram->valueTotals();
+//qDebug() << "--------------------------------------------------------";
             const double radius = dataBoundariesPair.second.y();
+//qDebug() << radius <<"="<<dataBoundariesPair.second.y();
             const double diagramWidth = radius * 2; // == height
             const double planeWidth = d->contentRect.width();
             const double planeHeight = d->contentRect.height();
             const double radiusUnit = qMin( planeWidth, planeHeight ) / diagramWidth;
+//qDebug() << radiusUnit <<"=" << "qMin( "<<planeWidth<<","<< planeHeight <<") / "<<diagramWidth;
             QPointF coordinateOrigin = QPointF ( planeWidth / 2, planeHeight / 2 );
             coordinateOrigin += d->contentRect.topLeft();
 
