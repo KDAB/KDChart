@@ -1554,21 +1554,101 @@
 		</para>
 		<para>
 		    Let us concentrate on our Bar chart implementation for now and consult the 
-		    following files:
+		    following files: other needed files like the ui, pro , qrc ,CSV and main.cpp files 
+		    can be consulted from the <filename>examples/Bars/Advanced</filename> directory
+		    of your installation.
 		</para>
 		<programlisting linenumbering="numbered" id="fullbar_mainwindow_h">
 		    <textobject><textdata fileref="../../examples/Bars/Advanced/mainwindow.h"/>
 		    </textobject>
 		</programlisting>                
 		<para>
-		    
+		    In the above code we bring up the KDChart namespace as usual and declare our 
+		    slots. The prupose is to let the user configure its bar chart attributes 
+		    manually . As you can see we are using a KDChartChart object ( m_chart ),
+		    a KDChartBarDiagram object ( m_bars ), and our home made TableModel ( m_model ).		    
+		</para>
+		<para>
+		    The implementation is also straight forward as we will see below:
 		</para>
 		<programlisting linenumbering="numbered" id="fullbar_mainwindow_cpp">
 		    <textobject><textdata fileref="../../examples/Bars/Advanced/mainwindow.cpp"/>
 		    </textobject>
 		</programlisting>
 		<para>
-		    More explanation cpp file?
+		    First of all we are adding our chart to the layout as for any other Qt widget. Load 
+		    the data to be display into our model, and assign the model to our bar diagram. We 
+		    also want to configure a Pen and surround the displayed bars by a darkGray line
+		    to make it somewhat nicer. Finally we assign the diagram to our chart.
+		</para>
+		<programlisting>
+		    //draw a surrounding line around bars
+		   QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
+		    m_chart = new Chart();
+		    chartLayout->addWidget( m_chart );
+		    
+		    m_model.loadFromCSV( ":/data" );
+		    
+		    // Set up the diagram
+		    m_bars = new BarDiagram();
+		    m_bars->setModel( &amp;m_model );
+
+		    QPen pen;
+		    pen.setColor( Qt::darkGray );
+		    pen.setWidth( 1 );
+		    m_bars->setPen( pen );
+
+		    m_chart->coordinatePlane()->replaceDiagram( m_bars );
+		</programlisting>
+		<para>
+		    The user should be able to change the default sub-type via a combo box 
+		    from the GUI. This can be done by using 
+		    <methodname>KDChartBarDiagram::setType()</methodname> as shown below and
+		    by updating the view.
+		</para>
+		<programlisting>
+		 ....   
+		 if ( text == "Normal" )
+		    m_bars->setType( BarDiagram::Normal );
+		    else if ( text == "Stacked" )
+		    m_bars->setType( BarDiagram::Stacked );
+		 ....
+		    m_chart->update();
+		</programlisting>
+		<para>
+		    We set the DataValueAttributes on a per-column basis here, because we want the 
+		    texts to be printed in different colours - according to their respective 
+		    dataset's colour. The user will be able to display or hide the values. 
+		</para>
+		<programlisting>
+		    ...
+		    const QFont font(QFont( "Comic", 10 ));
+		    const int colCount = m_bars->model()->columnCount();
+		    for ( int iColumn = 0; iColumn&lt;colCount; ++iColumn ) {
+			QBrush brush( m_bars->brush( iColumn ) );
+			DataValueAttributes a( m_bars->dataValueAttributes( iColumn ) );
+			TextAttributes ta( a.textAttributes() );
+			ta.setRotation( 0 );
+			ta.setFont( font );
+			ta .setPen( QPen( brush.color() ) );
+			if ( checked )
+			ta.setVisible( true );
+			else
+			ta.setVisible( false );
+			
+			a.setTextAttributes( ta );
+			a.setVisible( true );
+			m_bars->setDataValueAttributes( iColumn, a);
+		    }
+
+		    m_chart->update();
+		    ....		
+		</programlisting>
+		<para>
+		    As you can see in the above code we are changing the default values for 
+		    <classname>DataValuesAttributes</classname> <classname>TextAttributes</classname>.
+		    Also we allow the usert to display or not the texts dynamically. see 
+		    <methodname>KDChartTextAttributes::setVisible()</methodname>.
 		</para>
 		<figure float="0" id="fig-fullbar">
 		    <title>A Full featured Bar Chart</title>
