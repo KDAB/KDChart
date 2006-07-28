@@ -469,51 +469,95 @@ void AbstractDiagram::paintMarkers( QPainter* painter )
 
 void AbstractDiagram::setPen( const QModelIndex& index, const QPen& pen )
 {
-    attributesModel()->setData( attributesModel()->mapFromSource(index),
-				qVariantFromValue( pen ), DatasetPenRole );
+    attributesModel()->setData(
+        attributesModel()->mapFromSource( index ),
+        qVariantFromValue( pen ), DatasetPenRole );
 }
 
 void AbstractDiagram::setPen( const QPen& pen )
 {
-    d->attributesModel->setModelData( qVariantFromValue( pen ), DatasetPenRole );
+    d->attributesModel->setModelData(
+        qVariantFromValue( pen ), DatasetPenRole );
 }
 
 void AbstractDiagram::setPen( int column,const QPen& pen )
 {
-    d->attributesModel->setHeaderData( column, Qt::Vertical, qVariantFromValue( pen ), DatasetPenRole );
+    d->attributesModel->setHeaderData(
+        column, Qt::Vertical,
+        qVariantFromValue( pen ),
+        DatasetPenRole );
+}
+
+QPen AbstractDiagram::pen() const
+{
+    return qVariantValue<QPen>(
+        attributesModel()->data( DatasetPenRole ) );
+}
+
+QPen AbstractDiagram::pen( int dataset ) const
+{
+    return qVariantValue<QPen>(
+        attributesModel()->data(
+            attributesModel()->mapFromSource( columnToIndex( dataset ) ),
+            DatasetPenRole ) );
 }
 
 QPen AbstractDiagram::pen( const QModelIndex& index ) const
 {
-    return qVariantValue<QPen>( attributesModel()->data( attributesModel()->mapFromSource(index),
-							 DatasetPenRole ) );
+    return qVariantValue<QPen>(
+        attributesModel()->data(
+            attributesModel()->mapFromSource( index ),
+            DatasetPenRole ) );
 }
 
 void AbstractDiagram::setBrush( const QModelIndex& index, const QBrush& brush )
 {
-    attributesModel()->setData( attributesModel()->mapFromSource(index),
-				qVariantFromValue( brush ), DatasetBrushRole );
+    attributesModel()->setData(
+        attributesModel()->mapFromSource( index ),
+        qVariantFromValue( brush ), DatasetBrushRole );
 }
 
 void AbstractDiagram::setBrush( const QBrush& brush )
 {
-    attributesModel()->setModelData( qVariantFromValue( brush ), DatasetBrushRole );
+    attributesModel()->setModelData(
+        qVariantFromValue( brush ), DatasetBrushRole );
 }
 
 void AbstractDiagram::setBrush( int column, const QBrush& brush )
 {
-    attributesModel()->setHeaderData( column, Qt::Vertical, qVariantFromValue( brush ), DatasetBrushRole );
+    attributesModel()->setHeaderData(
+        column, Qt::Vertical,
+        qVariantFromValue( brush ),
+        DatasetBrushRole );
+}
+
+QBrush AbstractDiagram::brush() const
+{
+    return qVariantValue<QBrush>(
+        attributesModel()->data( DatasetBrushRole ) );
+}
+
+QBrush AbstractDiagram::brush( int dataset ) const
+{
+    return qVariantValue<QBrush>(
+        attributesModel()->data(
+            attributesModel()->mapFromSource( columnToIndex( dataset ) ),
+            DatasetBrushRole ) );
 }
 
 QBrush AbstractDiagram::brush( const QModelIndex& index ) const
 {
-    return qVariantValue<QBrush>( attributesModel()->data( attributesModel()->mapFromSource(index),
-							   DatasetBrushRole ) );
+    return qVariantValue<QBrush>(
+        attributesModel()->data(
+            attributesModel()->mapFromSource( index ),
+            DatasetBrushRole ) );
 }
 
 // implement QAbstractItemView:
 QRect AbstractDiagram::visualRect(const QModelIndex &) const
-{ return QRect(); }
+{
+    return QRect();
+}
 
 void AbstractDiagram::scrollTo(const QModelIndex &, ScrollHint )
 {}

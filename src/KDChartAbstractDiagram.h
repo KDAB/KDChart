@@ -219,7 +219,7 @@ namespace KDChart {
          * Retrieve the DataValueAttributes for the given dataset. This will fall
          * back automatically to what was set at model level, if there
          * are no dataset specific settings.
-         * @param index The dataset to retrieve the attributes for.
+         * @param dataset The dataset to retrieve the attributes for.
          * @return The DataValueAttributes for the given dataset.
          */
         DataValueAttributes dataValueAttributes( int column ) const;
@@ -254,6 +254,21 @@ namespace KDChart {
         void setPen( const QPen& pen );
 
         /**
+         * Retrieve the pen to be used for painting datapoints globally. This will fall
+         * back automatically to the default settings, if there
+         * are no specific settings.
+         * @return The pen to use for painting.
+         */
+        QPen pen() const;
+        /**
+         * Retrieve the pen to be used for the given dataset. This will fall
+         * back automatically to what was set at model level, if there
+         * are no dataset specific settings.
+         * @param dataset The dataset to retrieve the pen for.
+         * @return The pen to use for painting.
+         */
+        QPen pen( int dataset ) const;
+        /**
          * Retrieve the pen to be used, for painting the datapoint at the given
          * index in the model.
          * @param index The index of the datapoint in the model.
@@ -281,6 +296,21 @@ namespace KDChart {
          */
         void setBrush( const QBrush& brush);
 
+        /**
+         * Retrieve the brush to be used for painting datapoints globally. This will fall
+         * back automatically to the default settings, if there
+         * are no specific settings.
+         * @return The brush to use for painting.
+         */
+        QBrush brush() const;
+        /**
+         * Retrieve the brush to be used for the given dataset. This will fall
+         * back automatically to what was set at model level, if there
+         * are no dataset specific settings.
+         * @param dataset The dataset to retrieve the brush for.
+         * @return The brush to use for painting.
+         */
+        QBrush brush( int dataset ) const;
         /**
          * Retrieve the brush to be used, for painting the datapoint at the given
          * index in the model.
