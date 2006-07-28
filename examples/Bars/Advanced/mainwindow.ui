@@ -123,7 +123,7 @@
          <item>
           <widget class="QSpinBox" name="markColumnSB" >
            <property name="maximum" >
-            <number>4</number>
+            <number>3</number>
            </property>
           </widget>
          </item>
