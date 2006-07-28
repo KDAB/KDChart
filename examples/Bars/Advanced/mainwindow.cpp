@@ -54,7 +54,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_bars = new BarDiagram();
     m_bars->setModel( &m_model );
 
-    QPen pen;
+    QPen pen(  m_bars->pen() );
     pen.setColor( Qt::darkGray );
     pen.setWidth( 1 );
     m_bars->setPen( pen );
@@ -74,9 +74,6 @@ void MainWindow::on_barTypeCB_currentIndexChanged( const QString & text )
     else
         qWarning (" Does not match any type");
 
-    QPen pen;
-    pen.setColor( Qt::black );
-    m_bars->setPen(pen );
     m_chart->update();
 }
 
@@ -177,7 +174,7 @@ void MainWindow::on_widthSB_valueChanged( int value )
         ba.setUseFixedBarWidth( true );
         m_bars->setBarAttributes( ba  );
     }
-    m_bars->update();
+    m_chart->update();
 }
 
 void MainWindow::on_widthCB_toggled( bool checked )
@@ -188,6 +185,6 @@ void MainWindow::on_widthCB_toggled( bool checked )
         BarAttributes ba( m_bars->barAttributes() );
         ba.setUseFixedBarWidth( false );
         m_bars->setBarAttributes( ba  );
-        m_bars->update();
+        m_chart->update();
     }
 }
