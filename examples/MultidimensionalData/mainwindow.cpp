@@ -52,7 +52,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_lines->setModel( &m_model );
     m_lines->setPen( Qt::NoPen );
 
-    DataValueAttributes dva;
+    DataValueAttributes dva( m_lines->dataValueAttributes() );
     dva.setVisible( true );
     MarkerAttributes ma;
     ma.setVisible( true );

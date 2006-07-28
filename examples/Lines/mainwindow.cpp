@@ -82,11 +82,10 @@ void MainWindow::on_paintValuesCB_toggled( bool checked )
 {
     qDebug() << "MainWindow::on_paintValuesCB_toggled("<<checked<<")";
     const int colCount = m_lines->model()->columnCount(m_lines->rootIndex());
-    for ( int i = 0; i<colCount; ++i ) {
-        QModelIndex index = m_lines->model()->index( 0, i, m_lines->rootIndex());
-        DataValueAttributes a = m_lines->dataValueAttributes( index );
-        QBrush brush = m_lines->brush( index );
-        TextAttributes ta = a.textAttributes();
+    for ( int iColumn = 0; iColumn<colCount; ++iColumn ) {
+        DataValueAttributes a( m_lines->dataValueAttributes( iColumn ) );
+        QBrush brush( m_lines->brush( iColumn ) );
+        TextAttributes ta( a.textAttributes() );
         ta.setRotation( 0 );
         ta.setFont( QFont( "Comic", 10 ) );
         ta.setPen( QPen( brush.color() ) );
@@ -97,7 +96,7 @@ void MainWindow::on_paintValuesCB_toggled( bool checked )
             ta.setVisible( false );
         a.setVisible( true );
         a.setTextAttributes( ta );
-        m_lines->setDataValueAttributes( i, a );
+        m_lines->setDataValueAttributes( iColumn, a );
     }
     m_chart->update();
 }
@@ -114,8 +113,8 @@ void MainWindow::on_animateAreasCB_toggled( bool checked )
     highlightAreaSB->setEnabled( ! checked );
     // un-highlight all previously highlighted columns
     const int colCount = m_lines->model()->columnCount();
-    for ( int i = 0; i<colCount; ++i )
-        setHighlightArea( i, 127, false, false );
+    for ( int iColumn = 0; iColumn<colCount; ++iColumn )
+        setHighlightArea( iColumn, 127, false, false );
     m_chart->update();
     m_curOpacity = 0;
 }
@@ -153,9 +152,10 @@ void MainWindow::on_highlightAreaCB_toggled( bool checked )
     setHighlightArea( highlightAreaSB->value(), 127, checked, true );
 }
 
-void MainWindow::on_highlightAreaSB_valueChanged( int /*i*/ )
+void MainWindow::on_highlightAreaSB_valueChanged( int i )
 {
- if ( highlightAreaCB->isChecked() )
+    Q_UNUSED( i );
+    if ( highlightAreaCB->isChecked() )
         on_highlightAreaCB_toggled( true );
     else
         on_highlightAreaCB_toggled( false);

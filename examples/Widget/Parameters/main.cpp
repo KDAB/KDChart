@@ -58,7 +58,7 @@ int main( int argc, char** argv ) {
 
     //Set up your ThreeDAttributes
     //display in ThreeD mode
-    ThreeDBarAttributes td;
+    ThreeDBarAttributes td( widget.barDiagram()->threeDBarAttributes() );
     td.setDepth(  15 );
     td.setEnabled(  true );
     widget.barDiagram()->setThreeDBarAttributes( td );

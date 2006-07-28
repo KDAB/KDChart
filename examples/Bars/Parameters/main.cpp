@@ -24,7 +24,7 @@ public:
     BarDiagram* diagram = new KDChart::BarDiagram;
     diagram->setModel(&m_model);
 
-    BarAttributes ba;
+    BarAttributes ba( diagram->barAttributes() );
     //set the bar width and
     //implicitely enable it
     ba.setFixedBarWidth( 500 );
@@ -38,8 +38,8 @@ public:
     diagram->setBarAttributes(  ba );
 
     // display the values
-    DataValueAttributes dva;
-    TextAttributes ta = dva.textAttributes();
+    DataValueAttributes dva( diagram->dataValueAttributes() );
+    TextAttributes ta( dva.textAttributes() );
     //rotate if you wish
     //ta.setRotation( 0 );
     ta.setFont( QFont( "Comic", 9 ) );

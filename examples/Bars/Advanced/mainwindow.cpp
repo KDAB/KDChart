@@ -84,34 +84,35 @@ void MainWindow::on_barTypeCB_currentIndexChanged( const QString & text )
 void MainWindow::on_paintValuesCB_toggled( bool checked )
 {
     Q_UNUSED( checked );
-
-    const int rowCount = m_bars->model()->rowCount();
+    // We set the DataValueAttributes on a per-column basis here,
+    // because we want the texts to be printed in different
+    // colours - according to their respective dataset's colour.
+    const QFont font(QFont( "Comic", 10 ));
     const int colCount = m_bars->model()->columnCount();
-    for ( int i = 0; i<colCount; ++i ) {
-        for ( int j=0; j< rowCount; ++j ) {
-            QModelIndex index = m_bars->model()->index( j, i, QModelIndex() );
-            QBrush brush = m_bars->brush( index );
-            DataValueAttributes a = m_bars->dataValueAttributes( index );
-            TextAttributes ta = a.textAttributes();
-            ta.setRotation( 0 );
-            ta.setFont( QFont( "Comic", 10 ) );
-            ta .setPen( QPen( brush.color() ) );
-            if ( checked )
-                ta.setVisible( true );
-            else
-                ta.setVisible( false );
+    for ( int iColumn = 0; iColumn<colCount; ++iColumn ) {
+        QBrush brush( m_bars->brush( iColumn ) );
+        DataValueAttributes a( m_bars->dataValueAttributes( iColumn ) );
+        TextAttributes ta( a.textAttributes() );
+        ta.setRotation( 0 );
+        ta.setFont( font );
+        ta .setPen( QPen( brush.color() ) );
+        if ( checked )
+            ta.setVisible( true );
+        else
+            ta.setVisible( false );
 
-            a.setTextAttributes( ta );
-            a.setVisible( true );
-            m_bars->setDataValueAttributes( index, a);
-        }
+        a.setTextAttributes( ta );
+        a.setVisible( true );
+        m_bars->setDataValueAttributes( iColumn, a);
     }
+
     m_chart->update();
 }
 
+
 void MainWindow::on_paintThreeDBarsCB_toggled( bool checked )
 {
-    ThreeDBarAttributes td;
+    ThreeDBarAttributes td( m_bars->threeDBarAttributes() );
     double defaultDepth = td.depth();
     if ( checked ) {
         td.setEnabled( true );
@@ -171,7 +172,7 @@ void MainWindow::on_markColumnSB_valueChanged( int i )
 void MainWindow::on_widthSB_valueChanged( int value )
 {
     if (  widthCB->isChecked() ) {
-        BarAttributes ba;
+        BarAttributes ba( m_bars->barAttributes() );
         ba.setFixedBarWidth( value );
         ba.setUseFixedBarWidth( true );
         m_bars->setBarAttributes( ba  );
@@ -181,12 +182,10 @@ void MainWindow::on_widthSB_valueChanged( int value )
 
 void MainWindow::on_widthCB_toggled( bool checked )
 {
-     Q_UNUSED( checked );
-
-    if (  widthCB->isChecked() )
+    if (  checked ){
         on_widthSB_valueChanged( widthSB->value() );
-    else {
-        BarAttributes ba;
+    }else{
+        BarAttributes ba( m_bars->barAttributes() );
         ba.setUseFixedBarWidth( false );
         m_bars->setBarAttributes( ba  );
         m_bars->update();

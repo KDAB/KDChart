@@ -106,10 +106,9 @@ void MainWindow::on_paintValuesCB_toggled( bool checked )
 {
     //testing
     const int colCount = m_lines->model()->columnCount();
-    for ( int i = 0; i<colCount; ++i ) {
-        QModelIndex index = m_lines->model()->index( 0, i, QModelIndex() );
-        QBrush brush = qVariantValue<QBrush>( m_lines->model()->headerData( i, Qt::Vertical, DatasetBrushRole ) );
-        DataValueAttributes a = m_lines->dataValueAttributes( index );
+    for ( int iColumn = 0; iColumn<colCount; ++iColumn ) {
+        QBrush brush = qVariantValue<QBrush>( m_lines->model()->headerData( iColumn, Qt::Vertical, DatasetBrushRole ) );
+        DataValueAttributes a = m_lines->dataValueAttributes( iColumn );
         if ( !paintMarkersCB->isChecked() ) {
             MarkerAttributes ma = a.markerAttributes();
             ma.setVisible( false );
@@ -126,7 +125,7 @@ void MainWindow::on_paintValuesCB_toggled( bool checked )
 
         a.setTextAttributes( ta );
         a.setVisible( true );
-        m_lines->setDataValueAttributes( i, a);
+        m_lines->setDataValueAttributes( iColumn, a);
     }
     m_chart->update();
 }
@@ -135,14 +134,14 @@ void MainWindow::on_paintValuesCB_toggled( bool checked )
 void MainWindow::on_paintMarkersCB_toggled( bool checked )
 {
    //testing
-    DataValueAttributes a;
+    DataValueAttributes a( m_lines->dataValueAttributes() );
     // dont paint the values
     if ( !paintValuesCB->isChecked() ) {
         TextAttributes ta = a.textAttributes();
         ta.setVisible( false );
         a.setTextAttributes( ta );
     }
-    MarkerAttributes ma = a.markerAttributes();
+    MarkerAttributes ma( a.markerAttributes() );
     MarkerAttributes::MarkerStylesMap map;
     map.insert( 0, MarkerAttributes::MarkerSquare );
     map.insert( 1, MarkerAttributes::MarkerCircle );
@@ -190,50 +189,53 @@ void MainWindow::on_paintMarkersCB_toggled( bool checked )
     a.setVisible( true );
 
     // make a special one for certain values
-    DataValueAttributes yellowAttributes(a);
-    MarkerAttributes yellowMarker = yellowAttributes.markerAttributes();
+    DataValueAttributes yellowAttributes( a );
+    MarkerAttributes yellowMarker( yellowAttributes.markerAttributes() );
     yellowMarker.setMarkerColor( Qt::yellow );
     yellowAttributes.setMarkerAttributes( yellowMarker );
 
     const int rowCount = m_lines->model()->rowCount();
     const int colCount = m_lines->model()->columnCount();
-    for ( int i = 0; i<colCount; ++i ) {
-        DataValueAttributes colAttributes(a);
+    for ( int iColumn = 0; iColumn<colCount; ++iColumn ) {
+        DataValueAttributes colAttributes( a );
         if ( markersStyleCB->currentIndex() == 0 ) {
-            MarkerAttributes ma = colAttributes.markerAttributes();
-            ma.setMarkerStyle( ma.markerStylesMap().value(i) );
+            MarkerAttributes ma( colAttributes.markerAttributes() );
+            ma.setMarkerStyle( ma.markerStylesMap().value(iColumn) );
             colAttributes.setMarkerAttributes( ma );
         }
         for ( int j=0; j< rowCount; ++j ) {
-            QModelIndex index = m_lines->model()->index( j, i, QModelIndex() );
-            QBrush brush = qVariantValue<QBrush>( m_lines->model()->headerData( i, Qt::Vertical, DatasetBrushRole ) );
+            QModelIndex index = m_lines->model()->index( j, iColumn, QModelIndex() );
+            QBrush brush = qVariantValue<QBrush>( m_lines->model()->headerData( iColumn, Qt::Vertical, DatasetBrushRole ) );
             double value = m_lines->model()->data( index ).toDouble();
             /* Set a specific color - marker for a specific value */
             if ( value == 8 ) {
                 m_lines->setDataValueAttributes( index, yellowAttributes );
             }
         }
-        m_lines->setDataValueAttributes( i, colAttributes );
+        m_lines->setDataValueAttributes( iColumn, colAttributes );
     }
     m_chart->update();
 }
 
-void MainWindow::on_markersStyleCB_currentIndexChanged( const QString & /*text*/ )
+void MainWindow::on_markersStyleCB_currentIndexChanged( const QString & text )
 {
+    Q_UNUSED( text );
     if ( paintMarkersCB->isChecked() )
         on_paintMarkersCB_toggled( true );
 }
 
 
-void MainWindow::on_markersWidthSB_valueChanged( int /*i*/ )
+void MainWindow::on_markersWidthSB_valueChanged( int i )
 {
+    Q_UNUSED( i );
     markersHeightSB->setValue( markersWidthSB->value() );
     if ( paintMarkersCB->isChecked() )
         on_paintMarkersCB_toggled( true );
 }
 
-void MainWindow::on_markersHeightSB_valueChanged( int /*i*/ )
+void MainWindow::on_markersHeightSB_valueChanged( int i )
 {
+    Q_UNUSED( i );
     markersWidthSB->setValue( markersHeightSB->value() );
     if ( paintMarkersCB->isChecked() )
         on_paintMarkersCB_toggled( true );
@@ -244,16 +246,15 @@ void MainWindow::on_displayAreasCB_toggled( bool checked )
 {
     const int rowCount = m_lines->model()->rowCount();
     const int colCount = m_lines->model()->columnCount();
-     for ( int i = 0; i<colCount; ++i ) {
-         QModelIndex index = m_lines->model()->index( 0, i, QModelIndex() );
+     for ( int iColumn = 0; iColumn<colCount; ++iColumn ) {
          for ( int j=0; j< rowCount; ++j ) {
-             LineAttributes la = m_lines->lineAttributes( index );
+             LineAttributes la( m_lines->lineAttributes( iColumn ) );
              if ( checked  ) {
                  la.setDisplayArea( true );
                  la.setTransparency( transparencySB->value() );
              } else
                  la.setDisplayArea( false );
-             m_lines->setLineAttributes( i,  la );
+             m_lines->setLineAttributes( iColumn,  la );
          }
      }
      m_chart->update();
@@ -263,10 +264,9 @@ void MainWindow::on_transparencySB_valueChanged( int alpha )
 {
     const int rowCount = m_lines->model()->rowCount();
     const int colCount = m_lines->model()->columnCount();
-    for ( int i = 0; i<colCount; ++i ) {
-        QModelIndex index = m_lines->model()->index( 0, i, QModelIndex() );
+    for ( int iColumn = 0; iColumn<colCount; ++iColumn ) {
         for ( int j=0; j< rowCount; ++j ) {
-            LineAttributes la = m_lines->lineAttributes( index );
+            LineAttributes la = m_lines->lineAttributes( iColumn );
             la.setTransparency( alpha );
             m_lines->setLineAttributes( la );
         }
