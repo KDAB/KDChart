@@ -1650,6 +1650,105 @@
 		    Also we allow the usert to display or not the texts dynamically. see 
 		    <methodname>KDChartTextAttributes::setVisible()</methodname>.
 		</para>
+		<para>
+		    In order to be able to display our diagram in threeD mode we need to bring 
+		    <classname>KDChartThreeDBarAttributes</classname>, and configure it. Here we are 
+		    enabling or disabling and change its Depth parameter according to the user 
+		    interaction.
+		</para>
+		<programlisting>
+		    ...
+		    ThreeDBarAttributes td( m_bars->threeDBarAttributes() );
+		    double defaultDepth = td.depth();
+		    if ( checked ) {
+		    td.setEnabled( true );
+		      if ( threeDDepthCB->isChecked() )
+		        td.setDepth( depthSB->value() );
+		      else
+		        td.setDepth( defaultDepth );
+		    } else {
+		      td.setEnabled( false );
+		    }
+		    m_bars->setThreeDBarAttributes( td );
+		    m_chart->update();
+		    ...
+		</programlisting>
+		<para>
+		    ThreeDBarAttributes are as simple to use as all other Attributes types. 
+		    Our next lines of code will make use of the generic 
+		    <methodname>KDChartAbstractDiagram::setPen()</methodname> available to
+		    all diagram types, to allow the user to mark a column or reset it to 
+		    the original Pen interactively. 
+		</para>
+		<programlisting>
+		    ...
+		    const int column = markColumnSB->value();
+		    QPen pen( m_bars->pen( column ) );
+		    if ( checked ) {
+		    pen.setColor( Qt::yellow );
+		    pen.setStyle( Qt::DashLine );
+		    pen.setWidth( 3 );
+		    m_bars->setPen( column, pen );
+		    }  else {
+		    pen.setColor( Qt::darkGray );
+		    pen.setStyle( Qt::SolidLine );
+		    pen.setWidth( 1 );
+		    m_bars->setPen( column, pen );
+		    }
+		    m_chart->update();
+		    ...
+		</programlisting>
+		<note>
+		    <para>
+			It is important to know that have three levels of precedence when setting the 
+		    attributes: 
+		    <itemizedlist>
+			<listitem>
+			    <para>
+				Global: Weak
+			    </para>
+			</listitem>
+			<listitem>
+			    <para>
+				Per column: Medium
+			    </para>
+			</listitem>
+			<listitem>
+			    <para>
+				Per cell: Strong
+			    </para>
+			</listitem>
+		    </itemizedlist>
+		    Which means that once you have set the attributes for a column or a cell, you will
+		    not be able to change those settings by calling the "global" method to reset it 
+		    to another value, but instead call the per column or per index setter. As 
+		    demonstrated in the above code.
+		    </para>
+		</note>
+		<para>
+		    Finally we configure a typical <classname>KDChartBarAttributes</classname>, the Bar 
+		    Width, for the user to be able to change the width of the bars dynamically increasing
+		    or decreasing its value via the Gui.
+		</para>
+		<programlisting>
+		    if (  widthCB->isChecked() ) {
+		      BarAttributes ba( m_bars->barAttributes() );
+		      ba.setFixedBarWidth( value );
+		      ba.setUseFixedBarWidth( true );
+		      m_bars->setBarAttributes( ba  );
+		    }
+		    m_chart->update();
+		</programlisting>
+		<para>
+		    Here we are making use of the 
+		    <methodname>KDChartBarAttributes::setUseFixedBarWidth()</methodname> method to 
+		    enable or disable the effect. The Bar Width value being passed by the value of 
+		    a Spin Box.		    
+		</para>
+		<para>
+		   See how this widget having some attributes enabled is displayed in the following 
+		    screen-shot.
+		</para>
 		<figure float="0" id="fig-fullbar">
 		    <title>A Full featured Bar Chart</title>
 		    <mediaobject>
@@ -1658,6 +1757,11 @@
 			</imageobject>
 		    </mediaobject>
 		</figure>
+		<para>
+		    This example is available to compile and run from the 
+		    <filename>examples/Bars/Advanced</filename> directory into your KD Chart installation.
+		    We recommend you to run it.
+		</para>
 	    </sect2>	  	    	    
             <sect2>
 		<title id="lines">Line Charts</title>
