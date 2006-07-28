@@ -9,7 +9,7 @@ CONFIG(debug, debug|release) {
     !unix: KDCHARTLIB = "kdchartd"
 }
 
-TARGET = barAdvanced
+TARGET = BarAdvanced
 HEADERS= mainwindow.h
 SOURCES= main.cpp mainwindow.cpp
 FORMS  = mainwindow.ui
