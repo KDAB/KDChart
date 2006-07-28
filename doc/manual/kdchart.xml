@@ -1236,18 +1236,6 @@
 		    example below:
 		</para>
 		<itemizedlist>
-<!-- we will not use that in the future
-		    <listitem>
-			<para>
-			   DataValueGap: Gap between two values
-			</para>
-		    </listitem>
-		    <listitem>
-			<para>
-			   ValueBlockGap: Gap betwen each block of values
-			</para>
-		    </listitem>
--->
 		    <listitem>
 			<para>
 			    BarWidth: Specifies the width of the bars
@@ -1263,7 +1251,6 @@
 			    BarGapFactor: Configure the gap between Bars within a group
 			</para>
 		    </listitem>
-		    <!-- Pending Michel is that still actual? - I guess so -->
 		    <listitem>
 			<para>
 			    DrawSolidExcessArrow: Specify whether the arrows showing excess values
@@ -1487,11 +1474,7 @@
 	    </sect2>
 	    <sect2>
 		<title id="bartipssample" xreflabel="codexample">A complete Bar Example</title>
-		<para>
-		    <!-- Pending michel show a nice full featured bar chart with as many 
-		    attributes as possible - The following text and list has to be modified 
-		    after we have written our own more complete example - 
-		    see NotForCustomers/KDChart20-Manual-Examples.txt  -->
+		<para>		    
 		    In the following implementation we want to be able to:
 		</para>
 		<itemizedlist>
@@ -1762,7 +1745,7 @@
 		    <filename>examples/Bars/Advanced</filename> directory into your KD Chart installation.
 		    We recommend you to run it.
 		</para>
-	    </sect2>	  	    	    
+	    </sect2>		    	    
             <sect2>
 		<title id="lines">Line Charts</title>
 		<tip>
@@ -1878,7 +1861,7 @@
 			on.
 		    </para>
 		</note>			
-	    </sect2>
+	    </sect2>	    
 	    <sect2>
 		<title id="linesample" xreflabel="codesample">Code Sample</title>
 		<para>
@@ -1913,57 +1896,98 @@
 		    widget.resize( 600, 600 );		    
                     // store the data and assign it
 		    QVector&lt; double &gt; vec0,  vec1;
-		    vec0 &lt;&lt; 5 &lt;&lt; 4 &lt;&lt; 3 &lt;&lt; 2 &lt;&lt; 1 &lt;&lt; 0
-		    &lt;&lt; 1 &lt;&lt; 2 &lt;&lt; 3 &lt;&lt; 4 &lt;&lt; 5;
-		    vec1 &lt;&lt; 25 &lt;&lt; 16 &lt;&lt; 9 &lt;&lt; 4 &lt;&lt; 1 &lt;&lt; 0
-		    &lt;&lt; 1 &lt;&lt; 4 &lt;&lt; 9 &lt;&lt; 16 &lt;&lt; 25;		    
+		    vec0 &lt;&lt; 5 &lt;&lt; 1 &lt;&lt; 3 &lt;&lt; 4 &lt;&lt; 1;
+		    vec1 &lt;&lt; 3 &lt;&lt; 6 &lt;&lt; 2 &lt;&lt; 4 &lt;&lt; 8;
+		    vec2 &lt;&lt; 0 &lt;&lt; 7 &lt;&lt; 1 &lt;&lt; 2 &lt;&lt; 1;
 		    widget.setDataset( 0, vec0, "vec0" );
 		    widget.setDataset( 1, vec1, "vec1" );
+		    widget.setDataset( 2, vec2, "vec2" );
+		    widget.setSubType(  Widget::Percent );
 		</programlisting>
 		<para>
 		    We dont need to change the default chart type as Line Charts is the default . 
-		    In this case we also want to display it in stacked mode. 
+		    In this case we also want to display it in percent mode. 
 		    <classname>KDChartWidget</classname> with its <methodname>setSubType</methodname> 
 		    method allow us to achieve that the easy way.		    
 		</para>
 		<programlisting>
-		    widget.setSubType( Widget::Stacked );
+		    widget.setSubType( Widget::Percent );
 		</programlisting>
 		<para>
-		    The default sub-type being Normal type for the widget, we need to implicitely call 
-		    <methodname>KDChartWidget::setSubType()</methodname> in this case.
+		    The default sub-type being Normal for all types of charts we need to call 
+		    implicitely <methodname>KDChartWidget::setSubType()</methodname> in this case.
 		    We can also change the sub-type of our line chart further on by calling for example 
-		    <methodname>setSubType( Widget::Percent )</methodname> or reset its default value by
+		    <methodname>setSubType( Widget::Stacked )</methodname> or reset its default value by
 		    calling <methodname>setSubType( Widget::Normal )</methodname>.		    
 		</para>
-		
-		<para>
-		    We recommended you to read, compile and run the following example.
-		</para> 
-		<programlisting linenumbering="numbered" id="simple_line__mainwindow_h">
-		    <textobject><textdata fileref="../../examples/Lines/mainwindow.h"/>
-		    </textobject>
-		</programlisting>                
-		<para>
-		    More explanation h file?
-		</para>
-		<programlisting linenumbering="numbered" id="simple_line__mainwindow_cpp">
-		    <textobject><textdata fileref="../../examples/Lines/mainwindow.cpp"/>
-		    </textobject>
+		<programlisting>
+		   //Configure a pen and draw 
+		    //a dashed line for column 1
+		    QPen pen;
+		    pen.setWidth( 3 );
+		    pen.setStyle( Qt::DashDotLine );
+		    pen.setColor(  Qt::green );
+		    // call your diagram and set the new pen
+		    widget.lineDiagram()->setPen(  1 , pen );
 		</programlisting>
 		<para>
-		    More explanation cpp file?
+		     In the above code our intention is to draw a new style of line for this 
+		    specific dataset in order to keep the attention of the public on it.
+		    That is what we call configuring an attribute. In this case the pen attribute. 
+		    To do so we configure a QPen and then assign it to our diagram. 
+		    <methodname>KDChartWidget::lineDiagram()</methodname> allow us to get a pointer to 
+		    our widget diagram. As you can see it is very simple to assign a new pen to our 
+		    diagram by calling the diagram <methodname>KDChartAbstractDiagram::setPen()</methodname>
+		    method.
 		</para>
-		<figure float="0" id="fig-simpleline">
-		    <title>A Simple Line Chart</title>
+		<programlisting>
+		    //Display in Area mode
+		    LineAttributes ld;
+		    ld.setDisplayArea( true );
+		    //configure transparency 
+		    //it is nicer and let us 
+		    //all the area
+		    ld.setTransparency( 25 );
+		    widget.lineDiagram()->setLineAttributes( ld );
+		</programlisting>
+		<para>
+		    The code above makes use of typical <classname>KDChartLineAttributes</classname> and
+		    let us diplay the areas as well as set up the color transparency which is very 
+		    helpfull when displaying a normal chart type where the areas can hide each other. 
+		    Finally we conclude our small example:
+		</para>
+		<programlisting>
+		    widget.show();
+		    
+		    return app.exec();
+		    }
+		</programlisting>
+		<para>
+		    See the screen-shot below to view The resulting chart displayed by the above code. 
+		</para>
+		<figure float="0" id="fig-simplelinewidget">
+		    <title>A Simple Line ChartWidget</title>
 		    <mediaobject>
 			<imageobject>
-			    <imagedata width="3in" scalefit="1" fileref="images/simpleline.png"/>
+			    <imagedata width="3in" scalefit="1" fileref="images/simplelinewidget.png"/>
 			</imageobject>
 		    </mediaobject>
 		</figure>
-	    </sect2>
-	    <sect2>
+		<para>
+		    This example can be compiled and run from the following location of your KD Chart
+		    installation <filename>examples/Lines/SimpleLineWidget</filename>
+		</para>
+		<note>
+		    <para>
+			Configuring the attributes for a <classname>KDChartLineDiagram</classname> making use
+			of a <classname>KDChartChart</classname> is done the same way as for a 
+			<classname>KDChartWidget</classname>. You just need to assign the configured attributes 
+			to your line diagram and assign the diagram to the chart by calling 
+			<methodname>KDChartChart::replaceDiagram()</methodname>.
+		    </para>
+		</note>
+		</sect2>
+	        <sect2>	
 		<title id="linesattributes">Lines Attributes</title>
 		<para>
 		    There are only a few attributes specific to a line chart as it is using a Pen 
@@ -2451,14 +2475,14 @@
 		    </listitem>		   
 		</itemizedlist>
 		<programlisting linenumbering="numbered" id="fullarea_mainwindow_h">
-		    <textobject><textdata fileref="../../examples/Lines/mainwindow.h"/>
+		    <textobject><textdata fileref="../../examples/Lines/Advanced/mainwindow.h"/>
 		    </textobject>
 		</programlisting>                
 		<para>
 		    More explanation h file?
 		</para>
 		<programlisting linenumbering="numbered" id="fullarea_mainwindow_cpp">
-		    <textobject><textdata fileref="../../examples/Lines/mainwindow.cpp"/>
+		    <textobject><textdata fileref="../../examples/Lines/Advanced/mainwindow.cpp"/>
 		    </textobject>
 		</programlisting>
 		<para>
