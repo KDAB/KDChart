@@ -1512,16 +1512,56 @@
 		    </listitem>
 		    <listitem>
 			<para>
-			   Display in ThreeD mode and change the Bars depth. 
+			   Display in ThreeD mode and change the Bars depth dynamically. 
 			</para>
-		    </listitem>		   
+		    </listitem>
+		    <listitem>
+			<para>
+			   Change the Bars width dynamically. 
+			</para>
+		    </listitem>
 		</itemizedlist>
+		<para>
+		    To do so we will need to use several types of attributes. Generics one 
+		    available to all chart types (e.g 
+		    <methodname>KDChartAbstractDiagram::setPen()</methodname>,
+		    <classname>KDCHartDataValueAttributes</classname> and 
+		    <classname>KDChartTextAttributes</classname> as well as typical bar attributes 
+		    only applyable to the Bar types as 
+		    <methodname>KDChartBarAttributes::setWidth()</methodname> or 
+		    <classname>KDChartThreeDBarAttributes</classname>
+		</para>
+		<para>
+		    We are making use of a <classname>KDChartChart</classname> class and also of 
+		    an home made <classname>TableModel</classname> for the convenience and derived 
+		    from <classname>QAbstractTableModel</classname>.
+		</para>
+		<para>
+		    TableModel uses a simple rectangular vector of vectors to represent a data
+		    table that can be displayed in regular Qt Interview views. Additionally, it 
+		    provides a method to load CSV files exported by OpenOffice Calc in the default 
+		    configuration. This allows to prepare test data using spreadsheet software.
+		</para>
+		<para>
+		    It expects the CSV files in the subfolder ./modeldata. If the application
+		    is started from another location, it will ask for the location of the
+		    model data files.
+		</para>
+		<para>
+		    We recommend you to consult the "TableModel" interface and implementation files
+		    which are located in the <filename>examples/tools</filename> directory of your 
+		    KD Chart installation.
+		</para>
+		<para>
+		    Let us concentrate on our Bar chart implementation for now and consult the 
+		    following files:
+		</para>
 		<programlisting linenumbering="numbered" id="fullbar_mainwindow_h">
 		    <textobject><textdata fileref="../../examples/Bars/Advanced/mainwindow.h"/>
 		    </textobject>
 		</programlisting>                
 		<para>
-		    More explanation h file?
+		    
 		</para>
 		<programlisting linenumbering="numbered" id="fullbar_mainwindow_cpp">
 		    <textobject><textdata fileref="../../examples/Bars/Advanced/mainwindow.cpp"/>
