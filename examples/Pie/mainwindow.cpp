@@ -71,6 +71,8 @@ void MainWindow::on_startPositionSB_valueChanged( double pos )
     startPositionSL->blockSignals( true );
     startPositionSL->setValue( intValue );
     startPositionSL->blockSignals( false );
+    // note: We use the global getter method here, it will fall back
+    //       automatically to return the default settings.
     PieAttributes attrs( m_pie->pieAttributes() );
     attrs.setStartPosition( pos );
     m_pie->setPieAttributes( attrs );
@@ -83,6 +85,8 @@ void MainWindow::on_startPositionSL_valueChanged( int pos )
     startPositionSB->blockSignals( true );
     startPositionSB->setValue( doubleValue  );
     startPositionSB->blockSignals( false );
+    // note: We use the global getter method here, it will fall back
+    //       automatically to return the default settings.
     PieAttributes attrs( m_pie->pieAttributes() );
     attrs.setStartPosition( pos );
     m_pie->setPieAttributes( attrs );
@@ -97,6 +101,8 @@ void MainWindow::on_explodeSubmitPB_clicked()
 
 void MainWindow::setExplodeFactor( int column, double value )
 {
+    // note: We use the per-column getter method here, it will fall back
+    //       automatically to return the global (or even the default) settings.
     PieAttributes attrs( m_pie->pieAttributes( column ) );
     attrs.setExplodeFactor( value );
     m_pie->setPieAttributes( column, attrs );
@@ -131,7 +137,9 @@ void MainWindow::slotNextFrame()
 
 void MainWindow::on_threeDGB_toggled( bool toggle )
 {
-    ThreeDPieAttributes attrs;
+    // note: We use the global getter method here, it will fall back
+    //       automatically to return the default settings.
+    ThreeDPieAttributes attrs( m_pie->threeDPieAttributes() );
     attrs.setEnabled( toggle );
     attrs.setDepth( threeDFactorSB->value() );
     m_pie->setThreeDPieAttributes( attrs );
@@ -140,7 +148,9 @@ void MainWindow::on_threeDGB_toggled( bool toggle )
 
 void MainWindow::on_threeDFactorSB_valueChanged( int factor )
 {
-    ThreeDPieAttributes attrs;
+    // note: We use the global getter method here, it will fall back
+    //       automatically to return the default settings.
+    ThreeDPieAttributes attrs( m_pie->threeDPieAttributes() );
     attrs.setEnabled( threeDGB->isChecked() );
     attrs.setDepth( factor );
     m_pie->setThreeDPieAttributes( attrs );
