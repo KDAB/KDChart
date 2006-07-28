@@ -123,6 +123,20 @@ void LineDiagram::setLineAttributes(
         LineAttributesRole );
 }
 
+LineAttributes LineDiagram::lineAttributes() const
+{
+    return qVariantValue<LineAttributes>(
+        d->attributesModel->data( KDChart::LineAttributesRole ) );
+}
+
+LineAttributes LineDiagram::lineAttributes( int column ) const
+{
+    return qVariantValue<LineAttributes>(
+        d->attributesModel->data(
+            d->attributesModel->mapFromSource( columnToIndex( column ) ),
+            KDChart::LineAttributesRole ) );
+}
+
 LineAttributes LineDiagram::lineAttributes(
     const QModelIndex & index ) const
 {
@@ -162,6 +176,20 @@ void LineDiagram::setThreeDLineAttributes(
         d->attributesModel->mapFromSource(index),
         qVariantFromValue( ta ),
         ThreeDLineAttributesRole );
+}
+
+ThreeDLineAttributes LineDiagram::threeDLineAttributes() const
+{
+    return qVariantValue<ThreeDLineAttributes>(
+        d->attributesModel->data( KDChart::ThreeDLineAttributesRole ) );
+}
+
+ThreeDLineAttributes LineDiagram::threeDLineAttributes( int column ) const
+{
+    return qVariantValue<ThreeDLineAttributes>(
+        d->attributesModel->data(
+            d->attributesModel->mapFromSource( columnToIndex( column ) ),
+            KDChart::ThreeDLineAttributesRole ) );
 }
 
 ThreeDLineAttributes LineDiagram::threeDLineAttributes(

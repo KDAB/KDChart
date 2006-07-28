@@ -68,12 +68,16 @@ public:
     void setLineAttributes( const LineAttributes & a );
     void setLineAttributes( int column, const LineAttributes & a );
     void setLineAttributes( const QModelIndex & index, const LineAttributes & a );
+    LineAttributes lineAttributes() const;
+    LineAttributes lineAttributes( int column ) const;
     LineAttributes lineAttributes( const QModelIndex & index ) const;
 
     void setThreeDLineAttributes( const ThreeDLineAttributes & a );
     void setThreeDLineAttributes( int column, const ThreeDLineAttributes & a );
     void setThreeDLineAttributes( const QModelIndex & index,
                                   const ThreeDLineAttributes & a );
+    ThreeDLineAttributes threeDLineAttributes() const;
+    ThreeDLineAttributes threeDLineAttributes( int column ) const;
     ThreeDLineAttributes threeDLineAttributes( const QModelIndex & index ) const;
 
     // implement AbstractCartesianDiagram

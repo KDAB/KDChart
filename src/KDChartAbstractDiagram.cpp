@@ -189,6 +189,13 @@ QModelIndex AbstractDiagram::attributesModelRootIndex() const
   return d->attributesModelRootIndex;
 }
 
+QModelIndex AbstractDiagram::columnToIndex( int column ) const
+{
+    if( model() )
+        return QModelIndex( model()->index( 0, column, rootIndex() ) );
+    return QModelIndex();
+}
+
 void AbstractDiagram::setCoordinatePlane( AbstractCoordinatePlane* parent )
 {
     d->plane = parent;
@@ -203,7 +210,8 @@ void AbstractDiagram::doItemsLayout()
     QAbstractItemView::doItemsLayout();
 }
 
-void AbstractDiagram::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
+void AbstractDiagram::dataChanged( const QModelIndex &topLeft,
+                                   const QModelIndex &bottomRight )
 {
   // We are still too dumb to do intelligent updates...
   d->databoundariesDirty = true;
@@ -213,21 +221,38 @@ void AbstractDiagram::dataChanged(const QModelIndex &topLeft, const QModelIndex 
 void AbstractDiagram::setDataValueAttributes( const QModelIndex & index,
                                               const DataValueAttributes & a )
 {
-    d->attributesModel->setData( d->attributesModel->mapFromSource(index),
-				qVariantFromValue( a ), DataValueLabelAttributesRole );
+    d->attributesModel->setData(
+        d->attributesModel->mapFromSource( index ),
+        qVariantFromValue( a ),
+        DataValueLabelAttributesRole );
 }
 
 
 void AbstractDiagram::setDataValueAttributes( int column, const DataValueAttributes & a )
 {
 
-    d->attributesModel->setHeaderData( column, Qt::Vertical, qVariantFromValue( a ), DataValueLabelAttributesRole );
+    d->attributesModel->setHeaderData(
+        column, Qt::Vertical,
+        qVariantFromValue( a ), DataValueLabelAttributesRole );
+}
+
+DataValueAttributes AbstractDiagram::dataValueAttributes() const
+{
+    return qVariantValue<DataValueAttributes>( KDChart::DataValueLabelAttributesRole );
+}
+
+DataValueAttributes AbstractDiagram::dataValueAttributes( int column ) const
+{
+    return qVariantValue<DataValueAttributes>(
+        attributesModel()->data( attributesModel()->mapFromSource(columnToIndex( column )),
+        KDChart::DataValueLabelAttributesRole ) );
 }
 
 DataValueAttributes AbstractDiagram::dataValueAttributes( const QModelIndex & index ) const
 {
-    return qVariantValue<DataValueAttributes>( attributesModel()->data( attributesModel()->mapFromSource(index),
-									KDChart::DataValueLabelAttributesRole ) );
+    return qVariantValue<DataValueAttributes>(
+        attributesModel()->data( attributesModel()->mapFromSource(index),
+        KDChart::DataValueLabelAttributesRole ) );
 }
 
 void AbstractDiagram::setDataValueAttributes( const DataValueAttributes & a )

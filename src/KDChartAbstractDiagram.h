@@ -208,6 +208,23 @@ namespace KDChart {
         void setDataValueAttributes( const DataValueAttributes & a );
 
         /**
+         * Retrieve the DataValueAttributes speficied globally. This will fall
+         * back automatically to the default settings, if there
+         * are no specific settings.
+         * @return The global DataValueAttributes.
+         */
+        DataValueAttributes dataValueAttributes() const;
+
+        /**
+         * Retrieve the DataValueAttributes for the given dataset. This will fall
+         * back automatically to what was set at model level, if there
+         * are no dataset specific settings.
+         * @param index The dataset to retrieve the attributes for.
+         * @return The DataValueAttributes for the given dataset.
+         */
+        DataValueAttributes dataValueAttributes( int column ) const;
+
+        /**
          * Retrieve the DataValueAttributes for the given index. This will fall
          * back automatically to what was set at dataset or model level, if there
          * are no datapoint specific settings.
@@ -355,8 +372,10 @@ namespace KDChart {
         void setPercentMode( bool percent );
         bool percentMode() const;
 
-        virtual void paintMarker( QPainter* painter, const MarkerAttributes& markerAttributes,
-                                  const QBrush& brush, const QPen&, const QPointF& point, const QSizeF& size );
+        virtual void paintMarker( QPainter* painter,
+                                  const MarkerAttributes& markerAttributes,
+                                  const QBrush& brush, const QPen&,
+                                  const QPointF& point, const QSizeF& size );
 
         /**
          * The dataset dimension of a diagram determines, how many value dimensions
@@ -395,6 +414,7 @@ namespace KDChart {
         virtual void paintMarkers( QPainter* painter );
 	void setAttributesModelRootIndex( const QModelIndex& );
         QModelIndex attributesModelRootIndex() const;
+        QModelIndex columnToIndex( int column ) const;
         /**
          * Helper method, retrieving the data value (DisplayRole) for a given row and column
          * @param row The row to query.

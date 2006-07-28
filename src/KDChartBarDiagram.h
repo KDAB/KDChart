@@ -65,12 +65,16 @@ public:
     void setBarAttributes( int column, const BarAttributes & a );
     void setBarAttributes( const QModelIndex & index,
                            const BarAttributes & a );
+    BarAttributes barAttributes() const;
+    BarAttributes barAttributes( int column ) const;
     BarAttributes barAttributes( const QModelIndex & index ) const;
 
     void setThreeDBarAttributes( const ThreeDBarAttributes & a );
     void setThreeDBarAttributes( int column, const ThreeDBarAttributes & a );
     void setThreeDBarAttributes( const QModelIndex & index,
                                   const ThreeDBarAttributes & a );
+    ThreeDBarAttributes threeDBarAttributes() const;
+    ThreeDBarAttributes threeDBarAttributes( int column ) const;
     ThreeDBarAttributes threeDBarAttributes( const QModelIndex & index ) const;
 
     // implement AbstractCartesianDiagram
