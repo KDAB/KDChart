@@ -164,7 +164,7 @@ void PieDiagram::paint( PaintContext* ctx )
             pieRect.translate( difference );
         }
 
-        ctx->painter()->drawPie( pieRect, ( int ) ((-startAngle + 90 ) * 16), ( int ) (-spanAngle * 16) );
+        ctx->painter()->drawPie( pieRect, ( int ) ((-startAngle + 90 )), ( int ) (-spanAngle) );
         startAngle += spanAngle;
         startAngleValueSpace += nextValue;
     }
@@ -176,20 +176,6 @@ void PieDiagram::paint( PaintContext* ctx )
 }
 */
 
-
-/*
-  Paints the actual data area.
-
-  \param painter the QPainter onto which the chart should be painted
-  \param data the data that will be displayed as a chart
-  \param paint2nd specifies whether the main chart or the additional chart is to be drawn now
-  \param regions a pointer to a list of regions that will be filled
-  with regions representing the data segments, if not null
-  */
-//void PieDiagram::paintData( QPainter* painter,
-//        KDChartTableDataBase* data,
-//        bool paint2nd,
-//        KDChartDataRegionList* regions )
 
 void PieDiagram::paint( PaintContext* ctx )
 {
@@ -262,8 +248,8 @@ void PieDiagram::paint( PaintContext* ctx )
         //  d->position.moveBy( contentsRect.left(), contentsRect.top() );
     }
 
-    const qreal sectorsPerValue = 5760.0 / sum; // 5760 == 16*360, number of sections in Qt circle
-    qreal currentValue = startAngle * 16.0;
+    const qreal sectorsPerValue = 360.0 / sum;
+    qreal currentValue = startAngle;
 
     bool atLeastOneValue = false; // guard against completely empty tables
     QVariant vValY;
@@ -284,7 +270,9 @@ void PieDiagram::paint( PaintContext* ctx )
             else
                 d->startAngles[ iColumn ] = currentValue;
         }
-        //qDebug() << d->startAngles[ iColumn ] << d->angleLens[ iColumn ];
+        //qDebug() << "d->startAngles["<<iColumn<<"] == " << d->startAngles[ iColumn ]
+        //         << " +  d->angleLens["<<iColumn<<"]" << d->angleLens[ iColumn ]
+        //         << " = " << d->startAngles[ iColumn ]+d->angleLens[ iColumn ];
 
         currentValue = d->startAngles[ iColumn ] + d->angleLens[ iColumn ];
     }
@@ -297,9 +285,9 @@ void PieDiagram::paint( PaintContext* ctx )
 
     // Find the backmost pie which is at +90° and needs to be drawn
     // first
-    int backmostpie = findPieAt( 90 * 16, colCount );
+    int backmostpie = findPieAt( 90, colCount );
     // Find the frontmost pie (at -90°/+270°) that should be drawn last
-    int frontmostpie = findPieAt( 270 * 16, colCount );
+    int frontmostpie = findPieAt( 270, colCount );
     // and put the backmost pie on the TODO stack to initialize it,
     // but only if it is not the frontmostpie
     QStack < int > todostack;
@@ -323,6 +311,8 @@ void PieDiagram::paint( PaintContext* ctx )
     // The list with pies that have already been drawn
 
     QList < int > donelist;
+
+    const qreal granularity = attrs.granularity();
 
     // Draw pies until the todostack is empty or only the frontmost
     // pie is there
@@ -363,7 +353,7 @@ void PieDiagram::paint( PaintContext* ctx )
             continue;
         }
         // When we get here, we can just draw the pie and proceed.
-        drawOnePie( ctx->painter(), 0, currentpie, sizeFor3DEffect );
+        drawOnePie( ctx->painter(), 0, currentpie, granularity, sizeFor3DEffect );
 
         // Mark the pie just drawn as done.
         donelist.append( currentpie );
@@ -380,7 +370,7 @@ void PieDiagram::paint( PaintContext* ctx )
     }
 
     // now only the frontmost pie is left to draw
-    drawOnePie( ctx->painter(), 0, frontmostpie, sizeFor3DEffect );
+    drawOnePie( ctx->painter(), 0, frontmostpie, granularity, sizeFor3DEffect );
 }
 
 
@@ -394,6 +384,7 @@ void PieDiagram::paint( PaintContext* ctx )
   */
 void PieDiagram::drawOnePie( QPainter* painter,
         uint dataset, uint pie,
+        qreal granularity,
         qreal threeDPieHeight )
 {
     // Is there anything to draw at all?
@@ -415,7 +406,7 @@ void PieDiagram::drawOnePie( QPainter* painter,
         QRectF drawPosition( d->position );
 
         if ( attrs.explode() ) {
-            qreal explodeAngle = ( startAngle + angleLen / 2.0 ) / 16.0;
+            qreal explodeAngle = ( startAngle + angleLen / 2.0 );
             qreal explodeAngleRad = DEGTORAD( explodeAngle );
             qreal cosAngle = cos( explodeAngleRad );
             qreal sinAngle = -sin( explodeAngleRad );
@@ -429,6 +420,7 @@ void PieDiagram::drawOnePie( QPainter* painter,
         // otherwise partly hide the pie itself.
         draw3DEffect( painter,
             drawPosition, dataset, pie,
+            granularity,
             threeDAttrs,
             attrs.explode() );
 
@@ -439,7 +431,7 @@ void PieDiagram::drawOnePie( QPainter* painter,
         painter->setBrush( brush );
         painter->setPen( pen );
 
-        if ( angleLen == 5760 ) {
+        if ( angleLen == 360 ) {
             // full circle, avoid nasty line in the middle
             painter->drawEllipse( drawPosition );
 /*
@@ -457,30 +449,28 @@ void PieDiagram::drawOnePie( QPainter* painter,
                 datReg->points[ KDChartEnums::PosCenterRight ]
                     = pointOnCircle( drawPosition,    0 );
                 datReg->points[ KDChartEnums::PosTopRight ]
-                    = pointOnCircle( drawPosition,  720 );
+                    = pointOnCircle( drawPosition,  45 );
                 datReg->points[ KDChartEnums::PosTopCenter ]
-                    = pointOnCircle( drawPosition, 1440 );
+                    = pointOnCircle( drawPosition, 90 );
                 datReg->points[ KDChartEnums::PosTopLeft ]
-                    = pointOnCircle( drawPosition, 2160 );
+                    = pointOnCircle( drawPosition, 135 );
                 datReg->points[ KDChartEnums::PosCenterLeft ]
-                    = pointOnCircle( drawPosition, 2880 );
+                    = pointOnCircle( drawPosition, 180 );
                 datReg->points[ KDChartEnums::PosBottomLeft ]
-                    = pointOnCircle( drawPosition, 3600 );
+                    = pointOnCircle( drawPosition, 225 );
                 datReg->points[ KDChartEnums::PosBottomCenter ]
-                    = pointOnCircle( drawPosition, 4320 );
+                    = pointOnCircle( drawPosition, 270 );
                 datReg->points[ KDChartEnums::PosBottomRight ]
-                    = pointOnCircle( drawPosition, 5040 );
-                datReg->startAngle = 2880;
-                datReg->angleLen   = 5760;
+                    = pointOnCircle( drawPosition, 315 );
+                datReg->startAngle = 180;
+                datReg->angleLen   = 360;
                 regions->append( datReg );
             }
 */
         } else {
             // draw the top of this piece
             // Start with getting the points for the arc.
-            const qreal stepWidth = 1.0;
-
-            const int arcPoints = static_cast<int>(trunc( angleLen / stepWidth ));
+            const int arcPoints = static_cast<int>(trunc( angleLen / granularity ));
             QPolygonF poly( arcPoints+2 );
             qreal degree=0.0;
             int iPoint = 0;
@@ -489,7 +479,7 @@ void PieDiagram::drawOnePie( QPainter* painter,
                 poly[ iPoint ] = pointOnCircle( drawPosition, startAngle + degree );
 //qDebug() << degree << angleLen << poly[ iPoint ];
                 perfectMatch = (degree == angleLen);
-                degree += stepWidth;
+                degree += granularity;
                 ++iPoint;
             }
             // if necessary add one more point to fill the last small gap
@@ -582,6 +572,7 @@ void PieDiagram::drawOnePie( QPainter* painter,
 void PieDiagram::draw3DEffect( QPainter* painter,
         const QRectF& drawPosition,
         uint dataset, uint pie,
+        qreal granularity,
         const ThreeDPieAttributes& threeDAttrs,
         bool /*explode*/ )
 {
@@ -607,152 +598,173 @@ void PieDiagram::draw3DEffect( QPainter* painter,
     qreal startAngle = d->startAngles[ pie ];
     qreal endAngle = startAngle + d->angleLens[ pie ];
     // Normalize angles
-    while ( startAngle >= 5760 )
-        startAngle -= 5760;
-    while ( endAngle >= 5760 )
-        endAngle -= 5760;
-    Q_ASSERT( startAngle >= 0 && startAngle <= 360 * 16 );
-    Q_ASSERT( endAngle >= 0 && endAngle <= 360 * 16 );
+    while ( startAngle >= 360 )
+        startAngle -= 360;
+    while ( endAngle >= 360 )
+        endAngle -= 360;
+    Q_ASSERT( startAngle >= 0 && startAngle <= 360 );
+    Q_ASSERT( endAngle >= 0 && endAngle <= 360 );
 
     //int centerY = drawPosition.center().y();
 
     if ( startAngle == endAngle ||
-            startAngle == endAngle - 5760 ) { // full circle
+            startAngle == endAngle - 360 ) { // full circle
         drawArcEffectSegment( painter, drawPosition, 
-                threeDAttrs.height(), 2880, 5760 );
-    } else if ( startAngle <= 90 * 16 ) {
-        if ( endAngle <= 90 * 16 ) {
+                threeDAttrs.height(),
+                180, 360, granularity );
+    } else if ( startAngle <= 90 ) {
+        if ( endAngle <= 90 ) {
             if ( startAngle <= endAngle ) {
                 /// starts and ends in first quadrant, less than 1/4
                 drawStraightEffectSegment( painter, drawPosition,
-                                           threeDAttrs.height(), startAngle );
+                    threeDAttrs.height(), startAngle );
             } else {
                 /// starts and ends in first quadrant, more than 3/4
                 drawStraightEffectSegment( painter, drawPosition,
-                                           threeDAttrs.height(), startAngle );
+                    threeDAttrs.height(), startAngle );
                 drawArcEffectSegment( painter, drawPosition,  
-                                      threeDAttrs.height(), 2880, 5760 );
+                    threeDAttrs.height(),
+                    180, 360, granularity );
             }
-        } else if ( endAngle <= 180 * 16 ) {
+        } else if ( endAngle <= 180 ) {
             /// starts in first quadrant, ends in second quadrant,
             /// less than 1/2
             drawStraightEffectSegment( painter, drawPosition, 
-                                       threeDAttrs.height(), startAngle );
+                threeDAttrs.height(), startAngle );
             drawStraightEffectSegment( painter, drawPosition, 
-                                       threeDAttrs.height(), endAngle );
-        } else if ( endAngle <= 270 * 16 ) {
+                threeDAttrs.height(), endAngle );
+        } else if ( endAngle <= 270 ) {
             /// starts in first quadrant, ends in third quadrant
             drawStraightEffectSegment( painter, drawPosition,  
-                    threeDAttrs.height(), startAngle );
+                threeDAttrs.height(), startAngle );
             drawStraightEffectSegment( painter, drawPosition,  
-                    threeDAttrs.height(), endAngle );
+                threeDAttrs.height(), endAngle );
             drawArcEffectSegment( painter, drawPosition,  
-                    threeDAttrs.height(), 2880, endAngle );
+                threeDAttrs.height(),
+                180, endAngle, granularity );
         } else { // 270*16 < endAngle < 360*16
             /// starts in first quadrant, ends in fourth quadrant,
             /// more than 3/4
             drawStraightEffectSegment( painter, drawPosition,  
-                    threeDAttrs.height(), startAngle );
+                threeDAttrs.height(), startAngle );
             drawArcEffectSegment( painter, drawPosition,  
-                    threeDAttrs.height(), 2880, endAngle );
+                threeDAttrs.height(),
+                180, endAngle, granularity );
         }
-    } else if ( startAngle <= 180 * 16 ) {
-        if ( endAngle <= 90 * 16 ) {
+    } else if ( startAngle <= 180 ) {
+        if ( endAngle <= 90 ) {
             drawArcEffectSegment( painter, drawPosition,  
-                    threeDAttrs.height(), 2880, 5760 );
-        } else if ( endAngle <= 180 * 16 ) {
+                threeDAttrs.height(),
+                180, 360, granularity );
+        } else if ( endAngle <= 180 ) {
             if ( startAngle <= endAngle ) {
                 /// starts in second quadrant, ends in second
                 /// quadrant, less than 1/4
                 drawStraightEffectSegment( painter, drawPosition,
-                        threeDAttrs.height(), endAngle );
+                    threeDAttrs.height(), endAngle );
             } else {
                 /// starts in second quadrant, ends in second
                 /// quadrant, more than 1/4
                 drawStraightEffectSegment( painter, drawPosition,
-                        threeDAttrs.height(), endAngle );
-                drawArcEffectSegment( painter, drawPosition,  
-                        threeDAttrs.height(), 2880, 5760 );
-            }
-        } else if ( endAngle <= 270 * 16 ) {
-            drawStraightEffectSegment( painter, drawPosition,  
                     threeDAttrs.height(), endAngle );
+                drawArcEffectSegment( painter, drawPosition,  
+                    threeDAttrs.height(),
+                    180, 360, granularity );
+            }
+        } else if ( endAngle <= 270 ) {
+            drawStraightEffectSegment( painter, drawPosition,  
+                threeDAttrs.height(), endAngle );
             drawArcEffectSegment( painter, drawPosition,  
-                    threeDAttrs.height(), 2880, endAngle );
+                threeDAttrs.height(),
+                180, endAngle, granularity );
         } else { // 270*16 < endAngle < 360*16
             drawArcEffectSegment( painter, drawPosition,  
-                    threeDAttrs.height(), 2880, endAngle );
+                threeDAttrs.height(),
+                180, endAngle, granularity );
         }
-    } else if ( startAngle <= 270 * 16 ) {
-        if ( endAngle <= 90 * 16 ) {
+    } else if ( startAngle <= 270 ) {
+        if ( endAngle <= 90 ) {
             drawArcEffectSegment( painter, drawPosition,  
-                    threeDAttrs.height(), startAngle, 5760 );
-        } else if ( endAngle <= 180 * 16 ) {
+                threeDAttrs.height(),
+                startAngle, 360, granularity );
+        } else if ( endAngle <= 180 ) {
             drawStraightEffectSegment( painter, drawPosition,  
-                    threeDAttrs.height(), endAngle );
+                threeDAttrs.height(), endAngle );
             drawArcEffectSegment( painter, drawPosition,  
-                    threeDAttrs.height(), startAngle, 5760 );
-        } else if ( endAngle <= 270 * 16 ) {
+                threeDAttrs.height(),
+                startAngle, 360, granularity );
+        } else if ( endAngle <= 270 ) {
             if ( startAngle <= endAngle ) {
                 /// starts in third quadrant, ends in third quadrant,
                 /// less than 1/4
                 drawStraightEffectSegment( painter, drawPosition,
-                        threeDAttrs.height(), endAngle );
+                    threeDAttrs.height(), endAngle );
                 drawArcEffectSegment( painter, drawPosition,  
-                        threeDAttrs.height(), startAngle, endAngle );
+                    threeDAttrs.height(),
+                    startAngle, endAngle, granularity );
             } else {
                 /// starts in third quadrant, ends in third quadrant,
                 /// more than 3/4
                 drawStraightEffectSegment( painter, drawPosition,
-                        threeDAttrs.height(), endAngle );
+                    threeDAttrs.height(), endAngle );
                 drawArcEffectSegment( painter, drawPosition,  
-                        threeDAttrs.height(), 2880, endAngle );
+                    threeDAttrs.height(),
+                    180, endAngle, granularity );
                 drawArcEffectSegment( painter, drawPosition,  
-                        threeDAttrs.height(), startAngle, 5760 );
+                    threeDAttrs.height(),
+                    startAngle, 360, granularity );
             }
         } else { // 270*16 < endAngle < 360*16
             drawArcEffectSegment( painter, drawPosition,  
-                    threeDAttrs.height(), startAngle, endAngle );
+                threeDAttrs.height(),
+                startAngle, endAngle, granularity );
         }
     } else { // 270*16 < startAngle < 360*16
-        if ( endAngle <= 90 * 16 ) {
+        if ( endAngle <= 90 ) {
             drawStraightEffectSegment( painter, drawPosition,  
-                    threeDAttrs.height(), startAngle );
+                threeDAttrs.height(), startAngle );
             drawArcEffectSegment( painter, drawPosition,  
-                    threeDAttrs.height(), startAngle, 5760 );
-        } else if ( endAngle <= 180 * 16 ) {
+                threeDAttrs.height(),
+                startAngle, 360, granularity );
+        } else if ( endAngle <= 180 ) {
             drawStraightEffectSegment( painter, drawPosition,  
-                    threeDAttrs.height(), startAngle );
+                threeDAttrs.height(), startAngle );
             drawStraightEffectSegment( painter, drawPosition,  
-                    threeDAttrs.height(), endAngle );
+                threeDAttrs.height(), endAngle );
             drawArcEffectSegment( painter, drawPosition,  
-                    threeDAttrs.height(), startAngle, 5760 );
-        } else if ( endAngle <= 270 * 16 ) {
+                threeDAttrs.height(),
+                startAngle, 360, granularity );
+        } else if ( endAngle <= 270 ) {
             drawStraightEffectSegment( painter, drawPosition,  
-                    threeDAttrs.height(), startAngle );
+                threeDAttrs.height(), startAngle );
             drawStraightEffectSegment( painter, drawPosition,  
-                    threeDAttrs.height(), endAngle );
+                threeDAttrs.height(), endAngle );
             drawArcEffectSegment( painter, drawPosition,  
-                    threeDAttrs.height(), 2880, endAngle );
+                threeDAttrs.height(),
+                180, endAngle, granularity );
             drawArcEffectSegment( painter, drawPosition,  
-                    threeDAttrs.height(), startAngle, 5760 );
+                threeDAttrs.height(),
+                startAngle, 360, granularity );
         } else { // 270*16 < endAngle < 360*16
             if ( startAngle <= endAngle ) {
                 /// starts in fourth quadrant, ends in fourth
                 /// quadrant, less than 1/4
                 drawStraightEffectSegment( painter, drawPosition,
-                        threeDAttrs.height(), startAngle );
+                    threeDAttrs.height(), startAngle );
                 drawArcEffectSegment( painter, drawPosition,  
-                        threeDAttrs.height(), startAngle, endAngle );
+                    threeDAttrs.height(),
+                    startAngle, endAngle, granularity );
             } else {
                 /// starts in fourth quadrant, ends in fourth
                 /// quadrant, more than 3/4
                 drawStraightEffectSegment( painter, drawPosition, 
-                        threeDAttrs.height(), startAngle );
+                    threeDAttrs.height(), startAngle );
                 drawArcEffectSegment( painter, drawPosition,  
-                        threeDAttrs.height(), startAngle, 5760 );
+                    threeDAttrs.height(),
+                    startAngle, 360, granularity );
                 drawArcEffectSegment( painter, drawPosition,  
-                        threeDAttrs.height(), 2880, endAngle );
+                    threeDAttrs.height(),
+                    180, endAngle, granularity );
             }
         }
     }
@@ -798,15 +810,14 @@ void PieDiagram::drawArcEffectSegment( QPainter* painter,
         const QRectF& rect,
         qreal threeDHeight,
         qreal startAngle,
-        qreal endAngle )
+        qreal endAngle,
+        qreal granularity )
 {
     // Start with getting the points for the inner arc.
     const qreal startA = qMin(startAngle, endAngle);
     const qreal endA   = qMax(startAngle, endAngle);
 
-    const qreal stepWidth = 1.0;
-
-    int numHalfPoints = static_cast<int>(trunc( (endA-startA) / stepWidth )) + 1;
+    int numHalfPoints = static_cast<int>(trunc( (endA-startA) / granularity )) + 1;
 
     QPolygonF poly( numHalfPoints );
 
@@ -817,7 +828,7 @@ void PieDiagram::drawArcEffectSegment( QPainter* painter,
         poly[ numHalfPoints - iPoint - 1 ] = pointOnCircle( rect, degree );
 
         perfectMatch = (degree == startA);
-        degree -= stepWidth;
+        degree -= granularity;
         ++iPoint;
     }
     // if necessary add one more point to fill the last small gap
@@ -860,7 +871,7 @@ uint PieDiagram::findPieAt( qreal angle, int colCount )
     }
 
     // If we have not found it, try wrap around
-    //return findPieAt( angle + 5760, colCount );
+    //return findPieAt( angle + 360, colCount );
 return 0;
 }
 

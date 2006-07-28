@@ -73,10 +73,12 @@ protected:
 private:
     void drawOnePie( QPainter* painter,
         uint dataset, uint pie,
+        qreal granularity,
         qreal threeDPieHeight );
     void draw3DEffect( QPainter* painter,
         const QRectF& drawPosition,
         uint dataset, uint pie,
+        qreal granularity,
         const ThreeDPieAttributes& threeDAttrs,
         bool /*explode*/ );
     void drawStraightEffectSegment( QPainter* painter,
@@ -87,7 +89,8 @@ private:
         const QRectF& rect,
         qreal threeDHeight,
         qreal startAngle,
-        qreal endAngle );
+        qreal endAngle,
+        qreal granularity );
     uint findPieAt( qreal angle, int columnCount );
     uint findLeftPie( uint pie, int columnCount );
     uint findRightPie( uint pie, int columnCount );

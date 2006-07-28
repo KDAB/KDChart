@@ -86,6 +86,9 @@ public:
       * \note Granularity can only be specified for the whole diagram,
       * so please use the global AbstractPieDiagram::setThreeDPieAttributes( const ThreeDPieAttributes & a )
       * method. Granularity settings made using the per column setter method will be ignored.
+      *
+      * \param value the granularity value between 0.05 (one twentieth of a degree)
+      * and 36.0 (one tenth of a full circle), other values will be interpreted as 1.0.
       */
     void setGranularity( qreal value );
 

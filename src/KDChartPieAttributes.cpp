@@ -36,8 +36,9 @@ using namespace KDChart;
 
 
 PieAttributes::Private::Private()
-    : explodeFactor( 0.0 ),
-      startPosition( 0.0 )
+    : explodeFactor( 0.0 )
+    , startPosition( 0.0 )
+    , granularity(   1.0 )
 {
 }
 
@@ -122,7 +123,9 @@ void PieAttributes::setGranularity( qreal value )
 
 qreal PieAttributes::granularity() const
 {
-    return d->granularity;
+    return (d->granularity < 0.05 || d->granularity > 36.0)
+        ? 1.0
+        : d->granularity;
 }
 
 
