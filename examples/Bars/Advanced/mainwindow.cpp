@@ -126,16 +126,18 @@ void MainWindow::on_paintThreeDBarsCB_toggled( bool checked )
 
 void MainWindow::on_markColumnCB_toggled( bool checked )
 {
-    QPen pen;
+    const int column = markColumnSB->value();
+    QPen pen( m_bars->pen( column ) );
     if ( checked ) {
         pen.setColor( Qt::yellow );
         pen.setStyle( Qt::DashLine );
         pen.setWidth( 3 );
-        m_bars->setPen( markColumnSB->value(), pen );
+        m_bars->setPen( column, pen );
     }  else {
         pen.setColor( Qt::darkGray );
+        pen.setStyle( Qt::SolidLine );
         pen.setWidth( 1 );
-        m_bars->setPen( markColumnSB->value(), pen );
+        m_bars->setPen( column, pen );
     }
     m_chart->update();
 }
@@ -158,12 +160,8 @@ void MainWindow::on_threeDDepthCB_toggled( bool checked )
 
 void MainWindow::on_markColumnSB_valueChanged( int i )
 {
-     Q_UNUSED( i );
-
-    if ( markColumnCB->isChecked() )
-        on_markColumnCB_toggled( true );
-    else
-        on_markColumnCB_toggled( false);
+    QPen pen( m_bars->pen( i ) );
+    markColumnCB->setChecked( pen.color() == Qt::yellow );
 }
 
 void MainWindow::on_widthSB_valueChanged( int value )
