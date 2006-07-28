@@ -93,25 +93,36 @@ bool PieAttributes::explode() const
     return (d->explodeFactor != 0.0);
 }
 
-void PieAttributes::setExplodeFactor( double factor )
+void PieAttributes::setExplodeFactor( qreal factor )
 {
     d->explodeFactor = factor;
 }
 
-double PieAttributes::explodeFactor() const
+qreal PieAttributes::explodeFactor() const
 {
     return d->explodeFactor;
 }
 
 
-void PieAttributes::setStartPosition( double degrees )
+void PieAttributes::setStartPosition( qreal degrees )
 {
     d->startPosition = degrees;
 }
 
-double PieAttributes::startPosition() const
+qreal PieAttributes::startPosition() const
 {
     return d->startPosition;
+}
+
+
+void PieAttributes::setGranularity( qreal value )
+{
+    d->granularity = value;
+}
+
+qreal PieAttributes::granularity() const
+{
+    return d->granularity;
 }
 
 

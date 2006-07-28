@@ -59,26 +59,38 @@ public:
     bool explode() const;
 
     /** Set the explode factor.
-     * The explode factor is a double between 0 and 1, and is interpreted
+     * The explode factor is a qreal between 0 and 1, and is interpreted
      * as a percentage of the total available radius of the pie.
      *
      * \sa setExplode
      */
-    void setExplodeFactor( double factor );
+    void setExplodeFactor( qreal factor );
 
     /** @return the explode factor set by setExplode or by setExplodeFactor. */
-    double explodeFactor() const;
+    qreal explodeFactor() const;
 
     /** Set the starting angle for the first dataset.
       *
-      * \note Starting angle can only be specified for the whole diagram
-      * using the global AbstractPieDiagram::setThreeDPieAttributes( const ThreeDPieAttributes & a )
+      * \note Starting angle can only be specified for the whole diagram,
+      * so please use the global AbstractPieDiagram::setThreeDPieAttributes( const ThreeDPieAttributes & a )
       * method. Starting position settings made using the per column setter method will be ignored.
       */
-    void setStartPosition( double degrees );
+    void setStartPosition( qreal degrees );
 
     /** @return the starting angle for the first dataset. */
-    double startPosition() const;
+    qreal startPosition() const;
+
+    /** Set the granularity: the smaller the granularity the more your diagram
+      * segments will show facettes instead of rounded segments.
+      *
+      * \note Granularity can only be specified for the whole diagram,
+      * so please use the global AbstractPieDiagram::setThreeDPieAttributes( const ThreeDPieAttributes & a )
+      * method. Granularity settings made using the per column setter method will be ignored.
+      */
+    void setGranularity( qreal value );
+
+    /** @return the granularity. */
+    qreal granularity() const;
 
 
     bool operator==( const PieAttributes& ) const;

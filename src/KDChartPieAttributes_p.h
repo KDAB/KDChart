@@ -57,8 +57,9 @@ class PieAttributes::Private
 public:
     Private();
 
-    double explodeFactor;
-    double startPosition;
+    qreal explodeFactor;
+    qreal startPosition;
+    qreal granularity;
 };
 
 inline PieAttributes::PieAttributes( Private * p ) : _d( p ) { init(); }

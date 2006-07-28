@@ -54,6 +54,8 @@ public:
     void setPieAttributes( const PieAttributes & a );
     void setPieAttributes( int   column,
                            const PieAttributes & a );
+    PieAttributes pieAttributes() const;
+    PieAttributes pieAttributes( int column ) const;
     PieAttributes pieAttributes( const QModelIndex & index ) const;
 
     void setThreeDPieAttributes( const ThreeDPieAttributes & a );
@@ -61,6 +63,8 @@ public:
                                  const ThreeDPieAttributes & a );
     void setThreeDPieAttributes( const QModelIndex & index,
                                  const ThreeDPieAttributes & a );
+    ThreeDPieAttributes threeDPieAttributes() const;
+    ThreeDPieAttributes threeDPieAttributes( int column ) const;
     ThreeDPieAttributes threeDPieAttributes( const QModelIndex & index ) const;
 }; // End of class KDChartAbstractPieDiagram
 

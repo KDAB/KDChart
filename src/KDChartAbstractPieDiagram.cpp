@@ -85,11 +85,33 @@ void AbstractPieDiagram::setPieAttributes( int column, const PieAttributes & att
     emit layoutChanged( this );
 }
 
+// Note: Our users NEED this method - even if
+//       we do not need it at drawing time!
+//       (khz, 2006-07-28)
+PieAttributes AbstractPieDiagram::pieAttributes() const
+{
+    return qVariantValue<PieAttributes>(
+        d->attributesModel->data( PieAttributesRole ) );
+}
+
+// Note: Our users NEED this method - even if
+//       we do not need it at drawing time!
+//       (khz, 2006-07-28)
+PieAttributes AbstractPieDiagram::pieAttributes( int column ) const
+{
+    const QModelIndex index( model()->index( 0, column, rootIndex() ) );
+    return qVariantValue<PieAttributes>(
+        d->attributesModel->data(
+            d->attributesModel->mapFromSource( index ).column(),
+            PieAttributesRole ) );
+}
+
 PieAttributes AbstractPieDiagram::pieAttributes( const QModelIndex & index ) const
 {
     return qVariantValue<PieAttributes>(
         d->attributesModel->data(
-            d->attributesModel->mapFromSource( index ), PieAttributesRole ) );
+            d->attributesModel->mapFromSource( index ),
+            PieAttributesRole ) );
 }
 
 
@@ -112,10 +134,32 @@ void AbstractPieDiagram::setThreeDPieAttributes( const QModelIndex & index, cons
     emit layoutChanged( this );
 }
 
+// Note: Our users NEED this method - even if
+//       we do not need it at drawing time!
+//       (khz, 2006-07-28)
+ThreeDPieAttributes AbstractPieDiagram::threeDPieAttributes() const
+{
+    return qVariantValue<ThreeDPieAttributes>(
+        d->attributesModel->data( ThreeDPieAttributesRole ) );
+}
+
+// Note: Our users NEED this method - even if
+//       we do not need it at drawing time!
+//       (khz, 2006-07-28)
+ThreeDPieAttributes AbstractPieDiagram::threeDPieAttributes( int column ) const
+{
+    const QModelIndex index( model()->index( 0, column, rootIndex() ) );
+    return qVariantValue<ThreeDPieAttributes>(
+        d->attributesModel->data(
+            d->attributesModel->mapFromSource( index ).column(),
+            ThreeDPieAttributesRole ) );
+}
+
 ThreeDPieAttributes AbstractPieDiagram::threeDPieAttributes( const QModelIndex & index ) const
 {
     return qVariantValue<ThreeDPieAttributes>(
         d->attributesModel->data(
-            d->attributesModel->mapFromSource( index ), KDChart::ThreeDPieAttributesRole ) );
+            d->attributesModel->mapFromSource( index ),
+            ThreeDPieAttributesRole ) );
 }
 

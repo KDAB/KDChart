@@ -110,6 +110,44 @@ QVariant AttributesModel::headerData ( int section,
   return QVariant();
 }
 
+
+// Note: Our users NEED this method - even if
+//       we do not need it at drawing time!
+//       (khz, 2006-07-28)
+QVariant AttributesModel::data( int role ) const
+{
+  if ( isKnownAttributesRole( role ) ) {
+      // check if there is something set at global level
+      QVariant v = modelData( role );
+
+      // else return the default setting, if any
+      if ( !v.isValid() )
+          v = defaultsForRole( role );
+      return v;
+  }
+  return QVariant();
+}
+
+
+// Note: Our users NEED this method - even if
+//       we do not need it at drawing time!
+//       (khz, 2006-07-28)
+QVariant AttributesModel::data( int column, int role ) const
+{
+  if ( isKnownAttributesRole( role ) ) {
+      // check if there is something set for the column (dataset)
+      QVariant v;
+      v = headerData( column, Qt::Vertical, role );
+
+      // check if there is something set at global level
+      if ( !v.isValid() )
+          v = data( role ); // includes automatic fallback to default
+      return v;
+  }
+  return QVariant();
+}
+
+
 QVariant AttributesModel::data( const QModelIndex& index, int role ) const
 {
   //qDebug() << "AttributesModel::data(" << index << role << ")";
@@ -117,8 +155,10 @@ QVariant AttributesModel::data( const QModelIndex& index, int role ) const
     Q_ASSERT( index.model() == this );
   }
   QVariant sourceData = sourceModel()->data( mapToSource(index), role );
-  if ( sourceData.isValid() ) return sourceData;
-  // check if we are storing a value for this role at this index
+  if ( sourceData.isValid() )
+      return sourceData;
+
+  // check if we are storing a value for this role at this cell index
   if ( mDataMap.contains( index.column() ) ) {
       const QMap< int,  QMap< int, QVariant> > &colDataMap = mDataMap[ index.column() ];
       if ( colDataMap.contains( index.row() ) ) {
@@ -127,19 +167,13 @@ QVariant AttributesModel::data( const QModelIndex& index, int role ) const
               return dataMap[ role ];
       }
   }
-  if ( isKnownAttributesRole( role ) ) {
-      // check if there is something set for the column (dataset)
-      QVariant v;
-      if( index.isValid() ) v = headerData( index.column(), Qt::Vertical, role );
-      if ( !v.isValid() )
-          v = modelData( role );
-      if ( !v.isValid() )
-          v = defaultsForRole( role );
-      return v;
-  }
+  // check if there is something set for the column (dataset), or at global level
+  if( index.isValid() )
+      return data( index.column(), role ); // includes automatic fallback to default
 
   return QVariant();
 }
+
 
 bool AttributesModel::isKnownAttributesRole( int role ) const
 {

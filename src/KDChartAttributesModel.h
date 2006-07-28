@@ -67,6 +67,16 @@ public:
     void setPaletteType( PaletteType type );
     PaletteType paletteType() const;
 
+    /** Returns the data that were specified at global level,
+      * or the default data, or QVariant().
+      */
+    QVariant data(int role) const;
+
+    /** Returns the data that were specified at per column level,
+      * or the globally set data, or the default data, or QVariant().
+      */
+    QVariant data(int column, int role) const;
+
     /** \reimpl */
     QVariant headerData ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
     /** \reimpl */
