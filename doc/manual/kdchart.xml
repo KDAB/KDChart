@@ -1872,16 +1872,71 @@
 		    <para>
 			Three-dimensional look of the lines is no special feature you can enable it
 			for all types (<literal>Normal</literal>, <literal>Stacked</literal> or
-			<literal>Percent</literal>) by setting its ThreeD attributes, we will 
-			describe that in the "Line Attributes" section further on.
+			<literal>Percent</literal>) by setting its ThreeD attributes class (see 
+			<filename>KDChartThreeDLineAttributes.h</filename> to consult its interface).
+			We will describe it more in details  in the "Line Attributes" section further 
+			on.
 		    </para>
 		</note>			
 	    </sect2>
 	    <sect2>
-		<title id="linesample" xreflabel="codexample">Line Example</title>
+		<title id="linesample" xreflabel="codesample">Code Sample</title>
 		<para>
-		    Let us make this more concrete by looking at the following lines of code.
-		</para>		
+		    For now let us make the above description  more concrete by looking at the 
+		    following code sample based on the <filename>Simple Widget</filename> example we 
+		    have been demonstrating above 
+		    (<filename>Chapter 3 - Two Ways - Widget Example</filename>). In this example we 
+		    demonstrate how to configure your  line diagram and change its attributes when 
+		    working with a <classname>KDChartWidget</classname>.
+		</para>	
+		<para>
+		    First include the appropriate headers and bring in the "KDChart namespace":
+		</para>	    	
+		<programlisting>
+		    #include &lt;QApplication&gt;
+		    #include &lt;KDChartWidget&gt;
+                    #include &lt;KDChartLineDiagram&gt;
+                    #include &lt;QPen&gt;
+
+	            using namespace KDChart;			    
+		</programlisting>                
+		<para>
+		    We need to include <classname>KDChartLineDiagram</classname> in order to be able
+		    to configure some of its attributes as we will see further on. 
+		</para>
+		<programlisting>
+		    int main( int argc, char** argv ) {
+		    QApplication app( argc, argv );                    
+		    Widget widget;
+		    // our Widget can be configured 
+		    // as any Qt Widget 
+		    widget.resize( 600, 600 );		    
+                    // store the data and assign it
+		    QVector&lt; double &gt; vec0,  vec1;
+		    vec0 &lt;&lt; 5 &lt;&lt; 4 &lt;&lt; 3 &lt;&lt; 2 &lt;&lt; 1 &lt;&lt; 0
+		    &lt;&lt; 1 &lt;&lt; 2 &lt;&lt; 3 &lt;&lt; 4 &lt;&lt; 5;
+		    vec1 &lt;&lt; 25 &lt;&lt; 16 &lt;&lt; 9 &lt;&lt; 4 &lt;&lt; 1 &lt;&lt; 0
+		    &lt;&lt; 1 &lt;&lt; 4 &lt;&lt; 9 &lt;&lt; 16 &lt;&lt; 25;		    
+		    widget.setDataset( 0, vec0, "vec0" );
+		    widget.setDataset( 1, vec1, "vec1" );
+		</programlisting>
+		<para>
+		    We dont need to change the default chart type as Line Charts is the default . 
+		    In this case we also want to display it in stacked mode. 
+		    <classname>KDChartWidget</classname> with its <methodname>setSubType</methodname> 
+		    method allow us to achieve that the easy way.		    
+		</para>
+		<programlisting>
+		    widget.setSubType( Widget::Stacked );
+		</programlisting>
+		<para>
+		    The default sub-type being Normal type for the widget, we need to implicitely call 
+		    <methodname>KDChartWidget::setSubType()</methodname> in this case.
+		    We can also change the sub-type of our line chart further on by calling for example 
+		    <methodname>setSubType( Widget::Percent )</methodname> or reset its default value by
+		    calling <methodname>setSubType( Widget::Normal )</methodname>.		    
+		</para>
+		
 		<para>
 		    We recommended you to read, compile and run the following example.
 		</para> 
