@@ -26,7 +26,7 @@
 #include <QApplication>
 #include <KDChartWidget>
 #include <KDChartLineDiagram>
-//#include <KDChartThreeDLineAttributes>
+#include <KDChartThreeDLineAttributes>
 
 
 using namespace KDChart;
@@ -57,9 +57,9 @@ int main( int argc, char** argv ) {
     // call your diagram and set the new pen
     widget.lineDiagram()->setPen(  1 , pen );
 
-    //Set up your ThreeDAttributes
-    //display in ThreeD mode
-    LineAttributes la;
+    //Set up your Attributes
+    //display areas
+    LineAttributes la( widget.lineDiagram()->lineAttributes() );
     la.setDisplayArea(  true );
     la.setTransparency( 25 );
     widget.lineDiagram()->setLineAttributes( la );
