@@ -26,7 +26,6 @@
 #include <QApplication>
 #include <KDChartWidget>
 #include <KDChartLineDiagram>
-#include <KDChartThreeDLineAttributes>
 
 
 using namespace KDChart;
