@@ -2656,16 +2656,109 @@
 		<programlisting linenumbering="numbered" id="fullpoint_mainwindow_h">
 		    <textobject><textdata fileref="../../examples/Lines/PointChart/mainwindow.h"/>
 		    </textobject>
-		</programlisting>                
-		<para>
-		    More explanation h file?
+		</programlisting>   
+		<para>		
+		    In the above code we bring up the KDChart namespace as usual and declare our 
+		    slots. The purpose is to let the user configure its line chart attributes 
+		    manually from the GUI. As you can see we are using a KDChartChart object (m_chart),
+		    a KDChartLineDiagram object (m_lines), and our home made TableModel (m_model).
 		</para>
+		<para>
+		    The implementation is similar to the line chart implementation presented earlier:
+		</para>    		
 		<programlisting linenumbering="numbered" id="fullpoint_mainwindow_cpp">
 		    <textobject><textdata fileref="../../examples/Lines/PointChart/mainwindow.cpp"/>
 		    </textobject>
 		</programlisting>
 		<para>
-		    More explanation?
+		    Here we will not comment in details the code as it is similar to what we have seen 
+		    before in our line chart example, but only pick up the interesting part of it.
+		</para>
+		<para>
+		    In order to get a point chart we paint or hide the lines by setting our line diagram
+		    pen:
+		</para>
+		<programlisting>
+		    void MainWindow::on_paintLinesCB_toggled(  bool checked )
+		    {
+		    const int colCount = m_lines->model()->columnCount(m_lines->rootIndex());
+		    for ( int iColumn = 0; iColumn&lt;colCount; ++iColumn ) {
+			DataValueAttributes a( m_lines->dataValueAttributes( iColumn ) );
+			QBrush lineBrush( m_lines->brush( iColumn ) );
+			  if ( checked ) {
+			    QPen linePen( lineBrush.color() );
+			    m_lines->setPen(  iColumn,  linePen );
+			  }
+			  else
+			    m_lines->setPen( iColumn,  Qt::NoPen );
+			  }
+		    m_chart->update();
+		    }
+		</programlisting> 
+		<para>
+		    We need to retrieve the pen color before resetting it to its original value, and do 
+		    that by looping through the datasets.
+		</para>
+		<note>
+		    <para>
+			It is important to know that have three levels of precedence when 
+			setting the attributes: 
+		    <itemizedlist>
+			<listitem>
+			    <para>
+				Global: Weak
+			    </para>
+			</listitem>
+			<listitem>
+			    <para>
+				Per column: Medium
+			    </para>
+			</listitem>
+			<listitem>
+			    <para>
+				Per cell: Strong
+			    </para>
+			</listitem>
+		    </itemizedlist>
+		    Which means that once you have set the attributes for a column or a cell, you will
+		    not be able to change those settings by calling the "global" method to reset it 
+		    to another value, but instead call the per column or per index setter. As 
+		    demonstrated in the above code.
+		    </para>
+		</note>
+		<para>
+		    For us to be able to store different Markers style we make use of 
+		    <methodname>MarkerAttributes::MarkerStylesMap map</methodname> which is 
+		    very convenient in this case.
+		</para>
+		<programlisting>
+		    ...
+		    MarkerAttributes::MarkerStylesMap map;
+		    map.insert( 0, MarkerAttributes::MarkerSquare );
+		    map.insert( 1, MarkerAttributes::MarkerCircle );
+		    map.insert( 2, MarkerAttributes::MarkerRing );
+		    map.insert( 3, MarkerAttributes::MarkerCross );
+		    map.insert( 4, MarkerAttributes::MarkerDiamond );
+		    ...
+		    MarkerAttributes ma( dva.markerAttributes() );
+		    ma.setMarkerStylesMap( map );
+		    ....
+		</programlisting>
+		<para>
+		    The user may also change the size of the marker form the GUI and this is 
+		    implemented straight forward by using 
+		    <classname>KDChartMarkerAttributes</classname> method
+		    <methodname>setMarkerSize()</methodname>.
+		</para>
+		<programlisting>
+		     ma.setMarkerSize( QSize( markersWidthSB->value(),
+                                       markersHeightSB->value() ) );
+		</programlisting>
+		<para>
+		    This example is available to compile and run from the 
+		    <filename>examples/Lines/PointChart</filename> directory into your KD Chart 
+		    installation. We recommend you to run it. The widget displayed by the above 
+		    code is shown in the figure below.
 		</para>
 		<figure float="0" id="fig-fullpoint">
 		    <title>A Full featured Point Chart</title>
