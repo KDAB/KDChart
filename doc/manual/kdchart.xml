@@ -3127,11 +3127,10 @@
 			</imageobject>
 		    </mediaobject>
 		</figure>
-	    </sect2>	  	
+	    </sect2>
+<!--	  	
 	    <sect2>
-		<title id="highlow">High/Low Charts</title>
-		<!-- Pending Michel: this is not implemented yet - just filling in with 
-		kdc11 material -->
+		<title id="highlow">High/Low Charts</title>		
 		<tip>
 		    <para>
 			High/low charts could be useful if your value's evolution during a time 
@@ -3157,11 +3156,8 @@
 		    dataset's high/low/open/close values but it is your obligation to pass these 
 		    numbers into the data cells. This is done for optimization: most likely you 
 		    have these figures anyway, if not it is extremely easy to determine them.
-		    <!-- Pending Michel: we will need some code sample here to demo the above 
-		    if it is still actual -->
 		</para>
 		<para>
-		   <!-- Pending Michel check if that is still true -->
 		    The advantage of not stuffing all your data values into &kdchart; is that such 
 		    very small datasets (holding just four cells each) enable your high/low charts 
 		    to be displayed very quickly and even when representing a large number of days 
@@ -3184,9 +3180,8 @@
 			temperature reached in a year where your chart might show the evolution of 
 			these values during a span of some 100 years.
                     </para>    
-                </tip>		
-		<!-- Commented for now until the feature is implemented -->
-		<!--
+                </tip>	
+
 		<figure float="0" id="fig-hilosimple">
 		    <title>A Simple High/Low Chart</title>
 		    <mediaobject>
@@ -3195,14 +3190,13 @@
 			</imageobject>
 		    </mediaobject>
 		</figure>
-		-->		
 		<para>
 		    &kdchart; by default draws normal high/low charts without showing any open or 
 		    close marks when in High/Low Chart mode so no methods need to be called to get 
 		    such charts, however after having used your 
-		    <!-- <classname>KDChartParams</classname> --> to display another high/low chart
-		    type you can call 
-		    <!-- <methodname>setHiLoChartSubType( KDChart::HiLoNormal )</methodname>-->
+		    <classname>KDChartParams</classname> to display another high/low chart
+		    type you can call
+		    <methodname>setHiLoChartSubType( KDChart::HiLoNormal )</methodname>
                     to return to the default subtype.
 		</para>	    
 	    </sect2>
@@ -3218,8 +3212,6 @@
 			value diagram displaying one or several weeks.
                     </para>
                 </tip>
-		<!-- Commented for now until the feature is implemented -->
-		<!--
 		 <figure float="0" id="fig-openclosehilo">
                     <title>An Open/Close High/Low Chart </title>
 		    <mediaobject>
@@ -3228,11 +3220,10 @@
 			</imageobject>
 		    </mediaobject>
 		</figure>
-		-->
-		<para>
+	        <para>
 		    To make  draw the open and close lines too you call the "classname"
-		    <!-- <classname>KDChartParams</classname> --> function
-                    <!-- <methodname>setHiLoChartType( KDChart::HiLoOpenClose )</methodname> -->
+		    <classname>KDChartParams</classname> function
+                    <methodname>setHiLoChartType( KDChart::HiLoOpenClose )</methodname>
 		    "methodname". In case you are not interested in the open value (e.g. because 
 		    this would always be identical to the respective previous close value) just 
 		    use <literal>HiLoClose</literal> instead.  
@@ -3247,9 +3238,7 @@
 			idea to draw the lines without showing the data labels but show a few 
 			labels instead using "method".
                     </para>
-                </tip>
-		<!-- Commented for now until the feature is implemented -->
-		<!--
+                </tip>		
                 <figure float="0" id="fig-hilocustom">
                     <title>A High/Low Chart With Custom Data Labels</title>
                     <mediaobject>
@@ -3259,12 +3248,8 @@
                             width="3in" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
-                </figure>
-		-->
-		<!-- Pending Michel: check if the printing tips are still actual -->
-	    </sect2>
-	    <!-- Re-open when HiLo are implemented -->
-	    <!--
+                </figure>	
+               </sect2> 	    
 	    <sect2>
 		<title id="hlsample" xreflabel="codexample">High/Low Example</title>
 		<para>
@@ -3306,8 +3291,7 @@
 		<para>
 		    More explanation?
 		</para>   
-	    </sect2>
-	    -->
+	    </sect2>	   
 	    <sect2>
 		<title id="boxwhisker">Box and Whisker Charts</title>
 		<para>
@@ -3343,18 +3327,15 @@
 		</para>
 		<para>
 		    You can activate the box&amp;whisker chart mode by calling the 
-		    "classname" <!-- <classname>KDChartParams</classname> --> function
+		    "classname" <classname>KDChartParams</classname> function
 		    "methodname" 
-		    <!-- <methodname>setChartType( KDChartParams::BoxWhisker )</methodname>. -->
+		    <methodname>setChartType( KDChartParams::BoxWhisker )</methodname>. 
 		</para>
-		<!-- Commented for now until the feature is implemented -->
-		<!--
 		<note>
                   <para>
 		      Some notes about configuring colors and lines width
 	          </para>
-                </note>
-		-->
+                </note>	
 	    </sect2>	    
 	    <sect2>
 		<title id="bwnormal">Normal Box&amp;Whisker Charts</title>
@@ -3364,8 +3345,6 @@
 			spreading data and see the show outliers.
                     </para>
                 </tip>
-		<!-- Commented for now until the feature is implemented -->
-		<!--
 		<figure float="0" id="fig-simplebwchart">
                     <title>A Normal Box&amp;Whisker Chart</title>
                     <mediaobject>
@@ -3375,9 +3354,7 @@
 				width="3in" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
-                </figure>
-		-->
-		<!-- More para and notes about the view above -->
+                </figure>		
             </sect2>
 	    <sect2>
                 <title id="bwstripped">Box&amp;Whisker Charts without Outliers</title>
@@ -3387,8 +3364,6 @@
 			visually unpleasant, you can turn them off as described here.
                     </para>
                 </tip>
-		<!-- Commented for now until the feature is implemented -->
-		<!--
                 <figure float="0" id="fig-bwstripped">
                     <title>A Box&amp;Whisker Chart Without Outliers</title>
                     <mediaobject>
@@ -3399,17 +3374,16 @@
                         </imageobject>
                     </mediaobject>
                 </figure>
-		-->
                 <para>
 		    To suppress drawing of any markers for <emphasis>outliers</emphasis> or
                     <emphasis>extremes</emphasis> just set their size to zero by calling
-		    "methodname" <!-- <methodname>setBWChartOutValMarkerSize( 0 )</methodname> -->
+		    "methodname"  <methodname>setBWChartOutValMarkerSize( 0 )</methodname> 
                     as demonstrated by the tutorial file "filename", of course you could also use 
 		    a value different from zero to set them to a specific size:
-                    "methodename" <!-- <methodname>setBWChartOutValMarkerSize( -50
-                        )</methodname> --> would increase their dynamic size by factor two since 
+                    "methodename" <methodname>setBWChartOutValMarkerSize( -50
+                        )</methodname>  would increase their dynamic size by factor two since 
 		    -25 is the default setting (a quarter of the box width), while "methodname"
-		    <!-- <methodname>setBWChartOutValMarkerSize( 15 )</methodname> --> would set 
+		    <methodname>setBWChartOutValMarkerSize( 15 )</methodname> would set 
 		    them to a fixed size of 15pt ignoring the size of the widget.
                </para>
                 <note>
@@ -3429,8 +3403,6 @@
 			your charts even more expressive - at the possible expense of readability.
                     </para>
                 </tip>
-		<!-- Commented for now until the feature is implemented -->
-		<!--
                 <figure float="0" id="fig-bwstatistics">
                     <title>A Box&amp;Whisker Chart With Statistical Values</title>
                     <mediaobject>
@@ -3441,7 +3413,6 @@
                         </imageobject>
                     </mediaobject>
                 </figure>
-		-->
                 <para>
 		    Box&amp;whisker charts can print up to ten different statistical figures next 
 		    to the respective boxes&mdash;each of which can be shown using specific fonts, 
@@ -3457,8 +3428,6 @@
                     <literal>MeanValue</literal>, <literal>MinValue</literal>)
                     to the following function:
                 </para>
-		<!-- Fill in when implemented -->
-		<!--
 		<programlisting>
 		    void KDChartParams::setBWChartPrintStatistics( BWStatVal statValue,
 		    bool active,
@@ -3467,7 +3436,6 @@
 		    QColor* color = 0,
 		    QBrush* brush = 0 );
 		</programlisting>
-		-->
                 <para>
 		    Parameters:
 		</para>
@@ -3524,18 +3492,19 @@
                 </variablelist>
                 <para>
 		    Compile and run the tutorial file
-                    <!-- <ulink url="../../doc/tutorial/step01w/kdchart_step01w.cpp"> 
+
+                     <ulink url="../../doc/tutorial/step01w/kdchart_step01w.cpp"> 
                         <filename>kdchart_step01w.cpp</filename>
                     </ulink>
-		    -->
+		    
                     to see a box&amp;whisker chart featuring all possible statistical value texts 
 		    using custom font settings and a special background color for the boxes 
-		    <!-- (see also <xref linkend="fig-bwstatistics"/>).-->
+		    (see also <xref linkend="fig-bwstatistics"/>).
                 </para>
                 <note>
                     <para>
 			No fence values are printed for the middle series in our sample 
-			<!-- (<xref linkend="fig-bwstatistics"/>) --> because they are outside of 
+			(<xref linkend="fig-bwstatistics"/>) because they are outside of 
 			the chart's data area.  This can occur if all values of a series are in 
 			the inner fences and the box.  Since in this case there is no need to show 
 			the fence values the range of the ordinate axis is <emphasis>not</emphasis>
@@ -3545,8 +3514,6 @@
                     </para>
                 </note>
             </sect2>
-	    <!-- commented for now until this is implemented -->
-	    <!--
 	    <sect2>
 		<title id="bwsample" xreflabel="codexample">Box and Whisker Example</title>
 		<para>
