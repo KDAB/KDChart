@@ -87,13 +87,23 @@ void MainWindow::on_paintValuesCB_toggled( bool checked )
     m_chart->update();
 }
 
-/*
+
 void MainWindow::on_paintLinesCB_toggled(  bool checked )
 {
-
-    m_chart->update();
+    const int colCount = m_lines->model()->columnCount(m_lines->rootIndex());
+    for ( int iColumn = 0; iColumn<colCount; ++iColumn ) {
+        DataValueAttributes a( m_lines->dataValueAttributes( iColumn ) );
+        QBrush lineBrush( m_lines->brush( iColumn ) );
+        if ( checked ) {
+            QPen linePen( lineBrush.color() );
+            m_lines->setPen(  iColumn,  linePen );
+        }
+        else
+            m_lines->setPen( iColumn,  Qt::NoPen );
+    }
+        m_chart->update();
 }
-*/
+
 
 void MainWindow::on_paintMarkersCB_toggled( bool checked )
 {
