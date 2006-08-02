@@ -1,6 +1,6 @@
 SOURCES= main.cpp
 
-TARGET = LineParameters
+TARGET = Parameters
 
 KDCHART_PATH = ../../..
 INCLUDEPATH += \
