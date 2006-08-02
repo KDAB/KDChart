@@ -2002,11 +2002,12 @@
 		    go through those methods further on in our Area charts section in this Chapter. 
 		</para>
 		<para>
-		    <classname>KDChartLineDiagram</classname> combined with its attributes or 
-		    combined together with <classname>KDChartMarkerAttributes</classname> let us 
-		    display the line chart subtypes as described above as well as Area Charts and 
-		    Point charts the easy way. We will of course present all those alternatives 
-		    with some sample code and ready to use examples in the next sections.
+		    <classname>KDChartLineDiagram</classname> combined with its attributes and 
+		    methods or combined together with 
+		    <classname>KDChartMarkerAttributes</classname> let us display the line chart 
+		    subtypes as described above as well as Area Charts and Point charts the easy 
+		    way. We will of course present all those alternatives with some sample code 
+		    and ready to use examples in the next sections.
 		</para>
 		<para>
 		    The use of LineAttributes is as simple as for the other chart types:
@@ -2038,6 +2039,12 @@
 		    example below:
 		</para>
 		<itemizedlist>
+		     <listitem>
+			<para>
+			  MissingValuesPolicy: Specifies how missing values will be shown in a
+			  line diagram. 
+			</para>
+		    </listitem>
 		    <listitem>
 			<para>
 			  Display area: paint the area for a dataset. 
@@ -2049,27 +2056,194 @@
 			</para>
 		    </listitem>
 		</itemizedlist>
+		<note>
+		    <para>
+			All other attributes as ThreeDLineAttributes (specific to line charts), 
+			or MarkerAttributes, DataValueAttributes and TextAttributes ..etc..
+			available to all types of charts are of course also available to the 
+			line charts types and sub-types.
+		    </para>
+		</note>
 	    </sect2>	
 	    <sect2>
-		<title id="lineattributessample" xreflabel="codexample">Line Example</title>
+		<title id="lineattributessample" xreflabel="codesample">Line Attributes Sample</title>
 		<para>
-		    Let us make this more concrete by looking at the following lines of code.
+		    Let us make this more concrete by looking at the following sample code that 
+		    describes the above process. We recommand you to compile and run the following 
+		    example which is located into the <filename>examples/Lines/Parameters</filename>
+		    directory of your KD Chart installation.
+		</para>
+		<para>
+		    First of all we are including the header files and bring KD Chart namespace.
 		</para>
 		<programlisting>
-		    // 1 - Create a Line Attributes object
-		    LineAttributes la = m_lines->lineAttributes( index );
-                    // 2 - Display area at this index
-		    la.setDisplayArea( true );
-		    // 3 - Configure the transparency e.g. using the value 
-		    // returned by a Spin box
-                    la.setTransparency( transparencySB->value() );                    
-		    // 3 - Assign to your diagram
-		    m_lines->setLineAttributes( index, la );
+		    #include &lt;QtGui&gt;
+		    #include &lt;KDChartChart&gt;
+                    #include &lt;KDChartLineDiagram&gt;
+                    #include &lt;KDChartDataValueAttributes&gt;
+
+                    using namespace KDChart;		    
                 </programlisting>
 		<para>
-		    Of course the attributes can be set or retrieved for a column, at a given 
-		    index, or for the whole diagram as for all the other chart types.
-		</para>   
+		    We have included <classname>KDChartDataValueAttributes</classname> to be able 
+		    to display our data values. Those attributes are of course used by all types of
+		    charts and are not specifical to the Line diagram.
+		</para>
+		<para>
+		    In this example we are using a <classname>KDChartChart</classname> class as well
+		    as a <classname>QStandardItemModel</classname> in order to store the data which 
+		    will be assigned to our diagram. 
+		</para>
+		<programlisting>
+		    class ChartWidget : public QWidget {
+		    Q_OBJECT
+		    public:
+		    explicit ChartWidget(QWidget* parent=0)
+		    : QWidget(parent)
+		    {
+		    m_model.insertRows( 0,5, QModelIndex() );
+		    m_model.insertColumns( 0,5, QModelIndex() );
+
+		    for( int i = 0; i &lt; 5; ++i ) {
+		      for( int j = 0; j &lt; 5; ++j ) {
+		        m_model.setData( m_model.index( i,j,QModelIndex() ), (double)i*j );
+		      } 
+		    }		    
+
+		    LineDiagram* diagram = new LineDiagram;
+		    diagram->setModel(&amp;m_model);
+                </programlisting>
+		<para>
+		    After having stored our data into the model, we create a diagram. In this 
+		    case, we want to display a <classname>KDChartLineDiagram</classname>. 
+		    As always we need to assign the model to our diagram. This procedure is of 
+		    course similar for all types of diagrams. 
+		</para>
+		<para>
+		    We are now ready to configure our attributes. We want to display the data 
+		    values and configure the text and font for those.
+		</para>
+		<programlisting>
+		    // Display values
+		    // 1 - Call the relevant attributes
+		    DataValueAttributes dva( diagram->dataValueAttributes() );
+		    // 2 - We want to configure the font and colors
+		    //     for the data values text.
+		    TextAttributes ta( dva.textAttributes() );
+		    //rotate if you wish
+		    //ta.setRotation( 0 );
+		    // 3 - Set up your text attributes
+		    ta.setFont( QFont( "Comic", 6 ) );
+		    ta .setPen( QPen( QColor( Qt::darkGreen ) ) );
+		    ta.setVisible( true );
+		    // 4 - Assign the text attributes to your
+		    //     DataValuesAttributes
+		    dva.setTextAttributes( ta );
+		    dva.setVisible( true );
+		    // 5 - Assign to the diagram
+		    diagram->setDataValueAttributes( dva );
+                </programlisting>
+		<para>
+		    As for all attributes we call them by using the relevant method available
+		    from our diagram interface, here 
+		    <methodname>diagram->dataValueAttributes()</methodname>. The second step 
+		    is to set it up with our own values and finally we assign it to our diagram.
+		</para>
+		<para>
+		    We could have displayed the data values without caring about settings its 
+		    <classname>KDChartTextAttributes</classname>, but we wanted to do so in 
+		    order to demonstrate this feature too. Notice that you have to implicitely
+		    enable your attributes ( DataValue and Text) by calling their 
+		    <methodname>setVisible()</methodname> methods before we assign it to the 
+		    diagram.  
+		</para>
+		<note>
+		    <para>
+			After having configured our attributes we need to assign the 
+			attributes to the diagram. This can be done for the whole diagram, at a 
+			specific index or for a column. Look at the attributes interface  and look 
+			at the methods available there to find out those setters and getters.
+		    </para>   
+		</note>
+		<para>
+		    We want to configure the Pen in order to draw a section of a line (dataset)
+		    differently. e.g. We want to focus the attention of the reader on this 
+		    particular section.
+		</para>
+		<programlisting>
+		    // Draw a the section of a line differently.
+		    // 1 - Retrieve the pen for the dataset and change
+		    //    its style.
+		    //    This allow us to keep the line original color.
+		    QPen linePen(  diagram->pen( 1 ) );
+		    linePen.setWidth( 3 );
+		    linePen.setStyle( Qt::DashLine );
+		    // 2 - Change the Pen for a section within a line 
+		    while assigning it to the diagram		    
+		    diagram->setPen( m_model.index( 1, 1, QModelIndex() ), linePen );		   
+		</programlisting>	
+		<para>
+		    Of course we could  also have changed the pen for a single or all datasets as
+		    well. See how we call the pen for this very dataset before changing its style
+ 		    and width. This is done to keep its original color for consistancy. Alos
+		</para>		
+		<note>
+		    <para>
+			The Pen and the Brush setters and getters are implemented at a lower level 
+			in our <classname>KDChartAbstractDiagram</classname> class for a cleaner 
+			code structure. Those methods are of course used by all types of diagram 
+			and their configuration is very simple and straight forward as you can see 
+			in the above sample code. Create or get a Pen , configure it, call one of 
+			the setters methods available (See 
+			<filename>KDChartAbstractDiagram.h</filename> about those methods).
+		    </para>
+		</note>
+		<para>
+		    Our attribute having been configured and assigned we just need to assign our
+		    line diagram to our chart and conclude the implementation.
+		</para>
+		<programlisting>
+		    m_chart.coordinatePlane()->replaceDiagram(diagram);
+
+		    QVBoxLayout* l = new QVBoxLayout(this);
+		    l->addWidget(&amp;m_chart);
+		    setLayout(l);
+		    }
+
+		    private:
+		    Chart m_chart;
+		    QStandardItemModel m_model;
+		    };
+
+		    int main( int argc, char** argv ) {
+		    QApplication app( argc, argv );
+
+		    ChartWidget w;
+		    w.show();
+
+		    return app.exec();
+		    }
+
+		    #include "main.moc"
+		</programlisting>
+                <para>
+		    The above procedure can be applied to any of the supported attributes for 
+		    all chart types. The resulting display of the code we have gone through can be 
+		    seen in the following screen-shot. We also recommend you to compile and run the 
+		    example related to this section and located in the 
+		    <filename>examples/Lines/Parameters</filename> directory of your KD Chart 
+		    installation.
+                </para>
+		<figure float="0" id="fig-samplelinechart">
+                <title>Line With Configured Attributes</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata
+                        fileref="images/samplelinechart.png"
+                        width="3in" scalefit="1"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
 	    </sect2>	
 	    <sect2>
 		<title id="linestips">Tips and Tricks</title>
