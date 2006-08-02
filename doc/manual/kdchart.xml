@@ -2384,12 +2384,104 @@
 		    m_lines->setType( LineDiagram::Percent );
 		 ....
 		 m_chart->update();
-		</programlisting>    		
-		<figure float="0" id="fig-fullline">
+		</programlisting>
+    		<para>
+		    We want the user to be able to display or hide the data values from the 
+		    GUI, and also change the default font for our data values labels to make 
+		    it nicer. 
+		</para>
+		<programlisting>
+		    const int colCount = m_lines->model()->columnCount(m_lines->rootIndex());
+		    for ( int iColumn = 0; iColumn&lt;colCount; ++iColumn ) {
+			DataValueAttributes a( m_lines->dataValueAttributes( iColumn ) );
+			QBrush brush( m_lines->brush( iColumn ) );
+			TextAttributes ta( a.textAttributes() );
+			ta.setRotation( 0 );
+			ta.setFont( QFont( "Comic", 10 ) );
+			ta.setPen( QPen( brush.color() ) );
+			
+			if ( checked )
+			ta.setVisible( true );
+			else
+			ta.setVisible( false );
+			a.setVisible( true );
+			a.setTextAttributes( ta );
+			m_lines->setDataValueAttributes( iColumn, a );
+		    }
+		    m_chart->update();
+		</programlisting>		
+		<para>
+		    In the code above, we make sure our data values labels will be painted 
+		    using the dataset default color by retrieving the brush for each dataset 
+		    and assigning the color of the brush to the pen.
+		</para>
+		<note>
+		    <para>
+			It is important to know that have three levels of precedence when 
+			setting the attributes: 
+		    <itemizedlist>
+			<listitem>
+			    <para>
+				Global: Weak
+			    </para>
+			</listitem>
+			<listitem>
+			    <para>
+				Per column: Medium
+			    </para>
+			</listitem>
+			<listitem>
+			    <para>
+				Per cell: Strong
+			    </para>
+			</listitem>
+		    </itemizedlist>
+		    Which means that once you have set the attributes for a column or a cell, you will
+		    not be able to change those settings by calling the "global" method to reset it 
+		    to another value, but instead call the per column or per index setter. As 
+		    demonstrated in the above code.
+		    </para>
+		</note>
+		<para>
+		    The user should be able to display the area for one or several dataset.  
+		</para>
+		<programlisting>
+		    ....
+		    LineAttributes la = 
+		    m_lines->lineAttributes( 
+		    m_lines->model()->index( 0, column, m_lines->rootIndex() ) );
+		    if ( checked ) {
+		     la.setDisplayArea( true );
+		     la.setTransparency( opacity );
+		    }  else {
+		     la.setDisplayArea( false );
+		    }
+		    m_lines->setLineAttributes( column, la );
+		    ...
+		    m_chart->update();
+		    ...
+		</programlisting>
+		<para>
+		    This is implemented by configuring our line attributes and assign them by 
+		    dataset to the diagram, as shown above.
+		</para>
+		<para>
+		    The same procedure is used for us to be able to run our animation. You can 
+		    of course learn more about this part of the code which is more related to 
+		    Qt programming than KD Chart attributes by consulting the 
+		    <filename>examples/Lines/Advanced/mainwindow.cpp</filename>. 
+		</para>
+		<para>
+		    This example is available to compile and run from the 
+		    <filename>examples/Lines/Advanced</filename> directory into your KD Chart 
+		    installation. We recommend you to run it. The widget displayed by the above 
+		    code is shown in the figure below.
+		</para>
+		<figure float="0" id="fig-advancedline">
 		    <title>A Full featured Line Chart</title>
 		    <mediaobject>
 			<imageobject>
-			    <imagedata width="3in" scalefit="1" fileref="images/fulllinechart.png"/>
+			    <imagedata width="3in" scalefit="1" fileref="images/advancedlinechart.png"/>
 			</imageobject>
 		    </mediaobject>
 		</figure>
