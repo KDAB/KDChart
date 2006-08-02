@@ -2468,8 +2468,7 @@
 		<para>
 		    The same procedure is used for us to be able to run our animation. You can 
 		    of course learn more about this part of the code which is more related to 
-		    Qt programming than KD Chart attributes by consulting the 
-		    <filename>examples/Lines/Advanced/mainwindow.cpp</filename>. 
+		    Qt programming by consulting <filename>examples/Lines/Advanced/mainwindow.cpp</filename>. 
 		</para>
 		<para>
 		    This example is available to compile and run from the 
@@ -2485,6 +2484,14 @@
 			</imageobject>
 		    </mediaobject>
 		</figure>
+		<note>
+		    <para>
+			The following sections about Point charts and Area are tightly related to line charts. 
+			Point charts are line diagrams with Markers (lines themselves are not painted). Area 
+			charts are also line charts with the area below the lines, filled by the respective 
+			dataset's color.
+		    </para>
+		</note>
 	    </sect2>	  	
             <sect2>
 		<title id="points">Point Charts</title>
@@ -2508,12 +2515,14 @@
                     </imageobject>
                 </mediaobject>
             </figure>
-		<para>
-		    Unlike the other chart types in &kdchart; the point chart is not a type of 
-		    its own but actually a special kind of Line Chart. The resulting display is 
-		    obtained by painting markers instead of lines as we will see in the following 
-		    code sample. 
-		</para>
+		<note>
+		    <para>
+			Unlike the other chart types in &kdchart; the point chart is not a type of 
+			its own but actually a special kind of Line Chart. The resulting display is 
+			obtained by painting markers instead of lines as we will see in the following 
+			code sample. 
+		    </para>
+		</note>
 		<para>
 		    The process for creating a point chart is very simple as described below:
 		</para>
@@ -2525,16 +2534,16 @@
 		    </listitem>
 		    <listitem>
 			<para>
-			    Configure and display its data values markers. 
+			    Configure and display its data values marker attributes. 
 			</para>
 		    </listitem>
 		</itemizedlist>
 	    </sect2>
 	    <sect2>
-		<title id="pointsample" xreflabel="codexample">Point Example</title>
+		<title id="pointsample" xreflabel="codesample">Point Sample Code</title>
 		<para>
-		    The following code sample is going through the process above in order to 
-		    create a point chart.
+		    The following code sample is going through the process described above to obtain 
+		    a point chart.
 		</para>
 		<programlisting>
 		    // 1 - Set up a line chart and set its pen to Qt::NoPen
@@ -2565,9 +2574,9 @@
 		    m_lines->setDataValueAttributes( i, dva );			    	
                 </programlisting>
 		<para>
-		    After assigning your markersattributes setting to the diagram you may need
-		    to run <methodname>KDChartChart::update</methodname> as follow, in order to 
-		    force a re-paint depending of your implementation. 		   
+		    After having assigned your configured <classname>MarkerAttributes</classname> to 
+		    the diagram you need to run <methodname>KDChartChart::update</methodname> as follow, 
+		    in order to force a re-paint of the chart widget. 		   
 		</para> 
 		<programlisting>
 		    m_chart->update();		    	
