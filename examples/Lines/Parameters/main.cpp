@@ -50,8 +50,9 @@ public:
     linePen.setWidth( 3 );
     linePen.setStyle( Qt::DashLine );
     // 2 - Change the Pen for a section within a line
+    //     while assigning it to the diagram
     diagram->setPen( m_model.index( 1, 1, QModelIndex() ), linePen );
-    // 3 - Assign to the diagram
+    // 3 - Assign to the chart
     m_chart.coordinatePlane()->replaceDiagram(diagram);
 
     QVBoxLayout* l = new QVBoxLayout(this);
