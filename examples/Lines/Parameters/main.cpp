@@ -12,7 +12,6 @@ public:
     : QWidget(parent)
   {
 
-      //QModelIndex mindex = QModelIndex();
     m_model.insertRows( 0,5, QModelIndex() );
     m_model.insertColumns( 0,5, QModelIndex() );
 
