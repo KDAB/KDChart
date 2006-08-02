@@ -1,4 +1,5 @@
 TEMPLATE	= subdirs
 SUBDIRS		= SimpleLineWidget \                  
-	          Advanced
+	          Advanced \
+	          Parameters
 
