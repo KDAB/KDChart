@@ -2858,8 +2858,7 @@
 		<itemizedlist>
 		    <listitem>
 			<para>
-			    Create a LineAttribute object by calling 
-			    <methodname>KDChartLineDiagram::lineAttributes</methodname>
+			    Create a LineAttribute object by calling <methodname>KDChartLineDiagram::lineAttributes</methodname>
 			</para>
 		    </listitem>
 		    <listitem>
@@ -2870,9 +2869,10 @@
 		</itemizedlist>
 	    </sect2>
 	    <sect2>
-		<title id="areasample" xreflabel="codexample">Area Example</title>
+		<title id="areasample" xreflabel="codesample">Area Sample Code</title>
 		<para>
-		    Let us make this more concrete by looking at the following lines of code:	   
+		    Let us make this more concrete by looking at the following lines of code
+		    and reproduce the process described above:	   
 		</para>
 		<programlisting>
 		    // Create a LineAttribute object
@@ -2887,15 +2887,22 @@
 		    accessible by the diagram itself can be set, which give the user a lot of 
 		    flexibility ( display or hide data values, markers, lines, configure colors 
 		    etc ...). 
-		</para>   
+		</para>
+		<note>
+		    <para>
+		        <classname>KDChartLineAttributes</classname> can be set for the whole diagram, 
+			for a dataset or for a specific index (see sample code above), as for any 
+			other attributes.
+		    </para>
+		</note>
 	    </sect2>
 	    <sect2>
-		<title id="areaattributes">area Attributes</title>
+		<title id="areaattributes">Area Attributes</title>
 		<para>
 		    There are no specifical attributes related to the Area chart. As explained 
-		    above Area charts displaying is implemented as a Line Attribute. Of course the 
+		    above Area charts display mode is implemented as a Line Attribute. Of course the 
 		    generic attributes common to all chart types are availables, which give us full
-		    flexibility to configure our area chart.
+		    flexibility to configure our Area chart.
 		</para>	
 	    </sect2>	    	
 	    <sect2>
@@ -2931,12 +2938,7 @@
 			<para>
 			  Display areas for each dataset on its own and for the whole diagram
 			</para>
-		    </listitem>			   
-		    <listitem>
-			<para>			    
-			  run the area animation 
-			</para>
-		    </listitem>		   
+		    </listitem>			   		    		   
 		</itemizedlist>
 		<programlisting linenumbering="numbered" id="fullarea_mainwindow_h">
 		    <textobject><textdata fileref="../../examples/Lines/Advanced/mainwindow.h"/>
