@@ -2625,16 +2625,43 @@
 			  Shift between points and lines charts
 			</para>
 		    </listitem>		   
-		</itemizedlist>
+		</itemizedlist>		
+		<para>
+		    We are using a <classname>KDChartChart</classname> class and also an home made 
+		    <classname>TableModel</classname> for the convenience. It is  derived from 
+		    <classname>QAbstractTableModel</classname>.
+		</para>
+		<para>
+		    TableModel uses a simple rectangular vector of vectors to represent a data
+		    table that can be displayed in regular Qt Interview views. Additionally, it 
+		    provides a method to load CSV files exported by OpenOffice Calc in the default 
+		    configuration. This allows to prepare test data using spreadsheet software.
+		</para>
+		<para>
+		    It expects the CSV files in the subfolder ./modeldata. If the application
+		    is started from another location, it will ask for the location of the
+		    model data files.
+		</para>
+		<para>
+		    We recommend you to consult the "TableModel" interface and implementation files
+		    which are located in the <filename>examples/tools</filename> directory of your 
+		    KD Chart installation.
+		</para>
+		<para>
+		    Let us concentrate on our Line chart implementation for now and consult the 
+		    following files: other needed files like the ui, pro , qrc ,CSV and main.cpp files 
+		    can be consulted from the <filename>examples/Lines/PointChart</filename> directory
+		    of your installation.
+		</para>
 		<programlisting linenumbering="numbered" id="fullpoint_mainwindow_h">
-		    <textobject><textdata fileref="../../examples/Axis/Parameters/mainwindow.h"/>
+		    <textobject><textdata fileref="../../examples/Lines/PointChart/mainwindow.h"/>
 		    </textobject>
 		</programlisting>                
 		<para>
 		    More explanation h file?
 		</para>
 		<programlisting linenumbering="numbered" id="fullpoint_mainwindow_cpp">
-		    <textobject><textdata fileref="../../examples/Axis/Parameters/mainwindow.cpp"/>
+		    <textobject><textdata fileref="../../examples/Lines/PointChart/mainwindow.cpp"/>
 		    </textobject>
 		</programlisting>
 		<para>
@@ -2644,7 +2671,7 @@
 		    <title>A Full featured Point Chart</title>
 		    <mediaobject>
 			<imageobject>			    
-			    <imagedata width="3in" scalefit="1" fileref="images/simplepoint.png"/>
+			    <imagedata width="3in" scalefit="1" fileref="images/featuredpointchart.png"/>
 			</imageobject>
 		    </mediaobject>
 		</figure>
