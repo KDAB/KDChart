@@ -2510,7 +2510,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata
-                        fileref="images/simplepoint.png"
+                        fileref="images/pointwidget.png"
                         width="3in" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
@@ -2529,12 +2529,12 @@
 		<itemizedlist>
 		    <listitem>
 			<para>
-			    Set up a line chart and set its pen to Qt::NoPen.
+			    Set up a line diagram and configure its pen to Qt::NoPen.
 			</para>
 		    </listitem>
 		    <listitem>
 			<para>
-			    Configure and display its data values marker attributes. 
+			    Display its data values marker attributes. 
 			</para>
 		    </listitem>
 		</itemizedlist>
@@ -2543,44 +2543,32 @@
 		<title id="pointsample" xreflabel="codesample">Point Sample Code</title>
 		<para>
 		    The following code sample is going through the process described above to obtain 
-		    a point chart.
+		    a very simple point chart. It is based on the 
+		    <filename>examples/Widget/Simple</filename> which code has been slightly modified
+		    to display a Point diagram.
 		</para>
 		<programlisting>
-		    // 1 - Set up a line chart and set its pen to Qt::NoPen
-                    m_lines = new LineDiagram();
-		    m_lines->setPen( Qt::NoPen );
-                    // 2 - Configure and display its data values markers
-                    // we will see more in details how to handle DataValueAttribute
-		    // and its MarkerAttributes
-		    DataValueAttributes dva;
-		    MarkerAttributes ma = dva.markerAttributes();
-		    ma->setVisible( true );
-		    // store several styles if needed
-		    // we can use a style for each dataset for example
-		    MarkerAttributes::MarkerStylesMap map;
-		    map.insert( 0, MarkerAttributes::MarkerSquare );
-		    map.insert( 1, MarkerAttributes::MarkerCircle );
-		    ....etc
-		    ma.setMarkerStylesMap( map );
-		    dva.setMarkerAttributes( ma );
-		    dva.setVisible( true );                    
-		    //3 - Paint different markers style for each dataset	     		    
-		    const int colCount = m_lines->model()->columnCount();
-		    for ( int i = 0; i &lt; colCount; ++i ) {			
-			ma.setMarkerStyle( ma.markerStylesMap().value(i) );
-			colAttributes.setMarkerAttributes( ma );
-		    }
-		    // Assign to the diagram
-		    m_lines->setDataValueAttributes( i, dva );			    	
+		    ...
+		    //  Hide the lines
+		    widget.lineDiagram()->setPen(  Qt::NoPen );
+		    // Set up the Attributes
+		    DataValueAttributes dva( widget.lineDiagram()->dataValueAttributes() );
+		    MarkerAttributes ma(  dva.markerAttributes() );
+		    TextAttributes ta(  dva.textAttributes() );
+		    ma.setVisible( true );
+		    // display values or not
+		    ta.setVisible(  false );
+		    dva.setTextAttributes(  ta );
+		    dva.setMarkerAttributes(  ma );
+		    dva.setVisible( true );
+		    
+		    widget.lineDiagram()->setDataValueAttributes( dva );		    	
                 </programlisting>
 		<para>
-		    After having assigned your configured <classname>MarkerAttributes</classname> to 
-		    the diagram you need to run <methodname>KDChartChart::update</methodname> as follow, 
-		    in order to force a re-paint of the chart widget. 		   
+		    This sample code is making use of a <classname>KDChartWidget</classname> and a 
+		    <classname>KDChartLineDiagram</classname> but of course the process is very 
+		    similar if we were working with a <classname>KDChartChart</classname>. 
 		</para> 
-		<programlisting>
-		    m_chart->update();		    	
-                </programlisting>
 		<para>
 		    We recommend you to run the complete example presented in the following Tips 
 		    section.
@@ -2597,7 +2585,7 @@
 		</para>	
 		<para>
 		    For this reason we will for now point you to the sections related to those 
-		    subject and in particular to Chapter 5 - Customizing your Chart - Section 
+		    subjects and in particular to Chapter 5 - Customizing your Chart - Section 
 		    Markers or Chapter 9 - Advanced Charting - Section Data Value Manipulation
 		    and finalize this section by implementing a full featured point chart in the 
 		    Tips section below.
@@ -2631,12 +2619,7 @@
 			<para>
 			   Display data values or hide it.
 			</para>
-		    </listitem>
-		    <listitem>			
-			<para>
-			  Display areas for each dataset on its own
-			</para>
-		    </listitem>			   
+		    </listitem>		  		   
 		    <listitem>
 			<para>			    
 			  Shift between points and lines charts
