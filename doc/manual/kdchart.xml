@@ -3593,15 +3593,11 @@
 		    <para>
 			While pie charts are nice for displaying <emphasis>one</emphasis>
 			dataset there is a complementary chart type you might choose
-			to visualize several datasets: the Ring Chart.
+			to visualize several datasets: the Ring Chart, a circular multi dataset
+			chart type described in the <filename>Ring Charts</filename> section furhter 
+			on.
 		    </para>
-		</tip>
-		<note>
-		    <para>
-			The Ring Charts section describes a circular 
-			<emphasis>multi-dataset</emphasis> chart type.
-		    </para>
-		</note>
+		</tip>	
 		<para>
 		    Pie charts typically consist of two or more pieces any number of which can be 
 		    shown 'exploded' (shifted away from the center) at different amounts, starting
@@ -3642,17 +3638,13 @@
 		    so no method needs to be called to get one. We are describing more in details
 		    about how to obtain three dimensional look for a pie chart in the following 
 		    Pie Attributes section.
-                </para>		
-                <para>
-		    Compile and run the example "examples/Pie" to build a normal pie chart as 
-		    presented above
-                </para>
+                </para>		               
 	    </sect2>
 	    <sect2>
                 <title id="pieexploding">Exploding Pie Charts</title>
                 <tip>
                     <para>
-			Exploding individual segments allows to emphasize individual data.
+			Explode individual segments to emphasize individual data.
                     </para>
                 </tip>
                 <figure float="0" id="fig-pieexplode">
@@ -3667,9 +3659,138 @@
                 </figure>                                
                 <para>
                     We will go through all the configuration possibilities in the Pie Attributes
-		    section below.
+		    section below, but let us study some code sample first.
                 </para>
-            </sect2>
+            </sect2>	   
+	    <sect2>
+		<title id="piesample" xreflabel="codesample">Pie Sample Code</title>
+		<para>
+		    For now let us make the above description  more concrete by looking at the 
+		    following code sample based on the <filename>Simple Widget</filename> example we 
+		    have been demonstrating above 
+		    (<filename>Chapter 3 - Two Ways - Widget Example</filename>). In this example we 
+		    demonstrate how to configure your  line diagram and change its attributes when 
+		    working with a <classname>KDChartWidget</classname>.
+		</para>	
+		<para>
+		    First include the appropriate headers and bring in the "KDChart namespace":
+		</para>	    	
+		<programlisting>
+		    #include &lt;QApplication&gt;
+		    #include &lt;KDChartWidget&gt;
+                    #include &lt;KDChartPieDiagram&gt;
+                    #include &lt;QPen&gt;
+
+	            using namespace KDChart;			    
+		</programlisting>                
+		<para>
+		    We need to include <classname>KDChartPieDiagram</classname> in order to be able
+		    to configure some of its attributes as we will see further on. 
+		</para>
+		<programlisting>
+		    int main( int argc, char** argv ) {
+		    QApplication app( argc, argv );                    
+		    Widget widget;
+		    // our Widget can be configured 
+		    // as any Qt Widget 
+		    widget.resize( 600, 600 );		    
+                    // store the data and assign it
+		    QVector&lt; double &gt; vec0,  vec1;
+		    vec0 &lt;&lt; 5 &lt;&lt; 1 &lt;&lt; 3 &lt;&lt; 4 &lt;&lt; 1;
+		    vec1 &lt;&lt; 3 &lt;&lt; 6 &lt;&lt; 2 &lt;&lt; 4 &lt;&lt; 8;
+		    vec2 &lt;&lt; 0 &lt;&lt; 7 &lt;&lt; 1 &lt;&lt; 2 &lt;&lt; 1;
+		    widget.setDataset( 0, vec0, "vec0" );
+		    widget.setDataset( 1, vec1, "vec1" );
+		    widget.setDataset( 2, vec2, "vec2" );
+		    widget.setSubType(  Widget::Percent );
+		</programlisting>
+<!--
+		<para>
+		    We dont need to change the default chart type as Line Charts is the default . 
+		    In this case we also want to display it in percent mode. 
+		    <classname>KDChartWidget</classname> with its <methodname>setSubType</methodname> 
+		    method allow us to achieve that the easy way.		    
+		</para>
+		<programlisting>
+		    widget.setSubType( Widget::Percent );
+		</programlisting>
+		<para>
+		    The default sub-type being Normal for all types of charts we need to call 
+		    implicitely <methodname>KDChartWidget::setSubType()</methodname> in this case.
+		    We can also change the sub-type of our line chart further on by calling for example 
+		    <methodname>setSubType( Widget::Stacked )</methodname> or reset its default value by
+		    calling <methodname>setSubType( Widget::Normal )</methodname>.		    
+		</para>
+		<programlisting>
+		   //Configure a pen and draw 
+		    //a dashed line for column 1
+		    QPen pen;
+		    pen.setWidth( 3 );
+		    pen.setStyle( Qt::DashDotLine );
+		    pen.setColor(  Qt::green );
+		    // call your diagram and set the new pen
+		    widget.lineDiagram()->setPen(  1 , pen );
+		</programlisting>
+		<para>
+		     In the above code our intention is to draw a new style of line for this 
+		    specific dataset in order to keep the attention of the public on it.
+		    That is what we call configuring an attribute. In this case the pen attribute. 
+		    To do so we configure a QPen and then assign it to our diagram. 
+		    <methodname>KDChartWidget::lineDiagram()</methodname> allow us to get a pointer to 
+		    our widget diagram. As you can see it is very simple to assign a new pen to our 
+		    diagram by calling the diagram <methodname>KDChartAbstractDiagram::setPen()</methodname>
+		    method.
+		</para>
+		<programlisting>
+		    //Display in Area mode
+		    LineAttributes ld;
+		    ld.setDisplayArea( true );
+		    //configure transparency 
+		    //it is nicer and let us 
+		    //all the area
+		    ld.setTransparency( 25 );
+		    widget.lineDiagram()->setLineAttributes( ld );
+		</programlisting>
+		<para>
+		    The code above makes use of typical <classname>KDChartLineAttributes</classname> and
+		    let us diplay the areas as well as set up the color transparency which is very 
+		    helpfull when displaying a normal chart type where the areas can hide each other. 
+		    Finally we conclude our small example:
+		</para>
+		<programlisting>
+		    widget.show();
+		    
+		    return app.exec();
+		    }
+		</programlisting>
+-->
+		<para>
+		    See the screen-shot below to view The resulting chart displayed by the above code. 
+		</para>
+<!--
+		<figure float="0" id="fig-simplelinewidget">
+		    <title>A Simple Pie ChartWidget</title>
+		    <mediaobject>
+			<imageobject>
+			    <imagedata width="3in" scalefit="1" fileref="images/simplelinewidget.png"/>
+			</imageobject>
+		    </mediaobject>
+		</figure>
+-->
+		<para>
+		    This example can be compiled and run from the following location of your KD Chart
+		    installation <filename>examples/Pie/Simple</filename>
+		</para>
+		<note>
+		    <para>
+			Configuring the attributes for a <classname>KDChartPieDiagram</classname> making use
+			of a <classname>KDChartChart</classname> is done the same way as for a 
+			<classname>KDChartWidget</classname>. You just need to assign the configured attributes 
+			to your pie diagram and assign the diagram to the chart by calling 
+			<methodname>KDChartChart::replaceDiagram()</methodname>.
+		    </para>
+		</note>
+		</sect2>
 	    <sect2>
 		<title id="pieattributes">Pies Attributes</title>
 		<para>
