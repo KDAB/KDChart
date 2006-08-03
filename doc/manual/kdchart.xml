@@ -3663,13 +3663,13 @@
                 </para>
             </sect2>	   
 	    <sect2>
-		<title id="piesample" xreflabel="codesample">Pie Sample Code</title>
+		<title id="piesample" xreflabel="wcodesample">Code Sample</title>
 		<para>
 		    For now let us make the above description  more concrete by looking at the 
 		    following code sample based on the <filename>Simple Widget</filename> example we 
 		    have been demonstrating above 
 		    (<filename>Chapter 3 - Two Ways - Widget Example</filename>). In this example we 
-		    demonstrate how to configure your  line diagram and change its attributes when 
+		    demonstrate how to configure your Pie diagram and change its attributes when 
 		    working with a <classname>KDChartWidget</classname>.
 		</para>	
 		<para>
@@ -3678,7 +3678,7 @@
 		<programlisting>
 		    #include &lt;QApplication&gt;
 		    #include &lt;KDChartWidget&gt;
-                    #include &lt;KDChartPieDiagram&gt;
+		    #include &lt;KDChartPieDiagram&gt;
                     #include &lt;QPen&gt;
 
 	            using namespace KDChart;			    
@@ -3702,55 +3702,29 @@
 		    widget.setDataset( 0, vec0, "vec0" );
 		    widget.setDataset( 1, vec1, "vec1" );
 		    widget.setDataset( 2, vec2, "vec2" );
-		    widget.setSubType(  Widget::Percent );
-		</programlisting>
-<!--
-		<para>
-		    We dont need to change the default chart type as Line Charts is the default . 
-		    In this case we also want to display it in percent mode. 
-		    <classname>KDChartWidget</classname> with its <methodname>setSubType</methodname> 
-		    method allow us to achieve that the easy way.		    
-		</para>
-		<programlisting>
-		    widget.setSubType( Widget::Percent );
+		    widget.setType(  Widget::Pie );
 		</programlisting>
 		<para>
-		    The default sub-type being Normal for all types of charts we need to call 
-		    implicitely <methodname>KDChartWidget::setSubType()</methodname> in this case.
-		    We can also change the sub-type of our line chart further on by calling for example 
-		    <methodname>setSubType( Widget::Stacked )</methodname> or reset its default value by
-		    calling <methodname>setSubType( Widget::Normal )</methodname>.		    
+		    We just need to change the default chart type (Line Charts) by calling  
+		    the <methodname>KDChartWidget::setType</methodname> method.     
+		</para>		
+		<para>
+		    Now let us configure a Pen to draw a line arount the Pie and its section
 		</para>
-		<programlisting>
-		   //Configure a pen and draw 
-		    //a dashed line for column 1
-		    QPen pen;
-		    pen.setWidth( 3 );
-		    pen.setStyle( Qt::DashDotLine );
-		    pen.setColor(  Qt::green );
+		<programlisting>		   
+		    QPen piePen( widget.pieDiagram()->pen() );
+                    piePen.setWidth( 3 );
+		    piePen.setColor( Qt::yellow );
 		    // call your diagram and set the new pen
-		    widget.lineDiagram()->setPen(  1 , pen );
-		</programlisting>
+		    widget.pieDiagram()->setPen( 2, piePen );
+		</programlisting>		
 		<para>
-		     In the above code our intention is to draw a new style of line for this 
-		    specific dataset in order to keep the attention of the public on it.
-		    That is what we call configuring an attribute. In this case the pen attribute. 
-		    To do so we configure a QPen and then assign it to our diagram. 
-		    <methodname>KDChartWidget::lineDiagram()</methodname> allow us to get a pointer to 
+		    Here we are configuring the pen "attribute". As you can see it is straight forward.
+		    <methodname>KDChartWidget::pieDiagram()</methodname> allow us to get a pointer to 
 		    our widget diagram. As you can see it is very simple to assign a new pen to our 
 		    diagram by calling the diagram <methodname>KDChartAbstractDiagram::setPen()</methodname>
-		    method.
-		</para>
-		<programlisting>
-		    //Display in Area mode
-		    LineAttributes ld;
-		    ld.setDisplayArea( true );
-		    //configure transparency 
-		    //it is nicer and let us 
-		    //all the area
-		    ld.setTransparency( 25 );
-		    widget.lineDiagram()->setLineAttributes( ld );
-		</programlisting>
+		    method. 
+		</para>		
 		<para>
 		    The code above makes use of typical <classname>KDChartLineAttributes</classname> and
 		    let us diplay the areas as well as set up the color transparency which is very 
@@ -3763,19 +3737,20 @@
 		    return app.exec();
 		    }
 		</programlisting>
--->
 		<para>
 		    See the screen-shot below to view The resulting chart displayed by the above code. 
 		</para>
 <!--
-		<figure float="0" id="fig-simplelinewidget">
-		    <title>A Simple Pie ChartWidget</title>
-		    <mediaobject>
-			<imageobject>
-			    <imagedata width="3in" scalefit="1" fileref="images/simplelinewidget.png"/>
-			</imageobject>
-		    </mediaobject>
-		</figure>
+		<figure float="0" id="fig-samplepiewidget">
+                <title>A Simple Pie Widget</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata
+                        fileref="images/simplepiewidget.png"
+                        width="3in" scalefit="1"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
 -->
 		<para>
 		    This example can be compiled and run from the following location of your KD Chart
@@ -3883,6 +3858,201 @@
 		    </para>
 		</note>		
 	    </sect2>
+	   <sect2>
+		<title id="pieattributessample" xreflabel="acodesample">Pie Attributes Sample</title>
+		<para>
+		    Let us make this more concrete by looking at the following sample code that 
+		    describes the above process. We recommand you to compile and run the following 
+		    example which is located into the <filename>examples/Lines/Parameters</filename>
+		    directory of your KD Chart installation.
+		</para>
+		<para>
+		    First of all we are including the header files and bring KD Chart namespace.
+		</para>
+		<programlisting>
+		    #include &lt;QtGui&gt;
+		    #include &lt;KDChartChart&gt;
+                    #include &lt;KDChartLineDiagram&gt;
+                    #include &lt;KDChartDataValueAttributes&gt;
+
+                    using namespace KDChart;		    
+                </programlisting>
+		<para>
+		    We have included <classname>KDChartDataValueAttributes</classname> to be able 
+		    to display our data values. Those attributes are of course used by all types of
+		    charts and are not specifical to the Line diagram.
+		</para>
+		<para>
+		    In this example we are using a <classname>KDChartChart</classname> class as well
+		    as a <classname>QStandardItemModel</classname> in order to store the data which 
+		    will be assigned to our diagram. 
+		</para>
+		<programlisting>
+		    class ChartWidget : public QWidget {
+		    Q_OBJECT
+		    public:
+		    explicit ChartWidget(QWidget* parent=0)
+		    : QWidget(parent)
+		    {
+		    m_model.insertRows( 0,5, QModelIndex() );
+		    m_model.insertColumns( 0,5, QModelIndex() );
+
+		    for( int i = 0; i &lt; 5; ++i ) {
+		      for( int j = 0; j &lt; 5; ++j ) {
+		        m_model.setData( m_model.index( i,j,QModelIndex() ), (double)i*j );
+		      } 
+		    }		    
+
+		    LineDiagram* diagram = new LineDiagram;
+		    diagram->setModel(&amp;m_model);
+                </programlisting>
+		<para>
+		    After having stored our data into the model, we create a diagram. In this 
+		    case, we want to display a <classname>KDChartLineDiagram</classname>. 
+		    As always we need to assign the model to our diagram. This procedure is of 
+		    course similar for all types of diagrams. 
+		</para>
+		<para>
+		    We are now ready to configure our attributes. We want to display the data 
+		    values and configure the text and font for those.
+		</para>
+		<programlisting>
+		    // Display values
+		    // 1 - Call the relevant attributes
+		    DataValueAttributes dva( diagram->dataValueAttributes() );
+		    // 2 - We want to configure the font and colors
+		    //     for the data values text.
+		    TextAttributes ta( dva.textAttributes() );
+		    //rotate if you wish
+		    //ta.setRotation( 0 );
+		    // 3 - Set up your text attributes
+		    ta.setFont( QFont( "Comic", 6 ) );
+		    ta .setPen( QPen( QColor( Qt::darkGreen ) ) );
+		    ta.setVisible( true );
+		    // 4 - Assign the text attributes to your
+		    //     DataValuesAttributes
+		    dva.setTextAttributes( ta );
+		    dva.setVisible( true );
+		    // 5 - Assign to the diagram
+		    diagram->setDataValueAttributes( dva );
+                </programlisting>
+		<para>
+		    As for all attributes we call them by using the relevant method available
+		    from our diagram interface, here 
+		    <methodname>diagram->dataValueAttributes()</methodname>. The second step 
+		    is to set it up with our own values and finally we assign it to our diagram.
+		</para>
+		<para>
+		    We could have displayed the data values without caring about settings its 
+		    <classname>KDChartTextAttributes</classname>, but we wanted to do so in 
+		    order to demonstrate this feature too. Notice that you have to implicitely
+		    enable your attributes ( DataValue and Text) by calling their 
+		    <methodname>setVisible()</methodname> methods before we assign it to the 
+		    diagram.  
+		</para>
+		<note>
+		    <para>
+			After having configured our attributes we need to assign the 
+			attributes to the diagram. This can be done for the whole diagram, at a 
+			specific index or for a column. Look at the attributes interface  and look 
+			at the methods available there to find out those setters and getters.
+		    </para>   
+		</note>
+		<para>
+		    We want to configure the Pen in order to draw a section of a line (dataset)
+		    differently. e.g. We want to focus the attention of the reader on this 
+		    particular section.
+		</para>
+		<programlisting>
+		    // Draw a the section of a line differently.
+		    // 1 - Retrieve the pen for the dataset and change
+		    //    its style.
+		    //    This allow us to keep the line original color.
+		    QPen linePen(  diagram->pen( 1 ) );
+		    linePen.setWidth( 3 );
+		    linePen.setStyle( Qt::DashLine );
+		    // 2 - Change the Pen for a section within a line 
+		    while assigning it to the diagram		    
+		    diagram->setPen( m_model.index( 1, 1, QModelIndex() ), linePen );		   
+		</programlisting>	
+		<para>
+		    Of course we could  also have changed the pen for a single or all datasets as
+		    well. See how we call the pen for this very dataset before changing its style
+ 		    and width. This is done to keep its original color for consistancy. Alos
+		</para>		
+		<note>
+		    <para>
+			The Pen and the Brush setters and getters are implemented at a lower level 
+			in our <classname>KDChartAbstractDiagram</classname> class for a cleaner 
+			code structure. Those methods are of course used by all types of diagram 
+			and their configuration is very simple and straight forward as you can see 
+			in the above sample code. Create or get a Pen , configure it, call one of 
+			the setters methods available (See 
+			<filename>KDChartAbstractDiagram.h</filename> about those methods).
+		    </para>
+		</note>
+		<para>
+		    Our attribute having been configured and assigned we just need to assign our
+		    line diagram to our chart and conclude the implementation.
+		</para>
+		<programlisting>
+		    m_chart.coordinatePlane()->replaceDiagram(diagram);
+
+		    QVBoxLayout* l = new QVBoxLayout(this);
+		    l->addWidget(&amp;m_chart);
+		    setLayout(l);
+		    }
+
+		    private:
+		    Chart m_chart;
+		    QStandardItemModel m_model;
+		    };
+
+		    int main( int argc, char** argv ) {
+		    QApplication app( argc, argv );
+
+		    ChartWidget w;
+		    w.show();
+
+		    return app.exec();
+		    }
+
+		    #include "main.moc"
+		</programlisting>
+                <para>
+		    The above procedure can be applied to any of the supported attributes for 
+		    all chart types. The resulting display of the code we have gone through can be 
+		    seen in the following screen-shot. We also recommend you to compile and run the 
+		    example related to this section and located in the 
+		    <filename>examples/Lines/Parameters</filename> directory of your KD Chart 
+		    installation.
+                </para>
+<!--
+		<figure float="0" id="fig-samplepiechart">
+                <title>Pie With Configured Attributes</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata
+                        fileref="images/samplepiechart.png"
+                        width="3in" scalefit="1"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+-->
+		<para>
+		    The subtype of a line chart (Normal, Stacked or Percent) is not set via its 
+		    attribute class, but directly by using the diagram 
+		    <methodname>KDChartLineDiagram::setType</methodname> method.  
+		</para>
+		<note>
+		    <para>
+			ThreeDAttibutes for the different chart types are implemented has an own
+			class, the same way as for the other attributes. We will talk more in 
+			details about KD Chart 2.0 ThreeD features in the ThreeD section, Chapter 5
+			- Customizing your Chart.  
+	 	    </para>	
+		</note>
+	    </sect2>	
 	    <sect2>
 		<title id="pietips">Tips and Tricks</title>
 		<para>
@@ -3937,15 +4107,16 @@
 			</para>
 		    </listitem>
 		</itemizedlist>
+
 		<programlisting linenumbering="numbered" id="fullpie_mainwindow_h">
-		    <textobject><textdata fileref="../../examples/Pie/mainwindow.h"/>
+		    <textobject><textdata fileref="../../examples/Pie/Advanced/mainwindow.h"/>
 		    </textobject>
 		</programlisting>                
 		<para>
 		    More explanation h file?
 		</para>
 		<programlisting linenumbering="numbered" id="fullpie_mainwindow_cpp">
-		    <textobject><textdata fileref="../../examples/Pie/mainwindow.cpp"/>
+		    <textobject><textdata fileref="../../examples/Pie/Advanced/mainwindow.cpp"/>
 		    </textobject>
 		</programlisting>
 		<para>
