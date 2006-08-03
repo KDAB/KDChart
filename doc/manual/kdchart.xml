@@ -4053,11 +4053,14 @@
 		    In the following implementation we want to be able to:
 		</para>
 		<itemizedlist>
+<!-- Pending Michel not implemented yet -->
+<!--
 		    <listitem>
 			<para>
 			   Display the data values.
 			</para>
 		    </listitem>
+-->
 		     <listitem>
 			<para>
 			   Configure the Start position .
@@ -4068,19 +4071,18 @@
 			   Display a Pie chart and shift between normal and threeD look.
 			</para>
 		    </listitem>
+<!-- Pending Michel not implemented yet is that still actual ? -->
+<!--
 		     <listitem>
 			<para>
 			   Enable or disable the use of shadow colors when in threeD mode 
 			</para>
 		    </listitem>
-		    <listitem>
-			<para>
-			  Set the surrounding lines width and color
-			</para>
-		    </listitem>			   
+-->		    
 		    <listitem>
 			<para>			    
-			   Explode one or several slices. 
+			   Explode one or several slices and  set a surrounding line 
+			   around  exploded sections
 			</para>
 		    </listitem>	
 		    <listitem>
