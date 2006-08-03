@@ -1,6 +1,6 @@
 SOURCES= main.cpp
 
-TARGET = barParameters
+TARGET = BarsParameters
 
 KDCHART_PATH = ../../..
 INCLUDEPATH += \
