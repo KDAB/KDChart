@@ -31,14 +31,42 @@ public:
         PieDiagram* diagram = new PieDiagram;
         diagram->setModel(&m_model);
 
-        // Configure some attributes
+        // Configure some Pie specifical attributes
+
         // explode a section
         PieAttributes pa(  diagram->pieAttributes() );
         pa.setExplodeFactor( 0.1 );
 
         // Assign the attributes
         // to the diagram
-        diagram->setPieAttributes( 1, pa );
+        diagram->setPieAttributes( 1,  pa );
+
+        // Configure a generic attribute
+        // available to all chart types
+        QPen sectionPen;
+        sectionPen.setWidth( 5 );
+        sectionPen.setStyle( Qt::DashLine );
+        sectionPen.setColor( Qt::magenta );
+
+        diagram->setPen( 1, sectionPen );
+
+        // Display data values
+        // not implemented yet - disable for now
+        /*
+        const QFont font(QFont( "Comic", 10 ));
+        const int colCount = diagram->model()->columnCount();
+        for ( int iColumn = 0; iColumn<colCount; ++iColumn ) {
+            DataValueAttributes dva( diagram->dataValueAttributes( iColumn ) );
+            TextAttributes ta( dva.textAttributes() );
+            ta.setRotation( 0 );
+            ta.setFont( font );
+            ta .setPen( QPen( Qt::gray  ) );
+            ta.setVisible( true );
+            dva.setTextAttributes( ta );
+            dva.setVisible( true );
+            diagram->setDataValueAttributes( iColumn, dva);
+        }
+        */
 
         // Assign our diagram to the Chart
         m_chart.coordinatePlane()->replaceDiagram(diagram);
