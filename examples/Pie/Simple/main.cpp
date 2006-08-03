@@ -25,6 +25,8 @@
 
 #include <QApplication>
 #include <KDChartWidget>
+#include <KDChartPieDiagram>
+#include <QPen>
 
 
 using namespace KDChart;
@@ -48,6 +50,15 @@ int main( int argc, char** argv ) {
     widget.setDataset( 1, vec1, "v1" );
     widget.setDataset( 2, vec2, "v2" );
     widget.setType( Widget::Pie );
+
+    // Draw a line around the
+    // third sections
+    // for example
+    QPen piePen;
+    piePen.setWidth( 3 );
+    piePen.setColor( Qt::white );
+    widget.pieDiagram()->setPen( 2,  piePen );
+
     widget.show();
 
     return app.exec();
