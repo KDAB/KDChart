@@ -3844,24 +3844,35 @@
 			</para>
 		    </listitem>		    
 		</itemizedlist>
+		<tip>
+		    <para>
+			The default explode factor is 10 percent; use 
+			<methodname>setExplodeFactor</methodname> to specify a different factor.
+			This is a convenience function: Calling 
+			<methodname>setExplode( true )</methodname> does the same as calling 
+			<methodname>setExplodeFactor( 0.1 )</methodname>, and calling 
+			<methodname>setExplode( false )</methodname> does the same as calling 
+			<methodname>setExplodeFactor( 0.0 )</methodname>.
+		    </para>
+		</tip>
 		<para>
 		    To get a pie chart like the one presented above (having one or several of the 
 		    pieces separated from the others in <emphasis>exploded</emphasis> mode) you 
-		    would have to set its attributes and implicitely enable exploding, by calling  
-		    <methodname>KDChartPieAttributes::setExplode </methodname> and then use the 
-		    available methods to set the exploding factor for a particular dataset. 
-		    as shown in the following code sample 
+		    would have to set its attributes by calling 
+		    <methodname>KDChartPieAttributes::setExplode </methodname> or 
+		    <methodname>KDChartPieAttributes::setExplodeFactor</methodname> if you want to
+		    change the explode factore default value and then use the available methods to 
+		    assing those attributes to your diagram as shown in the following code sample 
                 </para>
 		<programlisting>
 		    // 1 - Create a PieAttribute object
-		    PieAttributes pa = m_pie->PieAttributes( index );
+		    PieAttributes pa (m_pie->PieAttributes());
 		    // 2 - Enable exploding, point to a dataset and give the 
-		    // explode factor passing the dataset number and the factor 
-		    pa.setExplode( true );
-		    pa.setExplodeFactor( 2, 0.5 );
+		    // explode factor passing the dataset number and the factor 		   
+		    pa.setExplodeFactor( 0.5 );
 		    // 3 - Assign to your diagram
-		    m_pie->setPieAttributes( index, pa);
-		</programlisting>
+		    m_pie->setPieAttributes( column, pa);
+		</programlisting>	
 		<note>
 		    <para>
 			Three-dimensional look of the pies can be enable and configured  
