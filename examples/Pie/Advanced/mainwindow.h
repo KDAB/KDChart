@@ -31,8 +31,7 @@
 
 class QTimer;
 namespace KDChart {
-    class Chart;
-    class DatasetProxyModel;
+    class Chart;    
     class PieDiagram;
 }
 
@@ -62,8 +61,7 @@ private slots:
 
 private:
     KDChart::Chart* m_chart;
-    TableModel m_model;
-    KDChart::DatasetProxyModel* m_datasetProxy;
+    TableModel m_model;   
     KDChart::PieDiagram* m_pie;
     QTimer* m_timer;
 

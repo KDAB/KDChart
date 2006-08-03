@@ -26,17 +26,11 @@
 #include "mainwindow.h"
 
 #include <KDChartChart>
-#include <KDChartAbstractCoordinatePlane>
 #include <KDChartPieDiagram>
-#include <KDChartTextAttributes>
-#include <KDChartDataValueAttributes>
-#include <KDChartMarkerAttributes>
-#include <KDChartLegend>
 #include <KDChartPieAttributes>
 #include <KDChartThreeDPieAttributes>
 
 #include <QDebug>
-#include <QPainter>
 #include <QTimer>
 
 using namespace KDChart;
