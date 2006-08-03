@@ -3724,11 +3724,8 @@
 		    our widget diagram. As you can see it is very simple to assign a new pen to our 
 		    diagram by calling the diagram <methodname>KDChartAbstractDiagram::setPen()</methodname>
 		    method. 
-		</para>		
+		</para>			
 		<para>
-		    The code above makes use of typical <classname>KDChartLineAttributes</classname> and
-		    let us diplay the areas as well as set up the color transparency which is very 
-		    helpfull when displaying a normal chart type where the areas can hide each other. 
 		    Finally we conclude our small example:
 		</para>
 		<programlisting>
@@ -3740,7 +3737,6 @@
 		<para>
 		    See the screen-shot below to view The resulting chart displayed by the above code. 
 		</para>
-<!--
 		<figure float="0" id="fig-samplepiewidget">
                 <title>A Simple Pie Widget</title>
                 <mediaobject>
@@ -3751,11 +3747,10 @@
                     </imageobject>
                 </mediaobject>
             </figure>
--->
 		<para>
 		    This example can be compiled and run from the following location of your KD Chart
 		    installation <filename>examples/Pie/Simple</filename>
-		</para>
+		</para>	
 		<note>
 		    <para>
 			Configuring the attributes for a <classname>KDChartPieDiagram</classname> making use
@@ -3764,8 +3759,8 @@
 			to your pie diagram and assign the diagram to the chart by calling 
 			<methodname>KDChartChart::replaceDiagram()</methodname>.
 		    </para>
-		</note>
-		</sect2>
+		</note>	
+	    </sect2>
 	    <sect2>
 		<title id="pieattributes">Pies Attributes</title>
 		<para>
@@ -3773,7 +3768,9 @@
 		    configured and set by the user and which are specifics to the Pie Chart type.
 		    KD Chart 2.0 API separates the attributes specifics to a chart type itself and 
 		    the generic attributes which are common to all chart types as for example the 
-		    setters and getters for a brush or a pen.		    
+		    setters and getters for a brush or a pen (See 
+		    <classname>KDChartAbstractDiagram</classname> or 
+		    <classname>KDChartPieAbstractDiagram</classname> etc...		    
 		</para>
 		<para>
 		    All those attributes have a reasonnable default value that can simply be 
@@ -3812,24 +3809,40 @@
 		<itemizedlist>
 		    <listitem>
 			<para>
-			   Explode: Enable/Disable exploding one or several datasets
+			   Explode: Enable/Disable exploding pie piece(s)
 			</para>
 		    </listitem>
 		    <listitem>
 			<para>
-			   Explode factor: Set the explode factor for a dataset or for all slices
+			   Explode factor: The explode factor is a qreal between 0 and 1, it 
+			    is interpreted as a percentage of the total available radius.
 			</para>
 		    </listitem>
 		    <listitem>
 			<para>
-			   StartPosition: Set the starting angle for the first dataset 
+			   StartPosition: Set the starting angle for the first dataset. 
+			    Can only be specified for the whole diagram.
+			</para>
+		    </listitem>
+		     <listitem>
+			<para>
+			   Granularity: Set the granularity: the smaller the granularity the 
+			    more your diagramsegments will show facettes instead of rounded 
+			    segments. Can only be specified for the whole diagram.
 			</para>
 		    </listitem>
 		    <listitem>
 			<para>
-			    ThreeDPieAttributes: Enable/Disable threeD
+			    PieAttributes: set or retrieve the pie diagram Attributes.
+			    ( see: <classname>KDChartAbstractPieDiagram</classname> )
 			</para>
 		    </listitem>
+		    <listitem>
+			<para>
+			    ThreeDPieAttributes: set or retrieve the diagram ThreeDAttributes.
+			    ( see: <classname>KDChartAbstractPieDiagram</classname> )
+			</para>
+		    </listitem>		    
 		</itemizedlist>
 		<para>
 		    To get a pie chart like the one presented above (having one or several of the 
@@ -4411,14 +4424,14 @@
 		    </listitem>
 		</itemizedlist>
 		<programlisting linenumbering="numbered" id="fullring_mainwindow_h">
-		    <textobject><textdata fileref="../../examples/Pie/mainwindow.h"/>
+		    <textobject><textdata fileref="../../examples/Pie/Advanced/mainwindow.h"/>
 		    </textobject>
 		</programlisting>                
 		<para>
 		    More explanation h file?
 		</para>
 		<programlisting linenumbering="numbered" id="fullring_mainwindow_cpp">
-		    <textobject><textdata fileref="../../examples/Pie/mainwindow.cpp"/>
+		    <textobject><textdata fileref="../../examples/Pie/Advanced/mainwindow.cpp"/>
 		    </textobject>
 		</programlisting>
 		<para>
