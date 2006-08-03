@@ -3896,15 +3896,15 @@
 		<programlisting>
 		    #include &lt;QtGui&gt;
 		    #include &lt;KDChartChart&gt;
-                    #include &lt;KDChartLineDiagram&gt;
-                    #include &lt;KDChartDataValueAttributes&gt;
+                    #include &lt;KDChartPieDiagram&gt;
+                    #include &lt;KDChartPieAttributes&gt;
 
                     using namespace KDChart;		    
                 </programlisting>
 		<para>
-		    We have included <classname>KDChartDataValueAttributes</classname> to be able 
-		    to display our data values. Those attributes are of course used by all types of
-		    charts and are not specifical to the Line diagram.
+		    We have included <classname>KDChartPieAttributes</classname> to be able 
+		    to configure exploding for one of the pie slice. Those attributes are 
+		    specifical to the Pie types.
 		</para>
 		<para>
 		    In this example we are using a <classname>KDChartChart</classname> class as well
@@ -3912,68 +3912,56 @@
 		    will be assigned to our diagram. 
 		</para>
 		<programlisting>
-		    class ChartWidget : public QWidget {
-		    Q_OBJECT
-		    public:
-		    explicit ChartWidget(QWidget* parent=0)
-		    : QWidget(parent)
-		    {
-		    m_model.insertRows( 0,5, QModelIndex() );
-		    m_model.insertColumns( 0,5, QModelIndex() );
+		    m_model.insertRows( 0, 1, QModelIndex() );
+		    m_model.insertColumns(  0,  6,  QModelIndex() );
+		    for (int row = 0; row &lt; 1; ++row) {
+		      for (int column = 0; column &lt; 6; ++column) {
+		        QModelIndex index = 
+		    m_model.index(row, column, QModelIndex());
+		        m_model.setData(index, QVariant(row+1 * column+1) );
+		      }
+		    }
+		    // We need a Polar plane for the Pie type
+		    PolarCoordinatePlane* polarPlane = 
+		    new PolarCoordinatePlane( &amp;m_chart );
+		    // replace the default Cartesian plane with
+		    // our Polar plane
+		    m_chart.replaceCoordinatePlane( polarPlane );
 
-		    for( int i = 0; i &lt; 5; ++i ) {
-		      for( int j = 0; j &lt; 5; ++j ) {
-		        m_model.setData( m_model.index( i,j,QModelIndex() ), (double)i*j );
-		      } 
-		    }		    
-
-		    LineDiagram* diagram = new LineDiagram;
+		    // assign the model to our pie diagram
+		    PieDiagram* diagram = new PieDiagram;
 		    diagram->setModel(&amp;m_model);
                 </programlisting>
 		<para>
-		    After having stored our data into the model, we create a diagram. In this 
-		    case, we want to display a <classname>KDChartLineDiagram</classname>. 
-		    As always we need to assign the model to our diagram. This procedure is of 
-		    course similar for all types of diagrams. 
+		    After having stored our data into the model, we create a need to replace 
+		    the default Cartesian plane against a Polar plane before creating our Pie diagram. 
+		    In this case, we want to display a <classname>KDChartPieDiagram</classname>. 
+		    As always we need to assign the model to our diagram. This procedure is of course 
+		    similar for all types of diagrams. 
 		</para>
 		<para>
-		    We are now ready to configure our attributes. We want to display the data 
-		    values and configure the text and font for those.
+		    We are now ready to configure our attributes. We want to explode a section and 
+		    configure a Pen to surround it. Let us begin with the specifical 
+		    <methodname>PieAttributes</methodname>.
 		</para>
 		<programlisting>
-		    // Display values
-		    // 1 - Call the relevant attributes
-		    DataValueAttributes dva( diagram->dataValueAttributes() );
-		    // 2 - We want to configure the font and colors
-		    //     for the data values text.
-		    TextAttributes ta( dva.textAttributes() );
-		    //rotate if you wish
-		    //ta.setRotation( 0 );
-		    // 3 - Set up your text attributes
-		    ta.setFont( QFont( "Comic", 6 ) );
-		    ta .setPen( QPen( QColor( Qt::darkGreen ) ) );
-		    ta.setVisible( true );
-		    // 4 - Assign the text attributes to your
-		    //     DataValuesAttributes
-		    dva.setTextAttributes( ta );
-		    dva.setVisible( true );
-		    // 5 - Assign to the diagram
-		    diagram->setDataValueAttributes( dva );
+		    // Configure some Pie specifical attributes
+
+		    // explode a section
+		    PieAttributes pa(  diagram->pieAttributes() );
+		    pa.setExplodeFactor( 0.1 );
+		    
+		    // Assign the attributes
+		    // to the diagram
+		    diagram->setPieAttributes( 1,  pa );
                 </programlisting>
 		<para>
 		    As for all attributes we call them by using the relevant method available
 		    from our diagram interface, here 
-		    <methodname>diagram->dataValueAttributes()</methodname>. The second step 
-		    is to set it up with our own values and finally we assign it to our diagram.
-		</para>
-		<para>
-		    We could have displayed the data values without caring about settings its 
-		    <classname>KDChartTextAttributes</classname>, but we wanted to do so in 
-		    order to demonstrate this feature too. Notice that you have to implicitely
-		    enable your attributes ( DataValue and Text) by calling their 
-		    <methodname>setVisible()</methodname> methods before we assign it to the 
-		    diagram.  
-		</para>
+		    <methodname>diagram->PieAttributes()</methodname>. The second step is to 
+		    set it up with our own values and finally we assign it to our diagram.
+		    In the above code we explode the second slice (dataset) in our Pie.
+		</para>	
 		<note>
 		    <para>
 			After having configured our attributes we need to assign the 
@@ -3983,26 +3971,22 @@
 		    </para>   
 		</note>
 		<para>
-		    We want to configure the Pen in order to draw a section of a line (dataset)
-		    differently. e.g. We want to focus the attention of the reader on this 
-		    particular section.
+		    We want to configure the Pen in order to draw a surrounding line around the 
+		    exploded section (dataset) to focus the attention of the reader on this particular 
+		    section.
 		</para>
 		<programlisting>
-		    // Draw a the section of a line differently.
-		    // 1 - Retrieve the pen for the dataset and change
-		    //    its style.
-		    //    This allow us to keep the line original color.
-		    QPen linePen(  diagram->pen( 1 ) );
-		    linePen.setWidth( 3 );
-		    linePen.setStyle( Qt::DashLine );
-		    // 2 - Change the Pen for a section within a line 
-		    while assigning it to the diagram		    
-		    diagram->setPen( m_model.index( 1, 1, QModelIndex() ), linePen );		   
+		    // Configure a generic attribute
+		    // available to all chart types
+		    QPen sectionPen;
+		    sectionPen.setWidth( 5 );
+		    sectionPen.setStyle( Qt::DashLine );
+		    sectionPen.setColor( Qt::magenta );
+		    
+		    diagram->setPen( 1, sectionPen );
 		</programlisting>	
 		<para>
-		    Of course we could  also have changed the pen for a single or all datasets as
-		    well. See how we call the pen for this very dataset before changing its style
- 		    and width. This is done to keep its original color for consistancy. Alos
+		    Of course we could  also have changed the pen for all datasets as well.
 		</para>		
 		<note>
 		    <para>
@@ -4016,42 +4000,26 @@
 		    </para>
 		</note>
 		<para>
-		    Our attribute having been configured and assigned we just need to assign our
-		    line diagram to our chart and conclude the implementation.
+		    Our attributes having been configured and assigned we just need to assign our
+		    Pie diagram to our chart and conclude the implementation.
 		</para>
 		<programlisting>
+		     // Assign our diagram to the Chart
 		    m_chart.coordinatePlane()->replaceDiagram(diagram);
 
 		    QVBoxLayout* l = new QVBoxLayout(this);
 		    l->addWidget(&amp;m_chart);
 		    setLayout(l);
 		    }
-
-		    private:
-		    Chart m_chart;
-		    QStandardItemModel m_model;
-		    };
-
-		    int main( int argc, char** argv ) {
-		    QApplication app( argc, argv );
-
-		    ChartWidget w;
-		    w.show();
-
-		    return app.exec();
-		    }
-
-		    #include "main.moc"
 		</programlisting>
                 <para>
 		    The above procedure can be applied to any of the supported attributes for 
 		    all chart types. The resulting display of the code we have gone through can be 
 		    seen in the following screen-shot. We also recommend you to compile and run the 
 		    example related to this section and located in the 
-		    <filename>examples/Lines/Parameters</filename> directory of your KD Chart 
+		    <filename>examples/Pie/Parameters</filename> directory of your KD Chart 
 		    installation.
                 </para>
-<!--
 		<figure float="0" id="fig-samplepiechart">
                 <title>Pie With Configured Attributes</title>
                 <mediaobject>
@@ -4061,13 +4029,7 @@
                         width="3in" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
-            </figure>
--->
-		<para>
-		    The subtype of a line chart (Normal, Stacked or Percent) is not set via its 
-		    attribute class, but directly by using the diagram 
-		    <methodname>KDChartLineDiagram::setType</methodname> method.  
-		</para>
+            </figure>		
 		<note>
 		    <para>
 			ThreeDAttibutes for the different chart types are implemented has an own
