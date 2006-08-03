@@ -4139,7 +4139,116 @@
 		    </textobject>
 		</programlisting>
 		<para>
-		    More explanation cpp file?
+		    First of all we are adding our chart to the layout as for any other Qt widget. Load 
+		    the data to be display into our model, and assign the model to our pie diagram. We 
+		    also want to set up a <classname>QTimer</classname> to be able to run our animation. 
+		    Finally we assign the diagram to our chart.
+		</para>
+		<programlisting>
+		   ... 
+		   QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
+		    m_chart = new Chart();
+		    chartLayout->addWidget( m_chart );
+
+		    m_model.loadFromCSV( ":/data" );
+		    
+		    // Set up the plane
+		    PolarCoordinatePlane* polarPlane = new PolarCoordinatePlane( m_chart );
+		    m_chart->replaceCoordinatePlane( polarPlane );
+		    
+		    // Set up the diagram
+		    m_pie = new LineDiagram();
+		    m_pie->setModel( &amp;m_model );
+		    m_chart->coordinatePlane()->replaceDiagram( m_pie );
+		    
+		    // Instantiate the timer
+		    QTimer *timer = new QTimer(this);
+		    connect(timer, SIGNAL(timeout()), this, SLOT(slot_NextFrame() ) );		    
+		    ...
+		</programlisting>
+		<para>
+		    The user should be able to change the start position from the GUI. This can 
+		    be implemented by using <classname>KDChartPieAttributes</classname> 
+		    as shown below and by updating the view.
+		</para>
+		<programlisting>
+		    ....   
+		    PieAttributes pa( m_pie->pieAttributes() );
+		    pa.setStartPosition( pos );
+		    m_pie->setPieAttributes( pa );
+		    m_chart->update();
+                    ....
+		</programlisting>
+    		<para>
+		    We want the user to be able to shift between 3D mode display  or the normal  
+		    standard display from the GUI. 
+		</para>
+		<programlisting>
+		    // note: We use the global getter method here, it will fall back
+		    // automatically to return the default settings.
+		    ThreeDPieAttributes tda( m_pie->threeDPieAttributes() );
+		    tda.setEnabled( toggle );
+		    tda.setDepth( threeDFactorSB->value() );
+		    m_pie->setThreeDPieAttributes( tda );
+		    m_chart->update();
+		</programlisting>				
+		<note>
+		    <para>
+			It is important to know that have three levels of precedence when 
+			setting the attributes: 
+		    <itemizedlist>
+			<listitem>
+			    <para>
+				Global: Weak
+			    </para>
+			</listitem>
+			<listitem>
+			    <para>
+				Per column: Medium
+			    </para>
+			</listitem>
+			<listitem>
+			    <para>
+				Per cell: Strong
+			    </para>
+			</listitem>
+		    </itemizedlist>
+		    Which means that once you have set the attributes for a column or a cell, you will
+		    not be able to change those settings by calling the "global" method to reset it 
+		    to another value, but instead call the per column or per index setter. As 
+		    demonstrated in the above code.
+		    </para>
+		</note>
+		<para>
+		    We want the user to be able to explode one or several slice(s) (dataset) and
+		    to configure the exploding factor.
+		</para>
+		<programlisting>
+		    ....
+		    // note: We use the per-column getter method here, it will fall back
+		    // automatically to return the global (or even the default) settings.
+		    PieAttributes pa( m_pie->pieAttributes( column ) );
+		    pa.setExplodeFactor( value );
+		    m_pie->setPieAttributes( column, pa );
+		    ...
+		    m_chart->update();
+		    ...
+		</programlisting>
+		<para>
+		    This is implemented by configuring our pie attributes and assign them by 
+		    dataset to the diagram, as shown above.
+		</para>
+		<para>
+		    The same procedure is used for us to be able to run our animation. You can 
+		    of course learn more about this part of the code which is more related to 
+		    Qt programming by consulting 
+		    <filename>examples/Pie/Advanced/mainwindow.cpp</filename>. 
+		</para>
+		<para>
+		    This example is available to compile and run from the 
+		    <filename>examples/Pie/Advanced</filename> directory into your KD Chart 
+		    installation. We recommend you to run it. The widget displayed by the above 
+		    code is shown in the figure below.
 		</para>
 		<figure float="0" id="fig-fullpie">
 		    <title>A Full featured Pie Chart</title>
