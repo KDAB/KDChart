@@ -70,7 +70,7 @@ void MainWindow::on_startPositionSB_valueChanged( double pos )
     PieAttributes attrs( m_pie->pieAttributes() );
     attrs.setStartPosition( pos );
     m_pie->setPieAttributes( attrs );
-    update();
+    m_chart->update();
 }
 
 void MainWindow::on_startPositionSL_valueChanged( int pos )
@@ -84,13 +84,13 @@ void MainWindow::on_startPositionSL_valueChanged( int pos )
     PieAttributes attrs( m_pie->pieAttributes() );
     attrs.setStartPosition( pos );
     m_pie->setPieAttributes( attrs );
-    update();
+    m_chart->update();
 }
 
 void MainWindow::on_explodeSubmitPB_clicked()
 {
     setExplodeFactor( explodeDatasetSB->value(), explodeFactorSB->value() );
-    update();
+    m_chart->update();
 }
 
 void MainWindow::setExplodeFactor( int column, double value )
@@ -100,6 +100,7 @@ void MainWindow::setExplodeFactor( int column, double value )
     PieAttributes attrs( m_pie->pieAttributes( column ) );
     attrs.setExplodeFactor( value );
     m_pie->setPieAttributes( column, attrs );
+    m_chart->update();
 }
 
 void MainWindow::on_animateExplosionCB_toggled( bool toggle )
@@ -126,7 +127,7 @@ void MainWindow::slotNextFrame()
     setExplodeFactor(
         m_currentSlice,
         static_cast<double>( m_currentFactor ) / 10.0 );
-    update();
+    m_chart->update();
 }
 
 void MainWindow::on_threeDGB_toggled( bool toggle )
@@ -137,7 +138,7 @@ void MainWindow::on_threeDGB_toggled( bool toggle )
     attrs.setEnabled( toggle );
     attrs.setDepth( threeDFactorSB->value() );
     m_pie->setThreeDPieAttributes( attrs );
-    update();
+    m_chart->update();
 }
 
 void MainWindow::on_threeDFactorSB_valueChanged( int factor )
@@ -148,7 +149,7 @@ void MainWindow::on_threeDFactorSB_valueChanged( int factor )
     attrs.setEnabled( threeDGB->isChecked() );
     attrs.setDepth( factor );
     m_pie->setThreeDPieAttributes( attrs );
-    update();
+    m_chart->update();
 }
 
 
