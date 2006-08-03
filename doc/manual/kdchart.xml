@@ -2942,7 +2942,7 @@
 			</para>
 		    </listitem>			   		    		   
 		</itemizedlist>
-			<para>
+		<para>
 		    We are using a <classname>KDChartChart</classname> class and also an home made 
 		    <classname>TableModel</classname> for the convenience. It is  derived from 
 		    <classname>QAbstractTableModel</classname>.
@@ -4049,11 +4049,7 @@
 	    </sect2>
 	    <sect2>
 		<title id="pietipsample" xreflabel="codexample">A complete Pie Example</title>
-		<para>
-		    <!-- Pending michel show a nice full featured Pie chart with as many 
-		    attributes as possible - The following text and list has to be modified 
-		    after we have written our own more complete example - 
-		    see NotForCustomers/KDChart20-Manual-Examples.txt  -->
+		<para>		  
 		    In the following implementation we want to be able to:
 		</para>
 		<itemizedlist>
@@ -4093,14 +4089,49 @@
 			</para>
 		    </listitem>
 		</itemizedlist>
-
+		<para>
+		    In the example below we are using a <classname>KDChartChart</classname> class and 
+		    also an home made <classname>TableModel</classname> for the convenience. It is  
+		    derived from <classname>QAbstractTableModel</classname>.
+		</para>
+		<para>
+		    TableModel uses a simple rectangular vector of vectors to represent a data
+		    table that can be displayed in regular Qt Interview views. Additionally, it 
+		    provides a method to load CSV files exported by OpenOffice Calc in the default 
+		    configuration. This allows to prepare test data using spreadsheet software.
+		</para>
+		<para>
+		    It expects the CSV files in the subfolder ./modeldata. If the application
+		    is started from another location, it will ask for the location of the
+		    model data files.
+		</para>
+		<para>
+		    We recommend you to consult the "TableModel" interface and implementation files
+		    which are located in the <filename>examples/tools</filename> directory of your 
+		    KD Chart installation.
+		</para>
+		<para>
+		    Let us concentrate on our Pie chart implementation for now and consult the 
+		    following files: other needed files like the ui, pro , qrc ,CSV and main.cpp files 
+		    can be consulted from the <filename>examples/Pie/Advanced</filename> directory
+		    of your installation.
+		</para>
 		<programlisting linenumbering="numbered" id="fullpie_mainwindow_h">
 		    <textobject><textdata fileref="../../examples/Pie/Advanced/mainwindow.h"/>
 		    </textobject>
 		</programlisting>                
-		<para>
-		    More explanation h file?
+		<para>		
+		    In the above code we bring up the KDChart namespace as usual and declare our 
+		    slots. The purpose is to let the user configure its line chart attributes 
+		    manually from the GUI. As you can see we are using a KDChartChart object (m_chart),
+		    a KDChartPieDiagram object (m_pie), and our home made TableModel (m_model).
 		</para>
+		<note>
+		    <para>
+			Before diplaying our Pie diagram we need to implicitely replace the default 
+			cartesian plane by a Polar plane.
+		    </para>
+		</note>	
 		<programlisting linenumbering="numbered" id="fullpie_mainwindow_cpp">
 		    <textobject><textdata fileref="../../examples/Pie/Advanced/mainwindow.cpp"/>
 		    </textobject>
