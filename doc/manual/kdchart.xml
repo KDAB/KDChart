@@ -4901,14 +4901,14 @@
         </sect1>
 -->
 	<sect1>
-            <title id="axestips">Tips</title>
+            <title id="axistips">Tips</title>
 	    <para>
 		In this section we want to give you some example about how to use some 
 		interesting features offered by the KD Chart 2.0 API. We will study the 
 		code and display a screen-shot showing the resulting widget. 
 	    </para>	
             <sect2>
-                <title id="axestipsample" xreflabel="codexample">A cool Axes Example</title>           
+                <title id="axistipsample" xreflabel="codexample">Axis Example</title>           
 		<para>		  
 		    In the following implementation we want to be able to:
 		</para>
@@ -4957,7 +4957,7 @@
 		    of your installation.
 		</para>
 		<programlisting linenumbering="numbered" id="axislabels_mainwindow_h">
-		    <textobject><textdata fileref="../../examples/Axis/Labels/mainwindow.h"/>
+		    <textobject><textdata fileref="../../examples/Axis/Chart/mainwindow.h"/>
 		    </textobject>
 		</programlisting>                
 		<para>		
@@ -4973,7 +4973,7 @@
 		    </para>
 		</note>	
 		<programlisting linenumbering="numbered" id="axeslabels_mainwindow_cpp">
-		    <textobject><textdata fileref="../../examples/Axis/Labels/mainwindow.cpp"/>
+		    <textobject><textdata fileref="../../examples/Axis/Chart/mainwindow.cpp"/>
 		    </textobject>
 		</programlisting>
 		<para>
@@ -5075,24 +5075,18 @@
 		<para>
 		    This is implemented by configuring our pie attributes and assign them by 
 		    dataset to the diagram, as shown above.
-		</para>
-		<para>
-		    The same procedure is used for us to be able to run our animation. You can 
-		    of course learn more about this part of the code which is more related to 
-		    Qt programming by consulting 
-		    <filename>examples/Pie/Advanced/mainwindow.cpp</filename>. 
-		</para>
+		</para>	
 		<para>
 		    This example is available to compile and run from the 
-		    <filename>examples/Pie/Advanced</filename> directory into your KD Chart 
+		    <filename>examples/Axis/Chart</filename> directory into your KD Chart 
 		    installation. We recommend you to run it. The widget displayed by the above 
 		    code is shown in the figure below.
 		</para>
-		<figure float="0" id="fig-axislabels">
+		<figure float="0" id="fig-axisconfiguredtitles">
 		    <title>Axis with Label</title>
 		    <mediaobject>
 			<imageobject>
-			    <imagedata width="3in" scalefit="1" fileref="images/axislabels.png"/>
+			    <imagedata width="3in" scalefit="1" fileref="images/axisconfiguredtitles.png"/>
 			</imageobject>
 		    </mediaobject>
 		</figure>	    	  		    
