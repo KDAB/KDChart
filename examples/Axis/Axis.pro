@@ -1,5 +1,6 @@
 TEMPLATE	= subdirs
 SUBDIRS		= Labels \
-                  Parameters
+                  Parameters \
+	          Widget
 
 
