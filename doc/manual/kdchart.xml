@@ -4576,6 +4576,7 @@
 		</figure>	    	  	
 	    </sect2>
 -->
+<!--
 	    <sect2>
 		<title id="polarchart">Polar Charts</title>
 		 <tip>
@@ -4591,10 +4592,12 @@
 		    </para>
 		</tip>
 		<para>		    
-		    To activate the ring chart mode simply call the 
+		    To activate the polar chart mode simply call the 
 		    <classname>KDChartWidget</classname> function 
 		    <methodname>setType(Widget::Polar)</methodname> or create an object of type 
-		    <classname>KDChartPolarDiagram</classname>
+		    <classname>KDChartPolarDiagram</classname> and assign it to your 
+		    <classname>KDChartChart</classname> by calling its 
+		    <methodname>replaceDiagram()</methodname> method.
 		</para>	
 	    </sect2>
 	    <sect2>
@@ -4609,6 +4612,7 @@
 		    Compile and run the example file "PolarSimple" to see a normal polar chart as 
 		    shown below. 		
 		</para>
+-->
 		<!-- temporarely commented until we have an example to show -->
 		<!--
 		 <figure float="0" id="fig-simplepolarchart">
@@ -4622,6 +4626,7 @@
                 </mediaobject>
             </figure>
 		-->
+<!--
 		<note>
 		    <para>
 			Data Values are shown by default in polar charts even if drawing of the 
@@ -4649,11 +4654,14 @@
 		<para>
 		    Let us make this more concrete by looking at the 
 		    following lines of code.
+-->
 		    <!--
 		    <link linkend=""></link>
 		    <link linkend=""></link>
 		    -->
+<!--
 		</para>
+-->
 		<!--
 		<programlisting linenumbering="numbered" id="">
 		<textobject>
@@ -4661,10 +4669,12 @@
 	        </textobject>
 	        </programlisting>
 		-->
+<!--
 		<para>
 		    More explanation?
 		</para>   	
 	    </sect2>
+-->
 	</sect1>
 	<sect1>
             <title>What's next</title>
