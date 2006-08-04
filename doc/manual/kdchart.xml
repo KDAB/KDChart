@@ -4679,7 +4679,8 @@
 	<sect1>
             <title>What's next</title>
             <para>
-                Axes
+                For our diagram to be useful we need to be able to display its axis. That 
+		will be the subject of our next section.
             </para>
         </sect1>
     </chapter>
@@ -4687,8 +4688,50 @@
         <title id="chtxt_axes">Axes</title>
         <titleabbrev id="chnum_axes">Chapter 5</titleabbrev>
 	<para>
-          Introduction text
+	    Axes are implemented at different levels in the KD Chart 2.0 API. KD Chart make 
+	    use of Cartesian axis - see <classname>KDChartCartesianAxis</classname> and Polar 
+	    Axis which are derived from the base class for axes 
+	    <classname>KDChartAbstractAxis</classname>.
+	    <!-- Pending Michel Polar axis are not implemented yet -->.
         </para>
+	<para>
+	    The user may specify its own set of strings to be used as Axis labels with the
+	    <methodname>KDChartAbstractAxis::setLabels( const QStringList )</methodname>
+	    method.
+	</para>
+	<note>
+	    <para>
+		Labels specified via setLabels take precedence: If a non-empty list is passed, 
+		KD Chart will use these strings as axis labels, instead of calculating them.
+		By passing an empty QStringList you can reset the default behaviour.
+	    </para>
+	</note>
+	<para>
+	    For the convenience we can also specify short labels in our own set of string to
+	    be used as axis labels,in case the normal labels are too long by using  
+	    <methodname>KDChartAbstractAxis::setShortLabels( const QStringList )</methodname>
+	</para>
+	<para>
+	    Axis values and labels text attributes can also be configured. Thus the labels of 
+	    all of your axes in all of your diagrams  within that Chart will be drawn in same 
+	    font size, by default.
+	</para>
+	<para>
+	    The setters and getters for axis labels and their text attributes are implemented 
+	    in the axis base class <classname>KDChartAbstractAxis</classname>, we recommend you 
+	    to study its interface - See <filename>KDChartAbstractAxis.h</filename>.
+	</para>
+	<tip>
+	    <para>
+		If you a smaller number of strings than the number od labels drawn at this
+		axis, KD Chart will iterate over the list, repeating the strings, until all
+		labels are drawn. 
+	    </para>
+	    <para>
+		As an example you could specify the seven days of the week as abscissa labels,
+		which would be repeatedly used then.
+	    </para>
+	</tip>
 	<sect1>
             <title id="axeshowtoconfigure">How to configure</title>
             <para>
