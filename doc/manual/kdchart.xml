@@ -4896,7 +4896,7 @@
                 Text ...
             </para>  
             <sect2>
-                <title id="attributesample" xreflabel="codesample">Attributes Example</title>
+                <title id="attributeassample" xreflabel="codesample">Attributes Example</title>
                 <para>
                     Let us make this more concrete by looking at the following
                     lines of code.
@@ -4923,7 +4923,7 @@
                 Text ...
             </para>  
             <sect2>
-                <title id="datavalueattributesample" xreflabel="codesample">DataValue Attributes Example</title>
+                <title id="datavaluesample" xreflabel="codesample">DataValue Attributes Example</title>
                 <para>
                     Let us make this more concrete by looking at the following
                     lines of code.
@@ -4950,7 +4950,7 @@
                 Text ...
             </para>  
             <sect2>
-                <title id="textattributessample" xreflabel="codesample">Text Attributes Example</title>
+                <title id="textsample" xreflabel="codesample">Text Attributes Example</title>
                 <para>
                     Let us make this more concrete by looking at the following
                     lines of code.
@@ -4977,7 +4977,7 @@
                 Text ...
             </para>  
             <sect2>
-                <title id="markerssample" xreflabel="markersample">Marker Attributes Example</title>
+                <title id="markersattributesample" xreflabel="markersample">Marker Attributes Example</title>
                 <para>
                     Let us make this more concrete by looking at the following
                     lines of code.
