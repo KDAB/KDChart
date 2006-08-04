@@ -4753,18 +4753,113 @@
 	<sect1>
             <title id="caxeshowtoconfigure">How to configure</title>
             <para>
-                Text ...
-            </para>  
+                In order to add axis to a cartesian diagram we need to use 
+		<methodname>KDChartAbstractCartesianDiagram::AddAxis()</methodname> method.
+		The diagram takes ownership of the axis and will delete it by itself.
+            </para>
+	    <para>
+		To gain back ownership (e.g. for assigning the axis to another diagram)
+		use the <methodname>KDChartAbstractDiagram::takeAxis()</methodname> method, 
+		before calling addAxis on the other diagram.
+	    </para>
+	    <note>
+		<para>
+		    <methodname>KDChartAbstractDiagram::takeAxis()</methodname>Removes the 
+		    axis from the diagram, without deleting it. The diagram no longer owns 
+		    the axis, so it is the caller's responsibility to delete the axis.
+		</para>
+	    </note>
             <sect2>
                 <title id="caxessample" xreflabel="codsample">Cartesian Axes sample</title>
                 <para>
-                    Let us make this more concrete by looking at the following
-                    lines of code.
-		    <!--
-                    <link linkend=""></link>
-		    <link linkend=""></link>
-                    -->
-                </para>
+                    Let us make the above description more concrete by looking at the following
+                    lines of code based on the <filename>Simple Widget</filename> example we 
+		    have been demonstrating above 
+		    (<filename>Chapter 3 - Two Ways - Widget Example</filename>). In this example 
+		    we demonstrate how to add an X axis and a Y axis to your diagram and set the 
+		    Axis titles when working with a <classname>KDChartWidget</classname>..
+		</para>
+		<para>
+		    First include the appropriate headers and bring in the "KDChart namespace":
+		</para>	    	
+		<programlisting>
+		    #include &lt;QApplication&gt;
+		    #include &lt;KDChartWidget&gt;
+		    #include &lt;KDChartLineDiagram&gt;
+                    #include &lt;KDChartCartesianAxis&gt;
+
+	            using namespace KDChart;			    
+		</programlisting>                
+		<para>
+		    We need to include <classname>KDChartLineDiagram</classname> in order to be 
+		    able to add the Axis as we will see further on. 
+		</para>
+		<programlisting>
+		    int main( int argc, char** argv ) {
+		    QApplication app( argc, argv );                    
+		    Widget widget;
+		    // our Widget can be configured 
+		    // as any Qt Widget 
+		    widget.resize( 600, 600 );		    
+                    // store the data and assign it
+		    QVector&lt; double &gt; vec0,  vec1;
+		    vec0 &lt;&lt; 5 &lt;&lt; 1 &lt;&lt; 3 &lt;&lt; 4 &lt;&lt; 1;
+		    vec1 &lt;&lt; 3 &lt;&lt; 6 &lt;&lt; 2 &lt;&lt; 4 &lt;&lt; 8;
+		    vec2 &lt;&lt; 0 &lt;&lt; 7 &lt;&lt; 1 &lt;&lt; 2 &lt;&lt; 1;
+		    widget.setDataset( 0, vec0, "vec0" );
+		    widget.setDataset( 1, vec1, "vec1" );
+		    widget.setDataset( 2, vec2, "vec2" );		   
+		</programlisting>
+		<note>
+		    <para>
+			We don't need to change the default chart type (Line Charts) by calling  
+			the <methodname>KDChartWidget::setType</methodname> method.     
+		    </para>
+		</note>
+		    <para>
+		    Now let us create our axis, position them and set their titles:
+		</para>
+		<programlisting>
+		    CartesianAxis *xAxis = new CartesianAxis( widget.lineDiagram() );
+		    CartesianAxis *yAxis = new CartesianAxis (widget.lineDiagram() );
+		    xAxis->setPosition ( CartesianAxis::Bottom );
+		    yAxis->setPosition ( CartesianAxis::Left );
+		    xAxis->setTitleText ( "Abscissa bottom position" );
+		    yAxis->setTitleText ( "Ordinate left position" );
+		</programlisting>		
+		<para>
+		    And add them to our diagram which will take the ownership:
+		</para>			
+		<programlisting>
+		    widget.lineDiagram()->addAxis( xAxis );
+		    widget.lineDiagram()->addAxis( yAxis );
+		</programlisting>
+		<para>
+		    Finally we conclude our small example:
+		</para>
+		<programlisting>
+		    widget.show();
+		    
+		    return app.exec();
+		    }
+		</programlisting>
+		<para>
+		    See the screen-shot below to view The resulting chart displayed by the above code. 
+		</para>
+		<figure float="0" id="fig-sampleaxiswidget">
+                <title>A Simple Widget With Axis</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata
+                        fileref="images/simpleaxiswidget.png"
+                        width="3in" scalefit="1"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+		<para>
+		    This example can be compiled and run from the following location of your KD Chart
+		    installation <filename>examples/Axis/Widget</filename>
+		</para>			
                 <!--
                 <programlisting linenumbering="numbered" id="">
                 <textobject>
@@ -4773,7 +4868,7 @@
 	        </programlisting>
                 -->
                 <para>
-                    More explanation?
+                    More Text?
                 </para>
             </sect2>
         </sect1>
