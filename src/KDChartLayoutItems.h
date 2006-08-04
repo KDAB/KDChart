@@ -79,7 +79,7 @@ namespace KDChart {
 
     /** \internal
      */
-    class TextLayoutItem : public AbstractLayoutItem
+    class KDCHART_EXPORT TextLayoutItem : public AbstractLayoutItem
     {
     public:
         TextLayoutItem();
@@ -134,7 +134,7 @@ namespace KDChart {
 
     /** \internal
      */
-    class MarkerLayoutItem : public AbstractLayoutItem
+    class KDCHART_EXPORT MarkerLayoutItem : public AbstractLayoutItem
     {
     public:
         MarkerLayoutItem( AbstractDiagram* diagram, const MarkerAttributes& marker,
@@ -161,7 +161,7 @@ namespace KDChart {
 
     /** \internal
      */
-    class HorizontalLineLayoutItem : public AbstractLayoutItem
+    class KDCHART_EXPORT HorizontalLineLayoutItem : public AbstractLayoutItem
     {
     public:
         HorizontalLineLayoutItem();
@@ -182,7 +182,7 @@ namespace KDChart {
 
     /** \internal
      */
-    class VerticalLineLayoutItem : public AbstractLayoutItem
+    class KDCHART_EXPORT VerticalLineLayoutItem : public AbstractLayoutItem
     {
     public:
         VerticalLineLayoutItem();
