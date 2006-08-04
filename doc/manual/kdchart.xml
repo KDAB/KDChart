@@ -4258,7 +4258,9 @@
 			</imageobject>
 		    </mediaobject>
 		</figure>	    	  	
-	    </sect2>	  
+	    </sect2>
+<!-- comment for now not implemented yet -->
+<!--	  
             <sect2>
 		<title id="rings">Ring Charts</title>
 		 <tip>
@@ -4288,6 +4290,7 @@
 			datasets, simple ring charts are is the good choice.
                     </para>
                 </tip>
+-->
 		<!-- disabling for now no example available yet -->
 		<!-- 
                 <figure float="0" id="fig-simpleringchart">
@@ -4301,6 +4304,7 @@
                     </mediaobject>
                 </figure>
 		-->
+<!--
                 <para>
 		    &kdchart; by default draws non-exploded rings with equal thickness when in 
 		    ring chart mode so no methods need to be called.
@@ -4323,6 +4327,7 @@
 			products.
                     </para>
                 </tip>
+-->
 		<!-- disabling for now no example available yet -->
 		<!-- 
                 <figure float="0" id="fig-ringrelative">
@@ -4336,6 +4341,7 @@
                     </mediaobject>
                 </figure>
 		-->
+<!--
                 <para>
 		    Relative thickness mode is activated by calling the 
 		    <classname>KDChartRingAttributes</classname> function 
@@ -4381,6 +4387,7 @@
 			Ring Attribute section below.
 		    </para>    
 		</tip>
+-->
 		<!-- disabling for now no example available yet -->
 		<!-- 
                 <figure float="0" id="fig-ringexplode">
@@ -4394,12 +4401,14 @@
                     </mediaobject>
                 </figure>
 		-->
+<!--
                 <para>
 		    Compile and run the example RingExploded to see a ring chart featuring both 
 		    relative thickness  of the rings and differently exploded segments on the 
                     outer ring. 
                 </para>                
             </sect2>
+-->
 	    <!-- commenting this part until we have something to show -->
 	    <!--
 	    <sect2>
@@ -4413,6 +4422,7 @@
 		</para>   
 	    </sect2>
 	    -->
+<!--
 	    <sect2>
 		<title id="ringsattributes">Rings Attributes</title>
 		<para>
@@ -4496,7 +4506,9 @@
 		    // 3 - Assign to your diagram
 		    m_ring->setRingAttributes( index, pa);
 		</programlisting>  
+-->
       		<!-- Pending Michel Is that still true ? -->
+<!--
 		<note>
                     <para>
 			Only segments that are located on the <emphasis>outer</emphasis>
@@ -4515,10 +4527,12 @@
 	    <sect2>
 		<title id="ringtipsample" xreflabel="codexample">A complete Ring Example</title>
 		<para>
+-->
 		    <!-- Pending michel show a nice full featured Ring chart with as many 
 		    attributes as possible - The following text and list has to be modified 
 		    after we have written our own more complete example - 
 		    see NotForCustomers/KDChart20-Manual-Examples.txt  -->
+<!--
 		    In the following implementation we want to be able to:
 		</para>
 		<itemizedlist>
@@ -4561,6 +4575,7 @@
 		    </mediaobject>
 		</figure>	    	  	
 	    </sect2>
+-->
 	    <sect2>
 		<title id="polarchart">Polar Charts</title>
 		 <tip>
