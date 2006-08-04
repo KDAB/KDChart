@@ -4733,12 +4733,30 @@
 	    </para>
 	</tip>
 	<sect1>
-            <title id="axeshowtoconfigure">How to configure</title>
+	   <title id="cartesianaxes">Cartesian Axis</title>
+            <para>
+                The class <classname>KDChartCartesianAxis</classname> is used together with 
+		the diagrams displayed in a cartesian coordinate plane and contains the setters
+		and getters related to the axis specifics to those chart types.
+            </para> 
+	    <para>
+		It allows the user to set and retrieve the position (top, bottom, left or right), 
+		or the type (abscissa, ordinate) of the axis, assign or retrieve a title and its 
+		text attributes. That is where the axis are painted.
+	    </para>
+	    <para>
+		The setters and getters for those specifics cartesian features are implemented 
+		in <classname>KDChartCartesianAxis</classname>, we recommend you 
+		to study its interface - See <filename>KDChartCaretesianAxis.h</filename>.
+	    </para>
+	</sect1>
+	<sect1>
+            <title id="caxeshowtoconfigure">How to configure</title>
             <para>
                 Text ...
             </para>  
             <sect2>
-                <title id="axesconfiguresample" xreflabel="codexample">Axes Example</title>
+                <title id="caxessample" xreflabel="codsample">Cartesian Axes sample</title>
                 <para>
                     Let us make this more concrete by looking at the following
                     lines of code.
@@ -4759,6 +4777,39 @@
                 </para>
             </sect2>
         </sect1>
+<!--
+	<sect1>
+	   <title id="partesianaxes">Polar Axis</title>
+            <para>
+                
+            </para> 
+	</sect1>
+	<sect1>
+            <title id="paxeshowtoconfigure">How to configure</title>
+            <para>
+                Text ...
+            </para>  
+            <sect2>
+                <title id="paxessample" xreflabel="codsample">Polar Axes sample</title>
+                <para>
+                    Let us make this more concrete by looking at the following
+                    lines of code.	
+                </para>
+-->
+                <!--
+                <programlisting linenumbering="numbered" id="">
+                <textobject>
+                <textdata fileref="../../examples/..."/>
+	        </textobject>
+	        </programlisting>
+                -->
+<!--
+                <para>
+                    More explanation?
+                </para>
+            </sect2>
+        </sect1>
+-->
 	<sect1>
             <title id="axestips">Tips</title>
             <para>
