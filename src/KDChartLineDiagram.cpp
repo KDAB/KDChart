@@ -86,6 +86,8 @@ void LineDiagram::setType( const LineType type )
        return;
    }
    d->lineType = type;
+   // AbstractAxis settings - see AbstractDiagram and CartesianAxis
+   setPercentMode( type == LineDiagram::Percent );
    setDataBoundariesDirty();
    emit layoutChanged( this );
 }
@@ -557,8 +559,6 @@ void LineDiagram::paint( PaintContext* ctx )
                 if ( laa.displayArea() )
                     paintAreas( ctx, index, area, laa.transparency() );
             }
-            // AbstractAxis settings - see AbstractDiagram and CartesianAxis
-	    setPercentMode( true );
             break;
         }
         default:
