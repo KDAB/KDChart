@@ -531,7 +531,6 @@ void LineDiagram::paint( PaintContext* ctx )
                 QPolygonF area;
                 for ( int j=0; j<rowCount ; ++j ) {
                     double stackedValues = 0, nextValues = 0;
-                    QPointF nextPoint;
 		    QModelIndex index = model()->index( j, i, rootIndex() );
                     //calculate stacked percent value- we only take in account positives values for now.
                     for ( int k = i; k >= 0 ; --k ) {
@@ -544,12 +543,16 @@ void LineDiagram::paint( PaintContext* ctx )
                                 nextValues += val;
                         }
                     }
-                    nextPoint = coordinatePlane()->translate(
-                            QPointF( j, stackedValues/sumValuesVector.at(j)* maxValue ) );
+                    double y = 0;
+                    if ( sumValuesVector.at(j) != 0 && maxValue != 0 )
+                        y = stackedValues/sumValuesVector.at(j) * maxValue;
+                    QPointF nextPoint = coordinatePlane()->translate( QPointF( j, y ) );
                     area.append( nextPoint );
                     if ( j+1 < rowCount ) {
-                        QPointF toPoint = coordinatePlane()->translate(
-                                QPointF( j+1, nextValues/sumValuesVector.at(j+1)* maxValue ) );
+                        double y = 0;
+                        if ( sumValuesVector.at(j+1) != 0 && maxValue != 0 )
+                            y = nextValues/sumValuesVector.at(j+1) * maxValue;
+                        QPointF toPoint = coordinatePlane()->translate( QPointF( j+1, y ) );
                         lineList.append( LineAttributesInfo( index, nextPoint, toPoint ) );
                     }
                     list.append( DataValueTextInfo( index, nextPoint, valueForCell( j, i ) ) );
