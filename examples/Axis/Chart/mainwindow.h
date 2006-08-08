@@ -31,11 +31,8 @@
 
 namespace KDChart {
     class Chart;
-    class DatasetProxyModel;
     class LineDiagram;
-    class LineAttributes;
-    class CartesianAxis;
-    class Legend;
+    class CartesianAxis;    
 }
 
 class MainWindow : public QWidget, private Ui::MainWindow
@@ -46,32 +43,10 @@ public:
     MainWindow( QWidget* parent = 0 );
 
 
-
-private slots:
-/*
-    void on_lineTypeCB_currentIndexChanged( const QString & text );
-    void on_paintLegendCB_toggled( bool checked );
-    void on_paintValuesCB_toggled( bool checked );
-    void on_paintMarkersCB_toggled( bool checked );
-    void on_markersStyleCB_currentIndexChanged( const QString & text );
-    void on_markersWidthSB_valueChanged( int i );
-    void on_markersHeightSB_valueChanged( int i);
-    void on_displayAreasCB_toggled( bool checked );
-    void on_transparencySB_valueChanged( int i );
-    void on_zoomFactorSB_valueChanged( double factor );
-    void on_hSLine_valueChanged( int value );
-    void on_vSLine_valueChanged( int value );
-*/
-
 private:
     KDChart::Chart* m_chart;
-    TableModel m_model;
-    KDChart::DatasetProxyModel* m_datasetProxy;
+    TableModel m_model;   
     KDChart::LineDiagram* m_lines;
-    KDChart::Legend* m_legend;
-    // mutable KDChart::CartesianAxis xAxis;
-    //mutable KDChart::CartesianAxis yAxis;
-
 };
 
 

@@ -26,17 +26,8 @@
 #include "mainwindow.h"
 
 #include <KDChartChart>
-#include <KDChartAbstractCoordinatePlane>
 #include <KDChartLineDiagram>
-#include <KDChartLineAttributes>
 #include <KDChartTextAttributes>
-#include <KDChartDataValueAttributes>
-#include <KDChartThreeDLineAttributes>
-#include <KDChartMarkerAttributes>
-#include <KDChartLegend>
-
-#include <QDebug>
-#include <QPainter>
 
 using namespace KDChart;
 
@@ -56,54 +47,48 @@ MainWindow::MainWindow( QWidget* parent ) :
     // Set up the diagram
     m_lines = new LineDiagram();
     m_lines->setModel( &m_model );
-    //CartesianAxisList List = m_lines->axesList();
 
-    CartesianAxis *xAxis = new CartesianAxis( m_lines );
-    CartesianAxis *yAxis = new CartesianAxis ( m_lines );
-    CartesianAxis *bAxis = new CartesianAxis ( m_lines );
-    xAxis->setPosition ( CartesianAxis::Top );
-    yAxis->setPosition ( CartesianAxis::Left );
-    bAxis->setPosition ( CartesianAxis::Bottom );
+    CartesianAxis *topAxis = new CartesianAxis( m_lines );
+    CartesianAxis *leftAxis = new CartesianAxis ( m_lines );
+    CartesianAxis *bottomAxis = new CartesianAxis ( m_lines );
+    topAxis->setPosition ( CartesianAxis::Top );
+    leftAxis->setPosition ( CartesianAxis::Left );
+    bottomAxis->setPosition ( CartesianAxis::Bottom );
 
-    xAxis->setTitleText ( "Abscissa color configured top position" );
-    yAxis->setTitleText ( "Ordinate font configured" );
-    bAxis->setTitleText ( "Abscissa Bottom" );
+    topAxis->setTitleText ( "Abscissa color configured top position" );
+    leftAxis->setTitleText ( "Ordinate font configured" );
+    bottomAxis->setTitleText ( "Abscissa Bottom" );
 
-    TextAttributes tax ( xAxis->titleTextAttributes () );
-    tax.setPen( QPen( Qt::red ) );
-    xAxis->setTitleTextAttributes ( tax );
+    TextAttributes taTop ( topAxis->titleTextAttributes () );
+    taTop.setPen( QPen( Qt::red ) );
+    topAxis->setTitleTextAttributes ( taTop );
 
-    TextAttributes tay ( yAxis->titleTextAttributes () );
-    Measure me( tay.fontSize() );
+    TextAttributes taLeft ( leftAxis->titleTextAttributes () );
+    Measure me( taLeft.fontSize() );
     me.setValue( me.value() * 1.5 );
-    tay.setFontSize( me );
-    yAxis->setTitleTextAttributes ( tay );
+    taLeft.setFontSize( me );
+    leftAxis->setTitleTextAttributes ( taLeft );
 
-    TextAttributes tab ( bAxis->titleTextAttributes () );
-    tab.setPen(  QPen( Qt::blue ) );
-    bAxis->setTitleTextAttributes ( tab );
+    TextAttributes taBottom ( bottomAxis->titleTextAttributes () );
+    taBottom.setPen(  QPen( Qt::blue ) );
+    bottomAxis->setTitleTextAttributes ( taBottom );
 
 // set the following to 0, to see the default Abscissa labels (== X headers, as read from the data file)
 #if 1
     QStringList daysOfWeek;
     daysOfWeek << "Monday" << "Tuesday" << "Wednesday" << "Thursday" << "Friday" ;
-    xAxis->setLabels( daysOfWeek );
+    topAxis->setLabels( daysOfWeek );
     QStringList shortDays;
     shortDays << "Mon" << "Tue" << "Wed" << "Thu" << "Fri";
-    xAxis->setShortLabels( shortDays );
+    topAxis->setShortLabels( shortDays );
 
     QStringList bottomLabels;
     bottomLabels << "Day1" << "Day2" << "Day 3" << "Day 4" << "Day 5";
-    bAxis->setLabels( bottomLabels );
+    bottomAxis->setLabels( bottomLabels );
 #endif
 
-    m_lines->addAxis( xAxis );
-    m_lines->addAxis( yAxis );
-    m_lines->addAxis( bAxis );
+    m_lines->addAxis( topAxis );
+    m_lines->addAxis( leftAxis );
+    m_lines->addAxis( bottomAxis );
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
-
-    // Set up the legend
-    m_legend = new Legend( m_lines, m_chart );
-    m_chart->addLegend( m_legend );
-    m_legend->hide();
 }
