@@ -26,6 +26,7 @@
 #include <QApplication>
 #include <KDChartWidget>
 #include <KDChartBarDiagram>
+#include <KDChartPosition>
 
 
 using namespace KDChart;
@@ -49,6 +50,14 @@ int main( int argc, char** argv ) {
     widget.setDataset( 1, vec1, "v1" );
     widget.setDataset( 2, vec2, "v2" );
     widget.setType( Widget::Bar );
+    widget.addLegend(Position::North);
+    widget.firstLegend()->setOrientation( Qt::Horizontal );
+    widget.firstLegend()->setTitleText( "Bars Legend" );
+    widget.firstLegend()->setText( 0,  "Vector 1" );
+    widget.firstLegend()->setText( 1,  "Vector 2" );
+    widget.firstLegend()->setText( 2,  "Vector 3" );
+    widget.firstLegend()->setShowLines(  true );
+
 
     widget.show();
 
