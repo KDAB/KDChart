@@ -5173,9 +5173,35 @@
 	</para>
 	<sect1>
             <title id="legendshowtoconfigure">How to configure</title>
-            <para>
-                Text ...
-            </para>  
+             <para>
+                In order to add a legend to our chart we need to use the  
+		<methodname>KDChartChart::AddLegend()</methodname> method.
+		The charttakes ownership of the legend and will take care of
+		removing it by itself.
+            </para>
+	    <tip>		
+		<para>
+		    You may also wish to use 
+		    <methodname>KDChartChart::replaceLegend( Legend newLegend , Legend oldLegend)</methodname> which is also available for the convenience:
+		</para>
+		<para>
+		    The old legend will be deleted automatically. If its parameter is 
+		    omitted, the very first legend will be replaced. In case, there was 
+		    no legend yet, the new legend will just be added.
+		</para>
+	    </tip>
+	    <note>
+		<para>
+		    <methodname>KDChartChart::takeLegend()</methodname>Removes the 
+		    legend from the chart without deleting it. The chart no longer owns 
+		    the legend, it is the caller's responsibility to delete the legend.
+		</para>
+	    </note>
+	    <para>
+		Please consult the interface for <classname>KDChartChart</classname> in
+		order to get accustomed to those methods related to legends. See 
+		<filename>KDChartChart.h</filename>.
+	    </para>
             <sect2>
                 <title id="legendsconfiguresample" xreflabel="codexample">Legend Example</title>
                 <para>
