@@ -48,6 +48,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_lines = new LineDiagram();
     m_lines->setModel( &m_model );
 
+    // create and position axis
     CartesianAxis *topAxis = new CartesianAxis( m_lines );
     CartesianAxis *leftAxis = new CartesianAxis ( m_lines );
     CartesianAxis *bottomAxis = new CartesianAxis ( m_lines );
@@ -55,10 +56,12 @@ MainWindow::MainWindow( QWidget* parent ) :
     leftAxis->setPosition ( CartesianAxis::Left );
     bottomAxis->setPosition ( CartesianAxis::Bottom );
 
+    // set axis titles
     topAxis->setTitleText ( "Abscissa color configured top position" );
     leftAxis->setTitleText ( "Ordinate font configured" );
     bottomAxis->setTitleText ( "Abscissa Bottom" );
 
+    // configure titles text attributes
     TextAttributes taTop ( topAxis->titleTextAttributes () );
     taTop.setPen( QPen( Qt::red ) );
     topAxis->setTitleTextAttributes ( taTop );
@@ -73,8 +76,16 @@ MainWindow::MainWindow( QWidget* parent ) :
     taBottom.setPen(  QPen( Qt::blue ) );
     bottomAxis->setTitleTextAttributes ( taBottom );
 
+    // configure labels text attributes
+    TextAttributes taLabels;
+    taLabels.setPen(  QPen( Qt::darkGreen ) );
+    topAxis->setTextAttributes( taLabels );
+    leftAxis->setTextAttributes( taLabels );
+    bottomAxis->setTextAttributes( taLabels );
+
 // set the following to 0, to see the default Abscissa labels (== X headers, as read from the data file)
 #if 1
+    // configure labels and their shortened versions
     QStringList daysOfWeek;
     daysOfWeek << "Monday" << "Tuesday" << "Wednesday" << "Thursday" << "Friday" ;
     topAxis->setLabels( daysOfWeek );
@@ -86,9 +97,11 @@ MainWindow::MainWindow( QWidget* parent ) :
     bottomLabels << "Day1" << "Day2" << "Day 3" << "Day 4" << "Day 5";
     bottomAxis->setLabels( bottomLabels );
 #endif
-
+    // add axis
     m_lines->addAxis( topAxis );
     m_lines->addAxis( leftAxis );
     m_lines->addAxis( bottomAxis );
+
+    // assign diagram to chart view
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
 }
