@@ -5190,27 +5190,59 @@
 		    no legend yet, the new legend will just be added.
 		</para>
 	    </tip>
+	     <para>
+		Please consult the interface for <classname>KDChartChart</classname> in
+		order to get accustomed to those methods related to legends. See 
+		<filename>KDChartChart.h</filename>.
+	    </para>
 	    <note>
 		<para>
 		    <methodname>KDChartChart::takeLegend()</methodname>Removes the 
 		    legend from the chart without deleting it. The chart no longer owns 
 		    the legend, it is the caller's responsibility to delete the legend.
 		</para>
-	    </note>
+	    </note>	   
 	    <para>
-		Please consult the interface for <classname>KDChartChart</classname> in
-		order to get accustomed to those methods related to legends. See 
-		<filename>KDChartChart.h</filename>.
+		The main configurations elements for <classname>KDChartLegend</classname> are:
+	    </para>
+	    <itemizedlist>
+		<listitem>
+		    <para>
+			ReferenceArea: Specifies or retrieve the reference area for font size 
+			of title text and for font size of the item texts.
+		    </para>
+		</listitem>
+		<listitem>
+		    <para>
+			Diagrams: Add, retrieve, replace or remove diagrams associated to 
+			the legends.
+		    </para>
+		</listitem>		    
+		<listitem>
+		    <para>			    
+			Show Lines: Paint lines between the different items of a legend.
+		    </para>
+		</listitem>
+		<listitem>
+		    <para>			    
+			Title, Markers and Text attributes can be set, as well as colors and 
+			spacing.
+		    </para>
+		</listitem>
+	    </itemizedlist>
+	    <para>
+		Please consult the setters and getters methods available in the 
+		<classname>KDChartLegend</classname> interface. See 
+		<filename>KDChartLegend.h</filename>.
 	    </para>
             <sect2>
-                <title id="legendsconfiguresample" xreflabel="codexample">Legend Example</title>
+                <title id="legendsconfiguresample" xreflabel="codexample">Legend Sample</title>
                 <para>
-                    Let us make this more concrete by looking at the following
-                    lines of code.
-		    <!--
-                    <link linkend=""></link>
-		    <link linkend=""></link>
-                    -->
+                    We will no describe those features a more concrete way by looking at the following
+                    sample code based on the <filename>Simple Widget</filename> example we have been 
+		    demonstrating above <filename>Chapter 3 - Two Ways - Widget Example</filename>.
+		    Through the following code we demonstrate how to add and position a Legend to your
+		    chart Widget using a KDChartWidget.		    
                 </para>
                 <!--
                 <programlisting linenumbering="numbered" id="">
