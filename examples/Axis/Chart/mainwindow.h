@@ -32,7 +32,6 @@
 namespace KDChart {
     class Chart;
     class LineDiagram;
-    class CartesianAxis;    
 }
 
 class MainWindow : public QWidget, private Ui::MainWindow

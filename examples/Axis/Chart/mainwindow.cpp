@@ -83,20 +83,31 @@ MainWindow::MainWindow( QWidget* parent ) :
     leftAxis->setTextAttributes( taLabels );
     bottomAxis->setTextAttributes( taLabels );
 
-// set the following to 0, to see the default Abscissa labels (== X headers, as read from the data file)
+// set the following to 0, to see the default Abscissa labels
+// (== X headers, as read from the data file)
 #if 1
     // configure labels and their shortened versions
     QStringList daysOfWeek;
-    daysOfWeek << "Monday" << "Tuesday" << "Wednesday" << "Thursday" << "Friday" ;
+    daysOfWeek << "Monday" << "Tuesday" << "Wednesday"
+               << "Thursday" << "Friday" ;
     topAxis->setLabels( daysOfWeek );
+
     QStringList shortDays;
-    shortDays << "Mon" << "Tue" << "Wed" << "Thu" << "Fri";
+    shortDays << "Mon" << "Tue" << "Wed"
+              << "Thu" << "Fri";
     topAxis->setShortLabels( shortDays );
 
     QStringList bottomLabels;
-    bottomLabels << "Day1" << "Day2" << "Day 3" << "Day 4" << "Day 5";
+    bottomLabels << "Day 1" << "Day 2" << "Day 3"
+                 << "Day 4" << "Day 5";
     bottomAxis->setLabels( bottomLabels );
+
+    QStringList shortBottomLabels;
+    shortBottomLabels << "D1" << "D2" << "D3"
+                 << "D4" << "D5";
+    bottomAxis->setShortLabels( shortBottomLabels );
 #endif
+
     // add axis
     m_lines->addAxis( topAxis );
     m_lines->addAxis( leftAxis );
