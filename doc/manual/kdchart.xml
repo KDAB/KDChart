@@ -4915,7 +4915,7 @@
 		<itemizedlist>
 		     <listitem>
 			<para>
-			   Add axes at diffrent positions.
+			   Add axes at different positions.
 			</para>
 		    </listitem>
 		    <listitem>
@@ -4927,7 +4927,12 @@
 			<para>			    
 			   Use our own labels and their shortened versions.
 			</para>
-		    </listitem>	
+		    </listitem>
+		     <listitem>
+			<para>			    
+			   Configure our labels text attributes.
+			</para>
+		    </listitem>
 		</itemizedlist>
 		<para>
 		    In the example below we are using a <classname>KDChartChart</classname> class and 
@@ -5121,13 +5126,19 @@
 			    <imagedata width="3in" scalefit="1" fileref="images/axisconfiguredtitles.png"/>
 			</imageobject>
 		    </mediaobject>
-		</figure>	    	  		    
+		</figure>
+		<para>
+		    Several ready to run examples related to axis are available at the following 
+		    location <filename>examples/Axis</filename>, we recommend you to run them all
+		    and consult their implementation.
+		</para>
             </sect2>
         </sect1>
         <sect1>
             <title>What's next</title>
             <para>
-                Legends.
+                Legends are also an important element. In the next section we will describe how to 
+		add and configure your chart legend.
             </para>
         </sect1>
     </chapter>
@@ -5135,8 +5146,31 @@
         <title id="chtxt_legends">Legends</title>
         <titleabbrev id="chnum_legends">Chapter 6</titleabbrev>
 	<para>
-          Introduction text
-        </para>
+	    Legends can be drawn for all kind of diagrams and are drawn on chart 
+	    level (in relation to diagram level). We can have more than one
+	    legend per chart, using 
+	    <methodname>KDChartChart::addLegend()</methodname>.
+	</para>
+	<note>
+	    <para>
+		Legend is different from all other classes ofd KD Chart, since it 
+		can be displayed outside of the Chart's area. If we want to, we 
+		can embedd the legend into your own widget, or into another part 
+		of a bigger grid, into which we might have inserted the Chart.
+	    </para>
+	    <para>
+		On the other hand, please note that we need to (MUST) call 
+		<methodname>Chart::addLegend()</methodname> to get our legend 
+		positioned at the correct position in our chart in case we want 
+		to display the legend inside of the chart which is probably true 
+		for most cases.
+	    </para>
+	</note>
+	<para>
+	    Let us go through the main configuration features offered by
+	    <classname>KDChartLegend</classname>. Of course we also recommend you to 
+	    consult its interface see <filename>KDChartLegend.h</filename>.
+	</para>
 	<sect1>
             <title id="legendshowtoconfigure">How to configure</title>
             <para>
@@ -5166,9 +5200,9 @@
         </sect1>
 	<sect1>
             <title id="legendstips">Tips</title>
-            <para>
-                Text ...
-            </para>  
+	    <para>
+		some text
+	    </para>
             <sect2>
                 <title id="legendtipsample" xreflabel="codexample">Legend Example</title>
                 <para>
