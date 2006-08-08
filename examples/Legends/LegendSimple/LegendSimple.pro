@@ -1,8 +1,5 @@
 KDCHART_PATH = ../../..
 
-
-TARGET = Widget
-
 # Use the filename "kdchartd.dll" (or "kdchartd.lib") on Windows
 # to avoid name clashes between debug/non-debug versions of the
 # KD Chart library:
