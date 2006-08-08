@@ -5238,21 +5238,109 @@
             <sect2>
                 <title id="legendsconfiguresample" xreflabel="codexample">Legend Sample</title>
                 <para>
-                    We will no describe those features a more concrete way by looking at the following
+                    We will now describe those features a more concrete way by looking at the following
                     sample code based on the <filename>Simple Widget</filename> example we have been 
 		    demonstrating above <filename>Chapter 3 - Two Ways - Widget Example</filename>.
 		    Through the following code we demonstrate how to add and position a Legend to your
 		    chart Widget using a KDChartWidget.		    
-                </para>
-                <!--
-                <programlisting linenumbering="numbered" id="">
-                <textobject>
-                <textdata fileref="../../examples/..."/>
-	        </textobject>
-	        </programlisting>
-                -->
+                </para>	
+		<para>
+		    First include the appropriate headers and bring in the "KDChart namespace":
+		</para>	    		 	
+		<programlisting>
+		    #include &lt;QApplication&gt;
+		    #include &lt;KDChartWidget&gt;
+		    #include &lt;KDChartBarDiagram&gt;
+                    #include &lt;KDChartPosition&gt;
+
+	            using namespace KDChart;			    
+		</programlisting>     	    
+		<para>
+		    In this sample code we want to display a bar chart and need to include our
+		    <classname>KDChartBarDiagram</classname> class. In order to be able to 
+		    give a location (position) to our legend in the widget view we also include  
+		    <classname>KDChartPosition</classname>.
+		</para>
+		<programlisting>
+		    int main( int argc, char** argv ) {
+		    QApplication app( argc, argv );
+		    
+		    Widget widget;
+		    widget.resize( 600, 600 );
+		    
+		    QVector&lt; double &gt; vec0,  vec1,  vec2;
+		    
+		    vec0 &lt;&lt; -5 &lt;&lt; -4 &lt;&lt; -3 &lt;&lt; -2 &lt;&lt; -1 &lt;&lt; 0
+		    &lt;&lt; 1 &lt;&lt; 2 &lt;&lt; 3 &lt;&lt; 4 &lt;&lt; 5;
+		    vec1 &lt;&lt; 25 &lt;&lt; 16 &lt;&lt; 9 &lt;&lt; 4 &lt;&lt; 1 &lt;&lt; 0
+		    &lt;&lt; 1 &lt;&lt; 4 &lt;&lt; 9 &lt;&lt; 16 &lt;&lt; 25;
+		    vec2 &lt;&lt; -125 &lt;&lt; -64 &lt;&lt; -27 &lt;&lt; -8 &lt;&lt; -1 &lt;&lt; 0
+		    &lt;&lt; 1 &lt;&lt; 8 &lt;&lt; 27 &lt;&lt; 64 &lt;&lt; 125;
+		    
+		    widget.setDataset( 0, vec0, "v0" );
+		    widget.setDataset( 1, vec1, "v1" );
+		    widget.setDataset( 2, vec2, "v2" );
+		    widget.setType( Widget::Bar );			    
+		</programlisting>  	
+		<note>
+		    <para>
+			We need to change the default chart type (Line Charts) by calling  
+			the <methodname>KDChartWidget::setType</methodname> method in order 
+			to display a bar type diagram.     
+		    </para>
+		</note>
+		<para>
+		    Now let us add our legend, set its position and orientation, its title 
+		    and dataset labels text:
+		</para>    	    
+		<programlisting>
+		    widget.addLegend(Position::North);
+		    widget.firstLegend()->setOrientation( Qt::Horizontal );
+		    widget.firstLegend()->setTitleText( "Bars Legend" );
+		    widget.firstLegend()->setText( 0,  "Vector 1" );
+		    widget.firstLegend()->setText( 1,  "Vector 2" );
+		    widget.firstLegend()->setText( 2,  "Vector 3" );
+		    widget.firstLegend()->setShowLines(  true );			    
+		</programlisting>    
+		<para>
+		    The interesting point here is how we call 
+		    <methodname>KDChartWidget::firstlegend()</methodname> to get a pointer to 
+		    to our legend object and be able to set up and configure it. We will see 
+		    further on in the next code example (see - Section Tips - how to configure 
+		    the elements of a legend (e.g Title text, markers, etc....).
+		</para>
+		<para>
+		    Finally we conclude our small application by runnig the usual lines of 
+		    code.
+		</para>
+		<programlisting>
+		     widget.show();
+
+		    return app.exec();
+		</programlisting> 
+		<para>
+		    See the screen-shot below to view The resulting chart displayed by the 
+		    above code. 
+		</para>
+		<figure float="0" id="fig-samplelegendwidget">
+                <title>A Widget With a simply configured Legend</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata
+                        fileref="images/legendsimple.png"
+                        width="3in" scalefit="1"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+		<para>
+		    This example can be compiled and run from the following location of your 
+		    KD Chart installation <filename>examples/Legends/LegendSimple</filename>, 
+		    we recommend you to do so.
+		</para>			             
                 <para>
-                    More explanation?
+                    In the Tips section below we will present you a more elaborate example 
+		    which uses  <classname>KDChartChart</classname> and where we are setting
+		    up our legend elements ( texts and markers). 
                 </para>
             </sect2>
         </sect1>
@@ -5263,24 +5351,7 @@
 	    </para>
             <sect2>
                 <title id="legendtipsample" xreflabel="codexample">Legend Example</title>
-                <para>
-                    Let us make this more concrete by looking at the following
-                    lines of code.
-		    <!--
-                    <link linkend=""></link>
-		    <link linkend=""></link>
-                    -->
-                </para>
-                <!--
-                <programlisting linenumbering="numbered" id="">
-                <textobject>
-                <textdata fileref="../../examples/..."/>
-	        </textobject>
-	        </programlisting>
-                -->
-                <para>
-                    More explanation?
-                </para>
+		
             </sect2>
         </sect1>
         <sect1>
