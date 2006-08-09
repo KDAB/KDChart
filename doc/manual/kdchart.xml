@@ -5487,13 +5487,79 @@
 		</para>
 	    </note>
 	    <para>
-		
+		We want to make our legend more readable by setting a white background 
+		inside its frame.
 	    </para>
-	    <para>		
-		Let us have a look at the code and comment it. 
-	    </para>
-	    
+	    <programlisting>
+		 // Add a background to your legend
+		BackgroundAttributes ba;
+		ba.setBrush(  Qt::white );
+		ba.setVisible( true );
+		legend->setBackgroundAttributes(  ba );
+	    </programlisting>
 	    <para>
+		As for all attributes settings the code is straight forward, just create 
+		the attribute object, configure it and assign it. We recommend you to have 
+		a look at the <classname>KDChartBackgroundAttributes</classname> interface.
+		See <filename>KDChartBackgroundAttributes.h</filename>
+	    </para>
+	    <para>
+		Let us now configure our legend's frame:
+	    </para>
+	     <programlisting>
+		 FrameAttributes fa;
+		fa.setPen( markerPen );
+		fa.setPadding( 5 );
+		fa.setVisible( true );
+		legend->setFrameAttributes(  fa );
+	    </programlisting>
+	    <para>
+		Same procedure as above. Please note the <methodname>setVisible()</methodname>
+		method which is necessary as the default value hide those attributes.
+	    </para>
+	    <para>
+		Finally we need to conclude our small application.
+	    </para>
+	    <programlisting>
+		QVBoxLayout* l = new QVBoxLayout(this);
+		l->addWidget(&amp;m_chart);
+		setLayout(l);
+		}
+
+		private:
+		Chart m_chart;
+		QStandardItemModel m_model;
+		};
+		
+		int main( int argc, char** argv ) {
+		QApplication app( argc, argv );
+		
+		ChartWidget w;
+		w.show();
+
+		return app.exec();
+		}
+		
+		#include "main.moc"
+	    </programlisting>
+	    <para>
+		See the screen-shot below to view The resulting chart displayed by the 
+		above code. 
+	    </para>
+	    <figure float="0" id="fig-samplelegendchart">
+                <title>A Chart with configured Legend</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata
+			    fileref="images/legendparameters.png"
+			    width="3in" scalefit="1"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+	    <para>
+	   	We recommend you to compile and run the above example, it is available 
+		at the following location: <filename>examples/Legends/LegendParameters
+		</filename>.
 	    </para>
             <sect2>
 		<title id="legendtipsample" xreflabel="codexample">Legend Example</title>
