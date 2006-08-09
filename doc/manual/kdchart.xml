@@ -5357,9 +5357,46 @@
 		which we will comment:
 	    </para>
 	    <programlisting linenumbering="numbered" id="legendparameters_mainwindow_h">
-		<textobject><textdata fileref="../../examples/Legends/LegendParameters/main.cpp"/>
+		<textobject>
+		    <textdata fileref="../../examples/Legends/LegendParameters/main.cpp"/>
 		</textobject>
-	    </programlisting>   
+	    </programlisting>
+	    <para>
+		In the above code we are:
+	    </para>
+	    <itemizedlist>
+		<listitem>
+		    <para>
+			Adding a legends and set it up (positions, orientations, etc...)
+		    </para>
+		</listitem>
+		<listitem>
+		    <para>
+			Setting the Legend title their text attributes. 
+		    </para>
+		</listitem>		    
+		<listitem>
+		    <para>			    
+			Configuring the legend's items their text attributes and 
+			markers.
+		    </para>
+		</listitem>
+		<listitem>
+		    <para>			    
+			Configuring the legend's background attributes.
+		    </para>
+		</listitem>
+		<listitem>
+		    <para>			    
+			Configuring the legend's frame attributes.
+		    </para>
+		</listitem>
+	    </itemizedlist>
+	    <para>
+		Let us have a look at the code and comment it. 
+	    </para>
+	    <para>
+	    </para>
             <sect2>
 		<title id="legendtipsample" xreflabel="codexample">Legend Example</title>
 		<para>		  
@@ -5368,17 +5405,27 @@
 		<itemizedlist>
 		     <listitem>
 			<para>
-			   Add Legends and change their positions and orientations
+			   Add Legends and set it up (positions, orientations, etc...)
 			</para>
 		    </listitem>
 		    <listitem>
 			<para>
-			   Set the Legend title and configure their text attributes. 
+			   Set the Legend title their text attributes. 
 			</para>
 		    </listitem>		    
 		    <listitem>
 			<para>			    
-			   configure the legends items their text attributes and markers.
+			   Configure the legend's items their text attributes and markers.
+			</para>
+		    </listitem>
+		     <listitem>
+			<para>			    
+			   Configure the legend's background attributes.
+			</para>
+		    </listitem>
+		     <listitem>
+			<para>			    
+			   Configure the legend's frame attributes.
 			</para>
 		    </listitem>
 		</itemizedlist>
