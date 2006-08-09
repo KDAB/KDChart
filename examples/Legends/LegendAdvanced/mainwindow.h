@@ -35,7 +35,6 @@
 
 namespace KDChart {
     class Chart;
-    class DatasetProxyModel;
     class LineDiagram;
 }
 
@@ -58,7 +57,6 @@ private:
 
     KDChart::Chart* m_chart;
     TableModel m_model;
-    KDChart::DatasetProxyModel* m_datasetProxy;
     KDChart::LineDiagram* m_lines;
     QMap<Qt::Alignment, QString> alignmentMap;
 };

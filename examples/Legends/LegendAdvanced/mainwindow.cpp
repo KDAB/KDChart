@@ -28,10 +28,8 @@
 #include <KDChartChart>
 #include <KDChartLegend>
 #include <KDChartPosition>
-#include <KDChartCartesianCoordinatePlane>
 #include <KDChartLineDiagram>
 #include <KDChartTextAttributes>
-#include <KDChartDatasetProxyModel>
 #include <QComboBox>
 #include <QLineEdit>
 
