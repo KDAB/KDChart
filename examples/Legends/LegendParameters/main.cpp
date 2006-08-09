@@ -27,7 +27,7 @@ public:
 
     m_chart.coordinatePlane()->replaceDiagram(diagram);
 
-    // Add at least one legend for starters
+    // Add at one legend and set it up
     Legend* legend = new Legend( diagram, &m_chart );
     legend->setPosition( Position::NorthEast );
     legend->setAlignment( Qt::AlignCenter );
@@ -35,7 +35,16 @@ public:
     legend->setTitleText( tr( "Legend" ) );
     legend->setOrientation( Qt::Vertical );
     m_chart.addLegend( legend );
-    //legend->show();
+
+    // Configure the items markers
+    MarkerAttributes lma;
+    lma.setMarkerStyle( MarkerAttributes::MarkerDiamond );
+    legend->setMarkerAttributes( 0,  lma );
+    lma.setMarkerStyle( MarkerAttributes::MarkerCircle );
+    legend->setMarkerAttributes( 1,  lma );
+
+    // Configure Legend Title and labels
+
 
     QVBoxLayout* l = new QVBoxLayout(this);
     l->addWidget(&m_chart);
