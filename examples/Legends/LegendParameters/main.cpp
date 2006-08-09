@@ -3,6 +3,8 @@
 #include <KDChartBarDiagram>
 #include <KDChartLegend>
 #include <KDChartPosition>
+#include <KDChartBackgroundAttributes>
+#include <KDChartFrameAttributes>
 
 using namespace KDChart;
 
@@ -44,7 +46,36 @@ public:
     legend->setMarkerAttributes( 1,  lma );
 
     // Configure Legend Title and labels
+    legend->setTitleText( "Bars" );
+    legend->setText( 0,  "Series 1" );
+    legend->setText( 1,  "Series 2" );
+    legend->setText( 2,  "Series 3" );
 
+    TextAttributes lta;
+    lta.setPen( QPen( Qt::darkGray ) );
+    legend->setTextAttributes(  lta );
+
+    // Configure a pen to surround
+    // the markers with a border
+    QPen markerPen;
+    markerPen.setColor(  Qt::darkGray );
+    markerPen.setWidth( 2 );
+    // Pending Michel use datasetCount() here as soon
+    // as it is fixed
+    for (  uint i = 0; i < /*legend->datasetCount()*/ 3; i++ )
+        legend->setPen( i,  markerPen );
+
+    // Add a background to your legend
+    BackgroundAttributes ba;
+    ba.setBrush(  Qt::white );
+    ba.setVisible( true );
+    legend->setBackgroundAttributes(  ba );
+
+    FrameAttributes fa;
+    fa.setPen( markerPen );
+    fa.setPadding( 5 );
+    fa.setVisible( true );
+    legend->setFrameAttributes(  fa );
 
     QVBoxLayout* l = new QVBoxLayout(this);
     l->addWidget(&m_chart);
