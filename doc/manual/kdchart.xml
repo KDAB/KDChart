@@ -5643,15 +5643,18 @@
 		</figure>
 		<para>
 		    This ready to run example is available at the following location 
-		    <filename>examples/Legends/LegendAdvanced</filename> of your KD Chart installation, 
-		    we recommend you to study its code, compile and run it.
+		    <filename>examples/Legends/LegendAdvanced</filename> of your KD Chart 
+		    installation, we recommend you to study its code, compile and run it.
 		</para>
             </sect2>	    
         </sect1>
         <sect1>
             <title>What's next</title>
             <para>
-                Headers and Footers.
+		You can also add headers and/or footers to your chart to make it more 
+		understandable. In the next section w e will go through the several 
+		features and configuration possibilities available in  KD Chart 2.0 
+		about "Headers and Footers". 
             </para>
         </sect1>
     </chapter>
@@ -5659,15 +5662,19 @@
         <title id="chtxt_headersfooters">Header and Footers</title>
         <titleabbrev id="chnum_headersfooters">Chapter 7</titleabbrev>
 	<para>
-          Introduction text
+	    Headers and Footers can be added and configured in several ways. That will 
+	    be the subject of this section where we will go through the main features 
+	    and methods available. Of course we recommend you to consult the  
+	    <classname>KDChartHeaderFooter</classname> class interface to learn more 
+	    about those features and methods. See <filename>KDChartHeaderFooter.h</filename>
         </para>
 	<sect1>
             <title id="headersfootershowtoconfigure">How to configure</title>
             <para>
-                Text ...
+                text
             </para>  
             <sect2>
-                <title id="headersfootersconfiguresample" xreflabel="codexample">Headers and Footers Example</title>
+                <title id="headersfootersconfiguresample" xreflabel="codexample">Headers and Footers code Sample</title>
                 <para>
                     Let us make this more concrete by looking at the following
                     lines of code.
