@@ -1,4 +1,5 @@
 TEMPLATE	= subdirs
 SUBDIRS		= LegendAdvanced \
-      	          LegendSimple
+      	          LegendSimple \
+	          LegendParameters
 	          
