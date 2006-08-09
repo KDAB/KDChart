@@ -5354,47 +5354,145 @@
 	    <para>
 		Before we go through this example, let us study a very simple chart 
 		implementation with its legend by looking at the following line of codes 
-		which we will comment:
+		which we will comment. 
 	    </para>
-	    <programlisting linenumbering="numbered" id="legendparameters_mainwindow_h">
-		<textobject>
-		    <textdata fileref="../../examples/Legends/LegendParameters/main.cpp"/>
-		</textobject>
+	    <para>
+	        First and as we always do, we set up a model, declare our diagram, and 
+		assign the model to it and the diagram to our chart after having 
+		included the relevant header files.
+	    </para>
+	    <programlisting>
+		#include &lt;QtGui&gt;
+		#include &lt;KDChartChart&gt;
+		#include &lt;KDChartBarDiagram&gt;
+		#include &lt;KDChartLegend&gt;
+		#include &lt;KDChartPosition&gt;
+		#include &lt;KDChartBackgroundAttributes&gt;
+		#include &lt;KDChartFrameAttributes&gt;
+		
+		using namespace KDChart;
+		
+		class ChartWidget : public QWidget {
+		Q_OBJECT
+		public:
+		  explicit ChartWidget(QWidget* parent=0)
+		    : QWidget(parent)
+		  {
+		
+		    m_model.insertRows( 0, 2, QModelIndex() );
+		    m_model.insertColumns(  0,  3,  QModelIndex() );
+		    for (int row = 0; row &lt; 3; ++row) {
+		      for (int column = 0; column &lt; 3; ++column) {
+		        QModelIndex index = m_model.index(row, column, QModelIndex());
+		        m_model.setData(index, QVariant(row+1 * column) );
+		      }
+		    }
+		
+		    BarDiagram* diagram = new BarDiagram;
+		    diagram-&gt;setModel(&amp;m_model);
+		
+		    m_chart.coordinatePlane()-&gt;replaceDiagram(diagram);
 	    </programlisting>
 	    <para>
-		In the above code we are:
+		We will set the legend position as well as its  Background and Frame
+		attributes and includes those header files on this purpose. That will 
+		allow us to make use of the methods available in those classes.
 	    </para>
-	    <itemizedlist>
-		<listitem>
-		    <para>
-			Adding a legends and set it up (positions, orientations, etc...)
-		    </para>
-		</listitem>
-		<listitem>
-		    <para>
-			Setting the Legend title their text attributes. 
-		    </para>
-		</listitem>		    
-		<listitem>
-		    <para>			    
-			Configuring the legend's items their text attributes and 
-			markers.
-		    </para>
-		</listitem>
-		<listitem>
-		    <para>			    
-			Configuring the legend's background attributes.
-		    </para>
-		</listitem>
-		<listitem>
-		    <para>			    
-			Configuring the legend's frame attributes.
-		    </para>
-		</listitem>
-	    </itemizedlist>
 	    <para>
+		We will now add a legend and set it up (positions, orientations, etc...):
+	    </para>
+	    <programlisting>
+		// Add a legend and set it up
+		Legend* legend = new Legend( diagram, &amp;m_chart );
+		legend->setPosition( Position::NorthEast );
+		legend->setAlignment( Qt::AlignCenter );
+		legend->setShowLines( false );
+		legend->setTitleText( tr( "Bars" ) );
+		legend->setOrientation( Qt::Vertical );
+		m_chart.addLegend( legend );
+	    </programlisting>
+	    <para>
+		The code above handle the attributes specific to a legend, the setters
+		and getters for the methods we have been used here are implemented 
+		into the <classname>KDChartLegend</classname> class. We recommend you
+		to consult its interface. See <filename>KDChartLegend.h</filename>.	
+	    </para>	    
+	    <para>
+	        Set the Legend marker attributes. We want each dataset's marker to have 
+		its own marker style.
+	    </para>
+	     <programlisting>
+		// Configure the items markers
+		MarkerAttributes lma;
+		lma.setMarkerStyle( MarkerAttributes::MarkerDiamond );
+		legend->setMarkerAttributes( 0,  lma );
+		lma.setMarkerStyle( MarkerAttributes::MarkerCircle );
+		legend->setMarkerAttributes( 1,  lma );
+	    </programlisting>
+	    <para>
+		Markers are assigned per dataset as you can see above. You can learn 
+		more about the marker styles and the methods available to configure
+		markers into the <classname>MarkerAttributes</classname> class interface.
+		See <filename>KDChartMarkerAttributes.h</filename>.		
+	    </para>
+	    <para>
+	        Let us now configure our legend's items text:
+	    </para>
+	    <programlisting>
+		// Configure labels for Legend's items    
+		legend->setText( 0,  "Series 1" );
+		legend->setText( 1,  "Series 2" );
+		legend->setText( 2,  "Series 3" );
+	    </programlisting>
+	    <para>
+		Each dataset can be assigned its own text. We want to change their 
+		pen color for demonstrating this feature and also to make our legend 
+		nicer. We proceed as follow and configure their text attributes.
+	    </para>
+	    <programlisting>
+		TextAttributes lta;
+		lta.setPen( QPen( Qt::darkGray ) );
+		legend->setTextAttributes(  lta );
+	    </programlisting>
+	    <para>
+		Text attributes configuration and assignment is done as for all other 
+		types of attribute. Create a text attribute object, configure it and 
+		assign it. In this case we assign it to our legend by using its method 
+		<methodname>KDChartLegend::setTextAttributes()</methodname>.
+	    </para>
+	    <tip>
+		<para>
+		    If we wish to paint a surrounding line round our legend markers we 
+		    just need to configure a pen and assign it to our legend by calling
+		    <methodname>KDChartLegend::setPen()</methodname>. See the following 
+		    code sample that demonstrate that.		    
+		</para>
+	    </tip>
+	     <programlisting>
+		// Configure a pen to surround
+		// the markers with a border
+		QPen markerPen;
+		markerPen.setColor(  Qt::darkGray );
+		markerPen.setWidth( 2 );
+		// Pending Michel use datasetCount() here as soon
+		// as it is fixed
+		for (  uint i = 0; i &lt; legend->datasetCount(); i++ )
+		    legend->setPen( i,  markerPen );
+	    </programlisting>
+	    <note>
+		<para>
+		    Mind the call to <methodname>KDChartLegend::datasetCount()</methodname>
+		    which allow you to retrieve the number of dataset and simply loop 
+		    through it.
+		</para>
+	    </note>
+	    <para>
+		
+	    </para>
+	    <para>		
 		Let us have a look at the code and comment it. 
 	    </para>
+	    
 	    <para>
 	    </para>
             <sect2>
