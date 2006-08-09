@@ -5340,19 +5340,188 @@
                 <para>
                     In the Tips section below we will present you a more elaborate example 
 		    which uses  <classname>KDChartChart</classname> and where we are setting
-		    up our legend elements ( texts and markers). 
+		    up our legend elements ( title, texts, markers, etc...). 
                 </para>
             </sect2>
         </sect1>
 	<sect1>
             <title id="legendstips">Tips</title>
-	    <para>
-		some text
+	     <para>
+		In this section we want to give you some example about how to use some 
+		interesting features offered by the KD Chart 2.0 API. We will study the 
+		code and display a screen-shot showing the resulting widget. 
 	    </para>
+	    <para>
+		Before we go through this example, let us study a very simple chart 
+		implementation with its legend by looking at the following line of codes 
+		which we will comment:
+	    </para>
+	    <programlisting linenumbering="numbered" id="legendparameters_mainwindow_h">
+		<textobject><textdata fileref="../../examples/Legends/LegendParameters/main.cpp"/>
+		</textobject>
+	    </programlisting>   
             <sect2>
-                <title id="legendtipsample" xreflabel="codexample">Legend Example</title>
-		
-            </sect2>
+		<title id="legendtipsample" xreflabel="codexample">Legend Example</title>
+		<para>		  
+		    In the following implementation we want to be able to:
+		</para>
+		<itemizedlist>
+		     <listitem>
+			<para>
+			   Add Legends and change their positions and orientations
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>
+			   Set the Legend title and configure their text attributes. 
+			</para>
+		    </listitem>		    
+		    <listitem>
+			<para>			    
+			   configure the legends items their text attributes and markers.
+			</para>
+		    </listitem>
+		</itemizedlist>
+		<para>
+		    In the example below we are using a <classname>KDChartChart</classname> class and 
+		    also an home made <classname>TableModel</classname> for the convenience. It is  
+		    derived from <classname>QAbstractTableModel</classname>.
+		</para>
+		<para>
+		    TableModel uses a simple rectangular vector of vectors to represent a data
+		    table that can be displayed in regular Qt Interview views. Additionally, it 
+		    provides a method to load CSV files exported by OpenOffice Calc in the default 
+		    configuration. This allows to prepare test data using spreadsheet software.
+		</para>
+		<para>
+		    It expects the CSV files in the subfolder ./modeldata. If the application
+		    is started from another location, it will ask for the location of the
+		    model data files.
+		</para>
+		<para>
+		    We recommend you to consult the "TableModel" interface and implementation files
+		    which are located in the <filename>examples/tools</filename> directory of your 
+		    KD Chart installation.
+		</para>
+		<para>
+		    Let us concentrate on our diagram _with_ axis implementation for now and consult the 
+		    following files: other needed files like the ui, pro , qrc ,CSV and main.cpp files 
+		    can be consulted from the <filename>examples/Legends/LegendParameters</filename> directory
+		    of your installation.
+		</para>
+		<programlisting linenumbering="numbered" id="legendadvanced_mainwindow_h">
+		    <textobject><textdata fileref="../../examples/Legends/LegendAdvanced/mainwindow.h"/>
+		    </textobject>
+		</programlisting>                
+		<para>		
+		    In the above code we bring up the KDChart namespace as usual. As you can see we are 
+		    using a KDChartChart object (m_chart), a KDChartLineDiagram object (m_lines), and 
+		    our home made TableModel (m_model). 
+		</para>	
+		<programlisting linenumbering="numbered" id="legendadvanced_mainwindow_cpp">
+		    <textobject><textdata fileref="../../examples/Legends/LegendAdvanced/mainwindow.cpp"/>
+		    </textobject>
+		</programlisting>
+		<para>
+		    First of all we are adding our chart to the layout as for any other Qt widget. Load 
+		    the data to be display into our model, and assign the model to our diagram.		   
+		</para>
+		<programlisting>
+		    ... 
+		    QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
+		    m_chart = new Chart();
+		    chartLayout->addWidget( m_chart );
+		    hSBar->setVisible( false );
+		    vSBar->setVisible( false );
+		    
+		    m_model.loadFromCSV( ":/data" );
+		    
+		    // Set up the diagram
+		    m_lines = new LineDiagram();
+		    m_lines->setModel( &amp;m_model );	    
+		    ...
+		</programlisting>
+		<para>
+		    We want to display three axis, respectively positionned at
+		    the top, left and bottom side of our diagram. This is straight
+		    forward:
+		</para>
+		<programlisting>
+		    ....   		    
+                    ....
+		</programlisting>
+    		<para>
+		    In the code above we are declaring our axis and make use of 
+		    <methodname>KDChartCartesianAxis::setPosition()</methodname> to
+		    give their location.
+		</para>
+		<para>
+		    Let us now define the title text for each of those axis:
+		</para>
+		<programlisting>
+		    ...		   		   
+		    ...
+		</programlisting>				
+		<para>
+		    <methodname>setTitleText()</methodname> and 
+		    <methodname>setTitleTextAttributes()</methodname> are implemented in 
+		    <classname>KDChartCartesianAxis</classname>, we recommend you to 
+		    consult its interface ( see <filename>KDChartCartesianAxis.h</filename>
+		</para>
+		<para>
+		    In this example and to demonstrate the text configuration for the title 
+		    and the labels we want to have a different configuration for each of 
+		    our tilte axis and also for our labels. The process is the same as for 
+		    configuring any type of attributes, as follow:
+		</para>
+		<para>
+		    Create an attribute object, configure it and assign it.
+		</para>
+		<programlisting>
+		    ...
+		    ...
+		</programlisting>
+		<para>
+		    We want our top and bottom axis to display different types of labels
+		    as well as to make sure those labels will be shortened in case the 
+		    normal labels are too long ( see setShortLabels() ).
+		</para>
+		<programlisting>
+		    ... some text
+		</programlisting>
+		<note>
+		    <para>
+			some text 
+		    </para>
+		</note>
+		<para>
+		    Finally the last step i to assign our axis to the diagram and the 
+		    diagram to our chart view.
+		</para>
+		<programlisting>
+		    ....
+		    m_chart->coordinatePlane()->replaceDiagram( m_lines );
+		</programlisting>		
+		<para>
+		    This example is available to compile and run from the 
+		    <filename>examples/Legends/LegendParameters</filename> directory into your KD Chart 
+		    installation. We recommend you to run it. The widget displayed by the 
+		    above code is shown in the figure below.
+		</para>
+		<figure float="0" id="fig-legendsconfigured">
+		    <title>Legend with configured Labels and Titles</title>
+		    <mediaobject>
+			<imageobject>
+			    <imagedata width="3in" scalefit="1" fileref="images/axisconfiguredtitles.png"/>
+			</imageobject>
+		    </mediaobject>
+		</figure>
+		<para>
+		    Several ready to run examples related to axis are available at the following 
+		    location <filename>examples/Legends</filename>, we recommend you to run them all
+		    and consult their implementation.
+		</para>
+            </sect2>	    
         </sect1>
         <sect1>
             <title>What's next</title>
