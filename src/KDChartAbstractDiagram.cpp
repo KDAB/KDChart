@@ -67,7 +67,7 @@ AbstractDiagram::Private::Private()
 
 AbstractDiagram::Private::~Private()
 {
-  if( attributesModel && qobject_cast<PrivateAttributesModel*>(attributesModel) ) 
+  if( attributesModel && qobject_cast<PrivateAttributesModel*>(attributesModel) )
     delete attributesModel;
 }
 
@@ -82,7 +82,7 @@ void AbstractDiagram::Private::init( AbstractCoordinatePlane* newPlane )
 
 void AbstractDiagram::Private::setAttributesModel( AttributesModel* amodel )
 {
-    if( !attributesModel.isNull() && 
+    if( !attributesModel.isNull() &&
 	qobject_cast<PrivateAttributesModel*>(attributesModel) ) {
 	delete attributesModel;
     }
@@ -361,6 +361,7 @@ void AbstractDiagram::paintMarker( QPainter* painter,
             {
                 QRectF rect( 0 - maSize.height()/2, 0 - maSize.width()/2,
                             maSize.height(), maSize.width() );
+                painter->drawRect( rect );
                 painter->fillRect( rect, painter->brush() );
                 break;
             }
@@ -664,7 +665,7 @@ bool AbstractDiagram::checkInvariants( bool justReturnTheStatus ) const
     if( ! justReturnTheStatus ){
         Q_ASSERT_X ( model(), "AbstractDiagram::checkInvariants()",
                     "There is no usable model set, for the diagram." );
-    
+
         Q_ASSERT_X ( coordinatePlane(), "AbstractDiagram::checkInvariants()",
                     "There is no usable coordinate plane set, for the diagram." );
     }
