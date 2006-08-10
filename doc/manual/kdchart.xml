@@ -6042,25 +6042,90 @@
 		</filename>.
 	    </para>
             <sect2>
-                <title id="headersfooterstipsample" xreflabel="codexample">A cool headers and footers Example</title>
-                <para>
-                    Let us make this more concrete by looking at the following
-                    lines of code.
-		    <!--
-                    <link linkend=""></link>
-		    <link linkend=""></link>
-                    -->
-                </para>
-                <!--
-                <programlisting linenumbering="numbered" id="">
-                <textobject>
-                <textdata fileref="../../examples/..."/>
-	        </textobject>
-	        </programlisting>
-                -->
-                <para>
-                    More explanation?
-                </para>
+                <title id="headersfooterstipsample" xreflabel="codexample">Headers and Footers Example</title>
+                <para>		  
+		    In the following implementation we want to be able to:
+		</para>
+		<itemizedlist>
+		     <listitem>
+			<para>
+			   Add, edit or remove headers and footers in/from our chart view.
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>
+			   Configure their positions.  
+			</para>
+		    </listitem>		    
+		    <listitem>
+			<para>			    
+			   Set their text
+			</para>
+		    </listitem>
+		     <listitem>
+			<para>			    
+			   All of the above operations should be available to the user from
+			   the GUI and performed dynamically. 
+			</para>
+		    </listitem>
+		</itemizedlist>
+		<para>
+		    In the example below we are using a <classname>KDChartChart</classname> class and 
+		    also an home made <classname>TableModel</classname> for the convenience. It is  
+		    derived from <classname>QAbstractTableModel</classname>.
+		</para>
+		<para>
+		    TableModel uses a simple rectangular vector of vectors to represent a data
+		    table that can be displayed in regular Qt Interview views. Additionally, it 
+		    provides a method to load CSV files exported by OpenOffice Calc in the default 
+		    configuration. This allows to prepare test data using spreadsheet software.
+		</para>
+		<para>
+		    It expects the CSV files in the subfolder ./modeldata. If the application
+		    is started from another location, it will ask for the location of the
+		    model data files.
+		</para>
+		<para>
+		    We recommend you to consult the "TableModel" interface and implementation files
+		    which are located in the <filename>examples/tools</filename> directory of your 
+		    KD Chart installation.
+		</para>
+		<para>
+		    Let us concentrate on our diagram _with_ axis implementation for now and consult the 
+		    following files: other needed files like the ui, pro , qrc ,CSV and main.cpp files 
+		    can be consulted from the <filename>examples/Legends/LegendAdvanced</filename> directory
+		    of your installation.
+		</para>
+		<programlisting linenumbering="numbered" id="headeradvanced_mainwindow_h">
+		    <textobject><textdata fileref="../../examples/HeadersFooters/Advanced/mainwindow.h"/>
+		    </textobject>
+		</programlisting>                
+		<para>		
+		    In the above code we bring up the KDChart namespace as usual. As you can see we are 
+		    using a KDChartChart object (m_chart), a KDChartLineDiagram object (m_lines), and 
+		    our home made TableModel (m_model). 
+		</para>
+		<programlisting linenumbering="numbered" id="headeradvanced_mainwindow_cpp">
+		    <textobject><textdata fileref="../../examples/HeadersFooters/Advanced/mainwindow.cpp"/>
+		    </textobject>
+		</programlisting>
+		<para>		    
+		    See the screen-shot below to view The resulting chart displayed by the 
+		    above code. 
+		</para> 	  
+		<figure float="0" id="fig-headersconfigured">
+		    <title>Headers and Footers advanced example</title>
+		    <mediaobject>
+			<imageobject>
+			    <imagedata width="3in" scalefit="1" fileref="images/headerconfigured.png"/>
+			</imageobject>
+		    </mediaobject>
+		</figure>
+		<para>
+		    This ready to run example is available at the following location 
+		    <filename>examples/HeadersFooters/Advanced</filename> of your KD Chart 
+		    installation, we recommend you to study its code, compile and run it.
+		</para>
             </sect2>
         </sect1>
         <sect1>
