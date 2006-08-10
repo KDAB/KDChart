@@ -5146,10 +5146,11 @@
         <title id="chtxt_legends">Legends</title>
         <titleabbrev id="chnum_legends">Chapter 6</titleabbrev>
 	<para>
-	    Legends can be drawn for all kind of diagrams and are drawn on chart 
-	    level (in relation to diagram level). We can have more than one
-	    legend per chart, using 
-	    <methodname>KDChartChart::addLegend()</methodname>.
+	    Legends can be drawn for all kind of diagrams and are drawn at the chart 
+	    level (in relation to diagram level). We can have more than one legend per 
+	    chart and add it to our chart or our widget view by using respectively 
+	    <methodname>KDChartChart::addLegend()</methodname> or  
+	    <methodname>KDChartWidget::addLegend()</methodname>
 	</para>
 	<note>
 	    <para>
@@ -5160,29 +5161,37 @@
 	    </para>
 	    <para>
 		On the other hand, please note that we need to (MUST) call 
-		<methodname>Chart::addLegend()</methodname> to get our legend 
-		positioned at the correct position in our chart in case we want 
-		to display the legend inside of the chart which is probably true 
-		for most cases.
+		<methodname>KDChartChart::addLegend()</methodname> to get our legend 
+		positioned at the correct position in our chart in case we want to 
+		display the legend inside of the chart which is probably true for most 
+		cases.
 	    </para>
 	</note>
 	<para>
 	    Let us go through the main configuration features offered by
 	    <classname>KDChartLegend</classname>. Of course we also recommend you to 
-	    consult its interface see <filename>KDChartLegend.h</filename>.
+	    consult its interface see <filename>KDChartLegend.h</filename> as well as
+	    the interfaces for <classname>KDChartChart</classname> and 
+	    <classname>KDChartWidget</classname> to have a complete idea over how to
+	    handle legends and what are the configurations parameters available.
 	</para>
 	<sect1>
             <title id="legendshowtoconfigure">How to configure</title>
              <para>
                 In order to add a legend to our chart we need to use the  
 		<methodname>KDChartChart::AddLegend()</methodname> method.
-		The charttakes ownership of the legend and will take care of
-		removing it by itself.
+		The chart takes ownership of the legend and will take care of
+		removing it by itself. The <classname>KDChartChart</classname> method 
+		above and the ones discussed in the paragraphs are similar for the
+		<classname>KDChartWidget</classname> class. In order to make the 
+		following description simpler we will only mention 
+		<classname>KDChartChart</classname> in the following paragraphs.
             </para>
 	    <tip>		
 		<para>
-		    You may also wish to use 
-		    <methodname>KDChartChart::replaceLegend( Legend newLegend , Legend oldLegend)</methodname> which is also available for the convenience:
+		    You may also wish to use <classname>KDChartChart</classname>
+		    <methodname>replaceLegend( Legend newLegend , Legend oldLegend)</methodname> 
+		    which is also available for the convenience:
 		</para>
 		<para>
 		    The old legend will be deleted automatically. If its parameter is 
@@ -5191,9 +5200,8 @@
 		</para>
 	    </tip>
 	     <para>
-		Please consult the interface for <classname>KDChartChart</classname> in
-		order to get accustomed to those methods related to legends. See 
-		<filename>KDChartChart.h</filename>.
+		If you want to re-use the old legend, call takeLegend and addLegend, instead of 
+		using replaceLegend.
 	    </para>
 	    <note>
 		<para>
@@ -5652,7 +5660,7 @@
             <title>What's next</title>
             <para>
 		You can also add headers and/or footers to your chart to make it more 
-		understandable. In the next section w e will go through the several 
+		understandable. In the next section we will go through the several 
 		features and configuration possibilities available in  KD Chart 2.0 
 		about "Headers and Footers". 
             </para>
@@ -5670,9 +5678,45 @@
         </para>
 	<sect1>
             <title id="headersfootershowtoconfigure">How to configure</title>
-            <para>
-                text
-            </para>  
+                <para>
+                In order to add a Header or a Footer to our chart we need to use the  
+		<methodname>KDChartChart::AddHeaderFooter( HeaderFooter* hf )</methodname>
+		method. The chart takes ownership and will take care of removing it by itself. 
+		The <classname>KDChartChart</classname> method above and the ones discussed 
+		in the next paragraphs of this section are similar for the
+		<classname>KDChartWidget</classname> class. In order to make this  
+		description simpler we will only mention 
+		<classname>KDChartChart</classname> there.
+            </para>
+	    <tip>		
+		<para>
+		    You may also wish to use <classname>KDChartChart</classname>
+		    <methodname>replaceHeaderFooter( HeaderFooter newHf, HeaderFooter oldHf)</methodname> 
+		    which is also available for the convenience:
+		</para>
+		<para>
+		    The new header or footer to be used instead of the old one must not be 
+		    zero, or the method will do nothing. The second parameter of this method
+		    is header or footer to be removed by the new one. This header or footer 
+		    will be deleted automatically. If the parameter is omitted, the very first 
+		    header or footer will be replaced. In case, there was no header and no footer 
+		    yet, the new header or footer will just be added.
+		</para>
+	    </tip>
+	     <para>
+		If you want to re-use the old header or footer, call takeHeaderFooter and 
+		addHeaderFooter, instead of using replaceHeaderFooter.
+	    </para>
+	    <note>
+		<para>
+		    <methodname>KDChartChart::takeHeaderFooter()</methodname>Removes the 
+		    header or footer from the chart without deleting it. The chart no longer 
+		    owns the header or footer, it is the caller's responsibility to delete it.
+		</para>
+	    </note>	   
+	    <para>
+		The main configurations elements for <classname>KDChartHeaderFooter</classname> are:
+	    </para>
             <sect2>
                 <title id="headersfootersconfiguresample" xreflabel="codexample">Headers and Footers code Sample</title>
                 <para>
