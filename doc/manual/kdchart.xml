@@ -5762,23 +5762,101 @@
 	    </note>
             <sect2>
                 <title id="headersfootersconfiguresample" xreflabel="codexample">Headers and Footers code Sample</title>
+		<para>
+                    We will now describe those features a more concrete way by looking at the following
+                    sample code based on the <filename>Simple Widget</filename> example we have been 
+		    demonstrating above <filename>Chapter 3 - Two Ways - Widget Example</filename>.
+		    Through the following code we demonstrate how to add and position a header and a 
+		    footer to a chart Widget using a KDChartWidget.		    
+                </para>	
+		<para>
+		    First include the appropriate headers and bring in the "KDChart namespace":
+		</para>	    		 	
+		<programlisting>
+		    #include &lt;QApplication&gt;
+		    #include &lt;KDChartWidget&gt;
+		    #include &lt;KDChartBarDiagram&gt;
+                    #include &lt;KDChartPosition&gt;
+
+	            using namespace KDChart;			    
+		</programlisting>     	    
+		<para>
+		    In this sample code we want to display a bar chart and need to include our
+		    <classname>KDChartBarDiagram</classname> class. In order to be able to 
+		    give a location (position) to our header and our footer in the widget view we also 
+		    include <classname>KDChartPosition</classname>.
+		</para>
+		<programlisting>
+		    int main( int argc, char** argv ) {
+		    QApplication app( argc, argv );
+		    
+		    Widget widget;
+		    widget.resize( 600, 600 );
+		    
+		    QVector&lt; double &gt; vec0,  vec1,  vec2;
+		    
+		    vec0 &lt;&lt; -5 &lt;&lt; -4 &lt;&lt; -3 &lt;&lt; -2 &lt;&lt; -1 &lt;&lt; 0
+		    &lt;&lt; 1 &lt;&lt; 2 &lt;&lt; 3 &lt;&lt; 4 &lt;&lt; 5;
+		    vec1 &lt;&lt; 25 &lt;&lt; 16 &lt;&lt; 9 &lt;&lt; 4 &lt;&lt; 1 &lt;&lt; 0
+		    &lt;&lt; 1 &lt;&lt; 4 &lt;&lt; 9 &lt;&lt; 16 &lt;&lt; 25;
+		    vec2 &lt;&lt; -125 &lt;&lt; -64 &lt;&lt; -27 &lt;&lt; -8 &lt;&lt; -1 &lt;&lt; 0
+		    &lt;&lt; 1 &lt;&lt; 8 &lt;&lt; 27 &lt;&lt; 64 &lt;&lt; 125;
+		    
+		    widget.setDataset( 0, vec0, "v0" );
+		    widget.setDataset( 1, vec1, "v1" );
+		    widget.setDataset( 2, vec2, "v2" );
+		    widget.setType( Widget::Bar );			    
+		</programlisting>  	
+		<note>
+		    <para>
+			We need to change the default chart type (Line Charts) by calling  
+			the <methodname>KDChartWidget::setType</methodname> method in order 
+			to display a bar type diagram.     
+		    </para>
+		</note>
+		<para>
+		    Now let us add our header and footer, set its position and its text.
+		</para>    	    
+		<programlisting>
+		    widget.addHeaderFooter("A default Header - North", HeaderFooter::Header, Position::North);
+		    widget.addHeaderFooter("A default Footer - South", HeaderFooter::Footer, Position::South);
+		</programlisting>    
+		<para>
+		    As you can see the code above is straight forward and we just need to call 
+		    <methodname>KDChartWidget::addHeaderFooter()</methodname> passing the text, type
+		    and position we want to assign to it. 
+		</para>
+		<para>
+		    Finally we conclude our small application:
+		</para>
+		<programlisting>
+		     widget.show();
+
+		    return app.exec();
+		</programlisting> 
+		<para>
+		    See the screen-shot below to view The resulting chart displayed by the 
+		    above code. 
+		</para>
+		<figure float="0" id="fig-sampleheaderfooterwidget">
+                <title>A Widget With a Header and a Footer</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata
+                        fileref="images/headerfootersimple.png"
+                        width="3in" scalefit="1"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+		<para>
+		    This example can be compiled and run from the following location of your 
+		    KD Chart installation <filename>examples/HeadersFooters/HeadersFootersSimple</filename>, 
+		    we recommend you to do so.
+		</para>			             
                 <para>
-                    Let us make this more concrete by looking at the following
-                    lines of code.
-		    <!--
-                    <link linkend=""></link>
-		    <link linkend=""></link>
-                    -->
-                </para>
-                <!--
-                <programlisting linenumbering="numbered" id="">
-                <textobject>
-                <textdata fileref="../../examples/..."/>
-	        </textobject>
-	        </programlisting>
-                -->
-                <para>
-                    More explanation?
+                    In the Tips section below we will present you a more elaborate example 
+		    which uses  <classname>KDChartChart</classname> and where we are setting
+		    up our headers and footers ( texts, background, frame etc...). 
                 </para>
             </sect2>
         </sect1>
