@@ -6147,14 +6147,54 @@
 	    <filename>Chapter 4 - Cartesian Coordinate Plane and Polar Coordinate Plane</filename>
 	    we have been overviewing the differents attributes specifics to a certain type of 
 	    chart ( Line, Bar, Pie, etc...). In this chapter we will go through the details when 
-	    it comes to the attributes related to the elements of a chart and also common to all 
-	    types of charts.
+	    it comes to the attributes related to the elements of a chart and also the ones common 
+	    to all types of charts.
         </para>
 	<sect1>
             <title id="customizingattributes">KD Chart Attributes Model</title>
             <para>
-                
-            </para>  
+                The <classname>KDChartAttributesModel</classname> class is derived from 
+		<classname>QAbstractProxyModel</classname> and used especially by the base 
+		class for all diagrams <classname>KDChartAbstractDiagram</classname> which 
+		<methodname>setAttributesModel( AttributesModel* model )</methodname> method 
+		associate an AttributesModel with a diagram.
+            </para>
+	    <note>
+		<para>
+		    The diagram does _not_ take ownership of the AttributesModel. This should thus 
+		    only be used with AttributesModels that have been explicitely created by the 
+		    user, and are owned by her. Setting an AttributesModel that is internal to
+		    another diagram is an error.
+		</para>
+	    </note>
+	    <para>
+		Let us illustrate the notice above, the right way is:
+	    </para>
+	    <programlisting>
+		// correct
+		AttributesModel *am = new AttributesModel( model, 0 );
+		diagram1->setAttributesModel( am );
+		diagram2->setAttributesModel( am );
+	    </programlisting>
+	    <para>
+		It would be wrong to proceed as follow:
+	    </para>
+	    <programlisting>
+		// Wrong
+		diagram1->setAttributesModel( diagram2->attributesModel() );
+	    </programlisting>
+	    <para>
+		To retrieve the attribute model associated to a particular diagram, we can make 
+		use of the <classname>KDChartAbstractDiagram</classname> method
+		<methodname>attributesModel()</methodname>.
+	    </para>
+	    <note>
+		<para>
+		    By default each diagram owns its own AttributesModel, which should never be 
+		    deleted. Only if a user-supplied AttributesModel has been set does the pointer 
+		    returned here not belong to the diagram.
+		</para>
+	    </note>
             <sect2>
                 <title id="attributeassample" xreflabel="codesample">Attributes Example</title>
                 <para>
