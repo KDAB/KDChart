@@ -5862,9 +5862,185 @@
         </sect1>
 	<sect1>
             <title id="headersandfooterstips">Tips</title>
-            <para>
-                Text ...
-            </para>  
+	     <para>
+		In this section we want to give you some example about how to use some 
+		interesting features offered by the KD Chart 2.0 API. We will study the 
+		code and display a screen-shot showing the resulting widget. 
+	    </para>
+	    <para>
+		Before we go through this example, let us study a very simple chart 
+		implementation with a configured header by looking at the following 
+		line of codes which we will comment. 
+	    </para>
+	    <para>
+	        First and as we always do, we set up a model, declare our diagram, and 
+		assign the model to it and the diagram to our chart after having 
+		included the relevant header files.
+	    </para>
+	    <programlisting>
+		#include &lt;QtGui&gt;
+		#include &lt;KDChartChart&gt;
+		#include &lt;KDChartBarDiagram&gt;
+		#include &lt;KDChartHeaderFooter&gt;
+		#include &lt;KDChartPosition&gt;
+		#include &lt;KDChartBackgroundAttributes&gt;
+		#include &lt;KDChartFrameAttributes&gt;
+		
+		using namespace KDChart;
+		
+		class ChartWidget : public QWidget {
+		Q_OBJECT
+		public:
+		  explicit ChartWidget(QWidget* parent=0)
+		    : QWidget(parent)
+		  {
+		
+		    m_model.insertRows( 0, 2, QModelIndex() );
+		    m_model.insertColumns(  0,  3,  QModelIndex() );
+		    for (int row = 0; row &lt; 3; ++row) {
+		      for (int column = 0; column &lt; 3; ++column) {
+		        QModelIndex index = m_model.index(row, column, QModelIndex());
+		        m_model.setData(index, QVariant(row+1 * column) );
+		      }
+		    }
+		
+		    BarDiagram* diagram = new BarDiagram;
+		    diagram-&gt;setModel(&amp;m_model);
+		
+		    m_chart.coordinatePlane()-&gt;replaceDiagram(diagram);
+	    </programlisting>
+	    <para>
+		We will configure the header position as well as its  text, Background and 
+		Frame attributes and includes the header files related to those attributes
+		on this purpose. That will allow us to make use of the methods available 
+		in these classes.
+	    </para>
+	    <para>
+		We will now add our header and set it up:
+	    </para>
+	    <programlisting>
+		 // Add at one Header and set it up
+		HeaderFooter* header = new HeaderFooter( &amp;m_chart );
+		header->setPosition( Position::North );
+		header->setText( "A Simple Bar Chart" );
+		m_chart.addHeaderFooter( header );
+	    </programlisting>
+	    <para>
+		The code above handle the attributes specific to a headers and footers
+		the setters and getters for the methods we have been used here are 
+		implemented into the <classname>KDCharthEADERfOOTER</classname> class. 
+		We recommend you to consult its interface. See 
+		<filename>KDChartHeaderFooter.h</filename>.	
+	    </para>	    
+	    <para>
+		Let us configure the header text attributes and make sure the font will 
+		be resized together with the widget in case the user resize it. 
+	    </para>
+	     <programlisting>
+		// Configure the Header text attributes
+		TextAttributes hta;
+		hta.setPen( QPen(  Qt::blue ) );
+
+		// let the header resize itself
+		// together with the widget.
+		// so-called relative size
+		Measure m( 35.0 );
+		m.setRelativeMode( header->autoReferenceArea(), 
+		                   KDChartEnums::MeasureOrientationMinimum );
+		hta.setFontSize( m );
+		// min font size
+		m.setValue( 3.0 );
+		m.setCalculationMode( KDChartEnums::MeasureCalculationModeAbsolute );
+		hta.setMinimalFontSize( m  );
+
+		// assign
+		header->setTextAttributes( hta );
+	    </programlisting>
+	    <para>
+		Our header text is now displayed using a blue pen, the font are 
+		configured to take a relative size. 
+	    </para>
+	    <para>
+	        We also want to configure a white background to make it nicer, and 
+		proceed as follow:
+	    </para>
+	    <programlisting>
+		// Configure the header Background attributes
+		BackgroundAttributes hba;
+		hba.setBrush(  Qt::white );
+		hba.setVisible( true );
+		header->setBackgroundAttributes(  hba );
+	    </programlisting>
+	    <para>
+		As for all types of attributes we just need to create the attribute
+		object, configure it and assign it to our header.
+	    </para>
+	    <para>
+		The same process is applied to configure header'sour frame attributes:
+	    </para>
+	    <programlisting>
+		// Configure the header Frame attributes
+		FrameAttributes hfa;
+		hfa.setPen( QPen ( QBrush( Qt::darkGray ), 2 ) );
+		hfa.setVisible( true );
+		header->setFrameAttributes(  hfa );
+	    </programlisting>
+	    <para>
+		In the code above we assign a pen to the frame attributes in order to 
+		get a Gray line around the frame.
+	    </para>	    
+	    <note>
+		<para>
+		    Same procedure as above. Please note the 
+		    <methodname>setVisible()</methodname> method which is necessary as 
+		    the default value hide the attributes above.
+		</para>
+	    </note>
+	    <para>
+		Finally we need to conclude our small application.
+	    </para>
+	    <programlisting>
+		QVBoxLayout* l = new QVBoxLayout(this);
+		l->addWidget(&amp;m_chart);
+		setLayout(l);
+		}
+
+		private:
+		Chart m_chart;
+		QStandardItemModel m_model;
+		};
+		
+		int main( int argc, char** argv ) {
+		QApplication app( argc, argv );
+		
+		ChartWidget w;
+		w.show();
+
+		return app.exec();
+		}
+		
+		#include "main.moc"
+	    </programlisting>
+	    <para>
+		See the screen-shot below to view The resulting chart displayed by the 
+		above code. 
+	    </para>
+	    <figure float="0" id="fig-sampleheaderchart">
+                <title>A Chart with a configured Header</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata
+			    fileref="images/headerparameters.png"
+			    width="3in" scalefit="1"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+	    <para>
+	   	We recommend you to compile and run the above example, it is available 
+		at the following location: 
+		<filename>examples/HeadersFooters/HeadersFootersParameters
+		</filename>.
+	    </para>
             <sect2>
                 <title id="headersfooterstipsample" xreflabel="codexample">A cool headers and footers Example</title>
                 <para>
