@@ -1,7 +1,7 @@
 #include <QtGui>
 #include <KDChartChart>
 #include <KDChartBarDiagram>
-#include <KDChartLegend>
+#include <KDChartHeaderFooter>
 #include <KDChartPosition>
 #include <KDChartBackgroundAttributes>
 #include <KDChartFrameAttributes>
@@ -29,53 +29,39 @@ public:
 
     m_chart.coordinatePlane()->replaceDiagram(diagram);
 
-    // Add at one legend and set it up
-    Legend* legend = new Legend( diagram, &m_chart );
-    legend->setPosition( Position::NorthEast );
-    legend->setAlignment( Qt::AlignCenter );
-    legend->setShowLines( false );
-    legend->setTitleText( tr( "Legend" ) );
-    legend->setOrientation( Qt::Vertical );
-    m_chart.addLegend( legend );
+    // Add at one Header and set it up
+    HeaderFooter* header = new HeaderFooter( &m_chart );
+    header->setPosition( Position::North );
+    header->setText( "A Simple Bar Chart" );
+    m_chart.addHeaderFooter( header );
 
-    // Configure the items markers
-    MarkerAttributes lma;
-    lma.setMarkerStyle( MarkerAttributes::MarkerDiamond );
-    legend->setMarkerAttributes( 0,  lma );
-    lma.setMarkerStyle( MarkerAttributes::MarkerCircle );
-    legend->setMarkerAttributes( 1,  lma );
+    // Configure the Header text attributes
+    TextAttributes hta;
+    hta.setPen( QPen(  Qt::blue ) );
 
-    // Configure Legend Title and labels
-    legend->setTitleText( "Bars" );
-    legend->setText( 0,  "Series 1" );
-    legend->setText( 1,  "Series 2" );
-    legend->setText( 2,  "Series 3" );
+    // let the header resize itself
+    // together with the widget.
+    // so-called relative size
+    Measure m( 35.0 );
+    m.setRelativeMode( header->autoReferenceArea(), KDChartEnums::MeasureOrientationMinimum );
+    hta.setFontSize( m );
+    // min font size
+    m.setValue( 3.0 );
+    m.setCalculationMode( KDChartEnums::MeasureCalculationModeAbsolute );
+    hta.setMinimalFontSize( m  );
+    header->setTextAttributes( hta );
 
-    TextAttributes lta;
-    lta.setPen( QPen( Qt::darkGray ) );
-    legend->setTextAttributes(  lta );
+    // Configure the header Background attributes
+    BackgroundAttributes hba;
+    hba.setBrush(  Qt::white );
+    hba.setVisible( true );
+    header->setBackgroundAttributes(  hba );
 
-    // Configure a pen to surround
-    // the markers with a border
-    QPen markerPen;
-    markerPen.setColor(  Qt::darkGray );
-    markerPen.setWidth( 2 );
-    // Pending Michel use datasetCount() here as soon
-    // as it is fixed
-    for (  uint i = 0; i < /*legend->datasetCount()*/ 3; i++ )
-        legend->setPen( i,  markerPen );
-
-    // Add a background to your legend
-    BackgroundAttributes ba;
-    ba.setBrush(  Qt::white );
-    ba.setVisible( true );
-    legend->setBackgroundAttributes(  ba );
-
-    FrameAttributes fa;
-    fa.setPen( markerPen );
-    fa.setPadding( 5 );
-    fa.setVisible( true );
-    legend->setFrameAttributes(  fa );
+    // Configure the header Frame attributes
+    FrameAttributes hfa;
+    hfa.setPen( QPen ( QBrush( Qt::darkGray ), 2 ) );
+    hfa.setVisible( true );
+    header->setFrameAttributes(  hfa );
 
     QVBoxLayout* l = new QVBoxLayout(this);
     l->addWidget(&m_chart);
