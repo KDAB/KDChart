@@ -5225,7 +5225,12 @@
 			Diagrams: Add, retrieve, replace or remove diagrams associated to 
 			the legends.
 		    </para>
-		</listitem>		    
+		</listitem>
+		<listitem>
+		    <para>
+			Position, Alignment and Orientation are of course configurable.
+		    </para>
+		</listitem>
 		<listitem>
 		    <para>			    
 			Show Lines: Paint lines between the different items of a legend.
@@ -5238,6 +5243,15 @@
 		    </para>
 		</listitem>
 	    </itemizedlist>
+	    <note>
+		<para>
+		    The <classname>KDChartPosition</classname> class, defines positions, 
+		    using compass terminologie. Using this class you can specify one of 
+		    nine pre-defined, logical points , in a similar way, as you would use 
+		    a compass to navigate on a map. We recommend you to consult its interface 
+		    to learn more about it (<filename>KDChartPosition.h</filename>).
+		</para>
+	    </note>
 	    <para>
 		Please consult the setters and getters methods available in the 
 		<classname>KDChartLegend</classname> interface. See 
@@ -5715,8 +5729,37 @@
 		</para>
 	    </note>	   
 	    <para>
-		The main configurations elements for <classname>KDChartHeaderFooter</classname> are:
+		The main configurations elements for <classname>KDChartHeaderFooter</classname>
+		are:
 	    </para>
+	     <itemizedlist>
+		<listitem>
+		    <para>
+			Type: Can be Header or Footer. 
+		    </para>
+		</listitem>
+		<listitem>
+		    <para>
+			Position: Allow the user to define or retrieve the Header or footer
+			position.
+		    </para>
+		</listitem>	
+		<listitem>
+		    <para>			    
+			Text and Text attributes can of course also be configured as we will see
+			in the following examples.
+		    </para>
+		</listitem>
+	    </itemizedlist>
+	    <note>
+		<para>
+		    The <classname>KDChartPosition</classname> class, defines positions, 
+		    using compass terminologie. Using this class you can specify one of 
+		    nine pre-defined, logical points , in a similar way, as you would use 
+		    a compass to navigate on a map. We recommend you to consult its interface 
+		    to learn more about it (<filename>KDChartPosition.h</filename>).
+		</para>
+	    </note>
             <sect2>
                 <title id="headersfootersconfiguresample" xreflabel="codexample">Headers and Footers code Sample</title>
                 <para>
