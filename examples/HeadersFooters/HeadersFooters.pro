@@ -1,3 +1,5 @@
 TEMPLATE	= subdirs
-SUBDIRS		= Advanced
+SUBDIRS		= Advanced \
+	          HeadersFootersSimple \
+                  HeadersFootersParameters
 
