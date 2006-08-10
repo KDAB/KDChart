@@ -6131,7 +6131,10 @@
         <sect1>
             <title>What's next</title>
             <para>
-                Customizing your chart.
+                The next chapter will be dedicated to KDChart 2.0 Attributes model which is derived 
+		indirectly from <classname>QAbstractProxyModel</classname> and gives the user 
+		all flexibility to customizing her's chart and its component at different levels 
+		( whole diagram, per index, per row or column etc....).
             </para>
         </sect1>
     </chapter>
@@ -6139,12 +6142,18 @@
         <title id="chtxt_customizing">Customizing your Chart</title>
         <titleabbrev id="chnum_customizing">Chapter 8</titleabbrev>
 	<para>
-          Introduction text
+	    Customizing your chart means configuring the attributes available for the different 
+	    components of a chart (e.g diagrams, legends, headers and footers etc...). In 
+	    <filename>Chapter 4 - Cartesian Coordinate Plane and Polar Coordinate Plane</filename>
+	    we have been overviewing the differents attributes specifics to a certain type of 
+	    chart ( Line, Bar, Pie, etc...). In this chapter we will go through the details when 
+	    it comes to the attributes related to the elements of a chart and also common to all 
+	    types of charts.
         </para>
 	<sect1>
-            <title id="customizingattributes">KD Chart Attributes</title>
+            <title id="customizingattributes">KD Chart Attributes Model</title>
             <para>
-                Text ...
+                
             </para>  
             <sect2>
                 <title id="attributeassample" xreflabel="codesample">Attributes Example</title>
