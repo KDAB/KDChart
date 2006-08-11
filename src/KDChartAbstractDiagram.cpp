@@ -477,13 +477,13 @@ void AbstractDiagram::setPen( const QModelIndex& index, const QPen& pen )
 
 void AbstractDiagram::setPen( const QPen& pen )
 {
-    attributesModel->setModelData(
+    attributesModel()->setModelData(
         qVariantFromValue( pen ), DatasetPenRole );
 }
 
 void AbstractDiagram::setPen( int column,const QPen& pen )
 {
-    attributesModel->setHeaderData(
+    attributesModel()->setHeaderData(
         column, Qt::Vertical,
         qVariantFromValue( pen ),
         DatasetPenRole );
