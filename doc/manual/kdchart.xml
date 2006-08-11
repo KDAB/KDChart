@@ -6151,7 +6151,7 @@
 	    to all types of charts.
         </para>
 	<sect1>
-            <title id="customizingattributes">KD Chart Attributes Model and Abstract Diagram</title>
+            <title id="customizingattributes">Attributes Model and Abstract Diagram</title>
             <para>
                 The <classname>KDChartAttributesModel</classname> class is derived from 
 		<classname>QAbstractProxyModel</classname> and used internally by the base 
@@ -6195,7 +6195,7 @@
 		</para>
 	    </note>
             <sect2>
-                <title id="attributeassample" xreflabel="codesample">Attributes Example</title>
+                <title id="attributeassample" xreflabel="codesample">How it Works</title>
                 <para>
                     Let us make this more concrete by looking at the following methods for settings  
 		    a Pen and extracted from <classname>KDChartAbstractDiagram</classname>'s 
