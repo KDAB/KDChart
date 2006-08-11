@@ -6145,30 +6145,29 @@
 	    Customizing your chart means configuring the attributes available for the different 
 	    components of a chart (e.g diagrams, legends, headers and footers etc...). In 
 	    <filename>Chapter 4 - Cartesian Coordinate Plane and Polar Coordinate Plane</filename>
-	    we have been overviewing the differents attributes specifics to a certain type of 
-	    chart ( Line, Bar, Pie, etc...). In this chapter we will go through the details when 
+	    we have been looking at the different attributes specific to a certain type of 
+	    diagram ( Line, Bar, Pie, etc...). In this chapter we will go through the details when 
 	    it comes to the attributes related to the elements of a chart and also the ones common 
 	    to all types of charts.
         </para>
 	<sect1>
-            <title id="customizingattributes">KD Chart Attributes Model</title>
+            <title id="customizingattributes">KD Chart Attributes Model and Abstract Diagram</title>
             <para>
                 The <classname>KDChartAttributesModel</classname> class is derived from 
-		<classname>QAbstractProxyModel</classname> and used especially by the base 
+		<classname>QAbstractProxyModel</classname> and used internally by the base 
 		class for all diagrams <classname>KDChartAbstractDiagram</classname> which 
 		<methodname>setAttributesModel( AttributesModel* model )</methodname> method 
-		associate an AttributesModel with a diagram.
+		associates an AttributesModel with a diagram.
             </para>
 	    <note>
 		<para>
 		    The diagram does _not_ take ownership of the AttributesModel. This should thus 
 		    only be used with AttributesModels that have been explicitely created by the 
-		    user, and are owned by her. Setting an AttributesModel that is internal to
-		    another diagram is an error.
+		    user. Setting an AttributesModel that is internal to another diagram is an error.
 		</para>
 	    </note>
 	    <para>
-		Let us illustrate the notice above, the right way is:
+		Let us illustrate the above assertion, the right way is:
 	    </para>
 	    <programlisting>
 		// correct
@@ -6198,23 +6197,90 @@
             <sect2>
                 <title id="attributeassample" xreflabel="codesample">Attributes Example</title>
                 <para>
-                    Let us make this more concrete by looking at the following
-                    lines of code.
-		    <!--
-                    <link linkend=""></link>
-		    <link linkend=""></link>
-                    -->
+                    Let us make this more concrete by looking at the following methods for settings  
+		    a Pen and extracted from <classname>KDChartAbstractDiagram</classname>'s 
+		    interface. 
                 </para>
-                <!--
-                <programlisting linenumbering="numbered" id="">
-                <textobject>
-                <textdata fileref="../../examples/..."/>
-	        </textobject>
+                <programlisting>		    
+		    void setPen( const QModelIndex&amp; index, const QPen&amp; pen );		    
+		    void setPen( int dataset, const QPen&amp; pen );		   
+		    void setPen( const QPen&amp; pen );
 	        </programlisting>
-                -->
+		<note>
+		    <para>
+			<classname>KDChartAbstractDiagram</classname> defines the interface, that 
+			needs to be implemented for the diagram, to function within the KDChart 
+			framework. It extends Interview's AbstractItemView. 
+		    </para>
+		</note>		
                 <para>
-                    More explanation?
+		    Those methods allow us to set the Pen to be used respectively: at a given index,
+		    for a given dataset, or for all datasets in the model.
                 </para>
+		<para>
+		    By looking at their implementations we can see how we make use of the 
+		    <classname>KDChartAttributesModel</classname> methods 
+		    <methodname>setData(), setHeaderData(), and setModelData()</methodname>
+		    to achieve this task.
+		</para>
+		<programlisting>		    
+		void AbstractDiagram::setPen( const QModelIndex&amp; index, const QPen&amp; pen )
+		    {
+		    attributesModel()->setData(
+		    attributesModel()->mapFromSource( index ),
+		    qVariantFromValue( pen ), DatasetPenRole );
+		    }
+
+		    void AbstractDiagram::setPen( const QPen&amp; pen )
+		    {
+		    attributesModel()->setModelData(
+		    qVariantFromValue( pen ), DatasetPenRole );
+		    }
+		    
+		    void AbstractDiagram::setPen( int column,const QPen&amp; pen )
+		    {
+		    attributesModel()->setHeaderData(
+		    column, Qt::Vertical,
+		    qVariantFromValue( pen ),
+		    DatasetPenRole );
+		    }
+	        </programlisting>
+		<para>
+		    The above description to demonstrate how it works for almost all the 
+		    attributes available for the configuranble elements of a chart, and the 
+		    flexibility of this approch.
+		</para>
+		<note>
+		    <para>
+			It is important to know that have three levels of precedence when setting the 
+			attributes: 
+			<itemizedlist>
+			    <listitem>
+				<para>
+				    Global: Weak
+				</para>
+			    </listitem>
+			    <listitem>
+				<para>
+				    Per column: Medium
+				</para>
+			    </listitem>
+			    <listitem>
+				<para>
+				    Per cell: Strong
+				</para>
+			    </listitem>
+			</itemizedlist>
+			Which means that once you have set the attributes for a column or a cell, you will
+			not be able to change those settings by calling the "global" method to reset it 
+			to another value, but instead call the per column or per index setter. As 
+			demonstrated in the above code.
+		    </para>
+		</note>
+		<para>
+		    In the next section we will have a quick look at the attributes common to all
+		    chart types and elements of a chart and learn about the way to use them.
+		</para>
             </sect2>
         </sect1>
 	<sect1>
