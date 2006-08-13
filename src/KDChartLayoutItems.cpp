@@ -90,7 +90,7 @@ KDChart::TextLayoutItem::TextLayoutItem( const QString& text,
     , mAttributes( attributes )
     , mAutoReferenceArea( area )
     , mAutoReferenceOrientation( orientation )
-    , cachedSizeHint( QSize() ) // default this to invalid to force real-time calculation before first use of sizeHint()
+    , cachedSizeHint( QSize() ) // default this to invalid to force just-in-time calculation before first use of sizeHint()
     , cachedFontSize( 0.0 )
     , cachedFont( attributes.font() )
 {
@@ -102,7 +102,7 @@ KDChart::TextLayoutItem::TextLayoutItem()
     , mAttributes()
     , mAutoReferenceArea( 0 )
     , mAutoReferenceOrientation( KDChartEnums::MeasureOrientationHorizontal )
-    , cachedSizeHint( QSize() ) // default this to invalid to force real-time calculation before first use of sizeHint()
+    , cachedSizeHint( QSize() ) // default this to invalid to force just-in-time calculation before first use of sizeHint()
     , cachedFontSize( 0.0 )
 {
     cachedFont = mAttributes.font();
@@ -140,7 +140,7 @@ QString KDChart::TextLayoutItem::text() const
 void KDChart::TextLayoutItem::setTextAttributes( const TextAttributes &a )
 {
     mAttributes = a;
-    cachedSizeHint = QSize();
+    cachedSizeHint = QSize(); // invalidate size hint
     sizeHint();
 }
 
@@ -255,8 +255,15 @@ void KDChart::TextLayoutItem::paint( QPainter* painter )
 
     PainterSaver painterSaver( painter );
     painter->setFont( cachedFont );
-    painter->setPen(  mAttributes.pen() );
-    painter->drawText( geometry(), Qt::AlignHCenter|Qt::AlignVCenter, mText );
+    painter->setPen( mAttributes.pen() );
+    QRectF rect = geometry();
+    if( mAttributes.rotation() != 0 )
+        qDebug() << "rect = " << rect;
+    painter->translate( rect.topLeft() );
+    painter->rotate( mAttributes.rotation() );
+    rect.moveTopLeft( QPointF
+                      ( 0, 0 ) );
+    painter->drawText( rect, Qt::AlignHCenter|Qt::AlignVCenter, mText );
 }
 
 

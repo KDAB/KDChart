@@ -95,6 +95,8 @@ private:
     uint findLeftPie( uint pie, int columnCount );
     uint findRightPie( uint pie, int columnCount );
     QPointF pointOnCircle( const QRectF& rect, qreal angle );
+    void computeAngles( int columnCount, QVector<qreal>& startAngles, QVector<qreal>& startAnglesValueSpace,
+                        QVector<qreal>& spanAngles );
 }; // End of class KDChartPieDiagram
 
 }

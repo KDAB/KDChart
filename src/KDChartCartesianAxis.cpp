@@ -306,7 +306,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
     #endif
 
     ptr->setPen ( Qt::black );
-    ptr->setBrush ( Qt::red );
+    ptr->setBrush ( Qt::red ); // PENDING(michel) What is this for?
     QPointF fourthRulerRef ( rulerRef );
     qreal minValueY = dimY.start;
     qreal maxValueY = dimY.end;
@@ -394,7 +394,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         ? ( topPoint.y() -        met.height()  )
                         : ( topPoint.y() + (2.0 * met.height()) ) );
 
-		    const QRect r( QPoint( static_cast<int>(topPoint.x()), 
+		    const QRect r( QPoint( static_cast<int>(topPoint.x()),
 					   static_cast<int>(topPoint.y()) ),
 				   labelItem->sizeHint() );
 		    const QRegion region( r.adjusted( -1,-1,1,1) );// a minimum of 2 pixels between the labels
