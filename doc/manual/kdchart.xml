@@ -6825,6 +6825,33 @@
 		    See file: <filename>examples/Background</filename>.
 		</para>
             </sect2> 
+        </sect1>	
+	<sect1>
+            <title id="customizingframes">Frame Attributes</title>
+            <para>
+                Text ...
+            </para>  
+            <sect2>
+                <title id="framesample" xreflabel="framesample">Frame Attributes Example</title>
+                <para>
+                    Let us make this more concrete by looking at the following
+                    lines of code.
+		    <!--
+                    <link linkend=""></link>
+		    <link linkend=""></link>
+                    -->
+                </para>
+                <!--
+                <programlisting linenumbering="numbered" id="">
+                <textobject>
+                <textdata fileref="../../examples/..."/>
+	        </textobject>
+	        </programlisting>
+                -->
+                <para>
+                    More explanation?
+                </para>
+            </sect2>
         </sect1>
 	<sect1>
             <title id="customizinggrid">Grid Attributes</title>
@@ -6853,34 +6880,7 @@
                 </para>
             </sect2>
         </sect1>
-		<sect1>
-            <title id="customizingframes">Frame Attributes</title>
-            <para>
-                Text ...
-            </para>  
-            <sect2>
-                <title id="framesample" xreflabel="framesample">Frame Attributes Example</title>
-                <para>
-                    Let us make this more concrete by looking at the following
-                    lines of code.
-		    <!--
-                    <link linkend=""></link>
-		    <link linkend=""></link>
-                    -->
-                </para>
-                <!--
-                <programlisting linenumbering="numbered" id="">
-                <textobject>
-                <textdata fileref="../../examples/..."/>
-	        </textobject>
-	        </programlisting>
-                -->
-                <para>
-                    More explanation?
-                </para>
-            </sect2>
-        </sect1>
-		<sect1>
+	<sect1>
             <title id="customizingthreed">ThreeD Attributes</title>
             <para>
                 Text ...
