@@ -221,7 +221,7 @@
 		subclass <classname>KDChart::AbstractDiagram</classname> (or 
 		one of the other Diagram classes starting with Abstract, 
 		which are designed to be base classes) to implement custom 
-		chart types. A typical use of a simple BarDiagram looks like 
+		chart types. A typical use of a simple Bar Diagram looks like 
 		this:
 	    </para>
             <sect2>
@@ -486,7 +486,7 @@
 		govern whether there should be a background pixmap, or a solid
 		background color. Other attribute sets include FrameAttributes
 		or GridAttributes. The default attributes provide reasonable, 
-		unintrusive settings, such as no visible background and no 
+		un intrusive settings, such as no visible background and no 
 		visible frame.
             </para>
 	    <para>
@@ -610,10 +610,10 @@
 	 </itemizedlist>
 	<para>
 	    Basically, <classname>KDChart::Widget</classname> has been designed for 
-	    starters, while <classname>KDChart::Chart</classname> is destinated for 
+	    starters, while <classname>KDChart::Chart</classname> is destinate for 
 	    the experienced user and/or for users who need more features and flexibility.
 	    Once again we recommend you to read both interfaces for those classes in order
-	    to make yourself an opinion about what you would need while developping your 
+	    to make yourself an opinion about what you would need while developing your 
 	    application.( See <filename>KDChartWidget.h</filename> and 
 	    <filename>KDChartChart.h</filename> ).
 	</para>
@@ -638,7 +638,7 @@
 			</para>
 			<para>
 			    A "chart" can hold several coordinate planes
-			    (e.g cartesian and polar coordinates are supported
+			    (e.g Cartesian and polar coordinates are supported
 			    at the moment) each of which can hold several 
 			    diagrams.
 			</para>    
@@ -724,7 +724,7 @@
 		to these attributes. In the case of diagrams, most aspects
 		can be adjusted at different levels of granularity.
 		The QPen that is used for drawing datasets (lines, bars, 
-		etc...) can be set either for one datapoint within a 
+		etc...) can be set either for one data point within a 
 		dataset, for a dataset or for the whole diagram. See file 
 		<filename>KDChartAbstractDiagram.h</filename>:
 	    </para>
