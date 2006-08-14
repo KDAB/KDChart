@@ -6519,11 +6519,13 @@
 		    // together with the widget.
 		    // so-called relative size
 		    Measure m( 35.0 );
-		    m.setRelativeMode( header->autoReferenceArea(), KDChartEnums::MeasureOrientationMinimum );
+		    m.setRelativeMode( header->autoReferenceArea(), 
+		    KDChartEnums::MeasureOrientationMinimum );
 		    hta.setFontSize( m );
 		    // min font size
 		    m.setValue( 3.0 );
-		    m.setCalculationMode( KDChartEnums::MeasureCalculationModeAbsolute );
+		    m.setCalculationMode( 
+		    KDChartEnums::MeasureCalculationModeAbsolute );
 		    hta.setMinimalFontSize( m  );
 
 		    // Assign thre text attributes 
@@ -6557,32 +6559,154 @@
         </sect1>
 	<sect1>
             <title id="customizingmarkers">Markers Attributes</title>
-            <para>
-                Text ...
+             <para>
+                MarkerAttributes encapsulates settings that have to do with markers. This includes 
+		there types ( square, diamond, ring etc...), size and colors. For the convenience 
+		the user may also set up a Map of markers...
             </para>  
-            <sect2>
-                <title id="markersattributesample" xreflabel="markersample">Marker Attributes Example</title>
-                <para>
-                    Let us make this more concrete by looking at the following
-                    lines of code.
-		    <!--
-                    <link linkend=""></link>
-		    <link linkend=""></link>
-                    -->
-                </para>
-                <!--
-                <programlisting linenumbering="numbered" id="">
-                <textobject>
-                <textdata fileref="../../examples/..."/>
-	        </textobject>
+             <para>
+		We recommend you to consult <classname>KDChartMarkerAttributes</classname>' interface 
+		to find out more in details what can be done. In this section we will describe quickly 
+	        its main properties and go through a commented example that will demonstrates how to 
+		proceed in order to use and configure those attributes.		
+	    </para>
+	    <para>
+		Marker attributes can be set with some defined type(s), size, color etc..., the list 
+		below gives us an overview about the most used features. We will only list the setters 
+		here and explain them - Of course each of those setters has a corresponding getter.	
+	    </para>
+	    <itemizedlist>
+		<listitem>
+		    <para>
+			setMarkerStyle( const MarkerStyle style ): Set the style of the marker to be 
+			used.
+		    </para>
+		</listitem>
+		<listitem>
+		    <para>
+			setMarkerSize( const QSizeF&amp; size ): Set the size of the marker.
+		    </para>
+		</listitem>
+		<listitem>
+		    <para>
+			setMarkerColor( const QColor&amp; color ): Set the color of the marker.
+		    </para>
+		</listitem>		
+		<listitem>
+		    <para>
+			void setVisible( bool visible ): Set whether marker attributes should be 
+			displayed.
+		    </para>
+		</listitem>
+		<listitem>
+		    <para>
+			setMarkerStylesMap( MarkerStylesMap map ): Define a map of marker to be used.
+		    </para>
+		</listitem>
+	    </itemizedlist>
+	    <note>
+		<para>
+		    As defined in the <classname>KDChartMarkersAttributes</classname> class'interface
+		    the differnet marker types available are:
+		</para>
+		<programlisting>
+		    ....
+		     enum MarkerStyle { MarkerCircle  = 0,
+                          MarkerSquare  = 1,
+                          MarkerDiamond = 2,
+                          Marker1Pixel  = 3,
+                          Marker4Pixels = 4,
+                          MarkerRing    = 5,
+                          MarkerCross   = 6,
+                          MarkerFastCross = 7 };
+		    ...
 	        </programlisting>
-                -->
+	    </note>
+	    <para>
+		The process to configure the marker attributes is very simple, and similar to all 
+		other kind of attributes:
+	    </para>
+	     <itemizedlist>
+		<listitem>
+		    <para>
+			Call the marker attributes - e.g We want to configure their types and sizes 
+			we need to configure the data values marker attributes and call them as follow:
+			<methodname>MarkerAttributes ma( dva.markerAttributes() )</methodname>
+		    </para>
+		</listitem>
+		<listitem>
+		    <para>
+			Assign the configurated attributes to your data values attributes. e.g call 
+			<methodname>dva.setMarkerAttributes( ma )</methodname>.
+		    </para>
+		</listitem>			
+	    </itemizedlist>
+            <sect2>
+                <title id="markersample" xreflabel="codesample">Markers Attributes Sample code</title>
                 <para>
-                    More explanation?
+                    Let us make this more concrete by looking at the following lines of code which describe 
+		    the above process. This example is based on the <filename>mainwindow.cpp</filename> 
+		    file of the <filename>examples/Axis/Parameters</filename>. We recommend  you to compile
+		    and run this example and to study its code.
                 </para>
-            </sect2>
+		<programlisting>
+		    ....
+		    // set up a map with different marker styles
+		    MarkerAttributes::MarkerStylesMap map;
+		    map.insert( 0, MarkerAttributes::MarkerSquare );
+		    map.insert( 1, MarkerAttributes::MarkerCircle );
+		    map.insert( 2, MarkerAttributes::MarkerRing );
+		    map.insert( 3, MarkerAttributes::MarkerCross );
+		    map.insert( 4, MarkerAttributes::MarkerDiamond );
+		    ....
+		    // Configure mmarkers per dataset in this example
+		    const int colCount = 
+		    m_lines->model()-&gt;columnCount(m_lines->rootIndex());
+		    for ( int iColumn = 0; iColumn&lt;colCount; ++iColumn ) {
+			DataValueAttributes dva
+			( m_lines->dataValueAttributes( iColumn ) );
+			MarkerAttributes ma( dva.markerAttributes() );
+			ma.setMarkerStylesMap( map );
+			ma.setMarkerSize( QSize( markersWidthSB->value(),
+			markersHeightSB->value() ) );
+		    }
+		    .... 	
+			ma.setVisible(  true );
+			
+			// Assign markers attributes
+			// to Data values attributes
+			dva.setMarkerAttributes( ma );
+			
+			//Assign Data Values Attributes to
+			//Diagram
+			m_lines->setDataValueAttributes( iColumn, dva );
+		    ....
+	        </programlisting>
+		<para>
+		    As we can see the code is straight forward and the process is similar 
+		    as for setting all others types of attributes.
+		</para>
+		<para>
+		    See the screen-shot below to view The resulting chart displayed by the 
+		    above code. 
+		</para>
+		<figure float="0" id="fig-samplemarkerattributes">
+		    <title>A Chart with configured Data Values Markers</title>
+		    <mediaobject>
+			<imageobject>
+			    <imagedata
+				fileref="images/markersample.png"
+				width="3in" scalefit="1"/>
+			</imageobject>
+		    </mediaobject>
+		</figure>
+		<para>
+		    We recommend you to modify, compile and run the example at the following location: 
+		    See file: <filename>examples/Axis/Parameters/mainwindow.cpp</filename>.
+		</para>
+            </sect2> 
         </sect1>
-		<sect1>
+	<sect1>
             <title id="customizingbackground">BackGround Attributes</title>
             <para>
                 Text ...
