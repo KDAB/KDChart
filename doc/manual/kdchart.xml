@@ -6373,6 +6373,61 @@
 		    the <filename>examples/Lines/Parameters</filename> slightly modified. We recommend you 
 		    to compile and run this example and to study its code.
                 </para>
+		<programlisting>
+		    ....
+		    // Display values
+		    // 1 - Call the relevant attributes
+		    DataValueAttributes dva( diagram->dataValueAttributes() );
+
+		    // 2 - We want to configure the font and colors
+		    //     for the data values text.
+		    TextAttributes ta( dva.textAttributes() );
+		    //rotate if you wish
+		    ta.setRotation( 45 );
+
+		    // 3 - Set up your text attributes
+		    ta.setFont( QFont( "Comic", 6 ) );
+		    ta .setPen( QPen( QColor( Qt::darkGreen ) ) );
+		    ta.setVisible( true );
+
+		    // 4 - Assign the text attributes to your
+		    //     DataValuesAttributes
+		    dva.setTextAttributes( ta );
+		    dva.setDecimalDigits( 4 );
+		    dva.setVisible( true );
+
+		    // 5 - Assign to the diagram
+		    diagram->setDataValueAttributes( dva );
+                    ....
+		    // 6 - Assign the diagram to the chart
+		    m_chart.coordinatePlane()->replaceDiagram(diagram);
+		    // make sure there is space to display the
+		    // data value labels
+		    m_chart.setGlobalLeading( 15, 15, 15, 15 );
+		    ...
+	        </programlisting>
+		<para>
+		    As we can see the code is straight forward and the process is similar 
+		    as for setting all others types of attributes.
+		</para>
+		<para>
+		    See the screen-shot below to view The resulting chart displayed by the 
+		    above code. 
+		</para>
+		<figure float="0" id="fig-sampledatavaluesattributes">
+		    <title>A Chart with a configured Data Values Labels</title>
+		    <mediaobject>
+			<imageobject>
+			    <imagedata
+				fileref="images/datavaluesparameters.png"
+				width="3in" scalefit="1"/>
+			</imageobject>
+		    </mediaobject>
+		</figure>
+		<para>
+		    We recommend you to modify, compile and run the example at the following location: 
+		    <filename>examples/Lines/Parameters</filename>.
+		</para>
             </sect2>
         </sect1>	
 	<sect1>
