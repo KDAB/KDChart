@@ -6752,10 +6752,11 @@
 		</para>
 		<programlisting>
 		    ....
-		    enum BackgroundPixmapMode { BackgroundPixmapModeNone,
-		                                BackgroundPixmapModeCentered,
-		                                BackgroundPixmapModeScaled,
-		                                BackgroundPixmapModeStretched };
+		    enum BackgroundPixmapMode { 
+		    BackgroundPixmapModeNone,
+		    BackgroundPixmapModeCentered,
+		    BackgroundPixmapModeScaled,
+		    BackgroundPixmapModeStretched };
 		    ...
 	        </programlisting>
 	    </note>
@@ -6767,13 +6768,12 @@
 		<listitem>
 		    <para>
 			Call the background attributes and configure it.
-			..... method
 		    </para>
 		</listitem>
 		<listitem>
 		    <para>
-			Assign the configurated attributes e.g call 
-			<methodname>setBackgroundAttributes( ba )</methodname>.
+			Assign the configurated attributes to the element of a chart.
+			<methodname>element.setBackgroundAttributes( ba )</methodname>.
 		    </para>
 		</listitem>			
 	    </itemizedlist>
@@ -6781,12 +6781,25 @@
                 <title id="bgsample" xreflabel="codesample">Background Attributes Sample code</title>
                 <para>
                     Let us make this more concrete by looking at the following lines of code which describe 
-		    the above process. This example is based on the <filename>mainwindow.cpp</filename> 
-		    file of the <filename>examples/Axis/Parameters</filename>. We recommend  you to compile
+		    the above process. This example is based on the <filename>main.cpp</filename> 
+		    file of the <filename>examples/Background</filename>. We recommend  you to compile
 		    and run this example and to study its code.
                 </para>
 		<programlisting>
 		    ....		   
+		     // Configure the plane's Background
+		    BackgroundAttributes pba;
+		    pba.setPixmap(  *pixmap );
+		    pba.setPixmapMode(  
+		    BackgroundAttributes::BackgroundPixmapModeStretched );
+		    pba.setVisible( true );
+		    diagram->coordinatePlane()->setBackgroundAttributes(  pba );
+
+		    // Configure the Header's Background
+		    BackgroundAttributes hba;
+		    hba.setBrush( Qt::white );
+		    hba.setVisible( true );
+		    header->setBackgroundAttributes(  hba );
 		    ....
 	        </programlisting>
 		<para>
@@ -6809,7 +6822,7 @@
 		</figure>
 		<para>
 		    We recommend you to modify, compile and run the example at the following location: 
-		    See file: <filename>examples/.....</filename>.
+		    See file: <filename>examples/Background</filename>.
 		</para>
             </sect2> 
         </sect1>
