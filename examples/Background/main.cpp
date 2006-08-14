@@ -68,9 +68,16 @@ public:
     hba.setVisible( true );
     header->setBackgroundAttributes(  hba );
 
+    // Configure the plane Frame attributes
+    FrameAttributes pfa;
+    pfa.setPen( QPen ( QBrush( Qt::blue ), 2 ) );
+    pfa.setVisible( true );
+    diagram->coordinatePlane()->setFrameAttributes(  pfa );
+
     // Configure the header Frame attributes
     FrameAttributes hfa;
     hfa.setPen( QPen ( QBrush( Qt::darkGray ), 2 ) );
+    hfa.setPadding( 2 );
     hfa.setVisible( true );
     header->setFrameAttributes(  hfa );
 
