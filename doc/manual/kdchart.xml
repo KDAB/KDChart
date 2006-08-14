@@ -6286,27 +6286,92 @@
 	<sect1>
             <title id="customizingdatavalue">Data Values Attributes</title>
             <para>
-                Text ...
-            </para>  
+		The Data Value Attributes group all properties that can be set
+		in relation to data value labels and if and how they are displayed. This
+                includes things like the text attributes (font, color), what markers are used, 
+		and how many decimal digits are displayed, etc.
+            </para>
+	    <para>
+		We recommend you to consult <classname>KDChartDataValueAttributes</classname>' interface 
+		to find out more in details what can be done. In this section we will describe quickly 
+	        its main properties and go through a commented example that will demonstrates how to 
+		proceed in order to use and configure those attributes.		
+	    </para>
+	    <para>
+		Data values can be set with some defined text, background, frame and markers, the list 
+		below gives us an overview about the most used features. We will only list the setters 
+		here and explain them - Of course each of those setters has a corresponding getter:		
+	    </para>
+	    <itemizedlist>
+		<listitem>
+		    <para>
+			setVisible( bool visible ): Set whether data value labels should be displayed.
+		    </para>
+		</listitem>
+		<listitem>
+		    <para>
+			setTextAttributes( const TextAttributes &amp;a ): Set the text attributes to use 
+			for the data value labels.
+		    </para>
+		</listitem>
+		<listitem>
+		    <para>
+			setFrameAttributes( const FrameAttributes &amp;a ): Set the frame attributes to 
+			use for the data value labels area.
+		    </para>
+		</listitem>
+		<listitem>
+		    <para>
+			setBackgroundAttributes( const BackgroundAttributes &amp;a ): Set the background 
+			attributes to use for the data value labels area. 
+		    </para>
+		</listitem>
+		<listitem>
+		    <para>
+			setMarkerAttributes( const MarkerAttributes &amp;a ): Set the marker attributes to 
+			use for the data values. This includes the marker type.
+		    </para>
+		</listitem>
+		<listitem>
+		    <para>
+			void setDecimalDigits( int digits ): Set how  many decimal digits to use when 
+			rendering the data value labels.
+		    </para>
+		</listitem>
+	    </itemizedlist>
+	    <para>
+		The process to configure the data value attributes for a diagram is very simple, and 
+		similar to all other kind of attributes:
+	    </para>
+	     <itemizedlist>
+		<listitem>
+		    <para>
+			Call the relevant attributes - e.g We want to configure the font and colors
+			we need to configure the Text attributes and call them as follow:
+			<methodname>TextAttributes ta( datavaluesattrinbutes.textAttributes() )</methodname>
+		    </para>
+		</listitem>
+		<listitem>
+		    <para>
+			Assign the configurated attributes to your data values attributes. e.g call 
+			<methodname>datavalueattributes.setTextAttributes( ta )</methodname>.
+		    </para>
+		</listitem>
+		<listitem>
+		    <para>
+			set them as visdible implicitly and assign them to the diagram by calling the 
+			diagram method 
+			<methodname>diagram->setDataValueAttributes( datavaluesattributes)</methodname>
+		    </para>
+		</listitem>	
+	    </itemizedlist>
             <sect2>
-                <title id="datavaluesample" xreflabel="codesample">DataValue Attributes Example</title>
+                <title id="datavaluesample" xreflabel="codesample">DataValue Attributes Sample code</title>
                 <para>
-                    Let us make this more concrete by looking at the following
-                    lines of code.
-		    <!--
-                    <link linkend=""></link>
-		    <link linkend=""></link>
-                    -->
-                </para>
-                <!--
-                <programlisting linenumbering="numbered" id="">
-                <textobject>
-                <textdata fileref="../../examples/..."/>
-	        </textobject>
-	        </programlisting>
-                -->
-                <para>
-                    More explanation?
+                    Let us make this more concrete by looking at the following lines of code which describe 
+		    the above process. This example is based on the <filename>main.cpp</filename> file of 
+		    the <filename>examples/Lines/Parameters</filename> slightly modified. We recommend you 
+		    to compile and run this example and to study its code.
                 </para>
             </sect2>
         </sect1>	
