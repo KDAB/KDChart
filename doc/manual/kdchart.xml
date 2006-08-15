@@ -7263,15 +7263,44 @@
 	    customers. 
 	</para>	
 	<para>
-	    <filename>/examples/Axis/Parameters</filename>
+	    1 - <filename>/examples/Axis/Parameters</filename>
 	</para>
-	
+	    <figure float="0" id="fig-axisparameters">
+		<title>/examples/Axis/Parameters</title>
+		<mediaobject>
+		    <imageobject>
+			<imagedata
+			    fileref="images/axisparameters.png"
+			    width="3in" scalefit="1"/>
+		    </imageobject>
+		</mediaobject>
+	    </figure>
 	<para>
-	    <filename>/examples/Bars/Advanced</filename>
+	    2 - <filename>/examples/Bars/Advanced</filename>
 	</para>
+	    <figure float="0" id="fig-bartsadvanced">
+		<title>/examples/Bars/Advanced</title>
+		<mediaobject>
+		    <imageobject>
+			<imagedata
+			    fileref="images/baradvanced.png"
+			    width="3in" scalefit="1"/>
+		    </imageobject>
+		</mediaobject>
+	    </figure> 
 	<para>
-	    <filename>/examples/HeadersFooters/HeadersFooters/Advanced</filename>
+	    3 - <filename>/examples/HeadersFooters/HeadersFooters/Advanced</filename>
 	</para>
+	    <figure float="0" id="fig-headersfootersadvanced">
+		<title>/examples/HeadersFooters/HeadersFooters/Advanced</title>
+		<mediaobject>
+		    <imageobject>
+			<imagedata
+			    fileref="images/headersfootersadvanced.png"
+			    width="3in" scalefit="1"/>
+		    </imageobject>
+		</mediaobject>
+	    </figure>  
 	<para>
 	    <filename>/examples/Legends/LegendAdvanced</filename>
 	</para>
