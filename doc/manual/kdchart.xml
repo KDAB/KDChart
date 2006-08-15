@@ -484,8 +484,8 @@
 		and all areas have a set of 
 		<classname>KDChart::BackgroundAttributes</classname>, which 
 		govern whether there should be a background pixmap, or a solid
-		background color. Other attribute sets include FrameAttributes
-		or GridAttributes. The default attributes provide reasonable, 
+		background color. Other attribute sets include Frame Attributes
+		or Grid Attributes. The default attributes provide reasonable, 
 		un intrusive settings, such as no visible background and no 
 		visible frame.
             </para>
