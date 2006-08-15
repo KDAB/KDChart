@@ -7343,13 +7343,42 @@
 	<para>
 	    7 - <filename>/examples/Pie/Advanced</filename>
 	</para>
-	    
+	    <figure float="0" id="fig-pieadvanced">
+		<title>/examples/Pie/Advanced</title>
+		<mediaobject>
+		    <imageobject>
+			<imagedata
+			    fileref="images/pieadvanced.png"
+			    width="3in" scalefit="1"/>
+		    </imageobject>
+		</mediaobject>
+	    </figure> 
 	<para>
-	    <filename>/examples/SharedAbscissa</filename>
+	    8 - <filename>/examples/SharedAbscissa</filename>
 	</para>
+	    <figure float="0" id="fig-sharedabscissa">
+		<title>/examples/SharedAbscissa</title>
+		<mediaobject>
+		    <imageobject>
+			<imagedata
+			    fileref="images/sharedabscissa.png"
+			    width="3in" scalefit="1"/>
+		    </imageobject>
+		</mediaobject>
+	    </figure>
 	<para>
-	    <filename>/examples/Widget/Advanced</filename>
+	    9 - <filename>/examples/Widget/Advanced</filename>
 	</para>
+	    <figure float="0" id="fig-widgetadvanced">
+		<title>/examples/Widget/Advanced</title>
+		<mediaobject>
+		    <imageobject>
+			<imagedata
+			    fileref="images/widgetadvanced.png"
+			    width="3in" scalefit="1"/>
+		    </imageobject>
+		</mediaobject>
+	    </figure>	 
 	</sect1>
         <sect1>
             <title>What's next</title>
