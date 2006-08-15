@@ -7302,17 +7302,48 @@
 		</mediaobject>
 	    </figure>  
 	<para>
-	    <filename>/examples/Legends/LegendAdvanced</filename>
+	    4 - <filename>/examples/Legends/LegendAdvanced</filename>
 	</para>
+	    <figure float="0" id="fig-legendsadvanced">
+		<title>/examples/Legends/LegendAdvanced</title>
+		<mediaobject>
+		    <imageobject>
+			<imagedata
+			    fileref="images/legendsadvanced.png"
+			    width="3in" scalefit="1"/>
+		    </imageobject>
+		</mediaobject>
+	    </figure>  
 	<para>
-	    <filename>/examples/Lines/Advanced</filename>
+	    5 - <filename>/examples/Lines/Advanced</filename>
 	</para>
+	    <figure float="0" id="fig-linesadvanced">
+		<title>/examples/Lines/Advanced</title>
+		<mediaobject>
+		    <imageobject>
+			<imagedata
+			    fileref="images/linesadvanced.png"
+			    width="3in" scalefit="1"/>
+		    </imageobject>
+		</mediaobject>
+	    </figure>  
 	<para>
-	    <filename>/examples/ModelView</filename>
+	    6 - <filename>/examples/ModelView</filename>
 	</para>
+	    <figure float="0" id="fig-modelview">
+		<title>/examples/ModelView</title>
+		<mediaobject>
+		    <imageobject>
+			<imagedata
+			    fileref="images/modelview.png"
+			    width="3in" scalefit="1"/>
+		    </imageobject>
+		</mediaobject>
+	    </figure>  
 	<para>
-	    <filename>/examples/Pie/Advanced</filename>
+	    7 - <filename>/examples/Pie/Advanced</filename>
 	</para>
+	    
 	<para>
 	    <filename>/examples/SharedAbscissa</filename>
 	</para>
