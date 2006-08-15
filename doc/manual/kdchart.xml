@@ -7100,6 +7100,78 @@
 		will describe quickly its main properties and go through a commented example that 
 		demonstrates how to proceed in order to use and configure those attributes.		
 	    </para>
+	    <para>
+		The list below gives us an overview about the most used features. We will only list 
+		the setters here and explain them - Of course each of those setters has a 
+		corresponding getter.
+	    </para>
+	    <para>
+		1 - Generic (common to all diagrams) ThreeD Attributes
+	    </para>
+	    <itemizedlist>
+		<listitem>
+		    <para>
+			setEnabled( bool enabled ): set whether threeD display mode is on or off.
+		    </para>
+		</listitem>
+		<listitem>
+		    <para>
+			setDepth( double depth ): set the depth of the threeD effect (see example below).
+		    </para>
+		</listitem>		
+	    </itemizedlist>	    
+	     <para>
+		2 - ThreeD Bar Attributes - Specific to bar diagrams.
+	    </para>
+	    <itemizedlist>		
+		<listitem>
+		    <para>
+			setAngle( uint threeDAngle ): Not implemented yet
+		    </para>
+		</listitem>	
+	    </itemizedlist>
+	    <para>
+		3 - ThreeD Line Attributes - Specific to line diagrams.
+	    </para>
+	    <itemizedlist>
+		<listitem>
+		    <para>
+			setLineXRotation( const uint degrees ): rotate the x coordinate.
+		    </para>
+		</listitem>
+		<listitem>
+		    <para>
+			setLineYRotation( const uint degrees ): rotate the y coordinate.
+		    </para>
+		</listitem>	
+	    </itemizedlist>
+	   <para>
+		4 - ThreeD Pie Attributes - Specific to Pie diagrams.
+	    </para>
+	    <itemizedlist>
+		<listitem>
+		    <para>
+			setUseShadowColors( bool useShadowColors ): Not implemented yet
+		    </para>
+		</listitem>
+	    </itemizedlist>
+	    <para>
+		The process to configure the grid attributes is very simple, and similar to all 
+		other kind of attributes:
+	    </para>
+	     <itemizedlist>
+		<listitem>
+		    <para>
+			Call the threeD attributes and configure it.
+		    </para>
+		</listitem>
+		<listitem>
+		    <para>
+			Assign the configurated attributes to the diagram by calling the available 
+			method <methodname>setThreeDAttributes()</methodname> method.
+		    </para>
+		</listitem>			
+	    </itemizedlist>
             <sect2>
                 <title id="threedsample" xreflabel="threedsample">ThreeD Attributes Example</title>
                 <para>
