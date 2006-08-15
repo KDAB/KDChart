@@ -14,6 +14,7 @@ SUBDIRS		= tools \
                   MultidimensionalData \
                   EmptyValues \
 	          Charts \
-	          Background
+	          Background \
+	          Grids
 
 
