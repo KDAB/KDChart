@@ -6934,42 +6934,45 @@
              <para>
 		We recommend you to consult <classname>KDChartGridAttributes</classname>'interface 
 		to find out more in details what can be done. In this section we will describe quickly 
-	        its main properties and go through a commented example that will demonstrates how to 
+	        its main properties and go through a commented example that demonstrates how to 
 		proceed in order to use and configure those attributes.		
 	    </para>
 	    <para>
-		The list below gives us an overview about the most used features. We will only list the 
-		setters here and explain them - Of course each of those setters has a corresponding getter.
+		The list below gives us an overview about the most used features. We will only list 
+		the setters here and explain them - Of course each of those setters has a 
+		corresponding getter.
 	    </para>
 	    <itemizedlist>
 		<listitem>
 		    <para>
-			setGridVisible( bool visible );
+			setGridVisible( bool visible ): set whether the grid should be painted or not 
 		    </para>
 		</listitem>
 		<listitem>
 		    <para>
-			setGridStepWidth( qreal stepWidth=0.0 );
+			setGridStepWidth( qreal stepWidth=0.0 ): set the distance between the lines 
+			of the grid
 		    </para>
 		</listitem>
 		<listitem>
 		    <para>
-			setGridPen( const QPen &amp; pen );
+			setGridPen( const QPen &amp; pen ): set the main grid pen.
 		    </para>
 		</listitem>
 		<listitem>
 		    <para>
-			setSubGridVisible( bool visible );
+			setSubGridVisible( bool visible ): Specify whether the sub-grid should be 
+			displayed.
 		    </para>
 		</listitem>
 		<listitem>
 		    <para>
-			setSubGridPen( const QPen &amp; pen );
+			setSubGridPen( const QPen &amp; pen ): set the sub-grid pen.
 		    </para>
 		</listitem>
 			<listitem>
 		    <para>
-			setZeroLinePen( const QPen &amp; pen );
+			setZeroLinePen( const QPen &amp; pen ): set the zero line pen.
 		    </para>
 		</listitem>
 	    </itemizedlist>	    
@@ -6985,23 +6988,70 @@
 		</listitem>
 		<listitem>
 		    <para>
-			Assign the configurated attributes using one of the setter available, e.g
-			<methodname>plane.setGridAttributes( Qt::Orientation orientation, 
-			    const GridAttributes &amp; ) )</methodname>.
+			Assign the configurated attributes to the plane using one of the setter 
+			available, e.g
+			<methodname>CartesianCoordinatePlane::setGridAttributes
+			    ( Qt::Orientation orientation, const GridAttributes &amp; )</methodname>.
+			or <methodname>AbstractCoordinatePlane::setGlobalGridAttributes
+			    ( const GridAttributes &amp; )</methodname>
 		    </para>
 		</listitem>			
 	    </itemizedlist>
+	    <note>
+		<para>
+		    In case you want to set your grid attributes with orientation using the 
+		    <classname>CartesianCoordinatePlane</classname> method above you will need 
+		    to cast your <methodname>AbstractCoordinatePlane* coordinatePlane() const;
+		    </methodname> which return a pointer to 
+		    <classname>AbstractCoordinatePlane</classname> as presented in the following 
+			example.
+		</para>
+		<para>
+		    Otherwise you just need to set the grid attributes globally as follow:
+		</para>
+		<programlisting>
+		   GridAttributes ga = diagram->coordinatePlane()->globalGridAttributes(); 
+		   ga.setGlobalGridVisible( false );
+		   diagram->coordinatePlane->setGlobalGridAttributes( ga );
+	        </programlisting>
+	    </note>
             <sect2>
                 <title id="gridsample" xreflabel="codesample">Grid Attributes Sample code</title>
                 <para>
-                    Let us make this more concrete by looking at the following lines of code which describe 
-		    the above process. This example is based on the <filename>....</filename> 
-		    file of the <filename>examples/....</filename>. We recommend  you to compile
-		    and run this example and to study its code.
+                    Let us make this more concrete by looking at the following lines of code which 
+		    describe the above process. This example is based on the 
+		    <filename>main.cpp</filename> file of the <filename>examples/Grids</filename>. 
+		    We recommend  you to compile and run this example and to study its code.
                 </para>
 		<programlisting>
-		    ....		   
-		    ....
+		    // diagram->coordinatePlane returns an abstract plane.
+		    // if we want to specify the orientation we need to cast
+		    // as follow
+		    CartesianCoordinatePlane* plane = 
+		    static_cast &lt;CartesianCoordinatePlane*&gt;
+		    ( diagram->coordinatePlane() );
+
+		    // retrieve your grid attributes
+		    // display grid and sub-grid
+		    GridAttributes ga ( plane->gridAttributes( Qt::Vertical ) );
+		    ga.setGridVisible(  true );
+		    ga.setSubGridVisible( true );
+
+		    // Configure a grid pen
+		    QPen gridPen(  Qt::magenta );
+		    gridPen.setWidth( 3 );
+		    ga.setGridPen(  gridPen );
+
+		    // Configure a sub-grid pen
+		    QPen subGridPen( Qt::darkGray );
+		    subGridPen.setStyle( Qt::DotLine );
+		    ga.setSubGridPen(  subGridPen );
+
+		    // Display a blue zero line
+		    ga.setZeroLinePen( QPen( Qt::blue ) );
+
+		    // Assign your grid to the plane
+		    plane->setGridAttributes( Qt::Vertical,  ga );
 	        </programlisting>
 		<para>
 		    As we can see the code is straight forward and the process is similar 
@@ -7016,14 +7066,14 @@
 		    <mediaobject>
 			<imageobject>
 			    <imagedata
-				fileref="images/framesample.png"
+				fileref="images/gridsample.png"
 				width="3in" scalefit="1"/>
 			</imageobject>
 		    </mediaobject>
 		</figure>
 		<para>
 		    We recommend you to modify, compile and run the example at the following location: 
-		    See file: <filename>examples/....</filename>.
+		    See file: <filename>examples/Grids</filename>.
 		</para>
             </sect2> 
         </sect1>
