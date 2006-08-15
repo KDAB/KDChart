@@ -7095,7 +7095,7 @@
 		working with.
             </para>  
              <para>
-		We recommend you to consult the <classname>ThreeDAttributes</classname> 
+		We recommend you to consult the <classname>*ThreeDAttributes</classname> 
 		class'interface to find out more in details what can be done. In this section we 
 		will describe quickly its main properties and go through a commented example that 
 		demonstrates how to proceed in order to use and configure those attributes.		
@@ -7105,38 +7105,25 @@
                 <para>
                     Let us make this more concrete by looking at the following lines of code which 
 		    describe the above process. This example is based on the 
-		    <filename>main.cpp</filename> file of the <filename>examples/Pie</filename>. 
+		    <filename>mainwindow.cpp</filename> file of the <filename>examples/Bars/Advanced</filename>. 
 		    We recommend  you to compile and run this example and to study its code.
                 </para>
 		<programlisting>
-		    // diagram->coordinatePlane returns an abstract plane.
-		    // if we want to specify the orientation we need to cast
-		    // as follow
-		    CartesianCoordinatePlane* plane = 
-		    static_cast &lt;CartesianCoordinatePlane*&gt;
-		    ( diagram->coordinatePlane() );
+		    // Retrieve the threeD attributes for 
+		    // the diagram
+		    ThreeDBarAttributes td( m_bars->threeDBarAttributes() );
 
-		    // retrieve your grid attributes
-		    // display grid and sub-grid
-		    GridAttributes ga ( plane->gridAttributes( Qt::Vertical ) );
-		    ga.setGridVisible(  true );
-		    ga.setSubGridVisible( true );
+		    // set its depth property
+		    td.setDepth( depthSB->value() );
 
-		    // Configure a grid pen
-		    QPen gridPen(  Qt::magenta );
-		    gridPen.setWidth( 3 );
-		    ga.setGridPen(  gridPen );
+		    // Implicitely enable threeD Mode
+		    td.setEnabled( true );
 
-		    // Configure a sub-grid pen
-		    QPen subGridPen( Qt::darkGray );
-		    subGridPen.setStyle( Qt::DotLine );
-		    ga.setSubGridPen(  subGridPen );
+		    // Assign to the diagram
+		    m_bars->setThreeDBarAttributes( td );
 
-		    // Display a blue zero line
-		    ga.setZeroLinePen( QPen( Qt::blue ) );
-
-		    // Assign your grid to the plane
-		    plane->setGridAttributes( Qt::Vertical,  ga );
+		    // Re-paint 
+		    m_chart->update();
 	        </programlisting>
 		<para>
 		    As we can see the code is straight forward and the process is similar 
@@ -7147,21 +7134,22 @@
 		    above code. 
 		</para>
 		<figure float="0" id="fig-samplethreedattributes">
-		    <title>A ThreeD Pie Chart</title>
+		    <title>A ThreeD Bar Chart</title>
 		    <mediaobject>
 			<imageobject>
 			    <imagedata
-				fileref="images/piethreedsample.png"
+				fileref="images/threedsample.png"
 				width="3in" scalefit="1"/>
 			</imageobject>
 		    </mediaobject>
 		</figure>
 		<para>
 		    We recommend you to modify, compile and run the example at the following location: 
-		    See file: <filename>examples/Pie</filename>.
+		    See file: <filename>examples/Bars/Advanced</filename>.
 		</para>
             </sect2>
         </sect1>
+<!--
 	<sect1>
             <title id="customizingtips">Tips</title>
             <para>
@@ -7172,23 +7160,14 @@
                 <para>
                     Let us make this more concrete by looking at the following
                     lines of code.
-		    <!--
-                    <link linkend=""></link>
-		    <link linkend=""></link>
-                    -->
-                </para>
-                <!--
-                <programlisting linenumbering="numbered" id="">
-                <textobject>
-                <textdata fileref="../../examples/..."/>
-	        </textobject>
-	        </programlisting>
-                -->
+		   
+                </para>               
                 <para>
                     More explanation?
                 </para>
             </sect2>
         </sect1>
+-->
         <sect1>
             <title>What's next</title>
             <para>
