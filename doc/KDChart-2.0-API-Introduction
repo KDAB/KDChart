@@ -48,7 +48,7 @@ QPen pen;
 pen.setColor( Qt::darkGray );
 pen.setWidth( 1 );
 bars->setPen( pen );
-chart->coordinatePlane()->replaceDiagram( ars );
+chart->coordinatePlane()->replaceDiagram( bars );
 
 You could also use this way, to prevent your compiler from complaining
 about instance bars not being free'ed:
