@@ -394,10 +394,10 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         ? ( topPoint.y() -        met.height()  )
                         : ( topPoint.y() + (2.0 * met.height()) ) );
 
-		    const QRect r( QPoint( static_cast<int>(topPoint.x()),
-					   static_cast<int>(topPoint.y()) ),
-				   labelItem->sizeHint() );
-		    const QRegion region( r.adjusted( -1,-1,1,1) );// a minimum of 2 pixels between the labels
+                    const QRect r( QPoint( static_cast<int>(topPoint.x()),
+                            static_cast<int>(topPoint.y()) ),
+                            labelItem->sizeHint() );
+                    const QRegion region( r.adjusted( -1,-1,1,1) );// a minimum of 2 pixels between the labels
 
                     labelsAreOverlapping = ! combinedRegion.intersect( region ).isEmpty();
                     combinedRegion += region;
@@ -410,7 +410,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
             }
 
             int iLabel = 0;
-            for ( qreal i = minValueX; i <= maxValueX; i+=dimX.stepWidth ) {
+            for ( qreal i = minValueX; i < maxValueX; i += dimX.stepWidth ) {
                 QPointF topPoint ( i + (useItemCountLabels ? 0.5 : 0.0), 0.0 );
                 QPointF bottomPoint ( topPoint );
                 topPoint = plane->translate( topPoint );
@@ -428,13 +428,6 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     // No need to call labelItem->setParentWidget(), since we are using
                     // the layout item temporarily only.
                     const QSize size( labelItem->sizeHint() );
-/*                    labelItem->setGeometry(
-                        QRect(
-                            QPoint(
-                                static_cast<int>( topPoint.x() - size.width() / 2 ),
-                                static_cast<int>( topPoint.y()
-                                    + met.height() * (isBottom ? 0.5 : -1.5 )) ),
-                            size ) );*/
                     labelItem->setGeometry( 
                             QRect( 
                                 QPoint( 
