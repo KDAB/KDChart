@@ -592,15 +592,47 @@ QSize CartesianAxis::maximumSize() const
     // FIXME return real values:
     QSize result;
 
+    const TextAttributes titleTA( titleTextAttributes() );
+    const TextAttributes labelTA = textAttributes();
+    TextLayoutItem titleItem( titleText(), titleTA, 0, KDChartEnums::MeasureOrientationMinimum, Qt::AlignHCenter | Qt::AlignVCenter );
+    TextLayoutItem labelItem( "", labelTA, 0, KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft );
+    int h = 0;
+    
     switch ( position() )
     {
     case Bottom:
     case Top:
-        result = QSize ( 100, 100 );
+        // enough space for the labels to fit:
+        for ( int i = 0; i < labels().count(); ++i )
+        {
+            labelItem.setText( labels()[ i ] );
+            int lh = labelItem.sizeHint().height();
+            if ( h < lh )
+                h = lh;
+        }
+        // space for a possible title:
+        if ( ! titleText().isEmpty() ) {
+            h += titleItem.sizeHint().height();
+        }
+        qDebug() << h + 20;
+        result = QSize ( 10, h + 20 );
         break;
     case Left:
     case Right:
-        result = QSize ( 100, 100 );
+        // enough space for the labels to fit:
+        for ( int i = 0; i < labels().count(); ++i )
+        {
+            labelItem.setText( labels()[ i ] );
+            int lh = labelItem.sizeHint().width();
+            if ( h < lh )
+                h = lh;
+        }
+        // space for a possible title:
+        if ( ! titleText().isEmpty() ) {
+            h += titleItem.sizeHint().width();
+        }
+        qDebug() << h + 20;
+        result = QSize ( h + 20, 10 );
         break;
     default:
         Q_ASSERT( false ); // all positions need to be handled
