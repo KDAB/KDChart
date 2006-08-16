@@ -428,13 +428,19 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     // No need to call labelItem->setParentWidget(), since we are using
                     // the layout item temporarily only.
                     const QSize size( labelItem->sizeHint() );
-                    labelItem->setGeometry(
+/*                    labelItem->setGeometry(
                         QRect(
                             QPoint(
                                 static_cast<int>( topPoint.x() - size.width() / 2 ),
                                 static_cast<int>( topPoint.y()
                                     + met.height() * (isBottom ? 0.5 : -1.5 )) ),
-                            size ) );
+                            size ) );*/
+                    labelItem->setGeometry( 
+                            QRect( 
+                                QPoint( 
+                                    static_cast<int>( topPoint.x() - size.width() / 2 ),
+                                    static_cast<int>( topPoint.y() + size.height() * ( isBottom ? 1 : -1 ) ) ),
+                                size ) );
                     labelItem->paint( ptr );
                     if( hardLabelsCount ){
                         if( iLabel >= hardLabelsCount  -1 )

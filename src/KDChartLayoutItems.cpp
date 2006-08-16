@@ -41,6 +41,7 @@
 
 #include <KDABLibFakes>
 
+#include <math.h>
 
 /**
     Inform the item about its widget: This enables the item,
@@ -242,6 +243,7 @@ QSize KDChart::TextLayoutItem::calcSizeHint( QFont fnt ) const
     QSize ret = met.boundingRect( mText ).toRect().size();
     const int frame = QApplication::style()->pixelMetric( QStyle::PM_ButtonMargin, 0, 0 );
     ret += QSize( frame, frame );
+    ret.setHeight( ret.height() + static_cast<int>( ret.width() * sin( mAttributes.rotation() * 3.141592653589793 / 360 ) ) );
     return ret;
 }
 
@@ -259,11 +261,14 @@ void KDChart::TextLayoutItem::paint( QPainter* painter )
     QRectF rect = geometry();
     if( mAttributes.rotation() != 0 )
         qDebug() << "rect = " << rect;
+   
+    painter->translate( 0, - rect.width() * sin( mAttributes.rotation() * 3.141592653589793 / 360 ) );
     painter->translate( rect.topLeft() );
     painter->rotate( mAttributes.rotation() );
     rect.moveTopLeft( QPointF
                       ( 0, 0 ) );
-    painter->drawText( rect, Qt::AlignHCenter|Qt::AlignVCenter, mText );
+    painter->drawText( rect, Qt::AlignHCenter | Qt::AlignVCenter, mText );
+
 }
 
 
