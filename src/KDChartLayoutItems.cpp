@@ -281,7 +281,6 @@ void KDChart::TextLayoutItem::paint( QPainter* painter )
     painter->setPen( mAttributes.pen() );
     QRectF rect = geometry();
 
-    painter->drawRect( rect );
     painter->translate( rect.center() );
     rect.moveTopLeft( QPointF( - rect.width() / 2, - rect.height() / 2 ) );
     painter->rotate( mAttributes.rotation() );
