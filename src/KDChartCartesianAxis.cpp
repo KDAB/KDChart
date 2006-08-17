@@ -364,6 +364,14 @@ void CartesianAxis::paintCtx( PaintContext* context )
                       KDChartEnums::MeasureOrientationMinimum,
                       Qt::AlignLeft )
             : 0;
+        TextLayoutItem* labelItem2 =
+            drawLabels
+            ? new TextLayoutItem( QString::number( minValueY ),
+                      labelTA,
+                      referenceArea,
+                      KDChartEnums::MeasureOrientationMinimum,
+                      Qt::AlignLeft )
+            : 0;
         const QFontMetricsF met(
             drawLabels
             ? labelItem->realFont()
@@ -375,7 +383,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
             // If we have a labels list AND a short labels list, we first find out,
             // if there is enough space for the labels: if not, use the short labels.
             if( drawLabels && hardLabelsCount && shortLabelsCount ){
-                bool labelsAreOverlapping = false;
+/*                bool labelsAreOverlapping = false;
                 QRegion combinedRegion;
                 int iLabel = 0;
                 for ( qreal i = minValueX; i <= maxValueX && ! labelsAreOverlapping; i+=dimX.stepWidth ) {
@@ -391,27 +399,59 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     topPoint.setY( fourthRulerRef.y() + tickLength );
                     topPoint.setY(
                         isTop
-                        ? ( topPoint.y() -        met.height()  )
-                        : ( topPoint.y() + (2.0 * met.height()) ) );
+                        ? ( topPoint.y() -         met.height() )
+                        : ( topPoint.y() + ( 2.0 * met.height() ) ) );
 
-                    const QRect r( QPoint( static_cast<int>(topPoint.x()),
-                            static_cast<int>(topPoint.y()) ),
+                    const QRect r( QPoint( static_cast<int>( topPoint.x() ),
+                            static_cast<int>( topPoint.y() ) ),
                             labelItem->sizeHint() );
-                    const QRegion region( r.adjusted( -1,-1,1,1) );// a minimum of 2 pixels between the labels
+                    const QRegion region( r.adjusted( -1,-1, 1, 1 ) );// a minimum of 2 pixels between the labels
 
                     labelsAreOverlapping = ! combinedRegion.intersect( region ).isEmpty();
                     combinedRegion += region;
-                    if( iLabel >= hardLabelsCount-1 )
+                    if( iLabel >= hardLabelsCount - 1 )
                         iLabel = 0;
                     else
                         ++iLabel;
                 }
+                useShortLabels = labelsAreOverlapping;*/
+
+                bool labelsAreOverlapping = false;
+                int iLabel = 0;
+                for ( qreal i = minValueX; i < maxValueX && !labelsAreOverlapping; i += dimX.stepWidth )
+                {
+                    if ( dimX.stepWidth != 1.0 && ! dim.isCalculated )
+                    {
+                        labelItem->setText( QString::number( i, 'f', 0 ) );
+                        labelItem2->setText( QString::number( i + dimX.stepWidth, 'f', 0 ) );
+                    } else {
+                        labelItem->setText( labels()[ iLabel ] );
+                        labelItem->setText( labels()[ iLabel + 1 >= hardLabelsCount ? 0 : iLabel + 1 ] );
+                    }
+                    QPointF firstPos( i, 0.0 );
+                    firstPos = plane->translate( firstPos );
+                    firstPos.setX( firstPos.x() - met.height() );
+                    firstPos.setY( fourthRulerRef.y() + tickLength );
+                    firstPos.setY( isTop ? firstPos.y() - met.height() : firstPos.y() + ( 2.0 * met.height() ) );
+                    QPointF secondPos( i + dimX.stepWidth, 0.0 );
+                    secondPos = plane->translate( secondPos );
+                    secondPos.setX( secondPos.x() - met.height() );
+                    secondPos.setY( fourthRulerRef.y() + tickLength );
+                    secondPos.setY( isTop ? secondPos.y() - met.height() : secondPos.y() + ( 2.0 * met.height() ) );
+
+                    labelsAreOverlapping = labelItem->intersects( *labelItem2, firstPos, secondPos );
+
+                    if ( iLabel++ > hardLabelsCount - 1 )
+                        iLabel = 0;
+                }
+
                 useShortLabels = labelsAreOverlapping;
+                
             }
 
             int iLabel = 0;
             for ( qreal i = minValueX; i < maxValueX; i += dimX.stepWidth ) {
-                QPointF topPoint ( i + (useItemCountLabels ? 0.5 : 0.0), 0.0 );
+                QPointF topPoint ( i + ( useItemCountLabels ? 0.5 : 0.0 ), 0.0 );
                 QPointF bottomPoint ( topPoint );
                 topPoint = plane->translate( topPoint );
                 bottomPoint = plane->translate( bottomPoint );
@@ -432,7 +472,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                             QRect( 
                                 QPoint( 
                                     static_cast<int>( topPoint.x() - size.width() / 2 ),
-                                    static_cast<int>( topPoint.y() + size.height() * ( isBottom ? 1 : -1 ) ) ),
+                                    static_cast<int>( topPoint.y() + ( isBottom ? (met.height() * 0.5) : (size.height() * -1.0) ) ) ),
                                 size ) );
                     labelItem->paint( ptr );
                     if( hardLabelsCount ){
@@ -614,7 +654,6 @@ QSize CartesianAxis::maximumSize() const
         if ( ! titleText().isEmpty() ) {
             h += titleItem.sizeHint().height();
         }
-        qDebug() << h + 20;
         result = QSize ( 10, h + 20 );
         break;
     case Left:
@@ -631,7 +670,6 @@ QSize CartesianAxis::maximumSize() const
         if ( ! titleText().isEmpty() ) {
             h += titleItem.sizeHint().width();
         }
-        qDebug() << h + 20;
         result = QSize ( h + 20, 10 );
         break;
     default:

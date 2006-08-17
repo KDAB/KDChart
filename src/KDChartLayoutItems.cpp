@@ -43,6 +43,8 @@
 
 #include <math.h>
 
+#define PI 3.141592653589793
+
 /**
     Inform the item about its widget: This enables the item,
     to trigger that widget's update, whenever the size of the item's
@@ -221,6 +223,22 @@ QFont KDChart::TextLayoutItem::realFont() const
 }
 
 
+bool KDChart::TextLayoutItem::intersects( const TextLayoutItem& other, const QPointF& myPos, const QPointF& otherPos ) const
+{
+    return intersects( other, myPos.toPoint(), otherPos.toPoint() );
+}
+
+bool KDChart::TextLayoutItem::intersects( const TextLayoutItem& other, const QPoint& myPos, const QPoint& otherPos ) const
+{
+    const QSize mySize = sizeHint();
+    const QSize otherSize = other.sizeHint();
+
+    const QRect myRect = QRect( myPos, mySize );
+    const QRect otherRect = QRect( otherPos, otherSize );
+
+    return myRect.intersects( otherRect );
+}
+
 QSize KDChart::TextLayoutItem::sizeHint() const
 {
     if( realFontWasRecalculated() ){
@@ -239,14 +257,13 @@ QSize KDChart::TextLayoutItem::sizeHint() const
 
 QSize KDChart::TextLayoutItem::calcSizeHint( QFont fnt ) const
 {
-    const qreal pi2 = 2 * 3.141592653589793;
     const qreal angle = mAttributes.rotation();
     const QFontMetricsF met( fnt );
     QSize ret = met.boundingRect( mText ).toRect().size();
     const int frame = QApplication::style()->pixelMetric( QStyle::PM_ButtonMargin, 0, 0 );
     ret += QSize( frame, frame );
-    QSize rotated = QSize( static_cast<int>( ret.width() * cos( angle * pi2 / 360 ) + ret.height() * sin( angle * pi2 / 360 ) ),
-                           static_cast<int>( ret.height() * cos( angle * pi2 / 360 ) + ret.width() * sin( angle * pi2 / 360 ) ) );
+    QSize rotated = QSize( static_cast<int>( ret.width() * cos( angle * PI / 180 ) + ret.height() * sin( angle * PI / 180 ) ),
+                           static_cast<int>( ret.height() * cos( angle * PI / 180 ) + ret.width() * sin( angle * PI / 180 ) ) );
     rotated.setWidth( qMax( rotated.height(), rotated.width() ) );
     return rotated;
 }
@@ -264,6 +281,7 @@ void KDChart::TextLayoutItem::paint( QPainter* painter )
     painter->setPen( mAttributes.pen() );
     QRectF rect = geometry();
 
+    painter->drawRect( rect );
     painter->translate( rect.center() );
     rect.moveTopLeft( QPointF( - rect.width() / 2, - rect.height() / 2 ) );
     painter->rotate( mAttributes.rotation() );

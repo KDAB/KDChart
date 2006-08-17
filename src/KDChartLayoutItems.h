@@ -95,7 +95,7 @@ namespace KDChart {
         void setText(const QString & text);
         QString text() const;
 
-        void setTextAttributes( const TextAttributes &a );
+        void setTextAttributes( const TextAttributes& a );
         TextAttributes textAttributes() const;
 
         /** pure virtual in QLayoutItem */
@@ -112,6 +112,9 @@ namespace KDChart {
         virtual void setGeometry( const QRect& r );
         /** pure virtual in QLayoutItem */
         virtual QRect geometry() const;
+
+        virtual bool intersects( const TextLayoutItem& other, const QPointF& myPos, const QPointF& otherPos ) const;
+        virtual bool intersects( const TextLayoutItem& other, const QPoint& myPos, const QPoint& otherPos ) const;
 
         virtual qreal realFontSize() const;
         virtual QFont realFont() const;
