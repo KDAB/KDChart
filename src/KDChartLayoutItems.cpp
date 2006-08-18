@@ -280,14 +280,8 @@ bool KDChart::TextLayoutItem::intersects( const TextLayoutItem& other, const QPo
         qreal r = sqrt( otherP1.x() * otherP1.x() + otherP1.y() * otherP1.y() );
         otherP1 = QPointF( r * cos( -angle ), r * sin( -angle ) );
 
-        // this is otherP1, relative to myP1
-//      const QPointF relP1( otherP1 - myP1 );
-
+        // finally we look, whether both rectangles intersect or even not
         return QRectF( myP1, mySize ).intersects( QRectF( otherP1, otherSize ) );
-
-        // now some logical magic to find out, wheter both rectangles are overlaping :)
-//      return ( relP1.y() < 0 ? -relP1.y() < otherSize.height() : relP1.y() < mySize.height() )
-//          && ( relP1.x() < 0 ? -relP1.x() < otherSize.width() : relP1.x() < mySize.width() );
     }
 }
 
