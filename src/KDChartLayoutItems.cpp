@@ -249,8 +249,8 @@ bool KDChart::TextLayoutItem::intersects( const TextLayoutItem& other, const QPo
     if ( mAttributes.rotation() != other.mAttributes.rotation() )
     {
         // that's the code for the common case: the rotation angles don't need to match here
-        QPolygon myPolygon = rotatedCorners();
-        QPolygon otherPolygon = other.rotatedCorners();
+        QPolygon myPolygon(          rotatedCorners() );
+        QPolygon otherPolygon( other.rotatedCorners() );
 
         // move the polygons to their positions
         myPolygon.translate( myPos );
@@ -267,25 +267,27 @@ bool KDChart::TextLayoutItem::intersects( const TextLayoutItem& other, const QPo
         // and that's the code for the special case: the rotation angles match, which is less time consuming in calculation
         const qreal angle = mAttributes.rotation() * PI / 180.0;
         // both sizes
-        QSize mySize = unrotatedSizeHint();
-        QSize otherSize = other.unrotatedSizeHint();
+        const QSizeF mySize(          unrotatedSizeHint() );
+        const QSizeF otherSize( other.unrotatedSizeHint() );
 
         // that's myP1 relative to myPos
-        QPointF myP1( mySize.height() * sin( angle ), 0 );
+        QPointF myP1( mySize.height() * sin( angle ), 0.0 );
         // that's otherP1 to myPos
-        QPointF otherP1 = QPointF( otherSize.height() * sin( angle ), 0 ) + otherPos - myPos;
+        QPointF otherP1 = QPointF( otherSize.height() * sin( angle ), 0.0 ) + otherPos - myPos;
 
         // now rotate both points the negative angle around myPos
         myP1 = QPointF( myP1.x() * cos( -angle ), myP1.x() * sin( -angle ) );
-        double r = sqrt( otherP1.x() * otherP1.x() + otherP1.y() * otherP1.y() );
+        qreal r = sqrt( otherP1.x() * otherP1.x() + otherP1.y() * otherP1.y() );
         otherP1 = QPointF( r * cos( -angle ), r * sin( -angle ) );
 
         // this is otherP1, relative to myP1
-        QPointF relP1 = otherP1 - myP1;
+//      const QPointF relP1( otherP1 - myP1 );
+
+        return QRectF( myP1, mySize ).intersects( QRectF( otherP1, otherSize ) );
 
         // now some logical magic to find out, wheter both rectangles are overlaping :)
-        return ( relP1.y() < 0 ? -relP1.y() < otherSize.height() : relP1.y() < mySize.height() )
-            && ( relP1.x() < 0 ? -relP1.x() < otherSize.width() : relP1.x() < mySize.width() );
+//      return ( relP1.y() < 0 ? -relP1.y() < otherSize.height() : relP1.y() < mySize.height() )
+//          && ( relP1.x() < 0 ? -relP1.x() < otherSize.width() : relP1.x() < mySize.width() );
     }
 }
 
