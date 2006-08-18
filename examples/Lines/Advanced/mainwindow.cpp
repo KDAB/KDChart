@@ -29,6 +29,7 @@
 #include <KDChartLineDiagram>
 #include <KDChartTextAttributes>
 #include <KDChartDataValueAttributes>
+#include <KDChartThreeDLineAttributes>
 
 
 #include <QTimer>
@@ -52,6 +53,14 @@ MainWindow::MainWindow( QWidget* parent ) :
     // Set up the diagram
     m_lines = new LineDiagram();
     m_lines->setModel( &m_model );
+
+    CartesianAxis *xAxis = new CartesianAxis( m_lines );
+    CartesianAxis *yAxis = new CartesianAxis ( m_lines );
+    xAxis->setPosition ( KDChart::CartesianAxis::Bottom );
+    yAxis->setPosition ( KDChart::CartesianAxis::Left );
+    m_lines->addAxis( xAxis );
+    m_lines->addAxis( yAxis );
+
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
 
     // Instantiate the timer
@@ -155,4 +164,25 @@ void MainWindow::on_highlightAreaSB_valueChanged( int i )
         on_highlightAreaCB_toggled( true );
     else
         on_highlightAreaCB_toggled( false);
+}
+
+void MainWindow::on_threeDModeCB_toggled( bool checked )
+{
+    ThreeDLineAttributes td( m_lines->threeDLineAttributes() );
+    td.setDepth( depthSB->value() );
+    if ( checked )
+        td.setEnabled(  true );
+    else
+        td.setEnabled(  false );
+
+    m_lines->setThreeDLineAttributes( td );
+
+    m_chart->update();
+}
+
+void MainWindow::on_depthSB_valueChanged( int i )
+{
+    Q_UNUSED( i );
+    if ( threeDModeCB->isChecked() )
+        on_threeDModeCB_toggled( true );
 }

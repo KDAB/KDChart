@@ -45,6 +45,8 @@ private slots:
 
     void on_lineTypeCB_currentIndexChanged( const QString & text );
     void on_paintValuesCB_toggled( bool checked );
+    void on_threeDModeCB_toggled( bool checked );
+    void on_depthSB_valueChanged( int i );
     void on_animateAreasCB_toggled( bool checked );
     void on_highlightAreaCB_toggled( bool checked );
     void on_highlightAreaSB_valueChanged( int i );
