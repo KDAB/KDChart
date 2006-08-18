@@ -122,6 +122,7 @@ namespace KDChart {
         virtual void paint( QPainter* );
 
     private:
+        QPolygon rotatedCorners() const;
         bool realFontWasRecalculated() const;
         QSize unrotatedSizeHint( QFont fnt = QFont() ) const;
         QSize calcSizeHint( QFont fnt ) const;

@@ -222,6 +222,22 @@ QFont KDChart::TextLayoutItem::realFont() const
     return cachedFont;
 }
 
+QPolygon KDChart::TextLayoutItem::rotatedCorners() const
+{
+    // the angle in rad
+    const qreal angle = mAttributes.rotation() * PI / 180;
+    QSize size = unrotatedSizeHint();
+
+    // my P1 - P4 (the four points of the rotated area)
+    QPointF P1( size.height() * sin( angle ), 0 );
+    QPointF P2( size.height() * sin( angle ) + size.width() * cos( angle ), size.width() * sin( angle ) );
+    QPointF P3( size.width() * cos( angle ), size.width() * sin( angle ) + size.height() * cos( angle ) );
+    QPointF P4( 0, size.height() * cos( angle ) );
+
+    QPolygon result;
+    result << P1.toPoint() << P2.toPoint() << P3.toPoint() << P4.toPoint();
+    return result;
+}
 
 bool KDChart::TextLayoutItem::intersects( const TextLayoutItem& other, const QPointF& myPos, const QPointF& otherPos ) const
 {
@@ -230,35 +246,47 @@ bool KDChart::TextLayoutItem::intersects( const TextLayoutItem& other, const QPo
 
 bool KDChart::TextLayoutItem::intersects( const TextLayoutItem& other, const QPoint& myPos, const QPoint& otherPos ) const
 {
-    // the angle in rad
-    const qreal angle = mAttributes.rotation() * PI / 180;
-    QPolygon myPolygon;
-    QPolygon otherPolygon;
-    QSize mySize = unrotatedSizeHint();
-    QSize otherSize = other.unrotatedSizeHint();
-    // my P1 - P4 (the four points of the rotated area)
-    QPointF mP1( mySize.height() * sin( angle ), 0 );
-    QPointF mP2( mySize.height() * sin( angle ) + mySize.width() * cos( angle ), mySize.width() * sin( angle ) );
-    QPointF mP3( mySize.width() * cos( angle ), mySize.width() * sin( angle ) + mySize.height() * cos( angle ) );
-    QPointF mP4( 0, mySize.height() * cos( angle ) );
-    myPolygon << mP1.toPoint() << mP2.toPoint() << mP3.toPoint() << mP4.toPoint();
-    // others P1 - P4 (the four points of the rotated area)
-    QPointF oP1( otherSize.height() * sin( angle ), 0 );
-    QPointF oP2( otherSize.height() * sin( angle ) + otherSize.width() * cos( angle ), otherSize.width() * sin( angle ) );
-    QPointF oP3( otherSize.width() * cos( angle ), otherSize.width() * sin( angle ) + otherSize.height() * cos( angle ) );
-    QPointF oP4( 0, mySize.height() * cos( angle ) );
-    otherPolygon << oP1.toPoint() << oP2.toPoint() << oP3.toPoint() << oP4.toPoint();
+    if ( mAttributes.rotation() != other.mAttributes.rotation() )
+    {
+        // that's the code for the common case: the rotation angles don't need to match here
+        QPolygon myPolygon = rotatedCorners();
+        QPolygon otherPolygon = other.rotatedCorners();
 
-    // move the polygons to their positions
-    myPolygon.translate( myPos );
-    otherPolygon.translate( otherPos );
+        // move the polygons to their positions
+        myPolygon.translate( myPos );
+        otherPolygon.translate( otherPos );
 
-    // create regions out of it
-    QRegion myRegion( myPolygon );
-    QRegion otherRegion( otherPolygon );
+        // create regions out of it
+        QRegion myRegion( myPolygon );
+        QRegion otherRegion( otherPolygon );
 
-    // now the question - do they intersect or not?
-    return ! myRegion.intersect( otherRegion ).isEmpty();
+        // now the question - do they intersect or not?
+        return ! myRegion.intersect( otherRegion ).isEmpty();
+
+    } else {
+        // and that's the code for the special case: the rotation angles match, which is less time consuming in calculation
+        const qreal angle = mAttributes.rotation() * PI / 180;
+        // both sizes
+        QSize mySize = unrotatedSizeHint();
+        QSize otherSize = other.unrotatedSizeHint();
+
+        // that's myP1 relative to myPos
+        QPointF myP1( mySize.height() * sin( angle ), 0 );
+        // that's otherP1 to myPos
+        QPointF otherP1 = QPointF( otherSize.height() * sin( angle ), 0 ) + otherPos - myPos;
+
+        // now rotate both points the negative angle around myPos
+        myP1 = QPointF( myP1.x() * cos( -angle ), myP1.x() * sin( -angle ) );
+        double r = sqrt( otherP1.x() * otherP1.x() + otherP1.y() * otherP1.y() );
+        otherP1 = QPointF( r * cos( -angle ), r * sin( -angle ) );
+
+        // this is otherP1, relative to myP1
+        QPointF relP1 = otherP1 - myP1;
+
+        // now some logical magic to find out, wheter both rectangles are overlaping :)
+        return ( relP1.y() < 0 ? -relP1.y() < otherSize.height() : relP1.y() < mySize.height() )
+            && ( relP1.x() < 0 ? -relP1.x() < otherSize.width() : relP1.x() < mySize.width() );
+    }
 }
 
 QSize KDChart::TextLayoutItem::sizeHint() const
