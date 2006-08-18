@@ -230,13 +230,35 @@ bool KDChart::TextLayoutItem::intersects( const TextLayoutItem& other, const QPo
 
 bool KDChart::TextLayoutItem::intersects( const TextLayoutItem& other, const QPoint& myPos, const QPoint& otherPos ) const
 {
-    const QSize mySize = sizeHint();
-    const QSize otherSize = other.sizeHint();
+    // the angle in rad
+    const qreal angle = mAttributes.rotation() * PI / 180;
+    QPolygon myPolygon;
+    QPolygon otherPolygon;
+    QSize mySize = unrotatedSizeHint();
+    QSize otherSize = other.unrotatedSizeHint();
+    // my P1 - P4 (the four points of the rotated area)
+    QPointF mP1( mySize.height() * sin( angle ), 0 );
+    QPointF mP2( mySize.height() * sin( angle ) + mySize.width() * cos( angle ), mySize.width() * sin( angle ) );
+    QPointF mP3( mySize.width() * cos( angle ), mySize.width() * sin( angle ) + mySize.height() * cos( angle ) );
+    QPointF mP4( 0, mySize.height() * cos( angle ) );
+    myPolygon << mP1.toPoint() << mP2.toPoint() << mP3.toPoint() << mP4.toPoint();
+    // others P1 - P4 (the four points of the rotated area)
+    QPointF oP1( otherSize.height() * sin( angle ), 0 );
+    QPointF oP2( otherSize.height() * sin( angle ) + otherSize.width() * cos( angle ), otherSize.width() * sin( angle ) );
+    QPointF oP3( otherSize.width() * cos( angle ), otherSize.width() * sin( angle ) + otherSize.height() * cos( angle ) );
+    QPointF oP4( 0, mySize.height() * cos( angle ) );
+    otherPolygon << oP1.toPoint() << oP2.toPoint() << oP3.toPoint() << oP4.toPoint();
 
-    const QRect myRect = QRect( myPos, mySize );
-    const QRect otherRect = QRect( otherPos, otherSize );
+    // move the polygons to their positions
+    myPolygon.translate( myPos );
+    otherPolygon.translate( otherPos );
 
-    return myRect.intersects( otherRect );
+    // create regions out of it
+    QRegion myRegion( myPolygon );
+    QRegion otherRegion( otherPolygon );
+
+    // now the question - do they intersect or not?
+    return ! myRegion.intersect( otherRegion ).isEmpty();
 }
 
 QSize KDChart::TextLayoutItem::sizeHint() const
@@ -250,18 +272,24 @@ QSize KDChart::TextLayoutItem::sizeHint() const
 }
 
 
-// PENDING(kalle) Support auto rotate
 // PENDING(kalle) Support auto shrink
-// PENDING(kalle) Support rotation
 
 
-QSize KDChart::TextLayoutItem::calcSizeHint( QFont fnt ) const
+QSize KDChart::TextLayoutItem::unrotatedSizeHint( QFont fnt ) const
 {
-    const qreal angle = mAttributes.rotation();
+    if ( fnt == QFont() )
+        fnt = cachedFont;
     const QFontMetricsF met( fnt );
     QSize ret = met.boundingRect( mText ).toRect().size();
     const int frame = QApplication::style()->pixelMetric( QStyle::PM_ButtonMargin, 0, 0 );
     ret += QSize( frame, frame );
+    return ret;
+}
+
+QSize KDChart::TextLayoutItem::calcSizeHint( QFont fnt ) const
+{
+    QSize ret = unrotatedSizeHint( fnt );
+    const qreal angle = mAttributes.rotation();
     QSize rotated = QSize( static_cast<int>( ret.width() * cos( angle * PI / 180 ) + ret.height() * sin( angle * PI / 180 ) ),
                            static_cast<int>( ret.height() * cos( angle * PI / 180 ) + ret.width() * sin( angle * PI / 180 ) ) );
     rotated.setWidth( qMax( rotated.height(), rotated.width() ) );

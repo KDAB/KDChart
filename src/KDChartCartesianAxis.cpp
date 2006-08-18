@@ -383,39 +383,6 @@ void CartesianAxis::paintCtx( PaintContext* context )
             // If we have a labels list AND a short labels list, we first find out,
             // if there is enough space for the labels: if not, use the short labels.
             if( drawLabels && hardLabelsCount && shortLabelsCount ){
-/*                bool labelsAreOverlapping = false;
-                QRegion combinedRegion;
-                int iLabel = 0;
-                for ( qreal i = minValueX; i <= maxValueX && ! labelsAreOverlapping; i+=dimX.stepWidth ) {
-                    if( (dimX.stepWidth != 1.0) && ! dimX.isCalculated )
-                        labelItem->setText( QString::number(i, 'f', 0) );
-                    else
-                        labelItem->setText( labels()[ iLabel ] );
-                    // No need to call labelItem->setParentWidget(), since we are using
-                    // the layout item temporarily only.
-                    QPointF topPoint ( i, 0.0 );
-                    topPoint = plane->translate( topPoint );
-                    topPoint.setX( topPoint.x() - met.height() );
-                    topPoint.setY( fourthRulerRef.y() + tickLength );
-                    topPoint.setY(
-                        isTop
-                        ? ( topPoint.y() -         met.height() )
-                        : ( topPoint.y() + ( 2.0 * met.height() ) ) );
-
-                    const QRect r( QPoint( static_cast<int>( topPoint.x() ),
-                            static_cast<int>( topPoint.y() ) ),
-                            labelItem->sizeHint() );
-                    const QRegion region( r.adjusted( -1,-1, 1, 1 ) );// a minimum of 2 pixels between the labels
-
-                    labelsAreOverlapping = ! combinedRegion.intersect( region ).isEmpty();
-                    combinedRegion += region;
-                    if( iLabel >= hardLabelsCount - 1 )
-                        iLabel = 0;
-                    else
-                        ++iLabel;
-                }
-                useShortLabels = labelsAreOverlapping;*/
-
                 bool labelsAreOverlapping = false;
                 int iLabel = 0;
                 for ( qreal i = minValueX; i < maxValueX && !labelsAreOverlapping; i += dimX.stepWidth )
@@ -433,6 +400,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     firstPos.setX( firstPos.x() - met.height() );
                     firstPos.setY( fourthRulerRef.y() + tickLength );
                     firstPos.setY( isTop ? firstPos.y() - met.height() : firstPos.y() + ( 2.0 * met.height() ) );
+
                     QPointF secondPos( i + dimX.stepWidth, 0.0 );
                     secondPos = plane->translate( secondPos );
                     secondPos.setX( secondPos.x() - met.height() );

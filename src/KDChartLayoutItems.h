@@ -123,6 +123,7 @@ namespace KDChart {
 
     private:
         bool realFontWasRecalculated() const;
+        QSize unrotatedSizeHint( QFont fnt = QFont() ) const;
         QSize calcSizeHint( QFont fnt ) const;
 
         QRect mRect;
