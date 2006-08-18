@@ -5,7 +5,7 @@
  **
  ** This file may be distributed and/or modified under the terms of the
  ** GNU General Public License version 2 as published by the Free Software
- ** Foundation and appearing in the file LICENSE.GPL included in the
+ ** Foundtion and appearing in the file LICENSE.GPL included in the
  ** packaging of this file.
  **
  ** Licensees holding valid commercial KD Chart licenses may use this file in
@@ -232,8 +232,8 @@ const QPair<QPointF, QPointF> LineDiagram::calculateDataBoundaries() const
     double yMin = 0, yMax = 0;
     bool bStarting = true;
     bool bOK;
-//qDebug() << "LineDiagram::calculateDataBoundaries ()";
-    // calculate boundaries for  different line types Normal - Stacked - Percent - Default Normal
+
+    // calculate boundaries for different line types Normal - Stacked - Percent - Default Normal
     switch ( type() ){
         case LineDiagram::Normal:
             for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
@@ -313,24 +313,26 @@ const QPair<QPointF, QPointF> LineDiagram::calculateDataBoundaries() const
     QPointF bottomLeft ( QPointF( xMin, yMin ) );
     QPointF topRight ( QPointF( xMax, yMax ) );
 
-    QPointF bottomLeftThreeD, topRightThreeD;
-
     //FIXME(khz): Verify, if this code is right: We are taking
     //            ThreeDBarAttributes that might have been set
     //            at a header (using the setter that takes a column as parameter),
     //            but we are ignoring 'any' ThreeDBarAttributes, that might have
     //            been specified for an individual cell.
     // see: BarDiagram::calculateDataBoundaries ()
+    //
+    //Pending Michel: We don't need that any more with the new Grid Painting
+    //I am commenting the code temporarely - will clean up after testing more
+    //accurately.
+    /*
     bool threeDBoundaries = false;
-    // ThreeD boundaries
     for ( int i=0; i<colCount; ++i ) {
         QModelIndex index = model()->index( 0, i, rootIndex() );
         const ThreeDLineAttributes tda( threeDLineAttributes( index ) );
         if ( tda.isEnabled() ) {
             threeDBoundaries = true;
-            QPointF projLeft ( project(QPointF( xMin, yMin ), QPointF( xMin, yMin), tda.depth()/10 , index ) );
+            QPointF projLeft ( project(QPointF( xMin, 0.0 ), QPointF( xMin, 0.0 ), tda.depth()/10 , index ) );
             QPointF projRight( project(QPointF( xMax, yMax ), QPointF( xMax, yMax), tda.depth()/10, index ) );
-            projRight.x() > topRight.x()  ? topRightThreeD.setX( projRight.x() ):
+               projRight.x() > topRight.x()  ? topRightThreeD.setX( projRight.x() ):
                 topRightThreeD.setX( topRight.x() );
             projRight.y() > topRight.y()  ? topRightThreeD.setY( projRight.y() ):
                 topRightThreeD.setY( topRight.y() );
@@ -340,8 +342,11 @@ const QPair<QPointF, QPointF> LineDiagram::calculateDataBoundaries() const
                 bottomLeftThreeD.setY( projLeft.y() );
         }
     }
-    return threeDBoundaries ? QPair<QPointF, QPointF> ( bottomLeftThreeD,  topRightThreeD ):
+
+    return threeDBoundaries ? QPair<QPointF, QPointF> ( bottomLeftThreeD ,  topRightThreeD ):
                               QPair<QPointF, QPointF> ( bottomLeft, topRight );
+    */
+    return QPair<QPointF, QPointF> ( bottomLeft, topRight );
 }
 
 
@@ -396,6 +401,7 @@ void LineDiagram::paint( PaintContext* ctx )
 {
     if ( !checkInvariants( true ) ) return;
     if ( !AbstractGrid::isBoundariesValid(dataBoundaries()) ) return;
+
 
     //calculates and stores the values
     const int rowCount = d->attributesModel->rowCount(attributesModelRootIndex());
@@ -592,7 +598,7 @@ void LineDiagram::paintLines( PaintContext* ctx, const QModelIndex& index,
     ThreeDLineAttributes td = threeDLineAttributes(index);
     if ( td.isEnabled() ) {
         const double lineDepth = td.depth();
-        paintThreeDLines( ctx, index, from.y(), to.y(), lineDepth );
+        paintThreeDLines( ctx, index, from, to, lineDepth );
     }    else {
         //get the brush and pen to be used from the AbstractDiagram methods
         QBrush indexBrush ( brush( index ) );
@@ -633,9 +639,7 @@ void LineDiagram::paintAreas( PaintContext* ctx, const QModelIndex& index, const
 
 const QPointF LineDiagram::project( QPointF point, QPointF maxLimits, double z, const QModelIndex& index ) const
 {
-    Q_UNUSED( maxLimits );
-
-    ThreeDLineAttributes td = threeDLineAttributes( index );
+  ThreeDLineAttributes td = threeDLineAttributes( index );
 
     //Pending Michel FIXME - the rotation does not work as expected atm
     double xrad = DEGTORAD( td.lineXRotation() );
@@ -644,20 +648,16 @@ const QPointF LineDiagram::project( QPointF point, QPointF maxLimits, double z, 
     return ret;
 }
 
-void LineDiagram::paintThreeDLines(PaintContext* ctx, const QModelIndex& index, double from, double to, double depth  )
+void LineDiagram::paintThreeDLines(PaintContext* ctx, const QModelIndex& index, const QPointF& from, const QPointF& to, const double depth  )
 {
     // retrieve the boundaries
     const QPair<QPointF, QPointF> boundaries = dataBoundaries ();
     QPointF maxLimits = boundaries.second;
     QVector <QPointF > segmentPoints;
-    QPointF bottomLeft = QPointF( index.row(), from);
-    QPointF topLeft = project( QPointF( index.row(), from), maxLimits, depth/10, index  );
-    QPointF bottomRight = QPointF( index.row()+1, to);
-    QPointF topRight = project (QPointF( index.row()+1, to), maxLimits, depth/10, index  );
-    segmentPoints << coordinatePlane()->translate(bottomLeft)
-                  << coordinatePlane()->translate(bottomRight)
-                  << coordinatePlane()->translate(topRight)
-                  << coordinatePlane()->translate(topLeft);
+    QPointF topLeft = project( from, maxLimits, depth, index  );
+    QPointF topRight = project ( to, maxLimits, depth, index  );
+
+    segmentPoints << from << topLeft << topRight << to;
     QPolygonF segment ( segmentPoints );
     QBrush indexBrush ( brush( index ) );
     PainterSaver painterSaver( ctx->painter() );
