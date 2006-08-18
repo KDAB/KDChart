@@ -265,9 +265,12 @@ const QPair<QPointF, QPointF> LineDiagram::calculateDataBoundaries() const
             }
             break;
         case LineDiagram::Stacked:
+        {
+            double tmpValue = 0;
+
             for ( int j=0; j< rowCount; ++j ) {
                 // calculate sum of values per column - Find out stacked Min/Max
-                double stackedValues = 0;
+                 double stackedValues = 0;
                 for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
                     const double value = valueForCellTesting( j, i, bOK );
                     if( bOK )
@@ -277,11 +280,15 @@ const QPair<QPointF, QPointF> LineDiagram::calculateDataBoundaries() const
                     yMin = stackedValues;
                     yMax = stackedValues;
                 }else{
-                    yMin = qMin( yMin, stackedValues );
+                    // Pending Michel:
+                    // I am taking in account all values negatives or positives
+                    // take in account all stacked values
+                    yMin = qMin( qMin( yMin,  tmpValue ), stackedValues );
                     yMax = qMax( yMax, stackedValues );
                 }
                 bStarting = false;
             }
+        }
             break;
         case LineDiagram::Percent:
             for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
@@ -356,6 +363,7 @@ double LineDiagram::valueForCellTesting( int row, int column, bool& bOK ) const
         ).toDouble( &bOK );
     if( ! bOK )
         value = 0.0;
+
     return value;
 }
 
