@@ -75,7 +75,10 @@ BarDiagram * BarDiagram::clone() const
 void BarDiagram::setType( const BarType type )
 {
     if ( type == d->barType ) return;
+
     d->barType = type;
+    // AbstractAxis settings - see AbstractDiagram and CartesianAxis
+    setPercentMode( type == BarDiagram::Percent );
     setDataBoundariesDirty();
     emit layoutChanged( this );
 }
@@ -379,7 +382,7 @@ void BarDiagram::paint( PaintContext* ctx )
     const int colCount = d->attributesModel->columnCount(attributesModelRootIndex());
     DataValueTextInfoList list;
     BarAttributes ba = barAttributes( model()->index( 0, 0, rootIndex() ) );
-    double maxValue = 0;
+    //double maxValue = 0;
     double sumValues = 0;
     QVector <double > sumValuesVector;
     double barWidth = 0;
@@ -490,13 +493,17 @@ void BarDiagram::paint( PaintContext* ctx )
            }
            break;
         case BarDiagram::Percent:
+        {
+            double maxValue = 100;
             // search for ordinate max value or 100 %
+            /*
             for ( int i=0; i<colCount; ++i ) {
                 for ( int j=0; j< rowCount; ++j ) {
                     double value = model()->data( model()->index( j, i, rootIndex() ) ).toDouble();
                     maxValue = qMax( maxValue, value );
                 }
             }
+            */
             //calculate sum of values for each column and store
             for ( int j=0; j<rowCount; ++j ) {
                 for ( int i=0; i<colCount; ++i ) {
@@ -547,7 +554,8 @@ void BarDiagram::paint( PaintContext* ctx )
 
                 }
             }
-            break;
+        }
+        break;
         default:
             Q_ASSERT_X ( false, "paint()",
                          "Type item does not match a defined bar chart Type." );

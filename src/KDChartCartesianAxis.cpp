@@ -242,8 +242,6 @@ void CartesianAxis::paintCtx( PaintContext* context )
         }
     }
 
-
-
     const bool drawUnitRulers = screenRange / numberOfUnitRulers > MinimumPixelsBetweenRulers;
     const bool drawSubUnitRulers =
         (numberOfSubUnitRulers != 0.0) &&

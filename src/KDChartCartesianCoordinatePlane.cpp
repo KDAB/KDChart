@@ -263,7 +263,6 @@ DataDimensionsList CartesianCoordinatePlane::getDataDimensionsList() const
 
     if( dgr ){
         const QRectF r( calculateRawDataBoundingRect() );
-
         // note:
         // We do *not* access d->gridAttributesHorizontal here, but
         // we use the getter function, to get the global attrs, if no
