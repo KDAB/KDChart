@@ -217,7 +217,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
     // - calculate the absolute range in screen pixels:
     const QPointF p1 = plane->translate( QPointF(dimX.start, dimY.start) );
-    const QPointF p2 = plane->translate( QPointF(dimX.end, dimX.end) );
+    const QPointF p2 = plane->translate( QPointF(dimX.end, dimY.end) );
 
     double screenRange;
     if ( isAbscissa() )
@@ -414,7 +414,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 }
 
                 useShortLabels = labelsAreOverlapping;
-                
+
             }
 
             int iLabel = 0;
@@ -436,9 +436,9 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     // No need to call labelItem->setParentWidget(), since we are using
                     // the layout item temporarily only.
                     const QSize size( labelItem->sizeHint() );
-                    labelItem->setGeometry( 
-                            QRect( 
-                                QPoint( 
+                    labelItem->setGeometry(
+                            QRect(
+                                QPoint(
                                     static_cast<int>( topPoint.x() - size.width() / 2 ),
                                     static_cast<int>( topPoint.y() + ( isBottom ? (met.height() * 0.5) : (size.height() * -1.0) ) ) ),
                                 size ) );
@@ -605,7 +605,7 @@ QSize CartesianAxis::maximumSize() const
     TextLayoutItem titleItem( titleText(), titleTA, 0, KDChartEnums::MeasureOrientationMinimum, Qt::AlignHCenter | Qt::AlignVCenter );
     TextLayoutItem labelItem( "", labelTA, 0, KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft );
     int h = 0;
-    
+
     switch ( position() )
     {
     case Bottom:
