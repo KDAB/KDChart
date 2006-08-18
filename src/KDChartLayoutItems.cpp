@@ -225,7 +225,7 @@ QFont KDChart::TextLayoutItem::realFont() const
 QPolygon KDChart::TextLayoutItem::rotatedCorners() const
 {
     // the angle in rad
-    const qreal angle = mAttributes.rotation() * PI / 180;
+    const qreal angle = mAttributes.rotation() * PI / 180.0;
     QSize size = unrotatedSizeHint();
 
     // my P1 - P4 (the four points of the rotated area)
@@ -265,7 +265,7 @@ bool KDChart::TextLayoutItem::intersects( const TextLayoutItem& other, const QPo
 
     } else {
         // and that's the code for the special case: the rotation angles match, which is less time consuming in calculation
-        const qreal angle = mAttributes.rotation() * PI / 180;
+        const qreal angle = mAttributes.rotation() * PI / 180.0;
         // both sizes
         QSize mySize = unrotatedSizeHint();
         QSize otherSize = other.unrotatedSizeHint();
@@ -291,7 +291,8 @@ bool KDChart::TextLayoutItem::intersects( const TextLayoutItem& other, const QPo
 
 QSize KDChart::TextLayoutItem::sizeHint() const
 {
-    if( realFontWasRecalculated() ){
+    if( realFontWasRecalculated() )
+    {
         cachedSizeHint = calcSizeHint( cachedFont );
         sizeHintChanged();
     }
@@ -317,9 +318,9 @@ QSize KDChart::TextLayoutItem::unrotatedSizeHint( QFont fnt ) const
 QSize KDChart::TextLayoutItem::calcSizeHint( QFont fnt ) const
 {
     QSize ret = unrotatedSizeHint( fnt );
-    const qreal angle = mAttributes.rotation();
-    QSize rotated = QSize( static_cast<int>( ret.width() * cos( angle * PI / 180 ) + ret.height() * sin( angle * PI / 180 ) ),
-                           static_cast<int>( ret.height() * cos( angle * PI / 180 ) + ret.width() * sin( angle * PI / 180 ) ) );
+    const qreal angle = PI * mAttributes.rotation() / 180.0;
+    QSize rotated( static_cast<int>( cos( angle ) * ret.width()  + sin( angle ) * ret.height() ),
+                   static_cast<int>( cos( angle ) * ret.height() + sin( angle ) *  ret.width() ) );
     rotated.setWidth( qMax( rotated.height(), rotated.width() ) );
     return rotated;
 }

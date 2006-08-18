@@ -525,6 +525,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
         }
         if( labelItem )
             delete labelItem;
+        if( labelItem2 )
+            delete labelItem2;
     }
 
     if( ! titleText().isEmpty() ){
@@ -595,13 +597,13 @@ Qt::Orientations CartesianAxis::expandingDirections() const
 /* pure virtual in QLayoutItem */
 QSize CartesianAxis::maximumSize() const
 {
-    // FIXME return real values:
     QSize result;
 
     const TextAttributes titleTA( titleTextAttributes() );
     const TextAttributes labelTA = textAttributes();
-    TextLayoutItem titleItem( titleText(), titleTA, 0, KDChartEnums::MeasureOrientationMinimum, Qt::AlignHCenter | Qt::AlignVCenter );
-    TextLayoutItem labelItem( "", labelTA, 0, KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft );
+    QObject* refArea = d->diagram()->coordinatePlane()->parent();
+    TextLayoutItem titleItem( titleText(), titleTA, refArea, KDChartEnums::MeasureOrientationMinimum, Qt::AlignHCenter | Qt::AlignVCenter );
+    TextLayoutItem labelItem( "", labelTA, refArea, KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft );
     int h = 0;
 
     switch ( position() )
@@ -620,7 +622,7 @@ QSize CartesianAxis::maximumSize() const
         if ( ! titleText().isEmpty() ) {
             h += titleItem.sizeHint().height();
         }
-        result = QSize ( 10, h + 20 );
+        result = QSize ( 10, h + 30 );
         break;
     case Left:
     case Right:
@@ -634,9 +636,9 @@ QSize CartesianAxis::maximumSize() const
         }
         // space for a possible title:
         if ( ! titleText().isEmpty() ) {
-            h += titleItem.sizeHint().width();
+            h += titleItem.sizeHint().height();
         }
-        result = QSize ( h + 20, 10 );
+        result = QSize ( h + 30, 10 );
         break;
     default:
         Q_ASSERT( false ); // all positions need to be handled
