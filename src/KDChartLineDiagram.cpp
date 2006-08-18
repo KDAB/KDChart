@@ -506,14 +506,10 @@ void LineDiagram::paint( PaintContext* ctx )
         case LineDiagram::Percent:
         {
             //FIXME(khz): add LineAttributes::MissingValuesPolicy support for LineDiagram::Percent
-            double maxValue = 0;
+            double maxValue = 100; // always 100%
             double sumValues = 0;
             QVector <double > sumValuesVector;
-            // search for ordinate max value or 100 %
-            for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
-                for ( int j=0; j< rowCount; ++j )
-                    maxValue = qMax( maxValue, valueForCell( j, i ) );
-            }
+
             //calculate sum of values for each column and store
             for ( int j=0; j<rowCount ; ++j ) {
                 for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
@@ -544,13 +540,13 @@ void LineDiagram::paint( PaintContext* ctx )
                         }
                     }
                     double y = 0;
-                    if ( sumValuesVector.at(j) != 0 && maxValue != 0 )
+                    if ( sumValuesVector.at(j) != 0  )
                         y = stackedValues/sumValuesVector.at(j) * maxValue;
                     QPointF nextPoint = coordinatePlane()->translate( QPointF( j, y ) );
                     area.append( nextPoint );
                     if ( j+1 < rowCount ) {
                         double y = 0;
-                        if ( sumValuesVector.at(j+1) != 0 && maxValue != 0 )
+                        if ( sumValuesVector.at(j+1) != 0  )
                             y = nextValues/sumValuesVector.at(j+1) * maxValue;
                         QPointF toPoint = coordinatePlane()->translate( QPointF( j+1, y ) );
                         lineList.append( LineAttributesInfo( index, nextPoint, toPoint ) );

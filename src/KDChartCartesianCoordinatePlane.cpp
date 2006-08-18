@@ -256,11 +256,14 @@ QRectF CartesianCoordinatePlane::calculateRawDataBoundingRect() const
 
 DataDimensionsList CartesianCoordinatePlane::getDataDimensionsList() const
 {
+
     DataDimensionsList l;
     const AbstractCartesianDiagram* dgr
         = diagrams().isEmpty() ? 0 : dynamic_cast<const AbstractCartesianDiagram*> (diagrams().first() );
+
     if( dgr ){
         const QRectF r( calculateRawDataBoundingRect() );
+
         // note:
         // We do *not* access d->gridAttributesHorizontal here, but
         // we use the getter function, to get the global attrs, if no
@@ -275,7 +278,8 @@ DataDimensionsList CartesianCoordinatePlane::getDataDimensionsList() const
                 gaH.gridStepWidth() ) );
         l.append(
             DataDimension(
-                r.bottom(), r.top(),
+                // always return 0-100 when in percentMode
+                dgr->percentMode() ? 0.0:r.bottom(), dgr->percentMode() ? 100:r.top(),
                 true,
                 gaV.gridGranularitySequence(),
                 gaV.gridStepWidth() ) );

@@ -83,7 +83,7 @@ void CartesianGrid::drawGrid( PaintContext* context )
     if( numberOfUnitLinesX <= 0.0 || numberOfUnitLinesY <= 0.0 ) return;
 
     const QPointF p1 = plane->translate( QPointF(dimX.start, dimY.start) );
-    const QPointF p2 = plane->translate( QPointF(dimX.end, dimX.end) );
+    const QPointF p2 = plane->translate( QPointF(dimX.end, dimY.end) );
 //qDebug() << "dimX.isCalculated:" << dimX.isCalculated << "dimY.isCalculated:" << dimY.isCalculated;
 //qDebug() << "dimX.start: " << dimX.start << "dimX.end: " << dimX.end;
 //qDebug() << "dimY.start: " << dimY.start << "dimY.end: " << dimY.end;
@@ -403,5 +403,5 @@ void CartesianGrid::calculateStepWidth(
         //qDebug("C");
     }
     //qDebug("CartesianGrid::calculateStepWidth() found stepWidth %f (%f steps) and sub-stepWidth %f",
-    //        stepWidth, steps, subStepWidth);
+    //      stepWidth, steps, subStepWidth);
 }
