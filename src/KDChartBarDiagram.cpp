@@ -382,9 +382,6 @@ void BarDiagram::paint( PaintContext* ctx )
     const int colCount = d->attributesModel->columnCount(attributesModelRootIndex());
     DataValueTextInfoList list;
     BarAttributes ba = barAttributes( model()->index( 0, 0, rootIndex() ) );
-    //double maxValue = 0;
-    double sumValues = 0;
-    QVector <double > sumValuesVector;
     double barWidth = 0;
     double maxDepth = 0;
     double spaceBetweenBars = 0;
@@ -494,16 +491,10 @@ void BarDiagram::paint( PaintContext* ctx )
            break;
         case BarDiagram::Percent:
         {
-            double maxValue = 100;
-            // search for ordinate max value or 100 %
-            /*
-            for ( int i=0; i<colCount; ++i ) {
-                for ( int j=0; j< rowCount; ++j ) {
-                    double value = model()->data( model()->index( j, i, rootIndex() ) ).toDouble();
-                    maxValue = qMax( maxValue, value );
-                }
-            }
-            */
+            double maxValue = 100; // always 100 %
+            double sumValues = 0;
+            QVector <double > sumValuesVector;
+
             //calculate sum of values for each column and store
             for ( int j=0; j<rowCount; ++j ) {
                 for ( int i=0; i<colCount; ++i ) {
