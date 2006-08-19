@@ -275,12 +275,14 @@ DataDimensionsList CartesianCoordinatePlane::getDataDimensionsList() const
                 dgr->datasetDimension() > 1,
                 gaH.gridGranularitySequence(),
                 gaH.gridStepWidth() ) );
+        const bool isPercentMode = dgr->percentMode();
         l.append(
             DataDimension(
                 // always return 0-100 when in percentMode
-                dgr->percentMode() ? 0.0:r.bottom(), dgr->percentMode() ? 100:r.top(),
+                isPercentMode ?   0.0 : r.bottom(),
+                isPercentMode ? 100.0 : r.top(),
                 true,
-                gaV.gridGranularitySequence(),
+                isPercentMode ? KDChartEnums::GranularitySequence_10_20 : gaV.gridGranularitySequence(),
                 gaV.gridStepWidth() ) );
     }else{
         l.append( DataDimension() ); // This gets us the default 1..0 / 1..0 grid
