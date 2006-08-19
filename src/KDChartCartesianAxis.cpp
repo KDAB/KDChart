@@ -390,15 +390,9 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     }
                     QPointF firstPos( i, 0.0 );
                     firstPos = plane->translate( firstPos );
-                   /* firstPos.setX( firstPos.x() - met.height() );
-                    firstPos.setY( fourthRulerRef.y() + tickLength );
-                    firstPos.setY( isTop ? firstPos.y() - met.height() : firstPos.y() + ( 2.0 * met.height() ) );*/
 
                     QPointF secondPos( i + dimX.stepWidth, 0.0 );
                     secondPos = plane->translate( secondPos );
-                    /*secondPos.setX( secondPos.x() - met.height() );
-                    secondPos.setY( fourthRulerRef.y() + tickLength );
-                    econdPos.setY( isTop ? secondPos.y() - met.height() : secondPos.y() + ( 2.0 * met.height() ) );*/
 
                     labelsAreOverlapping = labelItem->intersects( *labelItem2, firstPos, secondPos );
 
