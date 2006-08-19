@@ -368,6 +368,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
             drawLabels
             ? labelItem->realFont()
             : QFontMetricsF( QApplication::font() ) );
+        const qreal halfFontHeight = met.height() * 0.5;
 
         if ( isAbscissa() ) {
             int tickLength = isTop ? -4 : 3;
@@ -433,7 +434,10 @@ void CartesianAxis::paintCtx( PaintContext* context )
                             QRect(
                                 QPoint(
                                     static_cast<int>( topPoint.x() - size.width() / 2 ),
-                                    static_cast<int>( topPoint.y() + ( isBottom ? (met.height() * 0.5) : (size.height() * -1.0) ) ) ),
+                                    static_cast<int>( topPoint.y() +
+                                        ( isBottom
+                                          ? halfFontHeight
+                                          : ((halfFontHeight + size.height()) * -1.0) ) ) ),
                                 size ) );
                     labelItem->paint( ptr );
                     if( hardLabelsCount ){
