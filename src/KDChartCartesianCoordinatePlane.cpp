@@ -269,21 +269,29 @@ DataDimensionsList CartesianCoordinatePlane::getDataDimensionsList() const
         // special ones have been set for the respective orientation.
         const GridAttributes gaH( gridAttributes( Qt::Horizontal ) );
         const GridAttributes gaV( gridAttributes( Qt::Vertical ) );
+        // append the first dimension: for Abscissa axes
         l.append(
             DataDimension(
                 r.left(), r.right(),
                 dgr->datasetDimension() > 1,
                 gaH.gridGranularitySequence(),
                 gaH.gridStepWidth() ) );
-        const bool isPercentMode = dgr->percentMode();
-        l.append(
-            DataDimension(
-                // always return 0-100 when in percentMode
-                isPercentMode ?   0.0 : r.bottom(),
-                isPercentMode ? 100.0 : r.top(),
-                true,
-                isPercentMode ? KDChartEnums::GranularitySequence_10_20 : gaV.gridGranularitySequence(),
-                gaV.gridStepWidth() ) );
+        // append the second dimension: for Ordinate axes
+        if( dgr->percentMode() )
+            l.append(
+                DataDimension(
+                    // always return 0-100 when in percentMode
+                    0.0, 100.0,
+                    true,
+                    KDChartEnums::GranularitySequence_10_20,
+                    10.0 ) );
+        else
+            l.append(
+                DataDimension(
+                    r.bottom(), r.top(),
+                    true,
+                    gaV.gridGranularitySequence(),
+                    gaV.gridStepWidth() ) );
     }else{
         l.append( DataDimension() ); // This gets us the default 1..0 / 1..0 grid
         l.append( DataDimension() ); // shown, if there is no diagram on this plane.

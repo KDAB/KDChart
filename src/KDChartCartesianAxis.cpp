@@ -196,23 +196,15 @@ void CartesianAxis::paintCtx( PaintContext* context )
     if ( isAbscissa() )
         numberOfUnitRulers = d->diagram()->model()->rowCount() - 1.0;
     else {
-        if ( d->diagram()->percentMode() )
-            numberOfUnitRulers = 10.0;
-        else{
-            numberOfUnitRulers = absRange / qAbs( dimY.stepWidth ) + 1.0;
-            //qDebug() << "absRange" << absRange << "dimY.stepWidth:" << dimY.stepWidth << "numberOfUnitRulers:" << numberOfUnitRulers;
-        }
+        numberOfUnitRulers = absRange / qAbs( dimY.stepWidth ) + 1.0;
+        //qDebug() << "absRange" << absRange << "dimY.stepWidth:" << dimY.stepWidth << "numberOfUnitRulers:" << numberOfUnitRulers;
     }
     qreal numberOfSubUnitRulers;
     if ( isAbscissa() )
         numberOfSubUnitRulers = 0.0;
     else {
-        if ( d->diagram()->percentMode() )
-            numberOfSubUnitRulers = 20.0;
-        else{
-            numberOfSubUnitRulers = absRange / qAbs( dimY.subStepWidth ) + 1.0;
-            //qDebug() << "dimY.subStepWidth:" << dimY.stepWidth << "numberOfSubUnitRulers:" << numberOfSubUnitRulers;
-        }
+        numberOfSubUnitRulers = absRange / qAbs( dimY.subStepWidth ) + 1.0;
+        //qDebug() << "dimY.subStepWidth:" << dimY.stepWidth << "numberOfSubUnitRulers:" << numberOfSubUnitRulers;
     }
 
     // - calculate the absolute range in screen pixels:
@@ -290,26 +282,28 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
     // set up a reference point,  a step vector and a unit vector for the drawing:
 
+    const qreal minValueY = dimY.start;
+    const qreal maxValueY = dimY.end;
+    const qreal minValueX = dimX.start;
+    const qreal maxValueX = dimX.end;
+#define AXES_PAINTING_DEBUG 1
     #ifdef AXES_PAINTING_DEBUG
     qDebug() << "CartesianAxis::paint: reference values:" << endl
-            << "-- range: " << dimension.distance() << endl
+            << "-- range x/y: " << dimX.distance() << "/" << dimY.distance() << endl
             << "-- absRange: " << absRange << endl
-            << "-- magnitude: " << magnitude << endl
-            << "-- basicUnit: " << basicUnit << endl
             << "-- numberOfUnitRulers: " << numberOfUnitRulers << endl
             << "-- screenRange: " << screenRange << endl
             << "-- drawUnitRulers: " << drawUnitRulers << endl
             << "-- drawLabels: " << drawLabels << endl
-            << "-- ruler reference point:: " << rulerRef << endl;
+            << "-- ruler reference point:: " << rulerRef << endl
+            << "-- minValueX: " << minValueX << "   maxValueX: " << maxValueX << endl
+            << "-- minValueY: " << minValueY << "   maxValueY: " << maxValueY << endl
+            ;
     #endif
 
     ptr->setPen ( Qt::black );
     ptr->setBrush ( Qt::red ); // PENDING(michel) What is this for?
     QPointF fourthRulerRef ( rulerRef );
-    qreal minValueY = dimY.start;
-    qreal maxValueY = dimY.end;
-    qreal minValueX = dimX.start;
-    qreal maxValueX = dimX.end;
 
     if ( drawSubUnitRulers ) {
         if ( isAbscissa() ) {
@@ -415,7 +409,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
             }
 
-            int iLabel = 0;
+            int idxLabel = 0;
+            qreal iLabelF = minValueX;
             for ( qreal i = minValueX; i < maxValueX; i += dimX.stepWidth ) {
                 QPointF topPoint ( i + ( useItemCountLabels ? 0.5 : 0.0 ), 0.0 );
                 QPointF bottomPoint ( topPoint );
@@ -429,8 +424,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         labelItem->setText( QString::number(i, 'f', 0) );
                     else
                         labelItem->setText( hardLabelsCount
-                            ? ( useShortLabels    ? shortLabels()[ iLabel ] : labels()[ iLabel ] )
-                            : ( headerLabelsCount ? headerLabels[  iLabel ] : QString::number( minValueX ) ) );
+                            ? ( useShortLabels    ? shortLabels()[ idxLabel ] : labels()[ idxLabel ] )
+                            : ( headerLabelsCount ? headerLabels[  idxLabel ] : QString::number( iLabelF ) ) );
                     // No need to call labelItem->setParentWidget(), since we are using
                     // the layout item temporarily only.
                     const QSize size( labelItem->sizeHint() );
@@ -442,31 +437,24 @@ void CartesianAxis::paintCtx( PaintContext* context )
                                 size ) );
                     labelItem->paint( ptr );
                     if( hardLabelsCount ){
-                        if( iLabel >= hardLabelsCount  -1 )
-                            iLabel = 0;
+                        if( idxLabel >= hardLabelsCount  -1 )
+                            idxLabel = 0;
                         else
-                            ++iLabel;
+                            ++idxLabel;
                     }else if( headerLabelsCount ){
-                        if( iLabel >= headerLabelsCount-1 )
-                            iLabel = 0;
+                        if( idxLabel >= headerLabelsCount-1 )
+                            idxLabel = 0;
                         else
-                            ++iLabel;
+                            ++idxLabel;
                     }else{
-                        minValueX += dimX.stepWidth;
+                        iLabelF += dimX.stepWidth;
                     }
                 }
             }
         } else {
-            double maxLimit, steg;
-            bool percent = d->diagram()->percentMode();
-            int tickLength = isLeft ? -4 : 3;
-            if ( percent ) {
-                maxLimit = maxValueY*10.0;
-                steg = maxValueY;
-            } else {
-                maxLimit = maxValueY;
-                steg = dimY.stepWidth;
-            }
+            const int tickLength = isLeft ? -4 : 3;
+            const double maxLimit = maxValueY;
+            const double steg = dimY.stepWidth;
             int maxLabelsWidth = 0;
             qreal labelValue;
             if( drawLabels && isRight ){
@@ -476,15 +464,15 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 for ( qreal f = minValueY; f <= maxLimit; f+= steg ) {
                     labelItem->setText( QString::number( labelValue ) );
                     maxLabelsWidth = qMax( maxLabelsWidth, labelItem->sizeHint().width() );
-                    d->diagram()->percentMode() ? labelValue += 10.0 : labelValue += dimY.stepWidth;
+                    labelValue += dimY.stepWidth;
                 }
             }
             labelValue = minValueY;
 //qDebug("minValueY: %f   maxLimit: %f   steg: %f", minValueY, maxLimit, steg);
             for ( qreal f = minValueY; f <= maxLimit; f+= steg ) {
 //qDebug("f: %f",f);
-                QPointF leftPoint (  0.0, percent ? f/numberOfUnitRulers : f );
-                QPointF rightPoint ( 0.0, percent ? f/numberOfUnitRulers : f );
+                QPointF leftPoint (  0.0, f );
+                QPointF rightPoint ( 0.0, f );
                 leftPoint  = plane->translate( leftPoint );
                 rightPoint = plane->translate( rightPoint );
                 leftPoint.setX( fourthRulerRef.x() + tickLength );
@@ -517,11 +505,9 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     labelItem->setGeometry( QRect( QPoint(x, y), labelSize ) );
                     labelItem->paint( ptr );
 
-                    d->diagram()->percentMode() ? labelValue += 10.0 : labelValue += dimY.stepWidth;
+                    labelValue += dimY.stepWidth;
                 }
             }
-            //Pending Michel: reset to default - is that really what we want?
-            //d->diagram()->setPercentMode( false );
         }
         if( labelItem )
             delete labelItem;
