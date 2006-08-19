@@ -286,7 +286,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
     const qreal maxValueY = dimY.end;
     const qreal minValueX = dimX.start;
     const qreal maxValueX = dimX.end;
-//#define AXES_PAINTING_DEBUG 1
+#define AXES_PAINTING_DEBUG 1
     #ifdef AXES_PAINTING_DEBUG
     qDebug() << "CartesianAxis::paint: reference values:" << endl
             << "-- range x/y: " << dimX.distance() << "/" << dimY.distance() << endl
@@ -590,41 +590,44 @@ QSize CartesianAxis::maximumSize() const
     QObject* refArea = d->diagram()->coordinatePlane()->parent();
     TextLayoutItem titleItem( titleText(), titleTA, refArea, KDChartEnums::MeasureOrientationMinimum, Qt::AlignHCenter | Qt::AlignVCenter );
     TextLayoutItem labelItem( "", labelTA, refArea, KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft );
-    int h = 0;
 
     switch ( position() )
     {
     case Bottom:
-    case Top:
-        // enough space for the labels to fit:
-        for ( int i = 0; i < labels().count(); ++i )
-        {
-            labelItem.setText( labels()[ i ] );
-            int lh = labelItem.sizeHint().height();
-            if ( h < lh )
-                h = lh;
+    case Top: {
+            int h = 0;
+            // enough space for the labels to fit:
+            for ( int i = 0; i < labels().count(); ++i )
+            {
+                labelItem.setText( labels()[ i ] );
+                int lh = labelItem.sizeHint().height();
+                if ( h < lh )
+                    h = lh;
+            }
+            // space for a possible title:
+            if ( ! titleText().isEmpty() ) {
+                h += titleItem.sizeHint().height();
+            }
+            result = QSize ( 10, h + 30 );
         }
-        // space for a possible title:
-        if ( ! titleText().isEmpty() ) {
-            h += titleItem.sizeHint().height();
-        }
-        result = QSize ( 10, h + 30 );
         break;
     case Left:
-    case Right:
-        // enough space for the labels to fit:
-        for ( int i = 0; i < labels().count(); ++i )
-        {
-            labelItem.setText( labels()[ i ] );
-            int lh = labelItem.sizeHint().width();
-            if ( h < lh )
-                h = lh;
+    case Right: {
+            int w = 0;
+            // enough space for the labels to fit:
+            for ( int i = 0; i < labels().count(); ++i )
+            {
+                labelItem.setText( labels()[ i ] );
+                int lw = labelItem.sizeHint().width();
+                if ( w < lw )
+                    w = lw;
+            }
+            // space for a possible title:
+            if ( ! titleText().isEmpty() ) {
+                w += titleItem.sizeHint().height();
+            }
+            result = QSize ( w + 30, 10 );
         }
-        // space for a possible title:
-        if ( ! titleText().isEmpty() ) {
-            h += titleItem.sizeHint().height();
-        }
-        result = QSize ( h + 30, 10 );
         break;
     default:
         Q_ASSERT( false ); // all positions need to be handled
