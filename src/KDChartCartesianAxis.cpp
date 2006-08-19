@@ -286,7 +286,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
     const qreal maxValueY = dimY.end;
     const qreal minValueX = dimX.start;
     const qreal maxValueX = dimX.end;
-#define AXES_PAINTING_DEBUG 1
+//#define AXES_PAINTING_DEBUG 1
     #ifdef AXES_PAINTING_DEBUG
     qDebug() << "CartesianAxis::paint: reference values:" << endl
             << "-- range x/y: " << dimX.distance() << "/" << dimY.distance() << endl
