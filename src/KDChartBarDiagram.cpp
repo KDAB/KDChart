@@ -222,8 +222,13 @@ const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries  () const
                     // this is always true yMin can be 0 in case all values
                     // are the same
                     // same for yMax it can be zero if all values are negative
-                    yMin = qMin( yMin,  value );
-                    yMax = qMax( yMax,  value );
+                    if( bStarting ){
+                        yMin = value;
+                        yMax = value;
+                    }else{
+                        yMin = qMin( yMin,  value );
+                        yMax = qMax( yMax,  value );
+                    }
 
                     const double depth = threeDItemDepth( model()->index( j, i, rootIndex() ) );
                     if( depth > 0.0 ){
@@ -246,8 +251,13 @@ const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries  () const
                     // this is always true yMin can be 0 in case all values
                     // are the same
                     // same for yMax it can be zero if all values are negative
-                    yMin = qMin( yMin,  stackedValues );
-                    yMax = qMax(  yMax,  stackedValues );
+                    if( bStarting ){
+                        yMin = stackedValues;
+                        yMax = stackedValues;
+                    }else{
+                        yMin = qMin( yMin, stackedValues );
+                        yMax = qMax( yMax, stackedValues );
+                    }
 
                     const double depth = threeDItemDepth( idx );
                     if( depth > 0.0 ){
@@ -267,7 +277,11 @@ const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries  () const
                     QModelIndex idx = model()->index( j, i, rootIndex() );
                     // only positive values are handled
                     double value = model()->data( idx ).toDouble();
-                    yMax = qMax( yMax, value );
+                    if( bStarting ){
+                        yMax = value;
+                    }else{
+                        yMax = qMax( yMax, value );
+                    }
                     const double depth = threeDItemDepth( idx );
                     if( depth > 0.0 ){
                         maxThreeDDepth = qMax( maxThreeDDepth, depth );
