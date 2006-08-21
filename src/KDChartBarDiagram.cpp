@@ -219,13 +219,14 @@ const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries  () const
             for ( int i=0; i<colCount; ++i ) {
                 for ( int j=0; j< rowCount; ++j ) {
                     const double value = d->attributesModel->data( d->attributesModel->index( j, i, attributesModelRootIndex() ) ).toDouble();
-                    if( bStarting ){
-                        yMin = value;
+                    // this is always true yMin can be 0 in case all values
+                    // are the same
+                    yMin = qMin( yMin,  value );
+                    if( bStarting )
                         yMax = value;
-                    }else{
-                        yMin = qMin( yMin, value );
+                    else
                         yMax = qMax( yMax, value );
-                    }
+
                     const double depth = threeDItemDepth( model()->index( j, i, rootIndex() ) );
                     if( depth > 0.0 ){
                         maxThreeDDepth = qMax( maxThreeDDepth, depth );
@@ -244,13 +245,14 @@ const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries  () const
                 for ( int i=0; i<colCount ; ++i ) {
                     QModelIndex idx = model()->index( j, i, rootIndex() );
                     stackedValues +=  model()->data( idx ).toDouble();
-                    if( bStarting ){
-                        yMin = stackedValues;
+                    // this is always true yMin can be 0 in case all values
+                    // are the same
+                    yMin = qMin( yMin,  stackedValues );
+                    if( bStarting )
                         yMax = stackedValues;
-                    }else{
-                        yMin = qMin( yMin, stackedValues);
+                    else
                         yMax = qMax( yMax, stackedValues);
-                    }
+
                     const double depth = threeDItemDepth( idx );
                     if( depth > 0.0 ){
                         maxThreeDDepth = qMax( maxThreeDDepth, depth );
@@ -287,6 +289,14 @@ const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries  () const
         default:
              Q_ASSERT_X ( false, "calculateDataBoundaries()",
                          "Type item does not match a defined bar chart Type." );
+    }
+
+    // special cases
+    if (  yMax == yMin ) {
+        if ( yMin == 0.0 )
+            yMax = 0.1; //we need at list a range
+        else
+            yMin = 0.0; // they are the same but negative
     }
 
     QPointF bottomLeft ( QPointF( xMin, yMin ) );
