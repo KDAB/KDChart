@@ -213,7 +213,7 @@ const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries  () const
     double lastThreeDDepth  = 0.0;
 
     bool bStarting = true;
-     // calculate boundaries for  different line types Normal - Stacked - Percent - Default Normal
+    // calculate boundaries for  different line types Normal - Stacked - Percent - Default Normal
     switch ( type() ){
         case BarDiagram::Normal:
             for ( int i=0; i<colCount; ++i ) {
@@ -247,11 +247,9 @@ const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries  () const
                     stackedValues +=  model()->data( idx ).toDouble();
                     // this is always true yMin can be 0 in case all values
                     // are the same
+                    // same for yMax it can be zero if all values are negative
                     yMin = qMin( yMin,  stackedValues );
-                    if( bStarting )
-                        yMax = stackedValues;
-                    else
-                        yMax = qMax( yMax, stackedValues);
+                    yMax = qMax(  yMax,  stackedValues );
 
                     const double depth = threeDItemDepth( idx );
                     if( depth > 0.0 ){
@@ -270,9 +268,9 @@ const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries  () const
                     // Ordinate should begin at 0 the max value being the 100% pos
                     QModelIndex idx = model()->index( j, i, rootIndex() );
                     const double value = model()->data( idx ).toDouble();
-                    if( bStarting )
-                        yMax = value;
-                    else
+                    //if( bStarting )
+                    //  yMax = value;
+                    //else
                         yMax = qMax( yMax, value );
                     const double depth = threeDItemDepth( idx );
                     if( depth > 0.0 ){
@@ -296,7 +294,7 @@ const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries  () const
         if ( yMin == 0.0 )
             yMax = 0.1; //we need at list a range
         else
-            yMin = 0.0; // they are the same but negative
+            yMax = 0.0; // they are the same but negative
     }
 
     QPointF bottomLeft ( QPointF( xMin, yMin ) );
