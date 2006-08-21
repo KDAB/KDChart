@@ -272,11 +272,7 @@ const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries  () const
                     QModelIndex idx = model()->index( j, i, rootIndex() );
                     // only positive values are handled
                     double value = model()->data( idx ).toDouble();
-                    if( bStarting ){
-                        yMax = value;
-                    }else{
-                        yMax = qMax( yMax, value );
-                    }
+                    yMax = qMax( yMax, value );
                     const double depth = threeDItemDepth( idx );
                     if( depth > 0.0 ){
                         maxThreeDDepth = qMax( maxThreeDDepth, depth );
