@@ -47,6 +47,7 @@
 namespace KDChart {
 
   class CartesianCoordinatePlane;
+  class AbstractCartesianDiagram;
   using KDChart::AbstractDiagram;
 
 /**

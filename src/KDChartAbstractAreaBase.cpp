@@ -112,7 +112,7 @@ BackgroundAttributes AbstractAreaBase::backgroundAttributes() const
 void AbstractAreaBase::paintBackground( QPainter& painter, const QRect& rect )
 {
     Q_ASSERT_X ( d != 0, "AbstractAreaBase::paintBackground()",
-                "Private class was now initialized!" );
+                "Private class was not initialized!" );
 
 #define attributes d->backgroundAttributes
 
@@ -167,7 +167,7 @@ void AbstractAreaBase::paintBackground( QPainter& painter, const QRect& rect )
 void AbstractAreaBase::paintFrame( QPainter& painter, const QRect& rect )
 {
     Q_ASSERT_X ( d != 0, "AbstractAreaBase::paintFrame()",
-                "Private class was now initialized!" );
+                "Private class was not initialized!" );
 
 #define attributes d->frameAttributes
 
@@ -184,7 +184,7 @@ void AbstractAreaBase::paintFrame( QPainter& painter, const QRect& rect )
 QRect AbstractAreaBase::innerRect() const
 {
     Q_ASSERT_X ( d != 0, "AbstractAreaBase::innerRect()",
-                "Private class was now initialized!" );
+                "Private class was not initialized!" );
 
     const int padding
         = d->frameAttributes.isVisible()
