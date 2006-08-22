@@ -222,13 +222,8 @@ const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries  () const
                     // this is always true yMin can be 0 in case all values
                     // are the same
                     // same for yMax it can be zero if all values are negative
-                    if( bStarting ){
-                        yMin = value;
-                        yMax = value;
-                    }else{
-                        yMin = qMin( yMin,  value );
-                        yMax = qMax( yMax,  value );
-                    }
+                    yMin = qMin( yMin,  value );
+                    yMax = qMax( yMax,  value );
 
                     const double depth = threeDItemDepth( model()->index( j, i, rootIndex() ) );
                     if( depth > 0.0 ){
