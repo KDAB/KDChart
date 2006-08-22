@@ -307,7 +307,9 @@ void CartesianAxis::paintCtx( PaintContext* context )
     #endif
 
     ptr->setPen ( Qt::black );
-    ptr->setBrush ( Qt::red ); // PENDING(michel) What is this for?
+    // Commenting this it causes the frame backround to be painted in red
+    // for some reason and does not look to make sense.
+    //ptr->setBrush ( Qt::red ); // PENDING(michel) What is this for?
     QPointF fourthRulerRef ( rulerRef );
 
     // this draws the subunit rulers
@@ -438,7 +440,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                                           ? halfFontHeight
                                           : ((halfFontHeight + size.height()) * -1.0) ) ) ),
                                 size ) );
-                    
+
                     if ( ! labelItem2->intersects( *labelItem, oldItemPos, labelItem->geometry().topLeft() ) )
                     {
                         labelItem->paint( ptr );
