@@ -126,25 +126,7 @@ void CartesianGrid::drawGrid( PaintContext* context )
     const bool drawSubGridLinesY = (dimY.subStepWidth != 0.0) &&
         (screenRangeY / (numberOfUnitLinesY / dimY.stepWidth * dimY.subStepWidth) > MinimumPixelsBetweenLines) &&
         gridAttrsY.isSubGridVisible();
-/*
-    if (  dimY.subStepWidth != 0.0 )
-        qDebug() << " dimY.subStepWidth != 0.0 ";
 
-    if (   (screenRangeY / (numberOfUnitLinesY / dimY.stepWidth * dimY.subStepWidth) > MinimumPixelsBetweenLines) )
-        qDebug() << " (screenRangeY / (numberOfUnitLinesY / dimY.stepWidth * dimY.subStepWidth) > MinimumPixelsBetweenLines)";
-
-    qDebug() << "screenRangeY" << screenRangeY;
-    qDebug() << "numberOfUnitLinesY" <<  numberOfUnitLinesY;
-    qDebug() << "dimY.stepWidth" << dimY.stepWidth;
-    qDebug() << "dimY.subStepWidth" << dimY.subStepWidth;
-    qDebug() << "dimY.stepWidth * dimY.subStepWidth" << dimY.stepWidth * dimY.subStepWidth;
-    qDebug() << "MinimumPixelsBetweenLines" << MinimumPixelsBetweenLines;
-    qDebug() << "screenRangeY / (numberOfUnitLinesY / dimY.stepWidth * dimY.subStepWidth)"
-           << screenRangeY / (numberOfUnitLinesY / dimY.stepWidth * dimY.subStepWidth);
-
-    if (  drawSubGridLinesY )
-        qDebug() << "drawSubGridLinesY";
-*/
     const qreal minValueX = qMin( dimX.start, dimX.end );
     const qreal maxValueX = qMax( dimX.start, dimX.end );
     const qreal minValueY = qMin( dimY.start, dimY.end );
@@ -245,8 +227,6 @@ DataDimensionsList CartesianGrid::calculateGrid(
             const DataDimension dimY
                 = calculateGridXY( l.last(), Qt::Horizontal );
             if( dimY.stepWidth ){
-//                qDebug() << "calculateGrid::dimY.stepWidth" << dimY.stepWidth;
-                //          qDebug() << "calculateGrid::dimY.subStepWidth" << dimY.subStepWidth;
                 l.first().start        = dimX.start;
                 l.first().end          = dimX.end;
                 l.first().stepWidth    = dimX.stepWidth;
@@ -254,16 +234,7 @@ DataDimensionsList CartesianGrid::calculateGrid(
                 l.last().start        = dimY.start;
                 l.last().end          = dimY.end;
                 l.last().stepWidth    = dimY.stepWidth;
-                //if ( !dimY.subStepWidth )
-                //  l.last().subStepWidth = dimY.stepWidth/2;
-                //else
                 l.last().subStepWidth = dimY.subStepWidth;
-
-                qDebug() << "calculateGrid::dimY.stepWidth" << dimY.stepWidth;
-                qDebug() << "calculateGrid::dimY.subStepWidth" << dimY.subStepWidth;
-                //qDebug() << " l.last().stepWidth" <<  l.last().stepWidth;
-                //qDebug() << "*****l.last().subStepWidth" << l.last().subStepWidth;
-
             }
         }
     }
@@ -280,7 +251,6 @@ void adjustUpperLowerRange( qreal& start, qreal& end, qreal stepWidth )
     if ( fmod( end, stepWidth ) != 0.0 )
         end = stepWidth * (_trunc( end / stepWidth ) + endAdjust);
 }
-
 double fastPow10( int x )
 {
     double res = 1.0;
@@ -300,48 +270,35 @@ DataDimension CartesianGrid::calculateGridXY(
     Qt::Orientation orientation ) const
 {
     DataDimension dim( rawDataDimension );
-    QList<qreal> granularities;
     if( dim.isCalculated && dim.start != dim.end ){
-        // if( dim.stepWidth == 0.0 ){
-
-            switch( dim.sequence ) {
-            case KDChartEnums::GranularitySequence_10_20:
-                granularities << 1.0 << 2.0;
-                break;
-            case KDChartEnums::GranularitySequence_10_50:
-                granularities << 1.0 << 5.0;
-                break;
-            case KDChartEnums::GranularitySequence_25_50:
-                granularities << 2.5 << 5.0;
-                break;
-            case KDChartEnums::GranularitySequenceIrregular:
-                granularities << 1.0 << 2.0 << 2.5 << 5.0;
-                break;
-            default:
-                break;
-                }
-            qDebug() << "dim.sequence" << dim.sequence;
+        if( dim.stepWidth == 0.0 ){
+            QList<qreal> granularities;
+            switch( dim.sequence ){
+                case KDChartEnums::GranularitySequence_10_20:
+                    granularities << 1.0 << 2.0;
+                    break;
+                case KDChartEnums::GranularitySequence_10_50:
+                    granularities << 1.0 << 5.0;
+                    break;
+                case KDChartEnums::GranularitySequence_25_50:
+                    granularities << 2.5 << 5.0;
+                    break;
+                case KDChartEnums::GranularitySequenceIrregular:
+                    granularities << 1.0 << 2.0 << 2.5 << 5.0;
+                    break;
+                default:
+                    break;
+            }
+            //qDebug("CartesianGrid::calculateGridXY()   dim.start: %f   dim.end: %f", dim.start, dim.end);
             calculateStepWidth(
                 dim.start, dim.end, granularities, orientation,
                 dim.stepWidth, dim.subStepWidth );
-            //  }
-         if (  orientation == Qt::Horizontal )
-        qDebug("*****CartesianGrid::calculateGridXY()   value for: dim.stepWidth: %f   dim.subStepWidht: %f",
-               dim.stepWidth, dim.subStepWidth);
+        }
         // if needed, adjust start/end to match the step width:
         adjustUpperLowerRange( dim.start, dim.end, dim.stepWidth );
-        } else
-
-            dim.stepWidth = 1;
-    /*
-    calculateStepWidth(
-                dim.start, dim.end, granularities, orientation,
-                dim.stepWidth, dim.subStepWidth );
-    */
-    if (  orientation == Qt::Horizontal )
-        qDebug("*****CartesianGrid::calculateGridXY()   returning: dim.stepWidth: %f   dim.subStepWidht: %f",
-               dim.stepWidth, dim.subStepWidth);
-
+    }else{
+        dim.stepWidth = 1.0;
+    }
     return dim;
 }
 
@@ -376,7 +333,7 @@ void calculateSteps(
             stepWidth = testStepWidth;
             distance  = testDistance;
             //qDebug( "start: %f   end: %f   step width: %f   steps: %f   distance: %f",
-//                    start, end, stepWidth, steps, distance);
+            //        start, end, stepWidth, steps, distance);
         }
     }
 }
@@ -388,10 +345,8 @@ void CartesianGrid::calculateStepWidth(
     Qt::Orientation orientation,
     qreal& stepWidth, qreal& subStepWidth ) const
 {
-    //qDebug() << "******calculateStepWidth called ****" ;
     Q_ASSERT_X ( granularities.count(), "CartesianGrid::calculateStepWidth",
                 "Error: The list of GranularitySequence values is empty." );
-
     QList<qreal> list( granularities );
     qSort( list );
 
@@ -412,7 +367,6 @@ void CartesianGrid::calculateStepWidth(
     // We have the sequence *two* times in the calculation test list,
     // so we will be sure to find the best match:
     const int count = list.count();
-
     QList<qreal> testList;
     for( int i = 0;  i < count;  ++i )
         testList << list.at(i) * 0.1;
@@ -427,15 +381,12 @@ void CartesianGrid::calculateStepWidth(
     //qDebug( "steps calculated:  stepWidth: %f   steps: %f", stepWidth, steps);
 
     // find the matching sub-grid line width
-
     if( stepWidth == list.first() * fastPow10( power ) ){
         subStepWidth = list.last() * fastPow10( power-1 );
-         qDebug("A");
+        //qDebug("A");
     }else if( stepWidth == list.first() * fastPow10( power-1 ) ){
-
         subStepWidth = list.last() * fastPow10( power-2 );
-        qDebug("B");
-
+        //qDebug("B");
     }else{
         qreal smallerStepWidth = list.first();
         for( int i = 1;  i < list.count();  ++i ){
@@ -449,9 +400,8 @@ void CartesianGrid::calculateStepWidth(
             }
             smallerStepWidth = list.at( i );
         }
-        qDebug("C");
+        //qDebug("C");
     }
-
-    qDebug("b - CartesianGrid::calculateStepWidth() found stepWidth %f (%f steps) and sub-stepWidth %f",
-          stepWidth, steps, subStepWidth);
+    //qDebug("CartesianGrid::calculateStepWidth() found stepWidth %f (%f steps) and sub-stepWidth %f",
+    //      stepWidth, steps, subStepWidth);
 }
