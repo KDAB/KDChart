@@ -291,7 +291,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
     const qreal maxValueY = dimY.end;
     const qreal minValueX = dimX.start;
     const qreal maxValueX = dimX.end;
-#define AXES_PAINTING_DEBUG 1
+//#define AXES_PAINTING_DEBUG 1
     #ifdef AXES_PAINTING_DEBUG
     qDebug() << "CartesianAxis::paint: reference values:" << endl
             << "-- range x/y: " << dimX.distance() << "/" << dimY.distance() << endl
@@ -603,7 +603,8 @@ QSize CartesianAxis::maximumSize() const
 
     const TextAttributes titleTA( titleTextAttributes() );
     const TextAttributes labelTA = textAttributes();
-    QObject* refArea = d->diagram()->coordinatePlane()->parent();
+    AbstractCoordinatePlane* plane = d->diagram()->coordinatePlane();
+    QObject* refArea = plane->parent();
     TextLayoutItem titleItem( titleText(), titleTA, refArea, KDChartEnums::MeasureOrientationMinimum, Qt::AlignHCenter | Qt::AlignVCenter );
     TextLayoutItem labelItem( "", labelTA, refArea, KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft );
 
@@ -620,11 +621,20 @@ QSize CartesianAxis::maximumSize() const
                 if ( h < lh )
                     h = lh;
             }
+            // if there're no labels, we take the biggest needed number as height
+            if ( labels().count() == 0 )
+            {
+                labelItem.setText( QString::number( plane->gridDimensionsList().first().end, 'f', 0 ) );
+                h = labelItem.sizeHint().height();
+            }
+            h = static_cast<int>( h * 1.33 );
             // space for a possible title:
             if ( ! titleText().isEmpty() ) {
-                h += titleItem.sizeHint().height();
+                h += static_cast<int>( titleItem.sizeHint().height() * 1.33 );
             }
-            result = QSize ( 10, h + 30 );
+            // space for the ticks
+            h += qAbs( tickLength() ) * 3;
+            result = QSize ( 10, h );
         }
         break;
     case Left:
@@ -638,11 +648,21 @@ QSize CartesianAxis::maximumSize() const
                 if ( w < lw )
                     w = lw;
             }
+            // if there're no labels, we take the biggest needed number as width
+            if ( labels().count() == 0 )
+            {
+                labelItem.setText( QString::number( plane->gridDimensionsList().last().end, 'f', 0 ) );
+                w = labelItem.sizeHint().width();
+            }
+            w = static_cast<int>( w * 1.33 );
             // space for a possible title:
             if ( ! titleText().isEmpty() ) {
-                w += titleItem.sizeHint().height();
+                w += static_cast<int>( titleItem.sizeHint().height() * 1.33 );
             }
-            result = QSize ( w + 30, 10 );
+            // space for the ticks
+            w += qAbs( tickLength() ) * 3;
+
+            result = QSize ( w, 10 );
         }
         break;
     default:
