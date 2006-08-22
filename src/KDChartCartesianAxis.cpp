@@ -180,10 +180,10 @@ void CartesianAxis::paintCtx( PaintContext* context )
     const DataDimension& dimY = dimensions.last();
     const DataDimension& dim = (isAbscissa() ? dimensions.first() : dimensions.last());
 
-    const bool isLeft   = position() == Left;
+/*    const bool isLeft   = position() == Left;
     const bool isRight  = position() == Right;
     const bool isTop    = position() == Top;
-    const bool isBottom = position() == Bottom;
+    const bool isBottom = position() == Bottom;*/
 
     // preparations:
     // - calculate the range that will be displayed:
@@ -255,19 +255,24 @@ void CartesianAxis::paintCtx( PaintContext* context )
     // FIXME references are of course different for all locations:
     rulerWidth = geoRect.width();
     rulerHeight =  geoRect.height();
-    if ( isTop )
+    switch( position() )
     {
+    case Top:
         rulerRef.setX( geoRect.topLeft().x() );
         rulerRef.setY( geoRect.topLeft().y() + rulerHeight );
-    } else if ( isBottom ) {
+        break;
+    case Bottom:
         rulerRef.setX( geoRect.bottomLeft().x() );
         rulerRef.setY( geoRect.bottomLeft().y() - rulerHeight );
-    } else if ( isRight ) {
+        break;
+    case Right:
         rulerRef.setX( geoRect.bottomRight().x() - rulerWidth );
         rulerRef.setY( geoRect.bottomRight().y() );
-    } else {
+        break;
+    case Left:
         rulerRef.setX( geoRect.bottomLeft().x() + rulerWidth );
         rulerRef.setY( geoRect.bottomLeft().y() );
+        break;
     }
 
     // set up the lines to paint:
@@ -305,26 +310,27 @@ void CartesianAxis::paintCtx( PaintContext* context )
     ptr->setBrush ( Qt::red ); // PENDING(michel) What is this for?
     QPointF fourthRulerRef ( rulerRef );
 
+    // this draws the subunit rulers
     if ( drawSubUnitRulers ) {
+        // for the x-axis
         if ( isAbscissa() ) {
-            int tickLength = isTop ? -3 : 2;
             for ( float f = minValueX; f <= maxValueX; f += dimX.subStepWidth ) {
                 QPointF topPoint ( f, 0 );
                 QPointF bottomPoint ( f, 0 );
                 topPoint = plane->translate( topPoint );
                 bottomPoint = plane->translate( bottomPoint );
-                topPoint.setY( fourthRulerRef.y() + tickLength );
+                topPoint.setY( fourthRulerRef.y() + tickLength( true ) );
                 bottomPoint.setY( fourthRulerRef.y() );
                 ptr->drawLine( topPoint, bottomPoint );
             }
+        // for the y-axis
         } else {
-            int tickLength = isLeft ? -3 : 2;
             for ( float f = minValueY; f <= maxValueY; f += dimY.subStepWidth ) {
                 QPointF leftPoint ( 0, f );
                 QPointF rightPoint ( 0, f );
                 leftPoint = plane->translate( leftPoint );
                 rightPoint = plane->translate( rightPoint );
-                leftPoint.setX( fourthRulerRef.x() + tickLength );
+                leftPoint.setX( fourthRulerRef.x() + tickLength( true ) );
                 rightPoint.setX( fourthRulerRef.x() );
                 ptr->drawLine( leftPoint, rightPoint );
           }
@@ -333,8 +339,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
     const QObject* referenceArea = plane->parent();
 
+    // this draws the unit rulers
     if ( drawUnitRulers ) {
-//qDebug() << isOrdinate();
         const int hardLabelsCount  = labels().count();
         const int shortLabelsCount = shortLabels().count();
         bool useShortLabels = false;
@@ -371,11 +377,9 @@ void CartesianAxis::paintCtx( PaintContext* context )
         const qreal halfFontHeight = met.height() * 0.5;
 
         if ( isAbscissa() ) {
-            int tickLength = isTop ? -4 : 3;
-
             // If we have a labels list AND a short labels list, we first find out,
             // if there is enough space for the labels: if not, use the short labels.
-            if( drawLabels && hardLabelsCount && shortLabelsCount ){
+            if( drawLabels && hardLabelsCount > 0 && shortLabelsCount > 0 ){
                 bool labelsAreOverlapping = false;
                 int iLabel = 0;
                 for ( qreal i = minValueX; i < maxValueX && !labelsAreOverlapping; i += dimX.stepWidth )
@@ -401,9 +405,10 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 }
 
                 useShortLabels = labelsAreOverlapping;
-
             }
 
+            labelItem2->setText( "" );
+            QPoint oldItemPos;
             int idxLabel = 0;
             qreal iLabelF = minValueX;
             for ( qreal i = minValueX; i < maxValueX; i += dimX.stepWidth ) {
@@ -411,7 +416,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 QPointF bottomPoint ( topPoint );
                 topPoint = plane->translate( topPoint );
                 bottomPoint = plane->translate( bottomPoint );
-                topPoint.setY( fourthRulerRef.y() + tickLength );
+                topPoint.setY( fourthRulerRef.y() + tickLength() );
                 bottomPoint.setY( fourthRulerRef.y() );
                 ptr->drawLine( topPoint, bottomPoint );
                 if ( drawLabels ) {
@@ -429,11 +434,19 @@ void CartesianAxis::paintCtx( PaintContext* context )
                                 QPoint(
                                     static_cast<int>( topPoint.x() - size.width() / 2 ),
                                     static_cast<int>( topPoint.y() +
-                                        ( isBottom
+                                        ( position() == Bottom
                                           ? halfFontHeight
                                           : ((halfFontHeight + size.height()) * -1.0) ) ) ),
                                 size ) );
-                    labelItem->paint( ptr );
+                    
+                    if ( ! labelItem2->intersects( *labelItem, oldItemPos, labelItem->geometry().topLeft() ) )
+                    {
+                        labelItem->paint( ptr );
+
+                        labelItem2->setText( labelItem->text() );
+                        oldItemPos = labelItem->geometry().topLeft();
+                    }
+
                     if( hardLabelsCount ){
                         if( idxLabel >= hardLabelsCount  -1 )
                             idxLabel = 0;
@@ -450,12 +463,11 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 }
             }
         } else {
-            const int tickLength = isLeft ? -4 : 3;
             const double maxLimit = maxValueY;
             const double steg = dimY.stepWidth;
             int maxLabelsWidth = 0;
             qreal labelValue;
-            if( drawLabels && isRight ){
+            if( drawLabels && position() == Right ){
                 // Find the wides label, so we to know how much we need to right-shift
                 // our labels, to get them drawn right aligned:
                 labelValue = minValueY;
@@ -473,7 +485,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 QPointF rightPoint ( 0.0, f );
                 leftPoint  = plane->translate( leftPoint );
                 rightPoint = plane->translate( rightPoint );
-                leftPoint.setX( fourthRulerRef.x() + tickLength );
+                leftPoint.setX( fourthRulerRef.x() + tickLength() );
                 rightPoint.setX( fourthRulerRef.x() );
                 ptr->drawLine( leftPoint, rightPoint );
                 if ( drawLabels ) {
@@ -484,8 +496,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     leftPoint.setX( leftPoint.x()
                          );
                     const int x =
-                        static_cast<int>( leftPoint.x() + met.height() * (isLeft ? -0.5 : 0.5) )
-                        - ( isLeft ? labelSize.width() : (labelSize.width() - maxLabelsWidth) );
+                        static_cast<int>( leftPoint.x() + met.height() * ( position() == Left ? -0.5 : 0.5) )
+                        - ( position() == Left ? labelSize.width() : (labelSize.width() - maxLabelsWidth) );
                     int y;
                     if( f == minValueY ){
                         // first label of the ordinate?
@@ -522,18 +534,24 @@ void CartesianAxis::paintCtx( PaintContext* context )
                       Qt::AlignHCenter|Qt::AlignVCenter );
         QPointF point;
         const QSize size( titleItem.sizeHint() );
-        if( isTop ){
+        switch( position() )
+        {
+        case Top:
             point.setX( geoRect.left() + geoRect.width() / 2.0);
             point.setY( geoRect.top() );
-        }else if( isBottom ){
+            break;
+        case Bottom:
             point.setX( geoRect.left() + geoRect.width() / 2.0);
             point.setY( geoRect.bottom() - size.height() );
-        }else if( isLeft ){
+            break;
+        case Left:
             point.setX( geoRect.left() );
             point.setY( geoRect.top() + geoRect.height() / 2.0);
-        }else /*if( isRight )*/ {
+            break;
+        case Right:
             point.setX( geoRect.right() - size.height() );
             point.setY( geoRect.top() + geoRect.height() / 2.0);
+            break;
         }
         PainterSaver painterSaver( ptr );
         ptr->translate( point );
@@ -655,4 +673,20 @@ void CartesianAxis::setGeometry( const QRect& r )
 QRect CartesianAxis::geometry() const
 {
     return d->geometry;
+}
+
+int CartesianAxis::tickLength( bool subUnitTicks ) const
+{
+    int result = 0;
+
+    if ( isAbscissa() ) {
+        result = position() == Top ? -4 : 3;
+    } else {
+        result = position() == Left ? -4 : 3;
+    }
+
+    if ( subUnitTicks )
+        result = result < 0 ? result + 1 : result - 1;
+
+    return result;
 }

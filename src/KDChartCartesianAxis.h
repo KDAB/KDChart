@@ -120,6 +120,8 @@ namespace KDChart {
         virtual void setGeometry( const QRect& r );
         /** pure virtual in QLayoutItem */
         virtual QRect geometry() const;
+
+        int tickLength( bool subUnitTicks = false ) const;
     };
 
     typedef QList<CartesianAxis*> CartesianAxisList;

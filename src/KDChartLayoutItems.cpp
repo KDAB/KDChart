@@ -407,8 +407,8 @@ void KDChart::MarkerLayoutItem::paint( QPainter* painter )
 }
 
 
-KDChart::HorizontalLineLayoutItem::HorizontalLineLayoutItem() :
-    AbstractLayoutItem( Qt::AlignCenter )
+KDChart::HorizontalLineLayoutItem::HorizontalLineLayoutItem() 
+    : AbstractLayoutItem( Qt::AlignCenter )
 {
 }
 
@@ -458,8 +458,8 @@ void KDChart::HorizontalLineLayoutItem::paint( QPainter* painter )
 }
 
 
-KDChart::VerticalLineLayoutItem::VerticalLineLayoutItem() :
-    AbstractLayoutItem( Qt::AlignCenter )
+KDChart::VerticalLineLayoutItem::VerticalLineLayoutItem()
+    : AbstractLayoutItem( Qt::AlignCenter )
 {
 }
 
