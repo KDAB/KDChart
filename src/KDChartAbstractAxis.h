@@ -30,10 +30,10 @@
 #ifndef KDCHARTAXIS_H
 #define KDCHARTAXIS_H
 
-#include <QObject>
+// #include <QObject>
 #include <QRectF>
 #include <QtXml/QDomDocumentFragment>
-//#include <QWidget>
+// #include <QWidget>
 
 #include "kdchart_export.h"
 #include "KDChartGlobal.h"

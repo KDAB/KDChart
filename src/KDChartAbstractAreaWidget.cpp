@@ -1,7 +1,7 @@
 /****************************************************************************
  ** Copyright (C) 2006 Klarälvdalens Datakonsult AB.  All rights reserved.
  **
- ** This file is part of the KD Chart library.
+g ** This file is part of the KD Chart library.
  **
  ** This file may be distributed and/or modified under the terms of the
  ** GNU General Public License version 2 as published by the Free Software
