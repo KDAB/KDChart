@@ -32,6 +32,13 @@ public:
     LineDiagram* diagram = new LineDiagram;
     diagram->setModel(&m_model);
 
+    CartesianAxis *xAxis = new CartesianAxis( diagram );
+    CartesianAxis *yAxis = new CartesianAxis ( diagram );
+    xAxis->setPosition ( KDChart::CartesianAxis::Bottom );
+    yAxis->setPosition ( KDChart::CartesianAxis::Left );
+    diagram->addAxis( xAxis );
+    diagram->addAxis( yAxis );
+
     m_chart.coordinatePlane()->replaceDiagram(diagram);
 
     // Add at one Header and set it up
@@ -79,8 +86,6 @@ public:
     // retrieve your grid attributes
     // display grid and sub-grid
     GridAttributes ga ( plane->gridAttributes( Qt::Vertical ) );
-    ga.setGridVisible(  true );
-    ga.setSubGridVisible( true );
 
     // Configure a grid pen
     QPen gridPen(  Qt::magenta );
@@ -94,6 +99,16 @@ public:
 
     // Display a blue zero line
     ga.setZeroLinePen( QPen( Qt::blue ) );
+
+    // When changing the stepWidth
+    // subStepWidth needs to be set
+    // too in case we want to show
+    // the subGrid lines
+
+    ga.setGridStepWidth( 0.5 );
+    ga.setGridSubStepWidth( 0.10 );
+    ga.setGridVisible(  true );
+    ga.setSubGridVisible( true );
 
     // Assign your grid to the plane
     plane->setGridAttributes( Qt::Vertical,  ga );
