@@ -43,6 +43,7 @@ private:
     bool visible;
     KDChartEnums::GranularitySequence sequence;
     qreal stepWidth;
+    qreal subStepWidth;
     QPen pen;
     bool subVisible;
     QPen subPen;
@@ -143,15 +144,46 @@ qreal GridAttributes::gridStepWidth() const
     return d->stepWidth;
 }
 
+
+/**
+  * Specifies the sub-step width to be used for calculating
+  * the grid sub-lines.
+  *
+  *
+  * \param subStepWidth the sub-step width to be used.
+  * If this parameter is omitted (or set to Zero, resp.)
+  * the automatic calculation will be done, using the
+  * granularity sequence specified.
+  * This is the default.
+  *
+  * \sa gridSubStepWidth
+  */
+
+void GridAttributes::setGridSubStepWidth( qreal subStepWidth )
+{
+    d->subStepWidth = subStepWidth;
+}
+
+/**
+  * Returns the sub-step width to be used for calculating
+  * the sub-grid lines.
+  *
+  * \sa setGridStepWidth
+  */
+qreal GridAttributes::gridSubStepWidth() const
+{
+    return d->subStepWidth;
+}
+
 /**
   * Specifies the granularity sequence to be used for calculating
   * the grid lines.
   *
   * By default the GridAttributes class uses KDChartEnums::GranularitySequence_10_20.
-  * 
+  *
   * \note The sequence specified by this method is ignored, if
   * a fixed step width was specified via setStepWidth.
-  * 
+  *
   * \param sequence one of the sequences declared in
   * KDChartEnums::GranularitySequence.
   *

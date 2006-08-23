@@ -275,7 +275,8 @@ DataDimensionsList CartesianCoordinatePlane::getDataDimensionsList() const
                 r.left(), r.right(),
                 dgr->datasetDimension() > 1,
                 gaH.gridGranularitySequence(),
-                gaH.gridStepWidth() ) );
+                gaH.gridStepWidth(),
+                gaH.gridSubStepWidth() ) );
         // append the second dimension: for Ordinate axes
         if( dgr->percentMode() )
             l.append(
@@ -291,7 +292,8 @@ DataDimensionsList CartesianCoordinatePlane::getDataDimensionsList() const
                     r.bottom(), r.top(),
                     true,
                     gaV.gridGranularitySequence(),
-                    gaV.gridStepWidth() ) );
+                    gaV.gridStepWidth(),
+                    gaV.gridSubStepWidth() ) );
     }else{
         l.append( DataDimension() ); // This gets us the default 1..0 / 1..0 grid
         l.append( DataDimension() ); // shown, if there is no diagram on this plane.

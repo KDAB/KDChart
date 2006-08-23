@@ -55,6 +55,9 @@ public:
     void setGridStepWidth( qreal stepWidth=0.0 );
     qreal gridStepWidth() const;
 
+    void setGridSubStepWidth(  qreal subStepWidth=0.0 );
+    qreal gridSubStepWidth() const;
+
     void setGridGranularitySequence( KDChartEnums::GranularitySequence sequence );
     KDChartEnums::GranularitySequence gridGranularitySequence() const;
 
