@@ -121,7 +121,7 @@ void Widget::setDataset( int column, const QVector< double > & data, const QStri
         model->setData( index, QVariant( data[i] ), Qt::DisplayRole );
     }
     if ( ! title.isNull() )
-        model->setHeaderData( column, Qt::Vertical, QVariant( title ) );
+        model->setHeaderData( column, Qt::Horizontal, QVariant( title ) );
 }
 
 /**
@@ -147,7 +147,7 @@ void Widget::setDataset( int column, const QVector< QPair< double, double > > & 
         model->setData( index, QVariant( data[i].second ), Qt::DisplayRole );
     }
     if ( ! title.isNull() )
-        model->setHeaderData( column * 2, Qt::Vertical, QVariant( title ) );
+        model->setHeaderData( column * 2, Qt::Horizontal, QVariant( title ) );
 }
 
 /*
