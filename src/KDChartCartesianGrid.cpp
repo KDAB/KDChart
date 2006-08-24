@@ -221,11 +221,11 @@ DataDimensionsList CartesianGrid::calculateGrid(
     if( isBoundariesValid( l ) ) {
         //qDebug("CartesianGrid::calculateGrid()   l.first().start: %f   l.first().end: %f", l.first().start, l.first().end);
         const DataDimension dimX
-            = calculateGridXY( l.first(), Qt::Vertical );
+            = calculateGridXY( l.first(), Qt::Horizontal );
         if( dimX.stepWidth ){
             //qDebug("CartesianGrid::calculateGrid()   l.last().start: %f   l.last().end: %f", l.last().start, l.last().end);
             const DataDimension dimY
-                = calculateGridXY( l.last(), Qt::Horizontal );
+                = calculateGridXY( l.last(), Qt::Vertical );
             if( dimY.stepWidth ){
                 l.first().start        = dimX.start;
                 l.first().end          = dimX.end;
@@ -234,7 +234,13 @@ DataDimensionsList CartesianGrid::calculateGrid(
                 l.last().start        = dimY.start;
                 l.last().end          = dimY.end;
                 l.last().stepWidth    = dimY.stepWidth;
-                l.last().subStepWidth = dimY.subStepWidth;
+                // calculate some reasonable subSteps if the
+                // user did not set the sub grid but did set
+                // the stepWidth.
+                if ( dimY.subStepWidth == 0 )
+                    l.last().subStepWidth = dimY.stepWidth/2;
+                else
+                    l.last().subStepWidth = dimY.subStepWidth;
             }
         }
     }
@@ -345,6 +351,7 @@ void CartesianGrid::calculateStepWidth(
     Qt::Orientation orientation,
     qreal& stepWidth, qreal& subStepWidth ) const
 {
+
     Q_ASSERT_X ( granularities.count(), "CartesianGrid::calculateStepWidth",
                  "Error: The list of GranularitySequence values is empty." );
     QList<qreal> list( granularities );
@@ -382,6 +389,7 @@ void CartesianGrid::calculateStepWidth(
 
     // find the matching sub-grid line width in case it is
     // not set by the user
+
     if (  subStepWidth == 0.0 ) {
         if( stepWidth == list.first() * fastPow10( power ) ){
             subStepWidth = list.last() * fastPow10( power-1 );
