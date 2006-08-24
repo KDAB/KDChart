@@ -58,7 +58,7 @@ Legend::Private::Private() :
     titleText( QObject::tr( "Legend" ) ),
     titleTextAttributes(),
     spacing( 1 ),
-    needRebuild( false )
+    needRebuild( true )
 {
     // this bloc left empty intentionally
 }
@@ -140,7 +140,7 @@ void Legend::paint( QPainter* painter )
 {
     // rule: We do not show a legend, if there is no diagram.
     if( ! diagram() ) return;
-    qDebug() << "KDChart::Legend::paint() called";
+    //qDebug() << "KDChart::Legend::paint() called";
 
     // re-calculate/adjust the Legend's internal layout and contents, if needed:
     buildLegend();
@@ -150,7 +150,7 @@ void Legend::paint( QPainter* painter )
     foreach( KDChart::AbstractLayoutItem* layoutItem, d->layoutItems ) {
         layoutItem->paint( painter );
     }
-    qDebug() << "KDChart::Legend::paint() done.";
+    //qDebug() << "KDChart::Legend::paint() done.";
 }
 
 
@@ -163,8 +163,9 @@ uint Legend::datasetCount() const
 
 void Legend::setReferenceArea( const QWidget* area )
 {
+    if( area == d->referenceArea ) return;
     d->referenceArea = area;
-    d->needRebuild = true;
+    setNeedRebuild();
 }
 
 const QWidget* Legend::referenceArea() const
@@ -205,7 +206,7 @@ void Legend::addDiagram( AbstractDiagram* newDiagram )
                         SLOT( setNeedRebuild() ));
         connect( observer, SIGNAL( diagramAttributesChanged(AbstractDiagram*) ),
                         SLOT( setNeedRebuild() ));
-        d->needRebuild = true;
+        setNeedRebuild();
     }
 }
 
@@ -217,7 +218,7 @@ void Legend::removeDiagram( AbstractDiagram* oldDiagram )
             delete d->observers[ oldDiagram ];
             d->observers.remove( oldDiagram );
         }
-        d->needRebuild = true;
+        setNeedRebuild();
     }
 }
 
@@ -261,8 +262,6 @@ void Legend::setNeedRebuild()
 void Legend::setPosition( Position position )
 {
     d->position = position;
-
-    d->needRebuild = true;
     emit positionChanged( this );
 }
 
@@ -275,7 +274,6 @@ Position Legend::position() const
 void Legend::setAlignment( Qt::Alignment alignment )
 {
     d->alignment = alignment;
-    d->needRebuild = true;
     emit positionChanged( this );
 }
 
@@ -286,8 +284,9 @@ Qt::Alignment Legend::alignment() const
 
 void Legend::setOrientation( Qt::Orientation orientation )
 {
+    if( d->orientation == orientation ) return;
     d->orientation = orientation;
-    d->needRebuild = true;
+    setNeedRebuild();
 }
 
 Qt::Orientation Legend::orientation() const
@@ -297,8 +296,9 @@ Qt::Orientation Legend::orientation() const
 
 void Legend::setShowLines( bool legendShowLines )
 {
+    if( d->showLines == legendShowLines ) return;
     d->showLines = legendShowLines;
-    d->needRebuild = true;
+    setNeedRebuild();
 }
 
 bool Legend::showLines() const
@@ -313,14 +313,16 @@ bool Legend::showLines() const
 */
 void Legend::resetTexts()
 {
+    if( ! d->texts.count() ) return;
     d->texts.clear();
-    d->needRebuild = true;
+    setNeedRebuild();
 }
 
 void Legend::setText( uint dataset, const QString& text )
 {
+    if( d->texts[dataset] == text ) return;
     d->texts[dataset] = text;
-    d->needRebuild = true;
+    setNeedRebuild();
 }
 
 QString Legend::text( uint dataset ) const
@@ -333,14 +335,16 @@ QString Legend::text( uint dataset ) const
 
 void Legend::setColor( uint dataset, const QColor& color )
 {
+    if( d->brushes[dataset] == color ) return;
     d->brushes[dataset] = color;
-    d->needRebuild = true;
+    setNeedRebuild();
 }
 
 void Legend::setBrush( uint dataset, const QBrush& brush )
 {
+    if( d->brushes[dataset] == brush ) return;
     d->brushes[dataset] = brush;
-    d->needRebuild = true;
+    setNeedRebuild();
 }
 
 QBrush Legend::brush( uint dataset ) const
@@ -354,17 +358,24 @@ QBrush Legend::brush( uint dataset ) const
 
 void Legend::setBrushesFromDiagram( KDChart::AbstractDiagram* diagram )
 {
+    bool bChangesDone = false;
     QList<QBrush> datasetBrushes = diagram->datasetBrushes();
-    for( int i = 0; i < datasetBrushes.count(); i++ )
-        d->brushes[i] = datasetBrushes[i];
-    d->needRebuild = true;
+    for( int i = 0; i < datasetBrushes.count(); i++ ){
+        if( d->brushes[i] != datasetBrushes[i] ){
+            d->brushes[i]  = datasetBrushes[i];
+            bChangesDone = true;
+        }
+    }
+    if( bChangesDone )
+        setNeedRebuild();
 }
 
 
 void Legend::setPen( uint dataset, const QPen& pen )
 {
+    if( d->pens[dataset] == pen ) return;
     d->pens[dataset] = pen;
-    d->needRebuild = true;
+    setNeedRebuild();
 }
 
 QPen Legend::pen( uint dataset ) const
@@ -378,8 +389,9 @@ QPen Legend::pen( uint dataset ) const
 
 void Legend::setMarkerAttributes( uint dataset, const MarkerAttributes& markerAttributes )
 {
+    if( d->markerAttributes[dataset] == markerAttributes ) return;
     d->markerAttributes[dataset] = markerAttributes;
-    d->needRebuild = true;
+    setNeedRebuild();
 }
 
 MarkerAttributes Legend::markerAttributes( uint dataset ) const
@@ -392,8 +404,9 @@ MarkerAttributes Legend::markerAttributes( uint dataset ) const
 
 void Legend::setTextAttributes( const TextAttributes &a )
 {
+    if( d->textAttributes == a ) return;
     d->textAttributes = a;
-    d->needRebuild = true;
+    setNeedRebuild();
 }
 
 TextAttributes Legend::textAttributes() const
@@ -403,8 +416,9 @@ TextAttributes Legend::textAttributes() const
 
 void Legend::setTitleText( const QString& text )
 {
+    if( d->titleText == text ) return;
     d->titleText = text;
-    d->needRebuild = true;
+    setNeedRebuild();
 }
 
 QString Legend::titleText() const
@@ -414,8 +428,9 @@ QString Legend::titleText() const
 
 void Legend::setTitleTextAttributes( const TextAttributes &a )
 {
+    if( d->titleTextAttributes == a ) return;
     d->titleTextAttributes = a;
-    d->needRebuild = true;
+    setNeedRebuild();
 }
 
 TextAttributes Legend::titleTextAttributes() const
@@ -425,9 +440,10 @@ TextAttributes Legend::titleTextAttributes() const
 
 void Legend::setSpacing( uint space )
 {
+    if( d->spacing == space && d->layout->spacing() == static_cast<int>(space) ) return;
     d->spacing = space;
     d->layout->setSpacing( space );
-    d->needRebuild = true;
+    setNeedRebuild();
 }
 
 uint Legend::spacing() const
@@ -515,7 +531,12 @@ static const QColor SUBDUEDCOLORS[ NUM_SUBDUEDCOLORS ] = {
 
 void Legend::buildLegend()
 {
-    if( ! d->needRebuild ) return;
+    //qDebug() << "entering Legend::buildLegend()";
+    if( ! d->needRebuild ) {
+        // Note: we *need* to send positionChanged, or layout may become wrong
+        emit positionChanged( this );
+        return;
+    }
     d->needRebuild = false;
 
     foreach( QLayoutItem* layoutItem, d->layoutItems ) {
@@ -652,5 +673,6 @@ void Legend::buildLegend()
 
     //FIXME(khz): Find out if we really need that call:
     //d->layout->activate();
+    //qDebug() << "leaving Legend::buildLegend()";
 }
 

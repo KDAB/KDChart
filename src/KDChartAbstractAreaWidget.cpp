@@ -1,7 +1,7 @@
 /****************************************************************************
  ** Copyright (C) 2006 Klarälvdalens Datakonsult AB.  All rights reserved.
  **
-g ** This file is part of the KD Chart library.
+ ** This file is part of the KD Chart library.
  **
  ** This file may be distributed and/or modified under the terms of the
  ** GNU General Public License version 2 as published by the Free Software
@@ -83,7 +83,7 @@ void AbstractAreaWidget::paintIntoRect( QPainter& painter, const QRect& rect )
 
 void AbstractAreaWidget::paintAll( QPainter& painter )
 {
-    //qDebug() << "AbstractAreaWidget::paintAll() called";
+     //qDebug() << "AbstractAreaWidget::paintAll() called";
     // Paint the background and frame
     paintBackground( painter, rect() );
     paintFrame(      painter, rect().adjusted(0,0,-1,-1) );
@@ -93,7 +93,7 @@ void AbstractAreaWidget::paintAll( QPainter& painter )
     const QRect oldGeometry( areaGeometry()  );
     const QRect inner( innerRect() );
     if( contentsRect() != inner ){
-        //qDebug() << "contentsRect():" << contentsRect() << "  inner:" << inner;
+         //qDebug() << "contentsRect():" << contentsRect() << "  inner:" << inner;
         setContentsMargins(
             inner.left(),
             inner.top(),
@@ -101,7 +101,7 @@ void AbstractAreaWidget::paintAll( QPainter& painter )
             oldGeometry.height()-inner.height() );
     }
     paint( &painter );
-    //qDebug() << "AbstractAreaWidget::paintAll() done.";
+     //qDebug() << "AbstractAreaWidget::paintAll() done.";
 }
 
 const QRect AbstractAreaWidget::areaGeometry() const

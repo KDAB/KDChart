@@ -526,6 +526,8 @@ void Chart::Private::slotRelayout()
     foreach (AbstractCoordinatePlane* plane, coordinatePlanes )
         plane->layoutDiagrams();
 
+    //chart->update();
+
     //qDebug() << "Chart relayouting done.";
 }
 
