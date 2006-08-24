@@ -46,9 +46,15 @@ int main( int argc, char** argv ) {
     vec2 << -85 << -64 << -27 << -8 << -1 << 0
          << 1 << 8 << 27 << 64 << 85;
 
-    widget.setDataset( 0, vec0 );
-    widget.setDataset( 1, vec1 );
-    widget.setDataset( 2, vec2 );
+    // assign your datasets
+    // while setting the legend
+    // items text
+    widget.setDataset( 0, vec0, "vec1" );
+    widget.setDataset( 1, vec1, "vec2" );
+    widget.setDataset( 2, vec2, "vec3" );
+
+    // add and position
+    widget.addLegend(Position::North);
 
     CartesianAxis *xAxis = new CartesianAxis( widget.lineDiagram() );
     CartesianAxis *yAxis = new CartesianAxis (widget.lineDiagram() );
