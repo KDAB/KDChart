@@ -100,11 +100,9 @@ public:
     // Display a blue zero line
     ga.setZeroLinePen( QPen( Qt::blue ) );
 
-    // When changing the stepWidth
-    // subStepWidth needs to be set
-    // too in case we want to show
-    // the subGrid lines
 
+    // change step and substep width
+    // or any of those.
     ga.setGridStepWidth( 0.5 );
     ga.setGridSubStepWidth( 0.10 );
     ga.setGridVisible(  true );
