@@ -288,6 +288,16 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
 {
     // paint one data series
     DataValueAttributes a = dataValueAttributes(index);
+    int decimalDigits = a.decimalDigits();
+    QString stringValue;
+
+    int decimalPos = QString::number(  value ).indexOf( "." );
+    if ( decimalPos && value != 0.0 ) {
+        stringValue = QString::number( value ).leftJustified( decimalPos + 1 + decimalDigits, '.', true );
+    } else {
+        stringValue = QString::number(  value ).toInt();
+    }
+
     if ( !a.isVisible() ) return;
     PainterSaver painterSaver( painter );
     // FIXME draw the non-text bits, background, etc
@@ -297,7 +307,7 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
         painter->setFont( ta.font() );
         painter->translate( pos );
         painter->rotate( ta.rotation() );
-        painter->drawText( QPointF(0, 0), QString::number( value ) );
+        painter->drawText( QPointF(0, 0), stringValue );
     }
 }
 
