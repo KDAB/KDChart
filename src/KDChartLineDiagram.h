@@ -86,7 +86,10 @@ public:
     /* reimpl */
     const int numberOfOrdinateSegments () const;
 
+protected:
     void paint ( PaintContext* paintContext );
+
+public:
     void resize ( const QSizeF& area );
 
 protected:

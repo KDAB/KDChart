@@ -47,9 +47,11 @@ public:
         QWidget* parent = 0, PolarCoordinatePlane* plane = 0 );
     virtual ~RingDiagram();
 
+protected:
     // Implement AbstractDiagram
     /** \reimpl */
     virtual void paint ( PaintContext* paintContext );
+public:
     /** \reimpl */
     virtual void resize ( const QSizeF& area );
 

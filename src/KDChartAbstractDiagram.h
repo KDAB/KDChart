@@ -55,6 +55,11 @@ namespace KDChart {
         Q_OBJECT
         Q_DISABLE_COPY( AbstractDiagram )
         KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC( AbstractDiagram )
+
+    friend class AbstractCoordinatePlane;
+    friend class CartesianCoordinatePlane;
+    friend class PolarCoordinatePlane;
+
     protected:
         explicit inline AbstractDiagram(
             Private *p, QWidget* parent, AbstractCoordinatePlane* plane );
@@ -80,6 +85,7 @@ namespace KDChart {
          */
         const QPair<QPointF, QPointF> dataBoundaries() const;
 
+    protected:
         /**
          * Draw the diagram contents to the rectangle and painter, that are
          * passed in as part of the paint context.
@@ -88,7 +94,7 @@ namespace KDChart {
          */
         virtual void paint ( PaintContext* paintContext ) = 0;
 
-
+    public:
         /**
          * Called by the widget's sizeEvent. Adjust all internal structures,
          * that are calculated, dependending on the size of the widget.
@@ -442,7 +448,7 @@ namespace KDChart {
         void paintMarker(  QPainter* painter, const QModelIndex& index,
                            const QPointF& pos );
         virtual void paintMarkers( QPainter* painter );
-	void setAttributesModelRootIndex( const QModelIndex& );
+        void setAttributesModelRootIndex( const QModelIndex& );
         QModelIndex attributesModelRootIndex() const;
         QModelIndex columnToIndex( int column ) const;
         /**
