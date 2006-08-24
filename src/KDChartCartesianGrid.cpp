@@ -346,7 +346,7 @@ void CartesianGrid::calculateStepWidth(
     qreal& stepWidth, qreal& subStepWidth ) const
 {
     Q_ASSERT_X ( granularities.count(), "CartesianGrid::calculateStepWidth",
-                "Error: The list of GranularitySequence values is empty." );
+                 "Error: The list of GranularitySequence values is empty." );
     QList<qreal> list( granularities );
     qSort( list );
 
@@ -380,27 +380,31 @@ void CartesianGrid::calculateStepWidth(
     ++power;
     //qDebug( "steps calculated:  stepWidth: %f   steps: %f", stepWidth, steps);
 
-    // find the matching sub-grid line width
-    if( stepWidth == list.first() * fastPow10( power ) ){
-        subStepWidth = list.last() * fastPow10( power-1 );
-        //qDebug("A");
-    }else if( stepWidth == list.first() * fastPow10( power-1 ) ){
-        subStepWidth = list.last() * fastPow10( power-2 );
-        //qDebug("B");
-    }else{
-        qreal smallerStepWidth = list.first();
-        for( int i = 1;  i < list.count();  ++i ){
-            if( stepWidth == list.at( i ) * fastPow10( power ) ){
-                subStepWidth = smallerStepWidth * fastPow10( power );
-                break;
+    // find the matching sub-grid line width in case it is
+    // not set by the user
+    if (  subStepWidth == 0.0 ) {
+        if( stepWidth == list.first() * fastPow10( power ) ){
+            subStepWidth = list.last() * fastPow10( power-1 );
+            //qDebug("A");
+        }else if( stepWidth == list.first() * fastPow10( power-1 ) ){
+            subStepWidth = list.last() * fastPow10( power-2 );
+            //qDebug("B");
+        }else{
+            qreal smallerStepWidth = list.first();
+            for( int i = 1;  i < list.count();  ++i ){
+                if( stepWidth == list.at( i ) * fastPow10( power ) ){
+                    subStepWidth = smallerStepWidth * fastPow10( power );
+                    break;
+                }
+                if( stepWidth == list.at( i ) * fastPow10( power-1 ) ){
+                    subStepWidth = smallerStepWidth * fastPow10( power-1 );
+                    break;
+                }
+                smallerStepWidth = list.at( i );
             }
-            if( stepWidth == list.at( i ) * fastPow10( power-1 ) ){
-                subStepWidth = smallerStepWidth * fastPow10( power-1 );
-                break;
-            }
-            smallerStepWidth = list.at( i );
+
+            //qDebug("C");
         }
-        //qDebug("C");
     }
     //qDebug("CartesianGrid::calculateStepWidth() found stepWidth %f (%f steps) and sub-stepWidth %f",
     //      stepWidth, steps, subStepWidth);
