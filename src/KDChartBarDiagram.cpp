@@ -615,7 +615,7 @@ void BarDiagram::paintBars( PaintContext* ctx, const QModelIndex& index, const Q
         isoRect =  bar.translated( usedDepth, -usedDepth );
       // well need to find out if the height is negative
         // and in this case paint it up and down
-        qDebug() << isoRect.height();
+        //qDebug() << isoRect.height();
         if (  isoRect.height() < 0 ) {
           topPoints << isoRect.bottomLeft() << isoRect.bottomRight()
                     << bar.bottomRight() << bar.bottomLeft();
