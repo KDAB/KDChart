@@ -54,6 +54,7 @@ GridAttributes::Private::Private()
     : visible( true ),
       sequence( KDChartEnums::GranularitySequence_10_20 ),
       stepWidth( 0.0 ),
+      subStepWidth( 0.0 ),
       pen( QColor(0xa0, 0xa0, 0xa0 ) ),
       subVisible( true ),
       subPen( QColor(0xd0, 0xd0, 0xd0 ) ),
