@@ -266,10 +266,10 @@ void PolarCoordinatePlane::layoutDiagrams()
             coordinateOrigin += d->contentRect.topLeft();
 
             CoordinateTransformation diagramTransposition;
-	    diagramTransposition.originTranslation = coordinateOrigin;
-	    diagramTransposition.radiusUnit = radiusUnit;
-	    diagramTransposition.angleUnit = angleUnit;
-	    diagramTransposition.zoom = ZoomParameters();
+            diagramTransposition.originTranslation = coordinateOrigin;
+            diagramTransposition.radiusUnit = radiusUnit;
+            diagramTransposition.angleUnit = angleUnit;
+            diagramTransposition.zoom = ZoomParameters();
             d->coordinateTransformations.append( diagramTransposition );
         }
 }
