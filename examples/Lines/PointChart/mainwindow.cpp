@@ -29,6 +29,7 @@
 #include <KDChartLineDiagram>
 #include <KDChartTextAttributes>
 #include <KDChartDataValueAttributes>
+#include <KDChartMarkerAttributes>
 
 
 using namespace KDChart;
@@ -119,6 +120,7 @@ void MainWindow::on_paintMarkersCB_toggled( bool checked )
     const int colCount = m_lines->model()->columnCount(m_lines->rootIndex());
     for ( int iColumn = 0; iColumn<colCount; ++iColumn ) {
         DataValueAttributes dva( m_lines->dataValueAttributes( iColumn ) );
+        QBrush lineBrush( m_lines->brush( iColumn ) );
         TextAttributes ta ( dva.textAttributes() );
         if (  paintValuesCB->isChecked() )
             ta.setVisible(  true );
@@ -158,6 +160,8 @@ void MainWindow::on_paintMarkersCB_toggled( bool checked )
             break;
         }
 
+        QPen markerPen( lineBrush.color() );
+        ma.setPen( markerPen );
         ma.setVisible(  true );
         dva.setTextAttributes( ta );
         dva.setMarkerAttributes( ma );
