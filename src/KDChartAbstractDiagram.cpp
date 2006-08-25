@@ -288,6 +288,8 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
 {
     // paint one data series
     DataValueAttributes a = dataValueAttributes(index);
+
+    // handle decimal digits
     int decimalDigits = a.decimalDigits();
     int decimalPos = QString::number(  value ).indexOf( "." );
     QString roundedValue;
@@ -296,6 +298,13 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
         roundedValue =  roundValues ( value, decimalPos, decimalDigits );
     else
         roundedValue = QString::number(  value );
+
+    // handle prefix and suffix
+    if ( !a.prefix().isNull() )
+        roundedValue.prepend( a.prefix() );
+
+    if ( !a.suffix().isNull() )
+        roundedValue.append( a.suffix() );
 
     if ( !a.isVisible() ) return;
     PainterSaver painterSaver( painter );

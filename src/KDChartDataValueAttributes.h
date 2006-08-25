@@ -145,7 +145,32 @@ public:
    * \return The number of decimal digits used.
    */
   int decimalDigits() const;
+  
+  /**
+   * Prepend a prefix to the data value text to be displayed  
+   * 
+   * \param prefix  The string to prepend.
+   */
+  void setPrefix( const QString prefix );
 
+ /**
+   * \return The string used as a prefix to the data value text.
+   */
+  QString prefix() const;
+
+  /**
+   * Append a suffix to the data value text to be displayed  
+   * 
+   * \param suffix  The string to append.
+   */
+  void setSuffix( const QString suffix );
+
+ /**
+   * \return The string used as a suffix to the data value text.
+   */
+  QString suffix() const;
+  
+  
   void setPowerOfTenDivisor( int powerOfTenDivisor );
   int powerOfTenDivisor() const;
 

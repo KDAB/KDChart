@@ -56,6 +56,8 @@ private:
     BackgroundAttributes backgroundAttributes;
     MarkerAttributes markerAttributes;
     int decimalDigits;
+    QString prefix;
+    QString suffix;
     int powerOfTenDivisor;
     bool showInfinite;
     KDChartEnums::PositionFlag negativeAnchorPos;
@@ -67,6 +69,8 @@ private:
 DataValueAttributes::Private::Private() :
     visible( false ),
     decimalDigits( KDCHART_DATA_VALUE_AUTO_DIGITS ),
+    prefix( 0 ),
+    suffix( 0 ),
     powerOfTenDivisor( 0 ),
     showInfinite( true ),
     negativeAnchorPos( KDChartEnums::PosCenter   ),
@@ -112,6 +116,8 @@ bool DataValueAttributes::operator==( const DataValueAttributes& r ) const
 	     backgroundAttributes() == r.backgroundAttributes() &&
 	     markerAttributes() == r.markerAttributes() &&
 	     decimalDigits() == r.decimalDigits() &&
+             prefix() == r.prefix() &&
+             suffix() == r.suffix() &&
 	     powerOfTenDivisor() == r.powerOfTenDivisor() &&
 	     showInfinite() == r.showInfinite() &&
 	     negativeAnchorPosition() == r.negativeAnchorPosition() &&
@@ -201,6 +207,26 @@ int DataValueAttributes::decimalDigits() const
     return d->decimalDigits;
 }
 
+void DataValueAttributes::setPrefix( const QString prefixString )
+{
+    d->prefix = prefixString;
+}
+
+QString DataValueAttributes::prefix() const
+{
+    return d->prefix;
+}
+
+void DataValueAttributes::setSuffix( const QString suffixString )
+{
+    d->suffix  = suffixString;
+}
+
+QString DataValueAttributes::suffix() const
+{
+    return d->suffix;
+}
+
 void DataValueAttributes::setPowerOfTenDivisor( int powerOfTenDivisor )
 {
     d->powerOfTenDivisor = powerOfTenDivisor;
@@ -275,7 +301,7 @@ QDebug operator<<(QDebug dbg, const KDChart::DataValueAttributes& val )
 	<< "negativeanchorposition="<<val.negativeAnchorPosition()
 	<< "positiveanchorposition="<<val.positiveAnchorPosition()
 	<< "negativerelativeposition="<<val.negativeRelativePosition()
-	<< "positiverelativeposition="<<val.positiveRelativePosition()      
+	<< "positiverelativeposition="<<val.positiveRelativePosition()
 	<<")";
     return dbg;
 }
