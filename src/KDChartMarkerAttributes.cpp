@@ -46,6 +46,7 @@ private:
     MarkerStyle markerStyle;
     QSizeF markerSize;
     QColor markerColor;
+    QPen markerPen;
 };
 
 MarkerAttributes::Private::Private()
@@ -59,6 +60,7 @@ MarkerAttributes::MarkerAttributes()
     setVisible( false );
     setMarkerStyle( MarkerSquare );
     setMarkerSize( QSizeF(10,10) );
+    setPen( QPen( Qt::black ) );
 }
 
 MarkerAttributes::MarkerAttributes( const MarkerAttributes& r )
@@ -88,7 +90,8 @@ bool MarkerAttributes::operator==( const MarkerAttributes& r ) const
 	     markerStylesMap() == r.markerStylesMap() &&
 	     markerStyle() == r.markerStyle() &&
 	     markerSize() == r.markerSize() &&
-	     markerColor() == r.markerColor() );
+	     markerColor() == r.markerColor() &&
+             pen() == r.pen() );
 }
 
 
@@ -141,6 +144,16 @@ void MarkerAttributes::setMarkerColor( const QColor& color )
 QColor MarkerAttributes::markerColor() const
 {
     return d->markerColor;
+}
+
+void MarkerAttributes::setPen( const QPen& pen )
+{
+    d->markerPen = pen;
+}
+
+QPen MarkerAttributes::pen() const
+{
+    return d->markerPen;
 }
 
 QDomDocumentFragment MarkerAttributes::toXML() const

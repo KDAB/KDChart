@@ -364,6 +364,7 @@ void AbstractDiagram::paintMarker( QPainter* painter,
                                    const QModelIndex& index,
                                    const QPointF& pos )
 {
+
     if ( !checkInvariants() ) return;
     DataValueAttributes a = dataValueAttributes(index);
     if ( !a.isVisible() ) return;
@@ -373,11 +374,9 @@ void AbstractDiagram::paintMarker( QPainter* painter,
     PainterSaver painterSaver( painter );
     QSizeF maSize( ma.markerSize() );
     QBrush indexBrush( brush( index ) );
-    QPen indexPen( pen( index ) );
-    if ( ma.markerColor().isValid() ) {
+    QPen indexPen( ma.pen() );
+    if ( ma.markerColor().isValid() )
         indexBrush.setColor( ma.markerColor() );
-        indexPen.setColor( ma.markerColor() );
-    }
 
     paintMarker( painter, ma, indexBrush, indexPen, pos, maSize );
 }
