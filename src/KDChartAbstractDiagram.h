@@ -472,6 +472,11 @@ namespace KDChart {
 
         /** This signal is emitted, when either the model or the AttributesModel is replaced. */
         void modelsChanged();
+    
+    private:
+	QString roundValues( double value, const int decimalPos, 
+			      const int decimalDigits ) const;
+	
     };
 
     typedef QList<AbstractDiagram*> AbstractDiagramList;

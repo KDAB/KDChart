@@ -289,14 +289,13 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
     // paint one data series
     DataValueAttributes a = dataValueAttributes(index);
     int decimalDigits = a.decimalDigits();
-    QString stringValue;
-
     int decimalPos = QString::number(  value ).indexOf( "." );
-    if ( decimalPos && value != 0.0 ) {
-        stringValue = QString::number( value ).leftJustified( decimalPos + 1 + decimalDigits, '.', true );
-    } else {
-        stringValue = QString::number(  value ).toInt();
-    }
+    QString roundedValue;
+
+    if ( decimalPos > 0 && value != 0 )
+        roundedValue =  roundValues ( value, decimalPos, decimalDigits );
+    else
+        roundedValue = QString::number(  value );
 
     if ( !a.isVisible() ) return;
     PainterSaver painterSaver( painter );
@@ -307,8 +306,33 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
         painter->setFont( ta.font() );
         painter->translate( pos );
         painter->rotate( ta.rotation() );
-        painter->drawText( QPointF(0, 0), stringValue );
+        painter->drawText( QPointF(0, 0), roundedValue );
     }
+}
+
+QString  AbstractDiagram::roundValues( double value,
+                                       const int decimalPos,
+                                       const int decimalDigits ) const {
+
+    QString digits( QString::number( value ).mid( decimalPos+1 ) );
+    QString num( QString::number( value ) );
+    num.truncate( decimalPos );
+    int count = 0;
+        for (  int i = digits.length(); i >= decimalDigits ; --i ) {
+            count += 1;
+            int lastval = QString( digits.data() [i] ).toInt();
+            int val = QString( digits.data() [i-1] ) .toInt();
+            if ( lastval >= 5 ) {
+                val += 1;
+                digits.replace( digits.length() - count,1 , QString::number( val ) );
+            }
+        }
+
+    digits.truncate( decimalDigits );
+    num.append( "."+ digits );
+
+    return num;
+
 }
 
 void AbstractDiagram::paintDataValueTexts( QPainter* painter )
