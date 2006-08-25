@@ -14,21 +14,27 @@ public:
 
     m_model.insertRows( 0,5, QModelIndex() );
     m_model.insertColumns( 0,5, QModelIndex() );
-
+    double increase = 1.15;
     for( int i = 0; i < 5; ++i ) {
+        increase += 0.06;
       for( int j = 0; j < 5; ++j ) {
-	m_model.setData( m_model.index( i,j,QModelIndex() ), (double)i*j );
+        m_model.setData( m_model.index( i,j,QModelIndex() ), (double)( i +
+increase )* j );
       }
     }
+
     LineDiagram* diagram = new LineDiagram;
     diagram->setModel(&m_model);
 
     // Display values
     // 1 - Call the relevant attributes
     DataValueAttributes dva( diagram->dataValueAttributes() );
+
     // 2 - We want to configure the font and colors
     //     for the data values text.
     TextAttributes ta( dva.textAttributes() );
+    dva.setDecimalDigits( 2 );
+
     //rotate if you wish
     //ta.setRotation( 0 );
     // 3 - Set up your text attributes
@@ -54,6 +60,7 @@ public:
     diagram->setPen( m_model.index( 1, 1, QModelIndex() ), linePen );
     // 3 - Assign to the chart
     m_chart.coordinatePlane()->replaceDiagram(diagram);
+    m_chart.setGlobalLeadingRight(  15 );
 
     QVBoxLayout* l = new QVBoxLayout(this);
     l->addWidget(&m_chart);
