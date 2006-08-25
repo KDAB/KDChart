@@ -146,7 +146,7 @@ void PolarCoordinatePlane::paint ( QPainter* painter )
         PaintContext ctx;
         ctx.setPainter ( painter );
         ctx.setCoordinatePlane ( this );
-        ctx.setRectangle ( d->contentRect );
+        ctx.setRectangle ( geometry() /*d->contentRect*/ );
 
         // paint the coordinate system rulers:
         d->grid->drawGrid( &ctx );

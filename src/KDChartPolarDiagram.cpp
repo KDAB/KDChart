@@ -140,14 +140,16 @@ void PolarDiagram::paintPolarMarkers( PaintContext* ctx, const QPolygonF& polygo
 
 void PolarDiagram::paint( PaintContext* ctx )
 {
-    if ( !checkInvariants() ) return;
-    const int rowCount = model()->rowCount(rootIndex());
-    const int colCount = model()->columnCount(rootIndex());
+    if ( !checkInvariants() )
+        return;
+    const int rowCount = model()->rowCount( rootIndex() );
+    const int colCount = model()->columnCount( rootIndex() );
     DataValueTextInfoList list;
-    for ( int j=0; j<colCount; ++j ) {
+
+    for ( int j=0; j < colCount; ++j ) {
         QBrush brush = qVariantValue<QBrush>( attributesModel()->headerData( j, Qt::Vertical, KDChart::DatasetBrushRole ) );
         QPolygonF polygon;
-        for ( int i=0; i<rowCount; ++i ) {
+        for ( int i=0; i < rowCount; ++i ) {
             QModelIndex index = model()->index( i, j, rootIndex() );
             const double value = model()->data( index ).toDouble();
             QPointF point = coordinatePlane()->translate( QPointF( value, i ) );
@@ -161,6 +163,7 @@ void PolarDiagram::paint( PaintContext* ctx )
         p.setColor( brush.color() ); // FIXME use DatasetPenRole
         p.setWidth( 2 );// FIXME properties
         ctx->painter()->setPen( p );
+        polygon.translate( ctx->rectangle().topLeft() );
         ctx->painter()->drawPolyline( polygon );
         paintPolarMarkers( ctx, polygon );
     }

@@ -329,14 +329,16 @@ const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries  () const
        return QPair<QPointF, QPointF> ( bottomLeft,  topRight );
 }
 
+/*
 void BarDiagram::paintEvent ( QPaintEvent*)
 {
+    qDebug() << "BarDiagram::paintEvent";
     QPainter painter ( viewport() );
     PaintContext ctx;
     ctx.setPainter ( &painter );
     ctx.setRectangle( QRectF ( 0, 0, width(), height() ) );
     paint ( &ctx );
-}
+}*/
 
 void BarDiagram::calculateValueAndGapWidths( int rowCount,int colCount,
                                              double groupWidth,
@@ -371,8 +373,8 @@ void BarDiagram::calculateValueAndGapWidths( int rowCount,int colCount,
 
 void BarDiagram::paint( PaintContext* ctx )
 {
-    if ( !checkInvariants() ) return;
-
+    if ( !checkInvariants() )
+        return;
     // Calculate width
     QPointF boundLeft, boundRight;
     QPair<QPointF,QPointF> boundaries = dataBoundaries();

@@ -111,7 +111,7 @@ protected:
     virtual double threeDItemDepth( int column ) const;
     /** \reimpl */
     const QPair<QPointF, QPointF> calculateDataBoundaries() const;
-    void paintEvent ( QPaintEvent* );
+    //void paintEvent ( QPaintEvent* );
     void resizeEvent ( QResizeEvent* );
 
 private:

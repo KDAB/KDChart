@@ -32,6 +32,7 @@
 #include <QPainter>
 #include <QPaintEvent>
 #include <QLayoutItem>
+#include <QPushButton>
 
 #include "KDChartChart.h"
 #include "KDChartChart_p.h"
@@ -129,8 +130,7 @@ void Chart::Private::layoutHeadersAndFooters()
             }
             textLayoutItems << hf;
             hf->setParentLayout( headerFooterLayout );
-            //qDebug() << "hd/ft at " << row <<"/"<<column;
-            headerFooterLayout->addItem( hf, row, column, 1, 1, hAlign|vAlign );
+            headerFooterLayout->addItem( hf, row, column, 1, 1, hAlign | vAlign );
         }
         else{
             qDebug( "Unknown header/footer position" );

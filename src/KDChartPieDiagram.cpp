@@ -187,6 +187,7 @@ void PieDiagram::paint( PaintContext* ctx )
     const int colCount = columnCount();
 
     QRectF contentsRect( buildReferenceRect( polarCoordinatePlane() ) );
+    contentsRect = ctx->rectangle();
 //    contentsRect = geometry();
 //qDebug() << contentsRect;
     if( contentsRect.isEmpty() )
