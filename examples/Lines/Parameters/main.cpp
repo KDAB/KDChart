@@ -35,6 +35,12 @@ increase )* j );
     TextAttributes ta( dva.textAttributes() );
     dva.setDecimalDigits( 2 );
 
+    // Append a prefix/suffix to the
+    // data value labels being displayed
+    //
+    //dva.setPrefix( "* " );
+    dva.setSuffix( " Ohm" );
+
     //rotate if you wish
     //ta.setRotation( 0 );
     // 3 - Set up your text attributes
@@ -60,7 +66,7 @@ increase )* j );
     diagram->setPen( m_model.index( 1, 1, QModelIndex() ), linePen );
     // 3 - Assign to the chart
     m_chart.coordinatePlane()->replaceDiagram(diagram);
-    m_chart.setGlobalLeadingRight(  15 );
+    m_chart.setGlobalLeadingRight(  20  );
 
     QVBoxLayout* l = new QVBoxLayout(this);
     l->addWidget(&m_chart);
