@@ -156,8 +156,16 @@ void Legend::paint( QPainter* painter )
 
 uint Legend::datasetCount() const
 {
-    Q_ASSERT( d->modelLabels.count() == d->modelBrushes.count() );
-    return d->modelLabels.count();
+    DiagramsObserversMap::const_iterator i = d->observers.constBegin();
+    int modelLabelsCount = 0;
+    int modelBrushesCount = 0;
+    while (i != d->observers.constEnd()) {
+        modelLabelsCount  += i.key()->datasetLabels().count();
+        modelBrushesCount += i.key()->datasetBrushes().count();
+        ++i;
+    }
+    Q_ASSERT( modelLabelsCount == modelBrushesCount );
+    return modelLabelsCount;
 }
 
 
@@ -320,37 +328,37 @@ void Legend::resetTexts()
 
 void Legend::setText( uint dataset, const QString& text )
 {
-    if( d->texts[dataset] == text ) return;
-    d->texts[dataset] = text;
+    if( d->texts[ dataset ] == text ) return;
+    d->texts[ dataset ] = text;
     setNeedRebuild();
 }
 
 QString Legend::text( uint dataset ) const
 {
     if( d->texts.find( dataset ) != d->texts.end() )
-        return d->texts[dataset];
+        return d->texts[ dataset ];
     else
         return d->modelLabels[ dataset ];
 }
 
 void Legend::setColor( uint dataset, const QColor& color )
 {
-    if( d->brushes[dataset] == color ) return;
-    d->brushes[dataset] = color;
+    if( d->brushes[ dataset ] == color ) return;
+    d->brushes[ dataset ] = color;
     setNeedRebuild();
 }
 
 void Legend::setBrush( uint dataset, const QBrush& brush )
 {
-    if( d->brushes[dataset] == brush ) return;
-    d->brushes[dataset] = brush;
+    if( d->brushes[ dataset ] == brush ) return;
+    d->brushes[ dataset ] = brush;
     setNeedRebuild();
 }
 
 QBrush Legend::brush( uint dataset ) const
 {
     if( d->brushes.find( dataset ) != d->brushes.end() )
-        return d->brushes[dataset];
+        return d->brushes[ dataset ];
     else
         return d->modelBrushes[ dataset ];
 }
@@ -361,8 +369,8 @@ void Legend::setBrushesFromDiagram( KDChart::AbstractDiagram* diagram )
     bool bChangesDone = false;
     QList<QBrush> datasetBrushes = diagram->datasetBrushes();
     for( int i = 0; i < datasetBrushes.count(); i++ ){
-        if( d->brushes[i] != datasetBrushes[i] ){
-            d->brushes[i]  = datasetBrushes[i];
+        if( d->brushes[ i ] != datasetBrushes[ i ] ){
+            d->brushes[ i ]  = datasetBrushes[ i ];
             bChangesDone = true;
         }
     }
@@ -478,8 +486,8 @@ void Legend::setRainbowColors()
     setColor(  5, Qt::cyan );
     setColor(  6, QColor( 96, 96,255) );
     setColor(  7, QColor(160,  0,255) );
-    for( int i=8; i<16; ++i )
-        setColor( i, brush(i-8).color().light() );
+    for( int i = 8; i < 16; ++i )
+        setColor( i, brush( i - 8 ).color().light() );
 }
 
 void Legend::setSubduedColors( bool ordered )
