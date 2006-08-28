@@ -292,7 +292,7 @@ void Widget::takeHeaderFooter( HeaderFooter* header )
 /**
  * Returns the first of all legends.
  */
-KDChart::Legend* Widget::firstLegend() const
+KDChart::Legend* Widget::legend() const
 {
     return d->m_chart->legend();
 }

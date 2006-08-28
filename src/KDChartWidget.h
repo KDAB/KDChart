@@ -152,7 +152,7 @@ namespace KDChart {
         void takeHeaderFooter( HeaderFooter* header );
 
         /** Returns the first of all legends. */
-        KDChart::Legend* firstLegend() const;
+        KDChart::Legend* legend() const;
         /** Returns a list with all legends. */
         const QList<KDChart::Legend*> allLegends() const;
         /** Returns the count over all legends. */
