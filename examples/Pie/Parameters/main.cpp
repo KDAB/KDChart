@@ -52,7 +52,6 @@ public:
 
         // Display data values
         // not implemented yet - disable for now
-        /*
         const QFont font(QFont( "Comic", 10 ));
         const int colCount = diagram->model()->columnCount();
         for ( int iColumn = 0; iColumn<colCount; ++iColumn ) {
@@ -66,7 +65,7 @@ public:
             dva.setVisible( true );
             diagram->setDataValueAttributes( iColumn, dva);
         }
-        */
+
 
         // Assign our diagram to the Chart
         m_chart.coordinatePlane()->replaceDiagram(diagram);
