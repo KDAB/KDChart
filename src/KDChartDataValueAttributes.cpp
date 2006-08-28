@@ -58,6 +58,7 @@ private:
     int decimalDigits;
     QString prefix;
     QString suffix;
+    QString dataLabel;
     int powerOfTenDivisor;
     bool showInfinite;
     KDChartEnums::PositionFlag negativeAnchorPos;
@@ -71,6 +72,7 @@ DataValueAttributes::Private::Private() :
     decimalDigits( KDCHART_DATA_VALUE_AUTO_DIGITS ),
     prefix( 0 ),
     suffix( 0 ),
+    dataLabel( 0 ),
     powerOfTenDivisor( 0 ),
     showInfinite( true ),
     negativeAnchorPos( KDChartEnums::PosCenter   ),
@@ -118,6 +120,7 @@ bool DataValueAttributes::operator==( const DataValueAttributes& r ) const
 	     decimalDigits() == r.decimalDigits() &&
              prefix() == r.prefix() &&
              suffix() == r.suffix() &&
+             dataLabel() == r.dataLabel() &&
 	     powerOfTenDivisor() == r.powerOfTenDivisor() &&
 	     showInfinite() == r.showInfinite() &&
 	     negativeAnchorPosition() == r.negativeAnchorPosition() &&
@@ -225,6 +228,16 @@ void DataValueAttributes::setSuffix( const QString suffixString )
 QString DataValueAttributes::suffix() const
 {
     return d->suffix;
+}
+
+void DataValueAttributes::setDataLabel( const QString label )
+{
+    d->dataLabel =  label;
+}
+
+QString DataValueAttributes::dataLabel() const
+{
+    return d->dataLabel;
 }
 
 void DataValueAttributes::setPowerOfTenDivisor( int powerOfTenDivisor )

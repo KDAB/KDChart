@@ -135,14 +135,14 @@ public:
   MarkerAttributes markerAttributes() const;
 
   /**
-   * Set how  many decimal digits to use when rendering the data value
-   * labels.
+   * Set how  many decimal digits to display when rendering the data value
+   * labels. If there are no decimal digits it will not be displayed.
    * \param digits The number of decimal digits to use.
    */
   void setDecimalDigits( int digits );
 
   /**
-   * \return The number of decimal digits used.
+   * \return The number of decimal digits displayed.
    */
   int decimalDigits() const;
   
@@ -170,6 +170,18 @@ public:
    */
   QString suffix() const;
   
+/**
+ *\display a string label instead of the original data value label
+ *
+ *\param label: the string to be displayed.
+ */
+  void setDataLabel( const QString label );
+
+ /**
+   * \return The string to be displayed instead of the data value text.
+   */
+  QString dataLabel() const;
+
   
   void setPowerOfTenDivisor( int powerOfTenDivisor );
   int powerOfTenDivisor() const;

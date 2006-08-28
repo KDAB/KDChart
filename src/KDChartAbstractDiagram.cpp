@@ -293,13 +293,14 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
     int decimalDigits = a.decimalDigits();
     int decimalPos = QString::number(  value ).indexOf( "." );
     QString roundedValue;
-
-    if ( decimalPos > 0 && value != 0 )
-        roundedValue =  roundValues ( value, decimalPos, decimalDigits );
-    else
-        roundedValue = QString::number(  value );
-
-    // handle prefix and suffix
+    if ( a.dataLabel().isNull() ) {
+        if ( decimalPos > 0 && value != 0 )
+            roundedValue =  roundValues ( value, decimalPos, decimalDigits );
+        else
+            roundedValue = QString::number(  value );
+    } else
+        roundedValue = a.dataLabel();
+        // handle prefix and suffix
     if ( !a.prefix().isNull() )
         roundedValue.prepend( a.prefix() );
 
