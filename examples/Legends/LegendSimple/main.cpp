@@ -51,12 +51,12 @@ int main( int argc, char** argv ) {
     widget.setDataset( 2, vec2, "v2" );
     widget.setType( Widget::Bar );
     widget.addLegend(Position::North);
-    widget.firstLegend()->setOrientation( Qt::Horizontal );
-    widget.firstLegend()->setTitleText( "Bars Legend" );
-    widget.firstLegend()->setText( 0,  "Vector 1" );
-    widget.firstLegend()->setText( 1,  "Vector 2" );
-    widget.firstLegend()->setText( 2,  "Vector 3" );
-    widget.firstLegend()->setShowLines(  true );
+    widget.legend()->setOrientation( Qt::Horizontal );
+    widget.legend()->setTitleText( "Bars Legend" );
+    widget.legend()->setText( 0,  "Vector 1" );
+    widget.legend()->setText( 1,  "Vector 2" );
+    widget.legend()->setText( 2,  "Vector 3" );
+    widget.legend()->setShowLines(  true );
 
 
     widget.show();
