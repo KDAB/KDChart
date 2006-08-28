@@ -390,16 +390,17 @@ QPen Legend::pen( uint dataset ) const
 void Legend::setMarkerAttributes( uint dataset, const MarkerAttributes& markerAttributes )
 {
     if( d->markerAttributes[dataset] == markerAttributes ) return;
-    d->markerAttributes[dataset] = markerAttributes;
+    d->markerAttributes[ dataset ] = markerAttributes;
     setNeedRebuild();
 }
 
 MarkerAttributes Legend::markerAttributes( uint dataset ) const
 {
     if( d->markerAttributes.find( dataset ) != d->markerAttributes.end() )
-        return d->markerAttributes[dataset];
-    else
+        return d->markerAttributes[ dataset ];
+    else if ( static_cast<uint>( d->modelMarkers.count() ) > dataset )
         return d->modelMarkers[ dataset ];
+    return MarkerAttributes();
 }
 
 void Legend::setTextAttributes( const TextAttributes &a )
