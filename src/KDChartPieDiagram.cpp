@@ -355,7 +355,9 @@ void PieDiagram::paint( PaintContext* ctx )
         }
         // When we get here, we can just draw the pie and proceed.
         drawOnePie( ctx->painter(), 0, currentpie, granularity, sizeFor3DEffect );
-
+        //qDebug() << " currentpie = " << currentpie;
+        //qDebug() << "cellValue" << cellValue;
+        //qDebug() << "currentValue" << currentValue;
         // Mark the pie just drawn as done.
         donelist.append( currentpie );
 
@@ -405,8 +407,9 @@ void PieDiagram::drawOnePie( QPainter* painter,
             mustDeleteRegion = true;
         }
 */
-        const PieAttributes attrs( pieAttributes( model()->index( 0, pie, rootIndex() ) ) );
-        const ThreeDPieAttributes threeDAttrs( threeDPieAttributes( model()->index( 0, pie, rootIndex() ) ) );
+        QModelIndex index( model()->index( 0, pie, rootIndex() ) );
+        const PieAttributes attrs( pieAttributes( index ) );
+        const ThreeDPieAttributes threeDAttrs( threeDPieAttributes( index ) );
 
         QRectF drawPosition( d->position );
 
@@ -498,10 +501,12 @@ void PieDiagram::drawOnePie( QPainter* painter,
                 poly[ iPoint ] = drawPosition.center();
 //qDebug() << "center:" << poly[ iPoint ];
             }
-
 //qDebug() << "a";
+            //find the value and paint it
+            //fix value position
+            const qreal sum = valueTotals();
             painter->drawPolygon( poly );
-
+            paintDataValueText( painter, index, poly.boundingRect().center(),angleLen*sum / 360  );
 
 //if( bHelp ){
 //              painter->drawPolyline( collect );
