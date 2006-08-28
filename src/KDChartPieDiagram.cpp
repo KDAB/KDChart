@@ -483,16 +483,19 @@ void PieDiagram::drawOnePie( QPainter* painter,
             qreal degree=0.0;
             int iPoint = 0;
             bool perfectMatch = false;
+
             while ( degree <= angleLen ){
                 poly[ iPoint ] = pointOnCircle( drawPosition, startAngle + degree );
-//qDebug() << degree << angleLen << poly[ iPoint ];
+                //qDebug() << degree << angleLen << poly[ iPoint ];
                 perfectMatch = (degree == angleLen);
                 degree += granularity;
                 ++iPoint;
             }
+            int last = poly.size();
             // if necessary add one more point to fill the last small gap
             if( ! perfectMatch ){
                 poly[ iPoint ] = pointOnCircle( drawPosition, startAngle + angleLen );
+
 //qDebug() << "adding" << poly[ iPoint ];
                 // add the center point of the piece
                 poly.append( drawPosition.center() );
@@ -506,10 +509,17 @@ void PieDiagram::drawOnePie( QPainter* painter,
             //fix value position
             const qreal sum = valueTotals();
             painter->drawPolygon( poly );
-            paintDataValueText( painter, index, poly.boundingRect().center(),angleLen*sum / 360  );
+
+            QLineF centerLine(  drawPosition.center(),
+                            QPointF( (poly[ last - 2].x() + poly.first().x())/2,
+                                     ( poly.first().y() + poly[last-2].y() )/2 ) );
+            QPointF valuePos( ( centerLine.x1() + centerLine.x2() )/2,
+                                  ( centerLine.y1() + centerLine.y2() )/2 ) ;
+
+            paintDataValueText( painter, index, valuePos, angleLen*sum / 360  );
 
 //if( bHelp ){
-//              painter->drawPolyline( collect );
+                            //painter->drawPolyline( collect );
 //bHelp=false;
 //}
 
