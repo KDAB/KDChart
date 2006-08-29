@@ -155,7 +155,11 @@ void CartesianAxis::paint( QPainter* painter )
             //QPointF(0, 0),
             QPointF(rect.left(), rect.top()),
             QSizeF(rect.width(), rect.height() ) ) );
+    // enabling clipping so that we're not drawing outside
+    QRegion clipRegion( rect );
+    painter->setClipRegion( clipRegion );
     paintCtx( &ctx );
+    painter->setClipping( false );
     //qDebug() << "KDChart::CartesianAxis::paint() done.";
 }
 

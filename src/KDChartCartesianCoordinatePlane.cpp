@@ -99,6 +99,13 @@ void CartesianCoordinatePlane::paint ( QPainter* painter )
         const QRectF drawArea( drawingArea() );
         ctx.setRectangle ( drawArea );
 
+        // enabling clipping so that we're not drawing outside
+        QRect clipRect = drawArea.toRect();
+        clipRect.setTopLeft( clipRect.topLeft() - QPoint( 1, 1 ) );
+        clipRect.setBottomRight( clipRect.bottomRight() + QPoint( 1, 1 ) );
+        QRegion clipRegion( clipRect );
+        painter->setClipRegion( clipRegion );
+
         // paint the coordinate system rulers:
         d->grid->drawGrid( &ctx );
 
@@ -108,6 +115,10 @@ void CartesianCoordinatePlane::paint ( QPainter* painter )
             PainterSaver painterSaver( painter );
             diags[i]->paint ( &ctx );
         }
+
+        // and disable clipping afterwards
+        painter->setClipping( false );
+
         //for debugging:
         //    painter->drawRect( drawArea.adjusted(4,4,4,4) );
         //    painter->drawRect( drawArea.adjusted(2,2,2,2) );
