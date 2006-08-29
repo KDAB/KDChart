@@ -39,7 +39,7 @@ public:
     m_chart.addLegend( legend );
 
     // Configure the items markers
-    MarkerAttributes lma;
+    MarkerAttributes lma ( legend->markerAttributes( 0 ) );
     lma.setMarkerStyle( MarkerAttributes::MarkerDiamond );
     legend->setMarkerAttributes( 0,  lma );
     lma.setMarkerStyle( MarkerAttributes::MarkerCircle );
