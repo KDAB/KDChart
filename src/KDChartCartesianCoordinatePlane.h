@@ -174,7 +174,7 @@ namespace KDChart {
         enum AxesCalcMode { Linear, Logarithmic };
 
         AxesCalcMode axesCalcMode() const;
-	void setAxesCalcMode( AxesCalcMode mode );
+        void setAxesCalcMode( AxesCalcMode mode );
 
         /** reimpl */
         virtual void paint( QPainter* );
