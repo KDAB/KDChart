@@ -334,10 +334,10 @@ void Legend::setText( uint dataset, const QString& text )
 QString Legend::text( uint dataset ) const
 {
     if( d->texts.find( dataset ) != d->texts.end() ){
-        qDebug() << "Legend::text(" << dataset << ") returning d->texts[" << dataset << "] :" << d->texts[ dataset ];
+        //qDebug() << "Legend::text(" << dataset << ") returning d->texts[" << dataset << "] :" << d->texts[ dataset ];
         return d->texts[ dataset ];
     }else{
-        qDebug() << "Legend::text(" << dataset << ") returning d->modelLabels[" << dataset << "] :" << d->modelLabels[ dataset ];
+        //qDebug() << "Legend::text(" << dataset << ") returning d->modelLabels[" << dataset << "] :" << d->modelLabels[ dataset ];
         return d->modelLabels[ dataset ];
     }
 }
@@ -567,7 +567,7 @@ void Legend::buildLegend()
     d->modelMarkers.clear();
     for (int i = 0; i < d->observers.size(); ++i){
         const AbstractDiagram* diagram = d->observers.at(i)->diagram();
-        qDebug() << "Legend::buildLegend() adding to d->modelLabels :" << diagram->datasetLabels();
+        //qDebug() << "Legend::buildLegend() adding to d->modelLabels :" << diagram->datasetLabels();
         d->modelLabels  += diagram->datasetLabels();
         d->modelBrushes += diagram->datasetBrushes();
         d->modelPens    += diagram->datasetPens();
