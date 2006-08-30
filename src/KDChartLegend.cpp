@@ -156,13 +156,12 @@ void Legend::paint( QPainter* painter )
 
 uint Legend::datasetCount() const
 {
-    DiagramsObserversMap::const_iterator i = d->observers.constBegin();
     int modelLabelsCount = 0;
     int modelBrushesCount = 0;
-    while (i != d->observers.constEnd()) {
-        modelLabelsCount  += i.key()->datasetLabels().count();
-        modelBrushesCount += i.key()->datasetBrushes().count();
-        ++i;
+    for (int i = 0; i < d->observers.size(); ++i) {
+        DiagramObserver * obs = d->observers.at(i);
+        modelLabelsCount  += obs->diagram()->datasetLabels().count();
+        modelBrushesCount += obs->diagram()->datasetBrushes().count();
     }
     Q_ASSERT( modelLabelsCount == modelBrushesCount );
     return modelLabelsCount;
@@ -186,17 +185,14 @@ AbstractDiagram* Legend::diagram() const
 {
     if( d->observers.isEmpty() )
         return 0;
-    return d->observers.constBegin().key();
+    return d->observers.first()->diagram();
 }
 
 DiagramList Legend::diagrams() const
 {
     DiagramList list;
-    DiagramsObserversMap::const_iterator i = d->observers.constBegin();
-    while (i != d->observers.constEnd()) {
-        list << i.key();
-        ++i;
-    }
+    for (int i = 0; i < d->observers.size(); ++i)
+        list << d->observers.at(i)->diagram();
     return list;
 }
 
@@ -204,10 +200,15 @@ void Legend::addDiagram( AbstractDiagram* newDiagram )
 {
     if ( newDiagram )
     {
-        if ( d->observers.contains( newDiagram ) )
-            delete d->observers[ newDiagram ];
         DiagramObserver* observer = new DiagramObserver( *newDiagram, this );
-        d->observers[ newDiagram ] = observer;
+
+        DiagramObserver* oldObs = d->findObserverForDiagram( newDiagram );
+        if( oldObs ){
+            delete oldObs;
+            d->observers[ d->observers.indexOf( oldObs ) ] = observer;
+        }else{
+            d->observers.append( observer );
+        }
         connect( observer, SIGNAL( diagramDestroyed(AbstractDiagram*) ),
                         SLOT( resetDiagram(AbstractDiagram*) ));
         connect( observer, SIGNAL( diagramDataChanged(AbstractDiagram*) ),
@@ -221,10 +222,10 @@ void Legend::addDiagram( AbstractDiagram* newDiagram )
 void Legend::removeDiagram( AbstractDiagram* oldDiagram )
 {
     if( oldDiagram ){
-        if ( d->observers.contains( oldDiagram ) )
-        {
-            delete d->observers[ oldDiagram ];
-            d->observers.remove( oldDiagram );
+        DiagramObserver* oldObs = d->findObserverForDiagram( oldDiagram );
+        if( oldObs ){
+            delete oldObs;
+            d->observers.removeAt( d->observers.indexOf( oldObs ) );
         }
         setNeedRebuild();
     }
@@ -232,11 +233,8 @@ void Legend::removeDiagram( AbstractDiagram* oldDiagram )
 
 void Legend::removeDiagrams()
 {
-    DiagramsObserversMap::const_iterator i = d->observers.constBegin();
-    while (i != d->observers.constEnd()) {
-        removeDiagram( i.key() );
-        ++i;
-    }
+    for (int i = 0; i < d->observers.size(); ++i)
+        removeDiagram( d->observers.at(i)->diagram() );
 }
 
 void Legend::replaceDiagram( AbstractDiagram* newDiagram,
@@ -244,7 +242,7 @@ void Legend::replaceDiagram( AbstractDiagram* newDiagram,
 {
     KDChart::AbstractDiagram* old = oldDiagram;
     if( ! d->observers.isEmpty() && ! old )
-        old = d->observers.constBegin().key();
+        old = d->observers.first()->diagram();
     if( old )
         removeDiagram( old );
     if( newDiagram )
@@ -335,10 +333,13 @@ void Legend::setText( uint dataset, const QString& text )
 
 QString Legend::text( uint dataset ) const
 {
-    if( d->texts.find( dataset ) != d->texts.end() )
+    if( d->texts.find( dataset ) != d->texts.end() ){
+        qDebug() << "Legend::text(" << dataset << ") returning d->texts[" << dataset << "] :" << d->texts[ dataset ];
         return d->texts[ dataset ];
-    else
+    }else{
+        qDebug() << "Legend::text(" << dataset << ") returning d->modelLabels[" << dataset << "] :" << d->modelLabels[ dataset ];
         return d->modelLabels[ dataset ];
+    }
 }
 
 void Legend::setColor( uint dataset, const QColor& color )
@@ -564,13 +565,13 @@ void Legend::buildLegend()
     d->modelBrushes.clear();
     d->modelPens.clear();
     d->modelMarkers.clear();
-    DiagramsObserversMap::const_iterator i = d->observers.constBegin();
-    while (i != d->observers.constEnd()) {
-        d->modelLabels  += i.key()->datasetLabels();
-        d->modelBrushes += i.key()->datasetBrushes();
-        d->modelPens    += i.key()->datasetPens();
-        d->modelMarkers += i.key()->datasetMarkers();
-        ++i;
+    for (int i = 0; i < d->observers.size(); ++i){
+        const AbstractDiagram* diagram = d->observers.at(i)->diagram();
+        qDebug() << "Legend::buildLegend() adding to d->modelLabels :" << diagram->datasetLabels();
+        d->modelLabels  += diagram->datasetLabels();
+        d->modelBrushes += diagram->datasetBrushes();
+        d->modelPens    += diagram->datasetPens();
+        d->modelMarkers += diagram->datasetMarkers();
     }
     Q_ASSERT( d->modelLabels.count() == d->modelBrushes.count() );
 

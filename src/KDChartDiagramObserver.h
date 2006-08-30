@@ -22,7 +22,7 @@
  ** licensing are not clear to you.
  **
  **********************************************************************/
-#ifndef __KDCHARTDIAGRAMOBSERVER_H__
+#ifndef __KDCHARTDIAGRAMOBSERVER_H_
 #define __KDCHARTDIAGRAMOBSERVER_H_
 
 #include <QObject>
@@ -44,6 +44,9 @@ namespace KDChart {
          * Constructs a new observer observing the given diagram.
          */
         DiagramObserver( AbstractDiagram& diagram, QObject* parent = NULL );
+
+        const AbstractDiagram* diagram() const;
+        AbstractDiagram* diagram();
 
     signals:
         /** This signal is emitted immediately before the diagram is

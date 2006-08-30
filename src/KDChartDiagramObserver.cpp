@@ -43,6 +43,16 @@ namespace KDChart {
        connect( &m_diagram, SIGNAL(modelsChanged()), SLOT(modelsChanged()));
     }
 
+    const AbstractDiagram* DiagramObserver::diagram() const
+    {
+        return &m_diagram;
+    }
+
+    AbstractDiagram* DiagramObserver::diagram()
+    {
+        return &m_diagram;
+    }
+
     void DiagramObserver::init()
     {
         if( !m_model.isNull() ) {

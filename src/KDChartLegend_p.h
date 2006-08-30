@@ -38,10 +38,11 @@
 //
 
 #include "KDChartLegend.h"
+#include <KDChartDiagramObserver.h>
 #include "KDChartAbstractAreaWidget_p.h"
 #include <KDChartTextAttributes.h>
 #include <KDChartMarkerAttributes.h>
-#include <QMap>
+#include <QList>
 #include <QAbstractTextDocumentLayout>
 #include <QPainter>
 #include <QVector>
@@ -58,7 +59,7 @@ namespace KDChart {
     class DiagramObserver;
     class AbstractLayoutItem;
 
-    class DiagramsObserversMap : public QMap<AbstractDiagram*, DiagramObserver*> {};
+    class DiagramsObserversList : public QList<DiagramObserver*> {};
 }
 
 using KDChart::AbstractDiagram;
@@ -72,6 +73,16 @@ class KDChart::Legend::Private : public AbstractAreaWidget::Private
 public:
     Private();
     ~Private();
+
+    DiagramObserver* findObserverForDiagram( AbstractDiagram* diagram )
+    {
+        for (int i = 0; i < observers.size(); ++i) {
+            DiagramObserver * obs = observers.at(i);
+            if( obs->diagram() == diagram )
+                return obs;
+        }
+        return 0;
+    }
 
 private:
     // user-settable
@@ -98,7 +109,7 @@ private:
     //QVector<KDChart::AbstractLayoutItem*> layoutItems;
     QVector<KDChart::AbstractLayoutItem*> layoutItems;
     QGridLayout* layout;
-    DiagramsObserversMap observers;
+    DiagramsObserversList observers;
     bool needRebuild; // set to TRUE by all of the Legend's setter functions
 };
 
