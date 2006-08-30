@@ -284,10 +284,10 @@ void PieDiagram::paint( PaintContext* ctx )
         return;
 
 
-    // Find the backmost pie which is at +90Â° and needs to be drawn
+    // Find the backmost pie which is at +90° and needs to be drawn
     // first
     int backmostpie = findPieAt( 90, colCount );
-    // Find the frontmost pie (at -90Â°/+270Â°) that should be drawn last
+    // Find the frontmost pie (at -90°/+270°) that should be drawn last
     int frontmostpie = findPieAt( 270, colCount );
     // and put the backmost pie on the TODO stack to initialize it,
     // but only if it is not the frontmostpie
@@ -891,8 +891,11 @@ uint PieDiagram::findPieAt( qreal angle, int colCount )
     }
 
     // If we have not found it, try wrap around
-    //return findPieAt( angle + 360, colCount );
-return 0;
+    // but only if the current searched angle is < 360 degree
+    if ( angle < 360 )
+        return findPieAt( angle + 360, colCount );
+    // otherwise - what ever went wrong - we return 0
+    return 0;
 }
 
 
