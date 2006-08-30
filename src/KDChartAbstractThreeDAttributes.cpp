@@ -37,7 +37,6 @@ using namespace KDChart;
 
 AbstractThreeDAttributes::Private::Private()
     : enabled( false ),
-      height( 20 ),
       depth( 20 )
 {
 }
@@ -72,7 +71,6 @@ AbstractThreeDAttributes::~AbstractThreeDAttributes()
 bool AbstractThreeDAttributes::operator==( const AbstractThreeDAttributes& r ) const
 {
     if( isEnabled() == r.isEnabled() &&
-        height() == r.height() &&
         depth() == r.depth() )
         return true;
     else
@@ -93,16 +91,6 @@ void AbstractThreeDAttributes::setEnabled( bool enabled )
 bool AbstractThreeDAttributes::isEnabled() const
 {
     return d->enabled;
-}
-
-void AbstractThreeDAttributes::setHeight( int pixels )
-{
-    d->height = pixels;
-}
-
-int AbstractThreeDAttributes::height() const
-{
-    return d->height;
 }
 
 void AbstractThreeDAttributes::setDepth( double depth )
@@ -129,4 +117,3 @@ QDomDocumentFragment AbstractThreeDAttributes::toXML() const
     qWarning( "Sorry, not implemented: AbstractThreeDAttributes::toXML()" );
     return QDomDocumentFragment();
 }
-

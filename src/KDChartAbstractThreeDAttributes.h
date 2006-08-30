@@ -47,9 +47,6 @@ public:
 
     void setEnabled( bool enabled );
     bool isEnabled() const;
-    /*PENDING(michel) What do we use height attribute for?*/
-    void setHeight( int pixels );
-    int height() const;
 
     void setDepth( double depth );
     double depth() const;
