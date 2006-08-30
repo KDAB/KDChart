@@ -70,9 +70,6 @@ private:
 DataValueAttributes::Private::Private() :
     visible( false ),
     decimalDigits( KDCHART_DATA_VALUE_AUTO_DIGITS ),
-    prefix( 0 ),
-    suffix( 0 ),
-    dataLabel( 0 ),
     powerOfTenDivisor( 0 ),
     showInfinite( true ),
     negativeAnchorPos( KDChartEnums::PosCenter   ),
