@@ -147,7 +147,7 @@ void MainWindow::on_threeDFactorSB_valueChanged( int factor )
     //       automatically to return the default settings.
     ThreeDPieAttributes attrs( m_pie->threeDPieAttributes() );
     attrs.setEnabled( threeDGB->isChecked() );
-    attrs.setDepth( factor );
+    attrs.setHeight( factor );
     m_pie->setThreeDPieAttributes( attrs );
     m_chart->update();
 }
