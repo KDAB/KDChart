@@ -544,7 +544,7 @@ void Legend::buildLegend()
     //qDebug() << "entering Legend::buildLegend()";
     if( ! d->needRebuild ) {
         // Note: we *need* to send positionChanged, or layout may become wrong
-        emit positionChanged( this );
+        //emit positionChanged( this );
         return;
     }
     d->needRebuild = false;
