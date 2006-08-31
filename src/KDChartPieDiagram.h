@@ -88,9 +88,17 @@ private:
         const QRectF& rect,
         qreal threeDHeight,
         qreal angle );
+    void drawUpperBrinkEffect( QPainter* painter,
+        const QRectF& rect,
+        qreal angle );
     void drawArcEffectSegment( QPainter* painter,
         const QRectF& rect,
         qreal threeDHeight,
+        qreal startAngle,
+        qreal endAngle,
+        qreal granularity );
+    void drawArcUpperBrinkEffectSegment( QPainter* painter,
+        const QRectF& rect,
         qreal startAngle,
         qreal endAngle,
         qreal granularity );

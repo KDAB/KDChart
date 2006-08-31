@@ -424,14 +424,9 @@ void PieDiagram::drawOnePie( QPainter* painter,
         }else{
             drawPosition = d->position;
         }
-        // The 3D effect needs to be drawn first because it could
-        // otherwise partly hide the pie itself.
-        draw3DEffect( painter,
-            drawPosition, dataset, pie,
-            granularity,
-            threeDAttrs,
-            attrs.explode() );
 
+        const QBrush oldBrush = painter->brush();
+        const QPen oldPen = painter->pen();
         const QBrush brush = qVariantValue<QBrush>( attributesModel()->headerData( pie, Qt::Vertical, KDChart::DatasetBrushRole ) );
         const QPen pen = qVariantValue<QPen>( attributesModel()->headerData( pie, Qt::Vertical, KDChart::DatasetPenRole ) );
         PainterSaver painterSaver( painter );
@@ -576,6 +571,16 @@ void PieDiagram::drawOnePie( QPainter* painter,
         }
 //        if( mustDeleteRegion )
 //            delete region;
+
+        // after all, we draw maybe some nice 3D
+        painter->setBrush( oldBrush );
+        painter->setPen( oldPen );
+        draw3DEffect( painter,
+            drawPosition, dataset, pie,
+            granularity,
+            threeDAttrs,
+            attrs.explode() );
+
     }
 }
 
@@ -638,10 +643,12 @@ void PieDiagram::draw3DEffect( QPainter* painter,
                 /// starts and ends in first quadrant, less than 1/4
                 drawStraightEffectSegment( painter, drawPosition,
                     threeDAttrs.depth(), startAngle );
+                drawUpperBrinkEffect( painter, drawPosition, endAngle );
             } else {
                 /// starts and ends in first quadrant, more than 3/4
                 drawStraightEffectSegment( painter, drawPosition,
                     threeDAttrs.depth(), startAngle );
+                drawUpperBrinkEffect( painter, drawPosition, endAngle );
                 drawArcEffectSegment( painter, drawPosition,
                     threeDAttrs.depth(),
                     180, 360, granularity );
@@ -667,6 +674,7 @@ void PieDiagram::draw3DEffect( QPainter* painter,
             /// more than 3/4
             drawStraightEffectSegment( painter, drawPosition,
                 threeDAttrs.depth(), startAngle );
+            drawUpperBrinkEffect( painter, drawPosition, endAngle );
             drawArcEffectSegment( painter, drawPosition,
                 threeDAttrs.depth(),
                 180, endAngle, granularity );
@@ -676,17 +684,21 @@ void PieDiagram::draw3DEffect( QPainter* painter,
             drawArcEffectSegment( painter, drawPosition,
                 threeDAttrs.depth(),
                 180, 360, granularity );
+            drawUpperBrinkEffect( painter, drawPosition, startAngle );
+            drawUpperBrinkEffect( painter, drawPosition, endAngle );
         } else if ( endAngle <= 180 ) {
             if ( startAngle <= endAngle ) {
                 /// starts in second quadrant, ends in second
                 /// quadrant, less than 1/4
                 drawStraightEffectSegment( painter, drawPosition,
                     threeDAttrs.depth(), endAngle );
+                drawUpperBrinkEffect( painter, drawPosition, startAngle );
             } else {
                 /// starts in second quadrant, ends in second
                 /// quadrant, more than 1/4
                 drawStraightEffectSegment( painter, drawPosition,
                     threeDAttrs.depth(), endAngle );
+                drawUpperBrinkEffect( painter, drawPosition, startAngle );
                 drawArcEffectSegment( painter, drawPosition,
                     threeDAttrs.depth(),
                     180, 360, granularity );
@@ -694,6 +706,7 @@ void PieDiagram::draw3DEffect( QPainter* painter,
         } else if ( endAngle <= 270 ) {
             drawStraightEffectSegment( painter, drawPosition,
                 threeDAttrs.depth(), endAngle );
+            drawUpperBrinkEffect( painter, drawPosition, startAngle );
             drawArcEffectSegment( painter, drawPosition,
                 threeDAttrs.depth(),
                 180, endAngle, granularity );
@@ -701,15 +714,20 @@ void PieDiagram::draw3DEffect( QPainter* painter,
             drawArcEffectSegment( painter, drawPosition,
                 threeDAttrs.depth(),
                 180, endAngle, granularity );
+            drawUpperBrinkEffect( painter, drawPosition, startAngle );
+            drawUpperBrinkEffect( painter, drawPosition, endAngle );
         }
     } else if ( startAngle <= 270 ) {
         if ( endAngle <= 90 ) {
             drawArcEffectSegment( painter, drawPosition,
                 threeDAttrs.depth(),
                 startAngle, 360, granularity );
+            drawUpperBrinkEffect( painter, drawPosition, startAngle );
+            drawUpperBrinkEffect( painter, drawPosition, endAngle );
         } else if ( endAngle <= 180 ) {
             drawStraightEffectSegment( painter, drawPosition,
                 threeDAttrs.depth(), endAngle );
+            drawUpperBrinkEffect( painter, drawPosition, startAngle );
             drawArcEffectSegment( painter, drawPosition,
                 threeDAttrs.depth(),
                 startAngle, 360, granularity );
@@ -719,6 +737,7 @@ void PieDiagram::draw3DEffect( QPainter* painter,
                 /// less than 1/4
                 drawStraightEffectSegment( painter, drawPosition,
                     threeDAttrs.depth(), endAngle );
+                drawUpperBrinkEffect( painter, drawPosition, startAngle );
                 drawArcEffectSegment( painter, drawPosition,
                     threeDAttrs.depth(),
                     startAngle, endAngle, granularity );
@@ -727,6 +746,7 @@ void PieDiagram::draw3DEffect( QPainter* painter,
                 /// more than 3/4
                 drawStraightEffectSegment( painter, drawPosition,
                     threeDAttrs.depth(), endAngle );
+                drawUpperBrinkEffect( painter, drawPosition, startAngle );
                 drawArcEffectSegment( painter, drawPosition,
                     threeDAttrs.depth(),
                     180, endAngle, granularity );
@@ -738,11 +758,14 @@ void PieDiagram::draw3DEffect( QPainter* painter,
             drawArcEffectSegment( painter, drawPosition,
                 threeDAttrs.depth(),
                 startAngle, endAngle, granularity );
+            drawUpperBrinkEffect( painter, drawPosition, startAngle );
+            drawUpperBrinkEffect( painter, drawPosition, endAngle );
         }
     } else { // 270*16 < startAngle < 360*16
         if ( endAngle <= 90 ) {
             drawStraightEffectSegment( painter, drawPosition,
                 threeDAttrs.depth(), startAngle );
+            drawUpperBrinkEffect( painter, drawPosition, endAngle );
             drawArcEffectSegment( painter, drawPosition,
                 threeDAttrs.depth(),
                 startAngle, 360, granularity );
@@ -771,6 +794,7 @@ void PieDiagram::draw3DEffect( QPainter* painter,
                 /// quadrant, less than 1/4
                 drawStraightEffectSegment( painter, drawPosition,
                     threeDAttrs.depth(), startAngle );
+                drawUpperBrinkEffect( painter, drawPosition, endAngle );
                 drawArcEffectSegment( painter, drawPosition,
                     threeDAttrs.depth(),
                     startAngle, endAngle, granularity );
@@ -779,6 +803,7 @@ void PieDiagram::draw3DEffect( QPainter* painter,
                 /// quadrant, more than 3/4
                 drawStraightEffectSegment( painter, drawPosition,
                     threeDAttrs.depth(), startAngle );
+                drawUpperBrinkEffect( painter, drawPosition, endAngle );
                 drawArcEffectSegment( painter, drawPosition,
                     threeDAttrs.depth(),
                     startAngle, 360, granularity );
@@ -788,6 +813,8 @@ void PieDiagram::draw3DEffect( QPainter* painter,
             }
         }
     }
+    //drawArcEffectSegment( painter, drawPosition, threeDAttrs.depth(), startAngle, endAngle, granularity );
+    drawArcUpperBrinkEffectSegment( painter, drawPosition, startAngle, endAngle, granularity );
 }
 
 
@@ -816,6 +843,21 @@ void PieDiagram::drawStraightEffectSegment( QPainter* painter,
 //        *region += QRegion( points );
 }
 
+/**
+  Internal method that draws the upper brink of a 3D pie piece
+ 
+  \param painter the QPainter to draw in
+  \param rect the position to draw at
+  \param angle the angle of the segment
+  */
+void PieDiagram::drawUpperBrinkEffect( QPainter* painter,
+        const QRectF& rect,
+        qreal angle )
+{
+    const QPointF center = rect.center();
+    const QPointF circlePoint = pointOnCircle( rect, angle );
+    painter->drawLine( center, circlePoint );
+}
 
 /**
   Internal method that draws a segment with an arc 3D effect
@@ -834,14 +876,14 @@ void PieDiagram::drawArcEffectSegment( QPainter* painter,
         qreal granularity )
 {
     // Start with getting the points for the inner arc.
-    const qreal startA = qMin(startAngle, endAngle);
-    const qreal endA   = qMax(startAngle, endAngle);
+    const qreal startA = qMin( startAngle, endAngle );
+    const qreal endA   = qMax( startAngle, endAngle );
 
-    int numHalfPoints = static_cast<int>(trunc( (endA-startA) / granularity )) + 1;
+    int numHalfPoints = static_cast<int>( trunc( ( endA - startA ) / granularity ) ) + 1;
 
     QPolygonF poly( numHalfPoints );
 
-    qreal degree=endA;
+    qreal degree = endA;
     int iPoint = 0;
     bool perfectMatch = false;
     while ( degree >= startA ){
@@ -872,6 +914,50 @@ void PieDiagram::drawArcEffectSegment( QPainter* painter,
 //        *region += QRegion( collect );
 }
 
+/**
+  Internal method that draws the upper brink of a 3D pie segment
+
+  \param painter the QPainter to draw in
+  \param rect the position to draw at
+  \param startAngle the starting angle of the segment
+  \param endAngle the ending angle of the segment
+  */
+void PieDiagram::drawArcUpperBrinkEffectSegment( QPainter* painter,
+        const QRectF& rect,
+        qreal startAngle,
+        qreal endAngle,
+        qreal granularity )
+{
+    if ( endAngle < startAngle )
+        endAngle += 360;
+    // Start with getting the poits for the inner arc.
+    const qreal startA = qMin( startAngle, endAngle );
+    const qreal endA   = qMax( startAngle, endAngle );
+
+    int numHalfPoints = static_cast<int>( trunc( ( endA - startA ) / granularity ) ) + 1;
+
+    QPolygonF poly( numHalfPoints );
+
+    qreal degree = endA;
+    int iPoint = 0;
+    bool perfectMatch = false;
+    while ( degree >= startA ){
+        poly[ numHalfPoints - iPoint - 1 ] = pointOnCircle( rect, degree );
+
+        perfectMatch = (degree == startA);
+        degree -= granularity;
+        ++iPoint;
+    }
+    // if necessary add one more point to fill the last small gap
+    if( ! perfectMatch ){
+        poly.prepend( pointOnCircle( rect, startA ) );
+        ++numHalfPoints;
+    }
+
+    painter->drawPolyline( poly );
+//    if ( region )
+//        *region += QRegion( collect );
+}
 
 /**
   Internal method that finds the pie that is located at the position
