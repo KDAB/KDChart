@@ -288,6 +288,7 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
 {
     // paint one data series
     DataValueAttributes a = dataValueAttributes(index);
+    if ( !a.isVisible() ) return;
 
     // handle decimal digits
     int decimalDigits = a.decimalDigits();
@@ -307,7 +308,6 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
     if ( !a.suffix().isNull() )
         roundedValue.append( a.suffix() );
 
-    if ( !a.isVisible() ) return;
     PainterSaver painterSaver( painter );
     // FIXME draw the non-text bits, background, etc
     const TextAttributes &ta = a.textAttributes();
