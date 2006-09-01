@@ -179,9 +179,10 @@ void PieDiagram::paint( PaintContext* ctx )
 
 void PieDiagram::paint( PaintContext* ctx )
 {
-    if ( !checkInvariants() ) return;
+    if ( !checkInvariants() )
+        return;
 
-    const PieAttributes attrs( pieAttributes( model()->index( 0, 0, rootIndex() ) ) );
+    const PieAttributes attrs( pieAttributes() );
     const ThreeDPieAttributes threeDAttrs( threeDPieAttributes( model()->index( 0, 0, rootIndex() ) ) );
 
     const int colCount = columnCount();
@@ -287,95 +288,86 @@ void PieDiagram::paint( PaintContext* ctx )
     int frontmostpie = findPieAt( 270, colCount );
     // and put the backmost pie on the TODO stack to initialize it,
     // but only if it is not the frontmostpie
-    QStack < int > todostack;
-    if ( backmostpie != frontmostpie )
-        todostack.push( backmostpie );
-    else {
-        // Otherwise, try to find something else
-        int leftOfCurrent = findLeftPie( backmostpie, colCount );
-        if ( leftOfCurrent != frontmostpie ) {
-            todostack.push( leftOfCurrent );
-        } else {
-            int rightOfCurrent = findRightPie( backmostpie, colCount );
-            if ( rightOfCurrent != frontmostpie ) {
-                todostack.push( rightOfCurrent );
-            }
-        }
-        // If we get here, there was nothing else, and we will bail
-        // out of the while loop below.
-    }
-
-    // The list with pies that have already been drawn
-
-    QList < int > donelist;
+    
+    int currentLeftPie = backmostpie;
+    int currentRightPie = backmostpie;
 
     const qreal granularity = attrs.granularity();
 
-    // Draw pies until the todostack is empty or only the frontmost
-    // pie is there
-    while ( !todostack.isEmpty() &&
-            !( ( todostack.count() == 1 ) &&
-                ( ( todostack.top() == frontmostpie ) ) ) ) {
-        // The while loop cannot be cancelled if frontmostpie is on
-        // top of the stack, but this is also backmostpie (can happen
-        // when one of the pies covers more than 1/2 of the circle. In
-        // this case, we need to find something else to put on the
-        // stack to get things going.
+    drawOnePie( ctx->painter(), 0, backmostpie, granularity, sizeFor3DEffect );
 
-        // take one pie from the stack
-        int currentpie = todostack.pop();
-        // if this pie was already drawn, ignore it
-        if ( donelist.contains( currentpie ) )
-            continue;
+    if( backmostpie == frontmostpie )
+    {
+        int rightmostpie = findPieAt( 0, colCount );
+        int leftmostpie = findPieAt( 180, colCount );
 
-        // If this pie is the frontmost pie, put it back, but at the
-        // second position (otherwise, there would be an endless
-        // loop). If this pie is the frontmost pie, there must be at
-        // least one other pie, otherwise the loop would already have
-        // been terminated by the loop condition.
-        if ( currentpie == frontmostpie ) {
-            Q_ASSERT( !todostack.isEmpty() );
-            // QValueStack::exchange() would be nice here...
-            int secondpie = todostack.pop();
-            if ( currentpie == secondpie )
-                // no need to have the second pie twice on the stack,
-                // forget about one instance and take the third
-                // instead
-                if ( todostack.isEmpty() )
-                    break; // done anyway
-                else
-                    secondpie = todostack.pop();
-            todostack.push( currentpie );
-            todostack.push( secondpie );
-            continue;
-        }
-        // When we get here, we can just draw the pie and proceed.
-        drawOnePie( ctx->painter(), 0, currentpie, granularity, sizeFor3DEffect );
-        //qDebug() << " currentpie = " << currentpie;
-        //qDebug() << "cellValue" << cellValue;
-        //qDebug() << "currentValue" << currentValue;
-        // Mark the pie just drawn as done.
-        donelist.append( currentpie );
-
-        // Now take the pie to the left and to the right, check
-        // whether these have not been painted already, and put them
-        // on the stack.
-        int leftOfCurrent = findLeftPie( currentpie, colCount );
-        if ( ! donelist.contains( leftOfCurrent ) )
-            todostack.push( leftOfCurrent );
-        int rightOfCurrent = findRightPie( currentpie, colCount );
-        if ( ! donelist.contains( rightOfCurrent ) )
-            todostack.push( rightOfCurrent );
+        if( backmostpie == leftmostpie )
+            currentLeftPie = findLeftPie( currentLeftPie, colCount );
+        if( backmostpie == rightmostpie )
+            currentRightPie = findRightPie( currentRightPie, colCount );
+    }
+    while( currentLeftPie != frontmostpie )
+    {
+        if( currentLeftPie != backmostpie )
+            drawOnePie( ctx->painter(), 0, currentLeftPie, granularity, sizeFor3DEffect );
+        currentLeftPie = findLeftPie( currentLeftPie, colCount );
+    }
+    while( currentRightPie != frontmostpie )
+    {
+        if( currentRightPie != backmostpie )
+            drawOnePie( ctx->painter(), 0, currentRightPie, granularity, sizeFor3DEffect );
+        currentRightPie = findRightPie( currentRightPie, colCount );
     }
 
-    // now only the frontmost pie is left to draw
-    drawOnePie( ctx->painter(), 0, frontmostpie, granularity, sizeFor3DEffect );
+    if( backmostpie != frontmostpie )
+    {
+        drawOnePie( ctx->painter(), 0, frontmostpie, granularity, sizeFor3DEffect );
+    } else if( threeDPieAttributes().isEnabled() ) {
+        drawPieSurface( ctx->painter(), 0, frontmostpie, granularity );
+        const QBrush brush = qVariantValue<QBrush>( attributesModel()->headerData( frontmostpie, Qt::Vertical, KDChart::DatasetBrushRole ) );
+        QPen pen = qVariantValue<QPen>( attributesModel()->headerData( frontmostpie, Qt::Vertical, KDChart::DatasetPenRole ) );
+        ctx->painter()->setRenderHint ( QPainter::Antialiasing );
+        ctx->painter()->setBrush( brush );
+        if ( threeDAttrs.isEnabled() )
+            pen.setColor( QColor( 0, 0, 0 ) );
+        ctx->painter()->setPen( pen );
+        qreal startAngle = d->startAngles[ frontmostpie ];
+        if( startAngle > 360 )
+            startAngle -= 360;
+        qreal endAngle = qMin( startAngle + d->angleLens[ frontmostpie ], 360.0 );
+        startAngle = qMax( startAngle, 180.0 );
+        drawArcEffectSegment( ctx->painter(), piePosition( 0, frontmostpie), 
+                sizeFor3DEffect, startAngle, endAngle, granularity );
+    }
 }
 
 #if defined ( Q_WS_WIN)
 #define trunc(x) ((int)(x))
 #endif
 
+QRectF PieDiagram::piePosition( uint dataset, uint pie ) const
+{
+    qreal angleLen = d->angleLens[ pie ];
+    qreal startAngle = d->startAngles[ pie ];
+    QModelIndex index( model()->index( 0, pie, rootIndex() ) );
+    const PieAttributes attrs( pieAttributes( index ) );
+    const ThreeDPieAttributes threeDAttrs( threeDPieAttributes( index ) );
+
+    QRectF drawPosition( d->position );
+
+    if ( attrs.explode() ) {
+        qreal explodeAngle = ( startAngle + angleLen / 2.0 );
+        qreal explodeAngleRad = DEGTORAD( explodeAngle );
+        qreal cosAngle = cos( explodeAngleRad );
+        qreal sinAngle = -sin( explodeAngleRad );
+        qreal explodeX = attrs.explodeFactor() * d->size * cosAngle;
+        qreal explodeY = attrs.explodeFactor() * d->size * sinAngle;
+        drawPosition.translate( explodeX, explodeY );
+    }else{
+        drawPosition = d->position;
+    }
+    return drawPosition;
+ }
 
 /**
   Internal method that draws one of the pies in a pie chart.
@@ -389,6 +381,46 @@ void PieDiagram::drawOnePie( QPainter* painter,
         uint dataset, uint pie,
         qreal granularity,
         qreal threeDPieHeight )
+{
+    // Is there anything to draw at all?
+    qreal angleLen = d->angleLens[ pie ];
+    if ( angleLen ) {
+  //      qreal startAngle = d->startAngles[ pie ];
+/*
+        KDChartDataRegion* datReg = 0;
+        QRegion* region = 0;
+        bool mustDeleteRegion = false;
+        if ( regions ){
+            region = new QRegion();
+            mustDeleteRegion = true;
+        }
+*/
+        QModelIndex index( model()->index( 0, pie, rootIndex() ) );
+        const PieAttributes attrs( pieAttributes( index ) );
+        const ThreeDPieAttributes threeDAttrs( threeDPieAttributes( index ) );
+
+        QRectF drawPosition = piePosition( dataset, pie );
+        
+        draw3DEffect( painter,
+            drawPosition, dataset, pie,
+            granularity,
+            threeDAttrs,
+            attrs.explode() );
+
+        drawPieSurface( painter, dataset, pie, granularity );
+    }
+}
+
+/**
+  Internal method that draws the surface of one of the pies in a pie chart.
+
+  \param painter the QPainter to draw in
+  \param dataset the dataset to draw the pie for
+  \param pie the pie to draw
+  */
+void PieDiagram::drawPieSurface( QPainter* painter,
+        uint dataset, uint pie,
+        qreal granularity )
 {
     // Is there anything to draw at all?
     qreal angleLen = d->angleLens[ pie ];
@@ -407,9 +439,10 @@ void PieDiagram::drawOnePie( QPainter* painter,
         const PieAttributes attrs( pieAttributes( index ) );
         const ThreeDPieAttributes threeDAttrs( threeDPieAttributes( index ) );
 
-        QRectF drawPosition( d->position );
+        QRectF drawPosition = piePosition( dataset, pie );
+//        QRectF drawPosition( d->position );
 
-        if ( attrs.explode() ) {
+/*        if ( attrs.explode() ) {
             qreal explodeAngle = ( startAngle + angleLen / 2.0 );
             qreal explodeAngleRad = DEGTORAD( explodeAngle );
             qreal cosAngle = cos( explodeAngleRad );
@@ -419,15 +452,15 @@ void PieDiagram::drawOnePie( QPainter* painter,
             drawPosition.translate( explodeX, explodeY );
         }else{
             drawPosition = d->position;
-        }
+        }*/
 
-        const QBrush oldBrush = painter->brush();
-        const QPen oldPen = painter->pen();
         const QBrush brush = qVariantValue<QBrush>( attributesModel()->headerData( pie, Qt::Vertical, KDChart::DatasetBrushRole ) );
-        const QPen pen = qVariantValue<QPen>( attributesModel()->headerData( pie, Qt::Vertical, KDChart::DatasetPenRole ) );
+        QPen pen = qVariantValue<QPen>( attributesModel()->headerData( pie, Qt::Vertical, KDChart::DatasetPenRole ) );
         PainterSaver painterSaver( painter );
         painter->setRenderHint ( QPainter::Antialiasing );
         painter->setBrush( brush );
+        if ( threeDAttrs.isEnabled() )
+            pen.setColor( QColor( 0, 0, 0 ) );
         painter->setPen( pen );
 
         if ( angleLen == 360 ) {
@@ -567,16 +600,6 @@ void PieDiagram::drawOnePie( QPainter* painter,
         }
 //        if( mustDeleteRegion )
 //            delete region;
-
-        // after all, we draw maybe some nice 3D
-        painter->setBrush( oldBrush );
-        painter->setPen( oldPen );
-        draw3DEffect( painter,
-            drawPosition, dataset, pie,
-            granularity,
-            threeDAttrs,
-            attrs.explode() );
-
     }
 }
 
@@ -809,7 +832,6 @@ void PieDiagram::draw3DEffect( QPainter* painter,
             }
         }
     }
-    //drawArcEffectSegment( painter, drawPosition, threeDAttrs.depth(), startAngle, endAngle, granularity );
     drawArcUpperBrinkEffectSegment( painter, drawPosition, startAngle, endAngle, granularity );
 }
 

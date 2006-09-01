@@ -74,10 +74,14 @@ protected:
     void resizeEvent( QResizeEvent* );
 
 private:
+    QRectF piePosition( uint dataset, uint pie ) const;
     void drawOnePie( QPainter* painter,
         uint dataset, uint pie,
         qreal granularity,
         qreal threeDPieHeight );
+    void drawPieSurface( QPainter* painter,
+        uint dataset, uint pie,
+        qreal granularity );
     void draw3DEffect( QPainter* painter,
         const QRectF& drawPosition,
         uint dataset, uint pie,
