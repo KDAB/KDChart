@@ -208,7 +208,6 @@ void PieDiagram::paint( PaintContext* ctx )
 
     // if the pies explode, we need to give them additional space =>
     // make the basic size smaller
-    const int colCount = columnCount();
     qreal maxExplode = 0.0;
     for( int j = 0; j < colCount; ++j ){
         const PieAttributes columnAttrs( pieAttributes( model()->index( 0, j, rootIndex() ) ) );
