@@ -150,6 +150,9 @@ void CartesianAxis::paint( QPainter* painter )
     ctx.setPainter ( painter );
     ctx.setCoordinatePlane( d->diagram()->coordinatePlane() );
     const QRect rect( areaGeometry() );
+
+    //qDebug() << "CartesianAxis::paint( QPainter* painter )  " << " areaGeometry()():" << rect << " sizeHint():" << sizeHint();
+
     ctx.setRectangle(
         QRectF (
             //QPointF(0, 0),
@@ -253,7 +256,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
     double rulerWidth;
     double rulerHeight;
 
-    //for debugging: if( isAbscissa() )ptr->drawRect(geoRect);
+    //for debugging: if( isAbscissa() )ptr->drawRect(geoRect.adjusted(0,0,-1,-1));
     //qDebug() << "         " << (isAbscissa() ? "Abscissa":"Ordinate") << "axis painting with geometry" << geoRect;
 
     // FIXME references are of course different for all locations:
@@ -519,6 +522,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     --y;
 
                     labelItem->setGeometry( QRect( QPoint(x, y), labelSize ) );
+                    //ptr->drawRect(labelItem->geometry().adjusted(0,0,-1,-1));
                     labelItem->paint( ptr );
 
                     labelValue += dimY.stepWidth;
@@ -564,6 +568,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
         if( isOrdinate() )
             ptr->rotate( 270.0 );
         titleItem.setGeometry( QRect( QPoint(-size.width() / 2, 0), size ) );
+        //ptr->drawRect(titleItem.geometry().adjusted(0,0,-1,-1));
         titleItem.paint( ptr );
     }
 
@@ -624,8 +629,7 @@ QSize CartesianAxis::maximumSize() const
             {
                 labelItem.setText( labels()[ i ] );
                 int lh = labelItem.sizeHint().height();
-                if ( h < lh )
-                    h = lh;
+                h = qMax( h, lh );
             }
             // if there're no labels, we take the biggest needed number as height
             if ( labels().count() == 0 )
@@ -633,10 +637,12 @@ QSize CartesianAxis::maximumSize() const
                 labelItem.setText( QString::number( plane->gridDimensionsList().first().end, 'f', 0 ) );
                 h = labelItem.sizeHint().height();
             }
-            h = static_cast<int>( h * 1.33 );
+            // we leave a little gap between axis labels and bottom (or top, resp.) side of axis
+            h = static_cast<int>( h * 1.10 );
             // space for a possible title:
             if ( ! titleText().isEmpty() ) {
-                h += static_cast<int>( titleItem.sizeHint().height() * 1.33 );
+                // we leave a little gap between axis labels and axis title
+                h += static_cast<int>( titleItem.sizeHint().height() * 1.10 );
             }
             // space for the ticks
             h += qAbs( tickLength() ) * 3;
@@ -645,14 +651,13 @@ QSize CartesianAxis::maximumSize() const
         break;
     case Left:
     case Right: {
-            int w = 0;
+            qreal w = 0;
             // enough space for the labels to fit:
             for ( int i = 0; i < labels().count(); ++i )
             {
                 labelItem.setText( labels()[ i ] );
-                int lw = labelItem.sizeHint().width();
-                if ( w < lw )
-                    w = lw;
+                qreal lw = labelItem.sizeHint().width();
+                w = qMax( w, lw );
             }
             // if there're no labels, we take the biggest needed number as width
             if ( labels().count() == 0 )
@@ -660,22 +665,25 @@ QSize CartesianAxis::maximumSize() const
                 labelItem.setText( QString::number( plane->gridDimensionsList().last().end, 'f', 0 ) );
                 w = labelItem.sizeHint().width();
             }
-            w = static_cast<int>( w * 1.33 );
+            // we leave a little gap between axis labels and left (or right, resp.) side of axis
+            w *= 1.10;
             // space for a possible title:
             if ( ! titleText().isEmpty() ) {
-                w += static_cast<int>( titleItem.sizeHint().height() * 1.33 );
+                // we leave a little gap between axis labels and axis title
+                w += titleItem.sizeHint().height() * 1.10;
             }
             // space for the ticks
-            w += qAbs( tickLength() ) * 3;
+            w += qAbs( tickLength() ) * 3.0;
 
-            result = QSize ( w, 10 );
+            result = QSize ( static_cast<int>( w ), 10 );
+//            qDebug() << "left/right axis width:" << result << "   w:" << w;
         }
         break;
     default:
         Q_ASSERT( false ); // all positions need to be handled
         break;
     };
-
+//qDebug() << "*******************" << result;
     return result;
 }
 /* pure virtual in QLayoutItem */

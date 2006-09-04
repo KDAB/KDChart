@@ -27,6 +27,7 @@
 #include <QList>
 #include <QtDebug>
 #include <QPainter>
+#include <QApplication>
 
 #include "KDChartAbstractDiagram.h"
 #include "KDChartAbstractCartesianDiagram.h"
@@ -46,6 +47,8 @@ using namespace KDChart;
 
 CartesianCoordinatePlane::Private::Private()
     : AbstractCoordinatePlane::Private()
+    , bPaintIsRunning( false )
+    , bNextPaintPending( false )
     , hasOwnGridAttributesHorizontal ( false )
     , hasOwnGridAttributesVertical ( false )
     // old: , initialResizeEventReceived ( false )
@@ -87,7 +90,17 @@ void CartesianCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
 
 void CartesianCoordinatePlane::paint ( QPainter* painter )
 {
-    //qDebug("KDChart::CartesianCoordinatePlane::paint() called");
+    // prevent recursive call:
+    qDebug("attempt plane::paint()");
+    if( d->bPaintIsRunning ){
+        d->bNextPaintPending = true;
+        return;
+    }
+    d->bNextPaintPending = false;
+    d->bPaintIsRunning = true;
+
+    qDebug("start plane::paint()");
+
     AbstractDiagramList diags = diagrams();
     //FIXME(khz): make this also work in no diagrams are there
     // (commenting out the following line should do it)
@@ -112,8 +125,19 @@ void CartesianCoordinatePlane::paint ( QPainter* painter )
         // paint the diagrams:
         for ( int i = 0; i < diags.size(); i++ )
         {
+qDebug("  attempt diags[i]->paint ( &ctx );");
+
+            //if ( qApp->hasPendingEvents () )
+            //    continue;
+
+            //if( ! d->bNextPaintPending )
+            //    qApp->processEvents( QEventLoop::ExcludeSocketNotifiers );
+            //if( ! d->bNextPaintPending ){
+qDebug("  start diags[i]->paint ( &ctx );");
             PainterSaver painterSaver( painter );
             diags[i]->paint ( &ctx );
+            //}
+qDebug("  done: diags[i]->paint ( &ctx );");
         }
 
         // and disable clipping afterwards
@@ -124,7 +148,8 @@ void CartesianCoordinatePlane::paint ( QPainter* painter )
         //    painter->drawRect( drawArea.adjusted(2,2,2,2) );
         //    painter->drawRect( drawArea );
     }
-    //qDebug("KDChart::CartesianCoordinatePlane::paint() done.");
+    d->bPaintIsRunning = false;
+    qDebug("done: plane::paint()");
 }
 
 /*

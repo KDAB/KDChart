@@ -58,6 +58,8 @@ public:
 
     virtual void initialize()
     {
+        bPaintIsRunning   = false;
+        bNextPaintPending = false;
         coordinateTransformation.axesCalcMode = Linear;
         grid = new CartesianGrid();
     }
@@ -65,6 +67,9 @@ public:
 
     // the coordinate plane will calculate the coordinate transformation:
     CoordinateTransformation coordinateTransformation;
+
+    bool bPaintIsRunning;
+    bool bNextPaintPending;
 
     // true after setGridAttributes( Qt::Orientation ) was used,
     // false if resetGridAttributes( Qt::Orientation ) was called
