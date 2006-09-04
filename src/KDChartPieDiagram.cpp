@@ -324,10 +324,10 @@ void PieDiagram::paint( PaintContext* ctx )
         drawOnePie( ctx->painter(), 0, frontmostpie, granularity, sizeFor3DEffect );
     } else if( threeDPieAttributes().isEnabled() ) {
         drawPieSurface( ctx->painter(), 0, frontmostpie, granularity );
-        const QBrush brush = qVariantValue<QBrush>( attributesModel()->headerData( frontmostpie, Qt::Vertical, KDChart::DatasetBrushRole ) );
-        QPen pen = qVariantValue<QPen>( attributesModel()->headerData( frontmostpie, Qt::Vertical, KDChart::DatasetPenRole ) );
+        const QModelIndex index = model()->index( 0, frontmostpie, rootIndex() );
+        QPen pen = this->pen( index );
         ctx->painter()->setRenderHint ( QPainter::Antialiasing );
-        ctx->painter()->setBrush( brush );
+        ctx->painter()->setBrush( brush( index ) );
         if ( threeDAttrs.isEnabled() )
             pen.setColor( QColor( 0, 0, 0 ) );
         ctx->painter()->setPen( pen );
@@ -454,11 +454,10 @@ void PieDiagram::drawPieSurface( QPainter* painter,
             drawPosition = d->position;
         }*/
 
-        const QBrush brush = qVariantValue<QBrush>( attributesModel()->headerData( pie, Qt::Vertical, KDChart::DatasetBrushRole ) );
-        QPen pen = qVariantValue<QPen>( attributesModel()->headerData( pie, Qt::Vertical, KDChart::DatasetPenRole ) );
+        QPen pen = this->pen( index );
         PainterSaver painterSaver( painter );
         painter->setRenderHint ( QPainter::Antialiasing );
-        painter->setBrush( brush );
+        painter->setBrush( brush( index ) );
         if ( threeDAttrs.isEnabled() )
             pen.setColor( QColor( 0, 0, 0 ) );
         painter->setPen( pen );
@@ -632,8 +631,7 @@ void PieDiagram::draw3DEffect( QPainter* painter,
     // No need to save the brush, will be changed on return from this
     // method anyway.
     if( threeDAttrs.useShadowColors() ){
-        //const QBrush brush = qVariantValue<QBrush>( attributesModel()->headerData( pie, Qt::Vertical, KDChart::DatasetBrushRole ) );
-        const QPen pen = qVariantValue<QPen>( attributesModel()->headerData( pie, Qt::Vertical, KDChart::DatasetPenRole ) );
+        const QPen pen = this->pen( model()->index( 0, pie, rootIndex() ) );
         painter->setBrush( QBrush( pen.color() ) );
     }
     //painter->setBrush( QBrush( threeDAttrs.dataShadow1Color( pie ),
