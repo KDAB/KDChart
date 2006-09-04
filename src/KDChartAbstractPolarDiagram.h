@@ -48,7 +48,6 @@ namespace KDChart {
 
         const PolarCoordinatePlane * polarCoordinatePlane() const;
 
-    protected:
         int columnCount() const;
     };
 
