@@ -326,22 +326,32 @@ void CartesianAxis::paintCtx( PaintContext* context )
             for ( float f = minValueX; f <= maxValueX; f += dimX.subStepWidth ) {
                 QPointF topPoint ( f, 0 );
                 QPointF bottomPoint ( f, 0 );
-                topPoint = plane->translate( topPoint );
-                bottomPoint = plane->translate( bottomPoint );
-                topPoint.setY( fourthRulerRef.y() + tickLength( true ) );
-                bottomPoint.setY( fourthRulerRef.y() );
-                ptr->drawLine( topPoint, bottomPoint );
+                // we don't draw the sub ticks, if we are at the same position as a normal tick
+                float absVal = (f - minValueX) / dimX.stepWidth;
+                if( fabs( rint( absVal ) - absVal ) > 0.0001 )
+                {
+                    topPoint = plane->translate( topPoint );
+                    bottomPoint = plane->translate( bottomPoint );
+                    topPoint.setY( fourthRulerRef.y() + tickLength( true ) );
+                    bottomPoint.setY( fourthRulerRef.y() );
+                    ptr->drawLine( topPoint, bottomPoint );
+                }
             }
         // for the y-axis
         } else {
             for ( float f = minValueY; f <= maxValueY; f += dimY.subStepWidth ) {
                 QPointF leftPoint ( 0, f );
                 QPointF rightPoint ( 0, f );
-                leftPoint = plane->translate( leftPoint );
-                rightPoint = plane->translate( rightPoint );
-                leftPoint.setX( fourthRulerRef.x() + tickLength( true ) );
-                rightPoint.setX( fourthRulerRef.x() );
-                ptr->drawLine( leftPoint, rightPoint );
+                // we don't draw the sub ticks, if we are at the same position as a normal tick
+                float absVal = (f - minValueY) / dimY.stepWidth;
+                if( fabs( rint( absVal ) - absVal ) > 0.0001 )
+                {
+                    leftPoint = plane->translate( leftPoint );
+                    rightPoint = plane->translate( rightPoint );
+                    leftPoint.setX( fourthRulerRef.x() + tickLength( true ) );
+                    rightPoint.setX( fourthRulerRef.x() );
+                    ptr->drawLine( leftPoint, rightPoint );
+                }
           }
       }
     }
