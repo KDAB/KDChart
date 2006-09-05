@@ -614,63 +614,81 @@ QSize CartesianAxis::maximumSize() const
 
     const TextAttributes titleTA( titleTextAttributes() );
     const TextAttributes labelTA = textAttributes();
+    const bool drawLabels = labelTA.isVisible();
+    const bool drawTitle  = ! titleText().isEmpty();
     AbstractCoordinatePlane* plane = d->diagram()->coordinatePlane();
     QObject* refArea = plane->parent();
-    TextLayoutItem titleItem( titleText(), titleTA, refArea, KDChartEnums::MeasureOrientationMinimum, Qt::AlignHCenter | Qt::AlignVCenter );
-    TextLayoutItem labelItem( "", labelTA, refArea, KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft );
+    TextLayoutItem labelItem( "", labelTA, refArea,
+        KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft );
+    TextLayoutItem titleItem( titleText(), titleTA, refArea,
+        KDChartEnums::MeasureOrientationMinimum, Qt::AlignHCenter | Qt::AlignVCenter );
+    const qreal labelGap =
+        drawLabels
+        ? (QFontMetricsF( labelItem.realFont() ).height() / 3.0)
+        : 0.0;
+    const qreal titleGap =
+        drawTitle
+        ? (QFontMetricsF( titleItem.realFont() ).height() / 3.0)
+        : 0.0;
 
     switch ( position() )
     {
     case Bottom:
     case Top: {
-            int h = 0;
-            // enough space for the labels to fit:
-            for ( int i = 0; i < labels().count(); ++i )
-            {
-                labelItem.setText( labels()[ i ] );
-                int lh = labelItem.sizeHint().height();
-                h = qMax( h, lh );
+            qreal h = 0;
+            if( drawLabels ){
+                // if there're no label strings, we take the biggest needed number as height
+                if ( ! labels().count() )
+                {
+                    labelItem.setText( QString::number( plane->gridDimensionsList().first().end, 'f', 0 ) );
+                    h = labelItem.sizeHint().height();
+                }else{
+                    // find the longest label text:
+                    for ( int i = 0; i < labels().count(); ++i )
+                    {
+                        labelItem.setText( labels()[ i ] );
+                        qreal lh = labelItem.sizeHint().height();
+                        h = qMax( h, lh );
+                    }
+                }
+                // we leave a little gap between axis labels and bottom (or top, resp.) side of axis
+                h += labelGap;
             }
-            // if there're no labels, we take the biggest needed number as height
-            if ( labels().count() == 0 )
-            {
-                labelItem.setText( QString::number( plane->gridDimensionsList().first().end, 'f', 0 ) );
-                h = labelItem.sizeHint().height();
-            }
-            // we leave a little gap between axis labels and bottom (or top, resp.) side of axis
-            h = static_cast<int>( h * 1.10 );
             // space for a possible title:
-            if ( ! titleText().isEmpty() ) {
-                // we leave a little gap between axis labels and axis title
-                h += static_cast<int>( titleItem.sizeHint().height() * 1.10 );
+            if ( drawTitle ) {
+                // we add the title height and leave a little gap between axis labels and axis title
+                h += titleItem.sizeHint().height() + titleGap;
             }
             // space for the ticks
-            h += qAbs( tickLength() ) * 3;
-            result = QSize ( 10, h );
+            h += qAbs( tickLength() ) * 3.0;
+            result = QSize ( 10, static_cast<int>( h ) );
         }
         break;
     case Left:
     case Right: {
             qreal w = 0;
-            // enough space for the labels to fit:
-            for ( int i = 0; i < labels().count(); ++i )
-            {
-                labelItem.setText( labels()[ i ] );
-                qreal lw = labelItem.sizeHint().width();
-                w = qMax( w, lw );
+            if( drawLabels ){
+                // if there're no label strings, we take the biggest needed number as width
+                if ( labels().count() == 0 )
+                {
+                    labelItem.setText( QString::number( plane->gridDimensionsList().last().end, 'f', 0 ) );
+                    w = labelItem.sizeHint().width();
+                }else{
+                    // find the longest label text:
+                    for ( int i = 0; i < labels().count(); ++i )
+                    {
+                        labelItem.setText( labels()[ i ] );
+                        qreal lw = labelItem.sizeHint().width();
+                        w = qMax( w, lw );
+                    }
+                }
+                // we leave a little gap between axis labels and left (or right, resp.) side of axis
+                w += labelGap;
             }
-            // if there're no labels, we take the biggest needed number as width
-            if ( labels().count() == 0 )
-            {
-                labelItem.setText( QString::number( plane->gridDimensionsList().last().end, 'f', 0 ) );
-                w = labelItem.sizeHint().width();
-            }
-            // we leave a little gap between axis labels and left (or right, resp.) side of axis
-            w *= 1.10;
             // space for a possible title:
-            if ( ! titleText().isEmpty() ) {
-                // we leave a little gap between axis labels and axis title
-                w += titleItem.sizeHint().height() * 1.10;
+            if ( drawTitle ) {
+                // we add the title height and leave a little gap between axis labels and axis title
+                w += titleItem.sizeHint().height() + titleGap;
             }
             // space for the ticks
             w += qAbs( tickLength() ) * 3.0;
