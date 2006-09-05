@@ -70,6 +70,11 @@ MainWindow::MainWindow( QWidget* parent ) :
     Measure me( taLeft.fontSize() );
     me.setValue( me.value() * 1.5 );
     taLeft.setFontSize( me );
+// Set the following to 1, to hide the left axis title
+//  - no matter if a title text is set or not
+#if 0
+    taLeft.setVisible( false );
+#endif
     leftAxis->setTitleTextAttributes ( taLeft );
 
     TextAttributes taBottom ( bottomAxis->titleTextAttributes () );
@@ -84,7 +89,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     leftAxis->setTextAttributes( taLabels );
     bottomAxis->setTextAttributes( taLabels );
 
-// set the following to 0, to see the default Abscissa labels
+// Set the following to 0, to see the default Abscissa labels
 // (== X headers, as read from the data file)
 #if 1
     // configure labels and their shortened versions
