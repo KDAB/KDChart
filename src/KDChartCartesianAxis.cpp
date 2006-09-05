@@ -537,39 +537,41 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
     if( ! titleText().isEmpty() ){
         const TextAttributes titleTA( titleTextAttributes() );
-        TextLayoutItem titleItem( titleText(),
-                      titleTA,
-                      referenceArea,
-                      KDChartEnums::MeasureOrientationMinimum,
-                      Qt::AlignHCenter|Qt::AlignVCenter );
-        QPointF point;
-        const QSize size( titleItem.sizeHint() );
-        switch( position() )
-        {
-        case Top:
-            point.setX( geoRect.left() + geoRect.width() / 2.0);
-            point.setY( geoRect.top() );
-            break;
-        case Bottom:
-            point.setX( geoRect.left() + geoRect.width() / 2.0);
-            point.setY( geoRect.bottom() - size.height() );
-            break;
-        case Left:
-            point.setX( geoRect.left() );
-            point.setY( geoRect.top() + geoRect.height() / 2.0);
-            break;
-        case Right:
-            point.setX( geoRect.right() - size.height() );
-            point.setY( geoRect.top() + geoRect.height() / 2.0);
-            break;
+        if( titleTA.isVisible() ){
+            TextLayoutItem titleItem( titleText(),
+                          titleTA,
+                          referenceArea,
+                          KDChartEnums::MeasureOrientationMinimum,
+                          Qt::AlignHCenter|Qt::AlignVCenter );
+            QPointF point;
+            const QSize size( titleItem.sizeHint() );
+            switch( position() )
+            {
+            case Top:
+                point.setX( geoRect.left() + geoRect.width() / 2.0);
+                point.setY( geoRect.top() );
+                break;
+            case Bottom:
+                point.setX( geoRect.left() + geoRect.width() / 2.0);
+                point.setY( geoRect.bottom() - size.height() );
+                break;
+            case Left:
+                point.setX( geoRect.left() );
+                point.setY( geoRect.top() + geoRect.height() / 2.0);
+                break;
+            case Right:
+                point.setX( geoRect.right() - size.height() );
+                point.setY( geoRect.top() + geoRect.height() / 2.0);
+                break;
+            }
+            PainterSaver painterSaver( ptr );
+            ptr->translate( point );
+            if( isOrdinate() )
+                ptr->rotate( 270.0 );
+            titleItem.setGeometry( QRect( QPoint(-size.width() / 2, 0), size ) );
+            //ptr->drawRect(titleItem.geometry().adjusted(0,0,-1,-1));
+            titleItem.paint( ptr );
         }
-        PainterSaver painterSaver( ptr );
-        ptr->translate( point );
-        if( isOrdinate() )
-            ptr->rotate( 270.0 );
-        titleItem.setGeometry( QRect( QPoint(-size.width() / 2, 0), size ) );
-        //ptr->drawRect(titleItem.geometry().adjusted(0,0,-1,-1));
-        titleItem.paint( ptr );
     }
 
     //qDebug() << "KDChart::CartesianAxis::paintCtx() done.";
@@ -612,10 +614,12 @@ QSize CartesianAxis::maximumSize() const
 {
     QSize result;
 
-    const TextAttributes titleTA( titleTextAttributes() );
     const TextAttributes labelTA = textAttributes();
     const bool drawLabels = labelTA.isVisible();
-    const bool drawTitle  = ! titleText().isEmpty();
+
+    const TextAttributes titleTA( titleTextAttributes() );
+    const bool drawTitle = titleTA.isVisible() && ! titleText().isEmpty();
+
     AbstractCoordinatePlane* plane = d->diagram()->coordinatePlane();
     QObject* refArea = plane->parent();
     TextLayoutItem labelItem( "", labelTA, refArea,
