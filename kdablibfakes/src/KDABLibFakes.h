@@ -73,12 +73,12 @@
 #define ISINF(x) isinf(x)
 #endif
 
-
+/* This is done in Qt4 qglobal.h */
 // We wrap every if() by extra { } to work around
 // the scope bug for loop counters in MS Visual C++
-#if defined(Q_CC_MSVC) && !defined(Q_CC_MSVC_NET)
-#define for if (0) {} else for
-#endif
+//#if defined(Q_CC_MSVC) && !defined(Q_CC_MSVC_NET)
+//#define for if (0) {} else for
+//#endif
 
 
 #endif
