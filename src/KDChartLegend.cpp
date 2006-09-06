@@ -34,6 +34,7 @@
 #include <QTextCursor>
 #include <QTextCharFormat>
 #include <QTextDocumentFragment>
+#include <QTimer>
 #include <QAbstractTextDocumentLayout>
 #include <QtDebug>
 #include <QLabel>
@@ -268,6 +269,11 @@ void Legend::setNeedRebuild()
 void Legend::setPosition( Position position )
 {
     d->position = position;
+    emitPositionChanged();
+}
+
+void Legend::emitPositionChanged()
+{
     emit positionChanged( this );
 }
 
@@ -280,7 +286,7 @@ Position Legend::position() const
 void Legend::setAlignment( Qt::Alignment alignment )
 {
     d->alignment = alignment;
-    emit positionChanged( this );
+    emitPositionChanged();
 }
 
 Qt::Alignment Legend::alignment() const
@@ -539,12 +545,18 @@ static const QColor SUBDUEDCOLORS[ NUM_SUBDUEDCOLORS ] = {
     }
 }
 
+void Legend::resizeEvent ( QResizeEvent * event )
+{
+    QTimer::singleShot(0, this, SLOT(emitPositionChanged()));
+}
+
 void Legend::buildLegend()
 {
     //qDebug() << "entering Legend::buildLegend()";
     if( ! d->needRebuild ) {
-        // Note: we *need* to send positionChanged, or layout may become wrong
-        //emit positionChanged( this );
+        // Note: We do *not* need to send positionChanged here,
+        //       because we send it in the resizeEvent, so layouting
+        //       is done at the right time.
         return;
     }
     d->needRebuild = false;

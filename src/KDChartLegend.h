@@ -76,6 +76,7 @@ public:
     virtual Legend * clone() const;
 
     //QSize calcSizeHint() const;
+    virtual void resizeEvent( QResizeEvent * event );
 
     virtual void paint( QPainter* painter );
 
@@ -223,6 +224,7 @@ signals:
     void destroyedLegend( Legend* );
 
 private slots:
+    void emitPositionChanged();
     void resetDiagram( AbstractDiagram* );
     void setNeedRebuild();
     void buildLegend();
