@@ -319,44 +319,12 @@ void CartesianAxis::paintCtx( PaintContext* context )
     //ptr->setBrush ( Qt::red ); // PENDING(michel) What is this for?
     QPointF fourthRulerRef ( rulerRef );
 
-    // this draws the subunit rulers
-    if ( drawSubUnitRulers ) {
-        // for the x-axis
-        if ( isAbscissa() ) {
-            for ( float f = minValueX; f <= maxValueX; f += dimX.subStepWidth ) {
-                QPointF topPoint ( f, 0 );
-                QPointF bottomPoint ( f, 0 );
-                // we don't draw the sub ticks, if we are at the same position as a normal tick
-                float absVal = (f - minValueX) / dimX.stepWidth;
-                if( fabs( rint( absVal ) - absVal ) > 0.0001 )
-                {
-                    topPoint = plane->translate( topPoint );
-                    bottomPoint = plane->translate( bottomPoint );
-                    topPoint.setY( fourthRulerRef.y() + tickLength( true ) );
-                    bottomPoint.setY( fourthRulerRef.y() );
-                    ptr->drawLine( topPoint, bottomPoint );
-                }
-            }
-        // for the y-axis
-        } else {
-            for ( float f = minValueY; f <= maxValueY; f += dimY.subStepWidth ) {
-                QPointF leftPoint ( 0, f );
-                QPointF rightPoint ( 0, f );
-                // we don't draw the sub ticks, if we are at the same position as a normal tick
-                float absVal = (f - minValueY) / dimY.stepWidth;
-                if( fabs( rint( absVal ) - absVal ) > 0.0001 )
-                {
-                    leftPoint = plane->translate( leftPoint );
-                    rightPoint = plane->translate( rightPoint );
-                    leftPoint.setX( fourthRulerRef.x() + tickLength( true ) );
-                    rightPoint.setX( fourthRulerRef.x() );
-                    ptr->drawLine( leftPoint, rightPoint );
-                }
-          }
-      }
-    }
-
     const QObject* referenceArea = plane->parent();
+
+    // that QVector contains all drawn x-ticks (so no subticks are drawn there also)
+    QVector< int > drawnXTicks;
+    // and that does the same for the y-ticks
+    QVector< int > drawnYTicks;
 
     // this draws the unit rulers
     if ( drawUnitRulers ) {
@@ -438,6 +406,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 topPoint.setY( fourthRulerRef.y() + tickLength() );
                 bottomPoint.setY( fourthRulerRef.y() );
                 ptr->drawLine( topPoint, bottomPoint );
+                drawnXTicks.append( static_cast<int>( topPoint.x() ) );
                 if ( drawLabels ) {
                     if( (dimX.stepWidth != 1.0) && ! dimX.isCalculated )
                         labelItem->setText( QString::number(i, 'f', 0) );
@@ -507,6 +476,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 leftPoint.setX( fourthRulerRef.x() + tickLength() );
                 rightPoint.setX( fourthRulerRef.x() );
                 ptr->drawLine( leftPoint, rightPoint );
+                drawnYTicks.append( static_cast<int>( leftPoint.y() ) );
                 if ( drawLabels ) {
                     labelItem->setText( QString::number( labelValue ) );
                     // No need to call labelItem->setParentWidget(), since we are using
@@ -544,6 +514,50 @@ void CartesianAxis::paintCtx( PaintContext* context )
         if( labelItem2 )
             delete labelItem2;
     }
+
+    // this draws the subunit rulers
+    if ( drawSubUnitRulers ) {
+        // for the x-axis
+        if ( isAbscissa() ) {
+            int nextMayBeTick = 0;
+            int mayBeTick = 0;
+            for ( float f = minValueX; f <= maxValueX; f += dimX.subStepWidth ) {
+                QPointF topPoint ( f, 0 );
+                QPointF bottomPoint ( f, 0 );
+                // we don't draw the sub ticks, if we are at the same position as a normal tick
+                topPoint = plane->translate( topPoint );
+                bottomPoint = plane->translate( bottomPoint );
+                topPoint.setY( fourthRulerRef.y() + tickLength( true ) );
+                bottomPoint.setY( fourthRulerRef.y() );
+                if( drawnXTicks.count() > nextMayBeTick )
+                    mayBeTick = drawnXTicks[ nextMayBeTick ];
+                if( qAbs( mayBeTick - topPoint.x() ) > 1 )
+                    ptr->drawLine( topPoint, bottomPoint );
+                else
+                    ++nextMayBeTick;
+            }
+        // for the y-axis
+        } else {
+            int nextMayBeTick = 0;
+            int mayBeTick = 0;
+            for ( float f = minValueY; f <= maxValueY; f += dimY.subStepWidth ) {
+                QPointF leftPoint ( 0, f );
+                QPointF rightPoint ( 0, f );
+                // we don't draw the sub ticks, if we are at the same position as a normal tick
+                leftPoint = plane->translate( leftPoint );
+                rightPoint = plane->translate( rightPoint );
+                leftPoint.setX( fourthRulerRef.x() + tickLength( true ) );
+                rightPoint.setX( fourthRulerRef.x() );
+                if( drawnYTicks.count() > nextMayBeTick )
+                    mayBeTick = drawnYTicks[ nextMayBeTick ];
+                if( qAbs( mayBeTick - leftPoint.y() ) > 1 )
+                    ptr->drawLine( leftPoint, rightPoint );
+                else
+                    ++nextMayBeTick;
+            }
+        }
+    }
+
 
     if( ! titleText().isEmpty() ){
         const TextAttributes titleTA( titleTextAttributes() );
