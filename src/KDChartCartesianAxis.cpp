@@ -159,7 +159,7 @@ void CartesianAxis::paint( QPainter* painter )
             QPointF(rect.left(), rect.top()),
             QSizeF(rect.width(), rect.height() ) ) );
     // enabling clipping so that we're not drawing outside
-    QRegion clipRegion( rect );
+    QRegion clipRegion( rect.adjusted( -1, -1, 1, 1 ) );
     painter->setClipRegion( clipRegion );
     paintCtx( &ctx );
     painter->setClipping( false );
@@ -502,7 +502,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     --y;
 
                     labelItem->setGeometry( QRect( QPoint(x, y), labelSize ) );
-                    //ptr->drawRect(labelItem->geometry().adjusted(0,0,-1,-1));
+                    ptr->drawRect(labelItem->geometry().adjusted(0,0,-1,-1));
                     labelItem->paint( ptr );
 
                     labelValue += dimY.stepWidth;

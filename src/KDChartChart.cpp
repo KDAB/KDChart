@@ -277,8 +277,8 @@ QHash<AbstractCoordinatePlane*, PlaneInfo> Chart::Private::buildPlaneLayoutInfos
     {
         PlaneInfo p;
         // first check if we share space with another plane
-       p.referencePlane = plane->referenceCoordinatePlane();
-       planeInfos.insert( plane, p );
+        p.referencePlane = plane->referenceCoordinatePlane();
+        planeInfos.insert( plane, p );
 
         foreach ( AbstractDiagram* abstractDiagram, plane->diagrams() ) {
             AbstractCartesianDiagram* diagram =

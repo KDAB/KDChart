@@ -113,9 +113,7 @@ void CartesianCoordinatePlane::paint ( QPainter* painter )
         ctx.setRectangle ( drawArea );
 
         // enabling clipping so that we're not drawing outside
-        QRect clipRect = drawArea.toRect();
-        clipRect.setTopLeft( clipRect.topLeft() - QPoint( 1, 1 ) );
-        clipRect.setBottomRight( clipRect.bottomRight() + QPoint( 1, 1 ) );
+        QRect clipRect = drawArea.toRect().adjusted( -1, -1, 1, 1 );
         QRegion clipRegion( clipRect );
         painter->setClipRegion( clipRegion );
 
