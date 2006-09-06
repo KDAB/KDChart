@@ -85,7 +85,7 @@ QModelIndex DatasetProxyModel::mapFromSource ( const QModelIndex & sourceIndex )
 
     if ( !sourceIndex.isValid() ) return sourceIndex;
 
-    if ( mRowSrcToProxyMap.size() == 0 && mColSrcToProxyMap.size() == 0 )
+    if ( mRowSrcToProxyMap.isEmpty() && mColSrcToProxyMap.isEmpty() )
     {
         return createIndex ( sourceIndex.row(), sourceIndex.column(),
                              sourceIndex.internalPointer() );
@@ -102,7 +102,7 @@ QModelIndex DatasetProxyModel::mapToSource ( const QModelIndex& proxyIndex ) con
                  "model must be set before the selection can be configured." );
 
     if ( !proxyIndex.isValid() ) return proxyIndex;
-    if ( mRowSrcToProxyMap.size() == 0 && mColSrcToProxyMap.size() == 0 )
+    if ( mRowSrcToProxyMap.isEmpty() && mColSrcToProxyMap.isEmpty() )
     {
         return createIndex ( proxyIndex.row(),  proxyIndex.column(),
                              proxyIndex.internalPointer() );
@@ -116,7 +116,7 @@ QModelIndex DatasetProxyModel::mapToSource ( const QModelIndex& proxyIndex ) con
 bool DatasetProxyModel::filterAcceptsRow ( int sourceRow,
                                            const QModelIndex & ) const
 {
-    if ( mRowSrcToProxyMap.size() == 0 )
+    if ( mRowSrcToProxyMap.isEmpty() )
     {   // no row mapping set, all rows are passed down:
         return true;
     } else {
@@ -136,7 +136,7 @@ bool DatasetProxyModel::filterAcceptsRow ( int sourceRow,
 bool DatasetProxyModel::filterAcceptsColumn ( int sourceColumn,
                                               const QModelIndex & ) const
 {
-    if ( mColSrcToProxyMap.size() == 0 )
+    if ( mColSrcToProxyMap.isEmpty() )
     {   // no column mapping set up yet, all columns are passed down:
         return true;
     } else {
@@ -155,7 +155,7 @@ bool DatasetProxyModel::filterAcceptsColumn ( int sourceColumn,
 
 int DatasetProxyModel::mapProxyRowToSource ( const int& proxyRow ) const
 {
-    if ( mRowProxyToSrcMap.size() == 0 )
+    if ( mRowProxyToSrcMap.isEmpty() )
     {   // if no row mapping is set, we pass down the row:
         return proxyRow;
     } else {
@@ -166,7 +166,7 @@ int DatasetProxyModel::mapProxyRowToSource ( const int& proxyRow ) const
 
 int DatasetProxyModel::mapProxyColumnToSource ( const int& proxyColumn ) const
 {
-    if ( mColProxyToSrcMap.size() == 0 )
+    if ( mColProxyToSrcMap.isEmpty()  )
     {   // if no column mapping is set, we pass down the column:
         return proxyColumn;
     } else {
@@ -177,7 +177,7 @@ int DatasetProxyModel::mapProxyColumnToSource ( const int& proxyColumn ) const
 
 int DatasetProxyModel::mapSourceRowToProxy ( const int& sourceRow ) const
 {
-    if ( mRowSrcToProxyMap.size() == 0 )
+    if ( mRowSrcToProxyMap.isEmpty() )
     {
         return sourceRow;
     } else {
@@ -188,12 +188,12 @@ int DatasetProxyModel::mapSourceRowToProxy ( const int& sourceRow ) const
 
 int DatasetProxyModel::mapSourceColumnToProxy ( const int& sourceColumn ) const
 {
-    if ( mColSrcToProxyMap.size() == 0 )
+    if ( mColSrcToProxyMap.isEmpty() )
     {
         return sourceColumn;
     } else {
         Q_ASSERT ( sourceColumn >= 0 && sourceColumn < mColSrcToProxyMap.size() );
-        return mColSrcToProxyMap[sourceColumn];
+        return mColSrcToProxyMap.at( sourceColumn ) ;
     }
 }
 
