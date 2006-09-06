@@ -337,6 +337,19 @@ namespace KDChart {
         bool allowOverlappingDataValueTexts() const;
 
         /**
+         * Set whether anti-aliasing is to be used while rendering 
+         * this diagram.
+         * @param enabled True means that AA is enabled.
+         */
+        void setAntiAliasing( bool enabled );
+
+        /**
+         * @return Whether anti-aliasing is to be used for rendering
+         * this diagram.
+         */
+        bool antiAliasing() const;
+
+        /**
          * Set the palette to be used, for painting datasets to the default
          * palette.
          * @see KDChart::Palette.

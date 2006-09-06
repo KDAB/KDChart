@@ -59,6 +59,7 @@ AbstractDiagram::Private::Private()
   : plane( 0 )
   , attributesModel( new PrivateAttributesModel(0,0) )
   , allowOverlappingDataValueTexts( false )
+  , antiAliasing( true )
   , percent( false )
   , datasetDimension( 1 )
   , databoundariesDirty(true)
@@ -269,6 +270,17 @@ void AbstractDiagram::setAllowOverlappingDataValueTexts( bool allow )
 bool AbstractDiagram::allowOverlappingDataValueTexts() const
 {
     return d->allowOverlappingDataValueTexts;
+}
+
+void AbstractDiagram::setAntiAliasing( bool enabled )
+{
+    d->antiAliasing = enabled;
+    update();
+}
+
+bool AbstractDiagram::antiAliasing() const
+{
+    return d->antiAliasing;
 }
 
 void AbstractDiagram::setPercentMode ( bool percent )

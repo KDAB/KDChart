@@ -67,6 +67,7 @@ protected:
     QModelIndex attributesModelRootIndex;
     QPointer<AttributesModel> attributesModel;
     bool allowOverlappingDataValueTexts;
+    bool antiAliasing;
     bool percent;
     int datasetDimension;
     mutable QPair<QPointF,QPointF> databoundaries;
