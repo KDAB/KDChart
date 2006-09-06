@@ -352,11 +352,13 @@ const QPair<QPointF, QPointF> LineDiagram::calculateDataBoundaries() const
 
 void LineDiagram::paintEvent ( QPaintEvent*)
 {
+qDebug() << "starting LineDiagram::paintEvent ( QPaintEvent*)";
     QPainter painter ( viewport() );
     PaintContext ctx;
     ctx.setPainter ( &painter );
     ctx.setRectangle ( QRectF ( 0, 0, width(), height() ) );
     paint ( &ctx );
+qDebug() << "         LineDiagram::paintEvent ( QPaintEvent*) ended.";
 }
 
 
@@ -400,6 +402,7 @@ LineAttributes::MissingValuesPolicy LineDiagram::getCellValues(
 
 void LineDiagram::paint( PaintContext* ctx )
 {
+qDebug() << "    start diag::paint()";
     if ( !checkInvariants( true ) ) return;
     if ( !AbstractGrid::isBoundariesValid(dataBoundaries()) ) return;
 
@@ -581,20 +584,26 @@ void LineDiagram::paint( PaintContext* ctx )
                          "Type item does not match a defined line chart Type." );
     }
     // paint all lines and their attributes
-    PainterSaver painterSaver( ctx->painter() );
-    if ( antiAliasing() )
-        ctx->painter()->setRenderHint ( QPainter::Antialiasing );
-    LineAttributesInfoListIterator itline ( lineList );
-    //qDebug() << "Rendering 1 in: " << t.msecsTo( QTime::currentTime() ) << endl;
-    while ( itline.hasNext() ) {
-        const LineAttributesInfo& lineInfo = itline.next();
-        paintLines( ctx,lineInfo.index, lineInfo.value, lineInfo.nextValue );
+    {
+        PainterSaver painterSaver( ctx->painter() );
+        if ( antiAliasing() )
+            ctx->painter()->setRenderHint ( QPainter::Antialiasing );
+        LineAttributesInfoListIterator itline ( lineList );
+        //qDebug() << "Rendering 1 in: " << t.msecsTo( QTime::currentTime() ) << endl;
+        while ( itline.hasNext() ) {
+            const LineAttributesInfo& lineInfo = itline.next();
+            paintLines( ctx,lineInfo.index, lineInfo.value, lineInfo.nextValue );
+        }
     }
-    DataValueTextInfoListIterator it( list );
-    while ( it.hasNext() ) {
-        const DataValueTextInfo& info = it.next();
-        paintDataValueText( ctx->painter(), info.index, info.pos, info.value );
-        paintMarker( ctx->painter(), info.index, info.pos );
+    // paint all data value texts and the point markers
+    {
+        PainterSaver painterSaver( ctx->painter() );
+        DataValueTextInfoListIterator it( list );
+        while ( it.hasNext() ) {
+            const DataValueTextInfo& info = it.next();
+            paintDataValueText( ctx->painter(), info.index, info.pos, info.value );
+            paintMarker( ctx->painter(), info.index, info.pos );
+        }
     }
     //qDebug() << "Rendering 2 in: " << t.msecsTo( QTime::currentTime() ) << endl;
 }
