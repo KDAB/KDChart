@@ -502,7 +502,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     --y;
 
                     labelItem->setGeometry( QRect( QPoint(x, y), labelSize ) );
-                    ptr->drawRect(labelItem->geometry().adjusted(0,0,-1,-1));
+                    //ptr->drawRect(labelItem->geometry().adjusted(0,0,-1,-1));
                     labelItem->paint( ptr );
 
                     labelValue += dimY.stepWidth;
