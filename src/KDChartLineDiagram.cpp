@@ -352,13 +352,13 @@ const QPair<QPointF, QPointF> LineDiagram::calculateDataBoundaries() const
 
 void LineDiagram::paintEvent ( QPaintEvent*)
 {
-qDebug() << "starting LineDiagram::paintEvent ( QPaintEvent*)";
+//qDebug() << "starting LineDiagram::paintEvent ( QPaintEvent*)";
     QPainter painter ( viewport() );
     PaintContext ctx;
     ctx.setPainter ( &painter );
     ctx.setRectangle ( QRectF ( 0, 0, width(), height() ) );
     paint ( &ctx );
-qDebug() << "         LineDiagram::paintEvent ( QPaintEvent*) ended.";
+//qDebug() << "         LineDiagram::paintEvent ( QPaintEvent*) ended.";
 }
 
 
@@ -402,7 +402,7 @@ LineAttributes::MissingValuesPolicy LineDiagram::getCellValues(
 
 void LineDiagram::paint( PaintContext* ctx )
 {
-qDebug() << "    start diag::paint()";
+//qDebug() << "    start diag::paint()";
     if ( !checkInvariants( true ) ) return;
     if ( !AbstractGrid::isBoundariesValid(dataBoundaries()) ) return;
 
