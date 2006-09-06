@@ -582,7 +582,8 @@ void BarDiagram::paintBars( PaintContext* ctx, const QModelIndex& index, const Q
     QBrush indexBrush ( brush( index ) );
     QPen indexPen( pen( index ) );
     PainterSaver painterSaver( ctx->painter() );
-    ctx->painter()->setRenderHint ( QPainter::Antialiasing );
+    if ( antiAliasing() )
+        ctx->painter()->setRenderHint ( QPainter::Antialiasing );
     ctx->painter()->setBrush( indexBrush );
     ctx->painter()->setPen( indexPen );
     if ( tda.isEnabled() ) {
