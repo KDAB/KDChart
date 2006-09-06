@@ -396,12 +396,14 @@ LineAttributes::MissingValuesPolicy LineDiagram::getCellValues(
     return policy;
 }
 
+#include <QTime>
 
 void LineDiagram::paint( PaintContext* ctx )
 {
     if ( !checkInvariants( true ) ) return;
     if ( !AbstractGrid::isBoundariesValid(dataBoundaries()) ) return;
 
+    //QTime t = QTime::currentTime();
 
     //calculates and stores the values
     const int rowCount = d->attributesModel->rowCount(attributesModelRootIndex());
@@ -579,7 +581,11 @@ void LineDiagram::paint( PaintContext* ctx )
                          "Type item does not match a defined line chart Type." );
     }
     // paint all lines and their attributes
+    PainterSaver painterSaver( ctx->painter() );
+    if ( antiAliasing() )
+        ctx->painter()->setRenderHint ( QPainter::Antialiasing );
     LineAttributesInfoListIterator itline ( lineList );
+    //qDebug() << "Rendering 1 in: " << t.msecsTo( QTime::currentTime() ) << endl;
     while ( itline.hasNext() ) {
         const LineAttributesInfo& lineInfo = itline.next();
         paintLines( ctx,lineInfo.index, lineInfo.value, lineInfo.nextValue );
@@ -590,6 +596,7 @@ void LineDiagram::paint( PaintContext* ctx )
         paintDataValueText( ctx->painter(), info.index, info.pos, info.value );
         paintMarker( ctx->painter(), info.index, info.pos );
     }
+    //qDebug() << "Rendering 2 in: " << t.msecsTo( QTime::currentTime() ) << endl;
 }
 
 void LineDiagram::paintLines( PaintContext* ctx, const QModelIndex& index,
@@ -599,15 +606,13 @@ void LineDiagram::paintLines( PaintContext* ctx, const QModelIndex& index,
     if ( td.isEnabled() ) {
         const double lineDepth = td.depth();
         paintThreeDLines( ctx, index, from, to, lineDepth );
-    }    else {
-        //get the brush and pen to be used from the AbstractDiagram methods
-        QBrush indexBrush ( brush( index ) );
-        PainterSaver painterSaver( ctx->painter() );
-        ctx->painter()->setRenderHint ( QPainter::Antialiasing );
-        ctx->painter()->setBrush( indexBrush );
+    } else {
+        ctx->painter()->setBrush( brush( index ) );
         ctx->painter()->setPen( pen( index ) );
         if ( index.row() + 1 < d->attributesModel->rowCount(attributesModelRootIndex()) ) {
-            ctx->painter()->drawLine( from, to );
+            if ( ctx->rectangle().contains( from ) || ctx->rectangle().contains( to ) ) {
+                ctx->painter()->drawLine( from, to );
+            }
         }
     }
 }
@@ -625,7 +630,8 @@ void LineDiagram::paintAreas( PaintContext* ctx, const QModelIndex& index, const
     pol.insert( 0,  coordinatePlane()->translate( QPointF( bottomLeft.x(), 0 ) ) );
     pol.append( coordinatePlane()->translate( QPointF( topRight.x(),0 ) ) );
     PainterSaver painterSaver( ctx->painter() );
-    ctx->painter()->setRenderHint ( QPainter::Antialiasing );
+    if ( antiAliasing() )
+        ctx->painter()->setRenderHint ( QPainter::Antialiasing );
     ctx->painter()->setPen( indexPen );
     ctx->painter()->setBrush( trans ) ;
     ctx->painter()->drawPolygon( pol );
@@ -661,7 +667,8 @@ void LineDiagram::paintThreeDLines(PaintContext* ctx, const QModelIndex& index, 
     QPolygonF segment ( segmentPoints );
     QBrush indexBrush ( brush( index ) );
     PainterSaver painterSaver( ctx->painter() );
-    ctx->painter()->setRenderHint ( QPainter::Antialiasing );
+    if ( antiAliasing() )
+        ctx->painter()->setRenderHint ( QPainter::Antialiasing );
     ctx->painter()->setBrush( indexBrush );
     ctx->painter()->setPen( pen( index ) ) ;
     ctx->painter()->drawPolygon( segment );
