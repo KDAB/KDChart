@@ -398,7 +398,10 @@ LineAttributes::MissingValuesPolicy LineDiagram::getCellValues(
     return policy;
 }
 
-#include <QTime>
+/*commenting this include: used for testing
+notice: Windows compilers need this include to
+be written before the #define d(d_func()) above*/
+//#include <QTime>
 
 void LineDiagram::paint( PaintContext* ctx )
 {
