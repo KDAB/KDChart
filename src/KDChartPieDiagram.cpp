@@ -286,8 +286,10 @@ void PieDiagram::paint( PaintContext* ctx )
     int backmostpie = findPieAt( 90, colCount );
     // Find the frontmost pie (at -90°/+270°) that should be drawn last
     int frontmostpie = findPieAt( 270, colCount );
-    // and put the backmost pie on the TODO stack to initialize it,
-    // but only if it is not the frontmostpie
+    // the right- and the leftmost (only needed in some special cases...)
+    int rightmostpie = findPieAt( 0, colCount );
+    int leftmostpie = findPieAt( 180, colCount );
+
     
     int currentLeftPie = backmostpie;
     int currentRightPie = backmostpie;
@@ -298,9 +300,6 @@ void PieDiagram::paint( PaintContext* ctx )
 
     if( backmostpie == frontmostpie )
     {
-        int rightmostpie = findPieAt( 0, colCount );
-        int leftmostpie = findPieAt( 180, colCount );
-
         if( backmostpie == leftmostpie )
             currentLeftPie = findLeftPie( currentLeftPie, colCount );
         if( backmostpie == rightmostpie )
@@ -319,9 +318,11 @@ void PieDiagram::paint( PaintContext* ctx )
         currentRightPie = findRightPie( currentRightPie, colCount );
     }
 
-    if( backmostpie != frontmostpie )
+    // if the backmost pie is not the frontmost pie, we draw the frontmost at last
+    if( backmostpie != frontmostpie || ! threeDPieAttributes().isEnabled() )
     {
         drawOnePie( ctx->painter(), 0, frontmostpie, granularity, sizeFor3DEffect );
+    // else, this gets a bit mor complicated...
     } else if( threeDPieAttributes().isEnabled() ) {
         drawPieSurface( ctx->painter(), 0, frontmostpie, granularity );
         const QModelIndex index = model()->index( 0, frontmostpie, rootIndex() );
@@ -331,11 +332,14 @@ void PieDiagram::paint( PaintContext* ctx )
         if ( threeDAttrs.isEnabled() )
             pen.setColor( QColor( 0, 0, 0 ) );
         ctx->painter()->setPen( pen );
+
         qreal startAngle = d->startAngles[ frontmostpie ];
         if( startAngle > 360 )
             startAngle -= 360;
-        qreal endAngle = qMin( startAngle + d->angleLens[ frontmostpie ], 360.0 );
+
+        qreal endAngle = startAngle + d->angleLens[ frontmostpie ];
         startAngle = qMax( startAngle, 180.0 );
+
         drawArcEffectSegment( ctx->painter(), piePosition( 0, frontmostpie), 
                 sizeFor3DEffect, startAngle, endAngle, granularity );
     }
@@ -892,8 +896,14 @@ void PieDiagram::drawArcEffectSegment( QPainter* painter,
         qreal granularity )
 {
     // Start with getting the points for the inner arc.
-    const qreal startA = qMin( startAngle, endAngle );
-    const qreal endA   = qMax( startAngle, endAngle );
+    qreal startA = qMin( startAngle, endAngle );
+    qreal endA   = qMax( startAngle, endAngle );
+
+    // sometimes we have to draw two segments, which are on different sides of the pie
+    if( endA > 540 )
+        drawArcEffectSegment( painter, rect, threeDHeight, 180, endA - 360, granularity );
+    if( endA > 360 )
+        endA = qMin( endA, 360.0 );
 
     int numHalfPoints = static_cast<int>( trunc( ( endA - startA ) / granularity ) ) + 1;
 
