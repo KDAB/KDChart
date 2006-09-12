@@ -48,8 +48,8 @@ namespace KDChart {
     class KDCHART_EXPORT AbstractLayoutItem : public QLayoutItem
     {
     public:
-        AbstractLayoutItem( Qt::Alignment alignment = 0 ) :
-            QLayoutItem( alignment ),
+        AbstractLayoutItem( Qt::Alignment itemAlignment = 0 ) :
+            QLayoutItem( itemAlignment ),
             mParent( 0 ),
             mParentLayout( 0 ) {}
 
@@ -59,9 +59,9 @@ namespace KDChart {
         virtual void setParentWidget( QWidget* widget );
         virtual void sizeHintChanged()const;
 
-        void setParentLayout( QLayout* layout )
+        void setParentLayout( QLayout* lay )
         {
-            mParentLayout = layout;
+            mParentLayout = lay;
         }
         void removeFromParentLayout()
         {
