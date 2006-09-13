@@ -476,14 +476,30 @@ double CartesianCoordinatePlane::zoomFactorY() const
     return d->coordinateTransformation.zoom.yFactor;
 }
 
-CartesianCoordinatePlane::AxesCalcMode CartesianCoordinatePlane::axesCalcMode() const
+CartesianCoordinatePlane::AxesCalcMode CartesianCoordinatePlane::axesCalcModeY() const
 {
-    return d->coordinateTransformation.axesCalcMode;
+    return d->coordinateTransformation.axesCalcModeY;
 }
 
-void CartesianCoordinatePlane::setAxesCalcMode( AxesCalcMode mode )
+CartesianCoordinatePlane::AxesCalcMode CartesianCoordinatePlane::axesCalcModeX() const
 {
-    d->coordinateTransformation.axesCalcMode = mode;
+    return d->coordinateTransformation.axesCalcModeX;
+}
+
+void CartesianCoordinatePlane::setAxesCalcModes( AxesCalcMode mode )
+{
+    setAxesCalcModeY( mode );
+    setAxesCalcModeX( mode );
+}
+
+void CartesianCoordinatePlane::setAxesCalcModeY( AxesCalcMode mode )
+{
+    d->coordinateTransformation.axesCalcModeY = mode;
+}
+
+void CartesianCoordinatePlane::setAxesCalcModeX( AxesCalcMode mode )
+{
+    d->coordinateTransformation.axesCalcModeX = mode;
 }
 
 void KDChart::CartesianCoordinatePlane::setHorizontalRange( const QPair< qreal, qreal > & range )

@@ -173,8 +173,15 @@ namespace KDChart {
 
         enum AxesCalcMode { Linear, Logarithmic };
 
-        AxesCalcMode axesCalcMode() const;
-        void setAxesCalcMode( AxesCalcMode mode );
+        AxesCalcMode axesCalcModeY() const;
+        AxesCalcMode axesCalcModeX() const;
+
+        /** Specifies the calculation modes for all axes */
+        void setAxesCalcModes( AxesCalcMode mode );
+        /** Specifies the calculation mode for all Ordinate axes */
+        void setAxesCalcModeY( AxesCalcMode mode );
+        /** Specifies the calculation mode for all Abscissa axes */
+        void setAxesCalcModeX( AxesCalcMode mode );
 
         /** reimpl */
         virtual void paint( QPainter* );

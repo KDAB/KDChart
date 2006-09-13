@@ -54,14 +54,16 @@ namespace KDChart {
         double isoScaleX;
         double isoScaleY;
 
-        CartesianCoordinatePlane::AxesCalcMode axesCalcMode;
+        CartesianCoordinatePlane::AxesCalcMode axesCalcModeY;
+        CartesianCoordinatePlane::AxesCalcMode axesCalcModeX;
 
         ZoomParameters zoom;
 
         inline const qreal makeLogarithmic( qreal reference, qreal value ) const
         {
             qreal result = value;
-            const qreal relation = reference / log10( reference );
+
+            const qreal relation = reference / log10( qAbs(reference) );
 
             if( result > 0.0 )
                 result = log10( result ) * relation;
@@ -76,13 +78,11 @@ namespace KDChart {
             // ### de-inline me
             QPointF result = originTranslation;
             QPointF tempPoint = diagramPoint;
-            if ( axesCalcMode == CartesianCoordinatePlane::Logarithmic )
-                tempPoint.setY( makeLogarithmic( diagramRect.y(), tempPoint.y() ) );
 
-            //FIXME(khz): Make this work, so we can have logarithmic X axes too.
-            // also needed: extend the API, so user can decide if Y and/or X shall be logarithmic.
-//            if ( axesCalcMode == CartesianCoordinatePlane::Logarithmic )
-//                tempPoint.setX( makeLogarithmic( diagramRect.x(), tempPoint.x() ) );
+            if ( axesCalcModeY == CartesianCoordinatePlane::Logarithmic )
+                tempPoint.setY( makeLogarithmic( diagramRect.y(), tempPoint.y() ) );
+            if ( axesCalcModeX == CartesianCoordinatePlane::Logarithmic )
+                tempPoint.setX( makeLogarithmic( diagramRect.x(), tempPoint.x() ) );
 
             tempPoint.setX( tempPoint.x() + diagramRect.width() / (2 * zoom.xFactor) );
             tempPoint.setY( tempPoint.y() + diagramRect.height() / (2 * zoom.yFactor ) );

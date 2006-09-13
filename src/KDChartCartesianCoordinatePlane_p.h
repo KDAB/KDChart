@@ -60,7 +60,8 @@ public:
     {
         bPaintIsRunning   = false;
         bNextPaintPending = false;
-        coordinateTransformation.axesCalcMode = Linear;
+        coordinateTransformation.axesCalcModeX = Linear;
+        coordinateTransformation.axesCalcModeY = Linear;
         grid = new CartesianGrid();
     }
 
