@@ -63,7 +63,13 @@ namespace KDChart {
         {
             qreal result = value;
 
-            const qreal relation = reference / log10( qAbs(reference) );
+            qreal relation;
+            if( reference > 0.0 )
+                relation = reference / log10( reference );
+            else if( result < 0.0 )
+                relation = reference / log10( -reference );
+            else
+                relation = 10.0;
 
             if( result > 0.0 )
                 result = log10( result ) * relation;
@@ -79,11 +85,14 @@ namespace KDChart {
             QPointF result = originTranslation;
             QPointF tempPoint = diagramPoint;
 
-            if ( axesCalcModeY == CartesianCoordinatePlane::Logarithmic )
+            if ( axesCalcModeY == CartesianCoordinatePlane::Logarithmic ){
                 tempPoint.setY( makeLogarithmic( diagramRect.y(), tempPoint.y() ) );
-            if ( axesCalcModeX == CartesianCoordinatePlane::Logarithmic )
+                //qDebug() << "Y: " << tempPoint.y();
+            }
+            if ( axesCalcModeX == CartesianCoordinatePlane::Logarithmic ){
                 tempPoint.setX( makeLogarithmic( diagramRect.x(), tempPoint.x() ) );
-
+                //qDebug() << "X: " << tempPoint.x();
+            }
             tempPoint.setX( tempPoint.x() + diagramRect.width() / (2 * zoom.xFactor) );
             tempPoint.setY( tempPoint.y() + diagramRect.height() / (2 * zoom.yFactor ) );
 
