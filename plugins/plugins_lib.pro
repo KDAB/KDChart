@@ -15,6 +15,14 @@ CONFIG += designer message-target
 KDCHARTDIR = ../
 load(kdchart)
 
+win32:LIBS += kdchartuitools.lib
+unix:LIBS += -lkdchartuitools
+
+INCLUDEPATH += ../uitools \
+                ../src
+
+DEPENDPATH += ../uitools
+
 HEADERS = \
 	kdchartdesignerextension.h \
 	kdchartwidgetdesignercustomeditor.h \ 

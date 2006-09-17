@@ -9,6 +9,9 @@
 
 namespace KDChart {
     class Widget;
+    class LegendPropertiesWidget;
+    class AxisPropertiesWidget;
+    class HeaderFooterPropertiesWidget;
 }
 
 class KDCHART_PLUGINS_EXPORT KDChartWidgetDesignerCustomEditor 
@@ -26,7 +29,26 @@ class KDCHART_PLUGINS_EXPORT KDChartWidgetDesignerCustomEditor
         void slotLeadingRightChanged( int v );
         void slotLeadingBottomChanged( int v );
 
+
+    private slots:
+        void slotAddLegend();
+        void slotRemoveLegend();
+        void slotCurrentLegendChanged( int idx );
+        void slotAddAxis();
+        void slotRemoveAxis();
+        void slotCurrentAxisChanged( int idx );
+        void slotAddHeaderFooter();
+        void slotRemoveHeaderFooter();
+        void slotCurrentHeaderFooterChanged( int idx );
+
     private:
+        void setupLegendsTab();
+        void setupAxesTab();
+        void setupHeaderFooterTab();
+
+        KDChart::LegendPropertiesWidget * mLegendEditor;
+        KDChart::AxisPropertiesWidget * mAxisEditor;
+        KDChart::HeaderFooterPropertiesWidget * mHeaderFooterEditor;
         KDChart::Widget * const mChart;
 
 };
