@@ -1,5 +1,6 @@
 #include "plugins.h"
-#include "../src/KDChartWidget.h"
+#include <KDChartWidget>
+#include <KDChartChart>
 #include "kdchartdesignerextension.h"
 
 #include <QDesignerCustomWidgetInterface>
@@ -27,13 +28,27 @@ QWidget* createKDChartWidget( QWidget * parent )
      return w;
 }
 
+QWidget* createKDChartChart( QWidget * parent )
+{
+    return new KDChart::Chart( parent );
+}
+
+void initKDChartChart( QDesignerCustomWidgetInterface *, QDesignerFormEditorInterface * core )
+{
+    Q_ASSERT( core );
+    QExtensionManager * extMgr = core->extensionManager();
+    KDChartChartTaskMenuFactory * menuFactory = new KDChartChartTaskMenuFactory( extMgr );
+    extMgr->registerExtensions( menuFactory, Q_TYPEID( QDesignerTaskMenuExtension ) );
+  //extMgr->registerExtensions( new KDChartExtraInfoExtensionFactory(core, extMgr), Q_TYPEID(QDesignerExtraInfoExtension));
+}
+
 void initKDChartWidget( QDesignerCustomWidgetInterface *, QDesignerFormEditorInterface * core )
 {
   Q_ASSERT( core );
   QExtensionManager * extMgr = core->extensionManager();
   KDChartWidgetTaskMenuFactory * menuFactory = new KDChartWidgetTaskMenuFactory( extMgr );
   extMgr->registerExtensions( menuFactory, Q_TYPEID( QDesignerTaskMenuExtension ) );
-  //extMgr->registerExtensions( new LDChartExtraInfoExtensionFactory(core, extMgr), Q_TYPEID(QDesignerExtraInfoExtension));
+  //extMgr->registerExtensions( new KDChartExtraInfoExtensionFactory(core, extMgr), Q_TYPEID(QDesignerExtraInfoExtension));
 }
 
 typedef QWidget * (*widget_create_func)( QWidget * );
@@ -53,11 +68,18 @@ static const struct WidgetInfo {
   plugin_init_func init;
 } widgetInfos[] = {
   {
-    "KDChart", QT_TR_NOOP("KDChart Widgets"),
+    "KDChart Widget", QT_TR_NOOP("KDChart Widgets"),
     "", "include/KDChartWidget",
     QT_TR_NOOP("A charting widget"),
     QT_TR_NOOP("A charting widget"),
     false, &createKDChartWidget, &initKDChartWidget
+  },
+  {
+      "KDChart View", QT_TR_NOOP("KDChart Widgets"),
+      "", "include/KDChartChart",
+      QT_TR_NOOP("A charting view"),
+      QT_TR_NOOP("A charting view"),
+      false, &createKDChartChart, &initKDChartChart
   },
 };
 

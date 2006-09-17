@@ -2,6 +2,7 @@
 
 #include "kdchartwidgetdesignercustomeditor.h"
 
+#include <KDChartChart>
 #include <KDChartWidget>
 
 #include <QDesignerFormWindowInterface>
@@ -9,25 +10,17 @@
 
 #include <QAction>
 
-KDChartWidgetTaskMenu::KDChartWidgetTaskMenu( KDChart::Widget * chartWidget, QObject * parentW ):
-    QObject( parentW ),
-    mChart( chartWidget ),
-    mEditPropertiesAction( 0 )
-{
-  mEditPropertiesAction = new QAction( tr( "Edit chart properties..." ), this );
-  connect( mEditPropertiesAction, SIGNAL( triggered() ), this, SLOT( editCellProperties() ) );
-}
 
-KDChartWidgetTaskMenu::~KDChartWidgetTaskMenu()
+KDChartBaseTaskMenu::~KDChartBaseTaskMenu()
 {
 }
 
-QAction * KDChartWidgetTaskMenu::preferredEditAction() const
+QAction * KDChartBaseTaskMenu::preferredEditAction() const
 {
   return mEditPropertiesAction;
 }
 
-QList<QAction*> KDChartWidgetTaskMenu::taskActions() const
+QList<QAction*> KDChartBaseTaskMenu::taskActions() const
 {
   QList<QAction*> actions;
   actions.append( mEditPropertiesAction );
@@ -35,12 +28,42 @@ QList<QAction*> KDChartWidgetTaskMenu::taskActions() const
   return actions;
 }
 
-void KDChartWidgetTaskMenu::editCellProperties()
+void KDChartBaseTaskMenu::editChartProperties()
 {
-  KDChartWidgetDesignerCustomEditor dlg( mChart );
-  dlg.exec();
+    doEditChartProperties();
 }
 
+KDChartBaseTaskMenu::KDChartBaseTaskMenu( QObject * parentW )
+    : QObject( parentW ),
+    mEditPropertiesAction( 0 )
+{
+    mEditPropertiesAction = new QAction( tr( "Edit chart properties..." ), this );
+    connect( mEditPropertiesAction, SIGNAL( triggered() ), this, SLOT( editChartProperties() ) );
+}
+
+KDChartWidgetTaskMenu::KDChartWidgetTaskMenu( KDChart::Widget * chartWidget, QObject * parentW )
+    : KDChartBaseTaskMenu( parentW ),
+      mChart( chartWidget )
+{
+}
+
+void KDChartWidgetTaskMenu::doEditChartProperties()
+{
+    KDChartWidgetDesignerCustomEditor dlg( mChart );
+    dlg.exec();
+}
+
+KDChartChartTaskMenu::KDChartChartTaskMenu( KDChart::Chart * chart, QObject * parentW )
+    : KDChartBaseTaskMenu( parentW ),
+    mChart( chart )
+{
+}
+
+void KDChartChartTaskMenu::doEditChartProperties()
+{
+    //KDChartWidgetDesignerCustomEditor dlg( mChart );
+    //dlg.exec();
+}
 
 KDChartWidgetTaskMenuFactory::KDChartWidgetTaskMenuFactory( QExtensionManager * extMgr ):
     QExtensionFactory( extMgr )
@@ -52,6 +75,23 @@ QObject * KDChartWidgetTaskMenuFactory::createExtension( QObject * object, const
     if ( KDChart::Widget * kdchart = qobject_cast<KDChart::Widget*>( object ) ) {
         if ( iid == Q_TYPEID( QDesignerTaskMenuExtension ) ) {
             return new KDChartWidgetTaskMenu( kdchart, parentW );
+        }
+    }
+
+    return 0;
+}
+
+
+KDChartChartTaskMenuFactory::KDChartChartTaskMenuFactory( QExtensionManager * extMgr ):
+        QExtensionFactory( extMgr )
+{
+}
+
+QObject * KDChartChartTaskMenuFactory::createExtension( QObject * object, const QString &iid, QObject * parentW) const
+{
+    if ( KDChart::Chart * chart = qobject_cast<KDChart::Chart*>( object ) ) {
+        if ( iid == Q_TYPEID( QDesignerTaskMenuExtension ) ) {
+            return new KDChartChartTaskMenu( chart, parentW );
         }
     }
 
