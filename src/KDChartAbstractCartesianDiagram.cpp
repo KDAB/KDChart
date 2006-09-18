@@ -55,6 +55,10 @@ AbstractCartesianDiagram::AbstractCartesianDiagram ( QWidget* parent, CartesianC
 {
 }
 
+KDChart::AbstractCartesianDiagram::~AbstractCartesianDiagram()
+{
+}
+
 void AbstractCartesianDiagram::addAxis( CartesianAxis *axis )
 {
     d->axesList.append( axis );

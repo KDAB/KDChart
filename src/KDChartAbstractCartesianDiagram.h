@@ -51,7 +51,7 @@ namespace KDChart {
 
     public:
         explicit AbstractCartesianDiagram ( QWidget* parent = 0, CartesianCoordinatePlane* plane = 0 );
-        virtual ~AbstractCartesianDiagram() {}
+        virtual ~AbstractCartesianDiagram();
 
         virtual const int numberOfAbscissaSegments () const = 0;
         virtual const int numberOfOrdinateSegments () const = 0;
