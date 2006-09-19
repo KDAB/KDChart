@@ -28,6 +28,7 @@
 #include <QWidget>
 
 #include "kdchart_export.h"
+#include "ui_KDChartLegendPropertiesWidget.h"
 #include "KDChartGlobal.h"
 
 namespace KDChart {
@@ -40,7 +41,8 @@ namespace KDChart {
      *
      * 
      */
-    class KDCHART_EXPORT LegendPropertiesWidget : public QWidget
+    class KDCHART_EXPORT LegendPropertiesWidget
+    : public QWidget, private Ui::Form
     {
         Q_OBJECT
 
@@ -48,21 +50,17 @@ namespace KDChart {
         KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC_QWIDGET( LegendPropertiesWidget )
 
     public:
-        /**
-         * Default Constructor
-         *
-         * Creates a new widget with all data initialized empty.
-         *
-         * \param parent the widget parent; passed on to QWidget
-         */
         LegendPropertiesWidget( QWidget* parent = 0 );
 
-        /** Destructor. */
         ~LegendPropertiesWidget();
 
         void setLegend( Legend* legend );
 
         void setInstantApply( bool value );
+
+        void readFromLegend( const Legend * legend );
+
+        void writeToLegend( Legend * legend );
     };
 }
 

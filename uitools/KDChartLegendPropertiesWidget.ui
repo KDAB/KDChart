@@ -1,0 +1,31 @@
+<ui version="4.0" >
+ <class>Form</class>
+ <widget class="QWidget" name="KDChartLegendPropertiesWidget" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Form</string>
+  </property>
+  <widget class="QCheckBox" name="checkBox" >
+   <property name="geometry" >
+    <rect>
+     <x>100</x>
+     <y>70</y>
+     <width>76</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>CheckBox</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

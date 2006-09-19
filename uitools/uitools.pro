@@ -27,18 +27,21 @@ DEPENDPATH += ../include \
 LIBS        += -L$$KDCHART_PATH/lib -lkdchart
 
 
-SOURCES= \
+SOURCES = \
         KDChartLegendPropertiesWidget.cpp \
         KDChartAxisPropertiesWidget.cpp \
         KDChartHeaderFooterPropertiesWidget.cpp \
 
-HEADERS= \
+HEADERS = \
         KDChartLegendPropertiesWidget.h \
         KDChartLegendPropertiesWidget_p.h \
         KDChartAxisPropertiesWidget.h \
         KDChartAxisPropertiesWidget_p.h \
         KDChartHeaderFooterPropertiesWidget.h \
         KDChartHeaderFooterPropertiesWidget_p.h \
+
+FORMS = \
+        KDChartLegendPropertiesWidget.ui \
 
 KDAB_EVAL {
   HEADERS += ../evaldialog/evaldialog.h

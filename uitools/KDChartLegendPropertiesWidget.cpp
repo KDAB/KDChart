@@ -49,7 +49,7 @@ LegendPropertiesWidget::LegendPropertiesWidget( QWidget *parent )
     :QWidget( parent )
 {
     new QLabel( "Legend Editor Widget", this );
-    
+    setupUi( this );
 }
 
 LegendPropertiesWidget::~LegendPropertiesWidget()
@@ -60,9 +60,20 @@ LegendPropertiesWidget::~LegendPropertiesWidget()
 void LegendPropertiesWidget::setLegend( Legend * legend )
 {
     d->legend = legend;
+    readFromLegend( legend );
 }
 
-void KDChart::LegendPropertiesWidget::setInstantApply( bool value )
+void LegendPropertiesWidget::setInstantApply( bool value )
 {
     d->instantApply = value;
+}
+
+void LegendPropertiesWidget::readFromLegend( const Legend * legend )
+{
+    Q_UNUSED( legend )
+}
+
+void LegendPropertiesWidget::writeToLegend( Legend * legend )
+{
+    Q_UNUSED( legend )
 }
