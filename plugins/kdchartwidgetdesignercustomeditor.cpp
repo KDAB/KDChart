@@ -246,3 +246,4 @@ void KDChartWidgetDesignerCustomEditor::slotCurrentHeaderFooterChanged( int idx 
     HeaderFooter* l = mChart->allHeadersFooters()[idx];
     mHeaderFooterEditor->setHeaderFooter( l );
 }
+
