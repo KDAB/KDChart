@@ -58,6 +58,49 @@ private slots:
       QVERIFY( !m_axis->observedBy( m_bars ) );
   }
 
+  void testReplacing()
+  {
+      m_axis = new CartesianAxis;
+      m_lines->addAxis( m_axis );
+      m_chart->coordinatePlane()->takeDiagram( m_bars );
+      QVERIFY( m_axis->observedBy( m_lines ) );
+      QVERIFY( !m_axis->observedBy( m_bars ) );
+      QPointer<LineDiagram> p( m_lines);
+      m_chart->coordinatePlane()->replaceDiagram( m_bars, m_lines );
+      QVERIFY( !p );
+      AbstractDiagram * nullDiagram = 0;
+      QCOMPARE( m_axis->diagram(), nullDiagram );
+      QVERIFY( !m_axis->observedBy( m_bars ) );
+  }
+
+  void testReplacingWithPropagation()
+  {
+      initTestCase();
+      m_axis = new CartesianAxis;
+      m_lines->addAxis( m_axis );
+      m_bars->addAxis( m_axis );
+      m_chart->coordinatePlane()->takeDiagram( m_bars );
+      QCOMPARE( m_axis->diagram(), m_lines );
+      QVERIFY( m_axis->observedBy( m_bars ) );
+      QPointer<LineDiagram> p( m_lines);
+      m_chart->coordinatePlane()->replaceDiagram( m_bars, m_lines );
+      QVERIFY( !p );
+      QCOMPARE( m_axis->diagram(), m_bars );
+      QVERIFY( m_axis->observedBy( m_bars ) );
+  }
+
+  void testAxisDeletion()
+  {
+      initTestCase();
+      m_axis = new CartesianAxis;
+      m_lines->addAxis( m_axis );
+      CartesianAxisList list = m_lines->axes();
+      QVERIFY( !list.isEmpty() );
+      delete m_axis;
+      list = m_lines->axes();
+      QVERIFY( list.isEmpty() );
+  }
+
   void cleanupTestCase()
   {
   }
