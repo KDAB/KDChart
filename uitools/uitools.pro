@@ -1,5 +1,7 @@
 include( ../variables.pri )
 
+UI_DIR = .
+
 TEMPLATE = lib
 TARGET = kdchartuitools
 DESTDIR	= ../lib
