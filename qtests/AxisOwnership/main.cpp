@@ -101,6 +101,21 @@ private slots:
       QVERIFY( list.isEmpty() );
   }
 
+  void testAxisDeletionAndUnregister()
+  {
+      initTestCase();
+      m_axis = new CartesianAxis;
+      m_lines->addAxis( m_axis );
+      m_bars->addAxis( m_axis );
+      CartesianAxisList list = m_lines->axes();
+      QVERIFY( !list.isEmpty() );
+      delete m_axis;
+      list = m_lines->axes();
+      QVERIFY( list.isEmpty() );
+      list = m_bars->axes();
+      QVERIFY( list.isEmpty() );
+  }
+
   void cleanupTestCase()
   {
   }
