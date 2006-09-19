@@ -187,8 +187,9 @@ void KDChartWidgetDesignerCustomEditor::slotRemoveLegend()
 
 void KDChartWidgetDesignerCustomEditor::slotCurrentLegendChanged( int idx )
 {
-    if ( idx == -1 || idx >= mChart->legendCount() ) return;
-    Legend* l = mChart->allLegends()[idx];
+    Legend* l = 0;
+    if ( idx != -1 && idx < mChart->legendCount() )
+        l = mChart->allLegends()[idx];
     mLegendEditor->setLegend( l );
 }
 
