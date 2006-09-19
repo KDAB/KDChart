@@ -24,12 +24,16 @@
  **
  **********************************************************************/
 
-#include <KDChartLegendPropertiesWidget.h>
-#include <KDChartLegendPropertiesWidget_p.h>
-
 #include <QWidget>
 #include <QDebug>
 #include <QLabel>
+
+#include <KDChartPosition.h>
+#include <KDChartLegend.h>
+
+#include <KDChartLegendPropertiesWidget.h>
+#include <KDChartLegendPropertiesWidget_p.h>
+
 
 #define d d_func()
 
@@ -46,9 +50,14 @@ LegendPropertiesWidget::Private::~Private()
 }
 
 LegendPropertiesWidget::LegendPropertiesWidget( QWidget *parent )
-    :QWidget( parent )
+    : QWidget( parent ), _d( new Private )
 {
     setupUi( this );
+
+    mPositionCombo->insertItems( 0, Position::printableNames( true ) );
+    connect( mPositionCombo, SIGNAL( activated( int ) ),
+             this, SLOT( slotPositionChanged( int ) ) );
+    setEnabled( false );
 }
 
 LegendPropertiesWidget::~LegendPropertiesWidget()
@@ -59,7 +68,12 @@ LegendPropertiesWidget::~LegendPropertiesWidget()
 void LegendPropertiesWidget::setLegend( Legend * legend )
 {
     d->legend = legend;
-    readFromLegend( legend );
+    if ( legend ) {
+        readFromLegend( legend );
+        setEnabled( true );
+    } else {
+        setEnabled( false);
+    }
 }
 
 void LegendPropertiesWidget::setInstantApply( bool value )
@@ -69,10 +83,20 @@ void LegendPropertiesWidget::setInstantApply( bool value )
 
 void LegendPropertiesWidget::readFromLegend( const Legend * legend )
 {
-    Q_UNUSED( legend )
+    mPositionCombo->setCurrentIndex( legend->position().value() );
 }
 
 void LegendPropertiesWidget::writeToLegend( Legend * legend )
 {
-    Q_UNUSED( legend )
+    if ( !legend ) return;
+    legend->setPosition( Position( mPositionCombo->currentIndex() ) );
+}
+
+void LegendPropertiesWidget::slotPositionChanged( int idx )
+{
+    if ( d->legend && d->instantApply ) {
+        d->legend->setPosition( Position( idx ) );
+    } else {
+        emit changed();
+    }
 }

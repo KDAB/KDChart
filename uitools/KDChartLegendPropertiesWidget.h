@@ -61,6 +61,12 @@ namespace KDChart {
         void readFromLegend( const Legend * legend );
 
         void writeToLegend( Legend * legend );
+    protected slots:
+        void slotPositionChanged( int idx );
+
+    signals:
+        // emitted whenever a value in the dialog changes
+        void changed();
     };
 }
 

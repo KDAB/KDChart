@@ -36,6 +36,8 @@
 // We mean it.
 //
 
+#include <QPointer>
+
 #include <KDChartLegendPropertiesWidget.h>
 
 namespace KDChart {
@@ -53,7 +55,7 @@ namespace KDChart {
 
     protected:
         void init();
-        Legend* legend;
+        QPointer<Legend> legend;
         bool instantApply;
     };
 }
