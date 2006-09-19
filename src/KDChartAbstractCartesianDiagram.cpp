@@ -57,6 +57,10 @@ AbstractCartesianDiagram::AbstractCartesianDiagram ( QWidget* parent, CartesianC
 
 KDChart::AbstractCartesianDiagram::~AbstractCartesianDiagram()
 {
+    foreach( CartesianAxis* axis, d->axesList ) {
+        axis->deleteObserver( this );
+    }
+    d->axesList.clear();
 }
 
 void AbstractCartesianDiagram::addAxis( CartesianAxis *axis )

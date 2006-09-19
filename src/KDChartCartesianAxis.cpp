@@ -54,6 +54,14 @@ CartesianAxis::CartesianAxis ( AbstractCartesianDiagram* diagram )
 
 CartesianAxis::~CartesianAxis ()
 {
+    if ( d->mDiagram ) {
+        AbstractCartesianDiagram *cd = qobject_cast<AbstractCartesianDiagram*>( d->mDiagram );
+        cd->takeAxis( this );
+    }
+    foreach ( AbstractDiagram *diagram, d->secondaryDiagrams ) {
+        AbstractCartesianDiagram *cd = qobject_cast<AbstractCartesianDiagram*>( diagram );
+        cd->takeAxis( this );
+    }
 }
 
 void CartesianAxis::init ()

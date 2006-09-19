@@ -77,7 +77,7 @@ public:
     QStringList hardShortLabels;
     QQueue<AbstractDiagram*> secondaryDiagrams;
 
-private:
+protected:
     AbstractDiagram* mDiagram;
     AbstractAxis*    mAxis;
 };

@@ -120,7 +120,8 @@ AbstractAxis::AbstractAxis ( AbstractDiagram* diagram )
 
 AbstractAxis::~AbstractAxis()
 {
-    emit destroyedAxis( this );
+    d->mDiagram = 0;
+    d->secondaryDiagrams.clear();
 }
 
 

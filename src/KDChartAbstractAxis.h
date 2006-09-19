@@ -107,9 +107,6 @@ namespace KDChart {
         /** called for initializing after the c'tor has completed */
         virtual void delayedInit();
 
-    signals:
-        void destroyedAxis( AbstractAxis* );
-
     public slots:
         void update();
     };
