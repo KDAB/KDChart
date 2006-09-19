@@ -48,7 +48,6 @@ LegendPropertiesWidget::Private::~Private()
 LegendPropertiesWidget::LegendPropertiesWidget( QWidget *parent )
     :QWidget( parent )
 {
-    new QLabel( "Legend Editor Widget", this );
     setupUi( this );
 }
 

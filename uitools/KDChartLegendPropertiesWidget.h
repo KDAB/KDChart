@@ -42,7 +42,7 @@ namespace KDChart {
      * 
      */
     class KDCHART_EXPORT LegendPropertiesWidget
-    : public QWidget, private Ui::Form
+    : public QWidget, private Ui::KDChartLegendPropertiesWidget
     {
         Q_OBJECT
 
