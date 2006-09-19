@@ -65,8 +65,10 @@ KDChart::AbstractCartesianDiagram::~AbstractCartesianDiagram()
 
 void AbstractCartesianDiagram::addAxis( CartesianAxis *axis )
 {
-    d->axesList.append( axis );
-    axis->createObserver( this );
+    if ( !d->axesList.contains( axis ) ) {
+        d->axesList.append( axis );
+        axis->createObserver( this );
+    }
 }
 
 void AbstractCartesianDiagram::takeAxis( CartesianAxis *axis )

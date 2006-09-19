@@ -54,7 +54,9 @@ CartesianAxis::CartesianAxis ( AbstractCartesianDiagram* diagram )
 
 CartesianAxis::~CartesianAxis ()
 {
-    if ( d->mDiagram ) {
+    // when we remove the first axis it will unregister itself and
+    // propagate the next one to the primary, thus the while loop
+    while ( d->mDiagram ) {
         AbstractCartesianDiagram *cd = qobject_cast<AbstractCartesianDiagram*>( d->mDiagram );
         cd->takeAxis( this );
     }
