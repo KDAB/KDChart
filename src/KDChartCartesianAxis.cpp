@@ -196,11 +196,10 @@ void CartesianAxis::paintCtx( PaintContext* context )
     DataDimension& dimX = dimensions.first();
     const DataDimension& dimY = dimensions.last();
     const DataDimension& dim = (isAbscissa() ? dimensions.first() : dimensions.last());
-
-/*    const bool isLeft   = position() == Left;
-    const bool isRight  = position() == Right;
-    const bool isTop    = position() == Top;
-    const bool isBottom = position() == Bottom;*/
+//    if(isAbscissa())
+//        qDebug() << "         " << "Abscissa:" << dimX.start <<".."<<dimX.end;
+//    else
+//        qDebug() << "         " << "Ordinate:" << dimY.start <<".."<<dimY.end;
 
     // preparations:
     // - calculate the range that will be displayed:
@@ -308,6 +307,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
     const qreal maxValueY = dimY.end;
     const qreal minValueX = dimX.start;
     const qreal maxValueX = dimX.end;
+    const bool isLogarithmicX = (dimX.calcMode == AbstractCoordinatePlane::Logarithmic );
+    const bool isLogarithmicY = (dimY.calcMode == AbstractCoordinatePlane::Logarithmic );
 //#define AXES_PAINTING_DEBUG 1
     #ifdef AXES_PAINTING_DEBUG
     qDebug() << "CartesianAxis::paint: reference values:" << endl
@@ -379,7 +380,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
             if( drawLabels && hardLabelsCount > 0 && shortLabelsCount > 0 ){
                 bool labelsAreOverlapping = false;
                 int iLabel = 0;
-                for ( qreal i = minValueX; i < maxValueX && !labelsAreOverlapping; i += dimX.stepWidth )
+                qreal i = minValueX;
+                while ( i < maxValueX && !labelsAreOverlapping )
                 {
                     if ( dimX.stepWidth != 1.0 && ! dim.isCalculated )
                     {
@@ -399,6 +401,10 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
                     if ( iLabel++ > hardLabelsCount - 1 )
                         iLabel = 0;
+                    if ( isLogarithmicX )
+                        i *= 10.0;
+                    else
+                        i += dimX.stepWidth;
                 }
 
                 useShortLabels = labelsAreOverlapping;
@@ -408,7 +414,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
             QPoint oldItemPos;
             int idxLabel = 0;
             qreal iLabelF = minValueX;
-            for ( qreal i = minValueX; i < maxValueX; i += dimX.stepWidth ) {
+            qreal i = minValueX;
+            while ( i < maxValueX ) {
                 QPointF topPoint ( i + ( useItemCountLabels ? 0.5 : 0.0 ), 0.0 );
                 QPointF bottomPoint ( topPoint );
                 topPoint = plane->translate( topPoint );
@@ -459,7 +466,11 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         iLabelF += dimX.stepWidth;
                     }
                 }
-            }
+                if ( isLogarithmicX )
+                    i *= 10.0;
+                else
+                    i += dimX.stepWidth;
+           }
         } else {
             const double maxLimit = maxValueY;
             const double steg = dimY.stepWidth;
@@ -469,15 +480,24 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 // Find the wides label, so we to know how much we need to right-shift
                 // our labels, to get them drawn right aligned:
                 labelValue = minValueY;
-                for ( qreal f = minValueY; f <= maxLimit; f+= steg ) {
+                qreal f = minValueY;
+                while ( f <= maxLimit ) {
                     labelItem->setText( QString::number( labelValue ) );
                     maxLabelsWidth = qMax( maxLabelsWidth, labelItem->sizeHint().width() );
-                    labelValue += dimY.stepWidth;
+                    if ( isLogarithmicY )
+                        labelValue *= 10.0;
+                    else
+                        labelValue += dimY.stepWidth;
+                    if ( isLogarithmicY )
+                        f *= 10.0;
+                    else
+                        f += steg;
                 }
             }
             labelValue = minValueY;
 //qDebug("minValueY: %f   maxLimit: %f   steg: %f", minValueY, maxLimit, steg);
-            for ( qreal f = minValueY; f <= maxLimit; f+= steg ) {
+            qreal f = minValueY;
+            while ( f <= maxLimit ) {
 //qDebug("f: %f",f);
                 QPointF leftPoint (  0.0, f );
                 QPointF rightPoint ( 0.0, f );
@@ -515,8 +535,15 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     //ptr->drawRect(labelItem->geometry().adjusted(0,0,-1,-1));
                     labelItem->paint( ptr );
 
-                    labelValue += dimY.stepWidth;
+                    if ( isLogarithmicY )
+                        labelValue *= 10.0;
+                    else
+                        labelValue += dimY.stepWidth;
                 }
+                if ( isLogarithmicY )
+                    f *= 10.0;
+                else
+                    f += steg;
             }
         }
         if( labelItem )
@@ -531,7 +558,10 @@ void CartesianAxis::paintCtx( PaintContext* context )
         if ( isAbscissa() ) {
             int nextMayBeTick = 0;
             int mayBeTick = 0;
-            for ( float f = minValueX; f <= maxValueX; f += dimX.subStepWidth ) {
+            float f = minValueX;
+            qreal fLogSubstep = minValueX;
+            int logSubstep = 0;
+            while ( f <= maxValueX ) {
                 QPointF topPoint ( f, 0 );
                 QPointF bottomPoint ( f, 0 );
                 // we don't draw the sub ticks, if we are at the same position as a normal tick
@@ -545,12 +575,25 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     ptr->drawLine( topPoint, bottomPoint );
                 else
                     ++nextMayBeTick;
+                if ( isLogarithmicX ){
+                    if( logSubstep == 9 ){
+                        fLogSubstep *= 10.0;
+                        logSubstep = 0;
+                    }
+                    f += fLogSubstep;
+                    ++logSubstep;
+                }else{
+                    f += dimX.subStepWidth;
+                }
             }
         // for the y-axis
         } else {
             int nextMayBeTick = 0;
             int mayBeTick = 0;
-            for ( float f = minValueY; f <= maxValueY; f += dimY.subStepWidth ) {
+            float f = minValueY;
+            qreal fLogSubstep = minValueY;
+            int logSubstep = 0;
+            while ( f <= maxValueY ) {
                 QPointF leftPoint ( 0, f );
                 QPointF rightPoint ( 0, f );
                 // we don't draw the sub ticks, if we are at the same position as a normal tick
@@ -564,6 +607,16 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     ptr->drawLine( leftPoint, rightPoint );
                 else
                     ++nextMayBeTick;
+                if ( isLogarithmicY ){
+                    if( logSubstep == 9 ){
+                        fLogSubstep *= 10.0;
+                        logSubstep = 0;
+                    }
+                    f += fLogSubstep;
+                    ++logSubstep;
+                }else{
+                    f += dimY.subStepWidth;
+                }
             }
         }
     }

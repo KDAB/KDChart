@@ -42,6 +42,8 @@ using namespace KDChart;
 
 void CartesianGrid::drawGrid( PaintContext* context )
 {
+    //qDebug() << "KDChart::CartesianGrid::drawGrid( PaintContext* context ) called";
+
     CartesianCoordinatePlane* plane = dynamic_cast<CartesianCoordinatePlane*>(context->coordinatePlane());
     Q_ASSERT_X ( plane, "CartesianGrid::drawGrid",
                  "Bad function call: PaintContext::coodinatePlane() NOT a cartesian plane." );
@@ -49,7 +51,9 @@ void CartesianGrid::drawGrid( PaintContext* context )
     const GridAttributes gridAttrsX( plane->gridAttributes( Qt::Horizontal ) );
     const GridAttributes gridAttrsY( plane->gridAttributes( Qt::Vertical ) );
 
+    qDebug() << "OK:";
     if ( !gridAttrsX.isGridVisible() && !gridAttrsY.isGridVisible() ) return;
+    qDebug() << "A";
 
     // important: Need to update the calculated mData,
     //            before we may use it!
@@ -61,6 +65,7 @@ void CartesianGrid::drawGrid( PaintContext* context )
 
     // test for invalid boundaries: non-critical
     if( !isBoundariesValid( mData ) ) return;
+    qDebug() << "B";
 
     DataDimension& dimX = mData.first();
     const DataDimension& dimY = mData.last();
@@ -81,6 +86,7 @@ void CartesianGrid::drawGrid( PaintContext* context )
 
     // do not draw a Zero size grid (and do not divide by Zero)
     if( numberOfUnitLinesX <= 0.0 || numberOfUnitLinesY <= 0.0 ) return;
+    qDebug() << "C";
 
     const QPointF p1 = plane->translate( QPointF(dimX.start, dimY.start) );
     const QPointF p2 = plane->translate( QPointF(dimX.end, dimY.end) );
@@ -108,7 +114,9 @@ void CartesianGrid::drawGrid( PaintContext* context )
     }
 
     const bool drawUnitLinesX = (screenRangeX / numberOfUnitLinesX > MinimumPixelsBetweenLines);
+    const bool isLogarithmicX = dimX.isCalculated && (dimX.calcMode == AbstractCoordinatePlane::Logarithmic );
     const bool drawUnitLinesY = (screenRangeY / numberOfUnitLinesY > MinimumPixelsBetweenLines);
+    const bool isLogarithmicY = (dimY.calcMode == AbstractCoordinatePlane::Logarithmic );
 /*
     while ( !drawUnitLinesX ) {
         unitFactorX *= 10.0;
@@ -134,25 +142,51 @@ void CartesianGrid::drawGrid( PaintContext* context )
 
     if ( drawSubGridLinesX ) {
         context->painter()->setPen( gridAttrsX.subGridPen() );
-        for ( qreal f = minValueX; f <= maxValueX; f += dimX.subStepWidth ) {
-            //qDebug() << "sub grid lines X at" << f;
+        qreal f = minValueX;
+        qreal fLogSubstep = minValueX;
+        int logSubstep = 0;
+        while ( f <= maxValueX ) {
+            //qDebug() << "sub grid line X at" << f;
             QPointF topPoint( f, maxValueY );
             QPointF bottomPoint( f, minValueY );
             topPoint = plane->translate( topPoint );
             bottomPoint = plane->translate( bottomPoint );
             context->painter()->drawLine( topPoint, bottomPoint );
+            if ( isLogarithmicX ){
+                if( logSubstep == 9 ){
+                    fLogSubstep *= 10.0;
+                    logSubstep = 0;
+                }
+                f += fLogSubstep;
+                ++logSubstep;
+            }else{
+                f += dimX.subStepWidth;
+            }
         }
     }
 
     if ( drawSubGridLinesY ) {
         context->painter()->setPen( gridAttrsY.subGridPen() );
-        for ( qreal f = minValueY; f <= maxValueY; f += dimY.subStepWidth ) {
-            //qDebug() << "sub grid lines Y at" << f;
+        qreal f = minValueY;
+        qreal fLogSubstep = minValueY;
+        int logSubstep = 0;
+        while ( f <= maxValueY ) {
+            //qDebug() << "sub grid line Y at" << f;
             QPointF leftPoint( minValueX, f );
             QPointF rightPoint( maxValueX, f );
             leftPoint = plane->translate( leftPoint );
             rightPoint = plane->translate( rightPoint );
             context->painter()->drawLine( leftPoint, rightPoint );
+            if ( isLogarithmicY ){
+                if( logSubstep == 9 ){
+                    fLogSubstep *= 10.0;
+                    logSubstep = 0;
+                }
+                f += fLogSubstep;
+                ++logSubstep;
+            }else{
+                f += dimY.subStepWidth;
+            }
         }
     }
 
@@ -164,14 +198,17 @@ void CartesianGrid::drawGrid( PaintContext* context )
         = gridAttrsY.zeroLinePen().style() != Qt::NoPen;
 
     if ( drawUnitLinesX || drawXZeroLineX ) {
+        qDebug() << "E";
         if ( drawUnitLinesX )
             context->painter()->setPen( gridAttrsX.gridPen() );
-        const qreal minX = dimX.start;
+//        const qreal minX = dimX.start;
 
-        for ( qreal f = minX; f <= maxValueX; f += qAbs( dimX.stepWidth ) ) {
+        qreal f = minValueX;
+        while ( f <= maxValueX ) {
             // PENDING(khz) FIXME: make draving/not drawing of Zero line more sophisticated?:
             const bool zeroLineHere = drawXZeroLineX && (f == 0.0);
             if ( drawUnitLinesX || zeroLineHere ){
+                //qDebug("main grid line X at: %f",f);
                 QPointF topPoint( f, maxValueY );
                 QPointF bottomPoint( f, minValueY );
                 topPoint = plane->translate( topPoint );
@@ -182,15 +219,21 @@ void CartesianGrid::drawGrid( PaintContext* context )
                 if ( zeroLineHere )
                     context->painter()->setPen( gridAttrsX.gridPen() );
             }
+            if ( isLogarithmicX )
+                f *= 10.0;
+            else
+                f += dimX.stepWidth;
         }
     }
     if ( drawUnitLinesY || drawZeroLineY ) {
+        qDebug() << "F";
         if ( drawUnitLinesY )
             context->painter()->setPen( gridAttrsY.gridPen() );
         //const qreal minY = dimY.start;
 
         //qDebug("minY: %f   maxValueY: %f   dimY.stepWidth: %f",minY,maxValueY,dimY.stepWidth);
-        for ( qreal f = minValueY; f <= maxValueY; f += qAbs( dimY.stepWidth ) ) {
+        qreal f = minValueY;
+        while ( f <= maxValueY ) {
             // PENDING(khz) FIXME: make draving/not drawing of Zero line more sophisticated?:
             //qDebug("main grid line Y at: %f",f);
             const bool zeroLineHere = (f == 0.0);
@@ -205,8 +248,13 @@ void CartesianGrid::drawGrid( PaintContext* context )
                 if ( zeroLineHere )
                     context->painter()->setPen( gridAttrsY.gridPen() );
             }
+            if ( isLogarithmicY )
+                f *= 10.0;
+            else
+                f += dimY.stepWidth;
         }
     }
+    qDebug() << "Z";
 }
 
 
@@ -257,9 +305,9 @@ void adjustUpperLowerRange( qreal& start, qreal& end, qreal stepWidth )
     if ( fmod( end, stepWidth ) != 0.0 )
         end = stepWidth * (_trunc( end / stepWidth ) + endAdjust);
 }
-double fastPow10( int x )
+qreal fastPow10( int x )
 {
-    double res = 1.0;
+    qreal res = 1.0;
     if( 0 <= x ){
         for( int i = 1; i <= x; ++i )
             res *= 10.0;
@@ -277,31 +325,58 @@ DataDimension CartesianGrid::calculateGridXY(
 {
     DataDimension dim( rawDataDimension );
     if( dim.isCalculated && dim.start != dim.end ){
-        if( dim.stepWidth == 0.0 ){
-            QList<qreal> granularities;
-            switch( dim.sequence ){
-                case KDChartEnums::GranularitySequence_10_20:
-                    granularities << 1.0 << 2.0;
-                    break;
-                case KDChartEnums::GranularitySequence_10_50:
-                    granularities << 1.0 << 5.0;
-                    break;
-                case KDChartEnums::GranularitySequence_25_50:
-                    granularities << 2.5 << 5.0;
-                    break;
-                case KDChartEnums::GranularitySequenceIrregular:
-                    granularities << 1.0 << 2.0 << 2.5 << 5.0;
-                    break;
-                default:
-                    break;
+        if( dim.calcMode == AbstractCoordinatePlane::Linear ){
+            // linear ( == not-logarithmic) calculation
+            if( dim.stepWidth == 0.0 ){
+                QList<qreal> granularities;
+                switch( dim.sequence ){
+                    case KDChartEnums::GranularitySequence_10_20:
+                        granularities << 1.0 << 2.0;
+                        break;
+                    case KDChartEnums::GranularitySequence_10_50:
+                        granularities << 1.0 << 5.0;
+                        break;
+                    case KDChartEnums::GranularitySequence_25_50:
+                        granularities << 2.5 << 5.0;
+                        break;
+                    case KDChartEnums::GranularitySequenceIrregular:
+                        granularities << 1.0 << 2.0 << 2.5 << 5.0;
+                        break;
+                    default:
+                        break;
+                }
+                //qDebug("CartesianGrid::calculateGridXY()   dim.start: %f   dim.end: %f", dim.start, dim.end);
+                calculateStepWidth(
+                    dim.start, dim.end, granularities, orientation,
+                    dim.stepWidth, dim.subStepWidth );
             }
-            //qDebug("CartesianGrid::calculateGridXY()   dim.start: %f   dim.end: %f", dim.start, dim.end);
-            calculateStepWidth(
-                dim.start, dim.end, granularities, orientation,
-                dim.stepWidth, dim.subStepWidth );
+            // if needed, adjust start/end to match the step width:
+            adjustUpperLowerRange( dim.start, dim.end, dim.stepWidth );
+            qDebug() << "CartesianGrid::calculateGridXY() returns linear range: min " << dim.start << " and max" << dim.end;
+        }else{
+            // logarithmic calculation (ignoring all negative values)
+            qreal min;
+            const qreal minRaw = qMax( qMin( dim.start, dim.end ), 0.0 );
+            const int minLog = static_cast<int>(trunc( log10( minRaw ) ) );
+            if( minLog <= 0 )
+                min = 1;
+            else
+                min = fastPow10( minLog-1 );
+
+            qreal max;
+            const qreal maxRaw = qMax( qMax( dim.start, dim.end ), 0.0 );
+            const int maxLog = static_cast<int>(trunc( log10( maxRaw ) ) );
+            if( maxLog <= 0 )
+                max = 1;
+            else if( fastPow10( maxLog ) < maxRaw )
+                max = fastPow10( maxLog+1 );
+            else
+                max = fastPow10( maxLog );
+            dim.start = min;
+            dim.end   = max;
+            dim.stepWidth = qAbs(max - min) / 10.0;
+            qDebug() << "CartesianGrid::calculateGridXY() returns logarithmic:  min " << min << " and max" << max;
         }
-        // if needed, adjust start/end to match the step width:
-        adjustUpperLowerRange( dim.start, dim.end, dim.stepWidth );
     }else{
         dim.stepWidth = 1.0;
     }

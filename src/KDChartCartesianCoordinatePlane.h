@@ -171,8 +171,6 @@ namespace KDChart {
          */
         bool hasOwnGridAttributes( Qt::Orientation orientation ) const;
 
-        enum AxesCalcMode { Linear, Logarithmic };
-
         AxesCalcMode axesCalcModeY() const;
         AxesCalcMode axesCalcModeX() const;
 

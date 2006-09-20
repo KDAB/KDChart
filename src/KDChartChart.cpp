@@ -404,9 +404,15 @@ void Chart::Private::slotLayoutPlanes()
             //qDebug() << "--------------- diagram ! ! ! ! ! ! ! ! ! !  -----------------";
             // collect all axes of a kind into sublayouts
             QVBoxLayout *topAxesLayout = findOrCreateVBoxLayoutByObjectName( planeLayout, "topAxesLayout" );
+            topAxesLayout->setSizeConstraint( QLayout::SetFixedSize );
             QVBoxLayout *bottomAxesLayout = findOrCreateVBoxLayoutByObjectName( planeLayout, "bottomAxesLayout" );
+            bottomAxesLayout->setSizeConstraint( QLayout::SetFixedSize );
             QHBoxLayout *leftAxesLayout = findOrCreateHBoxLayoutByObjectName( planeLayout, "leftAxesLayout" );
+            leftAxesLayout->setSizeConstraint( QLayout::SetFixedSize );
             QHBoxLayout *rightAxesLayout = findOrCreateHBoxLayoutByObjectName( planeLayout, "rightAxesLayout" );
+            rightAxesLayout->setSizeConstraint( QLayout::SetFixedSize );
+
+            //leftAxesLayout->setSizeConstraint( QLayout::SetFixedSize );
 
             foreach ( CartesianAxis* axis, diagram->axes() ) {
                 if ( axisInfos.contains( axis ) ) continue; // already layed this one out
@@ -446,8 +452,11 @@ void Chart::Private::slotLayoutPlanes()
                 planeLayout->addLayout( topAxesLayout,    0,       1 );
             if ( !bottomAxesLayout->parent() )
                 planeLayout->addLayout( bottomAxesLayout, row + 1, 1 );
-            if ( !leftAxesLayout->parent() )
+            if ( !leftAxesLayout->parent() ){
                 planeLayout->addLayout( leftAxesLayout,   row,     0 );
+                //planeLayout->setRowStretch(    row, 0 );
+                //planeLayout->setColumnStretch( 0,   0 );
+            }
             if ( !rightAxesLayout->parent() )
                 planeLayout->addLayout( rightAxesLayout,  row,     column + 1);
         }
@@ -510,8 +519,8 @@ void Chart::Private::createLayouts( QWidget* w )
 
     // the data+axes area
     dataAndLegendLayout->addLayout( planesLayout, 1, 1 );
-    dataAndLegendLayout->setRowStretch(    1, 2 );
-    dataAndLegendLayout->setColumnStretch( 1, 2 );
+    dataAndLegendLayout->setRowStretch(    1, 1 );
+    dataAndLegendLayout->setColumnStretch( 1, 1 );
 }
 
 void Chart::Private::slotRelayout()

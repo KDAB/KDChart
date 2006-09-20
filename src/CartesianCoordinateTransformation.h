@@ -62,16 +62,22 @@ namespace KDChart {
         inline const qreal makeLogarithmic( qreal reference, qreal value ) const
         {
             qreal result = value;
+qDebug() << "value == " << value;
+qDebug() << "log10( " << reference << " ) == " << log10( reference );
 
             qreal relation;
-            if( reference > 0.0 )
+            if( reference == 1.0 )
+                relation = 1.0;
+            else if( reference > 0.0 )
                 relation = reference / log10( reference );
             else if( result < 0.0 )
                 relation = reference / log10( -reference );
             else
                 relation = 10.0;
 
-            if( result > 0.0 )
+            if( result == 1.0 )
+                result = 1.0;
+            else if( result > 0.0 )
                 result = log10( result ) * relation;
             else if( result < 0.0 )
                 result = -log10( -result ) * relation;
@@ -90,11 +96,13 @@ namespace KDChart {
                 //qDebug() << "Y: " << tempPoint.y();
             }
             if ( axesCalcModeX == CartesianCoordinatePlane::Logarithmic ){
+                qDebug() << "X diagramRect.x(): " << diagramRect.x();
+                qDebug() << "X tempPoint.x():   " << tempPoint.x();
                 tempPoint.setX( makeLogarithmic( diagramRect.x(), tempPoint.x() ) );
                 //qDebug() << "X: " << tempPoint.x();
             }
-            tempPoint.setX( tempPoint.x() + diagramRect.width() / (2 * zoom.xFactor) );
-            tempPoint.setY( tempPoint.y() + diagramRect.height() / (2 * zoom.yFactor ) );
+            tempPoint.setX( tempPoint.x() + diagramRect.width() / (2.0 * zoom.xFactor) );
+            tempPoint.setY( tempPoint.y() + diagramRect.height() / (2.0 * zoom.yFactor ) );
 
             tempPoint.setX( tempPoint.x() - diagramRect.width() * zoom.xCenter );
             tempPoint.setY( tempPoint.y() - diagramRect.height() * zoom.yCenter );

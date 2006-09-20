@@ -37,75 +37,8 @@ namespace KDChart {
 
     class Chart;
     class GridAttributes;
+    class DataDimension;
 
-
-    /**
-     * \brief Helper class for one dimension of data, e.g. for the rows in a data model,
-     * or for the labels of an axis, or for the vertical lines in a grid.
-     *
-     * isCalculated specifies whether this dimension's values are calculated or counted.
-     * (counted == "Item 1", "Item 2", "Item 3" ...)
-     *
-     * sequence is the GranularitySequence, as specified at for the respective
-     * coordinate plane.
-     *
-     * Step width is an optional parameter, to be omitted (or set to Zero, resp.)
-     * if the step width is unknown.
-     *
-     * The default c'tor just gets you counted values from 1..10, using step width 1,
-     * used by the CartesianGrid, when showing an empty plane without any diagrams.
-     */
-    class DataDimension{
-    public:
-        DataDimension()
-            : start(         1.0 )
-            , end(          10.0 )
-            , isCalculated( false )
-            , sequence( KDChartEnums::GranularitySequence_10_20 )
-            , stepWidth(    1.0 )
-            , subStepWidth( 0.0 )
-        {}
-        DataDimension( qreal start_,
-                       qreal end_,
-                       bool isCalculated_,
-                       KDChartEnums::GranularitySequence sequence_,
-                       qreal stepWidth_=0.0,
-                       qreal subStepWidth_=0.0 )
-            : start(        start_ )
-            , end(          end_ )
-            , isCalculated( isCalculated_ )
-            , sequence(     sequence_ )
-            , stepWidth(    stepWidth_ )
-            , subStepWidth( subStepWidth_ )
-        {}
-        /**
-          * Returns the size of the distance,
-          * equivalent to the width() (or height(), resp.) of a QRectF.
-          *
-          * Note that this value can be negative, e.g. indicating axis labels
-          * going in reversed direction.
-          */
-        qreal distance()const
-        {
-            return end-start;
-        }
-        bool operator==( const DataDimension& r )
-        {
-            return
-                (start        == r.start) &&
-                (end          == r.end) &&
-                (sequence     == r.sequence) &&
-                (isCalculated == r.isCalculated) &&
-                (stepWidth    == r.stepWidth) &&
-                (subStepWidth    == r.subStepWidth);
-        }
-        qreal start;
-        qreal end;
-        bool  isCalculated;
-        KDChartEnums::GranularitySequence sequence;
-        qreal stepWidth;
-        qreal subStepWidth;
-    };
     typedef QList<DataDimension> DataDimensionsList;
 
 
@@ -117,6 +50,9 @@ namespace KDChart {
         KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( AbstractCoordinatePlane, Chart* )
 
     friend class AbstractGrid;
+
+    public:
+        enum AxesCalcMode { Linear, Logarithmic };
 
     protected:
         explicit AbstractCoordinatePlane ( Chart* parent = 0 );
@@ -342,6 +278,79 @@ namespace KDChart {
         virtual DataDimensionsList getDataDimensionsList() const = 0;
 
         //KDCHART_DECLARE_PRIVATE_DERIVED( AbstractCoordinatePlane )
+    };
+
+    /**
+     * \brief Helper class for one dimension of data, e.g. for the rows in a data model,
+     * or for the labels of an axis, or for the vertical lines in a grid.
+     *
+     * isCalculated specifies whether this dimension's values are calculated or counted.
+     * (counted == "Item 1", "Item 2", "Item 3" ...)
+     *
+     * sequence is the GranularitySequence, as specified at for the respective
+     * coordinate plane.
+     *
+     * Step width is an optional parameter, to be omitted (or set to Zero, resp.)
+     * if the step width is unknown.
+     *
+     * The default c'tor just gets you counted values from 1..10, using step width 1,
+     * used by the CartesianGrid, when showing an empty plane without any diagrams.
+     */
+    class DataDimension{
+    public:
+        DataDimension()
+            : start(         1.0 )
+            , end(          10.0 )
+            , isCalculated( false )
+            , calcMode( AbstractCoordinatePlane::Linear )
+            , sequence( KDChartEnums::GranularitySequence_10_20 )
+            , stepWidth(    1.0 )
+            , subStepWidth( 0.0 )
+        {}
+        DataDimension( qreal start_,
+                       qreal end_,
+                       bool isCalculated_,
+                       AbstractCoordinatePlane::AxesCalcMode calcMode_,
+                       KDChartEnums::GranularitySequence sequence_,
+                       qreal stepWidth_=0.0,
+                       qreal subStepWidth_=0.0 )
+            : start(        start_ )
+            , end(          end_ )
+            , isCalculated( isCalculated_ )
+            , calcMode(     calcMode_ )
+            , sequence(     sequence_ )
+            , stepWidth(    stepWidth_ )
+            , subStepWidth( subStepWidth_ )
+        {}
+        /**
+          * Returns the size of the distance,
+          * equivalent to the width() (or height(), resp.) of a QRectF.
+          *
+          * Note that this value can be negative, e.g. indicating axis labels
+          * going in reversed direction.
+          */
+        qreal distance()const
+        {
+            return end-start;
+        }
+        bool operator==( const DataDimension& r )
+        {
+            return
+                (start        == r.start) &&
+                (end          == r.end) &&
+                (sequence     == r.sequence) &&
+                (isCalculated == r.isCalculated) &&
+                (calcMode     == r.calcMode) &&
+                (stepWidth    == r.stepWidth) &&
+                (subStepWidth    == r.subStepWidth);
+        }
+        qreal start;
+        qreal end;
+        bool  isCalculated;
+        AbstractCoordinatePlane::AxesCalcMode calcMode;
+        KDChartEnums::GranularitySequence sequence;
+        qreal stepWidth;
+        qreal subStepWidth;
     };
 
 }

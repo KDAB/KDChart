@@ -308,6 +308,7 @@ DataDimensionsList CartesianCoordinatePlane::getDataDimensionsList() const
             DataDimension(
                 r.left(), r.right(),
                 dgr->datasetDimension() > 1,
+                axesCalcModeX(),
                 gaH.gridGranularitySequence(),
                 gaH.gridStepWidth() ) );
         // append the second dimension: for Ordinate axes
@@ -317,6 +318,7 @@ DataDimensionsList CartesianCoordinatePlane::getDataDimensionsList() const
                     // always return 0-100 when in percentMode
                     0.0, 100.0,
                     true,
+                    axesCalcModeY(),
                     KDChartEnums::GranularitySequence_10_20,
                     10.0 ) );
         else
@@ -324,6 +326,7 @@ DataDimensionsList CartesianCoordinatePlane::getDataDimensionsList() const
                 DataDimension(
                     r.bottom(), r.top(),
                     true,
+                    axesCalcModeY(),
                     gaV.gridGranularitySequence(),
                     gaV.gridStepWidth(),
                     gaV.gridSubStepWidth() ) );

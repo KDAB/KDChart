@@ -118,6 +118,9 @@ bool GridAttributes::isGridVisible() const
   * Specifies the step width to be used for calculating
   * the grid lines.
   *
+  * \note Step with can be set for Linear axis calculation mode only,
+  * there is no way to specify a step width for Logarithmic axes.
+  *
   * By default the GridAttributes class does not use a fixed step width,
   * but it uses KDChartEnums::GranularitySequence_10_20.
   *
@@ -181,6 +184,9 @@ qreal GridAttributes::gridSubStepWidth() const
   * the grid lines.
   *
   * By default the GridAttributes class uses KDChartEnums::GranularitySequence_10_20.
+  *
+  * \note Granularity can be set for Linear axis calculation mode only,
+  * there is no way to specify a step width for Logarithmic axes.
   *
   * \note The sequence specified by this method is ignored, if
   * a fixed step width was specified via setStepWidth.
