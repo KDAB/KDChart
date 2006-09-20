@@ -15,6 +15,7 @@ SUBDIRS		= tools \
                   EmptyValues \
 	          Charts \
 	          Background \
-	          Grids
+	          Grids \
+	          RealTime 
 
 
