@@ -20,10 +20,10 @@ private slots:
       m_chart = new Chart(0);
       m_bars = new BarDiagram();
       m_lines = new LineDiagram();
-      TableModel *tableModel = new TableModel( this );
-      tableModel->loadFromCSV( "../../examples/tools/modeldata/KDChart-Test-Datatables.csv" );
-      m_bars->setModel( tableModel );
-      m_lines->setModel( tableModel );
+      m_tableModel = new TableModel( this );
+      m_tableModel->loadFromCSV( "../../examples/tools/modeldata/KDChart-Test-Datatables.csv" );
+      m_bars->setModel( m_tableModel );
+      m_lines->setModel( m_tableModel );
       m_chart->coordinatePlane()->replaceDiagram( m_bars );
       m_chart->coordinatePlane()->addDiagram( m_lines );
   }
@@ -116,6 +116,17 @@ private slots:
       QVERIFY( list.isEmpty() );
   }
 
+  void testFreeStanding()
+  {
+      initTestCase();
+      m_axis = new CartesianAxis;
+      m_bars->addAxis( m_axis );
+      BarDiagram *bars2 = new BarDiagram;
+      bars2->setModel( m_tableModel );
+      m_chart->coordinatePlane()->replaceDiagram( bars2 );
+      m_axis->sizeHint();
+  }
+
   void cleanupTestCase()
   {
   }
@@ -125,6 +136,7 @@ private:
   BarDiagram *m_bars;
   LineDiagram *m_lines;
   CartesianAxis *m_axis;
+  TableModel *m_tableModel;
 
 };
 
