@@ -98,8 +98,8 @@ qDebug() << "log10( " << reference << " ) == " << log10( reference );
             if ( axesCalcModeX == CartesianCoordinatePlane::Logarithmic ){
                 qDebug() << "X diagramRect.x(): " << diagramRect.x();
                 qDebug() << "X tempPoint old: " << tempPoint;
-                tempPoint.setX( makeLogarithmic( diagramRect.x(), tempPoint.x() ) );
-                qDebug() << "X tempPoint new: " << tempPoint << "\n\n";
+                tempPoint.setX( makeLogarithmic( diagramRect.width(), tempPoint.x() ) );
+                qDebug() << "X tempPoint new: " << tempPoint;
             }
             tempPoint.setX( tempPoint.x() + diagramRect.width() / (2.0 * zoom.xFactor) );
             tempPoint.setY( tempPoint.y() + diagramRect.height() / (2.0 * zoom.yFactor ) );

@@ -128,12 +128,14 @@ void CartesianGrid::drawGrid( PaintContext* context )
     }
 */
 
-    const bool drawSubGridLinesX = (dimX.subStepWidth != 0.0) &&
+    const bool drawSubGridLinesX = isLogarithmicX ||
+        ((dimX.subStepWidth != 0.0) &&
         (screenRangeX / (numberOfUnitLinesX / dimX.stepWidth * dimX.subStepWidth) > MinimumPixelsBetweenLines) &&
-        gridAttrsX.isSubGridVisible();
-    const bool drawSubGridLinesY = (dimY.subStepWidth != 0.0) &&
+        gridAttrsX.isSubGridVisible());
+    const bool drawSubGridLinesY = isLogarithmicY ||
+        ((dimY.subStepWidth != 0.0) &&
         (screenRangeY / (numberOfUnitLinesY / dimY.stepWidth * dimY.subStepWidth) > MinimumPixelsBetweenLines) &&
-        gridAttrsY.isSubGridVisible();
+        gridAttrsY.isSubGridVisible());
 
     const qreal minValueX = qMin( dimX.start, dimX.end );
     const qreal maxValueX = qMax( dimX.start, dimX.end );
