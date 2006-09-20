@@ -62,8 +62,8 @@ namespace KDChart {
         inline const qreal makeLogarithmic( qreal reference, qreal value ) const
         {
             qreal result = value;
-qDebug() << "value == " << value;
-qDebug() << "log10( " << reference << " ) == " << log10( reference );
+            //qDebug() << "value == " << value;
+            //qDebug() << "log10( " << reference << " ) == " << log10( reference );
 
             qreal relation;
             if( reference == 1.0 )
@@ -96,10 +96,10 @@ qDebug() << "log10( " << reference << " ) == " << log10( reference );
                 //qDebug() << "Y: " << tempPoint.y();
             }
             if ( axesCalcModeX == CartesianCoordinatePlane::Logarithmic ){
-                qDebug() << "X diagramRect.x(): " << diagramRect.x();
-                qDebug() << "X tempPoint old: " << tempPoint;
+                //qDebug() << "X diagramRect.x(): " << diagramRect.x();
+                //qDebug() << "X tempPoint old: " << tempPoint;
                 tempPoint.setX( makeLogarithmic( diagramRect.width(), tempPoint.x() ) );
-                qDebug() << "X tempPoint new: " << tempPoint;
+                //qDebug() << "X tempPoint new: " << tempPoint;
             }
             tempPoint.setX( tempPoint.x() + diagramRect.width() / (2.0 * zoom.xFactor) );
             tempPoint.setY( tempPoint.y() + diagramRect.height() / (2.0 * zoom.yFactor ) );

@@ -425,7 +425,9 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 ptr->drawLine( topPoint, bottomPoint );
                 drawnXTicks.append( static_cast<int>( topPoint.x() ) );
                 if ( drawLabels ) {
-                    if( (dimX.stepWidth != 1.0) && ! dimX.isCalculated )
+                    if ( isLogarithmicX )
+                        labelItem->setText( QString::number(i, 'f', 0) );
+                    else if( (dimX.stepWidth != 1.0) && ! dimX.isCalculated )
                         labelItem->setText( QString::number(i, 'f', 0) );
                     else
                         labelItem->setText( hardLabelsCount
