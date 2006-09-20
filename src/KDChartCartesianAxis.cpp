@@ -647,6 +647,8 @@ Qt::Orientations CartesianAxis::expandingDirections() const
 QSize CartesianAxis::maximumSize() const
 {
     QSize result;
+    if ( !d->diagram() )
+        return result;
 
     const TextAttributes labelTA = textAttributes();
     const bool drawLabels = labelTA.isVisible();

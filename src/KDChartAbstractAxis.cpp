@@ -309,7 +309,6 @@ bool KDChart::AbstractAxis::observedBy( AbstractDiagram * diagram ) const
 
 void KDChart::AbstractAxis::update()
 {
-    qDebug("KDChart::AbstractAxis::update() called");
     if( d->diagram() )
         d->diagram()->update();
 }
