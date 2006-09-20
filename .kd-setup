@@ -1,0 +1,3 @@
+echo "Setting up for KD Chart..."
+source /home/kalle/setqt4
+source ./.kdab-setup
