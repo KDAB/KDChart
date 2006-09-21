@@ -57,6 +57,18 @@ LegendPropertiesWidget::LegendPropertiesWidget( QWidget *parent )
     mPositionCombo->insertItems( 0, Position::printableNames( true ) );
     connect( mPositionCombo, SIGNAL( activated( int ) ),
              this, SLOT( slotPositionChanged( int ) ) );
+    connect( horizontalRB,  SIGNAL( toggled( bool ) ),
+             this,  SLOT( slotOrientationChanged( bool ) ) );
+    connect( verticalRB,  SIGNAL( toggled( bool ) ),
+             this,  SLOT( slotOrientationChanged( bool ) ) );
+    connect( topLeftRB,  SIGNAL( toggled( bool ) ),
+             this,  SLOT( slotOrientationChanged( bool ) ) );
+    connect( bottomRightRB,  SIGNAL( toggled( bool ) ),
+             this,  SLOT( slotOrientationChanged( bool ) ) );
+    connect( centerRB,  SIGNAL( toggled( bool ) ),
+             this,  SLOT( slotOrientationChanged( bool ) ) );
+    connect( titleTextED,  SIGNAL( textChanged( const QString ) ),
+             this,  SLOT( slotTitleTextChanged( const QString  ) ) );
     setEnabled( false );
 }
 
@@ -84,18 +96,91 @@ void LegendPropertiesWidget::setInstantApply( bool value )
 void LegendPropertiesWidget::readFromLegend( const Legend * legend )
 {
     mPositionCombo->setCurrentIndex( legend->position().value() );
+    titleTextED->setText( legend->titleText() );
+    if (  legend->orientation() == Qt::Horizontal ) {
+        horizontalRB->setChecked( true );
+        topLeftRB->setText( "Left" );
+        bottomRightRB->setText( "Right" );
+    } else {
+        verticalRB->setChecked( true );
+        topLeftRB->setText( "Top" );
+        bottomRightRB->setText( "Bottom" );
+    }
+
 }
 
 void LegendPropertiesWidget::writeToLegend( Legend * legend )
 {
     if ( !legend ) return;
     legend->setPosition( Position( mPositionCombo->currentIndex() ) );
+    legend->setTitleText( titleTextED->text() );
+    if (  horizontalRB->isChecked() ) {
+        legend->setOrientation( Qt::Horizontal );
+        if (  topLeftRB->isChecked() )
+            legend->setAlignment(  Qt::AlignLeft );
+        else if ( bottomRightRB->isChecked() )
+            legend->setAlignment(  Qt::AlignRight );
+        else
+            legend->setAlignment(  Qt::AlignHCenter );
+    } else {
+        legend->setOrientation( Qt::Vertical );
+        if (  topLeftRB->isChecked() )
+            legend->setAlignment(  Qt::AlignTop );
+        else if ( bottomRightRB->isChecked() )
+            legend->setAlignment(  Qt::AlignBottom );
+        else
+            legend->setAlignment(  Qt::AlignVCenter );
+    }
 }
 
 void LegendPropertiesWidget::slotPositionChanged( int idx )
 {
     if ( d->legend && d->instantApply ) {
         d->legend->setPosition( Position( idx ) );
+    } else {
+        emit changed();
+    }
+}
+
+void LegendPropertiesWidget::slotOrientationChanged( bool toggled )
+{
+    Q_UNUSED( toggled );
+
+    if ( d->legend && d->instantApply ) {
+        if (  horizontalRB->isChecked() ) {
+            d->legend->setOrientation( Qt::Horizontal );
+            topLeftRB->setText( "Left" );
+            bottomRightRB->setText( "Right" );
+            if (  topLeftRB->isChecked() )
+                d->legend->setAlignment(  Qt::AlignLeft );
+            else if ( bottomRightRB->isChecked() )
+                d->legend->setAlignment(  Qt::AlignRight );
+            else
+                d->legend->setAlignment(  Qt::AlignHCenter );
+        } else {
+            d->legend->setOrientation(  Qt::Vertical );
+            topLeftRB->setText( "Top" );
+            bottomRightRB->setText( "Bottom" );
+            if (  topLeftRB->isChecked() )
+                d->legend->setAlignment(  Qt::AlignTop );
+            else if ( bottomRightRB->isChecked() )
+                d->legend->setAlignment(  Qt::AlignBottom );
+            else
+                d->legend->setAlignment(  Qt::AlignVCenter );
+        }
+
+    } else
+        emit changed();
+
+}
+
+
+void LegendPropertiesWidget::slotTitleTextChanged( const QString& text )
+{
+    Q_UNUSED( text );
+
+    if ( d->legend && d->instantApply ) {
+        d->legend->setTitleText( titleTextED->text() );
     } else {
         emit changed();
     }

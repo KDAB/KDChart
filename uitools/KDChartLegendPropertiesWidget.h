@@ -63,6 +63,8 @@ namespace KDChart {
         void writeToLegend( Legend * legend );
     protected slots:
         void slotPositionChanged( int idx );
+        void slotOrientationChanged( bool toggled );
+        void slotTitleTextChanged( const QString& text );
 
     signals:
         // emitted whenever a value in the dialog changes
