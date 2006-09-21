@@ -169,7 +169,7 @@ void KDChartWidgetDesignerCustomEditor::setupHeaderFooterTab()
 
 void KDChartWidgetDesignerCustomEditor::slotAddLegend()
 {
-    Legend * l = new Legend( mChart->diagram(), mChart );
+    //Legend * l = new Legend( mChart->diagram(), mChart );
     mChart->addLegend( Position::East );
     mLegendsList->addItem( QString("Legend %1").arg(mChart->legendCount() ) );
 
