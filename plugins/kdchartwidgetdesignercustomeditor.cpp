@@ -22,7 +22,7 @@
  ** licensing are not clear to you.
  **
  **********************************************************************/
- 
+
 #include <KDChartWidget>
 
 #include "kdchartwidgetdesignercustomeditor.h"
@@ -67,7 +67,7 @@ static QStringList barSubtypeItems()
 {
     QStringList items;
     items << "Normal" << "Stacked" << "Percent";// << "Rows";
-    return items; 
+    return items;
 }
 
 static QStringList lineSubtypeItems()
