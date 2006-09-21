@@ -65,6 +65,7 @@ namespace KDChart {
         void slotPositionChanged( int idx );
         void slotOrientationChanged( bool toggled );
         void slotTitleTextChanged( const QString& text );
+        void slotShowLineChanged( int state );
 
     signals:
         // emitted whenever a value in the dialog changes

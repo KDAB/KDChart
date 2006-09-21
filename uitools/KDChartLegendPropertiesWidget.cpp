@@ -69,6 +69,9 @@ LegendPropertiesWidget::LegendPropertiesWidget( QWidget *parent )
              this,  SLOT( slotOrientationChanged( bool ) ) );
     connect( titleTextED,  SIGNAL( textChanged( const QString ) ),
              this,  SLOT( slotTitleTextChanged( const QString  ) ) );
+    connect( showLinesCB,  SIGNAL( stateChanged( int ) ),
+             this,  SLOT( slotShowLineChanged( int  ) ) );
+
     setEnabled( false );
 }
 
@@ -107,6 +110,10 @@ void LegendPropertiesWidget::readFromLegend( const Legend * legend )
         bottomRightRB->setText( "Bottom" );
     }
 
+    if (  legend->showLines() )
+        showLinesCB->setChecked( true );
+    else
+        showLinesCB->setChecked( false );
 }
 
 void LegendPropertiesWidget::writeToLegend( Legend * legend )
@@ -131,6 +138,11 @@ void LegendPropertiesWidget::writeToLegend( Legend * legend )
         else
             legend->setAlignment(  Qt::AlignVCenter );
     }
+     if (  showLinesCB->isChecked() )
+            legend->setShowLines( true );
+        else
+            legend->setShowLines( false );
+
 }
 
 void LegendPropertiesWidget::slotPositionChanged( int idx )
@@ -181,6 +193,21 @@ void LegendPropertiesWidget::slotTitleTextChanged( const QString& text )
 
     if ( d->legend && d->instantApply ) {
         d->legend->setTitleText( titleTextED->text() );
+    } else {
+        emit changed();
+    }
+}
+
+
+void LegendPropertiesWidget::slotShowLineChanged( int state )
+{
+    Q_UNUSED( state );
+
+    if ( d->legend && d->instantApply ) {
+        if (  showLinesCB->isChecked() )
+            d->legend->setShowLines( true );
+        else
+            d->legend->setShowLines( false );
     } else {
         emit changed();
     }
