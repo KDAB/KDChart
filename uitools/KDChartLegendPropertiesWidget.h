@@ -55,15 +55,14 @@ namespace KDChart {
         ~LegendPropertiesWidget();
 
         void setLegend( Legend* legend );
-
         void setInstantApply( bool value );
-
         void readFromLegend( const Legend * legend );
-
         void writeToLegend( Legend * legend );
+
     protected slots:
         void slotPositionChanged( int idx );
         void slotOrientationChanged( bool toggled );
+        void slotAlignmentChanged( bool toggled );
         void slotTitleTextChanged( const QString& text );
         void slotShowLineChanged( int state );
 

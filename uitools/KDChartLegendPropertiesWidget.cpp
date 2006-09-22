@@ -62,11 +62,11 @@ LegendPropertiesWidget::LegendPropertiesWidget( QWidget *parent )
     connect( verticalRB,  SIGNAL( toggled( bool ) ),
              this,  SLOT( slotOrientationChanged( bool ) ) );
     connect( topLeftRB,  SIGNAL( toggled( bool ) ),
-             this,  SLOT( slotOrientationChanged( bool ) ) );
+             this,  SLOT( slotAlignmentChanged( bool ) ) );
     connect( bottomRightRB,  SIGNAL( toggled( bool ) ),
-             this,  SLOT( slotOrientationChanged( bool ) ) );
+             this,  SLOT( slotAlignmentChanged( bool ) ) );
     connect( centerRB,  SIGNAL( toggled( bool ) ),
-             this,  SLOT( slotOrientationChanged( bool ) ) );
+             this,  SLOT( slotAlignmentChanged( bool ) ) );
     connect( titleTextED,  SIGNAL( textChanged( const QString ) ),
              this,  SLOT( slotTitleTextChanged( const QString  ) ) );
     connect( showLinesCB,  SIGNAL( stateChanged( int ) ),
@@ -104,11 +104,19 @@ void LegendPropertiesWidget::readFromLegend( const Legend * legend )
         horizontalRB->setChecked( true );
         topLeftRB->setText( "Left" );
         bottomRightRB->setText( "Right" );
+
     } else {
         verticalRB->setChecked( true );
         topLeftRB->setText( "Top" );
         bottomRightRB->setText( "Bottom" );
     }
+
+    if (  legend->alignment() == Qt::AlignLeft || legend->alignment() == Qt::AlignTop )
+        topLeftRB->setChecked(  true );
+    else if ( legend->alignment() == Qt::AlignRight || legend->alignment() == Qt::AlignBottom )
+        bottomRightRB->setChecked( true );
+    else
+        centerRB->setChecked( true );
 
     if (  legend->showLines() )
         showLinesCB->setChecked( true );
@@ -163,6 +171,24 @@ void LegendPropertiesWidget::slotOrientationChanged( bool toggled )
             d->legend->setOrientation( Qt::Horizontal );
             topLeftRB->setText( "Left" );
             bottomRightRB->setText( "Right" );
+
+        } else {
+            d->legend->setOrientation(  Qt::Vertical );
+            topLeftRB->setText( "Top" );
+            bottomRightRB->setText( "Bottom" );
+        }
+
+    } else
+        emit changed();
+
+}
+
+void LegendPropertiesWidget::slotAlignmentChanged( bool toggled )
+{
+    Q_UNUSED( toggled );
+
+    if ( d->legend && d->instantApply ) {
+        if (  horizontalRB->isChecked() ) {
             if (  topLeftRB->isChecked() )
                 d->legend->setAlignment(  Qt::AlignLeft );
             else if ( bottomRightRB->isChecked() )
@@ -170,9 +196,6 @@ void LegendPropertiesWidget::slotOrientationChanged( bool toggled )
             else
                 d->legend->setAlignment(  Qt::AlignHCenter );
         } else {
-            d->legend->setOrientation(  Qt::Vertical );
-            topLeftRB->setText( "Top" );
-            bottomRightRB->setText( "Bottom" );
             if (  topLeftRB->isChecked() )
                 d->legend->setAlignment(  Qt::AlignTop );
             else if ( bottomRightRB->isChecked() )
