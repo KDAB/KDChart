@@ -199,55 +199,92 @@ void KDChartWidgetDesignerCustomEditor::slotCurrentLegendChanged( int idx )
 
 void KDChartWidgetDesignerCustomEditor::slotAddAxis()
 {
-    CartesianAxis * yAxis = new CartesianAxis( );
-    CartesianAxis * xAxis = new CartesianAxis( );
-    yAxis->setPosition( CartesianAxis::Left );
-    xAxis->setPosition( CartesianAxis::Bottom );
+    CartesianAxis * axis = new CartesianAxis( );
+    axis->setPosition( CartesianAxis::Left );
     KDChart::Widget::ChartType type = mChart->type();
     switch ( type ) {
-        case KDChart::Widget::Bar:
-            mChart->barDiagram()->addAxis( xAxis );
-            mChart->barDiagram()->addAxis( yAxis );
-            mAxesList->addItem( QString("Axis %1").arg(mChart->barDiagram()->axes().count() ) );
-            break;
-        case KDChart::Widget::Line:
-            mChart->lineDiagram()->addAxis( xAxis );
-            mChart->lineDiagram()->addAxis( yAxis );
-            mAxesList->addItem( QString("Axis %1").arg(mChart->lineDiagram()->axes().count() ) );
-            break;
-        case KDChart::Widget::Pie:
-            break;
-        case KDChart::Widget::Ring:
-            break;
-        case KDChart::Widget::Polar:
-            break;
-      case KDChart::Widget::NoType:
-        default:
-            break;
+    case KDChart::Widget::Bar:
+        mChart->barDiagram()->addAxis( axis );
+        mAxesList->addItem( QString("Axis %1").arg(mChart->barDiagram()->axes().count() ) );
+        break;
+    case KDChart::Widget::Line:
+        mChart->lineDiagram()->addAxis( axis );
+        mAxesList->addItem( QString("Axis %1").arg(mChart->lineDiagram()->axes().count() ) );
+        break;
+    case KDChart::Widget::Pie:
+    case KDChart::Widget::Ring:
+    case KDChart::Widget::Polar:
+    case KDChart::Widget::NoType:
+    default:
+        qDebug() << "Axis for this diagram type are not supported at the moment";
+        break;
     }
 
 }
 
 void KDChartWidgetDesignerCustomEditor::slotRemoveAxis()
 {
-/*
-    int idx = mAxissList->currentRow();
-    if ( idx == -1 || idx >= mChart->legendCount() ) return;
-    Axis* l = mChart->allAxiss()[idx];
-    mChart->takeAxis( l );
-    delete l;
-    delete mAxissList->takeItem( idx );
-*/
+    int idx = mAxesList->currentRow();
+    if ( idx == -1  ) return;
+    KDChart::Widget::ChartType type = mChart->type();
+    switch ( type ) {
+    case KDChart::Widget::Bar:
+    {
+        if ( idx >= mChart->barDiagram()->axes().count() ) break;
+        CartesianAxis* l = mChart->barDiagram()->axes()[idx];
+        mChart->barDiagram()->takeAxis( l );
+        delete l;
+        delete mAxesList->takeItem(  idx );
+        break;
+    }
+    case KDChart::Widget::Line:
+    {
+        if ( idx >= mChart->lineDiagram()->axes().count() ) break;
+        CartesianAxis* l = mChart->lineDiagram()->axes()[idx];
+        mChart->lineDiagram()->takeAxis( l );
+        delete l;
+        delete mAxesList->takeItem(  idx );
+        break;
+    }
+    case KDChart::Widget::Pie:
+    case KDChart::Widget::Ring:
+    case KDChart::Widget::Polar:
+    case KDChart::Widget::NoType:
+    default:
+        break;
+    }
 
 }
 
 void KDChartWidgetDesignerCustomEditor::slotCurrentAxisChanged( int idx )
 {
-/*
-    if ( idx == -1 || idx >= mChart->legendCount() ) return;
-    Axis* l = mChart->allAxiss()[idx];
-    mAxisEditor->setAxis( l );
-*/
+
+    if ( idx == -1 ) return;
+    KDChart::Widget::ChartType type = mChart->type();
+    switch ( type ) {
+    case KDChart::Widget::Bar:
+    {
+        if ( idx >= mChart->barDiagram()->axes().count() ) break;
+        CartesianAxis* l = mChart->barDiagram()->axes()[idx];
+        mAxisEditor->setAxis( l );
+        break;
+    }
+    case KDChart::Widget::Line:
+    {
+        if ( idx >= mChart->lineDiagram()->axes().count() ) break;
+        CartesianAxis* l = mChart->lineDiagram()->axes()[idx];
+        mAxisEditor->setAxis( l );
+        break;
+    }
+    case KDChart::Widget::Pie:
+    case KDChart::Widget::Ring:
+    case KDChart::Widget::Polar:
+    case KDChart::Widget::NoType:
+        default:
+            qDebug() << "Axis for this diagram type are not supported at the moment";
+            break;
+    }
+
 }
 
 void KDChartWidgetDesignerCustomEditor::slotAddHeaderFooter()
