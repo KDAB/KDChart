@@ -136,6 +136,10 @@ void KDChartWidgetDesignerCustomEditor::setupLegendsTab()
 {
     QVBoxLayout* vbox = new QVBoxLayout( mLegendDetailsGroup );
     mLegendEditor = new LegendPropertiesWidget( mLegendDetailsGroup );
+
+    for (  int i = 0; i < mChart->legendCount(); ++i )
+        mLegendsList->addItem( QString("Legend %1").arg( i+1 ) );
+
     vbox->addWidget( mLegendEditor );
     connect( mAddLegendBtn, SIGNAL( clicked() ),
              this, SLOT( slotAddLegend() ) );
@@ -143,12 +147,33 @@ void KDChartWidgetDesignerCustomEditor::setupLegendsTab()
              this, SLOT( slotRemoveLegend() ) );
     connect( mLegendsList, SIGNAL( currentRowChanged( int ) ),
              this, SLOT( slotCurrentLegendChanged( int ) ) );
+
 }
 
 void KDChartWidgetDesignerCustomEditor::setupAxesTab()
 {
     QVBoxLayout* vbox = new QVBoxLayout( mAxisDetailsGroup );
     mAxisEditor = new AxisPropertiesWidget( mAxisDetailsGroup );
+
+    KDChart::Widget::ChartType type = mChart->type();
+    switch ( type ) {
+    case KDChart::Widget::Bar:
+        for (  int i = 0; i < mChart->barDiagram()->axes().count(); ++i )
+            mAxesList->addItem( QString("Axis %1").arg(mChart->barDiagram()->axes().count() ) );
+        break;
+    case KDChart::Widget::Line:
+        for (  int i = 0; i < mChart->lineDiagram()->axes().count(); ++i )
+            mAxesList->addItem( QString("Axis %1").arg(mChart->lineDiagram()->axes().count() ) );
+        break;
+    case KDChart::Widget::Pie:
+    case KDChart::Widget::Ring:
+    case KDChart::Widget::Polar:
+    case KDChart::Widget::NoType:
+    default:
+        qDebug() << "Axis for this diagram type are not supported for now";
+        break;
+    }
+
     vbox->addWidget( mAxisEditor );
     connect( mAddAxisBtn, SIGNAL( clicked() ),
              this, SLOT( slotAddAxis() ) );
@@ -162,6 +187,10 @@ void KDChartWidgetDesignerCustomEditor::setupHeaderFooterTab()
 {
     QVBoxLayout* vbox = new QVBoxLayout( mHeaderFooterDetailsGroup );
     mHeaderFooterEditor = new HeaderFooterPropertiesWidget( mHeaderFooterDetailsGroup );
+
+    for (  int i = 0; i < mChart->headerFooterCount(); ++i )
+        mHeaderFootersList->addItem( QString("HeaderFooter %1").arg( i+1 ) );
+
     vbox->addWidget( mHeaderFooterEditor );
     connect( mAddHeaderFooterBtn, SIGNAL( clicked() ),
              this, SLOT( slotAddHeaderFooter() ) );
