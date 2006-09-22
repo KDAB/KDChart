@@ -1,8 +1,6 @@
 #ifndef KDCHARTDESIGNEREXTENSION_H
 #define KDCHARTDESIGNEREXTENSION_H
 
-#include <../src/kdchart_export.h>
-
 #include <QObject>
 #include <QList>
 
@@ -24,8 +22,8 @@ class KDChartBaseTaskMenu: public QObject, public QDesignerTaskMenuExtension
   Q_INTERFACES(QDesignerTaskMenuExtension)
   Q_DISABLE_COPY( KDChartBaseTaskMenu )
 public:
-    KDChartBaseTaskMenu( QObject *parentW );
-   ~KDChartBaseTaskMenu();
+    explicit KDChartBaseTaskMenu( QObject *parentW );
+    ~KDChartBaseTaskMenu();
 
   /* \reimp */
   QAction *preferredEditAction() const;
@@ -43,7 +41,7 @@ private:
 
 };
 
-class KDCHART_PLUGINS_EXPORT KDChartWidgetTaskMenu : public KDChartBaseTaskMenu
+class KDChartWidgetTaskMenu : public KDChartBaseTaskMenu
 {
     public:
         KDChartWidgetTaskMenu( KDChart::Widget * chartWidget, QObject * parentW );
@@ -53,7 +51,7 @@ class KDCHART_PLUGINS_EXPORT KDChartWidgetTaskMenu : public KDChartBaseTaskMenu
         KDChart::Widget * mChart;
 };
 
-class KDCHART_PLUGINS_EXPORT KDChartChartTaskMenu : public KDChartBaseTaskMenu
+class KDChartChartTaskMenu : public KDChartBaseTaskMenu
 {
     public:
         KDChartChartTaskMenu( KDChart::Chart * chart, QObject * parentW );
@@ -63,7 +61,7 @@ class KDCHART_PLUGINS_EXPORT KDChartChartTaskMenu : public KDChartBaseTaskMenu
         KDChart::Chart * mChart;
 };
 
-class KDCHART_PLUGINS_EXPORT KDChartWidgetTaskMenuFactory: public QExtensionFactory
+class KDChartWidgetTaskMenuFactory: public QExtensionFactory
 {
     Q_OBJECT
     Q_DISABLE_COPY( KDChartWidgetTaskMenuFactory )
@@ -74,15 +72,15 @@ protected:
     virtual QObject * createExtension( QObject *object, const QString &iid, QObject *parentW ) const;
 };
 
-class KDCHART_PLUGINS_EXPORT KDChartChartTaskMenuFactory: public QExtensionFactory
+class KDChartChartTaskMenuFactory: public QExtensionFactory
 {
     Q_OBJECT
     Q_DISABLE_COPY( KDChartChartTaskMenuFactory )
-    public:
-        explicit KDChartChartTaskMenuFactory( QExtensionManager *extMgr = 0 );
+public:
+    explicit KDChartChartTaskMenuFactory( QExtensionManager *extMgr = 0 );
 
-    protected:
-        virtual QObject * createExtension( QObject *object, const QString &iid, QObject *parentW ) const;
+protected:
+    virtual QObject * createExtension( QObject *object, const QString &iid, QObject *parentW ) const;
 };
 
 

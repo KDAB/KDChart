@@ -1,8 +1,6 @@
 #ifndef __KDCHARTWIDGET_DESIGNER_CUSTOM_EDITOR_H__
 #define __KDCHARTWIDGET_DESIGNER_CUSTOM_EDITOR_H__
 
-#include "../src/kdchart_export.h"
-
 #include <QDialog>
 
 #include "ui_kdchartwidgetdesignercustomeditor.h"
@@ -14,7 +12,7 @@ namespace KDChart {
     class HeaderFooterPropertiesWidget;
 }
 
-class KDCHART_PLUGINS_EXPORT KDChartWidgetDesignerCustomEditor 
+class KDChartWidgetDesignerCustomEditor
     : public QDialog, private Ui::KDChartWidgetProperties
 {
     Q_OBJECT
