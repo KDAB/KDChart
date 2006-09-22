@@ -581,6 +581,10 @@ void Chart::addCoordinatePlane( AbstractCoordinatePlane* plane )
              d,   SLOT( slotUnregisterDestroyedPlane( AbstractCoordinatePlane* ) ) );
     connect( plane, SIGNAL( needUpdate() ),
              this,    SLOT( update() ) );
+    connect( plane, SIGNAL( needRelayout() ),
+             d,       SLOT( slotRelayout() ) ) ;
+    connect( plane, SIGNAL( needLayoutPlanes() ),
+             d,       SLOT( slotLayoutPlanes() ) ) ;
     d->coordinatePlanes.append( plane );
     plane->setParent( this );
     d->slotLayoutPlanes();

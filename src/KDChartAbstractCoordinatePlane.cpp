@@ -243,4 +243,16 @@ void KDChart::AbstractCoordinatePlane::update()
     emit needUpdate();
 }
 
+void KDChart::AbstractCoordinatePlane::relayout()
+{
+    //qDebug("KDChart::AbstractCoordinatePlane::relayout() called");
+    emit needRelayout();
+}
+
+void KDChart::AbstractCoordinatePlane::layoutPlanes()
+{
+    //qDebug("KDChart::AbstractCoordinatePlane::relayout() called");
+    emit needLayoutPlanes();
+}
+
 #undef d

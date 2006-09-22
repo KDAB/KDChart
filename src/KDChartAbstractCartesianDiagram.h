@@ -76,6 +76,7 @@ namespace KDChart {
         virtual void takeAxis( CartesianAxis * axis );
         virtual KDChart::CartesianAxisList axes () const;
 
+        virtual void layoutPlanes();
         virtual void setCoordinatePlane( AbstractCoordinatePlane* plane );
 
         virtual void setReferenceDiagram( AbstractCartesianDiagram* diagarm, const QPointF& offset = QPointF() );

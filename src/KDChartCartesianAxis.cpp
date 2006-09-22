@@ -75,7 +75,7 @@ void CartesianAxis::setTitleText( const QString& text )
 {
     //FIXME(khz): Call update al all places where axis internals are changed!
     d->titleText = text;
-    //d->needRebuild = true;
+    layoutPlanes();
 }
 
 QString CartesianAxis::titleText() const
@@ -87,7 +87,7 @@ void CartesianAxis::setTitleTextAttributes( const TextAttributes &a )
 {
     d->titleTextAttributes = a;
     d->useDefaultTextAttributes = false;
-    //d->needRebuild = true;
+    layoutPlanes();
 }
 
 TextAttributes CartesianAxis::titleTextAttributes() const
@@ -105,7 +105,7 @@ TextAttributes CartesianAxis::titleTextAttributes() const
 void CartesianAxis::resetTitleTextAttributes()
 {
     d->useDefaultTextAttributes = true;
-    //d->needRebuild = true;
+    layoutPlanes();
 }
 
 bool CartesianAxis::hasDefaultTitleTextAttributes() const
@@ -116,11 +116,24 @@ bool CartesianAxis::hasDefaultTitleTextAttributes() const
 void CartesianAxis::setPosition ( Position p )
 {
     d->position = p;
+    layoutPlanes();
 }
 
 const CartesianAxis::Position CartesianAxis::position() const
 {
     return d->position;
+}
+
+void CartesianAxis::layoutPlanes()
+{
+    //qDebug() << "CartesianAxis::layoutPlanes()";
+    if( ! d->diagram() || ! d->diagram()->coordinatePlane() ) return;
+    //qDebug() << "CartesianAxis::layoutPlanes(): Sorry, found no plane.";
+    AbstractCoordinatePlane* plane = d->diagram()->coordinatePlane();
+    if( plane ){
+        plane->layoutPlanes();
+        //qDebug() << "CartesianAxis::layoutPlanes() OK";
+    }
 }
 
 bool CartesianAxis::isAbscissa() const

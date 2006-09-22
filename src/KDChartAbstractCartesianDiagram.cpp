@@ -68,6 +68,7 @@ void AbstractCartesianDiagram::addAxis( CartesianAxis *axis )
     if ( !d->axesList.contains( axis ) ) {
         d->axesList.append( axis );
         axis->createObserver( this );
+        layoutPlanes();
     }
 }
 
@@ -78,11 +79,22 @@ void AbstractCartesianDiagram::takeAxis( CartesianAxis *axis )
         d->axesList.takeAt( idx );
     axis->deleteObserver( this );
     axis->setParentWidget( 0 );
+    layoutPlanes();
 }
 
 KDChart::CartesianAxisList AbstractCartesianDiagram::axes( ) const
 {
     return d->axesList;
+}
+
+void KDChart::AbstractCartesianDiagram::layoutPlanes()
+{
+    //qDebug() << "KDChart::AbstractCartesianDiagram::layoutPlanes()";
+    AbstractCoordinatePlane* plane = coordinatePlane();
+    if( plane ){
+        plane->layoutPlanes();
+        //qDebug() << "KDChart::AbstractCartesianDiagram::layoutPlanes() OK";
+    }
 }
 
 void KDChart::AbstractCartesianDiagram::setCoordinatePlane( AbstractCoordinatePlane* plane )

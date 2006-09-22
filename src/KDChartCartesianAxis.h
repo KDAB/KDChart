@@ -103,6 +103,9 @@ namespace KDChart {
 
         virtual void setPosition ( Position p );
         virtual const Position position () const;
+
+        virtual void layoutPlanes();
+
         virtual bool isAbscissa() const;
         virtual bool isOrdinate() const;
 

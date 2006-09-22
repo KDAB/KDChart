@@ -266,6 +266,14 @@ namespace KDChart {
           * Calling update() on the plane triggers the global KDChart::Chart::update()
           */
         void update();
+        /**
+          * Calling relayout() on the plane triggers the global KDChart::Chart::slotRelayout()
+          */
+        void relayout();
+        /**
+          * Calling layoutPlanes() on the plane triggers the global KDChart::Chart::slotLayoutPlanes()
+          */
+        void layoutPlanes();
 
     signals:
         /** Emitted when this coordinate plane is destroyed. */
@@ -273,6 +281,12 @@ namespace KDChart {
 
         /** Emitted when plane needs to update its drawings. */
         void needUpdate();
+
+        /** Emitted when plane needs to trigger the Chart's layouting. */
+        void needRelayout();
+
+        /** Emitted when plane needs to trigger the Chart's layouting of the coord. planes. */
+        void needLayoutPlanes();
 
     protected:
         virtual DataDimensionsList getDataDimensionsList() const = 0;
