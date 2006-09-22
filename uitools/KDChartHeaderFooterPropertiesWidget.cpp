@@ -23,13 +23,16 @@
  ** licensing are not clear to you.
  **
  **********************************************************************/
+#include <QWidget>
+#include <QDebug>
+#include <QLabel>
+
+#include <KDChartPosition.h>
+#include <KDChartHeaderFooter.h>
 
 #include <KDChartHeaderFooterPropertiesWidget.h>
 #include <KDChartHeaderFooterPropertiesWidget_p.h>
 
-#include <QWidget>
-#include <QDebug>
-#include <QLabel>
 
 #define d d_func()
 
@@ -46,10 +49,20 @@ HeaderFooterPropertiesWidget::Private::~Private()
 }
 
 HeaderFooterPropertiesWidget::HeaderFooterPropertiesWidget( QWidget *parent )
-    :QWidget( parent )
+    :QWidget( parent ), _d( new Private )
 {
-    new QLabel( "HeaderFooter Editor Widget", this );
-    
+    setupUi( this );
+
+    mPositionCombo->insertItems( 0, Position::printableNames( true ) );
+    connect( mPositionCombo, SIGNAL( activated( int ) ),
+             this, SLOT( slotPositionChanged( int ) ) );
+    connect( headerRB,  SIGNAL( toggled( bool ) ),
+             this,  SLOT( slotTypeChanged( bool ) ) );
+    connect( textED,  SIGNAL( textChanged( const QString ) ),
+             this,  SLOT( slotTextChanged( const QString  ) ) );
+
+    setEnabled( false );
+
 }
 
 HeaderFooterPropertiesWidget::~HeaderFooterPropertiesWidget()
@@ -59,10 +72,75 @@ HeaderFooterPropertiesWidget::~HeaderFooterPropertiesWidget()
 
 void HeaderFooterPropertiesWidget::setHeaderFooter( HeaderFooter * hf )
 {
-    d->headerfooter = hf;
+     d->headerfooter = hf;
+    if ( hf ) {
+        readFromHeaderFooter( hf );
+        setEnabled( true );
+    } else {
+        setEnabled( false);
+    }
 }
 
-void KDChart::HeaderFooterPropertiesWidget::setInstantApply( bool value )
+void HeaderFooterPropertiesWidget::setInstantApply( bool value )
 {
     d->instantApply = value;
 }
+
+
+void HeaderFooterPropertiesWidget::readFromHeaderFooter( const HeaderFooter * hf  )
+{
+    mPositionCombo->setCurrentIndex( hf->position().value() );
+    textED->setText( hf->text() );
+    if (  hf->type() == HeaderFooter::Header )
+        headerRB->setChecked( true );
+    else
+        footerRB->setChecked( true );
+}
+
+
+void HeaderFooterPropertiesWidget::writeToHeaderFooter( HeaderFooter * hf )
+{
+    if ( !hf ) return;
+    hf->setPosition( Position( mPositionCombo->currentIndex() ) );
+    hf->setText( textED->text() );
+    if (  headerRB->isChecked() )
+        hf->setType( HeaderFooter::Header );
+    else
+        hf->setType( HeaderFooter::Footer );
+}
+
+void HeaderFooterPropertiesWidget::slotPositionChanged( int idx )
+{
+    if ( d->headerfooter && d->instantApply ) {
+        d->headerfooter->setPosition( Position( idx ) );
+    } else {
+        emit changed();
+    }
+}
+
+
+void HeaderFooterPropertiesWidget::slotTextChanged( const QString& text )
+{
+    Q_UNUSED( text );
+
+    if ( d->headerfooter && d->instantApply ) {
+        d->headerfooter->setText( textED->text() );
+    } else {
+        emit changed();
+    }
+}
+
+void HeaderFooterPropertiesWidget::slotTypeChanged( bool toggled )
+{
+    Q_UNUSED( toggled );
+
+    if ( d->headerfooter && d->instantApply ) {
+        if (  headerRB->isChecked() )
+            d->headerfooter->setType( HeaderFooter::Header );
+        else
+            d->headerfooter->setType( HeaderFooter::Footer );
+    } else {
+        emit changed();
+    }
+}
+

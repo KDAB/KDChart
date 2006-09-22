@@ -44,6 +44,7 @@ HEADERS = \
 
 FORMS = \
         KDChartLegendPropertiesWidget.ui \
+        KDChartHeaderFooterPropertiesWidget.ui \
 
 KDAB_EVAL {
   HEADERS += ../evaldialog/evaldialog.h

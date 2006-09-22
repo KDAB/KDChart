@@ -28,6 +28,7 @@
 #include <QWidget>
 
 #include "kdchart_export.h"
+#include "ui_KDChartHeaderFooterPropertiesWidget.h"
 #include "KDChartGlobal.h"
 
 namespace KDChart {
@@ -40,7 +41,9 @@ namespace KDChart {
      *
      * 
      */
-    class KDCHART_EXPORT HeaderFooterPropertiesWidget : public QWidget
+
+    class KDCHART_EXPORT HeaderFooterPropertiesWidget 
+       : public QWidget, private Ui::KDChartHeaderFooterPropertiesWidget
     {
         Q_OBJECT
 
@@ -61,8 +64,19 @@ namespace KDChart {
         ~HeaderFooterPropertiesWidget();
 
         void setHeaderFooter( HeaderFooter* hf );
-
         void setInstantApply( bool value );
+	void readFromHeaderFooter( const HeaderFooter * headerFooter );
+        void writeToHeaderFooter( HeaderFooter * headerFooter );
+
+   protected slots:
+      
+        void slotTextChanged( const QString& text );
+	void slotPositionChanged( int idx );
+        void slotTypeChanged( bool toggled );
+
+    signals:
+        // emitted whenever a value in the dialog changes
+        void changed();
     };
 }
 
