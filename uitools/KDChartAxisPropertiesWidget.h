@@ -28,11 +28,13 @@
 #include <QWidget>
 
 #include "kdchart_export.h"
+#include "ui_KDChartAxisPropertiesWidget.h"
 #include "KDChartGlobal.h"
 
 namespace KDChart {
 
-    class Axis;
+    class CartesianAxis;
+
 
     /**
      * \class AxisPropertiesWidget KDChartAxisPropertiesWidget.h
@@ -40,7 +42,8 @@ namespace KDChart {
      *
      * 
      */
-    class KDCHART_EXPORT AxisPropertiesWidget : public QWidget
+    class KDCHART_EXPORT AxisPropertiesWidget 
+	    : public QWidget, private Ui::KDChartAxisPropertiesWidget
     {
         Q_OBJECT
 
@@ -60,9 +63,19 @@ namespace KDChart {
         /** Destructor. */
         ~AxisPropertiesWidget();
 
-        void setAxis( Axis* axis );
-
+        void setAxis( CartesianAxis* axis );
         void setInstantApply( bool value );
+	void readFromAxis( const CartesianAxis * axis );
+        void writeToAxis( CartesianAxis * axis );
+
+   protected slots:
+      
+        void slotTitleChanged( const QString& text );
+	void slotPositionChanged( int idx );
+
+    signals:
+        // emitted whenever a value in the dialog changes
+        void changed();
     };
 }
 

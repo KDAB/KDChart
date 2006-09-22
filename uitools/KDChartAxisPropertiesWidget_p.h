@@ -39,7 +39,7 @@
 #include <KDChartAxisPropertiesWidget.h>
 
 namespace KDChart {
-    class Axis;
+    class CartesianAxis;
 
     /**
     * \internal
@@ -53,7 +53,7 @@ namespace KDChart {
 
     protected:
         void init();
-        Axis* axis;
+        CartesianAxis* axis;
         bool instantApply;
     };
 }
