@@ -35,6 +35,27 @@
 // QLabel with rich text assigned, this is mostly a workaround around
 // QTextDocumentLayout not being a public class.
 
+KDTextDocument::KDTextDocument( QObject * p )
+    : QTextDocument( p ),
+      mHintValid( false ),
+      mSizeHint(),
+      mMinimumSizeHint()
+{
+
+}
+
+KDTextDocument::KDTextDocument( const QString & text, QObject * p )
+    : QTextDocument( text, p ),
+      mHintValid( false ),
+      mSizeHint(),
+      mMinimumSizeHint()
+{
+
+}
+
+KDTextDocument::~KDTextDocument() {}
+
+
 QSize KDTextDocument::sizeHint()
 {
     if( !mHintValid )

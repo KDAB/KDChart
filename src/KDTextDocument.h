@@ -27,7 +27,7 @@
 #define KDTEXTDOCUMENT_H
 
 #include <QTextDocument>
-
+#include <QSize>
 
 /**
   * \internal
@@ -37,20 +37,20 @@ class KDTextDocument : public QTextDocument
     Q_OBJECT
 
 public:
-    KDTextDocument( QObject* parent = 0 ) :
-        QTextDocument( parent ), mHintValid( false ) {}
-    KDTextDocument( const QString& text, QObject* parent = 0 ) :
-        QTextDocument( text, parent ), mHintValid( false ) {}
+    explicit KDTextDocument( QObject* parent = 0 );
+    explicit KDTextDocument( const QString& text, QObject* parent = 0 );
+    ~KDTextDocument();
 
-    virtual QSize sizeHint();
-    virtual QSize minimumSizeHint();
+    QSize sizeHint();
+    QSize minimumSizeHint();
 
-protected:
+private:
     QSize sizeForWidth( int width );
 
-    mutable bool mHintValid;
-    mutable QSize mSizeHint;
-    mutable QSize mMinimumSizeHint;
+private:
+    bool mHintValid;
+    QSize mSizeHint;
+    QSize mMinimumSizeHint;
 };
 
 
