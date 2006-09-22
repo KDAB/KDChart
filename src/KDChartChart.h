@@ -56,17 +56,21 @@ namespace KDChart {
      * programming, and thus requires data to be presented to it in a QAbstractItemModel
      * compatible way. For many simple charts, especially if the visualized data is
      * static, KDChart::Widget provides an abstracted interface, that hides the complexity
-     * of Interview to a large extent. *
+     * of Interview to a large extent.
      */
     class KDCHART_EXPORT Chart : public QWidget
     {
         Q_OBJECT
+        Q_PROPERTY( int globalLeadingTop READ globalLeadingTop WRITE setGlobalLeadingTop )
+        Q_PROPERTY( int globalLeadingBottom READ globalLeadingBottom WRITE setGlobalLeadingBottom )
+        Q_PROPERTY( int globalLeadingLeft READ globalLeadingLeft WRITE setGlobalLeadingLeft )
+        Q_PROPERTY( int globalLeadingRight READ globalLeadingRight WRITE setGlobalLeadingRight )
 
         KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC_QWIDGET( Chart )
 
     public:
         explicit Chart ( QWidget* parent = 0 );
-        virtual ~Chart();
+        ~Chart();
 
         /**
          * Each chart must have at least one coordinate plane.
@@ -143,7 +147,7 @@ namespace KDChart {
          *
          * \sa replaceHeaderFooter, takeHeaderFooter
          */
-        virtual void addHeaderFooter( HeaderFooter* headerFooter );
+        void addHeaderFooter( HeaderFooter* headerFooter );
 
         /**
          * Replaces the old header (or footer, resp.), or appends the
@@ -162,8 +166,8 @@ namespace KDChart {
          *
          * \sa addHeaderFooter, takeHeaderFooter
          */
-        virtual void replaceHeaderFooter ( HeaderFooter* headerFooter,
-                                           HeaderFooter* oldHeaderFooter = 0 );
+        void replaceHeaderFooter ( HeaderFooter* headerFooter,
+                                   HeaderFooter* oldHeaderFooter = 0 );
 
         /**
          * Removes the header (or footer, resp.) from the chart, without deleting it.
@@ -173,7 +177,7 @@ namespace KDChart {
          *
          * \sa addHeaderFooter, replaceHeaderFooter
          */
-        virtual void takeHeaderFooter( HeaderFooter* headerFooter );
+        void takeHeaderFooter( HeaderFooter* headerFooter );
 
         /**
          * The first legend of the chart or 0 if there was none added to the chart.
@@ -193,7 +197,7 @@ namespace KDChart {
          *
          * \sa replaceLegend, takeLegend
          */
-        virtual void addLegend( Legend* legend );
+        void addLegend( Legend* legend );
 
         /**
          * Replaces the old legend, or appends the
@@ -212,7 +216,7 @@ namespace KDChart {
          *
          * \sa addLegend, takeLegend
          */
-        virtual void replaceLegend ( Legend* legend, Legend* oldLegend = 0 );
+        void replaceLegend ( Legend* legend, Legend* oldLegend = 0 );
 
         /**
          * Removes the legend from the chart, without deleting it.
@@ -222,7 +226,7 @@ namespace KDChart {
          *
          * \sa addLegend, takeLegend
          */
-        virtual void takeLegend( Legend* legend );
+        void takeLegend( Legend* legend );
 
         /**
          * Set the padding between the margin of the widget and the area that
@@ -328,19 +332,20 @@ namespace KDChart {
           */
         void paint( QPainter* painter, const QRect& target );
 
+    protected:
         /**
           * Adjusts the internal layout when the chart is resized.
           */
-        virtual void resizeEvent ( QResizeEvent * event );
+        /* reimp */ void resizeEvent ( QResizeEvent * event );
 
         /**
           * @brief Draws the background and frame, then calls paint().
           *
-          * In most cases there is no need to overwrite this method in a derived
-          * class, but you would overwrite paint() instead.
+          * In most cases there is no need to override this method in a derived
+          * class, but if you do, do not forget to call paint().
           * @sa paint
           */
-        virtual void paintEvent( QPaintEvent* event );
+        /* reimp */ void paintEvent( QPaintEvent* event );
     };
 
 }
