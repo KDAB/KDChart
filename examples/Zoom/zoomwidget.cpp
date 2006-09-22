@@ -35,7 +35,7 @@ ZoomWidget::ZoomWidget( QWidget* parent ) :
 }
 
 
-QPointF ZoomWidget::findNewZoomCenter( QPoint pos )const
+QPointF ZoomWidget::findNewZoomCenter( const QPoint & pos )
 {
     if( ! height() || ! width() ) return coordinatePlane()->zoomCenter();
 

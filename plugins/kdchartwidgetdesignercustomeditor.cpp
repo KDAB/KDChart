@@ -28,6 +28,7 @@
 #include <KDChartAbstractCartesianDiagram>
 #include <KDChartLineDiagram>
 #include <KDChartBarDiagram>
+#include <KDChartLegend>
 
 #include "kdchartwidgetdesignercustomeditor.h"
 
@@ -137,7 +138,7 @@ void KDChartWidgetDesignerCustomEditor::setupLegendsTab()
     QVBoxLayout* vbox = new QVBoxLayout( mLegendDetailsGroup );
     mLegendEditor = new LegendPropertiesWidget( mLegendDetailsGroup );
 
-    for (  int i = 0; i < mChart->legendCount(); ++i )
+    for (  int i = 0; i < mChart->allLegends().count(); ++i )
         mLegendsList->addItem( QString("Legend %1").arg( i+1 ) );
 
     vbox->addWidget( mLegendEditor );
@@ -188,7 +189,7 @@ void KDChartWidgetDesignerCustomEditor::setupHeaderFooterTab()
     QVBoxLayout* vbox = new QVBoxLayout( mHeaderFooterDetailsGroup );
     mHeaderFooterEditor = new HeaderFooterPropertiesWidget( mHeaderFooterDetailsGroup );
 
-    for (  int i = 0; i < mChart->headerFooterCount(); ++i )
+    for (  int i = 0; i < mChart->allHeadersFooters().count(); ++i )
         mHeaderFootersList->addItem( QString("HeaderFooter %1").arg( i+1 ) );
 
     vbox->addWidget( mHeaderFooterEditor );
@@ -204,14 +205,14 @@ void KDChartWidgetDesignerCustomEditor::slotAddLegend()
 {
 
     mChart->addLegend( Position::East );
-    mLegendsList->addItem( QString("Legend %1").arg(mChart->legendCount() ) );
+    mLegendsList->addItem( QString("Legend %1").arg(mChart->allLegends().count() ) );
 
 }
 
 void KDChartWidgetDesignerCustomEditor::slotRemoveLegend()
 {
     int idx = mLegendsList->currentRow();
-    if ( idx == -1 || idx >= mChart->legendCount() ) return;
+    if ( idx == -1 || idx >= mChart->allLegends().count() ) return;
     Legend* l = mChart->allLegends()[idx];
     mChart->takeLegend( l );
     delete l;
@@ -221,7 +222,7 @@ void KDChartWidgetDesignerCustomEditor::slotRemoveLegend()
 void KDChartWidgetDesignerCustomEditor::slotCurrentLegendChanged( int idx )
 {
     Legend* l = 0;
-    if ( idx != -1 && idx < mChart->legendCount() )
+    if ( idx != -1 && idx < mChart->allLegends().count() )
         l = mChart->allLegends()[idx];
     mLegendEditor->setLegend( l );
 }
@@ -322,14 +323,14 @@ void KDChartWidgetDesignerCustomEditor::slotAddHeaderFooter()
     hf->setType( HeaderFooter::Header );
     hf->setText(  "Header" );
     mChart->addHeaderFooter( hf );
-    mHeaderFootersList->addItem( QString("HeaderFooter %1").arg(mChart->headerFooterCount() ) );
+    mHeaderFootersList->addItem( QString("HeaderFooter %1").arg(mChart->allHeadersFooters().count() ) );
 
 }
 
 void KDChartWidgetDesignerCustomEditor::slotRemoveHeaderFooter()
 {
     int idx = mHeaderFootersList->currentRow();
-    if ( idx == -1 || idx >= mChart->headerFooterCount() ) return;
+    if ( idx == -1 || idx >= mChart->allHeadersFooters().count() ) return;
     HeaderFooter* l = mChart->allHeadersFooters()[idx];
     mChart->takeHeaderFooter( l );
     delete l;
@@ -338,7 +339,7 @@ void KDChartWidgetDesignerCustomEditor::slotRemoveHeaderFooter()
 
 void KDChartWidgetDesignerCustomEditor::slotCurrentHeaderFooterChanged( int idx )
 {
-    if ( idx == -1 || idx >= mChart->headerFooterCount() ) return;
+    if ( idx == -1 || idx >= mChart->allHeadersFooters().count() ) return;
     HeaderFooter* l = mChart->allHeadersFooters()[idx];
     mHeaderFooterEditor->setHeaderFooter( l );
 }

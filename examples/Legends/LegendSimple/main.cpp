@@ -27,6 +27,7 @@
 #include <KDChartWidget>
 #include <KDChartBarDiagram>
 #include <KDChartPosition>
+#include <KDChartLegend>
 
 
 using namespace KDChart;

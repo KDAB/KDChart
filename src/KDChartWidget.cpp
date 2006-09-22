@@ -27,6 +27,9 @@
  **
  **********************************************************************/
 
+#include <KDChartWidget.h>
+#include <KDChartWidget_p.h>
+
 #include <KDChartAbstractDiagram.h>
 #include <KDChartBarDiagram.h>
 #include <KDChartCartesianCoordinatePlane.h>
@@ -37,29 +40,31 @@
 #include <KDChartPolarCoordinatePlane.h>
 #include <KDChartPolarDiagram.h>
 #include <KDChartRingDiagram.h>
-#include <KDChartWidget.h>
-#include <KDChartWidget_p.h>
+#include <KDChartLegend.h>
 
 #include <QDebug>
-#include <QGridLayout>
-#include <QStandardItemModel>
 
 #include <KDABLibFakes>
 
 #define d d_func()
 
-namespace KDChart {
+using namespace KDChart;
 
-Widget::Private::Private()
+Widget::Private::Private( Widget * qq )
+    : q( qq ),
+      layout( q ),
+      m_model( q ),
+      m_chart( q ),
+      usedDatasetWidth( 0 )
 {
-    m_model = new QStandardItemModel();
-    usedDatasetWidth = 0;
+    KDAB_SET_OBJECT_NAME( layout );
+    KDAB_SET_OBJECT_NAME( m_model );
+    KDAB_SET_OBJECT_NAME( m_chart );
+
+    layout.addWidget( &m_chart );
 }
 
-Widget::Private::~Private()
-{
-    delete m_model; m_model = NULL;
-}
+Widget::Private::~Private() {}
 
 
 /**
@@ -75,16 +80,8 @@ Widget::Private::~Private()
  * \param parent the widget parent; passed on to QWidget
  */
 Widget::Widget( QWidget* parent ) :
-    QWidget(parent), _d( new Private )
+    QWidget(parent), _d( new Private( this ) )
 {
-    // setting up the layout
-    d->m_chart = new Chart( this );
-    QGridLayout* layout = new QGridLayout( this );
-    layout->addWidget( d->m_chart );
-
-    // our internal model
-    d->m_model = new QStandardItemModel();
-
     // as default we have a cartesian coordinate plane ...
     // ... and a line diagram
     setType( Line );
@@ -110,18 +107,17 @@ void Widget::setDataset( int column, const QVector< double > & data, const QStri
     if ( ! checkDatasetWidth( 1 ) )
         return;
 
-    QModelIndex index;
-    QStandardItemModel* model = d->m_model;
+    QStandardItemModel & model = d->m_model;
 
     justifyModelSize( data.size(), column + 1 );
 
     for( int i = 0; i < data.size(); ++i )
     {
-        index = model->index( i, column );
-        model->setData( index, QVariant( data[i] ), Qt::DisplayRole );
+        const QModelIndex index = model.index( i, column );
+        model.setData( index, QVariant( data[i] ), Qt::DisplayRole );
     }
-    if ( ! title.isNull() )
-        model->setHeaderData( column, Qt::Horizontal, QVariant( title ) );
+    if ( ! title.isEmpty() )
+        model.setHeaderData( column, Qt::Horizontal, QVariant( title ) );
 }
 
 /**
@@ -133,21 +129,20 @@ void Widget::setDataset( int column, const QVector< QPair< double, double > > & 
     if ( ! checkDatasetWidth( 2 ))
         return;
 
-    QModelIndex index;
-    QStandardItemModel* model = d->m_model;
+    QStandardItemModel & model = d->m_model;
 
     justifyModelSize( data.size(), (column + 1) * 2 );
 
     for( int i = 0; i < data.size(); ++i )
     {
-        index = model->index( i, column * 2 );
-        model->setData( index, QVariant( data[i].first ), Qt::DisplayRole );
+        QModelIndex index = model.index( i, column * 2 );
+        model.setData( index, QVariant( data[i].first ), Qt::DisplayRole );
 
-        index = model->index( i, column * 2 + 1 );
-        model->setData( index, QVariant( data[i].second ), Qt::DisplayRole );
+        index = model.index( i, column * 2 + 1 );
+        model.setData( index, QVariant( data[i].second ), Qt::DisplayRole );
     }
-    if ( ! title.isNull() )
-        model->setHeaderData( column * 2, Qt::Horizontal, QVariant( title ) );
+    if ( ! title.isEmpty() )
+        model.setHeaderData( column * 2, Qt::Horizontal, QVariant( title ) );
 }
 
 /*
@@ -155,7 +150,7 @@ void Widget::setDataset( int column, const QVector< QPair< double, double > > & 
  */
 void Widget::resetData()
 {
-    d->m_model->clear();
+    d->m_model.clear();
     d->usedDatasetWidth = 0;
 }
 
@@ -164,7 +159,7 @@ void Widget::resetData()
  */
 void Widget::setGlobalLeading( int left, int top, int right, int bottom )
 {
-    d->m_chart->setGlobalLeading( left, top, right, bottom );
+    d->m_chart.setGlobalLeading( left, top, right, bottom );
 }
 
 /**
@@ -172,7 +167,7 @@ void Widget::setGlobalLeading( int left, int top, int right, int bottom )
  */
 void Widget::setGlobalLeadingLeft( int leading )
 {
-    d->m_chart->setGlobalLeadingLeft( leading );
+    d->m_chart.setGlobalLeadingLeft( leading );
 }
 
 /**
@@ -180,7 +175,7 @@ void Widget::setGlobalLeadingLeft( int leading )
  */
 int Widget::globalLeadingLeft() const
 {
-    return d->m_chart->globalLeadingLeft();
+    return d->m_chart.globalLeadingLeft();
 }
 
 /**
@@ -188,7 +183,7 @@ int Widget::globalLeadingLeft() const
  */
 void Widget::setGlobalLeadingTop( int leading )
 {
-    d->m_chart->setGlobalLeadingTop( leading );
+    d->m_chart.setGlobalLeadingTop( leading );
 }
 
 /**
@@ -196,7 +191,7 @@ void Widget::setGlobalLeadingTop( int leading )
  */
 int Widget::globalLeadingTop() const
 {
-    return d->m_chart->globalLeadingTop();
+    return d->m_chart.globalLeadingTop();
 }
 
 /**
@@ -204,7 +199,7 @@ int Widget::globalLeadingTop() const
  */
 void Widget::setGlobalLeadingRight( int leading )
 {
-    d->m_chart->setGlobalLeadingRight( leading );
+    d->m_chart.setGlobalLeadingRight( leading );
 }
 
 /**
@@ -212,7 +207,7 @@ void Widget::setGlobalLeadingRight( int leading )
  */
 int Widget::globalLeadingRight() const
 {
-    return d->m_chart->globalLeadingRight();
+    return d->m_chart.globalLeadingRight();
 }
 
 /**
@@ -220,7 +215,7 @@ int Widget::globalLeadingRight() const
  */
 void Widget::setGlobalLeadingBottom( int leading )
 {
-    d->m_chart->setGlobalLeadingBottom( leading );
+    d->m_chart.setGlobalLeadingBottom( leading );
 }
 
 /**
@@ -228,31 +223,23 @@ void Widget::setGlobalLeadingBottom( int leading )
  */
 int Widget::globalLeadingBottom() const
 {
-    return d->m_chart->globalLeadingBottom();
+    return d->m_chart.globalLeadingBottom();
 }
 
 /**
  * Returns the first of all headers.
  */
-KDChart::HeaderFooter* Widget::firstHeaderFooter() const
+KDChart::HeaderFooter* Widget::firstHeaderFooter()
 {
-    return d->m_chart->headerFooter();
+    return d->m_chart.headerFooter();
 }
 
 /**
  * Returns a list with all headers.
  */
-const QList<KDChart::HeaderFooter*> Widget::allHeadersFooters() const
+QList<KDChart::HeaderFooter*> Widget::allHeadersFooters()
 {
-    return d->m_chart->headerFooters();
-}
-
-/**
- * Returns the count over all headers.
- */
-int Widget::headerFooterCount() const
-{
-    return d->m_chart->headerFooters().count();
+    return d->m_chart.headerFooters();
 }
 
 /**
@@ -262,11 +249,11 @@ void Widget::addHeaderFooter( const QString& text,
                               HeaderFooter::HeaderFooterType type,
                               Position position)
 {
-    HeaderFooter* newHeader = new HeaderFooter( d->m_chart );
+    HeaderFooter* newHeader = new HeaderFooter( &d->m_chart );
     newHeader->setType( type );
     newHeader->setPosition( position );
     newHeader->setText( text );
-    d->m_chart->addHeaderFooter( newHeader ); // we need this explicit call !
+    d->m_chart.addHeaderFooter( newHeader ); // we need this explicit call !
 }
 
 /**
@@ -274,43 +261,35 @@ void Widget::addHeaderFooter( const QString& text,
  */
 void Widget::addHeaderFooter( HeaderFooter* header )
 {
-    header->setParent( d->m_chart );
-    d->m_chart->addHeaderFooter( header ); // we need this explicit call !
+    header->setParent( &d->m_chart );
+    d->m_chart.addHeaderFooter( header ); // we need this explicit call !
 }
 
 void Widget::replaceHeaderFooter( HeaderFooter* header, HeaderFooter* oldHeader )
 {
-    header->setParent( d->m_chart );
-    d->m_chart->replaceHeaderFooter( header, oldHeader );
+    header->setParent( &d->m_chart );
+    d->m_chart.replaceHeaderFooter( header, oldHeader );
 }
 
 void Widget::takeHeaderFooter( HeaderFooter* header )
 {
-    d->m_chart->takeHeaderFooter( header );
+    d->m_chart.takeHeaderFooter( header );
 }
 
 /**
  * Returns the first of all legends.
  */
-KDChart::Legend* Widget::legend() const
+KDChart::Legend* Widget::legend()
 {
-    return d->m_chart->legend();
+    return d->m_chart.legend();
 }
 
 /**
  * Returns a list with all legends.
  */
-const QList<KDChart::Legend*> Widget::allLegends() const
+QList<KDChart::Legend*> Widget::allLegends()
 {
-    return d->m_chart->legends();
-}
-
-/**
- * Returns the count over all legends.
- */
-int Widget::legendCount() const
-{
-    return d->m_chart->legends().count();
+    return d->m_chart.legends();
 }
 
 /**
@@ -318,33 +297,33 @@ int Widget::legendCount() const
  */
 void Widget::addLegend( Position position )
 {
-    Legend* legend = new Legend( diagram(), d->m_chart );
+    Legend* legend = new Legend( diagram(), &d->m_chart );
     legend->setPosition( position );
-    d->m_chart->addLegend( legend );
+    d->m_chart.addLegend( legend );
 }
 
 /**
  * Adds a new, already existing, legend.
  */
-void Widget::addLegend (Legend* legend )
+void Widget::addLegend( Legend* legend )
 {
     legend->setDiagram( diagram() );
-    legend->setParent( d->m_chart );
+    legend->setParent( &d->m_chart );
 }
 
 void Widget::replaceLegend( Legend* legend, Legend* oldLegend )
 {
     legend->setDiagram( diagram() );
-    legend->setParent( d->m_chart );
-    d->m_chart->replaceLegend( legend, oldLegend );
+    legend->setParent( &d->m_chart );
+    d->m_chart.replaceLegend( legend, oldLegend );
 }
 
 void Widget::takeLegend( Legend* legend )
 {
-    d->m_chart->takeLegend( legend );
+    d->m_chart.takeLegend( legend );
 }
 
-AbstractDiagram* Widget::diagram() const
+AbstractDiagram* Widget::diagram()
 {
     if ( coordinatePlane() == 0 )
         qDebug() << "diagram(): coordinatePlane() was NULL";
@@ -352,30 +331,30 @@ AbstractDiagram* Widget::diagram() const
     return coordinatePlane()->diagram();
 }
 
-BarDiagram* Widget::barDiagram() const
+BarDiagram* Widget::barDiagram()
 {
     return dynamic_cast<BarDiagram*>( diagram() );
 }
-LineDiagram* Widget::lineDiagram() const
+LineDiagram* Widget::lineDiagram()
 {
     return dynamic_cast<LineDiagram*>( diagram() );
 }
-PieDiagram* Widget::pieDiagram() const
+PieDiagram* Widget::pieDiagram()
 {
     return dynamic_cast<PieDiagram*>( diagram() );
 }
-RingDiagram* Widget::ringDiagram() const
+RingDiagram* Widget::ringDiagram()
 {
     return dynamic_cast<RingDiagram*>( diagram() );
 }
-PolarDiagram* Widget::polarDiagram() const
+PolarDiagram* Widget::polarDiagram()
 {
     return dynamic_cast<PolarDiagram*>( diagram() );
 }
 
-AbstractCoordinatePlane* Widget::coordinatePlane() const
+AbstractCoordinatePlane* Widget::coordinatePlane()
 {
-    return d->m_chart->coordinatePlane();
+    return d->m_chart.coordinatePlane();
 }
 
 void Widget::setType( ChartType chartType, SubType chartSubType )
@@ -388,40 +367,40 @@ void Widget::setType( ChartType chartType, SubType chartSubType )
         switch ( chartType )
         {
             case Bar:
-              cartPlane = new CartesianCoordinatePlane( d->m_chart );
-              d->m_chart->replaceCoordinatePlane( cartPlane );
-              diag = new BarDiagram( d->m_chart, cartPlane );
+              cartPlane = new CartesianCoordinatePlane( &d->m_chart );
+              d->m_chart.replaceCoordinatePlane( cartPlane );
+              diag = new BarDiagram( &d->m_chart, cartPlane );
               break;
             case Line:
-              cartPlane = new CartesianCoordinatePlane( d->m_chart );
-              d->m_chart->replaceCoordinatePlane( cartPlane );
-              diag = new LineDiagram( d->m_chart, cartPlane );
+              cartPlane = new CartesianCoordinatePlane( &d->m_chart );
+              d->m_chart.replaceCoordinatePlane( cartPlane );
+              diag = new LineDiagram( &d->m_chart, cartPlane );
               break;
             case Pie:
-              polPlane = new PolarCoordinatePlane( d->m_chart );
-              d->m_chart->replaceCoordinatePlane( polPlane );
-              diag = new PieDiagram( d->m_chart, polPlane );
+              polPlane = new PolarCoordinatePlane( &d->m_chart );
+              d->m_chart.replaceCoordinatePlane( polPlane );
+              diag = new PieDiagram( &d->m_chart, polPlane );
               break;
             case Polar:
-              polPlane = new PolarCoordinatePlane( d->m_chart );
-              d->m_chart->replaceCoordinatePlane( polPlane );
-              diag = new PolarDiagram( d->m_chart, polPlane );
+              polPlane = new PolarCoordinatePlane( &d->m_chart );
+              d->m_chart.replaceCoordinatePlane( polPlane );
+              diag = new PolarDiagram( &d->m_chart, polPlane );
               break;
             case Ring:
-              polPlane = new PolarCoordinatePlane( d->m_chart );
-              d->m_chart->replaceCoordinatePlane( polPlane );
-              diag = new RingDiagram( d->m_chart, polPlane );
+              polPlane = new PolarCoordinatePlane( &d->m_chart );
+              d->m_chart.replaceCoordinatePlane( polPlane );
+              diag = new RingDiagram( &d->m_chart, polPlane );
               break;
             case NoType:
               break;
         }
         if ( diag != NULL )
         {
-            diag->setModel( d->m_model );
+            diag->setModel( &d->m_model );
             coordinatePlane()->replaceDiagram( diag );
 
-            LegendList legends = d->m_chart->legends();
-            foreach(Legend* l, legends)
+            LegendList legends = d->m_chart.legends();
+            Q_FOREACH(Legend* l, legends)
                 l->setDiagram( diag );
         }
     }
@@ -476,15 +455,17 @@ void Widget::setSubType( SubType subType )
  */
 Widget::ChartType Widget::type() const
 {
-    if ( qobject_cast< BarDiagram* >( diagram() ) )
+    // PENDING(christoph) save the type out-of-band:
+    AbstractDiagram * const dia = const_cast<Widget*>( this )->diagram();
+    if ( qobject_cast< BarDiagram* >( dia ) )
         return Bar;
-    else if ( qobject_cast< LineDiagram* >( diagram() ) )
+    else if ( qobject_cast< LineDiagram* >( dia ) )
         return Line;
-    else if( qobject_cast< PieDiagram* >( diagram() ) )
+    else if( qobject_cast< PieDiagram* >( dia ) )
         return Pie;
-    else if( qobject_cast< PolarDiagram* >( diagram() ) )
+    else if( qobject_cast< PolarDiagram* >( dia ) )
         return Polar;
-    else if( qobject_cast< RingDiagram* >( diagram() ) )
+    else if( qobject_cast< RingDiagram* >( dia ) )
         return Ring;
     else
         return NoType;
@@ -492,10 +473,12 @@ Widget::ChartType Widget::type() const
 
 Widget::SubType Widget::subType() const
 {
+    // PENDING(christoph) save the type out-of-band:
     Widget::SubType retVal = Normal;
 
-    BarDiagram*  barDia  = qobject_cast< BarDiagram* >(   diagram() );
-    LineDiagram* lineDia = qobject_cast< LineDiagram* >(  diagram() );
+    AbstractDiagram * const dia = const_cast<Widget*>( this )->diagram();
+    BarDiagram*  barDia  = qobject_cast< BarDiagram* >(   dia );
+    LineDiagram* lineDia = qobject_cast< LineDiagram* >(  dia );
 
 //FIXME(khz): Add the impl for these chart types - or remove them from here:
 //    PieDiagram*   pieDia   = qobject_cast< PieDiagram* >(   diagram() );
@@ -557,17 +540,16 @@ bool Widget::checkDatasetWidth( int width )
  */
 void Widget::justifyModelSize( int rows, int columns )
 {
-    QAbstractItemModel* model = d->m_model;
-    int currentRows = model->rowCount();
-    int currentCols = model->columnCount();
+    QAbstractItemModel & model = d->m_model;
+    const int currentRows = model.rowCount();
+    const int currentCols = model.columnCount();
 
     if ( currentRows < rows )
-        if ( ! model->insertRows( currentRows, rows - currentRows ))
+        if ( ! model.insertRows( currentRows, rows - currentRows ))
             qDebug() << "justifyModelSize: could not increase model size.";
 
     if ( currentCols < columns )
-        if ( ! model->insertColumns( currentCols, columns - currentCols ))
+        if ( ! model.insertColumns( currentCols, columns - currentCols ))
             qDebug() << "justifyModelSize: could not increase model size.";
 }
 
-}

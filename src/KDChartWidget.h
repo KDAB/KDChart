@@ -29,12 +29,15 @@
 #ifndef __KDCHARTWIDGET_H__
 #define __KDCHARTWIDGET_H__
 
-#include <QPair>
-#include <QVector>
+#include "KDChartGlobal.h"
+
 #include <QWidget>
 
+#include "KDChartEnums.h"
 #include "KDChartHeaderFooter.h"
-#include "KDChartLegend.h"
+
+template <typename T> class QVector;
+template <typename T1, typename T2> class QPair;
 
 namespace KDChart {
 
@@ -48,12 +51,14 @@ namespace KDChart {
     class PieDiagram;
     class RingDiagram;
     class PolarDiagram;
+    class Legend;
+    class Position;
 
     /**
      * \class Widget KDChartWidget.h
-     * \brief The KD Chart widget for usage without InterView.
+     * \brief The KD Chart widget for usage without Model/View.
      *
-     * If you want to use KD Chart with InterView, use KDChart::Chart instead.
+     * If you want to use KD Chart with Model/View, use KDChart::Chart instead.
      */
     class KDCHART_EXPORT Widget : public QWidget
     {
@@ -64,13 +69,13 @@ namespace KDChart {
 
     public:
         /**
-         * Default Constructor
+         * Standard Qt-style Constructor
          *
          * Creates a new widget with all data initialized empty.
          *
          * \param parent the widget parent; passed on to QWidget
          */
-        Widget( QWidget* parent = NULL );
+        explicit Widget( QWidget* parent = 0 );
 
         /** Destructor. */
         ~Widget();
@@ -105,11 +110,9 @@ namespace KDChart {
         int globalLeadingBottom() const;
 
         /** Returns the first of all headers. */
-        KDChart::HeaderFooter* firstHeaderFooter() const;
+        HeaderFooter* firstHeaderFooter();
         /** Returns a list with all headers. */
-        const QList<KDChart::HeaderFooter*> allHeadersFooters() const;
-        /** Returns the count over all headers. */
-        int headerFooterCount() const;
+        QList<HeaderFooter*> allHeadersFooters();
 
         /** Adds a new header/footer with the given text to the position. */
         void addHeaderFooter( const QString& text,
@@ -152,11 +155,10 @@ namespace KDChart {
         void takeHeaderFooter( HeaderFooter* header );
 
         /** Returns the first of all legends. */
-        KDChart::Legend* legend() const;
+        Legend* legend();
         /** Returns a list with all legends. */
-        const QList<KDChart::Legend*> allLegends() const;
-        /** Returns the count over all legends. */
-        int legendCount() const;
+        QList<Legend*> allLegends();
+
         /** Adds an empty legend on the given position. */
         void addLegend( Position position );
         /** Adds a new, already existing, legend. */
@@ -167,31 +169,31 @@ namespace KDChart {
 
 
         /** Returns a pointer to the current diagram. */
-        AbstractDiagram* diagram() const;
+        AbstractDiagram* diagram();
 
         /** If the current diagram is a BarDiagram, it is returnd; otherwise 0 is returned.
           * This function provides type-safe casting.
           */
-        BarDiagram* barDiagram() const;
+        BarDiagram* barDiagram();
         /** If the current diagram is a LineDiagram, it is returnd; otherwise 0 is returned.
           * This function provides type-safe casting.
           */
-        LineDiagram* lineDiagram() const;
+        LineDiagram* lineDiagram();
         /** If the current diagram is a PieDiagram, it is returnd; otherwise 0 is returned.
           * This function provides type-safe casting.
           */
-        PieDiagram* pieDiagram() const;
+        PieDiagram* pieDiagram();
         /** If the current diagram is a RingDiagram, it is returnd; otherwise 0 is returned.
           * This function provides type-safe casting.
           */
-        RingDiagram* ringDiagram() const;
+        RingDiagram* ringDiagram();
         /** If the current diagram is a PolarDiagram, it is returnd; otherwise 0 is returned.
           * This function provides type-safe casting.
           */
-        PolarDiagram* polarDiagram() const;
+        PolarDiagram* polarDiagram();
 
         /** Returns a pointer to the current coordinate plane. */
-        AbstractCoordinatePlane* coordinatePlane() const;
+        AbstractCoordinatePlane* coordinatePlane();
 
 
         enum ChartType { NoType, Bar, Line, Pie, Ring, Polar };
@@ -205,7 +207,7 @@ namespace KDChart {
         /** Returns the sub-type of the chart. */
         SubType subType() const;
 
-    public slots:
+    public Q_SLOTS:
         /** Sets the type of the chart. */
         void setType( ChartType chartType, SubType subType=Normal );
         /** \brief Sets the type of the chart without changing the main type.

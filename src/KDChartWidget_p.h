@@ -41,34 +41,31 @@
 //
 
 #include <KDChartWidget.h>
+#include <KDChartChart.h>
 
 #include <KDABLibFakes>
 
+#include <QGridLayout>
+#include <QStandardItemModel>
 
-class QStandardItemModel;
+/**
+ * \internal
+ */
+class KDChart::Widget::Private
+{
+    friend class ::KDChart::Widget;
+    Widget * const q;
+public:
+    explicit Private( Widget * qq );
+    ~Private(); // non-virtual, since nothing inherits this
 
-namespace KDChart {
-    class Chart;
-    class AbstractCoordinatePlane;
+protected:
+    QGridLayout layout;
+    QStandardItemModel m_model;
+    Chart m_chart;
 
-    /**
-    * \internal
-    */
-    class Widget::Private
-    {
-        friend class Widget;
-    public:
-        explicit Private();
-        virtual ~Private();
-
-    protected:
-        void init();
-        QStandardItemModel* m_model;
-        Chart* m_chart;
-
-        int usedDatasetWidth;
-    };
-}
+    int usedDatasetWidth;
+};
 
 
 #endif // KDChartWidget_p_H
