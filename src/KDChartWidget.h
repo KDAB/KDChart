@@ -87,7 +87,7 @@ namespace KDChart {
         /** Resets all data. */
         void resetData();
 
-    public slots:
+    public Q_SLOTS:
         /** Sets all global leadings (borders). */
         void setGlobalLeading( int left, int top, int right, int bottom );
         /** Sets the left leading (border). */
