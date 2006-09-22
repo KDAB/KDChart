@@ -24,6 +24,10 @@
  **********************************************************************/
 
 #include <KDChartWidget>
+#include <KDChartCartesianAxis>
+#include <KDChartAbstractCartesianDiagram>
+#include <KDChartLineDiagram>
+#include <KDChartBarDiagram>
 
 #include "kdchartwidgetdesignercustomeditor.h"
 
@@ -195,11 +199,33 @@ void KDChartWidgetDesignerCustomEditor::slotCurrentLegendChanged( int idx )
 
 void KDChartWidgetDesignerCustomEditor::slotAddAxis()
 {
-/*
-    Axis * l = new Axis( mChart->diagram(), mChart );
-    mChart->addAxis( Position::East );
-    mAxissList->addItem( QString("Axis %1").arg(mChart->axesCount() ) );
-*/
+    CartesianAxis * yAxis = new CartesianAxis( );
+    CartesianAxis * xAxis = new CartesianAxis( );
+    yAxis->setPosition( CartesianAxis::Left );
+    xAxis->setPosition( CartesianAxis::Bottom );
+    KDChart::Widget::ChartType type = mChart->type();
+    switch ( type ) {
+        case KDChart::Widget::Bar:
+            mChart->barDiagram()->addAxis( xAxis );
+            mChart->barDiagram()->addAxis( yAxis );
+            mAxesList->addItem( QString("Axis %1").arg(mChart->barDiagram()->axes().count() ) );
+            break;
+        case KDChart::Widget::Line:
+            mChart->lineDiagram()->addAxis( xAxis );
+            mChart->lineDiagram()->addAxis( yAxis );
+            mAxesList->addItem( QString("Axis %1").arg(mChart->lineDiagram()->axes().count() ) );
+            break;
+        case KDChart::Widget::Pie:
+            break;
+        case KDChart::Widget::Ring:
+            break;
+        case KDChart::Widget::Polar:
+            break;
+      case KDChart::Widget::NoType:
+        default:
+            break;
+    }
+
 }
 
 void KDChartWidgetDesignerCustomEditor::slotRemoveAxis()
