@@ -163,13 +163,13 @@ void KDChartWidgetDesignerCustomEditor::setupHeaderFooterTab()
              this, SLOT( slotAddHeaderFooter() ) );
     connect( mRemoveHeaderFooterBtn, SIGNAL( clicked() ),
              this, SLOT( slotRemoveHeaderFooter() ) );
-    connect( mAxesList, SIGNAL( currentRowChanged( int ) ),
+    connect( mHeaderFootersList, SIGNAL( currentRowChanged( int ) ),
              this, SLOT( slotCurrentHeaderFooterChanged( int ) ) );
 }
 
 void KDChartWidgetDesignerCustomEditor::slotAddLegend()
 {
-    //Legend * l = new Legend( mChart->diagram(), mChart );
+
     mChart->addLegend( Position::East );
     mLegendsList->addItem( QString("Legend %1").arg(mChart->legendCount() ) );
 
@@ -195,37 +195,40 @@ void KDChartWidgetDesignerCustomEditor::slotCurrentLegendChanged( int idx )
 
 void KDChartWidgetDesignerCustomEditor::slotAddAxis()
 {
-    /*
+/*
     Axis * l = new Axis( mChart->diagram(), mChart );
     mChart->addAxis( Position::East );
     mAxissList->addItem( QString("Axis %1").arg(mChart->axesCount() ) );
-    */
+*/
 }
 
 void KDChartWidgetDesignerCustomEditor::slotRemoveAxis()
 {
-    /*
+/*
     int idx = mAxissList->currentRow();
     if ( idx == -1 || idx >= mChart->legendCount() ) return;
     Axis* l = mChart->allAxiss()[idx];
     mChart->takeAxis( l );
     delete l;
     delete mAxissList->takeItem( idx );
-    */
+*/
+
 }
 
 void KDChartWidgetDesignerCustomEditor::slotCurrentAxisChanged( int idx )
 {
-    /*
+/*
     if ( idx == -1 || idx >= mChart->legendCount() ) return;
     Axis* l = mChart->allAxiss()[idx];
     mAxisEditor->setAxis( l );
-    */
+*/
 }
 
 void KDChartWidgetDesignerCustomEditor::slotAddHeaderFooter()
 {
     HeaderFooter * hf = new HeaderFooter();
+    hf->setType( HeaderFooter::Header );
+    hf->setText(  "Header" );
     mChart->addHeaderFooter( hf );
     mHeaderFootersList->addItem( QString("HeaderFooter %1").arg(mChart->headerFooterCount() ) );
 
@@ -243,7 +246,7 @@ void KDChartWidgetDesignerCustomEditor::slotRemoveHeaderFooter()
 
 void KDChartWidgetDesignerCustomEditor::slotCurrentHeaderFooterChanged( int idx )
 {
-    if ( idx == -1 || idx >= mChart->legendCount() ) return;
+    if ( idx == -1 || idx >= mChart->headerFooterCount() ) return;
     HeaderFooter* l = mChart->allHeadersFooters()[idx];
     mHeaderFooterEditor->setHeaderFooter( l );
 }
