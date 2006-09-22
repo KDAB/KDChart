@@ -31,38 +31,19 @@
 
 #include <qglobal.h>
 
-#ifdef useless_cruft
-#include <cfloat>
-
-#if defined(unix) || defined(__unix__) || defined(Q_WS_MAC) || defined(Q_WS_LINUX)
-#include <climits>
-#else
-#define MINDOUBLE DBL_MIN
-#define MAXDOUBLE DBL_MAX
-#endif
-
-// http://support.microsoft.com/default.aspx?scid=kb;en-us;134980
-// says this is fixed since MSVC 4.0!
-#if defined(_MSC_VER)
-#pragma warning(disable: 4251)
-#endif
-#endif // useless_cruft
-
 #include "kdchart_export.h"
 
+template <typename T>
+inline T & __kdab__dereference_for_methodcall( T & o ) {
+    return o;
+}
 
+template <typename T>
+inline T & __kdab__dereference_for_methodcall( T * o ) {
+    return *o;
+}
 
-#ifdef useless_cruft
-// since Qt 3.1 they do /not/ include limits.h or climits on windows anymore
-// so we must include that manually
-#if defined(_MSC_VER)
-#include <climits>
-#endif
-
-
-#include <QList>
-#include <QVector>
-#endif // useless_cruft
+#define KDAB_SET_OBJECT_NAME( x ) __kdab__dereference_for_methodcall( x ).setObjectName( QLatin1String( #x ) )
 
 #if defined(_MSC_VER) && _MSC_VER < 1300
 #define KDCHART_DECLARE_PRIVATE_DERIVED( X )      \
