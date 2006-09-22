@@ -51,9 +51,9 @@ void CartesianGrid::drawGrid( PaintContext* context )
     const GridAttributes gridAttrsX( plane->gridAttributes( Qt::Horizontal ) );
     const GridAttributes gridAttrsY( plane->gridAttributes( Qt::Vertical ) );
 
-    qDebug() << "OK:";
+    //qDebug() << "OK:";
     if ( !gridAttrsX.isGridVisible() && !gridAttrsY.isGridVisible() ) return;
-    qDebug() << "A";
+    //qDebug() << "A";
 
     // important: Need to update the calculated mData,
     //            before we may use it!
@@ -65,7 +65,7 @@ void CartesianGrid::drawGrid( PaintContext* context )
 
     // test for invalid boundaries: non-critical
     if( !isBoundariesValid( mData ) ) return;
-    qDebug() << "B";
+    //qDebug() << "B";
 
     DataDimension& dimX = mData.first();
     const DataDimension& dimY = mData.last();
@@ -86,7 +86,7 @@ void CartesianGrid::drawGrid( PaintContext* context )
 
     // do not draw a Zero size grid (and do not divide by Zero)
     if( numberOfUnitLinesX <= 0.0 || numberOfUnitLinesY <= 0.0 ) return;
-    qDebug() << "C";
+    //qDebug() << "C";
 
     const QPointF p1 = plane->translate( QPointF(dimX.start, dimY.start) );
     const QPointF p2 = plane->translate( QPointF(dimX.end, dimY.end) );
@@ -200,7 +200,7 @@ void CartesianGrid::drawGrid( PaintContext* context )
         = gridAttrsY.zeroLinePen().style() != Qt::NoPen;
 
     if ( drawUnitLinesX || drawXZeroLineX ) {
-        qDebug() << "E";
+        //qDebug() << "E";
         if ( drawUnitLinesX )
             context->painter()->setPen( gridAttrsX.gridPen() );
 //        const qreal minX = dimX.start;
@@ -228,7 +228,7 @@ void CartesianGrid::drawGrid( PaintContext* context )
         }
     }
     if ( drawUnitLinesY || drawZeroLineY ) {
-        qDebug() << "F";
+        //qDebug() << "F";
         if ( drawUnitLinesY )
             context->painter()->setPen( gridAttrsY.gridPen() );
         //const qreal minY = dimY.start;
@@ -256,7 +256,7 @@ void CartesianGrid::drawGrid( PaintContext* context )
                 f += dimY.stepWidth;
         }
     }
-    qDebug() << "Z";
+    //qDebug() << "Z";
 }
 
 
@@ -354,7 +354,7 @@ DataDimension CartesianGrid::calculateGridXY(
             }
             // if needed, adjust start/end to match the step width:
             adjustUpperLowerRange( dim.start, dim.end, dim.stepWidth );
-            qDebug() << "CartesianGrid::calculateGridXY() returns linear range: min " << dim.start << " and max" << dim.end;
+            //qDebug() << "CartesianGrid::calculateGridXY() returns linear range: min " << dim.start << " and max" << dim.end;
         }else{
             // logarithmic calculation (ignoring all negative values)
             qreal min;
@@ -377,7 +377,7 @@ DataDimension CartesianGrid::calculateGridXY(
             dim.start = min;
             dim.end   = max;
             dim.stepWidth = qAbs(max - min) / 10.0;
-            qDebug() << "CartesianGrid::calculateGridXY() returns logarithmic:  min " << min << " and max" << max;
+            //qDebug() << "CartesianGrid::calculateGridXY() returns logarithmic:  min " << min << " and max" << max;
         }
     }else{
         dim.stepWidth = 1.0;
