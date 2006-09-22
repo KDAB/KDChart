@@ -159,11 +159,11 @@ void KDChartWidgetDesignerCustomEditor::setupAxesTab()
     switch ( type ) {
     case KDChart::Widget::Bar:
         for (  int i = 0; i < mChart->barDiagram()->axes().count(); ++i )
-            mAxesList->addItem( QString("Axis %1").arg(mChart->barDiagram()->axes().count() ) );
+            mAxesList->addItem( QString("Axis %1").arg( i+1 ) );
         break;
     case KDChart::Widget::Line:
         for (  int i = 0; i < mChart->lineDiagram()->axes().count(); ++i )
-            mAxesList->addItem( QString("Axis %1").arg(mChart->lineDiagram()->axes().count() ) );
+            mAxesList->addItem( QString("Axis %1").arg( i+1 ) );
         break;
     case KDChart::Widget::Pie:
     case KDChart::Widget::Ring:
