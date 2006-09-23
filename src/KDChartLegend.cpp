@@ -201,7 +201,7 @@ void Legend::addDiagram( AbstractDiagram* newDiagram )
 {
     if ( newDiagram )
     {
-        DiagramObserver* observer = new DiagramObserver( *newDiagram, this );
+        DiagramObserver* observer = new DiagramObserver( newDiagram, this );
 
         DiagramObserver* oldObs = d->findObserverForDiagram( newDiagram );
         if( oldObs ){

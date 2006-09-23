@@ -35,61 +35,69 @@
 
 #include <QDebug>
 
-namespace KDChart {
-    DiagramObserver::DiagramObserver( AbstractDiagram& diagram, QObject* parent )
+using namespace KDChart;
+
+DiagramObserver::DiagramObserver( AbstractDiagram * diagram, QObject* parent )
     : QObject( parent ), m_diagram( diagram )
-    {
-       connect( &m_diagram, SIGNAL(destroyed(QObject*)), SLOT(destroyed()));
-       connect( &m_diagram, SIGNAL(modelsChanged()), SLOT(modelsChanged()));
-    }
-
-    const AbstractDiagram* DiagramObserver::diagram() const
-    {
-        return &m_diagram;
-    }
-
-    AbstractDiagram* DiagramObserver::diagram()
-    {
-        return &m_diagram;
-    }
-
-    void DiagramObserver::init()
-    {
-        if( !m_model.isNull() ) {
-            disconnect(m_model);
-        }
-        if( !m_attributesmodel.isNull() ) {
-            disconnect(m_attributesmodel);
-        }
-        connect( m_diagram.model(), SIGNAL(dataChanged(const QModelIndex&,const QModelIndex&)),
-                SLOT(dataChanged()));
-        connect( m_diagram.attributesModel(), SIGNAL(attributesChanged(const QModelIndex&,const QModelIndex&)),
-                SLOT(attributesChanged()));
-        connect( m_diagram.model(), SIGNAL(headerDataChanged(Qt::Orientation,int,int)),
-                SLOT(dataChanged()));
-        m_model = m_diagram.model();
-        m_attributesmodel = m_diagram.attributesModel();
-    }
-
-    void DiagramObserver::destroyed()
-    {
-        emit diagramDestroyed( &m_diagram );
-    }
-
-    void DiagramObserver::modelsChanged()
-    {
-        init();
-        dataChanged();
-        attributesChanged();
-    }
-
-    void DiagramObserver::dataChanged()
-    {
-        emit diagramDataChanged( &m_diagram );
-    }
-
-    void DiagramObserver::attributesChanged()
-    {
-        emit diagramAttributesChanged( &m_diagram );
+{
+    if ( m_diagram ) {
+        connect( m_diagram, SIGNAL(destroyed(QObject*)), SLOT(slotDestroyed()));
+        connect( m_diagram, SIGNAL(modelsChanged()), SLOT(slotModelsChanged()));
     }
 }
+
+DiagramObserver::~DiagramObserver() {}
+
+const AbstractDiagram* DiagramObserver::diagram() const
+{
+    return m_diagram;
+}
+
+AbstractDiagram* DiagramObserver::diagram()
+{
+    return m_diagram;
+}
+
+void DiagramObserver::init()
+{
+    if ( !m_diagram )
+        return;
+
+    if ( m_model )
+        disconnect(m_model);
+
+    if ( m_attributesmodel )
+        disconnect(m_attributesmodel);
+
+    connect( m_diagram->model(), SIGNAL(dataChanged(QModelIndex,QModelIndex)),
+             SLOT(slotDataChanged()));
+    connect( m_diagram->attributesModel(), SIGNAL(attributesChanged(QModelIndex,QModelIndex)),
+             SLOT(slotAttributesChanged()));
+    connect( m_diagram->model(), SIGNAL(headerDataChanged(Qt::Orientation,int,int)),
+             SLOT(slotDataChanged()));
+    m_model = m_diagram->model();
+    m_attributesmodel = m_diagram->attributesModel();
+}
+
+void DiagramObserver::slotDestroyed()
+{
+    emit diagramDestroyed( m_diagram );
+}
+
+void DiagramObserver::slotModelsChanged()
+{
+    init();
+    slotDataChanged();
+    slotAttributesChanged();
+}
+
+void DiagramObserver::slotDataChanged()
+{
+    emit diagramDataChanged( m_diagram );
+}
+
+void DiagramObserver::slotAttributesChanged()
+{
+    emit diagramAttributesChanged( m_diagram );
+}
+

@@ -25,30 +25,35 @@
 #ifndef __KDCHARTDIAGRAMOBSERVER_H_
 #define __KDCHARTDIAGRAMOBSERVER_H_
 
+#include "KDChartGlobal.h"
+
 #include <QObject>
-#include <QAbstractItemModel>
 #include <QPointer>
 
+class QAbstractItemModel;
+
 namespace KDChart {
+
     class AbstractDiagram;
 
     /**
      * \brief A DiagramObserver watches the associated diagram for
      * changes and deletion and emits corresponsing signals.
      */
-    class DiagramObserver : public QObject
+    class KDCHART_EXPORT DiagramObserver : public QObject
     {
         Q_OBJECT
     public:
        /**
          * Constructs a new observer observing the given diagram.
          */
-        DiagramObserver( AbstractDiagram& diagram, QObject* parent = NULL );
+        explicit DiagramObserver( AbstractDiagram * diagram, QObject* parent = 0 );
+        ~DiagramObserver();
 
         const AbstractDiagram* diagram() const;
         AbstractDiagram* diagram();
 
-    signals:
+    Q_SIGNALS:
         /** This signal is emitted immediately before the diagram is
           * being destroyed. */
         void diagramDestroyed( AbstractDiagram* diagram );
@@ -57,16 +62,16 @@ namespace KDChart {
         /** This signal is emitted whenever the attributes of the diagram change. */
         void diagramAttributesChanged( AbstractDiagram* diagram );
 
-    private slots:
-        void destroyed();
-        void dataChanged();
-        void attributesChanged();
-        void modelsChanged();
+    private Q_SLOTS:
+        void slotDestroyed();
+        void slotDataChanged();
+        void slotAttributesChanged();
+        void slotModelsChanged();
 
     private:
         void init();
 
-        AbstractDiagram& m_diagram;
+        QPointer<AbstractDiagram>    m_diagram;
         QPointer<QAbstractItemModel> m_model;
         QPointer<QAbstractItemModel> m_attributesmodel;
    };

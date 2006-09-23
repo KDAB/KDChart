@@ -77,7 +77,7 @@ bool AbstractAxis::Private::setDiagram(
         delete observer;
         if ( mDiagram ) {
 //qDebug() << "axis" << (axis != 0);
-            observer = new DiagramObserver( *mDiagram, axis );
+            observer = new DiagramObserver( mDiagram, axis );
             bNewDiagramStored = true;
         }else{
             observer = 0;
