@@ -26,6 +26,7 @@
 #include "KDChartGridAttributes.h"
 
 #include <QPen>
+#include <QDebug>
 #include <QDomDocumentFragment>
 
 #include <KDABLibFakes>
@@ -262,3 +263,27 @@ QDomDocumentFragment GridAttributes::toXML() const
     qWarning( "Sorry, not implemented: GridAttributes::toXML()" );
     return QDomDocumentFragment();
 }
+
+
+#if !defined(QT_NO_DEBUG_STREAM)
+QDebug operator<<(QDebug dbg, const KDChart::GridAttributes& a)
+{
+    dbg << "KDChart::GridAttributes("
+            << "visible="<<a.isGridVisible()
+            << "subVisible="<<a.isSubGridVisible()
+            // KDChartEnums::GranularitySequence sequence;
+            << "stepWidth=" << a.gridStepWidth()
+            << "subStepWidth=" << a.gridSubStepWidth()
+            << "pen="<<a.gridPen()
+            << "subPen="<<a.subGridPen()
+            << "zeroPen="<<a.zeroLinePen()
+            << ")";
+    return dbg;
+
+
+   
+    QPen subPen;
+    QPen zeroPen;
+}
+#endif /* QT_NO_DEBUG_STREAM */
+
