@@ -107,13 +107,13 @@ void LegendPropertiesWidget::readFromLegend( const Legend * legend )
     titleTextED->setText( legend->titleText() );
     if (  legend->orientation() == Qt::Horizontal ) {
         horizontalRB->setChecked( true );
-        topLeftRB->setText( "Left" );
-        bottomRightRB->setText( "Right" );
+        topLeftRB->setText( tr( "Left" ) );
+        bottomRightRB->setText( tr( "Right" ) );
 
     } else {
         verticalRB->setChecked( true );
-        topLeftRB->setText( "Top" );
-        bottomRightRB->setText( "Bottom" );
+        topLeftRB->setText( tr( "Top" ) );
+        bottomRightRB->setText( tr( "Bottom" ) );
     }
 
     if (  legend->alignment() == Qt::AlignLeft || legend->alignment() == Qt::AlignTop )
@@ -174,13 +174,13 @@ void LegendPropertiesWidget::slotOrientationChanged( bool toggled )
     if ( d->legend && d->instantApply ) {
         if (  horizontalRB->isChecked() ) {
             d->legend->setOrientation( Qt::Horizontal );
-            topLeftRB->setText( "Left" );
-            bottomRightRB->setText( "Right" );
+            topLeftRB->setText( tr( "Left" ) );
+            bottomRightRB->setText( tr( "Right" ) );
 
         } else {
             d->legend->setOrientation(  Qt::Vertical );
-            topLeftRB->setText( "Top" );
-            bottomRightRB->setText( "Bottom" );
+            topLeftRB->setText( tr( "Top" ) );
+            bottomRightRB->setText( tr( "Bottom" ) );
         }
 
     } else

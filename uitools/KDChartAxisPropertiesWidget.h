@@ -38,11 +38,11 @@ namespace KDChart {
 
     /**
      * \class AxisPropertiesWidget KDChartAxisPropertiesWidget.h
-     * \brief 
+     * \brief
      *
-     * 
+     *
      */
-    class KDCHART_EXPORT AxisPropertiesWidget 
+    class KDCHART_EXPORT AxisPropertiesWidget
 	    : public QWidget, private Ui::KDChartAxisPropertiesWidget
     {
         Q_OBJECT
@@ -68,12 +68,12 @@ namespace KDChart {
 	void readFromAxis( const CartesianAxis * axis );
         void writeToAxis( CartesianAxis * axis );
 
-   protected slots:
-      
+    protected Q_SLOTS:
+
         void slotTitleChanged( const QString& text );
 	void slotPositionChanged( int idx );
 
-    signals:
+    Q_SIGNALS:
         // emitted whenever a value in the dialog changes
         void changed();
     };

@@ -37,12 +37,12 @@ namespace KDChart {
 
     /**
      * \class HeaderFooterPropertiesWidget KDChartHeaderFooterPropertiesWidget.h
-     * \brief 
+     * \brief
      *
-     * 
+     *
      */
 
-    class KDCHART_EXPORT HeaderFooterPropertiesWidget 
+    class KDCHART_EXPORT HeaderFooterPropertiesWidget
        : public QWidget, private Ui::KDChartHeaderFooterPropertiesWidget
     {
         Q_OBJECT
@@ -68,13 +68,13 @@ namespace KDChart {
 	void readFromHeaderFooter( const HeaderFooter * headerFooter );
         void writeToHeaderFooter( HeaderFooter * headerFooter );
 
-   protected slots:
-      
+    protected Q_SLOTS:
+
         void slotTextChanged( const QString& text );
 	void slotPositionChanged( int idx );
         void slotTypeChanged( bool toggled );
 
-    signals:
+    Q_SIGNALS:
         // emitted whenever a value in the dialog changes
         void changed();
     };

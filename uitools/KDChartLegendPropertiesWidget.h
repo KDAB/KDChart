@@ -37,9 +37,9 @@ namespace KDChart {
 
     /**
      * \class LegendPropertiesWidget KDChartLegendPropertiesWidget.h
-     * \brief 
+     * \brief
      *
-     * 
+     *
      */
     class KDCHART_EXPORT LegendPropertiesWidget
     : public QWidget, private Ui::KDChartLegendPropertiesWidget
@@ -59,14 +59,14 @@ namespace KDChart {
         void readFromLegend( const Legend * legend );
         void writeToLegend( Legend * legend );
 
-    protected slots:
+    protected Q_SLOTS:
         void slotPositionChanged( int idx );
         void slotOrientationChanged( bool toggled );
         void slotAlignmentChanged( bool toggled );
         void slotTitleTextChanged( const QString& text );
         void slotShowLineChanged( int state );
 
-    signals:
+    Q_SIGNALS:
         // emitted whenever a value in the dialog changes
         void changed();
     };
