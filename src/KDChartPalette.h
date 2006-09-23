@@ -75,7 +75,7 @@ public:
     /** Return the number of brushed in the palette.  */
     int size() const;
 
-    /** Adds a brush to the palette. If no position is specified, the
+    /** Adds \a brush to the palette. If no position is specified, the
      * brush is appended. */
     void addBrush( const QBrush & brush, int position = -1 );
 

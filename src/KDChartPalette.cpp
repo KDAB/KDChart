@@ -36,9 +36,68 @@
 using namespace KDChart;
 
 namespace {
-    static Palette * s_defaultPalette = 0;
-    static Palette * s_subduedPalette = 0;
-    static Palette * s_rainbowPalette = 0;
+
+    static Palette makeDefaultPalette() {
+        Palette p;
+
+        p.addBrush( Qt::red );
+        p.addBrush( Qt::green );
+        p.addBrush( Qt::blue );
+        p.addBrush( Qt::cyan );
+        p.addBrush( Qt::magenta );
+        p.addBrush( Qt::yellow );
+        p.addBrush( Qt::darkRed );
+        p.addBrush( Qt::darkGreen );
+        p.addBrush( Qt::darkBlue );
+        p.addBrush( Qt::darkCyan );
+        p.addBrush( Qt::darkMagenta );
+        p.addBrush( Qt::darkYellow );
+
+        return p;
+    }
+
+    static Palette makeSubduedPalette() {
+        Palette p;
+
+        p.addBrush( QColor( 0xe0,0x7f,0x70 ) );
+        p.addBrush( QColor( 0xe2,0xa5,0x6f ) );
+        p.addBrush( QColor( 0xe0,0xc9,0x70 ) );
+        p.addBrush( QColor( 0xd1,0xe0,0x70 ) );
+        p.addBrush( QColor( 0xac,0xe0,0x70 ) );
+        p.addBrush( QColor( 0x86,0xe0,0x70 ) );
+        p.addBrush( QColor( 0x70,0xe0,0x7f ) );
+        p.addBrush( QColor( 0x70,0xe0,0xa4 ) );
+        p.addBrush( QColor( 0x70,0xe0,0xc9 ) );
+        p.addBrush( QColor( 0x70,0xd1,0xe0 ) );
+        p.addBrush( QColor( 0x70,0xac,0xe0 ) );
+        p.addBrush( QColor( 0x70,0x86,0xe0 ) );
+        p.addBrush( QColor( 0x7f,0x70,0xe0 ) );
+        p.addBrush( QColor( 0xa4,0x70,0xe0 ) );
+        p.addBrush( QColor( 0xc9,0x70,0xe0 ) );
+        p.addBrush( QColor( 0xe0,0x70,0xd1 ) );
+        p.addBrush( QColor( 0xe0,0x70,0xac ) );
+        p.addBrush( QColor( 0xe0,0x70,0x86 ) );
+
+        return p;
+    }
+
+    static Palette makeRainbowPalette() {
+        Palette p;
+
+        p.addBrush( QColor(255,  0,196) );
+        p.addBrush( QColor(255,  0, 96) );
+        p.addBrush( QColor(255, 128,64) );
+        p.addBrush( Qt::yellow );
+        p.addBrush( Qt::green );
+        p.addBrush( Qt::cyan );
+        p.addBrush( QColor( 96, 96,255) );
+        p.addBrush( QColor(160,  0,255) );
+        for( int i = 8 ; i < 16 ; ++i )
+            p.addBrush( p.getBrush(i-8).color().light(), i );
+
+        return p;
+    }
+
 }
 
 #define d d_func()
@@ -54,72 +113,26 @@ public:
 
 const Palette& Palette::defaultPalette()
 {
-  if ( !s_defaultPalette ) {
-    s_defaultPalette = new Palette;
-    s_defaultPalette->addBrush( Qt::red );
-    s_defaultPalette->addBrush( Qt::green );
-    s_defaultPalette->addBrush( Qt::blue );
-    s_defaultPalette->addBrush( Qt::cyan );
-    s_defaultPalette->addBrush( Qt::magenta );
-    s_defaultPalette->addBrush( Qt::yellow );
-    s_defaultPalette->addBrush( Qt::darkRed );
-    s_defaultPalette->addBrush( Qt::darkGreen );
-    s_defaultPalette->addBrush( Qt::darkBlue );
-    s_defaultPalette->addBrush( Qt::darkCyan );
-    s_defaultPalette->addBrush( Qt::darkMagenta );
-    s_defaultPalette->addBrush( Qt::darkYellow );
-  }
-  return *s_defaultPalette;
+    static const Palette palette = makeDefaultPalette();
+    return palette;
 }
 
 const Palette& Palette::subduedPalette()
 {
-  if ( !s_subduedPalette ) {
-    s_subduedPalette = new Palette;
-    s_subduedPalette->addBrush( QColor( 0xe0,0x7f,0x70 ) );
-    s_subduedPalette->addBrush( QColor( 0xe2,0xa5,0x6f ) );
-    s_subduedPalette->addBrush( QColor( 0xe0,0xc9,0x70 ) );
-    s_subduedPalette->addBrush( QColor( 0xd1,0xe0,0x70 ) );
-    s_subduedPalette->addBrush( QColor( 0xac,0xe0,0x70 ) );
-    s_subduedPalette->addBrush( QColor( 0x86,0xe0,0x70 ) );
-    s_subduedPalette->addBrush( QColor( 0x70,0xe0,0x7f ) );
-    s_subduedPalette->addBrush( QColor( 0x70,0xe0,0xa4 ) );
-    s_subduedPalette->addBrush( QColor( 0x70,0xe0,0xc9 ) );
-    s_subduedPalette->addBrush( QColor( 0x70,0xd1,0xe0 ) );
-    s_subduedPalette->addBrush( QColor( 0x70,0xac,0xe0 ) );
-    s_subduedPalette->addBrush( QColor( 0x70,0x86,0xe0 ) );
-    s_subduedPalette->addBrush( QColor( 0x7f,0x70,0xe0 ) );
-    s_subduedPalette->addBrush( QColor( 0xa4,0x70,0xe0 ) );
-    s_subduedPalette->addBrush( QColor( 0xc9,0x70,0xe0 ) );
-    s_subduedPalette->addBrush( QColor( 0xe0,0x70,0xd1 ) );
-    s_subduedPalette->addBrush( QColor( 0xe0,0x70,0xac ) );
-    s_subduedPalette->addBrush( QColor( 0xe0,0x70,0x86 ) );
-  }
-  return *s_subduedPalette;
+    static const Palette palette = makeSubduedPalette();
+    return palette;
 }
 
 const Palette& Palette::rainbowPalette()
 {
-  if ( !s_rainbowPalette ) {
-    s_rainbowPalette = new Palette;
-    s_rainbowPalette->addBrush( QColor(255,  0,196) );
-    s_rainbowPalette->addBrush( QColor(255,  0, 96) );
-    s_rainbowPalette->addBrush( QColor(255, 128,64) );
-    s_rainbowPalette->addBrush( Qt::yellow );
-    s_rainbowPalette->addBrush( Qt::green );
-    s_rainbowPalette->addBrush( Qt::cyan );
-    s_rainbowPalette->addBrush( QColor( 96, 96,255) );
-    s_rainbowPalette->addBrush( QColor(160,  0,255) );
-    for( int i=8; i<16; ++i )
-        s_rainbowPalette->addBrush( s_rainbowPalette->getBrush(i-8).color().light(), i );
-  }
-  return *s_rainbowPalette;
+    static const Palette palette = makeRainbowPalette();
+    return palette;
 }
 
 Palette::Palette( QObject *parent )
   : QObject( parent ), _d( new Private )
 {
-    // this line intentionally left empty
+
 }
 
 Palette::~Palette()
@@ -136,11 +149,10 @@ Palette::Palette( const Palette& r )
 
 Palette& Palette::operator=( const Palette& r )
 {
-    if( this == &r )
-        return *this;
+    Palette copy( r );
+    copy.swap( *this );
 
-    *d = *r.d;
-
+    // emit changed() ?
     return *this;
 }
 
@@ -156,7 +168,7 @@ int Palette::size() const
 
 void Palette::addBrush( const QBrush& brush, int position )
 {
-  if ( position == -1 || position >= size() ) {
+  if ( position < 0 || position >= size() ) {
     d->brushes.append( brush );
   } else {
     d->brushes.insert( position, brush );
@@ -172,7 +184,7 @@ QBrush Palette::getBrush( int position ) const
 
 void Palette::removeBrush( int position )
 {
-  if ( position >= size() ) return;
+  if ( position < 0 || position >= size() ) return;
   d->brushes.remove( position );
   emit changed();
 }
