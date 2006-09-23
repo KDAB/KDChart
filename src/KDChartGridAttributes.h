@@ -89,8 +89,8 @@ private:
 }
 
 KDCHART_DECLARE_SWAP_SPECIALISATION( KDChart::GridAttributes )
-
 Q_DECLARE_METATYPE( KDChart::GridAttributes )
+Q_DECLARE_TYPEINFO( KDChart::GridAttributes, Q_MOVABLE_TYPE );
 
 
 #endif // KDCHARTGRIDATTRIBUTES_H

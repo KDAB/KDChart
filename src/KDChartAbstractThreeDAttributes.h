@@ -61,8 +61,17 @@ public:
     QDomDocumentFragment toXML() const;
 
     KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC(AbstractThreeDAttributes)
+
+    KDCHART_DECLARE_SWAP_BASE(AbstractThreeDAttributes)
+
 }; // End of class AbstractThreeDAttributes
 
 }
+
+#if !defined(QT_NO_DEBUG_STREAM)
+KDCHART_EXPORT QDebug operator<<(QDebug, const KDChart::AbstractThreeDAttributes& );
+#endif /* QT_NO_DEBUG_STREAM */
+
+
 
 #endif // KDCHARTABSTRACTTHREEDATTRIBUTES_H

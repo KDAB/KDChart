@@ -167,10 +167,7 @@ public:
   // FIXME KDChartEnums::TextLayoutPolicy?
 
 private:
-    class Private;
-    Private * _d;
-    Private * d_func() { return _d; }
-    const Private * d_func() const { return _d; }
+  KDCHART_DECLARE_PRIVATE_BASE_VALUE( TextAttributes )
 
 }; // End of class TextAttributes
 
@@ -180,6 +177,8 @@ private:
 KDCHART_EXPORT QDebug operator<<(QDebug, const KDChart::TextAttributes& );
 #endif /* QT_NO_DEBUG_STREAM */
 
+KDCHART_DECLARE_SWAP_SPECIALISATION( KDChart::TextAttributes )
 Q_DECLARE_METATYPE( KDChart::TextAttributes )
+Q_DECLARE_TYPEINFO( KDChart::TextAttributes, Q_MOVABLE_TYPE );
 
 #endif // KDCHARTTEXTATTRIBUTES_H

@@ -72,11 +72,7 @@ public:
     QDomDocumentFragment toXML() const;
 
 private:
-    class Private;
-    Private * _d;
-    Private * d_func() { return _d; }
-    const Private * d_func() const { return _d; }
-
+    KDCHART_DECLARE_PRIVATE_BASE_VALUE( BackgroundAttributes )
 }; // End of class BackgroundAttributes
 
 }
@@ -86,5 +82,7 @@ KDCHART_EXPORT QDebug operator<<(QDebug, const KDChart::BackgroundAttributes& );
 #endif /* QT_NO_DEBUG_STREAM */
 
 Q_DECLARE_METATYPE( KDChart::BackgroundAttributes )
+Q_DECLARE_TYPEINFO( KDChart::BackgroundAttributes, Q_MOVABLE_TYPE );
+KDCHART_DECLARE_SWAP_SPECIALISATION( KDChart::BackgroundAttributes )
 
 #endif // KDCHARTBACKGROUNDATTRIBUTES_H

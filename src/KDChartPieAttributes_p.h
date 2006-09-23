@@ -62,8 +62,6 @@ public:
     qreal granularity;
 };
 
-inline PieAttributes::PieAttributes( Private * p ) : _d( p ) { init(); }
-
 }
 
 #endif // KDCHART_PIE_ATTRIBUTES_P_H

@@ -25,7 +25,8 @@
 
 #include "KDChartThreeDPieAttributes.h"
 #include "KDChartThreeDPieAttributes_p.h"
-#include <qglobal.h>
+
+#include <QDebug>
 
 #include <KDABLibFakes>
 
@@ -94,4 +95,13 @@ QDomDocumentFragment ThreeDPieAttributes::toXML() const
     return QDomDocumentFragment();
 }
 
+#if !defined(QT_NO_DEBUG_STREAM)
+QDebug operator<<(QDebug dbg, const KDChart::ThreeDPieAttributes& a)
+{
+    dbg << "KDChart::ThreeDPieAttributes(";
+    dbg = operator <<( dbg, a);
+    dbg << "useShadowColors="<< a.useShadowColors() << ")";
+    return dbg;
+}
+#endif /* QT_NO_DEBUG_STREAM */
 

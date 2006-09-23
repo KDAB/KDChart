@@ -221,6 +221,32 @@ inline const CLASS::Private * CLASS::d_func() const           \
     { lhs.swap( rhs ); }
 #endif
 
+#define KDCHART_DECLARE_SWAP_BASE( X ) \
+protected: \
+    void doSwap( X& other ) \
+    { qSwap( _d, other._d); }
+
+#define KDCHART_DECLARE_SWAP_DERIVED( X ) \
+    void swap( X& other ) { doSwap( other ); }
+
+#include <QtAlgorithms> // qSwap
+#ifndef QT_NO_STL
+#include <algorithm>
+#define KDCHART_DECLARE_SWAP_SPECIALISATION_DERIVED( X )        \
+    template <> inline void qSwap<X>( X & lhs, X & rhs )        \
+    { lhs.swap( rhs ); }                                        \
+    namespace std {                                             \
+        template <> inline void swap<X>( X & lhs, X & rhs )     \
+        { lhs.swap( rhs ); }                                    \
+    }
+#else
+#define KDCHART_DECLARE_SWAP_SPECIALISATION_DERIVED( X )        \
+    template <> inline void qSwap<X>( X & lhs, X & rhs )        \
+    { lhs.swap( rhs ); }
+#endif
+
+
+
 #if defined(Q_OS_WIN) && defined(QT_DLL)
 #if _MSC_VER >= 1300
 // workaround http://support.microsoft.com/default.aspx?scid=kb;en-us;309801

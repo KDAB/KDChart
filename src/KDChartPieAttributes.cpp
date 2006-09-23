@@ -25,7 +25,8 @@
 
 #include "KDChartPieAttributes.h"
 #include "KDChartPieAttributes_p.h"
-#include <qglobal.h>
+
+#include <QDebug>
 
 #include <KDABLibFakes>
 
@@ -135,4 +136,14 @@ QDomDocumentFragment PieAttributes::toXML() const
     qWarning( "Sorry, not implemented: PieAttributes::toXML()" );
     return QDomDocumentFragment();
 }
+
+#if !defined(QT_NO_DEBUG_STREAM)
+QDebug operator<<(QDebug dbg, const KDChart::PieAttributes& a)
+{
+    dbg << "KDChart::PieAttributes(";
+    dbg << "granularity="<< a.granularity()
+        << "startPosition=" << a.startPosition() << ")";
+    return dbg;
+}
+#endif /* QT_NO_DEBUG_STREAM */
 

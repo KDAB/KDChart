@@ -52,12 +52,21 @@ namespace KDChart {
     // XML serialization
     QDomDocumentFragment toXML() const;
 
+    KDCHART_DECLARE_SWAP_DERIVED(ThreeDPieAttributes)
+
+private:
     KDCHART_DECLARE_PRIVATE_DERIVED(ThreeDPieAttributes)
 
   }; // End of class ThreeDPieAttributes
 
 }
 
+#if !defined(QT_NO_DEBUG_STREAM)
+KDCHART_EXPORT QDebug operator<<(QDebug, const KDChart::ThreeDPieAttributes& );
+#endif /* QT_NO_DEBUG_STREAM */
+
 Q_DECLARE_METATYPE( KDChart::ThreeDPieAttributes )
+Q_DECLARE_TYPEINFO( KDChart::ThreeDPieAttributes, Q_MOVABLE_TYPE );
+KDCHART_DECLARE_SWAP_SPECIALISATION_DERIVED( KDChart::ThreeDPieAttributes )
 
 #endif // KDCHARTTHREEDPIEATTRIBUTES_H

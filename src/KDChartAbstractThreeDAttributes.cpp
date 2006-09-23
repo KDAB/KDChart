@@ -25,7 +25,8 @@
 
 #include "KDChartAbstractThreeDAttributes.h"
 #include "KDChartAbstractThreeDAttributes_p.h"
-#include <qglobal.h>
+
+#include <QDebug>
 
 #include <KDABLibFakes>
 
@@ -117,3 +118,12 @@ QDomDocumentFragment AbstractThreeDAttributes::toXML() const
     qWarning( "Sorry, not implemented: AbstractThreeDAttributes::toXML()" );
     return QDomDocumentFragment();
 }
+
+#if !defined(QT_NO_DEBUG_STREAM)
+QDebug operator<<(QDebug dbg, const KDChart::AbstractThreeDAttributes& a)
+{
+    dbg << "enabled="<<a.isEnabled()
+        << "depth="<<a.depth();
+    return dbg;
+}
+#endif /* QT_NO_DEBUG_STREAM */
