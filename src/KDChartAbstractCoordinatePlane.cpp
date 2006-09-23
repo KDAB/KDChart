@@ -129,8 +129,8 @@ ConstAbstractDiagramList AbstractCoordinatePlane::diagrams() const
 #ifndef QT_NO_STL
     qCopy( d->diagrams.begin(), d->diagrams.end(), std::back_inserter( list ) );
 #else
-    list.resize( d->diagrams.size() );
-    qCopy( d->diagrams.begin(), d->diagrams.end(), list.begin() );
+    Q_FOREACH( AbstractDiagram * a, d->diagrams )
+        list.push_back( a );
 #endif
     return list;
 }
