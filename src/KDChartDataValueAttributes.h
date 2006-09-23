@@ -189,17 +189,11 @@ public:
   void setShowInfinite( bool infinite );
   bool showInfinite() const;
 
-  void setNegativeAnchorPosition( KDChartEnums::PositionFlag anchorPosition );
-  KDChartEnums::PositionFlag negativeAnchorPosition() const;
+  void setNegativePosition( const RelativePosition& relPosition );
+  RelativePosition negativePosition() const;
 
-  void setNegativeRelativePosition( const RelativePosition& relPosition );
-  RelativePosition negativeRelativePosition() const;
-
-  void setPositiveAnchorPosition( KDChartEnums::PositionFlag anchorPosition );
-  KDChartEnums::PositionFlag positiveAnchorPosition() const;
-
-  void setPositiveRelativePosition( const RelativePosition& relPosition );
-  RelativePosition positiveRelativePosition() const;
+  void setPositivePosition( const RelativePosition& relPosition );
+  RelativePosition positivePosition() const;
 
 private:
     class Private;

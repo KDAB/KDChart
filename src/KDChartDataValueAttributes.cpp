@@ -61,9 +61,7 @@ private:
     QString dataLabel;
     int powerOfTenDivisor;
     bool showInfinite;
-    KDChartEnums::PositionFlag negativeAnchorPos;
     RelativePosition    negativeRelPos;
-    KDChartEnums::PositionFlag positiveAnchorPos;
     RelativePosition    positiveRelPos;
 };
 
@@ -72,9 +70,7 @@ DataValueAttributes::Private::Private() :
     decimalDigits( KDCHART_DATA_VALUE_AUTO_DIGITS ),
     powerOfTenDivisor( 0 ),
     showInfinite( true ),
-    negativeAnchorPos( KDChartEnums::PosCenter   ),
     negativeRelPos(),  // use the default: centered alignment, no padding, no rotation
-    positiveAnchorPos( KDChartEnums::PosCenter   ),
     positiveRelPos()
 {
   textAttributes.setRotation( -45 );
@@ -120,10 +116,8 @@ bool DataValueAttributes::operator==( const DataValueAttributes& r ) const
              dataLabel() == r.dataLabel() &&
 	     powerOfTenDivisor() == r.powerOfTenDivisor() &&
 	     showInfinite() == r.showInfinite() &&
-	     negativeAnchorPosition() == r.negativeAnchorPosition() &&
-	     positiveAnchorPosition() == r.positiveAnchorPosition() &&
-	     negativeRelativePosition() == r.negativeRelativePosition() &&
-	     positiveRelativePosition() == r.positiveRelativePosition() );
+	     negativePosition() == r.negativePosition() &&
+	     positivePosition() == r.positivePosition() );
 }
 
 /*static*/
@@ -257,42 +251,22 @@ bool DataValueAttributes::showInfinite() const
     return d->showInfinite;
 }
 
-void DataValueAttributes::setNegativeAnchorPosition( KDChartEnums::PositionFlag anchorPosition )
-{
-    d->negativeAnchorPos = anchorPosition;
-}
-
-KDChartEnums::PositionFlag DataValueAttributes::negativeAnchorPosition() const
-{
-    return d->negativeAnchorPos;
-}
-
-void DataValueAttributes::setNegativeRelativePosition( const RelativePosition& relPosition )
+void DataValueAttributes::setNegativePosition( const RelativePosition& relPosition )
 {
     d->negativeRelPos = relPosition;
 }
 
-RelativePosition DataValueAttributes::negativeRelativePosition() const
+RelativePosition DataValueAttributes::negativePosition() const
 {
     return d->negativeRelPos;
 }
 
-void DataValueAttributes::setPositiveAnchorPosition( KDChartEnums::PositionFlag anchorPosition )
-{
-    d->positiveAnchorPos = anchorPosition;
-}
-
-KDChartEnums::PositionFlag DataValueAttributes::positiveAnchorPosition() const
-{
-    return d->positiveAnchorPos;
-}
-
-void DataValueAttributes::setPositiveRelativePosition( const RelativePosition& relPosition )
+void DataValueAttributes::setPositivePosition( const RelativePosition& relPosition )
 {
     d->positiveRelPos = relPosition;
 }
 
-RelativePosition DataValueAttributes::positiveRelativePosition() const
+RelativePosition DataValueAttributes::positivePosition() const
 {
     return d->positiveRelPos;
 }
@@ -308,10 +282,8 @@ QDebug operator<<(QDebug dbg, const KDChart::DataValueAttributes& val )
 	<< "decimaldigits="<<val.decimalDigits()
 	<< "poweroftendivisor="<<val.powerOfTenDivisor()
 	<< "showinfinite="<<val.showInfinite()
-	<< "negativeanchorposition="<<val.negativeAnchorPosition()
-	<< "positiveanchorposition="<<val.positiveAnchorPosition()
-	<< "negativerelativeposition="<<val.negativeRelativePosition()
-	<< "positiverelativeposition="<<val.positiveRelativePosition()
+	<< "negativerelativeposition="<<val.negativePosition()
+	<< "positiverelativeposition="<<val.positivePosition()
 	<<")";
     return dbg;
 }
