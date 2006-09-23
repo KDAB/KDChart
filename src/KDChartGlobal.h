@@ -87,18 +87,18 @@ private:                                          \
     void init();
 #endif
 
-#define KDCHART_DECLARE_PRIVATE_DERIVED_QWIDGET( X )      \
+#define KDCHART_DECLARE_PRIVATE_DERIVED_QWIDGET( X )         \
     KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( X, QWidget* )
 
-#define KDCHART_DECLARE_PRIVATE_BASE_VALUE( X )   \
-public:                                           \
-    inline void swap( X & other );                \
-protected:                                        \
-    class Private;                                \
-    Private * d_func() { return _d; }             \
-    const Private * d_func() const { return _d; } \
-private:                                          \
-    void init();                                  \
+#define KDCHART_DECLARE_PRIVATE_BASE_VALUE( X )              \
+public:                                                      \
+    inline void swap( X & other ) { qSwap( _d, other._d ); } \
+protected:                                                   \
+    class Private;                                           \
+    Private * d_func() { return _d; }                        \
+    const Private * d_func() const { return _d; }            \
+private:                                                     \
+    void init();                                             \
     Private * _d;
 
 #if defined(_MSC_VER) && _MSC_VER < 1300
@@ -205,8 +205,6 @@ inline const CLASS::Private * CLASS::d_func() const           \
 #ifndef QT_NO_STL
 #include <algorithm>
 #define KDCHART_DECLARE_SWAP_SPECIALISATION( X )            \
-    inline void X::swap( X & other )                        \
-    { qSwap( _d, other._d ); }                              \
     template <> inline void qSwap<X>( X & lhs, X & rhs )    \
     { lhs.swap( rhs ); }                                    \
     namespace std {                                         \
@@ -215,11 +213,12 @@ inline const CLASS::Private * CLASS::d_func() const           \
     }
 #else
 #define KDCHART_DECLARE_SWAP_SPECIALISATION( X )            \
-    inline void X::swap( X & other )                        \
-    { qSwap( _d, other._d ); }                              \
     template <> inline void qSwap<X>( X & lhs, X & rhs )    \
     { lhs.swap( rhs ); }
 #endif
+
+#define KDCHART_DECLARE_SWAP_SPECIALISATION_DERIVED( X )    \
+    KDCHART_DECLARE_SWAP_SPECIALISATION( X )
 
 #define KDCHART_DECLARE_SWAP_BASE( X ) \
 protected: \
@@ -228,24 +227,6 @@ protected: \
 
 #define KDCHART_DECLARE_SWAP_DERIVED( X ) \
     void swap( X& other ) { doSwap( other ); }
-
-#include <QtAlgorithms> // qSwap
-#ifndef QT_NO_STL
-#include <algorithm>
-#define KDCHART_DECLARE_SWAP_SPECIALISATION_DERIVED( X )        \
-    template <> inline void qSwap<X>( X & lhs, X & rhs )        \
-    { lhs.swap( rhs ); }                                        \
-    namespace std {                                             \
-        template <> inline void swap<X>( X & lhs, X & rhs )     \
-        { lhs.swap( rhs ); }                                    \
-    }
-#else
-#define KDCHART_DECLARE_SWAP_SPECIALISATION_DERIVED( X )        \
-    template <> inline void qSwap<X>( X & lhs, X & rhs )        \
-    { lhs.swap( rhs ); }
-#endif
-
-
 
 #if defined(Q_OS_WIN) && defined(QT_DLL)
 #if _MSC_VER >= 1300
