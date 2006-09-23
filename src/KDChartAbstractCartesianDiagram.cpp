@@ -57,7 +57,7 @@ AbstractCartesianDiagram::AbstractCartesianDiagram ( QWidget* parent, CartesianC
 
 KDChart::AbstractCartesianDiagram::~AbstractCartesianDiagram()
 {
-    foreach( CartesianAxis* axis, d->axesList ) {
+    Q_FOREACH( CartesianAxis* axis, d->axesList ) {
         axis->deleteObserver( this );
     }
     d->axesList.clear();
@@ -106,10 +106,10 @@ void KDChart::AbstractCartesianDiagram::setCoordinatePlane( AbstractCoordinatePl
     // (because they might be dependend on each other)
     /*
     if( plane )
-        foreach( CartesianAxis* axis, d->axesList )
+        Q_FOREACH( CartesianAxis* axis, d->axesList )
             axis->show();
     else
-        foreach( CartesianAxis* axis, d->axesList )
+        Q_FOREACH( CartesianAxis* axis, d->axesList )
             axis->hide();
     */
 }

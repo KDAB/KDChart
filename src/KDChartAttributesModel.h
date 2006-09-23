@@ -93,7 +93,7 @@ public:
     /** \reimpl */
     void setSourceModel ( QAbstractItemModel* sourceModel );
 
-signals:
+Q_SIGNALS:
     void attributesChanged( const QModelIndex&, const QModelIndex& );
 
 private:

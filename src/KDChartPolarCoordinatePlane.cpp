@@ -247,7 +247,7 @@ void PolarCoordinatePlane::layoutDiagrams()
 
     // FIXME distribute space according to options:
     d->coordinateTransformations.clear();
-    foreach ( AbstractDiagram* diagram, diagrams() )
+    Q_FOREACH( AbstractDiagram* diagram, diagrams() )
         {
             AbstractPolarDiagram *polarDiagram = dynamic_cast<AbstractPolarDiagram*>( diagram );
             Q_ASSERT( polarDiagram );

@@ -122,7 +122,7 @@ class Chart::Private : public QObject
 
         QHash<AbstractCoordinatePlane*, PlaneInfo> buildPlaneLayoutInfos();
 
-    public slots:
+    public Q_SLOTS:
         void slotLayoutPlanes();
         void slotRelayout();
         void slotUnregisterDestroyedLegend( Legend * legend );

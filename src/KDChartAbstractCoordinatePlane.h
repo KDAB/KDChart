@@ -261,7 +261,7 @@ namespace KDChart {
         Chart* parent();
         const Chart* parent() const;
 
-    public slots:
+    public Q_SLOTS:
         /**
           * Calling update() on the plane triggers the global KDChart::Chart::update()
           */
@@ -275,7 +275,7 @@ namespace KDChart {
           */
         void layoutPlanes();
 
-    signals:
+    Q_SIGNALS:
         /** Emitted when this coordinate plane is destroyed. */
         void destroyedCoordinatePlane( AbstractCoordinatePlane* );
 

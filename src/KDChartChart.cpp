@@ -85,7 +85,7 @@ Chart::Private::Private( Chart* chart_ )
 
 void Chart::Private::layoutHeadersAndFooters()
 {
-    foreach ( HeaderFooter *hf, headerFooters ) {
+    Q_FOREACH( HeaderFooter *hf, headerFooters ) {
         // for now, there are only two types of Header/Footer,
         // we use a pointer to the right layout, depending on the type():
         QGridLayout * headerFooterLayout;
@@ -147,7 +147,7 @@ void Chart::Private::layoutLegends()
     // (the middle field, will be used by floating legends, once they are impl'ed)
     QList<Legend*> infos[3][3];
 
-    foreach ( Legend *legend, legends ) {
+    Q_FOREACH( Legend *legend, legends ) {
 
         bool bOK = true;
         int row, column;
@@ -273,19 +273,19 @@ QHash<AbstractCoordinatePlane*, PlaneInfo> Chart::Private::buildPlaneLayoutInfos
      * layed out vertically or horizontally next to each other. */
     QHash<CartesianAxis*, AxisInfo> axisInfos;
     QHash<AbstractCoordinatePlane*, PlaneInfo> planeInfos;
-    foreach (AbstractCoordinatePlane* plane, coordinatePlanes )
+    Q_FOREACH(AbstractCoordinatePlane* plane, coordinatePlanes )
     {
         PlaneInfo p;
         // first check if we share space with another plane
         p.referencePlane = plane->referenceCoordinatePlane();
         planeInfos.insert( plane, p );
 
-        foreach ( AbstractDiagram* abstractDiagram, plane->diagrams() ) {
+        Q_FOREACH( AbstractDiagram* abstractDiagram, plane->diagrams() ) {
             AbstractCartesianDiagram* diagram =
                     dynamic_cast<AbstractCartesianDiagram*> ( abstractDiagram );
             if( !diagram ) continue;
 
-            foreach ( CartesianAxis* axis, diagram->axes() ) {
+            Q_FOREACH( CartesianAxis* axis, diagram->axes() ) {
                 if ( !axisInfos.contains( axis ) ) {
                     /* If this is the first time we see this axis, add it, with the
                      * current plane. The first plane added to the chart that has
@@ -334,10 +334,10 @@ QHash<AbstractCoordinatePlane*, PlaneInfo> Chart::Private::buildPlaneLayoutInfos
 template <typename T>
 static T* findOrCreateLayoutByObjectName( QLayout * parentLayout, const char* name )
 {
-    T *box = qFindChild<T*>( parentLayout, name );
+    T *box = qFindChild<T*>( parentLayout, QString::fromLatin1( name ) );
     if ( !box ) {
         box = new T();
-        box->setObjectName( name );
+        box->setObjectName( QString::fromLatin1( name ) );
     }
     return box;
 }
@@ -358,7 +358,7 @@ void Chart::Private::slotLayoutPlanes()
     if ( planesLayout && dataAndLegendLayout )
         dataAndLegendLayout->removeItem( planesLayout );
 
-    foreach( KDChart::AbstractArea* plane, planeLayoutItems ) {
+    Q_FOREACH( KDChart::AbstractArea* plane, planeLayoutItems ) {
         plane->removeFromParentLayout();
     }
     planeLayoutItems.clear();
@@ -371,7 +371,7 @@ void Chart::Private::slotLayoutPlanes()
      * get their own. See buildPlaneLayoutInfos() for more details. */
     QHash<AbstractCoordinatePlane*, PlaneInfo> planeInfos = buildPlaneLayoutInfos();
     QHash<AbstractAxis*, AxisInfo> axisInfos;
-    foreach ( AbstractCoordinatePlane* plane, coordinatePlanes ) {
+    Q_FOREACH( AbstractCoordinatePlane* plane, coordinatePlanes ) {
         Q_ASSERT( planeInfos.contains(plane) );
         const PlaneInfo pi = planeInfos[plane];
         int column = pi.horizontalOffset;
@@ -395,7 +395,7 @@ void Chart::Private::slotLayoutPlanes()
         planeLayout->setRowStretch(    row,    2 );
         planeLayout->setColumnStretch( column, 2 );
 
-        foreach ( AbstractDiagram* abstractDiagram, plane->diagrams() )
+        Q_FOREACH( AbstractDiagram* abstractDiagram, plane->diagrams() )
         {
             AbstractCartesianDiagram* diagram =
                     dynamic_cast<AbstractCartesianDiagram*> ( abstractDiagram );
@@ -414,7 +414,7 @@ void Chart::Private::slotLayoutPlanes()
 
             //leftAxesLayout->setSizeConstraint( QLayout::SetFixedSize );
 
-            foreach ( CartesianAxis* axis, diagram->axes() ) {
+            Q_FOREACH( CartesianAxis* axis, diagram->axes() ) {
                 if ( axisInfos.contains( axis ) ) continue; // already layed this one out
                 Q_ASSERT ( axis );
                 //qDebug() << "--------------- axis added to planeLayoutItems  -----------------";
@@ -475,12 +475,12 @@ void Chart::Private::slotLayoutPlanes()
 
 void Chart::Private::createLayouts( QWidget* w )
 {
-    foreach( KDChart::TextArea* textLayoutItem, textLayoutItems ) {
+    Q_FOREACH( KDChart::TextArea* textLayoutItem, textLayoutItems ) {
         textLayoutItem->removeFromParentLayout();
     }
     textLayoutItems.clear();
 
-    foreach( KDChart::AbstractArea* layoutItem, layoutItems ) {
+    Q_FOREACH( KDChart::AbstractArea* layoutItem, layoutItems ) {
         layoutItem->removeFromParentLayout();
     }
     layoutItems.clear();
@@ -532,7 +532,7 @@ void Chart::Private::slotRelayout()
     layoutLegends();
     layout->activate();
     //dataAndLegendLayout->activate();
-    foreach (AbstractCoordinatePlane* plane, coordinatePlanes )
+    Q_FOREACH (AbstractCoordinatePlane* plane, coordinatePlanes )
         plane->layoutDiagrams();
 
     //chart->update();
@@ -702,16 +702,16 @@ qFatal("nPaint > 100");
         painter->translate( translation );
     }
 
-    foreach( KDChart::AbstractArea* layoutItem, d->layoutItems ) {
+    Q_FOREACH( KDChart::AbstractArea* layoutItem, d->layoutItems ) {
         layoutItem->paintAll( *painter );
     }
-    foreach( KDChart::AbstractArea* planeLayoutItem, d->planeLayoutItems ) {
+    Q_FOREACH( KDChart::AbstractArea* planeLayoutItem, d->planeLayoutItems ) {
         planeLayoutItem->paintAll( *painter );
     }
-    foreach( KDChart::TextArea* textLayoutItem, d->textLayoutItems ) {
+    Q_FOREACH( KDChart::TextArea* textLayoutItem, d->textLayoutItems ) {
         textLayoutItem->paintAll( *painter );
     }
-    foreach ( Legend *legend, d->legendLayoutItems ) {
+    Q_FOREACH( Legend *legend, d->legendLayoutItems ) {
         legend->paintAll( *painter );
     }
 

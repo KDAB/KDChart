@@ -88,7 +88,7 @@ public:
     /** Remove the brush at position @param position, if there is one.  */
     void removeBrush( int position );
 
-signals:
+Q_SIGNALS:
     /**  Emitted whenever the palette changes. Views listen to this and
      * repaing.  */
     void changed();

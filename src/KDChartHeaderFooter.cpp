@@ -76,7 +76,7 @@ void HeaderFooter::init()
 {
     TextAttributes ta;
     ta.setPen( QPen(Qt::black) );
-    ta.setFont( QFont( "helvetica", 10, QFont::Bold, false ) );
+    ta.setFont( QFont( QLatin1String( "helvetica" ), 10, QFont::Bold, false ) );
 
     Measure m( 35.0 );
     m.setRelativeMode( autoReferenceArea(), KDChartEnums::MeasureOrientationMinimum );

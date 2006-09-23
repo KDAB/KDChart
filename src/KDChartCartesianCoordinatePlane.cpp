@@ -256,7 +256,7 @@ QRectF CartesianCoordinatePlane::calculateRawDataBoundingRect() const
     QPointF smallestPoint;
     QPointF largestPoint;
     bool bStarting = true;
-    foreach ( const AbstractDiagram* diagram, diagrams() )
+    Q_FOREACH( const AbstractDiagram* diagram, diagrams() )
     {
         QPair<QPointF, QPointF> dataBoundariesPair = diagram->dataBoundaries();
         //qDebug() << "CartesianCoordinatePlane::calculateRawDataBoundingRect() gets diagram->dataBoundaries: " << dataBoundariesPair.first << dataBoundariesPair.second;

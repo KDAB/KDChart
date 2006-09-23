@@ -82,7 +82,7 @@ protected:
     virtual const QRect areaGeometry() const;
     virtual void positionHasChanged();
 
-signals:
+Q_SIGNALS:
     void positionChanged( AbstractArea * );
 
     //KDCHART_DECLARE_PRIVATE_DERIVED(AbstractArea)

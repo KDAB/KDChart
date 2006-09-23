@@ -104,12 +104,12 @@ void Legend::init()
 
     TextAttributes textAttrs;
     textAttrs.setPen( QPen( Qt::black ) );
-    textAttrs.setFont( QFont( "helvetica", 10, QFont::Normal, false ) );
+    textAttrs.setFont( QFont( QLatin1String( "helvetica" ), 10, QFont::Normal, false ) );
     textAttrs.setFontSize( 16 );
     setTextAttributes( textAttrs );
     TextAttributes titleTextAttrs;
     titleTextAttrs.setPen( QPen( Qt::black ) );
-    titleTextAttrs.setFont( QFont( "helvetica", 12, QFont::Bold, false ) );
+    titleTextAttrs.setFont( QFont( QLatin1String( "helvetica" ), 12, QFont::Bold, false ) );
     titleTextAttrs.setFontSize( 20 );
     setTitleTextAttributes( titleTextAttrs );
 
@@ -148,7 +148,7 @@ void Legend::paint( QPainter* painter )
 
     // PENDING(kalle) Support palette
 
-    foreach( KDChart::AbstractLayoutItem* layoutItem, d->layoutItems ) {
+    Q_FOREACH( KDChart::AbstractLayoutItem* layoutItem, d->layoutItems ) {
         layoutItem->paint( painter );
     }
     //qDebug() << "KDChart::Legend::paint() done.";
@@ -566,7 +566,7 @@ void Legend::buildLegend()
     }
     d->needRebuild = false;
 
-    foreach( QLayoutItem* layoutItem, d->layoutItems ) {
+    Q_FOREACH( QLayoutItem* layoutItem, d->layoutItems ) {
         d->layout->removeItem( layoutItem );
     }
     qDeleteAll( d->layoutItems );

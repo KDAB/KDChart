@@ -102,7 +102,7 @@ protected:
 public:
 //    virtual AbstractAreaWidget * clone() const = 0;
 
-signals:
+Q_SIGNALS:
     void positionChanged( AbstractAreaWidget * );
 
 }; // End of class AbstractAreaWidget

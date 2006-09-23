@@ -93,22 +93,23 @@ KDChart::TextLayoutItem::TextLayoutItem( const QString& text,
     , mAttributes( attributes )
     , mAutoReferenceArea( area )
     , mAutoReferenceOrientation( orientation )
-    , cachedSizeHint( QSize() ) // default this to invalid to force just-in-time calculation before first use of sizeHint()
+    , cachedSizeHint() // default this to invalid to force just-in-time calculation before first use of sizeHint()
     , cachedFontSize( 0.0 )
-    , cachedFont( attributes.font() )
+    , cachedFont( mAttributes.font() )
 {
 }
 
 KDChart::TextLayoutItem::TextLayoutItem()
     : AbstractLayoutItem( Qt::AlignLeft )
-    , mText( "" )
+    , mText()
     , mAttributes()
     , mAutoReferenceArea( 0 )
     , mAutoReferenceOrientation( KDChartEnums::MeasureOrientationHorizontal )
-    , cachedSizeHint( QSize() ) // default this to invalid to force just-in-time calculation before first use of sizeHint()
+    , cachedSizeHint() // default this to invalid to force just-in-time calculation before first use of sizeHint()
     , cachedFontSize( 0.0 )
+    , cachedFont( mAttributes.font() )
 {
-    cachedFont = mAttributes.font();
+
 }
 
 void KDChart::TextLayoutItem::setAutoReferenceArea( const QObject* area )
@@ -407,7 +408,7 @@ void KDChart::MarkerLayoutItem::paint( QPainter* painter )
 }
 
 
-KDChart::HorizontalLineLayoutItem::HorizontalLineLayoutItem() 
+KDChart::HorizontalLineLayoutItem::HorizontalLineLayoutItem()
     : AbstractLayoutItem( Qt::AlignCenter )
 {
 }

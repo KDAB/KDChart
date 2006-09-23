@@ -193,7 +193,7 @@ namespace KDChart {
         void paintEvent ( QPaintEvent* );
         void layoutDiagrams();
 
-    protected slots:
+    protected Q_SLOTS:
         void slotLayoutChanged( AbstractDiagram* );
 
     private:

@@ -221,10 +221,10 @@ public:
 /*public static*/
 //    static LegendPosition stringToPosition( QString name, bool* ok=0 );
 
-signals:
+Q_SIGNALS:
     void destroyedLegend( Legend* );
 
-private slots:
+private Q_SLOTS:
     void emitPositionChanged();
     void resetDiagram( AbstractDiagram* );
     void setNeedRebuild();

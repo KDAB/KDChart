@@ -80,11 +80,9 @@ QVariant AttributesModel::headerData ( int section,
 
   // Default values if nothing else matches
   switch ( role ) {
-  case Qt::DisplayRole: {
-      QString header = ( ( orientation == Qt::Vertical ) ?  "Series " : "Item " )
-          + QString::number( section );
-      return header;
-  }
+  case Qt::DisplayRole:
+      return QLatin1String( orientation == Qt::Vertical ?  "Series " : "Item " ) + QString::number( section ) ;
+
   case KDChart::DatasetBrushRole: {
       if ( paletteType() == PaletteTypeSubdued )
           return Palette::subduedPalette().getBrush( section );

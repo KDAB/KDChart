@@ -44,18 +44,18 @@ namespace KDChart {
     public:
         explicit DatasetSelectorWidget ( QWidget* parent = 0 );
 
-    public slots:
+    public Q_SLOTS:
         void setSourceRowCount ( const int& rowCount );
         void setSourceColumnCount ( const int& columnCount );
 
-    signals:
+    Q_SIGNALS:
         void configureDatasetProxyModel (
             const DatasetDescriptionVector& rowConfig,
             const DatasetDescriptionVector& columnConfig );
 
         void mappingDisabled ();
 
-    private slots:
+    private Q_SLOTS:
         void on_sbStartColumn_valueChanged ( int );
         void on_sbStartRow_valueChanged ( int );
         void on_sbColumnCount_valueChanged( int );

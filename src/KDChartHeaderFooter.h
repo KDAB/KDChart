@@ -66,7 +66,7 @@ public:
 
     void setParent( QObject* parent );
 
-signals:
+Q_SIGNALS:
     void destroyedHeaderFooter( HeaderFooter* );
     void positionChanged( HeaderFooter* );
 

@@ -337,7 +337,7 @@ namespace KDChart {
         bool allowOverlappingDataValueTexts() const;
 
         /**
-         * Set whether anti-aliasing is to be used while rendering 
+         * Set whether anti-aliasing is to be used while rendering
          * this diagram.
          * @param enabled True means that AA is enabled.
          */
@@ -472,7 +472,7 @@ namespace KDChart {
          */
         double valueForCell( int row, int column ) const;
 
-    signals:
+    Q_SIGNALS:
         /** Diagrams are supposed to emit this signal, when the layout of one
             of their element changes. Layouts can change, for example, when
             axes are added or removed, or when the configuration was changed
@@ -485,11 +485,11 @@ namespace KDChart {
 
         /** This signal is emitted, when either the model or the AttributesModel is replaced. */
         void modelsChanged();
-    
+
     private:
-	QString roundValues( double value, const int decimalPos, 
+	QString roundValues( double value, const int decimalPos,
 			      const int decimalDigits ) const;
-	
+
     };
 
     typedef QList<AbstractDiagram*> AbstractDiagramList;

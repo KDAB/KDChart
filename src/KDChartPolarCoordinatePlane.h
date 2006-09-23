@@ -71,7 +71,7 @@ namespace KDChart {
         void resizeEvent ( QResizeEvent* );
 
         void layoutDiagrams();
-    protected slots:
+    protected Q_SLOTS:
         void slotLayoutChanged( AbstractDiagram* diagram );
     };
 

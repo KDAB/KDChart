@@ -304,7 +304,7 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
 
     // handle decimal digits
     int decimalDigits = a.decimalDigits();
-    int decimalPos = QString::number(  value ).indexOf( "." );
+    int decimalPos = QString::number(  value ).indexOf( QLatin1Char( '.' ) );
     QString roundedValue;
     if ( a.dataLabel().isNull() ) {
         if ( decimalPos > 0 && value != 0 )
@@ -351,7 +351,7 @@ QString  AbstractDiagram::roundValues( double value,
         }
 
     digits.truncate( decimalDigits );
-    num.append( "."+ digits );
+    num.append( QLatin1Char( '.' ) + digits );
 
     return num;
 

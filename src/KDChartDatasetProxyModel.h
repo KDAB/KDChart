@@ -65,7 +65,7 @@ namespace KDChart {
         */
         explicit DatasetProxyModel ( QObject* parent = 0 );
 
-        QModelIndex index( int row, int column, 
+        QModelIndex index( int row, int column,
                            const QModelIndex &parent = QModelIndex() ) const;
         QModelIndex parent(const QModelIndex &child ) const;
 
@@ -89,7 +89,7 @@ namespace KDChart {
         void setSourceRootIndex(const QModelIndex& rootIdx);
 
 
-    public slots:
+    public Q_SLOTS:
         /** Reset all dataset description.
             After that, the result of the proxying is an empty model (a new
             dataset description needs to be set to achieve a non-empty result).

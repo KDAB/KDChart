@@ -60,7 +60,7 @@ CartesianAxis::~CartesianAxis ()
         AbstractCartesianDiagram *cd = qobject_cast<AbstractCartesianDiagram*>( d->mDiagram );
         cd->takeAxis( this );
     }
-    foreach ( AbstractDiagram *diagram, d->secondaryDiagrams ) {
+    Q_FOREACH( AbstractDiagram *diagram, d->secondaryDiagrams ) {
         AbstractCartesianDiagram *cd = qobject_cast<AbstractCartesianDiagram*>( diagram );
         cd->takeAxis( this );
     }
@@ -423,7 +423,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 useShortLabels = labelsAreOverlapping;
             }
 
-            labelItem2->setText( "" );
+            labelItem2->setText( QString::null );
             QPoint oldItemPos;
             int idxLabel = 0;
             qreal iLabelF = minValueX;
@@ -726,7 +726,7 @@ QSize CartesianAxis::maximumSize() const
 
     AbstractCoordinatePlane* plane = d->diagram()->coordinatePlane();
     QObject* refArea = plane->parent();
-    TextLayoutItem labelItem( "", labelTA, refArea,
+    TextLayoutItem labelItem( QString::null, labelTA, refArea,
         KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft );
     TextLayoutItem titleItem( titleText(), titleTA, refArea,
         KDChartEnums::MeasureOrientationMinimum, Qt::AlignHCenter | Qt::AlignVCenter );

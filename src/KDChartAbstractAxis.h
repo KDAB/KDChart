@@ -103,11 +103,11 @@ namespace KDChart {
 
         virtual QDomDocumentFragment toXML() const = 0;
 
-    protected slots:
+    protected Q_SLOTS:
         /** called for initializing after the c'tor has completed */
         virtual void delayedInit();
 
-    public slots:
+    public Q_SLOTS:
         void update();
     };
 }
