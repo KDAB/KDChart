@@ -45,9 +45,9 @@ class KDCHART_EXPORT Measure
 {
 public:
     Measure();
-    Measure( qreal value,
-             KDChartEnums::MeasureCalculationMode mode = KDChartEnums::MeasureCalculationModeAuto,
-             KDChartEnums::MeasureOrientation orientation = KDChartEnums::MeasureOrientationAuto );
+    /*implicit*/ Measure( qreal value,
+                          KDChartEnums::MeasureCalculationMode mode = KDChartEnums::MeasureCalculationModeAuto,
+                          KDChartEnums::MeasureOrientation orientation = KDChartEnums::MeasureOrientationAuto );
     Measure( const Measure& );
     Measure &operator= ( const Measure& );
 
