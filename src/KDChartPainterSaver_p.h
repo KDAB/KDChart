@@ -70,16 +70,13 @@ namespace KDChart {
    clauses, or when exceptions are thrown.
 */
 class PainterSaver {
-    QPainter* const painter;
+    Q_DISABLE_COPY( PainterSaver )
 public:
-    PainterSaver( QPainter* p ) : painter( p ) { p->save(); }
+    explicit PainterSaver( QPainter* p ) : painter( p ) { p->save(); }
     ~PainterSaver() { painter->restore(); }
 
 private:
-#ifdef Q_DISABLE_COPY
-    PainterSaver( const PainterSaver& );
-    PainterSaver& operator=( const PainterSaver& );
-#endif
+    QPainter* const painter;
 };
 
 }
