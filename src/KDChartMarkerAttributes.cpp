@@ -26,18 +26,19 @@
 #include "KDChartMarkerAttributes.h"
 #include <QColor>
 #include <QMap>
+#include <QPen>
+#include <QSizeF>
+#include <QDebug>
 #include <QtXml/QDomDocumentFragment>
 #include <qglobal.h>
 
 #include <KDABLibFakes>
 
-#define d d_func()
-
 using namespace KDChart;
 
 class MarkerAttributes::Private
 {
-    friend class MarkerAttributes;
+    friend class ::KDChart::MarkerAttributes;
 public:
     Private();
 private:
@@ -50,32 +51,30 @@ private:
 };
 
 MarkerAttributes::Private::Private()
+    : visible( false ),
+      markerStyle( MarkerSquare ),
+      markerSize( 10, 10 ),
+      markerPen( Qt::black )
 {
 }
 
 
 MarkerAttributes::MarkerAttributes()
-    : _d( new Private() )
+    : _d( new Private )
 {
-    setVisible( false );
-    setMarkerStyle( MarkerSquare );
-    setMarkerSize( QSizeF(10,10) );
-    setPen( QPen( Qt::black ) );
+
 }
 
 MarkerAttributes::MarkerAttributes( const MarkerAttributes& r )
-    : _d( new Private( *r.d ) )
+    : _d( new Private( *r._d ) )
 {
 
 }
 
 MarkerAttributes & MarkerAttributes::operator=( const MarkerAttributes& r )
 {
-    if( this == &r )
-        return *this;
-
-    *d = *r.d;
-
+    MarkerAttributes copy( r );
+    copy.swap( *this );
     return *this;
 }
 
@@ -83,6 +82,8 @@ MarkerAttributes::~MarkerAttributes()
 {
     delete _d; _d = 0;
 }
+
+#define d d_func()
 
 bool MarkerAttributes::operator==( const MarkerAttributes& r ) const
 {
@@ -106,7 +107,7 @@ bool MarkerAttributes::isVisible() const
     return d->visible;
 }
 
-void MarkerAttributes::setMarkerStylesMap( MarkerStylesMap map )
+void MarkerAttributes::setMarkerStylesMap( const MarkerStylesMap & map )
 {
     d->markerStylesMap = map;
 }
@@ -116,7 +117,7 @@ MarkerAttributes::MarkerStylesMap MarkerAttributes::markerStylesMap() const
     return d->markerStylesMap;
 }
 
-void MarkerAttributes::setMarkerStyle( const MarkerStyle style )
+void MarkerAttributes::setMarkerStyle( MarkerStyle style )
 {
     d->markerStyle = style;
 }
@@ -163,6 +164,19 @@ QDomDocumentFragment MarkerAttributes::toXML() const
     return QDomDocumentFragment();
 }
 
+#undef d
+
+#ifndef QT_NO_DEBUG_STREAM
+QDebug operator<<( QDebug dbg, const MarkerAttributes & ma ) {
+    return dbg << "KDChart::MarkerAttributes("
+               << "visible=" << ma.isVisible()
+               << "markerStylesMap=" << ma.markerStylesMap()
+               << "markerStyle=" << ma.markerStyle()
+               << "markerColor=" << ma.markerColor()
+               << "pen=" << ma.pen()
+               << ")";
+}
+#endif
 
 
 

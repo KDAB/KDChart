@@ -31,12 +31,14 @@
 #define KDCHARTMARKERATTRIBUTES_H
 
 #include <QMetaType>
-#include <QSizeF>
-#include <QPen>
 #include "KDChartGlobal.h"
 
 class QColor;
+class QSizeF;
+class QPen;
 class QDomDocumentFragment;
+class QDebug;
+template <typename T, typename K> class QMap;
 
 namespace KDChart {
 
@@ -62,10 +64,10 @@ namespace KDChart {
         bool isVisible() const;
 
         typedef QMap<uint, MarkerStyle> MarkerStylesMap;
-        void setMarkerStylesMap( MarkerStylesMap map );
+        void setMarkerStylesMap( const MarkerStylesMap & map );
         MarkerStylesMap markerStylesMap() const;
 
-        void setMarkerStyle( const MarkerStyle style );
+        void setMarkerStyle( MarkerStyle style );
         MarkerStyle markerStyle() const;
 
         void setMarkerSize( const QSizeF& size );
@@ -79,21 +81,24 @@ namespace KDChart {
 
 
         bool operator==( const MarkerAttributes& ) const;
-        inline bool operator!=( const MarkerAttributes& other ) const { return !operator==(other); }
+        bool operator!=( const MarkerAttributes& ) const;
 
         // XML serialization
         QDomDocumentFragment toXML() const;
 
     private:
-        class Private;
-        Private * _d;
-        Private * d_func() { return _d; }
-        const Private * d_func() const { return _d; }
-
+        KDCHART_DECLARE_PRIVATE_BASE_VALUE( MarkerAttributes )
     }; // End of class MarkerAttributes
 
+    inline bool MarkerAttributes::operator!=( const MarkerAttributes & other ) const { return !operator==( other ); }
 }
 
+KDCHART_DECLARE_SWAP_SPECIALISATION( KDChart::MarkerAttributes )
+Q_DECLARE_TYPEINFO( KDChart::MarkerAttributes, Q_MOVABLE_TYPE );
 Q_DECLARE_METATYPE( KDChart::MarkerAttributes )
+
+#ifndef QT_NO_DEBUG_STREAM
+KDCHART_EXPORT QDebug operator<<( QDebug, const KDChart::MarkerAttributes & );
+#endif
 
 #endif // KDCHARTMARKERATTRIBUTES_H
