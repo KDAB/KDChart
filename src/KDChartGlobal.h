@@ -215,6 +215,8 @@ inline const CLASS::Private * CLASS::d_func() const           \
     }
 #else
 #define KDCHART_DECLARE_SWAP_SPECIALISATION( X )            \
+    inline void X::swap( X & other )                        \
+    { qSwap( _d, other._d ); }                              \
     template <> inline void qSwap<X>( X & lhs, X & rhs )    \
     { lhs.swap( rhs ); }
 #endif
