@@ -336,66 +336,6 @@ public:
 
 
     /**
-      Areas of the chart that may have their own backgrounds
-      and/or may be surrounded by a simple or complex border.
-
-      \li \c AreaData surrounding the data area
-      \li \c AreaAxes surrounding the axes but leaving out the data area
-      \li \c AreaDataAxes surrounding the data+axes area
-      \li \c AreaLegend surrounding the legend area
-      \li \c AreaDataAxesLegend surrounding the data+axes+legend area
-      \li \c AreaHeaders surrounding the headers area
-      \li \c AreaFooters surrounding the footers area
-      \li \c AreaDataAxesLegendHeadersFooters surrounding the data+axes+legend+headers+footers area
-      \li \c AreaInnermost covering the complete drawing area but <b>not</b> covering the global left/top/right/bottom leading
-      \li \c AreaOutermost covering the complete drawing area including the global left/top/right/bottom leading
-
-      \li \c AreaChartDataRegion covering the area used to display one data entry (i.e. one point, bar, line, pie slice,...).
-      The respective data coordinates are specified by additional parameters, this is used by
-      KDChartCustomBox where you have the parameters \c dataRow, \c dataCol, \c data3rd.
-
-      In addition there is a special value specifying a <b>list</b> of regions:
-
-      \li \c AreasCustomBoxes specifies many small areas surrounding all the custom boxes that you might have added to the chart,
-      this is useful in case you want to specify some default frame settings to be used for all custom boxes
-      not having frame settings of their own.
-
-      Finally there are three special values that you may use to specify
-      a single axis area (or a header/footer area, or a custom box area resp.).
-      Just add the number of the axis (or header/footer, or custom box resp.)
-      to the respective base value:
-
-      \li \c AreaAxisBASE value to be added to the axis number in case you want to specify a single axis area,
-      e.g. for specifying the area of the left ordinate axis just type <b>AreaAxisBASE + AxisPosLeft</b>.
-      \li \c AreaHdFtBASE value to be added to the header/footer number in case you want to specify a single header (or footer, resp.) area,
-      e.g. for specifying the area of the main header just type <b>AreaHdFtBASE + HdFtPosHeader</b>.
-      \li \c AreaCustomBoxBASE value to be added to the number of a custom box that you might have added to your chart,
-      e.g. for specifying the area a custom box you have added to the chart
-      (let us assume the index of that box is in \c boxIdx1) just type <b>AreaCustBoxBASE + boxIdx1</b>.
-
-      \sa KDChartParams::setSimpleFrame, KDChartParams::setFrame
-      \sa KDChartParams::insertCustomBox, KDChartCustomBox
-      */
-    enum AreaName { AreaUNKNOWN                      = 0x0000,
-        AreaData                         = 0x0001,
-        AreaAxes                         = 0x0002,
-        AreaDataAxes                     = 0x0003,
-        AreaLegend                       = 0x0004,
-        AreaDataAxesLegend               = 0x0005,
-        AreaHeaders                      = 0x0006,
-        AreaFooters                      = 0x0007,
-        AreaDataAxesLegendHeadersFooters = 0x0008,
-        AreaInnermost                    = 0x0009,
-        AreaOutermost                    = 0x000a,
-        AreaChartDataRegion              = 0x000b,
-        AreasCustomBoxes                 = 0x000d,
-        AreaAxisBASE                     = 0x1000,
-        AreaHdFtBASE                     = 0x2000,
-        AreaCustomBoxesBASE              = 0x4000,
-        AreaBASEMask                     = 0xF000 };
-
-
-    /**
       The general position flag to specify a point of
       an area, for example this could be the anchor point
       which an annotation box should be aligned to.
