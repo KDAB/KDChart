@@ -64,11 +64,8 @@ public:
     QDomDocumentFragment toXML() const;
 
 private:
-    class Private;
-    Private * _d;
-    Private * d_func() { return _d; }
-    const Private * d_func() const { return _d; }
 
+    KDCHART_DECLARE_PRIVATE_BASE_VALUE( FrameAttributes )
 }; // End of class FrameAttributes
 
 }
@@ -78,5 +75,7 @@ KDCHART_EXPORT QDebug operator<<(QDebug, const KDChart::FrameAttributes& );
 #endif /* QT_NO_DEBUG_STREAM */
 
 Q_DECLARE_METATYPE( KDChart::FrameAttributes )
+KDCHART_DECLARE_SWAP_SPECIALISATION( KDChart::FrameAttributes )
+Q_DECLARE_TYPEINFO( KDChart::FrameAttributes, Q_MOVABLE_TYPE );
 
 #endif // KDCHARTFRAMEATTRIBUTES_H
