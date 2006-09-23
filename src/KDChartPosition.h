@@ -113,9 +113,9 @@ public:
     static Position fromName(const char * name);
     static Position fromName(const QByteArray & name);
 
-    bool operator==( const Position& );
-    bool operator==( int );
-    bool operator!=( const Position& );
+    bool operator==( const Position& ) const;
+    bool operator==( int ) const;
+    bool operator!=( const Position& ) const;
 
 private:
     int m_value;

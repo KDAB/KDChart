@@ -230,19 +230,19 @@ Position Position::fromName( const QByteArray & name ) {
     return fromName( name.data() );
 }
 
-bool Position::operator==( const Position& r )
+bool Position::operator==( const Position& r ) const
 {
     return ( value() == r.value() );
 }
 
 
-bool Position::operator==( int value_ )
+bool Position::operator==( int value_ ) const
 {
     return ( value() == value_ );
 }
 
 
-bool Position::operator!=( const Position& r )
+bool Position::operator!=( const Position& r ) const
 {
     return ! ( *this == r );
 }

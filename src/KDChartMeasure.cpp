@@ -141,7 +141,7 @@ qreal Measure::calculatedValue( const QObject* autoArea,
 }
 
 
-bool Measure::operator==( const Measure& r )
+bool Measure::operator==( const Measure& r ) const
 {
     return( mValue == r.value() &&
             mMode  == r.calculationMode() &&
