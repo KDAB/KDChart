@@ -196,10 +196,7 @@ public:
   RelativePosition positivePosition() const;
 
 private:
-    class Private;
-    Private * _d;
-    Private * d_func() { return _d; }
-    const Private * d_func() const { return _d; }
+  KDCHART_DECLARE_PRIVATE_BASE_VALUE( DataValueAttributes )
 
 }; // End of class DataValueAttributes
 
@@ -210,5 +207,7 @@ KDCHART_EXPORT QDebug operator<<(QDebug, const KDChart::DataValueAttributes& );
 #endif /* QT_NO_DEBUG_STREAM */
 
 Q_DECLARE_METATYPE( KDChart::DataValueAttributes )
+Q_DECLARE_TYPEINFO( KDChart::DataValueAttributes, Q_MOVABLE_TYPE );
+KDCHART_DECLARE_SWAP_SPECIALISATION( KDChart::DataValueAttributes )
 
 #endif // KDCHARTDATAVALUEATTRIBUTES_H
