@@ -83,14 +83,18 @@ public:
     QDomDocumentFragment toXML() const;
 
 private:
-    class Private;
-    Private * _d;
-    Private * d_func() { return _d; }
-    const Private * d_func() const { return _d; }
-}; // End of class LineAttributes
+    KDCHART_DECLARE_PRIVATE_BASE_VALUE( LineAttributes )
+}; // End of class GridAttributes
 
 }
 
+#if !defined(QT_NO_DEBUG_STREAM)
+KDCHART_EXPORT QDebug operator<<(QDebug, const KDChart::LineAttributes& );
+#endif /* QT_NO_DEBUG_STREAM */
+
+KDCHART_DECLARE_SWAP_SPECIALISATION( KDChart::LineAttributes )
 Q_DECLARE_METATYPE( KDChart::LineAttributes )
+Q_DECLARE_TYPEINFO( KDChart::LineAttributes, Q_MOVABLE_TYPE );
+
 
 #endif // KDCHARTLINEATTRIBUTES_H

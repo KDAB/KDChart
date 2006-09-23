@@ -24,7 +24,7 @@
  **********************************************************************/
 
 #include "KDChartLineAttributes.h"
-#include <qglobal.h>
+#include <QDebug>
 
 #include <KDABLibFakes>
 
@@ -126,3 +126,15 @@ QDomDocumentFragment LineAttributes::toXML() const
     return QDomDocumentFragment();
 }
 
+#if !defined(QT_NO_DEBUG_STREAM)
+QDebug operator<<(QDebug dbg, const KDChart::LineAttributes& a)
+{
+    dbg << "KDChart::LineAttributes("
+            //     MissingValuesPolicy missingValuesPolicy;
+            << "bool="<<a.displayArea()
+            << "transparency="<<a.transparency()
+            << ")";
+    return dbg;
+
+}
+#endif /* QT_NO_DEBUG_STREAM */

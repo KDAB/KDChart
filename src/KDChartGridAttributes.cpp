@@ -279,11 +279,6 @@ QDebug operator<<(QDebug dbg, const KDChart::GridAttributes& a)
             << "zeroPen="<<a.zeroLinePen()
             << ")";
     return dbg;
-
-
-   
-    QPen subPen;
-    QPen zeroPen;
 }
 #endif /* QT_NO_DEBUG_STREAM */
 
