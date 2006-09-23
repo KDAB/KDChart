@@ -343,11 +343,12 @@ namespace KDChart {
           * Note that this value can be negative, e.g. indicating axis labels
           * going in reversed direction.
           */
-        qreal distance()const
+        qreal distance() const
         {
             return end-start;
         }
-        bool operator==( const DataDimension& r )
+
+        bool operator==( const DataDimension& r ) const
         {
             return
                 (start        == r.start) &&
@@ -358,6 +359,10 @@ namespace KDChart {
                 (stepWidth    == r.stepWidth) &&
                 (subStepWidth    == r.subStepWidth);
         }
+
+        bool operator!=( const DataDimension& other ) const
+        { return !operator==( other ); }
+
         qreal start;
         qreal end;
         bool  isCalculated;

@@ -95,6 +95,7 @@ public:
     qreal calculatedValue( const QObject * autoArea, KDChartEnums::MeasureOrientation autoOrientation ) const;
 
     bool operator==( const Measure& ) const;
+    bool operator!=( const Measure& other ) const { return !operator==(other); }
 
 private:
     qreal mValue;
