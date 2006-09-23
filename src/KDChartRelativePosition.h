@@ -31,11 +31,9 @@
 #define KDCHARTREALTIVEPOSITION_H
 
 #include <QDebug>
+#include <QMetaType>
 #include <Qt>
 #include "KDChartGlobal.h"
-#include "KDChartEnums.h"
-#include "KDChartMeasure.h"
-#include "KDChartPosition.h"
 
 class QDomDocumentFragment;
 
@@ -43,7 +41,8 @@ class QDomDocumentFragment;
 namespace KDChart {
 
     class AbstractArea;
-
+    class Position;
+    class Measure;
 
 /**
   \class RelativePosition KDChartRelativePosition.h
@@ -63,40 +62,44 @@ public:
     RelativePosition();
     RelativePosition( const RelativePosition& );
 
+    RelativePosition & operator=( const RelativePosition & other );
+
     ~RelativePosition();
 
     QDomDocumentFragment toXML() const;
 
-    void setReferenceArea( AbstractArea* area ) { m_area = area; }
-    AbstractArea* referenceArea() const { return m_area; }
+    void setReferenceArea( AbstractArea* area );
+    AbstractArea* referenceArea() const;
 
-    void setReferencePosition( const Position& position ) { m_position = position; }
-    Position referencePosition() const { return m_position; }
+    void setReferencePosition( Position position );
+    Position referencePosition() const;
 
-    void setAlignment( Qt::Alignment flags ) { m_alignment = flags; }
-    Qt::Alignment alignment() const { return m_alignment; }
+    void setAlignment( Qt::Alignment flags );
+    Qt::Alignment alignment() const;
 
-    void setHorizontalPadding( const Measure& padding ) { m_horizontalPadding = padding; }
-    Measure horizontalPadding() const { return m_horizontalPadding; }
+    void setHorizontalPadding( const Measure& padding );
+    Measure horizontalPadding() const;
 
-    void setVerticalPadding( const Measure& padding ) { m_verticalPadding = padding; }
-    Measure verticalPadding() const { return m_verticalPadding; }
+    void setVerticalPadding( const Measure& padding );
+    Measure verticalPadding() const;
 
-    void setRotation( qreal rot ) { m_rotation = rot; }
-    qreal rotation() const { return m_rotation; }
+    void setRotation( qreal rot );
+    qreal rotation() const;
 
-    bool operator==( const RelativePosition& );
+    bool operator==( const RelativePosition& ) const;
+    bool operator!=( const RelativePosition & other ) const;
 
 private:
-    AbstractArea* m_area;
-    Position m_position;
-    Qt::Alignment m_alignment;
-    Measure m_horizontalPadding;
-    Measure m_verticalPadding;
-    qreal m_rotation;
-}; // End of class RelativePosition
+    KDCHART_DECLARE_PRIVATE_BASE_VALUE( RelativePosition )
+};
 
+inline bool RelativePosition::operator!=( const RelativePosition & other ) const { return !operator==( other ); }
 }
+
+KDCHART_DECLARE_SWAP_SPECIALISATION( KDChart::RelativePosition )
+
+Q_DECLARE_TYPEINFO( KDChart::RelativePosition, Q_MOVABLE_TYPE );
+Q_DECLARE_METATYPE( KDChart::RelativePosition )
 
 #if !defined(QT_NO_DEBUG_STREAM)
 KDCHART_EXPORT QDebug operator<<(QDebug, const KDChart::RelativePosition& );

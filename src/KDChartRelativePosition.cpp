@@ -24,48 +24,126 @@
  **********************************************************************/
 
 #include "KDChartRelativePosition.h"
+
+#include "KDChartEnums.h"
+#include "KDChartMeasure.h"
+#include "KDChartPosition.h"
+
 #include <QtXml/QDomDocumentFragment>
 
 #include <KDABLibFakes>
 
-namespace KDChart {
+using namespace KDChart;
+
+class RelativePosition::Private {
+    friend class ::KDChart::RelativePosition;
+public:
+    Private();
+    ~Private();
+
+private:
+    AbstractArea* area;
+    Position position;
+    Qt::Alignment alignment;
+    Measure horizontalPadding;
+    Measure verticalPadding;
+    qreal rotation;
+};
+
+
+RelativePosition::Private::Private()
+    : area( 0 ),
+      alignment( Qt::AlignCenter ),
+      rotation( 0 )
+{
+
+}
+
+RelativePosition::Private::~Private() {}
+
+
 
 RelativePosition::RelativePosition()
-    : m_area(0),
-      m_alignment(Qt::AlignCenter),
-      m_rotation(0)
+    : _d( new Private )
 {
-    //this line left empty intentionally
+
 }
 
 RelativePosition::RelativePosition( const RelativePosition& r )
-    : m_area(              r.referenceArea() ),
-      m_position(          r.referencePosition() ),
-      m_alignment(         r.alignment() ),
-      m_horizontalPadding( r.horizontalPadding() ),
-      m_verticalPadding(   r.verticalPadding() ),
-      m_rotation(          r.rotation() )
+    : _d( new Private( *r._d ) )
 {
-    //this line left empty intentionally
+
 }
 
-RelativePosition::~RelativePosition()
-{
-    // this bloc left empty intentionally
+RelativePosition & RelativePosition::operator=( const RelativePosition & other ) {
+    RelativePosition copy( other );
+    copy.swap( *this );
+    return *this;
 }
 
+RelativePosition::~RelativePosition() {}
 
-bool RelativePosition::operator==( const RelativePosition& r )
-{
-    return( m_area              == r.referenceArea() &&
-            m_position          == r.referencePosition() &&
-            m_alignment         == r.alignment() &&
-            m_horizontalPadding == r.horizontalPadding() &&
-            m_verticalPadding   == r.verticalPadding() &&
-            m_rotation          == r.rotation() );
+#define d d_func()
+
+void RelativePosition::setReferenceArea( AbstractArea * area ) {
+    d->area = area;
 }
 
+AbstractArea * RelativePosition::referenceArea() const {
+    return d->area;
+}
 
+void RelativePosition::setReferencePosition( Position pos ) {
+    d->position = pos;
+}
+
+Position RelativePosition::referencePosition() const {
+    return d->position;
+}
+
+void RelativePosition::setAlignment( Qt::Alignment align ) {
+    d->alignment = align;
+}
+
+Qt::Alignment RelativePosition::alignment() const {
+    return d->alignment;
+}
+
+void RelativePosition::setHorizontalPadding( const Measure & pad ) {
+    d->horizontalPadding = pad;
+}
+
+Measure RelativePosition::horizontalPadding() const {
+    return d->horizontalPadding;
+}
+
+void RelativePosition::setVerticalPadding( const Measure & pad ) {
+    d->verticalPadding = pad;
+}
+
+Measure RelativePosition::verticalPadding() const {
+    return d->verticalPadding;
+}
+
+void RelativePosition::setRotation( qreal rot ) {
+    d->rotation = rot;
+}
+
+qreal RelativePosition::rotation() const {
+    return d->rotation;
+}
+
+bool RelativePosition::operator==( const RelativePosition& r ) const
+{
+    return  d->area              == r.referenceArea() &&
+            d->position          == r.referencePosition() &&
+            d->alignment         == r.alignment() &&
+            d->horizontalPadding == r.horizontalPadding() &&
+            d->verticalPadding   == r.verticalPadding() &&
+            d->rotation          == r.rotation() ;
+}
+
+#undef d
 
 
 QDomDocumentFragment RelativePosition::toXML() const
@@ -73,7 +151,7 @@ QDomDocumentFragment RelativePosition::toXML() const
     // PENDING(kalle) Implement this
     return QDomDocumentFragment();
 }
-}
+
 
 #if !defined(QT_NO_DEBUG_STREAM)
 QDebug operator<<(QDebug dbg, const KDChart::RelativePosition& rp)
