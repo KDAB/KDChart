@@ -72,7 +72,12 @@ void MainWindow::setupAddHeaderDialog( QDialog* dlg, Ui::AddHeaderDialog& conf )
 {
     conf.setupUi( dlg );
     conf.textED->setFocus();
-    conf.positionCO->addItems( KDChart::Position::printableNames(true) );
+
+    const QStringList labels = KDChart::Position::printableNames();
+    const QList<QByteArray> names = KDChart::Position::names();
+
+    for ( int i = 0, end = qMin( labels.size(), names.size() ) ; i != end ; ++i )
+        conf.positionCO->addItem( labels[i], names[i] );
 }
 
 
@@ -95,7 +100,7 @@ void MainWindow::on_addHeaderPB_clicked()
             ? KDChart::HeaderFooter::Header
             : KDChart::HeaderFooter::Footer );
         headerFooter->setPosition(
-            KDChart::Position::fromPrintableName( conf.positionCO->currentText() ) );
+            KDChart::Position::fromName( conf.positionCO->itemData( conf.positionCO->currentIndex() ).toByteArray() ) );
         //headerFooter->show();
         HeaderItem* newItem = new HeaderItem( headerFooter, headersTV );
         newItem->setText( 0, conf.textED->text() );
@@ -129,7 +134,7 @@ void MainWindow::on_editHeaderPB_clicked()
             ? KDChart::HeaderFooter::Header
             : KDChart::HeaderFooter::Footer );
         headerFooter->setPosition(
-            KDChart::Position::fromPrintableName( conf.positionCO->currentText() ) );
+            KDChart::Position::fromName( conf.positionCO->itemData( conf.positionCO->currentIndex() ).toByteArray() ) );
         item->setText( 0, conf.textED->text() );
         item->setText( 1, headerFooter->type() == KDChart::HeaderFooter::Header
             ? tr("Header")

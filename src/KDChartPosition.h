@@ -33,7 +33,9 @@
 #include <QDebug>
 #include <Qt>
 #include <QStringList>
+#include <QCoreApplication>
 #include "KDChartGlobal.h"
+#include "KDChartEnums.h"
 
 class QDomDocumentFragment;
 
@@ -71,13 +73,15 @@ switch( yourPosition().value() ) {
 
 class KDCHART_EXPORT Position
 {
+    Q_DECLARE_TR_FUNCTIONS( Position )
+    Position( int value );
 public:
     Position();
-    explicit Position(int value);
+    Position( KDChartEnums::PositionValue value ); // intentionally non-explicit
 
-    int value() const;
+    KDChartEnums::PositionValue value() const;
 
-    QString name() const;
+    const char * name() const;
     QString printableName() const;
     QDomDocumentFragment toXML() const;
 
@@ -100,14 +104,17 @@ public:
     static const Position& SouthWest;
     static const Position& West;
 
-    static QStringList names(bool includeCenter);
-    static QStringList printableNames(bool includeCenter);
+    enum Option { IncludeCenter=0, ExcludeCenter=1 };
+    Q_DECLARE_FLAGS( Options, Option )
 
-    static Position fromName(const QString& name);
-    static Position fromPrintableName(const QString& printableName);
+    static QList<QByteArray> names( Options options=IncludeCenter );
+    static QStringList printableNames( Options options=IncludeCenter );
+
+    static Position fromName(const char * name);
+    static Position fromName(const QByteArray & name);
 
     bool operator==( const Position& );
-    bool operator==( const int& );
+    bool operator==( int );
     bool operator!=( const Position& );
 
 private:
@@ -115,6 +122,8 @@ private:
 }; // End of class Position
 
 }
+
+Q_DECLARE_OPERATORS_FOR_FLAGS( KDChart::Position::Options )
 
 #if !defined(QT_NO_DEBUG_STREAM)
 KDCHART_EXPORT QDebug operator<<(QDebug, const KDChart::Position& );

@@ -54,7 +54,12 @@ LegendPropertiesWidget::LegendPropertiesWidget( QWidget *parent )
 {
     setupUi( this );
 
-    mPositionCombo->insertItems( 0, Position::printableNames( true ) );
+    const QStringList labels = KDChart::Position::printableNames();
+    const QList<QByteArray> names = KDChart::Position::names();
+
+    for ( int i = 0, end = qMin( labels.size(), names.size() ) ; i != end ; ++i )
+        mPositionCombo->addItem( labels[i], names[i] );
+
     connect( mPositionCombo, SIGNAL( activated( int ) ),
              this, SLOT( slotPositionChanged( int ) ) );
     connect( horizontalRB,  SIGNAL( toggled( bool ) ),
@@ -98,7 +103,7 @@ void LegendPropertiesWidget::setInstantApply( bool value )
 
 void LegendPropertiesWidget::readFromLegend( const Legend * legend )
 {
-    mPositionCombo->setCurrentIndex( legend->position().value() );
+    mPositionCombo->setCurrentIndex( mPositionCombo->findData( QByteArray( legend->position().name() ) ) );
     titleTextED->setText( legend->titleText() );
     if (  legend->orientation() == Qt::Horizontal ) {
         horizontalRB->setChecked( true );
@@ -127,7 +132,7 @@ void LegendPropertiesWidget::readFromLegend( const Legend * legend )
 void LegendPropertiesWidget::writeToLegend( Legend * legend )
 {
     if ( !legend ) return;
-    legend->setPosition( Position( mPositionCombo->currentIndex() ) );
+    legend->setPosition( Position::fromName( mPositionCombo->itemData( mPositionCombo->currentIndex() ).toByteArray() ) );
     legend->setTitleText( titleTextED->text() );
     if (  horizontalRB->isChecked() ) {
         legend->setOrientation( Qt::Horizontal );
@@ -156,7 +161,7 @@ void LegendPropertiesWidget::writeToLegend( Legend * legend )
 void LegendPropertiesWidget::slotPositionChanged( int idx )
 {
     if ( d->legend && d->instantApply ) {
-        d->legend->setPosition( Position( idx ) );
+        d->legend->setPosition( Position::fromName( mPositionCombo->itemData( idx ).toByteArray() ) );
     } else {
         emit changed();
     }

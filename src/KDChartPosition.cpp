@@ -36,25 +36,26 @@
 
 #include <KDABLibFakes>
 
+#include <cassert>
 
-namespace KDChart {
+using namespace KDChart;
 
-
+namespace {
 /**
  * \internal
  * Static strings, to be translated in printable()
  */
 static const char * staticPositionNames[] = {
-    QT_TR_NOOP("unknown Position"),
-    QT_TR_NOOP("Center"),
-    QT_TR_NOOP("NorthWest"),
-    QT_TR_NOOP("North"),
-    QT_TR_NOOP("NorthEast"),
-    QT_TR_NOOP("East"),
-    QT_TR_NOOP("SouthEast"),
-    QT_TR_NOOP("South"),
-    QT_TR_NOOP("SouthWest"),
-    QT_TR_NOOP("West")
+    QT_TRANSLATE_NOOP("Position","Unknown Position"),
+    QT_TRANSLATE_NOOP("Position","Center"),
+    QT_TRANSLATE_NOOP("Position","NorthWest"),
+    QT_TRANSLATE_NOOP("Position","North"),
+    QT_TRANSLATE_NOOP("Position","NorthEast"),
+    QT_TRANSLATE_NOOP("Position","East"),
+    QT_TRANSLATE_NOOP("Position","SouthEast"),
+    QT_TRANSLATE_NOOP("Position","South"),
+    QT_TRANSLATE_NOOP("Position","SouthWest"),
+    QT_TRANSLATE_NOOP("Position","West")
 };
 
 
@@ -75,6 +76,8 @@ static Position staticPositionWest      = Position( KDChartEnums::PositionWest )
 
 static int maxPositionValue = 9;
 
+} // anon namespace
+
 const Position& Position::Unknown   = staticPositionUnknown;
 const Position& Position::Center    = staticPositionCenter;
 const Position& Position::NorthWest = staticPositionNorthWest;
@@ -91,12 +94,18 @@ const Position& Position::West      = staticPositionWest;
  * Default constructor. Creates a new Position, defaulting it to Position::Unknown.
  */
 Position::Position()
+    : m_value( KDChartEnums::PositionUnknown )
 {
-    m_value = Position::Unknown.value();
+
+}
+
+Position::Position( int value )
+    : m_value( value )
+{
+    assert( 0 <= value ); assert( value <= maxPositionValue );
 }
 
 /**
- * \internal
  * Constructor. Creates a new Position, defaulting it to the respective value.
  *
  * Valid values ranging from zero (unknown value) to 10.
@@ -108,20 +117,18 @@ Position::Position()
  * const KDChart::Position myPosition = KDChart::Position::NorthEast;
  * \endverbatim
  */
-Position::Position(int value)
+Position::Position( KDChartEnums::PositionValue value )
+    : m_value( value )
 {
-    if( 0 <= value && 10 >= value )
-        m_value = value;
-    else
-        m_value = Position::Unknown.value();
+
 }
 
 /**
  * Returns an integer value corresponding to this Position.
  */
-int Position::value() const
+KDChartEnums::PositionValue Position::value() const
 {
-    return m_value;
+    return static_cast<KDChartEnums::PositionValue>( m_value );
 }
 
 bool Position::isWestSide() const
@@ -165,7 +172,7 @@ bool Position::isPole() const
 /**
  * Returns a non-translated string in English language, corresponding to this Position.
  */
-QString Position::name() const
+const char * Position::name() const
 {
     return staticPositionNames[m_value];
 }
@@ -175,7 +182,7 @@ QString Position::name() const
  */
 QString Position::printableName() const
 {
-    return QObject::tr(staticPositionNames[m_value]);
+    return tr(staticPositionNames[m_value]);
 }
 
 
@@ -183,15 +190,15 @@ QString Position::printableName() const
  * \brief Returns a list of all string, corresponding to
  * the pre-defined positions.
  *
- * \param includeCenter if set to \c true, the returned list
- * includes the Center position too.
+ * \param options if set to \c ExcludeCenter, the returned list
+ * does not contain the Center position.
  */
-QStringList Position::names(bool includeCenter)
+QList<QByteArray> Position::names( Options options )
 {
-    QStringList list;
-    const int start = includeCenter ? 1 : 2;
+    QList<QByteArray> list;
+    const int start = ( options & IncludeCenter ) ? 1 : 2;
     for( int i=start; i<=maxPositionValue; ++i)
-        list.append( Position(i).name() );
+        list.append( staticPositionNames[i] );
     return list;
 }
 
@@ -199,34 +206,29 @@ QStringList Position::names(bool includeCenter)
  * \brief Returns a list of all translated string, corresponding to
  * the pre-defined positions.
  *
- * \param includeCenter if set to \c true, the returned list
- * includes the Center position too.
+ * \param options if set to \c ExcludeCenter, the returned list
+ * does not contain the Center position.
  */
-QStringList Position::printableNames(bool includeCenter)
+QStringList Position::printableNames( Options options )
 {
     QStringList list;
-    const int start = includeCenter ? 1 : 2;
+    const int start = ( options & IncludeCenter ) ? 1 : 2;
     for( int i=start; i<=maxPositionValue; ++i)
         list.append( Position(i).printableName() );
     return list;
 }
 
-Position Position::fromName(const QString& name)
+Position Position::fromName(const char * name)
 {
     for( int i=1; i<=maxPositionValue; ++i)
-        if( Position(i).name() == name )
+        if ( !qstricmp( name, staticPositionNames[i] ) )
             return Position(i);
     return Position(0);
 }
 
-Position Position::fromPrintableName(const QString& printableName)
-{
-    for( int i=1; i<=maxPositionValue; ++i )
-        if( Position(i).printableName() == printableName )
-            return Position(i);
-    return Position(0);
+Position Position::fromName( const QByteArray & name ) {
+    return fromName( name.data() );
 }
-
 
 bool Position::operator==( const Position& r )
 {
@@ -234,7 +236,7 @@ bool Position::operator==( const Position& r )
 }
 
 
-bool Position::operator==( const int& value_ )
+bool Position::operator==( int value_ )
 {
     return ( value() == value_ );
 }
@@ -252,8 +254,6 @@ QDomDocumentFragment Position::toXML() const
     return QDomDocumentFragment();
 }
 
-
-}
 
 #if !defined(QT_NO_DEBUG_STREAM)
 QDebug operator<<(QDebug dbg, const KDChart::Position& p )

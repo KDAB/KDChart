@@ -97,7 +97,13 @@ void MainWindow::initAddLegendDialog( DerivedAddLegendDialog& conf,
                                       Qt::Alignment alignment ) const
 {
     conf.titleTextED->setFocus();
-    conf.positionCO->addItems( KDChart::Position::printableNames(false) );
+
+    const QStringList labels = KDChart::Position::printableNames();
+    const QList<QByteArray> names = KDChart::Position::names();
+
+    for ( int i = 0, end = qMin( labels.size(), names.size() ) ; i != end ; ++i )
+        conf.positionCO->addItem( labels[i], names[i] );
+
     QMap<Qt::Alignment, QString>::const_iterator i = alignmentMap.constBegin();
     while (i != alignmentMap.constEnd()) {
         conf.alignmentCO->addItem( i.value() );
@@ -116,7 +122,7 @@ void MainWindow::on_addLegendPB_clicked()
         KDChart::Legend* legend = new KDChart::Legend( m_lines, m_chart );
         m_chart->addLegend( legend );
         legend->setPosition(
-            KDChart::Position::fromPrintableName( conf.positionCO->currentText() ) );
+            KDChart::Position::fromName( conf.positionCO->itemData( conf.positionCO->currentIndex() ).toByteArray() ) );
         // get the alignment
         Qt::Alignment alignment = Qt::AlignCenter;
         const QString selectedAlignment( conf.alignmentCO->currentText() );
@@ -165,7 +171,7 @@ void MainWindow::on_editLegendPB_clicked()
     if( conf.exec() == QDialog::Accepted ) {
         //legend->setPosition( (KDChart::Legend::LegendPosition)conf.positionCO->currentIndex() );
         legend->setPosition(
-            KDChart::Position::fromPrintableName( conf.positionCO->currentText() ) );
+            KDChart::Position::fromName( conf.positionCO->itemData( conf.positionCO->currentIndex() ).toByteArray() ) );
         // get the alignment
         Qt::Alignment alignment = Qt::AlignCenter;
         const QString selectedAlignment( conf.alignmentCO->currentText() );

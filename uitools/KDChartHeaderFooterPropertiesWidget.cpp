@@ -53,7 +53,12 @@ HeaderFooterPropertiesWidget::HeaderFooterPropertiesWidget( QWidget *parent )
 {
     setupUi( this );
 
-    mPositionCombo->insertItems( 0, Position::printableNames( true ) );
+    const QStringList labels = KDChart::Position::printableNames();
+    const QList<QByteArray> names = KDChart::Position::names();
+
+    for ( int i = 0, end = qMin( labels.size(), names.size() ) ; i != end ; ++i )
+        mPositionCombo->addItem( labels[i], names[i] );
+
     connect( mPositionCombo, SIGNAL( activated( int ) ),
              this, SLOT( slotPositionChanged( int ) ) );
     connect( headerRB,  SIGNAL( toggled( bool ) ),
@@ -89,7 +94,7 @@ void HeaderFooterPropertiesWidget::setInstantApply( bool value )
 
 void HeaderFooterPropertiesWidget::readFromHeaderFooter( const HeaderFooter * hf  )
 {
-    mPositionCombo->setCurrentIndex( hf->position().value() );
+    mPositionCombo->setCurrentIndex( mPositionCombo->findData( QByteArray( hf->position().name() ) ) );
     textED->setText( hf->text() );
     if (  hf->type() == HeaderFooter::Header )
         headerRB->setChecked( true );
@@ -101,7 +106,7 @@ void HeaderFooterPropertiesWidget::readFromHeaderFooter( const HeaderFooter * hf
 void HeaderFooterPropertiesWidget::writeToHeaderFooter( HeaderFooter * hf )
 {
     if ( !hf ) return;
-    hf->setPosition( Position( mPositionCombo->currentIndex() ) );
+    hf->setPosition( Position::fromName( mPositionCombo->itemData( mPositionCombo->currentIndex() ).toByteArray() ) );
     hf->setText( textED->text() );
     if (  headerRB->isChecked() )
         hf->setType( HeaderFooter::Header );
@@ -112,7 +117,7 @@ void HeaderFooterPropertiesWidget::writeToHeaderFooter( HeaderFooter * hf )
 void HeaderFooterPropertiesWidget::slotPositionChanged( int idx )
 {
     if ( d->headerfooter && d->instantApply ) {
-        d->headerfooter->setPosition( Position( idx ) );
+        d->headerfooter->setPosition( Position::fromName( mPositionCombo->itemData( idx ).toByteArray() ) );
     } else {
         emit changed();
     }
