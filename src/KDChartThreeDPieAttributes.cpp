@@ -99,7 +99,7 @@ QDomDocumentFragment ThreeDPieAttributes::toXML() const
 QDebug operator<<(QDebug dbg, const KDChart::ThreeDPieAttributes& a)
 {
     dbg << "KDChart::ThreeDPieAttributes(";
-    dbg = operator <<( dbg, a);
+    dbg = operator <<( dbg, static_cast<const AbstractThreeDAttributes&>(a) );
     dbg << "useShadowColors="<< a.useShadowColors() << ")";
     return dbg;
 }

@@ -25,7 +25,8 @@
 
 #include "KDChartThreeDLineAttributes.h"
 #include "KDChartThreeDLineAttributes_p.h"
-#include <qglobal.h>
+
+#include <QDebug>
 
 #include <KDABLibFakes>
 
@@ -107,4 +108,16 @@ QDomDocumentFragment ThreeDLineAttributes::toXML() const
     return QDomDocumentFragment();
 }
 
+#if !defined(QT_NO_DEBUG_STREAM)
+
+QDebug operator<<(QDebug dbg, const KDChart::ThreeDLineAttributes& a)
+{
+    dbg << "KDChart::ThreeDLineAttributes(";
+    dbg = operator <<( dbg, static_cast<const AbstractThreeDAttributes&>(a) );
+    dbg << " lineXRotation="<< a.lineXRotation()
+        << " lineYRotation="<< a.lineYRotation()
+        << ")";
+    return dbg;
+}
+#endif /* QT_NO_DEBUG_STREAM */
 

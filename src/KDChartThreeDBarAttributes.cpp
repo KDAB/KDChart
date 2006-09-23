@@ -113,7 +113,7 @@ QDomDocumentFragment ThreeDBarAttributes::toXML() const
 QDebug operator<<(QDebug dbg, const KDChart::ThreeDBarAttributes& a)
 {
     dbg << "KDChart::ThreeDBarAttributes(";
-    dbg = operator <<( dbg, a);
+    dbg = operator <<( dbg, static_cast<const AbstractThreeDAttributes&>(a) );
     dbg << "useShadowColors="<< a.useShadowColors()
         << "angle=" << a.angle() << ")";
     return dbg;
