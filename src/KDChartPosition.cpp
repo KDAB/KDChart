@@ -27,11 +27,14 @@
  **
  **********************************************************************/
 
-#include <QObject>
-#include <QString>
-
 #include <KDChartPosition.h>
 #include <KDChartEnums.h>
+
+#include <QString>
+#include <QStringList>
+#include <QList>
+#include <QByteArray>
+
 #include <QtXml/QDomDocumentFragment>
 
 #include <KDABLibFakes>
@@ -239,12 +242,6 @@ bool Position::operator==( const Position& r ) const
 bool Position::operator==( int value_ ) const
 {
     return ( value() == value_ );
-}
-
-
-bool Position::operator!=( const Position& r ) const
-{
-    return ! ( *this == r );
 }
 
 

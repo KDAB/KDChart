@@ -32,13 +32,15 @@
 
 #include <QDebug>
 #include <Qt>
-#include <QStringList>
+#include <QMetaType>
 #include <QCoreApplication>
 #include "KDChartGlobal.h"
 #include "KDChartEnums.h"
 
 class QDomDocumentFragment;
-
+class QStringList;
+class QByteArray;
+template <typename T> class QList;
 
 namespace KDChart {
 
@@ -116,13 +118,19 @@ public:
     bool operator==( const Position& ) const;
     bool operator==( int ) const;
     bool operator!=( const Position& ) const;
+    bool operator!=( int ) const;
 
 private:
     int m_value;
 }; // End of class Position
 
+inline bool Position::operator!=( const Position & other ) const { return !operator==( other ); }
+inline bool Position::operator!=( int other ) const { return !operator==( other ); }
+
 }
 
+Q_DECLARE_TYPEINFO( KDChart::Position, Q_MOVABLE_TYPE );
+Q_DECLARE_METATYPE( KDChart::Position )
 Q_DECLARE_OPERATORS_FOR_FLAGS( KDChart::Position::Options )
 
 #if !defined(QT_NO_DEBUG_STREAM)
