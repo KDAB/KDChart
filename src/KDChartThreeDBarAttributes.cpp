@@ -25,7 +25,8 @@
 
 #include "KDChartThreeDBarAttributes.h"
 #include "KDChartThreeDBarAttributes_p.h"
-#include <qglobal.h>
+
+#include <QDebug>
 
 #include <KDABLibFakes>
 
@@ -106,5 +107,17 @@ QDomDocumentFragment ThreeDBarAttributes::toXML() const
     qWarning( "Sorry, not implemented: ThreeDBarAttribute::toXML()" );
     return QDomDocumentFragment();
 }
+
+
+#if !defined(QT_NO_DEBUG_STREAM)
+QDebug operator<<(QDebug dbg, const KDChart::ThreeDBarAttributes& a)
+{
+    dbg << "KDChart::ThreeDBarAttributes(";
+    dbg = operator <<( dbg, a);
+    dbg << "useShadowColors="<< a.useShadowColors()
+        << "angle=" << a.angle() << ")";
+    return dbg;
+}
+#endif /* QT_NO_DEBUG_STREAM */
 
 

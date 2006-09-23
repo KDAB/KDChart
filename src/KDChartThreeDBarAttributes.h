@@ -55,6 +55,8 @@ namespace KDChart {
 
     // XML serialization
     QDomDocumentFragment toXML() const;
+    
+    KDCHART_DECLARE_SWAP_DERIVED(ThreeDBarAttributes)
 
     KDCHART_DECLARE_PRIVATE_DERIVED(ThreeDBarAttributes)
 
@@ -62,6 +64,12 @@ namespace KDChart {
 
 }
 
+#if !defined(QT_NO_DEBUG_STREAM)
+KDCHART_EXPORT QDebug operator<<(QDebug, const KDChart::ThreeDBarAttributes& );
+#endif /* QT_NO_DEBUG_STREAM */
+
 Q_DECLARE_METATYPE( KDChart::ThreeDBarAttributes )
+Q_DECLARE_TYPEINFO( KDChart::ThreeDBarAttributes, Q_MOVABLE_TYPE );
+KDCHART_DECLARE_SWAP_SPECIALISATION_DERIVED( KDChart::ThreeDBarAttributes )
 
 #endif // KDCHARTTHREEDBARATTRIBUTES_H
