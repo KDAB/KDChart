@@ -96,7 +96,7 @@ public:
 
 protected:
     virtual ~AbstractAreaWidget() ;
-    virtual const QRect areaGeometry() const;
+    virtual QRect areaGeometry() const;
     virtual void positionHasChanged();
 
 public:

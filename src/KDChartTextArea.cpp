@@ -102,7 +102,7 @@ void TextArea::paintAll( QPainter& painter )
     //qDebug() << "TextAreaWidget::paintAll() done.";
 }
 
-const QRect TextArea::areaGeometry() const
+QRect TextArea::areaGeometry() const
 {
     return geometry();
 }

@@ -108,7 +108,7 @@ protected:
       * to find out the real widget size.
       * \sa AbstractArea, AbstractAreaWidget
       */
-    virtual const QRect areaGeometry() const = 0;
+    virtual QRect areaGeometry() const = 0;
 
     /** \internal
       * This internal method can be overwritten by derived classes,

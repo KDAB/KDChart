@@ -104,7 +104,7 @@ void AbstractAreaWidget::paintAll( QPainter& painter )
      //qDebug() << "AbstractAreaWidget::paintAll() done.";
 }
 
-const QRect AbstractAreaWidget::areaGeometry() const
+QRect AbstractAreaWidget::areaGeometry() const
 {
     return geometry();
 }

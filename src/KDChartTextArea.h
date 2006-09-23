@@ -79,7 +79,7 @@ public:
 
 protected:
     TextArea();
-    virtual const QRect areaGeometry() const;
+    virtual QRect areaGeometry() const;
     virtual void positionHasChanged();
 
 Q_SIGNALS:
