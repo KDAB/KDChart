@@ -260,6 +260,11 @@ void Legend::resetDiagram( AbstractDiagram* oldDiagram )
     removeDiagram( oldDiagram );
 }
 
+void Legend::setVisible( bool visible )
+{
+    QWidget::setVisible( visible );
+//    emitPositionChanged();
+}
 
 void Legend::setNeedRebuild()
 {

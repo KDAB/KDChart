@@ -79,6 +79,7 @@ public:
     virtual void resizeEvent( QResizeEvent * event );
 
     virtual void paint( QPainter* painter );
+    virtual void setVisible( bool visible );
 
     /**
         Specifies the reference area for font size of title text,
