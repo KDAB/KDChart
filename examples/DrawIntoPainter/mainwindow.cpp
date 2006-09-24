@@ -75,6 +75,10 @@ MainWindow::MainWindow( QWidget* parent ) :
     chartFrameWidget->setChart( m_chart );
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
 
+    // make sure, we re-draw after changing one of the chart's properties
+    connect( m_chart,          SIGNAL( propertiesChanged() ),
+             chartFrameWidget, SLOT(   update() ) ) ;
+
     // Set up the legend
     m_legend = new Legend( m_lines, m_chart );
     m_chart->addLegend( m_legend );
@@ -91,15 +95,12 @@ void MainWindow::on_lineTypeCB_currentIndexChanged( const QString & text )
         m_lines->setType( LineDiagram::Percent );
     else
         qWarning (" Does not match any type");
-
-    m_chart->update();
 }
 
 
 void MainWindow::on_paintLegendCB_toggled( bool checked )
 {
     m_legend->setVisible( checked );
-    m_chart->update();
 }
 
 void MainWindow::on_paintValuesCB_toggled( bool checked )
@@ -127,7 +128,6 @@ void MainWindow::on_paintValuesCB_toggled( bool checked )
         a.setVisible( true );
         m_lines->setDataValueAttributes( iColumn, a);
     }
-    m_chart->update();
 }
 
 
@@ -214,7 +214,6 @@ void MainWindow::on_paintMarkersCB_toggled( bool checked )
         }
         m_lines->setDataValueAttributes( iColumn, colAttributes );
     }
-    m_chart->update();
 }
 
 void MainWindow::on_markersStyleCB_currentIndexChanged( const QString & text )
@@ -257,7 +256,6 @@ void MainWindow::on_displayAreasCB_toggled( bool checked )
              m_lines->setLineAttributes( iColumn,  la );
          }
      }
-     m_chart->update();
 }
 
 void MainWindow::on_transparencySB_valueChanged( int alpha )
@@ -287,7 +285,6 @@ void MainWindow::on_zoomFactorSB_valueChanged( double factor )
     }
     m_chart->coordinatePlane()->setZoomFactorX( factor );
     m_chart->coordinatePlane()->setZoomFactorY( factor );
-    m_chart->update();
 }
 
 void MainWindow::on_hSBar_valueChanged( int hPos )
@@ -299,6 +296,5 @@ void MainWindow::on_hSBar_valueChanged( int hPos )
 void MainWindow::on_vSBar_valueChanged( int vPos )
 {
     m_chart->coordinatePlane()->setZoomCenter( QPointF( hSBar->value()/1000.0, vPos/1000.0) );
-    m_chart->update();
 }
 
