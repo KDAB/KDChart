@@ -288,6 +288,9 @@ namespace KDChart {
         /** Emitted when plane needs to trigger the Chart's layouting of the coord. planes. */
         void needLayoutPlanes();
 
+        /** Emitted upon change of a property of the Coordinate Plane or any of its components. */
+        void propertiesChanged();
+
     protected:
         virtual DataDimensionsList getDataDimensionsList() const = 0;
 

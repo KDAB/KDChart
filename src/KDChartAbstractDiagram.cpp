@@ -226,6 +226,7 @@ void AbstractDiagram::setDataValueAttributes( const QModelIndex & index,
         d->attributesModel->mapFromSource( index ),
         qVariantFromValue( a ),
         DataValueLabelAttributesRole );
+    emit propertiesChanged();
 }
 
 
@@ -235,6 +236,7 @@ void AbstractDiagram::setDataValueAttributes( int column, const DataValueAttribu
     d->attributesModel->setHeaderData(
         column, Qt::Vertical,
         qVariantFromValue( a ), DataValueLabelAttributesRole );
+    emit propertiesChanged();
 }
 
 DataValueAttributes AbstractDiagram::dataValueAttributes() const
@@ -259,12 +261,13 @@ DataValueAttributes AbstractDiagram::dataValueAttributes( const QModelIndex & in
 void AbstractDiagram::setDataValueAttributes( const DataValueAttributes & a )
 {
     d->attributesModel->setModelData( qVariantFromValue( a ), DataValueLabelAttributesRole );
+    emit propertiesChanged();
 }
 
 void AbstractDiagram::setAllowOverlappingDataValueTexts( bool allow )
 {
     d->allowOverlappingDataValueTexts = allow;
-    update();
+    emit propertiesChanged();
 }
 
 bool AbstractDiagram::allowOverlappingDataValueTexts() const
@@ -275,7 +278,7 @@ bool AbstractDiagram::allowOverlappingDataValueTexts() const
 void AbstractDiagram::setAntiAliasing( bool enabled )
 {
     d->antiAliasing = enabled;
-    update();
+    emit propertiesChanged();
 }
 
 bool AbstractDiagram::antiAliasing() const
@@ -286,6 +289,7 @@ bool AbstractDiagram::antiAliasing() const
 void AbstractDiagram::setPercentMode ( bool percent )
 {
     d->percent = percent;
+    emit propertiesChanged();
 }
 
 bool AbstractDiagram::percentMode() const
@@ -528,12 +532,14 @@ void AbstractDiagram::setPen( const QModelIndex& index, const QPen& pen )
     attributesModel()->setData(
         attributesModel()->mapFromSource( index ),
         qVariantFromValue( pen ), DatasetPenRole );
+    emit propertiesChanged();
 }
 
 void AbstractDiagram::setPen( const QPen& pen )
 {
     attributesModel()->setModelData(
         qVariantFromValue( pen ), DatasetPenRole );
+    emit propertiesChanged();
 }
 
 void AbstractDiagram::setPen( int column,const QPen& pen )
@@ -542,6 +548,7 @@ void AbstractDiagram::setPen( int column,const QPen& pen )
         column, Qt::Vertical,
         qVariantFromValue( pen ),
         DatasetPenRole );
+    emit propertiesChanged();
 }
 
 QPen AbstractDiagram::pen() const
@@ -571,12 +578,14 @@ void AbstractDiagram::setBrush( const QModelIndex& index, const QBrush& brush )
     attributesModel()->setData(
         attributesModel()->mapFromSource( index ),
         qVariantFromValue( brush ), DatasetBrushRole );
+    emit propertiesChanged();
 }
 
 void AbstractDiagram::setBrush( const QBrush& brush )
 {
     attributesModel()->setModelData(
         qVariantFromValue( brush ), DatasetBrushRole );
+    emit propertiesChanged();
 }
 
 void AbstractDiagram::setBrush( int column, const QBrush& brush )
@@ -585,6 +594,7 @@ void AbstractDiagram::setBrush( int column, const QBrush& brush )
         column, Qt::Vertical,
         qVariantFromValue( brush ),
         DatasetBrushRole );
+    emit propertiesChanged();
 }
 
 QBrush AbstractDiagram::brush() const

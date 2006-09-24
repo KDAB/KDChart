@@ -78,6 +78,7 @@ void CartesianCoordinatePlane::init()
     // this bloc left empty intentionally
 }
 
+
 void CartesianCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
 {
     Q_ASSERT_X ( dynamic_cast<AbstractCartesianDiagram*> ( diagram ),
@@ -86,7 +87,10 @@ void CartesianCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
     AbstractCoordinatePlane::addDiagram ( diagram );
     connect ( diagram,  SIGNAL ( layoutChanged ( AbstractDiagram* ) ),
               SLOT ( slotLayoutChanged ( AbstractDiagram* ) ) );
+
+    connect( diagram, SIGNAL( propertiesChanged() ),this, SIGNAL( propertiesChanged() ) );
 }
+
 
 void CartesianCoordinatePlane::paint ( QPainter* painter )
 {
@@ -149,100 +153,6 @@ void CartesianCoordinatePlane::paint ( QPainter* painter )
     d->bPaintIsRunning = false;
     //qDebug("done: plane::paint()");
 }
-
-/*
-void CartesianCoordinatePlane::paintEvent ( QPaintEvent* )
-{
-    AbstractDiagramList diags = diagrams();
-    if ( !diags.isEmpty() )
-    {
-        QPainter painter ( this );
-        PaintContext ctx;
-        ctx.setPainter ( &painter );
-        ctx.setCoordinatePlane ( this );
-        const QRectF drawArea( drawingArea() );
-        ctx.setRectangle ( drawArea );
-
-        // paint the coordinate system rulers:
-        d->grid->drawGrid( &ctx );
-
-        // paint the diagrams:
-        for ( int i = 0; i < diags.size(); i++ )
-        {
-            PainterSaver painterSaver( &painter );
-            diags[i]->paint ( &ctx );
-        }
-    }
-    //for debugging: painter.drawRect(drawArea);
-}
-*/
-
-/*
-void CartesianCoordinatePlane::paintGrid( PaintContext* ctx )
-{
-    // FIXME accumulate over all diagrams
-    const GridAttributes a = gridAttributes();
-    AbstractCartesianDiagram* dgr = dynamic_cast<AbstractCartesianDiagram*> (diagrams().first() );
-    Q_ASSERT ( dgr ); // only cartesian diagrams are allowed here
-
-    const int numberOfAbscissaSegments = dgr->numberOfAbscissaSegments();
-    const int numberOfOrdinateSegments = dgr->numberOfOrdinateSegments();
-    QRectF diagramRect = d->coordinateTransformation.diagramRect;
-    bool hasVisibleAbscissa = ( d->coordinateTransformation.unitVectorX
-                                * ( diagramRect.left() - diagramRect.right() ) ) <= 0;
-    bool hasVisibleOrdinate = ( d->coordinateTransformation.unitVectorY
-                                * ( diagramRect.top() - diagramRect.bottom () ) ) <= 0;
-
-
-    // the axes and rulers to draw, this can be cached:
-    QVector<QLineF> axes;
-    QVector<QLineF> rulers;
-
-    // draw the abscissa and ordinate, if they are in the visible range:
-    if ( hasVisibleAbscissa )
-    {
-        QLineF l2r ( translate ( QPointF ( diagramRect.left(), 0 ) ),
-                     translate ( QPointF ( diagramRect.right(), 0 ) ) );
-        axes.append ( l2r );
-    }
-
-    if ( hasVisibleOrdinate )
-    {
-        QLineF t2b ( translate ( QPointF ( 0, diagramRect.top() ) ),
-                     translate ( QPointF ( 0, diagramRect.bottom() ) ) );
-        axes.append ( t2b );
-    }
-
-    double step = diagramRect.width() / ( numberOfAbscissaSegments - 1 );
-    double x = diagramRect.left();
-    for ( int i = 0; i < numberOfAbscissaSegments; ++i )
-    {
-        QLineF l ( translate ( QPointF ( x, diagramRect.top() ) ),
-                   translate ( QPointF ( x,  diagramRect.bottom() ) ) );
-        rulers.append (l );
-        x += step;
-    }
-
-    step = diagramRect.height() / ( numberOfOrdinateSegments - 1 );
-    double y = diagramRect.top();
-    for ( int i = 0; i < numberOfOrdinateSegments; ++i )
-    {
-        QLineF l ( translate ( QPointF ( diagramRect.left(), y ) ),
-                   translate ( QPointF ( diagramRect.right(), y ) ) );
-        rulers.append (l );
-        y += step;
-    }
-
-    if ( a.isSubGridVisible() ) {
-        ctx->painter()->setPen ( a.subGridPen() );
-        ctx->painter()->drawLines ( rulers );
-    }
-    if ( a.isGridVisible() ) {
-        ctx->painter()->setPen ( a.gridPen() );
-        ctx->painter()->drawLines ( axes );
-    }
-}
-*/
 
 void CartesianCoordinatePlane::slotLayoutChanged ( AbstractDiagram* )
 {

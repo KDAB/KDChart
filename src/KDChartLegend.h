@@ -223,6 +223,8 @@ public:
 
 Q_SIGNALS:
     void destroyedLegend( Legend* );
+    /** Emitted upon change of a property of the Legend or any of its components. */
+    void propertiesChanged();
 
 private Q_SLOTS:
     void emitPositionChanged();

@@ -332,6 +332,10 @@ namespace KDChart {
           */
         void paint( QPainter* painter, const QRect& target );
 
+    Q_SIGNALS:
+        /** Emitted upon change of a property of the Chart or any of its components. */
+        void propertiesChanged();
+
     protected:
         /**
           * Adjusts the internal layout when the chart is resized.

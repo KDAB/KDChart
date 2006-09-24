@@ -486,6 +486,9 @@ namespace KDChart {
         /** This signal is emitted, when either the model or the AttributesModel is replaced. */
         void modelsChanged();
 
+        /** Emitted upon change of a property of the Diagram. */
+        void propertiesChanged();
+
     private:
 	QString roundValues( double value, const int decimalPos,
 			      const int decimalDigits ) const;

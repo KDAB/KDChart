@@ -534,10 +534,7 @@ void Chart::Private::slotRelayout()
     //dataAndLegendLayout->activate();
     Q_FOREACH (AbstractCoordinatePlane* plane, coordinatePlanes )
         plane->layoutDiagrams();
-
-    //chart->update();
-
-    //qDebug() << "Chart relayouting done.";
+   //qDebug() << "Chart relayouting done.";
 }
 
 // ******** Chart interface implementation ***********
@@ -579,12 +576,10 @@ void Chart::addCoordinatePlane( AbstractCoordinatePlane* plane )
 {
     connect( plane, SIGNAL( destroyedCoordinatePlane( AbstractCoordinatePlane* ) ),
              d,   SLOT( slotUnregisterDestroyedPlane( AbstractCoordinatePlane* ) ) );
-    connect( plane, SIGNAL( needUpdate() ),
-             this,    SLOT( update() ) );
-    connect( plane, SIGNAL( needRelayout() ),
-             d,       SLOT( slotRelayout() ) ) ;
-    connect( plane, SIGNAL( needLayoutPlanes() ),
-             d,       SLOT( slotLayoutPlanes() ) ) ;
+    connect( plane, SIGNAL( needUpdate() ),       this,   SLOT( update() ) );
+    connect( plane, SIGNAL( needRelayout() ),     d,      SLOT( slotRelayout() ) ) ;
+    connect( plane, SIGNAL( needLayoutPlanes() ), d,      SLOT( slotLayoutPlanes() ) ) ;
+    connect( plane, SIGNAL( propertiesChanged() ),this, SIGNAL( propertiesChanged() ) );
     d->coordinatePlanes.append( plane );
     plane->setParent( this );
     d->slotLayoutPlanes();
@@ -726,7 +721,6 @@ qFatal("nPaint > 100");
     //qDebug() << "KDChart::Chart::paint() done.\n";
 }
 
-
 void Chart::resizeEvent ( QResizeEvent * event )
 {
     d->slotLayoutPlanes();
@@ -802,6 +796,7 @@ void Chart::addLegend( Legend* legend )
              d, SLOT( slotUnregisterDestroyedLegend( Legend* ) ) );
     connect( legend, SIGNAL( positionChanged( AbstractAreaWidget* ) ),
              d, SLOT( slotRelayout() ) );
+    connect( legend, SIGNAL( propertiesChanged() ),this, SIGNAL( propertiesChanged() ) );
     d->slotRelayout();
 }
 

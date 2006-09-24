@@ -90,6 +90,7 @@ void LineDiagram::setType( const LineType type )
    setPercentMode( type == LineDiagram::Percent );
    setDataBoundariesDirty();
    emit layoutChanged( this );
+   emit propertiesChanged();
 }
 
 LineDiagram::LineType LineDiagram::type() const
@@ -102,6 +103,7 @@ void LineDiagram::setLineAttributes( const LineAttributes & ta )
      d->attributesModel->setModelData(
         qVariantFromValue( ta ),
         LineAttributesRole );
+   emit propertiesChanged();
 }
 
 void LineDiagram::setLineAttributes(
@@ -113,6 +115,7 @@ void LineDiagram::setLineAttributes(
         Qt::Vertical,
         qVariantFromValue( ta ),
         LineAttributesRole );
+   emit propertiesChanged();
 }
 
 void LineDiagram::setLineAttributes(
@@ -123,6 +126,7 @@ void LineDiagram::setLineAttributes(
         d->attributesModel->mapFromSource(index),
         qVariantFromValue( ta ),
         LineAttributesRole );
+   emit propertiesChanged();
 }
 
 LineAttributes LineDiagram::lineAttributes() const
@@ -155,6 +159,7 @@ void LineDiagram::setThreeDLineAttributes(
     d->attributesModel->setModelData(
         qVariantFromValue( ta ),
         ThreeDLineAttributesRole );
+   emit propertiesChanged();
 }
 
 void LineDiagram::setThreeDLineAttributes(
@@ -167,6 +172,7 @@ void LineDiagram::setThreeDLineAttributes(
         Qt::Vertical,
         qVariantFromValue( ta ),
         ThreeDLineAttributesRole );
+   emit propertiesChanged();
 }
 
 void LineDiagram::setThreeDLineAttributes(
@@ -178,6 +184,7 @@ void LineDiagram::setThreeDLineAttributes(
         d->attributesModel->mapFromSource(index),
         qVariantFromValue( ta ),
         ThreeDLineAttributesRole );
+   emit propertiesChanged();
 }
 
 ThreeDLineAttributes LineDiagram::threeDLineAttributes() const
