@@ -349,6 +349,7 @@ void CartesianCoordinatePlane::setIsometricScaling ( bool onOff )
     {
         d->isometricScaling = onOff;
         layoutDiagrams();
+        emit propertiesChanged();
     }
 }
 
@@ -359,18 +360,28 @@ bool CartesianCoordinatePlane::doesIsometricScaling ()
 
 void CartesianCoordinatePlane::setZoomFactorX( double factor )
 {
-    d->coordinateTransformation.zoom.xFactor = factor;
+    if( d->coordinateTransformation.zoom.xFactor != factor ){
+        d->coordinateTransformation.zoom.xFactor = factor;
+        emit propertiesChanged();
+    }
 }
 
 void CartesianCoordinatePlane::setZoomFactorY( double factor )
 {
-    d->coordinateTransformation.zoom.yFactor = factor;
+    if( d->coordinateTransformation.zoom.yFactor != factor ){
+        d->coordinateTransformation.zoom.yFactor = factor;
+        emit propertiesChanged();
+    }
 }
 
 void CartesianCoordinatePlane::setZoomCenter( QPointF center )
 {
-    d->coordinateTransformation.zoom.xCenter = center.x();
-    d->coordinateTransformation.zoom.yCenter = center.y();
+    if( d->coordinateTransformation.zoom.xCenter != center.x() ||
+        d->coordinateTransformation.zoom.yCenter != center.y() ){
+        d->coordinateTransformation.zoom.xCenter = center.x();
+        d->coordinateTransformation.zoom.yCenter = center.y();
+        emit propertiesChanged();
+    }
 }
 
 QPointF CartesianCoordinatePlane::zoomCenter() const
@@ -401,18 +412,28 @@ CartesianCoordinatePlane::AxesCalcMode CartesianCoordinatePlane::axesCalcModeX()
 
 void CartesianCoordinatePlane::setAxesCalcModes( AxesCalcMode mode )
 {
-    setAxesCalcModeY( mode );
-    setAxesCalcModeX( mode );
+    if( d->coordinateTransformation.axesCalcModeY != mode ||
+        d->coordinateTransformation.axesCalcModeX != mode ){
+        d->coordinateTransformation.axesCalcModeY = mode;
+        d->coordinateTransformation.axesCalcModeX = mode;
+        emit propertiesChanged();
+    }
 }
 
 void CartesianCoordinatePlane::setAxesCalcModeY( AxesCalcMode mode )
 {
-    d->coordinateTransformation.axesCalcModeY = mode;
+    if( d->coordinateTransformation.axesCalcModeY != mode ){
+        d->coordinateTransformation.axesCalcModeY = mode;
+        emit propertiesChanged();
+    }
 }
 
 void CartesianCoordinatePlane::setAxesCalcModeX( AxesCalcMode mode )
 {
-    d->coordinateTransformation.axesCalcModeX = mode;
+    if( d->coordinateTransformation.axesCalcModeX != mode ){
+        d->coordinateTransformation.axesCalcModeX = mode;
+        emit propertiesChanged();
+    }
 }
 
 void KDChart::CartesianCoordinatePlane::setHorizontalRange( const QPair< qreal, qreal > & range )
@@ -421,6 +442,7 @@ void KDChart::CartesianCoordinatePlane::setHorizontalRange( const QPair< qreal, 
         d->horizontalMin = range.first;
         d->horizontalMax = range.second;
         layoutDiagrams();
+        emit propertiesChanged();
     }
 }
 
@@ -430,6 +452,7 @@ void KDChart::CartesianCoordinatePlane::setVerticalRange( const QPair< qreal, qr
         d->verticalMin = range.first;
         d->verticalMax = range.second;
         layoutDiagrams();
+        emit propertiesChanged();
     }
 }
 
@@ -453,6 +476,7 @@ void KDChart::CartesianCoordinatePlane::setGridAttributes(
         d->gridAttributesVertical = a;
     setHasOwnGridAttributes( orientation, true );
     update();
+    emit propertiesChanged();
 }
 
 void KDChart::CartesianCoordinatePlane::resetGridAttributes(
@@ -478,10 +502,11 @@ GridAttributes KDChart::CartesianCoordinatePlane::gridAttributes(
 void KDChart::CartesianCoordinatePlane::setHasOwnGridAttributes(
     Qt::Orientation orientation, bool on )
 {
-        if( orientation == Qt::Horizontal )
-            d->hasOwnGridAttributesHorizontal = on;
-        else
-            d->hasOwnGridAttributesVertical = on;
+    if( orientation == Qt::Horizontal )
+        d->hasOwnGridAttributesHorizontal = on;
+    else
+        d->hasOwnGridAttributesVertical = on;
+    emit propertiesChanged();
 }
 
 bool KDChart::CartesianCoordinatePlane::hasOwnGridAttributes(
