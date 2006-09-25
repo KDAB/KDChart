@@ -691,7 +691,7 @@ qFatal("nPaint > 100");
         //qDebug() << "KDChart::Chart::paint() calling new setGeometry(" << target << ")";
         setGeometry( target );
         painter->drawRect( target );
-        d->slotRelayout();
+        d->slotLayoutPlanes();
         translation.setX( target_.left() );
         translation.setY( target_.left() );
         painter->translate( translation );
@@ -706,8 +706,20 @@ qFatal("nPaint > 100");
     Q_FOREACH( KDChart::TextArea* textLayoutItem, d->textLayoutItems ) {
         textLayoutItem->paintAll( *painter );
     }
-    Q_FOREACH( Legend *legend, d->legendLayoutItems ) {
-        legend->paintAll( *painter );
+//int i=0;
+    Q_FOREACH( Legend *legend, d->legends ) {
+//qDebug("legend # %i",++i);
+        if( ! legend->isHidden() ){
+            legend->forceRebuild();
+/*
+            const QPoint translation( legend->geometry().topLeft() );
+            painter->translate( translation );
+            legend->paintAll( *painter );
+            if( ! translation.isNull() )
+                painter->translate( -translation.x(), -translation.y() );
+*/
+            legend->paintIntoRect( *painter, legend->geometry() );
+        }
     }
 
     if( target_ != oldGeometry ){

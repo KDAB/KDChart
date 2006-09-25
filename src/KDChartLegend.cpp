@@ -468,6 +468,11 @@ TextAttributes Legend::titleTextAttributes() const
     return d->titleTextAttributes;
 }
 
+void Legend::forceRebuild()
+{
+    setSpacing(d->layout->spacing());
+}
+
 void Legend::setSpacing( uint space )
 {
     if( d->spacing == space && d->layout->spacing() == static_cast<int>(space) ) return;
@@ -561,6 +566,8 @@ static const QColor SUBDUEDCOLORS[ NUM_SUBDUEDCOLORS ] = {
 
 void Legend::resizeEvent ( QResizeEvent * event )
 {
+    d->needRebuild = true;
+    buildLegend();
     QTimer::singleShot(0, this, SLOT(emitPositionChanged()));
 }
 
