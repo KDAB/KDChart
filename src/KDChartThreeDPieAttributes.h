@@ -27,7 +27,6 @@
 #define KDCHARTTHREEDPIEATTRIBUTES_H
 
 #include <QMetaType>
-#include <QtXml/QDomDocumentFragment>
 #include "KDChartAbstractThreeDAttributes.h"
 #include "KDChartGlobal.h"
 
@@ -49,8 +48,6 @@ namespace KDChart {
     bool operator==( const ThreeDPieAttributes& ) const;
     inline bool operator!=( const ThreeDPieAttributes& other ) const { return !operator==(other); }
 
-    // XML serialization
-    QDomDocumentFragment toXML() const;
 
     KDCHART_DECLARE_SWAP_DERIVED(ThreeDPieAttributes)
 

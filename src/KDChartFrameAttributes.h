@@ -35,8 +35,6 @@
 #include <QPen>
 #include "KDChartGlobal.h"
 
-class QDomDocumentFragment;
-
 namespace KDChart {
 
 class KDCHART_EXPORT FrameAttributes
@@ -59,9 +57,6 @@ public:
 
     bool operator==( const FrameAttributes& ) const;
     inline bool operator!=( const FrameAttributes& other ) const { return !operator==(other); }
-
-    // XML serialization
-    QDomDocumentFragment toXML() const;
 
 private:
 

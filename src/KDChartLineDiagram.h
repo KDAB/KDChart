@@ -33,7 +33,6 @@
 #include "KDChartAbstractCartesianDiagram.h"
 #include "KDChartLineAttributes.h"
 
-class QDomDocumentFragment;
 class QPainter;
 class QPolygonF;
 

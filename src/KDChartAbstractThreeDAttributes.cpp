@@ -112,13 +112,6 @@ double AbstractThreeDAttributes::validDepth() const
 }
 
 
-QDomDocumentFragment AbstractThreeDAttributes::toXML() const
-{
-    // PENDING(kalle) FIXME
-    qWarning( "Sorry, not implemented: AbstractThreeDAttributes::toXML()" );
-    return QDomDocumentFragment();
-}
-
 #if !defined(QT_NO_DEBUG_STREAM)
 QDebug operator<<(QDebug dbg, const KDChart::AbstractThreeDAttributes& a)
 {

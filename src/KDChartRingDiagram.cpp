@@ -23,7 +23,6 @@
  **
  **********************************************************************/
 
-#include <QtXml/QDomDocumentFragment>
 #include <QPainter>
 
 #include "KDChartAttributesModel.h"
@@ -64,13 +63,6 @@ RingDiagram * RingDiagram::clone() const
     // PENDING(kalle) FIXME
     qWarning( "Sorry, not implemented: RingDiagram * RingDiagram::clone() const" );
     return (RingDiagram*)0xdeadbeef;
-}
-
-QDomDocumentFragment RingDiagram::toXML() const
-{
-    // PENDING(kalle) FIXME
-    qWarning( "Sorry, not implemented: QDomDocumentFragment RingDiagram::toXML() const" );
-    return QDomDocumentFragment();
 }
 
 void RingDiagram::setRelativeThickness( bool relativeThickness )

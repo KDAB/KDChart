@@ -29,8 +29,6 @@
 #include "KDChartMeasure.h"
 #include "KDChartPosition.h"
 
-#include <QtXml/QDomDocumentFragment>
-
 #include <KDABLibFakes>
 
 using namespace KDChart;
@@ -144,13 +142,6 @@ bool RelativePosition::operator==( const RelativePosition& r ) const
 }
 
 #undef d
-
-
-QDomDocumentFragment RelativePosition::toXML() const
-{
-    // PENDING(kalle) Implement this
-    return QDomDocumentFragment();
-}
 
 
 #if !defined(QT_NO_DEBUG_STREAM)

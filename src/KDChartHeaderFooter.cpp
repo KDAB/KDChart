@@ -26,7 +26,6 @@
 #include "KDChartChart.h"
 #include "KDChartHeaderFooter.h"
 #include "KDChartHeaderFooter_p.h"
-#include <QtXml/QDomDocumentFragment>
 #include <KDChartTextAttributes.h>
 #include <QFont>
 #include <QPainter>
@@ -87,13 +86,6 @@ void HeaderFooter::init()
     ta.setMinimalFontSize( m  );
 
     setTextAttributes( ta );
-}
-
-QDomDocumentFragment HeaderFooter::toXML() const
-{
-    // PENDING(kalle) FIXME
-    qWarning( "Sorry, not implemented: QDomDocumentFragment HeaderFooter::toXML() const" );
-    return QDomDocumentFragment();
 }
 
 HeaderFooter * HeaderFooter::clone() const

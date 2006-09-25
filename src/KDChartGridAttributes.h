@@ -34,7 +34,6 @@
 #include "KDChartGlobal.h"
 #include "KDChartEnums.h"
 
-class QDomDocumentFragment;
 class QPen;
 
 namespace KDChart {
@@ -78,9 +77,6 @@ public:
 
     bool operator==( const GridAttributes& ) const;
     inline bool operator!=( const GridAttributes& other ) const { return !operator==(other); }
-
-    // XML serialization
-    QDomDocumentFragment toXML() const;
 
 private:
     KDCHART_DECLARE_PRIVATE_BASE_VALUE( GridAttributes )

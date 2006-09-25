@@ -24,7 +24,6 @@
  **********************************************************************/
 
 #include <QMap>
-#include <QtXml/QDomDocumentFragment>
 
 #include "KDChartAbstractPieDiagram.h"
 #include "KDChartAbstractPieDiagram_p.h"
@@ -62,14 +61,6 @@ void AbstractPieDiagram::init()
 
 
 #define d d_func()
-
-
-QDomDocumentFragment AbstractPieDiagram::toXML() const
-{
-    // PENDING(kalle) FIXME
-    qWarning( "Sorry, not implemented: QDomDocumentFragment AbstractPieDiagram::toXML() const" );
-    return QDomDocumentFragment();
-}
 
 
 void AbstractPieDiagram::setPieAttributes( const PieAttributes & attrs )

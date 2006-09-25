@@ -26,7 +26,6 @@
 #include "KDChartTextAttributes.h"
 #include <QFont>
 #include <QPen>
-#include <QtXml/QDomDocumentFragment>
 #include <qglobal.h>
 #include <QApplication>
 
@@ -187,13 +186,6 @@ void TextAttributes::setPen( const QPen& pen )
 QPen TextAttributes::pen() const
 {
     return d->pen;
-}
-
-QDomDocumentFragment TextAttributes::toXML() const
-{
-    // PENDING(kalle) FIXME
-    qWarning( "Sorry, not implemented: QDomDocumentFragment TextAttributes::toXML() const" );
-    return QDomDocumentFragment();
 }
 
 #if !defined(QT_NO_DEBUG_STREAM)

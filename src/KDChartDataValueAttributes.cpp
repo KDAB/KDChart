@@ -26,7 +26,6 @@
 
 #include <QVariant>
 #include <QDebug>
-#include <QtXml/QDomDocumentFragment>
 #include "KDChartDataValueAttributes.h"
 #include "KDChartRelativePosition.h"
 #include <KDChartTextAttributes.h>
@@ -143,11 +142,6 @@ void DataValueAttributes::setVisible( bool visible )
 bool DataValueAttributes::isVisible() const
 {
     return d->visible;
-}
-
-QDomDocumentFragment DataValueAttributes::toXML() const
-{
-    return QDomDocumentFragment();
 }
 
 void DataValueAttributes::setTextAttributes( const TextAttributes &a )

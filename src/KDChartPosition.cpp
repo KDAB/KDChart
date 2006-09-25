@@ -35,8 +35,6 @@
 #include <QList>
 #include <QByteArray>
 
-#include <QtXml/QDomDocumentFragment>
-
 #include <KDABLibFakes>
 
 #include <cassert>
@@ -242,13 +240,6 @@ bool Position::operator==( const Position& r ) const
 bool Position::operator==( int value_ ) const
 {
     return ( value() == value_ );
-}
-
-
-QDomDocumentFragment Position::toXML() const
-{
-    // PENDING(kalle) Implement this, using the string returned by name()
-    return QDomDocumentFragment();
 }
 
 

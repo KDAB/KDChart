@@ -151,11 +151,6 @@ bool Measure::operator==( const Measure& r ) const
 
 
 
-QDomDocumentFragment Measure::toXML() const
-{
-    return QDomDocumentFragment();
-}
-
 
 }
 

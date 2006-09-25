@@ -36,7 +36,6 @@
 #include "KDChartEnums.h"
 
 class QObject;
-class QDomDocumentFragment;
 
 namespace KDChart {
 
@@ -50,8 +49,6 @@ public:
                           KDChartEnums::MeasureOrientation orientation = KDChartEnums::MeasureOrientationAuto );
     Measure( const Measure& );
     Measure &operator= ( const Measure& );
-
-    QDomDocumentFragment toXML() const;
 
     void setValue( qreal val ){ mValue = val; }
     qreal value() const { return mValue; }

@@ -35,7 +35,6 @@
 #include "KDChartAbstractPolarDiagram.h"
 
 
-class QDomDocumentFragment;
 class QPolygonF;
 
 
@@ -71,8 +70,6 @@ public:
     virtual double numberOfGridRings() const;
 
     virtual PolarDiagram * clone() const;
-
-    virtual QDomDocumentFragment toXML() const;
 
     void setZeroDegreePosition( int degrees );
     int zeroDegreePosition() const;

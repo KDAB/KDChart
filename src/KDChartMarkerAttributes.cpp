@@ -29,7 +29,6 @@
 #include <QPen>
 #include <QSizeF>
 #include <QDebug>
-#include <QtXml/QDomDocumentFragment>
 #include <qglobal.h>
 
 #include <KDABLibFakes>
@@ -155,13 +154,6 @@ void MarkerAttributes::setPen( const QPen& pen )
 QPen MarkerAttributes::pen() const
 {
     return d->markerPen;
-}
-
-QDomDocumentFragment MarkerAttributes::toXML() const
-{
-    // PENDING(kalle) FIXME
-    qWarning( "Sorry, not implemented: QDomDocumentFragment MarkerAttributes::toXML() const" );
-    return QDomDocumentFragment();
 }
 
 #undef d

@@ -680,12 +680,6 @@ void CartesianAxis::paintCtx( PaintContext* context )
 }
 #undef ptr
 
-QDomDocumentFragment CartesianAxis::toXML() const
-{
-    Q_ASSERT_X ( false, "CartesianAxis::toXML()", "not implemented" );
-    return QDomDocumentFragment();
-}
-
 /* pure virtual in QLayoutItem */
 bool CartesianAxis::isEmpty() const
 {

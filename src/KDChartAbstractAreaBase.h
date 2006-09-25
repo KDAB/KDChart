@@ -39,7 +39,6 @@
 #include "KDChartRelativePosition.h"
 
 
-class QDomDocumentFragment;
 class QPainter;
 class QString;
 namespace KDChart {
@@ -76,8 +75,6 @@ protected:
     virtual ~AbstractAreaBase() ;
 
 public:
-    virtual QDomDocumentFragment toXML() const;
-
 //    virtual AbstractAreaBase * clone() const = 0;
 
 

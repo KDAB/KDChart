@@ -101,14 +101,6 @@ uint ThreeDBarAttributes::angle() const
 }
 
 
-QDomDocumentFragment ThreeDBarAttributes::toXML() const
-{
-    // PENDING(kalle) FIXME
-    qWarning( "Sorry, not implemented: ThreeDBarAttribute::toXML()" );
-    return QDomDocumentFragment();
-}
-
-
 #if !defined(QT_NO_DEBUG_STREAM)
 QDebug operator<<(QDebug dbg, const KDChart::ThreeDBarAttributes& a)
 {

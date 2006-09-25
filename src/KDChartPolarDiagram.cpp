@@ -25,7 +25,6 @@
 
 
 #include <QPainter>
-#include <QtXml/QDomDocumentFragment>
 #include "KDChartAttributesModel.h"
 #include "KDChartPaintContext.h"
 #include "KDChartPolarDiagram.h"
@@ -84,13 +83,6 @@ PolarDiagram * PolarDiagram::clone() const
     // PENDING(kalle) FIXME
     qWarning( "Sorry, not implemented: PolarDiagram * PolarDiagram::clone() const" );
     return (PolarDiagram*)0xdeadbeef;
-}
-
-QDomDocumentFragment PolarDiagram::toXML() const
-{
-    // PENDING(kalle) FIXME
-    qWarning( "Sorry, not implemented: QDomDocumentFragment PolarDiagram::toXML() const" );
-    return QDomDocumentFragment();
 }
 
 const QPair<QPointF, QPointF> PolarDiagram::calculateDataBoundaries () const

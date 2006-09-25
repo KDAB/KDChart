@@ -36,7 +36,6 @@
 class QColor;
 class QSizeF;
 class QPen;
-class QDomDocumentFragment;
 class QDebug;
 template <typename T, typename K> class QMap;
 
@@ -82,9 +81,6 @@ namespace KDChart {
 
         bool operator==( const MarkerAttributes& ) const;
         bool operator!=( const MarkerAttributes& ) const;
-
-        // XML serialization
-        QDomDocumentFragment toXML() const;
 
     private:
         KDCHART_DECLARE_PRIVATE_BASE_VALUE( MarkerAttributes )

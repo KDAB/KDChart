@@ -27,7 +27,6 @@
 #define KDCHARTBARATTRIBUTES_H
 
 #include <QMetaType>
-#include <QtXml/QDomDocumentFragment>
 #include "KDChartGlobal.h"
 
 namespace KDChart {
@@ -70,9 +69,6 @@ public:
 
     bool operator==( const BarAttributes& ) const;
     inline bool operator!=( const BarAttributes& other ) const { return !operator==(other); }
-
-    // XML serialization
-    QDomDocumentFragment toXML() const;
 
 private:
     class Private;

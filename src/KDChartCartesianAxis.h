@@ -78,8 +78,6 @@ namespace KDChart {
         /** reimpl */
         virtual void paintCtx( PaintContext* );
 
-        QDomDocumentFragment toXML() const;
-
         void setTitleText( const QString& text );
         QString titleText() const;
 

@@ -130,13 +130,6 @@ qreal PieAttributes::granularity() const
 }
 
 
-QDomDocumentFragment PieAttributes::toXML() const
-{
-    // PENDING(kalle) FIXME
-    qWarning( "Sorry, not implemented: PieAttributes::toXML()" );
-    return QDomDocumentFragment();
-}
-
 #if !defined(QT_NO_DEBUG_STREAM)
 QDebug operator<<(QDebug dbg, const KDChart::PieAttributes& a)
 {

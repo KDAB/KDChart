@@ -24,7 +24,6 @@
  **********************************************************************/
 
 #include "KDChartFrameAttributes.h"
-#include <QtXml/QDomDocumentFragment>
 
 #include <KDABLibFakes>
 
@@ -114,13 +113,6 @@ void FrameAttributes::setPadding( int padding )
 int FrameAttributes::padding() const
 {
     return d->padding;
-}
-
-QDomDocumentFragment FrameAttributes::toXML() const
-{
-    // PENDING(kalle) FIXME
-    qWarning( "Sorry, not implemented: QDomDocumentFragment FrameAttributes::toXML() const" );
-    return QDomDocumentFragment();
 }
 
 #if !defined(QT_NO_DEBUG_STREAM)

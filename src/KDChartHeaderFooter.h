@@ -33,8 +33,6 @@
 #include "KDChartTextArea.h"
 #include "KDChartPosition.h"
 
-class QDomDocumentFragment;
-
 namespace KDChart {
 
     class Chart;
@@ -50,8 +48,6 @@ class KDCHART_EXPORT HeaderFooter : public TextArea
 public:
     HeaderFooter( Chart* parent = 0 );
     virtual ~HeaderFooter();
-
-    virtual QDomDocumentFragment toXML() const;
 
     virtual HeaderFooter * clone() const;
 

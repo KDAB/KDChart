@@ -35,9 +35,6 @@
 #include <Qt>
 #include "KDChartGlobal.h"
 
-class QDomDocumentFragment;
-
-
 namespace KDChart {
 
     class AbstractArea;
@@ -65,8 +62,6 @@ public:
     RelativePosition & operator=( const RelativePosition & other );
 
     ~RelativePosition();
-
-    QDomDocumentFragment toXML() const;
 
     void setReferenceArea( AbstractArea* area );
     AbstractArea* referenceArea() const;

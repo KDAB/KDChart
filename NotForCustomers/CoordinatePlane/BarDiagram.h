@@ -5,7 +5,6 @@
 #include "KDChartBarAttributes.h"
 #include "KDChartThreeDBarAttributes.h"
 
-class QDomDocumentFragment;
 class QPainter;
 
 namespace KDChart {

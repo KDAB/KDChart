@@ -35,8 +35,6 @@
 #include <QBrush>
 #include "KDChartGlobal.h"
 
-class QDomDocumentFragment;
-
 namespace KDChart {
 
 class KDCHART_EXPORT BackgroundAttributes
@@ -67,9 +65,6 @@ public:
 
     bool operator==( const BackgroundAttributes& ) const;
     inline bool operator!=( const BackgroundAttributes& other ) const { return !operator==(other); }
-
-    // XML serialization
-    QDomDocumentFragment toXML() const;
 
 private:
     KDCHART_DECLARE_PRIVATE_BASE_VALUE( BackgroundAttributes )

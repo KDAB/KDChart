@@ -25,7 +25,6 @@
 
 #include "KDChartLegend.h"
 #include "KDChartLegend_p.h"
-#include <QtXml/QDomDocumentFragment>
 #include <KDChartTextAttributes.h>
 #include <KDChartMarkerAttributes.h>
 #include <QFont>
@@ -121,13 +120,6 @@ void Legend::init()
 
     d->position = Position::NorthEast;
     d->alignment = Qt::AlignCenter;
-}
-
-QDomDocumentFragment Legend::toXML() const
-{
-    // PENDING(kalle) FIXME
-    qWarning( "Sorry, not implemented: QDomDocumentFragment Legend::toXML() const" );
-    return QDomDocumentFragment();
 }
 
 Legend* Legend::clone() const

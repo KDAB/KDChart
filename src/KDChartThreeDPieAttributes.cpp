@@ -88,13 +88,6 @@ bool ThreeDPieAttributes::useShadowColors() const
     return d->useShadowColors;
 }
 
-QDomDocumentFragment ThreeDPieAttributes::toXML() const
-{
-    // PENDING(kalle) FIXME
-    qWarning( "Sorry, not implemented: ThreeDPieAttribute::toXML()" );
-    return QDomDocumentFragment();
-}
-
 #if !defined(QT_NO_DEBUG_STREAM)
 QDebug operator<<(QDebug dbg, const KDChart::ThreeDPieAttributes& a)
 {

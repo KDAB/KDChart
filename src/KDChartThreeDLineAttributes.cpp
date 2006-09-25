@@ -101,13 +101,6 @@ uint ThreeDLineAttributes::lineYRotation() const
 }
 
 
-QDomDocumentFragment ThreeDLineAttributes::toXML() const
-{
-    // PENDING(kalle) FIXME
-    qWarning( "Sorry, not implemented: ThreeDLineAttribute::toXML()" );
-    return QDomDocumentFragment();
-}
-
 #if !defined(QT_NO_DEBUG_STREAM)
 
 QDebug operator<<(QDebug dbg, const KDChart::ThreeDLineAttributes& a)

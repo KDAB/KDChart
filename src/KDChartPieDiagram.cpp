@@ -27,8 +27,6 @@
 #include <QPainter>
 #include <QStack>
 
-#include <QtXml/QDomDocumentFragment>
-
 #include "KDChartAttributesModel.h"
 #include "KDChartPaintContext.h"
 #include "KDChartPieDiagram.h"
@@ -70,14 +68,6 @@ PieDiagram * PieDiagram::clone() const
     qWarning( "Sorry, not implemented: PieDiagram * PieDiagram::clone() const" );
     return (PieDiagram*)0xdeadbeef;
 }
-
-QDomDocumentFragment PieDiagram::toXML() const
-{
-    // PENDING(kalle) FIXME
-    qWarning( "Sorry, not implemented: QDomDocumentFragment PieDiagram::toXML() const" );
-    return QDomDocumentFragment();
-}
-
 
 const QPair<QPointF, QPointF> PieDiagram::calculateDataBoundaries () const
 {
@@ -290,7 +280,7 @@ void PieDiagram::paint( PaintContext* ctx )
     int rightmostpie = findPieAt( 0, colCount );
     int leftmostpie = findPieAt( 180, colCount );
 
-    
+
     int currentLeftPie = backmostpie;
     int currentRightPie = backmostpie;
 
@@ -340,7 +330,7 @@ void PieDiagram::paint( PaintContext* ctx )
         qreal endAngle = startAngle + d->angleLens[ frontmostpie ];
         startAngle = qMax( startAngle, 180.0 );
 
-        drawArcEffectSegment( ctx->painter(), piePosition( 0, frontmostpie), 
+        drawArcEffectSegment( ctx->painter(), piePosition( 0, frontmostpie),
                 sizeFor3DEffect, startAngle, endAngle, granularity );
     }
 }
@@ -404,7 +394,7 @@ void PieDiagram::drawOnePie( QPainter* painter,
         const ThreeDPieAttributes threeDAttrs( threeDPieAttributes( index ) );
 
         QRectF drawPosition = piePosition( dataset, pie );
-        
+
         draw3DEffect( painter,
             drawPosition, dataset, pie,
             granularity,
@@ -865,7 +855,7 @@ void PieDiagram::drawStraightEffectSegment( QPainter* painter,
 
 /**
   Internal method that draws the upper brink of a 3D pie piece
- 
+
   \param painter the QPainter to draw in
   \param rect the position to draw at
   \param angle the angle of the segment

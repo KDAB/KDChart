@@ -31,7 +31,6 @@
 #define KDCHARTPIEDIAGRAM_H
 
 #include "KDChartAbstractPieDiagram.h"
-class QDomDocumentFragment;
 
 namespace KDChart {
 
@@ -66,7 +65,6 @@ public:
 
     virtual PieDiagram * clone() const;
 
-    virtual QDomDocumentFragment toXML() const;
 protected:
     /** \reimpl */
     virtual const QPair<QPointF, QPointF> calculateDataBoundaries() const;

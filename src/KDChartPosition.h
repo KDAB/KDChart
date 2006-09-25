@@ -37,7 +37,6 @@
 #include "KDChartGlobal.h"
 #include "KDChartEnums.h"
 
-class QDomDocumentFragment;
 class QStringList;
 class QByteArray;
 template <typename T> class QList;
@@ -85,7 +84,6 @@ public:
 
     const char * name() const;
     QString printableName() const;
-    QDomDocumentFragment toXML() const;
 
     bool isWestSide() const;
     bool isNorthSide() const;

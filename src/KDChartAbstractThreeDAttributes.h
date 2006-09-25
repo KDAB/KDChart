@@ -31,7 +31,6 @@
 #define KDCHARTABSTRACTTHREEDATTRIBUTES_H
 
 #include <QMetaType>
-#include <QtXml/QDomDocumentFragment>
 #include "KDChartGlobal.h"
 
 namespace KDChart {
@@ -56,9 +55,6 @@ public:
 
     bool operator==( const AbstractThreeDAttributes& ) const;
     inline bool operator!=( const AbstractThreeDAttributes& other ) const { return !operator==(other); }
-
-    // XML serialization
-    QDomDocumentFragment toXML() const;
 
     KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC(AbstractThreeDAttributes)
 

@@ -31,7 +31,6 @@
 #define KDCHARTABSTRACTPIEDIAGRAM_H
 
 #include "KDChartAbstractPolarDiagram.h"
-class QDomDocumentFragment;
 
 namespace KDChart {
     class PieAttributes;
@@ -48,8 +47,6 @@ public:
     explicit AbstractPieDiagram(
         QWidget* parent = 0, PolarCoordinatePlane* plane = 0 );
     virtual ~AbstractPieDiagram();
-
-    virtual QDomDocumentFragment toXML() const;
 
     void setPieAttributes( const PieAttributes & a );
     void setPieAttributes( int   column,

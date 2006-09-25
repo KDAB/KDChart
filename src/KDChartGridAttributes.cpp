@@ -27,7 +27,6 @@
 
 #include <QPen>
 #include <QDebug>
-#include <QDomDocumentFragment>
 
 #include <KDABLibFakes>
 
@@ -256,14 +255,6 @@ QPen GridAttributes::zeroLinePen() const
 {
     return d->zeroPen;
 }
-
-QDomDocumentFragment GridAttributes::toXML() const
-{
-    // PENDING(kalle) FIXME
-    qWarning( "Sorry, not implemented: GridAttributes::toXML()" );
-    return QDomDocumentFragment();
-}
-
 
 #if !defined(QT_NO_DEBUG_STREAM)
 QDebug operator<<(QDebug dbg, const KDChart::GridAttributes& a)

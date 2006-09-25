@@ -25,7 +25,6 @@
 
 #include "KDChartBackgroundAttributes.h"
 #include <QPixmap>
-#include <QtXml/QDomDocumentFragment>
 
 #include <KDABLibFakes>
 
@@ -129,13 +128,6 @@ void BackgroundAttributes::setPixmap( const QPixmap &backPixmap )
 QPixmap BackgroundAttributes::pixmap() const
 {
     return d->pixmap;
-}
-
-QDomDocumentFragment BackgroundAttributes::toXML() const
-{
-    // PENDING(kalle) FIXME
-    qWarning( "Sorry, not implemented: QDomDocumentFragment BackgroundAttributes::toXML() const" );
-    return QDomDocumentFragment();
 }
 
 #if !defined(QT_NO_DEBUG_STREAM)

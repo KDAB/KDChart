@@ -27,7 +27,6 @@
 #define KDCHARTLINEATTRIBUTES_H
 
 #include <QMetaType>
-#include <QtXml/QDomDocumentFragment>
 #include "KDChartGlobal.h"
 
 namespace KDChart {
@@ -78,9 +77,6 @@ public:
 
     bool operator==( const LineAttributes& ) const;
     inline bool operator!=( const LineAttributes& other ) const { return !operator==(other); }
-
-    // XML serialization
-    QDomDocumentFragment toXML() const;
 
 private:
     KDCHART_DECLARE_PRIVATE_BASE_VALUE( LineAttributes )

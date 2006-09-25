@@ -29,7 +29,6 @@
 #include <KDChartFrameAttributes.h>
 #include <KDChartTextAttributes.h>
 #include "KDChartPainterSaver_p.h"
-#include <QtXml/QDomDocumentFragment>
 #include <QPainter>
 
 #include <KDABLibFakes>
@@ -72,14 +71,6 @@ void AbstractAreaBase::init()
 
 
 #define d d_func()
-
-QDomDocumentFragment AbstractAreaBase::toXML() const
-{
-    // PENDING(kalle) FIXME
-    qWarning( "Sorry, not implemented: QDomDocumentFragment AbstractAreaBase::toXML() const" );
-    return QDomDocumentFragment();
-}
-
 
 void AbstractAreaBase::alignToReferencePoint( const RelativePosition& position )
 {

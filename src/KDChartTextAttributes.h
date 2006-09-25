@@ -37,7 +37,6 @@
 
 class QPen;
 class QFont;
-class QDomDocumentFragment;
 
 namespace KDChart {
 
@@ -158,11 +157,6 @@ public:
    * \return The pen used for rendering the text.
    */
   QPen pen() const;
-
-  /**
-   * Serialize the the attributes into XML.
-   */
-  QDomDocumentFragment toXML() const;
 
   // FIXME KDChartEnums::TextLayoutPolicy?
 

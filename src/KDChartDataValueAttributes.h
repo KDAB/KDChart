@@ -33,8 +33,6 @@
 #include "KDChartEnums.h"
 #include "KDChartRelativePosition.h"
 
-class QDomDocumentFragment;
-
 namespace KDChart {
 
   class TextAttributes;
@@ -68,16 +66,11 @@ public:
    * \param visible Whether data value labels should be displayed.
    */
   void setVisible( bool visible );
-  
+
   /**
    * @return Whether data value labels should be displayed.
    */
   bool isVisible() const;
-
-  /**
-   * Persist the set of attributes to XML.
-   */
-  QDomDocumentFragment toXML() const;
 
   /**
    * Set the text attributes to use for the data value labels.
@@ -145,10 +138,10 @@ public:
    * \return The number of decimal digits displayed.
    */
   int decimalDigits() const;
-  
+
   /**
-   * Prepend a prefix to the data value text to be displayed  
-   * 
+   * Prepend a prefix to the data value text to be displayed
+   *
    * \param prefix  The string to prepend.
    */
   void setPrefix( const QString prefix );
@@ -159,8 +152,8 @@ public:
   QString prefix() const;
 
   /**
-   * Append a suffix to the data value text to be displayed  
-   * 
+   * Append a suffix to the data value text to be displayed
+   *
    * \param suffix  The string to append.
    */
   void setSuffix( const QString suffix );
@@ -169,7 +162,7 @@ public:
    * \return The string used as a suffix to the data value text.
    */
   QString suffix() const;
-  
+
 /**
  *\display a string label instead of the original data value label
  *
@@ -182,7 +175,7 @@ public:
    */
   QString dataLabel() const;
 
-  
+
   void setPowerOfTenDivisor( int powerOfTenDivisor );
   int powerOfTenDivisor() const;
 

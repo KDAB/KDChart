@@ -27,7 +27,6 @@
 #define KDCHART_PIE_ATTRIBUTES_H
 
 #include <QMetaType>
-#include <QtXml/QDomDocumentFragment>
 #include "KDChartAbstractThreeDAttributes.h"
 #include "KDChartGlobal.h"
 
@@ -98,9 +97,6 @@ public:
 
     bool operator==( const PieAttributes& ) const;
     inline bool operator!=( const PieAttributes& other ) const { return !operator==(other); }
-
-    // XML serialization
-    QDomDocumentFragment toXML() const;
 
 private:
     KDCHART_DECLARE_PRIVATE_BASE_VALUE( PieAttributes )

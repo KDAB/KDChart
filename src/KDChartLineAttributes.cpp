@@ -119,13 +119,6 @@ uint LineAttributes::transparency() const
      return d->transparency;
 }
 
-QDomDocumentFragment LineAttributes::toXML() const
-{
-    // PENDING(kalle) FIXME
-    qWarning( "Sorry, not implemented: LineAttributes::toXML()" );
-    return QDomDocumentFragment();
-}
-
 #if !defined(QT_NO_DEBUG_STREAM)
 QDebug operator<<(QDebug dbg, const KDChart::LineAttributes& a)
 {

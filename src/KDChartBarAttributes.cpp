@@ -200,10 +200,3 @@ bool BarAttributes::drawSolidExcessArrows() const
     return d->drawSolidExcessArrows;
 }
 
-QDomDocumentFragment BarAttributes::toXML() const
-{
-    // PENDING(kalle) FIXME
-    qWarning( "Sorry, not implemented: BarAttributes::toXML()" );
-    return QDomDocumentFragment();
-}
-

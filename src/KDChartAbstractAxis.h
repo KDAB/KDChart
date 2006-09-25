@@ -32,7 +32,6 @@
 
 // #include <QObject>
 #include <QRectF>
-#include <QtXml/QDomDocumentFragment>
 // #include <QWidget>
 
 #include "kdchart_export.h"
@@ -100,8 +99,6 @@ namespace KDChart {
         virtual QRect geometry() const = 0;
 
         const AbstractCoordinatePlane* coordinatePlane() const;
-
-        virtual QDomDocumentFragment toXML() const = 0;
 
     protected Q_SLOTS:
         /** called for initializing after the c'tor has completed */

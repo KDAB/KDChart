@@ -31,7 +31,6 @@
 #define KDCHARTRINGDIAGRAM_H
 
 #include <KDChartAbstractPieDiagram.h>
-class QDomDocumentFragment;
 
 namespace KDChart {
 
@@ -64,8 +63,6 @@ public:
     virtual double numberOfGridRings() const;
 
     virtual RingDiagram * clone() const;
-
-    virtual QDomDocumentFragment toXML() const;
 
     void setRelativeThickness( bool relativeThickness );
     bool relativeThickness() const;

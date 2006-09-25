@@ -35,7 +35,6 @@
 #include "KDChartMarkerAttributes.h"
 
 class QTextTable;
-class QDomDocumentFragment;
 
 namespace KDChart {
 
@@ -70,8 +69,6 @@ public:
     explicit Legend( QWidget* parent );
     explicit Legend( KDChart::AbstractDiagram* diagram, QWidget* parent );
     virtual ~Legend();
-
-    virtual QDomDocumentFragment toXML() const;
 
     virtual Legend * clone() const;
 
