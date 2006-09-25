@@ -66,11 +66,11 @@ class KDCHART_EXPORT Legend : public AbstractAreaWidget
     KDCHART_DECLARE_PRIVATE_DERIVED_QWIDGET( Legend )
 
 public:
-    explicit Legend( QWidget* parent );
+    explicit Legend( QWidget* parent = 0 );
     explicit Legend( KDChart::AbstractDiagram* diagram, QWidget* parent );
     virtual ~Legend();
 
-    virtual Legend * clone( QWidget* parent = 0 ) const;
+    virtual Legend * clone() const;
 
     //QSize calcSizeHint() const;
     virtual void resizeEvent( QResizeEvent * event );

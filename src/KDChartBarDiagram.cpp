@@ -66,9 +66,17 @@ BarDiagram::~BarDiagram()
 
 BarDiagram * BarDiagram::clone() const
 {
-    // PENDING(kalle) FIXME
-    qWarning( "Sorry, not implemented: BarDiagram * BarDiagram::clone() const" );
-    return (BarDiagram*)0xdeadbeef;
+    BarDiagram* newDiagram = new BarDiagram();
+    newDiagram->setBarAttributes( barAttributes() );
+    newDiagram->setThreeDBarAttributes( threeDBarAttributes() );
+    newDiagram->setReferenceDiagram( referenceDiagram(),
+                                     referenceDiagramOffset() );
+    newDiagram->setPen( pen() );
+    newDiagram->setBrush( brush() );
+    newDiagram->setAllowOverlappingDataValueTexts( allowOverlappingDataValueTexts() );
+    newDiagram->setAntiAliasing( antiAliasing() );
+    newDiagram->setDatasetDimension( datasetDimension() );
+    return newDiagram;
 }
 
 void BarDiagram::setType( const BarType type )

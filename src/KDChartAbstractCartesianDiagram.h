@@ -79,7 +79,7 @@ namespace KDChart {
         virtual void layoutPlanes();
         virtual void setCoordinatePlane( AbstractCoordinatePlane* plane );
 
-        virtual void setReferenceDiagram( AbstractCartesianDiagram* diagarm, const QPointF& offset = QPointF() );
+        virtual void setReferenceDiagram( AbstractCartesianDiagram* diagram, const QPointF& offset = QPointF() );
         virtual AbstractCartesianDiagram* referenceDiagram() const;
         virtual QPointF referenceDiagramOffset() const;
 

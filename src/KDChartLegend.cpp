@@ -122,9 +122,9 @@ void Legend::init()
     d->alignment = Qt::AlignCenter;
 }
 
-Legend* Legend::clone( QWidget* parent ) const
+Legend* Legend::clone() const
 {
-    Legend* newLegend = new Legend( parent );
+    Legend* newLegend = new Legend();
     newLegend->setReferenceArea( referenceArea() );
     newLegend->setPosition( position() );
     newLegend->setAlignment( alignment() );
@@ -140,7 +140,8 @@ Legend* Legend::clone( QWidget* parent ) const
     newLegend->setTitleText( titleText() );
     newLegend->setTitleTextAttributes( titleTextAttributes() );
     newLegend->setSpacing( spacing() );
-
+    newLegend->setFrameAttributes( frameAttributes() );
+    newLegend->setBackgroundAttributes( backgroundAttributes() );
     return newLegend;
 }
 

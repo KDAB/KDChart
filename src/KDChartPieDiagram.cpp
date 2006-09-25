@@ -34,6 +34,7 @@
 #include "KDChartPieAttributes.h"
 #include "KDChartThreeDPieAttributes.h"
 #include "KDChartPainterSaver_p.h"
+#include "KDChartDataValueAttributes.h"
 
 #include <KDABLibFakes>
 
@@ -64,9 +65,16 @@ void PieDiagram::init()
 
 PieDiagram * PieDiagram::clone() const
 {
-    // PENDING(kalle) FIXME
-    qWarning( "Sorry, not implemented: PieDiagram * PieDiagram::clone() const" );
-    return (PieDiagram*)0xdeadbeef;
+    PieDiagram* newDiagram = new PieDiagram();
+    newDiagram->setPieAttributes( pieAttributes() );
+    newDiagram->setThreeDPieAttributes( threeDPieAttributes() );
+    newDiagram->setDataValueAttributes( dataValueAttributes() );
+    newDiagram->setPen( pen() );
+    newDiagram->setBrush( brush() );
+    newDiagram->setAllowOverlappingDataValueTexts( allowOverlappingDataValueTexts() );
+    newDiagram->setAntiAliasing( antiAliasing() );
+    newDiagram->setDatasetDimension( datasetDimension() );
+    return newDiagram;
 }
 
 const QPair<QPointF, QPointF> PieDiagram::calculateDataBoundaries () const

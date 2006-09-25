@@ -30,6 +30,7 @@
 #include "KDChartPolarDiagram.h"
 #include "KDChartPolarDiagram_p.h"
 #include "KDChartPainterSaver_p.h"
+#include "KDChartDataValueAttributes.h"
 
 #include <KDABLibFakes>
 
@@ -80,9 +81,18 @@ void PolarDiagram::init()
 
 PolarDiagram * PolarDiagram::clone() const
 {
-    // PENDING(kalle) FIXME
-    qWarning( "Sorry, not implemented: PolarDiagram * PolarDiagram::clone() const" );
-    return (PolarDiagram*)0xdeadbeef;
+    PolarDiagram* newDiagram = new PolarDiagram();
+    newDiagram->setZeroDegreePosition( zeroDegreePosition() );
+    newDiagram->setRotateCircularLabels( rotateCircularLabels() );
+    newDiagram->d->showDelimitersAtPosition = d->showDelimitersAtPosition;
+    newDiagram->d->showLabelsAtPosition = d->showLabelsAtPosition;
+    newDiagram->setDataValueAttributes( dataValueAttributes() );
+    newDiagram->setPen( pen() );
+    newDiagram->setBrush( brush() );
+    newDiagram->setAllowOverlappingDataValueTexts( allowOverlappingDataValueTexts() );
+    newDiagram->setAntiAliasing( antiAliasing() );
+    newDiagram->setDatasetDimension( datasetDimension() );
+    return newDiagram;
 }
 
 const QPair<QPointF, QPointF> PolarDiagram::calculateDataBoundaries () const

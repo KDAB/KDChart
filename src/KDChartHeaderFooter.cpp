@@ -90,9 +90,15 @@ void HeaderFooter::init()
 
 HeaderFooter * HeaderFooter::clone() const
 {
-    // PENDING(kalle) FIXME
-    qWarning( "Sorry, not implemented: HeaderFooter * HeaderFooter::clone() const" );
-    return (HeaderFooter*)0xdeadbeef;
+    HeaderFooter* newHeaderFooter = new HeaderFooter();
+    newHeaderFooter->setType( type() );
+    newHeaderFooter->setPosition( position() );
+    newHeaderFooter->setAutoReferenceArea( autoReferenceArea() );
+    newHeaderFooter->setText( text() );
+    newHeaderFooter->setTextAttributes( textAttributes() );
+    newHeaderFooter->setFrameAttributes( frameAttributes() );
+    newHeaderFooter->setBackgroundAttributes( backgroundAttributes() );
+    return newHeaderFooter;
 }
 
 void HeaderFooter::setType( HeaderFooterType type )

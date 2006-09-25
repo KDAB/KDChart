@@ -112,7 +112,6 @@ protected:
     const QPair<QPointF, QPointF> calculateDataBoundaries() const;
     //void paintEvent ( QPaintEvent* );
     void resizeEvent ( QResizeEvent* );
-
 private:
     void paintBars( PaintContext* ctx, const QModelIndex& index, const QRectF& bar, double& maxDepth );
     void calculateValueAndGapWidths( int rowCount, int colCount,

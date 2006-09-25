@@ -30,6 +30,9 @@
 #include "KDChartRingDiagram.h"
 #include "KDChartRingDiagram_p.h"
 #include "KDChartPainterSaver_p.h"
+#include "KDChartPieAttributes.h"
+#include "KDChartThreeDPieAttributes.h"
+#include "KDChartDataValueAttributes.h"
 
 #include <KDABLibFakes>
 
@@ -60,9 +63,17 @@ void RingDiagram::init()
 
 RingDiagram * RingDiagram::clone() const
 {
-    // PENDING(kalle) FIXME
-    qWarning( "Sorry, not implemented: RingDiagram * RingDiagram::clone() const" );
-    return (RingDiagram*)0xdeadbeef;
+    RingDiagram* newDiagram = new RingDiagram();
+    newDiagram->setRelativeThickness( relativeThickness() );
+    newDiagram->setPieAttributes( pieAttributes() );
+    newDiagram->setThreeDPieAttributes( threeDPieAttributes() );
+    newDiagram->setDataValueAttributes( dataValueAttributes() );
+    newDiagram->setPen( pen() );
+    newDiagram->setBrush( brush() );
+    newDiagram->setAllowOverlappingDataValueTexts( allowOverlappingDataValueTexts() );
+    newDiagram->setAntiAliasing( antiAliasing() );
+    newDiagram->setDatasetDimension( datasetDimension() );
+    return newDiagram;
 }
 
 void RingDiagram::setRelativeThickness( bool relativeThickness )

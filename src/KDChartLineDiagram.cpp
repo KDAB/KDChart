@@ -38,6 +38,7 @@
 #include "KDChartAttributesModel.h"
 #include "KDChartPainterSaver_p.h"
 #include "KDChartAbstractGrid.h"
+#include "KDChartDataValueAttributes.h"
 
 #include <KDABLibFakes>
 
@@ -71,9 +72,19 @@ LineDiagram::~LineDiagram()
 
 LineDiagram * LineDiagram::clone() const
 {
-    // PENDING(kalle) FIXME
-    qWarning( "Sorry, not implemented: LineDiagram * LineDiagram::clone() const" );
-    return (LineDiagram*)0xdeadbeef;
+    LineDiagram* newDiagram = new LineDiagram();
+    newDiagram->setType( type() );
+    newDiagram->setLineAttributes( lineAttributes() );
+    newDiagram->setThreeDLineAttributes( threeDLineAttributes() );
+    newDiagram->setReferenceDiagram( referenceDiagram(),
+                                     referenceDiagramOffset() );
+    newDiagram->setDataValueAttributes( dataValueAttributes() );
+    newDiagram->setPen( pen() );
+    newDiagram->setBrush( brush() );
+    newDiagram->setAllowOverlappingDataValueTexts( allowOverlappingDataValueTexts() );
+    newDiagram->setAntiAliasing( antiAliasing() );
+    newDiagram->setDatasetDimension( datasetDimension() );
+    return newDiagram;
 }
 
 void LineDiagram::setType( const LineType type )
