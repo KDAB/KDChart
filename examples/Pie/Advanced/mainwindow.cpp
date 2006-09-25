@@ -68,7 +68,7 @@ void MainWindow::on_startPositionSB_valueChanged( double pos )
     // note: We use the global getter method here, it will fall back
     //       automatically to return the default settings.
     PieAttributes attrs( m_pie->pieAttributes() );
-    attrs.setStartPosition( pos );
+    m_pie->setStartPosition( pos );
     m_pie->setPieAttributes( attrs );
     m_chart->update();
 }
@@ -82,7 +82,7 @@ void MainWindow::on_startPositionSL_valueChanged( int pos )
     // note: We use the global getter method here, it will fall back
     //       automatically to return the default settings.
     PieAttributes attrs( m_pie->pieAttributes() );
-    attrs.setStartPosition( pos );
+    m_pie->setStartPosition( pos );
     m_pie->setPieAttributes( attrs );
     m_chart->update();
 }
