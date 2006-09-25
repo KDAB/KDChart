@@ -58,8 +58,6 @@ public:
     Private();
 
     qreal explodeFactor;
-    qreal startPosition;
-    qreal granularity;
 };
 
 }

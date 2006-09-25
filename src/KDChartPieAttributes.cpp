@@ -38,8 +38,6 @@ using namespace KDChart;
 
 PieAttributes::Private::Private()
     : explodeFactor( 0.0 )
-    , startPosition( 0.0 )
-    , granularity(   1.0 )
 {
 }
 
@@ -72,8 +70,7 @@ PieAttributes::~PieAttributes()
 
 bool PieAttributes::operator==( const PieAttributes& r ) const
 {
-    if( explodeFactor() == r.explodeFactor() &&
-        startPosition() == r.startPosition() )
+    if( explodeFactor() == r.explodeFactor() )
         return true;
     else
         return false;
@@ -105,37 +102,11 @@ qreal PieAttributes::explodeFactor() const
     return d->explodeFactor;
 }
 
-
-void PieAttributes::setStartPosition( qreal degrees )
-{
-    d->startPosition = degrees;
-}
-
-qreal PieAttributes::startPosition() const
-{
-    return d->startPosition;
-}
-
-
-void PieAttributes::setGranularity( qreal value )
-{
-    d->granularity = value;
-}
-
-qreal PieAttributes::granularity() const
-{
-    return (d->granularity < 0.05 || d->granularity > 36.0)
-        ? 1.0
-        : d->granularity;
-}
-
-
 #if !defined(QT_NO_DEBUG_STREAM)
 QDebug operator<<(QDebug dbg, const KDChart::PieAttributes& a)
 {
     dbg << "KDChart::PieAttributes(";
-    dbg << "granularity="<< a.granularity()
-        << "startPosition=" << a.startPosition() << ")";
+    dbg << "explodeFactor="<< a.explodeFactor() << ")";
     return dbg;
 }
 #endif /* QT_NO_DEBUG_STREAM */

@@ -38,7 +38,8 @@ using namespace KDChart;
 
 AbstractPieDiagram::Private::Private() :
     explode( false ),
-    startPosition( 0.0 )
+    startPosition( 0.0 ),
+    granularity( 1.0 )
 {
 }
 
@@ -61,6 +62,29 @@ void AbstractPieDiagram::init()
 
 
 #define d d_func()
+
+void AbstractPieDiagram::setStartPosition( qreal degrees )
+{
+    d->startPosition = degrees;
+}
+
+qreal AbstractPieDiagram::startPosition() const
+{
+    return d->startPosition;
+}
+
+
+void AbstractPieDiagram::setGranularity( qreal value )
+{
+    d->granularity = value;
+}
+
+qreal AbstractPieDiagram::granularity() const
+{
+    return (d->granularity < 0.05 || d->granularity > 36.0)
+            ? 1.0
+    : d->granularity;
+}
 
 
 void AbstractPieDiagram::setPieAttributes( const PieAttributes & attrs )

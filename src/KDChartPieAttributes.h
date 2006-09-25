@@ -68,33 +68,6 @@ public:
     /** @return the explode factor set by setExplode or by setExplodeFactor. */
     qreal explodeFactor() const;
 
-    /** Set the starting angle for the first dataset.
-      *
-      * \note Starting angle can only be specified for the whole diagram,
-      * so please use the global AbstractPieDiagram::setThreeDPieAttributes( const ThreeDPieAttributes & a )
-      * method. Starting position settings made using the per column setter method will be ignored.
-      */
-    void setStartPosition( qreal degrees );
-
-    /** @return the starting angle for the first dataset. */
-    qreal startPosition() const;
-
-    /** Set the granularity: the smaller the granularity the more your diagram
-      * segments will show facettes instead of rounded segments.
-      *
-      * \note Granularity can only be specified for the whole diagram,
-      * so please use the global AbstractPieDiagram::setThreeDPieAttributes( const ThreeDPieAttributes & a )
-      * method. Granularity settings made using the per column setter method will be ignored.
-      *
-      * \param value the granularity value between 0.05 (one twentieth of a degree)
-      * and 36.0 (one tenth of a full circle), other values will be interpreted as 1.0.
-      */
-    void setGranularity( qreal value );
-
-    /** @return the granularity. */
-    qreal granularity() const;
-
-
     bool operator==( const PieAttributes& ) const;
     inline bool operator!=( const PieAttributes& other ) const { return !operator==(other); }
 

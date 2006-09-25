@@ -193,7 +193,6 @@ void PieDiagram::paint( PaintContext* ctx )
         return;
 
     DataValueTextInfoList list;
-    const qreal startAngle = attrs.startPosition();
     const qreal sum = valueTotals();
 
     if( sum == 0.0 ) //nothing to draw
@@ -245,6 +244,7 @@ void PieDiagram::paint( PaintContext* ctx )
     }
 
     const qreal sectorsPerValue = 360.0 / sum;
+    const qreal startAngle = startPosition();
     qreal currentValue = startAngle;
 
     bool atLeastOneValue = false; // guard against completely empty tables
@@ -292,9 +292,7 @@ void PieDiagram::paint( PaintContext* ctx )
     int currentLeftPie = backmostpie;
     int currentRightPie = backmostpie;
 
-    const qreal granularity = attrs.granularity();
-
-    drawOnePie( ctx->painter(), 0, backmostpie, granularity, sizeFor3DEffect );
+    drawOnePie( ctx->painter(), 0, backmostpie, granularity(), sizeFor3DEffect );
 
     if( backmostpie == frontmostpie )
     {
@@ -306,23 +304,23 @@ void PieDiagram::paint( PaintContext* ctx )
     while( currentLeftPie != frontmostpie )
     {
         if( currentLeftPie != backmostpie )
-            drawOnePie( ctx->painter(), 0, currentLeftPie, granularity, sizeFor3DEffect );
+            drawOnePie( ctx->painter(), 0, currentLeftPie, granularity(), sizeFor3DEffect );
         currentLeftPie = findLeftPie( currentLeftPie, colCount );
     }
     while( currentRightPie != frontmostpie )
     {
         if( currentRightPie != backmostpie )
-            drawOnePie( ctx->painter(), 0, currentRightPie, granularity, sizeFor3DEffect );
+            drawOnePie( ctx->painter(), 0, currentRightPie, granularity(), sizeFor3DEffect );
         currentRightPie = findRightPie( currentRightPie, colCount );
     }
 
     // if the backmost pie is not the frontmost pie, we draw the frontmost at last
     if( backmostpie != frontmostpie || ! threeDPieAttributes().isEnabled() )
     {
-        drawOnePie( ctx->painter(), 0, frontmostpie, granularity, sizeFor3DEffect );
+        drawOnePie( ctx->painter(), 0, frontmostpie, granularity(), sizeFor3DEffect );
     // else, this gets a bit mor complicated...
     } else if( threeDPieAttributes().isEnabled() ) {
-        drawPieSurface( ctx->painter(), 0, frontmostpie, granularity );
+        drawPieSurface( ctx->painter(), 0, frontmostpie, granularity() );
         const QModelIndex index = model()->index( 0, frontmostpie, rootIndex() );
         QPen pen = this->pen( index );
         ctx->painter()->setRenderHint ( QPainter::Antialiasing );
@@ -339,7 +337,7 @@ void PieDiagram::paint( PaintContext* ctx )
         startAngle = qMax( startAngle, 180.0 );
 
         drawArcEffectSegment( ctx->painter(), piePosition( 0, frontmostpie),
-                sizeFor3DEffect, startAngle, endAngle, granularity );
+                sizeFor3DEffect, startAngle, endAngle, granularity() );
     }
 }
 
