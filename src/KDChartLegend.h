@@ -70,7 +70,7 @@ public:
     explicit Legend( KDChart::AbstractDiagram* diagram, QWidget* parent );
     virtual ~Legend();
 
-    virtual Legend * clone() const;
+    virtual Legend * clone( QWidget* parent = 0 ) const;
 
     //QSize calcSizeHint() const;
     virtual void resizeEvent( QResizeEvent * event );

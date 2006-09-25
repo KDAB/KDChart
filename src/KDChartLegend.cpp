@@ -122,11 +122,26 @@ void Legend::init()
     d->alignment = Qt::AlignCenter;
 }
 
-Legend* Legend::clone() const
+Legend* Legend::clone( QWidget* parent ) const
 {
-    // PENDING(kalle) FIXME
-    qWarning( "Sorry, not implemented: Legend* Legend::clone() const" );
-    return (Legend*)0xdeadbeef;
+    Legend* newLegend = new Legend( parent );
+    newLegend->setReferenceArea( referenceArea() );
+    newLegend->setPosition( position() );
+    newLegend->setAlignment( alignment() );
+    newLegend->setOrientation( orientation() );
+    newLegend->setShowLines( showLines() );
+    for( uint textNo = 0; textNo < datasetCount(); textNo++ ) {
+        newLegend->setText( textNo, text( textNo ) );
+        newLegend->setPen( textNo, pen( textNo ) );
+        newLegend->setBrush( textNo, brush( textNo ) );
+        newLegend->setMarkerAttributes( textNo, markerAttributes( textNo ) );
+    }
+    newLegend->setTextAttributes( textAttributes() );
+    newLegend->setTitleText( titleText() );
+    newLegend->setTitleTextAttributes( titleTextAttributes() );
+    newLegend->setSpacing( spacing() );
+
+    return newLegend;
 }
 
 void Legend::paint( QPainter* painter )
