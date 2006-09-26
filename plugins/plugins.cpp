@@ -90,14 +90,14 @@ static const struct WidgetInfo {
   plugin_init_func init;
 } widgetInfos[] = {
   {
-    "KDChart Widget", QT_TR_NOOP("KDChart Widgets"),
+      "KDChart::Widget", QT_TR_NOOP("KDChart Widgets"),
     "", "include/KDChartWidget",
     QT_TR_NOOP("A charting widget"),
     QT_TR_NOOP("A charting widget"),
     false, &createKDChartWidget, &initKDChartWidget
   },
   {
-      "KDChart View", QT_TR_NOOP("KDChart Widgets"),
+      "KDChart::Chart", QT_TR_NOOP("KDChart Widgets"),
       "", "include/KDChartChart",
       QT_TR_NOOP("A charting view"),
       QT_TR_NOOP("A charting view"),
