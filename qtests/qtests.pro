@@ -4,6 +4,7 @@ SUBDIRS +=  ChartElementOwnership \
             KDChartAttributesModel \
             KDChartPalette \
             Legends \
+            Planes \
 
 unix:SUBDIRS += AxisOwnership
 test.target=test
