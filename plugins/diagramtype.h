@@ -28,7 +28,7 @@
 
 #include "ui_diagramtype.h"
 
-class DiagramType : public QDialog, public Ui::DiagramTypDLG
+class DiagramType : public QDialog, public Ui::DiagramTypeDLG
 {
     Q_OBJECT
 
