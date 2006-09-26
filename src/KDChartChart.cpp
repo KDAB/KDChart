@@ -60,6 +60,7 @@ void Chart::Private::slotUnregisterDestroyedLegend( Legend *l )
 void Chart::Private::slotUnregisterDestroyedHeaderFooter( HeaderFooter* hf )
 {
     headerFooters.removeAll( hf );
+    hf->removeFromParentLayout();
     textLayoutItems.remove( textLayoutItems.indexOf( hf ) );
 }
 
@@ -370,7 +371,6 @@ void Chart::Private::slotLayoutPlanes()
         plane->removeFromParentLayout();
     }
     planeLayoutItems.clear();
-
     delete planesLayout;
     planesLayout = new QVBoxLayout();
 
@@ -560,6 +560,7 @@ Chart::Chart ( QWidget* parent )
 
 Chart::~Chart()
 {
+    delete  _d;
 }
 
 #define d d_func()
