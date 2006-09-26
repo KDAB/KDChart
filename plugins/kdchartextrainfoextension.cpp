@@ -30,6 +30,9 @@ bool KDChartExtraInfoExtension::loadWidgetExtraInfo(DomWidget *ui_widget)
     return s.loadExtraInfo( mChart, ui_widget );
 }
 
+QWidget * KDChartExtraInfoExtension::widget() const { return mChart; }
+QDesignerFormEditorInterface * KDChartExtraInfoExtension::core() const { return mCore; }
+
 ////
 
 KDChartWidgetExtraInfoExtension::KDChartWidgetExtraInfoExtension(Widget *widget, QDesignerFormEditorInterface *desCore, QObject *parentObj)
@@ -71,5 +74,5 @@ QObject * KDChartExtraInfoExtensionFactory::createExtension(QObject *object, con
   return 0;
 }
 
-QWidget * KDChartExtraInfoExtension::widget() const { return mChart; }
-QDesignerFormEditorInterface * KDChartExtraInfoExtension::core() const { return mCore; }
+QWidget * KDChartWidgetExtraInfoExtension::widget() const { return mWidget; }
+QDesignerFormEditorInterface * KDChartWidgetExtraInfoExtension::core() const { return mCore; }
