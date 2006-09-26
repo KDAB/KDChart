@@ -34,20 +34,20 @@ QWidget* createKDChartWidget( QWidget * parent )
 
 QWidget* createKDChartChart( QWidget * parent )
 {
-    QStandardItemModel m_model;
+    QStandardItemModel *m_model = new QStandardItemModel;
     KDChart::Chart *w = new KDChart::Chart(  parent );
 
-    m_model.insertRows( 0, 2, QModelIndex() );
-    m_model.insertColumns(  0,  3,  QModelIndex() );
+    m_model->insertRows( 0, 2, QModelIndex() );
+    m_model->insertColumns(  0,  3,  QModelIndex() );
     for (int row = 0; row < 3; ++row) {
             for (int column = 0; column < 3; ++column) {
-                QModelIndex index = m_model.index(row, column, QModelIndex());
-                m_model.setData(index, QVariant(row+1 * column) );
+                QModelIndex index = m_model->index(row, column, QModelIndex());
+                m_model->setData(index, QVariant(row+1 * column) );
             }
     }
 
     KDChart::LineDiagram* diagram = new KDChart::LineDiagram;
-    diagram->setModel(&m_model);
+    diagram->setModel(m_model);
 
     w->coordinatePlane()->replaceDiagram(diagram);
 
