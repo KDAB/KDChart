@@ -4,6 +4,7 @@
 #include <KDChartLineDiagram>
 //#include <KDChartCartesianAxis>
 #include "kdchartdesignerextension.h"
+#include "kdchartextrainfoextension.h"
 
 
 #include <QDesignerCustomWidgetInterface>
@@ -60,7 +61,7 @@ void initKDChartChart( QDesignerCustomWidgetInterface *, QDesignerFormEditorInte
     QExtensionManager * extMgr = core->extensionManager();
     KDChartChartTaskMenuFactory * menuFactory = new KDChartChartTaskMenuFactory( extMgr );
     extMgr->registerExtensions( menuFactory, Q_TYPEID( QDesignerTaskMenuExtension ) );
-  //extMgr->registerExtensions( new KDChartExtraInfoExtensionFactory(core, extMgr), Q_TYPEID(QDesignerExtraInfoExtension));
+    extMgr->registerExtensions( new KDChartExtraInfoExtensionFactory(core, extMgr), Q_TYPEID(QDesignerExtraInfoExtension));
 }
 
 void initKDChartWidget( QDesignerCustomWidgetInterface *, QDesignerFormEditorInterface * core )
@@ -69,7 +70,7 @@ void initKDChartWidget( QDesignerCustomWidgetInterface *, QDesignerFormEditorInt
   QExtensionManager * extMgr = core->extensionManager();
   KDChartWidgetTaskMenuFactory * menuFactory = new KDChartWidgetTaskMenuFactory( extMgr );
   extMgr->registerExtensions( menuFactory, Q_TYPEID( QDesignerTaskMenuExtension ) );
-  //extMgr->registerExtensions( new KDChartExtraInfoExtensionFactory(core, extMgr), Q_TYPEID(QDesignerExtraInfoExtension));
+  extMgr->registerExtensions( new KDChartExtraInfoExtensionFactory(core, extMgr), Q_TYPEID(QDesignerExtraInfoExtension));
 }
 
 typedef QWidget * (*widget_create_func)( QWidget * );
