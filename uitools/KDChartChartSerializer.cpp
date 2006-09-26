@@ -26,7 +26,10 @@
 
 #include "KDChartChartSerializer.h"
 
+
 #include <QDebug>
+#include <QtDesigner/private/ui4_p.h>
+
 
 using namespace KDChart;
 
@@ -41,15 +44,38 @@ ChartSerializer::~ChartSerializer( )
 bool ChartSerializer::saveExtraInfo( const Chart * chart, DomWidget * ui_widget )
 {
     Q_UNUSED( chart)
-    Q_UNUSED( ui_widget )
+
+    QList<DomItem*> items;
+    DomItem* item = new DomItem;
+    item->setText(QLatin1String("Chart Details"));
+    items.append( item );
+    ui_widget->setElementItem( items );
+
     return true;
 }
 
 
-bool ChartSerializer::loadExtraInfo( Chart * chart, const DomWidget * ui_widget )
+bool ChartSerializer::loadExtraInfo( Chart * chart, DomWidget * ui_widget )
 {
     Q_UNUSED( chart)
-    Q_UNUSED( ui_widget )
+
+    const QList<DomItem*> items = ui_widget->elementItem();
+
+    for ( QList<DomItem*>::const_iterator itemit = items.begin(), itemsend = items.end() ;
+          itemit != itemsend ; ++itemit )
+    {
+        DomItem* item = (*itemit);
+        QList<DomProperty*> properties = item->elementProperty();
+
+        for( QList<DomProperty*>::const_iterator propsit = properties.begin()
+             , propsend = properties.end()
+             ; propsit != propsend; ++propsit )
+        {
+            DomProperty *p = (*propsit);
+            if ( p->text() == QLatin1String("Chart Details"))
+                qDebug() << "Found a KDChart::Chart";
+        }
+    }
     return true;
 }
 

@@ -36,8 +36,8 @@ namespace KDChart
         WidgetSerializer();
         ~WidgetSerializer();
 
-        bool saveExtraInfo( const Widget* widget, DomWidget *ui_widget );
-        bool loadExtraInfo( Widget* widget, const DomWidget *ui_widget );
+        static bool saveExtraInfo( const Widget* widget, DomWidget *ui_widget );
+        static bool loadExtraInfo( Widget* widget, DomWidget *ui_widget );
     };
 
 }

@@ -37,8 +37,8 @@ namespace KDChart
         ChartSerializer();
         ~ChartSerializer();
 
-        bool saveExtraInfo( const Chart* widget, DomWidget *ui_widget );
-        bool loadExtraInfo( Chart* widget, const DomWidget *ui_widget );
+        static bool saveExtraInfo( const Chart* widget, DomWidget *ui_widget );
+        static bool loadExtraInfo( Chart* widget, DomWidget *ui_widget );
     };
 
 }
