@@ -86,7 +86,6 @@ PolarDiagram * PolarDiagram::clone() const
     newDiagram->setRotateCircularLabels( rotateCircularLabels() );
     newDiagram->d->showDelimitersAtPosition = d->showDelimitersAtPosition;
     newDiagram->d->showLabelsAtPosition = d->showLabelsAtPosition;
-    newDiagram->setDataValueAttributes( dataValueAttributes() );
     newDiagram->setPen( pen() );
     newDiagram->setBrush( brush() );
     newDiagram->setAllowOverlappingDataValueTexts( allowOverlappingDataValueTexts() );

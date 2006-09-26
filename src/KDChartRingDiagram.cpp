@@ -65,9 +65,6 @@ RingDiagram * RingDiagram::clone() const
 {
     RingDiagram* newDiagram = new RingDiagram();
     newDiagram->setRelativeThickness( relativeThickness() );
-    newDiagram->setPieAttributes( pieAttributes() );
-    newDiagram->setThreeDPieAttributes( threeDPieAttributes() );
-    newDiagram->setDataValueAttributes( dataValueAttributes() );
     newDiagram->setPen( pen() );
     newDiagram->setBrush( brush() );
     newDiagram->setAllowOverlappingDataValueTexts( allowOverlappingDataValueTexts() );

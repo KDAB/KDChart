@@ -735,8 +735,8 @@ void Legend::buildLegend()
         d->layout->addItem( lineItem, 2, 2, d->modelLabels.count()*2, 1 );
     }
 
-    //FIXME(khz): Find out if we really need that call:
-    //d->layout->activate();
+    // This line is absolutely necessary, otherwise: #2516.
+    d->layout->activate();
 #ifdef debug_legend_paint
     qDebug() << "leaving Legend::buildLegend()";
 #endif

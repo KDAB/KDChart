@@ -66,9 +66,6 @@ void PieDiagram::init()
 PieDiagram * PieDiagram::clone() const
 {
     PieDiagram* newDiagram = new PieDiagram();
-    newDiagram->setPieAttributes( pieAttributes() );
-    newDiagram->setThreeDPieAttributes( threeDPieAttributes() );
-    newDiagram->setDataValueAttributes( dataValueAttributes() );
     newDiagram->setPen( pen() );
     newDiagram->setBrush( brush() );
     newDiagram->setAllowOverlappingDataValueTexts( allowOverlappingDataValueTexts() );

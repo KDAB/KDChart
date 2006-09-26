@@ -74,11 +74,8 @@ LineDiagram * LineDiagram::clone() const
 {
     LineDiagram* newDiagram = new LineDiagram();
     newDiagram->setType( type() );
-    newDiagram->setLineAttributes( lineAttributes() );
-    newDiagram->setThreeDLineAttributes( threeDLineAttributes() );
     newDiagram->setReferenceDiagram( referenceDiagram(),
                                      referenceDiagramOffset() );
-    newDiagram->setDataValueAttributes( dataValueAttributes() );
     newDiagram->setPen( pen() );
     newDiagram->setBrush( brush() );
     newDiagram->setAllowOverlappingDataValueTexts( allowOverlappingDataValueTexts() );

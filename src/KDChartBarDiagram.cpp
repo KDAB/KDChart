@@ -67,8 +67,6 @@ BarDiagram::~BarDiagram()
 BarDiagram * BarDiagram::clone() const
 {
     BarDiagram* newDiagram = new BarDiagram();
-    newDiagram->setBarAttributes( barAttributes() );
-    newDiagram->setThreeDBarAttributes( threeDBarAttributes() );
     newDiagram->setReferenceDiagram( referenceDiagram(),
                                      referenceDiagramOffset() );
     newDiagram->setPen( pen() );

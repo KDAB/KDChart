@@ -28,7 +28,11 @@
 
 
 #include <QDebug>
+#if QT_VERSION >= 0x040200
 #include <QtDesigner/private/ui4_p.h>
+#else
+#include <QtDesigner/ui4.h>
+#endif
 
 
 using namespace KDChart;
