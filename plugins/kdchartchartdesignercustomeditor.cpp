@@ -1,0 +1,359 @@
+/****************************************************************************
+ ** Copyright (C) 2006 Klarälvdalens Datakonsult AB.  All rights reserved.
+ **
+ ** This file is part of the KD Chart library.
+ **
+ ** This file may be distributed and/or modified under the terms of the
+ ** GNU General Public License version 2 as published by the Free Software
+ ** Foundation and appearing in the file LICENSE.GPL included in the
+ ** packaging of this file.
+ **
+ ** Licensees holding valid commercial KD Chart licenses may use this file in
+ ** accordance with the KD Chart Commercial License Agreement provided with
+ ** the Software.
+ **
+ ** This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
+ ** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ **
+ ** See http://www.kdab.net/kdchart for
+ **   information about KDChart Commercial License Agreements.
+ **
+ ** Contact info@kdab.net if any conditions of this
+ ** licensing are not clear to you.
+ **
+ **********************************************************************/
+
+#include <KDChartChart>
+#include <KDChartCartesianAxis>
+#include <KDChartAbstractCartesianDiagram>
+#include <KDChartLineDiagram>
+#include <KDChartBarDiagram>
+#include <KDChartLegend>
+#include <KDChartHeaderFooter>
+
+#include "kdchartchartdesignercustomeditor.h"
+
+#include <KDChartLegendPropertiesWidget.h>
+#include <KDChartAxisPropertiesWidget.h>
+#include <KDChartHeaderFooterPropertiesWidget.h>
+
+using namespace KDChart;
+
+KDChartChartDesignerCustomEditor::KDChartChartDesignerCustomEditor( KDChart::Chart * chart )
+    :mChart( chart )
+{
+    setupUi( this );
+    //mTypeCombo->setCurrentIndex( mChart->diagram()->type() - 1 );
+    //slotTypeChanged( mChart->diagram()->type() - 1 );
+    mGlobalLeadingTopSB->setValue( mChart->globalLeadingTop() );
+    mGlobalLeadingLeftSB->setValue( mChart->globalLeadingLeft() );
+    mGlobalLeadingRightSB->setValue( mChart->globalLeadingRight() );
+    mGlobalLeadingBottomSB->setValue( mChart->globalLeadingBottom() );
+    connect( mCloseButton, SIGNAL( clicked() ),
+             this, SLOT( accept() ));
+    //connect( mTypeCombo, SIGNAL( activated( int ) ),
+    //       this, SLOT( slotTypeChanged( int ) ) );
+    //connect( mSubTypeCombo, SIGNAL( activated( int ) ),
+    //       this, SLOT( slotSubTypeChanged( int ) ) );
+    connect( mGlobalLeadingTopSB, SIGNAL( valueChanged( int ) ),
+             this, SLOT( slotLeadingTopChanged( int ) ) );
+    connect( mGlobalLeadingLeftSB, SIGNAL( valueChanged( int ) ),
+             this, SLOT( slotLeadingLeftChanged( int ) ) );
+    connect( mGlobalLeadingRightSB, SIGNAL( valueChanged( int ) ),
+             this, SLOT( slotLeadingRightChanged( int ) ) );
+    connect( mGlobalLeadingBottomSB, SIGNAL( valueChanged( int ) ),
+             this, SLOT( slotLeadingBottomChanged( int ) ) );
+
+    setupLegendsTab();
+    //setupAxesTab();
+    setupHeaderFooterTab();
+}
+/*
+static QStringList barSubtypeItems()
+{
+    QStringList items;
+    items << "Normal" << "Stacked" << "Percent";// << "Rows";
+    return items;
+}
+
+static QStringList lineSubtypeItems()
+{
+    QStringList items;
+    items << "Normal" << "Stacked" << "Percent";
+    return items;
+}
+*/
+/*
+void KDChartChartDesignerCustomEditor::slotTypeChanged( int index )
+{
+
+    KDChart::Chart::ChartType type = static_cast<KDChart::Chart::ChartType>(index+1);
+    mChart->setType( type );
+    mSubTypeCombo->clear();
+    switch ( type ) {
+        case KDChart::Chart::Bar:
+            mSubTypeCombo->addItems( barSubtypeItems() );
+            break;
+        case KDChart::Chart::Line:
+            mSubTypeCombo->addItems( lineSubtypeItems() );
+            break;
+        case KDChart::Chart::Pie:
+            break;
+        case KDChart::Chart::Ring:
+            break;
+        case KDChart::Chart::Polar:
+            break;
+      case KDChart::Chart::NoType:
+        default:
+            break;
+    }
+    mSubTypeCombo->setCurrentIndex( mChart->subType() );
+}
+*/
+
+/*
+void KDChartChartDesignerCustomEditor::slotSubTypeChanged( int index )
+{
+
+    KDChart::Chart::SubType type = static_cast<KDChart::Chart::SubType>(index);
+    mChart->setSubType( type );
+
+}
+*/
+
+void KDChartChartDesignerCustomEditor::slotLeadingTopChanged( int v )
+{
+    mChart->setGlobalLeadingTop( v );
+}
+
+void KDChartChartDesignerCustomEditor::slotLeadingLeftChanged( int v )
+{
+    mChart->setGlobalLeadingLeft( v );
+}
+
+void KDChartChartDesignerCustomEditor::slotLeadingRightChanged( int v )
+{
+    mChart->setGlobalLeadingRight( v );
+}
+
+void KDChartChartDesignerCustomEditor::slotLeadingBottomChanged( int v )
+{
+    mChart->setGlobalLeadingBottom( v );
+}
+
+void KDChartChartDesignerCustomEditor::setupLegendsTab()
+{
+    QVBoxLayout* vbox = new QVBoxLayout( mLegendDetailsGroup );
+    mLegendEditor = new LegendPropertiesWidget( mLegendDetailsGroup );
+
+    for (  int i = 0; i < mChart->legends().count(); ++i )
+        mLegendsList->addItem( QString("Legend %1").arg( i+1 ) );
+
+    vbox->addWidget( mLegendEditor );
+    connect( mAddLegendBtn, SIGNAL( clicked() ),
+             this, SLOT( slotAddLegend() ) );
+    connect( mRemoveLegendBtn, SIGNAL( clicked() ),
+             this, SLOT( slotRemoveLegend() ) );
+    connect( mLegendsList, SIGNAL( currentRowChanged( int ) ),
+             this, SLOT( slotCurrentLegendChanged( int ) ) );
+
+}
+/*
+void KDChartChartDesignerCustomEditor::setupAxesTab()
+{
+
+    QVBoxLayout* vbox = new QVBoxLayout( mAxisDetailsGroup );
+    mAxisEditor = new AxisPropertiesWidget( mAxisDetailsGroup );
+    KDChart::Chart::ChartType type = mChart->type();
+    switch ( type ) {
+    case KDChart::Chart::Bar:
+        for (  int i = 0; i < mChart->barDiagram()->axes().count(); ++i )
+            mAxesList->addItem( QString("Axis %1").arg( i+1 ) );
+        break;
+    case KDChart::Chart::Line:
+        for (  int i = 0; i < mChart->lineDiagram()->axes().count(); ++i )
+            mAxesList->addItem( QString("Axis %1").arg( i+1 ) );
+        break;
+    case KDChart::Chart::Pie:
+    case KDChart::Chart::Ring:
+    case KDChart::Chart::Polar:
+    case KDChart::Chart::NoType:
+    default:
+        qDebug() << "Axis for this diagram type are not supported for now";
+        break;
+    }
+
+    vbox->addWidget( mAxisEditor );
+    connect( mAddAxisBtn, SIGNAL( clicked() ),
+             this, SLOT( slotAddAxis() ) );
+    connect( mRemoveAxisBtn, SIGNAL( clicked() ),
+             this, SLOT( slotRemoveAxis() ) );
+    connect( mAxesList, SIGNAL( currentRowChanged( int ) ),
+             this, SLOT( slotCurrentAxisChanged( int ) ) );
+}
+*/
+
+void KDChartChartDesignerCustomEditor::setupHeaderFooterTab()
+{
+    QVBoxLayout* vbox = new QVBoxLayout( mHeaderFooterDetailsGroup );
+    mHeaderFooterEditor = new HeaderFooterPropertiesWidget( mHeaderFooterDetailsGroup );
+
+    for (  int i = 0; i < mChart->headerFooters().count(); ++i )
+        mHeaderFootersList->addItem( QString("HeaderFooter %1").arg( i+1 ) );
+
+    vbox->addWidget( mHeaderFooterEditor );
+    connect( mAddHeaderFooterBtn, SIGNAL( clicked() ),
+             this, SLOT( slotAddHeaderFooter() ) );
+    connect( mRemoveHeaderFooterBtn, SIGNAL( clicked() ),
+             this, SLOT( slotRemoveHeaderFooter() ) );
+    connect( mHeaderFootersList, SIGNAL( currentRowChanged( int ) ),
+             this, SLOT( slotCurrentHeaderFooterChanged( int ) ) );
+}
+
+void KDChartChartDesignerCustomEditor::slotAddLegend()
+{
+    Legend *l = new Legend( mChart );
+    l->setPosition(  Position::East );
+    mChart->addLegend( l );
+    mLegendsList->addItem( QString("Legend %1").arg(mChart->legends().count() ) );
+
+}
+
+void KDChartChartDesignerCustomEditor::slotRemoveLegend()
+{
+    int idx = mLegendsList->currentRow();
+    if ( idx == -1 || idx >= mChart->legends().count() ) return;
+    Legend* l = mChart->legends()[idx];
+    mChart->takeLegend( l );
+    delete l;
+    delete mLegendsList->takeItem( idx );
+}
+
+void KDChartChartDesignerCustomEditor::slotCurrentLegendChanged( int idx )
+{
+    Legend* l = 0;
+    if ( idx != -1 && idx < mChart->legends().count() )
+        l = mChart->legends()[idx];
+    mLegendEditor->setLegend( l );
+}
+
+/*
+void KDChartChartDesignerCustomEditor::slotAddAxis()
+{
+
+    CartesianAxis * axis = new CartesianAxis( );
+    axis->setPosition( CartesianAxis::Left );
+    KDChart::Chart::ChartType type = mChart->type();
+    switch ( type ) {
+    case KDChart::Chart::Bar:
+        mChart->barDiagram()->addAxis( axis );
+        mAxesList->addItem( QString("Axis %1").arg(mChart->barDiagram()->axes().count() ) );
+        break;
+    case KDChart::Chart::Line:
+        mChart->lineDiagram()->addAxis( axis );
+        mAxesList->addItem( QString("Axis %1").arg(mChart->lineDiagram()->axes().count() ) );
+        break;
+    case KDChart::Chart::Pie:
+    case KDChart::Chart::Ring:
+    case KDChart::Chart::Polar:
+    case KDChart::Chart::NoType:
+    default:
+        qDebug() << "Axis for this diagram type are not supported at the moment";
+        break;
+    }
+}
+*/
+ /*
+void KDChartChartDesignerCustomEditor::slotRemoveAxis()
+{
+    int idx = mAxesList->currentRow();
+    if ( idx == -1  ) return;
+    KDChart::Chart::ChartType type = mChart->type();
+    switch ( type ) {
+    case KDChart::Chart::Bar:
+    {
+        if ( idx >= mChart->barDiagram()->axes().count() ) break;
+        CartesianAxis* l = mChart->barDiagram()->axes()[idx];
+        mChart->barDiagram()->takeAxis( l );
+        delete l;
+        delete mAxesList->takeItem(  idx );
+        break;
+    }
+    case KDChart::Chart::Line:
+    {
+        if ( idx >= mChart->lineDiagram()->axes().count() ) break;
+        CartesianAxis* l = mChart->lineDiagram()->axes()[idx];
+        mChart->lineDiagram()->takeAxis( l );
+        delete l;
+        delete mAxesList->takeItem(  idx );
+        break;
+    }
+    case KDChart::Chart::Pie:
+    case KDChart::Chart::Ring:
+    case KDChart::Chart::Polar:
+    case KDChart::Chart::NoType:
+    default:
+        break;
+    }
+
+}
+*/
+  /*
+void KDChartChartDesignerCustomEditor::slotCurrentAxisChanged( int idx )
+{
+
+    if ( idx == -1 ) return;
+    KDChart::Chart::ChartType type = mChart->type();
+    switch ( type ) {
+    case KDChart::Chart::Bar:
+    {
+        if ( idx >= mChart->barDiagram()->axes().count() ) break;
+        CartesianAxis* l = mChart->barDiagram()->axes()[idx];
+        mAxisEditor->setAxis( l );
+        break;
+    }
+    case KDChart::Chart::Line:
+    {
+        if ( idx >= mChart->lineDiagram()->axes().count() ) break;
+        CartesianAxis* l = mChart->lineDiagram()->axes()[idx];
+        mAxisEditor->setAxis( l );
+        break;
+    }
+    case KDChart::Chart::Pie:
+    case KDChart::Chart::Ring:
+    case KDChart::Chart::Polar:
+    case KDChart::Chart::NoType:
+        default:
+            qDebug() << "Axis for this diagram type are not supported at the moment";
+            break;
+    }
+}
+*/
+
+void KDChartChartDesignerCustomEditor::slotAddHeaderFooter()
+{
+    HeaderFooter * hf = new HeaderFooter();
+    hf->setType( HeaderFooter::Header );
+    hf->setText(  "Header" );
+    mChart->addHeaderFooter( hf );
+    mHeaderFootersList->addItem( QString("HeaderFooter %1").arg(mChart->headerFooters().count() ) );
+
+}
+
+void KDChartChartDesignerCustomEditor::slotRemoveHeaderFooter()
+{
+    int idx = mHeaderFootersList->currentRow();
+    if ( idx == -1 || idx >= mChart->headerFooters().count() ) return;
+    HeaderFooter* l = mChart->headerFooters()[idx];
+    mChart->takeHeaderFooter( l );
+    delete l;
+    delete mHeaderFootersList->takeItem( idx );
+}
+
+void KDChartChartDesignerCustomEditor::slotCurrentHeaderFooterChanged( int idx )
+{
+    if ( idx == -1 || idx >= mChart->headerFooters().count() ) return;
+    HeaderFooter* l = mChart->headerFooters()[idx];
+    mHeaderFooterEditor->setHeaderFooter( l );
+}
+

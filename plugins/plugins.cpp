@@ -1,11 +1,15 @@
 #include "plugins.h"
 #include <KDChartWidget>
 #include <KDChartChart>
+#include <KDChartLineDiagram>
+//#include <KDChartCartesianAxis>
 #include "kdchartdesignerextension.h"
+
 
 #include <QDesignerCustomWidgetInterface>
 #include <QDesignerFormEditorInterface>
 #include <QExtensionManager>
+#include <QtGui>
 
 #include <QString>
 #include <QIcon>
@@ -30,7 +34,24 @@ QWidget* createKDChartWidget( QWidget * parent )
 
 QWidget* createKDChartChart( QWidget * parent )
 {
-    return new KDChart::Chart( parent );
+    QStandardItemModel m_model;
+    KDChart::Chart *w = new KDChart::Chart(  parent );
+
+    m_model.insertRows( 0, 2, QModelIndex() );
+    m_model.insertColumns(  0,  3,  QModelIndex() );
+    for (int row = 0; row < 3; ++row) {
+            for (int column = 0; column < 3; ++column) {
+                QModelIndex index = m_model.index(row, column, QModelIndex());
+                m_model.setData(index, QVariant(row+1 * column) );
+            }
+    }
+
+    KDChart::LineDiagram* diagram = new KDChart::LineDiagram;
+    diagram->setModel(&m_model);
+
+    w->coordinatePlane()->replaceDiagram(diagram);
+
+    return w;/*new KDChart::Chart( parent )*/;
 }
 
 void initKDChartChart( QDesignerCustomWidgetInterface *, QDesignerFormEditorInterface * core )

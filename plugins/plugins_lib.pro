@@ -26,10 +26,13 @@ DEPENDPATH += ../uitools
 HEADERS = \
 	kdchartdesignerextension.h \
 	kdchartwidgetdesignercustomeditor.h \ 
+        kdchartchartdesignercustomeditor.h \
 
 SOURCES = \
 	kdchartdesignerextension.cpp \
 	kdchartwidgetdesignercustomeditor.cpp \ 
+        kdchartchartdesignercustomeditor.cpp \
 
 FORMS = \
         kdchartwidgetdesignercustomeditor.ui \
+        kdchartchartdesignercustomeditor.ui \

@@ -1,6 +1,7 @@
 #include "kdchartdesignerextension.h"
 
 #include "kdchartwidgetdesignercustomeditor.h"
+#include "kdchartchartdesignercustomeditor.h"
 
 #include <KDChartChart>
 #include <KDChartWidget>
@@ -61,8 +62,8 @@ KDChartChartTaskMenu::KDChartChartTaskMenu( KDChart::Chart * chart, QObject * pa
 
 void KDChartChartTaskMenu::doEditChartProperties()
 {
-    //KDChartWidgetDesignerCustomEditor dlg( mChart );
-    //dlg.exec();
+    KDChartChartDesignerCustomEditor dlg( mChart );
+    dlg.exec();
 }
 
 KDChartWidgetTaskMenuFactory::KDChartWidgetTaskMenuFactory( QExtensionManager * extMgr ):
