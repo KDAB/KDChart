@@ -21,6 +21,7 @@ private slots:
 
   void testPlaneOwnership()
   {
+      AbstractCoordinatePlane*orig = m_chart->coordinatePlane();
       QCOMPARE( m_chart->coordinatePlanes().size(), 1 );
       CartesianCoordinatePlane *p = new CartesianCoordinatePlane();
       m_chart->addCoordinatePlane( p );
@@ -31,6 +32,7 @@ private slots:
       QCOMPARE( m_chart->coordinatePlanes().size(), 2 );
       delete p;
       QCOMPARE( m_chart->coordinatePlanes().size(), 1 );
+      QCOMPARE( m_chart->coordinatePlane(), orig );
   }
 
   void testLegendOwnership()
@@ -61,7 +63,11 @@ private slots:
       QCOMPARE( m_chart->headerFooters().size(), 0 );
   }
 
-  
+  void testChartDeletion()
+  {
+      delete m_chart;
+  }
+
   void cleanupTestCase()
   {
   }
