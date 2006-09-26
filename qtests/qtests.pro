@@ -3,6 +3,7 @@ SUBDIRS +=  ChartElementOwnership \
             #AxisOwnership \
             KDChartAttributesModel \
             KDChartPalette \
+            Legends \
 
 unix:SUBDIRS += AxisOwnership
 test.target=test
