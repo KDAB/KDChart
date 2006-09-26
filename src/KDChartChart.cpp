@@ -60,6 +60,7 @@ void Chart::Private::slotUnregisterDestroyedLegend( Legend *l )
 void Chart::Private::slotUnregisterDestroyedHeaderFooter( HeaderFooter* hf )
 {
     headerFooters.removeAll( hf );
+    textLayoutItems.remove( textLayoutItems.indexOf( hf ) );
 }
 
 void Chart::Private::slotUnregisterDestroyedPlane( AbstractCoordinatePlane* plane )
@@ -71,6 +72,7 @@ void Chart::Private::slotUnregisterDestroyedPlane( AbstractCoordinatePlane* plan
             p->setReferenceCoordinatePlane(0);
         }
     }
+    plane->layoutPlanes();
 }
 
 Chart::Private::Private( Chart* chart_ )
@@ -613,6 +615,7 @@ void Chart::takeCoordinatePlane( AbstractCoordinatePlane* plane )
         d->coordinatePlanes.takeAt( idx );
         disconnect( plane, SIGNAL( destroyedCoordinatePlane( AbstractCoordinatePlane* ) ),
                     d, SLOT( slotUnregisterDestroyedPlane( AbstractCoordinatePlane* ) ) );
+        plane->removeFromParentLayout();
         plane->setParent( 0 );
     }
     d->slotLayoutPlanes();
