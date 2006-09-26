@@ -212,7 +212,7 @@ void KDChartChartDesignerCustomEditor::setupHeaderFooterTab()
 
 void KDChartChartDesignerCustomEditor::slotAddLegend()
 {
-    Legend *l = new Legend( mChart );
+    Legend *l = new Legend( mChart->coordinatePlane()->diagram(), mChart );
     l->setPosition(  Position::East );
     mChart->addLegend( l );
     mLegendsList->addItem( QString("Legend %1").arg(mChart->legends().count() ) );
