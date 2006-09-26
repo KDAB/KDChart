@@ -26,7 +26,7 @@
 #ifndef DIAGRAMTYPE_H
 #define DIAGRAMTYPE_H
 
-#include "ui_diagramType.h"
+#include "ui_diagramtype.h"
 
 class DiagramType : public QDialog, public Ui::DiagramTypDLG
 {
