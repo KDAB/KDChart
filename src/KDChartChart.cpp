@@ -65,6 +65,12 @@ void Chart::Private::slotUnregisterDestroyedHeaderFooter( HeaderFooter* hf )
 void Chart::Private::slotUnregisterDestroyedPlane( AbstractCoordinatePlane* plane )
 {
     coordinatePlanes.removeAll( plane );
+    Q_FOREACH ( AbstractCoordinatePlane* p, coordinatePlanes )
+    {
+        if ( p->referenceCoordinatePlane() == plane) {
+            p->setReferenceCoordinatePlane(0);
+        }
+    }
 }
 
 Chart::Private::Private( Chart* chart_ )
