@@ -28,13 +28,17 @@ HEADERS = \
 	kdchartwidgetdesignercustomeditor.h \ 
         kdchartchartdesignercustomeditor.h \
         kdchartextrainfoextension.h \
+        diagramtype.h \
 
 SOURCES = \
 	kdchartdesignerextension.cpp \
 	kdchartwidgetdesignercustomeditor.cpp \ 
         kdchartchartdesignercustomeditor.cpp \
         kdchartextrainfoextension.cpp \
+        diagramtype.cpp \
 
 FORMS = \
         kdchartwidgetdesignercustomeditor.ui \
         kdchartchartdesignercustomeditor.ui \
+        diagramtype.ui \
+        

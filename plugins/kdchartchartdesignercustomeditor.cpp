@@ -22,10 +22,10 @@
  ** licensing are not clear to you.
  **
  **********************************************************************/
-
+#include <QStandardItemModel>
 #include <KDChartChart>
 #include <KDChartCartesianAxis>
-#include <KDChartAbstractCartesianDiagram>
+#include <KDChartAbstractDiagram>
 #include <KDChartLineDiagram>
 #include <KDChartBarDiagram>
 #include <KDChartLegend>
@@ -36,6 +36,7 @@
 #include <KDChartLegendPropertiesWidget.h>
 #include <KDChartAxisPropertiesWidget.h>
 #include <KDChartHeaderFooterPropertiesWidget.h>
+#include <KDChartDiagramPropertiesWidget.h>
 
 using namespace KDChart;
 
@@ -43,18 +44,12 @@ KDChartChartDesignerCustomEditor::KDChartChartDesignerCustomEditor( KDChart::Cha
     :mChart( chart )
 {
     setupUi( this );
-    //mTypeCombo->setCurrentIndex( mChart->diagram()->type() - 1 );
-    //slotTypeChanged( mChart->diagram()->type() - 1 );
     mGlobalLeadingTopSB->setValue( mChart->globalLeadingTop() );
     mGlobalLeadingLeftSB->setValue( mChart->globalLeadingLeft() );
     mGlobalLeadingRightSB->setValue( mChart->globalLeadingRight() );
     mGlobalLeadingBottomSB->setValue( mChart->globalLeadingBottom() );
     connect( mCloseButton, SIGNAL( clicked() ),
              this, SLOT( accept() ));
-    //connect( mTypeCombo, SIGNAL( activated( int ) ),
-    //       this, SLOT( slotTypeChanged( int ) ) );
-    //connect( mSubTypeCombo, SIGNAL( activated( int ) ),
-    //       this, SLOT( slotSubTypeChanged( int ) ) );
     connect( mGlobalLeadingTopSB, SIGNAL( valueChanged( int ) ),
              this, SLOT( slotLeadingTopChanged( int ) ) );
     connect( mGlobalLeadingLeftSB, SIGNAL( valueChanged( int ) ),
@@ -64,6 +59,7 @@ KDChartChartDesignerCustomEditor::KDChartChartDesignerCustomEditor( KDChart::Cha
     connect( mGlobalLeadingBottomSB, SIGNAL( valueChanged( int ) ),
              this, SLOT( slotLeadingBottomChanged( int ) ) );
 
+    setupDiagramsTab();
     setupLegendsTab();
     //setupAxesTab();
     setupHeaderFooterTab();
@@ -141,6 +137,25 @@ void KDChartChartDesignerCustomEditor::slotLeadingBottomChanged( int v )
     mChart->setGlobalLeadingBottom( v );
 }
 
+void KDChartChartDesignerCustomEditor::setupDiagramsTab()
+{
+    QVBoxLayout* vbox = new QVBoxLayout( mDiagramDetailsGroup );
+    mDiagramEditor = new DiagramPropertiesWidget( mDiagramDetailsGroup );
+
+    for (  int i = 0; i < mChart->coordinatePlane()->diagrams().count(); ++i )
+        mDiagramsList->addItem( QString("Diagram %1").arg( i+1 ) );
+
+    vbox->addWidget( mDiagramEditor );
+    connect( mAddDiagramBtn, SIGNAL( clicked() ),
+             this, SLOT( slotAddDiagram() ) );
+    connect( mRemoveDiagramBtn, SIGNAL( clicked() ),
+             this, SLOT( slotRemoveDiagram() ) );
+    connect( mDiagramsList, SIGNAL( currentRowChanged( int ) ),
+             this, SLOT( slotCurrentDiagramChanged( int ) ) );
+
+}
+
+
 void KDChartChartDesignerCustomEditor::setupLegendsTab()
 {
     QVBoxLayout* vbox = new QVBoxLayout( mLegendDetailsGroup );
@@ -209,6 +224,78 @@ void KDChartChartDesignerCustomEditor::setupHeaderFooterTab()
     connect( mHeaderFootersList, SIGNAL( currentRowChanged( int ) ),
              this, SLOT( slotCurrentHeaderFooterChanged( int ) ) );
 }
+
+void KDChartChartDesignerCustomEditor::slotAddDiagram()
+{
+
+    DiagramType dlg;
+    QStandardItemModel * m_model = new QStandardItemModel;
+
+    m_model->insertRows( 0, 2, QModelIndex() );
+    m_model->insertColumns(  0,  3,  QModelIndex() );
+    for (int row = 0; row < 3; ++row) {
+            for (int column = 0; column < 3; ++column) {
+                QModelIndex index = m_model->index(row, column, QModelIndex());
+                m_model->setData(index, QVariant(row+1 * column) );
+            }
+    }
+
+    if (  dlg.exec()== QDialog::Accepted ) {
+        if ( dlg.lineRB->isChecked() ) {
+         LineDiagram * diagram = new LineDiagram;
+         diagram->setModel(m_model);
+         mChart->coordinatePlane()-> addDiagram( diagram );
+        } else if ( dlg.barRB->isChecked() ) {
+         BarDiagram * diagram = new BarDiagram;
+         diagram->setModel(m_model);
+         mChart->coordinatePlane()-> addDiagram( diagram );
+        } else
+            qDebug() << "Pie diagrams are not supported yet";
+
+    mDiagramsList->addItem( QString("Diagram %1").arg(mChart->coordinatePlane()->diagrams().count() ) );
+    } else
+        return;
+
+}
+
+void KDChartChartDesignerCustomEditor::slotRemoveDiagram()
+{
+
+    int idx = mDiagramsList->currentRow();
+    if ( idx == -1 || idx >= mChart->coordinatePlane()->diagrams().count() ) return;
+    if (  idx == 0 ) {
+        LineDiagram *l = dynamic_cast<KDChart::LineDiagram*>( mChart->coordinatePlane()->diagrams()[idx] ) ;
+        mChart->coordinatePlane()->takeDiagram( l );
+        delete l;
+    }
+    else if  (  idx == 1 ) {
+        BarDiagram *b = dynamic_cast<KDChart::BarDiagram*>( mChart->coordinatePlane()->diagrams()[idx] ) ;
+        mChart->coordinatePlane()->takeDiagram( b );
+        delete b;
+    }
+
+
+    delete mDiagramsList->takeItem( idx );
+
+}
+
+void KDChartChartDesignerCustomEditor::slotCurrentDiagramChanged( int idx )
+{
+
+
+    if ( idx != -1 && idx < mChart->coordinatePlane()->diagrams().count() ) {
+        if (  idx == 0 ) {
+            LineDiagram *l = dynamic_cast<KDChart::LineDiagram*>( mChart->coordinatePlane()->diagrams()[idx] ) ;
+            mDiagramEditor->setLineDiagram( l );
+        }
+        else if  (  idx == 1 ) {
+            BarDiagram *b = dynamic_cast<KDChart::BarDiagram*>( mChart->coordinatePlane()->diagrams()[idx] ) ;
+            mDiagramEditor->setBarDiagram( b );
+        }
+    }
+}
+
+
 
 void KDChartChartDesignerCustomEditor::slotAddLegend()
 {

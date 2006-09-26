@@ -4,12 +4,14 @@
 #include <QDialog>
 
 #include "ui_kdchartchartdesignercustomeditor.h"
+#include "diagramtype.h"
 
 namespace KDChart {
     class Chart;
     class LegendPropertiesWidget;
     class AxisPropertiesWidget;
     class HeaderFooterPropertiesWidget;
+    class DiagramPropertiesWidget;
 }
 
 class KDChartChartDesignerCustomEditor
@@ -27,6 +29,9 @@ class KDChartChartDesignerCustomEditor
 
 
     private slots:
+        void slotAddDiagram();
+        void slotRemoveDiagram();
+        void slotCurrentDiagramChanged( int idx ); 
         void slotAddLegend();
         void slotRemoveLegend();
         void slotCurrentLegendChanged( int idx );
@@ -38,10 +43,12 @@ class KDChartChartDesignerCustomEditor
         void slotCurrentHeaderFooterChanged( int idx );
 
     private:
+        void setupDiagramsTab();
         void setupLegendsTab();
         //void setupAxesTab();
         void setupHeaderFooterTab();
 
+	KDChart::DiagramPropertiesWidget * mDiagramEditor;
         KDChart::LegendPropertiesWidget * mLegendEditor;
         //KDChart::AxisPropertiesWidget * mAxisEditor;
         KDChart::HeaderFooterPropertiesWidget * mHeaderFooterEditor;

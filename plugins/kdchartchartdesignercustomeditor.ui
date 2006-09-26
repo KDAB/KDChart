@@ -207,26 +207,26 @@
               <number>6</number>
              </property>
              <item row="1" column="0" >
-              <widget class="QPushButton" name="mAddChartBtn" >
+              <widget class="QPushButton" name="mAddDiagramBtn" >
                <property name="text" >
-                <string>Add Chart</string>
+                <string>Add Diagram</string>
                </property>
               </widget>
              </item>
              <item row="1" column="1" >
-              <widget class="QPushButton" name="mRemoveChartBtn" >
+              <widget class="QPushButton" name="mRemoveDiagramBtn" >
                <property name="text" >
-                <string>Remove Chart</string>
+                <string>Remove Diagram</string>
                </property>
               </widget>
              </item>
              <item row="0" column="0" colspan="2" >
-              <widget class="QListWidget" name="mChartList" />
+              <widget class="QListWidget" name="mDiagramsList" />
              </item>
             </layout>
            </item>
            <item>
-            <widget class="QGroupBox" name="mChartDetailsGroup" >
+            <widget class="QGroupBox" name="mDiagramDetailsGroup" >
              <property name="title" >
               <string>Chart Details</string>
              </property>
