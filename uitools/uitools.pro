@@ -1,5 +1,6 @@
 
 include( ../variables.pri )
+
 UI_DIR = .
 TEMPLATE = lib
 TARGET = kdchartuitools
@@ -20,6 +21,7 @@ LIBS += -L$$KDCHART_PATH/lib -lkdchart
 dll{
   DEFINES += KDCHART_UITOOLS_DLL
 }
+
 KDAB_EVAL{
   HEADERS += ../evaldialog/evaldialog.h
   SOURCES += ../evaldialog/evaldialog.cpp
@@ -30,6 +32,7 @@ KDAB_EVAL{
 FORMS += KDChartLegendPropertiesWidget.ui \
          KDChartHeaderFooterPropertiesWidget.ui \
          KDChartAxisPropertiesWidget.ui \
+         KDChartDiagramPropertiesWidget.ui \
          
 HEADERS += KDChartLegendPropertiesWidget.h \
            KDChartLegendPropertiesWidget_p.h \
@@ -39,9 +42,12 @@ HEADERS += KDChartLegendPropertiesWidget.h \
            KDChartHeaderFooterPropertiesWidget_p.h \
            KDChartWidgetSerializer.h \
            KDChartChartSerializer.h \
+           KDChartDiagramPropertiesWidget.h \
+           KDChartDiagramPropertiesWidget_p.h \ 
            
 SOURCES += KDChartLegendPropertiesWidget.cpp \
            KDChartAxisPropertiesWidget.cpp \
            KDChartHeaderFooterPropertiesWidget.cpp \
            KDChartWidgetSerializer.cpp \
            KDChartChartSerializer.cpp \ 
+           KDChartDiagramPropertiesWidget.cpp \
