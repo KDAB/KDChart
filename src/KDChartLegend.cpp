@@ -72,6 +72,7 @@ Legend::Private::~Private()
 
 #define d d_func()
 
+
 Legend::Legend( QWidget* parent ) :
     AbstractAreaWidget( new Private(), parent )
 {
@@ -145,11 +146,15 @@ Legend* Legend::clone() const
     return newLegend;
 }
 
+//#define debug_legend_paint
+
 void Legend::paint( QPainter* painter )
 {
+#ifdef debug_legend_paint
+    qDebug() << "entering Legend::paint( QPainter* painter )";
+#endif
     // rule: We do not show a legend, if there is no diagram.
     if( ! diagram() ) return;
-    //qDebug() << "KDChart::Legend::paint() called";
 
     // re-calculate/adjust the Legend's internal layout and contents, if needed:
     buildLegend();
@@ -159,7 +164,9 @@ void Legend::paint( QPainter* painter )
     Q_FOREACH( KDChart::AbstractLayoutItem* layoutItem, d->layoutItems ) {
         layoutItem->paint( painter );
     }
-    //qDebug() << "KDChart::Legend::paint() done.";
+#ifdef debug_legend_paint
+    qDebug() << "leaving Legend::paint( QPainter* painter )";
+#endif
 }
 
 
@@ -470,7 +477,15 @@ TextAttributes Legend::titleTextAttributes() const
 
 void Legend::forceRebuild()
 {
+#ifdef debug_legend_paint
+    qDebug() << "entering Legend::forceRebuild()";
+#endif
     setSpacing(d->layout->spacing());
+    //d->needRebuild = true;
+    buildLegend();
+#ifdef debug_legend_paint
+    qDebug() << "leaving Legend::forceRebuild()";
+#endif
 }
 
 void Legend::setSpacing( uint space )
@@ -566,6 +581,7 @@ static const QColor SUBDUEDCOLORS[ NUM_SUBDUEDCOLORS ] = {
 
 void Legend::resizeEvent ( QResizeEvent * event )
 {
+    //qDebug() << "Legend::resizeEvent() called";
     d->needRebuild = true;
     buildLegend();
     QTimer::singleShot(0, this, SLOT(emitPositionChanged()));
@@ -573,8 +589,13 @@ void Legend::resizeEvent ( QResizeEvent * event )
 
 void Legend::buildLegend()
 {
-    //qDebug() << "entering Legend::buildLegend()";
+#ifdef debug_legend_paint
+    qDebug() << "entering Legend::buildLegend()";
+#endif
     if( ! d->needRebuild ) {
+#ifdef debug_legend_paint
+        qDebug() << "leaving Legend::buildLegend() with NO action (was already rebuild)";
+#endif
         // Note: We do *not* need to send positionChanged here,
         //       because we send it in the resizeEvent, so layouting
         //       is done at the right time.
@@ -716,6 +737,8 @@ void Legend::buildLegend()
 
     //FIXME(khz): Find out if we really need that call:
     //d->layout->activate();
-    //qDebug() << "leaving Legend::buildLegend()";
+#ifdef debug_legend_paint
+    qDebug() << "leaving Legend::buildLegend()";
+#endif
 }
 

@@ -81,6 +81,11 @@ void AbstractAreaWidget::paintIntoRect( QPainter& painter, const QRect& rect )
         setGeometry( oldGeometry );
 }
 
+void AbstractAreaWidget::forceRebuild()
+{
+    //bloc left empty intentionally
+}
+
 void AbstractAreaWidget::paintAll( QPainter& painter )
 {
      //qDebug() << "AbstractAreaWidget::paintAll() called";
@@ -88,17 +93,21 @@ void AbstractAreaWidget::paintAll( QPainter& painter )
     paintBackground( painter, rect() );
     paintFrame(      painter, rect().adjusted(0,0,-1,-1) );
 
-    // temporarily adjust the margins, to be sure all content gets calculated
+    // adjust the widget's content margins,
+    // to be sure all content gets calculated
     // to fit into the inner rectangle
     const QRect oldGeometry( areaGeometry()  );
     const QRect inner( innerRect() );
+    //qDebug() << "areaGeometry():" << oldGeometry
+    //         << "  contentsRect():" << contentsRect() << "  inner:" << inner;
     if( contentsRect() != inner ){
-         //qDebug() << "contentsRect():" << contentsRect() << "  inner:" << inner;
+        qDebug() << "old contentsRect():" << contentsRect() << "  new innerRect:" << inner;
         setContentsMargins(
             inner.left(),
             inner.top(),
-            oldGeometry.width() -inner.width(),
-            oldGeometry.height()-inner.height() );
+            oldGeometry.width() -inner.width()-1,
+            oldGeometry.height()-inner.height()-1 );
+        forceRebuild();
     }
     paint( &painter );
      //qDebug() << "AbstractAreaWidget::paintAll() done.";

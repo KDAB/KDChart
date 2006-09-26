@@ -682,6 +682,8 @@ qFatal("nPaint > 100");
 
     d->inPaint = true;
 
+    d->slotRelayout();
+
     const QRect oldGeometry( geometry() );
     //painter->drawRect( oldGeometry );
     QRect target( target_ );
@@ -710,7 +712,7 @@ qFatal("nPaint > 100");
     Q_FOREACH( Legend *legend, d->legends ) {
 //qDebug("legend # %i",++i);
         if( ! legend->isHidden() ){
-            legend->forceRebuild();
+            //legend->forceRebuild();
 /*
             const QPoint translation( legend->geometry().topLeft() );
             painter->translate( translation );

@@ -93,6 +93,7 @@ public:
       * before the normal paint() is invoked automatically.
       */
     void paintAll( QPainter& painter );
+    virtual void forceRebuild();
 
 protected:
     virtual ~AbstractAreaWidget() ;

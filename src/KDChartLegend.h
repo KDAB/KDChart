@@ -216,7 +216,7 @@ public:
     uint spacing() const;
 
     // called internally by KDChart::Chart, when painting into a custom QPainter
-    void forceRebuild();
+    virtual void forceRebuild();
 
 /*public static*/
 //    static LegendPosition stringToPosition( QString name, bool* ok=0 );
