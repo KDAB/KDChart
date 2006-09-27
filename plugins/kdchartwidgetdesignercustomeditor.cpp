@@ -82,9 +82,23 @@ static QStringList lineSubtypeItems()
     return items;
 }
 
+static bool isCartesian( KDChart::Widget::ChartType type )
+{
+    return (type == KDChart::Widget::Bar || type == KDChart::Widget::Line);
+}
+
+static bool isPolar( KDChart::Widget::ChartType type )
+{
+    return (type == KDChart::Widget::Pie
+            || type == KDChart::Widget::Ring
+            || type == KDChart::Widget::Polar );
+}
+
 void KDChartWidgetDesignerCustomEditor::slotTypeChanged( int index )
 {
     KDChart::Widget::ChartType type = static_cast<KDChart::Widget::ChartType>(index+1);
+    if ( isCartesian(mChart->type()) && isPolar( type ) )
+        mAxesList->clear();
     mChart->setType( type );
     mSubTypeCombo->clear();
     switch ( type ) {
