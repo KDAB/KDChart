@@ -314,7 +314,6 @@ void KDChartChartDesignerCustomEditor::slotCurrentLegendChanged( int idx )
 
 void KDChartChartDesignerCustomEditor::slotAddAxis()
 {
-    qDebug() << "called addAxis";
     CartesianAxis * axis = new CartesianAxis( );
     axis->setPosition( CartesianAxis::Left );
     ChartType type = typeFromDiagram();
@@ -328,6 +327,7 @@ void KDChartChartDesignerCustomEditor::slotAddAxis()
         break;
     case Line:
         d->addAxis(  axis );
+        mAxesList->addItem( QString("Axis %1").arg( count ) );
     case Pie:
     default:
         qDebug() << "Axis for this diagram type are not supported at the moment";
