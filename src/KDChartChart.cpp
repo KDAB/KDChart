@@ -560,7 +560,7 @@ Chart::Chart ( QWidget* parent )
 
 Chart::~Chart()
 {
-    delete  _d;
+    delete _d;
 }
 
 #define d d_func()
@@ -691,8 +691,6 @@ qFatal("nPaint > 100");
     if( d->inPaint || target_.isEmpty() || !painter ) return;
 
     d->inPaint = true;
-
-//    d->slotRelayout();
 
     const QRect oldGeometry( geometry() );
     //painter->drawRect( oldGeometry );
