@@ -357,38 +357,41 @@ AbstractCoordinatePlane* Widget::coordinatePlane()
     return d->m_chart.coordinatePlane();
 }
 
+static bool isCartesian( KDChart::Widget::ChartType type )
+{
+    return (type == KDChart::Widget::Bar || type == KDChart::Widget::Line);
+}
+
+static bool isPolar( KDChart::Widget::ChartType type )
+{
+    return (type == KDChart::Widget::Pie
+            || type == KDChart::Widget::Ring
+            || type == KDChart::Widget::Polar );
+}
+
 void Widget::setType( ChartType chartType, SubType chartSubType )
 {
     AbstractDiagram* diag = 0;
     CartesianCoordinatePlane* cartPlane = 0;
     PolarCoordinatePlane* polPlane = 0;
 
+
     if ( chartType != type() ){
         switch ( chartType )
         {
             case Bar:
-              cartPlane = new CartesianCoordinatePlane( &d->m_chart );
-              d->m_chart.replaceCoordinatePlane( cartPlane );
               diag = new BarDiagram( &d->m_chart, cartPlane );
               break;
             case Line:
-              cartPlane = new CartesianCoordinatePlane( &d->m_chart );
-              d->m_chart.replaceCoordinatePlane( cartPlane );
               diag = new LineDiagram( &d->m_chart, cartPlane );
               break;
             case Pie:
-              polPlane = new PolarCoordinatePlane( &d->m_chart );
-              d->m_chart.replaceCoordinatePlane( polPlane );
               diag = new PieDiagram( &d->m_chart, polPlane );
               break;
             case Polar:
-              polPlane = new PolarCoordinatePlane( &d->m_chart );
-              d->m_chart.replaceCoordinatePlane( polPlane );
               diag = new PolarDiagram( &d->m_chart, polPlane );
               break;
             case Ring:
-              polPlane = new PolarCoordinatePlane( &d->m_chart );
-              d->m_chart.replaceCoordinatePlane( polPlane );
               diag = new RingDiagram( &d->m_chart, polPlane );
               break;
             case NoType:
@@ -396,6 +399,23 @@ void Widget::setType( ChartType chartType, SubType chartSubType )
         }
         if ( diag != NULL )
         {
+            if ( isPolar( type() ) && isCartesian( chartType ) )
+            {
+                cartPlane = new CartesianCoordinatePlane( &d->m_chart );
+                d->m_chart.replaceCoordinatePlane( cartPlane );
+            } else if ( isCartesian( type() ) && isPolar( chartType ) )
+            {
+                polPlane = new PolarCoordinatePlane( &d->m_chart );
+                d->m_chart.replaceCoordinatePlane( polPlane );
+            } else if ( isCartesian( type() ) && isCartesian( chartType ) )
+            {
+                AbstractCartesianDiagram *old =
+                        qobject_cast<AbstractCartesianDiagram*>( d->m_chart.coordinatePlane()->diagram() );
+                Q_FOREACH( CartesianAxis* axis, old->axes() ) {
+                    old->takeAxis( axis );
+                    qobject_cast<AbstractCartesianDiagram*>(diag)->addAxis( axis );
+                }
+            }
             diag->setModel( &d->m_model );
             coordinatePlane()->replaceDiagram( diag );
 
