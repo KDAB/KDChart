@@ -6,13 +6,16 @@
 #include "ui_kdchartchartdesignercustomeditor.h"
 #include "diagramtype.h"
 
+class QStandardItemModel;
+
 namespace KDChart {
     class Chart;
     class LegendPropertiesWidget;
     class AxisPropertiesWidget;
     class HeaderFooterPropertiesWidget;
     class DiagramPropertiesWidget;
-    class AbstractDiagram; 
+    class AbstractDiagram;
+    class AbstractCartesianDiagram; 
 }
 
 class KDChartChartDesignerCustomEditor
@@ -63,13 +66,16 @@ class KDChartChartDesignerCustomEditor
         void setupHeaderFooterTab();
         ChartType typeFromDiagram() ;
         SubType subTypeFromDiagram();
+        void switchToCartesianPlaneAndMoveStuffToDiagram(
+                KDChart::AbstractCartesianDiagram *diagram );
+        void moveLegendsToDiagram( KDChart::AbstractDiagram* diagram );
         
 	//KDChart::DiagramPropertiesWidget * mDiagramEditor;
         KDChart::LegendPropertiesWidget * mLegendEditor;
         KDChart::AxisPropertiesWidget * mAxisEditor;
         KDChart::HeaderFooterPropertiesWidget * mHeaderFooterEditor;
         KDChart::Chart * const mChart;
-
+        QStandardItemModel * mModel;
 };
 
 #endif
