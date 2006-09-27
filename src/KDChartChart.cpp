@@ -692,7 +692,7 @@ qFatal("nPaint > 100");
 
     d->inPaint = true;
 
-    d->slotRelayout();
+//    d->slotRelayout();
 
     const QRect oldGeometry( geometry() );
     //painter->drawRect( oldGeometry );
