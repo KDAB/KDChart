@@ -81,8 +81,14 @@ MainWindow::MainWindow( QWidget* parent ) :
 
     // Set up the legend
     m_legend = new Legend( m_lines, m_chart );
+
+    m_legend->setPosition( Position::SouthEast );
+    m_legend->setAlignment( Qt::AlignCenter );
+    m_legend->setShowLines( false );
+    m_legend->setTitleText( tr( "Legend" ) );
+    m_legend->setOrientation( Qt::Vertical );
+
     m_chart->addLegend( m_legend );
-    m_legend->hide();
 }
 
 void MainWindow::on_lineTypeCB_currentIndexChanged( const QString & text )
