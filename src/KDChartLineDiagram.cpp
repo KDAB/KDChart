@@ -277,6 +277,12 @@ const QPair<QPointF, QPointF> LineDiagram::calculateDataBoundaries() const
                     }
                 }
             }
+
+            if( yMin > 0 && yMax / yMin >= 2.0 )
+                yMin = 0;
+            else if( yMax < 0 && yMax / yMin <= 0.5 )
+                yMax = 0;
+
             break;
         case LineDiagram::Stacked:
         {
