@@ -145,7 +145,7 @@ Legend* Legend::clone() const
     return newLegend;
 }
 
-#define debug_legend_paint
+//#define debug_legend_paint
 void Legend::paint( QPainter* painter )
 {
 #ifdef debug_legend_paint
