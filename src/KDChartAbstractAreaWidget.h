@@ -94,6 +94,7 @@ public:
       */
     void paintAll( QPainter& painter );
     virtual void forceRebuild();
+    //virtual void setGeometry( const QRect & rect );
 
 protected:
     virtual ~AbstractAreaWidget() ;

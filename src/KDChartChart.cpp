@@ -819,7 +819,7 @@ void Chart::addLegend( Legend* legend )
     connect( legend, SIGNAL( destroyedLegend( Legend* ) ),
              d, SLOT( slotUnregisterDestroyedLegend( Legend* ) ) );
     connect( legend, SIGNAL( positionChanged( AbstractAreaWidget* ) ),
-             d, SLOT( slotRelayout() ) );
+             d, SLOT( slotLayoutPlanes() ) ); //slotRelayout() ) );
     connect( legend, SIGNAL( propertiesChanged() ),this, SIGNAL( propertiesChanged() ) );
     d->slotRelayout();
 }

@@ -101,13 +101,13 @@ void AbstractAreaWidget::paintAll( QPainter& painter )
     //qDebug() << "areaGeometry():" << oldGeometry
     //         << "  contentsRect():" << contentsRect() << "  inner:" << inner;
     if( contentsRect() != inner ){
-        qDebug() << "old contentsRect():" << contentsRect() << "  new innerRect:" << inner;
+        //qDebug() << "old contentsRect():" << contentsRect() << "  new innerRect:" << inner;
         setContentsMargins(
             inner.left(),
             inner.top(),
             oldGeometry.width() -inner.width()-1,
             oldGeometry.height()-inner.height()-1 );
-        forceRebuild();
+        //forceRebuild();
     }
     paint( &painter );
      //qDebug() << "AbstractAreaWidget::paintAll() done.";
@@ -122,4 +122,13 @@ void AbstractAreaWidget::positionHasChanged()
 {
     emit positionChanged( this );
 }
-
+/*
+void AbstractAreaWidget::setGeometry( const QRect & rect )
+{
+    qDebug() << "AbstractAreaWidget::setGeometry("<< rect << ") called";
+    const bool bChanged = rect != geometry();
+    QWidget::setGeometry( rect );
+    if( bChanged )
+        forceRebuild();
+}
+*/

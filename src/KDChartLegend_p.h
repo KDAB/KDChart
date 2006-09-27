@@ -101,7 +101,7 @@ private:
     uint spacing;
 
     // internal
-    QRectF rect;
+    QRectF cachedGeometry;
     mutable QStringList modelLabels;
     mutable QList<QBrush> modelBrushes;
     mutable QList<QPen> modelPens;
@@ -110,7 +110,6 @@ private:
     QVector<KDChart::AbstractLayoutItem*> layoutItems;
     QGridLayout* layout;
     DiagramsObserversList observers;
-    bool needRebuild; // set to TRUE by all of the Legend's setter functions
 };
 
 inline KDChart::Legend::Legend( Private* p, QWidget* parent )
