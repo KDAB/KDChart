@@ -12,6 +12,7 @@ namespace KDChart {
     class AxisPropertiesWidget;
     class HeaderFooterPropertiesWidget;
     class DiagramPropertiesWidget;
+    class AbstractDiagram; 
 }
 
 class KDChartChartDesignerCustomEditor
@@ -19,9 +20,25 @@ class KDChartChartDesignerCustomEditor
 {
     Q_OBJECT
     public:
-        KDChartChartDesignerCustomEditor( KDChart::Chart *chart );
+    KDChartChartDesignerCustomEditor( KDChart::Chart *chart );
+
+    
+      enum ChartType {
+        Bar =  0,
+        Line = 1,
+        Pie = 2
+      };
+      enum SubType {
+	Normal = 0,
+	Stacked = 1,
+	Percent = 2
+      };
+
+
+      void setSubType( const SubType subtype );
 
     public slots:
+        void slotTypeChanged( int index );
         void slotLeadingTopChanged( int v );
         void slotLeadingLeftChanged( int v );
         void slotLeadingRightChanged( int v );
@@ -29,25 +46,24 @@ class KDChartChartDesignerCustomEditor
 
 
     private slots:
-        void slotAddDiagram();
-        void slotRemoveDiagram();
-        void slotCurrentDiagramChanged( int idx ); 
         void slotAddLegend();
         void slotRemoveLegend();
         void slotCurrentLegendChanged( int idx );
         //void slotAddAxis();
         //void slotRemoveAxis();
-        //void slotCurrentAxisChanged( int idx );
+        //void slotCurrentAxisChanged( int idx ); 
         void slotAddHeaderFooter();
         void slotRemoveHeaderFooter();
         void slotCurrentHeaderFooterChanged( int idx );
 
     private:
-        void setupDiagramsTab();
+        void setupCombos();
         void setupLegendsTab();
         //void setupAxesTab();
         void setupHeaderFooterTab();
-
+        ChartType typeFromDiagram() ;
+        SubType subTypeFromDiagram();
+        
 	KDChart::DiagramPropertiesWidget * mDiagramEditor;
         KDChart::LegendPropertiesWidget * mLegendEditor;
         //KDChart::AxisPropertiesWidget * mAxisEditor;

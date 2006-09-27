@@ -28,6 +28,7 @@
 #include <KDChartAbstractDiagram>
 #include <KDChartLineDiagram>
 #include <KDChartBarDiagram>
+#include <KDChartPieDiagram>
 #include <KDChartLegend>
 #include <KDChartHeaderFooter>
 
@@ -44,12 +45,17 @@ KDChartChartDesignerCustomEditor::KDChartChartDesignerCustomEditor( KDChart::Cha
     :mChart( chart )
 {
     setupUi( this );
+    mTypeCombo->setCurrentIndex( typeFromDiagram( ) );
     mGlobalLeadingTopSB->setValue( mChart->globalLeadingTop() );
     mGlobalLeadingLeftSB->setValue( mChart->globalLeadingLeft() );
     mGlobalLeadingRightSB->setValue( mChart->globalLeadingRight() );
     mGlobalLeadingBottomSB->setValue( mChart->globalLeadingBottom() );
     connect( mCloseButton, SIGNAL( clicked() ),
              this, SLOT( accept() ));
+    connect( mTypeCombo, SIGNAL( activated( int ) ),
+             this, SLOT( slotTypeChanged( int ) ) );
+    connect( mSubTypeCombo, SIGNAL( activated( int ) ),
+             this, SLOT( slotTypeChanged( int ) ) );
     connect( mGlobalLeadingTopSB, SIGNAL( valueChanged( int ) ),
              this, SLOT( slotLeadingTopChanged( int ) ) );
     connect( mGlobalLeadingLeftSB, SIGNAL( valueChanged( int ) ),
@@ -59,12 +65,12 @@ KDChartChartDesignerCustomEditor::KDChartChartDesignerCustomEditor( KDChart::Cha
     connect( mGlobalLeadingBottomSB, SIGNAL( valueChanged( int ) ),
              this, SLOT( slotLeadingBottomChanged( int ) ) );
 
-    setupDiagramsTab();
+    setupCombos();
     setupLegendsTab();
     //setupAxesTab();
     setupHeaderFooterTab();
 }
-/*
+
 static QStringList barSubtypeItems()
 {
     QStringList items;
@@ -78,44 +84,114 @@ static QStringList lineSubtypeItems()
     items << "Normal" << "Stacked" << "Percent";
     return items;
 }
-*/
-/*
+
+static QStringList pieSubtypeItems()
+{
+    QStringList items;
+    items << "Normal";
+    return items;
+}
+
+KDChartChartDesignerCustomEditor::ChartType KDChartChartDesignerCustomEditor::typeFromDiagram()
+{
+    BarDiagram *bar = qobject_cast<BarDiagram*>( mChart->coordinatePlane()->diagram() );
+    if (bar) return Bar;
+    LineDiagram *line = qobject_cast<LineDiagram*>( mChart->coordinatePlane()->diagram() );
+    if (line) return Line;
+    PieDiagram *pie = qobject_cast<PieDiagram*>( mChart->coordinatePlane()->diagram() );
+    if ( pie ) return Pie;
+
+    return Line;
+
+}
+
+KDChartChartDesignerCustomEditor::SubType KDChartChartDesignerCustomEditor::subTypeFromDiagram()
+{
+    BarDiagram *bar = qobject_cast<BarDiagram*>( mChart->coordinatePlane()->diagram() );
+    if (bar) {
+        if ( bar->type() == BarDiagram::Normal )
+            return Normal;
+        else if ( bar->type() == BarDiagram::Stacked )
+            return Stacked;
+        else
+            return Percent;
+    }
+
+    LineDiagram *line = qobject_cast<LineDiagram*>( mChart->coordinatePlane()->diagram() );
+    if (line) {
+        if ( line->type() == LineDiagram::Normal )
+            return Normal;
+        else if ( line->type() == LineDiagram::Stacked )
+            return Stacked;
+        else
+            return Percent;
+    }
+
+    PieDiagram *pie = qobject_cast<PieDiagram*>( mChart->coordinatePlane()->diagram() );
+    if ( pie ) return Normal;
+
+    return Normal;
+}
+
+void KDChartChartDesignerCustomEditor::setupCombos( )
+{
+
+    mTypeCombo->setCurrentIndex( typeFromDiagram() );
+    mSubTypeCombo->addItems( barSubtypeItems() );
+    mSubTypeCombo->setCurrentIndex( subTypeFromDiagram() );
+}
+
 void KDChartChartDesignerCustomEditor::slotTypeChanged( int index )
 {
-
-    KDChart::Chart::ChartType type = static_cast<KDChart::Chart::ChartType>(index+1);
-    mChart->setType( type );
-    mSubTypeCombo->clear();
-    switch ( type ) {
-        case KDChart::Chart::Bar:
-            mSubTypeCombo->addItems( barSubtypeItems() );
-            break;
-        case KDChart::Chart::Line:
-            mSubTypeCombo->addItems( lineSubtypeItems() );
-            break;
-        case KDChart::Chart::Pie:
-            break;
-        case KDChart::Chart::Ring:
-            break;
-        case KDChart::Chart::Polar:
-            break;
-      case KDChart::Chart::NoType:
-        default:
-            break;
+    QStandardItemModel *m_model = new QStandardItemModel;
+    m_model->insertRows( 0, 2, QModelIndex() );
+    m_model->insertColumns(  0,  3,  QModelIndex() );
+    for (int row = 0; row < 3; ++row) {
+            for (int column = 0; column < 3; ++column) {
+                QModelIndex index = m_model->index(row, column, QModelIndex());
+                m_model->setData(index, QVariant(row+1 * column) );
+            }
     }
-    mSubTypeCombo->setCurrentIndex( mChart->subType() );
+    index = mTypeCombo->currentIndex();
+    int subindex = mSubTypeCombo->currentIndex();
+    if (  index == 0 ) {
+        //mSubTypeCombo->addItems( barSubtypeItems() );
+        CartesianCoordinatePlane* plane = new CartesianCoordinatePlane( mChart );
+        mChart->replaceCoordinatePlane( plane );
+        KDChart::BarDiagram* diagram = new KDChart::BarDiagram;
+        diagram->setModel(m_model);
+        if (  subindex == 0 )
+            diagram->setType( BarDiagram::Normal );
+        else if (  subindex == 1 )
+            diagram->setType( BarDiagram::Stacked );
+        else
+            diagram->setType( BarDiagram::Percent );
+
+        mChart->coordinatePlane()->replaceDiagram(diagram);
+    } else if ( index == 1 ) {
+        //mSubTypeCombo->addItems( lineSubtypeItems() );
+        CartesianCoordinatePlane* plane = new CartesianCoordinatePlane( mChart );
+        mChart->replaceCoordinatePlane( plane );
+        KDChart::LineDiagram* diagram = new KDChart::LineDiagram;
+        diagram->setModel(m_model);
+        if (  subindex == 0 )
+            diagram->setType( LineDiagram::Normal );
+        else if (  subindex == 1 )
+            diagram->setType( LineDiagram::Stacked );
+        else
+            diagram->setType( LineDiagram::Percent );
+        mChart->coordinatePlane()->replaceDiagram(diagram);
+    } else if (  index == 2 ) {
+        PolarCoordinatePlane* plane = new PolarCoordinatePlane( mChart );
+        mChart->replaceCoordinatePlane( plane );
+        KDChart::PieDiagram* diagram = new KDChart::PieDiagram;
+        diagram->setModel(m_model);
+        mSubTypeCombo->setCurrentIndex( 0 );
+        mChart->coordinatePlane()->replaceDiagram(diagram);
+    }
+
 }
-*/
 
-/*
-void KDChartChartDesignerCustomEditor::slotSubTypeChanged( int index )
-{
-
-    KDChart::Chart::SubType type = static_cast<KDChart::Chart::SubType>(index);
-    mChart->setSubType( type );
-
-}
-*/
 
 void KDChartChartDesignerCustomEditor::slotLeadingTopChanged( int v )
 {
@@ -135,24 +211,6 @@ void KDChartChartDesignerCustomEditor::slotLeadingRightChanged( int v )
 void KDChartChartDesignerCustomEditor::slotLeadingBottomChanged( int v )
 {
     mChart->setGlobalLeadingBottom( v );
-}
-
-void KDChartChartDesignerCustomEditor::setupDiagramsTab()
-{
-    QVBoxLayout* vbox = new QVBoxLayout( mDiagramDetailsGroup );
-    mDiagramEditor = new DiagramPropertiesWidget( mDiagramDetailsGroup );
-
-    for (  int i = 0; i < mChart->coordinatePlane()->diagrams().count(); ++i )
-        mDiagramsList->addItem( QString("Diagram %1").arg( i+1 ) );
-
-    vbox->addWidget( mDiagramEditor );
-    connect( mAddDiagramBtn, SIGNAL( clicked() ),
-             this, SLOT( slotAddDiagram() ) );
-    connect( mRemoveDiagramBtn, SIGNAL( clicked() ),
-             this, SLOT( slotRemoveDiagram() ) );
-    connect( mDiagramsList, SIGNAL( currentRowChanged( int ) ),
-             this, SLOT( slotCurrentDiagramChanged( int ) ) );
-
 }
 
 
@@ -225,6 +283,7 @@ void KDChartChartDesignerCustomEditor::setupHeaderFooterTab()
              this, SLOT( slotCurrentHeaderFooterChanged( int ) ) );
 }
 
+/*
 void KDChartChartDesignerCustomEditor::slotAddDiagram()
 {
 
@@ -257,7 +316,8 @@ void KDChartChartDesignerCustomEditor::slotAddDiagram()
         return;
 
 }
-
+*/
+ /*
 void KDChartChartDesignerCustomEditor::slotRemoveDiagram()
 {
 
@@ -278,24 +338,7 @@ void KDChartChartDesignerCustomEditor::slotRemoveDiagram()
     delete mDiagramsList->takeItem( idx );
 
 }
-
-void KDChartChartDesignerCustomEditor::slotCurrentDiagramChanged( int idx )
-{
-
-
-    if ( idx != -1 && idx < mChart->coordinatePlane()->diagrams().count() ) {
-        if (  idx == 0 ) {
-            LineDiagram *l = dynamic_cast<KDChart::LineDiagram*>( mChart->coordinatePlane()->diagrams()[idx] ) ;
-            mDiagramEditor->setLineDiagram( l );
-        }
-        else if  (  idx == 1 ) {
-            BarDiagram *b = dynamic_cast<KDChart::BarDiagram*>( mChart->coordinatePlane()->diagrams()[idx] ) ;
-            mDiagramEditor->setBarDiagram( b );
-        }
-    }
-}
-
-
+*/
 
 void KDChartChartDesignerCustomEditor::slotAddLegend()
 {

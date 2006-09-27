@@ -12,14 +12,14 @@
   <property name="windowTitle" >
    <string>Chart Properties</string>
   </property>
-  <layout class="QGridLayout" >
+  <layout class="QVBoxLayout" >
    <property name="margin" >
     <number>9</number>
    </property>
    <property name="spacing" >
     <number>6</number>
    </property>
-   <item row="0" column="0" >
+   <item>
     <widget class="QTabWidget" name="tabWidget" >
      <property name="currentIndex" >
       <number>0</number>
@@ -28,15 +28,15 @@
       <attribute name="title" >
        <string>Properties</string>
       </attribute>
-      <layout class="QGridLayout" >
+      <layout class="QVBoxLayout" >
        <property name="margin" >
         <number>9</number>
        </property>
        <property name="spacing" >
         <number>6</number>
        </property>
-       <item row="0" column="0" >
-        <layout class="QVBoxLayout" >
+       <item>
+        <layout class="QHBoxLayout" >
          <property name="margin" >
           <number>0</number>
          </property>
@@ -44,197 +44,178 @@
           <number>6</number>
          </property>
          <item>
-          <widget class="QGroupBox" name="groupBox" >
-           <property name="title" >
-            <string>GroupBox</string>
+          <widget class="QLabel" name="mTypeLabel" >
+           <property name="text" >
+            <string>Diagram Type</string>
            </property>
-           <layout class="QGridLayout" >
-            <property name="margin" >
-             <number>9</number>
-            </property>
-            <property name="spacing" >
-             <number>6</number>
-            </property>
-            <item row="0" column="0" >
-             <layout class="QHBoxLayout" >
-              <property name="margin" >
-               <number>0</number>
-              </property>
-              <property name="spacing" >
-               <number>6</number>
-              </property>
-              <item>
-               <layout class="QVBoxLayout" >
-                <property name="margin" >
-                 <number>0</number>
-                </property>
-                <property name="spacing" >
-                 <number>6</number>
-                </property>
-                <item>
-                 <widget class="QLabel" name="label_5" >
-                  <property name="text" >
-                   <string>Global Leading Top</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_8" >
-                  <property name="text" >
-                   <string>Global Leading Left</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_7" >
-                  <property name="text" >
-                   <string>Global Leading Right</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_6" >
-                  <property name="text" >
-                   <string>Global Leading Bottom</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <layout class="QVBoxLayout" >
-                <property name="margin" >
-                 <number>0</number>
-                </property>
-                <property name="spacing" >
-                 <number>6</number>
-                </property>
-                <item>
-                 <spacer>
-                  <property name="orientation" >
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" >
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-                <item>
-                 <spacer>
-                  <property name="orientation" >
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" >
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-                <item>
-                 <spacer>
-                  <property name="orientation" >
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" >
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-                <item>
-                 <spacer>
-                  <property name="orientation" >
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" >
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <layout class="QVBoxLayout" >
-                <property name="margin" >
-                 <number>0</number>
-                </property>
-                <property name="spacing" >
-                 <number>6</number>
-                </property>
-                <item>
-                 <widget class="QSpinBox" name="mGlobalLeadingTopSB" />
-                </item>
-                <item>
-                 <widget class="QSpinBox" name="mGlobalLeadingLeftSB" />
-                </item>
-                <item>
-                 <widget class="QSpinBox" name="mGlobalLeadingRightSB" />
-                </item>
-                <item>
-                 <widget class="QSpinBox" name="mGlobalLeadingBottomSB" />
-                </item>
-               </layout>
-              </item>
-             </layout>
-            </item>
-           </layout>
+           <property name="buddy" >
+            <cstring>mTypeCombo</cstring>
+           </property>
           </widget>
          </item>
          <item>
-          <layout class="QHBoxLayout" >
-           <property name="margin" >
-            <number>0</number>
-           </property>
-           <property name="spacing" >
-            <number>6</number>
-           </property>
+          <widget class="QComboBox" name="mTypeCombo" >
            <item>
-            <layout class="QGridLayout" >
-             <property name="margin" >
-              <number>0</number>
-             </property>
-             <property name="spacing" >
-              <number>6</number>
-             </property>
-             <item row="1" column="0" >
-              <widget class="QPushButton" name="mAddDiagramBtn" >
-               <property name="text" >
-                <string>Add Diagram</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1" >
-              <widget class="QPushButton" name="mRemoveDiagramBtn" >
-               <property name="text" >
-                <string>Remove Diagram</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="0" colspan="2" >
-              <widget class="QListWidget" name="mDiagramsList" />
-             </item>
-            </layout>
+            <property name="text" >
+             <string>Bar</string>
+            </property>
            </item>
            <item>
-            <widget class="QGroupBox" name="mDiagramDetailsGroup" >
-             <property name="title" >
-              <string>Chart Details</string>
-             </property>
-            </widget>
+            <property name="text" >
+             <string>Line</string>
+            </property>
            </item>
-          </layout>
+           <item>
+            <property name="text" >
+             <string>Pie</string>
+            </property>
+           </item>
+          </widget>
          </item>
         </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" >
+         <property name="margin" >
+          <number>0</number>
+         </property>
+         <property name="spacing" >
+          <number>6</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="mSubTypeLabel" >
+           <property name="text" >
+            <string>Diagram Subtype</string>
+           </property>
+           <property name="buddy" >
+            <cstring>mSubTypeCombo</cstring>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="mSubTypeCombo" />
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox" >
+         <property name="title" >
+          <string>GroupBox</string>
+         </property>
+         <layout class="QGridLayout" >
+          <property name="margin" >
+           <number>9</number>
+          </property>
+          <property name="spacing" >
+           <number>6</number>
+          </property>
+          <item row="1" column="3" >
+           <widget class="QSpinBox" name="mGlobalLeadingLeftSB" />
+          </item>
+          <item row="2" column="0" >
+           <widget class="QLabel" name="label_7" >
+            <property name="text" >
+             <string>Global Leading Right</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="3" >
+           <widget class="QSpinBox" name="mGlobalLeadingRightSB" />
+          </item>
+          <item row="1" column="1" colspan="2" >
+           <spacer>
+            <property name="orientation" >
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" >
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="0" column="2" >
+           <spacer>
+            <property name="orientation" >
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" >
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="3" column="3" >
+           <widget class="QSpinBox" name="mGlobalLeadingBottomSB" />
+          </item>
+          <item row="0" column="0" >
+           <widget class="QLabel" name="label_5" >
+            <property name="text" >
+             <string>Global Leading Top</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3" >
+           <widget class="QSpinBox" name="mGlobalLeadingTopSB" />
+          </item>
+          <item row="3" column="2" >
+           <spacer>
+            <property name="orientation" >
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" >
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="2" column="2" >
+           <spacer>
+            <property name="orientation" >
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" >
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="3" column="0" colspan="2" >
+           <widget class="QLabel" name="label_6" >
+            <property name="text" >
+             <string>Global Leading Bottom</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" >
+           <widget class="QLabel" name="label_8" >
+            <property name="text" >
+             <string>Global Leading Left</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
@@ -381,7 +362,7 @@
      </widget>
     </widget>
    </item>
-   <item row="1" column="0" >
+   <item>
     <layout class="QHBoxLayout" >
      <property name="margin" >
       <number>0</number>
