@@ -231,26 +231,25 @@ void KDChartChartDesignerCustomEditor::setupLegendsTab()
              this, SLOT( slotCurrentLegendChanged( int ) ) );
 
 }
-/*
+
 void KDChartChartDesignerCustomEditor::setupAxesTab()
 {
 
     QVBoxLayout* vbox = new QVBoxLayout( mAxisDetailsGroup );
     mAxisEditor = new AxisPropertiesWidget( mAxisDetailsGroup );
-    KDChart::Chart::ChartType type = mChart->type();
+    ChartType type = typeFromDiagram();
+    int count = dynamic_cast<const AbstractCartesianDiagram*>
+                (mChart->coordinatePlane()->diagram() )->axes().count();
     switch ( type ) {
-    case KDChart::Chart::Bar:
-        for (  int i = 0; i < mChart->barDiagram()->axes().count(); ++i )
+    case Bar:
+        for (  int i = 0; i < count; ++i )
             mAxesList->addItem( QString("Axis %1").arg( i+1 ) );
         break;
-    case KDChart::Chart::Line:
-        for (  int i = 0; i < mChart->lineDiagram()->axes().count(); ++i )
+    case Line:
+        for (  int i = 0; i < count; ++i )
             mAxesList->addItem( QString("Axis %1").arg( i+1 ) );
         break;
-    case KDChart::Chart::Pie:
-    case KDChart::Chart::Ring:
-    case KDChart::Chart::Polar:
-    case KDChart::Chart::NoType:
+    case Pie:
     default:
         qDebug() << "Axis for this diagram type are not supported for now";
         break;
@@ -263,8 +262,9 @@ void KDChartChartDesignerCustomEditor::setupAxesTab()
              this, SLOT( slotRemoveAxis() ) );
     connect( mAxesList, SIGNAL( currentRowChanged( int ) ),
              this, SLOT( slotCurrentAxisChanged( int ) ) );
+
 }
-*/
+
 
 void KDChartChartDesignerCustomEditor::setupHeaderFooterTab()
 {
@@ -283,62 +283,7 @@ void KDChartChartDesignerCustomEditor::setupHeaderFooterTab()
              this, SLOT( slotCurrentHeaderFooterChanged( int ) ) );
 }
 
-/*
-void KDChartChartDesignerCustomEditor::slotAddDiagram()
-{
 
-    DiagramType dlg;
-    QStandardItemModel * m_model = new QStandardItemModel;
-
-    m_model->insertRows( 0, 2, QModelIndex() );
-    m_model->insertColumns(  0,  3,  QModelIndex() );
-    for (int row = 0; row < 3; ++row) {
-            for (int column = 0; column < 3; ++column) {
-                QModelIndex index = m_model->index(row, column, QModelIndex());
-                m_model->setData(index, QVariant(row+1 * column) );
-            }
-    }
-
-    if (  dlg.exec()== QDialog::Accepted ) {
-        if ( dlg.lineRB->isChecked() ) {
-         LineDiagram * diagram = new LineDiagram;
-         diagram->setModel(m_model);
-         mChart->coordinatePlane()-> addDiagram( diagram );
-        } else if ( dlg.barRB->isChecked() ) {
-         BarDiagram * diagram = new BarDiagram;
-         diagram->setModel(m_model);
-         mChart->coordinatePlane()-> addDiagram( diagram );
-        } else
-            qDebug() << "Pie diagrams are not supported yet";
-
-    mDiagramsList->addItem( QString("Diagram %1").arg(mChart->coordinatePlane()->diagrams().count() ) );
-    } else
-        return;
-
-}
-*/
- /*
-void KDChartChartDesignerCustomEditor::slotRemoveDiagram()
-{
-
-    int idx = mDiagramsList->currentRow();
-    if ( idx == -1 || idx >= mChart->coordinatePlane()->diagrams().count() ) return;
-    if (  idx == 0 ) {
-        LineDiagram *l = dynamic_cast<KDChart::LineDiagram*>( mChart->coordinatePlane()->diagrams()[idx] ) ;
-        mChart->coordinatePlane()->takeDiagram( l );
-        delete l;
-    }
-    else if  (  idx == 1 ) {
-        BarDiagram *b = dynamic_cast<KDChart::BarDiagram*>( mChart->coordinatePlane()->diagrams()[idx] ) ;
-        mChart->coordinatePlane()->takeDiagram( b );
-        delete b;
-    }
-
-
-    delete mDiagramsList->takeItem( idx );
-
-}
-*/
 
 void KDChartChartDesignerCustomEditor::slotAddLegend()
 {
@@ -367,98 +312,91 @@ void KDChartChartDesignerCustomEditor::slotCurrentLegendChanged( int idx )
     mLegendEditor->setLegend( l );
 }
 
-/*
 void KDChartChartDesignerCustomEditor::slotAddAxis()
 {
-
     CartesianAxis * axis = new CartesianAxis( );
     axis->setPosition( CartesianAxis::Left );
-    KDChart::Chart::ChartType type = mChart->type();
+    ChartType type = typeFromDiagram();
+    AbstractCartesianDiagram *d =
+            qobject_cast<AbstractCartesianDiagram*>( mChart->coordinatePlane()->diagram() );
+    int count = d->axes().count();
     switch ( type ) {
-    case KDChart::Chart::Bar:
-        mChart->barDiagram()->addAxis( axis );
-        mAxesList->addItem( QString("Axis %1").arg(mChart->barDiagram()->axes().count() ) );
+    case Bar:
+        d->addAxis( axis );
+        mAxesList->addItem( QString("Axis %1").arg( count ) );
         break;
-    case KDChart::Chart::Line:
-        mChart->lineDiagram()->addAxis( axis );
-        mAxesList->addItem( QString("Axis %1").arg(mChart->lineDiagram()->axes().count() ) );
-        break;
-    case KDChart::Chart::Pie:
-    case KDChart::Chart::Ring:
-    case KDChart::Chart::Polar:
-    case KDChart::Chart::NoType:
+    case Line:
+        d->addAxis(  axis );
+    case Pie:
     default:
         qDebug() << "Axis for this diagram type are not supported at the moment";
         break;
     }
 }
-*/
- /*
+
 void KDChartChartDesignerCustomEditor::slotRemoveAxis()
 {
     int idx = mAxesList->currentRow();
     if ( idx == -1  ) return;
-    KDChart::Chart::ChartType type = mChart->type();
+    AbstractCartesianDiagram *d =
+            qobject_cast<AbstractCartesianDiagram*>( mChart->coordinatePlane()->diagram() );
+    int count = d->axes().count();
+    ChartType type = typeFromDiagram();
     switch ( type ) {
-    case KDChart::Chart::Bar:
+    case Bar:
     {
-        if ( idx >= mChart->barDiagram()->axes().count() ) break;
-        CartesianAxis* l = mChart->barDiagram()->axes()[idx];
-        mChart->barDiagram()->takeAxis( l );
+        if ( idx >= count ) break;
+        CartesianAxis* l = d->axes()[idx];
+        d->takeAxis( l );
         delete l;
         delete mAxesList->takeItem(  idx );
         break;
     }
-    case KDChart::Chart::Line:
+    case Line:
     {
-        if ( idx >= mChart->lineDiagram()->axes().count() ) break;
-        CartesianAxis* l = mChart->lineDiagram()->axes()[idx];
-        mChart->lineDiagram()->takeAxis( l );
+        if ( idx >= count ) break;
+        CartesianAxis* l = d->axes()[idx];
+        d->takeAxis( l );
         delete l;
         delete mAxesList->takeItem(  idx );
         break;
     }
-    case KDChart::Chart::Pie:
-    case KDChart::Chart::Ring:
-    case KDChart::Chart::Polar:
-    case KDChart::Chart::NoType:
+    case Pie:
     default:
         break;
     }
-
 }
-*/
-  /*
+
 void KDChartChartDesignerCustomEditor::slotCurrentAxisChanged( int idx )
 {
 
     if ( idx == -1 ) return;
-    KDChart::Chart::ChartType type = mChart->type();
+    ChartType type = typeFromDiagram();
+    AbstractCartesianDiagram *d =
+            qobject_cast<AbstractCartesianDiagram*>( mChart->coordinatePlane()->diagram() );
+    int count = d->axes().count();
     switch ( type ) {
-    case KDChart::Chart::Bar:
+    case Bar:
     {
-        if ( idx >= mChart->barDiagram()->axes().count() ) break;
-        CartesianAxis* l = mChart->barDiagram()->axes()[idx];
+        if ( idx >= count ) break;
+        CartesianAxis* l = d->axes()[idx];
         mAxisEditor->setAxis( l );
         break;
     }
-    case KDChart::Chart::Line:
+    case Line:
     {
-        if ( idx >= mChart->lineDiagram()->axes().count() ) break;
-        CartesianAxis* l = mChart->lineDiagram()->axes()[idx];
+        if ( idx >= count ) break;
+        CartesianAxis* l = d->axes()[idx];
         mAxisEditor->setAxis( l );
         break;
     }
-    case KDChart::Chart::Pie:
-    case KDChart::Chart::Ring:
-    case KDChart::Chart::Polar:
-    case KDChart::Chart::NoType:
+    case Pie:
         default:
             qDebug() << "Axis for this diagram type are not supported at the moment";
             break;
     }
 }
-*/
+
 
 void KDChartChartDesignerCustomEditor::slotAddHeaderFooter()
 {

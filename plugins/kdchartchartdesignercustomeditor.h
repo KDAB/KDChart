@@ -49,9 +49,9 @@ class KDChartChartDesignerCustomEditor
         void slotAddLegend();
         void slotRemoveLegend();
         void slotCurrentLegendChanged( int idx );
-        //void slotAddAxis();
-        //void slotRemoveAxis();
-        //void slotCurrentAxisChanged( int idx ); 
+        void slotAddAxis();
+        void slotRemoveAxis();
+        void slotCurrentAxisChanged( int idx ); 
         void slotAddHeaderFooter();
         void slotRemoveHeaderFooter();
         void slotCurrentHeaderFooterChanged( int idx );
@@ -59,14 +59,14 @@ class KDChartChartDesignerCustomEditor
     private:
         void setupCombos();
         void setupLegendsTab();
-        //void setupAxesTab();
+        void setupAxesTab();
         void setupHeaderFooterTab();
         ChartType typeFromDiagram() ;
         SubType subTypeFromDiagram();
         
-	KDChart::DiagramPropertiesWidget * mDiagramEditor;
+	//KDChart::DiagramPropertiesWidget * mDiagramEditor;
         KDChart::LegendPropertiesWidget * mLegendEditor;
-        //KDChart::AxisPropertiesWidget * mAxisEditor;
+        KDChart::AxisPropertiesWidget * mAxisEditor;
         KDChart::HeaderFooterPropertiesWidget * mHeaderFooterEditor;
         KDChart::Chart * const mChart;
 
