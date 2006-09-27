@@ -67,7 +67,7 @@ KDChartChartDesignerCustomEditor::KDChartChartDesignerCustomEditor( KDChart::Cha
 
     setupCombos();
     setupLegendsTab();
-    //setupAxesTab();
+    setupAxesTab();
     setupHeaderFooterTab();
 }
 
@@ -314,6 +314,7 @@ void KDChartChartDesignerCustomEditor::slotCurrentLegendChanged( int idx )
 
 void KDChartChartDesignerCustomEditor::slotAddAxis()
 {
+    qDebug() << "called addAxis";
     CartesianAxis * axis = new CartesianAxis( );
     axis->setPosition( CartesianAxis::Left );
     ChartType type = typeFromDiagram();
