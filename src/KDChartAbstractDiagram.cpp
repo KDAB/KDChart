@@ -90,6 +90,20 @@ void AbstractDiagram::Private::setAttributesModel( AttributesModel* amodel )
     attributesModel = amodel;
 }
 
+AbstractDiagram::Private::Private( const AbstractDiagram::Private& rhs ) :
+    // Do not copy the plane
+    plane( 0 ),
+    attributesModelRootIndex( QModelIndex() ),
+    attributesModel( rhs.attributesModel ),
+    allowOverlappingDataValueTexts( rhs.allowOverlappingDataValueTexts ),
+    antiAliasing( rhs.antiAliasing ),
+    percent( rhs.percent ),
+    datasetDimension( rhs.datasetDimension )
+{
+    attributesModel = new PrivateAttributesModel( 0, 0);
+    attributesModel->initFrom( rhs.attributesModel );
+}
+
 #define d d_func()
 
 AbstractDiagram::AbstractDiagram ( QWidget* parent, AbstractCoordinatePlane* plane )
@@ -187,6 +201,8 @@ void AbstractDiagram::setAttributesModelRootIndex( const QModelIndex& idx )
   root index of the diagram. */
 QModelIndex AbstractDiagram::attributesModelRootIndex() const
 {
+    if ( !d->attributesModelRootIndex.isValid() )
+        d->attributesModelRootIndex = d->attributesModel->mapFromSource( rootIndex() );
   return d->attributesModelRootIndex;
 }
 

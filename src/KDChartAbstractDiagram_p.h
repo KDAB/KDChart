@@ -58,17 +58,7 @@ public:
     explicit Private();
     virtual ~Private();
 
-    Private( const Private& rhs ) :
-        // Do not copy the plane
-        plane( 0 ),
-        attributesModelRootIndex( rhs.attributesModelRootIndex ),
-        attributesModel( rhs.attributesModel ),
-        allowOverlappingDataValueTexts( rhs.allowOverlappingDataValueTexts ),
-        antiAliasing( rhs.antiAliasing ),
-        percent( rhs.percent ),
-        datasetDimension( rhs.datasetDimension )
-        {
-        }
+    Private( const Private& rhs );
 
     void setAttributesModel( AttributesModel* );
 
@@ -76,7 +66,7 @@ protected:
     void init();
     void init( AbstractCoordinatePlane* plane );
     QPointer<AbstractCoordinatePlane> plane;
-    QModelIndex attributesModelRootIndex;
+    mutable QModelIndex attributesModelRootIndex;
     QPointer<AttributesModel> attributesModel;
     bool allowOverlappingDataValueTexts;
     bool antiAliasing;
