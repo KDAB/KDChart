@@ -1,178 +1,178 @@
-<?Xml Version="1.0" Encoding="Utf-8"?>
-<!Doctype Book Public "-//Oasis//Dtd Docbook Xml V4.2//En"
-"/Usr/Share/Xml/Docbook/Schema/Dtd/4.2/Docbookx.Dtd" [
-        <!Entity Auml "&#X00e4;">
-        <!Entity Mdash "&#X2014;">
-        <!Entity Nbsp "&#X00a0;">
-        <!Entity Kdchart "Kd&#X00a0;Chart">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+"/usr/share/xml/docbook/schema/dtd/4.2/docbookx.dtd" [
+        <!ENTITY auml "&#x00E4;">
+        <!ENTITY mdash "&#x2014;">
+        <!ENTITY nbsp "&#x00A0;">
+        <!ENTITY kdchart "KD&#x00A0;Chart">
 ]>
-<Book>
-    <Bookinfo>
-	<Title>&Kdchart; Programmer's Manual</Title>
-	<Corpauthor>The &Kdchart; Team</Corpauthor>
-	<Corpname>Klar&Auml;Lvdalens Datakonsult Ab</Corpname>
-        <Releaseinfo>Version 2.0</Releaseinfo>
-        <Legalnotice>
-            <Para>
-                The Contents Of This Manual And The Associated &Kdchart;
-                Software Are The Property Of Klar&Auml;Lvdalens Datakonsult Ab
-                And Are Copyrighted. Any Reproduction In Whole Or In Part Is
-                Strictly Prohibited Without Prior Written Permission By
-                Klar&Auml;Lvdalens Datakonsult Ab.
-            </Para>    
-	    <Para>
-                &Kdchart; And The &Kdchart; Logo Are Trademarks Or Registered
-                Trademarks Of Klar&Auml;Lvdalens Datakonsult Ab In The European
-                Union, The United States, And/Or Other Countries. Other
-                Product And Company Names And Logos May Be Trademarks Or 
-		Registered Trademarks Of Their Respective Companies.
-            </Para>
-        </Legalnotice>
-        <Copyright>
-            <Year>2001&Mdash;2006</Year>
-            <Holder>Klar&Auml;Lvdalens Datakonsult Ab</Holder>
-        </Copyright>
-    </Bookinfo>
+<book>
+    <bookinfo>
+	<title>&kdchart; Programmer's Manual</title>
+	<corpauthor>The &kdchart; Team</corpauthor>
+	<corpname>Klar&auml;lvdalens Datakonsult AB</corpname>
+        <releaseinfo>Version 2.0</releaseinfo>
+        <legalnotice>
+            <para>
+                The contents of this manual and the associated &kdchart;
+                software are the property of Klar&auml;lvdalens Datakonsult AB
+                and are copyrighted. Any reproduction in whole or in part is
+                strictly prohibited without prior written permission by
+                Klar&auml;lvdalens Datakonsult AB.
+            </para>    
+	    <para>
+                &kdchart; and the &kdchart; logo are trademarks or registered
+                trademarks of Klar&auml;lvdalens Datakonsult AB in the European
+                Union, the United States, and/or other countries. Other
+                product and company names and logos may be trademarks or 
+		registered trademarks of their respective companies.
+            </para>
+        </legalnotice>
+        <copyright>
+            <year>2001&mdash;2006</year>
+            <holder>Klar&auml;lvdalens Datakonsult AB</holder>
+        </copyright>
+    </bookinfo>
 
     <!-- =====================Introduction============================== -->
 
-    <Chapter Id="Chapter_Introduction">
-        <Title Id="Chtxt_Introduction">Introduction</Title>
-        <Titleabbrev Id="Chnum_Introduction">Chapter 1</Titleabbrev>
+    <chapter id="chapter_introduction">
+        <title id="chtxt_introduction">Introduction</title>
+        <titleabbrev id="chnum_introduction">Chapter 1</titleabbrev>
 
-        <Para>
-	    &Kdchart; Is Klar&Auml;Lvdalens Datakonsult Ab's Charting Package 
-	    For Qt Applications.
-            This Is The &Kdchart; Programmer's Manual. It Will Get You
-            Started Creating Your Charts And Provides Lots Of Pointers
-	    To The Many Advanced Features In &Kdchart;.
-        </Para>
-        <Itemizedlist>
-            <Listitem>
-                <Para>
-                    Depending On Your &Kdchart; Version, You Will Find
-                    Different <Filename>Install</Filename> Files That Explain
-                    How To Install &Kdchart; On Your Platform And Contain A Step By 
-		    Step Description About How To Build  It From Sources.
-                </Para>
-            </Listitem>
-            <Listitem>
-                <Para>
-                    &Kdchart; Also Comes With An Extensive Reference Manual
-                    Generated Directly From The Source Code Itself.
-                </Para>
-            </Listitem>
-        </Itemizedlist>
-        <Para>
-            You Should Refer To It In Conjunction With This Programmer's
+        <para>
+	    &kdchart; is Klar&auml;lvdalens Datakonsult AB's charting package 
+	    for Qt applications.
+            This is the &kdchart; Programmer's Manual. It will get you
+            started with creating your charts and provides lots of pointers
+	    to the many advanced features in &kdchart;.
+        </para>
+        <itemizedlist>
+            <listitem>
+                <para>
+                    Depending on your &kdchart; version, you will find
+                    different <filename>INSTALL</filename> files that explain
+                    how to install &kdchart; on your platform and a step by 
+		    step description about how to build  it from sources.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    &kdchart; also comes with an extensive Reference Manual
+                    generated directly from the source code itself.
+                </para>
+            </listitem>
+        </itemizedlist>
+        <para>
+            You should refer to it in conjunction with this Programmer's
             Manual.
-        </Para>
-        <Itemizedlist>
-         <Listitem>
-                <Para>
-                    What Is &Kdchart;?
-                </Para>
-		<Para>
-		    &Kdchart; Is A Tool For Creating Business And Scientific
-		    Charts, And Is The Most Powerful Qt Component Of Its Kind.
-		    Besides Having All The Standard Features, It Also Enables 
-		    The Developer To Design And Manage A Large Number Of Axes 
-		    And Provide Sophisticated Means Of Layout Customization.
-		    Since All Configuration Settings Have Reasonable Defaults
-		    You Can Usually Get By With Setting Only A Handful Of 
-		    Parameters And Relying On The Defaults For The Rest.
-		</Para>    
-            </Listitem>
-            <Listitem>
-                <Para>
-                    What Can We Use &Kdchart; For?
-		</Para>
-		<Para>
-		    &Kdchart; Is Used By A Variety Of Programs For Many 
-		    Different Purposes. 
-		</Para>
-		<!-- Pending Michel: Insert Screen-Shot -->
+        </para>
+        <itemizedlist>
+         <listitem>
+                <para>
+                    What is &kdchart;?
+                </para>
+		<para>
+		    &kdchart; is a tool for creating business and scientific
+		    charts, and is the most powerful Qt component of its kind.
+		    Besides having all the standard features, it also enables 
+		    the developer to design and manage a large number of axes 
+		    and provide sophisticated means of layout customization.
+		    Since all configuration settings have reasonable defaults
+		    you can usually get by with setting only a handful of 
+		    parameters and relying on the defaults for the rest.
+		</para>    
+            </listitem>
+            <listitem>
+                <para>
+                    What can we use &kdchart; for?
+		</para>
+		<para>
+		    &kdchart; is used by a variety of programs for many 
+		    different purposes. 
+		</para>
+		<!-- Pending Michel: insert screen-shot -->
 		<!--
-                 * Demonstrate In Short Sentences Associated To Screen-Shots
-                    That Kdc Can Be Used For Both Business Charts And
-                    Engineering Charts.
+                 * Demonstrate in short sentences associated to screen-shots
+                    that kdc can be used for both business charts and
+                    engineering charts.
 		-->
-		<Para>
-		    The Above Example Shows How &Kdchart; Is Used For 
-		    Visualizing Flood Events In A River; Other Samples On Our 
-		    Web Site At <Filename>Http://Www.Kdab.Net/Kdchart</Filename>
-		    Show How &Kdchart; Is Used For Monitoring Seismic Activity.
-                    It Is No Coincidence That The Current Version Of The 
-		    Koffice Productivity Suite Uses Our Library.
-		</Para>
-		<Para>    
+		<para>
+		    The above example shows how &kdchart; is used for 
+		    visualizing flood events in a river; other samples on our 
+		    web site at <filename>http://www.kdab.net/kdchart</filename>
+		    show how &kdchart; is used for monitoring seismic activity.
+                    It is no coincidence that the current version of the 
+		    KOffice productivity suite uses our library.
+		</para>
+		<para>    
 		    <!-- Pending Michel -->
-                    * Display A View With Small Diagrams And Arrows Showing
-                    How The Main Classes Work Together
-                </Para>
-            </Listitem>
-        </Itemizedlist>
-        <Sect1>
-            <Title Id="Prerequisites">What You Should Know</Title>
-            <Para>
-                You Should Be Familiar With Writing Qt Applications, As
-                Well As Have A Working C++ Knowledge. When You Are In
-                Doubt About How A Qt Class Mentioned In This Programmer's 
-		Guide Works, Please Check The Qt Reference Documentation Or 
-		A Good Book About Qt. A More In-Depth Introduction To The 
-		Api Can Be Found In The File 
-		<Filename>Doc/Kdchart-2.0-Api-Introduction</Filename>.
-                Also To Browse &Kdchart; Api Reference Documentation Start 
-		With This File: <Filename>Doc/Refman/Index.Html</Filename>.
-            </Para>
-        </Sect1>
-        <Sect1>
-            <Title Id="Structure">The Structure Of This Manual</Title>
-            <Para>
-                How We Will Proceed To Present &Kdchart;?
-            </Para>
-            <Para>
-		This Manual Starts With An Introduction To The &Kdchart; 2.0 Api
-		Before Going Through The Basic Steps And Methods For The User 
-		To Create Her Own Chart.
-            </Para>
-	    <Para><!-- Pending(Michel) Cross-Refs, Here And Elsewhere  -->
-		The Following Chapter 4 <Filename>Coordinate Planes And 
-		Diagrams</Filename> Will Provide The Reader With More Details 
-		About The Different Chart Types Supported And The Information 
-		You Need To Know In Order To Use &Kdchart;'s Features
-                In The Best Possible Way.
-	    </Para>
-	    <Para>
-		The Subsequent Chapters Contain More Advanced Customizing 
-		Material Like How To Specify Colors, Fonts And Other Attributes
-		If You Don't Want To Use &Kdchart;'s Default Settings. How To 
-		Create And Display Headers, Footers, And Legends, As
-                Well As How To Configure Your Chart Axes Is Also A
-                Part Of These Chapters.
-	    </Para>
-	    <Para>
-		Chapter 9 <Filename>Advanced Charting</Filename>, Will Guide 
-		You Through &Kdchart;'s Other More Advanced Features And 
-		Describes The Way To Use Them (Frames And Backgrounds, 
-		Data Values, Axis And Grid Manipulations Etc...). It Will Also
-		Show In Detail A Number Of Interesting Features Like 
-		Interactive And Multiple Charts Or Zooming.		
-	    </Para>
-	    <Para>
-                We Provide You With Lots Of Sample Code Combined With 
-		Screenshots That Show The Resulting Display. 
-                We Recommend Our Readers To Try And Run The Sample Code And
-                Experiment With The Various Settings.
-            </Para>
-        </Sect1>
-        <Sect1>
-            <Title>What's Next</Title>
-            <Para>
-                In The Next Chapter, We Introduce You To &Kdchart; 2.0 New Api.
-            </Para>
-       </Sect1>
-    </Chapter>
+                    * Display a view with small diagrams and arrows showing
+                    how the main classes work together
+                </para>
+            </listitem>
+        </itemizedlist>
+        <sect1>
+            <title id="prerequisites">What You Should Know</title>
+            <para>
+                You should be familiar with writing Qt applications, as
+                well as have a working C++ knowledge. When you are in
+                doubt about how a Qt class mentioned in this Programmer's 
+		Guide works, please check the Qt reference documentation or 
+		a good book about Qt. A more in-depth introduction to the 
+		API can be found in the file 
+		<filename>doc/KDChart-2.0-API-Introduction</filename>.
+                Also to browse &kdchart; API Reference documentation start 
+		with this file: <filename>doc/refman/index.html</filename>.
+            </para>
+        </sect1>
+        <sect1>
+            <title id="structure">The Structure of This Manual</title>
+            <para>
+                How we will proceed to present &kdchart;?
+            </para>
+            <para>
+		This manual starts with an introduction to the &kdchart;2.0 API
+		before going through the basic steps and methods for the user 
+		to create her own chart.
+            </para>
+	    <para>
+		<!--Pending(Michel) Cross-Refs, here and elsewhere  -->
+		The following Chapter 4 <filename>Coordinate planes and 
+		Diagrams</filename> will provide the reader with more details 
+		about the different chart types supported and the information 
+		you need to know in order to use &kdchart;'s features in the 
+		best possible way.
+	    </para>
+	    <para>
+		The subsequent chapters contain more advanced customizing 
+		material like how to specify colors, fonts and other attributes
+		if you don't want to use &kdchart;'s default settings. How to 
+		create and display headers, footers and legends as well as how
+		to configure your chart axes is also a part of these chapters.
+	    </para>
+	    <para>
+		Chapter 9 <filename>Advanced Charting</filename>, will guide 
+		you through &kdchart; other more advanced features and 
+		describe the way to use them (frames and backgrounds, 
+		data values, axis and grid manipulations etc...). It will also
+		show in details a number of interesting features like 
+		Interactive and Multiple charts or Zooming.		
+	    </para>        
+	    <para>
+                We provide you with lots of sample code combined with 
+		screenshots that show the resulting display. 
+                We recommend our readers to try and run the sample code and
+                experiment with the various settings.
+            </para>
+        </sect1>
+        <sect1>
+            <title>What's next</title>
+            <para>
+                In the next chapter we introduce you to &kdchart; 2.0 new API.
+            </para>
+       </sect1>
+    </chapter>
 
     <!-- ============ Kd Chart 2.0 Api Introduction ============= -->
 
