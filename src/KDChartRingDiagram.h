@@ -30,7 +30,7 @@
 #ifndef KDCHARTRINGDIAGRAM_H
 #define KDCHARTRINGDIAGRAM_H
 
-#include <KDChartAbstractPieDiagram.h>
+#include "KDChartAbstractPieDiagram.h"
 
 namespace KDChart {
 

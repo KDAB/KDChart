@@ -63,14 +63,7 @@ void RingDiagram::init()
 
 RingDiagram * RingDiagram::clone() const
 {
-    RingDiagram* newDiagram = new RingDiagram();
-    newDiagram->setRelativeThickness( relativeThickness() );
-    newDiagram->setPen( pen() );
-    newDiagram->setBrush( brush() );
-    newDiagram->setAllowOverlappingDataValueTexts( allowOverlappingDataValueTexts() );
-    newDiagram->setAntiAliasing( antiAliasing() );
-    newDiagram->setDatasetDimension( datasetDimension() );
-    return newDiagram;
+    return new RingDiagram( new Private( *d ) );
 }
 
 void RingDiagram::setRelativeThickness( bool relativeThickness )

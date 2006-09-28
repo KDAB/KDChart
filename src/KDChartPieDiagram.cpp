@@ -65,13 +65,7 @@ void PieDiagram::init()
 
 PieDiagram * PieDiagram::clone() const
 {
-    PieDiagram* newDiagram = new PieDiagram();
-    newDiagram->setPen( pen() );
-    newDiagram->setBrush( brush() );
-    newDiagram->setAllowOverlappingDataValueTexts( allowOverlappingDataValueTexts() );
-    newDiagram->setAntiAliasing( antiAliasing() );
-    newDiagram->setDatasetDimension( datasetDimension() );
-    return newDiagram;
+    return new PieDiagram( new Private( *d ) );
 }
 
 const QPair<QPointF, QPointF> PieDiagram::calculateDataBoundaries () const

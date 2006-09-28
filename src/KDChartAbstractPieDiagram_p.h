@@ -57,8 +57,14 @@ public:
     Private();
     ~Private();
 
+    Private( const Private& rhs ) :
+        AbstractPolarDiagram::Private( rhs ),
+        startPosition( rhs.startPosition ),
+        granularity( rhs.granularity )
+        {
+        }
+
 private:
-    bool explode;
     double startPosition;
     double granularity;
 };

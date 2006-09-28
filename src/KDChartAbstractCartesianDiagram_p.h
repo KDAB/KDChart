@@ -60,6 +60,14 @@ public:
     Private();
    ~Private();
 
+    Private( const Private& rhs ) :
+        AbstractDiagram::Private( rhs ),
+        // Do not copy axes and reference diagrams.
+        axesList(),
+        referenceDiagram( 0 )
+        {
+        }
+
    CartesianAxisList axesList;
 
    AbstractCartesianDiagram* referenceDiagram;

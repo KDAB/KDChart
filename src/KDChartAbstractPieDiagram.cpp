@@ -37,7 +37,6 @@
 using namespace KDChart;
 
 AbstractPieDiagram::Private::Private() :
-    explode( false ),
     startPosition( 0.0 ),
     granularity( 1.0 )
 {

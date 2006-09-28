@@ -66,15 +66,7 @@ BarDiagram::~BarDiagram()
 
 BarDiagram * BarDiagram::clone() const
 {
-    BarDiagram* newDiagram = new BarDiagram();
-    newDiagram->setReferenceDiagram( referenceDiagram(),
-                                     referenceDiagramOffset() );
-    newDiagram->setPen( pen() );
-    newDiagram->setBrush( brush() );
-    newDiagram->setAllowOverlappingDataValueTexts( allowOverlappingDataValueTexts() );
-    newDiagram->setAntiAliasing( antiAliasing() );
-    newDiagram->setDatasetDimension( datasetDimension() );
-    return newDiagram;
+    return new BarDiagram( new Private( *d ) );
 }
 
 void BarDiagram::setType( const BarType type )

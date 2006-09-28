@@ -54,6 +54,12 @@ public:
     Private();
     ~Private();
 
+    Private( const Private& rhs ) :
+        AbstractPieDiagram::Private( rhs )
+        {
+            // just for consistency
+        }
+
 protected:
     // this information needed temporarily at drawing time
     QVector < qreal > startAngles;

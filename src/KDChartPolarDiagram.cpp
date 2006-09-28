@@ -81,16 +81,10 @@ void PolarDiagram::init()
 
 PolarDiagram * PolarDiagram::clone() const
 {
-    PolarDiagram* newDiagram = new PolarDiagram();
-    newDiagram->setZeroDegreePosition( zeroDegreePosition() );
-    newDiagram->setRotateCircularLabels( rotateCircularLabels() );
+    PolarDiagram* newDiagram = new PolarDiagram( new Private( *d ) );
+    // This needs to be copied after the fact
     newDiagram->d->showDelimitersAtPosition = d->showDelimitersAtPosition;
     newDiagram->d->showLabelsAtPosition = d->showLabelsAtPosition;
-    newDiagram->setPen( pen() );
-    newDiagram->setBrush( brush() );
-    newDiagram->setAllowOverlappingDataValueTexts( allowOverlappingDataValueTexts() );
-    newDiagram->setAntiAliasing( antiAliasing() );
-    newDiagram->setDatasetDimension( datasetDimension() );
     return newDiagram;
 }
 

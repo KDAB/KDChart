@@ -53,6 +53,13 @@ bool ChartSerializer::saveExtraInfo( const Chart * chart, DomWidget * ui_widget 
     DomItem* item = new DomItem;
     item->setText(QLatin1String("Chart Details"));
     items.append( item );
+
+    // PENDING(kalle) Save planes
+    // PENDING(kalle) Save legends
+    // PENDING(kalle) Save header footers
+    // PENDING(kalle) Save global leadings
+
+
     ui_widget->setElementItem( items );
 
     return true;

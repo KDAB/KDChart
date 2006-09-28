@@ -54,6 +54,12 @@ public:
     Private();
     ~Private();
 
+    Private( const Private& rhs ) :
+        AbstractPieDiagram::Private( rhs ),
+        relativeThickness( rhs.relativeThickness )
+        {
+        }
+
 private:
     bool relativeThickness;
 };

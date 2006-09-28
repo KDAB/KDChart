@@ -58,6 +58,18 @@ public:
     explicit Private();
     virtual ~Private();
 
+    Private( const Private& rhs ) :
+        // Do not copy the plane
+        plane( 0 ),
+        attributesModelRootIndex( rhs.attributesModelRootIndex ),
+        attributesModel( rhs.attributesModel ),
+        allowOverlappingDataValueTexts( rhs.allowOverlappingDataValueTexts ),
+        antiAliasing( rhs.antiAliasing ),
+        percent( rhs.percent ),
+        datasetDimension( rhs.datasetDimension )
+        {
+        }
+
     void setAttributesModel( AttributesModel* );
 
 protected:

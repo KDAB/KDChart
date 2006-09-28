@@ -54,11 +54,19 @@ public:
     Private();
     ~Private();
 
+    Private( const Private& rhs ) :
+        AbstractCartesianDiagram::Private( rhs ),
+        barType( rhs.barType ),
+        maxDepth( rhs.maxDepth )
+        {
+        }
+
     void calculateValueAndGapWidths( int rowCount, int colCount,
                                      double groupWidth,
                                      double& barWidth,
                                      double& spaceBetweenBars,
                                      double& spaceBetweenGroups );
+
 
     BarType barType;
 private:

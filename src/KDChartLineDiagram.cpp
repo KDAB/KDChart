@@ -72,16 +72,7 @@ LineDiagram::~LineDiagram()
 
 LineDiagram * LineDiagram::clone() const
 {
-    LineDiagram* newDiagram = new LineDiagram();
-    newDiagram->setType( type() );
-    newDiagram->setReferenceDiagram( referenceDiagram(),
-                                     referenceDiagramOffset() );
-    newDiagram->setPen( pen() );
-    newDiagram->setBrush( brush() );
-    newDiagram->setAllowOverlappingDataValueTexts( allowOverlappingDataValueTexts() );
-    newDiagram->setAntiAliasing( antiAliasing() );
-    newDiagram->setDatasetDimension( datasetDimension() );
-    return newDiagram;
+    return new LineDiagram( new Private( *d ) );
 }
 
 void LineDiagram::setType( const LineType type )

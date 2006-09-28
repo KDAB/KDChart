@@ -56,6 +56,12 @@ class AbstractPolarDiagram::Private : public AbstractDiagram::Private
 public:
     Private();
     ~Private();
+
+    Private( const Private& rhs ) :
+        AbstractDiagram::Private( rhs )
+        {
+            // just for consistency
+        }
 };
 
 KDCHART_IMPL_DERIVED_DIAGRAM( AbstractPolarDiagram, AbstractDiagram, PolarCoordinatePlane )

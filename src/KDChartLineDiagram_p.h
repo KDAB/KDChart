@@ -56,6 +56,13 @@ public:
     Private();
     ~Private();
 
+    Private( const Private& rhs ) :
+        AbstractCartesianDiagram::Private( rhs ),
+        lineType( rhs.lineType )
+        {
+        }
+
+
     LineType lineType;
 };
 
