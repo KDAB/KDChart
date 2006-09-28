@@ -73,13 +73,12 @@
 #define ISINF(x) isinf(x)
 #endif
 
-/* This is done in Qt4 qglobal.h */
-// We wrap every if() by extra { } to work around
-// the scope bug for loop counters in MS Visual C++
-//#if defined(Q_CC_MSVC) && !defined(Q_CC_MSVC_NET)
-//#define for if (0) {} else for
-//#endif
-
+// We wrap every for() by extra { } to work around
+// the scope bug for loop counters in MS Visual C++ v6
 #if defined(Q_CC_MSVC) && !defined(Q_CC_MSVC_NET)
-#define KDAB_FOREACH( v, c ) if ( 0 ) {} else Q_FOREACH( v, c )
+/* This is done in Qt4 qglobal.h */
+//#define for if (0) {} else for
+#define KDAB_FOREACH( v, c ) if (0) {} else Q_FOREACH( v, c )
+#endif
+
 #endif
