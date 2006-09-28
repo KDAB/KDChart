@@ -62,6 +62,72 @@ namespace KDChart {
 
         virtual void setZoomCenter( QPointF center );
 
+        /**
+         * Set the attributes to be used for grid lines drawn in circular
+         * direction (or in sagittal direction, resp.).
+         *
+         * To disable circular grid painting, for example, your code should like this:
+         * \code
+         * GridAttributes ga = plane->gridAttributes( bool );
+         * ga.setGridVisible( false );
+         * plane-setGridAttributes( bool, ga );
+         * \endcode
+         *
+         * \note setGridAttributes overwrites the global attributes that
+         * were set by AbstractCoordinatePlane::setGlobalGridAttributes.
+         * To re-activate these global attributes you can call
+         * resetGridAttributes.
+         *
+         * \sa resetGridAttributes, gridAttributes
+         * \sa AbstractCoordinatePlane::setGlobalGridAttributes
+         * \sa hasOwnGridAttributes
+         */
+        void setGridAttributes( bool circular, const GridAttributes & );
+
+        /**
+         * Reset the attributes to be used for grid lines drawn in circular
+         * direction (or in sagittal direction, resp.).
+         * By calling this method you specify that the global attributes set by
+         * AbstractCoordinatePlane::setGlobalGridAttributes be used.
+         *
+         * \sa setGridAttributes, gridAttributes
+         * \sa AbstractCoordinatePlane::globalGridAttributes
+         * \sa hasOwnGridAttributes
+         */
+        void resetGridAttributes( bool circular );
+
+        /**
+         * \return The attributes used for grid lines drawn in circular
+         * direction (or in sagittal direction, resp.).
+         *
+         * \note This function always returns a valid set of grid attributes:
+         * If no special grid attributes were set for this direction
+         * the global attributes are returned, as returned by
+         * AbstractCoordinatePlane::globalGridAttributes.
+         *
+         * \sa setGridAttributes
+         * \sa resetGridAttributes
+         * \sa AbstractCoordinatePlane::globalGridAttributes
+         * \sa hasOwnGridAttributes
+         */
+        GridAttributes gridAttributes( bool circular ) const;
+
+        /**
+         * \return Returns whether the grid attributes have been set for the
+         * respective direction via setGridAttributes( bool circular ).
+         *
+         * If false, the grid will use the global attributes set
+         * by AbstractCoordinatePlane::globalGridAttributes (or the default
+         * attributes, resp.)
+         *
+         * \sa setGridAttributes
+         * \sa resetGridAttributes
+         * \sa AbstractCoordinatePlane::globalGridAttributes
+         */
+        bool hasOwnGridAttributes( bool circular ) const;
+
+        qreal angleUnit() const;
+
         /** reimpl */
         virtual void paint( QPainter* );
 
@@ -73,6 +139,10 @@ namespace KDChart {
         void layoutDiagrams();
     protected Q_SLOTS:
         void slotLayoutChanged( AbstractDiagram* diagram );
+
+    private:
+        void setHasOwnGridAttributes(
+            bool circular, bool on );
     };
 
 }

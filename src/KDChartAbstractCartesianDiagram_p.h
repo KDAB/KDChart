@@ -64,8 +64,6 @@ public:
 
    AbstractCartesianDiagram* referenceDiagram;
    QPointF referenceDiagramOffset;
-
-   GridAttributes gridAttributes;
 };
 
 KDCHART_IMPL_DERIVED_DIAGRAM( AbstractCartesianDiagram, AbstractDiagram, CartesianCoordinatePlane )

@@ -129,13 +129,3 @@ QPointF AbstractCartesianDiagram::referenceDiagramOffset() const
 {
     return d->referenceDiagramOffset;
 }
-
-GridAttributes* AbstractCartesianDiagram::gridAttributes()
-{
-    return &(d->gridAttributes);
-}
-
-const GridAttributes* AbstractCartesianDiagram::gridAttributes() const
-{
-    return &(d->gridAttributes);
-}

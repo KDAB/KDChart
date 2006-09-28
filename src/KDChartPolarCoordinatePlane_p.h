@@ -97,8 +97,10 @@ class PolarCoordinatePlane::Private : public AbstractCoordinatePlane::Private
     friend class PolarCoordinatePlane;
 public:
     explicit Private()
-        :currentTransformation(0),
-        initialResizeEventReceived(false )
+        : currentTransformation(0)
+        , initialResizeEventReceived(false )
+        , hasOwnGridAttributesCircular ( false )
+        , hasOwnGridAttributesSagittal ( false )
     {}
 
     virtual ~Private() { }
@@ -119,6 +121,14 @@ public:
     QRectF contentRect;
     // true after the first resize event came in
     bool initialResizeEventReceived;
+
+    // true after setGridAttributes( Qt::Orientation ) was used,
+    // false if resetGridAttributes( Qt::Orientation ) was called
+    bool hasOwnGridAttributesCircular;
+    bool hasOwnGridAttributesSagittal;
+
+    GridAttributes gridAttributesCircular;
+    GridAttributes gridAttributesSagittal;
 };
 
 

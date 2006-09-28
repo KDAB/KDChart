@@ -31,6 +31,8 @@
 
 namespace KDChart {
 
+    class GridAttributes;
+
     class AbstractPolarDiagram : public AbstractDiagram
     {
         Q_OBJECT

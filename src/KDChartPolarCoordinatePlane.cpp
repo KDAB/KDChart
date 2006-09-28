@@ -149,6 +149,7 @@ void PolarCoordinatePlane::paint ( QPainter* painter )
         ctx.setRectangle ( geometry() /*d->contentRect*/ );
 
         // paint the coordinate system rulers:
+        d->currentTransformation = & ( d->coordinateTransformations[0] );
         d->grid->drawGrid( &ctx );
 
         // paint the diagrams:
@@ -288,6 +289,13 @@ const QPointF PolarCoordinatePlane::translatePolar( const QPointF& diagramPoint 
     return  d->currentTransformation->translatePolar ( diagramPoint );
 }
 
+qreal PolarCoordinatePlane::angleUnit() const
+{
+    Q_ASSERT_X ( d->currentTransformation != 0, "PolarCoordinatePlane::translate",
+                 "Only call translate() from within paint()." );
+    return  d->currentTransformation->angleUnit;
+}
+
 void PolarCoordinatePlane::slotLayoutChanged ( AbstractDiagram* )
 {
     if ( d->initialResizeEventReceived ) layoutDiagrams();
@@ -333,3 +341,54 @@ DataDimensionsList PolarCoordinatePlane::getDataDimensionsList() const
     return l;
 }
 
+void KDChart::PolarCoordinatePlane::setGridAttributes(
+    bool circular,
+    const GridAttributes& a )
+{
+    if( circular )
+        d->gridAttributesCircular = a;
+    else
+        d->gridAttributesSagittal = a;
+    setHasOwnGridAttributes( circular, true );
+    update();
+    emit propertiesChanged();
+}
+
+void KDChart::PolarCoordinatePlane::resetGridAttributes(
+    bool circular )
+{
+    setHasOwnGridAttributes( circular, false );
+    update();
+}
+
+GridAttributes KDChart::PolarCoordinatePlane::gridAttributes(
+    bool circular ) const
+{
+    if( hasOwnGridAttributes( circular ) ){
+        if( circular )
+            return d->gridAttributesCircular;
+        else
+            return d->gridAttributesSagittal;
+    }else{
+        return globalGridAttributes();
+    }
+}
+
+void KDChart::PolarCoordinatePlane::setHasOwnGridAttributes(
+    bool circular, bool on )
+{
+    if( circular )
+        d->hasOwnGridAttributesCircular = on;
+    else
+        d->hasOwnGridAttributesSagittal = on;
+    emit propertiesChanged();
+}
+
+bool KDChart::PolarCoordinatePlane::hasOwnGridAttributes(
+    bool circular ) const
+{
+    return
+        ( circular )
+        ? d->hasOwnGridAttributesCircular
+        : d->hasOwnGridAttributesSagittal;
+}

@@ -33,7 +33,7 @@
 namespace KDChart {
 
     class GridAttributes;
-    class PaintContext;
+//    class PaintContext;
 
     /**
      * @brief Base class for diagrams based on a cartesian coordianate system.
@@ -82,9 +82,6 @@ namespace KDChart {
         virtual void setReferenceDiagram( AbstractCartesianDiagram* diagram, const QPointF& offset = QPointF() );
         virtual AbstractCartesianDiagram* referenceDiagram() const;
         virtual QPointF referenceDiagramOffset() const;
-
-        virtual GridAttributes* gridAttributes();
-        virtual const GridAttributes* gridAttributes() const;
 
     protected:
         virtual double threeDItemDepth( const QModelIndex & index ) const = 0;

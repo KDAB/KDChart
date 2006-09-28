@@ -321,6 +321,7 @@ void Legend::setOrientation( Qt::Orientation orientation )
     if( d->orientation == orientation ) return;
     d->orientation = orientation;
     setNeedRebuild();
+    emitPositionChanged();
 }
 
 Qt::Orientation Legend::orientation() const

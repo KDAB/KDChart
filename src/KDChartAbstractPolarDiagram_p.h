@@ -38,6 +38,7 @@
 //
 
 #include "KDChartAbstractDiagram_p.h"
+#include <KDChartGridAttributes.h>
 
 #include <KDABLibFakes>
 
@@ -55,7 +56,6 @@ class AbstractPolarDiagram::Private : public AbstractDiagram::Private
 public:
     Private();
     ~Private();
-
 };
 
 KDCHART_IMPL_DERIVED_DIAGRAM( AbstractPolarDiagram, AbstractDiagram, PolarCoordinatePlane )

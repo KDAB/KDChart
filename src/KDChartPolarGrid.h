@@ -41,7 +41,7 @@ namespace KDChart {
      *
      * The PolarGrid interface is used
      * for calculating and for drawing
-     * the saggital grid lines, and the circular grid lines
+     * the sagittal grid lines, and the circular grid lines
      * of a polar coordinate plane.
      */
     class PolarGrid : public AbstractGrid
