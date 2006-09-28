@@ -83,8 +83,8 @@ void PolarGrid::drawGrid( PaintContext* context )
     }
 
     const int numberOfGridRings = ( int ) dgr->numberOfGridRings();
-    for ( int i = 0; i < numberOfGridRings; ++i ) {
-        const double rad = ( ( i + 1) * r / numberOfGridRings );
+    for ( int j = 0; j < numberOfGridRings; ++j ) {
+        const double rad = ( ( j + 1) * r / numberOfGridRings );
 
         if ( rad == 0 )
             continue;
