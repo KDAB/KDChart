@@ -22,6 +22,17 @@ private slots:
         {
             BarDiagram* diagram = new BarDiagram();
             diagram->setType( BarDiagram::Stacked );
+            BarAttributes attrs;
+            attrs.setFixedDataValueGap( 3.0 );
+            attrs.setFixedBarWidth( 30.0 );
+            attrs.setDrawSolidExcessArrows( false );
+            diagram->setBarAttributes( attrs );
+            attrs.setDrawSolidExcessArrows( true );
+            diagram->setBarAttributes( 0, attrs );
+            attrs.setDrawSolidExcessArrows( false );
+            ThreeDBarAttributes threeDAttrs;
+            threeDAttrs.setUseShadowColors( false );
+            diagram->setThreeDBarAttributes( threeDAttrs );
             BarDiagram* clone = diagram->clone();
             QCOMPARE( diagram->type(), clone->type() );
             // We do not clone the axes.
@@ -35,6 +46,9 @@ private slots:
             QCOMPARE( diagram->antiAliasing(), clone->antiAliasing() );
             QCOMPARE( diagram->percentMode(), clone->percentMode() );
             QCOMPARE( diagram->datasetDimension(), clone->datasetDimension() );
+            QCOMPARE( diagram->barAttributes(), clone->barAttributes() );
+            QCOMPARE( diagram->barAttributes( 0 ), clone->barAttributes( 0 ) );
+            QCOMPARE( diagram->threeDBarAttributes(), clone->threeDBarAttributes() );
 
             // PENDING(kalle) What could we test in the attributes model?
         }
@@ -43,8 +57,12 @@ private slots:
         {
             LineDiagram* diagram = new LineDiagram();
             diagram->setType( LineDiagram::Percent );
+            LineAttributes attrs;
+            attrs.setMissingValuesPolicy( LineAttributes::MissingValuesShownAsZero );
+            diagram->setLineAttributes( attrs );
             LineDiagram* clone = diagram->clone();
             QCOMPARE( diagram->type(), clone->type() );
+            QCOMPARE( diagram->lineAttributes(), clone->lineAttributes() );
 
             // the rest is already tested in testCloningBarDiagram()
         }
