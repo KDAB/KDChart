@@ -44,7 +44,7 @@ namespace KDChart {
      *
      */
 
-    class KDCHART_EXPORT DiagramPropertiesWidget
+    class UITOOLS_EXPORT DiagramPropertiesWidget
        : public QWidget, private Ui::KDChartDiagramPropertiesWidget
     {
         Q_OBJECT

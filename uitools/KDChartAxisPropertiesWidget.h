@@ -42,7 +42,7 @@ namespace KDChart {
      *
      *
      */
-    class KDCHART_EXPORT AxisPropertiesWidget
+    class UITOOLS_EXPORT AxisPropertiesWidget
 	    : public QWidget, private Ui::KDChartAxisPropertiesWidget
     {
         Q_OBJECT

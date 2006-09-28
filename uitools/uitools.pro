@@ -18,9 +18,15 @@ $(QTDIR)/src/3rdparty/zlib \
 $$KDCHART_PATH/include \
 .
 LIBS += -L$$KDCHART_PATH/lib -lkdchart
-dll{
-  DEFINES += KDCHART_UITOOLS_DLL
+
+win32{
+  DLLDESTDIR = ../bin
+  !static{
+    DEFINES += KDCHART_MAKEDLL
+  }
 }
+
+DEFINES += UITOOLS_BUILD_UITOOLS_LIB
 
 KDAB_EVAL{
   HEADERS += ../evaldialog/evaldialog.h

@@ -42,7 +42,7 @@ namespace KDChart {
      *
      */
 
-    class KDCHART_EXPORT HeaderFooterPropertiesWidget
+    class UITOOLS_EXPORT HeaderFooterPropertiesWidget
        : public QWidget, private Ui::KDChartHeaderFooterPropertiesWidget
     {
         Q_OBJECT

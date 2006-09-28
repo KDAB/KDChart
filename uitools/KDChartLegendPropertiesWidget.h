@@ -41,7 +41,7 @@ namespace KDChart {
      *
      *
      */
-    class KDCHART_EXPORT LegendPropertiesWidget
+    class UITOOLS_EXPORT LegendPropertiesWidget
     : public QWidget, private Ui::KDChartLegendPropertiesWidget
     {
         Q_OBJECT
