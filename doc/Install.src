@@ -33,3 +33,10 @@ nmake   # Windows
 
 5) Have a look at the examples applications it will get you started with KD Chart 2.0 and it's new API.
 
+
+Designer Plugins:
+Just run "make install" (Unix/Linux, Mac), or nmake install (Windows) from the plugins directory of your KDChart installation. Make sure that your environment variable are set (see above) before doing so.
+
+
+
+
