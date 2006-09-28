@@ -572,7 +572,9 @@ static const QColor SUBDUEDCOLORS[ NUM_SUBDUEDCOLORS ] = {
 
 void Legend::resizeEvent ( QResizeEvent * event )
 {
+#ifdef debug_legend_paint
     qDebug() << "Legend::resizeEvent() called";
+#endif
     forceRebuild();
     QTimer::singleShot(0, this, SLOT(emitPositionChanged()));
 }
