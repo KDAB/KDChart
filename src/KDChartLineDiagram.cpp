@@ -240,85 +240,88 @@ const QPair<QPointF, QPointF> LineDiagram::calculateDataBoundaries() const
 
     // calculate boundaries for different line types Normal - Stacked - Percent - Default Normal
     switch ( type() ){
-        case LineDiagram::Normal:
-            for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
-                for ( int j=0; j< rowCount; ++j ) {
-                    const double value = valueForCellTesting( j, i, bOK );
-                    double xvalue;
-                    if( datasetDimension() > 1 && bOK )
-                        xvalue = valueForCellTesting( j, i-1, bOK );
-                    if( bOK ){
-                        if( bStarting ){
-                            yMin = value;
-                            yMax = value;
-                        }else{
-                          yMin = qMin( yMin, value );
-                          yMax = qMax( yMax, value );
-                        }
-                        if ( datasetDimension() > 1 ) {
-                            if( bStarting ){
-                                xMin = xvalue;
-                                xMax = xvalue;
-                            }else{
-                                xMin = qMin( xMin, xvalue );
-                                xMax = qMax( xMax, xvalue );
-                            }
-                        }
-                        bStarting = false;
-                    }
-                }
-            }
-
-            if( yMin > 0 && yMax / yMin >= 2.0 )
-                yMin = 0;
-            else if( yMax < 0 && yMax / yMin <= 0.5 )
-                yMax = 0;
-
-            break;
-        case LineDiagram::Stacked:
-        {
-            double tmpValue = 0;
-
+    case LineDiagram::Normal:
+    {
+        for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
             for ( int j=0; j< rowCount; ++j ) {
-                // calculate sum of values per column - Find out stacked Min/Max
-                 double stackedValues = 0;
-                for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
-                    const double value = valueForCellTesting( j, i, bOK );
-                    if( bOK )
-                        stackedValues += value;
+                const double value = valueForCellTesting( j, i, bOK );
+                double xvalue;
+                if( datasetDimension() > 1 && bOK )
+                    xvalue = valueForCellTesting( j, i-1, bOK );
+                if( bOK ){
+                    if( bStarting ){
+                        yMin = value;
+                        yMax = value;
+                    }else{
+                        yMin = qMin( yMin, value );
+                        yMax = qMax( yMax, value );
+                    }
+                    if ( datasetDimension() > 1 ) {
+                        if( bStarting ){
+                            xMin = xvalue;
+                            xMax = xvalue;
+                        }else{
+                            xMin = qMin( xMin, xvalue );
+                            xMax = qMax( xMax, xvalue );
+                        }
+                    }
+                    bStarting = false;
                 }
-                if( bStarting ){
-                    yMin = stackedValues;
-                    yMax = stackedValues;
-                }else{
-                    // Pending Michel:
-                    // I am taking in account all values negatives or positives
-                    // take in account all stacked values
-                    yMin = qMin( qMin( yMin,  tmpValue ), stackedValues );
-                    yMax = qMax( yMax, stackedValues );
-                }
-                bStarting = false;
             }
         }
-            break;
-        case LineDiagram::Percent:
+
+        if( yMin > 0 && yMax / yMin >= 2.0 )
+            yMin = 0;
+        else if( yMax < 0 && yMax / yMin <= 0.5 )
+            yMax = 0;
+    }
+    break;
+    case LineDiagram::Stacked:
+    {
+        double tmpValue = 0;
+
+        for ( int j=0; j< rowCount; ++j ) {
+            // calculate sum of values per column - Find out stacked Min/Max
+            double stackedValues = 0;
             for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
-                for ( int j=0; j< rowCount; ++j ) {
-                    // Ordinate should begin at 0 the max value being the 100% pos
-                    const double value = valueForCellTesting( j, i, bOK );
-                    if( bOK ){
-                        if( bStarting )
-                            yMax = value;
-                        else
-                            yMax = qMax( yMax, value );
-                        bStarting = false;
-                    }
+                const double value = valueForCellTesting( j, i, bOK );
+                if( bOK )
+                    stackedValues += value;
+            }
+            if( bStarting ){
+                yMin = stackedValues;
+                yMax = stackedValues;
+            }else{
+                // Pending Michel:
+                // I am taking in account all values negatives or positives
+                // take in account all stacked values
+                yMin = qMin( qMin( yMin,  tmpValue ), stackedValues );
+                yMax = qMax( yMax, stackedValues );
+            }
+            bStarting = false;
+        }
+    }
+    break;
+    case LineDiagram::Percent:
+    {
+        for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
+            for ( int j=0; j< rowCount; ++j ) {
+                // Ordinate should begin at 0 the max value being the 100% pos
+                const double value = valueForCellTesting( j, i, bOK );
+                if( bOK ){
+                    if( bStarting )
+                        yMax = value;
+                    else
+                        yMax = qMax( yMax, value );
+                    bStarting = false;
                 }
             }
-            break;
-        default:
-            Q_ASSERT_X ( false, "calculateDataBoundaries()",
-                         "Type item does not match a defined line chart Type." );
+        }
+    }
+    break;
+    default:
+        Q_ASSERT_X ( false, "calculateDataBoundaries()",
+                     "Type item does not match a defined line chart Type." );
     }
 
     QPointF bottomLeft ( QPointF( xMin, yMin ) );
@@ -335,27 +338,27 @@ const QPair<QPointF, QPointF> LineDiagram::calculateDataBoundaries() const
     //I am commenting the code temporarely - will clean up after testing more
     //accurately.
     /*
-    bool threeDBoundaries = false;
-    for ( int i=0; i<colCount; ++i ) {
-        QModelIndex index = model()->index( 0, i, rootIndex() );
-        const ThreeDLineAttributes tda( threeDLineAttributes( index ) );
-        if ( tda.isEnabled() ) {
-            threeDBoundaries = true;
-            QPointF projLeft ( project(QPointF( xMin, 0.0 ), QPointF( xMin, 0.0 ), tda.depth()/10 , index ) );
-            QPointF projRight( project(QPointF( xMax, yMax ), QPointF( xMax, yMax), tda.depth()/10, index ) );
-               projRight.x() > topRight.x()  ? topRightThreeD.setX( projRight.x() ):
-                topRightThreeD.setX( topRight.x() );
-            projRight.y() > topRight.y()  ? topRightThreeD.setY( projRight.y() ):
-                topRightThreeD.setY( topRight.y() );
-            projLeft.x() > bottomLeft.x() ? bottomLeftThreeD.setX( bottomLeft.x() ):
-                bottomLeftThreeD.setX( projLeft.x() );
-            projLeft.y() > bottomLeft.y() ? bottomLeftThreeD.setY( bottomLeft.y() ):
-                bottomLeftThreeD.setY( projLeft.y() );
-        }
-    }
+      bool threeDBoundaries = false;
+      for ( int i=0; i<colCount; ++i ) {
+      QModelIndex index = model()->index( 0, i, rootIndex() );
+      const ThreeDLineAttributes tda( threeDLineAttributes( index ) );
+      if ( tda.isEnabled() ) {
+      threeDBoundaries = true;
+      QPointF projLeft ( project(QPointF( xMin, 0.0 ), QPointF( xMin, 0.0 ), tda.depth()/10 , index ) );
+      QPointF projRight( project(QPointF( xMax, yMax ), QPointF( xMax, yMax), tda.depth()/10, index ) );
+      projRight.x() > topRight.x()  ? topRightThreeD.setX( projRight.x() ):
+      topRightThreeD.setX( topRight.x() );
+      projRight.y() > topRight.y()  ? topRightThreeD.setY( projRight.y() ):
+      topRightThreeD.setY( topRight.y() );
+      projLeft.x() > bottomLeft.x() ? bottomLeftThreeD.setX( bottomLeft.x() ):
+      bottomLeftThreeD.setX( projLeft.x() );
+      projLeft.y() > bottomLeft.y() ? bottomLeftThreeD.setY( bottomLeft.y() ):
+      bottomLeftThreeD.setY( projLeft.y() );
+      }
+      }
 
-    return threeDBoundaries ? QPair<QPointF, QPointF> ( bottomLeftThreeD ,  topRightThreeD ):
-                              QPair<QPointF, QPointF> ( bottomLeft, topRight );
+      return threeDBoundaries ? QPair<QPointF, QPointF> ( bottomLeftThreeD ,  topRightThreeD ):
+      QPair<QPointF, QPointF> ( bottomLeft, topRight );
     */
     return QPair<QPointF, QPointF> ( bottomLeft, topRight );
 }
