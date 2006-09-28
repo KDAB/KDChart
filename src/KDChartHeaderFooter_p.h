@@ -64,6 +64,13 @@ public:
     explicit Private();
     ~Private();
 
+    Private( const Private& rhs ) :
+        TextArea::Private( rhs ),
+        type( rhs.type ),
+        position( rhs.position )
+        {
+        }
+
     void updateTextDoc();
 
 private:

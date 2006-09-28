@@ -90,15 +90,11 @@ void HeaderFooter::init()
 
 HeaderFooter * HeaderFooter::clone() const
 {
-    HeaderFooter* newHeaderFooter = new HeaderFooter();
-    newHeaderFooter->setType( type() );
-    newHeaderFooter->setPosition( position() );
-    newHeaderFooter->setAutoReferenceArea( autoReferenceArea() );
-    newHeaderFooter->setText( text() );
-    newHeaderFooter->setTextAttributes( textAttributes() );
-    newHeaderFooter->setFrameAttributes( frameAttributes() );
-    newHeaderFooter->setBackgroundAttributes( backgroundAttributes() );
-    return newHeaderFooter;
+    HeaderFooter* headerFooter = new HeaderFooter( new Private( *d ), 0 );
+    headerFooter->setType( type() );
+    headerFooter->setPosition( position() );
+    headerFooter->setTextAttributes( textAttributes() );
+    return headerFooter;
 }
 
 void HeaderFooter::setType( HeaderFooterType type )

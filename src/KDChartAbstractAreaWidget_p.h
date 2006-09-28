@@ -58,6 +58,13 @@ class AbstractAreaWidget::Private : public AbstractAreaBase::Private
 public:
     explicit Private();
     virtual ~Private();
+
+    Private( const Private& rhs ) :
+        AbstractAreaBase::Private( rhs )
+        {
+            // Just for consistency
+        }
+
 };
 
 

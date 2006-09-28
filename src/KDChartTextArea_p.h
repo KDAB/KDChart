@@ -52,28 +52,34 @@ namespace KDChart {
 /**
  * \internal
  */
-class TextArea::Private : public AbstractAreaBase::Private
-{
-    friend class TextArea;
-public:
-    explicit Private();
-    virtual ~Private();
-};
+    class TextArea::Private : public AbstractAreaBase::Private
+    {
+        friend class TextArea;
+    public:
+        explicit Private();
+        virtual ~Private();
+
+        Private( const Private& rhs ) :
+            AbstractAreaBase::Private( rhs )
+            {
+                // Just for consistency
+            }
+    };
 
 
-inline TextArea::TextArea( Private * p )
-  :  QObject(), AbstractAreaBase( p ), TextLayoutItem()
-{
-    init();
-}
-inline TextArea::Private * TextArea::d_func()
-{
-    return static_cast<Private*>( AbstractAreaBase::d_func() );
-}
-inline const TextArea::Private * TextArea::d_func() const
-{
-    return static_cast<const Private*>( AbstractAreaBase::d_func() );
-}
+    inline TextArea::TextArea( Private * p )
+        :  QObject(), AbstractAreaBase( p ), TextLayoutItem()
+    {
+        init();
+    }
+    inline TextArea::Private * TextArea::d_func()
+    {
+        return static_cast<Private*>( AbstractAreaBase::d_func() );
+    }
+    inline const TextArea::Private * TextArea::d_func() const
+    {
+        return static_cast<const Private*>( AbstractAreaBase::d_func() );
+    }
 
 }
 

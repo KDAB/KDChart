@@ -54,24 +54,31 @@ namespace KDChart {
 /**
  * \internal
  */
-class AbstractAreaBase::Private
-{
-    friend class AbstractAreaBase;
-public:
-    explicit Private();
-    virtual ~Private();
+    class AbstractAreaBase::Private
+    {
+        friend class AbstractAreaBase;
+    public:
+        explicit Private();
+        virtual ~Private();
 
-protected:
-    void init();
+        Private( const Private& rhs ) :
+            visible( rhs.visible ),
+            frameAttributes( rhs.frameAttributes ),
+            backgroundAttributes( rhs.backgroundAttributes )
+            {
+            }
 
-private:
-    bool visible;
-    KDChart::FrameAttributes frameAttributes;
-    KDChart::BackgroundAttributes backgroundAttributes;
-};
+    protected:
+        void init();
 
-inline AbstractAreaBase::AbstractAreaBase( AbstractAreaBase::Private * p ) :
-    _d( p ) { init(); }
+    private:
+        bool visible;
+        KDChart::FrameAttributes frameAttributes;
+        KDChart::BackgroundAttributes backgroundAttributes;
+    };
+
+    inline AbstractAreaBase::AbstractAreaBase( AbstractAreaBase::Private * p ) :
+        _d( p ) { init(); }
 
 }
 #endif /* KDCHARTABSTRACTAREABASE_P_H */

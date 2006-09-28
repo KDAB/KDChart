@@ -7,6 +7,8 @@
 #include <KDChartThreeDPieAttributes>
 #include <KDChartPolarDiagram>
 #include <KDChartRingDiagram>
+#include <KDChartHeaderFooter>
+#include <KDChartLegend>
 
 using namespace KDChart;
 
@@ -117,6 +119,32 @@ private slots:
             QCOMPARE( diagram->relativeThickness(), clone->relativeThickness() );
             // the rest is already tested in testCloningBarDiagram()
             // and testCloningPieDiagram()
+        }
+
+    void testCloningHeaderFooter()
+        {
+            HeaderFooter* headerFooter = new HeaderFooter();
+            headerFooter->setType( HeaderFooter::Footer );
+            TextAttributes attrs;
+            attrs.setPen( QPen(Qt::red) );
+            headerFooter->setTextAttributes( attrs );
+            HeaderFooter* clone = headerFooter->clone();
+            QCOMPARE( headerFooter->type(), clone->type() );
+            QCOMPARE( headerFooter->textAttributes(), clone->textAttributes() );
+        }
+
+    void testCloningLegends()
+        {
+            Legend* legend = new Legend();
+            TextAttributes attrs;
+            attrs.setPen( QPen(Qt::red) );
+            legend->setTextAttributes( attrs );
+            legend->setShowLines( true );
+            legend->setPosition( Position::North );
+            Legend* clone = legend->clone();
+            QCOMPARE( legend->textAttributes(), clone->textAttributes() );
+            QCOMPARE( legend->showLines(), clone->showLines() );
+            QCOMPARE( legend->position(), clone->position() );
         }
 
     void cleanupTestCase()

@@ -74,6 +74,24 @@ public:
     Private();
     ~Private();
 
+    Private( const Private& rhs ) :
+        AbstractAreaWidget::Private( rhs ),
+        referenceArea( 0 ),
+        position( rhs.position ),
+        alignment( rhs.alignment ),
+        orientation( rhs.orientation ),
+        showLines( rhs.showLines ),
+        texts( rhs.texts ),
+        brushes( rhs.brushes ),
+        pens( rhs.pens ),
+        markerAttributes( rhs.markerAttributes ),
+        textAttributes( rhs.textAttributes ),
+        titleText( rhs.titleText ),
+        titleTextAttributes( rhs.titleTextAttributes ),
+        spacing( rhs.spacing )
+        {
+        }
+
     DiagramObserver* findObserverForDiagram( AbstractDiagram* diagram )
     {
         for (int i = 0; i < observers.size(); ++i) {

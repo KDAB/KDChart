@@ -124,25 +124,13 @@ void Legend::init()
 
 Legend* Legend::clone() const
 {
-    Legend* newLegend = new Legend();
-    newLegend->setReferenceArea( referenceArea() );
-    newLegend->setPosition( position() );
-    newLegend->setAlignment( alignment() );
-    newLegend->setOrientation( orientation() );
-    newLegend->setShowLines( showLines() );
-    for( uint textNo = 0; textNo < datasetCount(); textNo++ ) {
-        newLegend->setText( textNo, text( textNo ) );
-        newLegend->setPen( textNo, pen( textNo ) );
-        newLegend->setBrush( textNo, brush( textNo ) );
-        newLegend->setMarkerAttributes( textNo, markerAttributes( textNo ) );
-    }
-    newLegend->setTextAttributes( textAttributes() );
-    newLegend->setTitleText( titleText() );
-    newLegend->setTitleTextAttributes( titleTextAttributes() );
-    newLegend->setSpacing( spacing() );
-    newLegend->setFrameAttributes( frameAttributes() );
-    newLegend->setBackgroundAttributes( backgroundAttributes() );
-    return newLegend;
+    Legend* legend = new Legend( new Private( *d ), 0 );
+    legend->setTextAttributes( textAttributes() );
+    legend->setTitleTextAttributes( titleTextAttributes() );
+    legend->setFrameAttributes( frameAttributes() );
+    legend->setPosition( position() );
+    legend->setAlignment( alignment() );
+    return legend;
 }
 
 //#define debug_legend_paint
