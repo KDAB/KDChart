@@ -431,6 +431,7 @@ void BarDiagram::paint( PaintContext* ctx )
     switch ( type() )
         {
         case BarDiagram::Normal:
+        {
             // we paint the bars for all series next to each other, then move to the next value
             for ( int i=0; i<rowCount; ++i ) {
                 double offset = -groupWidth/2 + spaceBetweenGroups/2;
@@ -463,8 +464,10 @@ void BarDiagram::paint( PaintContext* ctx )
                     offset += barWidth + spaceBetweenBars;
                 }
             }
+        }
             break;
         case BarDiagram::Stacked:
+        {
            for ( int i = 0; i<colCount; ++i ) {
                double offset = spaceBetweenGroups;
                for ( int j = 0; j< rowCount; ++j ) {
@@ -495,6 +498,7 @@ void BarDiagram::paint( PaintContext* ctx )
                }
 
            }
+        }
            break;
         case BarDiagram::Percent:
         {
