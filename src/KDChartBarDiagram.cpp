@@ -213,6 +213,7 @@ const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries  () const
     // calculate boundaries for  different line types Normal - Stacked - Percent - Default Normal
     switch ( type() ){
         case BarDiagram::Normal:
+        {
             for ( int i=0; i<colCount; ++i ) {
                 for ( int j=0; j< rowCount; ++j ) {
                     const double value = d->attributesModel->data( d->attributesModel->index( j, i, attributesModelRootIndex() ) ).toDouble();
@@ -232,8 +233,10 @@ const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries  () const
                     bStarting = false;
                 }
             }
+        }
             break;
         case BarDiagram::Stacked:
+        {
             for ( int j=0; j< rowCount; ++j ) {
                 // calculate sum of values per column - Find out stacked Min/Max
                 double stackedValues = 0;
@@ -256,8 +259,10 @@ const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries  () const
                     bStarting = false;
                 }
             }
+        }
             break;
         case BarDiagram::Percent:
+        {
             for ( int i=0; i<colCount; ++i ) {
                 for ( int j=0; j< rowCount; ++j ) {
                     // Ordinate should begin at 0 the max value being the 100% pos
@@ -276,7 +281,7 @@ const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries  () const
                 }
             }
             break;
-
+        }
         default:
              Q_ASSERT_X ( false, "calculateDataBoundaries()",
                          "Type item does not match a defined bar chart Type." );
