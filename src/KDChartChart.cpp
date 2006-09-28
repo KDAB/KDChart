@@ -367,7 +367,7 @@ void Chart::Private::slotLayoutPlanes()
     if ( planesLayout && dataAndLegendLayout )
         dataAndLegendLayout->removeItem( planesLayout );
 
-    Q_FOREACH( KDChart::AbstractArea* plane, planeLayoutItems ) {
+    KDAB_FOREACH( KDChart::AbstractArea* plane, planeLayoutItems ) {
         plane->removeFromParentLayout();
     }
     planeLayoutItems.clear();
@@ -379,7 +379,7 @@ void Chart::Private::slotLayoutPlanes()
      * get their own. See buildPlaneLayoutInfos() for more details. */
     QHash<AbstractCoordinatePlane*, PlaneInfo> planeInfos = buildPlaneLayoutInfos();
     QHash<AbstractAxis*, AxisInfo> axisInfos;
-    Q_FOREACH( AbstractCoordinatePlane* plane, coordinatePlanes ) {
+    KDAB_FOREACH( AbstractCoordinatePlane* plane, coordinatePlanes ) {
         Q_ASSERT( planeInfos.contains(plane) );
         const PlaneInfo pi = planeInfos[plane];
         int column = pi.horizontalOffset;
@@ -403,7 +403,7 @@ void Chart::Private::slotLayoutPlanes()
         planeLayout->setRowStretch(    row,    2 );
         planeLayout->setColumnStretch( column, 2 );
 
-        Q_FOREACH( AbstractDiagram* abstractDiagram, plane->diagrams() )
+        KDAB_FOREACH( AbstractDiagram* abstractDiagram, plane->diagrams() )
         {
             AbstractCartesianDiagram* diagram =
                     dynamic_cast<AbstractCartesianDiagram*> ( abstractDiagram );
@@ -422,7 +422,7 @@ void Chart::Private::slotLayoutPlanes()
 
             //leftAxesLayout->setSizeConstraint( QLayout::SetFixedSize );
 
-            Q_FOREACH( CartesianAxis* axis, diagram->axes() ) {
+            KDAB_FOREACH( CartesianAxis* axis, diagram->axes() ) {
                 if ( axisInfos.contains( axis ) ) continue; // already layed this one out
                 Q_ASSERT ( axis );
                 //qDebug() << "--------------- axis added to planeLayoutItems  -----------------";
@@ -483,12 +483,12 @@ void Chart::Private::slotLayoutPlanes()
 
 void Chart::Private::createLayouts( QWidget* w )
 {
-    Q_FOREACH( KDChart::TextArea* textLayoutItem, textLayoutItems ) {
+    KDAB_FOREACH( KDChart::TextArea* textLayoutItem, textLayoutItems ) {
         textLayoutItem->removeFromParentLayout();
     }
     textLayoutItems.clear();
 
-    Q_FOREACH( KDChart::AbstractArea* layoutItem, layoutItems ) {
+    KDAB_FOREACH( KDChart::AbstractArea* layoutItem, layoutItems ) {
         layoutItem->removeFromParentLayout();
     }
     layoutItems.clear();
@@ -540,7 +540,7 @@ void Chart::Private::slotRelayout()
     layoutLegends();
     layout->activate();
     //dataAndLegendLayout->activate();
-    Q_FOREACH (AbstractCoordinatePlane* plane, coordinatePlanes )
+    KDAB_FOREACH (AbstractCoordinatePlane* plane, coordinatePlanes )
         plane->layoutDiagrams();
    //qDebug() << "Chart relayouting done.";
 }
@@ -707,17 +707,17 @@ qFatal("nPaint > 100");
         painter->translate( translation );
     }
 
-    Q_FOREACH( KDChart::AbstractArea* layoutItem, d->layoutItems ) {
+    KDAB_FOREACH( KDChart::AbstractArea* layoutItem, d->layoutItems ) {
         layoutItem->paintAll( *painter );
     }
-    Q_FOREACH( KDChart::AbstractArea* planeLayoutItem, d->planeLayoutItems ) {
+    KDAB_FOREACH( KDChart::AbstractArea* planeLayoutItem, d->planeLayoutItems ) {
         planeLayoutItem->paintAll( *painter );
     }
-    Q_FOREACH( KDChart::TextArea* textLayoutItem, d->textLayoutItems ) {
+    KDAB_FOREACH( KDChart::TextArea* textLayoutItem, d->textLayoutItems ) {
         textLayoutItem->paintAll( *painter );
     }
 //int i=0;
-    Q_FOREACH( Legend *legend, d->legends ) {
+    KDAB_FOREACH( Legend *legend, d->legends ) {
 //qDebug("legend # %i",++i);
         if( ! legend->isHidden() ){
             //legend->forceRebuild();
