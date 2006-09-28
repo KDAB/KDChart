@@ -403,11 +403,13 @@ void Widget::setType( ChartType chartType, SubType chartSubType )
             {
                 cartPlane = new CartesianCoordinatePlane( &d->m_chart );
                 d->m_chart.replaceCoordinatePlane( cartPlane );
-            } else if ( isCartesian( type() ) && isPolar( chartType ) )
+            }
+            else if ( isCartesian( type() ) && isPolar( chartType ) )
             {
                 polPlane = new PolarCoordinatePlane( &d->m_chart );
                 d->m_chart.replaceCoordinatePlane( polPlane );
-            } else if ( isCartesian( type() ) && isCartesian( chartType ) )
+            }
+            else if ( isCartesian( type() ) && isCartesian( chartType ) )
             {
                 AbstractCartesianDiagram *old =
                         qobject_cast<AbstractCartesianDiagram*>( d->m_chart.coordinatePlane()->diagram() );
