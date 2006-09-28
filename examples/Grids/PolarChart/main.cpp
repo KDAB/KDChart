@@ -15,13 +15,13 @@ int main( int argc, char** argv ) {
 
     // the model
     QStandardItemModel model;
-    model.insertRows( 0, 50 );
+    model.insertRows( 0, 40 );
     model.insertColumns(  0,  5 );
     int i = 0;
 
     // fill it with some nice looking data
-    for ( int column = 0; column <= model.columnCount(); ++column ) {
-        for ( int row = 0; row <= model.rowCount(); ++row ) {
+    for ( int column = 0; column < model.columnCount(); ++column ) {
+        for ( int row = 0; row < model.rowCount(); ++row ) {
             QModelIndex index = model.index( row, column );
             model.setData( index, QVariant( i++  ) );
         }
