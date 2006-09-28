@@ -334,6 +334,7 @@ void Legend::setShowLines( bool legendShowLines )
     if( d->showLines == legendShowLines ) return;
     d->showLines = legendShowLines;
     setNeedRebuild();
+    emitPositionChanged();
 }
 
 bool Legend::showLines() const
