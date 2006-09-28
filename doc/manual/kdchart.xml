@@ -176,122 +176,123 @@
 
     <!-- ============ Kd Chart 2.0 Api Introduction ============= -->
 
-    <Chapter Id="Chapter_Api">
-        <Title Id="Chtxt_Api">Kd Chart 2 Api Introduction</Title>
-        <Titleabbrev Id="Chnum_Api">Chapter 2</Titleabbrev>
-        <Para>
-            Version 2.0 Of Kd Chart Fully Supports And Builds On The 
-	    Technologies Introduced With Qt 4. The Charting Engine Makes Use 
-	    Of The Arthur And Scribe Painting And Text Rendering Frameworks 
-	    To Achieve High Quality Visual Results. Kd Chart 2.0 Also 
-	    Integrates With The Interview Framework For Model/View Separation 
-	    And, Much Like Qt 4 Itself, Provides A Convenience Widget Class 
-	    For Those Cases Where That Is Too Complex To Use.
-        </Para>
-        <Sect1>
-            <Title Id="Apioverview">Overview</Title>
-            <Para>
-		The &Kdchart; 2.0 Api Strives For Maximum Consistency With 
-		The Concepts And Api Style Found In Qt 4. Of Course, This 
-		Means Breaking Source Compatibility In Several Places, But 
-		Like Trolltech, We Have Made A Conscious Decision That It 
-		Would Be Better To Clean Up The Api Now, Than To Carry It 
-		With Us Into The Next &Kdchart; Generation. 
-	    </Para>
-	    <Note>
-		<Para>
-		    Wherever Possible, Compatibility Methods And Classes Have 
-		    Been, Or Will Be, Provided.		
-		</Para>
-	    </Note>
-	    <Para>
-		The Core Of The &Kdchart; 2.0 Api Is The 
-		<Classname>Kdchart::Chart</Classname> Class.
-		It Encapsulates The Canvas Onto Which The Individual 
-		Components Of A Chart Are Painted, Manages Them And Provides 
-		Access To Them. There Can Be More Than One 
-		<Classname>Kdchart::Diagram</Classname> On A 
-		<Classname>Kdchart::Chart</Classname>, How They Are Laid Out 
-		Is Determined By Which Axes, If Any, They Share (More On Axes 
-		Below).
-	    </Para>
-	    <Para>
-		<Classname>Kdchart::Diagram</Classname> Subclasses For The 
-		Various Types Of Charts Are Provided, Such As 
-                <Classname>Kdchart::Piediagram</Classname>, And Users Can 
-		Subclass <Classname>Kdchart::Abstractdiagram</Classname> (Or 
-		One Of The Other Diagram Classes Starting With Abstract, 
-		Which Are Designed To Be Base Classes) To Implement Custom 
-		Chart Types. A Typical Use Of A Simple Bar Diagram Looks Like 
-		This:
-	    </Para>
-            <Sect2>
-                <Title Id="Apisample" Xreflabel="Codesample">Code Sample</Title>
-		<Programlisting>
-		    Using Namespace Kdchart;
+    <chapter id="chapter_api">
+        <title id="chtxt_api">KD Chart 2 API Introduction</title>
+        <titleabbrev id="chnum_api">Chapter 2</titleabbrev>
+        <para>
+            Version 2.0 of KD Chart fully supports and builds on the 
+	    technologies introduced with Qt 4. The charting engine makes use 
+	    of the Arthur and Scribe painting and text rendering frameworks 
+	    to achieve high quality visual results. KD Chart 2.0 also 
+	    integrates with the Interview framework for model/view separation 
+	    and, much like Qt 4 itself, provides a convenience Widget class 
+	    for those cases where that is too complex to use.
+        </para>
+        <sect1>
+            <title id="apioverview">Overview</title>
+            <para>
+		&kdchart; 2.0  API strives for maximum consistency with 
+		the concepts and API style found in Qt 4. Of course, this 
+		means breaking source compatibility in several places, but 
+		like Trolltech, we have made a conscious decision that it 
+		would be better to clean up the API now, than to carry it 
+		with us into the next &kdchart; generation. 
+	    </para>
+	    <note>
+		<para>
+		    Wherever possible, compatibility methods and classes have 
+		    been, or will be, provided.		
+		</para>
+	    </note>
+	    <para>
+		The core of &kdchart;'s 2.0 API is the 
+		<classname>KDChart::Chart</classname> class.
+		It encapsulates the canvas onto which the individual 
+		components of a chart are painted, manages them and provides 
+		access to them. There can be more than one 
+		<classname>KDChart::Diagram</classname> on a 
+		<classname>KDChart::Chart</classname>, how they are laid out 
+		is determined by which axes, if any, they share (more on axes 
+		below).
+	    </para>
+	    <para>
+		<classname>KDChart::Diagram</classname> subclasses for the 
+		various types of charts are provided, such as 
+                <classname>KDChart::PieDiagram</classname>, and users can 
+		subclass <classname>KDChart::AbstractDiagram</classname> (or 
+		one of the other Diagram classes starting with Abstract, 
+		which are designed to be base classes) to implement custom 
+		chart types. A typical use of a simple Bar Diagram looks like 
+		this:
+	    </para>
+            <sect2>
+                <title id="apisample" xreflabel="codesample">Code Sample</title>
+		<programlisting>
+		    using namespace KDChart;
 		    ......
-		    Bardiagram *Bars = New Bardiagram;
-		    Bars->Setmodel( &Amp;M_Model );		    
-		    Chart->Coordinateplane()->Replacediagram( Bars );
+		    BarDiagram *bars = new BarDiagram;
+		    bars->setModel( &amp;m_model );		    
+		    chart->coordinatePlane()->replaceDiagram( bars );
 		    .....
-		</Programlisting>
-		<Para>
+		</programlisting>
+<!-- not relevant
+		<para>
 		    You Could Also Use The Following Way, To Prevent Your 
 		    Compiler From Complaining About Instance Bars Not Being 
 		    Free'ed:
 		</Para>
-<!-- Pending(Michel) Is This Really Necessary And Interesting Here? -->
                 <Programlisting>
 		    Bardiagram *Bars = Static_Cast &Lt;Bardiagram *&Gt;
 		    (Mychart->Replacediagram( New Bardiagram ));
 		    //Now Call The Setter Methods ... 
 		</Programlisting>
-                <Para>
+-->
+                <para>
                     In Chapter 3 
-		    <Filename>Basic Steps: Create A Chart</Filename>, We Will 
-		    Make This Somewhat Abstract Description More Concrete By 
-		    Looking At Some Complete Examples (Widget And Charts), 
-		    Which We Recommend You To Compile And Run.
-		</Para>
-		<Para>
-		    For Now, In Order For You To Get An Overview About  
-		    The Kd Chart 2.0 Api And Its Features, You Need To
-                    Understand The Following Base Concepts:
-		</Para> 
-		<Itemizedlist>
-		    <Listitem>
-			<Para>
-			    Each Diagram Has An Associated Coordinate Plane 
-			    (Cartesian By Default) Which Is Responsible For 
-			    The Translation Of Data Values Into Pixel 
-			    Positions. It Defines The Scale Of The Diagram 
-			    And All Axes That Are Associated With It. This 
-			    Makes Implementing Diagram Subclasses (Types) Much
-			    Easier, Since The Drawing Code Can Delegate The
-			    Complete Coordinate Calculation Work To
-                            The Coordinate Plane. 
-			</Para>
-		    </Listitem>
-		    <Listitem>
-			<Para>
-			    Each Coordinate Plane Can Have One Or More Diagrams 
-			    Associated To It. Those Diagrams Will Share The Scale 
-			    Provided By The Plane. A Chart Can Also Have More Than 
-			    One Coordinate Plane. This Makes It Possible To Have 
-			    Multiple Diagrams (E.G, A Line Chart And A Bar Chart) Using The 
-			    Same Or Different Scales And Displayed Next To, Or On Top 
-			    Of Each Other In The Same Chart. 
-			</Para>
-		    </Listitem>		
-		    <Listitem>
-			<Para>
-			    In Order To Share An Axis Among Two Planes (And Also Diagrams),
-			    We Just Need To Add It To Both Diagrams. The Chart 
-			    Layouting Engine Will Take Care Of Adjusting Positions 
-			    Accordingly.
-			</Para>
-		    </Listitem>
-		    </Itemizedlist>
+		    <filename>Basic steps: Create a Chart</filename> we will 
+		    make this somewhat abstract description more concrete by 
+		    looking at some complete examples (Widget and Charts), 
+		    which we recommend you to compile and run.
+		</para>
+		<para>
+		    For now, in order for you to get an overview about the 
+		    KD Chart 2.0 API and its features you need to understand
+		    the following base concepts:   
+		</para> 
+		<itemizedlist>
+		    <listitem>
+			<para>
+			    Each diagram has an associated Coordinate Plane 
+			    (Cartesian by default), which is responsible for 
+			    the translation of data values into pixel 
+			    positions. It defines the scale of the diagram, 
+			    and all axes that are associated with it. This 
+			    makes implementing diagram subclasses (types) much
+			    easier, since the drawing code can delegate the
+			    complete coordinate calculation work to the 
+			    coordinate plane. 
+			</para>
+		    </listitem>
+		    <listitem>
+			<para>
+			    Each coordinate plane can have one or more diagram 
+			    associated to it. Those diagrams will share the scale 
+			    provided by the plan. A chart can also have more than 
+			    one coordinate plane. This makes it possible to have 
+			    multiple diagrams (e.g a line and a bar chart) using the 
+			    same or different scales and displayed next to, or on top 
+			    of each other in the same chart. 
+			</para>
+		    </listitem>		
+		    <listitem>
+			<para>
+			    In order To share an axis among two planes (and also diagrams)
+			    we just need to add it to both diagrams. The Chart 
+			    lay-outing engine will take care of adjusting positions 
+			    accordingly.
+			</para>
+		    </listitem>
+		    </itemizedlist>
 		 <!--
                 Pending Michel Link:
 		(See Src/Kdchartabstractcoordinateplane.H And
@@ -302,202 +303,199 @@
                     </Textobject>
                 </Programlisting>
                 -->
-		<Para>
-		    A Chart Can Also Have A Number Of Optional Components
-		    Such As Legends, Headers/Footers, Or Custom 
-		    <Classname>Kdchart::Area</Classname> Subclasses That
-		    Implement User-Defined Elements. The Api For Manipulating 
-		    These Is Similar For All Of Them.
-		</Para>
-		<Para>
-		    For Example, In Order To Add An Additional Header,
-                    You Can Use Code Like This: 
-		</Para>
-		<Programlisting>
-		    Headerfooter * Additionalheader = New Headerfooter;
-		    Additionalheader->Setposition( Northwest );
-		    Chart->Addheaderfooter( Additionalheader  );
-		</Programlisting>
-		<Para>
-		    In The Next Section, We Will Explain Further How
-                    Ownership Of Such Components Is Maintained.
-		</Para>
+		<para>
+		    A chart can also have a number of optional components
+		    such as Legends, Headers/Footers or custom 
+		    <classname>KDChart::Area</classname> subclasses that
+		    implement user-defined elements. The API for manipulating 
+		    these is similar for all of them.
+		</para>
+		<para>
+		    For example, in order to add an additional header you can
+		    use code like this:
+		</para>
+		<programlisting>
+		    HeaderFooter * additionalHeader = new HeaderFooter;
+		    additionalHeader->setPosition( NorthWest );
+		    chart->addHeaderFooter( additionalHeader  );
+		</programlisting>
+		<para>
+		    In the next section, we will explain further how ownership
+		    of such components is maintained.
+		</para>
 		<!--
-                Pending Michel: Point To Those Files
-		(See Src/{Kdchartchart.H|Kdchartlegend.H|Kdchartheaderfooter.H)
+                Pending Michel: point to those files
+		(see src/{KDChartChart.h|KDChartLegend.h|KDChartHeaderFooter.h)
 		-->
-		<Para>
-		    Finally, And Concluding This Overview, All Classes In The 
-		    Kd Chart 2 Api Are In The "Kdchart" Namespace, To Allow 
-		    Concise Class Names, While Still Avoiding Name
-		    Clashes. Unless You Prefer To Use The "Kdchart::" Prefix 
-		    On All Class Names In Your Code, You Can Add The Following
-		    Line At The Top Of Your Implementation Files Which Makes All 
-		    Names In The "Kdchart" Namespace Available In That File:
-		</Para>
-		<Programlisting>
-		    Using Namespace Kdchart;
-		</Programlisting>
-		<Para>
-		    Like Qt, &Kdchart; Provides Stl-Style Forwarding Headers, 
-		    Allowing You To Omit The ".H" Suffix When Including 
-		    Headers. To Bring The Bar Diagram Header Into Your 
-		    Implementation File, You Could Therefore Write:
-		</Para>
-		<Programlisting>
-		    #Include &Lt;Kdchartbardiagram&Gt;
-		    Or 
-		    #Include &Lt;Kdchartbardiagram.H&Gt;
-		</Programlisting>
-		<Note>
-		    <Para>
-			File Names Of Header And Implementation Files All
-			Have The "Kdchart" Prefix In The Name. The Definition 
-			Of <Classname>Kdchart::Bardiagram</Classname> Is 
-			Thus Located In The File 
-			<Filename>Kdchartbardiagram.H</Filename>.
-		    </Para>	
-		</Note>    
-            </Sect2>
-        </Sect1>
-<!-- Pending Michel: No Much To Say Here For Now - Shall We Remove
-        This Section? Kalle: No, This Is A Key Concept, We Should
-        Definitely Have It.
-        <Sect1>
-            <Title Id="Apihandling">Ownership And Parameters Handling</Title>
-            <Para>
-                Text: Shift The Following Sections: Handling Of Value
-                Parameters (E.G Text Attributes) Vs Pointer Classes.
-            </Para>
-            <Sect2>
-                <Title Id="Handlingsample" Xreflabel="Codexample">Code Example</Title>
-		<Para>
-                    Let Us Make This More Concrete By Looking At The Following
-                    Lines Of Code........                  
-                </Para>
-                <Para>
-                    More Explanation?
-                </Para>
-            </Sect2>
-        </Sect1>
+		<para>
+		    Finally, and concluding this overview, all classes in the 
+		    KD Chart 2 API are in the "KDChart" namespace, to allow 
+		    concise class names, while still avoiding name clashes. 
+		    Unless you prefer to use the "KDChart::" prefix on all 
+		    class names in your code, you can add the following
+		    line at the top of your implementation files, to make all 
+		    names in the "KDChart" namespace available in that file:
+		</para>
+		<programlisting>
+		    using namespace KDChart;
+		</programlisting>
+		<para>
+		    Like Qt, KD Chart provides STL-style forwarding headers, 
+		    allowing you to omit the ".h" suffix when including 
+		    headers. To bring the bar diagram header into your 
+		    implementation file, you could therefore write:
+		</para>
+		<programlisting>
+		    #include &lt;KDChartBarDiagram&gt;
+		    or 
+		    #include &lt;KDChartBarDiagram.h&gt;
+		</programlisting>
+		<note>
+		    <para>
+			File names of header and implementation files all
+			have the "KDChart" prefix in the name. The definition 
+			of <classname>KDChart::BarDiagram</classname> is 
+			thus located in the file 
+			<filename>KDChartBarDiagram.h</filename>.
+		    </para>	
+		</note>    
+            </sect2>
+        </sect1>
+<!-- Pending Michel: No much to say here for now - Shall we remove this section? Kalle: No, this is a key concept, we should definitely have it.
+        <sect1>
+            <title id="apihandling">Ownership and Parameters Handling</title>
+            <para>
+                Text: Shift the following sections: Handling of value
+                parameters (e.g Text Attributes) vs Pointer classes.
+            </para>
+            <sect2>
+                <title id="handlingsample" xreflabel="codexample">Code Example</title>
+		<para>
+                    Let us make this more concrete by looking at the following
+                    lines of code........                  
+                </para>
+                <para>
+                    More explanation?
+                </para>
+            </sect2>
+        </sect1>
 -->
-        <Sect1>
-            <Title Id="Apiinterview">Kd Chart And Interview </Title>
-            <Para>
+        <sect1>
+            <title id="apiinterview">KD Chart and Interview </title>
+            <para>
 		
-		Kd Chart 2.0 Follows The Interview Model/View Paradigm 
-		Introduced By Qt 4:
-	    </Para>	
-	    <Para>
-		Any <Classname>Kdchart::Abstractdiagram</Classname> Subclass 
-		(Which In Turn Inherits 
-		<Classname>Qabstractitemview</Classname>) Can Display Data 
-		Originating From Any
-                <Classname>Qabstractitemmodel</Classname> Object.
-		In Order To Use Your Data With Kd Chart Diagrams, You Need 
-		To Either Use One Of Qt's Built-In Models To Manage It, Or 
-		Provide The <Classname>Qabstractitemmodel</Classname> 
-		Interface On Top Of Your Already Existing Data Storage By 
-		Implementing Your Own Model That Talks To That Underlying 
-		Storage. 
-            </Para>
-	    <Para>
-		<Classname>Kdchart::Widget</Classname> Is A Convenience Class 
-		That Provides A Simpler, But Less Flexible, Way Of Displaying 
-		Data In A Chart. It Stores The Data It Displays Itself, And 
-		Thus Does Not Need A <Classname>Qabstractitemmodel</Classname>.
-		It Should Be Sufficient For Many Basic Charting Needs But It 
-		Is Not Meant To Handle Very Large Amounts Of Data Or To Make 
-		Use Of User-Supplied Chart Types.
-	    </Para>
-	    <Para>
-		<Classname>Kdchart::Widget</Classname> Is Provided In Order To 
-		Get Started Quickly Without Having To Master The 
-		Complexities Of The New Interview Framework In Qt 4. We Would 
-		Still Advise To Use Kdchart::Chart So That You Can Make Use Of
-		All The Benefits That Interview Brings You Once You Have 
-		A Good Understanding Of It.
-	    </Para>
-	    <Para>
-		In Order To Better Understand The Relationship Between 
-		<Classname>Kdchart::View</Classname>
-		And <Classname>Kdchart::Widget</Classname>, Compare For
-		Example <Classname>Kdchart::View</Classname> And
-		<Classname>Kdchart::Widget</Classname> To 
-		<Classname>Qlistview</Classname> And 
-		<Classname>Qlistwidget</Classname> In The Qt 4 Documentation. 
-		You Will Clearly Notice The Similiarities.
-	    </Para>	   
-             <Sect2>
-                <Title Id="Interviewsample" Xreflabel="Codesample">Code Sample</Title>
-                <Para>		  
-                    Let's Make This More Concrete By Looking At The Following
-                    Lines Of Code Where We Are Using  
-		    <Classname>Qstandarditemmodel</Classname> To Store The 
-		    Data Which Will Be Displayed By The Diagram In A 
-		    <Classname>Kdchartchart</Classname> Widget. 
-                </Para>                
-                <Programlisting>
-                    // Set Up Your Model
-		    M_Model.Insertrows( 0, 2, Qmodelindex() );
-		    M_Model.Insertcolumns(  0,  3,  Qmodelindex() );
-		    For (Int Row = 0; Row &Lt; 3; ++Row) {
-		       For (Int Column = 0; Column &Lt; 3; ++Column) {
-		          Qmodelindex Index = 
-		          M_Model.Index(Row, Column, Qmodelindex());
-		          M_Model.Setdata(Index, Qvariant(Row+1 * Column) );
+		KD Chart 2.0 follows the Interview model/view paradigm 
+		introduced by Qt 4:
+	    </para>	
+	    <para>
+		Any <classname>KDChart::AbstractDiagram</classname> subclass 
+		(which in turn inherits 
+		<classname>QAbstractItemView</classname>) can display data 
+		originating from any <classname>QAbstractItemModel</classname>
+		object. In order to use your data with KD Chart diagrams, you 
+		need to either use one of Qt's built-in models to manage it, 
+		or provide the <classname>QAbstractItemModel</classname> 
+		interface on top of your already existing data storage by 
+		implementing your own model that talks to that underlying 
+		storage. 
+            </para>
+	    <para>
+		<classname>KDChart::Widget</classname> is a convenience class 
+		that provides a simpler, but less flexible way of displaying 
+		data in a chart. It stores the data it displays itself, and 
+		thus does not need a <classname>QAbstractItemModel</classname>.
+		It should be sufficient for many basic charting needs but it 
+		is not meant to handle very large amounts of data or to make 
+		use of user-supplied chart types.
+	    </para>
+	    <para>
+		<classname>KDChart::Widget</classname> is provided in order to 
+		get started quickly without having to master the complexities 
+		of the new Interview framework in Qt 4. We would still advise 
+		to use KDChart::Chart so that you can make use of all the 
+		benefits that Interview brings you once you have a good 
+		undertanding of it.
+	    </para>
+	    <para>
+		In order to better understand the relationship between 
+		<classname>KDChart::View</classname>
+		and <classname>KDChart::Widget</classname> better, compare for
+		example <classname>KDChart::View</classname> and
+		<classname>KDChart::Widget</classname> to 
+		<classname>QListView</classname> and 
+		<classname>QListWidget</classname> in the Qt 4 documentation. 
+		You will clearly notice the similarities.
+	    </para>	   
+             <sect2>
+                <title id="interviewsample" xreflabel="codesample">Code Sample</title>
+                <para>		  
+                    Let us make this more concrete by looking at the following
+                    lines of code where we are using  
+		    <classname>QStandardItemModel</classname> to store the 
+		    data which will be displayed by the diagram in a 
+		    <classname>KDChartChart</classname> widget. 
+                </para>                
+                <programlisting>
+                    // set up your model
+		    m_model.insertRows( 0, 2, QModelIndex() );
+		    m_model.insertColumns(  0,  3,  QModelIndex() );
+		    for (int row = 0; row &lt; 3; ++row) {
+		       for (int column = 0; column &lt; 3; ++column) {
+		          QModelIndex index = 
+		          m_model.index(row, column, QModelIndex());
+		          m_model.setData(index, QVariant(row+1 * column) );
                        } 
                     }
-                </Programlisting>                
-                <Para>
-                    In Order To Assign The Model Above To Your Diagram And 
-		    Display It, You Would Proceed As Follows:
-                </Para>
-		<Programlisting>
-		    Kdchart::Bardiagram* Diagram = New Kdchart::Bardiagram;
-		    Diagram->Setmodel(&Amp;M_Model);
-		    M_Chart.Coordinateplane()->Replacediagram(Diagram);
-                </Programlisting>
-		<Para>
-		    Using <Classname>Kdchartwidget</Classname>, We
-                    Would Use Code Like This:
-		</Para>
-		<Programlisting>
-                    Kdchartwidget Widget;
-		    Qvector&Lt; Double &Gt; Vec0,  Vec1;
-		    Vec0 &Lt;&Lt; -5 &Lt;&Lt; -4 &Lt;&Lt; -3 &Lt;&Lt; -2 &Lt;&Lt; -1 &Lt;&Lt; 0 ...;
-		    Vec1 &Lt;&Lt; 25 &Lt;&Lt; 16 &Lt;&Lt; 9 &Lt;&Lt; 4 &Lt;&Lt; 1 &Lt;&Lt; 0 ...;      
-		    Widget.Setdataset( 0, Vec0, "Linear" );
-		    Widget.Setdataset( 1, Vec1, "Quadratic" );
-		    Widget.Show();
-                </Programlisting> 
-		<Para>
-		    We Recommend You To Read 
-		    <Filename>Kdchartchart.H</Filename> And 
-		    <Filename>Kdchartwidget.H</Filename> In Order To Learn More About 
-		    Those Classes And What They Can Do. Also Compile And Run 
-		    The Complete Examples That Show In A Simple Way The Two 
-		    Ways You Can Use To Display A Chart.
-		</Para>
-	    </Sect2>
-        </Sect1>
-        <Sect1>
-            <Title Id="Apiattribute">Attribute Sets</Title>
-            <Para>
-                The Various Components Of A Chart Such As Legends Or Axes Have
-		Attribute Sets Associated With Them That Define The Way They 
-		Are Laid Out And Painted. For Example, Both The Chart Itself 
-		And All Areas Have A Set Of 
-		<Classname>Kdchart::Backgroundattributes</Classname> Members, Which 
+                </programlisting>                
+                <para>
+                    In order to assign the model above to your diagram and 
+		    display it you would proceed as follow:
+                </para>
+		<programlisting>
+		    KDChart::BarDiagram* diagram = new KDChart::BarDiagram;
+		    diagram->setModel(&amp;m_model);
+		    m_chart.coordinatePlane()->replaceDiagram(diagram);
+                </programlisting>
+		<para>
+		    Using <classname>KDChartWidget</classname> we would use 
+		    code as follow:
+		</para>
+		<programlisting>
+                    KDChartWidget widget;
+		    QVector&lt; double &gt; vec0,  vec1;
+		    vec0 &lt;&lt; -5 &lt;&lt; -4 &lt;&lt; -3 &lt;&lt; -2 &lt;&lt; -1 &lt;&lt; 0 ...;
+		    vec1 &lt;&lt; 25 &lt;&lt; 16 &lt;&lt; 9 &lt;&lt; 4 &lt;&lt; 1 &lt;&lt; 0 ...;      
+		    widget.setDataset( 0, vec0, "Linear" );
+		    widget.setDataset( 1, vec1, "Quadratic" );
+		    widget.show();
+                </programlisting> 
+		<para>
+		    We recommend you to read 
+		    <filename>KDChartChart.h</filename> and 
+		    <filename>KDChartWidget.h</filename> to learn more about 
+		    those classes and what they can do. Also compile and run 
+		    the complete examples that describe very simply the two 
+		    ways you can use to display a Chart.
+		</para>
+	    </sect2>
+        </sect1>
+        <sect1>
+            <title id="apiattribute">Attribute sets</title>
+            <para>
+                The various components of a chart such as legends or axes have
+		attribute sets associated with them that define the way they 
+		are laid out and painted. For example, both the chart itself 
+		and all areas have a set of 
+		<classname>KDChart::BackgroundAttributes</classname>, which 
 		control whether there should be a background pixmap, or a solid
-		background color. Other attribute sets include Frame Attributes
-		or Grid Attributes. The default attributes provide reasonable, 
+		background color. Other attribute sets include frame attributes
+		or grid attributes. The default attributes provide reasonable, 
 		unintrusive settings, such as no visible background and no 
 		visible frame.
             </para>
 	    <para>
 		These attribute sets are passed by value, they are intended to
-		be used much like Qt's QPen or QBrush as shown below:
+		be used much like Qt's QPen or QBrush. As shown below:
 	    </para>
              <sect2>
                 <title id="attributesample" xreflabel="codesample">Code Sample</title>
@@ -513,10 +511,9 @@
 		    level only ensures that the proper fallback hierarchy can 
 		    be observed. If there is a value set at cell level, it 
 		    will be used, otherwise the dataset (column) level is 
-		    checked. If nothing was found at the dataset
-level, either, the model
-		    wide setting is used, and if there is none either, the 
-		    default values will be applied. 
+		    checked. If nothing was found at the dataset level, either
+		    the model wide setting is used, and if there is none 
+		    either, the default values will be applied. 
 		    All of this happens automatically, so that the code using
 		    these values only has to ask the cell for its attributes, 
 		    and will get the correct values. This avoids duplicating 
@@ -537,7 +534,7 @@ level, either, the model
             <para>
                 As a general rule, everything in a KDChart::Chart is owned by 
 		the chart. Manipulation of the built-in components of a chart,
-		such as e.g. a legend, happens through mutable pointers
+		such as for example a legend, happens through mutable pointers
 		provided by the view, but those components can also be 
 		replaced. 
             </para>
