@@ -1,19 +1,13 @@
-The following features have been removed from KD Chart 2.0 Beta 2
-as they have not been sufficiently tested, or their implementation
-is not complete.
 
-[ Note: There will be a Beta 3 before the KD Chart 2.0 release. ]
-[       Beta 3 will be feature complete, so please address your ]
-[       most important requests to us as soon as possible now.  ]
+[ Note: That is the KD Chart 2.0 release. ]
 
-
-- Documentation: There is no updated Programmer's Manual yet.
+- Documentation: There is a Programmer's Manual now.
 - Documentation: The API documentation is still incomplete.
 - Documentation: More example programs will be provided in future
-                 beta versions.
+                 versions.
 - Compatibility: There is no compatibility library for supporting KD
                  Chart 1.x code yet. This will be provided in a future
-                 beta version.
+                 version.
 - Chart types:   Ring charts are not included in this version.
 - Chart types:   Hi-Lo charts are not included in this version.
 - Chart types:   Box+Whisker charts are not included in this
@@ -21,28 +15,14 @@ is not complete.
 - Axes:          Only cartesian coordinate systems can be zoomed at
                  the moment, zooming polar coordinate systems will
                  be provided soon.
-- Axes:          Automatic detection of best matching scale as of
-                 yet has been implemented for Ordinate axes only.
-                 Abscissa axes will be supported by the next Beta,
-                 for now a simple algorithm is used:
-                 If there are too many labels on the Abscissa, it
-                 will show item numbers from 10, 20, 30, ...
-                 (or 100, 200, 300, ..., or ...), depending on the
-                 total number of labels.
-- Axes:          Support for logarithmic axes has been temporarily
-                 removed.
-- Axes:          Support for decreasing axes has been temporarily
-                 removed.
+- Axes:          Support for logarithmic axes has been implemented
+                 
 - Boxes:         Support for custom background in boxes has been
                  removed.
-- Line charts    Ordinate scaling sometimes is broken in Percent
-                 mode, this is a known bug under investigation.
-- Pie charts     Three-dimensional pie charts are not displayed
-                 correctly.
-- Polar charts   Grid lines (both circular and saggital) are not
-                 provided by this release.
-                 They have been temporarily removed and will be
-                 re-added for the Beta 3 release.
+- Polar charts   Grid lines are provided.
+                 
 - XML:           Saving chart configurations to XML has been
                  temporarily removed.
-- Designer:      A Designer plugin is not yet provided.
+- Designer:      A Designer plugin is provided for both KDChart::Chart 
+                 and KDChart::Widget. It will be improved in future 
+                 version 
