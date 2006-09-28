@@ -80,5 +80,6 @@
 //#define for if (0) {} else for
 //#endif
 
-
+#if defined(Q_CC_MSVC) && !defined(Q_CC_MSVC_NET)
+#define KDAB_FOREACH( v, c ) if ( 0 ) {} else Q_FOREACH( v, c )
 #endif
