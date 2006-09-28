@@ -88,6 +88,8 @@ static QStringList barSubtypeItems()
     return items;
 }
 
+/*not used for now */
+/*
 static QStringList lineSubtypeItems()
 {
     QStringList items;
@@ -101,6 +103,7 @@ static QStringList pieSubtypeItems()
     items << "Normal";
     return items;
 }
+*/
 
 KDChartChartDesignerCustomEditor::ChartType KDChartChartDesignerCustomEditor::typeFromDiagram()
 {
