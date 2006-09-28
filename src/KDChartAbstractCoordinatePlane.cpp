@@ -74,6 +74,7 @@ void AbstractCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
     diagram->setParent( d->parent );
     diagram->setCoordinatePlane( this );
     layoutDiagrams();
+    layoutPlanes(); // there might be new axes, etc
     update();
 }
 
@@ -90,6 +91,7 @@ void AbstractCoordinatePlane::replaceDiagram ( AbstractDiagram* diagram, Abstrac
         delete oldDiagram;
         addDiagram( diagram );
         layoutDiagrams();
+        layoutPlanes(); // there might be new axes, etc
         update();
     }
 }
