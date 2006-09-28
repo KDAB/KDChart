@@ -40,10 +40,9 @@
 
 using namespace KDChart;
 
-HeaderFooter::Private::Private( HeaderFooter * qq )
-    : TextArea::Private( qq ),
-      type( Header ),
-      position( Position::North )
+HeaderFooter::Private::Private() :
+    type( Header ),
+    position( Position::North )
 {
 }
 
@@ -54,7 +53,7 @@ HeaderFooter::Private::~Private()
 #define d d_func()
 
 HeaderFooter::HeaderFooter( Chart* parent ) :
-    TextArea( new Private( this ) )
+    TextArea( new Private() )
 {
     setParent( parent );
     init();

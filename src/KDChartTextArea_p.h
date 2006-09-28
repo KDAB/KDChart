@@ -47,48 +47,35 @@
 #include <KDABLibFakes>
 
 
+namespace KDChart {
+
 /**
  * \internal
  */
-class KDChart::TextArea::Private : public AbstractAreaBase::Private
+class TextArea::Private : public AbstractAreaBase::Private
 {
-    friend class ::KDChart::TextArea;
-    TextArea * const q;
+    friend class TextArea;
 public:
-    explicit Private( TextArea * qq );
-    ~Private();
-
-private:
-    QPolygon rotatedCorners() const;
-    bool realFontWasRecalculated() const;
-    QSize unrotatedSizeHint( const QFont & fnt = QFont() ) const;
-    QSize calcSizeHint( const QFont & fnt ) const;
-
-    QRect rect;
-    QString text;
-    TextAttributes attributes;
-    const QObject* autoReferenceArea;
-    KDChartEnums::MeasureOrientation autoReferenceOrientation;
-    mutable QSize cachedSizeHint;
-    mutable qreal cachedFontSize;
-    mutable QFont cachedFont;
+    explicit Private();
+    virtual ~Private();
 };
 
 
-inline KDChart::TextArea::TextArea( Private * p )
-  :  QObject(), AbstractAreaBase( p )
+inline TextArea::TextArea( Private * p )
+  :  QObject(), AbstractAreaBase( p ), TextLayoutItem()
 {
     init();
 }
-inline KDChart::TextArea::Private * KDChart::TextArea::d_func()
+inline TextArea::Private * TextArea::d_func()
 {
     return static_cast<Private*>( AbstractAreaBase::d_func() );
 }
-inline const KDChart::TextArea::Private * KDChart::TextArea::d_func() const
+inline const TextArea::Private * TextArea::d_func() const
 {
     return static_cast<const Private*>( AbstractAreaBase::d_func() );
 }
 
+}
 
 #endif /* KDCHART_TEXT_AREA_P_H */
 

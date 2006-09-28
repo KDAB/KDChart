@@ -25,7 +25,6 @@
 
 #include "KDChartLegend.h"
 #include "KDChartLegend_p.h"
-#include <KDChartTextArea.h>
 #include <KDChartTextAttributes.h>
 #include <KDChartMarkerAttributes.h>
 #include <QFont>
@@ -638,16 +637,14 @@ void Legend::buildLegend()
     // legend caption
     if( !titleText().isEmpty() && titleTextAttributes().isVisible() ) {
         // PENDING(kalle) Other properties!
-        TextArea * const ta = new TextArea;
-        ta->setText( titleText() );
-        ta->setTextAttributes( titleTextAttributes() );
-        ta->setAutoReferenceArea( referenceArea() );
-        ta->setAutoReferenceOrientation( orientation() == Qt::Vertical
-                                         ? KDChartEnums::MeasureOrientationMinimum
-                                         : KDChartEnums::MeasureOrientationHorizontal );
-
-        TextLayoutItem * const titleItem =  new TextLayoutItem( ta );
-        titleItem->setAlignment( Qt::AlignCenter );
+        KDChart::TextLayoutItem* titleItem =
+            new KDChart::TextLayoutItem( titleText(),
+                titleTextAttributes(),
+                referenceArea(),
+                (orientation() == Qt::Vertical)
+                ? KDChartEnums::MeasureOrientationMinimum
+                : KDChartEnums::MeasureOrientationHorizontal,
+                Qt::AlignCenter );
         titleItem->setParentWidget( this );
 
         d->layoutItems << titleItem;
@@ -687,16 +684,14 @@ void Legend::buildLegend()
                                 dataset*4 );
 
         // PENDING(kalle) Other properties!
-        TextArea * const ta = new TextArea;
-        ta->setText( text( dataset ) );
-        ta->setTextAttributes( textAttributes() );
-        ta->setAutoReferenceArea( referenceArea() );
-        ta->setAutoReferenceOrientation( orientation() == Qt::Vertical
-                                         ? KDChartEnums::MeasureOrientationMinimum
-                                         : KDChartEnums::MeasureOrientationHorizontal );
-
-        TextLayoutItem * const labelItem = new TextLayoutItem( ta );
-        labelItem->setAlignment( Qt::AlignLeft );
+        KDChart::TextLayoutItem* labelItem =
+            new KDChart::TextLayoutItem( text( dataset ),
+                textAttributes(),
+                referenceArea(),
+                (orientation() == Qt::Vertical)
+                ? KDChartEnums::MeasureOrientationMinimum
+                : KDChartEnums::MeasureOrientationHorizontal,
+                Qt::AlignLeft );
         labelItem->setParentWidget( this );
 
         d->layoutItems << labelItem;

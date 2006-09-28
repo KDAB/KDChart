@@ -37,8 +37,7 @@
 #include "KDChartCartesianAxis_p.h"
 #include "KDChartAbstractCartesianDiagram.h"
 #include "KDChartPainterSaver_p.h"
-//#include "KDChartLayoutItems.h"
-#include "KDChartTextArea.h"
+#include "KDChartLayoutItems.h"
 
 #include <KDABLibFakes>
 
@@ -366,36 +365,25 @@ void CartesianAxis::paintCtx( PaintContext* context )
         }
         const int headerLabelsCount = headerLabels.count();
 
-        QObject owner; // just to clean up the labelAreas afterwards
-
-        TextArea * labelArea = 0;
-        if ( drawLabels ) {
-            labelArea = new TextArea;
-            labelArea->setText( QString::number( minValueY ) );
-            labelArea->setTextAttributes( labelTA );
-            labelArea->setAutoReferenceArea( referenceArea );
-            labelArea->setAutoReferenceOrientation( KDChartEnums::MeasureOrientationMinimum );
-            //labelArea->setAlignment( Qt::AlignLeft );
-
-            labelArea->QObject::setParent( &owner );
-        }
-
-
-        TextArea * labelArea2 = 0;
-        if ( drawLabels ) {
-            labelArea2 = new TextArea;
-            labelArea2->setText( QString::number( minValueY ) );
-            labelArea2->setTextAttributes( labelTA );
-            labelArea2->setAutoReferenceArea( referenceArea );
-            labelArea2->setAutoReferenceOrientation( KDChartEnums::MeasureOrientationMinimum );
-            //labelArea2->setAlignment( Qt::AlignLeft );
-
-            labelArea2->QObject::setParent( &owner );
-        }
-
+        TextLayoutItem* labelItem =
+            drawLabels
+            ? new TextLayoutItem( QString::number( minValueY ),
+                      labelTA,
+                      referenceArea,
+                      KDChartEnums::MeasureOrientationMinimum,
+                      Qt::AlignLeft )
+            : 0;
+        TextLayoutItem* labelItem2 =
+            drawLabels
+            ? new TextLayoutItem( QString::number( minValueY ),
+                      labelTA,
+                      referenceArea,
+                      KDChartEnums::MeasureOrientationMinimum,
+                      Qt::AlignLeft )
+            : 0;
         const QFontMetricsF met(
             drawLabels
-            ? labelArea->realFont()
+            ? labelItem->realFont()
             : QFontMetricsF( QApplication::font() ) );
         const qreal halfFontHeight = met.height() * 0.5;
 
@@ -410,11 +398,11 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 {
                     if ( dimX.stepWidth != 1.0 && ! dim.isCalculated )
                     {
-                        labelArea->setText( QString::number( i, 'f', 0 ) );
-                        labelArea2->setText( QString::number( i + dimX.stepWidth, 'f', 0 ) );
+                        labelItem->setText( QString::number( i, 'f', 0 ) );
+                        labelItem2->setText( QString::number( i + dimX.stepWidth, 'f', 0 ) );
                     } else {
-                        labelArea->setText( labels()[ iLabel ] );
-                        labelArea->setText( labels()[ iLabel + 1 >= hardLabelsCount ? 0 : iLabel + 1 ] );
+                        labelItem->setText( labels()[ iLabel ] );
+                        labelItem->setText( labels()[ iLabel + 1 >= hardLabelsCount ? 0 : iLabel + 1 ] );
                     }
                     QPointF firstPos( i, 0.0 );
                     firstPos = plane->translate( firstPos );
@@ -422,7 +410,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     QPointF secondPos( i + dimX.stepWidth, 0.0 );
                     secondPos = plane->translate( secondPos );
 
-                    labelsAreOverlapping = labelArea->intersects( *labelArea2, firstPos, secondPos );
+                    labelsAreOverlapping = labelItem->intersects( *labelItem2, firstPos, secondPos );
 
                     if ( iLabel++ > hardLabelsCount - 1 )
                         iLabel = 0;
@@ -435,7 +423,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 useShortLabels = labelsAreOverlapping;
             }
 
-            labelArea2->setText( QString::null );
+            labelItem2->setText( QString::null );
             QPoint oldItemPos;
             int idxLabel = 0;
             qreal iLabelF = minValueX;
@@ -451,17 +439,17 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 drawnXTicks.append( static_cast<int>( topPoint.x() ) );
                 if ( drawLabels ) {
                     if ( isLogarithmicX )
-                        labelArea->setText( QString::number(i, 'f', 0) );
+                        labelItem->setText( QString::number(i, 'f', 0) );
                     else if( (dimX.stepWidth != 1.0) && ! dimX.isCalculated )
-                        labelArea->setText( QString::number(i, 'f', 0) );
+                        labelItem->setText( QString::number(i, 'f', 0) );
                     else
-                        labelArea->setText( hardLabelsCount
+                        labelItem->setText( hardLabelsCount
                             ? ( useShortLabels    ? shortLabels()[ idxLabel ] : labels()[ idxLabel ] )
                             : ( headerLabelsCount ? headerLabels[  idxLabel ] : QString::number( iLabelF ) ) );
-                    // No need to call labelArea->setParentWidget(), since we are using
+                    // No need to call labelItem->setParentWidget(), since we are using
                     // the layout item temporarily only.
-                    const QSize size( labelArea->sizeHint() );
-                    labelArea->setAreaGeometry(
+                    const QSize size( labelItem->sizeHint() );
+                    labelItem->setGeometry(
                             QRect(
                                 QPoint(
                                     static_cast<int>( topPoint.x() - size.width() / 2 ),
@@ -471,12 +459,12 @@ void CartesianAxis::paintCtx( PaintContext* context )
                                           : ((halfFontHeight + size.height()) * -1.0) ) ) ),
                                 size ) );
 
-                    if ( ! labelArea2->intersects( *labelArea, oldItemPos, labelArea->areaGeometry().topLeft() ) )
+                    if ( ! labelItem2->intersects( *labelItem, oldItemPos, labelItem->geometry().topLeft() ) )
                     {
-                        labelArea->paint( ptr );
+                        labelItem->paint( ptr );
 
-                        labelArea2->setText( labelArea->text() );
-                        oldItemPos = labelArea->areaGeometry().topLeft();
+                        labelItem2->setText( labelItem->text() );
+                        oldItemPos = labelItem->geometry().topLeft();
                     }
 
                     if( hardLabelsCount ){
@@ -509,8 +497,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 labelValue = minValueY;
                 qreal f = minValueY;
                 while ( f <= maxLimit ) {
-                    labelArea->setText( QString::number( labelValue ) );
-                    maxLabelsWidth = qMax( maxLabelsWidth, labelArea->sizeHint().width() );
+                    labelItem->setText( QString::number( labelValue ) );
+                    maxLabelsWidth = qMax( maxLabelsWidth, labelItem->sizeHint().width() );
                     if ( isLogarithmicY )
                         labelValue *= 10.0;
                     else
@@ -535,10 +523,10 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 ptr->drawLine( leftPoint, rightPoint );
                 drawnYTicks.append( static_cast<int>( leftPoint.y() ) );
                 if ( drawLabels ) {
-                    labelArea->setText( QString::number( labelValue ) );
-                    // No need to call labelArea->setParentWidget(), since we are using
+                    labelItem->setText( QString::number( labelValue ) );
+                    // No need to call labelItem->setParentWidget(), since we are using
                     // the layout item temporarily only.
-                    const QSize labelSize( labelArea->sizeHint() );
+                    const QSize labelSize( labelItem->sizeHint() );
                     leftPoint.setX( leftPoint.x()
                          );
                     const int x =
@@ -558,9 +546,9 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     }
                     --y;
 
-                    labelArea->setAreaGeometry( QRect( QPoint(x, y), labelSize ) );
-                    //ptr->drawRect(labelArea->areaGeometry().adjusted(0,0,-1,-1));
-                    labelArea->paint( ptr );
+                    labelItem->setGeometry( QRect( QPoint(x, y), labelSize ) );
+                    //ptr->drawRect(labelItem->geometry().adjusted(0,0,-1,-1));
+                    labelItem->paint( ptr );
 
                     if ( isLogarithmicY )
                         labelValue *= 10.0;
@@ -573,6 +561,10 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     f += steg;
             }
         }
+        if( labelItem )
+            delete labelItem;
+        if( labelItem2 )
+            delete labelItem2;
     }
 
     // this draws the subunit rulers
@@ -648,15 +640,13 @@ void CartesianAxis::paintCtx( PaintContext* context )
     if( ! titleText().isEmpty() ){
         const TextAttributes titleTA( titleTextAttributes() );
         if( titleTA.isVisible() ){
-            TextArea titleArea;
-            titleArea.setText( titleText() );
-            titleArea.setTextAttributes( titleTA );
-            titleArea.setAutoReferenceArea( referenceArea );
-            titleArea.setAutoReferenceOrientation( KDChartEnums::MeasureOrientationMinimum );
-            //titleArea.setAlignment( Qt::AlignCenter );
-
+            TextLayoutItem titleItem( titleText(),
+                          titleTA,
+                          referenceArea,
+                          KDChartEnums::MeasureOrientationMinimum,
+                          Qt::AlignHCenter|Qt::AlignVCenter );
             QPointF point;
-            const QSize size( titleArea.sizeHint() );
+            const QSize size( titleItem.sizeHint() );
             switch( position() )
             {
             case Top:
@@ -676,13 +666,13 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 point.setY( geoRect.top() + geoRect.height() / 2.0);
                 break;
             }
-            const PainterSaver painterSaver( ptr );
+            PainterSaver painterSaver( ptr );
             ptr->translate( point );
             if( isOrdinate() )
                 ptr->rotate( 270.0 );
-            titleArea.setAreaGeometry( QRect( QPoint(-size.width() / 2, 0), size ) );
-            //ptr->drawRect(titleArea.areaGeometry().adjusted(0,0,-1,-1));
-            titleArea.paint( ptr );
+            titleItem.setGeometry( QRect( QPoint(-size.width() / 2, 0), size ) );
+            //ptr->drawRect(titleItem.geometry().adjusted(0,0,-1,-1));
+            titleItem.paint( ptr );
         }
     }
 
@@ -730,27 +720,17 @@ QSize CartesianAxis::maximumSize() const
 
     AbstractCoordinatePlane* plane = d->diagram()->coordinatePlane();
     QObject* refArea = plane->parent();
-
-    TextArea labelArea;
-    labelArea.setText( QString::null );
-    labelArea.setTextAttributes( labelTA );
-    labelArea.setAutoReferenceArea( refArea );
-    labelArea.setAutoReferenceOrientation( KDChartEnums::MeasureOrientationMinimum );
-
-    TextArea titleArea;
-    titleArea.setText( titleText() );
-    titleArea.setTextAttributes( titleTA );
-    titleArea.setAutoReferenceArea( refArea );
-    titleArea.setAutoReferenceOrientation( KDChartEnums::MeasureOrientationMinimum );
-    //titleArea.setAlignment( Qt::AlignHCenter | Qt::AlignVCenter );
-
+    TextLayoutItem labelItem( QString::null, labelTA, refArea,
+        KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft );
+    TextLayoutItem titleItem( titleText(), titleTA, refArea,
+        KDChartEnums::MeasureOrientationMinimum, Qt::AlignHCenter | Qt::AlignVCenter );
     const qreal labelGap =
         drawLabels
-        ? (QFontMetricsF( labelArea.realFont() ).height() / 3.0)
+        ? (QFontMetricsF( labelItem.realFont() ).height() / 3.0)
         : 0.0;
     const qreal titleGap =
         drawTitle
-        ? (QFontMetricsF( titleArea.realFont() ).height() / 3.0)
+        ? (QFontMetricsF( titleItem.realFont() ).height() / 3.0)
         : 0.0;
 
     switch ( position() )
@@ -762,14 +742,14 @@ QSize CartesianAxis::maximumSize() const
                 // if there're no label strings, we take the biggest needed number as height
                 if ( ! labels().count() )
                 {
-                    labelArea.setText( QString::number( plane->gridDimensionsList().first().end, 'f', 0 ) );
-                    h = labelArea.sizeHint().height();
+                    labelItem.setText( QString::number( plane->gridDimensionsList().first().end, 'f', 0 ) );
+                    h = labelItem.sizeHint().height();
                 }else{
                     // find the longest label text:
                     for ( int i = 0; i < labels().count(); ++i )
                     {
-                        labelArea.setText( labels()[ i ] );
-                        qreal lh = labelArea.sizeHint().height();
+                        labelItem.setText( labels()[ i ] );
+                        qreal lh = labelItem.sizeHint().height();
                         h = qMax( h, lh );
                     }
                 }
@@ -779,7 +759,7 @@ QSize CartesianAxis::maximumSize() const
             // space for a possible title:
             if ( drawTitle ) {
                 // we add the title height and leave a little gap between axis labels and axis title
-                h += titleArea.sizeHint().height() + titleGap;
+                h += titleItem.sizeHint().height() + titleGap;
             }
             // space for the ticks
             h += qAbs( tickLength() ) * 3.0;
@@ -793,14 +773,14 @@ QSize CartesianAxis::maximumSize() const
                 // if there're no label strings, we take the biggest needed number as width
                 if ( labels().count() == 0 )
                 {
-                    labelArea.setText( QString::number( plane->gridDimensionsList().last().end, 'f', 0 ) );
-                    w = labelArea.sizeHint().width();
+                    labelItem.setText( QString::number( plane->gridDimensionsList().last().end, 'f', 0 ) );
+                    w = labelItem.sizeHint().width();
                 }else{
                     // find the longest label text:
                     for ( int i = 0; i < labels().count(); ++i )
                     {
-                        labelArea.setText( labels()[ i ] );
-                        qreal lw = labelArea.sizeHint().width();
+                        labelItem.setText( labels()[ i ] );
+                        qreal lw = labelItem.sizeHint().width();
                         w = qMax( w, lw );
                     }
                 }
@@ -810,7 +790,7 @@ QSize CartesianAxis::maximumSize() const
             // space for a possible title:
             if ( drawTitle ) {
                 // we add the title height and leave a little gap between axis labels and axis title
-                w += titleArea.sizeHint().height() + titleGap;
+                w += titleItem.sizeHint().height() + titleGap;
             }
             // space for the ticks
             w += qAbs( tickLength() ) * 3.0;

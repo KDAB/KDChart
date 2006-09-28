@@ -34,10 +34,10 @@
 
 #include "KDChartGlobal.h"
 #include "KDChartAbstractAreaBase.h"
+#include "KDChartLayoutItems.h"
 
 namespace KDChart {
 
-    class TextLayoutItem;
 
 /**
   * @class TextArea KDChartTextArea.h
@@ -46,30 +46,21 @@ namespace KDChart {
   * TextArea is the base class for all text containing non-widget chart elements
   * that have a set of background attributes and frame attributes, such as
   * headers or footers.
+  *
+  * @note This class inherits from AbstractAreaBase, TextLayoutItem, QObject.
+  * The reason for this tripple inheritance is that neither AbstractAreaBase nor
+  * TextLayoutItem are QObject.
   */
-class KDCHART_EXPORT TextArea : public QObject, public AbstractAreaBase
+class KDCHART_EXPORT TextArea : public QObject, public AbstractAreaBase, public TextLayoutItem
 {
     Q_OBJECT
 
     Q_DISABLE_COPY( TextArea )
     KDCHART_DECLARE_PRIVATE_DERIVED( TextArea )
-    friend class ::KDChart::TextLayoutItem;
+
 
 public:
-    TextArea();
-    ~TextArea();
-
-    void setAutoReferenceArea( const QObject* area );
-    const QObject* autoReferenceArea() const;
-
-    void setAutoReferenceOrientation( KDChartEnums::MeasureOrientation o );
-    KDChartEnums::MeasureOrientation autoReferenceOrientation() const;
-
-    void setText( const QString & text );
-    QString text() const;
-
-    void setTextAttributes( const TextAttributes & a );
-    TextAttributes textAttributes() const;
+    virtual ~TextArea() ;
 
 //    virtual TextArea * clone() const = 0;
     /**
@@ -86,25 +77,15 @@ public:
       */
     void paintAll( QPainter& painter );
 
-    virtual qreal realFontSize() const;
-    virtual QFont realFont() const;
-
-    virtual void paint( QPainter* );
-
-    virtual QSize sizeHint() const;
-
-    virtual bool intersects( const TextArea & other, const QPointF& myPos, const QPointF& otherPos ) const;
-    virtual bool intersects( const TextArea & other, const QPoint& myPos, const QPoint& otherPos ) const;
-
-    virtual QRect areaGeometry() const;
-    virtual void setAreaGeometry( const QRect & rect );
 protected:
+    TextArea();
+    virtual QRect areaGeometry() const;
     virtual void positionHasChanged();
-    void sizeHintChanged() const;
 
 Q_SIGNALS:
     void positionChanged( TextArea * );
 
+    //KDCHART_DECLARE_PRIVATE_DERIVED(TextArea)
 }; // End of class TextArea
 
 }

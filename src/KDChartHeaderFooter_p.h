@@ -59,9 +59,9 @@ using KDChart::HeaderFooter;
  */
 class KDChart::HeaderFooter::Private : public KDChart::TextArea::Private
 {
-    friend class ::KDChart::HeaderFooter;
+    friend class KDChart::HeaderFooter;
 public:
-    explicit Private( HeaderFooter * qq );
+    explicit Private();
     ~Private();
 
     void updateTextDoc();
