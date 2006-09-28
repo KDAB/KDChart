@@ -26,6 +26,7 @@
 #include "KDChartLayoutItems.h"
 #include "KDTextDocument.h"
 #include "KDChartAbstractDiagram.h"
+#include "KDChartTextArea.h"
 #include "KDChartPaintContext.h"
 #include "KDChartPainterSaver_p.h"
 #include <QTextCursor>
@@ -44,6 +45,8 @@
 #include <math.h>
 
 #define PI 3.141592653589793
+
+using namespace KDChart;
 
 /**
     Inform the item about its widget: This enables the item,
@@ -82,7 +85,7 @@ void KDChart::AbstractLayoutItem::sizeHintChanged()const
     }
 }
 
-
+#if 0
 KDChart::TextLayoutItem::TextLayoutItem( const QString& text,
                                          const KDChart::TextAttributes& attributes,
                                          const QObject* area,
@@ -158,6 +161,29 @@ KDChart::TextAttributes KDChart::TextLayoutItem::textAttributes() const
     return mAttributes;
 }
 
+#endif
+
+
+TextLayoutItem::TextLayoutItem( TextArea * ta )
+    : AbstractLayoutItem(),
+      area( ta )
+{
+
+}
+
+TextLayoutItem::~TextLayoutItem() {}
+
+
+TextArea * TextLayoutItem::textArea() {
+    return area;
+}
+
+void TextLayoutItem::setTextArea( TextArea * ta ) {
+    const QSize old = sizeHint();
+    area = ta;
+    if ( old != sizeHint() )
+        sizeHintChanged();
+}
 
 Qt::Orientations KDChart::TextLayoutItem::expandingDirections() const
 {
@@ -166,12 +192,12 @@ Qt::Orientations KDChart::TextLayoutItem::expandingDirections() const
 
 QRect KDChart::TextLayoutItem::geometry() const
 {
-    return mRect;
+    return area ? area->areaGeometry() : QRect() ;
 }
 
 bool KDChart::TextLayoutItem::isEmpty() const
 {
-    return false; // never empty, otherwise the layout item would not exist
+    return area;
 }
 
 QSize KDChart::TextLayoutItem::maximumSize() const
@@ -184,12 +210,23 @@ QSize KDChart::TextLayoutItem::minimumSize() const
     return sizeHint(); // PENDING(kalle) Review, quite inflexible
 }
 
-void KDChart::TextLayoutItem::setGeometry( const QRect& r )
+QSize TextLayoutItem::sizeHint() const
 {
-    mRect = r;
+    return area ? area->sizeHint() : QSize() ;
 }
 
+void KDChart::TextLayoutItem::setGeometry( const QRect& r )
+{
+    if ( area )
+        area->setAreaGeometry( r );
+}
 
+void TextLayoutItem::paint( QPainter * p ) {
+    if ( area )
+        area->paint( p );
+}
+
+#if 0
 qreal KDChart::TextLayoutItem::realFontSize() const
 {
     return qMax(
@@ -322,6 +359,7 @@ QSize KDChart::TextLayoutItem::calcSizeHint( QFont fnt ) const
     return rotated;
 }
 
+
 void KDChart::TextLayoutItem::paint( QPainter* painter )
 {
     // make sure, cached font is updated, if needed:
@@ -340,6 +378,8 @@ void KDChart::TextLayoutItem::paint( QPainter* painter )
     painter->rotate( mAttributes.rotation() );
     painter->drawText( rect, Qt::AlignHCenter | Qt::AlignVCenter, mText );
 }
+
+#endif
 
 KDChart::MarkerLayoutItem::MarkerLayoutItem( KDChart::AbstractDiagram* diagram,
                                              const MarkerAttributes& marker,

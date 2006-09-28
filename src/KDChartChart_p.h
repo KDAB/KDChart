@@ -96,7 +96,7 @@ class Chart::Private : public QObject
         QGridLayout* footerLayout;
         QGridLayout* dataAndLegendLayout;
 
-        QVector<KDChart::TextArea*> textLayoutItems;
+        QVector<KDChart::TextLayoutItem*> textLayoutItems;
         QVector<KDChart::AbstractArea*> layoutItems;
         QVector<KDChart::AbstractArea*> planeLayoutItems;
         QVector<KDChart::Legend*> legendLayoutItems;

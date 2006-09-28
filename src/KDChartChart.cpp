@@ -137,9 +137,10 @@ void Chart::Private::layoutHeadersAndFooters()
                 column = 1;
                 hAlign = Qt::AlignHCenter;
             }
-            textLayoutItems << hf;
-            hf->setParentLayout( headerFooterLayout );
-            headerFooterLayout->addItem( hf, row, column, 1, 1, hAlign | vAlign );
+            TextLayoutItem * tli = new TextLayoutItem( hf );
+            tli->setParentLayout( headerFooterLayout );
+            textLayoutItems.push_back( tli );
+            headerFooterLayout->addItem( tli, row, column, 1, 1, hAlign | vAlign );
         }
         else{
             qDebug( "Unknown header/footer position" );
@@ -483,9 +484,11 @@ void Chart::Private::slotLayoutPlanes()
 
 void Chart::Private::createLayouts( QWidget* w )
 {
+#if 0
     Q_FOREACH( KDChart::TextArea* textLayoutItem, textLayoutItems ) {
         textLayoutItem->removeFromParentLayout();
     }
+#endif
     textLayoutItems.clear();
 
     Q_FOREACH( KDChart::AbstractArea* layoutItem, layoutItems ) {
@@ -713,9 +716,10 @@ qFatal("nPaint > 100");
     Q_FOREACH( KDChart::AbstractArea* planeLayoutItem, d->planeLayoutItems ) {
         planeLayoutItem->paintAll( *painter );
     }
-    Q_FOREACH( KDChart::TextArea* textLayoutItem, d->textLayoutItems ) {
-        textLayoutItem->paintAll( *painter );
-    }
+    Q_FOREACH( KDChart::TextLayoutItem* textLayoutItem, d->textLayoutItems )
+        if ( TextArea * const area = textLayoutItem->textArea() )
+            area->paintAll( *painter );
+
 //int i=0;
     Q_FOREACH( Legend *legend, d->legends ) {
 //qDebug("legend # %i",++i);

@@ -42,10 +42,11 @@ class KDTextDocument;
 namespace KDChart {
     class AbstractDiagram;
     class PaintContext;
+    class TextArea;
 
     /** \internal
      */
-    class KDCHART_EXPORT AbstractLayoutItem : public QLayoutItem
+    class AbstractLayoutItem : public QLayoutItem
     {
     public:
         AbstractLayoutItem( Qt::Alignment itemAlignment = 0 ) :
@@ -79,10 +80,15 @@ namespace KDChart {
 
     /** \internal
      */
-    class KDCHART_EXPORT TextLayoutItem : public AbstractLayoutItem
+    class TextLayoutItem : public AbstractLayoutItem
     {
     public:
-        TextLayoutItem();
+        explicit TextLayoutItem( TextArea * a=0 );
+        ~TextLayoutItem();
+
+        void setTextArea( TextArea * a );
+        TextArea * textArea();
+#if 0
         TextLayoutItem( const QString& text,
                         const TextAttributes& attributes,
                         const QObject* autoReferenceArea,
@@ -97,6 +103,7 @@ namespace KDChart {
 
         void setTextAttributes( const TextAttributes& a );
         TextAttributes textAttributes() const;
+#endif
 
         /** pure virtual in QLayoutItem */
         virtual bool isEmpty() const;
@@ -113,15 +120,18 @@ namespace KDChart {
         /** pure virtual in QLayoutItem */
         virtual QRect geometry() const;
 
+#if 0
         virtual bool intersects( const TextLayoutItem& other, const QPointF& myPos, const QPointF& otherPos ) const;
         virtual bool intersects( const TextLayoutItem& other, const QPoint& myPos, const QPoint& otherPos ) const;
 
         virtual qreal realFontSize() const;
         virtual QFont realFont() const;
-
+#endif
         virtual void paint( QPainter* );
 
     private:
+        TextArea * area;
+#if 0
         QPolygon rotatedCorners() const;
         bool realFontWasRecalculated() const;
         QSize unrotatedSizeHint( QFont fnt = QFont() ) const;
@@ -135,11 +145,12 @@ namespace KDChart {
         mutable QSize cachedSizeHint;
         mutable qreal cachedFontSize;
         mutable QFont cachedFont;
+#endif
     };
 
     /** \internal
      */
-    class KDCHART_EXPORT MarkerLayoutItem : public AbstractLayoutItem
+    class MarkerLayoutItem : public AbstractLayoutItem
     {
     public:
         MarkerLayoutItem( AbstractDiagram* diagram, const MarkerAttributes& marker,
@@ -166,7 +177,7 @@ namespace KDChart {
 
     /** \internal
      */
-    class KDCHART_EXPORT HorizontalLineLayoutItem : public AbstractLayoutItem
+    class HorizontalLineLayoutItem : public AbstractLayoutItem
     {
     public:
         HorizontalLineLayoutItem();
@@ -187,7 +198,7 @@ namespace KDChart {
 
     /** \internal
      */
-    class KDCHART_EXPORT VerticalLineLayoutItem : public AbstractLayoutItem
+    class VerticalLineLayoutItem : public AbstractLayoutItem
     {
     public:
         VerticalLineLayoutItem();

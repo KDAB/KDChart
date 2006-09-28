@@ -79,6 +79,8 @@
 /* This is done in Qt4 qglobal.h */
 //#define for if (0) {} else for
 #define KDAB_FOREACH( v, c ) if (0) {} else Q_FOREACH( v, c )
+#else
+#define KDAB_FOREACH( v, c ) Q_FOREACH( v, c )
 #endif
 
 #endif
