@@ -436,6 +436,7 @@ void LineDiagram::paint( PaintContext* ctx )
     switch ( type() )
     {
         case LineDiagram::Normal:
+        {
             for( int iColumn = datasetDimension()-1;
                      iColumn < colCount;  iColumn += datasetDimension() ) {
                 QPolygonF area;
@@ -513,8 +514,10 @@ void LineDiagram::paint( PaintContext* ctx )
                 if ( laa.displayArea() )
                     paintAreas( ctx, index, area, laa.transparency() );
             }
+        }
             break;
         case LineDiagram::Stacked:
+        {
             //FIXME(khz): add LineAttributes::MissingValuesPolicy support for LineDiagram::Stacked
             for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
                 QPolygonF area;
@@ -538,6 +541,7 @@ void LineDiagram::paint( PaintContext* ctx )
                 if ( laa.displayArea() )
                     paintAreas( ctx, index, area, laa.transparency() );
             }
+        }
             break;
         case LineDiagram::Percent:
         {
