@@ -74,12 +74,12 @@ void PolarGrid::drawGrid( PaintContext* context )
 
 
     context->painter()->setPen ( QColor ( Qt::lightGray ) );
-    QPointF origin = plane->translate( QPointF( 0,0 ) );
+    QPointF origin = plane->translate( QPointF( 0,0 ) ) + context->rectangle().topLeft();
 
     const int numberOfSpokes = ( int ) ( 360 / plane->angleUnit() );
     const double r = dgr->dataBoundaries().second.y(); // use the full extents
     for ( int i = 0; i < numberOfSpokes ; ++i ) {
-        context->painter()->drawLine( origin, plane->translate( QPointF( r, i ) ) );
+        context->painter()->drawLine( origin, plane->translate( QPointF( r, i ) ) + context->rectangle().topLeft() );
     }
 
     const int numberOfGridRings = ( int ) dgr->numberOfGridRings();
@@ -100,6 +100,7 @@ void PolarGrid::drawGrid( PaintContext* context )
 
         rect.setTopLeft( topLeftPoint );
         rect.setBottomRight( bottomRightPoint );
+        rect.translate( context->rectangle().topLeft() );
 
         context->painter()->drawEllipse( rect );
     }
