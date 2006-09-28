@@ -320,6 +320,9 @@ qreal fastPow10( int x )
     return res;
 }
 
+#if defined ( Q_WS_WIN)
+#define trunc(x) ((int)(x))
+#endif
 
 DataDimension CartesianGrid::calculateGridXY(
     const DataDimension& rawDataDimension,
