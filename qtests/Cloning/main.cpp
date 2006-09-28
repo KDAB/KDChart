@@ -22,6 +22,9 @@ private slots:
         {
             BarDiagram* diagram = new BarDiagram();
             diagram->setType( BarDiagram::Stacked );
+            CartesianAxis *axis = new CartesianAxis;
+            diagram->addAxis( axis );
+            QCOMPARE( diagram->axes().count(), 1 );
             BarAttributes attrs;
             attrs.setFixedDataValueGap( 3.0 );
             attrs.setFixedBarWidth( 30.0 );
@@ -50,7 +53,7 @@ private slots:
             QCOMPARE( diagram->barAttributes( 0 ), clone->barAttributes( 0 ) );
             QCOMPARE( diagram->threeDBarAttributes(), clone->threeDBarAttributes() );
 
-            // PENDING(kalle) What could we test in the attributes model?
+            QVERIFY( diagram->attributesModel() != clone->attributesModel() );
         }
 
     void testCloningLineDiagram()

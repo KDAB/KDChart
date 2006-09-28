@@ -5,6 +5,7 @@ SUBDIRS +=  ChartElementOwnership \
             KDChartPalette \
             Legends \
             Planes \
+            Cloning \
 
 unix:SUBDIRS += AxisOwnership
 test.target=test
