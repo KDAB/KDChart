@@ -53,6 +53,11 @@ PaintContext::PaintContext()
 {
 }
 
+PaintContext::~PaintContext()
+{
+    delete _d;
+}
+
 const QRectF PaintContext::rectangle() const
 {
     return d->rect;

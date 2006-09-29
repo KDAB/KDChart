@@ -57,7 +57,8 @@ RelativePosition::Private::Private()
 
 }
 
-RelativePosition::Private::~Private() {}
+RelativePosition::Private::~Private()
+{}
 
 
 
@@ -79,7 +80,10 @@ RelativePosition & RelativePosition::operator=( const RelativePosition & other )
     return *this;
 }
 
-RelativePosition::~RelativePosition() {}
+RelativePosition::~RelativePosition()
+{
+    delete _d;
+}
 
 #define d d_func()
 

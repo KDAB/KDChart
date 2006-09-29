@@ -42,6 +42,7 @@ namespace KDChart {
     {
     public:
         PaintContext();
+        ~PaintContext();
 
         const QRectF rectangle () const;
         void setRectangle( const QRectF& rect );
