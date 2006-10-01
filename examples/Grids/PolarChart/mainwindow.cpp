@@ -99,9 +99,7 @@ void MainWindow::on_startPositionSB_valueChanged( double pos )
     startPositionSL->blockSignals( false );
     // note: We use the global getter method here, it will fall back
     //       automatically to return the default settings.
-/*    PieAttributes attrs( m_diagram->pieAttributes() );
-    attrs.setStartPosition( pos );
-    m_diagram->setPieAttributes( attrs );*/
+    static_cast<PolarCoordinatePlane*>(m_chart->coordinatePlane())->setStartPosition( pos );
     update();
 }
 
@@ -113,9 +111,7 @@ void MainWindow::on_startPositionSL_valueChanged( int pos )
     startPositionSB->blockSignals( false );
     // note: We use the global getter method here, it will fall back
     //       automatically to return the default settings.
-/*    PieAttributes attrs( m_diagram->pieAttributes() );
-    attrs.setStartPosition( pos );
-    m_diagram->setPieAttributes( attrs );*/
+    static_cast<PolarCoordinatePlane*>(m_chart->coordinatePlane())->setStartPosition( pos );
     update();
 }
 
@@ -126,15 +122,6 @@ void MainWindow::on_circularGridCB_toggled( bool toggle )
     GridAttributes attrs( m_polarPlane->gridAttributes( true ) );
     attrs.setGridVisible( toggle );
     m_polarPlane->setGridAttributes( true, attrs );
-/*
-    if( toggle ){
-        startPositionSB->hide();
-        startPositionSL->hide();
-    }else{
-        startPositionSB->show();
-        startPositionSL->show();
-    }
-*/
     update();
 }
 void MainWindow::on_sagittalGridCB_toggled( bool toggle )
