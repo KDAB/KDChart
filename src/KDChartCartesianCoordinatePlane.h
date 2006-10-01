@@ -155,7 +155,7 @@ namespace KDChart {
          * \sa AbstractCoordinatePlane::globalGridAttributes
          * \sa hasOwnGridAttributes
          */
-        GridAttributes gridAttributes( Qt::Orientation orientation ) const;
+        const GridAttributes gridAttributes( Qt::Orientation orientation ) const;
 
         /**
          * \return Returns whether the grid attributes have been set for the

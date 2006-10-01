@@ -122,7 +122,7 @@ namespace KDChart {
          * \sa AbstractCoordinatePlane::globalGridAttributes
          * \sa hasOwnGridAttributes
          */
-        GridAttributes gridAttributes( bool circular ) const;
+        const GridAttributes gridAttributes( bool circular ) const;
 
         /**
          * \return Returns whether the grid attributes have been set for the

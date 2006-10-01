@@ -486,7 +486,7 @@ void KDChart::CartesianCoordinatePlane::resetGridAttributes(
     update();
 }
 
-GridAttributes KDChart::CartesianCoordinatePlane::gridAttributes(
+const GridAttributes KDChart::CartesianCoordinatePlane::gridAttributes(
     Qt::Orientation orientation ) const
 {
     if( hasOwnGridAttributes( orientation ) ){

@@ -382,7 +382,7 @@ void KDChart::PolarCoordinatePlane::resetGridAttributes(
     update();
 }
 
-GridAttributes KDChart::PolarCoordinatePlane::gridAttributes(
+const GridAttributes KDChart::PolarCoordinatePlane::gridAttributes(
     bool circular ) const
 {
     if( hasOwnGridAttributes( circular ) ){
