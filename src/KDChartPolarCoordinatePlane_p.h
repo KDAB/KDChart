@@ -72,7 +72,7 @@ struct PolarCoordinatePlane::CoordinateTransformation
         // calculate the polar coordinates
         const double x = diagramPoint.x() * radiusUnit;
 //qDebug() << x << "=" << diagramPoint.x() << "*" << radiusUnit << "  startPosition: " << startPosition;
-        const double y = ( diagramPoint.y() * angleUnit) - 90.0 + startPosition;
+        const double y = ( diagramPoint.y() * angleUnit) - 90.0 - startPosition;
         // convert to cartesian coordinates
         QPointF cartesianPoint = polarToCartesian( x, y );
         cartesianPoint.setX( cartesianPoint.x() * zoom.xFactor );
