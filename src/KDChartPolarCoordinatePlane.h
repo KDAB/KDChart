@@ -52,6 +52,18 @@ namespace KDChart {
         const QPointF translate ( const QPointF& diagramPoint ) const;
         const QPointF translatePolar ( const QPointF& diagramPoint ) const;
 
+        /** \brief Specify the rotation of the coordinate plane.
+          *
+          * In a Pie diagram this indicates the position where the first pie starts,
+          * in a Polar diagram it specifies the Zero position of the circular axis.
+          * \sa startPosition
+          */
+        void setStartPosition( qreal degrees );
+        /** Retrieve the rotation of the coordinate plane.
+          * \sa setStartPosition
+          */
+        qreal startPosition() const;
+
         virtual double zoomFactorX() const;
         virtual double zoomFactorY() const;
 

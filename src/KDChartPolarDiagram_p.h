@@ -56,7 +56,6 @@ public:
 
     Private( const Private& rhs ) :
         AbstractPolarDiagram::Private( rhs ),
-        zeroDegreePosition( rhs.zeroDegreePosition ),
         showDelimitersAtPosition( rhs.showDelimitersAtPosition ),
         showLabelsAtPosition( rhs.showLabelsAtPosition ),
         rotateCircularLabels( rhs.rotateCircularLabels )
@@ -64,7 +63,6 @@ public:
         }
 
 private:
-    int zeroDegreePosition;
     QMap<int,bool> showDelimitersAtPosition;
     QMap<int,bool> showLabelsAtPosition;
     bool rotateCircularLabels;

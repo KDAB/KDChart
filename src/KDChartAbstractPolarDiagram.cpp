@@ -35,7 +35,9 @@ AbstractPolarDiagram::Private::Private()
 {
 }
 
-AbstractPolarDiagram::Private::~Private() {}
+AbstractPolarDiagram::Private::~Private()
+{
+}
 
 void AbstractPolarDiagram::init()
 {

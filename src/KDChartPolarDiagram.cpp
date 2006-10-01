@@ -37,7 +37,6 @@
 using namespace KDChart;
 
 PolarDiagram::Private::Private() :
-    zeroDegreePosition( 0 ),
     rotateCircularLabels( false )
 {
 }
@@ -193,14 +192,15 @@ double PolarDiagram::numberOfGridRings() const
 
 void PolarDiagram::setZeroDegreePosition( int degrees )
 {
-    d->zeroDegreePosition = degrees;
+    qWarning() << "Deprecated PolarDiagram::setZeroDegreePosition() called, setting ignored.";
 }
-
+/*
 int PolarDiagram::zeroDegreePosition() const
 {
-    return d->zeroDegreePosition;
+    qWarning() << "Deprecated PolarDiagram::zeroDegreePosition() called.";
+    return 0;
 }
-
+*/
 void PolarDiagram::setRotateCircularLabels( bool rotateCircularLabels )
 {
     d->rotateCircularLabels = rotateCircularLabels;

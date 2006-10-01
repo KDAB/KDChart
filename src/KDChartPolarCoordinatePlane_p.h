@@ -57,6 +57,7 @@ struct PolarCoordinatePlane::CoordinateTransformation
     double radiusUnit;
     double angleUnit;
 
+    qreal startPosition;
     ZoomParameters zoom;
 
     static QPointF polarToCartesian( double R, double theta )
@@ -71,7 +72,7 @@ struct PolarCoordinatePlane::CoordinateTransformation
         // calculate the polar coordinates
         const double x = diagramPoint.x() * radiusUnit;
 //qDebug() << x << "=" << diagramPoint.x() << "*" << radiusUnit;
-        const double y = ( diagramPoint.y() * angleUnit) - 90;
+        const double y = ( diagramPoint.y() * angleUnit) - 90.0;
         // convert to cartesian coordinates
         QPointF cartesianPoint = polarToCartesian( x, y );
         cartesianPoint.setX( cartesianPoint.x() * zoom.xFactor );

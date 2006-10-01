@@ -62,6 +62,9 @@ public:
         {
             // just for consistency
         }
+
+private:
+    double granularity;
 };
 
 KDCHART_IMPL_DERIVED_DIAGRAM( AbstractPolarDiagram, AbstractDiagram, PolarCoordinatePlane )

@@ -234,9 +234,9 @@ void PieDiagram::paint( PaintContext* ctx )
         //  d->position.moveBy( contentsRect.left(), contentsRect.top() );
     }
 
+    const PolarCoordinatePlane * plane = polarCoordinatePlane();
     const qreal sectorsPerValue = 360.0 / sum;
-    const qreal startAngle = startPosition();
-    qreal currentValue = startAngle;
+    qreal currentValue = plane ? plane->startPosition() : 0.0;
 
     bool atLeastOneValue = false; // guard against completely empty tables
     QVariant vValY;

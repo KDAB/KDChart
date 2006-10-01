@@ -48,12 +48,6 @@ public:
         QWidget* parent = 0, PolarCoordinatePlane* plane = 0 );
     virtual ~AbstractPieDiagram();
 
-    /** Set the starting angle for the first dataset. */
-    void setStartPosition( qreal degrees );
-
-    /** @return the starting angle for the first dataset. */
-    qreal startPosition() const;
-
     /** Set the granularity: the smaller the granularity the more your diagram
      * segments will show facettes instead of rounded segments.
      * \param value the granularity value between 0.05 (one twentieth of a degree)
@@ -63,6 +57,11 @@ public:
 
     /** @return the granularity. */
     qreal granularity() const;
+
+    /** \deprecated Use PolarCoordinatePlane::setStartPosition( qreal degrees ) instead. */
+    void setStartPosition( int degrees );
+    /** \deprecated Use qreal PolarCoordinatePlane::startPosition instead. */
+//    int startPosition() const;
 
     void setPieAttributes( const PieAttributes & a );
     void setPieAttributes( int   column,

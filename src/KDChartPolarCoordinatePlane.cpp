@@ -270,6 +270,7 @@ void PolarCoordinatePlane::layoutDiagrams()
             diagramTransposition.originTranslation = coordinateOrigin;
             diagramTransposition.radiusUnit = radiusUnit;
             diagramTransposition.angleUnit = angleUnit;
+            diagramTransposition.startPosition = 0.0;
             diagramTransposition.zoom = ZoomParameters();
             d->coordinateTransformations.append( diagramTransposition );
         }
@@ -299,6 +300,15 @@ qreal PolarCoordinatePlane::angleUnit() const
 void PolarCoordinatePlane::slotLayoutChanged ( AbstractDiagram* )
 {
     if ( d->initialResizeEventReceived ) layoutDiagrams();
+}
+
+void PolarCoordinatePlane::setStartPosition( qreal degrees )
+{
+    d->coordinateTransformations[0].startPosition = degrees;
+}
+qreal PolarCoordinatePlane::startPosition() const
+{
+    return d->coordinateTransformations[0].startPosition;
 }
 
 double PolarCoordinatePlane::zoomFactorX() const
