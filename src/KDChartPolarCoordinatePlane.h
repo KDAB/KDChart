@@ -139,6 +139,7 @@ namespace KDChart {
         bool hasOwnGridAttributes( bool circular ) const;
 
         qreal angleUnit() const;
+        qreal radiusUnit() const;
 
         /** reimpl */
         virtual void paint( QPainter* );

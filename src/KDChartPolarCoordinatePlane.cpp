@@ -247,6 +247,7 @@ void PolarCoordinatePlane::layoutDiagrams()
     d->contentRect = QRectF ( 1, 1, rect.width() - 3, rect.height() - 3 );
 
     // FIXME distribute space according to options:
+    const qreal oldStartPosition = startPosition();
     d->coordinateTransformations.clear();
     Q_FOREACH( AbstractDiagram* diagram, diagrams() )
         {
@@ -270,7 +271,7 @@ void PolarCoordinatePlane::layoutDiagrams()
             diagramTransposition.originTranslation = coordinateOrigin;
             diagramTransposition.radiusUnit = radiusUnit;
             diagramTransposition.angleUnit = angleUnit;
-            diagramTransposition.startPosition = 0.0;
+            diagramTransposition.startPosition = oldStartPosition;
             diagramTransposition.zoom = ZoomParameters();
             d->coordinateTransformations.append( diagramTransposition );
         }
@@ -292,9 +293,16 @@ const QPointF PolarCoordinatePlane::translatePolar( const QPointF& diagramPoint 
 
 qreal PolarCoordinatePlane::angleUnit() const
 {
-    Q_ASSERT_X ( d->currentTransformation != 0, "PolarCoordinatePlane::translate",
-                 "Only call translate() from within paint()." );
+    Q_ASSERT_X ( d->currentTransformation != 0, "PolarCoordinatePlane::angleUnit",
+                 "Only call angleUnit() from within paint()." );
     return  d->currentTransformation->angleUnit;
+}
+
+qreal PolarCoordinatePlane::radiusUnit() const
+{
+    Q_ASSERT_X ( d->currentTransformation != 0, "PolarCoordinatePlane::radiusUnit",
+                 "Only call radiusUnit() from within paint()." );
+    return  d->currentTransformation->radiusUnit;
 }
 
 void PolarCoordinatePlane::slotLayoutChanged ( AbstractDiagram* )
@@ -306,9 +314,12 @@ void PolarCoordinatePlane::setStartPosition( qreal degrees )
 {
     d->coordinateTransformations[0].startPosition = degrees;
 }
+
 qreal PolarCoordinatePlane::startPosition() const
 {
-    return d->coordinateTransformations[0].startPosition;
+    return d->coordinateTransformations.size()
+        ?  d->coordinateTransformations[0].startPosition
+        :  0.0;
 }
 
 double PolarCoordinatePlane::zoomFactorX() const

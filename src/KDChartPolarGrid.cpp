@@ -75,6 +75,7 @@ void PolarGrid::drawGrid( PaintContext* context )
 
     context->painter()->setPen ( QColor ( Qt::lightGray ) );
     QPointF origin = plane->translate( QPointF( 0,0 ) ) + context->rectangle().topLeft();
+    //qDebug() << "origin" << origin;
 
     const double r = dgr->dataBoundaries().second.y(); // use the full extents
 
@@ -96,16 +97,24 @@ void PolarGrid::drawGrid( PaintContext* context )
             QRectF rect;
             QPointF topLeftPoint;
             QPointF bottomRightPoint;
-    
+/*
             topLeftPoint = plane->translate( QPointF( rad, 0 ) );
             topLeftPoint.setX( plane->translate( QPointF( rad, 90 / plane->angleUnit() ) ).x() );
             bottomRightPoint = plane->translate( QPointF( rad, 180 / plane->angleUnit() ) );
             bottomRightPoint.setX( plane->translate( QPointF( rad, 270 / plane->angleUnit() ) ).x() );
-    
+*/
+
+            const qreal radius = rad  * plane->radiusUnit();
+            topLeftPoint     = origin - QPointF(radius, radius);
+            bottomRightPoint = origin + QPointF(radius, radius);
+
             rect.setTopLeft( topLeftPoint );
             rect.setBottomRight( bottomRightPoint );
+/*
+    qDebug() << "rect 0:" << rect;
             rect.translate( context->rectangle().topLeft() );
-    
+    qDebug() << "rect 1:" << rect;
+*/
             context->painter()->drawEllipse( rect );
         }
     }
