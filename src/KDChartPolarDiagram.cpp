@@ -194,13 +194,13 @@ void PolarDiagram::setZeroDegreePosition( int degrees )
 {
     qWarning() << "Deprecated PolarDiagram::setZeroDegreePosition() called, setting ignored.";
 }
-/*
+
 int PolarDiagram::zeroDegreePosition() const
 {
     qWarning() << "Deprecated PolarDiagram::zeroDegreePosition() called.";
     return 0;
 }
-*/
+
 void PolarDiagram::setRotateCircularLabels( bool rotateCircularLabels )
 {
     d->rotateCircularLabels = rotateCircularLabels;

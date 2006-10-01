@@ -61,7 +61,7 @@ public:
     /** \deprecated Use PolarCoordinatePlane::setStartPosition( qreal degrees ) instead. */
     void setStartPosition( int degrees );
     /** \deprecated Use qreal PolarCoordinatePlane::startPosition instead. */
-//    int startPosition() const;
+    int startPosition() const;
 
     void setPieAttributes( const PieAttributes & a );
     void setPieAttributes( int   column,

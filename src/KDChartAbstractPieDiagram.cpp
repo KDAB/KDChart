@@ -78,13 +78,13 @@ void AbstractPieDiagram::setStartPosition( int degrees )
 {
     qWarning() << "Deprecated AbstractPieDiagram::setStartPosition() called, setting ignored.";
 }
-/*
+
 int AbstractPieDiagram::startPosition() const
 {
     qWarning() << "Deprecated AbstractPieDiagram::startPosition() called.";
     return 0;
 }
-*/
+
 void AbstractPieDiagram::setPieAttributes( const PieAttributes & attrs )
 {
     d->attributesModel->setModelData( qVariantFromValue( attrs ), PieAttributesRole );

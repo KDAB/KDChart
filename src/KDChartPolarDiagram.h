@@ -74,7 +74,7 @@ public:
     /** \deprecated Use PolarCoordinatePlane::setStartPosition( qreal degrees ) instead. */
     void setZeroDegreePosition( int degrees );
     /** \deprecated Use qreal PolarCoordinatePlane::startPosition instead. */
-//    int zeroDegreePosition() const;
+    int zeroDegreePosition() const;
 
     void setRotateCircularLabels( bool rotateCircularLabels );
     bool rotateCircularLabels() const;
