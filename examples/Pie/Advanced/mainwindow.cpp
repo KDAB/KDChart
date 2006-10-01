@@ -65,11 +65,7 @@ void MainWindow::on_startPositionSB_valueChanged( double pos )
     startPositionSL->blockSignals( true );
     startPositionSL->setValue( intValue );
     startPositionSL->blockSignals( false );
-    // note: We use the global getter method here, it will fall back
-    //       automatically to return the default settings.
-    PieAttributes attrs( m_pie->pieAttributes() );
     static_cast<PolarCoordinatePlane*>(m_chart->coordinatePlane())->setStartPosition( pos );
-    m_pie->setPieAttributes( attrs );
     m_chart->update();
 }
 
@@ -79,11 +75,7 @@ void MainWindow::on_startPositionSL_valueChanged( int pos )
     startPositionSB->blockSignals( true );
     startPositionSB->setValue( doubleValue  );
     startPositionSB->blockSignals( false );
-    // note: We use the global getter method here, it will fall back
-    //       automatically to return the default settings.
-    PieAttributes attrs( m_pie->pieAttributes() );
     static_cast<PolarCoordinatePlane*>(m_chart->coordinatePlane())->setStartPosition( pos );
-    m_pie->setPieAttributes( attrs );
     m_chart->update();
 }
 
