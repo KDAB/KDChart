@@ -117,8 +117,6 @@ void MainWindow::on_startPositionSL_valueChanged( int pos )
 
 void MainWindow::on_circularGridCB_toggled( bool toggle )
 {
-    startPositionSB->setEnabled( toggle );
-    startPositionSL->setEnabled( toggle );
     GridAttributes attrs( m_polarPlane->gridAttributes( true ) );
     attrs.setGridVisible( toggle );
     m_polarPlane->setGridAttributes( true, attrs );
