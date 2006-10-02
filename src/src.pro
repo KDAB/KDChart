@@ -1,17 +1,17 @@
 # Subdir relative project main directory: ./src
 # Target is a library:  kdchart
-
-LIBFAKES_PATH = ../kdablibfakes
-
-
+TEMPLATE = lib
 # Use the filename "kdchartd.dll" (or "kdchartd.lib") on Windows
 # to avoid name clashes between debug/non-debug versions of the
 # KD Chart library:
 TARGET = kdchart
 CONFIG(debug, debug|release) {
-    !unix: TARGET = "kdchartd"
+    !unix: TARGET = kdchartd
 }
 
+include( ../variables.pri )
+
+DEFINES += KDCHART_BUILD_KDCHART_LIB
 
 FORMS += KDChartDatasetSelector.ui
 HEADERS += KDChartGlobal.h \
@@ -147,13 +147,12 @@ SOURCES += \
            KDChartThreeDPieAttributes.cpp
 
 CONFIG += warn-on
-include( ../variables.pri )
 
-DEFINES += KDCHART_BUILD_KDCHART_LIB
-TEMPLATE = lib
+# We want users of kdchart to be able to use the lib without interference with Qt-specific keywords, e.g. "signals" that collides with Boost's Signals
+DEFINES += QT_NO_KEYWORDS
+DEFINES += emit=""
 
-DESTDIR = ../lib
-DEFINES += QT_NO_CAST_TO_ASCII
+LIBFAKES_PATH = ../kdablibfakes
 
 DEPENDPATH = ../include \
             $$LIBFAKES_PATH/include \
@@ -188,12 +187,6 @@ KDAB_EVAL{
   HEADERS += ../evaldialog/evaldialog.h
   SOURCES += ../evaldialog/evaldialog.cpp
   DEFINES += KDAB_EVAL
-}
-win32{
-  DLLDESTDIR = ../bin
-  !static{
-    DEFINES += KDCHART_MAKEDLL
-  }
 }
 *g++*{
   QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter

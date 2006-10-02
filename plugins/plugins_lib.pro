@@ -1,23 +1,29 @@
 TEMPLATE = lib
-
-srcdir = ../plugins
-
-DESTDIR = ../lib
-
 TARGET = kdchartpluginlib
+CONFIG(debug, debug|release) {
+  !unix:TARGET = kdchartpluginlibd
+}
 
-THIS_DLL=PLUGINS_LIB_DLL
+include( ../variables.pri )
 
-include( ../kdchart.pri )
+DEFINES += KDCHART_BUILD_PLUGIN_LIB
+CONFIG += designer
 
-CONFIG += designer message-target
+# Remove when all strings have been surrounded by tr() or QLatin1String()
+DEFINES -= QT_NO_CAST_FROM_ASCII
 
 KDCHARTDIR = ../
 load(kdchart)
 
-win32:LIBS += kdchartuitools.lib
-unix:LIBS += -lkdchartuitools
-
+unix {
+  LIBS += -lkdchartuitools
+} else {
+  CONFIG(debug, debug|release) {
+    LIBS += -lkdchartuitoolsd
+  } else {
+    LIBS += -lkdchartuitools
+  }
+}
 INCLUDEPATH += ../uitools \
                 ../src
 
@@ -28,17 +34,17 @@ HEADERS = \
 	kdchartwidgetdesignercustomeditor.h \ 
         kdchartchartdesignercustomeditor.h \
         kdchartextrainfoextension.h \
-        diagramtype.h \
+        #diagramtype.h \
 
 SOURCES = \
 	kdchartdesignerextension.cpp \
 	kdchartwidgetdesignercustomeditor.cpp \ 
         kdchartchartdesignercustomeditor.cpp \
         kdchartextrainfoextension.cpp \
-        diagramtype.cpp \
+        #diagramtype.cpp \
 
 FORMS = \
         kdchartwidgetdesignercustomeditor.ui \
         kdchartchartdesignercustomeditor.ui \
-        diagramtype.ui \
+        #diagramtype.ui \
         

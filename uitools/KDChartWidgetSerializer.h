@@ -25,12 +25,15 @@
 
 #ifndef __KDCHART_WIDGET_SERIALIZER_H__
 #define __KDCHART_WIDGET_SERIALIZER_H__
+
+#include "kdchart_export.h"
+
 class DomWidget;
 
 namespace KDChart
 {
     class Widget;
-    class WidgetSerializer
+    class UITOOLS_EXPORT WidgetSerializer
     {
     public:
         WidgetSerializer();

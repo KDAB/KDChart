@@ -6,18 +6,16 @@
     #win32:!exists( $$KDCHARTDIR/lib/kdchart.lib ):error( "Cannot find kdchart.lib in $KDCHARTDIR/lib" )
     !exists( $$KDCHARTDIR/include/KDChartGlobal ):error( "Cannot find KDChartGlobal in $KDCHARTDIR/include" )
 
+    LIBS += -L$$KDCHARTDIR/lib
     unix {
-      LIBS += -L$$KDCHARTDIR/lib
       !norpath:LIBS += $$QMAKE_RPATH$$KDCHARTDIR/lib
       LIBS += -lkdchart
     }
     win32 {
-      # wrong syntax
-      #!norpath:LIBS += $$QMAKE_RPATH$$KDCHARTDIR\lib
       CONFIG(debug, debug|release) {
-        LIBS += $$KDCHARTDIR/lib/kdchartd.lib
+        LIBS += -lkdchartd
       } else {
-        LIBS += $$KDCHARTDIR/lib/kdchart.lib
+        LIBS += -lkdchart
       }
     }
 

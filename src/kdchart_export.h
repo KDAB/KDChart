@@ -28,10 +28,9 @@
 
 #include <qglobal.h>
 
-#ifdef Q_OS_WIN
-# ifdef KDCHART_NODLL
-#  undef KDCHART_MAKEDLL
-# elif defined( KDCHART_MAKEDLL )
+# ifdef KDCHART_STATICLIB
+#  undef KDCHART_SHAREDLIB
+# elif defined( KDCHART_SHAREDLIB )
 #  ifdef KDCHART_BUILD_KDCHART_LIB
 #   define KDCHART_EXPORT Q_DECL_EXPORT
 #  else
@@ -47,24 +46,16 @@
 #  else
 #   define KDCHART_COMPAT_EXPORT Q_DECL_IMPORT
 #  endif
+#  ifdef KDCHART_BUILD_PLUGIN_LIB
+#   define KDCHART_PLUGIN_EXPORT Q_DECL_EXPORT
+#  else
+#   define KDCHART_PLUGIN_EXPORT Q_DECL_IMPORT
+#  endif
 # else
 #  define KDCHART_EXPORT Q_DECL_IMPORT
 #  define UITOOLS_EXPORT Q_DECL_IMPORT
 #  define KDCHART_COMPAT_EXPORT Q_DECL_IMPORT
+#  define KDCHART_PLUGIN_EXPORT Q_DECL_IMPORT
 # endif
-#else
-# undef KDCHART_MAKEDLL
-#endif
-
-#ifndef KDCHART_EXPORT
-# ifdef QT_SHARED
-#  define KDCHART_EXPORT Q_DECL_EXPORT
-#  define UITOOLS_EXPORT Q_DECL_EXPORT
-#  define KDCHART_COMPAT_EXPORT Q_DECL_EXPORT
-# else
-#  define KDCHART_EXPORT
-#  define KDCHART_COMPAT_EXPORT Q_DECL_EXPORT
-# endif
-#endif
 
 #endif // KDCHART_EXPORT_H

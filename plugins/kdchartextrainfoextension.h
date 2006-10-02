@@ -1,6 +1,8 @@
 #ifndef KDCHARTEXTRAINFOEXTENSION_H
 #define KDCHARTEXTRAINFOEXTENSION_H
 
+#include "kdchart_export.h"
+
 #include <QtDesigner/QDesignerExtraInfoExtension>
 #include <QtDesigner/QExtensionFactory>
 
@@ -15,7 +17,7 @@ namespace KDChart {
 class DomUi;
 #define DomUI DomUi
 
-class KDChartExtraInfoExtension : public QObject, public QDesignerExtraInfoExtension
+class KDCHART_PLUGIN_EXPORT KDChartExtraInfoExtension : public QObject, public QDesignerExtraInfoExtension
 {
   Q_OBJECT
   Q_INTERFACES(QDesignerExtraInfoExtension)
@@ -36,7 +38,7 @@ private:
   QPointer<QDesignerFormEditorInterface> mCore;
 };
 
-class KDChartWidgetExtraInfoExtension : public QObject, public QDesignerExtraInfoExtension
+class KDCHART_PLUGIN_EXPORT KDChartWidgetExtraInfoExtension : public QObject, public QDesignerExtraInfoExtension
 {
     Q_OBJECT
     Q_INTERFACES(QDesignerExtraInfoExtension)
@@ -58,7 +60,7 @@ class KDChartWidgetExtraInfoExtension : public QObject, public QDesignerExtraInf
         QPointer<QDesignerFormEditorInterface> mCore;
 };
 
-class KDChartExtraInfoExtensionFactory: public QExtensionFactory
+class KDCHART_PLUGIN_EXPORT KDChartExtraInfoExtensionFactory: public QExtensionFactory
 {
   Q_OBJECT
   Q_DISABLE_COPY( KDChartExtraInfoExtensionFactory )

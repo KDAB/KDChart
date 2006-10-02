@@ -1,33 +1,26 @@
+TEMPLATE = lib
+TARGET = kdchartuitools
+CONFIG(debug, debug|release) {
+  !unix:TARGET = kdchartuitoolsd
+}
 
 include( ../variables.pri )
 
-UI_DIR = .
-TEMPLATE = lib
-TARGET = kdchartuitools
-DESTDIR = ../lib
-QT += xml 
-CONFIG+=designer
-DLLDESTDIR = ../bin
-KDCHART_PATH = ..
-INCLUDEPATH+= ../include \
-$(QTDIR)/src/3rdparty/zlib \
-$$KDCHART_PATH/include \
-$$KDCHART_PATH/src \
-.
-DEPENDPATH += ../include \
-$(QTDIR)/src/3rdparty/zlib \
-$$KDCHART_PATH/include \
-.
-LIBS += -L$$KDCHART_PATH/lib -lkdchart
-
-win32{
-  DLLDESTDIR = ../bin
-  !static{
-    DEFINES += KDCHART_MAKEDLL
-  }
-}
+KDCHARTDIR = ..
+load(kdchart)
 
 DEFINES += UITOOLS_BUILD_UITOOLS_LIB
+
+QT += xml 
+CONFIG += designer
+
+INCLUDEPATH+= $(QTDIR)/src/3rdparty/zlib \
+              $$KDCHARTDIR/src \
+              .
+DEPENDPATH += $(QTDIR)/src/3rdparty/zlib \
+              .
+
+UI_DIR = .
 
 KDAB_EVAL{
   HEADERS += ../evaldialog/evaldialog.h

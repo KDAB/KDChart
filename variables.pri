@@ -9,7 +9,7 @@ exists( g++.pri ):include( g++.pri )
 
 DEFINES += USE_EXCEPTIONS KDCHART_VERSION=200 KDCHART_MASTER_CVS QT_FATAL_ASSERT
 
-DEFINES += emit="" QT_NO_STL QT_NO_KEYWORDS QT_NO_CAST_TO_ASCII QBA_NO_CAST_TO_VOID QBA_NO_CAST_TO_ASCII QT_NO_CAST_FROM_ASCII
+DEFINES += QT_NO_STL QT_NO_CAST_TO_ASCII QBA_NO_CAST_TO_VOID QBA_NO_CAST_TO_ASCII QT_NO_CAST_FROM_ASCII
 
 QT += xml
 
@@ -23,8 +23,21 @@ linux-g++:QMAKE_CXXFLAGS += -pedantic -Wno-long-long
 
 CONFIG += depend_includepath
 
+contains(TEMPLATE, lib) {
+  DESTDIR = $$PWD/lib
+}
+contains(TEMPLATE, app) {
+  DESTDIR = $$PWD/bin
+}
+
 staticlib {
-	DEFINES += KDCHART_NODLL
+  DEFINES += KDCHART_STATICLIB
+} else {
+  DEFINES += KDCHART_SHAREDLIB
+  win32 {
+    DLLDESTDIR = $$PWD/bin
+    CONFIG += dll
+  }
 }
 
 # If CONFIG += qsa is set, KDChart will be compiled for QSA

@@ -1,6 +1,7 @@
 #ifndef KDCHARTDESIGNEREXTENSION_H
 #define KDCHARTDESIGNEREXTENSION_H
 
+#include "kdchart_export.h"
 #include <QObject>
 #include <QList>
 
@@ -16,7 +17,7 @@ namespace KDChart {
 class QAction;
 
 // This is for extending the popupmenu on charts, to add "Edit chart properties..."
-class KDChartBaseTaskMenu: public QObject, public QDesignerTaskMenuExtension
+class KDCHART_PLUGIN_EXPORT KDChartBaseTaskMenu: public QObject, public QDesignerTaskMenuExtension
 {
   Q_OBJECT
   Q_INTERFACES(QDesignerTaskMenuExtension)
@@ -41,7 +42,7 @@ private:
 
 };
 
-class KDChartWidgetTaskMenu : public KDChartBaseTaskMenu
+class KDCHART_PLUGIN_EXPORT KDChartWidgetTaskMenu : public KDChartBaseTaskMenu
 {
     public:
         KDChartWidgetTaskMenu( KDChart::Widget * chartWidget, QObject * parentW );
@@ -51,7 +52,7 @@ class KDChartWidgetTaskMenu : public KDChartBaseTaskMenu
         KDChart::Widget * mChart;
 };
 
-class KDChartChartTaskMenu : public KDChartBaseTaskMenu
+class KDCHART_PLUGIN_EXPORT KDChartChartTaskMenu : public KDChartBaseTaskMenu
 {
     public:
         KDChartChartTaskMenu( KDChart::Chart * chart, QObject * parentW );
@@ -61,7 +62,7 @@ class KDChartChartTaskMenu : public KDChartBaseTaskMenu
         KDChart::Chart * mChart;
 };
 
-class KDChartWidgetTaskMenuFactory: public QExtensionFactory
+class KDCHART_PLUGIN_EXPORT KDChartWidgetTaskMenuFactory: public QExtensionFactory
 {
     Q_OBJECT
     Q_DISABLE_COPY( KDChartWidgetTaskMenuFactory )
@@ -72,7 +73,7 @@ protected:
     virtual QObject * createExtension( QObject *object, const QString &iid, QObject *parentW ) const;
 };
 
-class KDChartChartTaskMenuFactory: public QExtensionFactory
+class KDCHART_PLUGIN_EXPORT KDChartChartTaskMenuFactory: public QExtensionFactory
 {
     Q_OBJECT
     Q_DISABLE_COPY( KDChartChartTaskMenuFactory )

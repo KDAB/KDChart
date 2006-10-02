@@ -1,10 +1,11 @@
 #ifndef __KDCHARTCHART_DESIGNER_CUSTOM_EDITOR_H__
 #define __KDCHARTCHART_DESIGNER_CUSTOM_EDITOR_H__
 
+#include "kdchart_export.h"
+
 #include <QDialog>
 
 #include "ui_kdchartchartdesignercustomeditor.h"
-#include "diagramtype.h"
 
 class QStandardItemModel;
 
@@ -18,7 +19,7 @@ namespace KDChart {
     class AbstractCartesianDiagram; 
 }
 
-class KDChartChartDesignerCustomEditor
+class KDCHART_PLUGIN_EXPORT KDChartChartDesignerCustomEditor
     : public QDialog, private Ui::KDChartChartProperties
 {
     Q_OBJECT
