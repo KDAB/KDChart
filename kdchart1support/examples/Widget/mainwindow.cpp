@@ -49,16 +49,17 @@ MainWindow::MainWindow( QWidget* parent )
 
 void MainWindow::changeType()
 {
-    QString text = typeSelector->currentText();
-    if ( text == "Widget::Bar" )
+    QString sType = typeSelector->currentText();
+qDebug(sType.toLatin1());
+    if ( sType == "KDChart1Params::Bar" )
         widget->params()->setChartType( KDChart1Params::Bar );
-    else if ( text == "Widget::Line" )
+    else if ( sType == "KDChart1Params::Line" )
         widget->params()->setChartType( KDChart1Params::Line );
-    else if ( text == "Widget::Pie" )
+    else if ( sType == "KDChart1Params::Pie" )
         widget->params()->setChartType( KDChart1Params::Pie );
-    else if ( text == "Widget::Polar" )
+    else if ( sType == "KDChart1Params::Polar" )
         widget->params()->setChartType( KDChart1Params::Polar );
-    else if ( text == "Widget::Ring" )
+    else if ( sType == "KDChart1Params::Ring" )
         widget->params()->setChartType( KDChart1Params::Ring );
     else
         widget->params()->setChartType( KDChart1Params::NoType );

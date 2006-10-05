@@ -374,7 +374,7 @@ public slots:
                    int            innerGapX,
                    int            innerGapY,
                    bool           addFrameWidthToLayout = true,
-                   bool           addFrameHeightToLayout = true ){};
+                   bool           addFrameHeightToLayout = true );
 
 
     // Note if you change the parameters here, then you must also change them in wrappers/KDChart1ParametersWrapper.h
@@ -408,7 +408,7 @@ public slots:
             setFrame( area,
                       frame,
                       outerGapX, outerGapY, innerGapX, innerGapY,
-                      addFrameWidthToLayout, addFrameHeightToLayout = true
+                      addFrameWidthToLayout, addFrameHeightToLayout );
         }
 
 
@@ -425,7 +425,7 @@ public slots:
                              int                     midLineWidth   = 0,
                              QPen                    pen            = QPen(),
                              int                     shadowWidth    = 0,
-                             KDFrame1::CornerName     sunPos         = KDFrame1::CornerTopLeft ){};
+                             KDFrame1::CornerName     sunPos         = KDFrame1::CornerTopLeft );
 
 
     // Note if you change the parameters here, then you must also change them in wrappers/KDChart1ParametersWrapper.h
@@ -944,11 +944,11 @@ public slots:
     void setBarWidth( int width = KDCHART1_AUTO_SIZE )
         {
           if ( width == KDCHART1_AUTO_SIZE ) {
-	    _barWidth = width;
+            _barWidth = width;
             _userWidth = 0;
-	  }
+          }
           else
-	  _userWidth = width;
+          _userWidth = width;
 
           emit changed();
         }
@@ -961,7 +961,7 @@ public slots:
 
   int userWidth() const
         {
-	  return _userWidth;
+          return _userWidth;
         }
 
     int numBarsDisplayed() const
@@ -2028,11 +2028,7 @@ public slots:
                        uint& chart ) const;
 
 public:
-#if COMPAT_QT_VERSION >= 0x030000
     typedef QVector<uint> AxesArray;
-#else
-    typedef QArray<uint> AxesArray;
-#endif
 
 public slots:
     bool chartAxes( uint chart, uint& cnt, AxesArray& axes ) const;
@@ -2415,7 +2411,7 @@ protected:
 
 private:
     void updateAllK2Settings();
-    void updateK2Setting( int type );
+    void updateK2Setting( int type, bool doUpdate = true );
     KDChart::Widget * _K2Widget;
 
     QString dataRegionFrameAreaName( uint dataRow,

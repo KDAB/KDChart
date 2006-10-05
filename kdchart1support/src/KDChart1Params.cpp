@@ -26,6 +26,12 @@
  ** licensing are not clear to you.
  **
  **********************************************************************/
+
+// include any KD Chart 2 classes first:
+#include <KDChartWidget>
+#include <KDChartAbstractDiagram>
+
+// now include the KD Chart 1 classes:
 #include <KDChart1Params.h>
 #include <KDChart1AxisParams.h>
 #include <KDChart1Enums.h>
@@ -33,8 +39,6 @@
 #include <KDChart1CustomBox.h>
 #include <KDChart1TextPiece.h>
 //#include <KDXMLTools1.h>
-
-#include <KDChartWidget>
 
 class KDChart1Data;
 
@@ -2528,8 +2532,8 @@ void KDChart1Params::setGlobalLeadingBottom( int leading )
                 int            outerGapY,
                 int            innerGapX,
                 int            innerGapY,
-                bool           addFrameWidthToLayout = true,
-                bool           addFrameHeightToLayout = true )
+                bool           addFrameWidthToLayout,
+                bool           addFrameHeightToLayout )
 {
     _areaDict.insert( QString( "%1/-----/-----/-----" ).arg( area, 5 ),
                       new KDChart1FrameSettings(0,0,0,
@@ -2633,16 +2637,16 @@ void KDChart1Params::setGlobalLeadingBottom( int leading )
 void KDChart1Params::setDataRegionFrame( uint dataRow,
                         uint dataCol,
                         uint, // important: we ignore the data3rd parameter for now!
-                        int  innerGapX = 0,
-                        int  innerGapY = 0,
-                        bool addFrameWidthToLayout      = true,
-                        bool addFrameHeightToLayout     = true,
-                        KDFrame1::SimpleFrame    simpleFrame    = KDFrame1::FrameFlat,
-                        int                     lineWidth      = 1,
-                        int                     midLineWidth   = 0,
-                        QPen                    pen            = QPen(),
-                        int                     shadowWidth    = 0,
-                        KDFrame1::CornerName     sunPos         = KDFrame1::CornerTopLeft )
+                        int  innerGapX,
+                        int  innerGapY,
+                        bool addFrameWidthToLayout,
+                        bool addFrameHeightToLayout,
+                        KDFrame1::SimpleFrame simpleFrame,
+                        int                   lineWidth,
+                        int                   midLineWidth,
+                        QPen                  pen,
+                        int                   shadowWidth,
+                        KDFrame1::CornerName  sunPos )
 {
 
     KDFrame1 frame( QRect(0,0,0,0),
@@ -2966,6 +2970,7 @@ uint KDChart1Params::maxCustomBoxIdx() const
   */
 void KDChart1Params::setChartType( ChartType chartType )
 {
+qDebug("setChartType( %i )", chartType);
     _chartType = chartType;
 
     updateK2Setting( K2ChartType );
@@ -9690,10 +9695,12 @@ void KDChart1Params::updateAllK2Settings()
 {
     if( ! _K2Widget ) return;
     for( int i=0; i<=K2LastValue; ++i )
-        updateK2Setting( i );
+        updateK2Setting( i, false );
+    KDChart::Widget & k2( *_K2Widget );
+    k2.update();
 }
 
-void KDChart1Params::updateK2Setting( int type )
+void KDChart1Params::updateK2Setting( int type, bool doUpdate )
 {
     if( ! _K2Widget ) return;
 
@@ -9702,40 +9709,46 @@ void KDChart1Params::updateK2Setting( int type )
         case K2ChartType:
             switch( chartType() ){
                 case NoType:
+                    qDebug("applying KDChart1Params::setChartType( NoType )");
                     k2.setType( KDChart::Widget::NoType );
                     break;
                 case Bar:
+                    qDebug("applying KDChart1Params::setChartType( Bar )");
                     k2.setType( KDChart::Widget::Bar );
                     break;
                 case Line:
+                    qDebug("applying KDChart1Params::setChartType( Line )");
                     k2.setType( KDChart::Widget::Line );
-                break;
+                    break;
                 case Area:
                     qDebug("Sorry: KDChart1Params::setChartType( Area ) is not implemented yet.");
                     //k2.setType( KDChart::Widget::Area );
-                break;
+                    break;
                 case Pie:
+                    qDebug("applying KDChart1Params::setChartType( Pie )");
                     k2.setType( KDChart::Widget::Pie );
-                break;
+                    break;
                 case HiLo:
                     qDebug("Sorry: KDChart1Params::setChartType( HiLo ) is not implemented yet.");
                     //k2.setType( KDChart::Widget::HiLo );
-                break;
+                    break;
                 case Ring:
+                    qDebug("applying KDChart1Params::setChartType( Ring )");
                     k2.setType( KDChart::Widget::Ring );
-                break;
+                    break;
                 case Polar:
+                    qDebug("applying KDChart1Params::setChartType( Polar )");
                     k2.setType( KDChart::Widget::Polar );
-                break;
+                    break;
                 case BoxWhisker:
                     qDebug("Sorry: KDChart1Params::setChartType( BoxWhisker ) is not implemented yet.");
                     //k2.setType( KDChart::Widget::BoxWhisker );
-                break;
+                    break;
                 default:
                     qDebug("Sorry: KDChart1Params::setChartType() was called for not supported type.");
             }
             break;
-        case K2AdditionalType:
+        case K2AdditionalChartType:
             qDebug("Sorry: KDChart1Params::setAdditionalChartType() not implemented yet.");
             // Note: Setting the additional chart type can NOT be done via KDChart::Widget,
             //       but only by adding a second diagram to KDChart::Chart directly.
@@ -9768,19 +9781,21 @@ void KDChart1Params::updateK2Setting( int type )
         case K2DataDefaultColor:
             //FIXME(khz): Use KDChartAbstractDiagram::usePalette (KDChart::Palette&),
             //            once that method is implemented.
-            K2.diagram->useDefaultColors();
+            k2.diagram()->useDefaultColors();
             break;
         case K2DataRainbowColor:
             //FIXME(khz): Use KDChartAbstractDiagram::usePalette (KDChart::Palette&),
             //            once that method is implemented.
-            K2.diagram->useDefaultColors();
+            k2.diagram()->useDefaultColors();
             break;
         case K2DataSubduedColor:
             //FIXME(khz): Use KDChartAbstractDiagram::usePalette (KDChart::Palette&),
             //            once that method is implemented.
-            K2.diagram->useDefaultColors();
+            k2.diagram()->useDefaultColors();
             break;
         default:
             qDebug("Sorry: updateK2Setting( %i ) not implemented yet.", type);
     }
+    if( doUpdate )
+        k2.update();
 }
