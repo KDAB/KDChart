@@ -50,7 +50,7 @@ MainWindow::MainWindow( QWidget* parent )
 void MainWindow::changeType()
 {
     QString sType = typeSelector->currentText();
-qDebug(sType.toLatin1());
+    //qDebug(sType.toLatin1());
     if ( sType == "KDChart1Params::Bar" )
         widget->params()->setChartType( KDChart1Params::Bar );
     else if ( sType == "KDChart1Params::Line" )

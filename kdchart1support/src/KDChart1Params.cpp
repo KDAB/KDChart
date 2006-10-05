@@ -2970,7 +2970,7 @@ uint KDChart1Params::maxCustomBoxIdx() const
   */
 void KDChart1Params::setChartType( ChartType chartType )
 {
-qDebug("setChartType( %i )", chartType);
+    //qDebug("setChartType( %i )", chartType);
     _chartType = chartType;
 
     updateK2Setting( K2ChartType );
