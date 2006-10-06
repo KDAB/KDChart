@@ -74,8 +74,12 @@ private slots:
 
     void testCloningPieDiagram()
         {
+            // commenting those tests - Deprecated method
+            // will make new test for that in PolarCoordinatePlane
+            // do we want the warning ?
+            // if yes - we just need to un-comment
             PieDiagram* diagram = new PieDiagram();
-            diagram->setStartPosition( 15.0 );
+            //diagram->coordinatePlane()->setStartPosition( 15.0 );
             diagram->setGranularity( 1.5 );
             PieAttributes attrs;
             attrs.setExplode( true );
@@ -83,7 +87,7 @@ private slots:
             ThreeDPieAttributes threeDAttrs;
             threeDAttrs.setUseShadowColors( false );
             PieDiagram* clone = diagram->clone();
-            QCOMPARE( diagram->startPosition(), clone->startPosition() );
+            //QCOMPARE( diagram->startPosition(), clone->startPosition() );
             QCOMPARE( diagram->granularity(), clone->granularity() );
             QCOMPARE( diagram->pieAttributes(), clone->pieAttributes() );
             QCOMPARE( diagram->threeDPieAttributes(), clone->threeDPieAttributes() );
@@ -93,15 +97,19 @@ private slots:
 
     void testCloningPolarDiagram()
         {
+            // commenting those tests - Deprecated method
+            // will make new test for that in PolarCoordinatePlane
+            // do we want the warning ?
+            // if yes - we just need to un-comment
             PolarDiagram* diagram = new PolarDiagram();
-            diagram->setZeroDegreePosition( 5 );
+            //diagram->setZeroDegreePosition( 5 );
             diagram->setRotateCircularLabels( true );
             diagram->setShowDelimitersAtPosition( Position::North, false );
             diagram->setShowDelimitersAtPosition( Position::South, true );
             diagram->setShowLabelsAtPosition( Position::North, true );
             diagram->setShowLabelsAtPosition( Position::South, false );
             PolarDiagram* clone = diagram->clone();
-            QCOMPARE( diagram->zeroDegreePosition(), clone->zeroDegreePosition() );
+            //QCOMPARE( diagram->zeroDegreePosition(), clone->zeroDegreePosition() );
             QCOMPARE( diagram->rotateCircularLabels(), clone->rotateCircularLabels() );
             QCOMPARE( diagram->showDelimitersAtPosition( Position::North ),
                       clone->showDelimitersAtPosition( Position::North ) );
