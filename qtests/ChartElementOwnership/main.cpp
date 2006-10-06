@@ -5,6 +5,7 @@
 #include <KDChartBarDiagram>
 #include <KDChartLineDiagram>
 #include <KDChartCartesianCoordinatePlane>
+#include <KDChartPolarCoordinatePlane>
 #include <KDChartLegend>
 #include <KDChartHeaderFooter>
 
@@ -21,18 +22,47 @@ private slots:
 
   void testPlaneOwnership()
   {
+      // check number plane
       AbstractCoordinatePlane*orig = m_chart->coordinatePlane();
       QCOMPARE( m_chart->coordinatePlanes().size(), 1 );
+
+      // add and take
       CartesianCoordinatePlane *p = new CartesianCoordinatePlane();
       m_chart->addCoordinatePlane( p );
       QCOMPARE( m_chart->coordinatePlanes().size(), 2 );
+      m_chart->takeCoordinatePlane( orig );
+      QCOMPARE( m_chart->coordinatePlanes().size(), 1 );
+      QCOMPARE( m_chart->coordinatePlane(), p );
+      m_chart->addCoordinatePlane( orig );
+      QCOMPARE( m_chart->coordinatePlanes().size(), 2 );
+
+      // replace abstract by polar
+      PolarCoordinatePlane *po = new PolarCoordinatePlane();
+      m_chart->replaceCoordinatePlane( po, orig );
+      QCOMPARE( m_chart->coordinatePlanes().size(), 2 );
       m_chart->takeCoordinatePlane( p );
       QCOMPARE( m_chart->coordinatePlanes().size(), 1 );
+      QCOMPARE( m_chart->coordinatePlane(), po );
       m_chart->addCoordinatePlane( p );
       QCOMPARE( m_chart->coordinatePlanes().size(), 2 );
-      delete p;
+
+      // delete
+      delete po;
       QCOMPARE( m_chart->coordinatePlanes().size(), 1 );
-      QCOMPARE( m_chart->coordinatePlane(), orig );
+      QCOMPARE( m_chart->coordinatePlane(), p );
+
+      // replace cartesian by polar
+      PolarCoordinatePlane*polast = new PolarCoordinatePlane();
+      m_chart->replaceCoordinatePlane( polast );
+      QCOMPARE( m_chart->coordinatePlanes().size(), 1 );
+      QCOMPARE( m_chart->coordinatePlane(), polast );
+
+      // replace polar by cartesian
+      CartesianCoordinatePlane* plast = new CartesianCoordinatePlane();
+      m_chart->replaceCoordinatePlane( plast,  polast );
+      QCOMPARE( m_chart->coordinatePlanes().size(), 1 );
+      QCOMPARE( m_chart->coordinatePlane(), plast );
+
   }
 
   void testLegendOwnership()
