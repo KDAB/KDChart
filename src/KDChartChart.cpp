@@ -692,6 +692,11 @@ qFatal("nPaint > 100");
 
     d->inPaint = true;
 
+    // trigger layouting the chart:
+    const bool needShowAndHide = ! isVisible() && ! parent();
+    if( needShowAndHide )
+        showMinimized();
+
     const QRect oldGeometry( geometry() );
     //painter->drawRect( oldGeometry );
     QRect target( target_ );
@@ -738,6 +743,9 @@ qFatal("nPaint > 100");
         if( ! translation.isNull() )
             painter->translate( -translation.x(), -translation.y() );
     }
+
+    if( needShowAndHide )
+        hide();
 
     d->inPaint = false;
     //qDebug() << "KDChart::Chart::paint() done.\n";
