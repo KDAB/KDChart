@@ -8,6 +8,7 @@ SUBDIRS +=  ChartElementOwnership \
             Cloning \
             PolarPlanes \
             QLayout \
+            WidgetElementOwnership \
 
 unix:SUBDIRS += AxisOwnership
 test.target=test
