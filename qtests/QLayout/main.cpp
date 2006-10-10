@@ -4,6 +4,8 @@
 #include <QBoxLayout>
 #include <QStyle>
 #include <QtTest/QtTest>
+#include <QGridLayout>
+#include <QLineEdit>
 
 #define KDAB_REIMP
 
@@ -13,6 +15,13 @@ class MyLegendWidget : public QWidget
 
 public:
     explicit MyLegendWidget( QWidget* parent ) : QWidget( parent ) {
+    }
+
+    void populate() {
+        setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed ); // like Legend
+        setFixedSize( 50, 50 ); // hmm Legend has a layout instead.
+        //QGridLayout* layout = new QGridLayout( this );
+        // ...
     }
 
 protected:
@@ -37,7 +46,7 @@ class TestQLayout : public QObject
 private slots:
 
     // This is very much like KDChart::Chart does with legends
-    void testLayoutHiddenWidget() {
+    void testBoxLayoutHiddenWidget() {
         QBoxLayout* vLayout = new QVBoxLayout;
         MyLegendWidget* widget1 = new MyLegendWidget( 0 );
         widget1->resize( 10, 10 );
@@ -61,7 +70,7 @@ private slots:
         delete vLayout;
     }
 
-    void testRelayoutChildWidget() {
+    void testBoxLayoutChildWidget() {
         QWidget* topLevelWidget = new QWidget( 0 );
         // This time the layout is associated with a widget, like d->layout in KDChart::Chart.
         QBoxLayout* vLayout = new QVBoxLayout( topLevelWidget );
@@ -93,20 +102,26 @@ private slots:
         delete topLevelWidget;
     }
 
-    void testSublayout() {
+    void testSubGridLayout() {
         QWidget* topLevelWidget = new QWidget( 0 );
         QBoxLayout* vLayout = new QVBoxLayout( topLevelWidget );
-        QBoxLayout* hLayout = new QHBoxLayout();
+        QGridLayout* gridLayout = new QGridLayout();
+
+        QLineEdit* lineEdit = new QLineEdit( topLevelWidget );
+        MyWidgetItem* lineEditWidgetItem = new MyWidgetItem( lineEdit );
+        gridLayout->addItem( lineEditWidgetItem, 0, 0 );
+
         MyLegendWidget* widget1 = new MyLegendWidget( topLevelWidget );
+        widget1->makeSizeFixed();
+
         MyWidgetItem* widgetItem = new MyWidgetItem( widget1 );
-        hLayout->addItem( widgetItem );
-        vLayout->addLayout( hLayout );
+        gridLayout->addItem( widgetItem, 1, 1 );
+        vLayout->addLayout( gridLayout );
 
         QRect geom( 100, 100, 800, 800 );
         vLayout->setGeometry( geom );
         qDebug() << "widget1: " << widget1->geometry();
-        int marg = topLevelWidget->style()->pixelMetric( QStyle::PM_DefaultTopLevelMargin );
-        QCOMPARE( widget1->geometry(), geom.adjusted(marg,marg,-marg,-marg) );
+        QVERIFY( widget1->width() > 0 );
 
         delete topLevelWidget;
     }
