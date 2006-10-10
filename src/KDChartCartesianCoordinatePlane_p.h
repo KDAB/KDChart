@@ -54,12 +54,11 @@ class CartesianCoordinatePlane::Private : public AbstractCoordinatePlane::Privat
     friend class CartesianCoordinatePlane;
 public:
     explicit Private();
-    virtual ~Private() { }
+    virtual ~Private() {  }
 
     virtual void initialize()
     {
         bPaintIsRunning   = false;
-        bNextPaintPending = false;
         coordinateTransformation.axesCalcModeX = Linear;
         coordinateTransformation.axesCalcModeY = Linear;
         grid = new CartesianGrid();
@@ -70,7 +69,6 @@ public:
     CoordinateTransformation coordinateTransformation;
 
     bool bPaintIsRunning;
-    bool bNextPaintPending;
 
     // true after setGridAttributes( Qt::Orientation ) was used,
     // false if resetGridAttributes( Qt::Orientation ) was called

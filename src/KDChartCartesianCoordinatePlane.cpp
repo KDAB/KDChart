@@ -48,7 +48,6 @@ using namespace KDChart;
 CartesianCoordinatePlane::Private::Private()
     : AbstractCoordinatePlane::Private()
     , bPaintIsRunning( false )
-    , bNextPaintPending( false )
     , hasOwnGridAttributesHorizontal ( false )
     , hasOwnGridAttributesVertical ( false )
     // old: , initialResizeEventReceived ( false )
@@ -97,17 +96,13 @@ void CartesianCoordinatePlane::paint ( QPainter* painter )
     // prevent recursive call:
     //qDebug("attempt plane::paint()");
     if( d->bPaintIsRunning ){
-        d->bNextPaintPending = true;
         return;
     }
-    d->bNextPaintPending = false;
     d->bPaintIsRunning = true;
 
-    //qDebug("start plane::paint()");
+    //qDebug() << "start plane::paint()";
 
     AbstractDiagramList diags = diagrams();
-    //FIXME(khz): make this also work in no diagrams are there
-    // (commenting out the following line should do it)
     if ( !diags.isEmpty() )
     {
         PaintContext ctx;
@@ -127,18 +122,9 @@ void CartesianCoordinatePlane::paint ( QPainter* painter )
         // paint the diagrams:
         for ( int i = 0; i < diags.size(); i++ )
         {
-//qDebug("  attempt diags[i]->paint ( &ctx );");
-
-            //if ( qApp->hasPendingEvents () )
-            //    continue;
-
-            //if( ! d->bNextPaintPending )
-            //    qApp->processEvents( QEventLoop::ExcludeSocketNotifiers );
-            //if( ! d->bNextPaintPending ){
 //qDebug("  start diags[i]->paint ( &ctx );");
             PainterSaver painterSaver( painter );
             diags[i]->paint ( &ctx );
-            //}
 //qDebug("  done: diags[i]->paint ( &ctx );");
         }
 

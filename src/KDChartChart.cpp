@@ -33,6 +33,8 @@
 #include <QPaintEvent>
 #include <QLayoutItem>
 #include <QPushButton>
+#include <QApplication>
+#include <QEvent>
 
 #include "KDChartChart.h"
 #include "KDChartChart_p.h"
@@ -49,6 +51,16 @@
 
 #include <KDABLibFakes>
 
+// Layout widgets even if they are not visible
+class MyWidgetItem : public QWidgetItem
+{
+public:
+    explicit MyWidgetItem(QWidget *w, Qt::Alignment alignment = 0)
+        : QWidgetItem(w) {
+        setAlignment( alignment );
+    }
+    /*reimp*/ bool isEmpty() const { return false; }
+};
 
 using namespace KDChart;
 
@@ -88,7 +100,6 @@ Chart::Private::Private( Chart* chart_ )
     , globalLeadingRight( 0 )
     , globalLeadingTop( 0 )
     , globalLeadingBottom( 0 )
-    , inPaint( false )
 {
 }
 
@@ -200,8 +211,8 @@ void Chart::Private::layoutLegends()
                 break;
             case 1: {
                     Legend* legend = list.first();
-                    dataAndLegendLayout->addWidget(
-                        legend, iR, iC, 1, 1, legend->alignment() );
+                    dataAndLegendLayout->addItem( new MyWidgetItem(legend),
+                        iR, iC, 1, 1, legend->alignment() );
                 }
                 break;
             default: {
@@ -229,8 +240,7 @@ void Chart::Private::layoutLegends()
                     if( haveSameAlign ){
                         QVBoxLayout* vLayout = new QVBoxLayout();
                         for (int i = 0; i < count; ++i) {
-                            vLayout->addWidget(
-                                list.at(i), 0, Qt::AlignLeft );
+                            vLayout->addItem( new MyWidgetItem(list.at(i), Qt::AlignLeft) );
                         }
                         dataAndLegendLayout->addLayout( vLayout, iR, iC, 1, 1, alignment );
                     }else{
@@ -241,7 +251,7 @@ void Chart::Private::layoutLegends()
     for (int i = 0; i < count; ++i) { \
         legend = list.at(i); \
         if( legend->alignment() == ( align ) ) \
-            innerLayout->addWidget( legend, 0, Qt::AlignLeft ); \
+            innerLayout->addItem( new MyWidgetItem(legend, Qt::AlignLeft) ); \
     } \
     gridLayout->addLayout( innerLayout, row, column, ( align  ) ); \
 }
@@ -373,6 +383,7 @@ void Chart::Private::slotLayoutPlanes()
     planeLayoutItems.clear();
     delete planesLayout;
     planesLayout = new QVBoxLayout();
+    planesLayout->setObjectName( QString::fromLatin1( "planesLayout" ) );
 
     /* First go through all planes and all axes and figure out whether the planes
      * need to coordinate. If they do, they share a grid layout, if not, each
@@ -503,11 +514,13 @@ void Chart::Private::createLayouts( QWidget* w )
 
     // The HBox d->layout provides the left and right global leadings
     layout = new QHBoxLayout( w );
+    layout->setObjectName( QString::fromLatin1( "Chart::Private::layout" ) );
     layout->addSpacing( globalLeadingLeft );
 
     // The vLayout provides top and bottom global leadings and lays
     // out headers/footers and the data area.
     vLayout = new QVBoxLayout();
+    vLayout->setObjectName( QString::fromLatin1( "vLayout" ) );
     layout->addLayout( vLayout, 2 );
     layout->addSpacing( globalLeadingRight );
 
@@ -518,9 +531,11 @@ void Chart::Private::createLayouts( QWidget* w )
     vLayout->addLayout( headerLayout );
     // 3. the area containing coordinate plane(s), axes, legend(s)
     dataAndLegendLayout = new QGridLayout();
+    dataAndLegendLayout->setObjectName( QString::fromLatin1( "dataAndLegendLayout" ) );
     vLayout->addLayout( dataAndLegendLayout, 2 );
     // 4. the footer(s) area
     footerLayout = new QGridLayout();
+    footerLayout->setObjectName( QString::fromLatin1( "footerLayout" ) );
     vLayout->addLayout( footerLayout );
     // 5. the gap below the bottom edge of the headers area
     vLayout->addSpacing( globalLeadingBottom );
@@ -538,11 +553,47 @@ void Chart::Private::slotRelayout()
 
     layoutHeadersAndFooters();
     layoutLegends();
-    layout->activate();
+    //layout->activate();
     //dataAndLegendLayout->activate();
     KDAB_FOREACH (AbstractCoordinatePlane* plane, coordinatePlanes )
         plane->layoutDiagrams();
-   //qDebug() << "Chart relayouting done.";
+    //qDebug() << "Chart relayouting done.";
+}
+
+void Chart::Private::layoutAll( const QRect& rect )
+{
+    const QRect oldGeometry( layout->geometry() );
+    if( rect != oldGeometry ){
+        // We need to make sure that the legend's layouts are populated,
+        // so that setGeometry gets proper sizeHints from them and resizes them properly.
+        KDAB_FOREACH( Legend *legend, legends ) {
+            // This forceRebuild will see a wrong areaGeometry, but I don't care about geometries yet,
+            // only about the fact that legends should have their contents populated.
+            // -> it would be better to dissociate "building contents" and "resizing" in Legend...
+            legend->forceRebuild();
+        }
+        slotLayoutPlanes();
+        layout->setGeometry( rect ); // triggers relayout, see QBoxLayout::setGeometry
+        KDAB_FOREACH (AbstractCoordinatePlane* plane, coordinatePlanes )
+            plane->layoutDiagrams();
+    }
+}
+
+void Chart::Private::paintAll( QPainter* painter )
+{
+    KDAB_FOREACH( KDChart::AbstractArea* layoutItem, layoutItems ) {
+        layoutItem->paintAll( *painter );
+    }
+    KDAB_FOREACH( KDChart::AbstractArea* planeLayoutItem, planeLayoutItems ) {
+        planeLayoutItem->paintAll( *painter );
+    }
+    KDAB_FOREACH( KDChart::TextArea* textLayoutItem, textLayoutItems ) {
+        textLayoutItem->paintAll( *painter );
+    }
+    KDAB_FOREACH( Legend *legend, legends ) {
+        //qDebug() << "painting legend at " << legend->geometry();
+        legend->paintIntoRect( *painter, legend->geometry() );
+    }
 }
 
 // ******** Chart interface implementation ***********
@@ -675,79 +726,29 @@ int Chart::globalLeadingBottom() const
     return d->globalLeadingBottom;
 }
 
-//#define debug_recursive_paint
-#ifdef debug_recursive_paint
-static int nPaint=0;
-#endif
-
-void Chart::paint( QPainter* painter, const QRect& target_ )
+void Chart::paint( QPainter* painter, const QRect& target )
 {
-    //qDebug() << "KDChart::Chart::paint() called, inPaint: " << d->inPaint;
-#ifdef debug_recursive_paint
-++nPaint;
-if( 100<nPaint)
-qFatal("nPaint > 100");
-#endif
-    if( d->inPaint || target_.isEmpty() || !painter ) return;
+    if( target.isEmpty() || !painter ) return;
 
-    d->inPaint = true;
+    const QRect oldGeometry = d->layout->geometry();
 
-    // trigger layouting the chart:
-    const bool needShowAndHide = ! isVisible() && ! parent();
-    if( needShowAndHide )
-        showMinimized();
-
-    const QRect oldGeometry( geometry() );
-    //painter->drawRect( oldGeometry );
-    QRect target( target_ );
-    QPoint translation(0,0);
-
-    if( target != oldGeometry ){
-        //qDebug() << "KDChart::Chart::paint() calling new setGeometry(" << target << ")";
-        setGeometry( target );
-        painter->drawRect( target );
-        d->slotLayoutPlanes();
-        translation.setX( target_.left() );
-        translation.setY( target_.left() );
-        painter->translate( translation );
+    if( target.size() != oldGeometry.size() ){
+        //qDebug() << "KDChart::Chart::paint() setting geometry (" << target << ")";
+        d->layoutAll( target );
     }
 
-    KDAB_FOREACH( KDChart::AbstractArea* layoutItem, d->layoutItems ) {
-        layoutItem->paintAll( *painter );
-    }
-    KDAB_FOREACH( KDChart::AbstractArea* planeLayoutItem, d->planeLayoutItems ) {
-        planeLayoutItem->paintAll( *painter );
-    }
-    KDAB_FOREACH( KDChart::TextArea* textLayoutItem, d->textLayoutItems ) {
-        textLayoutItem->paintAll( *painter );
-    }
-//int i=0;
-    KDAB_FOREACH( Legend *legend, d->legends ) {
-//qDebug("legend # %i",++i);
-        if( ! legend->isHidden() ){
-            //legend->forceRebuild();
-/*
-            const QPoint translation( legend->geometry().topLeft() );
-            painter->translate( translation );
-            legend->paintAll( *painter );
-            if( ! translation.isNull() )
-                painter->translate( -translation.x(), -translation.y() );
-*/
-            legend->paintIntoRect( *painter, legend->geometry() );
-        }
+    painter->drawRect( target );
+
+    const QPoint translation = target.topLeft();
+    painter->translate( translation );
+    d->paintAll( painter );
+    painter->translate( -translation.x(), -translation.y() );
+
+    if( target.size() != oldGeometry.size() && !oldGeometry.isEmpty() ){
+        //qDebug() << "KDChart::Chart::paint() restoring geometry (" << oldGeometry << ")";
+        d->layoutAll( oldGeometry );
     }
 
-    if( target_ != oldGeometry ){
-        //qDebug() << "KDChart::Chart::paint() calling new setGeometry(" << oldGeometry << ")";
-        setGeometry( oldGeometry );
-        if( ! translation.isNull() )
-            painter->translate( -translation.x(), -translation.y() );
-    }
-
-    if( needShowAndHide )
-        hide();
-
-    d->inPaint = false;
     //qDebug() << "KDChart::Chart::paint() done.\n";
 }
 
@@ -756,14 +757,13 @@ void Chart::resizeEvent ( QResizeEvent * event )
     d->slotLayoutPlanes();
 }
 
-void Chart::paintEvent( QPaintEvent* event )
+void Chart::paintEvent( QPaintEvent* )
 {
-    event->accept();
-
     QPainter painter( this );
+
     //FIXME(khz): Paint the background/frame too!
     //            (can we derive Chart from AreaWidget ??)
-    paint( &painter, geometry() );
+    d->paintAll( &painter );
 }
 
 void Chart::addHeaderFooter( HeaderFooter* headerFooter )

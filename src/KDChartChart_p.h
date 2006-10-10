@@ -103,8 +103,6 @@ class Chart::Private : public QObject
 
         int globalLeadingLeft, globalLeadingRight, globalLeadingTop, globalLeadingBottom;
 
-        bool inPaint;
-
         Private ( Chart* );
 
         virtual ~Private() {}
@@ -112,6 +110,9 @@ class Chart::Private : public QObject
         void createLayouts( QWidget * parent );
         void layoutLegends();
         void layoutHeadersAndFooters();
+        void layoutAll( const QRect& rect );
+        void paintAll( QPainter* painter );
+
 
         struct AxisInfo {
             AxisInfo()
