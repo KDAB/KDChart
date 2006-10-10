@@ -44,7 +44,7 @@ private slots:
         // Adding a hidden widget doesn't work, the layout ignores it
         // This is why we created MyWidgetItem above, then the layout works
         //vLayout->addWidget( widget1 );
-        MyWidgetItem* widgetItem = new MyWidgetItem( widget1 ); // leak
+        MyWidgetItem* widgetItem = new MyWidgetItem( widget1 );
         vLayout->addItem( widgetItem );
 
         QRect geom( 100, 100, 800, 800 );
