@@ -2,6 +2,7 @@
 #include <QWidget>
 #include <QDebug>
 #include <QBoxLayout>
+#include <QStyle>
 #include <QtTest/QtTest>
 
 #define KDAB_REIMP
@@ -37,8 +38,8 @@ private slots:
 
     // This is very much like KDChart::Chart does with legends
     void testLayoutHiddenWidget() {
-        QBoxLayout* vLayout = new QVBoxLayout(); // leak
-        MyWidget* widget1 = new MyWidget( 0 ); // leak
+        QBoxLayout* vLayout = new QVBoxLayout;
+        MyWidget* widget1 = new MyWidget( 0 );
         widget1->resize( 10, 10 );
 
         // Adding a hidden widget doesn't work, the layout ignores it
@@ -55,6 +56,40 @@ private slots:
         QCOMPARE( vLayout->geometry(), geom );
         qDebug() << "widget1: " << widget1->geometry();
         QCOMPARE( widget1->geometry(), geom );
+
+        delete widget1;
+        delete vLayout;
+    }
+
+    void testRelayoutChildWidget() {
+        QWidget* topLevelWidget = new QWidget( 0 );
+        // This time the layout is associated with a widget, like d->layout in KDChart::Chart.
+        QBoxLayout* vLayout = new QVBoxLayout( topLevelWidget );
+        MyWidget* widget1 = new MyWidget( 0 );
+        MyWidgetItem* widgetItem = new MyWidgetItem( widget1 );
+        vLayout->addItem( widgetItem );
+        vLayout->activate();
+
+        QRect geom( 100, 100, 800, 800 );
+        vLayout->setGeometry( geom );
+        qDebug() << "widget1: " << widget1->geometry();
+        int marg = topLevelWidget->style()->pixelMetric( QStyle::PM_DefaultTopLevelMargin );
+        QCOMPARE( widget1->geometry(), geom.adjusted(marg,marg,-marg,-marg) );
+
+        geom = QRect( 10, 10, 80, 80 );
+        vLayout->setGeometry( geom );
+        qDebug() << "widget1: " << widget1->geometry();
+        QCOMPARE( widget1->geometry(), geom.adjusted(marg,marg,-marg,-marg) );
+
+        // And now let's show the widget for real
+        geom = QRect( 0, 0, 50, 50 );
+        topLevelWidget->resize( geom.size() );
+        topLevelWidget->show();
+        QApplication::sendPostedEvents();
+        qDebug() << "widget1: " << widget1->geometry();
+        QCOMPARE( widget1->geometry(), geom.adjusted(marg,marg,-marg,-marg) );
+
+        delete topLevelWidget;
     }
 };
 
