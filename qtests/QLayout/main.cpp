@@ -7,17 +7,17 @@
 
 #define KDAB_REIMP
 
-class MyWidget : public QWidget
+class MyLegendWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit MyWidget( QWidget* parent ) : QWidget( parent ) {
-
+    explicit MyLegendWidget( QWidget* parent ) : QWidget( parent ) {
     }
 
 protected:
     KDAB_REIMP void resizeEvent( QResizeEvent* ) {
+        // Note that this is never called unless the widget is shown.
         qDebug() << "resizeEvent " << size();
     }
 };
@@ -39,7 +39,7 @@ private slots:
     // This is very much like KDChart::Chart does with legends
     void testLayoutHiddenWidget() {
         QBoxLayout* vLayout = new QVBoxLayout;
-        MyWidget* widget1 = new MyWidget( 0 );
+        MyLegendWidget* widget1 = new MyLegendWidget( 0 );
         widget1->resize( 10, 10 );
 
         // Adding a hidden widget doesn't work, the layout ignores it
@@ -65,10 +65,10 @@ private slots:
         QWidget* topLevelWidget = new QWidget( 0 );
         // This time the layout is associated with a widget, like d->layout in KDChart::Chart.
         QBoxLayout* vLayout = new QVBoxLayout( topLevelWidget );
-        MyWidget* widget1 = new MyWidget( 0 );
+        MyLegendWidget* widget1 = new MyLegendWidget( topLevelWidget );
         MyWidgetItem* widgetItem = new MyWidgetItem( widget1 );
         vLayout->addItem( widgetItem );
-        vLayout->activate();
+        //vLayout->activate();
 
         QRect geom( 100, 100, 800, 800 );
         vLayout->setGeometry( geom );
@@ -87,6 +87,25 @@ private slots:
         topLevelWidget->show();
         QApplication::sendPostedEvents();
         qDebug() << "widget1: " << widget1->geometry();
+        QCOMPARE( widget1->geometry(), geom.adjusted(marg,marg,-marg,-marg) );
+        QVERIFY( widget1->isVisible() );
+
+        delete topLevelWidget;
+    }
+
+    void testSublayout() {
+        QWidget* topLevelWidget = new QWidget( 0 );
+        QBoxLayout* vLayout = new QVBoxLayout( topLevelWidget );
+        QBoxLayout* hLayout = new QHBoxLayout();
+        MyLegendWidget* widget1 = new MyLegendWidget( topLevelWidget );
+        MyWidgetItem* widgetItem = new MyWidgetItem( widget1 );
+        hLayout->addItem( widgetItem );
+        vLayout->addLayout( hLayout );
+
+        QRect geom( 100, 100, 800, 800 );
+        vLayout->setGeometry( geom );
+        qDebug() << "widget1: " << widget1->geometry();
+        int marg = topLevelWidget->style()->pixelMetric( QStyle::PM_DefaultTopLevelMargin );
         QCOMPARE( widget1->geometry(), geom.adjusted(marg,marg,-marg,-marg) );
 
         delete topLevelWidget;
