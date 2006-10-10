@@ -73,7 +73,7 @@ public:
     virtual Legend * clone() const;
 
     //QSize calcSizeHint() const;
-    virtual void resizeEvent( QResizeEvent * event );
+    virtual void resizeEvent( QResizeEvent * event ); // TODO: should be protected
 
     virtual void paint( QPainter* painter );
     virtual void setVisible( bool visible );

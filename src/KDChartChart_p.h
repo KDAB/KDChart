@@ -101,6 +101,8 @@ class Chart::Private : public QObject
         QVector<KDChart::AbstractArea*> planeLayoutItems;
         QVector<KDChart::Legend*> legendLayoutItems;
 
+        QSize currentLayoutSize;
+
         int globalLeadingLeft, globalLeadingRight, globalLeadingTop, globalLeadingBottom;
 
         Private ( Chart* );
@@ -110,7 +112,7 @@ class Chart::Private : public QObject
         void createLayouts( QWidget * parent );
         void layoutLegends();
         void layoutHeadersAndFooters();
-        void layoutAll( const QRect& rect );
+        void resizeLayout( const QSize& sz );
         void paintAll( QPainter* painter );
 
 

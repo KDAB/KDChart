@@ -59,7 +59,13 @@ public:
         : QWidgetItem(w) {
         setAlignment( alignment );
     }
-    /*reimp*/ bool isEmpty() const { return false; }
+    /*reimp*/ bool isEmpty() const {
+        QWidget* w = const_cast<MyWidgetItem *>(this)->widget();
+        // legend->hide() should indeed hide the legend,
+        // but a legend in a chart that hasn't been shown yet isn't hidden
+        // (as can happen when using Chart::paint() without showing the chart)
+        return w->isHidden() && w->testAttribute(Qt::WA_WState_ExplicitShowHide);
+    }
 };
 
 using namespace KDChart;
@@ -553,30 +559,39 @@ void Chart::Private::slotRelayout()
 
     layoutHeadersAndFooters();
     layoutLegends();
-    //layout->activate();
-    //dataAndLegendLayout->activate();
-    KDAB_FOREACH (AbstractCoordinatePlane* plane, coordinatePlanes )
+
+    // This triggers the qlayout, see QBoxLayout::setGeometry
+    // The geometry is not necessarily w->rect(), when using paint(), this is why
+    // we don't call layout->activate().
+    layout->setGeometry( QRect( 0, 0, currentLayoutSize.width(), currentLayoutSize.height() ) );
+
+    // Adapt diagram drawing to the new size
+    KDAB_FOREACH (AbstractCoordinatePlane* plane, coordinatePlanes ) {
         plane->layoutDiagrams();
+    }
     //qDebug() << "Chart relayouting done.";
 }
 
-void Chart::Private::layoutAll( const QRect& rect )
+// Called when the size of the chart changes.
+// So in theory, we only need to adjust geometries.
+// But this also needs to make sure that everything is in place for the first painting.
+void Chart::Private::resizeLayout( const QSize& size )
 {
-    const QRect oldGeometry( layout->geometry() );
-    if( rect != oldGeometry ){
-        // We need to make sure that the legend's layouts are populated,
-        // so that setGeometry gets proper sizeHints from them and resizes them properly.
-        KDAB_FOREACH( Legend *legend, legends ) {
-            // This forceRebuild will see a wrong areaGeometry, but I don't care about geometries yet,
-            // only about the fact that legends should have their contents populated.
-            // -> it would be better to dissociate "building contents" and "resizing" in Legend...
-            legend->forceRebuild();
-        }
-        slotLayoutPlanes();
-        layout->setGeometry( rect ); // triggers relayout, see QBoxLayout::setGeometry
-        KDAB_FOREACH (AbstractCoordinatePlane* plane, coordinatePlanes )
-            plane->layoutDiagrams();
+    currentLayoutSize = size;
+    //qDebug() << "Chart::resizeLayout(" << currentLayoutSize << ")";
+
+    // We need to make sure that the legend's layouts are populated,
+    // so that setGeometry gets proper sizeHints from them and resizes them properly.
+    KDAB_FOREACH( Legend *legend, legends ) {
+        // This forceRebuild will see a wrong areaGeometry, but I don't care about geometries yet,
+        // only about the fact that legends should have their contents populated.
+        // -> it would be better to dissociate "building contents" and "resizing" in Legend...
+        legend->forceRebuild();
     }
+
+    slotLayoutPlanes(); // includes slotRelayout
+
+    //qDebug() << "Chart::resizeLayout done";
 }
 
 void Chart::Private::paintAll( QPainter* painter )
@@ -591,8 +606,11 @@ void Chart::Private::paintAll( QPainter* painter )
         textLayoutItem->paintAll( *painter );
     }
     KDAB_FOREACH( Legend *legend, legends ) {
-        //qDebug() << "painting legend at " << legend->geometry();
-        legend->paintIntoRect( *painter, legend->geometry() );
+        const bool hidden = legend->isHidden() && legend->testAttribute(Qt::WA_WState_ExplicitShowHide);
+        if ( !hidden ) {
+            //qDebug() << "painting legend at " << legend->geometry();
+            legend->paintIntoRect( *painter, legend->geometry() );
+        }
     }
 }
 
@@ -730,11 +748,8 @@ void Chart::paint( QPainter* painter, const QRect& target )
 {
     if( target.isEmpty() || !painter ) return;
 
-    const QRect oldGeometry = d->layout->geometry();
-
-    if( target.size() != oldGeometry.size() ){
-        //qDebug() << "KDChart::Chart::paint() setting geometry (" << target << ")";
-        d->layoutAll( target );
+    if( target.size() != d->currentLayoutSize ){
+        d->resizeLayout( target.size() );
     }
 
     painter->drawRect( target );
@@ -743,11 +758,6 @@ void Chart::paint( QPainter* painter, const QRect& target )
     painter->translate( translation );
     d->paintAll( painter );
     painter->translate( -translation.x(), -translation.y() );
-
-    if( target.size() != oldGeometry.size() && !oldGeometry.isEmpty() ){
-        //qDebug() << "KDChart::Chart::paint() restoring geometry (" << oldGeometry << ")";
-        d->layoutAll( oldGeometry );
-    }
 
     //qDebug() << "KDChart::Chart::paint() done.\n";
 }
@@ -760,6 +770,10 @@ void Chart::resizeEvent ( QResizeEvent * event )
 void Chart::paintEvent( QPaintEvent* )
 {
     QPainter painter( this );
+
+    if( size() != d->currentLayoutSize ){
+        d->resizeLayout( size() );
+    }
 
     //FIXME(khz): Paint the background/frame too!
     //            (can we derive Chart from AreaWidget ??)

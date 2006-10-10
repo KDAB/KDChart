@@ -267,7 +267,7 @@ void Legend::resetDiagram( AbstractDiagram* oldDiagram )
 void Legend::setVisible( bool visible )
 {
     QWidget::setVisible( visible );
-    emit propertiesChanged();
+    emitPositionChanged();
 }
 
 void Legend::setNeedRebuild()
