@@ -6,7 +6,8 @@ SUBDIRS +=  ChartElementOwnership \
             Legends \
             CartesianPlanes \
             Cloning \
-            PolarPlanes \ 
+            PolarPlanes \
+            QLayout \
 
 unix:SUBDIRS += AxisOwnership
 test.target=test
