@@ -67,13 +67,34 @@ private slots:
 
   void testLegendOwnership()
   {
+      // check no legend
       QCOMPARE( m_chart->legends().size(), 0 );
+
+      // check add legend - take legend - delete legend
       Legend * legend = new Legend( m_chart->coordinatePlane()->diagram() );
       m_chart->addLegend( legend );
       QCOMPARE( m_chart->legends().size(), 1 );
       m_chart->takeLegend( legend );
       QCOMPARE( m_chart->legends().size(), 0 );
       m_chart->addLegend( legend );
+      QCOMPARE( m_chart->legends().size(), 1 );
+      delete legend;
+      QCOMPARE( m_chart->legends().size(), 0 );
+  }
+
+  void testLegendReplace()
+    {
+      // check add several legends - take legend
+      // replace legend - delete legend
+      Legend * legend = new Legend( m_chart->coordinatePlane()->diagram() );
+      Legend * legend2 = new Legend( m_chart->coordinatePlane()->diagram() );
+      m_chart->addLegend( legend );
+      QCOMPARE( m_chart->legends().size(), 1 );
+      m_chart->addLegend( legend2 );
+      QCOMPARE( m_chart->legends().size(), 2 );
+      m_chart->takeLegend( legend );
+      QCOMPARE( m_chart->legends().size(), 1 );
+      m_chart->replaceLegend( legend  );
       QCOMPARE( m_chart->legends().size(), 1 );
       delete legend;
       QCOMPARE( m_chart->legends().size(), 0 );
