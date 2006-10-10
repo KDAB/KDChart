@@ -84,6 +84,9 @@ private slots:
 
   void testLegendReplace()
     {
+
+      // check no legend
+      QCOMPARE( m_chart->legends().size(), 0 );
       // check add several legends - take legend
       // replace legend - delete legend
       Legend * legend = new Legend( m_chart->coordinatePlane()->diagram() );
@@ -94,7 +97,7 @@ private slots:
       QCOMPARE( m_chart->legends().size(), 2 );
       m_chart->takeLegend( legend );
       QCOMPARE( m_chart->legends().size(), 1 );
-      m_chart->replaceLegend( legend  );
+      m_chart->replaceLegend( legend, legend2  );
       QCOMPARE( m_chart->legends().size(), 1 );
       delete legend;
       QCOMPARE( m_chart->legends().size(), 0 );
@@ -109,6 +112,23 @@ private slots:
       m_chart->takeHeaderFooter( h );
       QCOMPARE( m_chart->headerFooters().size(), 0 );
       m_chart->addHeaderFooter( h );
+      QCOMPARE( m_chart->headerFooters().size(), 1 );
+      delete h;
+      QCOMPARE( m_chart->headerFooters().size(), 0 );
+  }
+
+  void testHeaderFooterReplace()
+  {
+      QCOMPARE( m_chart->headerFooters().size(), 0 );
+      HeaderFooter * h = new HeaderFooter();
+      HeaderFooter * h1 = new HeaderFooter();
+      m_chart->addHeaderFooter( h );
+      QCOMPARE( m_chart->headerFooters().size(), 1 );
+      m_chart->addHeaderFooter( h1 );
+      QCOMPARE( m_chart->headerFooters().size(), 2 );
+      m_chart->takeHeaderFooter( h );
+      QCOMPARE( m_chart->headerFooters().size(), 1 );
+      m_chart->replaceHeaderFooter( h,  h1 );
       QCOMPARE( m_chart->headerFooters().size(), 1 );
       delete h;
       QCOMPARE( m_chart->headerFooters().size(), 0 );
