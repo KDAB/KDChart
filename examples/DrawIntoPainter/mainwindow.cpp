@@ -41,14 +41,20 @@
 
 using namespace KDChart;
 
+// When set, this example uses FrameWidget which uses Chart::paint to paint itself.
+// When not set, this example uses a Chart widget directly.
+#define USE_FRAME_WIDGET 1
+
 MainWindow::MainWindow( QWidget* parent ) :
     QWidget( parent )
 {
     setupUi( this );
 
     QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
+#ifdef USE_FRAME_WIDGET
     FrameWidget* chartFrameWidget = new FrameWidget();
     chartLayout->addWidget( chartFrameWidget );
+#endif
     hSBar->setVisible( false );
     vSBar->setVisible( false );
 
@@ -72,12 +78,16 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_lines->addAxis( axisTop );
     m_lines->addAxis( axisRight );
     m_chart = new Chart();
+#ifdef USE_FRAME_WIDGET
     chartFrameWidget->setChart( m_chart );
-    m_chart->coordinatePlane()->replaceDiagram( m_lines );
-
     // make sure, we re-draw after changing one of the chart's properties
     connect( m_chart,          SIGNAL( propertiesChanged() ),
              chartFrameWidget, SLOT(   update() ) ) ;
+#else
+    chartLayout->addWidget( m_chart );
+#endif
+    m_chart->coordinatePlane()->replaceDiagram( m_lines );
+
 
     // Set up the legend
     m_legend = new Legend( m_lines, m_chart );
@@ -304,3 +314,17 @@ void MainWindow::on_vSBar_valueChanged( int vPos )
     m_chart->coordinatePlane()->setZoomCenter( QPointF( hSBar->value()/1000.0, vPos/1000.0) );
 }
 
+void MainWindow::on_savePB_clicked()
+{
+    qDebug() << "Painting into PNG";
+    QPixmap qpix(400,600);
+    QPainter painter(&qpix);
+    painter.setBrush(Qt::white);
+    painter.fillRect( 0, 0, 400, 600, Qt::white);
+    m_chart->paint(
+            &painter,
+            QRect(0, 0, 400, 600) );
+    painter.end();
+    qpix.save("kdchart-demo.png", "PNG");
+    qDebug() << "Painting into PNG - done";
+}

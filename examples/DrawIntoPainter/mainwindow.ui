@@ -1,7 +1,4 @@
 <ui version="4.0" >
- <author></author>
- <comment></comment>
- <exportmacro></exportmacro>
  <class>MainWindow</class>
  <widget class="QWidget" name="MainWindow" >
   <property name="geometry" >
@@ -409,16 +406,16 @@
          <item>
           <widget class="QDoubleSpinBox" name="zoomFactorSB" >
            <property name="maximum" >
-            <double>9.9</double>
+            <double>9.900000000000000</double>
            </property>
            <property name="minimum" >
-            <double>0.01</double>
+            <double>0.010000000000000</double>
            </property>
            <property name="singleStep" >
-            <double>0.1</double>
+            <double>0.100000000000000</double>
            </property>
            <property name="value" >
-            <double>1</double>
+            <double>1.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -439,7 +436,7 @@
         <string>Display Legend</string>
        </property>
        <property name="checked" >
-         <bool>true</bool>
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -456,13 +453,19 @@
        </property>
       </spacer>
      </item>
+     <item>
+      <widget class="QPushButton" name="savePB" >
+       <property name="text" >
+        <string>Save as PNG</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
   </layout>
  </widget>
- <pixmapfunction></pixmapfunction>
  <resources>
-  <include location="BarChart" />
+  <include location="DrawIntoPainter.qrc" />
  </resources>
  <connections/>
 </ui>

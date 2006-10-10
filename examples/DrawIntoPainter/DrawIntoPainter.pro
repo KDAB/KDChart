@@ -1,5 +1,7 @@
 KDCHART_PATH = ../..
 
+include( $$KDCHART_PATH/g++.pri )
+
 
 # Use the filename "kdchartd.dll" (or "kdchartd.lib") on Windows
 # to avoid name clashes between debug/non-debug versions of the
