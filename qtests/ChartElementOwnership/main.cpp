@@ -97,6 +97,7 @@ private slots:
       QCOMPARE( m_chart->legends().size(), 2 );
       m_chart->takeLegend( legend );
       QCOMPARE( m_chart->legends().size(), 1 );
+      QCOMPARE( m_chart->legend(), legend2 );
       m_chart->replaceLegend( legend, legend2  );
       QCOMPARE( m_chart->legends().size(), 1 );
       delete legend;
@@ -128,6 +129,7 @@ private slots:
       QCOMPARE( m_chart->headerFooters().size(), 2 );
       m_chart->takeHeaderFooter( h );
       QCOMPARE( m_chart->headerFooters().size(), 1 );
+      QCOMPARE( m_chart->headerFooter(), h1 );
       m_chart->replaceHeaderFooter( h,  h1 );
       QCOMPARE( m_chart->headerFooters().size(), 1 );
       delete h;
