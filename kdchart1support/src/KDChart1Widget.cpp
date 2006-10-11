@@ -387,6 +387,8 @@ void KDChart1Widget::setData( KDChart1TableDataBase* data )
     resetData();
 
     d->data = data;
+    d->data->setWidget( this );
+
     QVariant::Type typeX;
     const bool hasXValues =
         data->cellsHaveSeveralCoordinates( &typeX )

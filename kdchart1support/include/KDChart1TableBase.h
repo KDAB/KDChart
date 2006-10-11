@@ -45,6 +45,8 @@
 #endif
 
 
+class KDChart1Widget;
+
 /**
     Use special value KDCHART1_POS_INFINITE to indicate positive infinite values.
 
@@ -117,6 +119,13 @@ public:
     virtual ~KDChart1TableDataBase() {}
 
 public slots:
+    /**
+      * Specifies the KDCart1Widget this data table is used within.
+      */
+    void setWidget( KDChart1Widget* widget ) {
+        _widget = widget;
+    }
+
     /**
       Returns the number of rows in the table.
 
@@ -469,6 +478,7 @@ private:
     bool _sorted;
 protected:
     bool _useUsedRows, _useUsedCols;
+    KDChart1Widget* _widget;
 private:
     uint _usedRows, _usedCols;
 };

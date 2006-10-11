@@ -9694,10 +9694,12 @@ int KDChart1Params::axisTitleFontRelSize( uint n ) const
 void KDChart1Params::updateAllK2Settings()
 {
     if( ! _K2Widget ) return;
+    qDebug("Starting KDChart1Params::updateAllK2Settings()");
     for( int i=0; i<=K2LastValue; ++i )
         updateK2Setting( i, false );
     KDChart::Widget & k2( *_K2Widget );
     k2.update();
+    qDebug("Ending   KDChart1Params::updateAllK2Settings()");
 }
 
 void KDChart1Params::updateK2Setting( int type, bool doUpdate )
@@ -9769,6 +9771,7 @@ void KDChart1Params::updateK2Setting( int type, bool doUpdate )
             break;
         case K2ChartSourceMode:
             qDebug("Sorry: updateK2Setting( K2ChartSourceMode ) not implemented yet.");
+//qFatal("ok");
             break;
         case K2NumValues:
             qDebug("Sorry: updateK2Setting( K2NumValues ) not implemented yet.");

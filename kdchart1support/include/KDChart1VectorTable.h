@@ -187,10 +187,13 @@ public:
             delete sh;
         sh = t.sh;
         setSorted( t.sorted() );
+        updateWidget();
         return *this;
     }
 
 public slots:
+    void updateWidget();
+
     Iterator begin() {
         return sh->matrix.begin();
     }
@@ -249,6 +252,7 @@ public slots:
         detach();
         const KDChart1Data element( _value1, _value2 );
         sh->setCell( _row, _col, element );
+        updateWidget();
     }
 
     virtual void setProp( uint _row, uint _col,
@@ -260,11 +264,13 @@ public slots:
     void clearCell( uint _row, uint _col ) {
         detach();
         sh->clearCell( _row, _col );
+        updateWidget();
     }
 
     void clearAllCells() {
         detach();
         sh->clearAllCells();
+        updateWidget();
     }
 
     void expand( uint _rows, uint _cols ) {
@@ -275,6 +281,7 @@ public slots:
             setUsedCols( qMin( _usedCols, _cols ) );
         if( _useUsedRows )
             setUsedRows( qMin( _usedRows, _rows ) );
+        updateWidget();
     }
 
     void setUsedRows( uint _rows ) {
@@ -283,6 +290,7 @@ public slots:
             setSorted( false );
         _usedRows = _rows;
         _useUsedRows = true;
+        updateWidget();
     }
 
     uint usedRows() const {
@@ -295,6 +303,7 @@ public slots:
             setSorted( false );
         _usedCols = _cols;
         _useUsedCols = true;
+        updateWidget();
     }
 
     uint usedCols() const {

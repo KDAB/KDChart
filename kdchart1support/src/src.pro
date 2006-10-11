@@ -41,6 +41,7 @@ SOURCES= \
         KDChart1PropertySet.cpp \
         KDChart1AxisParams.cpp \
         KDChart1TextPiece.cpp \
+        KDChart1VectorTable.cpp \
         KDChart1Widget.cpp
 
 HEADERS= KDDrawText1.h \
