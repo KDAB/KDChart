@@ -8,7 +8,7 @@
 
     LIBS += -L$$KDCHARTDIR/lib
     unix {
-      !norpath:LIBS += $$QMAKE_RPATH$$KDCHARTDIR/lib
+      !isEmpty(QMAKE_RPATH):LIBS += $$QMAKE_RPATH$$KDCHARTDIR/lib
       LIBS += -lkdchart
     }
     win32 {
