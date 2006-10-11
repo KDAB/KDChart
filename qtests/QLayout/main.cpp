@@ -91,12 +91,13 @@ private slots:
         QCOMPARE( widget1->geometry(), geom.adjusted(marg,marg,-marg,-marg) );
 
         // And now let's show the widget for real
-        geom = QRect( 0, 0, 50, 50 );
+        geom = QRect( 0, 0, 500, 100 );
         topLevelWidget->resize( geom.size() );
         topLevelWidget->show();
         QApplication::sendPostedEvents();
-        qDebug() << "widget1: " << widget1->geometry();
-        QCOMPARE( widget1->geometry(), geom.adjusted(marg,marg,-marg,-marg) );
+		QRect expected = geom.adjusted(marg,marg,-marg,-marg);
+        qDebug() << "widget1: " << widget1->geometry() << "expecting" << expected;
+        QCOMPARE( widget1->geometry(), expected );
         QVERIFY( widget1->isVisible() );
 
         delete topLevelWidget;
