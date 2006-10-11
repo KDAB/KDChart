@@ -17,7 +17,7 @@ public:
     explicit MyLegendWidget( QWidget* parent ) : QWidget( parent ) {
     }
 
-    void populate() {
+    void makeSizeFixed() {
         setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed ); // like Legend
         setFixedSize( 50, 50 ); // hmm Legend has a layout instead.
         //QGridLayout* layout = new QGridLayout( this );
@@ -112,7 +112,7 @@ private slots:
         gridLayout->addItem( lineEditWidgetItem, 0, 0 );
 
         MyLegendWidget* widget1 = new MyLegendWidget( topLevelWidget );
-        //widget1->makeSizeFixed();
+        widget1->makeSizeFixed();
 
         MyWidgetItem* widgetItem = new MyWidgetItem( widget1 );
         gridLayout->addItem( widgetItem, 1, 1 );
