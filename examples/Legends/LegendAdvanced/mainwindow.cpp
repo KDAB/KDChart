@@ -104,10 +104,10 @@ void MainWindow::initAddLegendDialog( DerivedAddLegendDialog& conf,
     for ( int i = 0, end = qMin( labels.size(), names.size() ) ; i != end ; ++i )
         conf.positionCO->addItem( labels[i], names[i] );
 
-    QMap<Qt::Alignment, QString>::const_iterator i = alignmentMap.constBegin();
-    while (i != alignmentMap.constEnd()) {
-        conf.alignmentCO->addItem( i.value() );
-        ++i;
+    QMap<Qt::Alignment, QString>::const_iterator it = alignmentMap.constBegin();
+    while (it != alignmentMap.constEnd()) {
+        conf.alignmentCO->addItem( it.value() );
+        ++it;
     }
     const int idx = conf.alignmentCO->findText( alignmentMap[ alignment ] );
     if( idx > -1 )
