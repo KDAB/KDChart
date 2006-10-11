@@ -1,16 +1,24 @@
+KDCHART_PATH = ../../..
+
+
+# Use the filename "kdchartd.dll" (or "kdchartd.lib") on Windows
+# to avoid name clashes between debug/non-debug versions of the
+# KD Chart library:
+KDCHARTLIB = kdchart
+CONFIG(debug, debug|release) {
+    !unix: KDCHARTLIB = "kdchartd"
+}
+
 SOURCES= main.cpp
 
-TARGET = BarSimple
 
-KDCHART_PATH = ../../..
-INCLUDEPATH += \
-            $$KDCHART_PATH/include \
+INCLUDEPATH += $$KDCHART_PATH/include \
             $$KDCHART_PATH/examples/tools
-DEPENDPATH += \
-            $$KDCHART_PATH/include \
-            $$KDCHART_PATH/examles/tools
+DEPENDPATH += $$KDCHART_PATH/include \
+            $$KDCHART_PATH/examples/tools
 
-LIBS        += -L$$KDCHART_PATH/lib -lkdchart -ltesttools
+LIBS        += -L$$KDCHART_PATH/lib -l$$KDCHARTLIB -ltesttools
+message( "Building ''$$TARGET'' using LIBS ''$$LIBS''" )
 
 unix {
   MOC_DIR = .moc
