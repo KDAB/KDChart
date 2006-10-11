@@ -1,4 +1,4 @@
-KDCHART_PATH = ../../..
+KDCHART_PATH = ../..
 
 
 # Use the filename "kdchartd.dll" (or "kdchartd.lib") on Windows
