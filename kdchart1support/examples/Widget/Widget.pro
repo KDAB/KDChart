@@ -7,6 +7,8 @@ QT += xml
 KDCHART_PATH        = ../../..
 KDCHART_COMPAT_PATH = ../..
 
+load(kdchart)
+
 INCLUDEPATH += $$KDCHART_PATH/include \
                $$KDCHART_COMPAT_PATH/include 
 DEPENDPATH  += $$KDCHART_PATH/include \
