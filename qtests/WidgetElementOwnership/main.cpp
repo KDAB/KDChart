@@ -27,8 +27,8 @@ private slots:
       m_widget->setDataset( 0, vec0, "Linear" );
 
       QVector< double > vec1;
-      vec1.append( 4 );
-      vec1.append( 2 );
+      vec1.append( -4 );
+      vec1.append( -2 );
       vec1.append( 0 );
       vec1.append( 2 );
       vec1.append( 4 );
@@ -44,59 +44,39 @@ private slots:
 
   }
 
-  void testPlaneOwnership()
+  void testGlobalLeadings()
   {
-      // check plane
-      AbstractCoordinatePlane*orig = m_widget->coordinatePlane();
-      QCOMPARE( m_widget->coordinatePlane(), orig );
-  }
-  void testDiagramTypeSubType()
-  {
-      QCOMPARE( m_widget->type(), Widget::Line );
-      QCOMPARE( m_widget->subType(),  Widget::Normal );
-      //check type subtype = default
-      m_widget->setType( Widget::Bar );
-      QCOMPARE( m_widget->type(), Widget::Bar );
-      QCOMPARE( m_widget->subType(),  Widget::Normal );
-      //check type subtype
-      m_widget->setType( Widget::Line,  Widget::Stacked );
-      QCOMPARE( m_widget->type(), Widget::Line );
-      QCOMPARE( m_widget->subType(),  Widget::Stacked );
-      //check subtype
-      m_widget->setSubType( Widget::Percent );
-      QCOMPARE( m_widget->subType(),  Widget::Percent );
-  }
-
-  void testRetrieveDiagram()
-  {
-      m_widget->setType( Widget::Line );
-      QCOMPARE( m_widget->type(), Widget::Line );
-      QVERIFY( m_widget->barDiagram() == false );
-      QVERIFY( m_widget->pieDiagram() == false );
-      QVERIFY( m_widget->ringDiagram() == false );
-      QVERIFY( m_widget->polarDiagram() == false );
-      m_widget->setType( Widget::Polar );
-      QCOMPARE( m_widget->type(), Widget::Polar );
-      QVERIFY( m_widget->barDiagram() == false );
-      QVERIFY( m_widget->lineDiagram() == false );
-      QVERIFY( m_widget->ringDiagram() == false );
-      QVERIFY( m_widget->pieDiagram() == false );
-
-  }
-  void testLegendOwnerShip()
-  {
-      // check no legend
-      QCOMPARE( m_widget->allLegends().size(), 0 );
-      // check add legend - take legend - delete legend
-      m_widget->addLegend( Position::North );
-      QCOMPARE( m_widget->allLegends().size(), 1 );
-      Legend* legend ( m_widget->legend() );
-      m_widget->takeLegend( legend );
-      QCOMPARE( m_widget->allLegends().size(), 0 );
-      m_widget->replaceLegend( legend );
-      QCOMPARE( m_widget->allLegends().size(), 1 );
-      delete legend;
-      QCOMPARE( m_widget->allLegends().size(), 0 );
+      QVERIFY( m_widget->globalLeadingLeft() == false );
+      m_widget->setGlobalLeading( 2, 2, 2, 2 );
+      QCOMPARE( m_widget->globalLeadingLeft(), 2 );
+      QCOMPARE( m_widget->globalLeadingTop(), 2 );
+      QCOMPARE( m_widget->globalLeadingRight(), 2 );
+      QCOMPARE( m_widget->globalLeadingBottom(), 2 );
+      m_widget->setGlobalLeadingLeft( 5 );
+      QCOMPARE( m_widget->globalLeadingLeft(), 5 );
+      QCOMPARE( m_widget->globalLeadingTop(), 2 );
+      QCOMPARE( m_widget->globalLeadingRight(), 2 );
+      QCOMPARE( m_widget->globalLeadingBottom(), 2 );
+      m_widget->setGlobalLeadingTop( 5 );
+      QCOMPARE( m_widget->globalLeadingLeft(), 5 );
+      QCOMPARE( m_widget->globalLeadingTop(), 5 );
+      QCOMPARE( m_widget->globalLeadingRight(), 2 );
+      QCOMPARE( m_widget->globalLeadingBottom(), 2 );
+      m_widget->setGlobalLeadingRight( 5 );
+      QCOMPARE( m_widget->globalLeadingLeft(), 5 );
+      QCOMPARE( m_widget->globalLeadingTop(), 5 );
+      QCOMPARE( m_widget->globalLeadingRight(), 5 );
+      QCOMPARE( m_widget->globalLeadingBottom(), 2 );
+      m_widget->setGlobalLeadingBottom( 5 );
+      QCOMPARE( m_widget->globalLeadingLeft(), 5 );
+      QCOMPARE( m_widget->globalLeadingTop(), 5 );
+      QCOMPARE( m_widget->globalLeadingRight(), 5 );
+      QCOMPARE( m_widget->globalLeadingBottom(), 5 );
+      m_widget->setGlobalLeading( 2, 2, 2, 2 );
+      QCOMPARE( m_widget->globalLeadingLeft(), 2 );
+      QCOMPARE( m_widget->globalLeadingTop(), 2 );
+      QCOMPARE( m_widget->globalLeadingRight(), 2 );
+      QCOMPARE( m_widget->globalLeadingBottom(), 2 );
   }
 
   void testHeaderFooterOwnership()
@@ -116,6 +96,70 @@ private slots:
       delete h;
       QCOMPARE( m_widget->allHeadersFooters().size(), 0 );
   }
+
+  void testLegendOwnerShip()
+  {
+      // check no legend
+      QCOMPARE( m_widget->allLegends().size(), 0 );
+      // check add legend - take legend - delete legend
+      m_widget->addLegend( Position::North );
+      QCOMPARE( m_widget->allLegends().size(), 1 );
+      Legend* legend ( m_widget->legend() );
+      m_widget->takeLegend( legend );
+      QCOMPARE( m_widget->allLegends().size(), 0 );
+      m_widget->replaceLegend( legend );
+      QCOMPARE( m_widget->allLegends().size(), 1 );
+      delete legend;
+      QCOMPARE( m_widget->allLegends().size(), 0 );
+  }
+
+  void testRetrieveDiagram()
+  {
+      //set Cartesian type
+      m_widget->setType( Widget::Line );
+      QCOMPARE( m_widget->type(), Widget::Line );
+      QVERIFY( m_widget->barDiagram() == false );
+      QVERIFY( m_widget->pieDiagram() == false );
+      QVERIFY( m_widget->ringDiagram() == false );
+      QVERIFY( m_widget->polarDiagram() == false );
+      // set Polar type
+      m_widget->setType( Widget::Polar );
+      QCOMPARE( m_widget->type(), Widget::Polar );
+      QVERIFY( m_widget->barDiagram() == false );
+      QVERIFY( m_widget->lineDiagram() == false );
+      QVERIFY( m_widget->ringDiagram() == false );
+      QVERIFY( m_widget->pieDiagram() == false );
+      // reset default
+      m_widget->setType( Widget::Line );
+  }
+
+
+  void testDiagramTypeSubType()
+  {
+
+      QCOMPARE( m_widget->type(), Widget::Line );
+      QCOMPARE( m_widget->subType(),  Widget::Normal );
+      //check type subtype = default
+      m_widget->setType( Widget::Bar );
+      QCOMPARE( m_widget->type(), Widget::Bar );
+      QCOMPARE( m_widget->subType(),  Widget::Normal );
+      //check type subtype
+      m_widget->setType( Widget::Line,  Widget::Stacked );
+      QCOMPARE( m_widget->type(), Widget::Line );
+      QCOMPARE( m_widget->subType(),  Widget::Stacked );
+      //check subtype
+      m_widget->setSubType( Widget::Percent );
+      QCOMPARE( m_widget->subType(),  Widget::Percent );
+  }
+
+
+  void testPlaneOwnership()
+  {
+      // check plane
+      AbstractCoordinatePlane*orig = m_widget->coordinatePlane();
+      QCOMPARE( m_widget->coordinatePlane(), orig );
+  }
+
 
   void testWidgetDeletion()
   {
