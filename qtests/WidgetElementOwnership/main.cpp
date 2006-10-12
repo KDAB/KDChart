@@ -18,6 +18,30 @@ private slots:
   void initTestCase()
   {
       m_widget = new Widget(0);
+      QVector< double > vec0;
+      vec0.append( -2 );
+      vec0.append( -1 );
+      vec0.append( 0 );
+      vec0.append( 1 );
+      vec0.append( 2 );
+      m_widget->setDataset( 0, vec0, "Linear" );
+
+      QVector< double > vec1;
+      vec1.append( 4 );
+      vec1.append( 2 );
+      vec1.append( 0 );
+      vec1.append( 2 );
+      vec1.append( 4 );
+      m_widget->setDataset( 1, vec1, "Quadratic" );
+
+      QVector< double > vec2;
+      vec2.append( -8 );
+      vec2.append( -2 );
+      vec2.append( 0 );
+      vec2.append( 2 );
+      vec2.append( 8 );
+      m_widget->setDataset( 2, vec2, "Cubic" );
+
   }
 
   void testPlaneOwnership()
@@ -43,78 +67,40 @@ private slots:
       QCOMPARE( m_widget->subType(),  Widget::Percent );
   }
 
-/*
   void testLegendOwnerShip()
   {
       // check no legend
       QCOMPARE( m_widget->allLegends().size(), 0 );
       // check add legend - take legend - delete legend
-      m_widget->addLegend( North );
+      m_widget->addLegend( Position::North );
       QCOMPARE( m_widget->allLegends().size(), 1 );
-
-      m_chart->takeLegend( legend );
-      QCOMPARE( m_chart->legends().size(), 0 );
-      m_chart->addLegend( legend );
-      QCOMPARE( m_chart->legends().size(), 1 );
+      Legend* legend ( m_widget->legend() );
+      m_widget->takeLegend( legend );
+      QCOMPARE( m_widget->allLegends().size(), 0 );
+      m_widget->replaceLegend( legend );
+      QCOMPARE( m_widget->allLegends().size(), 1 );
       delete legend;
-      QCOMPARE( m_chart->legends().size(), 0 );
-
-  }
-
-  void testLegendReplace()
-    {
-
-      // check no legend
-      QCOMPARE( m_chart->legends().size(), 0 );
-      // check add several legends - take legend
-      // replace legend - delete legend
-      Legend * legend = new Legend( m_chart->coordinatePlane()->diagram() );
-      Legend * legend2 = new Legend( m_chart->coordinatePlane()->diagram() );
-      m_chart->addLegend( legend );
-      QCOMPARE( m_chart->legends().size(), 1 );
-      m_chart->addLegend( legend2 );
-      QCOMPARE( m_chart->legends().size(), 2 );
-      m_chart->takeLegend( legend );
-      QCOMPARE( m_chart->legends().size(), 1 );
-      QCOMPARE( m_chart->legend(), legend2 );
-      m_chart->replaceLegend( legend, legend2  );
-      QCOMPARE( m_chart->legends().size(), 1 );
-      delete legend;
-      QCOMPARE( m_chart->legends().size(), 0 );
+      QCOMPARE( m_widget->allLegends().size(), 0 );
   }
 
   void testHeaderFooterOwnership()
   {
-      QCOMPARE( m_chart->headerFooters().size(), 0 );
-      HeaderFooter * h = new HeaderFooter();
-      m_chart->addHeaderFooter( h );
-      QCOMPARE( m_chart->headerFooters().size(), 1 );
-      m_chart->takeHeaderFooter( h );
-      QCOMPARE( m_chart->headerFooters().size(), 0 );
-      m_chart->addHeaderFooter( h );
-      QCOMPARE( m_chart->headerFooters().size(), 1 );
-      delete h;
-      QCOMPARE( m_chart->headerFooters().size(), 0 );
-  }
-
-  void testHeaderFooterReplace()
-  {
-      QCOMPARE( m_chart->headerFooters().size(), 0 );
+      QCOMPARE( m_widget->allHeadersFooters().size(), 0 );
       HeaderFooter * h = new HeaderFooter();
       HeaderFooter * h1 = new HeaderFooter();
-      m_chart->addHeaderFooter( h );
-      QCOMPARE( m_chart->headerFooters().size(), 1 );
-      m_chart->addHeaderFooter( h1 );
-      QCOMPARE( m_chart->headerFooters().size(), 2 );
-      m_chart->takeHeaderFooter( h );
-      QCOMPARE( m_chart->headerFooters().size(), 1 );
-      QCOMPARE( m_chart->headerFooter(), h1 );
-      m_chart->replaceHeaderFooter( h,  h1 );
-      QCOMPARE( m_chart->headerFooters().size(), 1 );
+      m_widget->addHeaderFooter( h );
+      m_widget->addHeaderFooter( h1 );
+      QCOMPARE( m_widget->allHeadersFooters().size(), 2 );
+      QCOMPARE( m_widget->firstHeaderFooter(),  h );
+      m_widget->takeHeaderFooter( h );
+      QCOMPARE( m_widget->allHeadersFooters().size(), 1 );
+      QCOMPARE( m_widget->firstHeaderFooter(),  h1 );
+      m_widget->replaceHeaderFooter( h ,  h1 );
+      QCOMPARE( m_widget->allHeadersFooters().size(), 1 );
       delete h;
-      QCOMPARE( m_chart->headerFooters().size(), 0 );
+      QCOMPARE( m_widget->allHeadersFooters().size(), 0 );
   }
-*/
+
   void testWidgetDeletion()
   {
       delete m_widget;
@@ -122,6 +108,7 @@ private slots:
 
   void cleanupTestCase()
   {
+
   }
 
 private:
