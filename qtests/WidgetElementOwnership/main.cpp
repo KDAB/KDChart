@@ -44,7 +44,7 @@ private slots:
 
   }
 
-  void testGlobalLeadings()
+  void testPadding()
   {
       QVERIFY( m_widget->globalLeadingLeft() == false );
       m_widget->setGlobalLeading( 2, 2, 2, 2 );
