@@ -67,6 +67,22 @@ private slots:
       QCOMPARE( m_widget->subType(),  Widget::Percent );
   }
 
+  void testRetrieveDiagram()
+  {
+      m_widget->setType( Widget::Line );
+      QCOMPARE( m_widget->type(), Widget::Line );
+      QVERIFY( m_widget->barDiagram() == false );
+      QVERIFY( m_widget->pieDiagram() == false );
+      QVERIFY( m_widget->ringDiagram() == false );
+      QVERIFY( m_widget->polarDiagram() == false );
+      m_widget->setType( Widget::Polar );
+      QCOMPARE( m_widget->type(), Widget::Polar );
+      QVERIFY( m_widget->barDiagram() == false );
+      QVERIFY( m_widget->lineDiagram() == false );
+      QVERIFY( m_widget->ringDiagram() == false );
+      QVERIFY( m_widget->pieDiagram() == false );
+
+  }
   void testLegendOwnerShip()
   {
       // check no legend
