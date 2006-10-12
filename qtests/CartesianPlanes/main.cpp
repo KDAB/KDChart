@@ -1,6 +1,7 @@
 #include <QtTest/QtTest>
 #include <QStandardItemModel>
-
+#include <QPointF>
+#include <QString>
 #include <KDChartChart>
 #include <KDChartGlobal>
 #include <KDChartCartesianCoordinatePlane>
@@ -12,6 +13,14 @@
 #include <TableModel.h>
 
 using namespace KDChart;
+
+#if QT_VERSION < 0x040200
+namespace QTest{
+template <> inline char *toString(const QPointF &p) {
+    return qstrdup(QString::fromLatin1("QPointF(%1,%2)").arg(p.x()).arg(p.y()).toLatin1().constData());
+ }
+}
+#endif
 
 class TestPlanes: public QObject {
     Q_OBJECT
@@ -56,6 +65,20 @@ private slots:
         m_plane->takeDiagram( m_bars );
         QCOMPARE( m_plane->diagrams().size(),  0 );
         delete m_bars;
+    }
+
+    void testZoomFactorsSettings()
+    {
+        QCOMPARE( m_plane->zoomFactorX(),  1.0 );
+        QCOMPARE( m_plane->zoomFactorY(),  1.0 );
+        qDebug() << m_plane->zoomCenter();
+        QCOMPARE( m_plane->zoomCenter(), QPointF( 0.5, 0.5 ) );
+        m_plane->setZoomFactorX( 1.5 );
+        m_plane->setZoomFactorY( 1.5 );
+        m_plane->setZoomCenter( QPointF ( 1.0, 1.0 ) );
+        QCOMPARE( m_plane->zoomFactorX(),  1.5 );
+        QCOMPARE( m_plane->zoomFactorY(),  1.5 );
+        QCOMPARE( m_plane->zoomCenter(),  QPointF( 1.0, 1.0 ) );
     }
 
 
