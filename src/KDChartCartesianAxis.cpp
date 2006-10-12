@@ -540,7 +540,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     } else if( f + steg > maxLimit ){
                         // last label of the ordinate?
                         // shift it down a bit, to prevent it from being clipped away
-                        y = static_cast<int>( leftPoint.y() - ( met.ascent() + met.descent() ) * 0.4 );
+                        y = static_cast<int>( leftPoint.y() - met.ascent() * 0.1 );
                     } else{
                         y = static_cast<int>( leftPoint.y() - ( met.ascent() + met.descent() ) * 0.6 );
                     }
