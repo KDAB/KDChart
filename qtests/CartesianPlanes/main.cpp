@@ -8,6 +8,7 @@
 #include <KDChartAbstractCoordinatePlane>
 #include <KDChartBarDiagram>
 #include <KDChartLineDiagram>
+#include <KDChartGridAttributes>
 #include <KDChartLegend>
 
 #include <TableModel.h>
@@ -71,7 +72,6 @@ private slots:
     {
         QCOMPARE( m_plane->zoomFactorX(),  1.0 );
         QCOMPARE( m_plane->zoomFactorY(),  1.0 );
-        qDebug() << m_plane->zoomCenter();
         QCOMPARE( m_plane->zoomCenter(), QPointF( 0.5, 0.5 ) );
         m_plane->setZoomFactorX( 1.5 );
         m_plane->setZoomFactorY( 1.5 );
@@ -81,6 +81,14 @@ private slots:
         QCOMPARE( m_plane->zoomCenter(),  QPointF( 1.0, 1.0 ) );
     }
 
+    void testGlobalGridAttributesSettings()
+    {
+        GridAttributes ga = m_plane->globalGridAttributes();
+        QVERIFY( ga.isGridVisible() == true );
+        ga.setGridVisible(  false );
+        m_plane->setGlobalGridAttributes(  ga );
+        QVERIFY( m_plane->globalGridAttributes().isGridVisible() == false );
+    }
 
     void cleanupTestCase()
     {
