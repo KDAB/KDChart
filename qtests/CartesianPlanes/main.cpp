@@ -1,6 +1,7 @@
 #include <QtTest/QtTest>
 #include <QStandardItemModel>
 #include <QPointF>
+#include <QPair>
 #include <QString>
 #include <KDChartChart>
 #include <KDChartGlobal>
@@ -90,6 +91,30 @@ private slots:
         QVERIFY( m_plane->globalGridAttributes().isGridVisible() == false );
     }
 
+    void testIsometricScalingSettings()
+    {
+        QVERIFY( m_plane->doesIsometricScaling() == false );
+        m_plane->setIsometricScaling( true );
+        QVERIFY( m_plane->doesIsometricScaling() == true );
+    }
+
+    void testRangeSettings()
+    {
+        initTestCase ();
+        QPair< qreal,  qreal> range( 0, 0 );
+        m_plane->addDiagram(  m_bars );
+        QCOMPARE( m_plane->horizontalRange(),  range );
+        QCOMPARE( m_plane->verticalRange(),  range );
+        QPair< qreal,  qreal> hboundaries( m_bars->dataBoundaries().first.x(),
+                                           m_bars->dataBoundaries().second.x() );
+        QPair< qreal,  qreal> vboundaries( m_bars->dataBoundaries().first.y(),
+                                           m_bars->dataBoundaries().second.y() );
+        m_plane->setHorizontalRange( hboundaries );
+        m_plane->setVerticalRange( vboundaries );
+        QCOMPARE( m_plane->horizontalRange(), hboundaries );
+        QCOMPARE( m_plane->verticalRange(), vboundaries );
+    }
+
     void cleanupTestCase()
     {
     }
@@ -98,11 +123,11 @@ private:
     Chart *m_chart;
     BarDiagram *m_bars;
     LineDiagram *m_lines;
-    AbstractCoordinatePlane *m_plane;
+    CartesianCoordinatePlane *m_plane;
     TableModel *m_tableModel;
 
 };
 
-QTEST_MAIN(TestPlanes)
+QTEST_MAIN(TestCartesianPlanes)
 
 #include "main.moc"
