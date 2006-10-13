@@ -44,6 +44,7 @@
 #include "KDChartEnums.h"
 #include "KDChartLegend.h"
 #include "KDChartLayoutItems.h"
+#include <KDChartTextAttributes.h>
 #include "KDChartPainterSaver_p.h"
 
 #if defined KDAB_EVAL
@@ -879,6 +880,28 @@ void Chart::addLegend( Legend* legend )
 {
     d->legends.append( legend );
     legend->setParent( this );
+
+    TextAttributes textAttrs( legend->textAttributes() );
+    KDChart::Measure measure( textAttrs.fontSize() );
+    measure.setCalculationMode(
+        KDChartEnums::MeasureCalculationModeRelative );
+    measure.setRelativeMode(
+        this,
+        KDChartEnums::MeasureOrientationMinimum );
+    measure.setValue( 16 );
+    textAttrs.setFontSize( measure );
+    legend->setTextAttributes( textAttrs );
+
+    textAttrs = legend->titleTextAttributes();
+    measure.setCalculationMode(
+        KDChartEnums::MeasureCalculationModeRelative );
+    measure.setRelativeMode(
+        this,
+        KDChartEnums::MeasureOrientationMinimum );
+    measure.setValue( 20 );
+    textAttrs.setFontSize( measure );
+    legend->setTitleTextAttributes( textAttrs );
+
     connect( legend, SIGNAL( destroyedLegend( Legend* ) ),
              d, SLOT( slotUnregisterDestroyedLegend( Legend* ) ) );
     connect( legend, SIGNAL( positionChanged( AbstractAreaWidget* ) ),
