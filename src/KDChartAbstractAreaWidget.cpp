@@ -97,15 +97,17 @@ void AbstractAreaWidget::paintIntoRect( QPainter& painter, const QRect& rect )
 
 
 */
-    const QRect oldGeometry( geometry() );
-    if( oldGeometry != rect )
-        setGeometry( rect );
+    const QRect oldGeometry( layout()->geometry() );
+    const QRect newGeo( QRect( QPoint(0,0), rect.size() ) );
+    const bool mustChangeGeo = layout() && oldGeometry != newGeo;
+    if( mustChangeGeo )
+        layout()->setGeometry( newGeo );
 qDebug() << "       called with rect left/top:" << rect.left() << rect.top();
     painter.translate( rect.left(), rect.top() );
     paintAll( painter );
     painter.translate( -rect.left(), -rect.top() );
-    if( oldGeometry != rect )
-        setGeometry( oldGeometry );
+    if( mustChangeGeo )
+        layout()->setGeometry( oldGeometry );
 
 }
 
