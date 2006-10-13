@@ -34,12 +34,12 @@ using namespace KDChart;
 
 AbstractAreaWidget::Private::Private()
 {
-    // this bloc left empty intentionally
+    // this block left empty intentionally
 }
 
 AbstractAreaWidget::Private::~Private()
 {
-    // this bloc left empty intentionally
+    // this block left empty intentionally
 }
 
 /*
@@ -61,12 +61,17 @@ AbstractAreaWidget::AbstractAreaWidget( QWidget* parent )
 
 AbstractAreaWidget::~AbstractAreaWidget()
 {
-    // this bloc left empty intentionally
+    // this block left empty intentionally
 }
 
 void AbstractAreaWidget::init()
 {
-    // this bloc left empty intentionally
+    // this block left empty intentionally
+}
+
+void AbstractAreaWidget::needSizeHint()
+{
+    // this block left empty intentionally
 }
 
 #define d d_func()
@@ -97,6 +102,10 @@ void AbstractAreaWidget::paintIntoRect( QPainter& painter, const QRect& rect )
 
 
 */
+    // make sure, the contents of the widget have been set up,
+    // so we get a usefull geometry:
+    needSizeHint();
+
     const QRect oldGeometry( layout()->geometry() );
     const QRect newGeo( QRect( QPoint(0,0), rect.size() ) );
     const bool mustChangeGeo = layout() && oldGeometry != newGeo;

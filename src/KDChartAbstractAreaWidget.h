@@ -93,7 +93,18 @@ public:
       * before the normal paint() is invoked automatically.
       */
     void paintAll( QPainter& painter );
+
+    /**
+      * Call this to trigger an unconditional re-building of the widget's internals.
+      */ 
     virtual void forceRebuild();
+
+    /**
+      * Call this to trigger an conditional re-building of the widget's internals.
+      *
+      * e.g. AbstractAreaWidget call this, before calling layout()->setGeometry()
+      */ 
+    virtual void needSizeHint();
     //virtual void setGeometry( const QRect & rect );
 
 protected:

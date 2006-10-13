@@ -130,13 +130,15 @@ QSize Legend::minimumSizeHint() const
 
 QSize Legend::sizeHint() const
 {
-    // Re-build the Legend's content, if it has not been build yet,
-    // or if the Legend's geometry has changed, resp.
-    const_cast<KDChart::Legend*>(this)->buildLegend();
-
     return AbstractAreaWidget::sizeHint();
 }
 
+void Legend::needSizeHint()
+{
+    // Re-build the Legend's content, if it has not been build yet,
+    // or if the Legend's geometry has changed, resp.
+    buildLegend();
+}
 
 Legend* Legend::clone() const
 {
