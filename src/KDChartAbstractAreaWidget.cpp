@@ -113,7 +113,7 @@ void AbstractAreaWidget::paintIntoRect( QPainter& painter, const QRect& rect )
 
     d->resizeLayout( this, rect.size() );
 
-    const QPoint translation = rect.topLeft();
+    const QPoint translation( rect.topLeft() );
     painter.translate( translation );
     paintAll( painter );
     painter.translate( -translation.x(), -translation.y() );
@@ -170,7 +170,15 @@ void AbstractAreaWidget::paintAll( QPainter& painter )
         //forceRebuild();
     }
 */
+    int left;
+    int top;
+    int right;
+    int bottom;
+    getFrameLeadings( left, top, right, bottom );
+    const QPoint translation( left, top );
+    painter.translate( translation );
     paint( &painter );
+    painter.translate( -translation.x(), -translation.y() );
      //qDebug() << "AbstractAreaWidget::paintAll() done.";
 }
 
