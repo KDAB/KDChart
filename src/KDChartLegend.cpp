@@ -160,7 +160,7 @@ Legend* Legend::clone() const
     return legend;
 }
 
-//#define DEBUG_LEGEND_PAINT
+#define DEBUG_LEGEND_PAINT
 void Legend::paint( QPainter* painter )
 {
 #ifdef DEBUG_LEGEND_PAINT
@@ -615,7 +615,7 @@ void Legend::buildLegend()
         return;
     }
 #ifdef DEBUG_LEGEND_PAINT
-    qDebug() << "entering Legend::buildLegend()";
+    qDebug() << "entering Legend::buildLegend() **********************************";
 #endif
     d->needRebuild = false;
 

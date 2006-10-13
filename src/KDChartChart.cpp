@@ -883,24 +883,20 @@ void Chart::addLegend( Legend* legend )
 
     TextAttributes textAttrs( legend->textAttributes() );
     KDChart::Measure measure( textAttrs.fontSize() );
-    measure.setCalculationMode(
-        KDChartEnums::MeasureCalculationModeRelative );
     measure.setRelativeMode(
         this,
-        KDChartEnums::MeasureOrientationMinimum );
+        KDChartEnums::MeasureOrientationAuto );
     measure.setValue( 16 );
     textAttrs.setFontSize( measure );
     legend->setTextAttributes( textAttrs );
-
     textAttrs = legend->titleTextAttributes();
-    measure.setCalculationMode(
-        KDChartEnums::MeasureCalculationModeRelative );
     measure.setRelativeMode(
         this,
-        KDChartEnums::MeasureOrientationMinimum );
+        KDChartEnums::MeasureOrientationAuto );
     measure.setValue( 20 );
     textAttrs.setFontSize( measure );
     legend->setTitleTextAttributes( textAttrs );
+    legend->setReferenceArea( this );
 
     connect( legend, SIGNAL( destroyedLegend( Legend* ) ),
              d, SLOT( slotUnregisterDestroyedLegend( Legend* ) ) );
