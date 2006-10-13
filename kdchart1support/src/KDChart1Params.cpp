@@ -1815,6 +1815,7 @@ void KDChart1Params::setDataRainbowColors()
 void KDChart1Params::setDataSubduedColors( bool ordered )
 {
     updateK2Setting( K2DataSubduedColor );
+    Q_UNUSED(ordered);
     /*
 static const int NUM_SUBDUEDCOLORS = 18;
 static const QColor SUBDUEDCOLORS[ NUM_SUBDUEDCOLORS ] = {
