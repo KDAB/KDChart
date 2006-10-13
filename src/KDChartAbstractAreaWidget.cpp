@@ -107,7 +107,7 @@ void AbstractAreaWidget::paintIntoRect( QPainter& painter, const QRect& rect )
     needSizeHint();
 
     const QRect oldGeometry( layout()->geometry() );
-    const QRect newGeo( QRect( QPoint(0,0), rect.size() ) );
+    const QRect newGeo( QPoint(0,0), rect.size() );
     const bool mustChangeGeo = layout() && oldGeometry != newGeo;
     if( mustChangeGeo )
         layout()->setGeometry( newGeo );
