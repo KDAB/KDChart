@@ -1,4 +1,4 @@
-include( variables.pri )
+include( ../variables.pri )
 
 CONFIG += ordered
 
