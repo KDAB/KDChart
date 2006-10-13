@@ -18,6 +18,7 @@ solaris-cc:DEFINES += SUN7
 #  NOMINMAX avoids conflicting definitions of min and max
 #  _USE_MATH_DEFINES makes M_PI defined
 win32:DEFINES += NOMINMAX _USE_MATH_DEFINES
+win32:QMAKE_CXXFLAGS += /GX /GR /EHsc /wd4251
 
 CONFIG += depend_includepath
 
