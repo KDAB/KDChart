@@ -34,6 +34,8 @@
 #include <KDChartDataValueAttributes>
 #include <KDChartThreeDLineAttributes>
 #include <KDChartMarkerAttributes>
+#include <KDChartFrameAttributes>
+#include <KDChartBackgroundAttributes>
 #include <KDChartLegend>
 
 #include <QDebug>
@@ -41,9 +43,11 @@
 
 using namespace KDChart;
 
+
 // When set, this example uses FrameWidget which uses Chart::paint to paint itself.
 // When not set, this example uses a Chart widget directly.
 #define USE_FRAME_WIDGET 1
+
 
 MainWindow::MainWindow( QWidget* parent ) :
     QWidget( parent )
@@ -78,6 +82,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_lines->addAxis( axisTop );
     m_lines->addAxis( axisRight );
     m_chart = new Chart();
+
 #ifdef USE_FRAME_WIDGET
     chartFrameWidget->setChart( m_chart );
     // make sure, we re-draw after changing one of the chart's properties
@@ -86,8 +91,17 @@ MainWindow::MainWindow( QWidget* parent ) :
 #else
     chartLayout->addWidget( m_chart );
 #endif
+
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
 
+    FrameAttributes frameAttrs( m_chart->frameAttributes() );
+    frameAttrs.setPen( QPen(QColor(0x90,0x90,0xff), 3) );
+    m_chart->setFrameAttributes( frameAttrs );
+
+    BackgroundAttributes backgroundAttrs( m_chart->backgroundAttributes() );
+    backgroundAttrs.setVisible( true );
+    backgroundAttrs.setBrush( QColor(0xd0,0xd0,0xff) );
+    m_chart->setBackgroundAttributes( backgroundAttrs );
 
     // Set up the legend
     m_legend = new Legend( m_lines, m_chart );
@@ -317,13 +331,13 @@ void MainWindow::on_vSBar_valueChanged( int vPos )
 void MainWindow::on_savePB_clicked()
 {
     qDebug() << "Painting into PNG";
-    QPixmap qpix(400,600);
+    QPixmap qpix(600,600);
     QPainter painter(&qpix);
     painter.setBrush(Qt::white);
-    painter.fillRect( 0, 0, 400, 600, Qt::white);
+    painter.fillRect( 0, 0, 600, 600, Qt::white);
     m_chart->paint(
             &painter,
-            QRect(0, 0, 400, 600) );
+            QRect(100, 100, 400, 400) );
     painter.end();
     qpix.save("kdchart-demo.png", "PNG");
     qDebug() << "Painting into PNG - done";
