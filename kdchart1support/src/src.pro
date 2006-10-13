@@ -1,4 +1,4 @@
-include( ../variables.pri )
+include( ../../variables.pri )
 
 TEMPLATE = lib
 TARGET = kdchart1support
