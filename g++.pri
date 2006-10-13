@@ -1,5 +1,5 @@
 *-g++* {
-  NORMAL_CFLAGS = -pedantic -Wno-long-long -ansi
+  NORMAL_CFLAGS = -Wno-long-long -ansi
   NORMAL_CXXFLAGS = \
 	-Wnon-virtual-dtor -Wundef -Wcast-align \
 	-Wconversion -Wchar-subscripts -Wpointer-arith \
@@ -9,6 +9,7 @@
   # Qt-4.2 has tools/designer/src/lib/uilib/ui4_p.h:263: error: comma at end of enumerator list
   !contains($$list($$[QT_VERSION]), 4.2.*) {
         NORMAL_CXXFLAGS += -pedantic
+        NORMAL_CFLAGS += -pedantic
   }
 
   debug:NORMAL_CXXFLAGS += -O0 -g3
