@@ -8,7 +8,6 @@
 
   # Qt-4.2 has tools/designer/src/lib/uilib/ui4_p.h:263: error: comma at end of enumerator list
   !contains($$list($$[QT_VERSION]), 4.2.*) {
-        NORMAL_CXXFLAGS += -pedantic
         NORMAL_CFLAGS += -pedantic
   }
 
