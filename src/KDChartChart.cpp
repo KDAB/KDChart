@@ -803,9 +803,9 @@ void Chart::paint( QPainter* painter, const QRect& target )
     //qDebug() << "KDChart::Chart::paint() done.\n";
 }
 
-void Chart::resizeEvent ( QResizeEvent * event )
+void Chart::resizeEvent ( QResizeEvent * )
 {
-    d->slotLayoutPlanes();
+    d->resizeLayout( size() );
 }
 
 void Chart::paintEvent( QPaintEvent* )
