@@ -24,7 +24,7 @@ template <> inline char *toString(const QPointF &p) {
 }
 #endif
 
-class TestPlanes: public QObject {
+class TestCartesianPlanes: public QObject {
     Q_OBJECT
 private slots:
 
@@ -69,6 +69,14 @@ private slots:
         delete m_bars;
     }
 
+      void testIsometricScalingSettings()
+    {
+        QVERIFY( m_plane->doesIsometricScaling() == false );
+        m_plane->setIsometricScaling( true );
+        QVERIFY( m_plane->doesIsometricScaling() == true );
+    }
+
+
     void testZoomFactorsSettings()
     {
         QCOMPARE( m_plane->zoomFactorX(),  1.0 );
@@ -82,21 +90,6 @@ private slots:
         QCOMPARE( m_plane->zoomCenter(),  QPointF( 1.0, 1.0 ) );
     }
 
-    void testGlobalGridAttributesSettings()
-    {
-        GridAttributes ga = m_plane->globalGridAttributes();
-        QVERIFY( ga.isGridVisible() == true );
-        ga.setGridVisible(  false );
-        m_plane->setGlobalGridAttributes(  ga );
-        QVERIFY( m_plane->globalGridAttributes().isGridVisible() == false );
-    }
-
-    void testIsometricScalingSettings()
-    {
-        QVERIFY( m_plane->doesIsometricScaling() == false );
-        m_plane->setIsometricScaling( true );
-        QVERIFY( m_plane->doesIsometricScaling() == true );
-    }
 
     void testRangeSettings()
     {
@@ -114,6 +107,21 @@ private slots:
         QCOMPARE( m_plane->horizontalRange(), hboundaries );
         QCOMPARE( m_plane->verticalRange(), vboundaries );
     }
+
+    void testGlobalGridAttributesSettings()
+    {
+        GridAttributes ga = m_plane->globalGridAttributes();
+        QVERIFY( ga.isGridVisible() == true );
+        ga.setGridVisible(  false );
+        m_plane->setGlobalGridAttributes(  ga );
+        QVERIFY( m_plane->globalGridAttributes().isGridVisible() == false );
+        //reset to normal
+        ga.setGridVisible(  true );
+        QVERIFY( m_plane->globalGridAttributes().isGridVisible() == false );
+        m_plane->setGlobalGridAttributes(  ga );
+        QVERIFY( m_plane->globalGridAttributes().isGridVisible() == true );
+    }
+
 
     void cleanupTestCase()
     {
