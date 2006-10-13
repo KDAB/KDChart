@@ -92,6 +92,7 @@ void AbstractAreaWidget::needSizeHint()
 
 void AbstractAreaWidget::resizeLayout( const QSize& size )
 {
+    Q_UNUSED( size );
     // this block left empty intentionally
 }
 
