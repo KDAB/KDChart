@@ -122,6 +122,31 @@ private slots:
         QVERIFY( m_plane->globalGridAttributes().isGridVisible() == true );
     }
 
+    void testGridAttributesSettings()
+    {
+        GridAttributes gh = m_plane->gridAttributes( Qt::Horizontal );
+        GridAttributes gv = m_plane->gridAttributes( Qt::Vertical );
+        QVERIFY( gh.isGridVisible() == true );
+        QVERIFY( gv.isGridVisible() == true );
+        gh.setGridVisible( false );
+        m_plane->setGridAttributes( Qt::Horizontal, gh );
+        QVERIFY( m_plane->hasOwnGridAttributes( Qt::Horizontal ) == true );
+        QVERIFY( m_plane->hasOwnGridAttributes( Qt::Vertical ) == false );
+        QVERIFY( m_plane->gridAttributes( Qt::Horizontal ).isGridVisible() == false );
+        QVERIFY( m_plane->gridAttributes( Qt::Vertical ).isGridVisible() == true );
+        gv.setGridVisible( false );
+        m_plane->setGridAttributes( Qt::Vertical, gv );
+        QVERIFY( m_plane->hasOwnGridAttributes( Qt::Horizontal ) == true );
+        QVERIFY( m_plane->hasOwnGridAttributes( Qt::Vertical ) == true );
+        QVERIFY( m_plane->gridAttributes( Qt::Horizontal ).isGridVisible() == false );
+        QVERIFY( m_plane->gridAttributes( Qt::Vertical ).isGridVisible() == false );
+        m_plane->resetGridAttributes( Qt::Horizontal );
+        m_plane->resetGridAttributes( Qt::Vertical );
+        QVERIFY( m_plane->gridAttributes( Qt::Horizontal ).isGridVisible() == true );
+        QVERIFY( m_plane->gridAttributes( Qt::Vertical ).isGridVisible() == true );
+        QVERIFY( m_plane->hasOwnGridAttributes( Qt::Horizontal ) == false );
+        QVERIFY( m_plane->hasOwnGridAttributes( Qt::Vertical ) == false );
+    }
 
     void cleanupTestCase()
     {
