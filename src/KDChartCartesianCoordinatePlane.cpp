@@ -112,6 +112,7 @@ void CartesianCoordinatePlane::paint ( QPainter* painter )
         ctx.setRectangle ( drawArea );
 
         // enabling clipping so that we're not drawing outside
+        PainterSaver painterSaver( painter );
         QRect clipRect = drawArea.toRect().adjusted( -1, -1, 1, 1 );
         QRegion clipRegion( clipRect );
         painter->setClipRegion( clipRegion );
@@ -123,13 +124,10 @@ void CartesianCoordinatePlane::paint ( QPainter* painter )
         for ( int i = 0; i < diags.size(); i++ )
         {
 //qDebug("  start diags[i]->paint ( &ctx );");
-            PainterSaver painterSaver( painter );
+            PainterSaver diagramPainterSaver( painter );
             diags[i]->paint ( &ctx );
 //qDebug("  done: diags[i]->paint ( &ctx );");
         }
-
-        // and disable clipping afterwards
-        painter->setClipping( false );
 
         //for debugging:
         //    painter->drawRect( drawArea.adjusted(4,4,4,4) );

@@ -615,19 +615,10 @@ void Chart::Private::paintAll( QPainter* painter )
         layoutItem->paintAll( *painter );
     }
     KDAB_FOREACH( KDChart::AbstractArea* planeLayoutItem, planeLayoutItems ) {
-        planeLayoutItem->paintAll( *painter );
+		planeLayoutItem->paintAll( *painter );
     }
     KDAB_FOREACH( KDChart::TextArea* textLayoutItem, textLayoutItems ) {
         textLayoutItem->paintAll( *painter );
-    }
-    KDAB_FOREACH( Legend *legend, legends ) {
-        const bool hidden = legend->isHidden() && legend->testAttribute(Qt::WA_WState_ExplicitShowHide);
-        if ( !hidden ) {
-            //qDebug() << "painting legend at " << legend->geometry();
-            legend->paintIntoRect( *painter, legend->geometry() );
-            //testing:
-            //legend->paintIntoRect( *painter, legend->geometry().adjusted(-100,0,-100,0) );
-        }
     }
 }
 
@@ -798,7 +789,18 @@ void Chart::paint( QPainter* painter, const QRect& target )
     const QPoint translation = target.topLeft();
     painter->translate( translation );
     d->paintAll( painter );
-    painter->translate( -translation.x(), -translation.y() );
+    
+    KDAB_FOREACH( Legend *legend, d->legends ) {
+        const bool hidden = legend->isHidden() && legend->testAttribute(Qt::WA_WState_ExplicitShowHide);
+        if ( !hidden ) {
+            //qDebug() << "painting legend at " << legend->geometry();
+            legend->paintIntoRect( *painter, legend->geometry() );
+            //testing:
+            //legend->paintIntoRect( *painter, legend->geometry().adjusted(-100,0,-100,0) );
+        }
+	}
+
+	painter->translate( -translation.x(), -translation.y() );
 
     //qDebug() << "KDChart::Chart::paint() done.\n";
 }
