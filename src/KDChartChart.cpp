@@ -44,6 +44,7 @@
 #include "KDChartEnums.h"
 #include "KDChartLegend.h"
 #include "KDChartLayoutItems.h"
+#include "KDChartPainterSaver_p.h"
 
 #if defined KDAB_EVAL
 #include "../evaldialog/evaldialog.h"
@@ -580,22 +581,34 @@ void Chart::Private::resizeLayout( const QSize& size )
     currentLayoutSize = size;
     //qDebug() << "Chart::resizeLayout(" << currentLayoutSize << ")";
 
+/*
     // We need to make sure that the legend's layouts are populated,
     // so that setGeometry gets proper sizeHints from them and resizes them properly.
     KDAB_FOREACH( Legend *legend, legends ) {
         // This forceRebuild will see a wrong areaGeometry, but I don't care about geometries yet,
         // only about the fact that legends should have their contents populated.
         // -> it would be better to dissociate "building contents" and "resizing" in Legend...
-        legend->forceRebuild();
-    }
 
+//        legend->forceRebuild();
+
+        legend->resizeLayout( size );
+    }
+*/
     slotLayoutPlanes(); // includes slotRelayout
 
     //qDebug() << "Chart::resizeLayout done";
 }
 
+
 void Chart::Private::paintAll( QPainter* painter )
 {
+    // Paint the background (if any)
+    KDChart::AbstractAreaBase::paintBackgroundAttributes(
+        *painter, QRect(QPoint(0, 0), currentLayoutSize), backgroundAttributes );
+    // Paint the frame (if any)
+    KDChart::AbstractAreaBase::paintFrameAttributes(
+        *painter, QRect(QPoint(0, 0), currentLayoutSize), frameAttributes );
+
     KDAB_FOREACH( KDChart::AbstractArea* layoutItem, layoutItems ) {
         layoutItem->paintAll( *painter );
     }
@@ -610,6 +623,8 @@ void Chart::Private::paintAll( QPainter* painter )
         if ( !hidden ) {
             //qDebug() << "painting legend at " << legend->geometry();
             legend->paintIntoRect( *painter, legend->geometry() );
+            //testing:
+            //legend->paintIntoRect( *painter, legend->geometry().adjusted(-100,0,-100,0) );
         }
     }
 }
@@ -624,6 +639,12 @@ Chart::Chart ( QWidget* parent )
     EvalDialog::checkEvalLicense( "KD Chart" );
 #endif
 
+    FrameAttributes frameAttrs;
+    frameAttrs.setVisible( true );
+    frameAttrs.setPen( QPen( Qt::black ) );
+    frameAttrs.setPadding( 1 );
+    setFrameAttributes( frameAttrs );
+
     addCoordinatePlane( new CartesianCoordinatePlane ( this ) );
 }
 
@@ -633,6 +654,26 @@ Chart::~Chart()
 }
 
 #define d d_func()
+
+void Chart::setFrameAttributes( const FrameAttributes &a )
+{
+    d->frameAttributes = a;
+}
+
+FrameAttributes Chart::frameAttributes() const
+{
+    return d->frameAttributes;
+}
+
+void Chart::setBackgroundAttributes( const BackgroundAttributes &a )
+{
+    d->backgroundAttributes = a;
+}
+
+BackgroundAttributes Chart::backgroundAttributes() const
+{
+    return d->backgroundAttributes;
+}
 
 AbstractCoordinatePlane* Chart::coordinatePlane()
 {
@@ -751,8 +792,6 @@ void Chart::paint( QPainter* painter, const QRect& target )
     if( target.size() != d->currentLayoutSize ){
         d->resizeLayout( target.size() );
     }
-
-    painter->drawRect( target );
 
     const QPoint translation = target.topLeft();
     painter->translate( translation );

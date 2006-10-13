@@ -218,6 +218,9 @@ public:
     // called internally by KDChart::Chart, when painting into a custom QPainter
     virtual void forceRebuild();
 
+    virtual QSize minimumSizeHint() const;
+    virtual QSize sizeHint() const;
+
 /*public static*/
 //    static LegendPosition stringToPosition( QString name, bool* ok=0 );
 

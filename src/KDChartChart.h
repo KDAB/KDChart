@@ -33,6 +33,8 @@
 
 namespace KDChart {
 
+    class BackgroundAttributes;
+    class FrameAttributes;
     class AbstractDiagram;
     class AbstractCoordinatePlane;
     class HeaderFooter;
@@ -71,6 +73,37 @@ namespace KDChart {
     public:
         explicit Chart ( QWidget* parent = 0 );
         ~Chart();
+
+        /**
+          \brief Specify the frame attributes to be used, by default is it a thin black line.
+
+          To hide the frame line, you could do something like this:
+          \verbatim
+          KDChart::FrameAttributes frameAttrs( my_chart->frameAttributes() );
+          frameAttrs.setVisible( false );
+          my_chart->setFrameAttributes( frameAttrs );
+          \endverbatim
+
+          \sa setBackgroundAttributes
+          */
+        void setFrameAttributes( const FrameAttributes &a );
+        FrameAttributes frameAttributes() const;
+
+        /**
+          \brief Specify the background attributes to be used, by default there is no background.
+
+          To set a light blue background, you could do something like this:
+          \verbatim
+          KDChart::BackgroundAttributes backgroundAttrs( my_chart->backgroundAttributes() );
+          backgroundAttrs.setVisible( true );
+          backgroundAttrs.setBrush( QColor(0xd0,0xd0,0xff) );
+          my_chart->setBackgroundAttributes( backgroundAttrs );
+          \endverbatim
+
+          \sa setFrameAttributes
+          */
+        void setBackgroundAttributes( const BackgroundAttributes &a );
+        BackgroundAttributes backgroundAttributes() const;
 
         /**
          * Each chart must have at least one coordinate plane.

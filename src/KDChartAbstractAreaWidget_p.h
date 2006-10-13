@@ -65,6 +65,9 @@ public:
             // Just for consistency
         }
 
+//    QSize currentLayoutSize;
+
+//    virtual void resizeLayout( const QSize& sz );
 };
 
 

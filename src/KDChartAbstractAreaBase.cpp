@@ -100,13 +100,10 @@ BackgroundAttributes AbstractAreaBase::backgroundAttributes() const
 }
 
 
-void AbstractAreaBase::paintBackground( QPainter& painter, const QRect& rect )
+/* static */
+void AbstractAreaBase::paintBackgroundAttributes( QPainter& painter, const QRect& rect,
+    const KDChart::BackgroundAttributes& attributes )
 {
-    Q_ASSERT_X ( d != 0, "AbstractAreaBase::paintBackground()",
-                "Private class was not initialized!" );
-
-#define attributes d->backgroundAttributes
-
     if( !attributes.isVisible() ) return;
 
     /* first draw the brush (may contain a pixmap)*/
@@ -151,7 +148,33 @@ void AbstractAreaBase::paintBackground( QPainter& painter, const QRect& rect )
             painter.drawPixmap( ol, pm );
         }
     }
-#undef attributes
+}
+
+/* static */
+void AbstractAreaBase::paintFrameAttributes( QPainter& painter, const QRect& rect,
+    const KDChart::FrameAttributes& attributes )
+{
+
+    if( !attributes.isVisible() ) return;
+
+    // Note: We set the brush to NoBrush explicitely here.
+    //       Otherwise we might get a filled rectangle, so any
+    //       previously drawn background would be overwritten by that area.
+
+    const QPen   oldPen(   painter.pen() );
+    const QBrush oldBrush( painter.brush() );
+    painter.setPen(   attributes.pen() );
+    painter.setBrush( Qt::NoBrush );
+    painter.drawRect( rect );
+    painter.setBrush( oldBrush );
+    painter.setPen(   oldPen );
+}
+
+void AbstractAreaBase::paintBackground( QPainter& painter, const QRect& rect )
+{
+    Q_ASSERT_X ( d != 0, "AbstractAreaBase::paintBackground()",
+                "Private class was not initialized!" );
+    paintBackgroundAttributes( painter, rect, d->backgroundAttributes );
 }
 
 
@@ -159,16 +182,7 @@ void AbstractAreaBase::paintFrame( QPainter& painter, const QRect& rect )
 {
     Q_ASSERT_X ( d != 0, "AbstractAreaBase::paintFrame()",
                 "Private class was not initialized!" );
-
-#define attributes d->frameAttributes
-
-    if( !attributes.isVisible() ) return;
-
-    const QPen oldPen( painter.pen() );
-    painter.setPen( attributes.pen() );
-    painter.drawRect( rect );
-    painter.setPen( oldPen );
-#undef attributes
+    paintFrameAttributes( painter, rect, d->frameAttributes );
 }
 
 

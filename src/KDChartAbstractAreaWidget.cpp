@@ -42,6 +42,15 @@ AbstractAreaWidget::Private::~Private()
     // this bloc left empty intentionally
 }
 
+/*
+void AbstractAreaWidget::Private::resizeLayout( const QSize& size )
+{
+    currentLayoutSize = size;
+    //qDebug() << "AbstractAreaWidget::resizeLayout(" << currentLayoutSize << ")";
+    layout()->setGeometry( size );
+    //qDebug() << "AbstractAreaWidget::resizeLayout done";
+}
+*/
 
 AbstractAreaWidget::AbstractAreaWidget( QWidget* parent )
     : QWidget( parent )
@@ -71,14 +80,33 @@ void AbstractAreaWidget::paintEvent( QPaintEvent* event )
 
 void AbstractAreaWidget::paintIntoRect( QPainter& painter, const QRect& rect )
 {
+    qDebug() << "AbstractAreaWidget::paintIntoRect() called";
+/*
+
+    if( rect.isEmpty() ) return;
+
+    if( rect.size() != d->currentLayoutSize ){
+        d->resizeLayout( rect.size() );
+    }
+
+    const QPoint translation = rect.topLeft();
+    painter.translate( translation );
+    d->paintAll( painter );
+    painter.translate( -translation.x(), -translation.y() );
+
+
+
+*/
     const QRect oldGeometry( geometry() );
     if( oldGeometry != rect )
         setGeometry( rect );
+qDebug() << "       called with rect left/top:" << rect.left() << rect.top();
     painter.translate( rect.left(), rect.top() );
     paintAll( painter );
     painter.translate( -rect.left(), -rect.top() );
     if( oldGeometry != rect )
         setGeometry( oldGeometry );
+
 }
 
 void AbstractAreaWidget::forceRebuild()
@@ -88,10 +116,11 @@ void AbstractAreaWidget::forceRebuild()
 
 void AbstractAreaWidget::paintAll( QPainter& painter )
 {
-     //qDebug() << "AbstractAreaWidget::paintAll() called";
+     qDebug() << "AbstractAreaWidget::paintAll() called";
+
     // Paint the background and frame
-    paintBackground( painter, rect() );
-    paintFrame(      painter, rect().adjusted(0,0,-1,-1) );
+    paintBackground( painter, QRect(QPoint(0, 0), size()) );
+    paintFrame(      painter, QRect(QPoint(0, 0), size()) );
 
     // adjust the widget's content margins,
     // to be sure all content gets calculated

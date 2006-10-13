@@ -122,6 +122,22 @@ void Legend::init()
     d->alignment = Qt::AlignCenter;
 }
 
+
+QSize Legend::minimumSizeHint() const
+{
+    return sizeHint();
+}
+
+QSize Legend::sizeHint() const
+{
+    // Re-build the Legend's content, if it has not been build yet,
+    // or if the Legend's geometry has changed, resp.
+    const_cast<KDChart::Legend*>(this)->buildLegend();
+
+    return AbstractAreaWidget::sizeHint();
+}
+
+
 Legend* Legend::clone() const
 {
     Legend* legend = new Legend( new Private( *d ), 0 );

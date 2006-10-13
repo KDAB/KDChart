@@ -44,6 +44,8 @@
 #include "KDChartChart.h"
 #include "KDChartAbstractArea.h"
 #include "KDChartTextArea.h"
+#include "KDChartFrameAttributes.h"
+#include "KDChartBackgroundAttributes.h"
 #include "KDChartLayoutItems.h"
 
 #include <KDABLibFakes>
@@ -103,6 +105,12 @@ class Chart::Private : public QObject
 
         QSize currentLayoutSize;
 
+        // since we do not want to derive Chart from AbstractAreaBase,
+        // we store the attributes here, and then we call two static painting
+        // methods to drawn the background (or frame, resp.).
+        KDChart::FrameAttributes frameAttributes;
+        KDChart::BackgroundAttributes backgroundAttributes;
+
         int globalLeadingLeft, globalLeadingRight, globalLeadingTop, globalLeadingBottom;
 
         Private ( Chart* );
@@ -114,7 +122,6 @@ class Chart::Private : public QObject
         void layoutHeadersAndFooters();
         void resizeLayout( const QSize& sz );
         void paintAll( QPainter* painter );
-
 
         struct AxisInfo {
             AxisInfo()

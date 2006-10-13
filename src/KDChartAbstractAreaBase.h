@@ -37,6 +37,7 @@
 #include "KDChartGlobal.h"
 #include "KDChartLayoutItems.h"
 #include "KDChartRelativePosition.h"
+#include "KDChartAbstractAreaBase.h"
 
 
 class QPainter;
@@ -88,6 +89,11 @@ public:
 
     virtual void paintBackground( QPainter& painter, const QRect& rectangle );
     virtual void paintFrame( QPainter& painter, const QRect& rectangle );
+
+    static void paintBackgroundAttributes( QPainter& painter, const QRect& rectangle,
+        const KDChart::BackgroundAttributes& attributes );
+    static void paintFrameAttributes( QPainter& painter, const QRect& rectangle,
+        const KDChart::FrameAttributes& attributes );
 
 
 protected:
