@@ -4,9 +4,15 @@
 	-Wnon-virtual-dtor -Wundef -Wcast-align \
 	-Wconversion -Wchar-subscripts -Wpointer-arith \
 	-Wwrite-strings -Wpacked -Wformat-security \
-        -Wmissing-format-attribute -Woverloaded-virtual \
-        -pedantic
+        -Wmissing-format-attribute -Woverloaded-virtual
+
+  # Qt-4.2 has tools/designer/src/lib/uilib/ui4_p.h:263: error: comma at end of enumerator list
+  !contains($$list($$[QT_VERSION]), 4.2.*) {
+        NORMAL_CXXFLAGS += -pedantic
+  }
+
   debug:NORMAL_CXXFLAGS += -O0 -g3
+  debug:NORMAL_CXXFLAGS -= -g
   USABLE_CXXFLAGS = -Wold-style-cast
   HARD_CXXFLAGS = -Weffc++ -Wshadow
   PITA_CXXFLAGS = -Wunreachable-code
