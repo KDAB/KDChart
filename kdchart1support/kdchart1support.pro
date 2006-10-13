@@ -1,4 +1,4 @@
-include( ../variables.pri )
+include( kdchart1support.pri )
 
 CONFIG += ordered
 
