@@ -85,7 +85,7 @@ void AbstractAreaWidget::paintEvent( QPaintEvent* event )
 
 void AbstractAreaWidget::paintIntoRect( QPainter& painter, const QRect& rect )
 {
-    qDebug() << "AbstractAreaWidget::paintIntoRect() called";
+    qDebug() << "AbstractAreaWidget::paintIntoRect() called rect=" << rect;
 /*
 
     if( rect.isEmpty() ) return;
@@ -111,7 +111,6 @@ void AbstractAreaWidget::paintIntoRect( QPainter& painter, const QRect& rect )
     const bool mustChangeGeo = layout() && oldGeometry != newGeo;
     if( mustChangeGeo )
         layout()->setGeometry( newGeo );
-qDebug() << "       called with rect left/top:" << rect.left() << rect.top();
     painter.translate( rect.left(), rect.top() );
     paintAll( painter );
     painter.translate( -rect.left(), -rect.top() );
@@ -127,7 +126,7 @@ void AbstractAreaWidget::forceRebuild()
 
 void AbstractAreaWidget::paintAll( QPainter& painter )
 {
-     qDebug() << "AbstractAreaWidget::paintAll() called";
+    //qDebug() << "AbstractAreaWidget::paintAll() called";
 
     // Paint the background and frame
     paintBackground( painter, QRect(QPoint(0, 0), size()) );

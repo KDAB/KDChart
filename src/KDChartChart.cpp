@@ -176,6 +176,8 @@ void Chart::Private::layoutLegends()
 
     Q_FOREACH( Legend *legend, legends ) {
 
+        legend->needSizeHint(); // we'll lay it out soon
+
         bool bOK = true;
         int row, column;
         switch( legend->position().value() ) {

@@ -57,7 +57,8 @@ Legend::Private::Private() :
     textAttributes(),
     titleText( QObject::tr( "Legend" ) ),
     titleTextAttributes(),
-    spacing( 1 )
+    spacing( 1 ),
+    needRebuild( true )
 {
     // this bloc left empty intentionally
 }
@@ -151,17 +152,14 @@ Legend* Legend::clone() const
     return legend;
 }
 
-//#define debug_legend_paint
+//#define DEBUG_LEGEND_PAINT
 void Legend::paint( QPainter* painter )
 {
-#ifdef debug_legend_paint
+#ifdef DEBUG_LEGEND_PAINT
     qDebug() << "entering Legend::paint( QPainter* painter )";
 #endif
     // rule: We do not show a legend, if there is no diagram.
     if( ! diagram() ) return;
-#ifdef debug_legend_paint
-    qDebug() << "        Legend::paint() areaGeometry: " << areaGeometry();
-#endif
 
     // re-calculate/adjust the Legend's internal layout and contents, if needed:
     buildLegend();
@@ -171,7 +169,7 @@ void Legend::paint( QPainter* painter )
     Q_FOREACH( KDChart::AbstractLayoutItem* layoutItem, d->layoutItems ) {
         layoutItem->paint( painter );
     }
-#ifdef debug_legend_paint
+#ifdef DEBUG_LEGEND_PAINT
     qDebug() << "leaving Legend::paint( QPainter* painter )";
 #endif
 }
@@ -290,7 +288,7 @@ void Legend::setVisible( bool visible )
 
 void Legend::setNeedRebuild()
 {
-    d->cachedGeometry = QRectF();
+    d->needRebuild = true;
 }
 
 void Legend::setPosition( Position position )
@@ -486,13 +484,13 @@ TextAttributes Legend::titleTextAttributes() const
 
 void Legend::forceRebuild()
 {
-#ifdef debug_legend_paint
+#ifdef DEBUG_LEGEND_PAINT
     qDebug() << "entering Legend::forceRebuild()";
 #endif
     //setSpacing(d->layout->spacing());
     setNeedRebuild();
     buildLegend();
-#ifdef debug_legend_paint
+#ifdef DEBUG_LEGEND_PAINT
     qDebug() << "leaving Legend::forceRebuild()";
 #endif
 }
@@ -590,7 +588,7 @@ static const QColor SUBDUEDCOLORS[ NUM_SUBDUEDCOLORS ] = {
 
 void Legend::resizeEvent ( QResizeEvent * event )
 {
-#ifdef debug_legend_paint
+#ifdef DEBUG_LEGEND_PAINT
     qDebug() << "Legend::resizeEvent() called";
 #endif
     forceRebuild();
@@ -599,11 +597,8 @@ void Legend::resizeEvent ( QResizeEvent * event )
 
 void Legend::buildLegend()
 {
-#ifdef debug_legend_paint
-    qDebug() << "entering Legend::buildLegend()";
-#endif
-    if( d->cachedGeometry == areaGeometry() ) {
-#ifdef debug_legend_paint
+    if( !d->needRebuild ) {
+#ifdef DEBUG_LEGEND_PAINT
         qDebug() << "leaving Legend::buildLegend() with NO action (was already build)";
 #endif
         // Note: We do *not* need to send positionChanged here,
@@ -611,11 +606,10 @@ void Legend::buildLegend()
         //       is done at the right time.
         return;
     }
-    d->cachedGeometry = areaGeometry();
-
-#ifdef debug_legend_paint
-    qDebug() << "        Legend::buildLegend() areaGeometry: " << areaGeometry();
+#ifdef DEBUG_LEGEND_PAINT
+    qDebug() << "entering Legend::buildLegend()";
 #endif
+    d->needRebuild = false;
 
     Q_FOREACH( QLayoutItem* layoutItem, d->layoutItems ) {
         d->layout->removeItem( layoutItem );
@@ -756,7 +750,7 @@ void Legend::buildLegend()
     emit propertiesChanged();
     //emit positionChanged( this );
     //emitPositionChanged();
-#ifdef debug_legend_paint
+#ifdef DEBUG_LEGEND_PAINT
     qDebug() << "leaving Legend::buildLegend()";
 #endif
 }

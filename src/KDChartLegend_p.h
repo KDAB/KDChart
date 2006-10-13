@@ -88,7 +88,8 @@ public:
         textAttributes( rhs.textAttributes ),
         titleText( rhs.titleText ),
         titleTextAttributes( rhs.titleTextAttributes ),
-        spacing( rhs.spacing )
+        spacing( rhs.spacing ),
+        needRebuild( true )
         {
         }
 
@@ -119,7 +120,7 @@ private:
     uint spacing;
 
     // internal
-    QRectF cachedGeometry;
+    bool needRebuild;
     mutable QStringList modelLabels;
     mutable QList<QBrush> modelBrushes;
     mutable QList<QPen> modelPens;
