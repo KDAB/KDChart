@@ -34,7 +34,7 @@
 */
 
 
-static char * xpmUSD[] = {
+static const char * xpmUSD[] = {
     "54 44 10 1",
     "   c None",
     "+  c #D1F0E7",
@@ -92,7 +92,7 @@ static char * xpmUSD[] = {
     "                                                      "};
 
 
-static char *xpmKlaralven[] = {
+static const char *xpmKlaralven[] = {
     /* width height ncolors chars_per_pixel */
     "137 103 256 2",
     /* colors */
