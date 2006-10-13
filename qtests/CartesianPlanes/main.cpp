@@ -148,6 +148,21 @@ private slots:
         QVERIFY( m_plane->hasOwnGridAttributes( Qt::Vertical ) == false );
     }
 
+    void testAxesCalcModesSettings()
+    {
+        QCOMPARE( m_plane->axesCalcModeX(), AbstractCoordinatePlane::Linear );
+        QCOMPARE( m_plane->axesCalcModeY(), AbstractCoordinatePlane::Linear );
+        m_plane->setAxesCalcModes(  AbstractCoordinatePlane::Logarithmic );
+        QCOMPARE( m_plane->axesCalcModeX(), AbstractCoordinatePlane::Logarithmic );
+        QCOMPARE( m_plane->axesCalcModeY(), AbstractCoordinatePlane::Logarithmic );
+        m_plane->setAxesCalcModeX(  AbstractCoordinatePlane::Linear );
+        QCOMPARE( m_plane->axesCalcModeX(), AbstractCoordinatePlane::Linear );
+        QCOMPARE( m_plane->axesCalcModeY(), AbstractCoordinatePlane::Logarithmic );
+        m_plane->setAxesCalcModeY(  AbstractCoordinatePlane::Linear );
+        QCOMPARE( m_plane->axesCalcModeX(), AbstractCoordinatePlane::Linear );
+        QCOMPARE( m_plane->axesCalcModeY(), AbstractCoordinatePlane::Linear );
+    }
+
     void cleanupTestCase()
     {
     }
