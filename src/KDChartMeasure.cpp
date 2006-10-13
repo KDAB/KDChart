@@ -108,7 +108,7 @@ qreal Measure::calculatedValue( const QObject* autoArea,
             QSize size;
             const QWidget* widget = dynamic_cast<const QWidget*>(area);
             if( widget ){
-                size = widget->geometry().size();
+                size = widget->layout()->geometry().size();
             }else{
                 const AbstractArea* kdcArea = dynamic_cast<const AbstractArea*>(area);
                 if( kdcArea ){

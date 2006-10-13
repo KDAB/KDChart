@@ -790,7 +790,7 @@ void Chart::paint( QPainter* painter, const QRect& target )
     const QPoint translation = target.topLeft();
     painter->translate( translation );
     d->paintAll( painter );
-    
+
     KDAB_FOREACH( Legend *legend, d->legends ) {
         const bool hidden = legend->isHidden() && legend->testAttribute(Qt::WA_WState_ExplicitShowHide);
         if ( !hidden ) {
