@@ -19,8 +19,6 @@ solaris-cc:DEFINES += SUN7
 #  _USE_MATH_DEFINES makes M_PI defined
 win32:DEFINES += NOMINMAX _USE_MATH_DEFINES
 
-linux-g++:QMAKE_CXXFLAGS += -pedantic -Wno-long-long
-
 CONFIG += depend_includepath
 
 contains(TEMPLATE, lib) {
