@@ -98,13 +98,18 @@ public:
 
 protected:
     /** \internal
-      * This internal method is used by AbstractArea and AbstractAreaWidget
-      * to reduce the size of the area before calling paint( QPainter ).
       * \note Normally you should not call this method, but derive your classes
       * from AbstractArea or AbstractAreaWidget.
       * \sa AbstractArea, AbstractAreaWidget
       */
     QRect innerRect() const;
+
+    /** \internal
+      * \note Normally you should not call this method, but derive your classes
+      * from AbstractArea or AbstractAreaWidget.
+      * \sa AbstractArea, AbstractAreaWidget
+      */
+    void getFrameLeadings(int& left, int& top, int& right, int& bottom ) const;
 
     /** \internal
       * This internal method is used by AbstractArea and AbstractAreaWidget

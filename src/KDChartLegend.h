@@ -221,6 +221,7 @@ public:
     virtual QSize minimumSizeHint() const;
     virtual QSize sizeHint() const;
     virtual void needSizeHint();
+    virtual void resizeLayout( const QSize& size );
 
 /*public static*/
 //    static LegendPosition stringToPosition( QString name, bool* ok=0 );

@@ -42,15 +42,29 @@ AbstractAreaWidget::Private::~Private()
     // this block left empty intentionally
 }
 
-/*
-void AbstractAreaWidget::Private::resizeLayout( const QSize& size )
+
+void AbstractAreaWidget::Private::resizeLayout(
+    AbstractAreaWidget* widget, const QSize& size )
 {
+    if( size == currentLayoutSize ) return;
+
     currentLayoutSize = size;
-    //qDebug() << "AbstractAreaWidget::resizeLayout(" << currentLayoutSize << ")";
-    layout()->setGeometry( size );
-    //qDebug() << "AbstractAreaWidget::resizeLayout done";
+
+    // Now we call adjust the size, for the inner parts of the widget.
+    int left;
+    int top;
+    int right;
+    int bottom;
+    widget->getFrameLeadings( left, top, right, bottom );
+    const QSize innerSize( size.width() - left - right,
+                           size.height() - top - bottom );
+    // With tis adjusted size we call the real resizeLayout method,
+    // which normally will call resizeLayout( size ) in the derived class
+    // - which in turn is the place to resize the layout member variable
+    // of that class.
+    widget->resizeLayout( innerSize );
 }
-*/
+
 
 AbstractAreaWidget::AbstractAreaWidget( QWidget* parent )
     : QWidget( parent )
@@ -76,32 +90,35 @@ void AbstractAreaWidget::needSizeHint()
 
 #define d d_func()
 
+void AbstractAreaWidget::resizeLayout( const QSize& size )
+{
+    // this block left empty intentionally
+}
+
 void AbstractAreaWidget::paintEvent( QPaintEvent* event )
 {
     Q_UNUSED( event );
     QPainter painter( this );
+    if( size() != d->currentLayoutSize ){
+        d->resizeLayout( this, size() );
+    }
     paintAll( painter );
 }
 
 void AbstractAreaWidget::paintIntoRect( QPainter& painter, const QRect& rect )
 {
     qDebug() << "AbstractAreaWidget::paintIntoRect() called rect=" << rect;
-/*
 
     if( rect.isEmpty() ) return;
 
-    if( rect.size() != d->currentLayoutSize ){
-        d->resizeLayout( rect.size() );
-    }
+    d->resizeLayout( this, rect.size() );
 
     const QPoint translation = rect.topLeft();
     painter.translate( translation );
-    d->paintAll( painter );
+    paintAll( painter );
     painter.translate( -translation.x(), -translation.y() );
 
-
-
-*/
+/*
     // make sure, the contents of the widget have been set up,
     // so we get a usefull geometry:
     needSizeHint();
@@ -116,7 +133,7 @@ void AbstractAreaWidget::paintIntoRect( QPainter& painter, const QRect& rect )
     painter.translate( -rect.left(), -rect.top() );
     if( mustChangeGeo )
         layout()->setGeometry( oldGeometry );
-
+*/
 }
 
 void AbstractAreaWidget::forceRebuild()
@@ -131,6 +148,10 @@ void AbstractAreaWidget::paintAll( QPainter& painter )
     // Paint the background and frame
     paintBackground( painter, QRect(QPoint(0, 0), size()) );
     paintFrame(      painter, QRect(QPoint(0, 0), size()) );
+
+/*
+    we do not call setContentsMargins() now,
+    but we call resizeLayout() whenever the size or the frame has changed
 
     // adjust the widget's content margins,
     // to be sure all content gets calculated
@@ -148,6 +169,7 @@ void AbstractAreaWidget::paintAll( QPainter& painter )
             oldGeometry.height()-inner.height()-1 );
         //forceRebuild();
     }
+*/
     paint( &painter );
      //qDebug() << "AbstractAreaWidget::paintAll() done.";
 }

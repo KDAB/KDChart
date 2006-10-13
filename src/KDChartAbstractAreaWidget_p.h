@@ -65,9 +65,10 @@ public:
             // Just for consistency
         }
 
-//    QSize currentLayoutSize;
+    QSize currentLayoutSize;
 
-//    virtual void resizeLayout( const QSize& sz );
+    // non-virtual method, calling widget->resizeLayout( size )
+    void resizeLayout( AbstractAreaWidget* widget, const QSize& sz ); 
 };
 
 

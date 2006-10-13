@@ -111,6 +111,8 @@ protected:
     virtual ~AbstractAreaWidget() ;
     virtual QRect areaGeometry() const;
     virtual void positionHasChanged();
+    virtual void resizeLayout( const QSize& );
+
 
 public:
 //    virtual AbstractAreaWidget * clone() const = 0;

@@ -141,6 +141,14 @@ void Legend::needSizeHint()
     buildLegend();
 }
 
+void Legend::resizeLayout( const QSize& size )
+{
+    //qDebug() << "Legend::resizeLayout started";
+    if( d->layout )
+        d->layout->setGeometry( QRect(QPoint(0,0), size) );
+    //qDebug() << "Legend::resizeLayout done";
+}
+
 Legend* Legend::clone() const
 {
     Legend* legend = new Legend( new Private( *d ), 0 );

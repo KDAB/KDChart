@@ -186,17 +186,32 @@ void AbstractAreaBase::paintFrame( QPainter& painter, const QRect& rect )
 }
 
 
+void AbstractAreaBase::getFrameLeadings(int& left, int& top, int& right, int& bottom ) const
+{
+    if( d && d->frameAttributes.isVisible() ){
+        const int padding = qMax( d->frameAttributes.padding(), 0 );
+        left   = padding;
+        top    = padding;
+        right  = padding;
+        bottom = padding;
+    }else{
+        left   = 0;
+        top    = 0;
+        right  = 0;
+        bottom = 0;
+    }
+}
+
 QRect AbstractAreaBase::innerRect() const
 {
-    Q_ASSERT_X ( d != 0, "AbstractAreaBase::innerRect()",
-                "Private class was not initialized!" );
-
-    const int padding
-        = d->frameAttributes.isVisible()
-        ? qMax( d->frameAttributes.padding(), 0 ) : 0;
+    int left;
+    int top;
+    int right;
+    int bottom;
+    getFrameLeadings( left, top, right, bottom );
     return
         QRect( QPoint(0,0), areaGeometry().size() )
-            .adjusted( padding, padding, -padding, -padding );
+            .adjusted( left, top, -right, -bottom );
 }
 
 void AbstractAreaBase::positionHasChanged()
