@@ -122,6 +122,9 @@ bool KDChart1Params::KDChart1FrameSettings::readFrameSettingsNode( const QDomEle
         KDChart1FrameSettings& settings,
         uint& areaId )
 {
+    Q_UNUSED( element );
+    Q_UNUSED( settings );
+    Q_UNUSED( areaId );
     return false;
     /*
     bool ok = true;
@@ -260,6 +263,11 @@ void KDChart1Params::KDChart1FrameSettings::createFrameSettingsNode( QDomDocumen
         const KDChart1Params::KDChart1FrameSettings* settings,
         uint areaId )
 {
+    Q_UNUSED( document );
+    Q_UNUSED( parent );
+    Q_UNUSED( elementName );
+    Q_UNUSED( settings );
+    Q_UNUSED( areaId );
     return;
     /*
     QDomElement frameSettingsElement = document.createElement( elementName );

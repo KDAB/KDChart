@@ -53,6 +53,8 @@ QTextStream& operator<<( QTextStream& s, const KDChart1Params& p )
 */
 void KDChart1Params::saveAxesToXML(QDomDocument& doc, QDomElement& docRoot) const
 {
+    Q_UNUSED( doc );
+    Q_UNUSED( docRoot );
     return;
 
     /*
@@ -2281,6 +2283,10 @@ void KDChart1Params::createColorMapNode( QDomDocument& doc, QDomNode& parent,
         const QString& elementName,
         const QMap< uint, QColor >& map )
 {
+    Q_UNUSED( doc );
+    Q_UNUSED( parent );
+    Q_UNUSED( elementName );
+    Q_UNUSED( map );
     return;
     /*
     QDomElement mapElement =
@@ -2314,6 +2320,10 @@ void KDChart1Params::createDoubleMapNode( QDomDocument& doc, QDomNode& parent,
         const QString& elementName,
         const QMap< int, double >& map )
 {
+    Q_UNUSED( doc );
+    Q_UNUSED( parent );
+    Q_UNUSED( elementName );
+    Q_UNUSED( map );
     return;
     /*
     QDomElement mapElement =
@@ -2392,6 +2402,13 @@ void KDChart1Params::createChartFontNode( QDomDocument& doc, QDomNode& parent,
         int relFont,
         int minFont )
 {
+    Q_UNUSED( doc );
+    Q_UNUSED( parent );
+    Q_UNUSED( elementName );
+    Q_UNUSED( font );
+    Q_UNUSED( useRelFont );
+    Q_UNUSED( relFont );
+    Q_UNUSED( minFont );
     return;
     /*
     QDomElement chartFontElement = doc.createElement( elementName );
@@ -2421,6 +2438,8 @@ void KDChart1Params::createChartFontNode( QDomDocument& doc, QDomNode& parent,
 bool KDChart1Params::readColorMapNode( const QDomElement& element,
         QMap<uint,QColor>* value )
 {
+    Q_UNUSED( element );
+    Q_UNUSED( value );
     return false;
     /*
     QDomNode node = element.firstChild();
@@ -2458,6 +2477,8 @@ bool KDChart1Params::readColorMapNode( const QDomElement& element,
 bool KDChart1Params::readDoubleMapNode( const QDomElement& element,
         QMap<int,double>* value )
 {
+    Q_UNUSED( element );
+    Q_UNUSED( value );
     return false;
     /*
     QDomNode node = element.firstChild();
@@ -2502,6 +2523,11 @@ bool KDChart1Params::readChartFontNode( const QDomElement& element,
         int& relFontSize,
         int* minFontSize )
 {
+    Q_UNUSED( element );
+    Q_UNUSED( font );
+    Q_UNUSED( useRelFont );
+    Q_UNUSED( relFontSize );
+    Q_UNUSED( minFontSize );
     return false;
     /*
     bool ok = true;

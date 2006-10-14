@@ -41,6 +41,10 @@ void KDFrame1ProfileSection::createFrameProfileSectionNode( QDomDocument& docume
         const KDFrame1ProfileSection* section )
 
 {
+    Q_UNUSED( document );
+    Q_UNUSED( parent );
+    Q_UNUSED( elementName );
+    Q_UNUSED( section );
     return;
 
     /*
@@ -59,6 +63,8 @@ void KDFrame1ProfileSection::createFrameProfileSectionNode( QDomDocument& docume
 bool KDFrame1ProfileSection::readFrameProfileSectionNode( const QDomElement& element,
         KDFrame1ProfileSection* section )
 {
+    Q_UNUSED( element );
+    Q_UNUSED( section );
     return false;
 
     /*

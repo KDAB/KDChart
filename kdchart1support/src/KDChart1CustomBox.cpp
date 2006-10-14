@@ -354,6 +354,10 @@ void KDChart1CustomBox::createCustomBoxNode( QDomDocument& document,
         const QString& elementName,
         const KDChart1CustomBox* custombox )
 {
+    Q_UNUSED( document );
+    Q_UNUSED( parent );
+    Q_UNUSED( elementName );
+    Q_UNUSED( custombox );
     return;
     /*
     QDomElement customBoxElement = document.createElement( elementName );
@@ -395,6 +399,8 @@ void KDChart1CustomBox::createCustomBoxNode( QDomDocument& document,
 bool KDChart1CustomBox::readCustomBoxNode( const QDomElement& element,
         KDChart1CustomBox& custombox )
 {
+    Q_UNUSED( element );
+    Q_UNUSED( custombox );
     return false;
     /*
     bool ok = true;

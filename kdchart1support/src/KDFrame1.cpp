@@ -419,6 +419,10 @@ void KDFrame1::createFrameNode( QDomDocument& document, QDomNode& parent,
         const QString& elementName,
         const KDFrame1& frame )
 {
+    Q_UNUSED( document );
+    Q_UNUSED( parent );
+    Q_UNUSED( elementName );
+    Q_UNUSED( frame );
     return;
 
     /*
@@ -478,6 +482,10 @@ void KDFrame1::KDFrame1Corner::createFrameCornerNode( QDomDocument& document,
         const QString& elementName,
         const KDFrame1Corner& corner )
 {
+    Q_UNUSED( document );
+    Q_UNUSED( parent );
+    Q_UNUSED( elementName );
+    Q_UNUSED( corner );
     return;
 
     /*
@@ -494,6 +502,8 @@ void KDFrame1::KDFrame1Corner::createFrameCornerNode( QDomDocument& document,
 
 bool KDFrame1::readFrameNode( const QDomElement& element, KDFrame1& frame )
 {
+    Q_UNUSED( element );
+    Q_UNUSED( frame );
     return false;
 
     /*
@@ -580,6 +590,8 @@ bool KDFrame1::readFrameNode( const QDomElement& element, KDFrame1& frame )
 bool KDFrame1::readFrameProfileNode( const QDomElement& element,
         KDFrame1Profile& profile )
 {
+    Q_UNUSED( element );
+    Q_UNUSED( profile );
     return false;
 
     /*
@@ -609,6 +621,8 @@ bool KDFrame1::readFrameProfileNode( const QDomElement& element,
 bool KDFrame1::KDFrame1Corner::readFrameCornerNode( const QDomElement& element,
         KDFrame1Corner& corner )
 {
+    Q_UNUSED( element );
+    Q_UNUSED( corner );
     return false;
 
     /*
