@@ -403,7 +403,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         labelItem2->setText( QString::number( i + dimX.stepWidth, 'f', 0 ) );
                     } else {
                         labelItem->setText( labels()[ iLabel ] );
-                        labelItem->setText( labels()[ iLabel + 1 >= hardLabelsCount ? 0 : iLabel + 1 ] );
+                        labelItem2->setText( labels()[ iLabel + 1 >= hardLabelsCount ? 0 : iLabel + 1 ] );
                     }
                     QPointF firstPos( i, 0.0 );
                     firstPos = plane->translate( firstPos );
@@ -425,10 +425,53 @@ void CartesianAxis::paintCtx( PaintContext* context )
             }
 
             labelItem2->setText( QString::null );
+            qreal labelDiff = dimX.stepWidth;
+            if ( drawLabels )
+            {
+                qreal i = minValueX;
+                int iLabel = 0;
+                while ( i < maxValueX )
+                {
+                    if ( !drawLabels || hardLabelsCount < 1 || shortLabelsCount < 1 || ( dimX.stepWidth != 1.0 && ! dim.isCalculated ) )
+                    {
+                        labelItem->setText( QString::number( i, 'f', 0 ) );
+                        labelItem2->setText( QString::number( i + labelDiff, 'f', 0 ) );
+                    } else {
+                        labelItem->setText( labels()[ iLabel ] );
+                        labelItem2->setText( labels()[ iLabel + 1 >= hardLabelsCount ? 0 : iLabel + qRound( labelDiff ) ] );
+                    }
+                    QPointF firstPos( i, 0.0 );
+                    firstPos = plane->translate( firstPos );
+
+                    QPointF secondPos( i + labelDiff, 0.0 );
+                    secondPos = plane->translate( secondPos );
+
+                    if ( labelItem->intersects( *labelItem2, firstPos, secondPos ) )
+                    {
+                        i = minValueX;
+                        ++labelDiff;
+                        iLabel = 0;
+//                        qDebug() << "labelDiff jetzt" << labelDiff << " wegen" << labelItem->text() << "vs." << labelItem2->text();
+                    }
+                    else
+                    {
+                        i += labelDiff;
+                    }
+                    if ( iLabel++ > hardLabelsCount - 1 )
+                    {
+                        iLabel = 0;
+                    }
+                }
+            }
+            //qDebug() << labelDiff;
+
+            labelItem2->setText( QString::null );
             QPoint oldItemPos;
             int idxLabel = 0;
             qreal iLabelF = minValueX;
             qreal i = minValueX;
+            int labelStep = 0;
+
             while ( i < maxValueX ) {
                 QPointF topPoint ( i + ( useItemCountLabels ? 0.5 : 0.0 ), 0.0 );
                 QPointF bottomPoint ( topPoint );
@@ -460,8 +503,10 @@ void CartesianAxis::paintCtx( PaintContext* context )
                                           : ((halfFontHeight + size.height()) * -1.0) ) ) ),
                                 size ) );
 
-                    if ( ! labelItem2->intersects( *labelItem, oldItemPos, labelItem->geometry().topLeft() ) )
+//                    if ( ! labelItem2->intersects( *labelItem, oldItemPos, labelItem->geometry().topLeft() ) )
+                    if ( labelStep-- == 0 )
                     {
+                        labelStep = qRound( labelDiff ) - 1;
                         labelItem->paint( ptr );
 
                         labelItem2->setText( labelItem->text() );
