@@ -127,8 +127,10 @@ const CartesianAxis::Position CartesianAxis::position() const
 void CartesianAxis::layoutPlanes()
 {
     //qDebug() << "CartesianAxis::layoutPlanes()";
-    if( ! d->diagram() || ! d->diagram()->coordinatePlane() ) return;
-    //qDebug() << "CartesianAxis::layoutPlanes(): Sorry, found no plane.";
+    if( ! d->diagram() || ! d->diagram()->coordinatePlane() ) {
+        //qDebug() << "CartesianAxis::layoutPlanes(): Sorry, found no plane.";
+        return;
+    }
     AbstractCoordinatePlane* plane = d->diagram()->coordinatePlane();
     if( plane ){
         plane->layoutPlanes();
