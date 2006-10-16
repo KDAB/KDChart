@@ -9,6 +9,7 @@ SUBDIRS +=  ChartElementOwnership \
             PolarPlanes \
             QLayout \
             WidgetElementOwnership \
+            BarDiagrams \
 
 unix:SUBDIRS += AxisOwnership
 test.target=test
