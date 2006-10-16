@@ -45,6 +45,7 @@
 #include "KDChartLegend.h"
 #include "KDChartLayoutItems.h"
 #include <KDChartTextAttributes.h>
+#include <KDChartMarkerAttributes>
 #include "KDChartPainterSaver_p.h"
 
 #if defined KDAB_EVAL
@@ -951,6 +952,17 @@ void Chart::addLegend( Legend* legend )
     textAttrs.setFontSize( measure );
     legend->setTitleTextAttributes( textAttrs );
     legend->setReferenceArea( this );
+
+/*
+    future: Use relative sizes for the markers too!
+
+    const uint nMA = Legend::datasetCount();
+    for( uint iMA = 0; iMA < nMA; ++iMA ){
+        MarkerAttributes ma( legend->markerAttributes( iMA ) );
+        ma.setMarkerSize( ... )
+        legend->setMarkerAttributes( iMA, ma )
+    }
+*/
 
     connect( legend, SIGNAL( destroyedLegend( Legend* ) ),
              d, SLOT( slotUnregisterDestroyedLegend( Legend* ) ) );

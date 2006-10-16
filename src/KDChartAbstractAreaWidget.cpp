@@ -58,7 +58,7 @@ void AbstractAreaWidget::Private::resizeLayout(
     widget->getFrameLeadings( left, top, right, bottom );
     const QSize innerSize( size.width() - left - right,
                            size.height() - top - bottom );
-    // With tis adjusted size we call the real resizeLayout method,
+    // With this adjusted size we call the real resizeLayout method,
     // which normally will call resizeLayout( size ) in the derived class
     // - which in turn is the place to resize the layout member variable
     // of that class.
@@ -108,7 +108,7 @@ void AbstractAreaWidget::paintEvent( QPaintEvent* event )
 
 void AbstractAreaWidget::paintIntoRect( QPainter& painter, const QRect& rect )
 {
-    qDebug() << "AbstractAreaWidget::paintIntoRect() called rect=" << rect;
+    //qDebug() << "AbstractAreaWidget::paintIntoRect() called rect=" << rect;
 
     if( rect.isEmpty() ) return;
 

@@ -325,7 +325,7 @@ QSize KDChart::TextLayoutItem::calcSizeHint( QFont fnt ) const
 void KDChart::TextLayoutItem::paint( QPainter* painter )
 {
     // make sure, cached font is updated, if needed:
-    sizeHint();
+    // sizeHint();
 
     if( !mRect.isValid() )
         return;
