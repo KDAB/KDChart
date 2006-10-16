@@ -80,16 +80,18 @@ private slots:
         QVERIFY( ba.drawSolidExcessArrows() == false );
         QVERIFY( ba.groupGapFactor() == 1.0 );
         QVERIFY( ba.barGapFactor() == 0.5 );
+        //change settings
         ba.setFixedDataValueGap( 7 );
         ba.setUseFixedDataValueGap( true );
         ba.setFixedValueBlockGap( 25 );
         ba.setUseFixedValueBlockGap( true );
         ba.setFixedBarWidth( 1 );
         ba.setUseFixedBarWidth( true );
-        ba.setDrawSolidExcessArrows(  true );
+        ba.setDrawSolidExcessArrows(  true ); //not implemented yet
         ba.setGroupGapFactor( 2 );
         ba.setBarGapFactor( 1 );
         m_bars->setBarAttributes(  ba );
+        // get new values
         QVERIFY( m_bars->barAttributes().fixedDataValueGap() ==  7 );
         QVERIFY( m_bars->barAttributes().useFixedDataValueGap() == true );
         QVERIFY( m_bars->barAttributes().fixedValueBlockGap() ==  25 );
@@ -100,6 +102,72 @@ private slots:
         QVERIFY( m_bars->barAttributes().groupGapFactor() == 2 );
         QVERIFY( m_bars->barAttributes().barGapFactor() == 1 );
     }
+
+        void testThreeDBarAttributesLevelSettings()
+    {
+        //check segments
+        const int rows = m_bars->model()->rowCount();
+        QCOMPARE( m_bars->numberOfAbscissaSegments(), rows );
+        const int cols = m_bars->model()->columnCount();
+        QCOMPARE( m_bars->numberOfOrdinateSegments(), cols );
+        QModelIndex idx = m_model->index(rows-3, cols-3, QModelIndex());
+        // create attribut
+        ThreeDBarAttributes td( m_bars->threeDBarAttributes() );
+        ThreeDBarAttributes tdCol( m_bars->threeDBarAttributes() );
+        ThreeDBarAttributes tdIndex( m_bars->threeDBarAttributes() );
+        // modify at different level and compare
+        tdCol.setDepth(25 );
+        tdIndex.setDepth( 30 );
+        m_bars->setThreeDBarAttributes( td  );
+        m_bars->setThreeDBarAttributes( cols-2,  tdCol );
+        m_bars->setThreeDBarAttributes( idx,  tdIndex );
+        QVERIFY( m_bars->threeDBarAttributes() !=
+                 m_bars->threeDBarAttributes(cols-2) );
+        QVERIFY( m_bars->threeDBarAttributes() !=
+                 m_bars->threeDBarAttributes(idx) );
+        QVERIFY( m_bars->threeDBarAttributes(cols-2) !=
+                 m_bars->threeDBarAttributes(idx) );
+        QCOMPARE( m_bars->threeDBarAttributes(),  td );
+        QCOMPARE( m_bars->threeDBarAttributes( cols - 2 ),  tdCol );
+        QCOMPARE( m_bars->threeDBarAttributes( idx ),  tdIndex );
+        // try and override the cols and index level - should not work
+        m_bars->setThreeDBarAttributes( td );
+        QVERIFY( m_bars->threeDBarAttributes().depth() == 20 );
+        QVERIFY( m_bars->threeDBarAttributes( cols-2 ).depth() == 25 );
+        QVERIFY( m_bars->threeDBarAttributes( idx ).depth() == 30 );
+    }
+
+    void testBarsThreeDAttributes()
+    {
+        ThreeDBarAttributes td( m_bars->threeDBarAttributes() );
+
+        //check default values
+        //generics == AbstractThreeD
+        QVERIFY( td.isEnabled() == false );
+        QVERIFY( td.depth() == 20 );
+        QVERIFY( td.validDepth() == 0.0 );
+        //bars specifics
+        QVERIFY( td.useShadowColors() == true ); // Not implemented
+        QVERIFY( td.angle() == 45 ); // Not implemented
+
+        //set new values
+        td.setEnabled(  true );
+        td.setDepth( 40 );
+        td.setUseShadowColors( false );
+        td.setAngle( 75 );
+        m_bars->setThreeDBarAttributes( td );
+
+        //get new values
+        QVERIFY( m_bars->threeDBarAttributes().isEnabled() == true );
+        QVERIFY( m_bars->threeDBarAttributes().depth() == 40 );
+        QVERIFY( m_bars->threeDBarAttributes().validDepth() == 40 );
+        QVERIFY( m_bars->threeDBarAttributes().useShadowColors() == false );
+        QVERIFY( m_bars->threeDBarAttributes().angle() == 75 );
+    }
+
+
+
+
 
 
     void cleanupTestCase()
