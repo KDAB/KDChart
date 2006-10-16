@@ -98,6 +98,9 @@ class Chart::Private : public QObject
         QGridLayout* footerLayout;
         QGridLayout* dataAndLegendLayout;
 
+        QMap< int, QMap< int, HorizontalLineLayoutItem > > dummyHeaders;
+        QMap< int, QMap< int, HorizontalLineLayoutItem > > dummyFooters;
+
         QVector<KDChart::TextArea*> textLayoutItems;
         QVector<KDChart::AbstractArea*> layoutItems;
         QVector<KDChart::AbstractArea*> planeLayoutItems;
@@ -115,7 +118,9 @@ class Chart::Private : public QObject
 
         Private ( Chart* );
 
-        virtual ~Private() {}
+        virtual ~Private();
+        
+        void removeDummyHeaderFooters();
 
         void createLayouts( QWidget * parent );
         void layoutLegends();

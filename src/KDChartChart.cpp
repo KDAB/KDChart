@@ -109,10 +109,42 @@ Chart::Private::Private( Chart* chart_ )
     , globalLeadingTop( 0 )
     , globalLeadingBottom( 0 )
 {
+    for( int row = 0; row < 3; ++row )
+    {
+        for( int column = 0; column < 3; ++column )
+        {
+            dummyHeaders[ row ][ column ] = HorizontalLineLayoutItem();
+            dummyFooters[ row ][ column ] = HorizontalLineLayoutItem();
+        }
+    }
+}
+
+Chart::Private::~Private()
+{
+    removeDummyHeaderFooters();
+}
+
+void Chart::Private::removeDummyHeaderFooters()
+{
+    for ( int row = 0; row < 3; ++row )
+        {
+        for ( int column = 0; column < 3; ++ column )
+        {
+            if( headerLayout != 0 )
+                headerLayout->removeItem( &(dummyHeaders[ row ][ column ]) );
+            if( footerLayout != 0 )
+                footerLayout->removeItem( &(dummyFooters[ row ][ column ]) );
+        }
+    }
 }
 
 void Chart::Private::layoutHeadersAndFooters()
 {
+    removeDummyHeaderFooters();
+
+    bool headersLineFilled[] = { false, false, false };
+    bool footersLineFilled[] = { false, false, false };
+
     Q_FOREACH( HeaderFooter *hf, headerFooters ) {
         // for now, there are only two types of Header/Footer,
         // we use a pointer to the right layout, depending on the type():
@@ -156,6 +188,24 @@ void Chart::Private::layoutHeadersAndFooters()
                 column = 1;
                 hAlign = Qt::AlignHCenter;
             }
+            switch( hf->type() ){
+                case HeaderFooter::Header:
+                    if( !headersLineFilled[ row ] )
+                    {
+                        for( int col = 0; col < 3; ++col )
+                            headerFooterLayout->addItem( &(dummyHeaders[ row ][ col ]), row, col );
+                        headersLineFilled[ row ] = true;
+                    }
+                    break;
+                case HeaderFooter::Footer:
+                    if( !footersLineFilled[ row ] )
+                    {
+                        for( int col = 0; col < 3; ++col )
+                            headerFooterLayout->addItem( &(dummyFooters[ row ][ col ]), row, col );
+                        footersLineFilled[ row ] = true;
+                    }
+                    break;
+            };
             textLayoutItems << hf;
             hf->setParentLayout( headerFooterLayout );
             headerFooterLayout->addItem( hf, row, column, 1, 1, hAlign | vAlign );
@@ -514,6 +564,8 @@ void Chart::Private::createLayouts( QWidget* w )
     }
     layoutItems.clear();
 
+    removeDummyHeaderFooters();
+
     // layout for the planes is handled separately, so we don't want to delete it here
     if ( dataAndLegendLayout) {
         dataAndLegendLayout->removeItem( planesLayout );
@@ -534,6 +586,8 @@ void Chart::Private::createLayouts( QWidget* w )
     layout->addLayout( vLayout, 2 );
     layout->addSpacing( globalLeadingRight );
 
+ 
+    
     // 1. the gap above the top edge of the headers area
     vLayout->addSpacing( globalLeadingTop );
     // 2. the header(s) area
