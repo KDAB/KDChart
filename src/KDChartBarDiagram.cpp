@@ -280,8 +280,16 @@ const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries  () const
                     bStarting = false;
                 }
             }
+        }
+            break;
+        case BarDiagram::Rows:
+        {
+            qDebug()<< "KDChartBarDiagram::calculateDataBoundaries"
+                    << "Sorry Type Rows not implemented yet";
             break;
         }
+
+
         default:
              Q_ASSERT_X ( false, "calculateDataBoundaries()",
                          "Type item does not match a defined bar chart Type." );
