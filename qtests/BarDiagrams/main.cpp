@@ -35,7 +35,7 @@ private slots:
         m_bars->setType( BarDiagram::Normal );
     }
 
-    void testBarAttributesSettings()
+    void testBarAttributesLevelSettings()
     {
         //check segments
         const int rows = m_bars->model()->rowCount();
@@ -59,6 +59,46 @@ private slots:
         QCOMPARE( m_bars->barAttributes(),  ba );
         QCOMPARE( m_bars->barAttributes( cols - 2 ),  baCol );
         QCOMPARE( m_bars->barAttributes( idx ),  baIndex );
+        // try and override the cols and index level - should not work
+        m_bars->setBarAttributes( ba );
+        QVERIFY( m_bars->barAttributes().barGapFactor() == 0.5 );
+        QVERIFY( m_bars->barAttributes( cols-2 ).barGapFactor() == 2 );
+        QVERIFY( m_bars->barAttributes( idx ).barGapFactor() == 3 );
+    }
+
+    void testBarAttributesValueSettings()
+    {
+        BarAttributes ba( m_bars->barAttributes() );
+
+        // check default values
+        QVERIFY( ba.fixedDataValueGap() ==  6 );
+        QVERIFY( ba.useFixedDataValueGap() == false );
+        QVERIFY( ba.fixedValueBlockGap() ==  24 );
+        QVERIFY( ba.useFixedValueBlockGap() == false );
+        QVERIFY( ba.fixedBarWidth() ==  -1 );
+        QVERIFY( ba.useFixedBarWidth() == false );
+        QVERIFY( ba.drawSolidExcessArrows() == false );
+        QVERIFY( ba.groupGapFactor() == 1.0 );
+        QVERIFY( ba.barGapFactor() == 0.5 );
+        ba.setFixedDataValueGap( 7 );
+        ba.setUseFixedDataValueGap( true );
+        ba.setFixedValueBlockGap( 25 );
+        ba.setUseFixedValueBlockGap( true );
+        ba.setFixedBarWidth( 1 );
+        ba.setUseFixedBarWidth( true );
+        ba.setDrawSolidExcessArrows(  true );
+        ba.setGroupGapFactor( 2 );
+        ba.setBarGapFactor( 1 );
+        m_bars->setBarAttributes(  ba );
+        QVERIFY( m_bars->barAttributes().fixedDataValueGap() ==  7 );
+        QVERIFY( m_bars->barAttributes().useFixedDataValueGap() == true );
+        QVERIFY( m_bars->barAttributes().fixedValueBlockGap() ==  25 );
+        QVERIFY( m_bars->barAttributes().useFixedValueBlockGap() == true );
+        QVERIFY( m_bars->barAttributes().fixedBarWidth() ==  1 );
+        QVERIFY( m_bars->barAttributes().useFixedBarWidth() == true );
+        QVERIFY( m_bars->barAttributes().drawSolidExcessArrows() == true );
+        QVERIFY( m_bars->barAttributes().groupGapFactor() == 2 );
+        QVERIFY( m_bars->barAttributes().barGapFactor() == 1 );
     }
 
 
