@@ -48,6 +48,17 @@ private slots:
         QCOMPARE( m_plane->referenceCoordinatePlane(), (AbstractCoordinatePlane*)0 );
     }
 
+     void testStartPositionSettings()
+    {
+        m_plane->addDiagram(  m_pie );
+        double pos = 45;
+        m_plane->setStartPosition( pos );
+        QVERIFY( m_plane->startPosition() ==  pos );
+        m_plane->takeDiagram(  m_pie );
+    }
+
+
+
     void testDiagramOwnership()
     {
         m_plane->addDiagram(  m_pie );
