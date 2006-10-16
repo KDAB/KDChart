@@ -312,6 +312,8 @@ void PolarCoordinatePlane::slotLayoutChanged ( AbstractDiagram* )
 
 void PolarCoordinatePlane::setStartPosition( qreal degrees )
 {
+    Q_ASSERT_X ( diagram(), "PolarCoordinatePlane::setStartPosition",
+                 "setStartPosition() needs a diagram to be associated to the plane." );
     d->coordinateTransformations[0].startPosition = degrees;
 }
 
