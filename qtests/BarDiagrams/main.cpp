@@ -137,7 +137,7 @@ private slots:
         QVERIFY( m_bars->threeDBarAttributes( idx ).depth() == 30 );
     }
 
-    void testBarsThreeDAttributes()
+    void testThreeDBarAttributesValueSettings()
     {
         ThreeDBarAttributes td( m_bars->threeDBarAttributes() );
 
@@ -164,11 +164,6 @@ private slots:
         QVERIFY( m_bars->threeDBarAttributes().useShadowColors() == false );
         QVERIFY( m_bars->threeDBarAttributes().angle() == 75 );
     }
-
-
-
-
-
 
     void cleanupTestCase()
     {
