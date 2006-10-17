@@ -17,6 +17,7 @@ SUBDIRS		= tools \
 	          Charts \
 	          Background \
 	          Grids \
-	          RealTime 
+	          RealTime \
+	          Polar \
 
 
