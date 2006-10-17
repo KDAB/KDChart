@@ -132,10 +132,12 @@ void MainWindow::on_sagittalGridCB_toggled( bool toggle )
 
 void MainWindow::on_circularAxisCB_toggled( bool toggle )
 {
+    Q_UNUSED( toggle );
     update();
 }
 void MainWindow::on_sagittalAxisCB_toggled( bool toggle )
 {
+    Q_UNUSED( toggle );
     update();
 }
 
