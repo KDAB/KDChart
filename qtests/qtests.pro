@@ -11,6 +11,7 @@ SUBDIRS +=  ChartElementOwnership \
             WidgetElementOwnership \
             BarDiagrams \
 	    LineDiagrams \
+            PieDiagrams \
 
 unix:SUBDIRS += AxisOwnership
 test.target=test
