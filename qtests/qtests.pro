@@ -10,6 +10,7 @@ SUBDIRS +=  ChartElementOwnership \
             QLayout \
             WidgetElementOwnership \
             BarDiagrams \
+	    LineDiagrams \
 
 unix:SUBDIRS += AxisOwnership
 test.target=test
