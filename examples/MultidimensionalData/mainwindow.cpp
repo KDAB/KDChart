@@ -34,7 +34,7 @@
 #include <QDebug>
 #include <QPainter>
 #include <QHBoxLayout>
-
+#include <KDChartLegend>
 using namespace KDChart;
 
 MainWindow::MainWindow( QWidget* parent ) :
@@ -50,15 +50,15 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_lines = new LineDiagram();
     m_lines->setDatasetDimension(2);
     m_lines->setModel( &m_model );
-    m_lines->setPen( Qt::NoPen );
-
-    DataValueAttributes dva( m_lines->dataValueAttributes() );
-    dva.setVisible( true );
-    MarkerAttributes ma;
-    ma.setVisible( true );
-    ma.setMarkerStyle( MarkerAttributes::Marker4Pixels );
-    dva.setMarkerAttributes( ma );
-    m_lines->setDataValueAttributes( dva );
-
+    KDChart::CartesianAxis *xAxis = new KDChart::CartesianAxis ( m_lines );
+    KDChart::CartesianAxis *yAxis = new KDChart::CartesianAxis ( m_lines );
+    xAxis->setPosition ( KDChart::CartesianAxis::Bottom );
+    yAxis->setPosition ( KDChart::CartesianAxis::Left );
+    m_lines->addAxis( xAxis );
+    m_lines->addAxis( yAxis );
+    //m_lines->setPen( Qt::NoPen );
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
+    KDChart::Legend* legend = new KDChart::Legend( m_lines, m_chart );
+    m_chart->addLegend( legend );
+
 }
