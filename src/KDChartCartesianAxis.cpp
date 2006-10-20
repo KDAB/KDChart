@@ -453,7 +453,6 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         i = minValueX;
                         ++labelDiff;
                         iLabel = 0;
-//                        qDebug() << "labelDiff jetzt" << labelDiff << " wegen" << labelItem->text() << "vs." << labelItem2->text();
                     }
                     else
                     {
@@ -465,16 +464,14 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     }
                 }
             }
-            //qDebug() << labelDiff;
 
             labelItem2->setText( QString::null );
-            QPoint oldItemPos;
             int idxLabel = 0;
             qreal iLabelF = minValueX;
             qreal i = minValueX;
             int labelStep = 0;
 
-            while ( i < maxValueX ) {
+            while( i <= maxValueX ) {
                 QPointF topPoint ( i + ( useItemCountLabels ? 0.5 : 0.0 ), 0.0 );
                 QPointF bottomPoint ( topPoint );
                 topPoint = plane->translate( topPoint );
@@ -483,44 +480,51 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 bottomPoint.setY( fourthRulerRef.y() );
                 ptr->drawLine( topPoint, bottomPoint );
                 drawnXTicks.append( static_cast<int>( topPoint.x() ) );
-                if ( drawLabels ) {
+                if( drawLabels ) {
                     if ( isLogarithmicX )
-                        labelItem->setText( QString::number(i, 'f', 0) );
+                        labelItem->setText( QString::number( i, 'f', 0 ) );
                     else if( (dimX.stepWidth != 1.0) && ! dimX.isCalculated )
-                        labelItem->setText( QString::number(i, 'f', 0) );
+                        labelItem->setText( QString::number( i, 'f', 0 ) );
                     else
                         labelItem->setText( hardLabelsCount
                             ? ( useShortLabels    ? shortLabels()[ idxLabel ] : labels()[ idxLabel ] )
                             : ( headerLabelsCount ? headerLabels[  idxLabel ] : QString::number( iLabelF ) ) );
                     // No need to call labelItem->setParentWidget(), since we are using
                     // the layout item temporarily only.
-                    const QSize size( labelItem->sizeHint() );
-                    labelItem->setGeometry(
-                            QRect(
-                                QPoint(
-                                    static_cast<int>( topPoint.x() - size.width() / 2 ),
-                                    static_cast<int>( topPoint.y() +
-                                        ( position() == Bottom
-                                          ? halfFontHeight
-                                          : ((halfFontHeight + size.height()) * -1.0) ) ) ),
-                                size ) );
+                    if( labelStep <= 0 ) {
+                        const QSize size( labelItem->sizeHint() );
+                        labelItem->setGeometry(
+                                QRect(
+                                    QPoint(
+                                        static_cast<int>( topPoint.x() - size.width() / 2 ),
+                                        static_cast<int>( topPoint.y() +
+                                            ( position() == Bottom
+                                              ? halfFontHeight
+                                              : ((halfFontHeight + size.height()) * -1.0) ) ) ),
+                                    size ) );
 
-//                    if ( ! labelItem2->intersects( *labelItem, oldItemPos, labelItem->geometry().topLeft() ) )
-                    if ( labelStep-- == 0 )
-                    {
-                        labelStep = qRound( labelDiff ) - 1;
+                        QRect geo = labelItem->geometry();
+                        if( i == minValueX && !useItemCountLabels )
+                            geo.moveLeft( geo.left() + geo.width() / 2 );
+                        if( i == maxValueX && !useItemCountLabels )
+                            geo.moveLeft( geo.left() - geo.width() / 2 );
+
+                        labelItem->setGeometry( geo );
+
+                        labelStep = qRound( labelDiff ) - qRound( dimX.stepWidth );
                         labelItem->paint( ptr );
 
                         labelItem2->setText( labelItem->text() );
-                        oldItemPos = labelItem->geometry().topLeft();
+                    } else {
+                        labelStep -= qRound( dimX.stepWidth ); //qRound( labelDiff );
                     }
 
-                    if( hardLabelsCount ){
+                    if( hardLabelsCount ) {
                         if( idxLabel >= hardLabelsCount  -1 )
                             idxLabel = 0;
                         else
                             ++idxLabel;
-                    }else if( headerLabelsCount ){
+                    } else if( headerLabelsCount ) {
                         if( idxLabel >= headerLabelsCount-1 )
                             idxLabel = 0;
                         else
