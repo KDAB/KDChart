@@ -55,7 +55,7 @@ QVariant TableModel::data ( const QModelIndex & index, int role) const
     Q_ASSERT ( index.row() >= 0 && index.row() < rowCount() );
     Q_ASSERT ( index.column() >= 0 && index.column() < columnCount() );
 
-    if ( role == Qt::DisplayRole )
+    if ( role == Qt::DisplayRole || role == Qt::EditRole )
     {
         return m_rows[index.row() + 1] [index.column() + 1] ;
     } else {
@@ -92,6 +92,22 @@ QVariant TableModel::headerData ( int section, Qt::Orientation orientation, int 
         break;
     }
     return result;
+}
+
+
+bool TableModel::setData ( const QModelIndex & index, const QVariant & value, int role/* = Qt::EditRole */ )
+{
+    Q_ASSERT ( index.row() >= 0 && index.row() < rowCount() );
+    Q_ASSERT ( index.column() >= 0 && index.column() < columnCount() );
+
+    if ( role == Qt::EditRole )
+    {
+        m_rows[index.row() + 1] [index.column() + 1] = value;
+        emit dataChanged( index, index );
+        return true;
+    } else {
+        return false;
+    }
 }
 
 bool TableModel::loadFromCSV ( const QString& filename )
