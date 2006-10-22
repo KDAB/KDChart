@@ -2,6 +2,7 @@ TEMPLATE = subdirs
 SUBDIRS +=  ChartElementOwnership \
             #AxisOwnership \
             KDChartAttributesModel \
+            KDChartMeasure \
             KDChartPalette \
             Legends \
             CartesianPlanes \
