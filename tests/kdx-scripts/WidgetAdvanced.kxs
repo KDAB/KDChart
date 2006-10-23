@@ -62,21 +62,23 @@
    <RunResult>
     <Run>
      <StartTime>
-      <Date Day="20" Year="2006" Month="10" />
-      <Time Hour="10" Minute="12" Second="16" Millisecond="241" />
+      <Date Day="23" Year="2006" Month="10" />
+      <Time Hour="18" Minute="35" Second="40" Millisecond="237" />
      </StartTime>
      <EndTime>
-      <Date Day="20" Year="2006" Month="10" />
-      <Time Hour="10" Minute="12" Second="25" Millisecond="307" />
+      <Date Day="23" Year="2006" Month="10" />
+      <Time Hour="18" Minute="36" Second="45" Millisecond="547" />
      </EndTime>
     </Run>
     <Result>
-     <NormalExit>false</NormalExit>
+     <NormalExit>true</NormalExit>
      <ExitCode>0</ExitCode>
-     <PropsOK>false</PropsOK>
-     <AssertionsOK>false</AssertionsOK>
+     <PropsOK>true</PropsOK>
+     <AssertionsOK>true</AssertionsOK>
      <PropertyCollection/>
-     <ScreenshotCollection/>
+     <ScreenshotCollection>
+      <Status>2</Status>
+     </ScreenshotCollection>
      <PostTestCheckResult>true</PostTestCheckResult>
      <PostTestCheckExitCode>0</PostTestCheckExitCode>
      <Error></Error>
