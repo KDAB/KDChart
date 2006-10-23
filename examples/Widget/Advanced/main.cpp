@@ -89,7 +89,7 @@ int main( int argc, char** argv ) {
     window.widget->addHeaderFooter( "Footer Center", HeaderFooter::Footer, Position::Center );
     window.widget->addHeaderFooter( "Footer East",   HeaderFooter::Footer, Position::East );
 
-    window.widget->addLegend( Position::East );
+    //window.widget->addLegend( Position::East );
 
     //window.widget->setType( Widget::Polar );
 
