@@ -148,7 +148,6 @@ private slots:
   }
 
 
-
   void testDiagramTypeSubType()
   {
       m_widget->setType( Widget::Line );
@@ -167,14 +166,12 @@ private slots:
       QCOMPARE( m_widget->subType(),  Widget::Percent );
   }
 
-
   void testPlaneOwnership()
   {
       // check plane
       AbstractCoordinatePlane*orig = m_widget->coordinatePlane();
       QCOMPARE( m_widget->coordinatePlane(), orig );
   }
-
 
   void testWidgetDeletion()
   {
