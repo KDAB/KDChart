@@ -205,9 +205,8 @@ const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries  () const
     double xMin = 0;
     double xMax = rowCount;
     double yMin = 0, yMax = 0;
-    double maxThreeDDepth   = 0.0;
-    double firstThreeDDepth = 0.0;
-    double lastThreeDDepth  = 0.0;
+    //double maxThreeDDepth   = 0.0;
+
 
     bool bStarting = true;
     // calculate boundaries for  different line types Normal - Stacked - Percent - Default Normal
@@ -222,14 +221,11 @@ const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries  () const
                     // same for yMax it can be zero if all values are negative
                     yMin = qMin( yMin,  value );
                     yMax = qMax( yMax,  value );
-
+                     /* We should not need that anymore - See comments below
                     const double depth = threeDItemDepth( model()->index( j, i, rootIndex() ) );
-                    if( depth > 0.0 ){
+                    if( depth > 0.0 )
                         maxThreeDDepth = qMax( maxThreeDDepth, depth );
-                        if( bStarting )
-                            firstThreeDDepth = depth;
-                        lastThreeDDepth = depth;
-                    }
+                     */
                     bStarting = false;
                 }
             }
@@ -248,14 +244,11 @@ const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries  () const
                     // same for yMax it can be zero if all values are negative
                     yMin = qMin( yMin, stackedValues );
                     yMax = qMax( yMax, stackedValues );
-
+                    /* We should not need that anymore - See comments below
                     const double depth = threeDItemDepth( idx );
-                    if( depth > 0.0 ){
+                    if( depth > 0.0 )
                         maxThreeDDepth = qMax( maxThreeDDepth, depth );
-                        if( bStarting )
-                            firstThreeDDepth = depth;
-                        lastThreeDDepth = depth;
-                    }
+                    */
                     bStarting = false;
                 }
             }
@@ -270,13 +263,11 @@ const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries  () const
                     // only positive values are handled
                     double value = model()->data( idx ).toDouble();
                     yMax = qMax( yMax, value );
+                    /* We should not need that anymore - See comments below
                     const double depth = threeDItemDepth( idx );
-                    if( depth > 0.0 ){
+                    if( depth > 0.0 )
                         maxThreeDDepth = qMax( maxThreeDDepth, depth );
-                        if( bStarting )
-                            firstThreeDDepth = depth;
-                        lastThreeDDepth = depth;
-                    }
+                    */
                     bStarting = false;
                 }
             }
@@ -311,28 +302,35 @@ const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries  () const
     //            but we are ignoring all ThreeDBarAttributes that might have been set
     //            at a header (using the setter that takes a column as parameter).
     // see: LineDiagram::calculateDataBoundaries ()
-    if ( maxThreeDDepth > 0.0 ) {
-        double percentx, percenty;
+
+    //Pending Michel: I am removing that code - it is not right
+    // this calculation should be done at the axis or grid level
+    // and not from here where we have to return the max and min values.
+    // I just comment it for now and will clean up if we all agree about that
+
+
+    //if ( maxThreeDDepth > 0.0 ) {
+    //    double percentx, percenty;
         //threeDBoundaries calculate a depth percent value and add it
-        QPointF pTRTranslated = coordinatePlane()->translate( topRight );
-        QPointF pBLTranslated = coordinatePlane()->translate( bottomLeft );
+    //  QPointF pTRTranslated = coordinatePlane()->translate( topRight );
+    //    QPointF pBLTranslated = coordinatePlane()->translate( bottomLeft );
         //reserve some plane space for the top of the threeD bars
         //Pending Michel: fixme 4 - 8?
-        if ( d->maxDepth )
-            maxThreeDDepth = d->maxDepth;
-        if ( type() == BarDiagram::Normal ) {
-            percentx = (maxThreeDDepth / pTRTranslated.x());
-            percenty = (maxThreeDDepth / pBLTranslated.y());
-        } else if ( type() == BarDiagram::Stacked ){
-            percentx = ( maxThreeDDepth    / pTRTranslated.x());
-            percenty = ((maxThreeDDepth*8) / pBLTranslated.y());
-        } else {
-            percentx = ( maxThreeDDepth    / pTRTranslated.x());
-            percenty = ((maxThreeDDepth*4) / pBLTranslated.y());
-        }
-            topRight.setX( topRight.x() + percentx);
-            topRight.setY( topRight.y() + percenty);
-    }
+    //     if ( d->maxDepth )
+    //      maxThreeDDepth = d->maxDepth;
+    //  if ( type() == BarDiagram::Normal ) {
+    //      percentx = (maxThreeDDepth / pTRTranslated.x());
+    //      percenty = (maxThreeDDepth / pBLTranslated.y());
+    //  } else if ( type() == BarDiagram::Stacked ){
+    //      percentx = ( maxThreeDDepth    / pTRTranslated.x());
+    //      percenty = ((maxThreeDDepth*8) / pBLTranslated.y());
+    //  } else {
+    //      percentx = ( maxThreeDDepth    / pTRTranslated.x());
+    //      percenty = ((maxThreeDDepth*4) / pBLTranslated.y());
+    //   }
+    //      topRight.setX( topRight.x() + percentx);
+    //      topRight.setY( topRight.y() + percenty);
+    //}
 
 //qDebug() << "BarDiagram::calculateDataBoundaries () returns ( " << bottomLeft << topRight <<")";
 
