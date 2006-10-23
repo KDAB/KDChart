@@ -71,7 +71,7 @@ namespace KDChart {
     private:
         void init();
 
-        QPointer<AbstractDiagram>    m_diagram;
+        AbstractDiagram*    m_diagram;
         QPointer<QAbstractItemModel> m_model;
         QPointer<QAbstractItemModel> m_attributesmodel;
    };

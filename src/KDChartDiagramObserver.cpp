@@ -82,6 +82,7 @@ void DiagramObserver::init()
 void DiagramObserver::slotDestroyed()
 {
     emit diagramDestroyed( m_diagram );
+    m_diagram = 0;
 }
 
 void DiagramObserver::slotModelsChanged()
