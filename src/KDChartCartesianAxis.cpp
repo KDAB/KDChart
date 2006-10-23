@@ -508,7 +508,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         QRect geo = labelItem->geometry();
                         // if our item would only half fit, we disable clipping for that one
                         if( geo.left() < geometry().left() && geo.right() > geometry().left() )
-                                ptr->setClipping( false );
+                            ptr->setClipping( false );
                         if( geo.left() < geometry().right() && geo.right() > geometry().right() )
                             ptr->setClipping( false );
 
