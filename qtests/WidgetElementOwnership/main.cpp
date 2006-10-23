@@ -111,9 +111,7 @@ private slots:
       QCOMPARE( m_widget->allLegends().size(), 1 );
       delete legend;
       QCOMPARE( m_widget->allLegends().size(), 0 );
-      m_widget->addLegend( Position::North );
-      QCOMPARE( m_widget->allLegends().size(), 1 );
-  }
+   }
 
   void testRetrieveDiagram()
   {
@@ -135,10 +133,20 @@ private slots:
       m_widget->setType( Widget::Line );
   }
 
+  void testTypeChangeWithLegend()
+  {
+      //set Cartesian type
+      m_widget->addLegend( Position::North );
+      QCOMPARE( m_widget->allLegends().size(), 1 );
+      m_widget->setType( Widget::Bar, Widget::Stacked );
+      m_widget->setType( Widget::Line );
+  }
+
+
 
   void testDiagramTypeSubType()
   {
-
+      m_widget->setType( Widget::Line );
       QCOMPARE( m_widget->type(), Widget::Line );
       QCOMPARE( m_widget->subType(),  Widget::Normal );
       //check type subtype = default
