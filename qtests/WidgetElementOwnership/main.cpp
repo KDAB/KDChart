@@ -139,6 +139,11 @@ private slots:
       m_widget->addLegend( Position::North );
       QCOMPARE( m_widget->allLegends().size(), 1 );
       m_widget->setType( Widget::Bar, Widget::Stacked );
+      Legend *legend = m_widget->legend();
+      QVERIFY( legend != 0 );
+      QVERIFY( legend->diagram() != 0 );
+      QCOMPARE( legend->diagram(), m_widget->diagram() );
+      QCOMPARE( m_widget->allLegends().size(), 1 );
       m_widget->setType( Widget::Line );
   }
 
