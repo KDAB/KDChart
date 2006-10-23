@@ -503,11 +503,14 @@ void CartesianAxis::paintCtx( PaintContext* context )
                                               : ((halfFontHeight + size.height()) * -1.0) ) ) ),
                                     size ) );
 
+                        bool hadClipping = ptr->hasClipping();
+
                         QRect geo = labelItem->geometry();
-                        if( i == minValueX && !useItemCountLabels )
-                            geo.moveLeft( geo.left() + geo.width() / 2 );
-                        if( i == maxValueX && !useItemCountLabels )
-                            geo.moveLeft( geo.left() - geo.width() / 2 );
+                        // if our item would only half fit, we disable clipping for that one
+                        if( geo.left() < geometry().left() && geo.right() > geometry().left() )
+                                ptr->setClipping( false );
+                        if( geo.left() < geometry().right() && geo.right() > geometry().right() )
+                            ptr->setClipping( false );
 
                         labelItem->setGeometry( geo );
 
@@ -515,6 +518,9 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         labelItem->paint( ptr );
 
                         labelItem2->setText( labelItem->text() );
+
+                        // maybe enable clipping afterwards
+                        ptr->setClipping( hadClipping );
                     } else {
                         labelStep -= qRound( dimX.stepWidth ); //qRound( labelDiff );
                     }
@@ -584,23 +590,21 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     const int x =
                         static_cast<int>( leftPoint.x() + met.height() * ( position() == Left ? -0.5 : 0.5) )
                         - ( position() == Left ? labelSize.width() : (labelSize.width() - maxLabelsWidth) );
-                    int y;
-                    if( f == minValueY ){
-                        // first label of the ordinate?
-                        // shift it up a bit, to prevent it from being clipped away
-                        y = static_cast<int>( leftPoint.y() - ( met.ascent() + met.descent() ) * 0.7 );
-                    } else if( f + steg > maxLimit ){
-                        // last label of the ordinate?
-                        // shift it down a bit, to prevent it from being clipped away
-                        y = static_cast<int>( leftPoint.y() - met.ascent() * 0.1 );
-                    } else{
-                        y = static_cast<int>( leftPoint.y() - ( met.ascent() + met.descent() ) * 0.6 );
-                    }
-                    --y;
 
-                    labelItem->setGeometry( QRect( QPoint(x, y), labelSize ) );
-                    //ptr->drawRect(labelItem->geometry().adjusted(0,0,-1,-1));
+                    int y = static_cast<int>( leftPoint.y() - ( met.ascent() + met.descent() ) * 0.6 );
+
+                    labelItem->setGeometry( QRect( QPoint( x, y ), labelSize ) );
+
+                    bool hadClipping = ptr->hasClipping();
+                    QRect geo = labelItem->geometry();
+
+                    if( geo.top() < geometry().top() && geo.bottom() > geometry().top() )
+                        ptr->setClipping( false );
+                    if( geo.top() < geometry().bottom() && geo.bottom() > geometry().bottom() )
+                        ptr->setClipping( false );
+
                     labelItem->paint( ptr );
+                    ptr->setClipping( hadClipping );
 
                     if ( isLogarithmicY )
                         labelValue *= 10.0;
