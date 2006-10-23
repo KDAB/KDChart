@@ -3,7 +3,7 @@
 #include <KDChartGlobal>
 #include <KDChartBarDiagram>
 #include <KDChartCartesianCoordinatePlane>
-#include <KDChartMeasure>
+#include <../../include/KDChartMeasure>
 
 #include <TableModel.h>
 
