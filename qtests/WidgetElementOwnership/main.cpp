@@ -111,6 +111,8 @@ private slots:
       QCOMPARE( m_widget->allLegends().size(), 1 );
       delete legend;
       QCOMPARE( m_widget->allLegends().size(), 0 );
+      m_widget->addLegend( Position::North );
+      QCOMPARE( m_widget->allLegends().size(), 1 );
   }
 
   void testRetrieveDiagram()
