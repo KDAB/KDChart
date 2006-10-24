@@ -40,7 +40,7 @@ public:
     ~Private();
 
 private:
-    AbstractArea* area;
+    QObject* area;
     Position position;
     Qt::Alignment alignment;
     Measure horizontalPadding;
@@ -87,11 +87,11 @@ RelativePosition::~RelativePosition()
 
 #define d d_func()
 
-void RelativePosition::setReferenceArea( AbstractArea * area ) {
+void RelativePosition::setReferenceArea( QObject * area ) {
     d->area = area;
 }
 
-AbstractArea * RelativePosition::referenceArea() const {
+QObject * RelativePosition::referenceArea() const {
     return d->area;
 }
 

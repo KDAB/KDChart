@@ -37,7 +37,7 @@
 
 namespace KDChart {
 
-    class AbstractArea;
+//    class AbstractArea;
     class Position;
     class Measure;
 
@@ -63,18 +63,50 @@ public:
 
     ~RelativePosition();
 
-    void setReferenceArea( AbstractArea* area );
-    AbstractArea* referenceArea() const;
+    /**
+     * \brief Specifies the reference area to be used to find the anchor point.
+     *
+     * The reference area's type can be either QWidget, or be derived from KDChart::AbstractArea.
+     *
+     * \sa setReferencePosition, setAlignment, setHorizontalPadding, setVerticalPadding
+     */
+    void setReferenceArea( QObject* area );
+    QObject* referenceArea() const;
 
+    /**
+     * \brief Specifies the position of the anchor point.
+     *
+     * The anchor point of a RelativePosition may be one of the pre-defined
+     * points of it's reference area - for details see KDChart::Position.
+     *
+     *  \sa setReferenceArea, setAlignment, setHorizontalPadding, setVerticalPadding, KDChart::Position
+     */
     void setReferencePosition( Position position );
     Position referencePosition() const;
 
+    /**
+     * Specifies the location of the content, that is to be positioned by this RelativePosition.
+     *
+     * \sa setReferencePosition, setReferenceArea, setHorizontalPadding, setVerticalPadding
+     */
     void setAlignment( Qt::Alignment flags );
     Qt::Alignment alignment() const;
 
+    /**
+     * Specifies the horizontal width of the gap between the anchor point and the content,
+     * that is to be positioned by this RelativePosition.
+     *
+     * \sa setVerticalPadding, setReferencePosition, setReferenceArea
+     */
     void setHorizontalPadding( const Measure& padding );
     Measure horizontalPadding() const;
 
+    /**
+     * Specifies the vertical width of the gap between the anchor point and the content,
+     * that is to be positioned by this RelativePosition.
+     *
+     * \sa setHorizontalPadding, setReferencePosition, setReferenceArea
+     */
     void setVerticalPadding( const Measure& padding );
     Measure verticalPadding() const;
 
