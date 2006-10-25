@@ -257,4 +257,13 @@ void KDChart::AbstractCoordinatePlane::layoutPlanes()
     emit needLayoutPlanes();
 }
 
+
+void KDChart::AbstractCoordinatePlane::mousePressEvent( QMouseEvent* event )
+{
+    KDAB_FOREACH( AbstractDiagram * a, d->diagrams )
+    {
+        a->mousePressEvent( event );
+    }
+}
+
 #undef d
