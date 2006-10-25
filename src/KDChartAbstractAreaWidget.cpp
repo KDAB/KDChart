@@ -147,8 +147,8 @@ void AbstractAreaWidget::paintAll( QPainter& painter )
     //qDebug() << "AbstractAreaWidget::paintAll() called";
 
     // Paint the background and frame
-    paintBackground( painter, QRect(QPoint(0, 0), size()) );
-    paintFrame(      painter, QRect(QPoint(0, 0), size()) );
+    paintBackground( painter, QRect(QPoint(0, 0), QSize( width()-1, height()-1 ) ) );
+    paintFrame(      painter, QRect(QPoint(0, 0), QSize( width()-1, height()-1 ) ) );
 
 /*
     we do not call setContentsMargins() now,
