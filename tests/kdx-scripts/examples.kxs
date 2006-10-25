@@ -23,7 +23,7 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/AxisChart-zzoji.conf</Value>
+   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/AxisChart-qSf6e.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
@@ -84,7 +84,7 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/AxisLabels-kTYWL.conf</Value>
+   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/AxisLabels-8FFWq.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
@@ -145,7 +145,7 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/AxisParameters-mxw8N.conf</Value>
+   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/AxisParameters-3sV1n.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
@@ -206,7 +206,7 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Background-xxRbK.conf</Value>
+   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Background-5wn9a.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
@@ -267,7 +267,7 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/BarAdvanced-6Nzzi.conf</Value>
+   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/BarAdvanced-5NWCE.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
@@ -328,7 +328,7 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Parameters-Jey7N.conf</Value>
+   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Parameters-551gd.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
@@ -389,7 +389,7 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Simple-4laBB.conf</Value>
+   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Simple-Hlxh6.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
@@ -450,7 +450,7 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/simple-DWurj.conf</Value>
+   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Simple-JNN0L.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
@@ -511,7 +511,7 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/DrawIntoPainter-WTUMH.conf</Value>
+   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/DrawIntoPainter-3fEGU.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
@@ -572,7 +572,7 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/EmptyValues-yCLKZ.conf</Value>
+   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/EmptyValues-tHdtR.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
@@ -633,7 +633,7 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/CartesianGrid-k5A3c.conf</Value>
+   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/CartesianGrid-HlbhG.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
@@ -694,7 +694,7 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/PolarGrid-zZPiy.conf</Value>
+   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/PolarGrid-r2ljI.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
@@ -755,7 +755,7 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Advanced-9km8I.conf</Value>
+   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Advanced-l5tb0.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
@@ -877,7 +877,7 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/HeadersFootersSimple-oBUYB.conf</Value>
+   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/HeadersFootersSimple-gwIdD.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
@@ -978,6 +978,31 @@
     <Run>
      <StartTime>
       <Date Day="25" Year="2006" Month="10" />
+      <Time Hour="15" Minute="55" Second="8" Millisecond="268" />
+     </StartTime>
+     <EndTime>
+      <Date Day="25" Year="2006" Month="10" />
+      <Time Hour="15" Minute="57" Second="11" Millisecond="350" />
+     </EndTime>
+    </Run>
+    <Result>
+     <NormalExit>true</NormalExit>
+     <ExitCode>0</ExitCode>
+     <PropsOK>true</PropsOK>
+     <AssertionsOK>true</AssertionsOK>
+     <PropertyCollection/>
+     <ScreenshotCollection>
+      <Status>2</Status>
+     </ScreenshotCollection>
+     <PostTestCheckResult>true</PostTestCheckResult>
+     <PostTestCheckExitCode>0</PostTestCheckExitCode>
+     <Error></Error>
+    </Result>
+   </RunResult>
+   <RunResult>
+    <Run>
+     <StartTime>
+      <Date Day="25" Year="2006" Month="10" />
       <Time Hour="12" Minute="57" Second="54" Millisecond="986" />
      </StartTime>
      <EndTime>
@@ -1024,7 +1049,7 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/LegendParameters-Zy2jx.conf</Value>
+   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/LegendParameters-T1CIR.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
@@ -1085,7 +1110,7 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/LegendSimple-RafGs.conf</Value>
+   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/LegendSimple-VI95S.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
@@ -1146,7 +1171,7 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Advanced-hsBlk.conf</Value>
+   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Advanced-NsShu.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
@@ -1207,7 +1232,7 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Parameters-xrFGz.conf</Value>
+   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Parameters-cRlDu.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
@@ -1268,7 +1293,7 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/PointChart-dKAYE.conf</Value>
+   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/PointChart-0PCNX.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
@@ -1329,7 +1354,7 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/PointWidget-bcPuB.conf</Value>
+   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/PointWidget-jKHTw.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
@@ -1390,7 +1415,7 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/SimpleLineWidget-U52Gt.conf</Value>
+   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/SimpleLineWidget-XL6a1.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
@@ -1451,7 +1476,7 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/ModelView-26gYd.conf</Value>
+   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/ModelView-BuBK8.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
@@ -1512,7 +1537,7 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/MultidimensionalData-kmCmO.conf</Value>
+   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/MultidimensionalData-mmFv7.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
@@ -1573,7 +1598,7 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Advanced-NTVJ0.conf</Value>
+   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Advanced-p3tWE.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
@@ -1634,7 +1659,7 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Parameters-zfyXm.conf</Value>
+   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Parameters-dLQKA.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
@@ -1695,7 +1720,7 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Simple-1wt5d.conf</Value>
+   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/simple-p49mE.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
@@ -1756,7 +1781,7 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Advanced-rIxSa.conf</Value>
+   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Advanced-p3tWE.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
@@ -1817,7 +1842,7 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Parameters-SQsFN.conf</Value>
+   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Parameters-Fr6cN.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
@@ -1878,7 +1903,7 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Simple-f09lX.conf</Value>
+   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Simple-tAFHy.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
@@ -1939,7 +1964,7 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/RealTime-mdE5L.conf</Value>
+   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/RealTime-aNHWN.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
@@ -2000,7 +2025,7 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/SharedAbscissa-vTXsU.conf</Value>
+   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/SharedAbscissa-GvesT.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
@@ -2061,7 +2086,7 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/WidgetAdvanced-esDr7.conf</Value>
+   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/WidgetAdvanced-nWNZj.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
@@ -2122,7 +2147,7 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/WidgetParameters-2lIYN.conf</Value>
+   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/WidgetParameters-KpPdH.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
@@ -2183,7 +2208,7 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/WidgetSimple-x16N7.conf</Value>
+   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/WidgetSimple-Tf4UU.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
@@ -2244,7 +2269,7 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Zoom-xSNhN.conf</Value>
+   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Zoom-VIJHe.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
@@ -2280,6 +2305,31 @@
    <Selected>false</Selected>
    <OverrideSuiteConfig>false</OverrideSuiteConfig>
    <ConfigFile/>
+   <RunResult>
+    <Run>
+     <StartTime>
+      <Date Day="25" Year="2006" Month="10" />
+      <Time Hour="15" Minute="54" Second="31" Millisecond="503" />
+     </StartTime>
+     <EndTime>
+      <Date Day="25" Year="2006" Month="10" />
+      <Time Hour="15" Minute="54" Second="58" Millisecond="832" />
+     </EndTime>
+    </Run>
+    <Result>
+     <NormalExit>true</NormalExit>
+     <ExitCode>0</ExitCode>
+     <PropsOK>true</PropsOK>
+     <AssertionsOK>true</AssertionsOK>
+     <PropertyCollection/>
+     <ScreenshotCollection>
+      <Status>2</Status>
+     </ScreenshotCollection>
+     <PostTestCheckResult>true</PostTestCheckResult>
+     <PostTestCheckExitCode>0</PostTestCheckExitCode>
+     <Error></Error>
+    </Result>
+   </RunResult>
   </Test>
  </TestSuite>
 </KDXSetup>
