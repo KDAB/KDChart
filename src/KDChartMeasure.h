@@ -90,6 +90,8 @@ public:
       * AbstractAreaWidget too.
       */
     qreal calculatedValue( const QObject * autoArea, KDChartEnums::MeasureOrientation autoOrientation ) const;
+    qreal calculatedValue( QSizeF autoSize, KDChartEnums::MeasureOrientation autoOrientation ) const;
+    const QSizeF sizeOfArea( const QObject* area ) const;
 
     bool operator==( const Measure& ) const;
     bool operator!=( const Measure& other ) const { return !operator==(other); }

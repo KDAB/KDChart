@@ -80,13 +80,15 @@ Measure & Measure::operator=( const Measure& r )
 }
 
 
-qreal Measure::calculatedValue( const QObject* autoArea,
+qreal Measure::calculatedValue( QSizeF autoSize,
                                 KDChartEnums::MeasureOrientation autoOrientation) const
 {
     if( mMode == KDChartEnums::MeasureCalculationModeAbsolute ){
         return mValue;
     }else{
         qreal value = 0.0;
+        const QObject theAutoArea;
+        const QObject* autoArea = &theAutoArea;
         const QObject* area = mArea ? mArea : autoArea;
         KDChartEnums::MeasureOrientation orientation = mOrientation;
         switch( mMode ){
@@ -105,19 +107,12 @@ qreal Measure::calculatedValue( const QObject* autoArea,
                 break;
         }
         if( area ){
-            QSize size;
-            const QWidget* widget = dynamic_cast<const QWidget*>(area);
-            if( widget ){
-                size = widget->layout()->geometry().size();
-            }else{
-                const AbstractArea* kdcArea = dynamic_cast<const AbstractArea*>(area);
-                if( kdcArea ){
-                    size = kdcArea->geometry().size();
-                }else if( mMode != KDChartEnums::MeasureCalculationModeAbsolute ){
-                    qDebug("Measure::calculatedValue() has no reference area.");
-                    return 1.0;
-                }
-            }
+            QSizeF size;
+            if( area == autoArea )
+                size = autoSize;
+            else
+                size = sizeOfArea( area );
+
             qreal referenceValue;
             switch( orientation ){
                 case KDChartEnums::MeasureOrientationAuto: // fall through intended
@@ -138,6 +133,32 @@ qreal Measure::calculatedValue( const QObject* autoArea,
         }
         return value;
     }
+}
+
+
+qreal Measure::calculatedValue( const QObject* autoArea,
+                                KDChartEnums::MeasureOrientation autoOrientation) const
+{
+    return calculatedValue( sizeOfArea( autoArea ), autoOrientation);
+}
+
+
+const QSizeF Measure::sizeOfArea( const QObject* area ) const
+{
+    QSizeF size;
+    const QWidget* widget = dynamic_cast<const QWidget*>(area);
+    if( widget ){
+        size = widget->layout()->geometry().size();
+    }else{
+        const AbstractArea* kdcArea = dynamic_cast<const AbstractArea*>(area);
+        if( kdcArea ){
+            size = kdcArea->geometry().size();
+        }else if( mMode != KDChartEnums::MeasureCalculationModeAbsolute ){
+            //qDebug("Measure::sizeOfArea() got no valid area.");
+            return QSizeF(1.0, 1.0);
+        }
+    }
+    return size;
 }
 
 

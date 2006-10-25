@@ -474,10 +474,17 @@ void BarDiagram::paint( PaintContext* ctx )
                         const bool isPositive = (value >= 0.0);
                         RelativePosition relPos( isPositive ? attrs.positivePosition() : attrs.negativePosition() );
                         relPos.setReferencePoints( PositionPoints::fromRectF( rect ) );
+                        const TextAttributes ta( attrs.textAttributes() );
+                        const QFontMetrics metrics( ta.font(), this );
+                        // note: The font height is used, for both horizontal and vertical padding.
+                        QSizeF relativeMeasureSize( metrics.height(), metrics.height() );
                         //qDebug() << "\ntopPoint at" << topPoint;
                         //qDebug() << "the rect is" << rect;
                         //qDebug() << "data value text at" << relPos.calculatedPoint();
-                        list.append( DataValueTextInfo( index, relPos.calculatedPoint(), value ) );
+                        list.append( DataValueTextInfo(
+                                index,
+                                relPos.calculatedPoint( relativeMeasureSize ),
+                                value ) );
                     }
                     paintBars( ctx, index, rect, maxDepth );
 

@@ -340,13 +340,31 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
     if ( !a.suffix().isNull() )
         roundedValue.append( a.suffix() );
 
-    PainterSaver painterSaver( painter );
+    const TextAttributes ta( a.textAttributes() );
+
+    QPointF pt( pos );
+    // adjust the text start point position, if alignment if not Bottom/Left
+    const bool isPositive = (value >= 0.0);
+    const RelativePosition relPos( isPositive ? a.positivePosition() : a.negativePosition() );
+    if( ! ((relPos.alignment() & Qt::AlignLeft) && (relPos.alignment() & Qt::AlignBottom)) ){
+        const QFontMetrics metrics( ta.font(), this );
+        QRectF boundRect( metrics.boundingRect( roundedValue ) );
+        if( relPos.alignment() & Qt::AlignRight )
+            pt.rx() -= boundRect.width();
+        else if( relPos.alignment() & Qt::AlignHCenter )
+            pt.rx() -= boundRect.width() / 2.0;
+        if( relPos.alignment() & Qt::AlignBottom )
+            pt.rx() -= boundRect.height();
+        else if( relPos.alignment() & Qt::AlignVCenter )
+            pt.rx() -= boundRect.height() / 2.0;
+    }
+
     // FIXME draw the non-text bits, background, etc
-    const TextAttributes &ta = a.textAttributes();
     if ( ta.isVisible() ) {
+        PainterSaver painterSaver( painter );
         painter->setPen( ta.pen() );
         painter->setFont( ta.font() );
-        painter->translate( pos );
+        painter->translate( pt );
         painter->rotate( ta.rotation() );
         painter->drawText( QPointF(0, 0), roundedValue );
     }

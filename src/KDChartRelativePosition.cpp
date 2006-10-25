@@ -152,7 +152,7 @@ qreal RelativePosition::rotation() const {
 }
 
 
-const QPointF RelativePosition::calculatedPoint() const
+const QPointF RelativePosition::calculatedPoint( QSizeF autoSize ) const
 {
     bool useRect = (d->area != 0);
     QRect rect;
@@ -170,8 +170,8 @@ const QPointF RelativePosition::calculatedPoint() const
     }
     const PositionPoints pts( useRect ? PositionPoints::fromRect( rect ) : d->points );
     QPointF pt( pts.point( d->position ) );
-    const qreal dx = horizontalPadding().calculatedValue( d->area, KDChartEnums::MeasureOrientationHorizontal );
-    const qreal dy = verticalPadding()  .calculatedValue( d->area, KDChartEnums::MeasureOrientationVertical );
+    const qreal dx = horizontalPadding().calculatedValue( autoSize, KDChartEnums::MeasureOrientationHorizontal );
+    const qreal dy = verticalPadding()  .calculatedValue( autoSize, KDChartEnums::MeasureOrientationVertical );
     //qDebug() << "pt.x() + dx" << pt.x() + dx << "  pt.y() + dy" << pt.y() + dy;
     return QPointF( pt.x() + dx, pt.y() + dy );
 }

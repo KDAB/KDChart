@@ -69,13 +69,26 @@ DataValueAttributes::Private::Private() :
     visible( false ),
     decimalDigits( KDCHART_DATA_VALUE_AUTO_DIGITS ),
     powerOfTenDivisor( 0 ),
-    showInfinite( true ),
-    negativeRelPos(),  // use the default: no padding, no rotation
-    positiveRelPos()
+    showInfinite( true )
 {
-  textAttributes.setRotation( -45 );
-  positiveRelPos.setReferencePosition( Position::North );
-  negativeRelPos.setReferencePosition( Position::South );
+    textAttributes.setRotation( -45 );
+    positiveRelPos.setReferencePosition( Position::NorthWest );
+    negativeRelPos.setReferencePosition( Position::SouthEast );
+
+    positiveRelPos.setAlignment( Qt::AlignLeft  | Qt::AlignBottom );
+    negativeRelPos.setAlignment( Qt::AlignRight | Qt::AlignTop );
+
+    // By default use 0.25 of the font height as horizontal distance between
+    // the data and their respective data value texts,
+    // and use 0.33 as the vertical distance.
+    Measure m(   250.0, KDChartEnums::MeasureCalculationModeAuto );
+    positiveRelPos.setHorizontalPadding( m );
+    m.setValue( -250.0 );
+    negativeRelPos.setHorizontalPadding( m );
+    m.setValue( -333.3 );
+    positiveRelPos.setVerticalPadding( m );
+    m.setValue(  333.3 );
+    negativeRelPos.setVerticalPadding( m );
 }
 
 

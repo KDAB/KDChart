@@ -144,7 +144,7 @@ public:
     void setRotation( qreal rot );
     qreal rotation() const;
 
-    const QPointF calculatedPoint() const;
+    const QPointF calculatedPoint( QSizeF autoSize ) const;
 
     bool operator==( const RelativePosition& ) const;
     bool operator!=( const RelativePosition & other ) const;
