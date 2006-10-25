@@ -104,12 +104,11 @@ QModelIndex DatasetProxyModel::mapToSource ( const QModelIndex& proxyIndex ) con
     if ( !proxyIndex.isValid() ) return proxyIndex;
     if ( mRowSrcToProxyMap.isEmpty() && mColSrcToProxyMap.isEmpty() )
     {
-        return createIndex ( proxyIndex.row(),  proxyIndex.column(),
-                             proxyIndex.internalPointer() );
+        return sourceModel()->index( proxyIndex.row(),  proxyIndex.column(), mRootIndex );
     } else {
         int row = mapProxyRowToSource ( proxyIndex.row() );
         int column = mapProxyColumnToSource ( proxyIndex.column() );
-        return createIndex ( row, column, proxyIndex.internalPointer() );
+        return sourceModel()->index( row, column, mRootIndex );
     }
 }
 
