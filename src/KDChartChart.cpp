@@ -660,12 +660,13 @@ void Chart::Private::resizeLayout( const QSize& size )
 
 void Chart::Private::paintAll( QPainter* painter )
 {
+    QRect rect( QPoint(0, 0), QSize( currentLayoutSize.width()-1, currentLayoutSize.height()-1 ));
     // Paint the background (if any)
     KDChart::AbstractAreaBase::paintBackgroundAttributes(
-        *painter, QRect(QPoint(0, 0), currentLayoutSize), backgroundAttributes );
+        *painter, rect, backgroundAttributes );
     // Paint the frame (if any)
     KDChart::AbstractAreaBase::paintFrameAttributes(
-        *painter, QRect(QPoint(0, 0), currentLayoutSize), frameAttributes );
+        *painter, rect, frameAttributes );
 
     KDAB_FOREACH( KDChart::AbstractArea* layoutItem, layoutItems ) {
         layoutItem->paintAll( *painter );
@@ -1012,3 +1013,20 @@ LegendList Chart::legends()
 {
     return d->legends;
 }
+
+
+void Chart::mousePressEvent( QMouseEvent* event )
+{
+    KDAB_FOREACH( AbstractCoordinatePlane* plane, d->coordinatePlanes ) {
+       if ( plane->geometry().contains( event->pos() ) ) {
+           if ( plane->diagrams().size() > 0 ) {
+               QPoint pos = plane->diagram()->mapFromGlobal( event->globalPos() );
+               QMouseEvent ev( QEvent::MouseButtonPress, pos, event->globalPos(),
+                               event->button(), event->buttons(),
+                               event->modifiers() );
+               plane->mousePressEvent( &ev );
+           }
+       }
+    }
+}
+

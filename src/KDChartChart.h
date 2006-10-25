@@ -383,6 +383,9 @@ namespace KDChart {
           * @sa paint
           */
         /* reimp */ void paintEvent( QPaintEvent* event );
+
+        /** reimp */
+        void mousePressEvent( QMouseEvent* event );
     };
 
 }
