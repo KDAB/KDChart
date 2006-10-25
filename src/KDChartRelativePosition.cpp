@@ -28,6 +28,10 @@
 #include "KDChartEnums.h"
 #include "KDChartMeasure.h"
 #include "KDChartPosition.h"
+#include "KDChartAbstractArea.h"
+
+#include <QWidget>
+#include <QLayout>
 
 #include <KDABLibFakes>
 
@@ -41,6 +45,7 @@ public:
 
 private:
     QObject* area;
+    PositionPoints points;
     Position position;
     Qt::Alignment alignment;
     Measure horizontalPadding;
@@ -89,10 +94,21 @@ RelativePosition::~RelativePosition()
 
 void RelativePosition::setReferenceArea( QObject * area ) {
     d->area = area;
+    if( area )
+        setReferencePoints( PositionPoints() );
 }
 
 QObject * RelativePosition::referenceArea() const {
     return d->area;
+}
+
+void RelativePosition::setReferencePoints( const PositionPoints& points ){
+    d->points = points;
+    if( !points.isNull() )
+        setReferenceArea( 0 );
+}
+const PositionPoints RelativePosition::referencePoints() const{
+    return d->points;
 }
 
 void RelativePosition::setReferencePosition( Position pos ) {
@@ -134,6 +150,32 @@ void RelativePosition::setRotation( qreal rot ) {
 qreal RelativePosition::rotation() const {
     return d->rotation;
 }
+
+
+const QPointF RelativePosition::calculatedPoint() const
+{
+    bool useRect = (d->area != 0);
+    QRect rect;
+    if( useRect ){
+        const QWidget* widget = dynamic_cast<const QWidget*>(d->area);
+        if( widget ){
+            rect = widget->layout()->geometry();
+        }else{
+            const AbstractArea* kdcArea = dynamic_cast<const AbstractArea*>(d->area);
+            if( kdcArea )
+                rect = kdcArea->geometry();
+            else
+                useRect = false;
+        }
+    }
+    const PositionPoints pts( useRect ? PositionPoints::fromRect( rect ) : d->points );
+    QPointF pt( pts.point( d->position ) );
+    const qreal dx = horizontalPadding().calculatedValue( d->area, KDChartEnums::MeasureOrientationHorizontal );
+    const qreal dy = verticalPadding()  .calculatedValue( d->area, KDChartEnums::MeasureOrientationVertical );
+    //qDebug() << "pt.x() + dx" << pt.x() + dx << "  pt.y() + dy" << pt.y() + dy;
+    return QPointF( pt.x() + dx, pt.y() + dy );
+}
+
 
 bool RelativePosition::operator==( const RelativePosition& r ) const
 {

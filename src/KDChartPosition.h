@@ -125,6 +125,102 @@ private:
 inline bool Position::operator!=( const Position & other ) const { return !operator==( other ); }
 inline bool Position::operator!=( int other ) const { return !operator==( other ); }
 
+
+class KDCHART_EXPORT PositionPoints
+{
+  public:
+    PositionPoints(){} // all points get initialized with the default automatically
+
+    PositionPoints(
+        QPointF center,
+        QPointF northWest,
+        QPointF north,
+        QPointF northEast,
+        QPointF east,
+        QPointF southEast,
+        QPointF south,
+        QPointF southWest,
+        QPointF west )
+      : mPositionCenter( center )
+      , mPositionNorthWest( northWest )
+      , mPositionNorth( north )
+      , mPositionNorthEast( northEast )
+      , mPositionEast( east )
+      , mPositionSouthEast( southEast )
+      , mPositionSouth( south )
+      , mPositionSouthWest( southWest )
+      , mPositionWest( west )
+        {}
+    const QPointF point( Position position ) const
+    {
+      //qDebug() << "point( " << position.name() << " )";
+      if( position ==  Position::Center)
+        return mPositionCenter;
+      if( position ==  Position::NorthWest)
+        return mPositionNorthWest;
+      if( position ==  Position::North)
+        return mPositionNorth;
+      if( position ==  Position::NorthEast)
+        return mPositionNorthEast;
+      if( position ==  Position::East)
+        return mPositionEast;
+      if( position ==  Position::SouthEast)
+        return mPositionSouthEast;
+      if( position ==  Position::South)
+        return mPositionSouth;
+      if( position ==  Position::SouthWest)
+        return mPositionSouthWest;
+      if( position ==  Position::West)
+        return mPositionWest;
+      return mPositionUnknown;
+    }
+
+    bool isNull() const
+    {
+        return
+            mPositionUnknown.isNull() &&
+            mPositionCenter.isNull() &&
+            mPositionNorthWest.isNull() &&
+            mPositionNorth.isNull() &&
+            mPositionNorthEast.isNull() &&
+            mPositionEast.isNull() &&
+            mPositionSouthEast.isNull() &&
+            mPositionSouth.isNull() &&
+            mPositionSouthWest.isNull() &&
+            mPositionWest.isNull();
+    }
+
+    static const PositionPoints fromRectF( const QRectF r )
+    {
+        return PositionPoints(
+            r.center(),
+            r.topLeft(),
+            QPointF(r.center().x(), r.top()),
+            r.topRight(),
+            QPointF(r.right(), r.center().y()),
+            r.bottomRight(),
+            QPointF(r.center().x(), r.bottom()),
+            r.bottomLeft(),
+            QPointF(r.left(), r.center().y()) );
+    }
+    static const PositionPoints fromRect( const QRect r )
+    {
+        return PositionPoints::fromRectF( r );
+    }
+
+    QPointF mPositionUnknown;
+    QPointF mPositionCenter;
+    QPointF mPositionNorthWest;
+    QPointF mPositionNorth;
+    QPointF mPositionNorthEast;
+    QPointF mPositionEast;
+    QPointF mPositionSouthEast;
+    QPointF mPositionSouth;
+    QPointF mPositionSouthWest;
+    QPointF mPositionWest;
+}; // End of class PositionPoints
+
+
 }
 
 Q_DECLARE_TYPEINFO( KDChart::Position, Q_MOVABLE_TYPE );

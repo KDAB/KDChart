@@ -319,7 +319,7 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
                                           double value )
 {
     // paint one data series
-    DataValueAttributes a = dataValueAttributes(index);
+    const DataValueAttributes a( dataValueAttributes(index) );
     if ( !a.isVisible() ) return;
 
     // handle decimal digits

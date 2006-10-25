@@ -29,6 +29,8 @@
 #include "KDChartBarDiagram.h"
 #include "KDChartBarDiagram_p.h"
 #include "KDChartThreeDBarAttributes.h"
+#include "KDChartDataValueAttributes.h"
+#include "KDChartPosition.h"
 #include "KDChartAttributesModel.h"
 #include "KDChartPaintContext.h"
 #include "KDChartPainterSaver_p.h"
@@ -462,10 +464,22 @@ void BarDiagram::paint( PaintContext* ctx )
                     QPointF bottomPoint = coordinatePlane()->translate( QPointF( i, 0 ) );
                     const double barHeight = bottomPoint.y() - topPoint.y();
                     topPoint.setX( topPoint.x() + offset );
+
                     //PENDING Michel: FIXME barWidth
+                    const QRectF rect( topPoint, QSizeF( barWidth, barHeight ) );
+
                     QModelIndex index = model()->index( i, j, rootIndex() );
-                    list.append( DataValueTextInfo( index, topPoint, value ) );
-                    paintBars( ctx, index, QRectF( topPoint, QSizeF( barWidth, barHeight ) ), maxDepth );
+                    const DataValueAttributes attrs( dataValueAttributes( index ) );
+                    if( attrs.isVisible() ) {
+                        const bool isPositive = (value >= 0.0);
+                        RelativePosition relPos( isPositive ? attrs.positivePosition() : attrs.negativePosition() );
+                        relPos.setReferencePoints( PositionPoints::fromRectF( rect ) );
+                        //qDebug() << "\ntopPoint at" << topPoint;
+                        //qDebug() << "the rect is" << rect;
+                        //qDebug() << "data value text at" << relPos.calculatedPoint();
+                        list.append( DataValueTextInfo( index, relPos.calculatedPoint(), value ) );
+                    }
+                    paintBars( ctx, index, rect, maxDepth );
 
                     offset += barWidth + spaceBetweenBars;
                 }

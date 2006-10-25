@@ -37,8 +37,8 @@
 
 namespace KDChart {
 
-//    class AbstractArea;
     class Position;
+    class PositionPoints;
     class Measure;
 
 /**
@@ -46,12 +46,16 @@ namespace KDChart {
   \brief Defines relative position information: reference area, position
   in this area, horizontal / vertical padding, and rotating.
 
-  \Note Using RelativePosition you can specify the relative parts
+  Using RelativePosition you can specify the relative parts
   of some position information, and you can specify the absolute parts:
   the reference area, and the position in this area.
-  To get an absolute position, you will need to declare both, the relative
-  and the absolute parts, otherwise the specification is incomplete and
-  KD Chart will ignore it.
+
+  \Note To get an absolute position, you have three options:
+  \li either you declare both, the relative and the absolute parts,
+  using setReferenceArea for the later,
+  \li or you specify a set of points, using setReferencePoints,
+  \li or you refrein from using either, but leave it to KD Chart to find
+  a matching reference area for you.
   */
 class KDCHART_EXPORT RelativePosition
 {
@@ -68,10 +72,34 @@ public:
      *
      * The reference area's type can be either QWidget, or be derived from KDChart::AbstractArea.
      *
+     * \note Usage of reference area and reference points works mutually exclusively:
+     * Only one setting can be valid, so any former specification of reference points is reset
+     * when you call setReferenceArea.
+     *
+     * Also note: In a few cases KD Chart will ignore your area (or points, resp.) settings!
+     * Relative positioning of data value texts is an example: For these
+     * the reference area is the respective data area taking precendence over your settings.
+     *
      * \sa setReferencePosition, setAlignment, setHorizontalPadding, setVerticalPadding
      */
     void setReferenceArea( QObject* area );
     QObject* referenceArea() const;
+
+    /**
+     * \brief Specifies a set of points from which the anchor point will be selected.
+     *
+     * \note Usage of reference area and reference points works mutually exclusively:
+     * Only one setting can be valid, so any former specification of reference area is reset
+     * when you call setReferencePoints.
+     *
+     * Also note: In a few cases KD Chart will ignore your points (or area, resp.) settings!
+     * Relative positioning of data value texts is an example: For these
+     * the reference area is the respective data area taking precendence over your settings.
+     *
+     * \sa setReferenceArea, setReferencePosition, setAlignment, setHorizontalPadding, setVerticalPadding
+     */
+    void setReferencePoints( const PositionPoints& points );
+    const PositionPoints referencePoints() const;
 
     /**
      * \brief Specifies the position of the anchor point.
@@ -86,6 +114,9 @@ public:
 
     /**
      * Specifies the location of the content, that is to be positioned by this RelativePosition.
+     *
+     * Aligning is applied, after horiz./vert. padding was retrieved to calculate the real
+     * reference point, so aligning is seen as relative to that point.
      *
      * \sa setReferencePosition, setReferenceArea, setHorizontalPadding, setVerticalPadding
      */
@@ -112,6 +143,8 @@ public:
 
     void setRotation( qreal rot );
     qreal rotation() const;
+
+    const QPointF calculatedPoint() const;
 
     bool operator==( const RelativePosition& ) const;
     bool operator!=( const RelativePosition & other ) const;

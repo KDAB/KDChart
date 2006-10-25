@@ -28,6 +28,7 @@
 #include <QDebug>
 #include "KDChartDataValueAttributes.h"
 #include "KDChartRelativePosition.h"
+#include "KDChartPosition.h"
 #include <KDChartTextAttributes.h>
 #include <KDChartFrameAttributes.h>
 #include <KDChartBackgroundAttributes.h>
@@ -60,8 +61,8 @@ private:
     QString dataLabel;
     int powerOfTenDivisor;
     bool showInfinite;
-    RelativePosition    negativeRelPos;
-    RelativePosition    positiveRelPos;
+    RelativePosition negativeRelPos;
+    RelativePosition positiveRelPos;
 };
 
 DataValueAttributes::Private::Private() :
@@ -69,10 +70,12 @@ DataValueAttributes::Private::Private() :
     decimalDigits( KDCHART_DATA_VALUE_AUTO_DIGITS ),
     powerOfTenDivisor( 0 ),
     showInfinite( true ),
-    negativeRelPos(),  // use the default: centered alignment, no padding, no rotation
+    negativeRelPos(),  // use the default: no padding, no rotation
     positiveRelPos()
 {
   textAttributes.setRotation( -45 );
+  positiveRelPos.setReferencePosition( Position::North );
+  negativeRelPos.setReferencePosition( Position::South );
 }
 
 
