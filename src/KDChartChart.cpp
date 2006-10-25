@@ -660,7 +660,7 @@ void Chart::Private::resizeLayout( const QSize& size )
 
 void Chart::Private::paintAll( QPainter* painter )
 {
-    QRect rect( QPoint(0, 0), QSize( currentLayoutSize.width()-1, currentLayoutSize.height()-1 ));
+    QRect rect( QPoint(0, 0), currentLayoutSize );
     // Paint the background (if any)
     KDChart::AbstractAreaBase::paintBackgroundAttributes(
         *painter, rect, backgroundAttributes );
