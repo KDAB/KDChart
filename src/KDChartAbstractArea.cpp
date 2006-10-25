@@ -83,8 +83,8 @@ void AbstractArea::paintIntoRect( QPainter& painter, const QRect& rect )
 void AbstractArea::paintAll( QPainter& painter )
 {
     // Paint the background and frame
-    paintBackground( painter, geometry().adjusted( 0, 0, -1, -1 ) );
-    paintFrame(      painter, geometry().adjusted( 0, 0, -1, -1 ) );
+    paintBackground( painter, geometry() );
+    paintFrame(      painter, geometry() );
 
     // temporarily adjust the widget size, to be sure all content gets calculated
     // to fit into the inner rectangle
