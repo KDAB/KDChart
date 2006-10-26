@@ -152,7 +152,7 @@ qreal RelativePosition::rotation() const {
 }
 
 
-const QPointF RelativePosition::calculatedPoint( QSizeF autoSize ) const
+const QPointF RelativePosition::calculatedPoint( const QSizeF& autoSize ) const
 {
     bool useRect = (d->area != 0);
     QRect rect;

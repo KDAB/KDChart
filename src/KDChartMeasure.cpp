@@ -80,7 +80,7 @@ Measure & Measure::operator=( const Measure& r )
 }
 
 
-qreal Measure::calculatedValue( QSizeF autoSize,
+qreal Measure::calculatedValue( const QSizeF& autoSize,
                                 KDChartEnums::MeasureOrientation autoOrientation) const
 {
     if( mMode == KDChartEnums::MeasureCalculationModeAbsolute ){
