@@ -29,7 +29,6 @@
 #include "KDChartBarDiagram.h"
 #include "KDChartBarDiagram_p.h"
 #include "KDChartThreeDBarAttributes.h"
-#include "KDChartDataValueAttributes.h"
 #include "KDChartPosition.h"
 #include "KDChartAttributesModel.h"
 #include "KDChartPaintContext.h"
@@ -350,6 +349,7 @@ void BarDiagram::paintEvent ( QPaintEvent*)
     paint ( &ctx );
 }*/
 
+
 void BarDiagram::calculateValueAndGapWidths( int rowCount,int colCount,
                                              double groupWidth,
                                              double& outBarWidth,
@@ -459,33 +459,17 @@ void BarDiagram::paint( PaintContext* ctx )
 
                 for ( int j=0; j< colCount; ++j ) {
                     // paint one group
-                    const double value = d->attributesModel->data( d->attributesModel->index( i, j, attributesModelRootIndex() ) ).toDouble();
+                    const qreal value = d->attributesModel->data( d->attributesModel->index( i, j, attributesModelRootIndex() ) ).toDouble();
                     QPointF topPoint = coordinatePlane()->translate( QPointF( i + 0.5, value ) );
                     QPointF bottomPoint = coordinatePlane()->translate( QPointF( i, 0 ) );
                     const double barHeight = bottomPoint.y() - topPoint.y();
                     topPoint.setX( topPoint.x() + offset );
 
+                    const QModelIndex index = model()->index( i, j, rootIndex() );
+
                     //PENDING Michel: FIXME barWidth
                     const QRectF rect( topPoint, QSizeF( barWidth, barHeight ) );
-
-                    QModelIndex index = model()->index( i, j, rootIndex() );
-                    const DataValueAttributes attrs( dataValueAttributes( index ) );
-                    if( attrs.isVisible() ) {
-                        const bool isPositive = (value >= 0.0);
-                        RelativePosition relPos( isPositive ? attrs.positivePosition() : attrs.negativePosition() );
-                        relPos.setReferencePoints( PositionPoints::fromRectF( rect ) );
-                        const TextAttributes ta( attrs.textAttributes() );
-                        const QFontMetrics metrics( ta.font(), this );
-                        // note: The font height is used, for both horizontal and vertical padding.
-                        QSizeF relativeMeasureSize( metrics.height(), metrics.height() );
-                        //qDebug() << "\ntopPoint at" << topPoint;
-                        //qDebug() << "the rect is" << rect;
-                        //qDebug() << "data value text at" << relPos.calculatedPoint();
-                        list.append( DataValueTextInfo(
-                                index,
-                                relPos.calculatedPoint( relativeMeasureSize ),
-                                value ) );
-                    }
+                    d->appendDataValueTextInfoToList( this, list, index, PositionPoints( rect ), value );
                     paintBars( ctx, index, rect, maxDepth );
 
                     offset += barWidth + spaceBetweenBars;
@@ -520,8 +504,10 @@ void BarDiagram::paint( PaintContext* ctx )
                    point.setX( point.x() + offset/2 );
                    previousPoint = coordinatePlane()->translate( QPointF( j, stackedValues - value ) );
                    const double barHeight = previousPoint.y() - point.y();
-                   list.append( DataValueTextInfo( index, point, value ) );
-                   paintBars( ctx, index, QRectF( point, QSizeF( barWidth , barHeight ) ), maxDepth );
+
+                   const QRectF rect( point, QSizeF( barWidth , barHeight ) );
+                   d->appendDataValueTextInfoToList( this, list, index, PositionPoints( rect ), value );
+                   paintBars( ctx, index, rect, maxDepth );
                }
 
            }
@@ -585,8 +571,9 @@ void BarDiagram::paint( PaintContext* ctx )
                     }
                     const double barHeight = previousPoint.y() - point.y();
 
-                    list.append( DataValueTextInfo( index, point, value ) );
-                    paintBars( ctx, index, QRectF( point, QSizeF( barWidth, barHeight ) ), maxDepth );
+                    const QRectF rect( point, QSizeF( barWidth, barHeight ) );
+                    d->appendDataValueTextInfoToList( this, list, index, PositionPoints( rect ), value );
+                    paintBars( ctx, index, rect, maxDepth );
 
                 }
             }

@@ -168,7 +168,7 @@ const QPointF RelativePosition::calculatedPoint( const QSizeF& autoSize ) const
                 useRect = false;
         }
     }
-    const PositionPoints pts( useRect ? PositionPoints::fromRect( rect ) : d->points );
+    const PositionPoints pts( useRect ? PositionPoints( rect ) : d->points );
     QPointF pt( pts.point( d->position ) );
     const qreal dx = horizontalPadding().calculatedValue( autoSize, KDChartEnums::MeasureOrientationHorizontal );
     const qreal dy = verticalPadding()  .calculatedValue( autoSize, KDChartEnums::MeasureOrientationVertical );

@@ -25,6 +25,7 @@
 
 #include <QPainter>
 #include <QDebug>
+#include <QApplication>
 #include <QAbstractProxyModel>
 #include <QStandardItemModel>
 #include <QSizeF>
@@ -63,6 +64,7 @@ AbstractDiagram::Private::Private()
   , percent( false )
   , datasetDimension( 1 )
   , databoundariesDirty(true)
+  , mCachedFontMetrics( QFontMetrics( qApp->font() ) )
 {
 }
 
@@ -98,7 +100,8 @@ AbstractDiagram::Private::Private( const AbstractDiagram::Private& rhs ) :
     allowOverlappingDataValueTexts( rhs.allowOverlappingDataValueTexts ),
     antiAliasing( rhs.antiAliasing ),
     percent( rhs.percent ),
-    datasetDimension( rhs.datasetDimension )
+    datasetDimension( rhs.datasetDimension ),
+    mCachedFontMetrics( rhs.cachedFontMetrics() )
 {
     attributesModel = new PrivateAttributesModel( 0, 0);
     attributesModel->initFrom( rhs.attributesModel );
@@ -343,12 +346,12 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
     const TextAttributes ta( a.textAttributes() );
 
     QPointF pt( pos );
-    // adjust the text start point position, if alignment if not Bottom/Left
-    const bool isPositive = (value >= 0.0);
-    const RelativePosition relPos( isPositive ? a.positivePosition() : a.negativePosition() );
-    if( ! ((relPos.alignment() & Qt::AlignLeft) && (relPos.alignment() & Qt::AlignBottom)) ){
-        const QFontMetrics metrics( ta.font(), this );
-        QRectF boundRect( metrics.boundingRect( roundedValue ) );
+    // adjust the text start point position, if alignment is not Bottom/Left
+    const RelativePosition relPos( a.position( value >= 0.0 ) );
+    const Qt::Alignment alignTopLeft = Qt::AlignLeft | Qt::AlignBottom;
+    if( (relPos.alignment() & alignTopLeft) != alignTopLeft ){
+        const QRectF boundRect(
+                d->cachedFontMetrics( ta.font(), this )->boundingRect( roundedValue ) );
         if( relPos.alignment() & Qt::AlignRight )
             pt.rx() -= boundRect.width();
         else if( relPos.alignment() & Qt::AlignHCenter )

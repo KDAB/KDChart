@@ -141,16 +141,56 @@ class KDCHART_EXPORT PositionPoints
         QPointF south,
         QPointF southWest,
         QPointF west )
-      : mPositionCenter( center )
+      : mPositionCenter(    center )
       , mPositionNorthWest( northWest )
-      , mPositionNorth( north )
+      , mPositionNorth(     north )
       , mPositionNorthEast( northEast )
-      , mPositionEast( east )
+      , mPositionEast(      east )
       , mPositionSouthEast( southEast )
-      , mPositionSouth( south )
+      , mPositionSouth(     south )
       , mPositionSouthWest( southWest )
-      , mPositionWest( west )
+      , mPositionWest(      west )
         {}
+    PositionPoints(
+        const QPointF& onePointForAllPositions )
+      : mPositionCenter(    onePointForAllPositions )
+      , mPositionNorthWest( onePointForAllPositions )
+      , mPositionNorth(     onePointForAllPositions )
+      , mPositionNorthEast( onePointForAllPositions )
+      , mPositionEast(      onePointForAllPositions )
+      , mPositionSouthEast( onePointForAllPositions )
+      , mPositionSouth(     onePointForAllPositions )
+      , mPositionSouthWest( onePointForAllPositions )
+      , mPositionWest(      onePointForAllPositions )
+        {}
+    PositionPoints(
+        const QRectF& r )
+      : mPositionCenter(    r.center() )
+      , mPositionNorthWest( r.topLeft() )
+      , mPositionNorth(     QPointF(r.center().x(), r.top()) )
+      , mPositionNorthEast( r.topRight() )
+      , mPositionEast(      QPointF(r.right(), r.center().y()) )
+      , mPositionSouthEast( r.bottomRight() )
+      , mPositionSouth(     QPointF(r.center().x(), r.bottom()) )
+      , mPositionSouthWest( r.bottomLeft() )
+      , mPositionWest(      QPointF(r.left(), r.center().y()) )
+        {}
+    PositionPoints(
+        QPointF northWest,
+        QPointF northEast,
+        QPointF southEast,
+        QPointF southWest )
+      : mPositionCenter(    (northWest + southEast) / 2.0 )
+      , mPositionNorthWest( northWest )
+      , mPositionNorth(     (northWest + northEast) / 2.0 )
+      , mPositionNorthEast( northEast )
+      , mPositionEast(      (northEast + southEast) / 2.0 )
+      , mPositionSouthEast( southEast )
+      , mPositionSouth(     (southWest + southEast) / 2.0 )
+      , mPositionSouthWest( southWest )
+      , mPositionWest(      (northWest + southWest) / 2.0 )
+        {}
+
     const QPointF point( Position position ) const
     {
       //qDebug() << "point( " << position.name() << " )";
@@ -188,24 +228,6 @@ class KDCHART_EXPORT PositionPoints
             mPositionSouth.isNull() &&
             mPositionSouthWest.isNull() &&
             mPositionWest.isNull();
-    }
-
-    static const PositionPoints fromRectF( const QRectF r )
-    {
-        return PositionPoints(
-            r.center(),
-            r.topLeft(),
-            QPointF(r.center().x(), r.top()),
-            r.topRight(),
-            QPointF(r.right(), r.center().y()),
-            r.bottomRight(),
-            QPointF(r.center().x(), r.bottom()),
-            r.bottomLeft(),
-            QPointF(r.left(), r.center().y()) );
-    }
-    static const PositionPoints fromRect( const QRect r )
-    {
-        return PositionPoints::fromRectF( r );
     }
 
     QPointF mPositionUnknown;

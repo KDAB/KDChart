@@ -38,15 +38,36 @@
 //
 
 #include "KDChartAbstractCoordinatePlane.h"
+#include "KDChartDataValueAttributes.h"
 
 #include <QPoint>
 #include <QPointer>
+#include <QFont>
+#include <QFontMetrics>
+#include <QPaintDevice>
 
 #include <KDABLibFakes>
 
 
 namespace KDChart {
   class AttributesModel;
+
+class DataValueTextInfo {
+    public:
+        DataValueTextInfo(){}
+        DataValueTextInfo( const QModelIndex& _index, const QPointF& _pos, double _value )
+        :index( _index ), pos( _pos ), value( _value )
+        {}
+        DataValueTextInfo( const DataValueTextInfo& other )
+        :index( other.index ), pos( other.pos ), value( other.value ) {}
+        QModelIndex index;
+        QPointF pos;
+        double value;
+};
+
+typedef QVector<DataValueTextInfo> DataValueTextInfoList;
+typedef QVectorIterator<DataValueTextInfo> DataValueTextInfoListIterator;
+
 
 /**
  * \internal
@@ -62,6 +83,40 @@ public:
 
     void setAttributesModel( AttributesModel* );
 
+    void appendDataValueTextInfoToList(
+            AbstractDiagram * diagram,
+            DataValueTextInfoList & list,
+            const QModelIndex & index,
+            const PositionPoints& points,
+            const qreal value )
+    {
+        const DataValueAttributes attrs( diagram->dataValueAttributes( index ) );
+        if( attrs.isVisible() ) {
+            RelativePosition relPos( attrs.position( value >= 0.0 ) );
+            relPos.setReferencePoints( points );
+            const TextAttributes ta( attrs.textAttributes() );
+            const qreal fontHeight = cachedFontMetrics( ta.font(), diagram )->height();
+            // Note: When printing data value texts the font height is used as reference size for both,
+            //       horizontal and vertical padding, if the respective padding's Measure is using
+            //       automatic reference area detection.
+            QSizeF relativeMeasureSize( fontHeight, fontHeight );
+            list.append(
+                    DataValueTextInfo(
+                    index, relPos.calculatedPoint( relativeMeasureSize ), value ) );
+        }
+    }
+
+    const QFontMetrics * cachedFontMetrics( const QFont& font, QPaintDevice * paintDevice)
+    {
+        if( (font != mCachedFont) || (paintDevice != mCachedPaintDevice) )
+            mCachedFontMetrics = QFontMetrics( font, paintDevice );
+        return & mCachedFontMetrics;
+    }
+    const QFontMetrics cachedFontMetrics() const
+    {
+        return mCachedFontMetrics;
+    }
+
 protected:
     void init();
     void init( AbstractCoordinatePlane* plane );
@@ -74,6 +129,10 @@ protected:
     int datasetDimension;
     mutable QPair<QPointF,QPointF> databoundaries;
     mutable bool databoundariesDirty;
+private:
+    QFontMetrics   mCachedFontMetrics;
+    QFont          mCachedFont;
+    QPaintDevice * mCachedPaintDevice;
 };
 
 inline AbstractDiagram::AbstractDiagram( Private * p ) : _d( p )
@@ -87,21 +146,6 @@ inline AbstractDiagram::AbstractDiagram(
     _d->init( plane );
 }
 
-class DataValueTextInfo {
-public:
-  DataValueTextInfo(){}
-  DataValueTextInfo( const QModelIndex& _index, const QPointF& _pos, double _value )
-    :index( _index ), pos( _pos ), value( _value )
-    {}
-  DataValueTextInfo( const DataValueTextInfo& other )
-    :index( other.index ), pos( other.pos ), value( other.value ) {}
-  QModelIndex index;
-  QPointF pos;
-  double value;
-};
-
-typedef QVector<DataValueTextInfo> DataValueTextInfoList;
-typedef QVectorIterator<DataValueTextInfo> DataValueTextInfoListIterator;
 
 class LineAttributesInfo {
 public :

@@ -127,6 +127,10 @@ public:
      * Specifies the horizontal width of the gap between the anchor point and the content,
      * that is to be positioned by this RelativePosition.
      *
+     * \note When printing data value texts the font height is used as reference size for both,
+     *       horizontal and vertical padding, if the respective padding's Measure is using
+     *       automatic reference area detection.
+     *
      * \sa setVerticalPadding, setReferencePosition, setReferenceArea
      */
     void setHorizontalPadding( const Measure& padding );
@@ -135,6 +139,10 @@ public:
     /**
      * Specifies the vertical width of the gap between the anchor point and the content,
      * that is to be positioned by this RelativePosition.
+     *
+     * \note When printing data value texts the font height is used as reference size for both,
+     *       horizontal and vertical padding, if the respective padding's Measure is using
+     *       automatic reference area detection.
      *
      * \sa setHorizontalPadding, setReferencePosition, setReferenceArea
      */

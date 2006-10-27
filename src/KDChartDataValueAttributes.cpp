@@ -266,7 +266,7 @@ void DataValueAttributes::setNegativePosition( const RelativePosition& relPositi
     d->negativeRelPos = relPosition;
 }
 
-RelativePosition DataValueAttributes::negativePosition() const
+const RelativePosition DataValueAttributes::negativePosition() const
 {
     return d->negativeRelPos;
 }
@@ -276,7 +276,7 @@ void DataValueAttributes::setPositivePosition( const RelativePosition& relPositi
     d->positiveRelPos = relPosition;
 }
 
-RelativePosition DataValueAttributes::positivePosition() const
+const RelativePosition DataValueAttributes::positivePosition() const
 {
     return d->positiveRelPos;
 }

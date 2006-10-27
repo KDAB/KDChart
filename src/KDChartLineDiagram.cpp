@@ -33,6 +33,7 @@
 #include "KDChartLineDiagram_p.h"
 #include "KDChartPaintContext.h"
 #include "KDChartPalette.h"
+#include "KDChartPosition.h"
 #include "KDChartTextAttributes.h"
 #include "KDChartThreeDLineAttributes.h"
 #include "KDChartAttributesModel.h"
@@ -425,6 +426,10 @@ void LineDiagram::paint( PaintContext* ctx )
 
     //QTime t = QTime::currentTime();
 
+    const QPair<QPointF, QPointF> boundaries = dataBoundaries();
+    const QPointF bottomLeft = boundaries.first;
+    const QPointF topRight = boundaries.second;
+
     //calculates and stores the values
     const int rowCount = d->attributesModel->rowCount(attributesModelRootIndex());
     const int colCount = d->attributesModel->columnCount(attributesModelRootIndex());
@@ -439,6 +444,12 @@ void LineDiagram::paint( PaintContext* ctx )
         {
             for( int iColumn = datasetDimension()-1;
                      iColumn < colCount;  iColumn += datasetDimension() ) {
+
+                //display area can be set by column
+                QModelIndex indexRow0 = model()->index( 0, iColumn, rootIndex() );
+                LineAttributes laa = lineAttributes( indexRow0 );
+                const bool bDisplayArea = laa.displayArea();
+
                 QPolygonF area;
                 bool bValuesFound = false;
                 double lastValueX, lastValueY;
@@ -500,26 +511,61 @@ void LineDiagram::paint( PaintContext* ctx )
                             QModelIndex index = model()->index( iRow, iColumn, rootIndex() );
                             QPointF fromPoint = coordinatePlane()->translate( QPointF( valueX, valueY ) );
                             area.append( fromPoint );
+
+                            const QPointF ptNorthWest( fromPoint );
+                            const QPointF ptSouthWest(
+                                bDisplayArea
+                                ? coordinatePlane()->translate( QPointF( valueX, 0.0 ) )
+                                : fromPoint );
+                            QPointF ptNorthEast;
+                            QPointF ptSouthEast;
+
                             if( foundToPoint ){
                                 QPointF toPoint = coordinatePlane()->translate( QPointF( nextValueX, nextValueY ) );
                                 lineList.append( LineAttributesInfo( index, fromPoint, toPoint ) );
+                                ptNorthEast = toPoint;
+                                ptSouthEast =
+                                    bDisplayArea
+                                    ? coordinatePlane()->translate( QPointF( nextValueX, 0.0 ) )
+                                    : toPoint;
+                            }else{
+                                ptNorthEast = ptNorthWest;
+                                ptSouthEast = ptSouthWest;
                             }
-                            list.append( DataValueTextInfo( index, fromPoint, valueY ) );
+
+                            const PositionPoints pts( ptNorthWest, ptNorthEast, ptSouthEast, ptSouthWest );
+                            d->appendDataValueTextInfoToList( this, list, index, pts, valueY );
                         }
                     }
                 }
-                //area can be set by column
-                QModelIndex index = model()->index( 0, iColumn, rootIndex() );
-                LineAttributes laa = lineAttributes( index );
-                if ( laa.displayArea() )
-                    paintAreas( ctx, index, area, laa.transparency() );
+
+                //FIXME(khz): As of yet we can NOT have cell-specific area properties, since we are drawing
+                // all of the area parts of one dataset in one go.
+                // ( see KDAB Bugzilla issue #2556 )
+                if ( bDisplayArea ){
+                    area.insert( 0,  coordinatePlane()->translate( QPointF( bottomLeft.x(), 0.0 ) ) );
+                    area.append( coordinatePlane()->translate(     QPointF( topRight.x(),   0.0 ) ) );
+                    paintAreas( ctx, indexRow0, area, laa.transparency() );
+                }
             }
         }
             break;
         case LineDiagram::Stacked:
         {
             //FIXME(khz): add LineAttributes::MissingValuesPolicy support for LineDiagram::Stacked
+
+            QPolygonF bottomArea;
+            // initialize the bottom area with the start and end points
+            // positioned at the level of 0.0:
+            bottomArea.append( coordinatePlane()->translate( QPointF( bottomLeft.x(), 0.0 ) ) );
+            bottomArea.append( coordinatePlane()->translate( QPointF( topRight.x(),   0.0 ) ) );
+            bool bFirstDataset = true;
+
             for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
+                QModelIndex indexRow0 = model()->index( 0, i, rootIndex() );
+                LineAttributes laa = lineAttributes( indexRow0 );
+                bool bDisplayArea = laa.displayArea();
+
                 QPolygonF area;
                 for ( int j = 0; j< rowCount; ++j ) {
                     QModelIndex index = model()->index( j, i, rootIndex() );
@@ -531,21 +577,53 @@ void LineDiagram::paint( PaintContext* ctx )
                     }
                     QPointF nextPoint = coordinatePlane()->translate( QPointF( j, stackedValues ) );
                     area.append( nextPoint );
-                    QPointF toPoint = coordinatePlane()->translate( QPointF( j+1, nextValues ) );
-                    if ( j+1 < rowCount )
+
+                    const QPointF ptNorthWest( nextPoint );
+                    const QPointF ptSouthWest(
+                            bDisplayArea
+                            ? ( bFirstDataset
+                                ? coordinatePlane()->translate( QPointF( j, 0.0 ) )
+                                : bottomArea.at( j )
+                              )
+                            : nextPoint );
+                    QPointF ptNorthEast;
+                    QPointF ptSouthEast;
+
+                    if ( j+1 < rowCount ){
+                        QPointF toPoint = coordinatePlane()->translate( QPointF( j+1, nextValues ) );
                         lineList.append( LineAttributesInfo( index, nextPoint, toPoint ) );
-                    list.append( DataValueTextInfo( index, nextPoint, valueForCell( j, i ) ) );
+                        ptNorthEast = toPoint;
+                        ptSouthEast =
+                            bDisplayArea
+                                ? ( bFirstDataset
+                                    ? coordinatePlane()->translate( QPointF( j+1, 0.0 ) )
+                                    : bottomArea.at( j+1 )
+                                  )
+                                : toPoint;
+                    }else{
+                        ptNorthEast = ptNorthWest;
+                        ptSouthEast = ptSouthWest;
+                    }
+
+                    const PositionPoints pts( ptNorthWest, ptNorthEast, ptSouthEast, ptSouthWest );
+                    d->appendDataValueTextInfoToList( this, list, index, pts, valueForCell( j, i ) );
                 }
-                QModelIndex index = model()->index( 0, i, rootIndex() );
-                LineAttributes laa = lineAttributes( index );
-                if ( laa.displayArea() )
-                    paintAreas( ctx, index, area, laa.transparency() );
+                // append the points of the prevoius area in reversed order,
+                // because these are the bottom points of the stacked area segments:
+                const QPolygonF orgArea( area );
+                for (int i = bottomArea.size()-1; i >= 0; --i)
+                    area.append( bottomArea.at( i ) );
+                bottomArea = orgArea;
+                if ( bDisplayArea )
+                    paintAreas( ctx, indexRow0, area, laa.transparency() );
+                bFirstDataset = false;
             }
         }
             break;
         case LineDiagram::Percent:
         {
             //FIXME(khz): add LineAttributes::MissingValuesPolicy support for LineDiagram::Percent
+
             double maxValue = 100; // always 100%
             double sumValues = 0;
             QVector <double > sumValuesVector;
@@ -562,12 +640,24 @@ void LineDiagram::paint( PaintContext* ctx )
                     }
                 }
             }
+
+            QPolygonF bottomArea;
+            // initialize the bottom area with the start and end points
+            // positioned at the level of 0.0:
+            bottomArea.append( coordinatePlane()->translate( QPointF( bottomLeft.x(), 0.0 ) ) );
+            bottomArea.append( coordinatePlane()->translate( QPointF( topRight.x(),   0.0 ) ) );
+            bool bFirstDataset = true;
+
             // calculate stacked percent value
             for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
+                QModelIndex indexRow0 = model()->index( 0, i, rootIndex() );
+                LineAttributes laa = lineAttributes( indexRow0 );
+                bool bDisplayArea = laa.displayArea();
+
                 QPolygonF area;
                 for ( int j=0; j<rowCount ; ++j ) {
                     double stackedValues = 0, nextValues = 0;
-		    QModelIndex index = model()->index( j, i, rootIndex() );
+                    QModelIndex index = model()->index( j, i, rootIndex() );
                     //calculate stacked percent value- we only take in account positives values for now.
                     for ( int k = i; k >= 0 ; --k ) {
                         double val = valueForCell( j, k );
@@ -584,19 +674,49 @@ void LineDiagram::paint( PaintContext* ctx )
                         y = stackedValues/sumValuesVector.at(j) * maxValue;
                     QPointF nextPoint = coordinatePlane()->translate( QPointF( j, y ) );
                     area.append( nextPoint );
+
+                    const QPointF ptNorthWest( nextPoint );
+                    const QPointF ptSouthWest(
+                            bDisplayArea
+                            ? ( bFirstDataset
+                            ? coordinatePlane()->translate( QPointF( j, 0.0 ) )
+                        : bottomArea.at( j )
+                              )
+                        : nextPoint );
+                    QPointF ptNorthEast;
+                    QPointF ptSouthEast;
+
                     if ( j+1 < rowCount ) {
                         double y = 0;
                         if ( sumValuesVector.at(j+1) != 0  )
                             y = nextValues/sumValuesVector.at(j+1) * maxValue;
                         QPointF toPoint = coordinatePlane()->translate( QPointF( j+1, y ) );
                         lineList.append( LineAttributesInfo( index, nextPoint, toPoint ) );
+                        ptNorthEast = toPoint;
+                        ptSouthEast =
+                                bDisplayArea
+                                ? ( bFirstDataset
+                                ? coordinatePlane()->translate( QPointF( j+1, 0.0 ) )
+                            : bottomArea.at( j+1 )
+                                  )
+                            : toPoint;
+                    }else{
+                        ptNorthEast = ptNorthWest;
+                        ptSouthEast = ptSouthWest;
                     }
-                    list.append( DataValueTextInfo( index, nextPoint, valueForCell( j, i ) ) );
+
+                    const PositionPoints pts( ptNorthWest, ptNorthEast, ptSouthEast, ptSouthWest );
+                    d->appendDataValueTextInfoToList( this, list, index, pts, valueForCell( j, i ) );
                 }
-                QModelIndex index = model()->index( 0, i, rootIndex() );
-                LineAttributes laa = lineAttributes( index );
-                if ( laa.displayArea() )
-                    paintAreas( ctx, index, area, laa.transparency() );
+                // append the points of the prevoius area in reversed order,
+                // because these are the bottom points of the stacked area segments:
+                const QPolygonF orgArea( area );
+                for (int i = bottomArea.size()-1; i >= 0; --i)
+                    area.append( bottomArea.at( i ) );
+                bottomArea = orgArea;
+                if ( bDisplayArea )
+                    paintAreas( ctx, indexRow0, area, laa.transparency() );
+                bFirstDataset = false;
             }
             break;
         }
@@ -649,22 +769,16 @@ void LineDiagram::paintLines( PaintContext* ctx, const QModelIndex& index,
 
 void LineDiagram::paintAreas( PaintContext* ctx, const QModelIndex& index, const QPolygonF& area, const uint transparency )
 {
-    QPolygonF pol ( area );
-    const QPair<QPointF, QPointF> boundaries = dataBoundaries ();
-    QPointF bottomLeft = boundaries.first;
-    QPointF topRight = boundaries.second;
     QColor trans( brush(index).color() );
     QPen indexPen( pen(index) );
     trans.setAlpha( transparency );
     indexPen.setColor( trans );
-    pol.insert( 0,  coordinatePlane()->translate( QPointF( bottomLeft.x(), 0 ) ) );
-    pol.append( coordinatePlane()->translate( QPointF( topRight.x(),0 ) ) );
     PainterSaver painterSaver( ctx->painter() );
     if ( antiAliasing() )
         ctx->painter()->setRenderHint ( QPainter::Antialiasing );
     ctx->painter()->setPen( indexPen );
     ctx->painter()->setBrush( trans ) ;
-    ctx->painter()->drawPolygon( pol );
+    ctx->painter()->drawPolygon( area );//pol );
 }
 
 /*!

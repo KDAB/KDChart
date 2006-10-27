@@ -183,10 +183,15 @@ public:
   bool showInfinite() const;
 
   void setNegativePosition( const RelativePosition& relPosition );
-  RelativePosition negativePosition() const;
+  const RelativePosition negativePosition() const;
 
   void setPositivePosition( const RelativePosition& relPosition );
-  RelativePosition positivePosition() const;
+  const RelativePosition positivePosition() const;
+
+  const RelativePosition position( bool positive ) const
+  {
+    return positive ? positivePosition() : negativePosition();
+  }
 
 private:
   KDCHART_DECLARE_PRIVATE_BASE_VALUE( DataValueAttributes )
