@@ -212,32 +212,33 @@ void CartesianAxis::paintCtx( PaintContext* context )
     DataDimension& dimX = dimensions.first();
     const DataDimension& dimY = dimensions.last();
     const DataDimension& dim = (isAbscissa() ? dimensions.first() : dimensions.last());
-//    if(isAbscissa())
-//        qDebug() << "         " << "Abscissa:" << dimX.start <<".."<<dimX.end;
-//    else
-//        qDebug() << "         " << "Ordinate:" << dimY.start <<".."<<dimY.end;
-
+    /*
+    if(isAbscissa())
+        qDebug() << "         " << "Abscissa:" << dimX.start <<".."<<dimX.end;
+    else
+        qDebug() << "         " << "Ordinate:" << dimY.start <<".."<<dimY.end;
+    */
     // preparations:
     // - calculate the range that will be displayed:
     const qreal absRange = qAbs( dim.distance() );
 
-    // Fixme Michel: Need to find the type of chart here - Line or Bar
-    // if Bars calculate the number of groups
+    //const bool useItemCountLabels = isAbscissa() && d->diagram()->datasetDimension() == 1;
 
     qreal numberOfUnitRulers;
-    if ( isAbscissa() )
+    if ( isAbscissa() ) {
         numberOfUnitRulers = d->diagram()->model()->rowCount() - 1.0;
+
+    }
     else {
         numberOfUnitRulers = absRange / qAbs( dimY.stepWidth ) + 1.0;
-        //qDebug() << "absRange" << absRange << "dimY.stepWidth:" << dimY.stepWidth << "numberOfUnitRulers:" << numberOfUnitRulers;
+        // qDebug() << "absRange" << absRange << "dimY.stepWidth:" << dimY.stepWidth << "numberOfUnitRulers:" << numberOfUnitRulers;
     }
     qreal numberOfSubUnitRulers;
     if ( isAbscissa() )
-        numberOfSubUnitRulers = 0.0;
-    else {
+        numberOfSubUnitRulers = dimX.subStepWidth>0 ? absRange / qAbs( dimX.subStepWidth ) + 1.0 : 0.0;
+    else
         numberOfSubUnitRulers = absRange / qAbs( dimY.subStepWidth ) + 1.0;
-        //qDebug() << "dimY.subStepWidth:" << dimY.stepWidth << "numberOfSubUnitRulers:" << numberOfSubUnitRulers;
-    }
+
 
     // - calculate the absolute range in screen pixels:
     const QPointF p1 = plane->translate( QPointF(dimX.start, dimY.start) );
@@ -367,7 +368,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 : d->diagram()->itemRowLabels();
         }
         const int headerLabelsCount = headerLabels.count();
-
+        //qDebug() << "headerLabels" << headerLabels.count();
         TextLayoutItem* labelItem =
             drawLabels
             ? new TextLayoutItem( QString::number( minValueY ),
@@ -472,7 +473,9 @@ void CartesianAxis::paintCtx( PaintContext* context )
             int labelStep = 0;
 
             while( i <= maxValueX ) {
-                QPointF topPoint ( i + ( useItemCountLabels ? 0.5 : 0.0 ), 0.0 );
+                // we want the first tick to begin at 0.0 not at 0.5 otherwise labels and
+                // values does not fit each others
+                QPointF topPoint ( i /*+ ( useItemCountLabels ? 0.5 : 0.0 )*/, 0.0 );
                 QPointF bottomPoint ( topPoint );
                 topPoint = plane->translate( topPoint );
                 bottomPoint = plane->translate( bottomPoint );
@@ -489,6 +492,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         labelItem->setText( hardLabelsCount
                             ? ( useShortLabels    ? shortLabels()[ idxLabel ] : labels()[ idxLabel ] )
                             : ( headerLabelsCount ? headerLabels[  idxLabel ] : QString::number( iLabelF ) ) );
+                    //qDebug() << "label text" << labelItem->text();
                     // No need to call labelItem->setParentWidget(), since we are using
                     // the layout item temporarily only.
                     if( labelStep <= 0 ) {
