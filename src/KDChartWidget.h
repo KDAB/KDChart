@@ -79,10 +79,10 @@ namespace KDChart {
 
         /** Destructor. */
         ~Widget();
-        /** Sets the data in the given column using a QVector of double. */
+        /** Sets the data in the given column using a QVector of double for the Y values. */
         void setDataset( int column, const QVector< double > & data, const QString& title = QString()  );
         /** Sets the data in the given column using a QVector of QPairs
-         *  of double. */
+         *  of double for the (X, Y) values. */
         void setDataset( int column, const QVector< QPair< double, double > > &  data, const QString& title = QString() );
         /** Resets all data. */
         void resetData();

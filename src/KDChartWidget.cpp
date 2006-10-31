@@ -99,9 +99,6 @@ void Widget::init()
 {
 }
 
-/**
- * Sets the data in the given column using a QVector of double.
- */
 void Widget::setDataset( int column, const QVector< double > & data, const QString& title )
 {
     if ( ! checkDatasetWidth( 1 ) )
@@ -120,10 +117,6 @@ void Widget::setDataset( int column, const QVector< double > & data, const QStri
         model.setHeaderData( column, Qt::Horizontal, QVariant( title ) );
 }
 
-/**
- * Sets the data in the given column using a QVector of QPairs
- * of double.
- */
 void Widget::setDataset( int column, const QVector< QPair< double, double > > & data, const QString& title )
 {
     if ( ! checkDatasetWidth( 2 ))
