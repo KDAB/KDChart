@@ -226,6 +226,13 @@ void CartesianGrid::drawGrid( PaintContext* context )
             else
                 f += dimX.stepWidth;
         }
+        // draw the last line if not logarithmic calculation
+        // we need the in order to get the right grid line painted
+        // when f + dimX.stepWidth jump over maxValueX
+        if (  ! isLogarithmicX )
+        context->painter()->drawLine( plane->translate( QPointF(  maxValueX, maxValueY ) ),
+                                      plane->translate( QPointF( maxValueX, minValueY ) ) );
+
     }
     if ( drawUnitLinesY || drawZeroLineY ) {
         //qDebug() << "F";
