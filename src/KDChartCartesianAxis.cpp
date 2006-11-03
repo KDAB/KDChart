@@ -394,12 +394,13 @@ void CartesianAxis::paintCtx( PaintContext* context )
         if ( isAbscissa() ) {
             // If we have a labels list AND a short labels list, we first find out,
             // if there is enough space for the labels: if not, use the short labels.
-            if( drawLabels && hardLabelsCount > 0 && shortLabelsCount > 0 ){
+            if( drawLabels && hardLabelsCount > 0 /*&& shortLabelsCount > 0*/ ){
                 bool labelsAreOverlapping = false;
                 int iLabel = 0;
                 qreal i = minValueX;
                 while ( i < maxValueX && !labelsAreOverlapping )
                 {
+                    if (  !labelsAreOverlapping ) {
                     if ( dimX.stepWidth != 1.0 && ! dim.isCalculated )
                     {
                         labelItem->setText( QString::number( i, 'f', 0 ) );
@@ -422,9 +423,10 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         i *= 10.0;
                     else
                         i += dimX.stepWidth;
+                    }
                 }
 
-                useShortLabels = labelsAreOverlapping;
+                useShortLabels = (  labelsAreOverlapping && shortLabelsCount > 0 );
             }
 
             labelItem2->setText( QString::null );
@@ -440,8 +442,9 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         labelItem->setText( QString::number( i, 'f', 0 ) );
                         labelItem2->setText( QString::number( i + labelDiff, 'f', 0 ) );
                     } else {
+                        int index = iLabel + qRound( labelDiff );
                         labelItem->setText( labels()[ iLabel ] );
-                        labelItem2->setText( labels()[ iLabel + qRound( labelDiff ) >= hardLabelsCount ? 0 : iLabel + qRound( labelDiff ) ] );
+                        labelItem2->setText( labels()[ index >= hardLabelsCount ? 0 : index ] );
                     }
                     QPointF firstPos( i, 0.0 );
                     firstPos = plane->translate( firstPos );
