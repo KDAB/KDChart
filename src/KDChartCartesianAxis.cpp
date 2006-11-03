@@ -441,7 +441,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         labelItem2->setText( QString::number( i + labelDiff, 'f', 0 ) );
                     } else {
                         labelItem->setText( labels()[ iLabel ] );
-                        labelItem2->setText( labels()[ iLabel + 1 >= hardLabelsCount ? 0 : iLabel + qRound( labelDiff ) ] );
+                        labelItem2->setText( labels()[ iLabel + qRound( labelDiff ) >= hardLabelsCount ? 0 : iLabel + qRound( labelDiff ) ] );
                     }
                     QPointF firstPos( i, 0.0 );
                     firstPos = plane->translate( firstPos );
