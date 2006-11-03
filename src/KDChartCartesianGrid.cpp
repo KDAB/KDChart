@@ -98,9 +98,9 @@ void CartesianGrid::drawGrid( PaintContext* context )
     const qreal screenRangeX = qAbs ( p1.x() - p2.x() );
     const qreal screenRangeY = qAbs ( p1.y() - p2.y() );
 
-    const qreal MinimumPixelsBetweenLines = 10.0;
+    const qreal MinimumPixelsBetweenLines = 5.0;
 
-//    qreal unitFactorX = 1.0;
+    //qreal unitFactorX = 1.0;
 //    qreal unitFactorY = 1.0;
 
     //FIXME(khz): Remove this code, and do the calculation in the grid calc function
@@ -263,6 +263,10 @@ void CartesianGrid::drawGrid( PaintContext* context )
                 f += dimY.stepWidth;
         }
     }
+    // reset to the default size
+    // so that the number of lines to be painted
+    // is refreshed when resizing
+    dimX.stepWidth = 1;
     //qDebug() << "Z";
 }
 
