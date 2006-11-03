@@ -394,13 +394,12 @@ void CartesianAxis::paintCtx( PaintContext* context )
         if ( isAbscissa() ) {
             // If we have a labels list AND a short labels list, we first find out,
             // if there is enough space for the labels: if not, use the short labels.
-            if( drawLabels && hardLabelsCount > 0 /*&& shortLabelsCount > 0*/ ){
+            if( drawLabels && hardLabelsCount > 0 && shortLabelsCount > 0 ){
                 bool labelsAreOverlapping = false;
                 int iLabel = 0;
                 qreal i = minValueX;
                 while ( i < maxValueX && !labelsAreOverlapping )
                 {
-                    if (  !labelsAreOverlapping ) {
                     if ( dimX.stepWidth != 1.0 && ! dim.isCalculated )
                     {
                         labelItem->setText( QString::number( i, 'f', 0 ) );
@@ -423,10 +422,10 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         i *= 10.0;
                     else
                         i += dimX.stepWidth;
-                    }
+
                 }
 
-                useShortLabels = (  labelsAreOverlapping && shortLabelsCount > 0 );
+                useShortLabels = labelsAreOverlapping;
             }
 
             labelItem2->setText( QString::null );
