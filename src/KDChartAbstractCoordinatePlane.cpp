@@ -266,4 +266,11 @@ void KDChart::AbstractCoordinatePlane::mousePressEvent( QMouseEvent* event )
     }
 }
 
+
+const bool KDChart::AbstractCoordinatePlane::isVisiblePoint( const QPointF& point ) const
+{
+    return d->isVisiblePoint( this, point );
+}
+
+
 #undef d

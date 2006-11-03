@@ -387,8 +387,12 @@ void BarDiagram::paint( PaintContext* ctx )
     QPointF boundLeft, boundRight;
     QPair<QPointF,QPointF> boundaries = dataBoundaries();
     if( !AbstractGrid::isBoundariesValid(boundaries) ) return;
-    boundLeft = coordinatePlane()->translate( boundaries.first );
-    boundRight = coordinatePlane()->translate( boundaries.second );
+
+    CartesianCoordinatePlane* plane = dynamic_cast<KDChart::CartesianCoordinatePlane*>( coordinatePlane() );
+    if( ! plane ) return;
+
+    boundLeft = plane->translate( boundaries.first );
+    boundRight = plane->translate( boundaries.second );
     double width = boundRight.x() - boundLeft.x();
     //calculates and stores the values
     const int rowCount = d->attributesModel->rowCount(attributesModelRootIndex());
@@ -458,8 +462,8 @@ void BarDiagram::paint( PaintContext* ctx )
                 for ( int j=0; j< colCount; ++j ) {
                     // paint one group
                     const qreal value = d->attributesModel->data( d->attributesModel->index( i, j, attributesModelRootIndex() ) ).toDouble();
-                    QPointF topPoint = coordinatePlane()->translate( QPointF( i + 0.5, value ) );
-                    QPointF bottomPoint = coordinatePlane()->translate( QPointF( i, 0 ) );
+                    QPointF topPoint = plane->translate( QPointF( i + 0.5, value ) );
+                    QPointF bottomPoint = plane->translate( QPointF( i, 0 ) );
                     const double barHeight = bottomPoint.y() - topPoint.y();
                     topPoint.setX( topPoint.x() + offset );
 
@@ -498,9 +502,9 @@ void BarDiagram::paint( PaintContext* ctx )
                    value = model()->data( index ).toDouble();
                    for ( int k = i; k >= 0 ; --k )
                        stackedValues += model()->data( model()->index( j, k, rootIndex() ) ).toDouble();
-                   point = coordinatePlane()->translate( QPointF( j, stackedValues ) );
+                   point = plane->translate( QPointF( j, stackedValues ) );
                    point.setX( point.x() + offset/2 );
-                   previousPoint = coordinatePlane()->translate( QPointF( j, stackedValues - value ) );
+                   previousPoint = plane->translate( QPointF( j, stackedValues - value ) );
                    const double barHeight = previousPoint.y() - point.y();
 
                    const QRectF rect( point, QSizeF( barWidth , barHeight ) );
@@ -561,11 +565,11 @@ void BarDiagram::paint( PaintContext* ctx )
 		    }
 
                     if (  sumValuesVector.at( j ) != 0 && value > 0 ) {
-                        point = coordinatePlane()->translate( QPointF( j,  stackedValues/sumValuesVector.at(j)* maxValue ) );
+                      point = plane->translate( QPointF( j,  stackedValues/sumValuesVector.at(j)* maxValue ) );
 
                         point.setX( point.x() + offset/2 );
 
-                        previousPoint = coordinatePlane()->translate( QPointF( j, (stackedValues - value)/sumValuesVector.at(j)* maxValue ) );
+                        previousPoint = plane->translate( QPointF( j, (stackedValues - value)/sumValuesVector.at(j)* maxValue ) );
                     }
                     const double barHeight = previousPoint.y() - point.y();
 

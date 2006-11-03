@@ -263,6 +263,13 @@ namespace KDChart {
         Chart* parent();
         const Chart* parent() const;
 
+        /**
+         * Tests, if a point is visible on the coordinate plane.
+         * 
+         * \note Before calling this function the point must have been translated into coordinate plane space.
+         */
+        const bool isVisiblePoint( const QPointF& point ) const;
+
     public Q_SLOTS:
         /**
           * Calling update() on the plane triggers the global KDChart::Chart::update()

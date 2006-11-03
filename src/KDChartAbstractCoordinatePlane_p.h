@@ -38,6 +38,7 @@
 //
 
 #include "KDChartAbstractArea_p.h"
+#include <KDChartAbstractCoordinatePlane.h>
 #include <KDChartGridAttributes.h>
 #include <KDChartAbstractGrid.h>
 
@@ -45,6 +46,7 @@
 
 
 namespace KDChart {
+
 
 /**
  * \internal
@@ -62,6 +64,13 @@ protected:
     {
         qDebug("ERROR: Calling AbstractCoordinatePlane::Private::initialize()");
         // can not call the base class: grid = new AbstractGrid();
+    }
+
+    virtual const bool isVisiblePoint(
+        const AbstractCoordinatePlane * plane,
+        const QPointF& point ) const
+    {
+        return true;
     }
 
     KDChart::Chart* parent;

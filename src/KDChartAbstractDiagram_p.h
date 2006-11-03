@@ -98,13 +98,16 @@ public:
             relPos.setReferencePoints( points );
             const TextAttributes ta( attrs.textAttributes() );
             const qreal fontHeight = cachedFontMetrics( ta.font(), diagram )->height();
+
             // Note: When printing data value texts the font height is used as reference size for both,
             //       horizontal and vertical padding, if the respective padding's Measure is using
             //       automatic reference area detection.
             QSizeF relativeMeasureSize( fontHeight, fontHeight );
-            list.append(
-                    DataValueTextInfo(
-                    index, relPos.calculatedPoint( relativeMeasureSize ), value ) );
+
+            // Find the anchor point, that's already shifted according to horiz./vert. padding:
+            const QPointF point( relPos.calculatedPoint( relativeMeasureSize ) );
+            if( diagram->coordinatePlane()->isVisiblePoint( point ) )
+                list.append( DataValueTextInfo( index, point, value ) );
         }
     }
 

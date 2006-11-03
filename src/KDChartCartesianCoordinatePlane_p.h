@@ -64,6 +64,15 @@ public:
         grid = new CartesianGrid();
     }
 
+    virtual const bool isVisiblePoint(
+        const AbstractCoordinatePlane * plane,
+        const QPointF& point ) const
+    {
+        const QRectF geo( plane->geometry() );
+        //qDebug() << "point:" << point << "  coordinateTransformation.diagramRect:" << geo;
+        return geo.contains( point );
+    }
+
 
     // the coordinate plane will calculate the coordinate transformation:
     CoordinateTransformation coordinateTransformation;
