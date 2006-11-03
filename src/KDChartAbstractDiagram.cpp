@@ -40,7 +40,6 @@
 #include "KDChartAttributesModel.h"
 #include "KDChartAbstractThreeDAttributes.h"
 #include "KDChartThreeDLineAttributes.h"
-#include "KDChartPainterSaver_p.h"
 
 #include <KDABLibFakes>
 
@@ -316,6 +315,7 @@ bool AbstractDiagram::percentMode() const
     return d->percent;
 }
 
+
 void AbstractDiagram::paintDataValueText( QPainter* painter,
                                           const QModelIndex& index,
                                           const QPointF& pos,
@@ -372,6 +372,7 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
         painter->drawText( QPointF(0, 0), roundedValue );
     }
 }
+
 
 QString  AbstractDiagram::roundValues( double value,
                                        const int decimalPos,

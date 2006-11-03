@@ -31,8 +31,6 @@
 #include "KDChartThreeDBarAttributes.h"
 #include "KDChartPosition.h"
 #include "KDChartAttributesModel.h"
-#include "KDChartPaintContext.h"
-#include "KDChartPainterSaver_p.h"
 #include "KDChartAbstractGrid.h"
 
 #include <KDABLibFakes>
@@ -584,11 +582,8 @@ void BarDiagram::paint( PaintContext* ctx )
                          "Type item does not match a defined bar chart Type." );
         }
 
-    DataValueTextInfoListIterator it( list );
-    while ( it.hasNext() ) {
-        const DataValueTextInfo& info = it.next();
-        paintDataValueText( ctx->painter(), info.index, info.pos, info.value );
-    }
+    // paint all data value texts, but no point markers
+    d->paintDataValueTextsAndMarkers( this, ctx, list, false );
 }
 
 void BarDiagram::paintBars( PaintContext* ctx, const QModelIndex& index, const QRectF& bar, double& maxDepth )

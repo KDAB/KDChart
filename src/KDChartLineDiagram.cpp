@@ -31,13 +31,11 @@
 
 #include "KDChartLineDiagram.h"
 #include "KDChartLineDiagram_p.h"
-#include "KDChartPaintContext.h"
 #include "KDChartPalette.h"
 #include "KDChartPosition.h"
 #include "KDChartTextAttributes.h"
 #include "KDChartThreeDLineAttributes.h"
 #include "KDChartAttributesModel.h"
-#include "KDChartPainterSaver_p.h"
 #include "KDChartAbstractGrid.h"
 #include "KDChartDataValueAttributes.h"
 
@@ -737,15 +735,7 @@ void LineDiagram::paint( PaintContext* ctx )
         }
     }
     // paint all data value texts and the point markers
-    {
-        PainterSaver painterSaver( ctx->painter() );
-        DataValueTextInfoListIterator it( list );
-        while ( it.hasNext() ) {
-            const DataValueTextInfo& info = it.next();
-            paintDataValueText( ctx->painter(), info.index, info.pos, info.value );
-            paintMarker( ctx->painter(), info.index, info.pos );
-        }
-    }
+    d->paintDataValueTextsAndMarkers( this, ctx, list, true );
     //qDebug() << "Rendering 2 in: " << t.msecsTo( QTime::currentTime() ) << endl;
 }
 

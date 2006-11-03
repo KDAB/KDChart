@@ -39,6 +39,8 @@
 
 #include "KDChartAbstractCoordinatePlane.h"
 #include "KDChartDataValueAttributes.h"
+#include "KDChartPainterSaver_p.h"
+#include "KDChartPaintContext.h"
 
 #include <QPoint>
 #include <QPointer>
@@ -116,6 +118,20 @@ public:
     {
         return mCachedFontMetrics;
     }
+    void paintDataValueTextsAndMarkers( AbstractDiagram* diag,
+                                       PaintContext* ctx, const DataValueTextInfoList & list, bool paintMarkers )
+    {
+        PainterSaver painterSaver( ctx->painter() );
+        ctx->painter()->setClipping( false );
+        DataValueTextInfoListIterator it( list );
+        while ( it.hasNext() ) {
+            const DataValueTextInfo& info = it.next();
+            if( paintMarkers )
+              diag->paintMarker( ctx->painter(), info.index, info.pos );
+            diag->paintDataValueText( ctx->painter(), info.index, info.pos, info.value );
+        }
+    }
+
 
 protected:
     void init();
