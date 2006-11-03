@@ -119,15 +119,21 @@ public:
         return mCachedFontMetrics;
     }
     void paintDataValueTextsAndMarkers( AbstractDiagram* diag,
-                                       PaintContext* ctx, const DataValueTextInfoList & list, bool paintMarkers )
+                                        PaintContext* ctx, const DataValueTextInfoList & list, bool paintMarkers )
     {
         PainterSaver painterSaver( ctx->painter() );
         ctx->painter()->setClipping( false );
+        if( paintMarkers )
+        {
+            DataValueTextInfoListIterator it( list );
+            while ( it.hasNext() ) {
+                const DataValueTextInfo& info = it.next();
+                diag->paintMarker( ctx->painter(), info.index, info.pos );
+            }
+        }
         DataValueTextInfoListIterator it( list );
         while ( it.hasNext() ) {
             const DataValueTextInfo& info = it.next();
-            if( paintMarkers )
-              diag->paintMarker( ctx->painter(), info.index, info.pos );
             diag->paintDataValueText( ctx->painter(), info.index, info.pos, info.value );
         }
     }
