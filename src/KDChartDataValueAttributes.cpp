@@ -82,13 +82,12 @@ DataValueAttributes::Private::Private() :
     // the data and their respective data value texts,
     // and use 0.33 as the vertical distance.
     Measure m(   250.0, KDChartEnums::MeasureCalculationModeAuto );
-    positiveRelPos.setHorizontalPadding( m );
-    m.setValue( -250.0 );
-    negativeRelPos.setHorizontalPadding( m );
-    m.setValue( -333.3 );
-    positiveRelPos.setVerticalPadding( m );
-    m.setValue(  333.3 );
-    negativeRelPos.setVerticalPadding( m );
+                          positiveRelPos.setHorizontalPadding( m );
+    m.setValue( -333.3 ); positiveRelPos.setVerticalPadding( m );
+
+    m.setValue( -250.0 ); negativeRelPos.setHorizontalPadding( m );
+    m.setValue(  100.0 ); negativeRelPos.setVerticalPadding( m );
+    // note: we use a smaller default vertical gap, because the fonts have top leading anyway
 }
 
 

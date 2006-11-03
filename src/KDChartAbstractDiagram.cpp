@@ -346,20 +346,28 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
     const TextAttributes ta( a.textAttributes() );
 
     QPointF pt( pos );
+    /* for debugging:
+    PainterSaver painterSaver( painter );
+    painter->setPen( Qt::black );
+    painter->drawLine( pos - QPointF( 1,1), pos + QPointF( 1,1) );
+    painter->drawLine( pos - QPointF(-1,1), pos + QPointF(-1,1) );
+    */
+
     // adjust the text start point position, if alignment is not Bottom/Left
     const RelativePosition relPos( a.position( value >= 0.0 ) );
-    const Qt::Alignment alignTopLeft = Qt::AlignLeft | Qt::AlignBottom;
-    if( (relPos.alignment() & alignTopLeft) != alignTopLeft ){
+    const Qt::Alignment alignBottomLeft = Qt::AlignBottom | Qt::AlignLeft;
+    if( (relPos.alignment() & alignBottomLeft) != alignBottomLeft ){
         const QRectF boundRect(
                 d->cachedFontMetrics( ta.font(), this )->boundingRect( roundedValue ) );
         if( relPos.alignment() & Qt::AlignRight )
             pt.rx() -= boundRect.width();
         else if( relPos.alignment() & Qt::AlignHCenter )
-            pt.rx() -= boundRect.width() / 2.0;
-        if( relPos.alignment() & Qt::AlignBottom )
-            pt.rx() -= boundRect.height();
+            pt.rx() -= 0.5 * boundRect.width();
+
+        if( relPos.alignment() & Qt::AlignTop )
+            pt.ry() += boundRect.height();
         else if( relPos.alignment() & Qt::AlignVCenter )
-            pt.rx() -= boundRect.height() / 2.0;
+            pt.ry() += 0.5 * boundRect.height();
     }
 
     // FIXME draw the non-text bits, background, etc

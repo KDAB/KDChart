@@ -118,6 +118,7 @@ public:
     {
         return mCachedFontMetrics;
     }
+
     void paintDataValueTextsAndMarkers( AbstractDiagram* diag,
                                         PaintContext* ctx, const DataValueTextInfoList & list, bool paintMarkers )
     {
