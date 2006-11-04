@@ -60,8 +60,11 @@ int main( int argc, char** argv ) {
     legend->setText( 2,  "Vector 3" );
     legend->setShowLines(  true );
 
+    legend->setPosition( KDChart::Position::Floating );
+    widget.addLegend( legend );
+
     legend->move( 50, 50 );
-    legend->resize( 300, 100 );
+    //legend->resize( 300, 100 );
 
     widget.show();
 
