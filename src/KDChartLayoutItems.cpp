@@ -338,6 +338,11 @@ void KDChart::TextLayoutItem::paint( QPainter* painter )
     painter->translate( rect.center() );
     rect.moveTopLeft( QPointF( - rect.width() / 2, - rect.height() / 2 ) );
     painter->rotate( mAttributes.rotation() );
+    /* for debugging:
+    painter->setPen( Qt::red );
+    painter->drawRect( rect );
+    painter->setPen( mAttributes.pen() );
+    */
     painter->drawText( rect, Qt::AlignHCenter | Qt::AlignVCenter, mText );
 }
 

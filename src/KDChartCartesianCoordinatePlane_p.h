@@ -69,7 +69,7 @@ public:
         const QPointF& point ) const
     {
         const QRectF geo( plane->geometry() );
-        //qDebug() << "point:" << point << "  coordinateTransformation.diagramRect:" << geo;
+        //qDebug() << "point:" << point << "  plane->geometry():" << geo;
         return geo.contains( point );
     }
 

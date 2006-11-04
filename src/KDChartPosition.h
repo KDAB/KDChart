@@ -93,6 +93,8 @@ public:
     bool isCorner() const;
     bool isPole() const;
 
+    bool isFloating() const;
+
     static const Position& Unknown;
     static const Position& Center;
     static const Position& NorthWest;
@@ -103,6 +105,8 @@ public:
     static const Position& South;
     static const Position& SouthWest;
     static const Position& West;
+
+    static const Position& Floating;
 
     enum Option { IncludeCenter=0, ExcludeCenter=1 };
     Q_DECLARE_FLAGS( Options, Option )

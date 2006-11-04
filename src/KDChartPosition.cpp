@@ -56,7 +56,8 @@ static const char * staticPositionNames[] = {
     QT_TRANSLATE_NOOP("Position","SouthEast"),
     QT_TRANSLATE_NOOP("Position","South"),
     QT_TRANSLATE_NOOP("Position","SouthWest"),
-    QT_TRANSLATE_NOOP("Position","West")
+    QT_TRANSLATE_NOOP("Position","West"),
+    QT_TRANSLATE_NOOP("Position","Floating")
 };
 
 
@@ -74,8 +75,9 @@ static Position staticPositionSouthEast = Position( KDChartEnums::PositionSouthE
 static Position staticPositionSouth     = Position( KDChartEnums::PositionSouth );
 static Position staticPositionSouthWest = Position( KDChartEnums::PositionSouthWest );
 static Position staticPositionWest      = Position( KDChartEnums::PositionWest );
+static Position staticPositionFloating  = Position( KDChartEnums::PositionFloating );
 
-static int maxPositionValue = 9;
+static int maxPositionValue = 10;
 
 } // anon namespace
 
@@ -89,6 +91,7 @@ const Position& Position::SouthEast = staticPositionSouthEast;
 const Position& Position::South     = staticPositionSouth;
 const Position& Position::SouthWest = staticPositionSouthWest;
 const Position& Position::West      = staticPositionWest;
+const Position& Position::Floating  = staticPositionFloating;
 
 
 /**
@@ -167,7 +170,12 @@ bool Position::isCorner() const
 bool Position::isPole() const
 {
     return  m_value == Position::North.value() ||
-            m_value == Position::South.value();
+        m_value == Position::South.value();
+}
+
+bool Position::isFloating() const
+{
+    return  m_value == Position::Floating.value();
 }
 
 /**

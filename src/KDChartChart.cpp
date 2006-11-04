@@ -253,6 +253,9 @@ void Chart::Private::layoutLegends()
                 qDebug( "Sorry: Legend not shown, because position Center is not supported." );
                 bOK = false;
                 break;
+            case KDChartEnums::PositionFloating:
+                bOK = false;
+                break;
             default:
                 qDebug( "Sorry: Legend not shown, because of unknown legend position." );
                 bOK = false;
@@ -855,9 +858,9 @@ void Chart::paint( QPainter* painter, const QRect& target )
             //testing:
             //legend->paintIntoRect( *painter, legend->geometry().adjusted(-100,0,-100,0) );
         }
-	}
+    }
 
-	painter->translate( -translation.x(), -translation.y() );
+    painter->translate( -translation.x(), -translation.y() );
 
     //qDebug() << "KDChart::Chart::paint() done.\n";
 }
@@ -865,6 +868,13 @@ void Chart::paint( QPainter* painter, const QRect& target )
 void Chart::resizeEvent ( QResizeEvent * )
 {
     d->resizeLayout( size() );
+
+    KDAB_FOREACH( Legend *legend, d->legends ) {
+        const bool hidden = legend->isHidden() && legend->testAttribute(Qt::WA_WState_ExplicitShowHide);
+        if ( legend->position().isFloating() && !hidden )
+            legend->setGeometry( QRect( legend->geometry().topLeft(), legend->sizeHint() ) );
+    }
+
 }
 
 void Chart::paintEvent( QPaintEvent* )
@@ -934,6 +944,7 @@ HeaderFooterList Chart::headerFooters()
 
 void Chart::addLegend( Legend* legend )
 {
+    qDebug() << "adding the legend";
     d->legends.append( legend );
     legend->setParent( this );
 

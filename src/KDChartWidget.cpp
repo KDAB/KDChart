@@ -304,6 +304,7 @@ void Widget::addLegend( Legend* legend )
 {
     legend->setDiagram( diagram() );
     legend->setParent( &d->m_chart );
+    d->m_chart.addLegend( legend );
 }
 
 void Widget::replaceLegend( Legend* legend, Legend* oldLegend )

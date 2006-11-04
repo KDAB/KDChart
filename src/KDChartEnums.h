@@ -194,7 +194,9 @@ public:
         PositionSouthEast = 6,
         PositionSouth     = 7,
         PositionSouthWest = 8,
-        PositionWest      = 9 };
+        PositionWest      = 9,
+        PositionFloating  =10
+    };
 
 
     /**
