@@ -159,7 +159,8 @@ const QPointF RelativePosition::calculatedPoint( const QSizeF& autoSize ) const
     if( useRect ){
         const QWidget* widget = dynamic_cast<const QWidget*>(d->area);
         if( widget ){
-            rect = widget->layout()->geometry();
+          const QLayout * layout = widget->layout();
+          rect = layout ? layout->geometry() : widget->geometry();
         }else{
             const AbstractArea* kdcArea = dynamic_cast<const AbstractArea*>(d->area);
             if( kdcArea )

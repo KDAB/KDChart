@@ -148,7 +148,8 @@ const QSizeF Measure::sizeOfArea( const QObject* area ) const
     QSizeF size;
     const QWidget* widget = dynamic_cast<const QWidget*>(area);
     if( widget ){
-        size = widget->layout()->geometry().size();
+        const QLayout * layout = widget->layout();
+        size = layout ? layout->geometry().size() : widget->geometry().size();
     }else{
         const AbstractArea* kdcArea = dynamic_cast<const AbstractArea*>(area);
         if( kdcArea ){

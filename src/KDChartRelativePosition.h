@@ -152,6 +152,15 @@ public:
     void setRotation( qreal rot );
     qreal rotation() const;
 
+    /**
+     * \brief Calculate a point, according to the reference area/position and horiz/vert padding.
+     *
+     * This method is called at drawing time: The returned point is used as anchor point.
+     * Note that calculatedPoint ignores the alignment setting, it just returns the point,
+     * so the calling code needs to take alignment into account explicitely.
+     *
+     * \sa setReferenceArea, setReferencePosition, setHorizontalPadding, setVerticalPadding
+     */
     const QPointF calculatedPoint( const QSizeF& autoSize ) const;
 
     bool operator==( const RelativePosition& ) const;
