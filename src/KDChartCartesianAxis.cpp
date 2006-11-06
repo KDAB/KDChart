@@ -277,34 +277,35 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
     // - find the reference point at which to start drawing and the increment (line distance);
     QPointF rulerRef;
-    QRect geoRect( areaGeometry() );
+    const QRect areaGeoRect( areaGeometry() );
+    const QRect geoRect( geometry() );
     QRectF rulerRect;
     double rulerWidth;
     double rulerHeight;
 
-    //for debugging: if( isAbscissa() )ptr->drawRect(geoRect.adjusted(0,0,-1,-1));
-    //qDebug() << "         " << (isAbscissa() ? "Abscissa":"Ordinate") << "axis painting with geometry" << geoRect;
+    //for debugging: if( isAbscissa() )ptr->drawRect(areaGeoRect.adjusted(0,0,-1,-1));
+    //qDebug() << "         " << (isAbscissa() ? "Abscissa":"Ordinate") << "axis painting with geometry" << areaGeoRect;
 
     // FIXME references are of course different for all locations:
-    rulerWidth = geoRect.width();
-    rulerHeight =  geoRect.height();
+    rulerWidth = areaGeoRect.width();
+    rulerHeight =  areaGeoRect.height();
     switch( position() )
     {
     case Top:
-        rulerRef.setX( geoRect.topLeft().x() );
-        rulerRef.setY( geoRect.topLeft().y() + rulerHeight );
+        rulerRef.setX( areaGeoRect.topLeft().x() );
+        rulerRef.setY( areaGeoRect.topLeft().y() + rulerHeight );
         break;
     case Bottom:
-        rulerRef.setX( geoRect.bottomLeft().x() );
-        rulerRef.setY( geoRect.bottomLeft().y() - rulerHeight );
+        rulerRef.setX( areaGeoRect.bottomLeft().x() );
+        rulerRef.setY( areaGeoRect.bottomLeft().y() - rulerHeight );
         break;
     case Right:
-        rulerRef.setX( geoRect.bottomRight().x() - rulerWidth );
-        rulerRef.setY( geoRect.bottomRight().y() );
+        rulerRef.setX( areaGeoRect.bottomRight().x() - rulerWidth );
+        rulerRef.setY( areaGeoRect.bottomRight().y() );
         break;
     case Left:
-        rulerRef.setX( geoRect.bottomLeft().x() + rulerWidth );
-        rulerRef.setY( geoRect.bottomLeft().y() );
+        rulerRef.setX( areaGeoRect.bottomLeft().x() + rulerWidth );
+        rulerRef.setY( areaGeoRect.bottomLeft().y() );
         break;
     }
 
@@ -509,16 +510,16 @@ void CartesianAxis::paintCtx( PaintContext* context )
                                               : ((halfFontHeight + size.height()) * -1.0) ) ) ),
                                     size ) );
 
-                        bool hadClipping = ptr->hasClipping();
+                        bool origClipping = ptr->hasClipping();
 
-                        QRect geo = labelItem->geometry();
+                        QRect labelGeo = labelItem->geometry();
                         // if our item would only half fit, we disable clipping for that one
-                        if( geo.left() < geometry().left() && geo.right() > geometry().left() )
+                        if( labelGeo.left() < geoRect.left() && labelGeo.right() > geoRect.left() )
                             ptr->setClipping( false );
-                        if( geo.left() < geometry().right() && geo.right() > geometry().right() )
+                        if( labelGeo.left() < geoRect.right() && labelGeo.right() > geoRect.right() )
                             ptr->setClipping( false );
 
-                        labelItem->setGeometry( geo );
+                        labelItem->setGeometry( labelGeo );
 
                         labelStep = qRound( labelDiff ) - qRound( dimX.stepWidth );
                         labelItem->paint( ptr );
@@ -526,7 +527,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         labelItem2->setText( labelItem->text() );
 
                         // maybe enable clipping afterwards
-                        ptr->setClipping( hadClipping );
+                        ptr->setClipping( origClipping );
                     } else {
                         labelStep -= qRound( dimX.stepWidth ); //qRound( labelDiff );
                     }
@@ -559,69 +560,52 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 // Find the wides label, so we to know how much we need to right-shift
                 // our labels, to get them drawn right aligned:
                 labelValue = minValueY;
-                qreal f = minValueY;
-                while ( f <= maxLimit ) {
+                while ( labelValue <= maxLimit ) {
                     labelItem->setText( QString::number( labelValue ) );
                     maxLabelsWidth = qMax( maxLabelsWidth, labelItem->sizeHint().width() );
                     if ( isLogarithmicY )
                         labelValue *= 10.0;
                     else
-                        labelValue += dimY.stepWidth;
-                    if ( isLogarithmicY )
-                        f *= 10.0;
-                    else
-                        f += steg;
+                        labelValue += steg;
                 }
             }
+
+            bool origClipping = ptr->hasClipping();
+            ptr->setClipping( false );
             labelValue = minValueY;
 //qDebug("minValueY: %f   maxLimit: %f   steg: %f", minValueY, maxLimit, steg);
-            qreal f = minValueY;
-            while ( f <= maxLimit ) {
-//qDebug("f: %f",f);
-                QPointF leftPoint (  0.0, f );
-                QPointF rightPoint ( 0.0, f );
-                leftPoint  = plane->translate( leftPoint );
-                rightPoint = plane->translate( rightPoint );
-                leftPoint.setX( fourthRulerRef.x() + tickLength() );
-                rightPoint.setX( fourthRulerRef.x() );
-                ptr->drawLine( leftPoint, rightPoint );
-                drawnYTicks.append( static_cast<int>( leftPoint.y() ) );
-                if ( drawLabels ) {
-                    labelItem->setText( QString::number( labelValue ) );
-                    // No need to call labelItem->setParentWidget(), since we are using
-                    // the layout item temporarily only.
-                    const QSize labelSize( labelItem->sizeHint() );
-                    leftPoint.setX( leftPoint.x()
-                         );
-                    const int x =
-                        static_cast<int>( leftPoint.x() + met.height() * ( position() == Left ? -0.5 : 0.5) )
-                        - ( position() == Left ? labelSize.width() : (labelSize.width() - maxLabelsWidth) );
-
-                    int y = static_cast<int>( leftPoint.y() - ( met.ascent() + met.descent() ) * 0.6 );
-
-                    labelItem->setGeometry( QRect( QPoint( x, y ), labelSize ) );
-
-                    bool hadClipping = ptr->hasClipping();
-                    QRect geo = labelItem->geometry();
-
-                    if( geo.top() < geometry().top() && geo.bottom() > geometry().top() )
-                        ptr->setClipping( false );
-                    if( geo.top() < geometry().bottom() && geo.bottom() > geometry().bottom() )
-                        ptr->setClipping( false );
-
-                    labelItem->paint( ptr );
-                    ptr->setClipping( hadClipping );
-
-                    if ( isLogarithmicY )
-                        labelValue *= 10.0;
-                    else
-                        labelValue += dimY.stepWidth;
+            while ( labelValue <= maxLimit ) {
+                QPointF leftPoint = plane->translate( QPointF( 0, labelValue ) );
+                const qreal translatedValue = leftPoint.y();
+                //qDebug() << "geoRect:" << geoRect << "   geoRect.top()" << geoRect.top() << "geoRect.bottom()" << geoRect.bottom() << "  translatedValue:" << translatedValue;
+                if( translatedValue > geoRect.top() && translatedValue <= geoRect.bottom() ){
+                    QPointF rightPoint ( 0.0, labelValue );
+                    rightPoint = plane->translate( rightPoint );
+                    leftPoint.setX( fourthRulerRef.x() + tickLength() );
+                    rightPoint.setX( fourthRulerRef.x() );
+                    ptr->drawLine( leftPoint, rightPoint );
+                    drawnYTicks.append( static_cast<int>( leftPoint.y() ) );
+                    if ( drawLabels ) {
+                        labelItem->setText( QString::number( labelValue ) );
+                        // No need to call labelItem->setParentWidget(), since we are using
+                        // the layout item temporarily only.
+                        const QSize labelSize( labelItem->sizeHint() );
+                        leftPoint.setX( leftPoint.x() );
+                        const int x =
+                            static_cast<int>( leftPoint.x() + met.height() * ( position() == Left ? -0.5 : 0.5) )
+                            - ( position() == Left ? labelSize.width() : (labelSize.width() - maxLabelsWidth) );
+                        const int y =
+                            static_cast<int>( leftPoint.y() - ( met.ascent() + met.descent() ) * 0.6 );
+                        labelItem->setGeometry( QRect( QPoint( x, y ), labelSize ) );
+                        labelItem->paint( ptr );
+                    }
                 }
                 if ( isLogarithmicY )
-                    f *= 10.0;
+                    labelValue *= 10.0;
                 else
-                    f += steg;
+                    labelValue += dimY.stepWidth;
             }
+            ptr->setClipping( origClipping );
         }
         if( labelItem )
             delete labelItem;
@@ -671,19 +655,23 @@ void CartesianAxis::paintCtx( PaintContext* context )
             qreal fLogSubstep = minValueY;
             int logSubstep = 0;
             while ( f <= maxValueY ) {
-                QPointF leftPoint ( 0, f );
-                QPointF rightPoint ( 0, f );
+                QPointF leftPoint = plane->translate( QPointF( 0, f ) );
+                //qDebug() << "geoRect:" << geoRect << "   geoRect.top()" << geoRect.top() << "geoRect.bottom()" << geoRect.bottom() << "  translatedValue:" << translatedValue;
                 // we don't draw the sub ticks, if we are at the same position as a normal tick
-                leftPoint = plane->translate( leftPoint );
-                rightPoint = plane->translate( rightPoint );
-                leftPoint.setX( fourthRulerRef.x() + tickLength( true ) );
-                rightPoint.setX( fourthRulerRef.x() );
                 if( drawnYTicks.count() > nextMayBeTick )
                     mayBeTick = drawnYTicks[ nextMayBeTick ];
-                if( qAbs( mayBeTick - leftPoint.y() ) > 1 )
-                    ptr->drawLine( leftPoint, rightPoint );
-                else
+                if( qAbs( mayBeTick - leftPoint.y() ) > 1 ){
+                    const qreal translatedValue = leftPoint.y();
+                    if( translatedValue > geoRect.top() && translatedValue <= geoRect.bottom() ){
+                        QPointF rightPoint ( 0, f );
+                        rightPoint = plane->translate( rightPoint );
+                        leftPoint.setX( fourthRulerRef.x() + tickLength( true ) );
+                        rightPoint.setX( fourthRulerRef.x() );
+                        ptr->drawLine( leftPoint, rightPoint );
+                    }
+                }else{
                     ++nextMayBeTick;
+                }
                 if ( isLogarithmicY ){
                     if( logSubstep == 9 ){
                         fLogSubstep *= 10.0;
@@ -712,20 +700,20 @@ void CartesianAxis::paintCtx( PaintContext* context )
             switch( position() )
             {
             case Top:
-                point.setX( geoRect.left() + geoRect.width() / 2.0);
-                point.setY( geoRect.top() );
+                point.setX( areaGeoRect.left() + areaGeoRect.width() / 2.0);
+                point.setY( areaGeoRect.top() );
                 break;
             case Bottom:
-                point.setX( geoRect.left() + geoRect.width() / 2.0);
-                point.setY( geoRect.bottom() - size.height() );
+                point.setX( areaGeoRect.left() + areaGeoRect.width() / 2.0);
+                point.setY( areaGeoRect.bottom() - size.height() );
                 break;
             case Left:
-                point.setX( geoRect.left() );
-                point.setY( geoRect.top() + geoRect.height() / 2.0);
+                point.setX( areaGeoRect.left() );
+                point.setY( areaGeoRect.top() + areaGeoRect.height() / 2.0);
                 break;
             case Right:
-                point.setX( geoRect.right() - size.height() );
-                point.setY( geoRect.top() + geoRect.height() / 2.0);
+                point.setX( areaGeoRect.right() - size.height() );
+                point.setY( areaGeoRect.top() + areaGeoRect.height() / 2.0);
                 break;
             }
             PainterSaver painterSaver( ptr );
