@@ -434,11 +434,12 @@ void CartesianAxis::paintCtx( PaintContext* context )
             qreal labelDiff = dimX.stepWidth;
             if ( drawLabels )
             {
+
                 qreal i = minValueX;
                 int iLabel = 0;
                 while ( i < maxValueX )
                 {
-                    if ( !drawLabels || hardLabelsCount < 1 || shortLabelsCount < 1 || ( dimX.stepWidth != 1.0 && ! dim.isCalculated ) )
+                    if ( !drawLabels || hardLabelsCount < 1 || ( dimX.stepWidth != 1.0 && ! dim.isCalculated ) )
                     {
                         labelItem->setText( QString::number( i, 'f', 0 ) );
                         labelItem2->setText( QString::number( i + labelDiff, 'f', 0 ) );
@@ -452,6 +453,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
                     QPointF secondPos( i + labelDiff, 0.0 );
                     secondPos = plane->translate( secondPos );
+
 
                     if ( labelItem->intersects( *labelItem2, firstPos, secondPos ) )
                     {
@@ -493,11 +495,11 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         labelItem->setText( QString::number( i, 'f', 0 ) );
                     else if( (dimX.stepWidth != 1.0) && ! dimX.isCalculated )
                         labelItem->setText( QString::number( i, 'f', 0 ) );
-                    else
+                    else {
                         labelItem->setText( hardLabelsCount
                             ? ( useShortLabels    ? shortLabels()[ idxLabel ] : labels()[ idxLabel ] )
                             : ( headerLabelsCount ? headerLabels[  idxLabel ] : QString::number( iLabelF ) ) );
-                    //qDebug() << "label text" << labelItem->text();
+                    }
                     // No need to call labelItem->setParentWidget(), since we are using
                     // the layout item temporarily only.
                     if( labelStep <= 0 ) {
