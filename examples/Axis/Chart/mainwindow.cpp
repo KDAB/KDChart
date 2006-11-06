@@ -68,7 +68,7 @@ MainWindow::MainWindow( QWidget* parent ) :
 
     TextAttributes taLeft ( leftAxis->titleTextAttributes () );
     Measure me( taLeft.fontSize() );
-    me.setValue( me.value() * 1.5 );
+    me.setValue( me.value() * 0.8 );
     taLeft.setFontSize( me );
 // Set the following to 1, to hide the left axis title
 //  - no matter if a title text is set or not
