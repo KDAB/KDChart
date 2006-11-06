@@ -590,8 +590,8 @@ void Chart::Private::createLayouts( QWidget* w )
     layout->addLayout( vLayout, 2 );
     layout->addSpacing( globalLeadingRight );
 
- 
-    
+
+
     // 1. the gap above the top edge of the headers area
     vLayout->addSpacing( globalLeadingTop );
     // 2. the header(s) area
@@ -944,7 +944,7 @@ HeaderFooterList Chart::headerFooters()
 
 void Chart::addLegend( Legend* legend )
 {
-    qDebug() << "adding the legend";
+    //qDebug() << "adding the legend";
     d->legends.append( legend );
     legend->setParent( this );
 

@@ -406,8 +406,10 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         labelItem->setText( QString::number( i, 'f', 0 ) );
                         labelItem2->setText( QString::number( i + dimX.stepWidth, 'f', 0 ) );
                     } else {
-                        labelItem->setText( labels()[ iLabel ] );
-                        labelItem2->setText( labels()[ iLabel + 1 >= hardLabelsCount ? 0 : iLabel + 1 ] );
+
+                        int index = iLabel;
+                        labelItem->setText( labels()[ index < hardLabelsCount ? index : 0 ] );
+                        labelItem2->setText( labels()[ index < hardLabelsCount - 1 ? index + 1 : 0] );
                     }
                     QPointF firstPos( i, 0.0 );
                     firstPos = plane->translate( firstPos );
@@ -416,7 +418,6 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     secondPos = plane->translate( secondPos );
 
                     labelsAreOverlapping = labelItem->intersects( *labelItem2, firstPos, secondPos );
-
                     if ( iLabel++ > hardLabelsCount - 1 )
                         iLabel = 0;
                     if ( isLogarithmicX )
@@ -442,9 +443,9 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         labelItem->setText( QString::number( i, 'f', 0 ) );
                         labelItem2->setText( QString::number( i + labelDiff, 'f', 0 ) );
                     } else {
-                        int index = iLabel + qRound( labelDiff );
-                        labelItem->setText( labels()[ iLabel ] );
-                        labelItem2->setText( labels()[ index >= hardLabelsCount ? 0 : index ] );
+                        int index = iLabel;
+                        labelItem->setText( labels()[ index < hardLabelsCount ? index : 0 ] );
+                        labelItem2->setText( labels()[ index < hardLabelsCount - 1 ? index + 1 : 0] );
                     }
                     QPointF firstPos( i, 0.0 );
                     firstPos = plane->translate( firstPos );
@@ -462,6 +463,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     {
                         i += labelDiff;
                     }
+
                     if ( iLabel++ > hardLabelsCount - 1 )
                     {
                         iLabel = 0;
