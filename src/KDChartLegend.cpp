@@ -132,9 +132,11 @@ QSize Legend::minimumSizeHint() const
 QSize Legend::sizeHint() const
 {
     //qDebug() << "Legend::sizeHint() started";
+    /* we dont need this anymore - causes */
     Q_FOREACH( KDChart::AbstractLayoutItem* layoutItem, d->layoutItems ) {
         layoutItem->sizeHint();
     }
+    */
     return AbstractAreaWidget::sizeHint();
 }
 
