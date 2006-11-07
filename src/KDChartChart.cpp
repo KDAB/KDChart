@@ -625,7 +625,9 @@ void Chart::Private::slotRelayout()
     // This triggers the qlayout, see QBoxLayout::setGeometry
     // The geometry is not necessarily w->rect(), when using paint(), this is why
     // we don't call layout->activate().
-    layout->setGeometry( QRect( 0, 0, currentLayoutSize.width(), currentLayoutSize.height() ) );
+    const QRect geo( QRect( 0, 0, currentLayoutSize.width(), currentLayoutSize.height() ) );
+    if( geo != layout->geometry() )
+        layout->setGeometry( geo );
 
     // Adapt diagram drawing to the new size
     KDAB_FOREACH (AbstractCoordinatePlane* plane, coordinatePlanes ) {
