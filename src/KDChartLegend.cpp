@@ -758,8 +758,6 @@ void Legend::buildLegend()
     // This line is absolutely necessary, otherwise: #2516.
     d->layout->activate();
 
-//    emit propertiesChanged();
-    d->layout->activate();
     emit propertiesChanged();
     //emit positionChanged( this );
     //emitPositionChanged();
