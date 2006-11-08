@@ -51,9 +51,21 @@ public:
     legend->setText( 1,  "Series 2" );
     legend->setText( 2,  "Series 3" );
 
-    TextAttributes lta;
+    // adjust the legend item's font:
+    TextAttributes lta( legend->textAttributes() );
     lta.setPen( QPen( Qt::darkGray ) );
+    Measure me( lta.fontSize() );
+    me.setValue( me.value() * 1.5 );
+    lta.setFontSize( me );
     legend->setTextAttributes(  lta );
+
+    // adjust the legend title's font:
+    lta = legend->titleTextAttributes();
+    lta.setPen( QPen( Qt::darkGray ) );
+    me = lta.fontSize();
+    me.setValue( me.value() * 1.5 );
+    lta.setFontSize( me );
+    legend->setTitleTextAttributes(  lta );
 
     // Configure a pen to surround
     // the markers with a border
