@@ -8,6 +8,8 @@ CONFIG(debug, debug|release) {
 
 CONFIG+=qtestlib
 TEMPLATE = app
+# Do not conflict with the KDChartPalette header
+TARGET = kdchartpalettetest
 INCLUDEPATH +=  ../../examples/tools ../../include
 DEPENDPATH += . ../../src ../../lib ../../examples/tools ../../include
 
