@@ -125,6 +125,7 @@ private:
     mutable QList<QBrush> modelBrushes;
     mutable QList<QPen> modelPens;
     mutable QList<MarkerAttributes> modelMarkers;
+    mutable QSize cachedSizeHint;
     //QVector<KDChart::AbstractLayoutItem*> layoutItems;
     QVector<KDChart::AbstractLayoutItem*> layoutItems;
     QGridLayout* layout;

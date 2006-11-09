@@ -131,12 +131,12 @@ QSize Legend::minimumSizeHint() const
 
 QSize Legend::sizeHint() const
 {
-    //qDebug()  << "Legend::sizeHint() started";
-    /* we dont need this anymore - causes recursion
+#ifdef DEBUG_LEGEND_PAINT
+    qDebug()  << "Legend::sizeHint() started";
+#endif
     Q_FOREACH( KDChart::AbstractLayoutItem* layoutItem, d->layoutItems ) {
         layoutItem->sizeHint();
     }
-    */
     return AbstractAreaWidget::sizeHint();
 }
 
@@ -149,7 +149,9 @@ void Legend::needSizeHint()
 
 void Legend::resizeLayout( const QSize& size )
 {
-    //qDebug() << "Legend::resizeLayout started";
+#ifdef DEBUG_LEGEND_PAINT
+    qDebug() << "Legend::resizeLayout started";
+#endif
     if( d->layout )
         d->layout->setGeometry( QRect(QPoint(0,0), size) );
     //d->layout->activate();
@@ -167,7 +169,7 @@ Legend* Legend::clone() const
     return legend;
 }
 
-//#define DEBUG_LEGEND_PAINT
+#define DEBUG_LEGEND_PAINT
 void Legend::paint( QPainter* painter )
 {
 #ifdef DEBUG_LEGEND_PAINT
