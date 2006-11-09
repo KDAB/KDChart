@@ -456,7 +456,7 @@
   <Selected>0</Selected>
   <Test>
    <Script>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/simple/chartsimple/script.kdx</Value>
+    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/chartSimple/chartsimple/script.kdx</Value>
    </Script>
    <Name>chartsimple</Name>
    <Description></Description>
@@ -464,11 +464,11 @@
    <UseDir>true</UseDir>
    <UseProperties>true</UseProperties>
    <BaselineFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/simple/chartsimple/props.kdx</Value>
+    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/chartSimple/chartsimple/props.kdx</Value>
    </BaselineFile>
    <UseScreenshots>true</UseScreenshots>
    <ScreenshotFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/simple/chartsimple/shots.kdx</Value>
+    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/chartSimple/chartsimple/shots.kdx</Value>
    </ScreenshotFile>
    <ScreenshotManualComparison>false</ScreenshotManualComparison>
    <WaitForSetupCommand>true</WaitForSetupCommand>
