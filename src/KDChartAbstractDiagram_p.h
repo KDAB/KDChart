@@ -96,8 +96,7 @@ public:
         if( attrs.isVisible() ) {
             RelativePosition relPos( attrs.position( value >= 0.0 ) );
             relPos.setReferencePoints( points );
-            const TextAttributes ta( attrs.textAttributes() );
-            const qreal fontHeight = cachedFontMetrics( ta.font(), diagram )->height();
+            const qreal fontHeight = cachedFontMetrics( attrs.textAttributes().font(), diagram )->height();
 
             // Note: When printing data value texts the font height is used as reference size for both,
             //       horizontal and vertical padding, if the respective padding's Measure is using

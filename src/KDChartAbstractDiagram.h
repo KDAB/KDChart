@@ -453,14 +453,14 @@ namespace KDChart {
 
         void paintMarker( QPainter* painter, const QModelIndex& index,
                           const QPointF& pos );
+        void paintDataValueText( QPainter* painter, const QModelIndex& index,
+                                 const QPointF& pos, double value );
 
     protected:
         virtual bool checkInvariants( bool justReturnTheStatus=false ) const;
         virtual const QPair<QPointF, QPointF> calculateDataBoundaries() const = 0;
         void setDataBoundariesDirty() const;
         virtual void paintDataValueTexts( QPainter* painter );
-        void paintDataValueText( QPainter* painter, const QModelIndex& index,
-                                 const QPointF& pos, double value );
         virtual void paintMarkers( QPainter* painter );
         void setAttributesModelRootIndex( const QModelIndex& );
         QModelIndex attributesModelRootIndex() const;
