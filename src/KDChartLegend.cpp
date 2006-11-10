@@ -506,7 +506,6 @@ void Legend::forceRebuild()
     qDebug() << "entering Legend::forceRebuild()";
 #endif
     //setSpacing(d->layout->spacing());
-    //setNeedRebuild();
     buildLegend();
 #ifdef DEBUG_LEGEND_PAINT
     qDebug() << "leaving Legend::forceRebuild()";
@@ -610,6 +609,7 @@ void Legend::resizeEvent ( QResizeEvent * event )
     qDebug() << "Legend::resizeEvent() called";
 #endif
     forceRebuild();
+    sizeHint();
     QTimer::singleShot(0, this, SLOT(emitPositionChanged()));
 }
 
