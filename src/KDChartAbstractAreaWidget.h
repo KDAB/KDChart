@@ -106,12 +106,12 @@ public:
       */ 
     virtual void needSizeHint();
     //virtual void setGeometry( const QRect & rect );
+    virtual void resizeLayout( const QSize& );
 
 protected:
     virtual ~AbstractAreaWidget() ;
     virtual QRect areaGeometry() const;
     virtual void positionHasChanged();
-    virtual void resizeLayout( const QSize& );
 
 
 public:
