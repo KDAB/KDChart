@@ -306,6 +306,7 @@ void Legend::setVisible( bool visible )
 void Legend::setNeedRebuild()
 {
     buildLegend();
+    sizeHint();
 }
 
 void Legend::setPosition( Position position )
