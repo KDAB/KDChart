@@ -88,8 +88,8 @@ public:
         textAttributes( rhs.textAttributes ),
         titleText( rhs.titleText ),
         titleTextAttributes( rhs.titleTextAttributes ),
-        spacing( rhs.spacing ),
-        needRebuild( true )
+        spacing( rhs.spacing )
+        //needRebuild( true )
         {
         }
 
@@ -120,7 +120,7 @@ private:
     uint spacing;
 
     // internal
-    bool needRebuild;
+//    bool needRebuild;
     mutable QStringList modelLabels;
     mutable QList<QBrush> modelBrushes;
     mutable QList<QPen> modelPens;

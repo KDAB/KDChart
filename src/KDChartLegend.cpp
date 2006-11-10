@@ -57,8 +57,8 @@ Legend::Private::Private() :
     textAttributes(),
     titleText( QObject::tr( "Legend" ) ),
     titleTextAttributes(),
-    spacing( 1 ),
-    needRebuild( true )
+    spacing( 1 )
+    //needRebuild( true )
 {
     // this bloc left empty intentionally
 }
@@ -154,7 +154,7 @@ void Legend::resizeLayout( const QSize& size )
 #endif
     if( d->layout )
         d->layout->setGeometry( QRect(QPoint(0,0), size) );
-    //d->layout->activate();
+    d->layout->activate();
     //qDebug() << "Legend::resizeLayout done";
 }
 
@@ -179,7 +179,7 @@ void Legend::paint( QPainter* painter )
     if( ! diagram() ) return;
 
     // re-calculate/adjust the Legend's internal layout and contents, if needed:
-    buildLegend();
+    //buildLegend();
 
     // PENDING(kalle) Support palette
 
@@ -305,7 +305,7 @@ void Legend::setVisible( bool visible )
 
 void Legend::setNeedRebuild()
 {
-    d->needRebuild = true;
+    buildLegend();
 }
 
 void Legend::setPosition( Position position )
@@ -505,7 +505,7 @@ void Legend::forceRebuild()
     qDebug() << "entering Legend::forceRebuild()";
 #endif
     //setSpacing(d->layout->spacing());
-    setNeedRebuild();
+    //setNeedRebuild();
     buildLegend();
 #ifdef DEBUG_LEGEND_PAINT
     qDebug() << "leaving Legend::forceRebuild()";
@@ -614,6 +614,7 @@ void Legend::resizeEvent ( QResizeEvent * event )
 
 void Legend::buildLegend()
 {
+    /*
     if( !d->needRebuild ) {
 #ifdef DEBUG_LEGEND_PAINT
         qDebug() << "leaving Legend::buildLegend() with NO action (was already build)";
@@ -627,7 +628,7 @@ void Legend::buildLegend()
     qDebug() << "entering Legend::buildLegend() **********************************";
 #endif
     d->needRebuild = false;
-
+    */
     Q_FOREACH( QLayoutItem* layoutItem, d->layoutItems ) {
         d->layout->removeItem( layoutItem );
     }

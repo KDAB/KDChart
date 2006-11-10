@@ -277,7 +277,7 @@ void Chart::Private::layoutLegends()
                     Legend* legend = list.first();
                     dataAndLegendLayout->addItem( new MyWidgetItem(legend),
                         iR, iC, 1, 1, legend->alignment() );
-                }
+            }
                 break;
             default: {
                     // We have more than one legend in the same cell
