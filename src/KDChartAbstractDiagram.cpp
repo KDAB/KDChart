@@ -344,37 +344,37 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
         roundedValue.append( a.suffix() );
 
     const TextAttributes ta( a.textAttributes() );
-
-    QPointF pt( pos );
-    /* for debugging:
-    PainterSaver painterSaver( painter );
-    painter->setPen( Qt::black );
-    painter->drawLine( pos - QPointF( 1,1), pos + QPointF( 1,1) );
-    painter->drawLine( pos - QPointF(-1,1), pos + QPointF(-1,1) );
-    */
-
-    // adjust the text start point position, if alignment is not Bottom/Left
-    const RelativePosition relPos( a.position( value >= 0.0 ) );
-    const Qt::Alignment alignBottomLeft = Qt::AlignBottom | Qt::AlignLeft;
-    if( (relPos.alignment() & alignBottomLeft) != alignBottomLeft ){
-        const QRectF boundRect(
-                d->cachedFontMetrics( ta.font(), this )->boundingRect( roundedValue ) );
-        if( relPos.alignment() & Qt::AlignRight )
-            pt.rx() -= boundRect.width();
-        else if( relPos.alignment() & Qt::AlignHCenter )
-            pt.rx() -= 0.5 * boundRect.width();
-
-        if( relPos.alignment() & Qt::AlignTop )
-            pt.ry() += boundRect.height();
-        else if( relPos.alignment() & Qt::AlignVCenter )
-            pt.ry() += 0.5 * boundRect.height();
-    }
-
     // FIXME draw the non-text bits, background, etc
     if ( ta.isVisible() ) {
+
+        QPointF pt( pos );
+        /* for debugging:
+        PainterSaver painterSaver( painter );
+        painter->setPen( Qt::black );
+        painter->drawLine( pos - QPointF( 1,1), pos + QPointF( 1,1) );
+        painter->drawLine( pos - QPointF(-1,1), pos + QPointF(-1,1) );
+        */
+
+        // adjust the text start point position, if alignment is not Bottom/Left
+        const RelativePosition relPos( a.position( value >= 0.0 ) );
+        const Qt::Alignment alignBottomLeft = Qt::AlignBottom | Qt::AlignLeft;
+        const QFont calculatedFont( ta.calculatedFont( this, KDChartEnums::MeasureOrientationMinimum ) );
+        if( (relPos.alignment() & alignBottomLeft) != alignBottomLeft ){
+            const QRectF boundRect(
+                    d->cachedFontMetrics( calculatedFont, this )->boundingRect( roundedValue ) );
+            if( relPos.alignment() & Qt::AlignRight )
+                pt.rx() -= boundRect.width();
+            else if( relPos.alignment() & Qt::AlignHCenter )
+                pt.rx() -= 0.5 * boundRect.width();
+            if( relPos.alignment() & Qt::AlignTop )
+                pt.ry() += boundRect.height();
+            else if( relPos.alignment() & Qt::AlignVCenter )
+                pt.ry() += 0.5 * boundRect.height();
+        }
+
         PainterSaver painterSaver( painter );
         painter->setPen( ta.pen() );
-        painter->setFont( ta.font() );
+        painter->setFont( calculatedFont );
         painter->translate( pt );
         painter->rotate( ta.rotation() );
         painter->drawText( QPointF(0, 0), roundedValue );

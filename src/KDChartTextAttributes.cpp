@@ -148,6 +148,19 @@ bool TextAttributes::hasAbsoluteFontSize() const
         && d->minimalFontSize.calculationMode() == KDChartEnums::MeasureCalculationModeAbsolute;
 }
 
+
+const QFont TextAttributes::calculatedFont(
+    const QObject*                   autoReferenceArea,
+    KDChartEnums::MeasureOrientation autoReferenceOrientation ) const
+{
+    QFont fnt( font() );
+    fnt.setPointSizeF( qMax(
+        fontSize().calculatedValue(        autoReferenceArea, autoReferenceOrientation ),
+        minimalFontSize().calculatedValue( autoReferenceArea, autoReferenceOrientation ) ) );
+    return fnt;
+}
+
+
 void TextAttributes::setAutoRotate( bool autoRotate )
 {
     d->autoRotate = autoRotate;
