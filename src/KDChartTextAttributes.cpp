@@ -162,7 +162,7 @@ const QFont TextAttributes::calculatedFont(
         fontSize().calculatedValue(        autoReferenceArea, autoReferenceOrientation ),
         minimalFontSize().calculatedValue( autoReferenceArea, autoReferenceOrientation ) );
 
-    if( d->cachedFontSize != calculatedFontSize ){
+    if( calculatedFontSize > 0.0 && d->cachedFontSize != calculatedFontSize ){
         d->cachedFontSize  = calculatedFontSize;
         d->cachedFont.setPointSizeF( d->cachedFontSize );
     }
