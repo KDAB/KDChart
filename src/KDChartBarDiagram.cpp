@@ -471,7 +471,9 @@ void BarDiagram::paint( PaintContext* ctx )
 
                     //PENDING Michel: FIXME barWidth
                     const QRectF rect( topPoint, QSizeF( barWidth, barHeight ) );
-                    d->appendDataValueTextInfoToList( this, list, index, PositionPoints( rect ), value );
+                    d->appendDataValueTextInfoToList( this, list, index, PositionPoints( rect ),
+                            Position::NorthWest, Position::SouthEast,
+                            value );
                     paintBars( ctx, index, rect, maxDepth );
 
                     offset += barWidth + spaceBetweenBars;
@@ -508,7 +510,9 @@ void BarDiagram::paint( PaintContext* ctx )
                    const double barHeight = previousPoint.y() - point.y();
 
                    const QRectF rect( point, QSizeF( barWidth , barHeight ) );
-                   d->appendDataValueTextInfoToList( this, list, index, PositionPoints( rect ), value );
+                   d->appendDataValueTextInfoToList( this, list, index, PositionPoints( rect ),
+                           Position::NorthWest, Position::SouthEast,
+                           value );
                    paintBars( ctx, index, rect, maxDepth );
                }
 
@@ -574,7 +578,9 @@ void BarDiagram::paint( PaintContext* ctx )
                     const double barHeight = previousPoint.y() - point.y();
 
                     const QRectF rect( point, QSizeF( barWidth, barHeight ) );
-                    d->appendDataValueTextInfoToList( this, list, index, PositionPoints( rect ), value );
+                    d->appendDataValueTextInfoToList( this, list, index, PositionPoints( rect ),
+                            Position::NorthWest, Position::SouthEast,
+                            value );
                     paintBars( ctx, index, rect, maxDepth );
 
                 }

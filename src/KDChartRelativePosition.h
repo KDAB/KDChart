@@ -107,9 +107,21 @@ public:
      * The anchor point of a RelativePosition may be one of the pre-defined
      * points of it's reference area - for details see KDChart::Position.
      *
-     *  \sa setReferenceArea, setAlignment, setHorizontalPadding, setVerticalPadding, KDChart::Position
+     *  \sa resetReferencePosition, setReferenceArea, setAlignment, setHorizontalPadding, setVerticalPadding, KDChart::Position
      */
     void setReferencePosition( Position position );
+
+    /**
+     * \brief Resets the position of the anchor point to the built-in default.
+     *
+     * If the anchor point of a RelativePosition is reset (or never changed from the
+     * default setting, resp.) KD Chart will choose an appropriate Position at run-time.
+     *
+     * e.g. BarDiagrams will use Position::NorthWest / Position::SouthEast for positive / negative values.
+     *
+     *  \sa setReferencePosition, setReferenceArea, setAlignment, setHorizontalPadding, setVerticalPadding, KDChart::Position
+     */
+    void resetReferencePosition();
     Position referencePosition() const;
 
     /**

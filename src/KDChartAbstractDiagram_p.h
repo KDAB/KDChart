@@ -39,6 +39,8 @@
 
 #include "KDChartAbstractCoordinatePlane.h"
 #include "KDChartDataValueAttributes.h"
+#include "KDChartRelativePosition.h"
+#include "KDChartPosition.h"
 #include "KDChartPainterSaver_p.h"
 #include "KDChartPaintContext.h"
 
@@ -90,12 +92,17 @@ public:
             DataValueTextInfoList & list,
             const QModelIndex & index,
             const PositionPoints& points,
+            const Position& autoPositionPositive,
+            const Position& autoPositionNegative,
             const qreal value )
     {
         const DataValueAttributes attrs( diagram->dataValueAttributes( index ) );
         if( attrs.isVisible() ) {
             RelativePosition relPos( attrs.position( value >= 0.0 ) );
             relPos.setReferencePoints( points );
+            if( relPos.referencePosition().isUnknown() )
+                relPos.setReferencePosition( ( value >= 0.0 ) ? autoPositionPositive : autoPositionNegative );
+
             const qreal fontHeight = cachedFontMetrics( attrs.textAttributes().font(), diagram )->height();
 
             // Note: When printing data value texts the font height is used as reference size for both,

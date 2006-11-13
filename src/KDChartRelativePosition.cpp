@@ -115,6 +115,10 @@ void RelativePosition::setReferencePosition( Position pos ) {
     d->position = pos;
 }
 
+void RelativePosition::resetReferencePosition() {
+    d->position = Position::Unknown;
+}
+
 Position RelativePosition::referencePosition() const {
     return d->position;
 }

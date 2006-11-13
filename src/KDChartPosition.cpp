@@ -135,6 +135,11 @@ KDChartEnums::PositionValue Position::value() const
     return static_cast<KDChartEnums::PositionValue>( m_value );
 }
 
+bool Position::isUnknown() const
+{
+    return  m_value == Position::Unknown.value();
+}
+
 bool Position::isWestSide() const
 {
     return  m_value == Position::SouthWest.value() ||

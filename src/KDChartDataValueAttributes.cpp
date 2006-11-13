@@ -72,8 +72,9 @@ DataValueAttributes::Private::Private() :
     showInfinite( true )
 {
     textAttributes.setRotation( -45 );
-    positiveRelPos.setReferencePosition( Position::NorthWest );
-    negativeRelPos.setReferencePosition( Position::SouthEast );
+    // we set the Position to unknown: so the diagrams can take their own decisions
+    positiveRelPos.setReferencePosition( Position::Unknown ); // a bar diagram will use: Position::NorthWest
+    negativeRelPos.setReferencePosition( Position::Unknown ); // a bar diagram will use: Position::SouthEast
 
     positiveRelPos.setAlignment( Qt::AlignLeft  | Qt::AlignBottom );
     negativeRelPos.setAlignment( Qt::AlignRight | Qt::AlignTop );

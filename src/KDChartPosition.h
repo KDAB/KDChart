@@ -85,6 +85,8 @@ public:
     const char * name() const;
     QString printableName() const;
 
+    bool isUnknown() const;
+
     bool isWestSide() const;
     bool isNorthSide() const;
     bool isEastSide() const;

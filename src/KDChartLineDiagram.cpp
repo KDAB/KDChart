@@ -532,7 +532,9 @@ void LineDiagram::paint( PaintContext* ctx )
                             }
 
                             const PositionPoints pts( ptNorthWest, ptNorthEast, ptSouthEast, ptSouthWest );
-                            d->appendDataValueTextInfoToList( this, list, index, pts, valueY );
+                            d->appendDataValueTextInfoToList( this, list, index, pts,
+                                    Position::NorthWest, Position::SouthWest,
+                                    valueY );
                         }
                     }
                 }
@@ -604,7 +606,9 @@ void LineDiagram::paint( PaintContext* ctx )
                     }
 
                     const PositionPoints pts( ptNorthWest, ptNorthEast, ptSouthEast, ptSouthWest );
-                    d->appendDataValueTextInfoToList( this, list, index, pts, valueForCell( j, i ) );
+                    d->appendDataValueTextInfoToList( this, list, index, pts,
+                            Position::NorthWest, Position::SouthWest,
+                            valueForCell( j, i ) );
                 }
                 // append the points of the prevoius area in reversed order,
                 // because these are the bottom points of the stacked area segments:
@@ -704,7 +708,9 @@ void LineDiagram::paint( PaintContext* ctx )
                     }
 
                     const PositionPoints pts( ptNorthWest, ptNorthEast, ptSouthEast, ptSouthWest );
-                    d->appendDataValueTextInfoToList( this, list, index, pts, valueForCell( j, i ) );
+                    d->appendDataValueTextInfoToList( this, list, index, pts,
+                            Position::NorthWest, Position::SouthWest,
+                            valueForCell( j, i ) );
                 }
                 // append the points of the prevoius area in reversed order,
                 // because these are the bottom points of the stacked area segments:
