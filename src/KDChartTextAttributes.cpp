@@ -43,6 +43,8 @@ public:
 private:
     bool visible;
     QFont font;
+    mutable QFont cachedFont;
+    mutable qreal cachedFontSize;
     Measure fontSize;
     Measure minimalFontSize;
     bool autoRotate;
@@ -53,6 +55,7 @@ private:
 
 TextAttributes::Private::Private()
 {
+    cachedFontSize = -1.0;
 }
 
 
@@ -114,7 +117,9 @@ bool TextAttributes::isVisible() const
 
 void TextAttributes::setFont( const QFont& font )
 {
-    d->font = font;
+    d->font       = font;
+    d->cachedFont = font; // note: we do not set the font's size here, but in calculatedFont()
+    d->cachedFontSize = -1.0;
 }
 
 QFont TextAttributes::font() const
@@ -153,11 +158,15 @@ const QFont TextAttributes::calculatedFont(
     const QObject*                   autoReferenceArea,
     KDChartEnums::MeasureOrientation autoReferenceOrientation ) const
 {
-    QFont fnt( font() );
-    fnt.setPointSizeF( qMax(
+    const qreal calculatedFontSize = qMax(
         fontSize().calculatedValue(        autoReferenceArea, autoReferenceOrientation ),
-        minimalFontSize().calculatedValue( autoReferenceArea, autoReferenceOrientation ) ) );
-    return fnt;
+        minimalFontSize().calculatedValue( autoReferenceArea, autoReferenceOrientation ) );
+
+    if( d->cachedFontSize != calculatedFontSize ){
+        d->cachedFontSize  = calculatedFontSize;
+        d->cachedFont.setPointSizeF( d->cachedFontSize );
+    }
+    return d->cachedFont;
 }
 
 
