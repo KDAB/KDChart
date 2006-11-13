@@ -366,6 +366,7 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
                 pt.rx() -= boundRect.width();
             else if( relPos.alignment() & Qt::AlignHCenter )
                 pt.rx() -= 0.5 * boundRect.width();
+
             if( relPos.alignment() & Qt::AlignTop )
                 pt.ry() += boundRect.height();
             else if( relPos.alignment() & Qt::AlignVCenter )
