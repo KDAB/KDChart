@@ -127,29 +127,29 @@ BarAttributes BarDiagram::barAttributes( const QModelIndex & index ) const
             KDChart::BarAttributesRole ) );
 }
 
-void BarDiagram::setThreeDBarAttributes( const ThreeDBarAttributes & tda )
+void BarDiagram::setThreeDBarAttributes( const ThreeDBarAttributes & threeDAttrs )
 {
     setDataBoundariesDirty();
-    d->attributesModel->setModelData( qVariantFromValue( tda ), ThreeDBarAttributesRole );
+    d->attributesModel->setModelData( qVariantFromValue( threeDAttrs ), ThreeDBarAttributesRole );
     emit layoutChanged( this );
 }
 
-void BarDiagram::setThreeDBarAttributes( int column, const ThreeDBarAttributes & tda )
+void BarDiagram::setThreeDBarAttributes( int column, const ThreeDBarAttributes & threeDAttrs )
 {
     setDataBoundariesDirty();
     d->attributesModel->setHeaderData(
         column, Qt::Vertical,
-        qVariantFromValue( tda ),
+        qVariantFromValue( threeDAttrs ),
         ThreeDBarAttributesRole );
     emit layoutChanged( this );
 }
 
-void BarDiagram::setThreeDBarAttributes( const QModelIndex & index, const ThreeDBarAttributes & tda )
+void BarDiagram::setThreeDBarAttributes( const QModelIndex & index, const ThreeDBarAttributes & threeDAttrs )
 {
     setDataBoundariesDirty();
     d->attributesModel->setData(
         d->attributesModel->mapFromSource(index),
-        qVariantFromValue( tda ),
+        qVariantFromValue( threeDAttrs ),
         ThreeDBarAttributesRole );
     emit layoutChanged( this );
 }
@@ -487,13 +487,13 @@ void BarDiagram::paint( PaintContext* ctx )
                double offset = spaceBetweenGroups;
                for ( int j = 0; j< rowCount; ++j ) {
                    QModelIndex index = model()->index( j, i, rootIndex() );
-                   ThreeDBarAttributes tda = threeDBarAttributes( index );
+                   ThreeDBarAttributes threeDAttrs = threeDBarAttributes( index );
                    double value = 0, stackedValues = 0;
                    QPointF point, previousPoint;
 
-                   if ( tda.isEnabled() ) {
+                   if ( threeDAttrs.isEnabled() ) {
                        if ( barWidth > 0 )
-                           barWidth =  (width - ((offset+(tda.depth()))*rowCount))/ rowCount;
+                           barWidth =  (width - ((offset+(threeDAttrs.depth()))*rowCount))/ rowCount;
                        if ( barWidth <= 0 ) {
                            barWidth = 0;
                            maxDepth = offset - (width/rowCount);
@@ -545,28 +545,28 @@ void BarDiagram::paint( PaintContext* ctx )
                     double value = 0, stackedValues = 0;
                     QPointF point, previousPoint;
                     QModelIndex index = model()->index( j, i, rootIndex() );
-		    ThreeDBarAttributes tda = threeDBarAttributes( index );
+                    ThreeDBarAttributes threeDAttrs = threeDBarAttributes( index );
 
-		    if ( tda.isEnabled() ) {
+                    if ( threeDAttrs.isEnabled() ){
                         if ( barWidth > 0 )
-                            barWidth =  (width - ((offset+(tda.depth()))*rowCount))/ rowCount;
+                            barWidth =  (width - ((offset+(threeDAttrs.depth()))*rowCount))/ rowCount;
                         if ( barWidth <= 0 ) {
                             barWidth = 0;
                             maxDepth = offset - ( width/rowCount);
                         }
-                    }
-		    else
+                    }else{
                         barWidth = (ctx->rectangle().width() - (offset*rowCount))/ rowCount;
+                    }
 
                     value = model()->data( index ).toDouble();
 
                     // calculate stacked percent value
                     // we only take in account positives values for now.
                     for ( int k = i; k >= 0 ; --k ) {
-		        double val = model()->data( model()->index( j, k, rootIndex() ) ).toDouble();
+                        double val = model()->data( model()->index( j, k, rootIndex() ) ).toDouble();
                         if ( val > 0)
-			    stackedValues += val;
-		    }
+                            stackedValues += val;
+                    }
 
                     if (  sumValuesVector.at( j ) != 0 && value > 0 ) {
                       point = plane->translate( QPointF( j,  stackedValues/sumValuesVector.at(j)* maxValue ) );
@@ -600,7 +600,7 @@ void BarDiagram::paintBars( PaintContext* ctx, const QModelIndex& index, const Q
 {
     QRectF isoRect;
     QPolygonF topPoints, sidePoints;
-    ThreeDBarAttributes tda = threeDBarAttributes( index );
+    ThreeDBarAttributes threeDAttrs = threeDBarAttributes( index );
     double usedDepth;
 
     //Pending Michel: configure threeDBrush settings - shadowColor etc...
@@ -611,37 +611,37 @@ void BarDiagram::paintBars( PaintContext* ctx, const QModelIndex& index, const Q
         ctx->painter()->setRenderHint ( QPainter::Antialiasing );
     ctx->painter()->setBrush( indexBrush );
     ctx->painter()->setPen( indexPen );
-    if ( tda.isEnabled() ) {
+    if ( threeDAttrs.isEnabled() ) {
         bool stackedMode = false;
         bool percentMode = false;
         bool paintTop = true;
         if ( maxDepth )
-            tda.setDepth( -maxDepth );
+            threeDAttrs.setDepth( -maxDepth );
         QPointF boundRight = coordinatePlane()->translate( dataBoundaries().second );
         //fixme adjust the painting to reasonable depth value
         switch ( type() )
         {
         case BarDiagram::Normal:
-            usedDepth = tda.depth()/4;
+            usedDepth = threeDAttrs.depth()/4;
             stackedMode = false;
             percentMode = false;
             break;
         case BarDiagram::Stacked:
-            usedDepth = tda.depth();
+            usedDepth = threeDAttrs.depth();
             stackedMode = true;
             percentMode = false;
             break;
         case BarDiagram::Percent:
-            usedDepth = tda.depth();
+            usedDepth = threeDAttrs.depth();
             stackedMode = false;
             percentMode = true;
             break;
-	default:
+        default:
             Q_ASSERT_X ( false, "dataBoundaries()",
                          "Type item does not match a defined bar chart Type." );
         }
         isoRect =  bar.translated( usedDepth, -usedDepth );
-      // well need to find out if the height is negative
+        // we need to find out if the height is negative
         // and in this case paint it up and down
         //qDebug() << isoRect.height();
         if (  isoRect.height() < 0 ) {
@@ -658,25 +658,51 @@ void BarDiagram::paintBars( PaintContext* ctx, const QModelIndex& index, const Q
 
         } else {
             ctx->painter()->drawRect( isoRect );
-          topPoints << bar.topLeft() << bar.topRight() << isoRect.topRight() << isoRect.topLeft();
-      }
+            topPoints << bar.topLeft() << bar.topRight() << isoRect.topRight() << isoRect.topLeft();
+        }
 
         if ( percentMode && isoRect.height() == 0 )
             paintTop = false;
-        if ( paintTop )
-            ctx->painter()->drawPolygon( topPoints );
+
+        bool needToSetClippingOffForTop = false;
+        if ( paintTop ){
+            // Draw the top, if at least one of the top's points is
+            // either inside or near at the edge of the coordinate plane:
+            bool drawIt = false;
+            bool hasPointOutside = false;
+            const QRectF r( ctx->rectangle().adjusted(0,-1,1,0) );
+            KDAB_FOREACH( QPointF pt, topPoints ) {
+                if( r.contains( pt ) )
+                    drawIt = true;
+                else
+                    hasPointOutside = true;
+            }
+            if( drawIt ){
+                needToSetClippingOffForTop = hasPointOutside && ctx->painter()->hasClipping();
+                if( needToSetClippingOffForTop )
+                    ctx->painter()->setClipping( false );
+                ctx->painter()->drawPolygon( topPoints );
+                if( needToSetClippingOffForTop )
+                    ctx->painter()->setClipping( true );
+            }
+        }
 
 
 
-      sidePoints << bar.topRight() << isoRect.topRight() << isoRect.bottomRight() << bar.bottomRight();
-      if (  bar.height() != 0 )
-      ctx->painter()->drawPolygon( sidePoints );
+        sidePoints << bar.topRight() << isoRect.topRight() << isoRect.bottomRight() << bar.bottomRight();
+        if (  bar.height() != 0 ){
+            if( needToSetClippingOffForTop )
+                ctx->painter()->setClipping( false );
+            ctx->painter()->drawPolygon( sidePoints );
+            if( needToSetClippingOffForTop )
+                ctx->painter()->setClipping( true );
+        }
     }
 
     if (  bar.height() != 0 )
         ctx->painter()->drawRect( bar );
     // reset
-    d->maxDepth = tda.depth();
+    d->maxDepth = threeDAttrs.depth();
 }
 
 void BarDiagram::resize ( const QSizeF& )
