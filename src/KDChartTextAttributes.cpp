@@ -161,9 +161,9 @@ const QFont TextAttributes::calculatedFont(
     const qreal calculatedFontSize = qMax(
         fontSize().calculatedValue(        autoReferenceArea, autoReferenceOrientation ),
         minimalFontSize().calculatedValue( autoReferenceArea, autoReferenceOrientation ) );
-
+    //qDebug() << "TextAttributes::calculatedFont() has   d->cachedFontSize" << d->cachedFontSize << "  calculatedFontSize" << calculatedFontSize;
     if( calculatedFontSize > 0.0 && d->cachedFontSize != calculatedFontSize ){
-        d->cachedFontSize  = calculatedFontSize;
+        d->cachedFontSize = calculatedFontSize;
         d->cachedFont.setPointSizeF( d->cachedFontSize );
     }
     return d->cachedFont;

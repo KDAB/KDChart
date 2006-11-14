@@ -98,10 +98,11 @@ public:
     {
         const DataValueAttributes attrs( diagram->dataValueAttributes( index ) );
         if( attrs.isVisible() ) {
-            RelativePosition relPos( attrs.position( value >= 0.0 ) );
+            const bool bValueIsPositive = (value >= 0.0);
+            RelativePosition relPos( attrs.position( bValueIsPositive ) );
             relPos.setReferencePoints( points );
             if( relPos.referencePosition().isUnknown() )
-                relPos.setReferencePosition( ( value >= 0.0 ) ? autoPositionPositive : autoPositionNegative );
+                relPos.setReferencePosition( bValueIsPositive ? autoPositionPositive : autoPositionNegative );
 
             const qreal fontHeight = cachedFontMetrics( attrs.textAttributes().font(), diagram )->height();
 

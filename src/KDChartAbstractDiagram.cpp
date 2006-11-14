@@ -358,7 +358,8 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
         // adjust the text start point position, if alignment is not Bottom/Left
         const RelativePosition relPos( a.position( value >= 0.0 ) );
         const Qt::Alignment alignBottomLeft = Qt::AlignBottom | Qt::AlignLeft;
-        const QFont calculatedFont( ta.calculatedFont( this, KDChartEnums::MeasureOrientationMinimum ) );
+        const QFont calculatedFont( ta.calculatedFont( d->plane, KDChartEnums::MeasureOrientationMinimum ) );
+        //qDebug() << "calculatedFont's point size:" << calculatedFont.pointSizeF();
         if( (relPos.alignment() & alignBottomLeft) != alignBottomLeft ){
             const QRectF boundRect(
                     d->cachedFontMetrics( calculatedFont, this )->boundingRect( roundedValue ) );
