@@ -130,9 +130,9 @@ void CartesianCoordinatePlane::paint ( QPainter* painter )
         }
 
         //for debugging:
-            painter->drawRect( drawArea.adjusted(4,4,-4,-4) );
-            painter->drawRect( drawArea.adjusted(2,2,-2,-2) );
-            painter->drawRect( drawArea );
+        //    painter->drawRect( drawArea.adjusted(4,4,-4,-4) );
+        //    painter->drawRect( drawArea.adjusted(2,2,-2,-2) );
+        //    painter->drawRect( drawArea );
     }
     d->bPaintIsRunning = false;
     //qDebug("done: plane::paint()");
