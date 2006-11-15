@@ -33,6 +33,7 @@
 #include <QDebug>
 #include <QMetaType>
 #include <Qt>
+#include <QSizeF>
 #include "KDChartGlobal.h"
 
 namespace KDChart {
