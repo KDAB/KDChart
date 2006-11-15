@@ -33,7 +33,6 @@
 #include <QDebug>
 #include <QMetaType>
 #include <Qt>
-#include <QSizeF>
 #include "KDChartGlobal.h"
 
 namespace KDChart {
@@ -174,7 +173,7 @@ public:
      *
      * \sa setReferenceArea, setReferencePosition, setHorizontalPadding, setVerticalPadding
      */
-    const QPointF calculatedPoint( const QSizeF& autoSize ) const;
+    QPointF calculatedPoint( const QSizeF& autoSize ) const;
 
     bool operator==( const RelativePosition& ) const;
     bool operator!=( const RelativePosition & other ) const;
