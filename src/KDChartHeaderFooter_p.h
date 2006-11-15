@@ -49,10 +49,7 @@ class KDTextDocument;
 namespace KDChart {
     class Chart;
     class TextAttributes;
-    class HeaderFooter;
 }
-using KDChart::TextAttributes;
-using KDChart::HeaderFooter;
 
 /**
  * \internal

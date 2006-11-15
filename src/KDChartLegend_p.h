@@ -62,8 +62,6 @@ namespace KDChart {
     class DiagramsObserversList : public QList<DiagramObserver*> {};
 }
 
-using KDChart::AbstractDiagram;
-
 /**
  * \internal
  */
