@@ -11,7 +11,17 @@ namespace KDChart {
           yCenter( 0.5)
         {
         }
-    
+
+        void setCenter( QPointF center )
+        {
+            xCenter = center.x();
+            yCenter = center.y();
+        }
+        const QPointF center() const
+        {
+            return QPointF( xCenter, yCenter );
+        }
+
         double xFactor;
         double yFactor;
 
