@@ -45,7 +45,8 @@ inline T & __kdab__dereference_for_methodcall( T * o ) {
 
 #define KDAB_SET_OBJECT_NAME( x ) __kdab__dereference_for_methodcall( x ).setObjectName( QLatin1String( #x ) )
 
-#if defined(_MSC_VER) && _MSC_VER < 1300
+/* vc.net2002 is 1300, vc.net2003 is 1310 */
+#if defined(_MSC_VER) && _MSC_VER <= 1300
 #define KDCHART_DECLARE_PRIVATE_DERIVED( X )      \
 public:                                           \
     class Private;                                \
@@ -66,7 +67,7 @@ private:                                          \
     void init();
 #endif
 
-#if defined(_MSC_VER) && _MSC_VER < 1300
+#if defined(_MSC_VER) && _MSC_VER <= 1300
 #define KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( X, ParentType )      \
 public:                                           \
     class Private;                                \
@@ -101,7 +102,7 @@ private:                                                     \
     void init();                                             \
     Private * _d;
 
-#if defined(_MSC_VER) && _MSC_VER < 1300
+#if defined(_MSC_VER) && _MSC_VER <= 1300
 #define KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC( X ) \
 public:                                           \
     class Private;                                    \
@@ -124,7 +125,7 @@ private:                                              \
     Private * _d;
 #endif
 
-#if defined(_MSC_VER) && _MSC_VER < 1300
+#if defined(_MSC_VER) && _MSC_VER <= 1300
 #define KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC_QWIDGET( X ) \
 public:                                           \
     class Private;                                    \
@@ -157,7 +158,7 @@ inline const CLASS::Private * CLASS::d_func() const         \
 { return static_cast<const Private*>( PARENT::d_func() ); }
 
 
-#if defined(_MSC_VER) && _MSC_VER < 1300
+#if defined(_MSC_VER) && _MSC_VER <= 1300
 #define KDCHART_DECLARE_DERIVED_DIAGRAM( X, PLANE )     \
 public:                                                 \
     class Private;                                      \
