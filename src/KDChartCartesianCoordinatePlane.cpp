@@ -130,13 +130,14 @@ void CartesianCoordinatePlane::paint ( QPainter* painter )
         }
 
         //for debugging:
-        //    painter->drawRect( drawArea.adjusted(4,4,4,4) );
-        //    painter->drawRect( drawArea.adjusted(2,2,2,2) );
-        //    painter->drawRect( drawArea );
+            painter->drawRect( drawArea.adjusted(4,4,-4,-4) );
+            painter->drawRect( drawArea.adjusted(2,2,-2,-2) );
+            painter->drawRect( drawArea );
     }
     d->bPaintIsRunning = false;
     //qDebug("done: plane::paint()");
 }
+
 
 void CartesianCoordinatePlane::slotLayoutChanged ( AbstractDiagram* )
 {
@@ -237,6 +238,7 @@ QRectF CartesianCoordinatePlane::drawingArea() const
     return QRectF ( rect.left()+1, rect.top()+1, rect.width() - 3, rect.height() - 3 );
 }
 
+
 void CartesianCoordinatePlane::layoutDiagrams()
 {
     //qDebug("KDChart::CartesianCoordinatePlane::layoutDiagrams() called");
@@ -284,11 +286,6 @@ void CartesianCoordinatePlane::layoutDiagrams()
 
     diagramXUnitInCoordinatePlane = diagramWidth != 0 ? planeWidth / diagramWidth : 1;
     diagramYUnitInCoordinatePlane = diagramHeight != 0 ? planeHeight / diagramHeight : 1;
-    // calculate diagram origin in plane coordinates:
-    QPointF coordinateOrigin = QPointF (
-        diagramTopLeft.x() * -diagramXUnitInCoordinatePlane,
-        diagramTopLeft.y() * -diagramYUnitInCoordinatePlane );
-    coordinateOrigin += diagramArea.topLeft();
     // calculate isometric scaling factor to maxscale the diagram into
     // the coordinate system:
     if ( d->isometricScaling )
@@ -302,18 +299,31 @@ void CartesianCoordinatePlane::layoutDiagrams()
         scaleX = 1.0;
         scaleY = 1.0;
     }
-    d->coordinateTransformation.diagramRect = dataBoundingRect;
+
+    // calculate diagram origin in plane coordinates:
+    QPointF coordinateOrigin = QPointF (
+            diagramTopLeft.x() * -diagramXUnitInCoordinatePlane,
+    diagramTopLeft.y() * -diagramYUnitInCoordinatePlane );
+    coordinateOrigin += diagramArea.topLeft();
+
     d->coordinateTransformation.originTranslation = coordinateOrigin;
+
+    d->coordinateTransformation.diagramRect = dataBoundingRect;
+
     d->coordinateTransformation.unitVectorX = diagramXUnitInCoordinatePlane;
     d->coordinateTransformation.unitVectorY = diagramYUnitInCoordinatePlane;
+
     d->coordinateTransformation.isoScaleX = scaleX;
     d->coordinateTransformation.isoScaleY = scaleY;
+    
     //      adapt diagram area to effect of isometric scaling:
     diagramArea.setTopLeft( translate ( dataBoundingRect.topLeft() ) );
     diagramArea.setBottomRight ( translate ( dataBoundingRect.bottomRight() ) );
+
     //qDebug("KDChart::CartesianCoordinatePlane::layoutDiagrams() done,\ncalling update() now:");
     update();
 }
+
 
 const QPointF CartesianCoordinatePlane::translate( const QPointF& diagramPoint ) const
 {
@@ -358,20 +368,17 @@ void CartesianCoordinatePlane::setZoomFactorY( double factor )
     }
 }
 
-void CartesianCoordinatePlane::setZoomCenter( QPointF center )
+void CartesianCoordinatePlane::setZoomCenter( QPointF point )
 {
-    if( d->coordinateTransformation.zoom.xCenter != center.x() ||
-        d->coordinateTransformation.zoom.yCenter != center.y() ){
-        d->coordinateTransformation.zoom.xCenter = center.x();
-        d->coordinateTransformation.zoom.yCenter = center.y();
+    if( d->coordinateTransformation.zoom.center() != point ){
+        d->coordinateTransformation.zoom.setCenter( point );
         emit propertiesChanged();
     }
 }
 
 QPointF CartesianCoordinatePlane::zoomCenter() const
 {
-    return QPointF( d->coordinateTransformation.zoom.xCenter,
-                    d->coordinateTransformation.zoom.yCenter );
+    return d->coordinateTransformation.zoom.center();
 }
 
 double CartesianCoordinatePlane::zoomFactorX() const
