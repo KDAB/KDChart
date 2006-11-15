@@ -101,19 +101,21 @@ namespace KDChart {
                 tempPoint.setX( makeLogarithmic( diagramRect.width(), tempPoint.x() ) );
                 //qDebug() << "X tempPoint new: " << tempPoint;
             }
-            //qDebug() << "CoordinateTransformation::translate() using diagramRect: "
-            //        << diagramRect.x() << diagramRect.y() << diagramRect.width() << diagramRect.height();
-            tempPoint.setX( tempPoint.x() + diagramRect.width() / (2.0 * zoom.xFactor) );
-            tempPoint.setY( tempPoint.y() + diagramRect.height() / (2.0 * zoom.yFactor ) );
+/*            qDebug() << "CoordinateTransformation::translate() using diagramRect: "
+                    << diagramRect.x() << diagramRect.y() << diagramRect.width() << diagramRect.height();*/
 
-            tempPoint.setX( tempPoint.x() - diagramRect.width() * zoom.xCenter );
-            tempPoint.setY( tempPoint.y() - diagramRect.height() * zoom.yCenter );
+            tempPoint.rx() += diagramRect.width() / (2.0 * zoom.xFactor);
+            tempPoint.ry() += diagramRect.height() / (2.0 * zoom.yFactor);
 
-            result.setX( result.x() + isoScaleX * unitVectorX * tempPoint.x() );
-            result.setY( result.y() + isoScaleY * unitVectorY * tempPoint.y() );
+            tempPoint.rx() -= diagramRect.width() * zoom.xCenter;
+            tempPoint.ry() -= diagramRect.height() * zoom.yCenter;
 
-            result.setX( result.x() * zoom.xFactor );
-            result.setY( result.y() * zoom.yFactor );
+            //tempPoint.rx() *= zoom.xFactor;
+            tempPoint.setX( ( tempPoint.x() - diagramRect.x() ) * zoom.xFactor + diagramRect.x() );
+            tempPoint.setY( ( tempPoint.y() - diagramRect.y() ) * zoom.yFactor + diagramRect.y() );
+            
+            result.rx() += isoScaleX * unitVectorX * tempPoint.x();
+            result.ry() += isoScaleY * unitVectorY * tempPoint.y();
 
             return result;
         }
