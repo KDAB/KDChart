@@ -173,6 +173,7 @@ const QPointF RelativePosition::calculatedPoint( const QSizeF& autoSize ) const
                 useRect = false;
         }
     }
+    
     QPointF pt;
     if ( useRect )
         pt = PositionPoints( rect ).point( d->position );
