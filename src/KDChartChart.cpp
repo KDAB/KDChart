@@ -548,8 +548,8 @@ void Chart::Private::slotLayoutPlanes()
     // re-add our grid(s) to the chart's layout
     if ( dataAndLegendLayout ){
         dataAndLegendLayout->addLayout( planesLayout, 1, 1 );
-        dataAndLegendLayout->setRowStretch(    1, 2 );
-        dataAndLegendLayout->setColumnStretch( 1, 2 );
+        dataAndLegendLayout->setRowStretch(    1, 1000 );
+        dataAndLegendLayout->setColumnStretch( 1, 1000 );
     }
 
     slotRelayout();
