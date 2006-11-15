@@ -587,7 +587,7 @@ void Chart::Private::createLayouts( QWidget* w )
     // out headers/footers and the data area.
     vLayout = new QVBoxLayout();
     vLayout->setObjectName( QString::fromLatin1( "vLayout" ) );
-    layout->addLayout( vLayout, 2 );
+    layout->addLayout( vLayout, 1000 );
     layout->addSpacing( globalLeadingRight );
 
 
@@ -600,7 +600,7 @@ void Chart::Private::createLayouts( QWidget* w )
     // 3. the area containing coordinate plane(s), axes, legend(s)
     dataAndLegendLayout = new QGridLayout();
     dataAndLegendLayout->setObjectName( QString::fromLatin1( "dataAndLegendLayout" ) );
-    vLayout->addLayout( dataAndLegendLayout, 2 );
+    vLayout->addLayout( dataAndLegendLayout, 1000 );
     // 4. the footer(s) area
     footerLayout = new QGridLayout();
     footerLayout->setObjectName( QString::fromLatin1( "footerLayout" ) );
