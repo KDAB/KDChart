@@ -1,7 +1,4 @@
 <ui version="4.0" >
- <author></author>
- <comment></comment>
- <exportmacro></exportmacro>
  <class>MainWindow</class>
  <widget class="QWidget" name="MainWindow" >
   <property name="geometry" >
@@ -69,6 +66,14 @@
       <enum>Qt::Horizontal</enum>
      </property>
      <widget class="QFrame" name="chartFrame" >
+      <property name="sizePolicy" >
+       <sizepolicy>
+        <hsizetype>3</hsizetype>
+        <vsizetype>3</vsizetype>
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="minimumSize" >
        <size>
         <width>300</width>
@@ -86,7 +91,6 @@
    </item>
   </layout>
  </widget>
- <pixmapfunction></pixmapfunction>
  <resources>
   <include location="BarChart" />
  </resources>
