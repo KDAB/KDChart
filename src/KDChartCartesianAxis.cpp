@@ -791,68 +791,72 @@ QSize CartesianAxis::maximumSize() const
     {
     case Bottom:
     case Top: {
-            qreal h = 0;
-            if( drawLabels ){
-                // if there're no label strings, we take the biggest needed number as height
-                if ( ! labels().count() )
+        qreal w = 10.0;
+        qreal h = 0.0;
+        if( drawLabels ){
+            // if there're no label strings, we take the biggest needed number as height
+            if ( ! labels().count() )
+            {
+                labelItem.setText( QString::number( plane->gridDimensionsList().first().end, 'f', 0 ) );
+                h = labelItem.sizeHint().height();
+            }else{
+                // find the longest label text:
+                for ( int i = 0; i < labels().count(); ++i )
                 {
-                    labelItem.setText( QString::number( plane->gridDimensionsList().first().end, 'f', 0 ) );
-                    h = labelItem.sizeHint().height();
-                }else{
-                    // find the longest label text:
-                    for ( int i = 0; i < labels().count(); ++i )
-                    {
-                        labelItem.setText( labels()[ i ] );
-                        qreal lh = labelItem.sizeHint().height();
-                        h = qMax( h, lh );
-                    }
+                    labelItem.setText( labels()[ i ] );
+                    qreal lh = labelItem.sizeHint().height();
+                    h = qMax( h, lh );
                 }
-                // we leave a little gap between axis labels and bottom (or top, resp.) side of axis
-                h += labelGap;
             }
-            // space for a possible title:
-            if ( drawTitle ) {
-                // we add the title height and leave a little gap between axis labels and axis title
-                h += titleItem.sizeHint().height() + titleGap;
-            }
-            // space for the ticks
-            h += qAbs( tickLength() ) * 3.0;
-            result = QSize ( 10, static_cast<int>( h ) );
+            // we leave a little gap between axis labels and bottom (or top, resp.) side of axis
+            h += labelGap;
         }
-        break;
+        // space for a possible title:
+        if ( drawTitle ) {
+            // we add the title height and leave a little gap between axis labels and axis title
+            h += titleItem.sizeHint().height() + titleGap;
+            w = titleItem.sizeHint().width() + 2.0;
+        }
+        // space for the ticks
+        h += qAbs( tickLength() ) * 3.0;
+        result = QSize ( static_cast<int>( w ), static_cast<int>( h ) );
+    }
+    break;
     case Left:
     case Right: {
-            qreal w = 0;
-            if( drawLabels ){
-                // if there're no label strings, we take the biggest needed number as width
-                if ( labels().count() == 0 )
+        qreal w = 0.0;
+        qreal h = 10.0;
+        if( drawLabels ){
+            // if there're no label strings, we take the biggest needed number as width
+            if ( labels().count() == 0 )
+            {
+                labelItem.setText( QString::number( plane->gridDimensionsList().last().end, 'f', 0 ) );
+                w = labelItem.sizeHint().width();
+            }else{
+                // find the longest label text:
+                for ( int i = 0; i < labels().count(); ++i )
                 {
-                    labelItem.setText( QString::number( plane->gridDimensionsList().last().end, 'f', 0 ) );
-                    w = labelItem.sizeHint().width();
-                }else{
-                    // find the longest label text:
-                    for ( int i = 0; i < labels().count(); ++i )
-                    {
-                        labelItem.setText( labels()[ i ] );
-                        qreal lw = labelItem.sizeHint().width();
-                        w = qMax( w, lw );
-                    }
+                    labelItem.setText( labels()[ i ] );
+                    qreal lw = labelItem.sizeHint().width();
+                    w = qMax( w, lw );
                 }
-                // we leave a little gap between axis labels and left (or right, resp.) side of axis
-                w += labelGap;
             }
-            // space for a possible title:
-            if ( drawTitle ) {
-                // we add the title height and leave a little gap between axis labels and axis title
-                w += titleItem.sizeHint().height() + titleGap;
-            }
-            // space for the ticks
-            w += qAbs( tickLength() ) * 3.0;
-
-            result = QSize ( static_cast<int>( w ), 10 );
-//            qDebug() << "left/right axis width:" << result << "   w:" << w;
+            // we leave a little gap between axis labels and left (or right, resp.) side of axis
+            w += labelGap;
         }
-        break;
+        // space for a possible title:
+        if ( drawTitle ) {
+            // we add the title height and leave a little gap between axis labels and axis title
+            w += titleItem.sizeHint().height() + titleGap;
+            h = titleItem.sizeHint().width() + 2.0;
+        }
+        // space for the ticks
+        w += qAbs( tickLength() ) * 3.0;
+
+        result = QSize ( static_cast<int>( w ), static_cast<int>( h ) );
+//            qDebug() << "left/right axis width:" << result << "   w:" << w;
+    }
+    break;
     default:
         Q_ASSERT( false ); // all positions need to be handled
         break;
