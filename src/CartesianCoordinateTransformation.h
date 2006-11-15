@@ -110,7 +110,6 @@ namespace KDChart {
             tempPoint.rx() -= diagramRect.width() * zoom.xCenter;
             tempPoint.ry() -= diagramRect.height() * zoom.yCenter;
 
-            //tempPoint.rx() *= zoom.xFactor;
             tempPoint.setX( ( tempPoint.x() - diagramRect.x() ) * zoom.xFactor + diagramRect.x() );
             tempPoint.setY( ( tempPoint.y() - diagramRect.y() ) * zoom.yFactor + diagramRect.y() );
             
