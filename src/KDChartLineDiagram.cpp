@@ -506,13 +506,17 @@ void LineDiagram::paint( PaintContext* ctx )
                             ++iNextRow;
                         }
                         if( ! skipThisCell ){
+                            const bool isPositive = (valueY >= 0.0);
                             QModelIndex index = model()->index( iRow, iColumn, rootIndex() );
                             QPointF fromPoint = coordinatePlane()->translate( QPointF( valueX, valueY ) );
                             area.append( fromPoint );
 
-                            const QPointF ptNorthWest( fromPoint );
+                            const QPointF ptNorthWest(
+                                (bDisplayArea && ! isPositive)
+                                ? coordinatePlane()->translate( QPointF( valueX, 0.0 ) )
+                                : fromPoint );
                             const QPointF ptSouthWest(
-                                bDisplayArea
+                                (bDisplayArea && isPositive)
                                 ? coordinatePlane()->translate( QPointF( valueX, 0.0 ) )
                                 : fromPoint );
                             QPointF ptNorthEast;
@@ -521,9 +525,12 @@ void LineDiagram::paint( PaintContext* ctx )
                             if( foundToPoint ){
                                 QPointF toPoint = coordinatePlane()->translate( QPointF( nextValueX, nextValueY ) );
                                 lineList.append( LineAttributesInfo( index, fromPoint, toPoint ) );
-                                ptNorthEast = toPoint;
+                                ptNorthEast =
+                                    (bDisplayArea && ! isPositive)
+                                    ? coordinatePlane()->translate( QPointF( nextValueX, 0.0 ) )
+                                    : toPoint;
                                 ptSouthEast =
-                                    bDisplayArea
+                                    (bDisplayArea && isPositive)
                                     ? coordinatePlane()->translate( QPointF( nextValueX, 0.0 ) )
                                     : toPoint;
                             }else{
