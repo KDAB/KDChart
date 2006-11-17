@@ -1,0 +1,85 @@
+/****************************************************************************
+** Meta object code from reading C++ file 'main.cpp'
+**
+** Created: Fri Nov 17 08:42:57 2006
+**      by: The Qt Meta Object Compiler version 59 (Qt 4.2.1)
+**
+** WARNING! All changes made in this file will be lost!
+*****************************************************************************/
+
+#if !defined(Q_MOC_OUTPUT_REVISION)
+#error "The header file 'main.cpp' doesn't include <QObject>."
+#elif Q_MOC_OUTPUT_REVISION != 59
+#error "This file was generated using the moc from 4.2.1. It"
+#error "cannot be used with the include files from this version of Qt."
+#error "(The moc has changed too much.)"
+#endif
+
+static const uint qt_meta_data_TestKDChartAttributesModel[] = {
+
+ // content:
+       1,       // revision
+       0,       // classname
+       0,    0, // classinfo
+       7,   10, // methods
+       0,    0, // properties
+       0,    0, // enums/sets
+
+ // slots: signature, parameters, type, tag, flags
+      28,   27,   27,   27, 0x08,
+      43,   27,   27,   27, 0x08,
+      85,   27,   27,   27, 0x08,
+     130,   27,   27,   27, 0x08,
+     174,   27,   27,   27, 0x08,
+     222,   27,   27,   27, 0x08,
+     262,   27,   27,   27, 0x08,
+
+       0        // eod
+};
+
+static const char qt_meta_stringdata_TestKDChartAttributesModel[] = {
+    "TestKDChartAttributesModel\0\0initTestCase()\0"
+    "testKDChartAttributesModelSetSimpleData()\0"
+    "testKDChartAttributesModelTestPrivateModel()\0"
+    "testKDChartAttributesModelTestSharedModel()\0"
+    "testKDChartAttributesModelTestSharedFromStart()\0"
+    "testKDChartAttributesModelTestPrivate()\0cleanupTestCase()\0"
+};
+
+const QMetaObject TestKDChartAttributesModel::staticMetaObject = {
+    { &QObject::staticMetaObject, qt_meta_stringdata_TestKDChartAttributesModel,
+      qt_meta_data_TestKDChartAttributesModel, 0 }
+};
+
+const QMetaObject *TestKDChartAttributesModel::metaObject() const
+{
+    return &staticMetaObject;
+}
+
+void *TestKDChartAttributesModel::qt_metacast(const char *_clname)
+{
+    if (!_clname) return 0;
+    if (!strcmp(_clname, qt_meta_stringdata_TestKDChartAttributesModel))
+	return static_cast<void*>(const_cast<TestKDChartAttributesModel*>(this));
+    return QObject::qt_metacast(_clname);
+}
+
+int TestKDChartAttributesModel::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+{
+    _id = QObject::qt_metacall(_c, _id, _a);
+    if (_id < 0)
+        return _id;
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        switch (_id) {
+        case 0: initTestCase(); break;
+        case 1: testKDChartAttributesModelSetSimpleData(); break;
+        case 2: testKDChartAttributesModelTestPrivateModel(); break;
+        case 3: testKDChartAttributesModelTestSharedModel(); break;
+        case 4: testKDChartAttributesModelTestSharedFromStart(); break;
+        case 5: testKDChartAttributesModelTestPrivate(); break;
+        case 6: cleanupTestCase(); break;
+        }
+        _id -= 7;
+    }
+    return _id;
+}

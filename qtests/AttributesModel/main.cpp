@@ -1,7 +1,7 @@
 #include <QtTest/QtTest>
 #include <TableModel.h>
 #include <KDChartGlobal>
-#include <../../src/KDChartAttributesModel.h> /* Bah! */
+#include <KDChartAttributesModel>
 #include <KDChartBarDiagram>
 #include <KDChartLineDiagram>
 #include <KDChartCartesianCoordinatePlane>
