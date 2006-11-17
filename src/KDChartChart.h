@@ -244,8 +244,14 @@ namespace KDChart {
          * the very first legend will be replaced. In case, there was no
          * legend yet, the new legend will just be added.
          *
-         * \note If you want to re-use the old legend, call takeLegend and
+         * If you want to re-use the old legend, call takeLegend and
          * addLegend, instead of using replaceLegend.
+         * 
+         * \note Whenever addLegend is called the font sizes used by the
+         * Legend are set to relative and thei get coupled to the Chart's size,
+         * with their relative values being 20 for the item texts and 24 to the
+         * title text. So if you want to use custom font sizes for the Legend,
+         * make sure to set them after calling addLegend.
          *
          * \sa addLegend, takeLegend
          */
