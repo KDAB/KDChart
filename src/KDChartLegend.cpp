@@ -57,7 +57,8 @@ Legend::Private::Private() :
     textAttributes(),
     titleText( QObject::tr( "Legend" ) ),
     titleTextAttributes(),
-    spacing( 1 )
+    spacing( 1 ),
+    useAutomaticMarkerSize( true )
     //needRebuild( true )
 {
     // this bloc left empty intentionally
@@ -102,15 +103,22 @@ void Legend::init()
     d->layout->setSpacing( d->spacing );
     //setLayout( d->layout );
 
+    const Measure normalFontSizeTitle(  12, KDChartEnums::MeasureCalculationModeAbsolute );
+    const Measure normalFontSizeLabels( 10, KDChartEnums::MeasureCalculationModeAbsolute );
+    const Measure minimalFontSize(       4, KDChartEnums::MeasureCalculationModeAbsolute );
+
     TextAttributes textAttrs;
     textAttrs.setPen( QPen( Qt::black ) );
     textAttrs.setFont( QFont( QLatin1String( "helvetica" ), 10, QFont::Normal, false ) );
-    textAttrs.setFontSize( 16 );
+    textAttrs.setFontSize(        normalFontSizeLabels );
+    textAttrs.setMinimalFontSize( minimalFontSize );
     setTextAttributes( textAttrs );
+
     TextAttributes titleTextAttrs;
     titleTextAttrs.setPen( QPen( Qt::black ) );
     titleTextAttrs.setFont( QFont( QLatin1String( "helvetica" ), 12, QFont::Bold, false ) );
-    titleTextAttrs.setFontSize( 20 );
+    titleTextAttrs.setFontSize(        normalFontSizeTitle );
+    titleTextAttrs.setMinimalFontSize( minimalFontSize );
     setTitleTextAttributes( titleTextAttrs );
 
     FrameAttributes frameAttrs;
@@ -128,6 +136,8 @@ QSize Legend::minimumSizeHint() const
 {
     return sizeHint();
 }
+
+//#define DEBUG_LEGEND_PAINT
 
 QSize Legend::sizeHint() const
 {
@@ -155,7 +165,9 @@ void Legend::resizeLayout( const QSize& size )
     if( d->layout )
         d->layout->setGeometry( QRect(QPoint(0,0), size) );
     d->layout->activate();
-    //qDebug() << "Legend::resizeLayout done";
+#ifdef DEBUG_LEGEND_PAINT
+    qDebug() << "Legend::resizeLayout done";
+#endif
 }
 
 Legend* Legend::clone() const
@@ -164,12 +176,12 @@ Legend* Legend::clone() const
     legend->setTextAttributes( textAttributes() );
     legend->setTitleTextAttributes( titleTextAttributes() );
     legend->setFrameAttributes( frameAttributes() );
+    legend->setUseAutomaticMarkerSize( useAutomaticMarkerSize() );
     legend->setPosition( position() );
     legend->setAlignment( alignment() );
     return legend;
 }
 
-#define DEBUG_LEGEND_PAINT
 void Legend::paint( QPainter* painter )
 {
 #ifdef DEBUG_LEGEND_PAINT
@@ -215,6 +227,7 @@ void Legend::setReferenceArea( const QWidget* area )
 
 const QWidget* Legend::referenceArea() const
 {
+    //qDebug() << d->referenceArea;
     return (d->referenceArea ? d->referenceArea : static_cast<const QWidget*>(parent()));
 }
 
@@ -362,6 +375,18 @@ void Legend::setShowLines( bool legendShowLines )
 bool Legend::showLines() const
 {
     return d->showLines;
+}
+
+void Legend::setUseAutomaticMarkerSize( bool useAutomaticMarkerSize )
+{
+    d->useAutomaticMarkerSize = useAutomaticMarkerSize;
+    setNeedRebuild();
+    emitPositionChanged();
+}
+
+bool Legend::useAutomaticMarkerSize() const
+{
+    return d->useAutomaticMarkerSize;
 }
 
 /**
@@ -686,11 +711,23 @@ void Legend::buildLegend()
         }
     }
 
+    const KDChartEnums::MeasureOrientation orient =
+            (orientation() == Qt::Vertical)
+            ? KDChartEnums::MeasureOrientationMinimum
+            : KDChartEnums::MeasureOrientationHorizontal;
+    const TextAttributes labelAttrs( textAttributes() );
+    const qreal fontHeight = labelAttrs.calculatedFontSize( referenceArea(), orient );
+    qDebug() << "fontHeight:" << fontHeight;
+
     for ( int dataset = 0; dataset < d->modelLabels.count(); dataset++ ) {
+        // retrieve the marker attributes, and adjust the size, if needed
+        MarkerAttributes markerAttrs( markerAttributes( dataset ) );
+        if( useAutomaticMarkerSize() || ! markerAttrs.markerSize().isValid() )
+            markerAttrs.setMarkerSize( QSizeF(fontHeight, fontHeight) );
         // Note: We may use diagram() for all of the MarkerLayoutItem instances,
         //       since all they need the diagram for is to invoke mDiagram->paintMarker()
         KDChart::MarkerLayoutItem* markerItem = new KDChart::MarkerLayoutItem( diagram(),
-                                                                               markerAttributes( dataset ),
+                                                                               markerAttrs,
                                                                                brush( dataset ),
                                                                                pen( dataset ),
                                                                                Qt::AlignLeft );
@@ -708,11 +745,8 @@ void Legend::buildLegend()
         // PENDING(kalle) Other properties!
         KDChart::TextLayoutItem* labelItem =
             new KDChart::TextLayoutItem( text( dataset ),
-                textAttributes(),
-                referenceArea(),
-                (orientation() == Qt::Vertical)
-                ? KDChartEnums::MeasureOrientationMinimum
-                : KDChartEnums::MeasureOrientationHorizontal,
+                labelAttrs,
+                referenceArea(), orient,
                 Qt::AlignLeft );
         labelItem->setParentWidget( this );
 

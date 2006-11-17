@@ -612,6 +612,8 @@ void Chart::Private::createLayouts( QWidget* w )
     dataAndLegendLayout->addLayout( planesLayout, 1, 1 );
     dataAndLegendLayout->setRowStretch(    1, 1 );
     dataAndLegendLayout->setColumnStretch( 1, 1 );
+
+    //qDebug() << "w->rect()" << w->rect();
 }
 
 void Chart::Private::slotRelayout()
@@ -944,6 +946,7 @@ HeaderFooterList Chart::headerFooters()
     return d->headerFooters;
 }
 
+
 void Chart::addLegend( Legend* legend )
 {
     //qDebug() << "adding the legend";
@@ -951,20 +954,20 @@ void Chart::addLegend( Legend* legend )
     legend->setParent( this );
 
     TextAttributes textAttrs( legend->textAttributes() );
+
     KDChart::Measure measure( textAttrs.fontSize() );
-    measure.setRelativeMode(
-        this,
-        KDChartEnums::MeasureOrientationAuto );
-    measure.setValue( 16 );
-    textAttrs.setFontSize( measure );
-    legend->setTextAttributes( textAttrs );
-    textAttrs = legend->titleTextAttributes();
-    measure.setRelativeMode(
-        this,
-        KDChartEnums::MeasureOrientationAuto );
+    measure.setRelativeMode( this, KDChartEnums::MeasureOrientationMinimum );
     measure.setValue( 20 );
     textAttrs.setFontSize( measure );
+    legend->setTextAttributes( textAttrs );
+
+    textAttrs = legend->titleTextAttributes();
+    measure.setRelativeMode( this, KDChartEnums::MeasureOrientationMinimum );
+    measure.setValue( 24 );
+    textAttrs.setFontSize( measure );
+
     legend->setTitleTextAttributes( textAttrs );
+
     legend->setReferenceArea( this );
 
 /*
@@ -985,6 +988,7 @@ void Chart::addLegend( Legend* legend )
     connect( legend, SIGNAL( propertiesChanged() ),this, SIGNAL( propertiesChanged() ) );
     d->slotRelayout();
 }
+
 
 void Chart::replaceLegend( Legend* legend, Legend* oldLegend_ )
 {

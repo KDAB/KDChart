@@ -106,15 +106,26 @@ public:
   Measure minimalFontSize() const;
 
   /**
+   * \brief Returns the font size that is used at drawing time.
+   *
+   * This method is called at drawing time. It returns the
+   * font size as it is used for rendering text, taking into account
+   * any measures that were set via setFontSize and/or setMinimalFontSize.
+   */
+  const qreal calculatedFontSize(
+        const QObject*                   autoReferenceArea,
+        KDChartEnums::MeasureOrientation autoReferenceOrientation ) const;
+
+  /**
    * \brief Returns the font in the size that is used at drawing time.
-   * 
+   *
    * This method is called at drawing time. It returns the
    * font as it is used for rendering text, taking into account
    * any measures that were set via setFontSize and/or setMinimalFontSize.
    */
   const QFont calculatedFont(
-      const QObject*                   autoReferenceArea,
-      KDChartEnums::MeasureOrientation autoReferenceOrientation ) const;
+        const QObject*                   autoReferenceArea,
+        KDChartEnums::MeasureOrientation autoReferenceOrientation ) const;
 
   /**
    * \return Whether the text has an absolute font size set.

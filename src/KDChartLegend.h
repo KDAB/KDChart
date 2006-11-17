@@ -199,8 +199,23 @@ public:
     void setPen( uint dataset, const QPen& pen );
     QPen pen( uint dataset ) const;
 
+    /**
+     * Note that any sizes specified via setMarkerAttributes are ignored,
+     * unless you disable the automatic size calculation, by saying
+     * setUseAutomaticMarkerSize( false )
+     */
     void setMarkerAttributes( uint dataset, const MarkerAttributes& );
     MarkerAttributes markerAttributes( uint dataset ) const;
+
+    /**
+     * This option is on by default, it means that Marker sizes in the Legend
+     * will be the same as the font height used for their respective label texts.
+     *
+     * Set this to false, if you want to specify the marker sizes via setMarkerAttributes
+     * or if you want the Legend to use the same marker sizes as they are used in the Diagrams.
+     */
+    void setUseAutomaticMarkerSize( bool useAutomaticMarkerSize );
+    bool useAutomaticMarkerSize() const;
 
     void setTextAttributes( const TextAttributes &a );
     TextAttributes textAttributes() const;

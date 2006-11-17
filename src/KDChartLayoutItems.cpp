@@ -192,13 +192,7 @@ void KDChart::TextLayoutItem::setGeometry( const QRect& r )
 
 qreal KDChart::TextLayoutItem::realFontSize() const
 {
-    return qMax(
-        mAttributes.fontSize().calculatedValue(
-            mAutoReferenceArea,
-            mAutoReferenceOrientation ),
-        mAttributes.minimalFontSize().calculatedValue(
-            mAutoReferenceArea,
-            mAutoReferenceOrientation ) );
+    return mAttributes.calculatedFontSize( mAutoReferenceArea, mAutoReferenceOrientation );
 }
 
 
@@ -307,20 +301,26 @@ QSize KDChart::TextLayoutItem::unrotatedSizeHint( QFont fnt ) const
 {
     if ( fnt == QFont() )
         fnt = cachedFont;
-    const QFontMetricsF met( fnt );
+    const QFontMetricsF met( fnt, mParent );
     QSize ret = met.boundingRect( mText ).toRect().size();
     const int frame = QApplication::style()->pixelMetric( QStyle::PM_ButtonMargin, 0, 0 );
     ret += QSize( frame, frame );
     return ret;
+    //const QFontMetricsF met( fnt, mParent );
+    //const int frame = QApplication::style()->pixelMetric( QStyle::PM_ButtonMargin, 0, 0 );
+    //return
+    //    met.boundingRect( mText ).size().toSize() + QSize( frame, frame );
 }
 
 QSize KDChart::TextLayoutItem::calcSizeHint( QFont fnt ) const
 {
     QSize ret = unrotatedSizeHint( fnt );
+    //qDebug() << "-------- "<<ret.width();
     const qreal angle = PI * mAttributes.rotation() / 180.0;
     QSize rotated( static_cast<int>( cos( angle ) * ret.width()  + sin( angle ) * ret.height() ),
                    static_cast<int>( cos( angle ) * ret.height() + sin( angle ) *  ret.width() ) );
     rotated.setWidth( qMax( rotated.height(), rotated.width() ) );
+    //qDebug() << "-------- "<<rotated.width()<<"----------";
     return rotated;
 }
 
@@ -335,7 +335,7 @@ void KDChart::TextLayoutItem::paint( QPainter* painter )
     PainterSaver painterSaver( painter );
     painter->setFont( cachedFont );
     painter->setPen( mAttributes.pen() );
-    QRectF rect = geometry();
+    QRectF rect( geometry() );
 
     painter->translate( rect.center() );
     rect.moveTopLeft( QPointF( - rect.width() / 2, - rect.height() / 2 ) );
@@ -346,6 +346,10 @@ void KDChart::TextLayoutItem::paint( QPainter* painter )
     painter->setPen( mAttributes.pen() );
     */
     painter->drawText( rect, Qt::AlignHCenter | Qt::AlignVCenter, mText );
+//    if (  calcSizeHint( cachedFont ).width() > rect.width() )
+//        qDebug() << "rect.width()" << rect.width() << "text.width()" << calcSizeHint( cachedFont ).width();
+//
+//    //painter->drawText( rect, Qt::AlignHCenter | Qt::AlignVCenter, mText );
 }
 
 KDChart::MarkerLayoutItem::MarkerLayoutItem( KDChart::AbstractDiagram* diagram,

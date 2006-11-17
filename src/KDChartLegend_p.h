@@ -86,7 +86,8 @@ public:
         textAttributes( rhs.textAttributes ),
         titleText( rhs.titleText ),
         titleTextAttributes( rhs.titleTextAttributes ),
-        spacing( rhs.spacing )
+        spacing( rhs.spacing ),
+        useAutomaticMarkerSize( rhs.useAutomaticMarkerSize )
         //needRebuild( true )
         {
         }
@@ -116,6 +117,7 @@ private:
     QString titleText;
     TextAttributes titleTextAttributes;
     uint spacing;
+    bool useAutomaticMarkerSize;
 
     // internal
 //    bool needRebuild;

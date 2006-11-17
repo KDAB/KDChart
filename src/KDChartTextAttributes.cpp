@@ -154,16 +154,25 @@ bool TextAttributes::hasAbsoluteFontSize() const
 }
 
 
-const QFont TextAttributes::calculatedFont(
-    const QObject*                   autoReferenceArea,
-    KDChartEnums::MeasureOrientation autoReferenceOrientation ) const
+const qreal TextAttributes::calculatedFontSize(
+        const QObject*                   autoReferenceArea,
+        KDChartEnums::MeasureOrientation autoReferenceOrientation ) const
 {
-    const qreal calculatedFontSize = qMax(
-        fontSize().calculatedValue(        autoReferenceArea, autoReferenceOrientation ),
-        minimalFontSize().calculatedValue( autoReferenceArea, autoReferenceOrientation ) );
+    const qreal normalSize  = fontSize().calculatedValue(        autoReferenceArea, autoReferenceOrientation );
+    const qreal minimalSize = minimalFontSize().calculatedValue( autoReferenceArea, autoReferenceOrientation );
+    //qDebug() << "TextAttributes::calculatedFontSize() finds" << normalSize << "and" << minimalSize;
+    return qMax( normalSize, minimalSize );
+}
+
+
+const QFont TextAttributes::calculatedFont(
+        const QObject*                   autoReferenceArea,
+        KDChartEnums::MeasureOrientation autoReferenceOrientation ) const
+{
+    const qreal size = calculatedFontSize( autoReferenceArea, autoReferenceOrientation );
     //qDebug() << "TextAttributes::calculatedFont() has   d->cachedFontSize" << d->cachedFontSize << "  calculatedFontSize" << calculatedFontSize;
-    if( calculatedFontSize > 0.0 && d->cachedFontSize != calculatedFontSize ){
-        d->cachedFontSize = calculatedFontSize;
+    if( size > 0.0 && d->cachedFontSize != size ){
+        d->cachedFontSize = size;
         d->cachedFont.setPointSizeF( d->cachedFontSize );
     }
     return d->cachedFont;
