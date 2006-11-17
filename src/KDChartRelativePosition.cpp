@@ -156,15 +156,15 @@ qreal RelativePosition::rotation() const {
 }
 
 
-const QPointF RelativePosition::calculatedPoint( const QSizeF& autoSize ) const
+const QPointF RelativePosition::referencePoint() const
 {
     bool useRect = (d->area != 0);
     QRect rect;
     if( useRect ){
         const QWidget* widget = dynamic_cast<const QWidget*>(d->area);
         if( widget ){
-          const QLayout * layout = widget->layout();
-          rect = layout ? layout->geometry() : widget->geometry();
+            const QLayout * layout = widget->layout();
+            rect = layout ? layout->geometry() : widget->geometry();
         }else{
             const AbstractArea* kdcArea = dynamic_cast<const AbstractArea*>(d->area);
             if( kdcArea )
@@ -173,12 +173,18 @@ const QPointF RelativePosition::calculatedPoint( const QSizeF& autoSize ) const
                 useRect = false;
         }
     }
-    
     QPointF pt;
     if ( useRect )
         pt = PositionPoints( rect ).point( d->position );
     else
         pt = d->points.point( d->position );
+    return pt;
+}
+
+
+const QPointF RelativePosition::calculatedPoint( const QSizeF& autoSize ) const
+{
+    QPointF pt( referencePoint() );
     const qreal dx = horizontalPadding().calculatedValue( autoSize, KDChartEnums::MeasureOrientationHorizontal );
     const qreal dy = verticalPadding()  .calculatedValue( autoSize, KDChartEnums::MeasureOrientationVertical );
     //qDebug() << "rect.center() " << rect.center();

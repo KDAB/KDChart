@@ -167,13 +167,24 @@ public:
     qreal rotation() const;
 
     /**
+     * \brief Return the reference point, according to the reference area/position, but ignoring horiz/vert padding.
+     *
+     * This method is called at drawing time.
+     * The returned point is used to test if the label of a data value is to be printed: labels
+     * are printed only, if their reference points are either inside or touching the coordinate plane.
+     *
+     * \sa calculatedPoint, setReferenceArea, setReferencePosition, setHorizontalPadding, setVerticalPadding
+     */
+    const QPointF referencePoint() const;
+
+    /**
      * \brief Calculate a point, according to the reference area/position and horiz/vert padding.
      *
      * This method is called at drawing time: The returned point is used as anchor point.
      * Note that calculatedPoint ignores the alignment setting, it just returns the point,
      * so the calling code needs to take alignment into account explicitely.
      *
-     * \sa setReferenceArea, setReferencePosition, setHorizontalPadding, setVerticalPadding
+     * \sa referencePoint, setReferenceArea, setReferencePosition, setHorizontalPadding, setVerticalPadding
      */
     const QPointF calculatedPoint( const QSizeF& autoSize ) const;
 
