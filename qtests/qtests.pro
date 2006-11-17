@@ -1,10 +1,10 @@
 TEMPLATE = subdirs
 SUBDIRS +=  ChartElementOwnership \
             #AxisOwnership \
-            KDChartAttributesModel \
+            AttributesModel \
             Measure \
             RelativePosition \
-            KDChartPalette \
+            Palette \
             Legends \
             CartesianPlanes \
             Cloning \
