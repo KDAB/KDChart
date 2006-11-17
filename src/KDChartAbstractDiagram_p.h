@@ -111,10 +111,12 @@ public:
             //       automatic reference area detection.
             QSizeF relativeMeasureSize( fontHeight, fontHeight );
 
-            // Find the anchor point, that's already shifted according to horiz./vert. padding:
-            const QPointF point( relPos.calculatedPoint( relativeMeasureSize ) );
-            if( diagram->coordinatePlane()->isVisiblePoint( point ) )
-                list.append( DataValueTextInfo( index, point, value ) );
+            if( diagram->coordinatePlane()->isVisiblePoint( relPos.referencePoint() ) )
+                // Store the anchor point, that's already shifted according to horiz./vert. padding:
+                list.append( DataValueTextInfo(
+                        index,
+                        relPos.calculatedPoint( relativeMeasureSize ),
+                        value ) );
         }
     }
 
