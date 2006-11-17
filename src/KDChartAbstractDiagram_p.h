@@ -104,19 +104,20 @@ public:
             if( relPos.referencePosition().isUnknown() )
                 relPos.setReferencePosition( bValueIsPositive ? autoPositionPositive : autoPositionNegative );
 
-            const qreal fontHeight = cachedFontMetrics( attrs.textAttributes().font(), diagram )->height();
+            if( diagram->coordinatePlane()->isVisiblePoint( relPos.referencePoint() ) ){
+                const qreal fontHeight = cachedFontMetrics( attrs.textAttributes().font(), diagram )->height();
 
-            // Note: When printing data value texts the font height is used as reference size for both,
-            //       horizontal and vertical padding, if the respective padding's Measure is using
-            //       automatic reference area detection.
-            QSizeF relativeMeasureSize( fontHeight, fontHeight );
+                // Note: When printing data value texts the font height is used as reference size for both,
+                //       horizontal and vertical padding, if the respective padding's Measure is using
+                //       automatic reference area detection.
+                QSizeF relativeMeasureSize( fontHeight, fontHeight );
 
-            if( diagram->coordinatePlane()->isVisiblePoint( relPos.referencePoint() ) )
                 // Store the anchor point, that's already shifted according to horiz./vert. padding:
                 list.append( DataValueTextInfo(
                         index,
                         relPos.calculatedPoint( relativeMeasureSize ),
                         value ) );
+            }
         }
     }
 
