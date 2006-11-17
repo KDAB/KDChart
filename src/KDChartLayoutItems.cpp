@@ -293,7 +293,7 @@ QSize KDChart::TextLayoutItem::sizeHint() const
             sizeHintChanged();
         }
     }
-    //qDebug("cachedSizeHint.width(): %i",cachedSizeHint.width());
+    //qDebug() << "-------- KDChart::TextLayoutItem::sizeHint() returns:"<<cachedSizeHint<<" ----------";
     return cachedSizeHint;
 }
 
@@ -327,7 +327,7 @@ QSize KDChart::TextLayoutItem::calcSizeHint( QFont fnt ) const
     QSize rotated( static_cast<int>( cos( angle ) * ret.width()  + sin( angle ) * ret.height() ),
                    static_cast<int>( cos( angle ) * ret.height() + sin( angle ) * ret.width() ) );
     rotated.setWidth( qMax( rotated.height(), rotated.width() ) );
-    //qDebug() << "-------- "<<rotated.width()<<"----------";
+    //qDebug() << "-------- KDChart::TextLayoutItem::calcSizeHint() returns:"<<rotated<<" ----------";
     return rotated;
 }
 
@@ -403,6 +403,7 @@ void KDChart::MarkerLayoutItem::setGeometry( const QRect& r )
 
 QSize KDChart::MarkerLayoutItem::sizeHint() const
 {
+    //qDebug() << "KDChart::MarkerLayoutItem::sizeHint() returns:"<<mMarker.markerSize().toSize();
     return mMarker.markerSize().toSize();
 }
 

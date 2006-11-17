@@ -717,9 +717,10 @@ void Legend::buildLegend()
             : KDChartEnums::MeasureOrientationHorizontal;
     const TextAttributes labelAttrs( textAttributes() );
     const qreal fontHeight = labelAttrs.calculatedFontSize( referenceArea(), orient );
-    qDebug() << "fontHeight:" << fontHeight;
+    //qDebug() << "fontHeight:" << fontHeight;
 
     for ( int dataset = 0; dataset < d->modelLabels.count(); dataset++ ) {
+
         // retrieve the marker attributes, and adjust the size, if needed
         MarkerAttributes markerAttrs( markerAttributes( dataset ) );
         if( useAutomaticMarkerSize() || ! markerAttrs.markerSize().isValid() )
@@ -781,8 +782,7 @@ void Legend::buildLegend()
         }
 
         if( orientation() != Qt::Vertical ) { // Horizontal needs a spacer
-            d->layout->addItem( new QSpacerItem( spacing(), qMax( markerItem->sizeHint().height(),
-                                                                  labelItem->sizeHint().height() ) ),
+            d->layout->addItem( new QSpacerItem( spacing(), 1 ),
                                 2, // all in row two
                                 dataset*4+3 );
         }
