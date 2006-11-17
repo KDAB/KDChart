@@ -248,9 +248,9 @@ namespace KDChart {
          * addLegend, instead of using replaceLegend.
          * 
          * \note Whenever addLegend is called the font sizes used by the
-         * Legend are set to relative and thei get coupled to the Chart's size,
+         * Legend are set to relative and they get coupled to the Chart's size,
          * with their relative values being 20 for the item texts and 24 to the
-         * title text. So if you want to use custom font sizes for the Legend,
+         * title text. So if you want to use custom font sizes for the Legend
          * make sure to set them after calling addLegend.
          *
          * \sa addLegend, takeLegend
