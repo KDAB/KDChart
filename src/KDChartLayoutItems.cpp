@@ -45,6 +45,10 @@
 
 #define PI 3.141592653589793
 
+
+
+//#define DEBUG_ITEMS_PAINT
+
 /**
     Inform the item about its widget: This enables the item,
     to trigger that widget's update, whenever the size of the item's
@@ -303,7 +307,10 @@ QSize KDChart::TextLayoutItem::unrotatedSizeHint( QFont fnt ) const
         fnt = cachedFont;
     const QFontMetricsF met( fnt, mParent );
     QSize ret = met.boundingRect( mText ).toRect().size();
-    const int frame = QApplication::style()->pixelMetric( QStyle::PM_ButtonMargin, 0, 0 );
+    int frame = QApplication::style()->pixelMetric( QStyle::PM_ButtonMargin, 0, 0 );
+    // fine-tuning for small font sizes: the frame must not be so big, if the font is tiny
+    frame = qMin( frame, ret.height() * 2 / 3 );
+    //qDebug() << "frame:"<< frame;
     ret += QSize( frame, frame );
     return ret;
     //const QFontMetricsF met( fnt, mParent );
@@ -318,7 +325,7 @@ QSize KDChart::TextLayoutItem::calcSizeHint( QFont fnt ) const
     //qDebug() << "-------- "<<ret.width();
     const qreal angle = PI * mAttributes.rotation() / 180.0;
     QSize rotated( static_cast<int>( cos( angle ) * ret.width()  + sin( angle ) * ret.height() ),
-                   static_cast<int>( cos( angle ) * ret.height() + sin( angle ) *  ret.width() ) );
+                   static_cast<int>( cos( angle ) * ret.height() + sin( angle ) * ret.width() ) );
     rotated.setWidth( qMax( rotated.height(), rotated.width() ) );
     //qDebug() << "-------- "<<rotated.width()<<"----------";
     return rotated;
@@ -340,11 +347,11 @@ void KDChart::TextLayoutItem::paint( QPainter* painter )
     painter->translate( rect.center() );
     rect.moveTopLeft( QPointF( - rect.width() / 2, - rect.height() / 2 ) );
     painter->rotate( mAttributes.rotation() );
-    /* for debugging:
+#ifdef DEBUG_ITEMS_PAINT
     painter->setPen( Qt::red );
     painter->drawRect( rect );
     painter->setPen( mAttributes.pen() );
-    */
+#endif
     painter->drawText( rect, Qt::AlignHCenter | Qt::AlignVCenter, mText );
 //    if (  calcSizeHint( cachedFont ).width() > rect.width() )
 //        qDebug() << "rect.width()" << rect.width() << "text.width()" << calcSizeHint( cachedFont ).width();
@@ -410,12 +417,23 @@ void KDChart::MarkerLayoutItem::paint( QPainter* painter )
     pos += QPointF( static_cast<qreal>(( geometry().width() - sizeHint().width()) / 2.0 ),
                     static_cast<qreal>(( geometry().height() - sizeHint().height()) / 2.0 ) );
 
-    // And finally, drawMarker() assumes the position to be the center
+#ifdef DEBUG_ITEMS_PAINT
+    QPointF oldPos = pos;
+#endif
+
+// And finally, drawMarker() assumes the position to be the center
     // of the marker, adjust again.
     pos += QPointF( static_cast<qreal>( sizeHint().width() ) / 2.0,
                     static_cast<qreal>( sizeHint().height() )/ 2.0 );
 
     mDiagram->paintMarker( painter, mMarker, mBrush, mPen, pos.toPoint(), sizeHint() );
+
+#ifdef DEBUG_ITEMS_PAINT
+    const QPen oldPen( painter->pen() );
+    painter->setPen( Qt::red );
+    painter->drawRect( QRect(oldPos.toPoint(), sizeHint()) );
+    painter->setPen( oldPen );
+#endif
 }
 
 
