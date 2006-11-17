@@ -105,7 +105,7 @@ void Legend::init()
 
     const Measure normalFontSizeTitle(  12, KDChartEnums::MeasureCalculationModeAbsolute );
     const Measure normalFontSizeLabels( 10, KDChartEnums::MeasureCalculationModeAbsolute );
-    const Measure minimalFontSize(       4, KDChartEnums::MeasureCalculationModeAbsolute );
+    const Measure minimalFontSize(       3, KDChartEnums::MeasureCalculationModeAbsolute );
 
     TextAttributes textAttrs;
     textAttrs.setPen( QPen( Qt::black ) );
