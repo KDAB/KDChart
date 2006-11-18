@@ -2,7 +2,7 @@
 <KDXSetup xmlns:xsi="http://www.w3.org/2000/10/XMLSchema-instance" xmlns="http://www.klaralvdalens-datakonsult.se/kdexecutor" xsi:schemaLocation="http://www.klaralvdalens-datakonsult.se/kdexecutor" >
  <TestSuite>
   <AppPath>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/examples/Axis/Chart/AxisChart</Value>
+   <Value Key="LINUX" >../../examples/Axis/Chart/AxisChart</Value>
   </AppPath>
   <UseExitCodes>false</UseExitCodes>
   <MinSuccessExitCode>0</MinSuccessExitCode>
@@ -23,13 +23,13 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/AxisChart-qSf6e.conf</Value>
+   <Value Key="LINUX" >../../tests/kdx-scripts/AxisChart-qSf6e.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
   <Test>
    <Script>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/AxisChart/axischart/script.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/AxisChart/axischart/script.kdx</Value>
    </Script>
    <Name>axischart</Name>
    <Description></Description>
@@ -37,11 +37,11 @@
    <UseDir>true</UseDir>
    <UseProperties>true</UseProperties>
    <BaselineFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/AxisChart/axischart/props.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/AxisChart/axischart/props.kdx</Value>
    </BaselineFile>
    <UseScreenshots>true</UseScreenshots>
    <ScreenshotFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/AxisChart/axischart/shots.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/AxisChart/axischart/shots.kdx</Value>
    </ScreenshotFile>
    <ScreenshotManualComparison>false</ScreenshotManualComparison>
    <WaitForSetupCommand>true</WaitForSetupCommand>
@@ -63,7 +63,7 @@
  </TestSuite>
  <TestSuite>
   <AppPath>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/examples/Axis/Labels/AxisLabels</Value>
+   <Value Key="LINUX" >../../examples/Axis/Labels/AxisLabels</Value>
   </AppPath>
   <UseExitCodes>false</UseExitCodes>
   <MinSuccessExitCode>0</MinSuccessExitCode>
@@ -84,13 +84,13 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/AxisLabels-8FFWq.conf</Value>
+   <Value Key="LINUX" >../../tests/kdx-scripts/AxisLabels-8FFWq.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
   <Test>
    <Script>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/AxisLabels/axislabels/script.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/AxisLabels/axislabels/script.kdx</Value>
    </Script>
    <Name>axislabels</Name>
    <Description></Description>
@@ -98,11 +98,11 @@
    <UseDir>true</UseDir>
    <UseProperties>true</UseProperties>
    <BaselineFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/AxisLabels/axislabels/props.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/AxisLabels/axislabels/props.kdx</Value>
    </BaselineFile>
    <UseScreenshots>true</UseScreenshots>
    <ScreenshotFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/AxisLabels/axislabels/shots.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/AxisLabels/axislabels/shots.kdx</Value>
    </ScreenshotFile>
    <ScreenshotManualComparison>false</ScreenshotManualComparison>
    <WaitForSetupCommand>true</WaitForSetupCommand>
@@ -124,7 +124,7 @@
  </TestSuite>
  <TestSuite>
   <AppPath>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/examples/Axis/Parameters/AxisParameters</Value>
+   <Value Key="LINUX" >../../examples/Axis/Parameters/AxisParameters</Value>
   </AppPath>
   <UseExitCodes>false</UseExitCodes>
   <MinSuccessExitCode>0</MinSuccessExitCode>
@@ -145,13 +145,13 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/AxisParameters-3sV1n.conf</Value>
+   <Value Key="LINUX" >../../tests/kdx-scripts/AxisParameters-3sV1n.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
   <Test>
    <Script>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/AxisParameters/axisparameters/script.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/AxisParameters/axisparameters/script.kdx</Value>
    </Script>
    <Name>axisparameters</Name>
    <Description></Description>
@@ -159,11 +159,11 @@
    <UseDir>true</UseDir>
    <UseProperties>true</UseProperties>
    <BaselineFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/AxisParameters/axisparameters/props.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/AxisParameters/axisparameters/props.kdx</Value>
    </BaselineFile>
    <UseScreenshots>true</UseScreenshots>
    <ScreenshotFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/AxisParameters/axisparameters/shots.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/AxisParameters/axisparameters/shots.kdx</Value>
    </ScreenshotFile>
    <ScreenshotManualComparison>false</ScreenshotManualComparison>
    <WaitForSetupCommand>true</WaitForSetupCommand>
@@ -185,7 +185,7 @@
  </TestSuite>
  <TestSuite>
   <AppPath>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/examples/Background/Background</Value>
+   <Value Key="LINUX" >../../examples/Background/Background</Value>
   </AppPath>
   <UseExitCodes>false</UseExitCodes>
   <MinSuccessExitCode>0</MinSuccessExitCode>
@@ -206,13 +206,13 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Background-5wn9a.conf</Value>
+   <Value Key="LINUX" >../../tests/kdx-scripts/Background-5wn9a.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
   <Test>
    <Script>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Background/background/script.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Background/background/script.kdx</Value>
    </Script>
    <Name>background</Name>
    <Description></Description>
@@ -220,11 +220,11 @@
    <UseDir>true</UseDir>
    <UseProperties>true</UseProperties>
    <BaselineFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Background/background/props.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Background/background/props.kdx</Value>
    </BaselineFile>
    <UseScreenshots>true</UseScreenshots>
    <ScreenshotFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Background/background/shots.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Background/background/shots.kdx</Value>
    </ScreenshotFile>
    <ScreenshotManualComparison>false</ScreenshotManualComparison>
    <WaitForSetupCommand>true</WaitForSetupCommand>
@@ -246,7 +246,7 @@
  </TestSuite>
  <TestSuite>
   <AppPath>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/examples/Bars/Advanced/BarAdvanced</Value>
+   <Value Key="LINUX" >../../examples/Bars/Advanced/BarAdvanced</Value>
   </AppPath>
   <UseExitCodes>false</UseExitCodes>
   <MinSuccessExitCode>0</MinSuccessExitCode>
@@ -267,13 +267,13 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/BarAdvanced-5NWCE.conf</Value>
+   <Value Key="LINUX" >../../tests/kdx-scripts/BarAdvanced-5NWCE.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
   <Test>
    <Script>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/BarAdvanced/baradvanced/script.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/BarAdvanced/baradvanced/script.kdx</Value>
    </Script>
    <Name>baradvanced</Name>
    <Description></Description>
@@ -281,11 +281,11 @@
    <UseDir>true</UseDir>
    <UseProperties>true</UseProperties>
    <BaselineFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/BarAdvanced/baradvanced/props.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/BarAdvanced/baradvanced/props.kdx</Value>
    </BaselineFile>
    <UseScreenshots>true</UseScreenshots>
    <ScreenshotFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/BarAdvanced/baradvanced/shots.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/BarAdvanced/baradvanced/shots.kdx</Value>
    </ScreenshotFile>
    <ScreenshotManualComparison>false</ScreenshotManualComparison>
    <WaitForSetupCommand>true</WaitForSetupCommand>
@@ -307,7 +307,7 @@
  </TestSuite>
  <TestSuite>
   <AppPath>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/examples/Bars/Parameters/Parameters</Value>
+   <Value Key="LINUX" >../../examples/Bars/Parameters/Parameters</Value>
   </AppPath>
   <UseExitCodes>false</UseExitCodes>
   <MinSuccessExitCode>0</MinSuccessExitCode>
@@ -328,13 +328,13 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Parameters-551gd.conf</Value>
+   <Value Key="LINUX" >../../tests/kdx-scripts/Parameters-551gd.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
   <Test>
    <Script>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Parameters/barparameters/script.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Parameters/barparameters/script.kdx</Value>
    </Script>
    <Name>barparameters</Name>
    <Description></Description>
@@ -342,11 +342,11 @@
    <UseDir>true</UseDir>
    <UseProperties>true</UseProperties>
    <BaselineFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Parameters/barparameters/props.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Parameters/barparameters/props.kdx</Value>
    </BaselineFile>
    <UseScreenshots>true</UseScreenshots>
    <ScreenshotFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Parameters/barparameters/shots.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Parameters/barparameters/shots.kdx</Value>
    </ScreenshotFile>
    <ScreenshotManualComparison>false</ScreenshotManualComparison>
    <WaitForSetupCommand>true</WaitForSetupCommand>
@@ -368,7 +368,7 @@
  </TestSuite>
  <TestSuite>
   <AppPath>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/examples/Bars/Simple/Simple</Value>
+   <Value Key="LINUX" >../../examples/Bars/Simple/Simple</Value>
   </AppPath>
   <UseExitCodes>false</UseExitCodes>
   <MinSuccessExitCode>0</MinSuccessExitCode>
@@ -389,13 +389,13 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Simple-Hlxh6.conf</Value>
+   <Value Key="LINUX" >../../tests/kdx-scripts/Simple-Hlxh6.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
   <Test>
    <Script>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Simple/barsimple/script.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Simple/barsimple/script.kdx</Value>
    </Script>
    <Name>barsimple</Name>
    <Description></Description>
@@ -403,11 +403,11 @@
    <UseDir>true</UseDir>
    <UseProperties>true</UseProperties>
    <BaselineFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Simple/barsimple/props.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Simple/barsimple/props.kdx</Value>
    </BaselineFile>
    <UseScreenshots>true</UseScreenshots>
    <ScreenshotFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Simple/barsimple/shots.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Simple/barsimple/shots.kdx</Value>
    </ScreenshotFile>
    <ScreenshotManualComparison>false</ScreenshotManualComparison>
    <WaitForSetupCommand>true</WaitForSetupCommand>
@@ -429,7 +429,7 @@
  </TestSuite>
  <TestSuite>
   <AppPath>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/examples/Charts/simple/simple</Value>
+   <Value Key="LINUX" >../../examples/Charts/simple/simple</Value>
   </AppPath>
   <UseExitCodes>false</UseExitCodes>
   <MinSuccessExitCode>0</MinSuccessExitCode>
@@ -450,13 +450,13 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Simple-JNN0L.conf</Value>
+   <Value Key="LINUX" >../../tests/kdx-scripts/Simple-JNN0L.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
   <Test>
    <Script>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/chartSimple/chartsimple/script.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/chartSimple/chartsimple/script.kdx</Value>
    </Script>
    <Name>chartsimple</Name>
    <Description></Description>
@@ -464,11 +464,11 @@
    <UseDir>true</UseDir>
    <UseProperties>true</UseProperties>
    <BaselineFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/chartSimple/chartsimple/props.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/chartSimple/chartsimple/props.kdx</Value>
    </BaselineFile>
    <UseScreenshots>true</UseScreenshots>
    <ScreenshotFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/chartSimple/chartsimple/shots.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/chartSimple/chartsimple/shots.kdx</Value>
    </ScreenshotFile>
    <ScreenshotManualComparison>false</ScreenshotManualComparison>
    <WaitForSetupCommand>true</WaitForSetupCommand>
@@ -490,7 +490,7 @@
  </TestSuite>
  <TestSuite>
   <AppPath>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/examples/DrawIntoPainter/DrawIntoPainter</Value>
+   <Value Key="LINUX" >../../examples/DrawIntoPainter/DrawIntoPainter</Value>
   </AppPath>
   <UseExitCodes>false</UseExitCodes>
   <MinSuccessExitCode>0</MinSuccessExitCode>
@@ -511,13 +511,13 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/DrawIntoPainter-3fEGU.conf</Value>
+   <Value Key="LINUX" >../../tests/kdx-scripts/DrawIntoPainter-3fEGU.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
   <Test>
    <Script>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/DrawIntoPainter/drawintopainter/script.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/DrawIntoPainter/drawintopainter/script.kdx</Value>
    </Script>
    <Name>drawintopainter</Name>
    <Description></Description>
@@ -525,11 +525,11 @@
    <UseDir>true</UseDir>
    <UseProperties>true</UseProperties>
    <BaselineFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/DrawIntoPainter/drawintopainter/props.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/DrawIntoPainter/drawintopainter/props.kdx</Value>
    </BaselineFile>
    <UseScreenshots>true</UseScreenshots>
    <ScreenshotFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/DrawIntoPainter/drawintopainter/shots.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/DrawIntoPainter/drawintopainter/shots.kdx</Value>
    </ScreenshotFile>
    <ScreenshotManualComparison>false</ScreenshotManualComparison>
    <WaitForSetupCommand>true</WaitForSetupCommand>
@@ -551,7 +551,7 @@
  </TestSuite>
  <TestSuite>
   <AppPath>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/examples/EmptyValues/EmptyValues</Value>
+   <Value Key="LINUX" >../../examples/EmptyValues/EmptyValues</Value>
   </AppPath>
   <UseExitCodes>false</UseExitCodes>
   <MinSuccessExitCode>0</MinSuccessExitCode>
@@ -572,13 +572,13 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/EmptyValues-tHdtR.conf</Value>
+   <Value Key="LINUX" >../../tests/kdx-scripts/EmptyValues-tHdtR.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
   <Test>
    <Script>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/EmptyValues/emptyvalues/script.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/EmptyValues/emptyvalues/script.kdx</Value>
    </Script>
    <Name>emptyvalues</Name>
    <Description></Description>
@@ -586,11 +586,11 @@
    <UseDir>true</UseDir>
    <UseProperties>true</UseProperties>
    <BaselineFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/EmptyValues/emptyvalues/props.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/EmptyValues/emptyvalues/props.kdx</Value>
    </BaselineFile>
    <UseScreenshots>true</UseScreenshots>
    <ScreenshotFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/EmptyValues/emptyvalues/shots.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/EmptyValues/emptyvalues/shots.kdx</Value>
    </ScreenshotFile>
    <ScreenshotManualComparison>false</ScreenshotManualComparison>
    <WaitForSetupCommand>true</WaitForSetupCommand>
@@ -612,7 +612,7 @@
  </TestSuite>
  <TestSuite>
   <AppPath>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/examples/Grids/CartesianGrid/CartesianGrid</Value>
+   <Value Key="LINUX" >../../examples/Grids/CartesianGrid/CartesianGrid</Value>
   </AppPath>
   <UseExitCodes>false</UseExitCodes>
   <MinSuccessExitCode>0</MinSuccessExitCode>
@@ -633,13 +633,13 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/CartesianGrid-HlbhG.conf</Value>
+   <Value Key="LINUX" >../../tests/kdx-scripts/CartesianGrid-HlbhG.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
   <Test>
    <Script>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/CartesianGrid/cartesiangrid/script.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/CartesianGrid/cartesiangrid/script.kdx</Value>
    </Script>
    <Name>cartesiangrid</Name>
    <Description></Description>
@@ -647,11 +647,11 @@
    <UseDir>true</UseDir>
    <UseProperties>true</UseProperties>
    <BaselineFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/CartesianGrid/cartesiangrid/props.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/CartesianGrid/cartesiangrid/props.kdx</Value>
    </BaselineFile>
    <UseScreenshots>true</UseScreenshots>
    <ScreenshotFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/CartesianGrid/cartesiangrid/shots.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/CartesianGrid/cartesiangrid/shots.kdx</Value>
    </ScreenshotFile>
    <ScreenshotManualComparison>false</ScreenshotManualComparison>
    <WaitForSetupCommand>true</WaitForSetupCommand>
@@ -673,7 +673,7 @@
  </TestSuite>
  <TestSuite>
   <AppPath>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/examples/Grids/PolarGrid/PolarGrid</Value>
+   <Value Key="LINUX" >../../examples/Grids/PolarGrid/PolarGrid</Value>
   </AppPath>
   <UseExitCodes>false</UseExitCodes>
   <MinSuccessExitCode>0</MinSuccessExitCode>
@@ -694,13 +694,13 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/PolarGrid-r2ljI.conf</Value>
+   <Value Key="LINUX" >../../tests/kdx-scripts/PolarGrid-r2ljI.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
   <Test>
    <Script>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/PolarGrid/polargrid/script.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PolarGrid/polargrid/script.kdx</Value>
    </Script>
    <Name>polargrid</Name>
    <Description></Description>
@@ -708,11 +708,11 @@
    <UseDir>true</UseDir>
    <UseProperties>true</UseProperties>
    <BaselineFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/PolarGrid/polargrid/props.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PolarGrid/polargrid/props.kdx</Value>
    </BaselineFile>
    <UseScreenshots>true</UseScreenshots>
    <ScreenshotFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/PolarGrid/polargrid/shots.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PolarGrid/polargrid/shots.kdx</Value>
    </ScreenshotFile>
    <ScreenshotManualComparison>false</ScreenshotManualComparison>
    <WaitForSetupCommand>true</WaitForSetupCommand>
@@ -734,7 +734,7 @@
  </TestSuite>
  <TestSuite>
   <AppPath>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/examples/HeadersFooters/Advanced/Advanced</Value>
+   <Value Key="LINUX" >../../examples/HeadersFooters/Advanced/Advanced</Value>
   </AppPath>
   <UseExitCodes>false</UseExitCodes>
   <MinSuccessExitCode>0</MinSuccessExitCode>
@@ -755,13 +755,13 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Advanced-l5tb0.conf</Value>
+   <Value Key="LINUX" >../../tests/kdx-scripts/Advanced-l5tb0.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
   <Test>
    <Script>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Advanced/headerfootersadvanced/script.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Advanced/headerfootersadvanced/script.kdx</Value>
    </Script>
    <Name>headerfootersadvanced</Name>
    <Description></Description>
@@ -769,11 +769,11 @@
    <UseDir>true</UseDir>
    <UseProperties>true</UseProperties>
    <BaselineFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Advanced/headerfootersadvanced/props.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Advanced/headerfootersadvanced/props.kdx</Value>
    </BaselineFile>
    <UseScreenshots>true</UseScreenshots>
    <ScreenshotFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Advanced/headerfootersadvanced/shots.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Advanced/headerfootersadvanced/shots.kdx</Value>
    </ScreenshotFile>
    <ScreenshotManualComparison>false</ScreenshotManualComparison>
    <WaitForSetupCommand>true</WaitForSetupCommand>
@@ -795,7 +795,7 @@
  </TestSuite>
  <TestSuite>
   <AppPath>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/examples/HeadersFooters/HeadersFootersParameters/HeadersFootersParameters</Value>
+   <Value Key="LINUX" >../../examples/HeadersFooters/HeadersFootersParameters/HeadersFootersParameters</Value>
   </AppPath>
   <UseExitCodes>false</UseExitCodes>
   <MinSuccessExitCode>0</MinSuccessExitCode>
@@ -822,7 +822,7 @@
   <Selected>0</Selected>
   <Test>
    <Script>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/HeadersFootersParameters/headersfootersparameters/script.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/HeadersFootersParameters/headersfootersparameters/script.kdx</Value>
    </Script>
    <Name>headersfootersparameters</Name>
    <Description></Description>
@@ -830,11 +830,11 @@
    <UseDir>true</UseDir>
    <UseProperties>true</UseProperties>
    <BaselineFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/HeadersFootersParameters/headersfootersparameters/props.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/HeadersFootersParameters/headersfootersparameters/props.kdx</Value>
    </BaselineFile>
    <UseScreenshots>true</UseScreenshots>
    <ScreenshotFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/HeadersFootersParameters/headersfootersparameters/shots.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/HeadersFootersParameters/headersfootersparameters/shots.kdx</Value>
    </ScreenshotFile>
    <ScreenshotManualComparison>false</ScreenshotManualComparison>
    <WaitForSetupCommand>true</WaitForSetupCommand>
@@ -856,7 +856,7 @@
  </TestSuite>
  <TestSuite>
   <AppPath>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/examples/HeadersFooters/HeadersFootersSimple/HeadersFootersSimple</Value>
+   <Value Key="LINUX" >../../examples/HeadersFooters/HeadersFootersSimple/HeadersFootersSimple</Value>
   </AppPath>
   <UseExitCodes>false</UseExitCodes>
   <MinSuccessExitCode>0</MinSuccessExitCode>
@@ -877,13 +877,13 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/HeadersFootersSimple-gwIdD.conf</Value>
+   <Value Key="LINUX" >../../tests/kdx-scripts/HeadersFootersSimple-gwIdD.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
   <Test>
    <Script>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/HeadersFootersSimple/headersfooterssimple/script.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/HeadersFootersSimple/headersfooterssimple/script.kdx</Value>
    </Script>
    <Name>headersfooterssimple</Name>
    <Description></Description>
@@ -891,11 +891,11 @@
    <UseDir>true</UseDir>
    <UseProperties>true</UseProperties>
    <BaselineFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/HeadersFootersSimple/headersfooterssimple/props.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/HeadersFootersSimple/headersfooterssimple/props.kdx</Value>
    </BaselineFile>
    <UseScreenshots>true</UseScreenshots>
    <ScreenshotFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/HeadersFootersSimple/headersfooterssimple/shots.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/HeadersFootersSimple/headersfooterssimple/shots.kdx</Value>
    </ScreenshotFile>
    <ScreenshotManualComparison>false</ScreenshotManualComparison>
    <WaitForSetupCommand>true</WaitForSetupCommand>
@@ -917,7 +917,7 @@
  </TestSuite>
  <TestSuite>
   <AppPath>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/examples/Legends/LegendAdvanced/LegendAdvanced</Value>
+   <Value Key="LINUX" >../../examples/Legends/LegendAdvanced/LegendAdvanced</Value>
   </AppPath>
   <UseExitCodes>false</UseExitCodes>
   <MinSuccessExitCode>0</MinSuccessExitCode>
@@ -944,7 +944,7 @@
   <Selected>0</Selected>
   <Test>
    <Script>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/LegendAdvanced/legendadvanced/script.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/LegendAdvanced/legendadvanced/script.kdx</Value>
    </Script>
    <Name>legendadvanced</Name>
    <Description></Description>
@@ -952,11 +952,11 @@
    <UseDir>true</UseDir>
    <UseProperties>true</UseProperties>
    <BaselineFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/LegendAdvanced/legendadvanced/props.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/LegendAdvanced/legendadvanced/props.kdx</Value>
    </BaselineFile>
    <UseScreenshots>true</UseScreenshots>
    <ScreenshotFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/LegendAdvanced/legendadvanced/shots.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/LegendAdvanced/legendadvanced/shots.kdx</Value>
    </ScreenshotFile>
    <ScreenshotManualComparison>false</ScreenshotManualComparison>
    <WaitForSetupCommand>true</WaitForSetupCommand>
@@ -1028,7 +1028,7 @@
  </TestSuite>
  <TestSuite>
   <AppPath>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/examples/Legends/LegendParameters/LegendParameters</Value>
+   <Value Key="LINUX" >../../examples/Legends/LegendParameters/LegendParameters</Value>
   </AppPath>
   <UseExitCodes>false</UseExitCodes>
   <MinSuccessExitCode>0</MinSuccessExitCode>
@@ -1049,13 +1049,13 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/LegendParameters-T1CIR.conf</Value>
+   <Value Key="LINUX" >../../tests/kdx-scripts/LegendParameters-T1CIR.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
   <Test>
    <Script>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/LegendParameters/legendparameters/script.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/LegendParameters/legendparameters/script.kdx</Value>
    </Script>
    <Name>legendparameters</Name>
    <Description></Description>
@@ -1063,11 +1063,11 @@
    <UseDir>true</UseDir>
    <UseProperties>true</UseProperties>
    <BaselineFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/LegendParameters/legendparameters/props.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/LegendParameters/legendparameters/props.kdx</Value>
    </BaselineFile>
    <UseScreenshots>true</UseScreenshots>
    <ScreenshotFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/LegendParameters/legendparameters/shots.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/LegendParameters/legendparameters/shots.kdx</Value>
    </ScreenshotFile>
    <ScreenshotManualComparison>false</ScreenshotManualComparison>
    <WaitForSetupCommand>true</WaitForSetupCommand>
@@ -1089,7 +1089,7 @@
  </TestSuite>
  <TestSuite>
   <AppPath>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/examples/Legends/LegendSimple/LegendSimple</Value>
+   <Value Key="LINUX" >../../examples/Legends/LegendSimple/LegendSimple</Value>
   </AppPath>
   <UseExitCodes>false</UseExitCodes>
   <MinSuccessExitCode>0</MinSuccessExitCode>
@@ -1110,13 +1110,13 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/LegendSimple-VI95S.conf</Value>
+   <Value Key="LINUX" >../../tests/kdx-scripts/LegendSimple-VI95S.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
   <Test>
    <Script>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/LegendSimple/legendsimple/script.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/LegendSimple/legendsimple/script.kdx</Value>
    </Script>
    <Name>legendsimple</Name>
    <Description></Description>
@@ -1124,11 +1124,11 @@
    <UseDir>true</UseDir>
    <UseProperties>true</UseProperties>
    <BaselineFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/LegendSimple/legendsimple/props.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/LegendSimple/legendsimple/props.kdx</Value>
    </BaselineFile>
    <UseScreenshots>true</UseScreenshots>
    <ScreenshotFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/LegendSimple/legendsimple/shots.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/LegendSimple/legendsimple/shots.kdx</Value>
    </ScreenshotFile>
    <ScreenshotManualComparison>false</ScreenshotManualComparison>
    <WaitForSetupCommand>true</WaitForSetupCommand>
@@ -1150,7 +1150,7 @@
  </TestSuite>
  <TestSuite>
   <AppPath>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/examples/Lines/Advanced/Advanced</Value>
+   <Value Key="LINUX" >../../examples/Lines/Advanced/Advanced</Value>
   </AppPath>
   <UseExitCodes>false</UseExitCodes>
   <MinSuccessExitCode>0</MinSuccessExitCode>
@@ -1171,13 +1171,13 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Advanced-NsShu.conf</Value>
+   <Value Key="LINUX" >../../tests/kdx-scripts/Advanced-NsShu.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
   <Test>
    <Script>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Advanced/linesadvanced/script.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Advanced/linesadvanced/script.kdx</Value>
    </Script>
    <Name>linesadvanced</Name>
    <Description></Description>
@@ -1185,11 +1185,11 @@
    <UseDir>true</UseDir>
    <UseProperties>true</UseProperties>
    <BaselineFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Advanced/linesadvanced/props.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Advanced/linesadvanced/props.kdx</Value>
    </BaselineFile>
    <UseScreenshots>true</UseScreenshots>
    <ScreenshotFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Advanced/linesadvanced/shots.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Advanced/linesadvanced/shots.kdx</Value>
    </ScreenshotFile>
    <ScreenshotManualComparison>false</ScreenshotManualComparison>
    <WaitForSetupCommand>true</WaitForSetupCommand>
@@ -1211,7 +1211,7 @@
  </TestSuite>
  <TestSuite>
   <AppPath>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/examples/Lines/Parameters/Parameters</Value>
+   <Value Key="LINUX" >../../examples/Lines/Parameters/Parameters</Value>
   </AppPath>
   <UseExitCodes>false</UseExitCodes>
   <MinSuccessExitCode>0</MinSuccessExitCode>
@@ -1232,13 +1232,13 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Parameters-cRlDu.conf</Value>
+   <Value Key="LINUX" >../../tests/kdx-scripts/Parameters-cRlDu.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
   <Test>
    <Script>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Parameters/linesparameters/script.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Parameters/linesparameters/script.kdx</Value>
    </Script>
    <Name>linesparameters</Name>
    <Description></Description>
@@ -1246,11 +1246,11 @@
    <UseDir>true</UseDir>
    <UseProperties>true</UseProperties>
    <BaselineFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Parameters/linesparameters/props.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Parameters/linesparameters/props.kdx</Value>
    </BaselineFile>
    <UseScreenshots>true</UseScreenshots>
    <ScreenshotFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Parameters/linesparameters/shots.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Parameters/linesparameters/shots.kdx</Value>
    </ScreenshotFile>
    <ScreenshotManualComparison>false</ScreenshotManualComparison>
    <WaitForSetupCommand>true</WaitForSetupCommand>
@@ -1272,7 +1272,7 @@
  </TestSuite>
  <TestSuite>
   <AppPath>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/examples/Lines/PointChart/PointChart</Value>
+   <Value Key="LINUX" >../../examples/Lines/PointChart/PointChart</Value>
   </AppPath>
   <UseExitCodes>false</UseExitCodes>
   <MinSuccessExitCode>0</MinSuccessExitCode>
@@ -1293,13 +1293,13 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/PointChart-0PCNX.conf</Value>
+   <Value Key="LINUX" >../../tests/kdx-scripts/PointChart-0PCNX.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
   <Test>
    <Script>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/PointChart/pointchart/script.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PointChart/pointchart/script.kdx</Value>
    </Script>
    <Name>pointchart</Name>
    <Description></Description>
@@ -1307,11 +1307,11 @@
    <UseDir>true</UseDir>
    <UseProperties>true</UseProperties>
    <BaselineFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/PointChart/pointchart/props.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PointChart/pointchart/props.kdx</Value>
    </BaselineFile>
    <UseScreenshots>true</UseScreenshots>
    <ScreenshotFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/PointChart/pointchart/shots.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PointChart/pointchart/shots.kdx</Value>
    </ScreenshotFile>
    <ScreenshotManualComparison>false</ScreenshotManualComparison>
    <WaitForSetupCommand>true</WaitForSetupCommand>
@@ -1333,7 +1333,7 @@
  </TestSuite>
  <TestSuite>
   <AppPath>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/examples/Lines/PointWidget/PointWidget</Value>
+   <Value Key="LINUX" >../../examples/Lines/PointWidget/PointWidget</Value>
   </AppPath>
   <UseExitCodes>false</UseExitCodes>
   <MinSuccessExitCode>0</MinSuccessExitCode>
@@ -1354,13 +1354,13 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/PointWidget-jKHTw.conf</Value>
+   <Value Key="LINUX" >../../tests/kdx-scripts/PointWidget-jKHTw.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
   <Test>
    <Script>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/PointWidget/pointwidget/script.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PointWidget/pointwidget/script.kdx</Value>
    </Script>
    <Name>pointwidget</Name>
    <Description></Description>
@@ -1368,11 +1368,11 @@
    <UseDir>true</UseDir>
    <UseProperties>true</UseProperties>
    <BaselineFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/PointWidget/pointwidget/props.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PointWidget/pointwidget/props.kdx</Value>
    </BaselineFile>
    <UseScreenshots>true</UseScreenshots>
    <ScreenshotFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/PointWidget/pointwidget/shots.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PointWidget/pointwidget/shots.kdx</Value>
    </ScreenshotFile>
    <ScreenshotManualComparison>false</ScreenshotManualComparison>
    <WaitForSetupCommand>true</WaitForSetupCommand>
@@ -1394,7 +1394,7 @@
  </TestSuite>
  <TestSuite>
   <AppPath>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/examples/Lines/SimpleLineWidget/SimpleLineWidget</Value>
+   <Value Key="LINUX" >../../examples/Lines/SimpleLineWidget/SimpleLineWidget</Value>
   </AppPath>
   <UseExitCodes>false</UseExitCodes>
   <MinSuccessExitCode>0</MinSuccessExitCode>
@@ -1415,13 +1415,13 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/SimpleLineWidget-XL6a1.conf</Value>
+   <Value Key="LINUX" >../../tests/kdx-scripts/SimpleLineWidget-XL6a1.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
   <Test>
    <Script>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/SimpleLineWidget/simplelinewidget/script.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/SimpleLineWidget/simplelinewidget/script.kdx</Value>
    </Script>
    <Name>simplelinewidget</Name>
    <Description></Description>
@@ -1429,11 +1429,11 @@
    <UseDir>true</UseDir>
    <UseProperties>true</UseProperties>
    <BaselineFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/SimpleLineWidget/simplelinewidget/props.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/SimpleLineWidget/simplelinewidget/props.kdx</Value>
    </BaselineFile>
    <UseScreenshots>true</UseScreenshots>
    <ScreenshotFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/SimpleLineWidget/simplelinewidget/shots.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/SimpleLineWidget/simplelinewidget/shots.kdx</Value>
    </ScreenshotFile>
    <ScreenshotManualComparison>false</ScreenshotManualComparison>
    <WaitForSetupCommand>true</WaitForSetupCommand>
@@ -1455,7 +1455,7 @@
  </TestSuite>
  <TestSuite>
   <AppPath>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/examples/ModelView/ModelView</Value>
+   <Value Key="LINUX" >../../examples/ModelView/ModelView</Value>
   </AppPath>
   <UseExitCodes>false</UseExitCodes>
   <MinSuccessExitCode>0</MinSuccessExitCode>
@@ -1476,13 +1476,13 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/ModelView-BuBK8.conf</Value>
+   <Value Key="LINUX" >../../tests/kdx-scripts/ModelView-BuBK8.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
   <Test>
    <Script>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/ModelView/modelview/script.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/ModelView/modelview/script.kdx</Value>
    </Script>
    <Name>modelview</Name>
    <Description></Description>
@@ -1490,11 +1490,11 @@
    <UseDir>true</UseDir>
    <UseProperties>true</UseProperties>
    <BaselineFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/ModelView/modelview/props.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/ModelView/modelview/props.kdx</Value>
    </BaselineFile>
    <UseScreenshots>true</UseScreenshots>
    <ScreenshotFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/ModelView/modelview/shots.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/ModelView/modelview/shots.kdx</Value>
    </ScreenshotFile>
    <ScreenshotManualComparison>false</ScreenshotManualComparison>
    <WaitForSetupCommand>true</WaitForSetupCommand>
@@ -1516,7 +1516,7 @@
  </TestSuite>
  <TestSuite>
   <AppPath>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/examples/MultidimensionalData/MultidimensionalData</Value>
+   <Value Key="LINUX" >../../examples/MultidimensionalData/MultidimensionalData</Value>
   </AppPath>
   <UseExitCodes>false</UseExitCodes>
   <MinSuccessExitCode>0</MinSuccessExitCode>
@@ -1537,13 +1537,13 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/MultidimensionalData-mmFv7.conf</Value>
+   <Value Key="LINUX" >../../tests/kdx-scripts/MultidimensionalData-mmFv7.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
   <Test>
    <Script>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/MultidimensionalData/multidimensionaldata/script.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/MultidimensionalData/multidimensionaldata/script.kdx</Value>
    </Script>
    <Name>multidimensionaldata</Name>
    <Description></Description>
@@ -1551,11 +1551,11 @@
    <UseDir>true</UseDir>
    <UseProperties>true</UseProperties>
    <BaselineFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/MultidimensionalData/multidimensionaldata/props.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/MultidimensionalData/multidimensionaldata/props.kdx</Value>
    </BaselineFile>
    <UseScreenshots>true</UseScreenshots>
    <ScreenshotFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/MultidimensionalData/multidimensionaldata/shots.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/MultidimensionalData/multidimensionaldata/shots.kdx</Value>
    </ScreenshotFile>
    <ScreenshotManualComparison>false</ScreenshotManualComparison>
    <WaitForSetupCommand>true</WaitForSetupCommand>
@@ -1577,7 +1577,7 @@
  </TestSuite>
  <TestSuite>
   <AppPath>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/examples/Pie/Advanced/Advanced</Value>
+   <Value Key="LINUX" >../../examples/Pie/Advanced/Advanced</Value>
   </AppPath>
   <UseExitCodes>false</UseExitCodes>
   <MinSuccessExitCode>0</MinSuccessExitCode>
@@ -1598,13 +1598,13 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Advanced-p3tWE.conf</Value>
+   <Value Key="LINUX" >../../tests/kdx-scripts/Advanced-p3tWE.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
   <Test>
    <Script>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Advanced/pieadvanced/script.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Advanced/pieadvanced/script.kdx</Value>
    </Script>
    <Name>pieadvanced</Name>
    <Description></Description>
@@ -1612,11 +1612,11 @@
    <UseDir>true</UseDir>
    <UseProperties>true</UseProperties>
    <BaselineFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Advanced/pieadvanced/props.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Advanced/pieadvanced/props.kdx</Value>
    </BaselineFile>
    <UseScreenshots>true</UseScreenshots>
    <ScreenshotFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Advanced/pieadvanced/shots.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Advanced/pieadvanced/shots.kdx</Value>
    </ScreenshotFile>
    <ScreenshotManualComparison>false</ScreenshotManualComparison>
    <WaitForSetupCommand>true</WaitForSetupCommand>
@@ -1638,7 +1638,7 @@
  </TestSuite>
  <TestSuite>
   <AppPath>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/examples/Pie/Parameters/Parameters</Value>
+   <Value Key="LINUX" >../../examples/Pie/Parameters/Parameters</Value>
   </AppPath>
   <UseExitCodes>false</UseExitCodes>
   <MinSuccessExitCode>0</MinSuccessExitCode>
@@ -1659,13 +1659,13 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Parameters-dLQKA.conf</Value>
+   <Value Key="LINUX" >../../tests/kdx-scripts/Parameters-dLQKA.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
   <Test>
    <Script>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Parameters/pieparameters/script.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Parameters/pieparameters/script.kdx</Value>
    </Script>
    <Name>pieparameters</Name>
    <Description></Description>
@@ -1673,11 +1673,11 @@
    <UseDir>true</UseDir>
    <UseProperties>true</UseProperties>
    <BaselineFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Parameters/pieparameters/props.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Parameters/pieparameters/props.kdx</Value>
    </BaselineFile>
    <UseScreenshots>true</UseScreenshots>
    <ScreenshotFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Parameters/pieparameters/shots.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Parameters/pieparameters/shots.kdx</Value>
    </ScreenshotFile>
    <ScreenshotManualComparison>false</ScreenshotManualComparison>
    <WaitForSetupCommand>true</WaitForSetupCommand>
@@ -1699,7 +1699,7 @@
  </TestSuite>
  <TestSuite>
   <AppPath>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/examples/Pie/Simple/Simple</Value>
+   <Value Key="LINUX" >../../examples/Pie/Simple/Simple</Value>
   </AppPath>
   <UseExitCodes>false</UseExitCodes>
   <MinSuccessExitCode>0</MinSuccessExitCode>
@@ -1720,13 +1720,13 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/simple-p49mE.conf</Value>
+   <Value Key="LINUX" >../../tests/kdx-scripts/simple-p49mE.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
   <Test>
    <Script>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/PieSimple/piesimple/script.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PieSimple/piesimple/script.kdx</Value>
    </Script>
    <Name>piesimple</Name>
    <Description></Description>
@@ -1734,11 +1734,11 @@
    <UseDir>true</UseDir>
    <UseProperties>true</UseProperties>
    <BaselineFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/PieSimple/piesimple/props.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PieSimple/piesimple/props.kdx</Value>
    </BaselineFile>
    <UseScreenshots>true</UseScreenshots>
    <ScreenshotFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/PieSimple/piesimple/shots.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PieSimple/piesimple/shots.kdx</Value>
    </ScreenshotFile>
    <ScreenshotManualComparison>false</ScreenshotManualComparison>
    <WaitForSetupCommand>true</WaitForSetupCommand>
@@ -1760,7 +1760,7 @@
  </TestSuite>
  <TestSuite>
   <AppPath>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/examples/Polar/Advanced/Advanced</Value>
+   <Value Key="LINUX" >../../examples/Polar/Advanced/Advanced</Value>
   </AppPath>
   <UseExitCodes>false</UseExitCodes>
   <MinSuccessExitCode>0</MinSuccessExitCode>
@@ -1781,13 +1781,13 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Advanced-p3tWE.conf</Value>
+   <Value Key="LINUX" >../../tests/kdx-scripts/Advanced-p3tWE.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
   <Test>
    <Script>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/PolarAdvanced/polaradvanced/script.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PolarAdvanced/polaradvanced/script.kdx</Value>
    </Script>
    <Name>polaradvanced</Name>
    <Description></Description>
@@ -1795,11 +1795,11 @@
    <UseDir>true</UseDir>
    <UseProperties>true</UseProperties>
    <BaselineFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/PolarAdvanced/polaradvanced/props.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PolarAdvanced/polaradvanced/props.kdx</Value>
    </BaselineFile>
    <UseScreenshots>true</UseScreenshots>
    <ScreenshotFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/PolarAdvanced/polaradvanced/shots.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PolarAdvanced/polaradvanced/shots.kdx</Value>
    </ScreenshotFile>
    <ScreenshotManualComparison>false</ScreenshotManualComparison>
    <WaitForSetupCommand>true</WaitForSetupCommand>
@@ -1821,7 +1821,7 @@
  </TestSuite>
  <TestSuite>
   <AppPath>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/examples/Polar/Parameters/Parameters</Value>
+   <Value Key="LINUX" >../../examples/Polar/Parameters/Parameters</Value>
   </AppPath>
   <UseExitCodes>false</UseExitCodes>
   <MinSuccessExitCode>0</MinSuccessExitCode>
@@ -1842,13 +1842,13 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Parameters-Fr6cN.conf</Value>
+   <Value Key="LINUX" >../../tests/kdx-scripts/Parameters-Fr6cN.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
   <Test>
    <Script>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/PolarParameters/polarparameters/script.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PolarParameters/polarparameters/script.kdx</Value>
    </Script>
    <Name>polarparameters</Name>
    <Description></Description>
@@ -1856,11 +1856,11 @@
    <UseDir>true</UseDir>
    <UseProperties>true</UseProperties>
    <BaselineFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/PolarParameters/polarparameters/props.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PolarParameters/polarparameters/props.kdx</Value>
    </BaselineFile>
    <UseScreenshots>true</UseScreenshots>
    <ScreenshotFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/PolarParameters/polarparameters/shots.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PolarParameters/polarparameters/shots.kdx</Value>
    </ScreenshotFile>
    <ScreenshotManualComparison>false</ScreenshotManualComparison>
    <WaitForSetupCommand>true</WaitForSetupCommand>
@@ -1882,7 +1882,7 @@
  </TestSuite>
  <TestSuite>
   <AppPath>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/examples/Polar/Simple/Simple</Value>
+   <Value Key="LINUX" >../../examples/Polar/Simple/Simple</Value>
   </AppPath>
   <UseExitCodes>false</UseExitCodes>
   <MinSuccessExitCode>0</MinSuccessExitCode>
@@ -1903,13 +1903,13 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Simple-tAFHy.conf</Value>
+   <Value Key="LINUX" >../../tests/kdx-scripts/Simple-tAFHy.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
   <Test>
    <Script>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/PolarSimple/polarsimple/script.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PolarSimple/polarsimple/script.kdx</Value>
    </Script>
    <Name>polarsimple</Name>
    <Description></Description>
@@ -1917,11 +1917,11 @@
    <UseDir>true</UseDir>
    <UseProperties>true</UseProperties>
    <BaselineFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/PolarSimple/polarsimple/props.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PolarSimple/polarsimple/props.kdx</Value>
    </BaselineFile>
    <UseScreenshots>true</UseScreenshots>
    <ScreenshotFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/PolarSimple/polarsimple/shots.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/PolarSimple/polarsimple/shots.kdx</Value>
    </ScreenshotFile>
    <ScreenshotManualComparison>false</ScreenshotManualComparison>
    <WaitForSetupCommand>true</WaitForSetupCommand>
@@ -1943,7 +1943,7 @@
  </TestSuite>
  <TestSuite>
   <AppPath>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/examples/RealTime/RealTime</Value>
+   <Value Key="LINUX" >../../examples/RealTime/RealTime</Value>
   </AppPath>
   <UseExitCodes>false</UseExitCodes>
   <MinSuccessExitCode>0</MinSuccessExitCode>
@@ -1964,13 +1964,13 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/RealTime-aNHWN.conf</Value>
+   <Value Key="LINUX" >../../tests/kdx-scripts/RealTime-aNHWN.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
   <Test>
    <Script>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/RealTime/realtime/script.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/RealTime/realtime/script.kdx</Value>
    </Script>
    <Name>realtime</Name>
    <Description></Description>
@@ -1978,11 +1978,11 @@
    <UseDir>true</UseDir>
    <UseProperties>true</UseProperties>
    <BaselineFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/RealTime/realtime/props.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/RealTime/realtime/props.kdx</Value>
    </BaselineFile>
    <UseScreenshots>true</UseScreenshots>
    <ScreenshotFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/RealTime/realtime/shots.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/RealTime/realtime/shots.kdx</Value>
    </ScreenshotFile>
    <ScreenshotManualComparison>false</ScreenshotManualComparison>
    <WaitForSetupCommand>true</WaitForSetupCommand>
@@ -2004,7 +2004,7 @@
  </TestSuite>
  <TestSuite>
   <AppPath>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/examples/SharedAbscissa/SharedAbscissa</Value>
+   <Value Key="LINUX" >../../examples/SharedAbscissa/SharedAbscissa</Value>
   </AppPath>
   <UseExitCodes>false</UseExitCodes>
   <MinSuccessExitCode>0</MinSuccessExitCode>
@@ -2025,13 +2025,13 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/SharedAbscissa-GvesT.conf</Value>
+   <Value Key="LINUX" >../../tests/kdx-scripts/SharedAbscissa-GvesT.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
   <Test>
    <Script>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/SharedAbscissa/sharedabscissa/script.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/SharedAbscissa/sharedabscissa/script.kdx</Value>
    </Script>
    <Name>sharedabscissa</Name>
    <Description></Description>
@@ -2039,11 +2039,11 @@
    <UseDir>true</UseDir>
    <UseProperties>true</UseProperties>
    <BaselineFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/SharedAbscissa/sharedabscissa/props.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/SharedAbscissa/sharedabscissa/props.kdx</Value>
    </BaselineFile>
    <UseScreenshots>true</UseScreenshots>
    <ScreenshotFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/SharedAbscissa/sharedabscissa/shots.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/SharedAbscissa/sharedabscissa/shots.kdx</Value>
    </ScreenshotFile>
    <ScreenshotManualComparison>false</ScreenshotManualComparison>
    <WaitForSetupCommand>true</WaitForSetupCommand>
@@ -2065,7 +2065,7 @@
  </TestSuite>
  <TestSuite>
   <AppPath>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/examples/Widget/Advanced/WidgetAdvanced</Value>
+   <Value Key="LINUX" >../../examples/Widget/Advanced/WidgetAdvanced</Value>
   </AppPath>
   <UseExitCodes>false</UseExitCodes>
   <MinSuccessExitCode>0</MinSuccessExitCode>
@@ -2086,13 +2086,13 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/WidgetAdvanced-nWNZj.conf</Value>
+   <Value Key="LINUX" >../../tests/kdx-scripts/WidgetAdvanced-nWNZj.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
   <Test>
    <Script>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/WidgetAdvanced/widgetadvanced/script.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/WidgetAdvanced/widgetadvanced/script.kdx</Value>
    </Script>
    <Name>widgetadvanced</Name>
    <Description></Description>
@@ -2100,11 +2100,11 @@
    <UseDir>true</UseDir>
    <UseProperties>true</UseProperties>
    <BaselineFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/WidgetAdvanced/widgetadvanced/props.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/WidgetAdvanced/widgetadvanced/props.kdx</Value>
    </BaselineFile>
    <UseScreenshots>true</UseScreenshots>
    <ScreenshotFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/WidgetAdvanced/widgetadvanced/shots.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/WidgetAdvanced/widgetadvanced/shots.kdx</Value>
    </ScreenshotFile>
    <ScreenshotManualComparison>false</ScreenshotManualComparison>
    <WaitForSetupCommand>true</WaitForSetupCommand>
@@ -2126,7 +2126,7 @@
  </TestSuite>
  <TestSuite>
   <AppPath>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/examples/Widget/Parameters/WidgetParameters</Value>
+   <Value Key="LINUX" >../../examples/Widget/Parameters/WidgetParameters</Value>
   </AppPath>
   <UseExitCodes>false</UseExitCodes>
   <MinSuccessExitCode>0</MinSuccessExitCode>
@@ -2147,13 +2147,13 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/WidgetParameters-KpPdH.conf</Value>
+   <Value Key="LINUX" >../../tests/kdx-scripts/WidgetParameters-KpPdH.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
   <Test>
    <Script>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/WidgetParameters/widgetparameters/script.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/WidgetParameters/widgetparameters/script.kdx</Value>
    </Script>
    <Name>widgetparameters</Name>
    <Description></Description>
@@ -2161,11 +2161,11 @@
    <UseDir>true</UseDir>
    <UseProperties>true</UseProperties>
    <BaselineFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/WidgetParameters/widgetparameters/props.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/WidgetParameters/widgetparameters/props.kdx</Value>
    </BaselineFile>
    <UseScreenshots>true</UseScreenshots>
    <ScreenshotFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/WidgetParameters/widgetparameters/shots.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/WidgetParameters/widgetparameters/shots.kdx</Value>
    </ScreenshotFile>
    <ScreenshotManualComparison>false</ScreenshotManualComparison>
    <WaitForSetupCommand>true</WaitForSetupCommand>
@@ -2187,7 +2187,7 @@
  </TestSuite>
  <TestSuite>
   <AppPath>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/examples/Widget/Simple/WidgetSimple</Value>
+   <Value Key="LINUX" >../../examples/Widget/Simple/WidgetSimple</Value>
   </AppPath>
   <UseExitCodes>false</UseExitCodes>
   <MinSuccessExitCode>0</MinSuccessExitCode>
@@ -2208,13 +2208,13 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/WidgetSimple-Tf4UU.conf</Value>
+   <Value Key="LINUX" >../../tests/kdx-scripts/WidgetSimple-Tf4UU.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
   <Test>
    <Script>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/WidgetSimple/widgetsimple/script.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/WidgetSimple/widgetsimple/script.kdx</Value>
    </Script>
    <Name>widgetsimple</Name>
    <Description></Description>
@@ -2222,11 +2222,11 @@
    <UseDir>true</UseDir>
    <UseProperties>true</UseProperties>
    <BaselineFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/WidgetSimple/widgetsimple/props.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/WidgetSimple/widgetsimple/props.kdx</Value>
    </BaselineFile>
    <UseScreenshots>true</UseScreenshots>
    <ScreenshotFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/WidgetSimple/widgetsimple/shots.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/WidgetSimple/widgetsimple/shots.kdx</Value>
    </ScreenshotFile>
    <ScreenshotManualComparison>false</ScreenshotManualComparison>
    <WaitForSetupCommand>true</WaitForSetupCommand>
@@ -2248,7 +2248,7 @@
  </TestSuite>
  <TestSuite>
   <AppPath>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/examples/Zoom/Zoom</Value>
+   <Value Key="LINUX" >../../examples/Zoom/Zoom</Value>
   </AppPath>
   <UseExitCodes>false</UseExitCodes>
   <MinSuccessExitCode>0</MinSuccessExitCode>
@@ -2269,13 +2269,13 @@
   </DefaultPostTestCheck>
   <OverrideParentConfig>true</OverrideParentConfig>
   <ConfigFile>
-   <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Zoom-VIJHe.conf</Value>
+   <Value Key="LINUX" >../../tests/kdx-scripts/Zoom-VIJHe.conf</Value>
   </ConfigFile>
   <WaitForSetupCommand>true</WaitForSetupCommand>
   <Selected>0</Selected>
   <Test>
    <Script>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Zoom/zoom/script.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Zoom/zoom/script.kdx</Value>
    </Script>
    <Name>zoom</Name>
    <Description></Description>
@@ -2283,11 +2283,11 @@
    <UseDir>true</UseDir>
    <UseProperties>true</UseProperties>
    <BaselineFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Zoom/zoom/props.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Zoom/zoom/props.kdx</Value>
    </BaselineFile>
    <UseScreenshots>true</UseScreenshots>
    <ScreenshotFile>
-    <Value Key="LINUX" >/home/michel/svn-kdchart/kdchart/tests/kdx-scripts/Zoom/zoom/shots.kdx</Value>
+    <Value Key="LINUX" >../../tests/kdx-scripts/Zoom/zoom/shots.kdx</Value>
    </ScreenshotFile>
    <ScreenshotManualComparison>false</ScreenshotManualComparison>
    <WaitForSetupCommand>true</WaitForSetupCommand>
