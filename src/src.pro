@@ -24,7 +24,9 @@ HEADERS += KDChartGlobal.h \
            KDChartCartesianCoordinatePlane.h \
            KDChartCartesianCoordinatePlane_p.h \
            KDChartPolarCoordinatePlane.h \
+           KDChartTernaryCoordinatePlane.h \
            KDChartPolarCoordinatePlane_p.h \
+           KDChartTernaryCoordinatePlane_p.h \
            KDChartChart.h \
            KDChartChart_p.h \
            KDChartWidget.h \
@@ -100,6 +102,7 @@ SOURCES += \
            KDChartAbstractCoordinatePlane.cpp \
            KDChartCartesianCoordinatePlane.cpp \
            KDChartPolarCoordinatePlane.cpp \
+           KDChartTernaryCoordinatePlane.cpp \
            KDChartChart.cpp \
            KDChartWidget.cpp \
            KDChartAbstractDiagram.cpp \

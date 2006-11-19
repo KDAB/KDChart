@@ -59,6 +59,7 @@ namespace KDChart {
     friend class AbstractCoordinatePlane;
     friend class CartesianCoordinatePlane;
     friend class PolarCoordinatePlane;
+    friend class TernaryCoordinatePlane;
 
     protected:
         explicit inline AbstractDiagram(
