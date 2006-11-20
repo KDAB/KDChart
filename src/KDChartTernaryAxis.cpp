@@ -18,7 +18,7 @@ TernaryAxis::~TernaryAxis()
    // empty
 }
 
-void  TernaryAxis::paintAll (QPainter &) 
+void  TernaryAxis::paintAll (QPainter &)
 {
    // not used
 }
@@ -28,11 +28,11 @@ void  TernaryAxis::paint (QPainter *)
    // not used
 }
 
-void  TernaryAxis::paintCtx (PaintContext * paintContext) 
+void  TernaryAxis::paintCtx (PaintContext * paintContext)
 {
    QPainter* p = paintContext->painter();
    TernaryCoordinatePlane* plane = (TernaryCoordinatePlane*) paintContext->coordinatePlane();
-   QObject* refArea = plane->parent();
+   // QObject* refArea = plane->parent();
    QRectF drawArea = paintContext->rectangle();
    QRectF titleArea;
 
@@ -47,7 +47,7 @@ void  TernaryAxis::paintCtx (PaintContext * paintContext)
    double range_inc = (range.second - range.first) / nr_of_ticks;
 
 
-   switch( m_position.value() ) 
+   switch( m_position.value() )
    {
    case KDChartEnums::PositionSouth:
       {
@@ -59,7 +59,7 @@ void  TernaryAxis::paintCtx (PaintContext * paintContext)
             tick += offset;
             p->drawLine( tick, tick + QPointF( 0.0, 5.0 ) );
             p->drawText( QRectF( tick.x() - 50.0, tick.y()+5.0, 100.0, 50.0 ),
-               QString( "%1" ).arg( range.first + range_inc * i ),
+               QString( tr( "%1" ) ).arg( range.first + range_inc * i ),
                QTextOption( Qt::AlignHCenter ) );
          }
 
@@ -77,7 +77,7 @@ void  TernaryAxis::paintCtx (PaintContext * paintContext)
             tick += offset;
             p->drawLine( tick, tick + QPointF( -5.0, 0.0 ) );
             p->drawText( QRectF( tick.x() -106.0, tick.y()-7.0, 100.0, 50.0 ),
-               QString( "%1" ).arg( range.first + range_inc * i  ),
+                         QString( tr( "%1" ) ).arg( range.first + range_inc * i  ),
                QTextOption( Qt::AlignRight ) );
          }
 
@@ -97,7 +97,7 @@ void  TernaryAxis::paintCtx (PaintContext * paintContext)
             tick += offset;
             p->drawLine( tick, tick + QPointF( 5.0, 0.0 ) );
             p->drawText( QRectF( tick.x() + 6.0, tick.y()-7.0, 100.0, 50.0 ),
-               QString( "%1" ).arg( range.first + range_inc * i  ),
+                         QString( tr( "%1" ) ).arg( range.first + range_inc * i  ),
                QTextOption( Qt::AlignLeft ) );
          }
 
@@ -143,23 +143,23 @@ void  TernaryAxis::setGeometry (const QRect &rect)
    m_geometry = rect;
 }
 
-QSize  TernaryAxis::minimumSize () const  
+QSize  TernaryAxis::minimumSize () const
 {
    // todo: return realistic sizes
    return QSize( 100, 100 );
 }
 
-QSize  TernaryAxis::maximumSize () const 
+QSize  TernaryAxis::maximumSize () const
 {
    return QSize( 300, 200 );
 }
 
-QSize  TernaryAxis::sizeHint () const  
+QSize  TernaryAxis::sizeHint () const
 {
    return QSize( 150, 100 );
 }
 
-Qt::Orientations  TernaryAxis::expandingDirections () const 
+Qt::Orientations  TernaryAxis::expandingDirections () const
 {
    return Qt::Vertical;
 }

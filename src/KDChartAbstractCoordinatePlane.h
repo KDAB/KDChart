@@ -265,7 +265,7 @@ namespace KDChart {
 
         /**
          * Tests, if a point is visible on the coordinate plane.
-         * 
+         *
          * \note Before calling this function the point must have been translated into coordinate plane space.
          */
         const bool isVisiblePoint( const QPointF& point ) const;

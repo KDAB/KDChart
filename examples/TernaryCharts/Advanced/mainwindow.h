@@ -22,7 +22,7 @@ public:
 private:
     KDChart::Chart* m_chart;
     KDChart::TernaryDiagram* m_diagram;
-    KDChart::TernaryCoordinatePlane* m_polarPlane;
+    KDChart::TernaryCoordinatePlane* m_ternaryPlane;
 };
 
 #endif

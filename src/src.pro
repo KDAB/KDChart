@@ -94,7 +94,9 @@ HEADERS += KDChartGlobal.h \
            KDChartThreeDLineAttributes.h \
            KDChartThreeDLineAttributes_p.h \
            KDChartThreeDPieAttributes.h \
-           KDChartThreeDPieAttributes_p.h
+           KDChartThreeDPieAttributes_p.h \ 
+	   KDChartTernaryAxis.h \
+	   KDChartTernaryDiagram.h
 
 SOURCES += \
            KDChartMeasure.cpp \
@@ -147,7 +149,9 @@ SOURCES += \
            KDChartAbstractThreeDAttributes.cpp \
            KDChartThreeDBarAttributes.cpp \
            KDChartThreeDLineAttributes.cpp \
-           KDChartThreeDPieAttributes.cpp
+           KDChartThreeDPieAttributes.cpp \
+	   KDChartTernaryAxis.cpp \
+	   KDChartTernaryDiagram.cpp
 
 CONFIG += warn-on
 
