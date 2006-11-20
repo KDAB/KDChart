@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QDialog>
+#include <QStandardItemModel>
 
 #include "ui_mainwindow.h"
 
@@ -20,9 +21,13 @@ public:
     explicit MainWindow( QWidget* parent = 0 );
 
 private:
+    void setupModel();
+
     KDChart::Chart* m_chart;
     KDChart::TernaryDiagram* m_diagram;
     KDChart::TernaryCoordinatePlane* m_ternaryPlane;
+
+    QStandardItemModel m_model;
 };
 
 #endif

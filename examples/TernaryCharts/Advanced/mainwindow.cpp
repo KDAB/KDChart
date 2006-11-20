@@ -27,4 +27,30 @@ MainWindow::MainWindow( QWidget* parent )
 
     QHBoxLayout* chartLayout = new QHBoxLayout( frame );
     chartLayout->addWidget( m_chart );
+
+    setupModel();
+    m_diagram->setModel( &m_model );
+}
+
+void MainWindow::setupModel()
+{
+    m_model.insertRows( 0, 5 );
+    m_model.insertColumns(  0,  3 );
+
+    const float column0Share = 1.0/3.0;
+    const float column1Share = 1.0/3.0;
+    const float column2Share = 1.0/3.0;
+
+    for ( int row = 0; row < m_model.rowCount(); ++row ) {
+        const double SkewX = column0Share * ( 1 - 1.0/( 5 * row*row*row + 1 ) );
+        const double SkewY = SkewX;
+        QModelIndex index;
+
+        index = m_model.index( row, 0 );
+        m_model.setData( index, QVariant( column0Share - SkewX ) );
+        index = m_model.index( row, 1 );
+        m_model.setData( index, QVariant( column1Share + SkewX - SkewY) );
+        index = m_model.index( row, 2 );
+        m_model.setData( index, QVariant( column2Share + SkewY ) );
+    }
 }
