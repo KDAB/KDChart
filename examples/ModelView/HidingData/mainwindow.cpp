@@ -36,8 +36,6 @@
 #include <KDChartThreeDLineAttributes>
 
 
-#include <QTimer>
-
 using namespace KDChart;
 
 MainWindow::MainWindow( QWidget* parent ) :
@@ -91,10 +89,6 @@ MainWindow::MainWindow( QWidget* parent ) :
     legend->setOrientation( Qt::Horizontal );
     m_chart->addLegend( legend );
 
-    // Instantiate the timer
-    QTimer *timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(slot_timerFired()));
-    timer->start(40);
 }
 
 void MainWindow::on_showDataset1CB_toggled( bool checked )
