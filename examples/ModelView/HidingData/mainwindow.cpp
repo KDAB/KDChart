@@ -28,7 +28,6 @@
 #include "mainwindow.h"
 
 #include <KDChartChart>
-#include <KDChartDatasetProxyModel>
 #include <KDChartDataValueAttributes>
 #include <KDChartLegend>
 #include <KDChartLineDiagram>
@@ -42,9 +41,6 @@ MainWindow::MainWindow( QWidget* parent ) :
     QWidget( parent )
 {
     setupUi( this );
-
-    m_curColumn = -1;
-    m_curOpacity = 0;
 
     QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
     m_chart = new Chart();
@@ -61,9 +57,8 @@ MainWindow::MainWindow( QWidget* parent ) :
 
     // Set up the diagram
     m_lines = new LineDiagram();
-    // Initialize and assign the proxy model to the diagram
-    m_proxyModel = new KDChart::DatasetProxyModel(this);
-    updateProxyModel();
+    // Register the data model at the diagram
+    m_lines->setModel( m_model );
     // Add axes to the diagram
     CartesianAxis *xAxis = new CartesianAxis( m_lines );
     CartesianAxis *yAxis = new CartesianAxis ( m_lines );
@@ -88,42 +83,23 @@ MainWindow::MainWindow( QWidget* parent ) :
     legend->setTitleText("");
     legend->setOrientation( Qt::Horizontal );
     m_chart->addLegend( legend );
-
 }
 
 void MainWindow::on_showDataset1CB_toggled( bool checked )
 {
-    Q_UNUSED(checked);
-    updateProxyModel();
+    m_lines->setHidden( 0, ! checked );
 }
 void MainWindow::on_showDataset2CB_toggled( bool checked )
 {
-    Q_UNUSED(checked);
-    updateProxyModel();
+    m_lines->setHidden( 1, ! checked );
 }
 void MainWindow::on_showDataset3CB_toggled( bool checked )
 {
-    Q_UNUSED(checked);
-    updateProxyModel();
+    m_lines->setHidden( 2, ! checked );
 }
-
-void MainWindow::updateProxyModel()
-{
-    DatasetDescriptionVector columnConfig;
-    if( showDataset1CB->isChecked() )
-        columnConfig.append( 0 );
-    if( showDataset2CB->isChecked() )
-        columnConfig.append( 1 );
-    if( showDataset3CB->isChecked() )
-        columnConfig.append( 2 );
-
-    m_proxyModel->setSourceModel(m_model);
-    m_proxyModel->setDatasetColumnDescriptionVector( columnConfig );
-    m_lines->setModel( m_proxyModel );
-
+/*
     m_chart->update();
-}
-
+*/
 
 void MainWindow::openFile(const QString &path)
 {

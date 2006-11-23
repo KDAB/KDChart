@@ -33,7 +33,6 @@ class QAbstractItemModel;
 namespace KDChart {
     class Chart;
     class LineDiagram;
-    class DatasetProxyModel;
 }
 
 class MainWindow : public QWidget, private Ui::MainWindow
@@ -47,16 +46,12 @@ private slots:
     void on_showDataset1CB_toggled( bool checked );
     void on_showDataset2CB_toggled( bool checked );
     void on_showDataset3CB_toggled( bool checked );
-    void updateProxyModel();
     void openFile(const QString &path);
 
 private:
     KDChart::Chart             * m_chart;
     KDChart::LineDiagram       * m_lines;
     QAbstractItemModel         * m_model;
-    KDChart::DatasetProxyModel * m_proxyModel;
-    int m_curColumn;
-    int m_curOpacity;
 };
 
 
