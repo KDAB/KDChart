@@ -61,6 +61,7 @@ int main( int argc, char** argv ) {
     dva.setVisible( true );
 
     widget.lineDiagram()->setDataValueAttributes( dva );
+    widget.setGlobalLeading( 10,  10,  10, 10 );
 
     widget.show();
 
