@@ -7241,37 +7241,6 @@ done in the same way as for a
 		</para>
             </sect2>
         </sect1>
-        <sect1>
-            <title>Specifying font sizes and other measures</title>
-            <para>
-                This chapter will show you how to use the <classname>KDChart::Measure</classname>
-                class for specifying font sizes or other measures.
-            </para>
-            <sect2>
-                <title>Purpose and capabilities of the Measure class</title>
-                <para>
-                    ...
-                </para>
-            </sect2>
-            <sect2>
-                <title>How to specify absolute values</title>
-                <para>
-                    ...
-                </para>
-            </sect2>
-            <sect2>
-                <title>How to specify relative values</title>
-                <para>
-                    ...
-                </para>
-            </sect2>
-            <sect2>
-                <title>Examples on using the Measure class</title>
-                <para>
-                    ...
-                </para>
-            </sect2>
-        </sect1>
 <!--
 	<sect1>
             <title id="customizingtips">Tips</title>
@@ -7303,7 +7272,7 @@ done in the same way as for a
         <titleabbrev id="chnum_advancedcharting">Chapter 9</titleabbrev>
 	<para>
 	    In this section we want to present you some examples which demonstrate interesting 
-	    features offered by the KD Chart 2.0 API by displaying the resulting widget and
+	    features offered by the KD Chart 2.0 API by dispalying the resulting widget and 
 	    giving you a link to the directory in which you can study the example code, compile 
 	    and run it.
         </para>	

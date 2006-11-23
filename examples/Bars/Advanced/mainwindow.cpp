@@ -48,9 +48,6 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_chart = new Chart();
     chartLayout->addWidget( m_chart );
 
-    m_chart->setGlobalLeadingTop( 50 );
-    m_chart->setGlobalLeadingBottom( 50 );
-
     m_model.loadFromCSV( ":/data" );
 
     // Set up the diagram
