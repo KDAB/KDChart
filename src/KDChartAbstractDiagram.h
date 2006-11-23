@@ -194,6 +194,53 @@ namespace KDChart {
 
 
         /**
+         * Hide (or unhide, resp.) a data cell.
+         * @param index The datapoint to set the hidden status for.
+         * @param hidden The hidden status to set.
+         */
+        void setHidden( const QModelIndex & index, bool hidden );
+
+        /**
+         * Hide (or unhide, resp.) a dataset.
+         * @param dataset The dataset to set the hidden status for.
+         * @param hidden The hidden status to set.
+         */
+        void setHidden( int column, bool hidden );
+
+        /**
+         * Hide (or unhide, resp.) all datapoints in the model.
+         * @param hidden The hidden status to set.
+         */
+        void setHidden( bool hidden );
+
+        /**
+         * Retrieve the hidden status speficied globally. This will fall
+         * back automatically to the default settings ( = not hidden), if there
+         * are no specific settings.
+         * @return The global hidden status.
+         */
+        bool isHidden() const;
+
+        /**
+         * Retrieve the hidden status for the given dataset. This will fall
+         * back automatically to what was set at diagram level, if there
+         * are no dataset specific settings.
+         * @param dataset The dataset to retrieve the hidden status for.
+         * @return The hidden status for the given dataset.
+         */
+        bool isHidden( int column ) const;
+
+        /**
+         * Retrieve the hidden status for the given index. This will fall
+         * back automatically to what was set at dataset or diagram level, if there
+         * are no datapoint specific settings.
+         * @param index The datapoint to retrieve the hidden status for.
+         * @return The hidden status for the given index.
+         */
+        bool isHidden( const QModelIndex & index ) const;
+
+
+        /**
          * Set the DataValueAttributes for the given index.
          * @param index The datapoint to set the attributes for.
          * @param a The attributes to set.

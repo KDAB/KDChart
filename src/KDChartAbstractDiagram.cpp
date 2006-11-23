@@ -237,6 +237,55 @@ void AbstractDiagram::dataChanged( const QModelIndex &topLeft,
   scheduleDelayedItemsLayout();
 }
 
+
+void AbstractDiagram::setHidden( const QModelIndex & index, bool hidden )
+{
+    d->attributesModel->setData(
+        d->attributesModel->mapFromSource( index ),
+        qVariantFromValue( hidden ),
+        DataHiddenRole );
+    emit propertiesChanged();
+}
+
+void AbstractDiagram::setHidden( int column, bool hidden )
+{
+    d->attributesModel->setHeaderData(
+        column, Qt::Vertical,
+        qVariantFromValue( hidden ),
+        DataHiddenRole );
+    emit propertiesChanged();
+}
+
+void AbstractDiagram::setHidden( bool hidden )
+{
+    d->attributesModel->setModelData(
+        qVariantFromValue( hidden ),
+        DataHiddenRole );
+    emit propertiesChanged();
+}
+
+bool AbstractDiagram::isHidden() const
+{
+    return qVariantValue<bool>(
+        attributesModel()->modelData( DataHiddenRole ) );
+}
+
+bool AbstractDiagram::isHidden( int column ) const
+{
+    return qVariantValue<bool>(
+        attributesModel()->data(
+            attributesModel()->mapFromSource(columnToIndex( column )),
+            DataHiddenRole ) );
+}
+bool AbstractDiagram::isHidden( const QModelIndex & index ) const
+{
+    return qVariantValue<bool>(
+        attributesModel()->data(
+            attributesModel()->mapFromSource(index),
+            DataHiddenRole ) );
+}
+
+
 void AbstractDiagram::setDataValueAttributes( const QModelIndex & index,
                                               const DataValueAttributes & a )
 {
@@ -250,7 +299,6 @@ void AbstractDiagram::setDataValueAttributes( const QModelIndex & index,
 
 void AbstractDiagram::setDataValueAttributes( int column, const DataValueAttributes & a )
 {
-
     d->attributesModel->setHeaderData(
         column, Qt::Vertical,
         qVariantFromValue( a ), DataValueLabelAttributesRole );
@@ -259,7 +307,8 @@ void AbstractDiagram::setDataValueAttributes( int column, const DataValueAttribu
 
 DataValueAttributes AbstractDiagram::dataValueAttributes() const
 {
-    return qVariantValue<DataValueAttributes>( KDChart::DataValueLabelAttributesRole );
+    return qVariantValue<DataValueAttributes>(
+        attributesModel()->modelData( KDChart::DataValueLabelAttributesRole ) );
 }
 
 DataValueAttributes AbstractDiagram::dataValueAttributes( int column ) const
