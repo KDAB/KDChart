@@ -92,7 +92,9 @@ public:
     void resize ( const QSizeF& area );
 
 protected:
-    double valueForCellTesting( int row, int column, bool& bOK ) const;
+    double valueForCellTesting( int row, int column,
+                                bool& bOK,
+                                bool showHiddenCellsAsInvalid = false ) const;
     LineAttributes::MissingValuesPolicy getCellValues(
         int row, int column,
         double& valueX, double& valueY ) const;

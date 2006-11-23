@@ -229,6 +229,10 @@ const QPair<QPointF, QPointF> LineDiagram::calculateDataBoundaries() const
 {
     if ( !checkInvariants( true ) ) return QPair<QPointF, QPointF>( QPointF( 0, 0 ), QPointF( 0, 0 ) );
 
+    // note: calculateDataBoundaries() is ignoring the hidden flags.
+    //       That's not a bug but a feature: Hiding data does not mean removing them.
+    // For totally removing data from KD Chart's view people can use e.g. a proxy model ...
+
     const int rowCount = d->attributesModel->rowCount(attributesModelRootIndex());
     const int colCount = d->attributesModel->columnCount(attributesModelRootIndex());
     double xMin = 0;
@@ -375,16 +379,18 @@ void LineDiagram::paintEvent ( QPaintEvent*)
 }
 
 
-double LineDiagram::valueForCellTesting( int row, int column, bool& bOK ) const
+double LineDiagram::valueForCellTesting( int row, int column,
+                                         bool& bOK,
+                                         bool showHiddenCellsAsInvalid ) const
 {
-    double value =
-        d->attributesModel->data(
-            d->attributesModel->index( row, column, attributesModelRootIndex() )
-        ).toDouble( &bOK );
-    if( ! bOK )
-        value = 0.0;
-
-    return value;
+    double value;
+    if( showHiddenCellsAsInvalid && isHidden( model()->index( row, column, rootIndex() ) ) )
+        bOK = false;
+    else
+        value = d->attributesModel->data(
+                    d->attributesModel->index( row, column, attributesModelRootIndex() )
+                ).toDouble( &bOK );
+    return bOK ? value : 0.0;
 }
 
 
@@ -396,10 +402,10 @@ LineAttributes::MissingValuesPolicy LineDiagram::getCellValues(
 
     bool bOK = true;
     valueX = ( datasetDimension() > 1 && column > 0 )
-           ? valueForCellTesting(row, column-1, bOK)
+           ? valueForCellTesting( row, column-1, bOK, true )
            : row;
     if( bOK )
-        valueY = valueForCellTesting(row, column, bOK);
+        valueY = valueForCellTesting( row, column, bOK, true );
     if( bOK ){
         policy = LineAttributes::MissingValuesPolicyIgnored;
     }else{
@@ -428,9 +434,18 @@ void LineDiagram::paint( PaintContext* ctx )
     const QPointF bottomLeft = boundaries.first;
     const QPointF topRight = boundaries.second;
 
-    //calculates and stores the values
+    int maxFound = 0;
+    {   // find the last column number that is not hidden
+        const int columnCount = d->attributesModel->columnCount(attributesModelRootIndex());
+        for( int iColumn =  datasetDimension()-1;
+            iColumn <  columnCount;
+            iColumn += datasetDimension() )
+            if( ! isHidden( iColumn ) )
+                maxFound = iColumn;
+    }
+    const int lastVisibleColumn = maxFound;
     const int rowCount = d->attributesModel->rowCount(attributesModelRootIndex());
-    const int colCount = d->attributesModel->columnCount(attributesModelRootIndex());
+
     DataValueTextInfoList list;
     LineAttributesInfoList lineList;
     LineAttributes::MissingValuesPolicy policy;
@@ -440,8 +455,9 @@ void LineDiagram::paint( PaintContext* ctx )
     {
         case LineDiagram::Normal:
         {
-            for( int iColumn = datasetDimension()-1;
-                     iColumn < colCount;  iColumn += datasetDimension() ) {
+            for( int iColumn  = datasetDimension()-1;
+                     iColumn <= lastVisibleColumn;
+                     iColumn += datasetDimension() ) {
 
                 //display area can be set by column
                 QModelIndex indexRow0 = model()->index( 0, iColumn, rootIndex() );
@@ -568,7 +584,9 @@ void LineDiagram::paint( PaintContext* ctx )
             bottomArea.append( coordinatePlane()->translate( QPointF( topRight.x(),   0.0 ) ) );
             bool bFirstDataset = true;
 
-            for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
+            for( int i =  datasetDimension()-1;
+                     i <= lastVisibleColumn;
+                     i += datasetDimension() ) {
                 QModelIndex indexRow0 = model()->index( 0, i, rootIndex() );
                 LineAttributes laa = lineAttributes( indexRow0 );
                 bool bDisplayArea = laa.displayArea();
@@ -639,11 +657,13 @@ void LineDiagram::paint( PaintContext* ctx )
 
             //calculate sum of values for each column and store
             for ( int j=0; j<rowCount ; ++j ) {
-                for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
+                for( int i =  datasetDimension()-1;
+                         i <= lastVisibleColumn;
+                         i += datasetDimension() ) {
                     double tmpValue = valueForCell( j, i );
                     if ( tmpValue > 0 )
                         sumValues += tmpValue;
-                    if ( i == colCount-1 ) {
+                    if ( i == lastVisibleColumn ) {
                         sumValuesVector <<  sumValues ;
                         sumValues = 0;
                     }
@@ -658,7 +678,9 @@ void LineDiagram::paint( PaintContext* ctx )
             bool bFirstDataset = true;
 
             // calculate stacked percent value
-            for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
+            for( int i =  datasetDimension()-1;
+                     i <= lastVisibleColumn;
+                     i += datasetDimension() ) {
                 QModelIndex indexRow0 = model()->index( 0, i, rootIndex() );
                 LineAttributes laa = lineAttributes( indexRow0 );
                 bool bDisplayArea = laa.displayArea();

@@ -318,6 +318,7 @@ void Legend::setVisible( bool visible )
 
 void Legend::setNeedRebuild()
 {
+    //qDebug() << "setNeedRebuild()";
     buildLegend();
     sizeHint();
 }
@@ -671,14 +672,24 @@ void Legend::buildLegend()
     d->modelBrushes.clear();
     d->modelPens.clear();
     d->modelMarkers.clear();
+    // retrieve the diagrams' settings for all non-hidden datasets
     for (int i = 0; i < d->observers.size(); ++i){
         const AbstractDiagram* diagram = d->observers.at(i)->diagram();
-        //qDebug() << "Legend::buildLegend() adding to d->modelLabels :" << diagram->datasetLabels();
-        d->modelLabels  += diagram->datasetLabels();
-        d->modelBrushes += diagram->datasetBrushes();
-        d->modelPens    += diagram->datasetPens();
-        d->modelMarkers += diagram->datasetMarkers();
+        const QStringList             diagramLabels(  diagram->datasetLabels()  );
+        const QList<QBrush>           diagramBrushes( diagram->datasetBrushes() );
+        const QList<QPen>             diagramPens(    diagram->datasetPens()    );
+        const QList<MarkerAttributes> diagramMarkers( diagram->datasetMarkers() );
+        for ( int dataset = 0; dataset < diagramLabels.count(); dataset++ ) {
+            // only show the label if the diagrams is NOT having the dataset set to hidden
+            if( ! diagram->isHidden( dataset ) ){
+                d->modelLabels  += diagramLabels[   dataset ];
+                d->modelBrushes += diagramBrushes[  dataset ];
+                d->modelPens    += diagramPens[     dataset ];
+                d->modelMarkers += diagramMarkers[  dataset ];
+            }
+        }
     }
+
     Q_ASSERT( d->modelLabels.count() == d->modelBrushes.count() );
 
     // legend caption
@@ -720,7 +731,6 @@ void Legend::buildLegend()
     //qDebug() << "fontHeight:" << fontHeight;
 
     for ( int dataset = 0; dataset < d->modelLabels.count(); dataset++ ) {
-
         // retrieve the marker attributes, and adjust the size, if needed
         MarkerAttributes markerAttrs( markerAttributes( dataset ) );
         if( useAutomaticMarkerSize() || ! markerAttrs.markerSize().isValid() )
@@ -728,10 +738,10 @@ void Legend::buildLegend()
         // Note: We may use diagram() for all of the MarkerLayoutItem instances,
         //       since all they need the diagram for is to invoke mDiagram->paintMarker()
         KDChart::MarkerLayoutItem* markerItem = new KDChart::MarkerLayoutItem( diagram(),
-                                                                               markerAttrs,
-                                                                               brush( dataset ),
-                                                                               pen( dataset ),
-                                                                               Qt::AlignLeft );
+                                                                            markerAttrs,
+                                                                            brush( dataset ),
+                                                                            pen( dataset ),
+                                                                            Qt::AlignLeft );
         d->layoutItems << markerItem;
         if( orientation() == Qt::Vertical )
             d->layout->addItem( markerItem,
@@ -762,7 +772,7 @@ void Legend::buildLegend()
                                 dataset*4+1 );
 
         // horizontal lines (only in vertical mode, and not after the last item)
-        if( orientation() == Qt::Vertical && showLines() && dataset != ( d->modelLabels.count()-1 ) ) {
+        if( orientation() == Qt::Vertical && showLines() && dataset != d->modelLabels.count()-1 ) {
             KDChart::HorizontalLineLayoutItem* lineItem = new KDChart::HorizontalLineLayoutItem();
             d->layoutItems << lineItem;
             d->layout->addItem( lineItem,
@@ -772,7 +782,7 @@ void Legend::buildLegend()
         }
 
         // vertical lines (only in horizontal mode, and not after the last item)
-        if( orientation() == Qt::Horizontal && showLines() && dataset != ( d->modelLabels.count()-1 ) ) {
+        if( orientation() == Qt::Horizontal && showLines() && dataset != d->modelLabels.count()-1 ) {
             KDChart::VerticalLineLayoutItem* lineItem = new KDChart::VerticalLineLayoutItem();
             d->layoutItems << lineItem;
             d->layout->addItem( lineItem,

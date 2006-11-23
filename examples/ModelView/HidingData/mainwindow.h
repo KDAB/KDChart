@@ -46,6 +46,7 @@ private slots:
     void on_showDataset1CB_toggled( bool checked );
     void on_showDataset2CB_toggled( bool checked );
     void on_showDataset3CB_toggled( bool checked );
+    void setHidden( int dataset, bool hidden );
     void openFile(const QString &path);
 
 private:

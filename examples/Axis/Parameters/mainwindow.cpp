@@ -56,6 +56,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     // Set up the diagram
     m_lines = new LineDiagram();
     m_lines->setModel( &m_model );
+    /**/
     //CartesianAxisList List = m_lines->axesList();
     CartesianAxis *xAxis = new CartesianAxis( m_lines );
     CartesianAxis *yAxis = new CartesianAxis ( m_lines );
@@ -64,12 +65,13 @@ MainWindow::MainWindow( QWidget* parent ) :
     xAxis->setPosition ( KDChart::CartesianAxis::Bottom );
     yAxis->setPosition ( KDChart::CartesianAxis::Left );
     axisTop->setPosition( KDChart::CartesianAxis::Top );
-    axisRight->setPosition( KDChart::CartesianAxis::Left);//Right );
+    axisRight->setPosition( KDChart::CartesianAxis::Right );
 
     xAxis->setTitleText ( "Abscissa axis at the bottom" );
     yAxis->setTitleText ( "Ordinate axis at the left side" );
     axisTop->setTitleText ( "Abscissa axis at the top" );
     axisRight->setTitleText ( "Ordinate axis at the right side" );
+
     TextAttributes taTop ( xAxis->titleTextAttributes () );
     taTop.setPen( QPen( Qt::red ) );
     axisTop->setTitleTextAttributes ( taTop );
@@ -83,6 +85,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_lines->addAxis( yAxis );
     m_lines->addAxis( axisTop );
     m_lines->addAxis( axisRight );
+    /**/
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
 
     // Set up the legend

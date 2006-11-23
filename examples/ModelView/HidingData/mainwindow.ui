@@ -10,7 +10,7 @@
    </rect>
   </property>
   <property name="windowTitle" >
-   <string>Using a proxy model to disable parts of the data</string>
+   <string>Hiding data without removing them from the model</string>
   </property>
   <property name="windowIcon" >
    <iconset/>

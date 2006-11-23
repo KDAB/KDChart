@@ -300,7 +300,7 @@ namespace KDChart {
         /** Emitted upon change of a property of the Coordinate Plane or any of its components. */
         void propertiesChanged();
 
-    protected:
+        protected:
         virtual DataDimensionsList getDataDimensionsList() const = 0;
 
         //KDCHART_DECLARE_PRIVATE_DERIVED( AbstractCoordinatePlane )

@@ -61,6 +61,8 @@ public:
 
     m_chart.coordinatePlane()->replaceDiagram(diagram);
 
+    m_chart.setGlobalLeadingTop( 150 );
+
     QVBoxLayout* l = new QVBoxLayout(this);
     l->addWidget(&m_chart);
     setLayout(l);

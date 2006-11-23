@@ -38,7 +38,7 @@ public:
       \brief MissingValuesPolicy specifies how a missing value will be shown in a line diagram.
 
       Missing value is assumed if the data cell contains a QVariant that can not be
-      interpreted as a double.
+      interpreted as a double, or if the data cell is hidden while its dataset is not hidden.
 
       \li \c MissingValuesAreBridged the default: No markers will be shown for missing values
       but the line will be bridged if there is at least one valid cell before and after

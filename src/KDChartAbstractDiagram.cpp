@@ -244,7 +244,7 @@ void AbstractDiagram::setHidden( const QModelIndex & index, bool hidden )
         d->attributesModel->mapFromSource( index ),
         qVariantFromValue( hidden ),
         DataHiddenRole );
-    emit propertiesChanged();
+    emit dataHidden();
 }
 
 void AbstractDiagram::setHidden( int column, bool hidden )
@@ -253,7 +253,7 @@ void AbstractDiagram::setHidden( int column, bool hidden )
         column, Qt::Vertical,
         qVariantFromValue( hidden ),
         DataHiddenRole );
-    emit propertiesChanged();
+    emit dataHidden();
 }
 
 void AbstractDiagram::setHidden( bool hidden )
@@ -261,7 +261,7 @@ void AbstractDiagram::setHidden( bool hidden )
     d->attributesModel->setModelData(
         qVariantFromValue( hidden ),
         DataHiddenRole );
-    emit propertiesChanged();
+    emit dataHidden();
 }
 
 bool AbstractDiagram::isHidden() const

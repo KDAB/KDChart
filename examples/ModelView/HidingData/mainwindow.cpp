@@ -82,24 +82,30 @@ MainWindow::MainWindow( QWidget* parent ) :
     legend->setShowLines( true );
     legend->setTitleText("");
     legend->setOrientation( Qt::Horizontal );
+    //legend->addDiagram( m_lines );
     m_chart->addLegend( legend );
 }
 
 void MainWindow::on_showDataset1CB_toggled( bool checked )
 {
-    m_lines->setHidden( 0, ! checked );
+    setHidden( 0, ! checked );
 }
+
 void MainWindow::on_showDataset2CB_toggled( bool checked )
 {
-    m_lines->setHidden( 1, ! checked );
+    setHidden( 1, ! checked );
 }
+
 void MainWindow::on_showDataset3CB_toggled( bool checked )
 {
-    m_lines->setHidden( 2, ! checked );
+    setHidden( 2, ! checked );
 }
-/*
+
+void MainWindow::setHidden( int dataset, bool hidden )
+{
+    m_lines->setHidden( dataset, hidden );
     m_chart->update();
-*/
+}
 
 void MainWindow::openFile(const QString &path)
 {

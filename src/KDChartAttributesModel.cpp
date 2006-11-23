@@ -188,7 +188,8 @@ bool AttributesModel::isKnownAttributesRole( int role ) const
       case ThreeDBarAttributesRole:
       case PieAttributesRole:
       case ThreeDPieAttributesRole:
-          oneOfOurs = true;
+      case DataHiddenRole:
+            oneOfOurs = true;
         default:
         break;
     }

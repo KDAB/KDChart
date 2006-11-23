@@ -59,7 +59,6 @@ namespace KDChart {
     friend class AbstractCoordinatePlane;
     friend class CartesianCoordinatePlane;
     friend class PolarCoordinatePlane;
-    friend class TernaryCoordinatePlane;
 
     protected:
         explicit inline AbstractDiagram(
@@ -195,6 +194,13 @@ namespace KDChart {
 
         /**
          * Hide (or unhide, resp.) a data cell.
+         *
+         * \note Hidden data are still taken into account by the coordinate plane,
+         * so neither the grid nor your axes' ranges will change, when you hide data.
+         * For totally removing data from KD Chart's view you can use another approach: 
+         * e.g. you could define a proxy model on top of your data model, and register
+         * the proxy model calling setModel() instead of registering your real data model.
+         *
          * @param index The datapoint to set the hidden status for.
          * @param hidden The hidden status to set.
          */
@@ -202,6 +208,13 @@ namespace KDChart {
 
         /**
          * Hide (or unhide, resp.) a dataset.
+         *
+         * \note Hidden data are still taken into account by the coordinate plane,
+         * so neither the grid nor your axes' ranges will change, when you hide data.
+         * For totally removing data from KD Chart's view you can use another approach: 
+         * e.g. you could define a proxy model on top of your data model, and register
+         * the proxy model calling setModel() instead of registering your real data model.
+         *
          * @param dataset The dataset to set the hidden status for.
          * @param hidden The hidden status to set.
          */
@@ -209,6 +222,13 @@ namespace KDChart {
 
         /**
          * Hide (or unhide, resp.) all datapoints in the model.
+         *
+         * \note Hidden data are still taken into account by the coordinate plane,
+         * so neither the grid nor your axes' ranges will change, when you hide data.
+         * For totally removing data from KD Chart's view you can use another approach: 
+         * e.g. you could define a proxy model on top of your data model, and register
+         * the proxy model calling setModel() instead of registering your real data model.
+         *
          * @param hidden The hidden status to set.
          */
         void setHidden( bool hidden );
@@ -534,6 +554,9 @@ namespace KDChart {
 
         /** This signal is emitted, when either the model or the AttributesModel is replaced. */
         void modelsChanged();
+
+        /** This signal is emitted, when the hidden status of at least one data cell was (un)set. */
+        void dataHidden();
 
         /** Emitted upon change of a property of the Diagram. */
         void propertiesChanged();

@@ -65,7 +65,7 @@ public:
     me = lta.fontSize();
     me.setValue( me.value() * 1.5 );
     lta.setFontSize( me );
-    legend->setTitleTextAttributes(  lta );
+    legend->setTitleTextAttributes( lta );
 
     // Configure a pen to surround
     // the markers with a border
