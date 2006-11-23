@@ -44,6 +44,7 @@ DiagramObserver::DiagramObserver( AbstractDiagram * diagram, QObject* parent )
         connect( m_diagram, SIGNAL(destroyed(QObject*)), SLOT(slotDestroyed()));
         connect( m_diagram, SIGNAL(modelsChanged()), SLOT(slotModelsChanged()));
     }
+    init();
 }
 
 DiagramObserver::~DiagramObserver() {}
@@ -73,8 +74,8 @@ void DiagramObserver::init()
              SLOT(slotDataChanged()));
     connect( m_diagram->attributesModel(), SIGNAL(attributesChanged(QModelIndex,QModelIndex)),
              SLOT(slotAttributesChanged()));
-    connect( m_diagram->model(), SIGNAL(dataHidden()),
-             SLOT(slotDataChanged()));
+    connect( m_diagram, SIGNAL(dataHidden()),
+             SLOT(slotDataHidden()));
     connect( m_diagram->model(), SIGNAL(headerDataChanged(Qt::Orientation,int,int)),
              SLOT(slotDataChanged()));
     m_model = m_diagram->model();
@@ -96,11 +97,19 @@ void DiagramObserver::slotModelsChanged()
 
 void DiagramObserver::slotDataChanged()
 {
+    //qDebug() << "DiagramObserver::slotDataChanged()";
     emit diagramDataChanged( m_diagram );
+}
+
+void DiagramObserver::slotDataHidden()
+{
+    //qDebug() << "DiagramObserver::slotDataHidden()";
+    emit diagramDataHidden( m_diagram );
 }
 
 void DiagramObserver::slotAttributesChanged()
 {
+    //qDebug() << "DiagramObserver::slotAttributesChanged()";
     emit diagramAttributesChanged( m_diagram );
 }
 

@@ -59,12 +59,15 @@ namespace KDChart {
         void diagramDestroyed( AbstractDiagram* diagram );
         /** This signal is emitted whenever the data of the diagram changes. */
         void diagramDataChanged( AbstractDiagram* diagram );
+        /** This signal is emitted whenever any of the data of the diagram was set (un)hidden. */
+        void diagramDataHidden( AbstractDiagram* diagram );
         /** This signal is emitted whenever the attributes of the diagram change. */
         void diagramAttributesChanged( AbstractDiagram* diagram );
 
     private Q_SLOTS:
         void slotDestroyed();
         void slotDataChanged();
+        void slotDataHidden();
         void slotAttributesChanged();
         void slotModelsChanged();
 

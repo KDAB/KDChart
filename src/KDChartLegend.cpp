@@ -263,7 +263,9 @@ void Legend::addDiagram( AbstractDiagram* newDiagram )
         connect( observer, SIGNAL( diagramDestroyed(AbstractDiagram*) ),
                         SLOT( resetDiagram(AbstractDiagram*) ));
         connect( observer, SIGNAL( diagramDataChanged(AbstractDiagram*) ),
-                        SLOT( setNeedRebuild() ));
+                 SLOT( setNeedRebuild() ));
+        connect( observer, SIGNAL( diagramDataHidden(AbstractDiagram*) ),
+                 SLOT( setNeedRebuild() ));
         connect( observer, SIGNAL( diagramAttributesChanged(AbstractDiagram*) ),
                         SLOT( setNeedRebuild() ));
         setNeedRebuild();

@@ -82,7 +82,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     legend->setShowLines( true );
     legend->setTitleText("");
     legend->setOrientation( Qt::Horizontal );
-    //legend->addDiagram( m_lines );
+    legend->addDiagram( m_lines );
     m_chart->addLegend( legend );
 }
 
