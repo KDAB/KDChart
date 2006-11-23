@@ -59,6 +59,7 @@ AbstractDiagram* DiagramObserver::diagram()
     return m_diagram;
 }
 
+
 void DiagramObserver::init()
 {
     if ( !m_diagram )
@@ -70,17 +71,22 @@ void DiagramObserver::init()
     if ( m_attributesmodel )
         disconnect(m_attributesmodel);
 
-    connect( m_diagram->model(), SIGNAL(dataChanged(QModelIndex,QModelIndex)),
-             SLOT(slotDataChanged()));
-    connect( m_diagram->attributesModel(), SIGNAL(attributesChanged(QModelIndex,QModelIndex)),
-             SLOT(slotAttributesChanged()));
-    connect( m_diagram, SIGNAL(dataHidden()),
-             SLOT(slotDataHidden()));
-    connect( m_diagram->model(), SIGNAL(headerDataChanged(Qt::Orientation,int,int)),
-             SLOT(slotDataChanged()));
+    connect( m_diagram, SIGNAL(dataHidden()), SLOT(slotDataHidden()) );
+
+    if( m_diagram->model() ){
+        connect( m_diagram->model(), SIGNAL(dataChanged(QModelIndex,QModelIndex)),
+                SLOT(slotDataChanged()));
+        connect( m_diagram->model(), SIGNAL(headerDataChanged(Qt::Orientation,int,int)),
+                 SLOT(slotDataChanged()));
+    }
+
+    if( m_diagram->attributesModel() )
+        connect( m_diagram->attributesModel(), SIGNAL(attributesChanged(QModelIndex,QModelIndex)),
+                SLOT(slotAttributesChanged()));
     m_model = m_diagram->model();
     m_attributesmodel = m_diagram->attributesModel();
 }
+
 
 void DiagramObserver::slotDestroyed()
 {
