@@ -62,7 +62,7 @@ int main( int argc, char** argv ) {
     td.setDepth(  15 );
     td.setEnabled(  true );
     widget.barDiagram()->setThreeDBarAttributes( td );
-
+    widget.setGlobalLeadingTop( 20 );
     widget.show();
 
     return app.exec();
