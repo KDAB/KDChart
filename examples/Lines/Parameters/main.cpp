@@ -44,9 +44,14 @@ increase )* j );
     //rotate if you wish
     //ta.setRotation( 0 );
     // 3 - Set up your text attributes
-    ta.setFont( QFont( "Comic", 6 ) );
+    ta.setFont( QFont( "Comic") );
     ta .setPen( QPen( QColor( Qt::darkGreen ) ) );
     ta.setVisible( true );
+    // font size
+    Measure me( ta.fontSize() );
+    me.setValue( me.value() * 0.25 );
+    ta.setFontSize( me );
+
     // 4 - Assign the text attributes to your
     //     DataValuesAttributes
     dva.setTextAttributes( ta );
@@ -66,7 +71,7 @@ increase )* j );
     diagram->setPen( m_model.index( 1, 1, QModelIndex() ), linePen );
     // 3 - Assign to the chart
     m_chart.coordinatePlane()->replaceDiagram(diagram);
-    m_chart.setGlobalLeadingRight(  20  );
+    m_chart.setGlobalLeadingRight(  50  );
 
     QVBoxLayout* l = new QVBoxLayout(this);
     l->addWidget(&m_chart);
