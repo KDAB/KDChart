@@ -62,7 +62,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_lines->addAxis( yAxis );
 
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
-
+    m_chart->setGlobalLeading( 20,  20,  20,  20 );
     // Instantiate the timer
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(slot_timerFired()));
@@ -85,7 +85,6 @@ void MainWindow::on_lineTypeCB_currentIndexChanged( const QString & text )
 
 void MainWindow::on_paintValuesCB_toggled( bool checked )
 {
-    qDebug() << "MainWindow::on_paintValuesCB_toggled("<<checked<<")";
     const int colCount = m_lines->model()->columnCount(m_lines->rootIndex());
     for ( int iColumn = 0; iColumn<colCount; ++iColumn ) {
         DataValueAttributes a( m_lines->dataValueAttributes( iColumn ) );
