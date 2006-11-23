@@ -49,6 +49,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_lines = new LineDiagram();
     m_lines->setModel( &m_model );
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
+    m_chart->setGlobalLeading( 20, 20, 20, 20 );
 
 }
 
@@ -74,7 +75,7 @@ void MainWindow::on_paintValuesCB_toggled( bool checked )
         QBrush brush( m_lines->brush( iColumn ) );
         TextAttributes ta( a.textAttributes() );
         ta.setRotation( 0 );
-        ta.setFont( QFont( "Comic", 10 ) );
+        ta.setFont( QFont( "Comic" ) );
         ta.setPen( QPen( brush.color() ) );
 
         if ( checked )
