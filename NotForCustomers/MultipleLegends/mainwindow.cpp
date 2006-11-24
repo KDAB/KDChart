@@ -63,10 +63,9 @@ MainWindow::MainWindow( QWidget* parent ) :
 
     // Set up the diagrams
     m_lines = new LineDiagram();
+    m_lines->setModel( m_model );
     m_lines2 = new LineDiagram();
-    m_proxyModel = new KDChart::DatasetProxyModel(this);
-    m_proxyModel1 = new KDChart::DatasetProxyModel(this);
-    updateProxyModel();
+    m_lines2->setModel( m_model2 );
 
     // We call this "plane2" just for remembering, that we use it
     // in addition to the plane, that's built-in by default.
@@ -117,26 +116,6 @@ MainWindow::MainWindow( QWidget* parent ) :
 
 }
 
-void MainWindow::updateProxyModel()
-{
-    DatasetDescriptionVector columnConfig;
-      if( showDataset1CB->isChecked() )
-        columnConfig.append( 0 );
-      if( showDataset2CB->isChecked() )
-        columnConfig.append( 1 );
-      if( showDataset3CB->isChecked() )
-        columnConfig.append( 2 );
-
-    m_proxyModel->setSourceModel(m_model);
-    m_proxyModel->setDatasetColumnDescriptionVector( columnConfig );
-    m_lines->setModel( m_proxyModel );
-
-    m_proxyModel1->setSourceModel(m_model2);
-    m_proxyModel1->setDatasetColumnDescriptionVector( columnConfig );
-    m_lines2->setModel( m_proxyModel1 );
-
-    m_chart->update();
-}
 
 void MainWindow::openFile()
 {
@@ -194,16 +173,21 @@ void MainWindow::openFile()
 
 void MainWindow::on_showDataset1CB_toggled( bool checked )
 {
-    Q_UNUSED(checked);
-    updateProxyModel();
+  setHidden( 0, ! checked );
 }
 void MainWindow::on_showDataset2CB_toggled( bool checked )
 {
-    Q_UNUSED(checked);
-    updateProxyModel();
+    setHidden( 1, ! checked );
 }
 void MainWindow::on_showDataset3CB_toggled( bool checked )
 {
-    Q_UNUSED(checked);
-    updateProxyModel();
+   setHidden( 2, ! checked );
+}
+
+
+void MainWindow::setHidden( int dataset, bool hidden )
+{
+    m_lines->setHidden( dataset, hidden );
+    m_lines2->setHidden( dataset, hidden );
+    m_chart->update();
 }

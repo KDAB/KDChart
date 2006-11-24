@@ -51,15 +51,13 @@ private slots:
     void on_showDataset1CB_toggled( bool checked );
     void on_showDataset2CB_toggled( bool checked );
     void on_showDataset3CB_toggled( bool checked );
-    void updateProxyModel();
+    void setHidden( int dataset, bool hidden );
     void openFile();   
 
 private:
     KDChart::Chart* m_chart;
     QStandardItemModel * m_model;
     QStandardItemModel * m_model2;
-    KDChart::DatasetProxyModel* m_proxyModel;
-    KDChart::DatasetProxyModel* m_proxyModel1;
     
     KDChart::LineDiagram* m_lines;
     KDChart::LineDiagram* m_lines2;
