@@ -59,6 +59,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     pen.setWidth( 1 );
     m_bars->setPen( pen );
     m_chart->coordinatePlane()->replaceDiagram( m_bars );
+    m_chart->setGlobalLeadingTop( 20 );
 }
 
 
