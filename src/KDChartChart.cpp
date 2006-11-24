@@ -949,6 +949,8 @@ HeaderFooterList Chart::headerFooters()
 
 void Chart::addLegend( Legend* legend )
 {
+    if( ! legend ) return;
+
     //qDebug() << "adding the legend";
     d->legends.append( legend );
     legend->setParent( this );
@@ -986,6 +988,7 @@ void Chart::addLegend( Legend* legend )
     connect( legend, SIGNAL( positionChanged( AbstractAreaWidget* ) ),
              d, SLOT( slotLayoutPlanes() ) ); //slotRelayout() ) );
     connect( legend, SIGNAL( propertiesChanged() ),this, SIGNAL( propertiesChanged() ) );
+    legend->setVisible( true );
     d->slotRelayout();
 }
 
