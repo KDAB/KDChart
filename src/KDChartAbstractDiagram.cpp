@@ -503,9 +503,21 @@ void AbstractDiagram::paintMarker( QPainter* painter,
                                    const QPointF& pos,
                                    const QSizeF& maSize )
 {
-    if( markerAttributes.markerStyle() == MarkerAttributes::Marker1Pixel ){
+    const bool isFourPixels = (markerAttributes.markerStyle() == MarkerAttributes::Marker4Pixels);
+    if( isFourPixels || (markerAttributes.markerStyle() == MarkerAttributes::Marker1Pixel) ){
         // for high-performance point charts with tiny point markers:
         const QPen oldPen( painter->pen() );
+        if( isFourPixels ){
+            painter->setPen( QPen( pen.color().light() ) );
+            const qreal x = pos.x();
+            const qreal y = pos.y();
+            painter->drawLine( QPointF(x-1.0,y-1.0),
+                               QPointF(x+1.0,y-1.0) );
+            painter->drawLine( QPointF(x-1.0,y),
+                               QPointF(x+1.0,y) );
+            painter->drawLine( QPointF(x-1.0,y+1.0),
+                               QPointF(x+1.0,y+1.0) );
+        }
         painter->setPen( pen );
         painter->drawPoint( pos );
         painter->setPen( oldPen );
@@ -540,18 +552,10 @@ void AbstractDiagram::paintMarker( QPainter* painter,
                     painter->drawPolygon( diamondPoints );
                     break;
                 }
-            // handled on top of the method:
+            // both handled on top of the method:
             case MarkerAttributes::Marker1Pixel:
-                break;
-            // for high-performance point charts with tiny point markers:
             case MarkerAttributes::Marker4Pixels:
-                {
-                    painter->drawLine( QPointF(-0.5,-0.5),
-                                    QPointF( 0.5,-0.5) );
-                    painter->drawLine( QPointF(-0.5, 0.5),
-                                    QPointF( 0.5, 0.5) );
                     break;
-                }
             case MarkerAttributes::MarkerRing:
                 {
                     painter->setBrush( Qt::NoBrush );
