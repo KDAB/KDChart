@@ -60,6 +60,7 @@ public:
     diagram->setPen( 1,  linePen );
 
     m_chart.coordinatePlane()->replaceDiagram(diagram);
+    m_chart.setGlobalLeadingTop( 20 );
 
     QVBoxLayout* l = new QVBoxLayout(this);
     l->addWidget(&m_chart);
