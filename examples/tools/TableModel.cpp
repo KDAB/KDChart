@@ -201,6 +201,8 @@ bool TableModel::loadFromCSV ( const QString& filename )
         }
         return true;
     } else {
+        qDebug() << "TableModel::loadFromCSV: file" << filename
+                << "does not exist / or could not be opened" << endl;
         return false;
     }
 }
