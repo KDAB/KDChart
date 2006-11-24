@@ -41,7 +41,7 @@ DiagramObserver::DiagramObserver( AbstractDiagram * diagram, QObject* parent )
     : QObject( parent ), m_diagram( diagram )
 {
     if ( m_diagram ) {
-        connect( m_diagram, SIGNAL(destroyed(QObject*)), SLOT(slotDestroyed()));
+        connect( m_diagram, SIGNAL(destroyed(QObject*)), SLOT(slotDestroyed(QObject*)));
         connect( m_diagram, SIGNAL(modelsChanged()), SLOT(slotModelsChanged()));
     }
     init();
@@ -75,20 +75,20 @@ void DiagramObserver::init()
 
     if( m_diagram->model() ){
         connect( m_diagram->model(), SIGNAL(dataChanged(QModelIndex,QModelIndex)),
-                SLOT(slotDataChanged()));
+                 SLOT(slotDataChanged(QModelIndex,QModelIndex)));
         connect( m_diagram->model(), SIGNAL(headerDataChanged(Qt::Orientation,int,int)),
-                 SLOT(slotDataChanged()));
+                 SLOT(slotHeaderDataChanged(Qt::Orientation,int,int)));
     }
 
     if( m_diagram->attributesModel() )
         connect( m_diagram->attributesModel(), SIGNAL(attributesChanged(QModelIndex,QModelIndex)),
-                SLOT(slotAttributesChanged()));
+                 SLOT(slotAttributesChanged(QModelIndex,QModelIndex)));
     m_model = m_diagram->model();
     m_attributesmodel = m_diagram->attributesModel();
 }
 
 
-void DiagramObserver::slotDestroyed()
+void DiagramObserver::slotDestroyed(QObject*)
 {
     emit diagramDestroyed( m_diagram );
     m_diagram = 0;
@@ -101,6 +101,17 @@ void DiagramObserver::slotModelsChanged()
     slotAttributesChanged();
 }
 
+void DiagramObserver::slotHeaderDataChanged(Qt::Orientation,int,int)
+{
+    //qDebug() << "DiagramObserver::slotHeaderDataChanged()";
+    emit diagramDataChanged( m_diagram );
+}
+
+void DiagramObserver::slotDataChanged(QModelIndex,QModelIndex)
+{
+    slotDataChanged();
+}
+
 void DiagramObserver::slotDataChanged()
 {
     //qDebug() << "DiagramObserver::slotDataChanged()";
@@ -111,6 +122,11 @@ void DiagramObserver::slotDataHidden()
 {
     //qDebug() << "DiagramObserver::slotDataHidden()";
     emit diagramDataHidden( m_diagram );
+}
+
+void DiagramObserver::slotAttributesChanged(QModelIndex,QModelIndex)
+{
+    slotAttributesChanged();
 }
 
 void DiagramObserver::slotAttributesChanged()

@@ -29,6 +29,7 @@
 
 #include <QObject>
 #include <QPointer>
+#include <QModelIndex>
 
 class QAbstractItemModel;
 
@@ -65,10 +66,13 @@ namespace KDChart {
         void diagramAttributesChanged( AbstractDiagram* diagram );
 
     private Q_SLOTS:
-        void slotDestroyed();
+        void slotDestroyed(QObject*);
+        void slotHeaderDataChanged(Qt::Orientation,int,int);
+        void slotDataChanged(QModelIndex,QModelIndex);
         void slotDataChanged();
         void slotDataHidden();
         void slotAttributesChanged();
+        void slotAttributesChanged(QModelIndex,QModelIndex);
         void slotModelsChanged();
 
     private:
