@@ -51,6 +51,8 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
     m_chart->setGlobalLeading( 20, 20, 20, 20 );
 
+    on_paintLinesCB_toggled( false );
+    on_paintMarkersCB_toggled( true );
 }
 
 void MainWindow::on_lineTypeCB_currentIndexChanged( const QString & text )

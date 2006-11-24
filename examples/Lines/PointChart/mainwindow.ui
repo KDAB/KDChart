@@ -1,7 +1,4 @@
 <ui version="4.0" >
- <author></author>
- <comment></comment>
- <exportmacro></exportmacro>
  <class>MainWindow</class>
  <widget class="QWidget" name="MainWindow" >
   <property name="geometry" >
@@ -87,7 +84,7 @@
           <string>Paint Lines</string>
          </property>
          <property name="checked" >
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
         </widget>
        </item>
@@ -119,6 +116,9 @@
         <widget class="QCheckBox" name="paintMarkersCB" >
          <property name="text" >
           <string>Paint Markers</string>
+         </property>
+         <property name="checked" >
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -293,7 +293,6 @@
    </item>
   </layout>
  </widget>
- <pixmapfunction></pixmapfunction>
  <resources/>
  <connections/>
 </ui>
