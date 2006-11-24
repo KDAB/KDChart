@@ -59,12 +59,13 @@ increase )* j );
     // 5 - Assign to the diagram
     diagram->setDataValueAttributes( dva );
 
-    // Draw a the section of a line differently.
+    // Draw one of the sections of a line differently.
     // 1 - Retrieve the pen for the dataset and change
     //    its style.
     //    This allow us to keep the line original color.
     QPen linePen(  diagram->pen( 1 ) );
-    linePen.setWidth( 3 );
+    linePen.setColor( Qt::yellow );
+    linePen.setWidth( 7 );
     linePen.setStyle( Qt::DashLine );
     // 2 - Change the Pen for a section within a line
     //     while assigning it to the diagram
