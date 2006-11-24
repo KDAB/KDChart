@@ -33,7 +33,7 @@ namespace KDChart {
 
     class GridAttributes;
 
-    class AbstractPolarDiagram : public AbstractDiagram
+    class KDCHART_EXPORT AbstractPolarDiagram : public AbstractDiagram
     {
         Q_OBJECT
         Q_DISABLE_COPY( AbstractPolarDiagram )
