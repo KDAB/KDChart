@@ -515,8 +515,8 @@ void AbstractDiagram::paintMarker( QPainter* painter,
             break;
         case MarkerAttributes::MarkerSquare:
             {
-                QRectF rect( 0 - maSize.height()/2, 0 - maSize.width()/2,
-                            maSize.height(), maSize.width() );
+                QRectF rect( 0 - maSize.width()/2, 0 - maSize.height()/2,
+                             maSize.width(), maSize.height() );
                 painter->drawRect( rect );
                 painter->fillRect( rect, painter->brush() );
                 break;
