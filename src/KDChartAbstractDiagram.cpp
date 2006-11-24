@@ -503,108 +503,104 @@ void AbstractDiagram::paintMarker( QPainter* painter,
                                    const QPointF& pos,
                                    const QSizeF& maSize )
 {
-    PainterSaver painterSaver( painter );
-    painter->setBrush( brush );
-    painter->setPen( pen );
-    painter->setRenderHint ( QPainter::Antialiasing );
-    painter->translate( pos );
-    switch ( markerAttributes.markerStyle() ) {
-        case MarkerAttributes::MarkerCircle:
-            painter->drawEllipse( QRectF( 0 - maSize.height()/2, 0 - maSize.width()/2,
-                        maSize.height(), maSize.width()) );
-            break;
-        case MarkerAttributes::MarkerSquare:
-            {
-                QRectF rect( 0 - maSize.width()/2, 0 - maSize.height()/2,
-                             maSize.width(), maSize.height() );
-                painter->drawRect( rect );
-                painter->fillRect( rect, painter->brush() );
-                break;
-            }
-        case MarkerAttributes::MarkerDiamond:
-            {
-                QVector <QPointF > diamondPoints;
-                QPointF top, left, bottom, right;
-                top    = QPointF( 0, 0 - maSize.height()/2 );
-                left   = QPointF( 0 - maSize.width()/2, 0 );
-                bottom = QPointF( 0, maSize.height()/2 );
-                right  = QPointF( maSize.width()/2, 0 );
-                diamondPoints << top << left << bottom << right;
-                painter->drawPolygon( diamondPoints );
-                break;
-            }
-        //Pending Michel: do we need that? Ask: What is the idea about
-        // Marker1Pixel and Marker4Pixels.
-        case MarkerAttributes::Marker1Pixel:
-            {
-                QSizeF pSize(4,4);
-                QPen pen1Pixel;
-                pen1Pixel.setColor( painter->background().color() );
-                QRectF centerRect( -pSize.height()/2, -pSize.width()/2,
-                                   pSize.height(), pSize.width() );
-                painter->setPen( pen1Pixel );
-                painter->drawEllipse( centerRect );
-                break;
-            }
-        case MarkerAttributes::Marker4Pixels:
-            {
-                QSizeF pSize(8, 8);
-                QPen pen4Pixel;
-                pen4Pixel.setColor( painter->background().color() );
-                QRectF centerRect( -pSize.height()/2, -pSize.width()/2,
-                                   pSize.height(), pSize.width() );
-                painter->setPen( pen4Pixel );
-                painter->drawEllipse( centerRect );
-                break;
-            }
-        case MarkerAttributes::MarkerRing:
-            {
-                painter->setBrush( Qt::NoBrush );
+    if( markerAttributes.markerStyle() == MarkerAttributes::Marker1Pixel ){
+        // for high-performance point charts with tiny point markers:
+        const QPen oldPen( painter->pen() );
+        painter->setPen( pen );
+        painter->drawPoint( pos );
+        painter->setPen( oldPen );
+    }else{
+        PainterSaver painterSaver( painter );
+        painter->setPen( pen );
+        painter->setBrush( brush );
+        painter->setRenderHint ( QPainter::Antialiasing );
+        painter->translate( pos );
+        switch ( markerAttributes.markerStyle() ) {
+            case MarkerAttributes::MarkerCircle:
                 painter->drawEllipse( QRectF( 0 - maSize.height()/2, 0 - maSize.width()/2,
-                                      maSize.height(), maSize.width()) );
+                            maSize.height(), maSize.width()) );
                 break;
-            }
-        case MarkerAttributes::MarkerCross:
-            {
-                QVector <QPointF > crossPoints;
-                QPointF leftTop, leftBottom, centerBottomLeft, bottomLeft, bottomRight,
-                        centerBottomRight,rightBottom, rightTop, centerTopRight, topRight, topLeft,
-                        centerTopLeft;
-                leftTop           = QPointF( -maSize.width()/2, -maSize.height()/4 );
-                leftBottom        = QPointF( -maSize.width()/2, maSize.height()/4 );
-                centerBottomLeft  = QPointF( -maSize.width()/4, maSize.height()/4 );
-                bottomLeft        = QPointF( -maSize.width()/4, maSize.height()/2 );
-                bottomRight       = QPointF( maSize.width()/4,  maSize.height()/2 );
-                centerBottomRight = QPointF( maSize.width()/4, maSize.height()/4 );
-                rightBottom       = QPointF( maSize.width()/2, maSize.height()/4 );
-                rightTop          = QPointF( maSize.width()/2, -maSize.height()/4 );
-                centerTopRight    = QPointF( maSize.width()/4, -maSize.height()/4 );
-                topRight          = QPointF( maSize.width()/4, -maSize.height()/2 );
-                topLeft           = QPointF( -maSize.width()/4, -maSize.height()/2 );
-                centerTopLeft     = QPointF( -maSize.width()/4, -maSize.height()/4 );
-
-                crossPoints << leftTop << leftBottom << centerBottomLeft
-                    << bottomLeft << bottomRight << centerBottomRight
-                    << rightBottom << rightTop << centerTopRight
-                    << topRight << topLeft << centerTopLeft;
-
-                painter->drawPolygon( crossPoints );
+            case MarkerAttributes::MarkerSquare:
+                {
+                    QRectF rect( 0 - maSize.width()/2, 0 - maSize.height()/2,
+                                maSize.width(), maSize.height() );
+                    painter->drawRect( rect );
+                    painter->fillRect( rect, painter->brush() );
+                    break;
+                }
+            case MarkerAttributes::MarkerDiamond:
+                {
+                    QVector <QPointF > diamondPoints;
+                    QPointF top, left, bottom, right;
+                    top    = QPointF( 0, 0 - maSize.height()/2 );
+                    left   = QPointF( 0 - maSize.width()/2, 0 );
+                    bottom = QPointF( 0, maSize.height()/2 );
+                    right  = QPointF( maSize.width()/2, 0 );
+                    diamondPoints << top << left << bottom << right;
+                    painter->drawPolygon( diamondPoints );
+                    break;
+                }
+            // handled on top of the method:
+            case MarkerAttributes::Marker1Pixel:
                 break;
-            }
-        case MarkerAttributes::MarkerFastCross:
-            {
-                QPointF left, right, top, bottom;
-                left  = QPointF( -maSize.width()/2, 0 );
-                right = QPointF( maSize.width()/2, 0 );
-                top   = QPointF( 0, -maSize.height()/2 );
-                bottom= QPointF( 0, maSize.height()/2 );
-                painter->drawLine( left, right );
-                painter->drawLine(  top, bottom );
-                break;
-            }
-        default:
-            Q_ASSERT_X ( false, "paintMarkers()",
-                         "Type item does not match a defined Marker Type." );
+            // for high-performance point charts with tiny point markers:
+            case MarkerAttributes::Marker4Pixels:
+                {
+                    painter->drawLine( QPointF(-0.5,-0.5),
+                                    QPointF( 0.5,-0.5) );
+                    painter->drawLine( QPointF(-0.5, 0.5),
+                                    QPointF( 0.5, 0.5) );
+                    break;
+                }
+            case MarkerAttributes::MarkerRing:
+                {
+                    painter->setBrush( Qt::NoBrush );
+                    painter->drawEllipse( QRectF( 0 - maSize.height()/2, 0 - maSize.width()/2,
+                                        maSize.height(), maSize.width()) );
+                    break;
+                }
+            case MarkerAttributes::MarkerCross:
+                {
+                    QVector <QPointF > crossPoints;
+                    QPointF leftTop, leftBottom, centerBottomLeft, bottomLeft, bottomRight,
+                            centerBottomRight,rightBottom, rightTop, centerTopRight, topRight, topLeft,
+                            centerTopLeft;
+                    leftTop           = QPointF( -maSize.width()/2, -maSize.height()/4 );
+                    leftBottom        = QPointF( -maSize.width()/2, maSize.height()/4 );
+                    centerBottomLeft  = QPointF( -maSize.width()/4, maSize.height()/4 );
+                    bottomLeft        = QPointF( -maSize.width()/4, maSize.height()/2 );
+                    bottomRight       = QPointF( maSize.width()/4,  maSize.height()/2 );
+                    centerBottomRight = QPointF( maSize.width()/4, maSize.height()/4 );
+                    rightBottom       = QPointF( maSize.width()/2, maSize.height()/4 );
+                    rightTop          = QPointF( maSize.width()/2, -maSize.height()/4 );
+                    centerTopRight    = QPointF( maSize.width()/4, -maSize.height()/4 );
+                    topRight          = QPointF( maSize.width()/4, -maSize.height()/2 );
+                    topLeft           = QPointF( -maSize.width()/4, -maSize.height()/2 );
+                    centerTopLeft     = QPointF( -maSize.width()/4, -maSize.height()/4 );
+    
+                    crossPoints << leftTop << leftBottom << centerBottomLeft
+                        << bottomLeft << bottomRight << centerBottomRight
+                        << rightBottom << rightTop << centerTopRight
+                        << topRight << topLeft << centerTopLeft;
+    
+                    painter->drawPolygon( crossPoints );
+                    break;
+                }
+            case MarkerAttributes::MarkerFastCross:
+                {
+                    QPointF left, right, top, bottom;
+                    left  = QPointF( -maSize.width()/2, 0 );
+                    right = QPointF( maSize.width()/2, 0 );
+                    top   = QPointF( 0, -maSize.height()/2 );
+                    bottom= QPointF( 0, maSize.height()/2 );
+                    painter->drawLine( left, right );
+                    painter->drawLine(  top, bottom );
+                    break;
+                }
+            default:
+                Q_ASSERT_X ( false, "paintMarkers()",
+                            "Type item does not match a defined Marker Type." );
+        }
     }
 }
 
