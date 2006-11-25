@@ -59,13 +59,14 @@ namespace KDChart {
 class DataValueTextInfo {
     public:
         DataValueTextInfo(){}
-        DataValueTextInfo( const QModelIndex& _index, const QPointF& _pos, double _value )
-        :index( _index ), pos( _pos ), value( _value )
+        DataValueTextInfo( const QModelIndex& _index, const QPointF& _pos, const QPointF& _markerPos, double _value )
+        :index( _index ), pos( _pos ), markerPos( _markerPos ), value( _value )
         {}
         DataValueTextInfo( const DataValueTextInfo& other )
-        :index( other.index ), pos( other.pos ), value( other.value ) {}
+        :index( other.index ), pos( other.pos ), markerPos( other.markerPos ), value( other.value ) {}
         QModelIndex index;
         QPointF pos;
+        QPointF markerPos;
         double value;
 };
 
@@ -104,7 +105,8 @@ public:
             if( relPos.referencePosition().isUnknown() )
                 relPos.setReferencePosition( bValueIsPositive ? autoPositionPositive : autoPositionNegative );
 
-            if( diagram->coordinatePlane()->isVisiblePoint( relPos.referencePoint() ) ){
+            const QPointF referencePoint = relPos.referencePoint();
+            if( diagram->coordinatePlane()->isVisiblePoint( referencePoint ) ){
                 const qreal fontHeight = cachedFontMetrics( attrs.textAttributes().font(), diagram )->height();
 
                 // Note: When printing data value texts the font height is used as reference size for both,
@@ -116,6 +118,7 @@ public:
                 list.append( DataValueTextInfo(
                         index,
                         relPos.calculatedPoint( relativeMeasureSize ),
+                        referencePoint,
                         value ) );
             }
         }
@@ -142,7 +145,7 @@ public:
             DataValueTextInfoListIterator it( list );
             while ( it.hasNext() ) {
                 const DataValueTextInfo& info = it.next();
-                diag->paintMarker( ctx->painter(), info.index, info.pos );
+                diag->paintMarker( ctx->painter(), info.index, info.markerPos );
             }
         }
         DataValueTextInfoListIterator it( list );
@@ -196,22 +199,6 @@ public :
 
 typedef QVector<LineAttributesInfo> LineAttributesInfoList;
 typedef QVectorIterator<LineAttributesInfo> LineAttributesInfoListIterator;
-
-class DataValueMarkerInfo {
-public:
-  DataValueMarkerInfo(){}
-  DataValueMarkerInfo( const QModelIndex& _index, const QPointF& _pos, double _value )
-    :index( _index ), pos( _pos ), value( _value )
-    {}
-  DataValueMarkerInfo( const DataValueMarkerInfo& other )
-    :index( other.index ), pos( other.pos ), value( other.value ) {}
-  QModelIndex index;
-  QPointF pos;
-  double value;
-};
-
-typedef QVector<DataValueMarkerInfo> DataValueMarkerInfoList;
-typedef QVectorIterator<DataValueMarkerInfo> DataValueMarkerInfoListIterator;
 
 }
 #endif /* KDCHARTDIAGRAM_P_H */

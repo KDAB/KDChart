@@ -148,7 +148,7 @@ void PolarDiagram::paint( PaintContext* ctx )
             const double value = model()->data( index ).toDouble();
             QPointF point = coordinatePlane()->translate( QPointF( value, i ) );
             polygon.append( point );
-            list.append( DataValueTextInfo( index, point, value ) );
+            list.append( DataValueTextInfo( index, point, point, value ) );
         }
         PainterSaver painterSaver( ctx->painter() );
         ctx->painter()->setRenderHint ( QPainter::Antialiasing );
