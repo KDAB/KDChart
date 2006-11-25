@@ -565,29 +565,14 @@ void AbstractDiagram::paintMarker( QPainter* painter,
                 }
             case MarkerAttributes::MarkerCross:
                 {
-                    QVector <QPointF > crossPoints;
-                    QPointF leftTop, leftBottom, centerBottomLeft, bottomLeft, bottomRight,
-                            centerBottomRight,rightBottom, rightTop, centerTopRight, topRight, topLeft,
-                            centerTopLeft;
-                    leftTop           = QPointF( -maSize.width()/2, -maSize.height()/4 );
-                    leftBottom        = QPointF( -maSize.width()/2, maSize.height()/4 );
-                    centerBottomLeft  = QPointF( -maSize.width()/4, maSize.height()/4 );
-                    bottomLeft        = QPointF( -maSize.width()/4, maSize.height()/2 );
-                    bottomRight       = QPointF( maSize.width()/4,  maSize.height()/2 );
-                    centerBottomRight = QPointF( maSize.width()/4, maSize.height()/4 );
-                    rightBottom       = QPointF( maSize.width()/2, maSize.height()/4 );
-                    rightTop          = QPointF( maSize.width()/2, -maSize.height()/4 );
-                    centerTopRight    = QPointF( maSize.width()/4, -maSize.height()/4 );
-                    topRight          = QPointF( maSize.width()/4, -maSize.height()/2 );
-                    topLeft           = QPointF( -maSize.width()/4, -maSize.height()/2 );
-                    centerTopLeft     = QPointF( -maSize.width()/4, -maSize.height()/4 );
-    
-                    crossPoints << leftTop << leftBottom << centerBottomLeft
-                        << bottomLeft << bottomRight << centerBottomRight
-                        << rightBottom << rightTop << centerTopRight
-                        << topRight << topLeft << centerTopLeft;
-    
-                    painter->drawPolygon( crossPoints );
+                    QRectF rect( maSize.width()*-0.5, maSize.height()*-0.2,
+                                 maSize.width(), maSize.height()*0.4 );
+                    painter->drawRect( rect );
+                    painter->fillRect( rect, painter->brush() );
+                    rect.setTopLeft(QPointF( maSize.width()*-0.2, maSize.height()*-0.5 ));
+                    rect.setSize(QSizeF( maSize.width()*0.4, maSize.height() ));
+                    painter->drawRect( rect );
+                    painter->fillRect( rect, painter->brush() );
                     break;
                 }
             case MarkerAttributes::MarkerFastCross:
