@@ -568,11 +568,9 @@ void AbstractDiagram::paintMarker( QPainter* painter,
                     QRectF rect( maSize.width()*-0.5, maSize.height()*-0.2,
                                  maSize.width(), maSize.height()*0.4 );
                     painter->drawRect( rect );
-                    painter->fillRect( rect, painter->brush() );
                     rect.setTopLeft(QPointF( maSize.width()*-0.2, maSize.height()*-0.5 ));
                     rect.setSize(QSizeF( maSize.width()*0.4, maSize.height() ));
                     painter->drawRect( rect );
-                    painter->fillRect( rect, painter->brush() );
                     break;
                 }
             case MarkerAttributes::MarkerFastCross:
