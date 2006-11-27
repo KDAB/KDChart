@@ -15,6 +15,7 @@ QT += xml
 CONFIG += designer
 
 INCLUDEPATH+= $(QTDIR)/src/3rdparty/zlib \
+              $$KDCHARTDIR/extra_include \
               $$KDCHARTDIR/src \
               .
 DEPENDPATH += $(QTDIR)/src/3rdparty/zlib \
