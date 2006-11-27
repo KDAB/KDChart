@@ -162,9 +162,10 @@ void Legend::resizeLayout( const QSize& size )
 #ifdef DEBUG_LEGEND_PAINT
     qDebug() << "Legend::resizeLayout started";
 #endif
-    if( d->layout )
+    if( d->layout ){
         d->layout->setGeometry( QRect(QPoint(0,0), size) );
-    d->layout->activate();
+        d->layout->activate();
+    }
 #ifdef DEBUG_LEGEND_PAINT
     qDebug() << "Legend::resizeLayout done";
 #endif
