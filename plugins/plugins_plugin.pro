@@ -29,8 +29,9 @@ unix {
   }
 }
 
-INCLUDEPATH += ../src
-DEPENDPATH += ../src
+INCLUDEPATH += $$KDCHARTDIR/src \
+               $$KDCHARTDIR/extra_include
+DEPENDPATH +=  $$KDCHARTDIR/src
 
 target.path = $$[QT_INSTALL_PLUGINS]/designer
 INSTALLS += target

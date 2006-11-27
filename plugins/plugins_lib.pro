@@ -24,10 +24,11 @@ unix {
     LIBS += -lkdchartuitools
   }
 }
-INCLUDEPATH += ../uitools \
-                ../src
+INCLUDEPATH +=  $$KDCHARTDIR/uitools \
+                $$KDCHARTDIR/src \
+                $$KDCHARTDIR/extra_include
 
-DEPENDPATH += ../uitools
+DEPENDPATH += $$KDCHARTDIR/uitools
 
 HEADERS = \
 	kdchartdesignerextension.h \
@@ -47,4 +48,4 @@ FORMS = \
         kdchartwidgetdesignercustomeditor.ui \
         kdchartchartdesignercustomeditor.ui \
         #diagramtype.ui \
-        
+
