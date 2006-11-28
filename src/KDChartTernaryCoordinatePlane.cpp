@@ -46,7 +46,7 @@ void TernaryCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
    // TODO: what's this for ?
        connect ( diagram,  SIGNAL ( layoutChanged ( AbstractDiagram* ) ),
                  SLOT ( slotLayoutChanged ( AbstractDiagram* ) ) );
-   
+
        connect( diagram, SIGNAL( propertiesChanged() ),this, SIGNAL( propertiesChanged() ) );
 }
 
@@ -76,13 +76,13 @@ const QPointF TernaryCoordinatePlane::translate ( const double x, const double y
 {
    double X,Y;
    double onscreenX, onscreenY;
-   
+
    X = (1.0 - x + y) / 2.0;
    Y = z;
-   
+
    onscreenX = X * drawingArea().width();
    onscreenY = drawingArea().height() - (Y * drawingArea().height());
-   
+
    return QPointF( onscreenX, onscreenY);
 }
 
@@ -116,7 +116,7 @@ void TernaryCoordinatePlane::paint( QPainter* painter )
        drawGrid( &ctx );
    }
 
-    // draw the diagram(s) 
+    // draw the diagram(s)
     // most likely there is only one diagram for these type of plots
     AbstractDiagramList diags = diagrams();
     if ( !diags.isEmpty() )
@@ -129,7 +129,12 @@ void TernaryCoordinatePlane::paint( QPainter* painter )
         // paint the diagrams:
         for ( int i = 0; i < diags.size(); i++ )
         {
-            diags[i]->paint ( &ctx );
+            if ( TernaryDiagram* diagram = qobject_cast<TernaryDiagram*>( diags[i] ) ) {
+                diagram->paint ( &ctx );
+            } else {
+                Q_ASSERT_X( diagram, "KDChartTernaryCoordinatePlane::paint",
+                            "Only ternary diagrams are allowed in ternary planes." );
+            }
         }
     }
    // draw the axis
@@ -165,10 +170,10 @@ void TernaryCoordinatePlane::paint( QPainter* painter )
             painter->rotate( (-180/M_PI)*angle  );
             // shift up to top of triangle
             painter->translate( QPointF( 2.0, -1*height ) );
-    
+
             QRectF axisArea( 0.0, 0.0, 100.0, height );
             ctx.setRectangle( axisArea );
-    
+
             break;
         }
         case KDChartEnums::PositionWest:
@@ -204,7 +209,7 @@ void TernaryCoordinatePlane::drawGrid( PaintContext* paintContext )
 {
    QPainter* p = paintContext->painter();
    TernaryCoordinatePlane* plane = (TernaryCoordinatePlane*) paintContext->coordinatePlane();
-   
+
    // draw a triangle
    p->setPen( Qt::black );
    QPointF triangle[4] = {
@@ -214,12 +219,12 @@ void TernaryCoordinatePlane::drawGrid( PaintContext* paintContext )
       plane->translate( 1.0, 0.0, 0.0 ),
    };
    p->drawPolyline( triangle, 4 );
-   
+
    // draw a grid
    p->setPen( Qt::lightGray );
    QPointF line[2];
    double dim[3];
-   
+
    for(int dd=0; dd<3; dd++)
    {
       for(int i=1; i<10; i++)
@@ -228,15 +233,15 @@ void TernaryCoordinatePlane::drawGrid( PaintContext* paintContext )
          dim[0] = (dd==0) ? value : (dd==1) ? 1.0 - value : 0.0;
          dim[1] = (dd==1) ? value : (dd==2) ? 1.0 - value : 0.0;
          dim[2] = (dd==2) ? value : (dd==0) ? 1.0 - value : 0.0;
-         
+
          line[0] = plane->translate( dim[0], dim[1], dim[2] );
-         
+
          dim[0] = (dd==0) ? value : (dd==1) ? 0.0 : 1.0 - value;
          dim[1] = (dd==1) ? value : (dd==2) ? 0.0 : 1.0 - value;
          dim[2] = (dd==2) ? value : (dd==0) ? 0.0 : 1.0 - value;
-         
+
          line[1] = plane->translate( dim[0], dim[1], dim[2] );
-         
+
          p->drawLine( line[0], line[1] );
       }
    }
@@ -283,18 +288,18 @@ QRectF TernaryCoordinatePlane::drawingArea() const
 
 void TernaryCoordinatePlane::paintEvent ( QPaintEvent* )
 {
-   
+
 }
 
 void TernaryCoordinatePlane::layoutDiagrams()
 {
-   
+
 }
 
 
 void TernaryCoordinatePlane::slotLayoutChanged( AbstractDiagram* )
 {
-   
+
 }
 
 void TernaryCoordinatePlane::setLabelAttributes( const TextAttributes &a )
@@ -309,7 +314,7 @@ TextAttributes TernaryCoordinatePlane::labelAttributes( ) const
 
 void TernaryCoordinatePlane::setLabelText( Position position, const QString & text )
 {
-   switch( position.value() ) 
+   switch( position.value() )
    {
    case KDChartEnums::PositionNorth:
       {
@@ -338,7 +343,7 @@ QString TernaryCoordinatePlane::labelText( Position position ) const
 {
    QString ret;
 
-   switch( position.value() ) 
+   switch( position.value() )
    {
    case KDChartEnums::PositionNorth:
       {
@@ -365,11 +370,11 @@ QString TernaryCoordinatePlane::labelText( Position position ) const
    return ret;
 }
 
-DoubleRange TernaryCoordinatePlane::range ( Position position ) const  
+DoubleRange TernaryCoordinatePlane::range ( Position position ) const
 {
    DoubleRange ret;
 
-   switch( position.value() ) 
+   switch( position.value() )
    {
    case KDChartEnums::PositionSouth:
       {
@@ -398,7 +403,7 @@ DoubleRange TernaryCoordinatePlane::range ( Position position ) const
 
 void TernaryCoordinatePlane::setRange( Position position, const DoubleRange& range )
 {
-  switch( position.value() ) 
+  switch( position.value() )
    {
    case KDChartEnums::PositionSouth:
       {

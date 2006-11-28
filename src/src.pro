@@ -24,7 +24,9 @@ HEADERS += KDChartGlobal.h \
            KDChartCartesianCoordinatePlane.h \
            KDChartCartesianCoordinatePlane_p.h \
            KDChartPolarCoordinatePlane.h \
+           KDChartTernaryCoordinatePlane.h \
            KDChartPolarCoordinatePlane_p.h \
+           KDChartTernaryCoordinatePlane_p.h \
            KDChartChart.h \
            KDChartChart_p.h \
            KDChartWidget.h \
@@ -92,7 +94,9 @@ HEADERS += KDChartGlobal.h \
            KDChartThreeDLineAttributes.h \
            KDChartThreeDLineAttributes_p.h \
            KDChartThreeDPieAttributes.h \
-           KDChartThreeDPieAttributes_p.h
+           KDChartThreeDPieAttributes_p.h \ 
+	   KDChartTernaryAxis.h \
+	   KDChartTernaryDiagram.h
 
 SOURCES += \
            KDChartMeasure.cpp \
@@ -100,6 +104,7 @@ SOURCES += \
            KDChartAbstractCoordinatePlane.cpp \
            KDChartCartesianCoordinatePlane.cpp \
            KDChartPolarCoordinatePlane.cpp \
+           KDChartTernaryCoordinatePlane.cpp \
            KDChartChart.cpp \
            KDChartWidget.cpp \
            KDChartAbstractDiagram.cpp \
@@ -144,7 +149,9 @@ SOURCES += \
            KDChartAbstractThreeDAttributes.cpp \
            KDChartThreeDBarAttributes.cpp \
            KDChartThreeDLineAttributes.cpp \
-           KDChartThreeDPieAttributes.cpp
+           KDChartThreeDPieAttributes.cpp \
+	   KDChartTernaryAxis.cpp \
+	   KDChartTernaryDiagram.cpp
 
 CONFIG += warn-on
 
