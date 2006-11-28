@@ -13,7 +13,17 @@ CONFIG += designer
 DEFINES -= QT_NO_CAST_FROM_ASCII
 
 KDCHARTDIR = ../
-load(kdchart)
+
+
+# Use the filename "kdchartd.dll" (or "kdchartd.lib") on Windows
+# to avoid name clashes between debug/non-debug versions of the
+# KD Chart library:
+KDCHARTLIB = kdchart
+CONFIG(debug, debug|release) {
+    !unix: KDCHARTLIB = "kdchartd"
+}
+LIBS += -L$$KDCHARTDIR/lib -l$$KDCHARTLIB
+
 
 unix {
   LIBS += -lkdchartuitools
@@ -25,6 +35,7 @@ unix {
   }
 }
 INCLUDEPATH +=  $$KDCHARTDIR/uitools \
+                $$KDCHARTDIR/include \
                 $$KDCHARTDIR/src \
                 $$KDCHARTDIR/extra_include
 
