@@ -20,8 +20,10 @@ private slots:
       tableModel->setSupplyHeaderData( false );
       m_model = tableModel;
       m_plane = new CartesianCoordinatePlane(0);
+
       m_bars = new BarDiagram();
       m_bars->setModel( m_model );
+
       m_lines = new LineDiagram();
       m_lines->setModel( m_model );
   }
@@ -62,10 +64,11 @@ private slots:
   void testKDChartAttributesModelTestSharedModel()
   {
       AttributesModel* attrsmodel = m_lines->attributesModel();
-      m_bars->setAttributesModel(attrsmodel);
-      QModelIndex idx = m_model->index( 0, 2, QModelIndex() );
-      DataValueAttributes a = m_lines->dataValueAttributes( idx );
-      QCOMPARE( a.isVisible(), true );
+      //note: This setAttributesModel() is supposed to fail,
+      //      and it should trigger a warning from AbstractDiagram:
+      QWARN( "Next line SHALL be a QWARN" );
+      m_bars->setAttributesModel( attrsmodel );
+      QVERIFY( m_bars->attributesModel() != m_lines->attributesModel() );
   }
 
   void testKDChartAttributesModelTestSharedFromStart()
@@ -82,7 +85,7 @@ private slots:
       AttributesModel* attrsmodel = new AttributesModel( m_model, m_plane );
       m_lines->setAttributesModel(attrsmodel);
       m_bars->setAttributesModel(attrsmodel);
-      
+
       QModelIndex idx = m_bars->model()->index( 0, 2, QModelIndex() );
       DataValueAttributes a = m_lines->dataValueAttributes( idx );
       DataValueAttributes b = m_bars->dataValueAttributes( idx );
