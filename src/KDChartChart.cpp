@@ -83,6 +83,7 @@ void Chart::Private::slotUnregisterDestroyedHeaderFooter( HeaderFooter* hf )
     headerFooters.removeAll( hf );
     hf->removeFromParentLayout();
     textLayoutItems.remove( textLayoutItems.indexOf( hf ) );
+    slotRelayout();
 }
 
 void Chart::Private::slotUnregisterDestroyedPlane( AbstractCoordinatePlane* plane )
