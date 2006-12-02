@@ -152,8 +152,19 @@ void MainWindow::on_removeHeaderPB_clicked()
     if ( headersTV->selectedItems().size() == 0 ) return;
     QList<QTreeWidgetItem*> items = headersTV->selectedItems();
     for( QList<QTreeWidgetItem*>::const_iterator it = items.begin();
-         it != items.end(); ++it ) {
-        delete static_cast<HeaderItem*>( (*it) )->header();
+         it != items.end(); ++it )
+    {
+        KDChart::HeaderFooter* headerFooter = static_cast<HeaderItem*>( (*it) )->header();
+#if 0
+        // Note: Despite it being owned by the Chart, you *can* just delete
+        //       the header: KD Chart will notice that and adjust its layout ...
+        delete headerFooter;
+#else
+        // ... but the correct way is to first take it, so the Chart is no longer owning it:
+        m_chart->takeHeaderFooter( headerFooter );
+        // ... and then delete it:
+        delete headerFooter;
+#endif
         delete (*it);
     }
     m_chart->update();
