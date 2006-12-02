@@ -14,6 +14,7 @@ SUBDIRS		= tools \
                   ModelView \
                   MultidimensionalData \
                   EmptyValues \
+                  NoValues \
 	          Background \
 	          Grids \
 	          RealTime \
