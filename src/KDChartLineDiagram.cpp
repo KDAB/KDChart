@@ -763,17 +763,58 @@ void LineDiagram::paint( PaintContext* ctx )
         if ( antiAliasing() )
             ctx->painter()->setRenderHint ( QPainter::Antialiasing );
         LineAttributesInfoListIterator itline ( lineList );
+
         //qDebug() << "Rendering 1 in: " << t.msecsTo( QTime::currentTime() ) << endl;
+
+        QBrush curBrush;
+        QPen curPen;
+        QPolygonF points;
         while ( itline.hasNext() ) {
             const LineAttributesInfo& lineInfo = itline.next();
-            paintLines( ctx,lineInfo.index, lineInfo.value, lineInfo.nextValue );
+            const QModelIndex& index = lineInfo.index;
+            const ThreeDLineAttributes td = threeDLineAttributes( index );
+            if( td.isEnabled() ){
+                paintThreeDLines( ctx, index, lineInfo.value, lineInfo.nextValue, td.depth() );
+            }else{
+                const QBrush br( brush( index ) );
+                const QPen   pn( pen(   index ) );
+                if( points.count() && points.last() == lineInfo.value && curBrush == br && curPen == pn ){
+                    points << lineInfo.nextValue;
+                }else{
+                    if( points.count() )
+                        paintPolyline( ctx, curBrush, curPen, points );
+                    curBrush = br;
+                    curPen   = pn;
+                    points.clear();
+                    points << lineInfo.value << lineInfo.nextValue;
+                }
+            }
         }
+        if( points.count() )
+            paintPolyline( ctx, curBrush, curPen, points );
     }
     // paint all data value texts and the point markers
     d->paintDataValueTextsAndMarkers( this, ctx, list, true );
     //qDebug() << "Rendering 2 in: " << t.msecsTo( QTime::currentTime() ) << endl;
 }
 
+
+void LineDiagram::paintPolyline( PaintContext* ctx,
+                                 const QBrush& brush, const QPen& pen,
+                                 const QPolygonF& points ) const
+{
+    ctx->painter()->setBrush( brush );
+    ctx->painter()->setPen(
+            QPen( pen.color(),
+                  pen.width(),
+                  pen.style(),
+                  Qt::FlatCap,
+                  Qt::MiterJoin ) );
+    ctx->painter()->drawPolyline( points );
+}
+
+
+/* old:
 void LineDiagram::paintLines( PaintContext* ctx, const QModelIndex& index,
                               const QPointF& from, const QPointF& to )
 {
@@ -791,6 +832,7 @@ void LineDiagram::paintLines( PaintContext* ctx, const QModelIndex& index,
         }
     }
 }
+*/
 
 void LineDiagram::paintAreas( PaintContext* ctx, const QModelIndex& index, const QPolygonF& area, const uint transparency )
 {

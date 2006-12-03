@@ -107,8 +107,9 @@ protected:
     void resizeEvent ( QResizeEvent* );
 
 private:
-    void paintLines( PaintContext* painter,const QModelIndex& index,
-                     const QPointF& from, const QPointF& to );
+    void paintPolyline( PaintContext* ctx,
+                        const QBrush& brush, const QPen& pen,
+                        const QPolygonF& points ) const;
     const QPointF project( QPointF point, QPointF maxLimits, double z, const QModelIndex& index ) const;
     void paintThreeDLines( PaintContext* painter,const QModelIndex& index,
                            const QPointF& from, const QPointF& to, const double depth );
