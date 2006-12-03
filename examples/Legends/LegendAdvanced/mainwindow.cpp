@@ -203,8 +203,19 @@ void MainWindow::on_removeLegendPB_clicked()
     if ( legendsTV->selectedItems().size() == 0 ) return;
     QList<QTreeWidgetItem*> items = legendsTV->selectedItems();
     for( QList<QTreeWidgetItem*>::const_iterator it = items.begin();
-         it != items.end(); ++it ) {
-        delete static_cast<LegendItem*>( (*it) )->legend();
+         it != items.end(); ++it )
+    {
+        KDChart::Legend* legend = static_cast<LegendItem*>( (*it) )->legend();
+#if 0
+        // Note: Despite it being owned by the Chart, you *can* just delete
+        //       the legend: KD Chart will notice that and adjust its layout ...
+        delete legend;
+#else
+        // ... but the correct way is to first take it, so the Chart is no longer owning it:
+        m_chart->takeLegend( legend );
+        // ... and then delete it:
+        delete legend;
+#endif
         delete (*it);
     }
     m_chart->update();
