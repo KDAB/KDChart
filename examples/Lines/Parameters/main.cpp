@@ -17,10 +17,10 @@ public:
     double increase = 1.15;
     for( int i = 0; i < 5; ++i ) {
         increase += 0.06;
-      for( int j = 0; j < 5; ++j ) {
-        m_model.setData( m_model.index( i,j,QModelIndex() ), (double)( i +
-increase )* j );
-      }
+        for( int j = 0; j < 5; ++j ) {
+            m_model.setData( m_model.index( i,j,QModelIndex() ),
+                             ( increase + i ) * j * (1.0 + 0.1 * (rand() % 10)) );
+        }
     }
 
     LineDiagram* diagram = new LineDiagram;
@@ -58,6 +58,13 @@ increase )* j );
     dva.setVisible( true );
     // 5 - Assign to the diagram
     diagram->setDataValueAttributes( dva );
+
+    // Set thick line widths for all datasets
+    for( int i=0; i<m_model.rowCount(); ++i ){
+        QPen pen( diagram->pen( i ) );
+        pen.setWidth( 17 );
+        diagram->setPen( i, pen );
+    }
 
     // Draw one of the sections of a line differently.
     // 1 - Retrieve the pen for the dataset and change
