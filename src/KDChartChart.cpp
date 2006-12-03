@@ -76,6 +76,7 @@ using namespace KDChart;
 void Chart::Private::slotUnregisterDestroyedLegend( Legend *l )
 {
     legends.removeAll( l );
+    slotRelayout();
 }
 
 void Chart::Private::slotUnregisterDestroyedHeaderFooter( HeaderFooter* hf )
