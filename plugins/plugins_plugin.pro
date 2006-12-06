@@ -23,7 +23,12 @@ KDCHARTLIB = kdchart
 CONFIG(debug, debug|release) {
     !unix: KDCHARTLIB = "kdchartd"
 }
-LIBS += -L$$KDCHARTDIR/lib -l$$KDCHARTLIB
+KDCHARTUITOOLSLIB = kdchartuitools
+CONFIG(debug, debug|release) {
+    !unix: KDCHARTUITOOLSLIB = "kdchartuitoolsd"
+}
+
+LIBS += -L$$KDCHARTDIR/lib -l$$KDCHARTLIB -l$$KDCHARTUITOOLSLIB
 
 
 HEADERS += plugins.h
