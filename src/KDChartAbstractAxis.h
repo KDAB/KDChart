@@ -31,7 +31,7 @@
 #define KDCHARTAXIS_H
 
 // #include <QObject>
-#include <QRectF>
+// #include <QRectF>
 // #include <QWidget>
 
 #include "kdchart_export.h"
@@ -42,7 +42,7 @@
 
 class QPainter;
 class QSizeF;
-class QRectF;
+// class QRectF;
 
 
 namespace KDChart {
@@ -77,8 +77,8 @@ namespace KDChart {
         // FIXME (Mirko) readd when needed
         // void copyRelevantDetailsFrom( const KDChartAxis* axis );
 
-    /*    virtual void paint( PaintContext* ) const = 0;
-        virtual QSize sizeHint() const = 0;*/
+        /*    virtual void paint( PaintContext* ) const = 0;
+              virtual QSize sizeHint() const = 0;*/
 	//virtual void paintEvent( QPaintEvent* event) = 0;
 
         void createObserver( AbstractDiagram* diagram );

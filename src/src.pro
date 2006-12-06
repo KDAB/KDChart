@@ -96,7 +96,9 @@ HEADERS += KDChartGlobal.h \
            KDChartThreeDPieAttributes.h \
            KDChartThreeDPieAttributes_p.h \ 
 	   KDChartTernaryAxis.h \
-	   KDChartTernaryDiagram.h
+	   KDChartTernaryDiagram.h \
+	   PrerenderedElements/KDChartTextLabelCache.h \
+	   Ternary/TernaryPoint.h
 
 SOURCES += \
            KDChartMeasure.cpp \
@@ -151,7 +153,9 @@ SOURCES += \
            KDChartThreeDLineAttributes.cpp \
            KDChartThreeDPieAttributes.cpp \
 	   KDChartTernaryAxis.cpp \
-	   KDChartTernaryDiagram.cpp
+	   KDChartTernaryDiagram.cpp \
+	   PrerenderedElements/KDChartTextLabelCache.cpp \
+	   Ternary/TernaryPoint.cpp
 
 CONFIG += warn-on
 

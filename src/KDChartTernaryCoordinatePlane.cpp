@@ -1,3 +1,5 @@
+#include <cmath>
+
 #include <QFont>
 #include <QList>
 #include <QtDebug>
@@ -6,14 +8,12 @@
 
 #include <KDChartAbstractAxis>
 #include <KDChartAbstractDiagram>
+#include <KDChartPaintContext>
 #include "KDChartTernaryAxis.h"
 #include "KDChartTernaryDiagram.h"
 #include "KDChartTernaryCoordinatePlane.h"
 #include "KDChartTernaryCoordinatePlane_p.h"
-#include <KDChartPaintContext>
 #include "KDChartPainterSaver_p.h"
-
-#include "math.h"
 
 #define d d_func()
 

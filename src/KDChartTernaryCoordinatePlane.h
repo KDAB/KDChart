@@ -28,9 +28,8 @@ public:
 
    void addDiagram ( AbstractDiagram* diagram );
 
-   
-   void           addAxis( TernaryAxis* axis );
-   TernaryAxis*   axisAt(int index) const;
+   void addAxis( TernaryAxis* axis );
+   TernaryAxis* axisAt(int index) const;
 
 
    // need to implement from AbstractCoordinatePlane but is not used.
@@ -48,7 +47,7 @@ public:
    // triangle label stuff
    // valid positions are: NORTH, EAST and WEST
    virtual void setLabelAttributes( const TextAttributes& );
-   virtual TextAttributes labelAttributes() const; 
+   virtual TextAttributes labelAttributes() const;
    virtual void setLabelText( Position, const QString& );
    virtual QString labelText( Position ) const;
 

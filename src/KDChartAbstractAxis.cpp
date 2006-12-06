@@ -23,16 +23,16 @@
  **
  **********************************************************************/
 
+#include <QDebug>
+
 #include "KDChartAbstractAxis.h"
 #include "KDChartAbstractAxis_p.h"
-#include <QDebug>
-#include <KDChartAbstractDiagram.h>
+#include "KDChartAbstractDiagram.h"
 #include "KDChartAbstractCartesianDiagram.h"
 #include "KDChartEnums.h"
 #include "KDChartMeasure.h"
 
 #include <KDABLibFakes>
-
 
 using namespace KDChart;
 
@@ -108,8 +108,6 @@ bool AbstractAxis::Private::hasDiagram( AbstractDiagram* diagram ) const
 {
     return diagram == mDiagram || secondaryDiagrams.contains( diagram );
 }
-
-
 
 AbstractAxis::AbstractAxis ( AbstractDiagram* diagram )
     : AbstractArea( new Private( diagram, this ) )
