@@ -98,7 +98,8 @@ HEADERS += KDChartGlobal.h \
 	   KDChartTernaryAxis.h \
 	   KDChartTernaryDiagram.h \
 	   PrerenderedElements/KDChartTextLabelCache.h \
-	   Ternary/TernaryPoint.h
+	   Ternary/TernaryPoint.h \
+	   Ternary/TernaryConstants.h 
 
 SOURCES += \
            KDChartMeasure.cpp \
@@ -155,7 +156,8 @@ SOURCES += \
 	   KDChartTernaryAxis.cpp \
 	   KDChartTernaryDiagram.cpp \
 	   PrerenderedElements/KDChartTextLabelCache.cpp \
-	   Ternary/TernaryPoint.cpp
+	   Ternary/TernaryPoint.cpp \
+	   Ternary/TernaryConstants.cpp
 
 CONFIG += warn-on
 
