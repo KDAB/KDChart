@@ -1,1 +1,1 @@
-#include "../src/KDChartTernaryAxis.h"
+#include "../src/Ternary/KDChartTernaryAxis.h"
