@@ -41,43 +41,33 @@
 
 #include <KDABLibFakes>
 
-
 namespace KDChart {
 
+    class TernaryAxis;
 /**
  * \internal
  */
 
-class TernaryCoordinatePlane::Private : public AbstractCoordinatePlane::Private
-{
-    friend class TernaryCoordinatePlane;
-public:
-    explicit Private();
-
-    virtual ~Private() { }
-
-    virtual void initialize()
+    class TernaryCoordinatePlane::Private : public AbstractCoordinatePlane::Private
     {
-    }
+        friend class TernaryCoordinatePlane;
+    public:
+        explicit Private();
 
-    bool bPaintIsRunning;
-    bool bNextPaintPending;
+        virtual ~Private() { }
 
-    QList<TernaryAxis*> axes;
+        virtual void initialize()
+        {
+        }
 
-    TextAttributes labelAttributes;
-    QString northLabel;
-    QString eastLabel;
-    QString westLabel;
+        QList<TernaryAxis*> axes;
 
-    DoubleRange southRange;
-    DoubleRange eastRange;
-    DoubleRange westRange;
-};
+        TextAttributes labelAttributes;
+    };
 
 
-KDCHART_IMPL_DERIVED_PLANE(TernaryCoordinatePlane, AbstractCoordinatePlane)
+    KDCHART_IMPL_DERIVED_PLANE(TernaryCoordinatePlane, AbstractCoordinatePlane)
 
-}
+        }
 
 #endif /* KDCHARTTERNARYCOORDINATEPLANE_P_H */
