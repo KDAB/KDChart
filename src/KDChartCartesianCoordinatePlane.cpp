@@ -56,8 +56,8 @@ CartesianCoordinatePlane::Private::Private()
     , horizontalMax(0)
     , verticalMin(0)
     , verticalMax(0)
-    , autoAdjustHorizontalRangeToData(75)
-    , autoAdjustVerticalRangeToData(  75)
+    , autoAdjustHorizontalRangeToData(67)
+    , autoAdjustVerticalRangeToData(  67)
 {
     // this bloc left empty intentionally
 }

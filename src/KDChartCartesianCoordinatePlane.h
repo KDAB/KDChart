@@ -151,7 +151,7 @@ namespace KDChart {
          * \brief Automatically adjust horizontal range settings to the ranges covered by
          * the model's values, when ever the data have changed, and then emit horizontalRangeAutomaticallyAdjusted.
          *
-         * By default the horizontal range is adjusted automatically, if more than 75 percent of
+         * By default the horizontal range is adjusted automatically, if more than 67 percent of
          * the available horizontal space would be empty otherwise.
          *
          * Range setting is adjusted if more than \c percentEmpty percent of the horizontal
@@ -167,13 +167,13 @@ namespace KDChart {
          * \sa setHorizontalRange, setVerticalRange
          * \sa setAutoAdjustVerticalRangeToData
          */
-        void setAutoAdjustHorizontalRangeToData( unsigned int percentEmpty = 75 );
+        void setAutoAdjustHorizontalRangeToData( unsigned int percentEmpty = 67 );
 
         /**
          * \brief Automatically adjust vertical range settings to the ranges covered by
          * the model's values, when ever the data have changed, and then emit verticalRangeAutomaticallyAdjusted.
          *
-         * By default the vertical range is adjusted automatically, if more than 75 percent of
+         * By default the vertical range is adjusted automatically, if more than 67 percent of
          * the available vertical space would be empty otherwise.
          *
          * Range setting is adjusted if more than \c percentEmpty percent of the horizontal
@@ -189,7 +189,7 @@ namespace KDChart {
          * \sa setHorizontalRange, setVerticalRange
          * \sa setAutoAdjustHorizontalRangeToData
          */
-        void setAutoAdjustVerticalRangeToData( unsigned int percentEmpty = 75  );
+        void setAutoAdjustVerticalRangeToData( unsigned int percentEmpty = 67  );
 
         /**
          * \brief Returns the maximal allowed percent of the horizontal
