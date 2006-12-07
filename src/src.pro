@@ -93,13 +93,13 @@ HEADERS += KDChartGlobal.h \
            KDChartThreeDLineAttributes_p.h \
            KDChartThreeDPieAttributes.h \
            KDChartThreeDPieAttributes_p.h \ 
-#	   KDChartTernaryAxis.h \
-#	   KDChartTernaryDiagram.h \
 	   PrerenderedElements/KDChartTextLabelCache.h \
 	   Ternary/TernaryPoint.h \
 	   Ternary/TernaryConstants.h \
 	   Ternary/KDChartTernaryCoordinatePlane.h \
-	   Ternary/KDChartTernaryCoordinatePlane_p.h
+	   Ternary/KDChartTernaryCoordinatePlane_p.h \
+	   Ternary/KDChartTernaryAxis.h \
+	   Ternary/KDChartTernaryDiagram.h \
 
 SOURCES += \
            KDChartMeasure.cpp \
@@ -152,9 +152,9 @@ SOURCES += \
            KDChartThreeDBarAttributes.cpp \
            KDChartThreeDLineAttributes.cpp \
            KDChartThreeDPieAttributes.cpp \
-#	   KDChartTernaryAxis.cpp \
-#	   KDChartTernaryDiagram.cpp \
 	   PrerenderedElements/KDChartTextLabelCache.cpp \
+	   Ternary/KDChartTernaryAxis.cpp \
+	   Ternary/KDChartTernaryDiagram.cpp \
 	   Ternary/TernaryPoint.cpp \
 	   Ternary/TernaryConstants.cpp \
 	   Ternary/KDChartTernaryCoordinatePlane.cpp

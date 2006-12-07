@@ -1,27 +1,25 @@
-#include "KDChartTernaryDiagram.h"
-#include <KDChartPaintContext>
 #include <QPainter>
 
+#include <KDChartPaintContext>
 
+#include "TernaryConstants.h"
+#include "KDChartTernaryDiagram.h"
 
 using namespace KDChart;
 
-
-
-TernaryDiagram::TernaryDiagram ( QWidget* parent, TernaryCoordinatePlane* plane ) :
-   AbstractDiagram( parent, plane )
+TernaryDiagram::TernaryDiagram ( QWidget* parent,
+                                 TernaryCoordinatePlane* plane )
+    : AbstractDiagram( parent, plane )
 {
-   setDatasetDimension( 3 );
+    setDatasetDimension( 2 ); // the third column is implicit
 }
 
 TernaryDiagram::~TernaryDiagram()
 {
-
 }
 
-void  TernaryDiagram::resize (const QSizeF &area)
+void  TernaryDiagram::resize (const QSizeF& area)
 {
-
 }
 
 void  TernaryDiagram::paint (PaintContext *paintContext)
@@ -30,15 +28,14 @@ void  TernaryDiagram::paint (PaintContext *paintContext)
     if ( model() == 0 ) return;
 
     QPainter* p = paintContext->painter();
-    TernaryCoordinatePlane* plane = (TernaryCoordinatePlane*) paintContext->coordinatePlane();
+    TernaryCoordinatePlane* plane =
+        (TernaryCoordinatePlane*) paintContext->coordinatePlane();
 
-    double x,y,z;
-    QPolygonF points;
+    double x, y, z;
 
     int columnCount = model()->columnCount( rootIndex() );
     for(int column=0; column<columnCount; column+=datasetDimension() )
     {
-        points.clear();
         int numrows = model()->rowCount( rootIndex() );
         for( int row = 0; row < numrows; row++ )
         {
@@ -49,31 +46,17 @@ void  TernaryDiagram::paint (PaintContext *paintContext)
                 x = model()->data( model()->index( row, column+0 ) ).toDouble();
                 y = model()->data( model()->index( row, column+1 ) ).toDouble();
                 z = model()->data( model()->index( row, column+2 ) ).toDouble();
-
-                // translate the points to onscreen coordinates.
-                // and add to pointlist
-                points += plane->translate( x, y, z );
             }
-        }
-
-        // draw line from pointlist
-        p->setPen( pen( column+2 ) );
-        p->setBrush( brush( column+2 ) );
-        p->drawPolyline( points );
-
-        // paint markers
-        for (int i = 0; i < points.size(); ++i)
-        {
-            // use dummy index (same markers for all datapoints)
-            // good enough for now.
-            paintMarker( p, model()->index( 0, column+2 ), points.at(i) );
         }
     }
 }
 
 const QPair< QPointF, QPointF >  TernaryDiagram::calculateDataBoundaries () const
 {
-   QPair< QPointF, QPointF> t;
-   return t;
+    // this is a constant, because we defined it to be one:
+    static QPair<QPointF, QPointF> Boundaries(
+        TriangleBottomLeft,
+        QPointF( TriangleBottomRight.x(), TriangleHeight ) );
+    return Boundaries;
 }
 
