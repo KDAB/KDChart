@@ -7,17 +7,17 @@
 
 namespace KDChart {
 
-    class TernaryDiagram : public AbstractDiagram
+    class TernaryPointDiagram : public AbstractDiagram
     {
         Q_OBJECT
-        Q_DISABLE_COPY( TernaryDiagram )
-        KDCHART_DECLARE_DERIVED_DIAGRAM( TernaryDiagram, TernaryCoordinatePlane )
+        Q_DISABLE_COPY( TernaryPointDiagram )
+        KDCHART_DECLARE_DERIVED_DIAGRAM( TernaryPointDiagram, TernaryCoordinatePlane )
 
         friend class TernaryCoordinatePlane;
 
     public:
-        explicit TernaryDiagram ( QWidget* parent = 0, TernaryCoordinatePlane* plane = 0 );
-        virtual ~TernaryDiagram();
+        explicit TernaryPointDiagram ( QWidget* parent = 0, TernaryCoordinatePlane* plane = 0 );
+        virtual ~TernaryPointDiagram();
 
         virtual void  resize (const QSizeF &area);
         virtual void  paint (PaintContext *paintContext);

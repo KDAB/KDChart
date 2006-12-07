@@ -50,11 +50,11 @@ namespace KDChart {
         CartesianGrid() : AbstractGrid(){}
         virtual ~CartesianGrid(){}
 
-        virtual void drawGrid( PaintContext* context );
+        void drawGrid( PaintContext* context );
 
     private:
-        virtual DataDimensionsList calculateGrid(
-              const DataDimensionsList& rawDataDimensions ) const;
+        DataDimensionsList calculateGrid(
+            const DataDimensionsList& rawDataDimensions ) const;
 
         /**
           * Helper function called by calculateGrid().
