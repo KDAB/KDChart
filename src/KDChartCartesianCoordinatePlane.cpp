@@ -56,6 +56,8 @@ CartesianCoordinatePlane::Private::Private()
     , horizontalMax(0)
     , verticalMin(0)
     , verticalMax(0)
+    , autoAdjustHorizontalRangeToData(75)
+    , autoAdjustVerticalRangeToData(  75)
 {
     // this bloc left empty intentionally
 }
@@ -145,43 +147,112 @@ void CartesianCoordinatePlane::slotLayoutChanged ( AbstractDiagram* )
     layoutDiagrams();
 }
 
-QRectF CartesianCoordinatePlane::calculateRawDataBoundingRect() const
+QRectF CartesianCoordinatePlane::getRawDataBoundingRectFromDiagrams() const
 {
     // determine unit of the rectangles of all involved diagrams:
-    QPointF smallestPoint;
-    QPointF largestPoint;
+    qreal minX, maxX, minY, maxY;
     bool bStarting = true;
     Q_FOREACH( const AbstractDiagram* diagram, diagrams() )
     {
         QPair<QPointF, QPointF> dataBoundariesPair = diagram->dataBoundaries();
-        //qDebug() << "CartesianCoordinatePlane::calculateRawDataBoundingRect() gets diagram->dataBoundaries: " << dataBoundariesPair.first << dataBoundariesPair.second;
-        if ( bStarting || dataBoundariesPair.first.x() < smallestPoint.x() )
-            smallestPoint.setX( dataBoundariesPair.first.x() );
-        if ( bStarting || dataBoundariesPair.first.y() < smallestPoint.y() )
-            smallestPoint.setY( dataBoundariesPair.first.y() );
-        if ( bStarting || dataBoundariesPair.second.x() > largestPoint.x() )
-            largestPoint.setX( dataBoundariesPair.second.x() );
-        if ( bStarting || dataBoundariesPair.second.y() > largestPoint.y() )
-            largestPoint.setY( dataBoundariesPair.second.y() );
+        //qDebug() << "CartesianCoordinatePlane::getRawDataBoundingRectFromDiagrams()\ngets diagram->dataBoundaries: " << dataBoundariesPair.first << dataBoundariesPair.second;
+        if ( bStarting || dataBoundariesPair.first.x()  < minX ) minX = dataBoundariesPair.first.x();
+        if ( bStarting || dataBoundariesPair.first.y()  < minY ) minY = dataBoundariesPair.first.y();
+        if ( bStarting || dataBoundariesPair.second.x() > maxX ) maxX = dataBoundariesPair.second.x();
+        if ( bStarting || dataBoundariesPair.second.y() > maxY ) maxY = dataBoundariesPair.second.y();
         bStarting = false;
     }
-
-    // if custom boundaries are set on the plane, use them
-    if ( d->horizontalMin != d->horizontalMax  ) {
-        smallestPoint.setX( d->horizontalMin );
-        largestPoint.setX( d->horizontalMax );
-    }
-    if ( d->verticalMin != d->verticalMax ) {
-        smallestPoint.setY( d->verticalMin );
-        largestPoint.setY( d->verticalMax );
-    }
-
+    //qDebug() << "CartesianCoordinatePlane::getRawDataBoundingRectFromDiagrams()\nreturns data boundaries: " << QRectF( QPointF(minX, minY), QSizeF(maxX - minX, maxY - minY) );
     QRectF dataBoundingRect;
-    dataBoundingRect.setBottomLeft ( smallestPoint );
-    dataBoundingRect.setTopRight ( largestPoint );
-    //qDebug() << "CartesianCoordinatePlane::calculateRawDataBoundingRect() returns" << dataBoundingRect;
+    dataBoundingRect.setBottomLeft( QPointF(minX, minY) );
+    dataBoundingRect.setTopRight(   QPointF(maxX, maxY) );
     return dataBoundingRect;
 }
+
+
+QRectF CartesianCoordinatePlane::adjustedToMaxEmptyInnerPercentage(
+        const QRectF& r, unsigned int percentX, unsigned int percentY ) const
+{
+    QRectF erg( r );
+    if( percentX < 100 || percentX == 1000 ) {
+        const bool isPositive = (r.left() >= 0);
+        if( (r.right() >= 0) == isPositive ){
+            const qreal innerBound =
+                    isPositive ? qMin(r.left(), r.right()) : qMax(r.left(), r.right());
+            const qreal outerBound =
+                    isPositive ? qMax(r.left(), r.right()) : qMin(r.left(), r.right());
+            if( innerBound / outerBound * 100 <= percentX )
+            {
+                if( isPositive )
+                    erg.setLeft( 0.0 );
+                else
+                    erg.setRight( 0.0 );
+            }
+        }
+    }
+    if( percentY < 100 || percentY == 1000 ) {
+        const bool isPositive = (r.bottom() >= 0);
+        if( (r.top() >= 0) == isPositive ){
+            const qreal innerBound =
+                    isPositive ? qMin(r.top(), r.bottom()) : qMax(r.top(), r.bottom());
+            const qreal outerBound =
+                    isPositive ? qMax(r.top(), r.bottom()) : qMin(r.top(), r.bottom());
+            if( innerBound / outerBound * 100 <= percentY )
+            {
+                if( isPositive )
+                    erg.setBottom( 0.0 );
+                else
+                    erg.setTop( 0.0 );
+            }
+        }
+    }
+    return erg;
+}
+
+
+QRectF CartesianCoordinatePlane::calculateRawDataBoundingRect() const
+{
+    // are manually set ranges to be applied?
+    const bool bAutoAdjustHorizontalRange = (d->autoAdjustHorizontalRangeToData < 100);
+    const bool bAutoAdjustVerticalRange   = (d->autoAdjustVerticalRangeToData   < 100);
+    const bool bHardHorizontalRange = (d->horizontalMin != d->horizontalMax) && ! bAutoAdjustVerticalRange;
+    const bool bHardVerticalRange   = (d->verticalMin   != d->verticalMax)   && ! bAutoAdjustHorizontalRange;
+    QRectF dataBoundingRect;
+
+    // if custom boundaries are set on the plane, use them
+    if ( bHardHorizontalRange && bHardVerticalRange ) {
+        dataBoundingRect.setLeft(   d->horizontalMin );
+        dataBoundingRect.setRight(  d->horizontalMax );
+        dataBoundingRect.setBottom( d->verticalMin );
+        dataBoundingRect.setTop(    d->verticalMax );
+    }else{
+        // determine unit of the rectangles of all involved diagrams:
+        dataBoundingRect = getRawDataBoundingRectFromDiagrams();
+        if ( bHardHorizontalRange ) {
+            dataBoundingRect.setLeft(  d->horizontalMin );
+            dataBoundingRect.setRight( d->horizontalMax );
+        }
+        if ( bHardVerticalRange ) {
+            dataBoundingRect.setBottom( d->verticalMin );
+            dataBoundingRect.setTop(    d->verticalMax );
+        }
+    }
+    // recalculate the bounds, if automatic adjusting of ranges is desired AND
+    //                         both bounds are at the same side of the zero line
+    dataBoundingRect = adjustedToMaxEmptyInnerPercentage(
+            dataBoundingRect, d->autoAdjustHorizontalRangeToData, d->autoAdjustVerticalRangeToData );
+    if( bAutoAdjustHorizontalRange ){
+        const_cast<CartesianCoordinatePlane::Private *>(d)->horizontalMin = dataBoundingRect.left();
+        const_cast<CartesianCoordinatePlane::Private *>(d)->horizontalMax = dataBoundingRect.right();
+    }
+    if( bAutoAdjustVerticalRange ){
+        const_cast<CartesianCoordinatePlane*>(this)->d->verticalMin = dataBoundingRect.bottom();
+        const_cast<CartesianCoordinatePlane*>(this)->d->verticalMax = dataBoundingRect.top();
+    }
+    //qDebug() << "CartesianCoordinatePlane::calculateRawDataBoundingRect()\nreturns data boundaries: " << dataBoundingRect;
+    return dataBoundingRect;
+}
+
 
 DataDimensionsList CartesianCoordinatePlane::getDataDimensionsList() const
 {
@@ -352,26 +423,47 @@ bool CartesianCoordinatePlane::doesIsometricScaling ()
     return d->isometricScaling;
 }
 
+bool CartesianCoordinatePlane::doneSetZoomFactorX( double factor )
+{
+    bool bDone = ( d->coordinateTransformation.zoom.xFactor != factor );
+    if( bDone )
+        d->coordinateTransformation.zoom.xFactor = factor;
+    return bDone;
+}
+
+bool CartesianCoordinatePlane::doneSetZoomFactorY( double factor )
+{
+    bool bDone = ( d->coordinateTransformation.zoom.yFactor != factor );
+    if( bDone )
+        d->coordinateTransformation.zoom.yFactor = factor;
+    return bDone;
+}
+
+bool CartesianCoordinatePlane::doneSetZoomCenter( QPointF point )
+{
+    bool bDone = ( d->coordinateTransformation.zoom.center() != point );
+    if( bDone )
+        d->coordinateTransformation.zoom.setCenter( point );
+    return bDone;
+}
+
 void CartesianCoordinatePlane::setZoomFactorX( double factor )
 {
-    if( d->coordinateTransformation.zoom.xFactor != factor ){
-        d->coordinateTransformation.zoom.xFactor = factor;
+    if( doneSetZoomFactorX( factor ) ){
         emit propertiesChanged();
     }
 }
 
 void CartesianCoordinatePlane::setZoomFactorY( double factor )
 {
-    if( d->coordinateTransformation.zoom.yFactor != factor ){
-        d->coordinateTransformation.zoom.yFactor = factor;
+    if( doneSetZoomFactorY( factor ) ){
         emit propertiesChanged();
     }
 }
 
 void CartesianCoordinatePlane::setZoomCenter( QPointF point )
 {
-    if( d->coordinateTransformation.zoom.center() != point ){
-        d->coordinateTransformation.zoom.setCenter( point );
+    if( doneSetZoomCenter( point ) ){
         emit propertiesChanged();
     }
 }
@@ -390,6 +482,7 @@ double CartesianCoordinatePlane::zoomFactorY() const
 {
     return d->coordinateTransformation.zoom.yFactor;
 }
+
 
 CartesianCoordinatePlane::AxesCalcMode CartesianCoordinatePlane::axesCalcModeY() const
 {
@@ -430,6 +523,7 @@ void CartesianCoordinatePlane::setAxesCalcModeX( AxesCalcMode mode )
 void KDChart::CartesianCoordinatePlane::setHorizontalRange( const QPair< qreal, qreal > & range )
 {
     if ( d->horizontalMin != range.first || d->horizontalMax != range.second ) {
+        d->autoAdjustHorizontalRangeToData = 100;
         d->horizontalMin = range.first;
         d->horizontalMax = range.second;
         layoutDiagrams();
@@ -440,6 +534,7 @@ void KDChart::CartesianCoordinatePlane::setHorizontalRange( const QPair< qreal, 
 void KDChart::CartesianCoordinatePlane::setVerticalRange( const QPair< qreal, qreal > & range )
 {
     if ( d->verticalMin != range.first || d->verticalMax != range.second ) {
+        d->autoAdjustVerticalRangeToData = 100;
         d->verticalMin = range.first;
         d->verticalMax = range.second;
         layoutDiagrams();
@@ -456,6 +551,64 @@ QPair< qreal, qreal > KDChart::CartesianCoordinatePlane::verticalRange( ) const
 {
     return QPair<qreal, qreal>( d->verticalMin, d->verticalMax );
 }
+
+void CartesianCoordinatePlane::adjustRangesToData()
+{
+    const QRectF dataBoundingRect( getRawDataBoundingRectFromDiagrams() );
+    d->horizontalMin = dataBoundingRect.left();
+    d->horizontalMax = dataBoundingRect.right();
+    d->verticalMin = dataBoundingRect.top();
+    d->verticalMax = dataBoundingRect.bottom();
+    layoutDiagrams();
+    emit propertiesChanged();
+}
+
+void CartesianCoordinatePlane::adjustHorizontalRangeToData()
+{
+    const QRectF dataBoundingRect( getRawDataBoundingRectFromDiagrams() );
+    d->horizontalMin = dataBoundingRect.left();
+    d->horizontalMax = dataBoundingRect.right();
+    layoutDiagrams();
+    emit propertiesChanged();
+}
+
+void CartesianCoordinatePlane::adjustVerticalRangeToData()
+{
+    const QRectF dataBoundingRect( getRawDataBoundingRectFromDiagrams() );
+    d->verticalMin = dataBoundingRect.bottom();
+    d->verticalMax = dataBoundingRect.top();
+    layoutDiagrams();
+    emit propertiesChanged();
+}
+
+void CartesianCoordinatePlane::setAutoAdjustHorizontalRangeToData( unsigned int percentEmpty )
+{
+    d->autoAdjustHorizontalRangeToData = percentEmpty;
+    d->horizontalMin = 0.0;
+    d->horizontalMax = 0.0;
+    layoutDiagrams();
+    emit propertiesChanged();
+}
+
+void CartesianCoordinatePlane::setAutoAdjustVerticalRangeToData( unsigned int percentEmpty )
+{
+    d->autoAdjustVerticalRangeToData = percentEmpty;
+    d->verticalMin = 0.0;
+    d->verticalMax = 0.0;
+    layoutDiagrams();
+    emit propertiesChanged();
+}
+
+unsigned int CartesianCoordinatePlane::autoAdjustHorizontalRangeToData() const
+{
+    return d->autoAdjustHorizontalRangeToData;
+}
+
+unsigned int CartesianCoordinatePlane::autoAdjustVerticalRangeToData() const
+{
+    return d->autoAdjustVerticalRangeToData;
+}
+
 
 void KDChart::CartesianCoordinatePlane::setGridAttributes(
     Qt::Orientation orientation,

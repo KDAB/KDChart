@@ -195,7 +195,7 @@ void BarDiagram::resizeEvent ( QResizeEvent*)
 
 }
 
-const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries  () const
+const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries() const
 {
     if ( !checkInvariants() ) return QPair<QPointF, QPointF>( QPointF( 0, 0 ), QPointF( 0, 0 ) );
     const int rowCount = d->attributesModel->rowCount(attributesModelRootIndex());
@@ -207,31 +207,32 @@ const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries  () const
     //double maxThreeDDepth   = 0.0;
 
 
-    bool bStarting = true;
     // calculate boundaries for  different line types Normal - Stacked - Percent - Default Normal
     switch ( type() ){
         case BarDiagram::Normal:
         {
+            bool bStarting = true;
             for ( int i=0; i<colCount; ++i ) {
                 for ( int j=0; j< rowCount; ++j ) {
                     const double value = d->attributesModel->data( d->attributesModel->index( j, i, attributesModelRootIndex() ) ).toDouble();
                     // this is always true yMin can be 0 in case all values
                     // are the same
                     // same for yMax it can be zero if all values are negative
-                    yMin = qMin( yMin,  value );
-                    yMax = qMax( yMax,  value );
-                     /* We should not need that anymore - See comments below
-                    const double depth = threeDItemDepth( model()->index( j, i, rootIndex() ) );
-                    if( depth > 0.0 )
-                        maxThreeDDepth = qMax( maxThreeDDepth, depth );
-                     */
-                    bStarting = false;
+                    if( bStarting ){
+                        yMin = value;
+                        yMax = value;
+                        bStarting = false;
+                    }else{
+                        yMin = qMin( yMin, value );
+                        yMax = qMax( yMax, value );
+                    }
                 }
             }
         }
             break;
         case BarDiagram::Stacked:
         {
+            bool bStarting = true;
             for ( int j=0; j< rowCount; ++j ) {
                 // calculate sum of values per column - Find out stacked Min/Max
                 double stackedValues = 0;
@@ -241,14 +242,14 @@ const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries  () const
                     // this is always true yMin can be 0 in case all values
                     // are the same
                     // same for yMax it can be zero if all values are negative
-                    yMin = qMin( yMin, stackedValues );
-                    yMax = qMax( yMax, stackedValues );
-                    /* We should not need that anymore - See comments below
-                    const double depth = threeDItemDepth( idx );
-                    if( depth > 0.0 )
-                        maxThreeDDepth = qMax( maxThreeDDepth, depth );
-                    */
-                    bStarting = false;
+                    if( bStarting ){
+                        yMin = stackedValues;
+                        yMax = stackedValues;
+                        bStarting = false;
+                    }else{
+                        yMin = qMin( yMin, stackedValues );
+                        yMax = qMax( yMax, stackedValues );
+                    }
                 }
             }
         }
@@ -261,13 +262,8 @@ const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries  () const
                     QModelIndex idx = model()->index( j, i, rootIndex() );
                     // only positive values are handled
                     double value = model()->data( idx ).toDouble();
-                    yMax = qMax( yMax, value );
-                    /* We should not need that anymore - See comments below
-                    const double depth = threeDItemDepth( idx );
-                    if( depth > 0.0 )
-                        maxThreeDDepth = qMax( maxThreeDDepth, depth );
-                    */
-                    bStarting = false;
+                    if ( value > 0 )
+                        yMax = qMax( yMax, value );
                 }
             }
         }
@@ -295,45 +291,8 @@ const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries  () const
     QPointF bottomLeft ( QPointF( xMin, yMin ) );
     QPointF topRight ( QPointF( xMax, yMax ) );
 
-    //FIXME(khz): Verify, if this code is right: We are taking
-    //            'any' ThreeDBarAttributes, no matter for which cell it is specified
-    //            as long, as it is enabled(),
-    //            but we are ignoring all ThreeDBarAttributes that might have been set
-    //            at a header (using the setter that takes a column as parameter).
-    // see: LineDiagram::calculateDataBoundaries ()
-
-    //Pending Michel: I am removing that code - it is not right
-    // this calculation should be done at the axis or grid level
-    // and not from here where we have to return the max and min values.
-    // I just comment it for now and will clean up if we all agree about that
-
-
-    //if ( maxThreeDDepth > 0.0 ) {
-    //    double percentx, percenty;
-        //threeDBoundaries calculate a depth percent value and add it
-    //  QPointF pTRTranslated = coordinatePlane()->translate( topRight );
-    //    QPointF pBLTranslated = coordinatePlane()->translate( bottomLeft );
-        //reserve some plane space for the top of the threeD bars
-        //Pending Michel: fixme 4 - 8?
-    //     if ( d->maxDepth )
-    //      maxThreeDDepth = d->maxDepth;
-    //  if ( type() == BarDiagram::Normal ) {
-    //      percentx = (maxThreeDDepth / pTRTranslated.x());
-    //      percenty = (maxThreeDDepth / pBLTranslated.y());
-    //  } else if ( type() == BarDiagram::Stacked ){
-    //      percentx = ( maxThreeDDepth    / pTRTranslated.x());
-    //      percenty = ((maxThreeDDepth*8) / pBLTranslated.y());
-    //  } else {
-    //      percentx = ( maxThreeDDepth    / pTRTranslated.x());
-    //      percenty = ((maxThreeDDepth*4) / pBLTranslated.y());
-    //   }
-    //      topRight.setX( topRight.x() + percentx);
-    //      topRight.setY( topRight.y() + percenty);
-    //}
-
-//qDebug() << "BarDiagram::calculateDataBoundaries () returns ( " << bottomLeft << topRight <<")";
-
-       return QPair<QPointF, QPointF> ( bottomLeft,  topRight );
+    //qDebug() << "BarDiagram::calculateDataBoundaries () returns ( " << bottomLeft << topRight <<")";
+    return QPair<QPointF, QPointF> ( bottomLeft,  topRight );
 }
 
 /*

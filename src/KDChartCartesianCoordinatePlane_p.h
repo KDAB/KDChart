@@ -58,7 +58,7 @@ public:
 
     virtual void initialize()
     {
-        bPaintIsRunning   = false;
+        bPaintIsRunning = false;
         coordinateTransformation.axesCalcModeX = Linear;
         coordinateTransformation.axesCalcModeY = Linear;
         grid = new CartesianGrid();
@@ -97,6 +97,9 @@ public:
     qreal horizontalMax;
     qreal verticalMin;
     qreal verticalMax;
+
+    unsigned int autoAdjustHorizontalRangeToData;
+    unsigned int autoAdjustVerticalRangeToData;
 };
 
 

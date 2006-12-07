@@ -58,36 +58,76 @@ namespace KDChart {
 
         const QPointF translate ( const QPointF& diagramPoint ) const;
 
+        /**
+         * \sa setZoomFactorX, setZoomCenter
+         */
         virtual double zoomFactorX() const;
+        /**
+         * \sa setZoomFactorY, setZoomCenter
+         */
         virtual double zoomFactorY() const;
 
+        /**
+         * \sa zoomFactorX, setZoomCenter
+         */
         virtual void setZoomFactorX( double factor );
+        /**
+         * \sa zoomFactorY, setZoomCenter
+         */
         virtual void setZoomFactorY( double factor );
 
+        /**
+         * \sa setZoomCenter, setZoomFactorX, setZoomFactorY
+         */
         virtual QPointF zoomCenter() const;
 
+        /**
+         * \sa zoomCenter, setZoomFactorX, setZoomFactorY
+         */
         virtual void setZoomCenter( QPointF center );
 
 
         /**
-         * Allows setting the boundaries of the visible value space area
-         * that the plane displays in horizontal direction. The horizontal
-         * viewport. To disable use of this range, set both values to the same
-         * thing, which constiutes a null range.
-         * @param  A pair of values representing the smalles and the largest
-         * horizontal value space coordinate that are still visible.
+         * \brief Set the boundaries of the visible value space displayed in horizontal direction.
+         *
+         * This is also known as the horizontal viewport.
+         *
+         * By default the horizontal range is adjusted to the range covered by the model's data,
+         * see setAutoAdjustHorizontalRangeToData for details.
+         * Calling setHorizontalRange with a valid range disables this default automatic adjusting,
+         * while on the other hand automatic adjusting will set these ranges.
+         *
+         * To disable use of this range you can either pass an empty pair by using the default
+         * constructor QPair() or you can set setting both values to the same which constitutes
+         * a null range.
+         * 
+         * \param range a pair of values representing the smalles and the largest
+         * horizontal value space coordinate displayed.
+         *
+         * \sa setAutoAdjustHorizontalRangeToData
          */
-        void setHorizontalRange( const QPair<qreal, qreal> & );
+        void setHorizontalRange( const QPair<qreal, qreal> & range );
 
         /**
-         * Allows setting the boundaries of the visible value space area
-         * that the plane displays in vertical direction. The vertical
-         * viewport. To disable use of this range, set both values to the same
-         * thing, which constiutes a null range.
-         * @param  A pair of values representing the smalles and the largest
-         * vertical value space coordinate that are still visible.
+         * \brief Set the boundaries of the visible value space displayed in vertical direction.
+         *
+         * This is also known as the vertical viewport.
+         *
+         * By default the vertical range is adjusted to the range covered by the model's data,
+         * see setAutoAdjustVerticalRangeToData for details.
+         * Calling setVerticalRange with a valid range disables this default automatic adjusting,
+         * while on the other hand automatic adjusting will set these ranges.
+         *
+         * To disable use of this range you can either pass an empty pair by using the default
+         * constructor QPair() or you can set setting both values to the same which constitutes
+         * a null range.
+         *
+         * \param range a pair of values representing the smalles and the largest
+         * vertical value space coordinate displayed.
+         *
+         * \sa setAutoAdjustVerticalRangeToData
          */
-        void setVerticalRange( const QPair<qreal, qreal> & );
+        void setVerticalRange( const QPair<qreal, qreal> & range );
 
         /**
          * @return The largest and smallest visible horizontal value space
@@ -106,6 +146,75 @@ namespace KDChart {
          * \see KDChart::AbstractDiagram::dataBoundaries
          */
         QPair<qreal, qreal> verticalRange() const;
+
+        /**
+         * \brief Automatically adjust horizontal range settings to the ranges covered by
+         * the model's values, when ever the data have changed, and then emit horizontalRangeAutomaticallyAdjusted.
+         *
+         * By default the horizontal range is adjusted automatically, if more than 75 percent of
+         * the available horizontal space would be empty otherwise.
+         *
+         * Range setting is adjusted if more than \c percentEmpty percent of the horizontal
+         * space covered by the coordinate plane would otherwise be empty.
+         * Automatic range adjusting can happen, when either all of the data are positive or all are negative.
+         *
+         * Set percentEmpty to 100 to disable automatic range adjusting.
+         *
+         * \param percentEmpty The maximal percentage of horizontal space that may be empty.
+         *
+         * \sa horizontalRangeAutomaticallyAdjusted
+         * \sa autoAdjustHorizontalRangeToData, adjustRangesToData
+         * \sa setHorizontalRange, setVerticalRange
+         * \sa setAutoAdjustVerticalRangeToData
+         */
+        void setAutoAdjustHorizontalRangeToData( unsigned int percentEmpty = 75 );
+
+        /**
+         * \brief Automatically adjust vertical range settings to the ranges covered by
+         * the model's values, when ever the data have changed, and then emit verticalRangeAutomaticallyAdjusted.
+         *
+         * By default the vertical range is adjusted automatically, if more than 75 percent of
+         * the available vertical space would be empty otherwise.
+         *
+         * Range setting is adjusted if more than \c percentEmpty percent of the horizontal
+         * space covered by the coordinate plane would otherwise be empty.
+         * Automatic range adjusting can happen, when either all of the data are positive or all are negative.
+         *
+         * Set percentEmpty to 100 to disable automatic range adjusting.
+         *
+         * \param percentEmpty The maximal percentage of horizontal space that may be empty.
+         *
+         * \sa verticalRangeAutomaticallyAdjusted
+         * \sa autoAdjustVerticalRangeToData, adjustRangesToData
+         * \sa setHorizontalRange, setVerticalRange
+         * \sa setAutoAdjustHorizontalRangeToData
+         */
+        void setAutoAdjustVerticalRangeToData( unsigned int percentEmpty = 75  );
+
+        /**
+         * \brief Returns the maximal allowed percent of the horizontal
+         * space covered by the coordinate plane that may be empty.
+         *
+         * \return A percent value indicating how much of the horizontal space may be empty.
+         * If more than this is empty, automatic range adjusting is applied.
+         * A return value of 100 indicates that no such automatic adjusting is done at all.
+         *
+         * \sa setAutoAdjustHorizontalRangeToData, adjustRangesToData
+         */
+        unsigned int autoAdjustHorizontalRangeToData() const;
+
+        /**
+         * \brief Returns the maximal allowed percent of the vertical
+         * space covered by the coordinate plane that may be empty.
+         *
+         * \return A percent value indicating how much of the vertical space may be empty.
+         * If more than this is empty, automatic range adjusting is applied.
+         * A return value of 100 indicates that no such automatic adjusting is done at all.
+         *
+         * \sa setAutoAdjustVerticalRangeToData, adjustRangesToData
+         */
+        unsigned int autoAdjustVerticalRangeToData() const;
+
 
         /**
          * Set the attributes to be used for grid lines drawn in horizontal
@@ -184,7 +293,35 @@ namespace KDChart {
         /** reimpl */
         virtual void paint( QPainter* );
 
+
+    public Q_SLOTS:
+        /**
+         * \brief Adjust both, horizontal and vertical range settings to the
+         * ranges covered by the model's data values.
+         *
+         * \sa setHorizontalRange, setVerticalRange
+         * \sa adjustHorizontalRangeToData, adjustVerticalRangeToData
+         * \sa setAutoAdjustHorizontalRangeToData, setAutoAdjustVerticalRangeToData
+         */
+        void adjustRangesToData();
+
+        /**
+         * Adjust horizontal range settings to the ranges covered by the model's data values.
+         * \sa adjustRangesToData
+         */
+        void adjustHorizontalRangeToData();
+
+        /**
+         * Adjust vertical range settings to the ranges covered by the model's data values.
+         * \sa adjustRangesToData
+         */
+        void adjustVerticalRangeToData();
+
+
     protected:
+        QRectF getRawDataBoundingRectFromDiagrams() const;
+        QRectF adjustedToMaxEmptyInnerPercentage(
+                const QRectF& r, unsigned int percentX, unsigned int percentY ) const;
         virtual QRectF calculateRawDataBoundingRect() const;
         virtual DataDimensionsList getDataDimensionsList() const;
         // the whole drawing area, includes diagrams and axes, but maybe smaller
@@ -192,6 +329,9 @@ namespace KDChart {
         virtual QRectF drawingArea() const;
         void paintEvent ( QPaintEvent* );
         void layoutDiagrams();
+        bool doneSetZoomFactorX( double factor );
+        bool doneSetZoomFactorY( double factor );
+        bool doneSetZoomCenter( QPointF center );
 
     protected Q_SLOTS:
         void slotLayoutChanged( AbstractDiagram* );

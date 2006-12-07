@@ -238,13 +238,13 @@ const QPair<QPointF, QPointF> LineDiagram::calculateDataBoundaries() const
     double xMin = 0;
     double xMax = rowCount -1;
     double yMin = 0, yMax = 0;
-    bool bStarting = true;
     bool bOK;
 
     // calculate boundaries for different line types Normal - Stacked - Percent - Default Normal
     switch ( type() ){
     case LineDiagram::Normal:
     {
+        bool bStarting = true;
         for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
             for ( int j=0; j< rowCount; ++j ) {
                 const double value = valueForCellTesting( j, i, bOK );
@@ -273,16 +273,16 @@ const QPair<QPointF, QPointF> LineDiagram::calculateDataBoundaries() const
             }
         }
 
-        if( yMin > 0 && yMax / yMin >= 2.0 )
-            yMin = 0;
-        else if( yMax < 0 && yMax / yMin <= 0.5 )
-            yMax = 0;
+        // the following code is replaced by CartesianCoordinatePlane's automatic range / zoom adjusting
+        //if( yMin > 0 && yMax / yMin >= 2.0 )
+        //    yMin = 0;
+        //else if( yMax < 0 && yMax / yMin <= 0.5 )
+        //    yMax = 0;
     }
     break;
     case LineDiagram::Stacked:
     {
-        double tmpValue = 0;
-
+        bool bStarting = true;
         for ( int j=0; j< rowCount; ++j ) {
             // calculate sum of values per column - Find out stacked Min/Max
             double stackedValues = 0;
@@ -294,14 +294,14 @@ const QPair<QPointF, QPointF> LineDiagram::calculateDataBoundaries() const
             if( bStarting ){
                 yMin = stackedValues;
                 yMax = stackedValues;
+                bStarting = false;
             }else{
                 // Pending Michel:
                 // I am taking in account all values negatives or positives
                 // take in account all stacked values
-                yMin = qMin( qMin( yMin,  tmpValue ), stackedValues );
+                yMin = qMin( qMin( yMin,  0.0 ), stackedValues );
                 yMax = qMax( yMax, stackedValues );
             }
-            bStarting = false;
         }
     }
     break;
@@ -311,13 +311,8 @@ const QPair<QPointF, QPointF> LineDiagram::calculateDataBoundaries() const
             for ( int j=0; j< rowCount; ++j ) {
                 // Ordinate should begin at 0 the max value being the 100% pos
                 const double value = valueForCellTesting( j, i, bOK );
-                if( bOK ){
-                    if( bStarting )
-                        yMax = value;
-                    else
-                        yMax = qMax( yMax, value );
-                    bStarting = false;
-                }
+                if( bOK )
+                    yMax = qMax( yMax, value );
             }
         }
     }
@@ -327,42 +322,9 @@ const QPair<QPointF, QPointF> LineDiagram::calculateDataBoundaries() const
                      "Type item does not match a defined line chart Type." );
     }
 
-    QPointF bottomLeft ( QPointF( xMin, yMin ) );
-    QPointF topRight ( QPointF( xMax, yMax ) );
+    QPointF bottomLeft( QPointF( xMin, yMin ) );
+    QPointF topRight(   QPointF( xMax, yMax ) );
 
-    //FIXME(khz): Verify, if this code is right: We are taking
-    //            ThreeDBarAttributes that might have been set
-    //            at a header (using the setter that takes a column as parameter),
-    //            but we are ignoring 'any' ThreeDBarAttributes, that might have
-    //            been specified for an individual cell.
-    // see: BarDiagram::calculateDataBoundaries ()
-    //
-    //Pending Michel: We don't need that any more with the new Grid Painting
-    //I am commenting the code temporarely - will clean up after testing more
-    //accurately.
-    /*
-      bool threeDBoundaries = false;
-      for ( int i=0; i<colCount; ++i ) {
-      QModelIndex index = model()->index( 0, i, rootIndex() );
-      const ThreeDLineAttributes tda( threeDLineAttributes( index ) );
-      if ( tda.isEnabled() ) {
-      threeDBoundaries = true;
-      QPointF projLeft ( project(QPointF( xMin, 0.0 ), QPointF( xMin, 0.0 ), tda.depth()/10 , index ) );
-      QPointF projRight( project(QPointF( xMax, yMax ), QPointF( xMax, yMax), tda.depth()/10, index ) );
-      projRight.x() > topRight.x()  ? topRightThreeD.setX( projRight.x() ):
-      topRightThreeD.setX( topRight.x() );
-      projRight.y() > topRight.y()  ? topRightThreeD.setY( projRight.y() ):
-      topRightThreeD.setY( topRight.y() );
-      projLeft.x() > bottomLeft.x() ? bottomLeftThreeD.setX( bottomLeft.x() ):
-      bottomLeftThreeD.setX( projLeft.x() );
-      projLeft.y() > bottomLeft.y() ? bottomLeftThreeD.setY( bottomLeft.y() ):
-      bottomLeftThreeD.setY( projLeft.y() );
-      }
-      }
-
-      return threeDBoundaries ? QPair<QPointF, QPointF> ( bottomLeftThreeD ,  topRightThreeD ):
-      QPair<QPointF, QPointF> ( bottomLeft, topRight );
-    */
     return QPair<QPointF, QPointF> ( bottomLeft, topRight );
 }
 
@@ -805,11 +767,11 @@ void LineDiagram::paintPolyline( PaintContext* ctx,
 {
     ctx->painter()->setBrush( brush );
     ctx->painter()->setPen(
-            QPen( pen.color(),
-                  pen.width(),
-                  pen.style(),
-                  Qt::FlatCap,
-                  Qt::MiterJoin ) );
+        QPen( pen.color(),
+              pen.width(),
+              pen.style(),
+              Qt::FlatCap,
+              Qt::MiterJoin ) );
     ctx->painter()->drawPolyline( points );
 }
 
@@ -833,6 +795,7 @@ void LineDiagram::paintLines( PaintContext* ctx, const QModelIndex& index,
     }
 }
 */
+
 
 void LineDiagram::paintAreas( PaintContext* ctx, const QModelIndex& index, const QPolygonF& area, const uint transparency )
 {
