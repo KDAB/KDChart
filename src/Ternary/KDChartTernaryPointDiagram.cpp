@@ -3,26 +3,26 @@
 #include <KDChartPaintContext>
 
 #include "TernaryConstants.h"
-#include "KDChartTernaryDiagram.h"
+#include "KDChartTernaryPointDiagram.h"
 
 using namespace KDChart;
 
-TernaryDiagram::TernaryDiagram ( QWidget* parent,
+TernaryPointDiagram::TernaryPointDiagram ( QWidget* parent,
                                  TernaryCoordinatePlane* plane )
     : AbstractDiagram( parent, plane )
 {
     setDatasetDimension( 2 ); // the third column is implicit
 }
 
-TernaryDiagram::~TernaryDiagram()
+TernaryPointDiagram::~TernaryPointDiagram()
 {
 }
 
-void  TernaryDiagram::resize (const QSizeF& area)
+void  TernaryPointDiagram::resize (const QSizeF& area)
 {
 }
 
-void  TernaryDiagram::paint (PaintContext *paintContext)
+void  TernaryPointDiagram::paint (PaintContext *paintContext)
 {
     // sanity checks:
     if ( model() == 0 ) return;
@@ -51,7 +51,7 @@ void  TernaryDiagram::paint (PaintContext *paintContext)
     }
 }
 
-const QPair< QPointF, QPointF >  TernaryDiagram::calculateDataBoundaries () const
+const QPair< QPointF, QPointF >  TernaryPointDiagram::calculateDataBoundaries () const
 {
     // this is a constant, because we defined it to be one:
     static QPair<QPointF, QPointF> Boundaries(

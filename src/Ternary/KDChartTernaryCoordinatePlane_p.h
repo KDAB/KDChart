@@ -44,13 +44,15 @@
 namespace KDChart {
 
     class TernaryAxis;
-/**
- * \internal
- */
+
+    /**
+     * \internal
+     */
 
     class TernaryCoordinatePlane::Private : public AbstractCoordinatePlane::Private
     {
         friend class TernaryCoordinatePlane;
+
     public:
         explicit Private();
 
@@ -65,9 +67,7 @@ namespace KDChart {
         TextAttributes labelAttributes;
     };
 
-
     KDCHART_IMPL_DERIVED_PLANE(TernaryCoordinatePlane, AbstractCoordinatePlane)
-
-        }
+}
 
 #endif /* KDCHARTTERNARYCOORDINATEPLANE_P_H */

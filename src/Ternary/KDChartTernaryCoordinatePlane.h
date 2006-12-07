@@ -18,16 +18,6 @@ namespace KDChart {
 
         void addDiagram( AbstractDiagram* diagram );
 
-        void replaceDiagram( AbstractDiagram*,  AbstractDiagram* );
-
-        void takeDiagram( AbstractDiagram* );
-
-        AbstractDiagram* diagram();
-
-        AbstractDiagramList diagrams();
-
-        ConstAbstractDiagramList diagrams() const;
-
         void layoutDiagrams();
 
         const QPointF translate ( const QPointF& diagramPoint ) const;

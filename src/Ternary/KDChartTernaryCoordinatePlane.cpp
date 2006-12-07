@@ -1,3 +1,4 @@
+#include "KDChartAbstractTernaryDiagram.h"
 #include "KDChartTernaryCoordinatePlane.h"
 #include "KDChartTernaryCoordinatePlane_p.h"
 
@@ -15,31 +16,19 @@ TernaryCoordinatePlane::~TernaryCoordinatePlane()
 
 void TernaryCoordinatePlane::addDiagram( AbstractDiagram* diagram )
 {
-}
+    Q_ASSERT_X ( dynamic_cast<AbstractTernaryDiagram*>( diagram ),
+                 "TernaryCoordinatePlane::addDiagram", "Only ternary "
+                 "diagrams can be added to a ternary coordinate plane!" );
+    AbstractCoordinatePlane::addDiagram ( diagram );
+//     connect ( diagram,  SIGNAL ( layoutChanged ( AbstractDiagram* ) ),
+//               SLOT ( slotLayoutChanged ( AbstractDiagram* ) ) );
 
-void TernaryCoordinatePlane::replaceDiagram( AbstractDiagram* diagram,
-                                             AbstractDiagram* replacement )
-{
-}
-
-void TernaryCoordinatePlane::takeDiagram( AbstractDiagram* diagram )
-{
-}
-
-AbstractDiagram* TernaryCoordinatePlane::diagram()
-{
-}
-
-AbstractDiagramList TernaryCoordinatePlane::diagrams()
-{
-}
-
-ConstAbstractDiagramList TernaryCoordinatePlane::diagrams() const
-{
+//     connect( diagram, SIGNAL( propertiesChanged() ),this, SIGNAL( propertiesChanged() ) );
 }
 
 void TernaryCoordinatePlane::layoutDiagrams()
 {
+    // all diagrams always take the same space, nothing to be done here
 }
 
 const QPointF TernaryCoordinatePlane::translate( const QPointF& diagramPoint ) const
@@ -48,6 +37,7 @@ const QPointF TernaryCoordinatePlane::translate( const QPointF& diagramPoint ) c
 
 QSize TernaryCoordinatePlane::minimumSizeHint() const
 {
+
 }
 
 QSizePolicy TernaryCoordinatePlane::sizePolicy() const
