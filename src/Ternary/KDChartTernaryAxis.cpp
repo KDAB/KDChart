@@ -8,7 +8,7 @@
 
 using namespace KDChart;
 
-TernaryAxis::TernaryAxis ( TernaryDiagram* diagram)
+TernaryAxis::TernaryAxis ( AbstractTernaryDiagram* diagram)
     : AbstractAxis( diagram )
 {
     resetTitleTextAttributes();

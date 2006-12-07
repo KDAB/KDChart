@@ -162,7 +162,7 @@ SOURCES += \
 	   Ternary/TernaryPoint.cpp \
 	   Ternary/TernaryConstants.cpp \
 	   Ternary/KDChartTernaryCoordinatePlane.cpp \
-	   Ternary/KDChartAstractTernaryDiagram.cpp \
+	   Ternary/KDChartAbstractTernaryDiagram.cpp \
 	   Ternary/KDChartTernaryPointDiagram.cpp \
 	   Ternary/KDChartTernaryLineDiagram.cpp
 

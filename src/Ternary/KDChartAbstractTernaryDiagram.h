@@ -1,6 +1,8 @@
 #ifndef KDCHARTABSTRACTTERNARYDIAGRAM_H
 #define KDCHARTABSTRACTTERNARYDIAGRAM_H
 
+#include "KDChartAbstractDiagram.h"
+
 namespace KDChart {
 
     class TernaryCoordinatePlane;
@@ -17,11 +19,11 @@ namespace KDChart {
                                           TernaryCoordinatePlane* plane = 0 );
         virtual ~AbstractTernaryDiagram();
 
-        void resize (const QSizeF &area);
-        void paint (PaintContext *paintContext);
+        virtual void resize (const QSizeF &area) = 0;
+        virtual void paint (PaintContext *paintContext) = 0;
 
     protected:
-        virtual const QPair< QPointF, QPointF >  calculateDataBoundaries () const;
+        virtual const QPair< QPointF, QPointF >  calculateDataBoundaries () const = 0;
 
     };
 

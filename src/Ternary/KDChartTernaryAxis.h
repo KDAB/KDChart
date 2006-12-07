@@ -5,7 +5,8 @@
 #include <KDChartAbstractAxis>
 #include <KDChartPosition>
 #include <KDChartTextAttributes>
-#include "KDChartTernaryDiagram.h"
+
+#include "KDChartAbstractTernaryDiagram.h"
 
 namespace KDChart {
 
@@ -17,7 +18,7 @@ namespace KDChart {
         KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( TernaryAxis, AbstractDiagram* )
 
     public:
-        explicit TernaryAxis ( TernaryDiagram* diagram = 0 );
+        explicit TernaryAxis ( AbstractTernaryDiagram* diagram = 0 );
         ~TernaryAxis();
 
         virtual void  paintAll( QPainter &);
