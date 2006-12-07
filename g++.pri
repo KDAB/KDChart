@@ -20,8 +20,12 @@
   QMAKE_CFLAGS   += $$NORMAL_CFLAGS
   QMAKE_CXXFLAGS += $$NORMAL_CFLAGS $$NORMAL_CXXFLAGS
 
-  QMAKE_CFLAGS_WARN_ON   += $$NORMAL_CFLAGS -Werror
-  QMAKE_CXXFLAGS_WARN_ON += $$NORMAL_CFLAGS $$NORMAL_CXXFLAGS -Werror
+  # Mirko: removed that during development in trunk, should be
+  # reenabled once going towards a release: -Werror 
+  QMAKE_CFLAGS_WARN_ON   += $$NORMAL_CFLAGS
+  # Mirko: removed that during development in trunk, should be
+  # reenabled once going towards a release: -Werror 
+  QMAKE_CXXFLAGS_WARN_ON += $$NORMAL_CFLAGS $$NORMAL_CXXFLAGS
 
   #QMAKE_CXXFLAGS_WARN_ON += $$USABLE_CXXFLAGS
   #QMAKE_CXXFLAGS_WARN_ON += $$HARD_CXXFLAGS # headers must compile with this, code doesn't need to; needs patched Qt

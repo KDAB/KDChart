@@ -4,16 +4,13 @@
 #include "KDChartTernaryCoordinatePlane.h"
 #include "KDChartAbstractTernaryDiagram.h"
 
-
 namespace KDChart {
 
-    class TernaryPointDiagram : public AbstractDiagram
+    class TernaryPointDiagram : public AbstractTernaryDiagram
     {
         Q_OBJECT
         Q_DISABLE_COPY( TernaryPointDiagram )
         KDCHART_DECLARE_DERIVED_DIAGRAM( TernaryPointDiagram, TernaryCoordinatePlane )
-
-        friend class TernaryCoordinatePlane;
 
     public:
         explicit TernaryPointDiagram ( QWidget* parent = 0, TernaryCoordinatePlane* plane = 0 );

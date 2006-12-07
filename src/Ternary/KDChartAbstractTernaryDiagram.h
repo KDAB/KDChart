@@ -1,7 +1,7 @@
 #ifndef KDCHARTABSTRACTTERNARYDIAGRAM_H
 #define KDCHARTABSTRACTTERNARYDIAGRAM_H
 
-#include "KDChartAbstractDiagram.h"
+#include "../KDChartAbstractDiagram.h"
 
 namespace KDChart {
 

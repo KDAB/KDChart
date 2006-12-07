@@ -19,5 +19,6 @@ SUBDIRS		= tools \
 	          Grids \
 	          RealTime \
 	          Polar \
+		  TernaryCharts
 
 

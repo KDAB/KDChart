@@ -9,7 +9,7 @@ using namespace KDChart;
 
 TernaryLineDiagram::TernaryLineDiagram ( QWidget* parent,
                                  TernaryCoordinatePlane* plane )
-    : AbstractDiagram( parent, plane )
+    : AbstractTernaryDiagram( parent, plane )
 {
     setDatasetDimension( 2 ); // the third column is implicit
 }

@@ -1,7 +1,7 @@
 #ifndef KDCHARTTERNARYCOORDINATEPLANE_H
 #define KDCHARTTERNARYCOORDINATEPLANE_H
 
-#include "KDChartAbstractCoordinatePlane.h"
+#include "../KDChartAbstractCoordinatePlane.h"
 
 namespace KDChart {
 
@@ -21,6 +21,9 @@ namespace KDChart {
         void layoutDiagrams();
 
         const QPointF translate ( const QPointF& diagramPoint ) const;
+
+        void paint( QPainter* );
+        DataDimensionsList getDataDimensionsList() const;
 
         /** \reimpl */
         QSize minimumSizeHint() const;

@@ -8,8 +8,8 @@
 using namespace KDChart;
 
 TernaryPointDiagram::TernaryPointDiagram ( QWidget* parent,
-                                 TernaryCoordinatePlane* plane )
-    : AbstractDiagram( parent, plane )
+                                           TernaryCoordinatePlane* plane )
+    : AbstractTernaryDiagram( parent, plane )
 {
     setDatasetDimension( 2 ); // the third column is implicit
 }

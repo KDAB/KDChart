@@ -7,7 +7,7 @@
 
 namespace KDChart {
 
-    class TernaryLineDiagram : public AbstractDiagram
+    class TernaryLineDiagram : public AbstractTernaryDiagram
     {
         Q_OBJECT
         Q_DISABLE_COPY( TernaryLineDiagram )

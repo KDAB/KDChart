@@ -1,6 +1,6 @@
 #include <KDChartChart>
 #include <KDChartTernaryAxis>
-#include <KDChartTernaryDiagram>
+#include <KDChartTernaryPointDiagram>
 #include <KDChartTernaryCoordinatePlane>
 
 #include "mainwindow.h"
@@ -15,7 +15,7 @@ MainWindow::MainWindow( QWidget* parent )
     m_chart = new KDChart::Chart;
     m_ternaryPlane = new KDChart::TernaryCoordinatePlane;
     m_chart->replaceCoordinatePlane( m_ternaryPlane );
-    m_diagram = new KDChart::TernaryDiagram;
+    m_diagram = new KDChart::TernaryPointDiagram;
     m_ternaryPlane->replaceDiagram( m_diagram );
 
     KDChart::TernaryAxis* axisA = new KDChart::TernaryAxis( m_diagram );

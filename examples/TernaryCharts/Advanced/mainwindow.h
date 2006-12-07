@@ -8,7 +8,7 @@
 
 namespace KDChart {
     class Chart;
-    class TernaryDiagram;
+    class TernaryPointDiagram;
     class TernaryCoordinatePlane;
 }
 
@@ -24,7 +24,7 @@ private:
     void setupModel();
 
     KDChart::Chart* m_chart;
-    KDChart::TernaryDiagram* m_diagram;
+    KDChart::TernaryPointDiagram* m_diagram;
     KDChart::TernaryCoordinatePlane* m_ternaryPlane;
 
     QStandardItemModel m_model;

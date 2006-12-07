@@ -33,15 +33,28 @@ void TernaryCoordinatePlane::layoutDiagrams()
 
 const QPointF TernaryCoordinatePlane::translate( const QPointF& diagramPoint ) const
 {
+    // FIXME temp
+    return QPointF();
 }
 
 QSize TernaryCoordinatePlane::minimumSizeHint() const
 {
-
+    // FIXME temp
+    return QSize();
 }
 
 QSizePolicy TernaryCoordinatePlane::sizePolicy() const
 {
+    return QSizePolicy( QSizePolicy::MinimumExpanding,
+                        QSizePolicy::MinimumExpanding );
 }
 
+void TernaryCoordinatePlane::paint( QPainter* )
+{
+}
+
+DataDimensionsList TernaryCoordinatePlane::getDataDimensionsList() const
+{
+    return DataDimensionsList();
+}
 
