@@ -101,8 +101,8 @@ namespace KDChart {
                 tempPoint.setX( makeLogarithmic( diagramRect.width(), tempPoint.x() ) );
                 //qDebug() << "X tempPoint new: " << tempPoint;
             }
-/*            qDebug() << "CoordinateTransformation::translate() using diagramRect: "
-                    << diagramRect.x() << diagramRect.y() << diagramRect.width() << diagramRect.height();*/
+//            qDebug() << "CoordinateTransformation::translate() using diagramRect: "
+//                     << diagramRect.x() << diagramRect.y() << diagramRect.width() << diagramRect.height();
 
             tempPoint.rx() += diagramRect.width() / (2.0 * zoom.xFactor);
             tempPoint.ry() += diagramRect.height() / (2.0 * zoom.yFactor);
@@ -110,14 +110,55 @@ namespace KDChart {
             tempPoint.rx() -= diagramRect.width() * zoom.xCenter;
             tempPoint.ry() -= diagramRect.height() * zoom.yCenter;
 
+            // translate:      xNew = (xOld - diaX) * zoomX + diaX
             tempPoint.setX( ( tempPoint.x() - diagramRect.x() ) * zoom.xFactor + diagramRect.x() );
             tempPoint.setY( ( tempPoint.y() - diagramRect.y() ) * zoom.yFactor + diagramRect.y() );
-            
+
             result.rx() += isoScaleX * unitVectorX * tempPoint.x();
             result.ry() += isoScaleY * unitVectorY * tempPoint.y();
 
             return result;
         }
+
+        // convert screen points to value space points
+        inline const QPointF translateBack( const QPointF& screenPoint ) const
+        {
+            qreal x, y;
+
+            x = screenPoint.x() - originTranslation.x();
+            y = screenPoint.y() - originTranslation.y();
+
+            x /= isoScaleX * unitVectorX;
+            y /= isoScaleY * unitVectorY;
+
+            // translate back: xOld = DiaX + (xNew - DiaX) / zoomX
+            x = diagramRect.x() + (x - diagramRect.x()) / zoom.xFactor;
+            y = diagramRect.y() + (y - diagramRect.y()) / zoom.yFactor;
+
+            x += diagramRect.width()  * zoom.xCenter;
+            y += diagramRect.height() * zoom.yCenter;
+
+            x -= diagramRect.width()  / (2.0 * zoom.xFactor);
+            y -= diagramRect.height() / (2.0 * zoom.yFactor);
+
+            /*
+            if ( axesCalcModeY == CartesianCoordinatePlane::Logarithmic ){
+                tempPoint.setY( makeLogarithmic( diagramRect.y(), tempPoint.y() ) );
+                //qDebug() << "Y: " << tempPoint.y();
+            }
+            if ( axesCalcModeX == CartesianCoordinatePlane::Logarithmic ){
+                //qDebug() << "X diagramRect.x(): " << diagramRect.x();
+                //qDebug() << "X tempPoint old: " << tempPoint;
+                tempPoint.setX( makeLogarithmic( diagramRect.width(), tempPoint.x() ) );
+                //qDebug() << "X tempPoint new: " << tempPoint;
+            }
+//            qDebug() << "CoordinateTransformation::translate() using diagramRect: "
+//                     << diagramRect.x() << diagramRect.y() << diagramRect.width() << diagramRect.height();
+            */
+
+            return QPointF(x, y);
+        }
+
     };
 
     typedef QList<CoordinateTransformation> CoordinateTransformationList;

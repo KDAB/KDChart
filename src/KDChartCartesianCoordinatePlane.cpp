@@ -408,6 +408,11 @@ const QPointF CartesianCoordinatePlane::translate( const QPointF& diagramPoint )
     return  d->coordinateTransformation.translate ( diagramPoint );
 }
 
+const QPointF CartesianCoordinatePlane::translateBack( const QPointF& screenPoint ) const
+{
+    return  d->coordinateTransformation.translateBack ( screenPoint );
+}
+
 void CartesianCoordinatePlane::setIsometricScaling ( bool onOff )
 {
     if ( d->isometricScaling != onOff )
@@ -426,24 +431,30 @@ bool CartesianCoordinatePlane::doesIsometricScaling ()
 bool CartesianCoordinatePlane::doneSetZoomFactorX( double factor )
 {
     bool bDone = ( d->coordinateTransformation.zoom.xFactor != factor );
-    if( bDone )
+    if( bDone ){
         d->coordinateTransformation.zoom.xFactor = factor;
+        d->grid->setNeedRecalculate();
+    }
     return bDone;
 }
 
 bool CartesianCoordinatePlane::doneSetZoomFactorY( double factor )
 {
     bool bDone = ( d->coordinateTransformation.zoom.yFactor != factor );
-    if( bDone )
+    if( bDone ){
         d->coordinateTransformation.zoom.yFactor = factor;
+        d->grid->setNeedRecalculate();
+    }
     return bDone;
 }
 
 bool CartesianCoordinatePlane::doneSetZoomCenter( QPointF point )
 {
     bool bDone = ( d->coordinateTransformation.zoom.center() != point );
-    if( bDone )
+    if( bDone ){
         d->coordinateTransformation.zoom.setCenter( point );
+        d->grid->setNeedRecalculate();
+    }
     return bDone;
 }
 

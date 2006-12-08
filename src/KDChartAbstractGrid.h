@@ -75,6 +75,8 @@ namespace KDChart {
           */
         virtual void drawGrid( PaintContext* context ) = 0;
 
+        void setNeedRecalculate();
+
         static bool isBoundariesValid(const QRectF& r );
         static bool isBoundariesValid(const QPair<QPointF,QPointF>& b );
         static bool isBoundariesValid(const DataDimensionsList& l );
@@ -84,6 +86,7 @@ namespace KDChart {
 
     protected:
         DataDimensionsList mData;
+        AbstractCoordinatePlane* mPlane;
 
     private:
         /**

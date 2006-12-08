@@ -327,6 +327,7 @@ namespace KDChart {
         // the whole drawing area, includes diagrams and axes, but maybe smaller
         // than (width, height):
         virtual QRectF drawingArea() const;
+        const QPointF translateBack( const QPointF& screenPoint ) const;
         void paintEvent ( QPaintEvent* );
         void layoutDiagrams();
         bool doneSetZoomFactorX( double factor );

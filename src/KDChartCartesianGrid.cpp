@@ -276,15 +276,36 @@ DataDimensionsList CartesianGrid::calculateGrid(
 {
     Q_ASSERT_X ( rawDataDimensions.count() == 2, "CartesianGrid::calculateGrid",
                  "Error: calculateGrid() expects a list with exactly two entries." );
+
+    CartesianCoordinatePlane* plane = dynamic_cast<CartesianCoordinatePlane*>( mPlane );
+    Q_ASSERT_X ( plane, "CartesianGrid::calculateGrid",
+                 "Error: PaintContext::calculatePlane() called, but no cartesian plane set." );
+
     DataDimensionsList l( rawDataDimensions );
     // rule:  Returned list is either empty, or it is providing two
     //        valid dimensions, complete with two non-Zero step widths.
     if( isBoundariesValid( l ) ) {
-        //qDebug("CartesianGrid::calculateGrid()   l.first().start: %f   l.first().end: %f", l.first().start, l.first().end);
+        const QPointF translatedBottomLeft( plane->translateBack( plane->geometry().bottomLeft() ) );
+        const QPointF translatedTopRight(   plane->translateBack( plane->geometry().topRight() ) );
+        //qDebug() << "CartesianGrid::calculateGrid()         first:" << l.first().start << l.first().end <<                   "   last:" << l.last().start << l.last().end;
+        //qDebug() << "CartesianGrid::calculateGrid()  translated x:" << translatedBottomLeft.x() << translatedTopRight.x() << "      y:" << translatedBottomLeft.y() << translatedTopRight.y();
+
+        // As of yet horizontal grid adjusting does not work, this needs further investigation:
+        // (khz, Dec 08 2006)
+        //if( plane->zoomFactorX() > 1.0 ){
+        //    l.first().start = translatedBottomLeft.x();
+        //    l.first().end   = translatedTopRight.x();
+        //}
+
         const DataDimension dimX
             = calculateGridXY( l.first(), Qt::Horizontal );
         if( dimX.stepWidth ){
             //qDebug("CartesianGrid::calculateGrid()   l.last().start: %f   l.last().end: %f", l.last().start, l.last().end);
+
+            if( plane->zoomFactorY() > 1.0 ){
+                l.last().start = translatedBottomLeft.y();
+                l.last().end   = translatedTopRight.y();
+            }
             const DataDimension dimY
                 = calculateGridXY( l.last(), Qt::Vertical );
             if( dimY.stepWidth ){

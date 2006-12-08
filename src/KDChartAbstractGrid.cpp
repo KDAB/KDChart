@@ -35,6 +35,7 @@ using namespace KDChart;
 
 
 AbstractGrid::AbstractGrid ()
+    : mPlane( 0 )
 {
     //this bloc left empty intentionally
 }
@@ -44,6 +45,11 @@ AbstractGrid::~AbstractGrid()
     //this bloc left empty intentionally
 }
 
+void AbstractGrid::setNeedRecalculate()
+{
+    mCachedRawDataDimensions.clear();
+}
+
 DataDimensionsList AbstractGrid::updateData( AbstractCoordinatePlane* plane )
 {
 
@@ -51,6 +57,7 @@ DataDimensionsList AbstractGrid::updateData( AbstractCoordinatePlane* plane )
         const DataDimensionsList rawDataDimensions( plane->getDataDimensionsList() );
         if( mCachedRawDataDimensions.empty() || (rawDataDimensions != mCachedRawDataDimensions) ){
             mCachedRawDataDimensions = rawDataDimensions;
+            mPlane = plane;
             mData = calculateGrid( rawDataDimensions );
         }
     }
