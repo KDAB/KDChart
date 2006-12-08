@@ -129,7 +129,7 @@
          <item>
           <widget class="QDoubleSpinBox" name="zoomFactorSB" >
            <property name="maximum" >
-            <double>9.900000000000000</double>
+            <double>20.00000000000000</double>
            </property>
            <property name="minimum" >
             <double>0.010000000000000</double>
