@@ -292,7 +292,7 @@ DataDimensionsList CartesianGrid::calculateGrid(
 
         // As of yet horizontal grid adjusting does not work, this needs further investigation:
         // (khz, Dec 08 2006)
-        //if( plane->zoomFactorX() > 1.0 ){
+        //if( plane->axesCalcModeX() == CartesianCoordinatePlane::Linear && plane->zoomFactorX() > 1.0 ){
         //    l.first().start = translatedBottomLeft.x();
         //    l.first().end   = translatedTopRight.x();
         //}
@@ -302,7 +302,7 @@ DataDimensionsList CartesianGrid::calculateGrid(
         if( dimX.stepWidth ){
             //qDebug("CartesianGrid::calculateGrid()   l.last().start: %f   l.last().end: %f", l.last().start, l.last().end);
 
-            if( plane->zoomFactorY() > 1.0 ){
+            if( plane->axesCalcModeY() == CartesianCoordinatePlane::Linear && plane->zoomFactorY() > 1.0 ){
                 l.last().start = translatedBottomLeft.y();
                 l.last().end   = translatedTopRight.y();
             }
