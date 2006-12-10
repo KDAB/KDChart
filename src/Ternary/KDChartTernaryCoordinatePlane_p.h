@@ -37,6 +37,8 @@
 // We mean it.
 //
 
+#include <QRectF>
+
 #include "KDChartAbstractCoordinatePlane_p.h"
 
 #include <KDABLibFakes>
@@ -60,11 +62,25 @@ namespace KDChart {
 
         virtual void initialize()
         {
+            xUnit = 0.0;
+            yUnit = 0.0;
         }
 
         QList<TernaryAxis*> axes;
 
         TextAttributes labelAttributes;
+
+        // the diagram is drawn within this rectangle, which is within
+        // this widget:
+        QRectF diagramRectContainer;
+        // this is the "frame" of the plot area
+        QRectF diagramRect;
+        // multiply m_xUnit with a [0..1] value to get an isometric
+        // widget coordinate
+        double xUnit;
+        // same for y:
+        double yUnit;
+
     };
 
     KDCHART_IMPL_DERIVED_PLANE(TernaryCoordinatePlane, AbstractCoordinatePlane)

@@ -85,7 +85,7 @@ namespace KDChart {
          */
         const QPair<QPointF, QPointF> dataBoundaries() const;
 
-    protected:
+        // protected: // FIXME: why should that be private? (Mirko)
         /**
          * Draw the diagram contents to the rectangle and painter, that are
          * passed in as part of the paint context.
@@ -197,7 +197,7 @@ namespace KDChart {
          *
          * \note Hidden data are still taken into account by the coordinate plane,
          * so neither the grid nor your axes' ranges will change, when you hide data.
-         * For totally removing data from KD Chart's view you can use another approach: 
+         * For totally removing data from KD Chart's view you can use another approach:
          * e.g. you could define a proxy model on top of your data model, and register
          * the proxy model calling setModel() instead of registering your real data model.
          *
@@ -211,7 +211,7 @@ namespace KDChart {
          *
          * \note Hidden data are still taken into account by the coordinate plane,
          * so neither the grid nor your axes' ranges will change, when you hide data.
-         * For totally removing data from KD Chart's view you can use another approach: 
+         * For totally removing data from KD Chart's view you can use another approach:
          * e.g. you could define a proxy model on top of your data model, and register
          * the proxy model calling setModel() instead of registering your real data model.
          *
@@ -225,7 +225,7 @@ namespace KDChart {
          *
          * \note Hidden data are still taken into account by the coordinate plane,
          * so neither the grid nor your axes' ranges will change, when you hide data.
-         * For totally removing data from KD Chart's view you can use another approach: 
+         * For totally removing data from KD Chart's view you can use another approach:
          * e.g. you could define a proxy model on top of your data model, and register
          * the proxy model calling setModel() instead of registering your real data model.
          *
