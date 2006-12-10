@@ -5,6 +5,8 @@
 
 namespace KDChart {
 
+    class TernaryGrid;
+
     class KDCHART_EXPORT TernaryCoordinatePlane
         : public AbstractCoordinatePlane
     {
@@ -29,6 +31,9 @@ namespace KDChart {
         QSize minimumSizeHint() const;
         /** \reimpl */
         QSizePolicy sizePolicy() const;
+
+    private:
+        TernaryGrid* grid() const;
     };
 
 };

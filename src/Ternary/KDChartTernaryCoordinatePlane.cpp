@@ -45,17 +45,15 @@ void TernaryCoordinatePlane::layoutDiagrams()
 
     double xMargin = 0.0;
     double yMargin = 0.0;
-    // FIXME use the real margin every individual label requires (this
-    // results in too wide margins, so far):
-//     Q_FOREACH( const PrerenderedLabel& label, d->labels ) {
-//         QRectF rect = label.pixmap().rect();
-//         xMargin = qMax( xMargin, rect.width() );
-//         yMargin = qMax( yMargin, rect.height() );
-//     }
 
+
+    QPair<QSizeF, QSizeF> margins = grid()->requiredMargins();
     d->diagramRect = areaGeometry();
     d->diagramRectContainer =
-        d->diagramRect.adjusted( xMargin, yMargin, -xMargin, -yMargin );
+        d->diagramRect.adjusted( margins.first.width(),
+                                 margins.first.height(),
+                                 -margins.second.width(),
+                                 -margins.second.height() );
 
     QPointF zeroZeroPoint = d->diagramRectContainer.bottomLeft();
     double w = d->diagramRectContainer.width();
@@ -103,10 +101,6 @@ QSizePolicy TernaryCoordinatePlane::sizePolicy() const
 
 void TernaryCoordinatePlane::paint( QPainter* painter )
 {
-    painter->setPen( QPen( Qt::gray, 5 ) );
-    painter->setBrush( Qt::lightGray );
-    painter->drawRect( areaGeometry() );
-
     AbstractDiagramList diags = diagrams();
     if ( !diags.isEmpty() )
     {
@@ -146,6 +140,13 @@ void TernaryCoordinatePlane::paint( QPainter* painter )
 DataDimensionsList TernaryCoordinatePlane::getDataDimensionsList() const
 {
     return DataDimensionsList();
+}
+
+TernaryGrid* TernaryCoordinatePlane::grid() const
+{
+    TernaryGrid* ternaryGrid = static_cast<TernaryGrid*>( d->grid );
+    Q_ASSERT( dynamic_cast<TernaryGrid*>( d->grid ) );
+    return ternaryGrid;
 }
 
 #undef d
