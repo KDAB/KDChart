@@ -1,6 +1,8 @@
 #include <cmath>
 
 #include <QtDebug>
+#include <QImage>
+#include <QPixmap>
 #include <QPainter>
 
 #include "KDChartTextLabelCache.h"
@@ -51,20 +53,24 @@ void PrerenderedLabel::paint( const QFont& font, const QString& text,
 
     QRectF boundingRect;
     const QColor FullTransparent( 255, 255, 255, 0 );
-    QPixmap pixmap ( Width, Height );
-
-    pixmap.fill( FullTransparent );
 #ifdef Q_WS_X11
-    // FIXME workaround (Qt/Linux drawing bug)?
-    pixmap.fill( Qt::white );
-    qWarning() << "PrerenderedLabel::paint: this bug has to be fixed before a possible release!";
+    QImage pixmap( Width, Height, QImage::Format_ARGB32_Premultiplied );
+    qWarning() << "PrerenderedLabel::paint: using QImage for prerendered labels "
+               << "to work around XRender/Qt4 bug.";
+#else
+    QPixmap pixmap( Width, Height );
 #endif
+    // pixmap.fill( FullTransparent );
     {
         static const QPointF Center ( 0.0, 0.0 );
         QPointF textBottomRight;
         QPainter painter( &pixmap );
         painter.setRenderHint(QPainter::TextAntialiasing, true );
         painter.setRenderHint(QPainter::Antialiasing, true );
+
+        painter.setPen( FullTransparent );
+        painter.setBrush( FullTransparent );
+        painter.drawRect( 0, 0, Width, Height );
 
         QMatrix matrix;
         matrix.translate( 0.5 * Width,  0.5 * Height );
@@ -97,15 +103,13 @@ void PrerenderedLabel::paint( const QFont& font, const QString& text,
     QPixmap temp( static_cast<int>( boundingRect.width() ),
                   static_cast<int>( boundingRect.height() ) );
     {
-// #define PRERENDEREDLABEL_DEBUG
-#ifdef PRERENDEREDLABEL_DEBUG
-        static const QColor HalfTransparent( 60, 60, 255, 200 );
-        temp.fill( HalfTransparent );
-#else
         temp.fill( FullTransparent );
-#endif
         QPainter painter( &temp );
+#ifdef Q_WS_X11
+        painter.drawImage( QPointF( 0.0, 0.0 ), pixmap, boundingRect );
+#else
         painter.drawPixmap( QPointF( 0.0, 0.0 ), pixmap, boundingRect );
+#endif
 #ifdef PRERENDEREDLABEL_DEBUG
         painter.setPen( QPen( Qt::red, 2 ) );
         painter.setBrush( Qt::red );
