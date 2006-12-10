@@ -2,6 +2,7 @@
 #define TERNARYPOINT_H
 
 #include <QtDebug>
+#include <QPointF>
 
 // this class is not part of the published KDChart API
 class TernaryPoint
@@ -24,5 +25,7 @@ private:
 };
 
 QDebug operator<<( QDebug stream, const TernaryPoint& point );
+
+QPointF translate( const TernaryPoint& );
 
 #endif

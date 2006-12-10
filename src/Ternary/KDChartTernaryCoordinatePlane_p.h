@@ -39,6 +39,7 @@
 
 #include <QRectF>
 
+#include "KDChartTernaryGrid.h"
 #include "KDChartAbstractCoordinatePlane_p.h"
 
 #include <KDABLibFakes>
@@ -58,10 +59,13 @@ namespace KDChart {
     public:
         explicit Private();
 
-        virtual ~Private() { }
+        virtual ~Private() {
+            // grid is delete in base class dtor
+        }
 
         virtual void initialize()
         {
+            grid = new TernaryGrid();
             xUnit = 0.0;
             yUnit = 0.0;
         }

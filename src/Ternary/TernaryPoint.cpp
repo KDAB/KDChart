@@ -4,6 +4,7 @@
 #include <QTextStream>
 
 #include "TernaryPoint.h"
+#include "TernaryConstants.h"
 
 TernaryPoint::TernaryPoint()
     : m_a( -1.0 )
@@ -60,3 +61,22 @@ QDebug operator<<( QDebug stream, const TernaryPoint& point )
     return stream;
 }
 
+QPointF translate( const TernaryPoint& point )
+{
+    if ( point.isValid() ) {
+        // the position is calculated by
+        // - first moving along the B-C line to the function that b
+        //   selects
+        // - then traversing the selected function until we meet with
+        //   the function that A selects (which is a parallel of the B-C
+        //   line)
+        QPointF bPosition( 1.0 - point.b(), 0.0 );
+        QPointF aPosition( point.a() * AxisVector_C_A );
+        QPointF result( bPosition + aPosition );
+        return result;
+    } else {
+        qWarning() << "TernaryPoint::translate(TernaryPoint): cannot translate invalid ternary points:"
+                   << point;
+        return QPointF();
+    }
+}

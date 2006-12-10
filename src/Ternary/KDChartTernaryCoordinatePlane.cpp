@@ -41,11 +41,7 @@ void TernaryCoordinatePlane::addDiagram( AbstractDiagram* diagram )
 void TernaryCoordinatePlane::layoutDiagrams()
 {   // this is our "resize event":
     // all diagrams always take the same space, nothing to be done here
-    QRectF rect = areaGeometry();
-    qDebug() << "TernaryCoordinatePlane::layoutDiagrams: area:" << rect;
-
-    double w = rect.width();
-    double h = rect.height();
+    qDebug() << "TernaryCoordinatePlane::layoutDiagrams: area:" << areaGeometry();
 
     double xMargin = 0.0;
     double yMargin = 0.0;
@@ -57,12 +53,13 @@ void TernaryCoordinatePlane::layoutDiagrams()
 //         yMargin = qMax( yMargin, rect.height() );
 //     }
 
+    d->diagramRect = areaGeometry();
     d->diagramRectContainer =
-        QRectF( xMargin, yMargin, w - 2.0 * xMargin, h - 2.0 * yMargin );
+        d->diagramRect.adjusted( xMargin, yMargin, -xMargin, -yMargin );
 
     QPointF zeroZeroPoint = d->diagramRectContainer.bottomLeft();
-    w = d->diagramRectContainer.width();
-    h = d->diagramRectContainer.height();
+    double w = d->diagramRectContainer.width();
+    double h = d->diagramRectContainer.height();
     double usableWidth;
     double usableHeight;
 
@@ -126,7 +123,8 @@ void TernaryCoordinatePlane::paint( QPainter* painter )
 //         painter->setClipRegion( clipRegion );
 
         // paint the coordinate system rulers:
-        // d->grid->drawGrid( &ctx );
+        Q_ASSERT( d->grid != 0 );
+        d->grid->drawGrid( &ctx );
 
         // paint the diagrams:
         for ( int i = 0; i < diags.size(); i++ )

@@ -53,7 +53,6 @@ namespace KDChart {
         AbstractCoordinatePlane* coordinatePlane() const;
         void setCoordinatePlane( AbstractCoordinatePlane* plane );
 
-
     private:
         class Private;
         Private * _d;
