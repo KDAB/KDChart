@@ -204,45 +204,53 @@ void CartesianAxis::paintCtx( PaintContext* context )
     Q_ASSERT_X ( plane, "CartesianAxis::paint",
                  "Bad function call: PaintContext::coodinatePlane() NOT a cartesian plane." );
 
-    const int MinimumPixelsBetweenRulers = 5;
+    const qreal MinimumPixelsBetweenRulers = 5.0;
     DataDimensionsList dimensions( plane->gridDimensionsList() );
+    //qDebug("CartesianAxis::paintCtx() gets DataDimensionsList.first():   start: %f   end: %f   stepWidth: %f", dimensions.first().start, dimensions.first().end, dimensions.first().stepWidth);
+
     // test for programming errors: critical
     Q_ASSERT_X ( dimensions.count() == 2, "CartesianAxis::paint",
                  "Error: plane->gridDimensionsList() did not return exactly two dimensions." );
     DataDimension& dimX = dimensions.first();
     const DataDimension& dimY = dimensions.last();
     const DataDimension& dim = (isAbscissa() ? dimensions.first() : dimensions.last());
+
     /*
     if(isAbscissa())
-        qDebug() << "         " << "Abscissa:" << dimX.start <<".."<<dimX.end;
+        qDebug() << "         " << "Abscissa:" << dimX.start <<".."<<dimX.end <<"  step"<<dimX.stepWidth;
     else
-        qDebug() << "         " << "Ordinate:" << dimY.start <<".."<<dimY.end;
+        qDebug() << "         " << "Ordinate:" << dimY.start <<".."<<dimY.end <<"  step"<<dimY.stepWidth;
     */
+
     // preparations:
     // - calculate the range that will be displayed:
     const qreal absRange = qAbs( dim.distance() );
 
-    //const bool useItemCountLabels = isAbscissa() && d->diagram()->datasetDimension() == 1;
-
     qreal numberOfUnitRulers;
     if ( isAbscissa() ) {
-        numberOfUnitRulers = d->diagram()->model()->rowCount() - 1.0;
+        if( dimX.isCalculated )
+            numberOfUnitRulers = absRange / qAbs( dimX.stepWidth ) + 1.0;
+        else
+            numberOfUnitRulers = d->diagram()->model()->rowCount() - 1.0;
 
-    }
-    else {
+    }else{
         numberOfUnitRulers = absRange / qAbs( dimY.stepWidth ) + 1.0;
         // qDebug() << "absRange" << absRange << "dimY.stepWidth:" << dimY.stepWidth << "numberOfUnitRulers:" << numberOfUnitRulers;
     }
     qreal numberOfSubUnitRulers;
-    if ( isAbscissa() )
-        numberOfSubUnitRulers = dimX.subStepWidth>0 ? absRange / qAbs( dimX.subStepWidth ) + 1.0 : 0.0;
-    else
+    if ( isAbscissa() ){
+        if( dimX.isCalculated )
+            numberOfSubUnitRulers = absRange / qAbs( dimX.subStepWidth ) + 1.0;
+        else
+            numberOfSubUnitRulers = dimX.subStepWidth>0 ? absRange / qAbs( dimX.subStepWidth ) + 1.0 : 0.0;
+    }else{
         numberOfSubUnitRulers = absRange / qAbs( dimY.subStepWidth ) + 1.0;
+    }
 
 
     // - calculate the absolute range in screen pixels:
     const QPointF p1 = plane->translate( QPointF(dimX.start, dimY.start) );
-    const QPointF p2 = plane->translate( QPointF(dimX.end, dimY.end) );
+    const QPointF p2 = plane->translate( QPointF(dimX.end,   dimY.end) );
 
     double screenRange;
     if ( isAbscissa() )
@@ -252,16 +260,19 @@ void CartesianAxis::paintCtx( PaintContext* context )
         screenRange = qAbs ( p1.y() - p2.y() );
     }
 
-    const bool useItemCountLabels = isAbscissa() && d->diagram()->datasetDimension() == 1;
+    const bool useItemCountLabels = isAbscissa() && ! dimX.isCalculated;
 
 
 
 
+    //qDebug() << "isAbscissa():" << isAbscissa() << "   dimX.isCalculated:" << dimX.isCalculated << "   dimX.stepWidth: "<<dimX.stepWidth;
     //FIXME(khz): Remove this code, and do the calculation in the grid calc function
     if( isAbscissa() && ! dimX.isCalculated ){
         dimX.stepWidth = 1.0;
+        //qDebug() << "screenRange / numberOfUnitRulers <= MinimumPixelsBetweenRulers" << screenRange <<"/" << numberOfUnitRulers <<"<=" << MinimumPixelsBetweenRulers;
         while( screenRange / numberOfUnitRulers <= MinimumPixelsBetweenRulers ){
             dimX.stepWidth *= 10.0;
+            dimX.subStepWidth *= 10.0;
             //qDebug() << "adjusting dimX.stepWidth to" << dimX.stepWidth;
             numberOfUnitRulers = qAbs( dimX.distance() / dimX.stepWidth );
         }
@@ -478,7 +489,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
             qreal iLabelF = minValueX;
             qreal i = minValueX;
             int labelStep = 0;
-
+            //qDebug() << "dimX.stepWidth:" << dimX.stepWidth;
+            //dimX.stepWidth = 1000;
             while( i <= maxValueX ) {
                 // we want the first tick to begin at 0.0 not at 0.5 otherwise labels and
                 // values does not fit each others

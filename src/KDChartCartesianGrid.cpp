@@ -112,6 +112,10 @@ void CartesianGrid::drawGrid( PaintContext* context )
             numberOfUnitLinesX = qAbs( dimX.distance() / dimX.stepWidth );
         }
     }
+    if( dimX.subStepWidth && (screenRangeX / (dimX.distance() / dimX.subStepWidth) <= MinimumPixelsBetweenLines) ){
+        dimX.subStepWidth = 0.0;
+        //qDebug() << "de-activating grid sub steps: not enough space";
+    }
 
     const bool drawUnitLinesX = (screenRangeX / numberOfUnitLinesX > MinimumPixelsBetweenLines);
     const bool isLogarithmicX = dimX.isCalculated && (dimX.calcMode == AbstractCoordinatePlane::Logarithmic );
@@ -210,7 +214,7 @@ void CartesianGrid::drawGrid( PaintContext* context )
             // PENDING(khz) FIXME: make draving/not drawing of Zero line more sophisticated?:
             const bool zeroLineHere = drawXZeroLineX && (f == 0.0);
             if ( drawUnitLinesX || zeroLineHere ){
-                //qDebug("main grid line X at: %f",f);
+                //qDebug("main grid line X at: %f --------------------------",f);
                 QPointF topPoint( f, maxValueY );
                 QPointF bottomPoint( f, minValueY );
                 topPoint = plane->translate( topPoint );
@@ -263,10 +267,6 @@ void CartesianGrid::drawGrid( PaintContext* context )
                 f += dimY.stepWidth;
         }
     }
-    // reset to the default size
-    // so that the number of lines to be painted
-    // is refreshed when resizing
-    dimX.stepWidth = 1;
     //qDebug() << "Z";
 }
 
@@ -304,7 +304,8 @@ DataDimensionsList CartesianGrid::calculateGrid(
         const DataDimension dimX
             = calculateGridXY( l.first(), Qt::Horizontal );
         if( dimX.stepWidth ){
-            //qDebug("CartesianGrid::calculateGrid()   l.last().start: %f   l.last().end: %f", l.last().start, l.last().end);
+            //qDebug("CartesianGrid::calculateGrid()   l.last().start:  %f   l.last().end:  %f", l.last().start, l.last().end);
+            //qDebug("                                 l.first().start: %f   l.first().end: %f", l.first().start, l.first().end);
 
             if( plane->autoAdjustGridToZoom()
                 && plane->axesCalcModeY() == CartesianCoordinatePlane::Linear
@@ -316,6 +317,8 @@ DataDimensionsList CartesianGrid::calculateGrid(
             const DataDimension dimY
                 = calculateGridXY( l.last(), Qt::Vertical );
             if( dimY.stepWidth ){
+                //qDebug() << "CartesianGrid::calculateGrid()   ---> stepWidth Y:" << dimY.stepWidth;
+                //qDebug() << "CartesianGrid::calculateGrid()   ---> stepWidth X:" << dimX.stepWidth;
                 l.first().start        = dimX.start;
                 l.first().end          = dimX.end;
                 l.first().stepWidth    = dimX.stepWidth;
@@ -334,6 +337,9 @@ DataDimensionsList CartesianGrid::calculateGrid(
             }
         }
     }
+    //qDebug() << "CartesianGrid::calculateGrid()  final grid Y-range:" << l.last().end - l.last().start << "   step width:" << l.last().stepWidth;
+    //qDebug() << "CartesianGrid::calculateGrid()  final grid X-range:" << l.first().end - l.first().start << "   step width:" << l.first().stepWidth;
+
     return l;
 }
 
@@ -424,6 +430,7 @@ DataDimension CartesianGrid::calculateGridXY(
             //qDebug() << "CartesianGrid::calculateGridXY() returns logarithmic:  min " << min << " and max" << max;
         }
     }else{
+        //qDebug() << "CartesianGrid::calculateGridXY() returns stepWidth 1.0  !!";
         dim.stepWidth = 1.0;
     }
     return dim;

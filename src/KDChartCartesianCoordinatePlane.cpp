@@ -387,7 +387,7 @@ void CartesianCoordinatePlane::layoutDiagrams()
 
     d->coordinateTransformation.isoScaleX = scaleX;
     d->coordinateTransformation.isoScaleY = scaleY;
-    
+
     //      adapt diagram area to effect of isometric scaling:
     diagramArea.setTopLeft( translate ( dataBoundingRect.topLeft() ) );
     diagramArea.setBottomRight ( translate ( dataBoundingRect.bottomRight() ) );

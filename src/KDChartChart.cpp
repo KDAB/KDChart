@@ -875,6 +875,9 @@ void Chart::paint( QPainter* painter, const QRect& target )
 void Chart::resizeEvent ( QResizeEvent * )
 {
     d->resizeLayout( size() );
+    KDAB_FOREACH( AbstractCoordinatePlane* plane, d->coordinatePlanes ){
+        plane->setGridNeedsRecalculate();
+    }
     reLayoutFloatingLegends();
 }
 

@@ -161,7 +161,15 @@ GridAttributes KDChart::AbstractCoordinatePlane::globalGridAttributes() const
 
 KDChart::DataDimensionsList KDChart::AbstractCoordinatePlane::gridDimensionsList()
 {
+    //KDChart::DataDimensionsList l( d->grid->updateData( this ) );
+    //qDebug() << "AbstractCoordinatePlane::gridDimensionsList() Y-range:" << l.last().end - l.last().start << "   step width:" << l.last().stepWidth;
+    //qDebug() << "AbstractCoordinatePlane::gridDimensionsList() X-range:" << l.first().end - l.first().start << "   step width:" << l.first().stepWidth;
     return d->grid->updateData( this );
+}
+
+void KDChart::AbstractCoordinatePlane::setGridNeedsRecalculate()
+{
+    d->grid->setNeedRecalculate();
 }
 
 void KDChart::AbstractCoordinatePlane::setReferenceCoordinatePlane( AbstractCoordinatePlane * plane )

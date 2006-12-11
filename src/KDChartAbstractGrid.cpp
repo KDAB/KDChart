@@ -59,6 +59,7 @@ DataDimensionsList AbstractGrid::updateData( AbstractCoordinatePlane* plane )
             mCachedRawDataDimensions = rawDataDimensions;
             mPlane = plane;
             mData = calculateGrid( rawDataDimensions );
+            //qDebug("AbstractGrid::updateData() returns  mData.first().start: %f   mData.first().end: %f   mData.first().stepWidth: %f", mData.first().start, mData.first().end, mData.first().stepWidth);
         }
     }
     return mData;
