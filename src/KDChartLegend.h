@@ -210,7 +210,7 @@ public:
      * KDChart::Position::Floating automatically.
      *
      * If your Chart is pointed to by m_chart, your could have the floating legend
-     * alligned exactly to the the chart's coordinate plane's top-right corner
+     * alligned exactly to the chart's coordinate plane's top-right corner
      * with the following commands:
 \verbatim
 KDChart::RelativePosition relativePosition;
