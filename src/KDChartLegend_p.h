@@ -77,6 +77,7 @@ public:
         referenceArea( 0 ),
         position( rhs.position ),
         alignment( rhs.alignment ),
+        relativePosition( rhs.relativePosition ),
         orientation( rhs.orientation ),
         showLines( rhs.showLines ),
         texts( rhs.texts ),
@@ -107,6 +108,7 @@ private:
     const QWidget* referenceArea;
     Position position;
     Qt::Alignment alignment;
+    RelativePosition relativePosition;
     Qt::Orientation orientation;
     bool showLines;
     QMap<uint,QString> texts;

@@ -168,11 +168,89 @@ public:
       */
     void setDiagram( KDChart::AbstractDiagram* newDiagram );
 
+    /**
+     * \brief Specify the position of a non-floating legend.
+     *
+     * Use setFloatingPosition to set position and alignment
+     * if your legend is floating.
+     *
+     * \sa setAlignment, setFloatingPosition
+     */
     void setPosition( Position position );
+
+    /**
+     * Returns the position of a non-floating legend.
+     * \sa setPosition
+     */
     Position position() const;
 
+    /**
+     * \brief Specify the alignment of a non-floating legend.
+     *
+     * Use setFloatingPosition to set position and alignment
+     * if your legend is floating.
+     * 
+     * \sa alignment, setPosition, setFloatingPosition
+     */
     void setAlignment( Qt::Alignment );
+
+    /**
+     * Returns the alignment of a non-floating legend.
+     * \sa setAlignment
+     */
     Qt::Alignment alignment() const;
+
+    /**
+     * \brief Specify the position and alignment of a floating legend.
+     *
+     * Use setPosition and setAlignment to set position and alignment
+     * if your legend is non-floating.
+     *
+     * \note When setFloatingPosition is called, the Legend's position value is set to
+     * KDChart::Position::Floating automatically.
+     *
+     * If your Chart is pointed to by m_chart, your could have the floating legend
+     * alligned exactly to the the chart's coordinate plane's top-right corner
+     * with the following commands:
+\verbatim
+KDChart::RelativePosition relativePosition;
+relativePosition.setReferenceArea( m_chart->coordinatePlane() );
+relativePosition.setReferencePosition( Position::NorthEast );
+relativePosition.setAlignment( Qt::AlignTop | Qt::AlignRight );
+relativePosition.setHorizontalPadding(
+    KDChart::Measure( -1.0, KDChartEnums::MeasureCalculationModeAbsolute ) );
+relativePosition.setVerticalPadding(
+    KDChart::Measure( 0.0, KDChartEnums::MeasureCalculationModeAbsolute ) );
+m_legend->setFloatingPosition( relativePosition );
+\endverbatim
+     *
+     * To have the legend positioned at a fixed point, measured from the QPainter's top left corner,
+     * you could use the following code code:
+     *
+\verbatim
+KDChart::RelativePosition relativePosition;
+relativePosition.setReferencePoints( PositionPoints( QPointF( 0.0, 0.0 ) ) );
+relativePosition.setReferencePosition( Position::NorthWest );
+relativePosition.setAlignment( Qt::AlignTop | Qt::AlignLeft );
+relativePosition.setHorizontalPadding(
+    KDChart::Measure( 4.0, KDChartEnums::MeasureCalculationModeAbsolute ) );
+relativePosition.setVerticalPadding(
+    KDChart::Measure( 4.0, KDChartEnums::MeasureCalculationModeAbsolute ) );
+m_legend->setFloatingPosition( relativePosition );
+\endverbatim
+     * Actually that's exactly the code KD Chart is using as default position for any floating legends,
+     * so if you just say setPosition( KDChart::Position::Floating ) without calling setFloatingPosition
+     * your legend will be positioned at point 4/4.
+     * 
+     * \sa setPosition, setAlignment
+     */
+    void setFloatingPosition( const RelativePosition& relativePosition );
+
+    /**
+     * Returns the position of a floating legend.
+     * \sa setFloatingPosition
+     */
+    const RelativePosition floatingPosition() const;
 
     void setOrientation( Qt::Orientation orientation );
     Qt::Orientation orientation() const;
@@ -249,6 +327,7 @@ Q_SIGNALS:
 private Q_SLOTS:
     void emitPositionChanged();
     void resetDiagram( AbstractDiagram* );
+    void activateTheLayout();
     void setNeedRebuild();
     void buildLegend();
 }; // End of class Legend

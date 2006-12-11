@@ -225,7 +225,6 @@ void Chart::Private::layoutLegends()
     // To support more than one Legend, we first collect them all
     // in little lists: one list per grid position.
     // Since the dataAndLegendLayout is a 3x3 grid, we need 9 little lists.
-    // (the middle field, will be used by floating legends, once they are impl'ed)
     QList<Legend*> infos[3][3];
 
     Q_FOREACH( Legend *legend, legends ) {
@@ -677,6 +676,8 @@ void Chart::Private::paintAll( QPainter* painter )
     KDChart::AbstractAreaBase::paintFrameAttributes(
         *painter, rect, frameAttributes );
 
+    chart->reLayoutFloatingLegends();
+
     KDAB_FOREACH( KDChart::AbstractArea* layoutItem, layoutItems ) {
         layoutItem->paintAll( *painter );
     }
@@ -874,14 +875,41 @@ void Chart::paint( QPainter* painter, const QRect& target )
 void Chart::resizeEvent ( QResizeEvent * )
 {
     d->resizeLayout( size() );
+    reLayoutFloatingLegends();
+}
 
+
+void Chart::reLayoutFloatingLegends()
+{
     KDAB_FOREACH( Legend *legend, d->legends ) {
         const bool hidden = legend->isHidden() && legend->testAttribute(Qt::WA_WState_ExplicitShowHide);
-        if ( legend->position().isFloating() && !hidden )
-            legend->setGeometry( QRect( legend->geometry().topLeft(), legend->sizeHint() ) );
-    }
+        if ( legend->position().isFloating() && !hidden ){
+            // resize the legend
+            const QSize legendSize( legend->sizeHint() );
+            legend->setGeometry( QRect( legend->geometry().topLeft(), legendSize ) );
+            // find the legends corner point (reference point plus any paddings)
+            const RelativePosition relPos( legend->floatingPosition() );
+            QPointF pt( relPos.calculatedPoint( size() ) );
+            qDebug() << pt;
+            // calculate the legend's top left point
+            const Qt::Alignment alignTopLeft = Qt::AlignBottom | Qt::AlignLeft;
+            if( (relPos.alignment() & alignTopLeft) != alignTopLeft ){
+                if( relPos.alignment() & Qt::AlignRight )
+                    pt.rx() -= legendSize.width();
+                else if( relPos.alignment() & Qt::AlignHCenter )
+                    pt.rx() -= 0.5 * legendSize.width();
 
+                if( relPos.alignment() & Qt::AlignBottom )
+                    pt.ry() -= legendSize.height();
+                else if( relPos.alignment() & Qt::AlignVCenter )
+                    pt.ry() -= 0.5 * legendSize.height();
+            }
+            qDebug() << pt << endl;
+            legend->move( static_cast<int>(pt.x()), static_cast<int>(pt.y()) );
+        }
+    }
 }
+
 
 void Chart::paintEvent( QPaintEvent* )
 {
@@ -889,6 +917,7 @@ void Chart::paintEvent( QPaintEvent* )
 
     if( size() != d->currentLayoutSize ){
         d->resizeLayout( size() );
+        reLayoutFloatingLegends();
     }
 
     //FIXME(khz): Paint the background/frame too!

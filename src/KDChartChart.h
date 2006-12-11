@@ -392,6 +392,8 @@ namespace KDChart {
 
         /** reimp */
         void mousePressEvent( QMouseEvent* event );
+
+        void reLayoutFloatingLegends();
     };
 
 }

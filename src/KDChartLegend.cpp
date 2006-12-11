@@ -51,6 +51,7 @@ Legend::Private::Private() :
     referenceArea(0),
     position( Position::East ),
     alignment( Qt::AlignCenter ),
+    relativePosition( RelativePosition() ),
     orientation( Qt::Vertical ),
     showLines( false ),
     texts(),
@@ -61,7 +62,13 @@ Legend::Private::Private() :
     useAutomaticMarkerSize( true )
     //needRebuild( true )
 {
-    // this bloc left empty intentionally
+    // By default we specify a simple, hard point as the 'relative' position's ref. point,
+    // since we can not be sure that there will be any parent specified for the legend.
+    relativePosition.setReferencePoints(   PositionPoints( QPointF( 0.0, 0.0 ) ) );
+    relativePosition.setReferencePosition( Position::NorthWest );
+    relativePosition.setAlignment( Qt::AlignTop | Qt::AlignLeft );
+    relativePosition.setHorizontalPadding( KDChart::Measure( 4.0, KDChartEnums::MeasureCalculationModeAbsolute ) );
+    relativePosition.setVerticalPadding(   KDChart::Measure( 4.0, KDChartEnums::MeasureCalculationModeAbsolute ) );
 }
 
 Legend::Private::~Private()
@@ -164,11 +171,17 @@ void Legend::resizeLayout( const QSize& size )
 #endif
     if( d->layout ){
         d->layout->setGeometry( QRect(QPoint(0,0), size) );
-        d->layout->activate();
+        activateTheLayout();
     }
 #ifdef DEBUG_LEGEND_PAINT
     qDebug() << "Legend::resizeLayout done";
 #endif
+}
+
+void Legend::activateTheLayout()
+{
+    if( d->layout && d->layout->parent() )
+        d->layout->activate();
 }
 
 Legend* Legend::clone() const
@@ -353,6 +366,20 @@ void Legend::setAlignment( Qt::Alignment alignment )
 Qt::Alignment Legend::alignment() const
 {
     return d->alignment;
+}
+
+void Legend::setFloatingPosition( const RelativePosition& relativePosition )
+{
+    d->position = Position::Floating;
+    if( d->relativePosition != relativePosition ){
+        d->relativePosition  = relativePosition;
+        emitPositionChanged();
+    }
+}
+
+const RelativePosition Legend::floatingPosition() const
+{
+    return d->relativePosition;
 }
 
 void Legend::setOrientation( Qt::Orientation orientation )
@@ -809,7 +836,7 @@ void Legend::buildLegend()
     }
 
     // This line is absolutely necessary, otherwise: #2516.
-    d->layout->activate();
+    activateTheLayout();
 
     emit propertiesChanged();
     //emit positionChanged( this );
