@@ -60,11 +60,17 @@ int main( int argc, char** argv ) {
     legend->setText( 2,  "Vector 3" );
     legend->setShowLines(  true );
 
-    legend->setPosition( KDChart::Position::Floating );
-    widget.addLegend( legend );
+    // the following alligns the legend exactly to the
+    // chart's coordinate plane's top-right corner:
+    KDChart::RelativePosition relativePosition;
+    relativePosition.setReferenceArea( widget.coordinatePlane() );
+    relativePosition.setReferencePosition( Position::NorthEast );
+    relativePosition.setAlignment( Qt::AlignTop | Qt::AlignRight );
+    relativePosition.setHorizontalPadding( KDChart::Measure( -1.0, KDChartEnums::MeasureCalculationModeAbsolute ) );
+    relativePosition.setVerticalPadding(   KDChart::Measure(  0.0, KDChartEnums::MeasureCalculationModeAbsolute ) );
+    legend->setFloatingPosition( relativePosition );
 
-    legend->move( 50, 50 );
-    //legend->resize( 300, 100 );
+    widget.addLegend( legend );
 
     widget.show();
 
