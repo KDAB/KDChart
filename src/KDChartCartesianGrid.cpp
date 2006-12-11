@@ -292,12 +292,13 @@ DataDimensionsList CartesianGrid::calculateGrid(
         //qDebug() << "CartesianGrid::calculateGrid()  raw data y-range  :" << l.last().end - l.last().start;
         //qDebug() << "CartesianGrid::calculateGrid()  translated y-range:" << translatedTopRight.y() - translatedBottomLeft.y();
 
-        // As of yet horizontal grid adjusting does not work, this needs further investigation:
-        // (khz, Dec 08 2006)
-        //if( plane->axesCalcModeX() == CartesianCoordinatePlane::Linear && plane->zoomFactorX() > 1.0 ){
-        //    l.first().start = translatedBottomLeft.x();
-        //    l.first().end   = translatedTopRight.x();
-        //}
+        if( l.first().isCalculated
+            && plane->axesCalcModeX() == CartesianCoordinatePlane::Linear
+            && plane->zoomFactorX() > 1.0 )
+        {
+            l.first().start = translatedBottomLeft.x();
+            l.first().end   = translatedTopRight.x();
+        }
 
         const DataDimension dimX
             = calculateGridXY( l.first(), Qt::Horizontal );
