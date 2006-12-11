@@ -88,6 +88,14 @@ void MainWindow::on_zoomFactorSB_valueChanged( double factor )
     m_chart->update();
 }
 
+void MainWindow::on_adjustGridCB_toggled( bool checked )
+{
+    qDebug() << checked;
+    static_cast <CartesianCoordinatePlane*>( m_chart->coordinatePlane() )
+            ->setAutoAdjustGridToZoom( checked );
+    m_chart->update();
+}
+
 void MainWindow::on_hSBar_valueChanged( int hPos )
 {
     m_chart->coordinatePlane()->setZoomCenter( QPointF(hPos/1000.0, vSBar->value()/1000.0) );

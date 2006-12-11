@@ -46,6 +46,7 @@ public:
 
 private slots:
     void on_zoomFactorSB_valueChanged( double factor );
+    void on_adjustGridCB_toggled( bool checked );
     void on_hSBar_valueChanged( int value );
     void on_vSBar_valueChanged( int value );
 
