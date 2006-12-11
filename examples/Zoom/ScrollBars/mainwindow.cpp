@@ -90,7 +90,6 @@ void MainWindow::on_zoomFactorSB_valueChanged( double factor )
 
 void MainWindow::on_adjustGridCB_toggled( bool checked )
 {
-    qDebug() << checked;
     static_cast <CartesianCoordinatePlane*>( m_chart->coordinatePlane() )
             ->setAutoAdjustGridToZoom( checked );
     m_chart->update();
