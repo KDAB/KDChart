@@ -293,6 +293,7 @@ DataDimensionsList CartesianGrid::calculateGrid(
         //qDebug() << "CartesianGrid::calculateGrid()  translated y-range:" << translatedTopRight.y() - translatedBottomLeft.y();
 
         if( l.first().isCalculated
+            && plane->autoAdjustGridToZoom()
             && plane->axesCalcModeX() == CartesianCoordinatePlane::Linear
             && plane->zoomFactorX() > 1.0 )
         {
@@ -305,7 +306,10 @@ DataDimensionsList CartesianGrid::calculateGrid(
         if( dimX.stepWidth ){
             //qDebug("CartesianGrid::calculateGrid()   l.last().start: %f   l.last().end: %f", l.last().start, l.last().end);
 
-            if( plane->axesCalcModeY() == CartesianCoordinatePlane::Linear && plane->zoomFactorY() > 1.0 ){
+            if( plane->autoAdjustGridToZoom()
+                && plane->axesCalcModeY() == CartesianCoordinatePlane::Linear
+                && plane->zoomFactorY() > 1.0 )
+            {
                 l.last().start = translatedBottomLeft.y();
                 l.last().end   = translatedTopRight.y();
             }

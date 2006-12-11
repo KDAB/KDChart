@@ -233,6 +233,7 @@ namespace KDChart {
          * resetGridAttributes.
          *
          * \sa resetGridAttributes, gridAttributes
+         * \sa setAutoAdjustGridToZoom
          * \sa AbstractCoordinatePlane::setGlobalGridAttributes
          * \sa hasOwnGridAttributes
          */
@@ -245,6 +246,7 @@ namespace KDChart {
          * AbstractCoordinatePlane::setGlobalGridAttributes be used.
          *
          * \sa setGridAttributes, gridAttributes
+         * \sa setAutoAdjustGridToZoom
          * \sa AbstractCoordinatePlane::globalGridAttributes
          * \sa hasOwnGridAttributes
          */
@@ -279,6 +281,22 @@ namespace KDChart {
          * \sa AbstractCoordinatePlane::globalGridAttributes
          */
         bool hasOwnGridAttributes( Qt::Orientation orientation ) const;
+
+        /**
+         * Disable / re-enable the built-in grid adjusting feature.
+         *
+         * By default additional lines will be drawn in a Linear grid when zooming in.
+         * 
+         * \sa autoAdjustGridToZoom, setGridAttributes
+         */
+        void setAutoAdjustGridToZoom( bool autoAdjust );
+
+        /**
+         * Return the status of the built-in grid adjusting feature.
+         *
+         * \sa setAutoAdjustGridToZoom
+         */
+        const bool autoAdjustGridToZoom() const;
 
         AxesCalcMode axesCalcModeY() const;
         AxesCalcMode axesCalcModeX() const;

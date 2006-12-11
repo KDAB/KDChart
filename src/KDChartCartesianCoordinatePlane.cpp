@@ -58,6 +58,7 @@ CartesianCoordinatePlane::Private::Private()
     , verticalMax(0)
     , autoAdjustHorizontalRangeToData(67)
     , autoAdjustVerticalRangeToData(  67)
+    , autoAdjustGridToZoom( true )
 {
     // this bloc left empty intentionally
 }
@@ -433,7 +434,8 @@ bool CartesianCoordinatePlane::doneSetZoomFactorX( double factor )
     bool bDone = ( d->coordinateTransformation.zoom.xFactor != factor );
     if( bDone ){
         d->coordinateTransformation.zoom.xFactor = factor;
-        d->grid->setNeedRecalculate();
+        if( d->autoAdjustGridToZoom )
+            d->grid->setNeedRecalculate();
     }
     return bDone;
 }
@@ -443,7 +445,8 @@ bool CartesianCoordinatePlane::doneSetZoomFactorY( double factor )
     bool bDone = ( d->coordinateTransformation.zoom.yFactor != factor );
     if( bDone ){
         d->coordinateTransformation.zoom.yFactor = factor;
-        d->grid->setNeedRecalculate();
+        if( d->autoAdjustGridToZoom )
+            d->grid->setNeedRecalculate();
     }
     return bDone;
 }
@@ -453,7 +456,8 @@ bool CartesianCoordinatePlane::doneSetZoomCenter( QPointF point )
     bool bDone = ( d->coordinateTransformation.zoom.center() != point );
     if( bDone ){
         d->coordinateTransformation.zoom.setCenter( point );
-        d->grid->setNeedRecalculate();
+        if( d->autoAdjustGridToZoom )
+            d->grid->setNeedRecalculate();
     }
     return bDone;
 }
@@ -672,3 +676,18 @@ bool KDChart::CartesianCoordinatePlane::hasOwnGridAttributes(
         ? d->hasOwnGridAttributesHorizontal
         : d->hasOwnGridAttributesVertical;
 }
+
+void KDChart::CartesianCoordinatePlane::setAutoAdjustGridToZoom( bool autoAdjust )
+{
+    if( d->autoAdjustGridToZoom != autoAdjust ){
+        d->autoAdjustGridToZoom = autoAdjust;
+        d->grid->setNeedRecalculate();
+        emit propertiesChanged();
+    }
+}
+
+const bool KDChart::CartesianCoordinatePlane::autoAdjustGridToZoom() const
+{
+    return d->autoAdjustGridToZoom;
+}
+

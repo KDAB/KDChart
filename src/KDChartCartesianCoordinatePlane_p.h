@@ -100,6 +100,7 @@ public:
 
     unsigned int autoAdjustHorizontalRangeToData;
     unsigned int autoAdjustVerticalRangeToData;
+    bool autoAdjustGridToZoom;
 };
 
 
