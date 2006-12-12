@@ -139,7 +139,7 @@ void MainWindow::slot_timerFired()
 
 void MainWindow::setHighlightArea( int column, int opacity, bool checked, bool doUpdate )
 {
-    LineAttributes la = m_lines->lineAttributes( m_lines->model()->index( 0, column, m_lines->rootIndex() ) );
+    LineAttributes la = m_lines->lineAttributes( column );
     if ( checked ) {
         la.setDisplayArea( true );
         la.setTransparency( opacity );
@@ -147,6 +147,26 @@ void MainWindow::setHighlightArea( int column, int opacity, bool checked, bool d
         la.setDisplayArea( false );
     }
     m_lines->setLineAttributes( column, la );
+    // highlight the 2nd and the 3rd segment of the area even more than the others,
+    // do demonstrate cell-specific transparency setting:
+    QModelIndex cellIndex( m_lines->model()->index( 1, column, m_lines->rootIndex() ) );
+    la = m_lines->lineAttributes( cellIndex );
+    if ( checked ) {
+        la.setDisplayArea( true );
+        la.setTransparency( qMin( static_cast<int>(1.15 * opacity), 255 ) );
+    }  else {
+        la.setDisplayArea( false );
+    }
+    m_lines->setLineAttributes( cellIndex, la );
+    cellIndex = m_lines->model()->index( 2, column, m_lines->rootIndex() );
+    la = m_lines->lineAttributes( cellIndex );
+    if ( checked ) {
+        la.setDisplayArea( true );
+        la.setTransparency( qMin( static_cast<int>(1.3 * opacity), 255 ) );
+    }  else {
+        la.setDisplayArea( false );
+    }
+    m_lines->setLineAttributes( cellIndex, la );
     if( doUpdate )
         m_chart->update();
 }
