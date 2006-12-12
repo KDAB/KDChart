@@ -553,8 +553,32 @@ void LineDiagram::paint( PaintContext* ctx )
         }
             break;
         case LineDiagram::Stacked:
+            // fall-through intended
+        case LineDiagram::Percent:
         {
-            //FIXME(khz): add LineAttributes::MissingValuesPolicy support for LineDiagram::Stacked
+            //FIXME(khz): add LineAttributes::MissingValuesPolicy support for LineDiagram::Stacked and ::Percent
+
+            const bool isPercentMode = type() == LineDiagram::Percent;
+            double maxValue = 100; // always 100%
+            double sumValues = 0;
+            QVector <double > percentSumValues;
+
+            //calculate sum of values for each column and store
+            if( isPercentMode ){
+                for ( int j=0; j<rowCount ; ++j ) {
+                    for( int i =  datasetDimension()-1;
+                        i <= lastVisibleColumn;
+                        i += datasetDimension() ) {
+                            double tmpValue = valueForCell( j, i );
+                            if ( tmpValue > 0 )
+                                sumValues += tmpValue;
+                            if ( i == lastVisibleColumn ) {
+                                percentSumValues <<  sumValues ;
+                                sumValues = 0;
+                            }
+                        }
+                }
+            }
 
             QList<QPointF> bottomPoints;
             bool bFirstDataset = true;
@@ -579,11 +603,23 @@ void LineDiagram::paint( PaintContext* ctx )
                           iColumn2 >= datasetDimension()-1;
                           iColumn2 -= datasetDimension() )
                     {
-                        stackedValues += valueForCell( iRow, iColumn2 );
-                        if ( iRow+1 < rowCount )
-                            nextValues += valueForCell( iRow+1, iColumn2 );
+                        const double val = valueForCell( iRow, iColumn2 );
+                        if( val > 0 || ! isPercentMode )
+                            stackedValues += val;
+                        //qDebug() << valueForCell( iRow, iColumn2 );
+                        if ( iRow+1 < rowCount ){
+                            const double val = valueForCell( iRow+1, iColumn2 );
+                            if( val > 0 || ! isPercentMode )
+                                nextValues += val;
+                        }
                     }
-
+                    if( isPercentMode ){
+                        if ( percentSumValues.at( iRow ) != 0  )
+                            stackedValues = stackedValues / percentSumValues.at( iRow ) * maxValue;
+                        else
+                            stackedValues = 0.0;
+                    }
+                    //qDebug() << stackedValues << endl;
                     QPointF nextPoint = coordinatePlane()->translate( QPointF( iRow, stackedValues ) );
                     points << nextPoint;
 
@@ -599,6 +635,12 @@ void LineDiagram::paint( PaintContext* ctx )
                     QPointF ptSouthEast;
 
                     if ( iRow+1 < rowCount ){
+                        if( isPercentMode ){
+                            if ( percentSumValues.at( iRow+1 ) != 0  )
+                                nextValues = nextValues / percentSumValues.at( iRow+1 ) * maxValue;
+                            else
+                                nextValues = 0.0;
+                        }
                         QPointF toPoint = coordinatePlane()->translate( QPointF( iRow+1, nextValues ) );
                         lineList.append( LineAttributesInfo( index, nextPoint, toPoint ) );
                         ptNorthEast = toPoint;
@@ -641,112 +683,6 @@ void LineDiagram::paint( PaintContext* ctx )
             }
         }
             break;
-        case LineDiagram::Percent:
-        {
-            //FIXME(khz): add LineAttributes::MissingValuesPolicy support for LineDiagram::Percent
-
-            double maxValue = 100; // always 100%
-            double sumValues = 0;
-            QVector <double > sumValuesVector;
-
-            //calculate sum of values for each column and store
-            for ( int j=0; j<rowCount ; ++j ) {
-                for( int i =  datasetDimension()-1;
-                         i <= lastVisibleColumn;
-                         i += datasetDimension() ) {
-                    double tmpValue = valueForCell( j, i );
-                    if ( tmpValue > 0 )
-                        sumValues += tmpValue;
-                    if ( i == lastVisibleColumn ) {
-                        sumValuesVector <<  sumValues ;
-                        sumValues = 0;
-                    }
-                }
-            }
-
-            QPolygonF bottomArea;
-            // initialize the bottom area with the start and end points
-            // positioned at the level of 0.0:
-            bottomArea.append( coordinatePlane()->translate( QPointF( bottomLeft.x(), 0.0 ) ) );
-            bottomArea.append( coordinatePlane()->translate( QPointF( topRight.x(),   0.0 ) ) );
-            bool bFirstDataset = true;
-
-            // calculate stacked percent value
-            for( int i =  datasetDimension()-1;
-                     i <= lastVisibleColumn;
-                     i += datasetDimension() ) {
-                QModelIndex indexRow0 = model()->index( 0, i, rootIndex() );
-                LineAttributes laa = lineAttributes( indexRow0 );
-                bool bDisplayArea = laa.displayArea();
-
-                QPolygonF area;
-                for ( int j=0; j<rowCount ; ++j ) {
-                    double stackedValues = 0, nextValues = 0;
-                    QModelIndex index = model()->index( j, i, rootIndex() );
-                    //calculate stacked percent value- we only take in account positives values for now.
-                    for ( int k = i; k >= 0 ; --k ) {
-                        double val = valueForCell( j, k );
-                        if ( val > 0)
-                            stackedValues += val;
-                        if ( j+1 < rowCount ){
-                            val = valueForCell( j+1, k);
-                            if ( val > 0 )
-                                nextValues += val;
-                        }
-                    }
-                    double y = 0;
-                    if ( sumValuesVector.at(j) != 0  )
-                        y = stackedValues/sumValuesVector.at(j) * maxValue;
-                    QPointF nextPoint = coordinatePlane()->translate( QPointF( j, y ) );
-                    area.append( nextPoint );
-
-                    const QPointF ptNorthWest( nextPoint );
-                    const QPointF ptSouthWest(
-                            bDisplayArea
-                            ? ( bFirstDataset
-                            ? coordinatePlane()->translate( QPointF( j, 0.0 ) )
-                        : bottomArea.at( j )
-                              )
-                        : nextPoint );
-                    QPointF ptNorthEast;
-                    QPointF ptSouthEast;
-
-                    if ( j+1 < rowCount ) {
-                        double y = 0;
-                        if ( sumValuesVector.at(j+1) != 0  )
-                            y = nextValues/sumValuesVector.at(j+1) * maxValue;
-                        QPointF toPoint = coordinatePlane()->translate( QPointF( j+1, y ) );
-                        lineList.append( LineAttributesInfo( index, nextPoint, toPoint ) );
-                        ptNorthEast = toPoint;
-                        ptSouthEast =
-                                bDisplayArea
-                                ? ( bFirstDataset
-                                ? coordinatePlane()->translate( QPointF( j+1, 0.0 ) )
-                            : bottomArea.at( j+1 )
-                                  )
-                            : toPoint;
-                    }else{
-                        ptNorthEast = ptNorthWest;
-                        ptSouthEast = ptSouthWest;
-                    }
-
-                    const PositionPoints pts( ptNorthWest, ptNorthEast, ptSouthEast, ptSouthWest );
-                    d->appendDataValueTextInfoToList( this, list, index, pts,
-                            Position::NorthWest, Position::SouthWest,
-                            valueForCell( j, i ) );
-                }
-                // append the points of the prevoius area in reversed order,
-                // because these are the bottom points of the stacked area segments:
-                const QPolygonF orgArea( area );
-                for (int i = bottomArea.size()-1; i >= 0; --i)
-                    area.append( bottomArea.at( i ) );
-                bottomArea = orgArea;
-                if ( bDisplayArea )
-                    paintAreas( ctx, indexRow0, area, laa.transparency() );
-                bFirstDataset = false;
-            }
-            break;
-        }
         default:
             Q_ASSERT_X ( false, "paint()",
                          "Type item does not match a defined line chart Type." );
