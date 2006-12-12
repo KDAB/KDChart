@@ -26,6 +26,7 @@
 #include <QDebug>
 #include <QPainter>
 #include <QString>
+#include <QPainterPath>
 #include <QPen>
 #include <QVector>
 
@@ -421,12 +422,11 @@ void LineDiagram::paint( PaintContext* ctx )
                      iColumn <= lastVisibleColumn;
                      iColumn += datasetDimension() ) {
 
-                //display area can be set by column
-                QModelIndex indexRow0 = model()->index( 0, iColumn, rootIndex() );
-                LineAttributes laa = lineAttributes( indexRow0 );
-                const bool bDisplayArea = laa.displayArea();
+                //display area can be set by dataset ( == column) and/or by cell
+                LineAttributes laPreviousCell; // by default no area is drawn
+                QModelIndex indexPreviousCell;
+                QList<QPolygonF> areas;
 
-                QPolygonF area;
                 bool bValuesFound = false;
                 double lastValueX, lastValueY;
                 double valueX, valueY;
@@ -485,16 +485,19 @@ void LineDiagram::paint( PaintContext* ctx )
                         }
                         if( ! skipThisCell ){
                             const bool isPositive = (valueY >= 0.0);
-                            QModelIndex index = model()->index( iRow, iColumn, rootIndex() );
+                            const QModelIndex index = model()->index( iRow, iColumn, rootIndex() );
+
+                            const LineAttributes laCell = lineAttributes( index );
+                            const bool bDisplayCellArea = laCell.displayArea();
+
                             QPointF fromPoint = coordinatePlane()->translate( QPointF( valueX, valueY ) );
-                            area.append( fromPoint );
 
                             const QPointF ptNorthWest(
-                                (bDisplayArea && ! isPositive)
+                                (bDisplayCellArea && ! isPositive)
                                 ? coordinatePlane()->translate( QPointF( valueX, 0.0 ) )
                                 : fromPoint );
                             const QPointF ptSouthWest(
-                                (bDisplayArea && isPositive)
+                                (bDisplayCellArea && isPositive)
                                 ? coordinatePlane()->translate( QPointF( valueX, 0.0 ) )
                                 : fromPoint );
                             QPointF ptNorthEast;
@@ -504,13 +507,24 @@ void LineDiagram::paint( PaintContext* ctx )
                                 QPointF toPoint = coordinatePlane()->translate( QPointF( nextValueX, nextValueY ) );
                                 lineList.append( LineAttributesInfo( index, fromPoint, toPoint ) );
                                 ptNorthEast =
-                                    (bDisplayArea && ! isPositive)
+                                    (bDisplayCellArea && ! isPositive)
                                     ? coordinatePlane()->translate( QPointF( nextValueX, 0.0 ) )
                                     : toPoint;
                                 ptSouthEast =
-                                    (bDisplayArea && isPositive)
+                                    (bDisplayCellArea && isPositive)
                                     ? coordinatePlane()->translate( QPointF( nextValueX, 0.0 ) )
                                     : toPoint;
+                                if( areas.count() && laCell != laPreviousCell ){
+                                    paintAreas( ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
+                                    areas.clear();
+                                }
+                                if( bDisplayCellArea ){
+                                    QPolygonF poly;
+                                    poly << ptNorthWest << ptNorthEast << ptSouthEast << ptSouthWest;
+                                    areas << poly;
+                                    laPreviousCell = laCell;
+                                    indexPreviousCell = index;
+                                }
                             }else{
                                 ptNorthEast = ptNorthWest;
                                 ptSouthEast = ptSouthWest;
@@ -522,15 +536,10 @@ void LineDiagram::paint( PaintContext* ctx )
                                     valueY );
                         }
                     }
-                }
-
-                //FIXME(khz): As of yet we can NOT have cell-specific area properties, since we are drawing
-                // all of the area parts of one dataset in one go.
-                // ( see KDAB Bugzilla issue #2556 )
-                if ( bDisplayArea ){
-                    area.insert( 0,  coordinatePlane()->translate( QPointF( bottomLeft.x(), 0.0 ) ) );
-                    area.append( coordinatePlane()->translate(     QPointF( topRight.x(),   0.0 ) ) );
-                    paintAreas( ctx, indexRow0, area, laa.transparency() );
+                    if( areas.count() ){
+                        paintAreas( ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
+                        areas.clear();
+                    }
                 }
             }
         }
@@ -809,6 +818,23 @@ void LineDiagram::paintAreas( PaintContext* ctx, const QModelIndex& index, const
     ctx->painter()->setPen( indexPen );
     ctx->painter()->setBrush( trans ) ;
     ctx->painter()->drawPolygon( area );//pol );
+}
+
+void LineDiagram::paintAreas( PaintContext* ctx, const QModelIndex& index, const QList<QPolygonF>& areas, const uint transparency )
+{
+    QColor trans( brush(index).color() );
+    trans.setAlpha( transparency );
+    QPen indexPen( pen(index) );
+    indexPen.setColor( trans );
+    PainterSaver painterSaver( ctx->painter() );
+    if ( antiAliasing() )
+        ctx->painter()->setRenderHint ( QPainter::Antialiasing );
+    ctx->painter()->setPen( indexPen );
+    ctx->painter()->setBrush( trans );
+    QPainterPath path;
+    for( int i=0; i<areas.count(); ++i )
+        path.addPolygon( areas[i] );
+    ctx->painter()->drawPath( path );
 }
 
 /*!

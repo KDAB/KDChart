@@ -115,6 +115,8 @@ private:
                            const QPointF& from, const QPointF& to, const double depth );
     void paintAreas( PaintContext* painter, const QModelIndex& index,
                      const QPolygonF& area, const uint transparency );
+    void paintAreas( PaintContext* ctx, const QModelIndex& index,
+                     const QList<QPolygonF>& areas, const uint transparency );
 }; // End of class KDChartLineDiagram
 
 }
