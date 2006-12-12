@@ -15,3 +15,4 @@ extern const QPointF Norm_B_A( -AxisVector_B_A.y(), AxisVector_B_A.x() );
 extern const QPointF AxisVector_B_C( TriangleBottomRight );
 extern const QPointF Norm_B_C( -AxisVector_B_C.y(), AxisVector_B_C.x() );
 
+extern const double RelMarkerLength = 0.03 * TriangleWidth;

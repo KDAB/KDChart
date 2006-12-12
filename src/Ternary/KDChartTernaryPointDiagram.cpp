@@ -24,6 +24,7 @@ void  TernaryPointDiagram::resize (const QSizeF& area)
 
 void  TernaryPointDiagram::paint (PaintContext *paintContext)
 {
+    qDebug() << "TernaryPointDiagram::paint:" << this;
     // sanity checks:
     if ( model() == 0 ) return;
 
@@ -42,7 +43,7 @@ void  TernaryPointDiagram::paint (PaintContext *paintContext)
             // see if there is data otherwise skip
             if( ! model()->data( model()->index( row, column+0 ) ).isNull() )
             {
-                // retrieve data
+                // retrieve datasetDimension
                 x = model()->data( model()->index( row, column+0 ) ).toDouble();
                 y = model()->data( model()->index( row, column+1 ) ).toDouble();
                 z = model()->data( model()->index( row, column+2 ) ).toDouble();

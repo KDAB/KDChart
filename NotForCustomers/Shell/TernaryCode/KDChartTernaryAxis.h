@@ -12,29 +12,29 @@ namespace KDChart {
    class TernaryAxis : public AbstractAxis
    {
       Q_OBJECT
-         
+
       Q_DISABLE_COPY( TernaryAxis )
       KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( TernaryAxis, AbstractDiagram* )
-      
-   public:      
+
+   public:
       explicit TernaryAxis ( TernaryDiagram* diagram = 0 );
       ~TernaryAxis();
 
       virtual void  paintAll( QPainter &);
       virtual void  paint (QPainter *);
-      virtual void  paintCtx (PaintContext *); 
+      virtual void  paintCtx (PaintContext *);
 
-      virtual QRect  geometry () const; 
+      virtual QRect  geometry () const;
       virtual void  setGeometry (const QRect &rect);
 
       virtual bool  isEmpty () const;
-      virtual QSize  minimumSize () const;  
-      virtual QSize  maximumSize () const; 
-      virtual QSize  sizeHint () const;  
+      virtual QSize  minimumSize () const;
+      virtual QSize  maximumSize () const;
+      virtual QSize  sizeHint () const;
       virtual Qt::Orientations  expandingDirections () const  ;
 
-      virtual const Position  position () const;  
-      virtual void  setPosition (Position p); 
+      virtual const Position  position () const;
+      virtual void  setPosition (Position p);
 
       void setTitleText( const QString& text );
       QString titleText() const;
@@ -42,8 +42,6 @@ namespace KDChart {
       TextAttributes titleTextAttributes() const;
       void resetTitleTextAttributes();
       bool hasDefaultTitleTextAttributes() const;
-
-
 
    private:
       // TODO, move class variables to private class

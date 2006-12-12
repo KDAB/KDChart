@@ -34,12 +34,15 @@ namespace KDChart {
             the axis inscriptions are placed adjacent to the corners
             of the plot, outside of the plots rectangle. */
         QPair<QSizeF, QSizeF> requiredMargins() const;
+        /** Return the locations of the grid lines, so that axes can
+            draw axis rulers at the correct positions.
+            This information is valid after the grid has been
+            painted (that is, the axes need to be painted after the
+            grid. */
+        const QVector<TickInfo>& tickInfo() const;
     private:
         QVector<TickInfo> m_tickInfo;
-        QList<PrerenderedLabel> m_labels;
-        QString m_labelA;
-        QString m_labelB;
-        QString m_labelC;
+        // QList<PrerenderedLabel> m_labels;
     };
 
 }

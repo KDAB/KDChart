@@ -12,8 +12,6 @@
 
 using namespace KDChart;
 
-const double RelMarkerLength = 0.03 * TriangleWidth;
-
 bool operator==(const TickInfo& left, const TickInfo& right)
 {
     return fabs( left.percentage - right.percentage )
@@ -23,40 +21,37 @@ bool operator==(const TickInfo& left, const TickInfo& right)
 
 TernaryGrid::TernaryGrid()
     : AbstractGrid()
-    , m_labelA( QObject::tr( "A" ) )
-    , m_labelB( QObject::tr( "B" ) )
-    , m_labelC( QObject::tr( "C" ) )
 {
-    PrerenderedLabel labelA, labelB, labelC,
-        label4, label5, label6;
-    // FIXME this has to come fro TextAttributes
-    QFont font ( qApp->font() );
-    font.setPointSizeF( 1.3 * font.pointSize() );
-    labelA.paint( font, m_labelA, 0 );
-    labelA.setPosition( TriangleTop );
-    labelA.setReferencePoint( KDChartEnums::PositionSouth );
-    labelB.paint( font, m_labelB, 240 );
-    labelB.setPosition( TriangleBottomLeft );
-    labelB.setReferencePoint( KDChartEnums::PositionSouth );
-    labelC.paint( font, m_labelC, 120 );
-    labelC.setPosition( TriangleBottomRight );
-    labelC.setReferencePoint( KDChartEnums::PositionSouth );
-    font.setPointSizeF( 0.8 * qApp->font().pointSize() );
-    QString fifty( QObject::tr( "50%" ) );
-    label4.paint( font, fifty, 0 );
-    label4.setPosition( 0.5 * AxisVector_B_C - RelMarkerLength * Norm_B_C );
-    label4.setReferencePoint( KDChartEnums::PositionNorth );
-    label5.paint( font, fifty, 60 );
-    label5.setPosition( AxisVector_B_C + 0.5 * AxisVector_C_A - RelMarkerLength * Norm_C_A );
-    label5.setReferencePoint( KDChartEnums::PositionSouth );
-    label6.paint( font, fifty, 300 );
-    label6.setPosition( 0.5 * AxisVector_B_A + RelMarkerLength * Norm_B_A );
-    label6.setReferencePoint( KDChartEnums::PositionSouth );
+//     PrerenderedLabel labelA, labelB, labelC,
+//         label4, label5, label6;
+//     // FIXME this has to come fro TextAttributes
+//     QFont font ( qApp->font() );
+//     font.setPointSizeF( 1.3 * font.pointSize() );
+//     labelA.paint( font, m_labelA, 0 );
+//     labelA.setPosition( TriangleTop );
+//     labelA.setReferencePoint( KDChartEnums::PositionSouth );
+//     labelB.paint( font, m_labelB, 240 );
+//     labelB.setPosition( TriangleBottomLeft );
+//     labelB.setReferencePoint( KDChartEnums::PositionSouth );
+//     labelC.paint( font, m_labelC, 120 );
+//     labelC.setPosition( TriangleBottomRight );
+//     labelC.setReferencePoint( KDChartEnums::PositionSouth );
+//     font.setPointSizeF( 0.8 * qApp->font().pointSize() );
+//     QString fifty( QObject::tr( "50%" ) );
+//     label4.paint( font, fifty, 0 );
+//     label4.setPosition( 0.5 * AxisVector_B_C - RelMarkerLength * Norm_B_C );
+//     label4.setReferencePoint( KDChartEnums::PositionNorth );
+//     label5.paint( font, fifty, 60 );
+//     label5.setPosition( AxisVector_B_C + 0.5 * AxisVector_C_A - RelMarkerLength * Norm_C_A );
+//     label5.setReferencePoint( KDChartEnums::PositionSouth );
+//     label6.paint( font, fifty, 300 );
+//     label6.setPosition( 0.5 * AxisVector_B_A + RelMarkerLength * Norm_B_A );
+//     label6.setReferencePoint( KDChartEnums::PositionSouth );
 
-    // do not change the order of the first three labels, those are
-    // referenced by position later:
-    m_labels << labelA << labelB << labelC
-             << label4 << label5 << label6;
+//     // do not change the order of the first three labels, those are
+//     // referenced by position later:
+//     m_labels << labelA << labelB << labelC
+//              << label4 << label5 << label6;
 }
 
 TernaryGrid::~TernaryGrid()
@@ -65,6 +60,8 @@ TernaryGrid::~TernaryGrid()
 
 void TernaryGrid::drawGrid( PaintContext* context )
 {
+    qDebug() << "TernaryGrid::drawGrid:" << this;
+
     static const int GridLineDistanceTreshold = 20; // <Treshold> pixels between each grid line
 
     QPainter& painter ( *context->painter() ); // recover from pointer madness
@@ -143,16 +140,6 @@ void TernaryGrid::drawGrid( PaintContext* context )
            << plane->translate( TriangleBottomRight )
            << plane->translate( TriangleTop );
     painter.drawPolygon( points );
-
-    painter.setPen( Qt::black );
-    // draw Axis Labels: (A, B, and C):
-    Q_FOREACH( const PrerenderedLabel& label, m_labels ) {
-        const QPixmap& pixmap = label.pixmap();
-        KDChartEnums::PositionValue position = label.referencePoint();
-        QPointF point = plane->translate( label.position() )
-                        - label.referencePointLocation( position );
-        painter.drawPixmap( point, pixmap );
-    }
 }
 
 DataDimensionsList TernaryGrid::calculateGrid( const DataDimensionsList& ) const
@@ -162,6 +149,9 @@ DataDimensionsList TernaryGrid::calculateGrid( const DataDimensionsList& ) const
 
 QPair<QSizeF, QSizeF> TernaryGrid::requiredMargins() const
 {
+    return QPair<QSizeF, QSizeF>( QSizeF(), QSizeF() );
+
+/*
     // well, we just know about the semantics of the labels, so:
     double topMargin = m_labels[0].pixmap().height(); // label A
     double labelBWidth = m_labels[1].pixmap().width(); // label B
@@ -173,5 +163,10 @@ QPair<QSizeF, QSizeF> TernaryGrid::requiredMargins() const
     return QPair<QSizeF, QSizeF>
         ( QSizeF( leftMargin, topMargin ),
           QSizeF( rightMargin,topMargin ) );
+*/
 }
 
+const QVector<TickInfo>& TernaryGrid::tickInfo() const
+{
+    return m_tickInfo;
+}

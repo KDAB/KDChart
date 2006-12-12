@@ -15,5 +15,6 @@ extern const QPointF AxisVector_B_A;
 extern const QPointF Norm_B_A;
 extern const QPointF AxisVector_B_C;
 extern const QPointF Norm_B_C;
+extern const double RelMarkerLength;
 
 #endif

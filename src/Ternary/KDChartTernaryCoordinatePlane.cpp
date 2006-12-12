@@ -3,6 +3,7 @@
 
 #include "KDChartPaintContext.h"
 #include "KDChartPainterSaver_p.h"
+#include "KDChartTernaryAxis.h"
 #include "KDChartAbstractTernaryDiagram.h"
 #include "KDChartTernaryCoordinatePlane.h"
 #include "KDChartTernaryCoordinatePlane_p.h"
@@ -42,10 +43,6 @@ void TernaryCoordinatePlane::layoutDiagrams()
 {   // this is our "resize event":
     // all diagrams always take the same space, nothing to be done here
     qDebug() << "TernaryCoordinatePlane::layoutDiagrams: area:" << areaGeometry();
-
-    double xMargin = 0.0;
-    double yMargin = 0.0;
-
 
     QPair<QSizeF, QSizeF> margins = grid()->requiredMargins();
     d->diagramRect = areaGeometry();
@@ -101,6 +98,8 @@ QSizePolicy TernaryCoordinatePlane::sizePolicy() const
 
 void TernaryCoordinatePlane::paint( QPainter* painter )
 {
+    qDebug() << "TernaryCoordinatePlane::paint:" << this;
+
     AbstractDiagramList diags = diagrams();
     if ( !diags.isEmpty() )
     {
@@ -123,18 +122,10 @@ void TernaryCoordinatePlane::paint( QPainter* painter )
         // paint the diagrams:
         for ( int i = 0; i < diags.size(); i++ )
         {
-//qDebug("  start diags[i]->paint ( &ctx );");
             PainterSaver diagramPainterSaver( painter );
             diags[i]->paint ( &ctx );
-//qDebug("  done: diags[i]->paint ( &ctx );");
         }
-
-        //for debugging:
-        //    painter->drawRect( drawArea.adjusted(4,4,-4,-4) );
-        //    painter->drawRect( drawArea.adjusted(2,2,-2,-2) );
-        //    painter->drawRect( drawArea );
     }
-
 }
 
 DataDimensionsList TernaryCoordinatePlane::getDataDimensionsList() const

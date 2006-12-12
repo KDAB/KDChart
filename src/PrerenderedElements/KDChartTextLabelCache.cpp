@@ -13,7 +13,7 @@ PrerenderedElement::PrerenderedElement()
 }
 
 void PrerenderedElement::setPosition( const QPointF& position )
-{
+{   // this does not invalidate the element
     m_position = position;
 }
 
@@ -23,7 +23,7 @@ const QPointF& PrerenderedElement::position() const
 }
 
 void PrerenderedElement::setReferencePoint( KDChartEnums::PositionValue point )
-{
+{   // this does not invalidate the element
     m_referencePoint = point;
 }
 
@@ -37,14 +37,65 @@ PrerenderedLabel::PrerenderedLabel()
 {
 }
 
+void PrerenderedLabel::invalidate() const
+{
+    m_dirty = true;
+}
+
+void PrerenderedLabel::setFont( const QFont& font )
+{
+    m_font = font;
+    invalidate();
+}
+
+const QFont& PrerenderedLabel::font() const
+{
+    return m_font;
+}
+
+void PrerenderedLabel::setText( const QString& text )
+{
+    m_text = text;
+    invalidate();
+}
+
+const QString& PrerenderedLabel::text() const
+{
+    return m_text;
+}
+
+void PrerenderedLabel::setBrush( const QBrush& brush )
+{
+    m_brush = brush;
+    invalidate();
+}
+
+const QBrush& PrerenderedLabel::brush() const
+{
+    return m_brush;
+}
+
+void PrerenderedLabel::setAngle( double angle )
+{
+    m_angle = angle;
+    invalidate();
+}
+
+double PrerenderedLabel::angle() const
+{
+    return m_angle;
+}
+
 const QPixmap& PrerenderedLabel::pixmap() const
 {
+    if ( m_dirty ) paint();
     return m_pixmap;
 }
 
-void PrerenderedLabel::paint( const QFont& font, const QString& text,
-                         double angle )
+void PrerenderedLabel::paint() const
 {
+    qDebug() << "PrerenderedLabel::paint:" << this;
+
     // FIXME find a better value using font metrics of text (this
     // requires finding the diameter of the circle formed by rotating
     // the bounding rect around the center):
@@ -68,21 +119,22 @@ void PrerenderedLabel::paint( const QFont& font, const QString& text,
         painter.setRenderHint(QPainter::TextAntialiasing, true );
         painter.setRenderHint(QPainter::Antialiasing, true );
 
+        // QImage (X11 workaround) does not have fill():
         painter.setPen( FullTransparent );
         painter.setBrush( FullTransparent );
         painter.drawRect( 0, 0, Width, Height );
 
         QMatrix matrix;
         matrix.translate( 0.5 * Width,  0.5 * Height );
-        matrix.rotate( angle );
+        matrix.rotate( m_angle );
         painter.setWorldMatrix( matrix );
 
-        painter.setPen( Qt::black );
-        painter.setBrush( Qt::black );
-        painter.setFont( font );
+        painter.setPen( m_pen );
+        painter.setBrush( m_brush );
+        painter.setFont( m_font );
         QRectF container( -0.5 * Width, -0.5 * Height, Width, 0.5 * Height );
         painter.drawText( container, Qt::AlignHCenter | Qt::AlignBottom,
-                          text, &boundingRect );
+                          m_text, &boundingRect );
         m_referenceBottomLeft = QPointF( boundingRect.bottomLeft().x(), 0.0 );
         textBottomRight = QPointF( boundingRect.bottomRight().x(), 0.0 );
         m_textAscendVector = boundingRect.topRight() - textBottomRight;
@@ -140,6 +192,8 @@ void PrerenderedLabel::paint( const QFont& font, const QString& text,
 
 QPointF PrerenderedLabel::referencePointLocation( KDChartEnums::PositionValue position ) const
 {
+    if ( m_dirty ) paint();
+
     switch( position ) {
     case KDChartEnums::PositionCenter:
         return m_referenceBottomLeft + 0.5 * m_textBaseLineVector + 0.5 * m_textAscendVector;

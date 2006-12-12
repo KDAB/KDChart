@@ -8,6 +8,8 @@
 
 #include "KDChartAbstractTernaryDiagram.h"
 
+class PrerenderedLabel;
+
 namespace KDChart {
 
     class TernaryAxis : public AbstractAxis
@@ -15,9 +17,9 @@ namespace KDChart {
         Q_OBJECT
 
         Q_DISABLE_COPY( TernaryAxis )
-        KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( TernaryAxis, AbstractDiagram* )
+            KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( TernaryAxis, AbstractDiagram* )
 
-    public:
+            public:
         explicit TernaryAxis ( AbstractTernaryDiagram* diagram = 0 );
         ~TernaryAxis();
 
@@ -45,14 +47,21 @@ namespace KDChart {
         bool hasDefaultTitleTextAttributes() const;
 
     private:
-      // TODO, move class variables to private class
-      QRect m_geometry;
-      Position m_position;
+        void updatePrerenderedLabels();
+        // TODO, move class variables to private class
+        QRect m_geometry;
+        Position m_position;
 
-      QString m_title;
-      TextAttributes m_titleAttributes;
+        QString m_title;
+        TextAttributes m_titleAttributes;
 
-   };
+        // FIXME (Mirko): Move axis labels from grid to here, do not
+        // expose them, just paint them. Use title text for text. Make
+        // a function to allow the coordinate plane to calculate the
+        // necessary margins, like this:
+        PrerenderedLabel* m_label;
+        PrerenderedLabel* m_fifty;
+    };
 };
 
 #endif
