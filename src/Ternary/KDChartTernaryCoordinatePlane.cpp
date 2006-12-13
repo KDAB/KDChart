@@ -131,7 +131,7 @@ void TernaryCoordinatePlane::paint( QPainter* painter )
 }
 
 DataDimensionsList TernaryCoordinatePlane::getDataDimensionsList() const
-{
+{   // not needed
     return DataDimensionsList();
 }
 

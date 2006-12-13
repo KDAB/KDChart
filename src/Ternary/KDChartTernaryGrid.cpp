@@ -1,3 +1,6 @@
+#include <cmath>
+
+#include <algorithm>
 #include <limits>
 
 #include <QtDebug>
@@ -12,7 +15,13 @@
 
 using namespace KDChart;
 
-bool operator==(const TickInfo& left, const TickInfo& right)
+TickInfo::TickInfo( double _percentage, int _depth )
+    : percentage ( _percentage )
+    , depth( _depth )
+{
+}
+
+bool KDChart::operator==(const TickInfo& left, const TickInfo& right)
 {
     return fabs( left.percentage - right.percentage )
         <= std::numeric_limits<double>::epsilon()
@@ -51,14 +60,14 @@ void TernaryGrid::drawGrid( PaintContext* context )
     m_tickInfo.clear();
     for ( int i = granularity; i < 100; i+=granularity )
     {
-        TickInfo tick = { ( 1.0 * i ) / 100.0, 2 };
+        TickInfo tick( ( 1.0 * i ) / 100.0, 2 );
         if ( i % 10 == 0 ) tick.depth = 1;
         if ( i % 20 == 0 ) tick.depth = 0;
         m_tickInfo.append( tick );
     }
 
     QVector<QLineF> lines[MaxDepth];
-    Q_FOREACH( TickInfo tick, m_tickInfo ) {
+    Q_FOREACH( const TickInfo& tick, m_tickInfo ) {
         const double& percent = tick.percentage;
         {   // draw parallels to B
             TernaryPoint ternaryStart( percent, 1.0 - percent );
@@ -107,6 +116,63 @@ void TernaryGrid::drawGrid( PaintContext* context )
            << plane->translate( TriangleBottomRight )
            << plane->translate( TriangleTop );
     painter.drawPolygon( points );
+
+    // now draw the ticks:
+    painter.setPen( Qt::black );
+    painter.setBrush( Qt::black );
+
+    QVector<QLineF> ticks;
+    // prepare list of percentages, then calculate lines:
+    QVector<TickInfo> percentages( m_tickInfo );
+    // I have commented those out, I think it looks ugly if they are
+    // enabled:
+    // percentages.prepend( 0.0 );
+    // percentages.append( 1.0 );
+
+    // FIXME this may need a predicate that takes eplison into account
+    // (but it does not hurt, since it will not make the painter
+    // paint two lines):
+    percentages.erase( std::unique( percentages.begin(), percentages.end() ),
+                       percentages.end() );
+
+    Q_FOREACH( const TickInfo& tick, percentages ) {
+        const double& percent = tick.percentage;
+        {   // BC axis markers:
+            static const QPointF FullMarkerDistance ( RelMarkerLength * Norm_B_C );
+            const QPointF markerDistance( FullMarkerDistance / ( tick.depth + 1 ) );
+            QPointF start( percent, 0.0 );
+            ticks.append( QLineF( plane->translate( start ),
+                                  plane->translate( start - markerDistance ) ) );
+        }
+        {   // AC axis markers:
+            static const QPointF FullMarkerDistance( -RelMarkerLength * Norm_C_A );
+            const QPointF markerDistance( FullMarkerDistance / ( tick.depth + 1 ) );
+            const QPointF start( TriangleBottomRight + percent * AxisVector_C_A );
+            const QPointF end( start + markerDistance );
+            ticks.append( QLineF( plane->translate( start ),
+                                  plane->translate( end ) ) );
+        }
+        {
+            // AB axis markers:
+            static const QPointF FullMarkerDistance( RelMarkerLength * Norm_B_A );
+            const QPointF markerDistance( FullMarkerDistance / ( tick.depth +1 ) );
+            const QPointF start( percent * AxisVector_B_A );
+            const QPointF end( start + markerDistance );
+            ticks.append( QLineF( plane->translate( start ),
+                                  plane->translate( end ) ) );
+        }
+    }
+    painter.drawLines( ticks );
+
+//     painter.setPen( Qt::black );
+//     // draw Axis Labels: (A, B, and C):
+//     Q_FOREACH( const PrerenderedLabel& label, m_labels ) {
+//         const QPixmap& pixmap = label.pixmap();
+//         KDChartEnums::PositionValue position = label.referencePoint();
+//         QPointF point = translate( label.position() )
+//                         - label.referencePointLocation( position );
+//         painter.drawPixmap( point, pixmap );
+//     }
 }
 
 DataDimensionsList TernaryGrid::calculateGrid( const DataDimensionsList& ) const
