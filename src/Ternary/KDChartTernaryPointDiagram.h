@@ -16,12 +16,11 @@ namespace KDChart {
         explicit TernaryPointDiagram ( QWidget* parent = 0, TernaryCoordinatePlane* plane = 0 );
         virtual ~TernaryPointDiagram();
 
-        virtual void  resize (const QSizeF &area);
-        virtual void  paint (PaintContext *paintContext);
+        virtual void resize (const QSizeF &area);
+        virtual void paint (PaintContext *paintContext);
 
     protected:
         virtual const QPair< QPointF, QPointF >  calculateDataBoundaries () const;
-
     };
 
 };

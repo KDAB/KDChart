@@ -22,36 +22,6 @@ bool operator==(const TickInfo& left, const TickInfo& right)
 TernaryGrid::TernaryGrid()
     : AbstractGrid()
 {
-//     PrerenderedLabel labelA, labelB, labelC,
-//         label4, label5, label6;
-//     // FIXME this has to come fro TextAttributes
-//     QFont font ( qApp->font() );
-//     font.setPointSizeF( 1.3 * font.pointSize() );
-//     labelA.paint( font, m_labelA, 0 );
-//     labelA.setPosition( TriangleTop );
-//     labelA.setReferencePoint( KDChartEnums::PositionSouth );
-//     labelB.paint( font, m_labelB, 240 );
-//     labelB.setPosition( TriangleBottomLeft );
-//     labelB.setReferencePoint( KDChartEnums::PositionSouth );
-//     labelC.paint( font, m_labelC, 120 );
-//     labelC.setPosition( TriangleBottomRight );
-//     labelC.setReferencePoint( KDChartEnums::PositionSouth );
-//     font.setPointSizeF( 0.8 * qApp->font().pointSize() );
-//     QString fifty( QObject::tr( "50%" ) );
-//     label4.paint( font, fifty, 0 );
-//     label4.setPosition( 0.5 * AxisVector_B_C - RelMarkerLength * Norm_B_C );
-//     label4.setReferencePoint( KDChartEnums::PositionNorth );
-//     label5.paint( font, fifty, 60 );
-//     label5.setPosition( AxisVector_B_C + 0.5 * AxisVector_C_A - RelMarkerLength * Norm_C_A );
-//     label5.setReferencePoint( KDChartEnums::PositionSouth );
-//     label6.paint( font, fifty, 300 );
-//     label6.setPosition( 0.5 * AxisVector_B_A + RelMarkerLength * Norm_B_A );
-//     label6.setReferencePoint( KDChartEnums::PositionSouth );
-
-//     // do not change the order of the first three labels, those are
-//     // referenced by position later:
-//     m_labels << labelA << labelB << labelC
-//              << label4 << label5 << label6;
 }
 
 TernaryGrid::~TernaryGrid()
@@ -115,9 +85,6 @@ void TernaryGrid::drawGrid( PaintContext* context )
                                               plane->translate( end ) ) );
         }
     }
-
-    // FIXME: this is not a good location for that:
-    painter.setRenderHint(QPainter::Antialiasing, true );
 
     // now draw the lines:
     painter.setPen( QPen( QColor( "lightgray" ), 1 ) );

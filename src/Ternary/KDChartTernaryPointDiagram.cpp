@@ -4,12 +4,18 @@
 
 #include "TernaryConstants.h"
 #include "KDChartTernaryPointDiagram.h"
+#include "KDChartTernaryPointDiagram_p.h"
 
 using namespace KDChart;
 
+TernaryPointDiagram::Private::Private()
+    : AbstractTernaryDiagram::Private()
+{
+}
+
 TernaryPointDiagram::TernaryPointDiagram ( QWidget* parent,
                                            TernaryCoordinatePlane* plane )
-    : AbstractTernaryDiagram( parent, plane )
+    : AbstractTernaryDiagram( new Private(), parent, plane )
 {
     setDatasetDimension( 2 ); // the third column is implicit
 }
@@ -25,6 +31,9 @@ void  TernaryPointDiagram::resize (const QSizeF& area)
 void  TernaryPointDiagram::paint (PaintContext *paintContext)
 {
     qDebug() << "TernaryPointDiagram::paint:" << this;
+
+    AbstractTernaryDiagram::paint( paintContext );
+
     // sanity checks:
     if ( model() == 0 ) return;
 

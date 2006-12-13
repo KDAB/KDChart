@@ -27,7 +27,7 @@ namespace KDChart {
         friend class TernaryPointDiagram;
     public:
         Private();
-        ~Private();
+        ~Private() {}
 
         Private( const Private& rhs )
             : AbstractTernaryDiagram::Private( rhs )

@@ -6,6 +6,8 @@
 #include "TernaryConstants.h"
 #include "KDChartTernaryAxis.h"
 #include "KDChartTernaryCoordinatePlane.h"
+#include "KDChartAbstractTernaryDiagram.h"
+
 
 #include "../src/KDChartLayoutItems.h"
 #include "PrerenderedElements/KDChartTextLabelCache.h"
@@ -23,6 +25,8 @@ TernaryAxis::TernaryAxis ( AbstractTernaryDiagram* diagram)
 {
     resetTitleTextAttributes();
     updatePrerenderedLabels();
+    // FIXME is this consistent with other diagram/axis/plane implementations?
+    diagram->addAxis( this );
 }
 
 TernaryAxis::~TernaryAxis()

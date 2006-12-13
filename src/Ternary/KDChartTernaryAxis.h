@@ -6,20 +6,20 @@
 #include <KDChartPosition>
 #include <KDChartTextAttributes>
 
-#include "KDChartAbstractTernaryDiagram.h"
-
 class PrerenderedLabel;
 
 namespace KDChart {
+
+    class AbstractTernaryDiagram;
 
     class TernaryAxis : public AbstractAxis
     {
         Q_OBJECT
 
         Q_DISABLE_COPY( TernaryAxis )
-            KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( TernaryAxis, AbstractDiagram* )
+        KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( TernaryAxis, AbstractDiagram* )
 
-            public:
+    public:
         explicit TernaryAxis ( AbstractTernaryDiagram* diagram = 0 );
         ~TernaryAxis();
 
@@ -62,6 +62,8 @@ namespace KDChart {
         PrerenderedLabel* m_label;
         PrerenderedLabel* m_fifty;
     };
+
+    typedef QList<TernaryAxis*> TernaryAxisList;
 };
 
 #endif

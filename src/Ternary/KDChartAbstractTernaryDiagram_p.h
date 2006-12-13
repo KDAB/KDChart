@@ -32,7 +32,7 @@ namespace KDChart {
         friend class AbstractTernaryDiagram;
     public:
         Private();
-        ~Private();
+        ~Private() {}
 
         Private( const Private& rhs ) :
             AbstractDiagram::Private( rhs ),
@@ -48,7 +48,7 @@ namespace KDChart {
         QPointF referenceDiagramOffset;
     };
 
-    KDCHART_IMPL_DERIVED_DIAGRAM( AbstractTernaryDiagram, AbstractDiagram, CartesianCoordinatePlane )
+    KDCHART_IMPL_DERIVED_DIAGRAM( AbstractTernaryDiagram, AbstractDiagram, TernaryCoordinatePlane )
 /*
 inline AbstractTernaryDiagram::AbstractTernaryDiagram( Private * p )
     : AbstractDiagram( p ) { init(); }

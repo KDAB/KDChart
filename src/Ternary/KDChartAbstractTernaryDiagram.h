@@ -2,10 +2,12 @@
 #define KDCHARTABSTRACTTERNARYDIAGRAM_H
 
 #include "../KDChartAbstractDiagram.h"
+#include "KDChartTernaryAxis.h"
 
 namespace KDChart {
 
     class TernaryCoordinatePlane;
+    class TernaryAxis;
 
     class AbstractTernaryDiagram : public AbstractDiagram
     {
@@ -20,7 +22,11 @@ namespace KDChart {
         virtual ~AbstractTernaryDiagram();
 
         virtual void resize (const QSizeF &area) = 0;
-        virtual void paint (PaintContext *paintContext) = 0;
+        virtual void paint (PaintContext *paintContext);
+
+        virtual void addAxis( TernaryAxis* axis );
+        virtual void takeAxis( TernaryAxis* axis );
+        virtual TernaryAxisList axes () const;
 
     protected:
         virtual const QPair< QPointF, QPointF >  calculateDataBoundaries () const = 0;

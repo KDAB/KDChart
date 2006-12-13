@@ -99,6 +99,9 @@ QSizePolicy TernaryCoordinatePlane::sizePolicy() const
 void TernaryCoordinatePlane::paint( QPainter* painter )
 {
     qDebug() << "TernaryCoordinatePlane::paint:" << this;
+    PainterSaver s( painter );
+    // FIXME: this is not a good location for that:
+    painter->setRenderHint(QPainter::Antialiasing, true );
 
     AbstractDiagramList diags = diagrams();
     if ( !diags.isEmpty() )
@@ -110,7 +113,6 @@ void TernaryCoordinatePlane::paint( QPainter* painter )
         ctx.setRectangle ( drawArea );
 
         // enabling clipping so that we're not drawing outside
-        PainterSaver painterSaver( painter );
 //         QRect clipRect = drawArea.toRect().adjusted( -1, -1, 1, 1 );
 //         QRegion clipRegion( clipRect );
 //         painter->setClipRegion( clipRegion );
