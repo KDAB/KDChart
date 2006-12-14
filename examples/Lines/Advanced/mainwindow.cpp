@@ -66,7 +66,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     // Instantiate the timer
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(slot_timerFired()));
-    timer->start(40);
+    timer->start(30);
 }
 
 void MainWindow::on_lineTypeCB_currentIndexChanged( const QString & text )
@@ -109,6 +109,7 @@ void MainWindow::on_animateAreasCB_toggled( bool checked )
 {
     if( checked ){
         highlightAreaCB->setCheckState( Qt::Unchecked );
+        m_curRow = 0;
         m_curColumn = 0;
     }else{
         m_curColumn = -1;
@@ -116,9 +117,14 @@ void MainWindow::on_animateAreasCB_toggled( bool checked )
     highlightAreaCB->setEnabled( ! checked );
     highlightAreaSB->setEnabled( ! checked );
     // un-highlight all previously highlighted columns
+    const int rowCount = m_lines->model()->rowCount();
     const int colCount = m_lines->model()->columnCount();
-    for ( int iColumn = 0; iColumn<colCount; ++iColumn )
-        setHighlightArea( iColumn, 127, false, false );
+    for ( int iColumn = 0; iColumn<colCount; ++iColumn ){
+        setHighlightArea( -1, iColumn, 127, false, false );
+        for ( int iRow = 0; iRow<rowCount; ++iRow )
+        //    m_lines->resetLineAttributes( cellIndex );
+            setHighlightArea( iRow, iColumn, 127, false, false );
+    }
     m_chart->update();
     m_curOpacity = 0;
 }
@@ -126,54 +132,69 @@ void MainWindow::on_animateAreasCB_toggled( bool checked )
 void MainWindow::slot_timerFired()
 {
     if( m_curColumn < 0 ) return;
-    m_curOpacity += 5;
+    m_curOpacity += 8;
     if( m_curOpacity > 255 ){
-        setHighlightArea( m_curColumn, 127, false, false );
-        m_curOpacity = 0;
-        ++m_curColumn;
-        if( m_curColumn >= m_lines->model()->columnCount(m_lines->rootIndex()) )
-            m_curColumn = 0;
+        setHighlightArea( m_curRow, m_curColumn, 127, false, false );
+        m_curOpacity = 5;
+        ++m_curRow;
+        if( m_curRow >= m_lines->model()->rowCount(m_lines->rootIndex()) ){
+            m_curRow = 0;
+            ++m_curColumn;
+            if( m_curColumn >= m_lines->model()->columnCount(m_lines->rootIndex()) )
+                m_curColumn = 0;
+        }
     }
-    setHighlightArea( m_curColumn, m_curOpacity, true, true );
+    setHighlightArea( m_curRow, m_curColumn, m_curOpacity, true, true );
 }
 
-void MainWindow::setHighlightArea( int column, int opacity, bool checked, bool doUpdate )
+void MainWindow::setHighlightArea( int row, int column, int opacity, bool checked, bool doUpdate )
 {
-    LineAttributes la = m_lines->lineAttributes( column );
-    if ( checked ) {
-        la.setDisplayArea( true );
-        la.setTransparency( opacity );
-    }  else {
-        la.setDisplayArea( false );
+    if( row < 0 ){
+        // highlight a complete dataset
+        LineAttributes la = m_lines->lineAttributes( column );
+        if ( checked ) {
+            la.setDisplayArea( true );
+            la.setTransparency( opacity );
+        }  else {
+            la.setDisplayArea( false );
+        }
+        m_lines->setLineAttributes( column, la );
+    }else{
+        // highlight two segments only
+        if( row ){
+            QModelIndex cellIndex( m_lines->model()->index( row-1, column, m_lines->rootIndex() ) );
+            if ( checked ) {
+                LineAttributes la( m_lines->lineAttributes( cellIndex ) );
+                la.setDisplayArea( true );
+                la.setTransparency( 255-opacity );
+                // set specific line attribute settings for this cell
+                m_lines->setLineAttributes( cellIndex, la );
+            }  else {
+                // remove any cell-specific line attribute settings from the indexed cell
+                m_lines->resetLineAttributes( cellIndex );
+            }
+        }
+        if( row < m_lines->model()->rowCount(m_lines->rootIndex()) ){
+            QModelIndex cellIndex( m_lines->model()->index( row, column, m_lines->rootIndex() ) );
+            if ( checked ) {
+                LineAttributes la( m_lines->lineAttributes( cellIndex ) );
+                la.setDisplayArea( true );
+                la.setTransparency( opacity );
+                // set specific line attribute settings for this cell
+                m_lines->setLineAttributes( cellIndex, la );
+            }  else {
+                // remove any cell-specific line attribute settings from the indexed cell
+                m_lines->resetLineAttributes( cellIndex );
+            }
+        }
     }
-    m_lines->setLineAttributes( column, la );
-    // highlight the 2nd and the 3rd segment of the area even more than the others,
-    // do demonstrate cell-specific transparency setting:
-    QModelIndex cellIndex( m_lines->model()->index( 1, column, m_lines->rootIndex() ) );
-    la = m_lines->lineAttributes( cellIndex );
-    if ( checked ) {
-        la.setDisplayArea( true );
-        la.setTransparency( qMin( static_cast<int>(1.15 * opacity), 255 ) );
-    }  else {
-        la.setDisplayArea( false );
-    }
-    m_lines->setLineAttributes( cellIndex, la );
-    cellIndex = m_lines->model()->index( 2, column, m_lines->rootIndex() );
-    la = m_lines->lineAttributes( cellIndex );
-    if ( checked ) {
-        la.setDisplayArea( true );
-        la.setTransparency( qMin( static_cast<int>(1.3 * opacity), 255 ) );
-    }  else {
-        la.setDisplayArea( false );
-    }
-    m_lines->setLineAttributes( cellIndex, la );
     if( doUpdate )
         m_chart->update();
 }
 
 void MainWindow::on_highlightAreaCB_toggled( bool checked )
 {
-    setHighlightArea( highlightAreaSB->value(), 127, checked, true );
+    setHighlightArea( -1, highlightAreaSB->value(), 127, checked, true );
 }
 
 void MainWindow::on_highlightAreaSB_valueChanged( int i )

@@ -50,13 +50,14 @@ private slots:
     void on_animateAreasCB_toggled( bool checked );
     void on_highlightAreaCB_toggled( bool checked );
     void on_highlightAreaSB_valueChanged( int i );
-    void setHighlightArea( int column, int opacity, bool checked, bool doUpdate );
+    void setHighlightArea( int row, int column, int opacity, bool checked, bool doUpdate );
     void slot_timerFired();
 
 private:
     KDChart::Chart* m_chart;
     KDChart::LineDiagram* m_lines;
     TableModel m_model;
+    int m_curRow;
     int m_curColumn;
     int m_curOpacity;
 };
