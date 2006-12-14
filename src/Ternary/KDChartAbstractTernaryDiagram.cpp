@@ -52,6 +52,9 @@ TernaryAxisList AbstractTernaryDiagram::axes() const
 
 void AbstractTernaryDiagram::paint (PaintContext *paintContext)
 {
+    paintContext->painter()->setRenderHint( QPainter::Antialiasing,
+                                            antiAliasing() );
+
     Q_FOREACH( TernaryAxis* axis, axes() ) {
         PainterSaver s( paintContext->painter() );
         axis->paintCtx( paintContext );
