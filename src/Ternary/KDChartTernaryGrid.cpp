@@ -163,16 +163,6 @@ void TernaryGrid::drawGrid( PaintContext* context )
         }
     }
     painter.drawLines( ticks );
-
-//     painter.setPen( Qt::black );
-//     // draw Axis Labels: (A, B, and C):
-//     Q_FOREACH( const PrerenderedLabel& label, m_labels ) {
-//         const QPixmap& pixmap = label.pixmap();
-//         KDChartEnums::PositionValue position = label.referencePoint();
-//         QPointF point = translate( label.position() )
-//                         - label.referencePointLocation( position );
-//         painter.drawPixmap( point, pixmap );
-//     }
 }
 
 DataDimensionsList TernaryGrid::calculateGrid( const DataDimensionsList& ) const
@@ -184,8 +174,15 @@ QPair<QSizeF, QSizeF> TernaryGrid::requiredMargins() const
 {
 //    double topMargin = ( FullMarkerDistanceBA * RelMarkerLength ).x();
     double topMargin = 0.0; // no markers on tip of triangle
-    double leftMargin = fabs( ( FullMarkerDistanceBA * RelMarkerLength ).y() );
-    double bottomMargin = fabs( ( FullMarkerDistanceBC * RelMarkerLength ).x() );
+    double leftMargin = fabs( FullMarkerDistanceBA.x() );
+    double bottomMargin = fabs( FullMarkerDistanceBC.y() );
+//     qDebug() << "TernaryGrid::requiredMargins: leftMargin:" << leftMargin
+//              << ", bottomMargin:" << bottomMargin
+//              << ", topMargin:" << topMargin
+//              << ", FullMarkerDistanceBC:" << FullMarkerDistanceBC
+//              << ", FullMarkerDistanceBA:" << FullMarkerDistanceBA
+//              << ", FullMarkerDistanceAC:" << FullMarkerDistanceAC
+//              << ", RelMarkerLength:" << RelMarkerLength;
     return QPair<QSizeF, QSizeF>
         ( QSizeF( leftMargin, topMargin ),
           QSizeF( leftMargin, bottomMargin ) );

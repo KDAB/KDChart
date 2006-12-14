@@ -219,7 +219,9 @@ void TernaryAxis::updatePrerenderedLabels()
     m_label->setAngle( axisLabelAngle );
     m_label->setPosition( axisLabelPosition );
     m_label->setReferencePoint( KDChartEnums::PositionSouth );
-    m_fifty->setFont( attributes.font() );
+    QFont font = attributes.font();
+    font.setPointSizeF( 0.85 * font.pointSizeF() );
+    m_fifty->setFont( font );
     m_fifty->setAngle( fiftyMarkAngle );
     m_fifty->setPosition( fiftyMarkPosition );
     m_fifty->setReferencePoint( fiftyMarkReferencePoint );

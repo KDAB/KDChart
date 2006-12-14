@@ -87,19 +87,26 @@ void TernaryCoordinatePlane::layoutDiagrams()
 
     if ( TriangleHeight * w > h ) {
         // shorten width:
-        usableWidth = h / TriangleHeight;
+        usableWidth = h / diagramNativeRectangle.height();
         usableHeight = h;
         zeroZeroPoint.setX( zeroZeroPoint.x() + ( w - usableWidth ) / 2 );
     } else {
         // reduce height:
         usableWidth = w;
-        usableHeight = TriangleHeight * w;
+        usableHeight = diagramNativeRectangle.height() * w;
         zeroZeroPoint.setY( zeroZeroPoint.y() - ( h - usableHeight ) / 2 );
     }
     // the rectangle has 1 as it's width, and TriangleHeight as it's
     // height - so this is how we translate that to widget coordinates:
-    d->xUnit = usableWidth; // only because we normalize the values to [0..1]
-    d->yUnit = -usableHeight / TriangleHeight;
+    d->xUnit = usableWidth / diagramNativeRectangle.width(); // only because we normalize the values to [0..1]
+    d->yUnit = -usableHeight / diagramNativeRectangle.height();
+
+    // now move zeroZeroPoint so that it does not include the tick marks
+    {
+        double descent = diagramNativeRectangle.height() - TriangleHeight;
+        double rightShift = -diagramNativeRectangle.x();
+        zeroZeroPoint += QPointF( rightShift * d->xUnit, descent * d->yUnit );
+    }
 
     d->diagramRect.setBottomLeft( zeroZeroPoint );
     d->diagramRect.setTopRight( QPointF( usableWidth, -usableHeight ) + zeroZeroPoint );
