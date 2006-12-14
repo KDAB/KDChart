@@ -209,6 +209,8 @@ void TernaryAxis::updatePrerenderedLabels()
         fiftyMarkPosition = 0.5 * AxisVector_B_A + RelMarkerLength * Norm_B_A;
         fiftyMarkReferencePoint = KDChartEnums::PositionSouth;
         break;
+    case KDChartEnums::PositionUnknown:
+        break; // initial value
     default:
         qDebug() << "TernaryAxis::updatePrerenderedLabel: unknown location";
     };

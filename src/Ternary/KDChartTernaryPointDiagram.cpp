@@ -1,7 +1,10 @@
+#include <limits>
+
 #include <QPainter>
 
 #include <KDChartPaintContext>
 
+#include "TernaryPoint.h"
 #include "TernaryConstants.h"
 #include "KDChartTernaryPointDiagram.h"
 #include "KDChartTernaryPointDiagram_p.h"
@@ -30,21 +33,20 @@ void  TernaryPointDiagram::resize (const QSizeF& area)
 
 void  TernaryPointDiagram::paint (PaintContext *paintContext)
 {
-    qDebug() << "TernaryPointDiagram::paint:" << this;
-
     AbstractTernaryDiagram::paint( paintContext );
 
     // sanity checks:
     if ( model() == 0 ) return;
 
     QPainter* p = paintContext->painter();
+
     TernaryCoordinatePlane* plane =
         (TernaryCoordinatePlane*) paintContext->coordinatePlane();
 
-    // temp:
-    Q_UNUSED( p ); Q_UNUSED( plane );
-
     double x, y, z;
+
+    p->setPen( QPen( QColor( "steelblue" ), 2 ) );
+    p->setBrush( QColor( "slateblue" ) );
 
     int columnCount = model()->columnCount( rootIndex() );
     for(int column=0; column<columnCount; column+=datasetDimension() )
@@ -56,9 +58,28 @@ void  TernaryPointDiagram::paint (PaintContext *paintContext)
             if( ! model()->data( model()->index( row, column+0 ) ).isNull() )
             {
                 // retrieve datasetDimension
-                x = model()->data( model()->index( row, column+0 ) ).toDouble();
-                y = model()->data( model()->index( row, column+1 ) ).toDouble();
-                z = model()->data( model()->index( row, column+2 ) ).toDouble();
+                x = qMax( model()->data( model()->index( row, column+0 ) ).toDouble(),
+                          0.0 );
+                y = qMax( model()->data( model()->index( row, column+1 ) ).toDouble(),
+                          0.0 );
+                z = qMax( model()->data( model()->index( row, column+2 ) ).toDouble(),
+                          0.0 );
+
+                // fix messed up
+                double total = x + y + z;
+                if ( fabs( total ) > 3 * std::numeric_limits<double>::epsilon() ) {
+                    TernaryPoint tPunkt( x / total, y / total );
+                    QPointF diagramLocation = translate( tPunkt );
+                    QPointF widgetLocation = plane->translate( diagramLocation );
+                    static const double Diameter = 5;
+                    static const double Radius = Diameter / 2.0;
+                    p->drawEllipse( QRectF( widgetLocation - QPointF( Radius, Radius ),
+                                            QSizeF( Diameter, Diameter ) ) );
+                } else {
+                    // ignore and do not paint this point, garbage data
+                    qDebug() << "TernaryPointDiagram::paint: data point x/y/z:"
+                             << x << "/" << y << "/" << z << "ignored, unusable.";
+                }
             }
         }
     }

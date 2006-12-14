@@ -53,7 +53,6 @@ TernaryAxisList AbstractTernaryDiagram::axes() const
 void AbstractTernaryDiagram::paint (PaintContext *paintContext)
 {
     Q_FOREACH( TernaryAxis* axis, axes() ) {
-        qDebug() << "AbstractTernaryDiagram::paint: painting" << axis;
         PainterSaver s( paintContext->painter() );
         axis->paintCtx( paintContext );
     }
