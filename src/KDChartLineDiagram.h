@@ -67,6 +67,8 @@ public:
     void setLineAttributes( const LineAttributes & a );
     void setLineAttributes( int column, const LineAttributes & a );
     void setLineAttributes( const QModelIndex & index, const LineAttributes & a );
+    void resetLineAttributes( int column );
+    void resetLineAttributes( const QModelIndex & index );
     LineAttributes lineAttributes() const;
     LineAttributes lineAttributes( int column ) const;
     LineAttributes lineAttributes( const QModelIndex & index ) const;

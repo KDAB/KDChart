@@ -161,8 +161,11 @@ QVariant AttributesModel::data( const QModelIndex& index, int role ) const
       const QMap< int,  QMap< int, QVariant> > &colDataMap = mDataMap[ index.column() ];
       if ( colDataMap.contains( index.row() ) ) {
           const QMap<int, QVariant> &dataMap = colDataMap[ index.row() ];
-          if ( dataMap.contains( role ) )
-              return dataMap[ role ];
+          if ( dataMap.contains( role ) ) {
+              QVariant v = dataMap[ role ];
+              if( v.isValid() )
+                  return dataMap[ role ];
+          }
       }
   }
   // check if there is something set for the column (dataset), or at global level
@@ -224,6 +227,11 @@ bool AttributesModel::setData ( const QModelIndex & index, const QVariant & valu
     }
 }
 
+bool AttributesModel::resetData ( const QModelIndex & index, int role )
+{
+    return setData ( index, QVariant(), role );
+}
+
 bool AttributesModel::setHeaderData ( int section, Qt::Orientation orientation,
                                       const QVariant & value, int role )
 {
@@ -238,6 +246,11 @@ bool AttributesModel::setHeaderData ( int section, Qt::Orientation orientation,
                                 index( rowCount( QModelIndex() ), section, QModelIndex() ) );
         return true;
     }
+}
+
+bool AttributesModel::resetHeaderData ( int section, Qt::Orientation orientation, int role )
+{
+    return setHeaderData ( section, orientation, QVariant(), role );
 }
 
 void AttributesModel::setPaletteType( AttributesModel::PaletteType type )

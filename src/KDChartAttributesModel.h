@@ -87,9 +87,13 @@ public:
     QVariant data(const QModelIndex&, int role = Qt::DisplayRole) const;
     /** \reimpl */
     bool setData ( const QModelIndex & index, const QVariant & value, int role = Qt::DisplayRole);
+    /** Remove any explicit attributes settings that might have been specified before. */
+    bool resetData ( const QModelIndex & index, int role = Qt::DisplayRole);
     /** \reimpl */
     bool setHeaderData ( int section, Qt::Orientation orientation, const QVariant & value,
                          int role = Qt::DisplayRole);
+    /** Remove any explicit attributes settings that might have been specified before. */
+    bool resetHeaderData ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole);
     /** \reimpl */
     void setSourceModel ( QAbstractItemModel* sourceModel );
 

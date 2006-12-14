@@ -105,26 +105,43 @@ void LineDiagram::setLineAttributes( const LineAttributes & ta )
 }
 
 void LineDiagram::setLineAttributes(
-    int column,
+        int column,
     const LineAttributes & ta )
 {
     d->attributesModel->setHeaderData(
-        column,
-        Qt::Vertical,
-        qVariantFromValue( ta ),
-        LineAttributesRole );
-   emit propertiesChanged();
+            column,
+            Qt::Vertical,
+            qVariantFromValue( ta ),
+            LineAttributesRole );
+    emit propertiesChanged();
+}
+
+void LineDiagram::resetLineAttributes( int column )
+{
+    d->attributesModel->resetHeaderData(
+            column, Qt::Vertical, LineAttributesRole );
+    emit propertiesChanged();
 }
 
 void LineDiagram::setLineAttributes(
-    const QModelIndex & index,
+        const QModelIndex & index,
     const LineAttributes & ta )
 {
     d->attributesModel->setData(
-        d->attributesModel->mapFromSource(index),
-        qVariantFromValue( ta ),
-        LineAttributesRole );
-   emit propertiesChanged();
+            d->attributesModel->mapFromSource(index),
+    qVariantFromValue( ta ),
+    LineAttributesRole );
+    emit propertiesChanged();
+}
+
+/**
+ * Remove any explicit line attributes settings that might have been specified before.
+ */
+void LineDiagram::resetLineAttributes( const QModelIndex & index )
+{
+    d->attributesModel->resetData(
+            d->attributesModel->mapFromSource(index), LineAttributesRole );
+    emit propertiesChanged();
 }
 
 LineAttributes LineDiagram::lineAttributes() const
