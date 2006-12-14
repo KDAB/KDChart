@@ -90,6 +90,8 @@ public:
     // reimpl PrerenderedElement:
     const QPixmap& pixmap() const;
     QPointF referencePointLocation( KDChartEnums::PositionValue position ) const;
+    // overload: return location of referencePoint():
+    QPointF referencePointLocation() const;
 
 protected:
     void invalidate() const;

@@ -197,7 +197,7 @@ void PrerenderedLabel::paint() const
 #else
         painter.drawPixmap( QPointF( 0.0, 0.0 ), pixmap, boundingRect );
 #endif
-#define PRERENDEREDLABEL_DEBUG
+// #define PRERENDEREDLABEL_DEBUG
 #ifdef PRERENDEREDLABEL_DEBUG
         painter.setPen( QPen( Qt::red, 2 ) );
         painter.setBrush( Qt::red );
@@ -224,6 +224,11 @@ void PrerenderedLabel::paint() const
     }
 
     m_pixmap = temp;
+}
+
+QPointF PrerenderedLabel::referencePointLocation() const
+{
+    return referencePointLocation( referencePoint() );
 }
 
 QPointF PrerenderedLabel::referencePointLocation( KDChartEnums::PositionValue position ) const

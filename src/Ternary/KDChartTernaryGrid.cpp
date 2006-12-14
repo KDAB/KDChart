@@ -138,15 +138,15 @@ void TernaryGrid::drawGrid( PaintContext* context )
     Q_FOREACH( const TickInfo& tick, percentages ) {
         const double& percent = tick.percentage;
         {   // BC axis markers:
-            static const QPointF FullMarkerDistance ( RelMarkerLength * Norm_B_C );
-            const QPointF markerDistance( FullMarkerDistance / ( tick.depth + 1 ) );
+            const QPointF markerDistance( FullMarkerDistanceBC
+                                          / ( tick.depth + 1 ) );
             QPointF start( percent, 0.0 );
             ticks.append( QLineF( plane->translate( start ),
                                   plane->translate( start - markerDistance ) ) );
         }
         {   // AC axis markers:
-            static const QPointF FullMarkerDistance( -RelMarkerLength * Norm_C_A );
-            const QPointF markerDistance( FullMarkerDistance / ( tick.depth + 1 ) );
+            const QPointF markerDistance( FullMarkerDistanceAC
+                                          / ( tick.depth + 1 ) );
             const QPointF start( TriangleBottomRight + percent * AxisVector_C_A );
             const QPointF end( start + markerDistance );
             ticks.append( QLineF( plane->translate( start ),
@@ -154,8 +154,8 @@ void TernaryGrid::drawGrid( PaintContext* context )
         }
         {
             // AB axis markers:
-            static const QPointF FullMarkerDistance( RelMarkerLength * Norm_B_A );
-            const QPointF markerDistance( FullMarkerDistance / ( tick.depth +1 ) );
+            const QPointF markerDistance( FullMarkerDistanceBA
+                                          / ( tick.depth +1 ) );
             const QPointF start( percent * AxisVector_B_A );
             const QPointF end( start + markerDistance );
             ticks.append( QLineF( plane->translate( start ),
@@ -182,21 +182,13 @@ DataDimensionsList TernaryGrid::calculateGrid( const DataDimensionsList& ) const
 
 QPair<QSizeF, QSizeF> TernaryGrid::requiredMargins() const
 {
-    return QPair<QSizeF, QSizeF>( QSizeF(), QSizeF() );
-
-/*
-    // well, we just know about the semantics of the labels, so:
-    double topMargin = m_labels[0].pixmap().height(); // label A
-    double labelBWidth = m_labels[1].pixmap().width(); // label B
-    double leftMargin = labelBWidth -
-                        ( labelBWidth
-                          - m_labels[1].referencePointLocation( KDChartEnums::PositionSouth ).x() );
-    double rightMargin = m_labels[2].pixmap().width() //label C
-                         - m_labels[2].referencePointLocation( KDChartEnums::PositionSouth ).x();
+//    double topMargin = ( FullMarkerDistanceBA * RelMarkerLength ).x();
+    double topMargin = 0.0; // no markers on tip of triangle
+    double leftMargin = fabs( ( FullMarkerDistanceBA * RelMarkerLength ).y() );
+    double bottomMargin = fabs( ( FullMarkerDistanceBC * RelMarkerLength ).x() );
     return QPair<QSizeF, QSizeF>
         ( QSizeF( leftMargin, topMargin ),
-          QSizeF( rightMargin,topMargin ) );
-*/
+          QSizeF( leftMargin, bottomMargin ) );
 }
 
 const QVector<TickInfo>& TernaryGrid::tickInfo() const

@@ -44,14 +44,41 @@ void TernaryCoordinatePlane::layoutDiagrams()
     // all diagrams always take the same space, nothing to be done here
     qDebug() << "TernaryCoordinatePlane::layoutDiagrams: area:" << areaGeometry();
 
+    // the "inner" margin (adjustments to diagram coordinates)
+    QRectF diagramNativeRectangle ( QPointF( 0.0, 0.0 ),
+                                    QSizeF( TriangleWidth, TriangleHeight ) );
     QPair<QSizeF, QSizeF> margins = grid()->requiredMargins();
     d->diagramRect = areaGeometry();
-    d->diagramRectContainer =
-        d->diagramRect.adjusted( margins.first.width(),
-                                 margins.first.height(),
-                                 -margins.second.width(),
-                                 -margins.second.height() );
+    diagramNativeRectangle.adjust
+        (-margins.first.width(), -margins.first.height(),
+         margins.second.width(), margins.second.height() );
+    qDebug() << "TernaryCoordinatePlane::layoutDiagrams: adjusted triangle area with ticks:"
+             << diagramNativeRectangle;
 
+    // the "outer" margin (distance between diagram contents and area,
+    // determined by axis label overlap
+    {
+        QSizeF topleft( 0.0, 0.0 );
+        QSizeF bottomRight( 0.0, 0.0 );
+        Q_FOREACH( AbstractDiagram* abstractDiagram, diagrams() ) {
+            AbstractTernaryDiagram* diagram =
+                qobject_cast<AbstractTernaryDiagram*>( abstractDiagram );
+            Q_ASSERT( diagram );
+            Q_FOREACH( TernaryAxis* axis, diagram->axes() ) {
+                QPair<QSizeF, QSizeF> margin = axis->requiredMargins();
+                topleft = topleft.expandedTo( margin.first );
+                bottomRight = bottomRight.expandedTo( margin.second );
+            }
+        }
+        d->diagramRectContainer =
+            d->diagramRect.adjusted( topleft.width(),
+                                     topleft.height(),
+                                     -bottomRight.width(),
+                                     -bottomRight.height() );
+    }
+
+    // now calculate isometric projection, x and y widget coordinate
+    // units, and location of (0.0, 0.0) in diagram coordinates
     QPointF zeroZeroPoint = d->diagramRectContainer.bottomLeft();
     double w = d->diagramRectContainer.width();
     double h = d->diagramRectContainer.height();
@@ -102,6 +129,10 @@ void TernaryCoordinatePlane::paint( QPainter* painter )
     PainterSaver s( painter );
     // FIXME: this is not a good location for that:
     painter->setRenderHint(QPainter::Antialiasing, true );
+
+    painter->setPen( QColor( "gold" ) );
+    painter->setBrush( QColor( "gold" ) );
+    painter->drawRect( d->diagramRectContainer );
 
     AbstractDiagramList diags = diagrams();
     if ( !diags.isEmpty() )

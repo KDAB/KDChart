@@ -19,12 +19,13 @@ using namespace KDChart;
 
 TernaryAxis::TernaryAxis ( AbstractTernaryDiagram* diagram)
     : AbstractAxis( diagram )
-    , m_position( KDChartEnums::PositionSouth )
+    , m_position( KDChartEnums::PositionUnknown )
     , m_label( new PrerenderedLabel )
     , m_fifty( new PrerenderedLabel )
 {
     resetTitleTextAttributes();
-    updatePrerenderedLabels();
+    setPosition( KDChartEnums::PositionSouth ); // arbitrary
+    m_fifty->setText( QObject::tr( "50%" ) ); // const
     // FIXME is this consistent with other diagram/axis/plane implementations?
     diagram->addAxis( this );
 }
@@ -47,18 +48,12 @@ void  TernaryAxis::paint (QPainter *)
 
 void  TernaryAxis::paintCtx (PaintContext * paintContext)
 {
-    qDebug() << "TernaryAxis::paintCtx:" << this;
-
     QPainter* p = paintContext->painter();
     TernaryCoordinatePlane* plane =
         (TernaryCoordinatePlane*) paintContext->coordinatePlane();
     // QObject* refArea = plane->parent();
     QRectF drawArea = paintContext->rectangle();
     QRectF titleArea;
-
-//     TextAttributes ta( textAttributes() );
-//     p->setFont( ta.font() );
-//     p->setPen( ta.pen() );
 
     // paint the axis label (across the triangle, that one):
     QList<PrerenderedLabel> labels;
@@ -70,91 +65,6 @@ void  TernaryAxis::paintCtx (PaintContext * paintContext)
                         - label.referencePointLocation( position );
         p->drawPixmap( point, pixmap );
     }
-
-//    // todo: should be a variable setting
-//    const int nr_of_ticks = 10;
-
-//    DoubleRange range = plane->range( m_position );
-//    double range_inc = (range.second - range.first) / nr_of_ticks;
-
-
-//    switch( m_position.value() )
-//    {
-//    case KDChartEnums::PositionSouth:
-//       {
-//          QPointF tick = drawArea.topLeft();
-//          QPointF offset = QPointF( drawArea.width() / nr_of_ticks, 0.0 );
-
-//          for( int i=1; i<nr_of_ticks; i++ )
-//          {
-//             tick += offset;
-//             p->drawLine( tick, tick + QPointF( 0.0, 5.0 ) );
-//             p->drawText( QRectF( tick.x() - 50.0, tick.y()+5.0, 100.0, 50.0 ),
-//                QString( tr( "%1" ) ).arg( range.first + range_inc * i ),
-//                QTextOption( Qt::AlignHCenter ) );
-//          }
-
-//          titleArea = QRectF( drawArea.x(), 25.0, drawArea.width(), 50.0 );
-
-//          break;
-//       }
-//    case KDChartEnums::PositionWest:
-//       {
-//          QPointF tick = drawArea.topRight();
-//          QPointF offset = QPointF( 0.0, drawArea.height() / nr_of_ticks );
-
-//          for( int i=1; i<nr_of_ticks; i++ )
-//          {
-//             tick += offset;
-//             p->drawLine( tick, tick + QPointF( -5.0, 0.0 ) );
-//             p->drawText( QRectF( tick.x() -106.0, tick.y()-7.0, 100.0, 50.0 ),
-//                          QString( tr( "%1" ) ).arg( range.first + range_inc * i  ),
-//                QTextOption( Qt::AlignRight ) );
-//          }
-
-//          // prepare painter for title drawing
-//          p->rotate( -90 );
-//          titleArea =  QRectF( -1* drawArea.height(), 45.0, drawArea.height(), 50.0 );
-
-//          break;
-//       }
-//    case KDChartEnums::PositionEast:
-//       {
-//          QPointF tick = drawArea.topLeft();
-//          QPointF offset = QPointF( 0.0, drawArea.height() / nr_of_ticks );
-
-//          for( int i=1; i<nr_of_ticks; i++ )
-//          {
-//             tick += offset;
-//             p->drawLine( tick, tick + QPointF( 5.0, 0.0 ) );
-//             p->drawText( QRectF( tick.x() + 6.0, tick.y()-7.0, 100.0, 50.0 ),
-//                          QString( tr( "%1" ) ).arg( range.first + range_inc * i  ),
-//                QTextOption( Qt::AlignLeft ) );
-//          }
-
-//          // prepare painter for title drawing
-//          p->rotate( 90 );
-//          titleArea = QRectF( 0.0, -45.0, drawArea.height(), 50.0 );
-
-//          break;
-//       }
-//    default:
-//       {
-//          Q_ASSERT( false );
-//          break;
-//       }
-//    }
-
-//    // draw the title
-//    TextAttributes titleTA( titleTextAttributes() );
-//    QString titleTxt( titleText() );
-//    if( titleTA.isVisible() && ! titleTxt.isEmpty() )
-//    {
-//       p->setFont( titleTA.font() );
-//       p->setPen( titleTA.pen() );
-
-//       p->drawText( titleArea, titleTxt, QTextOption( Qt::AlignHCenter ) );
-//    }
 }
 
 bool TernaryAxis::isEmpty() const
@@ -201,26 +111,45 @@ const Position TernaryAxis::position () const
 
 void  TernaryAxis::setPosition (Position p)
 {
-    if ( p == KDChartEnums::PositionSouth
-         || p == KDChartEnums::PositionWest
-         || p == KDChartEnums::PositionEast ) {
-        m_position = p;
-        updatePrerenderedLabels();
-    } else {
+    if ( p == position() ) return;
+
+    if ( p != KDChartEnums::PositionWest
+         && p != KDChartEnums::PositionEast
+         && p != KDChartEnums::PositionSouth )
+    {
         qDebug() << "TernaryAxis::setPosition: only south, east and west are supported "
             "positions for ternary axes.";
+        return;
     }
+
+    if ( m_title.isEmpty() )
+        switch( p.value() ) {
+        case KDChartEnums::PositionSouth:
+            m_label->setText( tr( "A" ) );
+            break;
+        case KDChartEnums::PositionWest:
+            m_label->setText( tr( "C" ) );
+            break;
+        case KDChartEnums::PositionEast:
+            m_label->setText( tr( "B" ) );
+            break;
+        default:
+            break;
+        }
+
+    m_position = p;
+    updatePrerenderedLabels(); // position has changed
 }
 
 void TernaryAxis::setTitleText( const QString& text )
 {
-    m_title = text;
-    updatePrerenderedLabels();
+    m_title = text; // do not remove
+    m_label->setText( text );
 }
 
 QString TernaryAxis::titleText() const
 {
-    return m_title;
+    return m_label->text();
 }
 
 void TernaryAxis::setTitleTextAttributes( const TextAttributes &a )
@@ -256,7 +185,7 @@ void TernaryAxis::updatePrerenderedLabels()
     QPointF fiftyMarkPosition;
     KDChartEnums::PositionValue fiftyMarkReferencePoint;
 
-    switch( position().value() ) { // hehe
+    switch( position().value() ) {
     case KDChartEnums::PositionSouth:
         // this is the axis on the other side of A
         axisLabelAngle = 0.0;
@@ -286,13 +215,44 @@ void TernaryAxis::updatePrerenderedLabels()
     };
 
     m_label->setFont( attributes.font() );
-    m_label->setText( titleText() );
+    // m_label->setText( titleText() ); // done by setTitleText()
     m_label->setAngle( axisLabelAngle );
     m_label->setPosition( axisLabelPosition );
     m_label->setReferencePoint( KDChartEnums::PositionSouth );
     m_fifty->setFont( attributes.font() );
-    m_fifty->setText( QObject::tr( "50%" ) );
     m_fifty->setAngle( fiftyMarkAngle );
     m_fifty->setPosition( fiftyMarkPosition );
     m_fifty->setReferencePoint( fiftyMarkReferencePoint );
+}
+
+QPair<QSizeF, QSizeF> TernaryAxis::requiredMargins() const
+{
+    QSizeF topleft( 0.0, 0.0 );
+    QSizeF bottomRight( 0.0, 0.0 );
+
+    switch( position().value() ) {
+    case KDChartEnums::PositionSouth:
+        // the label of the south axis is, in fact, up north.
+        topleft.setHeight( m_label->pixmap().height() );
+        bottomRight.setHeight( m_fifty->pixmap().height() );
+        break;
+    case KDChartEnums::PositionWest:
+        bottomRight.setWidth( m_label->pixmap().width()
+                              - m_label->referencePointLocation().x() );
+        bottomRight.setHeight( m_label->pixmap().height()
+                               - m_label->referencePointLocation().y() );
+        break;
+    case KDChartEnums::PositionEast:
+        topleft.setWidth( m_label->pixmap().width()
+                          - ( m_label->pixmap().width()
+                              - m_label->referencePointLocation().x() ) );
+        bottomRight.setHeight( m_label->pixmap().height()
+                               - ( m_label->pixmap().height()
+                                   - m_label->referencePointLocation().y() ) );
+        break;
+    default:
+        qDebug() << "TernaryAxis::requiredMargins: unknown location";
+    }
+//     qDebug() << "TernaryAxis::requiredMargins:" << topleft << bottomRight;
+    return QPair<QSizeF, QSizeF>( topleft, bottomRight );
 }

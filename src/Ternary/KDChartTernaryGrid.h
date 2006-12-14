@@ -32,8 +32,11 @@ namespace KDChart {
         /** Returns two QSizeF objects specifying the dimension of the
             margins needed between each corner of the diagram and the
             border of the drawing area. Margins are required because
-            the axis inscriptions are placed adjacent to the corners
-            of the plot, outside of the plots rectangle. */
+            the tick marks are placed outside of the trianges
+            containing rectangle.
+            The margins are returned in <em>diagram coordinates</em>,
+            since the grid does not know about widget coordinates.
+        */
         QPair<QSizeF, QSizeF> requiredMargins() const;
         /** Return the locations of the grid lines, so that axes can
             draw axis rulers at the correct positions.

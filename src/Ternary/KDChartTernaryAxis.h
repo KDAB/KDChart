@@ -46,6 +46,8 @@ namespace KDChart {
         void resetTitleTextAttributes();
         bool hasDefaultTitleTextAttributes() const;
 
+        QPair<QSizeF, QSizeF> requiredMargins() const;
+
     private:
         void updatePrerenderedLabels();
         // TODO, move class variables to private class

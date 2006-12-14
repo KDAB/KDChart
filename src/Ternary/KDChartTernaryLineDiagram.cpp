@@ -31,6 +31,10 @@ void  TernaryLineDiagram::paint (PaintContext *paintContext)
     TernaryCoordinatePlane* plane =
         (TernaryCoordinatePlane*) paintContext->coordinatePlane();
 
+    // temp:
+    Q_UNUSED( p );
+    Q_UNUSED( plane );
+
     double x, y, z;
 
     int columnCount = model()->columnCount( rootIndex() );
