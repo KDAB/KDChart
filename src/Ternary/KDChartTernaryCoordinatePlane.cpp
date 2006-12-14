@@ -137,9 +137,9 @@ void TernaryCoordinatePlane::paint( QPainter* painter )
     // FIXME: this is not a good location for that:
     painter->setRenderHint(QPainter::Antialiasing, true );
 
-    painter->setPen( QColor( "gold" ) );
-    painter->setBrush( QColor( "gold" ) );
-    painter->drawRect( d->diagramRectContainer );
+//     painter->setPen( QColor( "gold" ) );
+//     painter->setBrush( QColor( "gold" ) );
+//     painter->drawRect( d->diagramRectContainer );
 
     AbstractDiagramList diags = diagrams();
     if ( !diags.isEmpty() )
