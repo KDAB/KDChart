@@ -70,6 +70,7 @@ class PrerenderedLabel : public PrerenderedElement
 {
 public:
     PrerenderedLabel();
+    ~PrerenderedLabel();
 
     void setFont( const QFont& font );
     const QFont& font() const;

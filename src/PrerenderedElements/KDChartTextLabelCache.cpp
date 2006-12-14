@@ -4,8 +4,28 @@
 #include <QImage>
 #include <QPixmap>
 #include <QPainter>
+#include <QApplication>
 
 #include "KDChartTextLabelCache.h"
+
+#ifndef NDEBUG
+int HitCount = 0;
+int MissCount = 0;
+#define INC_HIT_COUNT { ++HitCount; }
+#define INC_MISS_COUNT  { ++MissCount; }
+#define DUMP_CACHE_STATS \
+    if ( HitCount != 0 && MissCount != 0 ) { \
+        int total = HitCount + MissCount; \
+        double hitQuote = ( 1.0 * HitCount ) / total; \
+        qDebug() << "PrerenderedElement dtor: hits/misses/total:" \
+        << HitCount << "/" << MissCount << "/" << total \
+                 << "(" << 100 * hitQuote << "% hits)"; \
+    }
+#else
+#define INC_HIT_COUNT
+#define INC_MISS_COUNT
+#define DUMP_CACHE_STATS
+#endif
 
 PrerenderedElement::PrerenderedElement()
     : m_referencePoint( KDChartEnums::PositionNorthWest )
@@ -34,7 +54,17 @@ KDChartEnums::PositionValue PrerenderedElement::referencePoint() const
 
 PrerenderedLabel::PrerenderedLabel()
     : PrerenderedElement()
+    , m_dirty( true )
+    , m_font( qApp->font() )
+    , m_brush( Qt::black )
+    , m_pen( Qt::black ) // do not use anything invisible
+    , m_angle( 0.0 )
 {
+}
+
+PrerenderedLabel::~PrerenderedLabel()
+{
+    DUMP_CACHE_STATS;
 }
 
 void PrerenderedLabel::invalidate() const
@@ -88,14 +118,17 @@ double PrerenderedLabel::angle() const
 
 const QPixmap& PrerenderedLabel::pixmap() const
 {
-    if ( m_dirty ) paint();
+    if ( m_dirty ) {
+        INC_MISS_COUNT;
+        paint();
+    } else {
+        INC_HIT_COUNT;
+    }
     return m_pixmap;
 }
 
 void PrerenderedLabel::paint() const
 {
-    qDebug() << "PrerenderedLabel::paint:" << this;
-
     // FIXME find a better value using font metrics of text (this
     // requires finding the diameter of the circle formed by rotating
     // the bounding rect around the center):
@@ -152,6 +185,8 @@ void PrerenderedLabel::paint() const
                             - matrix.map( Center );
     }
 
+    m_dirty = false; // now all the calculation vectors are valid
+
     QPixmap temp( static_cast<int>( boundingRect.width() ),
                   static_cast<int>( boundingRect.height() ) );
     {
@@ -162,6 +197,7 @@ void PrerenderedLabel::paint() const
 #else
         painter.drawPixmap( QPointF( 0.0, 0.0 ), pixmap, boundingRect );
 #endif
+#define PRERENDEREDLABEL_DEBUG
 #ifdef PRERENDEREDLABEL_DEBUG
         painter.setPen( QPen( Qt::red, 2 ) );
         painter.setBrush( Qt::red );
@@ -192,7 +228,12 @@ void PrerenderedLabel::paint() const
 
 QPointF PrerenderedLabel::referencePointLocation( KDChartEnums::PositionValue position ) const
 {
-    if ( m_dirty ) paint();
+    if ( m_dirty ) {
+        INC_MISS_COUNT;
+        paint();
+    } else {
+        INC_HIT_COUNT;
+    }
 
     switch( position ) {
     case KDChartEnums::PositionCenter:
