@@ -56,13 +56,12 @@ void  TernaryAxis::paintCtx (PaintContext * paintContext)
     QRectF titleArea;
 
     // paint the axis label (across the triangle, that one):
-    QList<PrerenderedLabel> labels;
-    labels << *m_label << *m_fifty;
-    Q_FOREACH( const PrerenderedLabel& label, labels ) {
-        const QPixmap& pixmap = label.pixmap();
-        KDChartEnums::PositionValue position = label.referencePoint();
-        QPointF point = plane->translate( label.position() )
-                        - label.referencePointLocation( position );
+    QList<PrerenderedLabel*> labels;
+    labels << m_label << m_fifty;
+    Q_FOREACH( PrerenderedLabel* label, labels ) {
+        const QPixmap& pixmap = label->pixmap();
+        QPointF point = plane->translate( label->position() )
+                        - label->referencePointLocation();
         p->drawPixmap( point, pixmap );
     }
 }

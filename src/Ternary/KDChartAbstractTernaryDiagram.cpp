@@ -24,6 +24,10 @@ AbstractTernaryDiagram::AbstractTernaryDiagram( QWidget* parent,
 
 AbstractTernaryDiagram::~AbstractTernaryDiagram()
 {
+    while ( ! d->axesList.isEmpty() ) {
+        TernaryAxis* axis = d->axesList.takeFirst();
+        delete axis;
+    }
 }
 
 void AbstractTernaryDiagram::addAxis( TernaryAxis* axis )

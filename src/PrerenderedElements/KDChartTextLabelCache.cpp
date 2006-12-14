@@ -17,7 +17,7 @@ int MissCount = 0;
     if ( HitCount != 0 && MissCount != 0 ) { \
         int total = HitCount + MissCount; \
         double hitQuote = ( 1.0 * HitCount ) / total; \
-        qDebug() << "PrerenderedElement dtor: hits/misses/total:" \
+        qDebug() << "PrerenderedLabel dtor: hits/misses/total:" \
         << HitCount << "/" << MissCount << "/" << total \
                  << "(" << 100 * hitQuote << "% hits)"; \
     }
