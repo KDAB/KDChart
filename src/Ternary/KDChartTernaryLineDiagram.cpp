@@ -11,6 +11,8 @@
 
 using namespace KDChart;
 
+#define d d_func()
+
 TernaryLineDiagram::Private::Private()
     : AbstractTernaryDiagram::Private()
 {
@@ -20,7 +22,7 @@ TernaryLineDiagram::TernaryLineDiagram ( QWidget* parent,
                                          TernaryCoordinatePlane* plane )
     : AbstractTernaryDiagram( new Private(), parent, plane )
 {
-    setDatasetDimension( 2 ); // the third column is implicit
+    setDatasetDimension( 3 ); // the third column is implicit
 }
 
 TernaryLineDiagram::~TernaryLineDiagram()
@@ -52,6 +54,7 @@ void  TernaryLineDiagram::paint (PaintContext *paintContext)
     p->setBrush( QColor( "mediumpurple" ) );
 
     int columnCount = model()->columnCount( rootIndex() );
+    QPointF start;
     for(int column=0; column<columnCount; column+=datasetDimension() )
     {
         int numrows = model()->rowCount( rootIndex() );
@@ -73,17 +76,18 @@ void  TernaryLineDiagram::paint (PaintContext *paintContext)
                     TernaryPoint tPunkt( x / total, y / total );
                     QPointF diagramLocation = translate( tPunkt );
                     QPointF widgetLocation = plane->translate( diagramLocation );
-                    // FIXME: draw points according to selected point style:
-                    {
-                        static const double Diameter = 5.0;
-                        static const double Radius = Diameter / 2.0;
-                        p->drawEllipse(
-                            QRectF( widgetLocation - QPointF( Radius, Radius ),
-                                    QSizeF( Diameter, Diameter ) ) );
+
+                    if ( row > 0 ) {
+                        // FIXME: draw points according to selected point style:
+                        p->drawLine( start, widgetLocation );
+                        d->drawPoint( p, widgetLocation );
+                        // FIXME draw markers:
+                        // this paints nothing, since he attributes are set to  invisible - why?
+                        paintMarker( p, model()->index( row, column + 0 ), widgetLocation );
+                    } else {
+                        d->drawPoint( p, widgetLocation );
                     }
-                    // FIXME draw markers:
-                    // this paints nothing, since he attributes are set to  invisible - why?
-                    paintMarker( p, model()->index( row, column + 0 ), widgetLocation );
+                    start = widgetLocation;
                 } else {
                     // ignore and do not paint this point, garbage data
                     qDebug() << "TernaryPointDiagram::paint: data point x/y/z:"

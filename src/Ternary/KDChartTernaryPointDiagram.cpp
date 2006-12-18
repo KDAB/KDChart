@@ -11,6 +11,8 @@
 
 using namespace KDChart;
 
+#define d d_func()
+
 TernaryPointDiagram::Private::Private()
     : AbstractTernaryDiagram::Private()
 {
@@ -20,7 +22,7 @@ TernaryPointDiagram::TernaryPointDiagram ( QWidget* parent,
                                            TernaryCoordinatePlane* plane )
     : AbstractTernaryDiagram( new Private(), parent, plane )
 {
-    setDatasetDimension( 2 ); // the third column is implicit
+    setDatasetDimension( 3 ); // the third column is implicit
 }
 
 TernaryPointDiagram::~TernaryPointDiagram()
