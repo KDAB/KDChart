@@ -22,24 +22,23 @@ namespace KDChart {
 /**
  * \internal
  */
-class TernaryLineDiagram::Private : public AbstractTernaryDiagram::Private
-{
-    friend class LineDiagram;
-public:
-    Private();
-    ~Private();
+    class TernaryLineDiagram::Private : public AbstractTernaryDiagram::Private
+    {
+        friend class TernaryLineDiagram;
+    public:
+        Private();
+        ~Private() {}
 
-    Private( const Private& rhs ) :
-        AbstractTernaryDiagram::Private( rhs ),
-        lineType( rhs.lineType )
+        Private( const Private& rhs )
+            : AbstractTernaryDiagram::Private( rhs )
+//            , lineType( rhs.lineType )
         {
         }
 
-
-    LineType lineType;
+//     LineType lineType;
 };
 
-KDCHART_IMPL_DERIVED_DIAGRAM( LineDiagram, AbstractTernaryDiagram, TernaryCoordinatePlane )
+KDCHART_IMPL_DERIVED_DIAGRAM( TernaryLineDiagram, AbstractTernaryDiagram, TernaryCoordinatePlane )
 /*
 inline LineDiagram::LineDiagram( Private * p, TernaryCoordinatePlane* plane )
   : AbstractTernaryDiagram( p, plane ) { init(); }

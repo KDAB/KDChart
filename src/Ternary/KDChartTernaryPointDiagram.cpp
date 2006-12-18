@@ -57,7 +57,7 @@ void  TernaryPointDiagram::paint (PaintContext *paintContext)
             // see if there is data otherwise skip
             if( ! model()->data( model()->index( row, column+0 ) ).isNull() )
             {
-                // retrieve datasetDimension
+                // retrieve data
                 x = qMax( model()->data( model()->index( row, column+0 ) ).toDouble(),
                           0.0 );
                 y = qMax( model()->data( model()->index( row, column+1 ) ).toDouble(),
@@ -65,7 +65,7 @@ void  TernaryPointDiagram::paint (PaintContext *paintContext)
                 z = qMax( model()->data( model()->index( row, column+2 ) ).toDouble(),
                           0.0 );
 
-                // fix messed up
+                // fix messed up data values (paint as much as possible)
                 double total = x + y + z;
                 if ( fabs( total ) > 3 * std::numeric_limits<double>::epsilon() ) {
                     TernaryPoint tPunkt( x / total, y / total );

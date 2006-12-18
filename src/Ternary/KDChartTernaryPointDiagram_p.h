@@ -35,7 +35,6 @@ namespace KDChart {
         {
         }
 
-
 //         PointType pointType;
 };
 

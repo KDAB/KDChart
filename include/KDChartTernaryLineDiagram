@@ -1,1 +1,1 @@
-#include "../src/KDChartTernaryLineDiagram.h"
+#include "../src/Ternary/KDChartTernaryLineDiagram.h"

@@ -1,5 +1,6 @@
 #include <KDChartChart>
 #include <KDChartTernaryAxis>
+#include <KDChartTernaryLineDiagram>
 #include <KDChartTernaryPointDiagram>
 #include <KDChartTernaryCoordinatePlane>
 
@@ -17,6 +18,8 @@ MainWindow::MainWindow( QWidget* parent )
     m_chart->replaceCoordinatePlane( m_ternaryPlane );
     m_diagram = new KDChart::TernaryPointDiagram;
     m_ternaryPlane->replaceDiagram( m_diagram );
+    m_diagram2 = new KDChart::TernaryLineDiagram;
+    m_ternaryPlane->addDiagram( m_diagram2 );
 
     KDChart::TernaryAxis* axisA = new KDChart::TernaryAxis( m_diagram );
     axisA->setPosition( KDChartEnums::PositionSouth );
@@ -30,6 +33,7 @@ MainWindow::MainWindow( QWidget* parent )
 
     setupModel();
     m_diagram->setModel( &m_model );
+    m_diagram2->setModel( &m_model );
 }
 
 void MainWindow::setupModel()

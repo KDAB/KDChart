@@ -7,9 +7,12 @@
 #include "ui_mainwindow.h"
 
 namespace KDChart {
+
     class Chart;
+    class TernaryLineDiagram;
     class TernaryPointDiagram;
     class TernaryCoordinatePlane;
+
 }
 
 class MainWindow : public QDialog,
@@ -25,6 +28,7 @@ private:
 
     KDChart::Chart* m_chart;
     KDChart::TernaryPointDiagram* m_diagram;
+    KDChart::TernaryLineDiagram* m_diagram2;
     KDChart::TernaryCoordinatePlane* m_ternaryPlane;
 
     QStandardItemModel m_model;
