@@ -2,7 +2,13 @@
   isEmpty( KDCHARTDIR ):KDCHARTDIR=$$(KDCHARTDIR)
   !isEmpty( KDCHARTDIR ) {
     unix:isEmpty(QMAKE_EXTENSION_SHLIB):QMAKE_EXTENSION_SHLIB=so
-    unix:!exists( $$KDCHARTDIR/lib/libkdchart.$$QMAKE_EXTENSION_SHLIB ):error( "Cannot find libkdchart.$$QMAKE_EXTENSION_SHLIB in $KDCHARTDIR/lib" )
+    unix {
+      staticlib {
+        !exists( $$KDCHARTDIR/lib/libkdchart.a ):error( "Cannot find libkdchart.a in $KDCHARTDIR/lib" )
+      } else {
+        !exists( $$KDCHARTDIR/lib/libkdchart.$$QMAKE_EXTENSION_SHLIB ):error( "Cannot find libkdchart.$$QMAKE_EXTENSION_SHLIB in $KDCHARTDIR/lib" )
+      }
+    }
     #win32:!exists( $$KDCHARTDIR/lib/kdchart.lib ):error( "Cannot find kdchart.lib in $KDCHARTDIR/lib" )
     !exists( $$KDCHARTDIR/include/KDChartGlobal ):error( "Cannot find KDChartGlobal in $KDCHARTDIR/include" )
 
