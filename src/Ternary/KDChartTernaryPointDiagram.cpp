@@ -71,6 +71,15 @@ void  TernaryPointDiagram::paint (PaintContext *paintContext)
                     TernaryPoint tPunkt( x / total, y / total );
                     QPointF diagramLocation = translate( tPunkt );
                     QPointF widgetLocation = plane->translate( diagramLocation );
+                    // FIXME: draw points according to selected point style:
+                    {
+                        static const double Diameter = 5.0;
+                        static const double Radius = Diameter / 2.0;
+                        p->drawEllipse(
+                            QRectF( widgetLocation - QPointF( Radius, Radius ),
+                                    QSizeF( Diameter, Diameter ) ) );
+                    }
+                    // FIXME draw markers:
                     // this paints nothing, since he attributes are set to  invisible - why?
                     paintMarker( p, model()->index( row, column + 0 ), widgetLocation );
                 } else {
