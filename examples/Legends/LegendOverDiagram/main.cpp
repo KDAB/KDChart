@@ -60,8 +60,12 @@ int main( int argc, char** argv ) {
     legend->setText( 2,  "Vector 3" );
     legend->setShowLines(  true );
 
-    // the following alligns the legend exactly to the
-    // chart's coordinate plane's top-right corner:
+    // The following alligns the legend exactly to the
+    // chart's coordinate plane's top-right corner.
+    //
+    // Note: We do NOT use Legend::setAlignment here, because when
+    //       setRelativePosition is used the alignment is set at the
+    //       KDChart::RelativePosition rather than at the KDChart::Legend.
     KDChart::RelativePosition relativePosition;
     relativePosition.setReferenceArea( widget.coordinatePlane() );
     relativePosition.setReferencePosition( Position::NorthEast );
