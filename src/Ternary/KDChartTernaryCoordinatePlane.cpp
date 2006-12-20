@@ -28,6 +28,10 @@ TernaryCoordinatePlane::~TernaryCoordinatePlane()
 {
 }
 
+void TernaryCoordinatePlane::init()
+{
+}
+
 void TernaryCoordinatePlane::addDiagram( AbstractDiagram* diagram )
 {
     Q_ASSERT_X ( dynamic_cast<AbstractTernaryDiagram*>( diagram ),
