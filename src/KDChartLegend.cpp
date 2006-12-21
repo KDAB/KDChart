@@ -739,10 +739,10 @@ void Legend::buildLegend()
         if( orientation() == Qt::Vertical )
             d->layout->addItem( titleItem, 0, 0, 1, 5, Qt::AlignCenter );
         else
-            d->layout->addItem( titleItem, 0, 0, 1, d->modelLabels.count()*4, Qt::AlignCenter );
+            d->layout->addItem( titleItem, 0, 0, 1, d->modelLabels.count() ? (d->modelLabels.count()*4) : 1, Qt::AlignCenter );
 
         // The line between the title and the legend items, if any.
-        if( showLines() ) {
+        if( showLines() && d->modelLabels.count() ) {
             KDChart::HorizontalLineLayoutItem* lineItem = new KDChart::HorizontalLineLayoutItem();
             d->layoutItems << lineItem;
             if( orientation() == Qt::Vertical )
@@ -829,7 +829,7 @@ void Legend::buildLegend()
     }
 
     // vertical line (only in vertical mode)
-    if( orientation() == Qt::Vertical && showLines() ) {
+    if( orientation() == Qt::Vertical && showLines() && d->modelLabels.count() ) {
         KDChart::VerticalLineLayoutItem* lineItem = new KDChart::VerticalLineLayoutItem();
         d->layoutItems << lineItem;
         d->layout->addItem( lineItem, 2, 2, d->modelLabels.count()*2, 1 );
