@@ -35,7 +35,7 @@ private slots:
         QCOMPARE( m_chart->legend(), l );
         QCOMPARE( l->diagram(), (AbstractDiagram*)0);
         l->setDiagram( m_lines );
-        QCOMPARE( l->diagram(), m_lines );
+        QCOMPARE( static_cast<LineDiagram*>(l->diagram()), m_lines );
     }
 
     void testIntialOwnershipFromCtor()
@@ -43,31 +43,31 @@ private slots:
         Legend* l = new Legend( m_lines, m_chart );
         m_chart->replaceLegend( l );
         QCOMPARE( m_chart->legend(), l );
-        QCOMPARE( l->diagram(), m_lines );
+        QCOMPARE( static_cast<LineDiagram*>(l->diagram()), m_lines );
     }
 
     void testReplacing()
     {
         Legend* l = new Legend( m_chart );
         QPointer<Legend> oldLegend = m_chart->legend();
-        QCOMPARE( oldLegend->diagram(), m_lines );
+        QCOMPARE( static_cast<LineDiagram*>(oldLegend->diagram()), m_lines );
         m_chart->replaceLegend( l, oldLegend );
         QVERIFY( oldLegend.isNull() );
         QCOMPARE( l->diagram(), (AbstractDiagram*)0 );
         l->setDiagram( m_lines );
-        QCOMPARE( l->diagram(), m_lines );
+        QCOMPARE( static_cast<LineDiagram*>(l->diagram()), m_lines );
     }
 
     void testReferenceArea()
     {
          Legend* l = new Legend( );
-         QCOMPARE( l->referenceArea(), ( QWidget* )0 );
+         QCOMPARE( l->referenceArea(), ( const QWidget* )0 );
          l->setReferenceArea( m_chart );
-         QCOMPARE( l->referenceArea(), m_chart );
+         QCOMPARE( l->referenceArea(), static_cast<const QWidget*>(m_chart) );
          Legend* l1 = new Legend( m_chart );
-         QCOMPARE( l1->referenceArea(), m_chart );
+         QCOMPARE( l1->referenceArea(), static_cast<const QWidget*>(m_chart) );
          Legend* l2 = new Legend( m_lines,  m_chart );
-         QCOMPARE( l2->referenceArea(), m_chart );
+         QCOMPARE( l2->referenceArea(), static_cast<const QWidget*>(m_chart) );
     }
 
     void testDiagramOwnership()
@@ -78,13 +78,13 @@ private slots:
         QVERIFY( l->diagrams().size() == 1 );
         l->addDiagram( m_bars );
         QVERIFY( l->diagrams().size() == 2 );
-        QCOMPARE(l->diagram(),  m_lines );
+        QCOMPARE(static_cast<LineDiagram*>(l->diagram()),  m_lines );
         l->removeDiagram( m_lines );
         QVERIFY( l->diagrams().size() == 1 );
-        QCOMPARE(l->diagram(),  m_bars );
+        QCOMPARE(static_cast<BarDiagram*>(l->diagram()),  m_bars );
         l->replaceDiagram( m_lines, m_bars );
         QVERIFY( l->diagrams().size() == 1 );
-        QCOMPARE(l->diagram(),  m_lines );
+        QCOMPARE(static_cast<LineDiagram*>(l->diagram()),  m_lines );
     }
 
     void testLegendSettings()

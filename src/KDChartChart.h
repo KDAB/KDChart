@@ -31,6 +31,13 @@
 #include "kdchart_export.h"
 #include "KDChartGlobal.h"
 
+/** \file KDChartChart.h
+ *  \brief Declaring the class KDChart::Chart.
+ *
+ *
+ */
+
+
 namespace KDChart {
 
     class BackgroundAttributes;
@@ -44,7 +51,9 @@ namespace KDChart {
     typedef QList<HeaderFooter*> HeaderFooterList;
     typedef QList<Legend*> LegendList;
 
+
     /**
+     * @class Chart KDChartChart.h KDChartChart
      * @brief A chart with one or more diagrams.
      *
      * The Chart class represents a drawing consisting of one or more diagrams
@@ -357,7 +366,7 @@ namespace KDChart {
         int globalLeadingBottom() const;
 
         /**
-          * Paints all the contents of the chart. Use this method, to make KD Chart
+          * Paints all the contents of the chart. Use this method, to make KDChart
           * draw into your QPainter.
           *
           * \note Any global leading settings will be used by the paint method too,
@@ -370,6 +379,8 @@ namespace KDChart {
           * \sa setGlobalLeading
           */
         void paint( QPainter* painter, const QRect& target );
+ 
+        void reLayoutFloatingLegends();
 
     Q_SIGNALS:
         /** Emitted upon change of a property of the Chart or any of its components. */
@@ -392,10 +403,76 @@ namespace KDChart {
 
         /** reimp */
         void mousePressEvent( QMouseEvent* event );
-
-        void reLayoutFloatingLegends();
     };
 
+// Here we have a few docu block to be included into the API documentation:
+/**
+     * \dir src
+     * \brief Implementation directory of KDChart.
+     *
+     * This directory contains the header files and the source files of both,
+     * the private and the public classes.
+     *
+     * \note Only classes that have an include wrapper in the \c $KDCHARTDIR/include
+     * directory are part of the supported API.
+     * All other classes are to be considered as implemntation details, they
+     * could be changed in future versions of KDChart without notice.
+     *
+     * In other words: No class that is not mentioned in the \c $KDCHARTDIR/include
+     * directory may be directly used by your application.
+     *
+     * The recommended way to include classes of the KDChart API is including
+ * them by class name, so instead of including KDChartChart.h you would say:
+     *
+    \verbatim
+#include <KDChartChart>
+    \endverbatim
+     *
+     * When following this there is no reason to include the \c $KDCHARTDIR/src
+     * directory, it is sufficient to include \c $KDCHARTDIR/include
+ */
 }
+/**
+     * @class QAbstractItemView "(do not include)"
+     * @brief Class only listed here to document inheritance of some KDChart classes.
+     *
+ * Please consult the respective Qt documentation for details:
+     * <A HREF="http://doc.trolltech.com/">http://doc.trolltech.com/</A>
+ */
+/**
+     * @class QAbstractProxyModel "(do not include)"
+     * @brief Class only listed here to document inheritance of some KDChart classes.
+     *
+ * Please consult the respective Qt documentation for details:
+     * <A HREF="http://doc.trolltech.com/">http://doc.trolltech.com/</A>
+ */
+/**
+     * @class QFrame "(do not include)"
+     * @brief Class only listed here to document inheritance of some KDChart classes.
+     *
+ * Please consult the respective Qt documentation for details:
+     * <A HREF="http://doc.trolltech.com/">http://doc.trolltech.com/</A>
+ */
+/**
+     * @class QObject "(do not include)"
+     * @brief Class only listed here to document inheritance of some KDChart classes.
+     *
+ * Please consult the respective Qt documentation for details:
+     * <A HREF="http://doc.trolltech.com/">http://doc.trolltech.com/</A>
+ */
+/**
+     * @class QSortFilterProxyModel "(do not include)"
+     * @brief Class only listed here to document inheritance of some KDChart classes.
+     *
+ * Please consult the respective Qt documentation for details:
+     * <A HREF="http://doc.trolltech.com/">http://doc.trolltech.com/</A>
+ */
+/**
+ * @class QWidget "(do not include)"
+ * @brief Class only listed here to document inheritance of some KDChart classes.
+ *
+ * Please consult the respective Qt documentation for details:
+ * <A HREF="http://doc.trolltech.com/">http://doc.trolltech.com/</A>
+ */
 
 #endif

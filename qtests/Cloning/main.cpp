@@ -143,7 +143,7 @@ private slots:
 
     void testCloningLegends()
         {
-            Legend* legend = new Legend();
+            Legend* legend = new Legend(0);
             TextAttributes attrs;
             attrs.setPen( QPen(Qt::red) );
             legend->setTextAttributes( attrs );

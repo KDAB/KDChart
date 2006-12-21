@@ -57,13 +57,13 @@ private slots:
         QCOMPARE( m_plane->diagrams().size(),  1 );
         m_plane->addDiagram(  m_lines );
         QCOMPARE( m_plane->diagrams().size(),  2 );
-        QCOMPARE( m_plane->diagram(),  m_bars );
+        QCOMPARE( static_cast<BarDiagram*>(m_plane->diagram()),  m_bars );
         m_plane->takeDiagram( m_bars );
         QCOMPARE( m_plane->diagrams().size(),  1 );
-        QCOMPARE( m_plane->diagram(),  m_lines );
+        QCOMPARE( static_cast<LineDiagram*>(m_plane->diagram()),  m_lines );
         m_plane->replaceDiagram( m_bars,  m_lines );
         QCOMPARE( m_plane->diagrams().size(),  1 );
-        QCOMPARE( m_plane->diagram(),  m_bars );
+        QCOMPARE( static_cast<BarDiagram*>(m_plane->diagram()),  m_bars );
         m_plane->takeDiagram( m_bars );
         QCOMPARE( m_plane->diagrams().size(),  0 );
         delete m_bars;
