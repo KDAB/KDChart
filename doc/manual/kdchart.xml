@@ -856,11 +856,11 @@ see later in greater
 		<para>
 		    We recommend you to read, compile and run the following example. It is available
 		    at the following location of your KD Chart installation: 
-		    <filename>/examples/Widget/simple</filename>
+		    <filename>/examples/Widget/Simple</filename>
 		</para>
 		<programlisting linenumbering="numbered" id="chart_main">
 		    <textobject>
-                <textdata fileref="../../examples/Widget/simple/main.cpp"/>
+                <textdata fileref="../../examples/Widget/Simple/main.cpp"/>
 		    </textobject>
 		</programlisting>                
 		<para>
