@@ -798,9 +798,9 @@ this point. We will then build  a
 		</para>				
 		<programlisting linenumbering="numbered" id="widget_simple">
 		    <textobject>
-			<textdata fileref="../../examples/Widget/Simple/main.cpp"/>
+                <textdata fileref="../../examples/Widget/Simple/main.cpp"/>
 		    </textobject>
-		</programlisting>                
+		</programlisting>
 		<para>
 		    The result of the code above will display the simple 
 		    widget presented in the screenshot below.
@@ -856,11 +856,11 @@ see later in greater
 		<para>
 		    We recommend you to read, compile and run the following example. It is available
 		    at the following location of your KD Chart installation: 
-		    <filename>/examples/Widget/Simple</filename>
+		    <filename>/examples/Widget/simple</filename>
 		</para>
 		<programlisting linenumbering="numbered" id="chart_main">
 		    <textobject>
-                <textdata fileref="../../examples/Widget/Simple/main.cpp"/>
+			<textdata fileref="../../examples/Widget/simple/main.cpp"/>
 		    </textobject>
 		</programlisting>                
 		<para>
@@ -7242,13 +7242,13 @@ done in the same way as for a
             </sect2>
         </sect1>
         <sect1>
-            <title>Specifying font sizes and other measures</title>
+            <title>Font sizes and other measures</title>
             <para>
                 This chapter will show you how to use the <classname>KDChart::Measure</classname>
                 class for specifying font sizes or other measures.
             </para>
             <sect2>
-                <title>Purpose and capabilities of the Measure class</title>
+                <title>How and when to use the Measure class</title>
                 <para>
                     ...
                 </para>
