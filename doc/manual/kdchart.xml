@@ -7241,6 +7241,7 @@ done in the same way as for a
 		</para>
             </sect2>
         </sect1>
+        <?page-break?>
         <sect1>
             <title>Font sizes and other measures</title>
             <para>
@@ -7248,10 +7249,19 @@ done in the same way as for a
                 class for specifying font sizes or other measures.
             </para>
             <sect2>
-                <title>How and when to use the Measure class</title>
+                <title>When and how to use the Measure class</title>
                 <para>
-                    ...
+                    <classname>KDChart::Measure</classname> is used to specify all relative
+                    and/or absolute measures in KDChart, e.g. to define (relative) font sizes,
+                    or the distance between an anchor point and some text aligned to that point ...
                 </para>
+                <note>
+                <para>
+                    There are very few places in &kdchart; that allow specifying a measure without
+                    using the <classname>Measure</classname> class, so reading this sub-chapter
+                    is not so much a matter of opinion but really worth it.
+                </para>
+            </note>
             </sect2>
             <sect2>
                 <title>How to specify absolute values</title>
