@@ -31,9 +31,17 @@
 #include "KDChartDatasetProxyModel.h"
 
 
+/**
+ * \cond PRIVATE_API_DOCU
+ *
+ * ( This class is used internally by DatasetSelectorWidget. )
+ */
 namespace Ui {
     class DatasetSelector;
 }
+/**
+ * \endcond
+ */
 
 namespace KDChart {
 

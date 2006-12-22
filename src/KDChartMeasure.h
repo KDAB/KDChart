@@ -35,10 +35,22 @@
 #include "KDChartGlobal.h"
 #include "KDChartEnums.h"
 
+/** \file KDChartMeasure.h
+ *  \brief Declaring the class KDChart::Measure.
+ *
+ *
+ */
+
+
 class QObject;
 
 namespace KDChart {
 
+/**
+  * \class Measure KDChartMeasure.h KDChartMeasure
+  * \brief  Measure is used to specify all relative and/or absolute measures in KDChart, e.g. font sizes.
+  *
+  */
 
 class KDCHART_EXPORT Measure
 {
@@ -67,6 +79,22 @@ public:
         mMode = KDChartEnums::MeasureCalculationModeRelative;
         mArea = area;
         mOrientation = orientation;
+    }
+
+    /**
+     * \brief This is a convenience method for specifying a value,
+     * with implicitely setting the calculation mode to MeasureCalculationModeAbsolute
+     *
+     * Calling setAbsoluteValue( value ) is the same as calling
+\verbatim
+    setValue( value );
+    setCalculationMode( KDChartEnums::MeasureCalculationModeAbsolute );
+\endverbatim
+     */
+    void setAbsoluteValue( qreal val )
+    {
+        mMode = KDChartEnums::MeasureCalculationModeAbsolute;
+        mValue = val;
     }
 
     /**
