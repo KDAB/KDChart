@@ -33,6 +33,13 @@
 #include "KDChartEnums.h"
 #include "KDChartRelativePosition.h"
 
+/** \file KDChartDataValueAttributes.h
+ *  \brief Declaring the class KDChart::DataValueAttributes.
+ *
+ *
+ */
+
+
 namespace KDChart {
 
   class TextAttributes;
@@ -41,6 +48,7 @@ namespace KDChart {
   class MarkerAttributes;
 
   /**
+   * \class DataValueAttributes KDChartDataValueAttributes.h KDChartDataValueAttributes
    * \brief Diagram attributes dealing with data value labels.
    *
    * The DataValueAttributes group all properties that can be set
@@ -140,52 +148,98 @@ public:
   int decimalDigits() const;
 
   /**
-   * Prepend a prefix to the data value text to be displayed
-   *
-   * \param prefix  The string to prepend.
+   * \brief Prepend a prefix string to the data value label
+   * \sa prefix
    */
   void setPrefix( const QString prefix );
 
  /**
-   * \return The string used as a prefix to the data value text.
+   * \brief Returns the string used as a prefix to the data value text.
+   * \sa setPrefix
    */
   QString prefix() const;
 
   /**
-   * Append a suffix to the data value text to be displayed
-   *
-   * \param suffix  The string to append.
+   * \brief Append a suffix string to the data value label
+   * \sa suffix
    */
   void setSuffix( const QString suffix );
 
  /**
-   * \return The string used as a suffix to the data value text.
+   * \brief Returns the string used as a suffix to the data value text.
+   * \sa setSuffix
    */
   QString suffix() const;
 
-/**
- *\display a string label instead of the original data value label
- *
- *\param label: the string to be displayed.
- */
+ /**
+   * \brief display a string label instead of the original data value label
+   * \sa dataLabel
+   */
   void setDataLabel( const QString label );
 
  /**
-   * \return The string to be displayed instead of the data value text.
+   * \brief Returns the string displayed instead of the data value label
+   * \sa setDataLabel
    */
   QString dataLabel() const;
 
-
+ /**
+   * \cond PLANNED_FOR_FUTURE
+   *
+   * These method are planned for future versions of KD Chart,
+   * so they are not part of the documented API yet.
+   */
   void setPowerOfTenDivisor( int powerOfTenDivisor );
   int powerOfTenDivisor() const;
+   /**
+   * \endcond
+   */
 
+
+  /**
+   * \cond PLANNED_FOR_FUTURE
+   *
+   * These method are planned for future versions of KD Chart,
+   * so they are not part of the documented API yet.
+   */
   void setShowInfinite( bool infinite );
   bool showInfinite() const;
+  /**
+   * \endcond
+   */
 
+   /**
+   * \brief Defines the relative positioning of the data value labels for negative values.
+    *
+    * The position is specified in relation to the respective data value point, or in
+    * releation to the respective data representation area, that's one area segment in
+    * a LineDiagram showing areas, or one bar in a BarDiagram, one pie slice ...
+    *
+   * \sa negativePosition
+   */  
   void setNegativePosition( const RelativePosition& relPosition );
+   
+   /**
+   * \brief Return the relative positioning of the data value labels
+   * \sa setNegativePosition
+   */
   const RelativePosition negativePosition() const;
-
+  
+  /**
+   * \brief Defines the relative position of the data value labels for positive values.
+   * 
+   * The position is specified in relation to the respective data value point, or in
+   * releation to the respective data representation area, that's one area segment in
+   * a LineDiagram showing areas, or one bar in a BarDiagram, one pie slice ...
+   * 
+   * \sa positivePosition
+   */
   void setPositivePosition( const RelativePosition& relPosition );
+
+   /**
+   * \brief Return the relative positioning of the data value labels 
+   * \sa setPositivePosition
+   */
   const RelativePosition positivePosition() const;
 
   const RelativePosition position( bool positive ) const
