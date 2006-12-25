@@ -6,7 +6,7 @@
 
 namespace KDChart {
 
-    class TernaryPointDiagram : public AbstractTernaryDiagram
+    class KDCHART_EXPORT TernaryPointDiagram : public AbstractTernaryDiagram
     {
         Q_OBJECT
         Q_DISABLE_COPY( TernaryPointDiagram )

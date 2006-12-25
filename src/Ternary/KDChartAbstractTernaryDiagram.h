@@ -9,7 +9,7 @@ namespace KDChart {
     class TernaryCoordinatePlane;
     class TernaryAxis;
 
-    class AbstractTernaryDiagram : public AbstractDiagram
+    class KDCHART_EXPORT AbstractTernaryDiagram : public AbstractDiagram
     {
         Q_OBJECT
         Q_DISABLE_COPY( AbstractTernaryDiagram )

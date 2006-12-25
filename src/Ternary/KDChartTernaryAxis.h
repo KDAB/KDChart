@@ -12,7 +12,7 @@ namespace KDChart {
 
     class AbstractTernaryDiagram;
 
-    class TernaryAxis : public AbstractAxis
+    class KDCHART_EXPORT TernaryAxis : public AbstractAxis
     {
         Q_OBJECT
 

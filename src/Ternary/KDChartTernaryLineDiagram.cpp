@@ -29,6 +29,10 @@ TernaryLineDiagram::~TernaryLineDiagram()
 {
 }
 
+void TernaryLineDiagram::init()
+{
+}
+
 void  TernaryLineDiagram::resize (const QSizeF& area)
 {
 }

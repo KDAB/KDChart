@@ -29,6 +29,10 @@ TernaryPointDiagram::~TernaryPointDiagram()
 {
 }
 
+void TernaryPointDiagram::init()
+{
+}
+
 void  TernaryPointDiagram::resize (const QSizeF& area)
 {
 }
