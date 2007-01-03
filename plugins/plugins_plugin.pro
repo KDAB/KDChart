@@ -29,7 +29,7 @@ HEADERS += plugins.h
 SOURCES += plugins.cpp
 
 unix {
-  LIBS += -lkdchartpluginlib
+  LIBS += -lkdchartpluginlib -lkdchartuitools
   kdchart_static:LIBS += -lkdchartuitools
 } else {
   CONFIG(debug, debug|release) {
