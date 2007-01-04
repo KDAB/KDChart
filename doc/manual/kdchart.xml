@@ -169,7 +169,7 @@
         <sect1>
             <title>What's next</title>
             <para>
-                In the next chapter we introduce you to the &kdchart; 2.0 API.
+                In the next chapter we introduce you to the &kdchart; 2.0 new API.
             </para>
        </sect1>
     </chapter>
@@ -211,7 +211,7 @@
 		components of a chart are painted, manages them and provides 
 		access to them. There can be more than one 
 		<classname>KDChart::Diagram</classname> on a 
-		<classname>KDChart::Chart</classname>. How they are laid out 
+		<classname>KDChart::Chart</classname>. How they are laid out
 		is determined by which axes, if any, they share (more on axes 
 		below).
 	    </para>
@@ -228,12 +228,12 @@
             <sect2>
                 <title id="apisample" xreflabel="codesample">Code Sample</title>
 		<programlisting>
-		    using namespace KDChart;
-		    ......
-		    BarDiagram *bars = new BarDiagram;
-		    bars->setModel( &amp;m_model );		    
-		    chart->coordinatePlane()->replaceDiagram( bars );
-		    .....
+using namespace KDChart;
+......
+BarDiagram *bars = new BarDiagram;
+bars->setModel( &amp;m_model );
+chart->coordinatePlane()->replaceDiagram( bars );
+.....
 		</programlisting>
 <!-- not relevant
 		<para>
@@ -315,9 +315,9 @@
 		    use code like this:
 		</para>
 		<programlisting>
-		    HeaderFooter * additionalHeader = new HeaderFooter;
-		    additionalHeader->setPosition( NorthWest );
-		    chart->addHeaderFooter( additionalHeader  );
+HeaderFooter * additionalHeader = new HeaderFooter;
+additionalHeader->setPosition( NorthWest );
+chart->addHeaderFooter( additionalHeader  );
 		</programlisting>
 		<para>
 		    In the next section, we will explain further how ownership
@@ -337,7 +337,7 @@
 		    names in the "KDChart" namespace available in that file:
 		</para>
 		<programlisting>
-		    using namespace KDChart;
+using namespace KDChart;
 		</programlisting>
 		<para>
 		    Like Qt, KD Chart provides STL-style forwarding headers, 
@@ -345,11 +345,11 @@
 		    headers. To bring the bar diagram header into your 
 		    implementation file, you could therefore write:
 		</para>
-		<programlisting>
-		    #include &lt;KDChartBarDiagram&gt;
-		    or 
-		    #include &lt;KDChartBarDiagram.h&gt;
-		</programlisting>
+        <programlisting>
+#include &lt;KDChartBarDiagram&gt;
+or
+#include &lt;KDChartBarDiagram.h&gt;
+        </programlisting>
 		<note>
 		    <para>
 			File names of header and implementation files all
@@ -436,39 +436,39 @@
 		    <classname>KDChartChart</classname> widget. 
                 </para>                
                 <programlisting>
-                    // set up your model
-		    m_model.insertRows( 0, 2, QModelIndex() );
-		    m_model.insertColumns(  0,  3,  QModelIndex() );
-		    for (int row = 0; row &lt; 3; ++row) {
-		       for (int column = 0; column &lt; 3; ++column) {
-		          QModelIndex index = 
-		          m_model.index(row, column, QModelIndex());
-		          m_model.setData(index, QVariant(row+1 * column) );
-                       } 
-                    }
+// set up your model
+m_model.insertRows( 0, 2, QModelIndex() );
+m_model.insertColumns(  0,  3,  QModelIndex() );
+for (int row = 0; row &lt; 3; ++row) {
+    for (int column = 0; column &lt; 3; ++column) {
+        QModelIndex index =
+        m_model.index(row, column, QModelIndex());
+        m_model.setData(index, QVariant(row+1 * column) );
+    }
+}
                 </programlisting>                
                 <para>
                     In order to assign the model above to your diagram and 
 		    display it you would proceed as follow:
                 </para>
 		<programlisting>
-		    KDChart::BarDiagram* diagram = new KDChart::BarDiagram;
-		    diagram->setModel(&amp;m_model);
-		    m_chart.coordinatePlane()->replaceDiagram(diagram);
-                </programlisting>
+KDChart::BarDiagram* diagram = new KDChart::BarDiagram;
+diagram->setModel(&amp;m_model);
+m_chart.coordinatePlane()->replaceDiagram(diagram);
+        </programlisting>
 		<para>
 		    Using <classname>KDChartWidget</classname> we would use 
 		    code as follow:
 		</para>
 		<programlisting>
-                    KDChartWidget widget;
-		    QVector&lt; double &gt; vec0,  vec1;
-		    vec0 &lt;&lt; -5 &lt;&lt; -4 &lt;&lt; -3 &lt;&lt; -2 &lt;&lt; -1 &lt;&lt; 0 ...;
-		    vec1 &lt;&lt; 25 &lt;&lt; 16 &lt;&lt; 9 &lt;&lt; 4 &lt;&lt; 1 &lt;&lt; 0 ...;      
-		    widget.setDataset( 0, vec0, "Linear" );
-		    widget.setDataset( 1, vec1, "Quadratic" );
-		    widget.show();
-                </programlisting> 
+KDChartWidget widget;
+QVector&lt; double &gt; vec0,  vec1;
+vec0 &lt;&lt; -5 &lt;&lt; -4 &lt;&lt; -3 &lt;&lt; -2 &lt;&lt; -1 &lt;&lt; 0 ...;
+vec1 &lt;&lt; 25 &lt;&lt; 16 &lt;&lt; 9 &lt;&lt; 4 &lt;&lt; 1 &lt;&lt; 0 ...;
+widget.setDataset( 0, vec0, "Linear" );
+widget.setDataset( 1, vec1, "Quadratic" );
+widget.show();
+        </programlisting> 
 		<para>
 		    We recommend you to read 
 		    <filename>KDChartChart.h</filename> and 
@@ -497,14 +497,14 @@
 		These attribute sets are passed by value, they are intended to
 		be used much like Qt's QPen or QBrush. As shown below:
 	    </para>
-             <sect2>
-                <title id="attributesample" xreflabel="codesample">Code Sample</title>
-		<programlisting>
-		    KDChart::TextAttributes ta;
-		    ta.setPen( Qt::red );
-		    ta.setFont( QFont( "Helvetica" ) );
-		    chart->legend()->setTextAttributes( ta );
-		</programlisting>
+        <sect2>
+            <title id="attributesample" xreflabel="codesample">Code Sample</title>
+            <programlisting>
+KDChart::TextAttributes ta;
+ta.setPen( Qt::red );
+ta.setFont( QFont( "Helvetica" ) );
+chart->legend()->setTextAttributes( ta );
+            </programlisting>
                 <para>
 		    All attribute sets can be set per cell, per column or per 
 		    model, and only be queried per cell. Access at the cell 
@@ -545,14 +545,14 @@
                     lines of code.                   
                 </para>
 		<programlisting>
-		    // set the built-in (default) legend visible
-		    m_chart->legend()->setPosition( North );
+// set the built-in (default) legend visible
+m_chart->legend()->setPosition( North );
 
-		    // replace the default legend with a custom one 
-		    //the chart view will take ownership of the allocated 
-		    //memory and free the old legend
-		    KDChart::Legend *myLegend = 
-		    m_chart->replaceLegend( new Legend );
+// replace the default legend with a custom one
+//the chart view will take ownership of the allocated
+//memory and free the old legend
+KDChart::Legend *myLegend =
+m_chart->replaceLegend( new Legend );
                 </programlisting>
                 <para>
 		    Similarly, inserting new components into the view
@@ -560,8 +560,8 @@ transfers ownership to the chart. Notice that the same procedure has to be
 		    applied for a diagram, too. 		    
                 </para>
 		<programlisting>
-		    // add an additional legend, chart takes ownership
-		    chart->addLegend( Legend );
+// add an additional legend, chart takes ownership
+chart->addLegend( Legend );
                 </programlisting>
 		<para>
 		    Removing a component does not de-allocate it. If you "take"
@@ -653,7 +653,7 @@ top-level classes of the KD Chart 2 API:
 			<para>
 			    The "coordinate plane" (often called the "plane")
 			    represents the entity that is responsible for 
-			    mapping the values into positions on the widget.
+			    mapping the values to positions on the widget.
 			    The plane is also showing the (sub-)grid lines.
 			    There can be several planes per chart.
 			</para>	
@@ -684,14 +684,14 @@ this point. We will then build  a
 		bring in the "KDChart" namespace:
 	    </para>
 	    <programlisting>
-		#include &lt;KDChartChart&gt;
-		#include &lt;KDChartLineDiagram&gt;
-		using namespace KDChart;
-		
-		//Add the widget to your layout like any other QWidget:
-		QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
-		m_chart = new Chart();
-		chartLayout->addWidget( m_chart );
+#include &lt;KDChartChart&gt;
+#include &lt;KDChartLineDiagram&gt;
+using namespace KDChart;
+
+//Add the widget to your layout like any other QWidget:
+QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
+m_chart = new Chart();
+chartLayout->addWidget( m_chart );
 	    </programlisting>
 	    <para>
 		In this example, we will create a single line diagram,
@@ -699,29 +699,29 @@ this point. We will then build  a
 		already contained in an empty Chart object.
 	    </para>
 	    <programlisting>
-		// Create a line diagram and associate the data model to it
-		m_lines = new LineDiagram();
-		m_lines->setModel( &amp;m_model );
-		
-		// Replace the default diagram of the default coordinate
-		// plane with your newly created one.
-		// Note that the plane takes ownership of the diagram,
-		// so you are not allowed to delete it.
-		m_chart->coordinatePlane()->replaceDiagram( m_lines );
+// Create a line diagram and associate the data model to it
+m_lines = new LineDiagram();
+m_lines->setModel( &amp;m_model );
+
+// Replace the default diagram of the default coordinate
+// plane with your newly created one.
+// Note that the plane takes ownership of the diagram,
+// so you are not allowed to delete it.
+m_chart->coordinatePlane()->replaceDiagram( m_lines );
 	    </programlisting>
 	    <para>
 		Adding elements such as axes or legends is 
 		straightforward as well:
 	    </para>
 	    <programlisting>
-		CartesianAxis *yAxis = new CartesianAxis ( m_lines );
-		yAxis->setPosition ( KDChart::CartesianAxis::Left );
-		
-		// the diagram takes ownership of the Axis
-		m_lines->addAxis( yAxis );
-		
-		legend = new Legend( m_lines, m_chart );
-		m_chart->addLegend( legend );
+CartesianAxis *yAxis = new CartesianAxis ( m_lines );
+yAxis->setPosition ( KDChart::CartesianAxis::Left );
+
+// the diagram takes ownership of the Axis
+m_lines->addAxis( yAxis );
+
+legend = new Legend( m_lines, m_chart );
+m_chart->addLegend( legend );
 	    </programlisting> 
 	    <para>
 		You can adjust and fine-tune various aspects of the 
@@ -737,19 +737,19 @@ this point. We will then build  a
 		<filename>KDChartAbstractDiagram.h</filename>:
 	    </para>
 	    <programlisting>
-		void setPen( const QModelIndex&amp; index, const QPen&amp; pen );
-		void setPen( int dataset, const QPen&amp; pen );
-		void setPen( const QPen&amp; pen );
+void setPen( const QModelIndex&amp; index, const QPen&amp; pen );
+void setPen( int dataset, const QPen&amp; pen );
+void setPen( const QPen&amp; pen );
 	    </programlisting> 
 	    <para>
 		To use a dark gray color for all lines in your example 
 		chart, you would write:
 	    </para>
 	    <programlisting>
-		QPen pen;
-		pen.setColor( Qt::darkGray );
-		pen.setWidth( 1 );
-		m_lines->setPen( pen );
+QPen pen;
+pen.setColor( Qt::darkGray );
+pen.setWidth( 1 );
+m_lines->setPen( pen );
 	    </programlisting> 
 	    <para>
 		Attributes that form logical groupings are combined into
@@ -769,9 +769,9 @@ this point. We will then build  a
 		just write:    
 	    </para>    
 	    <programlisting>
-		TextAttributes ta( legend->textAttributes() );
-		ta.setFont( myfont );
-		legend->setTextAttributes( ta );
+TextAttributes ta( legend->textAttributes() );
+ta.setFont( myfont );
+legend->setTextAttributes( ta );
 	    </programlisting>
 	    <para>
 		We will continue with more examples and more detailed 
@@ -797,9 +797,7 @@ this point. We will then build  a
 		    installation: <filename>examples/Widget/Simple</filename>.
 		</para>
 		<programlisting linenumbering="numbered" id="widget_simple">
-		    <textobject>
-                <textdata fileref="../../examples/Widget/Simple/main.cpp"/>
-		    </textobject>
+<textobject><textdata fileref="../../examples/Widget/Simple/main.cpp"/></textobject>
 		</programlisting>
 		<para>
 		    The result of the code above will display the simple 
@@ -859,9 +857,7 @@ see later in greater
 		    <filename>/examples/Widget/Simple</filename>
 		</para>
 		<programlisting linenumbering="numbered" id="chart_main">
-		    <textobject>
-			<textdata fileref="../../examples/Widget/Simple/main.cpp"/>
-		    </textobject>
+<textobject><textdata fileref="../../examples/Widget/Simple/main.cpp"/></textobject>
 		</programlisting>                
 		<para>
 		    In this example, we are making use of 
@@ -1086,42 +1082,42 @@ this example, we show you how to configure your
 		    First, include the appropriate headers and bring in the "KDChart" namespace:
 		</para>	    	
 		<programlisting>
-		    #include &lt;QApplication&gt;
-		    #include &lt;KDChartWidget&gt;
-                    #include &lt;KDChartBarDiagram&gt;
-                    #include &lt;QPen&gt;
+#include &lt;QApplication&gt;
+#include &lt;KDChartWidget&gt;
+#include &lt;KDChartBarDiagram&gt;
+#include &lt;QPen&gt;
 
-	            using namespace KDChart;			    
+using namespace KDChart;
 		</programlisting>                
 		<para>
 		    We need to include <classname>KDChartBarDiagram</classname> in order to be able
 		    to configure some of its attributes as we will see later. 
 		</para>
 		<programlisting>
-		    int main( int argc, char** argv ) {
-		    QApplication app( argc, argv );                    
-		    Widget widget;
-		    // our widget can be configured 
-		    // as any Qt Widget 
-		    widget.resize( 600, 600 );		    
-                    // store the data and assign it
-		    QVector&lt; double &gt; vec0,  vec1;
-		    vec0 &lt;&lt; 5 &lt;&lt; 4 &lt;&lt; 3 &lt;&lt; 2 &lt;&lt; 1 &lt;&lt; 0
-		    &lt;&lt; 1 &lt;&lt; 2 &lt;&lt; 3 &lt;&lt; 4 &lt;&lt; 5;
-		    vec1 &lt;&lt; 25 &lt;&lt; 16 &lt;&lt; 9 &lt;&lt; 4 &lt;&lt; 1 &lt;&lt; 0
-		    &lt;&lt; 1 &lt;&lt; 4 &lt;&lt; 9 &lt;&lt; 16 &lt;&lt; 25;		    
-		    widget.setDataset( 0, vec0, "vec0" );
-		    widget.setDataset( 1, vec1, "vec1" );
+int main( int argc, char** argv ) {
+    QApplication app( argc, argv );
+    Widget widget;
+    // our widget can be configured
+    // as any Qt Widget
+    widget.resize( 600, 600 );
+    // store the data and assign it
+    QVector&lt; double &gt; vec0,  vec1;
+    vec0 &lt;&lt; 5 &lt;&lt; 4 &lt;&lt; 3 &lt;&lt; 2 &lt;&lt; 1 &lt;&lt; 0
+         &lt;&lt; 1 &lt;&lt; 2 &lt;&lt; 3 &lt;&lt; 4 &lt;&lt; 5;
+    vec1 &lt;&lt; 25 &lt;&lt; 16 &lt;&lt; 9 &lt;&lt; 4 &lt;&lt; 1 &lt;&lt; 0
+         &lt;&lt; 1 &lt;&lt; 4 &lt;&lt; 9 &lt;&lt; 16 &lt;&lt; 25;
+    widget.setDataset( 0, vec0, "vec0" );
+    widget.setDataset( 1, vec1, "vec1" );
 		</programlisting>
 		<para>
 		    We want to change the default line chart type to a bar chart type. In this
 		    case, we also want to display it in stacked mode. 
 		    <classname>KDChartWidget</classname> with its <methodname>setType</methodname>
 		    and <methodname>setSubType</methodname> methods
-allow us to achieve that in a very simple way.		    
+            allow us to achieve that in a very simple way.		    
 		</para>
 		<programlisting>
-		    widget.setType( Widget::Bar , Widget::Stacked );
+    widget.setType( Widget::Bar , Widget::Stacked );
 		</programlisting>
 		<para>
 		    The default type being Normal type for the widget, we need to implicitely pass 
@@ -1131,13 +1127,13 @@ later, e.g. by calling
 		    <methodname>setSubType( Widget::Percent )</methodname>.		    
 		</para>
 		<programlisting>
-		    //Configure a pen and draw a line
-		    //surrounding the bars
-		    QPen pen;
-		    pen.setWidth( 2 );
-		    pen.setColor(  Qt::darkGray );
-		    // call your diagram and set the new pen
-		    widget.barDiagram()->setPen(  pen );
+    //Configure a pen and draw a line
+    //surrounding the bars
+    QPen pen;
+    pen.setWidth( 2 );
+    pen.setColor(  Qt::darkGray );
+    // call your diagram and set the new pen
+    widget.barDiagram()->setPen(  pen );
 		</programlisting>
 		<para>
 		    In the above code, our intention is to draw a grey line around the bars to make them
@@ -1149,12 +1145,12 @@ later, e.g. by calling
 		    method.
 		</para>
 		<programlisting>
-		    //Set up your ThreeDAttributes
-		    //display in ThreeD mode
-		    ThreeDBarAttributes td;
-		    td.setDepth(  15 );
-		    td.setEnabled(  true );
-		    widget.barDiagram()->setThreeDBarAttributes( td );
+    //Set up your ThreeDAttributes
+    //display in ThreeD mode
+    ThreeDBarAttributes td;
+    td.setDepth(  15 );
+    td.setEnabled(  true );
+    widget.barDiagram()->setThreeDBarAttributes( td );
 		</programlisting>
 		<para>
 		    We want our bar chart to be displayed in 3D mode and need to configure some 
@@ -1169,10 +1165,10 @@ those attributes are made available at different levels in order to
 provide a better attribute structure.
 		</para>
 		<programlisting>
-		    widget.show();
+    widget.show();
 
-		    return app.exec();
-		    }
+    return app.exec();
+}
 		</programlisting>
 		<para>
 		    See the screenshot below to view the resulting
@@ -1284,19 +1280,19 @@ done in the same way as for a
 		<para>
 		    Let us make this more concrete by looking at the following sample code that 
 		    describes the above process. We recommand you to compile and run the following 
-		    example which is located into the <filename>examples/Bars/Parameters</filename>
+		    example which is located in the <filename>examples/Bars/Parameters</filename>
 		    directory of your KD Chart installation.
 		</para>
 		<para>
 		    First of all we are including the header files we need and bring KD Chart namespace.
 		</para>
 		<programlisting>
-		    #include &lt;QtGui&gt;
-		    #include &lt;KDChartChart&gt;
-                    #include &lt;KDChartBarDiagram&gt;
-                    #include &lt;KDChartDataValueAttributes&gt;
+#include &lt;QtGui&gt;
+#include &lt;KDChartChart&gt;
+#include &lt;KDChartBarDiagram&gt;
+#include &lt;KDChartDataValueAttributes&gt;
 
-                    using namespace KDChart;		    
+using namespace KDChart;
                 </programlisting>
 		<para>
 		    We have included <classname>KDChartDataValueAttributes</classname> to be able 
@@ -1309,24 +1305,23 @@ done in the same way as for a
 		    will be assigned to our diagram
 		</para>
 		<programlisting>
-		    class ChartWidget : public QWidget {
-		    Q_OBJECT
-		    public:
-		    explicit ChartWidget(QWidget* parent=0)
-		    : QWidget(parent)
-		    {
-		    
-		    m_model.insertRows( 0, 2, QModelIndex() );
-		    m_model.insertColumns(  0,  3,  QModelIndex() );
-		    for (int row = 0; row &lt; 3; ++row) {
-		      for (int column = 0; column &lt; 3; ++column) {
-		        QModelIndex index = m_model.index(row, column, QModelIndex());
-		        m_model.setData(index, QVariant(row+1 * column) );
-		      }
-		    }
+class ChartWidget : public QWidget {
+Q_OBJECT
+public:
+    explicit ChartWidget(QWidget* parent=0)
+    : QWidget(parent)
+    {
+        m_model.insertRows( 0, 2, QModelIndex() );
+        m_model.insertColumns(  0,  3,  QModelIndex() );
+        for (int row = 0; row &lt; 3; ++row) {
+            for (int column = 0; column &lt; 3; ++column) {
+                QModelIndex index = m_model.index(row, column, QModelIndex());
+                m_model.setData(index, QVariant(row+1 * column) );
+            }
+        }
 
-		    BarDiagram* diagram = new KDChart::BarDiagram;
-		    diagram->setModel(&amp;m_model);
+        BarDiagram* diagram = new KDChart::BarDiagram;
+        diagram->setModel(&amp;m_model);
                 </programlisting>
 		<para>
 		    After having store our data into the model, we create a diagram, in this 
@@ -1339,18 +1334,18 @@ done in the same way as for a
 		    <classname>KDChartBarAttributes</classname> to do so. 
 		</para>
 		<programlisting>
-		    BarAttributes ba;
-		    //set the bar width and
-		    //implicitely enable it
-		    ba.setFixedBarWidth( 500 );
-		    ba.setUseFixedBarWidth( true );
-		    //configure gab between values
-		    //and blocks
-		    ba.setGroupGapFactor( 0.50 );
-		    ba.setBarGapFactor( 0.125 );
-		    
-		    //assign to the diagram
-		    diagram->setBarAttributes(  ba );
+        BarAttributes ba;
+        //set the bar width and
+        //implicitely enable it
+        ba.setFixedBarWidth( 500 );
+        ba.setUseFixedBarWidth( true );
+        //configure gab between values
+        //and blocks
+        ba.setGroupGapFactor( 0.50 );
+        ba.setBarGapFactor( 0.125 );
+
+        //assign to the diagram
+        diagram->setBarAttributes(  ba );
                 </programlisting>
 		<para>
 		    We want to configure our bars width so that they get displayed a bit larger.
@@ -1378,17 +1373,17 @@ done in the same way as for a
 		    type of charts. The procedure is very similar.
 		</para>
 		<programlisting>
-		 // display the values
-		    DataValueAttributes dva;
-		    TextAttributes ta = dva.textAttributes();
-		    //rotate if you wish
-		    //ta.setRotation( 0 );
-		    ta.setFont( QFont( "Comic", 9 ) );
-		    ta .setPen( QPen( QColor( Qt::darkGreen ) ) );
-		    ta.setVisible( true );
-		    dva.setTextAttributes( ta );
-		    dva.setVisible( true );
-		    diagram->setDataValueAttributes( dva );
+        // display the values
+        DataValueAttributes dva;
+        TextAttributes ta = dva.textAttributes();
+        //rotate if you wish
+        //ta.setRotation( 0 );
+        ta.setFont( QFont( "Comic", 9 ) );
+        ta .setPen( QPen( QColor( Qt::darkGreen ) ) );
+        ta.setVisible( true );
+        dva.setTextAttributes( ta );
+        dva.setVisible( true );
+        diagram->setDataValueAttributes( dva );
 		</programlisting>
 		<para>
 		    We could have displayed the data values without caring about settings its 
@@ -1405,15 +1400,15 @@ done in the same way as for a
 		    could  also have changed the pen for all datasets or for a specifical index or value.
 		</para>
 		<programlisting>
-		     //draw a surrounding line around bars
-		    QPen linePen;
-		    linePen.setColor( Qt::magenta );
-		    linePen.setWidth( 4 );
-		    linePen.setStyle( Qt::DotLine );
-		    //draw only around a dataset
-		    //to draw around all the bars
-		    // call setPen( myPen );
-		    diagram->setPen( 1,  linePen );
+        //draw a surrounding line around bars
+        QPen linePen;
+        linePen.setColor( Qt::magenta );
+        linePen.setWidth( 4 );
+        linePen.setStyle( Qt::DotLine );
+        //draw only around a dataset
+        //to draw around all the bars
+        // call setPen( myPen );
+        diagram->setPen( 1,  linePen );
 		</programlisting>
 		<note>
 		    <para>
@@ -1431,28 +1426,28 @@ done in the same way as for a
 		    diagram to our chart and conclude the implementation.
 		</para>
 		<programlisting>
-		    m_chart.coordinatePlane()->replaceDiagram(diagram);
+        m_chart.coordinatePlane()->replaceDiagram(diagram);
 
-		    QVBoxLayout* l = new QVBoxLayout(this);
-		    l->addWidget(&amp;m_chart);
-		    setLayout(l);
-		    }
+        QVBoxLayout* l = new QVBoxLayout(this);
+        l->addWidget(&amp;m_chart);
+        setLayout(l);
+    }
 
-		    private:
-		    Chart m_chart;
-		    QStandardItemModel m_model;
-		    };
+    private:
+    Chart m_chart;
+    QStandardItemModel m_model;
+};
 
-		    int main( int argc, char** argv ) {
-		    QApplication app( argc, argv );
+int main( int argc, char** argv ) {
+    QApplication app( argc, argv );
 
-		    ChartWidget w;
-		    w.show();
+    ChartWidget w;
+    w.show();
 
-		    return app.exec();
-		    }
+    return app.exec();
+}
 
-		    #include "main.moc"
+#include "main.moc"
 		</programlisting>
                 <para>
 		    The above procedure can be applied to any of the supported attributes relative 
@@ -1562,8 +1557,7 @@ done in the same way as for a
 		    of your installation.
 		</para>
 		<programlisting linenumbering="numbered" id="fullbar_mainwindow_h">
-		    <textobject><textdata fileref="../../examples/Bars/Advanced/mainwindow.h"/>
-		    </textobject>
+<textobject><textdata fileref="../../examples/Bars/Advanced/mainwindow.h"/></textobject>
 		</programlisting>                
 		<para>
 		    In the above code we bring up the KDChart namespace as usual and declare our 
@@ -1575,8 +1569,7 @@ done in the same way as for a
 		    The implementation is also straight forward as we will see below:
 		</para>
 		<programlisting linenumbering="numbered" id="fullbar_mainwindow_cpp">
-		    <textobject><textdata fileref="../../examples/Bars/Advanced/mainwindow.cpp"/>
-		    </textobject>
+<textobject><textdata fileref="../../examples/Bars/Advanced/mainwindow.cpp"/></textobject>
 		</programlisting>
 		<para>
 		    First of all we are adding our chart to the layout as for any other Qt widget. Load 
@@ -1585,23 +1578,23 @@ done in the same way as for a
 		    to make it somewhat nicer. Finally we assign the diagram to our chart.
 		</para>
 		<programlisting>
-		    //draw a surrounding line around bars
-		   QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
-		    m_chart = new Chart();
-		    chartLayout->addWidget( m_chart );
-		    
-		    m_model.loadFromCSV( ":/data" );
-		    
-		    // Set up the diagram
-		    m_bars = new BarDiagram();
-		    m_bars->setModel( &amp;m_model );
+//draw a surrounding line around bars
+QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
+m_chart = new Chart();
+chartLayout->addWidget( m_chart );
 
-		    QPen pen;
-		    pen.setColor( Qt::darkGray );
-		    pen.setWidth( 1 );
-		    m_bars->setPen( pen );
+m_model.loadFromCSV( ":/data" );
 
-		    m_chart->coordinatePlane()->replaceDiagram( m_bars );
+// Set up the diagram
+m_bars = new BarDiagram();
+m_bars->setModel( &amp;m_model );
+
+QPen pen;
+pen.setColor( Qt::darkGray );
+pen.setWidth( 1 );
+m_bars->setPen( pen );
+
+m_chart->coordinatePlane()->replaceDiagram( m_bars );
 		</programlisting>
 		<para>
 		    The user should be able to change the default sub-type via a combo box 
@@ -1610,13 +1603,13 @@ done in the same way as for a
 		    by updating the view.
 		</para>
 		<programlisting>
-		 ....   
-		 if ( text == "Normal" )
-		    m_bars->setType( BarDiagram::Normal );
-		    else if ( text == "Stacked" )
-		    m_bars->setType( BarDiagram::Stacked );
-		 ....
-		    m_chart->update();
+....
+if ( text == "Normal" )
+    m_bars->setType( BarDiagram::Normal );
+else if ( text == "Stacked" )
+    m_bars->setType( BarDiagram::Stacked );
+....
+m_chart->update();
 		</programlisting>
 		<para>
 		    We set the DataValueAttributes on a per-column basis here, because we want the 
@@ -1624,28 +1617,28 @@ done in the same way as for a
 		    dataset's colour. The user will be able to display or hide the values. 
 		</para>
 		<programlisting>
-		    ...
-		    const QFont font(QFont( "Comic", 10 ));
-		    const int colCount = m_bars->model()->columnCount();
-		    for ( int iColumn = 0; iColumn&lt;colCount; ++iColumn ) {
-			QBrush brush( m_bars->brush( iColumn ) );
-			DataValueAttributes a( m_bars->dataValueAttributes( iColumn ) );
-			TextAttributes ta( a.textAttributes() );
-			ta.setRotation( 0 );
-			ta.setFont( font );
-			ta .setPen( QPen( brush.color() ) );
-			if ( checked )
-			ta.setVisible( true );
-			else
-			ta.setVisible( false );
-			
-			a.setTextAttributes( ta );
-			a.setVisible( true );
-			m_bars->setDataValueAttributes( iColumn, a);
-		    }
+...
+const QFont font(QFont( "Comic", 10 ));
+const int colCount = m_bars->model()->columnCount();
+for ( int iColumn = 0; iColumn&lt;colCount; ++iColumn ) {
+    QBrush brush( m_bars->brush( iColumn ) );
+    DataValueAttributes a( m_bars->dataValueAttributes( iColumn ) );
+    TextAttributes ta( a.textAttributes() );
+    ta.setRotation( 0 );
+    ta.setFont( font );
+    ta .setPen( QPen( brush.color() ) );
+    if ( checked )
+    ta.setVisible( true );
+    else
+    ta.setVisible( false );
 
-		    m_chart->update();
-		    ....		
+    a.setTextAttributes( ta );
+    a.setVisible( true );
+    m_bars->setDataValueAttributes( iColumn, a);
+}
+
+m_chart->update();
+....
 		</programlisting>
 		<para>
 		    As you can see in the above code we are changing the default values for 
@@ -1660,21 +1653,21 @@ done in the same way as for a
 		    interaction.
 		</para>
 		<programlisting>
-		    ...
-		    ThreeDBarAttributes td( m_bars->threeDBarAttributes() );
-		    double defaultDepth = td.depth();
-		    if ( checked ) {
-		    td.setEnabled( true );
-		      if ( threeDDepthCB->isChecked() )
-		        td.setDepth( depthSB->value() );
-		      else
-		        td.setDepth( defaultDepth );
-		    } else {
-		      td.setEnabled( false );
-		    }
-		    m_bars->setThreeDBarAttributes( td );
-		    m_chart->update();
-		    ...
+...
+ThreeDBarAttributes td( m_bars->threeDBarAttributes() );
+double defaultDepth = td.depth();
+if ( checked ) {
+    td.setEnabled( true );
+    if ( threeDDepthCB->isChecked() )
+        td.setDepth( depthSB->value() );
+    else
+        td.setDepth( defaultDepth );
+} else {
+    td.setEnabled( false );
+}
+m_bars->setThreeDBarAttributes( td );
+m_chart->update();
+...
 		</programlisting>
 		<para>
 		    ThreeDBarAttributes are as simple to use as all other Attributes types. 
@@ -1684,22 +1677,22 @@ done in the same way as for a
 		    the original Pen interactively. 
 		</para>
 		<programlisting>
-		    ...
-		    const int column = markColumnSB->value();
-		    QPen pen( m_bars->pen( column ) );
-		    if ( checked ) {
-		    pen.setColor( Qt::yellow );
-		    pen.setStyle( Qt::DashLine );
-		    pen.setWidth( 3 );
-		    m_bars->setPen( column, pen );
-		    }  else {
-		    pen.setColor( Qt::darkGray );
-		    pen.setStyle( Qt::SolidLine );
-		    pen.setWidth( 1 );
-		    m_bars->setPen( column, pen );
-		    }
-		    m_chart->update();
-		    ...
+...
+const int column = markColumnSB->value();
+QPen pen( m_bars->pen( column ) );
+if ( checked ) {
+    pen.setColor( Qt::yellow );
+    pen.setStyle( Qt::DashLine );
+    pen.setWidth( 3 );
+    m_bars->setPen( column, pen );
+}  else {
+    pen.setColor( Qt::darkGray );
+    pen.setStyle( Qt::SolidLine );
+    pen.setWidth( 1 );
+    m_bars->setPen( column, pen );
+}
+m_chart->update();
+...
 		</programlisting>
 		<note>
 		    <para>
@@ -1734,13 +1727,13 @@ done in the same way as for a
 		    or decreasing its value via the Gui.
 		</para>
 		<programlisting>
-		    if (  widthCB->isChecked() ) {
-		      BarAttributes ba( m_bars->barAttributes() );
-		      ba.setFixedBarWidth( value );
-		      ba.setUseFixedBarWidth( true );
-		      m_bars->setBarAttributes( ba  );
-		    }
-		    m_chart->update();
+if (  widthCB->isChecked() ) {
+    BarAttributes ba( m_bars->barAttributes() );
+    ba.setFixedBarWidth( value );
+    ba.setUseFixedBarWidth( true );
+    m_bars->setBarAttributes( ba  );
+}
+m_chart->update();
 		</programlisting>
 		<para>
 		    Here we are making use of the 
@@ -1762,7 +1755,7 @@ done in the same way as for a
 		</figure>
 		<para>
 		    This example is available to compile and run from the 
-		    <filename>examples/Bars/Advanced</filename> directory into your KD Chart installation.
+		    <filename>examples/Bars/Advanced</filename> directory in your KD Chart installation.
 		    We recommend you to run it.
 		</para>
 	    </sect2>		    	    
@@ -1896,33 +1889,33 @@ done in the same way as for a
 		    First include the appropriate headers and bring in the "KDChart namespace":
 		</para>	    	
 		<programlisting>
-		    #include &lt;QApplication&gt;
-		    #include &lt;KDChartWidget&gt;
-                    #include &lt;KDChartLineDiagram&gt;
-                    #include &lt;QPen&gt;
+#include &lt;QApplication&gt;
+#include &lt;KDChartWidget&gt;
+#include &lt;KDChartLineDiagram&gt;
+#include &lt;QPen&gt;
 
-	            using namespace KDChart;			    
+using namespace KDChart;
 		</programlisting>                
 		<para>
 		    We need to include <classname>KDChartLineDiagram</classname> in order to be able
 		    to configure some of its attributes as we will see further on. 
 		</para>
 		<programlisting>
-		    int main( int argc, char** argv ) {
-		    QApplication app( argc, argv );                    
-		    Widget widget;
-		    // our Widget can be configured 
-		    // as any Qt Widget 
-		    widget.resize( 600, 600 );		    
-                    // store the data and assign it
-		    QVector&lt; double &gt; vec0,  vec1;
-		    vec0 &lt;&lt; 5 &lt;&lt; 1 &lt;&lt; 3 &lt;&lt; 4 &lt;&lt; 1;
-		    vec1 &lt;&lt; 3 &lt;&lt; 6 &lt;&lt; 2 &lt;&lt; 4 &lt;&lt; 8;
-		    vec2 &lt;&lt; 0 &lt;&lt; 7 &lt;&lt; 1 &lt;&lt; 2 &lt;&lt; 1;
-		    widget.setDataset( 0, vec0, "vec0" );
-		    widget.setDataset( 1, vec1, "vec1" );
-		    widget.setDataset( 2, vec2, "vec2" );
-		    widget.setSubType(  Widget::Percent );
+int main( int argc, char** argv ) {
+    QApplication app( argc, argv );
+    Widget widget;
+    // our Widget can be configured
+    // as any Qt Widget
+    widget.resize( 600, 600 );
+            // store the data and assign it
+    QVector&lt; double &gt; vec0,  vec1;
+    vec0 &lt;&lt; 5 &lt;&lt; 1 &lt;&lt; 3 &lt;&lt; 4 &lt;&lt; 1;
+    vec1 &lt;&lt; 3 &lt;&lt; 6 &lt;&lt; 2 &lt;&lt; 4 &lt;&lt; 8;
+    vec2 &lt;&lt; 0 &lt;&lt; 7 &lt;&lt; 1 &lt;&lt; 2 &lt;&lt; 1;
+    widget.setDataset( 0, vec0, "vec0" );
+    widget.setDataset( 1, vec1, "vec1" );
+    widget.setDataset( 2, vec2, "vec2" );
+    widget.setSubType(  Widget::Percent );
 		</programlisting>
 		<para>
 		    We dont need to change the default chart type as Line Charts is the default . 
@@ -1931,7 +1924,7 @@ done in the same way as for a
 		    method allow us to achieve that the easy way.		    
 		</para>
 		<programlisting>
-		    widget.setSubType( Widget::Percent );
+    widget.setSubType( Widget::Percent );
 		</programlisting>
 		<para>
 		    The default sub-type being Normal for all types of charts we need to call 
@@ -1941,14 +1934,14 @@ done in the same way as for a
 		    calling <methodname>setSubType( Widget::Normal )</methodname>.		    
 		</para>
 		<programlisting>
-		   //Configure a pen and draw 
-		    //a dashed line for column 1
-		    QPen pen;
-		    pen.setWidth( 3 );
-		    pen.setStyle( Qt::DashDotLine );
-		    pen.setColor(  Qt::green );
-		    // call your diagram and set the new pen
-		    widget.lineDiagram()->setPen(  1 , pen );
+    //Configure a pen and draw
+    //a dashed line for column 1
+    QPen pen;
+    pen.setWidth( 3 );
+    pen.setStyle( Qt::DashDotLine );
+    pen.setColor(  Qt::green );
+    // call your diagram and set the new pen
+    widget.lineDiagram()->setPen(  1 , pen );
 		</programlisting>
 		<para>
 		     In the above code our intention is to draw a new style of line for this 
@@ -1961,14 +1954,14 @@ done in the same way as for a
 		    method.
 		</para>
 		<programlisting>
-		    //Display in Area mode
-		    LineAttributes ld;
-		    ld.setDisplayArea( true );
-		    //configure transparency 
-		    //it is nicer and let us 
-		    //all the area
-		    ld.setTransparency( 25 );
-		    widget.lineDiagram()->setLineAttributes( ld );
+    //Display in Area mode
+    LineAttributes ld;
+    ld.setDisplayArea( true );
+    //configure transparency
+    //it is nicer and let us
+    //all the area
+    ld.setTransparency( 25 );
+    widget.lineDiagram()->setLineAttributes( ld );
 		</programlisting>
 		<para>
 		    The code above makes use of typical <classname>KDChartLineAttributes</classname> and
@@ -1977,10 +1970,10 @@ done in the same way as for a
 		    Finally we conclude our small example:
 		</para>
 		<programlisting>
-		    widget.show();
-		    
-		    return app.exec();
-		    }
+    widget.show();
+
+    return app.exec();
+}
 		</programlisting>
 		<para>
 		    See the screen-shot below to view The resulting chart displayed by the above code. 
@@ -2090,19 +2083,19 @@ done in the same way as for a
 		<para>
 		    Let us make this more concrete by looking at the following sample code that 
 		    describes the above process. We recommand you to compile and run the following 
-		    example which is located into the <filename>examples/Lines/Parameters</filename>
+		    example which is located in the <filename>examples/Lines/Parameters</filename>
 		    directory of your KD Chart installation.
 		</para>
 		<para>
 		    First of all we are including the header files and bring KD Chart namespace.
 		</para>
 		<programlisting>
-		    #include &lt;QtGui&gt;
-		    #include &lt;KDChartChart&gt;
-                    #include &lt;KDChartLineDiagram&gt;
-                    #include &lt;KDChartDataValueAttributes&gt;
+#include &lt;QtGui&gt;
+#include &lt;KDChartChart&gt;
+#include &lt;KDChartLineDiagram&gt;
+#include &lt;KDChartDataValueAttributes&gt;
 
-                    using namespace KDChart;		    
+using namespace KDChart;
                 </programlisting>
 		<para>
 		    We have included <classname>KDChartDataValueAttributes</classname> to be able 
@@ -2115,23 +2108,23 @@ done in the same way as for a
 		    will be assigned to our diagram. 
 		</para>
 		<programlisting>
-		    class ChartWidget : public QWidget {
-		    Q_OBJECT
-		    public:
-		    explicit ChartWidget(QWidget* parent=0)
-		    : QWidget(parent)
-		    {
-		    m_model.insertRows( 0,5, QModelIndex() );
-		    m_model.insertColumns( 0,5, QModelIndex() );
+class ChartWidget : public QWidget {
+Q_OBJECT
+public:
+    explicit ChartWidget(QWidget* parent=0)
+    : QWidget(parent)
+    {
+        m_model.insertRows( 0,5, QModelIndex() );
+        m_model.insertColumns( 0,5, QModelIndex() );
 
-		    for( int i = 0; i &lt; 5; ++i ) {
-		      for( int j = 0; j &lt; 5; ++j ) {
-		        m_model.setData( m_model.index( i,j,QModelIndex() ), (double)i*j );
-		      } 
-		    }		    
+        for( int i = 0; i &lt; 5; ++i ) {
+            for( int j = 0; j &lt; 5; ++j ) {
+                m_model.setData( m_model.index( i,j,QModelIndex() ), (double)i*j );
+            }
+        }
 
-		    LineDiagram* diagram = new LineDiagram;
-		    diagram->setModel(&amp;m_model);
+        LineDiagram* diagram = new LineDiagram;
+        diagram->setModel(&amp;m_model);
                 </programlisting>
 		<para>
 		    After having stored our data into the model, we create a diagram. In this 
@@ -2144,25 +2137,25 @@ done in the same way as for a
 		    values and configure the text and font for those.
 		</para>
 		<programlisting>
-		    // Display values
-		    // 1 - Call the relevant attributes
-		    DataValueAttributes dva( diagram->dataValueAttributes() );
-		    // 2 - We want to configure the font and colors
-		    //     for the data values text.
-		    TextAttributes ta( dva.textAttributes() );
-		    //rotate if you wish
-		    //ta.setRotation( 0 );
-		    // 3 - Set up your text attributes
-		    ta.setFont( QFont( "Comic", 6 ) );
-		    ta .setPen( QPen( QColor( Qt::darkGreen ) ) );
-		    ta.setVisible( true );
-		    // 4 - Assign the text attributes to your
-		    //     DataValuesAttributes
-		    dva.setTextAttributes( ta );
-		    dva.setVisible( true );
-		    // 5 - Assign to the diagram
-		    diagram->setDataValueAttributes( dva );
-                </programlisting>
+        // Display values
+        // 1 - Call the relevant attributes
+        DataValueAttributes dva( diagram->dataValueAttributes() );
+        // 2 - We want to configure the font and colors
+        //     for the data values text.
+        TextAttributes ta( dva.textAttributes() );
+        //rotate if you wish
+        //ta.setRotation( 0 );
+        // 3 - Set up your text attributes
+        ta.setFont( QFont( "Comic", 6 ) );
+        ta .setPen( QPen( QColor( Qt::darkGreen ) ) );
+        ta.setVisible( true );
+        // 4 - Assign the text attributes to your
+        //     DataValuesAttributes
+        dva.setTextAttributes( ta );
+        dva.setVisible( true );
+        // 5 - Assign to the diagram
+        diagram->setDataValueAttributes( dva );
+        </programlisting>
 		<para>
 		    As for all attributes we call them by using the relevant method available
 		    from our diagram interface, here 
@@ -2191,16 +2184,16 @@ done in the same way as for a
 		    particular section.
 		</para>
 		<programlisting>
-		    // Draw a the section of a line differently.
-		    // 1 - Retrieve the pen for the dataset and change
-		    //    its style.
-		    //    This allow us to keep the line original color.
-		    QPen linePen(  diagram->pen( 1 ) );
-		    linePen.setWidth( 3 );
-		    linePen.setStyle( Qt::DashLine );
-		    // 2 - Change the Pen for a section within a line 
-		    while assigning it to the diagram		    
-		    diagram->setPen( m_model.index( 1, 1, QModelIndex() ), linePen );		   
+        // Draw a the section of a line differently.
+        // 1 - Retrieve the pen for the dataset and change
+        //    its style.
+        //    This allow us to keep the line original color.
+        QPen linePen(  diagram->pen( 1 ) );
+        linePen.setWidth( 3 );
+        linePen.setStyle( Qt::DashLine );
+        // 2 - Change the Pen for a section within a line
+        while assigning it to the diagram
+        diagram->setPen( m_model.index( 1, 1, QModelIndex() ), linePen );
 		</programlisting>	
 		<para>
 		    Of course we could  also have changed the pen for a single or all datasets as
@@ -2223,28 +2216,28 @@ done in the same way as for a
 		    line diagram to our chart and conclude the implementation.
 		</para>
 		<programlisting>
-		    m_chart.coordinatePlane()->replaceDiagram(diagram);
+        m_chart.coordinatePlane()->replaceDiagram(diagram);
 
-		    QVBoxLayout* l = new QVBoxLayout(this);
-		    l->addWidget(&amp;m_chart);
-		    setLayout(l);
-		    }
+        QVBoxLayout* l = new QVBoxLayout(this);
+        l->addWidget(&amp;m_chart);
+        setLayout(l);
+    }
 
-		    private:
-		    Chart m_chart;
-		    QStandardItemModel m_model;
-		    };
+private:
+    Chart m_chart;
+    QStandardItemModel m_model;
+};
 
-		    int main( int argc, char** argv ) {
-		    QApplication app( argc, argv );
+int main( int argc, char** argv ) {
+    QApplication app( argc, argv );
 
-		    ChartWidget w;
-		    w.show();
+    ChartWidget w;
+    w.show();
 
-		    return app.exec();
-		    }
+    return app.exec();
+}
 
-		    #include "main.moc"
+#include "main.moc"
 		</programlisting>
                 <para>
 		    The above procedure can be applied to any of the supported attributes for 
@@ -2347,8 +2340,7 @@ done in the same way as for a
 		    of your installation.
 		</para>
 		<programlisting linenumbering="numbered" id="fullline_mainwindow_h">
-		    <textobject><textdata fileref="../../examples/Lines/Advanced/mainwindow.h"/>
-		    </textobject>
+<textobject><textdata fileref="../../examples/Lines/Advanced/mainwindow.h"/></textobject>
 		</programlisting>                
 		<para>		
 		    In the above code we bring up the KDChart namespace as usual and declare our 
@@ -2360,8 +2352,7 @@ done in the same way as for a
 		    The implementation is also straight forward as we will see below:
 		</para>    		
 		<programlisting linenumbering="numbered" id="fullline_mainwindow_cpp">
-		    <textobject><textdata fileref="../../examples/Lines/Advanced/mainwindow.cpp"/>
-		    </textobject>
+<textobject><textdata fileref="../../examples/Lines/Advanced/mainwindow.cpp"/></textobject>
 		</programlisting>		
 		<para>
 		    First of all we are adding our chart to the layout as for any other Qt widget. Load 
@@ -2370,23 +2361,23 @@ done in the same way as for a
 		    Finally we assign the diagram to our chart.
 		</para>
 		<programlisting>
-		   ... 
-		   QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
-		    m_chart = new Chart();
-		    chartLayout->addWidget( m_chart );
+...
+QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
+m_chart = new Chart();
+chartLayout->addWidget( m_chart );
 
-		    m_model.loadFromCSV( ":/data" );
-		    
-		    // Set up the diagram
-		    m_lines = new LineDiagram();
-		    m_lines->setModel( &amp;m_model );
-		    m_chart->coordinatePlane()->replaceDiagram( m_lines );
-		    
-		    // Instantiate the timer
-		    QTimer *timer = new QTimer(this);
-		    connect(timer, SIGNAL(timeout()), this, SLOT(slot_timerFired()));
-		    timer->start(40);
-		    ...
+m_model.loadFromCSV( ":/data" );
+
+// Set up the diagram
+m_lines = new LineDiagram();
+m_lines->setModel( &amp;m_model );
+m_chart->coordinatePlane()->replaceDiagram( m_lines );
+
+// Instantiate the timer
+QTimer *timer = new QTimer(this);
+connect(timer, SIGNAL(timeout()), this, SLOT(slot_timerFired()));
+timer->start(40);
+...
 		</programlisting>
 		<para>
 		    The user should be able to change the default sub-type via a combo box 
@@ -2395,15 +2386,15 @@ done in the same way as for a
 		    by updating the view.
 		</para>
 		<programlisting>
-		 ....   
-		 if ( text == "Normal" )
-		    m_lines->setType( LineDiagram::Normal );
-		 else if ( text == "Stacked" )
-		    m_lines->setType( LineDiagram::Stacked );
-		 else if ( text == "Percent" )
-		    m_lines->setType( LineDiagram::Percent );
-		 ....
-		 m_chart->update();
+....
+if ( text == "Normal" )
+m_lines->setType( LineDiagram::Normal );
+else if ( text == "Stacked" )
+m_lines->setType( LineDiagram::Stacked );
+else if ( text == "Percent" )
+m_lines->setType( LineDiagram::Percent );
+....
+m_chart->update();
 		</programlisting>
     		<para>
 		    We want the user to be able to display or hide the data values from the 
@@ -2411,24 +2402,24 @@ done in the same way as for a
 		    it nicer. 
 		</para>
 		<programlisting>
-		    const int colCount = m_lines->model()->columnCount(m_lines->rootIndex());
-		    for ( int iColumn = 0; iColumn&lt;colCount; ++iColumn ) {
-			DataValueAttributes a( m_lines->dataValueAttributes( iColumn ) );
-			QBrush brush( m_lines->brush( iColumn ) );
-			TextAttributes ta( a.textAttributes() );
-			ta.setRotation( 0 );
-			ta.setFont( QFont( "Comic", 10 ) );
-			ta.setPen( QPen( brush.color() ) );
-			
-			if ( checked )
-			ta.setVisible( true );
-			else
-			ta.setVisible( false );
-			a.setVisible( true );
-			a.setTextAttributes( ta );
-			m_lines->setDataValueAttributes( iColumn, a );
-		    }
-		    m_chart->update();
+const int colCount = m_lines->model()->columnCount(m_lines->rootIndex());
+for ( int iColumn = 0; iColumn&lt;colCount; ++iColumn ) {
+    DataValueAttributes a( m_lines->dataValueAttributes( iColumn ) );
+    QBrush brush( m_lines->brush( iColumn ) );
+    TextAttributes ta( a.textAttributes() );
+    ta.setRotation( 0 );
+    ta.setFont( QFont( "Comic", 10 ) );
+    ta.setPen( QPen( brush.color() ) );
+    
+    if ( checked )
+    ta.setVisible( true );
+    else
+    ta.setVisible( false );
+    a.setVisible( true );
+    a.setTextAttributes( ta );
+    m_lines->setDataValueAttributes( iColumn, a );
+}
+m_chart->update();
 		</programlisting>		
 		<para>
 		    In the code above, we make sure our data values labels will be painted 
@@ -2466,20 +2457,19 @@ done in the same way as for a
 		    The user should be able to display the area for one or several dataset.  
 		</para>
 		<programlisting>
-		    ....
-		    LineAttributes la = 
-		    m_lines->lineAttributes( 
-		    m_lines->model()->index( 0, column, m_lines->rootIndex() ) );
-		    if ( checked ) {
-		     la.setDisplayArea( true );
-		     la.setTransparency( opacity );
-		    }  else {
-		     la.setDisplayArea( false );
-		    }
-		    m_lines->setLineAttributes( column, la );
-		    ...
-		    m_chart->update();
-		    ...
+....
+LineAttributes la = m_lines->lineAttributes(
+m_lines->model()->index( 0, column, m_lines->rootIndex() ) );
+if ( checked ) {
+    la.setDisplayArea( true );
+    la.setTransparency( opacity );
+}  else {
+    la.setDisplayArea( false );
+}
+m_lines->setLineAttributes( column, la );
+...
+m_chart->update();
+...
 		</programlisting>
 		<para>
 		    This is implemented by configuring our line attributes and assign them by 
@@ -2492,7 +2482,7 @@ done in the same way as for a
 		</para>
 		<para>
 		    This example is available to compile and run from the 
-		    <filename>examples/Lines/Advanced</filename> directory into your KD Chart 
+		    <filename>examples/Lines/Advanced</filename> directory in your KD Chart
 		    installation. We recommend you to run it. The widget displayed by the above 
 		    code is shown in the figure below.
 		</para>
@@ -2568,21 +2558,21 @@ done in the same way as for a
 		    to display a Point diagram.
 		</para>
 		<programlisting>
-		    ...
-		    //  Hide the lines
-		    widget.lineDiagram()->setPen(  Qt::NoPen );
-		    // Set up the Attributes
-		    DataValueAttributes dva( widget.lineDiagram()->dataValueAttributes() );
-		    MarkerAttributes ma(  dva.markerAttributes() );
-		    TextAttributes ta(  dva.textAttributes() );
-		    ma.setVisible( true );
-		    // display values or not
-		    ta.setVisible(  false );
-		    dva.setTextAttributes(  ta );
-		    dva.setMarkerAttributes(  ma );
-		    dva.setVisible( true );
-		    
-		    widget.lineDiagram()->setDataValueAttributes( dva );		    	
+...
+//  Hide the lines
+widget.lineDiagram()->setPen(  Qt::NoPen );
+// Set up the Attributes
+DataValueAttributes dva( widget.lineDiagram()->dataValueAttributes() );
+MarkerAttributes ma(  dva.markerAttributes() );
+TextAttributes ta(  dva.textAttributes() );
+ma.setVisible( true );
+// display values or not
+ta.setVisible(  false );
+dva.setTextAttributes(  ta );
+dva.setMarkerAttributes(  ma );
+dva.setVisible( true );
+
+widget.lineDiagram()->setDataValueAttributes( dva );
                 </programlisting>
 		<para>
 		    This sample code is making use of a <classname>KDChartWidget</classname> and a 
@@ -2673,8 +2663,7 @@ done in the same way as for a
 		    of your installation.
 		</para>
 		<programlisting linenumbering="numbered" id="fullpoint_mainwindow_h">
-		    <textobject><textdata fileref="../../examples/Lines/PointChart/mainwindow.h"/>
-		    </textobject>
+<textobject><textdata fileref="../../examples/Lines/PointChart/mainwindow.h"/></textobject>
 		</programlisting>   
 		<para>		
 		    In the above code we bring up the KDChart namespace as usual and declare our 
@@ -2686,8 +2675,7 @@ done in the same way as for a
 		    The implementation is similar to the line chart implementation presented earlier:
 		</para>    		
 		<programlisting linenumbering="numbered" id="fullpoint_mainwindow_cpp">
-		    <textobject><textdata fileref="../../examples/Lines/PointChart/mainwindow.cpp"/>
-		    </textobject>
+<textobject><textdata fileref="../../examples/Lines/PointChart/mainwindow.cpp"/></textobject>
 		</programlisting>
 		<para>
 		    Here we will not comment in details the code as it is similar to what we have seen 
@@ -2698,21 +2686,21 @@ done in the same way as for a
 		    pen:
 		</para>
 		<programlisting>
-		    void MainWindow::on_paintLinesCB_toggled(  bool checked )
-		    {
-		    const int colCount = m_lines->model()->columnCount(m_lines->rootIndex());
-		    for ( int iColumn = 0; iColumn&lt;colCount; ++iColumn ) {
-			DataValueAttributes a( m_lines->dataValueAttributes( iColumn ) );
-			QBrush lineBrush( m_lines->brush( iColumn ) );
-			  if ( checked ) {
-			    QPen linePen( lineBrush.color() );
-			    m_lines->setPen(  iColumn,  linePen );
-			  }
-			  else
-			    m_lines->setPen( iColumn,  Qt::NoPen );
-			  }
-		    m_chart->update();
-		    }
+void MainWindow::on_paintLinesCB_toggled(  bool checked )
+{
+    const int colCount = m_lines->model()->columnCount(m_lines->rootIndex());
+    for ( int iColumn = 0; iColumn&lt;colCount; ++iColumn ) {
+        DataValueAttributes a( m_lines->dataValueAttributes( iColumn ) );
+        QBrush lineBrush( m_lines->brush( iColumn ) );
+        if ( checked ) {
+            QPen linePen( lineBrush.color() );
+            m_lines->setPen(  iColumn,  linePen );
+        }
+        else
+            m_lines->setPen( iColumn,  Qt::NoPen );
+    }
+    m_chart->update();
+}
 		</programlisting> 
 		<para>
 		    We need to retrieve the pen color before resetting it to its original value, and do 
@@ -2751,17 +2739,17 @@ done in the same way as for a
 		    very convenient in this case.
 		</para>
 		<programlisting>
-		    ...
-		    MarkerAttributes::MarkerStylesMap map;
-		    map.insert( 0, MarkerAttributes::MarkerSquare );
-		    map.insert( 1, MarkerAttributes::MarkerCircle );
-		    map.insert( 2, MarkerAttributes::MarkerRing );
-		    map.insert( 3, MarkerAttributes::MarkerCross );
-		    map.insert( 4, MarkerAttributes::MarkerDiamond );
-		    ...
-		    MarkerAttributes ma( dva.markerAttributes() );
-		    ma.setMarkerStylesMap( map );
-		    ....
+...
+MarkerAttributes::MarkerStylesMap map;
+map.insert( 0, MarkerAttributes::MarkerSquare );
+map.insert( 1, MarkerAttributes::MarkerCircle );
+map.insert( 2, MarkerAttributes::MarkerRing );
+map.insert( 3, MarkerAttributes::MarkerCross );
+map.insert( 4, MarkerAttributes::MarkerDiamond );
+...
+MarkerAttributes ma( dva.markerAttributes() );
+ma.setMarkerStylesMap( map );
+....
 		</programlisting>
 		<para>
 		    The user may also change the size of the marker form the GUI and this is 
@@ -2770,12 +2758,12 @@ done in the same way as for a
 		    <methodname>setMarkerSize()</methodname>.
 		</para>
 		<programlisting>
-		     ma.setMarkerSize( QSize( markersWidthSB->value(),
-                                       markersHeightSB->value() ) );
+ma.setMarkerSize( QSize( markersWidthSB->value(),
+                         markersHeightSB->value() ) );
 		</programlisting>
 		<para>
 		    This example is available to compile and run from the 
-		    <filename>examples/Lines/PointChart</filename> directory into your KD Chart 
+		    <filename>examples/Lines/PointChart</filename> directory in your KD Chart
 		    installation. We recommend you to run it. The widget displayed by the above 
 		    code is shown in the figure below.
 		</para>
@@ -2811,7 +2799,7 @@ done in the same way as for a
 		<para>
 		    In order to make it possible to see all points, since some are covered by 
 		    another dataset's area, we have introduced an attribute which allow the user 
-		    to configure the level of transparency (more about that into the Attributes 
+		    to configure the level of transparency (more about that in the Attributes
 		    paragraph of this section.
 		    KD Chart 2.0 supports of course Area display for all subtypes of line charts 
 		    and thus allow also the user to display the non-overlapping line types. The 
@@ -2894,12 +2882,12 @@ done in the same way as for a
 		    and reproduce the process described above:	   
 		</para>
 		<programlisting>
-		    // Create a LineAttribute object
-		    LineAttributes la = m_lines->lineAttributes( index );  	    	
-                    // set Display implicitely 
-		    la.setDisplayArea( true );
-		    // Assign to the diagram 
-		    m_lines->setLineAttributes( index, la );
+// Create a LineAttribute object
+LineAttributes la = m_lines->lineAttributes( index );
+// set Display implicitely
+la.setDisplayArea( true );
+// Assign to the diagram
+m_lines->setLineAttributes( index, la );
                 </programlisting>
 		<para>
 		    Of course Brush and Pen settings as well as all other configurable attributes 
@@ -2986,12 +2974,11 @@ done in the same way as for a
 		<para>
 		    Let us concentrate on our Line chart implementation for now and consult the 
 		    following files: other needed files like the ui, pro , qrc ,CSV and main.cpp files 
-		    can be consulted from the <filename>examples/Lines/Advance</filename> directory
+		    can be consulted from the <filename>examples/Lines/Advanced</filename> directory
 		    of your installation.
 		</para>
 		<programlisting linenumbering="numbered" id="fullarea_mainwindow_h">
-		    <textobject><textdata fileref="../../examples/Lines/Advanced/mainwindow.h"/>
-		    </textobject>
+<textobject><textdata fileref="../../examples/Lines/Advanced/mainwindow.h"/></textobject>
 		</programlisting>                
 		<para>		
 		    In the above code we bring up the KDChart namespace as usual and declare our 
@@ -3003,8 +2990,7 @@ done in the same way as for a
 		    The implementation is similar to the line chart implementation presented earlier:
 		</para>    
 		<programlisting linenumbering="numbered" id="fullarea_mainwindow_cpp">
-		    <textobject><textdata fileref="../../examples/Lines/Advanced/mainwindow.cpp"/>
-		    </textobject>
+<textobject><textdata fileref="../../examples/Lines/Advanced/mainwindow.cpp"/></textobject>
 		</programlisting>
 		<para>
 		    First of all we are adding our chart to the layout as for any other Qt widget. Load 
@@ -3013,23 +2999,23 @@ done in the same way as for a
 		    Finally we assign the diagram to our chart.
 		</para>
 		<programlisting>
-		   ... 
-		   QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
-		    m_chart = new Chart();
-		    chartLayout->addWidget( m_chart );
+...
+QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
+m_chart = new Chart();
+chartLayout->addWidget( m_chart );
 
-		    m_model.loadFromCSV( ":/data" );
-		    
-		    // Set up the diagram
-		    m_lines = new LineDiagram();
-		    m_lines->setModel( &amp;m_model );
-		    m_chart->coordinatePlane()->replaceDiagram( m_lines );
-		    
-		    // Instantiate the timer
-		    QTimer *timer = new QTimer(this);
-		    connect(timer, SIGNAL(timeout()), this, SLOT(slot_timerFired()));
-		    timer->start(40);
-		    ...
+m_model.loadFromCSV( ":/data" );
+
+// Set up the diagram
+m_lines = new LineDiagram();
+m_lines->setModel( &amp;m_model );
+m_chart->coordinatePlane()->replaceDiagram( m_lines );
+
+// Instantiate the timer
+QTimer *timer = new QTimer(this);
+connect(timer, SIGNAL(timeout()), this, SLOT(slot_timerFired()));
+timer->start(40);
+...
 		</programlisting>
 		<para>
 		    The user should be able to change the default sub-type via a combo box 
@@ -3038,15 +3024,15 @@ done in the same way as for a
 		    by updating the view.
 		</para>
 		<programlisting>
-		 ....   
-		 if ( text == "Normal" )
-		    m_lines->setType( LineDiagram::Normal );
-		 else if ( text == "Stacked" )
-		    m_lines->setType( LineDiagram::Stacked );
-		 else if ( text == "Percent" )
-		    m_lines->setType( LineDiagram::Percent );
-		 ....
-		 m_chart->update();
+....
+if ( text == "Normal" )
+    m_lines->setType( LineDiagram::Normal );
+else if ( text == "Stacked" )
+    m_lines->setType( LineDiagram::Stacked );
+else if ( text == "Percent" )
+    m_lines->setType( LineDiagram::Percent );
+....
+m_chart->update();
 		</programlisting>
     		<para>
 		    We want the user to be able to display or hide the data values from the 
@@ -3054,24 +3040,24 @@ done in the same way as for a
 		    it nicer. 
 		</para>
 		<programlisting>
-		    const int colCount = m_lines->model()->columnCount(m_lines->rootIndex());
-		    for ( int iColumn = 0; iColumn&lt;colCount; ++iColumn ) {
-			DataValueAttributes a( m_lines->dataValueAttributes( iColumn ) );
-			QBrush brush( m_lines->brush( iColumn ) );
-			TextAttributes ta( a.textAttributes() );
-			ta.setRotation( 0 );
-			ta.setFont( QFont( "Comic", 10 ) );
-			ta.setPen( QPen( brush.color() ) );
-			
-			if ( checked )
-			ta.setVisible( true );
-			else
-			ta.setVisible( false );
-			a.setVisible( true );
-			a.setTextAttributes( ta );
-			m_lines->setDataValueAttributes( iColumn, a );
-		    }
-		    m_chart->update();
+const int colCount = m_lines->model()->columnCount(m_lines->rootIndex());
+for ( int iColumn = 0; iColumn&lt;colCount; ++iColumn ) {
+    DataValueAttributes a( m_lines->dataValueAttributes( iColumn ) );
+    QBrush brush( m_lines->brush( iColumn ) );
+    TextAttributes ta( a.textAttributes() );
+    ta.setRotation( 0 );
+    ta.setFont( QFont( "Comic", 10 ) );
+    ta.setPen( QPen( brush.color() ) );
+
+    if ( checked )
+        ta.setVisible( true );
+    else
+        ta.setVisible( false );
+    a.setVisible( true );
+    a.setTextAttributes( ta );
+    m_lines->setDataValueAttributes( iColumn, a );
+}
+m_chart->update();
 		</programlisting>		
 		<para>
 		    In the code above, we make sure our data values labels will be painted 
@@ -3109,20 +3095,20 @@ done in the same way as for a
 		    The user should be able to display the area for one or several dataset.  
 		</para>
 		<programlisting>
-		    ....
-		    LineAttributes la = 
-		    m_lines->lineAttributes( 
-		    m_lines->model()->index( 0, column, m_lines->rootIndex() ) );
-		    if ( checked ) {
-		     la.setDisplayArea( true );
-		     la.setTransparency( opacity );
-		    }  else {
-		     la.setDisplayArea( false );
-		    }
-		    m_lines->setLineAttributes( column, la );
-		    ...
-		    m_chart->update();
-		    ...
+....
+LineAttributes la =
+m_lines->lineAttributes(
+m_lines->model()->index( 0, column, m_lines->rootIndex() ) );
+if ( checked ) {
+    la.setDisplayArea( true );
+    la.setTransparency( opacity );
+} else {
+    la.setDisplayArea( false );
+}
+m_lines->setLineAttributes( column, la );
+...
+m_chart->update();
+...
 		</programlisting>
 		<para>
 		    This is implemented by configuring our line attributes and assign them by 
@@ -3135,7 +3121,7 @@ done in the same way as for a
 		</para>
 		<para>
 		    This example is available to compile and run from the 
-		    <filename>examples/Lines/Advanced</filename> directory into your KD Chart 
+		    <filename>examples/Lines/Advanced</filename> directory in your KD Chart
 		    installation. We recommend you to run it. The widget displayed by the above 
 		    code is shown in the figure below.
 		</para>
@@ -3696,33 +3682,33 @@ done in the same way as for a
 		    First include the appropriate headers and bring in the "KDChart namespace":
 		</para>	    	
 		<programlisting>
-		    #include &lt;QApplication&gt;
-		    #include &lt;KDChartWidget&gt;
-		    #include &lt;KDChartPieDiagram&gt;
-                    #include &lt;QPen&gt;
+#include &lt;QApplication&gt;
+#include &lt;KDChartWidget&gt;
+#include &lt;KDChartPieDiagram&gt;
+#include &lt;QPen&gt;
 
-	            using namespace KDChart;			    
+using namespace KDChart;
 		</programlisting>                
 		<para>
 		    We need to include <classname>KDChartPieDiagram</classname> in order to be able
 		    to configure some of its attributes as we will see further on. 
 		</para>
 		<programlisting>
-		    int main( int argc, char** argv ) {
-		    QApplication app( argc, argv );                    
-		    Widget widget;
-		    // our Widget can be configured 
-		    // as any Qt Widget 
-		    widget.resize( 600, 600 );		    
-                    // store the data and assign it
-		    QVector&lt; double &gt; vec0,  vec1;
-		    vec0 &lt;&lt; 5 &lt;&lt; 1 &lt;&lt; 3 &lt;&lt; 4 &lt;&lt; 1;
-		    vec1 &lt;&lt; 3 &lt;&lt; 6 &lt;&lt; 2 &lt;&lt; 4 &lt;&lt; 8;
-		    vec2 &lt;&lt; 0 &lt;&lt; 7 &lt;&lt; 1 &lt;&lt; 2 &lt;&lt; 1;
-		    widget.setDataset( 0, vec0, "vec0" );
-		    widget.setDataset( 1, vec1, "vec1" );
-		    widget.setDataset( 2, vec2, "vec2" );
-		    widget.setType(  Widget::Pie );
+int main( int argc, char** argv ) {
+    QApplication app( argc, argv );
+    Widget widget;
+    // our Widget can be configured
+    // as any Qt Widget
+    widget.resize( 600, 600 );
+    // store the data and assign it
+    QVector&lt; double &gt; vec0,  vec1;
+    vec0 &lt;&lt; 5 &lt;&lt; 1 &lt;&lt; 3 &lt;&lt; 4 &lt;&lt; 1;
+    vec1 &lt;&lt; 3 &lt;&lt; 6 &lt;&lt; 2 &lt;&lt; 4 &lt;&lt; 8;
+    vec2 &lt;&lt; 0 &lt;&lt; 7 &lt;&lt; 1 &lt;&lt; 2 &lt;&lt; 1;
+    widget.setDataset( 0, vec0, "vec0" );
+    widget.setDataset( 1, vec1, "vec1" );
+    widget.setDataset( 2, vec2, "vec2" );
+    widget.setType(  Widget::Pie );
 		</programlisting>
 		<para>
 		    We just need to change the default chart type (Line Charts) by calling  
@@ -3732,11 +3718,11 @@ done in the same way as for a
 		    Now let us configure a Pen to draw a line arount the Pie and its section
 		</para>
 		<programlisting>		   
-		    QPen piePen( widget.pieDiagram()->pen() );
-                    piePen.setWidth( 3 );
-		    piePen.setColor( Qt::yellow );
-		    // call your diagram and set the new pen
-		    widget.pieDiagram()->setPen( 2, piePen );
+    QPen piePen( widget.pieDiagram()->pen() );
+    piePen.setWidth( 3 );
+    piePen.setColor( Qt::yellow );
+    // call your diagram and set the new pen
+    widget.pieDiagram()->setPen( 2, piePen );
 		</programlisting>		
 		<para>
 		    Here we are configuring the pen "attribute". As you can see it is straight forward.
@@ -3749,10 +3735,10 @@ done in the same way as for a
 		    Finally we conclude our small example:
 		</para>
 		<programlisting>
-		    widget.show();
-		    
-		    return app.exec();
-		    }
+    widget.show();
+
+    return app.exec();
+}
 		</programlisting>
 		<para>
 		    See the screen-shot below to view The resulting chart displayed by the above code. 
@@ -3885,13 +3871,13 @@ done in the same way as for a
 		    assing those attributes to your diagram as shown in the following code sample 
                 </para>
 		<programlisting>
-		    // 1 - Create a PieAttribute object
-		    PieAttributes pa (m_pie->PieAttributes());
-		    // 2 - Enable exploding, point to a dataset and give the 
-		    // explode factor passing the dataset number and the factor 		   
-		    pa.setExplodeFactor( 0.5 );
-		    // 3 - Assign to your diagram
-		    m_pie->setPieAttributes( column, pa);
+// 1 - Create a PieAttribute object
+PieAttributes pa (m_pie->PieAttributes());
+// 2 - Enable exploding, point to a dataset and give the
+// explode factor passing the dataset number and the factor
+pa.setExplodeFactor( 0.5 );
+// 3 - Assign to your diagram
+m_pie->setPieAttributes( column, pa);
 		</programlisting>	
 		<note>
 		    <para>
@@ -3907,19 +3893,19 @@ done in the same way as for a
 		<para>
 		    Let us make this more concrete by looking at the following sample code that 
 		    describes the above process. We recommand you to compile and run the following 
-		    example which is located into the <filename>examples/Lines/Parameters</filename>
+		    example which is located in the <filename>examples/Lines/Parameters</filename>
 		    directory of your KD Chart installation.
 		</para>
 		<para>
 		    First of all we are including the header files and bring KD Chart namespace.
 		</para>
 		<programlisting>
-		    #include &lt;QtGui&gt;
-		    #include &lt;KDChartChart&gt;
-                    #include &lt;KDChartPieDiagram&gt;
-                    #include &lt;KDChartPieAttributes&gt;
+#include &lt;QtGui&gt;
+#include &lt;KDChartChart&gt;
+#include &lt;KDChartPieDiagram&gt;
+#include &lt;KDChartPieAttributes&gt;
 
-                    using namespace KDChart;		    
+using namespace KDChart;
                 </programlisting>
 		<para>
 		    We have included <classname>KDChartPieAttributes</classname> to be able 
@@ -3932,25 +3918,25 @@ done in the same way as for a
 		    will be assigned to our diagram. 
 		</para>
 		<programlisting>
-		    m_model.insertRows( 0, 1, QModelIndex() );
-		    m_model.insertColumns(  0,  6,  QModelIndex() );
-		    for (int row = 0; row &lt; 1; ++row) {
-		      for (int column = 0; column &lt; 6; ++column) {
-		        QModelIndex index = 
-		    m_model.index(row, column, QModelIndex());
-		        m_model.setData(index, QVariant(row+1 * column+1) );
-		      }
-		    }
-		    // We need a Polar plane for the Pie type
-		    PolarCoordinatePlane* polarPlane = 
-		    new PolarCoordinatePlane( &amp;m_chart );
-		    // replace the default Cartesian plane with
-		    // our Polar plane
-		    m_chart.replaceCoordinatePlane( polarPlane );
+    m_model.insertRows( 0, 1, QModelIndex() );
+    m_model.insertColumns(  0,  6,  QModelIndex() );
+    for (int row = 0; row &lt; 1; ++row) {
+        for (int column = 0; column &lt; 6; ++column) {
+            QModelIndex index =
+            m_model.index(row, column, QModelIndex());
+            m_model.setData(index, QVariant(row+1 * column+1) );
+        }
+    }
+    // We need a Polar plane for the Pie type
+    PolarCoordinatePlane* polarPlane =
+    new PolarCoordinatePlane( &amp;m_chart );
+    // replace the default Cartesian plane with
+    // our Polar plane
+    m_chart.replaceCoordinatePlane( polarPlane );
 
-		    // assign the model to our pie diagram
-		    PieDiagram* diagram = new PieDiagram;
-		    diagram->setModel(&amp;m_model);
+    // assign the model to our pie diagram
+    PieDiagram* diagram = new PieDiagram;
+    diagram->setModel(&amp;m_model);
                 </programlisting>
 		<para>
 		    After having stored our data into the model, we create a need to replace 
@@ -3965,15 +3951,15 @@ done in the same way as for a
 		    <methodname>PieAttributes</methodname>.
 		</para>
 		<programlisting>
-		    // Configure some Pie specifical attributes
+    // Configure some Pie specifical attributes
 
-		    // explode a section
-		    PieAttributes pa(  diagram->pieAttributes() );
-		    pa.setExplodeFactor( 0.1 );
-		    
-		    // Assign the attributes
-		    // to the diagram
-		    diagram->setPieAttributes( 1,  pa );
+    // explode a section
+    PieAttributes pa(  diagram->pieAttributes() );
+    pa.setExplodeFactor( 0.1 );
+
+    // Assign the attributes
+    // to the diagram
+    diagram->setPieAttributes( 1,  pa );
                 </programlisting>
 		<para>
 		    As for all attributes we call them by using the relevant method available
@@ -3996,14 +3982,14 @@ done in the same way as for a
 		    section.
 		</para>
 		<programlisting>
-		    // Configure a generic attribute
-		    // available to all chart types
-		    QPen sectionPen;
-		    sectionPen.setWidth( 5 );
-		    sectionPen.setStyle( Qt::DashLine );
-		    sectionPen.setColor( Qt::magenta );
-		    
-		    diagram->setPen( 1, sectionPen );
+    // Configure a generic attribute
+    // available to all chart types
+    QPen sectionPen;
+    sectionPen.setWidth( 5 );
+    sectionPen.setStyle( Qt::DashLine );
+    sectionPen.setColor( Qt::magenta );
+
+    diagram->setPen( 1, sectionPen );
 		</programlisting>	
 		<para>
 		    Of course we could  also have changed the pen for all datasets as well.
@@ -4024,13 +4010,13 @@ done in the same way as for a
 		    Pie diagram to our chart and conclude the implementation.
 		</para>
 		<programlisting>
-		     // Assign our diagram to the Chart
-		    m_chart.coordinatePlane()->replaceDiagram(diagram);
+    // Assign our diagram to the Chart
+    m_chart.coordinatePlane()->replaceDiagram(diagram);
 
-		    QVBoxLayout* l = new QVBoxLayout(this);
-		    l->addWidget(&amp;m_chart);
-		    setLayout(l);
-		    }
+    QVBoxLayout* l = new QVBoxLayout(this);
+    l->addWidget(&amp;m_chart);
+    setLayout(l);
+}
 		</programlisting>
                 <para>
 		    The above procedure can be applied to any of the supported attributes for 
@@ -4139,8 +4125,7 @@ done in the same way as for a
 		    of your installation.
 		</para>
 		<programlisting linenumbering="numbered" id="fullpie_mainwindow_h">
-		    <textobject><textdata fileref="../../examples/Pie/Advanced/mainwindow.h"/>
-		    </textobject>
+<textobject><textdata fileref="../../examples/Pie/Advanced/mainwindow.h"/></textobject>
 		</programlisting>                
 		<para>		
 		    In the above code we bring up the KDChart namespace as usual and declare our 
@@ -4153,10 +4138,9 @@ done in the same way as for a
 			Before diplaying our Pie diagram we need to implicitely replace the default 
 			cartesian plane by a Polar plane.
 		    </para>
-		</note>	
-		<programlisting linenumbering="numbered" id="fullpie_mainwindow_cpp">
-		    <textobject><textdata fileref="../../examples/Pie/Advanced/mainwindow.cpp"/>
-		    </textobject>
+		</note>
+        <programlisting linenumbering="numbered" id="fullpie_mainwindow_cpp">
+<textobject><textdata fileref="../../examples/Pie/Advanced/mainwindow.cpp"/></textobject>
 		</programlisting>
 		<para>
 		    First of all we are adding our chart to the layout as for any other Qt widget. Load 
@@ -4165,26 +4149,26 @@ done in the same way as for a
 		    Finally we assign the diagram to our chart.
 		</para>
 		<programlisting>
-		   ... 
-		   QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
-		    m_chart = new Chart();
-		    chartLayout->addWidget( m_chart );
+...
+QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
+m_chart = new Chart();
+chartLayout->addWidget( m_chart );
 
-		    m_model.loadFromCSV( ":/data" );
-		    
-		    // Set up the plane
-		    PolarCoordinatePlane* polarPlane = new PolarCoordinatePlane( m_chart );
-		    m_chart->replaceCoordinatePlane( polarPlane );
-		    
-		    // Set up the diagram
-		    m_pie = new LineDiagram();
-		    m_pie->setModel( &amp;m_model );
-		    m_chart->coordinatePlane()->replaceDiagram( m_pie );
-		    
-		    // Instantiate the timer
-		    QTimer *timer = new QTimer(this);
-		    connect(timer, SIGNAL(timeout()), this, SLOT(slot_NextFrame() ) );		    
-		    ...
+m_model.loadFromCSV( ":/data" );
+
+// Set up the plane
+PolarCoordinatePlane* polarPlane = new PolarCoordinatePlane( m_chart );
+m_chart->replaceCoordinatePlane( polarPlane );
+
+// Set up the diagram
+m_pie = new LineDiagram();
+m_pie->setModel( &amp;m_model );
+m_chart->coordinatePlane()->replaceDiagram( m_pie );
+
+// Instantiate the timer
+QTimer *timer = new QTimer(this);
+connect(timer, SIGNAL(timeout()), this, SLOT(slot_NextFrame() ) );
+...
 		</programlisting>
 		<para>
 		    The user should be able to change the start position from the GUI. This can 
@@ -4192,25 +4176,25 @@ done in the same way as for a
 		    as shown below and by updating the view.
 		</para>
 		<programlisting>
-		    ....   
-		    PieAttributes pa( m_pie->pieAttributes() );
-		    pa.setStartPosition( pos );
-		    m_pie->setPieAttributes( pa );
-		    m_chart->update();
-                    ....
+....
+PieAttributes pa( m_pie->pieAttributes() );
+pa.setStartPosition( pos );
+m_pie->setPieAttributes( pa );
+m_chart->update();
+        ....
 		</programlisting>
     		<para>
 		    We want the user to be able to shift between 3D mode display  or the normal  
 		    standard display from the GUI. 
 		</para>
 		<programlisting>
-		    // note: We use the global getter method here, it will fall back
-		    // automatically to return the default settings.
-		    ThreeDPieAttributes tda( m_pie->threeDPieAttributes() );
-		    tda.setEnabled( toggle );
-		    tda.setDepth( threeDFactorSB->value() );
-		    m_pie->setThreeDPieAttributes( tda );
-		    m_chart->update();
+// note: We use the global getter method here, it will fall back
+// automatically to return the default settings.
+ThreeDPieAttributes tda( m_pie->threeDPieAttributes() );
+tda.setEnabled( toggle );
+tda.setDepth( threeDFactorSB->value() );
+m_pie->setThreeDPieAttributes( tda );
+m_chart->update();
 		</programlisting>				
 		<note>
 		    <para>
@@ -4244,15 +4228,15 @@ done in the same way as for a
 		    to configure the exploding factor.
 		</para>
 		<programlisting>
-		    ....
-		    // note: We use the per-column getter method here, it will fall back
-		    // automatically to return the global (or even the default) settings.
-		    PieAttributes pa( m_pie->pieAttributes( column ) );
-		    pa.setExplodeFactor( value );
-		    m_pie->setPieAttributes( column, pa );
-		    ...
-		    m_chart->update();
-		    ...
+....
+// note: We use the per-column getter method here, it will fall back
+// automatically to return the global (or even the default) settings.
+PieAttributes pa( m_pie->pieAttributes( column ) );
+pa.setExplodeFactor( value );
+m_pie->setPieAttributes( column, pa );
+...
+m_chart->update();
+...
 		</programlisting>
 		<para>
 		    This is implemented by configuring our pie attributes and assign them by 
@@ -4266,7 +4250,7 @@ done in the same way as for a
 		</para>
 		<para>
 		    This example is available to compile and run from the 
-		    <filename>examples/Pie/Advanced</filename> directory into your KD Chart 
+		    <filename>examples/Pie/Advanced</filename> directory in your KD Chart
 		    installation. We recommend you to run it. The widget displayed by the above 
 		    code is shown in the figure below.
 		</para>
@@ -4803,32 +4787,32 @@ done in the same way as for a
 		    First include the appropriate headers and bring in the "KDChart namespace":
 		</para>	    	
 		<programlisting>
-		    #include &lt;QApplication&gt;
-		    #include &lt;KDChartWidget&gt;
-		    #include &lt;KDChartLineDiagram&gt;
-                    #include &lt;KDChartCartesianAxis&gt;
+#include &lt;QApplication&gt;
+#include &lt;KDChartWidget&gt;
+#include &lt;KDChartLineDiagram&gt;
+#include &lt;KDChartCartesianAxis&gt;
 
-	            using namespace KDChart;			    
+using namespace KDChart;
 		</programlisting>                
 		<para>
 		    We need to include <classname>KDChartLineDiagram</classname> in order to be 
 		    able to add the Axis as we will see further on. 
 		</para>
 		<programlisting>
-		    int main( int argc, char** argv ) {
-		    QApplication app( argc, argv );                    
-		    Widget widget;
-		    // our Widget can be configured 
-		    // as any Qt Widget 
-		    widget.resize( 600, 600 );		    
-                    // store the data and assign it
-		    QVector&lt; double &gt; vec0,  vec1;
-		    vec0 &lt;&lt; 5 &lt;&lt; 1 &lt;&lt; 3 &lt;&lt; 4 &lt;&lt; 1;
-		    vec1 &lt;&lt; 3 &lt;&lt; 6 &lt;&lt; 2 &lt;&lt; 4 &lt;&lt; 8;
-		    vec2 &lt;&lt; 0 &lt;&lt; 7 &lt;&lt; 1 &lt;&lt; 2 &lt;&lt; 1;
-		    widget.setDataset( 0, vec0, "vec0" );
-		    widget.setDataset( 1, vec1, "vec1" );
-		    widget.setDataset( 2, vec2, "vec2" );		   
+int main( int argc, char** argv ) {
+    QApplication app( argc, argv );
+    Widget widget;
+    // our Widget can be configured
+    // as any Qt Widget
+    widget.resize( 600, 600 );
+    // store the data and assign it
+    QVector&lt; double &gt; vec0,  vec1;
+    vec0 &lt;&lt; 5 &lt;&lt; 1 &lt;&lt; 3 &lt;&lt; 4 &lt;&lt; 1;
+    vec1 &lt;&lt; 3 &lt;&lt; 6 &lt;&lt; 2 &lt;&lt; 4 &lt;&lt; 8;
+    vec2 &lt;&lt; 0 &lt;&lt; 7 &lt;&lt; 1 &lt;&lt; 2 &lt;&lt; 1;
+    widget.setDataset( 0, vec0, "vec0" );
+    widget.setDataset( 1, vec1, "vec1" );
+    widget.setDataset( 2, vec2, "vec2" );
 		</programlisting>
 		<note>
 		    <para>
@@ -4840,28 +4824,28 @@ done in the same way as for a
 		    Now let us create our axis, position them and set their titles:
 		</para>
 		<programlisting>
-		    CartesianAxis *xAxis = new CartesianAxis( widget.lineDiagram() );
-		    CartesianAxis *yAxis = new CartesianAxis (widget.lineDiagram() );
-		    xAxis->setPosition ( CartesianAxis::Bottom );
-		    yAxis->setPosition ( CartesianAxis::Left );
-		    xAxis->setTitleText ( "Abscissa bottom position" );
-		    yAxis->setTitleText ( "Ordinate left position" );
+    CartesianAxis *xAxis = new CartesianAxis( widget.lineDiagram() );
+    CartesianAxis *yAxis = new CartesianAxis (widget.lineDiagram() );
+    xAxis->setPosition ( CartesianAxis::Bottom );
+    yAxis->setPosition ( CartesianAxis::Left );
+    xAxis->setTitleText ( "Abscissa bottom position" );
+    yAxis->setTitleText ( "Ordinate left position" );
 		</programlisting>		
 		<para>
 		    And add them to our diagram which will take the ownership:
 		</para>			
 		<programlisting>
-		    widget.lineDiagram()->addAxis( xAxis );
-		    widget.lineDiagram()->addAxis( yAxis );
+    widget.lineDiagram()->addAxis( xAxis );
+    widget.lineDiagram()->addAxis( yAxis );
 		</programlisting>
 		<para>
 		    Finally we conclude our small example:
 		</para>
 		<programlisting>
-		    widget.show();
-		    
-		    return app.exec();
-		    }
+    widget.show();
+
+    return app.exec();
+}
 		</programlisting>
 		<para>
 		    See the screen-shot below to view The resulting chart displayed by the above code. 
@@ -4982,8 +4966,7 @@ done in the same way as for a
 		    of your installation.
 		</para>
 		<programlisting linenumbering="numbered" id="axislabels_mainwindow_h">
-		    <textobject><textdata fileref="../../examples/Axis/Chart/mainwindow.h"/>
-		    </textobject>
+<textobject><textdata fileref="../../examples/Axis/Chart/mainwindow.h"/></textobject>
 		</programlisting>                
 		<para>		
 		    In the above code we bring up the KDChart namespace as usual. As you can see we are 
@@ -4991,27 +4974,26 @@ done in the same way as for a
 		    our home made TableModel (m_model). 
 		</para>	
 		<programlisting linenumbering="numbered" id="axeslabels_mainwindow_cpp">
-		    <textobject><textdata fileref="../../examples/Axis/Chart/mainwindow.cpp"/>
-		    </textobject>
+<textobject><textdata fileref="../../examples/Axis/Chart/mainwindow.cpp"/></textobject>
 		</programlisting>
 		<para>
 		    First of all we are adding our chart to the layout as for any other Qt widget. Load 
 		    the data to be display into our model, and assign the model to our diagram.		   
 		</para>
 		<programlisting>
-		    ... 
-		    QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
-		    m_chart = new Chart();
-		    chartLayout->addWidget( m_chart );
-		    hSBar->setVisible( false );
-		    vSBar->setVisible( false );
-		    
-		    m_model.loadFromCSV( ":/data" );
-		    
-		    // Set up the diagram
-		    m_lines = new LineDiagram();
-		    m_lines->setModel( &amp;m_model );	    
-		    ...
+...
+QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
+m_chart = new Chart();
+chartLayout->addWidget( m_chart );
+hSBar->setVisible( false );
+vSBar->setVisible( false );
+
+m_model.loadFromCSV( ":/data" );
+
+// Set up the diagram
+m_lines = new LineDiagram();
+m_lines->setModel( &amp;m_model );
+...
 		</programlisting>
 		<para>
 		    We want to display three axis, respectively positionned at
@@ -5019,14 +5001,14 @@ done in the same way as for a
 		    forward:
 		</para>
 		<programlisting>
-		    ....   
-		    CartesianAxis *topAxis = new CartesianAxis( m_lines );
-		    CartesianAxis *leftAxis = new CartesianAxis ( m_lines );
-		    CartesianAxis *bottomAxis = new CartesianAxis ( m_lines );
-		    topAxis->setPosition ( CartesianAxis::Top );
-		    leftAxis->setPosition ( CartesianAxis::Left );
-		    bottomAxis->setPosition ( CartesianAxis::Bottom );
-                    ....
+....
+CartesianAxis *topAxis = new CartesianAxis( m_lines );
+CartesianAxis *leftAxis = new CartesianAxis ( m_lines );
+CartesianAxis *bottomAxis = new CartesianAxis ( m_lines );
+topAxis->setPosition ( CartesianAxis::Top );
+leftAxis->setPosition ( CartesianAxis::Left );
+bottomAxis->setPosition ( CartesianAxis::Bottom );
+....
 		</programlisting>
     		<para>
 		    In the code above we are declaring our axis and make use of 
@@ -5037,11 +5019,11 @@ done in the same way as for a
 		    Let us now define the title text for each of those axis:
 		</para>
 		<programlisting>
-		    ...		   
-		    topAxis->setTitleText ( "Abscissa color configured top position" );
-		    leftAxis->setTitleText ( "Ordinate font configured" );
-		    bottomAxis->setTitleText ( "Abscissa Bottom" );
-		    ...
+...
+topAxis->setTitleText ( "Abscissa color configured top position" );
+leftAxis->setTitleText ( "Ordinate font configured" );
+bottomAxis->setTitleText ( "Abscissa Bottom" );
+...
 		</programlisting>				
 		<para>
 		    <methodname>setTitleText()</methodname> and 
@@ -5059,32 +5041,32 @@ done in the same way as for a
 		    Create an attribute object, configure it and assign it.
 		</para>
 		<programlisting>
-		    ...
-		     // configure titles text attributes
-		    TextAttributes taTop ( topAxis->titleTextAttributes () );
-		    // color configuration
-		    taTop.setPen( QPen( Qt::red ) );
-		    // assign to the axis 
-		    topAxis->setTitleTextAttributes ( taTop );
+...
+// configure titles text attributes
+TextAttributes taTop ( topAxis->titleTextAttributes () );
+// color configuration
+taTop.setPen( QPen( Qt::red ) );
+// assign to the axis
+topAxis->setTitleTextAttributes ( taTop );
 
-		    TextAttributes taLeft ( leftAxis->titleTextAttributes () );
-		    // Font configuration
-		    Measure me( taLeft.fontSize() );
-		    me.setValue( me.value() * 1.5 );
-		    taLeft.setFontSize( me );
-		    leftAxis->setTitleTextAttributes ( taLeft );
+TextAttributes taLeft ( leftAxis->titleTextAttributes () );
+// Font configuration
+Measure me( taLeft.fontSize() );
+me.setValue( me.value() * 1.5 );
+taLeft.setFontSize( me );
+leftAxis->setTitleTextAttributes ( taLeft );
 
-		    TextAttributes taBottom ( bottomAxis->titleTextAttributes () );
-		    taBottom.setPen(  QPen( Qt::blue ) );
-		    bottomAxis->setTitleTextAttributes ( taBottom );
+TextAttributes taBottom ( bottomAxis->titleTextAttributes () );
+taBottom.setPen(  QPen( Qt::blue ) );
+bottomAxis->setTitleTextAttributes ( taBottom );
 
-		    // configure labels text attributes
-		    TextAttributes taLabels;
-		    taLabels.setPen(  QPen( Qt::darkGreen ) );
-		    topAxis->setTextAttributes( taLabels );
-		    leftAxis->setTextAttributes( taLabels );
-		    bottomAxis->setTextAttributes( taLabels );
-		    ...
+// configure labels text attributes
+TextAttributes taLabels;
+taLabels.setPen(  QPen( Qt::darkGreen ) );
+topAxis->setTextAttributes( taLabels );
+leftAxis->setTextAttributes( taLabels );
+bottomAxis->setTextAttributes( taLabels );
+...
 		</programlisting>
 		<para>
 		    We want our top and bottom axis to display different types of labels
@@ -5092,26 +5074,26 @@ done in the same way as for a
 		    normal labels are too long ( see setShortLabels() ).
 		</para>
 		<programlisting>
-		    // configure labels and their shortened versions
-		    QStringList daysOfWeek;
-		    daysOfWeek &lt;&lt; "Monday" &lt;&lt; "Tuesday" &lt;&lt; "Wednesday"
-		    &lt;&lt; "Thursday" &lt;&lt; "Friday" ;
-		    topAxis->setLabels( daysOfWeek );
-		    
-		    QStringList shortDays;
-		    shortDays &lt;&lt; "Mon" &lt;&lt; "Tue" &lt;&lt; "Wed"
-		    &lt;&lt; "Thu" &lt;&lt; "Fri";
-		    topAxis->setShortLabels( shortDays );
-		    
-		    QStringList bottomLabels;
-		    bottomLabels &lt;&lt; "Day 1" &lt;&lt; "Day 2" &lt;&lt; "Day 3"
-		    &lt;&lt; "Day 4" &lt;&lt; "Day 5";
-		    bottomAxis->setLabels( bottomLabels );
+// configure labels and their shortened versions
+QStringList daysOfWeek;
+daysOfWeek &lt;&lt; "Monday" &lt;&lt; "Tuesday" &lt;&lt; "Wednesday"
+&lt;&lt; "Thursday" &lt;&lt; "Friday" ;
+topAxis->setLabels( daysOfWeek );
 
-		    QStringList shortBottomLabels;
-		    shortBottomLabels &lt;&lt; "D1" &lt;&lt; "D2" &lt;&lt; "D3"
-		    &lt;&lt; "D4" &lt;&lt; "D5";
-		    bottomAxis->setShortLabels( shortBottomLabels );
+QStringList shortDays;
+shortDays &lt;&lt; "Mon" &lt;&lt; "Tue" &lt;&lt; "Wed"
+&lt;&lt; "Thu" &lt;&lt; "Fri";
+topAxis->setShortLabels( shortDays );
+
+QStringList bottomLabels;
+bottomLabels &lt;&lt; "Day 1" &lt;&lt; "Day 2" &lt;&lt; "Day 3"
+&lt;&lt; "Day 4" &lt;&lt; "Day 5";
+bottomAxis->setLabels( bottomLabels );
+
+QStringList shortBottomLabels;
+shortBottomLabels &lt;&lt; "D1" &lt;&lt; "D2" &lt;&lt; "D3"
+&lt;&lt; "D4" &lt;&lt; "D5";
+bottomAxis->setShortLabels( shortBottomLabels );
 		</programlisting>
 		<note>
 		    <para>
@@ -5125,17 +5107,17 @@ done in the same way as for a
 		    diagram to our chart view.
 		</para>
 		<programlisting>
-		     // add axis
-		    m_lines->addAxis( topAxis );
-		    m_lines->addAxis( leftAxis );
-		    m_lines->addAxis( bottomAxis );
-		    
-		    // assign diagram to chart view
-		    m_chart->coordinatePlane()->replaceDiagram( m_lines );
+// add axis
+m_lines->addAxis( topAxis );
+m_lines->addAxis( leftAxis );
+m_lines->addAxis( bottomAxis );
+
+// assign diagram to chart view
+m_chart->coordinatePlane()->replaceDiagram( m_lines );
 		</programlisting>		
 		<para>
 		    This example is available to compile and run from the 
-		    <filename>examples/Axis/Chart</filename> directory into your KD Chart 
+		    <filename>examples/Axis/Chart</filename> directory in your KD Chart
 		    installation. We recommend you to run it. The widget displayed by the 
 		    above code is shown in the figure below.
 		</para>
@@ -5290,12 +5272,12 @@ done in the same way as for a
 		    First include the appropriate headers and bring in the "KDChart namespace":
 		</para>	    		 	
 		<programlisting>
-		    #include &lt;QApplication&gt;
-		    #include &lt;KDChartWidget&gt;
-		    #include &lt;KDChartBarDiagram&gt;
-                    #include &lt;KDChartPosition&gt;
+#include &lt;QApplication&gt;
+#include &lt;KDChartWidget&gt;
+#include &lt;KDChartBarDiagram&gt;
+#include &lt;KDChartPosition&gt;
 
-	            using namespace KDChart;			    
+using namespace KDChart;
 		</programlisting>     	    
 		<para>
 		    In this sample code we want to display a bar chart and need to include our
@@ -5304,25 +5286,25 @@ done in the same way as for a
 		    <classname>KDChartPosition</classname>.
 		</para>
 		<programlisting>
-		    int main( int argc, char** argv ) {
-		    QApplication app( argc, argv );
-		    
-		    Widget widget;
-		    widget.resize( 600, 600 );
-		    
-		    QVector&lt; double &gt; vec0,  vec1,  vec2;
-		    
-		    vec0 &lt;&lt; -5 &lt;&lt; -4 &lt;&lt; -3 &lt;&lt; -2 &lt;&lt; -1 &lt;&lt; 0
-		    &lt;&lt; 1 &lt;&lt; 2 &lt;&lt; 3 &lt;&lt; 4 &lt;&lt; 5;
-		    vec1 &lt;&lt; 25 &lt;&lt; 16 &lt;&lt; 9 &lt;&lt; 4 &lt;&lt; 1 &lt;&lt; 0
-		    &lt;&lt; 1 &lt;&lt; 4 &lt;&lt; 9 &lt;&lt; 16 &lt;&lt; 25;
-		    vec2 &lt;&lt; -125 &lt;&lt; -64 &lt;&lt; -27 &lt;&lt; -8 &lt;&lt; -1 &lt;&lt; 0
-		    &lt;&lt; 1 &lt;&lt; 8 &lt;&lt; 27 &lt;&lt; 64 &lt;&lt; 125;
-		    
-		    widget.setDataset( 0, vec0, "v0" );
-		    widget.setDataset( 1, vec1, "v1" );
-		    widget.setDataset( 2, vec2, "v2" );
-		    widget.setType( Widget::Bar );			    
+int main( int argc, char** argv ) {
+    QApplication app( argc, argv );
+
+    Widget widget;
+    widget.resize( 600, 600 );
+
+    QVector&lt; double &gt; vec0,  vec1,  vec2;
+
+    vec0 &lt;&lt; -5 &lt;&lt; -4 &lt;&lt; -3 &lt;&lt; -2 &lt;&lt; -1 &lt;&lt; 0
+         &lt;&lt; 1 &lt;&lt; 2 &lt;&lt; 3 &lt;&lt; 4 &lt;&lt; 5;
+    vec1 &lt;&lt; 25 &lt;&lt; 16 &lt;&lt; 9 &lt;&lt; 4 &lt;&lt; 1 &lt;&lt; 0
+         &lt;&lt; 1 &lt;&lt; 4 &lt;&lt; 9 &lt;&lt; 16 &lt;&lt; 25;
+    vec2 &lt;&lt; -125 &lt;&lt; -64 &lt;&lt; -27 &lt;&lt; -8 &lt;&lt; -1 &lt;&lt; 0
+         &lt;&lt; 1 &lt;&lt; 8 &lt;&lt; 27 &lt;&lt; 64 &lt;&lt; 125;
+
+    widget.setDataset( 0, vec0, "v0" );
+    widget.setDataset( 1, vec1, "v1" );
+    widget.setDataset( 2, vec2, "v2" );
+    widget.setType( Widget::Bar );
 		</programlisting>  	
 		<note>
 		    <para>
@@ -5336,13 +5318,13 @@ done in the same way as for a
 		    and dataset labels text:
 		</para>    	    
 		<programlisting>
-		    widget.addLegend(Position::North);
-		    widget.firstLegend()->setOrientation( Qt::Horizontal );
-		    widget.firstLegend()->setTitleText( "Bars Legend" );
-		    widget.firstLegend()->setText( 0,  "Vector 1" );
-		    widget.firstLegend()->setText( 1,  "Vector 2" );
-		    widget.firstLegend()->setText( 2,  "Vector 3" );
-		    widget.firstLegend()->setShowLines(  true );			    
+    widget.addLegend(Position::North);
+    widget.firstLegend()->setOrientation( Qt::Horizontal );
+    widget.firstLegend()->setTitleText( "Bars Legend" );
+    widget.firstLegend()->setText( 0,  "Vector 1" );
+    widget.firstLegend()->setText( 1,  "Vector 2" );
+    widget.firstLegend()->setText( 2,  "Vector 3" );
+    widget.firstLegend()->setShowLines(  true );
 		</programlisting>    
 		<para>
 		    The interesting point here is how we call 
@@ -5356,9 +5338,10 @@ done in the same way as for a
 		    code.
 		</para>
 		<programlisting>
-		     widget.show();
+    widget.show();
 
-		    return app.exec();
+    return app.exec();
+}
 		</programlisting> 
 		<para>
 		    See the screen-shot below to view The resulting chart displayed by the 
@@ -5404,36 +5387,34 @@ done in the same way as for a
 		included the relevant header files.
 	    </para>
 	    <programlisting>
-		#include &lt;QtGui&gt;
-		#include &lt;KDChartChart&gt;
-		#include &lt;KDChartBarDiagram&gt;
-		#include &lt;KDChartLegend&gt;
-		#include &lt;KDChartPosition&gt;
-		#include &lt;KDChartBackgroundAttributes&gt;
-		#include &lt;KDChartFrameAttributes&gt;
-		
-		using namespace KDChart;
-		
-		class ChartWidget : public QWidget {
-		Q_OBJECT
-		public:
-		  explicit ChartWidget(QWidget* parent=0)
-		    : QWidget(parent)
-		  {
-		
-		    m_model.insertRows( 0, 2, QModelIndex() );
-		    m_model.insertColumns(  0,  3,  QModelIndex() );
-		    for (int row = 0; row &lt; 3; ++row) {
-		      for (int column = 0; column &lt; 3; ++column) {
-		        QModelIndex index = m_model.index(row, column, QModelIndex());
-		        m_model.setData(index, QVariant(row+1 * column) );
-		      }
-		    }
-		
-		    BarDiagram* diagram = new BarDiagram;
-		    diagram-&gt;setModel(&amp;m_model);
-		
-		    m_chart.coordinatePlane()-&gt;replaceDiagram(diagram);
+#include &lt;QtGui&gt;
+#include &lt;KDChartChart&gt;
+#include &lt;KDChartBarDiagram&gt;
+#include &lt;KDChartLegend&gt;
+#include &lt;KDChartPosition&gt;
+#include &lt;KDChartBackgroundAttributes&gt;
+#include &lt;KDChartFrameAttributes&gt;
+
+using namespace KDChart;
+
+class ChartWidget : public QWidget {
+Q_OBJECT
+public:
+    explicit ChartWidget(QWidget* parent=0) : QWidget(parent)
+    {
+        m_model.insertRows( 0, 2, QModelIndex() );
+        m_model.insertColumns(  0,  3,  QModelIndex() );
+        for (int row = 0; row &lt; 3; ++row) {
+            for (int column = 0; column &lt; 3; ++column) {
+                QModelIndex index = m_model.index(row, column, QModelIndex());
+                m_model.setData(index, QVariant(row+1 * column) );
+            }
+        }
+
+        BarDiagram* diagram = new BarDiagram;
+        diagram-&gt;setModel(&amp;m_model);
+
+        m_chart.coordinatePlane()-&gt;replaceDiagram(diagram);
 	    </programlisting>
 	    <para>
 		We will set the legend position as well as its  Background and Frame
@@ -5444,19 +5425,19 @@ done in the same way as for a
 		We will now add a legend and set it up (positions, orientations, etc...):
 	    </para>
 	    <programlisting>
-		// Add a legend and set it up
-		Legend* legend = new Legend( diagram, &amp;m_chart );
-		legend->setPosition( Position::NorthEast );
-		legend->setAlignment( Qt::AlignCenter );
-		legend->setShowLines( false );
-		legend->setTitleText( tr( "Bars" ) );
-		legend->setOrientation( Qt::Vertical );
-		m_chart.addLegend( legend );
+        // Add a legend and set it up
+        Legend* legend = new Legend( diagram, &amp;m_chart );
+        legend->setPosition( Position::NorthEast );
+        legend->setAlignment( Qt::AlignCenter );
+        legend->setShowLines( false );
+        legend->setTitleText( tr( "Bars" ) );
+        legend->setOrientation( Qt::Vertical );
+        m_chart.addLegend( legend );
 	    </programlisting>
 	    <para>
 		The code above handle the attributes specific to a legend, the setters
 		and getters for the methods we have been used here are implemented 
-		into the <classname>KDChartLegend</classname> class. We recommend you
+		in the <classname>KDChartLegend</classname> class. We recommend you
 		to consult its interface. See <filename>KDChartLegend.h</filename>.	
 	    </para>	    
 	    <para>
@@ -5464,27 +5445,27 @@ done in the same way as for a
 		its own marker style.
 	    </para>
 	     <programlisting>
-		// Configure the items markers
-		MarkerAttributes lma;
-		lma.setMarkerStyle( MarkerAttributes::MarkerDiamond );
-		legend->setMarkerAttributes( 0,  lma );
-		lma.setMarkerStyle( MarkerAttributes::MarkerCircle );
-		legend->setMarkerAttributes( 1,  lma );
+        // Configure the items markers
+        MarkerAttributes lma;
+        lma.setMarkerStyle( MarkerAttributes::MarkerDiamond );
+        legend->setMarkerAttributes( 0,  lma );
+        lma.setMarkerStyle( MarkerAttributes::MarkerCircle );
+        legend->setMarkerAttributes( 1,  lma );
 	    </programlisting>
 	    <para>
 		Markers are assigned per dataset as you can see above. You can learn 
 		more about the marker styles and the methods available to configure
-		markers into the <classname>MarkerAttributes</classname> class interface.
+		markers in the <classname>MarkerAttributes</classname> class interface.
 		See <filename>KDChartMarkerAttributes.h</filename>.		
 	    </para>
 	    <para>
 	        Let us now configure our legend's items text:
 	    </para>
 	    <programlisting>
-		// Configure labels for Legend's items    
-		legend->setText( 0,  "Series 1" );
-		legend->setText( 1,  "Series 2" );
-		legend->setText( 2,  "Series 3" );
+        // Configure labels for Legend's items
+        legend->setText( 0,  "Series 1" );
+        legend->setText( 1,  "Series 2" );
+        legend->setText( 2,  "Series 3" );
 	    </programlisting>
 	    <para>
 		Each dataset can be assigned its own text. We want to change their 
@@ -5492,9 +5473,9 @@ done in the same way as for a
 		nicer. We proceed as follow and configure their text attributes.
 	    </para>
 	    <programlisting>
-		TextAttributes lta;
-		lta.setPen( QPen( Qt::darkGray ) );
-		legend->setTextAttributes(  lta );
+        TextAttributes lta;
+        lta.setPen( QPen( Qt::darkGray ) );
+        legend->setTextAttributes(  lta );
 	    </programlisting>
 	    <para>
 		Text attributes configuration and assignment is done as for all other 
@@ -5511,15 +5492,15 @@ done in the same way as for a
 		</para>
 	    </tip>
 	     <programlisting>
-		// Configure a pen to surround
-		// the markers with a border
-		QPen markerPen;
-		markerPen.setColor(  Qt::darkGray );
-		markerPen.setWidth( 2 );
-		// Pending Michel use datasetCount() here as soon
-		// as it is fixed
-		for (  uint i = 0; i &lt; legend->datasetCount(); i++ )
-		    legend->setPen( i,  markerPen );
+        // Configure a pen to surround
+        // the markers with a border
+        QPen markerPen;
+        markerPen.setColor(  Qt::darkGray );
+        markerPen.setWidth( 2 );
+        // Pending Michel use datasetCount() here as soon
+        // as it is fixed
+        for (  uint i = 0; i &lt; legend->datasetCount(); i++ )
+            legend->setPen( i,  markerPen );
 	    </programlisting>
 	    <note>
 		<para>
@@ -5533,11 +5514,11 @@ done in the same way as for a
 		inside its frame.
 	    </para>
 	    <programlisting>
-		 // Add a background to your legend
-		BackgroundAttributes ba;
-		ba.setBrush(  Qt::white );
-		ba.setVisible( true );
-		legend->setBackgroundAttributes(  ba );
+        // Add a background to your legend
+        BackgroundAttributes ba;
+        ba.setBrush(  Qt::white );
+        ba.setVisible( true );
+        legend->setBackgroundAttributes(  ba );
 	    </programlisting>
 	    <para>
 		As for all attributes settings the code is straight forward, just create 
@@ -5549,11 +5530,11 @@ done in the same way as for a
 		Let us now configure our legend's frame:
 	    </para>
 	     <programlisting>
-		 FrameAttributes fa;
-		fa.setPen( markerPen );
-		fa.setPadding( 5 );
-		fa.setVisible( true );
-		legend->setFrameAttributes(  fa );
+        FrameAttributes fa;
+        fa.setPen( markerPen );
+        fa.setPadding( 5 );
+        fa.setVisible( true );
+        legend->setFrameAttributes(  fa );
 	    </programlisting>
 	    <para>
 		Same procedure as above. Please note the <methodname>setVisible()</methodname>
@@ -5563,26 +5544,26 @@ done in the same way as for a
 		Finally we need to conclude our small application.
 	    </para>
 	    <programlisting>
-		QVBoxLayout* l = new QVBoxLayout(this);
-		l->addWidget(&amp;m_chart);
-		setLayout(l);
-		}
+        QVBoxLayout* l = new QVBoxLayout(this);
+        l->addWidget(&amp;m_chart);
+        setLayout(l);
+    }
 
-		private:
-		Chart m_chart;
-		QStandardItemModel m_model;
-		};
-		
-		int main( int argc, char** argv ) {
-		QApplication app( argc, argv );
-		
-		ChartWidget w;
-		w.show();
+private:
+    Chart m_chart;
+    QStandardItemModel m_model;
+};
 
-		return app.exec();
-		}
-		
-		#include "main.moc"
+int main( int argc, char** argv ) {
+    QApplication app( argc, argv );
+
+    ChartWidget w;
+    w.show();
+
+    return app.exec();
+}
+
+#include "main.moc"
 	    </programlisting>
 	    <para>
 		See the screen-shot below to view The resulting chart displayed by the 
@@ -5659,8 +5640,7 @@ done in the same way as for a
 		    of your installation.
 		</para>
 		<programlisting linenumbering="numbered" id="legendadvanced_mainwindow_h">
-		    <textobject><textdata fileref="../../examples/Legends/LegendAdvanced/mainwindow.h"/>
-		    </textobject>
+<textobject><textdata fileref="../../examples/Legends/LegendAdvanced/mainwindow.h"/></textobject>
 		</programlisting>                
 		<para>		
 		    In the above code we bring up the KDChart namespace as usual. As you can see we are 
@@ -5668,8 +5648,7 @@ done in the same way as for a
 		    our home made TableModel (m_model). 
 		</para>	
 		<programlisting linenumbering="numbered" id="legendadvanced_mainwindow_cpp">
-		    <textobject><textdata fileref="../../examples/Legends/LegendAdvanced/mainwindow.cpp"/>
-		    </textobject>
+<textobject><textdata fileref="../../examples/Legends/LegendAdvanced/mainwindow.cpp"/></textobject>
 		</programlisting>
 		<para>		    
 		    See the screen-shot below to view The resulting chart displayed by the 
@@ -5793,12 +5772,12 @@ done in the same way as for a
 		    First include the appropriate headers and bring in the "KDChart namespace":
 		</para>	    		 	
 		<programlisting>
-		    #include &lt;QApplication&gt;
-		    #include &lt;KDChartWidget&gt;
-		    #include &lt;KDChartBarDiagram&gt;
-                    #include &lt;KDChartPosition&gt;
+#include &lt;QApplication&gt;
+#include &lt;KDChartWidget&gt;
+#include &lt;KDChartBarDiagram&gt;
+#include &lt;KDChartPosition&gt;
 
-	            using namespace KDChart;			    
+using namespace KDChart;
 		</programlisting>     	    
 		<para>
 		    In this sample code we want to display a bar chart and need to include our
@@ -5807,25 +5786,25 @@ done in the same way as for a
 		    include <classname>KDChartPosition</classname>.
 		</para>
 		<programlisting>
-		    int main( int argc, char** argv ) {
-		    QApplication app( argc, argv );
-		    
-		    Widget widget;
-		    widget.resize( 600, 600 );
-		    
-		    QVector&lt; double &gt; vec0,  vec1,  vec2;
-		    
-		    vec0 &lt;&lt; -5 &lt;&lt; -4 &lt;&lt; -3 &lt;&lt; -2 &lt;&lt; -1 &lt;&lt; 0
-		    &lt;&lt; 1 &lt;&lt; 2 &lt;&lt; 3 &lt;&lt; 4 &lt;&lt; 5;
-		    vec1 &lt;&lt; 25 &lt;&lt; 16 &lt;&lt; 9 &lt;&lt; 4 &lt;&lt; 1 &lt;&lt; 0
-		    &lt;&lt; 1 &lt;&lt; 4 &lt;&lt; 9 &lt;&lt; 16 &lt;&lt; 25;
-		    vec2 &lt;&lt; -125 &lt;&lt; -64 &lt;&lt; -27 &lt;&lt; -8 &lt;&lt; -1 &lt;&lt; 0
-		    &lt;&lt; 1 &lt;&lt; 8 &lt;&lt; 27 &lt;&lt; 64 &lt;&lt; 125;
-		    
-		    widget.setDataset( 0, vec0, "v0" );
-		    widget.setDataset( 1, vec1, "v1" );
-		    widget.setDataset( 2, vec2, "v2" );
-		    widget.setType( Widget::Bar );			    
+int main( int argc, char** argv ) {
+    QApplication app( argc, argv );
+
+    Widget widget;
+    widget.resize( 600, 600 );
+
+    QVector&lt; double &gt; vec0,  vec1,  vec2;
+
+    vec0 &lt;&lt; -5 &lt;&lt; -4 &lt;&lt; -3 &lt;&lt; -2 &lt;&lt; -1 &lt;&lt; 0
+         &lt;&lt; 1 &lt;&lt; 2 &lt;&lt; 3 &lt;&lt; 4 &lt;&lt; 5;
+    vec1 &lt;&lt; 25 &lt;&lt; 16 &lt;&lt; 9 &lt;&lt; 4 &lt;&lt; 1 &lt;&lt; 0
+         &lt;&lt; 1 &lt;&lt; 4 &lt;&lt; 9 &lt;&lt; 16 &lt;&lt; 25;
+    vec2 &lt;&lt; -125 &lt;&lt; -64 &lt;&lt; -27 &lt;&lt; -8 &lt;&lt; -1 &lt;&lt; 0
+         &lt;&lt; 1 &lt;&lt; 8 &lt;&lt; 27 &lt;&lt; 64 &lt;&lt; 125;
+
+    widget.setDataset( 0, vec0, "v0" );
+    widget.setDataset( 1, vec1, "v1" );
+    widget.setDataset( 2, vec2, "v2" );
+    widget.setType( Widget::Bar );
 		</programlisting>  	
 		<note>
 		    <para>
@@ -5838,8 +5817,10 @@ done in the same way as for a
 		    Now let us add our header and footer, set its position and its text.
 		</para>    	    
 		<programlisting>
-		    widget.addHeaderFooter("A default Header - North", HeaderFooter::Header, Position::North);
-		    widget.addHeaderFooter("A default Footer - South", HeaderFooter::Footer, Position::South);
+    widget.addHeaderFooter( "A default Header - North",
+                            HeaderFooter::Header, Position::North );
+    widget.addHeaderFooter( "A default Footer - South",
+                            HeaderFooter::Footer, Position::South );
 		</programlisting>    
 		<para>
 		    As you can see the code above is straight forward and we just need to call 
@@ -5850,9 +5831,10 @@ done in the same way as for a
 		    Finally we conclude our small application:
 		</para>
 		<programlisting>
-		     widget.show();
+    widget.show();
 
-		    return app.exec();
+    return app.exec();
+}
 		</programlisting> 
 		<para>
 		    See the screen-shot below to view The resulting chart displayed by the 
@@ -5898,36 +5880,35 @@ done in the same way as for a
 		included the relevant header files.
 	    </para>
 	    <programlisting>
-		#include &lt;QtGui&gt;
-		#include &lt;KDChartChart&gt;
-		#include &lt;KDChartBarDiagram&gt;
-		#include &lt;KDChartHeaderFooter&gt;
-		#include &lt;KDChartPosition&gt;
-		#include &lt;KDChartBackgroundAttributes&gt;
-		#include &lt;KDChartFrameAttributes&gt;
-		
-		using namespace KDChart;
-		
-		class ChartWidget : public QWidget {
-		Q_OBJECT
-		public:
-		  explicit ChartWidget(QWidget* parent=0)
-		    : QWidget(parent)
-		  {
-		
-		    m_model.insertRows( 0, 2, QModelIndex() );
-		    m_model.insertColumns(  0,  3,  QModelIndex() );
-		    for (int row = 0; row &lt; 3; ++row) {
-		      for (int column = 0; column &lt; 3; ++column) {
-		        QModelIndex index = m_model.index(row, column, QModelIndex());
-		        m_model.setData(index, QVariant(row+1 * column) );
-		      }
-		    }
-		
-		    BarDiagram* diagram = new BarDiagram;
-		    diagram-&gt;setModel(&amp;m_model);
-		
-		    m_chart.coordinatePlane()-&gt;replaceDiagram(diagram);
+#include &lt;QtGui&gt;
+#include &lt;KDChartChart&gt;
+#include &lt;KDChartBarDiagram&gt;
+#include &lt;KDChartHeaderFooter&gt;
+#include &lt;KDChartPosition&gt;
+#include &lt;KDChartBackgroundAttributes&gt;
+#include &lt;KDChartFrameAttributes&gt;
+
+using namespace KDChart;
+
+class ChartWidget : public QWidget {
+Q_OBJECT
+public:
+    explicit ChartWidget(QWidget* parent=0)
+    : QWidget(parent)
+    {
+        m_model.insertRows( 0, 2, QModelIndex() );
+        m_model.insertColumns(  0,  3,  QModelIndex() );
+        for (int row = 0; row &lt; 3; ++row) {
+            for (int column = 0; column &lt; 3; ++column) {
+            QModelIndex index = m_model.index(row, column, QModelIndex());
+            m_model.setData(index, QVariant(row+1 * column) );
+            }
+        }
+
+        BarDiagram* diagram = new BarDiagram;
+        diagram-&gt;setModel(&amp;m_model);
+
+        m_chart.coordinatePlane()-&gt;replaceDiagram(diagram);
 	    </programlisting>
 	    <para>
 		We will configure the header position as well as its  text, Background and 
@@ -5939,16 +5920,16 @@ done in the same way as for a
 		We will now add our header and set it up:
 	    </para>
 	    <programlisting>
-		 // Add at one Header and set it up
-		HeaderFooter* header = new HeaderFooter( &amp;m_chart );
-		header->setPosition( Position::North );
-		header->setText( "A Simple Bar Chart" );
-		m_chart.addHeaderFooter( header );
+        // Add at one Header and set it up
+        HeaderFooter* header = new HeaderFooter( &amp;m_chart );
+        header->setPosition( Position::North );
+        header->setText( "A Simple Bar Chart" );
+        m_chart.addHeaderFooter( header );
 	    </programlisting>
 	    <para>
 		The code above handle the attributes specific to a headers and footers
 		the setters and getters for the methods we have been used here are 
-		implemented into the <classname>KDCharthEADERfOOTER</classname> class. 
+		implemented in the <classname>KDCharthEADERfOOTER</classname> class.
 		We recommend you to consult its interface. See 
 		<filename>KDChartHeaderFooter.h</filename>.	
 	    </para>	    
@@ -5957,24 +5938,24 @@ done in the same way as for a
 		be resized together with the widget in case the user resize it. 
 	    </para>
 	     <programlisting>
-		// Configure the Header text attributes
-		TextAttributes hta;
-		hta.setPen( QPen(  Qt::blue ) );
+        // Configure the Header text attributes
+        TextAttributes hta;
+        hta.setPen( QPen(  Qt::blue ) );
 
-		// let the header resize itself
-		// together with the widget.
-		// so-called relative size
-		Measure m( 35.0 );
-		m.setRelativeMode( header->autoReferenceArea(), 
-		                   KDChartEnums::MeasureOrientationMinimum );
-		hta.setFontSize( m );
-		// min font size
-		m.setValue( 3.0 );
-		m.setCalculationMode( KDChartEnums::MeasureCalculationModeAbsolute );
-		hta.setMinimalFontSize( m  );
+        // let the header resize itself
+        // together with the widget.
+        // so-called relative size
+        Measure m( 35.0 );
+        m.setRelativeMode( header->autoReferenceArea(),
+                           KDChartEnums::MeasureOrientationMinimum );
+        hta.setFontSize( m );
+        // min font size
+        m.setValue( 3.0 );
+        m.setCalculationMode( KDChartEnums::MeasureCalculationModeAbsolute );
+        hta.setMinimalFontSize( m  );
 
-		// assign
-		header->setTextAttributes( hta );
+        // assign
+        header->setTextAttributes( hta );
 	    </programlisting>
 	    <para>
 		Our header text is now displayed using a blue pen, the font are 
@@ -5985,11 +5966,11 @@ done in the same way as for a
 		proceed as follow:
 	    </para>
 	    <programlisting>
-		// Configure the header Background attributes
-		BackgroundAttributes hba;
-		hba.setBrush(  Qt::white );
-		hba.setVisible( true );
-		header->setBackgroundAttributes(  hba );
+        // Configure the header Background attributes
+        BackgroundAttributes hba;
+        hba.setBrush(  Qt::white );
+        hba.setVisible( true );
+        header->setBackgroundAttributes(  hba );
 	    </programlisting>
 	    <para>
 		As for all types of attributes we just need to create the attribute
@@ -5999,11 +5980,11 @@ done in the same way as for a
 		The same process is applied to configure header'sour frame attributes:
 	    </para>
 	    <programlisting>
-		// Configure the header Frame attributes
-		FrameAttributes hfa;
-		hfa.setPen( QPen ( QBrush( Qt::darkGray ), 2 ) );
-		hfa.setVisible( true );
-		header->setFrameAttributes(  hfa );
+        // Configure the header Frame attributes
+        FrameAttributes hfa;
+        hfa.setPen( QPen ( QBrush( Qt::darkGray ), 2 ) );
+        hfa.setVisible( true );
+        header->setFrameAttributes(  hfa );
 	    </programlisting>
 	    <para>
 		In the code above we assign a pen to the frame attributes in order to 
@@ -6020,26 +6001,26 @@ done in the same way as for a
 		Finally we need to conclude our small application.
 	    </para>
 	    <programlisting>
-		QVBoxLayout* l = new QVBoxLayout(this);
-		l->addWidget(&amp;m_chart);
-		setLayout(l);
-		}
+        QVBoxLayout* l = new QVBoxLayout(this);
+        l->addWidget(&amp;m_chart);
+        setLayout(l);
+    }
 
-		private:
-		Chart m_chart;
-		QStandardItemModel m_model;
-		};
-		
-		int main( int argc, char** argv ) {
-		QApplication app( argc, argv );
-		
-		ChartWidget w;
-		w.show();
+private:
+    Chart m_chart;
+    QStandardItemModel m_model;
+};
 
-		return app.exec();
-		}
-		
-		#include "main.moc"
+int main( int argc, char** argv ) {
+    QApplication app( argc, argv );
+
+    ChartWidget w;
+    w.show();
+
+    return app.exec();
+}
+
+#include "main.moc"
 	    </programlisting>
 	    <para>
 		See the screen-shot below to view The resulting chart displayed by the 
@@ -6117,8 +6098,7 @@ done in the same way as for a
 		    of your installation.
 		</para>
 		<programlisting linenumbering="numbered" id="headeradvanced_mainwindow_h">
-		    <textobject><textdata fileref="../../examples/HeadersFooters/Advanced/mainwindow.h"/>
-		    </textobject>
+<textobject><textdata fileref="../../examples/HeadersFooters/Advanced/mainwindow.h"/></textobject>
 		</programlisting>                
 		<para>		
 		    In the above code we bring up the KDChart namespace as usual. As you can see we are 
@@ -6126,8 +6106,7 @@ done in the same way as for a
 		    our home made TableModel (m_model). 
 		</para>
 		<programlisting linenumbering="numbered" id="headeradvanced_mainwindow_cpp">
-		    <textobject><textdata fileref="../../examples/HeadersFooters/Advanced/mainwindow.cpp"/>
-		    </textobject>
+<textobject><textdata fileref="../../examples/HeadersFooters/Advanced/mainwindow.cpp"/></textobject>
 		</programlisting>
 		<para>		    
 		    See the screen-shot below to view The resulting chart displayed by the 
@@ -6171,7 +6150,7 @@ done in the same way as for a
 	    to all types of charts.
         </para>
 	<sect1>
-            <title id="customizingattributes">Attributes Model and Abstract Diagram</title>
+            <title id="customizingattributes">Attributes Model, Abstract Diagram</title>
             <para>
                 The <classname>KDChartAttributesModel</classname> class is derived from 
 		<classname>QAbstractProxyModel</classname> and used internally by the base 
@@ -6190,17 +6169,17 @@ done in the same way as for a
 		Let us illustrate the above assertion, the right way is:
 	    </para>
 	    <programlisting>
-		// correct
-		AttributesModel *am = new AttributesModel( model, 0 );
-		diagram1->setAttributesModel( am );
-		diagram2->setAttributesModel( am );
+// correct
+AttributesModel *am = new AttributesModel( model, 0 );
+diagram1->setAttributesModel( am );
+diagram2->setAttributesModel( am );
 	    </programlisting>
 	    <para>
 		It would be wrong to proceed as follow:
 	    </para>
 	    <programlisting>
-		// Wrong
-		diagram1->setAttributesModel( diagram2->attributesModel() );
+// Wrong
+diagram1->setAttributesModel( diagram2->attributesModel() );
 	    </programlisting>
 	    <para>
 		To retrieve the attribute model associated to a particular diagram, we can make 
@@ -6222,9 +6201,9 @@ done in the same way as for a
 		    interface. 
                 </para>
                 <programlisting>		    
-		    void setPen( const QModelIndex&amp; index, const QPen&amp; pen );		    
-		    void setPen( int dataset, const QPen&amp; pen );		   
-		    void setPen( const QPen&amp; pen );
+void setPen( const QModelIndex&amp; index, const QPen&amp; pen );
+void setPen( int dataset, const QPen&amp; pen );
+void setPen( const QPen&amp; pen );
 	        </programlisting>
 		<note>
 		    <para>
@@ -6244,26 +6223,26 @@ done in the same way as for a
 		    to achieve this task.
 		</para>
 		<programlisting>		    
-		void AbstractDiagram::setPen( const QModelIndex&amp; index, const QPen&amp; pen )
-		    {
-		    attributesModel()->setData(
-		    attributesModel()->mapFromSource( index ),
-		    qVariantFromValue( pen ), DatasetPenRole );
-		    }
+void AbstractDiagram::setPen( const QModelIndex&amp; index, const QPen&amp; pen )
+{
+    attributesModel()->setData(
+    attributesModel()->mapFromSource( index ),
+    qVariantFromValue( pen ), DatasetPenRole );
+}
 
-		    void AbstractDiagram::setPen( const QPen&amp; pen )
-		    {
-		    attributesModel()->setModelData(
-		    qVariantFromValue( pen ), DatasetPenRole );
-		    }
-		    
-		    void AbstractDiagram::setPen( int column,const QPen&amp; pen )
-		    {
-		    attributesModel()->setHeaderData(
-		    column, Qt::Vertical,
-		    qVariantFromValue( pen ),
-		    DatasetPenRole );
-		    }
+void AbstractDiagram::setPen( const QPen&amp; pen )
+{
+    attributesModel()->setModelData(
+    qVariantFromValue( pen ), DatasetPenRole );
+}
+
+void AbstractDiagram::setPen( int column,const QPen&amp; pen )
+{
+    attributesModel()->setHeaderData(
+    column, Qt::Vertical,
+    qVariantFromValue( pen ),
+    DatasetPenRole );
+}
 	        </programlisting>
 		<para>
 		    The above description to demonstrate how it works for almost all the 
@@ -6394,37 +6373,38 @@ done in the same way as for a
 		    to compile and run this example and to study its code.
                 </para>
 		<programlisting>
-		    ....
-		    // Display values
-		    // 1 - Call the relevant attributes
-		    DataValueAttributes dva( diagram->dataValueAttributes() );
+....
+// Display values
+// 1 - Call the relevant attributes
+DataValueAttributes dva( diagram->dataValueAttributes() );
 
-		    // 2 - We want to configure the font and colors
-		    //     for the data values text.
-		    TextAttributes ta( dva.textAttributes() );
-		    //rotate if you wish
-		    ta.setRotation( 45 );
+// 2 - We want to configure the font and colors
+//     for the data values text.
+TextAttributes ta( dva.textAttributes() );
+//rotate if you wish
+ta.setRotation( 45 );
 
-		    // 3 - Set up your text attributes
-		    ta.setFont( QFont( "Comic", 6 ) );
-		    ta .setPen( QPen( QColor( Qt::darkGreen ) ) );
-		    ta.setVisible( true );
+// 3 - Set up your text attributes
+ta.setFont( QFont( "Comic", 6 ) );
+ta.setPen( QPen( QColor( Qt::darkGreen ) ) );
+ta.setVisible( true );
 
-		    // 4 - Assign the text attributes to your
-		    //     DataValuesAttributes
-		    dva.setTextAttributes( ta );
-		    dva.setDecimalDigits( 4 );
-		    dva.setVisible( true );
+// 4 - Assign the text attributes to your
+//     DataValuesAttributes
+dva.setTextAttributes( ta );
+dva.setDecimalDigits( 4 );
+dva.setVisible( true );
 
-		    // 5 - Assign to the diagram
-		    diagram->setDataValueAttributes( dva );
-                    ....
-		    // 6 - Assign the diagram to the chart
-		    m_chart.coordinatePlane()->replaceDiagram(diagram);
-		    // make sure there is space to display the
-		    // data value labels
-		    m_chart.setGlobalLeading( 15, 15, 15, 15 );
-		    ...
+// 5 - Assign to the diagram
+diagram->setDataValueAttributes( dva );
+        ....
+// 6 - Assign the diagram to the chart
+m_chart.coordinatePlane()->replaceDiagram(diagram);
+
+// make sure there is space to display the
+// data value labels at the edges of the data area
+m_chart.setGlobalLeading( 15, 15, 15, 15 );
+...
 	        </programlisting>
 		<para>
 		    As we can see the code is straight forward and the process is similar 
@@ -6453,11 +6433,11 @@ done in the same way as for a
 	<sect1>
             <title id="customizingtext">Text Attributes</title>
             <para>
-                TextAttributes encapsulates settings that have to do with text. This includes font, 
+                <classname>TextAttributes</classname> encapsulates settings that have to do with text. This includes font,
 		fontsize, color, whether the text is rotated, etc...
             </para>  
              <para>
-		We recommend you to consult <classname>KDChartTextAttributes</classname>' interface 
+		We recommend studying the <classname>KDChart::TextAttributes</classname> API documentation
 		to find out more in details what can be done. In this section we will describe quickly 
 	        its main properties and go through a commented example that will demonstrates how to 
 		proceed in order to use and configure those attributes.		
@@ -6530,28 +6510,28 @@ done in the same way as for a
 		    you to compile and run this example and to study its code.
                 </para>
 		<programlisting>
-		    ....
-		    // Configure the Header text attributes
-		    TextAttributes hta;
-		    hta.setPen( QPen(  Qt::blue ) );
-		    
-		    // let the header resize itself
-		    // together with the widget.
-		    // so-called relative size
-		    Measure m( 35.0 );
-		    m.setRelativeMode( header->autoReferenceArea(), 
-		    KDChartEnums::MeasureOrientationMinimum );
-		    hta.setFontSize( m );
-		    // min font size
-		    m.setValue( 3.0 );
-		    m.setCalculationMode( 
-		    KDChartEnums::MeasureCalculationModeAbsolute );
-		    hta.setMinimalFontSize( m  );
+....
+// Configure the Header text attributes
+TextAttributes hta;
+hta.setPen( QPen(  Qt::blue ) );
 
-		    // Assign thre text attributes 
-		    // to our header.
-		    header->setTextAttributes( hta );
-		    ...
+// let the header resize itself
+// together with the widget.
+// so-called relative size
+Measure m( 35.0 );
+m.setRelativeMode( header->autoReferenceArea(),
+KDChartEnums::MeasureOrientationMinimum );
+hta.setFontSize( m );
+// min font size
+m.setValue( 3.0 );
+m.setCalculationMode(
+KDChartEnums::MeasureCalculationModeAbsolute );
+hta.setMinimalFontSize( m  );
+
+// Assign thre text attributes
+// to our header.
+header->setTextAttributes( hta );
+...
 	        </programlisting>
 		<para>
 		    As we can see the code is straight forward and the process is similar 
@@ -6630,16 +6610,16 @@ done in the same way as for a
 		    the differnet marker types available are:
 		</para>
 		<programlisting>
-		    ....
-		     enum MarkerStyle { MarkerCircle  = 0,
-                          MarkerSquare  = 1,
-                          MarkerDiamond = 2,
-                          Marker1Pixel  = 3,
-                          Marker4Pixels = 4,
-                          MarkerRing    = 5,
-                          MarkerCross   = 6,
-                          MarkerFastCross = 7 };
-		    ...
+....
+enum MarkerStyle { MarkerCircle  = 0,
+                   MarkerSquare  = 1,
+                   MarkerDiamond = 2,
+                   Marker1Pixel  = 3,
+                   Marker4Pixels = 4,
+                   MarkerRing    = 5,
+                   MarkerCross   = 6,
+                   MarkerFastCross = 7 };
+...
 	        </programlisting>
 	    </note>
 	    <para>
@@ -6670,37 +6650,37 @@ done in the same way as for a
 		    and run this example and to study its code.
                 </para>
 		<programlisting>
-		    ....
-		    // set up a map with different marker styles
-		    MarkerAttributes::MarkerStylesMap map;
-		    map.insert( 0, MarkerAttributes::MarkerSquare );
-		    map.insert( 1, MarkerAttributes::MarkerCircle );
-		    map.insert( 2, MarkerAttributes::MarkerRing );
-		    map.insert( 3, MarkerAttributes::MarkerCross );
-		    map.insert( 4, MarkerAttributes::MarkerDiamond );
-		    ....
-		    // Configure mmarkers per dataset in this example
-		    const int colCount = 
-		    m_lines->model()-&gt;columnCount(m_lines->rootIndex());
-		    for ( int iColumn = 0; iColumn&lt;colCount; ++iColumn ) {
-			DataValueAttributes dva
-			( m_lines->dataValueAttributes( iColumn ) );
-			MarkerAttributes ma( dva.markerAttributes() );
-			ma.setMarkerStylesMap( map );
-			ma.setMarkerSize( QSize( markersWidthSB->value(),
-			markersHeightSB->value() ) );
-		    }
-		    .... 	
-			ma.setVisible(  true );
-			
-			// Assign markers attributes
-			// to Data values attributes
-			dva.setMarkerAttributes( ma );
-			
-			//Assign Data Values Attributes to
-			//Diagram
-			m_lines->setDataValueAttributes( iColumn, dva );
-		    ....
+....
+// set up a map with different marker styles
+MarkerAttributes::MarkerStylesMap map;
+map.insert( 0, MarkerAttributes::MarkerSquare );
+map.insert( 1, MarkerAttributes::MarkerCircle );
+map.insert( 2, MarkerAttributes::MarkerRing );
+map.insert( 3, MarkerAttributes::MarkerCross );
+map.insert( 4, MarkerAttributes::MarkerDiamond );
+....
+// Configure mmarkers per dataset in this example
+const int colCount =
+    m_lines->model()-&gt;columnCount(m_lines->rootIndex());
+for ( int iColumn = 0; iColumn&lt;colCount; ++iColumn ) {
+    DataValueAttributes dva
+        ( m_lines->dataValueAttributes( iColumn ) );
+    MarkerAttributes ma( dva.markerAttributes() );
+    ma.setMarkerStylesMap( map );
+    ma.setMarkerSize( QSize( markersWidthSB->value(),
+    markersHeightSB->value() ) );
+}
+....
+ma.setVisible(  true );
+
+// Assign markers attributes
+// to Data values attributes
+dva.setMarkerAttributes( ma );
+
+//Assign Data Values Attributes to
+//Diagram
+m_lines->setDataValueAttributes( iColumn, dva );
+....
 	        </programlisting>
 		<para>
 		    As we can see the code is straight forward and the process is similar 
@@ -6727,7 +6707,7 @@ done in the same way as for a
             </sect2> 
         </sect1>
 	<sect1>
-            <title id="customizingbackground">BackGround Attributes</title>
+            <title id="customizingbackground">Background Attributes</title>
 	    <para>
                 Background attributes encapsulates settings that have to do with backgounds for 
 		the divers elements of a chart view. This includes there modes( pixmap and its 
@@ -6771,13 +6751,14 @@ done in the same way as for a
 		    the different <filename>BackgroundPixmapMode</filename> available are:
 		</para>
 		<programlisting>
-		    ....
-		    enum BackgroundPixmapMode { 
-		    BackgroundPixmapModeNone,
-		    BackgroundPixmapModeCentered,
-		    BackgroundPixmapModeScaled,
-		    BackgroundPixmapModeStretched };
-		    ...
+....
+enum BackgroundPixmapMode {
+    BackgroundPixmapModeNone,
+    BackgroundPixmapModeCentered,
+    BackgroundPixmapModeScaled,
+    BackgroundPixmapModeStretched
+};
+...
 	        </programlisting>
 	    </note>
 	    <para>
@@ -6806,21 +6787,21 @@ done in the same way as for a
 		    and run this example and to study its code.
                 </para>
 		<programlisting>
-		    ....		   
-		     // Configure the plane's Background
-		    BackgroundAttributes pba;
-		    pba.setPixmap(  *pixmap );
-		    pba.setPixmapMode(  
-		    BackgroundAttributes::BackgroundPixmapModeStretched );
-		    pba.setVisible( true );
-		    diagram->coordinatePlane()->setBackgroundAttributes(  pba );
+....
+// Configure the plane's Background
+BackgroundAttributes pba;
+pba.setPixmap(  *pixmap );
+pba.setPixmapMode(
+BackgroundAttributes::BackgroundPixmapModeStretched );
+pba.setVisible( true );
+diagram->coordinatePlane()->setBackgroundAttributes(  pba );
 
-		    // Configure the Header's Background
-		    BackgroundAttributes hba;
-		    hba.setBrush( Qt::white );
-		    hba.setVisible( true );
-		    header->setBackgroundAttributes(  hba );
-		    ....
+// Configure the Header's Background
+BackgroundAttributes hba;
+hba.setBrush( Qt::white );
+hba.setVisible( true );
+header->setBackgroundAttributes(  hba );
+....
 	        </programlisting>
 		<para>
 		    As we can see the code is straight forward and the process is similar 
@@ -6906,20 +6887,20 @@ done in the same way as for a
 		    and run this example and to study its code.
                 </para>
 		<programlisting>
-		    ....		   
-		    // Configure the plane Frame attributes
-		    FrameAttributes pfa;
-		    pfa.setPen( QPen ( QBrush( Qt::blue ), 2 ) );
-		    pfa.setVisible( true );
-		    diagram->coordinatePlane()->setFrameAttributes(  pfa );
+....
+// Configure the plane Frame attributes
+FrameAttributes pfa;
+pfa.setPen( QPen ( QBrush( Qt::blue ), 2 ) );
+pfa.setVisible( true );
+diagram->coordinatePlane()->setFrameAttributes(  pfa );
 
-		    // Configure the header Frame attributes
-		    FrameAttributes hfa;
-		    hfa.setPen( QPen ( QBrush( Qt::darkGray ), 2 ) );
-		    hfa.setPadding( 2 );
-		    hfa.setVisible( true );
-		    header->setFrameAttributes(  hfa );
-		    ....
+// Configure the header Frame attributes
+FrameAttributes hfa;
+hfa.setPen( QPen ( QBrush( Qt::darkGray ), 2 ) );
+hfa.setPadding( 2 );
+hfa.setVisible( true );
+header->setFrameAttributes(  hfa );
+....
 	        </programlisting>
 		<para>
 		    As we can see the code is straight forward and the process is similar 
@@ -7030,9 +7011,9 @@ done in the same way as for a
 		    Otherwise you just need to set the grid attributes globally as follow:
 		</para>
 		<programlisting>
-		   GridAttributes ga = diagram->coordinatePlane()->globalGridAttributes(); 
-		   ga.setGlobalGridVisible( false );
-		   diagram->coordinatePlane->setGlobalGridAttributes( ga );
+GridAttributes ga = diagram->coordinatePlane()->globalGridAttributes();
+ga.setGlobalGridVisible( false );
+diagram->coordinatePlane->setGlobalGridAttributes( ga );
 	        </programlisting>
 	    </note>
             <sect2>
@@ -7044,34 +7025,34 @@ done in the same way as for a
 		    We recommend  you to compile and run this example and to study its code.
                 </para>
 		<programlisting>
-		    // diagram->coordinatePlane returns an abstract plane.
-		    // if we want to specify the orientation we need to cast
-		    // as follow
-		    CartesianCoordinatePlane* plane = 
-		    static_cast &lt;CartesianCoordinatePlane*&gt;
-		    ( diagram->coordinatePlane() );
+// diagram->coordinatePlane returns an abstract plane.
+// if we want to specify the orientation we need to cast
+// as follow
+CartesianCoordinatePlane* plane =
+    static_cast &lt;CartesianCoordinatePlane*&gt;
+        ( diagram->coordinatePlane() );
 
-		    // retrieve your grid attributes
-		    // display grid and sub-grid
-		    GridAttributes ga ( plane->gridAttributes( Qt::Vertical ) );
-		    ga.setGridVisible(  true );
-		    ga.setSubGridVisible( true );
+// retrieve your grid attributes
+// display grid and sub-grid
+GridAttributes ga ( plane->gridAttributes( Qt::Vertical ) );
+ga.setGridVisible(  true );
+ga.setSubGridVisible( true );
 
-		    // Configure a grid pen
-		    QPen gridPen(  Qt::magenta );
-		    gridPen.setWidth( 3 );
-		    ga.setGridPen(  gridPen );
+// Configure a grid pen
+QPen gridPen(  Qt::magenta );
+gridPen.setWidth( 3 );
+ga.setGridPen(  gridPen );
 
-		    // Configure a sub-grid pen
-		    QPen subGridPen( Qt::darkGray );
-		    subGridPen.setStyle( Qt::DotLine );
-		    ga.setSubGridPen(  subGridPen );
+// Configure a sub-grid pen
+QPen subGridPen( Qt::darkGray );
+subGridPen.setStyle( Qt::DotLine );
+ga.setSubGridPen(  subGridPen );
 
-		    // Display a blue zero line
-		    ga.setZeroLinePen( QPen( Qt::blue ) );
+// Display a blue zero line
+ga.setZeroLinePen( QPen( Qt::blue ) );
 
-		    // Assign your grid to the plane
-		    plane->setGridAttributes( Qt::Vertical,  ga );
+// Assign your grid to the plane
+plane->setGridAttributes( Qt::Vertical,  ga );
 	        </programlisting>
 		<para>
 		    As we can see the code is straight forward and the process is similar 
@@ -7201,21 +7182,21 @@ done in the same way as for a
 		    We recommend  you to compile and run this example and to study its code.
                 </para>
 		<programlisting>
-		    // Retrieve the threeD attributes for 
-		    // the diagram
-		    ThreeDBarAttributes td( m_bars->threeDBarAttributes() );
+// Retrieve the threeD attributes for
+// the diagram
+ThreeDBarAttributes td( m_bars->threeDBarAttributes() );
 
-		    // set its depth property
-		    td.setDepth( depthSB->value() );
+// set its depth property
+td.setDepth( depthSB->value() );
 
-		    // Implicitely enable threeD Mode
-		    td.setEnabled( true );
+// Implicitely enable threeD Mode
+td.setEnabled( true );
 
-		    // Assign to the diagram
-		    m_bars->setThreeDBarAttributes( td );
+// Assign to the diagram
+m_bars->setThreeDBarAttributes( td );
 
-		    // Re-paint 
-		    m_chart->update();
+// Re-paint
+m_chart->update();
 	        </programlisting>
 		<para>
 		    As we can see the code is straight forward and the process is similar 
@@ -7243,64 +7224,257 @@ done in the same way as for a
         </sect1>
         <?page-break?>
         <sect1>
-            <title>Font sizes and other measures</title>
+            <title id="rel_abs_measures">Font Sizes and other Measures</title>
             <para>
-                This chapter will show you how to use the <classname>KDChart::Measure</classname>
-                class for specifying font sizes or other measures.
+                This chapter illustrates how to use the <classname>KDChart::Measure</classname>
+                class to specify sizes. Closely related to <classname>Measure</classname> is the
+                <classname>KDChart::RelativePosition</classname> class explained in the
+                section <methodname>Relative and Absolute Positions</methodname> following this one.
             </para>
             <sect2>
                 <title>When and how to use the Measure class</title>
                 <para>
-                    <classname>KDChart::Measure</classname> is used to specify all relative
-                    and/or absolute measures in KDChart, e.g. to define (relative) font sizes,
-                    or the distance between an anchor point and some text aligned to that point ...
+                    <classname>KDChart::Measure</classname> is used to specify
+                    absolute values or relative measures to be re-calculated at runtime
+                    according to the size of a reference area, e.g. for font
+                    sizes or to define the distance between a text and its anchor point.
                 </para>
-                <note>
+                <itemizedlist>
+                    <listitem>
+                        <para>
+                            Absolute values are used to set a fixed measure, e.g. when
+                            the same font size is to be used, no matter how large the
+                            chart widget is displayed.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Relative measures specify values that are multiplied by 1/1000 of
+                            their reference area's width (or height, resp.) at runtime.
+                            &kdchart; uses this to link the default legend fonts to the
+                            chart's size: The legend is adjusted when your widget is resized.
+                        </para>
+                    </listitem>
+                </itemizedlist>
+                <tip>
+                    <para>
+                        The <classname>KDChart::TextAttributes</classname> class can handle
+                        both kinds of measures at the same time: You often might wish to
+                        specify a relative size via <methodname>setFontSize</methodname> and
+                        set a fixed value via <methodname>setMinimalFontSize</methodname> so
+                        the font will be dynamically calculated according to the area size
+                        but it will never be smaller than that specific minimum.
+                    </para>
+                </tip>
                 <para>
-                    There are very few places in &kdchart; that allow specifying a measure without
-                    using the <classname>Measure</classname> class, so reading this sub-chapter
-                    is not so much a matter of opinion but really worth it.
+                    Being a typical value class <classname>Measure</classname> is commonly
+                    initialized by the copy constructor since you should modify
+                    &kdchart;'s pre-defined settings rather than defining new ones from
+                    scratch. File <filename>examples/Lines/Parameters/main.cpp</filename>
+                    shows how to do that:
                 </para>
-            </note>
+                <programlisting>
+// Retrieve the data value attrs from your diagram, and retrieve their text attrs
+DataValueAttributes dva( diagram->dataValueAttributes() );
+TextAttributes ta( dva.textAttributes() );
+
+// Retrieve the font size and increase its value
+Measure me( ta.fontSize() );
+me.setValue( me.value() * 1.25 );
+
+// Make the data value texts visible
+ta.setVisible(  true );
+dva.setVisible( true );
+
+// Set the font size, set the text attrs, set the data value attrs
+ta.setFontSize( me );
+dva.setTextAttributes( ta );
+diagram->setDataValueAttributes( dva );
+                </programlisting>
             </sect2>
             <sect2>
                 <title>How to specify absolute values</title>
                 <para>
-                    ...
+                    To specify an absolute value for a Measure that you have
+                    initialized via copy constructor please use the
+                    <methodname>setAbsoluteValue()</methodname> method:
+                </para>
+                <programlisting>
+Measure me( someTextAttributes.fontSize() );
+me.setAbsoluteValue( 16 );
+someTextAttributes.setFontSize( me );
+                </programlisting>
+                <para>
+                    If you want to declare a new Measure from scratch
+                    just set the first two constructor parameters:
+                </para>
+                <programlisting>
+Measure me( 16, KDChartEnums::MeasureCalculationModeAbsolute );
+                </programlisting>
+                <para>
+                    In this case you can ommit the third parameter, since
+                    the orientation setting is ignored for absolute values.
                 </para>
             </sect2>
             <sect2>
                 <title>How to specify relative values</title>
                 <para>
-                    ...
+                    To specify a relative value for a Measure (no matter
+                    if initialized via copy constructor or not) you can
+                    use <methodname>setValue()</methodname> together with
+                    either <methodname>setRelativeMode()</methodname> or
+                    both <methodname>setReferenceArea()</methodname> and/or
+                    <methodname>setReferenceOrientation()</methodname>.
+                    So if your measure was using a fixed font size before
+                    you could say:
                 </para>
-            </sect2>
-            <sect2>
-                <title>Examples on using the Measure class</title>
+                <programlisting>
+me.setValue( 25 );
+me.setRelativeMode( m_chart, KDChartEnums::MeasureOrientationMinimum );
+                </programlisting>
                 <para>
-                    ...
+                    Note that <methodname>setRelativeMode()</methodname>
+                    is a convenience method that will implicitely
+                    enable the relative calculation mode.
+                </para>
+                <para>
+                    When not using <methodname>setRelativeMode()</methodname> you
+                    need to explicitely call <methodname>setCalculationMode(
+                    KDChartEnums::MeasureCalculationModeRelative )</methodname>,
+                    if your Measure was not set to this mode before:
+                </para>
+                <programlisting>
+me.setValue( 25 );
+me.setReferenceArea( m_chart );
+me.setReferenceOrientation( KDChartEnums::MeasureOrientationMinimum );
+me.setCalculationMode(      KDChartEnums::MeasureCalculationModeRelative );
+                </programlisting>
+                <para>
+                    In both cases the reference area must be derived from
+                    <classname>KDChart::AbstractArea</classname> or derived from
+                    <classname>QWidget</classname>. The orientation can be
+                    Horizontal, Vertical, Minimum, Maximum, the later ones
+                    meaning the area's qMin(width, height) or its qMax(), resp.
                 </para>
             </sect2>
         </sect1>
-<!--
-	<sect1>
-            <title id="customizingtips">Tips</title>
+        <sect1>
+            <title id="rel_abs_positions">Relative and Absolute Positions</title>
             <para>
-                Text ...
-            </para>  
+                This chapter covers the <classname>KDChart::Position</classname>
+                and <classname>KDChart::RelativePosition</classname> classes.
+                For details on the closely related <classname>KDChart::Measure</classname>
+                class see the preceeding section
+                <methodname>Font Sizes and other Measures</methodname>.
+            </para>
             <sect2>
-                <title id="tipsample" xreflabel="codexample">Customizing Example</title>
+                <title>What is relative positioning all about?</title>
                 <para>
-                    Let us make this more concrete by looking at the following
-                    lines of code.
-		   
-                </para>               
-                <para>
-                    More explanation?
+                    Introduced for floating objects in &kdchart; 2 relative positioning
+                    is defining a point in relation to a reference point that in
+                    turn is specified in relation to a reference area.
                 </para>
+                <para>
+                    This illustration shows the nine position points defined for a bar,
+                    see the magnified area for the relative positioning of negative /
+                    positive data value texts.
+                </para>
+                <figure float="0" id="fig-relativeposition">
+                    <title>Data value text positions relative to compass points</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata
+                                    fileref="images/relativeposition.png"
+                                    width="4in" scalefit="1"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
+            </sect2>
+            <sect2>
+                <title>How to specify a position</title>
+                <orderedlist numeration="arabic">
+                    <listitem>
+                        <para>
+                            If necessary name a reference area or define a set of reference points.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Use <classname>KDChart::Position</classname> to pick one of the
+                            reference area's compass points.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Specify distance and alignment in horizontal and vertical
+                            direction.
+                        </para>
+                    </listitem>
+                </orderedlist>
+            </sect2>
+            <sect2>
+                <title>Using Position and RelativePosition</title>
+                <para>
+                    Illustrated on the preceeding page you have seen the most
+                    common use of these position classes: Defining the placement
+                    of data value texts in relation to their respective areas.
+                </para>
+                <para>
+                    By default positive and negative data value texts are positioned
+                    in different ways: While positive texts would use the bar's
+                    <varname>Position::NorthWest</varname> their negative counterparts
+                    are located next to the <varname>Position::SouthEast</varname>
+                    point of the bar. Also the positive texts are using another way of
+                    alignment than the negative ones.
+                </para>
+                <para>
+                    The reason for this is to make it easy to specify rotated data
+                    value texts: Because of different reference points and alignment
+                    the texts will look good even when rotated, without the need of
+                    adjusting other settings than just the rotation angle itself.
+                </para>
+                <para>
+                    Being a typical value class <classname>RelativePosition</classname> is
+                    commonly initialized by the copy constructor since you should modify
+                    &kdchart;'s pre-defined settings rather than defining new ones from
+                    scratch, so you could specify non-rotated, centered texts as shown
+                    in the following code, that is using extra indentation to indicate
+                    get/set relationship:
+                </para>
+                    <programlisting>
+// Retrieve the data value attrs from your diagram
+DataValueAttributes dva( diagram->dataValueAttributes() );
+
+    // Set the text rotation to Zero degrees
+    TextAttributes ta = dva.textAttributes();
+        ta.setRotation( 0 );
+    dva.setTextAttributes( ta );
+
+    // Retrieve the current position settings
+    RelativePosition posPositive( dva.position( true ) );
+    RelativePosition posNegative( dva.position( false ) );
+
+        // Choose the centered position points
+        posPositive.setReferencePosition( Position::North );
+        posNegative.setReferencePosition( Position::South );
+
+        // Adjust the alignment of the texts:
+        // horizontally centered to their respective position points
+        posPositive.setAlignment( Qt::AlignHCenter | Qt::AlignBottom );
+        posNegative.setAlignment( Qt::AlignHCenter | Qt::AlignTop );
+
+    // Set the positions
+    dva.setPositivePosition( posPositive );
+    dva.setNegativePosition( posNegative );
+
+    // Make the data value texts visible
+    dva.setVisible( true );
+
+// Set the data value attrs
+diagram->setDataValueAttributes( dva );
+                </programlisting>
             </sect2>
         </sect1>
--->
         <sect1>
             <title>What's next</title>
             <para>
@@ -7476,3 +7650,4 @@ sgml-local-catalogs:nil
 sgml-local-ecat-files:nil
 End:
 -->
+
