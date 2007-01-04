@@ -4,5 +4,7 @@ CONFIG += ordered
 
 TEMPLATE=subdirs
 SUBDIRS = src examples uitools plugins tests qtests 
-unix: SUBDIRS += kdchart1support
+
+# (Mirko) removed in coordination with khz, will be finished after Jan 08:
+# unix: SUBDIRS += kdchart1support
 
