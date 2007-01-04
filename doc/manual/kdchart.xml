@@ -132,7 +132,7 @@
                 How we will proceed to present &kdchart;?
             </para>
             <para>
-		This manual starts with an introduction to the &kdchart;2.0 API
+		This manual starts with an introduction to the &kdchart; 2.0 API
 		before going through the basic steps and methods for the user 
 		to create her own chart.
             </para>
@@ -169,7 +169,7 @@
         <sect1>
             <title>What's next</title>
             <para>
-                In the next chapter we introduce you to &kdchart; 2.0 new API.
+                In the next chapter we introduce you to the &kdchart; 2.0 API.
             </para>
        </sect1>
     </chapter>
@@ -211,7 +211,7 @@
 		components of a chart are painted, manages them and provides 
 		access to them. There can be more than one 
 		<classname>KDChart::Diagram</classname> on a 
-		<classname>KDChart::Chart</classname>, how they are laid out 
+		<classname>KDChart::Chart</classname>. How they are laid out 
 		is determined by which axes, if any, they share (more on axes 
 		below).
 	    </para>
@@ -277,7 +277,7 @@
 			<para>
 			    Each coordinate plane can have one or more diagram 
 			    associated to it. Those diagrams will share the scale 
-			    provided by the plan. A chart can also have more than 
+			    provided by the plane. A chart can also have more than 
 			    one coordinate plane. This makes it possible to have 
 			    multiple diagrams (e.g a line and a bar chart) using the 
 			    same or different scales and displayed next to, or on top 
@@ -286,7 +286,7 @@
 		    </listitem>		
 		    <listitem>
 			<para>
-			    In order To share an axis among two planes (and also diagrams)
+			    In order to share an axis among two planes (and also diagrams)
 			    we just need to add it to both diagrams. The Chart 
 			    lay-outing engine will take care of adjusting positions 
 			    accordingly.
