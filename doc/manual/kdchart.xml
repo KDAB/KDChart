@@ -7406,7 +7406,7 @@ me.setCalculationMode(      KDChartEnums::MeasureCalculationModeRelative );
                     </listitem>
                     <listitem>
                         <para>
-                            Specify distance and alignment in horizontal and vertical
+                            Specify padding and alignment in horizontal and vertical
                             direction.
                         </para>
                     </listitem>
