@@ -117,9 +117,12 @@ void CartesianGrid::drawGrid( PaintContext* context )
         //qDebug() << "de-activating grid sub steps: not enough space";
     }
 
-    const bool drawUnitLinesX = (screenRangeX / numberOfUnitLinesX > MinimumPixelsBetweenLines);
+    const bool drawUnitLinesX = gridAttrsX.isGridVisible() &&
+            (screenRangeX / numberOfUnitLinesX > MinimumPixelsBetweenLines);
+    const bool drawUnitLinesY = gridAttrsY.isGridVisible() &&
+            (screenRangeY / numberOfUnitLinesY > MinimumPixelsBetweenLines);
+
     const bool isLogarithmicX = dimX.isCalculated && (dimX.calcMode == AbstractCoordinatePlane::Logarithmic );
-    const bool drawUnitLinesY = (screenRangeY / numberOfUnitLinesY > MinimumPixelsBetweenLines);
     const bool isLogarithmicY = (dimY.calcMode == AbstractCoordinatePlane::Logarithmic );
 /*
     while ( !drawUnitLinesX ) {
