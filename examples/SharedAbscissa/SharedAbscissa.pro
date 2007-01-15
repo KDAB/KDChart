@@ -1,10 +1,4 @@
-KDCHART_PATH = ../..
+TEMPLATE	= subdirs
+SUBDIRS		= OverlayedDiagrams \
+                  SeparateDiagrams
 
-include( $$KDCHART_PATH/examples/examples.pri )
-
-HEADERS= mainwindow.h
-SOURCES= main.cpp mainwindow.cpp
-FORMS  = mainwindow.ui
-RESOURCES = SharedAbscissa.qrc
-
-message( "Building ''$$TARGET'' using LIBS ''$$LIBS''" )
