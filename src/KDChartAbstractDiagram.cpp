@@ -63,6 +63,8 @@ AbstractDiagram::Private::Private()
   , percent( false )
   , datasetDimension( 1 )
   , databoundariesDirty(true)
+  , lastRoundedValue()
+  , lastX( 0 )
   , mCachedFontMetrics( QFontMetrics( qApp->font() ) )
 {
 }
@@ -423,12 +425,21 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
                 pt.ry() += 0.5 * boundRect.height();
         }
 
-        PainterSaver painterSaver( painter );
-        painter->setPen( ta.pen() );
-        painter->setFont( calculatedFont );
-        painter->translate( pt );
-        painter->rotate( ta.rotation() );
-        painter->drawText( QPointF(0, 0), roundedValue );
+        // FIXME draw the non-text bits, background, etc
+
+        if ( a.showRepetitiveDataLabels() ||
+             pos.x() <= d->lastX ||
+             d->lastRoundedValue != roundedValue ) {
+            d->lastRoundedValue = roundedValue;
+            d->lastX = pos.x();
+
+            PainterSaver painterSaver( painter );
+            painter->setPen( ta.pen() );
+            painter->setFont( calculatedFont );
+            painter->translate( pt );
+            painter->rotate( ta.rotation() );
+            painter->drawText( QPointF(0, 0), roundedValue );
+        }
     }
 }
 

@@ -168,6 +168,11 @@ protected:
     int datasetDimension;
     mutable QPair<QPointF,QPointF> databoundaries;
     mutable bool databoundariesDirty;
+
+private:
+    QString lastRoundedValue;
+    qreal lastX;
+
 private:
     QFontMetrics   mCachedFontMetrics;
     QFont          mCachedFont;

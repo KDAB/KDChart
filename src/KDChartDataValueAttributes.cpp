@@ -63,6 +63,7 @@ private:
     bool showInfinite;
     RelativePosition negativeRelPos;
     RelativePosition positiveRelPos;
+    bool showRepetitiveDataLabels;
 };
 
 DataValueAttributes::Private::Private() :
@@ -86,6 +87,8 @@ DataValueAttributes::Private::Private() :
 
     positiveRelPos.setAlignment( Qt::AlignLeft  | Qt::AlignBottom );
     negativeRelPos.setAlignment( Qt::AlignRight | Qt::AlignTop );
+
+    showRepetitiveDataLabels = false;
 
     // By default use 0.25 of the font height as horizontal distance between
     // the data and their respective data value texts,
@@ -140,7 +143,8 @@ bool DataValueAttributes::operator==( const DataValueAttributes& r ) const
 	     powerOfTenDivisor() == r.powerOfTenDivisor() &&
 	     showInfinite() == r.showInfinite() &&
 	     negativePosition() == r.negativePosition() &&
-	     positivePosition() == r.positivePosition() );
+	     positivePosition() == r.positivePosition() &&
+         showRepetitiveDataLabels() == r.showRepetitiveDataLabels() );
 }
 
 /*static*/
@@ -249,6 +253,16 @@ QString DataValueAttributes::dataLabel() const
     return d->dataLabel;
 }
 
+bool DataValueAttributes::showRepetitiveDataLabels() const
+{
+    return d->showRepetitiveDataLabels;
+}
+
+void DataValueAttributes::setShowRepetitiveDataLabels( bool showRepetitiveDataLabels )
+{
+    d->showRepetitiveDataLabels = showRepetitiveDataLabels;
+}
+
 void DataValueAttributes::setPowerOfTenDivisor( int powerOfTenDivisor )
 {
     d->powerOfTenDivisor = powerOfTenDivisor;
@@ -302,6 +316,7 @@ QDebug operator<<(QDebug dbg, const KDChart::DataValueAttributes& val )
 	<< "showinfinite="<<val.showInfinite()
 	<< "negativerelativeposition="<<val.negativePosition()
 	<< "positiverelativeposition="<<val.positivePosition()
+	<< "showRepetitiveDataLabels="<<val.showRepetitiveDataLabels()
 	<<")";
     return dbg;
 }

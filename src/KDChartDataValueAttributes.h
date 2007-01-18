@@ -186,9 +186,23 @@ public:
  /**
    * \cond PLANNED_FOR_FUTURE
    *
-   * These method are planned for future versions of KD Chart,
-   * so they are not part of the documented API yet.
+   * \return Whether data values not different from their predecessors are drawn.
    */
+  bool showRepetitiveDataLabels() const;
+
+ /**
+   *
+   * Set whether data value labels not different from their predecessors should be drawn.
+   * \param showRepetitiveDataLabels Whether data value not different from their predecessors are drawn.
+   */
+  void setShowRepetitiveDataLabels( bool showRepetitiveDataLabels );
+
+  /**
+    *
+    * These method are planned for future versions of KD Chart,
+    * so they are not part of the documented API yet.
+    *
+    */
   void setPowerOfTenDivisor( int powerOfTenDivisor );
   int powerOfTenDivisor() const;
    /**
