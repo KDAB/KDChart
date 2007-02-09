@@ -713,6 +713,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
                           Qt::AlignHCenter|Qt::AlignVCenter );
             QPointF point;
             const QSize size( titleItem.sizeHint() );
+            //FIXME(khz): We definitely need to provide a way that users can decide
+            //            the position of an axis title.
             switch( position() )
             {
             case Top:
