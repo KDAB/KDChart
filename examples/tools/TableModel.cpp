@@ -119,7 +119,7 @@ bool TableModel::loadFromCSV ( const QString& filename )
     {
         while ( !file.atEnd() )
         {
-            QString line = file.readLine();
+            QString line = QString::fromUtf8( file.readLine() );
             data.append ( line );
         }
 
