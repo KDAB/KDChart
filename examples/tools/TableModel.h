@@ -2,10 +2,10 @@
 #define TABLEMODEL_H
 
 #include <QVariant>
-#include <QVariant>
 #include <QVector>
 #include <QAbstractTableModel>
 #include "tools_export.h"
+#include <QStringList>
 
 /** TableModel uses a simple rectangular vector of vectors to represent a data
     table that can be displayed in regular Qt Interview views.
@@ -67,6 +67,9 @@ public:
 private:
     // the vector of rows:
     QVector< QVector<QVariant> > m_rows;
+    // the header data:
+    QStringList m_horizontalHeaderData;
+    QStringList m_verticalHeaderData;
     bool m_supplyHeaderData;
 };
 

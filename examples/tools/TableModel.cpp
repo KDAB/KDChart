@@ -18,21 +18,15 @@ TableModel::~TableModel ()
 
 int TableModel::rowCount ( const QModelIndex & ) const
 {
-    if ( m_rows.size() > 0 )
-    {
-        return m_rows.size() - 1;
-    } else {
-        return 0;
-    }
+    return m_rows.size();
 }
 
 int TableModel::columnCount ( const QModelIndex & ) const
 {
-    if ( m_rows.size() == 0 )
-    {
+    if ( m_rows.isEmpty() ) {
         return 0;
     } else {
-        return m_rows[0].size() - 1;
+        return m_rows[0].size();
     }
 }
 
@@ -57,7 +51,7 @@ QVariant TableModel::data ( const QModelIndex & index, int role) const
 
     if ( role == Qt::DisplayRole || role == Qt::EditRole )
     {
-        return m_rows[index.row() + 1] [index.column() + 1] ;
+        return m_rows[index.row()] [index.column()];
     } else {
         return QVariant();
     }
@@ -74,10 +68,10 @@ QVariant TableModel::headerData ( int section, Qt::Orientation orientation, int 
         if ( m_supplyHeaderData ) {
             if ( orientation == Qt::Horizontal )
             {   // column header data:
-                result = m_rows[0][section + 1];
+                result = m_horizontalHeaderData[section];
             } else {
                 // row header data:
-                result = m_rows[section + 1][0];
+                result = m_verticalHeaderData[section];
             }
         }
         break;
@@ -102,7 +96,7 @@ bool TableModel::setData ( const QModelIndex & index, const QVariant & value, in
 
     if ( role == Qt::EditRole )
     {
-        m_rows[index.row() + 1] [index.column() + 1] = value;
+        m_rows[index.row()] [index.column()] = value;
         emit dataChanged( index, index );
         return true;
     } else {
@@ -127,7 +121,8 @@ bool TableModel::loadFromCSV ( const QString& filename )
         {
 //             qDebug() << "TableModel::loadFromCSV: " << data.size()
 //                      << " data rows found." << endl;
-            m_rows.resize ( data.size() );
+
+            m_rows.resize ( data.size() - 1 );
 
             // debugging code:
             int previousColumnCount = 0;
@@ -137,7 +132,6 @@ bool TableModel::loadFromCSV ( const QString& filename )
                 QStringList parts = data.at( row ).split ( QString( ',' ) );
 
                 Q_ASSERT ( previousColumnCount == parts.size() || previousColumnCount == 0 );
-                Q_ASSERT ( ( previousColumnCount = parts.size() ) || true );
 
                 QVector<QVariant> values( parts.size() );
 
@@ -154,37 +148,32 @@ bool TableModel::loadFromCSV ( const QString& filename )
                     {
                         cell.remove ( cell.length()-1, 1 );
                     }
-                    parts[column] = cell;
 
                     if ( row == 0 )
                     {   // interpret the first row as column headers:
-                        values[column] = QVariant ( parts.at ( column ) );
-                        setHeaderData ( column,  Qt::Horizontal,  QVariant ( parts.at ( column ) ),
-                                        Qt::DisplayRole );
+                        m_horizontalHeaderData.append( cell );
+                        //setHeaderData ( column,  Qt::Horizontal, QVariant( cell ), Qt::DisplayRole );
                     } else {
                         if ( column == 0 )
                         {   // interpret first column as row headers:
-                            values[column] = QVariant ( parts.at ( column ) );
-                            setHeaderData ( row,  Qt::Vertical, QVariant ( parts.at ( column ) ) );
+                            m_verticalHeaderData.append( cell );
+                            //setHeaderData ( row,  Qt::Vertical, QVariant ( cell ) );
                         } else {
                             // interpret cell values as floating point:
                             bool convertedOk = false;
-                            double value = parts.at ( column ).toDouble ( &convertedOk );
+                            double value = cell.toDouble ( &convertedOk );
                             if ( convertedOk )
                             {
-//                             Q_ASSERT_X ( convertedOk, "TableModel::loadFromCSV",
-//                                          "Double values expected except first column or first row!" );
-                                values[column] = QVariant ( value );
+                                values[column-1] = QVariant( value );
                             } else {
-                                values[column] = parts.at( column );
+                                values[column-1] = cell;
                             }
                         }
                     }
                 }
-
-                m_rows[row] = values;
+                if ( row > 0 )
+                    m_rows[row-1] = values;
             }
-
         } else {
             m_rows.resize ( 0 );
         }
