@@ -905,6 +905,7 @@ give you a few examples.
 	    At the moment, KD Chart supports two types of planes in order to display 
 	    the different types of diagrams it supports.
         </para>
+        <para>
 	 <itemizedlist>
             <listitem>
                 <para>
@@ -917,19 +918,54 @@ give you a few examples.
                     A Polar coordinate plane which makes use of the radius or the polar angle 
 		    which defines the position of a point on a plane.
                 </para>
-		<para>
-		    This chapter tells you how to change the chart type from the default to any
-		    one of the other types. All of the chart types provided by &kdchart; are 
-		    presented here with the help of some sample code and/or small programs and their 
-		    screenshots.
-		</para>
-		<para>
-		    It will also give us an idea about which chart type could be appropriate for a 
-		    specific purpose, and provides information about the features that are available for 
-		    each type of chart.
-		</para>
             </listitem>
-        </itemizedlist>
+	</itemizedlist>
+	</para>
+	<para>
+	    This chapter tells you how to change the chart type from the default to any
+	    one of the other types. All of the chart types provided by &kdchart; are 
+	    presented here with the help of some sample code and/or small programs and their 
+	    screenshots.
+	</para>
+	<para>
+	    It will also give us an idea about which chart type could be appropriate for a 
+	    specific purpose, and provides information about the features that are available for 
+	    each type of chart. Let us first go through some important concept concerning the 
+	    planes and their relation to the diagrams and the chart view itself.
+	</para>
+      	<para>
+	    Each coordinate plane can have one or more diagram associated to it. Those diagrams 
+	    will share the scale provided by the plane. A chart can also have more than 
+	    one coordinate plane. This makes it possible to have multiple diagrams using different 
+	    scales and displayed next to, or on top of each other in the same chart. 
+	</para>
+        <note>
+	    <para>
+		There are two ways in which planes can be caused to interact in where they are 
+                positionned layouting wise: The first is the reference plane. 
+                By using <methodname>AbstractCoordinatePlane::setReferenceCoordinatePlane()</methodname> 
+		the user force the calling plane to be layouted in the same cell in as the plane it is 
+		referenced too (overLaying).
+	    </para>
+	    <para>
+		Also when planes share an axis they will be layed out in relation to each other as 
+		suggested by the position of the axis. If, for example Plane1 and Plane2 share an axis 
+		at position Left, that will result in the layout: Axis Plane1 Plane 2, vertically. 
+		If Plane1 also happens to be Plane2's reference plane, both planes are drawn over each 
+		other. 
+	    </para>
+	    <para>
+		The reference plane concept allows two planes to share the same space even if none has 
+		axis, and in case there are shared axis, it is used to decide whether the planes should be 
+		painted on top of each other or layed out vertically or horizontally next to each other.
+	    </para>
+	    <para>
+		The above concept is illustrated in 
+		<filename>examples/SharedAbscissa/OverlayedDiagrams</filename> and 
+		<filename>examples/SharedAbscissa/SeparateDiagrams</filename>, we recommend you
+                to study those examples.
+	    </para>
+	</note>  
         <sect1>
             <title id="cartesianplane">Cartesian Coordinate Planes</title>
             <para>
@@ -7513,12 +7549,12 @@ diagram->setDataValueAttributes( dva );
 	<para>
 	    2 - <filename>/examples/Bars/Advanced</filename>
 	</para>
-	    <figure float="0" id="fig-bartsadvanced">
+	    <figure float="0" id="fig-baradvanced">
 		<title>/examples/Bars/Advanced</title>
 		<mediaobject>
 		    <imageobject>
 			<imagedata
-			    fileref="images/baradvanced.png"
+			    fileref="images/fullbarchart.png"
 			    width="3in" scalefit="1"/>
 		    </imageobject>
 		</mediaobject>
@@ -7621,7 +7657,7 @@ diagram->setDataValueAttributes( dva );
                 FAQ.
             </para>
         </sect1>
-    </chapter>    
+    </chapter>
     <appendix id="appendix_qanda">
         <title>Q&amp;A section</title>
         <titleabbrev>Appendix A</titleabbrev>       
