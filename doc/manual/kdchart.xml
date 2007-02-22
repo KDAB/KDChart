@@ -942,7 +942,9 @@ give you a few examples.
         <note>
 	    <para>
 		There are two ways in which planes can be caused to interact in where they are 
-                positionned layouting wise: The first is the reference plane. 
+                positionned layouting wise: The first is the reference plane.
+           </para>		
+            <para>
                 By using <methodname>AbstractCoordinatePlane::setReferenceCoordinatePlane()</methodname> 
 		the user force the calling plane to be layouted in the same cell in as the plane it is 
 		referenced too (overLaying).
