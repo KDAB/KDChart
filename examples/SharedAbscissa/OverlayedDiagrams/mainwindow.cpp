@@ -28,6 +28,7 @@
 #include <KDChartChart>
 #include <KDChartAbstractCoordinatePlane>
 #include <KDChartLineDiagram>
+#include <KDChartGridAttributes>
 
 #include <QDebug>
 #include <QPainter>
@@ -65,7 +66,7 @@ MainWindow::MainWindow( QWidget* parent ) :
 
     xAxis->setPosition ( KDChart::CartesianAxis::Top );
     yAxis->setPosition ( KDChart::CartesianAxis::Left );
-    yAxis2->setPosition ( KDChart::CartesianAxis::Right );
+    yAxis2->setPosition ( KDChart::CartesianAxis::Left );
 
     m_lines->addAxis( yAxis );
 
@@ -75,4 +76,28 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
     plane2->replaceDiagram( m_lines2 );
     m_chart->addCoordinatePlane( plane2/*, 1*/);
+}
+
+
+void MainWindow::on_displayGrid1CB_toggled( bool checked )
+{
+    CartesianCoordinatePlane* plane = static_cast <CartesianCoordinatePlane*>
+                                      ( m_chart->coordinatePlane() );
+
+    // disable grids display for plane
+    GridAttributes gv ( plane->gridAttributes( Qt::Vertical) );
+    gv.setGridVisible( checked ? true : false );
+    plane->setGridAttributes(Qt::Vertical, gv );
+    plane->setGridAttributes(Qt::Horizontal, gv );
+}
+
+void MainWindow::on_displayGrid2CB_toggled( bool checked )
+{
+
+    // disable grids display for plane
+    GridAttributes gv ( plane2->gridAttributes( Qt::Vertical) );
+    gv.setGridVisible( checked ? true : false );
+    plane2->setGridAttributes(Qt::Vertical, gv );
+    plane2->setGridAttributes(Qt::Horizontal, gv );
+
 }

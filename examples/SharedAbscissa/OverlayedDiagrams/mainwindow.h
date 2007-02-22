@@ -45,6 +45,11 @@ class MainWindow : public QWidget, private Ui::MainWindow
 public:
     MainWindow( QWidget* parent = 0 );
 
+private slots:
+
+    void on_displayGrid1CB_toggled( bool checked );
+    void on_displayGrid2CB_toggled( bool checked );
+
 private:
     KDChart::Chart* m_chart;
     TableModel m_model;
@@ -53,8 +58,7 @@ private:
     KDChart::LineDiagram* m_lines;
     KDChart::LineDiagram* m_lines2;
     KDChart::CartesianCoordinatePlane* plane2;
-    // mutable KDChart::CartesianAxis xAxis;
-    //mutable KDChart::CartesianAxis yAxis;
+
 
 };
 
