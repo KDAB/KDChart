@@ -51,6 +51,7 @@ private slots:
     void on_displayGrid2CB_toggled( bool checked );
 
 private:
+    void init();
     KDChart::Chart* m_chart;
     TableModel m_model;
     TableModel m_model2;

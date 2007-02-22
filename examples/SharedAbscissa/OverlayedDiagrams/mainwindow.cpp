@@ -76,6 +76,12 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
     plane2->replaceDiagram( m_lines2 );
     m_chart->addCoordinatePlane( plane2/*, 1*/);
+    init();
+}
+
+void MainWindow::init()
+{
+    on_displayGrid2CB_toggled( false );
 }
 
 
