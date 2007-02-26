@@ -530,12 +530,20 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 if( drawLabels ) {
                     if ( isLogarithmicX )
                         labelItem->setText( QString::number( i, 'f', 0 ) );
-                    else if( (dimX.stepWidth != 1.0) && ! dimX.isCalculated )
-                        labelItem->setText( QString::number( i, 'f', 0 ) );
+                    /* We dont need that
+                     * it causes header labels to be skipped even if there is enough
+                     * space for them to displayed.
+                     * Commenting for now - I need to test more in details - Let me know if I am wrong here.
+                     * /
+                    else if( (dimX.stepWidth != 1.0) && ! dimX.isCalculated ) {
+                        labelItem->setText( QString::number( i, 'f', 0 ) )
+                    }
+                    */
                     else {
                         labelItem->setText( hardLabelsCount
                             ? ( useShortLabels    ? shortLabels()[ idxLabel ] : labels()[ idxLabel ] )
                             : ( headerLabelsCount ? headerLabels[  idxLabel ] : QString::number( iLabelF )));
+
                     }
                     // No need to call labelItem->setParentWidget(), since we are using
                     // the layout item temporarily only.
@@ -564,7 +572,6 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
                         labelStep = qRound( labelDiff ) - qRound( dimX.stepWidth );
                         labelItem->paint( ptr );
-
                         labelItem2->setText( labelItem->text() );
 
                         // maybe enable clipping afterwards
