@@ -468,12 +468,17 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
                 qreal i = minValueX;
                 int iLabel = 0;
-                while ( i < maxValueX )
+
+                while ( i + labelDiff < maxValueX )
                 {
                     if ( !drawLabels || hardLabelsCount < 1 || ( dimX.stepWidth != 1.0 && ! dim.isCalculated ) )
                     {
-                        labelItem->setText( QString::number( i, 'f', 0 ) );
-                        labelItem2->setText( QString::number( i + labelDiff, 'f', 0 ) );
+                        // Check intersects for the header label - we need to pass the full string here
+                        // and not only the i value.
+                          labelItem->setText( headerLabelsCount ? headerLabels[static_cast<int>(i)]
+                                              : QString::number( i, 'f', 0 ));
+                          labelItem2->setText( headerLabelsCount ? headerLabels[static_cast<int>(i + labelDiff ) ]
+                                              : QString::number( i + labelDiff, 'f', 0 ));
                     } else {
                         int index = iLabel;
                         labelItem->setText( labels()[ index < hardLabelsCount ? index : 0 ] );
@@ -530,7 +535,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     else {
                         labelItem->setText( hardLabelsCount
                             ? ( useShortLabels    ? shortLabels()[ idxLabel ] : labels()[ idxLabel ] )
-                                            : ( headerLabelsCount ? headerLabels[  idxLabel ] : QString::number( iLabelF )));
+                            : ( headerLabelsCount ? headerLabels[  idxLabel ] : QString::number( iLabelF )));
                     }
                     // No need to call labelItem->setParentWidget(), since we are using
                     // the layout item temporarily only.
