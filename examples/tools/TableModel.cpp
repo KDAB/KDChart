@@ -8,7 +8,10 @@
 #include "TableModel.h"
 
 TableModel::TableModel ( QObject * parent )
-    : QAbstractTableModel ( parent ), m_supplyHeaderData( true )
+    : QAbstractTableModel ( parent ),
+      m_dataHasHorizontalHeaders( true ),
+      m_dataHasVerticalHeaders( true ),
+      m_supplyHeaderData( true )
 {
 }
 
@@ -65,16 +68,19 @@ QVariant TableModel::headerData ( int section, Qt::Orientation orientation, int 
     {
     case Qt::DisplayRole:
     case Qt::EditRole:
-        if ( m_supplyHeaderData ) {
-            if ( orientation == Qt::Horizontal )
-            {   // column header data:
+    if ( m_supplyHeaderData )
+    {
+        if ( orientation == Qt::Horizontal )
+        {   // column header data:
+            if ( !m_horizontalHeaderData.isEmpty() )
                 result = m_horizontalHeaderData[section];
-            } else {
-                // row header data:
+        } else {
+            // row header data:
+            if ( !m_verticalHeaderData.isEmpty() )
                 result = m_verticalHeaderData[section];
-            }
         }
-        break;
+    }
+    break;
     case Qt::TextAlignmentRole:
 //        result = QVariant ( Qt::AlignHCenter | Qt::AlignHCenter );
         break;
@@ -149,12 +155,13 @@ bool TableModel::loadFromCSV ( const QString& filename )
                         cell.remove ( cell.length()-1, 1 );
                     }
 
-                    if ( row == 0 )
+
+                    if ( row == 0 && m_dataHasHorizontalHeaders )
                     {   // interpret the first row as column headers:
                         m_horizontalHeaderData.append( cell );
                         //setHeaderData ( column,  Qt::Horizontal, QVariant( cell ), Qt::DisplayRole );
                     } else {
-                        if ( column == 0 )
+                        if ( column == 0 && m_dataHasVerticalHeaders )
                         {   // interpret first column as row headers:
                             m_verticalHeaderData.append( cell );
                             //setHeaderData ( row,  Qt::Vertical, QVariant ( cell ) );
@@ -162,17 +169,15 @@ bool TableModel::loadFromCSV ( const QString& filename )
                             // interpret cell values as floating point:
                             bool convertedOk = false;
                             double value = cell.toDouble ( &convertedOk );
-                            if ( convertedOk )
-                            {
-                                values[column-1] = QVariant( value );
-                            } else {
-                                values[column-1] = cell;
-                            }
+                            const int destColumn = m_dataHasVerticalHeaders ? column - 1 : column;
+                            values[destColumn] = convertedOk ? QVariant( value ) : cell;
                         }
                     }
                 }
-                if ( row > 0 )
-                    m_rows[row-1] = values;
+                if ( row > 0 ) {
+                    const int destRow = m_dataHasHorizontalHeaders ? row - 1 : row;
+                    m_rows[destRow] = values;
+                }
             }
         } else {
             m_rows.resize ( 0 );

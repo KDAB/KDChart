@@ -60,16 +60,34 @@ public:
     /** Make the model invalid, that is, provide no data. */
     void clear();
 
-    /** Switch retrieval of row or column headers from the table on or off */
+    /**
+     * Set to false if the data has no horizontal header
+     */
+    void setDataHasHorizontalHeaders( bool value ) {
+        m_dataHasHorizontalHeaders = value;
+    }
+    /**
+     * Set to false if the data has no vertical header
+     */
+    void setDataHasVerticalHeaders( bool value ) {
+        m_dataHasVerticalHeaders = value;
+    }
+    /**
+     * setSupplyHeaderData(false) allows to prevent the model from supplying header data,
+     * even if parsing found any
+     */
     void setSupplyHeaderData( bool value ) {
         m_supplyHeaderData = value;
     }
+
 private:
     // the vector of rows:
     QVector< QVector<QVariant> > m_rows;
     // the header data:
     QStringList m_horizontalHeaderData;
     QStringList m_verticalHeaderData;
+    bool m_dataHasHorizontalHeaders;
+    bool m_dataHasVerticalHeaders;
     bool m_supplyHeaderData;
 };
 
