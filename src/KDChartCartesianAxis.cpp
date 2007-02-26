@@ -38,6 +38,7 @@
 #include "KDChartAbstractCartesianDiagram.h"
 #include "KDChartPainterSaver_p.h"
 #include "KDChartLayoutItems.h"
+#include "KDChartBarDiagram.h"
 
 #include <KDABLibFakes>
 
@@ -195,7 +196,6 @@ void CartesianAxis::paint( QPainter* painter )
 #define ptr (context->painter())
 void CartesianAxis::paintCtx( PaintContext* context )
 {
-    //qDebug() << "KDChart::CartesianAxis::paintCtx() called";
 
     Q_ASSERT_X ( d->diagram(), "CartesianAxis::paint",
                  "Function call not allowed: The axis is not assigned to any diagram." );
@@ -215,12 +215,12 @@ void CartesianAxis::paintCtx( PaintContext* context )
     const DataDimension& dimY = dimensions.last();
     const DataDimension& dim = (isAbscissa() ? dimensions.first() : dimensions.last());
 
-    /*
+/*
     if(isAbscissa())
         qDebug() << "         " << "Abscissa:" << dimX.start <<".."<<dimX.end <<"  step"<<dimX.stepWidth;
     else
         qDebug() << "         " << "Ordinate:" << dimY.start <<".."<<dimY.end <<"  step"<<dimY.stepWidth;
-    */
+*/
 
     // preparations:
     // - calculate the range that will be displayed:
@@ -366,11 +366,27 @@ void CartesianAxis::paintCtx( PaintContext* context )
     // and that does the same for the y-ticks
     QVector< int > drawnYTicks;
 
+    /*
+     * Find out if it is a bar diagram
+     * bar diagrams display their data per column
+     * we need to handle the last label another way
+     * 1 - Last label == QString null ( Header Labels )
+     * 2 - Display labels and ticks in the middle of the column
+     */
+
+    bool isBarDiagram;
+    AbstractDiagram * const dia = const_cast<AbstractDiagram*>( d->diagram() );
+    if ( qobject_cast< BarDiagram* >( dia ) )
+        isBarDiagram = true;
+    else
+        isBarDiagram = false;
+
     // this draws the unit rulers
     if ( drawUnitRulers ) {
         const int hardLabelsCount  = labels().count();
         const int shortLabelsCount = shortLabels().count();
         bool useShortLabels = false;
+
 
         QStringList headerLabels;
         if( useItemCountLabels ){
@@ -378,9 +394,13 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 isOrdinate()
                 ? d->diagram()->datasetLabels()
                 : d->diagram()->itemRowLabels();
+
+            if (  isBarDiagram )
+                headerLabels.append( QString::null );
         }
+
         const int headerLabelsCount = headerLabels.count();
-        //qDebug() << "headerLabels" << headerLabels.count();
+
         TextLayoutItem* labelItem =
             drawLabels
             ? new TextLayoutItem( QString::number( minValueY ),
@@ -457,7 +477,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     } else {
                         int index = iLabel;
                         labelItem->setText( labels()[ index < hardLabelsCount ? index : 0 ] );
-                        labelItem2->setText( labels()[ index < hardLabelsCount - 1 ? index + 1 : 0] );
+                        labelItem2->setText( labels()[ index < hardLabelsCount - 1 ? index + 1 : 0 ] );
                     }
                     QPointF firstPos( i, 0.0 );
                     firstPos = plane->translate( firstPos );
@@ -492,9 +512,9 @@ void CartesianAxis::paintCtx( PaintContext* context )
             //qDebug() << "dimX.stepWidth:" << dimX.stepWidth;
             //dimX.stepWidth = 1000;
             while( i <= maxValueX ) {
-                // we want the first tick to begin at 0.0 not at 0.5 otherwise labels and
+                // Line charts: we want the first tick to begin at 0.0 not at 0.5 otherwise labels and
                 // values does not fit each others
-                QPointF topPoint ( i /*+ ( useItemCountLabels ? 0.5 : 0.0 )*/, 0.0 );
+                QPointF topPoint ( i + ( isBarDiagram ? 0.5 : 0.0 ), 0.0 );
                 QPointF bottomPoint ( topPoint );
                 topPoint = plane->translate( topPoint );
                 bottomPoint = plane->translate( bottomPoint );
@@ -510,7 +530,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     else {
                         labelItem->setText( hardLabelsCount
                             ? ( useShortLabels    ? shortLabels()[ idxLabel ] : labels()[ idxLabel ] )
-                            : ( headerLabelsCount ? headerLabels[  idxLabel ] : QString::number( iLabelF ) ) );
+                                            : ( headerLabelsCount ? headerLabels[  idxLabel ] : QString::number( iLabelF )));
                     }
                     // No need to call labelItem->setParentWidget(), since we are using
                     // the layout item temporarily only.
@@ -554,11 +574,11 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         else
                             ++idxLabel;
                     } else if( headerLabelsCount ) {
-                        if( idxLabel >= headerLabelsCount-1 )
+                        if( idxLabel >= headerLabelsCount - 1 ) {
                             idxLabel = 0;
-                        else
+                        }else
                             ++idxLabel;
-                    }else{
+                    } else {
                         iLabelF += dimX.stepWidth;
                     }
                 }
