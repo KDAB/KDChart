@@ -114,6 +114,7 @@ bool CartesianAxis::hasDefaultTitleTextAttributes() const
     return d->useDefaultTextAttributes;
 }
 
+
 void CartesianAxis::setPosition ( Position p )
 {
     d->position = p;
@@ -204,7 +205,13 @@ void CartesianAxis::paintCtx( PaintContext* context )
     Q_ASSERT_X ( plane, "CartesianAxis::paint",
                  "Bad function call: PaintContext::coodinatePlane() NOT a cartesian plane." );
 
-    const qreal MinimumPixelsBetweenRulers = 5.0;
+     /*
+     * let us paint the labels at a
+     * smaller resolution
+     * Same mini pixel value as for
+     * Cartesian Grid
+     */
+    const qreal MinimumPixelsBetweenRulers = 1.0;
     DataDimensionsList dimensions( plane->gridDimensionsList() );
     //qDebug("CartesianAxis::paintCtx() gets DataDimensionsList.first():   start: %f   end: %f   stepWidth: %f", dimensions.first().start, dimensions.first().end, dimensions.first().stepWidth);
 
@@ -214,7 +221,6 @@ void CartesianAxis::paintCtx( PaintContext* context )
     DataDimension& dimX = dimensions.first();
     const DataDimension& dimY = dimensions.last();
     const DataDimension& dim = (isAbscissa() ? dimensions.first() : dimensions.last());
-
 /*
     if(isAbscissa())
         qDebug() << "         " << "Abscissa:" << dimX.start <<".."<<dimX.end <<"  step"<<dimX.stepWidth;
@@ -235,8 +241,11 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
     }else{
         numberOfUnitRulers = absRange / qAbs( dimY.stepWidth ) + 1.0;
-        // qDebug() << "absRange" << absRange << "dimY.stepWidth:" << dimY.stepWidth << "numberOfUnitRulers:" << numberOfUnitRulers;
+
     }
+
+    //    qDebug() << "absRange" << absRange << "dimY.stepWidth:" << dimY.stepWidth << "numberOfUnitRulers:" << numberOfUnitRulers;
+
     qreal numberOfSubUnitRulers;
     if ( isAbscissa() ){
         if( dimX.isCalculated )
@@ -246,7 +255,6 @@ void CartesianAxis::paintCtx( PaintContext* context )
     }else{
         numberOfSubUnitRulers = absRange / qAbs( dimY.subStepWidth ) + 1.0;
     }
-
 
     // - calculate the absolute range in screen pixels:
     const QPointF p1 = plane->translate( QPointF(dimX.start, dimY.start) );
@@ -263,8 +271,6 @@ void CartesianAxis::paintCtx( PaintContext* context )
     const bool useItemCountLabels = isAbscissa() && ! dimX.isCalculated;
 
 
-
-
     //qDebug() << "isAbscissa():" << isAbscissa() << "   dimX.isCalculated:" << dimX.isCalculated << "   dimX.stepWidth: "<<dimX.stepWidth;
     //FIXME(khz): Remove this code, and do the calculation in the grid calc function
     if( isAbscissa() && ! dimX.isCalculated ){
@@ -272,8 +278,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
         //qDebug() << "screenRange / numberOfUnitRulers <= MinimumPixelsBetweenRulers" << screenRange <<"/" << numberOfUnitRulers <<"<=" << MinimumPixelsBetweenRulers;
         while( screenRange / numberOfUnitRulers <= MinimumPixelsBetweenRulers ){
             dimX.stepWidth *= 10.0;
-            dimX.subStepWidth *= 10.0;
-            //qDebug() << "adjusting dimX.stepWidth to" << dimX.stepWidth;
+            dimX.subStepWidth  *= 10.0;
             numberOfUnitRulers = qAbs( dimX.distance() / dimX.stepWidth );
         }
     }
@@ -394,6 +399,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 isOrdinate()
                 ? d->diagram()->datasetLabels()
                 : d->diagram()->itemRowLabels();
+            //qDebug() << "labels**--**-->" << d->diagram()->itemRowLabels();
 
             if (  isBarDiagram )
                 headerLabels.append( QString::null );
@@ -525,7 +531,16 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 bottomPoint = plane->translate( bottomPoint );
                 topPoint.setY( fourthRulerRef.y() + tickLength() );
                 bottomPoint.setY( fourthRulerRef.y() );
-                ptr->drawLine( topPoint, bottomPoint );
+
+                //Dont paint more ticks than we need
+                //when diagram type is Bar
+                bool painttick = true;
+                if (  isBarDiagram && i == maxValueX )
+                    painttick = false;
+
+                if ( painttick )
+                    ptr->drawLine( topPoint, bottomPoint );
+
                 drawnXTicks.append( static_cast<int>( topPoint.x() ) );
                 if( drawLabels ) {
                     if ( isLogarithmicX )
@@ -534,7 +549,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
                      * it causes header labels to be skipped even if there is enough
                      * space for them to displayed.
                      * Commenting for now - I need to test more in details - Let me know if I am wrong here.
-                     * /
+                     */
+                    /*
                     else if( (dimX.stepWidth != 1.0) && ! dimX.isCalculated ) {
                         labelItem->setText( QString::number( i, 'f', 0 ) )
                     }
@@ -543,7 +559,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         labelItem->setText( hardLabelsCount
                             ? ( useShortLabels    ? shortLabels()[ idxLabel ] : labels()[ idxLabel ] )
                             : ( headerLabelsCount ? headerLabels[  idxLabel ] : QString::number( iLabelF )));
-
+                        //qDebug() << "labelItem->text()" << labelItem->text();
                     }
                     // No need to call labelItem->setParentWidget(), since we are using
                     // the layout item temporarily only.

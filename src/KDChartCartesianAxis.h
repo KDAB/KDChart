@@ -107,6 +107,8 @@ namespace KDChart {
         virtual bool isAbscissa() const;
         virtual bool isOrdinate() const;
 
+
+
         /** pure virtual in QLayoutItem */
         virtual bool isEmpty() const;
         /** pure virtual in QLayoutItem */

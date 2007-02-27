@@ -98,7 +98,13 @@ void CartesianGrid::drawGrid( PaintContext* context )
     const qreal screenRangeX = qAbs ( p1.x() - p2.x() );
     const qreal screenRangeY = qAbs ( p1.y() - p2.y() );
 
-    const qreal MinimumPixelsBetweenLines = 5.0;
+    /*
+     * let us paint the grid at a smaller resolution
+     * the user can disable at any time
+     * by setting the grid attribute to false
+     * Same Value as for Cartesian Axis
+     */
+    const qreal MinimumPixelsBetweenLines = 1.0; // 5.0
 
     //qreal unitFactorX = 1.0;
 //    qreal unitFactorY = 1.0;
@@ -108,7 +114,7 @@ void CartesianGrid::drawGrid( PaintContext* context )
         while( screenRangeX / numberOfUnitLinesX <= MinimumPixelsBetweenLines ){
             dimX.stepWidth *= 10.0;
             dimX.subStepWidth *= 10.0;
-            //qDebug() << "adjusting dimX.stepWidth to" << dimX.stepWidth;
+            //qDebug() << "drawGrid :adjusting dimX.stepWidth to" << dimX.stepWidth;
             numberOfUnitLinesX = qAbs( dimX.distance() / dimX.stepWidth );
         }
     }
