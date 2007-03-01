@@ -216,8 +216,9 @@ QRectF CartesianCoordinatePlane::calculateRawDataBoundingRect() const
     // are manually set ranges to be applied?
     const bool bAutoAdjustHorizontalRange = (d->autoAdjustHorizontalRangeToData < 100);
     const bool bAutoAdjustVerticalRange   = (d->autoAdjustVerticalRangeToData   < 100);
-    const bool bHardHorizontalRange = (d->horizontalMin != d->horizontalMax) && ! bAutoAdjustVerticalRange;
-    const bool bHardVerticalRange   = (d->verticalMin   != d->verticalMax)   && ! bAutoAdjustHorizontalRange;
+
+    const bool bHardHorizontalRange = (d->horizontalMin != d->horizontalMax) && ! bAutoAdjustHorizontalRange;
+    const bool bHardVerticalRange   = (d->verticalMin   != d->verticalMax)   && ! bAutoAdjustVerticalRange;
     QRectF dataBoundingRect;
 
     // if custom boundaries are set on the plane, use them
@@ -548,6 +549,7 @@ void KDChart::CartesianCoordinatePlane::setHorizontalRange( const QPair< qreal, 
 
 void KDChart::CartesianCoordinatePlane::setVerticalRange( const QPair< qreal, qreal > & range )
 {
+
     if ( d->verticalMin != range.first || d->verticalMax != range.second ) {
         d->autoAdjustVerticalRangeToData = 100;
         d->verticalMin = range.first;
