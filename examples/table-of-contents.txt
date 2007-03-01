@@ -34,8 +34,15 @@ examples/Axis/Parameters/ - fine-tuning the axis parameters
  - Demonstrate zooming 
  - Set up a legend and display it or hide it
 
+examples/Axis/Widget/ - ChartWidget together with axis
 
-examples/Bars/ - sub types of the bar diagram class
+   featuring:
+
+ - Set the data using a QVector of QPairs
+ - Configure the Axis and its labels 
+ - Configure the DataValueAttributes
+
+examples/Bars/Advanced - sub types of the bar diagram class
 
    featuring:
 
@@ -47,6 +54,32 @@ examples/Bars/ - sub types of the bar diagram class
  - Demonstrate Pen settings
  - Display ThreeD Bars and set the depth
 
+examples/Bars/Parameters - sub types of the bar diagram class
+
+   featuring:
+
+ - Use of KDChart::Widget together with a QStandardItemModel
+ - Configure the BarAttributes (Bar width and Gap factors)
+ - Set up the DataValueAttributes
+ - Set up a surrounding Pen
+
+examples/Bars/Simple - display a simple bar widget
+
+   featuring:
+
+- Use of KDChart::Widget together with a QStandardItemModel
+
+examples/DrawIntoPainter - Demonstrate KDChart::paint method
+
+   featuring:
+
+ - Display or hide data values 
+ - Shift Line chart types ( Normal / Stacked / Percent )
+ - Set up and display Markers 
+ - Display areas of a chart and set up transparency
+ - Demonstrate zooming
+ - Display or hide legend
+ - Paint your chart into a png 
 
 examples/EmptyValues/ - having zero values in all cells
 
@@ -58,6 +91,18 @@ examples/EmptyValues/ - having zero values in all cells
  - Demonstrate how to handle a plane when the values in
    the model are all zero
 
+examples/Grids/CartesianGrid - Grid configuration Cartesian plane
+
+   featuring:
+
+- Set up the GridAttributes ( Pen - step and subStepWidth etc...)
+- Configure and set up a Header and its attributes ( relative size, background etc..)
+
+examples/Grids/PolarGrid - Grid configuration Polar plane
+
+  featuring:
+
+- Set up the GridAttributes for a Polar diagram
 
 examples/HeadersFooters/ - adding headers and/or footers
 
