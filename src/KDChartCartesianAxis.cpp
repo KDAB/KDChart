@@ -16,7 +16,7 @@
 ** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 **
 ** See http://www.kdab.net/kdchart for
-**   information about KDChart Commercial License Agreements.
+**   information about KD Chart Commercial License Agreements.
 **
 ** Contact info@kdab.net if any conditions of this
 ** licensing are not clear to you.
@@ -171,7 +171,6 @@ void CartesianAxis::paintEvent( QPaintEvent* event )
 
 void CartesianAxis::paint( QPainter* painter )
 {
-    //qDebug() << "KDChart::CartesianAxis::paint() called";
     if( ! d->diagram() || ! d->diagram()->coordinatePlane() ) return;
     PaintContext ctx;
     ctx.setPainter ( painter );
@@ -211,7 +210,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
      * Same mini pixel value as for
      * Cartesian Grid
      */
-    const qreal MinimumPixelsBetweenRulers = 1.0;
+    //const qreal MinimumPixelsBetweenRulers = 1.0;
     DataDimensionsList dimensions( plane->gridDimensionsList() );
     //qDebug("CartesianAxis::paintCtx() gets DataDimensionsList.first():   start: %f   end: %f   stepWidth: %f", dimensions.first().start, dimensions.first().end, dimensions.first().stepWidth);
 
@@ -227,6 +226,13 @@ void CartesianAxis::paintCtx( PaintContext* context )
     else
         qDebug() << "         " << "Ordinate:" << dimY.start <<".."<<dimY.end <<"  step"<<dimY.stepWidth;
 */
+       /*
+     * let us paint the labels at a
+     * smaller resolution
+     * Same mini pixel value as for
+     * Cartesian Grid
+     */
+    const qreal MinimumPixelsBetweenRulers = qMin(  dimX.stepWidth,  dimY.stepWidth );//1.0;
 
     // preparations:
     // - calculate the range that will be displayed:
@@ -399,7 +405,6 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 isOrdinate()
                 ? d->diagram()->datasetLabels()
                 : d->diagram()->itemRowLabels();
-            //qDebug() << "labels**--**-->" << d->diagram()->itemRowLabels();
 
             if (  isBarDiagram )
                 headerLabels.append( QString::null );
@@ -474,22 +479,26 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
                 qreal i = minValueX;
                 int iLabel = 0;
+                const int precision = ( QString::number( labelDiff  ).section( QLatin1Char('.'), 1,  2 ) ).length();
 
                 while ( i + labelDiff < maxValueX )
                 {
+
                     if ( !drawLabels || hardLabelsCount < 1 || ( dimX.stepWidth != 1.0 && ! dim.isCalculated ) )
                     {
-                        // Check intersects for the header label - we need to pass the full string here
-                        // and not only the i value.
+                        // Check intersects for the header label - we need to pass the full string
+                        // here and not only the i value.
                           labelItem->setText( headerLabelsCount ? headerLabels[static_cast<int>(i)]
-                                              : QString::number( i, 'f', 0 ));
-                          labelItem2->setText( headerLabelsCount ? headerLabels[static_cast<int>(i + labelDiff ) ]
-                                              : QString::number( i + labelDiff, 'f', 0 ));
+                                              : QString::number( i, 'f', precision ));
+                          labelItem2->setText( headerLabelsCount ? headerLabels[static_cast<int>(i+labelDiff)]
+                                              : QString::number( i + labelDiff, 'f', precision ));
+
                     } else {
                         int index = iLabel;
                         labelItem->setText( labels()[ index < hardLabelsCount ? index : 0 ] );
                         labelItem2->setText( labels()[ index < hardLabelsCount - 1 ? index + 1 : 0 ] );
                     }
+
                     QPointF firstPos( i, 0.0 );
                     firstPos = plane->translate( firstPos );
 
@@ -500,7 +509,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     if ( labelItem->intersects( *labelItem2, firstPos, secondPos ) )
                     {
                         i = minValueX;
-                        ++labelDiff;
+                        labelDiff += labelDiff;
                         iLabel = 0;
                     }
                     else
@@ -519,7 +528,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
             int idxLabel = 0;
             qreal iLabelF = minValueX;
             qreal i = minValueX;
-            int labelStep = 0;
+            qreal labelStep = 0.0;
             //qDebug() << "dimX.stepWidth:" << dimX.stepWidth;
             //dimX.stepWidth = 1000;
             while( i <= maxValueX ) {
@@ -552,14 +561,13 @@ void CartesianAxis::paintCtx( PaintContext* context )
                      */
                     /*
                     else if( (dimX.stepWidth != 1.0) && ! dimX.isCalculated ) {
-                        labelItem->setText( QString::number( i, 'f', 0 ) )
+                        labelItem->setText( QString::number( i, 'f', 0 ) );
                     }
                     */
                     else {
                         labelItem->setText( hardLabelsCount
                             ? ( useShortLabels    ? shortLabels()[ idxLabel ] : labels()[ idxLabel ] )
                             : ( headerLabelsCount ? headerLabels[  idxLabel ] : QString::number( iLabelF )));
-                        //qDebug() << "labelItem->text()" << labelItem->text();
                     }
                     // No need to call labelItem->setParentWidget(), since we are using
                     // the layout item temporarily only.
@@ -586,14 +594,14 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
                         labelItem->setGeometry( labelGeo );
 
-                        labelStep = qRound( labelDiff ) - qRound( dimX.stepWidth );
+                        labelStep = labelDiff - dimX.stepWidth;
                         labelItem->paint( ptr );
                         labelItem2->setText( labelItem->text() );
 
                         // maybe enable clipping afterwards
                         ptr->setClipping( origClipping );
                     } else {
-                        labelStep -= qRound( dimX.stepWidth ); //qRound( labelDiff );
+                        labelStep -= dimX.stepWidth;
                     }
 
                     if( hardLabelsCount ) {
