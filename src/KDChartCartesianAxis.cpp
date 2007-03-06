@@ -1,27 +1,27 @@
 /****************************************************************************
-** Copyright (C) 2006 Klarävdalens Datakonsult AB.  All rights reserved.
-**
-** This file is part of the KD Chart library.
-**
-** This file may be distributed and/or modified under the terms of the
-** GNU General Public License version 2 as published by the Free Software
-** Foundation and appearing in the file LICENSE.GPL included in the
-** packaging of this file.
-**
-** Licensees holding valid commercial KD Chart licenses may use this file in
-** accordance with the KD Chart Commercial License Agreement provided with
-** the Software.
-**
-** This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
-** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
-**
-** See http://www.kdab.net/kdchart for
-**   information about KD Chart Commercial License Agreements.
-**
-** Contact info@kdab.net if any conditions of this
-** licensing are not clear to you.
-**
-**********************************************************************/
+ ** Copyright (C) 2006 Klarävdalens Datakonsult AB.  All rights reserved.
+ **
+ ** This file is part of the KD Chart library.
+ **
+ ** This file may be distributed and/or modified under the terms of the
+ ** GNU General Public License version 2 as published by the Free Software
+ ** Foundation and appearing in the file LICENSE.GPL included in the
+ ** packaging of this file.
+ **
+ ** Licensees holding valid commercial KD Chart licenses may use this file in
+ ** accordance with the KD Chart Commercial License Agreement provided with
+ ** the Software.
+ **
+ ** This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
+ ** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ **
+ ** See http://www.kdab.net/kdchart for
+ **   information about KD Chart Commercial License Agreements.
+ **
+ ** Contact info@kdab.net if any conditions of this
+ ** licensing are not clear to you.
+ **
+ **********************************************************************/
 
 #include <cmath>
 
@@ -151,22 +151,22 @@ bool CartesianAxis::isOrdinate() const
 }
 
 /*
-void CartesianAxis::paintEvent( QPaintEvent* event )
-{
-    Q_UNUSED( event );
+  void CartesianAxis::paintEvent( QPaintEvent* event )
+  {
+  Q_UNUSED( event );
 
-    if( ! d->diagram() || ! d->diagram()->coordinatePlane() ) return;
+  if( ! d->diagram() || ! d->diagram()->coordinatePlane() ) return;
 
-    PaintContext context;
-    QPainter painter( this );
-    context.setPainter( &painter );
-    AbstractCoordinatePlane* plane = d->diagram()->coordinatePlane();
-    context.setCoordinatePlane( plane );
-    QRectF rect = QRectF ( 1, 1, plane->width() - 3, plane->height() - 3 );
-    context.setRectangle( rect );
-    d->geometry.setSize( size() );
-    paintCtx( &context );
-}
+  PaintContext context;
+  QPainter painter( this );
+  context.setPainter( &painter );
+  AbstractCoordinatePlane* plane = d->diagram()->coordinatePlane();
+  context.setCoordinatePlane( plane );
+  QRectF rect = QRectF ( 1, 1, plane->width() - 3, plane->height() - 3 );
+  context.setRectangle( rect );
+  d->geometry.setSize( size() );
+  paintCtx( &context );
+  }
 */
 
 void CartesianAxis::paint( QPainter* painter )
@@ -186,7 +186,7 @@ void CartesianAxis::paint( QPainter* painter )
             QSizeF(rect.width(), rect.height() ) ) );
     // enabling clipping so that we're not drawing outside
     QRegion clipRegion( rect.adjusted( -1, -1, 1, 1 ) );
-	painter->save();
+    painter->save();
     painter->setClipRegion( clipRegion );
     paintCtx( &ctx );
     painter->restore();
@@ -204,7 +204,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
     Q_ASSERT_X ( plane, "CartesianAxis::paint",
                  "Bad function call: PaintContext::coodinatePlane() NOT a cartesian plane." );
 
-     /*
+    /*
      * let us paint the labels at a
      * smaller resolution
      * Same mini pixel value as for
@@ -221,12 +221,12 @@ void CartesianAxis::paintCtx( PaintContext* context )
     const DataDimension& dimY = dimensions.last();
     const DataDimension& dim = (isAbscissa() ? dimensions.first() : dimensions.last());
 /*
-    if(isAbscissa())
-        qDebug() << "         " << "Abscissa:" << dimX.start <<".."<<dimX.end <<"  step"<<dimX.stepWidth;
-    else
-        qDebug() << "         " << "Ordinate:" << dimY.start <<".."<<dimY.end <<"  step"<<dimY.stepWidth;
+  if(isAbscissa())
+  qDebug() << "         " << "Abscissa:" << dimX.start <<".."<<dimX.end <<"  step"<<dimX.stepWidth;
+  else
+  qDebug() << "         " << "Ordinate:" << dimY.start <<".."<<dimY.end <<"  step"<<dimY.stepWidth;
 */
-       /*
+    /*
      * let us paint the labels at a
      * smaller resolution
      * Same mini pixel value as for
@@ -350,19 +350,19 @@ void CartesianAxis::paintCtx( PaintContext* context )
     const bool isLogarithmicX = (dimX.calcMode == AbstractCoordinatePlane::Logarithmic );
     const bool isLogarithmicY = (dimY.calcMode == AbstractCoordinatePlane::Logarithmic );
 //#define AXES_PAINTING_DEBUG 1
-    #ifdef AXES_PAINTING_DEBUG
+#ifdef AXES_PAINTING_DEBUG
     qDebug() << "CartesianAxis::paint: reference values:" << endl
-            << "-- range x/y: " << dimX.distance() << "/" << dimY.distance() << endl
-            << "-- absRange: " << absRange << endl
-            << "-- numberOfUnitRulers: " << numberOfUnitRulers << endl
-            << "-- screenRange: " << screenRange << endl
-            << "-- drawUnitRulers: " << drawUnitRulers << endl
-            << "-- drawLabels: " << drawLabels << endl
-            << "-- ruler reference point:: " << rulerRef << endl
-            << "-- minValueX: " << minValueX << "   maxValueX: " << maxValueX << endl
-            << "-- minValueY: " << minValueY << "   maxValueY: " << maxValueY << endl
-            ;
-    #endif
+             << "-- range x/y: " << dimX.distance() << "/" << dimY.distance() << endl
+             << "-- absRange: " << absRange << endl
+             << "-- numberOfUnitRulers: " << numberOfUnitRulers << endl
+             << "-- screenRange: " << screenRange << endl
+             << "-- drawUnitRulers: " << drawUnitRulers << endl
+             << "-- drawLabels: " << drawLabels << endl
+             << "-- ruler reference point:: " << rulerRef << endl
+             << "-- minValueX: " << minValueX << "   maxValueX: " << maxValueX << endl
+             << "-- minValueY: " << minValueY << "   maxValueY: " << maxValueY << endl
+        ;
+#endif
 
     ptr->setPen ( Qt::black );
     // Commenting this it causes the frame backround to be painted in red
@@ -415,18 +415,18 @@ void CartesianAxis::paintCtx( PaintContext* context )
         TextLayoutItem* labelItem =
             drawLabels
             ? new TextLayoutItem( QString::number( minValueY ),
-                      labelTA,
-                      referenceArea,
-                      KDChartEnums::MeasureOrientationMinimum,
-                      Qt::AlignLeft )
+                                  labelTA,
+                                  referenceArea,
+                                  KDChartEnums::MeasureOrientationMinimum,
+                                  Qt::AlignLeft )
             : 0;
         TextLayoutItem* labelItem2 =
             drawLabels
             ? new TextLayoutItem( QString::number( minValueY ),
-                      labelTA,
-                      referenceArea,
-                      KDChartEnums::MeasureOrientationMinimum,
-                      Qt::AlignLeft )
+                                  labelTA,
+                                  referenceArea,
+                                  KDChartEnums::MeasureOrientationMinimum,
+                                  Qt::AlignLeft )
             : 0;
         const QFontMetricsF met(
             drawLabels
@@ -488,10 +488,10 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     {
                         // Check intersects for the header label - we need to pass the full string
                         // here and not only the i value.
-                          labelItem->setText( headerLabelsCount ? headerLabels[static_cast<int>(i)]
-                                              : QString::number( i, 'f', precision ));
-                          labelItem2->setText( headerLabelsCount ? headerLabels[static_cast<int>(i+labelDiff)]
-                                              : QString::number( i + labelDiff, 'f', precision ));
+                        labelItem->setText( headerLabelsCount ? headerLabels[static_cast<int>(i)]
+                                            : QString::number( i, 'f', precision ));
+                        labelItem2->setText( headerLabelsCount ? headerLabels[static_cast<int>(i+labelDiff)]
+                                             : QString::number( i + labelDiff, 'f', precision ));
 
                     } else {
                         int index = iLabel;
@@ -560,28 +560,28 @@ void CartesianAxis::paintCtx( PaintContext* context )
                      * Commenting for now - I need to test more in details - Let me know if I am wrong here.
                      */
                     /*
-                    else if( (dimX.stepWidth != 1.0) && ! dimX.isCalculated ) {
-                        labelItem->setText( QString::number( i, 'f', 0 ) );
-                    }
+                      else if( (dimX.stepWidth != 1.0) && ! dimX.isCalculated ) {
+                      labelItem->setText( QString::number( i, 'f', 0 ) );
+                      }
                     */
                     else {
                         labelItem->setText( hardLabelsCount
-                            ? ( useShortLabels    ? shortLabels()[ idxLabel ] : labels()[ idxLabel ] )
-                            : ( headerLabelsCount ? headerLabels[  idxLabel ] : QString::number( iLabelF )));
+                                            ? ( useShortLabels    ? shortLabels()[ idxLabel ] : labels()[ idxLabel ] )
+                                            : ( headerLabelsCount ? headerLabels[  idxLabel ] : QString::number( iLabelF )));
                     }
                     // No need to call labelItem->setParentWidget(), since we are using
                     // the layout item temporarily only.
                     if( labelStep <= 0 ) {
                         const QSize size( labelItem->sizeHint() );
                         labelItem->setGeometry(
-                                QRect(
-                                    QPoint(
-                                        static_cast<int>( topPoint.x() - size.width() / 2 ),
-                                        static_cast<int>( topPoint.y() +
-                                            ( position() == Bottom
-                                              ? halfFontHeight
-                                              : ((halfFontHeight + size.height()) * -1.0) ) ) ),
-                                    size ) );
+                            QRect(
+                                QPoint(
+                                    static_cast<int>( topPoint.x() - size.width() / 2 ),
+                                    static_cast<int>( topPoint.y() +
+                                                      ( position() == Bottom
+                                                        ? halfFontHeight
+                                                        : ((halfFontHeight + size.height()) * -1.0) ) ) ),
+                                size ) );
 
                         bool origClipping = ptr->hasClipping();
 
@@ -622,7 +622,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     i *= 10.0;
                 else
                     i += dimX.stepWidth;
-           }
+            }
         } else {
             const double maxLimit = maxValueY;
             const double steg = dimY.stepWidth;
@@ -645,38 +645,67 @@ void CartesianAxis::paintCtx( PaintContext* context )
             bool origClipping = ptr->hasClipping();
             ptr->setClipping( false );
             labelValue = minValueY;
-//qDebug("minValueY: %f   maxLimit: %f   steg: %f", minValueY, maxLimit, steg);
+            qreal step = steg;
+            bool nextLabel = false;
+            //qDebug("minValueY: %f   maxLimit: %f   steg: %f", minValueY, maxLimit, steg);
+
+            // first calculate the steps depending on labels colision
             while ( labelValue <= maxLimit ) {
                 QPointF leftPoint = plane->translate( QPointF( 0, labelValue ) );
                 const qreal translatedValue = leftPoint.y();
-                //qDebug() << "geoRect:" << geoRect << "   geoRect.top()" << geoRect.top() << "geoRect.bottom()" << geoRect.bottom() << "  translatedValue:" << translatedValue;
+                //qDebug() << "geoRect:" << geoRect << "   geoRect.top()" << geoRect.top()
+                //<< "geoRect.bottom()" << geoRect.bottom() << "  translatedValue:" << translatedValue;
                 if( translatedValue > geoRect.top() && translatedValue <= geoRect.bottom() ){
-                    QPointF rightPoint ( 0.0, labelValue );
-                    rightPoint = plane->translate( rightPoint );
-                    leftPoint.setX( fourthRulerRef.x() + tickLength() );
-                    rightPoint.setX( fourthRulerRef.x() );
-                    ptr->drawLine( leftPoint, rightPoint );
-                    drawnYTicks.append( static_cast<int>( leftPoint.y() ) );
                     if ( drawLabels ) {
                         labelItem->setText( QString::number( labelValue ) );
-                        // No need to call labelItem->setParentWidget(), since we are using
-                        // the layout item temporarily only.
-                        const QSize labelSize( labelItem->sizeHint() );
-                        leftPoint.setX( leftPoint.x() );
-                        const int x =
-                            static_cast<int>( leftPoint.x() + met.height() * ( position() == Left ? -0.5 : 0.5) )
-                            - ( position() == Left ? labelSize.width() : (labelSize.width() - maxLabelsWidth) );
-                        const int y =
-                            static_cast<int>( leftPoint.y() - ( met.ascent() + met.descent() ) * 0.6 );
-                        labelItem->setGeometry( QRect( QPoint( x, y ), labelSize ) );
-                        labelItem->paint( ptr );
+                        labelItem2->setText( QString::number( labelValue + step ) );
+                        QPointF nextPoint = plane->translate(  QPointF( 0,  labelValue + step ) );
+                        if ( labelItem->intersects( *labelItem2, leftPoint, nextPoint ) )
+                        {
+                            step += steg;
+                            nextLabel = false;
+                        }
+                        else
+                            nextLabel = true;
                     }
                 }
                 if ( isLogarithmicY )
                     labelValue *= 10.0;
-                else
-                    labelValue += dimY.stepWidth;
+                else {
+                    if ( nextLabel )
+                        labelValue += step;
+                    else
+                        labelValue = minValueY;
+                }
             }
+
+            // Second - Paint the labels
+            labelValue = minValueY;
+            while ( labelValue <= maxLimit ) {
+                labelItem->setText( QString::number( labelValue ) );
+                QPointF leftPoint = plane->translate( QPointF( 0, labelValue ) );
+                QPointF rightPoint ( 0.0, labelValue );
+                rightPoint = plane->translate( rightPoint );
+                leftPoint.setX( fourthRulerRef.x() + tickLength() );
+                rightPoint.setX( fourthRulerRef.x() );
+                ptr->drawLine( leftPoint, rightPoint );
+                drawnYTicks.append( static_cast<int>( leftPoint.y() ) );
+                const QSize labelSize( labelItem->sizeHint() );
+                leftPoint.setX( leftPoint.x() );
+                const int x =
+                    static_cast<int>( leftPoint.x() + met.height() * ( position() == Left ? -0.5 : 0.5) )
+                    - ( position() == Left ? labelSize.width() : (labelSize.width() - maxLabelsWidth) );
+                const int y =
+                    static_cast<int>( leftPoint.y() - ( met.ascent() + met.descent() ) * 0.6 );
+                labelItem->setGeometry( QRect( QPoint( x, y ), labelSize ) );
+                labelItem->paint( ptr );
+
+                if ( isLogarithmicY )
+                    labelValue *= 10.0;
+                else
+                    labelValue += step;
+            }
+
             ptr->setClipping( origClipping );
         }
         if( labelItem )
@@ -719,7 +748,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     f += dimX.subStepWidth;
                 }
             }
-        // for the y-axis
+            // for the y-axis
         } else {
             int nextMayBeTick = 0;
             int mayBeTick = 0;
@@ -763,10 +792,10 @@ void CartesianAxis::paintCtx( PaintContext* context )
         const TextAttributes titleTA( titleTextAttributes() );
         if( titleTA.isVisible() ){
             TextLayoutItem titleItem( titleText(),
-                          titleTA,
-                          referenceArea,
-                          KDChartEnums::MeasureOrientationMinimum,
-                          Qt::AlignHCenter|Qt::AlignVCenter );
+                                      titleTA,
+                                      referenceArea,
+                                      KDChartEnums::MeasureOrientationMinimum,
+                                      Qt::AlignHCenter|Qt::AlignVCenter );
             QPointF point;
             const QSize size( titleItem.sizeHint() );
             //FIXME(khz): We definitely need to provide a way that users can decide
@@ -845,9 +874,9 @@ QSize CartesianAxis::maximumSize() const
     AbstractCoordinatePlane* plane = d->diagram()->coordinatePlane();
     QObject* refArea = plane->parent();
     TextLayoutItem labelItem( QString::null, labelTA, refArea,
-        KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft );
+                              KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft );
     TextLayoutItem titleItem( titleText(), titleTA, refArea,
-        KDChartEnums::MeasureOrientationMinimum, Qt::AlignHCenter | Qt::AlignVCenter );
+                              KDChartEnums::MeasureOrientationMinimum, Qt::AlignHCenter | Qt::AlignVCenter );
     const qreal labelGap =
         drawLabels
         ? (QFontMetricsF( labelItem.realFont() ).height() / 3.0)
@@ -891,7 +920,7 @@ QSize CartesianAxis::maximumSize() const
         h += qAbs( tickLength() ) * 3.0;
         result = QSize ( static_cast<int>( w ), static_cast<int>( h ) );
     }
-    break;
+        break;
     case Left:
     case Right: {
         qreal w = 0.0;
@@ -926,7 +955,7 @@ QSize CartesianAxis::maximumSize() const
         result = QSize ( static_cast<int>( w ), static_cast<int>( h ) );
 //            qDebug() << "left/right axis width:" << result << "   w:" << w;
     }
-    break;
+        break;
     default:
         Q_ASSERT( false ); // all positions need to be handled
         break;
