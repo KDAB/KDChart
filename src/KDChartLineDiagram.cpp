@@ -532,8 +532,12 @@ void LineDiagram::paint( PaintContext* ctx )
                                     (bDisplayCellArea && isPositive)
                                     ? coordinatePlane()->translate( QPointF( nextValueX, 0.0 ) )
                                     : toPoint;
-                                if( areas.count() && laCell != laPreviousCell ){
-                                    //qDebug() << "a: laPreviousCell.transparency()"<<laPreviousCell.transparency();
+                                // we can't take as a condition the line attributes
+                                // to be different from a cell to another.
+                                // e.g the user should be able to have different brush
+                                // which is not reflected in the line attributes
+                                // see examples/Area which show such an option
+                                if( areas.count() /*&& laCell != laPreviousCell*/ ){
                                     paintAreas( ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
                                     areas.clear();
                                 }
@@ -562,7 +566,6 @@ void LineDiagram::paint( PaintContext* ctx )
                     }
                 }
                 if( areas.count() ){
-                    //qDebug() << "b: laPreviousCell.transparency()"<<laPreviousCell.transparency();
                     paintAreas( ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
                     areas.clear();
                 }
