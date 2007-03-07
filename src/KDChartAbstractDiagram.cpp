@@ -514,12 +514,15 @@ void AbstractDiagram::paintMarker( QPainter* painter,
                                    const QPointF& pos,
                                    const QSizeF& maSize )
 {
+
+    // Pen is used to paint 4Pixels - 1 Pixel - Ring and FastCross types.
+    // make sure to use the brush color - see above in those cases.
     const bool isFourPixels = (markerAttributes.markerStyle() == MarkerAttributes::Marker4Pixels);
     if( isFourPixels || (markerAttributes.markerStyle() == MarkerAttributes::Marker1Pixel) ){
         // for high-performance point charts with tiny point markers:
         const QPen oldPen( painter->pen() );
+        painter->setPen( QPen( brush.color().light() ) );
         if( isFourPixels ){
-            painter->setPen( QPen( pen.color().light() ) );
             const qreal x = pos.x();
             const qreal y = pos.y();
             painter->drawLine( QPointF(x-1.0,y-1.0),
@@ -529,7 +532,6 @@ void AbstractDiagram::paintMarker( QPainter* painter,
             painter->drawLine( QPointF(x-1.0,y+1.0),
                                QPointF(x+1.0,y+1.0) );
         }
-        painter->setPen( pen );
         painter->drawPoint( pos );
         painter->setPen( oldPen );
     }else{
@@ -569,6 +571,7 @@ void AbstractDiagram::paintMarker( QPainter* painter,
                     break;
             case MarkerAttributes::MarkerRing:
                 {
+                    painter->setPen( QPen( brush.color() ) );
                     painter->setBrush( Qt::NoBrush );
                     painter->drawEllipse( QRectF( 0 - maSize.height()/2, 0 - maSize.width()/2,
                                         maSize.height(), maSize.width()) );
@@ -591,6 +594,7 @@ void AbstractDiagram::paintMarker( QPainter* painter,
                     right = QPointF( maSize.width()/2, 0 );
                     top   = QPointF( 0, -maSize.height()/2 );
                     bottom= QPointF( 0, maSize.height()/2 );
+                    painter->setPen( QPen( brush.color() ) );
                     painter->drawLine( left, right );
                     painter->drawLine(  top, bottom );
                     break;
