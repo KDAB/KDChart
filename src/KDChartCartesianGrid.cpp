@@ -112,10 +112,10 @@ void CartesianGrid::drawGrid( PaintContext* context )
 
     //FIXME(khz): Remove this code, and do the calculation in the grid calc function
     if( ! dimX.isCalculated ){
+
         while( screenRangeX / numberOfUnitLinesX <= MinimumPixelsBetweenLines ){
             dimX.stepWidth *= 10.0;
             dimX.subStepWidth *= 10.0;
-            //qDebug() << "drawGrid :adjusting dimX.stepWidth to" << dimX.stepWidth;
             numberOfUnitLinesX = qAbs( dimX.distance() / dimX.stepWidth );
         }
     }
@@ -146,6 +146,7 @@ void CartesianGrid::drawGrid( PaintContext* context )
         ((dimX.subStepWidth != 0.0) &&
         (screenRangeX / (numberOfUnitLinesX / dimX.stepWidth * dimX.subStepWidth) > MinimumPixelsBetweenLines) &&
         gridAttrsX.isSubGridVisible());
+
     const bool drawSubGridLinesY = isLogarithmicY ||
         ((dimY.subStepWidth != 0.0) &&
         (screenRangeY / (numberOfUnitLinesY / dimY.stepWidth * dimY.subStepWidth) > MinimumPixelsBetweenLines) &&
@@ -253,7 +254,6 @@ void CartesianGrid::drawGrid( PaintContext* context )
         if ( drawUnitLinesY )
             context->painter()->setPen( gridAttrsY.gridPen() );
         //const qreal minY = dimY.start;
-
         //qDebug("minY: %f   maxValueY: %f   dimY.stepWidth: %f",minY,maxValueY,dimY.stepWidth);
         qreal f = minValueY;
         while ( f <= maxValueY ) {
@@ -327,8 +327,6 @@ DataDimensionsList CartesianGrid::calculateGrid(
             const DataDimension dimY
                 = calculateGridXY( l.last(), Qt::Vertical );
             if( dimY.stepWidth ){
-                //qDebug() << "CartesianGrid::calculateGrid()   ---> stepWidth Y:" << dimY.stepWidth;
-                //qDebug() << "CartesianGrid::calculateGrid()   ---> stepWidth X:" << dimX.stepWidth;
                 l.first().start        = dimX.start;
                 l.first().end          = dimX.end;
                 l.first().stepWidth    = dimX.stepWidth;
@@ -441,7 +439,8 @@ DataDimension CartesianGrid::calculateGridXY(
         }
     }else{
         //qDebug() << "CartesianGrid::calculateGridXY() returns stepWidth 1.0  !!";
-        dim.stepWidth = 1.0;
+        // Do not ignore the user configuration
+        dim.stepWidth = dim.stepWidth ? dim.stepWidth : 1.0;
     }
     return dim;
 }

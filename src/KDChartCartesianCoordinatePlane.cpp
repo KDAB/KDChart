@@ -278,7 +278,8 @@ DataDimensionsList CartesianCoordinatePlane::getDataDimensionsList() const
                 dgr->datasetDimension() > 1,
                 axesCalcModeX(),
                 gaH.gridGranularitySequence(),
-                gaH.gridStepWidth() ) );
+                gaH.gridStepWidth(),
+                gaH.gridSubStepWidth() ) );
         // append the second dimension: for Ordinate axes
         if( dgr->percentMode() )
             l.append(
