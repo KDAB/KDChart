@@ -116,10 +116,12 @@ public:
     gv.setSubGridVisible( true );
 
     // Horizontal
+
     GridAttributes gh = plane->gridAttributes( Qt::Horizontal );
     gh.setGridPen( gridPen );
+    gh.setGridStepWidth(  0.5 );
     gh.setSubGridPen(  subGridPen );
-    gh.setGridSubStepWidth( 0.5 );
+    gh.setGridSubStepWidth( 0.1 );
 
     plane->setGridAttributes( Qt::Vertical,  gv );
     plane->setGridAttributes( Qt::Horizontal,  gh );
