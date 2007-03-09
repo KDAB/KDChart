@@ -220,12 +220,15 @@ void CartesianAxis::paintCtx( PaintContext* context )
     DataDimension& dimX = dimensions.first();
     const DataDimension& dimY = dimensions.last();
     const DataDimension& dim = (isAbscissa() ? dimensions.first() : dimensions.last());
-/*
-  if(isAbscissa())
-  qDebug() << "         " << "Abscissa:" << dimX.start <<".."<<dimX.end <<"  step"<<dimX.stepWidth;
-  else
-  qDebug() << "         " << "Ordinate:" << dimY.start <<".."<<dimY.end <<"  step"<<dimY.stepWidth;
-*/
+
+    /*
+    if(isAbscissa())
+        qDebug() << "         " << "Abscissa:" << dimX.start <<".."<<dimX.end <<"  step"<<dimX.stepWidth;
+    else
+        qDebug() << "         " << "Ordinate:" << dimY.start <<".."<<dimY.end <<"  step"<<dimY.stepWidth;
+    */
+
+
     /*
      * let us paint the labels at a
      * smaller resolution
@@ -244,7 +247,6 @@ void CartesianAxis::paintCtx( PaintContext* context )
             numberOfUnitRulers = absRange / qAbs( dimX.stepWidth ) + 1.0;
         else
             numberOfUnitRulers = d->diagram()->model()->rowCount() - 1.0;
-
     }else{
         numberOfUnitRulers = absRange / qAbs( dimY.stepWidth ) + 1.0;
 
@@ -275,12 +277,13 @@ void CartesianAxis::paintCtx( PaintContext* context )
     }
 
     const bool useItemCountLabels = isAbscissa() && ! dimX.isCalculated;
-
+    //qDebug() << "CartesianAxis::paintCtx useItemCountLabels "<< useItemCountLabels;
 
     //qDebug() << "isAbscissa():" << isAbscissa() << "   dimX.isCalculated:" << dimX.isCalculated << "   dimX.stepWidth: "<<dimX.stepWidth;
     //FIXME(khz): Remove this code, and do the calculation in the grid calc function
     if( isAbscissa() && ! dimX.isCalculated ){
-        dimX.stepWidth = 1.0;
+        // dont ignore the users settings
+        dimX.stepWidth = dimX.stepWidth ? dimX.stepWidth : 1.0;
         //qDebug() << "screenRange / numberOfUnitRulers <= MinimumPixelsBetweenRulers" << screenRange <<"/" << numberOfUnitRulers <<"<=" << MinimumPixelsBetweenRulers;
         while( screenRange / numberOfUnitRulers <= MinimumPixelsBetweenRulers ){
             dimX.stepWidth *= 10.0;
@@ -405,10 +408,26 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 isOrdinate()
                 ? d->diagram()->datasetLabels()
                 : d->diagram()->itemRowLabels();
+            // check if configured stepWidth
+            if ( isAbscissa() && dimX.stepWidth
+                 && ( ( headerLabels.count() - 1 )/ dimX.stepWidth ) != numberOfUnitRulers ) {
+                numberOfUnitRulers = ( headerLabels.count() - 1 )/ dimX.stepWidth;
+                // we need to register data values for the steps
+                // in case it is configured by the user
+                QStringList configuredStepsLabels;
+                double value = headerLabels.first().toDouble();
+                configuredStepsLabels << QString::number( value );
+                for (  int i = 0; i < numberOfUnitRulers; i++ ) {
+                    value += dimX.stepWidth;
+                    configuredStepsLabels.append( QString::number( value ) );
+                }
+                headerLabels = configuredStepsLabels;
+            }
 
             if (  isBarDiagram )
                 headerLabels.append( QString::null );
         }
+
 
         const int headerLabelsCount = headerLabels.count();
 
@@ -474,6 +493,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
             labelItem2->setText( QString::null );
             qreal labelDiff = dimX.stepWidth;
+            //qDebug() << "labelDiff " << labelDiff;
             if ( drawLabels )
             {
 
@@ -488,10 +508,14 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     {
                         // Check intersects for the header label - we need to pass the full string
                         // here and not only the i value.
+                        //qDebug() << "i + labelDiff " << i + labelDiff;
                         labelItem->setText( headerLabelsCount ? headerLabels[static_cast<int>(i)]
                                             : QString::number( i, 'f', precision ));
+                        //           qDebug() << "1 - labelItem->text() " << labelItem->text();
                         labelItem2->setText( headerLabelsCount ? headerLabels[static_cast<int>(i+labelDiff)]
                                              : QString::number( i + labelDiff, 'f', precision ));
+                        //qDebug() << "2 - labelItem->text() " << labelItem->text();
+                        //qDebug() << "labelItem2->text() " << labelItem2->text();
 
                     } else {
                         int index = iLabel;
@@ -530,7 +554,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
             qreal i = minValueX;
             qreal labelStep = 0.0;
             //qDebug() << "dimX.stepWidth:" << dimX.stepWidth;
-            //dimX.stepWidth = 1000;
+            //dimX.stepWidth = 0.5;
             while( i <= maxValueX ) {
                 // Line charts: we want the first tick to begin at 0.0 not at 0.5 otherwise labels and
                 // values does not fit each others
