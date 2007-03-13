@@ -264,7 +264,8 @@ void MainWindow::load()
                                   tr("File loaded") );
     else
         QMessageBox::warning( this, tr("KD Chart Serializer"),
-                              tr("ERROR: Cannot read file %1.") );
+                              tr("ERROR: Cannot read file %1.")
+                                      .arg(fileName) );
     file.close();
 }
 

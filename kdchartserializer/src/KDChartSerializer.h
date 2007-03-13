@@ -68,7 +68,6 @@ namespace KDChart {
 
         private:
             Chart* mChart;
-            QDomDocument mDomDocument;
             AttributesSerializer* mAttrS;
             CoordPlanesSerializer* mCoordS;
     };

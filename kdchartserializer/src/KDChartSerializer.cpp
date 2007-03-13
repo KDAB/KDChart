@@ -73,7 +73,8 @@ bool Serializer::read(QIODevice *device)
     int errorLine;
     int errorColumn;
 
-    if( ! mDomDocument.setContent(device, true, &errorStr, &errorLine,
+    QDomDocument doc( "KDChart" );
+    if( ! doc.setContent(device, true, &errorStr, &errorLine,
          &errorColumn)) {
         QMessageBox::information(0 , tr("KD Chart Serializer"),
             tr("Parse error at line %1, column %2:\n%3")
@@ -83,26 +84,28 @@ bool Serializer::read(QIODevice *device)
         return false;
     }
 
-    return parseChartElement( mDomDocument.documentElement(), 0 );
+    const bool bOK = parseChartElement( doc.documentElement(), 0 );
+    if( bOK )
+        mChart->update();
+    return bOK;
 }
 
 
 bool Serializer::write(QIODevice *device) const
 {
     // Create an inital DOM document
-    QString docstart = "<kdchart:chart/>";
+    QString docstart = "<kdchart:kdchart/>";
 
     QDomDocument doc( "KDChart" );
 
     doc.setContent( docstart );
-    doc.appendChild( doc.createProcessingInstruction( "xml", "version=\"1.0\" encoding=\"UTF-8\"" ) );
 
     QDomElement docRoot = doc.documentElement();
     if( saveChartElement( doc, docRoot ) ){
         const int IndentSize = 4;
 
         QTextStream out(device);
-        mDomDocument.save(out, IndentSize);
+        doc.save(out, IndentSize);
         return true;
     }
 
@@ -114,14 +117,14 @@ bool Serializer::parseChartElement( const QDomElement& root,
                                     const QDomElement* styleList )const
 {
     Q_UNUSED(styleList)
-
+            qDebug() << root.tagName();
     bool bOK = true;
-    if (root.tagName() != "kdchart:chart") {
+    if (root.tagName() != "kdchart") {
         QMessageBox::information(0 , tr("KD Chart Serializer"),
                                  tr("The file is not an KD Chart file."));
         return false;
-    } else if (root.hasAttribute("version")
-               && ! root.attribute("version").startsWith("2.") ) {
+    } else if (root.hasAttribute("kdchart:version")
+               && ! root.attribute("kdchart:version").startsWith("2.") ) {
         QMessageBox::information(0 , tr("KD Chart Serializer"),
                                 tr("The file is not an KD Chart version 2.x file."));
         return false;
@@ -132,7 +135,7 @@ bool Serializer::parseChartElement( const QDomElement& root,
         QDomElement e = n.toElement(); // try to convert the node to an element.
         if(!e.isNull()) {
             // the node really is an element
-            if( e.tagName() == "kdchart:global-leading" ){
+            if( e.tagName() == "global-leading" ){
                 // we initialize the leading values, since
                 // it might be that not all of them are stored
                 int left   = mChart->globalLeadingLeft();
@@ -141,11 +144,11 @@ bool Serializer::parseChartElement( const QDomElement& root,
                 int bottom = mChart->globalLeadingBottom();
                 if( mAttrS->parseLeading( e,  left, top, right, bottom ) )
                     mChart->setGlobalLeading( left, top, right, bottom );
-            } else if( e.tagName() == "kdchart:frame-attributes" ){
+            } else if( e.tagName() == "frame-attributes" ){
                 FrameAttributes a;
                 if( mAttrS->parseFrameAttributes( e, a ) )
                     mChart->setFrameAttributes( a );
-            } else if( e.tagName() == "kdchart:background-attributes" ){
+            } else if( e.tagName() == "background-attributes" ){
                 BackgroundAttributes a;
                 if( mAttrS->parseBackgroundAttributes( e, a ) )
                     mChart->setBackgroundAttributes( a );
@@ -175,7 +178,7 @@ bool Serializer::saveChartElement(
     docRoot.setAttribute( "xmlns:xsi", "http://www.w3.org/2000/10/XMLSchema-instance" );
     docRoot.setAttribute( "xsi:schemaLocation", "http://www.klaralvdalens-datakonsult.se/kdchart2" );
 
-    docRoot.setAttribute( "version", "2.1" );
+    docRoot.setAttribute( "kdchart:version", "2.1" );
 
     // save the global leading
     mAttrS->saveLeading( doc, docRoot,
