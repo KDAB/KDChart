@@ -121,12 +121,12 @@ bool Serializer::parseChartElement( const QDomElement& root,
     bool bOK = true;
     if (root.tagName() != "kdchart") {
         QMessageBox::information(0 , tr("KD Chart Serializer"),
-                                 tr("The file is not an KD Chart file."));
+                                 tr("The file is not a KD Chart file."));
         return false;
     } else if (root.hasAttribute("kdchart:version")
                && ! root.attribute("kdchart:version").startsWith("2.") ) {
         QMessageBox::information(0 , tr("KD Chart Serializer"),
-                                tr("The file is not an KD Chart version 2.x file."));
+                                tr("The file is not a KD Chart version 2.x file."));
         return false;
     }
 

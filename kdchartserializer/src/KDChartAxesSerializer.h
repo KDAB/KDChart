@@ -26,75 +26,82 @@
  ** licensing are not clear to you.
  **
  **********************************************************************/
-#ifndef __KDCHARTDIAGRAMSSERIALIZER_H__
-#define __KDCHARTDIAGRAMSSERIALIZER_H__
+#ifndef __KDCHARTAXESSERIALIZER_H__
+#define __KDCHARTAXESSERIALIZER_H__
 
-/** \file KDChartDiagramsSerializer.h
+/** \file KDChartAxesSerializer.h
     \brief Auxiliary methods for reading/saving KD Chart data and configuration in streams.
   */
 
 #include "KDChartAttributesSerializer.h"
 
-#include <KDChartAbstractCartesianDiagram>
-#include <KDChartAbstractPolarDiagram>
+#include <KDChartCartesianAxis>
+//TODO once PolarAxis is implemented: #include <KDChartPolarAxis>
 #include <KDChartChart>
 
 namespace KDChart {
 
-    class AxesSerializer;
+    //class DiagramsSerializer;
 
-    class KDCHART_EXPORT DiagramsSerializer : public QObject
+    class KDCHART_EXPORT AxesSerializer : public QObject
     {
         Q_OBJECT
 
         public:
-            explicit DiagramsSerializer();
-            virtual ~DiagramsSerializer();
+            explicit AxesSerializer();
+            virtual ~AxesSerializer();
 
-            virtual bool parseDiagrams(
+            virtual bool parseCartesianAxes(
                     const QDomElement& e,
-                    AbstractDiagramList& diags,
+                    CartesianAxisList& axes,
                     const QDomElement* styleList=0 )const;
 
-            virtual void saveDiagrams(
+            //TODO once PolarAxis is implemented:
+            /*
+            virtual bool parsePolarAxes(
+                    const QDomElement& e,
+                    PolarAxisList& axes,
+                    const QDomElement* styleList=0 )const;
+            */
+            virtual void saveCartesianAxes(
                     QDomDocument& doc,
                     QDomElement& e,
-                    const ConstAbstractDiagramList& diags,
+                    const CartesianAxisList& axes,
                     const QString& title,
                     const QDomElement* styleList=0 )const;
 
-            virtual void saveAbstractDiagram(
+            //TODO once PolarAxis is implemented:
+            /*
+            virtual void savePolarAxes(
                     QDomDocument& doc,
                     QDomElement& e,
-                    const AbstractDiagram& diagram,
+                    const PolarAxisList& planes,
+                    const QString& title,
+                    const QDomElement* styleList=0 )const;
+            */
+            virtual void saveAbstractAxis(
+                    QDomDocument& doc,
+                    QDomElement& e,
+                    const AbstractAxis& axis,
                     const QString& title,
                     const QDomElement* styleList=0 )const;
 
-            virtual void saveCartDiagram(
+            virtual void saveCartAxis(
                     QDomDocument& doc,
                     QDomElement& e,
-                    const AbstractCartesianDiagram& diagram,
+                    const CartesianAxis& axis,
                     const QString& title,
                     const QDomElement* styleList=0 )const;
 
-            virtual void savePolDiagram(
+            //TODO once PolarAxis is implemented:
+            /*
+            virtual void savePolAxis(
                     QDomDocument& doc,
                     QDomElement& e,
-                    const AbstractPolarDiagram& diagram,
+                    const PolarAxis& axis,
                     const QString& title,
                     const QDomElement* styleList=0 )const;
-
-            // By default this does nothing, it can be used by derived classes,
-            // will be called whenever a diagram is found that is not one
-            // of KD Chart's built-in diagram classes.
-            virtual void saveOtherDiagram(
-                    QDomDocument& doc,
-                    QDomElement& e,
-                    const AbstractDiagram& diagram,
-                    const QDomElement* styleList=0 )const;
-
-        private:
-            AxesSerializer* mAxesS;
+            */
     };
 
 } // end of namespace

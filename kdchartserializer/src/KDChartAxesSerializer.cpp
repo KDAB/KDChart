@@ -27,7 +27,6 @@
  **
  **********************************************************************/
 
-#include "KDChartDiagramsSerializer.h"
 #include "KDChartAxesSerializer.h"
 
 #include "KDXMLTools.h"
@@ -37,7 +36,7 @@
 
 
 /**
-  \class KDChart::CoordPlanesSerializer KDChartCoordPlanesSerializer.h
+  \class KDChart::AxesSerializer KDChartAxesSerializer.h
 
   \brief Auxiliary methods reading/saving KD Chart data and configuration in streams.
   */
@@ -46,30 +45,31 @@
 using namespace KDChart;
 
 
-DiagramsSerializer::DiagramsSerializer()
+AxesSerializer::AxesSerializer()
 {
-    mAxesS = new AxesSerializer();
+    // this space left empty intentionally
 }
 
-DiagramsSerializer::~DiagramsSerializer()
+AxesSerializer::~AxesSerializer()
 {
-    delete mAxesS;
+    // this space left empty intentionally
 }
 
-bool DiagramsSerializer::parseDiagrams(
+bool AxesSerializer::parseCartesianAxes(
         const QDomElement& e,
-        AbstractDiagramList& diags,
+        CartesianAxisList& axes,
         const QDomElement* styleList )const
 {
     Q_UNUSED(styleList)
 
     bool bOK = true;
+/*
     QDomNode node = e.firstChild();
     while( !node.isNull() ) {
         QDomElement element = node.toElement();
         if( !element.isNull() ) { // was really an element
             QString tagName = element.tagName();
-            /*
+
             if( tagName == "kdchart:cartesian-coordinate-plane" ) {
                 bool b;
                 if( KDXML::readBoolNode( element, b ) )
@@ -86,115 +86,132 @@ bool DiagramsSerializer::parseDiagrams(
                 qDebug() << "Unknown subelement of FrameAttributes found:" << tagName;
                 bOK = false;
             }
-            */
+
         }
         node = node.nextSibling();
     }
+*/
     return bOK;
 }
 
-void DiagramsSerializer::saveDiagrams(
+//TODO once PolarAxis is implemented:
+/*
+bool AxesSerializer::parsePolarAxes(
+        const QDomElement& e,
+        PolarAxisList& axes,
+        const QDomElement* styleList=0 )const
+{
+    // ...
+    return true;
+}
+*/
+
+void AxesSerializer::saveCartesianAxes(
         QDomDocument& doc,
         QDomElement& e,
-        const ConstAbstractDiagramList& diags,
+        const CartesianAxisList& axes,
         const QString& title,
         const QDomElement* styleList )const
 {
     Q_UNUSED(styleList)
 
-    QDomElement diagsListElement =
+    QDomElement axesListElement =
             doc.createElement( title );
-    e.appendChild( diagsListElement );
-    Q_FOREACH ( const AbstractDiagram* p, diags )
+    e.appendChild( axesListElement );
+    Q_FOREACH ( const CartesianAxis* p, axes )
     {
-        QDomElement diagElement =
-                doc.createElement( "kdchart:diagram" );
-        diagsListElement.appendChild( diagElement );
+        QDomElement axisElement =
+                doc.createElement( "kdchart:axis" );
+        axesListElement.appendChild( axisElement );
 
         // first save the information hold by the base class
-        saveAbstractDiagram( doc, diagElement, *p,
-                             "kdchart:abstract-diagram", styleList );
+        saveAbstractAxis( doc, axisElement, *p,
+                          "kdchart:abstract-axis", styleList );
 
         // then save any diagram type specific information
-        const AbstractCartesianDiagram* cartDiag =
-                dynamic_cast<const AbstractCartesianDiagram*> ( p );
-        if( cartDiag ){
-            saveCartDiagram( doc, diagElement, *cartDiag,
-                             "kdchart:cartesian-diagram", styleList );
-        }else{
-            const AbstractPolarDiagram* polDiag =
-                    dynamic_cast<const AbstractPolarDiagram*> ( p );
-            if( polDiag ){
-                savePolDiagram( doc, diagElement, *polDiag,
-                                "kdchart:polar-diagram", styleList );
-            }else{
-                saveOtherDiagram( doc, diagElement, *p, styleList );
-            }
-        }
+        saveCartAxis( doc, axisElement, *p,
+                      "kdchart:cartesian-axis", styleList );
     }
 }
 
-void DiagramsSerializer::saveAbstractDiagram(
+//TODO once PolarAxis is implemented:
+/*
+void AxesSerializer::savePolarAxes(
         QDomDocument& doc,
         QDomElement& e,
-        const AbstractDiagram& diagram,
+        const PolarAxisList& axes,
         const QString& title,
         const QDomElement* styleList )const
 {
     Q_UNUSED(styleList)
 
-    QDomElement diagElement =
-        doc.createElement( title );
-    e.appendChild( diagElement );
+    QDomElement axesListElement =
+            doc.createElement( title );
+    e.appendChild( axesListElement );
+    Q_FOREACH ( const PolarAxis* p, axes )
+    {
+        QDomElement axisElement =
+                doc.createElement( "kdchart:axis" );
+        axesListElement.appendChild( axisElement );
 
-    KDXML::createBoolNode( doc, diagElement, "AllowOverlappingDataValueTexts",
-                           diagram.allowOverlappingDataValueTexts() );
-    KDXML::createBoolNode( doc, diagElement, "AntiAliasing",
-                           diagram.antiAliasing() );
-    KDXML::createBoolNode( doc, diagElement, "PercentMode",
-                           diagram.percentMode() );
-    KDXML::createIntNode( doc, diagElement, "DatasetDimension",
-                          diagram.datasetDimension() );
+        // first save the information hold by the base class
+        saveAbstractAxis( doc, axisElement, *p,
+                          "kdchart:abstract-axis", styleList );
+
+        // then save any diagram type specific information
+        savePolAxis( doc, axisElement, *p,
+                     "kdchart:polar-axis", styleList );
+    }
 }
+*/
 
-void DiagramsSerializer::saveCartDiagram(
+void AxesSerializer::saveAbstractAxis(
         QDomDocument& doc,
         QDomElement& e,
-        const AbstractCartesianDiagram& diagram,
+        const AbstractAxis& axis,
         const QString& title,
         const QDomElement* styleList )const
 {
     Q_UNUSED(styleList)
 
-    QDomElement diagElement =
+    QDomElement axisElement =
         doc.createElement( title );
-    e.appendChild( diagElement );
+    e.appendChild( axisElement );
 
-    mAxesS->saveCartesianAxes( doc, diagElement,
-                               diagram.axes(),
-                               "kdchart:cartesian-axes" );
     // ...
 }
 
-void DiagramsSerializer::savePolDiagram(
+void AxesSerializer::saveCartAxis(
         QDomDocument& doc,
         QDomElement& e,
-        const AbstractPolarDiagram& diagram,
+        const CartesianAxis& axis,
         const QString& title,
         const QDomElement* styleList )const
 {
     Q_UNUSED(styleList)
 
+    QDomElement axisElement =
+        doc.createElement( title );
+    e.appendChild( axisElement );
+
+    // ...
 }
 
-void DiagramsSerializer::saveOtherDiagram(
+//TODO once PolarAxis is implemented:
+/*
+void AxesSerializer::savePolPlane(
         QDomDocument& doc,
         QDomElement& e,
-        const AbstractDiagram& diagram,
+        const PolarAxis& axis,
+        const QString& title,
         const QDomElement* styleList )const
 {
-    Q_UNUSED(doc)
-    Q_UNUSED(e)
-    Q_UNUSED(diagram)
     Q_UNUSED(styleList)
+
+            QDomElement axisElement =
+            doc.createElement( title );
+    e.appendChild( axisElement );
+
+    // ...
 }
+*/
