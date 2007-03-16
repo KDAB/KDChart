@@ -92,7 +92,7 @@ bool Serializer::read(QIODevice *device)
         return false;
     }
 
-    const bool bOK = parseChartElement( doc.documentElement(), 0 );
+    const bool bOK = parseChartElement( doc.documentElement() );
     if( bOK )
         mChart->update();
     return bOK;

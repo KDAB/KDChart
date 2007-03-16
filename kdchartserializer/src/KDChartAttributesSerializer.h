@@ -49,34 +49,28 @@ namespace KDChart {
             virtual ~AttributesSerializer();
 
             virtual bool parseLeading(
-                    const QDomElement& e, int& left, int& top, int& right, int& bottom,
-                    const QDomElement* styleList=0 )const;
+                    const QDomElement& e, int& left, int& top, int& right, int& bottom )const;
             virtual void saveLeading(
                     QDomDocument& doc,
                     QDomElement& e,
                     int left, int top, int right, int bottom,
-                    const QString& title,
-                    const QDomElement* styleList=0 )const;
+                    const QString& title )const;
 
             virtual bool parseFrameAttributes(
-                    const QDomElement& e, FrameAttributes& a,
-                    const QDomElement* styleList=0 )const;
+                    const QDomElement& e, FrameAttributes& a )const;
             virtual void saveFrameAttributes(
                     QDomDocument& doc,
                     QDomElement& e,
                     const FrameAttributes& a,
-                    const QString& title,
-                    const QDomElement* styleList=0 )const;
+                    const QString& title )const;
 
             virtual bool parseBackgroundAttributes(
-                    const QDomElement& e, BackgroundAttributes& a,
-                    const QDomElement* styleList=0 )const;
+                    const QDomElement& e, BackgroundAttributes& a )const;
             virtual void saveBackgroundAttributes(
                     QDomDocument& doc,
                     QDomElement& e,
                     const BackgroundAttributes& a,
-                    const QString& title,
-                    const QDomElement* styleList=0 )const;
+                    const QString& title )const;
     };
 
 } // end of namespace
