@@ -31,7 +31,7 @@ private slots:
   void testIntialOwnership()
   {
       m_axis = new CartesianAxis( m_bars );
-      QCOMPARE( m_axis->diagram(), m_bars );
+      QCOMPARE( m_axis->diagram(), static_cast<const AbstractDiagram*>( m_bars ) );
       QVERIFY( m_axis->observedBy( m_bars ) );
   }
 
@@ -39,7 +39,7 @@ private slots:
   {
       m_axis = new CartesianAxis();
       m_bars->addAxis( m_axis );
-      QCOMPARE( m_axis->diagram(), m_bars );
+      QCOMPARE( m_axis->diagram(), static_cast<const AbstractDiagram*>( m_bars ) );
       QVERIFY( m_axis->observedBy( m_bars ) );
       QVERIFY( !m_axis->observedBy( m_lines ) );
   }
@@ -49,11 +49,11 @@ private slots:
       m_axis = new CartesianAxis();
       m_bars->addAxis( m_axis );
       m_lines->addAxis( m_axis );
-      QCOMPARE( m_axis->diagram(), m_bars );
+      QCOMPARE( m_axis->diagram(), static_cast<const AbstractDiagram*>( m_bars ) );
       QVERIFY( m_axis->observedBy( m_bars ) );
       QVERIFY( m_axis->observedBy( m_lines ) );
       m_bars->takeAxis( m_axis );
-      QCOMPARE( m_axis->diagram(), m_lines );
+      QCOMPARE( m_axis->diagram(), static_cast<const AbstractDiagram*>( m_lines ) );
       QVERIFY( m_axis->observedBy( m_lines ) );
       QVERIFY( !m_axis->observedBy( m_bars ) );
   }
@@ -69,7 +69,7 @@ private slots:
       m_chart->coordinatePlane()->replaceDiagram( m_bars, m_lines );
       QVERIFY( !p );
       AbstractDiagram * nullDiagram = 0;
-      QCOMPARE( m_axis->diagram(), nullDiagram );
+      QCOMPARE( m_axis->diagram(), static_cast<const AbstractDiagram*>( nullDiagram ) );
       QVERIFY( !m_axis->observedBy( m_bars ) );
   }
 
@@ -80,12 +80,12 @@ private slots:
       m_lines->addAxis( m_axis );
       m_bars->addAxis( m_axis );
       m_chart->coordinatePlane()->takeDiagram( m_bars );
-      QCOMPARE( m_axis->diagram(), m_lines );
+      QCOMPARE( m_axis->diagram(), static_cast<const AbstractDiagram*>( m_lines ) );
       QVERIFY( m_axis->observedBy( m_bars ) );
       QPointer<LineDiagram> p( m_lines);
       m_chart->coordinatePlane()->replaceDiagram( m_bars, m_lines );
       QVERIFY( !p );
-      QCOMPARE( m_axis->diagram(), m_bars );
+      QCOMPARE( m_axis->diagram(), static_cast<const AbstractDiagram*>( m_bars ) );
       QVERIFY( m_axis->observedBy( m_bars ) );
   }
 
