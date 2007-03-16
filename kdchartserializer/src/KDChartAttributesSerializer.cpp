@@ -45,18 +45,8 @@
 using namespace KDChart;
 
 
-AttributesSerializer::AttributesSerializer()
-{
-    // this space left empty intentionally
-}
-
-AttributesSerializer::~AttributesSerializer()
-{
-    // this space left empty intentionally
-}
-
 bool AttributesSerializer::parseLeading(
-        const QDomElement& e, int& left, int& top, int& right, int& bottom )const
+        const QDomElement& e, int& left, int& top, int& right, int& bottom )
 {
     return  KDXML::findIntAttribute( e, "left",   left   ) ||
             KDXML::findIntAttribute( e, "top",    top    ) ||
@@ -68,7 +58,7 @@ void AttributesSerializer::saveLeading(
         QDomDocument& doc,
         QDomElement& e,
         int left, int top, int right, int bottom,
-        const QString& title )const
+        const QString& title )
 {
     QDomElement leadingElement =
         doc.createElement( title );
@@ -82,7 +72,7 @@ void AttributesSerializer::saveLeading(
 
 bool AttributesSerializer::parseFrameAttributes(
         const QDomElement& e,
-        FrameAttributes& a )const
+        FrameAttributes& a )
 {
     bool bOK = true;
     QDomNode node = e.firstChild();
@@ -116,7 +106,7 @@ void AttributesSerializer::saveFrameAttributes(
         QDomDocument& doc,
         QDomElement& e,
         const FrameAttributes& a,
-        const QString& title )const
+        const QString& title )
 {
     QDomElement frameAttributesElement =
             doc.createElement( title );
@@ -130,9 +120,138 @@ void AttributesSerializer::saveFrameAttributes(
 }
 
 
+bool AttributesSerializer::parseTextAttributes(
+        const QDomElement& e,
+        TextAttributes& a )
+{
+    bool bOK = true;
+    QDomNode node = e.firstChild();
+    while( !node.isNull() ) {
+        QDomElement element = node.toElement();
+        if( !element.isNull() ) { // was really an element
+            QString tagName = element.tagName();
+            if( tagName == "Visible" ) {
+                bool b;
+                if( KDXML::readBoolNode( element, b ) )
+                    a.setVisible( b );
+            } else if( tagName == "Pen" ) {
+                QPen p;
+                if( KDXML::readPenNode( element, p ) )
+                    a.setPen( p );
+            } else if( tagName == "FontSize" ) {
+                Measure m;
+                if( parseMeasure( element, m ) )
+                    a.setFontSize( m );
+            } else if( tagName == "MinimalFontSize" ) {
+                Measure m;
+                if( parseMeasure( element, m ) )
+                    a.setMinimalFontSize( m );
+            } else if( tagName == "AutoRotate" ) {
+                bool b;
+                if( KDXML::readBoolNode( element, b ) )
+                    a.setAutoRotate( b );
+            } else if( tagName == "AutoShrink" ) {
+                bool b;
+                if( KDXML::readBoolNode( element, b ) )
+                    a.setAutoShrink( b );
+            } else if( tagName == "Rotation" ) {
+                int i;
+                if( KDXML::readIntNode( element, i ) )
+                    a.setRotation( i );
+            } else {
+                qDebug() << "Unknown subelement of TextAttributes found:" << tagName;
+                bOK = false;
+            }
+        }
+        node = node.nextSibling();
+    }
+    return bOK;
+}
+
+void AttributesSerializer::saveTextAttributes(
+        QDomDocument& doc,
+        QDomElement& e,
+        const TextAttributes& a,
+        const QString& title )
+{
+    QDomElement textAttributesElement =
+            doc.createElement( title );
+    e.appendChild( textAttributesElement );
+    KDXML::createBoolNode( doc, textAttributesElement, "Visible",
+                           a.isVisible() );
+    KDXML::createPenNode( doc, textAttributesElement, "Pen",
+                          a.pen() );
+    KDXML::createFontNode( doc, textAttributesElement, "Font",
+                           a.font() );
+    saveMeasure( doc, textAttributesElement,
+                 a.fontSize(), "FontSize" );
+    saveMeasure( doc, textAttributesElement,
+                 a.minimalFontSize(), "MinimalFontSize" );
+    KDXML::createBoolNode( doc, textAttributesElement, "AutoRotate",
+                           a.autoRotate() );
+    KDXML::createBoolNode( doc, textAttributesElement, "AutoShrink",
+                           a.autoShrink() );
+    KDXML::createIntNode( doc, textAttributesElement, "Rotation",
+                          a.rotation() );
+}
+
+
+bool AttributesSerializer::parseMeasure(
+        const QDomElement& e,
+        Measure& a )
+{
+    bool bOK = true;
+    QDomNode node = e.firstChild();
+    while( !node.isNull() ) {
+        QDomElement element = node.toElement();
+        if( !element.isNull() ) { // was really an element
+            QString tagName = element.tagName();
+            if( tagName == "Value" ) {
+                qreal r;
+                if( KDXML::readRealNode( element, r ) )
+                    a.setValue( r );
+            } else if( tagName == "Mode" ) {
+                QString s;
+                if( KDXML::readStringNode( element, s ) )
+                    a.setCalculationMode(
+                            KDChartEnums::stringToMeasureCalculationMode( s ) );
+            } else if( tagName == "Orientation" ) {
+                QString s;
+                if( KDXML::readStringNode( element, s ) )
+                    a.setReferenceOrientation(
+                            KDChartEnums::stringToMeasureOrientation( s ) );
+            } else {
+                qDebug() << "Unknown subelement of Measure found:" << tagName;
+                bOK = false;
+            }
+        }
+        node = node.nextSibling();
+    }
+    return bOK;
+}
+
+void AttributesSerializer::saveMeasure(
+        QDomDocument& doc,
+        QDomElement& e,
+        const Measure& m,
+        const QString& title )
+{
+    QDomElement measureElement =
+            doc.createElement( title );
+    e.appendChild( measureElement );
+    KDXML::createRealNode( doc, measureElement, "Value",
+                           m.value() );
+    KDXML::createStringNode( doc, measureElement, "Mode",
+                             KDChartEnums::measureCalculationModeToString(
+                                     m.calculationMode() ) );
+    KDXML::createStringNode( doc, measureElement, "Orientation",
+                             KDChartEnums::measureOrientationToString(
+                                     m.referenceOrientation() ) );
+}
+
 bool AttributesSerializer::parseBackgroundAttributes(
         const QDomElement& e,
-        BackgroundAttributes& a )const
+        BackgroundAttributes& a )
 {
     bool bOK = true;
     QDomNode node = e.firstChild();
@@ -182,7 +301,7 @@ void AttributesSerializer::saveBackgroundAttributes(
         QDomDocument& doc,
         QDomElement& e,
         const BackgroundAttributes& a,
-        const QString& title )const
+        const QString& title )
 {
     QDomElement backgroundAttributesElement =
             doc.createElement( title );

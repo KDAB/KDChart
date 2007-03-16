@@ -33,6 +33,7 @@
     \brief Auxiliary methods for reading/saving KD Chart data and configuration in streams.
   */
 
+#include <KDChartTextAttributes>
 #include <KDChartFrameAttributes>
 #include <KDChartBackgroundAttributes>
 
@@ -40,37 +41,47 @@
 
 namespace KDChart {
 
-    class KDCHART_EXPORT AttributesSerializer : public QObject
+    class KDCHART_EXPORT AttributesSerializer
     {
-        Q_OBJECT
-
         public:
-            explicit AttributesSerializer();
-            virtual ~AttributesSerializer();
-
-            virtual bool parseLeading(
-                    const QDomElement& e, int& left, int& top, int& right, int& bottom )const;
-            virtual void saveLeading(
+            static bool parseLeading(
+                    const QDomElement& e, int& left, int& top, int& right, int& bottom );
+            static void saveLeading(
                     QDomDocument& doc,
                     QDomElement& e,
                     int left, int top, int right, int bottom,
-                    const QString& title )const;
+                    const QString& title );
 
-            virtual bool parseFrameAttributes(
-                    const QDomElement& e, FrameAttributes& a )const;
-            virtual void saveFrameAttributes(
+            static bool parseTextAttributes(
+                    const QDomElement& e, TextAttributes& a );
+            static void saveTextAttributes(
                     QDomDocument& doc,
                     QDomElement& e,
-                    const FrameAttributes& a,
-                    const QString& title )const;
+                    const TextAttributes& a,
+                    const QString& title );
 
-            virtual bool parseBackgroundAttributes(
-                    const QDomElement& e, BackgroundAttributes& a )const;
-            virtual void saveBackgroundAttributes(
+            static bool parseMeasure(
+                    const QDomElement& e, Measure& a );
+            static void saveMeasure(
+                    QDomDocument& doc,
+                    QDomElement& e,
+                    const Measure& m,
+                    const QString& title );
+            static bool parseFrameAttributes(
+                    const QDomElement& e, FrameAttributes& a );
+            static void saveFrameAttributes(
+                    QDomDocument& doc,
+            QDomElement& e,
+            const FrameAttributes& a,
+            const QString& title );
+
+            static bool parseBackgroundAttributes(
+                    const QDomElement& e, BackgroundAttributes& a );
+            static void saveBackgroundAttributes(
                     QDomDocument& doc,
                     QDomElement& e,
                     const BackgroundAttributes& a,
-                    const QString& title )const;
+                    const QString& title );
     };
 
 } // end of namespace

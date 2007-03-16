@@ -86,13 +86,25 @@ namespace KDXML {
 
 
     void createDoubleNode( QDomDocument& doc, QDomNode& parent,
-            const QString& elementName, double value )
+                           const QString& elementName, double value )
     {
         QDomElement newElement =
-            doc.createElement( elementName );
+                doc.createElement( elementName );
         parent.appendChild( newElement );
         QDomText elementContent =
-            doc.createTextNode( QString::number( value ) );
+                doc.createTextNode( QString::number( value ) );
+        newElement.appendChild( elementContent );
+    }
+
+
+    void createRealNode( QDomDocument& doc, QDomNode& parent,
+                         const QString& elementName, qreal value )
+    {
+        QDomElement newElement =
+                doc.createElement( elementName );
+        parent.appendChild( newElement );
+        QDomText elementContent =
+                doc.createTextNode( QString::number( value ) );
         newElement.appendChild( elementContent );
     }
 
@@ -373,6 +385,16 @@ namespace KDXML {
     {
         bool ok = false;
         double temp = element.text().toDouble( &ok );
+        if( ok )
+            value = temp;
+        return ok;
+    }
+
+
+    bool readRealNode( const QDomElement& element, qreal& value )
+    {
+        bool ok = false;
+        qreal temp = element.text().toDouble( &ok );
         if( ok )
             value = temp;
         return ok;

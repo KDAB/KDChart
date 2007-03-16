@@ -28,6 +28,8 @@
  **********************************************************************/
 
 #include "KDChartAxesSerializer.h"
+#include "KDChartAttributesSerializer.h"
+#include "KDChartAbstractAreaBaseSerializer.h"
 #include "KDChartSerializeCollector.h"
 
 #include "KDXMLTools.h"
@@ -178,7 +180,27 @@ void AxesSerializer::saveAbstractAxis(
         doc.createElement( title );
     e.appendChild( axisElement );
 
-    // ...
+    // save the area information
+    AbstractAreaBaseSerializer::saveAbstractAreaBase(
+            doc,
+            axisElement,
+            axis,
+            "kdchart:abstract-area-base" );
+    // save the text attributes
+    AttributesSerializer::saveTextAttributes(
+            doc, axisElement,
+            axis.textAttributes(),
+            "TextAttributes" );
+    // save the labels
+    QStringList list( axis.labels() );
+    KDXML::createStringListNodes(
+            doc, axisElement,
+            "Labels", &list );
+    // save the short labels
+    list = axis.shortLabels();
+    KDXML::createStringListNodes(
+            doc, axisElement,
+            "ShortLabels", &list );
 }
 
 void AxesSerializer::saveCartAxis(
@@ -190,8 +212,33 @@ void AxesSerializer::saveCartAxis(
     QDomElement axisElement =
         doc.createElement( title );
     e.appendChild( axisElement );
-
-    // ...
+    // save the title
+    KDXML::createStringNode(
+            doc, axisElement,
+            "Title", axis.titleText() );
+    // save the title text attributes
+    AttributesSerializer::saveTextAttributes(
+            doc, axisElement,
+            axis.titleTextAttributes(),
+            "TitleTextAttributes" );
+    QString s;
+    switch( axis.position() ){
+        case CartesianAxis::Bottom:
+            s = "bottom";
+            break;
+        case CartesianAxis::Top:
+            s = "top";
+            break;
+        case CartesianAxis::Right:
+            s = "right";
+            break;
+        case CartesianAxis::Left:
+            s = "left";
+            break;
+    }
+    KDXML::createStringNode(
+            doc, axisElement,
+            "Position", s );
 }
 
 //TODO once PolarAxis is implemented:

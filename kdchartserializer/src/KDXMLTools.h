@@ -55,7 +55,9 @@ namespace KDXML {
     void createIntNode( QDomDocument& doc, QDomNode& parent,
             const QString& elementName, int value );
     void createDoubleNode( QDomDocument& doc, QDomNode& parent,
-            const QString& elementName, double value );
+                           const QString& elementName, double value );
+    void createRealNode( QDomDocument& doc, QDomNode& parent,
+                           const QString& elementName, qreal value );
     void createStringNode( QDomDocument& doc, QDomNode& parent,
             const QString& elementName,
             const QString& text );
@@ -88,6 +90,7 @@ namespace KDXML {
     bool readIntNode( const QDomElement& element, int& value );
     bool readStringNode( const QDomElement& element, QString& value );
     bool readDoubleNode( const QDomElement& element, double& value );
+    bool readRealNode( const QDomElement& element, qreal& value );
     bool readBoolNode( const QDomElement& element, bool& value );
     bool readOrientationNode( const QDomElement& element, Qt::Orientation& value );
     bool readSizeNode( const QDomElement& element, QSize& value );

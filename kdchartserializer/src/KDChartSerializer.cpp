@@ -52,7 +52,6 @@ using namespace KDChart;
 Serializer::Serializer( Chart* chart )
     : mChart( chart )
 {
-    mAttrS  = new AttributesSerializer();
     mCoordS = new CoordPlanesSerializer();
     // instantiate (or re-set, resp.) the singletons:
     IdMapper::instance()->clear();
@@ -61,7 +60,6 @@ Serializer::Serializer( Chart* chart )
 
 Serializer::~Serializer()
 {
-    delete mAttrS;
     delete mCoordS;
     // delete the singletons:
     //delete IdMapper::instance();
@@ -148,15 +146,15 @@ bool Serializer::parseChartElement( const QDomElement& root )const
                 int top    = mChart->globalLeadingTop();
                 int right  = mChart->globalLeadingRight();
                 int bottom = mChart->globalLeadingBottom();
-                if( mAttrS->parseLeading( e,  left, top, right, bottom ) )
+                if( AttributesSerializer::parseLeading( e,  left, top, right, bottom ) )
                     mChart->setGlobalLeading( left, top, right, bottom );
             } else if( e.tagName() == "frame-attributes" ){
                 FrameAttributes a;
-                if( mAttrS->parseFrameAttributes( e, a ) )
+                if( AttributesSerializer::parseFrameAttributes( e, a ) )
                     mChart->setFrameAttributes( a );
             } else if( e.tagName() == "background-attributes" ){
                 BackgroundAttributes a;
-                if( mAttrS->parseBackgroundAttributes( e, a ) )
+                if( AttributesSerializer::parseBackgroundAttributes( e, a ) )
                     mChart->setBackgroundAttributes( a );
             }
         }
@@ -192,6 +190,7 @@ bool Serializer::saveRootElement(
     return bOK;
 }
 
+
 bool Serializer::saveChartElement(
         QDomDocument& doc,
         QDomElement& e ) const
@@ -207,9 +206,9 @@ bool Serializer::saveChartElement(
     e.appendChild( bodyElement );
 
     // note: The following structure can be easily extended
-    //       to saving more than one chart.
-    // Every chart is added to the SerializeCollector - just
-    // the same way as we do for coordinate-planes, diagrams, ...
+    //       to allow saving of more than one chart.
+    // Every chart is added to the SerializeCollector in the
+    // same way as we do for coordinate-planes, diagrams, ...
 
     const QString title( "kdchart:charts" );
 
@@ -229,9 +228,10 @@ bool Serializer::saveChartElement(
             "kdchart:chart",
             &mChart,
             wasFound );
+    // as of yet, wasFound will be FALSE always, but never mind
     if( ! wasFound ){
         // save the global leading
-        mAttrS->saveLeading(
+        AttributesSerializer::saveLeading(
                 doc, chartElement,
                 mChart->globalLeadingLeft(),
                 mChart->globalLeadingTop(),
@@ -240,13 +240,13 @@ bool Serializer::saveChartElement(
                 "kdchart:global-leading" );
 
         // save the frame attributes
-        mAttrS->saveFrameAttributes(
+        AttributesSerializer::saveFrameAttributes(
                 doc, chartElement,
                 mChart->frameAttributes(),
                 "kdchart:frame-attributes" );
 
         // save the background attributes
-        mAttrS->saveBackgroundAttributes(
+        AttributesSerializer::saveBackgroundAttributes(
                 doc, chartElement,
                 mChart->backgroundAttributes(),
                 "kdchart:background-attributes" );

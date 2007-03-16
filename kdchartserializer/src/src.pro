@@ -18,6 +18,7 @@ KDCHART_PATH = ../..
 INCLUDEPATH+= ../include \
             $(QTDIR)/src/3rdparty/zlib \
             $$KDCHART_PATH/include \
+            $$KDCHART_PATH/src \
             .
 DEPENDPATH += ../include \
             $(QTDIR)/src/3rdparty/zlib \
@@ -31,6 +32,7 @@ SOURCES= \
         KDChartSerializeCollector.cpp \
         KDChartIdMapper.cpp \
         KDChartAttributesSerializer.cpp \
+        KDChartAbstractAreaBaseSerializer.cpp \
         KDChartCoordPlanesSerializer.cpp \
         KDChartDiagramsSerializer.cpp \
         KDChartAxesSerializer.cpp \
@@ -41,6 +43,7 @@ HEADERS= \
         KDChartSerializeCollector.h \
         KDChartIdMapper.h \
         KDChartAttributesSerializer.h \
+        KDChartAbstractAreaBaseSerializer.h \
         KDChartCoordPlanesSerializer.h \
         KDChartDiagramsSerializer.h \
         KDChartAxesSerializer.h \

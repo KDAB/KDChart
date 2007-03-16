@@ -41,7 +41,6 @@
 
 namespace KDChart {
 
-    class AttributesSerializer;
     class CoordPlanesSerializer;
 
     class KDCHART_EXPORT Serializer : public QObject
@@ -75,7 +74,6 @@ namespace KDChart {
 
         private:
             Chart* mChart;
-            AttributesSerializer* mAttrS;
             CoordPlanesSerializer* mCoordS;
     };
 
