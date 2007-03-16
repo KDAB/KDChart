@@ -170,6 +170,11 @@ linux-*{
     TARGETDEPS += libkdchart.map
   }
 }
+
+solaris-*{
+LIBS *= -lsunmath
+}
+
 qsa{
   message(compiling QSA support into KD Chart)
   SOURCES += KDChartObjectFactory.cpp \

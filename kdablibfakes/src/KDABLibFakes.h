@@ -47,13 +47,17 @@
 
 #include <cmath>
 
+#ifdef Q_OS_SOLARIS
+#include <sunmath.h>
+#include <math.h>
+#endif
+
 #include <qglobal.h>
 
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
-
 
 #define DEGTORAD(d) (d)*M_PI/180
 
