@@ -296,7 +296,7 @@ public:
       \param type the measure orientation to convert
       \return the string representation of the measure orientation enum
       */
-    static QString MeasureOrientationToString( MeasureOrientation mode ) {
+    static QString measureOrientationToString( MeasureOrientation mode ) {
         switch( mode ) {
             case MeasureOrientationAuto:
                 return QString::fromLatin1("MeasureOrientationAuto");
