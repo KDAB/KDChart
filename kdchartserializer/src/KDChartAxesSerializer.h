@@ -53,22 +53,19 @@ namespace KDChart {
 
             virtual bool parseCartesianAxes(
                     const QDomElement& e,
-                    CartesianAxisList& axes,
-                    const QDomElement* styleList=0 )const;
+                    CartesianAxisList& axes )const;
 
             //TODO once PolarAxis is implemented:
             /*
             virtual bool parsePolarAxes(
                     const QDomElement& e,
-                    PolarAxisList& axes,
-                    const QDomElement* styleList=0 )const;
+                    PolarAxisList& axes )const;
             */
             virtual void saveCartesianAxes(
                     QDomDocument& doc,
                     QDomElement& e,
                     const CartesianAxisList& axes,
-                    const QString& title,
-                    const QDomElement* styleList=0 )const;
+                    const QString& title )const;
 
             //TODO once PolarAxis is implemented:
             /*
@@ -76,22 +73,19 @@ namespace KDChart {
                     QDomDocument& doc,
                     QDomElement& e,
                     const PolarAxisList& planes,
-                    const QString& title,
-                    const QDomElement* styleList=0 )const;
+                    const QString& title )const;
             */
             virtual void saveAbstractAxis(
                     QDomDocument& doc,
                     QDomElement& e,
                     const AbstractAxis& axis,
-                    const QString& title,
-                    const QDomElement* styleList=0 )const;
+                    const QString& title )const;
 
             virtual void saveCartAxis(
                     QDomDocument& doc,
                     QDomElement& e,
                     const CartesianAxis& axis,
-                    const QString& title,
-                    const QDomElement* styleList=0 )const;
+                    const QString& title )const;
 
             //TODO once PolarAxis is implemented:
             /*
@@ -99,8 +93,7 @@ namespace KDChart {
                     QDomDocument& doc,
                     QDomElement& e,
                     const PolarAxis& axis,
-                    const QString& title,
-                    const QDomElement* styleList=0 )const;
+                    const QString& title )const;
             */
     };
 

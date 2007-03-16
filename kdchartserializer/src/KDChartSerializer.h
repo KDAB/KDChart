@@ -64,17 +64,14 @@ namespace KDChart {
             virtual bool write(QIODevice *device) const;
 
             virtual bool parseChartElement(
-                    const QDomElement& root,
-                    const QDomElement* styleList=0 ) const;
+                    const QDomElement& root ) const;
             virtual bool saveRootElement(
                     QDomDocument& doc,
-                    QDomElement& docRoot,
-                    const QDomElement* styleList=0 ) const;
+                    QDomElement& docRoot ) const;
 
             virtual bool saveChartElement(
                     QDomDocument& doc,
-                    QDomElement& e,
-                    const QDomElement* styleList=0 ) const;
+                    QDomElement& e ) const;
 
         private:
             Chart* mChart;

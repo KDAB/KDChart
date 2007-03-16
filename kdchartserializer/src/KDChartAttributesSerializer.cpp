@@ -56,11 +56,8 @@ AttributesSerializer::~AttributesSerializer()
 }
 
 bool AttributesSerializer::parseLeading(
-        const QDomElement& e, int& left, int& top, int& right, int& bottom,
-        const QDomElement* styleList )const
+        const QDomElement& e, int& left, int& top, int& right, int& bottom )const
 {
-    Q_UNUSED(styleList)
-
     return  KDXML::findIntAttribute( e, "left",   left   ) ||
             KDXML::findIntAttribute( e, "top",    top    ) ||
             KDXML::findIntAttribute( e, "right",  right  ) ||
@@ -71,11 +68,8 @@ void AttributesSerializer::saveLeading(
         QDomDocument& doc,
         QDomElement& e,
         int left, int top, int right, int bottom,
-        const QString& title,
-        const QDomElement* styleList )const
+        const QString& title )const
 {
-    Q_UNUSED(styleList)
-
     QDomElement leadingElement =
         doc.createElement( title );
     e.appendChild( leadingElement );
@@ -88,11 +82,8 @@ void AttributesSerializer::saveLeading(
 
 bool AttributesSerializer::parseFrameAttributes(
         const QDomElement& e,
-        FrameAttributes& a,
-        const QDomElement* styleList )const
+        FrameAttributes& a )const
 {
-    Q_UNUSED(styleList)
-
     bool bOK = true;
     QDomNode node = e.firstChild();
     while( !node.isNull() ) {
@@ -125,11 +116,8 @@ void AttributesSerializer::saveFrameAttributes(
         QDomDocument& doc,
         QDomElement& e,
         const FrameAttributes& a,
-        const QString& title,
-        const QDomElement* styleList )const
+        const QString& title )const
 {
-    Q_UNUSED(styleList)
-
     QDomElement frameAttributesElement =
             doc.createElement( title );
     e.appendChild( frameAttributesElement );
@@ -144,11 +132,8 @@ void AttributesSerializer::saveFrameAttributes(
 
 bool AttributesSerializer::parseBackgroundAttributes(
         const QDomElement& e,
-        BackgroundAttributes& a,
-        const QDomElement* styleList )const
+        BackgroundAttributes& a )const
 {
-    Q_UNUSED(styleList)
-
     bool bOK = true;
     QDomNode node = e.firstChild();
     while( !node.isNull() ) {
@@ -197,11 +182,8 @@ void AttributesSerializer::saveBackgroundAttributes(
         QDomDocument& doc,
         QDomElement& e,
         const BackgroundAttributes& a,
-        const QString& title,
-        const QDomElement* styleList )const
+        const QString& title )const
 {
-    Q_UNUSED(styleList)
-
     QDomElement backgroundAttributesElement =
             doc.createElement( title );
     e.appendChild( backgroundAttributesElement );

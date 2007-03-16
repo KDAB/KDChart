@@ -59,11 +59,8 @@ DiagramsSerializer::~DiagramsSerializer()
 
 bool DiagramsSerializer::parseDiagrams(
         const QDomElement& e,
-        AbstractDiagramList& diags,
-        const QDomElement* styleList )const
+        AbstractDiagramList& diags )const
 {
-    Q_UNUSED(styleList)
-
     bool bOK = true;
     QDomNode node = e.firstChild();
     while( !node.isNull() ) {
@@ -98,11 +95,8 @@ void DiagramsSerializer::saveDiagrams(
         QDomDocument& doc,
         QDomElement& e,
         const ConstAbstractDiagramList& diags,
-        const QString& title,
-        const QDomElement* styleList )const
+        const QString& title )const
 {
-    Q_UNUSED(styleList)
-
     // access (or append, resp.) the global list
     QDomElement* diagsList =
             SerializeCollector::instance()->findOrMakeElement( doc, title );
@@ -125,22 +119,22 @@ void DiagramsSerializer::saveDiagrams(
         if( ! wasFound ){
             // first save the information hold by the base class
             saveAbstractDiagram( doc, diagElement, *p,
-                                "kdchart:abstract-diagram", styleList );
+                                "kdchart:abstract-diagram" );
 
             // then save any diagram type specific information
             const AbstractCartesianDiagram* cartDiag =
                     dynamic_cast<const AbstractCartesianDiagram*> ( p );
             if( cartDiag ){
                 saveCartDiagram( doc, diagElement, *cartDiag,
-                                "kdchart:cartesian-diagram", styleList );
+                                "kdchart:cartesian-diagram" );
             }else{
                 const AbstractPolarDiagram* polDiag =
                         dynamic_cast<const AbstractPolarDiagram*> ( p );
                 if( polDiag ){
                     savePolDiagram( doc, diagElement, *polDiag,
-                                    "kdchart:polar-diagram", styleList );
+                                    "kdchart:polar-diagram" );
                 }else{
-                    saveOtherDiagram( doc, diagElement, *p, styleList );
+                    saveOtherDiagram( doc, diagElement, *p );
                 }
             }
         }
@@ -151,11 +145,8 @@ void DiagramsSerializer::saveAbstractDiagram(
         QDomDocument& doc,
         QDomElement& e,
         const AbstractDiagram& diagram,
-        const QString& title,
-        const QDomElement* styleList )const
+        const QString& title )const
 {
-    Q_UNUSED(styleList)
-
     QDomElement diagElement =
         doc.createElement( title );
     e.appendChild( diagElement );
@@ -174,11 +165,8 @@ void DiagramsSerializer::saveCartDiagram(
         QDomDocument& doc,
         QDomElement& e,
         const AbstractCartesianDiagram& diagram,
-        const QString& title,
-        const QDomElement* styleList )const
+        const QString& title )const
 {
-    Q_UNUSED(styleList)
-
     QDomElement diagElement =
         doc.createElement( title );
     e.appendChild( diagElement );
@@ -193,21 +181,17 @@ void DiagramsSerializer::savePolDiagram(
         QDomDocument& doc,
         QDomElement& e,
         const AbstractPolarDiagram& diagram,
-        const QString& title,
-        const QDomElement* styleList )const
+        const QString& title )const
 {
-    Q_UNUSED(styleList)
 
 }
 
 void DiagramsSerializer::saveOtherDiagram(
         QDomDocument& doc,
         QDomElement& e,
-        const AbstractDiagram& diagram,
-        const QDomElement* styleList )const
+        const AbstractDiagram& diagram )const
 {
     Q_UNUSED(doc)
     Q_UNUSED(e)
     Q_UNUSED(diagram)
-    Q_UNUSED(styleList)
 }

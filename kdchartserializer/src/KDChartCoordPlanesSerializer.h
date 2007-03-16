@@ -53,36 +53,31 @@ namespace KDChart {
 
             virtual bool parsePlanes(
                     const QDomElement& e,
-                    CoordinatePlaneList& planes,
-                    const QDomElement* styleList=0 )const;
+                    CoordinatePlaneList& planes )const;
 
             virtual void savePlanes(
                     QDomDocument& doc,
                     QDomElement& e,
                     const CoordinatePlaneList& planes,
-                    const QString& title,
-                    const QDomElement* styleList=0 )const;
+                    const QString& title )const;
 
             virtual void saveAbstractPlane(
                     QDomDocument& doc,
                     QDomElement& e,
                     const AbstractCoordinatePlane& plane,
-                    const QString& title,
-                    const QDomElement* styleList=0 )const;
+                    const QString& title )const;
 
             virtual void saveCartPlane(
                     QDomDocument& doc,
                     QDomElement& e,
                     const CartesianCoordinatePlane& plane,
-                    const QString& title,
-                    const QDomElement* styleList=0 )const;
+                    const QString& title )const;
 
             virtual void savePolPlane(
                     QDomDocument& doc,
                     QDomElement& e,
                     const PolarCoordinatePlane& plane,
-                    const QString& title,
-                    const QDomElement* styleList=0 )const;
+                    const QString& title )const;
 
             // By default this does nothing, it can be used by derived classes,
             // will be called whenever a coord. plane is found that is neither
@@ -90,8 +85,7 @@ namespace KDChart {
             virtual void saveOtherPlane(
                     QDomDocument& doc,
                     QDomElement& e,
-                    const AbstractCoordinatePlane& plane,
-                    const QDomElement* styleList=0 )const;
+                    const AbstractCoordinatePlane& plane )const;
 
         private:
             DiagramsSerializer* mDiagS;

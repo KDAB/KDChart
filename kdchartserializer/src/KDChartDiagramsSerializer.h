@@ -53,36 +53,31 @@ namespace KDChart {
 
             virtual bool parseDiagrams(
                     const QDomElement& e,
-                    AbstractDiagramList& diags,
-                    const QDomElement* styleList=0 )const;
+                    AbstractDiagramList& diags )const;
 
             virtual void saveDiagrams(
                     QDomDocument& doc,
                     QDomElement& e,
                     const ConstAbstractDiagramList& diags,
-                    const QString& title,
-                    const QDomElement* styleList=0 )const;
+                    const QString& title )const;
 
             virtual void saveAbstractDiagram(
                     QDomDocument& doc,
                     QDomElement& e,
                     const AbstractDiagram& diagram,
-                    const QString& title,
-                    const QDomElement* styleList=0 )const;
+                    const QString& title )const;
 
             virtual void saveCartDiagram(
                     QDomDocument& doc,
                     QDomElement& e,
                     const AbstractCartesianDiagram& diagram,
-                    const QString& title,
-                    const QDomElement* styleList=0 )const;
+                    const QString& title )const;
 
             virtual void savePolDiagram(
                     QDomDocument& doc,
                     QDomElement& e,
                     const AbstractPolarDiagram& diagram,
-                    const QString& title,
-                    const QDomElement* styleList=0 )const;
+                    const QString& title )const;
 
             // By default this does nothing, it can be used by derived classes,
             // will be called whenever a diagram is found that is not one
@@ -90,8 +85,7 @@ namespace KDChart {
             virtual void saveOtherDiagram(
                     QDomDocument& doc,
                     QDomElement& e,
-                    const AbstractDiagram& diagram,
-                    const QDomElement* styleList=0 )const;
+                    const AbstractDiagram& diagram )const;
 
         private:
             AxesSerializer* mAxesS;

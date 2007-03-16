@@ -58,11 +58,8 @@ AxesSerializer::~AxesSerializer()
 
 bool AxesSerializer::parseCartesianAxes(
         const QDomElement& e,
-        CartesianAxisList& axes,
-        const QDomElement* styleList )const
+        CartesianAxisList& axes )const
 {
-    Q_UNUSED(styleList)
-
     bool bOK = true;
 /*
     QDomNode node = e.firstChild();
@@ -99,8 +96,7 @@ bool AxesSerializer::parseCartesianAxes(
 /*
 bool AxesSerializer::parsePolarAxes(
         const QDomElement& e,
-        PolarAxisList& axes,
-        const QDomElement* styleList=0 )const
+        PolarAxisList& axes )const
 {
     // ...
     return true;
@@ -111,11 +107,8 @@ void AxesSerializer::saveCartesianAxes(
         QDomDocument& doc,
         QDomElement& e,
         const CartesianAxisList& axes,
-        const QString& title,
-        const QDomElement* styleList )const
+        const QString& title )const
 {
-    Q_UNUSED(styleList)
-
     // access (or append, resp.) the global list
     QDomElement* axesList =
             SerializeCollector::instance()->findOrMakeElement( doc, title );
@@ -138,11 +131,11 @@ void AxesSerializer::saveCartesianAxes(
         if( ! wasFound ){
             // first save the information hold by the base class
             saveAbstractAxis( doc, axisElement, *p,
-                            "kdchart:abstract-axis", styleList );
+                            "kdchart:abstract-axis" );
 
             // then save any diagram type specific information
             saveCartAxis( doc, axisElement, *p,
-                        "kdchart:cartesian-axis", styleList );
+                        "kdchart:cartesian-axis" );
         }
     }
 }
@@ -153,11 +146,8 @@ void AxesSerializer::savePolarAxes(
         QDomDocument& doc,
         QDomElement& e,
         const PolarAxisList& axes,
-        const QString& title,
-        const QDomElement* styleList )const
+        const QString& title )const
 {
-    Q_UNUSED(styleList)
-
     QDomElement axesList =
             doc.createElement( title );
     e.appendChild( axesList );
@@ -169,11 +159,11 @@ void AxesSerializer::savePolarAxes(
 
         // first save the information hold by the base class
         saveAbstractAxis( doc, axisElement, *p,
-                          "kdchart:abstract-axis", styleList );
+                          "kdchart:abstract-axis" );
 
         // then save any diagram type specific information
         savePolAxis( doc, axisElement, *p,
-                     "kdchart:polar-axis", styleList );
+                     "kdchart:polar-axis" );
     }
 }
 */
@@ -182,11 +172,8 @@ void AxesSerializer::saveAbstractAxis(
         QDomDocument& doc,
         QDomElement& e,
         const AbstractAxis& axis,
-        const QString& title,
-        const QDomElement* styleList )const
+        const QString& title )const
 {
-    Q_UNUSED(styleList)
-
     QDomElement axisElement =
         doc.createElement( title );
     e.appendChild( axisElement );
@@ -198,11 +185,8 @@ void AxesSerializer::saveCartAxis(
         QDomDocument& doc,
         QDomElement& e,
         const CartesianAxis& axis,
-        const QString& title,
-        const QDomElement* styleList )const
+        const QString& title )const
 {
-    Q_UNUSED(styleList)
-
     QDomElement axisElement =
         doc.createElement( title );
     e.appendChild( axisElement );
@@ -216,12 +200,9 @@ void AxesSerializer::savePolPlane(
         QDomDocument& doc,
         QDomElement& e,
         const PolarAxis& axis,
-        const QString& title,
-        const QDomElement* styleList )const
+        const QString& title )const
 {
-    Q_UNUSED(styleList)
-
-            QDomElement axisElement =
+    QDomElement axisElement =
             doc.createElement( title );
     e.appendChild( axisElement );
 

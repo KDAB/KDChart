@@ -121,11 +121,9 @@ bool Serializer::write(QIODevice *device) const
 }
 
 
-bool Serializer::parseChartElement( const QDomElement& root,
-                                    const QDomElement* styleList )const
+bool Serializer::parseChartElement( const QDomElement& root )const
 {
-    Q_UNUSED(styleList)
-            qDebug() << root.tagName();
+    //qDebug() << root.tagName();
     bool bOK = true;
     if (root.tagName() != "kdchart") {
         QMessageBox::information(0 , tr("KD Chart Serializer"),
@@ -170,11 +168,8 @@ bool Serializer::parseChartElement( const QDomElement& root,
 
 bool Serializer::saveRootElement(
         QDomDocument& doc,
-        QDomElement& docRoot,
-        const QDomElement* styleList ) const
+        QDomElement& docRoot ) const
 {
-    Q_UNUSED(styleList)
-
     if( ! mChart ){
         QMessageBox::information(0 , tr("KD Chart Serializer"),
                                  tr("Can not save Chart Root element: mChart was not set!"));
@@ -188,7 +183,7 @@ bool Serializer::saveRootElement(
 
     docRoot.setAttribute( "kdchart:version", "2.1" );
 
-    bool bOK = saveChartElement( doc, docRoot, styleList );
+    bool bOK = saveChartElement( doc, docRoot );
 
     if( bOK ){
         // save all collected data
@@ -199,11 +194,8 @@ bool Serializer::saveRootElement(
 
 bool Serializer::saveChartElement(
         QDomDocument& doc,
-        QDomElement& e,
-        const QDomElement* styleList ) const
+        QDomElement& e ) const
 {
-    Q_UNUSED(styleList)
-
     if( ! mChart ){
         QMessageBox::information(0 , tr("KD Chart Serializer"),
                                  tr("Can not save Chart element: mChart was not set!"));

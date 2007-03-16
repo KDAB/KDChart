@@ -59,11 +59,8 @@ CoordPlanesSerializer::~CoordPlanesSerializer()
 
 bool CoordPlanesSerializer::parsePlanes(
         const QDomElement& e,
-        CoordinatePlaneList& planes,
-        const QDomElement* styleList )const
+        CoordinatePlaneList& planes )const
 {
-    Q_UNUSED(styleList)
-
     bool bOK = true;
     QDomNode node = e.firstChild();
     while( !node.isNull() ) {
@@ -98,11 +95,8 @@ void CoordPlanesSerializer::savePlanes(
         QDomDocument& doc,
         QDomElement& e,
         const CoordinatePlaneList& planes,
-        const QString& title,
-        const QDomElement* styleList )const
+        const QString& title )const
 {
-    Q_UNUSED(styleList)
-
     // access (or append, resp.) the global list
     QDomElement* planesList =
             SerializeCollector::instance()->findOrMakeElement( doc, title );
@@ -125,22 +119,22 @@ void CoordPlanesSerializer::savePlanes(
         if( ! wasFound ){
             // first save the information hold by the base class
             saveAbstractPlane( doc, planeElement, *p,
-                            "kdchart:abstract-coordinate-plane", styleList );
+                            "kdchart:abstract-coordinate-plane" );
 
             // then save any plane type specific information
             CartesianCoordinatePlane* cartPlane =
                     dynamic_cast<CartesianCoordinatePlane*> ( p );
             if( cartPlane ){
                 saveCartPlane( doc, planeElement, *cartPlane,
-                            "kdchart:cartesian-coordinate-plane", styleList );
+                            "kdchart:cartesian-coordinate-plane" );
             }else{
                 PolarCoordinatePlane* polPlane =
                         dynamic_cast<PolarCoordinatePlane*> ( p );
                 if( polPlane ){
                     savePolPlane( doc, planeElement, *polPlane,
-                                "kdchart:polar-coordinate-plane", styleList );
+                                "kdchart:polar-coordinate-plane" );
                 }else{
-                    saveOtherPlane( doc, planeElement, *p, styleList );
+                    saveOtherPlane( doc, planeElement, *p );
                 }
             }
         }
@@ -151,11 +145,8 @@ void CoordPlanesSerializer::saveAbstractPlane(
         QDomDocument& doc,
         QDomElement& e,
         const AbstractCoordinatePlane& plane,
-        const QString& title,
-        const QDomElement* styleList )const
+        const QString& title )const
 {
-    Q_UNUSED(styleList)
-
     QDomElement planeElement =
         doc.createElement( title );
     e.appendChild( planeElement );
@@ -171,11 +162,8 @@ void CoordPlanesSerializer::saveCartPlane(
         QDomDocument& doc,
         QDomElement& e,
         const CartesianCoordinatePlane& plane,
-        const QString& title,
-        const QDomElement* styleList )const
+        const QString& title )const
 {
-    Q_UNUSED(styleList)
-
     QDomElement planeElement =
         doc.createElement( title );
     e.appendChild( planeElement );
@@ -186,21 +174,17 @@ void CoordPlanesSerializer::savePolPlane(
         QDomDocument& doc,
         QDomElement& e,
         const PolarCoordinatePlane& plane,
-        const QString& title,
-        const QDomElement* styleList )const
+        const QString& title )const
 {
-    Q_UNUSED(styleList)
 
 }
 
 void CoordPlanesSerializer::saveOtherPlane(
         QDomDocument& doc,
         QDomElement& e,
-        const AbstractCoordinatePlane& plane,
-        const QDomElement* styleList )const
+        const AbstractCoordinatePlane& plane )const
 {
     Q_UNUSED(doc)
     Q_UNUSED(e)
     Q_UNUSED(plane)
-    Q_UNUSED(styleList)
 }
