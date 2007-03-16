@@ -50,6 +50,11 @@ namespace KDChart {
 
         public:
             explicit Serializer( Chart* chart = 0 );
+            /**
+             * Free the allocated memory, ignoring the singletons
+             * SerializeIdMapper and SerializeCollector. This enables you
+             * to use their content after the Serializer is deleted.
+             */
             virtual ~Serializer();
 
             void setChart( Chart* chart ){ mChart = chart; }

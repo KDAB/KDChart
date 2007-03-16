@@ -28,6 +28,8 @@
  **********************************************************************/
 
 #include "KDChartSerializer.h"
+#include "KDChartSerializeCollector.h"
+#include "KDChartIdMapper.h"
 #include "KDChartAttributesSerializer.h"
 #include "KDChartCoordPlanesSerializer.h"
 
@@ -52,12 +54,18 @@ Serializer::Serializer( Chart* chart )
 {
     mAttrS  = new AttributesSerializer();
     mCoordS = new CoordPlanesSerializer();
+    // instantiate the singletons:
+    //IdMapper::instance();
+    //SerializeCollector::instance();
 }
 
 Serializer::~Serializer()
 {
     delete mAttrS;
     delete mCoordS;
+    // delete the singletons:
+    //delete IdMapper::instance();
+    //delete SerializeCollector::instance();
 }
 
 
@@ -199,9 +207,13 @@ bool Serializer::saveChartElement(
                                       "kdchart:background-attributes" );
 
     // save the coordinate planes
-    mCoordS->savePlanes( doc, docRoot,
+    mCoordS->savePlanes( doc,
                          mChart->coordinatePlanes(),
                          "kdchart:coordinate-planes" );
+    QDomElement* planes = SerializeCollector::instance()->findElement(
+                         "kdchart:coordinate-planes" );
+    if( planes )
+        docRoot.appendChild( *planes );
 
     // save the headers / footers
     // ...

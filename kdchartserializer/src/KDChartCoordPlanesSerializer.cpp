@@ -28,6 +28,7 @@
  **********************************************************************/
 
 #include "KDChartCoordPlanesSerializer.h"
+#include "KDChartSerializeCollector.h"
 #include "KDChartDiagramsSerializer.h"
 
 #include "KDXMLTools.h"
@@ -95,21 +96,19 @@ bool CoordPlanesSerializer::parsePlanes(
 
 void CoordPlanesSerializer::savePlanes(
         QDomDocument& doc,
-        QDomElement& e,
         const CoordinatePlaneList& planes,
         const QString& title,
         const QDomElement* styleList )const
 {
     Q_UNUSED(styleList)
 
-    QDomElement planesListElement =
-            doc.createElement( title );
-    e.appendChild( planesListElement );
+    QDomElement* planesListElement =
+            SerializeCollector::instance()->findOrMakeElement( doc, title );
     Q_FOREACH ( AbstractCoordinatePlane* p, planes )
     {
         QDomElement planeElement =
                 doc.createElement( "kdchart:coordinate-plane" );
-        planesListElement.appendChild( planeElement );
+        planesListElement->appendChild( planeElement );
 
         // first save the information hold by the base class
         saveAbstractPlane( doc, planeElement, *p,

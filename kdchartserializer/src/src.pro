@@ -28,6 +28,8 @@ LIBS        += -L$$KDCHART_PATH/lib -lkdchart
 
 SOURCES= \
         KDChartSerializer.cpp \
+        KDChartSerializeCollector.cpp \
+        KDChartIdMapper.cpp \
         KDChartAttributesSerializer.cpp \
         KDChartCoordPlanesSerializer.cpp \
         KDChartDiagramsSerializer.cpp \
@@ -36,6 +38,8 @@ SOURCES= \
 
 HEADERS= \
         KDChartSerializer.h \
+        KDChartSerializeCollector.h \
+        KDChartIdMapper.h \
         KDChartAttributesSerializer.h \
         KDChartCoordPlanesSerializer.h \
         KDChartDiagramsSerializer.h \
