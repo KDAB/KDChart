@@ -30,6 +30,7 @@
 #include "KDChartDiagramsSerializer.h"
 #include "KDChartSerializeCollector.h"
 #include "KDChartAxesSerializer.h"
+#include "KDChartAttributesModelSerializer.h"
 
 #include "KDXMLTools.h"
 
@@ -50,10 +51,12 @@ using namespace KDChart;
 DiagramsSerializer::DiagramsSerializer()
 {
     mAxesS = new AxesSerializer();
+    mAttrModelS = new AttributesModelSerializer();
 }
 
 DiagramsSerializer::~DiagramsSerializer()
 {
+    delete mAttrModelS;
     delete mAxesS;
 }
 
@@ -150,6 +153,11 @@ void DiagramsSerializer::saveAbstractDiagram(
     QDomElement diagElement =
         doc.createElement( title );
     e.appendChild( diagElement );
+
+    mAttrModelS->saveAttributesModel(
+        doc,
+        diagElement,
+        diagram.attributesModel() );
 
     KDXML::createBoolNode( doc, diagElement, "AllowOverlappingDataValueTexts",
                            diagram.allowOverlappingDataValueTexts() );

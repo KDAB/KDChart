@@ -212,15 +212,19 @@ void AxesSerializer::saveCartAxis(
     QDomElement axisElement =
         doc.createElement( title );
     e.appendChild( axisElement );
-    // save the title
-    KDXML::createStringNode(
-            doc, axisElement,
-            "Title", axis.titleText() );
-    // save the title text attributes
-    AttributesSerializer::saveTextAttributes(
-            doc, axisElement,
-            axis.titleTextAttributes(),
-            "TitleTextAttributes" );
+    if( ! axis.titleText().isEmpty() ){
+        // save the title
+        KDXML::createStringNode(
+                doc, axisElement,
+                "Title", axis.titleText() );
+    }
+    if( ! axis.hasDefaultTitleTextAttributes() ){
+        // save the title text attributes
+        AttributesSerializer::saveTextAttributes(
+                doc, axisElement,
+                axis.titleTextAttributes(),
+                "TitleTextAttributes" );
+    }
     QString s;
     switch( axis.position() ){
         case CartesianAxis::Bottom:

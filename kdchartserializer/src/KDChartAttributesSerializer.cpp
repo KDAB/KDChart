@@ -340,3 +340,38 @@ void AttributesSerializer::saveBackgroundAttributes(
                                  a.pixmap() );
 }
 
+void AttributesSerializer::saveDataValueAttributes(
+        QDomDocument& doc,
+        QDomElement& e,
+        const DataValueAttributes& a,
+        const QString& title )
+{
+    QDomElement element = doc.createElement( title );
+    e.appendChild( element );
+    KDXML::createBoolNode( doc, element, "Visible",
+                           a.isVisible() );
+    // save the text attributes
+    saveTextAttributes(
+            doc, element,
+            a.textAttributes(),
+            "TextAttributes" );
+    // save the frame attributes
+    saveFrameAttributes(
+            doc, element,
+            a.frameAttributes(),
+            "FrameAttributes" );
+    // save the background attributes
+    saveBackgroundAttributes(
+            doc, element,
+            a.backgroundAttributes(),
+            "BackgroundAttributes" );
+    /*
+    // save the marker attributes
+    saveMarkerAttributes(
+            doc, element,
+            a.markerAttributes(),
+            "MarkerAttributes" );
+
+    // ...
+    */
+}

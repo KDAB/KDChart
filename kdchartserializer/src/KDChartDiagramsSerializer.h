@@ -42,6 +42,7 @@
 namespace KDChart {
 
     class AxesSerializer;
+    class AttributesModelSerializer;
 
     class KDCHART_EXPORT DiagramsSerializer : public QObject
     {
@@ -89,6 +90,7 @@ namespace KDChart {
 
         private:
             AxesSerializer* mAxesS;
+            AttributesModelSerializer* mAttrModelS;
     };
 
 } // end of namespace

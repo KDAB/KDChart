@@ -36,6 +36,7 @@
 #include <KDChartTextAttributes>
 #include <KDChartFrameAttributes>
 #include <KDChartBackgroundAttributes>
+#include <KDChartDataValueAttributes>
 
 #include <QDomDocument>
 
@@ -71,9 +72,9 @@ namespace KDChart {
                     const QDomElement& e, FrameAttributes& a );
             static void saveFrameAttributes(
                     QDomDocument& doc,
-            QDomElement& e,
-            const FrameAttributes& a,
-            const QString& title );
+                    QDomElement& e,
+                    const FrameAttributes& a,
+                    const QString& title );
 
             static bool parseBackgroundAttributes(
                     const QDomElement& e, BackgroundAttributes& a );
@@ -81,6 +82,12 @@ namespace KDChart {
                     QDomDocument& doc,
                     QDomElement& e,
                     const BackgroundAttributes& a,
+                    const QString& title );
+
+            static void saveDataValueAttributes(
+                    QDomDocument& doc,
+                    QDomElement& e,
+                    const DataValueAttributes& a,
                     const QString& title );
     };
 

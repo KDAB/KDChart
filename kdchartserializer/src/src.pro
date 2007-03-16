@@ -32,6 +32,7 @@ SOURCES= \
         KDChartSerializeCollector.cpp \
         KDChartIdMapper.cpp \
         KDChartAttributesSerializer.cpp \
+        KDChartAttributesModelSerializer.cpp \
         KDChartAbstractAreaBaseSerializer.cpp \
         KDChartCoordPlanesSerializer.cpp \
         KDChartDiagramsSerializer.cpp \
@@ -43,6 +44,7 @@ HEADERS= \
         KDChartSerializeCollector.h \
         KDChartIdMapper.h \
         KDChartAttributesSerializer.h \
+        KDChartAttributesModelSerializer.h \
         KDChartAbstractAreaBaseSerializer.h \
         KDChartCoordPlanesSerializer.h \
         KDChartDiagramsSerializer.h \
