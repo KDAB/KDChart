@@ -202,45 +202,68 @@ bool Serializer::saveChartElement(
         return false;
     }
 
-    // Create the chart element
+    QDomElement bodyElement =
+            doc.createElement( "kdchart:body" );
+    e.appendChild( bodyElement );
+
+    // note: The following structure can be easily extended
+    //       to saving more than one chart.
+    // Every chart is added to the SerializeCollector - just
+    // the same way as we do for coordinate-planes, diagrams, ...
+
+    const QString title( "kdchart:charts" );
+
+    QDomElement* chartsList =
+            SerializeCollector::instance()->findOrMakeElement( doc, title );
+
+    // create the local list holding names pointing into the global list
+    QDomElement pointersList =
+            SerializeCollector::createPointersList( doc, bodyElement, title );
+
+    bool wasFound;
     QDomElement chartElement =
-            doc.createElement( "kdchart:chart" );
-    e.appendChild( chartElement );
+            SerializeCollector::findOrMakeChild(
+            doc,
+            *chartsList,
+            pointersList,
+            "kdchart:chart",
+            &mChart,
+            wasFound );
+    if( ! wasFound ){
+        // save the global leading
+        mAttrS->saveLeading(
+                doc, chartElement,
+                mChart->globalLeadingLeft(),
+                mChart->globalLeadingTop(),
+                mChart->globalLeadingRight(),
+                mChart->globalLeadingBottom(),
+                "kdchart:global-leading" );
 
-    // save the global leading
-    mAttrS->saveLeading(
-            doc, chartElement,
-            mChart->globalLeadingLeft(),
-            mChart->globalLeadingTop(),
-            mChart->globalLeadingRight(),
-            mChart->globalLeadingBottom(),
-            "kdchart:global-leading" );
+        // save the frame attributes
+        mAttrS->saveFrameAttributes(
+                doc, chartElement,
+                mChart->frameAttributes(),
+                "kdchart:frame-attributes" );
 
-    // save the frame attributes
-    mAttrS->saveFrameAttributes(
-            doc, chartElement,
-            mChart->frameAttributes(),
-            "kdchart:frame-attributes" );
+        // save the background attributes
+        mAttrS->saveBackgroundAttributes(
+                doc, chartElement,
+                mChart->backgroundAttributes(),
+                "kdchart:background-attributes" );
 
-    // save the background attributes
-    mAttrS->saveBackgroundAttributes(
-            doc, chartElement,
-            mChart->backgroundAttributes(),
-            "kdchart:background-attributes" );
-
-    // save the coordinate planes:
-    // Data will be stored by the SerializeCollector.
-    mCoordS->savePlanes(
-            doc, chartElement,
-            mChart->coordinatePlanes(),
-            "kdchart:coordinate-planes" );
+        // save the coordinate planes:
+        // Data will be stored by the SerializeCollector.
+        mCoordS->savePlanes(
+                doc, chartElement,
+                mChart->coordinatePlanes(),
+                "kdchart:coordinate-planes" );
 
 
-    // save the headers / footers
-    // ...
+        // save the headers / footers
+        // ...
 
-    // save the legend
-    // ...
-
+        // save the legend
+        // ...
+    }
     return true;
 }
