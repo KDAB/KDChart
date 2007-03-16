@@ -28,6 +28,9 @@
  **********************************************************************/
 
 #include "KDChartSerializeCollector.h"
+#include "KDChartIdMapper.h"
+
+#include "KDXMLTools.h"
 
 using namespace KDChart;
 
@@ -37,6 +40,11 @@ SerializeCollector::SerializeCollector()
 }
 
 SerializeCollector::~SerializeCollector()
+{
+    clear();
+}
+
+void SerializeCollector::clear()
 {
     Q_FOREACH (QDomElement* e, mMap)
     {
@@ -67,4 +75,41 @@ QDomElement* SerializeCollector::findElement( const QString& name )const
     if( mMap.contains( name ) )
         return mMap.value( name );
     return 0;
+}
+
+void SerializeCollector::appendDataToElement( QDomElement& element )const
+{
+    Q_FOREACH (QDomElement* e, mMap)
+    {
+        element.appendChild( *e );
+    }
+}
+
+QDomElement SerializeCollector::createPointersList(
+        QDomDocument& doc, QDomElement& e, const QString& title )
+{
+    QDomElement list = doc.createElement( title + ":pointers" );
+    e.appendChild( list );
+    return list;
+}
+
+
+QDomElement SerializeCollector::findOrMakeChild(
+        QDomDocument& doc,
+        QDomElement& elementsList,
+        QDomElement& pointersList,
+        const QString& title,
+        const void* p,
+        bool& wasFound )
+{
+    const QString axisName( IdMapper::instance()->findOrMakeName( p, title, wasFound ) );
+
+    KDXML::createStringNode( doc, pointersList, "kdchart:pointer", axisName );
+
+    if( ! wasFound ){
+        QDomElement axisElement = doc.createElement( axisName );
+        elementsList.appendChild( axisElement );
+        return axisElement;
+    }
+    return QDomElement();
 }

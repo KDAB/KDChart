@@ -54,9 +54,9 @@ Serializer::Serializer( Chart* chart )
 {
     mAttrS  = new AttributesSerializer();
     mCoordS = new CoordPlanesSerializer();
-    // instantiate the singletons:
-    //IdMapper::instance();
-    //SerializeCollector::instance();
+    // instantiate (or re-set, resp.) the singletons:
+    IdMapper::instance()->clear();
+    SerializeCollector::instance()->clear();
 }
 
 Serializer::~Serializer()
@@ -109,7 +109,7 @@ bool Serializer::write(QIODevice *device) const
     doc.setContent( docstart );
 
     QDomElement docRoot = doc.documentElement();
-    if( saveChartElement( doc, docRoot ) ){
+    if( saveRootElement( doc, docRoot ) ){
         const int IndentSize = 4;
 
         QTextStream out(device);
@@ -168,7 +168,7 @@ bool Serializer::parseChartElement( const QDomElement& root,
 }
 
 
-bool Serializer::saveChartElement(
+bool Serializer::saveRootElement(
         QDomDocument& doc,
         QDomElement& docRoot,
         const QDomElement* styleList ) const
@@ -177,7 +177,7 @@ bool Serializer::saveChartElement(
 
     if( ! mChart ){
         QMessageBox::information(0 , tr("KD Chart Serializer"),
-                                 tr("Can not save Chart element: mChart was not set!"));
+                                 tr("Can not save Chart Root element: mChart was not set!"));
         return false;
     }
 
@@ -188,32 +188,61 @@ bool Serializer::saveChartElement(
 
     docRoot.setAttribute( "kdchart:version", "2.1" );
 
+    bool bOK = saveChartElement( doc, docRoot, styleList );
+
+    if( bOK ){
+        // save all collected data
+        SerializeCollector::instance()->appendDataToElement( docRoot );
+    }
+    return bOK;
+}
+
+bool Serializer::saveChartElement(
+        QDomDocument& doc,
+        QDomElement& e,
+        const QDomElement* styleList ) const
+{
+    Q_UNUSED(styleList)
+
+    if( ! mChart ){
+        QMessageBox::information(0 , tr("KD Chart Serializer"),
+                                 tr("Can not save Chart element: mChart was not set!"));
+        return false;
+    }
+
+    // Create the chart element
+    QDomElement chartElement =
+            doc.createElement( "kdchart:chart" );
+    e.appendChild( chartElement );
+
     // save the global leading
-    mAttrS->saveLeading( doc, docRoot,
-                         mChart->globalLeadingLeft(),
-                         mChart->globalLeadingTop(),
-                         mChart->globalLeadingRight(),
-                         mChart->globalLeadingBottom(),
-                         "kdchart:global-leading" );
+    mAttrS->saveLeading(
+            doc, chartElement,
+            mChart->globalLeadingLeft(),
+            mChart->globalLeadingTop(),
+            mChart->globalLeadingRight(),
+            mChart->globalLeadingBottom(),
+            "kdchart:global-leading" );
 
     // save the frame attributes
-    mAttrS->saveFrameAttributes( doc, docRoot,
-                         mChart->frameAttributes(),
-                         "kdchart:frame-attributes" );
+    mAttrS->saveFrameAttributes(
+            doc, chartElement,
+            mChart->frameAttributes(),
+            "kdchart:frame-attributes" );
 
     // save the background attributes
-    mAttrS->saveBackgroundAttributes( doc, docRoot,
-                                      mChart->backgroundAttributes(),
-                                      "kdchart:background-attributes" );
+    mAttrS->saveBackgroundAttributes(
+            doc, chartElement,
+            mChart->backgroundAttributes(),
+            "kdchart:background-attributes" );
 
-    // save the coordinate planes
-    mCoordS->savePlanes( doc,
-                         mChart->coordinatePlanes(),
-                         "kdchart:coordinate-planes" );
-    QDomElement* planes = SerializeCollector::instance()->findElement(
-                         "kdchart:coordinate-planes" );
-    if( planes )
-        docRoot.appendChild( *planes );
+    // save the coordinate planes:
+    // Data will be stored by the SerializeCollector.
+    mCoordS->savePlanes(
+            doc, chartElement,
+            mChart->coordinatePlanes(),
+            "kdchart:coordinate-planes" );
+
 
     // save the headers / footers
     // ...

@@ -66,9 +66,14 @@ namespace KDChart {
             virtual bool parseChartElement(
                     const QDomElement& root,
                     const QDomElement* styleList=0 ) const;
-            virtual bool saveChartElement(
+            virtual bool saveRootElement(
                     QDomDocument& doc,
                     QDomElement& docRoot,
+                    const QDomElement* styleList=0 ) const;
+
+            virtual bool saveChartElement(
+                    QDomDocument& doc,
+                    QDomElement& e,
                     const QDomElement* styleList=0 ) const;
 
         private:

@@ -19,7 +19,7 @@ namespace KDChart {
         virtual ~SerializeCollector();
 
     public:
-        /** Returns the QDomElement that was stored for this name.
+    /** Returns the QDomElement that was stored for this name.
      *
      * If none was stored before, a new element is created by the document
      * and the name is returned.
@@ -37,12 +37,45 @@ namespace KDChart {
     QDomElement* findOrMakeElement( QDomDocument& doc, const QString& name );
 
     /** Returns the QDomElement that was stored for this name.
-      *
-      * If none was stored before,zero is returned.
-      */
+     *
+     * If none was stored before,zero is returned.
+     */
     QDomElement* findElement( const QString& name )const;
 
-     private:
+    /** Delete all collected data.
+     */
+    void clear();
+
+    /** Append all collected data to the element given.
+      */
+    void appendDataToElement( QDomElement& element )const;
+
+    /**
+     * Auxiliary function:
+     * create an element of the given name + ":pointers"
+     * add the element to e
+     * return the element
+     */
+    static QDomElement createPointersList(
+            QDomDocument& doc, QDomElement& e, const QString& title );
+
+    /**
+     * Auxiliary function:
+     * Create and store a string node with the name "kdchart:pointer"
+     * and the value given by title, if no element matching the pointer
+     * was found in the list.
+     *
+     * \param wasFound returns if the node was in the list already
+     */
+    static QDomElement findOrMakeChild(
+            QDomDocument& doc,
+            QDomElement& elementsList,
+            QDomElement& pointersList,
+            const QString& title,
+            const void* p,
+            bool& wasFound );
+
+    private:
          QMap<QString, QDomElement*> mMap;
     };
 

@@ -49,18 +49,24 @@ namespace KDChart {
         /** Returns the name that was stored for this pointer.
          *
          * If none was stored before, a new name is created
-         * ( basename + "_" + a current number ),
+         * ( basename + ":" + a current number ),
          * the entry is stored and the name is returned.
          */
-        QString findOrMakeName( void* id, const QString& baseName );
+        QString findOrMakeName( const void* id,
+                                const QString& baseName,
+                                bool& wasFound );
         /** Returns the pointer that was stored for the given name.
          *
          * If none was stored, it returns zero.
          */
-        void* findId( const QString& name )const;
+        const void* findId( const QString& name )const;
+
+        /** Delete all collected data.
+          */
+        void clear();
 
     private:
-        QMap<void*, QString> mMap;
+        QMap<const void*, QString> mMap;
         QString mCounterTag;
     };
 

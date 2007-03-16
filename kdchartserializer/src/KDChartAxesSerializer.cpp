@@ -28,6 +28,7 @@
  **********************************************************************/
 
 #include "KDChartAxesSerializer.h"
+#include "KDChartSerializeCollector.h"
 
 #include "KDXMLTools.h"
 
@@ -115,22 +116,34 @@ void AxesSerializer::saveCartesianAxes(
 {
     Q_UNUSED(styleList)
 
-    QDomElement axesListElement =
-            doc.createElement( title );
-    e.appendChild( axesListElement );
+    // access (or append, resp.) the global list
+    QDomElement* axesList =
+            SerializeCollector::instance()->findOrMakeElement( doc, title );
+
+    // create the local list holding names pointing into the global list
+    QDomElement pointersList =
+            SerializeCollector::createPointersList( doc, e, title );
+
     Q_FOREACH ( const CartesianAxis* p, axes )
     {
+        bool wasFound;
         QDomElement axisElement =
-                doc.createElement( "kdchart:axis" );
-        axesListElement.appendChild( axisElement );
+                SerializeCollector::findOrMakeChild(
+                        doc,
+                        *axesList,
+                        pointersList,
+                        "kdchart:axis",
+                        p,
+                        wasFound );
+        if( ! wasFound ){
+            // first save the information hold by the base class
+            saveAbstractAxis( doc, axisElement, *p,
+                            "kdchart:abstract-axis", styleList );
 
-        // first save the information hold by the base class
-        saveAbstractAxis( doc, axisElement, *p,
-                          "kdchart:abstract-axis", styleList );
-
-        // then save any diagram type specific information
-        saveCartAxis( doc, axisElement, *p,
-                      "kdchart:cartesian-axis", styleList );
+            // then save any diagram type specific information
+            saveCartAxis( doc, axisElement, *p,
+                        "kdchart:cartesian-axis", styleList );
+        }
     }
 }
 
@@ -145,14 +158,14 @@ void AxesSerializer::savePolarAxes(
 {
     Q_UNUSED(styleList)
 
-    QDomElement axesListElement =
+    QDomElement axesList =
             doc.createElement( title );
-    e.appendChild( axesListElement );
+    e.appendChild( axesList );
     Q_FOREACH ( const PolarAxis* p, axes )
     {
         QDomElement axisElement =
                 doc.createElement( "kdchart:axis" );
-        axesListElement.appendChild( axisElement );
+        axesList.appendChild( axisElement );
 
         // first save the information hold by the base class
         saveAbstractAxis( doc, axisElement, *p,

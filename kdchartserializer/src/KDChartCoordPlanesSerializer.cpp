@@ -96,38 +96,52 @@ bool CoordPlanesSerializer::parsePlanes(
 
 void CoordPlanesSerializer::savePlanes(
         QDomDocument& doc,
+        QDomElement& e,
         const CoordinatePlaneList& planes,
         const QString& title,
         const QDomElement* styleList )const
 {
     Q_UNUSED(styleList)
 
-    QDomElement* planesListElement =
+    // access (or append, resp.) the global list
+    QDomElement* planesList =
             SerializeCollector::instance()->findOrMakeElement( doc, title );
+
+    // create the local list holding names pointing into the global list
+    QDomElement pointersList =
+            SerializeCollector::createPointersList( doc, e, title );
+
     Q_FOREACH ( AbstractCoordinatePlane* p, planes )
     {
+        bool wasFound;
         QDomElement planeElement =
-                doc.createElement( "kdchart:coordinate-plane" );
-        planesListElement->appendChild( planeElement );
+                SerializeCollector::findOrMakeChild(
+                doc,
+                *planesList,
+                pointersList,
+                "kdchart:coordinate-plane",
+                p,
+                wasFound );
+        if( ! wasFound ){
+            // first save the information hold by the base class
+            saveAbstractPlane( doc, planeElement, *p,
+                            "kdchart:abstract-coordinate-plane", styleList );
 
-        // first save the information hold by the base class
-        saveAbstractPlane( doc, planeElement, *p,
-                           "kdchart:abstract-coordinate-plane", styleList );
-
-        // then save any plane type specific information
-        CartesianCoordinatePlane* cartPlane =
-                dynamic_cast<CartesianCoordinatePlane*> ( p );
-        if( cartPlane ){
-            saveCartPlane( doc, planeElement, *cartPlane,
-                           "kdchart:cartesian-coordinate-plane", styleList );
-        }else{
-            PolarCoordinatePlane* polPlane =
-                    dynamic_cast<PolarCoordinatePlane*> ( p );
-            if( polPlane ){
-                savePolPlane( doc, planeElement, *polPlane,
-                              "kdchart:polar-coordinate-plane", styleList );
+            // then save any plane type specific information
+            CartesianCoordinatePlane* cartPlane =
+                    dynamic_cast<CartesianCoordinatePlane*> ( p );
+            if( cartPlane ){
+                saveCartPlane( doc, planeElement, *cartPlane,
+                            "kdchart:cartesian-coordinate-plane", styleList );
             }else{
-                saveOtherPlane( doc, planeElement, *p, styleList );
+                PolarCoordinatePlane* polPlane =
+                        dynamic_cast<PolarCoordinatePlane*> ( p );
+                if( polPlane ){
+                    savePolPlane( doc, planeElement, *polPlane,
+                                "kdchart:polar-coordinate-plane", styleList );
+                }else{
+                    saveOtherPlane( doc, planeElement, *p, styleList );
+                }
             }
         }
     }
@@ -146,7 +160,8 @@ void CoordPlanesSerializer::saveAbstractPlane(
         doc.createElement( title );
     e.appendChild( planeElement );
 
-    mDiagS->saveDiagrams( doc, planeElement,
+    mDiagS->saveDiagrams( doc,
+                          planeElement,
                           plane.diagrams(),
                           "kdchart:diagrams" );
 

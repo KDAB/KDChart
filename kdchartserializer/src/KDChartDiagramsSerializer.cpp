@@ -28,6 +28,7 @@
  **********************************************************************/
 
 #include "KDChartDiagramsSerializer.h"
+#include "KDChartSerializeCollector.h"
 #include "KDChartAxesSerializer.h"
 
 #include "KDXMLTools.h"
@@ -102,33 +103,45 @@ void DiagramsSerializer::saveDiagrams(
 {
     Q_UNUSED(styleList)
 
-    QDomElement diagsListElement =
-            doc.createElement( title );
-    e.appendChild( diagsListElement );
+    // access (or append, resp.) the global list
+    QDomElement* diagsList =
+            SerializeCollector::instance()->findOrMakeElement( doc, title );
+
+    // create the local list holding names pointing into the global list
+    QDomElement pointersList =
+            SerializeCollector::createPointersList( doc, e, title );
+
     Q_FOREACH ( const AbstractDiagram* p, diags )
     {
+        bool wasFound;
         QDomElement diagElement =
-                doc.createElement( "kdchart:diagram" );
-        diagsListElement.appendChild( diagElement );
+                SerializeCollector::findOrMakeChild(
+                doc,
+                *diagsList,
+                pointersList,
+                "kdchart:diagram",
+                p,
+                wasFound );
+        if( ! wasFound ){
+            // first save the information hold by the base class
+            saveAbstractDiagram( doc, diagElement, *p,
+                                "kdchart:abstract-diagram", styleList );
 
-        // first save the information hold by the base class
-        saveAbstractDiagram( doc, diagElement, *p,
-                             "kdchart:abstract-diagram", styleList );
-
-        // then save any diagram type specific information
-        const AbstractCartesianDiagram* cartDiag =
-                dynamic_cast<const AbstractCartesianDiagram*> ( p );
-        if( cartDiag ){
-            saveCartDiagram( doc, diagElement, *cartDiag,
-                             "kdchart:cartesian-diagram", styleList );
-        }else{
-            const AbstractPolarDiagram* polDiag =
-                    dynamic_cast<const AbstractPolarDiagram*> ( p );
-            if( polDiag ){
-                savePolDiagram( doc, diagElement, *polDiag,
-                                "kdchart:polar-diagram", styleList );
+            // then save any diagram type specific information
+            const AbstractCartesianDiagram* cartDiag =
+                    dynamic_cast<const AbstractCartesianDiagram*> ( p );
+            if( cartDiag ){
+                saveCartDiagram( doc, diagElement, *cartDiag,
+                                "kdchart:cartesian-diagram", styleList );
             }else{
-                saveOtherDiagram( doc, diagElement, *p, styleList );
+                const AbstractPolarDiagram* polDiag =
+                        dynamic_cast<const AbstractPolarDiagram*> ( p );
+                if( polDiag ){
+                    savePolDiagram( doc, diagElement, *polDiag,
+                                    "kdchart:polar-diagram", styleList );
+                }else{
+                    saveOtherDiagram( doc, diagElement, *p, styleList );
+                }
             }
         }
     }
@@ -172,7 +185,7 @@ void DiagramsSerializer::saveCartDiagram(
 
     mAxesS->saveCartesianAxes( doc, diagElement,
                                diagram.axes(),
-                               "kdchart:cartesian-axes" );
+                               "kdchart:axes" );
     // ...
 }
 

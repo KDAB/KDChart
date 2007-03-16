@@ -58,6 +58,7 @@ namespace KDChart {
 
             virtual void savePlanes(
                     QDomDocument& doc,
+                    QDomElement& e,
                     const CoordinatePlaneList& planes,
                     const QString& title,
                     const QDomElement* styleList=0 )const;
