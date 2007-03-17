@@ -43,6 +43,12 @@ namespace KDXML {
         element.setAttribute( attrName, value ? "true" : "false" );
     }
 
+    void setDoubleAttribute( QDomElement& element,
+                             const QString& attrName, double value )
+    {
+        element.setAttribute( attrName, value );
+    }
+
     void createBoolNode( QDomDocument& doc, QDomNode& parent,
             const QString& elementName, bool value )
     {

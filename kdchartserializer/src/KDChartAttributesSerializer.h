@@ -38,6 +38,13 @@
 #include <KDChartBackgroundAttributes>
 #include <KDChartDataValueAttributes>
 #include <KDChartMarkerAttributes>
+#include <KDChartBarAttributes>
+#include <KDChartLineAttributes>
+#include <KDChartPieAttributes>
+#include <KDChartAbstractThreeDAttributes>
+#include <KDChartThreeDBarAttributes>
+#include <KDChartThreeDLineAttributes>
+#include <KDChartThreeDPieAttributes>
 
 #include <QDomDocument>
 
@@ -89,6 +96,48 @@ namespace KDChart {
                     QDomDocument& doc,
                     QDomElement& e,
                     const DataValueAttributes& a,
+                    const QString& title );
+
+            static void saveLineAttributes(
+                    QDomDocument& doc,
+                    QDomElement& e,
+                    const LineAttributes& a,
+                    const QString& title );
+
+            static void saveBarAttributes(
+                    QDomDocument& doc,
+                    QDomElement& e,
+                    const BarAttributes& a,
+                    const QString& title );
+
+            static void savePieAttributes(
+                    QDomDocument& doc,
+                    QDomElement& e,
+                    const PieAttributes& a,
+                    const QString& title );
+
+            static void saveAbstractThreeDAttributes(
+                    QDomDocument& doc,
+                    QDomElement& e,
+                    const AbstractThreeDAttributes* a,
+                    const QString& title );
+
+            static void saveThreeDBarAttributes(
+                    QDomDocument& doc,
+                    QDomElement& e,
+                    const ThreeDBarAttributes& a,
+                    const QString& title );
+
+            static void saveThreeDLineAttributes(
+                    QDomDocument& doc,
+                    QDomElement& e,
+                    const ThreeDLineAttributes& a,
+                    const QString& title );
+
+            static void saveThreeDPieAttributes(
+                    QDomDocument& doc,
+                    QDomElement& e,
+                    const ThreeDPieAttributes& a,
                     const QString& title );
 
             static void saveMarkerAttributes(

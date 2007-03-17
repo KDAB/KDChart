@@ -201,29 +201,23 @@ void AttributesModelSerializer::saveAttributesModel(
                 ++i;
             }
         }
-
-        /*
-        // first save the information hold by the base class
-        saveAbstractDiagram( doc, modelElement, *p,
-                            "kdchart:abstract-diagram" );
-
-        // then save any diagram type specific information
-        const AbstractCartesianDiagram* cartDiag =
-                dynamic_cast<const AbstractCartesianDiagram*> ( p );
-        if( cartDiag ){
-            saveCartDiagram( doc, modelElement, *cartDiag,
-                            "kdchart:cartesian-diagram" );
-        }else{
-            const AbstractPolarDiagram* polDiag =
-                    dynamic_cast<const AbstractPolarDiagram*> ( p );
-            if( polDiag ){
-                savePolDiagram( doc, modelElement, *polDiag,
-                                "kdchart:polar-diagram" );
-            }else{
-                saveOtherDiagram( doc, modelElement, *p );
-            }
+        // save the palette type
+        QString name;
+        switch( model->paletteType() ){
+            case AttributesModel::PaletteTypeDefault:
+                name = "PaletteTypeDefault";
+                break;
+            case AttributesModel::PaletteTypeRainbow:
+                name = "PaletteTypeRainbow";
+                break;
+            case AttributesModel::PaletteTypeSubdued:
+                name = "PaletteTypeSubdued";
+                break;
+            default:
+                Q_ASSERT( false ); // all of the types need to be handled
+                break;
         }
-        */
+        KDXML::createStringNode( doc, modelElement, "Palette", name );
     }
 }
 
@@ -252,33 +246,80 @@ void AttributesModelSerializer::createAttributesNode(
                 break;
             case DatasetBrushRole:
                 name = QString::fromLatin1("DatasetBrushRole");
+                KDXML::createBrushNode( doc, element, "DatasetBrush",
+                                        qVariantValue<QBrush>( attributes ) );
                 break;
             case DatasetPenRole:
                 name = QString::fromLatin1("DatasetPenRole");
+                KDXML::createPenNode( doc, element, "DatasetPen",
+                                        qVariantValue<QPen>( attributes ) );
                 break;
             case ThreeDAttributesRole:
+                // As of yet there is no ThreeDAttributes class,
+                // and the AbstractThreeDAttributes class is pure virtual,
+                // so we ignore this role for now.
+                // (khz, 17.03.2007)
+                /*
                 name = QString::fromLatin1("ThreeDAttributesRole");
+                AttributesSerializer::saveThreeDAttributes(
+                        doc,
+                        element,
+                        qVariantValue<ThreeDAttributes>( attributes ),
+                        "ThreeDAttributes" );
+                */
                 break;
             case LineAttributesRole:
                 name = QString::fromLatin1("LineAttributesRole");
+                AttributesSerializer::saveLineAttributes(
+                        doc,
+                        element,
+                        qVariantValue<LineAttributes>( attributes ),
+                        "LineAttributes" );
                 break;
             case ThreeDLineAttributesRole:
                 name = QString::fromLatin1("ThreeDLineAttributesRole");
+                AttributesSerializer::saveThreeDLineAttributes(
+                        doc,
+                        element,
+                        qVariantValue<ThreeDLineAttributes>( attributes ),
+                        "ThreeDLineAttributes" );
                 break;
             case BarAttributesRole:
                 name = QString::fromLatin1("BarAttributesRole");
+                AttributesSerializer::saveBarAttributes(
+                        doc,
+                        element,
+                        qVariantValue<BarAttributes>( attributes ),
+                        "BarAttributes" );
                 break;
             case ThreeDBarAttributesRole:
                 name = QString::fromLatin1("ThreeDBarAttributesRole");
+                AttributesSerializer::saveThreeDBarAttributes(
+                        doc,
+                        element,
+                        qVariantValue<ThreeDBarAttributes>( attributes ),
+                        "ThreeDBarAttributes" );
                 break;
             case PieAttributesRole:
                 name = QString::fromLatin1("PieAttributesRole");
+                AttributesSerializer::savePieAttributes(
+                        doc,
+                        element,
+                        qVariantValue<PieAttributes>( attributes ),
+                        "PieAttributes" );
                 break;
             case ThreeDPieAttributesRole:
                 name = QString::fromLatin1("ThreeDPieAttributesRole");
+                AttributesSerializer::saveThreeDPieAttributes(
+                        doc,
+                        element,
+                        qVariantValue<ThreeDPieAttributes>( attributes ),
+                        "ThreeDPieAttributes" );
                 break;
             case DataHiddenRole:
                 name = QString::fromLatin1("DataHiddenRole");
+                KDXML::createBoolNode( doc, element, "DataHidden",
+                                       qVariantValue<bool>( attributes ) );
                 break;
             default:
                 Q_ASSERT( false ); // all of our own roles need to be handled

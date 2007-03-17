@@ -398,6 +398,127 @@ void AttributesSerializer::saveDataValueAttributes(
             "PositivePosition" );
 }
 
+void AttributesSerializer::saveLineAttributes(
+        QDomDocument& doc,
+        QDomElement& e,
+        const LineAttributes& a,
+        const QString& title )
+{
+    QDomElement element = doc.createElement( title );
+    e.appendChild( element );
+
+    QString name;
+    switch( a.missingValuesPolicy() ){
+        case LineAttributes::MissingValuesAreBridged:
+            name = "MissingValuesAreBridged";
+            break;
+        case LineAttributes::MissingValuesHideSegments:
+            name = "MissingValuesHideSegments";
+            break;
+        case LineAttributes::MissingValuesShownAsZero:
+            name = "MissingValuesShownAsZero";
+            break;
+        case LineAttributes::MissingValuesPolicyIgnored:
+            name = "MissingValuesPolicyIgnored";
+            break;
+        default:
+            Q_ASSERT( false ); // all of the types need to be handled
+            break;
+    }
+    KDXML::createStringNode( doc, element, "MissingValuesPolicy", name );
+    KDXML::createBoolNode(   doc, element, "DisplayArea",  a.displayArea() );
+    KDXML::createIntNode(    doc, element, "Transparency", a.transparency() );
+}
+
+void AttributesSerializer::saveBarAttributes(
+        QDomDocument& doc,
+        QDomElement& e,
+        const BarAttributes& a,
+        const QString& title )
+{
+    QDomElement element = doc.createElement( title );
+    e.appendChild( element );
+    KDXML::createRealNode( doc, element, "FixedDataValueGap",    a.fixedDataValueGap() );
+    KDXML::createBoolNode( doc, element, "UseFixedDataValueGap", a.useFixedDataValueGap() );
+    KDXML::createRealNode( doc, element, "FixedValueBlockGap",   a.fixedValueBlockGap() );
+    KDXML::createBoolNode( doc, element, "UseFixedValueBlockGap",a.useFixedValueBlockGap() );
+    KDXML::createRealNode( doc, element, "FixedBarWidth",        a.fixedBarWidth() );
+    KDXML::createBoolNode( doc, element, "UseFixedBarWidth",     a.useFixedBarWidth() );
+    KDXML::createRealNode( doc, element, "GroupGapFactor", a.groupGapFactor() );
+    KDXML::createRealNode( doc, element, "BarGapFactor",   a.barGapFactor() );
+    KDXML::createBoolNode( doc, element, "DrawSolidExcessArrows", a.drawSolidExcessArrows() );
+}
+
+void AttributesSerializer::savePieAttributes(
+        QDomDocument& doc,
+        QDomElement& e,
+        const PieAttributes& a,
+        const QString& title )
+{
+    QDomElement element = doc.createElement( title );
+    e.appendChild( element );
+    KDXML::createBoolNode( doc, element, "Explode",       a.explode() );
+    KDXML::createRealNode( doc, element, "ExplodeFactor", a.explodeFactor() );
+}
+
+void AttributesSerializer::saveAbstractThreeDAttributes(
+        QDomDocument& doc,
+        QDomElement& e,
+        const AbstractThreeDAttributes* a,
+        const QString& title )
+{
+    QDomElement element = doc.createElement( title );
+    e.appendChild( element );
+    KDXML::setBoolAttribute(   element, "enabled", a->isEnabled() );
+    KDXML::setDoubleAttribute( element, "depth",   a->depth() );
+}
+
+void AttributesSerializer::saveThreeDBarAttributes(
+        QDomDocument& doc,
+        QDomElement& e,
+        const ThreeDBarAttributes& a,
+        const QString& title )
+{
+    QDomElement element = doc.createElement( title );
+    e.appendChild( element );
+    saveAbstractThreeDAttributes( doc, element, &a,
+                                  "kdchart:abstract-three-D-attributes" );
+    // save the settings
+    KDXML::createBoolNode( doc, element, "UseShadowColors",
+                           a.useShadowColors() );
+    KDXML::createIntNode( doc, element, "Angle", a.angle() );
+}
+
+void AttributesSerializer::saveThreeDLineAttributes(
+        QDomDocument& doc,
+        QDomElement& e,
+        const ThreeDLineAttributes& a,
+        const QString& title )
+{
+    QDomElement element = doc.createElement( title );
+    e.appendChild( element );
+    saveAbstractThreeDAttributes( doc, element, &a,
+                                  "kdchart:abstract-three-D-attributes" );
+    // save the rotation settings
+    KDXML::createIntNode( doc, element, "LineXRotation", a.lineXRotation() );
+    KDXML::createIntNode( doc, element, "LineYRotation", a.lineYRotation() );
+}
+
+void AttributesSerializer::saveThreeDPieAttributes(
+        QDomDocument& doc,
+        QDomElement& e,
+        const ThreeDPieAttributes& a,
+        const QString& title )
+{
+    QDomElement element = doc.createElement( title );
+    e.appendChild( element );
+    saveAbstractThreeDAttributes( doc, element, &a,
+                                  "kdchart:abstract-three-D-attributes" );
+    // save the settings
+    KDXML::createBoolNode( doc, element, "UseShadowColors",
+                           a.useShadowColors() );
+}
+
 QString AttributesSerializer::markerStyleToName( MarkerAttributes::MarkerStyle style )
 {
     QString name;

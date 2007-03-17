@@ -48,6 +48,8 @@ namespace KDXML {
 
     void setBoolAttribute( QDomElement& element,
             const QString& attrName, bool value );
+    void setDoubleAttribute( QDomElement& element,
+            const QString& attrName, double value );
 
     void createBoolNode( QDomDocument& doc, QDomNode& parent,
             const QString& elementName, bool value );
