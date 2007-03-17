@@ -194,6 +194,7 @@ void DiagramsSerializer::saveCartDiagram(
         doc.createElement( title );
     e.appendChild( diagElement );
 
+    // save the axes
     mAxesS->saveCartesianAxes( doc, diagElement,
                                diagram.axes(),
                                "kdchart:axes" );
@@ -208,22 +209,25 @@ void DiagramsSerializer::saveCartDiagram(
         QDomElement* diagsList =
                 SerializeCollector::instance()->findOrMakeElement( doc, mGlobalList );
 
-        // create the local list holding names pointing into the global list
-        QDomElement pointersList =
-                SerializeCollector::createPointersList( doc, refDiagPtrElement, mGlobalList );
-
         bool wasFound;
-        QDomElement refListElement =
+        QDomElement globalListElement =
                 SerializeCollector::findOrMakeChild(
                 doc,
                 *diagsList,
-                pointersList,
+                refDiagPtrElement,
                 "kdchart:diagram",
                 refDiag,
                 wasFound );
         if( ! wasFound ){
-            saveDiagram( doc, refListElement, refDiag );
+            // Since the diagram is stored in the global structure anyway,
+            // it is save to store it right now.
+            // So it will not be forgotten, in case it is not embedded in any
+            // of the coordinate planes.
+            // The wasFound test makes sure it will not be stored twice.
+            saveDiagram( doc, globalListElement, refDiag );
         }
+        KDXML::createPointFNode(
+                doc, refDiagPtrElement, "Offset", diagram.referenceDiagramOffset() );
     }
 
     // ...

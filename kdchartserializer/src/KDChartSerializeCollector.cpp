@@ -97,14 +97,14 @@ QDomElement SerializeCollector::createPointersList(
 QDomElement SerializeCollector::findOrMakeChild(
         QDomDocument& doc,
         QDomElement& elementsList,
-        QDomElement& pointersList,
+        QDomElement& pointerContainer,
         const QString& title,
         const void* p,
         bool& wasFound )
 {
     const QString axisName( IdMapper::instance()->findOrMakeName( p, title, wasFound ) );
 
-    KDXML::createStringNode( doc, pointersList, "kdchart:pointer", axisName );
+    KDXML::createStringNode( doc, pointerContainer, "kdchart:pointer", axisName );
 
     if( ! wasFound ){
         QDomElement axisElement = doc.createElement( axisName );

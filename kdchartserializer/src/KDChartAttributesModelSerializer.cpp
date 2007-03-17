@@ -103,16 +103,16 @@ void AttributesModelSerializer::saveAttributesModel(
     QDomElement* modelsList =
             SerializeCollector::instance()->findOrMakeElement( doc, title );
 
-    // create the local list holding names pointing into the global list
-    QDomElement pointersList =
-            SerializeCollector::createPointersList( doc, e, title );
+    QDomElement attrModelPtrElement =
+            doc.createElement( "AttributesModel" );
+    e.appendChild( attrModelPtrElement );
 
     bool wasFound;
     QDomElement modelElement =
             SerializeCollector::findOrMakeChild(
             doc,
             *modelsList,
-            pointersList,
+            attrModelPtrElement,
             "kdchart:attribute-model",
             model,
             wasFound );

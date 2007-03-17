@@ -61,6 +61,8 @@ namespace KDChart {
 
     /**
      * Auxiliary function:
+     * Add an entry to the elementsList, if no element matching the pointer
+     * was found in the list.
      * Create and store a string node with the name "kdchart:pointer"
      * and the value given by title, if no element matching the pointer
      * was found in the list.
@@ -70,7 +72,7 @@ namespace KDChart {
     static QDomElement findOrMakeChild(
             QDomDocument& doc,
             QDomElement& elementsList,
-            QDomElement& pointersList,
+            QDomElement& pointerContainer,
             const QString& title,
             const void* p,
             bool& wasFound );
