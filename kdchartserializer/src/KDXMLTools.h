@@ -46,10 +46,15 @@ namespace KDXML {
     QString brushStyleToString( Qt::BrushStyle style );
     Qt::BrushStyle stringToBrushStyle( const QString& style );
 
+    void setBoolAttribute( QDomElement& element,
+            const QString& attrName, bool value );
+
     void createBoolNode( QDomDocument& doc, QDomNode& parent,
             const QString& elementName, bool value );
     void createOrientationNode( QDomDocument& doc, QDomNode& parent,
             const QString& elementName, Qt::Orientation value );
+    void createAlignmentNode( QDomDocument& doc, QDomNode& parent,
+            const QString& elementName, Qt::Alignment value );
     void createSizeNode( QDomDocument& doc, QDomNode& parent,
                          const QString& elementName, const QSize& value );
     void createSizeFNode( QDomDocument& doc, QDomNode& parent,
@@ -66,8 +71,11 @@ namespace KDXML {
     void createStringNodeIfContent( QDomDocument& doc, QDomNode& parent,
                            const QString& elementName,
                            const QString& text );
+    void createPointFNode( QDomDocument& doc, QDomNode& parent,
+                           const QString& elementName,
+                           const QPointF& point );
     void createColorNode( QDomDocument& doc, QDomNode& parent,
-            const QString& elementName, const QColor& color );
+                          const QString& elementName, const QColor& color );
     void createBrushNode( QDomDocument& doc, QDomNode& parent,
             const QString& elementName, const QBrush& brush );
     void createPixmapNode( QDomDocument& doc, QDomNode& parent,

@@ -29,6 +29,8 @@
 
 #include "KDChartAttributesSerializer.h"
 
+#include "KDChartPosition.h"
+
 #include "KDXMLTools.h"
 
 #include <qglobal.h>
@@ -478,6 +480,35 @@ void AttributesSerializer::saveRelativePosition(
 {
     QDomElement element = doc.createElement( title );
     e.appendChild( element );
-
-    //...
+    // save the reference points
+    const PositionPoints points = a.referencePoints();
+    if( ! points.isNull() ){
+        QDomElement pointsElement =
+                doc.createElement( "PositionPoints" );
+        element.appendChild( pointsElement );
+        // save the positions
+        KDXML::createPointFNode(
+                doc, element, "PositionUnknown", points.point( Position::Unknown ) );
+        KDXML::createPointFNode(
+                doc, element, "Center",    points.point( Position::Center ) );
+        KDXML::createPointFNode(
+                doc, element, "NorthWest", points.point( Position::NorthWest ) );
+        KDXML::createPointFNode(
+                doc, element, "North",     points.point( Position::North ) );
+        KDXML::createPointFNode(
+                doc, element, "NorthEast", points.point( Position::NorthEast ) );
+        KDXML::createPointFNode(
+                doc, element, "East",      points.point( Position::East ) );
+        KDXML::createPointFNode(
+                doc, element, "SouthEast", points.point( Position::SouthEast ) );
+        KDXML::createPointFNode(
+                doc, element, "South",     points.point( Position::South ) );
+        KDXML::createPointFNode(
+                doc, element, "SouthWest", points.point( Position::SouthWest ) );
+        KDXML::createPointFNode(
+                doc, element, "West",      points.point( Position::West ) );
+    }
+    // save the alignment
+    KDXML::createAlignmentNode(
+            doc, element, "Alignment", a.alignment() );
 }

@@ -37,6 +37,12 @@
 
 namespace KDXML {
 
+    void setBoolAttribute( QDomElement& element,
+            const QString& attrName, bool value )
+    {
+        element.setAttribute( attrName, value ? "true" : "false" );
+    }
+
     void createBoolNode( QDomDocument& doc, QDomNode& parent,
             const QString& elementName, bool value )
     {
@@ -60,7 +66,20 @@ namespace KDXML {
         newElement.appendChild( elementContent );
     }
 
-
+    void createAlignmentNode( QDomDocument& doc, QDomNode& parent,
+                              const QString& elementName, Qt::Alignment value )
+    {
+        QDomElement newElement =
+                doc.createElement( elementName );
+        parent.appendChild( newElement );
+        setBoolAttribute( newElement, "AlignLeft",    (Qt::AlignLeft    & value) );
+        setBoolAttribute( newElement, "AlignRight",   (Qt::AlignRight   & value) );
+        setBoolAttribute( newElement, "AlignHCenter", (Qt::AlignHCenter & value) );
+        setBoolAttribute( newElement, "AlignJustify", (Qt::AlignJustify & value) );
+        setBoolAttribute( newElement, "AlignTop",     (Qt::AlignTop     & value) );
+        setBoolAttribute( newElement, "AlignBottom",  (Qt::AlignBottom  & value) );
+        setBoolAttribute( newElement, "AlignVCenter", (Qt::AlignVCenter & value) );
+    }
 
     void createSizeNode( QDomDocument& doc, QDomNode& parent,
             const QString& elementName, const QSize& value )
@@ -140,17 +159,28 @@ namespace KDXML {
             createStringNode( doc, parent, elementName, text );
     }
 
+    void createPointFNode( QDomDocument& doc, QDomNode& parent,
+                           const QString& elementName, const QPointF& point )
+    {
+        QDomElement colorElement = doc.createElement( elementName );
+        parent.appendChild( colorElement );
+        colorElement.setAttribute( "x",
+                                   QString::number( point.x() ) );
+        colorElement.setAttribute( "y",
+                                   QString::number( point.y() ) );
+    }
+
     void createColorNode( QDomDocument& doc, QDomNode& parent,
-            const QString& elementName, const QColor& color )
+                          const QString& elementName, const QColor& color )
     {
         QDomElement colorElement = doc.createElement( elementName );
         parent.appendChild( colorElement );
         colorElement.setAttribute( "Red",
-                QString::number( color.red() ) );
+                                   QString::number( color.red() ) );
         colorElement.setAttribute( "Green",
-                QString::number( color.green() ) );
+                                   QString::number( color.green() ) );
         colorElement.setAttribute( "Blue",
-                QString::number( color.blue() ) );
+                                   QString::number( color.blue() ) );
     }
 
 
