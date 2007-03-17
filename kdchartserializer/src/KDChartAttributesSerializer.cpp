@@ -508,7 +508,14 @@ void AttributesSerializer::saveRelativePosition(
         KDXML::createPointFNode(
                 doc, element, "West",      points.point( Position::West ) );
     }
+    // save the reference position
+    KDXML::createStringNode( doc, element, "ReferencePosition", a.referencePosition().name() );
     // save the alignment
     KDXML::createAlignmentNode(
             doc, element, "Alignment", a.alignment() );
+    // save padding
+    saveMeasure( doc, element, a.horizontalPadding(), "HorizontalPadding" );
+    saveMeasure( doc, element, a.verticalPadding(),   "VerticalPadding" );
+    // save the rotation
+    KDXML::createRealNode( doc, element, "Rotation", a.rotation() );
 }

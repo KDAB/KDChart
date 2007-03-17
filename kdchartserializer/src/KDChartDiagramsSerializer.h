@@ -62,6 +62,11 @@ namespace KDChart {
                     const ConstAbstractDiagramList& diags,
                     const QString& title )const;
 
+            virtual void saveDiagram(
+                    QDomDocument& doc,
+                    QDomElement& e,
+                    const AbstractDiagram* diagram )const;
+
             virtual void saveAbstractDiagram(
                     QDomDocument& doc,
                     QDomElement& e,
@@ -91,6 +96,7 @@ namespace KDChart {
         private:
             AxesSerializer* mAxesS;
             AttributesModelSerializer* mAttrModelS;
+        mutable QString mGlobalList;
     };
 
 } // end of namespace

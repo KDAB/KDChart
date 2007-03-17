@@ -52,6 +52,8 @@ DiagramsSerializer::DiagramsSerializer()
 {
     mAxesS = new AxesSerializer();
     mAttrModelS = new AttributesModelSerializer();
+    mGlobalList = "kdchart:diagrams"; // default value, can be
+    // overwritten by the title passed to DiagramsSerializer::saveDiagrams()
 }
 
 DiagramsSerializer::~DiagramsSerializer()
@@ -100,9 +102,12 @@ void DiagramsSerializer::saveDiagrams(
         const ConstAbstractDiagramList& diags,
         const QString& title )const
 {
+    if( ! title.isEmpty() )
+        mGlobalList = title;
+
     // access (or append, resp.) the global list
     QDomElement* diagsList =
-            SerializeCollector::instance()->findOrMakeElement( doc, title );
+            SerializeCollector::instance()->findOrMakeElement( doc, mGlobalList );
 
     // create the local list holding names pointing into the global list
     QDomElement pointersList =
@@ -120,26 +125,36 @@ void DiagramsSerializer::saveDiagrams(
                 p,
                 wasFound );
         if( ! wasFound ){
-            // first save the information hold by the base class
-            saveAbstractDiagram( doc, diagElement, *p,
-                                "kdchart:abstract-diagram" );
+            saveDiagram( doc, diagElement, p );
+        }
+    }
+}
 
-            // then save any diagram type specific information
-            const AbstractCartesianDiagram* cartDiag =
-                    dynamic_cast<const AbstractCartesianDiagram*> ( p );
-            if( cartDiag ){
-                saveCartDiagram( doc, diagElement, *cartDiag,
-                                "kdchart:cartesian-diagram" );
-            }else{
-                const AbstractPolarDiagram* polDiag =
-                        dynamic_cast<const AbstractPolarDiagram*> ( p );
-                if( polDiag ){
-                    savePolDiagram( doc, diagElement, *polDiag,
-                                    "kdchart:polar-diagram" );
-                }else{
-                    saveOtherDiagram( doc, diagElement, *p );
-                }
-            }
+void DiagramsSerializer::saveDiagram(
+        QDomDocument& doc,
+        QDomElement& e,
+        const AbstractDiagram* p )const
+{
+    if( ! p ) return;
+
+    // first save the information hold by the base class
+    saveAbstractDiagram( doc, e, *p,
+                         "kdchart:abstract-diagram" );
+
+    // then save any diagram type specific information
+    const AbstractCartesianDiagram* cartDiag =
+            dynamic_cast<const AbstractCartesianDiagram*> ( p );
+    if( cartDiag ){
+        saveCartDiagram( doc, e, *cartDiag,
+                         "kdchart:cartesian-diagram" );
+    }else{
+        const AbstractPolarDiagram* polDiag =
+                dynamic_cast<const AbstractPolarDiagram*> ( p );
+        if( polDiag ){
+            savePolDiagram( doc, e, *polDiag,
+                            "kdchart:polar-diagram" );
+        }else{
+            saveOtherDiagram( doc, e, *p );
         }
     }
 }
@@ -182,6 +197,35 @@ void DiagramsSerializer::saveCartDiagram(
     mAxesS->saveCartesianAxes( doc, diagElement,
                                diagram.axes(),
                                "kdchart:axes" );
+
+    // save the reference diagram-pointer and the diagram, if any
+    const AbstractCartesianDiagram* refDiag = diagram.referenceDiagram();
+    if( refDiag ){
+        QDomElement refDiagPtrElement =
+                doc.createElement( "ReferenceDiagram" );
+        diagElement.appendChild( refDiagPtrElement );
+        // access (or append, resp.) the global list
+        QDomElement* diagsList =
+                SerializeCollector::instance()->findOrMakeElement( doc, mGlobalList );
+
+        // create the local list holding names pointing into the global list
+        QDomElement pointersList =
+                SerializeCollector::createPointersList( doc, refDiagPtrElement, mGlobalList );
+
+        bool wasFound;
+        QDomElement refListElement =
+                SerializeCollector::findOrMakeChild(
+                doc,
+                *diagsList,
+                pointersList,
+                "kdchart:diagram",
+                refDiag,
+                wasFound );
+        if( ! wasFound ){
+            saveDiagram( doc, refListElement, refDiag );
+        }
+    }
+
     // ...
 }
 
