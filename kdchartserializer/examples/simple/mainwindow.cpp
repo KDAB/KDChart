@@ -103,6 +103,20 @@ void MainWindow::on_paintValuesCB_toggled( bool checked )
             ta.setVisible( false );
         a.setVisible( true );
         a.setTextAttributes( ta );
+
+        /* just for testing:
+        MarkerAttributes marker( a.markerAttributes() );
+        marker.setMarkerStyle( MarkerAttributes::MarkerDiamond );
+        MarkerAttributes::MarkerStylesMap map;
+        map[0] = MarkerAttributes::MarkerRing;
+        map[1] = MarkerAttributes::MarkerCross;
+        map[2] = MarkerAttributes::MarkerRing;
+        map[3] = MarkerAttributes::MarkerCross;
+        map[4] = MarkerAttributes::MarkerRing;
+        map[5] = MarkerAttributes::MarkerCross;
+        marker.setMarkerStylesMap( map );
+        a.setMarkerAttributes( marker );
+        */
         m_lines->setDataValueAttributes( iColumn, a );
     }
     m_chart->update();

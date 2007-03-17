@@ -365,13 +365,119 @@ void AttributesSerializer::saveDataValueAttributes(
             doc, element,
             a.backgroundAttributes(),
             "BackgroundAttributes" );
-    /*
     // save the marker attributes
     saveMarkerAttributes(
             doc, element,
             a.markerAttributes(),
             "MarkerAttributes" );
+    // save the number of decimal digits
+    KDXML::createIntNode( doc, element, "DecimalDigits", a.decimalDigits() );
+    // save the prefix string
+    KDXML::createStringNodeIfContent( doc, element, "Prefix", a.prefix() );
+    // save the suffix string
+    KDXML::createStringNodeIfContent( doc, element, "Suffix", a.suffix() );
+    // save the data label
+    KDXML::createStringNodeIfContent( doc, element, "DataLabel", a.dataLabel() );
+    // save the showRepetitiveDataLabels flag
+    KDXML::createBoolNode( doc, element, "ShowRepetitiveDataLabels", a.showRepetitiveDataLabels() );
+    // save the power-of-ten divisor
+    KDXML::createIntNode( doc, element, "PowerOfTenDivisor", a.powerOfTenDivisor() );
+    // save the showInfinite flag
+    KDXML::createBoolNode( doc, element, "ShowInfinite", a.showInfinite() );
+    // save the negative positioning attributes
+    saveRelativePosition(
+            doc, element,
+            a.negativePosition(),
+            "NegativePosition" );
+    // save the positive positioning attributes
+    saveRelativePosition(
+            doc, element,
+            a.positivePosition(),
+            "PositivePosition" );
+}
 
-    // ...
-    */
+QString AttributesSerializer::markerStyleToName( MarkerAttributes::MarkerStyle style )
+{
+    QString name;
+    switch( style ){
+        case MarkerAttributes::MarkerCircle:
+            name = "MarkerCircle";
+            break;
+        case MarkerAttributes::MarkerSquare:
+            name = "MarkerSquare";
+            break;
+        case MarkerAttributes::MarkerDiamond:
+            name = "MarkerDiamond";
+            break;
+        case MarkerAttributes::Marker1Pixel:
+            name = "Marker1Pixel";
+            break;
+        case MarkerAttributes::Marker4Pixels:
+            name = "Marker4Pixels";
+            break;
+        case MarkerAttributes::MarkerRing:
+            name = "MarkerRing";
+            break;
+        case MarkerAttributes::MarkerCross:
+            name = "MarkerCross";
+            break;
+        case MarkerAttributes::MarkerFastCross:
+            name = "MarkerFastCross";
+            break;
+        default:
+            Q_ASSERT( false ); // all of the style types need to be handled
+            break;
+    }
+    return name;
+}
+
+void AttributesSerializer::saveMarkerAttributes(
+        QDomDocument& doc,
+        QDomElement& e,
+        const MarkerAttributes& a,
+        const QString& title )
+{
+    QDomElement element = doc.createElement( title );
+    e.appendChild( element );
+    KDXML::createBoolNode( doc, element, "Visible",
+                           a.isVisible() );
+    // save the style
+    QDomElement styleElement =
+            doc.createElement( "MarkerStyle" );
+    element.appendChild( styleElement );
+    styleElement.setAttribute( "style", markerStyleToName( a.markerStyle() ) );
+    // save the stylesMap
+    {
+        QDomElement mapElement =
+                doc.createElement( "StylesMap" );
+        element.appendChild( mapElement );
+        MarkerAttributes::MarkerStylesMap map( a.markerStylesMap() );
+        MarkerAttributes::MarkerStylesMap::const_iterator i = map.constBegin();
+        while (i != map.constEnd()) {
+            QDomElement styleElement =
+                    doc.createElement( "MarkerStyle" );
+            mapElement.appendChild( styleElement );
+            styleElement.setAttribute( "key", i.key() );
+            styleElement.setAttribute( "style", markerStyleToName( i.value() ) );
+            ++i;
+        }
+    }
+    // save the size
+    KDXML::createSizeFNode( doc, element, "Size", a.markerSize() );
+    // save the color
+    KDXML::createColorNode( doc, element, "Color", a.markerColor() );
+    // save the pen
+    KDXML::createPenNode( doc, element, "Pen", a.pen() );
+}
+
+void AttributesSerializer::saveRelativePosition(
+        QDomDocument& doc,
+        QDomElement& e,
+        const RelativePosition& a,
+        const QString& title )
+{
+    QDomElement element = doc.createElement( title );
+    e.appendChild( element );
+
+    //...
 }

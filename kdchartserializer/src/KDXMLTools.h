@@ -51,7 +51,9 @@ namespace KDXML {
     void createOrientationNode( QDomDocument& doc, QDomNode& parent,
             const QString& elementName, Qt::Orientation value );
     void createSizeNode( QDomDocument& doc, QDomNode& parent,
-            const QString& elementName, const QSize& value );
+                         const QString& elementName, const QSize& value );
+    void createSizeFNode( QDomDocument& doc, QDomNode& parent,
+                          const QString& elementName, const QSizeF& value );
     void createIntNode( QDomDocument& doc, QDomNode& parent,
             const QString& elementName, int value );
     void createDoubleNode( QDomDocument& doc, QDomNode& parent,
@@ -59,8 +61,11 @@ namespace KDXML {
     void createRealNode( QDomDocument& doc, QDomNode& parent,
                            const QString& elementName, qreal value );
     void createStringNode( QDomDocument& doc, QDomNode& parent,
-            const QString& elementName,
-            const QString& text );
+                           const QString& elementName,
+                           const QString& text );
+    void createStringNodeIfContent( QDomDocument& doc, QDomNode& parent,
+                           const QString& elementName,
+                           const QString& text );
     void createColorNode( QDomDocument& doc, QDomNode& parent,
             const QString& elementName, const QColor& color );
     void createBrushNode( QDomDocument& doc, QDomNode& parent,
@@ -94,6 +99,7 @@ namespace KDXML {
     bool readBoolNode( const QDomElement& element, bool& value );
     bool readOrientationNode( const QDomElement& element, Qt::Orientation& value );
     bool readSizeNode( const QDomElement& element, QSize& value );
+    bool readSizeFNode( const QDomElement& element, QSizeF& value );
     bool readColorNode( const QDomElement& element, QColor& value );
     bool readBrushNode( const QDomElement& element, QBrush& brush );
     bool readPixmapNode( const QDomElement& element, QPixmap& pixmap );

@@ -73,6 +73,17 @@ namespace KDXML {
     }
 
 
+    void createSizeFNode( QDomDocument& doc, QDomNode& parent,
+                         const QString& elementName, const QSizeF& value )
+    {
+        QDomElement newElement =
+                doc.createElement( elementName );
+        parent.appendChild( newElement );
+        newElement.setAttribute( "Width", value.width() );
+        newElement.setAttribute( "Height", value.height() );
+    }
+
+
     void createIntNode( QDomDocument& doc, QDomNode& parent,
             const QString& elementName, int value )
     {
@@ -121,6 +132,13 @@ namespace KDXML {
         newElement.appendChild( elementContent );
     }
 
+    void createStringNodeIfContent( QDomDocument& doc, QDomNode& parent,
+                           const QString& elementName,
+                           const QString& text )
+    {
+        if( ! text.isEmpty() )
+            createStringNode( doc, parent, elementName, text );
+    }
 
     void createColorNode( QDomDocument& doc, QDomNode& parent,
             const QString& elementName, const QColor& color )
@@ -435,6 +453,24 @@ namespace KDXML {
             width = element.attribute( "Width" ).toInt( &ok );
             if( ok && element.hasAttribute( "Height" ) ) {
                 height = element.attribute( "Height" ).toInt( &ok );
+                if( ok ){
+                    value.setWidth(  width );
+                    value.setHeight( height );
+                }
+            }
+        }
+        return ok;
+    }
+
+
+    bool readSizeFNode( const QDomElement& element, QSizeF& value )
+    {
+        bool ok = false;
+        qreal width, height;
+        if( element.hasAttribute(      "Width" ) ) {
+            width = element.attribute( "Width" ).toDouble( &ok );
+            if( ok && element.hasAttribute( "Height" ) ) {
+                height = element.attribute( "Height" ).toDouble( &ok );
                 if( ok ){
                     value.setWidth(  width );
                     value.setHeight( height );

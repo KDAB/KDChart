@@ -37,6 +37,7 @@
 #include <KDChartFrameAttributes>
 #include <KDChartBackgroundAttributes>
 #include <KDChartDataValueAttributes>
+#include <KDChartMarkerAttributes>
 
 #include <QDomDocument>
 
@@ -88,6 +89,20 @@ namespace KDChart {
                     QDomDocument& doc,
                     QDomElement& e,
                     const DataValueAttributes& a,
+                    const QString& title );
+
+            static void saveMarkerAttributes(
+                    QDomDocument& doc,
+                    QDomElement& e,
+                    const MarkerAttributes& a,
+                    const QString& title );
+            static QString markerStyleToName(
+                    MarkerAttributes::MarkerStyle style );
+
+            static void saveRelativePosition(
+                    QDomDocument& doc,
+                    QDomElement& e,
+                    const RelativePosition& a,
                     const QString& title );
     };
 

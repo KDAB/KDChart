@@ -212,12 +212,10 @@ void AxesSerializer::saveCartAxis(
     QDomElement axisElement =
         doc.createElement( title );
     e.appendChild( axisElement );
-    if( ! axis.titleText().isEmpty() ){
-        // save the title
-        KDXML::createStringNode(
-                doc, axisElement,
-                "Title", axis.titleText() );
-    }
+    // save the title
+    KDXML::createStringNodeIfContent(
+            doc, axisElement,
+            "Title", axis.titleText() );
     if( ! axis.hasDefaultTitleTextAttributes() ){
         // save the title text attributes
         AttributesSerializer::saveTextAttributes(
