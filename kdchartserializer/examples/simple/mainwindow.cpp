@@ -56,7 +56,6 @@ MainWindow::MainWindow( QWidget* parent ) :
     // Set up the diagram
     m_lines = new LineDiagram();
     m_lines->setModel( &m_model );
-    m_lines->setReferenceDiagram( m_lines );
 
     CartesianAxis *xAxis = new CartesianAxis( m_lines );
     CartesianAxis *yAxis = new CartesianAxis ( m_lines );
