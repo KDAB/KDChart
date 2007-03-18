@@ -35,6 +35,12 @@
 
 #include "KDXMLTools.h"
 
+#include <KDChartLineDiagram>
+#include <KDChartBarDiagram>
+#include <KDChartPieDiagram>
+#include <KDChartPolarDiagram>
+#include <KDChartRingDiagram>
+
 #include <qglobal.h>
 #include <QMessageBox>
 
@@ -139,21 +145,29 @@ void DiagramsSerializer::saveDiagram(
 {
     if( ! p ) return;
 
-    const AbstractCartesianDiagram* cartDiag =
-            dynamic_cast<const AbstractCartesianDiagram*> ( p );
-    if( cartDiag ){
-        saveCartDiagram( doc, e, *cartDiag,
-                         "kdchart:cartesian-diagram" );
-    }else{
-        const AbstractPolarDiagram* polDiag =
-                dynamic_cast<const AbstractPolarDiagram*> ( p );
-        if( polDiag ){
-            savePolDiagram( doc, e, *polDiag,
-                            "kdchart:polar-diagram" );
-        }else{
-            saveOtherDiagram( doc, e, *p );
-        }
-    }
+    const LineDiagram*  lineDiag  = dynamic_cast<const LineDiagram*> (  p );
+    const BarDiagram*   barDiag   = dynamic_cast<const BarDiagram*> (   p );
+    const PieDiagram*   pieDiag   = dynamic_cast<const PieDiagram*> (   p );
+    const PolarDiagram* polarDiag = dynamic_cast<const PolarDiagram*> ( p );
+    const RingDiagram*  ringDiag  = dynamic_cast<const RingDiagram*> (  p );
+
+    if( lineDiag )
+        saveLineDiagram( doc, e, *lineDiag,
+                         "kdchart:line-diagram" );
+    else if( barDiag )
+        saveBarDiagram( doc, e, *barDiag,
+                        "kdchart:bar-diagram" );
+    else if( pieDiag )
+        savePieDiagram( doc, e, *pieDiag,
+                        "kdchart:pie-diagram" );
+    else if( polarDiag )
+        savePolarDiagram( doc, e, *polarDiag,
+                          "kdchart:polar-diagram" );
+    else if( ringDiag )
+        saveRingDiagram( doc, e, *ringDiag,
+                         "kdchart:ring-diagram" );
+    else
+        saveOtherDiagram( doc, e, *p );
 }
 
 void DiagramsSerializer::saveAbstractDiagram(
@@ -166,6 +180,7 @@ void DiagramsSerializer::saveAbstractDiagram(
         doc.createElement( title );
     e.appendChild( diagElement );
 
+    // save the attributes model and the root index
     mAttrModelS->saveAttributesModel(
         doc,
         diagElement,
@@ -215,7 +230,7 @@ void DiagramsSerializer::saveAbstractDiagram(
                           diagram.datasetDimension() );
 }
 
-void DiagramsSerializer::saveCartDiagram(
+void DiagramsSerializer::saveCartCoordDiagram(
         QDomDocument& doc,
         QDomElement& e,
         const AbstractCartesianDiagram& diagram,
@@ -264,17 +279,156 @@ void DiagramsSerializer::saveCartDiagram(
         KDXML::createPointFNode(
                 doc, refDiagPtrElement, "Offset", diagram.referenceDiagramOffset() );
     }
-
-    // ...
 }
 
-void DiagramsSerializer::savePolDiagram(
+void DiagramsSerializer::savePolCoordDiagram(
         QDomDocument& doc,
         QDomElement& e,
         const AbstractPolarDiagram& diagram,
         const QString& title )const
 {
+    QDomElement diagElement =
+            doc.createElement( title );
+    e.appendChild( diagElement );
 
+    // first save the information hold by the base class
+    saveAbstractDiagram( doc, diagElement, diagram,
+                         "kdchart:abstract-diagram" );
+    // that's all, there is no to-be-saved information in this class
+}
+
+
+void DiagramsSerializer::saveLineDiagram(
+        QDomDocument& doc,
+        QDomElement& e,
+        const LineDiagram& diagram,
+        const QString& title )const
+{
+    QDomElement diagElement =
+            doc.createElement( title );
+    e.appendChild( diagElement );
+
+    // first save the information hold by the base class
+    saveCartCoordDiagram( doc, diagElement, diagram,
+                          "kdchart:cartesian-coordinate-diagram" );
+    // then save what is stored in the derived class
+    QString s;
+    switch( diagram.type() ){
+        case LineDiagram::Normal:
+                s = "Normal";
+                break;
+        case LineDiagram::Stacked:
+                s = "Stacked";
+                break;
+        case LineDiagram::Percent:
+                s = "Percent";
+                break;
+        default:
+            Q_ASSERT( false ); // all of the types need to be handled
+            break;
+    }
+    KDXML::createStringNode( doc, diagElement, "LineType", s );
+}
+
+void DiagramsSerializer::saveBarDiagram(
+        QDomDocument& doc,
+        QDomElement& e,
+        const BarDiagram& diagram,
+        const QString& title )const
+{
+    QDomElement diagElement =
+            doc.createElement( title );
+    e.appendChild( diagElement );
+
+    // first save the information hold by the base class
+    saveCartCoordDiagram( doc, diagElement, diagram,
+                          "kdchart:cartesian-coordinate-diagram" );
+    // then save what is stored in the derived class
+    QString s;
+    switch( diagram.type() ){
+        case BarDiagram::Normal:
+            s = "Normal";
+            break;
+        case BarDiagram::Stacked:
+            s = "Stacked";
+            break;
+        case BarDiagram::Percent:
+            s = "Percent";
+            break;
+        case BarDiagram::Rows:
+            s = "Rows";
+            break;
+        default:
+            Q_ASSERT( false ); // all of the types need to be handled
+            break;
+    }
+    KDXML::createStringNode( doc, diagElement, "BarType", s );
+}
+
+void DiagramsSerializer::saveAbstractPieDiagram(
+        QDomDocument& doc,
+        QDomElement& e,
+        const AbstractPieDiagram& diagram,
+        const QString& title )const
+{
+    QDomElement diagElement =
+            doc.createElement( title );
+    e.appendChild( diagElement );
+
+    // first save the information hold by the base class
+    savePolCoordDiagram( doc, diagElement, diagram,
+                         "kdchart:polar-coordinate-diagram" );
+
+    // then save what is stored in the derived class
+    KDXML::createRealNode( doc, diagElement, "Granularity", diagram.granularity() );
+
+    // ...
+}
+
+void DiagramsSerializer::savePieDiagram(
+        QDomDocument& doc,
+        QDomElement& e,
+        const PieDiagram& diagram,
+        const QString& title )const
+{
+    QDomElement diagElement =
+            doc.createElement( title );
+    e.appendChild( diagElement );
+
+    // first save the information hold by the base class
+    saveAbstractPieDiagram( doc, diagElement, diagram,
+                            "kdchart:abstract-pie-diagram" );
+}
+
+void DiagramsSerializer::savePolarDiagram(
+        QDomDocument& doc,
+        QDomElement& e,
+        const PolarDiagram& diagram,
+        const QString& title )const
+{
+    QDomElement diagElement =
+            doc.createElement( title );
+    e.appendChild( diagElement );
+
+    // first save the information hold by the base class
+    savePolCoordDiagram( doc, diagElement, diagram,
+                         "kdchart:polar-coordinate-diagram" );
+}
+
+void DiagramsSerializer::saveRingDiagram(
+        QDomDocument& doc,
+        QDomElement& e,
+        const RingDiagram& diagram,
+        const QString& title )const
+{
+    QDomElement diagElement =
+            doc.createElement( title );
+    e.appendChild( diagElement );
+
+    // first save the information hold by the base class
+    // first save the information hold by the base class
+    saveAbstractPieDiagram( doc, diagElement, diagram,
+                            "kdchart:abstract-pie-diagram" );
 }
 
 void DiagramsSerializer::saveOtherDiagram(

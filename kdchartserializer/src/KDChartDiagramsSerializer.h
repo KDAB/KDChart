@@ -35,9 +35,12 @@
 
 #include "KDChartAttributesSerializer.h"
 
-#include <KDChartAbstractCartesianDiagram>
-#include <KDChartAbstractPolarDiagram>
 #include <KDChartChart>
+#include <KDChartLineDiagram>
+#include <KDChartBarDiagram>
+#include <KDChartPieDiagram>
+#include <KDChartPolarDiagram>
+#include <KDChartRingDiagram>
 
 namespace KDChart {
 
@@ -74,16 +77,52 @@ namespace KDChart {
                     const AbstractDiagram& diagram,
                     const QString& title )const;
 
-            virtual void saveCartDiagram(
+            virtual void saveCartCoordDiagram(
                     QDomDocument& doc,
                     QDomElement& e,
                     const AbstractCartesianDiagram& diagram,
                     const QString& title )const;
 
-            virtual void savePolDiagram(
+            virtual void savePolCoordDiagram(
                     QDomDocument& doc,
                     QDomElement& e,
                     const AbstractPolarDiagram& diagram,
+                    const QString& title )const;
+
+            virtual void saveAbstractPieDiagram(
+                    QDomDocument& doc,
+                    QDomElement& e,
+                    const AbstractPieDiagram& diagram,
+                    const QString& title )const;
+
+            virtual void saveLineDiagram(
+                    QDomDocument& doc,
+                    QDomElement& e,
+                    const LineDiagram& diagram,
+                    const QString& title )const;
+
+            virtual void saveBarDiagram(
+                    QDomDocument& doc,
+                    QDomElement& e,
+                    const BarDiagram& diagram,
+                    const QString& title )const;
+
+            virtual void savePieDiagram(
+                    QDomDocument& doc,
+                    QDomElement& e,
+                    const PieDiagram& diagram,
+                    const QString& title )const;
+
+            virtual void savePolarDiagram(
+                    QDomDocument& doc,
+                    QDomElement& e,
+                    const PolarDiagram& diagram,
+                    const QString& title )const;
+
+            virtual void saveRingDiagram(
+                    QDomDocument& doc,
+                    QDomElement& e,
+                    const RingDiagram& diagram,
                     const QString& title )const;
 
             // By default this does nothing, it can be used by derived classes,
