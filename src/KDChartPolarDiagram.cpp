@@ -57,6 +57,8 @@ PolarDiagram::~PolarDiagram()
 
 void PolarDiagram::init()
 {
+    setShowDelimitersAtPosition( Position::Unknown, false );
+    setShowDelimitersAtPosition( Position::Center, false );
     setShowDelimitersAtPosition( Position::NorthWest, false );
     setShowDelimitersAtPosition( Position::North, true );
     setShowDelimitersAtPosition( Position::NorthEast, false );
@@ -65,6 +67,10 @@ void PolarDiagram::init()
     setShowDelimitersAtPosition( Position::SouthWest, false );
     setShowDelimitersAtPosition( Position::South, true );
     setShowDelimitersAtPosition( Position::SouthEast, false );
+    setShowDelimitersAtPosition( Position::Floating, false );
+
+    setShowLabelsAtPosition( Position::Unknown, false );
+    setShowLabelsAtPosition( Position::Center, false );
     setShowLabelsAtPosition( Position::NorthWest, false );
     setShowLabelsAtPosition( Position::North, true );
     setShowLabelsAtPosition( Position::NorthEast, false );
@@ -73,6 +79,7 @@ void PolarDiagram::init()
     setShowLabelsAtPosition( Position::SouthWest, false );
     setShowLabelsAtPosition( Position::South, true );
     setShowLabelsAtPosition( Position::SouthEast, false );
+    setShowLabelsAtPosition( Position::Floating, false );
 }
 
 
