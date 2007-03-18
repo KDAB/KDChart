@@ -164,6 +164,7 @@ void CoordPlanesSerializer::saveAbstractPlane(
         doc.createElement( title );
     e.appendChild( planeElement );
 
+    // save the associated diagrams
     mDiagS->saveDiagrams( doc,
                           planeElement,
                           plane.diagrams(),
@@ -242,8 +243,6 @@ void CoordPlanesSerializer::saveAbstractPlane(
             qDebug() << "--- CoordPlanesSerializer ---";
         }
     }
-
-
 }
 
 void CoordPlanesSerializer::saveCartPlane(
@@ -261,7 +260,34 @@ void CoordPlanesSerializer::saveCartPlane(
                        "kdchart:abstract-coordinate-plane" );
 
     // then save any plane type specific information
+    KDXML::createBoolNode( doc, planeElement, "IsometricScaling",
+                           plane.doesIsometricScaling() );
+    KDXML::createRealPairNode( doc, planeElement, "HorizontalRange",
+                               plane.horizontalRange() );
+    KDXML::createRealPairNode( doc, planeElement, "VerticalRange",
+                               plane.verticalRange() );
+    KDXML::createIntNode( doc, planeElement, "AutoAdjustHorizontalRangeToData",
+                          plane.autoAdjustHorizontalRangeToData() );
+    KDXML::createIntNode( doc, planeElement, "AutoAdjustVerticalRangeToData",
+                          plane.autoAdjustVerticalRangeToData() );
+    if( plane.hasOwnGridAttributes( Qt::Horizontal ) ){
+        AttributesSerializer::saveGridAttributes(
+                doc, planeElement, plane.gridAttributes( Qt::Horizontal ),
+                "HorizontalGridAttributes" );
+    }
+    if( plane.hasOwnGridAttributes( Qt::Vertical ) ){
+        AttributesSerializer::saveGridAttributes(
+                doc, planeElement, plane.gridAttributes( Qt::Vertical ),
+                "VerticalGridAttributes" );
+    }
+    KDXML::createBoolNode( doc, planeElement, "AutoAdjustGridToZoom",
+                           plane.autoAdjustGridToZoom() );
+    saveAxesCalcMode(
+            doc, planeElement, plane.axesCalcModeX(), "AxesCalcModeX" );
+    saveAxesCalcMode(
+            doc, planeElement, plane.axesCalcModeY(), "AxesCalcModeY" );
 }
+
 
 void CoordPlanesSerializer::savePolPlane(
         QDomDocument& doc,
@@ -278,7 +304,20 @@ void CoordPlanesSerializer::savePolPlane(
                        "kdchart:abstract-coordinate-plane" );
 
     // then save any plane type specific information
+    KDXML::createRealNode( doc, planeElement, "StartPosition",
+                           plane.startPosition() );
+    if( plane.hasOwnGridAttributes( true ) ){
+        AttributesSerializer::saveGridAttributes(
+                doc, planeElement, plane.gridAttributes( true ),
+                "CircularGridAttributes" );
+    }
+    if( plane.hasOwnGridAttributes( false ) ){
+        AttributesSerializer::saveGridAttributes(
+                doc, planeElement, plane.gridAttributes( false ),
+                "SagittalGridAttributes" );
+    }
 }
+
 
 void CoordPlanesSerializer::saveOtherPlane(
         QDomDocument& doc,
@@ -292,8 +331,29 @@ void CoordPlanesSerializer::saveOtherPlane(
     // first save the information hold by the base class
     saveAbstractPlane( doc, planeElement, plane,
                        "kdchart:abstract-coordinate-plane" );
-
     // that's all, there is no to-be-saved information in this class
+}
+
+
+void CoordPlanesSerializer::saveAxesCalcMode(
+        QDomDocument& doc,
+        QDomElement& e,
+        const CartesianCoordinatePlane::AxesCalcMode& mode,
+        const QString& title )const
+{
+    QString name;
+    switch( mode ){
+        case CartesianCoordinatePlane::Linear:
+            name = "Linear";
+            break;
+        case CartesianCoordinatePlane::Logarithmic:
+            name = "Logarithmic";
+            break;
+        default:
+            Q_ASSERT( false ); // all of the types need to be handled
+            break;
+    }
+    KDXML::createStringNode( doc, e, title, name );
 }
 
 const QString CoordPlanesSerializer::globalList()const

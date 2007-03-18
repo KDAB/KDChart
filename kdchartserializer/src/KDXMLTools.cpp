@@ -353,6 +353,15 @@ namespace KDXML {
         element.setAttribute( "Row",    QString::number( idx.row()    ) );
     }
 
+    void createRealPairNode( QDomDocument& doc, QDomNode& parent,
+                             const QString& elementName, const QPair<qreal, qreal> & pair )
+    {
+        QDomElement element = doc.createElement( elementName );
+        parent.appendChild( element );
+        element.setAttribute( "first",  QString::number( pair.first  ) );
+        element.setAttribute( "second", QString::number( pair.second ) );
+    }
+
     void createPositionBooleansNode(
             QDomDocument& doc, QDomNode& parent, const QString& elementName,
             bool unknown, bool center,

@@ -92,6 +92,12 @@ namespace KDChart {
                     QDomElement& e,
                     const AbstractCoordinatePlane& plane )const;
 
+            virtual void saveAxesCalcMode(
+                    QDomDocument& doc,
+                    QDomElement& e,
+                    const CartesianCoordinatePlane::AxesCalcMode& mode,
+                    const QString& title )const;
+
             const QString globalList()const;
 
         private:

@@ -101,7 +101,10 @@ namespace KDXML {
     void createTimeNode( QDomDocument& doc, QDomNode& parent,
             const QString& elementName, const QTime& time );
     void createModelIndexNode( QDomDocument& doc, QDomNode& parent,
-            const QString& elementName, const QModelIndex& idx );
+                               const QString& elementName, const QModelIndex& idx );
+
+    void createRealPairNode( QDomDocument& doc, QDomNode& parent,
+                             const QString& elementName, const QPair<qreal, qreal> & pair );
 
     void createPositionBooleansNode(
             QDomDocument& doc, QDomNode& parent, const QString& elementName,
