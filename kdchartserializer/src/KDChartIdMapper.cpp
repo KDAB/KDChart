@@ -29,6 +29,8 @@
 
 #include "KDChartIdMapper.h"
 
+#include <QDebug>
+
 using namespace KDChart;
 
 IdMapper::IdMapper()
@@ -58,35 +60,45 @@ QString IdMapper::findOrMakeName(
         const QString& baseName,
         bool& wasFound )
 {
-    wasFound = mMap.contains( id );
-    if( wasFound )
-        return mMap.value( id );
+    QString name = findName( id );
+    wasFound = ! name.isNull();
 
-    // check if we have a counter stored already - if not we add one
-    int counter = 1;
-    QString counterName( baseName + mCounterTag );
-    QMapIterator<const void*, QString> i( mMap );
-    while( i.hasNext() ) {
-        i.next();
-        if( i.value() == counterName ){
-            // we may cast away constness, since this is not
-            // an external pointer but our own auxiliary counter entry
-            int* storedCount = const_cast<int*>( static_cast<const int*>( i.key() ) );
-            (*storedCount)++;
-            counter = *storedCount;
+    if( ! wasFound ){
+        // check if we have a counter stored already - if not we add one
+        int counter = 1;
+        QString counterName( baseName + mCounterTag );
+        QMapIterator<const void*, QString> i( mMap );
+        while( i.hasNext() ) {
+            i.next();
+            if( i.value() == counterName ){
+                // we may cast away constness, since this is not
+                // an external pointer but our own auxiliary counter entry
+                int* storedCount = const_cast<int*>( static_cast<const int*>( i.key() ) );
+                (*storedCount)++;
+                counter = *storedCount;
+            }
         }
-    }
-    if( counter == 1 ){
-        int* p = new int;
-        *p = counter;
-        mMap[ p ] = counterName;
-    }
+        if( counter == 1 ){
+            int* p = new int;
+            *p = counter;
+            mMap[ p ] = counterName;
+        }
 
-    // store a new name using the counter value, and return it
-    QString name( baseName + ":" + QString::number( counter ) );
-    mMap[ id ] = name;
+        // store a new name using the counter value, and return it
+        name = baseName + ":" + QString::number( counter );
+        mMap[ id ] = name;
+    }
     return name;
 }
+
+
+QString IdMapper::findName( const void* id )const
+{
+    if( mMap.contains( id ) )
+        return mMap.value( id );
+    return QString();
+}
+
 
 
 const void* IdMapper::findId( const QString& name )const
@@ -98,4 +110,14 @@ const void* IdMapper::findId( const QString& name )const
             return i.key();
     }
     return 0;
+}
+
+void IdMapper::debugOut()const
+{
+    qDebug() << "IdMapper::debugOut():";
+    QMapIterator<const void*, QString> i( mMap );
+    while( i.hasNext() ) {
+        i.next();
+        qDebug() << "key:" << i.key() << "pointer:" << i.value();
+    }
 }

@@ -55,6 +55,11 @@ namespace KDChart {
         QString findOrMakeName( const void* id,
                                 const QString& baseName,
                                 bool& wasFound );
+        /** Returns the name that was stored for this pointer.
+         *
+         * If none was stored before, a QString() is returned.
+         */
+        QString findName( const void* id )const;
         /** Returns the pointer that was stored for the given name.
          *
          * If none was stored, it returns zero.
@@ -62,10 +67,14 @@ namespace KDChart {
         const void* findId( const QString& name )const;
 
         /** Delete all collected data.
-          */
+         */
         void clear();
 
-    private:
+        /** Prints all stored names and their respective pointers via qDebug().
+          */
+        void debugOut()const;
+
+        private:
         QMap<const void*, QString> mMap;
         QString mCounterTag;
     };

@@ -244,12 +244,14 @@ void DiagramsSerializer::saveCartCoordDiagram(
     saveAbstractDiagram( doc, diagElement, diagram,
                          "kdchart:abstract-diagram" );
 
+    // then save what is stored in the derived class
+
     // save the axes
     mAxesS->saveCartesianAxes( doc, diagElement,
                                diagram.axes(),
                                "kdchart:axes" );
 
-    // save the reference diagram-pointer and the diagram, if any
+    // save the reference diagram(-pointer) and the respective offset, if any
     const AbstractCartesianDiagram* refDiag = diagram.referenceDiagram();
     if( refDiag ){
         QDomElement refDiagPtrElement =
@@ -343,6 +345,7 @@ void DiagramsSerializer::saveBarDiagram(
     // first save the information hold by the base class
     saveCartCoordDiagram( doc, diagElement, diagram,
                           "kdchart:cartesian-coordinate-diagram" );
+
     // then save what is stored in the derived class
     QString s;
     switch( diagram.type() ){

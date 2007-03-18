@@ -201,6 +201,8 @@ bool Serializer::saveChartElement(
         return false;
     }
 
+    //qDebug() << "Serializer saving chart element:" << mChart;
+
     QDomElement bodyElement =
             doc.createElement( "kdchart:body" );
     e.appendChild( bodyElement );
@@ -226,7 +228,7 @@ bool Serializer::saveChartElement(
             *chartsList,
             pointersList,
             "kdchart:chart",
-            &mChart,
+            mChart,
             wasFound );
     // as of yet, wasFound will be FALSE always, but never mind
     if( ! wasFound ){

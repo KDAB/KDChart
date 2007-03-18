@@ -640,3 +640,47 @@ void AttributesSerializer::saveRelativePosition(
     // save the rotation
     KDXML::createRealNode( doc, element, "Rotation", a.rotation() );
 }
+
+void AttributesSerializer::saveGridAttributes(
+        QDomDocument& doc,
+        QDomElement& e,
+        const GridAttributes& a,
+        const QString& title )
+{
+    QDomElement element = doc.createElement( title );
+    e.appendChild( element );
+
+    KDXML::createBoolNode( doc, element, "GridVisible",
+                           a.isGridVisible() );
+    KDXML::createRealNode( doc, element, "GridStepWidth",
+                           a.gridStepWidth() );
+    KDXML::createRealNode( doc, element, "GridSubStepWidth",
+                           a.gridSubStepWidth() );
+    QString name;
+    switch( a.gridGranularitySequence() ){
+        case KDChartEnums::GranularitySequence_10_20:
+            name = "10_20";
+            break;
+        case KDChartEnums::GranularitySequence_10_50:
+            name = "10_50";
+            break;
+        case KDChartEnums::GranularitySequence_25_50:
+            name = "25_50";
+            break;
+        case KDChartEnums::GranularitySequenceIrregular:
+            name = "Irregular";
+            break;
+        default:
+            Q_ASSERT( false ); // all of the types need to be handled
+            break;
+    }
+    KDXML::createStringNode( doc, element, "GranularitySequence", name );
+    KDXML::createPenNode( doc, element, "GridPen",
+                          a.gridPen() );
+    KDXML::createBoolNode( doc, element, "SubGridVisible",
+                           a.isSubGridVisible() );
+    KDXML::createPenNode( doc, element, "SubGridPen",
+                          a.subGridPen() );
+    KDXML::createPenNode( doc, element, "ZeroLinePen",
+                          a.zeroLinePen() );
+}

@@ -29,6 +29,7 @@
 
 #include "KDChartCoordPlanesSerializer.h"
 #include "KDChartSerializeCollector.h"
+#include "KDChartIdMapper.h"
 #include "KDChartDiagramsSerializer.h"
 
 #include "KDXMLTools.h"
@@ -124,26 +125,31 @@ void CoordPlanesSerializer::savePlanes(
                 p,
                 wasFound );
         if( ! wasFound ){
-            // first save the information hold by the base class
-            saveAbstractPlane( doc, planeElement, *p,
-                            "kdchart:abstract-coordinate-plane" );
+            savePlane( doc, planeElement, p );
+        }
+    }
+}
 
-            // then save any plane type specific information
-            CartesianCoordinatePlane* cartPlane =
-                    dynamic_cast<CartesianCoordinatePlane*> ( p );
-            if( cartPlane ){
-                saveCartPlane( doc, planeElement, *cartPlane,
-                            "kdchart:cartesian-coordinate-plane" );
-            }else{
-                PolarCoordinatePlane* polPlane =
-                        dynamic_cast<PolarCoordinatePlane*> ( p );
-                if( polPlane ){
-                    savePolPlane( doc, planeElement, *polPlane,
-                                "kdchart:polar-coordinate-plane" );
-                }else{
-                    saveOtherPlane( doc, planeElement, *p );
-                }
-            }
+void CoordPlanesSerializer::savePlane(
+        QDomDocument& doc,
+        QDomElement& e,
+        const AbstractCoordinatePlane* p )const
+{
+    if( ! p ) return;
+
+    const CartesianCoordinatePlane* cartPlane =
+            dynamic_cast<const CartesianCoordinatePlane*> ( p );
+    if( cartPlane ){
+        saveCartPlane( doc, e, *cartPlane,
+                       "kdchart:cartesian-coordinate-plane" );
+    }else{
+        const PolarCoordinatePlane* polPlane =
+                dynamic_cast<const PolarCoordinatePlane*> ( p );
+        if( polPlane ){
+            savePolPlane( doc, e, *polPlane,
+                          "kdchart:polar-coordinate-plane" );
+        }else{
+            saveOtherPlane( doc, e, *p );
         }
     }
 }
@@ -163,6 +169,81 @@ void CoordPlanesSerializer::saveAbstractPlane(
                           plane.diagrams(),
                           "kdchart:diagrams" );
 
+    KDXML::createDoubleNode( doc, planeElement, "ZoomFactorX",
+                             plane.zoomFactorX() );
+    KDXML::createDoubleNode( doc, planeElement, "ZoomFactorY",
+                             plane.zoomFactorY() );
+    KDXML::createPointFNode( doc, planeElement, "ZoomCenter",
+                             plane.zoomCenter() );
+    AttributesSerializer::saveGridAttributes(
+            doc, planeElement, plane.globalGridAttributes(), "GlobalGridAttributes" );
+
+    // save the reference plane(-pointer), if any
+    const AbstractCoordinatePlane* refPlane = plane.referenceCoordinatePlane();
+    if( refPlane ){
+        QDomElement refPlanePtrElement =
+                doc.createElement( "ReferencePlane" );
+        planeElement.appendChild( refPlanePtrElement );
+        // access (or append, resp.) the global list
+        QDomElement* planesList =
+                SerializeCollector::instance()->findOrMakeElement( doc, globalListName );
+
+        bool wasFound;
+        QDomElement globalListElement =
+                SerializeCollector::findOrMakeChild(
+                doc,
+                *planesList,
+                refPlanePtrElement,
+                "kdchart:coordinate-plane",
+                refPlane,
+                wasFound );
+        if( ! wasFound ){
+            // Since the plane is stored in the global structure anyway,
+            // it is save to store it right now.
+            // So it will not be forgotten, in case it is not embedded in a
+            // chart.
+            // The wasFound test makes sure it will not be stored twice.
+            savePlane( doc, globalListElement, refPlane );
+        }
+    }
+
+    // save the pointer to the associated chart,
+    // and save the chart in the global structure if not there yet
+    const Chart* chart =
+            static_cast<const Chart*>( plane.parent() );
+    if( chart ){
+        // try to access the global charts list:
+        // If there is none, searching for the chart pointer's name makes no sense.
+        bool bOK = SerializeCollector::instance()->findElement( "kdchart:charts" ) != 0;
+        if( bOK ){
+            const QString chartName( IdMapper::instance()->findName( chart ) );
+            bOK = ! chartName.isEmpty();
+            if( bOK ){
+                QDomElement chartPtrElement =
+                        doc.createElement( "Chart" );
+                planeElement.appendChild( chartPtrElement );
+                SerializeCollector::instance()->storePointerName(
+                        doc, chartPtrElement, chartName );
+            }else{
+                qDebug() << "--- CoordPlanesSerializer ---";
+                qDebug() << "Warning: The coordinate plane's parent (" << chart << ") is not in the global charts list.";
+                IdMapper::instance()->debugOut();
+            }
+        }else{
+            qDebug() << "--- CoordPlanesSerializer ---";
+            qDebug() << "Warning: No global charts list found.";
+        }
+        if( ! bOK ){
+            // We warn via debug, but we do not break,
+            // since the result can still be used.
+            qDebug() << "Wrong usage of KD Chart Serializer ??";
+            qDebug() << "KDChart::CoordPlanesSerializer::savePlanes() was called before the associated chart was stored";
+            qDebug() << "So we can not store the kdchart-pointer in the coordinate planes sub-tree.";
+            qDebug() << "--- CoordPlanesSerializer ---";
+        }
+    }
+
+
 }
 
 void CoordPlanesSerializer::saveCartPlane(
@@ -175,6 +256,11 @@ void CoordPlanesSerializer::saveCartPlane(
         doc.createElement( title );
     e.appendChild( planeElement );
 
+    // first save the information hold by the base class
+    saveAbstractPlane( doc, planeElement, plane,
+                       "kdchart:abstract-coordinate-plane" );
+
+    // then save any plane type specific information
 }
 
 void CoordPlanesSerializer::savePolPlane(
@@ -183,7 +269,15 @@ void CoordPlanesSerializer::savePolPlane(
         const PolarCoordinatePlane& plane,
         const QString& title )const
 {
+    QDomElement planeElement =
+            doc.createElement( title );
+    e.appendChild( planeElement );
 
+    // first save the information hold by the base class
+    saveAbstractPlane( doc, planeElement, plane,
+                       "kdchart:abstract-coordinate-plane" );
+
+    // then save any plane type specific information
 }
 
 void CoordPlanesSerializer::saveOtherPlane(
@@ -191,9 +285,15 @@ void CoordPlanesSerializer::saveOtherPlane(
         QDomElement& e,
         const AbstractCoordinatePlane& plane )const
 {
-    Q_UNUSED(doc)
-    Q_UNUSED(e)
-    Q_UNUSED(plane)
+    QDomElement planeElement =
+            doc.createElement( "kdchart:user-defined-coordinate-plane" );
+    e.appendChild( planeElement );
+
+    // first save the information hold by the base class
+    saveAbstractPlane( doc, planeElement, plane,
+                       "kdchart:abstract-coordinate-plane" );
+
+    // that's all, there is no to-be-saved information in this class
 }
 
 const QString CoordPlanesSerializer::globalList()const

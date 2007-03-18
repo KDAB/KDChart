@@ -61,6 +61,11 @@ namespace KDChart {
                     const CoordinatePlaneList& planes,
                     const QString& title )const;
 
+            virtual void savePlane(
+                    QDomDocument& doc,
+                    QDomElement& e,
+                    const AbstractCoordinatePlane* p )const;
+
             virtual void saveAbstractPlane(
                     QDomDocument& doc,
                     QDomElement& e,

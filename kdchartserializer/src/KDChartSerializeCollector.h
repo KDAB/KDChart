@@ -61,11 +61,11 @@ namespace KDChart {
 
     /**
      * Auxiliary function:
-     * Add an entry to the elementsList, if no element matching the pointer
+     * Adds an entry to the elementsList, if no element matching the pointer
      * was found in the list.
-     * Create and store a string node with the name "kdchart:pointer"
-     * and the value given by title, if no element matching the pointer
-     * was found in the list.
+     * Also calls storePointerName() to create and store a string node with
+     * the name "kdchart:pointer" and the value composed by the title
+     * and the respective number.
      *
      * \param wasFound returns if the node was in the list already
      */
@@ -76,6 +76,16 @@ namespace KDChart {
             const QString& title,
             const void* p,
             bool& wasFound );
+
+    /**
+     * Auxiliary function:
+     * Create and store a string node with the name "kdchart:pointer"
+     * and the value given by pointerName.
+     */
+    static void SerializeCollector::storePointerName(
+            QDomDocument& doc,
+            QDomElement& pointerContainer,
+            const QString& pointerName );
 
     private:
          QMap<QString, QDomElement*> mMap;

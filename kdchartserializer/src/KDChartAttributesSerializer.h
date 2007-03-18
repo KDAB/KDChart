@@ -45,6 +45,7 @@
 #include <KDChartThreeDBarAttributes>
 #include <KDChartThreeDLineAttributes>
 #include <KDChartThreeDPieAttributes>
+#include <KDChartGridAttributes>
 
 #include <QDomDocument>
 
@@ -152,6 +153,12 @@ namespace KDChart {
                     QDomDocument& doc,
                     QDomElement& e,
                     const RelativePosition& a,
+                    const QString& title );
+
+            static void saveGridAttributes(
+                    QDomDocument& doc,
+                    QDomElement& e,
+                    const GridAttributes& a,
                     const QString& title );
     };
 
