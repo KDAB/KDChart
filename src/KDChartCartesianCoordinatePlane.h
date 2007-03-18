@@ -54,7 +54,7 @@ namespace KDChart {
 
         void setIsometricScaling ( bool onOff );
 
-        bool doesIsometricScaling();
+        bool doesIsometricScaling() const;
 
         const QPointF translate ( const QPointF& diagramPoint ) const;
 

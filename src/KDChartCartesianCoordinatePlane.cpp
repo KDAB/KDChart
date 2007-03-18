@@ -426,7 +426,7 @@ void CartesianCoordinatePlane::setIsometricScaling ( bool onOff )
     }
 }
 
-bool CartesianCoordinatePlane::doesIsometricScaling ()
+bool CartesianCoordinatePlane::doesIsometricScaling () const
 {
     return d->isometricScaling;
 }
