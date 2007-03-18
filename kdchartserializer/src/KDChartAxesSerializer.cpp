@@ -131,11 +131,6 @@ void AxesSerializer::saveCartesianAxes(
                         p,
                         wasFound );
         if( ! wasFound ){
-            // first save the information hold by the base class
-            saveAbstractAxis( doc, axisElement, *p,
-                            "kdchart:abstract-axis" );
-
-            // then save any diagram type specific information
             saveCartAxis( doc, axisElement, *p,
                         "kdchart:cartesian-axis" );
         }
@@ -155,17 +150,19 @@ void AxesSerializer::savePolarAxes(
     e.appendChild( axesList );
     Q_FOREACH ( const PolarAxis* p, axes )
     {
+        bool wasFound;
         QDomElement axisElement =
-                doc.createElement( "kdchart:axis" );
-        axesList.appendChild( axisElement );
-
-        // first save the information hold by the base class
-        saveAbstractAxis( doc, axisElement, *p,
-                          "kdchart:abstract-axis" );
-
-        // then save any diagram type specific information
-        savePolAxis( doc, axisElement, *p,
-                     "kdchart:polar-axis" );
+                SerializeCollector::findOrMakeChild(
+                        doc,
+                        *axesList,
+                        pointersList,
+                        "kdchart:axis",
+                        p,
+                        wasFound );
+        if( ! wasFound ){
+            savePolarAxis( doc, axisElement, *p,
+                          "kdchart:polar-axis" );
+        }
     }
 }
 */
@@ -212,6 +209,11 @@ void AxesSerializer::saveCartAxis(
     QDomElement axisElement =
         doc.createElement( title );
     e.appendChild( axisElement );
+
+    // first save the information hold by the base class
+    saveAbstractAxis( doc, axisElement, axis,
+                      "kdchart:abstract-axis" );
+
     // save the title
     KDXML::createStringNodeIfContent(
             doc, axisElement,
@@ -245,16 +247,21 @@ void AxesSerializer::saveCartAxis(
 
 //TODO once PolarAxis is implemented:
 /*
-void AxesSerializer::savePolPlane(
+void AxesSerializer::savePolarAxis(
         QDomDocument& doc,
         QDomElement& e,
         const PolarAxis& axis,
         const QString& title )const
 {
     QDomElement axisElement =
-            doc.createElement( title );
+        doc.createElement( title );
     e.appendChild( axisElement );
+
+    // first save the information hold by the base class
+    saveAbstractAxis( doc, axisElement, axis,
+                      "kdchart:abstract-axis" );
 
     // ...
 }
+
 */

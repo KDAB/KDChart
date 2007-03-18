@@ -29,6 +29,7 @@
 
 #include "KDChartDiagramsSerializer.h"
 #include "KDChartSerializeCollector.h"
+#include "KDChartCoordPlanesSerializer.h"
 #include "KDChartAxesSerializer.h"
 #include "KDChartAttributesModelSerializer.h"
 
@@ -39,7 +40,7 @@
 
 
 /**
-  \class KDChart::CoordPlanesSerializer KDChartCoordPlanesSerializer.h
+  \class KDChart::DiagramsSerializer KDChartDiagramsSerializer.h
 
   \brief Auxiliary methods reading/saving KD Chart data and configuration in streams.
   */
@@ -48,8 +49,9 @@
 using namespace KDChart;
 
 
-DiagramsSerializer::DiagramsSerializer()
+DiagramsSerializer::DiagramsSerializer( CoordPlanesSerializer* coordS )
 {
+    mCoordS = coordS;
     mAxesS = new AxesSerializer();
     mAttrModelS = new AttributesModelSerializer();
     mGlobalList = "kdchart:diagrams"; // default value, can be
@@ -111,7 +113,7 @@ void DiagramsSerializer::saveDiagrams(
 
     // create the local list holding names pointing into the global list
     QDomElement pointersList =
-            SerializeCollector::createPointersList( doc, e, title );
+            SerializeCollector::createPointersList( doc, e, mGlobalList );
 
     Q_FOREACH ( const AbstractDiagram* p, diags )
     {
@@ -137,11 +139,6 @@ void DiagramsSerializer::saveDiagram(
 {
     if( ! p ) return;
 
-    // first save the information hold by the base class
-    saveAbstractDiagram( doc, e, *p,
-                         "kdchart:abstract-diagram" );
-
-    // then save any diagram type specific information
     const AbstractCartesianDiagram* cartDiag =
             dynamic_cast<const AbstractCartesianDiagram*> ( p );
     if( cartDiag ){
@@ -173,6 +170,40 @@ void DiagramsSerializer::saveAbstractDiagram(
         doc,
         diagElement,
         diagram.attributesModel() );
+    KDXML::createModelIndexNode( doc, diagElement, "RootIndex",
+                                 diagram.rootIndex() );
+
+    // save the pointer to the associated coordinate plane,
+    // and save the plane in the global structure if not there yet
+    const CartesianCoordinatePlane* coordPlane =
+            static_cast<const CartesianCoordinatePlane*>( diagram.coordinatePlane() );
+    if( coordPlane ){
+        QDomElement coordPlanePtrElement =
+                doc.createElement( "CoodinatePlane" );
+        diagElement.appendChild( coordPlanePtrElement );
+        // access (or append, resp.) the global list
+        QDomElement* planesList =
+                SerializeCollector::instance()->findOrMakeElement( doc, mCoordS->globalList() );
+
+        bool wasFound;
+        QDomElement globalListElement =
+                SerializeCollector::findOrMakeChild(
+                doc,
+                *planesList,
+                coordPlanePtrElement,
+                "kdchart:coordinate-plane",
+                coordPlane,
+                wasFound );
+        if( ! wasFound ){
+            // Since the diagram is stored in the global structure anyway,
+            // it is save to store it right now.
+            // So it will not be forgotten, in case it is not embedded in any
+            // of the coordinate planes.
+            // The wasFound test makes sure it will not be stored twice.
+            mCoordS->saveCartPlane(
+                    doc, globalListElement, *coordPlane, "hase" );
+        }
+    }
 
     KDXML::createBoolNode( doc, diagElement, "AllowOverlappingDataValueTexts",
                            diagram.allowOverlappingDataValueTexts() );
@@ -193,6 +224,10 @@ void DiagramsSerializer::saveCartDiagram(
     QDomElement diagElement =
         doc.createElement( title );
     e.appendChild( diagElement );
+
+    // first save the information hold by the base class
+    saveAbstractDiagram( doc, diagElement, diagram,
+                         "kdchart:abstract-diagram" );
 
     // save the axes
     mAxesS->saveCartesianAxes( doc, diagElement,
@@ -250,4 +285,9 @@ void DiagramsSerializer::saveOtherDiagram(
     Q_UNUSED(doc)
     Q_UNUSED(e)
     Q_UNUSED(diagram)
+    /*
+    // first save the information hold by the base class
+    saveAbstractDiagram( doc, e, *diagElement,
+            "kdchart:abstract-diagram" );
+    */
 }

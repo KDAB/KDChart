@@ -41,6 +41,7 @@
 
 namespace KDChart {
 
+    class CoordPlanesSerializer;
     class AxesSerializer;
     class AttributesModelSerializer;
 
@@ -49,7 +50,7 @@ namespace KDChart {
         Q_OBJECT
 
         public:
-            explicit DiagramsSerializer();
+            explicit DiagramsSerializer( CoordPlanesSerializer* coordS );
             virtual ~DiagramsSerializer();
 
             virtual bool parseDiagrams(
@@ -94,6 +95,7 @@ namespace KDChart {
                     const AbstractDiagram& diagram )const;
 
         private:
+            CoordPlanesSerializer* mCoordS;
             AxesSerializer* mAxesS;
             AttributesModelSerializer* mAttrModelS;
         mutable QString mGlobalList;

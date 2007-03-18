@@ -29,16 +29,17 @@
 #ifndef __KDXMLTOOLS_H__
 #define __KDXMLTOOLS_H__
 
-#include <qpen.h>
 #include <qdom.h>
-#include <qstring.h>
-#include <qcolor.h>
-#include <qbrush.h>
-#include <qsize.h>
-#include <qrect.h>
-#include <qfont.h>
-#include <qstringlist.h>
-#include <qdatetime.h>
+#include <QPen>
+#include <QString>
+#include <QColor>
+#include <QBrush>
+#include <QSize>
+#include <QRect>
+#include <QFont>
+#include <QStringList>
+#include <QDateTime>
+#include <QModelIndex>
 
 namespace KDXML {
     QString penStyleToString( Qt::PenStyle style );
@@ -99,6 +100,8 @@ namespace KDXML {
             const QString& elementName, const QDate& date );
     void createTimeNode( QDomDocument& doc, QDomNode& parent,
             const QString& elementName, const QTime& time );
+    void createModelIndexNode( QDomDocument& doc, QDomNode& parent,
+            const QString& elementName, const QModelIndex& idx );
 
     bool findIntAttribute( const QDomElement& e, const QString & name, int& attr );
 

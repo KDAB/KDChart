@@ -47,9 +47,13 @@
 using namespace KDChart;
 
 
+static QString globalListName;
+
 CoordPlanesSerializer::CoordPlanesSerializer()
 {
-    mDiagS = new DiagramsSerializer();
+    mDiagS = new DiagramsSerializer( this );
+    globalListName = "kdchart:diagrams"; // default value, can be
+    // overwritten by the title passed to CoordPlanesSerializer::savePlanes()
 }
 
 CoordPlanesSerializer::~CoordPlanesSerializer()
@@ -97,13 +101,16 @@ void CoordPlanesSerializer::savePlanes(
         const CoordinatePlaneList& planes,
         const QString& title )const
 {
+    if( ! title.isEmpty() )
+        globalListName = title;
+
     // access (or append, resp.) the global list
     QDomElement* planesList =
-            SerializeCollector::instance()->findOrMakeElement( doc, title );
+            SerializeCollector::instance()->findOrMakeElement( doc, globalListName );
 
     // create the local list holding names pointing into the global list
     QDomElement pointersList =
-            SerializeCollector::createPointersList( doc, e, title );
+            SerializeCollector::createPointersList( doc, e, globalListName );
 
     Q_FOREACH ( AbstractCoordinatePlane* p, planes )
     {
@@ -187,4 +194,9 @@ void CoordPlanesSerializer::saveOtherPlane(
     Q_UNUSED(doc)
     Q_UNUSED(e)
     Q_UNUSED(plane)
+}
+
+const QString CoordPlanesSerializer::globalList()const
+{
+    return globalListName;
 }

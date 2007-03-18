@@ -87,6 +87,8 @@ namespace KDChart {
                     QDomElement& e,
                     const AbstractCoordinatePlane& plane )const;
 
+            const QString globalList()const;
+
         private:
             DiagramsSerializer* mDiagS;
     };

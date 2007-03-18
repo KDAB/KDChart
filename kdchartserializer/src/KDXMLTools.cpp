@@ -344,6 +344,15 @@ namespace KDXML {
                 QString::number( time.msec() ) );
     }
 
+    void createModelIndexNode( QDomDocument& doc, QDomNode& parent,
+            const QString& elementName, const QModelIndex& idx )
+    {
+        QDomElement element = doc.createElement( elementName );
+        parent.appendChild( element );
+        element.setAttribute( "Column", QString::number( idx.column() ) );
+        element.setAttribute( "Row",    QString::number( idx.row()    ) );
+    }
+
 
     QString penStyleToString( Qt::PenStyle style )
     {
