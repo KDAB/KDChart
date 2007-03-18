@@ -353,6 +353,28 @@ namespace KDXML {
         element.setAttribute( "Row",    QString::number( idx.row()    ) );
     }
 
+    void createPositionBooleansNode(
+            QDomDocument& doc, QDomNode& parent, const QString& elementName,
+            bool unknown, bool center,
+            bool northWest, bool north, bool northEast,
+            bool east, bool southEast, bool south, bool southWest, bool west,
+            bool floating )
+
+    {
+        QDomElement element = doc.createElement( elementName );
+        parent.appendChild( element );
+        setBoolAttribute( element, "Unknown",   unknown );
+        setBoolAttribute( element, "Center",    center );
+        setBoolAttribute( element, "NorthWest", northWest );
+        setBoolAttribute( element, "North",     north );
+        setBoolAttribute( element, "NorthEast", northEast );
+        setBoolAttribute( element, "East",      east );
+        setBoolAttribute( element, "SouthEast", southEast );
+        setBoolAttribute( element, "South",     south );
+        setBoolAttribute( element, "SouthWest", southWest );
+        setBoolAttribute( element, "West",      west );
+        setBoolAttribute( element, "Floating",  floating );
+    }
 
     QString penStyleToString( Qt::PenStyle style )
     {

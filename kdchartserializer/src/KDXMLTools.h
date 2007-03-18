@@ -103,6 +103,13 @@ namespace KDXML {
     void createModelIndexNode( QDomDocument& doc, QDomNode& parent,
             const QString& elementName, const QModelIndex& idx );
 
+    void createPositionBooleansNode(
+            QDomDocument& doc, QDomNode& parent, const QString& elementName,
+            bool unknown, bool center,
+            bool northWest, bool north, bool northEast,
+            bool east, bool southEast, bool south, bool southWest, bool west,
+            bool floating );
+
     bool findIntAttribute( const QDomElement& e, const QString & name, int& attr );
 
     bool readIntNode( const QDomElement& element, int& value );

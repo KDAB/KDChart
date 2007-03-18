@@ -125,9 +125,13 @@ namespace KDChart {
                     const RingDiagram& diagram,
                     const QString& title )const;
 
-            // By default this does nothing, it can be used by derived classes,
+            // By default this just saves the information stored by the
+            // base class AbstractDiagram, it can be used by derived classes,
             // will be called whenever a diagram is found that is not one
             // of KD Chart's built-in diagram classes.
+            // When using this option, just make sure to also call the
+            // saveAbstractDiagram() method from within your own method,
+            // so the base class's information will be stored too.
             virtual void saveOtherDiagram(
                     QDomDocument& doc,
                     QDomElement& e,

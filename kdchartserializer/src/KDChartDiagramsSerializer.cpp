@@ -380,9 +380,8 @@ void DiagramsSerializer::saveAbstractPieDiagram(
                          "kdchart:polar-coordinate-diagram" );
 
     // then save what is stored in the derived class
-    KDXML::createRealNode( doc, diagElement, "Granularity", diagram.granularity() );
-
-    // ...
+    KDXML::createRealNode( doc, diagElement, "Granularity",   diagram.granularity() );
+    KDXML::createIntNode(  doc, diagElement, "StartPosition", diagram.startPosition() );
 }
 
 void DiagramsSerializer::savePieDiagram(
@@ -398,6 +397,7 @@ void DiagramsSerializer::savePieDiagram(
     // first save the information hold by the base class
     saveAbstractPieDiagram( doc, diagElement, diagram,
                             "kdchart:abstract-pie-diagram" );
+    // that's all, there is no to-be-saved information in this class
 }
 
 void DiagramsSerializer::savePolarDiagram(
@@ -413,6 +413,36 @@ void DiagramsSerializer::savePolarDiagram(
     // first save the information hold by the base class
     savePolCoordDiagram( doc, diagElement, diagram,
                          "kdchart:polar-coordinate-diagram" );
+
+    // then save what is stored in the derived class
+    KDXML::createIntNode(  doc, diagElement, "ZeroDegreePosition",   diagram.zeroDegreePosition() );
+    KDXML::createBoolNode( doc, diagElement, "RotateCircularLabels", diagram.rotateCircularLabels() );
+    KDXML::createPositionBooleansNode(
+            doc, diagElement, "ShowDelimitersAtPosition",
+            diagram.showDelimitersAtPosition( Position::Unknown ),
+            diagram.showDelimitersAtPosition( Position::Center ),
+            diagram.showDelimitersAtPosition( Position::NorthWest ),
+            diagram.showDelimitersAtPosition( Position::North ),
+            diagram.showDelimitersAtPosition( Position::NorthEast ),
+            diagram.showDelimitersAtPosition( Position::East ),
+            diagram.showDelimitersAtPosition( Position::SouthEast ),
+            diagram.showDelimitersAtPosition( Position::South ),
+            diagram.showDelimitersAtPosition( Position::SouthWest ),
+            diagram.showDelimitersAtPosition( Position::West ),
+            diagram.showDelimitersAtPosition( Position::Floating ) );
+    KDXML::createPositionBooleansNode(
+            doc, diagElement, "ShowLabelsAtPosition",
+            diagram.showLabelsAtPosition( Position::Unknown ),
+            diagram.showLabelsAtPosition( Position::Center ),
+            diagram.showLabelsAtPosition( Position::NorthWest ),
+            diagram.showLabelsAtPosition( Position::North ),
+            diagram.showLabelsAtPosition( Position::NorthEast ),
+            diagram.showLabelsAtPosition( Position::East ),
+            diagram.showLabelsAtPosition( Position::SouthEast ),
+            diagram.showLabelsAtPosition( Position::South ),
+            diagram.showLabelsAtPosition( Position::SouthWest ),
+            diagram.showLabelsAtPosition( Position::West ),
+            diagram.showLabelsAtPosition( Position::Floating ) );
 }
 
 void DiagramsSerializer::saveRingDiagram(
@@ -429,6 +459,9 @@ void DiagramsSerializer::saveRingDiagram(
     // first save the information hold by the base class
     saveAbstractPieDiagram( doc, diagElement, diagram,
                             "kdchart:abstract-pie-diagram" );
+
+    // then save what is stored in the derived class
+    KDXML::createBoolNode(  doc, diagElement, "RelativeThickness",   diagram.relativeThickness() );
 }
 
 void DiagramsSerializer::saveOtherDiagram(
@@ -436,12 +469,12 @@ void DiagramsSerializer::saveOtherDiagram(
         QDomElement& e,
         const AbstractDiagram& diagram )const
 {
-    Q_UNUSED(doc)
-    Q_UNUSED(e)
-    Q_UNUSED(diagram)
-    /*
+    QDomElement diagElement =
+            doc.createElement( "kdchart:user-defined-diagram" );
+    e.appendChild( diagElement );
+
     // first save the information hold by the base class
-    saveAbstractDiagram( doc, e, *diagElement,
-            "kdchart:abstract-diagram" );
-    */
+    saveAbstractDiagram( doc, diagElement, diagram,
+                         "kdchart:abstract-diagram" );
+    // that's all, there is no to-be-saved information in this class
 }
