@@ -299,6 +299,7 @@ m_legend->setFloatingPosition( relativePosition );
      */
     void setMarkerAttributes( uint dataset, const MarkerAttributes& );
     MarkerAttributes markerAttributes( uint dataset ) const;
+    const QMap<uint, MarkerAttributes> markerAttributes() const;
 
     /**
      * This option is on by default, it means that Marker sizes in the Legend

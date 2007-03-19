@@ -485,7 +485,6 @@ QBrush Legend::brush( uint dataset ) const
         return d->modelBrushes[ dataset ];
 }
 
-
 const QMap<uint,QBrush> Legend::brushes() const
 {
     return d->brushes;
@@ -522,6 +521,11 @@ QPen Legend::pen( uint dataset ) const
         return d->modelPens[ dataset ];
 }
 
+const QMap<uint,QPen> Legend::pens() const
+{
+    return d->pens;
+}
+
 
 void Legend::setMarkerAttributes( uint dataset, const MarkerAttributes& markerAttributes )
 {
@@ -538,6 +542,12 @@ MarkerAttributes Legend::markerAttributes( uint dataset ) const
         return d->modelMarkers[ dataset ];
     return MarkerAttributes();
 }
+
+const QMap<uint, MarkerAttributes> Legend::markerAttributes() const
+{
+    return d->markerAttributes;
+}
+
 
 void Legend::setTextAttributes( const TextAttributes &a )
 {
