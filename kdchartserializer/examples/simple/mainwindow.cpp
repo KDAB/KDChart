@@ -33,6 +33,7 @@
 #include <KDChartDataValueAttributes>
 #include <KDChartThreeDLineAttributes>
 #include <KDChartHeaderFooter>
+#include <KDChartLegend>
 
 #include <KDChartSerializer>
 
@@ -82,6 +83,14 @@ MainWindow::MainWindow( QWidget* parent ) :
     headerFooter->setTextAttributes( textAttrs );
     headerFooter->setType( KDChart::HeaderFooter::Footer );
     headerFooter->setPosition( KDChart::Position::SouthEast );
+
+    Legend* legend = new Legend( m_lines, m_chart );
+    legend->setPosition( Position::South );
+    legend->setAlignment( Qt::AlignCenter );
+    legend->setShowLines( false );
+    legend->setTitleText( tr( "The Legend" ) );
+    legend->setOrientation( Qt::Horizontal );
+    m_chart->addLegend( legend );
 
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
     m_chart->setGlobalLeading( 20,  20,  20,  20 );

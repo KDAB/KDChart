@@ -38,6 +38,7 @@ SOURCES= \
         KDChartDiagramsSerializer.cpp \
         KDChartAxesSerializer.cpp \
         KDChartTextAreaSerializer.cpp \
+        KDChartLegendsSerializer.cpp \
         KDXMLTools.cpp
 
 HEADERS= \
@@ -51,4 +52,5 @@ HEADERS= \
         KDChartDiagramsSerializer.h \
         KDChartAxesSerializer.h \
         KDChartTextAreaSerializer.h \
+        KDChartLegendsSerializer.h \
         KDXMLTools.cpp

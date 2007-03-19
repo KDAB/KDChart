@@ -33,6 +33,7 @@
 #include "KDChartAttributesSerializer.h"
 #include "KDChartCoordPlanesSerializer.h"
 #include "KDChartTextAreaSerializer.h"
+#include "KDChartLegendsSerializer.h"
 
 #include "KDXMLTools.h"
 
@@ -267,8 +268,11 @@ bool Serializer::saveChartElement(
                 mChart->headerFooters(),
                 "kdchart:headers-footers" );
 
-        // save the legend
-        // ...
+        // save the legends
+        LegendsSerializer::saveLegends(
+                doc, chartElement,
+                mChart->legends(),
+                "kdchart:legends" );
     }
     return true;
 }
