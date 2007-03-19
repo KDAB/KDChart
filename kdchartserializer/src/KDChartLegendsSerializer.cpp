@@ -28,6 +28,7 @@
  **********************************************************************/
 
 #include "KDChartLegendsSerializer.h"
+#include "KDChartDiagramsSerializer.h"
 #include "KDChartSerializeCollector.h"
 #include "KDChartIdMapper.h"
 
@@ -87,4 +88,11 @@ void LegendsSerializer::saveLegend(
     e.appendChild( element );
 
     KDXML::createBoolNode( doc, element, "Visible", legend.isVisible() );
+
+    // save the associated diagrams
+    DiagramsSerializer diagS( 0 );
+    diagS.saveDiagrams( doc,
+                        element,
+                        legend.constDiagrams(),
+                        "kdchart:diagrams" );
 }

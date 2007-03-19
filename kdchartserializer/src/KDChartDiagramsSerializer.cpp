@@ -192,7 +192,7 @@ void DiagramsSerializer::saveAbstractDiagram(
     // and save the plane in the global structure if not there yet
     const CartesianCoordinatePlane* coordPlane =
             static_cast<const CartesianCoordinatePlane*>( diagram.coordinatePlane() );
-    if( coordPlane ){
+    if( coordPlane && mCoordS ){
         QDomElement coordPlanePtrElement =
                 doc.createElement( "CoodinatePlane" );
         diagElement.appendChild( coordPlanePtrElement );
