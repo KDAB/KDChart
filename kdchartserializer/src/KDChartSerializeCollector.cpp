@@ -32,6 +32,8 @@
 
 #include "KDXMLTools.h"
 
+#include <QDebug>
+
 using namespace KDChart;
 
 SerializeCollector::SerializeCollector()
@@ -77,11 +79,23 @@ QDomElement* SerializeCollector::findElement( const QString& name )const
     return 0;
 }
 
+const QString SerializeCollector::unresolvedTagName()
+{
+    return "U_N_R_E_S_O_L_V_E_D";
+}
+const QString SerializeCollector::unresolvedMapName()
+{
+    return "kdchart:unresolved-pointers";
+}
+
 void SerializeCollector::appendDataToElement( QDomElement& element )const
 {
     Q_FOREACH (QDomElement* e, mMap)
     {
-        element.appendChild( *e );
+        //qDebug() << e->tagName();
+        if( e->tagName() != unresolvedMapName() ){
+            element.appendChild( *e );
+        }
     }
 }
 
@@ -92,7 +106,6 @@ QDomElement SerializeCollector::createPointersList(
     e.appendChild( list );
     return list;
 }
-
 
 QDomElement SerializeCollector::findOrMakeChild(
         QDomDocument& doc,
@@ -114,6 +127,56 @@ QDomElement SerializeCollector::findOrMakeChild(
     return QDomElement();
 }
 
+
+void SerializeCollector::storeUnresolvedPointer(
+        QDomDocument& doc,
+        const QObject* p,
+        QDomElement& pointerContainer )
+{
+    // access (or append, resp.) the global list
+    bool wasFound;
+    const QString pointerName(
+            IdMapper::instance()->findOrMakeName(
+                    p, "kdchart:q-object-pointer", wasFound, false ) );
+
+    KDXML::createNodeWithAttribute( doc, pointerContainer,
+            "kdchart:unresolved-pointer", "name", pointerName );
+}
+
+
+void SerializeCollector::resolvePointers(
+        QDomDocument& doc,
+        QDomElement& rootNode )
+{
+    // make a list of all unresolved pointer names in the rootNode
+    QDomNodeList unresolvedList
+            = rootNode.elementsByTagName( "kdchart:unresolved-pointer" );
+
+    if( ! unresolvedList.isEmpty() ){
+        // access (or append, resp.) the global list
+        const QMap<const void*, QString> unresolvedMap
+                = IdMapper::instance()->unresolvedMap();
+        QMapIterator<const void*, QString> unresolvedIter( unresolvedMap );
+        while( unresolvedIter.hasNext() ) {
+            unresolvedIter.next();
+            const void* p = unresolvedIter.key();
+            QString globalName( IdMapper::instance()->findName( p ) );
+            if( globalName.isEmpty() )
+                globalName = unresolvedTagName();
+            for( int i=0; i<unresolvedList.count(); ++i ){
+                QDomElement e = unresolvedList.item(i).toElement();
+                if( e.attribute( "name" )
+                    == unresolvedIter.value() )
+                {
+                    e.removeAttribute( "name" );
+                    QDomText elementContent =
+                            doc.createTextNode( globalName );
+                    e.appendChild( elementContent );
+                }
+            }
+        }
+    }
+}
 
 void SerializeCollector::storePointerName(
         QDomDocument& doc,

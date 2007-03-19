@@ -186,8 +186,24 @@ bool Serializer::saveRootElement(
     bool bOK = saveChartElement( doc, docRoot );
 
     if( bOK ){
-        // save all collected data
+        // So far the document is having this content only:
+        //
+        // <kdchart:kdchart ... >
+        //   <kdchart:body>
+        //     <kdchart:charts:pointers>
+        //       <kdchart:pointer>kdchart:chart:1</kdchart:pointer>
+        //     </kdchart:charts:pointers>
+        //   </kdchart:body>
+        // </kdchart:kdchart>
+        //
+        // Now save all collected data:
+        // attribute-models, axes, charts, coordinate-planes,
+        // diagrams, headers-footers, legends, ...
         SerializeCollector::instance()->appendDataToElement( docRoot );
+
+        // Last step: Try to resolve all entries that
+        // were stored as unresolved pointers before.
+        SerializeCollector::instance()->resolvePointers( doc, docRoot );
     }
     return bOK;
 }

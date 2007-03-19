@@ -58,16 +58,18 @@ IdMapper* IdMapper::instance()
 QString IdMapper::findOrMakeName(
         const void* id,
         const QString& baseName,
-        bool& wasFound )
+        bool& wasFound,
+        bool useMapOfKnownElements )
 {
-    QString name = findName( id );
+    QString name = findName( id, useMapOfKnownElements );
     wasFound = ! name.isNull();
 
     if( ! wasFound ){
+        QMap<const void*, QString>& map = useMapOfKnownElements ? mMapOfKnownElements : mUnresolvedMap;
         // check if we have a counter stored already - if not we add one
         int counter = 1;
         QString counterName( baseName + mCounterTag );
-        QMapIterator<const void*, QString> i( mMap );
+        QMapIterator<const void*, QString> i( map );
         while( i.hasNext() ) {
             i.next();
             if( i.value() == counterName ){
@@ -81,29 +83,33 @@ QString IdMapper::findOrMakeName(
         if( counter == 1 ){
             int* p = new int;
             *p = counter;
-            mMap[ p ] = counterName;
+            map[ p ] = counterName;
         }
 
         // store a new name using the counter value, and return it
         name = baseName + ":" + QString::number( counter );
-        mMap[ id ] = name;
+        map[ id ] = name;
     }
     return name;
 }
 
 
-QString IdMapper::findName( const void* id )const
+QString IdMapper::findName( const void* id,
+                            bool useMapOfKnownElements )const
 {
-    if( mMap.contains( id ) )
-        return mMap.value( id );
+    const QMap<const void*, QString>& map = useMapOfKnownElements ? mMapOfKnownElements : mUnresolvedMap;
+    if( map.contains( id ) )
+        return map.value( id );
     return QString();
 }
 
 
 
-const void* IdMapper::findId( const QString& name )const
+const void* IdMapper::findId( const QString& name,
+                              bool useMapOfKnownElements )const
 {
-    QMapIterator<const void*, QString> i( mMap );
+    const QMap<const void*, QString>& map = useMapOfKnownElements ? mMapOfKnownElements : mUnresolvedMap;
+    QMapIterator<const void*, QString> i( map );
     while( i.hasNext() ) {
         i.next();
         if( i.value() == name )
@@ -112,12 +118,24 @@ const void* IdMapper::findId( const QString& name )const
     return 0;
 }
 
+const QMap<const void*, QString> IdMapper::unresolvedMap()const
+{
+    return mUnresolvedMap;
+}
+
 void IdMapper::debugOut()const
 {
     qDebug() << "IdMapper::debugOut():";
-    QMapIterator<const void*, QString> i( mMap );
+    qDebug() << "map of known elements:";
+    QMapIterator<const void*, QString> i( mMapOfKnownElements );
     while( i.hasNext() ) {
         i.next();
         qDebug() << "key:" << i.key() << "pointer:" << i.value();
+    }
+    qDebug() << "unresolved map:";
+    QMapIterator<const void*, QString> i2( mUnresolvedMap );
+    while( i2.hasNext() ) {
+        i2.next();
+        qDebug() << "key:" << i2.key() << "pointer:" << i2.value();
     }
 }

@@ -95,10 +95,15 @@ MainWindow::MainWindow( QWidget* parent ) :
     legend->setText( 3, tr( "turquoise" ) );
     legend->setText( 4, tr( "magenta" ) );
 
-    const DataValueAttributes da( m_lines->dataValueAttributes( 2 ) );
+    DataValueAttributes da( m_lines->dataValueAttributes( 2 ) );
     MarkerAttributes ma( da.markerAttributes() );
     ma.setMarkerStyle( MarkerAttributes::MarkerRing );
     legend->setMarkerAttributes( 2, ma );
+
+    RelativePosition negPos( da.negativePosition() );
+    negPos.setReferenceArea( m_chart );
+    da.setNegativePosition( negPos );
+    m_lines->setDataValueAttributes( 2, da );
 
     // for testing: make the legend item's color look differently
     // from the diagram line's color,

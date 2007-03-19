@@ -54,29 +54,37 @@ namespace KDChart {
          */
         QString findOrMakeName( const void* id,
                                 const QString& baseName,
-                                bool& wasFound );
+                                bool& wasFound,
+                                bool useMapOfKnownElements=true );
         /** Returns the name that was stored for this pointer.
          *
          * If none was stored before, a QString() is returned.
          */
-        QString findName( const void* id )const;
+        QString findName( const void* id,
+                          bool useMapOfKnownElements=true )const;
         /** Returns the pointer that was stored for the given name.
          *
          * If none was stored, it returns zero.
          */
-        const void* findId( const QString& name )const;
+        const void* findId( const QString& name,
+                            bool useMapOfKnownElements=true )const;
 
         /** Delete all collected data.
          */
         void clear();
+
+        /** Return the list of unresolved elements
+         */
+        const QMap<const void*, QString> unresolvedMap()const;
 
         /** Prints all stored names and their respective pointers via qDebug().
           */
         void debugOut()const;
 
         private:
-        QMap<const void*, QString> mMap;
-        QString mCounterTag;
+            QMap<const void*, QString> mMapOfKnownElements;
+            QMap<const void*, QString> mUnresolvedMap;
+            QString mCounterTag;
     };
 
 } // end of namespace

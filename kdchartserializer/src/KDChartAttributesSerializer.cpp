@@ -28,6 +28,8 @@
  **********************************************************************/
 
 #include "KDChartAttributesSerializer.h"
+#include "KDChartIdMapper.h"
+#include "KDChartSerializeCollector.h"
 
 #include "KDChartPosition.h"
 
@@ -601,6 +603,22 @@ void AttributesSerializer::saveRelativePosition(
 {
     QDomElement element = doc.createElement( title );
     e.appendChild( element );
+
+    // store the pointer to the reference area
+    const QObject* refArea = a.referenceArea();
+    if( refArea ){
+        QDomElement refAreaElement = doc.createElement( "ReferenceArea" );
+        element.appendChild( refAreaElement );
+        const QString globalRefAreaName( IdMapper::instance()->findName( refArea ) );
+        const bool bOK = ! globalRefAreaName.isEmpty();
+        if( bOK ){
+            SerializeCollector::instance()->storePointerName(
+                    doc, refAreaElement, globalRefAreaName );
+        }else{
+            SerializeCollector::instance()->storeUnresolvedPointer(
+                    doc, refArea, refAreaElement );
+        }
+    }
     // save the reference points
     const PositionPoints points = a.referencePoints();
     if( ! points.isNull() ){

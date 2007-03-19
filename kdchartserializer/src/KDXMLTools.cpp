@@ -49,6 +49,17 @@ namespace KDXML {
         element.setAttribute( attrName, value );
     }
 
+    void createNodeWithAttribute( QDomDocument& doc, QDomNode& parent,
+                                  const QString& elementName,
+                                  const QString& attrName,
+                                  const QString& attrText )
+    {
+        QDomElement newElement =
+                doc.createElement( elementName );
+        parent.appendChild( newElement );
+        newElement.setAttribute( attrName, attrText );
+    }
+
     void createBoolNode( QDomDocument& doc, QDomNode& parent,
             const QString& elementName, bool value )
     {

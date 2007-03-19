@@ -1,6 +1,7 @@
 #ifndef __KDCHART_SERIALIZE_COLLECTOR_H__
 #define __KDCHART_SERIALIZE_COLLECTOR_H__
 
+#include <QObject>
 #include <QDomDocument>
 #include <QDomElement>
 #include <QMap>
@@ -47,7 +48,10 @@ namespace KDChart {
     void clear();
 
     /** Append all collected data to the element given.
-      */
+     *
+     * \note This needs to be called after you have stored all of
+     * your structures, but before you call resolvePointers().
+     */
     void appendDataToElement( QDomElement& element )const;
 
     /**
@@ -67,6 +71,12 @@ namespace KDChart {
      * the name "kdchart:pointer" and the value composed by the title
      * and the respective number.
      *
+     * The returned element should be used to store the object that
+     * the pointer is pointing to.
+     * So if e.g. you have a (Some)Diagram pointer, you should call
+     * DiagramsSerializer::saveDiagram passing the QDomElement to it that
+     * you got as return value from findOrMakeChild.
+     * 
      * \param wasFound returns if the node was in the list already
      */
     static QDomElement findOrMakeChild(
@@ -76,6 +86,79 @@ namespace KDChart {
             const QString& title,
             const void* p,
             bool& wasFound );
+
+    /**
+     * Auxiliary function for the global list of unresolved(!) pointers:
+     *
+     * That special list is decicated for temporarily storing pure QObject pointers.
+     *
+     * \note This list is for QObject pointers only. It is not to be used for
+     * pointers to AttributeModel, Axis, Chart, CoordinatePlane, Diagram,
+     * HeaderFooter, Legend. For such pointers use findOrMakeChild() instead!
+     *
+     * Working with the global list of unresolved pointers goes like this:
+     *
+     * Step 1: While storing your local structure
+     *         you might want to store a QObject* p,
+     *         typically this could point to some ReferenceObject.
+     *         You look for it, it was not stored yet,
+     *         so you store it temporarily as unresolved pointer:
+\verbatim
+    QDomElement localPointerElement =
+            doc.createElement( "ReferenceObject" );
+    someParentElement.appendChild( localPointerElement );
+
+    const QString globalName( IdMapper::instance()->findName( p ) );
+    const bool bOK = ! globalName.isEmpty();
+    if( bOK ){
+        // you store the global name:
+
+        SerializeCollector::instance()->storePointerName(
+                doc, localPointerElement, globalName );
+    }else{
+        // there was no global name found yet,
+        // so you store it temporarily:
+
+        SerializeCollector::instance()->storeUnresolvedPointer(
+                doc, p, localPointerElement );
+    }
+\endverbatim
+     * This does the following:
+     * \li An entry is added to the global list of unresolved pointers,
+     *     (or an existing entry pointing to the same object is reused, resp.)
+     * \li Your local QDomElement receives a temporary string entry
+     *     of this type: "kdchart:unresolved-pointer".
+     *
+     * 
+     * Step 2: After you have stored ALL of your structures,
+     *         and after you have called appendDataToElement()
+     *         you run the resolve method on the root node
+     *         of your QDomDocument:
+\verbatim
+    SerializeCollector::instance()->resolvePointers( doc, rootNode );
+\endverbatim
+     * This does the following:
+     * \li All of the temporary "kdchart:unresolved-pointer"
+     *     entries in the whole document are matched against the
+     *     global ID list hold by IdMapper
+     * \li When possible, an entry's value is replaced by the real
+     *     pointer-name, that might have been stored in between.
+     * \li All non-resolvable entries are marked as "U_N_R_E_S_O_L_V_E_D".
+     */
+    static void storeUnresolvedPointer(
+            QDomDocument& doc,
+            const QObject* p,
+            QDomElement& pointerContainer );
+
+    /**
+     * Auxiliary method to be called after all of your
+     * structures have been stored.
+     *
+     * \sa storeUnresolvedPointer
+     */
+    static void resolvePointers(
+            QDomDocument& doc,
+            QDomElement& rootNode );
 
     /**
      * Auxiliary function:
@@ -88,7 +171,10 @@ namespace KDChart {
             const QString& pointerName );
 
     private:
-         QMap<QString, QDomElement*> mMap;
+        static const QString unresolvedTagName();
+        static const QString unresolvedMapName();
+
+        QMap<QString, QDomElement*> mMap;
     };
 
 } // end of namespace

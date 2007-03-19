@@ -52,6 +52,11 @@ namespace KDXML {
     void setDoubleAttribute( QDomElement& element,
             const QString& attrName, double value );
 
+    void createNodeWithAttribute( QDomDocument& doc, QDomNode& parent,
+                                  const QString& elementName,
+                                  const QString& attrName,
+                                  const QString& attrText );
+
     void createBoolNode( QDomDocument& doc, QDomNode& parent,
             const QString& elementName, bool value );
     void createOrientationNode( QDomDocument& doc, QDomNode& parent,
@@ -72,8 +77,8 @@ namespace KDXML {
                            const QString& elementName,
                            const QString& text );
     void createStringNodeIfContent( QDomDocument& doc, QDomNode& parent,
-                           const QString& elementName,
-                           const QString& text );
+                                    const QString& elementName,
+                                    const QString& text );
     void createPointFNode( QDomDocument& doc, QDomNode& parent,
                            const QString& elementName,
                            const QPointF& point );
