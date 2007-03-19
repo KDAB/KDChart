@@ -92,6 +92,10 @@ MainWindow::MainWindow( QWidget* parent ) :
     legend->setText( 2, tr( "blue" ) );
     legend->setText( 3, tr( "turquoise" ) );
     legend->setText( 4, tr( "magenta" ) );
+    // for testing: make the legend item's color look differently
+    // from the diagram line's color,
+    // so the legend's color map will be stored in the file:
+    // legend->setColor(  1, Qt::black );
     legend->setOrientation( Qt::Horizontal );
     m_chart->addLegend( legend );
 

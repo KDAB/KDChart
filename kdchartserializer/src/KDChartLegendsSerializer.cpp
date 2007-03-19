@@ -120,5 +120,21 @@ void LegendsSerializer::saveLegend(
             ++i;
         }
     }
+    // save the brushes map
+    {
+        QDomElement mapElement =
+                doc.createElement( "BrushesMap" );
+        element.appendChild( mapElement );
+        const QMap<uint,QBrush> map( legend.brushes() );
+        QMap<uint,QBrush>::const_iterator i = map.constBegin();
+        while (i != map.constEnd()) {
+            QDomElement brushElement =
+                    doc.createElement( "item" );
+            mapElement.appendChild( brushElement );
+            brushElement.setAttribute( "dataset", i.key() );
+            KDXML::createBrushNode( doc, brushElement, "brush", i.value() );
+            ++i;
+        }
+    }
 
 }
