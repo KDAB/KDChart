@@ -51,7 +51,7 @@ namespace KDChart {
 
             static void saveLegend(
                     QDomDocument& doc,
-                    QDomElement& e,
+                    QDomElement& element,
                     const Legend& legend,
                     const QString& title );
     };

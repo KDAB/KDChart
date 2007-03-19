@@ -80,13 +80,10 @@ void LegendsSerializer::saveLegends(
 
 void LegendsSerializer::saveLegend(
         QDomDocument& doc,
-        QDomElement& e,
+        QDomElement& element,
         const Legend& legend,
         const QString& title )
 {
-    QDomElement element = doc.createElement( title );
-    e.appendChild( element );
-
     KDXML::createBoolNode( doc, element, "Visible", legend.isVisible() );
 
     // save the associated diagrams
@@ -183,6 +180,8 @@ void LegendsSerializer::saveLegend(
             doc, element, legend.textAttributes(), "TextAttributes" );
     KDXML::createStringNode(
             doc, element, "TitleText", legend.titleText() );
+    AttributesSerializer::saveTextAttributes(
+            doc, element, legend.titleTextAttributes(), "TitleTextAttributes" );
     KDXML::createIntNode(
             doc, element, "Spacing", legend.spacing() );
 }
