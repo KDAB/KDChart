@@ -95,4 +95,30 @@ void LegendsSerializer::saveLegend(
                         element,
                         legend.constDiagrams(),
                         "kdchart:diagrams" );
+    KDXML::createAlignmentNode( doc, element, "Alignment", legend.alignment() );
+    KDXML::createStringNode( doc, element, "Position", legend.position().name() );
+    if( legend.position() == Position::Floating )
+        AttributesSerializer::saveRelativePosition(
+                doc, element, legend.floatingPosition(), "FloatingPosition" );
+    KDXML::createOrientationNode(
+            doc, element, "Orientation", legend.orientation() );
+    KDXML::createBoolNode(
+            doc, element, "ShowLines", legend.showLines() );
+    // save the texts map
+    {
+        QDomElement mapElement =
+                doc.createElement( "TextsMap" );
+        element.appendChild( mapElement );
+        const QMap<uint,QString> map( legend.texts() );
+        QMap<uint,QString>::const_iterator i = map.constBegin();
+        while (i != map.constEnd()) {
+            QDomElement textElement =
+                    doc.createElement( "item" );
+            mapElement.appendChild( textElement );
+            textElement.setAttribute( "dataset", i.key() );
+            textElement.setAttribute( "text",    i.value() );
+            ++i;
+        }
+    }
+
 }

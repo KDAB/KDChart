@@ -37,8 +37,6 @@
 
 #include <KDChartSerializer>
 
-#include <QTimer>
-
 using namespace KDChart;
 
 MainWindow::MainWindow( QWidget* parent ) :
@@ -89,15 +87,16 @@ MainWindow::MainWindow( QWidget* parent ) :
     legend->setAlignment( Qt::AlignCenter );
     legend->setShowLines( false );
     legend->setTitleText( tr( "The Legend" ) );
+    legend->setText( 0, tr( "The red one" ) );
+    legend->setText( 1, tr( "green" ) );
+    legend->setText( 2, tr( "blue" ) );
+    legend->setText( 3, tr( "turquoise" ) );
+    legend->setText( 4, tr( "magenta" ) );
     legend->setOrientation( Qt::Horizontal );
     m_chart->addLegend( legend );
 
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
     m_chart->setGlobalLeading( 20,  20,  20,  20 );
-    // Instantiate the timer
-    QTimer *timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(slot_timerFired()));
-    timer->start(30);
 }
 
 void MainWindow::on_lineTypeCB_currentIndexChanged( const QString & text )
@@ -148,48 +147,6 @@ void MainWindow::on_paintValuesCB_toggled( bool checked )
         m_lines->setDataValueAttributes( iColumn, a );
     }
     m_chart->update();
-}
-
-void MainWindow::on_animateAreasCB_toggled( bool checked )
-{
-    if( checked ){
-        highlightAreaCB->setCheckState( Qt::Unchecked );
-        m_curRow = 0;
-        m_curColumn = 0;
-    }else{
-        m_curColumn = -1;
-    }
-    highlightAreaCB->setEnabled( ! checked );
-    highlightAreaSB->setEnabled( ! checked );
-    // un-highlight all previously highlighted columns
-    const int rowCount = m_lines->model()->rowCount();
-    const int colCount = m_lines->model()->columnCount();
-    for ( int iColumn = 0; iColumn<colCount; ++iColumn ){
-        setHighlightArea( -1, iColumn, 127, false, false );
-        for ( int iRow = 0; iRow<rowCount; ++iRow )
-        //    m_lines->resetLineAttributes( cellIndex );
-            setHighlightArea( iRow, iColumn, 127, false, false );
-    }
-    m_chart->update();
-    m_curOpacity = 0;
-}
-
-void MainWindow::slot_timerFired()
-{
-    if( m_curColumn < 0 ) return;
-    m_curOpacity += 8;
-    if( m_curOpacity > 255 ){
-        setHighlightArea( m_curRow, m_curColumn, 127, false, false );
-        m_curOpacity = 5;
-        ++m_curRow;
-        if( m_curRow >= m_lines->model()->rowCount(m_lines->rootIndex()) ){
-            m_curRow = 0;
-            ++m_curColumn;
-            if( m_curColumn >= m_lines->model()->columnCount(m_lines->rootIndex()) )
-                m_curColumn = 0;
-        }
-    }
-    setHighlightArea( m_curRow, m_curColumn, m_curOpacity, true, true );
 }
 
 void MainWindow::setHighlightArea( int row, int column, int opacity, bool checked, bool doUpdate )

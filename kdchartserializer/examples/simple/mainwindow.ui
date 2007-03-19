@@ -225,20 +225,6 @@
       <number>6</number>
      </property>
      <item>
-      <widget class="QLabel" name="threeDLB" >
-       <property name="text" >
-        <string>Animate</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="animateAreasCB" >
-       <property name="text" >
-        <string>Highlight</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <layout class="QHBoxLayout" >
        <property name="margin" >
         <number>0</number>

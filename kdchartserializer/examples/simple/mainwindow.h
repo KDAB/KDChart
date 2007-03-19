@@ -47,7 +47,6 @@ private slots:
     void on_paintValuesCB_toggled( bool checked );
     void on_threeDModeCB_toggled( bool checked );
     void on_depthSB_valueChanged( int i );
-    void on_animateAreasCB_toggled( bool checked );
     void on_highlightAreaCB_toggled( bool checked );
     void on_highlightAreaSB_valueChanged( int i );
     void setHighlightArea( int row, int column, int opacity, bool checked, bool doUpdate );
@@ -56,8 +55,6 @@ private slots:
     void load();
     void on_pushButtonSave_clicked();
     void saveAs();
-
-    void slot_timerFired();
 
 private:
     KDChart::Chart* m_chart;
