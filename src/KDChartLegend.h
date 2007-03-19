@@ -40,6 +40,7 @@ namespace KDChart {
 
     class AbstractDiagram;
     typedef QList<AbstractDiagram*> DiagramList;
+    typedef QList<const AbstractDiagram*> ConstDiagramList;
 
 /**
   * @brief Legend defines the interface for the legend drawing class.
@@ -118,6 +119,11 @@ public:
       * \sa diagram, addDiagram, removeDiagram, removeDiagrams, replaceDiagram, setDiagram
       */
     DiagramList diagrams() const;
+
+    /**
+     * @return The list of diagrams associated with this coordinate plane.
+     */
+    ConstDiagramList constDiagrams() const;
 
     /**
       * Add the given diagram to the legend.

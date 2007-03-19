@@ -261,6 +261,14 @@ DiagramList Legend::diagrams() const
     return list;
 }
 
+ConstDiagramList Legend::constDiagrams() const
+{
+    ConstDiagramList list;
+    for (int i = 0; i < d->observers.size(); ++i)
+        list << d->observers.at(i)->diagram();
+    return list;
+}
+
 void Legend::addDiagram( AbstractDiagram* newDiagram )
 {
     if ( newDiagram )
