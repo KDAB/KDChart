@@ -267,6 +267,7 @@ m_legend->setFloatingPosition( relativePosition );
     void resetTexts();
     void setText( uint dataset, const QString& text );
     QString text( uint dataset ) const;
+    const QMap<uint,QString> texts() const;
 
     uint datasetCount() const;
 

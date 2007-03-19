@@ -458,6 +458,11 @@ QString Legend::text( uint dataset ) const
     }
 }
 
+const QMap<uint,QString> Legend::texts() const
+{
+    return d->texts;
+}
+
 void Legend::setColor( uint dataset, const QColor& color )
 {
     if( d->brushes[ dataset ] == color ) return;
