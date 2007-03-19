@@ -277,12 +277,20 @@ m_legend->setFloatingPosition( relativePosition );
 
     void setBrushesFromDiagram( KDChart::AbstractDiagram* diagram );
 
+    /**
+     * Note: there is no color() getter method, since setColor
+     * just sets a QBrush with the respective color, so the
+     * brush() getter method is suffienent.
+     */
     void setColor( uint dataset, const QColor& color );
+
     void setBrush( uint dataset, const QBrush& brush );
     QBrush brush( uint dataset ) const;
+    const QMap<uint,QBrush> brushes() const;
 
     void setPen( uint dataset, const QPen& pen );
     QPen pen( uint dataset ) const;
+    const QMap<uint,QPen> pens() const;
 
     /**
      * Note that any sizes specified via setMarkerAttributes are ignored,

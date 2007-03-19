@@ -486,6 +486,12 @@ QBrush Legend::brush( uint dataset ) const
 }
 
 
+const QMap<uint,QBrush> Legend::brushes() const
+{
+    return d->brushes;
+}
+
+
 void Legend::setBrushesFromDiagram( KDChart::AbstractDiagram* diagram )
 {
     bool bChangesDone = false;
