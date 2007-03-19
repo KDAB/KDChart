@@ -106,35 +106,83 @@ void LegendsSerializer::saveLegend(
             doc, element, "ShowLines", legend.showLines() );
     // save the texts map
     {
-        QDomElement mapElement =
-                doc.createElement( "TextsMap" );
-        element.appendChild( mapElement );
         const QMap<uint,QString> map( legend.texts() );
-        QMap<uint,QString>::const_iterator i = map.constBegin();
-        while (i != map.constEnd()) {
-            QDomElement textElement =
-                    doc.createElement( "item" );
-            mapElement.appendChild( textElement );
-            textElement.setAttribute( "dataset", i.key() );
-            textElement.setAttribute( "text",    i.value() );
-            ++i;
+        if( map.count() ){
+            QDomElement mapElement =
+                    doc.createElement( "TextsMap" );
+            element.appendChild( mapElement );
+            QMap<uint,QString>::const_iterator i = map.constBegin();
+            while (i != map.constEnd()) {
+                QDomElement textElement =
+                        doc.createElement( "item" );
+                mapElement.appendChild( textElement );
+                textElement.setAttribute( "dataset", i.key() );
+                textElement.setAttribute( "text",    i.value() );
+                ++i;
+            }
         }
     }
     // save the brushes map
     {
-        QDomElement mapElement =
-                doc.createElement( "BrushesMap" );
-        element.appendChild( mapElement );
         const QMap<uint,QBrush> map( legend.brushes() );
-        QMap<uint,QBrush>::const_iterator i = map.constBegin();
-        while (i != map.constEnd()) {
-            QDomElement brushElement =
-                    doc.createElement( "item" );
-            mapElement.appendChild( brushElement );
-            brushElement.setAttribute( "dataset", i.key() );
-            KDXML::createBrushNode( doc, brushElement, "brush", i.value() );
-            ++i;
+        if( map.count() ){
+            QDomElement mapElement =
+                    doc.createElement( "BrushesMap" );
+            element.appendChild( mapElement );
+            QMap<uint,QBrush>::const_iterator i = map.constBegin();
+            while (i != map.constEnd()) {
+                QDomElement brushElement =
+                        doc.createElement( "item" );
+                mapElement.appendChild( brushElement );
+                brushElement.setAttribute( "dataset", i.key() );
+                KDXML::createBrushNode( doc, brushElement, "brush", i.value() );
+                ++i;
+            }
         }
     }
-
+    // save the pens map
+    {
+        const QMap<uint,QPen> map( legend.pens() );
+        if( map.count() ){
+            QDomElement mapElement =
+                    doc.createElement( "PensMap" );
+            element.appendChild( mapElement );
+            QMap<uint,QPen>::const_iterator i = map.constBegin();
+            while (i != map.constEnd()) {
+                QDomElement penElement =
+                        doc.createElement( "item" );
+                mapElement.appendChild( penElement );
+                penElement.setAttribute( "dataset", i.key() );
+                KDXML::createPenNode( doc, penElement, "pen", i.value() );
+                ++i;
+            }
+        }
+    }
+    // save the marker attributes map
+    {
+        const QMap<uint,MarkerAttributes> map( legend.markerAttributes() );
+        if( map.count() ){
+            QDomElement mapElement =
+                    doc.createElement( "MarkerAttributesMap" );
+            element.appendChild( mapElement );
+            QMap<uint,MarkerAttributes>::const_iterator i = map.constBegin();
+            while (i != map.constEnd()) {
+                QDomElement attrsElement =
+                        doc.createElement( "item" );
+                mapElement.appendChild( attrsElement );
+                attrsElement.setAttribute( "dataset", i.key() );
+                AttributesSerializer::saveMarkerAttributes(
+                        doc, attrsElement, i.value(), "MarkerAttributes" );
+                ++i;
+            }
+        }
+    }
+    KDXML::createBoolNode(
+            doc, element, "UseAutomaticMarkerSize", legend.useAutomaticMarkerSize() );
+    AttributesSerializer::saveTextAttributes(
+            doc, element, legend.textAttributes(), "TextAttributes" );
+    KDXML::createStringNode(
+            doc, element, "TitleText", legend.titleText() );
+    KDXML::createIntNode(
+            doc, element, "Spacing", legend.spacing() );
 }

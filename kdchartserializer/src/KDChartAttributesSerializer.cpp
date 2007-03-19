@@ -570,11 +570,11 @@ void AttributesSerializer::saveMarkerAttributes(
     element.appendChild( styleElement );
     styleElement.setAttribute( "style", markerStyleToName( a.markerStyle() ) );
     // save the stylesMap
-    {
+    const MarkerAttributes::MarkerStylesMap map( a.markerStylesMap() );
+    if( map.count() ){
         QDomElement mapElement =
                 doc.createElement( "StylesMap" );
         element.appendChild( mapElement );
-        MarkerAttributes::MarkerStylesMap map( a.markerStylesMap() );
         MarkerAttributes::MarkerStylesMap::const_iterator i = map.constBegin();
         while (i != map.constEnd()) {
             QDomElement styleElement =
@@ -684,3 +684,4 @@ void AttributesSerializer::saveGridAttributes(
     KDXML::createPenNode( doc, element, "ZeroLinePen",
                           a.zeroLinePen() );
 }
+

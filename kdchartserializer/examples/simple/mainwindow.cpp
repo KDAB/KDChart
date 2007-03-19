@@ -82,16 +82,24 @@ MainWindow::MainWindow( QWidget* parent ) :
     headerFooter->setType( KDChart::HeaderFooter::Footer );
     headerFooter->setPosition( KDChart::Position::SouthEast );
 
+
     Legend* legend = new Legend( m_lines, m_chart );
     legend->setPosition( Position::South );
     legend->setAlignment( Qt::AlignCenter );
     legend->setShowLines( false );
     legend->setTitleText( tr( "The Legend" ) );
+
     legend->setText( 0, tr( "The red one" ) );
     legend->setText( 1, tr( "green" ) );
     legend->setText( 2, tr( "blue" ) );
     legend->setText( 3, tr( "turquoise" ) );
     legend->setText( 4, tr( "magenta" ) );
+
+    const DataValueAttributes da( m_lines->dataValueAttributes( 2 ) );
+    MarkerAttributes ma( da.markerAttributes() );
+    ma.setMarkerStyle( MarkerAttributes::MarkerRing );
+    legend->setMarkerAttributes( 2, ma );
+
     // for testing: make the legend item's color look differently
     // from the diagram line's color,
     // so the legend's color map will be stored in the file:
@@ -99,9 +107,11 @@ MainWindow::MainWindow( QWidget* parent ) :
     legend->setOrientation( Qt::Horizontal );
     m_chart->addLegend( legend );
 
+
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
     m_chart->setGlobalLeading( 20,  20,  20,  20 );
 }
+
 
 void MainWindow::on_lineTypeCB_currentIndexChanged( const QString & text )
 {
