@@ -84,6 +84,10 @@ namespace KDChart {
         /** Sets the data in the given column using a QVector of QPairs
          *  of double for the (X, Y) values. */
         void setDataset( int column, const QVector< QPair< double, double > > &  data, const QString& title = QString() );
+        /** Sets the Y value data for a given cell. */
+        void setDataCell( int row, int column, double data );
+        /** Sets the data for a given column using an (X, Y) QPair of doubles. */
+        void setDataCell( int row, int column, QPair< double, double > data );
         /** Resets all data. */
         void resetData();
 

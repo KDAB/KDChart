@@ -135,9 +135,38 @@ void Widget::setDataset( int column, const QVector< QPair< double, double > > & 
         model.setData( index, QVariant( data[i].second ), Qt::DisplayRole );
     }
     if ( ! title.isEmpty() ){
-      model.setHeaderData( column * 2,   Qt::Horizontal, QVariant( title ) );
-      model.setHeaderData( column * 2+1, Qt::Horizontal, QVariant( title ) );
+        model.setHeaderData( column * 2,   Qt::Horizontal, QVariant( title ) );
+        model.setHeaderData( column * 2+1, Qt::Horizontal, QVariant( title ) );
     }
+}
+
+void Widget::setDataCell( int row, int column, double data )
+{
+    if ( ! checkDatasetWidth( 1 ) )
+        return;
+
+    QStandardItemModel & model = d->m_model;
+
+    justifyModelSize( row + 1, column + 1 );
+
+    const QModelIndex index = model.index( row, column );
+    model.setData( index, QVariant( data ), Qt::DisplayRole );
+}
+
+void Widget::setDataCell( int row, int column, QPair< double, double > data )
+{
+    if ( ! checkDatasetWidth( 2 ))
+        return;
+
+    QStandardItemModel & model = d->m_model;
+
+    justifyModelSize( row + 1, (column + 1) * 2 );
+
+    QModelIndex index = model.index( row, column * 2 );
+    model.setData( index, QVariant( data.first ), Qt::DisplayRole );
+
+    index = model.index( row, column * 2 + 1 );
+    model.setData( index, QVariant( data.second ), Qt::DisplayRole );
 }
 
 /*
