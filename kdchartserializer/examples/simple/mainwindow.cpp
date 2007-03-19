@@ -32,6 +32,7 @@
 #include <KDChartTextAttributes>
 #include <KDChartDataValueAttributes>
 #include <KDChartThreeDLineAttributes>
+#include <KDChartHeaderFooter>
 
 #include <KDChartSerializer>
 
@@ -63,6 +64,24 @@ MainWindow::MainWindow( QWidget* parent ) :
     yAxis->setPosition ( KDChart::CartesianAxis::Left );
     m_lines->addAxis( xAxis );
     m_lines->addAxis( yAxis );
+
+    KDChart::HeaderFooter* headerFooter = new KDChart::HeaderFooter( m_chart );
+    m_chart->addHeaderFooter( headerFooter );
+    headerFooter->setText( "This is a centered header in red." );
+    KDChart::TextAttributes textAttrs( headerFooter->textAttributes() );
+    textAttrs.setPen( QPen( Qt::red ) );
+    headerFooter->setTextAttributes( textAttrs );
+    headerFooter->setType( KDChart::HeaderFooter::Header );
+    headerFooter->setPosition( KDChart::Position::North );
+
+    headerFooter = new KDChart::HeaderFooter( m_chart );
+    m_chart->addHeaderFooter( headerFooter );
+    headerFooter->setText( "... and a blue right-sided footer." );
+    textAttrs = headerFooter->textAttributes();
+    textAttrs.setPen( QPen( Qt::blue ) );
+    headerFooter->setTextAttributes( textAttrs );
+    headerFooter->setType( KDChart::HeaderFooter::Footer );
+    headerFooter->setPosition( KDChart::Position::SouthEast );
 
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
     m_chart->setGlobalLeading( 20,  20,  20,  20 );

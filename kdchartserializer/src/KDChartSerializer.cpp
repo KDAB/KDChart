@@ -32,6 +32,7 @@
 #include "KDChartIdMapper.h"
 #include "KDChartAttributesSerializer.h"
 #include "KDChartCoordPlanesSerializer.h"
+#include "KDChartTextAreaSerializer.h"
 
 #include "KDXMLTools.h"
 
@@ -260,9 +261,11 @@ bool Serializer::saveChartElement(
                 mChart->coordinatePlanes(),
                 "kdchart:coordinate-planes" );
 
-
         // save the headers / footers
-        // ...
+        TextAreaSerializer::saveHeadersFooters(
+                doc, chartElement,
+                mChart->headerFooters(),
+                "kdchart:headers-footers" );
 
         // save the legend
         // ...

@@ -459,7 +459,6 @@ void DiagramsSerializer::saveRingDiagram(
     e.appendChild( diagElement );
 
     // first save the information hold by the base class
-    // first save the information hold by the base class
     saveAbstractPieDiagram( doc, diagElement, diagram,
                             "kdchart:abstract-pie-diagram" );
 
