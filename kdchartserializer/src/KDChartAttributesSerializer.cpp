@@ -608,7 +608,8 @@ void AttributesSerializer::saveRelativePosition(
     // is Null because it might have been set to Null intentionally, to
     // change it from KD Chart's default setting that e.g. might have
     // been pointing to the Chart.
-    saveQObjectPointer( doc, e, a.referenceArea(), "ReferenceArea" );
+    //qDebug() << "AttributesSerializer::saveRelativePosition() storing a.referenceArea(): " << a.referenceArea();
+    saveQObjectPointer( doc, element, a.referenceArea(), "ReferenceArea" );
 
     // save the reference points
     const PositionPoints points = a.referencePoints();
@@ -706,9 +707,11 @@ void AttributesSerializer::saveQObjectPointer(
     const QString globalRefAreaName( IdMapper::instance()->findName( p ) );
     const bool bOK = ! globalRefAreaName.isEmpty();
     if( bOK ){
+        //qDebug() << "AttributesSerializer::saveQObjectPointer() storing  resolved  ptr:" << p;
         SerializeCollector::instance()->storePointerName(
                 doc, refAreaElement, globalRefAreaName );
     }else{
+        //qDebug() << "AttributesSerializer::saveQObjectPointer() storing UNRESOLVED ptr:" << p;
         SerializeCollector::instance()->storeUnresolvedPointer(
                 doc, p, refAreaElement );
     }

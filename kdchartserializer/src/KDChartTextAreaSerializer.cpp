@@ -127,6 +127,8 @@ void TextAreaSerializer::saveTextLayoutItem(
     QDomElement element = doc.createElement( title );
     e.appendChild( element );
 
+    AttributesSerializer::saveQObjectPointer(
+            doc, element, item.autoReferenceArea(), "AutoReferenceArea" );
     KDXML::createStringNode( doc, element, "Text", item.text() );
     AttributesSerializer::saveTextAttributes(
             doc, element, item.textAttributes(), "TextAttributes" );
