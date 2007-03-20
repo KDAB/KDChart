@@ -160,6 +160,12 @@ namespace KDChart {
                     QDomElement& e,
                     const GridAttributes& a,
                     const QString& title );
+
+            static void saveQObjectPointer(
+                    QDomDocument& doc,
+                    QDomElement& e,
+                    const QObject* p,
+                    const QString& title );
     };
 
 } // end of namespace

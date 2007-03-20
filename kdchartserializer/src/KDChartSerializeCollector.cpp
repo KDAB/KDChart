@@ -160,7 +160,7 @@ void SerializeCollector::resolvePointers(
         while( unresolvedIter.hasNext() ) {
             unresolvedIter.next();
             const void* p = unresolvedIter.key();
-            QString globalName( IdMapper::instance()->findName( p ) );
+            QString globalName( p ? IdMapper::instance()->findName( p ) : QString("Null") );
             if( globalName.isEmpty() )
                 globalName = unresolvedTagName();
             for( int i=0; i<unresolvedList.count(); ++i ){
@@ -168,6 +168,7 @@ void SerializeCollector::resolvePointers(
                 if( e.attribute( "name" )
                     == unresolvedIter.value() )
                 {
+                    e.setTagName( "kdchart:pointer" );
                     e.removeAttribute( "name" );
                     QDomText elementContent =
                             doc.createTextNode( globalName );

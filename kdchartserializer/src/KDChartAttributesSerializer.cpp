@@ -604,21 +604,12 @@ void AttributesSerializer::saveRelativePosition(
     QDomElement element = doc.createElement( title );
     e.appendChild( element );
 
-    // store the pointer to the reference area
-    const QObject* refArea = a.referenceArea();
-    if( refArea ){
-        QDomElement refAreaElement = doc.createElement( "ReferenceArea" );
-        element.appendChild( refAreaElement );
-        const QString globalRefAreaName( IdMapper::instance()->findName( refArea ) );
-        const bool bOK = ! globalRefAreaName.isEmpty();
-        if( bOK ){
-            SerializeCollector::instance()->storePointerName(
-                    doc, refAreaElement, globalRefAreaName );
-        }else{
-            SerializeCollector::instance()->storeUnresolvedPointer(
-                    doc, refArea, refAreaElement );
-        }
-    }
+    // We always store the pointer to the reference area - even if it
+    // is Null because it might have been set to Null intentionally, to
+    // change it from KD Chart's default setting that e.g. might have
+    // been pointing to the Chart.
+    saveQObjectPointer( doc, e, a.referenceArea(), "ReferenceArea" );
+
     // save the reference points
     const PositionPoints points = a.referencePoints();
     if( ! points.isNull() ){
@@ -703,3 +694,22 @@ void AttributesSerializer::saveGridAttributes(
                           a.zeroLinePen() );
 }
 
+
+void AttributesSerializer::saveQObjectPointer(
+        QDomDocument& doc,
+        QDomElement& e,
+        const QObject* p,
+        const QString& title )
+{
+    QDomElement refAreaElement = doc.createElement( "ReferenceArea" );
+    e.appendChild( refAreaElement );
+    const QString globalRefAreaName( IdMapper::instance()->findName( p ) );
+    const bool bOK = ! globalRefAreaName.isEmpty();
+    if( bOK ){
+        SerializeCollector::instance()->storePointerName(
+                doc, refAreaElement, globalRefAreaName );
+    }else{
+        SerializeCollector::instance()->storeUnresolvedPointer(
+                doc, p, refAreaElement );
+    }
+}
