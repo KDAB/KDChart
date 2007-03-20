@@ -243,6 +243,7 @@ void AttributesSerializer::saveMeasure(
     QDomElement measureElement =
             doc.createElement( title );
     e.appendChild( measureElement );
+    saveQObjectPointer( doc, measureElement, m.referenceArea(), "ReferenceArea" );
     KDXML::createRealNode( doc, measureElement, "Value",
                            m.value() );
     KDXML::createStringNode( doc, measureElement, "Mode",
