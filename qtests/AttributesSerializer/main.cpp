@@ -36,7 +36,7 @@ private slots:
     void testLeading()
     {
         QDomElement savedElement =
-                mDoc.createElement( "kdchart:serializer-test:Leading" );
+                mDoc.createElement( "TESTING" );
         mDocRoot.appendChild( savedElement );
 
         int savedLeft= 12;
@@ -74,7 +74,7 @@ private slots:
         DataValueAttributes da = m_bars->dataValueAttributes( idx );
 
         QDomElement savedElement =
-                mDoc.createElement( "kdchart:serializer-test:Attributes" );
+                mDoc.createElement( "TESTING" );
         mDocRoot.appendChild( savedElement );
 
         TextAttributes orgAttrs = da.textAttributes();
