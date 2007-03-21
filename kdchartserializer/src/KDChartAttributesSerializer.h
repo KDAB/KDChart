@@ -178,6 +178,8 @@ namespace KDChart {
                     QDomElement& e,
                     const QObject* p,
                     const QString& title );
+
+            static const QString showDomPath( const QDomElement& e );
     };
 
 } // end of namespace

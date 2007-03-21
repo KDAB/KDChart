@@ -733,9 +733,9 @@ bool AttributesSerializer::parseQObjectPointer(
                     }
                 }
             } else if( tagName == "kdchart:unresolved-pointer" ) {
-                qDebug() << "Non-critical information by AttributesSerializer::parseQObjectPointer()";
-                qDebug() << "    kdchart:unresolved-pointer found in " << e.tagName();
-                qDebug() << "    Setting pointer value to zero.";
+                qDebug() << "Non-critical information by AttributesSerializer::parseQObjectPointer():\n"
+                "    Unresolved pointer found, setting pointer value to zero.\n"
+                "    Location:\n    "+showDomPath( e );
                 p = 0;
             } else {
                 qDebug() << "Unknown subelement of " << e.tagName() << " found:" << tagName;
@@ -767,3 +767,30 @@ void AttributesSerializer::saveQObjectPointer(
                 doc, p, refAreaElement );
     }
 }
+
+const QString AttributesSerializer::showDomPath( const QDomElement& e )
+{
+    //return e.ownerDocument().toString();
+    QString path( e.tagName() );
+    QDomNode n = e.parentNode();
+    while( !n.isNull() ) {
+        QDomElement element = n.toElement(); // try to convert the node to an element.
+        if( element.isNull() )
+            return path;
+        path.prepend( "/" );
+        /*//path.prepend( "."+element.nodeValue()+"::" );
+        const QDomNamedNodeMap map = element.attributes();
+        for ( int i=0; i< map.count(); ++i ){
+            QDomNode n2 = map.item(i);
+            path.prepend( "+"+n2.nodeName() );
+            //QDomElement e2 = n2.toElement();
+            //if( ! e2.isNull() )
+            //    path.prepend( "."+e2.tagName() );
+        }
+        */
+        path.prepend( element.tagName() );
+        n = n.parentNode();
+    }
+    return path;
+}
+
