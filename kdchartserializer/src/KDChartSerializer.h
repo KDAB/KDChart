@@ -73,6 +73,7 @@ namespace KDChart {
                     QDomElement& e ) const;
 
         private:
+            QString mProgramName;
             Chart* mChart;
             CoordPlanesSerializer* mCoordS;
     };

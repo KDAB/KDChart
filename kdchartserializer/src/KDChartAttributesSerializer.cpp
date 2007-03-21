@@ -52,10 +52,11 @@ using namespace KDChart;
 bool AttributesSerializer::parseLeading(
         const QDomElement& e, int& left, int& top, int& right, int& bottom )
 {
-    return  KDXML::findIntAttribute( e, "left",   left   ) ||
-            KDXML::findIntAttribute( e, "top",    top    ) ||
-            KDXML::findIntAttribute( e, "right",  right  ) ||
-            KDXML::findIntAttribute( e, "bottom", bottom );
+    const bool bFoundLeft   = KDXML::findIntAttribute( e, "left",   left   );
+    const bool bFoundTop    = KDXML::findIntAttribute( e, "top",    top    );
+    const bool bFoundRight  = KDXML::findIntAttribute( e, "right",  right  );
+    const bool bFoundBottom = KDXML::findIntAttribute( e, "bottom", bottom );
+    return bFoundLeft || bFoundTop || bFoundRight || bFoundBottom;
 }
 
 void AttributesSerializer::saveLeading(
@@ -142,6 +143,10 @@ bool AttributesSerializer::parseTextAttributes(
                 QPen p;
                 if( KDXML::readPenNode( element, p ) )
                     a.setPen( p );
+            } else if( tagName == "Font" ) {
+                QFont f;
+                if( KDXML::readFontNode( element, f ) )
+                    a.setFont( f );
             } else if( tagName == "FontSize" ) {
                 Measure m;
                 if( parseMeasure( element, m ) )
@@ -210,7 +215,11 @@ bool AttributesSerializer::parseMeasure(
         QDomElement element = node.toElement();
         if( !element.isNull() ) { // was really an element
             QString tagName = element.tagName();
-            if( tagName == "Value" ) {
+            if( tagName == "ReferenceArea" ) {
+                QObject* ptr;
+                if( parseQObjectPointer( element, ptr ) )
+                    a.setReferenceArea( ptr );
+            } else if( tagName == "Value" ) {
                 qreal r;
                 if( KDXML::readRealNode( element, r ) )
                     a.setValue( r );
@@ -697,13 +706,54 @@ void AttributesSerializer::saveGridAttributes(
 }
 
 
+
+bool AttributesSerializer::parseQObjectPointer(
+        QDomElement& e,
+        QObject*& p )
+{
+    bool bOK = true;
+    QDomNode node = e.firstChild();
+    while( !node.isNull() ) {
+        QDomElement element = node.toElement();
+        if( !element.isNull() ) { // was really an element
+            QString tagName = element.tagName();
+            if( tagName == "kdchart:pointer" ) {
+                QString s;
+                if( KDXML::readStringNode( element, s ) ){
+                    if( s == "Null" ){
+                        p = 0;
+                    }else{
+                        QObject* ptr;
+                        if( SerializeCollector::instance()->foundParsedPointer( s, ptr ) ){
+                            p = ptr;
+                        }else{
+                            qDebug() << "Could not resolve kdchart-pointer " << s << " in:" << e.tagName();
+                            bOK = false;
+                        }
+                    }
+                }
+            } else if( tagName == "kdchart:unresolved-pointer" ) {
+                qDebug() << "Non-critical information by AttributesSerializer::parseQObjectPointer()";
+                qDebug() << "    kdchart:unresolved-pointer found in " << e.tagName();
+                qDebug() << "    Setting pointer value to zero.";
+                p = 0;
+            } else {
+                qDebug() << "Unknown subelement of " << e.tagName() << " found:" << tagName;
+                bOK = false;
+            }
+        }
+        node = node.nextSibling();
+    }
+    return bOK;
+}
+
 void AttributesSerializer::saveQObjectPointer(
         QDomDocument& doc,
         QDomElement& e,
         const QObject* p,
         const QString& title )
 {
-    QDomElement refAreaElement = doc.createElement( "ReferenceArea" );
+    QDomElement refAreaElement = doc.createElement( title );
     e.appendChild( refAreaElement );
     const QString globalRefAreaName( IdMapper::instance()->findName( p ) );
     const bool bOK = ! globalRefAreaName.isEmpty();

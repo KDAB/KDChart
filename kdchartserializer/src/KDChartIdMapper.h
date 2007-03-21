@@ -34,6 +34,14 @@
 
 namespace KDChart {
 
+    /**
+     * Auxiliary class used by the KDChart::*Serializer classes.
+     *
+     * Normally there should be no need to call any of these methods yourself.
+     *
+     * It is all handled automatically, if you use the main KDChart::Serializer
+     * class as entry point of your serialization operations.
+     */
     class IdMapper
     {
         //friend class Serializer; // is allowed to delete the mapper instance

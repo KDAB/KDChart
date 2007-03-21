@@ -161,6 +161,18 @@ namespace KDChart {
                     const GridAttributes& a,
                     const QString& title );
 
+            /**
+             * This method assumes you have called
+             * SerializeCollector::initializeParsedGlobalPointers()
+             * before.
+             * Return value is TRUE if the parsed pointer
+             * was found in the internal list of known objects.
+             * Otherwise it will return FALSE.
+             */
+            static bool parseQObjectPointer(
+                    QDomElement& e,
+                    QObject*& p );
+
             static void saveQObjectPointer(
                     QDomDocument& doc,
                     QDomElement& e,

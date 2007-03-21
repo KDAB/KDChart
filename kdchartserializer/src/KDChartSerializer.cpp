@@ -54,6 +54,7 @@ using namespace KDChart;
 Serializer::Serializer( Chart* chart )
     : mChart( chart )
 {
+    mProgramName = tr("KD Chart Serializer");
     mCoordS = new CoordPlanesSerializer();
     // instantiate (or re-set, resp.) the singletons:
     IdMapper::instance()->clear();
@@ -72,7 +73,7 @@ Serializer::~Serializer()
 bool Serializer::read(QIODevice *device)
 {
     if( ! mChart ){
-        QMessageBox::information(0 , tr("KD Chart Serializer"),
+        QMessageBox::information(0 , mProgramName,
                                  tr("No chart was specified, sorry, can not proceed."));
         return false;
     }
@@ -84,7 +85,7 @@ bool Serializer::read(QIODevice *device)
     QDomDocument doc( "KDChart" );
     if( ! doc.setContent(device, true, &errorStr, &errorLine,
          &errorColumn)) {
-        QMessageBox::information(0 , tr("KD Chart Serializer"),
+        QMessageBox::information(0 , mProgramName,
             tr("Parse error at line %1, column %2:\n%3")
                 .arg(errorLine)
                 .arg(errorColumn)
@@ -126,13 +127,22 @@ bool Serializer::parseChartElement( const QDomElement& root )const
     //qDebug() << root.tagName();
     bool bOK = true;
     if (root.tagName() != "kdchart") {
-        QMessageBox::information(0 , tr("KD Chart Serializer"),
-                                 tr("The file is not a KD Chart file."));
+        QMessageBox::information(
+                0 , mProgramName,
+                tr("The file is not a KD Chart file."));
         return false;
     } else if (root.hasAttribute("kdchart:version")
                && ! root.attribute("kdchart:version").startsWith("2.") ) {
-        QMessageBox::information(0 , tr("KD Chart Serializer"),
-                                tr("The file is not a KD Chart version 2.x file."));
+        QMessageBox::information(
+                0 , mProgramName,
+                tr("The file is not a KD Chart version 2.x file."));
+        return false;
+    }
+
+    if( ! SerializeCollector::initializeParsedGlobalPointers( root ) ){
+        QMessageBox::information(
+                0 , mProgramName,
+                tr("Error while parsing the root node: Can not initialize global pointers."));
         return false;
     }
 
@@ -171,7 +181,7 @@ bool Serializer::saveRootElement(
         QDomElement& docRoot ) const
 {
     if( ! mChart ){
-        QMessageBox::information(0 , tr("KD Chart Serializer"),
+        QMessageBox::information(0 , mProgramName,
                                  tr("Can not save Chart Root element: mChart was not set!"));
         return false;
     }
@@ -214,7 +224,7 @@ bool Serializer::saveChartElement(
         QDomElement& e ) const
 {
     if( ! mChart ){
-        QMessageBox::information(0 , tr("KD Chart Serializer"),
+        QMessageBox::information(0 , mProgramName,
                                  tr("Can not save Chart element: mChart was not set!"));
         return false;
     }

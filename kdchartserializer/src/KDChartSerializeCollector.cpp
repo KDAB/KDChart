@@ -60,6 +60,64 @@ SerializeCollector* SerializeCollector::instance()
     return &instance;
 }
 
+
+// ******************* parsing the data ***************************
+
+bool SerializeCollector::initializeParsedGlobalPointers(
+        const QDomElement& rootNode )
+{
+    instance()->parsedPointersMap().clear();
+
+    QDomNode n = rootNode.firstChild();
+    while(!n.isNull()) {
+        QDomElement e = n.toElement(); // try to convert the node to an element.
+        if(!e.isNull()) {
+            // the node really is an element
+            QString tagName = e.tagName();
+            if( tagName == "<kdchart:body>" ){
+                // We do not instantiate anything for the body element.
+                //
+                // The body contains only kdchart-pointer entries
+                // but no declarations, so we just ignore it here.
+            } else if( tagName == "<kdchart:attribute-models>" ){
+            } else if( tagName == "<kdchart:axes>" ){
+            } else if( tagName == "<kdchart:charts>" ){
+            } else if( tagName == "<kdchart:coordinate-planes>" ){
+            } else if( tagName == "<kdchart:diagrams>" ){
+            } else if( tagName == "<kdchart:headers-footers>" ){
+            } else if( tagName == "<kdchart:legends>" ){
+            } else {
+                qDebug() << "Non-critical information by SerializeCollector::initializeParsedGlobalPointers()";
+                qDebug() << "    Unknown subelement of " << rootNode.tagName() << " found: " << tagName;
+                // It might well be that someone has stored additional
+                // top-level information here, so we just ignore them.
+            }
+        }
+        n = n.nextSibling();
+    }
+}
+
+ParsedPointersMap& SerializeCollector::parsedPointersMap()
+{
+    return mParsedPointersMap;
+}
+
+bool SerializeCollector::foundParsedPointer(
+        const QString& globalName,
+        QObject*& p )
+{
+    const bool bFound = instance()->parsedPointersMap().contains( globalName );
+    if( bFound )
+        p = instance()->parsedPointersMap().value( globalName );
+    else
+        p = 0;
+    return bFound;
+}
+
+
+
+// ************** storing the data *******************************
+
 QDomElement* SerializeCollector::findOrMakeElement(
         QDomDocument& doc,
         const QString& name )

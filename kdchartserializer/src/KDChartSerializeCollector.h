@@ -8,6 +8,16 @@
 
 namespace KDChart {
 
+    typedef QMap<QString, QObject*> ParsedPointersMap;
+
+    /**
+     * Auxiliary class used by the KDChart::*Serializer classes.
+     *
+     * Normally there should be no need to call any of these methods yourself.
+     *
+     * It is all handled automatically, if you use the main KDChart::Serializer
+     * class as entry point of your serialization operations.
+     */
     class SerializeCollector
     {
         //friend class Serializer; // is allowed to delete the mapper instance
@@ -20,6 +30,76 @@ namespace KDChart {
         virtual ~SerializeCollector();
 
     public:
+
+    // ************** parsing the data *******************************
+
+    /**
+     * Auxiliary method to be called BEFORE all of your
+     * structures will be parsed.
+     *
+     * This method parses all of the global object declarations,
+     * it instantiates them, and it stores their pointers in a
+     * global list - together with their symbolic "global names"
+     * retrieved from the QDomDocument's root node.
+     *
+     * The following elements will be parsed
+     * and their top-level children instantiated:
+     *
+     * <kdchart:attribute-models>
+     * <kdchart:axes>
+     * <kdchart:charts>
+     * <kdchart:coordinate-planes>
+     * <kdchart:diagrams>
+     * <kdchart:headers-footers>
+     * <kdchart:legends>
+     *
+     * \sa foundParsedPointer
+     */
+    static bool initializeParsedGlobalPointers(
+            const QDomElement& rootNode );
+
+    /**
+     * Returns a reference to the global list of pointers parsed
+     * by initializeParsedGlobalPointers().
+     *
+     * Normally you do not need to call this method, but you can do
+     * so in case you want to add additional pointers to the list:
+     *
+     * By modifying the QDomDocument after KDChart::Serializer had
+     * finished creating it so you might have stored additional
+     * QObject* references in it.
+     *
+     * All entries which you add to the ParsedPointersMap will be taken
+     * into account by foundParsedPointer() trying to find a matching
+     * QObject* for a given name.
+     *
+     * SerializeCollector is a singleton, so you could use this:
+\verbatim
+KDChart::ParsedPointersMap& mapRef
+    = KDChart::SerializeCollector::instance()->parsedPointersMap();
+\endverbatim
+     */
+    ParsedPointersMap& parsedPointersMap();
+
+    /**
+     * Auxiliary method to find the QObject* for a given name.
+     *
+     * p is set the the QObject* found, or to 0 if none is found.
+     *
+     * \note This only works if initializeParsedGlobalPointers()
+     * was called before, otherwise the global list will be empty.
+     *
+     * \sa initializeParsedGlobalPointers
+     */
+    static bool foundParsedPointer(
+            const QString& globalName,
+            QObject*& p );
+
+
+
+    // ************** storing the data *******************************
+
+
     /** Returns the QDomElement that was stored for this name.
      *
      * If none was stored before, a new element is created by the document
@@ -151,7 +231,7 @@ namespace KDChart {
             QDomElement& pointerContainer );
 
     /**
-     * Auxiliary method to be called after all of your
+     * Auxiliary method to be called AFTER all of your
      * structures have been stored.
      *
      * \sa storeUnresolvedPointer
@@ -175,6 +255,7 @@ namespace KDChart {
         static const QString unresolvedMapName();
 
         QMap<QString, QDomElement*> mMap;
+        ParsedPointersMap mParsedPointersMap;
     };
 
 } // end of namespace
