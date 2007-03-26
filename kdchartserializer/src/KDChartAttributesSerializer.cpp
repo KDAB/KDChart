@@ -277,10 +277,14 @@ bool AttributesSerializer::parseBackgroundAttributes(
                 bool b;
                 if( KDXML::readBoolNode( element, b ) )
                     a.setVisible( b );
+                else
+                    qDebug() << "Error parsing BackgroundAttributes tag: " << tagName;
             } else if( tagName == "Brush" ) {
                 QBrush b;
                 if( KDXML::readBrushNode( element, b ) )
                     a.setBrush( b );
+                else
+                    qDebug() << "Error parsing BackgroundAttributes tag: " << tagName;
             } else if( tagName == "PixmapMode" ) {
                 QString s;
                 if( KDXML::readStringNode( element, s ) ){
@@ -296,11 +300,16 @@ bool AttributesSerializer::parseBackgroundAttributes(
                         qDebug() << "Unknown PixmapMode found in BackgroundAttributes:" << tagName;
                         bOK = false;
                     }
+                    //qDebug() << s;
+                }else{
+                    qDebug() << "Error parsing BackgroundAttributes tag: " << tagName;
                 }
             } else if( tagName == "Pixmap" ) {
                 QPixmap p;
                 if( KDXML::readPixmapNode( element, p ) )
                     a.setPixmap( p );
+                else
+                    qDebug() << "Error parsing BackgroundAttributes tag: " << tagName;
             } else {
                 qDebug() << "Unknown subelement of BackgroundAttributes found:" << tagName;
                 bOK = false;
@@ -350,7 +359,7 @@ void AttributesSerializer::saveBackgroundAttributes(
     KDXML::createStringNode( doc, backgroundAttributesElement, "PixmapMode",
                              s );
     if( hasPixmap )
-        KDXML::createPixmapNode( doc, backgroundAttributesElement, "Padding",
+        KDXML::createPixmapNode( doc, backgroundAttributesElement, "Pixmap",
                                  a.pixmap() );
 }
 

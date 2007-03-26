@@ -95,6 +95,7 @@ bool SerializeCollector::initializeParsedGlobalPointers(
         }
         n = n.nextSibling();
     }
+    return true;
 }
 
 ParsedPointersMap& SerializeCollector::parsedPointersMap()

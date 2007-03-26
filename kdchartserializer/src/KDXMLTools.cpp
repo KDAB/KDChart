@@ -313,8 +313,11 @@ namespace KDXML {
         QDomElement penElement = doc.createElement( elementName );
         parent.appendChild( penElement );
         createIntNode( doc, penElement, "Width", pen.width() );
+        createBrushNode( doc, penElement, "Brush", pen.brush() );
         createColorNode( doc, penElement, "Color", pen.color() );
-        createStringNode( doc, penElement, "Style", penStyleToString( pen.style() ) );
+        createStringNode( doc, penElement, "Style",     penStyleToString(     pen.style() ) );
+        createStringNode( doc, penElement, "CapStyle",  penCapStyleToString(  pen.capStyle() ) );
+        createStringNode( doc, penElement, "JoinStyle", penJoinStyleToString( pen.joinStyle() ) );
     }
 
 
@@ -413,6 +416,34 @@ namespace KDXML {
                 return "DashDotDotLine";
             default: // should not happen
                 return "SolidLine";
+        }
+    }
+
+    QString penCapStyleToString( Qt::PenCapStyle style )
+    {
+        switch( style ) {
+            case Qt::SquareCap:
+                return "SquareCap";
+            case Qt::FlatCap:
+                return "FlatCap";
+            case Qt::RoundCap:
+                return "RoundCap";
+            default: // should not happen
+                return "SquareCap";
+        }
+    }
+
+    QString penJoinStyleToString( Qt::PenJoinStyle style )
+    {
+        switch( style ) {
+            case Qt::BevelJoin:
+                return "BevelJoin";
+            case Qt::MiterJoin:
+                return "MiterJoin";
+            case Qt::RoundJoin:
+                return "RoundJoin";
+            default: // should not happen
+                return "BevelJoin";
         }
     }
 
@@ -708,7 +739,10 @@ namespace KDXML {
         bool ok = true;
         int tempWidth;
         QColor tempColor;
-        Qt::PenStyle tempStyle=Qt::SolidLine;
+        QBrush tempBrush;
+        Qt::PenStyle     tempStyle=Qt::SolidLine;
+        Qt::PenCapStyle  tempCapStyle=Qt::SquareCap;
+        Qt::PenJoinStyle tempJoinStyle=Qt::BevelJoin;
         QDomNode node = element.firstChild();
         while( !node.isNull() ) {
             QDomElement element = node.toElement();
@@ -718,10 +752,20 @@ namespace KDXML {
                     ok = ok & readIntNode( element, tempWidth );
                 } else if( tagName == "Color" ) {
                     ok = ok & readColorNode( element, tempColor );
+                } else if( tagName == "Brush" ) {
+                    ok = ok & readBrushNode( element, tempBrush );
                 } else if( tagName == "Style" ) {
                     QString value;
                     ok = ok & readStringNode( element, value );
                     tempStyle = stringToPenStyle( value );
+                } else if( tagName == "CapStyle" ) {
+                    QString value;
+                    ok = ok & readStringNode( element, value );
+                    tempCapStyle = stringToPenCapStyle( value );
+                } else if( tagName == "JoinStyle" ) {
+                    QString value;
+                    ok = ok & readStringNode( element, value );
+                    tempJoinStyle = stringToPenJoinStyle( value );
                 } else {
                     qDebug( "Unknown tag in brush" );
                 }
@@ -731,8 +775,11 @@ namespace KDXML {
 
         if( ok ) {
             pen.setWidth( tempWidth );
+            pen.setBrush( tempBrush );
             pen.setColor( tempColor );
-            pen.setStyle( tempStyle );
+            pen.setStyle(     tempStyle );
+            pen.setCapStyle(  tempCapStyle );
+            pen.setJoinStyle( tempJoinStyle );
         }
 
         return ok;
@@ -920,6 +967,30 @@ namespace KDXML {
             return Qt::DashDotDotLine;
         else // should not happen
             return Qt::SolidLine;
+    }
+
+    Qt::PenCapStyle stringToPenCapStyle( const QString& style )
+    {
+        if( style == "SquareCap" )
+            return Qt::SquareCap;
+        else if( style == "FlatCap" )
+            return Qt::FlatCap;
+        else if( style == "RoundCap" )
+            return Qt::RoundCap;
+        else // should not happen
+            return Qt::SquareCap;
+    }
+
+    Qt::PenJoinStyle stringToPenJoinStyle( const QString& style )
+    {
+        if( style == "BevelJoin" )
+            return Qt::BevelJoin;
+        else if( style == "MiterJoin" )
+            return Qt::MiterJoin;
+        else if( style == "RoundJoin" )
+            return Qt::RoundJoin;
+        else // should not happen
+            return Qt::BevelJoin;
     }
 
 

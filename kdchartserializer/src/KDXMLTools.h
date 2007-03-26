@@ -43,7 +43,12 @@
 
 namespace KDXML {
     QString penStyleToString( Qt::PenStyle style );
+    QString penCapStyleToString( Qt::PenCapStyle style );
+    QString penJoinStyleToString( Qt::PenJoinStyle style );
+
     Qt::PenStyle stringToPenStyle( const QString& style );
+    Qt::PenCapStyle stringToPenCapStyle( const QString& style );
+    Qt::PenJoinStyle stringToPenJoinStyle( const QString& style );
     QString brushStyleToString( Qt::BrushStyle style );
     Qt::BrushStyle stringToBrushStyle( const QString& style );
 
