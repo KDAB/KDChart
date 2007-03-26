@@ -94,6 +94,7 @@ HEADERS += KDChartGlobal.h \
            KDChartThreeDPieAttributes.h \
            KDChartThreeDPieAttributes_p.h \ 
 	   PrerenderedElements/KDChartTextLabelCache.h \
+	   KDChartSignalCompressor.h
 
 SOURCES += \
            KDChartMeasure.cpp \
@@ -147,6 +148,7 @@ SOURCES += \
            KDChartThreeDLineAttributes.cpp \
            KDChartThreeDPieAttributes.cpp \
 	   PrerenderedElements/KDChartTextLabelCache.cpp \
+	   KDChartSignalCompressor.cpp
 
 CONFIG += warn-on
 
