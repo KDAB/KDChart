@@ -19,9 +19,7 @@ private slots:
     void initTestCase()
     {
         mDocstart = "<kdchart:kdchart/>";
-        mDoc = QDomDocument( "KDChart" );
-        mDoc.setContent( mDocstart );
-        mDocRoot = mDoc.documentElement();
+        resetDoc();
 
         m_chart = new Chart(0);
         TableModel *tableModel = new TableModel( this );
@@ -36,6 +34,8 @@ private slots:
 
     void testLeading()
     {
+        resetDoc();
+
         QDomElement savedElement =
                 mDoc.createElement( "TESTING" );
         mDocRoot.appendChild( savedElement );
@@ -71,6 +71,8 @@ private slots:
 
     void testTextAttributes()
     {
+        resetDoc();
+
         QModelIndex idx = m_model->index( 0, 2, QModelIndex() );
         DataValueAttributes da = m_bars->dataValueAttributes( idx );
 
@@ -99,6 +101,8 @@ private slots:
 
     void testMeasure()
     {
+        resetDoc();
+
         QDomElement savedElement =
                 mDoc.createElement( "TESTING" );
         mDocRoot.appendChild( savedElement );
@@ -126,6 +130,8 @@ private slots:
 
     void testBrushAndPen()
     {
+        resetDoc();
+
         QDomElement savedElement =
                 mDoc.createElement( "TESTING" );
         mDocRoot.appendChild( savedElement );
@@ -149,6 +155,8 @@ private slots:
 
     void testFrameAttributes()
     {
+        resetDoc();
+
         QDomElement savedElement =
                 mDoc.createElement( "TESTING" );
         mDocRoot.appendChild( savedElement );
@@ -178,6 +186,8 @@ private slots:
 
     void testBackgroundAttributes()
     {
+        resetDoc();
+
         QDomElement savedElement =
                 mDoc.createElement( "TESTING" );
         mDocRoot.appendChild( savedElement );
@@ -187,16 +197,26 @@ private slots:
         const QBrush br( QColor( Qt::white ) );
         orgAttrs.setBrush( br );
         orgAttrs.setPixmapMode( BackgroundAttributes::BackgroundPixmapModeStretched );
-        QPixmap pix( 10, 20 );
-        pix.fill( Qt::blue );
-        orgAttrs.setPixmap( pix );
 
+        const int pixWidth =5;
+        const int pixHeight=4;
+        const QColor pixColor=Qt::blue;
+        QPixmap orgPix( pixWidth, pixHeight );
+        orgPix.fill( pixColor );
+        orgAttrs.setPixmap( orgPix );
+        /*
+        qDebug() << "\n\n---------------------------------------------------------------------\n"
+                +mDoc.toString(2);
+        */
         AttributesSerializer::saveBackgroundAttributes(
                 mDoc,
                 savedElement,
                 orgAttrs,
                 "TestBackgroundAttributes" );
-
+        /*
+        qDebug() << "\n\n---------------------------------------------------------------------\n"
+                +mDoc.toString(2);
+        */
         QDomNode parsedNode = savedElement.firstChild();
         QVERIFY( ! parsedNode.isNull() );
 
@@ -205,7 +225,16 @@ private slots:
 
         BackgroundAttributes parsedAttrs;
         QVERIFY( AttributesSerializer::parseBackgroundAttributes( parsedElement, parsedAttrs ) );
-        QCOMPARE( orgAttrs, parsedAttrs );
+
+        // carefully now: first ignore the pixmap
+        QVERIFY( orgAttrs.isEqualTo( parsedAttrs, true ) );
+        // then compare the pixmap manually
+        const QImage orgImg(    orgAttrs.pixmap().toImage() );
+        const QImage parsedImg( parsedAttrs.pixmap().toImage() );
+        QCOMPARE( orgImg.size(), parsedImg.size() );
+        for( int x=0; x<pixWidth; ++x )
+            for( int y=0; y<pixHeight; ++y )
+                QCOMPARE( orgImg.pixel(x,y), orgImg.pixel(x,y) );
     }
 
 
@@ -220,6 +249,13 @@ private slots:
     }
 
 private:
+    void resetDoc()
+    {
+        mDoc = QDomDocument( "KDChart" );
+        mDoc.setContent( mDocstart );
+        mDocRoot = mDoc.documentElement();
+    }
+
     QString mDocstart;
     QDomDocument mDoc;
     QDomElement mDocRoot;
