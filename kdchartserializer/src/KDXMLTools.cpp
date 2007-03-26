@@ -35,6 +35,16 @@
 
 #include <zlib.h>
 
+
+
+
+// For some reason the ::compress algorithm is producing a list
+// of Zero bytes onye, so we disable compression for now
+// (khz, 03 27 2007)
+#define DO_NOT_COMPRESS_PIXMAP_DATA
+
+
+
 namespace KDXML {
 
     void setBoolAttribute( QDomElement& element,
@@ -240,7 +250,11 @@ namespace KDXML {
             ulong len = ba.size() * 2;
             QByteArray bazip;
             bazip.reserve( len );
+#ifdef DO_NOT_COMPRESS_PIXMAP_DATA
+            bazip = ba;
+#else
             ::compress(  (uchar*) bazip.data(), &len, (uchar*) ba.data(), ba.size() );
+#endif
             QString dataString;
             static const char hexchars[] = "0123456789abcdef";
             for ( int i = 0; i < (int)len; ++i ) {
@@ -716,9 +730,13 @@ namespace KDXML {
                 if( tempData.length() * 5 > tempLength )
                     tempLength = tempData.length() * 5;
                 QByteArray baunzip;
-                baunzip.reserve( tempLength );
+#ifdef DO_NOT_COMPRESS_PIXMAP_DATA
+                baunzip = ba;
+#else
+                //baunzip.reserve( tempLength );
                 ::uncompress( (uchar*) baunzip.data(), &tempLength,
                         (uchar*) ba, tempData.length()/2 );
+#endif
                 QImage image;
                 image.loadFromData( (const uchar*)baunzip.data(), tempLength, "XPM" );
 
