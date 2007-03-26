@@ -7,7 +7,7 @@
 #include <KDChartCartesianCoordinatePlane>
 #include <KDChartDataValueAttributes>
 
-#include <KDChartAttributesSerializer>
+#include <KDChartAttributesSerializer.h>
 #include <KDXMLTools.h>
 
 using namespace KDChart;
