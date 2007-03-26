@@ -74,10 +74,26 @@ BackgroundAttributes & BackgroundAttributes::operator=( const BackgroundAttribut
 
 bool BackgroundAttributes::operator==( const BackgroundAttributes& r ) const
 {
-    return ( isVisible() == r.isVisible() &&
-	     brush() == r.brush() &&
-	     pixmapMode() == r.pixmapMode() &&
-	     pixmap().serialNumber() == r.pixmap().serialNumber() );
+    return isEqualTo( r );
+}
+
+
+bool BackgroundAttributes::isEqualTo(
+        const BackgroundAttributes& other, bool ignorePixmap ) const
+{
+    /*
+    qDebug() << "BackgroundAttributes::operator==";
+    qDebug() << "isVisible" << (isVisible() == r.isVisible());
+    qDebug() << "brush"     << (brush() == r.brush());
+    qDebug() << "pixmapMode"<< (pixmapMode() == r.pixmapMode());
+    qDebug() << "pixmap"    << (pixmap().serialNumber() == r.pixmap().serialNumber());
+    */
+    return (
+            isVisible()  == other.isVisible() &&
+            brush()      == other.brush() &&
+            pixmapMode() == other.pixmapMode() &&
+            (ignorePixmap ||
+            pixmap().serialNumber() == other.pixmap().serialNumber()) );
 }
 
 

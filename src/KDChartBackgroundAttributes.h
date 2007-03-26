@@ -66,6 +66,8 @@ public:
     bool operator==( const BackgroundAttributes& ) const;
     inline bool operator!=( const BackgroundAttributes& other ) const { return !operator==(other); }
 
+    bool isEqualTo( const BackgroundAttributes& other, bool ignorePixmap=false ) const;
+
 private:
     KDCHART_DECLARE_PRIVATE_BASE_VALUE( BackgroundAttributes )
 }; // End of class BackgroundAttributes
