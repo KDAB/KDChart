@@ -727,14 +727,18 @@ bool AttributesSerializer::parseQObjectPointer(
                         if( SerializeCollector::instance()->foundParsedPointer( s, ptr ) ){
                             p = ptr;
                         }else{
-                            qDebug() << "Could not resolve kdchart-pointer " << s << " in:" << e.tagName();
+                            qDebug() << "\n"
+                            "    CRITICAL information by AttributesSerializer::parseQObjectPointer():\n"
+                            "    Could not resolve pointer \"" << s << "\", setting pointer value to zero.\n"
+                            "    Location:\n    "+showDomPath( e );
                             bOK = false;
                         }
                     }
                 }
             } else if( tagName == "kdchart:unresolved-pointer" ) {
-                qDebug() << "Non-critical information by AttributesSerializer::parseQObjectPointer():\n"
-                "    Unresolved pointer found, setting pointer value to zero.\n"
+                qDebug() << "\n"
+                "    Non-critical information by AttributesSerializer::parseQObjectPointer():\n"
+                "    Unresolved pointer found, setting value to zero.\n"
                 "    Location:\n    "+showDomPath( e );
                 p = 0;
             } else {
@@ -777,18 +781,7 @@ const QString AttributesSerializer::showDomPath( const QDomElement& e )
         QDomElement element = n.toElement(); // try to convert the node to an element.
         if( element.isNull() )
             return path;
-        path.prepend( "/" );
-        /*//path.prepend( "."+element.nodeValue()+"::" );
-        const QDomNamedNodeMap map = element.attributes();
-        for ( int i=0; i< map.count(); ++i ){
-            QDomNode n2 = map.item(i);
-            path.prepend( "+"+n2.nodeName() );
-            //QDomElement e2 = n2.toElement();
-            //if( ! e2.isNull() )
-            //    path.prepend( "."+e2.tagName() );
-        }
-        */
-        path.prepend( element.tagName() );
+        path.prepend( element.tagName()+"/" );
         n = n.parentNode();
     }
     return path;
