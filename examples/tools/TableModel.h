@@ -47,11 +47,11 @@ public:
      * The files are supposed to be Unicode (UTF8), have commas (',') as
      * delimiters, and quotes ('"') as text delimiters. All lines are expected
      * to provide the same number of fields. HINT: This is the default way
-     * OO.o-Calc export CSV files.
+     * OO.o-Calc exports CSV files.
      * The cell data is expected to be floating point values, except for the
      * first row and the first column, where string values are exected (those
      * will be used as axis descriptors). If values cannot be converted to
-     * doubles, there string representation will be used.
+     * doubles, their string representation will be used.
      *
      * @returns true if successful, false otherwise
      */
