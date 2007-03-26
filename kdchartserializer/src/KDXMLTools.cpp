@@ -733,7 +733,7 @@ namespace KDXML {
 #ifdef DO_NOT_COMPRESS_PIXMAP_DATA
                 baunzip = ba;
 #else
-                //baunzip.reserve( tempLength );
+                baunzip.reserve( tempLength );
                 ::uncompress( (uchar*) baunzip.data(), &tempLength,
                         (uchar*) ba, tempData.length()/2 );
 #endif
