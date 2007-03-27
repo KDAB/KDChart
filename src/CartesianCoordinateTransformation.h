@@ -166,3 +166,4 @@ namespace KDChart {
 }
 
 #endif
+
