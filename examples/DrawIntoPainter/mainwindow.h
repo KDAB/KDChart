@@ -32,8 +32,8 @@
 namespace KDChart {
     class Chart;
     class DatasetProxyModel;
-    class LineDiagram;
-    class LineAttributes;
+    class BarDiagram;
+    class BarAttributes;
     class CartesianAxis;
     class Legend;
 }
@@ -68,7 +68,7 @@ private:
     KDChart::Chart* m_chart;
     TableModel m_model;
     KDChart::DatasetProxyModel* m_datasetProxy;
-    KDChart::LineDiagram* m_lines;
+    KDChart::BarDiagram* m_bars;
     KDChart::Legend* m_legend;
     // mutable KDChart::CartesianAxis xAxis;
     //mutable KDChart::CartesianAxis yAxis;
