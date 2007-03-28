@@ -54,11 +54,15 @@ class CartesianAxis::Private : public AbstractAxis::Private
     friend class CartesianAxis;
 
 public:
-    Private( AbstractCartesianDiagram* diagram, AbstractAxis* axis )
+    Private( AbstractCartesianDiagram* diagram, CartesianAxis* axis )
         : AbstractAxis::Private( diagram, axis )
         , useDefaultTextAttributes( true )
-    {};
-    ~Private() {};
+    {}
+    ~Private() {}
+
+    CartesianAxis* axis() { return static_cast<CartesianAxis *>( mAxis ); }
+
+    void drawTitleText( QPainter*, CartesianCoordinatePlane* plane, const QRect& areaGeoRect );
 
 private:
     QString titleText;

@@ -193,7 +193,48 @@ void CartesianAxis::paint( QPainter* painter )
     //qDebug() << "KDChart::CartesianAxis::paint() done.";
 }
 
-#define ptr (context->painter())
+void CartesianAxis::Private::drawTitleText( QPainter* painter, CartesianCoordinatePlane* plane, const QRect& areaGeoRect )
+{
+    const TextAttributes titleTA( axis()->titleTextAttributes() );
+    if( titleTA.isVisible() ) {
+        TextLayoutItem titleItem( titleText,
+                                  titleTA,
+                                  plane->parent(),
+                                  KDChartEnums::MeasureOrientationMinimum,
+                                  Qt::AlignHCenter|Qt::AlignVCenter );
+        QPointF point;
+        const QSize size( titleItem.sizeHint() );
+        //FIXME(khz): We definitely need to provide a way that users can decide
+        //            the position of an axis title.
+        switch( position )
+        {
+        case Top:
+            point.setX( areaGeoRect.left() + areaGeoRect.width() / 2.0);
+            point.setY( areaGeoRect.top() );
+            break;
+        case Bottom:
+            point.setX( areaGeoRect.left() + areaGeoRect.width() / 2.0);
+            point.setY( areaGeoRect.bottom() - size.height() );
+            break;
+        case Left:
+            point.setX( areaGeoRect.left() );
+            point.setY( areaGeoRect.top() + areaGeoRect.height() / 2.0);
+            break;
+        case Right:
+            point.setX( areaGeoRect.right() - size.height() );
+            point.setY( areaGeoRect.top() + areaGeoRect.height() / 2.0);
+            break;
+        }
+        PainterSaver painterSaver( painter );
+        painter->translate( point );
+        if( axis()->isOrdinate() )
+            painter->rotate( 270.0 );
+        titleItem.setGeometry( QRect( QPoint(-size.width() / 2, 0), size ) );
+        //ptr->drawRect(titleItem.geometry().adjusted(0,0,-1,-1));
+        titleItem.paint( painter );
+    }
+}
+
 void CartesianAxis::paintCtx( PaintContext* context )
 {
 
@@ -307,6 +348,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
     QRectF rulerRect;
     double rulerWidth;
     double rulerHeight;
+
+    QPainter* ptr = context->painter();
 
     //for debugging: if( isAbscissa() )ptr->drawRect(areaGeoRect.adjusted(0,0,-1,-1));
     //qDebug() << "         " << (isAbscissa() ? "Abscissa":"Ordinate") << "axis painting with geometry" << areaGeoRect;
@@ -651,7 +694,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
             int maxLabelsWidth = 0;
             qreal labelValue;
             if( drawLabels && position() == Right ){
-                // Find the wides label, so we to know how much we need to right-shift
+                // Find the widest label, so we to know how much we need to right-shift
                 // our labels, to get them drawn right aligned:
                 labelValue = minValueY;
                 while ( labelValue <= maxLimit ) {
@@ -807,51 +850,12 @@ void CartesianAxis::paintCtx( PaintContext* context )
         }
     }
 
-
     if( ! titleText().isEmpty() ){
-        const TextAttributes titleTA( titleTextAttributes() );
-        if( titleTA.isVisible() ){
-            TextLayoutItem titleItem( titleText(),
-                                      titleTA,
-                                      referenceArea,
-                                      KDChartEnums::MeasureOrientationMinimum,
-                                      Qt::AlignHCenter|Qt::AlignVCenter );
-            QPointF point;
-            const QSize size( titleItem.sizeHint() );
-            //FIXME(khz): We definitely need to provide a way that users can decide
-            //            the position of an axis title.
-            switch( position() )
-            {
-            case Top:
-                point.setX( areaGeoRect.left() + areaGeoRect.width() / 2.0);
-                point.setY( areaGeoRect.top() );
-                break;
-            case Bottom:
-                point.setX( areaGeoRect.left() + areaGeoRect.width() / 2.0);
-                point.setY( areaGeoRect.bottom() - size.height() );
-                break;
-            case Left:
-                point.setX( areaGeoRect.left() );
-                point.setY( areaGeoRect.top() + areaGeoRect.height() / 2.0);
-                break;
-            case Right:
-                point.setX( areaGeoRect.right() - size.height() );
-                point.setY( areaGeoRect.top() + areaGeoRect.height() / 2.0);
-                break;
-            }
-            PainterSaver painterSaver( ptr );
-            ptr->translate( point );
-            if( isOrdinate() )
-                ptr->rotate( 270.0 );
-            titleItem.setGeometry( QRect( QPoint(-size.width() / 2, 0), size ) );
-            //ptr->drawRect(titleItem.geometry().adjusted(0,0,-1,-1));
-            titleItem.paint( ptr );
-        }
+        d->drawTitleText( ptr, plane, areaGeoRect );
     }
 
     //qDebug() << "KDChart::CartesianAxis::paintCtx() done.";
 }
-#undef ptr
 
 /* pure virtual in QLayoutItem */
 bool CartesianAxis::isEmpty() const
