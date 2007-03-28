@@ -193,6 +193,66 @@ void CartesianAxis::paint( QPainter* painter )
     //qDebug() << "KDChart::CartesianAxis::paint() done.";
 }
 
+void CartesianAxis::Private::drawSubUnitRulers( QPainter* painter, CartesianCoordinatePlane* plane, const DataDimension& dim,
+                                                const QPointF& rulerRef, const QVector<int>& drawnTicks ) const
+{
+    const QRect geoRect( axis()->geometry() );
+    int nextMayBeTick = 0;
+    int mayBeTick = 0;
+    int logSubstep = 0;
+    float f = dim.start;
+    qreal fLogSubstep = f;
+    const bool isAbscissa = axis()->isAbscissa();
+    const bool isLogarithmic = (dim.calcMode == AbstractCoordinatePlane::Logarithmic );
+    const int subUnitTickLength = axis()->tickLength( true );
+    while ( f <= dim.end ) {
+        if( drawnTicks.count() > nextMayBeTick )
+            mayBeTick = drawnTicks[ nextMayBeTick ];
+        if ( isAbscissa ) {
+            // for the x-axis
+            QPointF topPoint ( f, 0 );
+            QPointF bottomPoint ( f, 0 );
+            // we don't draw the sub ticks, if we are at the same position as a normal tick
+            topPoint = plane->translate( topPoint );
+            bottomPoint = plane->translate( bottomPoint );
+            topPoint.setY( rulerRef.y() + subUnitTickLength );
+            bottomPoint.setY( rulerRef.y() );
+            if( qAbs( mayBeTick - topPoint.x() ) > 1 )
+                painter->drawLine( topPoint, bottomPoint );
+            else {
+                ++nextMayBeTick;
+            }
+        } else {
+            // for the y-axis
+            QPointF leftPoint = plane->translate( QPointF( 0, f ) );
+            //qDebug() << "geoRect:" << geoRect << "   geoRect.top()" << geoRect.top() << "geoRect.bottom()" << geoRect.bottom() << "  translatedValue:" << translatedValue;
+            // we don't draw the sub ticks, if we are at the same position as a normal tick
+            if( qAbs( mayBeTick - leftPoint.y() ) > 1 ){
+                const qreal translatedValue = leftPoint.y();
+                if( translatedValue > geoRect.top() && translatedValue <= geoRect.bottom() ){
+                    QPointF rightPoint ( 0, f );
+                    rightPoint = plane->translate( rightPoint );
+                    leftPoint.setX( rulerRef.x() + subUnitTickLength );
+                    rightPoint.setX( rulerRef.x() );
+                    painter->drawLine( leftPoint, rightPoint );
+                }
+            } else {
+                ++nextMayBeTick;
+            }
+        }
+        if ( isLogarithmic ){
+            if( logSubstep == 9 ){
+                fLogSubstep *= 10.0;
+                logSubstep = 0;
+            }
+            f += fLogSubstep;
+            ++logSubstep;
+        }else{
+            f += dim.subStepWidth;
+        }
+    }
+}
+
 void CartesianAxis::Private::drawTitleText( QPainter* painter, CartesianCoordinatePlane* plane, const QRect& areaGeoRect ) const
 {
     const TextAttributes titleTA( axis()->titleTextAttributes() );
@@ -952,64 +1012,4 @@ int CartesianAxis::tickLength( bool subUnitTicks ) const
         result = result < 0 ? result + 1 : result - 1;
 
     return result;
-}
-
-void CartesianAxis::Private::drawSubUnitRulers( QPainter* painter, CartesianCoordinatePlane* plane, const DataDimension& dim,
-                                                const QPointF& rulerRef, const QVector<int>& drawnTicks ) const
-{
-    const QRect geoRect( axis()->geometry() );
-    int nextMayBeTick = 0;
-    int mayBeTick = 0;
-    int logSubstep = 0;
-    float f = dim.start;
-    qreal fLogSubstep = f;
-    const bool isAbscissa = axis()->isAbscissa();
-    const bool isLogarithmic = (dim.calcMode == AbstractCoordinatePlane::Logarithmic );
-    const int subUnitTickLength = axis()->tickLength( true );
-    while ( f <= dim.end ) {
-        if( drawnTicks.count() > nextMayBeTick )
-            mayBeTick = drawnTicks[ nextMayBeTick ];
-        if ( isAbscissa ) {
-            // for the x-axis
-            QPointF topPoint ( f, 0 );
-            QPointF bottomPoint ( f, 0 );
-            // we don't draw the sub ticks, if we are at the same position as a normal tick
-            topPoint = plane->translate( topPoint );
-            bottomPoint = plane->translate( bottomPoint );
-            topPoint.setY( rulerRef.y() + subUnitTickLength );
-            bottomPoint.setY( rulerRef.y() );
-            if( qAbs( mayBeTick - topPoint.x() ) > 1 )
-                painter->drawLine( topPoint, bottomPoint );
-            else {
-                ++nextMayBeTick;
-            }
-        } else {
-            // for the y-axis
-            QPointF leftPoint = plane->translate( QPointF( 0, f ) );
-            //qDebug() << "geoRect:" << geoRect << "   geoRect.top()" << geoRect.top() << "geoRect.bottom()" << geoRect.bottom() << "  translatedValue:" << translatedValue;
-            // we don't draw the sub ticks, if we are at the same position as a normal tick
-            if( qAbs( mayBeTick - leftPoint.y() ) > 1 ){
-                const qreal translatedValue = leftPoint.y();
-                if( translatedValue > geoRect.top() && translatedValue <= geoRect.bottom() ){
-                    QPointF rightPoint ( 0, f );
-                    rightPoint = plane->translate( rightPoint );
-                    leftPoint.setX( rulerRef.x() + subUnitTickLength );
-                    rightPoint.setX( rulerRef.x() );
-                    painter->drawLine( leftPoint, rightPoint );
-                }
-            } else {
-                ++nextMayBeTick;
-            }
-        }
-        if ( isLogarithmic ){
-            if( logSubstep == 9 ){
-                fLogSubstep *= 10.0;
-                logSubstep = 0;
-            }
-            f += fLogSubstep;
-            ++logSubstep;
-        }else{
-            f += dim.subStepWidth;
-        }
-    }
 }
