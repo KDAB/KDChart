@@ -43,6 +43,14 @@
 
 using namespace KDChart;
 
+static QPixmap drawIntoPixmap( const QSize& size, KDChart::Chart* chart )
+{
+    QPixmap pix( size );
+    pix.fill( Qt::white );
+    QPainter painter( &pix );
+    chart->paint( &painter, QRect( 0, 0, size.width(), size.height() ) );
+    return pix;
+}
 
 // When set, this example uses FrameWidget which uses Chart::paint to paint itself.
 // When not set, this example uses a Chart widget directly.
@@ -113,6 +121,23 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_legend->setOrientation( Qt::Vertical );
 
     m_chart->addLegend( m_legend );
+
+#if 1 // test code for painting at different sizes
+    QSize size1 = QSize( 200, 200 );
+    QSize size2 = QSize( 1000, 1000 );
+    QPixmap pix1 = drawIntoPixmap( size1, m_chart );
+    QPixmap pix2 = drawIntoPixmap( size2, m_chart );
+    pix2 = pix2.scaled( size1 );
+
+    QLabel* label1 = new QLabel( 0 );
+    label1->setPixmap( pix1 );
+    label1->setFixedSize( pix1.size() );
+    label1->show();
+    QLabel* label2 = new QLabel( 0 );
+    label2->setPixmap( pix2 );
+    label2->setFixedSize( pix2.size() );
+    label2->show();
+#endif
 }
 
 void MainWindow::on_lineTypeCB_currentIndexChanged( const QString & text )
