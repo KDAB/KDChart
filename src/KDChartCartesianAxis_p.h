@@ -60,9 +60,11 @@ public:
     {}
     ~Private() {}
 
-    CartesianAxis* axis() { return static_cast<CartesianAxis *>( mAxis ); }
+    const CartesianAxis* axis() const { return static_cast<CartesianAxis *>( mAxis ); }
 
-    void drawTitleText( QPainter*, CartesianCoordinatePlane* plane, const QRect& areaGeoRect );
+    void drawSubUnitRulers( QPainter*, CartesianCoordinatePlane* plane, const DataDimension& dim,
+                            const QPointF& rulerRef, const QVector<int>& drawnTicks ) const;
+    void drawTitleText( QPainter*, CartesianCoordinatePlane* plane, const QRect& areaGeoRect ) const;
 
 private:
     QString titleText;
