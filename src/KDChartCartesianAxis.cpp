@@ -491,7 +491,6 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 useShortLabels = labelsAreOverlapping;
             }
 
-            labelItem2->setText( QString::null );
             qreal labelDiff = dimX.stepWidth;
             //qDebug() << "labelDiff " << labelDiff;
             if ( drawLabels )
@@ -548,7 +547,6 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 }
             }
 
-            labelItem2->setText( QString::null );
             int idxLabel = 0;
             qreal iLabelF = minValueX;
             qreal i = minValueX;
@@ -732,10 +730,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
             ptr->setClipping( origClipping );
         }
-        if( labelItem )
-            delete labelItem;
-        if( labelItem2 )
-            delete labelItem2;
+        delete labelItem;
+        delete labelItem2;
     }
 
     // this draws the subunit rulers
