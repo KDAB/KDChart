@@ -54,6 +54,8 @@
 
 #include <KDABLibFakes>
 
+#define SET_ALL_MARGINS_TO_ZERO
+
 // Layout widgets even if they are not visible
 class MyWidgetItem : public QWidgetItem
 {
@@ -409,6 +411,10 @@ QHash<AbstractCoordinatePlane*, PlaneInfo> Chart::Private::buildPlaneLayoutInfos
         p = planeInfos[plane];
         if ( p.referencePlane == 0 ) {
             p.gridLayout = new QGridLayout();
+            // TESTING(khz): set the margin of all of the layouts to Zero
+#if defined SET_ALL_MARGINS_TO_ZERO
+            p.gridLayout->setMargin(0);
+#endif
             planeInfos[plane] = p;
         }
     }
@@ -421,6 +427,10 @@ static T* findOrCreateLayoutByObjectName( QLayout * parentLayout, const char* na
     T *box = qFindChild<T*>( parentLayout, QString::fromLatin1( name ) );
     if ( !box ) {
         box = new T();
+        // TESTING(khz): set the margin of all of the layouts to Zero
+#if defined SET_ALL_MARGINS_TO_ZERO
+        box->setMargin(0);
+#endif
         box->setObjectName( QString::fromLatin1( name ) );
     }
     return box;
@@ -448,6 +458,10 @@ void Chart::Private::slotLayoutPlanes()
     planeLayoutItems.clear();
     delete planesLayout;
     planesLayout = new QVBoxLayout();
+    // TESTING(khz): set the margin of all of the layouts to Zero
+#if defined SET_ALL_MARGINS_TO_ZERO
+    planesLayout->setMargin(0);
+#endif
     planesLayout->setObjectName( QString::fromLatin1( "planesLayout" ) );
 
     /* First go through all planes and all axes and figure out whether the planes
@@ -581,12 +595,20 @@ void Chart::Private::createLayouts( QWidget* w )
 
     // The HBox d->layout provides the left and right global leadings
     layout = new QHBoxLayout( w );
+    // TESTING(khz): set the margin of all of the layouts to Zero
+#if defined SET_ALL_MARGINS_TO_ZERO
+    layout->setMargin(0);
+#endif
     layout->setObjectName( QString::fromLatin1( "Chart::Private::layout" ) );
     layout->addSpacing( globalLeadingLeft );
 
     // The vLayout provides top and bottom global leadings and lays
     // out headers/footers and the data area.
     vLayout = new QVBoxLayout();
+    // TESTING(khz): set the margin of all of the layouts to Zero
+#if defined SET_ALL_MARGINS_TO_ZERO
+    vLayout->setMargin(0);
+#endif
     vLayout->setObjectName( QString::fromLatin1( "vLayout" ) );
     layout->addLayout( vLayout, 1000 );
     layout->addSpacing( globalLeadingRight );
@@ -597,13 +619,25 @@ void Chart::Private::createLayouts( QWidget* w )
     vLayout->addSpacing( globalLeadingTop );
     // 2. the header(s) area
     headerLayout = new QGridLayout();
+    // TESTING(khz): set the margin of all of the layouts to Zero
+#if defined SET_ALL_MARGINS_TO_ZERO
+    headerLayout->setMargin(0);
+#endif
     vLayout->addLayout( headerLayout );
     // 3. the area containing coordinate plane(s), axes, legend(s)
     dataAndLegendLayout = new QGridLayout();
+    // TESTING(khz): set the margin of all of the layouts to Zero
+#if defined SET_ALL_MARGINS_TO_ZERO
+    dataAndLegendLayout->setMargin(0);
+#endif
     dataAndLegendLayout->setObjectName( QString::fromLatin1( "dataAndLegendLayout" ) );
     vLayout->addLayout( dataAndLegendLayout, 1000 );
     // 4. the footer(s) area
     footerLayout = new QGridLayout();
+    // TESTING(khz): set the margin of all of the layouts to Zero
+#if defined SET_ALL_MARGINS_TO_ZERO
+    footerLayout->setMargin(0);
+#endif
     footerLayout->setObjectName( QString::fromLatin1( "footerLayout" ) );
     vLayout->addLayout( footerLayout );
     // 5. the gap below the bottom edge of the headers area
