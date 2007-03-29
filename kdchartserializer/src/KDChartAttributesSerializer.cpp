@@ -524,6 +524,7 @@ void AttributesSerializer::saveDataValueAttributes(
             "PositivePosition" );
 }
 
+
 bool AttributesSerializer::parseLineAttributes(
         const QDomElement& e, LineAttributes& a )
 {
@@ -551,7 +552,7 @@ bool AttributesSerializer::parseLineAttributes(
                     }
                     //qDebug() << s;
                 }else{
-                    qDebug() << "Error parsing BackgroundAttributes tag: " << tagName;
+                    qDebug() << "Error parsing LineAttributes tag: " << tagName;
                 }
             } else if( tagName == "DisplayArea" ) {
                 bool b;
@@ -566,7 +567,7 @@ bool AttributesSerializer::parseLineAttributes(
                 else
                     qDebug() << "Error parsing LineAttributes tag: " << tagName;
             } else {
-                qDebug() << "Unknown subelement of BackgroundAttributes found:" << tagName;
+                qDebug() << "Unknown subelement of LineAttributes found:" << tagName;
                 bOK = false;
             }
         }
@@ -605,6 +606,81 @@ void AttributesSerializer::saveLineAttributes(
     KDXML::createStringNode( doc, element, "MissingValuesPolicy", name );
     KDXML::createBoolNode(   doc, element, "DisplayArea",  a.displayArea() );
     KDXML::createIntNode(    doc, element, "Transparency", a.transparency() );
+}
+
+
+bool AttributesSerializer::parseBarAttributes(
+        const QDomElement& e, BarAttributes& a )
+{
+    bool bOK = true;
+    QDomNode node = e.firstChild();
+    while( !node.isNull() ) {
+        QDomElement element = node.toElement();
+        if( !element.isNull() ) { // was really an element
+            QString tagName = element.tagName();
+            //qDebug()<<tagName;
+            if( tagName == "FixedDataValueGap" ) {
+                qreal r;
+                if( KDXML::readRealNode( element, r ) )
+                    a.setFixedDataValueGap( r );
+                else
+                    qDebug() << "Error parsing BarAttributes tag: " << tagName;
+            } else if( tagName == "UseFixedDataValueGap" ) {
+                bool b;
+                if( KDXML::readBoolNode( element, b ) )
+                    a.setUseFixedDataValueGap( b );
+                else
+                    qDebug() << "Error parsing BarAttributes tag: " << tagName;
+            } else if( tagName == "FixedValueBlockGap" ) {
+                qreal r;
+                if( KDXML::readRealNode( element, r ) )
+                    a.setFixedValueBlockGap( r );
+                else
+                    qDebug() << "Error parsing BarAttributes tag: " << tagName;
+            } else if( tagName == "UseFixedValueBlockGap" ) {
+                bool b;
+                if( KDXML::readBoolNode( element, b ) )
+                    a.setUseFixedValueBlockGap( b );
+                else
+                    qDebug() << "Error parsing BarAttributes tag: " << tagName;
+            } else if( tagName == "FixedBarWidth" ) {
+                qreal r;
+                if( KDXML::readRealNode( element, r ) )
+                    a.setFixedBarWidth( r );
+                else
+                    qDebug() << "Error parsing BarAttributes tag: " << tagName;
+            } else if( tagName == "UseFixedBarWidth" ) {
+                bool b;
+                if( KDXML::readBoolNode( element, b ) )
+                    a.setUseFixedBarWidth( b );
+                else
+                    qDebug() << "Error parsing BarAttributes tag: " << tagName;
+            } else if( tagName == "GroupGapFactor" ) {
+                qreal r;
+                if( KDXML::readRealNode( element, r ) )
+                    a.setGroupGapFactor( r );
+                else
+                    qDebug() << "Error parsing BarAttributes tag: " << tagName;
+            } else if( tagName == "BarGapFactor" ) {
+                qreal r;
+                if( KDXML::readRealNode( element, r ) )
+                    a.setBarGapFactor( r );
+                else
+                    qDebug() << "Error parsing BarAttributes tag: " << tagName;
+            } else if( tagName == "DrawSolidExcessArrows" ) {
+                bool b;
+                if( KDXML::readBoolNode( element, b ) )
+                    a.setDrawSolidExcessArrows( b );
+                else
+                    qDebug() << "Error parsing BarAttributes tag: " << tagName;
+            } else {
+                qDebug() << "Unknown subelement of BarAttributes found:" << tagName;
+                bOK = false;
+            }
+        }
+        node = node.nextSibling();
+    }
+    return bOK;
 }
 
 void AttributesSerializer::saveBarAttributes(

@@ -353,6 +353,46 @@ private slots:
         QCOMPARE( orgAttrs, parsedAttrs );
     }
 
+    void testBarAttributes()
+    {
+        resetDoc();
+
+        QModelIndex idx = m_model->index( 0, 2, QModelIndex() );
+        BarAttributes orgAttrs = m_bars->barAttributes( idx );
+        orgAttrs.setFixedDataValueGap( 4.5 );
+        orgAttrs.setUseFixedDataValueGap( true );
+        orgAttrs.setFixedValueBlockGap( 5.5 );
+        orgAttrs.setUseFixedValueBlockGap( true );
+        orgAttrs.setFixedBarWidth( 40.5 );
+        orgAttrs.setUseFixedBarWidth( true );
+        orgAttrs.setGroupGapFactor( 1.25 );
+        orgAttrs.setBarGapFactor(   1.5 );
+        orgAttrs.setDrawSolidExcessArrows( true );
+
+        QDomElement savedElement =
+                mDoc.createElement( "TESTING" );
+        mDocRoot.appendChild( savedElement );
+
+        AttributesSerializer::saveBarAttributes(
+                mDoc,
+                savedElement,
+                orgAttrs,
+                "TestBarAttributes" );
+
+        // use cout rather that qDebug() to avoid the length limitation of the later
+        //std::cout << "\n\n" << mDoc.toString(2).toLatin1().data() << "\n\n";
+
+        QDomNode parsedNode = savedElement.firstChild();
+        QVERIFY( ! parsedNode.isNull() );
+
+        QDomElement parsedElement = parsedNode.toElement();
+        QVERIFY( ! parsedElement.isNull() );
+
+        BarAttributes parsedAttrs;
+        QVERIFY( AttributesSerializer::parseBarAttributes( parsedElement, parsedAttrs ) );
+        QCOMPARE( orgAttrs, parsedAttrs );
+    }
+
 
     void testChartDeletion()
     {
