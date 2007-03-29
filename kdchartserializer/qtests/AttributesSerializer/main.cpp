@@ -32,6 +32,8 @@ private slots:
 
         m_bars = new BarDiagram();
         m_bars->setModel( m_model );
+        m_lines = new LineDiagram();
+        m_lines->setModel( m_model );
     }
 
     void testLeading()
@@ -317,6 +319,40 @@ private slots:
         QCOMPARE( orgAttrs, parsedAttrs );
     }
 
+    void testLineAttributes()
+    {
+        resetDoc();
+
+        QModelIndex idx = m_model->index( 0, 2, QModelIndex() );
+        LineAttributes orgAttrs = m_lines->lineAttributes( idx );
+        orgAttrs.setMissingValuesPolicy( LineAttributes::MissingValuesShownAsZero );
+        orgAttrs.setDisplayArea( true );
+        orgAttrs.setTransparency( 40 );
+
+        QDomElement savedElement =
+                mDoc.createElement( "TESTING" );
+        mDocRoot.appendChild( savedElement );
+
+        AttributesSerializer::saveLineAttributes(
+                mDoc,
+                savedElement,
+                orgAttrs,
+                "TestLineAttributes" );
+
+        // use cout rather that qDebug() to avoid the length limitation of the later
+        //std::cout << "\n\n" << mDoc.toString(2).toLatin1().data() << "\n\n";
+
+        QDomNode parsedNode = savedElement.firstChild();
+        QVERIFY( ! parsedNode.isNull() );
+
+        QDomElement parsedElement = parsedNode.toElement();
+        QVERIFY( ! parsedElement.isNull() );
+
+        LineAttributes parsedAttrs;
+        QVERIFY( AttributesSerializer::parseLineAttributes( parsedElement, parsedAttrs ) );
+        QCOMPARE( orgAttrs, parsedAttrs );
+    }
+
 
     void testChartDeletion()
     {
@@ -344,6 +380,7 @@ private:
     QAbstractItemModel *m_model;
     CartesianCoordinatePlane* m_plane;
     BarDiagram *m_bars;
+    LineDiagram *m_lines;
 
 };
 

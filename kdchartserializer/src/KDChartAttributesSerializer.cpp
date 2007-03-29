@@ -298,7 +298,7 @@ bool AttributesSerializer::parseBackgroundAttributes(
                     else if ( s == "BackgroundPixmapModeStretched" )
                         a.setPixmapMode( BackgroundAttributes::BackgroundPixmapModeStretched );
                     else{
-                        qDebug() << "Unknown PixmapMode found in BackgroundAttributes:" << tagName;
+                        qDebug() << "Unknown PixmapMode found in BackgroundAttributes:" << s;
                         bOK = false;
                     }
                     //qDebug() << s;
@@ -522,6 +522,57 @@ void AttributesSerializer::saveDataValueAttributes(
             doc, element,
             a.positivePosition(),
             "PositivePosition" );
+}
+
+bool AttributesSerializer::parseLineAttributes(
+        const QDomElement& e, LineAttributes& a )
+{
+    bool bOK = true;
+    QDomNode node = e.firstChild();
+    while( !node.isNull() ) {
+        QDomElement element = node.toElement();
+        if( !element.isNull() ) { // was really an element
+            QString tagName = element.tagName();
+            //qDebug()<<tagName;
+            if( tagName == "MissingValuesPolicy" ) {
+                QString s;
+                if( KDXML::readStringNode( element, s ) ){
+                    if( s == "MissingValuesAreBridged" )
+                        a.setMissingValuesPolicy( LineAttributes::MissingValuesAreBridged );
+                    else if( s == "MissingValuesHideSegments" )
+                        a.setMissingValuesPolicy( LineAttributes::MissingValuesHideSegments );
+                    else if( s == "MissingValuesShownAsZero" )
+                        a.setMissingValuesPolicy( LineAttributes::MissingValuesShownAsZero );
+                    else if( s == "MissingValuesPolicyIgnored" )
+                        a.setMissingValuesPolicy( LineAttributes::MissingValuesPolicyIgnored );
+                    else{
+                        qDebug() << "Unknown MissingValuesPolicy found in LineAttributes:" << s;
+                        bOK = false;
+                    }
+                    //qDebug() << s;
+                }else{
+                    qDebug() << "Error parsing BackgroundAttributes tag: " << tagName;
+                }
+            } else if( tagName == "DisplayArea" ) {
+                bool b;
+                if( KDXML::readBoolNode( element, b ) )
+                    a.setDisplayArea( b );
+                else
+                    qDebug() << "Error parsing BackgroundAttributes tag: " << tagName;
+            } else if( tagName == "Transparency" ) {
+                int i;
+                if( KDXML::readIntNode( element, i ) )
+                    a.setTransparency( i );
+                else
+                    qDebug() << "Error parsing LineAttributes tag: " << tagName;
+            } else {
+                qDebug() << "Unknown subelement of BackgroundAttributes found:" << tagName;
+                bOK = false;
+            }
+        }
+        node = node.nextSibling();
+    }
+    return bOK;
 }
 
 void AttributesSerializer::saveLineAttributes(
