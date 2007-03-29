@@ -212,12 +212,9 @@ Qt::Orientations KDChart::AbstractCoordinatePlane::expandingDirections() const
 /* pure virtual in QLayoutItem */
 QSize KDChart::AbstractCoordinatePlane::maximumSize() const
 {
-    if( d->parent )
-        return d->parent->size();
-    // Note: At external layut calculation time the coord.plane *will*
-    //       have a parent widget, so returning a default size here
-    //       will not affect its real drawing size.
-    return QSize(1000, 1000);
+    // No maximum size set. Especially not parent()->size(), we are not layouting
+    // to the parent widget's size when using Chart::paint()!
+    return QSize(QLAYOUTSIZE_MAX, QLAYOUTSIZE_MAX);
 }
 /* pure virtual in QLayoutItem */
 QSize KDChart::AbstractCoordinatePlane::minimumSize() const

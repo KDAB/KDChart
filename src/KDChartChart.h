@@ -255,7 +255,7 @@ namespace KDChart {
          *
          * If you want to re-use the old legend, call takeLegend and
          * addLegend, instead of using replaceLegend.
-         * 
+         *
          * \note Whenever addLegend is called the font sizes used by the
          * Legend are set to relative and they get coupled to the Chart's size,
          * with their relative values being 20 for the item texts and 24 to the
@@ -379,7 +379,7 @@ namespace KDChart {
           * \sa setGlobalLeading
           */
         void paint( QPainter* painter, const QRect& target );
- 
+
         void reLayoutFloatingLegends();
 
     Q_SIGNALS:

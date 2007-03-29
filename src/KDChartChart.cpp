@@ -663,13 +663,14 @@ void Chart::Private::slotRelayout()
     // The geometry is not necessarily w->rect(), when using paint(), this is why
     // we don't call layout->activate().
     const QRect geo( QRect( 0, 0, currentLayoutSize.width(), currentLayoutSize.height() ) );
-    if( geo != layout->geometry() ){
-        qDebug() << "Chart slotRelayout() adjusting geometry to" << geo;
-        if( coordinatePlanes.count() )
-            qDebug() << "           plane geo before" << coordinatePlanes.first()->geometry();
+    if( geo.isValid() && geo != layout->geometry() ){
+        //qDebug() << "Chart slotRelayout() adjusting geometry to" << geo;
+        //if( coordinatePlanes.count() )
+        //    qDebug() << "           plane geo before" << coordinatePlanes.first()->geometry();
         layout->setGeometry( geo );
-        if( coordinatePlanes.count() )
-            qDebug() << "           plane geo after " << coordinatePlanes.first()->geometry();
+        //if( coordinatePlanes.count() ) {
+        //    qDebug() << "           plane geo after " << coordinatePlanes.first()->geometry();
+        //}
     }
 
     // Adapt diagram drawing to the new size
