@@ -1,9 +1,13 @@
 #include <QtTest/QtTest>
 #include <TableModel.h>
 #include <KDChartGlobal>
-#include <KDChartBarDiagram>
+
 #include <KDChartChart>
+
+#include <KDChartBarDiagram>
 #include <KDChartLineDiagram>
+#include <KDChartPieDiagram>
+
 #include <KDChartCartesianCoordinatePlane>
 #include <KDChartDataValueAttributes>
 
@@ -34,6 +38,8 @@ private slots:
         m_bars->setModel( m_model );
         m_lines = new LineDiagram();
         m_lines->setModel( m_model );
+        m_pies = new PieDiagram();
+        m_pies->setModel( m_model );
     }
 
     void testLeading()
@@ -393,6 +399,39 @@ private slots:
         QCOMPARE( orgAttrs, parsedAttrs );
     }
 
+    void testPieAttributes()
+    {
+        resetDoc();
+
+        QModelIndex idx = m_model->index( 0, 2, QModelIndex() );
+        PieAttributes orgAttrs = m_pies->pieAttributes( idx );
+        orgAttrs.setExplode( true );
+        orgAttrs.setExplodeFactor( 7.5 );
+
+        QDomElement savedElement =
+                mDoc.createElement( "TESTING" );
+        mDocRoot.appendChild( savedElement );
+
+        AttributesSerializer::savePieAttributes(
+                mDoc,
+                savedElement,
+                orgAttrs,
+                "TestPieAttributes" );
+
+        // use cout rather that qDebug() to avoid the length limitation of the later
+        //std::cout << "\n\n" << mDoc.toString(2).toLatin1().data() << "\n\n";
+
+        QDomNode parsedNode = savedElement.firstChild();
+        QVERIFY( ! parsedNode.isNull() );
+
+        QDomElement parsedElement = parsedNode.toElement();
+        QVERIFY( ! parsedElement.isNull() );
+
+        PieAttributes parsedAttrs;
+        QVERIFY( AttributesSerializer::parsePieAttributes( parsedElement, parsedAttrs ) );
+        QCOMPARE( orgAttrs, parsedAttrs );
+    }
+
 
     void testChartDeletion()
     {
@@ -421,7 +460,7 @@ private:
     CartesianCoordinatePlane* m_plane;
     BarDiagram *m_bars;
     LineDiagram *m_lines;
-
+    PieDiagram *m_pies;
 };
 
 QTEST_MAIN(TestKDChartAttributesSerializer)

@@ -702,6 +702,39 @@ void AttributesSerializer::saveBarAttributes(
     KDXML::createBoolNode( doc, element, "DrawSolidExcessArrows", a.drawSolidExcessArrows() );
 }
 
+
+bool AttributesSerializer::parsePieAttributes(
+        const QDomElement& e, PieAttributes& a )
+{
+    bool bOK = true;
+    QDomNode node = e.firstChild();
+    while( !node.isNull() ) {
+        QDomElement element = node.toElement();
+        if( !element.isNull() ) { // was really an element
+            QString tagName = element.tagName();
+            //qDebug()<<tagName;
+            if( tagName == "Explode" ) {
+                bool b;
+                if( KDXML::readBoolNode( element, b ) )
+                    a.setExplode( b );
+                else
+                    qDebug() << "Error parsing PieAttributes tag: " << tagName;
+            } else if( tagName == "ExplodeFactor" ) {
+                qreal r;
+                if( KDXML::readRealNode( element, r ) )
+                    a.setExplodeFactor( r );
+                else
+                    qDebug() << "Error parsing PieAttributes tag: " << tagName;
+            } else {
+                qDebug() << "Unknown subelement of PieAttributes found:" << tagName;
+                bOK = false;
+            }
+        }
+        node = node.nextSibling();
+    }
+    return bOK;
+}
+
 void AttributesSerializer::savePieAttributes(
         QDomDocument& doc,
         QDomElement& e,
