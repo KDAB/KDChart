@@ -146,10 +146,12 @@ MainWindow::MainWindow( QWidget* parent ) :
     pix2 = pix2.scaled( size1 );
 
     QLabel* label1 = new QLabel( 0 );
+    label1->setWindowTitle( "200x200" );
     label1->setPixmap( pix1 );
     label1->setFixedSize( pix1.size() );
     label1->show();
     QLabel* label2 = new QLabel( 0 );
+    label2->setWindowTitle( "1000x1000 scaled down" );
     label2->setPixmap( pix2 );
     label2->setFixedSize( pix2.size() );
     label2->show();

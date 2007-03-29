@@ -196,11 +196,6 @@ void CartesianAxis::paint( QPainter* painter )
 void CartesianAxis::Private::drawSubUnitRulers( QPainter* painter, CartesianCoordinatePlane* plane, const DataDimension& dim,
                                                 const QPointF& rulerRef, const QVector<int>& drawnTicks ) const
 {
-    qDebug() << "entering CartesianAxis::Private ("<< this <<") ::drawSubUnitRulers()\n"
-            "for axis" << axis() << "and diagram" << diagram() << "\n";
-
-    if( ! mAxis ) return;
-
     const QRect geoRect( axis()->geometry() );
     int nextMayBeTick = 0;
     int mayBeTick = 0;
@@ -260,8 +255,6 @@ void CartesianAxis::Private::drawSubUnitRulers( QPainter* painter, CartesianCoor
 
 void CartesianAxis::Private::drawTitleText( QPainter* painter, CartesianCoordinatePlane* plane, const QRect& areaGeoRect ) const
 {
-    if( ! mAxis ) return;
-
     const TextAttributes titleTA( axis()->titleTextAttributes() );
     if( titleTA.isVisible() ) {
         TextLayoutItem titleItem( titleText,

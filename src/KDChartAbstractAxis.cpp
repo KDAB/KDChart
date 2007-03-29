@@ -49,21 +49,17 @@ AbstractAxis::Private::Private( AbstractDiagram* diagram, AbstractAxis* axis )
 
 AbstractAxis::Private::~Private()
 {
-    // PENDING(miroslav) Code from KDChartAxis::Private::~Private goes here
     delete observer;
     observer = 0;
 }
 
 bool AbstractAxis::Private::setDiagram(
     AbstractDiagram* diagram_,
-    AbstractAxis* axis_,
     bool delayedInit )
 {
     AbstractDiagram* diagram = delayedInit ? mDiagram : diagram_;
-    AbstractAxis*    axis    = delayedInit ? mAxis    : axis_;
     if( delayedInit ){
         mDiagram = 0;
-        mAxis = 0;
     }
 
     // do not set a diagram again that was already set
@@ -77,7 +73,7 @@ bool AbstractAxis::Private::setDiagram(
         delete observer;
         if ( mDiagram ) {
 //qDebug() << "axis" << (axis != 0);
-            observer = new DiagramObserver( mDiagram, axis );
+            observer = new DiagramObserver( mDiagram, mAxis );
             bNewDiagramStored = true;
         }else{
             observer = 0;
@@ -89,7 +85,7 @@ bool AbstractAxis::Private::setDiagram(
     return bNewDiagramStored;
 }
 
-void AbstractAxis::Private::unsetDiagram( AbstractDiagram* diagram, AbstractAxis* axis )
+void AbstractAxis::Private::unsetDiagram( AbstractDiagram* diagram )
 {
     if ( diagram == mDiagram ) {
         mDiagram = 0;
@@ -100,7 +96,7 @@ void AbstractAxis::Private::unsetDiagram( AbstractDiagram* diagram, AbstractAxis
     }
     if( !secondaryDiagrams.isEmpty() ) {
         AbstractDiagram *nextDiagram = secondaryDiagrams.dequeue();
-        setDiagram( nextDiagram, axis );
+        setDiagram( nextDiagram );
     }
 }
 
@@ -140,7 +136,7 @@ void AbstractAxis::delayedInit()
     // We call setDiagram() here, because the c'tor of Private
     // only has stored the pointers, but it did not call setDiagram().
     if( d )
-        d->setDiagram( 0, 0, true );
+        d->setDiagram( 0, true /* delayedInit */ );
 }
 
 /**
@@ -155,7 +151,7 @@ void AbstractAxis::delayedInit()
   */
 void AbstractAxis::createObserver( AbstractDiagram* diagram )
 {
-    if( d->setDiagram( diagram, this ) )
+    if( d->setDiagram( diagram ) )
         connectSignals();
 }
 
@@ -171,7 +167,7 @@ void AbstractAxis::createObserver( AbstractDiagram* diagram )
   */
 void AbstractAxis::deleteObserver( AbstractDiagram* diagram )
 {
-    d->unsetDiagram( diagram, this );
+    d->unsetDiagram( diagram );
 }
 
 /**
