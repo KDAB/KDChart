@@ -86,12 +86,22 @@ MarkerAttributes::~MarkerAttributes()
 
 bool MarkerAttributes::operator==( const MarkerAttributes& r ) const
 {
+    /*
+    qDebug() << "MarkerAttributes::operator== finds"
+            << (isVisible() == r.isVisible())
+            << (markerStylesMap() == r.markerStylesMap())
+            << (markerStyle() == r.markerStyle())
+            << (markerSize() == r.markerSize())
+            << (markerColor() == r.markerColor())
+            << (pen() == r.pen())
+            << markerColor() << r.markerColor();
+    */
     return ( isVisible() == r.isVisible() &&
-	     markerStylesMap() == r.markerStylesMap() &&
-	     markerStyle() == r.markerStyle() &&
-	     markerSize() == r.markerSize() &&
-	     markerColor() == r.markerColor() &&
-             pen() == r.pen() );
+            markerStylesMap() == r.markerStylesMap() &&
+            markerStyle() == r.markerStyle() &&
+            markerSize() == r.markerSize() &&
+            markerColor() == r.markerColor() &&
+            pen() == r.pen() );
 }
 
 
@@ -169,40 +179,4 @@ QDebug operator<<( QDebug dbg, const MarkerAttributes & ma ) {
                << ")";
 }
 #endif
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
