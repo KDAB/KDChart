@@ -138,6 +138,10 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_legend->setTitleText( tr( "Legend" ) );
     m_legend->setOrientation( Qt::Vertical );
 
+    FrameAttributes faLegend( m_legend->frameAttributes() );
+    faLegend.setPen( QPen(QColor(0xb0,0x60,0x60), 8) );
+    m_legend->setFrameAttributes( faLegend );
+
     BackgroundAttributes baLegend( m_legend->backgroundAttributes() );
     baLegend.setVisible( true );
     baLegend.setBrush( QColor(0xff,0xe0,0x80) );
@@ -150,7 +154,7 @@ MainWindow::MainWindow( QWidget* parent ) :
 
     // for illustration we paint the same chart at different sizes:
     QSize size1 = QSize( 200, 200 );
-    QSize size2 = QSize( 1000, 1000 );
+    QSize size2 = QSize( 800, 800 );
     m_pix1 = drawIntoPixmap( size1, m_chart );
     m_pix2 = drawIntoPixmap( size2, m_chart );
     m_pix2 = m_pix2.scaled( size1 );
@@ -164,7 +168,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_smallChart1->show();
 
     m_smallChart2 = new QLabel( this );
-    m_smallChart2->setWindowTitle( "1000x1000 scaled down" );
+    m_smallChart2->setWindowTitle( "800x800 scaled down" );
     m_smallChart2->setPixmap( m_pix2 );
     m_smallChart2->setFixedSize( m_pix2.size() );
     m_smallChart2->move( width() - m_pix2.width()*2,
