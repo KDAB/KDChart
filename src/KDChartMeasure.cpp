@@ -168,7 +168,9 @@ const QSizeF Measure::sizeOfArea( const QObject* area ) const
             //qDebug("Measure::sizeOfArea() got no valid area.");
         }
     }
-    return size;
+    const QPair< qreal, qreal > factors
+            = GlobalMeasureScaling::instance()->currentFactors();
+    return QSizeF(size.width() * factors.first, size.height() * factors.second);
 }
 
 
@@ -178,6 +180,41 @@ bool Measure::operator==( const Measure& r ) const
             mMode  == r.calculationMode() &&
             mArea  == r.referenceArea() &&
             mOrientation == r.referenceOrientation() );
+}
+
+
+
+GlobalMeasureScaling::GlobalMeasureScaling()
+{
+    mFactors.push( qMakePair(1.0, 1.0) );
+}
+
+GlobalMeasureScaling::~GlobalMeasureScaling()
+{
+    // this space left empty intentionally
+}
+
+GlobalMeasureScaling* GlobalMeasureScaling::instance()
+{
+    static GlobalMeasureScaling instance;
+    return &instance;
+}
+
+void GlobalMeasureScaling::setFactors(qreal factorX, qreal factorY)
+{
+    instance()->mFactors.push( qMakePair(factorX, factorY) );
+}
+
+void GlobalMeasureScaling::resetFactors()
+{
+    // never remove the initial (1.0. 1.0) setting
+    if( instance()->mFactors.count() > 1 )
+        instance()->mFactors.pop();
+}
+
+const QPair< qreal, qreal > GlobalMeasureScaling::currentFactors()
+{
+    return instance()->mFactors.top();
 }
 
 

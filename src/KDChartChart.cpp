@@ -894,11 +894,18 @@ void Chart::paint( QPainter* painter, const QRect& target )
     if( target.isEmpty() || !painter ) return;
     //qDebug() << "Chart::paint( ..," << target << ")";
 
+    GlobalMeasureScaling::instance()->setFactors(
+            static_cast<qreal>(target.width()) /
+            static_cast<qreal>(geometry().size().width()),
+            static_cast<qreal>(target.height()) /
+            static_cast<qreal>(geometry().size().height()) );
+
     if( target.size() != d->currentLayoutSize ){
         d->resizeLayout( target.size() );
     }
     const QPoint translation = target.topLeft();
     painter->translate( translation );
+
     d->paintAll( painter );
 
     // for debugging:
@@ -916,6 +923,8 @@ void Chart::paint( QPainter* painter, const QRect& target )
     }
 
     painter->translate( -translation.x(), -translation.y() );
+
+    GlobalMeasureScaling::instance()->resetFactors();
 
     //qDebug() << "KDChart::Chart::paint() done.\n";
 }

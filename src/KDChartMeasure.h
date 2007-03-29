@@ -32,6 +32,7 @@
 
 #include <QDebug>
 #include <Qt>
+#include <QStack>
 #include "KDChartGlobal.h"
 #include "KDChartEnums.h"
 
@@ -130,6 +131,52 @@ private:
     const QObject* mArea;
     KDChartEnums::MeasureOrientation mOrientation;
 }; // End of class Measure
+
+
+
+/**
+ * Auxiliary class used by the KDChart::Measure and KDChart::Chart class.
+ *
+ * Normally there should be no need to call any of these methods yourself.
+ * 
+ * They are used by KDChart::Chart::paint( QPainter*, const QRect& )
+ * to adjust all of the relative Measures according to the target
+ * rectangle's size.
+ *
+ * Default factors are (1.0, 1.0)
+ */
+class GlobalMeasureScaling
+{
+public:
+    static GlobalMeasureScaling* instance();
+
+protected:
+    GlobalMeasureScaling();
+    virtual ~GlobalMeasureScaling();
+
+public:
+    /**
+     * Set new factors to be used by all Measure objects from now on.
+     * Previous values will be stored.
+     */
+    static void setFactors(qreal factorX, qreal factorY);
+
+    /**
+     * Reset factors to the values active before the previous call of
+     * setFactors.
+     * This works on a stack, so recursive calls works fine, like:
+     * setFactors, setFactors, unserFactors, unsetFactors
+     */
+    static void resetFactors();
+
+    /**
+     * Returns the currently active factors.
+     */
+    static const QPair< qreal, qreal > currentFactors();
+
+private:
+    QStack< QPair< qreal, qreal > > mFactors;
+};
 
 }
 
