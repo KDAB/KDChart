@@ -273,6 +273,7 @@ bool AttributesSerializer::parseBackgroundAttributes(
         QDomElement element = node.toElement();
         if( !element.isNull() ) { // was really an element
             QString tagName = element.tagName();
+            //qDebug()<<tagName;
             if( tagName == "Visible" ) {
                 bool b;
                 if( KDXML::readBoolNode( element, b ) )
@@ -361,6 +362,110 @@ void AttributesSerializer::saveBackgroundAttributes(
     if( hasPixmap )
         KDXML::createPixmapNode( doc, backgroundAttributesElement, "Pixmap",
                                  a.pixmap() );
+}
+
+bool AttributesSerializer::parseDataValueAttributes(
+        const QDomElement& e,
+        DataValueAttributes& a )
+{
+    bool bOK = true;
+    QDomNode node = e.firstChild();
+    while( !node.isNull() ) {
+        QDomElement element = node.toElement();
+        if( !element.isNull() ) { // was really an element
+            QString tagName = element.tagName();
+            if( tagName == "Visible" ) {
+                bool b;
+                if( KDXML::readBoolNode( element, b ) )
+                    a.setVisible( b );
+                else
+                    qDebug() << "Error parsing DataValueAttributes tag: " << tagName;
+            } else if( tagName == "TextAttributes" ) {
+                TextAttributes attrs;
+                if( parseTextAttributes( element, attrs ) )
+                    a.setTextAttributes( attrs );
+                else
+                    qDebug() << "Error parsing DataValueAttributes tag: " << tagName;
+            } else if( tagName == "FrameAttributes" ) {
+                FrameAttributes attrs;
+                if( parseFrameAttributes( element, attrs ) )
+                    a.setFrameAttributes( attrs );
+                else
+                    qDebug() << "Error parsing DataValueAttributes tag: " << tagName;
+            } else if( tagName == "BackgroundAttributes" ) {
+                BackgroundAttributes attrs;
+                if( parseBackgroundAttributes( element, attrs ) )
+                    a.setBackgroundAttributes( attrs );
+                else
+                    qDebug() << "Error parsing DataValueAttributes tag: " << tagName;
+            } else if( tagName == "MarkerAttributes" ) {
+                MarkerAttributes attrs;
+                if( parseMarkerAttributes( element, attrs ) )
+                    a.setMarkerAttributes( attrs );
+                else
+                    qDebug() << "Error parsing DataValueAttributes tag: " << tagName;
+            } else if( tagName == "DecimalDigits" ) {
+                int i;
+                if( KDXML::readIntNode( element, i ) )
+                    a.setDecimalDigits( i );
+                else
+                    qDebug() << "Error parsing DataValueAttributes tag: " << tagName;
+            } else if( tagName == "Prefix" ) {
+                QString s;
+                if( KDXML::readStringNode( element, s ) )
+                    a.setPrefix( s );
+                else
+                    qDebug() << "Error parsing DataValueAttributes tag: " << tagName;
+            } else if( tagName == "Suffix" ) {
+                QString s;
+                if( KDXML::readStringNode( element, s ) )
+                    a.setSuffix( s );
+                else
+                    qDebug() << "Error parsing DataValueAttributes tag: " << tagName;
+            } else if( tagName == "DataLabel" ) {
+                QString s;
+                if( KDXML::readStringNode( element, s ) )
+                    a.setDataLabel( s );
+                else
+                    qDebug() << "Error parsing DataValueAttributes tag: " << tagName;
+            } else if( tagName == "ShowRepetitiveDataLabels" ) {
+                bool b;
+                if( KDXML::readBoolNode( element, b ) )
+                    a.setShowRepetitiveDataLabels( b );
+                else
+                    qDebug() << "Error parsing DataValueAttributes tag: " << tagName;
+            } else if( tagName == "PowerOfTenDivisor" ) {
+                int i;
+                if( KDXML::readIntNode( element, i ) )
+                    a.setPowerOfTenDivisor( i );
+                else
+                    qDebug() << "Error parsing DataValueAttributes tag: " << tagName;
+            } else if( tagName == "ShowInfinite" ) {
+                bool b;
+                if( KDXML::readBoolNode( element, b ) )
+                    a.setShowInfinite( b );
+                else
+                    qDebug() << "Error parsing DataValueAttributes tag: " << tagName;
+            } else if( tagName == "NegativePosition" ) {
+                RelativePosition pos;
+                if( parseRelativePosition( element, pos ) )
+                    a.setNegativePosition( pos );
+                else
+                    qDebug() << "Error parsing DataValueAttributes tag: " << tagName;
+            } else if( tagName == "PositivePosition" ) {
+                RelativePosition pos;
+                if( parseRelativePosition( element, pos ) )
+                    a.setPositivePosition( pos );
+                else
+                    qDebug() << "Error parsing DataValueAttributes tag: " << tagName;
+            } else {
+                qDebug() << "Unknown subelement of DataValueAttributes found:" << tagName;
+                bOK = false;
+            }
+        }
+        node = node.nextSibling();
+    }
+    return bOK;
 }
 
 void AttributesSerializer::saveDataValueAttributes(
@@ -540,6 +645,30 @@ void AttributesSerializer::saveThreeDPieAttributes(
                            a.useShadowColors() );
 }
 
+MarkerAttributes::MarkerStyle AttributesSerializer::markerStyleFromName( QString name )
+{
+    MarkerAttributes::MarkerStyle style;
+    if( name == "MarkerCircle" )
+        style = MarkerAttributes::MarkerCircle;
+    else if( name == "MarkerSquare" )
+        style = MarkerAttributes::MarkerSquare;
+    else if( name == "MarkerDiamond" )
+        style = MarkerAttributes::MarkerDiamond;
+    else if( name == "Marker1Pixel" )
+        style = MarkerAttributes::Marker1Pixel;
+    else if( name == "Marker4Pixels" )
+        style = MarkerAttributes::Marker4Pixels;
+    else if( name == "MarkerRing" )
+        style = MarkerAttributes::MarkerRing;
+    else if( name == "MarkerCross" )
+        style = MarkerAttributes::MarkerCross;
+    else if( name == "MarkerFastCross" )
+        style = MarkerAttributes::MarkerFastCross;
+    else 
+        Q_ASSERT( false ); // all of the style types need to be handled
+    return style;
+}
+
 QString AttributesSerializer::markerStyleToName( MarkerAttributes::MarkerStyle style )
 {
     QString name;
@@ -573,6 +702,74 @@ QString AttributesSerializer::markerStyleToName( MarkerAttributes::MarkerStyle s
             break;
     }
     return name;
+}
+
+
+bool AttributesSerializer::parseMarkerAttributes(
+        const QDomElement& e,
+        MarkerAttributes& a )
+{
+    bool bOK = true;
+    QDomNode node = e.firstChild();
+    while( !node.isNull() ) {
+        QDomElement element = node.toElement();
+        if( !element.isNull() ) { // was really an element
+            QString tagName = element.tagName();
+            if( tagName == "Visible" ) {
+                bool b;
+                if( KDXML::readBoolNode( element, b ) )
+                    a.setVisible( b );
+            } else if( tagName == "MarkerStyle" ) {
+                QString s;
+                if( KDXML::findStringAttribute( e, "style", s ) )
+                    a.setMarkerStyle( markerStyleFromName( s ) );
+            } else if( tagName == "StylesMap" ) {
+                MarkerAttributes::MarkerStylesMap map;
+                QDomNode node2 = element.firstChild();
+                while( ! node2.isNull() ) {
+                    QDomElement ele2 = node2.toElement();
+                    if( ! ele2.isNull() ) { // was really an element
+                        QString tag2 = ele2.tagName();
+                        if( tag2 == "MarkerStyle" ){
+                            int key;
+                            QString style;
+                            if( KDXML::findIntAttribute( ele2, "key", key ) &&
+                                KDXML::findStringAttribute( ele2, "style", style ) )
+                            {
+                                map[ key ] = markerStyleFromName( style );
+                            } else {
+                                qDebug() << "Invalid style element in MarkerAttributes/StylesMap found.";
+                                bOK = false;
+                            }
+                        } else {
+                            qDebug() << "Unknown subelement of MarkerAttributes/StylesMap found:" << tag2;
+                            bOK = false;
+                        }
+                    }
+                }
+                if( bOK )
+                    a.setMarkerStylesMap( map );
+            } else if( tagName == "Size" ) {
+                QSizeF size;
+                if( KDXML::readSizeFNode( element, size ) )
+                    a.setMarkerSize( size );
+            } else if( tagName == "Color" ) {
+                QColor c;
+                if( KDXML::readColorNode( element, c ) )
+                    a.setMarkerColor( c );
+                //qDebug() << "---> " << c;
+            } else if( tagName == "Pen" ) {
+                QPen pen;
+                if( KDXML::readPenNode( element, pen ) )
+                    a.setPen( pen );
+            } else {
+                qDebug() << "Unknown subelement of MarkerAttributes found:" << tagName;
+                bOK = false;
+            }
+        }
+        node = node.nextSibling();
+    }
+    return bOK;
 }
 
 void AttributesSerializer::saveMarkerAttributes(
@@ -614,6 +811,97 @@ void AttributesSerializer::saveMarkerAttributes(
     KDXML::createPenNode( doc, element, "Pen", a.pen() );
 }
 
+
+bool AttributesSerializer::parseRelativePosition(
+        const QDomElement& e,
+        RelativePosition& pos )
+{
+    bool bOK = true;
+    QDomNode node = e.firstChild();
+    while( !node.isNull() ) {
+        QDomElement element = node.toElement();
+        if( !element.isNull() ) { // was really an element
+            QString tagName = element.tagName();
+            if( tagName == "ReferenceArea" ) {
+                QObject* ptr;
+                if( parseQObjectPointer( element, ptr ) )
+                    pos.setReferenceArea( ptr );
+            } else if( tagName == "PositionPoints" ) {
+                PositionPoints points;
+                QDomNode node2 = element.firstChild();
+                while( ! node2.isNull() ) {
+                    QDomElement ele2 = node2.toElement();
+                    if( ! ele2.isNull() ) { // was really an element
+                        QString tag2 = ele2.tagName();
+                        QPointF pt;
+                        if( tag2 =="PositionUnknown" ) {
+                            if( KDXML::readPointFNode( ele2, pt ) )
+                                points.mPositionUnknown = pt;
+                        } else if( tag2 =="Center" ) {
+                            if( KDXML::readPointFNode( ele2, pt ) )
+                                points.mPositionCenter = pt;
+                        } else if( tag2 =="NorthWest" ) {
+                            if( KDXML::readPointFNode( ele2, pt ) )
+                                points.mPositionNorthWest = pt;
+                        } else if( tag2 =="North" ) {
+                            if( KDXML::readPointFNode( ele2, pt ) )
+                                points.mPositionNorth = pt;
+                        } else if( tag2 =="NorthEast" ) {
+                            if( KDXML::readPointFNode( ele2, pt ) )
+                                points.mPositionNorthEast = pt;
+                        } else if( tag2 =="East" ) {
+                            if( KDXML::readPointFNode( ele2, pt ) )
+                                points.mPositionEast = pt;
+                        } else if( tag2 =="SouthEast" ) {
+                            if( KDXML::readPointFNode( ele2, pt ) )
+                                points.mPositionSouthEast = pt;
+                        } else if( tag2 =="South" ) {
+                            if( KDXML::readPointFNode( ele2, pt ) )
+                                points.mPositionSouth = pt;
+                        } else if( tag2 =="SouthWest" ) {
+                            if( KDXML::readPointFNode( ele2, pt ) )
+                                points.mPositionSouthWest = pt;
+                        } else if( tag2 =="West" ) {
+                            if( KDXML::readPointFNode( ele2, pt ) )
+                                points.mPositionWest = pt;
+                        } else {
+                            qDebug() << "Unknown subelement of RelativePosition/PositionPoints found:" << tag2;
+                            bOK = false;
+                        }
+                    }
+                }
+                if( bOK )
+                    pos.setReferencePoints( points );
+            } else if( tagName == "ReferencePosition" ) {
+                QString s;
+                if( KDXML::readStringNode( element, s ) )
+                    pos.setReferencePosition( Position::fromName( s.toLatin1().data() ) );
+            } else if( tagName == "Alignment" ) {
+                Qt::Alignment a;
+                if( KDXML::readAlignmentNode( element, a ) )
+                    pos.setAlignment( a );
+            } else if( tagName == "HorizontalPadding" ) {
+                Measure m;
+                if( parseMeasure( element, m ) )
+                    pos.setHorizontalPadding( m );
+            } else if( tagName == "VerticalPadding" ) {
+                Measure m;
+                if( parseMeasure( element, m ) )
+                    pos.setVerticalPadding( m );
+            } else if( tagName == "Rotation" ) {
+                qreal r;
+                if( KDXML::readRealNode( element, r ) )
+                    pos.setRotation( r );
+            } else {
+                qDebug() << "Unknown subelement of RelativePosition found:" << tagName;
+                bOK = false;
+            }
+        }
+        node = node.nextSibling();
+    }
+    return bOK;
+}
+
 void AttributesSerializer::saveRelativePosition(
         QDomDocument& doc,
         QDomElement& e,
@@ -638,25 +926,25 @@ void AttributesSerializer::saveRelativePosition(
         element.appendChild( pointsElement );
         // save the positions
         KDXML::createPointFNode(
-                doc, element, "PositionUnknown", points.point( Position::Unknown ) );
+                doc, pointsElement, "PositionUnknown", points.point( Position::Unknown ) );
         KDXML::createPointFNode(
-                doc, element, "Center",    points.point( Position::Center ) );
+                doc, pointsElement, "Center",    points.point( Position::Center ) );
         KDXML::createPointFNode(
-                doc, element, "NorthWest", points.point( Position::NorthWest ) );
+                doc, pointsElement, "NorthWest", points.point( Position::NorthWest ) );
         KDXML::createPointFNode(
-                doc, element, "North",     points.point( Position::North ) );
+                doc, pointsElement, "North",     points.point( Position::North ) );
         KDXML::createPointFNode(
-                doc, element, "NorthEast", points.point( Position::NorthEast ) );
+                doc, pointsElement, "NorthEast", points.point( Position::NorthEast ) );
         KDXML::createPointFNode(
-                doc, element, "East",      points.point( Position::East ) );
+                doc, pointsElement, "East",      points.point( Position::East ) );
         KDXML::createPointFNode(
-                doc, element, "SouthEast", points.point( Position::SouthEast ) );
+                doc, pointsElement, "SouthEast", points.point( Position::SouthEast ) );
         KDXML::createPointFNode(
-                doc, element, "South",     points.point( Position::South ) );
+                doc, pointsElement, "South",     points.point( Position::South ) );
         KDXML::createPointFNode(
-                doc, element, "SouthWest", points.point( Position::SouthWest ) );
+                doc, pointsElement, "SouthWest", points.point( Position::SouthWest ) );
         KDXML::createPointFNode(
-                doc, element, "West",      points.point( Position::West ) );
+                doc, pointsElement, "West",      points.point( Position::West ) );
     }
     // save the reference position
     KDXML::createStringNode( doc, element, "ReferencePosition", a.referencePosition().name() );
@@ -745,10 +1033,12 @@ bool AttributesSerializer::parseQObjectPointer(
                     }
                 }
             } else if( tagName == "kdchart:unresolved-pointer" ) {
+                /*
                 qDebug() << "\n"
                 "    Non-critical information by AttributesSerializer::parseQObjectPointer():\n"
                 "    Unresolved pointer found, setting value to zero.\n"
                 "    Location:\n    "+showDomPath( e );
+                */
                 p = 0;
             } else {
                 qDebug() << "Unknown subelement of " << e.tagName() << " found:" << tagName;

@@ -123,7 +123,9 @@ namespace KDXML {
             bool east, bool southEast, bool south, bool southWest, bool west,
             bool floating );
 
-    bool findIntAttribute( const QDomElement& e, const QString & name, int& attr );
+    bool findStringAttribute( const QDomElement& e, const QString & name, QString& attr );
+    bool findIntAttribute(    const QDomElement& e, const QString & name, int&  attr );
+    bool findBoolAttribute(   const QDomElement& e, const QString & name, bool& attr );
 
     bool readIntNode( const QDomElement& element, int& value );
     bool readStringNode( const QDomElement& element, QString& value );
@@ -131,8 +133,10 @@ namespace KDXML {
     bool readRealNode( const QDomElement& element, qreal& value );
     bool readBoolNode( const QDomElement& element, bool& value );
     bool readOrientationNode( const QDomElement& element, Qt::Orientation& value );
+    bool readAlignmentNode(const QDomElement& element, Qt::Alignment& value );
     bool readSizeNode( const QDomElement& element, QSize& value );
     bool readSizeFNode( const QDomElement& element, QSizeF& value );
+    bool readPointFNode( const QDomElement& element, QPointF& value );
     bool readColorNode( const QDomElement& element, QColor& value );
     bool readBrushNode( const QDomElement& element, QBrush& brush );
     bool readPixmapNode( const QDomElement& element, QPixmap& pixmap );

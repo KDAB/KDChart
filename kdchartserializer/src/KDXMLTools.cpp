@@ -33,6 +33,8 @@
 #include <QImage>
 #include <QImageWriter>
 
+#include <QDebug>
+
 #include <zlib.h>
 
 
@@ -189,12 +191,10 @@ namespace KDXML {
     void createPointFNode( QDomDocument& doc, QDomNode& parent,
                            const QString& elementName, const QPointF& point )
     {
-        QDomElement colorElement = doc.createElement( elementName );
-        parent.appendChild( colorElement );
-        colorElement.setAttribute( "x",
-                                   QString::number( point.x() ) );
-        colorElement.setAttribute( "y",
-                                   QString::number( point.y() ) );
+        QDomElement element = doc.createElement( elementName );
+        parent.appendChild( element );
+        element.setAttribute( "x", QString::number( point.x() ) );
+        element.setAttribute( "y", QString::number( point.y() ) );
     }
 
     void createColorNode( QDomDocument& doc, QDomNode& parent,
@@ -202,12 +202,16 @@ namespace KDXML {
     {
         QDomElement colorElement = doc.createElement( elementName );
         parent.appendChild( colorElement );
+        setBoolAttribute( colorElement, "Valid", color.isValid() );
+        if( color.isValid() )
         colorElement.setAttribute( "Red",
                                    QString::number( color.red() ) );
         colorElement.setAttribute( "Green",
                                    QString::number( color.green() ) );
         colorElement.setAttribute( "Blue",
                                    QString::number( color.blue() ) );
+        colorElement.setAttribute( "Alpha",
+                                   QString::number( color.alpha() ) );
     }
 
 
@@ -503,6 +507,14 @@ namespace KDXML {
     }
 
 
+    bool findStringAttribute( const QDomElement& e, const QString & name, QString& attr )
+    {
+        bool bOK = false;
+        if( e.hasAttribute( name ) )
+            attr = e.attribute( name );
+        return bOK;
+    }
+
     bool findIntAttribute( const QDomElement& e, const QString & name, int& attr )
     {
         bool bOK = false;
@@ -510,6 +522,29 @@ namespace KDXML {
             int val = e.attribute( name ).toInt( &bOK );
             if( bOK )
                 attr = val;
+        }
+        return bOK;
+    }
+
+    bool findBoolAttribute( const QDomElement& e, const QString & name, bool& attr )
+    {
+        bool bOK = false;
+        if( e.hasAttribute( name ) ){
+            const QString value = e.attribute( name );
+            bool foundFalse = false;
+            const bool foundTrue =
+                    ( ! value.compare("true", Qt::CaseInsensitive) ) ||
+                    ( ! value.compare("1",    Qt::CaseInsensitive) ) ||
+                    ( ! value.compare("yes",  Qt::CaseInsensitive) );
+            if( ! foundTrue ){
+                foundFalse =
+                    ( ! value.compare("false", Qt::CaseInsensitive) ) ||
+                    ( ! value.compare("0",     Qt::CaseInsensitive) ) ||
+                    ( ! value.compare("no",    Qt::CaseInsensitive) );
+            }
+            bOK = ( foundTrue || foundFalse );
+            if( bOK )
+                attr = foundTrue;
         }
         return bOK;
     }
@@ -577,6 +612,32 @@ namespace KDXML {
     }
 
 
+    bool readAlignmentNode(const QDomElement& element, Qt::Alignment& value )
+    {
+        bool bOK = false;
+        Qt::Alignment align = 0;
+        bool bFlag;
+        if( findBoolAttribute( element, "AlignLeft",    bFlag ) && bFlag )
+            align = align | Qt::AlignLeft;
+        if( findBoolAttribute( element, "AlignRight",   bFlag ) && bFlag )
+            align = align | Qt::AlignRight;
+        if( findBoolAttribute( element, "AlignHCenter", bFlag ) && bFlag )
+            align = align | Qt::AlignHCenter;
+        if( findBoolAttribute( element, "AlignJustify", bFlag ) && bFlag )
+            align = align | Qt::AlignJustify;
+        if( findBoolAttribute( element, "AlignTop",     bFlag ) && bFlag )
+            align = align | Qt::AlignTop;
+        if( findBoolAttribute( element, "AlignBottom",  bFlag ) && bFlag )
+            align = align | Qt::AlignBottom;
+        if( findBoolAttribute( element, "AlignVCenter", bFlag ) && bFlag )
+            align = align | Qt::AlignVCenter;
+        bOK = align != 0;
+        if( bOK )
+            value = align;
+        return bOK;
+    }
+
+
     bool readSizeNode( const QDomElement& element, QSize& value )
     {
         bool ok = false;
@@ -615,26 +676,46 @@ namespace KDXML {
 
     bool readColorNode( const QDomElement& element, QColor& value )
     {
+        bool bOk = false;
+        bool bFlag;
+        if( findBoolAttribute( element, "Valid", bFlag ) && bFlag ){
+            int red, green, blue;
+            // these must be there:
+            bOk =
+                findIntAttribute( element, "Red",   red ) &&
+                findIntAttribute( element, "Green", green ) &&
+                findIntAttribute( element, "Blue",  blue );
+            if( bOk ){
+                int alpha=255;
+                // this is optional:
+                findIntAttribute( element, "Alpha", alpha );
+
+                value = QColor( red, green, blue, alpha );
+            }
+        }else{
+            bOk = true;
+            value = QColor(); // correctly return an invalid color
+        }
+        return bOk;
+    }
+
+    bool readPointFNode( const QDomElement& element, QPointF& value )
+    {
         bool ok = true;
-        int red=0, green=0, blue=0;
-        if( element.hasAttribute( "Red" ) ) {
-            bool redOk = false;
-            red = element.attribute( "Red" ).toInt( &redOk );
-            ok = ok & redOk;
+        qreal x=0, y=0;
+        if( element.hasAttribute( "x" ) ) {
+            bool bOk = false;
+            x = element.attribute( "Red" ).toDouble( &bOk );
+            ok = ok & bOk;
         }
-        if( element.hasAttribute( "Green" ) ) {
-            bool greenOk = false;
-            green = element.attribute( "Green" ).toInt( &greenOk );
-            ok = ok & greenOk;
-        }
-        if( element.hasAttribute( "Blue" ) ) {
-            bool blueOk = false;
-            blue = element.attribute( "Blue" ).toInt( &blueOk );
-            ok = ok & blueOk;
+        if( element.hasAttribute( "x" ) ) {
+            bool bOk = false;
+            x = element.attribute( "Red" ).toDouble( &bOk );
+            ok = ok & bOk;
         }
 
         if( ok )
-            value.setRgb( red, green, blue );
+            value = QPointF(x, y);
 
         return ok;
     }

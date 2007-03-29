@@ -77,6 +77,7 @@ namespace KDChart {
                     QDomElement& e,
                     const Measure& m,
                     const QString& title );
+
             static bool parseFrameAttributes(
                     const QDomElement& e, FrameAttributes& a );
             static void saveFrameAttributes(
@@ -93,68 +94,92 @@ namespace KDChart {
                     const BackgroundAttributes& a,
                     const QString& title );
 
+            static bool parseDataValueAttributes(
+                    const QDomElement& e, DataValueAttributes& a );
             static void saveDataValueAttributes(
                     QDomDocument& doc,
                     QDomElement& e,
                     const DataValueAttributes& a,
                     const QString& title );
 
+            static bool parseLineAttributes(
+                    const QDomElement& e, LineAttributes& a );
             static void saveLineAttributes(
                     QDomDocument& doc,
                     QDomElement& e,
                     const LineAttributes& a,
                     const QString& title );
 
+            static bool parseBarAttributes(
+                    const QDomElement& e, BarAttributes& a );
             static void saveBarAttributes(
                     QDomDocument& doc,
                     QDomElement& e,
                     const BarAttributes& a,
                     const QString& title );
 
+            static bool parsePieAttributes(
+                    const QDomElement& e, PieAttributes& a );
             static void savePieAttributes(
                     QDomDocument& doc,
                     QDomElement& e,
                     const PieAttributes& a,
                     const QString& title );
 
+            static bool parseAbstractThreeDAttributes(
+                    const QDomElement& e, AbstractThreeDAttributes& a );
             static void saveAbstractThreeDAttributes(
                     QDomDocument& doc,
                     QDomElement& e,
                     const AbstractThreeDAttributes* a,
                     const QString& title );
 
+            static bool parseThreeDBarAttributes(
+                    const QDomElement& e, ThreeDBarAttributes& a );
             static void saveThreeDBarAttributes(
                     QDomDocument& doc,
                     QDomElement& e,
                     const ThreeDBarAttributes& a,
                     const QString& title );
 
+            static bool parseThreeDLineAttributes(
+                    const QDomElement& e, ThreeDLineAttributes& a );
             static void saveThreeDLineAttributes(
                     QDomDocument& doc,
                     QDomElement& e,
                     const ThreeDLineAttributes& a,
                     const QString& title );
 
+            static bool parseThreeDPieAttributes(
+                    const QDomElement& e, ThreeDPieAttributes& a );
             static void saveThreeDPieAttributes(
                     QDomDocument& doc,
                     QDomElement& e,
                     const ThreeDPieAttributes& a,
                     const QString& title );
 
+            static bool parseMarkerAttributes(
+                    const QDomElement& e, MarkerAttributes& a );
             static void saveMarkerAttributes(
                     QDomDocument& doc,
                     QDomElement& e,
                     const MarkerAttributes& a,
                     const QString& title );
+            static MarkerAttributes::MarkerStyle markerStyleFromName(
+                    QString name );
             static QString markerStyleToName(
                     MarkerAttributes::MarkerStyle style );
 
+            static bool parseRelativePosition(
+                    const QDomElement& e, RelativePosition& a );
             static void saveRelativePosition(
                     QDomDocument& doc,
                     QDomElement& e,
                     const RelativePosition& a,
                     const QString& title );
 
+            static bool parseGridAttributes(
+                    const QDomElement& e, GridAttributes& a );
             static void saveGridAttributes(
                     QDomDocument& doc,
                     QDomElement& e,

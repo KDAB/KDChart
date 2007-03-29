@@ -10,6 +10,8 @@
 #include <KDChartAttributesSerializer>
 #include <KDXMLTools>
 
+#include <iostream>
+
 using namespace KDChart;
 
 class TestKDChartAttributesSerializer : public QObject {
@@ -96,6 +98,53 @@ private slots:
 
         TextAttributes parsedAttrs;
         QVERIFY( AttributesSerializer::parseTextAttributes( parsedElement, parsedAttrs ) );
+        QCOMPARE( orgAttrs, parsedAttrs );
+    }
+
+    void testMarkerAttributes()
+    {
+        resetDoc();
+
+        QDomElement savedElement =
+                mDoc.createElement( "TESTING" );
+        mDocRoot.appendChild( savedElement );
+
+        MarkerAttributes orgAttrs;
+
+        AttributesSerializer::saveMarkerAttributes(
+                mDoc,
+                savedElement,
+                orgAttrs,
+                "TestMarkerAttributes" );
+
+        // use cout rather that qDebug() to avoid the length limitation of the later
+        //std::cout << "\n\n" << mDoc.toString(2).toLatin1().data() << "\n\n";
+
+        QDomNode parsedNode = savedElement.firstChild();
+        QVERIFY( ! parsedNode.isNull() );
+
+        QDomElement parsedElement = parsedNode.toElement();
+        QVERIFY( ! parsedElement.isNull() );
+
+        MarkerAttributes parsedAttrs;
+        QVERIFY( AttributesSerializer::parseMarkerAttributes( parsedElement, parsedAttrs ) );
+
+
+        resetDoc();
+
+        QDomElement savedElement2 =
+                mDoc.createElement( "TESTING_#2" );
+        mDocRoot.appendChild( savedElement2 );
+
+        AttributesSerializer::saveMarkerAttributes(
+                mDoc,
+                savedElement2,
+                parsedAttrs,
+                "TestMarkerAttributes" );
+
+        // use cout rather that qDebug() to avoid the length limitation of the later
+        //std::cout << "\n\n testing saving parsed data:\n" << mDoc.toString(2).toLatin1().data() << "\n\n";
+
         QCOMPARE( orgAttrs, parsedAttrs );
     }
 
@@ -235,6 +284,37 @@ private slots:
         for( int x=0; x<pixWidth; ++x )
             for( int y=0; y<pixHeight; ++y )
                 QCOMPARE( orgImg.pixel(x,y), orgImg.pixel(x,y) );
+    }
+
+    void testDataValueAttributes()
+    {
+        resetDoc();
+
+        QModelIndex idx = m_model->index( 0, 2, QModelIndex() );
+        DataValueAttributes orgAttrs = m_bars->dataValueAttributes( idx );
+
+        QDomElement savedElement =
+                mDoc.createElement( "TESTING" );
+        mDocRoot.appendChild( savedElement );
+
+        AttributesSerializer::saveDataValueAttributes(
+                mDoc,
+                savedElement,
+                orgAttrs,
+                "TestDataValueAttributes" );
+
+        // use cout rather that qDebug() to avoid the length limitation of the later
+        //std::cout << "\n\n" << mDoc.toString(2).toLatin1().data() << "\n\n";
+
+        QDomNode parsedNode = savedElement.firstChild();
+        QVERIFY( ! parsedNode.isNull() );
+
+        QDomElement parsedElement = parsedNode.toElement();
+        QVERIFY( ! parsedElement.isNull() );
+
+        DataValueAttributes parsedAttrs;
+        QVERIFY( AttributesSerializer::parseDataValueAttributes( parsedElement, parsedAttrs ) );
+        QCOMPARE( orgAttrs, parsedAttrs );
     }
 
 
