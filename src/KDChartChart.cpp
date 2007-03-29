@@ -663,8 +663,10 @@ void Chart::Private::slotRelayout()
     // The geometry is not necessarily w->rect(), when using paint(), this is why
     // we don't call layout->activate().
     const QRect geo( QRect( 0, 0, currentLayoutSize.width(), currentLayoutSize.height() ) );
-    if( geo != layout->geometry() )
+    if( geo != layout->geometry() ){
+        //qDebug() << "Chart slotRelayout() adjusting geometry to" << geo;
         layout->setGeometry( geo );
+    }
 
     // Adapt diagram drawing to the new size
     KDAB_FOREACH (AbstractCoordinatePlane* plane, coordinatePlanes ) {
@@ -703,6 +705,7 @@ void Chart::Private::resizeLayout( const QSize& size )
 void Chart::Private::paintAll( QPainter* painter )
 {
     QRect rect( QPoint(0, 0), currentLayoutSize );
+
     // Paint the background (if any)
     KDChart::AbstractAreaBase::paintBackgroundAttributes(
         *painter, rect, backgroundAttributes );
@@ -882,14 +885,18 @@ int Chart::globalLeadingBottom() const
 void Chart::paint( QPainter* painter, const QRect& target )
 {
     if( target.isEmpty() || !painter ) return;
+    //qDebug() << "Chart::paint( ..," << target << ")";
 
     if( target.size() != d->currentLayoutSize ){
         d->resizeLayout( target.size() );
     }
-
     const QPoint translation = target.topLeft();
     painter->translate( translation );
     d->paintAll( painter );
+
+    // for debugging:
+    //painter->setPen(QPen(Qt::blue, 8));
+    //painter->drawRect(target.adjusted(12,12,-12,-12));
 
     KDAB_FOREACH( Legend *legend, d->legends ) {
         const bool hidden = legend->isHidden() && legend->testAttribute(Qt::WA_WState_ExplicitShowHide);
