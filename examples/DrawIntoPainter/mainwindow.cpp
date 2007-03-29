@@ -93,6 +93,13 @@ MainWindow::MainWindow( QWidget* parent ) :
     yAxis->setBackgroundAttributes( baAxis );
     axisTop->setBackgroundAttributes( baAxis );
     axisRight->setBackgroundAttributes( baAxis );
+    FrameAttributes faAxis( xAxis->frameAttributes() );
+    faAxis.setVisible( true );
+    faAxis.setPen( QPen(Qt::black, 1) );
+    xAxis->setFrameAttributes( faAxis );
+    yAxis->setFrameAttributes( faAxis );
+    axisTop->setFrameAttributes( faAxis );
+    axisRight->setFrameAttributes( faAxis );
 
     m_bars->addAxis( xAxis );
     m_bars->addAxis( yAxis );
@@ -113,9 +120,9 @@ MainWindow::MainWindow( QWidget* parent ) :
 
     m_chart->coordinatePlane()->replaceDiagram( m_bars );
 
-    FrameAttributes frameAttrs( m_chart->frameAttributes() );
-    frameAttrs.setPen( QPen(QColor(0x90,0x90,0xff), 3) );
-    m_chart->setFrameAttributes( frameAttrs );
+    FrameAttributes faChart( m_chart->frameAttributes() );
+    faChart.setPen( QPen(QColor(0x60,0x60,0xb0), 8) );
+    m_chart->setFrameAttributes( faChart );
 
     BackgroundAttributes baChart( m_chart->backgroundAttributes() );
     baChart.setVisible( true );
@@ -138,24 +145,31 @@ MainWindow::MainWindow( QWidget* parent ) :
 
     m_chart->addLegend( m_legend );
 
-#if 1 // test code for painting at different sizes
+    // for illustration we paint the same chart at different sizes:
     QSize size1 = QSize( 200, 200 );
     QSize size2 = QSize( 1000, 1000 );
-    QPixmap pix1 = drawIntoPixmap( size1, m_chart );
-    QPixmap pix2 = drawIntoPixmap( size2, m_chart );
-    pix2 = pix2.scaled( size1 );
+    m_pix1 = drawIntoPixmap( size1, m_chart );
+    m_pix2 = drawIntoPixmap( size2, m_chart );
+    m_pix2 = m_pix2.scaled( size1 );
 
-    QLabel* label1 = new QLabel( 0 );
-    label1->setWindowTitle( "200x200" );
-    label1->setPixmap( pix1 );
-    label1->setFixedSize( pix1.size() );
-    label1->show();
-    QLabel* label2 = new QLabel( 0 );
-    label2->setWindowTitle( "1000x1000 scaled down" );
-    label2->setPixmap( pix2 );
-    label2->setFixedSize( pix2.size() );
-    label2->show();
-#endif
+    m_smallChart1 = new QLabel( this );
+    m_smallChart1->setWindowTitle( "200x200" );
+    m_smallChart1->setPixmap( m_pix1 );
+    m_smallChart1->setFixedSize( m_pix1.size() );
+    m_smallChart1->move( width() - m_pix1.width()*2,
+                         height()/2 - m_pix1.height()-5 );
+    m_smallChart1->show();
+
+    m_smallChart2 = new QLabel( this );
+    m_smallChart2->setWindowTitle( "1000x1000 scaled down" );
+    m_smallChart2->setPixmap( m_pix2 );
+    m_smallChart2->setFixedSize( m_pix2.size() );
+    m_smallChart2->move( width() - m_pix2.width()*2,
+                         height()/2 + 5 );
+    m_smallChart2->show();
+
+    faChart.setPen( QPen(QColor(0xb0,0xb0,0xff), 8) );
+    m_chart->setFrameAttributes( faChart );
 }
 
 void MainWindow::on_lineTypeCB_currentIndexChanged( const QString & text )
@@ -385,3 +399,13 @@ void MainWindow::on_savePB_clicked()
     qpix.save("kdchart-demo.png", "PNG");
     qDebug() << "Painting into PNG - done";
 }
+
+void MainWindow::resizeEvent ( QResizeEvent * )
+{
+    m_smallChart1->move( width() - m_pix1.width()*2,
+                         height()/2 - m_pix1.height()-5 );
+    m_smallChart2->move( width() - m_pix2.width()*2,
+                         height()/2 + 5 );
+}
+
+

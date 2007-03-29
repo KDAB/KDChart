@@ -29,6 +29,8 @@
 #include "ui_mainwindow.h"
 #include <TableModel.h>
 
+#include <QPixmap>
+
 namespace KDChart {
     class Chart;
     class DatasetProxyModel;
@@ -38,6 +40,8 @@ namespace KDChart {
     class Legend;
 }
 
+class QLabel;
+
 class MainWindow : public QWidget, private Ui::MainWindow
 {
     Q_OBJECT
@@ -45,7 +49,11 @@ class MainWindow : public QWidget, private Ui::MainWindow
 public:
     MainWindow( QWidget* parent = 0 );
 
-
+    protected:
+        /**
+         * Adjusts the two small charts when the window is resized.
+         */
+        /* reimp */ void resizeEvent ( QResizeEvent * );
 
 private slots:
 
@@ -70,6 +78,9 @@ private:
     KDChart::DatasetProxyModel* m_datasetProxy;
     KDChart::BarDiagram* m_bars;
     KDChart::Legend* m_legend;
+    QPixmap m_pix1, m_pix2;
+    QLabel* m_smallChart1;
+    QLabel* m_smallChart2;
     // mutable KDChart::CartesianAxis xAxis;
     //mutable KDChart::CartesianAxis yAxis;
 
