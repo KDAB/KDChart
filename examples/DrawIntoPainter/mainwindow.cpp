@@ -76,6 +76,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_bars = new BarDiagram();
     m_bars->setModel( &m_model );
     //CartesianAxisList List = m_bars->axesList();
+
     CartesianAxis *xAxis = new CartesianAxis( m_bars );
     CartesianAxis *yAxis = new CartesianAxis ( m_bars );
     CartesianAxis *axisTop = new CartesianAxis ( m_bars );
@@ -85,11 +86,21 @@ MainWindow::MainWindow( QWidget* parent ) :
     axisTop->setPosition( KDChart::CartesianAxis::Top );
     axisRight->setPosition( KDChart::CartesianAxis::Right );
 
+    BackgroundAttributes baAxis( xAxis->backgroundAttributes() );
+    baAxis.setVisible( true );
+    baAxis.setBrush( QColor(0xff,0xe0,0x80) );
+    xAxis->setBackgroundAttributes( baAxis );
+    yAxis->setBackgroundAttributes( baAxis );
+    axisTop->setBackgroundAttributes( baAxis );
+    axisRight->setBackgroundAttributes( baAxis );
+
     m_bars->addAxis( xAxis );
     m_bars->addAxis( yAxis );
     m_bars->addAxis( axisTop );
     m_bars->addAxis( axisRight );
+
     m_chart = new Chart();
+    //m_chart->setGlobalLeading(10,10,10,10); // by default there is no leading
 
 #ifdef USE_FRAME_WIDGET
     chartFrameWidget->setChart( m_chart );
@@ -106,10 +117,10 @@ MainWindow::MainWindow( QWidget* parent ) :
     frameAttrs.setPen( QPen(QColor(0x90,0x90,0xff), 3) );
     m_chart->setFrameAttributes( frameAttrs );
 
-    BackgroundAttributes backgroundAttrs( m_chart->backgroundAttributes() );
-    backgroundAttrs.setVisible( true );
-    backgroundAttrs.setBrush( QColor(0xd0,0xd0,0xff) );
-    m_chart->setBackgroundAttributes( backgroundAttrs );
+    BackgroundAttributes baChart( m_chart->backgroundAttributes() );
+    baChart.setVisible( true );
+    baChart.setBrush( QColor(0xd0,0xd0,0xff) );
+    m_chart->setBackgroundAttributes( baChart );
 
     // Set up the legend
     m_legend = new Legend( m_bars, m_chart );
@@ -122,7 +133,7 @@ MainWindow::MainWindow( QWidget* parent ) :
 
     BackgroundAttributes baLegend( m_legend->backgroundAttributes() );
     baLegend.setVisible( true );
-    baLegend.setBrush( QColor(0xff,0xff,0x0d) );
+    baLegend.setBrush( QColor(0xff,0xe0,0x80) );
     m_legend->setBackgroundAttributes( baLegend );
 
     m_chart->addLegend( m_legend );
