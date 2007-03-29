@@ -146,8 +146,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_chart->addLegend( m_legend );
 
 
-//    m_chart->setGeometry(10,10,50,50);
-    //m_chart->show();
+    //m_chart->setGeometry(10,10,50,50);
 
     // for illustration we paint the same chart at different sizes:
     QSize size1 = QSize( 200, 200 );
