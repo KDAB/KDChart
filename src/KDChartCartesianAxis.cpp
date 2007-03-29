@@ -884,6 +884,7 @@ QSize CartesianAxis::maximumSize() const
     const bool drawTitle = titleTA.isVisible() && ! titleText().isEmpty();
 
     AbstractCoordinatePlane* plane = d->diagram()->coordinatePlane();
+    //qDebug() << this<<"::maximumSize() uses plane geometry" << plane->geometry();
     QObject* refArea = plane->parent();
     TextLayoutItem labelItem( QString::null, labelTA, refArea,
                               KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft );

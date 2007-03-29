@@ -664,8 +664,12 @@ void Chart::Private::slotRelayout()
     // we don't call layout->activate().
     const QRect geo( QRect( 0, 0, currentLayoutSize.width(), currentLayoutSize.height() ) );
     if( geo != layout->geometry() ){
-        //qDebug() << "Chart slotRelayout() adjusting geometry to" << geo;
+        qDebug() << "Chart slotRelayout() adjusting geometry to" << geo;
+        if( coordinatePlanes.count() )
+            qDebug() << "           plane geo before" << coordinatePlanes.first()->geometry();
         layout->setGeometry( geo );
+        if( coordinatePlanes.count() )
+            qDebug() << "           plane geo after " << coordinatePlanes.first()->geometry();
     }
 
     // Adapt diagram drawing to the new size
@@ -705,6 +709,8 @@ void Chart::Private::resizeLayout( const QSize& size )
 void Chart::Private::paintAll( QPainter* painter )
 {
     QRect rect( QPoint(0, 0), currentLayoutSize );
+
+    //qDebug() << this<<"::paintAll() uses layout size" << currentLayoutSize;
 
     // Paint the background (if any)
     KDChart::AbstractAreaBase::paintBackgroundAttributes(
