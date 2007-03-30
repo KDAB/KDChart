@@ -352,8 +352,11 @@ namespace KDXML {
     {
         QDomElement dateTimeElement = doc.createElement( elementName );
         parent.appendChild( dateTimeElement );
-        createDateNode( doc, dateTimeElement, "Date", datetime.date() );
-        createTimeNode( doc, dateTimeElement, "Time", datetime.time() );
+        setBoolAttribute( dateTimeElement, "Valid", datetime.isValid() );
+        if( datetime.isValid() ){
+            createDateNode( doc, dateTimeElement, "Date", datetime.date() );
+            createTimeNode( doc, dateTimeElement, "Time", datetime.time() );
+        }
     }
 
 
@@ -362,9 +365,12 @@ namespace KDXML {
     {
         QDomElement dateElement = doc.createElement( elementName );
         parent.appendChild( dateElement );
-        dateElement.setAttribute( "Year", QString::number( date.year() ) );
-        dateElement.setAttribute( "Month", QString::number( date.month() ) );
-        dateElement.setAttribute( "Day", QString::number( date.day() ) );
+        setBoolAttribute( dateElement, "Valid", date.isValid() );
+        if( date.isValid() ){
+            dateElement.setAttribute( "Year", QString::number( date.year() ) );
+            dateElement.setAttribute( "Month", QString::number( date.month() ) );
+            dateElement.setAttribute( "Day", QString::number( date.day() ) );
+        }
     }
 
 
@@ -373,14 +379,17 @@ namespace KDXML {
     {
         QDomElement timeElement = doc.createElement( elementName );
         parent.appendChild( timeElement );
-        timeElement.setAttribute( "Hour",
-                QString::number( time.hour() ) );
-        timeElement.setAttribute( "Minute",
-                QString::number( time.minute() ) );
-        timeElement.setAttribute( "Second",
-                QString::number( time.second() ) );
-        timeElement.setAttribute( "Millisecond",
-                QString::number( time.msec() ) );
+        setBoolAttribute( timeElement, "Valid", time.isValid() );
+        if( time.isValid() ){
+            timeElement.setAttribute( "Hour",
+                    QString::number( time.hour() ) );
+            timeElement.setAttribute( "Minute",
+                    QString::number( time.minute() ) );
+            timeElement.setAttribute( "Second",
+                    QString::number( time.second() ) );
+            timeElement.setAttribute( "Millisecond",
+                    QString::number( time.msec() ) );
+        }
     }
 
     void createModelIndexNode( QDomDocument& doc, QDomNode& parent,
@@ -832,7 +841,7 @@ namespace KDXML {
                     ba[ i ] = r;
                 }
 
-                if( tempData.length() * 5 > tempLength )
+                if( tempData.length() * 5 > static_cast<long>(tempLength) )
                     tempLength = tempData.length() * 5;
                 QByteArray baunzip;
 #ifdef DO_NOT_COMPRESS_PIXMAP_DATA
@@ -986,27 +995,33 @@ namespace KDXML {
     bool readDateTimeNode( const QDomElement& element, QDateTime& datetime )
     {
         bool ok = true;
-        QDate tempDate;
-        QTime tempTime;
-        QDomNode node = element.firstChild();
-        while( !node.isNull() ) {
-            QDomElement element = node.toElement();
-            if( !element.isNull() ) { // was really an element
-                QString tagName = element.tagName();
-                if( tagName == "Date" ) {
-                    ok = ok & readDateNode( element, tempDate );
-                } else if( tagName == "Time" ) {
-                    ok = ok & readTimeNode( element, tempTime );
-                } else {
-                    qDebug( "Unknown tag in datetime" );
+        bool bFlag;
+        if( findBoolAttribute( element, "Valid", bFlag ) && bFlag ){
+            QDate tempDate;
+            QTime tempTime;
+            QDomNode node = element.firstChild();
+            while( !node.isNull() ) {
+                QDomElement element = node.toElement();
+                if( !element.isNull() ) { // was really an element
+                    QString tagName = element.tagName();
+                    if( tagName == "Date" ) {
+                        ok = ok & readDateNode( element, tempDate );
+                    } else if( tagName == "Time" ) {
+                        ok = ok & readTimeNode( element, tempTime );
+                    } else {
+                        qDebug( "Unknown tag in datetime" );
+                    }
                 }
+                node = node.nextSibling();
             }
-            node = node.nextSibling();
-        }
 
-        if( ok ) {
-            datetime.setDate( tempDate );
-            datetime.setTime( tempTime );
+            if( ok ) {
+                datetime.setDate( tempDate );
+                datetime.setTime( tempTime );
+            }
+        }else{
+            ok = true;
+            datetime = QDateTime(); // correctly return an invalid datetime
         }
 
         return ok;
@@ -1016,25 +1031,30 @@ namespace KDXML {
     bool readDateNode( const QDomElement& element, QDate& value )
     {
         bool ok = true;
-        int year=0, month=0, day=0;
-        if( element.hasAttribute( "Year" ) ) {
-            bool yearOk = false;
-            year = element.attribute( "Year" ).toInt( &yearOk );
-            ok = ok & yearOk;
+        bool bFlag;
+        if( findBoolAttribute( element, "Valid", bFlag ) && bFlag ){
+            int year=0, month=0, day=0;
+            if( element.hasAttribute( "Year" ) ) {
+                bool yearOk = false;
+                year = element.attribute( "Year" ).toInt( &yearOk );
+                ok = ok & yearOk;
+            }
+            if( element.hasAttribute( "Month" ) ) {
+                bool monthOk = false;
+                month = element.attribute( "Month" ).toInt( &monthOk );
+                ok = ok & monthOk;
+            }
+            if( element.hasAttribute( "Day" ) ) {
+                bool dayOk = false;
+                day = element.attribute( "Day" ).toInt( &dayOk );
+                ok = ok & dayOk;
+            }
+            if( ok )
+                value.setYMD( year, month, day );
+        }else{
+            ok = true;
+            value = QDate(); // correctly return an invalid date
         }
-        if( element.hasAttribute( "Month" ) ) {
-            bool monthOk = false;
-            month = element.attribute( "Month" ).toInt( &monthOk );
-            ok = ok & monthOk;
-        }
-        if( element.hasAttribute( "Day" ) ) {
-            bool dayOk = false;
-            day = element.attribute( "Day" ).toInt( &dayOk );
-            ok = ok & dayOk;
-        }
-
-        if( ok )
-            value.setYMD( year, month, day );
 
         return ok;
     }
@@ -1044,30 +1064,35 @@ namespace KDXML {
     bool readTimeNode( const QDomElement& element, QTime& value )
     {
         bool ok = true;
-        int hour=0, minute=0, second=0, msec=0;
-        if( element.hasAttribute( "Hour" ) ) {
-            bool hourOk = false;
-            hour = element.attribute( "Hour" ).toInt( &hourOk );
-            ok = ok & hourOk;
+        bool bFlag;
+        if( findBoolAttribute( element, "Valid", bFlag ) && bFlag ){
+            int hour=0, minute=0, second=0, msec=0;
+            if( element.hasAttribute( "Hour" ) ) {
+                bool hourOk = false;
+                hour = element.attribute( "Hour" ).toInt( &hourOk );
+                ok = ok & hourOk;
+            }
+            if( element.hasAttribute( "Minute" ) ) {
+                bool minuteOk = false;
+                minute = element.attribute( "Minute" ).toInt( &minuteOk );
+                ok = ok & minuteOk;
+            }
+            if( element.hasAttribute( "Second" ) ) {
+                bool secondOk = false;
+                second = element.attribute( "Second" ).toInt( &secondOk );
+                ok = ok & secondOk;
+            }
+            if( element.hasAttribute( "Millisecond" ) ) {
+                bool msecOk = false;
+                msec = element.attribute( "Millisecond" ).toInt( &msecOk );
+                ok = ok & msecOk;
+            }
+            if( ok )
+                value.setHMS( hour, minute, second, msec );
+        }else{
+            ok = true;
+            value = QTime(); // correctly return an invalid time
         }
-        if( element.hasAttribute( "Minute" ) ) {
-            bool minuteOk = false;
-            minute = element.attribute( "Minute" ).toInt( &minuteOk );
-            ok = ok & minuteOk;
-        }
-        if( element.hasAttribute( "Second" ) ) {
-            bool secondOk = false;
-            second = element.attribute( "Second" ).toInt( &secondOk );
-            ok = ok & secondOk;
-        }
-        if( element.hasAttribute( "Millisecond" ) ) {
-            bool msecOk = false;
-            msec = element.attribute( "Millisecond" ).toInt( &msecOk );
-            ok = ok & msecOk;
-        }
-
-        if( ok )
-            value.setHMS( hour, minute, second, msec );
 
         return ok;
     }
