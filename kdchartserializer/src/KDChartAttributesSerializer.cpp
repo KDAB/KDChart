@@ -852,9 +852,9 @@ bool AttributesSerializer::parseThreeDLineAttributes(
                 if( KDXML::readIntNode( element, i ) )
                     a.setLineYRotation( i );
                 else
-                    qDebug() << "Error parsing ThreeDBarAttributes tag: " << tagName;
+                    qDebug() << "Error parsing ThreeDLineAttributes tag: " << tagName;
             } else {
-                qDebug() << "Unknown subelement of ThreeDBarAttributes found:" << tagName;
+                qDebug() << "Unknown subelement of ThreeDLineAttributes found:" << tagName;
                 bOK = false;
             }
         }
