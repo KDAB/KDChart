@@ -878,6 +878,36 @@ void AttributesSerializer::saveThreeDLineAttributes(
     KDXML::createIntNode( doc, element, "LineYRotation", a.lineYRotation() );
 }
 
+
+bool AttributesSerializer::parseThreeDPieAttributes(
+        const QDomElement& e, ThreeDPieAttributes& a )
+{
+    bool bOK = true;
+    QDomNode node = e.firstChild();
+    while( !node.isNull() ) {
+        QDomElement element = node.toElement();
+        if( !element.isNull() ) { // was really an element
+            QString tagName = element.tagName();
+            //qDebug()<<tagName;
+            if( tagName == "kdchart:abstract-three-D-attributes" ) {
+                if( ! parseAbstractThreeDAttributes( element, a ) )
+                    qDebug() << "Error parsing ThreeDPieAttributes tag: " << tagName;
+            } else if( tagName == "UseShadowColors" ) {
+                bool b;
+                if( KDXML::readBoolNode( element, b ) )
+                    a.setUseShadowColors( b );
+                else
+                    qDebug() << "Error parsing ThreeDPieAttributes tag: " << tagName;
+            } else {
+                qDebug() << "Unknown subelement of ThreeDPieAttributes found:" << tagName;
+                bOK = false;
+            }
+        }
+        node = node.nextSibling();
+    }
+    return bOK;
+}
+
 void AttributesSerializer::saveThreeDPieAttributes(
         QDomDocument& doc,
         QDomElement& e,

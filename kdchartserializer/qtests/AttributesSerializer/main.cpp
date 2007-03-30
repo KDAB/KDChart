@@ -506,6 +506,42 @@ private slots:
         QCOMPARE( orgAttrs, parsedAttrs );
     }
 
+    void testThreeDPieAttributes()
+    {
+        resetDoc();
+
+        QModelIndex idx = m_model->index( 0, 2, QModelIndex() );
+        ThreeDPieAttributes orgAttrs = m_pies->threeDPieAttributes( idx );
+        // set the abstract part to test that one too:
+        orgAttrs.setEnabled( true );
+        orgAttrs.setDepth( 1.15 );
+        // set the bar attrs part:
+        orgAttrs.setUseShadowColors( true );
+
+        QDomElement savedElement =
+                mDoc.createElement( "TESTING" );
+        mDocRoot.appendChild( savedElement );
+
+        AttributesSerializer::saveThreeDPieAttributes(
+                mDoc,
+                savedElement,
+                orgAttrs,
+                "ThreeDPieAttributes" );
+
+        // use cout rather that qDebug() to avoid the length limitation of the later
+        //std::cout << "\n\n" << mDoc.toString(2).toLatin1().data() << "\n\n";
+
+        QDomNode parsedNode = savedElement.firstChild();
+        QVERIFY( ! parsedNode.isNull() );
+
+        QDomElement parsedElement = parsedNode.toElement();
+        QVERIFY( ! parsedElement.isNull() );
+
+        ThreeDPieAttributes parsedAttrs;
+        QVERIFY( AttributesSerializer::parseThreeDPieAttributes( parsedElement, parsedAttrs ) );
+        QCOMPARE( orgAttrs, parsedAttrs );
+    }
+
 
     void testChartDeletion()
     {
