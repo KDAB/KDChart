@@ -70,6 +70,7 @@ void LegendsSerializer::saveLegends(
                 *legendsList,
                 pointersList,
                 "kdchart:legend",
+                "KDChart::Legend",
                 p,
                 wasFound );
         if( ! wasFound ){

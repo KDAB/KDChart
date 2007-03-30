@@ -104,6 +104,24 @@ bool DiagramsSerializer::parseDiagrams(
     return bOK;
 }
 
+const QString DiagramsSerializer::nameOfClass( const AbstractDiagram* p )const
+{
+    QString classname;
+    if( dynamic_cast<const LineDiagram*> (  p ) )
+        classname = "KDChart::LineDiagram";
+    else if( dynamic_cast<const BarDiagram*> (   p ) )
+        classname = "KDChart::BarDiagram";
+    else if( dynamic_cast<const PieDiagram*> (   p ) )
+        classname = "KDChart::PieDiagram";
+    else if( dynamic_cast<const PolarDiagram*> ( p ) )
+        classname = "KDChart::PolarDiagram";
+    else if( dynamic_cast<const RingDiagram*> (  p ) )
+        classname = "KDChart::RingDiagram";
+    else
+        classname = "UNKNOWN";
+    return classname;
+}
+
 void DiagramsSerializer::saveDiagrams(
         QDomDocument& doc,
         QDomElement& e,
@@ -130,6 +148,7 @@ void DiagramsSerializer::saveDiagrams(
                 *diagsList,
                 pointersList,
                 "kdchart:diagram",
+                nameOfClass( p ),
                 p,
                 wasFound );
         if( ! wasFound ){
@@ -207,6 +226,7 @@ void DiagramsSerializer::saveAbstractDiagram(
                 *planesList,
                 coordPlanePtrElement,
                 "kdchart:coordinate-plane",
+                mCoordS->nameOfClass( coordPlane ),
                 coordPlane,
                 wasFound );
         if( ! wasFound ){
@@ -268,6 +288,7 @@ void DiagramsSerializer::saveCartCoordDiagram(
                 *diagsList,
                 refDiagPtrElement,
                 "kdchart:diagram",
+                nameOfClass( refDiag ),
                 refDiag,
                 wasFound );
         if( ! wasFound ){

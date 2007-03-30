@@ -147,13 +147,18 @@ const QString SerializeCollector::unresolvedMapName()
     return "kdchart:unresolved-pointers";
 }
 
-void SerializeCollector::appendDataToElement( QDomElement& element )const
+void SerializeCollector::appendDataToElement(
+        QDomDocument& doc,
+        QDomElement& element,
+        const QString& name )const
 {
+    QDomElement list = doc.createElement( name );
+    element.appendChild( list );
     Q_FOREACH (QDomElement* e, mMap)
     {
         //qDebug() << e->tagName();
         if( e->tagName() != unresolvedMapName() ){
-            element.appendChild( *e );
+            list.appendChild( *e );
         }
     }
 }
@@ -171,6 +176,7 @@ QDomElement SerializeCollector::findOrMakeChild(
         QDomElement& elementsList,
         QDomElement& pointerContainer,
         const QString& title,
+        const QString& classname,
         const void* p,
         bool& wasFound )
 {
@@ -181,6 +187,7 @@ QDomElement SerializeCollector::findOrMakeChild(
     if( ! wasFound ){
         QDomElement storeElement = doc.createElement( pointerName );
         elementsList.appendChild( storeElement );
+        storeElement.setAttribute( "Classname", classname );
         return storeElement;
     }
     return QDomElement();

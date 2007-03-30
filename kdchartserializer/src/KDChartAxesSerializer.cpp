@@ -128,6 +128,7 @@ void AxesSerializer::saveCartesianAxes(
                         *axesList,
                         pointersList,
                         "kdchart:axis",
+                        nameOfClass( p ),
                         p,
                         wasFound );
         if( ! wasFound ){
@@ -157,6 +158,7 @@ void AxesSerializer::savePolarAxes(
                         *axesList,
                         pointersList,
                         "kdchart:axis",
+                        nameOfClass( p ),
                         p,
                         wasFound );
         if( ! wasFound ){
@@ -265,3 +267,16 @@ void AxesSerializer::savePolarAxis(
 }
 
 */
+
+const QString AxesSerializer::nameOfClass( const AbstractAxis* p )const
+{
+    QString classname;
+    if( dynamic_cast<const CartesianAxis*> (  p ) )
+        classname = "KDChart::CartesianAxis";
+    /*else if( dynamic_cast<const PolarAxis*> (  p ) )
+        classname = "KDChart::PolarAxis";*/
+    else
+        classname = "UNKNOWN";
+    return classname;
+}
+

@@ -95,6 +95,19 @@ namespace KDChart {
                     const PolarAxis& axis,
                     const QString& title )const;
             */
+
+            /**
+             * Returns the correct class name for a given class.
+             *
+             * \note Make sure to overwrite this, if you intend to use your
+             * own axis types, or the classname will be set to
+             * "UNKNOWN" for your own classes by default.
+             *
+             * When overwriting this method, you should first call the original method
+             * and set your own name only when needed.
+             */
+            virtual const QString nameOfClass( const AbstractAxis* p )const;
+
     };
 
 } // end of namespace

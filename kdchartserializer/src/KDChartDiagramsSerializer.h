@@ -125,6 +125,18 @@ namespace KDChart {
                     const RingDiagram& diagram,
                     const QString& title )const;
 
+            /**
+             * Returns the correct class name for a given class.
+             *
+             * \note Make sure to overwrite this, if you intend to use the
+             * saveOtherDiagram routine, or the classname will be set to
+             * "UNKNOWN" for your own classes by default.
+             *
+             * When overwriting this method, you should first call the original method
+             * and set your own name only when needed.
+             */
+            virtual const QString nameOfClass( const AbstractDiagram* p )const;
+
             // By default this just saves the information stored by the
             // base class AbstractDiagram, it can be used by derived classes,
             // will be called whenever a diagram is found that is not one

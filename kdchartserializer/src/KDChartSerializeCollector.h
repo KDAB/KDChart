@@ -129,10 +129,15 @@ KDChart::ParsedPointersMap& mapRef
 
     /** Append all collected data to the element given.
      *
+     * A new element of name \c name is created, and in this
+     * all data are stored.
+     *
      * \note This needs to be called after you have stored all of
      * your structures, but before you call resolvePointers().
      */
-    void appendDataToElement( QDomElement& element )const;
+    void appendDataToElement( QDomDocument& doc,
+                              QDomElement& element,
+                              const QString& name )const;
 
     /**
      * Auxiliary function:
@@ -164,6 +169,7 @@ KDChart::ParsedPointersMap& mapRef
             QDomElement& elementsList,
             QDomElement& pointerContainer,
             const QString& title,
+            const QString& classname,
             const void* p,
             bool& wasFound );
 

@@ -71,28 +71,28 @@ void TextAreaSerializer::saveHeadersFooters(
                 *hdFtList,
                 pointersList,
                 "kdchart:header-footer",
+                "KDChart::HeaderFooter",
                 p,
                 wasFound );
         if( ! wasFound ){
-            QString name;
+            // first save the information hold by the base class
+            QString type;
             switch( p->type() ){
                 case HeaderFooter::Header:
-                    name = "Header";
+                    type = "Header";
                     break;
                 case HeaderFooter::Footer:
-                    name = "Footer";
+                    type = "Footer";
                     break;
                 default:
                     Q_ASSERT( false ); // all of the types need to be handled
                     break;
             }
-
-        // first save the information hold by the base class
+            hdFtElement.setAttribute( "type", type );
             saveTextArea( doc, hdFtElement, *p,
                           "kdchart:text-area" );
 
-        // then save what is stored in the derived class
-            hdFtElement.setAttribute( "Type", name );
+            // then save what is stored in the derived class
             KDXML::createStringNode( doc, hdFtElement, "Position", p->position().name() );
         }
     }

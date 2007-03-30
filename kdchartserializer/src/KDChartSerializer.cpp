@@ -209,7 +209,8 @@ bool Serializer::saveRootElement(
         // Now save all collected data:
         // attribute-models, axes, charts, coordinate-planes,
         // diagrams, headers-footers, legends, ...
-        SerializeCollector::instance()->appendDataToElement( docRoot );
+        SerializeCollector::instance()->appendDataToElement(
+                doc, docRoot, "kdchart:global-objects" );
 
         // Last step: Try to resolve all entries that
         // were stored as unresolved pointers before.
@@ -256,6 +257,7 @@ bool Serializer::saveChartElement(
             *chartsList,
             pointersList,
             "kdchart:chart",
+            "KDChart::Chart",
             mChart,
             wasFound );
     // as of yet, wasFound will be FALSE always, but never mind

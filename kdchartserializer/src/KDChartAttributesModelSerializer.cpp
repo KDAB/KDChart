@@ -114,6 +114,7 @@ void AttributesModelSerializer::saveAttributesModel(
             *modelsList,
             attrModelPtrElement,
             "kdchart:attribute-model",
+            "KDChart::AttributesModel",
             model,
             wasFound );
     if( ! wasFound ){

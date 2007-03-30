@@ -122,6 +122,7 @@ void CoordPlanesSerializer::savePlanes(
                 *planesList,
                 pointersList,
                 "kdchart:coordinate-plane",
+                nameOfClass( p ),
                 p,
                 wasFound );
         if( ! wasFound ){
@@ -152,6 +153,18 @@ void CoordPlanesSerializer::savePlane(
             saveOtherPlane( doc, e, *p );
         }
     }
+}
+
+const QString CoordPlanesSerializer::nameOfClass( const AbstractCoordinatePlane* p )const
+{
+    QString classname;
+    if( dynamic_cast<const CartesianCoordinatePlane*> ( p ) )
+        classname = "KDChart::CartesianCoordinatePlane";
+    else if( dynamic_cast<const PolarCoordinatePlane*> ( p ) )
+        classname = "KDChart::PolarCoordinatePlane";
+    else
+        classname = "UNKNOWN";
+    return classname;
 }
 
 void CoordPlanesSerializer::saveAbstractPlane(
@@ -196,6 +209,7 @@ void CoordPlanesSerializer::saveAbstractPlane(
                 *planesList,
                 refPlanePtrElement,
                 "kdchart:coordinate-plane",
+                nameOfClass( refPlane ),
                 refPlane,
                 wasFound );
         if( ! wasFound ){

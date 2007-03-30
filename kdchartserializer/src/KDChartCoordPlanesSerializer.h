@@ -84,9 +84,25 @@ namespace KDChart {
                     const PolarCoordinatePlane& plane,
                     const QString& title )const;
 
-            // By default this does nothing, it can be used by derived classes,
-            // will be called whenever a coord. plane is found that is neither
-            // a CartesianCoordinatePlane nor a PolarCoordinatePlane.
+            /**
+             * Returns the correct class name for a given class.
+             *
+             * \note Make sure to overwrite this, if you intend to use the
+             * saveOtherPlane routine, or the classname will be set to
+             * "UNKNOWN" for your own classes by default.
+             *
+             * When overwriting this method, you should first call the original method
+             * and set your own name only when needed.
+             */
+            virtual const QString nameOfClass( const AbstractCoordinatePlane* p )const;
+
+            /** By default this does nothing, it can be used by derived classes,
+             * will be called whenever a coord. plane is found that is neither
+             *  a CartesianCoordinatePlane nor a PolarCoordinatePlane.
+             *
+             * \note Make sure to implement nameOfClass if you want to use
+             * saveOtherPlane, or the classname attribute will be stored as "UNKNOWN".
+             */
             virtual void saveOtherPlane(
                     QDomDocument& doc,
                     QDomElement& e,
