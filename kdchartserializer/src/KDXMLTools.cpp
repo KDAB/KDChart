@@ -1112,7 +1112,7 @@ namespace KDXML {
                 findIntAttribute( element, "Row", row ) )
             {
                 ok = true;
-                idx = model.index( column, row );
+                idx = model.index( row, column );
             }
         }else{
             ok = true;
