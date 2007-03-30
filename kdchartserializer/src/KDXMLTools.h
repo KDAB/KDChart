@@ -125,6 +125,7 @@ namespace KDXML {
 
     bool findStringAttribute( const QDomElement& e, const QString & name, QString& attr );
     bool findIntAttribute(    const QDomElement& e, const QString & name, int&  attr );
+    bool findDoubleAttribute( const QDomElement& e, const QString & name, double& attr );
     bool findBoolAttribute(   const QDomElement& e, const QString & name, bool& attr );
 
     bool readIntNode( const QDomElement& element, int& value );

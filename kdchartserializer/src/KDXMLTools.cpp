@@ -116,8 +116,11 @@ namespace KDXML {
         QDomElement newElement =
             doc.createElement( elementName );
         parent.appendChild( newElement );
-        newElement.setAttribute( "Width", value.width() );
-        newElement.setAttribute( "Height", value.height() );
+        setBoolAttribute( newElement, "Valid", value.isValid() );
+        if( value.isValid() ){
+            newElement.setAttribute( "Width", value.width() );
+            newElement.setAttribute( "Height", value.height() );
+        }
     }
 
 
@@ -127,8 +130,11 @@ namespace KDXML {
         QDomElement newElement =
                 doc.createElement( elementName );
         parent.appendChild( newElement );
-        newElement.setAttribute( "Width", value.width() );
-        newElement.setAttribute( "Height", value.height() );
+        setBoolAttribute( newElement, "Valid", value.isValid() );
+        if( value.isValid() ){
+            newElement.setAttribute( "Width", value.width() );
+            newElement.setAttribute( "Height", value.height() );
+        }
     }
 
 
@@ -203,15 +209,16 @@ namespace KDXML {
         QDomElement colorElement = doc.createElement( elementName );
         parent.appendChild( colorElement );
         setBoolAttribute( colorElement, "Valid", color.isValid() );
-        if( color.isValid() )
-        colorElement.setAttribute( "Red",
-                                   QString::number( color.red() ) );
-        colorElement.setAttribute( "Green",
-                                   QString::number( color.green() ) );
-        colorElement.setAttribute( "Blue",
-                                   QString::number( color.blue() ) );
-        colorElement.setAttribute( "Alpha",
-                                   QString::number( color.alpha() ) );
+        if( color.isValid() ){
+            colorElement.setAttribute( "Red",
+                                    QString::number( color.red() ) );
+            colorElement.setAttribute( "Green",
+                                    QString::number( color.green() ) );
+            colorElement.setAttribute( "Blue",
+                                    QString::number( color.blue() ) );
+            colorElement.setAttribute( "Alpha",
+                                    QString::number( color.alpha() ) );
+        }
     }
 
 
@@ -526,6 +533,17 @@ namespace KDXML {
         return bOK;
     }
 
+    bool findDoubleAttribute( const QDomElement& e, const QString & name, double& attr )
+    {
+        bool bOK = false;
+        if( e.hasAttribute( name ) ){
+            double val = e.attribute( name ).toDouble( &bOK );
+            if( bOK )
+                attr = val;
+        }
+        return bOK;
+    }
+
     bool findBoolAttribute( const QDomElement& e, const QString & name, bool& attr )
     {
         bool bOK = false;
@@ -640,37 +658,43 @@ namespace KDXML {
 
     bool readSizeNode( const QDomElement& element, QSize& value )
     {
-        bool ok = false;
-        int width, height;
-        if( element.hasAttribute(      "Width" ) ) {
-            width = element.attribute( "Width" ).toInt( &ok );
-            if( ok && element.hasAttribute( "Height" ) ) {
-                height = element.attribute( "Height" ).toInt( &ok );
-                if( ok ){
-                    value.setWidth(  width );
-                    value.setHeight( height );
-                }
+        bool bOk = false;
+        bool bFlag;
+        if( findBoolAttribute( element, "Valid", bFlag ) && bFlag ){
+            int width, height;
+            if( findIntAttribute( element, "Width", width ) &&
+                findIntAttribute( element, "Height", height ) )
+            {
+                bOk = true;
+                value.setWidth(  width );
+                value.setHeight( height );
             }
+        }else{
+            bOk = true;
+            value = QSize(); // correctly return an invalid size
         }
-        return ok;
+        return bOk;
     }
 
 
     bool readSizeFNode( const QDomElement& element, QSizeF& value )
     {
-        bool ok = false;
-        qreal width, height;
-        if( element.hasAttribute(      "Width" ) ) {
-            width = element.attribute( "Width" ).toDouble( &ok );
-            if( ok && element.hasAttribute( "Height" ) ) {
-                height = element.attribute( "Height" ).toDouble( &ok );
-                if( ok ){
-                    value.setWidth(  width );
-                    value.setHeight( height );
-                }
+        bool bOk = false;
+        bool bFlag;
+        if( findBoolAttribute( element, "Valid", bFlag ) && bFlag ){
+            double width, height;
+            if( findDoubleAttribute( element, "Width", width ) &&
+                findDoubleAttribute( element, "Height", height ) )
+            {
+                bOk = true;
+                value.setWidth(  width );
+                value.setHeight( height );
             }
+        }else{
+            bOk = true;
+            value = QSizeF(); // correctly return an invalid size
         }
-        return ok;
+        return bOk;
     }
 
 
