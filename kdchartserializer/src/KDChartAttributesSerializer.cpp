@@ -559,7 +559,7 @@ bool AttributesSerializer::parseLineAttributes(
                 if( KDXML::readBoolNode( element, b ) )
                     a.setDisplayArea( b );
                 else
-                    qDebug() << "Error parsing BackgroundAttributes tag: " << tagName;
+                    qDebug() << "Error parsing LineAttributes tag: " << tagName;
             } else if( tagName == "Transparency" ) {
                 int i;
                 if( KDXML::readIntNode( element, i ) )
