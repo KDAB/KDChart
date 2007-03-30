@@ -827,6 +827,42 @@ void AttributesSerializer::saveThreeDBarAttributes(
     KDXML::createIntNode( doc, element, "Angle", a.angle() );
 }
 
+
+bool AttributesSerializer::parseThreeDLineAttributes(
+        const QDomElement& e, ThreeDLineAttributes& a )
+{
+    bool bOK = true;
+    QDomNode node = e.firstChild();
+    while( !node.isNull() ) {
+        QDomElement element = node.toElement();
+        if( !element.isNull() ) { // was really an element
+            QString tagName = element.tagName();
+            //qDebug()<<tagName;
+            if( tagName == "kdchart:abstract-three-D-attributes" ) {
+                if( ! parseAbstractThreeDAttributes( element, a ) )
+                    qDebug() << "Error parsing ThreeDLineAttributes tag: " << tagName;
+            } else if( tagName == "LineXRotation" ) {
+                int i;
+                if( KDXML::readIntNode( element, i ) )
+                    a.setLineXRotation( i );
+                else
+                    qDebug() << "Error parsing ThreeDLineAttributes tag: " << tagName;
+            } else if( tagName == "LineYRotation" ) {
+                int i;
+                if( KDXML::readIntNode( element, i ) )
+                    a.setLineYRotation( i );
+                else
+                    qDebug() << "Error parsing ThreeDBarAttributes tag: " << tagName;
+            } else {
+                qDebug() << "Unknown subelement of ThreeDBarAttributes found:" << tagName;
+                bOK = false;
+            }
+        }
+        node = node.nextSibling();
+    }
+    return bOK;
+}
+
 void AttributesSerializer::saveThreeDLineAttributes(
         QDomDocument& doc,
         QDomElement& e,
