@@ -1236,6 +1236,71 @@ void AttributesSerializer::saveRelativePosition(
     KDXML::createRealNode( doc, element, "Rotation", a.rotation() );
 }
 
+
+bool AttributesSerializer::parseGridAttributes(
+        const QDomElement& e,
+        GridAttributes& a )
+{
+    bool bOK = true;
+    QDomNode node = e.firstChild();
+    while( !node.isNull() ) {
+        QDomElement element = node.toElement();
+        if( !element.isNull() ) { // was really an element
+            QString tagName = element.tagName();
+            if( tagName == "GridVisible" ) {
+                bool b;
+                if( KDXML::readBoolNode( element, b ) )
+                    a.setGridVisible( b );
+            } else if( tagName == "GridStepWidth" ) {
+                qreal r;
+                if( KDXML::readRealNode( element, r ) )
+                    a.setGridStepWidth( r );
+            } else if( tagName == "GridSubStepWidth" ) {
+                qreal r;
+                if( KDXML::readRealNode( element, r ) )
+                    a.setGridSubStepWidth( r );
+            } else if( tagName == "GranularitySequence" ) {
+                QString name;
+                if( KDXML::readStringNode( element, name ) ){
+                    KDChartEnums::GranularitySequence seq;
+                    if( name == "10_20" )
+                        seq = KDChartEnums::GranularitySequence_10_20;
+                    else if( name == "10_50" )
+                        seq = KDChartEnums::GranularitySequence_10_50;
+                    else if( name == "25_50" )
+                        seq = KDChartEnums::GranularitySequence_25_50;
+                    else if( name == "Irregular" )
+                        seq = KDChartEnums::GranularitySequenceIrregular;
+                    else
+                        Q_ASSERT( false ); // all of the values need to be handled
+                    a.setGridGranularitySequence( seq );
+                }
+            } else if( tagName == "GridPen" ) {
+                QPen pen;
+                if( KDXML::readPenNode( element, pen ) )
+                    a.setGridPen( pen );
+            } else if( tagName == "SubGridVisible" ) {
+                bool b;
+                if( KDXML::readBoolNode( element, b ) )
+                    a.setSubGridVisible( b );
+            } else if( tagName == "SubGridPen" ) {
+                QPen pen;
+                if( KDXML::readPenNode( element, pen ) )
+                    a.setSubGridPen( pen );
+            } else if( tagName == "ZeroLinePen" ) {
+                QPen pen;
+                if( KDXML::readPenNode( element, pen ) )
+                    a.setZeroLinePen( pen );
+            } else {
+                qDebug() << "Unknown subelement of GridAttributes found:" << tagName;
+                bOK = false;
+            }
+        }
+        node = node.nextSibling();
+    }
+    return bOK;
+}
+
 void AttributesSerializer::saveGridAttributes(
         QDomDocument& doc,
         QDomElement& e,

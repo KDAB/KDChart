@@ -542,6 +542,47 @@ private slots:
         QCOMPARE( orgAttrs, parsedAttrs );
     }
 
+    void testGridAttributes()
+    {
+        resetDoc();
+
+        GridAttributes orgAttrs = m_plane->gridAttributes( Qt::Horizontal );
+        orgAttrs.setGridVisible( true );
+        orgAttrs.setGridStepWidth( 17.4 );
+        orgAttrs.setGridSubStepWidth( 1.93 );
+        orgAttrs.setGridGranularitySequence( KDChartEnums::GranularitySequence_25_50 );
+        const QBrush br1( QColor( Qt::white ) );
+        const QBrush br2( QColor( Qt::red ) );
+        const QBrush br3( QColor( Qt::yellow ) );
+        orgAttrs.setGridPen( QPen( br1, 20, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin ) );
+        orgAttrs.setSubGridVisible( true );
+        orgAttrs.setSubGridPen( QPen( br2, 10, Qt::DashLine, Qt::SquareCap, Qt::MiterJoin ) );
+        orgAttrs.setZeroLinePen( QPen( br3, 13, Qt::DotLine, Qt::FlatCap, Qt::BevelJoin ) );
+
+        QDomElement savedElement =
+                mDoc.createElement( "TESTING" );
+        mDocRoot.appendChild( savedElement );
+
+        AttributesSerializer::saveGridAttributes(
+                mDoc,
+                savedElement,
+                orgAttrs,
+                "GridAttributes" );
+
+        // use cout rather that qDebug() to avoid the length limitation of the later
+        //std::cout << "\n\n" << mDoc.toString(2).toLatin1().data() << "\n\n";
+
+        QDomNode parsedNode = savedElement.firstChild();
+        QVERIFY( ! parsedNode.isNull() );
+
+        QDomElement parsedElement = parsedNode.toElement();
+        QVERIFY( ! parsedElement.isNull() );
+
+        GridAttributes parsedAttrs;
+        QVERIFY( AttributesSerializer::parseGridAttributes( parsedElement, parsedAttrs ) );
+        QCOMPARE( orgAttrs, parsedAttrs );
+    }
+
 
     void testChartDeletion()
     {
