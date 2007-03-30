@@ -751,13 +751,15 @@ void AttributesSerializer::savePieAttributes(
 bool AttributesSerializer::parseAbstractThreeDAttributes(
         const QDomElement& e, AbstractThreeDAttributes& a )
 {
-    bool bOK = true;
     bool bFlag;
     double d;
-    if( KDXML::findBoolAttribute( e, "enabled", bFlag ) )
+    const bool bOK =
+            KDXML::findBoolAttribute( e, "enabled", bFlag ) &&
+            KDXML::findDoubleAttribute( e, "depth", d );
+    if( bOK ){
         a.setEnabled( bFlag );
-    if( KDXML::findDoubleAttribute( e, "depth", d ) )
         a.setDepth( d );
+    }
     return bOK;
 }
 
