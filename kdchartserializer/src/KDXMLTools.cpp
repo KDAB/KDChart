@@ -1100,7 +1100,27 @@ namespace KDXML {
         return ok;
     }
 
+    bool readModelIndexNode(const QDomElement& element,
+                            const QAbstractItemModel& model,
+                            QModelIndex& idx )
+    {
+        bool ok = false;
+        bool bFlag;
+        if( findBoolAttribute( element, "Valid", bFlag ) && bFlag ){
+            int column, row;
+            if( findIntAttribute( element, "Column", column ) &&
+                findIntAttribute( element, "Row", row ) )
+            {
+                ok = true;
+                idx = model.index( column, row );
+            }
+        }else{
+            ok = true;
+            idx = QModelIndex(); // correctly return an invalid index
+        }
 
+        return ok;
+    }
 
     Qt::PenStyle stringToPenStyle( const QString& style )
     {
