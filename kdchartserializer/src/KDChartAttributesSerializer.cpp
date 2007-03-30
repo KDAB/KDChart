@@ -747,6 +747,20 @@ void AttributesSerializer::savePieAttributes(
     KDXML::createRealNode( doc, element, "ExplodeFactor", a.explodeFactor() );
 }
 
+
+bool AttributesSerializer::parseAbstractThreeDAttributes(
+        const QDomElement& e, AbstractThreeDAttributes& a )
+{
+    bool bOK = true;
+    bool bFlag;
+    double d;
+    if( KDXML::findBoolAttribute( e, "enabled", bFlag ) )
+        a.setEnabled( bFlag );
+    if( KDXML::findDoubleAttribute( e, "depth", d ) )
+        a.setDepth( d );
+    return bOK;
+}
+
 void AttributesSerializer::saveAbstractThreeDAttributes(
         QDomDocument& doc,
         QDomElement& e,
@@ -757,6 +771,42 @@ void AttributesSerializer::saveAbstractThreeDAttributes(
     e.appendChild( element );
     KDXML::setBoolAttribute(   element, "enabled", a->isEnabled() );
     KDXML::setDoubleAttribute( element, "depth",   a->depth() );
+}
+
+
+bool AttributesSerializer::parseThreeDBarAttributes(
+        const QDomElement& e, ThreeDBarAttributes& a )
+{
+    bool bOK = true;
+    QDomNode node = e.firstChild();
+    while( !node.isNull() ) {
+        QDomElement element = node.toElement();
+        if( !element.isNull() ) { // was really an element
+            QString tagName = element.tagName();
+            //qDebug()<<tagName;
+            if( tagName == "kdchart:abstract-three-D-attributes" ) {
+                if( ! parseAbstractThreeDAttributes( element, a ) )
+                    qDebug() << "Error parsing ThreeDBarAttributes tag: " << tagName;
+            } else if( tagName == "UseShadowColors" ) {
+                bool b;
+                if( KDXML::readBoolNode( element, b ) )
+                    a.setUseShadowColors( b );
+                else
+                    qDebug() << "Error parsing ThreeDBarAttributes tag: " << tagName;
+            } else if( tagName == "Angle" ) {
+                int i;
+                if( KDXML::readIntNode( element, i ) )
+                    a.setAngle( i );
+                else
+                    qDebug() << "Error parsing ThreeDBarAttributes tag: " << tagName;
+            } else {
+                qDebug() << "Unknown subelement of ThreeDBarAttributes found:" << tagName;
+                bOK = false;
+            }
+        }
+        node = node.nextSibling();
+    }
+    return bOK;
 }
 
 void AttributesSerializer::saveThreeDBarAttributes(
