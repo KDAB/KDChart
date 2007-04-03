@@ -1359,8 +1359,8 @@ bool AttributesSerializer::parseQObjectPointer(
             QString tagName = element.tagName();
             if( tagName == "kdchart:pointer" ) {
                 QString s;
-                if( KDXML::readStringNode( element, s ) ){
-                    if( s == "Null" ){
+                if( KDXML::findStringAttribute( element, "name", s ) ){
+                    if( s.compare("Null", Qt::CaseInsensitive) == 0 ){
                         p = 0;
                     }else{
                         QObject* ptr;

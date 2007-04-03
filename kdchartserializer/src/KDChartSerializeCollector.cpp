@@ -30,6 +30,24 @@
 #include "KDChartSerializeCollector.h"
 #include "KDChartIdMapper.h"
 
+
+// Global objects of the following classes can be
+// instantiated by initializeParsedGlobalPointers()
+#include "KDChartAttributesModel"
+#include "KDChartCartesianAxis"
+// once that class is implemented: #include "KDChartPolarAxis"
+#include "KDChartChart"
+#include "KDChartCartesianCoordinatePlane"
+#include "KDChartPolarCoordinatePlane"
+#include "KDChartBarDiagram"
+#include "KDChartLineDiagram"
+#include "KDChartPieDiagram"
+#include "KDChartPolarDiagram"
+#include "KDChartRingDiagram"
+#include "KDChartHeaderFooter"
+#include "KDChartLegend"
+
+
 #include "KDXMLTools.h"
 
 #include <QDebug>
@@ -64,31 +82,98 @@ SerializeCollector* SerializeCollector::instance()
 // ******************* parsing the data ***************************
 
 bool SerializeCollector::initializeParsedGlobalPointers(
-        const QDomElement& rootNode )
+        const QDomElement& globalObjectsNode )
 {
     instance()->parsedPointersMap().clear();
 
-    QDomNode n = rootNode.firstChild();
+    QDomNode n = globalObjectsNode.firstChild();
     while(!n.isNull()) {
         QDomElement e = n.toElement(); // try to convert the node to an element.
         if(!e.isNull()) {
             // the node really is an element
             QString tagName = e.tagName();
-            if( tagName == "<kdchart:body>" ){
-                // We do not instantiate anything for the body element.
-                //
-                // The body contains only kdchart-pointer entries
-                // but no declarations, so we just ignore it here.
-            } else if( tagName == "<kdchart:attribute-models>" ){
-            } else if( tagName == "<kdchart:axes>" ){
-            } else if( tagName == "<kdchart:charts>" ){
-            } else if( tagName == "<kdchart:coordinate-planes>" ){
-            } else if( tagName == "<kdchart:diagrams>" ){
-            } else if( tagName == "<kdchart:headers-footers>" ){
-            } else if( tagName == "<kdchart:legends>" ){
+            if( tagName == "<kdchart:attribute-models>" ||
+                tagName == "<kdchart:axes>" ||
+                tagName == "<kdchart:charts>" ||
+                tagName == "<kdchart:coordinate-planes>" ||
+                tagName == "<kdchart:diagrams>" ||
+                tagName == "<kdchart:headers-footers>" ||
+                tagName == "<kdchart:legends>" ){
+                QDomNode n2 = e.firstChild();
+                while(!n2.isNull()) {
+                    QDomElement e2 = n2.toElement(); // try to convert the node to an element.
+                    if(!e2.isNull()) {
+                    // the node really is an element
+                        QString objectName = e2.tagName();
+                        QString className;
+                        if( KDXML::findStringAttribute( e2, "Classname", className ) ){
+                            if( className == "KDChart::AttributesModel" ){
+                                instance()->parsedPointersMap()[ objectName ]
+                                        = new AttributesModel(0, 0);
+                            } else if( objectName == "KDChart::CartesianAxis" ){
+                                instance()->parsedPointersMap()[ objectName ]
+                                        = new CartesianAxis( 0 );
+                            /* once PolarAxis is implemented:
+                            } else if( objectName == "KDChart::PolarAxis" ){
+                                instance()->parsedPointersMap()[ objectName ]
+                                        = new PolarAxis(0, 0);
+                            */
+                            } else if( objectName == "KDChart::Chart" ){
+                                instance()->parsedPointersMap()[ objectName ]
+                                        = new Chart( 0 );
+                            } else if( objectName == "KDChart::CartesianCoordinatePlane" ){
+                                instance()->parsedPointersMap()[ objectName ]
+                                        = new CartesianCoordinatePlane( 0 );
+                            } else if( objectName == "KDChart::PolarCoordinatePlane" ){
+                                instance()->parsedPointersMap()[ objectName ]
+                                        = new PolarCoordinatePlane( 0 );
+                            } else if( objectName == "KDChart::BarDiagram" ){
+                                instance()->parsedPointersMap()[ objectName ]
+                                        = new BarDiagram(0, 0);
+                            } else if( objectName == "KDChart::LineDiagram" ){
+                                instance()->parsedPointersMap()[ objectName ]
+                                        = new LineDiagram(0, 0);
+                            } else if( objectName == "KDChart::PieDiagram" ){
+                                instance()->parsedPointersMap()[ objectName ]
+                                        = new PieDiagram(0, 0);
+                            } else if( objectName == "KDChart::PolarDiagram" ){
+                                instance()->parsedPointersMap()[ objectName ]
+                                        = new PolarDiagram(0, 0);
+                            } else if( objectName == "KDChart::RingDiagram" ){
+                                instance()->parsedPointersMap()[ objectName ]
+                                        = new RingDiagram(0, 0);
+                            } else if( objectName == "KDChart::HeaderFooter" ){
+                                instance()->parsedPointersMap()[ objectName ]
+                                        = new HeaderFooter( 0 );
+                            } else if( objectName == "KDChart::Legend" ){
+                                instance()->parsedPointersMap()[ objectName ]
+                                        = new Legend( 0 );
+                            } else {
+                                qDebug() << "Non-critical information by SerializeCollector::initializeParsedGlobalPointers()\n"
+                                        "    Unknown subelement of " << tagName
+                                        << " found: " << objectName << "\n"
+                                        "    Make sure to instantiate this object\n"
+                                        "    and store its pointer in the map of parsed pointers:\n"
+                                        "    KDChart::SerializeCollector::instance()->parsedPointersMap()";
+                                // It might well be that someone has stored additional
+                                // top-level information here, so we just ignore them.
+                            }
+                        } else {
+                            qDebug() << "CRITICAL information by SerializeCollector::initializeParsedGlobalPointers()\n"
+                                    "    Subelement of " << tagName
+                                    << " has no \"Classname\" attribute: " << objectName << "\n"
+                                    "    Can not parse that.";
+                        }
+                    }
+                    n2 = n2.nextSibling();
+                }
             } else {
-                qDebug() << "Non-critical information by SerializeCollector::initializeParsedGlobalPointers()";
-                qDebug() << "    Unknown subelement of " << rootNode.tagName() << " found: " << tagName;
+                qDebug() << "Non-critical information by SerializeCollector::initializeParsedGlobalPointers()\n"
+                "    Unknown subelement of " << globalObjectsNode.tagName()
+                        << " found: " << tagName << "\n"
+                "    Make sure to instantiate its top-level objects\n"
+                "    and store these object's pointers in the map of parsed pointers:\n"
+                "    KDChart::SerializeCollector::instance()->parsedPointersMap()";
                 // It might well be that someone has stored additional
                 // top-level information here, so we just ignore them.
             }
@@ -199,15 +284,20 @@ void SerializeCollector::storeUnresolvedPointer(
         const QObject* p,
         QDomElement& pointerContainer )
 {
-    // access (or append, resp.) the global list
-    bool wasFound;
-    const QString pointerName(
-            IdMapper::instance()->findOrMakeName(
-                    p, "kdchart:q-object-pointer", wasFound, false ) );
+    if( ! p ){
+        KDXML::createNodeWithAttribute( doc, pointerContainer,
+                                        "kdchart:pointer", "name", "Null" );
+    }else{
+        // access (or append, resp.) the global list
+        bool wasFound;
+        const QString pointerName(
+                IdMapper::instance()->findOrMakeName(
+                        p, "kdchart:q-object-pointer", wasFound, false ) );
 
-    //qDebug() << "SerializeCollector::storeUnresolvedPointer() storing" << pointerName << " wasFound:" << wasFound;
-    KDXML::createNodeWithAttribute( doc, pointerContainer,
-            "kdchart:unresolved-pointer", "name", pointerName );
+        //qDebug() << "SerializeCollector::storeUnresolvedPointer() storing" << pointerName << " wasFound:" << wasFound;
+        KDXML::createNodeWithAttribute( doc, pointerContainer,
+                                        "kdchart:unresolved-pointer", "name", pointerName );
+    }
 }
 
 

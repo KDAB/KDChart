@@ -42,8 +42,8 @@ namespace KDChart {
      * global list - together with their symbolic "global names"
      * retrieved from the QDomDocument's root node.
      *
-     * The following elements will be parsed
-     * and their top-level children instantiated:
+     * The following elements will be parsed,
+     * and their top-level children will be instantiated:
      *
      * <kdchart:attribute-models>
      * <kdchart:axes>
@@ -56,7 +56,7 @@ namespace KDChart {
      * \sa foundParsedPointer
      */
     static bool initializeParsedGlobalPointers(
-            const QDomElement& rootNode );
+            const QDomElement& globalObjectsNode );
 
     /**
      * Returns a reference to the global list of pointers parsed

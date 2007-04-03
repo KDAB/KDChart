@@ -51,6 +51,10 @@ namespace KDChart {
             virtual bool parseAttributesModel(
                     const QDomElement& e,
                     AttributesModel& model )const;
+            virtual bool parseAttributesNode(
+                    const QDomElement& e,
+                    QVariant& attributes,
+                    int& role )const;
 
             virtual void saveAttributesModel(
                     QDomDocument& doc,
