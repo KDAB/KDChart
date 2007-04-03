@@ -67,11 +67,17 @@ bool AttributesModel::hasEqualSettings( const AttributesModel* other )const
 {
     if( other == this ) return true;
     if( ! other ) return false;
-
+    /*
+    qDebug() << (mDataMap                 == other->mDataMap);
+    qDebug() << (mHorizontalHeaderDataMap == other->mHorizontalHeaderDataMap);
+    qDebug() << (mVerticalHeaderDataMap   == other->mVerticalHeaderDataMap);
+    qDebug() << (mModelDataMap            == other->mModelDataMap);
+    qDebug() << (paletteType()            == other->paletteType());
+    */
     return  (mDataMap                 == other->mDataMap) &&
             (mHorizontalHeaderDataMap == other->mHorizontalHeaderDataMap) &&
             (mVerticalHeaderDataMap   == other->mVerticalHeaderDataMap) &&
-            (mModelDataMap            == other->mModelDataMap)&&
+            (mModelDataMap            == other->mModelDataMap) &&
             (paletteType()            == other->paletteType());
 }
 
