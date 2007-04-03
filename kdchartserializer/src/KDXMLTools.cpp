@@ -98,16 +98,24 @@ namespace KDXML {
     void createAlignmentNode( QDomDocument& doc, QDomNode& parent,
                               const QString& elementName, Qt::Alignment value )
     {
+        //qDebug() << "store alignment:" << value;
         QDomElement newElement =
                 doc.createElement( elementName );
         parent.appendChild( newElement );
-        setBoolAttribute( newElement, "AlignLeft",    (Qt::AlignLeft    & value) );
-        setBoolAttribute( newElement, "AlignRight",   (Qt::AlignRight   & value) );
-        setBoolAttribute( newElement, "AlignHCenter", (Qt::AlignHCenter & value) );
-        setBoolAttribute( newElement, "AlignJustify", (Qt::AlignJustify & value) );
-        setBoolAttribute( newElement, "AlignTop",     (Qt::AlignTop     & value) );
-        setBoolAttribute( newElement, "AlignBottom",  (Qt::AlignBottom  & value) );
-        setBoolAttribute( newElement, "AlignVCenter", (Qt::AlignVCenter & value) );
+        if( Qt::AlignLeft & value )
+            newElement.setAttribute( "Horizontal", "Left" );
+        else if( Qt::AlignRight & value )
+            newElement.setAttribute( "Horizontal", "Right" );
+        else if( Qt::AlignHCenter & value )
+            newElement.setAttribute( "Horizontal", "Center" );
+        else if( Qt::AlignJustify & value )
+            newElement.setAttribute( "Horizontal", "Justify" );
+        if( Qt::AlignTop & value )
+            newElement.setAttribute( "Vertical", "Top" );
+        else if( Qt::AlignBottom & value )
+            newElement.setAttribute( "Vertical", "Bottom" );
+        else if( Qt::AlignVCenter & value )
+            newElement.setAttribute( "Vertical", "Center" );
     }
 
     void createSizeNode( QDomDocument& doc, QDomNode& parent,
@@ -528,8 +536,8 @@ namespace KDXML {
 
     bool findStringAttribute( const QDomElement& e, const QString & name, QString& attr )
     {
-        bool bOK = false;
-        if( e.hasAttribute( name ) )
+        const bool bOK = e.hasAttribute( name );
+        if( bOK )
             attr = e.attribute( name );
         return bOK;
     }
@@ -644,26 +652,33 @@ namespace KDXML {
 
     bool readAlignmentNode(const QDomElement& element, Qt::Alignment& value )
     {
-        bool bOK = false;
+        //qDebug() << "read alignment tagname:" << element.tagName();
         Qt::Alignment align = 0;
-        bool bFlag;
-        if( findBoolAttribute( element, "AlignLeft",    bFlag ) && bFlag )
-            align = align | Qt::AlignLeft;
-        if( findBoolAttribute( element, "AlignRight",   bFlag ) && bFlag )
-            align = align | Qt::AlignRight;
-        if( findBoolAttribute( element, "AlignHCenter", bFlag ) && bFlag )
-            align = align | Qt::AlignHCenter;
-        if( findBoolAttribute( element, "AlignJustify", bFlag ) && bFlag )
-            align = align | Qt::AlignJustify;
-        if( findBoolAttribute( element, "AlignTop",     bFlag ) && bFlag )
-            align = align | Qt::AlignTop;
-        if( findBoolAttribute( element, "AlignBottom",  bFlag ) && bFlag )
-            align = align | Qt::AlignBottom;
-        if( findBoolAttribute( element, "AlignVCenter", bFlag ) && bFlag )
-            align = align | Qt::AlignVCenter;
-        bOK = align != 0;
+        QString s;
+        if( findStringAttribute( element, "Horizontal", s ) ){
+            //qDebug() << "read alignment horizontal:" << s;
+            if( s == "Left" )
+                align = align | Qt::AlignLeft;
+            else if( s == "Right" )
+                align = align | Qt::AlignRight;
+            else if( s == "Center" )
+                align = align | Qt::AlignHCenter;
+            else if( s == "Justify" )
+                align = align | Qt::AlignJustify;
+        }
+        if( align && findStringAttribute( element, "Vertical", s ) ){
+            //qDebug() << "read alignment vertical:" << s;
+            if( s == "Top" )
+                align = align | Qt::AlignTop;
+            else if( s == "Bottom" )
+                align = align | Qt::AlignBottom;
+            else if( s == "Center" )
+                align = align | Qt::AlignVCenter;
+        }
+        const bool bOK = align != 0;
         if( bOK )
             value = align;
+        //qDebug() << "read alignment:" << value;
         return bOK;
     }
 
