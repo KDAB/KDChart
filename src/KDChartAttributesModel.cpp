@@ -63,6 +63,18 @@ void AttributesModel::initFrom( const AttributesModel* other )
     setPaletteType( other->paletteType() );
 }
 
+bool AttributesModel::hasEqualSettings( const AttributesModel* other )const
+{
+    if( other == this ) return true;
+    if( ! other ) return false;
+
+    return  (mDataMap                 == other->mDataMap) &&
+            (mHorizontalHeaderDataMap == other->mHorizontalHeaderDataMap) &&
+            (mVerticalHeaderDataMap   == other->mVerticalHeaderDataMap) &&
+            (mModelDataMap            == other->mModelDataMap)&&
+            (paletteType()            == other->paletteType());
+}
+
 QVariant AttributesModel::headerData ( int section,
                                        Qt::Orientation orientation,
                                        int role/* = Qt::DisplayRole */ ) const

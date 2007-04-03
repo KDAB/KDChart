@@ -58,6 +58,11 @@ public:
     */
     void initFrom( const AttributesModel* other );
 
+    /* Returns true if both, all of the attributes set, and
+     * the palette set is equal in both of the AttributeModels.
+    */
+    bool hasEqualSettings( const AttributesModel* other )const;
+
     /* Attributes Model specific API */
     bool setModelData( const QVariant value, int role );
     QVariant modelData( int role ) const;
