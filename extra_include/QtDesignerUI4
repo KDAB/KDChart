@@ -1,7 +1,7 @@
 /* This file wraps include of ui4.h (or ui4_p.h, resp.) needed for Qt Designer plug-ins */
 
 #if QT_VERSION >= 0x040300
-  #include <Qt_4_3_0/QtDesigner/ui4.h>
+  #include <Qt_4_3_0/QtDesigner/ui4_p.h>
 #elif QT_VERSION >= 0x040200
   #if QT_VERSION == 0x040202
     #include <Qt_4_2_2/QtDesigner/ui4_p.h>
