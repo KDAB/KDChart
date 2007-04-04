@@ -61,7 +61,9 @@ public:
     /* Returns true if both, all of the attributes set, and
      * the palette set is equal in both of the AttributeModels.
     */
-    bool hasEqualSettings( const AttributesModel* other )const;
+    bool compare( const AttributesModel* other )const;
+
+    bool compareAttributes( int role, const QVariant& a, const QVariant& b )const;
 
     /* Attributes Model specific API */
     bool setModelData( const QVariant value, int role );
