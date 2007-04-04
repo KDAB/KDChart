@@ -501,15 +501,19 @@ void CartesianAxis::paintCtx( PaintContext* context )
         bool useShortLabels = false;
 
 
+        bool useConfiguredStepsLabels = false;
         QStringList headerLabels;
         if( useItemCountLabels ){
+            //qDebug() << (isOrdinate() ? "is Ordinate" : "is Abscissa");
             headerLabels =
                 isOrdinate()
                 ? d->diagram()->datasetLabels()
                 : d->diagram()->itemRowLabels();
             // check if configured stepWidth
-            if ( isAbscissa() && dimX.stepWidth
-                 && ( ( headerLabels.count() - 1 )/ dimX.stepWidth ) != numberOfUnitRulers ) {
+            useConfiguredStepsLabels = isAbscissa() &&
+                    dimX.stepWidth &&
+                    (( (headerLabels.count() - 1)/ dimX.stepWidth ) != numberOfUnitRulers);
+            if( useConfiguredStepsLabels ) {
                 numberOfUnitRulers = ( headerLabels.count() - 1 )/ dimX.stepWidth;
                 // we need to register data values for the steps
                 // in case it is configured by the user
@@ -529,6 +533,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
 
         const int headerLabelsCount = headerLabels.count();
+        //qDebug() << "headerLabelsCount" << headerLabelsCount;
 
         TextLayoutItem* labelItem =
             drawLabels
@@ -602,19 +607,27 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 while ( i + labelDiff < maxValueX )
                 {
 
+                    //qDebug() << "drawLabels" << drawLabels << "  hardLabelsCount" << hardLabelsCount
+                    //        << "  dimX.stepWidth" << dimX.stepWidth << "  dim.isCalculated" << dim.isCalculated;
                     if ( !drawLabels || hardLabelsCount < 1 || ( dimX.stepWidth != 1.0 && ! dim.isCalculated ) )
                     {
                         // Check intersects for the header label - we need to pass the full string
                         // here and not only the i value.
-                        //qDebug() << "i + labelDiff " << i + labelDiff;
-                        labelItem->setText( headerLabelsCount ? headerLabels[static_cast<int>(i)]
-                                            : QString::number( i, 'f', precision ));
-                        //           qDebug() << "1 - labelItem->text() " << labelItem->text();
-                        labelItem2->setText( headerLabelsCount ? headerLabels[static_cast<int>(i+labelDiff)]
-                                             : QString::number( i + labelDiff, 'f', precision ));
-                        //qDebug() << "2 - labelItem->text() " << labelItem->text();
-                        //qDebug() << "labelItem2->text() " << labelItem2->text();
-
+                        if( useConfiguredStepsLabels ){
+                            labelItem->setText( headerLabels[ iLabel   ] );
+                            labelItem2->setText(headerLabels[ iLabel+1 ] );
+                        }else{
+                            //qDebug() << "i + labelDiff " << i + labelDiff;
+                            labelItem->setText( headerLabelsCount ? headerLabels[static_cast<int>(i)]
+                                : QString::number( i, 'f', precision ));
+                            //           qDebug() << "1 - labelItem->text() " << labelItem->text();
+                            //qDebug() << "labelDiff" << labelDiff
+                            //        << "  index" << i+labelDiff << "  count" << headerLabelsCount;
+                            labelItem2->setText( headerLabelsCount ? headerLabels[static_cast<int>(i+labelDiff)]
+                                : QString::number( i + labelDiff, 'f', precision ));
+                            //qDebug() << "2 - labelItem->text() " << labelItem->text();
+                            //qDebug() << "labelItem2->text() " << labelItem2->text();
+                        }
                     } else {
                         int index = iLabel;
                         labelItem->setText( labels()[ index < hardLabelsCount ? index : 0 ] );

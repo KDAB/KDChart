@@ -766,7 +766,7 @@ QStringList AbstractDiagram::itemRowLabels() const
     //qDebug() << "AbstractDiagram::itemRowLabels(): " << attributesModel()->rowCount(attributesModelRootIndex()) << "entries";
     const int rowCount = attributesModel()->rowCount(attributesModelRootIndex());
     for( int i = 0; i < rowCount; ++i ){
-        //qDebug() << "label: " << attributesModel()->headerData( i, Qt::Vertical, Qt::DisplayRole ).toString();
+        //qDebug() << "item row label: " << attributesModel()->headerData( i, Qt::Vertical, Qt::DisplayRole ).toString();
         ret << attributesModel()->headerData( i, Qt::Vertical, Qt::DisplayRole ).toString();
     }
     return ret;
@@ -778,7 +778,7 @@ QStringList AbstractDiagram::datasetLabels() const
     //qDebug() << "AbstractDiagram::datasetLabels(): " << attributesModel()->columnCount(attributesModelRootIndex()) << "entries";
     const int columnCount = attributesModel()->columnCount(attributesModelRootIndex());
     for( int i = datasetDimension()-1; i < columnCount; i += datasetDimension() ){
-        //qDebug() << "label: " << attributesModel()->headerData( i, Qt::Horizontal, Qt::DisplayRole ).toString();
+        //qDebug() << "dataset label: " << attributesModel()->headerData( i, Qt::Horizontal, Qt::DisplayRole ).toString();
         ret << attributesModel()->headerData( i, Qt::Horizontal, Qt::DisplayRole ).toString();
     }
     return ret;
