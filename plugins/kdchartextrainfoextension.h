@@ -13,9 +13,11 @@ namespace KDChart {
   class Chart;
   class Widget;
 }
-// Workaround Qt typo
+#if QT_VERSION < 0x040300
+// Workaround Qt typo; fixed in 4.3
 class DomUi;
 #define DomUI DomUi
+#endif
 
 class KDCHART_PLUGIN_EXPORT KDChartExtraInfoExtension : public QObject, public QDesignerExtraInfoExtension
 {
