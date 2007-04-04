@@ -132,7 +132,7 @@ private slots:
 
         AttributesModel parsedAttrsModel(0, 0);
         QVERIFY( mAttrModelS->parseAttributesModel( parsedElement, parsedAttrsModel ) );
-        QVERIFY( orgAttrsModel.hasEqualSettings( &parsedAttrsModel ) );
+        QVERIFY( orgAttrsModel.compare( &parsedAttrsModel ) );
     }
 
 
