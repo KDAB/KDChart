@@ -652,7 +652,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         i += labelDiff;
                     }
 
-                    if ( iLabel++ > hardLabelsCount - 1 )
+                    ++iLabel;
+                    if ( (iLabel > hardLabelsCount - 1) && !useConfiguredStepsLabels )
                     {
                         iLabel = 0;
                     }
