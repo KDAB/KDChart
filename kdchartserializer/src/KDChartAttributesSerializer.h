@@ -55,7 +55,7 @@ namespace KDChart {
     {
         public:
             static bool parseLeading(
-                    const QDomElement& e, int& left, int& top, int& right, int& bottom );
+                    const QDomElement& container, int& left, int& top, int& right, int& bottom );
             static void saveLeading(
                     QDomDocument& doc,
                     QDomElement& e,
@@ -63,7 +63,7 @@ namespace KDChart {
                     const QString& title );
 
             static bool parseTextAttributes(
-                    const QDomElement& e, TextAttributes& a );
+                    const QDomElement& container, TextAttributes& a );
             static void saveTextAttributes(
                     QDomDocument& doc,
                     QDomElement& e,
@@ -71,7 +71,7 @@ namespace KDChart {
                     const QString& title );
 
             static bool parseMeasure(
-                    const QDomElement& e, Measure& a );
+                    const QDomElement& container, Measure& a );
             static void saveMeasure(
                     QDomDocument& doc,
                     QDomElement& e,
@@ -79,7 +79,7 @@ namespace KDChart {
                     const QString& title );
 
             static bool parseFrameAttributes(
-                    const QDomElement& e, FrameAttributes& a );
+                    const QDomElement& container, FrameAttributes& a );
             static void saveFrameAttributes(
                     QDomDocument& doc,
                     QDomElement& e,
@@ -87,7 +87,7 @@ namespace KDChart {
                     const QString& title );
 
             static bool parseBackgroundAttributes(
-                    const QDomElement& e, BackgroundAttributes& a );
+                    const QDomElement& container, BackgroundAttributes& a );
             static void saveBackgroundAttributes(
                     QDomDocument& doc,
                     QDomElement& e,
@@ -95,7 +95,7 @@ namespace KDChart {
                     const QString& title );
 
             static bool parseDataValueAttributes(
-                    const QDomElement& e, DataValueAttributes& a );
+                    const QDomElement& container, DataValueAttributes& a );
             static void saveDataValueAttributes(
                     QDomDocument& doc,
                     QDomElement& e,
@@ -103,7 +103,7 @@ namespace KDChart {
                     const QString& title );
 
             static bool parseLineAttributes(
-                    const QDomElement& e, LineAttributes& a );
+                    const QDomElement& container, LineAttributes& a );
             static void saveLineAttributes(
                     QDomDocument& doc,
                     QDomElement& e,
@@ -111,7 +111,7 @@ namespace KDChart {
                     const QString& title );
 
             static bool parseBarAttributes(
-                    const QDomElement& e, BarAttributes& a );
+                    const QDomElement& container, BarAttributes& a );
             static void saveBarAttributes(
                     QDomDocument& doc,
                     QDomElement& e,
@@ -119,7 +119,7 @@ namespace KDChart {
                     const QString& title );
 
             static bool parsePieAttributes(
-                    const QDomElement& e, PieAttributes& a );
+                    const QDomElement& container, PieAttributes& a );
             static void savePieAttributes(
                     QDomDocument& doc,
                     QDomElement& e,
@@ -127,7 +127,7 @@ namespace KDChart {
                     const QString& title );
 
             static bool parseAbstractThreeDAttributes(
-                    const QDomElement& e, AbstractThreeDAttributes& a );
+                    const QDomElement& container, AbstractThreeDAttributes& a );
             static void saveAbstractThreeDAttributes(
                     QDomDocument& doc,
                     QDomElement& e,
@@ -135,7 +135,7 @@ namespace KDChart {
                     const QString& title );
 
             static bool parseThreeDBarAttributes(
-                    const QDomElement& e, ThreeDBarAttributes& a );
+                    const QDomElement& container, ThreeDBarAttributes& a );
             static void saveThreeDBarAttributes(
                     QDomDocument& doc,
                     QDomElement& e,
@@ -143,7 +143,7 @@ namespace KDChart {
                     const QString& title );
 
             static bool parseThreeDLineAttributes(
-                    const QDomElement& e, ThreeDLineAttributes& a );
+                    const QDomElement& container, ThreeDLineAttributes& a );
             static void saveThreeDLineAttributes(
                     QDomDocument& doc,
                     QDomElement& e,
@@ -151,7 +151,7 @@ namespace KDChart {
                     const QString& title );
 
             static bool parseThreeDPieAttributes(
-                    const QDomElement& e, ThreeDPieAttributes& a );
+                    const QDomElement& container, ThreeDPieAttributes& a );
             static void saveThreeDPieAttributes(
                     QDomDocument& doc,
                     QDomElement& e,
@@ -159,7 +159,7 @@ namespace KDChart {
                     const QString& title );
 
             static bool parseMarkerAttributes(
-                    const QDomElement& e, MarkerAttributes& a );
+                    const QDomElement& container, MarkerAttributes& a );
             static void saveMarkerAttributes(
                     QDomDocument& doc,
                     QDomElement& e,
@@ -171,7 +171,7 @@ namespace KDChart {
                     MarkerAttributes::MarkerStyle style );
 
             static bool parseRelativePosition(
-                    const QDomElement& e, RelativePosition& a );
+                    const QDomElement& container, RelativePosition& a );
             static void saveRelativePosition(
                     QDomDocument& doc,
                     QDomElement& e,
@@ -179,7 +179,7 @@ namespace KDChart {
                     const QString& title );
 
             static bool parseGridAttributes(
-                    const QDomElement& e, GridAttributes& a );
+                    const QDomElement& container, GridAttributes& a );
             static void saveGridAttributes(
                     QDomDocument& doc,
                     QDomElement& e,
@@ -204,7 +204,7 @@ namespace KDChart {
                     const QObject* p,
                     const QString& title );
 
-            static const QString showDomPath( const QDomElement& e );
+            static const QString showDomPath( const QDomElement& container );
     };
 
 } // end of namespace

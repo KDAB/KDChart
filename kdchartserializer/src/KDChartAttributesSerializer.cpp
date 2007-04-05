@@ -50,12 +50,12 @@ using namespace KDChart;
 
 
 bool AttributesSerializer::parseLeading(
-        const QDomElement& e, int& left, int& top, int& right, int& bottom )
+        const QDomElement& container, int& left, int& top, int& right, int& bottom )
 {
-    const bool bFoundLeft   = KDXML::findIntAttribute( e, "left",   left   );
-    const bool bFoundTop    = KDXML::findIntAttribute( e, "top",    top    );
-    const bool bFoundRight  = KDXML::findIntAttribute( e, "right",  right  );
-    const bool bFoundBottom = KDXML::findIntAttribute( e, "bottom", bottom );
+    const bool bFoundLeft   = KDXML::findIntAttribute( container, "left",   left   );
+    const bool bFoundTop    = KDXML::findIntAttribute( container, "top",    top    );
+    const bool bFoundRight  = KDXML::findIntAttribute( container, "right",  right  );
+    const bool bFoundBottom = KDXML::findIntAttribute( container, "bottom", bottom );
     return bFoundLeft || bFoundTop || bFoundRight || bFoundBottom;
 }
 
@@ -76,11 +76,11 @@ void AttributesSerializer::saveLeading(
 
 
 bool AttributesSerializer::parseFrameAttributes(
-        const QDomElement& e,
+        const QDomElement& container,
         FrameAttributes& a )
 {
     bool bOK = true;
-    QDomNode node = e.firstChild();
+    QDomNode node = container.firstChild();
     while( !node.isNull() ) {
         QDomElement element = node.toElement();
         if( !element.isNull() ) { // was really an element
@@ -126,11 +126,11 @@ void AttributesSerializer::saveFrameAttributes(
 
 
 bool AttributesSerializer::parseTextAttributes(
-        const QDomElement& e,
+        const QDomElement& container,
         TextAttributes& a )
 {
     bool bOK = true;
-    QDomNode node = e.firstChild();
+    QDomNode node = container.firstChild();
     while( !node.isNull() ) {
         QDomElement element = node.toElement();
         if( !element.isNull() ) { // was really an element
@@ -206,11 +206,11 @@ void AttributesSerializer::saveTextAttributes(
 
 
 bool AttributesSerializer::parseMeasure(
-        const QDomElement& e,
+        const QDomElement& container,
         Measure& a )
 {
     bool bOK = true;
-    QDomNode node = e.firstChild();
+    QDomNode node = container.firstChild();
     while( !node.isNull() ) {
         QDomElement element = node.toElement();
         if( !element.isNull() ) { // was really an element
@@ -264,11 +264,11 @@ void AttributesSerializer::saveMeasure(
 }
 
 bool AttributesSerializer::parseBackgroundAttributes(
-        const QDomElement& e,
+        const QDomElement& container,
         BackgroundAttributes& a )
 {
     bool bOK = true;
-    QDomNode node = e.firstChild();
+    QDomNode node = container.firstChild();
     while( !node.isNull() ) {
         QDomElement element = node.toElement();
         if( !element.isNull() ) { // was really an element
@@ -365,11 +365,11 @@ void AttributesSerializer::saveBackgroundAttributes(
 }
 
 bool AttributesSerializer::parseDataValueAttributes(
-        const QDomElement& e,
+        const QDomElement& container,
         DataValueAttributes& a )
 {
     bool bOK = true;
-    QDomNode node = e.firstChild();
+    QDomNode node = container.firstChild();
     while( !node.isNull() ) {
         QDomElement element = node.toElement();
         if( !element.isNull() ) { // was really an element
@@ -526,10 +526,10 @@ void AttributesSerializer::saveDataValueAttributes(
 
 
 bool AttributesSerializer::parseLineAttributes(
-        const QDomElement& e, LineAttributes& a )
+        const QDomElement& container, LineAttributes& a )
 {
     bool bOK = true;
-    QDomNode node = e.firstChild();
+    QDomNode node = container.firstChild();
     while( !node.isNull() ) {
         QDomElement element = node.toElement();
         if( !element.isNull() ) { // was really an element
@@ -610,10 +610,10 @@ void AttributesSerializer::saveLineAttributes(
 
 
 bool AttributesSerializer::parseBarAttributes(
-        const QDomElement& e, BarAttributes& a )
+        const QDomElement& container, BarAttributes& a )
 {
     bool bOK = true;
-    QDomNode node = e.firstChild();
+    QDomNode node = container.firstChild();
     while( !node.isNull() ) {
         QDomElement element = node.toElement();
         if( !element.isNull() ) { // was really an element
@@ -704,10 +704,10 @@ void AttributesSerializer::saveBarAttributes(
 
 
 bool AttributesSerializer::parsePieAttributes(
-        const QDomElement& e, PieAttributes& a )
+        const QDomElement& container, PieAttributes& a )
 {
     bool bOK = true;
-    QDomNode node = e.firstChild();
+    QDomNode node = container.firstChild();
     while( !node.isNull() ) {
         QDomElement element = node.toElement();
         if( !element.isNull() ) { // was really an element
@@ -749,13 +749,13 @@ void AttributesSerializer::savePieAttributes(
 
 
 bool AttributesSerializer::parseAbstractThreeDAttributes(
-        const QDomElement& e, AbstractThreeDAttributes& a )
+        const QDomElement& container, AbstractThreeDAttributes& a )
 {
     bool bFlag;
     double d;
     const bool bOK =
-            KDXML::findBoolAttribute( e, "enabled", bFlag ) &&
-            KDXML::findDoubleAttribute( e, "depth", d );
+            KDXML::findBoolAttribute(   container, "enabled", bFlag ) &&
+            KDXML::findDoubleAttribute( container, "depth", d );
     if( bOK ){
         a.setEnabled( bFlag );
         a.setDepth( d );
@@ -777,10 +777,10 @@ void AttributesSerializer::saveAbstractThreeDAttributes(
 
 
 bool AttributesSerializer::parseThreeDBarAttributes(
-        const QDomElement& e, ThreeDBarAttributes& a )
+        const QDomElement& container, ThreeDBarAttributes& a )
 {
     bool bOK = true;
-    QDomNode node = e.firstChild();
+    QDomNode node = container.firstChild();
     while( !node.isNull() ) {
         QDomElement element = node.toElement();
         if( !element.isNull() ) { // was really an element
@@ -829,10 +829,10 @@ void AttributesSerializer::saveThreeDBarAttributes(
 
 
 bool AttributesSerializer::parseThreeDLineAttributes(
-        const QDomElement& e, ThreeDLineAttributes& a )
+        const QDomElement& container, ThreeDLineAttributes& a )
 {
     bool bOK = true;
-    QDomNode node = e.firstChild();
+    QDomNode node = container.firstChild();
     while( !node.isNull() ) {
         QDomElement element = node.toElement();
         if( !element.isNull() ) { // was really an element
@@ -880,10 +880,10 @@ void AttributesSerializer::saveThreeDLineAttributes(
 
 
 bool AttributesSerializer::parseThreeDPieAttributes(
-        const QDomElement& e, ThreeDPieAttributes& a )
+        const QDomElement& container, ThreeDPieAttributes& a )
 {
     bool bOK = true;
-    QDomNode node = e.firstChild();
+    QDomNode node = container.firstChild();
     while( !node.isNull() ) {
         QDomElement element = node.toElement();
         if( !element.isNull() ) { // was really an element
@@ -984,11 +984,11 @@ QString AttributesSerializer::markerStyleToName( MarkerAttributes::MarkerStyle s
 
 
 bool AttributesSerializer::parseMarkerAttributes(
-        const QDomElement& e,
+        const QDomElement& container,
         MarkerAttributes& a )
 {
     bool bOK = true;
-    QDomNode node = e.firstChild();
+    QDomNode node = container.firstChild();
     while( !node.isNull() ) {
         QDomElement element = node.toElement();
         if( !element.isNull() ) { // was really an element
@@ -999,7 +999,7 @@ bool AttributesSerializer::parseMarkerAttributes(
                     a.setVisible( b );
             } else if( tagName == "MarkerStyle" ) {
                 QString s;
-                if( KDXML::findStringAttribute( e, "style", s ) ){
+                if( KDXML::findStringAttribute( element, "style", s ) ){
                     //qDebug() << "MarkerAttributes/MarkerStyle found: \"" << s << "\"";
                     const MarkerAttributes::MarkerStyle style = markerStyleFromName( s );
                     if( ! s.isEmpty() ){
@@ -1102,11 +1102,11 @@ void AttributesSerializer::saveMarkerAttributes(
 
 
 bool AttributesSerializer::parseRelativePosition(
-        const QDomElement& e,
+        const QDomElement& container,
         RelativePosition& pos )
 {
     bool bOK = true;
-    QDomNode node = e.firstChild();
+    QDomNode node = container.firstChild();
     while( !node.isNull() ) {
         QDomElement element = node.toElement();
         if( !element.isNull() ) { // was really an element
@@ -1249,11 +1249,11 @@ void AttributesSerializer::saveRelativePosition(
 
 
 bool AttributesSerializer::parseGridAttributes(
-        const QDomElement& e,
+        const QDomElement& container,
         GridAttributes& a )
 {
     bool bOK = true;
-    QDomNode node = e.firstChild();
+    QDomNode node = container.firstChild();
     while( !node.isNull() ) {
         QDomElement element = node.toElement();
         if( !element.isNull() ) { // was really an element
@@ -1425,11 +1425,11 @@ void AttributesSerializer::saveQObjectPointer(
     }
 }
 
-const QString AttributesSerializer::showDomPath( const QDomElement& e )
+const QString AttributesSerializer::showDomPath( const QDomElement& container )
 {
     //return e.ownerDocument().toString();
-    QString path( e.tagName() );
-    QDomNode n = e.parentNode();
+    QString path( container.tagName() );
+    QDomNode n = container.parentNode();
     while( !n.isNull() ) {
         QDomElement element = n.toElement(); // try to convert the node to an element.
         if( element.isNull() )
