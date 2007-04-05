@@ -97,6 +97,16 @@ HeaderFooter * HeaderFooter::clone() const
     return headerFooter;
 }
 
+bool HeaderFooter::compare( const HeaderFooter& other )
+{
+    return  (type()           == other.type()) &&
+            (position()       == other.position()) &&
+            // also compare members inherited from the base class:
+            (autoReferenceArea() == other.autoReferenceArea()) &&
+            (text()              == other.text()) &&
+            (textAttributes()    == other.textAttributes());
+}
+
 void HeaderFooter::setType( HeaderFooterType type )
 {
     d->type = type;
