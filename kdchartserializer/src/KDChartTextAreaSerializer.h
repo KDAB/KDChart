@@ -43,18 +43,31 @@ namespace KDChart {
     class KDCHART_EXPORT TextAreaSerializer : public QObject
     {
         public:
+            static bool parseHeadersFooters(
+                    const QDomElement& container, KDChart::HeaderFooterList& areas );
             static void saveHeadersFooters(
                     QDomDocument& doc,
                     QDomElement& e,
                     const KDChart::HeaderFooterList& areas,
                     const QString& title );
 
+            static bool parseHeaderFooter(
+                    const QDomElement& container, HeaderFooter& hdFt );
+            static void TextAreaSerializer::saveHeaderFooter(
+                    QDomDocument& doc,
+                    QDomElement& hdFtElement,
+                    const KDChart::HeaderFooter& hdFt );
+
+            static bool parseTextArea(
+                    const QDomElement& container, TextArea& area );
             static void saveTextArea(
                     QDomDocument& doc,
                     QDomElement& e,
                     const TextArea& area,
                     const QString& title );
 
+            static bool parseTextLayoutItem(
+                    const QDomElement& container, TextLayoutItem& item );
             static void saveTextLayoutItem(
                     QDomDocument& doc,
                     QDomElement& e,
