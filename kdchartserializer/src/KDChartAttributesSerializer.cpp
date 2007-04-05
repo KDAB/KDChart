@@ -999,8 +999,19 @@ bool AttributesSerializer::parseMarkerAttributes(
                     a.setVisible( b );
             } else if( tagName == "MarkerStyle" ) {
                 QString s;
-                if( KDXML::findStringAttribute( e, "style", s ) )
-                    a.setMarkerStyle( markerStyleFromName( s ) );
+                if( KDXML::findStringAttribute( e, "style", s ) ){
+                    //qDebug() << "MarkerAttributes/MarkerStyle found: \"" << s << "\"";
+                    const MarkerAttributes::MarkerStyle style = markerStyleFromName( s );
+                    if( ! s.isEmpty() ){
+                        a.setMarkerStyle( style );
+                    } else {
+                        qDebug() << "Invalid style attribute in MarkerAttributes/MarkerStyle found: \"" << s << "\"";
+                        bOK = false;
+                    }
+                } else {
+                    qDebug() << "Invalid style element in MarkerAttributes/MarkerStyle found.";
+                    bOK = false;
+                }
             } else if( tagName == "StylesMap" ) {
                 MarkerAttributes::MarkerStylesMap map;
                 QDomNode node2 = element.firstChild();
