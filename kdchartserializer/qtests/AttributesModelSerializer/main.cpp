@@ -92,7 +92,7 @@ private slots:
                 mDoc, mDocRoot, "kdchart:global-objects" );
 
         // use cout rather that qDebug() to avoid the length limitation of the later
-        std::cout << "\n\n" << mDoc.toString(2).toLatin1().data() << "\n\n";
+        //std::cout << "\n\n" << mDoc.toString(2).toLatin1().data() << "\n\n";
 
         bool bFoundSavedAttributesModel = false;
         QDomElement parsedElement;
@@ -132,6 +132,21 @@ private slots:
 
         AttributesModel parsedAttrsModel(0, 0);
         QVERIFY( mAttrModelS->parseAttributesModel( parsedElement, parsedAttrsModel ) );
+
+        /* for a manual test comparing the original with the parsed node:
+        QDomElement savedElement2 =
+                mDoc.createElement( "TESTING-2" );
+        mDocRoot.appendChild( savedElement2 );
+        mAttrModelS->saveAttributesModel(
+                mDoc,
+                savedElement2,
+                &parsedAttrsModel );
+        SerializeCollector::instance()->appendDataToElement(
+                mDoc, mDocRoot, "kdchart:global-objects" );
+        // use cout rather that qDebug() to avoid the length limitation of the later
+        //std::cout << "\n\n" << mDoc.toString(2).toLatin1().data() << "\n\n";
+        */
+
         QVERIFY( orgAttrsModel.compare( &parsedAttrsModel ) );
     }
 
