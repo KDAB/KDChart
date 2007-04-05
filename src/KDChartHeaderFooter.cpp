@@ -97,7 +97,7 @@ HeaderFooter * HeaderFooter::clone() const
     return headerFooter;
 }
 
-bool HeaderFooter::compare( const HeaderFooter& other )
+bool HeaderFooter::compare( const HeaderFooter& other )const
 {
     return  (type()           == other.type()) &&
             (position()       == other.position()) &&
