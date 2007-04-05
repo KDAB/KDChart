@@ -88,13 +88,13 @@ bool MarkerAttributes::operator==( const MarkerAttributes& r ) const
 {
     /*
     qDebug() << "MarkerAttributes::operator== finds"
-            << (isVisible() == r.isVisible())
-            << (markerStylesMap() == r.markerStylesMap())
-            << (markerStyle() == r.markerStyle())
-            << (markerSize() == r.markerSize())
-            << (markerColor() == r.markerColor())
-            << (pen() == r.pen())
-            << markerColor() << r.markerColor();
+            << "b" << (isVisible() == r.isVisible())
+            << "c" << (markerStylesMap() == r.markerStylesMap())
+            << "d" << (markerStyle() == r.markerStyle()) << markerStyle() <<r.markerStyle()
+            << "e" << (markerSize() == r.markerSize())
+            << "f" << (markerColor() == r.markerColor())
+            << "g" << (pen() == r.pen())
+            << "h" << (markerColor() == r.markerColor()) << markerColor() << r.markerColor();
     */
     return ( isVisible() == r.isVisible() &&
             markerStylesMap() == r.markerStylesMap() &&
