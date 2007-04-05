@@ -11,7 +11,7 @@
 
 using namespace KDChart;
 
-class TestKDChartAttributesSerializer : public QObject {
+class TestKDChartTextAreaSerializer : public QObject {
   Q_OBJECT
 private slots:
 
@@ -71,6 +71,6 @@ private:
     QDomElement mDocRoot;
 };
 
-QTEST_MAIN(TestKDChartAttributesSerializer)
+QTEST_MAIN(TestKDChartTextAreaSerializer)
 
 #include "main.moc"
