@@ -1,6 +1,6 @@
 TEMPLATE = subdirs
 SUBDIRS +=  AttributesSerializer \
-            AttributesModelSerializer
+            AttributesModelSerializer \
             TextAreaSerializer \
 #            AbstractAreaBaseSerializer \
 #            AxesSerializer \
