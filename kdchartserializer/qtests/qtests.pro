@@ -5,7 +5,7 @@ SUBDIRS +=  AttributesSerializer \
             AxesSerializer \
 #            DiagramsSerializer \
 #            CoordPlanesSerializer \
-             LegendsSerializer \
+#            LegendsSerializer \
 #            Serializer
 
 test.target=test
