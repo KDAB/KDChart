@@ -130,6 +130,7 @@ namespace KDXML {
 
     bool readIntNode( const QDomElement& element, int& value );
     bool readStringNode( const QDomElement& element, QString& value );
+    bool readStringListNode( const QDomElement& element, QStringList& value );
     bool readDoubleNode( const QDomElement& element, double& value );
     bool readRealNode( const QDomElement& element, qreal& value );
     bool readBoolNode( const QDomElement& element, bool& value );

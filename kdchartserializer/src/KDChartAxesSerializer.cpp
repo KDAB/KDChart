@@ -63,34 +63,9 @@ bool AxesSerializer::parseCartesianAxes(
         CartesianAxisList& axes )const
 {
     bool bOK = true;
-/*
-    QDomNode node = e.firstChild();
-    while( !node.isNull() ) {
-        QDomElement element = node.toElement();
-        if( !element.isNull() ) { // was really an element
-            QString tagName = element.tagName();
 
-            if( tagName == "kdchart:cartesian-coordinate-plane" ) {
-                bool b;
-                if( KDXML::readBoolNode( element, b ) )
-                    a.setVisible( b );
-            } else if( tagName == "kdchart:polar-coordinate-plane" ) {
-                QPen p;
-                if( KDXML::readPenNode( element, p ) )
-                    a.setPen( p );
-            } else {
-                QPen p;
-                if( KDXML::readPenNode( element, p ) )
-                    a.setPen( p );
-            } else {
-                qDebug() << "Unknown subelement of FrameAttributes found:" << tagName;
-                bOK = false;
-            }
+    //TODO(khz): impl' this
 
-        }
-        node = node.nextSibling();
-    }
-*/
     return bOK;
 }
 
@@ -132,7 +107,7 @@ void AxesSerializer::saveCartesianAxes(
                         p,
                         wasFound );
         if( ! wasFound ){
-            saveCartAxis( doc, axisElement, *p,
+            saveCartesianAxis( doc, axisElement, *p,
                         "kdchart:cartesian-axis" );
         }
     }
@@ -169,40 +144,64 @@ void AxesSerializer::savePolarAxes(
 }
 */
 
-void AxesSerializer::saveAbstractAxis(
-        QDomDocument& doc,
-        QDomElement& e,
-        const AbstractAxis& axis,
-        const QString& title )const
+bool AxesSerializer::parseCartesianAxis(
+        const QDomElement& container,
+        CartesianAxis& axis )const
 {
-    QDomElement axisElement =
-        doc.createElement( title );
-    e.appendChild( axisElement );
-
-    // save the area information
-    AbstractAreaBaseSerializer::saveAbstractAreaBase(
-            doc,
-            axisElement,
-            axis,
-            "kdchart:abstract-area-base" );
-    // save the text attributes
-    AttributesSerializer::saveTextAttributes(
-            doc, axisElement,
-            axis.textAttributes(),
-            "TextAttributes" );
-    // save the labels
-    QStringList list( axis.labels() );
-    KDXML::createStringListNodes(
-            doc, axisElement,
-            "Labels", &list );
-    // save the short labels
-    list = axis.shortLabels();
-    KDXML::createStringListNodes(
-            doc, axisElement,
-            "ShortLabels", &list );
+    bool bOK = true;
+    QDomNode node = container.firstChild();
+    while( !node.isNull() ) {
+        QDomElement element = node.toElement();
+        if( !element.isNull() ) { // was really an element
+            QString tagName = element.tagName();
+            if( tagName == "kdchart:abstract-axis" ) {
+                if( ! parseAbstractAxis( element, axis ) )
+                    bOK = false;
+            } else if( tagName == "Title" ) {
+                QString s;
+                if( KDXML::readStringNode( element, s ) )
+                    axis.setTitleText( s );
+                else
+                    bOK = false;
+            } else if( tagName == "TitleTextAttributes" ) {
+                TextAttributes ta;
+                if( AttributesSerializer::parseTextAttributes( element, ta ) )
+                    axis.setTitleTextAttributes( ta );
+                else
+                    bOK = false;
+            } else if( tagName == "Position" ) {
+                QString s;
+                if( KDXML::readStringNode( element, s ) ){
+                    CartesianAxis::Position pos;
+                    if( s.compare("bottom", Qt::CaseInsensitive) == 0 )
+                        pos = CartesianAxis::Bottom;
+                    else if( s.compare("top", Qt::CaseInsensitive) == 0 )
+                        pos = CartesianAxis::Top;
+                    else if( s.compare("right", Qt::CaseInsensitive) == 0 )
+                        pos = CartesianAxis::Right;
+                    else if( s.compare("left", Qt::CaseInsensitive) == 0 )
+                        pos = CartesianAxis::Left;
+                    else{
+                        qDebug() << "Unknown value of CartesianAxis/Position found:" << s;
+                        bOK = false;
+                    }
+                    if( bOK )
+                        axis.setPosition( pos );
+                }else{
+                    qDebug() << "Invalid CartesianAxis/Position element found.";
+                    bOK = false;
+                }
+            } else {
+                qDebug() << "Unknown subelement of CartesianAxis found:" << tagName;
+                bOK = false;
+            }
+        }
+        node = node.nextSibling();
+    }
+    return bOK;
 }
 
-void AxesSerializer::saveCartAxis(
+void AxesSerializer::saveCartesianAxis(
         QDomDocument& doc,
         QDomElement& e,
         const CartesianAxis& axis,
@@ -241,6 +240,9 @@ void AxesSerializer::saveCartAxis(
         case CartesianAxis::Left:
             s = "left";
             break;
+        default:
+            Q_ASSERT( false ); // all of the positions need to be handled
+            break;
     }
     KDXML::createStringNode(
             doc, axisElement,
@@ -249,6 +251,15 @@ void AxesSerializer::saveCartAxis(
 
 //TODO once PolarAxis is implemented:
 /*
+bool AxesSerializer::parsePolarAxis(
+        const QDomElement& container,
+        PolarAxis& axis )const
+{
+    bool bOK = true;
+    // ..
+    return bOK;
+}
+
 void AxesSerializer::savePolarAxis(
         QDomDocument& doc,
         QDomElement& e,
@@ -267,6 +278,84 @@ void AxesSerializer::savePolarAxis(
 }
 
 */
+
+
+bool AxesSerializer::parseAbstractAxis(
+        const QDomElement& container,
+        AbstractAxis& axis )const
+{
+    bool bOK = true;
+    QDomNode node = container.firstChild();
+    while( !node.isNull() ) {
+        QDomElement element = node.toElement();
+        if( !element.isNull() ) { // was really an element
+            QString tagName = element.tagName();
+            if( tagName == "kdchart:abstract-area-base" ) {
+                if( ! AbstractAreaBaseSerializer::parseAbstractAreaBase( element, axis ) )
+                    bOK = false;
+            } else if( tagName == "TextAttributes" ) {
+                TextAttributes ta;
+                if( AttributesSerializer::parseTextAttributes( element, ta ) )
+                    axis.setTextAttributes( ta );
+                else
+                    bOK = false;
+            } else if( tagName == "Labels" ) {
+                QStringList list;
+                if( KDXML::readStringListNode( element, list ) )
+                    axis.setLabels( list );
+                else
+                    bOK = false;
+            } else if( tagName == "ShortLabels" ) {
+                QStringList list;
+                if( KDXML::readStringListNode( element, list ) )
+                    axis.setShortLabels( list );
+                else
+                    bOK = false;
+            } else {
+                qDebug() << "Unknown subelement of AbstractAxis found:" << tagName;
+                bOK = false;
+            }
+        }
+        node = node.nextSibling();
+    }
+    return bOK;
+}
+
+void AxesSerializer::saveAbstractAxis(
+        QDomDocument& doc,
+        QDomElement& e,
+        const AbstractAxis& axis,
+        const QString& title )const
+{
+    QDomElement axisElement =
+            doc.createElement( title );
+    e.appendChild( axisElement );
+
+    // save the area information
+    AbstractAreaBaseSerializer::saveAbstractAreaBase(
+            doc,
+            axisElement,
+            axis,
+            "kdchart:abstract-area-base" );
+    // save the text attributes
+    AttributesSerializer::saveTextAttributes(
+            doc, axisElement,
+            axis.textAttributes(),
+            "TextAttributes" );
+    // save the labels
+    QStringList list( axis.labels() );
+    if( list.count() )
+        KDXML::createStringListNodes(
+                doc, axisElement,
+                "Labels", &list );
+    // save the short labels
+    list = axis.shortLabels();
+    if( list.count() )
+        KDXML::createStringListNodes(
+                doc, axisElement,
+                "ShortLabels", &list );
+}
+
 
 const QString AxesSerializer::nameOfClass( const AbstractAxis* p )const
 {

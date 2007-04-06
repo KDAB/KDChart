@@ -75,13 +75,11 @@ namespace KDChart {
                     const PolarAxisList& planes,
                     const QString& title )const;
             */
-            virtual void saveAbstractAxis(
-                    QDomDocument& doc,
-                    QDomElement& e,
-                    const AbstractAxis& axis,
-                    const QString& title )const;
 
-            virtual void saveCartAxis(
+            virtual bool parseCartesianAxis(
+                    const QDomElement& container,
+                    CartesianAxis& axis )const;
+            virtual void saveCartesianAxis(
                     QDomDocument& doc,
                     QDomElement& e,
                     const CartesianAxis& axis,
@@ -89,12 +87,24 @@ namespace KDChart {
 
             //TODO once PolarAxis is implemented:
             /*
-            virtual void savePolAxis(
+            virtual bool parsePolarAxis(
+                    const QDomElement& container,
+                    PolarAxis& axis )const;
+            virtual void savePolarAxis(
                     QDomDocument& doc,
                     QDomElement& e,
                     const PolarAxis& axis,
                     const QString& title )const;
             */
+
+            virtual bool parseAbstractAxis(
+                    const QDomElement& container,
+                    AbstractAxis& axis )const;
+            virtual void saveAbstractAxis(
+                    QDomDocument& doc,
+                    QDomElement& e,
+                    const AbstractAxis& axis,
+                    const QString& title )const;
 
             /**
              * Returns the correct class name for a given class.

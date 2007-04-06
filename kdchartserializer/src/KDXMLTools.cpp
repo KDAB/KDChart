@@ -318,10 +318,10 @@ namespace KDXML {
         if( !list )
             return;
 
+        QDomElement element = doc.createElement( elementName );
+        parent.appendChild( element );
         for( QStringList::ConstIterator it = list->begin();
                 it != list->end(); ++it ) {
-            QDomElement element = doc.createElement( elementName );
-            parent.appendChild( element );
             QDomText elementContent = doc.createTextNode( *it );
             element.appendChild( elementContent );
         }
@@ -590,6 +590,17 @@ namespace KDXML {
     bool readStringNode( const QDomElement& element, QString& value )
     {
         value = element.text();
+        return true;
+    }
+
+    bool readStringListNode( const QDomElement& element, QStringList& value )
+    {
+        for(QDomNode n = element.firstChild(); !n.isNull(); n = n.nextSibling())
+        {
+            QDomText t = n.toText();
+            if (!t.isNull())
+                value.append( t.data() );
+        }
         return true;
     }
 
