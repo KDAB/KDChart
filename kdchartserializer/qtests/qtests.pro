@@ -2,11 +2,10 @@ TEMPLATE = subdirs
 SUBDIRS +=  AttributesSerializer \
             AttributesModelSerializer \
             TextAreaSerializer \
-#            AbstractAreaBaseSerializer \
-#            AxesSerializer \
+            AxesSerializer \
 #            DiagramsSerializer \
-#            LegendsSerializer \
 #            CoordPlanesSerializer \
+             LegendsSerializer \
 #            Serializer
 
 test.target=test
