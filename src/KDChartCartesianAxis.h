@@ -73,6 +73,11 @@ namespace KDChart {
         explicit CartesianAxis ( AbstractCartesianDiagram* diagram = 0 );
         ~CartesianAxis();
 
+        /**
+         * Returns true if both axes have the same settings.
+         */
+        bool compare( const CartesianAxis* other )const;
+
         /** reimpl */
         virtual void paint( QPainter* );
         /** reimpl */

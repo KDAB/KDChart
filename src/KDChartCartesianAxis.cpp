@@ -72,6 +72,26 @@ void CartesianAxis::init ()
     d->position = Bottom;
 }
 
+
+bool CartesianAxis::compare( const CartesianAxis* other )const
+{
+    if( other == this ) return true;
+    if( ! other ){
+        //qDebug() << "CartesianAxis::compare() cannot compare to Null pointer";
+        return false;
+    }
+    /*
+    qDebug() << (position()            == other->position());
+    qDebug() << (titleText()           == other->titleText());
+    qDebug() << (titleTextAttributes() == other->titleTextAttributes());
+    */
+    return  ( static_cast<const AbstractAxis*>(this)->compare( other ) ) &&
+            ( position()            == other->position() ) &&
+            ( titleText()           == other->titleText() ) &&
+            ( titleTextAttributes() == other->titleTextAttributes() );
+}
+
+
 void CartesianAxis::setTitleText( const QString& text )
 {
     //FIXME(khz): Call update al all places where axis internals are changed!

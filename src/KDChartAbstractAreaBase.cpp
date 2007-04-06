@@ -72,6 +72,21 @@ void AbstractAreaBase::init()
 
 #define d d_func()
 
+bool AbstractAreaBase::compare( const AbstractAreaBase* other )const
+{
+    if( other == this ) return true;
+    if( ! other ){
+        //qDebug() << "CartesianAxis::compare() cannot compare to Null pointer";
+        return false;
+    }
+    /*
+    qDebug() << (frameAttributes()      == other->frameAttributes());
+    qDebug() << (backgroundAttributes() == other->backgroundAttributes());
+    */
+    return  (frameAttributes()      == other->frameAttributes()) &&
+            (backgroundAttributes() == other->backgroundAttributes());
+}
+
 void AbstractAreaBase::alignToReferencePoint( const RelativePosition& position )
 {
     Q_UNUSED( position );

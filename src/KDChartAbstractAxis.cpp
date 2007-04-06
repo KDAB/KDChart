@@ -139,6 +139,24 @@ void AbstractAxis::delayedInit()
         d->setDiagram( 0, true /* delayedInit */ );
 }
 
+bool AbstractAxis::compare( const AbstractAxis* other )const
+{
+    if( other == this ) return true;
+    if( ! other ){
+        //qDebug() << "CartesianAxis::compare() cannot compare to Null pointer";
+        return false;
+    }
+    /*
+    qDebug() << (textAttributes() == other->textAttributes());
+    qDebug() << (labels()         == other->labels());
+    qDebug() << (shortLabels()    == other->shortLabels());
+    */
+    return  ( static_cast<const AbstractAreaBase*>(this)->compare( other ) ) &&
+            (textAttributes() == other->textAttributes()) &&
+            (labels()         == other->labels()) &&
+            (shortLabels()    == other->shortLabels());
+}
+
 /**
   * \internal
   *

@@ -81,6 +81,11 @@ namespace KDChart {
               virtual QSize sizeHint() const = 0;*/
 	//virtual void paintEvent( QPaintEvent* event) = 0;
 
+        /**
+         * Returns true if both axes have the same settings.
+         */
+        bool compare( const AbstractAxis* other )const;
+
         void createObserver( AbstractDiagram* diagram );
         void deleteObserver( AbstractDiagram* diagram );
         const AbstractDiagram* diagram() const;
