@@ -73,6 +73,11 @@ public:
 
     virtual Legend * clone() const;
 
+    /**
+     * Returns true if both axes have the same settings.
+     */
+    bool compare( const Legend* other )const;
+
     //QSize calcSizeHint() const;
     virtual void resizeEvent( QResizeEvent * event ); // TODO: should be protected
 

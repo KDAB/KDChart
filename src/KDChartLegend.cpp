@@ -196,6 +196,24 @@ Legend* Legend::clone() const
     return legend;
 }
 
+
+bool Legend::compare( const Legend* other )const
+{
+    if( other == this ) return true;
+    if( ! other ){
+        //qDebug() << "Legend::compare() cannot compare to Null pointer";
+        return false;
+    }
+
+    return  ( static_cast<const AbstractAreaBase*>(this)->compare( other ) ) &&
+            (textAttributes()         == other->textAttributes()) &&
+            (titleTextAttributes()    == other->titleTextAttributes()) &&
+            (useAutomaticMarkerSize() == other->useAutomaticMarkerSize()) &&
+            (position()               == other->position()) &&
+            (alignment()              == other->alignment());
+}
+
+
 void Legend::paint( QPainter* painter )
 {
 #ifdef DEBUG_LEGEND_PAINT
