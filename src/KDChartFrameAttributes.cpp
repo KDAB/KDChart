@@ -77,9 +77,14 @@ FrameAttributes::~FrameAttributes()
 
 bool FrameAttributes::operator==( const FrameAttributes& r ) const
 {
+    /*
+    qDebug() << "FrameAttributes:" << (isVisible() == r.isVisible())
+        << (pen() == r.pen())
+        << (padding() == r.padding()) << "\n";
+    */
     return ( isVisible() == r.isVisible() &&
-	     pen() == r.pen() &&
-	     padding() == r.padding() );
+            pen() == r.pen() &&
+            padding() == r.padding() );
 }
 
 

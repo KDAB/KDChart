@@ -94,14 +94,24 @@ TextAttributes::~TextAttributes()
 
 bool TextAttributes::operator==( const TextAttributes& r ) const
 {
+    /*
+    qDebug() << "\n" << "TextAttributes::operator== :" << ( isVisible() == r.isVisible())
+            << (font() == r.font())
+            << (fontSize() == r.fontSize())
+            << (minimalFontSize() == r.minimalFontSize())
+            << (autoRotate() == r.autoRotate())
+            << (autoShrink() == r.autoShrink())
+            << (rotation() == rotation())
+            << (pen() == r.pen());
+    */
     return ( isVisible() == r.isVisible() &&
-	     font() == r.font() &&
-	     fontSize() == r.fontSize() &&
-	     minimalFontSize() == r.minimalFontSize() &&
-	     autoRotate() == r.autoRotate() &&
-	     autoShrink() == r.autoShrink() &&
-	     rotation() == rotation() &&
-	     pen() == r.pen() );
+            font() == r.font() &&
+            fontSize() == r.fontSize() &&
+            minimalFontSize() == r.minimalFontSize() &&
+            autoRotate() == r.autoRotate() &&
+            autoShrink() == r.autoShrink() &&
+            rotation() == rotation() &&
+            pen() == r.pen() );
 }
 
 

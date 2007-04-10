@@ -83,10 +83,10 @@ bool BackgroundAttributes::isEqualTo(
 {
     /*
     qDebug() << "BackgroundAttributes::operator==";
-    qDebug() << "isVisible" << (isVisible() == r.isVisible());
-    qDebug() << "brush"     << (brush() == r.brush());
-    qDebug() << "pixmapMode"<< (pixmapMode() == r.pixmapMode());
-    qDebug() << "pixmap"    << (pixmap().serialNumber() == r.pixmap().serialNumber());
+    qDebug() << "isVisible" << (isVisible() == other.isVisible());
+    qDebug() << "brush"     << (brush() == other.brush());
+    qDebug() << "pixmapMode"<< (pixmapMode() == other.pixmapMode());
+    qDebug() << "pixmap"    << (pixmap().serialNumber() == other.pixmap().serialNumber());
     */
     return (
             isVisible()  == other.isVisible() &&

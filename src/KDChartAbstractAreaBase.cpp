@@ -80,8 +80,8 @@ bool AbstractAreaBase::compare( const AbstractAreaBase* other )const
         return false;
     }
     /*
-    qDebug() << (frameAttributes()      == other->frameAttributes());
-    qDebug() << (backgroundAttributes() == other->backgroundAttributes());
+    qDebug() << "AbstractAreaBase:" << (frameAttributes() == other->frameAttributes())
+        << (backgroundAttributes() == other->backgroundAttributes()) << "\n";
     */
     return  (frameAttributes()      == other->frameAttributes()) &&
             (backgroundAttributes() == other->backgroundAttributes());

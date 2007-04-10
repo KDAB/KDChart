@@ -204,7 +204,24 @@ bool Legend::compare( const Legend* other )const
         //qDebug() << "Legend::compare() cannot compare to Null pointer";
         return false;
     }
-
+    /*
+    qDebug() << ( static_cast<const AbstractAreaBase*>(this)->compare( other ) );
+    qDebug() << (isVisible()              == other->isVisible());
+    qDebug() << (position()               == other->position());
+    qDebug() << (alignment()              == other->alignment());
+    qDebug() << (floatingPosition()       == other->floatingPosition());
+    qDebug() << (orientation()            == other->orientation());
+    qDebug() << (showLines()              == other->showLines());
+    qDebug() << (texts()                  == other->texts());
+    qDebug() << (brushes()                == other->brushes());
+    qDebug() << (pens()                   == other->pens());
+    qDebug() << (markerAttributes()       == other->markerAttributes());
+    qDebug() << (useAutomaticMarkerSize() == other->useAutomaticMarkerSize());
+    qDebug() << (textAttributes()         == other->textAttributes());
+    qDebug() << (titleText()              == other->titleText());
+    qDebug() << (titleTextAttributes()    == other->titleTextAttributes());
+    qDebug() << (spacing()                == other->spacing());
+    */
     return  ( static_cast<const AbstractAreaBase*>(this)->compare( other ) ) &&
             (isVisible()              == other->isVisible()) &&
             (position()               == other->position()) &&
