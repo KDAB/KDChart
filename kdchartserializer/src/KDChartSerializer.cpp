@@ -210,7 +210,7 @@ bool Serializer::saveRootElement(
         // attribute-models, axes, charts, coordinate-planes,
         // diagrams, headers-footers, legends, ...
         SerializeCollector::instance()->appendDataToElement(
-                doc, docRoot, "kdchart:global-objects" );
+                doc, docRoot );
 
         // Last step: Try to resolve all entries that
         // were stored as unresolved pointers before.

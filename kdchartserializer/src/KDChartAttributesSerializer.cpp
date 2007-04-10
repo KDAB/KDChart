@@ -217,7 +217,7 @@ bool AttributesSerializer::parseMeasure(
             QString tagName = element.tagName();
             if( tagName == "ReferenceArea" ) {
                 QObject* ptr;
-                if( parseQObjectPointer( element, ptr ) )
+                if( parseQObjectPointerNode( element.firstChild(), ptr ) )
                     a.setReferenceArea( ptr );
             } else if( tagName == "Value" ) {
                 qreal r;
@@ -1113,7 +1113,7 @@ bool AttributesSerializer::parseRelativePosition(
             QString tagName = element.tagName();
             if( tagName == "ReferenceArea" ) {
                 QObject* ptr;
-                if( parseQObjectPointer( element, ptr ) )
+                if( parseQObjectPointerNode( element.firstChild(), ptr ) )
                     pos.setReferenceArea( ptr );
             } else if( tagName == "PositionPoints" ) {
                 PositionPoints points;
@@ -1358,19 +1358,19 @@ void AttributesSerializer::saveGridAttributes(
 
 
 
-bool AttributesSerializer::parseQObjectPointer(
-        QDomElement& e,
+bool AttributesSerializer::parseQObjectPointerNode(
+        const QDomNode& node,
         QObject*& p )
 {
     bool bOK = true;
-    QDomNode node = e.firstChild();
-    while( !node.isNull() ) {
+    if( ! node.isNull() ) {
         QDomElement element = node.toElement();
-        if( !element.isNull() ) { // was really an element
+        if( ! element.isNull() ) { // was really an element
             QString tagName = element.tagName();
             if( tagName == "kdchart:pointer" ) {
                 QString s;
                 if( KDXML::findStringAttribute( element, "name", s ) ){
+                    //qDebug() << "parsed pointer:" << s;
                     if( s.compare("Null", Qt::CaseInsensitive) == 0 ){
                         p = 0;
                     }else{
@@ -1379,9 +1379,9 @@ bool AttributesSerializer::parseQObjectPointer(
                             p = ptr;
                         }else{
                             qDebug() << "\n"
-                            "    CRITICAL information by AttributesSerializer::parseQObjectPointer():\n"
+                            "    CRITICAL information by AttributesSerializer::parseQObjectPointerNode():\n"
                             "    Could not resolve pointer \"" << s << "\", setting pointer value to zero.\n"
-                            "    Location:\n    "+showDomPath( e );
+                            "    Location:\n    "+showDomPath( element );
                             bOK = false;
                         }
                     }
@@ -1389,17 +1389,16 @@ bool AttributesSerializer::parseQObjectPointer(
             } else if( tagName == "kdchart:unresolved-pointer" ) {
                 /*
                 qDebug() << "\n"
-                "    Non-critical information by AttributesSerializer::parseQObjectPointer():\n"
+                "    Non-critical information by AttributesSerializer::parseQObjectPointerNode():\n"
                 "    Unresolved pointer found, setting value to zero.\n"
-                "    Location:\n    "+showDomPath( e );
+                "    Location:\n    "+showDomPath( element );
                 */
                 p = 0;
             } else {
-                qDebug() << "Unknown subelement of " << e.tagName() << " found:" << tagName;
+                qDebug() << "Unknown subelement found:" << tagName;
                 bOK = false;
             }
         }
-        node = node.nextSibling();
     }
     return bOK;
 }

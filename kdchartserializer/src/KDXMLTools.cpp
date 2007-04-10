@@ -803,7 +803,7 @@ namespace KDXML {
                 } else if( tagName == "Pixmap" ) {
                     ok = ok & readPixmapNode( element, tempPixmap );
                 } else {
-                    qDebug( "Unknown tag in brush" );
+                    qDebug() << "Unknown tag in brush:" << tagName;
                 }
             }
             node = node.nextSibling();
@@ -928,7 +928,7 @@ namespace KDXML {
                     ok = ok & readStringNode( element, value );
                     tempJoinStyle = stringToPenJoinStyle( value );
                 } else {
-                    qDebug( "Unknown tag in brush" );
+                    qDebug() << "Unknown tag in pen:" << tagName;
                 }
             }
             node = node.nextSibling();

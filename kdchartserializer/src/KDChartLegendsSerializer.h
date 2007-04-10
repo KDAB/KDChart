@@ -49,6 +49,8 @@ namespace KDChart {
                     const LegendList& planes,
                     const QString& title );
 
+            static bool parseLegend(
+                    const QDomElement& container, Legend& legend );
             static void saveLegend(
                     QDomDocument& doc,
                     QDomElement& element,

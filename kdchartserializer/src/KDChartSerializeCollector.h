@@ -56,7 +56,8 @@ namespace KDChart {
      * \sa foundParsedPointer
      */
     static bool initializeParsedGlobalPointers(
-            const QDomElement& globalObjectsNode );
+            const QDomNode& rootNode,
+            const QString& name="kdchart:global-objects" );
 
     /**
      * Returns a reference to the global list of pointers parsed
@@ -137,7 +138,7 @@ KDChart::ParsedPointersMap& mapRef
      */
     void appendDataToElement( QDomDocument& doc,
                               QDomElement& element,
-                              const QString& name )const;
+                              const QString& name="kdchart:global-objects" )const;
 
     /**
      * Auxiliary function:

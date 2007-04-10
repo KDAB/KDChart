@@ -82,23 +82,44 @@ SerializeCollector* SerializeCollector::instance()
 // ******************* parsing the data ***************************
 
 bool SerializeCollector::initializeParsedGlobalPointers(
-        const QDomElement& globalObjectsNode )
+        const QDomNode& rootNode,
+        const QString& name )
 {
     instance()->parsedPointersMap().clear();
 
-    QDomNode n = globalObjectsNode.firstChild();
+    bool globalObjectsNodeFound;
+    QDomElement globalObjectsNode;
+    QDomNode n = rootNode.firstChild();
+    while(!n.isNull()) {
+        QDomElement e = n.toElement(); // try to convert the node to an element.
+        if(!e.isNull()) {
+            // the node really is an element
+            if( e.tagName().compare(name, Qt::CaseInsensitive) == 0 ){
+                globalObjectsNode = e;
+                globalObjectsNodeFound = true;
+            }
+        }
+        n = n.nextSibling();
+    }
+    if( ! globalObjectsNodeFound ){
+        qDebug() << "CRITICAL information by SerializeCollector::initializeParsedGlobalPointers()\n"
+                "    No global-objects node found.";
+        return false;
+    }
+
+    n = globalObjectsNode.firstChild();
     while(!n.isNull()) {
         QDomElement e = n.toElement(); // try to convert the node to an element.
         if(!e.isNull()) {
             // the node really is an element
             QString tagName = e.tagName();
-            if( tagName == "<kdchart:attribute-models>" ||
-                tagName == "<kdchart:axes>" ||
-                tagName == "<kdchart:charts>" ||
-                tagName == "<kdchart:coordinate-planes>" ||
-                tagName == "<kdchart:diagrams>" ||
-                tagName == "<kdchart:headers-footers>" ||
-                tagName == "<kdchart:legends>" ){
+            if( tagName == "kdchart:attribute-models" ||
+                tagName == "kdchart:axes" ||
+                tagName == "kdchart:charts" ||
+                tagName == "kdchart:coordinate-planes" ||
+                tagName == "kdchart:diagrams" ||
+                tagName == "kdchart:headers-footers" ||
+                tagName == "kdchart:legends" ){
                 QDomNode n2 = e.firstChild();
                 while(!n2.isNull()) {
                     QDomElement e2 = n2.toElement(); // try to convert the node to an element.
@@ -107,45 +128,46 @@ bool SerializeCollector::initializeParsedGlobalPointers(
                         QString objectName = e2.tagName();
                         QString className;
                         if( KDXML::findStringAttribute( e2, "Classname", className ) ){
+                            //qDebug() << "object:" << objectName << "class:" << className;
                             if( className == "KDChart::AttributesModel" ){
                                 instance()->parsedPointersMap()[ objectName ]
                                         = new AttributesModel(0, 0);
-                            } else if( objectName == "KDChart::CartesianAxis" ){
+                            } else if( className == "KDChart::CartesianAxis" ){
                                 instance()->parsedPointersMap()[ objectName ]
                                         = new CartesianAxis( 0 );
                             /* once PolarAxis is implemented:
-                            } else if( objectName == "KDChart::PolarAxis" ){
+                            } else if( className == "KDChart::PolarAxis" ){
                                 instance()->parsedPointersMap()[ objectName ]
                                         = new PolarAxis(0, 0);
                             */
-                            } else if( objectName == "KDChart::Chart" ){
+                            } else if( className == "KDChart::Chart" ){
                                 instance()->parsedPointersMap()[ objectName ]
                                         = new Chart( 0 );
-                            } else if( objectName == "KDChart::CartesianCoordinatePlane" ){
+                            } else if( className == "KDChart::CartesianCoordinatePlane" ){
                                 instance()->parsedPointersMap()[ objectName ]
                                         = new CartesianCoordinatePlane( 0 );
-                            } else if( objectName == "KDChart::PolarCoordinatePlane" ){
+                            } else if( className == "KDChart::PolarCoordinatePlane" ){
                                 instance()->parsedPointersMap()[ objectName ]
                                         = new PolarCoordinatePlane( 0 );
-                            } else if( objectName == "KDChart::BarDiagram" ){
+                            } else if( className == "KDChart::BarDiagram" ){
                                 instance()->parsedPointersMap()[ objectName ]
                                         = new BarDiagram(0, 0);
-                            } else if( objectName == "KDChart::LineDiagram" ){
+                            } else if( className == "KDChart::LineDiagram" ){
                                 instance()->parsedPointersMap()[ objectName ]
                                         = new LineDiagram(0, 0);
-                            } else if( objectName == "KDChart::PieDiagram" ){
+                            } else if( className == "KDChart::PieDiagram" ){
                                 instance()->parsedPointersMap()[ objectName ]
                                         = new PieDiagram(0, 0);
-                            } else if( objectName == "KDChart::PolarDiagram" ){
+                            } else if( className == "KDChart::PolarDiagram" ){
                                 instance()->parsedPointersMap()[ objectName ]
                                         = new PolarDiagram(0, 0);
-                            } else if( objectName == "KDChart::RingDiagram" ){
+                            } else if( className == "KDChart::RingDiagram" ){
                                 instance()->parsedPointersMap()[ objectName ]
                                         = new RingDiagram(0, 0);
-                            } else if( objectName == "KDChart::HeaderFooter" ){
+                            } else if( className == "KDChart::HeaderFooter" ){
                                 instance()->parsedPointersMap()[ objectName ]
                                         = new HeaderFooter( 0 );
-                            } else if( objectName == "KDChart::Legend" ){
+                            } else if( className == "KDChart::Legend" ){
                                 instance()->parsedPointersMap()[ objectName ]
                                         = new Legend( 0 );
                             } else {
@@ -267,7 +289,9 @@ QDomElement SerializeCollector::findOrMakeChild(
 {
     const QString pointerName( IdMapper::instance()->findOrMakeName( p, title, wasFound ) );
 
-    KDXML::createStringNode( doc, pointerContainer, "kdchart:pointer", pointerName );
+    //KDXML::createStringNode( doc, pointerContainer, "kdchart:pointer", pointerName );
+    KDXML::createNodeWithAttribute( doc, pointerContainer,
+                                    "kdchart:pointer", "name", pointerName );
 
     if( ! wasFound ){
         QDomElement storeElement = doc.createElement( pointerName );

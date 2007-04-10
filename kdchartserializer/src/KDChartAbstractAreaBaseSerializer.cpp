@@ -56,11 +56,11 @@ bool AbstractAreaBaseSerializer::parseAbstractAreaBase(
         QDomElement e = n.toElement(); // try to convert the node to an element.
         if(!e.isNull()) {
             // the node really is an element
-            if( e.tagName() == "frame-attributes" ){
+            if( e.tagName() == "kdchart:frame-attributes" ){
                 FrameAttributes a;
                 if( AttributesSerializer::parseFrameAttributes( e, a ) )
                     area.setFrameAttributes( a );
-            } else if( e.tagName() == "background-attributes" ){
+            } else if( e.tagName() == "kdchart:background-attributes" ){
                 BackgroundAttributes a;
                 if( AttributesSerializer::parseBackgroundAttributes( e, a ) )
                     area.setBackgroundAttributes( a );

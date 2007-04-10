@@ -194,8 +194,8 @@ namespace KDChart {
              * was found in the internal list of known objects.
              * Otherwise it will return FALSE.
              */
-            static bool parseQObjectPointer(
-                    QDomElement& e,
+            static bool parseQObjectPointerNode(
+                    const QDomNode& node,
                     QObject*& p );
 
             static void saveQObjectPointer(

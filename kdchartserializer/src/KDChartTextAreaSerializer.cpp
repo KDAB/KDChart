@@ -224,7 +224,7 @@ bool TextAreaSerializer::parseTextLayoutItem(
             QString tagName = element.tagName();
             if( tagName == "AutoReferenceArea" ) {
                 QObject* ptr;
-                if( AttributesSerializer::parseQObjectPointer( element, ptr ) )
+                if( AttributesSerializer::parseQObjectPointerNode( element.firstChild(), ptr ) )
                     item.setAutoReferenceArea( ptr );
                 else
                     bOK = false;
