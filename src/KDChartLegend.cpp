@@ -206,11 +206,20 @@ bool Legend::compare( const Legend* other )const
     }
 
     return  ( static_cast<const AbstractAreaBase*>(this)->compare( other ) ) &&
-            (textAttributes()         == other->textAttributes()) &&
-            (titleTextAttributes()    == other->titleTextAttributes()) &&
-            (useAutomaticMarkerSize() == other->useAutomaticMarkerSize()) &&
             (position()               == other->position()) &&
-            (alignment()              == other->alignment());
+            (alignment()              == other->alignment())&&
+            (floatingPosition()       == other->floatingPosition()) &&
+            (orientation()            == other->orientation())&&
+            (showLines()              == other->showLines())&&
+            (texts()                  == other->texts())&&
+            (brushes()                == other->brushes())&&
+            (pens()                   == other->pens())&&
+            (markerAttributes()       == other->markerAttributes())&&
+            (useAutomaticMarkerSize() == other->useAutomaticMarkerSize()) &&
+            (textAttributes()         == other->textAttributes()) &&
+            (titleText()              == other->titleText())&&
+            (titleTextAttributes()    == other->titleTextAttributes()) &&
+            (spacing()                == other->spacing());
 }
 
 
