@@ -119,11 +119,11 @@ bool TextAreaSerializer::parseHeaderFooter(
             if( !element.isNull() ) { // was really an element
                 QString tagName = element.tagName();
                 if( tagName == "Position" ) {
-                QString s;
-                if( KDXML::readStringNode( element, s ) )
-                    hdFt.setPosition( Position::fromName( s.toLatin1() ) );
-                else
-                    bOK = false;
+                    QString s;
+                    if( KDXML::readStringNode( element, s ) )
+                        hdFt.setPosition( Position::fromName( s.toLatin1() ) );
+                    else
+                        bOK = false;
                 } else if( tagName == "kdchart:text-area" ) {
                     // parse the base class:
                     if( ! parseTextArea( element, hdFt ) )
