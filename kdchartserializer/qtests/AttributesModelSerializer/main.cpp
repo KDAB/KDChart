@@ -89,7 +89,7 @@ private slots:
                 savedElement,
                 &orgAttrsModel );
         SerializeCollector::instance()->appendDataToElement(
-                mDoc, mDocRoot, "kdchart:global-objects" );
+                mDoc, mDocRoot );
 
         // use cout rather that qDebug() to avoid the length limitation of the later
         //std::cout << "\n\n" << mDoc.toString(2).toLatin1().data() << "\n\n";
@@ -142,7 +142,7 @@ private slots:
                 savedElement2,
                 &parsedAttrsModel );
         SerializeCollector::instance()->appendDataToElement(
-                mDoc, mDocRoot, "kdchart:global-objects" );
+                mDoc, mDocRoot );
         // use cout rather that qDebug() to avoid the length limitation of the later
         //std::cout << "\n\n" << mDoc.toString(2).toLatin1().data() << "\n\n";
         */

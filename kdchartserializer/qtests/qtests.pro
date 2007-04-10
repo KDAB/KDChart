@@ -3,9 +3,9 @@ SUBDIRS +=  AttributesSerializer \
             AttributesModelSerializer \
             TextAreaSerializer \
             AxesSerializer \
+            LegendsSerializer \
 #            DiagramsSerializer \
 #            CoordPlanesSerializer \
-#            LegendsSerializer \
 #            Serializer
 
 test.target=test
