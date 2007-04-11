@@ -49,13 +49,21 @@ namespace KDChart {
                     const LegendList& planes,
                     const QString& title );
 
+            /**
+             * Parse the legend element, and return a Legend* in \c legend
+             * if the respective legend was found in the list of global elements.
+             *
+             * Make sure that you have called
+             * \c KDChart::SerializeCollector::instance()->initializeParsedGlobalPointers()
+             * before invoking this method, or it will stop parsing and return false.
+             */
             static bool parseLegend(
-                    const QDomElement& container, Legend& legend );
+                    const QDomElement& container, Legend*& legend );
+
             static void saveLegend(
                     QDomDocument& doc,
                     QDomElement& element,
-                    const Legend& legend,
-                    const QString& title );
+                    const Legend& legend );
     };
 
 } // end of namespace

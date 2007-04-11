@@ -155,9 +155,9 @@ private slots:
         }
         QVERIFY( bFoundSavedLegend );
 
-        Legend parsedLegend;
+        Legend* parsedLegend=0;
         QVERIFY( LegendsSerializer::parseLegend( parsedElement, parsedLegend ) );
-        QVERIFY( m_legend->compare( &parsedLegend ) );
+        QVERIFY( m_legend->compare( parsedLegend ) );
     }
 
 

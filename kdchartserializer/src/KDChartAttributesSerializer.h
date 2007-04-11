@@ -198,6 +198,18 @@ namespace KDChart {
                     const QDomNode& node,
                     QObject*& p );
 
+            /**
+             * This method assumes you have called
+             * SerializeCollector::initializeParsedGlobalPointers()
+             * before.
+             * Return value is TRUE if the pointer \c name
+             * was found in the internal list of known objects.
+             * Otherwise it will return FALSE.
+             */
+            static bool findQObjectPointer(
+                    const QString& name,
+                    QObject*& p );
+
             static void saveQObjectPointer(
                     QDomDocument& doc,
                     QDomElement& e,
