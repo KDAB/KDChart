@@ -70,6 +70,12 @@ namespace KDChart {
 
 
         /**
+         * Returns true if both diagrams have the same settings.
+         */
+        bool compare( const AbstractDiagram* other )const;
+
+
+        /**
          * @brief Return the bottom left and top right data point, that the
          * diagram will display (unless the grid adjusts these values).
          *

@@ -126,6 +126,89 @@ void AbstractDiagram::init()
 }
 
 
+bool AbstractDiagram::compare( const AbstractDiagram* other )const
+{
+    if( other == this ) return true;
+    if( ! other ){
+        //qDebug() << "AbstractDiagram::compare() cannot compare to Null pointer";
+        return false;
+    }
+
+    qDebug() <<
+            // compare QAbstractScrollArea properties
+            ((horizontalScrollBarPolicy() == other->horizontalScrollBarPolicy()) &&
+            (verticalScrollBarPolicy()    == other->verticalScrollBarPolicy()));
+    qDebug() <<
+            // compare QFrame properties
+            ((frameShadow() == other->frameShadow()) &&
+            (frameShape()   == other->frameShape()) &&
+            (frameWidth()   == other->frameWidth()) &&
+            (lineWidth()    == other->lineWidth()) &&
+            (midLineWidth() == other->midLineWidth()));
+    qDebug() <<
+            // compare QAbstractItemView properties
+            ((alternatingRowColors() == other->alternatingRowColors()) &&
+            (hasAutoScroll()         == other->hasAutoScroll()) &&
+            (dragDropMode()          == other->dragDropMode()) &&
+            (dragDropOverwriteMode() == other->dragDropOverwriteMode()) &&
+            (dragEnabled()           == other->dragEnabled()) &&
+            (editTriggers()          == other->editTriggers()) &&
+            (horizontalScrollMode()  == other->horizontalScrollMode ()) &&
+            (verticalScrollMode()    == other->verticalScrollMode()) &&
+            (iconSize()              == other->iconSize()) &&
+            (selectionBehavior()     == other->selectionBehavior()) &&
+            (selectionMode()         == other->selectionMode()) &&
+            (showDropIndicator()     == other->showDropIndicator()) &&
+            (tabKeyNavigation()      == other->tabKeyNavigation()) &&
+            (textElideMode()         == other->textElideMode()));
+    qDebug() <<
+            // compare all of the properties stored in the attributes model
+            attributesModel()->compare( other->attributesModel() );
+    qDebug() <<
+            // compare own properties
+            ((rootIndex().column()            == other->rootIndex().column()) &&
+            (rootIndex().row()                == other->rootIndex().row()) &&
+            (allowOverlappingDataValueTexts() == other->allowOverlappingDataValueTexts()) &&
+            (antiAliasing()                   == other->antiAliasing()) &&
+            (percentMode()                    == other->percentMode()) &&
+            (datasetDimension()               == other->datasetDimension()));
+
+    return  // compare QAbstractScrollArea properties
+            (horizontalScrollBarPolicy() == other->horizontalScrollBarPolicy()) &&
+            (verticalScrollBarPolicy()   == other->verticalScrollBarPolicy()) &&
+            // compare QFrame properties
+            (frameShadow()  == other->frameShadow()) &&
+            (frameShape()   == other->frameShape()) &&
+            (frameWidth()   == other->frameWidth()) &&
+            (lineWidth()    == other->lineWidth()) &&
+            (midLineWidth() == other->midLineWidth()) &&
+            // compare QAbstractItemView properties
+            (alternatingRowColors()  == other->alternatingRowColors()) &&
+            (hasAutoScroll()         == other->hasAutoScroll()) &&
+            (dragDropMode()          == other->dragDropMode()) &&
+            (dragDropOverwriteMode() == other->dragDropOverwriteMode()) &&
+            (dragEnabled()           == other->dragEnabled()) &&
+            (editTriggers()          == other->editTriggers()) &&
+            (horizontalScrollMode()  == other->horizontalScrollMode ()) &&
+            (verticalScrollMode()    == other->verticalScrollMode()) &&
+            (iconSize()              == other->iconSize()) &&
+            (selectionBehavior()     == other->selectionBehavior()) &&
+            (selectionMode()         == other->selectionMode()) &&
+            (showDropIndicator()     == other->showDropIndicator()) &&
+            (tabKeyNavigation()      == other->tabKeyNavigation()) &&
+            (textElideMode()         == other->textElideMode()) &&
+            // compare all of the properties stored in the attributes model
+            attributesModel()->compare( other->attributesModel() ) &&
+            // compare own properties
+            (rootIndex().column()             == other->rootIndex().column()) &&
+            (rootIndex().row()                == other->rootIndex().row()) &&
+            (allowOverlappingDataValueTexts() == other->allowOverlappingDataValueTexts()) &&
+            (antiAliasing()                   == other->antiAliasing()) &&
+            (percentMode()                    == other->percentMode()) &&
+            (datasetDimension()               == other->datasetDimension());
+}
+
+
 AbstractCoordinatePlane* AbstractDiagram::coordinatePlane() const
 {
     return d->plane;
