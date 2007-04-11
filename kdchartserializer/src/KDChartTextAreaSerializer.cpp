@@ -90,28 +90,52 @@ void TextAreaSerializer::saveHeadersFooters(
 
 bool TextAreaSerializer::parseHeaderFooter(
         const QDomElement& container,
-        HeaderFooter& hdFt )
+        HeaderFooter*& hdFt )
 {
     bool bOK = true;
-    QString s;
-    if( KDXML::findStringAttribute( container, "type", s ) ){
-        if( ! s.isEmpty() ){
-            if( s.compare("Header", Qt::CaseInsensitive) == 0 ){
-                hdFt.setType( HeaderFooter::Header );
-            }else if( s.compare("Footer", Qt::CaseInsensitive) == 0 ){
-                hdFt.setType( HeaderFooter::Footer );
-            }else{
-                qDebug() << "Empty type attribute found in HeaderFooter.";
+    if( ! container.isNull() ) { // was really an element
+        const QString hdFtName = container.tagName();
+        //qDebug() << "\n    TextAreaSerializer::parseHeaderFooter() processing" << hdFtName;
+        QObject* p;
+        if( AttributesSerializer::findQObjectPointer( hdFtName, p ) ){
+            hdFt = dynamic_cast<HeaderFooter*>(p);
+            if( ! hdFt ){
+                qDebug()<< "Could not parse header/footer. Global pointer"
+                        << hdFtName << "is not a KDChart::HeaderFooter-ptr.";
+                bOK = false;
+            }
+        }else{
+            qDebug()<< "Could not parse header/footer. Pointer"
+                    << hdFtName << "not found in global list.";
+            bOK = false;
+        }
+    }else{
+        qDebug()<< "Could not parse header/footer. Container element is Null.";
+        bOK = false;
+    }
+
+    if( bOK ){
+        QString s;
+        if( KDXML::findStringAttribute( container, "type", s ) ){
+            if( ! s.isEmpty() ){
+                if( s.compare("Header", Qt::CaseInsensitive) == 0 ){
+                    hdFt->setType( HeaderFooter::Header );
+                }else if( s.compare("Footer", Qt::CaseInsensitive) == 0 ){
+                    hdFt->setType( HeaderFooter::Footer );
+                }else{
+                    qDebug() << "Empty type attribute found in HeaderFooter.";
+                    bOK = false;
+                }
+            } else {
+                qDebug() << "Invalid type attribute found in HeaderFooter: \"" << s << "\"";
                 bOK = false;
             }
         } else {
-            qDebug() << "Invalid type attribute found in HeaderFooter: \"" << s << "\"";
+            qDebug() << "No type attribute found in HeaderFooter element.";
             bOK = false;
         }
-    } else {
-        qDebug() << "No type attribute found in HeaderFooter element.";
-        bOK = false;
     }
+
     if( bOK ){
         QDomNode node = container.firstChild();
         while( !node.isNull() ) {
@@ -121,12 +145,12 @@ bool TextAreaSerializer::parseHeaderFooter(
                 if( tagName == "Position" ) {
                     QString s;
                     if( KDXML::readStringNode( element, s ) )
-                        hdFt.setPosition( Position::fromName( s.toLatin1() ) );
+                        hdFt->setPosition( Position::fromName( s.toLatin1() ) );
                     else
                         bOK = false;
                 } else if( tagName == "kdchart:text-area" ) {
                     // parse the base class:
-                    if( ! parseTextArea( element, hdFt ) )
+                    if( ! parseTextArea( element, *hdFt ) )
                         bOK = false;
                 } else {
                     qDebug() << "Unknown subelement of HeaderFooter found:" << tagName;

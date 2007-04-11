@@ -51,8 +51,17 @@ namespace KDChart {
                     const KDChart::HeaderFooterList& areas,
                     const QString& title );
 
+            /**
+             * Parse the header/footer element, and return a HeaderFooter* in \c hdFt
+             * if the respective header/footer was found in the list of global elements.
+             *
+             * Make sure that you have called
+             * \c KDChart::SerializeCollector::instance()->initializeParsedGlobalPointers()
+             * before invoking this method, or it will stop parsing and return false.
+             */
             static bool parseHeaderFooter(
-                    const QDomElement& container, HeaderFooter& hdFt );
+                    const QDomElement& container, HeaderFooter*& hdFt );
+
             static void TextAreaSerializer::saveHeaderFooter(
                     QDomDocument& doc,
                     QDomElement& hdFtElement,
