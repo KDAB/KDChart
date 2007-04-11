@@ -5,6 +5,7 @@
 #include <KDChartCartesianAxis>
 
 #include <KDChartAxesSerializer>
+#include <KDChartSerializeCollector>
 #include <KDXMLTools>
 
 #include <iostream>
@@ -47,23 +48,61 @@ private slots:
         shortList << "1" << "2" << "1-2-3";
         orgAxis.setShortLabels( shortList );
 
-        mAxesS->saveCartesianAxis(
-                mDoc,
-                savedElement,
-                orgAxis,
-                "TestCartesianAxis" );
+        KDChart::CartesianAxisList axes;
+        axes.append( &orgAxis );
+
+        mAxesS->saveCartesianAxes( mDoc, savedElement,
+                                   axes,
+                                   "kdchart:axes" );
+        SerializeCollector::instance()->appendDataToElement(
+                mDoc, mDocRoot );
         // use cout rather that qDebug() to avoid the length limitation of the later
         //std::cout << "\n\n" << mDoc.toString(2).toLatin1().data() << "\n\n";
 
-        QDomNode parsedNode = savedElement.firstChild();
-        QVERIFY( ! parsedNode.isNull() );
 
-        QDomElement parsedElement = parsedNode.toElement();
-        QVERIFY( ! parsedElement.isNull() );
+        // prepare parsing
+        QVERIFY( SerializeCollector::initializeParsedGlobalPointers( mDocRoot ) );
 
-        CartesianAxis parsedAxis;
+
+        bool bFoundSavedAxis = false;
+        QDomElement parsedElement;
+        QDomNode node = mDocRoot.firstChild();
+        while( !node.isNull() ) {
+            QDomElement element = node.toElement();
+            if( !element.isNull() ) { // was really an element
+                QString tagName = element.tagName();
+                if( tagName == "kdchart:global-objects" ) {
+                    QDomNode node2 = element.firstChild();
+                    while( !node2.isNull() ) {
+                        QDomElement ele2 = node2.toElement();
+                        if( !ele2.isNull() ) { // was really an element
+                            QString tagName2 = ele2.tagName();
+                            if( tagName2 == "kdchart:axes" ) {
+                                QDomNode node3 = ele2.firstChild();
+                                while( !node3.isNull() ) {
+                                    QDomElement ele3 = node3.toElement();
+                                    if( !ele3.isNull() ) { // was really an element
+                                        QString tagName3 = ele3.tagName();
+                                        if( tagName3 == "kdchart:axis:1" ) {
+                                            parsedElement = ele3;
+                                            bFoundSavedAxis = true;
+                                        }
+                                    }
+                                    node3 = node3.nextSibling();
+                                }
+                            }
+                        }
+                        node2 = node2.nextSibling();
+                    }
+                }
+            }
+            node = node.nextSibling();
+        }
+        QVERIFY( bFoundSavedAxis );
+
+        CartesianAxis* parsedAxis=0;
         QVERIFY( mAxesS->parseCartesianAxis( parsedElement, parsedAxis ) );
-        QVERIFY( orgAxis.compare( &parsedAxis ) );
+        QVERIFY( orgAxis.compare( parsedAxis ) );
     }
 
 

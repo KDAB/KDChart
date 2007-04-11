@@ -76,9 +76,17 @@ namespace KDChart {
                     const QString& title )const;
             */
 
+            /**
+             * Parse the axis element, and return a CartesianAxis* in \c axis
+             * if the respective axis was found in the list of global elements.
+             *
+             * Make sure that you have called
+             * \c KDChart::SerializeCollector::instance()->initializeParsedGlobalPointers()
+             * before invoking this method, or it will stop parsing and return false.
+             */
             virtual bool parseCartesianAxis(
                     const QDomElement& container,
-                    CartesianAxis& axis )const;
+                    CartesianAxis*& axis )const;
             virtual void saveCartesianAxis(
                     QDomDocument& doc,
                     QDomElement& e,
