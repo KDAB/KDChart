@@ -54,6 +54,11 @@ public:
 
     virtual LineDiagram * clone() const;
 
+    /**
+     * Returns true if both diagrams have the same settings.
+     */
+    bool compare( const LineDiagram* other )const;
+
     enum LineType {
         Normal =  0,
         Stacked = 1,

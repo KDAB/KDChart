@@ -75,6 +75,29 @@ LineDiagram * LineDiagram::clone() const
     return new LineDiagram( new Private( *d ) );
 }
 
+
+bool LineDiagram::compare( const LineDiagram* other )const
+{
+    if( other == this ) return true;
+    if( ! other ){
+        //qDebug() << "LineDiagram::compare() cannot compare to Null pointer";
+        return false;
+    }
+
+    qDebug() <<
+            // compare the base class
+            ( static_cast<const AbstractCartesianDiagram*>(this)->compare( other ) );
+    qDebug() <<
+            // compare own properties
+            (type() == other->type());
+
+    return  // compare the base class
+            ( static_cast<const AbstractCartesianDiagram*>(this)->compare( other ) ) &&
+            // compare own properties
+            (type() == other->type());
+}
+
+
 void LineDiagram::setType( const LineType type )
 {
    if ( d->lineType == type ) return;
