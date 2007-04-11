@@ -48,6 +48,31 @@ void AbstractCartesianDiagram::init()
 {
 }
 
+
+bool AbstractCartesianDiagram::compare( const AbstractCartesianDiagram* other )const
+{
+    if( other == this ) return true;
+    if( ! other ){
+        //qDebug() << "AbstractCartesianDiagram::compare() cannot compare to Null pointer";
+        return false;
+    }
+
+    qDebug() <<
+            // compare the base class
+            ( static_cast<const AbstractDiagram*>(this)->compare( other ) );
+    qDebug() <<
+            // compare own properties
+            ((referenceDiagram() == other->referenceDiagram()) &&
+            ((! referenceDiagram()) || (referenceDiagramOffset() == other->referenceDiagramOffset())));
+
+    return  // compare the base class
+            ( static_cast<const AbstractDiagram*>(this)->compare( other ) ) &&
+            // compare own properties
+            (referenceDiagram() == other->referenceDiagram()) &&
+            ((! referenceDiagram()) || (referenceDiagramOffset() == other->referenceDiagramOffset()));
+}
+
+
 #define d d_func()
 
 AbstractCartesianDiagram::AbstractCartesianDiagram ( QWidget* parent, CartesianCoordinatePlane* plane )

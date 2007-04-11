@@ -53,6 +53,11 @@ namespace KDChart {
         explicit AbstractCartesianDiagram ( QWidget* parent = 0, CartesianCoordinatePlane* plane = 0 );
         virtual ~AbstractCartesianDiagram();
 
+        /**
+         * Returns true if both diagrams have the same settings.
+         */
+        bool compare( const AbstractCartesianDiagram* other )const;
+
         virtual const int numberOfAbscissaSegments () const = 0;
         virtual const int numberOfOrdinateSegments () const = 0;
         /**
