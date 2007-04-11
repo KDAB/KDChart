@@ -94,6 +94,11 @@ private slots:
         // use cout rather that qDebug() to avoid the length limitation of the later
         //std::cout << "\n\n" << mDoc.toString(2).toLatin1().data() << "\n\n";
 
+
+        // prepare parsing
+        QVERIFY( SerializeCollector::initializeParsedGlobalPointers( mDocRoot ) );
+
+
         bool bFoundSavedAttributesModel = false;
         QDomElement parsedElement;
         QDomNode node = mDocRoot.firstChild();
@@ -130,7 +135,7 @@ private slots:
         }
         QVERIFY( bFoundSavedAttributesModel );
 
-        AttributesModel parsedAttrsModel(0, 0);
+        AttributesModel* parsedAttrsModel=0;
         QVERIFY( mAttrModelS->parseAttributesModel( parsedElement, parsedAttrsModel ) );
 
         /* for a manual test comparing the original with the parsed node:
@@ -140,14 +145,14 @@ private slots:
         mAttrModelS->saveAttributesModel(
                 mDoc,
                 savedElement2,
-                &parsedAttrsModel );
+                parsedAttrsModel );
         SerializeCollector::instance()->appendDataToElement(
                 mDoc, mDocRoot );
         // use cout rather that qDebug() to avoid the length limitation of the later
         //std::cout << "\n\n" << mDoc.toString(2).toLatin1().data() << "\n\n";
         */
 
-        QVERIFY( orgAttrsModel.compare( &parsedAttrsModel ) );
+        QVERIFY( orgAttrsModel.compare( parsedAttrsModel ) );
     }
 
 

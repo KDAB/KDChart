@@ -48,9 +48,17 @@ namespace KDChart {
             explicit AttributesModelSerializer();
             virtual ~AttributesModelSerializer();
 
+            /**
+             * Parse the atributes-model element, and return an AttributesModel* in \c model
+             * if the respective model was found in the list of global elements.
+             *
+             * Make sure that you have called
+             * \c KDChart::SerializeCollector::instance()->initializeParsedGlobalPointers()
+             * before invoking this method, or it will stop parsing and return false.
+             */
             virtual bool parseAttributesModel(
-                    const QDomElement& e,
-                    AttributesModel& model )const;
+                    const QDomElement& container, AttributesModel*& model )const;
+
             virtual bool parseAttributesNode(
                     const QDomElement& e,
                     QVariant& attributes,

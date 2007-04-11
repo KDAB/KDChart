@@ -385,11 +385,13 @@ bool LegendsSerializer::parseLegend(
                     node = node.nextSibling();
                 }
             }else{
-                qDebug() << "Could not parse Legend. Global pointer" << legendName << "is not a KDChart::Legend-ptr.";
+                qDebug()<< "Could not parse Legend. Global pointer"
+                        << legendName << "is not a KDChart::Legend-ptr.";
                 bOK = false;
             }
         }else{
-            qDebug() << "Could not parse Legend. Pointer" << legendName << "not found in global list.";
+            qDebug()<< "Could not parse Legend. Pointer"
+                    << legendName << "not found in global list.";
             bOK = false;
         }
     }
