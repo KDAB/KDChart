@@ -71,12 +71,16 @@ namespace KDChart {
                     QDomElement& e,
                     const AbstractDiagram* diagram )const;
 
+            virtual bool parseAbstractDiagram(
+                    const QDomElement& container, AbstractDiagram& diagram )const;
             virtual void saveAbstractDiagram(
                     QDomDocument& doc,
                     QDomElement& e,
                     const AbstractDiagram& diagram,
                     const QString& title )const;
 
+            virtual bool parseCartCoordDiagram(
+                    const QDomElement& container, AbstractCartesianDiagram& diagram )const;
             virtual void saveCartCoordDiagram(
                     QDomDocument& doc,
                     QDomElement& e,
@@ -94,6 +98,17 @@ namespace KDChart {
                     QDomElement& e,
                     const AbstractPieDiagram& diagram,
                     const QString& title )const;
+
+            /**
+             * Parse the diagram element, and return a LineDiagram* in \c diagram
+             * if the respective diagram was found in the list of global elements.
+             *
+             * Make sure that you have called
+             * \c KDChart::SerializeCollector::instance()->initializeParsedGlobalPointers()
+             * before invoking this method, or it will stop parsing and return false.
+             */
+            virtual bool parseLineDiagram(
+                    const QDomElement& container, LineDiagram*& diagram )const;
 
             virtual void saveLineDiagram(
                     QDomDocument& doc,

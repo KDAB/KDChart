@@ -133,7 +133,7 @@ bool LegendsSerializer::parseLegend(
                             while( !node2.isNull() ) {
                                 QObject* ptr;
                                 if( AttributesSerializer::parseQObjectPointerNode( node2, ptr ) ){
-                                    /*if( ptr )*/{
+                                    {
                                         AbstractDiagram* dPtr = dynamic_cast<AbstractDiagram*>(ptr);
                                         if( dPtr ){
                                             legend->addDiagram( dPtr );
@@ -141,8 +141,6 @@ bool LegendsSerializer::parseLegend(
                                             qDebug() << "Error: Values of Legend/kdchart:diagrams:pointers must be AbstractDiagram pointers";
                                             bOK = false;
                                         }
-                                    /*}else{
-                                        // do nothing, a Null pointer means no bug*/
                                     }
                                 }else{
                                     bOK = false;

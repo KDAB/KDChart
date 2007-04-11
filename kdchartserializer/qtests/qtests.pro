@@ -4,7 +4,7 @@ SUBDIRS +=  AttributesSerializer \
             TextAreaSerializer \
             AxesSerializer \
             LegendsSerializer \
-#            DiagramsSerializer \
+            DiagramsSerializer \
 #            CoordPlanesSerializer \
 #            Serializer
 
