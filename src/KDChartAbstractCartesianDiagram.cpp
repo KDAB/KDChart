@@ -57,11 +57,12 @@ bool AbstractCartesianDiagram::compare( const AbstractCartesianDiagram* other )c
         return false;
     }
 
-    qDebug() <<
+    qDebug() <<"\n             AbstractCartesianDiagram::compare() QAbstractDiagram:";
             // compare the base class
-            ( static_cast<const AbstractDiagram*>(this)->compare( other ) );
-    qDebug() <<
+    qDebug() << ( static_cast<const AbstractDiagram*>(this)->compare( other ) );
+    qDebug() << "AbstractCartesianDiagram::compare() own:";
             // compare own properties
+    qDebug() <<
             ((referenceDiagram() == other->referenceDiagram()) &&
             ((! referenceDiagram()) || (referenceDiagramOffset() == other->referenceDiagramOffset())));
 

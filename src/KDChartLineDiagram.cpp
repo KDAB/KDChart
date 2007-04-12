@@ -84,12 +84,12 @@ bool LineDiagram::compare( const LineDiagram* other )const
         return false;
     }
 
-    qDebug() <<
+    qDebug() <<"\n             LineDiagram::compare() AbstractCartesianDiagram:";
             // compare the base class
-            ( static_cast<const AbstractCartesianDiagram*>(this)->compare( other ) );
-    qDebug() <<
+    qDebug() << ( static_cast<const AbstractCartesianDiagram*>(this)->compare( other ) );
+    qDebug() << "LineDiagram::compare() own:";
             // compare own properties
-            (type() == other->type());
+    qDebug() << (type() == other->type());
 
     return  // compare the base class
             ( static_cast<const AbstractCartesianDiagram*>(this)->compare( other ) ) &&

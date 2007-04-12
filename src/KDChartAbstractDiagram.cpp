@@ -84,6 +84,12 @@ void AbstractDiagram::Private::init( AbstractCoordinatePlane* newPlane )
     plane = newPlane;
 }
 
+bool AbstractDiagram::Private::usesExternalAttributesModel()const
+{
+    return ( ! attributesModel.isNull() ) &&
+           ( ! qobject_cast<PrivateAttributesModel*>(attributesModel) );
+}
+
 void AbstractDiagram::Private::setAttributesModel( AttributesModel* amodel )
 {
     if( !attributesModel.isNull() &&
@@ -134,19 +140,22 @@ bool AbstractDiagram::compare( const AbstractDiagram* other )const
         return false;
     }
 
-    qDebug() <<
+    qDebug() << "\n             AbstractDiagram::compare() QAbstractScrollArea:";
             // compare QAbstractScrollArea properties
+    qDebug() <<
             ((horizontalScrollBarPolicy() == other->horizontalScrollBarPolicy()) &&
             (verticalScrollBarPolicy()    == other->verticalScrollBarPolicy()));
-    qDebug() <<
+    qDebug() << "AbstractDiagram::compare() QFrame:";
             // compare QFrame properties
+    qDebug() <<
             ((frameShadow() == other->frameShadow()) &&
             (frameShape()   == other->frameShape()) &&
             (frameWidth()   == other->frameWidth()) &&
             (lineWidth()    == other->lineWidth()) &&
             (midLineWidth() == other->midLineWidth()));
-    qDebug() <<
+    qDebug() << "AbstractDiagram::compare() QAbstractItemView:";
             // compare QAbstractItemView properties
+    qDebug() <<
             ((alternatingRowColors() == other->alternatingRowColors()) &&
             (hasAutoScroll()         == other->hasAutoScroll()) &&
             (dragDropMode()          == other->dragDropMode()) &&
@@ -161,11 +170,12 @@ bool AbstractDiagram::compare( const AbstractDiagram* other )const
             (showDropIndicator()     == other->showDropIndicator()) &&
             (tabKeyNavigation()      == other->tabKeyNavigation()) &&
             (textElideMode()         == other->textElideMode()));
-    qDebug() <<
+    qDebug() << "AbstractDiagram::compare() AttributesModel: ";
             // compare all of the properties stored in the attributes model
-            attributesModel()->compare( other->attributesModel() );
-    qDebug() <<
+    qDebug() << attributesModel()->compare( other->attributesModel() );
+    qDebug() << "AbstractDiagram::compare() own:";
             // compare own properties
+    qDebug() <<
             ((rootIndex().column()            == other->rootIndex().column()) &&
             (rootIndex().row()                == other->rootIndex().row()) &&
             (allowOverlappingDataValueTexts() == other->allowOverlappingDataValueTexts()) &&
@@ -261,6 +271,11 @@ void AbstractDiagram::setAttributesModel( AttributesModel* amodel )
     scheduleDelayedItemsLayout();
     d->databoundariesDirty = true;
     emit modelsChanged();
+}
+
+bool AbstractDiagram::usesExternalAttributesModel()const
+{
+    return d->usesExternalAttributesModel();
 }
 
 /*! \returns a pointer to the AttributesModel currently used by this diagram. */

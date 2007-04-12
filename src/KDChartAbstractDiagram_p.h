@@ -88,6 +88,8 @@ public:
 
     void setAttributesModel( AttributesModel* );
 
+    bool usesExternalAttributesModel()const;
+
     void appendDataValueTextInfoToList(
             AbstractDiagram * diagram,
             DataValueTextInfoList & list,

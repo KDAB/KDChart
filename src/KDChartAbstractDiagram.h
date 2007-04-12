@@ -138,9 +138,17 @@ namespace KDChart {
          * \endcode
          *
          * @param model The AttributesModel to use for this diagram.
-         * @see AttributesModel
+         * @see AttributesModel, usesExternalAttributesModel
          */
         virtual void setAttributesModel( AttributesModel* model );
+
+        /**
+         * Returns whether the diagram is using its own built-in attributes model
+         * or an attributes model that was set via setAttributesModel.
+         *
+         * @see setAttributesModel
+         */
+        virtual bool usesExternalAttributesModel()const;
 
         /**
          * Returns the AttributesModel, that is used by this diagram.
