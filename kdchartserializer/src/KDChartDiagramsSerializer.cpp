@@ -199,8 +199,8 @@ bool DiagramsSerializer::parseAbstractDiagram(
     //
     // pass #1: assign the model to the diagram
     //
-    // This is done to set the correct model first, so that
-    // setting any root index will use the right model then.
+    // This will be done to set the correct model first, so that
+    // setting a RootIndex will use the right model then.
     /*
     node = container.firstChild();
     while( !node.isNull() ) {
@@ -232,8 +232,13 @@ bool DiagramsSerializer::parseAbstractDiagram(
     if( ! bOK ) return false;
     */
 
+
     // pass #2: retrieve all of the other settings, assuming that
     // the attributes model has been set correctly to the diagram
+    //
+    // note: ATM pass #1 just is not done, so we can not set any RootIndex yet
+    //       (khz, 2007 April 12)
+    //
     node = container.firstChild();
     while( !node.isNull() ) {
         QDomElement element = node.toElement();
@@ -277,19 +282,16 @@ bool DiagramsSerializer::parseAbstractDiagram(
                     bOK = false;
                 }
             } else if( tagName == "RootIndex" ) {
-                //TODO(khz): Find a way to process RootIndex information even
-                //           if we do not serialize the Model data.
-                /*
-                QModelIndex idx;
-                if( KDXML::readModelIndexNode(
-                        element, *diagram.model(), idx ) )
+                bool isValid;
+                int column, row;
+                if( KDXML::readModelIndexNode( element, isValid, column, row ) &&
+                    isValid &&
+                    (column || row) )
                 {
-                    diagram.setRootIndex( idx );
-                }else{
-                    qDebug()<< "Could not parse AbstractDiagram. Element"
-                            << tagName << "has invalid content.";
+                    qDebug()<< "RootIndex(" << column << "," << row << ") was stored for AbstractDiagram in\n    "
+                        << AttributesSerializer::showDomPath( container.parentNode().parentNode().toElement() ) << "\n"
+                        "      Make sure to adjust it via setRootIndex() after you have called setModel().";
                 }
-                */
             } else if( tagName == "CoodinatePlane" ) {
                 QDomNode node2 = element.firstChild();
                 if( ! node2.isNull() ) {
@@ -368,8 +370,10 @@ void DiagramsSerializer::saveAbstractDiagram(
         diagram.usesExternalAttributesModel() );
 
     // save the root index
-    KDXML::createModelIndexNode( doc, diagElement, "RootIndex",
-                                 diagram.rootIndex() );
+    if( diagram.rootIndex().isValid() &&
+        (diagram.rootIndex().column() || diagram.rootIndex().row()) )
+        KDXML::createModelIndexNode( doc, diagElement, "RootIndex",
+                                     diagram.rootIndex() );
 
     // save the pointer to the associated coordinate plane,
     // and save the plane in the global structure if not there yet

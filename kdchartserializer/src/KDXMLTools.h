@@ -151,5 +151,9 @@ namespace KDXML {
     bool readModelIndexNode(const QDomElement& element,
                             const QAbstractItemModel& model,
                             QModelIndex& idx );
+    bool readModelIndexNode(const QDomElement& element,
+                            bool& isValid,
+                            int& column,
+                            int& row );
 }
 #endif

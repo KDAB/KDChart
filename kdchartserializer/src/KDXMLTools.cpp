@@ -1148,6 +1148,26 @@ namespace KDXML {
         return ok;
     }
 
+    bool readModelIndexNode(const QDomElement& element,
+                            bool& isValid,
+                            int& column,
+                            int& row )
+    {
+        bool ok = findBoolAttribute( element, "Valid", isValid );
+        if( ok && isValid ){
+            int c, r;
+            if( findIntAttribute( element, "Column", c ) &&
+                findIntAttribute( element, "Row", r ) )
+            {
+                column = c;
+                row = r;
+            }else{
+                ok = false;
+            }
+        }
+        return ok;
+    }
+
     Qt::PenStyle stringToPenStyle( const QString& style )
     {
         if( style == "NoPen" )
