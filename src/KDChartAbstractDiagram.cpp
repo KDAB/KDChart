@@ -139,7 +139,7 @@ bool AbstractDiagram::compare( const AbstractDiagram* other )const
         //qDebug() << "AbstractDiagram::compare() cannot compare to Null pointer";
         return false;
     }
-
+    /*
     qDebug() << "\n             AbstractDiagram::compare() QAbstractScrollArea:";
             // compare QAbstractScrollArea properties
     qDebug() <<
@@ -182,7 +182,7 @@ bool AbstractDiagram::compare( const AbstractDiagram* other )const
             (antiAliasing()                   == other->antiAliasing()) &&
             (percentMode()                    == other->percentMode()) &&
             (datasetDimension()               == other->datasetDimension()));
-
+    */
     return  // compare QAbstractScrollArea properties
             (horizontalScrollBarPolicy() == other->horizontalScrollBarPolicy()) &&
             (verticalScrollBarPolicy()   == other->verticalScrollBarPolicy()) &&

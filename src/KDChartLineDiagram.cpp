@@ -83,14 +83,11 @@ bool LineDiagram::compare( const LineDiagram* other )const
         //qDebug() << "LineDiagram::compare() cannot compare to Null pointer";
         return false;
     }
-
-    qDebug() <<"\n             LineDiagram::compare() AbstractCartesianDiagram:";
-            // compare the base class
-    qDebug() << ( static_cast<const AbstractCartesianDiagram*>(this)->compare( other ) );
-    qDebug() << "LineDiagram::compare() own:";
+    /*
+    qDebug() <<"\n             LineDiagram::compare():";
             // compare own properties
     qDebug() << (type() == other->type());
-
+    */
     return  // compare the base class
             ( static_cast<const AbstractCartesianDiagram*>(this)->compare( other ) ) &&
             // compare own properties

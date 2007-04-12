@@ -56,16 +56,13 @@ bool AbstractCartesianDiagram::compare( const AbstractCartesianDiagram* other )c
         //qDebug() << "AbstractCartesianDiagram::compare() cannot compare to Null pointer";
         return false;
     }
-
-    qDebug() <<"\n             AbstractCartesianDiagram::compare() QAbstractDiagram:";
-            // compare the base class
-    qDebug() << ( static_cast<const AbstractDiagram*>(this)->compare( other ) );
-    qDebug() << "AbstractCartesianDiagram::compare() own:";
+    /*
+    qDebug() << "\n             AbstractCartesianDiagram::compare():";
             // compare own properties
     qDebug() <<
             ((referenceDiagram() == other->referenceDiagram()) &&
             ((! referenceDiagram()) || (referenceDiagramOffset() == other->referenceDiagramOffset())));
-
+    */
     return  // compare the base class
             ( static_cast<const AbstractDiagram*>(this)->compare( other ) ) &&
             // compare own properties

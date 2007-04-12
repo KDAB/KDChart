@@ -100,7 +100,8 @@ bool AttributesModel::compare( const AttributesModel* other )const
             QMap<int, QMap<int, QVariant> >::const_iterator it2B = (*itB).constBegin();
             while (it2A != itA->constEnd()) {
                 if ((*it2A).count() != (*it2B).count()){
-                    //qDebug() << "AttributesModel::compare() dataMap/map/map have different sizes";
+                    //qDebug() << "AttributesModel::compare() dataMap/map/map have different sizes:"
+                    //        << (*it2A).count() << (*it2B).count();
                     return false;
                 }
                 QMap<int, QVariant>::const_iterator it3A = (*it2A).constBegin();
@@ -195,7 +196,7 @@ bool AttributesModel::compare( const AttributesModel* other )const
     }
     {
         if (mModelDataMap.count() != other->mModelDataMap.count()){
-            //qDebug() << "AttributesModel::compare() modelDataMap have different sizes";
+            //qDebug() << "AttributesModel::compare() modelDataMap have different sizes:" << mModelDataMap.count() << other->mModelDataMap.count();
             return false;
         }
         QMap<int, QVariant>::const_iterator itA = mModelDataMap.constBegin();
