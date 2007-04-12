@@ -263,6 +263,8 @@ bool DiagramsSerializer::parseCartCoordDiagram(
         const QDomElement& container, AbstractCartesianDiagram& diagram )const
 {
     bool bOK = true;
+    AbstractCartesianDiagram *refDiag=0;
+    QPointF refDiagOffset(0.0, 0.0);
     QDomNode node = container.firstChild();
     while( !node.isNull() ) {
         QDomElement element = node.toElement();
@@ -292,19 +294,29 @@ bool DiagramsSerializer::parseCartCoordDiagram(
                     }
                     node2 = node2.nextSibling();
                 }
-            /*} else if( tagName == "Size" ) {
-                QSizeF size;
-                if( KDXML::readSizeFNode( element, size ) )
-                    a.setMarkerSize( size );
-            } else if( tagName == "Color" ) {
-                QColor c;
-                if( KDXML::readColorNode( element, c ) )
-                    a.setMarkerColor( c );
-                //qDebug() << "---> " << c;
-            } else if( tagName == "Pen" ) {
-                QPen pen;
-                if( KDXML::readPenNode( element, pen ) )
-                a.setPen( pen );*/
+            } else if( tagName == "ReferenceDiagram" ) {
+                QDomNode node2 = element.firstChild();
+                if( ! node2.isNull() ) {
+                    QDomElement ele2 = node2.toElement();
+                    if( ! ele2.isNull() ) { // was really an element
+                        QObject* ptr;
+                        if( AttributesSerializer::parseQObjectPointerNode( ele2, ptr ) ){
+                            refDiag = dynamic_cast<AbstractCartesianDiagram*>(ptr);
+                            if( ! refDiag ){
+                                qDebug()<< "Could not parse AbstractCartesianDiagram. Global pointer"
+                                        << ele2.tagName() << "is not a KDChart::AbstractCartesianDiagram-ptr.";
+                                bOK = false;
+                            }
+                        }
+                    }
+                }
+            } else if( tagName == "Offset" ) {
+                QPointF pt;
+                if( KDXML::readPointFNode( element, pt ) ){
+                    refDiagOffset = pt;
+                }else{
+                    qDebug()<< "Could not parse AbstractCartesianDiagram. Element \"Offset\" is not a QPointF node.";
+                }
             } else {
                 qDebug() << "Unknown subelement of MarkerAttributes found:" << tagName;
                 bOK = false;
@@ -312,6 +324,8 @@ bool DiagramsSerializer::parseCartCoordDiagram(
         }
         node = node.nextSibling();
     }
+    if( refDiag )
+        diagram.setReferenceDiagram( refDiag, refDiagOffset );
     return bOK;
 }
 
