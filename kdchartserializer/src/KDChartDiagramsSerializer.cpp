@@ -389,8 +389,6 @@ bool DiagramsSerializer::parseLineDiagram(
                                     diagram->setType( LineDiagram::Normal );
                                 else if( s.compare("Stacked", Qt::CaseInsensitive) == 0 )
                                     diagram->setType( LineDiagram::Stacked );
-                                else if( s.compare("Stacked", Qt::CaseInsensitive) == 0 )
-                                    diagram->setType( LineDiagram::Stacked );
                                 else if( s.compare("Percent", Qt::CaseInsensitive) == 0 )
                                     diagram->setType( LineDiagram::Percent );
                                 else{
