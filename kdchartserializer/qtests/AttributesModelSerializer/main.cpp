@@ -68,6 +68,32 @@ private slots:
         m_lines->setDataValueAttributes( idx, da );
 
 
+        DataValueAttributes dva( m_lines->dataValueAttributes() );
+
+        ta = dva.textAttributes();
+        dva.setDecimalDigits( 2 );
+        dva.setSuffix( " Ohm" );
+        ta.setFont( QFont( "Comic") );
+        ta .setPen( QPen( QColor( Qt::darkGreen ) ) );
+        ta.setVisible( true );
+        me = ta.fontSize();
+        me.setValue( me.value() * 0.25 );
+        ta.setFontSize( me );
+        dva.setTextAttributes( ta );
+        dva.setVisible( true );
+        m_lines->setDataValueAttributes( dva );
+        for( int i=0; i<tableModel->columnCount(); ++i ){
+            QPen pen( m_lines->pen( i ) );
+            pen.setWidth( 17 );
+            m_lines->setPen( i, pen );
+        }
+        QPen linePen( m_lines->pen( 1 ) );
+        linePen.setColor( Qt::yellow );
+        linePen.setWidth( 7 );
+        linePen.setStyle( Qt::DashLine );
+        m_lines->setPen( tableModel->index( 1, 1, QModelIndex() ), linePen );
+
+
         m_attrsModel = m_lines->attributesModel();
         mAttrModelS = new AttributesModelSerializer();
     }
