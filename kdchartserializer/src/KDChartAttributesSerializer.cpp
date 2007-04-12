@@ -1158,6 +1158,7 @@ bool AttributesSerializer::parseRelativePosition(
                             bOK = false;
                         }
                     }
+                    node2 = node2.nextSibling();
                 }
                 if( bOK )
                     pos.setReferencePoints( points );

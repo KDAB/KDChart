@@ -263,7 +263,55 @@ bool DiagramsSerializer::parseCartCoordDiagram(
         const QDomElement& container, AbstractCartesianDiagram& diagram )const
 {
     bool bOK = true;
-
+    QDomNode node = container.firstChild();
+    while( !node.isNull() ) {
+        QDomElement element = node.toElement();
+        if( !element.isNull() ) { // was really an element
+            QString tagName = element.tagName();
+            if( tagName == "kdchart:abstract-diagram" ) {
+                if( ! parseAbstractDiagram( element, diagram ) ){
+                    qDebug() << "Could not parse base class of AbstractCartesianDiagram.";
+                    bOK = false;
+                }
+            } else if( tagName == "kdchart:axes:pointers" ) {
+                QDomNode node2 = element.firstChild();
+                while( ! node2.isNull() ) {
+                    QDomElement ele2 = node2.toElement();
+                    if( ! ele2.isNull() ) { // was really an element
+                        QObject* ptr;
+                        if( AttributesSerializer::parseQObjectPointerNode( ele2, ptr ) ){
+                            CartesianAxis *axis = dynamic_cast<CartesianAxis*>(ptr);
+                            if( axis ){
+                                diagram.addAxis( axis );
+                            }else{
+                                qDebug()<< "Could not parse AbstractCartesianDiagram. Global pointer"
+                                        << ele2.tagName() << "is not a KDChart::CartesianAxis-ptr.";
+                                bOK = false;
+                            }
+                        }
+                    }
+                    node2 = node2.nextSibling();
+                }
+            /*} else if( tagName == "Size" ) {
+                QSizeF size;
+                if( KDXML::readSizeFNode( element, size ) )
+                    a.setMarkerSize( size );
+            } else if( tagName == "Color" ) {
+                QColor c;
+                if( KDXML::readColorNode( element, c ) )
+                    a.setMarkerColor( c );
+                //qDebug() << "---> " << c;
+            } else if( tagName == "Pen" ) {
+                QPen pen;
+                if( KDXML::readPenNode( element, pen ) )
+                a.setPen( pen );*/
+            } else {
+                qDebug() << "Unknown subelement of MarkerAttributes found:" << tagName;
+                bOK = false;
+            }
+        }
+        node = node.nextSibling();
+    }
     return bOK;
 }
 
@@ -354,7 +402,7 @@ bool DiagramsSerializer::parseLineDiagram(
                 //qDebug()<< "\n    DiagramsSerializer::parseLineDiagram() processing"
                 //        << diagName << " / " << tagName;
                 if( tagName.compare("kdchart:line-diagram", Qt::CaseInsensitive) != 0 )
-                    qDebug() << "Unknown element in class LineDiagram:" << tagName;
+                    qDebug() << "Class LineDiagram" << diagName << "contains unknown element:" << tagName;
             }else{
                 qDebug() << "Class LineDiagram" << diagName << "contains no valid element";
             }

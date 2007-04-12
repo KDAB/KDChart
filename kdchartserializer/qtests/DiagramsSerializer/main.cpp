@@ -3,6 +3,7 @@
 #include <KDChartGlobal>
 
 #include <KDChartBackgroundAttributes>
+#include <KDChartCartesianAxis>
 #include <KDChartChart>
 #include <KDChartDataValueAttributes>
 #include <KDChartFrameAttributes>
@@ -34,6 +35,15 @@ private slots:
 
         m_lines = new LineDiagram();
         m_lines->setModel( tableModel );
+
+        CartesianAxis *xAxis = new CartesianAxis( m_lines );
+        CartesianAxis *yAxis = new CartesianAxis ( m_lines );
+        xAxis->setPosition ( KDChart::CartesianAxis::Bottom );
+        yAxis->setPosition ( KDChart::CartesianAxis::Left );
+        xAxis->setTitleText ( "Abscissa axis at the bottom" );
+        yAxis->setTitleText ( "Ordinate axis at the left side" );
+        m_lines->addAxis( xAxis );
+        m_lines->addAxis( yAxis );
 
         DataValueAttributes dva( m_lines->dataValueAttributes() );
 
