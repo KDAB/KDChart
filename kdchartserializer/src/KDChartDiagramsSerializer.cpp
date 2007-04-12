@@ -193,7 +193,160 @@ bool DiagramsSerializer::parseAbstractDiagram(
         const QDomElement& container, AbstractDiagram& diagram )const
 {
     bool bOK = true;
+    QDomNode node;
 
+    //TODO(khz): Find a way to serialize the Model data!
+    //
+    // pass #1: assign the model to the diagram
+    //
+    // This is done to set the correct model first, so that
+    // setting any root index will use the right model then.
+    /*
+    node = container.firstChild();
+    while( !node.isNull() ) {
+        QDomElement element = node.toElement();
+        if( !element.isNull() ) { // was really an element
+            QString tagName = element.tagName();
+            if( tagName == "Model" ) {
+                QDomNode node2 = element.firstChild();
+                if( ! node2.isNull() ) {
+                    QDomElement ele2 = node2.toElement();
+                    if( ! ele2.isNull() ) { // was really an element
+                        QObject* ptr;
+                        if( AttributesSerializer::parseQObjectPointerNode( ele2, ptr ) ){
+                            QAbstractItemModel *model = dynamic_cast<QAbstractItemModel*>(ptr);
+                            if( model ){
+                                diagram.setModel( model );
+                            }else{
+                                qDebug()<< "Could not parse AbstractDiagram. Global pointer"
+                                        << ele2.tagName() << "is not a KDChart::QAbstractItemModel-ptr.";
+                                bOK = false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        node = node.nextSibling();
+    }
+    if( ! bOK ) return false;
+    */
+
+    // pass #2: retrieve all of the other settings, assuming that
+    // the attributes model has been set correctly to the diagram
+    node = container.firstChild();
+    while( !node.isNull() ) {
+        QDomElement element = node.toElement();
+        if( !element.isNull() ) { // was really an element
+            QString tagName = element.tagName();
+            if( tagName == "AttributesModel" ) {
+                bool bExternalFlag;
+                if( KDXML::findBoolAttribute( element, "external", bExternalFlag ) ){
+                    QDomNode node2 = element.firstChild();
+                    if( ! node2.isNull() ) {
+                        QDomElement ele2 = node2.toElement();
+                        if( ! ele2.isNull() ) { // was really an element
+                            QObject* ptr;
+                            if( AttributesSerializer::parseQObjectPointerNode( ele2, ptr ) ){
+                                AttributesModel *model = dynamic_cast<AttributesModel*>(ptr);
+                                if( model ){
+                                    if( bExternalFlag )
+                                        diagram.setAttributesModel( model );
+                                    else
+                                        diagram.attributesModel()->initFrom( model );
+                                }else{
+                                    qDebug()<< "Could not parse AbstractDiagram. Global pointer"
+                                            << ele2.tagName() << "is not a KDChart::AttributesModel-ptr.";
+                                    bOK = false;
+                                }
+                            }else{
+                                qDebug()<< "Could not parse AbstractDiagram. Global pointer"
+                                        << ele2.tagName() << "not found in global list.";
+                                bOK = false;
+                            }
+                        }else{
+                            qDebug()<< "Could not parse AbstractDiagram.Element does not contain a valid element.";
+                            bOK = false;
+                        }
+                    }else{
+                        qDebug()<< "Could not parse AbstractDiagram. Element does not contain a valid node.";
+                        bOK = false;
+                    }
+                }else{
+                    qDebug()<< "Could not parse AbstractDiagram. Node does not contain an \"external\" flag.";
+                    bOK = false;
+                }
+            } else if( tagName == "RootIndex" ) {
+                //TODO(khz): Find a way to process RootIndex information even
+                //           if we do not serialize the Model data.
+                /*
+                QModelIndex idx;
+                if( KDXML::readModelIndexNode(
+                        element, *diagram.model(), idx ) )
+                {
+                    diagram.setRootIndex( idx );
+                }else{
+                    qDebug()<< "Could not parse AbstractDiagram. Element"
+                            << tagName << "has invalid content.";
+                }
+                */
+            } else if( tagName == "CoodinatePlane" ) {
+                QDomNode node2 = element.firstChild();
+                if( ! node2.isNull() ) {
+                    QDomElement ele2 = node2.toElement();
+                    if( ! ele2.isNull() ) { // was really an element
+                        QObject* ptr;
+                        if( AttributesSerializer::parseQObjectPointerNode( ele2, ptr ) ){
+                            AbstractCoordinatePlane* plane = dynamic_cast<AbstractCoordinatePlane*>(ptr);
+                            if( plane ){
+                                diagram.setCoordinatePlane( plane );
+                            }else{
+                                qDebug()<< "Could not parse AbstractDiagram. Global pointer"
+                                        << ele2.tagName() << "is not a KDChart::AbstractCoordinatePlane-ptr.";
+                                bOK = false;
+                            }
+                        }
+                    }
+                }
+            } else if( tagName == "AllowOverlappingDataValueTexts" ) {
+                bool b;
+                if( KDXML::readBoolNode( element, b ) ){
+                    diagram.setAllowOverlappingDataValueTexts( b );
+                }else{
+                    qDebug()<< "Could not parse AbstractDiagram. Element"
+                            << tagName << "has invalid content.";
+                }
+            } else if( tagName == "AntiAliasing" ) {
+                bool b;
+                if( KDXML::readBoolNode( element, b ) ){
+                    diagram.setAntiAliasing( b );
+                }else{
+                    qDebug()<< "Could not parse AbstractDiagram. Element"
+                            << tagName << "has invalid content.";
+                }
+            } else if( tagName == "PercentMode" ) {
+                bool b;
+                if( KDXML::readBoolNode( element, b ) ){
+                    diagram.setPercentMode( b );
+                }else{
+                    qDebug()<< "Could not parse AbstractDiagram. Element"
+                            << tagName << "has invalid content.";
+                }
+            } else if( tagName == "DatasetDimension" ) {
+                int i;
+                if( KDXML::readIntNode( element, i ) ){
+                    diagram.setDatasetDimension( i );
+                }else{
+                    qDebug()<< "Could not parse AbstractDiagram. Element"
+                            << tagName << "has invalid content.";
+                }
+            } else {
+                qDebug() << "Unknown subelement of AbstractDiagram found:" << tagName;
+                bOK = false;
+            }
+        }
+        node = node.nextSibling();
+    }
     return bOK;
 }
 
@@ -207,11 +360,14 @@ void DiagramsSerializer::saveAbstractDiagram(
         doc.createElement( title );
     e.appendChild( diagElement );
 
-    // save the attributes model and the root index
+    // save the attributes model
     mAttrModelS->saveAttributesModel(
         doc,
         diagElement,
-        diagram.attributesModel() );
+        diagram.attributesModel(),
+        diagram.usesExternalAttributesModel() );
+
+    // save the root index
     KDXML::createModelIndexNode( doc, diagElement, "RootIndex",
                                  diagram.rootIndex() );
 

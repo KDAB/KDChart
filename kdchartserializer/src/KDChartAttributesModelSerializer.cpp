@@ -411,7 +411,8 @@ bool AttributesModelSerializer::parseAttributesNode(
 void AttributesModelSerializer::saveAttributesModel(
         QDomDocument& doc,
         QDomElement& e,
-        const AttributesModel* model )const
+        const AttributesModel* model,
+        bool isExternalModel )const
 {
     if( ! model ) return;
 
@@ -423,6 +424,7 @@ void AttributesModelSerializer::saveAttributesModel(
     QDomElement attrModelPtrElement =
             doc.createElement( "AttributesModel" );
     e.appendChild( attrModelPtrElement );
+    KDXML::setBoolAttribute( attrModelPtrElement, "external", isExternalModel );
 
     bool wasFound;
     QDomElement modelElement =

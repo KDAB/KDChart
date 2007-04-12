@@ -67,7 +67,8 @@ namespace KDChart {
             virtual void saveAttributesModel(
                     QDomDocument& doc,
                     QDomElement& e,
-                    const AttributesModel* model )const;
+                    const AttributesModel* model,
+                    bool isExternalModel )const;
             virtual void createAttributesNode(
                     QDomDocument& doc,
                     QDomElement& e,
