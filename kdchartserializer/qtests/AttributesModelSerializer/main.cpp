@@ -87,7 +87,8 @@ private slots:
         mAttrModelS->saveAttributesModel(
                 mDoc,
                 savedElement,
-                &orgAttrsModel );
+                &orgAttrsModel,
+                true );
         SerializeCollector::instance()->appendDataToElement(
                 mDoc, mDocRoot );
 
