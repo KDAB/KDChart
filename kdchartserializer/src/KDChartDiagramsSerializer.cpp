@@ -341,15 +341,38 @@ void DiagramsSerializer::savePolCoordDiagram(
 bool DiagramsSerializer::parseLineDiagram(
         const QDomElement& container, LineDiagram*& diagram )const
 {
+    QDomElement diagramElement;
+    QString diagName;
+    if( ! container.isNull() ) { // was really an element
+        diagName = container.tagName();
+        //qDebug() << "\n    DiagramsSerializer::parseLineDiagram() processing" << diagName;
+        QDomNode diagramNode = container.firstChild();
+        if( ! diagramNode.isNull() ) {
+            diagramElement = diagramNode.toElement();
+            if( !diagramElement.isNull() ) { // was really an element
+                QString tagName = diagramElement.tagName();
+                //qDebug()<< "\n    DiagramsSerializer::parseLineDiagram() processing"
+                //        << diagName << " / " << tagName;
+                if( tagName.compare("kdchart:line-diagram", Qt::CaseInsensitive) != 0 )
+                    qDebug() << "Unknown element in class LineDiagram:" << tagName;
+            }else{
+                qDebug() << "Class LineDiagram" << diagName << "contains no valid element";
+            }
+        }else{
+            qDebug() << "Class LineDiagram" << diagName << "contains no diagram node";
+        }
+    }else{
+        qDebug() << "Cannot parse LineDiagram. Node is invalid.";
+    }
+
     bool bOK = true;
-    if( !container.isNull() ) { // was really an element
-        const QString diagName = container.tagName();
+    if( !diagramElement.isNull() ) {
         //qDebug() << "\n    DiagramsSerializer::parseLineDiagram() processing" << diagName;
         QObject* p;
         if( AttributesSerializer::findQObjectPointer( diagName, p ) ){
             diagram = dynamic_cast<LineDiagram*>(p);
             if( diagram ){
-                QDomNode node = container.firstChild();
+                QDomNode node = diagramElement.firstChild();
                 while( !node.isNull() ) {
                     QDomElement element = node.toElement();
                     if( !element.isNull() ) { // was really an element
@@ -359,137 +382,24 @@ bool DiagramsSerializer::parseLineDiagram(
                                 qDebug() << "Could not parse base class of LineDiagram.";
                                 bOK = false;
                             }
-                        /*
-                        } else if( tagName == "Visible" ) {
-                            bool b;
-                            if( KDXML::readBoolNode( element, b ) )
-                                diagram->setVisible( b );
-                            else
-                                bOK = false;
-                        } else if( tagName == "ReferenceArea" ) {
-                            QObject* ptr;
-                            //qDebug() << " a ";
-                            if( AttributesSerializer::parseQObjectPointerNode( element.firstChild(), ptr ) ){
-                                if( ptr ){
-                                    QWidget* wPtr = dynamic_cast<QWidget*>(ptr);
-                                    if( wPtr ){
-                                        diagram->setReferenceArea( wPtr );
-                                    }else{
-                                        qDebug() << "Error: Value of LineDiagram/ReferenceArea must be a QWidget*";
-                                        bOK = false;
-                                    }
-                                }else{
-                                    diagram->setReferenceArea( 0 ); // a Null pointer means no bug
-                                }
-                            }else{
-                                bOK = false;
-                            }
-                            //qDebug() << " b ";
-                        } else if( tagName == "kdchart:diagrams:pointers" ) {
-                            // parse the map of associated diagrams
-                            QDomNode node2 = element.firstChild();
-                            while( !node2.isNull() ) {
-                                QObject* ptr;
-                                if( AttributesSerializer::parseQObjectPointerNode( node2, ptr ) ){
-                                    {
-                                                     AbstractDiagram* dPtr = dynamic_cast<AbstractDiagram*>(ptr);
-                                                     if( dPtr ){
-                                                         diagram->addDiagram( dPtr );
-                                                     }else{
-                                                         qDebug() << "Error: Values of LineDiagram/kdchart:diagrams:pointers must be AbstractDiagram pointers";
-                                                         bOK = false;
-                                                     }
-                                    }
-                                }else{
+                        } else if( tagName == "LineType" ) {
+                            QString s;
+                            if( KDXML::readStringNode( element, s ) ){
+                                if( s.compare("Normal", Qt::CaseInsensitive) == 0 )
+                                    diagram->setType( LineDiagram::Normal );
+                                else if( s.compare("Stacked", Qt::CaseInsensitive) == 0 )
+                                    diagram->setType( LineDiagram::Stacked );
+                                else if( s.compare("Stacked", Qt::CaseInsensitive) == 0 )
+                                    diagram->setType( LineDiagram::Stacked );
+                                else if( s.compare("Percent", Qt::CaseInsensitive) == 0 )
+                                    diagram->setType( LineDiagram::Percent );
+                                else{
                                     bOK = false;
+                                    Q_ASSERT( false ); // all of the types need to be handled
                                 }
-                                node2 = node2.nextSibling();
                             }
-                        } else if( tagName == "Alignment" ) {
-                            Qt::Alignment a;
-                            if( KDXML::readAlignmentNode( element, a ) )
-                                diagram->setAlignment( a );
                             else
                                 bOK = false;
-                        } else if( tagName == "Position" ) {
-                            QString s;
-                            if( KDXML::readStringNode( element, s ) )
-                                diagram->setPosition( Position::fromName( s.toLatin1() ) );
-                            else
-                                bOK = false;
-                        } else if( tagName == "FloatingPosition" ) {
-                            RelativePosition pos;
-                            if( AttributesSerializer::parseRelativePosition( element, pos ) )
-                                diagram->setFloatingPosition( pos );
-                            else
-                                bOK = false;
-                        } else if( tagName == "Orientation" ) {
-                            Qt::Orientation o;
-                            if( KDXML::readOrientationNode( element, o ) )
-                                diagram->setOrientation( o );
-                            else
-                                bOK = false;
-                        } else if( tagName == "ShowLines" ) {
-                            bool b;
-                            if( KDXML::readBoolNode( element, b ) )
-                                diagram->setShowLines( b );
-                            else
-                                bOK = false;
-                        } else if( tagName == "TextsMap" ) {
-                            // parse the map of explicitely set texts
-                            QDomNode node2 = element.firstChild();
-                            while( !node2.isNull() ) {
-                                QDomElement ele2 = node2.toElement();
-                                if( !ele2.isNull() ) { // was really an element
-                                    QString tagName2 = ele2.tagName();
-                                    if( tagName2 == "item" ) {
-                                        int dataset;
-                                        QString txt;
-                                        if( KDXML::findIntAttribute( ele2, "dataset", dataset ) &&
-                                            KDXML::findStringAttribute( ele2, "text", txt ) ){
-                                            diagram->setText( dataset, txt );
-                                            }else{
-                                                qDebug() << "Invalid item in LineDiagram/TextsMap found.";
-                                                bOK = false;
-                                            }
-                                    }else{
-                                        qDebug() << "Unknown subelement of LineDiagram/TextsMap found:" << tagName2;
-                                        bOK = false;
-                                    }
-                                }
-                                node2 = node2.nextSibling();
-                            }
-                        } else if( tagName == "UseAutomaticMarkerSize" ) {
-                            bool b;
-                            if( KDXML::readBoolNode( element, b ) )
-                                diagram->setUseAutomaticMarkerSize( b );
-                            else
-                                bOK = false;
-                        } else if( tagName == "TextAttributes" ) {
-                            TextAttributes ta;
-                            if( AttributesSerializer::parseTextAttributes( element, ta ) )
-                                diagram->setTextAttributes( ta );
-                            else
-                                bOK = false;
-                        } else if( tagName == "TitleText" ) {
-                            QString s;
-                            if( KDXML::readStringNode( element, s ) )
-                                diagram->setTitleText( s );
-                            else
-                                bOK = false;
-                        } else if( tagName == "TitleTextAttributes" ) {
-                            TextAttributes ta;
-                            if( AttributesSerializer::parseTextAttributes( element, ta ) )
-                                diagram->setTitleTextAttributes( ta );
-                            else
-                                bOK = false;
-                        } else if( tagName == "Spacing" ) {
-                            int i;
-                            if( KDXML::readIntNode( element, i ) )
-                                diagram->setSpacing( i );
-                            else
-                                bOK = false;
-                        */
                         } else {
                             qDebug() << "Unknown subelement of LineDiagram found:" << tagName;
                             bOK = false;
