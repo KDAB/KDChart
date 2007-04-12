@@ -94,6 +94,7 @@ bool AttributesModelSerializer::parseAttributesModel(
                                     if( (tagName2 == "map") &&
                                         KDXML::findIntAttribute( element2, "key", key1 ) )
                                     {
+                                        //qDebug() << "key1:" << key1;
                                         QMap<int, QMap<int, QVariant> > map2 = dataMap[ key1 ];
                                         // parse the inner-most maps of DataMap/map
                                         QDomNode node3 = element2.firstChild();
@@ -108,6 +109,7 @@ bool AttributesModelSerializer::parseAttributesModel(
                                                 if( tagName3 == "map"  &&
                                                     KDXML::findIntAttribute( element3, "key", key2 ) )
                                                 {
+                                                    //qDebug() << "key2:" << key2;
                                                     QMap<int, QVariant> map3 = map2[ key2 ];
                                                     // parse the attributes stored in DataMap/map/map
                                                     QDomNode node4 = element3.firstChild();
@@ -127,6 +129,14 @@ bool AttributesModelSerializer::parseAttributesModel(
                                                                     // store the successfully parsed element
                                                                     map3[ role ] = attrs;
                                                                     //qDebug() << "      inserted:" << role;
+                                                                }else{
+                                                                    QString roleName;
+                                                                    if( ! KDXML::findStringAttribute( element4, "key", roleName ) )
+                                                                        roleName = "0x"+QString::number(role, 16);
+                                                                    qDebug()<< "Could not parse attribute role"
+                                                                            << roleName << "into DataMap("
+                                                                            << key1 << "," << key2
+                                                                            << ")";
                                                                 }
                                                             }
                                                         }
@@ -247,16 +257,20 @@ bool AttributesModelSerializer::parseAttributesModel(
                                 {   // was really an element
                                     QString tagName2 = element2.tagName();
                                     //qDebug() << tagName2;
-                                    int key1;
+                                    QString roleName;
                                     if( (tagName2 == "value") &&
-                                        KDXML::findIntAttribute( element2, "key", key1 ) )
+                                        KDXML::findStringAttribute( element2, "key", roleName ) )
                                     {
                                         QVariant attrs;
                                         int role;
                                         if( parseAttributesNode(
-                                            element2, attrs, role ) ){
+                                            element2, attrs, role ) )
+                                        {
                                             // store the successfully parsed element
                                             modelDataMap[ role ] = attrs;
+                                        }else{
+                                            qDebug()<< "Could not parse attribute role"
+                                                    << roleName << "into ModelDataMap";
                                         }
                                     }
                                 }
@@ -307,7 +321,7 @@ bool AttributesModelSerializer::parseAttributesNode(
 {
     bool bOK = false;
     QVariant value;
-    int roleValue;
+    int roleValue=0;
     QString roleName;
     if( KDXML::findStringAttribute( e, "key", roleName ) ){
         //qDebug() << roleName;
@@ -326,14 +340,16 @@ bool AttributesModelSerializer::parseAttributesNode(
                 }else if( roleName == "DatasetBrushRole"){
                     roleValue       =  DatasetBrushRole;
                     QBrush b;
-                    if( KDXML::readBrushNode( element, b ) )
+                    bOK = KDXML::readBrushNode( element, b );
+                    if( bOK )
                         value = qVariantFromValue( b );
                     else
                         qDebug() << "Error parsing DatasetBrushRole element";
                 }else if( roleName == "DatasetPenRole"){
                     roleValue       =  DatasetPenRole;
                     QPen pen;
-                    if( KDXML::readPenNode( element, pen ) )
+                    bOK = KDXML::readPenNode( element, pen );
+                    if( bOK )
                         value = qVariantFromValue( pen );
                     else
                         qDebug() << "Error parsing DatasetPenRole element";
@@ -388,11 +404,13 @@ bool AttributesModelSerializer::parseAttributesNode(
                 }else if( roleName == "DataHiddenRole"){
                     roleValue       =  DataHiddenRole;
                     bool b;
-                    if( KDXML::readBoolNode( element, b ) )
+                    bOK = KDXML::readBoolNode( element, b );
+                    if( bOK )
                         value = qVariantFromValue( b );
                     else
                         qDebug() << "Error parsing DataHiddenRole element";
                 }else{
+                    qDebug() << "Unknown"<< roleName <<"role found in element" << e.tagName();
                     Q_ASSERT( false ); // all of our own roles need to be handled
                 }
             }

@@ -67,9 +67,7 @@ private slots:
         da.setMarkerAttributes( ma );
         m_lines->setDataValueAttributes( idx, da );
 
-
         DataValueAttributes dva( m_lines->dataValueAttributes() );
-
         ta = dva.textAttributes();
         dva.setDecimalDigits( 2 );
         dva.setSuffix( " Ohm" );
@@ -91,8 +89,8 @@ private slots:
         linePen.setColor( Qt::yellow );
         linePen.setWidth( 7 );
         linePen.setStyle( Qt::DashLine );
+        // this pen will be stored in kdchart:attribute-model:1 / DataMap / 1 / 1
         m_lines->setPen( tableModel->index( 1, 1, QModelIndex() ), linePen );
-
 
         m_attrsModel = m_lines->attributesModel();
         mAttrModelS = new AttributesModelSerializer();
