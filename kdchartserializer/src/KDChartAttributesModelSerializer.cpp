@@ -58,257 +58,280 @@ AttributesModelSerializer::~AttributesModelSerializer()
 }
 
 bool AttributesModelSerializer::parseAttributesModel(
-        const QDomElement& container,
-        AttributesModel*& model )const
+        const QDomNode& rootNode,
+        const QString& globalName,
+        AttributesModel& model )const
 {
-    bool bOK = true;
+    bool bOK = false;
 
-    if( !container.isNull() ) { // was really an element
+    QDomElement container;
+    if( ! globalName.isEmpty() ){
+        QDomNode node = rootNode.firstChild();
+        while( !node.isNull() ) {
+            QDomElement element = node.toElement();
+            if( !element.isNull() ) { // was really an element
+                QString tagName = element.tagName();
+                if( tagName == "kdchart:global-objects" ) {
+                    QDomNode node2 = element.firstChild();
+                    while( !node2.isNull() ) {
+                        QDomElement ele2 = node2.toElement();
+                        if( !ele2.isNull() ) { // was really an element
+                            QString tagName2 = ele2.tagName();
+                            if( tagName2 == "kdchart:attribute-models" ) {
+                                QDomNode node3 = ele2.firstChild();
+                                while( !node3.isNull() ) {
+                                    QDomElement ele3 = node3.toElement();
+                                    if( !ele3.isNull() ) { // was really an element
+                                        QString tagName3 = ele3.tagName();
+                                        if( tagName3.compare(globalName, Qt::CaseInsensitive) == 0 ){
+                                            container = ele3;
+                                            bOK = true;
+                                        }
+                                    }
+                                    node3 = node3.nextSibling();
+                                }
+                            }
+                        }
+                        node2 = node2.nextSibling();
+                    }
+                }
+            }
+            node = node.nextSibling();
+        }
+    }
+
+    if( bOK ) {
         const QString modelName = container.tagName();
         //qDebug() << "\n    AttributesModelSerializer::parseAttributesModel() processing" << modelName;
-        QObject* p;
-        if( AttributesSerializer::findQObjectPointer( modelName, p ) ){
-            model = dynamic_cast<AttributesModel*>(p);
-            if( model ){
-                QDomNode node = container.firstChild();
-                while( !node.isNull() )
+        QDomNode node = container.firstChild();
+        while( !node.isNull() )
+        {
+            QDomElement element = node.toElement();
+            if( !element.isNull() )
+            {   // was really an element
+                QString tagName = element.tagName();
+                //qDebug() << tagName;
+                if( tagName == "DataMap" )
                 {
-                    QDomElement element = node.toElement();
-                    if( !element.isNull() )
-                    {   // was really an element
-                        QString tagName = element.tagName();
-                        //qDebug() << tagName;
-                        if( tagName == "DataMap" )
-                        {
-                            QMap<int, QMap<int, QMap<int, QVariant> > > dataMap;
-                            // parse the inner maps of DataMap
-                            QDomNode node2 = element.firstChild();
-                            while( !node2.isNull() )
+                    QMap<int, QMap<int, QMap<int, QVariant> > > dataMap;
+                    // parse the inner maps of DataMap
+                    QDomNode node2 = element.firstChild();
+                    while( !node2.isNull() )
+                    {
+                        QDomElement element2 = node2.toElement();
+                        if( !element2.isNull() )
+                        {   // was really an element
+                            QString tagName2 = element2.tagName();
+                            //qDebug() << tagName2;
+                            int key1;
+                            if( (tagName2 == "map") &&
+                                KDXML::findIntAttribute( element2, "key", key1 ) )
                             {
-                                QDomElement element2 = node2.toElement();
-                                if( !element2.isNull() )
-                                {   // was really an element
-                                    QString tagName2 = element2.tagName();
-                                    //qDebug() << tagName2;
-                                    int key1;
-                                    if( (tagName2 == "map") &&
-                                        KDXML::findIntAttribute( element2, "key", key1 ) )
-                                    {
-                                        //qDebug() << "key1:" << key1;
-                                        QMap<int, QMap<int, QVariant> > map2 = dataMap[ key1 ];
-                                        // parse the inner-most maps of DataMap/map
-                                        QDomNode node3 = element2.firstChild();
-                                        while( !node3.isNull() )
+                                //qDebug() << "key1:" << key1;
+                                QMap<int, QMap<int, QVariant> > map2 = dataMap[ key1 ];
+                                // parse the inner-most maps of DataMap/map
+                                QDomNode node3 = element2.firstChild();
+                                while( !node3.isNull() )
+                                {
+                                    QDomElement element3 = node3.toElement();
+                                    if( !element3.isNull() )
+                                    {   // was really an element
+                                        QString tagName3 = element3.tagName();
+                                        //qDebug() << tagName3;
+                                        int key2;
+                                        if( tagName3 == "map"  &&
+                                            KDXML::findIntAttribute( element3, "key", key2 ) )
                                         {
-                                            QDomElement element3 = node3.toElement();
-                                            if( !element3.isNull() )
-                                            {   // was really an element
-                                                QString tagName3 = element3.tagName();
-                                                //qDebug() << tagName3;
-                                                int key2;
-                                                if( tagName3 == "map"  &&
-                                                    KDXML::findIntAttribute( element3, "key", key2 ) )
-                                                {
-                                                    //qDebug() << "key2:" << key2;
-                                                    QMap<int, QVariant> map3 = map2[ key2 ];
-                                                    // parse the attributes stored in DataMap/map/map
-                                                    QDomNode node4 = element3.firstChild();
-                                                    while( !node4.isNull() )
+                                            //qDebug() << "key2:" << key2;
+                                            QMap<int, QVariant> map3 = map2[ key2 ];
+                                            // parse the attributes stored in DataMap/map/map
+                                            QDomNode node4 = element3.firstChild();
+                                            while( !node4.isNull() )
+                                            {
+                                                QDomElement element4 = node4.toElement();
+                                                if( !element4.isNull() )
+                                                {   // was really an element
+                                                    QString tagName4 = element4.tagName();
+                                                    //qDebug() << tagName4;
+                                                    if( tagName4 == "value" )
                                                     {
-                                                        QDomElement element4 = node4.toElement();
-                                                        if( !element4.isNull() )
-                                                        {   // was really an element
-                                                            QString tagName4 = element4.tagName();
-                                                            //qDebug() << tagName4;
-                                                            if( tagName4 == "value" )
-                                                            {
-                                                                QVariant attrs;
-                                                                int role;
-                                                                if( parseAttributesNode(
-                                                                        element4, attrs, role ) ){
-                                                                    // store the successfully parsed element
-                                                                    map3[ role ] = attrs;
-                                                                    //qDebug() << "      inserted:" << role;
-                                                                }else{
-                                                                    QString roleName;
-                                                                    if( ! KDXML::findStringAttribute( element4, "key", roleName ) )
-                                                                        roleName = "0x"+QString::number(role, 16);
-                                                                    qDebug()<< "Could not parse attribute role"
-                                                                            << roleName << "into DataMap("
-                                                                            << key1 << "," << key2
-                                                                            << ")";
-                                                                }
-                                                            }
+                                                        QVariant attrs;
+                                                        int role;
+                                                        if( parseAttributesNode(
+                                                                element4, attrs, role ) ){
+                                                            // store the successfully parsed element
+                                                            map3[ role ] = attrs;
+                                                            //qDebug() << "      inserted:" << role;
+                                                        }else{
+                                                            QString roleName;
+                                                            if( ! KDXML::findStringAttribute( element4, "key", roleName ) )
+                                                                roleName = "0x"+QString::number(role, 16);
+                                                            qDebug()<< "Could not parse attribute role"
+                                                                    << roleName << "into DataMap("
+                                                                    << key1 << "," << key2
+                                                                    << ")";
                                                         }
-                                                        node4 = node4.nextSibling();
-                                                    }
-                                                    map2[ key2 ] = map3;
-                                                    //qDebug() << "    inserted:" << key2;
-                                                }
-                                            }
-                                            node3 = node3.nextSibling();
-                                        }
-                                        dataMap[ key1 ] = map2;
-                                        //qDebug() << "  inserted:" << key1;
-                                    }
-                                }
-                                node2 = node2.nextSibling();
-                            }
-                            model->setDataMap( dataMap );
-            
-                        }else if( tagName == "HorizontalHeaderDataMap" ){
-                            QMap<int, QMap<int, QVariant> > horizHeaderDataMap;
-                            // parse the inner maps of HorizontalHeaderDataMap
-                            QDomNode node2 = element.firstChild();
-                            while( !node2.isNull() )
-                            {
-                                QDomElement element2 = node2.toElement();
-                                if( !element2.isNull() )
-                                {   // was really an element
-                                    QString tagName2 = element2.tagName();
-                                    //qDebug() << tagName2;
-                                    int key1;
-                                    if( (tagName2 == "map") &&
-                                        KDXML::findIntAttribute( element2, "key", key1 ) )
-                                    {
-                                        QMap<int, QVariant> map2 = horizHeaderDataMap[ key1 ];
-                                        // parse the inner-most map of HorizontalHeaderDataMap/map
-                                        QDomNode node3 = element2.firstChild();
-                                        while( !node3.isNull() )
-                                        {
-                                            QDomElement element3 = node3.toElement();
-                                            if( !element3.isNull() )
-                                            {   // was really an element
-                                                QString tagName3 = element3.tagName();
-                                                //qDebug() << tagName3;
-                                                if( tagName3 == "value" )
-                                                {
-                                                    QVariant attrs;
-                                                    int role;
-                                                    if( parseAttributesNode(
-                                                        element3, attrs, role ) ){
-                                                        // store the successfully parsed element
-                                                        map2[ role ] = attrs;
                                                     }
                                                 }
+                                                node4 = node4.nextSibling();
                                             }
-                                            node3 = node3.nextSibling();
+                                            map2[ key2 ] = map3;
+                                            //qDebug() << "    inserted:" << key2;
                                         }
-                                        horizHeaderDataMap[ key1 ] = map2;
                                     }
+                                    node3 = node3.nextSibling();
                                 }
-                                node2 = node2.nextSibling();
+                                dataMap[ key1 ] = map2;
+                                //qDebug() << "  inserted:" << key1;
                             }
-                            model->setHorizontalHeaderDataMap( horizHeaderDataMap );
-            
-                        }else if( tagName == "VerticalHeaderDataMap" ){
-                            QMap<int, QMap<int, QVariant> > vertHeaderDataMap;
-                            // parse the inner maps of VerticalHeaderDataMap
-                            QDomNode node2 = element.firstChild();
-                            while( !node2.isNull() )
+                        }
+                        node2 = node2.nextSibling();
+                    }
+                    model.setDataMap( dataMap );
+
+                }else if( tagName == "HorizontalHeaderDataMap" ){
+                    QMap<int, QMap<int, QVariant> > horizHeaderDataMap;
+                    // parse the inner maps of HorizontalHeaderDataMap
+                    QDomNode node2 = element.firstChild();
+                    while( !node2.isNull() )
+                    {
+                        QDomElement element2 = node2.toElement();
+                        if( !element2.isNull() )
+                        {   // was really an element
+                            QString tagName2 = element2.tagName();
+                            //qDebug() << tagName2;
+                            int key1;
+                            if( (tagName2 == "map") &&
+                                KDXML::findIntAttribute( element2, "key", key1 ) )
                             {
-                                QDomElement element2 = node2.toElement();
-                                if( !element2.isNull() )
-                                {   // was really an element
-                                    QString tagName2 = element2.tagName();
-                                    //qDebug() << tagName2;
-                                    int key1;
-                                    if( (tagName2 == "map") &&
-                                        KDXML::findIntAttribute( element2, "key", key1 ) )
-                                    {
-                                        QMap<int, QVariant> map2 = vertHeaderDataMap[ key1 ];
-                                        // parse the values of VerticalHeaderDataMap/map
-                                        QDomNode node3 = element2.firstChild();
-                                        while( !node3.isNull() )
+                                QMap<int, QVariant> map2 = horizHeaderDataMap[ key1 ];
+                                // parse the inner-most map of HorizontalHeaderDataMap/map
+                                QDomNode node3 = element2.firstChild();
+                                while( !node3.isNull() )
+                                {
+                                    QDomElement element3 = node3.toElement();
+                                    if( !element3.isNull() )
+                                    {   // was really an element
+                                        QString tagName3 = element3.tagName();
+                                        //qDebug() << tagName3;
+                                        if( tagName3 == "value" )
                                         {
-                                            QDomElement element3 = node3.toElement();
-                                            if( !element3.isNull() )
-                                            {   // was really an element
-                                                QString tagName3 = element3.tagName();
-                                                //qDebug() << tagName3;
-                                                if( tagName3 == "value" )
-                                                {
-                                                    QVariant attrs;
-                                                    int role;
-                                                    if( parseAttributesNode(
-                                                        element3, attrs, role ) ){
-                                                        // store the successfully parsed element
-                                                        map2[ role ] = attrs;
-                                                    }
-                                                }
+                                            QVariant attrs;
+                                            int role;
+                                            if( parseAttributesNode(
+                                                element3, attrs, role ) ){
+                                                // store the successfully parsed element
+                                                map2[ role ] = attrs;
                                             }
-                                            node3 = node3.nextSibling();
                                         }
-                                        vertHeaderDataMap[ key1 ] = map2;
                                     }
+                                    node3 = node3.nextSibling();
                                 }
-                                node2 = node2.nextSibling();
+                                horizHeaderDataMap[ key1 ] = map2;
                             }
-                            model->setVerticalHeaderDataMap( vertHeaderDataMap );
-            
-                        }else if( tagName == "ModelDataMap" ){
-                            QMap<int, QVariant> modelDataMap;
-                            // parse the values of ModelDataMap
-                            QDomNode node2 = element.firstChild();
-                            while( !node2.isNull() )
+                        }
+                        node2 = node2.nextSibling();
+                    }
+                    model.setHorizontalHeaderDataMap( horizHeaderDataMap );
+
+                }else if( tagName == "VerticalHeaderDataMap" ){
+                    QMap<int, QMap<int, QVariant> > vertHeaderDataMap;
+                    // parse the inner maps of VerticalHeaderDataMap
+                    QDomNode node2 = element.firstChild();
+                    while( !node2.isNull() )
+                    {
+                        QDomElement element2 = node2.toElement();
+                        if( !element2.isNull() )
+                        {   // was really an element
+                            QString tagName2 = element2.tagName();
+                            //qDebug() << tagName2;
+                            int key1;
+                            if( (tagName2 == "map") &&
+                                KDXML::findIntAttribute( element2, "key", key1 ) )
                             {
-                                QDomElement element2 = node2.toElement();
-                                if( !element2.isNull() )
-                                {   // was really an element
-                                    QString tagName2 = element2.tagName();
-                                    //qDebug() << tagName2;
-                                    QString roleName;
-                                    if( (tagName2 == "value") &&
-                                        KDXML::findStringAttribute( element2, "key", roleName ) )
-                                    {
-                                        QVariant attrs;
-                                        int role;
-                                        if( parseAttributesNode(
-                                            element2, attrs, role ) )
+                                QMap<int, QVariant> map2 = vertHeaderDataMap[ key1 ];
+                                // parse the values of VerticalHeaderDataMap/map
+                                QDomNode node3 = element2.firstChild();
+                                while( !node3.isNull() )
+                                {
+                                    QDomElement element3 = node3.toElement();
+                                    if( !element3.isNull() )
+                                    {   // was really an element
+                                        QString tagName3 = element3.tagName();
+                                        //qDebug() << tagName3;
+                                        if( tagName3 == "value" )
                                         {
-                                            // store the successfully parsed element
-                                            modelDataMap[ role ] = attrs;
-                                        }else{
-                                            qDebug()<< "Could not parse attribute role"
-                                                    << roleName << "into ModelDataMap";
+                                            QVariant attrs;
+                                            int role;
+                                            if( parseAttributesNode(
+                                                element3, attrs, role ) ){
+                                                // store the successfully parsed element
+                                                map2[ role ] = attrs;
+                                            }
                                         }
                                     }
+                                    node3 = node3.nextSibling();
                                 }
-                                node2 = node2.nextSibling();
+                                vertHeaderDataMap[ key1 ] = map2;
                             }
-                            model->setModelDataMap( modelDataMap );
-            
-                        }else if( tagName == "Palette" ){
-                            QString s;
-                            if( KDXML::readStringNode( element, s ) ){
-                                if( s == "PaletteTypeDefault" )
-                                    model->setPaletteType( AttributesModel::PaletteTypeDefault );
-                                else if( s == "PaletteTypeRainbow" )
-                                    model->setPaletteType( AttributesModel::PaletteTypeRainbow );
-                                else if( s == "PaletteTypeSubdued" )
-                                    model->setPaletteType( AttributesModel::PaletteTypeSubdued );
-                                else{
-                                    qDebug() << "Unknown PaletteType found:" << s;
-                                    bOK = false;
+                        }
+                        node2 = node2.nextSibling();
+                    }
+                    model.setVerticalHeaderDataMap( vertHeaderDataMap );
+
+                }else if( tagName == "ModelDataMap" ){
+                    QMap<int, QVariant> modelDataMap;
+                    // parse the values of ModelDataMap
+                    QDomNode node2 = element.firstChild();
+                    while( !node2.isNull() )
+                    {
+                        QDomElement element2 = node2.toElement();
+                        if( !element2.isNull() )
+                        {   // was really an element
+                            QString tagName2 = element2.tagName();
+                            //qDebug() << tagName2;
+                            QString roleName;
+                            if( (tagName2 == "value") &&
+                                KDXML::findStringAttribute( element2, "key", roleName ) )
+                            {
+                                QVariant attrs;
+                                int role;
+                                if( parseAttributesNode(
+                                    element2, attrs, role ) )
+                                {
+                                    // store the successfully parsed element
+                                    modelDataMap[ role ] = attrs;
+                                }else{
+                                    qDebug()<< "Could not parse attribute role"
+                                            << roleName << "into ModelDataMap";
                                 }
                             }
-                        }else{
-                            qDebug() << "Unknown Element found:" << tagName;
-                            // We continue, do not break here, since it might be
-                            // intentionally that additional information was stored.
+                        }
+                        node2 = node2.nextSibling();
+                    }
+                    model.setModelDataMap( modelDataMap );
+
+                }else if( tagName == "Palette" ){
+                    QString s;
+                    if( KDXML::readStringNode( element, s ) ){
+                        if( s == "PaletteTypeDefault" )
+                            model.setPaletteType( AttributesModel::PaletteTypeDefault );
+                        else if( s == "PaletteTypeRainbow" )
+                            model.setPaletteType( AttributesModel::PaletteTypeRainbow );
+                        else if( s == "PaletteTypeSubdued" )
+                            model.setPaletteType( AttributesModel::PaletteTypeSubdued );
+                        else{
+                            qDebug() << "Unknown PaletteType found:" << s;
+                            bOK = false;
                         }
                     }
-                    node = node.nextSibling();
+                }else{
+                    qDebug() << "Unknown Element found:" << tagName;
+                    // We continue, do not break here, since it might be
+                    // intentionally that additional information was stored.
                 }
-            }else{
-                qDebug()<< "Could not parse AttributesModel. Global pointer"
-                        << modelName << "is not a KDChart::AttributesModel-ptr.";
-                bOK = false;
             }
-        }else{
-            qDebug()<< "Could not parse AttributesModel. Pointer"
-                    << modelName << "not found in global list.";
-            bOK = false;
+            node = node.nextSibling();
         }
     }
     return bOK;
@@ -442,7 +465,6 @@ void AttributesModelSerializer::saveAttributesModel(
     QDomElement attrModelPtrElement =
             doc.createElement( "AttributesModel" );
     e.appendChild( attrModelPtrElement );
-    KDXML::setBoolAttribute( attrModelPtrElement, "external", isExternalModel );
 
     bool wasFound;
     QDomElement modelElement =
@@ -455,6 +477,7 @@ void AttributesModelSerializer::saveAttributesModel(
             model,
             wasFound );
     if( ! wasFound ){
+        KDXML::setBoolAttribute( modelElement, "external", isExternalModel );
         // save the dataMap
         {
             QDomElement dataMapElement =

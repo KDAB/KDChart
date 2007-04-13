@@ -130,9 +130,18 @@ bool SerializeCollector::initializeParsedGlobalPointers(
                         if( KDXML::findStringAttribute( e2, "Classname", className ) ){
                             //qDebug() << "object:" << objectName << "class:" << className;
                             if( className == "KDChart::AttributesModel" ){
-                                instance()->parsedPointersMap()[ objectName ]
-                                        = new AttributesModel(0, 0);
-                            } else if( className == "KDChart::CartesianAxis" ){
+                                bool bExternalFlag;
+                                if( KDXML::findBoolAttribute( e2, "external", bExternalFlag ) ){
+                                    if( bExternalFlag ){
+                                        instance()->parsedPointersMap()[ objectName ]
+                                                = new AttributesModel(0, 0);
+                                        // Only external attribute-models are instantiated explicitely,
+                                        // the other objects are found in their respective diagrams.
+                                    }
+                                }else{
+                                    qDebug()<< "Could not parse AttributesModel. Node"<<objectName<<"is invalid.";
+                                }
+                        } else if( className == "KDChart::CartesianAxis" ){
                                 instance()->parsedPointersMap()[ objectName ]
                                         = new CartesianAxis( 0 );
                             /* once PolarAxis is implemented:

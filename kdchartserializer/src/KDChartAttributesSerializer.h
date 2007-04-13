@@ -190,13 +190,22 @@ namespace KDChart {
              * This method assumes you have called
              * SerializeCollector::initializeParsedGlobalPointers()
              * before.
-             * Return value is TRUE if the parsed pointer
+             * 
+             * Returns value is true if the parsed "kdchart:pointer" has
+             * "name" attributed AND the respective pointer
              * was found in the internal list of known objects.
              * Otherwise it will return FALSE.
+             * 
+             * If a matching pointer was found it is returned in \c p, otherwise \c p will be Null.
+             *
+             * If prtName is valid, and if a "name" attribute was read
+             * that name is returned in \c ptrName, regardless of
+             * whether a matching pointer was found or not.
              */
             static bool parseQObjectPointerNode(
                     const QDomNode& node,
-                    QObject*& p );
+                    QObject*& p,
+                    QString* ptrName=0 );
 
             /**
              * This method assumes you have called
@@ -208,7 +217,8 @@ namespace KDChart {
              */
             static bool findQObjectPointer(
                     const QString& name,
-                    QObject*& p );
+                    QObject*& p,
+                    bool reportNotFound=true );
 
             static void saveQObjectPointer(
                     QDomDocument& doc,

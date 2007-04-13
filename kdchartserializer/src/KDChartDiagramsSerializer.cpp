@@ -245,36 +245,55 @@ bool DiagramsSerializer::parseAbstractDiagram(
         if( !element.isNull() ) { // was really an element
             QString tagName = element.tagName();
             if( tagName == "AttributesModel" ) {
-                bool bExternalFlag;
-                if( KDXML::findBoolAttribute( element, "external", bExternalFlag ) ){
-                    QDomNode node2 = element.firstChild();
-                    if( ! node2.isNull() ) {
-                        QDomElement ele2 = node2.toElement();
-                        if( ! ele2.isNull() ) { // was really an element
-                            QObject* ptr;
-                            if( AttributesSerializer::parseQObjectPointerNode( ele2, ptr ) ){
-                                AttributesModel *model = dynamic_cast<AttributesModel*>(ptr);
-                                if( model ){
-                                    if( bExternalFlag )
-                                        diagram.setAttributesModel( model );
-                                    else
-                                        diagram.attributesModel()->initFrom( model );
-                                }else{
+                QDomNode node2 = element.firstChild();
+                if( ! node2.isNull() ) {
+                    QDomElement ele2 = node2.toElement();
+                    if( ! ele2.isNull() ) { // was really an element
+                        AttributesModel* model=0;
+                        QObject* ptr;
+                        QString ptrName;
+                        const bool isExternalModel = 
+                            (AttributesSerializer::parseQObjectPointerNode(ele2, ptr, &ptrName) && ptr);
+                        if( ptrName.isEmpty() ){
+                            qDebug()<< "Could not parse AbstractDiagram. Global pointer node"
+                                    << ele2.tagName() << "is invalid.";
+                            bOK = false;
+                        }else{
+                            if( isExternalModel ){
+                                model = dynamic_cast<AttributesModel*>(ptr);
+                                if( ! model ){
                                     qDebug()<< "Could not parse AbstractDiagram. Global pointer"
-                                            << ele2.tagName() << "is not a KDChart::AttributesModel-ptr.";
+                                            << ptrName << "is no AttributesModel-ptr.";
                                     bOK = false;
                                 }
                             }else{
-                                qDebug()<< "Could not parse AbstractDiagram. Global pointer"
-                                        << ele2.tagName() << "not found in global list.";
+                            // If no external model stored
+                            // use the built-in attributes-model
+                                model = diagram.attributesModel();
+                            }
+                        }
+                        if( bOK ){
+                            if( mAttrModelS->parseAttributesModel(
+                                container.ownerDocument().firstChild(),
+                                ptrName,
+                                *model ) )
+                            {
+                                if( isExternalModel )
+                                    diagram.setAttributesModel( model );
+                                else
+                                    diagram.attributesModel()->initFrom( model );
+                            }else{
+                                qDebug()<< "Could not parse AbstractDiagram / AttributesModel"
+                                        << ptrName;
                                 bOK = false;
                             }
                         }else{
-                            qDebug()<< "Could not parse AbstractDiagram.Element does not contain a valid element.";
+                            qDebug()<< "Could not parse AbstractDiagram. Global pointer"
+                                    << ele2.tagName() << "not found in global list.";
                             bOK = false;
                         }
                     }else{
-                        qDebug()<< "Could not parse AbstractDiagram. Element does not contain a valid node.";
+                        qDebug()<< "Could not parse AbstractDiagram.Element does not contain a valid element.";
                         bOK = false;
                     }
                 }else{

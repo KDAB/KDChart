@@ -1361,9 +1361,14 @@ void AttributesSerializer::saveGridAttributes(
 
 bool AttributesSerializer::parseQObjectPointerNode(
         const QDomNode& node,
-        QObject*& p )
+        QObject*& p,
+        QString* ptrName )
 {
     bool bOK = true;
+    p = 0;
+    if( ptrName )
+        *ptrName = "";
+
     if( ! node.isNull() ) {
         QDomElement element = node.toElement();
         if( ! element.isNull() ) { // was really an element
@@ -1371,12 +1376,16 @@ bool AttributesSerializer::parseQObjectPointerNode(
             if( tagName == "kdchart:pointer" ) {
                 QString s;
                 if( KDXML::findStringAttribute( element, "name", s ) ){
+                    if( ptrName )
+                        *ptrName = s;
                     QObject* p0;
-                    if( findQObjectPointer( s, p0 ) ){
+                    if( findQObjectPointer( s, p0, (ptrName == 0) ) ){
                         p = p0;
                     }else{
-                        qDebug() << "    Could not resolve pointer in\n    "+showDomPath( element );
-                        bOK = false;
+                        if( ! ptrName ){
+                            qDebug() << "    Could not resolve pointer in\n    "+showDomPath( element );
+                            bOK = false;
+                        }
                     }
                 }else{
                     qDebug() << "    Invalid pointer element:\n    "+showDomPath( element );
@@ -1402,7 +1411,8 @@ bool AttributesSerializer::parseQObjectPointerNode(
 
 bool AttributesSerializer::findQObjectPointer(
         const QString& name,
-        QObject*& p )
+        QObject*& p,
+        bool reportNotFound )
 {
     bool bOK = true;
     //qDebug() << "parsed pointer:" << name;
@@ -1410,13 +1420,13 @@ bool AttributesSerializer::findQObjectPointer(
         p = 0;
     }else{
         QObject* ptr;
-        if( SerializeCollector::instance()->foundParsedPointer( name, ptr ) ){
+        bOK = SerializeCollector::instance()->foundParsedPointer( name, ptr );
+        if( bOK ){
             p = ptr;
-        }else{
+        }else if( reportNotFound ){
             qDebug() << "\n"
                     "    CRITICAL information by AttributesSerializer::findQObjectPointer():\n"
                     "    Could not resolve pointer \"" << name << "\", setting pointer value to zero.";
-            bOK = false;
         }
     }
     return bOK;
