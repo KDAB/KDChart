@@ -37,6 +37,7 @@
 #include <QDebug>
 #include <QCoreApplication>
 #include <QApplication>
+#include <QStringList>
 #include <QStyle>
 
 #include <KDABLibFakes>
@@ -305,8 +306,20 @@ QSize KDChart::TextLayoutItem::unrotatedSizeHint( QFont fnt ) const
 {
     if ( fnt == QFont() )
         fnt = cachedFont;
+
     const QFontMetricsF met( fnt, mParent );
-    QSize ret = met.boundingRect( mText ).toRect().size();
+    QSize ret(0, 0);
+    // note: boundingRect() does NOT take any newlines into account
+    //       so we need to calculate the size by combining several
+    //       rectangles: one per line.  This fixes bugz issue #3720.
+    //       (khz, 2007 04 14)
+    QStringList lines = mText.split(QString::fromAscii("\n"));
+    for (int i = 0; i < lines.size(); ++i){
+        const QSize lSize = met.boundingRect(lines.at(i) ).toRect().size();
+        ret.setWidth(qMax( ret.width(), lSize.width() ));
+        ret.rheight() += lSize.height();
+    }
+
     int frame = QApplication::style()->pixelMetric( QStyle::PM_ButtonMargin, 0, 0 );
     // fine-tuning for small font sizes: the frame must not be so big, if the font is tiny
     frame = qMin( frame, ret.height() * 2 / 3 );
@@ -318,6 +331,7 @@ QSize KDChart::TextLayoutItem::unrotatedSizeHint( QFont fnt ) const
     //return
     //    met.boundingRect( mText ).size().toSize() + QSize( frame, frame );
 }
+
 
 QSize KDChart::TextLayoutItem::calcSizeHint( QFont fnt ) const
 {
