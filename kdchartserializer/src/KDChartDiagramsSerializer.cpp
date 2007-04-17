@@ -780,6 +780,7 @@ void DiagramsSerializer::savePolarDiagram(
     // then save what is stored in the derived class
     KDXML::createIntNode(  doc, diagElement, "ZeroDegreePosition",   diagram.zeroDegreePosition() );
     KDXML::createBoolNode( doc, diagElement, "RotateCircularLabels", diagram.rotateCircularLabels() );
+    KDXML::createBoolNode( doc, diagElement, "CloseDatasets", diagram.closeDatasets() );
     KDXML::createPositionBooleansNode(
             doc, diagElement, "ShowDelimitersAtPosition",
             diagram.showDelimitersAtPosition( Position::Unknown ),
