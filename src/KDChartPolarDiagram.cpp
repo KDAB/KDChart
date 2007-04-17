@@ -37,7 +37,8 @@
 using namespace KDChart;
 
 PolarDiagram::Private::Private() :
-    rotateCircularLabels( false )
+    rotateCircularLabels( false ),
+    closeDatasets( false )
 {
 }
 
@@ -91,6 +92,8 @@ PolarDiagram * PolarDiagram::clone() const
     // This needs to be copied after the fact
     newDiagram->d->showDelimitersAtPosition = d->showDelimitersAtPosition;
     newDiagram->d->showLabelsAtPosition = d->showLabelsAtPosition;
+    newDiagram->d->rotateCircularLabels = d->rotateCircularLabels;
+    newDiagram->d->closeDatasets = d->closeDatasets;
     return newDiagram;
 }
 
@@ -150,13 +153,20 @@ void PolarDiagram::paint( PaintContext* ctx )
     for ( int j=0; j < colCount; ++j ) {
         QBrush brush = qVariantValue<QBrush>( attributesModel()->headerData( j, Qt::Vertical, KDChart::DatasetBrushRole ) );
         QPolygonF polygon;
+        QPointF point0;
         for ( int i=0; i < rowCount; ++i ) {
             QModelIndex index = model()->index( i, j, rootIndex() );
             const double value = model()->data( index ).toDouble();
             QPointF point = coordinatePlane()->translate( QPointF( value, i ) );
             polygon.append( point );
-            list.append( DataValueTextInfo( index, point, point, value ) );
+            const DataValueTextInfo info( index, point, point, value );
+            list.append( info );
+            if( ! i )
+                point0= point;
         }
+        if( closeDatasets() && rowCount )
+            polygon.append( point0 );
+
         PainterSaver painterSaver( ctx->painter() );
         ctx->painter()->setRenderHint ( QPainter::Antialiasing );
         ctx->painter()->setBrush( brush );
@@ -216,6 +226,16 @@ void PolarDiagram::setRotateCircularLabels( bool rotateCircularLabels )
 bool PolarDiagram::rotateCircularLabels() const
 {
     return d->rotateCircularLabels;
+}
+
+void PolarDiagram::setCloseDatasets( bool closeDatasets )
+{
+    d->closeDatasets = closeDatasets;
+}
+
+bool PolarDiagram::closeDatasets() const
+{
+    return d->closeDatasets;
 }
 
 void PolarDiagram::setShowDelimitersAtPosition( Position position,

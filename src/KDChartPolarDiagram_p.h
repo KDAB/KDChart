@@ -58,7 +58,8 @@ public:
         AbstractPolarDiagram::Private( rhs ),
         showDelimitersAtPosition( rhs.showDelimitersAtPosition ),
         showLabelsAtPosition( rhs.showLabelsAtPosition ),
-        rotateCircularLabels( rhs.rotateCircularLabels )
+        rotateCircularLabels( rhs.rotateCircularLabels ),
+        closeDatasets( rhs.closeDatasets )
         {
         }
 
@@ -66,6 +67,7 @@ private:
     QMap<int,bool> showDelimitersAtPosition;
     QMap<int,bool> showLabelsAtPosition;
     bool rotateCircularLabels;
+    bool closeDatasets;
 };
 
 KDCHART_IMPL_DERIVED_DIAGRAM( PolarDiagram, AbstractPolarDiagram, PolarCoordinatePlane )

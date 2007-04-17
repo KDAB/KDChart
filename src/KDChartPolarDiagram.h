@@ -79,6 +79,12 @@ public:
     void setRotateCircularLabels( bool rotateCircularLabels );
     bool rotateCircularLabels() const;
 
+    /** Close each of the data series by connecting the last point to its
+     * respective start point
+     */
+    void setCloseDatasets( bool closeDatasets );
+    bool closeDatasets() const;
+
     void setShowDelimitersAtPosition( Position position,
                                       bool showDelimiters );
     void setShowLabelsAtPosition( Position position,

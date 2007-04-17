@@ -401,13 +401,10 @@ void CartesianCoordinatePlane::layoutDiagrams()
 
 const QPointF CartesianCoordinatePlane::translate( const QPointF& diagramPoint ) const
 {
-    // i had to disable the assertion, because it fails for diagramPoint's
-    // directly on the edge of the diagramRect. i guess it can be replaced by
-    // manually comparing he coordinates, but be aware of the fact that the
-    // user coordinate system may be directed in any way the user choses!
-//     Q_ASSERT_X ( d->coordinateTransformation.diagramRect.contains ( diagramPoint ),
-//                  "CartesianCoordinatePlane::translate", "Diagram point has to be inside "
-//                  "user-supplied diagram rectangle." );
+    // Note: We do not test if the point lays inside of the data area,
+    //       but we just apply the transformation calculations to the point.
+    //       This allows for basic calculations done by the user, see e.g.
+    //       the file  examples/Lines/BubbleChart/mainwindow.cpp
     return  d->coordinateTransformation.translate ( diagramPoint );
 }
 
