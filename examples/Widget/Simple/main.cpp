@@ -26,13 +26,10 @@
 #include <QApplication>
 #include <KDChartWidget>
 
-
-using namespace KDChart;
-
 int main( int argc, char** argv ) {
     QApplication app( argc, argv );
 
-    Widget widget;
+    KDChart::Widget widget;
     widget.resize( 600, 600 );
 
     QVector< double > vec0,  vec1,  vec2;
