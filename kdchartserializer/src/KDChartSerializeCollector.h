@@ -33,6 +33,12 @@ namespace KDChart {
 
     // ************** parsing the data *******************************
 
+    static QDomElement findStoredGlobalPointer(
+            const QDomNode& rootNode,
+            const QString& globalPointerName,
+            const QString& globalGroupName,
+            const QString& globalListName = "kdchart:global-objects" );
+
     /**
      * Auxiliary method to be called BEFORE all of your
      * structures will be parsed.

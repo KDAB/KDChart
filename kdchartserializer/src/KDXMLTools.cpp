@@ -1126,6 +1126,29 @@ namespace KDXML {
         return ok;
     }
 
+    bool readPositionBooleansNode(
+            const QDomElement& element,
+            bool& unknown, bool& center,
+            bool& northWest, bool& north, bool& northEast,
+            bool& east, bool& southEast, bool& south, bool& southWest, bool& west,
+            bool& floating )
+    {
+        bool bFlag;
+        // at least one of the attributes needs to be set (no matter if true or false)
+        // and any possible combination of settings is allowed
+        return  findBoolAttribute( element, "Unknown", unknown ) ||
+                findBoolAttribute( element, "Center",  center ) ||
+                findBoolAttribute( element, "NorthWest", northWest ) ||
+                findBoolAttribute( element, "North",     north ) ||
+                findBoolAttribute( element, "NorthEast", northEast ) ||
+                findBoolAttribute( element, "East",      east ) ||
+                findBoolAttribute( element, "SouthEast", southEast ) ||
+                findBoolAttribute( element, "South",     south ) ||
+                findBoolAttribute( element, "SouthWest", southWest ) ||
+                findBoolAttribute( element, "West",      west ) ||
+                findBoolAttribute( element, "Floating",  floating );
+    }
+
     bool readModelIndexNode(const QDomElement& element,
                             const QAbstractItemModel& model,
                             QModelIndex& idx )

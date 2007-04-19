@@ -70,40 +70,6 @@ DiagramsSerializer::~DiagramsSerializer()
     delete mAxesS;
 }
 
-bool DiagramsSerializer::parseDiagrams(
-        const QDomElement& e,
-        AbstractDiagramList& diags )const
-{
-    bool bOK = true;
-    QDomNode node = e.firstChild();
-    while( !node.isNull() ) {
-        QDomElement element = node.toElement();
-        if( !element.isNull() ) { // was really an element
-            QString tagName = element.tagName();
-            /*
-            if( tagName == "kdchart:cartesian-coordinate-plane" ) {
-                bool b;
-                if( KDXML::readBoolNode( element, b ) )
-                    a.setVisible( b );
-            } else if( tagName == "kdchart:polar-coordinate-plane" ) {
-                QPen p;
-                if( KDXML::readPenNode( element, p ) )
-                    a.setPen( p );
-            } else {
-                QPen p;
-                if( KDXML::readPenNode( element, p ) )
-                    a.setPen( p );
-            } else {
-                qDebug() << "Unknown subelement of FrameAttributes found:" << tagName;
-                bOK = false;
-            }
-            */
-        }
-        node = node.nextSibling();
-    }
-    return bOK;
-}
-
 const QString DiagramsSerializer::nameOfClass( const AbstractDiagram* p )const
 {
     QString classname;
@@ -155,6 +121,80 @@ void DiagramsSerializer::saveDiagrams(
             saveDiagram( doc, diagElement, p );
         }
     }
+}
+
+
+bool DiagramsSerializer::parseDiagram(
+        const QDomNode& rootNode,
+        const QDomNode& pointerNode,
+        AbstractDiagram*& diagram )const
+{
+    bool bOK = true;
+
+    AbstractDiagram* diag=0;
+    QObject* ptr;
+    QString ptrName;
+    const bool pointerFound =
+            (AttributesSerializer::parseQObjectPointerNode(pointerNode, ptr, &ptrName) && ptr);
+    if( ptrName.isEmpty() ){
+        qDebug()<< "Could not parse diagram. Global pointer node is invalid.";
+        bOK = false;
+    }else{
+        if( pointerFound ){
+            diag = dynamic_cast<AbstractDiagram*>(ptr);
+            if( ! diag ){
+                qDebug()<< "Could not parse diagram. Global pointer"
+                        << ptrName << "is no AbstractDiagram-ptr.";
+                bOK = false;
+            }
+        }else{
+            qDebug()<< "Could not parse diagram. Global pointer"
+                << ptrName << "is no AbstractDiagram-ptr.";
+            bOK = false;
+        }
+    }
+
+    QDomElement container;
+    if( bOK ){
+        container = SerializeCollector::findStoredGlobalPointer(
+                rootNode, ptrName, "kdchart:diagrams" );
+        bOK = ! container.tagName().isEmpty();
+    }
+
+    if( bOK ) {
+        LineDiagram*  lineDiag  = dynamic_cast<LineDiagram*> (  diag );
+        BarDiagram*   barDiag   = dynamic_cast<BarDiagram*> (   diag );
+        PieDiagram*   pieDiag   = dynamic_cast<PieDiagram*> (   diag );
+        PolarDiagram* polarDiag = dynamic_cast<PolarDiagram*> ( diag );
+        RingDiagram*  ringDiag  = dynamic_cast<RingDiagram*> (  diag );
+
+        if( lineDiag ){
+            bOK = parseLineDiagram( container, *lineDiag );
+            if( bOK )
+                diagram = lineDiag;
+        }else if( barDiag ){
+            bOK = parseBarDiagram( container, *barDiag );
+            if( bOK )
+                diagram = barDiag;
+        }else if( pieDiag ){
+            bOK = parsePieDiagram( container, *pieDiag );
+            if( bOK )
+                diagram = pieDiag;
+        }else if( polarDiag ){
+            bOK = parsePolarDiagram( container, *polarDiag );
+            if( bOK )
+                diagram = polarDiag;
+        }else if( ringDiag ){
+            bOK = parseRingDiagram( container, *ringDiag );
+            if( bOK )
+                diagram = ringDiag;
+        }else{
+            bOK = parseOtherDiagram( container, *diag );
+            if( bOK )
+                diagram = diag;
+        }
+    }
+    return bOK;
 }
 
 void DiagramsSerializer::saveDiagram(
@@ -497,7 +537,7 @@ bool DiagramsSerializer::parseCartCoordDiagram(
                     qDebug()<< "Could not parse AbstractCartesianDiagram. Element \"Offset\" is not a QPointF node.";
                 }
             } else {
-                qDebug() << "Unknown subelement of MarkerAttributes found:" << tagName;
+                qDebug() << "Unknown subelement of AbstractCartesianDiagram found:" << tagName;
                 bOK = false;
             }
         }
@@ -562,6 +602,31 @@ void DiagramsSerializer::saveCartCoordDiagram(
     }
 }
 
+
+bool DiagramsSerializer::parsePolCoordDiagram(
+        const QDomElement& container, AbstractPolarDiagram& diagram )const
+{
+    bool bOK = true;
+    QDomNode node = container.firstChild();
+    while( !node.isNull() ) {
+        QDomElement element = node.toElement();
+        if( !element.isNull() ) { // was really an element
+            QString tagName = element.tagName();
+            if( tagName == "kdchart:abstract-diagram" ) {
+                if( ! parseAbstractDiagram( element, diagram ) ){
+                    qDebug() << "Could not parse base class of AbstractPolarDiagram.";
+                    bOK = false;
+                }
+            } else {
+                qDebug() << "Unknown subelement of AbstractPolarDiagram found:" << tagName;
+                bOK = false;
+            }
+        }
+        node = node.nextSibling();
+    }
+    return bOK;
+}
+
 void DiagramsSerializer::savePolCoordDiagram(
         QDomDocument& doc,
         QDomElement& e,
@@ -580,7 +645,7 @@ void DiagramsSerializer::savePolCoordDiagram(
 
 
 bool DiagramsSerializer::parseLineDiagram(
-        const QDomElement& container, LineDiagram*& diagram )const
+        const QDomElement& container, LineDiagram& diagram )const
 {
     QDomElement diagramElement;
     QString diagName;
@@ -609,52 +674,38 @@ bool DiagramsSerializer::parseLineDiagram(
     bool bOK = true;
     if( !diagramElement.isNull() ) {
         //qDebug() << "\n    DiagramsSerializer::parseLineDiagram() processing" << diagName;
-        QObject* p;
-        if( AttributesSerializer::findQObjectPointer( diagName, p ) ){
-            diagram = dynamic_cast<LineDiagram*>(p);
-            if( diagram ){
-                QDomNode node = diagramElement.firstChild();
-                while( !node.isNull() ) {
-                    QDomElement element = node.toElement();
-                    if( !element.isNull() ) { // was really an element
-                        QString tagName = element.tagName();
-                        if( tagName == "kdchart:cartesian-coordinate-diagram" ) {
-                            if( ! parseCartCoordDiagram( element, *diagram ) ){
-                                qDebug() << "Could not parse base class of LineDiagram.";
-                                bOK = false;
-                            }
-                        } else if( tagName == "LineType" ) {
-                            QString s;
-                            if( KDXML::readStringNode( element, s ) ){
-                                if( s.compare("Normal", Qt::CaseInsensitive) == 0 )
-                                    diagram->setType( LineDiagram::Normal );
-                                else if( s.compare("Stacked", Qt::CaseInsensitive) == 0 )
-                                    diagram->setType( LineDiagram::Stacked );
-                                else if( s.compare("Percent", Qt::CaseInsensitive) == 0 )
-                                    diagram->setType( LineDiagram::Percent );
-                                else{
-                                    bOK = false;
-                                    Q_ASSERT( false ); // all of the types need to be handled
-                                }
-                            }
-                            else
-                                bOK = false;
-                        } else {
-                            qDebug() << "Unknown subelement of LineDiagram found:" << tagName;
+        QDomNode node = diagramElement.firstChild();
+        while( !node.isNull() ) {
+            QDomElement element = node.toElement();
+            if( !element.isNull() ) { // was really an element
+                QString tagName = element.tagName();
+                if( tagName == "kdchart:cartesian-coordinate-diagram" ) {
+                    if( ! parseCartCoordDiagram( element, diagram ) ){
+                        qDebug() << "Could not parse base class of LineDiagram.";
+                        bOK = false;
+                    }
+                } else if( tagName == "LineType" ) {
+                    QString s;
+                    if( KDXML::readStringNode( element, s ) ){
+                        if( s.compare("Normal", Qt::CaseInsensitive) == 0 )
+                            diagram.setType( LineDiagram::Normal );
+                        else if( s.compare("Stacked", Qt::CaseInsensitive) == 0 )
+                            diagram.setType( LineDiagram::Stacked );
+                        else if( s.compare("Percent", Qt::CaseInsensitive) == 0 )
+                            diagram.setType( LineDiagram::Percent );
+                        else{
                             bOK = false;
+                            Q_ASSERT( false ); // all of the types need to be handled
                         }
                     }
-                    node = node.nextSibling();
+                    else
+                        bOK = false;
+                } else {
+                    qDebug() << "Unknown subelement of LineDiagram found:" << tagName;
+                    bOK = false;
                 }
-            }else{
-                qDebug()<< "Could not parse LineDiagram. Global pointer"
-                        << diagName << "is not a KDChart::LineDiagram-ptr.";
-                bOK = false;
             }
-        }else{
-            qDebug()<< "Could not parse LineDiagram. Pointer"
-                    << diagName << "not found in global list.";
-            bOK = false;
+            node = node.nextSibling();
         }
     }
     return bOK;
@@ -692,6 +743,76 @@ void DiagramsSerializer::saveLineDiagram(
     KDXML::createStringNode( doc, diagElement, "LineType", s );
 }
 
+
+bool DiagramsSerializer::parseBarDiagram(
+        const QDomElement& container, BarDiagram& diagram )const
+{
+    QDomElement diagramElement;
+    QString diagName;
+    if( ! container.isNull() ) { // was really an element
+        diagName = container.tagName();
+        //qDebug() << "\n    DiagramsSerializer::parseBarDiagram() processing" << diagName;
+        QDomNode diagramNode = container.firstChild();
+        if( ! diagramNode.isNull() ) {
+            diagramElement = diagramNode.toElement();
+            if( !diagramElement.isNull() ) { // was really an element
+                QString tagName = diagramElement.tagName();
+                //qDebug()<< "\n    DiagramsSerializer::parseBarDiagram() processing"
+                //        << diagName << " / " << tagName;
+                if( tagName.compare("kdchart:bar-diagram", Qt::CaseInsensitive) != 0 )
+                    qDebug() << "Class BarDiagram" << diagName << "contains unknown element:" << tagName;
+            }else{
+                qDebug() << "Class BarDiagram" << diagName << "contains no valid element";
+            }
+        }else{
+            qDebug() << "Class BarDiagram" << diagName << "contains no diagram node";
+        }
+    }else{
+        qDebug() << "Cannot parse BarDiagram. Node is invalid.";
+    }
+
+    bool bOK = true;
+    if( !diagramElement.isNull() ) {
+        //qDebug() << "\n    DiagramsSerializer::parseBarDiagram() processing" << diagName;
+        QDomNode node = diagramElement.firstChild();
+        while( !node.isNull() ) {
+            QDomElement element = node.toElement();
+            if( !element.isNull() ) { // was really an element
+                QString tagName = element.tagName();
+                if( tagName == "kdchart:cartesian-coordinate-diagram" ) {
+                    if( ! parseCartCoordDiagram( element, diagram ) ){
+                        qDebug() << "Could not parse base class of BarDiagram.";
+                        bOK = false;
+                    }
+                } else if( tagName == "BarType" ) {
+                    QString s;
+                    if( KDXML::readStringNode( element, s ) ){
+                        if( s.compare("Normal", Qt::CaseInsensitive) == 0 )
+                            diagram.setType( BarDiagram::Normal );
+                        else if( s.compare("Stacked", Qt::CaseInsensitive) == 0 )
+                            diagram.setType( BarDiagram::Stacked );
+                        else if( s.compare("Percent", Qt::CaseInsensitive) == 0 )
+                            diagram.setType( BarDiagram::Percent );
+                        else if( s.compare("Rows", Qt::CaseInsensitive) == 0 )
+                            diagram.setType( BarDiagram::Rows );
+                        else{
+                            bOK = false;
+                            Q_ASSERT( false ); // all of the types need to be handled
+                        }
+                    }
+                    else
+                        bOK = false;
+                } else {
+                    qDebug() << "Unknown subelement of BarDiagram found:" << tagName;
+                    bOK = false;
+                }
+            }
+            node = node.nextSibling();
+        }
+    }
+    return bOK;
+}
+
 void DiagramsSerializer::saveBarDiagram(
         QDomDocument& doc,
         QDomElement& e,
@@ -709,23 +830,64 @@ void DiagramsSerializer::saveBarDiagram(
     // then save what is stored in the derived class
     QString s;
     switch( diagram.type() ){
-        case BarDiagram::Normal:
+    case BarDiagram::Normal:
             s = "Normal";
             break;
-        case BarDiagram::Stacked:
+    case BarDiagram::Stacked:
             s = "Stacked";
             break;
-        case BarDiagram::Percent:
+    case BarDiagram::Percent:
             s = "Percent";
             break;
-        case BarDiagram::Rows:
+    case BarDiagram::Rows:
             s = "Rows";
             break;
-        default:
+    default:
             Q_ASSERT( false ); // all of the types need to be handled
             break;
-    }
+}
     KDXML::createStringNode( doc, diagElement, "BarType", s );
+}
+
+
+bool DiagramsSerializer::parseAbstractPieDiagram(
+        const QDomElement& container, AbstractPieDiagram& diagram )const
+{
+    bool bOK = true;
+    QDomNode node = container.firstChild();
+    while( !node.isNull() ) {
+        QDomElement element = node.toElement();
+        if( !element.isNull() ) { // was really an element
+            QString tagName = element.tagName();
+            if( tagName == "kdchart:polar-coordinate-diagram" ) {
+                if( ! parsePolCoordDiagram( element, diagram ) ){
+                    qDebug() << "Could not parse base class of AbstractPieDiagram.";
+                    bOK = false;
+                }
+            } else if( tagName == "Granularity" ) {
+                qreal r;
+                if( KDXML::readRealNode( element, r ) ){
+                    diagram.setGranularity( r );
+                }else{
+                    qDebug()<< "Could not parse AbstractPieDiagram. Element"
+                            << tagName << "has invalid content.";
+                }
+            } else if( tagName == "StartPosition" ) {
+                int i;
+                if( KDXML::readIntNode( element, i ) ){
+                    diagram.setStartPosition( i );
+                }else{
+                    qDebug()<< "Could not parse AbstractPieDiagram. Element"
+                            << tagName << "has invalid content.";
+                }
+            } else {
+                qDebug() << "Unknown subelement of AbstractPieDiagram found:" << tagName;
+                bOK = false;
+            }
+        }
+        node = node.nextSibling();
+    }
+    return bOK;
 }
 
 void DiagramsSerializer::saveAbstractPieDiagram(
@@ -747,6 +909,58 @@ void DiagramsSerializer::saveAbstractPieDiagram(
     KDXML::createIntNode(  doc, diagElement, "StartPosition", diagram.startPosition() );
 }
 
+
+bool DiagramsSerializer::parsePieDiagram(
+        const QDomElement& container, PieDiagram& diagram )const
+{
+    QDomElement diagramElement;
+    QString diagName;
+    if( ! container.isNull() ) { // was really an element
+        diagName = container.tagName();
+        //qDebug() << "\n    DiagramsSerializer::parsePieDiagram() processing" << diagName;
+        QDomNode diagramNode = container.firstChild();
+        if( ! diagramNode.isNull() ) {
+            diagramElement = diagramNode.toElement();
+            if( !diagramElement.isNull() ) { // was really an element
+                QString tagName = diagramElement.tagName();
+                //qDebug()<< "\n    DiagramsSerializer::parsePieDiagram() processing"
+                //        << diagName << " / " << tagName;
+                if( tagName.compare("kdchart:pie-diagram", Qt::CaseInsensitive) != 0 )
+                    qDebug() << "Class PieDiagram" << diagName << "contains unknown element:" << tagName;
+            }else{
+                qDebug() << "Class PieDiagram" << diagName << "contains no valid element";
+            }
+        }else{
+            qDebug() << "Class PieDiagram" << diagName << "contains no diagram node";
+        }
+    }else{
+        qDebug() << "Cannot parse PieDiagram. Node is invalid.";
+    }
+
+    bool bOK = true;
+    if( !diagramElement.isNull() ) {
+        //qDebug() << "\n    DiagramsSerializer::parsePieDiagram() processing" << diagName;
+        QDomNode node = diagramElement.firstChild();
+        while( !node.isNull() ) {
+            QDomElement element = node.toElement();
+            if( !element.isNull() ) { // was really an element
+                QString tagName = element.tagName();
+                if( tagName == "kdchart:abstract-pie-diagram" ) {
+                    if( ! parseAbstractPieDiagram( element, diagram ) ){
+                        qDebug() << "Could not parse base class of PieDiagram.";
+                        bOK = false;
+                    }
+                } else {
+                    qDebug() << "Unknown subelement of PieDiagram found:" << tagName;
+                    bOK = false;
+                }
+            }
+            node = node.nextSibling();
+        }
+    }
+    return bOK;
+}
+
 void DiagramsSerializer::savePieDiagram(
         QDomDocument& doc,
         QDomElement& e,
@@ -761,6 +975,150 @@ void DiagramsSerializer::savePieDiagram(
     saveAbstractPieDiagram( doc, diagElement, diagram,
                             "kdchart:abstract-pie-diagram" );
     // that's all, there is no to-be-saved information in this class
+}
+
+
+bool DiagramsSerializer::parsePolarDiagram(
+        const QDomElement& container, PolarDiagram& diagram )const
+{
+    QDomElement diagramElement;
+    QString diagName;
+    if( ! container.isNull() ) { // was really an element
+        diagName = container.tagName();
+        //qDebug() << "\n    DiagramsSerializer::parsePolarDiagram() processing" << diagName;
+        QDomNode diagramNode = container.firstChild();
+        if( ! diagramNode.isNull() ) {
+            diagramElement = diagramNode.toElement();
+            if( !diagramElement.isNull() ) { // was really an element
+                QString tagName = diagramElement.tagName();
+                //qDebug()<< "\n    DiagramsSerializer::parsePolarDiagram() processing"
+                //        << diagName << " / " << tagName;
+                if( tagName.compare("kdchart:polar-diagram", Qt::CaseInsensitive) != 0 )
+                    qDebug() << "Class PolarDiagram" << diagName << "contains unknown element:" << tagName;
+            }else{
+                qDebug() << "Class PolarDiagram" << diagName << "contains no valid element";
+            }
+        }else{
+            qDebug() << "Class PolarDiagram" << diagName << "contains no diagram node";
+        }
+    }else{
+        qDebug() << "Cannot parse PolarDiagram. Node is invalid.";
+    }
+
+    bool bOK = true;
+    if( !diagramElement.isNull() ) {
+        //qDebug() << "\n    DiagramsSerializer::parsePolarDiagram() processing" << diagName;
+        QDomNode node = diagramElement.firstChild();
+        while( !node.isNull() ) {
+            QDomElement element = node.toElement();
+            if( !element.isNull() ) { // was really an element
+                QString tagName = element.tagName();
+                if( tagName == "kdchart:polar-coordinate-diagram" ) {
+                    if( ! parsePolCoordDiagram( element, diagram ) ){
+                        qDebug() << "Could not parse base class of PolarDiagram.";
+                        bOK = false;
+                    }
+                } else if( tagName == "ZeroDegreePosition" ) {
+                    int i;
+                    if( KDXML::readIntNode( element, i ) ){
+                        diagram.setZeroDegreePosition( i );
+                    }else{
+                        qDebug()<< "Could not parse PolarDiagram. Element"
+                                << tagName << "has invalid content.";
+                    }
+                } else if( tagName == "RotateCircularLabels" ) {
+                    bool b;
+                    if( KDXML::readBoolNode( element, b ) ){
+                        diagram.setRotateCircularLabels( b );
+                    }else{
+                        qDebug()<< "Could not parse PolarDiagram. Element"
+                                << tagName << "has invalid content.";
+                    }
+                } else if( tagName == "CloseDatasets" ) {
+                    bool b;
+                    if( KDXML::readBoolNode( element, b ) ){
+                        diagram.setCloseDatasets( b );
+                    }else{
+                        qDebug()<< "Could not parse PolarDiagram. Element"
+                                << tagName << "has invalid content.";
+                    }
+                } else if( tagName == "ShowDelimitersAtPosition" ) {
+                    bool unknown = false;
+                    bool center = false;
+                    bool northWest = false;
+                    bool north = false;
+                    bool northEast = false;
+                    bool east = false;
+                    bool southEast = false;
+                    bool south = false;
+                    bool southWest = false;
+                    bool west = false;
+                    bool floating = false;
+                    if( KDXML::readPositionBooleansNode(
+                            element,
+                            unknown, center,
+                            northWest, north, northEast,
+                            east, southEast, south, southWest, west,
+                            floating ) )
+                    {
+                        diagram.setShowDelimitersAtPosition( Position::Unknown,  unknown );
+                        diagram.setShowDelimitersAtPosition( Position::Center,   center );
+                        diagram.setShowDelimitersAtPosition( Position::NorthWest,northWest );
+                        diagram.setShowDelimitersAtPosition( Position::North,    north );
+                        diagram.setShowDelimitersAtPosition( Position::NorthEast,northEast );
+                        diagram.setShowDelimitersAtPosition( Position::East,     east );
+                        diagram.setShowDelimitersAtPosition( Position::SouthEast,southEast );
+                        diagram.setShowDelimitersAtPosition( Position::South,    south );
+                        diagram.setShowDelimitersAtPosition( Position::SouthWest,southWest );
+                        diagram.setShowDelimitersAtPosition( Position::West,     west );
+                        diagram.setShowDelimitersAtPosition( Position::Floating, floating );
+                    }else{
+                        qDebug()<< "Could not parse PolarDiagram. Element"
+                                << tagName << "has invalid content.";
+                    }
+                } else if( tagName == "ShowLabelsAtPosition" ) {
+                    bool unknown = false;
+                    bool center = false;
+                    bool northWest = false;
+                    bool north = false;
+                    bool northEast = false;
+                    bool east = false;
+                    bool southEast = false;
+                    bool south = false;
+                    bool southWest = false;
+                    bool west = false;
+                    bool floating = false;
+                    if( KDXML::readPositionBooleansNode(
+                            element,
+                            unknown, center,
+                            northWest, north, northEast,
+                            east, southEast, south, southWest, west,
+                            floating ) )
+                    {
+                        diagram.setShowLabelsAtPosition( Position::Unknown,  unknown );
+                        diagram.setShowLabelsAtPosition( Position::Center,   center );
+                        diagram.setShowLabelsAtPosition( Position::NorthWest,northWest );
+                        diagram.setShowLabelsAtPosition( Position::North,    north );
+                        diagram.setShowLabelsAtPosition( Position::NorthEast,northEast );
+                        diagram.setShowLabelsAtPosition( Position::East,     east );
+                        diagram.setShowLabelsAtPosition( Position::SouthEast,southEast );
+                        diagram.setShowLabelsAtPosition( Position::South,    south );
+                        diagram.setShowLabelsAtPosition( Position::SouthWest,southWest );
+                        diagram.setShowLabelsAtPosition( Position::West,     west );
+                        diagram.setShowLabelsAtPosition( Position::Floating, floating );
+                    }else{
+                        qDebug()<< "Could not parse PolarDiagram. Element"
+                                << tagName << "has invalid content.";
+                    }
+                } else {
+                    qDebug() << "Unknown subelement of PolarDiagram found:" << tagName;
+                    bOK = false;
+                }
+            }
+            node = node.nextSibling();
+        }
+    }
+    return bOK;
 }
 
 void DiagramsSerializer::savePolarDiagram(
@@ -809,6 +1167,65 @@ void DiagramsSerializer::savePolarDiagram(
             diagram.showLabelsAtPosition( Position::Floating ) );
 }
 
+bool DiagramsSerializer::parseRingDiagram(
+        const QDomElement& container, RingDiagram& diagram )const
+{
+    QDomElement diagramElement;
+    QString diagName;
+    if( ! container.isNull() ) { // was really an element
+        diagName = container.tagName();
+        //qDebug() << "\n    DiagramsSerializer::parseRingDiagram() processing" << diagName;
+        QDomNode diagramNode = container.firstChild();
+        if( ! diagramNode.isNull() ) {
+            diagramElement = diagramNode.toElement();
+            if( !diagramElement.isNull() ) { // was really an element
+                QString tagName = diagramElement.tagName();
+                //qDebug()<< "\n    DiagramsSerializer::parseRingDiagram() processing"
+                //        << diagName << " / " << tagName;
+                if( tagName.compare("kdchart:ring-diagram", Qt::CaseInsensitive) != 0 )
+                    qDebug() << "Class RingDiagram" << diagName << "contains unknown element:" << tagName;
+            }else{
+                qDebug() << "Class RingDiagram" << diagName << "contains no valid element";
+            }
+        }else{
+            qDebug() << "Class RingDiagram" << diagName << "contains no diagram node";
+        }
+    }else{
+        qDebug() << "Cannot parse RingDiagram. Node is invalid.";
+    }
+
+    bool bOK = true;
+    if( !diagramElement.isNull() ) {
+        //qDebug() << "\n    DiagramsSerializer::parseRingDiagram() processing" << diagName;
+        QDomNode node = diagramElement.firstChild();
+        while( !node.isNull() ) {
+            QDomElement element = node.toElement();
+            if( !element.isNull() ) { // was really an element
+                QString tagName = element.tagName();
+                if( tagName == "kdchart:abstract-pie-diagram" ) {
+                    if( ! parseAbstractPieDiagram( element, diagram ) ){
+                        qDebug() << "Could not parse base class of RingDiagram.";
+                        bOK = false;
+                    }
+                } else if( tagName == "RelativeThickness" ) {
+                    bool b;
+                    if( KDXML::readBoolNode( element, b ) ){
+                        diagram.setRelativeThickness( b );
+                    }else{
+                        qDebug()<< "Could not parse RingDiagram. Element"
+                                << tagName << "has invalid content.";
+                    }
+                } else {
+                    qDebug() << "Unknown subelement of RingDiagram found:" << tagName;
+                    bOK = false;
+                }
+            }
+            node = node.nextSibling();
+        }
+    }
+    return bOK;
+}
+
 void DiagramsSerializer::saveRingDiagram(
         QDomDocument& doc,
         QDomElement& e,
@@ -825,6 +1242,58 @@ void DiagramsSerializer::saveRingDiagram(
 
     // then save what is stored in the derived class
     KDXML::createBoolNode(  doc, diagElement, "RelativeThickness",   diagram.relativeThickness() );
+}
+
+
+bool DiagramsSerializer::parseOtherDiagram(
+        const QDomElement& container, AbstractDiagram& diagram )const
+{
+    QDomElement diagramElement;
+    QString diagName;
+    if( ! container.isNull() ) { // was really an element
+        diagName = container.tagName();
+        //qDebug() << "\n    DiagramsSerializer::parseOtherDiagram() processing" << diagName;
+        QDomNode diagramNode = container.firstChild();
+        if( ! diagramNode.isNull() ) {
+            diagramElement = diagramNode.toElement();
+            if( !diagramElement.isNull() ) { // was really an element
+                QString tagName = diagramElement.tagName();
+                //qDebug()<< "\n    DiagramsSerializer::parseOtherDiagram() processing"
+                //        << diagName << " / " << tagName;
+                if( ! tagName.contains("diagram", Qt::CaseInsensitive) )
+                    qDebug() << "Diagram" << diagName << "contains unknown element:" << tagName;
+            }else{
+                qDebug() << "Diagram" << diagName << "contains no valid element";
+            }
+        }else{
+            qDebug() << "Diagram" << diagName << "contains no diagram node";
+        }
+    }else{
+        qDebug() << "Cannot parse diagram. Node is invalid.";
+    }
+
+    bool bOK = true;
+    if( !diagramElement.isNull() ) {
+        //qDebug() << "\n    DiagramsSerializer::parseOtherDiagram() processing" << diagName;
+        QDomNode node = diagramElement.firstChild();
+        while( !node.isNull() ) {
+            QDomElement element = node.toElement();
+            if( !element.isNull() ) { // was really an element
+                QString tagName = element.tagName();
+                if( tagName == "kdchart:abstract-diagram" ) {
+                    if( ! parseAbstractDiagram( element, diagram ) ){
+                        qDebug() << "Could not parse base class of diagram.";
+                        bOK = false;
+                    }
+                } else {
+                    qDebug() << "Unknown subelement of diagram found:" << tagName;
+                    bOK = false;
+                }
+            }
+            node = node.nextSibling();
+        }
+    }
+    return bOK;
 }
 
 void DiagramsSerializer::saveOtherDiagram(

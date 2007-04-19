@@ -81,6 +81,49 @@ SerializeCollector* SerializeCollector::instance()
 
 // ******************* parsing the data ***************************
 
+QDomElement SerializeCollector::findStoredGlobalPointer(
+        const QDomNode& rootNode,
+        const QString& globalPointerName,
+        const QString& globalGroupName,
+        const QString& globalListName )
+{
+    QDomElement container;
+    if( ! globalPointerName.isEmpty() ){
+        QDomNode node = rootNode.firstChild();
+        while( !node.isNull() ) {
+            QDomElement element = node.toElement();
+            if( !element.isNull() ) { // was really an element
+                QString tagName = element.tagName();
+                if( tagName.compare(globalListName, Qt::CaseInsensitive) == 0 ){
+                    QDomNode node2 = element.firstChild();
+                    while( !node2.isNull() ) {
+                        QDomElement ele2 = node2.toElement();
+                        if( !ele2.isNull() ) { // was really an element
+                            QString tagName2 = ele2.tagName();
+                            if( tagName2.compare(globalGroupName, Qt::CaseInsensitive) == 0 ){
+                                QDomNode node3 = ele2.firstChild();
+                                while( !node3.isNull() ) {
+                                    QDomElement ele3 = node3.toElement();
+                                    if( !ele3.isNull() ) { // was really an element
+                                        QString tagName3 = ele3.tagName();
+                                        if( tagName3.compare(globalPointerName, Qt::CaseInsensitive) == 0 ){
+                                            container = ele3;
+                                        }
+                                    }
+                                    node3 = node3.nextSibling();
+                                }
+                            }
+                        }
+                        node2 = node2.nextSibling();
+                    }
+                }
+            }
+            node = node.nextSibling();
+        }
+    }
+    return container;
+}
+
 bool SerializeCollector::initializeParsedGlobalPointers(
         const QDomNode& rootNode,
         const QString& name )

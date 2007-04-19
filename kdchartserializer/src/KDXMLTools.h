@@ -148,6 +148,12 @@ namespace KDXML {
     bool readDateTimeNode( const QDomElement& element, QDateTime& datetime );
     bool readDateNode( const QDomElement& element, QDate& date );
     bool readTimeNode( const QDomElement& element, QTime& time );
+    bool readPositionBooleansNode(
+            const QDomElement& element,
+            bool& unknown, bool& center,
+            bool& northWest, bool& north, bool& northEast,
+            bool& east, bool& southEast, bool& south, bool& southWest, bool& west,
+            bool& floating );
     bool readModelIndexNode(const QDomElement& element,
                             const QAbstractItemModel& model,
                             QModelIndex& idx );

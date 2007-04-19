@@ -62,43 +62,10 @@ bool AttributesModelSerializer::parseAttributesModel(
         const QString& globalName,
         AttributesModel& model )const
 {
-    bool bOK = false;
+    QDomElement container = SerializeCollector::findStoredGlobalPointer(
+            rootNode, globalName, "kdchart:attribute-models" );
 
-    QDomElement container;
-    if( ! globalName.isEmpty() ){
-        QDomNode node = rootNode.firstChild();
-        while( !node.isNull() ) {
-            QDomElement element = node.toElement();
-            if( !element.isNull() ) { // was really an element
-                QString tagName = element.tagName();
-                if( tagName == "kdchart:global-objects" ) {
-                    QDomNode node2 = element.firstChild();
-                    while( !node2.isNull() ) {
-                        QDomElement ele2 = node2.toElement();
-                        if( !ele2.isNull() ) { // was really an element
-                            QString tagName2 = ele2.tagName();
-                            if( tagName2 == "kdchart:attribute-models" ) {
-                                QDomNode node3 = ele2.firstChild();
-                                while( !node3.isNull() ) {
-                                    QDomElement ele3 = node3.toElement();
-                                    if( !ele3.isNull() ) { // was really an element
-                                        QString tagName3 = ele3.tagName();
-                                        if( tagName3.compare(globalName, Qt::CaseInsensitive) == 0 ){
-                                            container = ele3;
-                                            bOK = true;
-                                        }
-                                    }
-                                    node3 = node3.nextSibling();
-                                }
-                            }
-                        }
-                        node2 = node2.nextSibling();
-                    }
-                }
-            }
-            node = node.nextSibling();
-        }
-    }
+    bool bOK = ! container.tagName().isEmpty();
 
     if( bOK ) {
         const QString modelName = container.tagName();
