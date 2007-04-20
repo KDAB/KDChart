@@ -278,6 +278,43 @@ bool CoordPlanesSerializer::parseAbstractPlane(
                     qDebug()<< "Could not parse AbstractCoordinatePlane. Element"
                             << tagName << "has invalid content.";
                 }
+            } else if( tagName == "Chart" ) {
+                QDomNode node2 = element.firstChild();
+                if( ! node2.isNull() ) {
+                    QDomElement ele2 = node2.toElement();
+                    if( ! ele2.isNull() ) { // was really an element
+                        Chart* chart=0;
+                        QObject* ptr;
+                        QString ptrName;
+                        bool wasParsed;
+                        if( ! AttributesSerializer::parseQObjectPointerNode(
+                                        ele2, ptr,
+                                        ptrName, wasParsed, false ) && ptr )
+                        {
+                            qDebug()<< "Could not parse AbstractDiagram. Global pointer node"
+                                    << ele2.tagName() << "has invalid content.";
+                            bOK = false;
+                        }else{
+                            chart = dynamic_cast<Chart*>(ptr);
+                            if( ! chart ){
+                                qDebug()<< "Could not parse AbstractDiagram. Global pointer"
+                                        << ptrName << "is no KDChart::Chart-ptr.";
+                                bOK = false;
+                            }else{
+                                plane.setParent( chart );
+                            }
+                        }
+                    }else{
+                        qDebug()<< "Could not parse AbstractDiagram. Node does not contain a valid element.";
+                        bOK = false;
+                    }
+                }else{
+                    qDebug()<< "Could not parse AbstractDiagram. Node does not contain a valid element.";
+                    bOK = false;
+                }
+
+
+
             } else {
                 qDebug() << "Unknown subelement of AbstractCoordinatePlane found:" << tagName;
                 bOK = false;
