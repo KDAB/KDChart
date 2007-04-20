@@ -356,26 +356,12 @@ bool DiagramsSerializer::parseAbstractDiagram(
                         "      Make sure to adjust it via setRootIndex() after you have called setModel().";
                 }
             } else if( tagName == "CoodinatePlane" ) {
-                QDomNode node2 = element.firstChild();
-                if( ! node2.isNull() ) {
-                    QDomElement ele2 = node2.toElement();
-                    if( ! ele2.isNull() ) { // was really an element
-                        QObject* ptr;
-                        QString ptrName;
-                        bool wasParsed;
-                        if( AttributesSerializer::parseQObjectPointerNode(
-                                    ele2, ptr, ptrName, wasParsed, true ) )
-                        {
-                            AbstractCoordinatePlane* plane = dynamic_cast<AbstractCoordinatePlane*>(ptr);
-                            if( plane ){
-                                diagram.setCoordinatePlane( plane );
-                            }else{
-                                qDebug()<< "Could not parse AbstractDiagram. Global pointer"
-                                        << ele2.tagName() << "is not a KDChart::AbstractCoordinatePlane-ptr.";
-                                bOK = false;
-                            }
-                        }
-                    }
+                AbstractCoordinatePlane* plane;
+                if( mCoordS->parsePlane( container.ownerDocument().firstChild(), element.firstChild(), plane ) ){
+                    diagram.setCoordinatePlane( plane );
+                }else{
+                    qDebug()<< "Could not parse AbstractDiagram / CoodinatePlane. Global pointer is not a KDChart::AbstractCoordinatePlane-ptr.";
+                    bOK = false;
                 }
             } else if( tagName == "AllowOverlappingDataValueTexts" ) {
                 bool b;
@@ -506,10 +492,7 @@ bool DiagramsSerializer::parseCartCoordDiagram(
                 QDomNode node2 = element.firstChild();
                 while( ! node2.isNull() ) {
                     CartesianAxis *axis;
-                    if( mAxesS->parseCartesianAxis(
-                            container.ownerDocument().firstChild(),
-                            node2,
-                            axis ) )
+                    if( mAxesS->parseCartesianAxis( container.ownerDocument().firstChild(), node2, axis ) )
                     {
                         diagram.addAxis( axis );
                     }else{
@@ -519,17 +502,14 @@ bool DiagramsSerializer::parseCartCoordDiagram(
                     node2 = node2.nextSibling();
                 }
             } else if( tagName == "ReferenceDiagram" ) {
-                QDomNode node2 = element.firstChild();
-                if( ! node2.isNull() ) {
-                    AbstractDiagram* diag;
-                    refDiag = 0;
-                    if( parseDiagram( container.ownerDocument().firstChild(), node2, diag ) )
-                        refDiag = dynamic_cast<AbstractCartesianDiagram *>(diag);
-                    if( ! refDiag ){
-                        qDebug()<< "Could not parse AbstractCartesianDiagram. Reference-diagram of"
-                                << container.tagName() << "is not a KDChart::AbstractCartesianDiagram-ptr.";
-                        bOK = false;
-                    }
+                AbstractDiagram* diag;
+                refDiag = 0;
+                if( parseDiagram( container.ownerDocument().firstChild(), element.firstChild(), diag ) )
+                    refDiag = dynamic_cast<AbstractCartesianDiagram *>(diag);
+                if( ! refDiag ){
+                    qDebug()<< "Could not parse AbstractCartesianDiagram. Reference-diagram of"
+                            << container.tagName() << "is not a KDChart::AbstractCartesianDiagram-ptr.";
+                    bOK = false;
                 }
             } else if( tagName == "Offset" ) {
                 QPointF pt;

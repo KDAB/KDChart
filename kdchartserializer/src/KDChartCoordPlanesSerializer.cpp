@@ -222,53 +222,63 @@ bool CoordPlanesSerializer::parseAbstractPlane(
             if( tagName == "kdchart:diagrams" ) {
                 QDomNode node2 = element.firstChild();
                 while( ! node2.isNull() ) {
-                    QDomElement ele2 = node2.toElement();
-                    if( ! ele2.isNull() ) { // was really an element
-                        QObject* ptr;
-                        QString ptrName;
-                        bool wasParsed;
-                        if( AttributesSerializer::parseQObjectPointerNode(
-                                    ele2, ptr,
-                                    ptrName, wasParsed, true ) )
-                        {
-                            AbstractDiagram *diagram = dynamic_cast<AbstractDiagram*>(ptr);
-                            if( diagram ){
-                                if( bNoDiagramParsedYet ){
-                                    plane.replaceDiagram( diagram );
-                                    bNoDiagramParsedYet = false;
-                                }else{
-                                    plane.addDiagram( diagram );
-                                }
-                            }else{
-                                qDebug()<< "Could not parse AbstractCoordinatePlane. Global pointer"
-                                        << ele2.tagName() << "is not a KDChart::AbstractDiagram-ptr.";
-                                bOK = false;
-                            }
+                    AbstractDiagram* diagram=0;
+                    if( mDiagS->parseDiagram(
+                            container.ownerDocument().firstChild(), node2, diagram ) )
+                    {
+                        if( bNoDiagramParsedYet ){
+                            plane.replaceDiagram( diagram );
+                            bNoDiagramParsedYet = false;
                         }else{
-                            qDebug()<< "Could not parse AbstractCoordinatePlane. Global pointer"
-                                    << ele2.tagName() << "was not found in global list.";
-                            bOK = false;
+                            plane.addDiagram( diagram );
                         }
+                    }else{
+                        qDebug()<< "Could not parse AbstractCoordinatePlane / kdchart:diagrams. Global pointer is not a KDChart::AbstractDiagram-ptr.";
+                        bOK = false;
                     }
                     node2 = node2.nextSibling();
                 }
-            } /*else if( tagName == "AllowOverlappingDataValueTexts" ) {
-                bool b;
-                if( KDXML::readBoolNode( element, b ) ){
-                    diagram.setAllowOverlappingDataValueTexts( b );
+            } else if( tagName == "ZoomFactorX" ) {
+                double d;
+                if( KDXML::readDoubleNode( element, d ) ){
+                    plane.setZoomFactorX( d );
                 }else{
                     qDebug()<< "Could not parse AbstractCoordinatePlane. Element"
                             << tagName << "has invalid content.";
                 }
-            } else if( tagName == "DatasetDimension" ) {
-                int i;
-                if( KDXML::readIntNode( element, i ) ){
-                    diagram.setDatasetDimension( i );
+            } else if( tagName == "ZoomFactorY" ) {
+                double d;
+                if( KDXML::readDoubleNode( element, d ) ){
+                    plane.setZoomFactorY( d );
                 }else{
                     qDebug()<< "Could not parse AbstractCoordinatePlane. Element"
                             << tagName << "has invalid content.";
                 }
-        } */else {
+            } else if( tagName == "ZoomCenter" ) {
+                QPointF pt;
+                if( KDXML::readPointFNode( element, pt ) ){
+                    plane.setZoomCenter( pt );
+                }else{
+                    qDebug()<< "Could not parse AbstractCoordinatePlane. Element"
+                            << tagName << "has invalid content.";
+                }
+            } else if( tagName == "GlobalGridAttributes" ) {
+                GridAttributes a;
+                if( AttributesSerializer::parseGridAttributes( element, a ) ){
+                    plane.setGlobalGridAttributes( a );
+                }else{
+                    qDebug()<< "Could not parse AbstractCoordinatePlane. Element"
+                            << tagName << "has invalid content.";
+                }
+            } else if( tagName == "ReferencePlane" ) {
+                AbstractCoordinatePlane* refPlane;
+                if( parsePlane( container.ownerDocument().firstChild(), element.firstChild(), refPlane ) ){
+                    plane.setReferenceCoordinatePlane( refPlane );
+                }else{
+                    qDebug()<< "Could not parse AbstractCoordinatePlane. Element"
+                            << tagName << "has invalid content.";
+                }
+            } else {
                 qDebug() << "Unknown subelement of AbstractCoordinatePlane found:" << tagName;
                 bOK = false;
             }
