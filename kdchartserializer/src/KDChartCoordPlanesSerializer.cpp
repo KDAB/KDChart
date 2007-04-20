@@ -219,7 +219,7 @@ bool CoordPlanesSerializer::parseAbstractPlane(
         QDomElement element = node.toElement();
         if( !element.isNull() ) { // was really an element
             QString tagName = element.tagName();
-            if( tagName == "kdchart:diagrams" ) {
+            if( tagName == "kdchart:diagrams:pointers" ) {
                 QDomNode node2 = element.firstChild();
                 while( ! node2.isNull() ) {
                     AbstractDiagram* diagram=0;
@@ -699,6 +699,7 @@ bool CoordPlanesSerializer::parseAxesCalcMode(
             Q_ASSERT( false ); // all of the modes need to be handled
         }
     }
+    return bOK;
 }
 
 void CoordPlanesSerializer::saveAxesCalcMode(

@@ -168,7 +168,48 @@ bool Serializer::parseChartElement( const QDomElement& root )const
                 BackgroundAttributes a;
                 if( AttributesSerializer::parseBackgroundAttributes( e, a ) )
                     mChart->setBackgroundAttributes( a );
+            } else if( e.tagName() == "kdchart:coordinate-planes:pointers" ){
+                bool bFirstPlane=true;
+                QDomNode node2 = e.firstChild();
+                while( ! node2.isNull() ) {
+                    AbstractCoordinatePlane* plane;
+                    if( mCoordS->parsePlane( root, node2, plane ) ){
+                        if( bFirstPlane ){
+                            bFirstPlane = false;
+                            mChart->replaceCoordinatePlane( plane );
+                        }else{
+                            mChart->addCoordinatePlane( plane );
+                        }
+                    }else{
+                        qDebug()<< "Could not parse Chart / kdchart:coordinate-planes:pointers. Global pointer is not a KDChart::AbstractCoordinatePlane-ptr.";
+                        bOK = false;
+                    }
+                    node2 = node2.nextSibling();
+                }
+            } else {
+                qDebug() << "Unknown subelement of KDChart::Chart found:" << e.tagName();
+                bOK = false;
             }
+            /*
+        // save the coordinate planes:
+        // Data will be stored by the SerializeCollector.
+            mCoordS->savePlanes(
+                    doc, chartElement,
+            mChart->coordinatePlanes(),
+            "kdchart:coordinate-planes" );
+
+        // save the headers / footers
+            TextAreaSerializer::saveHeadersFooters(
+                    doc, chartElement,
+            mChart->headerFooters(),
+            "kdchart:headers-footers" );
+
+        // save the legends
+            LegendsSerializer::saveLegends(
+                    doc, chartElement,
+            mChart->legends(),
+            "kdchart:legends" );
+            */
         }
         n = n.nextSibling();
     }
