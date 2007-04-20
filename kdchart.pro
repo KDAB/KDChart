@@ -10,6 +10,6 @@ SUBDIRS = src examples uitools plugins tests qtests
 
 # forward make test calls to qtests:
 test.target=test
-test.commands=(cd qtests && make test)
+test.commands=(cd qtests && $(MAKE) test)
 test.depends = all $(TARGET)
 QMAKE_EXTRA_TARGETS += test
