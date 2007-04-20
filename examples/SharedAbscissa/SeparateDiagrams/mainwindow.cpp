@@ -68,6 +68,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_lines2->addAxis( xAxis );
 
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
+    m_chart->setGlobalLeading( 20, 20, 20, 20 );
     plane2->replaceDiagram( m_lines2 );
     m_chart->addCoordinatePlane( plane2/*, 1*/);
 }

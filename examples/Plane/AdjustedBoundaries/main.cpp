@@ -160,6 +160,7 @@ public:
     plane1->setGridAttributes( Qt::Vertical,  ga );
 
     QVBoxLayout* l = new QVBoxLayout(this);
+    m_chart.setGlobalLeadingTop( 5 );
     l->addWidget(&m_chart);
     setLayout(l);
   }

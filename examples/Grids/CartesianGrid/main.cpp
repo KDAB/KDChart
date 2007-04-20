@@ -147,6 +147,7 @@ public:
 
     QVBoxLayout* l = new QVBoxLayout(this);
     l->addWidget(&m_chart);
+    m_chart.setGlobalLeadingRight( 20 );
     setLayout(l);
   }
 

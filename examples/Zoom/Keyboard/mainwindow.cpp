@@ -37,6 +37,7 @@ MainWindow::MainWindow( QWidget* parent )
 
     QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
     widget = new ZoomWidget( chartFrame );
+    widget->setGlobalLeadingRight( 10 );
     chartLayout->addWidget( widget );
 }
 

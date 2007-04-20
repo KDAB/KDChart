@@ -49,6 +49,8 @@ MainWindow::MainWindow( QWidget* parent ) :
 
     // insert the KDChart::Chart into Qt's layout
     QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
+    m_chart->setGlobalLeadingLeft( 5 );
+    m_chart->setGlobalLeadingRight( 5 );
     chartLayout->addWidget( m_chart );
 
     // wire up the KD Chart classes

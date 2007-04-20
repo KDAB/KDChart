@@ -44,7 +44,9 @@ MainWindow::MainWindow( QWidget* parent ) :
 
     QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
     m_chart = new Chart();
+    m_chart->setGlobalLeading( 20,  20,  20,  20 );
     chartLayout->addWidget( m_chart );
+
 
     // Initialize the model, and fill it with data
     const int rowCount = 8;

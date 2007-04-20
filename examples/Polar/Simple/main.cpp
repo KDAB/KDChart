@@ -49,6 +49,7 @@ int main( int argc, char** argv ) {
     widget.setDataset( 1, vec1, "v1" );
     widget.setDataset( 2, vec2, "v2" );
     widget.setType( Widget::Polar );
+    widget.setGlobalLeading( 5, 5, 5, 5 );
 
     widget.show();
 

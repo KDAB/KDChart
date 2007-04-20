@@ -76,6 +76,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
     plane2->replaceDiagram( m_lines2 );
     m_chart->addCoordinatePlane( plane2/*, 1*/);
+    m_chart->setGlobalLeading( 20, 20, 20, 20 );
     init();
 }
 

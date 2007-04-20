@@ -44,6 +44,7 @@ MainWindow::MainWindow( QWidget* parent ) :
 {
     QHBoxLayout* chartLayout = new QHBoxLayout( this );
     m_chart = new Chart();
+    m_chart->setGlobalLeading( 5, 5, 5, 5 );
     chartLayout->addWidget( m_chart );
 
     m_model = new QStandardItemModel(0, 0, this); // model contains no data at all

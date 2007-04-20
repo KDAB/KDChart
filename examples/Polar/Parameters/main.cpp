@@ -56,6 +56,8 @@ public:
 
         QVBoxLayout* l = new QVBoxLayout(this);
         l->addWidget(&m_chart);
+        m_chart.setGlobalLeadingTop( 5 );
+        m_chart.setGlobalLeadingBottom( 5 );
         setLayout(l);
     }
 

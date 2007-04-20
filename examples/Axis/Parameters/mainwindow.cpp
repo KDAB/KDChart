@@ -47,6 +47,7 @@ MainWindow::MainWindow( QWidget* parent ) :
 
     QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
     m_chart = new Chart();
+    m_chart->setGlobalLeading( 20,  20,  20,  20 );
     chartLayout->addWidget( m_chart );
     hSBar->setVisible( false );
     vSBar->setVisible( false );
