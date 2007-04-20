@@ -121,8 +121,7 @@ private slots:
 
 
         // prepare parsing
-        QVERIFY( SerializeCollector::initializeParsedGlobalPointers( mDocRoot ) );
-
+        QVERIFY( SerializeCollector::initializeGlobalPointers( mDocRoot ) );
 
         AttributesModel parsedAttrsModel(0,0);
         QVERIFY( mAttrModelS->parseAttributesModel(

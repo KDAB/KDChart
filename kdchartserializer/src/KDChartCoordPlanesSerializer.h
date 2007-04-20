@@ -51,33 +51,47 @@ namespace KDChart {
             explicit CoordPlanesSerializer();
             virtual ~CoordPlanesSerializer();
 
-            virtual bool parsePlanes(
-                    const QDomElement& e,
-                    CoordinatePlaneList& planes )const;
-
             virtual void savePlanes(
                     QDomDocument& doc,
                     QDomElement& e,
                     const CoordinatePlaneList& planes,
                     const QString& title )const;
 
+            /**
+             * Parse the plane element, and return an AbstractCoordinatePlane* in \c planePtr
+             * if the respective plane was found in the list of global elements.
+             *
+             * Make sure that you have called
+             * \c KDChart::SerializeCollector::instance()->initializeParsedGlobalPointers()
+             * before invoking this method, or it will stop parsing and return false.
+             */
+            virtual bool parsePlane(
+                    const QDomNode& rootNode,
+                    const QDomNode& pointerNode,
+                    AbstractCoordinatePlane*& planePtr )const;
             virtual void savePlane(
                     QDomDocument& doc,
                     QDomElement& e,
                     const AbstractCoordinatePlane* p )const;
 
+            virtual bool parseAbstractPlane(
+                    const QDomElement& container, AbstractCoordinatePlane& plane )const;
             virtual void saveAbstractPlane(
                     QDomDocument& doc,
                     QDomElement& e,
                     const AbstractCoordinatePlane& plane,
                     const QString& title )const;
 
+            virtual bool parseCartPlane(
+                    const QDomElement& container, CartesianCoordinatePlane& plane )const;
             virtual void saveCartPlane(
                     QDomDocument& doc,
                     QDomElement& e,
                     const CartesianCoordinatePlane& plane,
                     const QString& title )const;
 
+            virtual bool parsePolPlane(
+                    const QDomElement& container, PolarCoordinatePlane& plane )const;
             virtual void savePolPlane(
                     QDomDocument& doc,
                     QDomElement& e,
@@ -96,6 +110,8 @@ namespace KDChart {
              */
             virtual const QString nameOfClass( const AbstractCoordinatePlane* p )const;
 
+            virtual bool parseOtherPlane(
+                    const QDomElement& container, AbstractCoordinatePlane& plane )const;
             /** By default this does nothing, it can be used by derived classes,
              * will be called whenever a coord. plane is found that is neither
              *  a CartesianCoordinatePlane nor a PolarCoordinatePlane.

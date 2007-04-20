@@ -58,6 +58,9 @@ using namespace KDChart;
 DiagramsSerializer::DiagramsSerializer( CoordPlanesSerializer* coordS )
 {
     mCoordS = coordS;
+    mHaveOwnCoordS = ( mCoordS == 0 );
+    if( mHaveOwnCoordS )
+        mCoordS = new CoordPlanesSerializer();
     mAxesS = new AxesSerializer();
     mAttrModelS = new AttributesModelSerializer();
     mGlobalList = "kdchart:diagrams"; // default value, can be
@@ -68,6 +71,8 @@ DiagramsSerializer::~DiagramsSerializer()
 {
     delete mAttrModelS;
     delete mAxesS;
+    if( mHaveOwnCoordS )
+        delete mCoordS;
 }
 
 const QString DiagramsSerializer::nameOfClass( const AbstractDiagram* p )const
@@ -127,22 +132,26 @@ void DiagramsSerializer::saveDiagrams(
 bool DiagramsSerializer::parseDiagram(
         const QDomNode& rootNode,
         const QDomNode& pointerNode,
-        AbstractDiagram*& diagram )const
+        AbstractDiagram*& diagramPtr )const
 {
     bool bOK = true;
+    diagramPtr=0;
 
-    AbstractDiagram* diag=0;
     QObject* ptr;
     QString ptrName;
+    bool wasParsed;
     const bool pointerFound =
-            (AttributesSerializer::parseQObjectPointerNode(pointerNode, ptr, &ptrName) && ptr);
+            AttributesSerializer::parseQObjectPointerNode(
+                    pointerNode, ptr,
+                    ptrName, wasParsed, true ) && ptr;
+
     if( ptrName.isEmpty() ){
         qDebug()<< "Could not parse diagram. Global pointer node is invalid.";
         bOK = false;
     }else{
         if( pointerFound ){
-            diag = dynamic_cast<AbstractDiagram*>(ptr);
-            if( ! diag ){
+            diagramPtr = dynamic_cast<AbstractDiagram*>(ptr);
+            if( ! diagramPtr ){
                 qDebug()<< "Could not parse diagram. Global pointer"
                         << ptrName << "is no AbstractDiagram-ptr.";
                 bOK = false;
@@ -154,45 +163,38 @@ bool DiagramsSerializer::parseDiagram(
         }
     }
 
+
+    if( bOK && wasParsed ) return true;
+
+
     QDomElement container;
     if( bOK ){
-        container = SerializeCollector::findStoredGlobalPointer(
+        container = SerializeCollector::findStoredGlobalElement(
                 rootNode, ptrName, "kdchart:diagrams" );
         bOK = ! container.tagName().isEmpty();
     }
 
     if( bOK ) {
-        LineDiagram*  lineDiag  = dynamic_cast<LineDiagram*> (  diag );
-        BarDiagram*   barDiag   = dynamic_cast<BarDiagram*> (   diag );
-        PieDiagram*   pieDiag   = dynamic_cast<PieDiagram*> (   diag );
-        PolarDiagram* polarDiag = dynamic_cast<PolarDiagram*> ( diag );
-        RingDiagram*  ringDiag  = dynamic_cast<RingDiagram*> (  diag );
+        SerializeCollector::instance()->setWasParsed( diagramPtr, true );
 
-        if( lineDiag ){
-            bOK = parseLineDiagram( container, *lineDiag );
-            if( bOK )
-                diagram = lineDiag;
-        }else if( barDiag ){
-            bOK = parseBarDiagram( container, *barDiag );
-            if( bOK )
-                diagram = barDiag;
-        }else if( pieDiag ){
-            bOK = parsePieDiagram( container, *pieDiag );
-            if( bOK )
-                diagram = pieDiag;
-        }else if( polarDiag ){
+        LineDiagram*  lineDiag  = dynamic_cast<LineDiagram*> (  diagramPtr );
+        BarDiagram*   barDiag   = dynamic_cast<BarDiagram*> (   diagramPtr );
+        PieDiagram*   pieDiag   = dynamic_cast<PieDiagram*> (   diagramPtr );
+        PolarDiagram* polarDiag = dynamic_cast<PolarDiagram*> ( diagramPtr );
+        RingDiagram*  ringDiag  = dynamic_cast<RingDiagram*> (  diagramPtr );
+
+        if( lineDiag )
+            bOK = parseLineDiagram(  container, *lineDiag );
+        else if( barDiag )
+            bOK = parseBarDiagram(   container,  *barDiag );
+        else if( pieDiag )
+            bOK = parsePieDiagram(   container, *pieDiag );
+        else if( polarDiag )
             bOK = parsePolarDiagram( container, *polarDiag );
-            if( bOK )
-                diagram = polarDiag;
-        }else if( ringDiag ){
-            bOK = parseRingDiagram( container, *ringDiag );
-            if( bOK )
-                diagram = ringDiag;
-        }else{
-            bOK = parseOtherDiagram( container, *diag );
-            if( bOK )
-                diagram = diag;
-        }
+        else if( ringDiag )
+            bOK = parseRingDiagram(  container, *ringDiag );
+        else
+            bOK = parseOtherDiagram( container, *diagramPtr );
     }
     return bOK;
 }
@@ -237,7 +239,7 @@ bool DiagramsSerializer::parseAbstractDiagram(
 
     //TODO(khz): Find a way to serialize the Model data!
     //
-    // pass #1: assign the model to the diagram
+    // pass #1: assign the data model to the diagram
     //
     // This will be done to set the correct model first, so that
     // setting a RootIndex will use the right model then.
@@ -274,7 +276,7 @@ bool DiagramsSerializer::parseAbstractDiagram(
 
 
     // pass #2: retrieve all of the other settings, assuming that
-    // the attributes model has been set correctly to the diagram
+    //          the data model has been set correctly to the diagram
     //
     // note: ATM pass #1 just is not done, so we can not set any RootIndex yet
     //       (khz, 2007 April 12)
@@ -292,8 +294,11 @@ bool DiagramsSerializer::parseAbstractDiagram(
                         AttributesModel* model=0;
                         QObject* ptr;
                         QString ptrName;
-                        const bool isExternalModel = 
-                            (AttributesSerializer::parseQObjectPointerNode(ele2, ptr, &ptrName) && ptr);
+                        bool wasParsed;
+                        const bool isExternalModel =
+                                AttributesSerializer::parseQObjectPointerNode(
+                                        ele2, ptr,
+                                        ptrName, wasParsed, false ) && ptr;
                         if( ptrName.isEmpty() ){
                             qDebug()<< "Could not parse AbstractDiagram. Global pointer node"
                                     << ele2.tagName() << "is invalid.";
@@ -307,37 +312,36 @@ bool DiagramsSerializer::parseAbstractDiagram(
                                     bOK = false;
                                 }
                             }else{
-                            // If no external model stored
-                            // use the built-in attributes-model
+                                // If no external model stored
+                                // use the built-in attributes-model
                                 model = diagram.attributesModel();
                             }
                         }
+
+                        if( bOK && ! wasParsed ){
+                            SerializeCollector::instance()->setWasParsed( model, true );
+
+                            bOK = mAttrModelS->parseAttributesModel(
+                                    container.ownerDocument().firstChild(),
+                                    ptrName, *model );
+                        }
+
                         if( bOK ){
-                            if( mAttrModelS->parseAttributesModel(
-                                container.ownerDocument().firstChild(),
-                                ptrName,
-                                *model ) )
-                            {
-                                if( isExternalModel )
-                                    diagram.setAttributesModel( model );
-                                else
-                                    diagram.attributesModel()->initFrom( model );
-                            }else{
-                                qDebug()<< "Could not parse AbstractDiagram / AttributesModel"
-                                        << ptrName;
-                                bOK = false;
-                            }
+                            if( isExternalModel )
+                                diagram.setAttributesModel( model );
+                            else
+                                diagram.attributesModel()->initFrom( model );
                         }else{
-                            qDebug()<< "Could not parse AbstractDiagram. Global pointer"
-                                    << ele2.tagName() << "not found in global list.";
+                            qDebug()<< "Could not parse AbstractDiagram / AttributesModel"
+                                    << ptrName;
                             bOK = false;
                         }
                     }else{
-                        qDebug()<< "Could not parse AbstractDiagram.Element does not contain a valid element.";
+                        qDebug()<< "Could not parse AbstractDiagram. Node does not contain a valid element.";
                         bOK = false;
                     }
                 }else{
-                    qDebug()<< "Could not parse AbstractDiagram. Node does not contain an \"external\" flag.";
+                    qDebug()<< "Could not parse AbstractDiagram. Node does not contain a valid element.";
                     bOK = false;
                 }
             } else if( tagName == "RootIndex" ) {
@@ -357,7 +361,11 @@ bool DiagramsSerializer::parseAbstractDiagram(
                     QDomElement ele2 = node2.toElement();
                     if( ! ele2.isNull() ) { // was really an element
                         QObject* ptr;
-                        if( AttributesSerializer::parseQObjectPointerNode( ele2, ptr ) ){
+                        QString ptrName;
+                        bool wasParsed;
+                        if( AttributesSerializer::parseQObjectPointerNode(
+                                    ele2, ptr, ptrName, wasParsed, true ) )
+                        {
                             AbstractCoordinatePlane* plane = dynamic_cast<AbstractCoordinatePlane*>(ptr);
                             if( plane ){
                                 diagram.setCoordinatePlane( plane );
@@ -497,36 +505,30 @@ bool DiagramsSerializer::parseCartCoordDiagram(
             } else if( tagName == "kdchart:axes:pointers" ) {
                 QDomNode node2 = element.firstChild();
                 while( ! node2.isNull() ) {
-                    QDomElement ele2 = node2.toElement();
-                    if( ! ele2.isNull() ) { // was really an element
-                        QObject* ptr;
-                        if( AttributesSerializer::parseQObjectPointerNode( ele2, ptr ) ){
-                            CartesianAxis *axis = dynamic_cast<CartesianAxis*>(ptr);
-                            if( axis ){
-                                diagram.addAxis( axis );
-                            }else{
-                                qDebug()<< "Could not parse AbstractCartesianDiagram. Global pointer"
-                                        << ele2.tagName() << "is not a KDChart::CartesianAxis-ptr.";
-                                bOK = false;
-                            }
-                        }
+                    CartesianAxis *axis;
+                    if( mAxesS->parseCartesianAxis(
+                            container.ownerDocument().firstChild(),
+                            node2,
+                            axis ) )
+                    {
+                        diagram.addAxis( axis );
+                    }else{
+                        qDebug()<< "Could not parse element of AbstractCartesianDiagram / kdchart:axes:pointers.";
+                        bOK = false;
                     }
                     node2 = node2.nextSibling();
                 }
             } else if( tagName == "ReferenceDiagram" ) {
                 QDomNode node2 = element.firstChild();
                 if( ! node2.isNull() ) {
-                    QDomElement ele2 = node2.toElement();
-                    if( ! ele2.isNull() ) { // was really an element
-                        QObject* ptr;
-                        if( AttributesSerializer::parseQObjectPointerNode( ele2, ptr ) ){
-                            refDiag = dynamic_cast<AbstractCartesianDiagram*>(ptr);
-                            if( ! refDiag ){
-                                qDebug()<< "Could not parse AbstractCartesianDiagram. Global pointer"
-                                        << ele2.tagName() << "is not a KDChart::AbstractCartesianDiagram-ptr.";
-                                bOK = false;
-                            }
-                        }
+                    AbstractDiagram* diag;
+                    refDiag = 0;
+                    if( parseDiagram( container.ownerDocument().firstChild(), node2, diag ) )
+                        refDiag = dynamic_cast<AbstractCartesianDiagram *>(diag);
+                    if( ! refDiag ){
+                        qDebug()<< "Could not parse AbstractCartesianDiagram. Reference-diagram of"
+                                << container.tagName() << "is not a KDChart::AbstractCartesianDiagram-ptr.";
+                        bOK = false;
                     }
                 }
             } else if( tagName == "Offset" ) {

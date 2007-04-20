@@ -197,15 +197,19 @@ namespace KDChart {
              * Otherwise it will return FALSE.
              * 
              * If a matching pointer was found it is returned in \c p, otherwise \c p will be Null.
+             * If a matching pointer was found and it has been parsed before \c wasParsed is
+             * set to true, otherwise \c wasParsed will be false.
              *
-             * If prtName is valid, and if a "name" attribute was read
+             * If a "name" attribute was read
              * that name is returned in \c ptrName, regardless of
              * whether a matching pointer was found or not.
              */
             static bool parseQObjectPointerNode(
                     const QDomNode& node,
                     QObject*& p,
-                    QString* ptrName=0 );
+                    QString& ptrName,
+                    bool& wasParsed,
+                    bool bErrorIfNotFound );
 
             /**
              * This method assumes you have called
@@ -218,6 +222,7 @@ namespace KDChart {
             static bool findQObjectPointer(
                     const QString& name,
                     QObject*& p,
+                    bool& wasParsed,
                     bool reportNotFound=true );
 
             static void saveQObjectPointer(

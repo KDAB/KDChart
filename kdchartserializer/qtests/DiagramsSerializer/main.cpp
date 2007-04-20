@@ -108,7 +108,7 @@ private slots:
         // </kdchart:kdchart>
 
         // prepare parsing
-        QVERIFY( SerializeCollector::initializeParsedGlobalPointers( mDocRoot ) );
+        QVERIFY( SerializeCollector::initializeGlobalPointers( mDocRoot ) );
 
 
         AbstractDiagram* parsedDiagram=0;

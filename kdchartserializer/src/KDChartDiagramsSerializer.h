@@ -63,7 +63,7 @@ namespace KDChart {
                     const QString& title )const;
 
             /**
-             * Parse the diagram element, and return an AbstractDiagram* in \c diagram
+             * Parse the diagram element, and return an AbstractDiagram* in \c diagramPtr
              * if the respective diagram was found in the list of global elements.
              *
              * Make sure that you have called
@@ -73,7 +73,7 @@ namespace KDChart {
             virtual bool parseDiagram(
                     const QDomNode& rootNode,
                     const QDomNode& pointerNode,
-                    AbstractDiagram*& diagram )const;
+                    AbstractDiagram*& diagramPtr )const;
             virtual void saveDiagram(
                     QDomDocument& doc,
                     QDomElement& e,
@@ -178,6 +178,7 @@ namespace KDChart {
                     const AbstractDiagram& diagram )const;
 
         private:
+            bool mHaveOwnCoordS;
             CoordPlanesSerializer* mCoordS;
             AxesSerializer* mAxesS;
             AttributesModelSerializer* mAttrModelS;

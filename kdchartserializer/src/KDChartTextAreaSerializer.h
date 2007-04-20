@@ -43,8 +43,6 @@ namespace KDChart {
     class KDCHART_EXPORT TextAreaSerializer : public QObject
     {
         public:
-            static bool parseHeadersFooters(
-                    const QDomElement& container, KDChart::HeaderFooterList& areas );
             static void saveHeadersFooters(
                     QDomDocument& doc,
                     QDomElement& e,
@@ -60,7 +58,9 @@ namespace KDChart {
              * before invoking this method, or it will stop parsing and return false.
              */
             static bool parseHeaderFooter(
-                    const QDomElement& container, HeaderFooter*& hdFt );
+                    const QDomNode& rootNode,
+                    const QDomNode& pointerNode,
+                    HeaderFooter*& hdFt );
 
             static void TextAreaSerializer::saveHeaderFooter(
                     QDomDocument& doc,

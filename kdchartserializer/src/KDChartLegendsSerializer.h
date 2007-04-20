@@ -58,7 +58,9 @@ namespace KDChart {
              * before invoking this method, or it will stop parsing and return false.
              */
             static bool parseLegend(
-                    const QDomElement& container, Legend*& legend );
+                    const QDomNode& rootNode,
+                    const QDomNode& pointerNode,
+                    Legend*& legend );
 
             static void saveLegend(
                     QDomDocument& doc,

@@ -48,14 +48,6 @@
 using namespace KDChart;
 
 
-bool TextAreaSerializer::parseHeadersFooters(
-        const QDomElement& container,
-        KDChart::HeaderFooterList& areas )
-{
-    bool bOK = true;
-    return bOK;
-}
-
 void TextAreaSerializer::saveHeadersFooters(
         QDomDocument& doc,
         QDomElement& e,
@@ -89,32 +81,53 @@ void TextAreaSerializer::saveHeadersFooters(
 
 
 bool TextAreaSerializer::parseHeaderFooter(
-        const QDomElement& container,
+        const QDomNode& rootNode,
+        const QDomNode& pointerNode,
         HeaderFooter*& hdFt )
 {
     bool bOK = true;
-    if( ! container.isNull() ) { // was really an element
-        const QString hdFtName = container.tagName();
-        //qDebug() << "\n    TextAreaSerializer::parseHeaderFooter() processing" << hdFtName;
-        QObject* p;
-        if( AttributesSerializer::findQObjectPointer( hdFtName, p ) ){
-            hdFt = dynamic_cast<HeaderFooter*>(p);
+    hdFt=0;
+
+    QObject* ptr;
+    QString ptrName;
+    bool wasParsed;
+    const bool pointerFound =
+            AttributesSerializer::parseQObjectPointerNode(
+                    pointerNode, ptr,
+                    ptrName, wasParsed, true ) && ptr;
+
+    if( ptrName.isEmpty() ){
+        qDebug()<< "Could not parse header/footer. Global pointer node is invalid.";
+        bOK = false;
+    }else{
+        if( pointerFound ){
+            hdFt = dynamic_cast<HeaderFooter*>(ptr);
             if( ! hdFt ){
                 qDebug()<< "Could not parse header/footer. Global pointer"
-                        << hdFtName << "is not a KDChart::HeaderFooter-ptr.";
+                        << ptrName << "is no HeaderFooter-ptr.";
                 bOK = false;
             }
         }else{
-            qDebug()<< "Could not parse header/footer. Pointer"
-                    << hdFtName << "not found in global list.";
+            qDebug()<< "Could not parse header/footer. Global pointer"
+                    << ptrName << "is no HeaderFooter-ptr.";
             bOK = false;
         }
-    }else{
-        qDebug()<< "Could not parse header/footer. Container element is Null.";
-        bOK = false;
     }
 
+
+    if( bOK && wasParsed ) return true;
+
+
+    QDomElement container;
     if( bOK ){
+        container = SerializeCollector::findStoredGlobalElement(
+                rootNode, ptrName, "kdchart:headers-footers" );
+        bOK = ! container.tagName().isEmpty();
+    }
+
+    if( bOK ) {
+        SerializeCollector::instance()->setWasParsed( hdFt, true );
+
         QString s;
         if( KDXML::findStringAttribute( container, "type", s ) ){
             if( ! s.isEmpty() ){
@@ -248,7 +261,10 @@ bool TextAreaSerializer::parseTextLayoutItem(
             QString tagName = element.tagName();
             if( tagName == "AutoReferenceArea" ) {
                 QObject* ptr;
-                if( AttributesSerializer::parseQObjectPointerNode( element.firstChild(), ptr ) )
+                QString ptrName;
+                bool wasParsed;
+                if( AttributesSerializer::parseQObjectPointerNode(
+                        element.firstChild(), ptr, ptrName, wasParsed, true ) )
                     item.setAutoReferenceArea( ptr );
                 else
                     bOK = false;

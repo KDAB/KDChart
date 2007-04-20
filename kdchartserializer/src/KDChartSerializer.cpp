@@ -139,7 +139,7 @@ bool Serializer::parseChartElement( const QDomElement& root )const
         return false;
     }
 
-    if( ! SerializeCollector::initializeParsedGlobalPointers( root ) ){
+    if( ! SerializeCollector::initializeGlobalPointers( root ) ){
         QMessageBox::information(
                 0 , mProgramName,
                 tr("Error while parsing the root node: Can not initialize global pointers."));

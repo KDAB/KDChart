@@ -62,39 +62,6 @@ CoordPlanesSerializer::~CoordPlanesSerializer()
     delete mDiagS;
 }
 
-bool CoordPlanesSerializer::parsePlanes(
-        const QDomElement& e,
-        CoordinatePlaneList& planes )const
-{
-    bool bOK = true;
-    QDomNode node = e.firstChild();
-    while( !node.isNull() ) {
-        QDomElement element = node.toElement();
-        if( !element.isNull() ) { // was really an element
-            QString tagName = element.tagName();
-            /*
-            if( tagName == "kdchart:cartesian-coordinate-plane" ) {
-                bool b;
-                if( KDXML::readBoolNode( element, b ) )
-                    a.setVisible( b );
-            } else if( tagName == "kdchart:polar-coordinate-plane" ) {
-                QPen p;
-                if( KDXML::readPenNode( element, p ) )
-                    a.setPen( p );
-            } else {
-                QPen p;
-                if( KDXML::readPenNode( element, p ) )
-                    a.setPen( p );
-            } else {
-                qDebug() << "Unknown subelement of FrameAttributes found:" << tagName;
-                bOK = false;
-            }
-            */
-        }
-        node = node.nextSibling();
-    }
-    return bOK;
-}
 
 void CoordPlanesSerializer::savePlanes(
         QDomDocument& doc,
@@ -131,6 +98,78 @@ void CoordPlanesSerializer::savePlanes(
     }
 }
 
+
+bool CoordPlanesSerializer::parsePlane(
+        const QDomNode& rootNode,
+        const QDomNode& pointerNode,
+        AbstractCoordinatePlane*& planePtr )const
+{
+    bool bOK = true;
+
+    AbstractCoordinatePlane* plane=0;
+    QObject* ptr;
+    QString ptrName;
+    bool wasParsed;
+    const bool pointerFound =
+            AttributesSerializer::parseQObjectPointerNode(
+                    pointerNode, ptr,
+                    ptrName, wasParsed, true ) && ptr;
+
+    if( ptrName.isEmpty() ){
+        qDebug()<< "Could not parse coord-plane. Global pointer node is invalid.";
+        bOK = false;
+    }else{
+        if( pointerFound ){
+            plane = dynamic_cast<AbstractCoordinatePlane*>(ptr);
+            if( ! plane ){
+                qDebug()<< "Could not parse coord-plane. Global pointer"
+                        << ptrName << "is no AbstractCoordinatePlane-ptr.";
+                bOK = false;
+            }
+        }else{
+            qDebug()<< "Could not parse coord-plane. Global pointer"
+                    << ptrName << "is no AbstractCoordinatePlane-ptr.";
+            bOK = false;
+        }
+    }
+
+
+    if( bOK && wasParsed ){
+        planePtr = plane;
+        return true;
+    }
+
+
+    QDomElement container;
+    if( bOK ){
+        container = SerializeCollector::findStoredGlobalElement(
+                rootNode, ptrName, "kdchart:coordinate-planes" );
+        bOK = ! container.tagName().isEmpty();
+    }
+
+    if( bOK ) {
+        SerializeCollector::instance()->setWasParsed( plane, true );
+
+        CartesianCoordinatePlane* cartPlane = dynamic_cast<CartesianCoordinatePlane*> ( plane );
+        PolarCoordinatePlane*     polPlane  = dynamic_cast<PolarCoordinatePlane*> (     plane );
+
+        if( cartPlane ){
+            bOK = parseCartPlane( container, *cartPlane );
+            if( bOK )
+                plane = cartPlane;
+        }else if( polPlane ){
+            bOK = parseCartPlane( container, *cartPlane );
+            if( bOK )
+                plane = cartPlane;
+        }else{
+            bOK = parseOtherPlane( container, *plane );
+            if( bOK )
+                planePtr = plane;
+        }
+    }
+    return bOK;
+}
+
 void CoordPlanesSerializer::savePlane(
         QDomDocument& doc,
         QDomElement& e,
@@ -165,6 +204,78 @@ const QString CoordPlanesSerializer::nameOfClass( const AbstractCoordinatePlane*
     else
         classname = "UNKNOWN";
     return classname;
+}
+
+
+bool CoordPlanesSerializer::parseAbstractPlane(
+        const QDomElement& container, AbstractCoordinatePlane& plane )const
+{
+    bool bOK = true;
+    QDomNode node;
+
+    bool bNoDiagramParsedYet = true;
+    node = container.firstChild();
+    while( !node.isNull() ) {
+        QDomElement element = node.toElement();
+        if( !element.isNull() ) { // was really an element
+            QString tagName = element.tagName();
+            if( tagName == "kdchart:diagrams" ) {
+                QDomNode node2 = element.firstChild();
+                while( ! node2.isNull() ) {
+                    QDomElement ele2 = node2.toElement();
+                    if( ! ele2.isNull() ) { // was really an element
+                        QObject* ptr;
+                        QString ptrName;
+                        bool wasParsed;
+                        if( AttributesSerializer::parseQObjectPointerNode(
+                                    ele2, ptr,
+                                    ptrName, wasParsed, true ) )
+                        {
+                            AbstractDiagram *diagram = dynamic_cast<AbstractDiagram*>(ptr);
+                            if( diagram ){
+                                if( bNoDiagramParsedYet ){
+                                    plane.replaceDiagram( diagram );
+                                    bNoDiagramParsedYet = false;
+                                }else{
+                                    plane.addDiagram( diagram );
+                                }
+                            }else{
+                                qDebug()<< "Could not parse AbstractCoordinatePlane. Global pointer"
+                                        << ele2.tagName() << "is not a KDChart::AbstractDiagram-ptr.";
+                                bOK = false;
+                            }
+                        }else{
+                            qDebug()<< "Could not parse AbstractCoordinatePlane. Global pointer"
+                                    << ele2.tagName() << "was not found in global list.";
+                            bOK = false;
+                        }
+                    }
+                    node2 = node2.nextSibling();
+                }
+            } /*else if( tagName == "AllowOverlappingDataValueTexts" ) {
+                bool b;
+                if( KDXML::readBoolNode( element, b ) ){
+                    diagram.setAllowOverlappingDataValueTexts( b );
+                }else{
+                    qDebug()<< "Could not parse AbstractCoordinatePlane. Element"
+                            << tagName << "has invalid content.";
+                }
+            } else if( tagName == "DatasetDimension" ) {
+                int i;
+                if( KDXML::readIntNode( element, i ) ){
+                    diagram.setDatasetDimension( i );
+                }else{
+                    qDebug()<< "Could not parse AbstractCoordinatePlane. Element"
+                            << tagName << "has invalid content.";
+                }
+        } */else {
+                qDebug() << "Unknown subelement of AbstractCoordinatePlane found:" << tagName;
+                bOK = false;
+            }
+        }
+        node = node.nextSibling();
+    }
+    return bOK;
 }
 
 void CoordPlanesSerializer::saveAbstractPlane(
@@ -259,6 +370,14 @@ void CoordPlanesSerializer::saveAbstractPlane(
     }
 }
 
+
+bool CoordPlanesSerializer::parseCartPlane(
+        const QDomElement& container, CartesianCoordinatePlane& plane )const
+{
+    bool bOK = true;
+    return bOK;
+}
+
 void CoordPlanesSerializer::saveCartPlane(
         QDomDocument& doc,
         QDomElement& e,
@@ -303,6 +422,13 @@ void CoordPlanesSerializer::saveCartPlane(
 }
 
 
+bool CoordPlanesSerializer::parsePolPlane(
+        const QDomElement& container, PolarCoordinatePlane& plane )const
+{
+    bool bOK = true;
+    return bOK;
+}
+
 void CoordPlanesSerializer::savePolPlane(
         QDomDocument& doc,
         QDomElement& e,
@@ -332,6 +458,13 @@ void CoordPlanesSerializer::savePolPlane(
     }
 }
 
+
+bool CoordPlanesSerializer::parseOtherPlane(
+        const QDomElement& container, AbstractCoordinatePlane& plane )const
+{
+    bool bOK = true;
+    return bOK;
+}
 
 void CoordPlanesSerializer::saveOtherPlane(
         QDomDocument& doc,

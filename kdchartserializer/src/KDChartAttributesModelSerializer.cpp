@@ -62,7 +62,7 @@ bool AttributesModelSerializer::parseAttributesModel(
         const QString& globalName,
         AttributesModel& model )const
 {
-    QDomElement container = SerializeCollector::findStoredGlobalPointer(
+    QDomElement container = SerializeCollector::findStoredGlobalElement(
             rootNode, globalName, "kdchart:attribute-models" );
 
     bool bOK = ! container.tagName().isEmpty();

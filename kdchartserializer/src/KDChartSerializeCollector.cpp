@@ -81,7 +81,7 @@ SerializeCollector* SerializeCollector::instance()
 
 // ******************* parsing the data ***************************
 
-QDomElement SerializeCollector::findStoredGlobalPointer(
+QDomElement SerializeCollector::findStoredGlobalElement(
         const QDomNode& rootNode,
         const QString& globalPointerName,
         const QString& globalGroupName,
@@ -124,11 +124,11 @@ QDomElement SerializeCollector::findStoredGlobalPointer(
     return container;
 }
 
-bool SerializeCollector::initializeParsedGlobalPointers(
+bool SerializeCollector::initializeGlobalPointers(
         const QDomNode& rootNode,
         const QString& name )
 {
-    instance()->parsedPointersMap().clear();
+    instance()->initializedPointersMap().clear();
 
     bool globalObjectsNodeFound;
     QDomElement globalObjectsNode;
@@ -176,8 +176,10 @@ bool SerializeCollector::initializeParsedGlobalPointers(
                                 bool bExternalFlag;
                                 if( KDXML::findBoolAttribute( e2, "external", bExternalFlag ) ){
                                     if( bExternalFlag ){
-                                        instance()->parsedPointersMap()[ objectName ]
-                                                = new AttributesModel(0, 0);
+                                        instance()->initializedPointersMap().insert(
+                                                objectName,
+                                                InitializedPointersMapItem(
+                                                        new AttributesModel(0, 0) ) );
                                         // Only external attribute-models are instantiated explicitely,
                                         // the other objects are found in their respective diagrams.
                                     }
@@ -185,50 +187,74 @@ bool SerializeCollector::initializeParsedGlobalPointers(
                                     qDebug()<< "Could not parse AttributesModel. Node"<<objectName<<"is invalid.";
                                 }
                         } else if( className == "KDChart::CartesianAxis" ){
-                                instance()->parsedPointersMap()[ objectName ]
-                                        = new CartesianAxis( 0 );
+                                instance()->initializedPointersMap().insert(
+                                        objectName,
+                                        InitializedPointersMapItem(
+                                                new CartesianAxis( 0 ) ) );
                             /* once PolarAxis is implemented:
                             } else if( className == "KDChart::PolarAxis" ){
-                                instance()->parsedPointersMap()[ objectName ]
-                                        = new PolarAxis(0, 0);
+                                instance()->initializedPointersMap().insert(
+                                        objectName,
+                                        InitializedPointersMapItem(
+                                                new PolarAxis( 0 ) ) );
                             */
                             } else if( className == "KDChart::Chart" ){
-                                instance()->parsedPointersMap()[ objectName ]
-                                        = new Chart( 0 );
+                                instance()->initializedPointersMap().insert(
+                                        objectName,
+                                        InitializedPointersMapItem(
+                                                new Chart( 0 ) ) );
                             } else if( className == "KDChart::CartesianCoordinatePlane" ){
-                                instance()->parsedPointersMap()[ objectName ]
-                                        = new CartesianCoordinatePlane( 0 );
+                                instance()->initializedPointersMap().insert(
+                                        objectName,
+                                        InitializedPointersMapItem(
+                                                new CartesianCoordinatePlane( 0 ) ) );
                             } else if( className == "KDChart::PolarCoordinatePlane" ){
-                                instance()->parsedPointersMap()[ objectName ]
-                                        = new PolarCoordinatePlane( 0 );
+                                instance()->initializedPointersMap().insert(
+                                        objectName,
+                                        InitializedPointersMapItem(
+                                                new PolarCoordinatePlane( 0 ) ) );
                             } else if( className == "KDChart::BarDiagram" ){
-                                instance()->parsedPointersMap()[ objectName ]
-                                        = new BarDiagram(0, 0);
+                                instance()->initializedPointersMap().insert(
+                                        objectName,
+                                        InitializedPointersMapItem(
+                                                new BarDiagram(0, 0) ) );
                             } else if( className == "KDChart::LineDiagram" ){
-                                instance()->parsedPointersMap()[ objectName ]
-                                        = new LineDiagram(0, 0);
+                                instance()->initializedPointersMap().insert(
+                                        objectName,
+                                        InitializedPointersMapItem(
+                                                new LineDiagram(0, 0) ) );
                             } else if( className == "KDChart::PieDiagram" ){
-                                instance()->parsedPointersMap()[ objectName ]
-                                        = new PieDiagram(0, 0);
+                                instance()->initializedPointersMap().insert(
+                                        objectName,
+                                        InitializedPointersMapItem(
+                                                new PieDiagram(0, 0) ) );
                             } else if( className == "KDChart::PolarDiagram" ){
-                                instance()->parsedPointersMap()[ objectName ]
-                                        = new PolarDiagram(0, 0);
+                                instance()->initializedPointersMap().insert(
+                                        objectName,
+                                        InitializedPointersMapItem(
+                                                new PolarDiagram(0, 0) ) );
                             } else if( className == "KDChart::RingDiagram" ){
-                                instance()->parsedPointersMap()[ objectName ]
-                                        = new RingDiagram(0, 0);
+                                instance()->initializedPointersMap().insert(
+                                        objectName,
+                                        InitializedPointersMapItem(
+                                                new RingDiagram(0, 0) ) );
                             } else if( className == "KDChart::HeaderFooter" ){
-                                instance()->parsedPointersMap()[ objectName ]
-                                        = new HeaderFooter( 0 );
+                                instance()->initializedPointersMap().insert(
+                                        objectName,
+                                        InitializedPointersMapItem(
+                                                new HeaderFooter( 0 ) ) );
                             } else if( className == "KDChart::Legend" ){
-                                instance()->parsedPointersMap()[ objectName ]
-                                        = new Legend( 0 );
+                                instance()->initializedPointersMap().insert(
+                                        objectName,
+                                        InitializedPointersMapItem(
+                                                new Legend( 0 ) ) );
                             } else {
                                 qDebug() << "Non-critical information by SerializeCollector::initializeParsedGlobalPointers()\n"
                                         "    Unknown subelement of " << tagName
                                         << " found: " << objectName << "\n"
                                         "    Make sure to instantiate this object\n"
                                         "    and store its pointer in the map of parsed pointers:\n"
-                                        "    KDChart::SerializeCollector::instance()->parsedPointersMap()";
+                                        "    KDChart::SerializeCollector::instance()->initializedPointersMap()";
                                 // It might well be that someone has stored additional
                                 // top-level information here, so we just ignore them.
                             }
@@ -247,7 +273,7 @@ bool SerializeCollector::initializeParsedGlobalPointers(
                         << " found: " << tagName << "\n"
                 "    Make sure to instantiate its top-level objects\n"
                 "    and store these object's pointers in the map of parsed pointers:\n"
-                "    KDChart::SerializeCollector::instance()->parsedPointersMap()";
+                "    KDChart::SerializeCollector::instance()->initializedPointersMap()";
                 // It might well be that someone has stored additional
                 // top-level information here, so we just ignore them.
             }
@@ -257,21 +283,39 @@ bool SerializeCollector::initializeParsedGlobalPointers(
     return true;
 }
 
-ParsedPointersMap& SerializeCollector::parsedPointersMap()
+InitializedPointersMap& SerializeCollector::initializedPointersMap()
 {
-    return mParsedPointersMap;
+    return mInitializedPointersMap;
 }
 
-bool SerializeCollector::foundParsedPointer(
+bool SerializeCollector::foundInitializedPointer(
         const QString& globalName,
-        QObject*& p )
+        QObject*& p,
+        bool& wasParsed )
 {
-    const bool bFound = instance()->parsedPointersMap().contains( globalName );
-    if( bFound )
-        p = instance()->parsedPointersMap().value( globalName );
-    else
+    InitializedPointersMap& mapRef = instance()->initializedPointersMap();
+    const bool bFound = mapRef.contains( globalName );
+    if( bFound ){
+        InitializedPointersMapItem item( mapRef.value( globalName ) );
+        p = item.pointer;
+        wasParsed = item.wasParsed;
+    }else{
         p = 0;
+        wasParsed = false;
+    }
     return bFound;
+}
+
+void SerializeCollector::setWasParsed(
+        QObject* p, bool parsed )
+{
+    InitializedPointersMap& mapRef = instance()->initializedPointersMap();
+    InitializedPointersMap::iterator i = mapRef.begin();
+    while (i != mapRef.end()) {
+        if( i.value().pointer == p )
+            i.value().wasParsed = parsed;
+        ++i;
+    }
 }
 
 

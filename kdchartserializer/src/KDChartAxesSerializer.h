@@ -51,16 +51,6 @@ namespace KDChart {
             explicit AxesSerializer();
             virtual ~AxesSerializer();
 
-            virtual bool parseCartesianAxes(
-                    const QDomElement& e,
-                    CartesianAxisList& axes )const;
-
-            //TODO once PolarAxis is implemented:
-            /*
-            virtual bool parsePolarAxes(
-                    const QDomElement& e,
-                    PolarAxisList& axes )const;
-            */
             virtual void saveCartesianAxes(
                     QDomDocument& doc,
                     QDomElement& e,
@@ -77,7 +67,7 @@ namespace KDChart {
             */
 
             /**
-             * Parse the axis element, and return a CartesianAxis* in \c axis
+             * Parse the axis-pointer element, and return a CartesianAxis* in \c axisPtr
              * if the respective axis was found in the list of global elements.
              *
              * Make sure that you have called
@@ -85,8 +75,9 @@ namespace KDChart {
              * before invoking this method, or it will stop parsing and return false.
              */
             virtual bool parseCartesianAxis(
-                    const QDomElement& container,
-                    CartesianAxis*& axis )const;
+                    const QDomNode& rootNode,
+                    const QDomNode& pointerNode,
+                    CartesianAxis*& axisPtr )const;
             virtual void saveCartesianAxis(
                     QDomDocument& doc,
                     QDomElement& e,
@@ -95,9 +86,19 @@ namespace KDChart {
 
             //TODO once PolarAxis is implemented:
             /*
+
+           / **
+             * Parse the axis-pointer element, and return a PolarAxis* in \c axisPtr
+             * if the respective axis was found in the list of global elements.
+             *
+             * Make sure that you have called
+             * \c KDChart::SerializeCollector::instance()->initializeParsedGlobalPointers()
+             * before invoking this method, or it will stop parsing and return false.
+             * /
             virtual bool parsePolarAxis(
-                    const QDomElement& container,
-                    PolarAxis& axis )const;
+                    const QDomNode& rootNode,
+                    const QDomNode& pointerNode,
+                    PolarAxis*& axisPtr )const;
             virtual void savePolarAxis(
                     QDomDocument& doc,
                     QDomElement& e,

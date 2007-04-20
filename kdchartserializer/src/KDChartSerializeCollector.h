@@ -8,7 +8,26 @@
 
 namespace KDChart {
 
-    typedef QMap<QString, QObject*> ParsedPointersMap;
+    /**
+     * Auxiliary class for information to be stored in the InitializedPointersMap
+     * used at parse time.
+     * 
+     * For KD Chart's built-in classes that's taken care for automatically,
+     * so you only need to use it in case you have added your own
+     * objects to the InitializedPointersMap
+     *
+     * \sa initializedPointersMap, setWasParsed
+     */
+    struct InitializedPointersMapItem
+    {
+        InitializedPointersMapItem(QObject* p) :
+                pointer(p), wasParsed(false) {}
+        InitializedPointersMapItem() :
+                pointer(0), wasParsed(false) {}
+        QObject* pointer;
+        bool wasParsed;
+    };
+    typedef QMap<QString, InitializedPointersMapItem> InitializedPointersMap;
 
     /**
      * Auxiliary class used by the KDChart::*Serializer classes.
@@ -33,7 +52,7 @@ namespace KDChart {
 
     // ************** parsing the data *******************************
 
-    static QDomElement findStoredGlobalPointer(
+    static QDomElement findStoredGlobalElement(
             const QDomNode& rootNode,
             const QString& globalPointerName,
             const QString& globalGroupName,
@@ -59,15 +78,15 @@ namespace KDChart {
      * <kdchart:headers-footers>
      * <kdchart:legends>
      *
-     * \sa foundParsedPointer
+     * \sa foundInitializedPointers
      */
-    static bool initializeParsedGlobalPointers(
+    static bool initializeGlobalPointers(
             const QDomNode& rootNode,
             const QString& name="kdchart:global-objects" );
 
     /**
      * Returns a reference to the global list of pointers parsed
-     * by initializeParsedGlobalPointers().
+     * by initializeGlobalPointers().
      *
      * Normally you do not need to call this method, but you can do
      * so in case you want to add additional pointers to the list:
@@ -76,31 +95,58 @@ namespace KDChart {
      * finished creating it so you might have stored additional
      * QObject* references in it.
      *
-     * All entries which you add to the ParsedPointersMap will be taken
-     * into account by foundParsedPointer() trying to find a matching
+     * All entries which you add to the InitializedPointersMap will be taken
+     * into account by foundInitializedPointers() trying to find a matching
      * QObject* for a given name.
      *
-     * SerializeCollector is a singleton, so you could use this:
+     * SerializeCollector is a singleton, so you could act like this:
 \verbatim
-KDChart::ParsedPointersMap& mapRef
-    = KDChart::SerializeCollector::instance()->parsedPointersMap();
+KDChart::SerializeCollector::instance()->initializeGlobalPointers( rootNode );
+
+// Add your own object to the list,
+// thePointer pointing to an object derived from QObject,
+// theName being a unique name for this object instance.
+
+KDChart::InitializedPointersMap& mapRef
+    = KDChart::SerializeCollector::instance()->initializedPointersMap();
+mapRef.insert( theName, InitializedPointersMapItem( myPointer ) );
+
+// after the data was parsed you set the flag:
+KDChart::SerializeCollector::instance()->setWasParsed( thePointer, true );
 \endverbatim
      */
-    ParsedPointersMap& parsedPointersMap();
+    InitializedPointersMap& initializedPointersMap();
 
     /**
      * Auxiliary method to find the QObject* for a given name.
      *
      * p is set the the QObject* found, or to 0 if none is found.
      *
-     * \note This only works if initializeParsedGlobalPointers()
+     * wasParsed is set to true, if the respective element
+     * has been completely parsed (not just initialized),
+     * that is, if setWasParsedCompletely() has been called accordingly.
+     * This flag is set by KD Chart's serializer methods automatically.
+     * 
+     * \note This only works if initializeGlobalPointers()
      * was called before, otherwise the global list will be empty.
      *
-     * \sa initializeParsedGlobalPointers
+     * \sa initializeGlobalPointers
      */
-    static bool foundParsedPointer(
+    static bool foundInitializedPointer(
             const QString& globalName,
-            QObject*& p );
+            QObject*& p,
+            bool& wasParsed );
+
+    /**
+     * This flag is set to true when the element has been parsed
+     * completely.
+     * For KD Chart's built-in classes that's done automatically,
+     * so you only need to call it in case you have added your own
+     * objects to the InitializedPointersMap
+     *
+     * \sa initializedPointersMap
+     */
+    static void setWasParsed( QObject* p, bool parsed );
 
 
 
@@ -268,7 +314,7 @@ KDChart::ParsedPointersMap& mapRef
         static const QString unresolvedMapName();
 
         QMap<QString, QDomElement*> mMap;
-        ParsedPointersMap mParsedPointersMap;
+        InitializedPointersMap mInitializedPointersMap;
     };
 
 } // end of namespace

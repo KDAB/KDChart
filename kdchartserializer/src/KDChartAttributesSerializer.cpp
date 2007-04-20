@@ -217,7 +217,10 @@ bool AttributesSerializer::parseMeasure(
             QString tagName = element.tagName();
             if( tagName == "ReferenceArea" ) {
                 QObject* ptr;
-                if( parseQObjectPointerNode( element.firstChild(), ptr ) )
+                QString ptrName;
+                bool wasParsed;
+                if( parseQObjectPointerNode( element.firstChild(), ptr,
+                                             ptrName, wasParsed, true ) )
                     a.setReferenceArea( ptr );
             } else if( tagName == "Value" ) {
                 qreal r;
@@ -1113,7 +1116,10 @@ bool AttributesSerializer::parseRelativePosition(
             QString tagName = element.tagName();
             if( tagName == "ReferenceArea" ) {
                 QObject* ptr;
-                if( parseQObjectPointerNode( element.firstChild(), ptr ) )
+                QString ptrName;
+                bool wasParsed;
+                if( parseQObjectPointerNode( element.firstChild(), ptr,
+                                             ptrName, wasParsed, true ) )
                     pos.setReferenceArea( ptr );
             } else if( tagName == "PositionPoints" ) {
                 PositionPoints points;
@@ -1362,12 +1368,14 @@ void AttributesSerializer::saveGridAttributes(
 bool AttributesSerializer::parseQObjectPointerNode(
         const QDomNode& node,
         QObject*& p,
-        QString* ptrName )
+        QString& ptrName,
+        bool& wasParsed,
+        bool bErrorIfNotFound )
 {
     bool bOK = true;
     p = 0;
-    if( ptrName )
-        *ptrName = "";
+    ptrName = "";
+    wasParsed = false;
 
     if( ! node.isNull() ) {
         QDomElement element = node.toElement();
@@ -1376,13 +1384,12 @@ bool AttributesSerializer::parseQObjectPointerNode(
             if( tagName == "kdchart:pointer" ) {
                 QString s;
                 if( KDXML::findStringAttribute( element, "name", s ) ){
-                    if( ptrName )
-                        *ptrName = s;
+                    ptrName = s;
                     QObject* p0;
-                    if( findQObjectPointer( s, p0, (ptrName == 0) ) ){
+                    if( findQObjectPointer( s, p0, wasParsed, bErrorIfNotFound ) ){
                         p = p0;
                     }else{
-                        if( ! ptrName ){
+                        if( bErrorIfNotFound ){
                             qDebug() << "    Could not resolve pointer in\n    "+showDomPath( element );
                             bOK = false;
                         }
@@ -1412,15 +1419,17 @@ bool AttributesSerializer::parseQObjectPointerNode(
 bool AttributesSerializer::findQObjectPointer(
         const QString& name,
         QObject*& p,
+        bool& wasParsed,
         bool reportNotFound )
 {
     bool bOK = true;
+
+    p = 0;
+    wasParsed = false;
     //qDebug() << "parsed pointer:" << name;
-    if( name.compare("Null", Qt::CaseInsensitive) == 0 ){
-        p = 0;
-    }else{
+    if( name.compare("Null", Qt::CaseInsensitive) != 0 ){
         QObject* ptr;
-        bOK = SerializeCollector::instance()->foundParsedPointer( name, ptr );
+        bOK = SerializeCollector::instance()->foundInitializedPointer( name, ptr, wasParsed );
         if( bOK ){
             p = ptr;
         }else if( reportNotFound ){
