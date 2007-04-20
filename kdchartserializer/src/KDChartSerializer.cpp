@@ -186,30 +186,34 @@ bool Serializer::parseChartElement( const QDomElement& root )const
                     }
                     node2 = node2.nextSibling();
                 }
+            } else if( e.tagName() == "kdchart:headers-footers:pointers" ){
+                QDomNode node2 = e.firstChild();
+                while( ! node2.isNull() ) {
+                    HeaderFooter* hdFt;
+                    if( TextAreaSerializer::parseHeaderFooter( root, node2, hdFt ) ){
+                        mChart->addHeaderFooter( hdFt );
+                    }else{
+                        qDebug()<< "Could not parse Chart / kdchart:headers-footers:pointers. Global pointer is not a KDChart::HeaderFooter-ptr.";
+                        bOK = false;
+                    }
+                    node2 = node2.nextSibling();
+                }
+            } else if( e.tagName() == "kdchart:legends:pointers" ){
+               QDomNode node2 = e.firstChild();
+                while( ! node2.isNull() ) {
+                    Legend* legend;
+                    if( LegendsSerializer::parseLegend( root, node2, legend ) ){
+                        mChart->addLegend( legend );
+                    }else{
+                        qDebug()<< "Could not parse Chart / kdchart:legends-footers:pointers. Global pointer is not a KDChart::Legend-ptr.";
+                        bOK = false;
+                    }
+                    node2 = node2.nextSibling();
+                }
             } else {
                 qDebug() << "Unknown subelement of KDChart::Chart found:" << e.tagName();
                 bOK = false;
             }
-            /*
-        // save the coordinate planes:
-        // Data will be stored by the SerializeCollector.
-            mCoordS->savePlanes(
-                    doc, chartElement,
-            mChart->coordinatePlanes(),
-            "kdchart:coordinate-planes" );
-
-        // save the headers / footers
-            TextAreaSerializer::saveHeadersFooters(
-                    doc, chartElement,
-            mChart->headerFooters(),
-            "kdchart:headers-footers" );
-
-        // save the legends
-            LegendsSerializer::saveLegends(
-                    doc, chartElement,
-            mChart->legends(),
-            "kdchart:legends" );
-            */
         }
         n = n.nextSibling();
     }
