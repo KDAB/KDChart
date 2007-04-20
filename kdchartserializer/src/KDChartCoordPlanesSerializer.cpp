@@ -158,9 +158,9 @@ bool CoordPlanesSerializer::parsePlane(
             if( bOK )
                 plane = cartPlane;
         }else if( polPlane ){
-            bOK = parseCartPlane( container, *cartPlane );
+            bOK = parsePolPlane( container,  *polPlane );
             if( bOK )
-                plane = cartPlane;
+                plane = polPlane;
         }else{
             bOK = parseOtherPlane( container, *plane );
             if( bOK )
