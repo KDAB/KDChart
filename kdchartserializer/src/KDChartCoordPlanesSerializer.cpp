@@ -422,6 +422,47 @@ bool CoordPlanesSerializer::parseCartPlane(
         const QDomElement& container, CartesianCoordinatePlane& plane )const
 {
     bool bOK = true;
+    QDomNode node = container.firstChild();
+    while( !node.isNull() ) {
+        QDomElement element = node.toElement();
+        if( !element.isNull() ) { // was really an element
+            QString tagName = element.tagName();
+            if( tagName == "kdchart:abstract-coordinate-plane" ) {
+                if( ! parseAbstractPlane( element, plane ) ){
+                    qDebug() << "Could not parse base class of CartesianCoordinatePlane.";
+                    bOK = false;
+                }
+            } else if( tagName == "IsometricScaling" ) {
+                bool b;
+                if( KDXML::readBoolNode( element, b ) ){
+                    plane.setIsometricScaling( b );
+                }else{
+                    qDebug()<< "Could not parse CartesianCoordinatePlane. Element"
+                            << tagName << "has invalid content.";
+                }
+            } else if( tagName == "HorizontalRange" ) {
+                QPair<qreal, qreal> pair;
+                if( KDXML::readRealPairNode( element, pair ) ){
+                    plane.setHorizontalRange( pair );
+                }else{
+                    qDebug()<< "Could not parse CartesianCoordinatePlane. Element"
+                            << tagName << "has invalid content.";
+                }
+            } else if( tagName == "VerticalRange" ) {
+                QPair<qreal, qreal> pair;
+                if( KDXML::readRealPairNode( element, pair ) ){
+                    plane.setVerticalRange( pair );
+                }else{
+                    qDebug()<< "Could not parse CartesianCoordinatePlane. Element"
+                            << tagName << "has invalid content.";
+                }
+            } else {
+                qDebug() << "Unknown subelement of AbstractCartesianDiagram found:" << tagName;
+                bOK = false;
+            }
+        }
+        node = node.nextSibling();
+    }
     return bOK;
 }
 
