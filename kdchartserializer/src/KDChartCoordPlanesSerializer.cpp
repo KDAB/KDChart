@@ -457,7 +457,7 @@ bool CoordPlanesSerializer::parseCartPlane(
                             << tagName << "has invalid content.";
                 }
             } else {
-                qDebug() << "Unknown subelement of AbstractCartesianDiagram found:" << tagName;
+                qDebug() << "Unknown subelement of CartesianCoordinatePlane found:" << tagName;
                 bOK = false;
             }
         }
