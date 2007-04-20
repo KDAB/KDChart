@@ -124,6 +124,9 @@ namespace KDChart {
                     QDomElement& e,
                     const AbstractCoordinatePlane& plane )const;
 
+            virtual bool parseAxesCalcMode(
+                    const QDomElement& container,
+                    AbstractCoordinatePlane::AxesCalcMode& mode )const;
             virtual void saveAxesCalcMode(
                     QDomDocument& doc,
                     QDomElement& e,

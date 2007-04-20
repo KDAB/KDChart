@@ -456,6 +456,62 @@ bool CoordPlanesSerializer::parseCartPlane(
                     qDebug()<< "Could not parse CartesianCoordinatePlane. Element"
                             << tagName << "has invalid content.";
                 }
+            } else if( tagName == "AutoAdjustHorizontalRangeToData" ) {
+                int i;
+                if( KDXML::readIntNode( element, i ) ){
+                    plane.setAutoAdjustHorizontalRangeToData( i );
+                }else{
+                    qDebug()<< "Could not parse CartesianCoordinatePlane. Element"
+                            << tagName << "has invalid content.";
+                }
+            } else if( tagName == "AutoAdjustVerticalRangeToData" ) {
+                int i;
+                if( KDXML::readIntNode( element, i ) ){
+                    plane.setAutoAdjustVerticalRangeToData( i );
+                }else{
+                    qDebug()<< "Could not parse CartesianCoordinatePlane. Element"
+                            << tagName << "has invalid content.";
+                }
+            } else if( tagName == "HorizontalGridAttributes" ) {
+                GridAttributes a;
+                if( AttributesSerializer::parseGridAttributes( element, a ) ){
+                    plane.setGridAttributes( Qt::Horizontal, a );
+                }else{
+                    qDebug()<< "Could not parse CartesianCoordinatePlane. Element"
+                            << tagName << "has invalid content.";
+                }
+            } else if( tagName == "VerticalGridAttributes" ) {
+                GridAttributes a;
+                if( AttributesSerializer::parseGridAttributes( element, a ) ){
+                    plane.setGridAttributes( Qt::Vertical, a );
+                }else{
+                    qDebug()<< "Could not parse CartesianCoordinatePlane. Element"
+                            << tagName << "has invalid content.";
+                }
+            } else if( tagName == "AutoAdjustGridToZoom" ) {
+                bool b;
+                if( KDXML::readBoolNode( element, b ) ){
+                    plane.setAutoAdjustGridToZoom( b );
+                }else{
+                    qDebug()<< "Could not parse CartesianCoordinatePlane. Element"
+                            << tagName << "has invalid content.";
+                }
+            } else if( tagName == "AxesCalcModeX" ) {
+                AbstractCoordinatePlane::AxesCalcMode mode;
+                if( parseAxesCalcMode( element, mode ) ){
+                    plane.setAxesCalcModeX( mode );
+                }else{
+                    qDebug()<< "Could not parse CartesianCoordinatePlane. Element"
+                            << tagName << "has invalid content.";
+                }
+            } else if( tagName == "AxesCalcModeY" ) {
+                AbstractCoordinatePlane::AxesCalcMode mode;
+                if( parseAxesCalcMode( element, mode ) ){
+                    plane.setAxesCalcModeY( mode );
+                }else{
+                    qDebug()<< "Could not parse CartesianCoordinatePlane. Element"
+                            << tagName << "has invalid content.";
+                }
             } else {
                 qDebug() << "Unknown subelement of CartesianCoordinatePlane found:" << tagName;
                 bOK = false;
@@ -514,6 +570,47 @@ bool CoordPlanesSerializer::parsePolPlane(
         const QDomElement& container, PolarCoordinatePlane& plane )const
 {
     bool bOK = true;
+    QDomNode node = container.firstChild();
+    while( !node.isNull() ) {
+        QDomElement element = node.toElement();
+        if( !element.isNull() ) { // was really an element
+            QString tagName = element.tagName();
+            if( tagName == "kdchart:abstract-coordinate-plane" ) {
+                if( ! parseAbstractPlane( element, plane ) ){
+                    qDebug() << "Could not parse base class of PolarCoordinatePlane.";
+                    bOK = false;
+                }
+            } else if( tagName == "StartPosition" ) {
+                qreal r;
+                if( KDXML::readRealNode( element, r ) ){
+                    plane.setStartPosition( r );
+                }else{
+                    qDebug()<< "Could not parse PolarCoordinatePlane. Element"
+                            << tagName << "has invalid content.";
+                }
+            } else if( tagName == "CircularGridAttributes" ) {
+                GridAttributes a;
+                if( AttributesSerializer::parseGridAttributes( element, a ) ){
+                    plane.setGridAttributes( true, a );
+                }else{
+                    qDebug()<< "Could not parse PolarCoordinatePlane. Element"
+                            << tagName << "has invalid content.";
+                }
+            } else if( tagName == "SagittalGridAttributes" ) {
+                GridAttributes a;
+                if( AttributesSerializer::parseGridAttributes( element, a ) ){
+                    plane.setGridAttributes( false, a );
+                }else{
+                    qDebug()<< "Could not parse PolarCoordinatePlane. Element"
+                            << tagName << "has invalid content.";
+                }
+            } else {
+                qDebug() << "Unknown subelement of PolarCoordinatePlane found:" << tagName;
+                bOK = false;
+            }
+        }
+        node = node.nextSibling();
+    }
     return bOK;
 }
 
@@ -551,6 +648,23 @@ bool CoordPlanesSerializer::parseOtherPlane(
         const QDomElement& container, AbstractCoordinatePlane& plane )const
 {
     bool bOK = true;
+    QDomNode node = container.firstChild();
+    while( !node.isNull() ) {
+        QDomElement element = node.toElement();
+        if( !element.isNull() ) { // was really an element
+            QString tagName = element.tagName();
+            if( tagName == "kdchart:abstract-coordinate-plane" ) {
+                if( ! parseAbstractPlane( element, plane ) ){
+                    qDebug() << "Could not parse base class of coordinate plane.";
+                    bOK = false;
+                }
+            } else {
+                qDebug() << "Unknown subelement of coordinate plane found:" << tagName;
+                bOK = false;
+            }
+        }
+        node = node.nextSibling();
+    }
     return bOK;
 }
 
@@ -569,6 +683,23 @@ void CoordPlanesSerializer::saveOtherPlane(
     // that's all, there is no to-be-saved information in this class
 }
 
+
+bool CoordPlanesSerializer::parseAxesCalcMode(
+        const QDomElement& container, AbstractCoordinatePlane::AxesCalcMode& mode )const
+{
+    bool bOK = true;
+    QString s;
+    if( KDXML::readStringNode( container, s ) ){
+        if( s.compare("Linear", Qt::CaseInsensitive) == 0 )
+            mode = AbstractCoordinatePlane::Linear;
+        else if( s.compare("Logarithmic", Qt::CaseInsensitive) == 0 )
+            mode = AbstractCoordinatePlane::Logarithmic;
+        else{
+            bOK = false;
+            Q_ASSERT( false ); // all of the modes need to be handled
+        }
+    }
+}
 
 void CoordPlanesSerializer::saveAxesCalcMode(
         QDomDocument& doc,
