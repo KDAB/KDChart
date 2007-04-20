@@ -18,7 +18,7 @@ SUBDIRS +=  ChartElementOwnership \
 
 unix:SUBDIRS += AxisOwnership
 test.target=test
-test.commands=for d in $${SUBDIRS}; do cd "\$$d" && make test && cd .. || break; done
+test.commands=for d in $${SUBDIRS}; do cd "\$$d" && $(MAKE) test && cd .. || break; done
 test.depends = all $(TARGET)
 
 QMAKE_EXTRA_TARGETS += test
