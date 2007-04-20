@@ -47,9 +47,9 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_curColumn = -1;
     m_curOpacity = 0;
 
-    QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
+    m_chartLayout = new QHBoxLayout( chartFrame );
     m_chart = new Chart();
-    chartLayout->addWidget( m_chart );
+    m_chartLayout->addWidget( m_chart );
 
     m_model.loadFromCSV( ":/data" );
 
@@ -276,14 +276,30 @@ void MainWindow::load()
         return;
     }
 
-    KDChart::Serializer serializer( m_chart );
-    if( serializer.read( &file ) )
-        QMessageBox::information( this, tr("KD Chart Serializer"),
-                                  tr("File loaded") );
-    else
+    KDChart::Serializer serializer( 0 );
+    if( serializer.read( &file ) ){
+        if( serializer.chart() &&
+            serializer.chart()->coordinatePlane() &&
+            serializer.chart()->coordinatePlane()->diagram() )
+        {
+            m_chartLayout->removeWidget( m_chart );
+            delete m_chart;
+            m_chart = serializer.chart();
+            m_chartLayout->addWidget( m_chart );
+            m_chart->coordinatePlane()->diagram()->setModel( &m_model );
+            update();
+            QMessageBox::information( this, tr("KD Chart Serializer"),
+                                      tr("File loaded") );
+        }else{
+            QMessageBox::warning( this, tr("KD Chart Serializer"),
+                                  tr("ERROR: Parsed chart in file %1 has no diagram.")
+                                  .arg(fileName) );
+        }
+    }else{
         QMessageBox::warning( this, tr("KD Chart Serializer"),
                               tr("ERROR: Cannot read file %1.")
-                                      .arg(fileName) );
+                              .arg(fileName) );
+    }
     file.close();
 }
 

@@ -115,7 +115,7 @@ private slots:
         QVERIFY( m_diagsS->parseDiagram(
                  mDocRoot,
                  // first child is the ptr-list
-                 // the list's first node is our diagramptr
+                 // the list's first node is our diagram-ptr
                  savedElement.firstChild().firstChild(),
                  parsedDiagram ) );
         LineDiagram* parsedLineDiagram = dynamic_cast<LineDiagram*>(parsedDiagram);

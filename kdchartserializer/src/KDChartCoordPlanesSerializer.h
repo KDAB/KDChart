@@ -86,17 +86,15 @@ namespace KDChart {
                     const QDomElement& container, CartesianCoordinatePlane& plane )const;
             virtual void saveCartPlane(
                     QDomDocument& doc,
-                    QDomElement& e,
-                    const CartesianCoordinatePlane& plane,
-                    const QString& title )const;
+                    QDomElement& planeElement,
+                    const CartesianCoordinatePlane& plane )const;
 
             virtual bool parsePolPlane(
                     const QDomElement& container, PolarCoordinatePlane& plane )const;
             virtual void savePolPlane(
                     QDomDocument& doc,
-                    QDomElement& e,
-                    const PolarCoordinatePlane& plane,
-                    const QString& title )const;
+                    QDomElement& planeElement,
+                    const PolarCoordinatePlane& plane )const;
 
             /**
              * Returns the correct class name for a given class.
@@ -121,7 +119,7 @@ namespace KDChart {
              */
             virtual void saveOtherPlane(
                     QDomDocument& doc,
-                    QDomElement& e,
+                    QDomElement& planeElement,
                     const AbstractCoordinatePlane& plane )const;
 
             virtual bool parseAxesCalcMode(

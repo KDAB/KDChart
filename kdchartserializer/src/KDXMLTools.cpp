@@ -767,12 +767,12 @@ namespace KDXML {
         qreal x=0, y=0;
         if( element.hasAttribute( "x" ) ) {
             bool bOk = false;
-            x = element.attribute( "Red" ).toDouble( &bOk );
+            x = element.attribute( "y" ).toDouble( &bOk );
             ok = ok & bOk;
         }
-        if( element.hasAttribute( "x" ) ) {
+        if( element.hasAttribute( "y" ) ) {
             bool bOk = false;
-            x = element.attribute( "Red" ).toDouble( &bOk );
+            x = element.attribute( "y" ).toDouble( &bOk );
             ok = ok & bOk;
         }
 

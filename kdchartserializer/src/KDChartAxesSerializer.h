@@ -80,9 +80,8 @@ namespace KDChart {
                     CartesianAxis*& axisPtr )const;
             virtual void saveCartesianAxis(
                     QDomDocument& doc,
-                    QDomElement& e,
-                    const CartesianAxis& axis,
-                    const QString& title )const;
+                    QDomElement& axisElement,
+                    const CartesianAxis& axis )const;
 
             //TODO once PolarAxis is implemented:
             /*
@@ -101,9 +100,8 @@ namespace KDChart {
                     PolarAxis*& axisPtr )const;
             virtual void savePolarAxis(
                     QDomDocument& doc,
-                    QDomElement& e,
-                    const PolarAxis& axis,
-                    const QString& title )const;
+                    QDomElement& axisElement,
+                    const PolarAxis& axis )const;
             */
 
             virtual bool parseAbstractAxis(

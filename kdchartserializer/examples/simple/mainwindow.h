@@ -57,6 +57,7 @@ private slots:
     void saveAs();
 
 private:
+    QHBoxLayout* m_chartLayout;
     KDChart::Chart* m_chart;
     KDChart::LineDiagram* m_lines;
     TableModel m_model;

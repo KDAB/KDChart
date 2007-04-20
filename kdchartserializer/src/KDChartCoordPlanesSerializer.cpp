@@ -106,7 +106,6 @@ bool CoordPlanesSerializer::parsePlane(
 {
     bool bOK = true;
 
-    AbstractCoordinatePlane* plane=0;
     QObject* ptr;
     QString ptrName;
     bool wasParsed;
@@ -120,8 +119,8 @@ bool CoordPlanesSerializer::parsePlane(
         bOK = false;
     }else{
         if( pointerFound ){
-            plane = dynamic_cast<AbstractCoordinatePlane*>(ptr);
-            if( ! plane ){
+            planePtr = dynamic_cast<AbstractCoordinatePlane*>(ptr);
+            if( ! planePtr ){
                 qDebug()<< "Could not parse coord-plane. Global pointer"
                         << ptrName << "is no AbstractCoordinatePlane-ptr.";
                 bOK = false;
@@ -134,10 +133,7 @@ bool CoordPlanesSerializer::parsePlane(
     }
 
 
-    if( bOK && wasParsed ){
-        planePtr = plane;
-        return true;
-    }
+    if( bOK && wasParsed ) return true;
 
 
     QDomElement container;
@@ -148,24 +144,17 @@ bool CoordPlanesSerializer::parsePlane(
     }
 
     if( bOK ) {
-        SerializeCollector::instance()->setWasParsed( plane, true );
+        SerializeCollector::instance()->setWasParsed( planePtr, true );
 
-        CartesianCoordinatePlane* cartPlane = dynamic_cast<CartesianCoordinatePlane*> ( plane );
-        PolarCoordinatePlane*     polPlane  = dynamic_cast<PolarCoordinatePlane*> (     plane );
+        CartesianCoordinatePlane* cartPlane = dynamic_cast<CartesianCoordinatePlane*> ( planePtr );
+        PolarCoordinatePlane*     polPlane  = dynamic_cast<PolarCoordinatePlane*> (     planePtr );
 
-        if( cartPlane ){
-            bOK = parseCartPlane( container, *cartPlane );
-            if( bOK )
-                plane = cartPlane;
-        }else if( polPlane ){
-            bOK = parsePolPlane( container,  *polPlane );
-            if( bOK )
-                plane = polPlane;
-        }else{
-            bOK = parseOtherPlane( container, *plane );
-            if( bOK )
-                planePtr = plane;
-        }
+        if( cartPlane )
+            bOK = parseCartPlane( container,  *cartPlane );
+        else if( polPlane )
+            bOK = parsePolPlane( container,   *polPlane );
+        else
+            bOK = parseOtherPlane( container, *planePtr );
     }
     return bOK;
 }
@@ -180,14 +169,12 @@ void CoordPlanesSerializer::savePlane(
     const CartesianCoordinatePlane* cartPlane =
             dynamic_cast<const CartesianCoordinatePlane*> ( p );
     if( cartPlane ){
-        saveCartPlane( doc, e, *cartPlane,
-                       "kdchart:cartesian-coordinate-plane" );
+        saveCartPlane( doc, e, *cartPlane );
     }else{
         const PolarCoordinatePlane* polPlane =
                 dynamic_cast<const PolarCoordinatePlane*> ( p );
         if( polPlane ){
-            savePolPlane( doc, e, *polPlane,
-                          "kdchart:polar-coordinate-plane" );
+            savePolPlane( doc, e, *polPlane );
         }else{
             saveOtherPlane( doc, e, *p );
         }
@@ -421,6 +408,7 @@ void CoordPlanesSerializer::saveAbstractPlane(
 bool CoordPlanesSerializer::parseCartPlane(
         const QDomElement& container, CartesianCoordinatePlane& plane )const
 {
+    //qDebug() << "-------->" << container.tagName();
     bool bOK = true;
     QDomNode node = container.firstChild();
     while( !node.isNull() ) {
@@ -439,6 +427,7 @@ bool CoordPlanesSerializer::parseCartPlane(
                 }else{
                     qDebug()<< "Could not parse CartesianCoordinatePlane. Element"
                             << tagName << "has invalid content.";
+                    bOK = false;
                 }
             } else if( tagName == "HorizontalRange" ) {
                 QPair<qreal, qreal> pair;
@@ -447,6 +436,7 @@ bool CoordPlanesSerializer::parseCartPlane(
                 }else{
                     qDebug()<< "Could not parse CartesianCoordinatePlane. Element"
                             << tagName << "has invalid content.";
+                    bOK = false;
                 }
             } else if( tagName == "VerticalRange" ) {
                 QPair<qreal, qreal> pair;
@@ -455,6 +445,7 @@ bool CoordPlanesSerializer::parseCartPlane(
                 }else{
                     qDebug()<< "Could not parse CartesianCoordinatePlane. Element"
                             << tagName << "has invalid content.";
+                    bOK = false;
                 }
             } else if( tagName == "AutoAdjustHorizontalRangeToData" ) {
                 int i;
@@ -463,6 +454,7 @@ bool CoordPlanesSerializer::parseCartPlane(
                 }else{
                     qDebug()<< "Could not parse CartesianCoordinatePlane. Element"
                             << tagName << "has invalid content.";
+                    bOK = false;
                 }
             } else if( tagName == "AutoAdjustVerticalRangeToData" ) {
                 int i;
@@ -471,6 +463,7 @@ bool CoordPlanesSerializer::parseCartPlane(
                 }else{
                     qDebug()<< "Could not parse CartesianCoordinatePlane. Element"
                             << tagName << "has invalid content.";
+                    bOK = false;
                 }
             } else if( tagName == "HorizontalGridAttributes" ) {
                 GridAttributes a;
@@ -479,6 +472,7 @@ bool CoordPlanesSerializer::parseCartPlane(
                 }else{
                     qDebug()<< "Could not parse CartesianCoordinatePlane. Element"
                             << tagName << "has invalid content.";
+                    bOK = false;
                 }
             } else if( tagName == "VerticalGridAttributes" ) {
                 GridAttributes a;
@@ -487,6 +481,7 @@ bool CoordPlanesSerializer::parseCartPlane(
                 }else{
                     qDebug()<< "Could not parse CartesianCoordinatePlane. Element"
                             << tagName << "has invalid content.";
+                    bOK = false;
                 }
             } else if( tagName == "AutoAdjustGridToZoom" ) {
                 bool b;
@@ -495,6 +490,7 @@ bool CoordPlanesSerializer::parseCartPlane(
                 }else{
                     qDebug()<< "Could not parse CartesianCoordinatePlane. Element"
                             << tagName << "has invalid content.";
+                    bOK = false;
                 }
             } else if( tagName == "AxesCalcModeX" ) {
                 AbstractCoordinatePlane::AxesCalcMode mode;
@@ -503,6 +499,7 @@ bool CoordPlanesSerializer::parseCartPlane(
                 }else{
                     qDebug()<< "Could not parse CartesianCoordinatePlane. Element"
                             << tagName << "has invalid content.";
+                    bOK = false;
                 }
             } else if( tagName == "AxesCalcModeY" ) {
                 AbstractCoordinatePlane::AxesCalcMode mode;
@@ -511,6 +508,7 @@ bool CoordPlanesSerializer::parseCartPlane(
                 }else{
                     qDebug()<< "Could not parse CartesianCoordinatePlane. Element"
                             << tagName << "has invalid content.";
+                    bOK = false;
                 }
             } else {
                 qDebug() << "Unknown subelement of CartesianCoordinatePlane found:" << tagName;
@@ -524,14 +522,9 @@ bool CoordPlanesSerializer::parseCartPlane(
 
 void CoordPlanesSerializer::saveCartPlane(
         QDomDocument& doc,
-        QDomElement& e,
-        const CartesianCoordinatePlane& plane,
-        const QString& title )const
+        QDomElement& planeElement,
+        const CartesianCoordinatePlane& plane )const
 {
-    QDomElement planeElement =
-        doc.createElement( title );
-    e.appendChild( planeElement );
-
     // first save the information hold by the base class
     saveAbstractPlane( doc, planeElement, plane,
                        "kdchart:abstract-coordinate-plane" );
@@ -616,14 +609,9 @@ bool CoordPlanesSerializer::parsePolPlane(
 
 void CoordPlanesSerializer::savePolPlane(
         QDomDocument& doc,
-        QDomElement& e,
-        const PolarCoordinatePlane& plane,
-        const QString& title )const
+        QDomElement& planeElement,
+        const PolarCoordinatePlane& plane )const
 {
-    QDomElement planeElement =
-            doc.createElement( title );
-    e.appendChild( planeElement );
-
     // first save the information hold by the base class
     saveAbstractPlane( doc, planeElement, plane,
                        "kdchart:abstract-coordinate-plane" );
@@ -647,6 +635,7 @@ void CoordPlanesSerializer::savePolPlane(
 bool CoordPlanesSerializer::parseOtherPlane(
         const QDomElement& container, AbstractCoordinatePlane& plane )const
 {
+    //qDebug() << "-------->" << container.tagName();
     bool bOK = true;
     QDomNode node = container.firstChild();
     while( !node.isNull() ) {
@@ -670,13 +659,9 @@ bool CoordPlanesSerializer::parseOtherPlane(
 
 void CoordPlanesSerializer::saveOtherPlane(
         QDomDocument& doc,
-        QDomElement& e,
+        QDomElement& planeElement,
         const AbstractCoordinatePlane& plane )const
 {
-    QDomElement planeElement =
-            doc.createElement( "kdchart:user-defined-coordinate-plane" );
-    e.appendChild( planeElement );
-
     // first save the information hold by the base class
     saveAbstractPlane( doc, planeElement, plane,
                        "kdchart:abstract-coordinate-plane" );

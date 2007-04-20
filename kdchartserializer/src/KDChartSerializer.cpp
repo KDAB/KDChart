@@ -72,18 +72,14 @@ Serializer::~Serializer()
 
 bool Serializer::read(QIODevice *device)
 {
-    if( ! mChart ){
-        QMessageBox::information(0 , mProgramName,
-                                 tr("No chart was specified, sorry, can not proceed."));
-        return false;
-    }
+    mChart = 0; // will be initialized by SerializeCollector::initializeGlobalPointers()
 
     QString errorStr;
     int errorLine;
     int errorColumn;
 
     QDomDocument doc( "KDChart" );
-    if( ! doc.setContent(device, true, &errorStr, &errorLine,
+    if( ! doc.setContent(device, false, &errorStr, &errorLine,
          &errorColumn)) {
         QMessageBox::information(0 , mProgramName,
             tr("Parse error at line %1, column %2:\n%3")
@@ -93,10 +89,7 @@ bool Serializer::read(QIODevice *device)
         return false;
     }
 
-    const bool bOK = parseChartElement( doc.documentElement() );
-    if( bOK )
-        mChart->update();
-    return bOK;
+    return parseRootElement( doc.documentElement() );
 }
 
 
@@ -107,11 +100,11 @@ bool Serializer::write(QIODevice *device) const
 
     QDomDocument doc( "KDChart" );
 
-    doc.setContent( docstart );
+    doc.setContent( docstart, false );
 
     QDomElement docRoot = doc.documentElement();
     if( saveRootElement( doc, docRoot ) ){
-        const int IndentSize = 4;
+        const int IndentSize = 2;
 
         QTextStream out(device);
         doc.save(out, IndentSize);
@@ -122,17 +115,17 @@ bool Serializer::write(QIODevice *device) const
 }
 
 
-bool Serializer::parseChartElement( const QDomElement& root )const
+bool Serializer::parseRootElement( const QDomElement& root )
 {
     //qDebug() << root.tagName();
     bool bOK = true;
-    if (root.tagName() != "kdchart") {
+    if (root.tagName() != "kdchart:kdchart") {
         QMessageBox::information(
                 0 , mProgramName,
                 tr("The file is not a KD Chart file."));
         return false;
     } else if (root.hasAttribute("kdchart:version")
-               && ! root.attribute("kdchart:version").startsWith("2.") ) {
+          && ! root.attribute("kdchart:version").startsWith("2.") ) {
         QMessageBox::information(
                 0 , mProgramName,
                 tr("The file is not a KD Chart version 2.x file."));
@@ -151,71 +144,175 @@ bool Serializer::parseChartElement( const QDomElement& root )const
         QDomElement e = n.toElement(); // try to convert the node to an element.
         if(!e.isNull()) {
             // the node really is an element
-            if( e.tagName() == "global-leading" ){
-                // we initialize the leading values, since
-                // it might be that not all of them are stored
-                int left   = mChart->globalLeadingLeft();
-                int top    = mChart->globalLeadingTop();
-                int right  = mChart->globalLeadingRight();
-                int bottom = mChart->globalLeadingBottom();
-                if( AttributesSerializer::parseLeading( e,  left, top, right, bottom ) )
-                    mChart->setGlobalLeading( left, top, right, bottom );
-            } else if( e.tagName() == "frame-attributes" ){
-                FrameAttributes a;
-                if( AttributesSerializer::parseFrameAttributes( e, a ) )
-                    mChart->setFrameAttributes( a );
-            } else if( e.tagName() == "background-attributes" ){
-                BackgroundAttributes a;
-                if( AttributesSerializer::parseBackgroundAttributes( e, a ) )
-                    mChart->setBackgroundAttributes( a );
-            } else if( e.tagName() == "kdchart:coordinate-planes:pointers" ){
-                bool bFirstPlane=true;
-                QDomNode node2 = e.firstChild();
-                while( ! node2.isNull() ) {
-                    AbstractCoordinatePlane* plane;
-                    if( mCoordS->parsePlane( root, node2, plane ) ){
-                        if( bFirstPlane ){
-                            bFirstPlane = false;
-                            mChart->replaceCoordinatePlane( plane );
-                        }else{
-                            mChart->addCoordinatePlane( plane );
+            if( e.tagName() == "kdchart:body" ){
+                QDomNode n2 = e.firstChild();
+                if( ! n2.isNull() ) {
+                    QDomElement e2 = n2.toElement(); // try to convert the node to an element.
+                    if( ! e2.isNull()) {
+                        if( ! parseChartElement( root, e2.firstChild(), mChart ) ){
+                            QMessageBox::information(
+                                    0 , mProgramName,
+                                    tr("Could not parse the KD Chart body element."));
+                            return false;
                         }
                     }else{
-                        qDebug()<< "Could not parse Chart / kdchart:coordinate-planes:pointers. Global pointer is not a KDChart::AbstractCoordinatePlane-ptr.";
-                        bOK = false;
+                        QMessageBox::information(
+                                0 , mProgramName,
+                                tr("The KD Chart body element is invalid."));
+                        return false;
                     }
-                    node2 = node2.nextSibling();
+                }else{
+                    QMessageBox::information(
+                            0 , mProgramName,
+                            tr("The KD Chart body element is empty."));
+                    return false;
                 }
-            } else if( e.tagName() == "kdchart:headers-footers:pointers" ){
-                QDomNode node2 = e.firstChild();
-                while( ! node2.isNull() ) {
-                    HeaderFooter* hdFt;
-                    if( TextAreaSerializer::parseHeaderFooter( root, node2, hdFt ) ){
-                        mChart->addHeaderFooter( hdFt );
-                    }else{
-                        qDebug()<< "Could not parse Chart / kdchart:headers-footers:pointers. Global pointer is not a KDChart::HeaderFooter-ptr.";
-                        bOK = false;
-                    }
-                    node2 = node2.nextSibling();
-                }
-            } else if( e.tagName() == "kdchart:legends:pointers" ){
-               QDomNode node2 = e.firstChild();
-                while( ! node2.isNull() ) {
-                    Legend* legend;
-                    if( LegendsSerializer::parseLegend( root, node2, legend ) ){
-                        mChart->addLegend( legend );
-                    }else{
-                        qDebug()<< "Could not parse Chart / kdchart:legends-footers:pointers. Global pointer is not a KDChart::Legend-ptr.";
-                        bOK = false;
-                    }
-                    node2 = node2.nextSibling();
-                }
-            } else {
-                qDebug() << "Unknown subelement of KDChart::Chart found:" << e.tagName();
+            }else if( e.tagName() == "kdchart:global-objects" ){
+                // do nothing, because this is parsed transparently
+            }else{
+                qDebug() << "Unknown subelement of kdchart:kdchart found:" << e.tagName();
                 bOK = false;
             }
         }
         n = n.nextSibling();
+    }
+    return bOK;
+}
+
+bool Serializer::parseChartElement(
+        const QDomNode& rootNode,
+        const QDomNode& pointerNode,
+        Chart*& chartPtr )const
+{
+    //qDebug() << element.tagName();
+    bool bOK = true;
+    chartPtr=0;
+
+    QObject* ptr;
+    QString ptrName;
+    bool wasParsed;
+    const bool pointerFound =
+            AttributesSerializer::parseQObjectPointerNode(
+            pointerNode, ptr,
+            ptrName, wasParsed, true ) && ptr;
+
+    if( ptrName.isEmpty() ){
+        qDebug()<< "Could not parse chart. Global pointer node is invalid.";
+        bOK = false;
+    }else{
+        if( pointerFound ){
+            chartPtr = dynamic_cast<Chart*>(ptr);
+            if( ! chartPtr ){
+                qDebug()<< "Could not parse chart. Global pointer"
+                        << ptrName << "is no KDChart::Chart-ptr.";
+                bOK = false;
+            }
+        }else{
+            qDebug()<< "Could not parse chart. Global pointer"
+                    << ptrName << "is no KDChart::Chart-ptr.";
+            bOK = false;
+        }
+    }
+
+
+    if( bOK && wasParsed ) return true;
+
+
+    QDomElement container;
+    if( bOK ){
+        container = SerializeCollector::findStoredGlobalElement(
+                rootNode, ptrName, "kdchart:charts" );
+        bOK = ! container.tagName().isEmpty();
+    }
+
+    if( bOK ) {
+        SerializeCollector::instance()->setWasParsed( chartPtr, true );
+
+        QDomNode n = container.firstChild();
+        while(!n.isNull()) {
+            QDomElement e = n.toElement(); // try to convert the node to an element.
+            if(!e.isNull()) {
+                // the node really is an element
+                if( e.tagName() == "kdchart:global-leading" ){
+                    // we initialize the leading values, since
+                    // it might be that not all of them are stored
+                    int left   = chartPtr->globalLeadingLeft();
+                    int top    = chartPtr->globalLeadingTop();
+                    int right  = chartPtr->globalLeadingRight();
+                    int bottom = chartPtr->globalLeadingBottom();
+                    if( AttributesSerializer::parseLeading( e,  left, top, right, bottom ) )
+                        chartPtr->setGlobalLeading( left, top, right, bottom );
+                } else if( e.tagName() == "kdchart:frame-attributes" ){
+                    FrameAttributes a;
+                    if( AttributesSerializer::parseFrameAttributes( e, a ) )
+                        chartPtr->setFrameAttributes( a );
+                } else if( e.tagName() == "kdchart:background-attributes" ){
+                    BackgroundAttributes a;
+                    if( AttributesSerializer::parseBackgroundAttributes( e, a ) )
+                        chartPtr->setBackgroundAttributes( a );
+                } else if( e.tagName() == "kdchart:coordinate-planes:pointers" ){
+                    bool bFirstPlane=true;
+                    QDomNode node2 = e.firstChild();
+                    while( ! node2.isNull() ) {
+                        AbstractCoordinatePlane* plane;
+                        if( mCoordS->parsePlane( rootNode, node2, plane ) ){
+                            if( bFirstPlane ){
+                                bFirstPlane = false;
+                                CartesianCoordinatePlane* cartPlane
+                                        = dynamic_cast<CartesianCoordinatePlane*>(plane);
+                                if( cartPlane )
+                                    chartPtr->replaceCoordinatePlane( cartPlane );
+                                else{
+                                    PolarCoordinatePlane* polPlane
+                                            = dynamic_cast<PolarCoordinatePlane*>(plane);
+                                    if( polPlane )
+                                        chartPtr->replaceCoordinatePlane( polPlane );
+                                    else{
+                                        qDebug()<< "Could not parse Chart / kdchart:coordinate-planes:pointers.\n"
+                                                "Global pointer is neither a KDChart::CartesianCoordinatePlane-ptr nor a KDChart::PolarCoordinatePlane-ptr.";
+                                        bOK = false;
+                                    }
+                                }
+                            }else{
+                                chartPtr->addCoordinatePlane( plane );
+                            }
+                        }else{
+                            qDebug()<< "Could not parse Chart / kdchart:coordinate-planes:pointers. Global pointer is not a KDChart::AbstractCoordinatePlane-ptr.";
+                            bOK = false;
+                        }
+                        node2 = node2.nextSibling();
+                    }
+                } else if( e.tagName() == "kdchart:headers-footers:pointers" ){
+                    QDomNode node2 = e.firstChild();
+                    while( ! node2.isNull() ) {
+                        HeaderFooter* hdFt;
+                        if( TextAreaSerializer::parseHeaderFooter( rootNode, node2, hdFt ) ){
+                            chartPtr->addHeaderFooter( hdFt );
+                        }else{
+                            qDebug()<< "Could not parse Chart / kdchart:headers-footers:pointers. Global pointer is not a KDChart::HeaderFooter-ptr.";
+                            bOK = false;
+                        }
+                        node2 = node2.nextSibling();
+                    }
+                } else if( e.tagName() == "kdchart:legends:pointers" ){
+                QDomNode node2 = e.firstChild();
+                    while( ! node2.isNull() ) {
+                        Legend* legend;
+                        if( LegendsSerializer::parseLegend( rootNode, node2, legend ) ){
+                            chartPtr->addLegend( legend );
+                        }else{
+                            qDebug()<< "Could not parse Chart / kdchart:legends-footers:pointers. Global pointer is not a KDChart::Legend-ptr.";
+                            bOK = false;
+                        }
+                        node2 = node2.nextSibling();
+                    }
+                } else {
+                    qDebug() << "Unknown subelement of KDChart::Chart found:" << e.tagName();
+                    bOK = false;
+                }
+            }
+            n = n.nextSibling();
+        }
     }
     return bOK;
 }
@@ -232,9 +329,11 @@ bool Serializer::saveRootElement(
     }
 
     // Create an inital DOM document
+    /*
     docRoot.setAttribute( "xmlns", "http://www.klaralvdalens-datakonsult.se/kdchart2" );
     docRoot.setAttribute( "xmlns:xsi", "http://www.w3.org/2000/10/XMLSchema-instance" );
     docRoot.setAttribute( "xsi:schemaLocation", "http://www.klaralvdalens-datakonsult.se/kdchart2" );
+    */
 
     docRoot.setAttribute( "kdchart:version", "2.1" );
 
@@ -260,6 +359,8 @@ bool Serializer::saveRootElement(
         // Last step: Try to resolve all entries that
         // were stored as unresolved pointers before.
         SerializeCollector::instance()->resolvePointers( doc, docRoot );
+    }else{
+        qDebug() << "KDChart::Serializer::saveRootElement() failed.";
     }
     return bOK;
 }
@@ -282,7 +383,7 @@ bool Serializer::saveChartElement(
     e.appendChild( bodyElement );
 
     // note: The following structure can be easily extended
-    //       to allow saving of more than one chart.
+    //       to allow saving of more than one chartPtr->
     // Every chart is added to the SerializeCollector in the
     // same way as we do for coordinate-planes, diagrams, ...
 

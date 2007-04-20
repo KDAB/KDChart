@@ -115,41 +115,36 @@ namespace KDChart {
                     const QDomElement& container, LineDiagram& diagram )const;
             virtual void saveLineDiagram(
                     QDomDocument& doc,
-                    QDomElement& e,
-                    const LineDiagram& diagram,
-                    const QString& title )const;
+                    QDomElement& diagElement,
+                    const LineDiagram& diagram )const;
 
             virtual bool parseBarDiagram(
                     const QDomElement& container, BarDiagram& diagram )const;
             virtual void saveBarDiagram(
                     QDomDocument& doc,
-                    QDomElement& e,
-                    const BarDiagram& diagram,
-                    const QString& title )const;
+                    QDomElement& diagElement,
+                    const BarDiagram& diagram )const;
 
             virtual bool parsePieDiagram(
                     const QDomElement& container, PieDiagram& diagram )const;
             virtual void savePieDiagram(
                     QDomDocument& doc,
-                    QDomElement& e,
-                    const PieDiagram& diagram,
-                    const QString& title )const;
+                    QDomElement& diagElement,
+                    const PieDiagram& diagram )const;
 
             virtual bool parsePolarDiagram(
                     const QDomElement& container, PolarDiagram& diagram )const;
             virtual void savePolarDiagram(
                     QDomDocument& doc,
-                    QDomElement& e,
-                    const PolarDiagram& diagram,
-                    const QString& title )const;
+                    QDomElement& diagElement,
+                    const PolarDiagram& diagram )const;
 
             virtual bool parseRingDiagram(
                     const QDomElement& container, RingDiagram& diagram )const;
             virtual void saveRingDiagram(
                     QDomDocument& doc,
-                    QDomElement& e,
-                    const RingDiagram& diagram,
-                    const QString& title )const;
+                    QDomElement& diagElement,
+                    const RingDiagram& diagram )const;
 
             /**
              * Returns the correct class name for a given class.
@@ -174,7 +169,7 @@ namespace KDChart {
             // so the base class's information will be stored too.
             virtual void saveOtherDiagram(
                     QDomDocument& doc,
-                    QDomElement& e,
+                    QDomElement& diagElement,
                     const AbstractDiagram& diagram )const;
 
         private:

@@ -56,18 +56,30 @@ namespace KDChart {
              */
             virtual ~Serializer();
 
+            /**
+             * Make sure to call setChart() before calling write()
+             */
             void setChart( Chart* chart ){ mChart = chart; }
+
+            /**
+             * After read() has run successfully the created chart can be
+             * retrieved via chart()
+             */
             Chart* chart() const { return mChart; }
 
             virtual bool read(QIODevice *device);
             virtual bool write(QIODevice *device) const;
 
-            virtual bool parseChartElement(
-                    const QDomElement& root ) const;
+            virtual bool parseRootElement(
+                    const QDomElement& root );
             virtual bool saveRootElement(
                     QDomDocument& doc,
                     QDomElement& docRoot ) const;
 
+            virtual bool parseChartElement(
+                    const QDomNode& rootNode,
+                    const QDomNode& pointerNode,
+                    Chart*& chartPtr ) const;
             virtual bool saveChartElement(
                     QDomDocument& doc,
                     QDomElement& e ) const;

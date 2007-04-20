@@ -32,7 +32,7 @@
 
 
 // Global objects of the following classes can be
-// instantiated by initializeParsedGlobalPointers()
+// instantiated by initializeGlobalPointers()
 #include "KDChartAttributesModel"
 #include "KDChartCartesianAxis"
 // once that class is implemented: #include "KDChartPolarAxis"
@@ -137,6 +137,7 @@ bool SerializeCollector::initializeGlobalPointers(
         QDomElement e = n.toElement(); // try to convert the node to an element.
         if(!e.isNull()) {
             // the node really is an element
+            //qDebug() << e.tagName();
             if( e.tagName().compare(name, Qt::CaseInsensitive) == 0 ){
                 globalObjectsNode = e;
                 globalObjectsNodeFound = true;
@@ -145,7 +146,7 @@ bool SerializeCollector::initializeGlobalPointers(
         n = n.nextSibling();
     }
     if( ! globalObjectsNodeFound ){
-        qDebug() << "CRITICAL information by SerializeCollector::initializeParsedGlobalPointers()\n"
+        qDebug() << "CRITICAL information by SerializeCollector::initializeGlobalPointers()\n"
                 "    No global-objects node found.";
         return false;
     }
@@ -167,7 +168,7 @@ bool SerializeCollector::initializeGlobalPointers(
                 while(!n2.isNull()) {
                     QDomElement e2 = n2.toElement(); // try to convert the node to an element.
                     if(!e2.isNull()) {
-                    // the node really is an element
+                        // the node really is an element
                         QString objectName = e2.tagName();
                         QString className;
                         if( KDXML::findStringAttribute( e2, "Classname", className ) ){
@@ -186,7 +187,7 @@ bool SerializeCollector::initializeGlobalPointers(
                                 }else{
                                     qDebug()<< "Could not parse AttributesModel. Node"<<objectName<<"is invalid.";
                                 }
-                        } else if( className == "KDChart::CartesianAxis" ){
+                            } else if( className == "KDChart::CartesianAxis" ){
                                 instance()->initializedPointersMap().insert(
                                         objectName,
                                         InitializedPointersMapItem(
@@ -249,7 +250,7 @@ bool SerializeCollector::initializeGlobalPointers(
                                         InitializedPointersMapItem(
                                                 new Legend( 0 ) ) );
                             } else {
-                                qDebug() << "Non-critical information by SerializeCollector::initializeParsedGlobalPointers()\n"
+                                qDebug() << "Non-critical information by SerializeCollector::initializeGlobalPointers()\n"
                                         "    Unknown subelement of " << tagName
                                         << " found: " << objectName << "\n"
                                         "    Make sure to instantiate this object\n"
@@ -259,7 +260,7 @@ bool SerializeCollector::initializeGlobalPointers(
                                 // top-level information here, so we just ignore them.
                             }
                         } else {
-                            qDebug() << "CRITICAL information by SerializeCollector::initializeParsedGlobalPointers()\n"
+                            qDebug() << "CRITICAL information by SerializeCollector::initializeGlobalPointers()\n"
                                     "    Subelement of " << tagName
                                     << " has no \"Classname\" attribute: " << objectName << "\n"
                                     "    Can not parse that.";
@@ -268,7 +269,7 @@ bool SerializeCollector::initializeGlobalPointers(
                     n2 = n2.nextSibling();
                 }
             } else {
-                qDebug() << "Non-critical information by SerializeCollector::initializeParsedGlobalPointers()\n"
+                qDebug() << "Non-critical information by SerializeCollector::initializeGlobalPointers()\n"
                 "    Unknown subelement of " << globalObjectsNode.tagName()
                         << " found: " << tagName << "\n"
                 "    Make sure to instantiate its top-level objects\n"
@@ -425,7 +426,7 @@ void SerializeCollector::resolvePointers(
         QDomDocument& doc,
         QDomElement& rootNode )
 {
-    qDebug() << "SerializeCollector::resolvePointers()";
+    //qDebug() << "SerializeCollector::resolvePointers()";
 
     // make a list of all unresolved pointer names in the rootNode
     QDomNodeList unresolvedList
@@ -476,5 +477,6 @@ void SerializeCollector::storePointerName(
         QDomElement& pointerContainer,
         const QString& pointerName )
 {
-    KDXML::createStringNode( doc, pointerContainer, "kdchart:pointer", pointerName );
+    KDXML::createNodeWithAttribute( doc, pointerContainer,
+                                    "kdchart:pointer", "name", pointerName );
 }
