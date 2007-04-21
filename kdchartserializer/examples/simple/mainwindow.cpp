@@ -112,9 +112,25 @@ MainWindow::MainWindow( QWidget* parent ) :
     legend->setOrientation( Qt::Horizontal );
     m_chart->addLegend( legend );
 
-
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
     m_chart->setGlobalLeading( 20,  20,  20,  20 );
+
+    // assign some bg colors
+    BackgroundAttributes ba = m_chart->backgroundAttributes();
+    ba.setVisible(true);
+    ba.setBrush(QBrush(QColor(255,255,200)));
+    m_chart->setBackgroundAttributes(ba);
+
+    ba = m_chart->coordinatePlane()->backgroundAttributes();
+    ba.setVisible(true);
+    ba.setBrush(QBrush(QColor(200,255,200)));
+    m_chart->coordinatePlane()->setBackgroundAttributes(ba);
+
+    ba = legend->backgroundAttributes();
+    ba.setVisible(true);
+    ba.setBrush(QBrush(QColor(200,200,255)));
+    legend->setBackgroundAttributes(ba);
+
 }
 
 
@@ -313,7 +329,6 @@ void MainWindow::load()
 
                 // Let the diagram use our data model:
                 m_lines->setModel( &m_model );
-                //newChart->coordinatePlane()->layoutDiagrams();
 
                 m_chart->update();
             }
