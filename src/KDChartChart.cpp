@@ -474,6 +474,7 @@ void Chart::Private::slotLayoutPlanes()
         const PlaneInfo pi = planeInfos[plane];
         int column = pi.horizontalOffset;
         int row = pi.verticalOffset;
+        //qDebug() << "processing plane at column" << column << "and row" << row;
         QGridLayout *planeLayout = pi.gridLayout;
         if ( !planeLayout ) {
             // this plane is sharing an axis with another one, so use

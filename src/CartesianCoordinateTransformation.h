@@ -101,8 +101,8 @@ namespace KDChart {
                 tempPoint.setX( makeLogarithmic( diagramRect.width(), tempPoint.x() ) );
                 //qDebug() << "X tempPoint new: " << tempPoint;
             }
-//            qDebug() << "CoordinateTransformation::translate() using diagramRect: "
-//                     << diagramRect.x() << diagramRect.y() << diagramRect.width() << diagramRect.height();
+            //qDebug() << "CoordinateTransformation::translate() using diagramRect: "
+            //         << diagramRect.x() << diagramRect.y() << diagramRect.width() << diagramRect.height();
 
             tempPoint.rx() += diagramRect.width() / (2.0 * zoom.xFactor);
             tempPoint.ry() += diagramRect.height() / (2.0 * zoom.yFactor);
