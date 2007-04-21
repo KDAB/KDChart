@@ -58,8 +58,10 @@ private slots:
 
 private:
     QHBoxLayout* m_chartLayout;
+
     KDChart::Chart* m_chart;
     KDChart::LineDiagram* m_lines;
+
     TableModel m_model;
     int m_curRow;
     int m_curColumn;

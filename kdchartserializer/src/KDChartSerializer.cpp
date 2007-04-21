@@ -255,26 +255,22 @@ bool Serializer::parseChartElement(
                     QDomNode node2 = e.firstChild();
                     while( ! node2.isNull() ) {
                         AbstractCoordinatePlane* plane;
-                        if( mCoordS->parsePlane( rootNode, node2, plane ) ){
-                            if( bFirstPlane ){
-                                bFirstPlane = false;
-                                CartesianCoordinatePlane* cartPlane
-                                        = dynamic_cast<CartesianCoordinatePlane*>(plane);
-                                if( cartPlane )
-                                    chartPtr->replaceCoordinatePlane( cartPlane );
-                                else{
-                                    PolarCoordinatePlane* polPlane
-                                            = dynamic_cast<PolarCoordinatePlane*>(plane);
-                                    if( polPlane )
-                                        chartPtr->replaceCoordinatePlane( polPlane );
-                                    else{
-                                        qDebug()<< "Could not parse Chart / kdchart:coordinate-planes:pointers.\n"
-                                                "Global pointer is neither a KDChart::CartesianCoordinatePlane-ptr nor a KDChart::PolarCoordinatePlane-ptr.";
-                                        bOK = false;
-                                    }
+                        if( mCoordS->parsePlane( rootNode, node2, plane ) && plane ){
+                            if( dynamic_cast<CartesianCoordinatePlane*>(plane) ||
+                                dynamic_cast<PolarCoordinatePlane*>(plane) )
+                            {
+                                if( bFirstPlane ){
+                                    bFirstPlane = false;
+                                    chartPtr->replaceCoordinatePlane( plane );
+                                }else{
+                                    chartPtr->addCoordinatePlane( plane );
                                 }
                             }else{
-                                chartPtr->addCoordinatePlane( plane );
+                                // We are blocking import of unknown coord-plane types for now.
+                                // Future versions of KD Chart will use an API for these.
+                                qDebug()<< "Could not parse Chart / kdchart:coordinate-planes:pointers.\n"
+                                           "Global pointer is neither a KDChart::CartesianCoordinatePlane-ptr nor a KDChart::PolarCoordinatePlane-ptr.";
+                                bOK = false;
                             }
                         }else{
                             qDebug()<< "Could not parse Chart / kdchart:coordinate-planes:pointers. Global pointer is not a KDChart::AbstractCoordinatePlane-ptr.";
@@ -287,6 +283,7 @@ bool Serializer::parseChartElement(
                     while( ! node2.isNull() ) {
                         HeaderFooter* hdFt;
                         if( TextAreaSerializer::parseHeaderFooter( rootNode, node2, hdFt ) ){
+                            hdFt->setParent( chartPtr );
                             chartPtr->addHeaderFooter( hdFt );
                         }else{
                             qDebug()<< "Could not parse Chart / kdchart:headers-footers:pointers. Global pointer is not a KDChart::HeaderFooter-ptr.";
@@ -299,6 +296,7 @@ bool Serializer::parseChartElement(
                     while( ! node2.isNull() ) {
                         Legend* legend;
                         if( LegendsSerializer::parseLegend( rootNode, node2, legend ) ){
+                            legend->setParent( chartPtr );
                             chartPtr->addLegend( legend );
                         }else{
                             qDebug()<< "Could not parse Chart / kdchart:legends-footers:pointers. Global pointer is not a KDChart::Legend-ptr.";

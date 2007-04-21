@@ -286,10 +286,15 @@ void MainWindow::load()
             delete m_chart;
             m_chart = serializer.chart();
             m_chartLayout->addWidget( m_chart );
-            m_chart->coordinatePlane()->diagram()->setModel( &m_model );
-            update();
-            QMessageBox::information( this, tr("KD Chart Serializer"),
-                                      tr("File loaded") );
+            m_lines = dynamic_cast<KDChart::LineDiagram*>(m_chart->coordinatePlane()->diagram());
+            if( ! m_lines ){
+                QMessageBox::warning( this, tr("KD Chart Serializer"),
+                                      tr("PROBLEM: Diagram of parsed chart in file %1 is no LineDiagram.")
+                                              .arg(fileName) );
+            }else{
+                m_lines->setModel( &m_model );
+            }
+            m_chart->update();
         }else{
             QMessageBox::warning( this, tr("KD Chart Serializer"),
                                   tr("ERROR: Parsed chart in file %1 has no diagram.")

@@ -299,9 +299,6 @@ bool CoordPlanesSerializer::parseAbstractPlane(
                     qDebug()<< "Could not parse AbstractDiagram. Node does not contain a valid element.";
                     bOK = false;
                 }
-
-
-
             } else {
                 qDebug() << "Unknown subelement of AbstractCoordinatePlane found:" << tagName;
                 bOK = false;
