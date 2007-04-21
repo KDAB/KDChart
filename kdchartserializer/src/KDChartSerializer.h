@@ -39,6 +39,8 @@
 
 #include <QDomDocument>
 
+class QAbstractItemModel;
+
 namespace KDChart {
 
     class CoordPlanesSerializer;
@@ -48,7 +50,8 @@ namespace KDChart {
         Q_OBJECT
 
         public:
-            explicit Serializer( Chart* chart = 0 );
+            explicit Serializer( Chart* chart = 0,
+                                 QAbstractItemModel* model = 0 );
             /**
              * Free the allocated memory, ignoring the singletons
              * SerializeIdMapper and SerializeCollector. This enables you
@@ -58,8 +61,21 @@ namespace KDChart {
 
             /**
              * Make sure to call setChart() before calling write()
+             * if you did not specify a chart with the constructor.
              */
             void setChart( Chart* chart ){ mChart = chart; }
+
+            /**
+             * If all of your chart's diagrams are using the same data model
+             * you might want to call setModel() before calling read()
+             * (or specify a model with the Serializer's constructor, resp.).
+             *
+             * If you do this then that model will be assigned to any diagrams
+             * that will be created by the serializer.
+             * Otherwise you need to call setModel() on each of the diagrams,
+             * after read() has run.
+             */
+            void setModel(QAbstractItemModel * model);
 
             /**
              * After read() has run successfully the created chart can be

@@ -60,7 +60,7 @@ DiagramsSerializer::DiagramsSerializer( CoordPlanesSerializer* coordS )
     mCoordS = coordS;
     mHaveOwnCoordS = ( mCoordS == 0 );
     if( mHaveOwnCoordS )
-        mCoordS = new CoordPlanesSerializer();
+        mCoordS = new CoordPlanesSerializer(0);
     mAxesS = new AxesSerializer();
     mAttrModelS = new AttributesModelSerializer();
     mGlobalList = "kdchart:diagrams"; // default value, can be

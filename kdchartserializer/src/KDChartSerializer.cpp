@@ -51,11 +51,11 @@
 using namespace KDChart;
 
 
-Serializer::Serializer( Chart* chart )
+Serializer::Serializer( Chart* chart, QAbstractItemModel * model )
     : mChart( chart )
 {
     mProgramName = tr("KD Chart Serializer");
-    mCoordS = new CoordPlanesSerializer();
+    mCoordS = new CoordPlanesSerializer( model );
     // instantiate (or re-set, resp.) the singletons:
     IdMapper::instance()->clear();
     SerializeCollector::instance()->clear();
@@ -67,6 +67,11 @@ Serializer::~Serializer()
     // delete the singletons:
     //delete IdMapper::instance();
     //delete SerializeCollector::instance();
+}
+
+void Serializer::setModel(QAbstractItemModel * model)
+{
+    mCoordS->setModel( model );
 }
 
 

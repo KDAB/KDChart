@@ -48,8 +48,17 @@ namespace KDChart {
         Q_OBJECT
 
         public:
-            explicit CoordPlanesSerializer();
+            /**
+             * If the model is set to a non-zero value before parsePlane()
+             * is called, then this model will be assigned to any diagrams
+             * that will be created by parsePlane().
+             * The model could be changed via setModel.
+             * \sa setModel
+             */
+            explicit CoordPlanesSerializer(QAbstractItemModel * model);
             virtual ~CoordPlanesSerializer();
+
+            virtual void setModel(QAbstractItemModel * model);
 
             virtual void savePlanes(
                     QDomDocument& doc,
@@ -135,6 +144,7 @@ namespace KDChart {
 
         private:
             DiagramsSerializer* mDiagS;
+            QAbstractItemModel* mModel;
     };
 
 } // end of namespace

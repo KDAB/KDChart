@@ -51,8 +51,9 @@ using namespace KDChart;
 
 static QString globalListName;
 
-CoordPlanesSerializer::CoordPlanesSerializer()
+CoordPlanesSerializer::CoordPlanesSerializer(QAbstractItemModel * model)
 {
+    mModel = model;
     mDiagS = new DiagramsSerializer( this );
     globalListName = "kdchart:diagrams"; // default value, can be
     // overwritten by the title passed to CoordPlanesSerializer::savePlanes()
@@ -63,6 +64,11 @@ CoordPlanesSerializer::~CoordPlanesSerializer()
     delete mDiagS;
 }
 
+
+void CoordPlanesSerializer::setModel(QAbstractItemModel * model)
+{
+    mModel = model;
+}
 
 void CoordPlanesSerializer::savePlanes(
         QDomDocument& doc,
@@ -220,6 +226,8 @@ bool CoordPlanesSerializer::parseAbstractPlane(
                     if( mDiagS->parseDiagram(
                             container.ownerDocument().firstChild(), node2, diagram ) )
                     {
+                        if( mModel )
+                            diagram->setModel( mModel );
                         if( bNoDiagramParsedYet ){
                             plane.replaceDiagram( diagram );
                             bNoDiagramParsedYet = false;

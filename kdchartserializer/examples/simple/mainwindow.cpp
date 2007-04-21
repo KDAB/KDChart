@@ -297,7 +297,7 @@ void MainWindow::load()
         return;
     }
 
-    KDChart::Serializer serializer( 0 );
+    KDChart::Serializer serializer( 0, &m_model );
     if( serializer.read( &file ) ){
         if( serializer.chart() &&
             serializer.chart()->coordinatePlane() &&
@@ -332,8 +332,11 @@ void MainWindow::load()
                 // Adjust our auxiliary diagram-ptr:
                 m_lines = newDiagram;
 
-                // Let the diagram use our data model:
-                m_lines->setModel( &m_model );
+                // We do NOT need to tell the diagram to use our data model,
+                // because we have specified the model when instantiating Serializer
+                // so it got used transparently when the diagram was instantiated.
+                //
+                // m_lines->setModel( &m_model );
 
                 m_chart->update();
             }
