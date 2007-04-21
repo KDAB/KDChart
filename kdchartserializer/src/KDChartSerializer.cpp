@@ -328,13 +328,6 @@ bool Serializer::saveRootElement(
         return false;
     }
 
-    // Create an inital DOM document
-    /*
-    docRoot.setAttribute( "xmlns", "http://www.klaralvdalens-datakonsult.se/kdchart2" );
-    docRoot.setAttribute( "xmlns:xsi", "http://www.w3.org/2000/10/XMLSchema-instance" );
-    docRoot.setAttribute( "xsi:schemaLocation", "http://www.klaralvdalens-datakonsult.se/kdchart2" );
-    */
-
     docRoot.setAttribute( "kdchart:version", "2.1" );
 
     bool bOK = saveChartElement( doc, docRoot );
