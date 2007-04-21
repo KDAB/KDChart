@@ -262,8 +262,10 @@ bool Serializer::parseChartElement(
                                 if( bFirstPlane ){
                                     bFirstPlane = false;
                                     chartPtr->replaceCoordinatePlane( plane );
+                                    //qDebug() << "replacing coord-plane";
                                 }else{
                                     chartPtr->addCoordinatePlane( plane );
+                                    //qDebug() << "adding new coord-plane";
                                 }
                             }else{
                                 // We are blocking import of unknown coord-plane types for now.

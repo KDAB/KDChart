@@ -282,19 +282,41 @@ void MainWindow::load()
             serializer.chart()->coordinatePlane() &&
             serializer.chart()->coordinatePlane()->diagram() )
         {
-            m_chartLayout->removeWidget( m_chart );
-            delete m_chart;
-            m_chart = serializer.chart();
-            m_chartLayout->addWidget( m_chart );
-            m_lines = dynamic_cast<KDChart::LineDiagram*>(m_chart->coordinatePlane()->diagram());
-            if( ! m_lines ){
-                QMessageBox::warning( this, tr("KD Chart Serializer"),
-                                      tr("PROBLEM: Diagram of parsed chart in file %1 is no LineDiagram.")
-                                              .arg(fileName) );
+            // Retrieve the chart read from file:
+            KDChart::Chart* newChart = serializer.chart();
+
+            // Retrieve the diagram read from file:
+            // We assume the file was created by this program, so it is
+            // supposed to have just one diagram and that must be a LineDiagram.
+            KDChart::LineDiagram* newDiagram =
+                    dynamic_cast<KDChart::LineDiagram*>(newChart->coordinatePlane()->diagram());
+
+            if( ! newDiagram ){
+                QMessageBox::warning(
+                        this,
+                        tr("KD Chart Serializer"),
+                        tr("The saved XLM file either was not created by this program,<br>"
+                           "or it has been modified manually in a wrong way.<br>"
+                           "Problem: First diagram in file %1 is not a LineDiagram.").arg(fileName) );
+                delete newChart;
             }else{
+                // Remove the current chart and delete it:
+                m_chartLayout->removeWidget( m_chart );
+                delete m_chart;
+
+                // From now on use the chart read from file:
+                m_chart = newChart;
+                m_chartLayout->addWidget( m_chart );
+
+                // Adjust our auxiliary diagram-ptr:
+                m_lines = newDiagram;
+
+                // Let the diagram use our data model:
                 m_lines->setModel( &m_model );
+                //newChart->coordinatePlane()->layoutDiagrams();
+
+                m_chart->update();
             }
-            m_chart->update();
         }else{
             QMessageBox::warning( this, tr("KD Chart Serializer"),
                                   tr("ERROR: Parsed chart in file %1 has no diagram.")
