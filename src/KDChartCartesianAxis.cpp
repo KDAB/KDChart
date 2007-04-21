@@ -819,10 +819,12 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         {
                             step += steg;
                             nextLabel = false;
-                        }
-                        else
+                        }else{
                             nextLabel = true;
+                        }
                     }
+                }else{
+                    nextLabel = true;
                 }
                 if ( isLogarithmicY )
                     labelValue *= 10.0;
