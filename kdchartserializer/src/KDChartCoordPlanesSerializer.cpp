@@ -31,6 +31,7 @@
 #include "KDChartSerializeCollector.h"
 #include "KDChartIdMapper.h"
 #include "KDChartDiagramsSerializer.h"
+#include "KDChartAbstractAreaBaseSerializer.h"
 
 #include "KDXMLTools.h"
 
@@ -206,7 +207,13 @@ bool CoordPlanesSerializer::parseAbstractPlane(
         QDomElement element = node.toElement();
         if( !element.isNull() ) { // was really an element
             QString tagName = element.tagName();
-            if( tagName == "kdchart:diagrams:pointers" ) {
+            if( tagName == "kdchart:abstract-area-base" ) {
+                if( ! AbstractAreaBaseSerializer::parseAbstractAreaBase( element, plane ) ){
+                    qDebug()<< "Could not parse AbstractCoordinatePlane. Element"
+                            << tagName << "has invalid content.";
+                    bOK = false;
+                }
+            } else if( tagName == "kdchart:diagrams:pointers" ) {
                 QDomNode node2 = element.firstChild();
                 while( ! node2.isNull() ) {
                     AbstractDiagram* diagram=0;
@@ -318,6 +325,13 @@ void CoordPlanesSerializer::saveAbstractPlane(
     QDomElement planeElement =
         doc.createElement( title );
     e.appendChild( planeElement );
+
+    // first save the information hold by the base class
+    AbstractAreaBaseSerializer::saveAbstractAreaBase(
+            doc,
+            planeElement,
+            plane,
+            "kdchart:abstract-area-base" );
 
     // save the associated diagrams
     mDiagS->saveDiagrams( doc,
