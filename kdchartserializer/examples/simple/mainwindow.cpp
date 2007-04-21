@@ -57,12 +57,18 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_lines = new LineDiagram();
     m_lines->setModel( &m_model );
 
-    CartesianAxis *xAxis = new CartesianAxis( m_lines );
-    CartesianAxis *yAxis = new CartesianAxis ( m_lines );
+    CartesianAxis *xAxis  = new CartesianAxis( m_lines );
+    CartesianAxis *xAxis2 = new CartesianAxis( m_lines );
+    CartesianAxis *yAxis  = new CartesianAxis ( m_lines );
+    CartesianAxis *yAxis2 = new CartesianAxis ( m_lines );
     xAxis->setPosition ( KDChart::CartesianAxis::Bottom );
+    xAxis2->setPosition( KDChart::CartesianAxis::Top );
     yAxis->setPosition ( KDChart::CartesianAxis::Left );
+    yAxis2->setPosition( KDChart::CartesianAxis::Right );
     m_lines->addAxis( xAxis );
+    m_lines->addAxis( xAxis2 );
     m_lines->addAxis( yAxis );
+    m_lines->addAxis( yAxis2 );
 
     KDChart::HeaderFooter* headerFooter = new KDChart::HeaderFooter( m_chart );
     m_chart->addHeaderFooter( headerFooter );
@@ -130,7 +136,6 @@ MainWindow::MainWindow( QWidget* parent ) :
     ba.setVisible(true);
     ba.setBrush(QBrush(QColor(200,200,255)));
     legend->setBackgroundAttributes(ba);
-
 }
 
 
