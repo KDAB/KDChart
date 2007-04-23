@@ -1,4 +1,3 @@
 TEMPLATE	= subdirs
-SUBDIRS		= OverlayedDiagrams \
-                  SeparateDiagrams
+SUBDIRS		= SeparateDiagrams 
 
