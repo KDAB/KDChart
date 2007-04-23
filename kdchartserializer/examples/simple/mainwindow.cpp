@@ -37,7 +37,10 @@
 
 #include <KDChartSerializer>
 
+#include <QStandardItemModel>
+
 using namespace KDChart;
+
 
 MainWindow::MainWindow( QWidget* parent ) :
     QWidget( parent )
@@ -51,11 +54,11 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_chart = new Chart();
     m_chartLayout->addWidget( m_chart );
 
-    m_model.loadFromCSV( ":/data" );
+    initializeDataModel();
 
     // Set up the diagram
     m_lines = new LineDiagram();
-    m_lines->setModel( &m_model );
+    m_lines->setModel( m_model );
 
     CartesianAxis *xAxis  = new CartesianAxis( m_lines );
     CartesianAxis *xAxis2 = new CartesianAxis( m_lines );
@@ -94,12 +97,10 @@ MainWindow::MainWindow( QWidget* parent ) :
     legend->setAlignment( Qt::AlignCenter );
     legend->setShowLines( false );
     legend->setTitleText( tr( "The Legend" ) );
-
     legend->setText( 0, tr( "The red one" ) );
     legend->setText( 1, tr( "green" ) );
     legend->setText( 2, tr( "blue" ) );
     legend->setText( 3, tr( "turquoise" ) );
-    legend->setText( 4, tr( "magenta" ) );
 
     DataValueAttributes da( m_lines->dataValueAttributes( 2 ) );
     MarkerAttributes ma( da.markerAttributes() );
@@ -132,6 +133,25 @@ MainWindow::MainWindow( QWidget* parent ) :
     ba.setVisible(true);
     ba.setBrush(QBrush(QColor(200,200,255)));
     legend->setBackgroundAttributes(ba);
+}
+
+
+void MainWindow::initializeDataModel()
+{
+    static const int nLines = 6;
+    static const int nDatasets = 4;
+    static const qreal linesData[nLines][nDatasets] = {
+        {29.5  ,  30  ,  29.5  ,  29.7},
+        {30    ,  29.5,  30.5  ,  29.8},
+        {30.5  ,  31  ,  29.7  ,  30},
+        {29.7  ,  29.3,  30    ,  31},
+        {30.3  ,  31  ,  30    ,  29.6},
+        {29.4  ,  30  ,  34    ,  29.5}
+    };
+    m_model = new QStandardItemModel( nLines, nDatasets, this );
+    for( int iL=0;  iL < nLines;  ++iL )
+        for( int iD=0;  iD < nDatasets;  ++iD )
+            m_model->setData( m_model->index( iL, iD ), linesData[ iL ][ iD ] );
 }
 
 
@@ -280,7 +300,7 @@ void MainWindow::load()
         return;
     }
 
-    KDChart::Serializer serializer( 0, &m_model );
+    KDChart::Serializer serializer( 0, m_model );
     if( serializer.read( &file ) ){
         if( serializer.chart() &&
             serializer.chart()->coordinatePlane() &&
