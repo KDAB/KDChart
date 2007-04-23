@@ -102,16 +102,6 @@ MainWindow::MainWindow( QWidget* parent ) :
     legend->setText( 2, tr( "blue" ) );
     legend->setText( 3, tr( "turquoise" ) );
 
-    DataValueAttributes da( m_lines->dataValueAttributes( 2 ) );
-    MarkerAttributes ma( da.markerAttributes() );
-    ma.setMarkerStyle( MarkerAttributes::MarkerRing );
-    legend->setMarkerAttributes( 2, ma );
-
-    RelativePosition negPos( da.negativePosition() );
-    negPos.setReferenceArea( m_chart );
-    da.setNegativePosition( negPos );
-    m_lines->setDataValueAttributes( 2, da );
-
     legend->setOrientation( Qt::Horizontal );
     m_chart->addLegend( legend );
 
