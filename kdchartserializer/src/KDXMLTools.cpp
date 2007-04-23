@@ -772,7 +772,7 @@ namespace KDXML {
         }
         if( element.hasAttribute( "y" ) ) {
             bool bOk = false;
-            x = element.attribute( "y" ).toDouble( &bOk );
+            y = element.attribute( "y" ).toDouble( &bOk );
             ok = ok & bOk;
         }
 
