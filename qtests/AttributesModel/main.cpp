@@ -16,7 +16,7 @@ private slots:
   void initTestCase()
   {
       TableModel *tableModel = new TableModel( this );
-      tableModel->loadFromCSV( "../../examples/tools/modeldata/KDChart-Test-Datatables.csv" );
+      tableModel->loadFromCSV( ":/data" );
       tableModel->setSupplyHeaderData( false );
       m_model = tableModel;
       m_plane = new CartesianCoordinatePlane(0);
