@@ -316,7 +316,7 @@ void CartesianAxis::Private::drawTitleText( QPainter* painter, CartesianCoordina
 }
 
 
-void calculateNextLabel( qreal& labelValue, qreal step, bool isLogarithmic)
+static void calculateNextLabel( qreal& labelValue, qreal step, bool isLogarithmic)
 {
     if ( isLogarithmic ){
         labelValue *= 10.0;
