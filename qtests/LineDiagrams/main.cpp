@@ -17,7 +17,7 @@ private slots:
     {
         m_chart = new Chart(0);
         m_model = new TableModel( this );
-        m_model->loadFromCSV( "../../examples/tools/modeldata/KDChart-Test-Datatables.csv" );
+        m_model->loadFromCSV( ":/data" );
         m_lines = new LineDiagram();
         m_lines->setModel( m_model );
         m_chart->coordinatePlane()->replaceDiagram( m_lines );

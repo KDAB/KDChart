@@ -19,3 +19,5 @@ QMAKE_EXTRA_TARGETS += test
 # Input
 SOURCES += main.cpp
 LIBS += -L../../lib -l$$KDCHARTLIB -ltesttools
+
+RESOURCES = Data.qrc

@@ -30,7 +30,7 @@ private slots:
     {
         m_chart = new Chart(0);
         m_tableModel = new TableModel( this );
-        m_tableModel->loadFromCSV( "../../examples/tools/modeldata/KDChart-Test-Datatables.csv" );
+        m_tableModel->loadFromCSV( ":/data" );
         m_pie = new PieDiagram();
         m_pie->setModel( m_tableModel );
         m_polar = new PolarDiagram();

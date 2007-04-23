@@ -32,7 +32,7 @@ private slots:
     {
         m_chart = new Chart(0);
         m_tableModel = new TableModel( this );
-        m_tableModel->loadFromCSV( "../../examples/tools/modeldata/KDChart-Test-Datatables.csv" );
+        m_tableModel->loadFromCSV( ":/data" );
         m_bars = new BarDiagram();
         m_bars->setModel( m_tableModel );
         m_lines = new LineDiagram();

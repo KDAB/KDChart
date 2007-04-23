@@ -1,5 +1,4 @@
 #include <QtTest/QtTest>
-
 #include <KDChartChart>
 #include <KDChartGlobal>
 #include <KDChartBarDiagram>
@@ -21,7 +20,7 @@ private slots:
       m_bars = new BarDiagram();
       m_lines = new LineDiagram();
       m_tableModel = new TableModel( this );
-      m_tableModel->loadFromCSV( "../../examples/tools/modeldata/KDChart-Test-Datatables.csv" );
+      m_tableModel->loadFromCSV( ":/data" );
       m_bars->setModel( m_tableModel );
       m_lines->setModel( m_tableModel );
       m_chart->coordinatePlane()->replaceDiagram( m_bars );

@@ -20,7 +20,7 @@ private slots:
         PolarCoordinatePlane* polarPlane = new PolarCoordinatePlane( m_chart );
         m_chart->replaceCoordinatePlane( polarPlane );
         m_model = new TableModel( this );
-        m_model->loadFromCSV( "../../examples/tools/modeldata/KDChart-Test-Datatables.csv" );
+        m_model->loadFromCSV( ":/data" );
         m_pie = new PieDiagram();
         m_pie->setModel( m_model );
         m_chart->coordinatePlane()->replaceDiagram( m_pie );
