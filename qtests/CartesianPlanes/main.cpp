@@ -94,8 +94,12 @@ private slots:
     void testRangeSettings()
     {
         initTestCase ();
-        QPair< qreal,  qreal> range( 0, 0 );
+        const QPair< qreal,  qreal> range( 0, 0 );
         m_plane->addDiagram(  m_bars );
+        // note: the range is only Null, if auto-adjusting is turned off!
+        m_plane->setAutoAdjustHorizontalRangeToData(100);
+        m_plane->setAutoAdjustVerticalRangeToData(100);
+        //qDebug() << m_plane->horizontalRange() << m_plane->verticalRange();
         QCOMPARE( m_plane->horizontalRange(),  range );
         QCOMPARE( m_plane->verticalRange(),  range );
         QPair< qreal,  qreal> hboundaries( m_bars->dataBoundaries().first.x(),
