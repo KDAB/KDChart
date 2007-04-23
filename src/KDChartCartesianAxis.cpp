@@ -315,6 +315,20 @@ void CartesianAxis::Private::drawTitleText( QPainter* painter, CartesianCoordina
     }
 }
 
+
+void calculateNextLabel( qreal& labelValue, qreal step, bool isLogarithmic)
+{
+    if ( isLogarithmic ){
+        labelValue *= 10.0;
+    }else{
+        //qDebug() << "new axis label:" << labelValue << "+" << step << "=" << labelValue+step;
+        labelValue += step;
+    }
+    if( qAbs(labelValue) < 1.0e-15 )
+        labelValue = 0.0;
+}
+
+
 void CartesianAxis::paintCtx( PaintContext* context )
 {
 
@@ -696,67 +710,73 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 topPoint.setY( rulerRef.y() + tickLength() );
                 bottomPoint.setY( rulerRef.y() );
 
+                const qreal translatedValue = topPoint.x();
+                const bool bIsVisibleLabel =
+                        ( translatedValue >= geoRect.left() && translatedValue <= geoRect.right() );
+
                 //Dont paint more ticks than we need
                 //when diagram type is Bar
                 bool painttick = true;
                 if (  isBarDiagram && i == maxValueX )
                     painttick = false;
 
-                if ( painttick )
+                if ( bIsVisibleLabel && painttick )
                     ptr->drawLine( topPoint, bottomPoint );
 
                 drawnXTicks.append( static_cast<int>( topPoint.x() ) );
                 if( drawLabels ) {
-                    if ( isLogarithmicX )
+                    if( bIsVisibleLabel ){
+                        if ( isLogarithmicX )
+                            labelItem->setText( QString::number( i, 'f', 0 ) );
+                        /* We dont need that
+                        * it causes header labels to be skipped even if there is enough
+                        * space for them to displayed.
+                        * Commenting for now - I need to test more in details - Let me know if I am wrong here.
+                        */
+                        /*
+                        else if( (dimX.stepWidth != 1.0) && ! dimX.isCalculated ) {
                         labelItem->setText( QString::number( i, 'f', 0 ) );
-                    /* We dont need that
-                     * it causes header labels to be skipped even if there is enough
-                     * space for them to displayed.
-                     * Commenting for now - I need to test more in details - Let me know if I am wrong here.
-                     */
-                    /*
-                      else if( (dimX.stepWidth != 1.0) && ! dimX.isCalculated ) {
-                      labelItem->setText( QString::number( i, 'f', 0 ) );
-                      }
-                    */
-                    else {
-                        labelItem->setText( hardLabelsCount
-                                            ? ( useShortLabels    ? shortLabels()[ idxLabel ] : labels()[ idxLabel ] )
-                                            : ( headerLabelsCount ? headerLabels[  idxLabel ] : QString::number( iLabelF )));
-                    }
-                    // No need to call labelItem->setParentWidget(), since we are using
-                    // the layout item temporarily only.
-                    if( labelStep <= 0 ) {
-                        const QSize size( labelItem->sizeHint() );
-                        labelItem->setGeometry(
-                            QRect(
-                                QPoint(
-                                    static_cast<int>( topPoint.x() - size.width() / 2 ),
-                                    static_cast<int>( topPoint.y() +
-                                                      ( position() == Bottom
-                                                        ? halfFontHeight
-                                                        : ((halfFontHeight + size.height()) * -1.0) ) ) ),
-                                size ) );
+                        }
+                        */
+                        else {
+                            labelItem->setText( hardLabelsCount
+                                                ? ( useShortLabels    ? shortLabels()[ idxLabel ] : labels()[ idxLabel ] )
+                                                : ( headerLabelsCount ? headerLabels[  idxLabel ] : QString::number( iLabelF )));
+                        }
+                        // No need to call labelItem->setParentWidget(), since we are using
+                        // the layout item temporarily only.
+                        if( labelStep <= 0 ) {
+                            const QSize size( labelItem->sizeHint() );
+                            labelItem->setGeometry(
+                                QRect(
+                                    QPoint(
+                                        static_cast<int>( topPoint.x() - size.width() / 2 ),
+                                        static_cast<int>( topPoint.y() +
+                                                        ( position() == Bottom
+                                                            ? halfFontHeight
+                                                            : ((halfFontHeight + size.height()) * -1.0) ) ) ),
+                                    size ) );
 
-                        bool origClipping = ptr->hasClipping();
+                            bool origClipping = ptr->hasClipping();
 
-                        QRect labelGeo = labelItem->geometry();
-                        // if our item would only half fit, we disable clipping for that one
-                        if( labelGeo.left() < geoRect.left() && labelGeo.right() > geoRect.left() )
-                            ptr->setClipping( false );
-                        if( labelGeo.left() < geoRect.right() && labelGeo.right() > geoRect.right() )
-                            ptr->setClipping( false );
+                            QRect labelGeo = labelItem->geometry();
+                            // if our item would only half fit, we disable clipping for that one
+                            if( labelGeo.left() < geoRect.left() && labelGeo.right() > geoRect.left() )
+                                ptr->setClipping( false );
+                            if( labelGeo.left() < geoRect.right() && labelGeo.right() > geoRect.right() )
+                                ptr->setClipping( false );
 
-                        labelItem->setGeometry( labelGeo );
+                            labelItem->setGeometry( labelGeo );
 
-                        labelStep = labelDiff - dimX.stepWidth;
-                        labelItem->paint( ptr );
-                        labelItem2->setText( labelItem->text() );
+                            labelStep = labelDiff - dimX.stepWidth;
+                            labelItem->paint( ptr );
+                            labelItem2->setText( labelItem->text() );
 
-                        // maybe enable clipping afterwards
-                        ptr->setClipping( origClipping );
-                    } else {
-                        labelStep -= dimX.stepWidth;
+                            // maybe enable clipping afterwards
+                            ptr->setClipping( origClipping );
+                        } else {
+                            labelStep -= dimX.stepWidth;
+                        }
                     }
 
                     if( hardLabelsCount ) {
@@ -790,10 +810,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 while ( labelValue <= maxLimit ) {
                     labelItem->setText( QString::number( labelValue ) );
                     maxLabelsWidth = qMax( maxLabelsWidth, labelItem->sizeHint().width() );
-                    if ( isLogarithmicY )
-                        labelValue *= 10.0;
-                    else
-                        labelValue += steg;
+
+                    calculateNextLabel( labelValue, steg, isLogarithmicY );
                 }
             }
 
@@ -826,41 +844,44 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 }else{
                     nextLabel = true;
                 }
-                if ( isLogarithmicY )
-                    labelValue *= 10.0;
-                else {
-                    if ( nextLabel )
-                        labelValue += step;
-                    else
-                        labelValue = minValueY;
-                }
+
+                if ( nextLabel || isLogarithmicY )
+                    calculateNextLabel( labelValue, step, isLogarithmicY );
+                else
+                    labelValue = minValueY;
             }
 
             // Second - Paint the labels
             labelValue = minValueY;
+            //qDebug() << "axis labels starting at" << labelValue << "step width" << step;
             while ( labelValue <= maxLimit ) {
+                //qDebug() << "value now" << labelValue;
                 labelItem->setText( QString::number( labelValue ) );
                 QPointF leftPoint = plane->translate( QPointF( 0, labelValue ) );
                 QPointF rightPoint ( 0.0, labelValue );
                 rightPoint = plane->translate( rightPoint );
                 leftPoint.setX( rulerRef.x() + tickLength() );
                 rightPoint.setX( rulerRef.x() );
-                ptr->drawLine( leftPoint, rightPoint );
-                drawnYTicks.append( static_cast<int>( leftPoint.y() ) );
-                const QSize labelSize( labelItem->sizeHint() );
-                leftPoint.setX( leftPoint.x() );
-                const int x =
-                    static_cast<int>( leftPoint.x() + met.height() * ( position() == Left ? -0.5 : 0.5) )
-                    - ( position() == Left ? labelSize.width() : (labelSize.width() - maxLabelsWidth) );
-                const int y =
-                    static_cast<int>( leftPoint.y() - ( met.ascent() + met.descent() ) * 0.6 );
-                labelItem->setGeometry( QRect( QPoint( x, y ), labelSize ) );
-                labelItem->paint( ptr );
 
-                if ( isLogarithmicY )
-                    labelValue *= 10.0;
-                else
-                    labelValue += step;
+                const qreal translatedValue = rightPoint.y();
+                const bool bIsVisibleLabel =
+                        ( translatedValue >= geoRect.top() && translatedValue <= geoRect.bottom() );
+
+                if( bIsVisibleLabel ){
+                    ptr->drawLine( leftPoint, rightPoint );
+                    drawnYTicks.append( static_cast<int>( leftPoint.y() ) );
+                    const QSize labelSize( labelItem->sizeHint() );
+                    leftPoint.setX( leftPoint.x() );
+                    const int x =
+                        static_cast<int>( leftPoint.x() + met.height() * ( position() == Left ? -0.5 : 0.5) )
+                        - ( position() == Left ? labelSize.width() : (labelSize.width() - maxLabelsWidth) );
+                    const int y =
+                        static_cast<int>( leftPoint.y() - ( met.ascent() + met.descent() ) * 0.6 );
+                    labelItem->setGeometry( QRect( QPoint( x, y ), labelSize ) );
+                    labelItem->paint( ptr );
+                }
+
+                calculateNextLabel( labelValue, step, isLogarithmicY );
             }
 
             ptr->setClipping( origClipping );
@@ -880,6 +901,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
     //qDebug() << "KDChart::CartesianAxis::paintCtx() done.";
 }
+
 
 /* pure virtual in QLayoutItem */
 bool CartesianAxis::isEmpty() const
