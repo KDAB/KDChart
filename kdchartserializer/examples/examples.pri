@@ -35,13 +35,11 @@ CONFIG(debug, debug|release) {
 #          before examples.pri is included
 INCLUDEPATH += \
             $$KDCHART_PATH/include \
-            $$KDCHART_PATH/kdchartserializer/include \
-            $$KDCHART_PATH/examples/tools
+            $$KDCHART_PATH/kdchartserializer/include
 DEPENDPATH += \
             $$KDCHART_PATH/include \
-            $$KDCHART_PATH/kdchartserializer/include \
-            $$KDCHART_PATH/examples/tools
-LIBS        += -L$$KDCHART_PATH/lib -l$$KDCHARTLIB -lkdchartserializer -ltesttools
+            $$KDCHART_PATH/kdchartserializer/include
+LIBS        += -L$$KDCHART_PATH/lib -l$$KDCHARTLIB -lkdchartserializer
 
 
 # 4. Miscellaneous settings:
