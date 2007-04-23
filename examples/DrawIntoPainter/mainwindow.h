@@ -34,8 +34,8 @@
 namespace KDChart {
     class Chart;
     class DatasetProxyModel;
-    class BarDiagram;
-    class BarAttributes;
+    class LineDiagram;
+    class LineAttributes;
     class CartesianAxis;
     class Legend;
 }
@@ -76,7 +76,7 @@ private:
     KDChart::Chart* m_chart;
     TableModel m_model;
     KDChart::DatasetProxyModel* m_datasetProxy;
-    KDChart::BarDiagram* m_bars;
+    KDChart::LineDiagram* m_lines;
     KDChart::Legend* m_legend;
     QPixmap m_pix1, m_pix2;
     QLabel* m_smallChart1;
