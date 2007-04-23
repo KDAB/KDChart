@@ -111,10 +111,6 @@ MainWindow::MainWindow( QWidget* parent ) :
     da.setNegativePosition( negPos );
     m_lines->setDataValueAttributes( 2, da );
 
-    // for testing: make the legend item's color look differently
-    // from the diagram line's color,
-    // so the legend's color map will be stored in the file:
-    // legend->setColor(  1, Qt::black );
     legend->setOrientation( Qt::Horizontal );
     m_chart->addLegend( legend );
 
@@ -171,19 +167,6 @@ void MainWindow::on_paintValuesCB_toggled( bool checked )
         a.setVisible( true );
         a.setTextAttributes( ta );
 
-        /* just for testing:
-        MarkerAttributes marker( a.markerAttributes() );
-        marker.setMarkerStyle( MarkerAttributes::MarkerDiamond );
-        MarkerAttributes::MarkerStylesMap map;
-        map[0] = MarkerAttributes::MarkerRing;
-        map[1] = MarkerAttributes::MarkerCross;
-        map[2] = MarkerAttributes::MarkerRing;
-        map[3] = MarkerAttributes::MarkerCross;
-        map[4] = MarkerAttributes::MarkerRing;
-        map[5] = MarkerAttributes::MarkerCross;
-        marker.setMarkerStylesMap( map );
-        a.setMarkerAttributes( marker );
-        */
         m_lines->setDataValueAttributes( iColumn, a );
     }
     m_chart->update();
