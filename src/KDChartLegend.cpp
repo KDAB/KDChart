@@ -364,8 +364,11 @@ void Legend::replaceDiagram( AbstractDiagram* newDiagram,
                              AbstractDiagram* oldDiagram )
 {
     KDChart::AbstractDiagram* old = oldDiagram;
-    if( ! d->observers.isEmpty() && ! old )
+    if( ! d->observers.isEmpty() && ! old ){
         old = d->observers.first()->diagram();
+        if( ! old )
+            d->observers.removeFirst(); // first entry had a 0 diagram
+    }
     if( old )
         removeDiagram( old );
     if( newDiagram )
