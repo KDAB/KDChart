@@ -96,18 +96,21 @@ private slots:
        QVERIFY( l->showLines() == false );
        QVERIFY( l->titleText() != QString::null );
        QVERIFY( l->spacing() == 1 );
+       QVERIFY( l->legendStyle() == Legend::MarkersOnly );
        l->setPosition( Position::North );
        l->setAlignment( Qt::AlignLeft );
        l->setOrientation( Qt::Horizontal );
        l->setShowLines( true );
        l->setTitleText( QString( tr( "Lines" ) ) );
        l->setSpacing( 2 );
+       l->setLegendStyle( Legend::LinesOnly );
        QVERIFY( l->position() == Position::North );
        QVERIFY( l->alignment() == Qt::AlignLeft );
        QVERIFY( l->orientation() == Qt::Horizontal );
        QVERIFY( l->showLines() == true );
        QVERIFY( l->titleText() == QString( tr( "Lines" ) ) );
        QVERIFY( l->spacing() == 2 );
+       QVERIFY( l->legendStyle() == Legend::LinesOnly );
     }
 
 
