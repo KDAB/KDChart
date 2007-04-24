@@ -59,7 +59,8 @@ Legend::Private::Private() :
     titleText( QObject::tr( "Legend" ) ),
     titleTextAttributes(),
     spacing( 1 ),
-    useAutomaticMarkerSize( true )
+    useAutomaticMarkerSize( true ),
+    legendstyle( MarkersOnly )
     //needRebuild( true )
 {
     // By default we specify a simple, hard point as the 'relative' position's ref. point,
@@ -184,6 +185,19 @@ void Legend::activateTheLayout()
         d->layout->activate();
 }
 
+
+void Legend::setLegendStyle( LegendStyle style )
+{
+    d->legendstyle = style;
+    //Pending Michel check if appropriate
+    setNeedRebuild();
+}
+
+Legend::LegendStyle Legend::legendStyle() const
+{
+    return d->legendstyle;
+}
+
 Legend* Legend::clone() const
 {
     Legend* legend = new Legend( new Private( *d ), 0 );
@@ -193,6 +207,7 @@ Legend* Legend::clone() const
     legend->setUseAutomaticMarkerSize( useAutomaticMarkerSize() );
     legend->setPosition( position() );
     legend->setAlignment( alignment() );
+    legend->setLegendStyle( legendStyle() );
     return legend;
 }
 
@@ -237,7 +252,8 @@ bool Legend::compare( const Legend* other )const
             (textAttributes()         == other->textAttributes()) &&
             (titleText()              == other->titleText())&&
             (titleTextAttributes()    == other->titleTextAttributes()) &&
-            (spacing()                == other->spacing());
+            (spacing()                == other->spacing()) &&
+            (legendStyle()            == other->legendStyle());
 }
 
 
@@ -767,6 +783,7 @@ void Legend::buildLegend()
 #endif
     d->needRebuild = false;
     */
+
     Q_FOREACH( QLayoutItem* layoutItem, d->layoutItems ) {
         d->layout->removeItem( layoutItem );
     }
@@ -842,30 +859,31 @@ void Legend::buildLegend()
             : KDChartEnums::MeasureOrientationHorizontal;
     const TextAttributes labelAttrs( textAttributes() );
     const qreal fontHeight = labelAttrs.calculatedFontSize( referenceArea(), orient );
+    const LegendStyle style = legendStyle();
     //qDebug() << "fontHeight:" << fontHeight;
 
     for ( int dataset = 0; dataset < d->modelLabels.count(); dataset++ ) {
         // retrieve the marker attributes, and adjust the size, if needed
-        MarkerAttributes markerAttrs( markerAttributes( dataset ) );
-        if( useAutomaticMarkerSize() || ! markerAttrs.markerSize().isValid() )
-            markerAttrs.setMarkerSize( QSizeF(fontHeight, fontHeight) );
+            MarkerAttributes markerAttrs( markerAttributes( dataset ) );
+            if( useAutomaticMarkerSize() || ! markerAttrs.markerSize().isValid() )
+                markerAttrs.setMarkerSize( QSizeF(fontHeight, fontHeight) );
         // Note: We may use diagram() for all of the MarkerLayoutItem instances,
         //       since all they need the diagram for is to invoke mDiagram->paintMarker()
-        KDChart::MarkerLayoutItem* markerItem = new KDChart::MarkerLayoutItem( diagram(),
-                                                                            markerAttrs,
-                                                                            brush( dataset ),
-                                                                            pen( dataset ),
-                                                                            Qt::AlignLeft );
-        d->layoutItems << markerItem;
-        if( orientation() == Qt::Vertical )
-            d->layout->addItem( markerItem,
-                                dataset*2+2, // first row is title, second is line
-                                1,
-                                1, 1, Qt::AlignCenter );
-        else
-            d->layout->addItem( markerItem,
-                                2, // all in row two
-                                dataset*4 );
+            KDChart::MarkerLayoutItem* markerItem = new KDChart::MarkerLayoutItem( diagram(),
+                                                                                   markerAttrs,
+                                                                                   brush( dataset ),
+                                                                                   pen( dataset ),
+                                                                                   Qt::AlignLeft );
+            d->layoutItems << markerItem;
+            if( orientation() == Qt::Vertical )
+                d->layout->addItem( markerItem,
+                                    dataset*2+2, // first row is title, second is line
+                                    1,
+                                    1, 1, Qt::AlignCenter );
+            else
+                d->layout->addItem( markerItem,
+                                    2, // all in row two
+                                    dataset*4 );
 
         // PENDING(kalle) Other properties!
         KDChart::TextLayoutItem* labelItem =

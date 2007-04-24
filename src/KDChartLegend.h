@@ -71,6 +71,16 @@ public:
     explicit Legend( KDChart::AbstractDiagram* diagram, QWidget* parent );
     virtual ~Legend();
 
+
+    enum LegendStyle { MarkersOnly     = 0,
+                       LinesOnly       = 1,
+                       MarkersAndLines = 2 };
+
+
+    void setLegendStyle( LegendStyle style );
+    LegendStyle legendStyle() const;
+
+
     virtual Legend * clone() const;
 
     /**
@@ -200,7 +210,7 @@ public:
      *
      * Use setFloatingPosition to set position and alignment
      * if your legend is floating.
-     * 
+     *
      * \sa alignment, setPosition, setFloatingPosition
      */
     void setAlignment( Qt::Alignment );
@@ -252,7 +262,7 @@ m_legend->setFloatingPosition( relativePosition );
      * Actually that's exactly the code KD Chart is using as default position for any floating legends,
      * so if you just say setPosition( KDChart::Position::Floating ) without calling setFloatingPosition
      * your legend will be positioned at point 4/4.
-     * 
+     *
      * \sa setPosition, setAlignment
      */
     void setFloatingPosition( const RelativePosition& relativePosition );
@@ -285,7 +295,7 @@ m_legend->setFloatingPosition( relativePosition );
     /**
      * Note: there is no color() getter method, since setColor
      * just sets a QBrush with the respective color, so the
-     * brush() getter method is suffienent.
+     * brush() getter method is sufficient.
      */
     void setColor( uint dataset, const QColor& color );
 
