@@ -31,11 +31,12 @@ public:
 
     // Add at one legend and set it up
     Legend* legend = new Legend( diagram, &m_chart );
-    legend->setPosition( Position::NorthEast );
+    legend->setPosition( Position::North );
     legend->setAlignment( Qt::AlignCenter );
-    legend->setShowLines( false );
+    legend->setShowLines( true );
+    legend->setSpacing( 5 );
     legend->setTitleText( tr( "Legend" ) );
-    legend->setOrientation( Qt::Vertical );
+    legend->setOrientation( Qt::Horizontal );
     m_chart.addLegend( legend );
 
     // Configure the items markers
@@ -85,13 +86,12 @@ public:
 
     FrameAttributes fa;
     fa.setPen( markerPen );
-    fa.setPadding( 5 );
     fa.setVisible( true );
     legend->setFrameAttributes(  fa );
 
     QVBoxLayout* l = new QVBoxLayout(this);
     l->addWidget(&m_chart);
-    m_chart.setGlobalLeading( 10,  10,  10,  10 );
+    m_chart.setGlobalLeadingTop( 10 );
     setLayout(l);
   }
 
