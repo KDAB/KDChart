@@ -553,3 +553,59 @@ void KDChart::VerticalLineLayoutItem::paint( QPainter* painter )
                        QPointF( mRect.center().x(), mRect.bottom() ) );
 }
 
+
+KDChart::LineLayoutItem::LineLayoutItem( KDChart::AbstractDiagram* diagram,
+                                         const QPen& pen,
+                                         Qt::Alignment alignment )
+    : AbstractLayoutItem( alignment )
+    , mDiagram( diagram )
+    , mPen( pen )
+{
+}
+
+Qt::Orientations KDChart::LineLayoutItem::expandingDirections() const
+{
+    return 0; // Grow neither vertically nor horizontally
+}
+
+QRect KDChart::LineLayoutItem::geometry() const
+{
+    return mRect;
+}
+
+bool KDChart::LineLayoutItem::isEmpty() const
+{
+    return false; // never empty, otherwise the layout item would not exist
+}
+
+QSize KDChart::LineLayoutItem::maximumSize() const
+{
+    return sizeHint(); // PENDING(kalle) Review, quite inflexible
+}
+
+QSize KDChart::LineLayoutItem::minimumSize() const
+{
+    return sizeHint(); // PENDING(kalle) Review, quite inflexible
+}
+
+void KDChart::LineLayoutItem::setGeometry( const QRect& r )
+{
+    mRect = r;
+}
+
+QSize KDChart::LineLayoutItem::sizeHint() const
+{
+    return QSize( 10, -1 );
+}
+
+void KDChart::LineLayoutItem::paint( QPainter* painter )
+{
+    if( !mRect.isValid() )
+        return;
+    painter->save();
+    painter->setPen( mPen );
+    painter->drawLine( QPointF( mRect.left(), mRect.center().y() ),
+                       QPointF( mRect.right(), mRect.center().y() ) );
+    painter->restore();
+}
+

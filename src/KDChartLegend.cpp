@@ -863,7 +863,9 @@ void Legend::buildLegend()
     //qDebug() << "fontHeight:" << fontHeight;
 
     for ( int dataset = 0; dataset < d->modelLabels.count(); dataset++ ) {
+        if (  style != LinesOnly ) {
         // retrieve the marker attributes, and adjust the size, if needed
+
             MarkerAttributes markerAttrs( markerAttributes( dataset ) );
             if( useAutomaticMarkerSize() || ! markerAttrs.markerSize().isValid() )
                 markerAttrs.setMarkerSize( QSizeF(fontHeight, fontHeight) );
@@ -884,7 +886,18 @@ void Legend::buildLegend()
                 d->layout->addItem( markerItem,
                                     2, // all in row two
                                     dataset*4 );
-
+        } else {
+            //LineAttributes lineAttrs( lineAttributes( dataset ) );
+            QPen linePen(  pen(  dataset ) );
+            linePen.setColor(  brush( dataset ).color() );
+             KDChart::LineLayoutItem* line = new KDChart::LineLayoutItem( diagram(),
+                                                                          linePen,
+                                                                          Qt::AlignCenter );
+            d->layoutItems << line;
+            d->layout->addItem( line,
+                                2, // all in row two
+                                dataset*4 );
+        }
         // PENDING(kalle) Other properties!
         KDChart::TextLayoutItem* labelItem =
             new KDChart::TextLayoutItem( text( dataset ),

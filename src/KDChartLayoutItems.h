@@ -164,6 +164,30 @@ namespace KDChart {
         QPen mPen;
     };
 
+      /** \internal
+     */
+    class KDCHART_EXPORT LineLayoutItem : public AbstractLayoutItem
+    {
+    public:
+        LineLayoutItem( AbstractDiagram* diagram, const QPen& pen,
+                          Qt::Alignment alignment = 0 );
+
+        virtual Qt::Orientations expandingDirections() const;
+        virtual QRect geometry() const;
+        virtual bool isEmpty() const;
+        virtual QSize maximumSize() const;
+        virtual QSize minimumSize() const;
+        virtual void setGeometry( const QRect& r );
+        virtual QSize sizeHint() const;
+
+        virtual void paint( QPainter* );
+
+    private:
+        AbstractDiagram* mDiagram;
+        QRect mRect;
+        QPen mPen;
+    };
+
     /** \internal
      */
     class KDCHART_EXPORT HorizontalLineLayoutItem : public AbstractLayoutItem
