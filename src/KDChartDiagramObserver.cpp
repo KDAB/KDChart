@@ -47,7 +47,9 @@ DiagramObserver::DiagramObserver( AbstractDiagram * diagram, QObject* parent )
     init();
 }
 
-DiagramObserver::~DiagramObserver() {}
+DiagramObserver::~DiagramObserver()
+{
+}
 
 const AbstractDiagram* DiagramObserver::diagram() const
 {
@@ -90,8 +92,12 @@ void DiagramObserver::init()
 
 void DiagramObserver::slotDestroyed(QObject*)
 {
-    emit diagramDestroyed( m_diagram );
+    //qDebug() << this << "emits signal\n"
+    //        "    emit diagramDestroyed(" <<  m_diagram << ")";
+    AbstractDiagram* diag = m_diagram;
+    disconnect( m_diagram, 0, this, 0);
     m_diagram = 0;
+    emit diagramDestroyed( diag );
 }
 
 void DiagramObserver::slotModelsChanged()

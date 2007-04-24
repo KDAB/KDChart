@@ -344,8 +344,11 @@ void Legend::removeDiagram( AbstractDiagram* oldDiagram )
     if( oldDiagram ){
         DiagramObserver* oldObs = d->findObserverForDiagram( oldDiagram );
         if( oldObs ){
+            //qDebug() << "before delete oldObs;";
             delete oldObs;
+            //qDebug() << "after delete oldObs;";
             d->observers.removeAt( d->observers.indexOf( oldObs ) );
+            //qDebug() << "after d->observers.removeAt()";
         }
         setNeedRebuild();
     }
@@ -376,6 +379,7 @@ void Legend::setDiagram( KDChart::AbstractDiagram* newDiagram )
 
 void Legend::resetDiagram( AbstractDiagram* oldDiagram )
 {
+    //qDebug() << oldDiagram;
     removeDiagram( oldDiagram );
 }
 
@@ -779,17 +783,20 @@ void Legend::buildLegend()
     // retrieve the diagrams' settings for all non-hidden datasets
     for (int i = 0; i < d->observers.size(); ++i){
         const AbstractDiagram* diagram = d->observers.at(i)->diagram();
-        const QStringList             diagramLabels(  diagram->datasetLabels()  );
-        const QList<QBrush>           diagramBrushes( diagram->datasetBrushes() );
-        const QList<QPen>             diagramPens(    diagram->datasetPens()    );
-        const QList<MarkerAttributes> diagramMarkers( diagram->datasetMarkers() );
-        for ( int dataset = 0; dataset < diagramLabels.count(); dataset++ ) {
-            // only show the label if the diagrams is NOT having the dataset set to hidden
-            if( ! diagram->isHidden( dataset ) ){
-                d->modelLabels  += diagramLabels[   dataset ];
-                d->modelBrushes += diagramBrushes[  dataset ];
-                d->modelPens    += diagramPens[     dataset ];
-                d->modelMarkers += diagramMarkers[  dataset ];
+        if( diagram ){
+            //qDebug() << "accessing" << diagram;
+            const QStringList             diagramLabels(  diagram->datasetLabels()  );
+            const QList<QBrush>           diagramBrushes( diagram->datasetBrushes() );
+            const QList<QPen>             diagramPens(    diagram->datasetPens()    );
+            const QList<MarkerAttributes> diagramMarkers( diagram->datasetMarkers() );
+            for ( int dataset = 0; dataset < diagramLabels.count(); dataset++ ) {
+                // only show the label if the diagrams is NOT having the dataset set to hidden
+                if( ! diagram->isHidden( dataset ) ){
+                    d->modelLabels  += diagramLabels[   dataset ];
+                    d->modelBrushes += diagramBrushes[  dataset ];
+                    d->modelPens    += diagramPens[     dataset ];
+                    d->modelMarkers += diagramMarkers[  dataset ];
+                }
             }
         }
     }
