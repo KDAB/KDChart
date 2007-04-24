@@ -887,9 +887,8 @@ void Legend::buildLegend()
                                     2, // all in row two
                                     dataset*4 );
         } else {
-            //LineAttributes lineAttrs( lineAttributes( dataset ) );
+
             QPen linePen(  pen(  dataset ) );
-            linePen.setColor(  brush( dataset ).color() );
              KDChart::LineLayoutItem* line = new KDChart::LineLayoutItem( diagram(),
                                                                           linePen,
                                                                           Qt::AlignCenter );

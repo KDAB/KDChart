@@ -595,7 +595,8 @@ void KDChart::LineLayoutItem::setGeometry( const QRect& r )
 
 QSize KDChart::LineLayoutItem::sizeHint() const
 {
-    return QSize( 10, -1 );
+    // pending Michel make it configurable?
+    return QSize( 10, mPen.width() );
 }
 
 void KDChart::LineLayoutItem::paint( QPainter* painter )
