@@ -862,6 +862,7 @@ void Legend::buildLegend()
     const LegendStyle style = legendStyle();
     //qDebug() << "fontHeight:" << fontHeight;
 
+
     for ( int dataset = 0; dataset < d->modelLabels.count(); dataset++ ) {
         if (  style != LinesOnly ) {
         // retrieve the marker attributes, and adjust the size, if needed
@@ -886,12 +887,32 @@ void Legend::buildLegend()
                 d->layout->addItem( markerItem,
                                     2, // all in row two
                                     dataset*4 );
-        } else {
+            if ( style == MarkersAndLines ) {
+                QPen linePen(  pen(  dataset ) );
+                KDChart::LineLayoutItem* line = new KDChart::LineLayoutItem( diagram(),
+                                                                             linePen,
+                                                                             Qt::AlignCenter );
+                d->layoutItems << line;
+                if( orientation() == Qt::Vertical ) {
+                    d->layout->addItem( line,
+                                        dataset*2+2, // first row is title, second is line
+                                        4,
+                                        1, 1, Qt::AlignLeft );
+                    d->layout->addItem( new QSpacerItem( spacing(), 1 ),
+                                        dataset*2+2,
+                                        5 );
+                }
+                else
+                    d->layout->addItem( line,
+                                        2, // all in row two
+                                        dataset*4+2 );
 
+            }
+        } else { //linesOnly
             QPen linePen(  pen(  dataset ) );
-             KDChart::LineLayoutItem* line = new KDChart::LineLayoutItem( diagram(),
-                                                                          linePen,
-                                                                          Qt::AlignCenter );
+            KDChart::LineLayoutItem* line = new KDChart::LineLayoutItem( diagram(),
+                                                                         linePen,
+                                                                         Qt::AlignCenter );
              d->layoutItems << line;
              if( orientation() == Qt::Vertical )
                  d->layout->addItem( line,
@@ -937,7 +958,7 @@ void Legend::buildLegend()
             d->layoutItems << lineItem;
             d->layout->addItem( lineItem,
                                 2, // all in row two
-                                dataset*4+2,
+                                style == MarkersAndLines ? dataset*4+3 : dataset*4+2 ,
                                 1, 1, Qt::AlignCenter );
         }
 
@@ -951,8 +972,8 @@ void Legend::buildLegend()
     // vertical line (only in vertical mode)
     if( orientation() == Qt::Vertical && showLines() && d->modelLabels.count() ) {
         KDChart::VerticalLineLayoutItem* lineItem = new KDChart::VerticalLineLayoutItem();
-        d->layoutItems << lineItem;
-        d->layout->addItem( lineItem, 2, 2, d->modelLabels.count()*2, 1 );
+        //d->layoutItems << lineItem;
+        //d->layout->addItem( lineItem, 2, 2, d->modelLabels.count()*2, 1 );
     }
 
     // This line is absolutely necessary, otherwise: #2516.

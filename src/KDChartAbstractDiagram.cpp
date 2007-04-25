@@ -613,12 +613,12 @@ void AbstractDiagram::paintMarker( QPainter* painter,
                                    const QSizeF& maSize )
 {
 
+    const QPen oldPen( painter->pen() );
     // Pen is used to paint 4Pixels - 1 Pixel - Ring and FastCross types.
     // make sure to use the brush color - see above in those cases.
     const bool isFourPixels = (markerAttributes.markerStyle() == MarkerAttributes::Marker4Pixels);
     if( isFourPixels || (markerAttributes.markerStyle() == MarkerAttributes::Marker1Pixel) ){
         // for high-performance point charts with tiny point markers:
-        const QPen oldPen( painter->pen() );
         painter->setPen( QPen( brush.color().light() ) );
         if( isFourPixels ){
             const qreal x = pos.x();
@@ -631,10 +631,12 @@ void AbstractDiagram::paintMarker( QPainter* painter,
                                QPointF(x+1.0,y+1.0) );
         }
         painter->drawPoint( pos );
-        painter->setPen( oldPen );
     }else{
         PainterSaver painterSaver( painter );
-        painter->setPen( pen );
+        // we only a solid line surrounding the markers
+        QPen painterPen( pen );
+        painterPen.setStyle( Qt::SolidLine );
+        painter->setPen( painterPen );
         painter->setBrush( brush );
         painter->setRenderHint ( QPainter::Antialiasing );
         painter->translate( pos );
@@ -648,7 +650,7 @@ void AbstractDiagram::paintMarker( QPainter* painter,
                     QRectF rect( 0 - maSize.width()/2, 0 - maSize.height()/2,
                                 maSize.width(), maSize.height() );
                     painter->drawRect( rect );
-                    painter->fillRect( rect, painter->brush() );
+                    painter->fillRect( rect, brush.color() );
                     break;
                 }
             case MarkerAttributes::MarkerDiamond:
@@ -702,6 +704,7 @@ void AbstractDiagram::paintMarker( QPainter* painter,
                             "Type item does not match a defined Marker Type." );
         }
     }
+    painter->setPen( oldPen );
 }
 
 void AbstractDiagram::paintMarkers( QPainter* painter )
