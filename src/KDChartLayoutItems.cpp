@@ -561,6 +561,9 @@ KDChart::LineLayoutItem::LineLayoutItem( KDChart::AbstractDiagram* diagram,
     , mDiagram( diagram )
     , mPen( pen )
 {
+    //have a mini pen width
+    if ( pen.width() < 2 )
+        mPen.setWidth( 2 );
 }
 
 Qt::Orientations KDChart::LineLayoutItem::expandingDirections() const
@@ -595,8 +598,9 @@ void KDChart::LineLayoutItem::setGeometry( const QRect& r )
 
 QSize KDChart::LineLayoutItem::sizeHint() const
 {
-    // pending Michel make it configurable?
-    return QSize( 10, mPen.width() );
+    // FixMe we need a mini width
+    // depending on the pen width
+    return QSize( 20, -1 );
 }
 
 void KDChart::LineLayoutItem::paint( QPainter* painter )
@@ -606,7 +610,7 @@ void KDChart::LineLayoutItem::paint( QPainter* painter )
     painter->save();
     painter->setPen( mPen );
     painter->drawLine( QPointF( mRect.left(), mRect.center().y() ),
-                       QPointF( mRect.right(), mRect.center().y() ) );
+                     QPointF( mRect.right(), mRect.center().y() ) );
     painter->restore();
 }
 

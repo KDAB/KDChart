@@ -892,10 +892,16 @@ void Legend::buildLegend()
              KDChart::LineLayoutItem* line = new KDChart::LineLayoutItem( diagram(),
                                                                           linePen,
                                                                           Qt::AlignCenter );
-            d->layoutItems << line;
-            d->layout->addItem( line,
-                                2, // all in row two
-                                dataset*4 );
+             d->layoutItems << line;
+             if( orientation() == Qt::Vertical )
+                 d->layout->addItem( line,
+                                     dataset*2+2, // first row is title, second is line
+                                     1,
+                                     1, 1, Qt::AlignCenter );
+             else
+                 d->layout->addItem( line,
+                                     2, // all in row two
+                                     dataset*4 );
         }
         // PENDING(kalle) Other properties!
         KDChart::TextLayoutItem* labelItem =
