@@ -161,9 +161,9 @@ void MainWindow::initializeDataModels()
     static const qreal pieData[nPieslices] = {
         1, 5, 3, 2, 4, 7, 3, 6, 5
     };
-    m_model2 = new QStandardItemModel( nPieslices, 1, this );
+    m_model2 = new QStandardItemModel( 1, nPieslices, this );
     for( int i=0;  i < nPieslices;  ++i )
-        m_model2->setData( m_model2->index( i, 1 ), pieData[ i ] );
+        m_model2->setData( m_model2->index( 0, i ), pieData[ i ] );
 }
 
 
@@ -212,7 +212,10 @@ void MainWindow::load()
         return;
     }
 
-    KDChart::Serializer serializer( 0, m_model1 );
+    // note: We do NOT set any default data-model for the serializer here
+    //       because we assign the data-models by another way, see below.
+    KDChart::Serializer serializer( 0, 0 );
+
     if( serializer.read( &file ) ){
         if( serializer.chart() &&
             serializer.chart()->coordinatePlane() &&
@@ -221,30 +224,27 @@ void MainWindow::load()
             // Retrieve the chart read from file:
             KDChart::Chart* newChart = serializer.chart();
 
-            // Retrieve the diagram read from file:
-            // We assume the file was created by this program, so it is
-            // supposed to have just one diagram and that must be a LineDiagram.
-            KDChart::LineDiagram* newDiagram =
-                    dynamic_cast<KDChart::LineDiagram*>(newChart->coordinatePlane()->diagram());
+            // Remove the current chart and delete it:
+            removeTheChart();
 
-            if( ! newDiagram ){
-                QMessageBox::warning(
-                        this,
-                        tr("KD Chart Serializer"),
-                        tr("The saved XLM file either was not created by this program,<br>"
-                           "or it has been modified manually in a wrong way.<br>"
-                           "Problem: First diagram in file %1 is not a LineDiagram.").arg(fileName) );
-                delete newChart;
-            }else{
-                // Remove the current chart and delete it:
-                removeTheChart();
-
-                // From now on use the chart read from file:
-                m_chart = newChart;
-                m_chartLayout->addWidget( m_chart );
-
-                m_chart->update();
+            KDChart::LineDiagram* lineDiag =
+                    dynamic_cast<KDChart::LineDiagram*>(newChart->coordinatePlanes().at(0)->diagrams().at(0));
+            KDChart::PieDiagram* pieDiag =
+                    dynamic_cast<KDChart::PieDiagram*>( newChart->coordinatePlanes().at(1)->diagrams().at(0));
+            if( lineDiag ){
+                lineDiag->setModel( m_model1 );
+                qDebug() << "adjusting the line diagram's data model"; 
             }
+            if( pieDiag ){
+                pieDiag->setModel( m_model2 );
+                qDebug() << "adjusting the pie diagram's data model";
+            }
+
+            // From now on use the chart read from file:
+            m_chart = newChart;
+            m_chartLayout->addWidget( m_chart );
+
+            m_chart->update();
         }else{
             QMessageBox::warning( this, tr("KD Chart Serializer"),
                                   tr("ERROR: Parsed chart in file %1 has no diagram.")
