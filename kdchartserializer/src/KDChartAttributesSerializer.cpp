@@ -1287,6 +1287,8 @@ bool AttributesSerializer::parseGridAttributes(
                         seq = KDChartEnums::GranularitySequence_10_50;
                     else if( name == "25_50" )
                         seq = KDChartEnums::GranularitySequence_25_50;
+                    else if( name == "125_25" )
+                        seq = KDChartEnums::GranularitySequence_125_25;
                     else if( name == "Irregular" )
                         seq = KDChartEnums::GranularitySequenceIrregular;
                     else
@@ -1344,6 +1346,9 @@ void AttributesSerializer::saveGridAttributes(
             break;
         case KDChartEnums::GranularitySequence_25_50:
             name = "25_50";
+            break;
+        case KDChartEnums::GranularitySequence_125_25:
+            name = "125_25";
             break;
         case KDChartEnums::GranularitySequenceIrregular:
             name = "Irregular";
