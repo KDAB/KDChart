@@ -15,7 +15,7 @@ SUBDIRS +=  ChartElementOwnership \
 	    LineDiagrams \
             PieDiagrams \
             PolarDiagrams \
-            ParamVsParam \
+#            ParamVsParam \
 
 unix:SUBDIRS += AxisOwnership
 test.target=test
