@@ -26,6 +26,7 @@
 #include <QApplication>
 #include <KDChartWidget>
 #include <KDChartLineDiagram>
+#include <KDChartLegend>
 
 
 using namespace KDChart;
@@ -48,14 +49,26 @@ int main( int argc, char** argv ) {
     widget.setSubType(  Widget::Percent );
 
     //Configure a pen and draw a line
-    //a dashed line for column 1
+    //a dot line for column 1
     QPen pen;
-    pen.setWidth( 3 );
-    pen.setStyle( Qt::DashDotLine );
-    pen.setColor(  Qt::green );
+    QBrush brush;
+    pen.setWidth(3);
+    pen.setStyle( Qt::DotLine );
+    pen.setColor(  Qt::yellow );
+    brush.setColor(  Qt::yellow );
     // call your diagram and set the new pen
+    // and brush
     widget.lineDiagram()->setPen(  1 , pen );
+    widget.lineDiagram()->setBrush( 1,  brush );
 
+    //set up a legend
+    Legend* legend = new Legend( &widget );
+    legend->setPosition( Position::East );
+    legend->setAlignment( Qt::AlignCenter );
+    legend->setOrientation( Qt::Vertical );
+    legend->setLegendStyle( Legend::LinesOnly );
+    legend->setShowLines(  true );
+    widget.addLegend( legend );
     //Set up your Attributes
     //display areas
     LineAttributes la( widget.lineDiagram()->lineAttributes() );
