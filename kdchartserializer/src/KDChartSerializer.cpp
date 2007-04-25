@@ -227,7 +227,14 @@ bool Serializer::parseChartElement(
     if( bOK ){
         container = SerializeCollector::findStoredGlobalElement(
                 rootNode, ptrName, "kdchart:charts" );
-        bOK = ! container.tagName().isEmpty();
+        if( container.isNull() ){
+            qDebug()<< "Stored Element was not found.";
+            bOK = false;
+        }
+        if( bOK && container.tagName().isEmpty() ){
+            qDebug()<< "Stored Element is invalid.";
+            bOK = false;
+        }
     }
 
     if( bOK ) {
@@ -263,6 +270,7 @@ bool Serializer::parseChartElement(
                         if( lay )
                             lay->setDirection( d );
                     }else{
+                        qDebug()<< "Could not parse Chart. Error in element" << e.tagName();
                         bOK = false;
                     }
                 } else if( e.tagName() == "kdchart:coordinate-planes:pointers" ){
