@@ -108,6 +108,7 @@ protected:
                                 bool showHiddenCellsAsInvalid = false ) const;
     LineAttributes::MissingValuesPolicy getCellValues(
         int row, int column,
+        bool shiftCountedXValuesByHalfSection,
         double& valueX, double& valueY ) const;
 
     virtual double threeDItemDepth( const QModelIndex & index ) const;

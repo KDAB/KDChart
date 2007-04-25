@@ -32,6 +32,7 @@
 
 #include "KDChartLineDiagram.h"
 #include "KDChartLineDiagram_p.h"
+#include "KDChartBarDiagram.h"
 #include "KDChartPalette.h"
 #include "KDChartPosition.h"
 #include "KDChartTextAttributes.h"
@@ -362,7 +363,7 @@ const QPair<QPointF, QPointF> LineDiagram::calculateDataBoundaries() const
 
     QPointF bottomLeft( QPointF( xMin, yMin ) );
     QPointF topRight(   QPointF( xMax, yMax ) );
-
+    qDebug() << "LineDiagram::calculateDataBoundaries () returns ( " << bottomLeft << topRight <<")";
     return QPair<QPointF, QPointF> ( bottomLeft, topRight );
 }
 
@@ -396,6 +397,7 @@ double LineDiagram::valueForCellTesting( int row, int column,
 
 LineAttributes::MissingValuesPolicy LineDiagram::getCellValues(
       int row, int column,
+      bool shiftCountedXValuesByHalfSection,
       double& valueX, double& valueY ) const
 {
     LineAttributes::MissingValuesPolicy policy;
@@ -403,7 +405,7 @@ LineAttributes::MissingValuesPolicy LineDiagram::getCellValues(
     bool bOK = true;
     valueX = ( datasetDimension() > 1 && column > 0 )
            ? valueForCellTesting( row, column-1, bOK, true )
-           : row;
+           : ((shiftCountedXValuesByHalfSection ? 0.5 : 0.0) + row);
     if( bOK )
         valueY = valueForCellTesting( row, column, bOK, true );
     if( bOK ){
@@ -429,6 +431,12 @@ void LineDiagram::paint( PaintContext* ctx )
     //       but we can not draw a diagram then either.
     if ( !checkInvariants( true ) ) return;
     if ( !AbstractGrid::isBoundariesValid(dataBoundaries()) ) return;
+
+    // Make sure counted x values (== in diagrams with 1-dimensional data cells)
+    // get shifted by 0.5, if the diagram's reference diagram is a BarDiagram.
+    // So we get the lines to start/end at the middle of the respective bar groups.
+    const bool shiftCountedXValuesByHalfSection =
+            (dynamic_cast< BarDiagram* >( referenceDiagram() ) != 0);
 
     //QTime t = QTime::currentTime();
 
@@ -472,7 +480,9 @@ void LineDiagram::paint( PaintContext* ctx )
                 for ( int iRow = 0; iRow < rowCount; ++iRow ) {
                     bool skipThisCell = false;
                     // trying to find a fromPoint
-                    policy = getCellValues( iRow, iColumn, valueX, valueY );
+                    policy = getCellValues( iRow, iColumn,
+                                            shiftCountedXValuesByHalfSection,
+                                            valueX, valueY );
                     switch( policy ){
                         case LineAttributes::MissingValuesAreBridged:
                             if( bValuesFound ){
@@ -499,7 +509,10 @@ void LineDiagram::paint( PaintContext* ctx )
                         bool foundToPoint = false;
                         int iNextRow = iRow+1;
                         while ( ! (foundToPoint || skipThisCell || iNextRow >= rowCount) ) {
-                            policy = getCellValues( iNextRow, iColumn, nextValueX, nextValueY );
+                            policy = getCellValues(
+                                    iNextRow, iColumn,
+                                    shiftCountedXValuesByHalfSection,
+                                    nextValueX, nextValueY );
                             switch( policy ){
                                 case LineAttributes::MissingValuesAreBridged:
                                     // The cell has no valid value, so we  make sure that

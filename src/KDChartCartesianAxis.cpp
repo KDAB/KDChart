@@ -528,11 +528,13 @@ void CartesianAxis::paintCtx( PaintContext* context )
      */
 
     bool isBarDiagram;
-    AbstractDiagram * const dia = const_cast<AbstractDiagram*>( d->diagram() );
-    if ( qobject_cast< BarDiagram* >( dia ) )
-        isBarDiagram = true;
-    else
-        isBarDiagram = false;
+    {
+        const AbstractCartesianDiagram * dia =
+                qobject_cast< const AbstractCartesianDiagram * >( d->diagram() );
+        if( dia && dia->referenceDiagram() )
+            dia = dia->referenceDiagram();
+        isBarDiagram = qobject_cast< const BarDiagram* >( dia );
+    }
 
     // this draws the unit rulers
     if ( drawUnitRulers ) {
