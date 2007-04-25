@@ -363,7 +363,7 @@ const QPair<QPointF, QPointF> LineDiagram::calculateDataBoundaries() const
 
     QPointF bottomLeft( QPointF( xMin, yMin ) );
     QPointF topRight(   QPointF( xMax, yMax ) );
-    qDebug() << "LineDiagram::calculateDataBoundaries () returns ( " << bottomLeft << topRight <<")";
+    //qDebug() << "LineDiagram::calculateDataBoundaries () returns ( " << bottomLeft << topRight <<")";
     return QPair<QPointF, QPointF> ( bottomLeft, topRight );
 }
 

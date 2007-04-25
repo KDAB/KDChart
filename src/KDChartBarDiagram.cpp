@@ -291,7 +291,7 @@ const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries() const
     QPointF bottomLeft ( QPointF( xMin, yMin ) );
     QPointF topRight ( QPointF( xMax, yMax ) );
 
-    qDebug() << "BarDiagram::calculateDataBoundaries () returns ( " << bottomLeft << topRight <<")";
+    //qDebug() << "BarDiagram::calculateDataBoundaries () returns ( " << bottomLeft << topRight <<")";
     return QPair<QPointF, QPointF> ( bottomLeft,  topRight );
 }
 
