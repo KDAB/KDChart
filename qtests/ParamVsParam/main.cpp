@@ -12,16 +12,13 @@ private slots:
     char** argv = (char**) new char[1]; int argc = 1;
     argv[0] = "TestParamVsParam";
 
-    QApplication    app(argc, argv);
     MainWindow      mainWindow;
 
     QTime t;
     t.start();
 
     mainWindow.show();
-    QTimer::singleShot(0, &app, SLOT(quit()));
-
-    app.exec();
+    QTimer::singleShot(0, qApp, SLOT(quit()));
 
     qDebug("Time elapsed: %d ms", t.elapsed());
 
