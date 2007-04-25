@@ -58,6 +58,13 @@ namespace KDChart {
             explicit CoordPlanesSerializer(QAbstractItemModel * model);
             virtual ~CoordPlanesSerializer();
 
+            /**
+             * \brief Set the data model to be assigned to diagrams created by parsePlane().
+             * 
+             * This will affect new diagrams instantiated after setModel was
+             * called, but it will not change any data model assignments that
+             * were made before setModel was called.
+             */
             virtual void setModel(QAbstractItemModel * model);
 
             virtual void savePlanes(
