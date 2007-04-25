@@ -699,34 +699,10 @@ void DiagramsSerializer::saveLineDiagram(
 bool DiagramsSerializer::parseBarDiagram(
         const QDomElement& container, BarDiagram& diagram )const
 {
-    QDomElement diagramElement;
-    QString diagName;
-    if( ! container.isNull() ) { // was really an element
-        diagName = container.tagName();
-        //qDebug() << "\n    DiagramsSerializer::parseBarDiagram() processing" << diagName;
-        QDomNode diagramNode = container.firstChild();
-        if( ! diagramNode.isNull() ) {
-            diagramElement = diagramNode.toElement();
-            if( !diagramElement.isNull() ) { // was really an element
-                QString tagName = diagramElement.tagName();
-                //qDebug()<< "\n    DiagramsSerializer::parseBarDiagram() processing"
-                //        << diagName << " / " << tagName;
-                if( tagName.compare("kdchart:bar-diagram", Qt::CaseInsensitive) != 0 )
-                    qDebug() << "Class BarDiagram" << diagName << "contains unknown element:" << tagName;
-            }else{
-                qDebug() << "Class BarDiagram" << diagName << "contains no valid element";
-            }
-        }else{
-            qDebug() << "Class BarDiagram" << diagName << "contains no diagram node";
-        }
-    }else{
-        qDebug() << "Cannot parse BarDiagram. Node is invalid.";
-    }
-
     bool bOK = true;
-    if( !diagramElement.isNull() ) {
+    if( !container.isNull() ) {
         //qDebug() << "\n    DiagramsSerializer::parseBarDiagram() processing" << diagName;
-        QDomNode node = diagramElement.firstChild();
+        QDomNode node = container.firstChild();
         while( !node.isNull() ) {
             QDomElement element = node.toElement();
             if( !element.isNull() ) { // was really an element
@@ -820,6 +796,8 @@ bool DiagramsSerializer::parseAbstractPieDiagram(
                             << tagName << "has invalid content.";
                 }
             } else if( tagName == "StartPosition" ) {
+                // setStartPosition is deprecated!
+                /*
                 int i;
                 if( KDXML::readIntNode( element, i ) ){
                     diagram.setStartPosition( i );
@@ -827,6 +805,7 @@ bool DiagramsSerializer::parseAbstractPieDiagram(
                     qDebug()<< "Could not parse AbstractPieDiagram. Element"
                             << tagName << "has invalid content.";
                 }
+                */
             } else {
                 qDebug() << "Unknown subelement of AbstractPieDiagram found:" << tagName;
                 bOK = false;
@@ -853,41 +832,18 @@ void DiagramsSerializer::saveAbstractPieDiagram(
 
     // then save what is stored in the derived class
     KDXML::createRealNode( doc, diagElement, "Granularity",   diagram.granularity() );
-    KDXML::createIntNode(  doc, diagElement, "StartPosition", diagram.startPosition() );
+    // setStartPosition is deprecated!
+    //KDXML::createIntNode(  doc, diagElement, "StartPosition", diagram.startPosition() );
 }
 
 
 bool DiagramsSerializer::parsePieDiagram(
         const QDomElement& container, PieDiagram& diagram )const
 {
-    QDomElement diagramElement;
-    QString diagName;
-    if( ! container.isNull() ) { // was really an element
-        diagName = container.tagName();
-        //qDebug() << "\n    DiagramsSerializer::parsePieDiagram() processing" << diagName;
-        QDomNode diagramNode = container.firstChild();
-        if( ! diagramNode.isNull() ) {
-            diagramElement = diagramNode.toElement();
-            if( !diagramElement.isNull() ) { // was really an element
-                QString tagName = diagramElement.tagName();
-                //qDebug()<< "\n    DiagramsSerializer::parsePieDiagram() processing"
-                //        << diagName << " / " << tagName;
-                if( tagName.compare("kdchart:pie-diagram", Qt::CaseInsensitive) != 0 )
-                    qDebug() << "Class PieDiagram" << diagName << "contains unknown element:" << tagName;
-            }else{
-                qDebug() << "Class PieDiagram" << diagName << "contains no valid element";
-            }
-        }else{
-            qDebug() << "Class PieDiagram" << diagName << "contains no diagram node";
-        }
-    }else{
-        qDebug() << "Cannot parse PieDiagram. Node is invalid.";
-    }
-
     bool bOK = true;
-    if( !diagramElement.isNull() ) {
+    if( !container.isNull() ) {
         //qDebug() << "\n    DiagramsSerializer::parsePieDiagram() processing" << diagName;
-        QDomNode node = diagramElement.firstChild();
+        QDomNode node = container.firstChild();
         while( !node.isNull() ) {
             QDomElement element = node.toElement();
             if( !element.isNull() ) { // was really an element
@@ -923,34 +879,10 @@ void DiagramsSerializer::savePieDiagram(
 bool DiagramsSerializer::parsePolarDiagram(
         const QDomElement& container, PolarDiagram& diagram )const
 {
-    QDomElement diagramElement;
-    QString diagName;
-    if( ! container.isNull() ) { // was really an element
-        diagName = container.tagName();
-        //qDebug() << "\n    DiagramsSerializer::parsePolarDiagram() processing" << diagName;
-        QDomNode diagramNode = container.firstChild();
-        if( ! diagramNode.isNull() ) {
-            diagramElement = diagramNode.toElement();
-            if( !diagramElement.isNull() ) { // was really an element
-                QString tagName = diagramElement.tagName();
-                //qDebug()<< "\n    DiagramsSerializer::parsePolarDiagram() processing"
-                //        << diagName << " / " << tagName;
-                if( tagName.compare("kdchart:polar-diagram", Qt::CaseInsensitive) != 0 )
-                    qDebug() << "Class PolarDiagram" << diagName << "contains unknown element:" << tagName;
-            }else{
-                qDebug() << "Class PolarDiagram" << diagName << "contains no valid element";
-            }
-        }else{
-            qDebug() << "Class PolarDiagram" << diagName << "contains no diagram node";
-        }
-    }else{
-        qDebug() << "Cannot parse PolarDiagram. Node is invalid.";
-    }
-
     bool bOK = true;
-    if( !diagramElement.isNull() ) {
+    if( !container.isNull() ) {
         //qDebug() << "\n    DiagramsSerializer::parsePolarDiagram() processing" << diagName;
-        QDomNode node = diagramElement.firstChild();
+        QDomNode node = container.firstChild();
         while( !node.isNull() ) {
             QDomElement element = node.toElement();
             if( !element.isNull() ) { // was really an element
@@ -1107,34 +1039,10 @@ void DiagramsSerializer::savePolarDiagram(
 bool DiagramsSerializer::parseRingDiagram(
         const QDomElement& container, RingDiagram& diagram )const
 {
-    QDomElement diagramElement;
-    QString diagName;
-    if( ! container.isNull() ) { // was really an element
-        diagName = container.tagName();
-        //qDebug() << "\n    DiagramsSerializer::parseRingDiagram() processing" << diagName;
-        QDomNode diagramNode = container.firstChild();
-        if( ! diagramNode.isNull() ) {
-            diagramElement = diagramNode.toElement();
-            if( !diagramElement.isNull() ) { // was really an element
-                QString tagName = diagramElement.tagName();
-                //qDebug()<< "\n    DiagramsSerializer::parseRingDiagram() processing"
-                //        << diagName << " / " << tagName;
-                if( tagName.compare("kdchart:ring-diagram", Qt::CaseInsensitive) != 0 )
-                    qDebug() << "Class RingDiagram" << diagName << "contains unknown element:" << tagName;
-            }else{
-                qDebug() << "Class RingDiagram" << diagName << "contains no valid element";
-            }
-        }else{
-            qDebug() << "Class RingDiagram" << diagName << "contains no diagram node";
-        }
-    }else{
-        qDebug() << "Cannot parse RingDiagram. Node is invalid.";
-    }
-
     bool bOK = true;
-    if( !diagramElement.isNull() ) {
+    if( !container.isNull() ) {
         //qDebug() << "\n    DiagramsSerializer::parseRingDiagram() processing" << diagName;
-        QDomNode node = diagramElement.firstChild();
+        QDomNode node = container.firstChild();
         while( !node.isNull() ) {
             QDomElement element = node.toElement();
             if( !element.isNull() ) { // was really an element
@@ -1180,34 +1088,10 @@ void DiagramsSerializer::saveRingDiagram(
 bool DiagramsSerializer::parseOtherDiagram(
         const QDomElement& container, AbstractDiagram& diagram )const
 {
-    QDomElement diagramElement;
-    QString diagName;
-    if( ! container.isNull() ) { // was really an element
-        diagName = container.tagName();
-        //qDebug() << "\n    DiagramsSerializer::parseOtherDiagram() processing" << diagName;
-        QDomNode diagramNode = container.firstChild();
-        if( ! diagramNode.isNull() ) {
-            diagramElement = diagramNode.toElement();
-            if( !diagramElement.isNull() ) { // was really an element
-                QString tagName = diagramElement.tagName();
-                //qDebug()<< "\n    DiagramsSerializer::parseOtherDiagram() processing"
-                //        << diagName << " / " << tagName;
-                if( ! tagName.contains("diagram", Qt::CaseInsensitive) )
-                    qDebug() << "Diagram" << diagName << "contains unknown element:" << tagName;
-            }else{
-                qDebug() << "Diagram" << diagName << "contains no valid element";
-            }
-        }else{
-            qDebug() << "Diagram" << diagName << "contains no diagram node";
-        }
-    }else{
-        qDebug() << "Cannot parse diagram. Node is invalid.";
-    }
-
     bool bOK = true;
-    if( !diagramElement.isNull() ) {
+    if( !container.isNull() ) {
         //qDebug() << "\n    DiagramsSerializer::parseOtherDiagram() processing" << diagName;
-        QDomNode node = diagramElement.firstChild();
+        QDomNode node = container.firstChild();
         while( !node.isNull() ) {
             QDomElement element = node.toElement();
             if( !element.isNull() ) { // was really an element
