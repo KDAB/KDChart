@@ -67,6 +67,14 @@ MainWindow::MainWindow( QWidget* parent ) :
     lines->setModel( m_model1 );
     lines->setReferenceDiagram( bars );
 
+    // increase the line width
+    for ( int iRow = 0; iRow < lines->model()->rowCount(); ++iRow ) {
+        QPen pen( lines->pen( iRow ) );
+        pen.setWidth(2);
+        pen.setColor( pen.color().dark(133) );
+        lines->setPen( iRow, pen );
+    }
+
     PieDiagram* pie = new PieDiagram();
     pie->setModel( m_model2 );
 
@@ -110,18 +118,25 @@ MainWindow::MainWindow( QWidget* parent ) :
 
 
 
-    Legend* legend = new Legend( lines, m_chart );
-    legend->setPosition( Position::South );
-    legend->setAlignment( Qt::AlignCenter );
-    legend->setShowLines( false );
-    legend->setTitleText( tr( "The Legend" ) );
-    legend->setText( 0, tr( "The red one" ) );
-    legend->setText( 1, tr( "green" ) );
-    legend->setText( 2, tr( "blue" ) );
-    legend->setText( 3, tr( "turquoise" ) );
+    Legend* legend1 = new Legend( lines, m_chart );
+    legend1->setPosition( Position::South );
+    legend1->setAlignment( Qt::AlignLeft );
+    legend1->setShowLines( false );
+    legend1->setTitleText( tr( "Legend 1" ) );
+    legend1->setText( 0, tr( "The red one" ) );
+    legend1->setText( 1, tr( "green" ) );
+    legend1->setText( 2, tr( "blue" ) );
+    legend1->setText( 3, tr( "turquoise" ) );
+    legend1->setOrientation( Qt::Horizontal );
+    m_chart->addLegend( legend1 );
 
-    legend->setOrientation( Qt::Horizontal );
-    m_chart->addLegend( legend );
+    Legend* legend2 = new Legend( pie, m_chart );
+    legend2->setPosition( Position::East );
+    legend2->setAlignment( Qt::AlignTop );
+    legend2->setShowLines( false );
+    legend2->setTitleText( tr( "L. 2" ) );
+    legend2->setOrientation( Qt::Vertical );
+    m_chart->addLegend( legend2 );
 
     KDChart::HeaderFooter* headerFooter = new KDChart::HeaderFooter( m_chart );
     m_chart->addHeaderFooter( headerFooter );
@@ -150,10 +165,11 @@ MainWindow::MainWindow( QWidget* parent ) :
     ba.setBrush(QBrush(QColor(200,255,200)));
     m_chart->coordinatePlane()->setBackgroundAttributes(ba);
 
-    ba = legend->backgroundAttributes();
+    ba = legend1->backgroundAttributes();
     ba.setVisible(true);
     ba.setBrush(QBrush(QColor(200,200,255)));
-    legend->setBackgroundAttributes(ba);
+    legend1->setBackgroundAttributes(ba);
+    legend2->setBackgroundAttributes(ba);
 }
 
 
@@ -246,17 +262,17 @@ void MainWindow::load()
             // Remove the current chart and delete it:
             removeTheChart();
 
-            KDChart::LineDiagram* lineDiag =
-                    dynamic_cast<KDChart::LineDiagram*>(newChart->coordinatePlanes().at(0)->diagrams().at(0));
-            KDChart::PieDiagram* pieDiag =
-                    dynamic_cast<KDChart::PieDiagram*>( newChart->coordinatePlanes().at(1)->diagrams().at(0));
-            if( lineDiag ){
-                lineDiag->setModel( m_model1 );
-                qDebug() << "adjusting the line diagram's data model"; 
-            }
-            if( pieDiag ){
-                pieDiag->setModel( m_model2 );
-                qDebug() << "adjusting the pie diagram's data model";
+            CoordinatePlaneList planes( newChart->coordinatePlanes() );
+            for( int iPlane=0; iPlane<planes.count(); ++iPlane){
+                AbstractDiagramList diags( planes.at(iPlane)->diagrams() );
+                for( int iDiag=0; iDiag<diags.count(); ++iDiag){
+                    AbstractDiagram* diagram = diags.at( iDiag );
+                    if( dynamic_cast<KDChart::BarDiagram*>( diagram ) ||
+                        dynamic_cast<KDChart::LineDiagram*>( diagram ) )
+                        diagram->setModel( m_model1 );
+                    else
+                        diagram->setModel( m_model2 );
+                }
             }
 
             // From now on use the chart read from file:
