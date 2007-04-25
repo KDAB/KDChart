@@ -1,7 +1,4 @@
 <ui version="4.0" >
- <author></author>
- <comment></comment>
- <exportmacro></exportmacro>
  <class>AddLegendDialog</class>
  <widget class="QDialog" name="AddLegendDialog" >
   <property name="geometry" >
@@ -9,7 +6,7 @@
     <x>0</x>
     <y>0</y>
     <width>355</width>
-    <height>219</height>
+    <height>232</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -22,27 +19,71 @@
    <property name="spacing" >
     <number>6</number>
    </property>
-   <item row="1" column="0" >
-    <widget class="QLabel" name="label_4" >
+   <item row="2" column="1" >
+    <widget class="QComboBox" name="styleCO" >
+     <item>
+      <property name="text" >
+       <string>MarkersOnly</string>
+      </property>
+     </item>
+     <item>
+      <property name="text" >
+       <string>LinesOnly</string>
+      </property>
+     </item>
+     <item>
+      <property name="text" >
+       <string>MarkersAndLines</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="2" column="0" >
+    <widget class="QLabel" name="styleLB" >
      <property name="text" >
-      <string>Alignment:</string>
+      <string>Style:</string>
      </property>
     </widget>
    </item>
-   <item row="0" column="0" >
-    <widget class="QLabel" name="label" >
+   <item row="3" column="0" >
+    <widget class="QCheckBox" name="showLinesCB" >
      <property name="text" >
-      <string>Position:</string>
+      <string>Show lines</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="1" >
-    <widget class="QComboBox" name="alignmentCO" />
+   <item row="4" column="0" >
+    <widget class="QLabel" name="label_2" >
+     <property name="text" >
+      <string>Title Text</string>
+     </property>
+    </widget>
    </item>
-   <item row="0" column="1" >
-    <widget class="QComboBox" name="positionCO" />
+   <item row="4" column="1" >
+    <widget class="QLineEdit" name="titleTextED" />
    </item>
-   <item row="5" column="0" colspan="2" >
+   <item row="5" column="0" >
+    <widget class="QLabel" name="label_3" >
+     <property name="text" >
+      <string>Orientation:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1" >
+    <widget class="QComboBox" name="orientationCO" >
+     <item>
+      <property name="text" >
+       <string>Vertical</string>
+      </property>
+     </item>
+     <item>
+      <property name="text" >
+       <string>Horizontal</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="6" column="0" colspan="2" >
     <layout class="QHBoxLayout" >
      <property name="margin" >
       <number>0</number>
@@ -79,47 +120,28 @@
      </item>
     </layout>
    </item>
-   <item row="4" column="1" >
-    <widget class="QComboBox" name="orientationCO" >
-     <item>
-      <property name="text" >
-       <string>Vertical</string>
-      </property>
-     </item>
-     <item>
-      <property name="text" >
-       <string>Horizontal</string>
-      </property>
-     </item>
-    </widget>
+   <item row="0" column="1" >
+    <widget class="QComboBox" name="positionCO" />
    </item>
-   <item row="4" column="0" >
-    <widget class="QLabel" name="label_3" >
+   <item row="1" column="1" >
+    <widget class="QComboBox" name="alignmentCO" />
+   </item>
+   <item row="0" column="0" >
+    <widget class="QLabel" name="label" >
      <property name="text" >
-      <string>Orientation:</string>
+      <string>Position:</string>
      </property>
     </widget>
    </item>
-   <item row="3" column="1" >
-    <widget class="QLineEdit" name="titleTextED" />
-   </item>
-   <item row="3" column="0" >
-    <widget class="QLabel" name="label_2" >
+   <item row="1" column="0" >
+    <widget class="QLabel" name="label_4" >
      <property name="text" >
-      <string>Title Text</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0" >
-    <widget class="QCheckBox" name="showLinesCB" >
-     <property name="text" >
-      <string>Show lines</string>
+      <string>Alignment:</string>
      </property>
     </widget>
    </item>
   </layout>
  </widget>
- <pixmapfunction></pixmapfunction>
  <resources/>
  <connections>
   <connection>

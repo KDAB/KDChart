@@ -1,7 +1,4 @@
 <ui version="4.0" >
- <author></author>
- <comment></comment>
- <exportmacro></exportmacro>
  <class>MainWindow</class>
  <widget class="QWidget" name="MainWindow" >
   <property name="geometry" >
@@ -72,6 +69,11 @@
             <string>Alignment</string>
            </property>
           </column>
+          <column>
+           <property name="text" >
+            <string>Style</string>
+           </property>
+          </column>
          </widget>
         </item>
         <item>
@@ -120,7 +122,6 @@
    </item>
   </layout>
  </widget>
- <pixmapfunction></pixmapfunction>
  <resources>
   <include location="../HeaderFooter/BarChart" />
  </resources>

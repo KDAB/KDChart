@@ -77,7 +77,8 @@ MainWindow::MainWindow( QWidget* parent ) :
     newItem->setText( 1, tr( "no" ) );
     newItem->setText( 2, tr( "Legend" ) );
     newItem->setText( 3, tr( "Vertical" ) );
-    newItem->setText( 4, tr("Center") );
+    newItem->setText( 4, tr( "Center") );
+    newItem->setText( 5, tr( "MarkersOnly" ) );
 
     alignmentMap[ Qt::AlignTop     | Qt::AlignLeft]    = tr("Top + Left");
     alignmentMap[ Qt::AlignTop     | Qt::AlignHCenter] = tr("Top + HCenter");
@@ -100,6 +101,7 @@ void MainWindow::initAddLegendDialog( DerivedAddLegendDialog& conf,
 
     const QStringList labels = KDChart::Position::printableNames();
     const QList<QByteArray> names = KDChart::Position::names();
+
 
     for ( int i = 0, end = qMin( labels.size(), names.size() ) ; i != end ; ++i )
         conf.positionCO->addItem( labels[i], names[i] );
@@ -138,13 +140,30 @@ void MainWindow::on_addLegendPB_clicked()
         legend->setShowLines( conf.showLinesCB->isChecked() );
         legend->setTitleText( conf.titleTextED->text() );
         legend->setOrientation( ( conf.orientationCO->currentIndex() == 0 ) ? Qt::Vertical : Qt::Horizontal );
-        legend->show();
+
+        switch( conf.styleCO->currentIndex() )
+        {
+        case 0:
+            legend->setLegendStyle( KDChart::Legend::MarkersOnly );
+            break;
+        case 1:
+            legend->setLegendStyle( KDChart::Legend::LinesOnly );
+            break;
+        case 2:
+            legend->setLegendStyle(KDChart::Legend::MarkersAndLines );
+            break;
+        default:
+            legend->setLegendStyle( KDChart::Legend::MarkersOnly );
+            break;
+        }
+
         LegendItem* newItem = new LegendItem( legend, legendsTV );
         newItem->setText( 0, conf.positionCO->currentText() );
         newItem->setText( 1, conf.showLinesCB->isChecked() ? tr("yes") : tr("no") );
         newItem->setText( 2, conf.titleTextED->text() );
         newItem->setText( 3, conf.orientationCO->currentText() );
         newItem->setText( 4, selectedAlignment );
+        newItem->setText( 5, conf.styleCO->currentText() );
         m_chart->update();
     }
 }
@@ -167,6 +186,7 @@ void MainWindow::on_editLegendPB_clicked()
     conf.positionCO->setCurrentIndex(
             conf.positionCO->findText( legend->position().printableName() ) );
     conf.orientationCO->setCurrentIndex( (legend->orientation()==Qt::Vertical)?0:1 );
+    conf.styleCO->setCurrentIndex( legend->legendStyle() );
 
     if( conf.exec() == QDialog::Accepted ) {
         //legend->setPosition( (KDChart::Legend::LegendPosition)conf.positionCO->currentIndex() );
@@ -187,11 +207,29 @@ void MainWindow::on_editLegendPB_clicked()
         legend->setShowLines( conf.showLinesCB->isChecked() );
         legend->setTitleText( conf.titleTextED->text() );
         legend->setOrientation( ( conf.orientationCO->currentIndex() == 0 ) ? Qt::Vertical : Qt::Horizontal );
+
+        switch( conf.styleCO->currentIndex() )
+        {
+        case 0:
+            legend->setLegendStyle( KDChart::Legend::MarkersOnly );
+            break;
+        case 1:
+            legend->setLegendStyle( KDChart::Legend::LinesOnly );
+            break;
+        case 2:
+            legend->setLegendStyle(KDChart::Legend::MarkersAndLines );
+            break;
+        default:
+            legend->setLegendStyle( KDChart::Legend::MarkersOnly );
+            break;
+        }
+
         item->setText( 0, conf.positionCO->currentText() );
         item->setText( 1, conf.showLinesCB->isChecked() ? tr("yes") : tr("no") );
         item->setText( 2, conf.titleTextED->text() );
         item->setText( 3, conf.orientationCO->currentText() );
         item->setText( 4, selectedAlignment );
+        item->setText( 5, conf.styleCO->currentText() );
         m_chart->update();
     }
 }
