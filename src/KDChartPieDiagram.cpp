@@ -1098,7 +1098,7 @@ double PieDiagram::valueTotals() const
 /*virtual*/
 double PieDiagram::numberOfValuesPerDataset() const
 {
-    return model()->columnCount( rootIndex() );
+    return model() ? model()->columnCount( rootIndex() ) : 0.0;
 }
 
 /*virtual*/
