@@ -1,0 +1,288 @@
+/****************************************************************************
+ ** Copyright (C) 2006 Klarälvdalens Datakonsult AB.  All rights reserved.
+ **
+ ** This file is part of the KD Chart library.
+ **
+ ** This file may be distributed and/or modified under the terms of the
+ ** GNU General Public License version 2 as published by the Free Software
+ ** Foundation and appearing in the file LICENSE.GPL included in the
+ ** packaging of this file.
+ **
+ ** Licensees holding valid commercial KD Chart licenses may use this file in
+ ** accordance with the KD Chart Commercial License Agreement provided with
+ ** the Software.
+ **
+ ** This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
+ ** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ **
+ ** See http://www.kdab.net/kdchart for
+ **   information about KDChart Commercial License Agreements.
+ **
+ ** Contact info@kdab.net if any conditions of this
+ ** licensing are not clear to you.
+ **
+ **********************************************************************/
+
+#include <QtGui>
+
+#include "mainwindow.h"
+
+#include <KDChartChart>
+#include <KDChartDataValueAttributes>
+#include <KDChartHeaderFooter>
+#include <KDChartLegend>
+#include <KDChartLineDiagram>
+#include <KDChartPieDiagram>
+#include <KDChartPolarCoordinatePlane>
+
+#include <KDChartSerializer>
+
+#include <QStandardItemModel>
+
+using namespace KDChart;
+
+
+MainWindow::MainWindow( QWidget* parent ) :
+    QWidget( parent )
+{
+    setupUi( this );
+
+    m_chartLayout = new QHBoxLayout( chartFrame );
+    m_chart = new Chart();
+    m_chartLayout->addWidget( m_chart );
+
+    m_chart->setGlobalLeading( 20,  20,  20,  20 );
+
+
+    initializeDataModels();
+
+
+    // Set up the diagrams
+    LineDiagram* lines = new LineDiagram();
+    lines->setModel( m_model1 );
+
+    CartesianAxis *xAxis  = new CartesianAxis( lines );
+    CartesianAxis *xAxis2 = new CartesianAxis( lines );
+    CartesianAxis *yAxis  = new CartesianAxis ( lines );
+    CartesianAxis *yAxis2 = new CartesianAxis ( lines );
+    xAxis->setPosition ( KDChart::CartesianAxis::Bottom );
+    xAxis2->setPosition( KDChart::CartesianAxis::Top );
+    yAxis->setPosition ( KDChart::CartesianAxis::Left );
+    yAxis2->setPosition( KDChart::CartesianAxis::Right );
+    lines->addAxis( xAxis );
+    lines->addAxis( xAxis2 );
+    lines->addAxis( yAxis );
+    lines->addAxis( yAxis2 );
+
+
+    PieDiagram* pie = new PieDiagram();
+    pie->setModel( m_model2 );
+
+
+    // Initially a default CartesianCoordinatePlane was created,
+    // so we just store its pointer as plane1:
+    CartesianCoordinatePlane* plane1 =
+            static_cast<CartesianCoordinatePlane*>(m_chart->coordinatePlane());
+
+    // Create an extra plane for the pie diagram:
+    PolarCoordinatePlane* plane2 = new PolarCoordinatePlane( m_chart );
+    m_chart->addCoordinatePlane( plane2/*, 1*/);
+
+    plane1->replaceDiagram( lines );
+    plane2->replaceDiagram( pie );
+
+    // Change the orientation of the planes' layout
+    QBoxLayout* planeLayout = dynamic_cast<QBoxLayout*>(m_chart->coordinatePlaneLayout());
+    if( planeLayout )
+        planeLayout->setDirection( QBoxLayout::LeftToRight );
+
+
+
+    Legend* legend = new Legend( lines, m_chart );
+    legend->setPosition( Position::South );
+    legend->setAlignment( Qt::AlignCenter );
+    legend->setShowLines( false );
+    legend->setTitleText( tr( "The Legend" ) );
+    legend->setText( 0, tr( "The red one" ) );
+    legend->setText( 1, tr( "green" ) );
+    legend->setText( 2, tr( "blue" ) );
+    legend->setText( 3, tr( "turquoise" ) );
+
+    legend->setOrientation( Qt::Horizontal );
+    m_chart->addLegend( legend );
+
+    KDChart::HeaderFooter* headerFooter = new KDChart::HeaderFooter( m_chart );
+    m_chart->addHeaderFooter( headerFooter );
+    headerFooter->setText( "Several coordinate planes / diagrams / legends" );
+    KDChart::TextAttributes textAttrs( headerFooter->textAttributes() );
+    textAttrs.setPen( QPen( Qt::red ) );
+    headerFooter->setTextAttributes( textAttrs );
+    headerFooter->setType( KDChart::HeaderFooter::Header );
+    headerFooter->setPosition( KDChart::Position::North );
+
+    // assign some bg colors
+    BackgroundAttributes ba = m_chart->backgroundAttributes();
+    ba.setVisible(true);
+    ba.setBrush(QBrush(QColor(255,255,200)));
+    m_chart->setBackgroundAttributes(ba);
+
+    ba = m_chart->coordinatePlane()->backgroundAttributes();
+    ba.setVisible(true);
+    ba.setBrush(QBrush(QColor(200,255,200)));
+    m_chart->coordinatePlane()->setBackgroundAttributes(ba);
+
+    ba = legend->backgroundAttributes();
+    ba.setVisible(true);
+    ba.setBrush(QBrush(QColor(200,200,255)));
+    legend->setBackgroundAttributes(ba);
+}
+
+
+void MainWindow::initializeDataModels()
+{
+    // model 1:
+    static const int nLines = 6;
+    static const int nDatasets = 4;
+    static const qreal linesData[nLines][nDatasets] = {
+        {29.5  ,  30  ,  29.5  ,  29.7},
+        {30    ,  29.5,  30.5  ,  29.8},
+        {30.5  ,  31  ,  29.7  ,  30},
+        {29.7  ,  29.3,  30    ,  31},
+        {30.3  ,  31  ,  30    ,  29.6},
+        {29.4  ,  30  ,  34    ,  29.5}
+    };
+    m_model1 = new QStandardItemModel( nLines, nDatasets, this );
+    for( int iL=0;  iL < nLines;  ++iL )
+        for( int iD=0;  iD < nDatasets;  ++iD )
+            m_model1->setData( m_model1->index( iL, iD ), linesData[ iL ][ iD ] );
+
+    // model 2:
+    static const int nPieslices = 9;
+    static const qreal pieData[nPieslices] = {
+        1, 5, 3, 2, 4, 7, 3, 6, 5
+    };
+    m_model2 = new QStandardItemModel( nPieslices, 1, this );
+    for( int i=0;  i < nPieslices;  ++i )
+        m_model2->setData( m_model2->index( i, 1 ), pieData[ i ] );
+}
+
+
+void MainWindow::on_pushButtonSave_clicked()
+{
+    saveAs();
+}
+
+void MainWindow::on_pushButtonClear_clicked()
+{
+    removeTheChart();
+}
+
+void MainWindow::on_pushButtonLoad_clicked()
+{
+    load();
+}
+
+
+void MainWindow::removeTheChart()
+{
+    // note: This does not delete the data model.
+    if( m_chart ){
+        m_chartLayout->removeWidget( m_chart );
+        delete m_chart;
+        m_chart = 0;
+    }
+}
+
+
+void MainWindow::load()
+{
+    QString fileName =
+            QFileDialog::getOpenFileName(this, tr("Open KD Chart 2 File"),
+                                         QDir::currentPath(),
+                                         tr("KDC2 Files (*.kdc2 *.xml)"));
+    if (fileName.isEmpty())
+        return;
+
+    QFile file(fileName);
+    if (!file.open(QFile::ReadOnly | QFile::Text)) {
+        QMessageBox::warning(this, tr("KD Chart Serializer"),
+                             tr("Cannot read file %1:\n%2.")
+                                     .arg(fileName)
+                                     .arg(file.errorString()));
+        return;
+    }
+
+    KDChart::Serializer serializer( 0, m_model1 );
+    if( serializer.read( &file ) ){
+        if( serializer.chart() &&
+            serializer.chart()->coordinatePlane() &&
+            serializer.chart()->coordinatePlane()->diagram() )
+        {
+            // Retrieve the chart read from file:
+            KDChart::Chart* newChart = serializer.chart();
+
+            // Retrieve the diagram read from file:
+            // We assume the file was created by this program, so it is
+            // supposed to have just one diagram and that must be a LineDiagram.
+            KDChart::LineDiagram* newDiagram =
+                    dynamic_cast<KDChart::LineDiagram*>(newChart->coordinatePlane()->diagram());
+
+            if( ! newDiagram ){
+                QMessageBox::warning(
+                        this,
+                        tr("KD Chart Serializer"),
+                        tr("The saved XLM file either was not created by this program,<br>"
+                           "or it has been modified manually in a wrong way.<br>"
+                           "Problem: First diagram in file %1 is not a LineDiagram.").arg(fileName) );
+                delete newChart;
+            }else{
+                // Remove the current chart and delete it:
+                removeTheChart();
+
+                // From now on use the chart read from file:
+                m_chart = newChart;
+                m_chartLayout->addWidget( m_chart );
+
+                m_chart->update();
+            }
+        }else{
+            QMessageBox::warning( this, tr("KD Chart Serializer"),
+                                  tr("ERROR: Parsed chart in file %1 has no diagram.")
+                                  .arg(fileName) );
+        }
+    }else{
+        QMessageBox::warning( this, tr("KD Chart Serializer"),
+                              tr("ERROR: Cannot read file %1.")
+                              .arg(fileName) );
+    }
+    file.close();
+}
+
+void MainWindow::saveAs()
+{
+    QString fileName =
+            QFileDialog::getSaveFileName(this, tr("Save KD Chart 2 File"),
+                                         QDir::currentPath(),
+                                         tr("KDC2 Files (*.kdc2 *.xml)"));
+    if (fileName.isEmpty())
+        return;
+
+    QFile file(fileName);
+    if (!file.open(QFile::WriteOnly | QFile::Text)) {
+        QMessageBox::warning(this, tr("KD Chart Serializer"),
+                             tr("Cannot write file %1:\n%2.")
+                                     .arg(fileName)
+                                     .arg(file.errorString()));
+        return;
+    }
+
+    KDChart::Serializer serializer( m_chart );
+    if( serializer.write( &file ) )
+        QMessageBox::information( this, tr("KD Chart Serializer"),
+                                  tr("File saved") );
+    else
+        QMessageBox::warning( this, tr("KD Chart Serializer"),
+                              tr("ERROR: Cannot write file %1.") );
+    file.close();
+}
+
