@@ -972,8 +972,8 @@ void Legend::buildLegend()
     // vertical line (only in vertical mode)
     if( orientation() == Qt::Vertical && showLines() && d->modelLabels.count() ) {
         KDChart::VerticalLineLayoutItem* lineItem = new KDChart::VerticalLineLayoutItem();
-        //d->layoutItems << lineItem;
-        //d->layout->addItem( lineItem, 2, 2, d->modelLabels.count()*2, 1 );
+        d->layoutItems << lineItem;
+        d->layout->addItem( lineItem, 2, 2, d->modelLabels.count()*2, 1 );
     }
 
     // This line is absolutely necessary, otherwise: #2516.
