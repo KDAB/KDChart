@@ -64,6 +64,12 @@ namespace KDChart {
              * This will affect new diagrams instantiated after setModel was
              * called, but it will not change any data model assignments that
              * were made before setModel was called.
+             *
+             * \note If you do not call setModel nor specify a model with the
+             * Serializer's constructor, then you need to manually call the
+             * setModel methods of all of the diagrams after the serializer has
+             * finished parsing. File \c examples/complexLayout/mainwindow.cpp
+             * illustrates a way how to do that.
              */
             virtual void setModel(QAbstractItemModel * model);
 

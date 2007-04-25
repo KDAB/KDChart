@@ -66,20 +66,23 @@ namespace KDChart {
             void setChart( Chart* chart ){ mChart = chart; }
 
             /**
-             * If all of your chart's diagrams are using the same data model
-             * you might want to call setModel() before calling read()
-             * (or specify a model with the Serializer's constructor, resp.).
+             * \brief Set the data model to be assigned to diagrams created by read().
              *
-             * If you do this then that model will be assigned to any diagrams
-             * that will be created by the serializer.
-             * Otherwise you need to call setModel() on each of the diagrams,
-             * after read() has run.
+             * This will affect new diagrams instantiated after setModel was
+             * called, but it will not change any data model assignments that
+             * were made before setModel was called.
+             *
+             * \note If you do not call setModel nor specify a model with the
+             * Serializer's constructor, then you need to manually call the
+             * setModel methods of all of the diagrams after read() has
+             * finished. File \c examples/complexLayout/mainwindow.cpp
+             * illustrates a way how to do that.
              */
             void setModel(QAbstractItemModel * model);
 
             /**
              * After read() has run successfully the created chart can be
-             * retrieved via chart()
+             * retrieved via chart().
              */
             Chart* chart() const { return mChart; }
 
