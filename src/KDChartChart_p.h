@@ -93,7 +93,7 @@ class Chart::Private : public QObject
         Chart* chart;
         QHBoxLayout* layout;
         QVBoxLayout* vLayout;
-        QVBoxLayout* planesLayout;
+        QBoxLayout*  planesLayout;
         QGridLayout* headerLayout;
         QGridLayout* footerLayout;
         QGridLayout* dataAndLegendLayout;

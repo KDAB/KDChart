@@ -169,6 +169,7 @@ namespace KDChart {
 
 
         void setCoordinatePlaneLayout( QLayout * layout );
+        QLayout* coordinatePlaneLayout();
 
         /**
          * The first header or footer of the chart. By default there is none.

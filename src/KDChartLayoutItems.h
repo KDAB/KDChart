@@ -63,6 +63,10 @@ namespace KDChart {
         {
             mParentLayout = lay;
         }
+        QLayout* parentLayout()
+        {
+            return mParentLayout;
+        }
         void removeFromParentLayout()
         {
             if( mParentLayout ){

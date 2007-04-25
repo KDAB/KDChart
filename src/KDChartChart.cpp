@@ -449,6 +449,8 @@ static QHBoxLayout* findOrCreateHBoxLayoutByObjectName( QLayout* parentLayout, c
 void Chart::Private::slotLayoutPlanes()
 {
     //qDebug() << "KDChart::Chart is layouting the planes";
+    const QBoxLayout::Direction oldPlanesDirection =
+            planesLayout ? planesLayout->direction() : QBoxLayout::TopToBottom;
     if ( planesLayout && dataAndLegendLayout )
         dataAndLegendLayout->removeItem( planesLayout );
 
@@ -457,7 +459,10 @@ void Chart::Private::slotLayoutPlanes()
     }
     planeLayoutItems.clear();
     delete planesLayout;
-    planesLayout = new QVBoxLayout();
+    //hint: The direction is configurable by the user now, as
+    //      we are using a QBoxLayout rather than a QVBoxLayout.  (khz, 2007/04/25)
+    planesLayout = new QBoxLayout( oldPlanesDirection );
+
     // TESTING(khz): set the margin of all of the layouts to Zero
 #if defined SET_ALL_MARGINS_TO_ZERO
     planesLayout->setMargin(0);
@@ -778,6 +783,11 @@ void Chart::setBackgroundAttributes( const BackgroundAttributes &a )
 BackgroundAttributes Chart::backgroundAttributes() const
 {
     return d->backgroundAttributes;
+}
+
+QLayout* Chart::coordinatePlaneLayout()
+{
+    return d->planesLayout;
 }
 
 AbstractCoordinatePlane* Chart::coordinatePlane()
