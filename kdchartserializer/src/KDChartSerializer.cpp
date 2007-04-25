@@ -255,6 +255,16 @@ bool Serializer::parseChartElement(
                     BackgroundAttributes a;
                     if( AttributesSerializer::parseBackgroundAttributes( e, a ) )
                         chartPtr->setBackgroundAttributes( a );
+                } else if( e.tagName() == "PlanesLayoutDirection" ) {
+                    QBoxLayout::Direction d;
+                    if( KDXML::readBoxLayoutDirectionNode( e, d ) ){
+                        QBoxLayout* lay =
+                                dynamic_cast<QBoxLayout*>(chartPtr->coordinatePlaneLayout());
+                        if( lay )
+                            lay->setDirection( d );
+                    }else{
+                        bOK = false;
+                    }
                 } else if( e.tagName() == "kdchart:coordinate-planes:pointers" ){
                     bool bFirstPlane=true;
                     QDomNode node2 = e.firstChild();
@@ -426,6 +436,12 @@ bool Serializer::saveChartElement(
                 doc, chartElement,
                 mChart->backgroundAttributes(),
                 "kdchart:background-attributes" );
+
+        QBoxLayout* lay =
+                dynamic_cast<QBoxLayout*>(mChart->coordinatePlaneLayout());
+        if( lay )
+            KDXML::createBoxLayoutDirectionNode(
+                    doc, chartElement, "PlanesLayoutDirection", lay->direction() );
 
         // save the coordinate planes:
         // Data will be stored by the SerializeCollector.

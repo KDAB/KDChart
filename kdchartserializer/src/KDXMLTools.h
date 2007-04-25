@@ -30,6 +30,7 @@
 #define __KDXMLTOOLS_H__
 
 #include <qdom.h>
+#include <QBoxLayout>
 #include <QPen>
 #include <QString>
 #include <QColor>
@@ -68,6 +69,8 @@ namespace KDXML {
             const QString& elementName, Qt::Orientation value );
     void createAlignmentNode( QDomDocument& doc, QDomNode& parent,
             const QString& elementName, Qt::Alignment value );
+    void createBoxLayoutDirectionNode( QDomDocument& doc, QDomNode& parent,
+                                       const QString& elementName, QBoxLayout::Direction value );
     void createSizeNode( QDomDocument& doc, QDomNode& parent,
                          const QString& elementName, const QSize& value );
     void createSizeFNode( QDomDocument& doc, QDomNode& parent,
@@ -136,6 +139,8 @@ namespace KDXML {
     bool readBoolNode( const QDomElement& element, bool& value );
     bool readOrientationNode( const QDomElement& element, Qt::Orientation& value );
     bool readAlignmentNode(const QDomElement& element, Qt::Alignment& value );
+    bool readBoxLayoutDirectionNode(const QDomElement& element,
+                                     QBoxLayout::Direction& value );
     bool readSizeNode( const QDomElement& element, QSize& value );
     bool readSizeFNode( const QDomElement& element, QSizeF& value );
     bool readPointFNode( const QDomElement& element, QPointF& value );

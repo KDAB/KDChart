@@ -118,6 +118,23 @@ namespace KDXML {
             newElement.setAttribute( "Vertical", "Center" );
     }
 
+    void createBoxLayoutDirectionNode( QDomDocument& doc, QDomNode& parent,
+                                       const QString& elementName, QBoxLayout::Direction value )
+    {
+        QDomElement newElement =
+                doc.createElement( elementName );
+        parent.appendChild( newElement );
+        if( value == QBoxLayout::LeftToRight)
+            newElement.setAttribute( "Direction", "LeftToRight" );
+        else if( value == QBoxLayout::RightToLeft)
+            newElement.setAttribute( "Direction", "RightToLeft" );
+        else if( value == QBoxLayout::TopToBottom)
+            newElement.setAttribute( "Direction", "TopToBottom" );
+        else if( value == QBoxLayout::BottomToTop)
+            newElement.setAttribute( "Direction", "BottomToTop" );
+    }
+
+
     void createSizeNode( QDomDocument& doc, QDomNode& parent,
             const QString& elementName, const QSize& value )
     {
@@ -690,6 +707,32 @@ namespace KDXML {
         if( bOK )
             value = align;
         //qDebug() << "read alignment:" << value;
+        return bOK;
+    }
+
+    bool readBoxLayoutDirectionNode(const QDomElement& element, QBoxLayout::Direction& value )
+    {
+        bool bOK = true;
+        QBoxLayout::Direction dir;
+        QString s;
+        if( findStringAttribute( element, "Direction", s ) ){
+            bOK = true;
+            if( s == "LeftToRight" )
+                dir = QBoxLayout::LeftToRight;
+            else if( s == "LeftToRight" )
+                dir = QBoxLayout::LeftToRight;
+            else if( s == "LeftToRight" )
+                dir = QBoxLayout::LeftToRight;
+            else if( s == "LeftToRight" )
+                dir = QBoxLayout::LeftToRight;
+            else
+                bOK = false;
+        }else{
+            bOK = false;
+            //qDebug() << "readBoxLayoutDirectionNode failed" ;
+        }
+        if( bOK )
+            value = dir;
         return bOK;
     }
 
