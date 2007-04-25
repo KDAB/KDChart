@@ -198,7 +198,7 @@ double PolarDiagram::valueTotals () const
 /*virtual*/
 double PolarDiagram::numberOfValuesPerDataset() const
 {
-    return model()->rowCount(rootIndex());
+    return model() ? model()->rowCount(rootIndex()) : 0.0;
 }
 
 /*virtual*/

@@ -139,7 +139,7 @@ double RingDiagram::valueTotals () const
 /*virtual*/
 double RingDiagram::numberOfValuesPerDataset() const
 {
-    return model()->columnCount(rootIndex());
+    return model() ? model()->columnCount(rootIndex()) : 0.0;
 }
 
 /*virtual*/
