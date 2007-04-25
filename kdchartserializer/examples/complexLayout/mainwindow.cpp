@@ -27,8 +27,10 @@
 
 #include "mainwindow.h"
 
+#include <KDChartBarDiagram>
 #include <KDChartChart>
 #include <KDChartDataValueAttributes>
+#include <KDChartFrameAttributes>
 #include <KDChartHeaderFooter>
 #include <KDChartLegend>
 #include <KDChartLineDiagram>
@@ -58,25 +60,33 @@ MainWindow::MainWindow( QWidget* parent ) :
 
 
     // Set up the diagrams
+    BarDiagram* bars = new BarDiagram();
+    bars->setModel( m_model1 );
+
     LineDiagram* lines = new LineDiagram();
     lines->setModel( m_model1 );
+    lines->setReferenceDiagram( bars );
 
-    CartesianAxis *xAxis  = new CartesianAxis( lines );
-    CartesianAxis *xAxis2 = new CartesianAxis( lines );
-    CartesianAxis *yAxis  = new CartesianAxis ( lines );
+    PieDiagram* pie = new PieDiagram();
+    pie->setModel( m_model2 );
+
+    // Assign some axes
+    //CartesianAxis *xAxis  = new CartesianAxis(  lines );
+    //CartesianAxis *yAxis  = new CartesianAxis ( lines );
+    CartesianAxis *xAxis  = new CartesianAxis(  bars );
+    CartesianAxis *yAxis  = new CartesianAxis ( bars );
+    CartesianAxis *xAxis2 = new CartesianAxis(  lines );
     CartesianAxis *yAxis2 = new CartesianAxis ( lines );
     xAxis->setPosition ( KDChart::CartesianAxis::Bottom );
     xAxis2->setPosition( KDChart::CartesianAxis::Top );
     yAxis->setPosition ( KDChart::CartesianAxis::Left );
     yAxis2->setPosition( KDChart::CartesianAxis::Right );
-    lines->addAxis( xAxis );
+    bars->addAxis(  xAxis );
+    bars->addAxis(  yAxis );
+    //lines->addAxis( xAxis );
+    //lines->addAxis( yAxis );
     lines->addAxis( xAxis2 );
-    lines->addAxis( yAxis );
     lines->addAxis( yAxis2 );
-
-
-    PieDiagram* pie = new PieDiagram();
-    pie->setModel( m_model2 );
 
 
     // Initially a default CartesianCoordinatePlane was created,
@@ -88,7 +98,9 @@ MainWindow::MainWindow( QWidget* parent ) :
     PolarCoordinatePlane* plane2 = new PolarCoordinatePlane( m_chart );
     m_chart->addCoordinatePlane( plane2/*, 1*/);
 
-    plane1->replaceDiagram( lines );
+    //plane1->replaceDiagram( lines );
+    plane1->replaceDiagram( bars );
+    plane1->addDiagram(     lines );
     plane2->replaceDiagram( pie );
 
     // Change the orientation of the planes' layout
@@ -119,6 +131,13 @@ MainWindow::MainWindow( QWidget* parent ) :
     headerFooter->setTextAttributes( textAttrs );
     headerFooter->setType( KDChart::HeaderFooter::Header );
     headerFooter->setPosition( KDChart::Position::North );
+
+    // have some leading and a framing line around the pie diagram
+    FrameAttributes fa = m_chart->coordinatePlanes().at(1)->frameAttributes();
+    fa.setVisible(true);
+    fa.setPen(QPen(Qt::black));
+    fa.setPadding(8);
+    m_chart->coordinatePlanes().at(1)->setFrameAttributes(fa);
 
     // assign some bg colors
     BackgroundAttributes ba = m_chart->backgroundAttributes();
