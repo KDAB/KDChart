@@ -9,9 +9,6 @@ private slots:
   void testMainWindow()
   {
 
-    char** argv = (char**) new char[1]; int argc = 1;
-    argv[0] = "TestParamVsParam";
-
     MainWindow      mainWindow;
 
     QTime t;
