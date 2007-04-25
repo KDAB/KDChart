@@ -97,7 +97,7 @@ bool LegendsSerializer::parseLegend(
     const bool pointerFound =
             AttributesSerializer::parseQObjectPointerNode(
             pointerNode, ptr,
-    ptrName, wasParsed, true ) && ptr;
+            ptrName, wasParsed, true ) && ptr;
 
     if( ptrName.isEmpty() ){
         qDebug()<< "Could not parse legend. Global pointer node is invalid.";
@@ -125,7 +125,14 @@ bool LegendsSerializer::parseLegend(
     if( bOK ){
         container = SerializeCollector::findStoredGlobalElement(
                 rootNode, ptrName, "kdchart:legends" );
-        bOK = ! container.tagName().isEmpty();
+        if( container.isNull() ){
+            qDebug()<< "Stored Element was not found.";
+            bOK = false;
+        }
+        if( bOK && container.tagName().isEmpty() ){
+            qDebug()<< "Stored Element is invalid.";
+            bOK = false;
+        }
     }
 
     if( bOK ) {
@@ -145,9 +152,11 @@ bool LegendsSerializer::parseLegend(
                     bool b;
                     if( KDXML::readBoolNode( element, b ) )
                         legend->setVisible( b );
-                    else
+                    else{
+                        qDebug()<< "Could not parse Legend. Error in element" << tagName;
                         bOK = false;
-                } else if( tagName == "ReferenceArea" ) {
+                    }
+            } else if( tagName == "ReferenceArea" ) {
                     QObject* ptr;
                     QString ptrName;
                     bool wasParsed;
@@ -166,6 +175,7 @@ bool LegendsSerializer::parseLegend(
                             legend->setReferenceArea( 0 ); // a Null pointer means no bug
                         }
                     }else{
+                        qDebug()<< "Could not parse Legend. Error in element" << tagName;
                         bOK = false;
                     }
                     //qDebug() << " b ";
@@ -186,32 +196,42 @@ bool LegendsSerializer::parseLegend(
                     Qt::Alignment a;
                     if( KDXML::readAlignmentNode( element, a ) )
                         legend->setAlignment( a );
-                    else
+                    else{
+                        qDebug()<< "Could not parse Legend. Error in element" << tagName;
                         bOK = false;
+                    }
                 } else if( tagName == "Position" ) {
                     QString s;
                     if( KDXML::readStringNode( element, s ) )
                         legend->setPosition( Position::fromName( s.toLatin1() ) );
-                    else
+                    else{
+                        qDebug()<< "Could not parse Legend. Error in element" << tagName;
                         bOK = false;
+                    }
                 } else if( tagName == "FloatingPosition" ) {
                     RelativePosition pos;
                     if( AttributesSerializer::parseRelativePosition( element, pos ) )
                         legend->setFloatingPosition( pos );
-                    else
+                    else{
+                        qDebug()<< "Could not parse Legend. Error in element" << tagName;
                         bOK = false;
+                    }
                 } else if( tagName == "Orientation" ) {
                     Qt::Orientation o;
                     if( KDXML::readOrientationNode( element, o ) )
                         legend->setOrientation( o );
-                    else
+                    else{
+                        qDebug()<< "Could not parse Legend. Error in element" << tagName;
                         bOK = false;
+                    }
                 } else if( tagName == "ShowLines" ) {
                     bool b;
                     if( KDXML::readBoolNode( element, b ) )
                         legend->setShowLines( b );
-                    else
+                    else{
+                        qDebug()<< "Could not parse Legend. Error in element" << tagName;
                         bOK = false;
+                    }
                 } else if( tagName == "TextsMap" ) {
                     // parse the map of explicitely set texts
                     QDomNode node2 = element.firstChild();
@@ -384,32 +404,42 @@ bool LegendsSerializer::parseLegend(
                     bool b;
                     if( KDXML::readBoolNode( element, b ) )
                         legend->setUseAutomaticMarkerSize( b );
-                    else
+                    else{
+                        qDebug()<< "Could not parse Legend. Error in element" << tagName;
                         bOK = false;
+                    }
                 } else if( tagName == "TextAttributes" ) {
                     TextAttributes ta;
                     if( AttributesSerializer::parseTextAttributes( element, ta ) )
                         legend->setTextAttributes( ta );
-                    else
+                    else{
+                        qDebug()<< "Could not parse Legend. Error in element" << tagName;
                         bOK = false;
+                    }
                 } else if( tagName == "TitleText" ) {
                     QString s;
                     if( KDXML::readStringNode( element, s ) )
                         legend->setTitleText( s );
-                    else
+                    else{
+                        qDebug()<< "Could not parse Legend. Error in element" << tagName;
                         bOK = false;
+                    }
                 } else if( tagName == "TitleTextAttributes" ) {
                     TextAttributes ta;
                     if( AttributesSerializer::parseTextAttributes( element, ta ) )
                         legend->setTitleTextAttributes( ta );
-                    else
+                    else{
+                        qDebug()<< "Could not parse Legend. Error in element" << tagName;
                         bOK = false;
+                    }
                 } else if( tagName == "Spacing" ) {
                     int i;
                     if( KDXML::readIntNode( element, i ) )
                         legend->setSpacing( i );
-                    else
+                    else{
+                        qDebug()<< "Could not parse Legend. Error in element" << tagName;
                         bOK = false;
+                    }
                 } else {
                     qDebug() << "Unknown subelement of Legend found:" << tagName;
                     bOK = false;

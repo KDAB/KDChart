@@ -681,6 +681,7 @@ namespace KDXML {
     bool readAlignmentNode(const QDomElement& element, Qt::Alignment& value )
     {
         //qDebug() << "read alignment tagname:" << element.tagName();
+        bool bOK = true;
         Qt::Alignment align = 0;
         QString s;
         if( findStringAttribute( element, "Horizontal", s ) ){
@@ -693,8 +694,12 @@ namespace KDXML {
                 align = align | Qt::AlignHCenter;
             else if( s == "Justify" )
                 align = align | Qt::AlignJustify;
+            else{
+                qDebug()<< "Could not parse AlignmentNode. Error in attribute \"Horizontal\"";
+                bOK = false;
+            }
         }
-        if( align && findStringAttribute( element, "Vertical", s ) ){
+        if( findStringAttribute( element, "Vertical", s ) ){
             //qDebug() << "read alignment vertical:" << s;
             if( s == "Top" )
                 align = align | Qt::AlignTop;
@@ -702,8 +707,11 @@ namespace KDXML {
                 align = align | Qt::AlignBottom;
             else if( s == "Center" )
                 align = align | Qt::AlignVCenter;
+            else{
+                qDebug()<< "Could not parse AlignmentNode. Error in attribute \"Vertical\"";
+                bOK = false;
+            }
         }
-        const bool bOK = align != 0;
         if( bOK )
             value = align;
         //qDebug() << "read alignment:" << value;

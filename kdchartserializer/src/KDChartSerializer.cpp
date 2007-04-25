@@ -313,10 +313,11 @@ bool Serializer::parseChartElement(
                     while( ! node2.isNull() ) {
                         Legend* legend;
                         if( LegendsSerializer::parseLegend( rootNode, node2, legend ) ){
+                            //qDebug() << "added legend" << legend;
                             legend->setParent( chartPtr );
                             chartPtr->addLegend( legend );
                         }else{
-                            qDebug()<< "Could not parse Chart / kdchart:legends-footers:pointers. Global pointer is not a KDChart::Legend-ptr.";
+                            qDebug()<< "Could not parse Chart / kdchart:legends:pointers. Global pointer is not a KDChart::Legend-ptr.";
                             bOK = false;
                         }
                         node2 = node2.nextSibling();
