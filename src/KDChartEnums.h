@@ -64,7 +64,7 @@ public:
       powers of ten.
 
       A granularity sequence is a sequence of values from the following set:
-      1, 2, 2.5, 5.
+      1, 1.25, 2, 2.5, 5.
 
       The reason for using one of the following three pre-defined granularity
       sequences (instead of just using the best matching step width) is to
@@ -75,15 +75,22 @@ public:
       This means: Smaller step width may not remove any grid lines, but it
       may add additional lines in between.
 
-      \li \c GranularitySequence_10_20 Step widths can be 1, or 2, but they never can be 2.5 nor 5.
-      \li \c GranularitySequence_10_50 Step widths can be 1, or 5, but they never can be 2, nor 2.5.
-      \li \c GranularitySequence_25_50 Step widths can be 2.5, or 5, but they never can be 1, nor 2.
-      \li \c GranularitySequenceIrregular Step widths can be all of these values: 1, or 2, or 2.5, or 5.
+      \li \c GranularitySequence_10_20 Step widths can be 1, or 2, but they never can be 2.5 nor 5, nor 1.25.
+      \li \c GranularitySequence_10_50 Step widths can be 1, or 5, but they never can be 2, nor 2.5, nor 1.25.
+      \li \c GranularitySequence_25_50 Step widths can be 2.5, or 5, but they never can be 1, nor 2, nor 1.25.
+      \li \c GranularitySequence_125_25 Step widths can be 1.25 or 2.5 but they never can be 1, nor 2, nor 5.
+      \li \c GranularitySequenceIrregular Step widths can be all of these values: 1, or 1.25, or 2, or 2.5, or 5.
 
       \note When ever possible, try to avoid using GranularitySequenceIrregular!
       Allowing all possible step values, using this granularity sequence involves a
       serious risk: Your users might be irritated due to 'jumping' grid lines, when step size
       is changed from 2.5 to 2 (or vice versa, resp.).
+      In case you still want to use GranularitySequenceIrregular just make sure to NOT draw
+      any sub-grid lines, because in most cases you will get not-matching step widths for
+      the sub-grid.
+      In short: GranularitySequenceIrregular can safely be used if your data range is not
+      changing at all AND (b) you will not allow the coordinate plane to be zoomed
+      AND (c) you are not displaying any sub-grid lines.
 
       Since you probably like having the value 1 as an allowed step width,
       the granularity sequence decision boils down to a boolean question:
@@ -95,6 +102,7 @@ public:
         GranularitySequence_10_20,
         GranularitySequence_10_50,
         GranularitySequence_25_50,
+        GranularitySequence_125_25,
         GranularitySequenceIrregular };
 
     /**
@@ -112,6 +120,8 @@ public:
                 return QString::fromLatin1("GranularitySequence_10_50");
             case GranularitySequence_25_50:
                 return QString::fromLatin1("GranularitySequence_25_50");
+            case GranularitySequence_125_25:
+                return QString::fromLatin1("GranularitySequence_125_25");
             case GranularitySequenceIrregular:
                 return QString::fromLatin1("GranularitySequenceIrregular");
             default: // should not happen
@@ -134,6 +144,8 @@ public:
           return GranularitySequence_10_50;
       if( string == QString::fromLatin1("GranularitySequence_25_50") )
           return GranularitySequence_25_50;
+      if( string == QString::fromLatin1("GranularitySequence_125_25") )
+          return GranularitySequence_125_25;
       if( string == QString::fromLatin1("GranularitySequenceIrregular") )
           return GranularitySequenceIrregular;
       // default, should not happen
