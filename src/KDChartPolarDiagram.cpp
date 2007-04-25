@@ -99,7 +99,7 @@ PolarDiagram * PolarDiagram::clone() const
 
 const QPair<QPointF, QPointF> PolarDiagram::calculateDataBoundaries () const
 {
-    if ( !checkInvariants() ) return QPair<QPointF, QPointF>( QPointF( 0, 0 ), QPointF( 0, 0 ) );
+    if ( !checkInvariants(true) ) return QPair<QPointF, QPointF>( QPointF( 0, 0 ), QPointF( 0, 0 ) );
     const int rowCount = model()->rowCount(rootIndex());
     const int colCount = model()->columnCount(rootIndex());
     double xMin = 0.0;

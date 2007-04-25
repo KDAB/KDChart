@@ -197,7 +197,7 @@ void BarDiagram::resizeEvent ( QResizeEvent*)
 
 const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries() const
 {
-    if ( !checkInvariants() ) return QPair<QPointF, QPointF>( QPointF( 0, 0 ), QPointF( 0, 0 ) );
+    if ( !checkInvariants(true) ) return QPair<QPointF, QPointF>( QPointF( 0, 0 ), QPointF( 0, 0 ) );
     const int rowCount = d->attributesModel->rowCount(attributesModelRootIndex());
     const int colCount = d->attributesModel->columnCount(attributesModelRootIndex());
 
