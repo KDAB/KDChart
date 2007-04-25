@@ -339,6 +339,12 @@ void CartesianAxis::paintCtx( PaintContext* context )
     Q_ASSERT_X ( plane, "CartesianAxis::paint",
                  "Bad function call: PaintContext::coodinatePlane() NOT a cartesian plane." );
 
+    // note: Not having any data model assigned is no bug
+    //       but we can not draw an axis then either.
+    if( ! d->diagram()->model() )
+        return;
+
+
     /*
      * let us paint the labels at a
      * smaller resolution

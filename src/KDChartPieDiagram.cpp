@@ -126,7 +126,7 @@ static QRectF buildReferenceRect( const PolarCoordinatePlane* plane )
 /*
 void PieDiagram::paint( PaintContext* ctx )
 {
-    if ( !checkInvariants() ) return;
+    if ( !checkInvariants(true) ) return;
     const int colCount = model()->columnCount(rootIndex());
     QRectF contentsRect = buildReferenceRect( polarCoordinatePlane() );
     DataValueTextInfoList list;
@@ -168,7 +168,9 @@ void PieDiagram::paint( PaintContext* ctx )
 
 void PieDiagram::paint( PaintContext* ctx )
 {
-    if ( !checkInvariants() )
+    // note: Not having any data model assigned is no bug
+    //       but we can not draw a diagram then either.
+    if ( !checkInvariants(true) )
         return;
 
     const PieAttributes attrs( pieAttributes() );

@@ -340,8 +340,11 @@ void BarDiagram::calculateValueAndGapWidths( int rowCount,int colCount,
 
 void BarDiagram::paint( PaintContext* ctx )
 {
-    if ( !checkInvariants() )
+    // note: Not having any data model assigned is no bug
+    //       but we can not draw a diagram then either.
+    if ( !checkInvariants(true) )
         return;
+
     // Calculate width
     QPointF boundLeft, boundRight;
     QPair<QPointF,QPointF> boundaries = dataBoundaries();

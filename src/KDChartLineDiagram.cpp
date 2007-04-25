@@ -425,6 +425,8 @@ be written before the #define d(d_func()) above*/
 void LineDiagram::paint( PaintContext* ctx )
 {
 //qDebug() << "    start diag::paint()";
+    // note: Not having any data model assigned is no bug
+    //       but we can not draw a diagram then either.
     if ( !checkInvariants( true ) ) return;
     if ( !AbstractGrid::isBoundariesValid(dataBoundaries()) ) return;
 

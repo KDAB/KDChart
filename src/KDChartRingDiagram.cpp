@@ -100,7 +100,11 @@ void RingDiagram::resizeEvent ( QResizeEvent*)
 
 void RingDiagram::paint( PaintContext* ctx )
 {
-    if ( !checkInvariants() ) return;
+    // note: Not having any data model assigned is no bug
+    //       but we can not draw a diagram then either.
+    if ( !checkInvariants(true) )
+        return;
+
     const int colCount = model()->columnCount(rootIndex());
     DataValueTextInfoList list;
     for ( int j=0; j<colCount; ++j ) {

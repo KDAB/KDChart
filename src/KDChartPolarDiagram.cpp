@@ -144,8 +144,11 @@ void PolarDiagram::paintPolarMarkers( PaintContext* ctx, const QPolygonF& polygo
 
 void PolarDiagram::paint( PaintContext* ctx )
 {
-    if ( !checkInvariants() )
+    // note: Not having any data model assigned is no bug
+    //       but we can not draw a diagram then either.
+    if ( !checkInvariants(true) )
         return;
+
     const int rowCount = model()->rowCount( rootIndex() );
     const int colCount = model()->columnCount( rootIndex() );
     DataValueTextInfoList list;
