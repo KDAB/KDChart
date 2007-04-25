@@ -727,12 +727,12 @@ namespace KDXML {
             bOK = true;
             if( s == "LeftToRight" )
                 dir = QBoxLayout::LeftToRight;
-            else if( s == "LeftToRight" )
-                dir = QBoxLayout::LeftToRight;
-            else if( s == "LeftToRight" )
-                dir = QBoxLayout::LeftToRight;
-            else if( s == "LeftToRight" )
-                dir = QBoxLayout::LeftToRight;
+            else if( s == "RightToLeft" )
+                dir = QBoxLayout::RightToLeft;
+            else if( s == "TopToBottom" )
+                dir = QBoxLayout::TopToBottom;
+            else if( s == "BottomToTop" )
+                dir = QBoxLayout::BottomToTop;
             else
                 bOK = false;
         }else{
