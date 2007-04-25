@@ -66,10 +66,7 @@ SerializeCollector::~SerializeCollector()
 
 void SerializeCollector::clear()
 {
-    Q_FOREACH (QDomElement* e, mMap)
-    {
-        delete e;
-    }
+    // this bloc left empty intentionally
 }
 
 SerializeCollector* SerializeCollector::instance()
