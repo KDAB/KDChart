@@ -1,4 +1,5 @@
 #include <QtTest/QtTest>
+#include <QColor>
 #include <TableModel.h>
 #include <KDChartGlobal>
 
@@ -192,8 +193,8 @@ private slots:
         QDomElement savedElement =
                 mDoc.createElement( "TESTING" );
         mDocRoot.appendChild( savedElement );
-
-        const QBrush br( QColor( Qt::white ) );
+        const QColor blanc( Qt::white );
+        const QBrush br( blanc );
         const QPen orgPen( br, 20, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin );
 
         KDXML::createPenNode( mDoc, savedElement, "TestBrushAndPen",
@@ -220,7 +221,8 @@ private slots:
 
         FrameAttributes orgAttrs;
         orgAttrs.setVisible( true );
-        const QBrush br( QColor( Qt::white ) );
+        const QColor blanc( Qt::white );
+        const QBrush br( blanc );
         orgAttrs.setPen( QPen( br, 20, Qt::DashDotLine, Qt::RoundCap,   Qt::RoundJoin ) );
         orgAttrs.setPadding( 4 );
 
@@ -251,7 +253,8 @@ private slots:
 
         BackgroundAttributes orgAttrs;
         orgAttrs.setVisible( true );
-        const QBrush br( QColor( Qt::white ) );
+        const QColor blanc( Qt::white );
+        const QBrush br( blanc );
         orgAttrs.setBrush( br );
         orgAttrs.setPixmapMode( BackgroundAttributes::BackgroundPixmapModeStretched );
 
@@ -551,9 +554,12 @@ private slots:
         orgAttrs.setGridStepWidth( 17.4 );
         orgAttrs.setGridSubStepWidth( 1.93 );
         orgAttrs.setGridGranularitySequence( KDChartEnums::GranularitySequence_25_50 );
-        const QBrush br1( QColor( Qt::white ) );
-        const QBrush br2( QColor( Qt::red ) );
-        const QBrush br3( QColor( Qt::yellow ) );
+        const QColor blanc( Qt::white );
+        const QColor rouge( Qt::red );
+        const QColor jaune( Qt::yellow );
+        const QBrush br1( blanc );
+        const QBrush br2( rouge );
+        const QBrush br3( jaune );
         orgAttrs.setGridPen( QPen( br1, 20, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin ) );
         orgAttrs.setSubGridVisible( true );
         orgAttrs.setSubGridPen( QPen( br2, 10, Qt::DashLine, Qt::SquareCap, Qt::MiterJoin ) );
