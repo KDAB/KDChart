@@ -1,0 +1,8 @@
+<!DOCTYPE RCC>
+<RCC>
+  <qresource>
+    <file alias="original">../../examples/tools/modeldata/KDChart-Test-Linear.csv</file>
+    <file alias="test">data_test.csv</file>
+    <file alias="empty">data_empty.csv</file>
+  </qresource>
+</RCC>

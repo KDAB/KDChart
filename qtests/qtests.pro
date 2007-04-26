@@ -16,6 +16,7 @@ SUBDIRS +=  ChartElementOwnership \
             PieDiagrams \
             PolarDiagrams \
             ParamVsParam \
+	    DrawIntoPainter \
 
 unix:SUBDIRS += AxisOwnership
 test.target=test
