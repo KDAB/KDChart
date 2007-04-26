@@ -208,6 +208,23 @@ bool LegendsSerializer::parseLegend(
                         qDebug()<< "Could not parse Legend. Error in element" << tagName;
                         bOK = false;
                     }
+                } else if( tagName == "LegendStyle" ) {
+                    QString s;
+                    if( KDXML::readStringNode( element, s ) ){
+                        if( s.compare("MarkersOnly", Qt::CaseInsensitive) != 0 )
+                            legend->setLegendStyle( Legend::MarkersOnly );
+                        else if( s.compare("LinesOnly", Qt::CaseInsensitive) != 0 )
+                            legend->setLegendStyle( Legend::LinesOnly );
+                        else if( s.compare("MarkersAndLines", Qt::CaseInsensitive) != 0 )
+                            legend->setLegendStyle( Legend::MarkersAndLines );
+                        else{
+                            qDebug()<< "Could not parse Legend. Unknown value in element" << tagName;
+                            bOK = false;
+                        }
+                    }else{
+                        qDebug()<< "Could not parse Legend. Error in element" << tagName;
+                        bOK = false;
+                    }
                 } else if( tagName == "FloatingPosition" ) {
                     RelativePosition pos;
                     if( AttributesSerializer::parseRelativePosition( element, pos ) )
@@ -484,6 +501,22 @@ void LegendsSerializer::saveLegend(
             doc, element, "Orientation", legend.orientation() );
     KDXML::createBoolNode(
             doc, element, "ShowLines", legend.showLines() );
+
+    switch( legend.legendStyle() ){
+        case Legend::MarkersOnly:
+            KDXML::createStringNode( doc, element, "LegendStyle", "MarkersOnly" );
+            break;
+        case Legend::LinesOnly:
+            KDXML::createStringNode( doc, element, "LegendStyle", "LinesOnly" );
+            break;
+        case Legend::MarkersAndLines:
+            KDXML::createStringNode( doc, element, "LegendStyle", "MarkersAndLines" );
+            break;
+        default:
+            Q_ASSERT( false ); // all of the styles need to be handled
+            break;
+    }
+
     // save the texts map
     {
         const QMap<uint,QString> map( legend.texts() );
