@@ -703,7 +703,7 @@ void KDChart::LineWithMarkerLayoutItem::paint( QPainter* painter )
 
     // paint the marker with the given offset from the left side of the line
     const QRect r(
-            QPoint( mMarkerOffs, mRect.y() ),
+            QPoint( mRect.x()+mMarkerOffs, mRect.y() ),
             QSize( mMarker.markerSize().toSize().width(), mRect.height() ) );
     MarkerLayoutItem::paintIntoRect(
             painter, r, mDiagram, mMarker, mMarkerBrush, mMarkerPen );
