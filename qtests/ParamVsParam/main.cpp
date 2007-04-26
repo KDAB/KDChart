@@ -8,16 +8,17 @@ private slots:
 
   void testMainWindow()
   {
+    QTime t;
+    t.start();
 
     MainWindow      mainWindow;
 
-    QTime t;
-    t.start();
+    qDebug("time constructor: %d ms", t.elapsed());
 
     mainWindow.show();
     QTimer::singleShot(0, qApp, SLOT(quit()));
 
-    qDebug("Time elapsed: %d ms", t.elapsed());
+    qDebug("time show(): %d ms", t.elapsed());
 
   }
 };
