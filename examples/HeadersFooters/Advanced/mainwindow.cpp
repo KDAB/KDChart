@@ -174,5 +174,5 @@ void MainWindow::on_removeHeaderPB_clicked()
 void MainWindow::on_headersTV_itemSelectionChanged()
 {
     removeHeaderPB->setEnabled( headersTV->selectedItems().count() > 0 );
-    removeHeaderPB->setEnabled( headersTV->selectedItems().count() == 1 );
+    editHeaderPB->setEnabled( headersTV->selectedItems().count() == 1 );
 }
