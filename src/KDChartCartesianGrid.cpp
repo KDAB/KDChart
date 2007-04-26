@@ -555,5 +555,5 @@ void CartesianGrid::calculateStepWidth(
             //qDebug("C");
         }
     }
-    qDebug("CartesianGrid::calculateStepWidth() found stepWidth %f (%f steps) and sub-stepWidth %f", stepWidth, steps, subStepWidth);
+    //qDebug("CartesianGrid::calculateStepWidth() found stepWidth %f (%f steps) and sub-stepWidth %f", stepWidth, steps, subStepWidth);
 }
