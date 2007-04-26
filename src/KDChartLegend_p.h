@@ -89,7 +89,7 @@ public:
         titleTextAttributes( rhs.titleTextAttributes ),
         spacing( rhs.spacing ),
         useAutomaticMarkerSize( rhs.useAutomaticMarkerSize ),
-        legendstyle( MarkersOnly )
+        legendStyle( MarkersOnly )
         //needRebuild( true )
         {
         }
@@ -121,7 +121,7 @@ private:
     TextAttributes titleTextAttributes;
     uint spacing;
     bool useAutomaticMarkerSize;
-    LegendStyle legendstyle;
+    LegendStyle legendStyle;
 
     // internal
 //    bool needRebuild;

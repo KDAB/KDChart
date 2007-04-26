@@ -60,7 +60,7 @@ Legend::Private::Private() :
     titleTextAttributes(),
     spacing( 1 ),
     useAutomaticMarkerSize( true ),
-    legendstyle( MarkersOnly )
+    legendStyle( MarkersOnly )
     //needRebuild( true )
 {
     // By default we specify a simple, hard point as the 'relative' position's ref. point,
@@ -188,14 +188,14 @@ void Legend::activateTheLayout()
 
 void Legend::setLegendStyle( LegendStyle style )
 {
-    d->legendstyle = style;
+    d->legendStyle = style;
     //Pending Michel check if appropriate
     setNeedRebuild();
 }
 
 Legend::LegendStyle Legend::legendStyle() const
 {
-    return d->legendstyle;
+    return d->legendStyle;
 }
 
 Legend* Legend::clone() const
