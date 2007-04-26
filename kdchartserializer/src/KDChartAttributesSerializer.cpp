@@ -1295,6 +1295,14 @@ bool AttributesSerializer::parseGridAttributes(
                         Q_ASSERT( false ); // all of the values need to be handled
                     a.setGridGranularitySequence( seq );
                 }
+            }else if( tagName == "AdjustLowerBound" ) {
+                bool b;
+                if( KDXML::readBoolNode( element, b ) )
+                    a.setAdjustBoundsToGrid( b, a.adjustUpperBoundToGrid() );
+            }else if( tagName == "AdjustUpperBound" ) {
+                bool b;
+                if( KDXML::readBoolNode( element, b ) )
+                    a.setAdjustBoundsToGrid( a.adjustLowerBoundToGrid(), b );
             } else if( tagName == "GridPen" ) {
                 QPen pen;
                 if( KDXML::readPenNode( element, pen ) )
@@ -1358,6 +1366,10 @@ void AttributesSerializer::saveGridAttributes(
             break;
     }
     KDXML::createStringNode( doc, element, "GranularitySequence", name );
+    KDXML::createBoolNode( doc, element, "AdjustLowerBound",
+                           a.adjustLowerBoundToGrid() );
+    KDXML::createBoolNode( doc, element, "AdjustUpperBound",
+                           a.adjustUpperBoundToGrid() );
     KDXML::createPenNode( doc, element, "GridPen",
                           a.gridPen() );
     KDXML::createBoolNode( doc, element, "SubGridVisible",
