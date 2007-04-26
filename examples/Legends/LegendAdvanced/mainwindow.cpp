@@ -62,6 +62,13 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_lines->setModel( &m_model );
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
 
+    QPen pen = QPen( m_lines->pen(0).color(), 2 );
+    pen.setStyle( Qt::DashLine );
+    m_lines->setPen( 0, pen );
+    pen = QPen( m_lines->pen(2).color(), 3 );
+    pen.setStyle( Qt::DashDotDotLine );
+    m_lines->setPen( 2, pen );
+
     // Add at least one legend for starters
     KDChart::Legend* legend = new KDChart::Legend( m_lines, m_chart );
     legend->setPosition( KDChart::Position::NorthEast );
