@@ -31,12 +31,6 @@
 #include <KDABLibFakes>
 
 
-static qreal _trunc( qreal v )
-{
-    return (( v > 0.0 ) ? floor( v ) : ceil(  v ));
-}
-
-
 using namespace KDChart;
 
 
@@ -152,10 +146,12 @@ void CartesianGrid::drawGrid( PaintContext* context )
         (screenRangeY / (numberOfUnitLinesY / dimY.stepWidth * dimY.subStepWidth) > MinimumPixelsBetweenLines) &&
         gridAttrsY.isSubGridVisible());
 
-    const qreal minValueX = qMin( dimX.start, dimX.end );
-    const qreal maxValueX = qMax( dimX.start, dimX.end );
-    const qreal minValueY = qMin( dimY.start, dimY.end );
-    const qreal maxValueY = qMax( dimY.start, dimY.end );
+    qreal minValueX = qMin( dimX.start, dimX.end );
+    qreal maxValueX = qMax( dimX.start, dimX.end );
+    qreal minValueY = qMin( dimY.start, dimY.end );
+    qreal maxValueY = qMax( dimY.start, dimY.end );
+    AbstractGrid::adjustLowerUpperRange( minValueX, maxValueX, dimX.stepWidth, true, true );
+    AbstractGrid::adjustLowerUpperRange( minValueY, maxValueY, dimY.stepWidth, true, true );
 
     if ( drawSubGridLinesX ) {
         context->painter()->setPen( gridAttrsX.subGridPen() );
@@ -311,8 +307,13 @@ DataDimensionsList CartesianGrid::calculateGrid(
             l.first().end   = translatedTopRight.x();
         }
 
+        const GridAttributes gridAttrsX( plane->gridAttributes( Qt::Horizontal ) );
+        const GridAttributes gridAttrsY( plane->gridAttributes( Qt::Vertical ) );
+
         const DataDimension dimX
-            = calculateGridXY( l.first(), Qt::Horizontal );
+                = calculateGridXY( l.first(), Qt::Horizontal,
+                                   gridAttrsX.adjustLowerBoundToGrid(),
+                                   gridAttrsX.adjustUpperBoundToGrid() );
         if( dimX.stepWidth ){
             //qDebug("CartesianGrid::calculateGrid()   l.last().start:  %f   l.last().end:  %f", l.last().start, l.last().end);
             //qDebug("                                 l.first().start: %f   l.first().end: %f", l.first().start, l.first().end);
@@ -325,7 +326,9 @@ DataDimensionsList CartesianGrid::calculateGrid(
                 l.last().end   = translatedTopRight.y();
             }
             const DataDimension dimY
-                = calculateGridXY( l.last(), Qt::Vertical );
+                    = calculateGridXY( l.last(), Qt::Vertical,
+                                       gridAttrsY.adjustLowerBoundToGrid(),
+                                       gridAttrsY.adjustUpperBoundToGrid() );
             if( dimY.stepWidth ){
                 l.first().start        = dimX.start;
                 l.first().end          = dimX.end;
@@ -352,15 +355,6 @@ DataDimensionsList CartesianGrid::calculateGrid(
 }
 
 
-void adjustUpperLowerRange( qreal& start, qreal& end, qreal stepWidth )
-{
-    const qreal startAdjust = ( start >= 0.0 ) ? 0.0 : -1.0;
-    const qreal endAdjust   = ( end   >= 0.0 ) ? 1.0 :  0.0;
-    if ( fmod( start, stepWidth ) != 0.0 )
-        start = stepWidth * (_trunc( start / stepWidth ) + startAdjust);
-    if ( fmod( end, stepWidth ) != 0.0 )
-        end = stepWidth * (_trunc( end / stepWidth ) + endAdjust);
-}
 qreal fastPow10( int x )
 {
     qreal res = 1.0;
@@ -380,7 +374,8 @@ qreal fastPow10( int x )
 
 DataDimension CartesianGrid::calculateGridXY(
     const DataDimension& rawDataDimension,
-    Qt::Orientation orientation ) const
+    Qt::Orientation orientation,
+    bool adjustLower, bool adjustUpper ) const
 {
     DataDimension dim( rawDataDimension );
     if( dim.isCalculated && dim.start != dim.end ){
@@ -410,11 +405,13 @@ DataDimension CartesianGrid::calculateGridXY(
                 //qDebug("CartesianGrid::calculateGridXY()   dim.start: %f   dim.end: %f", dim.start, dim.end);
                 calculateStepWidth(
                     dim.start, dim.end, granularities, orientation,
-                    dim.stepWidth, dim.subStepWidth );
+                    dim.stepWidth, dim.subStepWidth,
+                    adjustLower, adjustUpper );
             }
             // if needed, adjust start/end to match the step width:
             //qDebug() << "CartesianGrid::calculateGridXY() has 1st linear range: min " << dim.start << " and max" << dim.end;
-            adjustUpperLowerRange( dim.start, dim.end, dim.stepWidth );
+            AbstractGrid::adjustLowerUpperRange( dim.start, dim.end, dim.stepWidth,
+                    adjustLower, adjustUpper );
             //qDebug() << "CartesianGrid::calculateGridXY() returns linear range: min " << dim.start << " and max" << dim.end;
         }else{
             // logarithmic calculation (ignoring all negative values)
@@ -449,11 +446,12 @@ DataDimension CartesianGrid::calculateGridXY(
 }
 
 
-void calculateSteps(
+static void calculateSteps(
     qreal start_, qreal end_, const QList<qreal>& list,
     int minSteps, int maxSteps,
     int power,
-    qreal& steps, qreal& stepWidth )
+    qreal& steps, qreal& stepWidth,
+    bool adjustLower, bool adjustUpper )
 {
     //qDebug("-----------------------------------\nstart: %f   end: %f   power-of-ten: %i", start_, end_, power);
 
@@ -467,7 +465,7 @@ void calculateSteps(
         qreal start = qMin( start_, end_ );
         qreal end   = qMax( start_, end_ );
         //qDebug("pre adjusting    start: %f   end: %f", start, end);
-        adjustUpperLowerRange( start, end, testStepWidth );
+        AbstractGrid::adjustLowerUpperRange( start, end, testStepWidth, adjustLower, adjustUpper );
         //qDebug("post adjusting   start: %f   end: %f", start, end);
 
         const qreal testDistance = qAbs(end - start);
@@ -489,7 +487,8 @@ void CartesianGrid::calculateStepWidth(
     qreal start_, qreal end_,
     const QList<qreal>& granularities,
     Qt::Orientation orientation,
-    qreal& stepWidth, qreal& subStepWidth ) const
+    qreal& stepWidth, qreal& subStepWidth,
+    bool adjustLower, bool adjustUpper ) const
 {
 
     Q_ASSERT_X ( granularities.count(), "CartesianGrid::calculateStepWidth",
@@ -521,7 +520,9 @@ void CartesianGrid::calculateStepWidth(
     do{
         //qDebug() << "list:" << testList;
         //qDebug( "calculating steps: power: %i", power);
-        calculateSteps( start, end, testList, minSteps, maxSteps, power, steps, stepWidth );
+        calculateSteps( start, end, testList, minSteps, maxSteps, power,
+                        steps, stepWidth,
+                        adjustLower, adjustUpper );
         --power;
     }while( steps == 0.0 );
     ++power;

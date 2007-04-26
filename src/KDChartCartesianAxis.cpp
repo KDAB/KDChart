@@ -36,6 +36,7 @@
 #include "KDChartCartesianAxis.h"
 #include "KDChartCartesianAxis_p.h"
 #include "KDChartAbstractCartesianDiagram.h"
+#include "KDChartAbstractGrid.h"
 #include "KDChartPainterSaver_p.h"
 #include "KDChartLayoutItems.h"
 #include "KDChartBarDiagram.h"
@@ -358,9 +359,11 @@ void CartesianAxis::paintCtx( PaintContext* context )
     // test for programming errors: critical
     Q_ASSERT_X ( dimensions.count() == 2, "CartesianAxis::paint",
                  "Error: plane->gridDimensionsList() did not return exactly two dimensions." );
-    DataDimension& dimX = dimensions.first();
-    const DataDimension& dimY = dimensions.last();
-    const DataDimension& dim = (isAbscissa() ? dimensions.first() : dimensions.last());
+    DataDimension dimX =
+            AbstractGrid::adjustedLowerUpperRange( dimensions.first(), true, true );
+    const DataDimension dimY =
+            AbstractGrid::adjustedLowerUpperRange( dimensions.last(), true, true );
+    const DataDimension& dim = (isAbscissa() ? dimX : dimY);
 
     /*
     if(isAbscissa())

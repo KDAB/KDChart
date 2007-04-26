@@ -44,6 +44,8 @@ private:
     KDChartEnums::GranularitySequence sequence;
     qreal stepWidth;
     qreal subStepWidth;
+    bool adjustLower;
+    bool adjustUpper;
     QPen pen;
     bool subVisible;
     QPen subPen;
@@ -55,6 +57,8 @@ GridAttributes::Private::Private()
       sequence( KDChartEnums::GranularitySequence_10_20 ),
       stepWidth( 0.0 ),
       subStepWidth( 0.0 ),
+      adjustLower( true ),
+      adjustUpper( true ),
       pen( QColor(0xa0, 0xa0, 0xa0 ) ),
       subVisible( true ),
       subPen( QColor(0xd0, 0xd0, 0xd0 ) ),
@@ -95,12 +99,14 @@ GridAttributes::~GridAttributes()
 
 bool GridAttributes::operator==( const GridAttributes& r ) const
 {
-    return ( isGridVisible() == r.isGridVisible() &&
-             gridGranularitySequence() == r.gridGranularitySequence() &&
-	     gridPen() == r.gridPen() &&
-	     isSubGridVisible() == r.isSubGridVisible() &&
-	     subGridPen() == r.subGridPen() &&
-	     zeroLinePen() == r.zeroLinePen() );
+    return  isGridVisible() == r.isGridVisible() &&
+            gridGranularitySequence() == r.gridGranularitySequence() &&
+            adjustLowerBoundToGrid() == r.adjustLowerBoundToGrid() &&
+            adjustUpperBoundToGrid() == r.adjustUpperBoundToGrid() &&
+            gridPen() == r.gridPen() &&
+            isSubGridVisible() == r.isSubGridVisible() &&
+            subGridPen() == r.subGridPen() &&
+            zeroLinePen() == r.zeroLinePen();
 }
 
 
@@ -212,6 +218,19 @@ KDChartEnums::GranularitySequence GridAttributes::gridGranularitySequence() cons
     return d->sequence;
 }
 
+void GridAttributes::setAdjustBoundsToGrid( bool adjustLower, bool adjustUpper )
+{
+    d->adjustLower = adjustLower;
+    d->adjustUpper = adjustUpper;
+}
+bool GridAttributes::adjustLowerBoundToGrid() const
+{
+    return d->adjustLower;
+}
+bool GridAttributes::adjustUpperBoundToGrid() const
+{
+    return d->adjustUpper;
+}
 
 void GridAttributes::setGridPen( const QPen & pen )
 {

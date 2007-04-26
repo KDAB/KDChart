@@ -34,6 +34,12 @@
 using namespace KDChart;
 
 
+static qreal _trunc( qreal v )
+{
+    return (( v > 0.0 ) ? floor( v ) : ceil(  v ));
+}
+
+
 AbstractGrid::AbstractGrid ()
     : mPlane( 0 )
 {
@@ -88,4 +94,29 @@ bool AbstractGrid::isBoundariesValid(const DataDimensionsList& l )
 bool AbstractGrid::isValueValid(const qreal& r )
 {
   return !(ISNAN(r) || ISINF(r));
+}
+
+void AbstractGrid::adjustLowerUpperRange(
+        qreal& start, qreal& end,
+        qreal stepWidth,
+        bool adjustLower, bool adjustUpper )
+{
+    const qreal startAdjust = ( start >= 0.0 ) ? 0.0 : -1.0;
+    const qreal endAdjust   = ( end   >= 0.0 ) ? 1.0 :  0.0;
+    if ( adjustLower && (fmod( start, stepWidth ) != 0.0) )
+        start = stepWidth * (_trunc( start / stepWidth ) + startAdjust);
+    if ( adjustUpper && (fmod( end, stepWidth ) != 0.0) )
+        end = stepWidth * (_trunc( end / stepWidth ) + endAdjust);
+}
+
+const DataDimension AbstractGrid::adjustedLowerUpperRange(
+        const DataDimension& dim,
+        bool adjustLower, bool adjustUpper )
+{
+    DataDimension result( dim );
+    adjustLowerUpperRange(
+            result.start, result.end,
+            result.stepWidth,
+            adjustLower, adjustUpper );
+    return result;
 }

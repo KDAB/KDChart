@@ -81,6 +81,13 @@ namespace KDChart {
         static bool isBoundariesValid(const QPair<QPointF,QPointF>& b );
         static bool isBoundariesValid(const DataDimensionsList& l );
         static bool isValueValid(const qreal& r );
+        static void adjustLowerUpperRange(
+                qreal& start, qreal& end,
+                qreal stepWidth,
+                bool adjustLower, bool adjustUpper );
+        static const DataDimension adjustedLowerUpperRange(
+                const DataDimension& dim,
+                bool adjustLower, bool adjustUpper );
 
         GridAttributes gridAttributes;
 

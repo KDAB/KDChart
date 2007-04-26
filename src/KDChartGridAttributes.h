@@ -57,8 +57,30 @@ public:
     void setGridSubStepWidth(  qreal subStepWidth=0.0 );
     qreal gridSubStepWidth() const;
 
+    /**
+     * Specify which granularity sequence is to be used to find a matching
+     * grid granularity.
+     *
+     * See details explained at KDChartEnums::GranularitySequence.
+     *
+     * You might also want to use setAdjustBoundsToGrid for fine-tuning the
+     * start/end value.
+     *
+     * \sa setAdjustBoundsToGrid, GranularitySequence
+     */
     void setGridGranularitySequence( KDChartEnums::GranularitySequence sequence );
     KDChartEnums::GranularitySequence gridGranularitySequence() const;
+
+    /**
+     * By default visible bounds of the data area are adjusted to match
+     * a main grid line.
+     * If you set the respective adjust flag to false the bound will
+     * not start at a grid line's value but it will be the exact value
+     * of the data range set.
+     */
+    void setAdjustBoundsToGrid( bool adjustLower, bool adjustUpper );
+    bool adjustLowerBoundToGrid() const;
+    bool adjustUpperBoundToGrid() const;
 
 
     void setGridPen( const QPen & pen );

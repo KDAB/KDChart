@@ -144,7 +144,7 @@ public:
           return GranularitySequence_10_50;
       if( string == QString::fromLatin1("GranularitySequence_25_50") )
           return GranularitySequence_25_50;
-      if( string == QString::fromLatin1("GranularitySequence_125_25") )
+      if( string == QString::fromLatin1("GranularitySequence_125") )
           return GranularitySequence_125_25;
       if( string == QString::fromLatin1("GranularitySequenceIrregular") )
           return GranularitySequenceIrregular;
