@@ -77,6 +77,9 @@ public:
      * If you set the respective adjust flag to false the bound will
      * not start at a grid line's value but it will be the exact value
      * of the data range set.
+     *
+     * \sa CartesianCoordinatePlane::setHorizontalRange
+     * \sa CartesianCoordinatePlane::setVerticalRange
      */
     void setAdjustBoundsToGrid( bool adjustLower, bool adjustUpper );
     bool adjustLowerBoundToGrid() const;

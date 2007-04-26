@@ -101,10 +101,19 @@ namespace KDChart {
          * constructor QPair() or you can set setting both values to the same which constitutes
          * a null range.
          * 
+         * \note By default the visible data range often is larger than the
+         * range calculated from the data model (or set by setHoriz.|Vert.Range(), resp.).
+         * This is due to the built-in grid calculation feature: The visible start/end
+         * values get adjusted so that they match a main-grid line.
+         * You can turn this feature off for any of the four bounds by calling
+         * GridAttributes::setAdjustBoundsToGrid() for either the global grid-attributes
+         * or for the horizontal/vertical attrs separately.
+         *
          * \param range a pair of values representing the smalles and the largest
          * horizontal value space coordinate displayed.
          *
-         * \sa setAutoAdjustHorizontalRangeToData
+         * \sa setAutoAdjustHorizontalRangeToData, setVerticalRange
+         * \sa GridAttributes::setAdjustBoundsToGrid()
          */
         void setHorizontalRange( const QPair<qreal, qreal> & range );
 
@@ -122,10 +131,19 @@ namespace KDChart {
          * constructor QPair() or you can set setting both values to the same which constitutes
          * a null range.
          *
+         * \note By default the visible data range often is larger than the
+         * range calculated from the data model (or set by setHoriz.|Vert.Range(), resp.).
+         * This is due to the built-in grid calculation feature: The visible start/end
+         * values get adjusted so that they match a main-grid line.
+         * You can turn this feature off for any of the four bounds by calling
+         * GridAttributes::setAdjustBoundsToGrid() for either the global grid-attributes
+         * or for the horizontal/vertical attrs separately.
+         *
          * \param range a pair of values representing the smalles and the largest
          * vertical value space coordinate displayed.
          *
-         * \sa setAutoAdjustVerticalRangeToData
+         * \sa setAutoAdjustVerticalRangeToData, setHorizontalRange
+         * \sa GridAttributes::setAdjustBoundsToGrid()
          */
         void setVerticalRange( const QPair<qreal, qreal> & range );
 
