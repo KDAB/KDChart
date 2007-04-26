@@ -83,7 +83,6 @@ private:
     QLabel* m_smallChart2;
     // mutable KDChart::CartesianAxis xAxis;
     //mutable KDChart::CartesianAxis yAxis;
-
 };
 
 

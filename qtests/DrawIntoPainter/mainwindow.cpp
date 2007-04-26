@@ -75,7 +75,9 @@ MainWindow::MainWindow( QWidget* parent ) :
     // Set up the diagram
     m_lines = new LineDiagram();
 
-    updateData(":/empty");
+//    updateData(":/test");
+    m_model.loadFromCSV( QString(":/test") );
+    m_lines->setModel( &m_model );
 
     CartesianAxis *xAxis = new CartesianAxis( m_lines );
     CartesianAxis *yAxis = new CartesianAxis ( m_lines );
@@ -173,17 +175,35 @@ MainWindow::MainWindow( QWidget* parent ) :
 
 void MainWindow::updateData(QString data)
 {
-  QTime t;
-  t.start();
+    QTime t;
+    t.start();
 
-  m_model.loadFromCSV( data );
+    m_model.loadFromCSV( data );
 
-  qDebug("Time for loading data %s: %d ms", data.toLatin1().constData(), t.elapsed());
-  t.restart();
+    qDebug("Time for loading data %s: %d ms", data.toLatin1().constData(), t.elapsed());
+    t.restart();
 
-  m_lines->setModel( &m_model );
+    QSize size1 = QSize( 200, 200 );
+    QSize size2 = QSize( 800, 800 );
+    m_pix1 = drawIntoPixmap( size1, m_chart );
+    m_pix2 = drawIntoPixmap( size2, m_chart );
 
-  qDebug("Time for setting model %s: %d ms", data.toLatin1().constData(), t.elapsed());
+    qDebug("Time for drawing pixmap %s: %d ms", data.toLatin1().constData(), t.elapsed());
+    t.restart();
+
+    m_lines->setModel( &m_model );
+
+    qDebug("Time for setting model %s: %d ms", data.toLatin1().constData(), t.elapsed());
+    t.restart();
+
+    m_smallChart1->setPixmap( m_pix1 );
+    m_smallChart2->setPixmap( m_pix2 );
+
+    m_smallChart1->show();
+    m_smallChart2->show();
+
+    qDebug("Time for setting pixmap %s: %d ms", data.toLatin1().constData(), t.elapsed());
+    t.restart();
 
 }
 
