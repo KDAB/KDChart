@@ -65,13 +65,13 @@ MainWindow::MainWindow( QWidget* parent ) :
     QPen pen = QPen( m_lines->pen(0).color(), 2 );
     pen.setStyle( Qt::DashLine );
     m_lines->setPen( 0, pen );
-    pen = QPen( m_lines->pen(2).color(), 3 );
+    pen = QPen( m_lines->pen(2).color(), 2 );
     pen.setStyle( Qt::DashDotDotLine );
     m_lines->setPen( 2, pen );
 
     // Add at least one legend for starters
     KDChart::Legend* legend = new KDChart::Legend( m_lines, m_chart );
-    legend->setPosition( KDChart::Position::NorthEast );
+    legend->setPosition( KDChart::Position::North );
     legend->setAlignment( Qt::AlignCenter );
     legend->setShowLines( false );
     legend->setTitleText( tr( "Legend" ) );
@@ -80,7 +80,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     legend->show();
 
     LegendItem* newItem = new LegendItem( legend, legendsTV );
-    newItem->setText( 0, tr( "NorthEast" ) );
+    newItem->setText( 0, tr( "North" ) );
     newItem->setText( 1, tr( "no" ) );
     newItem->setText( 2, tr( "Legend" ) );
     newItem->setText( 3, tr( "Vertical" ) );
