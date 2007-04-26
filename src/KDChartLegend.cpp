@@ -188,8 +188,8 @@ void Legend::activateTheLayout()
 
 void Legend::setLegendStyle( LegendStyle style )
 {
+    if( d->legendStyle == style ) return;
     d->legendStyle = style;
-    //Pending Michel check if appropriate
     setNeedRebuild();
 }
 
