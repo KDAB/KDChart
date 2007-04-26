@@ -373,85 +373,6 @@ void KDChart::TextLayoutItem::paint( QPainter* painter )
 //    //painter->drawText( rect, Qt::AlignHCenter | Qt::AlignVCenter, mText );
 }
 
-KDChart::MarkerLayoutItem::MarkerLayoutItem( KDChart::AbstractDiagram* diagram,
-                                             const MarkerAttributes& marker,
-                                             const QBrush& brush, const QPen& pen,
-                                             Qt::Alignment alignment )
-    : AbstractLayoutItem( alignment )
-    , mDiagram( diagram )
-    , mMarker( marker )
-    , mBrush( brush )
-    , mPen( pen )
-{
-}
-
-Qt::Orientations KDChart::MarkerLayoutItem::expandingDirections() const
-{
-    return 0; // Grow neither vertically nor horizontally
-}
-
-QRect KDChart::MarkerLayoutItem::geometry() const
-{
-    return mRect;
-}
-
-bool KDChart::MarkerLayoutItem::isEmpty() const
-{
-    return false; // never empty, otherwise the layout item would not exist
-}
-
-QSize KDChart::MarkerLayoutItem::maximumSize() const
-{
-    return sizeHint(); // PENDING(kalle) Review, quite inflexible
-}
-
-QSize KDChart::MarkerLayoutItem::minimumSize() const
-{
-    return sizeHint(); // PENDING(kalle) Review, quite inflexible
-}
-
-void KDChart::MarkerLayoutItem::setGeometry( const QRect& r )
-{
-    mRect = r;
-}
-
-QSize KDChart::MarkerLayoutItem::sizeHint() const
-{
-    //qDebug() << "KDChart::MarkerLayoutItem::sizeHint() returns:"<<mMarker.markerSize().toSize();
-    return mMarker.markerSize().toSize();
-}
-
-void KDChart::MarkerLayoutItem::paint( QPainter* painter )
-{
-    if( !mRect.isValid() )
-        return;
-
-    // The layout management may assign a larger rect than what we
-    // wanted. We need to adjust the position.
-    QPointF pos = geometry().topLeft();
-    pos += QPointF( static_cast<qreal>(( geometry().width() - sizeHint().width()) / 2.0 ),
-                    static_cast<qreal>(( geometry().height() - sizeHint().height()) / 2.0 ) );
-
-#ifdef DEBUG_ITEMS_PAINT
-    QPointF oldPos = pos;
-#endif
-
-// And finally, drawMarker() assumes the position to be the center
-    // of the marker, adjust again.
-    pos += QPointF( static_cast<qreal>( sizeHint().width() ) / 2.0,
-                    static_cast<qreal>( sizeHint().height() )/ 2.0 );
-
-    mDiagram->paintMarker( painter, mMarker, mBrush, mPen, pos.toPoint(), sizeHint() );
-
-#ifdef DEBUG_ITEMS_PAINT
-    const QPen oldPen( painter->pen() );
-    painter->setPen( Qt::red );
-    painter->drawRect( QRect(oldPos.toPoint(), sizeHint()) );
-    painter->setPen( oldPen );
-#endif
-}
-
-
 KDChart::HorizontalLineLayoutItem::HorizontalLineLayoutItem()
     : AbstractLayoutItem( Qt::AlignCenter )
 {
@@ -554,11 +475,105 @@ void KDChart::VerticalLineLayoutItem::paint( QPainter* painter )
 }
 
 
+
+KDChart::MarkerLayoutItem::MarkerLayoutItem( KDChart::AbstractDiagram* diagram,
+                                             const MarkerAttributes& marker,
+                                             const QBrush& brush, const QPen& pen,
+                                             Qt::Alignment alignment )
+    : AbstractLayoutItem( alignment )
+    , mDiagram( diagram )
+    , mMarker( marker )
+    , mBrush( brush )
+    , mPen( pen )
+{
+}
+
+Qt::Orientations KDChart::MarkerLayoutItem::expandingDirections() const
+{
+    return 0; // Grow neither vertically nor horizontally
+}
+
+QRect KDChart::MarkerLayoutItem::geometry() const
+{
+    return mRect;
+}
+
+bool KDChart::MarkerLayoutItem::isEmpty() const
+{
+    return false; // never empty, otherwise the layout item would not exist
+}
+
+QSize KDChart::MarkerLayoutItem::maximumSize() const
+{
+    return sizeHint(); // PENDING(kalle) Review, quite inflexible
+}
+
+QSize KDChart::MarkerLayoutItem::minimumSize() const
+{
+    return sizeHint(); // PENDING(kalle) Review, quite inflexible
+}
+
+void KDChart::MarkerLayoutItem::setGeometry( const QRect& r )
+{
+    mRect = r;
+}
+
+QSize KDChart::MarkerLayoutItem::sizeHint() const
+{
+    //qDebug() << "KDChart::MarkerLayoutItem::sizeHint() returns:"<<mMarker.markerSize().toSize();
+    return mMarker.markerSize().toSize();
+}
+
+void KDChart::MarkerLayoutItem::paint( QPainter* painter )
+{
+    paintIntoRect( painter, mRect, mDiagram, mMarker, mBrush, mPen );
+}
+
+void KDChart::MarkerLayoutItem::paintIntoRect(
+        QPainter* painter,
+        const QRect& rect,
+        AbstractDiagram* diagram,
+        const MarkerAttributes& marker,
+        const QBrush& brush,
+        const QPen& pen )
+{
+    if( ! rect.isValid() )
+        return;
+
+    // The layout management may assign a larger rect than what we
+    // wanted. We need to adjust the position.
+    const QSize siz = marker.markerSize().toSize();
+    QPointF pos = rect.topLeft();
+    pos += QPointF( static_cast<qreal>(( rect.width()  - siz.width()) / 2.0 ),
+                    static_cast<qreal>(( rect.height() - siz.height()) / 2.0 ) );
+
+#ifdef DEBUG_ITEMS_PAINT
+    QPointF oldPos = pos;
+#endif
+
+// And finally, drawMarker() assumes the position to be the center
+    // of the marker, adjust again.
+    pos += QPointF( static_cast<qreal>( siz.width() ) / 2.0,
+                    static_cast<qreal>( siz.height() )/ 2.0 );
+
+    diagram->paintMarker( painter, marker, brush, pen, pos.toPoint(), siz );
+
+#ifdef DEBUG_ITEMS_PAINT
+    const QPen oldPen( painter->pen() );
+    painter->setPen( Qt::red );
+    painter->drawRect( QRect(oldPos.toPoint(), siz) );
+    painter->setPen( oldPen );
+#endif
+}
+
+
 KDChart::LineLayoutItem::LineLayoutItem( KDChart::AbstractDiagram* diagram,
+                                         int length,
                                          const QPen& pen,
                                          Qt::Alignment alignment )
     : AbstractLayoutItem( alignment )
     , mDiagram( diagram )
+    , mLength( length )
     , mPen( pen )
 {
     //have a mini pen width
@@ -598,19 +613,99 @@ void KDChart::LineLayoutItem::setGeometry( const QRect& r )
 
 QSize KDChart::LineLayoutItem::sizeHint() const
 {
-    // FixMe we need a mini width
-    // depending on the pen width
-    return QSize( 20, -1 );
+    return QSize( mLength, mPen.width()+2 );
 }
 
 void KDChart::LineLayoutItem::paint( QPainter* painter )
 {
-    if( !mRect.isValid() )
+    paintIntoRect( painter, mRect, mPen );
+}
+
+void KDChart::LineLayoutItem::paintIntoRect(
+        QPainter* painter,
+        const QRect& rect,
+        const QPen& pen )
+{
+    if( ! rect.isValid() )
         return;
-    painter->save();
-    painter->setPen( mPen );
-    painter->drawLine( QPointF( mRect.left(), mRect.center().y() ),
-                     QPointF( mRect.right(), mRect.center().y() ) );
-    painter->restore();
+
+    const QPen oldPen = painter->pen();
+    painter->setPen( pen );
+    const qreal y = rect.center().y();
+    painter->drawLine( QPointF( rect.left(), y ),
+                       QPointF( rect.right(), y ) );
+    painter->setPen( oldPen );
+}
+
+
+KDChart::LineWithMarkerLayoutItem::LineWithMarkerLayoutItem(
+        KDChart::AbstractDiagram* diagram,
+        int lineLength,
+        const QPen& linePen,
+        int markerOffs,
+        const MarkerAttributes& marker,
+        const QBrush& markerBrush,
+        const QPen& markerPen,
+        Qt::Alignment alignment )
+    : AbstractLayoutItem( alignment )
+    , mDiagram(     diagram )
+    , mLineLength(  lineLength )
+    , mLinePen(     linePen )
+    , mMarkerOffs(  markerOffs )
+    , mMarker(      marker )
+    , mMarkerBrush( markerBrush )
+    , mMarkerPen(   markerPen )
+{
+}
+
+Qt::Orientations KDChart::LineWithMarkerLayoutItem::expandingDirections() const
+{
+    return 0; // Grow neither vertically nor horizontally
+}
+
+QRect KDChart::LineWithMarkerLayoutItem::geometry() const
+{
+    return mRect;
+}
+
+bool KDChart::LineWithMarkerLayoutItem::isEmpty() const
+{
+    return false; // never empty, otherwise the layout item would not exist
+}
+
+QSize KDChart::LineWithMarkerLayoutItem::maximumSize() const
+{
+    return sizeHint(); // PENDING(kalle) Review, quite inflexible
+}
+
+QSize KDChart::LineWithMarkerLayoutItem::minimumSize() const
+{
+    return sizeHint(); // PENDING(kalle) Review, quite inflexible
+}
+
+void KDChart::LineWithMarkerLayoutItem::setGeometry( const QRect& r )
+{
+    mRect = r;
+}
+
+QSize KDChart::LineWithMarkerLayoutItem::sizeHint() const
+{
+    const QSize sizeM = mMarker.markerSize().toSize();
+    const QSize sizeL = QSize( mLineLength, mLinePen.width()+2 );
+    return QSize( qMax(sizeM.width(),  sizeL.width()),
+                  qMax(sizeM.height(), sizeL.height()) );
+}
+
+void KDChart::LineWithMarkerLayoutItem::paint( QPainter* painter )
+{
+    // paint the line over the full width, into the vertical middle of the rect
+    LineLayoutItem::paintIntoRect( painter, mRect, mLinePen );
+
+    // paint the marker with the given offset from the left side of the line
+    const QRect r(
+            QPoint( mMarkerOffs, mRect.y() ),
+            QSize( mMarker.markerSize().toSize().width(), mRect.height() ) );
+    MarkerLayoutItem::paintIntoRect(
+            painter, r, mDiagram, mMarker, mMarkerBrush, mMarkerPen );
 }
 

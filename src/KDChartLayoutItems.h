@@ -145,52 +145,106 @@ namespace KDChart {
      */
     class KDCHART_EXPORT MarkerLayoutItem : public AbstractLayoutItem
     {
-    public:
-        MarkerLayoutItem( AbstractDiagram* diagram, const MarkerAttributes& marker,
-                          const QBrush& brush, const QPen& pen,
-                          Qt::Alignment alignment = 0 );
+        public:
+            MarkerLayoutItem( AbstractDiagram* diagram,
+                              const MarkerAttributes& marker,
+                              const QBrush& brush,
+                              const QPen& pen,
+                              Qt::Alignment alignment = 0 );
 
-        virtual Qt::Orientations expandingDirections() const;
-        virtual QRect geometry() const;
-        virtual bool isEmpty() const;
-        virtual QSize maximumSize() const;
-        virtual QSize minimumSize() const;
-        virtual void setGeometry( const QRect& r );
-        virtual QSize sizeHint() const;
+            virtual Qt::Orientations expandingDirections() const;
+            virtual QRect geometry() const;
+            virtual bool isEmpty() const;
+            virtual QSize maximumSize() const;
+            virtual QSize minimumSize() const;
+            virtual void setGeometry( const QRect& r );
+            virtual QSize sizeHint() const;
 
-        virtual void paint( QPainter* );
+            virtual void paint( QPainter* );
 
-    private:
-        AbstractDiagram* mDiagram;
-        QRect mRect;
-        MarkerAttributes mMarker;
-        QBrush mBrush;
-        QPen mPen;
+            static void paintIntoRect(
+                    QPainter* painter,
+                    const QRect& rect,
+                    AbstractDiagram* diagram,
+                    const MarkerAttributes& marker,
+                    const QBrush& brush,
+                    const QPen& pen );
+
+        private:
+            AbstractDiagram* mDiagram;
+            QRect mRect;
+            MarkerAttributes mMarker;
+            QBrush mBrush;
+            QPen mPen;
     };
 
-      /** \internal
+    /** \internal
      */
     class KDCHART_EXPORT LineLayoutItem : public AbstractLayoutItem
     {
-    public:
-        LineLayoutItem( AbstractDiagram* diagram, const QPen& pen,
-                          Qt::Alignment alignment = 0 );
+        public:
+            LineLayoutItem( AbstractDiagram* diagram,
+                            int length,
+                            const QPen& pen,
+                            Qt::Alignment alignment = 0 );
 
-        virtual Qt::Orientations expandingDirections() const;
-        virtual QRect geometry() const;
-        virtual bool isEmpty() const;
-        virtual QSize maximumSize() const;
-        virtual QSize minimumSize() const;
-        virtual void setGeometry( const QRect& r );
-        virtual QSize sizeHint() const;
+            virtual Qt::Orientations expandingDirections() const;
+            virtual QRect geometry() const;
+            virtual bool isEmpty() const;
+            virtual QSize maximumSize() const;
+            virtual QSize minimumSize() const;
+            virtual void setGeometry( const QRect& r );
+            virtual QSize sizeHint() const;
 
-        virtual void paint( QPainter* );
+            virtual void paint( QPainter* );
 
-    private:
-        AbstractDiagram* mDiagram;
-        QRect mRect;
-        QPen mPen;
+            static void paintIntoRect(
+                    QPainter* painter,
+                    const QRect& rect,
+                    const QPen& pen );
+
+        private:
+            AbstractDiagram* mDiagram;
+            int mLength;
+            QPen mPen;
+            QRect mRect;
     };
+
+    /** \internal
+     */
+    class KDCHART_EXPORT LineWithMarkerLayoutItem : public AbstractLayoutItem
+    {
+        public:
+            LineWithMarkerLayoutItem( AbstractDiagram* diagram,
+                                      int lineLength,
+                                      const QPen& linePen,
+                                      int markerOffs,
+                                      const MarkerAttributes& marker,
+                                      const QBrush& markerBrush,
+                                      const QPen& markerPen,
+                                      Qt::Alignment alignment = 0 );
+
+            virtual Qt::Orientations expandingDirections() const;
+            virtual QRect geometry() const;
+            virtual bool isEmpty() const;
+            virtual QSize maximumSize() const;
+            virtual QSize minimumSize() const;
+            virtual void setGeometry( const QRect& r );
+            virtual QSize sizeHint() const;
+
+            virtual void paint( QPainter* );
+
+        private:
+            AbstractDiagram* mDiagram;
+            QRect mRect;
+            int mLineLength;
+            QPen mLinePen;
+            int mMarkerOffs;
+            MarkerAttributes mMarker;
+            QBrush mMarkerBrush;
+            QPen mMarkerPen;
+    };
+
 
     /** \internal
      */

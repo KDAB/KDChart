@@ -862,68 +862,98 @@ void Legend::buildLegend()
     const LegendStyle style = legendStyle();
     //qDebug() << "fontHeight:" << fontHeight;
 
+    const bool bShowMarkers = (style != LinesOnly);
 
-    for ( int dataset = 0; dataset < d->modelLabels.count(); dataset++ ) {
-        if (  style != LinesOnly ) {
-        // retrieve the marker attributes, and adjust the size, if needed
+    QSizeF maxMarkersSize(1.0, 1.0);
+    MarkerAttributes markerAttrs[d->modelLabels.count()];
+    if( bShowMarkers ){
+        for ( int dataset = 0; dataset < d->modelLabels.count(); ++dataset ) {
+            markerAttrs[dataset] = markerAttributes( dataset );
+            QSizeF siz;
+            if( useAutomaticMarkerSize() ||
+                ! markerAttrs[dataset].markerSize().isValid() )
+            {
+                siz = QSizeF(fontHeight, fontHeight);
+                markerAttrs[dataset].setMarkerSize( siz );
+            }else{
+                siz = markerAttrs[dataset].markerSize();
+            }
+            maxMarkersSize =
+                    QSizeF(qMax(maxMarkersSize.width(),  siz.width()),
+                           qMax(maxMarkersSize.height(), siz.height()));
+        }
+    }
 
-            MarkerAttributes markerAttrs( markerAttributes( dataset ) );
-            if( useAutomaticMarkerSize() || ! markerAttrs.markerSize().isValid() )
-                markerAttrs.setMarkerSize( QSizeF(fontHeight, fontHeight) );
-        // Note: We may use diagram() for all of the MarkerLayoutItem instances,
-        //       since all they need the diagram for is to invoke mDiagram->paintMarker()
-            KDChart::MarkerLayoutItem* markerItem = new KDChart::MarkerLayoutItem( diagram(),
-                                                                                   markerAttrs,
-                                                                                   brush( dataset ),
-                                                                                   pen( dataset ),
-                                                                                   Qt::AlignLeft );
-            d->layoutItems << markerItem;
+    // If we show a marker on a line, we paint it after 4 pixels
+    // of the line have been painted. This allows to see the line style
+    // at the right side of the marker without the line needing to
+    // be too long.
+    // (having the marker in the middle of the line would require longer lines)
+    const int markerOffsOnLine = 8;
+
+    int maxLineLength = 18;
+    {
+        bool hasComplexPenStyle = false;
+        for ( int dataset = 0; dataset < d->modelLabels.count(); ++dataset ){
+            const QPen pn = pen(dataset);
+            const Qt::PenStyle ps = pn.style();
+            if( ps != Qt::NoPen ){
+                maxLineLength = qMax( pn.width() * 18, maxLineLength );
+                if( ps != Qt::SolidLine )
+                    hasComplexPenStyle = true;
+            }
+        }
+        if( hasComplexPenStyle && bShowMarkers )
+            maxLineLength =
+                    maxLineLength + markerOffsOnLine +
+                    static_cast<int>(maxMarkersSize.width());
+    }
+
+    for ( int dataset = 0; dataset < d->modelLabels.count(); ++dataset ) {
+        KDChart::AbstractLayoutItem* markerLineItem = 0;
+        switch( style ){
+            case( MarkersOnly ):
+                markerLineItem = new KDChart::MarkerLayoutItem(
+                        diagram(),
+                        markerAttrs[dataset],
+                        brush( dataset ),
+                        pen( dataset ),
+                        Qt::AlignLeft );
+                break;
+            case( LinesOnly ):
+                markerLineItem = new KDChart::LineLayoutItem(
+                        diagram(),
+                        maxLineLength,
+                        pen( dataset ),
+                        Qt::AlignCenter );
+                break;
+            case( MarkersAndLines ):
+                markerLineItem = new KDChart::LineWithMarkerLayoutItem(
+                        diagram(),
+                        maxLineLength,
+                        pen( dataset ),
+                        markerOffsOnLine,
+                        markerAttrs[dataset],
+                        brush( dataset ),
+                        pen( dataset ),
+                        Qt::AlignCenter );
+                break;
+            default:
+                Q_ASSERT( false ); // all styles need to be handled
+        }
+        if( markerLineItem ){
+            d->layoutItems << markerLineItem;
             if( orientation() == Qt::Vertical )
-                d->layout->addItem( markerItem,
+                d->layout->addItem( markerLineItem,
                                     dataset*2+2, // first row is title, second is line
                                     1,
                                     1, 1, Qt::AlignCenter );
             else
-                d->layout->addItem( markerItem,
+                d->layout->addItem( markerLineItem,
                                     2, // all in row two
                                     dataset*4 );
-            if ( style == MarkersAndLines ) {
-                QPen linePen(  pen(  dataset ) );
-                KDChart::LineLayoutItem* line = new KDChart::LineLayoutItem( diagram(),
-                                                                             linePen,
-                                                                             Qt::AlignCenter );
-                d->layoutItems << line;
-                if( orientation() == Qt::Vertical ) {
-                    d->layout->addItem( line,
-                                        dataset*2+2, // first row is title, second is line
-                                        4,
-                                        1, 1, Qt::AlignLeft );
-                    d->layout->addItem( new QSpacerItem( spacing(), 1 ),
-                                        dataset*2+2,
-                                        5 );
-                }
-                else
-                    d->layout->addItem( line,
-                                        2, // all in row two
-                                        dataset*4+2 );
-
-            }
-        } else { //linesOnly
-            QPen linePen(  pen(  dataset ) );
-            KDChart::LineLayoutItem* line = new KDChart::LineLayoutItem( diagram(),
-                                                                         linePen,
-                                                                         Qt::AlignCenter );
-             d->layoutItems << line;
-             if( orientation() == Qt::Vertical )
-                 d->layout->addItem( line,
-                                     dataset*2+2, // first row is title, second is line
-                                     1,
-                                     1, 1, Qt::AlignCenter );
-             else
-                 d->layout->addItem( line,
-                                     2, // all in row two
-                                     dataset*4 );
         }
+
         // PENDING(kalle) Other properties!
         KDChart::TextLayoutItem* labelItem =
             new KDChart::TextLayoutItem( text( dataset ),
