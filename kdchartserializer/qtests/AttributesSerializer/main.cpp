@@ -1,5 +1,5 @@
 #include <QtTest/QtTest>
-#include <QColor>
+
 #include <TableModel.h>
 #include <KDChartGlobal>
 
