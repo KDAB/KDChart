@@ -157,6 +157,13 @@ bool AbstractAxis::compare( const AbstractAxis* other )const
             (shortLabels()    == other->shortLabels());
 }
 
+
+const QString AbstractAxis::customizedLabel( const QString& label )const
+{
+    return label;
+}
+
+
 /**
   * \internal
   *

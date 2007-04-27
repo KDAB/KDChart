@@ -82,6 +82,22 @@ namespace KDChart {
 	//virtual void paintEvent( QPaintEvent* event) = 0;
 
         /**
+         * \brief Implement this method if you want to adjust axis labels
+         * before they are printed.
+         *
+         * KD Chart is calling this method immediately before drawing the
+         * text, this  means: What you return here will be drawn without
+         * further modifications.
+         * 
+         * \param label The text of the label as KD Chart has calculated it
+         * automatically (or as it was taken from a QStringList provided
+         * by you, resp.)
+         *
+         * \return The text to be drawn. By default this is the same as \c label.
+         */
+        virtual const QString customizedLabel( const QString& label )const;
+
+        /**
          * Returns true if both axes have the same settings.
          */
         bool compare( const AbstractAxis* other )const;

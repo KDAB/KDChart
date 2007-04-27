@@ -613,13 +613,13 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 {
                     if ( dimX.stepWidth != 1.0 && ! dim.isCalculated )
                     {
-                        labelItem->setText( QString::number( i, 'f', 0 ) );
-                        labelItem2->setText( QString::number( i + dimX.stepWidth, 'f', 0 ) );
+                        labelItem->setText(  customizedLabel(QString::number( i, 'f', 0 )) );
+                        labelItem2->setText( customizedLabel(QString::number( i + dimX.stepWidth, 'f', 0 )) );
                     } else {
 
                         int index = iLabel;
-                        labelItem->setText( labels()[ index < hardLabelsCount ? index : 0 ] );
-                        labelItem2->setText( labels()[ index < hardLabelsCount - 1 ? index + 1 : 0] );
+                        labelItem->setText(  customizedLabel(labels()[ index < hardLabelsCount ? index : 0 ]) );
+                        labelItem2->setText( customizedLabel(labels()[ index < hardLabelsCount - 1 ? index + 1 : 0]) );
                     }
                     QPointF firstPos( i, 0.0 );
                     firstPos = plane->translate( firstPos );
@@ -659,24 +659,24 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         // Check intersects for the header label - we need to pass the full string
                         // here and not only the i value.
                         if( useConfiguredStepsLabels ){
-                            labelItem->setText( headerLabels[ iLabel   ] );
-                            labelItem2->setText(headerLabels[ iLabel+1 ] );
+                            labelItem->setText( customizedLabel(headerLabels[ iLabel   ]) );
+                            labelItem2->setText(customizedLabel(headerLabels[ iLabel+1 ]) );
                         }else{
                             //qDebug() << "i + labelDiff " << i + labelDiff;
-                            labelItem->setText( headerLabelsCount ? headerLabels[static_cast<int>(i)]
-                                : QString::number( i, 'f', precision ));
+                            labelItem->setText( customizedLabel(headerLabelsCount ? headerLabels[static_cast<int>(i)]
+                                : QString::number( i, 'f', precision )) );
                             //           qDebug() << "1 - labelItem->text() " << labelItem->text();
                             //qDebug() << "labelDiff" << labelDiff
                             //        << "  index" << i+labelDiff << "  count" << headerLabelsCount;
-                            labelItem2->setText( headerLabelsCount ? headerLabels[static_cast<int>(i+labelDiff)]
-                                : QString::number( i + labelDiff, 'f', precision ));
+                            labelItem2->setText( customizedLabel(headerLabelsCount ? headerLabels[static_cast<int>(i+labelDiff)]
+                                : QString::number( i + labelDiff, 'f', precision )) );
                             //qDebug() << "2 - labelItem->text() " << labelItem->text();
                             //qDebug() << "labelItem2->text() " << labelItem2->text();
                         }
                     } else {
                         int index = iLabel;
-                        labelItem->setText( labels()[ index < hardLabelsCount ? index : 0 ] );
-                        labelItem2->setText( labels()[ index < hardLabelsCount - 1 ? index + 1 : 0 ] );
+                        labelItem->setText(  customizedLabel(labels()[ index < hardLabelsCount ? index : 0 ]) );
+                        labelItem2->setText( customizedLabel(labels()[ index < hardLabelsCount - 1 ? index + 1 : 0 ]) );
                     }
 
                     QPointF firstPos( i, 0.0 );
@@ -738,7 +738,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 if( drawLabels ) {
                     if( bIsVisibleLabel ){
                         if ( isLogarithmicX )
-                            labelItem->setText( QString::number( i, 'f', 0 ) );
+                            labelItem->setText( customizedLabel(QString::number( i, 'f', 0 )) );
                         /* We dont need that
                         * it causes header labels to be skipped even if there is enough
                         * space for them to displayed.
@@ -746,13 +746,15 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         */
                         /*
                         else if( (dimX.stepWidth != 1.0) && ! dimX.isCalculated ) {
-                        labelItem->setText( QString::number( i, 'f', 0 ) );
+                        labelItem->setText( customizedLabel(QString::number( i, 'f', 0 )) );
                         }
                         */
                         else {
-                            labelItem->setText( hardLabelsCount
-                                                ? ( useShortLabels    ? shortLabels()[ idxLabel ] : labels()[ idxLabel ] )
-                                                : ( headerLabelsCount ? headerLabels[  idxLabel ] : QString::number( iLabelF )));
+                            labelItem->setText(
+                                    customizedLabel(
+                                          hardLabelsCount
+                                        ? ( useShortLabels    ? shortLabels()[ idxLabel ] : labels()[ idxLabel ] )
+                                        : ( headerLabelsCount ? headerLabels[  idxLabel ] : QString::number( iLabelF ))));
                         }
                         // No need to call labelItem->setParentWidget(), since we are using
                         // the layout item temporarily only.
@@ -781,6 +783,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
                             labelStep = labelDiff - dimX.stepWidth;
                             labelItem->paint( ptr );
+
+                            // do not call customizedLabel() again:
                             labelItem2->setText( labelItem->text() );
 
                             // maybe enable clipping afterwards
@@ -819,7 +823,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 // our labels, to get them drawn right aligned:
                 labelValue = minValueY;
                 while ( labelValue <= maxLimit ) {
-                    labelItem->setText( QString::number( labelValue ) );
+                    labelItem->setText( customizedLabel(QString::number( labelValue )) );
                     maxLabelsWidth = qMax( maxLabelsWidth, labelItem->sizeHint().width() );
 
                     calculateNextLabel( labelValue, steg, isLogarithmicY );
@@ -841,8 +845,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 //<< "geoRect.bottom()" << geoRect.bottom() << "  translatedValue:" << translatedValue;
                 if( translatedValue > geoRect.top() && translatedValue <= geoRect.bottom() ){
                     if ( drawLabels ) {
-                        labelItem->setText( QString::number( labelValue ) );
-                        labelItem2->setText( QString::number( labelValue + step ) );
+                        labelItem->setText(  customizedLabel(QString::number( labelValue )) );
+                        labelItem2->setText( customizedLabel(QString::number( labelValue + step )) );
                         QPointF nextPoint = plane->translate(  QPointF( 0,  labelValue + step ) );
                         if ( labelItem->intersects( *labelItem2, leftPoint, nextPoint ) )
                         {
@@ -867,7 +871,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
             //qDebug() << "axis labels starting at" << labelValue << "step width" << step;
             while ( labelValue <= maxLimit ) {
                 //qDebug() << "value now" << labelValue;
-                labelItem->setText( QString::number( labelValue ) );
+                labelItem->setText( customizedLabel(QString::number( labelValue )) );
                 QPointF leftPoint = plane->translate( QPointF( 0, labelValue ) );
                 QPointF rightPoint ( 0.0, labelValue );
                 rightPoint = plane->translate( rightPoint );
@@ -980,7 +984,7 @@ QSize CartesianAxis::maximumSize() const
                 // find the longest label text:
                 for ( int i = 0; i < labels().count(); ++i )
                 {
-                    labelItem.setText( labels()[ i ] );
+                    labelItem.setText( customizedLabel(labels()[ i ]) );
                     h = qMax( h, static_cast<qreal>(labelItem.sizeHint().height()) );
                 }
             }else{
@@ -989,11 +993,13 @@ QSize CartesianAxis::maximumSize() const
                 if( headerLabelsCount ){
                     for ( int i = 0; i < headerLabelsCount; ++i )
                     {
-                        labelItem.setText( headerLabels[ i ] );
+                        labelItem.setText( customizedLabel(headerLabels[ i ]) );
                         h = qMax( h, static_cast<qreal>(labelItem.sizeHint().height()) );
                     }
                 }else{
-                    labelItem.setText( QString::number( plane->gridDimensionsList().first().end, 'f', 0 ) );
+                    labelItem.setText(
+                            customizedLabel(
+                                    QString::number( plane->gridDimensionsList().first().end, 'f', 0 )));
                     h = labelItem.sizeHint().height();
                 }
             }
@@ -1019,13 +1025,15 @@ QSize CartesianAxis::maximumSize() const
             // if there're no label strings, we take the biggest needed number as width
             if ( labels().count() == 0 )
             {
-                labelItem.setText( QString::number( plane->gridDimensionsList().last().end, 'f', 0 ) );
+                labelItem.setText(
+                        customizedLabel(
+                                QString::number( plane->gridDimensionsList().last().end, 'f', 0 )));
                 w = labelItem.sizeHint().width();
             }else{
                 // find the longest label text:
                 for ( int i = 0; i < labels().count(); ++i )
                 {
-                    labelItem.setText( labels()[ i ] );
+                    labelItem.setText( customizedLabel(labels()[ i ]) );
                     qreal lw = labelItem.sizeHint().width();
                     w = qMax( w, lw );
                 }

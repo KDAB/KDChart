@@ -24,6 +24,7 @@
  **********************************************************************/
 
 #include "mainwindow.h"
+#include "AdjustedCartesianAxis.h"
 
 #include <KDChartChart>
 #include <KDChartAbstractCoordinatePlane>
@@ -59,7 +60,8 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_lines->setModel( &m_model );
 
     CartesianAxis *xAxis = new CartesianAxis( m_lines );
-    CartesianAxis *yAxis = new CartesianAxis ( m_lines );
+    AdjustedCartesianAxis *yAxis = new AdjustedCartesianAxis( m_lines );
+    yAxis->setBounds(3, 6);
     xAxis->setPosition ( KDChart::CartesianAxis::Bottom );
     yAxis->setPosition ( KDChart::CartesianAxis::Left );
     xAxis->setTitleText ( "Abscissa axis at the bottom" );
