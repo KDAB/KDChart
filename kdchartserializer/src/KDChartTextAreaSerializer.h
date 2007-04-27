@@ -62,7 +62,7 @@ namespace KDChart {
                     const QDomNode& pointerNode,
                     HeaderFooter*& hdFt );
 
-            static void TextAreaSerializer::saveHeaderFooter(
+            static void saveHeaderFooter(
                     QDomDocument& doc,
                     QDomElement& hdFtElement,
                     const KDChart::HeaderFooter& hdFt );

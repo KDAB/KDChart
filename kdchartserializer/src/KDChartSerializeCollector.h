@@ -304,7 +304,7 @@ KDChart::SerializeCollector::instance()->setWasParsed( thePointer, true );
      * Create and store a string node with the name "kdchart:pointer"
      * and the value given by pointerName.
      */
-    static void SerializeCollector::storePointerName(
+    static void storePointerName(
             QDomDocument& doc,
             QDomElement& pointerContainer,
             const QString& pointerName );
