@@ -27,14 +27,27 @@
  **
  **********************************************************************/
 
-#include "KDChartAttributesModelSerializer.h"
-#include "KDChartSerializeCollector.h"
-#include "KDChartAttributesSerializer.h"
+#include <KDChartAttributesModelSerializer.h>
+#include <KDChartAttributesModelSerializer_p.h>
+
+#include <KDChartSerializeCollector.h>
+#include <KDChartAttributesSerializer.h>
 
 #include "KDXMLTools.h"
 
 #include <qglobal.h>
 #include <QMessageBox>
+
+#define d d_func()
+
+using namespace KDChart;
+
+AttributesModelSerializer::Private::Private( AttributesModelSerializer* qq )
+    : q( qq )
+{
+}
+
+AttributesModelSerializer::Private::~Private() {}
 
 
 /**
@@ -44,17 +57,19 @@
   */
 
 
-using namespace KDChart;
-
-
 AttributesModelSerializer::AttributesModelSerializer()
+    : _d( new Private( this ) )
 {
     // this space left empty intentionally
 }
 
 AttributesModelSerializer::~AttributesModelSerializer()
 {
-    // this space left empty intentionally
+    delete _d; _d = 0;
+}
+
+void AttributesModelSerializer::init()
+{
 }
 
 bool AttributesModelSerializer::parseAttributesModel(

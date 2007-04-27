@@ -27,16 +27,31 @@
  **
  **********************************************************************/
 
-#include "KDChartCoordPlanesSerializer.h"
-#include "KDChartSerializeCollector.h"
-#include "KDChartIdMapper.h"
-#include "KDChartDiagramsSerializer.h"
-#include "KDChartAbstractAreaBaseSerializer.h"
+#include <KDChartCoordPlanesSerializer.h>
+#include <KDChartCoordPlanesSerializer_p.h>
 
-#include "KDXMLTools.h"
+#include <KDChartSerializeCollector.h>
+#include <KDChartIdMapper.h>
+#include <KDChartDiagramsSerializer.h>
+#include <KDChartAbstractAreaBaseSerializer.h>
+
+#include <KDXMLTools.h>
 
 #include <qglobal.h>
 #include <QMessageBox>
+
+#define d d_func()
+
+using namespace KDChart;
+
+CoordPlanesSerializer::Private::Private( CoordPlanesSerializer* qq )
+    : q( qq ),
+      m_diagS( 0 ),
+      m_model( 0 )
+{
+}
+
+CoordPlanesSerializer::Private::~Private() {}
 
 
 /**
@@ -46,28 +61,30 @@
   */
 
 
-using namespace KDChart;
-
-
 static QString globalListName;
 
 CoordPlanesSerializer::CoordPlanesSerializer(QAbstractItemModel * model)
+    : _d( new Private( this ) )
 {
-    mModel = model;
-    mDiagS = new DiagramsSerializer( this );
+    d->m_model = model;
+    d->m_diagS = new DiagramsSerializer( this );
     globalListName = "kdchart:diagrams"; // default value, can be
     // overwritten by the title passed to CoordPlanesSerializer::savePlanes()
 }
 
 CoordPlanesSerializer::~CoordPlanesSerializer()
 {
-    delete mDiagS;
+    delete d->m_diagS;
+    delete _d; _d = 0;
 }
 
+void CoordPlanesSerializer::init()
+{
+}
 
 void CoordPlanesSerializer::setModel(QAbstractItemModel * model)
 {
-    mModel = model;
+    d->m_model = model;
 }
 
 void CoordPlanesSerializer::savePlanes(
@@ -223,11 +240,11 @@ bool CoordPlanesSerializer::parseAbstractPlane(
                 QDomNode node2 = element.firstChild();
                 while( ! node2.isNull() ) {
                     AbstractDiagram* diagram=0;
-                    if( mDiagS->parseDiagram(
+                    if( d->m_diagS->parseDiagram(
                             container.ownerDocument().firstChild(), node2, diagram ) )
                     {
-                        if( mModel )
-                            diagram->setModel( mModel );
+                        if( d->m_model )
+                            diagram->setModel( d->m_model );
                         if( bNoDiagramParsedYet ){
                             plane.replaceDiagram( diagram );
                             bNoDiagramParsedYet = false;
@@ -241,17 +258,17 @@ bool CoordPlanesSerializer::parseAbstractPlane(
                     node2 = node2.nextSibling();
                 }
             } else if( tagName == "ZoomFactorX" ) {
-                double d;
-                if( KDXML::readDoubleNode( element, d ) ){
-                    plane.setZoomFactorX( d );
+                double factor;
+                if( KDXML::readDoubleNode( element, factor ) ){
+                    plane.setZoomFactorX( factor );
                 }else{
                     qDebug()<< "Could not parse AbstractCoordinatePlane. Element"
                             << tagName << "has invalid content.";
                 }
             } else if( tagName == "ZoomFactorY" ) {
-                double d;
-                if( KDXML::readDoubleNode( element, d ) ){
-                    plane.setZoomFactorY( d );
+                double factor;
+                if( KDXML::readDoubleNode( element, factor ) ){
+                    plane.setZoomFactorY( factor );
                 }else{
                     qDebug()<< "Could not parse AbstractCoordinatePlane. Element"
                             << tagName << "has invalid content.";
@@ -342,7 +359,7 @@ void CoordPlanesSerializer::saveAbstractPlane(
             "kdchart:abstract-area-base" );
 
     // save the associated diagrams
-    mDiagS->saveDiagrams( doc,
+    d->m_diagS->saveDiagrams( doc,
                           planeElement,
                           plane.diagrams(),
                           "kdchart:diagrams" );

@@ -27,16 +27,29 @@
  **
  **********************************************************************/
 
-#include "KDChartAttributesSerializer.h"
-#include "KDChartIdMapper.h"
-#include "KDChartSerializeCollector.h"
+#include <KDChartAttributesSerializer.h>
+#include <KDChartAttributesSerializer_p.h>
 
-#include "KDChartPosition.h"
+#include <KDChartIdMapper.h>
+#include <KDChartSerializeCollector.h>
 
-#include "KDXMLTools.h"
+#include <KDChartPosition.h>
+
+#include <KDXMLTools.h>
 
 #include <qglobal.h>
 #include <QMessageBox>
+
+#define d d_func()
+
+using namespace KDChart;
+
+AttributesSerializer::Private::Private( AttributesSerializer* qq )
+    : q( qq )
+{
+}
+
+AttributesSerializer::Private::~Private() {}
 
 
 /**
@@ -45,9 +58,19 @@
   \brief Auxiliary methods reading/saving KD Chart data and configuration in streams.
   */
 
+AttributesSerializer::AttributesSerializer()
+    : _d( new Private( this ) )
+{
+}
 
-using namespace KDChart;
+AttributesSerializer::~AttributesSerializer()
+{
+    delete _d; _d = 0;
+}
 
+void AttributesSerializer::init()
+{
+}
 
 bool AttributesSerializer::parseLeading(
         const QDomElement& container, int& left, int& top, int& right, int& bottom )
@@ -755,13 +778,13 @@ bool AttributesSerializer::parseAbstractThreeDAttributes(
         const QDomElement& container, AbstractThreeDAttributes& a )
 {
     bool bFlag;
-    double d;
+    double depth;
     const bool bOK =
             KDXML::findBoolAttribute(   container, "enabled", bFlag ) &&
-            KDXML::findDoubleAttribute( container, "depth", d );
+            KDXML::findDoubleAttribute( container, "depth", depth );
     if( bOK ){
         a.setEnabled( bFlag );
-        a.setDepth( d );
+        a.setDepth( depth );
     }
     return bOK;
 }

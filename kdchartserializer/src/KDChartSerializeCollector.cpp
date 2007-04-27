@@ -27,34 +27,55 @@
  **
  **********************************************************************/
 
-#include "KDChartSerializeCollector.h"
-#include "KDChartIdMapper.h"
+#include <KDChartSerializeCollector.h>
+#include <KDChartSerializeCollector_p.h>
+
+#include <KDChartIdMapper.h>
 
 
 // Global objects of the following classes can be
 // instantiated by initializeGlobalPointers()
-#include "KDChartAttributesModel"
-#include "KDChartCartesianAxis"
+#include <KDChartAttributesModel>
+#include <KDChartCartesianAxis>
 // once that class is implemented: #include "KDChartPolarAxis"
-#include "KDChartChart"
-#include "KDChartCartesianCoordinatePlane"
-#include "KDChartPolarCoordinatePlane"
-#include "KDChartBarDiagram"
-#include "KDChartLineDiagram"
-#include "KDChartPieDiagram"
-#include "KDChartPolarDiagram"
-#include "KDChartRingDiagram"
-#include "KDChartHeaderFooter"
-#include "KDChartLegend"
+#include <KDChartChart>
+#include <KDChartCartesianCoordinatePlane>
+#include <KDChartPolarCoordinatePlane>
+#include <KDChartBarDiagram>
+#include <KDChartLineDiagram>
+#include <KDChartPieDiagram>
+#include <KDChartPolarDiagram>
+#include <KDChartRingDiagram>
+#include <KDChartHeaderFooter>
+#include <KDChartLegend>
 
 
-#include "KDXMLTools.h"
+#include <KDXMLTools.h>
 
 #include <QDebug>
 
+#define d d_func()
+
 using namespace KDChart;
 
+SerializeCollector::Private::Private( SerializeCollector* qq )
+    : q( qq )
+{
+}
+
+SerializeCollector::Private::~Private() {}
+
+QString SerializeCollector::Private::unresolvedTagName()
+{
+    return QString::fromLatin1( "U_N_R_E_S_O_L_V_E_D" );
+}
+QString SerializeCollector::Private::unresolvedMapName()
+{
+    return QString::fromLatin1( "kdchart:unresolved-pointers" );
+}
+
 SerializeCollector::SerializeCollector()
+    : _d( new Private( this ) )
 {
     // this space left empty intentionally
 }
@@ -62,11 +83,16 @@ SerializeCollector::SerializeCollector()
 SerializeCollector::~SerializeCollector()
 {
     clear();
+    delete _d; _d = 0;
 }
 
 void SerializeCollector::clear()
 {
     // this bloc left empty intentionally
+}
+
+void SerializeCollector::init()
+{
 }
 
 SerializeCollector* SerializeCollector::instance()
@@ -283,7 +309,7 @@ bool SerializeCollector::initializeGlobalPointers(
 
 InitializedPointersMap& SerializeCollector::initializedPointersMap()
 {
-    return mInitializedPointersMap;
+    return d->m_initializedPointersMap;
 }
 
 bool SerializeCollector::foundInitializedPointer(
@@ -327,25 +353,16 @@ QDomElement* SerializeCollector::findOrMakeElement(
     QDomElement* e = findElement( name );
     if( ! e ){
         e = new QDomElement( doc.createElement( name ) );
-        mMap[ name ] = e;
+        d->m_map[ name ] = e;
     }
     return e;
 }
 
 QDomElement* SerializeCollector::findElement( const QString& name )const
 {
-    if( mMap.contains( name ) )
-        return mMap.value( name );
+    if( d->m_map.contains( name ) )
+        return d->m_map.value( name );
     return 0;
-}
-
-const QString SerializeCollector::unresolvedTagName()
-{
-    return "U_N_R_E_S_O_L_V_E_D";
-}
-const QString SerializeCollector::unresolvedMapName()
-{
-    return "kdchart:unresolved-pointers";
 }
 
 void SerializeCollector::appendDataToElement(
@@ -355,10 +372,10 @@ void SerializeCollector::appendDataToElement(
 {
     QDomElement list = doc.createElement( name );
     element.appendChild( list );
-    Q_FOREACH (QDomElement* e, mMap)
+    Q_FOREACH (QDomElement* e, d->m_map)
     {
         //qDebug() << e->tagName();
-        if( e->tagName() != unresolvedMapName() ){
+        if( e->tagName() != Private::unresolvedMapName() ){
             list.appendChild( *e );
         }
     }
@@ -440,7 +457,7 @@ void SerializeCollector::resolvePointers(
             const QString foundName  = IdMapper::instance()->findName( p );
             const bool wasFound = ! foundName.isEmpty();
             const QString globalName(
-                    p ? (wasFound ? foundName : unresolvedTagName()): QString("Null") );
+                    p ? (wasFound ? foundName : Private::unresolvedTagName()): QString("Null") );
 
             //qDebug() << "pointer:" << p << " name:" << unresolvedIter.value()
             //        << " wasFound: " << wasFound << " globalName:" << globalName;

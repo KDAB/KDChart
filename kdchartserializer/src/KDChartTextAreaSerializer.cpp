@@ -27,16 +27,20 @@
  **
  **********************************************************************/
 
-#include "KDChartTextAreaSerializer.h"
+#include <KDChartTextAreaSerializer.h>
+#include <KDChartTextAreaSerializer_p.h>
 
-#include "KDChartAttributesSerializer.h"
-#include "KDChartAbstractAreaBaseSerializer.h"
-#include "KDChartSerializeCollector.h"
+#include <KDChartAttributesSerializer.h>
+#include <KDChartAbstractAreaBaseSerializer.h>
+#include <KDChartSerializeCollector.h>
 
-#include "KDXMLTools.h"
+#include <KDXMLTools.h>
 
 #include <qglobal.h>
 
+#define d d_func()
+
+using namespace KDChart;
 
 /**
   \class KDChart::TextAreaSerializer KDChartTextAreaSerializer.h
@@ -44,9 +48,28 @@
   \brief Auxiliary methods reading/saving KD Chart data and configuration in streams.
   */
 
+TextAreaSerializer::Private::Private( TextAreaSerializer* qq )
+    : q( qq )
+{
+}
 
-using namespace KDChart;
+TextAreaSerializer::Private::~Private()
+{
+}
 
+TextAreaSerializer::TextAreaSerializer()
+    : _d( new Private( this ) )
+{
+}
+
+TextAreaSerializer::~TextAreaSerializer()
+{
+    delete _d; _d = 0;
+}
+
+void TextAreaSerializer::init()
+{
+}
 
 void TextAreaSerializer::saveHeadersFooters(
         QDomDocument& doc,

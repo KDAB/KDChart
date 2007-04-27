@@ -27,16 +27,21 @@
  **
  **********************************************************************/
 
-#include "KDChartAxesSerializer.h"
-#include "KDChartAttributesSerializer.h"
-#include "KDChartAbstractAreaBaseSerializer.h"
-#include "KDChartSerializeCollector.h"
+#include <KDChartAxesSerializer.h>
+#include <KDChartAxesSerializer_p.h>
 
-#include "KDXMLTools.h"
+#include <KDChartAttributesSerializer.h>
+#include <KDChartAbstractAreaBaseSerializer.h>
+#include <KDChartSerializeCollector.h>
+
+#include <KDXMLTools.h>
 
 #include <qglobal.h>
 #include <QMessageBox>
 
+#define d d_func()
+
+using namespace KDChart;
 
 /**
   \class KDChart::AxesSerializer KDChartAxesSerializer.h
@@ -44,18 +49,27 @@
   \brief Auxiliary methods reading/saving KD Chart data and configuration in streams.
   */
 
+AxesSerializer::Private::Private( AxesSerializer* qq )
+    : q( qq )
+{
+}
 
-using namespace KDChart;
+AxesSerializer::Private::~Private() {}
 
 
 AxesSerializer::AxesSerializer()
+    : _d( new Private( this ) )
 {
     // this space left empty intentionally
 }
 
 AxesSerializer::~AxesSerializer()
 {
-    // this space left empty intentionally
+    delete _d; _d = 0;
+}
+
+void AxesSerializer::init()
+{
 }
 
 void AxesSerializer::saveCartesianAxes(

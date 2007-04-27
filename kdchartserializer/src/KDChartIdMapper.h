@@ -32,6 +32,8 @@
 #include <QString>
 #include <QMap>
 
+#include <KDChartGlobal>
+
 namespace KDChart {
 
     /**
@@ -45,6 +47,10 @@ namespace KDChart {
     class IdMapper
     {
         //friend class Serializer; // is allowed to delete the mapper instance
+
+        Q_DISABLE_COPY( IdMapper )
+
+        KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC( IdMapper )
 
     public:
         static IdMapper* instance();
@@ -88,11 +94,6 @@ namespace KDChart {
         /** Prints all stored names and their respective pointers via qDebug().
           */
         void debugOut()const;
-
-        private:
-            QMap<const void*, QString> mMapOfKnownElements;
-            QMap<const void*, QString> mUnresolvedMap;
-            QString mCounterTag;
     };
 
 } // end of namespace

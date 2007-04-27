@@ -27,13 +27,15 @@
  **
  **********************************************************************/
 
-#include "KDChartDiagramsSerializer.h"
-#include "KDChartSerializeCollector.h"
-#include "KDChartCoordPlanesSerializer.h"
-#include "KDChartAxesSerializer.h"
-#include "KDChartAttributesModelSerializer.h"
+#include <KDChartDiagramsSerializer.h>
+#include <KDChartDiagramsSerializer_p.h>
 
-#include "KDXMLTools.h"
+#include <KDChartSerializeCollector.h>
+#include <KDChartCoordPlanesSerializer.h>
+#include <KDChartAxesSerializer.h>
+#include <KDChartAttributesModelSerializer.h>
+
+#include <KDXMLTools.h>
 
 #include <KDChartLineDiagram>
 #include <KDChartBarDiagram>
@@ -44,6 +46,9 @@
 #include <qglobal.h>
 #include <QMessageBox>
 
+#define d d_func()
+
+using namespace KDChart;
 
 /**
   \class KDChart::DiagramsSerializer KDChartDiagramsSerializer.h
@@ -51,28 +56,43 @@
   \brief Auxiliary methods reading/saving KD Chart data and configuration in streams.
   */
 
+DiagramsSerializer::Private::Private( DiagramsSerializer* qq )
+    : q( qq ),
+      m_haveOwnCoordS( false ),
+      m_coordS( 0 ),
+      m_axesS( 0 ),
+      m_attrModelS( 0 )
+{
+}
 
-using namespace KDChart;
+DiagramsSerializer::Private::~Private() {}
 
 
 DiagramsSerializer::DiagramsSerializer( CoordPlanesSerializer* coordS )
+    : _d( new Private( this ) )
 {
-    mCoordS = coordS;
-    mHaveOwnCoordS = ( mCoordS == 0 );
-    if( mHaveOwnCoordS )
-        mCoordS = new CoordPlanesSerializer(0);
-    mAxesS = new AxesSerializer();
-    mAttrModelS = new AttributesModelSerializer();
-    mGlobalList = "kdchart:diagrams"; // default value, can be
+    d->m_coordS = coordS;
+    d->m_haveOwnCoordS = ( d->m_coordS == 0 );
+    if( d->m_haveOwnCoordS )
+        d->m_coordS = new CoordPlanesSerializer();
+    d->m_axesS = new AxesSerializer();
+    d->m_attrModelS = new AttributesModelSerializer();
+    d->m_globalList = "kdchart:diagrams"; // default value, can be
     // overwritten by the title passed to DiagramsSerializer::saveDiagrams()
 }
 
 DiagramsSerializer::~DiagramsSerializer()
 {
-    delete mAttrModelS;
-    delete mAxesS;
-    if( mHaveOwnCoordS )
-        delete mCoordS;
+    delete d->m_attrModelS;
+    delete d->m_axesS;
+    if( d->m_haveOwnCoordS )
+        delete d->m_coordS;
+
+    delete _d; _d = 0;
+}
+
+void DiagramsSerializer::init()
+{
 }
 
 const QString DiagramsSerializer::nameOfClass( const AbstractDiagram* p )const
@@ -100,15 +120,15 @@ void DiagramsSerializer::saveDiagrams(
         const QString& title )const
 {
     if( ! title.isEmpty() )
-        mGlobalList = title;
+        d->m_globalList = title;
 
     // access (or append, resp.) the global list
     QDomElement* diagsList =
-            SerializeCollector::instance()->findOrMakeElement( doc, mGlobalList );
+            SerializeCollector::instance()->findOrMakeElement( doc, d->m_globalList );
 
     // create the local list holding names pointing into the global list
     QDomElement pointersList =
-            SerializeCollector::createPointersList( doc, e, mGlobalList );
+            SerializeCollector::createPointersList( doc, e, d->m_globalList );
 
     Q_FOREACH ( const AbstractDiagram* p, diags )
     {
@@ -316,7 +336,7 @@ bool DiagramsSerializer::parseAbstractDiagram(
                         if( bOK && ! wasParsed ){
                             SerializeCollector::instance()->setWasParsed( model, true );
 
-                            bOK = mAttrModelS->parseAttributesModel(
+                            bOK = d->m_attrModelS->parseAttributesModel(
                                     container.ownerDocument().firstChild(),
                                     ptrName, *model );
                         }
@@ -352,7 +372,7 @@ bool DiagramsSerializer::parseAbstractDiagram(
                 }
             } else if( tagName == "CoodinatePlane" ) {
                 AbstractCoordinatePlane* plane;
-                if( mCoordS->parsePlane( container.ownerDocument().firstChild(), element.firstChild(), plane ) ){
+                if( d->m_coordS->parsePlane( container.ownerDocument().firstChild(), element.firstChild(), plane ) ){
                     diagram.setCoordinatePlane( plane );
                 }else{
                     // We do *not* report an error, since this is no bug:
@@ -413,7 +433,7 @@ void DiagramsSerializer::saveAbstractDiagram(
     e.appendChild( diagElement );
 
     // save the attributes model
-    mAttrModelS->saveAttributesModel(
+    d->m_attrModelS->saveAttributesModel(
         doc,
         diagElement,
         diagram.attributesModel(),
@@ -429,13 +449,13 @@ void DiagramsSerializer::saveAbstractDiagram(
     // and save the plane in the global structure if not there yet
     const CartesianCoordinatePlane* coordPlane =
             static_cast<const CartesianCoordinatePlane*>( diagram.coordinatePlane() );
-    if( coordPlane && mCoordS ){
+    if( coordPlane && d->m_coordS ){
         QDomElement coordPlanePtrElement =
                 doc.createElement( "CoodinatePlane" );
         diagElement.appendChild( coordPlanePtrElement );
         // access (or append, resp.) the global list
         QDomElement* planesList =
-                SerializeCollector::instance()->findOrMakeElement( doc, mCoordS->globalList() );
+                SerializeCollector::instance()->findOrMakeElement( doc, d->m_coordS->globalList() );
 
         bool wasFound;
         QDomElement globalListElement =
@@ -444,7 +464,7 @@ void DiagramsSerializer::saveAbstractDiagram(
                 *planesList,
                 coordPlanePtrElement,
                 "kdchart:coordinate-plane",
-                mCoordS->nameOfClass( coordPlane ),
+                d->m_coordS->nameOfClass( coordPlane ),
                 coordPlane,
                 wasFound );
         if( ! wasFound ){
@@ -453,7 +473,7 @@ void DiagramsSerializer::saveAbstractDiagram(
             // So it will not be forgotten, in case it is not embedded in any
             // of the coordinate planes.
             // The wasFound test makes sure it will not be stored twice.
-            mCoordS->saveCartPlane(
+            d->m_coordS->saveCartPlane(
                     doc, globalListElement, *coordPlane );
         }
     }
@@ -489,7 +509,7 @@ bool DiagramsSerializer::parseCartCoordDiagram(
                 QDomNode node2 = element.firstChild();
                 while( ! node2.isNull() ) {
                     CartesianAxis *axis;
-                    if( mAxesS->parseCartesianAxis( container.ownerDocument().firstChild(), node2, axis ) )
+                    if( d->m_axesS->parseCartesianAxis( container.ownerDocument().firstChild(), node2, axis ) )
                     {
                         diagram.addAxis( axis );
                     }else{
@@ -544,7 +564,7 @@ void DiagramsSerializer::saveCartCoordDiagram(
     // then save what is stored in the derived class
 
     // save the axes
-    mAxesS->saveCartesianAxes( doc, diagElement,
+    d->m_axesS->saveCartesianAxes( doc, diagElement,
                                diagram.axes(),
                                "kdchart:axes" );
 
@@ -556,7 +576,7 @@ void DiagramsSerializer::saveCartCoordDiagram(
         diagElement.appendChild( refDiagPtrElement );
         // access (or append, resp.) the global list
         QDomElement* diagsList =
-                SerializeCollector::instance()->findOrMakeElement( doc, mGlobalList );
+                SerializeCollector::instance()->findOrMakeElement( doc, d->m_globalList );
 
         bool wasFound;
         QDomElement globalListElement =

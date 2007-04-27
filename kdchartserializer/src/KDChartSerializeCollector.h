@@ -1,6 +1,8 @@
 #ifndef __KDCHART_SERIALIZE_COLLECTOR_H__
 #define __KDCHART_SERIALIZE_COLLECTOR_H__
 
+#include <KDChartGlobal>
+
 #include <QObject>
 #include <QDomDocument>
 #include <QDomElement>
@@ -40,6 +42,9 @@ namespace KDChart {
     class SerializeCollector
     {
         //friend class Serializer; // is allowed to delete the mapper instance
+        Q_DISABLE_COPY( SerializeCollector )
+
+        KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC( SerializeCollector )
 
     public:
         static SerializeCollector* instance();
@@ -308,13 +313,6 @@ KDChart::SerializeCollector::instance()->setWasParsed( thePointer, true );
             QDomDocument& doc,
             QDomElement& pointerContainer,
             const QString& pointerName );
-
-    private:
-        static const QString unresolvedTagName();
-        static const QString unresolvedMapName();
-
-        QMap<QString, QDomElement*> mMap;
-        InitializedPointersMap mInitializedPointersMap;
     };
 
 } // end of namespace

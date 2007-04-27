@@ -42,46 +42,54 @@ namespace KDChart {
 
     class KDCHART_EXPORT TextAreaSerializer : public QObject
     {
-        public:
-            static void saveHeadersFooters(
-                    QDomDocument& doc,
-                    QDomElement& e,
-                    const KDChart::HeaderFooterList& areas,
-                    const QString& title );
+        Q_OBJECT
+        Q_DISABLE_COPY( TextAreaSerializer )
 
-            /**
-             * Parse the header/footer element, and return a HeaderFooter* in \c hdFt
-             * if the respective header/footer was found in the list of global elements.
-             *
-             * Make sure that you have called
-             * \c KDChart::SerializeCollector::instance()->initializeParsedGlobalPointers()
-             * before invoking this method, or it will stop parsing and return false.
-             */
-            static bool parseHeaderFooter(
-                    const QDomNode& rootNode,
-                    const QDomNode& pointerNode,
-                    HeaderFooter*& hdFt );
+        KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC( TextAreaSerializer )
 
-            static void saveHeaderFooter(
-                    QDomDocument& doc,
-                    QDomElement& hdFtElement,
-                    const KDChart::HeaderFooter& hdFt );
+    public:
+        TextAreaSerializer();
+        virtual ~TextAreaSerializer();
 
-            static bool parseTextArea(
-                    const QDomElement& container, TextArea& area );
-            static void saveTextArea(
-                    QDomDocument& doc,
-                    QDomElement& e,
-                    const TextArea& area,
-                    const QString& title );
+        static void saveHeadersFooters(
+                QDomDocument& doc,
+                QDomElement& e,
+                const KDChart::HeaderFooterList& areas,
+                const QString& title );
 
-            static bool parseTextLayoutItem(
-                    const QDomElement& container, TextLayoutItem& item );
-            static void saveTextLayoutItem(
-                    QDomDocument& doc,
-                    QDomElement& e,
-                    const TextLayoutItem& item,
-                    const QString& title );
+        /**
+         * Parse the header/footer element, and return a HeaderFooter* in \c hdFt
+         * if the respective header/footer was found in the list of global elements.
+         *
+         * Make sure that you have called
+         * \c KDChart::SerializeCollector::instance()->initializeParsedGlobalPointers()
+         * before invoking this method, or it will stop parsing and return false.
+         */
+        static bool parseHeaderFooter(
+                const QDomNode& rootNode,
+                const QDomNode& pointerNode,
+                HeaderFooter*& hdFt );
+
+        static void saveHeaderFooter(
+                QDomDocument& doc,
+                QDomElement& hdFtElement,
+                const KDChart::HeaderFooter& hdFt );
+
+        static bool parseTextArea(
+                const QDomElement& container, TextArea& area );
+        static void saveTextArea(
+                QDomDocument& doc,
+                QDomElement& e,
+                const TextArea& area,
+                const QString& title );
+
+        static bool parseTextLayoutItem(
+                const QDomElement& container, TextLayoutItem& item );
+        static void saveTextLayoutItem(
+                QDomDocument& doc,
+                QDomElement& e,
+                const TextLayoutItem& item,
+                const QString& title );
     };
 
 } // end of namespace

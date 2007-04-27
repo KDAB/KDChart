@@ -51,132 +51,135 @@ namespace KDChart {
     class KDCHART_EXPORT DiagramsSerializer : public QObject
     {
         Q_OBJECT
+        Q_DISABLE_COPY( DiagramsSerializer )
 
-        public:
-            explicit DiagramsSerializer( CoordPlanesSerializer* coordS );
-            virtual ~DiagramsSerializer();
+        KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC( DiagramsSerializer )
 
-            virtual void saveDiagrams(
-                    QDomDocument& doc,
-                    QDomElement& e,
-                    const ConstAbstractDiagramList& diags,
-                    const QString& title )const;
+    public:
+        explicit DiagramsSerializer( CoordPlanesSerializer* coordS = 0 );
+        virtual ~DiagramsSerializer();
 
-            /**
-             * Parse the diagram element, and return an AbstractDiagram* in \c diagramPtr
-             * if the respective diagram was found in the list of global elements.
-             *
-             * Make sure that you have called
-             * \c KDChart::SerializeCollector::instance()->initializeParsedGlobalPointers()
-             * before invoking this method, or it will stop parsing and return false.
-             */
-            virtual bool parseDiagram(
-                    const QDomNode& rootNode,
-                    const QDomNode& pointerNode,
-                    AbstractDiagram*& diagramPtr )const;
-            virtual void saveDiagram(
-                    QDomDocument& doc,
-                    QDomElement& e,
-                    const AbstractDiagram* diagram )const;
+        virtual void saveDiagrams(
+                QDomDocument& doc,
+                QDomElement& e,
+                const ConstAbstractDiagramList& diags,
+                const QString& title )const;
 
-            virtual bool parseAbstractDiagram(
-                    const QDomElement& container, AbstractDiagram& diagram )const;
-            virtual void saveAbstractDiagram(
-                    QDomDocument& doc,
-                    QDomElement& e,
-                    const AbstractDiagram& diagram,
-                    const QString& title )const;
+        /**
+         * Parse the diagram element, and return an AbstractDiagram* in \c diagramPtr
+         * if the respective diagram was found in the list of global elements.
+         *
+         * Make sure that you have called
+         * \c KDChart::SerializeCollector::instance()->initializeParsedGlobalPointers()
+         * before invoking this method, or it will stop parsing and return false.
+         */
+        virtual bool parseDiagram(
+                const QDomNode& rootNode,
+                const QDomNode& pointerNode,
+                AbstractDiagram*& diagramPtr )const;
+        virtual void saveDiagram(
+                QDomDocument& doc,
+                QDomElement& e,
+                const AbstractDiagram* diagram )const;
 
-            virtual bool parseCartCoordDiagram(
-                    const QDomElement& container, AbstractCartesianDiagram& diagram )const;
-            virtual void saveCartCoordDiagram(
-                    QDomDocument& doc,
-                    QDomElement& e,
-                    const AbstractCartesianDiagram& diagram,
-                    const QString& title )const;
+        virtual bool parseAbstractDiagram(
+                const QDomElement& container, AbstractDiagram& diagram )const;
+        virtual void saveAbstractDiagram(
+                QDomDocument& doc,
+                QDomElement& e,
+                const AbstractDiagram& diagram,
+                const QString& title )const;
 
-            virtual bool parsePolCoordDiagram(
-                    const QDomElement& container, AbstractPolarDiagram& diagram )const;
-            virtual void savePolCoordDiagram(
-                    QDomDocument& doc,
-                    QDomElement& e,
-                    const AbstractPolarDiagram& diagram,
-                    const QString& title )const;
+        virtual bool parseCartCoordDiagram(
+                const QDomElement& container, AbstractCartesianDiagram& diagram )const;
+        virtual void saveCartCoordDiagram(
+                QDomDocument& doc,
+                QDomElement& e,
+                const AbstractCartesianDiagram& diagram,
+                const QString& title )const;
 
-            virtual bool parseAbstractPieDiagram(
-                    const QDomElement& container, AbstractPieDiagram& diagram )const;
-            virtual void saveAbstractPieDiagram(
-                    QDomDocument& doc,
-                    QDomElement& e,
-                    const AbstractPieDiagram& diagram,
-                    const QString& title )const;
+        virtual bool parsePolCoordDiagram(
+                const QDomElement& container, AbstractPolarDiagram& diagram )const;
+        virtual void savePolCoordDiagram(
+                QDomDocument& doc,
+                QDomElement& e,
+                const AbstractPolarDiagram& diagram,
+                const QString& title )const;
 
-            virtual bool parseLineDiagram(
-                    const QDomElement& container, LineDiagram& diagram )const;
-            virtual void saveLineDiagram(
-                    QDomDocument& doc,
-                    QDomElement& diagElement,
-                    const LineDiagram& diagram )const;
+        virtual bool parseAbstractPieDiagram(
+                const QDomElement& container, AbstractPieDiagram& diagram )const;
+        virtual void saveAbstractPieDiagram(
+                QDomDocument& doc,
+                QDomElement& e,
+                const AbstractPieDiagram& diagram,
+                const QString& title )const;
 
-            virtual bool parseBarDiagram(
-                    const QDomElement& container, BarDiagram& diagram )const;
-            virtual void saveBarDiagram(
-                    QDomDocument& doc,
-                    QDomElement& diagElement,
-                    const BarDiagram& diagram )const;
+        virtual bool parseLineDiagram(
+                const QDomElement& container, LineDiagram& diagram )const;
+        virtual void saveLineDiagram(
+                QDomDocument& doc,
+                QDomElement& diagElement,
+                const LineDiagram& diagram )const;
 
-            virtual bool parsePieDiagram(
-                    const QDomElement& container, PieDiagram& diagram )const;
-            virtual void savePieDiagram(
-                    QDomDocument& doc,
-                    QDomElement& diagElement,
-                    const PieDiagram& diagram )const;
+        virtual bool parseBarDiagram(
+                const QDomElement& container, BarDiagram& diagram )const;
+        virtual void saveBarDiagram(
+                QDomDocument& doc,
+                QDomElement& diagElement,
+                const BarDiagram& diagram )const;
 
-            virtual bool parsePolarDiagram(
-                    const QDomElement& container, PolarDiagram& diagram )const;
-            virtual void savePolarDiagram(
-                    QDomDocument& doc,
-                    QDomElement& diagElement,
-                    const PolarDiagram& diagram )const;
+        virtual bool parsePieDiagram(
+                const QDomElement& container, PieDiagram& diagram )const;
+        virtual void savePieDiagram(
+                QDomDocument& doc,
+                QDomElement& diagElement,
+                const PieDiagram& diagram )const;
 
-            virtual bool parseRingDiagram(
-                    const QDomElement& container, RingDiagram& diagram )const;
-            virtual void saveRingDiagram(
-                    QDomDocument& doc,
-                    QDomElement& diagElement,
-                    const RingDiagram& diagram )const;
+        virtual bool parsePolarDiagram(
+                const QDomElement& container, PolarDiagram& diagram )const;
+        virtual void savePolarDiagram(
+                QDomDocument& doc,
+                QDomElement& diagElement,
+                const PolarDiagram& diagram )const;
 
-            /**
-             * Returns the correct class name for a given class.
-             *
-             * \note Make sure to overwrite this, if you intend to use the
-             * saveOtherDiagram routine, or the classname will be set to
-             * "UNKNOWN" for your own classes by default.
-             *
-             * When overwriting this method, you should first call the original method
-             * and set your own name only when needed.
-             */
-            virtual const QString nameOfClass( const AbstractDiagram* p )const;
+        virtual bool parseRingDiagram(
+                const QDomElement& container, RingDiagram& diagram )const;
+        virtual void saveRingDiagram(
+                QDomDocument& doc,
+                QDomElement& diagElement,
+                const RingDiagram& diagram )const;
 
-            virtual bool parseOtherDiagram(
-                    const QDomElement& container, AbstractDiagram& diagram )const;
-            // By default this just saves the information stored by the
-            // base class AbstractDiagram, it can be used by derived classes,
-            // will be called whenever a diagram is found that is not one
-            // of KD Chart's built-in diagram classes.
-            // When using this option, just make sure to also call the
-            // saveAbstractDiagram() method from within your own method,
-            // so the base class's information will be stored too.
-            virtual void saveOtherDiagram(
-                    QDomDocument& doc,
-                    QDomElement& diagElement,
-                    const AbstractDiagram& diagram )const;
+        /**
+         * Returns the correct class name for a given class.
+         *
+         * \note Make sure to overwrite this, if you intend to use the
+         * saveOtherDiagram routine, or the classname will be set to
+         * "UNKNOWN" for your own classes by default.
+         *
+         * When overwriting this method, you should first call the original method
+         * and set your own name only when needed.
+         */
+        virtual const QString nameOfClass( const AbstractDiagram* p )const;
 
-        private:
-            bool mHaveOwnCoordS;
-            CoordPlanesSerializer* mCoordS;
-            AxesSerializer* mAxesS;
-            AttributesModelSerializer* mAttrModelS;
+        virtual bool parseOtherDiagram(
+                const QDomElement& container, AbstractDiagram& diagram )const;
+        // By default this just saves the information stored by the
+        // base class AbstractDiagram, it can be used by derived classes,
+        // will be called whenever a diagram is found that is not one
+        // of KD Chart's built-in diagram classes.
+        // When using this option, just make sure to also call the
+        // saveAbstractDiagram() method from within your own method,
+        // so the base class's information will be stored too.
+        virtual void saveOtherDiagram(
+                QDomDocument& doc,
+                QDomElement& diagElement,
+                const AbstractDiagram& diagram )const;
+
+    private:
+        bool mHaveOwnCoordS;
+        CoordPlanesSerializer* mCoordS;
+        AxesSerializer* mAxesS;
+        AttributesModelSerializer* mAttrModelS;
         mutable QString mGlobalList;
     };
 

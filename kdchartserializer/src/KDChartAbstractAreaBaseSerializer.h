@@ -40,14 +40,20 @@ namespace KDChart {
 
     class KDCHART_EXPORT AbstractAreaBaseSerializer
     {
-        public:
-            static bool parseAbstractAreaBase(
-                    const QDomElement& e, AbstractAreaBase& area );
-            static void saveAbstractAreaBase(
-                    QDomDocument& doc,
-                    QDomElement& e,
-                    const AbstractAreaBase& area,
-                    const QString& title );
+        Q_DISABLE_COPY( AbstractAreaBaseSerializer )
+
+        KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC( AbstractAreaBaseSerializer )
+    public:
+        AbstractAreaBaseSerializer();
+        virtual ~AbstractAreaBaseSerializer();
+
+        static bool parseAbstractAreaBase(
+                const QDomElement& e, AbstractAreaBase& area );
+        static void saveAbstractAreaBase(
+                QDomDocument& doc,
+                QDomElement& e,
+                const AbstractAreaBase& area,
+                const QString& title );
     };
 
 } // end of namespace

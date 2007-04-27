@@ -47,83 +47,86 @@ namespace KDChart {
     {
         Q_OBJECT
 
-        public:
-            explicit AxesSerializer();
-            virtual ~AxesSerializer();
+        Q_DISABLE_COPY( AxesSerializer )
+        KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC( AxesSerializer )
 
-            virtual void saveCartesianAxes(
-                    QDomDocument& doc,
-                    QDomElement& e,
-                    const CartesianAxisList& axes,
-                    const QString& title )const;
+    public:
+        explicit AxesSerializer();
+        virtual ~AxesSerializer();
 
-            //TODO once PolarAxis is implemented:
-            /*
-            virtual void savePolarAxes(
-                    QDomDocument& doc,
-                    QDomElement& e,
-                    const PolarAxisList& planes,
-                    const QString& title )const;
-            */
+        virtual void saveCartesianAxes(
+                QDomDocument& doc,
+                QDomElement& e,
+                const CartesianAxisList& axes,
+                const QString& title )const;
 
-            /**
-             * Parse the axis-pointer element, and return a CartesianAxis* in \c axisPtr
-             * if the respective axis was found in the list of global elements.
-             *
-             * Make sure that you have called
-             * \c KDChart::SerializeCollector::instance()->initializeParsedGlobalPointers()
-             * before invoking this method, or it will stop parsing and return false.
-             */
-            virtual bool parseCartesianAxis(
-                    const QDomNode& rootNode,
-                    const QDomNode& pointerNode,
-                    CartesianAxis*& axisPtr )const;
-            virtual void saveCartesianAxis(
-                    QDomDocument& doc,
-                    QDomElement& axisElement,
-                    const CartesianAxis& axis )const;
+        //TODO once PolarAxis is implemented:
+        /*
+        virtual void savePolarAxes(
+                QDomDocument& doc,
+                QDomElement& e,
+                const PolarAxisList& planes,
+                const QString& title )const;
+        */
 
-            //TODO once PolarAxis is implemented:
-            /*
+        /**
+         * Parse the axis-pointer element, and return a CartesianAxis* in \c axisPtr
+         * if the respective axis was found in the list of global elements.
+         *
+         * Make sure that you have called
+         * \c KDChart::SerializeCollector::instance()->initializeParsedGlobalPointers()
+         * before invoking this method, or it will stop parsing and return false.
+         */
+        virtual bool parseCartesianAxis(
+                const QDomNode& rootNode,
+                const QDomNode& pointerNode,
+                CartesianAxis*& axisPtr )const;
+        virtual void saveCartesianAxis(
+                QDomDocument& doc,
+                QDomElement& axisElement,
+                const CartesianAxis& axis )const;
 
-           / **
-             * Parse the axis-pointer element, and return a PolarAxis* in \c axisPtr
-             * if the respective axis was found in the list of global elements.
-             *
-             * Make sure that you have called
-             * \c KDChart::SerializeCollector::instance()->initializeParsedGlobalPointers()
-             * before invoking this method, or it will stop parsing and return false.
-             * /
-            virtual bool parsePolarAxis(
-                    const QDomNode& rootNode,
-                    const QDomNode& pointerNode,
-                    PolarAxis*& axisPtr )const;
-            virtual void savePolarAxis(
-                    QDomDocument& doc,
-                    QDomElement& axisElement,
-                    const PolarAxis& axis )const;
-            */
+        //TODO once PolarAxis is implemented:
+        /*
 
-            virtual bool parseAbstractAxis(
-                    const QDomElement& container,
-                    AbstractAxis& axis )const;
-            virtual void saveAbstractAxis(
-                    QDomDocument& doc,
-                    QDomElement& e,
-                    const AbstractAxis& axis,
-                    const QString& title )const;
+       / **
+         * Parse the axis-pointer element, and return a PolarAxis* in \c axisPtr
+         * if the respective axis was found in the list of global elements.
+         *
+         * Make sure that you have called
+         * \c KDChart::SerializeCollector::instance()->initializeParsedGlobalPointers()
+         * before invoking this method, or it will stop parsing and return false.
+         * /
+        virtual bool parsePolarAxis(
+                const QDomNode& rootNode,
+                const QDomNode& pointerNode,
+                PolarAxis*& axisPtr )const;
+        virtual void savePolarAxis(
+                QDomDocument& doc,
+                QDomElement& axisElement,
+                const PolarAxis& axis )const;
+        */
 
-            /**
-             * Returns the correct class name for a given class.
-             *
-             * \note Make sure to overwrite this, if you intend to use your
-             * own axis types, or the classname will be set to
-             * "UNKNOWN" for your own classes by default.
-             *
-             * When overwriting this method, you should first call the original method
-             * and set your own name only when needed.
-             */
-            virtual const QString nameOfClass( const AbstractAxis* p )const;
+        virtual bool parseAbstractAxis(
+                const QDomElement& container,
+                AbstractAxis& axis )const;
+        virtual void saveAbstractAxis(
+                QDomDocument& doc,
+                QDomElement& e,
+                const AbstractAxis& axis,
+                const QString& title )const;
+
+        /**
+         * Returns the correct class name for a given class.
+         *
+         * \note Make sure to overwrite this, if you intend to use your
+         * own axis types, or the classname will be set to
+         * "UNKNOWN" for your own classes by default.
+         *
+         * When overwriting this method, you should first call the original method
+         * and set your own name only when needed.
+         */
+        virtual const QString nameOfClass( const AbstractAxis* p )const;
 
     };
 

@@ -27,16 +27,21 @@
  **
  **********************************************************************/
 
-#include "KDChartLegendsSerializer.h"
-#include "KDChartAbstractAreaBaseSerializer.h"
-#include "KDChartDiagramsSerializer.h"
-#include "KDChartSerializeCollector.h"
-#include "KDChartIdMapper.h"
+#include <KDChartLegendsSerializer.h>
+#include <KDChartLegendsSerializer_p.h>
 
-#include "KDXMLTools.h"
+#include <KDChartAbstractAreaBaseSerializer.h>
+#include <KDChartDiagramsSerializer.h>
+#include <KDChartSerializeCollector.h>
+#include <KDChartIdMapper.h>
+
+#include <KDXMLTools.h>
 
 #include <qglobal.h>
 
+#define d d_func()
+
+using namespace KDChart;
 
 /**
   \class KDChart::LegendsSerializer KDChartLegendsSerializer.h
@@ -45,8 +50,28 @@
   */
 
 
-using namespace KDChart;
+LegendsSerializer::Private::Private( LegendsSerializer* qq )
+    : q( qq )
+{
+}
 
+LegendsSerializer::Private::~Private()
+{
+}
+
+LegendsSerializer::LegendsSerializer()
+    : _d( new Private( this ) )
+{
+}
+
+LegendsSerializer::~LegendsSerializer()
+{
+    delete _d; _d = 0;
+}
+
+void LegendsSerializer::init()
+{
+}
 
 void LegendsSerializer::saveLegends(
         QDomDocument& doc,
@@ -86,7 +111,7 @@ bool LegendsSerializer::parseLegend(
         const QDomNode& pointerNode,
         Legend*& legend )
 {
-    DiagramsSerializer diagS(0);
+    DiagramsSerializer diagS;
 
     bool bOK = true;
     legend = 0;
@@ -487,7 +512,7 @@ void LegendsSerializer::saveLegend(
     //qDebug() << legend.referenceArea();
 
     // save the associated diagrams
-    DiagramsSerializer diagS( 0 );
+    DiagramsSerializer diagS;
     diagS.saveDiagrams( doc,
                         element,
                         legend.constDiagrams(),

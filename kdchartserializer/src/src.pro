@@ -45,13 +45,23 @@ HEADERS= \
         KDChartSerializer.h \
         KDChartSerializer_p.h \
         KDChartSerializeCollector.h \
+        KDChartSerializeCollector_p.h \
         KDChartIdMapper.h \
+        KDChartIdMapper_p.h \
         KDChartAttributesSerializer.h \
+        KDChartAttributesSerializer_p.h \
         KDChartAttributesModelSerializer.h \
+        KDChartAttributesModelSerializer_p.h \
         KDChartAbstractAreaBaseSerializer.h \
+        KDChartAbstractAreaBaseSerializer_p.h \
         KDChartCoordPlanesSerializer.h \
+        KDChartCoordPlanesSerializer_p.h \
         KDChartDiagramsSerializer.h \
+        KDChartDiagramsSerializer_p.h \
         KDChartAxesSerializer.h \
+        KDChartAxesSerializer_p.h \
         KDChartTextAreaSerializer.h \
+        KDChartTextAreaSerializer_p.h \
         KDChartLegendsSerializer.h \
+        KDChartLegendsSerializer_p.h \
         KDXMLTools.cpp

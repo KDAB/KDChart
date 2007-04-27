@@ -43,32 +43,35 @@ namespace KDChart {
     class KDCHART_EXPORT AttributesModelSerializer : public QObject
     {
         Q_OBJECT
+        Q_DISABLE_COPY( AttributesModelSerializer )
 
-        public:
-            explicit AttributesModelSerializer();
-            virtual ~AttributesModelSerializer();
+        KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC( AttributesModelSerializer )
 
-            virtual bool parseAttributesModel(
-                    const QDomNode& rootNode,
-                    const QString& globalName,
-                    AttributesModel& model )const;
+    public:
+        AttributesModelSerializer();
+        virtual ~AttributesModelSerializer();
 
-            virtual bool parseAttributesNode(
-                    const QDomElement& e,
-                    QVariant& attributes,
-                    int& role )const;
+        virtual bool parseAttributesModel(
+                const QDomNode& rootNode,
+                const QString& globalName,
+                AttributesModel& model )const;
 
-            virtual void saveAttributesModel(
-                    QDomDocument& doc,
-                    QDomElement& e,
-                    const AttributesModel* model,
-                    bool isExternalModel )const;
-            virtual void createAttributesNode(
-                    QDomDocument& doc,
-                    QDomElement& e,
-                    const AttributesModel* model,
-                    int role,
-                    const QVariant& attributes )const;
+        virtual bool parseAttributesNode(
+                const QDomElement& e,
+                QVariant& attributes,
+                int& role )const;
+
+        virtual void saveAttributesModel(
+                QDomDocument& doc,
+                QDomElement& e,
+                const AttributesModel* model,
+                bool isExternalModel )const;
+        virtual void createAttributesNode(
+                QDomDocument& doc,
+                QDomElement& e,
+                const AttributesModel* model,
+                int role,
+                const QVariant& attributes )const;
     };
 
 } // end of namespace

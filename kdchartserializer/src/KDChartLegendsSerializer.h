@@ -42,30 +42,38 @@ namespace KDChart {
 
     class KDCHART_EXPORT LegendsSerializer : public QObject
     {
-        public:
-            static void saveLegends(
-                    QDomDocument& doc,
-                    QDomElement& e,
-                    const LegendList& planes,
-                    const QString& title );
+        Q_OBJECT
+        Q_DISABLE_COPY( LegendsSerializer )
 
-            /**
-             * Parse the legend element, and return a Legend* in \c legend
-             * if the respective legend was found in the list of global elements.
-             *
-             * Make sure that you have called
-             * \c KDChart::SerializeCollector::instance()->initializeParsedGlobalPointers()
-             * before invoking this method, or it will stop parsing and return false.
-             */
-            static bool parseLegend(
-                    const QDomNode& rootNode,
-                    const QDomNode& pointerNode,
-                    Legend*& legend );
+        KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC( LegendsSerializer )
 
-            static void saveLegend(
-                    QDomDocument& doc,
-                    QDomElement& element,
-                    const Legend& legend );
+    public:
+        LegendsSerializer();
+        virtual ~LegendsSerializer();
+
+        static void saveLegends(
+                QDomDocument& doc,
+                QDomElement& e,
+                const LegendList& planes,
+                const QString& title );
+
+        /**
+         * Parse the legend element, and return a Legend* in \c legend
+         * if the respective legend was found in the list of global elements.
+         *
+         * Make sure that you have called
+         * \c KDChart::SerializeCollector::instance()->initializeParsedGlobalPointers()
+         * before invoking this method, or it will stop parsing and return false.
+         */
+        static bool parseLegend(
+                const QDomNode& rootNode,
+                const QDomNode& pointerNode,
+                Legend*& legend );
+
+        static void saveLegend(
+                QDomDocument& doc,
+                QDomElement& element,
+                const Legend& legend );
     };
 
 } // end of namespace

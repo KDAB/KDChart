@@ -27,14 +27,29 @@
  **
  **********************************************************************/
 
-#include "KDChartAbstractAreaBaseSerializer.h"
-#include "KDChartAttributesSerializer.h"
+#include <KDChartAbstractAreaBaseSerializer.h>
+#include <KDChartAbstractAreaBaseSerializer_p.h>
 
-#include "KDXMLTools.h"
+#include <KDChartAttributesSerializer.h>
+
+#include <KDXMLTools.h>
 
 #include <qglobal.h>
 #include <QMessageBox>
 
+
+#define d d_func()
+
+using namespace KDChart;
+
+AbstractAreaBaseSerializer::Private::Private( AbstractAreaBaseSerializer* qq )
+    : q( qq )
+{
+}
+
+AbstractAreaBaseSerializer::Private::~Private()
+{
+}
 
 /**
   \class KDChart::AbstractAreaBaseSerializer KDChartAbstractAreaBaseSerializer.h
@@ -42,9 +57,19 @@
   \brief Auxiliary methods reading/saving KD Chart data and configuration in streams.
   */
 
+AbstractAreaBaseSerializer::AbstractAreaBaseSerializer()
+    : _d( new Private( this ) )
+{
+}
 
-using namespace KDChart;
+AbstractAreaBaseSerializer::~AbstractAreaBaseSerializer()
+{
+    delete _d; _d = 0;
+}
 
+void AbstractAreaBaseSerializer::init()
+{
+}
 
 bool AbstractAreaBaseSerializer::parseAbstractAreaBase(
         const QDomElement& e,
