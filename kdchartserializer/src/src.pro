@@ -43,6 +43,7 @@ SOURCES= \
 
 HEADERS= \
         KDChartSerializer.h \
+        KDChartSerializer_p.h \
         KDChartSerializeCollector.h \
         KDChartIdMapper.h \
         KDChartAttributesSerializer.h \

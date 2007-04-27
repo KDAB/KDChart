@@ -27,19 +27,34 @@
  **
  **********************************************************************/
 
-#include "KDChartSerializer.h"
-#include "KDChartSerializeCollector.h"
-#include "KDChartIdMapper.h"
-#include "KDChartAttributesSerializer.h"
-#include "KDChartCoordPlanesSerializer.h"
-#include "KDChartTextAreaSerializer.h"
-#include "KDChartLegendsSerializer.h"
+#include <KDChartSerializer.h>
+#include <KDChartSerializer_p.h>
 
-#include "KDXMLTools.h"
+#include <KDChartSerializeCollector.h>
+#include <KDChartIdMapper.h>
+#include <KDChartAttributesSerializer.h>
+#include <KDChartCoordPlanesSerializer.h>
+#include <KDChartTextAreaSerializer.h>
+#include <KDChartLegendsSerializer.h>
+
+#include <KDXMLTools.h>
 
 #include <qglobal.h>
 #include <QMessageBox>
 
+#define d d_func()
+
+using namespace KDChart;
+
+Serializer::Private::Private( Serializer* qq )
+    : q( qq ),
+      m_chart( 0 ),
+      m_coordS( 0 )
+{
+}
+
+Serializer::Private::~Private() {}
+      
 
 /**
   \class KDChart::Serializer KDChartSerializer.h
@@ -47,15 +62,12 @@
   \brief Allows reading/saving KD Chart data and configuration in streams.
   */
 
-
-using namespace KDChart;
-
-
 Serializer::Serializer( Chart* chart, QAbstractItemModel * model )
-    : mChart( chart )
+    : _d( new Private( this ) )
 {
-    mProgramName = tr("KD Chart Serializer");
-    mCoordS = new CoordPlanesSerializer( model );
+    setChart( chart );
+    d->m_programName = tr( "KD Chart Serializer" );
+    d->m_coordS = new CoordPlanesSerializer( model );
     // instantiate (or re-set, resp.) the singletons:
     IdMapper::instance()->clear();
     SerializeCollector::instance()->clear();
@@ -63,21 +75,26 @@ Serializer::Serializer( Chart* chart, QAbstractItemModel * model )
 
 Serializer::~Serializer()
 {
-    delete mCoordS;
+    delete d->m_coordS;
+    delete _d; _d = 0;
     // delete the singletons:
     //delete IdMapper::instance();
     //delete SerializeCollector::instance();
 }
 
+void Serializer::init()
+{
+}
+
 void Serializer::setModel(QAbstractItemModel * model)
 {
-    mCoordS->setModel( model );
+    d->m_coordS->setModel( model );
 }
 
 
 bool Serializer::read(QIODevice *device)
 {
-    mChart = 0; // will be initialized by SerializeCollector::initializeGlobalPointers()
+    d->m_chart = 0; // will be initialized by SerializeCollector::initializeGlobalPointers()
 
     QString errorStr;
     int errorLine;
@@ -86,11 +103,10 @@ bool Serializer::read(QIODevice *device)
     QDomDocument doc( "KDChart" );
     if( ! doc.setContent(device, false, &errorStr, &errorLine,
          &errorColumn)) {
-        QMessageBox::information(0 , mProgramName,
-            tr("Parse error at line %1, column %2:\n%3")
-                .arg(errorLine)
-                .arg(errorColumn)
-                .arg(errorStr));
+        QMessageBox::information( 0, d->m_programName,
+                                  tr( "Parse error at line %1, column %2:\n%3" ).arg( errorLine )
+                                                                                .arg( errorColumn )
+                                                                                .arg( errorStr ) );
         return false;
     }
 
@@ -126,20 +142,20 @@ bool Serializer::parseRootElement( const QDomElement& root )
     bool bOK = true;
     if (root.tagName() != "kdchart:kdchart") {
         QMessageBox::information(
-                0 , mProgramName,
+                0 , d->m_programName,
                 tr("The file is not a KD Chart file."));
         return false;
     } else if (root.hasAttribute("kdchart:version")
           && ! root.attribute("kdchart:version").startsWith("2.") ) {
         QMessageBox::information(
-                0 , mProgramName,
+                0 , d->m_programName,
                 tr("The file is not a KD Chart version 2.x file."));
         return false;
     }
 
     if( ! SerializeCollector::initializeGlobalPointers( root ) ){
         QMessageBox::information(
-                0 , mProgramName,
+                0 , d->m_programName,
                 tr("Error while parsing the root node: Can not initialize global pointers."));
         return false;
     }
@@ -154,21 +170,21 @@ bool Serializer::parseRootElement( const QDomElement& root )
                 if( ! n2.isNull() ) {
                     QDomElement e2 = n2.toElement(); // try to convert the node to an element.
                     if( ! e2.isNull()) {
-                        if( ! parseChartElement( root, e2.firstChild(), mChart ) ){
+                        if( ! parseChartElement( root, e2.firstChild(), d->m_chart ) ){
                             QMessageBox::information(
-                                    0 , mProgramName,
+                                    0 , d->m_programName,
                                     tr("Could not parse the KD Chart body element."));
                             return false;
                         }
                     }else{
                         QMessageBox::information(
-                                0 , mProgramName,
+                                0 , d->m_programName,
                                 tr("The KD Chart body element is invalid."));
                         return false;
                     }
                 }else{
                     QMessageBox::information(
-                            0 , mProgramName,
+                            0 , d->m_programName,
                             tr("The KD Chart body element is empty."));
                     return false;
                 }
@@ -263,12 +279,12 @@ bool Serializer::parseChartElement(
                     if( AttributesSerializer::parseBackgroundAttributes( e, a ) )
                         chartPtr->setBackgroundAttributes( a );
                 } else if( e.tagName() == "PlanesLayoutDirection" ) {
-                    QBoxLayout::Direction d;
-                    if( KDXML::readBoxLayoutDirectionNode( e, d ) ){
+                    QBoxLayout::Direction direction;
+                    if( KDXML::readBoxLayoutDirectionNode( e, direction ) ){
                         QBoxLayout* lay =
                                 dynamic_cast<QBoxLayout*>(chartPtr->coordinatePlaneLayout());
                         if( lay )
-                            lay->setDirection( d );
+                            lay->setDirection( direction );
                     }else{
                         qDebug()<< "Could not parse Chart. Error in element" << e.tagName();
                         bOK = false;
@@ -278,7 +294,7 @@ bool Serializer::parseChartElement(
                     QDomNode node2 = e.firstChild();
                     while( ! node2.isNull() ) {
                         AbstractCoordinatePlane* plane;
-                        if( mCoordS->parsePlane( rootNode, node2, plane ) && plane ){
+                        if( d->m_coordS->parsePlane( rootNode, node2, plane ) && plane ){
                             if( dynamic_cast<CartesianCoordinatePlane*>(plane) ||
                                 dynamic_cast<PolarCoordinatePlane*>(plane) )
                             {
@@ -346,9 +362,9 @@ bool Serializer::saveRootElement(
         QDomDocument& doc,
         QDomElement& docRoot ) const
 {
-    if( ! mChart ){
-        QMessageBox::information(0 , mProgramName,
-                                 tr("Can not save Chart Root element: mChart was not set!"));
+    if( ! d->m_chart ){
+        QMessageBox::information(0 , d->m_programName,
+                                 tr("Can not save Chart Root element: d->m_chart was not set!"));
         return false;
     }
 
@@ -387,13 +403,13 @@ bool Serializer::saveChartElement(
         QDomDocument& doc,
         QDomElement& e ) const
 {
-    if( ! mChart ){
-        QMessageBox::information(0 , mProgramName,
-                                 tr("Can not save Chart element: mChart was not set!"));
+    if( ! d->m_chart ){
+        QMessageBox::information(0 , d->m_programName,
+                                 tr("Can not save Chart element: d->m_chart was not set!"));
         return false;
     }
 
-    //qDebug() << "Serializer saving chart element:" << mChart;
+    //qDebug() << "Serializer saving chart element:" << d->m_chart;
 
     QDomElement bodyElement =
             doc.createElement( "kdchart:body" );
@@ -421,55 +437,65 @@ bool Serializer::saveChartElement(
             pointersList,
             "kdchart:chart",
             "KDChart::Chart",
-            mChart,
+            d->m_chart,
             wasFound );
     // as of yet, wasFound will be FALSE always, but never mind
     if( ! wasFound ){
         // save the global leading
         AttributesSerializer::saveLeading(
                 doc, chartElement,
-                mChart->globalLeadingLeft(),
-                mChart->globalLeadingTop(),
-                mChart->globalLeadingRight(),
-                mChart->globalLeadingBottom(),
+                d->m_chart->globalLeadingLeft(),
+                d->m_chart->globalLeadingTop(),
+                d->m_chart->globalLeadingRight(),
+                d->m_chart->globalLeadingBottom(),
                 "kdchart:global-leading" );
 
         // save the frame attributes
         AttributesSerializer::saveFrameAttributes(
                 doc, chartElement,
-                mChart->frameAttributes(),
+                d->m_chart->frameAttributes(),
                 "kdchart:frame-attributes" );
 
         // save the background attributes
         AttributesSerializer::saveBackgroundAttributes(
                 doc, chartElement,
-                mChart->backgroundAttributes(),
+                d->m_chart->backgroundAttributes(),
                 "kdchart:background-attributes" );
 
         QBoxLayout* lay =
-                dynamic_cast<QBoxLayout*>(mChart->coordinatePlaneLayout());
+                dynamic_cast<QBoxLayout*>(d->m_chart->coordinatePlaneLayout());
         if( lay )
             KDXML::createBoxLayoutDirectionNode(
                     doc, chartElement, "PlanesLayoutDirection", lay->direction() );
 
         // save the coordinate planes:
         // Data will be stored by the SerializeCollector.
-        mCoordS->savePlanes(
+        d->m_coordS->savePlanes(
                 doc, chartElement,
-                mChart->coordinatePlanes(),
+                d->m_chart->coordinatePlanes(),
                 "kdchart:coordinate-planes" );
 
         // save the headers / footers
         TextAreaSerializer::saveHeadersFooters(
                 doc, chartElement,
-                mChart->headerFooters(),
+                d->m_chart->headerFooters(),
                 "kdchart:headers-footers" );
 
         // save the legends
         LegendsSerializer::saveLegends(
                 doc, chartElement,
-                mChart->legends(),
+                d->m_chart->legends(),
                 "kdchart:legends" );
     }
     return true;
+}
+
+Chart* Serializer::chart() const
+{
+    return d->m_chart;
+}
+
+void Serializer::setChart( Chart* chart )
+{
+    d->m_chart = chart;
 }

@@ -48,65 +48,63 @@ namespace KDChart {
     class KDCHART_EXPORT Serializer : public QObject
     {
         Q_OBJECT
+        Q_DISABLE_COPY( Serializer )
 
-        public:
-            explicit Serializer( Chart* chart = 0,
-                                 QAbstractItemModel* model = 0 );
-            /**
-             * Free the allocated memory, ignoring the singletons
-             * SerializeIdMapper and SerializeCollector. This enables you
-             * to use their content after the Serializer is deleted.
-             */
-            virtual ~Serializer();
+        KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC( Serializer );
 
-            /**
-             * Make sure to call setChart() before calling write()
-             * if you did not specify a chart with the constructor.
-             */
-            void setChart( Chart* chart ){ mChart = chart; }
+    public:
+        explicit Serializer( Chart* chart = 0,
+                             QAbstractItemModel* model = 0 );
+        /**
+         * Free the allocated memory, ignoring the singletons
+         * SerializeIdMapper and SerializeCollector. This enables you
+         * to use their content after the Serializer is deleted.
+         */
+        virtual ~Serializer();
 
-            /**
-             * \brief Set the data model to be assigned to diagrams created by read().
-             *
-             * This will affect new diagrams instantiated after setModel was
-             * called, but it will not change any data model assignments that
-             * were made before setModel was called.
-             *
-             * \note If you do not call setModel nor specify a model with the
-             * Serializer's constructor, then you need to manually call the
-             * setModel methods of all of the diagrams after read() has
-             * finished. File \c examples/complexLayout/mainwindow.cpp
-             * illustrates a way how to do that.
-             */
-            void setModel(QAbstractItemModel * model);
+        /**
+         * Make sure to call setChart() before calling write()
+         * if you did not specify a chart with the constructor.
+         */
+        void setChart( Chart* chart );
 
-            /**
-             * After read() has run successfully the created chart can be
-             * retrieved via chart().
-             */
-            Chart* chart() const { return mChart; }
+        /**
+         * \brief Set the data model to be assigned to diagrams created by read().
+         *
+         * This will affect new diagrams instantiated after setModel was
+         * called, but it will not change any data model assignments that
+         * were made before setModel was called.
+         *
+         * \note If you do not call setModel nor specify a model with the
+         * Serializer's constructor, then you need to manually call the
+         * setModel methods of all of the diagrams after read() has
+         * finished. File \c examples/complexLayout/mainwindow.cpp
+         * illustrates a way how to do that.
+         */
+        void setModel(QAbstractItemModel * model);
 
-            virtual bool read(QIODevice *device);
-            virtual bool write(QIODevice *device) const;
+        /**
+         * After read() has run successfully the created chart can be
+         * retrieved via chart().
+         */
+        Chart* chart() const;
 
-            virtual bool parseRootElement(
-                    const QDomElement& root );
-            virtual bool saveRootElement(
-                    QDomDocument& doc,
-                    QDomElement& docRoot ) const;
+        virtual bool read(QIODevice *device);
+        virtual bool write(QIODevice *device) const;
 
-            virtual bool parseChartElement(
-                    const QDomNode& rootNode,
-                    const QDomNode& pointerNode,
-                    Chart*& chartPtr ) const;
-            virtual bool saveChartElement(
-                    QDomDocument& doc,
-                    QDomElement& e ) const;
+        virtual bool parseRootElement(
+                const QDomElement& root );
+        virtual bool saveRootElement(
+                QDomDocument& doc,
+                QDomElement& docRoot ) const;
 
-        private:
-            QString mProgramName;
-            Chart* mChart;
-            CoordPlanesSerializer* mCoordS;
+        virtual bool parseChartElement(
+                const QDomNode& rootNode,
+                const QDomNode& pointerNode,
+                Chart*& chartPtr ) const;
+        virtual bool saveChartElement(
+                QDomDocument& doc,
+                QDomElement& e ) const;
     };
 
 } // end of namespace
