@@ -976,17 +976,25 @@ QSize CartesianAxis::maximumSize() const
         qreal h = 0.0;
         if( drawLabels ){
             // if there're no label strings, we take the biggest needed number as height
-            if ( ! labels().count() )
-            {
-                labelItem.setText( QString::number( plane->gridDimensionsList().first().end, 'f', 0 ) );
-                h = labelItem.sizeHint().height();
-            }else{
+            if ( labels().count() ){
                 // find the longest label text:
                 for ( int i = 0; i < labels().count(); ++i )
                 {
                     labelItem.setText( labels()[ i ] );
-                    qreal lh = labelItem.sizeHint().height();
-                    h = qMax( h, lh );
+                    h = qMax( h, static_cast<qreal>(labelItem.sizeHint().height()) );
+                }
+            }else{
+                QStringList headerLabels = d->diagram()->itemRowLabels();
+                const int headerLabelsCount = headerLabels.count();
+                if( headerLabelsCount ){
+                    for ( int i = 0; i < headerLabelsCount; ++i )
+                    {
+                        labelItem.setText( headerLabels[ i ] );
+                        h = qMax( h, static_cast<qreal>(labelItem.sizeHint().height()) );
+                    }
+                }else{
+                    labelItem.setText( QString::number( plane->gridDimensionsList().first().end, 'f', 0 ) );
+                    h = labelItem.sizeHint().height();
                 }
             }
             // we leave a little gap between axis labels and bottom (or top, resp.) side of axis
