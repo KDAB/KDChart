@@ -128,6 +128,7 @@ bool TableModel::loadFromCSV ( const QString& filename )
 //             qDebug() << "TableModel::loadFromCSV: " << data.size()
 //                      << " data rows found." << endl;
 
+            setTitleText("");
             m_rows.resize ( data.size() - 1 );
 
             // debugging code:
@@ -139,7 +140,7 @@ bool TableModel::loadFromCSV ( const QString& filename )
 
                 Q_ASSERT ( previousColumnCount == parts.size() || previousColumnCount == 0 );
 
-                QVector<QVariant> values( parts.size() );
+                QVector<QVariant> values( m_dataHasVerticalHeaders ? parts.size() - 1 : parts.size() );
 
                 for ( int column = 0; column < parts.size(); ++column )
                 {
@@ -158,13 +159,15 @@ bool TableModel::loadFromCSV ( const QString& filename )
 
                     if ( row == 0 && m_dataHasHorizontalHeaders )
                     {   // interpret the first row as column headers:
-                        m_horizontalHeaderData.append( cell );
-                        //setHeaderData ( column,  Qt::Horizontal, QVariant( cell ), Qt::DisplayRole );
+                        // the first one is an exception: interpret that as title
+                        if( column == 0 && m_dataHasVerticalHeaders )
+                            setTitleText( cell );
+                        else
+                            m_horizontalHeaderData.append( cell );
                     } else {
                         if ( column == 0 && m_dataHasVerticalHeaders )
                         {   // interpret first column as row headers:
                             m_verticalHeaderData.append( cell );
-                            //setHeaderData ( row,  Qt::Vertical, QVariant ( cell ) );
                         } else {
                             // interpret cell values as floating point:
                             bool convertedOk = false;

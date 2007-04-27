@@ -52,10 +52,41 @@ public:
      * first row and the first column, where string values are exected (those
      * will be used as axis descriptors). If values cannot be converted to
      * doubles, their string representation will be used.
-     *
+     * 
      * @returns true if successful, false otherwise
+     *
+     * @sa titleText
      */
     bool loadFromCSV ( const QString& filename );
+
+    /**
+     * If both DataHasHorizontalHeaders and DataHasVerticalHeaders is
+     * set true (that's the default setting) then loadFromCSV will interpret
+     * the first field in the first row as title-text.
+     * If no such field is found the loadFromCSV will set the title text to
+     * an empty string.
+     *
+     * The text is stored and can be retrieved via titleText(), but the model
+     * itself does nothing else with it: The calling application may use this
+     * method and e.g. display the text as header or as title of the Legend
+     * or as caption of the window ...
+     *
+     * @sa loadFromCSV
+     */
+    const QString titleText()const {
+        return m_titleText;
+    }
+
+    /**
+     * Setting the title text has no effect except that the text
+     * can then be retrieved via titleText.
+     * 
+     * TableModel is just storing this data but it does nothing
+     * else with it, nor does Qt's IndeView model make use of it.
+     */
+    void setTitleText( const QString& txt ) {
+        m_titleText = txt;
+    }
 
     /** Make the model invalid, that is, provide no data. */
     void clear();
@@ -86,6 +117,7 @@ private:
     // the header data:
     QStringList m_horizontalHeaderData;
     QStringList m_verticalHeaderData;
+    QString m_titleText;
     bool m_dataHasHorizontalHeaders;
     bool m_dataHasVerticalHeaders;
     bool m_supplyHeaderData;
