@@ -95,23 +95,21 @@ MainWindow::MainWindow( QWidget* parent ) :
 #if 1
     // configure labels and their shortened versions
     QStringList daysOfWeek;
-    daysOfWeek << "Monday" << "Tuesday" << "Wednesday"
+    daysOfWeek << "M O N D A Y" << "Tuesday" << "Wednesday"
                << "Thursday" << "Friday" ;
     topAxis->setLabels( daysOfWeek );
 
     QStringList shortDays;
-    shortDays << "Mon" << "Tue" << "Wed"
+    shortDays << "MON" << "Tue" << "Wed"
               << "Thu" << "Fri";
     topAxis->setShortLabels( shortDays );
 
     QStringList bottomLabels;
-    bottomLabels << "Day 1" << "Day 2" << "Day 3"
-                 << "Day 4" << "Day 5";
+    bottomLabels << "Team A" << "Team B" << "Team C";
     bottomAxis->setLabels( bottomLabels );
 
     QStringList shortBottomLabels;
-    shortBottomLabels << "D1" << "D2" << "D3"
-                 << "D4" << "D5";
+    shortBottomLabels << "A" << "B";
     bottomAxis->setShortLabels( shortBottomLabels );
 #endif
 
