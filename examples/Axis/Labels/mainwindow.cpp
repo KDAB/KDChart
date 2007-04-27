@@ -48,7 +48,7 @@ MainWindow::MainWindow( QWidget* parent ) :
 
     QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
     m_chart = new Chart();
-    m_chart->setGlobalLeading( 20,  20,  20,  20 );
+    m_chart->setGlobalLeading( 20,  20,  40,  20 );
     chartLayout->addWidget( m_chart );
     hSBar->setVisible( false );
     vSBar->setVisible( false );
@@ -80,7 +80,6 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_lines->addAxis( xAxis );
     m_lines->addAxis( yAxis );
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
-    m_chart->setGlobalLeadingRight( 20 );
     // Set up the legend
     m_legend = new Legend( m_lines, m_chart );
     m_chart->addLegend( m_legend );
