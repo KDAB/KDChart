@@ -674,9 +674,12 @@ void CartesianAxis::paintCtx( PaintContext* context )
                             //qDebug() << "labelItem2->text() " << labelItem2->text();
                         }
                     } else {
-                        int index = iLabel;
-                        labelItem->setText(  customizedLabel(labels()[ index < hardLabelsCount ? index : 0 ]) );
-                        labelItem2->setText( customizedLabel(labels()[ index < hardLabelsCount - 1 ? index + 1 : 0 ]) );
+                        const int idx = (iLabel < hardLabelsCount    ) ? iLabel     : 0;
+                        const int idx2= (iLabel < hardLabelsCount - 1) ? iLabel + 1 : 0;
+                        labelItem->setText(  customizedLabel(
+                                useShortLabels ? shortLabels()[ idx ] : labels()[ idx ]) );
+                        labelItem2->setText( customizedLabel(
+                                useShortLabels ? shortLabels()[ idx2] : labels()[ idx2]) );
                     }
 
                     QPointF firstPos( i, 0.0 );
