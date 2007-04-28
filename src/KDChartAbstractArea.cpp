@@ -36,6 +36,8 @@
 
 using namespace KDChart;
 
+#define d (d_func())
+
 AbstractArea::Private::Private() :
     AbstractAreaBase::Private()
 {
@@ -54,7 +56,7 @@ AbstractArea::AbstractArea()
     , KDChart::AbstractAreaBase()
     , KDChart::AbstractLayoutItem()
 {
-    // this bloc left empty intentionally
+    init();
 }
 
 AbstractArea::~AbstractArea()
@@ -65,8 +67,46 @@ AbstractArea::~AbstractArea()
 
 void AbstractArea::init()
 {
-    // this bloc left empty intentionally
+    d->amountOfLeftOverlap = 0;
+    d->amountOfRightOverlap = 0;
+    d->amountOfTopOverlap = 0;
+    d->amountOfBottomOverlap = 0;
 }
+
+
+int AbstractArea::leftOverlap( bool doNotRecalculate ) const
+{
+    // Re-calculate the sizes,
+    // so we also get the amountOf..Overlap members set newly:
+    if( ! doNotRecalculate )
+        sizeHint();
+    return d->amountOfLeftOverlap;
+}
+int AbstractArea::rightOverlap( bool doNotRecalculate ) const
+{
+    // Re-calculate the sizes,
+    // so we also get the amountOf..Overlap members set newly:
+    if( ! doNotRecalculate )
+        sizeHint();
+    return d->amountOfRightOverlap;
+}
+int AbstractArea::topOverlap( bool doNotRecalculate ) const
+{
+    // Re-calculate the sizes,
+    // so we also get the amountOf..Overlap members set newly:
+    if( ! doNotRecalculate )
+        sizeHint();
+    return d->amountOfTopOverlap;
+}
+int AbstractArea::bottomOverlap( bool doNotRecalculate ) const
+{
+    // Re-calculate the sizes,
+    // so we also get the amountOf..Overlap members set newly:
+    if( ! doNotRecalculate )
+        sizeHint();
+    return d->amountOfBottomOverlap;
+}
+
 
 void AbstractArea::paintIntoRect( QPainter& painter, const QRect& rect )
 {

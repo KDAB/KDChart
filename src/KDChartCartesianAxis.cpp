@@ -330,6 +330,16 @@ static void calculateNextLabel( qreal& labelValue, qreal step, bool isLogarithmi
 }
 
 
+static bool referenceDiagramIsBarDiagram( const AbstractDiagram * diagram )
+{
+    const AbstractCartesianDiagram * dia =
+            qobject_cast< const AbstractCartesianDiagram * >( diagram );
+    if( dia && dia->referenceDiagram() )
+        dia = dia->referenceDiagram();
+    return qobject_cast< const BarDiagram* >( dia ) != 0;
+}
+
+
 void CartesianAxis::paintCtx( PaintContext* context )
 {
 
@@ -530,14 +540,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
      * 2 - Display labels and ticks in the middle of the column
      */
 
-    bool isBarDiagram;
-    {
-        const AbstractCartesianDiagram * dia =
-                qobject_cast< const AbstractCartesianDiagram * >( d->diagram() );
-        if( dia && dia->referenceDiagram() )
-            dia = dia->referenceDiagram();
-        isBarDiagram = qobject_cast< const BarDiagram* >( dia );
-    }
+    const bool isBarDiagram = referenceDiagramIsBarDiagram(d->diagram());
 
     // this draws the unit rulers
     if ( drawUnitRulers ) {
@@ -946,6 +949,33 @@ Qt::Orientations CartesianAxis::expandingDirections() const
     };
     return ret;
 }
+
+
+static void calculateOverlap( int i, int first, int last,
+                              int measure,
+                              bool isBarDiagram,
+                              int& firstOverlap, int& lastOverlap )
+{
+    if( i == first ){
+        if( isBarDiagram ){
+            //TODO(khz): Calculate the amount of left overlap
+            //           for bar diagrams.
+        }else{
+            firstOverlap = measure / 2;
+        }
+    }
+    // we test both bounds in on go: first and last might be equal
+    if( i == last ){
+        if( isBarDiagram ){
+            //TODO(khz): Calculate the amount of right overlap
+            //           for bar diagrams.
+        }else{
+            lastOverlap = measure / 2;
+        }
+    }
+}
+
+
 /* pure virtual in QLayoutItem */
 QSize CartesianAxis::maximumSize() const
 {
@@ -979,31 +1009,49 @@ QSize CartesianAxis::maximumSize() const
     {
     case Bottom:
     case Top: {
+        const bool isBarDiagram = referenceDiagramIsBarDiagram(d->diagram());
+        int leftOverlap = 0;
+        int rightOverlap = 0;
+
         qreal w = 10.0;
         qreal h = 0.0;
         if( drawLabels ){
             // if there're no label strings, we take the biggest needed number as height
             if ( labels().count() ){
                 // find the longest label text:
-                for ( int i = 0; i < labels().count(); ++i )
+                const int first=0;
+                const int last=labels().count()-1;
+                for ( int i = first; i <= last; ++i )
                 {
                     labelItem.setText( customizedLabel(labels()[ i ]) );
-                    h = qMax( h, static_cast<qreal>(labelItem.sizeHint().height()) );
+                    const QSize siz = labelItem.sizeHint();
+                    h = qMax( h, static_cast<qreal>(siz.height()) );
+                    calculateOverlap( i, first, last, siz.width(), isBarDiagram,
+                                      leftOverlap, rightOverlap );
+
                 }
             }else{
                 QStringList headerLabels = d->diagram()->itemRowLabels();
                 const int headerLabelsCount = headerLabels.count();
                 if( headerLabelsCount ){
-                    for ( int i = 0; i < headerLabelsCount; ++i )
+                    const int first=0;
+                    const int last=headerLabelsCount-1;
+                    for ( int i = first; i <= last; ++i )
                     {
                         labelItem.setText( customizedLabel(headerLabels[ i ]) );
-                        h = qMax( h, static_cast<qreal>(labelItem.sizeHint().height()) );
+                        const QSize siz = labelItem.sizeHint();
+                        h = qMax( h, static_cast<qreal>(siz.height()) );
+                        calculateOverlap( i, first, last, siz.width(), isBarDiagram,
+                                          leftOverlap, rightOverlap );
                     }
                 }else{
                     labelItem.setText(
                             customizedLabel(
                                     QString::number( plane->gridDimensionsList().first().end, 'f', 0 )));
-                    h = labelItem.sizeHint().height();
+                    const QSize siz = labelItem.sizeHint();
+                    h = siz.height();
+                    calculateOverlap( 0, 0, 0, siz.width(), isBarDiagram,
+                                      leftOverlap, rightOverlap );
                 }
             }
             // we leave a little gap between axis labels and bottom (or top, resp.) side of axis
@@ -1018,10 +1066,25 @@ QSize CartesianAxis::maximumSize() const
         // space for the ticks
         h += qAbs( tickLength() ) * 3.0;
         result = QSize ( static_cast<int>( w ), static_cast<int>( h ) );
+
+
+        // If necessary adjust the widths
+        // of the left (or right, resp.) side neighboring columns:
+        d->amountOfLeftOverlap = leftOverlap;
+        d->amountOfRightOverlap = rightOverlap;
+        /* Unused code for a push-model:
+        if( leftOverlap || rightOverlap ){
+            QTimer::singleShot(200, const_cast<CartesianAxis*>(this),
+                               SLOT(adjustLeftRightGridColumnWidths()));
+        }
+        */
     }
         break;
     case Left:
     case Right: {
+        int topOverlap = 0;
+        int bottomOverlap = 0;
+
         qreal w = 0.0;
         qreal h = 10.0;
         if( drawLabels ){
@@ -1031,14 +1094,22 @@ QSize CartesianAxis::maximumSize() const
                 labelItem.setText(
                         customizedLabel(
                                 QString::number( plane->gridDimensionsList().last().end, 'f', 0 )));
-                w = labelItem.sizeHint().width();
+                const QSize siz = labelItem.sizeHint();
+                w = siz.width();
+                calculateOverlap( 0, 0, 0, siz.height(), false,// bar diagram flag is ignored for Ordinates
+                                  topOverlap, bottomOverlap );
             }else{
                 // find the longest label text:
-                for ( int i = 0; i < labels().count(); ++i )
+                const int first=0;
+                const int last=labels().count()-1;
+                for ( int i = first; i <= last; ++i )
                 {
                     labelItem.setText( customizedLabel(labels()[ i ]) );
-                    qreal lw = labelItem.sizeHint().width();
+                    const QSize siz = labelItem.sizeHint();
+                    qreal lw = siz.width();
                     w = qMax( w, lw );
+                    calculateOverlap( 0, 0, 0, siz.height(), false,// bar diagram flag is ignored for Ordinates
+                                      topOverlap, bottomOverlap );
                 }
             }
             // we leave a little gap between axis labels and left (or right, resp.) side of axis
@@ -1055,6 +1126,18 @@ QSize CartesianAxis::maximumSize() const
 
         result = QSize ( static_cast<int>( w ), static_cast<int>( h ) );
         //qDebug() << "left/right axis width:" << result << "   w:" << w;
+
+
+        // If necessary adjust the heights
+        // of the top (or bottom, resp.) side neighboring rows:
+        d->amountOfTopOverlap = topOverlap;
+        d->amountOfBottomOverlap = bottomOverlap;
+        /* Unused code for a push-model:
+        if( topOverlap || bottomOverlap ){
+            QTimer::singleShot(200, const_cast<CartesianAxis*>(this),
+                               SLOT(adjustTopBottomGridRowHeights()));
+        }
+        */
     }
         break;
     default:
@@ -1103,3 +1186,47 @@ int CartesianAxis::tickLength( bool subUnitTicks ) const
 
     return result;
 }
+
+
+
+
+
+/* unused code from KDChartCartesianAxis.h for using a push-model:
+Q_SIGNALS:
+    void needAdjustLeftRightColumnsForOverlappingLabels(
+            CartesianAxis* axis, int left, int right );
+    void needAdjustTopBottomRowsForOverlappingLabels(
+            CartesianAxis* axis, int top, int bottom );
+private Q_SLOTS:
+    void adjustLeftRightGridColumnWidths();
+    void adjustTopBottomGridRowHeights();
+*/
+
+/*
+// Unused code trying to use a push-model: This did not work
+// since we can not re-layout the planes each time when
+// Qt layouting is calling sizeHint()
+void CartesianAxis::adjustLeftRightGridColumnWidths()
+{
+    if( ! d->amountOfLeftOverlap && ! d->amountOfRightOverlap )
+        return;
+    const int leftOverlap = d->amountOfLeftOverlap;
+    const int rightOverlap= d->amountOfRightOverlap;
+    d->amountOfLeftOverlap = 0;
+    d->amountOfRightOverlap = 0;
+    emit needAdjustLeftRightColumnsForOverlappingLabels(
+            this, leftOverlap, rightOverlap );
+}
+
+void CartesianAxis::adjustTopBottomGridRowHeights()
+{
+    if( ! d->amountOfTopOverlap && ! d->amountOfBottomOverlap )
+        return;
+    const int topOverlap = d->amountOfTopOverlap;
+    const int bottomOverlap= d->amountOfBottomOverlap;
+    d->amountOfTopOverlap = 0;
+    d->amountOfBottomOverlap = 0;
+    emit needAdjustTopBottomRowsForOverlappingLabels(
+            this, topOverlap, bottomOverlap );
+}
+*/

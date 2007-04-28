@@ -71,6 +71,18 @@ namespace KDChart {
     protected:
         void init();
 
+        // These are set each time the area's sizeHint()
+        // (or the maximumSize(), resp.) is calculated:
+        // They store additional layout-information about
+        // space needed around the area.
+        // Other classes (e.g. KDChart::AutoSpacer) can use
+        // these data to determine how much space has to
+        // be added additionally ...
+        mutable int amountOfLeftOverlap;
+        mutable int amountOfRightOverlap;
+        mutable int amountOfTopOverlap;
+        mutable int amountOfBottomOverlap;
+
     private:
         bool visible;
         KDChart::FrameAttributes frameAttributes;

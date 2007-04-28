@@ -53,6 +53,14 @@ namespace KDChart {
             mParent( 0 ),
             mParentLayout( 0 ) {}
 
+        /**
+         * Default impl: just call paint.
+         * 
+         * Derived classes like KDChart::AbstractArea are providing
+         * additional action here.
+         */
+        virtual void paintAll( QPainter& painter );
+
         virtual void paint( QPainter* ) = 0;
 
         virtual void paintCtx( PaintContext* context );
@@ -271,21 +279,87 @@ namespace KDChart {
      */
     class KDCHART_EXPORT VerticalLineLayoutItem : public AbstractLayoutItem
     {
-    public:
-        VerticalLineLayoutItem();
+        public:
+            VerticalLineLayoutItem();
 
-        virtual Qt::Orientations expandingDirections() const;
-        virtual QRect geometry() const;
-        virtual bool isEmpty() const;
-        virtual QSize maximumSize() const;
-        virtual QSize minimumSize() const;
-        virtual void setGeometry( const QRect& r );
-        virtual QSize sizeHint() const;
+            virtual Qt::Orientations expandingDirections() const;
+            virtual QRect geometry() const;
+            virtual bool isEmpty() const;
+            virtual QSize maximumSize() const;
+            virtual QSize minimumSize() const;
+            virtual void setGeometry( const QRect& r );
+            virtual QSize sizeHint() const;
 
-        virtual void paint( QPainter* );
+            virtual void paint( QPainter* );
 
-    private:
-        QRect mRect;
+        private:
+            QRect mRect;
+    };
+
+    /** \internal
+     *
+     * The AutoSpacerLayoutItem is put into a corner cell of the planeLayout
+     * grid: one of its reference-layouts is a QVBoxLayout, the other one is
+     * a QHBoxLayout.
+     * The spacer reserves enough space so all of the AbstractAreas contained
+     * in the two reference-layouts have enough space to display not only
+     * their in-bounds content but also their overlapping content.
+     *
+     * schema:
+\verbatim
+    +---------------+----------------------+
+    | +-----------+ | +------------------+ |
+    | |           | | |                  | |
+    | |           | | |     TOP AXIS     | |
+    | |           | | |                  | |
+    | |  SPACER   | | +------------------+ |
+    | |           | | |                  | |
+    | |           | | |     TOP AX 2     | |
+    | |           | | |                  | |
+    | +-----------+ | +------------------+ |
+    +---------------+----------------------+
+    | +-----+-----+ | +------------------+ |
+    | |     |     | | |                  | |
+    | |  L  |  L  | | |                  | |
+    | |  E  |  E  | | |                  | |
+    | |  F  |  F  | | |                  | |
+    | |  T  |  T  | | |                  | |
+    | |     |     | | |     DIAGRAM      | |
+    | |  A  |  A  | | |                  | |
+    | |  X  |  X  | | |                  | |
+    | |  I  |     | | |                  | |
+    | |  S  |  2  | | |                  | |
+    | |     |     | | |                  | |
+    | +-----+-----+ | +------------------+ |
+    +---------------+----------------------+
+\endverbatim
+     * The spacer makes sure it is big enough that any content of the
+     * axes that is drawn outside of the axis area bounds will fit into
+     * the spacer.
+     */
+    class KDCHART_EXPORT AutoSpacerLayoutItem : public AbstractLayoutItem
+    {
+        public:
+            AutoSpacerLayoutItem(
+                    bool layoutIsAtLeftPosition, QHBoxLayout *rightLeftLayout,
+                    bool layoutIsAtTopPosition,  QVBoxLayout *topBottomLayout );
+
+            virtual Qt::Orientations expandingDirections() const;
+            virtual QRect geometry() const;
+            virtual bool isEmpty() const;
+            virtual QSize maximumSize() const;
+            virtual QSize minimumSize() const;
+            virtual void setGeometry( const QRect& r );
+            virtual QSize sizeHint() const;
+
+            virtual void paint( QPainter* );
+
+        private:
+            QRect mRect;
+            bool mLayoutIsAtLeftPosition;
+            bool mLayoutIsAtTopPosition;
+            QHBoxLayout *mRightLeftLayout;
+            QVBoxLayout *mTopBottomLayout;
     };
 
 }

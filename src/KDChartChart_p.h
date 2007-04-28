@@ -68,14 +68,14 @@ namespace KDChart {
 struct PlaneInfo {
     PlaneInfo()
         : referencePlane(0)
-            , horizontalOffset(1)
-            , verticalOffset(1)
-            , gridLayout( 0 )
-            {}
-            AbstractCoordinatePlane *referencePlane;
-            int horizontalOffset;
-            int verticalOffset;
-            QGridLayout *gridLayout;
+        , horizontalOffset(1)
+        , verticalOffset(1)
+        , gridLayout( 0 )
+    {}
+    AbstractCoordinatePlane *referencePlane;
+    int horizontalOffset;
+    int verticalOffset;
+    QGridLayout *gridLayout;
 };
 
 
@@ -103,7 +103,7 @@ class Chart::Private : public QObject
 
         QVector<KDChart::TextArea*> textLayoutItems;
         QVector<KDChart::AbstractArea*> layoutItems;
-        QVector<KDChart::AbstractArea*> planeLayoutItems;
+        QVector<KDChart::AbstractLayoutItem*> planeLayoutItems;
         QVector<KDChart::Legend*> legendLayoutItems;
 
         QSize currentLayoutSize;
@@ -143,6 +143,15 @@ class Chart::Private : public QObject
         void slotUnregisterDestroyedLegend( Legend * legend );
         void slotUnregisterDestroyedHeaderFooter( HeaderFooter* headerFooter );
         void slotUnregisterDestroyedPlane( AbstractCoordinatePlane* plane );
+        /*
+        // Unused code trying to use a push-model: This did not work
+        // since we can not re-layout the planes each time when
+        // Qt layouting is calling sizeHint()
+        void slotAdjustLeftRightColumnsForOverlappingLabels(
+                CartesianAxis* axis, int left, int right);
+        void slotAdjustTopBottomRowsForOverlappingLabels(
+                CartesianAxis* axis, int top, int bottom);
+        */
 };
 
 }

@@ -77,7 +77,60 @@ public:
       * Call paintAll, if you want the background and the frame to be drawn
       * before the normal paint() is invoked automatically.
       */
-    void paintAll( QPainter& painter );
+    virtual void paintAll( QPainter& painter );
+
+    /**
+     * This is called at layout time by KDChart::AutoSpacerLayoutItem::sizeHint().
+     *
+     * The method triggers AbstractArea::sizeHint() to find out the
+     * amount of overlap at the left edge of the area.
+     *
+     * \note The default implementation is not using any caching,
+     * it might make sense to implement a more sophisticated solution
+     * for derived classes that have complex work to do in sizeHint().
+     * All we have here is a primitive flag to be set by the caller
+     * if it is sure that no sizeHint() needs to be called.
+     */
+    virtual int leftOverlap( bool doNotRecalculate=false ) const;
+    /**
+     * This is called at layout time by KDChart::AutoSpacerLayoutItem::sizeHint().
+     *
+     * The method triggers AbstractArea::sizeHint() to find out the
+     * amount of overlap at the right edge of the area.
+     *
+     * \note The default implementation is not using any caching,
+     * it might make sense to implement a more sophisticated solution
+     * for derived classes that have complex work to do in sizeHint().
+     * All we have here is a primitive flag to be set by the caller
+     * if it is sure that no sizeHint() needs to be called.
+     */
+    virtual int rightOverlap( bool doNotRecalculate=false ) const;
+    /**
+     * This is called at layout time by KDChart::AutoSpacerLayoutItem::sizeHint().
+     *
+     * The method triggers AbstractArea::sizeHint() to find out the
+     * amount of overlap at the top edge of the area.
+     *
+     * \note The default implementation is not using any caching,
+     * it might make sense to implement a more sophisticated solution
+     * for derived classes that have complex work to do in sizeHint().
+     * All we have here is a primitive flag to be set by the caller
+     * if it is sure that no sizeHint() needs to be called.
+     */
+    virtual int topOverlap( bool doNotRecalculate=false ) const;
+    /**
+     * This is called at layout time by KDChart:AutoSpacerLayoutItem::sizeHint().
+     *
+     * The method triggers AbstractArea::sizeHint() to find out the
+     * amount of overlap at the bottom edge of the area.
+     *
+     * \note The default implementation is not using any caching,
+     * it might make sense to implement a more sophisticated solution
+     * for derived classes that have complex work to do in sizeHint().
+     * All we have here is a primitive flag to be set by the caller
+     * if it is sure that no sizeHint() needs to be called.
+     */
+    virtual int bottomOverlap( bool doNotRecalculate=false ) const;
 
 protected:
     AbstractArea();

@@ -25,6 +25,7 @@
 
 #include "KDChartLayoutItems.h"
 #include "KDTextDocument.h"
+#include "KDChartAbstractArea.h"
 #include "KDChartAbstractDiagram.h"
 #include "KDChartPaintContext.h"
 #include "KDChartPainterSaver_p.h"
@@ -61,6 +62,11 @@
 void KDChart::AbstractLayoutItem::setParentWidget( QWidget* widget )
 {
     mParent = widget;
+}
+
+void KDChart::AbstractLayoutItem::paintAll( QPainter& painter )
+{
+    paint( &painter );
 }
 
 /**
@@ -380,7 +386,7 @@ KDChart::HorizontalLineLayoutItem::HorizontalLineLayoutItem()
 
 Qt::Orientations KDChart::HorizontalLineLayoutItem::expandingDirections() const
 {
-    return Qt::Vertical|Qt::Horizontal; // Grow neither vertically nor horizontally
+    return Qt::Vertical|Qt::Horizontal; // Grow both vertically, and horizontally
 }
 
 QRect KDChart::HorizontalLineLayoutItem::geometry() const
@@ -431,7 +437,7 @@ KDChart::VerticalLineLayoutItem::VerticalLineLayoutItem()
 
 Qt::Orientations KDChart::VerticalLineLayoutItem::expandingDirections() const
 {
-    return Qt::Vertical|Qt::Vertical; // Grow neither vertically nor horizontally
+    return Qt::Vertical|Qt::Vertical; // Grow both vertically, and horizontally
 }
 
 QRect KDChart::VerticalLineLayoutItem::geometry() const
@@ -709,3 +715,96 @@ void KDChart::LineWithMarkerLayoutItem::paint( QPainter* painter )
             painter, r, mDiagram, mMarker, mMarkerBrush, mMarkerPen );
 }
 
+
+
+KDChart::AutoSpacerLayoutItem::AutoSpacerLayoutItem(
+        bool layoutIsAtLeftPosition, QHBoxLayout *rightLeftLayout,
+        bool layoutIsAtTopPosition, QVBoxLayout *topBottomLayout )
+    : AbstractLayoutItem( Qt::AlignCenter )
+    , mLayoutIsAtLeftPosition( layoutIsAtLeftPosition )
+    , mLayoutIsAtTopPosition(  layoutIsAtTopPosition )
+    , mRightLeftLayout( rightLeftLayout )
+    , mTopBottomLayout( topBottomLayout )
+{
+}
+
+Qt::Orientations KDChart::AutoSpacerLayoutItem::expandingDirections() const
+{
+    return 0; // Grow neither vertically nor horizontally
+}
+
+QRect KDChart::AutoSpacerLayoutItem::geometry() const
+{
+    return mRect;
+}
+
+bool KDChart::AutoSpacerLayoutItem::isEmpty() const
+{
+    return true; // never empty, otherwise the layout item would not exist
+}
+
+QSize KDChart::AutoSpacerLayoutItem::maximumSize() const
+{
+    return sizeHint();
+}
+
+QSize KDChart::AutoSpacerLayoutItem::minimumSize() const
+{
+    return sizeHint();
+}
+
+void KDChart::AutoSpacerLayoutItem::setGeometry( const QRect& r )
+{
+    mRect = r;
+}
+
+QSize KDChart::AutoSpacerLayoutItem::sizeHint() const
+{
+    // calculate the maximal overlap of the top/bottom axes:
+    int topBottomOverlap = 0;
+    if( mTopBottomLayout ){
+        for (int i = 0; i < mTopBottomLayout->count(); ++i){
+            AbstractArea* area = dynamic_cast<AbstractArea*>(mTopBottomLayout->itemAt(i));
+            if( area ){
+                //qDebug() << "AutoSpacerLayoutItem testing" << area;
+                topBottomOverlap =
+                    mLayoutIsAtLeftPosition
+                    ? qMax( topBottomOverlap, area->rightOverlap() )
+                    : qMax( topBottomOverlap, area->leftOverlap() );
+            }
+        }
+    }
+    // calculate the maximal overlap of the left/right axes:
+    int leftRightOverlap = 0;
+    if( mRightLeftLayout ){
+        for (int i = 0; i < mRightLeftLayout->count(); ++i){
+            AbstractArea* area = dynamic_cast<AbstractArea*>(mRightLeftLayout->itemAt(i));
+            if( area ){
+                //qDebug() << "AutoSpacerLayoutItem testing" << area;
+                leftRightOverlap =
+                        mLayoutIsAtTopPosition
+                        ? qMax( leftRightOverlap, area->bottomOverlap() )
+                        : qMax( leftRightOverlap, area->topOverlap() );
+            }
+        }
+    }
+    //qDebug() << QSize( topBottomOverlap, leftRightOverlap );
+    return QSize( topBottomOverlap, leftRightOverlap );
+}
+
+
+void KDChart::AutoSpacerLayoutItem::paint( QPainter* painter )
+{
+    // debug code:
+#if 0
+    //qDebug() << "KDChart::AutoSpacerLayoutItem::paint()";
+    if( !mRect.isValid() )
+        return;
+
+    painter->drawRect( mRect );
+    painter->drawLine( QPointF( mRect.x(), mRect.top() ),
+                       QPointF( mRect.right(), mRect.bottom() ) );
+    painter->drawLine( QPointF( mRect.right(), mRect.top() ),
+                       QPointF( mRect.x(), mRect.bottom() ) );
+#endif
+}

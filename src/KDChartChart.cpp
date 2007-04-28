@@ -342,7 +342,6 @@ void Chart::Private::layoutLegends()
 }
 
 
-
 QHash<AbstractCoordinatePlane*, PlaneInfo> Chart::Private::buildPlaneLayoutInfos()
 {
     /* There are two ways in which planes can be caused to interact in
@@ -432,6 +431,7 @@ static T* findOrCreateLayoutByObjectName( QLayout * parentLayout, const char* na
         box->setMargin(0);
 #endif
         box->setObjectName( QString::fromLatin1( name ) );
+        box->setSizeConstraint( QLayout::SetFixedSize );
     }
     return box;
 }
@@ -454,7 +454,7 @@ void Chart::Private::slotLayoutPlanes()
     if ( planesLayout && dataAndLegendLayout )
         dataAndLegendLayout->removeItem( planesLayout );
 
-    KDAB_FOREACH( KDChart::AbstractArea* plane, planeLayoutItems ) {
+    KDAB_FOREACH( KDChart::AbstractLayoutItem* plane, planeLayoutItems ) {
         plane->removeFromParentLayout();
     }
     planeLayoutItems.clear();
@@ -499,6 +499,14 @@ void Chart::Private::slotLayoutPlanes()
         planeLayout->setRowStretch(    row,    2 );
         planeLayout->setColumnStretch( column, 2 );
 
+        // These four layouts will be instantiated in the following loop,
+        // if they are needed.
+        // They will then be passed to the auto-spacer items after the loop.
+        QVBoxLayout *topAxesLayout    = 0;
+        QVBoxLayout *bottomAxesLayout = 0;
+        QHBoxLayout *leftAxesLayout   = 0;
+        QHBoxLayout *rightAxesLayout  = 0;
+
         KDAB_FOREACH( AbstractDiagram* abstractDiagram, plane->diagrams() )
         {
             AbstractCartesianDiagram* diagram =
@@ -507,14 +515,14 @@ void Chart::Private::slotLayoutPlanes()
             if( !diagram ) continue;  // FIXME polar ?
             //qDebug() << "--------------- diagram ! ! ! ! ! ! ! ! ! !  -----------------";
             // collect all axes of a kind into sublayouts
-            QVBoxLayout *topAxesLayout = findOrCreateVBoxLayoutByObjectName( planeLayout, "topAxesLayout" );
-            topAxesLayout->setSizeConstraint( QLayout::SetFixedSize );
-            QVBoxLayout *bottomAxesLayout = findOrCreateVBoxLayoutByObjectName( planeLayout, "bottomAxesLayout" );
-            bottomAxesLayout->setSizeConstraint( QLayout::SetFixedSize );
-            QHBoxLayout *leftAxesLayout = findOrCreateHBoxLayoutByObjectName( planeLayout, "leftAxesLayout" );
-            leftAxesLayout->setSizeConstraint( QLayout::SetFixedSize );
-            QHBoxLayout *rightAxesLayout = findOrCreateHBoxLayoutByObjectName( planeLayout, "rightAxesLayout" );
-            rightAxesLayout->setSizeConstraint( QLayout::SetFixedSize );
+            if( ! topAxesLayout )
+                topAxesLayout = findOrCreateVBoxLayoutByObjectName( planeLayout, "topAxesLayout" );
+            if( ! bottomAxesLayout )
+                bottomAxesLayout = findOrCreateVBoxLayoutByObjectName( planeLayout, "bottomAxesLayout" );
+            if( ! leftAxesLayout )
+                leftAxesLayout = findOrCreateHBoxLayoutByObjectName( planeLayout, "leftAxesLayout" );
+            if( ! rightAxesLayout )
+                rightAxesLayout = findOrCreateHBoxLayoutByObjectName( planeLayout, "rightAxesLayout" );
 
             //leftAxesLayout->setSizeConstraint( QLayout::SetFixedSize );
 
@@ -523,6 +531,19 @@ void Chart::Private::slotLayoutPlanes()
                 Q_ASSERT ( axis );
                 //qDebug() << "--------------- axis added to planeLayoutItems  -----------------";
                 planeLayoutItems << axis;
+                /*
+                // Unused code trying to use a push-model: This did not work
+                // since we can not re-layout the planes each time when
+                // Qt layouting is calling sizeHint()
+                connect( axis, SIGNAL( needAdjustLeftRightColumnsForOverlappingLabels(
+                                CartesianAxis*, int, int ) ),
+                         this, SLOT( slotAdjustLeftRightColumnsForOverlappingLabels(
+                                 CartesianAxis*, int, int ) ) );
+                connect( axis, SIGNAL( needAdjustTopBottomRowsForOverlappingLabels(
+                                CartesianAxis*, int, int ) ),
+                         this, SLOT( slotAdjustTopBottomRowsForOverlappingLabels(
+                                 CartesianAxis*, int, int ) ) );
+                */
                 switch ( axis->position() )
                 {
                     case CartesianAxis::Top:
@@ -553,11 +574,11 @@ void Chart::Private::slotLayoutPlanes()
              * were added, and the first one gets to lay out shared axes.
              * Private axes go here as well, of course. */
             if ( !topAxesLayout->parent() )
-                planeLayout->addLayout( topAxesLayout,    0,       1 );
+                planeLayout->addLayout( topAxesLayout,    row - 1, column );
             if ( !bottomAxesLayout->parent() )
-                planeLayout->addLayout( bottomAxesLayout, row + 1, 1 );
+                planeLayout->addLayout( bottomAxesLayout, row + 1, column );
             if ( !leftAxesLayout->parent() ){
-                planeLayout->addLayout( leftAxesLayout,   row,     0 );
+                planeLayout->addLayout( leftAxesLayout,   row,     column - 1);
                 //planeLayout->setRowStretch(    row, 0 );
                 //planeLayout->setColumnStretch( 0,   0 );
             }
@@ -565,6 +586,21 @@ void Chart::Private::slotLayoutPlanes()
                 planeLayout->addLayout( rightAxesLayout,  row,     column + 1);
         }
 
+        // use up to four auto-spacer items in the corners around the diagrams:
+#define ADD_AUTO_SPACER_IF_NEEDED( \
+    spacerRow, spacerColumn, hLayoutIsAtTop, hLayout, vLayoutIsAtLeft, vLayout ) \
+{ \
+    if( hLayout || vLayout ) { \
+        AutoSpacerLayoutItem * spacer \
+                = new AutoSpacerLayoutItem( hLayoutIsAtTop, hLayout, vLayoutIsAtLeft, vLayout ); \
+        planeLayout->addItem( spacer, spacerRow, spacerColumn, 1, 1 ); \
+        planeLayoutItems << spacer; \
+    } \
+}
+        ADD_AUTO_SPACER_IF_NEEDED( row-1, column-1, false, leftAxesLayout,  false, topAxesLayout )
+        ADD_AUTO_SPACER_IF_NEEDED( row+1, column-1, true,  leftAxesLayout,  false,  bottomAxesLayout )
+        ADD_AUTO_SPACER_IF_NEEDED( row-1, column+1, false, rightAxesLayout, true, topAxesLayout )
+        ADD_AUTO_SPACER_IF_NEEDED( row+1, column+1, true,  rightAxesLayout, true,  bottomAxesLayout )
     }
     // re-add our grid(s) to the chart's layout
     if ( dataAndLegendLayout ){
@@ -731,7 +767,7 @@ void Chart::Private::paintAll( QPainter* painter )
     KDAB_FOREACH( KDChart::AbstractArea* layoutItem, layoutItems ) {
         layoutItem->paintAll( *painter );
     }
-    KDAB_FOREACH( KDChart::AbstractArea* planeLayoutItem, planeLayoutItems ) {
+    KDAB_FOREACH( KDChart::AbstractLayoutItem* planeLayoutItem, planeLayoutItems ) {
 		planeLayoutItem->paintAll( *painter );
     }
     KDAB_FOREACH( KDChart::TextArea* textLayoutItem, textLayoutItems ) {
@@ -1152,3 +1188,175 @@ void Chart::mousePressEvent( QMouseEvent* event )
     }
 }
 
+
+
+
+/*
+// Unused code trying to use a push-model: This did not work
+// since we can not re-layout the planes each time when
+// Qt layouting is calling sizeHint()
+void Chart::Private::slotAdjustLeftRightColumnsForOverlappingLabels(
+        CartesianAxis* axis, int leftOverlap, int rightOverlap)
+{
+    const QLayout* axisLayout = axis ? axis->parentLayout() : 0;
+
+    if( (! leftOverlap && ! rightOverlap) || ! axis || ! axisLayout->parent() )
+        return;
+
+    bool needUpdate = false;
+    // access the planeLayout:
+    QGridLayout* grid = qobject_cast<QGridLayout*>(axisLayout->parent());
+    if( grid ){
+        // find the index of the parent layout in the planeLayout:
+        int idx = -1;
+        for (int i = 0; i < grid->count(); ++i)
+            if( grid->itemAt(i) == axisLayout )
+                idx = i;
+        // set the min widths of the neighboring column:
+        if( idx > -1 ){
+            int row, column, rowSpan, columnSpan;
+            grid->getItemPosition( idx, &row, &column, &rowSpan, &columnSpan );
+            const int leftColumn = column-1;
+            const int rightColumn = column+columnSpan;
+            // find the left/right axes layouts
+            QHBoxLayout* leftAxesLayout=0;
+            QHBoxLayout* rightAxesLayout=0;
+            for( int i = 0;
+                 (!leftAxesLayout || !rightAxesLayout) && i < grid->count();
+                 ++i )
+            {
+                int r, c, rs, cs;
+                grid->getItemPosition( i, &r, &c, &rs, &cs );
+                if( c+cs-1 == leftColumn )
+                    leftAxesLayout = dynamic_cast<QHBoxLayout*>(grid->itemAt(i));
+                if( c == rightColumn )
+                    rightAxesLayout = dynamic_cast<QHBoxLayout*>(grid->itemAt(i));
+            }
+            if( leftAxesLayout ){
+                const int leftColumnMinWidth = leftOverlap;
+                QLayoutItem* item = leftAxesLayout->count()
+                        ? dynamic_cast<QLayoutItem*>(leftAxesLayout->itemAt(leftAxesLayout->count()-1))
+                    : 0;
+                QSpacerItem* spacer = dynamic_cast<QSpacerItem*>(item);
+                if( spacer ){
+                    if( spacer->sizeHint().width() < leftColumnMinWidth ){
+                        needUpdate = true;
+                        spacer->changeSize(leftColumnMinWidth, 1);
+                        qDebug() << "adjusted left spacer->sizeHint().width() to" << spacer->sizeHint().width();
+                    }
+                }else{
+                    AbstractAxis* axis = dynamic_cast<AbstractAxis*>(item);
+                    if( !axis || axis->sizeHint().width() < leftColumnMinWidth ){
+                        needUpdate = true;
+                        leftAxesLayout->insertSpacing( -1, leftColumnMinWidth );
+                        qDebug() << "adjusted column" << leftColumn << "min width to" << leftColumnMinWidth;
+                    }
+                }
+            }
+            if( rightAxesLayout ){
+                const int rightColumnMinWidth = rightOverlap;
+                QLayoutItem* item = rightAxesLayout->count()
+                        ? dynamic_cast<QLayoutItem*>(rightAxesLayout->itemAt(0))
+                    : 0;
+                QSpacerItem* spacer = dynamic_cast<QSpacerItem*>(item);
+                if( spacer ){
+                    if( spacer->sizeHint().width() < rightColumnMinWidth ){
+                        needUpdate = true;
+                        spacer->changeSize(rightColumnMinWidth, 1);
+                        qDebug() << "adjusted right spacer->sizeHint().width() to" << spacer->sizeHint().width();
+                    }
+                }else{
+                    AbstractAxis* axis = dynamic_cast<AbstractAxis*>(item);
+                    if( !axis || axis->sizeHint().width() < rightColumnMinWidth ){
+                        needUpdate = true;
+                        rightAxesLayout->insertSpacing( 0, rightColumnMinWidth );
+                        qDebug() << "adjusted column" << rightColumn << "min width to" << rightColumnMinWidth;
+                    }
+                }
+            }
+        }
+    }
+    if( needUpdate ){
+        ;// do something ...?
+    }
+}
+
+
+void Chart::Private::slotAdjustTopBottomRowsForOverlappingLabels(
+        CartesianAxis* axis, int topOverlap, int bottomOverlap)
+{
+    const QLayout* axisLayout = axis ? axis->parentLayout() : 0;
+
+    if( (! topOverlap && ! bottomOverlap) || ! axisLayout || ! axisLayout->parent() )
+        return;
+
+    // access the planeLayout:
+    QGridLayout* grid = qobject_cast<QGridLayout*>(axisLayout->parent());
+    if( grid ){
+            // find the index of the parent layout in the planeLayout:
+        int idx = -1;
+        for (int i = 0; i < grid->count(); ++i)
+            if( grid->itemAt(i) == axisLayout )
+                idx = i;
+            // set the min widths of the neighboring column:
+        if( idx > -1 ){
+            int row, column, rowSpan, columnSpan;
+            grid->getItemPosition( idx, &row, &column, &rowSpan, &columnSpan );
+            const int topRow = row-1;
+            const int bottomRow = row+rowSpan;
+                // find the left/right axes layouts
+            QVBoxLayout* topAxesLayout=0;
+            QVBoxLayout* bottomAxesLayout=0;
+            for( int i = 0;
+                 (!topAxesLayout || !bottomAxesLayout) && i < grid->count();
+                 ++i )
+            {
+                int r, c, rs, cs;
+                grid->getItemPosition( i, &r, &c, &rs, &cs );
+                if( r+rs-1 == topRow )
+                    topAxesLayout = dynamic_cast<QVBoxLayout*>(grid->itemAt(i));
+                if( r == bottomRow )
+                    bottomAxesLayout = dynamic_cast<QVBoxLayout*>(grid->itemAt(i));
+            }
+            if( topAxesLayout ){
+                const int topRowMinWidth = topOverlap;
+                QLayoutItem* item = topAxesLayout->count()
+                        ? dynamic_cast<QLayoutItem*>(topAxesLayout->itemAt(topAxesLayout->count()-1))
+                    : 0;
+                QSpacerItem* spacer = dynamic_cast<QSpacerItem*>(item);
+                if( spacer ){
+                    if( spacer->sizeHint().height() < topRowMinWidth ){
+                        spacer->changeSize(1, topRowMinWidth);
+                        qDebug() << "adjusted top spacer->sizeHint().height() to" << spacer->sizeHint().height();
+                    }
+                }else{
+                    AbstractAxis* axis = dynamic_cast<AbstractAxis*>(item);
+                    if( !axis || axis->sizeHint().height() < topRowMinWidth ){
+                        topAxesLayout->insertSpacing( -1, topRowMinWidth );
+                        qDebug() << "adjusted row" << topRow << "min height to" << topRowMinWidth;
+                    }
+                }
+            }
+            if( bottomAxesLayout ){
+                const int bottomRowMinWidth = bottomOverlap;
+                QLayoutItem* item = bottomAxesLayout->count()
+                        ? dynamic_cast<QLayoutItem*>(bottomAxesLayout->itemAt(0))
+                    : 0;
+                QSpacerItem* spacer = dynamic_cast<QSpacerItem*>(item);
+                if( spacer ){
+                    if( spacer->sizeHint().height() < bottomRowMinWidth ){
+                        spacer->changeSize(1, bottomRowMinWidth);
+                        qDebug() << "adjusted bottom spacer->sizeHint().height() to" << spacer->sizeHint().height();
+                    }
+                }else{
+                    AbstractAxis* axis = dynamic_cast<AbstractAxis*>(item);
+                    if( !axis || axis->sizeHint().height() < bottomRowMinWidth ){
+                        bottomAxesLayout->insertSpacing( 0, bottomRowMinWidth );
+                        qDebug() << "adjusted row" << bottomRow << "min height to" << bottomRowMinWidth;
+                    }
+                }
+            }
+        }
+    }
+}
+*/
