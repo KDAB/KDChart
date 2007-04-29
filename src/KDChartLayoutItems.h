@@ -298,44 +298,71 @@ namespace KDChart {
 
     /** \internal
      *
-     * The AutoSpacerLayoutItem is put into a corner cell of the planeLayout
-     * grid: one of its reference-layouts is a QVBoxLayout, the other one is
-     * a QHBoxLayout.
+     * The AutoSpacerLayoutItem is automatically put into each corner cell of
+     * the planeLayout grid: one of its reference-layouts is a QVBoxLayout (for
+     * the top, or bottom axes resp.), the other one is a QHBoxLayout (for the
+     * left/right sided axes).
+     * 
      * The spacer reserves enough space so all of the AbstractAreas contained
-     * in the two reference-layouts have enough space to display not only
-     * their in-bounds content but also their overlapping content.
+     * in the two reference-layouts can display not only their in-bounds
+     * content but also their overlapping content reaching out of their area.
      *
-     * schema:
+     * KD Chart's layouting is applying this schema:
 \verbatim
-    +---------------+----------------------+
-    | +-----------+ | +------------------+ |
-    | |           | | |                  | |
-    | |           | | |     TOP AXIS     | |
-    | |           | | |                  | |
-    | |  SPACER   | | +------------------+ |
-    | |           | | |                  | |
-    | |           | | |     TOP AX 2     | |
-    | |           | | |                  | |
-    | +-----------+ | +------------------+ |
-    +---------------+----------------------+
-    | +-----+-----+ | +------------------+ |
-    | |     |     | | |                  | |
-    | |  L  |  L  | | |                  | |
-    | |  E  |  E  | | |                  | |
-    | |  F  |  F  | | |                  | |
-    | |  T  |  T  | | |                  | |
-    | |     |     | | |     DIAGRAM      | |
-    | |  A  |  A  | | |                  | |
-    | |  X  |  X  | | |                  | |
-    | |  I  |     | | |                  | |
-    | |  S  |  2  | | |                  | |
-    | |     |     | | |                  | |
-    | +-----+-----+ | +------------------+ |
-    +---------------+----------------------+
+    +------------------+-------------------------+-----------------+
+    | +--------------+ | +---------------------+ | +-------------+ |
+    | |              | | |  QVBoxLayout for    | | |             | |
+    | |     AUTO     | | |  the top axis/axes  | | |    AUTO     | |
+    | |    SPACER    | | +---------------------+ | |   SPACER    | |
+    | |     ITEM     | | |                     | | |    ITEM     | |
+    | |              | | |                     | | |             | |
+    | +--------------+ | +---------------------+ | +-------------+ |
+    +------------------+-------------------------+-----------------+
+    | +--------+-----+ | +---------------------+ | +-------+-----+ |
+    | |        |     | | |                     | | |       |     | |
+    | |        |     | | |                     | | |       |     | |
+    | | QHBox- |     | | |                     | | | Right |     | |
+    | | Layout |     | | |                     | | |       |     | |
+    | |        |     | | |                     | | | axes  |     | |
+    | | for    |     | | |                     | | |       |     | |
+    | |        |     | | |                     | | | layout|     | |
+    | | the    |     | | |      DIAGRAM(s)     | | |       |     | |
+    | |        |     | | |                     | | |       |     | |
+    | | left   |     | | |                     | | |       |     | |
+    | |        |     | | |                     | | |       |     | |
+    | | axis   |     | | |                     | | |       |     | |
+    | | or     |     | | |                     | | |       |     | |
+    | | axes   |     | | |                     | | |       |     | |
+    | |        |     | | |                     | | |       |     | |
+    | +--------+-----+ | +---------------------+ | +-------+-----+ |
+    +------------------+-------------------------+-----------------+
+    | +--------------+ | +---------------------+ | +-------------+ |
+    | |              | | |   QVBoxLayout for   | | |             | |
+    | |    AUTO      | | |   the bottom axes   | | |    AUTO     | |
+    | |   SPACER     | | +---------------------+ | |   SPACER    | |
+    | |    ITEM      | | |                     | | |    ITEM     | |
+    | |              | | |                     | | |             | |
+    | +--------------+ | +---------------------+ | +-------------+ |
+    +------------------+-------------------------+-----------------+
 \endverbatim
-     * The spacer makes sure it is big enough that any content of the
-     * axes that is drawn outside of the axis area bounds will fit into
-     * the spacer.
+     *
+     * A typical use case is an Abscissa axis with long labels:
+\verbatim
+    2 -|
+       |
+    1 -|
+       |
+    0 -+------------------------------------
+       |        |        |        |        |
+    Monday  Tuesday  Wednesday Thursday Friday
+\endverbatim
+     * The last letters of the word "Friday" would have been
+     * cut off in previous versions of KD Chart - that is
+     * if you did not call KDChart::Chart::setGlobalLeading().
+     *
+     * Now the word will be shown completely because there
+     * is an auto-spacer-item taking care for the additional
+     * space needed in the lower/right corner.
      */
     class KDCHART_EXPORT AutoSpacerLayoutItem : public AbstractLayoutItem
     {
