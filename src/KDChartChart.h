@@ -285,6 +285,14 @@ namespace KDChart {
          * @param right The padding on the left hand side.
          * @param bottom The padding on the bottom.
          *
+         * \note Using previous versions of KD Chart you might have called
+         * setGlobalLeading() to make room for long Abscissa labels (or for an
+         * overlapping top label of an Ordinate axis, resp.) that would not fit
+         * into the normal axis area. This is \em no \em longer \em needed
+         * because KD Chart now is using hidden auto-spacer items reserving
+         * as much free space as is needed for axes with overlaping content
+         * at the respective sides.
+         *
          * \sa setGlobalLeadingTop, setGlobalLeadingBottom, setGlobalLeadingLeft, setGlobalLeadingRight
          * \sa globalLeadingTop, globalLeadingBottom, globalLeadingLeft, globalLeadingRight
          */
