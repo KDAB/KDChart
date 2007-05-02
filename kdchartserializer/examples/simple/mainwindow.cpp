@@ -370,7 +370,7 @@ void MainWindow::saveAs()
                                   tr("File saved") );
     else
         QMessageBox::warning( this, tr("KD Chart Serializer"),
-                              tr("ERROR: Cannot write file %1.") );
+                              tr("ERROR: Cannot write file %1.").arg( fileName ) );
     file.close();
 }
 
