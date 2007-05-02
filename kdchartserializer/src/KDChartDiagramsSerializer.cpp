@@ -97,24 +97,6 @@ void DiagramsSerializer::init()
 {
 }
 
-const QString DiagramsSerializer::nameOfClass( const AbstractDiagram* p )const
-{
-    QString classname;
-    if( dynamic_cast<const LineDiagram*> (  p ) )
-        classname = "KDChart::LineDiagram";
-    else if( dynamic_cast<const BarDiagram*> (   p ) )
-        classname = "KDChart::BarDiagram";
-    else if( dynamic_cast<const PieDiagram*> (   p ) )
-        classname = "KDChart::PieDiagram";
-    else if( dynamic_cast<const PolarDiagram*> ( p ) )
-        classname = "KDChart::PolarDiagram";
-    else if( dynamic_cast<const RingDiagram*> (  p ) )
-        classname = "KDChart::RingDiagram";
-    else
-        classname = "UNKNOWN";
-    return classname;
-}
-
 void DiagramsSerializer::saveDiagrams(
         QDomDocument& doc,
         QDomElement& e,
@@ -141,7 +123,7 @@ void DiagramsSerializer::saveDiagrams(
                 *diagsList,
                 pointersList,
                 "kdchart:diagram",
-                nameOfClass( p ),
+                p->metaObject()->className(),
                 p,
                 wasFound );
         if( ! wasFound ){
@@ -207,7 +189,7 @@ bool DiagramsSerializer::parseDiagram(
     return bOK;
 }
 
-bool DiagramsSerializer::doParseDiagram(
+bool DiagramsSerializer::Private::doParseDiagram(
         const QDomElement& container,
         AbstractDiagram*& diagramPtr )const
 {
@@ -229,24 +211,22 @@ bool DiagramsSerializer::doParseDiagram(
         result = parsePolarDiagram( container, *polarDiag );
     else if( ringDiag )
         result = parseRingDiagram(  container, *ringDiag );
-    else
-        result = parseOtherDiagram( container, *diagramPtr );
 
     return result;
 }
 
 void DiagramsSerializer::saveElement( QDomDocument& doc, QDomElement& e, const QObject* obj ) const
 {
-    saveDiagram( doc, e, qobject_cast< const AbstractDiagram* >( obj ) );
+    d->saveDiagram( doc, e, qobject_cast< const AbstractDiagram* >( obj ) );
 }
 
 bool DiagramsSerializer::parseElement( const QDomElement& container, QObject*& ptr ) const
 {
     AbstractDiagram* diag = qobject_cast< AbstractDiagram* >( ptr );
-    return doParseDiagram( container, diag );
+    return d->doParseDiagram( container, diag );
 }
 
-void DiagramsSerializer::saveDiagram(
+void DiagramsSerializer::Private::saveDiagram(
         QDomDocument& doc,
         QDomElement& e,
         const AbstractDiagram* p )const
@@ -270,11 +250,9 @@ void DiagramsSerializer::saveDiagram(
         savePolarDiagram( doc, e, *polarDiag );
     else if( ringDiag )
         saveRingDiagram( doc, e, *ringDiag );
-    else
-        saveOtherDiagram( doc, e, *p );
 }
 
-bool DiagramsSerializer::parseAbstractDiagram(
+bool DiagramsSerializer::Private::parseAbstractDiagram(
         const QDomElement& container, AbstractDiagram& diagram )const
 {
     bool bOK = true;
@@ -364,7 +342,7 @@ bool DiagramsSerializer::parseAbstractDiagram(
                         if( bOK && ! wasParsed ){
                             SerializeCollector::instance()->setWasParsed( model, true );
 
-                            bOK = d->m_attrModelS->parseAttributesModel(
+                            bOK = m_attrModelS->parseAttributesModel(
                                     container.ownerDocument().firstChild(),
                                     ptrName, *model );
                         }
@@ -400,7 +378,7 @@ bool DiagramsSerializer::parseAbstractDiagram(
                 }
             } else if( tagName == "CoodinatePlane" ) {
                 AbstractCoordinatePlane* plane;
-                if( d->m_coordS->parsePlane( container.ownerDocument().firstChild(), element.firstChild(), plane ) ){
+                if( m_coordS->parsePlane( container.ownerDocument().firstChild(), element.firstChild(), plane ) ){
                     diagram.setCoordinatePlane( plane );
                 }else{
                     // We do *not* report an error, since this is no bug:
@@ -450,7 +428,7 @@ bool DiagramsSerializer::parseAbstractDiagram(
     return bOK;
 }
 
-void DiagramsSerializer::saveAbstractDiagram(
+void DiagramsSerializer::Private::saveAbstractDiagram(
         QDomDocument& doc,
         QDomElement& e,
         const AbstractDiagram& diagram,
@@ -461,7 +439,7 @@ void DiagramsSerializer::saveAbstractDiagram(
     e.appendChild( diagElement );
 
     // save the attributes model
-    d->m_attrModelS->saveAttributesModel(
+    m_attrModelS->saveAttributesModel(
         doc,
         diagElement,
         diagram.attributesModel(),
@@ -477,13 +455,12 @@ void DiagramsSerializer::saveAbstractDiagram(
     // and save the plane in the global structure if not there yet
     const CartesianCoordinatePlane* coordPlane =
             static_cast<const CartesianCoordinatePlane*>( diagram.coordinatePlane() );
-    if( coordPlane && d->m_coordS ){
+    if( coordPlane && m_coordS ){
         QDomElement coordPlanePtrElement =
                 doc.createElement( "CoodinatePlane" );
         diagElement.appendChild( coordPlanePtrElement );
         // access (or append, resp.) the global list
-        QDomElement* planesList =
-                SerializeCollector::instance()->findOrMakeElement( doc, d->m_coordS->globalList() );
+        QDomElement* planesList = SerializeCollector::instance()->findOrMakeElement( doc, m_coordS->globalList() );
 
         bool wasFound;
         QDomElement globalListElement =
@@ -492,7 +469,7 @@ void DiagramsSerializer::saveAbstractDiagram(
                 *planesList,
                 coordPlanePtrElement,
                 "kdchart:coordinate-plane",
-                d->m_coordS->nameOfClass( coordPlane ),
+                coordPlane->metaObject()->className(),
                 coordPlane,
                 wasFound );
         if( ! wasFound ){
@@ -501,8 +478,7 @@ void DiagramsSerializer::saveAbstractDiagram(
             // So it will not be forgotten, in case it is not embedded in any
             // of the coordinate planes.
             // The wasFound test makes sure it will not be stored twice.
-            d->m_coordS->saveCartPlane(
-                    doc, globalListElement, *coordPlane );
+            m_coordS->saveCartPlane( doc, globalListElement, *coordPlane );
         }
     }
 
@@ -517,7 +493,7 @@ void DiagramsSerializer::saveAbstractDiagram(
 }
 
 
-bool DiagramsSerializer::parseCartCoordDiagram(
+bool DiagramsSerializer::Private::parseCartCoordDiagram(
         const QDomElement& container, AbstractCartesianDiagram& diagram )const
 {
     bool bOK = true;
@@ -537,7 +513,7 @@ bool DiagramsSerializer::parseCartCoordDiagram(
                 QDomNode node2 = element.firstChild();
                 while( ! node2.isNull() ) {
                     CartesianAxis *axis;
-                    if( d->m_axesS->parseCartesianAxis( container.ownerDocument().firstChild(), node2, axis ) )
+                    if( m_axesS->parseCartesianAxis( container.ownerDocument().firstChild(), node2, axis ) )
                     {
                         diagram.addAxis( axis );
                     }else{
@@ -549,7 +525,7 @@ bool DiagramsSerializer::parseCartCoordDiagram(
             } else if( tagName == "ReferenceDiagram" ) {
                 AbstractDiagram* diag;
                 refDiag = 0;
-                if( parseDiagram( container.ownerDocument().firstChild(), element.firstChild(), diag ) )
+                if( q->parseDiagram( container.ownerDocument().firstChild(), element.firstChild(), diag ) )
                     refDiag = dynamic_cast<AbstractCartesianDiagram *>(diag);
                 if( ! refDiag ){
                     qDebug()<< "Could not parse AbstractCartesianDiagram. Reference-diagram of"
@@ -575,7 +551,7 @@ bool DiagramsSerializer::parseCartCoordDiagram(
     return bOK;
 }
 
-void DiagramsSerializer::saveCartCoordDiagram(
+void DiagramsSerializer::Private::saveCartCoordDiagram(
         QDomDocument& doc,
         QDomElement& e,
         const AbstractCartesianDiagram& diagram,
@@ -592,9 +568,7 @@ void DiagramsSerializer::saveCartCoordDiagram(
     // then save what is stored in the derived class
 
     // save the axes
-    d->m_axesS->saveCartesianAxes( doc, diagElement,
-                               diagram.axes(),
-                               "kdchart:axes" );
+    m_axesS->saveCartesianAxes( doc, diagElement, diagram.axes(), "kdchart:axes" );
 
     // save the reference diagram(-pointer) and the respective offset, if any
     const AbstractCartesianDiagram* refDiag = diagram.referenceDiagram();
@@ -603,8 +577,7 @@ void DiagramsSerializer::saveCartCoordDiagram(
                 doc.createElement( "ReferenceDiagram" );
         diagElement.appendChild( refDiagPtrElement );
         // access (or append, resp.) the global list
-        QDomElement* diagsList =
-                SerializeCollector::instance()->findOrMakeElement( doc, d->m_globalList );
+        QDomElement* diagsList = SerializeCollector::instance()->findOrMakeElement( doc, m_globalList );
 
         bool wasFound;
         QDomElement globalListElement =
@@ -613,7 +586,7 @@ void DiagramsSerializer::saveCartCoordDiagram(
                 *diagsList,
                 refDiagPtrElement,
                 "kdchart:diagram",
-                nameOfClass( refDiag ),
+                refDiag->metaObject()->className(),
                 refDiag,
                 wasFound );
         if( ! wasFound ){
@@ -630,7 +603,7 @@ void DiagramsSerializer::saveCartCoordDiagram(
 }
 
 
-bool DiagramsSerializer::parsePolCoordDiagram(
+bool DiagramsSerializer::Private::parsePolCoordDiagram(
         const QDomElement& container, AbstractPolarDiagram& diagram )const
 {
     bool bOK = true;
@@ -654,7 +627,7 @@ bool DiagramsSerializer::parsePolCoordDiagram(
     return bOK;
 }
 
-void DiagramsSerializer::savePolCoordDiagram(
+void DiagramsSerializer::Private::savePolCoordDiagram(
         QDomDocument& doc,
         QDomElement& e,
         const AbstractPolarDiagram& diagram,
@@ -671,7 +644,7 @@ void DiagramsSerializer::savePolCoordDiagram(
 }
 
 
-bool DiagramsSerializer::parseLineDiagram(
+bool DiagramsSerializer::Private::parseLineDiagram(
         const QDomElement& container, LineDiagram& diagram )const
 {
     //qDebug() << "-------->" << container.tagName();
@@ -716,7 +689,7 @@ bool DiagramsSerializer::parseLineDiagram(
     return bOK;
 }
 
-void DiagramsSerializer::saveLineDiagram(
+void DiagramsSerializer::Private::saveLineDiagram(
         QDomDocument& doc,
         QDomElement& diagElement,
         const LineDiagram& diagram )const
@@ -744,7 +717,7 @@ void DiagramsSerializer::saveLineDiagram(
 }
 
 
-bool DiagramsSerializer::parseBarDiagram(
+bool DiagramsSerializer::Private::parseBarDiagram(
         const QDomElement& container, BarDiagram& diagram )const
 {
     bool bOK = true;
@@ -789,7 +762,7 @@ bool DiagramsSerializer::parseBarDiagram(
     return bOK;
 }
 
-void DiagramsSerializer::saveBarDiagram(
+void DiagramsSerializer::Private::saveBarDiagram(
         QDomDocument& doc,
         QDomElement& diagElement,
         const BarDiagram& diagram )const
@@ -800,28 +773,29 @@ void DiagramsSerializer::saveBarDiagram(
 
     // then save what is stored in the derived class
     QString s;
-    switch( diagram.type() ){
+    switch( diagram.type() )
+    {
     case BarDiagram::Normal:
-            s = "Normal";
-            break;
+        s = "Normal";
+        break;
     case BarDiagram::Stacked:
-            s = "Stacked";
-            break;
+        s = "Stacked";
+        break;
     case BarDiagram::Percent:
-            s = "Percent";
-            break;
+        s = "Percent";
+        break;
     case BarDiagram::Rows:
-            s = "Rows";
-            break;
+        s = "Rows";
+        break;
     default:
-            Q_ASSERT( false ); // all of the types need to be handled
-            break;
-}
+        Q_ASSERT( false ); // all of the types need to be handled
+        break;
+    }
     KDXML::createStringNode( doc, diagElement, "BarType", s );
 }
 
 
-bool DiagramsSerializer::parseAbstractPieDiagram(
+bool DiagramsSerializer::Private::parseAbstractPieDiagram(
         const QDomElement& container, AbstractPieDiagram& diagram )const
 {
     bool bOK = true;
@@ -864,7 +838,7 @@ bool DiagramsSerializer::parseAbstractPieDiagram(
     return bOK;
 }
 
-void DiagramsSerializer::saveAbstractPieDiagram(
+void DiagramsSerializer::Private::saveAbstractPieDiagram(
         QDomDocument& doc,
         QDomElement& e,
         const AbstractPieDiagram& diagram,
@@ -885,7 +859,7 @@ void DiagramsSerializer::saveAbstractPieDiagram(
 }
 
 
-bool DiagramsSerializer::parsePieDiagram(
+bool DiagramsSerializer::Private::parsePieDiagram(
         const QDomElement& container, PieDiagram& diagram )const
 {
     bool bOK = true;
@@ -912,7 +886,7 @@ bool DiagramsSerializer::parsePieDiagram(
     return bOK;
 }
 
-void DiagramsSerializer::savePieDiagram(
+void DiagramsSerializer::Private::savePieDiagram(
         QDomDocument& doc,
         QDomElement& diagElement,
         const PieDiagram& diagram )const
@@ -924,7 +898,7 @@ void DiagramsSerializer::savePieDiagram(
 }
 
 
-bool DiagramsSerializer::parsePolarDiagram(
+bool DiagramsSerializer::Private::parsePolarDiagram(
         const QDomElement& container, PolarDiagram& diagram )const
 {
     bool bOK = true;
@@ -1043,7 +1017,7 @@ bool DiagramsSerializer::parsePolarDiagram(
     return bOK;
 }
 
-void DiagramsSerializer::savePolarDiagram(
+void DiagramsSerializer::Private::savePolarDiagram(
         QDomDocument& doc,
         QDomElement& diagElement,
         const PolarDiagram& diagram )const
@@ -1084,7 +1058,7 @@ void DiagramsSerializer::savePolarDiagram(
             diagram.showLabelsAtPosition( Position::Floating ) );
 }
 
-bool DiagramsSerializer::parseRingDiagram(
+bool DiagramsSerializer::Private::parseRingDiagram(
         const QDomElement& container, RingDiagram& diagram )const
 {
     bool bOK = true;
@@ -1119,7 +1093,7 @@ bool DiagramsSerializer::parseRingDiagram(
     return bOK;
 }
 
-void DiagramsSerializer::saveRingDiagram(
+void DiagramsSerializer::Private::saveRingDiagram(
         QDomDocument& doc,
         QDomElement& diagElement,
         const RingDiagram& diagram )const
@@ -1130,43 +1104,4 @@ void DiagramsSerializer::saveRingDiagram(
 
     // then save what is stored in the derived class
     KDXML::createBoolNode(  doc, diagElement, "RelativeThickness",   diagram.relativeThickness() );
-}
-
-
-bool DiagramsSerializer::parseOtherDiagram(
-        const QDomElement& container, AbstractDiagram& diagram )const
-{
-    bool bOK = true;
-    if( !container.isNull() ) {
-        //qDebug() << "\n    DiagramsSerializer::parseOtherDiagram() processing" << diagName;
-        QDomNode node = container.firstChild();
-        while( !node.isNull() ) {
-            QDomElement element = node.toElement();
-            if( !element.isNull() ) { // was really an element
-                QString tagName = element.tagName();
-                if( tagName == "kdchart:abstract-diagram" ) {
-                    if( ! parseAbstractDiagram( element, diagram ) ){
-                        qDebug() << "Could not parse base class of diagram.";
-                        bOK = false;
-                    }
-                } else {
-                    qDebug() << "Unknown subelement of diagram found:" << tagName;
-                    bOK = false;
-                }
-            }
-            node = node.nextSibling();
-        }
-    }
-    return bOK;
-}
-
-void DiagramsSerializer::saveOtherDiagram(
-        QDomDocument& doc,
-        QDomElement& diagElement,
-        const AbstractDiagram& diagram )const
-{
-    // first save the information hold by the base class
-    saveAbstractDiagram( doc, diagElement, diagram,
-                         "kdchart:abstract-diagram" );
-    // that's all, there is no to-be-saved information in this class
 }
