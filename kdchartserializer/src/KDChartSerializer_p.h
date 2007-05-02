@@ -61,7 +61,7 @@ protected:
     QString m_programName;
     Chart* m_chart;
     CoordPlanesSerializer* m_coordS;
-    static QMap< QString, AbstractSerializerFactory* > s_serializerFactories;
+    static QMap< QString, AbstractSerializerFactory* >* s_serializerFactories;
 };
 
 

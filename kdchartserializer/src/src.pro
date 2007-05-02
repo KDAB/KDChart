@@ -41,6 +41,7 @@ SOURCES= \
         KDChartLegendsSerializer.cpp \
         KDXMLTools.cpp \
         KDChartDiagramSerializerFactory.cpp \
+        KDChartLegendSerializerFactory.cpp \
         KDChartAbstractSerializerFactory.cpp \
 
 HEADERS= \
@@ -69,5 +70,7 @@ HEADERS= \
         KDXMLTools.h \
         KDChartDiagramSerializerFactory.h \
         KDChartDiagramSerializerFactory_p.h \
+        KDChartLegendSerializerFactory.h \
+        KDChartLegendSerializerFactory_p.h \
         KDChartAbstractSerializerFactory.h \
 

@@ -1417,41 +1417,50 @@ bool AttributesSerializer::parseQObjectPointerNode(
     ptrName = "";
     wasParsed = false;
 
-    if( ! node.isNull() ) {
-        QDomElement element = node.toElement();
-        if( ! element.isNull() ) { // was really an element
-            QString tagName = element.tagName();
-            if( tagName == "kdchart:pointer" ) {
-                QString s;
-                if( KDXML::findStringAttribute( element, "name", s ) ){
-                    ptrName = s;
-                    QObject* p0;
-                    if( findQObjectPointer( s, p0, wasParsed, bErrorIfNotFound ) ){
-                        p = p0;
-                    }else{
-                        if( bErrorIfNotFound ){
-                            qDebug() << "    Could not resolve pointer in\n    "+showDomPath( element );
-                            bOK = false;
-                        }
-                    }
-                }else{
-                    qDebug() << "    Invalid pointer element:\n    "+showDomPath( element );
-                    bOK = false;
-                }
-            } else if( tagName == "kdchart:unresolved-pointer" ) {
-                /*
-                qDebug() << "\n"
-                "    Non-critical information by AttributesSerializer::parseQObjectPointerNode():\n"
-                "    Unresolved pointer found, setting value to zero.\n"
-                "    Location:\n    "+showDomPath( element );
-                */
-                p = 0;
-            } else {
-                qDebug() << "Unknown subelement found:" << tagName;
+    if( node.isNull() )
+        return bOK;
+    
+    QDomElement element = node.toElement();
+    if( element.isNull() )  // was really an element
+        return bOK;
+
+    const QString tagName = element.tagName();
+    if( tagName == "kdchart:pointer" ) {
+        QString s;
+        if( KDXML::findStringAttribute( element, "name", s ) )
+        {
+            ptrName = s;
+            QObject* p0;
+            if( findQObjectPointer( s, p0, wasParsed, bErrorIfNotFound ) )
+            {
+                p = p0;
+            }
+            else if( bErrorIfNotFound )
+            {
+                qDebug() << "    Could not resolve pointer in\n    "+showDomPath( element );
                 bOK = false;
             }
         }
+        else
+        {
+            qDebug() << "    Invalid pointer element:\n    "+showDomPath( element );
+            bOK = false;
+        }
     }
+    else if( tagName == "kdchart:unresolved-pointer" ) {
+        /*
+        qDebug() << "\n"
+        "    Non-critical information by AttributesSerializer::parseQObjectPointerNode():\n"
+        "    Unresolved pointer found, setting value to zero.\n"
+        "    Location:\n    "+showDomPath( element );
+        */
+        p = 0;
+    }
+    else {
+        qDebug() << "Unknown subelement found:" << tagName;
+        bOK = false;
+    }
+    
     return bOK;
 }
 

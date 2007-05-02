@@ -34,6 +34,8 @@
 #include <KDChartDiagramsSerializer.h>
 #include <KDChartSerializeCollector.h>
 #include <KDChartIdMapper.h>
+#include <KDChartAbstractSerializerFactory.h>
+#include <KDChartSerializer.h>
 
 #include <KDXMLTools.h>
 
@@ -59,8 +61,9 @@ LegendsSerializer::Private::~Private()
 {
 }
 
-LegendsSerializer::LegendsSerializer()
-    : _d( new Private( this ) )
+LegendsSerializer::LegendsSerializer( QObject* parent )
+    : QObject( parent ),
+      _d( new Private( this ) )
 {
 }
 
@@ -71,6 +74,19 @@ LegendsSerializer::~LegendsSerializer()
 
 void LegendsSerializer::init()
 {
+}
+
+void LegendsSerializer::saveElement( QDomDocument& doc, QDomElement& e, const QObject* obj ) const
+{
+    const Legend* l = qobject_cast< const Legend* >( obj );
+    if( l != 0 )
+        d->saveLegend( doc, e, *l );
+}
+
+bool LegendsSerializer::parseElement( const QDomElement& container, QObject*& ptr ) const
+{
+    Legend* l =  qobject_cast< Legend* >( ptr );
+    return d->doParseLegend( container, l );
 }
 
 void LegendsSerializer::saveLegends(
@@ -100,19 +116,16 @@ void LegendsSerializer::saveLegends(
                 p,
                 wasFound );
         if( ! wasFound ){
-            saveLegend( doc, legendElement, *p );
+            Serializer::elementSerializerFactory( p )->instance( p->metaObject()->className() )->saveElement( doc, legendElement, p );
         }
     }
 }
-
 
 bool LegendsSerializer::parseLegend(
         const QDomNode& rootNode,
         const QDomNode& pointerNode,
         Legend*& legend )
 {
-    DiagramsSerializer diagS;
-
     bool bOK = true;
     legend = 0;
 
@@ -163,337 +176,346 @@ bool LegendsSerializer::parseLegend(
     if( bOK ) {
         SerializeCollector::instance()->setWasParsed( legend, true );
 
-        QDomNode node = container.firstChild();
-        while( !node.isNull() ) {
-            QDomElement element = node.toElement();
-            if( !element.isNull() ) { // was really an element
-                QString tagName = element.tagName();
-                if( tagName == "kdchart:abstract-area-base" ) {
-                    if( ! AbstractAreaBaseSerializer::parseAbstractAreaBase( element, *legend ) ){
-                        qDebug() << "Could not parse base class of Legend.";
-                        bOK = false;
-                    }
-                } else if( tagName == "Visible" ) {
-                    bool b;
-                    if( KDXML::readBoolNode( element, b ) )
-                        legend->setVisible( b );
-                    else{
-                        qDebug()<< "Could not parse Legend. Error in element" << tagName;
-                        bOK = false;
-                    }
-            } else if( tagName == "ReferenceArea" ) {
-                    QObject* ptr;
-                    QString ptrName;
-                    bool wasParsed;
-                    //qDebug() << " a ";
-                    if( AttributesSerializer::parseQObjectPointerNode(
-                            element.firstChild(), ptr, ptrName, wasParsed, true ) ){
-                        if( ptr ){
-                            QWidget* wPtr = dynamic_cast<QWidget*>(ptr);
-                            if( wPtr ){
-                                legend->setReferenceArea( wPtr );
-                            }else{
-                                qDebug() << "Error: Value of Legend/ReferenceArea must be a QWidget*";
-                                bOK = false;
-                            }
-                        }else{
-                            legend->setReferenceArea( 0 ); // a Null pointer means no bug
-                        }
-                    }else{
-                        qDebug()<< "Could not parse Legend. Error in element" << tagName;
-                        bOK = false;
-                    }
-                    //qDebug() << " b ";
-                } else if( tagName == "kdchart:diagrams:pointers" ) {
-                    // parse the map of associated diagrams
-                    QDomNode node2 = element.firstChild();
-                    while( !node2.isNull() ) {
-                        AbstractDiagram* diag;
-                        if( diagS.parseDiagram( container.ownerDocument().firstChild(), node2, diag ) ){
-                            legend->addDiagram( diag );
-                        }else{
-                            qDebug()<< "Values of Legend/kdchart:diagrams:pointers must be AbstractDiagram pointers";
-                            bOK = false;
-                        }
-                        node2 = node2.nextSibling();
-                    }
-                } else if( tagName == "Alignment" ) {
-                    Qt::Alignment a;
-                    if( KDXML::readAlignmentNode( element, a ) )
-                        legend->setAlignment( a );
-                    else{
-                        qDebug()<< "Could not parse Legend. Error in element" << tagName;
-                        bOK = false;
-                    }
-                } else if( tagName == "Position" ) {
-                    QString s;
-                    if( KDXML::readStringNode( element, s ) )
-                        legend->setPosition( Position::fromName( s.toLatin1() ) );
-                    else{
-                        qDebug()<< "Could not parse Legend. Error in element" << tagName;
-                        bOK = false;
-                    }
-                } else if( tagName == "LegendStyle" ) {
-                    QString s;
-                    if( KDXML::readStringNode( element, s ) ){
-                        if( s.compare("MarkersOnly", Qt::CaseInsensitive) != 0 )
-                            legend->setLegendStyle( Legend::MarkersOnly );
-                        else if( s.compare("LinesOnly", Qt::CaseInsensitive) != 0 )
-                            legend->setLegendStyle( Legend::LinesOnly );
-                        else if( s.compare("MarkersAndLines", Qt::CaseInsensitive) != 0 )
-                            legend->setLegendStyle( Legend::MarkersAndLines );
-                        else{
-                            qDebug()<< "Could not parse Legend. Unknown value in element" << tagName;
-                            bOK = false;
-                        }
-                    }else{
-                        qDebug()<< "Could not parse Legend. Error in element" << tagName;
-                        bOK = false;
-                    }
-                } else if( tagName == "FloatingPosition" ) {
-                    RelativePosition pos;
-                    if( AttributesSerializer::parseRelativePosition( element, pos ) )
-                        legend->setFloatingPosition( pos );
-                    else{
-                        qDebug()<< "Could not parse Legend. Error in element" << tagName;
-                        bOK = false;
-                    }
-                } else if( tagName == "Orientation" ) {
-                    Qt::Orientation o;
-                    if( KDXML::readOrientationNode( element, o ) )
-                        legend->setOrientation( o );
-                    else{
-                        qDebug()<< "Could not parse Legend. Error in element" << tagName;
-                        bOK = false;
-                    }
-                } else if( tagName == "ShowLines" ) {
-                    bool b;
-                    if( KDXML::readBoolNode( element, b ) )
-                        legend->setShowLines( b );
-                    else{
-                        qDebug()<< "Could not parse Legend. Error in element" << tagName;
-                        bOK = false;
-                    }
-                } else if( tagName == "TextsMap" ) {
-                    // parse the map of explicitely set texts
-                    QDomNode node2 = element.firstChild();
-                    while( !node2.isNull() ) {
-                        QDomElement ele2 = node2.toElement();
-                        if( !ele2.isNull() ) { // was really an element
-                            QString tagName2 = ele2.tagName();
-                            if( tagName2 == "item" ) {
-                                int dataset;
-                                QString txt;
-                                if( KDXML::findIntAttribute( ele2, "dataset", dataset ) &&
-                                    KDXML::findStringAttribute( ele2, "text", txt ) ){
-                                    legend->setText( dataset, txt );
-                                }else{
-                                    qDebug() << "Invalid item in Legend/TextsMap found.";
-                                    bOK = false;
-                                }
-                            }else{
-                                qDebug() << "Unknown subelement of Legend/TextsMap found:" << tagName2;
-                                bOK = false;
-                            }
-                        }
-                        node2 = node2.nextSibling();
-                    }
-                } else if( tagName == "BrushesMap" ) {
-                    // parse the map of brushes
-                    QDomNode node2 = element.firstChild();
-                    while( !node2.isNull() ) {
-                        QDomElement ele2 = node2.toElement();
-                        if( !ele2.isNull() ) { // was really an element
-                            QString tagName2 = ele2.tagName();
-                            if( tagName2 == "item" ) {
-                                int dataset;
-                                QBrush brush;
-                                bool brushFound = false;
-                                if( KDXML::findIntAttribute( ele2, "dataset", dataset ) ){
-                                    QDomNode node3 = ele2.firstChild();
-                                    while( !node3.isNull() ) {
-                                        QDomElement ele3 = node3.toElement();
-                                        if( !ele3.isNull() ) { // was really an element
-                                            QString tagName3 = ele3.tagName();
-                                            if( tagName3 == "brush" ) {
-                                                QBrush b;
-                                                if( KDXML::readBrushNode( ele3, b ) ){
-                                                    brush = b;
-                                                    brushFound = true;
-                                                }else{
-                                                    qDebug() << "Error parsing item in Legend/BrushesMap.";
-                                                }
-                                            }else{
-                                                qDebug() << "Unknown subelement of Legend/BrushesMap found:" << tagName3;
-                                            }
-                                        }
-                                        node3 = node3.nextSibling();
-                                    }
-                                    if( brushFound ){
-                                        legend->setBrush( dataset, brush );
-                                    }else{
-                                        qDebug() << "Error parsing Legend/BrushesMap.";
-                                        bOK = false;
-                                    }
-                                }else{
-                                    qDebug() << "Invalid item in Legend/BrushesMap found.";
-                                    bOK = false;
-                                }
-                            }else{
-                                qDebug() << "Unknown subelement of Legend/BrushesMap found:" << tagName2;
-                                bOK = false;
-                            }
-                        }
-                        node2 = node2.nextSibling();
-                    }
-                } else if( tagName == "PensMap" ) {
-                    // parse the map of brushes
-                    QDomNode node2 = element.firstChild();
-                    while( !node2.isNull() ) {
-                        QDomElement ele2 = node2.toElement();
-                        if( !ele2.isNull() ) { // was really an element
-                            QString tagName2 = ele2.tagName();
-                            if( tagName2 == "item" ) {
-                                int dataset;
-                                QPen pen;
-                                bool penFound = false;
-                                if( KDXML::findIntAttribute( ele2, "dataset", dataset ) ){
-                                    QDomNode node3 = ele2.firstChild();
-                                    while( !node3.isNull() ) {
-                                        QDomElement ele3 = node3.toElement();
-                                        if( !ele3.isNull() ) { // was really an element
-                                            QString tagName3 = ele3.tagName();
-                                            if( tagName3 == "pen" ) {
-                                                QPen pe;
-                                                if( KDXML::readPenNode( ele3, pe ) ){
-                                                    pen = pe;
-                                                    penFound = true;
-                                                }else{
-                                                    qDebug() << "Error parsing item in Legend/PensMap.";
-                                                }
-                                            }else{
-                                                qDebug() << "Unknown subelement of Legend/PensMap found:" << tagName3;
-                                            }
-                                        }
-                                        node3 = node3.nextSibling();
-                                    }
-                                    if( penFound ){
-                                        legend->setPen( dataset, pen );
-                                    }else{
-                                        qDebug() << "Error parsing Legend/PensMap.";
-                                        bOK = false;
-                                    }
-                                }else{
-                                    qDebug() << "Invalid item in Legend/PensMap found.";
-                                    bOK = false;
-                                }
-                            }else{
-                                qDebug() << "Unknown subelement of Legend/PensMap found:" << tagName2;
-                                bOK = false;
-                            }
-                        }
-                        node2 = node2.nextSibling();
-                    }
-                } else if( tagName == "MarkerAttributesMap" ) {
-                    // parse the map of brushes
-                    QDomNode node2 = element.firstChild();
-                    while( !node2.isNull() ) {
-                        QDomElement ele2 = node2.toElement();
-                        if( !ele2.isNull() ) { // was really an element
-                            QString tagName2 = ele2.tagName();
-                            if( tagName2 == "item" ) {
-                                int dataset;
-                                MarkerAttributes attrs;
-                                bool attrsFound = false;
-                                if( KDXML::findIntAttribute( ele2, "dataset", dataset ) ){
-                                    QDomNode node3 = ele2.firstChild();
-                                    while( !node3.isNull() ) {
-                                        QDomElement ele3 = node3.toElement();
-                                        if( !ele3.isNull() ) { // was really an element
-                                            QString tagName3 = ele3.tagName();
-                                            if( tagName3 == "MarkerAttributes" ) {
-                                                MarkerAttributes a;
-                                                if( AttributesSerializer::parseMarkerAttributes( ele3, a ) ){
-                                                    attrs = a;
-                                                    attrsFound = true;
-                                                }else{
-                                                    qDebug() << "Error parsing item in Legend/MarkerAttributesMap.";
-                                                }
-                                            }else{
-                                                qDebug() << "Unknown subelement of Legend/MarkerAttributesMap found:" << tagName3;
-                                            }
-                                        }
-                                        node3 = node3.nextSibling();
-                                    }
-                                    if( attrsFound ){
-                                        legend->setMarkerAttributes( dataset, attrs );
-                                    }else{
-                                        qDebug() << "Error parsing Legend/MarkerAttributesMap.";
-                                        bOK = false;
-                                    }
-                                }else{
-                                    qDebug() << "Invalid item in Legend/MarkerAttributesMap found.";
-                                    bOK = false;
-                                }
-                            }else{
-                                qDebug() << "Unknown subelement of Legend/MarkerAttributesMap found:" << tagName2;
-                                bOK = false;
-                            }
-                        }
-                        node2 = node2.nextSibling();
-                    }
-                } else if( tagName == "UseAutomaticMarkerSize" ) {
-                    bool b;
-                    if( KDXML::readBoolNode( element, b ) )
-                        legend->setUseAutomaticMarkerSize( b );
-                    else{
-                        qDebug()<< "Could not parse Legend. Error in element" << tagName;
-                        bOK = false;
-                    }
-                } else if( tagName == "TextAttributes" ) {
-                    TextAttributes ta;
-                    if( AttributesSerializer::parseTextAttributes( element, ta ) )
-                        legend->setTextAttributes( ta );
-                    else{
-                        qDebug()<< "Could not parse Legend. Error in element" << tagName;
-                        bOK = false;
-                    }
-                } else if( tagName == "TitleText" ) {
-                    QString s;
-                    if( KDXML::readStringNode( element, s ) )
-                        legend->setTitleText( s );
-                    else{
-                        qDebug()<< "Could not parse Legend. Error in element" << tagName;
-                        bOK = false;
-                    }
-                } else if( tagName == "TitleTextAttributes" ) {
-                    TextAttributes ta;
-                    if( AttributesSerializer::parseTextAttributes( element, ta ) )
-                        legend->setTitleTextAttributes( ta );
-                    else{
-                        qDebug()<< "Could not parse Legend. Error in element" << tagName;
-                        bOK = false;
-                    }
-                } else if( tagName == "Spacing" ) {
-                    int i;
-                    if( KDXML::readIntNode( element, i ) )
-                        legend->setSpacing( i );
-                    else{
-                        qDebug()<< "Could not parse Legend. Error in element" << tagName;
-                        bOK = false;
-                    }
-                } else {
-                    qDebug() << "Unknown subelement of Legend found:" << tagName;
+        return Private::doParseLegend( container, legend );
+    }
+    return false;
+}
+
+bool LegendsSerializer::Private::doParseLegend( const QDomElement& container, Legend* legend )
+{
+    bool bOK = true;
+
+    QDomNode node = container.firstChild();
+    while( !node.isNull() ) {
+        QDomElement element = node.toElement();
+        if( !element.isNull() ) { // was really an element
+            QString tagName = element.tagName();
+            if( tagName == "kdchart:abstract-area-base" ) {
+                if( ! AbstractAreaBaseSerializer::parseAbstractAreaBase( element, *legend ) ){
+                    qDebug() << "Could not parse base class of Legend.";
                     bOK = false;
                 }
+            } else if( tagName == "Visible" ) {
+                bool b;
+                if( KDXML::readBoolNode( element, b ) )
+                    legend->setVisible( b );
+                else{
+                    qDebug()<< "Could not parse Legend. Error in element" << tagName;
+                    bOK = false;
+                }
+        } else if( tagName == "ReferenceArea" ) {
+                QObject* ptr;
+                QString ptrName;
+                bool wasParsed;
+                //qDebug() << " a ";
+                if( AttributesSerializer::parseQObjectPointerNode(
+                        element.firstChild(), ptr, ptrName, wasParsed, true ) ){
+                    if( ptr ){
+                        QWidget* wPtr = dynamic_cast<QWidget*>(ptr);
+                        if( wPtr ){
+                            legend->setReferenceArea( wPtr );
+                        }else{
+                            qDebug() << "Error: Value of Legend/ReferenceArea must be a QWidget*";
+                            bOK = false;
+                        }
+                    }else{
+                        legend->setReferenceArea( 0 ); // a Null pointer means no bug
+                    }
+                }else{
+                    qDebug()<< "Could not parse Legend. Error in element" << tagName;
+                    bOK = false;
+                }
+                //qDebug() << " b ";
+            } else if( tagName == "kdchart:diagrams:pointers" ) {
+                // parse the map of associated diagrams
+                QDomNode node2 = element.firstChild();
+                while( !node2.isNull() ) {
+                    AbstractDiagram* diag;
+                    DiagramsSerializer diagS;
+                    if( diagS.parseDiagram( container.ownerDocument().firstChild(), node2, diag ) ){
+                        legend->addDiagram( diag );
+                    }else{
+                        qDebug()<< "Values of Legend/kdchart:diagrams:pointers must be AbstractDiagram pointers";
+                        bOK = false;
+                    }
+                    node2 = node2.nextSibling();
+                }
+            } else if( tagName == "Alignment" ) {
+                Qt::Alignment a;
+                if( KDXML::readAlignmentNode( element, a ) )
+                    legend->setAlignment( a );
+                else{
+                    qDebug()<< "Could not parse Legend. Error in element" << tagName;
+                    bOK = false;
+                }
+            } else if( tagName == "Position" ) {
+                QString s;
+                if( KDXML::readStringNode( element, s ) )
+                    legend->setPosition( Position::fromName( s.toLatin1() ) );
+                else{
+                    qDebug()<< "Could not parse Legend. Error in element" << tagName;
+                    bOK = false;
+                }
+            } else if( tagName == "LegendStyle" ) {
+                QString s;
+                if( KDXML::readStringNode( element, s ) ){
+                    if( s.compare("MarkersOnly", Qt::CaseInsensitive) != 0 )
+                        legend->setLegendStyle( Legend::MarkersOnly );
+                    else if( s.compare("LinesOnly", Qt::CaseInsensitive) != 0 )
+                        legend->setLegendStyle( Legend::LinesOnly );
+                    else if( s.compare("MarkersAndLines", Qt::CaseInsensitive) != 0 )
+                        legend->setLegendStyle( Legend::MarkersAndLines );
+                    else{
+                        qDebug()<< "Could not parse Legend. Unknown value in element" << tagName;
+                        bOK = false;
+                    }
+                }else{
+                    qDebug()<< "Could not parse Legend. Error in element" << tagName;
+                    bOK = false;
+                }
+            } else if( tagName == "FloatingPosition" ) {
+                RelativePosition pos;
+                if( AttributesSerializer::parseRelativePosition( element, pos ) )
+                    legend->setFloatingPosition( pos );
+                else{
+                    qDebug()<< "Could not parse Legend. Error in element" << tagName;
+                    bOK = false;
+                }
+            } else if( tagName == "Orientation" ) {
+                Qt::Orientation o;
+                if( KDXML::readOrientationNode( element, o ) )
+                    legend->setOrientation( o );
+                else{
+                    qDebug()<< "Could not parse Legend. Error in element" << tagName;
+                    bOK = false;
+                }
+            } else if( tagName == "ShowLines" ) {
+                bool b;
+                if( KDXML::readBoolNode( element, b ) )
+                    legend->setShowLines( b );
+                else{
+                    qDebug()<< "Could not parse Legend. Error in element" << tagName;
+                    bOK = false;
+                }
+            } else if( tagName == "TextsMap" ) {
+                // parse the map of explicitely set texts
+                QDomNode node2 = element.firstChild();
+                while( !node2.isNull() ) {
+                    QDomElement ele2 = node2.toElement();
+                    if( !ele2.isNull() ) { // was really an element
+                        QString tagName2 = ele2.tagName();
+                        if( tagName2 == "item" ) {
+                            int dataset;
+                            QString txt;
+                            if( KDXML::findIntAttribute( ele2, "dataset", dataset ) &&
+                                KDXML::findStringAttribute( ele2, "text", txt ) ){
+                                legend->setText( dataset, txt );
+                            }else{
+                                qDebug() << "Invalid item in Legend/TextsMap found.";
+                                bOK = false;
+                            }
+                        }else{
+                            qDebug() << "Unknown subelement of Legend/TextsMap found:" << tagName2;
+                            bOK = false;
+                        }
+                    }
+                    node2 = node2.nextSibling();
+                }
+            } else if( tagName == "BrushesMap" ) {
+                // parse the map of brushes
+                QDomNode node2 = element.firstChild();
+                while( !node2.isNull() ) {
+                    QDomElement ele2 = node2.toElement();
+                    if( !ele2.isNull() ) { // was really an element
+                        QString tagName2 = ele2.tagName();
+                        if( tagName2 == "item" ) {
+                            int dataset;
+                            QBrush brush;
+                            bool brushFound = false;
+                            if( KDXML::findIntAttribute( ele2, "dataset", dataset ) ){
+                                QDomNode node3 = ele2.firstChild();
+                                while( !node3.isNull() ) {
+                                    QDomElement ele3 = node3.toElement();
+                                    if( !ele3.isNull() ) { // was really an element
+                                        QString tagName3 = ele3.tagName();
+                                        if( tagName3 == "brush" ) {
+                                            QBrush b;
+                                            if( KDXML::readBrushNode( ele3, b ) ){
+                                                brush = b;
+                                                brushFound = true;
+                                            }else{
+                                                qDebug() << "Error parsing item in Legend/BrushesMap.";
+                                            }
+                                        }else{
+                                            qDebug() << "Unknown subelement of Legend/BrushesMap found:" << tagName3;
+                                        }
+                                    }
+                                    node3 = node3.nextSibling();
+                                }
+                                if( brushFound ){
+                                    legend->setBrush( dataset, brush );
+                                }else{
+                                    qDebug() << "Error parsing Legend/BrushesMap.";
+                                    bOK = false;
+                                }
+                            }else{
+                                qDebug() << "Invalid item in Legend/BrushesMap found.";
+                                bOK = false;
+                            }
+                        }else{
+                            qDebug() << "Unknown subelement of Legend/BrushesMap found:" << tagName2;
+                            bOK = false;
+                        }
+                    }
+                    node2 = node2.nextSibling();
+                }
+            } else if( tagName == "PensMap" ) {
+                // parse the map of brushes
+                QDomNode node2 = element.firstChild();
+                while( !node2.isNull() ) {
+                    QDomElement ele2 = node2.toElement();
+                    if( !ele2.isNull() ) { // was really an element
+                        QString tagName2 = ele2.tagName();
+                        if( tagName2 == "item" ) {
+                            int dataset;
+                            QPen pen;
+                            bool penFound = false;
+                            if( KDXML::findIntAttribute( ele2, "dataset", dataset ) ){
+                                QDomNode node3 = ele2.firstChild();
+                                while( !node3.isNull() ) {
+                                    QDomElement ele3 = node3.toElement();
+                                    if( !ele3.isNull() ) { // was really an element
+                                        QString tagName3 = ele3.tagName();
+                                        if( tagName3 == "pen" ) {
+                                            QPen pe;
+                                            if( KDXML::readPenNode( ele3, pe ) ){
+                                                pen = pe;
+                                                penFound = true;
+                                            }else{
+                                                qDebug() << "Error parsing item in Legend/PensMap.";
+                                            }
+                                        }else{
+                                            qDebug() << "Unknown subelement of Legend/PensMap found:" << tagName3;
+                                        }
+                                    }
+                                    node3 = node3.nextSibling();
+                                }
+                                if( penFound ){
+                                    legend->setPen( dataset, pen );
+                                }else{
+                                    qDebug() << "Error parsing Legend/PensMap.";
+                                    bOK = false;
+                                }
+                            }else{
+                                qDebug() << "Invalid item in Legend/PensMap found.";
+                                bOK = false;
+                            }
+                        }else{
+                            qDebug() << "Unknown subelement of Legend/PensMap found:" << tagName2;
+                            bOK = false;
+                        }
+                    }
+                    node2 = node2.nextSibling();
+                }
+            } else if( tagName == "MarkerAttributesMap" ) {
+                // parse the map of brushes
+                QDomNode node2 = element.firstChild();
+                while( !node2.isNull() ) {
+                    QDomElement ele2 = node2.toElement();
+                    if( !ele2.isNull() ) { // was really an element
+                        QString tagName2 = ele2.tagName();
+                        if( tagName2 == "item" ) {
+                            int dataset;
+                            MarkerAttributes attrs;
+                            bool attrsFound = false;
+                            if( KDXML::findIntAttribute( ele2, "dataset", dataset ) ){
+                                QDomNode node3 = ele2.firstChild();
+                                while( !node3.isNull() ) {
+                                    QDomElement ele3 = node3.toElement();
+                                    if( !ele3.isNull() ) { // was really an element
+                                        QString tagName3 = ele3.tagName();
+                                        if( tagName3 == "MarkerAttributes" ) {
+                                            MarkerAttributes a;
+                                            if( AttributesSerializer::parseMarkerAttributes( ele3, a ) ){
+                                                attrs = a;
+                                                attrsFound = true;
+                                            }else{
+                                                qDebug() << "Error parsing item in Legend/MarkerAttributesMap.";
+                                            }
+                                        }else{
+                                            qDebug() << "Unknown subelement of Legend/MarkerAttributesMap found:" << tagName3;
+                                        }
+                                    }
+                                    node3 = node3.nextSibling();
+                                }
+                                if( attrsFound ){
+                                    legend->setMarkerAttributes( dataset, attrs );
+                                }else{
+                                    qDebug() << "Error parsing Legend/MarkerAttributesMap.";
+                                    bOK = false;
+                                }
+                            }else{
+                                qDebug() << "Invalid item in Legend/MarkerAttributesMap found.";
+                                bOK = false;
+                            }
+                        }else{
+                            qDebug() << "Unknown subelement of Legend/MarkerAttributesMap found:" << tagName2;
+                            bOK = false;
+                        }
+                    }
+                    node2 = node2.nextSibling();
+                }
+            } else if( tagName == "UseAutomaticMarkerSize" ) {
+                bool b;
+                if( KDXML::readBoolNode( element, b ) )
+                    legend->setUseAutomaticMarkerSize( b );
+                else{
+                    qDebug()<< "Could not parse Legend. Error in element" << tagName;
+                    bOK = false;
+                }
+            } else if( tagName == "TextAttributes" ) {
+                TextAttributes ta;
+                if( AttributesSerializer::parseTextAttributes( element, ta ) )
+                    legend->setTextAttributes( ta );
+                else{
+                    qDebug()<< "Could not parse Legend. Error in element" << tagName;
+                    bOK = false;
+                }
+            } else if( tagName == "TitleText" ) {
+                QString s;
+                if( KDXML::readStringNode( element, s ) )
+                    legend->setTitleText( s );
+                else{
+                    qDebug()<< "Could not parse Legend. Error in element" << tagName;
+                    bOK = false;
+                }
+            } else if( tagName == "TitleTextAttributes" ) {
+                TextAttributes ta;
+                if( AttributesSerializer::parseTextAttributes( element, ta ) )
+                    legend->setTitleTextAttributes( ta );
+                else{
+                    qDebug()<< "Could not parse Legend. Error in element" << tagName;
+                    bOK = false;
+                }
+            } else if( tagName == "Spacing" ) {
+                int i;
+                if( KDXML::readIntNode( element, i ) )
+                    legend->setSpacing( i );
+                else{
+                    qDebug()<< "Could not parse Legend. Error in element" << tagName;
+                    bOK = false;
+                }
+            } else {
+                qDebug() << "Unknown subelement of Legend found:" << tagName;
+                bOK = false;
             }
-            node = node.nextSibling();
         }
+        node = node.nextSibling();
     }
     return bOK;
 }
 
-void LegendsSerializer::saveLegend(
+void LegendsSerializer::Private::saveLegend(
         QDomDocument& doc,
         QDomElement& element,
         const Legend& legend )

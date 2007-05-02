@@ -34,6 +34,7 @@
   */
 
 #include "KDChartAbstractSerializer.h"
+#include "KDChartLegendsSerializer.h"
 
 #include "KDChartAttributesSerializer.h"
 
@@ -60,6 +61,7 @@ namespace KDChart {
         friend class Private;
         friend class CoordPlanesSerializer;
         friend class LegendsSerializer;
+        friend class LegendsSerializer::Private;
 
     public:
         explicit DiagramsSerializer( CoordPlanesSerializer* coordS = 0 );

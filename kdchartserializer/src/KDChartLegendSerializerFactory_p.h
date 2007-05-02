@@ -26,8 +26,8 @@
  ** licensing are not clear to you.
  **
  **********************************************************************/
-#ifndef __KDCHARTLEGENDSSERIALIZER_P_H__
-#define __KDCHARTLEGENDSSERIALIZER_P_H__
+#ifndef __KDCHARTLEGENDSERIALIZERFACTORY_P_H__
+#define __KDCHARTLEGENDSERIALIZERFACTORY_P_H__
 
 //
 //  W A R N I N G
@@ -40,23 +40,29 @@
 // We mean it.
 //
 
-#include <KDChartLegendsSerializer.h>
+#include <KDChartLegendSerializerFactory.h>
+
+#include <QMap>
+
+namespace KDChart
+{
+    class LegendsSerializer;
+}
 
 /**
  * \internal
  */
-class KDChart::LegendsSerializer::Private
+class KDChart::LegendSerializerFactory::Private
 {
-    friend class ::KDChart::LegendsSerializer;
-    LegendsSerializer * const q;
+    friend class ::KDChart::LegendSerializerFactory;
+    LegendSerializerFactory* const q;
 public:
-    explicit Private( LegendsSerializer * qq );
+    explicit Private( LegendSerializerFactory * qq );
     ~Private(); // non-virtual, since nothing inherits this
 
 protected:
-    static void saveLegend( QDomDocument& doc, QDomElement& element, const Legend& legend );
-    static bool doParseLegend( const QDomElement& container, Legend* ptr );
+    mutable KDChart::LegendsSerializer* m_instance;
 };
 
 
-#endif // KDChartLegendsSerializer_p_H
+#endif // KDChartLegendSerializerFactory_p_H
