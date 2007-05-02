@@ -174,13 +174,6 @@ namespace KDChart {
                 QDomDocument& doc,
                 QDomElement& diagElement,
                 const AbstractDiagram& diagram )const;
-
-    private:
-        bool mHaveOwnCoordS;
-        CoordPlanesSerializer* mCoordS;
-        AxesSerializer* mAxesS;
-        AttributesModelSerializer* mAttrModelS;
-        mutable QString mGlobalList;
     };
 
 } // end of namespace
