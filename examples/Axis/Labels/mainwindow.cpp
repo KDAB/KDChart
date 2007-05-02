@@ -28,6 +28,7 @@
 
 #include <KDChartChart>
 #include <KDChartAbstractCoordinatePlane>
+#include <KDChartBackgroundAttributes>
 #include <KDChartLineDiagram>
 #include <KDChartLineAttributes>
 #include <KDChartTextAttributes>
@@ -38,6 +39,7 @@
 
 #include <QDebug>
 #include <QPainter>
+#include <QLinearGradient>
 
 using namespace KDChart;
 
@@ -65,6 +67,19 @@ MainWindow::MainWindow( QWidget* parent ) :
     yAxis->setPosition ( KDChart::CartesianAxis::Left );
     xAxis->setTitleText ( "Abscissa axis at the bottom" );
     yAxis->setTitleText ( "Ordinate axis at the left side" );
+
+    // colourize the Ordinate axis' background
+    QLinearGradient linearGrad(QPointF(0, 100), QPointF(0, 400));
+    linearGrad.setColorAt(0.0, QColor(0xff,0xff,0xc0));
+    linearGrad.setColorAt(1.0, QColor(0xa0,0xc0,0xff));
+    BackgroundAttributes ba = yAxis->backgroundAttributes();
+    ba.setVisible( true );
+    ba.setBrush( linearGrad );
+    yAxis->setBackgroundAttributes( ba );
+
+    // add 1 pixel space at the left and at the top edge, because the
+    // axis area would otherwise overwrite the left/top borders
+    m_chart->setGlobalLeading(1,1,0,0);
 
 // set the following to 0, to see the default Abscissa labels (== X headers, as read from the data file)
 #if 1
