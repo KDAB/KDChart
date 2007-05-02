@@ -37,6 +37,14 @@
 #include <KDChartTextAreaSerializer.h>
 #include <KDChartLegendsSerializer.h>
 
+#include <KDChartDiagramSerializerFactory.h>
+
+#include <KDChartLineDiagram.h>
+#include <KDChartBarDiagram.h>
+#include <KDChartPieDiagram.h>
+#include <KDChartPolarDiagram.h>
+#include <KDChartRingDiagram.h>
+
 #include <KDXMLTools.h>
 
 #include <qglobal.h>
@@ -45,6 +53,8 @@
 #define d d_func()
 
 using namespace KDChart;
+
+QMap< QString, AbstractSerializerFactory* > Serializer::Private::s_serializerFactories;
 
 Serializer::Private::Private( Serializer* qq )
     : q( qq ),
@@ -71,6 +81,14 @@ Serializer::Serializer( Chart* chart, QAbstractItemModel * model )
     // instantiate (or re-set, resp.) the singletons:
     IdMapper::instance()->clear();
     SerializeCollector::instance()->clear();
+
+    // register factories
+    DiagramSerializerFactory* f = new DiagramSerializerFactory( this );
+    registerElementSerializerFactory< LineDiagram >( f );
+    registerElementSerializerFactory< BarDiagram >( f );
+    registerElementSerializerFactory< PieDiagram >( f );
+    registerElementSerializerFactory< PolarDiagram >( f );
+    registerElementSerializerFactory< RingDiagram >( f );
 }
 
 Serializer::~Serializer()
@@ -498,4 +516,29 @@ Chart* Serializer::chart() const
 void Serializer::setChart( Chart* chart )
 {
     d->m_chart = chart;
+}
+
+void Serializer::registerElementSerializerFactory( const char* className, AbstractSerializerFactory* factory )
+{
+    Private::s_serializerFactories.insert( QString::fromLatin1( className ), factory );
+}
+
+void Serializer::unregisterElementSerializerFactory( const char* className )
+{
+    Private::s_serializerFactories.remove( QString::fromLatin1( className ) );
+}
+
+AbstractSerializerFactory* Serializer::elementSerializerFactory( const QObject* element )
+{
+    return elementSerializerFactory( element->metaObject()->className() );
+}
+
+AbstractSerializerFactory* Serializer::elementSerializerFactory( const QString& className )
+{
+    return Private::s_serializerFactories.value( className );
+}
+
+AbstractSerializerFactory* Serializer::elementSerializerFactory( const char* className )
+{
+    return elementSerializerFactory( QString::fromLatin1( className ) );
 }

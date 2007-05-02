@@ -33,6 +33,8 @@
     \brief Auxiliary methods for reading/saving KD Chart data and configuration in streams.
   */
 
+#include "KDChartAbstractSerializer.h"
+
 #include "KDChartAttributesSerializer.h"
 
 #include <KDChartChart>
@@ -48,7 +50,7 @@ namespace KDChart {
     class AxesSerializer;
     class AttributesModelSerializer;
 
-    class KDCHART_EXPORT DiagramsSerializer : public QObject
+    class KDCHART_EXPORT DiagramsSerializer : public QObject, public AbstractSerializer
     {
         Q_OBJECT
         Q_DISABLE_COPY( DiagramsSerializer )
@@ -64,6 +66,8 @@ namespace KDChart {
                 QDomElement& e,
                 const ConstAbstractDiagramList& diags,
                 const QString& title )const;
+        
+        virtual void saveElement( QDomDocument& doc, QDomElement& e, const QObject* obj ) const;
 
         /**
          * Parse the diagram element, and return an AbstractDiagram* in \c diagramPtr
@@ -73,9 +77,14 @@ namespace KDChart {
          * \c KDChart::SerializeCollector::instance()->initializeParsedGlobalPointers()
          * before invoking this method, or it will stop parsing and return false.
          */
+        virtual bool parseElement( const QDomElement& container, QObject*& ptr ) const;
+
         virtual bool parseDiagram(
                 const QDomNode& rootNode,
                 const QDomNode& pointerNode,
+                AbstractDiagram*& diagramPtr )const;
+        virtual bool doParseDiagram(
+                const QDomElement& container,
                 AbstractDiagram*& diagramPtr )const;
         virtual void saveDiagram(
                 QDomDocument& doc,

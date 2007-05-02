@@ -44,6 +44,7 @@ class QAbstractItemModel;
 namespace KDChart {
 
     class CoordPlanesSerializer;
+    class AbstractSerializerFactory;
 
     class KDCHART_EXPORT Serializer : public QObject
     {
@@ -105,6 +106,30 @@ namespace KDChart {
         virtual bool saveChartElement(
                 QDomDocument& doc,
                 QDomElement& e ) const;
+
+        template< class T >
+        static void registerElementSerializerFactory( AbstractSerializerFactory* factory )
+        {
+            registerElementSerializerFactory( T::staticMetaObject.className(), factory );
+        }
+        template< class T >
+        static void unregisterElementSerializerFactory()
+        {
+            unregisterElementSerializerFactory( T::staticMetaObject.className() );
+        }
+        template< class T >
+        static AbstractSerializerFactory* elementSerializerFactory()
+        {
+            return elementSerializerFactory( T::staticMetaObject.className() );
+        }
+        static AbstractSerializerFactory* elementSerializerFactory( const QObject* element );
+        
+        static AbstractSerializerFactory* elementSerializerFactory( const QString& className );
+
+    protected:
+        static void registerElementSerializerFactory( const char* name, AbstractSerializerFactory* factory );
+        static void unregisterElementSerializerFactory( const char* name );
+        static AbstractSerializerFactory* elementSerializerFactory( const char* className );
     };
 
 } // end of namespace

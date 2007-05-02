@@ -41,14 +41,10 @@
 #include <KDChartChart>
 #include <KDChartCartesianCoordinatePlane>
 #include <KDChartPolarCoordinatePlane>
-#include <KDChartBarDiagram>
-#include <KDChartLineDiagram>
-#include <KDChartPieDiagram>
-#include <KDChartPolarDiagram>
-#include <KDChartRingDiagram>
 #include <KDChartHeaderFooter>
 #include <KDChartLegend>
-
+#include <KDChartAbstractSerializerFactory.h>
+#include <KDChartSerializer.h>
 
 #include <KDXMLTools.h>
 
@@ -196,7 +192,14 @@ bool SerializeCollector::initializeGlobalPointers(
                         QString className;
                         if( KDXML::findStringAttribute( e2, "Classname", className ) ){
                             //qDebug() << "object:" << objectName << "class:" << className;
-                            if( className == "KDChart::AttributesModel" ){
+                            AbstractSerializerFactory* f = Serializer::elementSerializerFactory( className );
+                            if( f != 0 )
+                            {
+                                instance()->initializedPointersMap().insert(
+                                        objectName,
+                                        InitializedPointersMapItem(
+                                            f->createNewObject( className ) ) );
+                            } else if( className == "KDChart::AttributesModel" ){
                                 bool bExternalFlag;
                                 if( KDXML::findBoolAttribute( e2, "external", bExternalFlag ) ){
                                     if( bExternalFlag ){
@@ -237,7 +240,7 @@ bool SerializeCollector::initializeGlobalPointers(
                                         objectName,
                                         InitializedPointersMapItem(
                                                 new PolarCoordinatePlane( 0 ) ) );
-                            } else if( className == "KDChart::BarDiagram" ){
+/*                            } else if( className == "KDChart::BarDiagram" ){
                                 instance()->initializedPointersMap().insert(
                                         objectName,
                                         InitializedPointersMapItem(
@@ -261,7 +264,7 @@ bool SerializeCollector::initializeGlobalPointers(
                                 instance()->initializedPointersMap().insert(
                                         objectName,
                                         InitializedPointersMapItem(
-                                                new RingDiagram(0, 0) ) );
+                                                new RingDiagram(0, 0) ) );*/
                             } else if( className == "KDChart::HeaderFooter" ){
                                 instance()->initializedPointersMap().insert(
                                         objectName,

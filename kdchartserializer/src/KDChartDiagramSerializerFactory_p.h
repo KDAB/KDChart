@@ -26,8 +26,8 @@
  ** licensing are not clear to you.
  **
  **********************************************************************/
-#ifndef __KDCHARTSERIALIZER_P_H__
-#define __KDCHARTSERIALIZER_P_H__
+#ifndef __KDCHARTDIAGRAMSERIALIZERFACTORY_P_H__
+#define __KDCHARTDIAGRAMSERIALIZERFACTORY_P_H__
 
 //
 //  W A R N I N G
@@ -40,29 +40,29 @@
 // We mean it.
 //
 
-#include <KDChartSerializer.h>
+#include <KDChartDiagramSerializerFactory.h>
 
 #include <QMap>
 
-class KDChart::AbstractSerializerFactory;
+namespace KDChart
+{
+    class DiagramsSerializer;
+}
 
 /**
  * \internal
  */
-class KDChart::Serializer::Private
+class KDChart::DiagramSerializerFactory::Private
 {
-    friend class ::KDChart::Serializer;
-    Serializer * const q;
+    friend class ::KDChart::DiagramSerializerFactory;
+    DiagramSerializerFactory* const q;
 public:
-    explicit Private( Serializer * qq );
+    explicit Private( DiagramSerializerFactory * qq );
     ~Private(); // non-virtual, since nothing inherits this
 
 protected:
-    QString m_programName;
-    Chart* m_chart;
-    CoordPlanesSerializer* m_coordS;
-    static QMap< QString, AbstractSerializerFactory* > s_serializerFactories;
+    mutable KDChart::DiagramsSerializer* m_instance;
 };
 
 
-#endif // KDChartSerializer_p_H
+#endif // KDChartDiagramSerializerFactory_p_H

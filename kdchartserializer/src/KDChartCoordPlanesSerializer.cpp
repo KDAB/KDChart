@@ -214,6 +214,7 @@ const QString CoordPlanesSerializer::nameOfClass( const AbstractCoordinatePlane*
         classname = "KDChart::PolarCoordinatePlane";
     else
         classname = "UNKNOWN";
+    qDebug() << "nameOfClass(" << p->metaObject()->className() << ") =" << classname;
     return classname;
 }
 

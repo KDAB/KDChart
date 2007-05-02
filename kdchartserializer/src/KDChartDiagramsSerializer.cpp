@@ -42,6 +42,8 @@
 #include <KDChartPieDiagram>
 #include <KDChartPolarDiagram>
 #include <KDChartRingDiagram>
+#include <KDChartSerializer.h>
+#include <KDChartAbstractSerializerFactory.h>
 
 #include <qglobal.h>
 #include <QMessageBox>
@@ -143,7 +145,7 @@ void DiagramsSerializer::saveDiagrams(
                 p,
                 wasFound );
         if( ! wasFound ){
-            saveDiagram( doc, diagElement, p );
+            Serializer::elementSerializerFactory( p )->instance( p->metaObject()->className() )->saveElement( doc, diagElement, p );
         }
     }
 }
@@ -197,26 +199,51 @@ bool DiagramsSerializer::parseDiagram(
     if( bOK ) {
         SerializeCollector::instance()->setWasParsed( diagramPtr, true );
 
-        LineDiagram*  lineDiag  = dynamic_cast<LineDiagram*> (  diagramPtr );
-        BarDiagram*   barDiag   = dynamic_cast<BarDiagram*> (   diagramPtr );
-        PieDiagram*   pieDiag   = dynamic_cast<PieDiagram*> (   diagramPtr );
-        PolarDiagram* polarDiag = dynamic_cast<PolarDiagram*> ( diagramPtr );
-        RingDiagram*  ringDiag  = dynamic_cast<RingDiagram*> (  diagramPtr );
+        const AbstractSerializerFactory* const f = Serializer::elementSerializerFactory( diagramPtr );
 
-        if( lineDiag )
-            bOK = parseLineDiagram(  container, *lineDiag );
-        else if( barDiag )
-            bOK = parseBarDiagram(   container,  *barDiag );
-        else if( pieDiag )
-            bOK = parsePieDiagram(   container, *pieDiag );
-        else if( polarDiag )
-            bOK = parsePolarDiagram( container, *polarDiag );
-        else if( ringDiag )
-            bOK = parseRingDiagram(  container, *ringDiag );
-        else
-            bOK = parseOtherDiagram( container, *diagramPtr );
+        ptr = diagramPtr;
+        bOK = f->instance( diagramPtr->metaObject()->className() )->parseElement( container, ptr );
     }
     return bOK;
+}
+
+bool DiagramsSerializer::doParseDiagram(
+        const QDomElement& container,
+        AbstractDiagram*& diagramPtr )const
+{
+    bool result = false;
+
+    LineDiagram*  lineDiag  = qobject_cast< LineDiagram*> (  diagramPtr );
+    BarDiagram*   barDiag   = qobject_cast< BarDiagram*> (   diagramPtr );
+    PieDiagram*   pieDiag   = qobject_cast< PieDiagram*> (   diagramPtr );
+    PolarDiagram* polarDiag = qobject_cast< PolarDiagram*> ( diagramPtr );
+    RingDiagram*  ringDiag  = qobject_cast< RingDiagram*> (  diagramPtr );
+
+    if( lineDiag )
+        result = parseLineDiagram(  container, *lineDiag );
+    else if( barDiag )
+        result = parseBarDiagram(   container,  *barDiag );
+    else if( pieDiag )
+        result = parsePieDiagram(   container, *pieDiag );
+    else if( polarDiag )
+        result = parsePolarDiagram( container, *polarDiag );
+    else if( ringDiag )
+        result = parseRingDiagram(  container, *ringDiag );
+    else
+        result = parseOtherDiagram( container, *diagramPtr );
+
+    return result;
+}
+
+void DiagramsSerializer::saveElement( QDomDocument& doc, QDomElement& e, const QObject* obj ) const
+{
+    saveDiagram( doc, e, qobject_cast< const AbstractDiagram* >( obj ) );
+}
+
+bool DiagramsSerializer::parseElement( const QDomElement& container, QObject*& ptr ) const
+{
+    AbstractDiagram* diag = qobject_cast< AbstractDiagram* >( ptr );
+    return doParseDiagram( container, diag );
 }
 
 void DiagramsSerializer::saveDiagram(
@@ -224,8 +251,9 @@ void DiagramsSerializer::saveDiagram(
         QDomElement& e,
         const AbstractDiagram* p )const
 {
-    if( ! p ) return;
-
+    if( p == 0 )
+        return;
+    
     const LineDiagram*  lineDiag  = dynamic_cast<const LineDiagram*> (  p );
     const BarDiagram*   barDiag   = dynamic_cast<const BarDiagram*> (   p );
     const PieDiagram*   pieDiag   = dynamic_cast<const PieDiagram*> (   p );
