@@ -865,7 +865,7 @@ void Legend::buildLegend()
     const bool bShowMarkers = (style != LinesOnly);
 
     QSizeF maxMarkersSize(1.0, 1.0);
-    MarkerAttributes markerAttrs[d->modelLabels.count()];
+    QVector <MarkerAttributes> markerAttrs( d->modelLabels.count() );
     if( bShowMarkers ){
         for ( int dataset = 0; dataset < d->modelLabels.count(); ++dataset ) {
             markerAttrs[dataset] = markerAttributes( dataset );
