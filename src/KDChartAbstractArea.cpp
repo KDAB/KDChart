@@ -123,8 +123,13 @@ void AbstractArea::paintIntoRect( QPainter& painter, const QRect& rect )
 void AbstractArea::paintAll( QPainter& painter )
 {
     // Paint the background and frame
-    paintBackground( painter, geometry() );
-    paintFrame(      painter, geometry() );
+    const QRect overlappingArea( geometry().adjusted(
+            -d->amountOfLeftOverlap,
+            -d->amountOfTopOverlap,
+            d->amountOfRightOverlap,
+            d->amountOfBottomOverlap ) );
+    paintBackground( painter, overlappingArea );
+    paintFrame(      painter, overlappingArea );
 
     // temporarily adjust the widget size, to be sure all content gets calculated
     // to fit into the inner rectangle
