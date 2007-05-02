@@ -368,8 +368,8 @@ namespace KDChart {
     {
         public:
             AutoSpacerLayoutItem(
-                    bool layoutIsAtLeftPosition, QHBoxLayout *rightLeftLayout,
-                    bool layoutIsAtTopPosition,  QVBoxLayout *topBottomLayout );
+                    bool layoutIsAtTopPosition, QHBoxLayout *rightLeftLayout,
+                    bool layoutIsAtLeftPosition,  QVBoxLayout *topBottomLayout );
 
             virtual Qt::Orientations expandingDirections() const;
             virtual QRect geometry() const;
@@ -383,10 +383,13 @@ namespace KDChart {
 
         private:
             QRect mRect;
-            bool mLayoutIsAtLeftPosition;
             bool mLayoutIsAtTopPosition;
             QHBoxLayout *mRightLeftLayout;
+            bool mLayoutIsAtLeftPosition;
             QVBoxLayout *mTopBottomLayout;
+
+            mutable QBrush mCommonBrush;
+            mutable QSize mCachedSize;
     };
 
 }

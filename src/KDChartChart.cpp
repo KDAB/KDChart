@@ -594,6 +594,7 @@ void Chart::Private::slotLayoutPlanes()
         AutoSpacerLayoutItem * spacer \
                 = new AutoSpacerLayoutItem( hLayoutIsAtTop, hLayout, vLayoutIsAtLeft, vLayout ); \
         planeLayout->addItem( spacer, spacerRow, spacerColumn, 1, 1 ); \
+        spacer->setParentLayout( planeLayout ); \
         planeLayoutItems << spacer; \
     } \
 }

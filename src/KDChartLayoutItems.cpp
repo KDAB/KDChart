@@ -27,6 +27,8 @@
 #include "KDTextDocument.h"
 #include "KDChartAbstractArea.h"
 #include "KDChartAbstractDiagram.h"
+#include "KDChartBackgroundAttributes.h"
+#include "KDChartFrameAttributes.h"
 #include "KDChartPaintContext.h"
 #include "KDChartPainterSaver_p.h"
 #include <QTextCursor>
@@ -718,12 +720,12 @@ void KDChart::LineWithMarkerLayoutItem::paint( QPainter* painter )
 
 
 KDChart::AutoSpacerLayoutItem::AutoSpacerLayoutItem(
-        bool layoutIsAtLeftPosition, QHBoxLayout *rightLeftLayout,
-        bool layoutIsAtTopPosition, QVBoxLayout *topBottomLayout )
+        bool layoutIsAtTopPosition, QHBoxLayout *rightLeftLayout,
+        bool layoutIsAtLeftPosition, QVBoxLayout *topBottomLayout )
     : AbstractLayoutItem( Qt::AlignCenter )
-    , mLayoutIsAtLeftPosition( layoutIsAtLeftPosition )
     , mLayoutIsAtTopPosition(  layoutIsAtTopPosition )
     , mRightLeftLayout( rightLeftLayout )
+    , mLayoutIsAtLeftPosition( layoutIsAtLeftPosition )
     , mTopBottomLayout( topBottomLayout )
 {
 }
@@ -758,8 +760,30 @@ void KDChart::AutoSpacerLayoutItem::setGeometry( const QRect& r )
     mRect = r;
 }
 
+
+static void updateCommonBrush( QBrush& commonBrush, bool& bStart, const KDChart::AbstractArea& area )
+{
+    const KDChart::BackgroundAttributes ba( area.backgroundAttributes() );
+    const bool hasSimpleBrush = (
+            ! area.frameAttributes().isVisible() &&
+            ba.isVisible() &&
+            ba.pixmapMode() == KDChart::BackgroundAttributes::BackgroundPixmapModeNone &&
+            ba.brush().gradient() == 0 );
+    if( bStart ){
+        bStart = false;
+        commonBrush = hasSimpleBrush ? ba.brush() : QBrush();
+    }else{
+        if( ! hasSimpleBrush || ba.brush() != commonBrush )
+        {
+            commonBrush = QBrush();
+        }
+    }
+}
+
 QSize KDChart::AutoSpacerLayoutItem::sizeHint() const
 {
+    QBrush commonBrush;
+    bool bStart=true;
     // calculate the maximal overlap of the top/bottom axes:
     int topBottomOverlap = 0;
     if( mTopBottomLayout ){
@@ -771,6 +795,7 @@ QSize KDChart::AutoSpacerLayoutItem::sizeHint() const
                     mLayoutIsAtLeftPosition
                     ? qMax( topBottomOverlap, area->rightOverlap() )
                     : qMax( topBottomOverlap, area->leftOverlap() );
+                updateCommonBrush( commonBrush, bStart, *area );
             }
         }
     }
@@ -785,16 +810,52 @@ QSize KDChart::AutoSpacerLayoutItem::sizeHint() const
                         mLayoutIsAtTopPosition
                         ? qMax( leftRightOverlap, area->bottomOverlap() )
                         : qMax( leftRightOverlap, area->topOverlap() );
+                updateCommonBrush( commonBrush, bStart, *area );
             }
         }
     }
-    //qDebug() << QSize( topBottomOverlap, leftRightOverlap );
-    return QSize( topBottomOverlap, leftRightOverlap );
+    if( topBottomOverlap > 0 && leftRightOverlap > 0 )
+        mCommonBrush = commonBrush;
+    else
+        mCommonBrush = QBrush();
+    mCachedSize = QSize( topBottomOverlap, leftRightOverlap );
+    //qDebug() << mCachedSize;
+    return mCachedSize;
 }
 
 
 void KDChart::AutoSpacerLayoutItem::paint( QPainter* painter )
 {
+    if( mParentLayout && mRect.isValid() && mCachedSize.isValid() &&
+        mCommonBrush.style() != Qt::NoBrush )
+    {
+        QPoint p1( mRect.topLeft() );
+        QPoint p2( mRect.bottomRight() );
+        if( mLayoutIsAtLeftPosition )
+            p1.rx() += mCachedSize.width() - mParentLayout->spacing();
+        else
+            p2.rx() -= mCachedSize.width() - mParentLayout->spacing();
+        if( mLayoutIsAtTopPosition ){
+            p1.ry() += mCachedSize.height() - mParentLayout->spacing() - 1;
+            p2.ry() -= 1;
+        }else
+            p2.ry() -= mCachedSize.height() - mParentLayout->spacing() - 1;
+        //qDebug() << mLayoutIsAtTopPosition << mLayoutIsAtLeftPosition;
+        //qDebug() << mRect;
+        //qDebug() << mParentLayout->margin();
+        //qDebug() << QRect( p1, p2 );
+        const QPoint oldBrushOrigin( painter->brushOrigin() );
+        const QBrush oldBrush( painter->brush() );
+        const QPen   oldPen(   painter->pen() );
+        const QPointF newTopLeft( painter->deviceMatrix().map( p1 ) );
+        painter->setBrushOrigin( newTopLeft );
+        painter->setBrush( mCommonBrush );
+        painter->setPen( Qt::NoPen );
+        painter->drawRect( QRect( p1, p2 ) );
+        painter->setBrushOrigin( oldBrushOrigin );
+        painter->setBrush( oldBrush );
+        painter->setPen( oldPen );
+    }
     // debug code:
 #if 0
     //qDebug() << "KDChart::AutoSpacerLayoutItem::paint()";
