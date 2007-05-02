@@ -68,6 +68,15 @@ MainWindow::MainWindow( QWidget* parent ) :
     xAxis->setTitleText ( "Abscissa axis at the bottom" );
     yAxis->setTitleText ( "Ordinate axis at the left side" );
 
+// set the following to 0, to have only one of the axes with background
+#if 1
+    // colourize the axes' backgrounds
+    BackgroundAttributes ba = yAxis->backgroundAttributes();
+    ba.setVisible( true );
+    ba.setBrush( QBrush( QColor(0xff,0xff,0xc0) ) );
+    yAxis->setBackgroundAttributes( ba );
+    xAxis->setBackgroundAttributes( ba );
+#else
     // colourize the Ordinate axis' background
     QLinearGradient linearGrad(QPointF(0, 100), QPointF(0, 400));
     linearGrad.setColorAt(0.0, QColor(0xff,0xff,0xc0));
@@ -76,6 +85,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     ba.setVisible( true );
     ba.setBrush( linearGrad );
     yAxis->setBackgroundAttributes( ba );
+#endif
 
     // add 1 pixel space at the left and at the top edge, because the
     // axis area would otherwise overwrite the left/top borders
