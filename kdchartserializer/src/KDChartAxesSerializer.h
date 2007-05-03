@@ -57,41 +57,21 @@ namespace KDChart {
         virtual void saveElement( QDomDocument& doc, QDomElement& e, const QObject* obj ) const;
         virtual bool parseElement( const QDomElement& container, QObject*& ptr ) const;
 
-        virtual void saveAxes( QDomDocument& doc, QDomElement& e, const QList< const AbstractAxis* >& axes, const QString& title ) const;
+        virtual void saveAxes( QDomDocument& doc, QDomElement& e,
+                               const QList< const AbstractAxis* >& axes, const QString& title ) const;
 
         /**
-         * Parse the axis-pointer element, and return a CartesianAxis* in \c axisPtr
+         * Parse the axis-pointer element, and return an AbstractAxis* in \c axisPtr
          * if the respective axis was found in the list of global elements.
          *
          * Make sure that you have called
          * \c KDChart::SerializeCollector::instance()->initializeParsedGlobalPointers()
          * before invoking this method, or it will stop parsing and return false.
          */
-        virtual bool parseCartesianAxis(
+        virtual bool parseAxis(
                 const QDomNode& rootNode,
                 const QDomNode& pointerNode,
-                CartesianAxis*& axisPtr )const;
-
-        //TODO once PolarAxis is implemented:
-        /*
-
-       / **
-         * Parse the axis-pointer element, and return a PolarAxis* in \c axisPtr
-         * if the respective axis was found in the list of global elements.
-         *
-         * Make sure that you have called
-         * \c KDChart::SerializeCollector::instance()->initializeParsedGlobalPointers()
-         * before invoking this method, or it will stop parsing and return false.
-         * /
-        virtual bool parsePolarAxis(
-                const QDomNode& rootNode,
-                const QDomNode& pointerNode,
-                PolarAxis*& axisPtr )const;
-        virtual void savePolarAxis(
-                QDomDocument& doc,
-                QDomElement& axisElement,
-                const PolarAxis& axis )const;
-        */
+                AbstractAxis*& axisPtr )const;
 
         virtual bool parseAbstractAxis(
                 const QDomElement& container,

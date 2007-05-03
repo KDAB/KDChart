@@ -139,10 +139,10 @@ void AxesSerializer::saveAxes(
     }
 }
 
-bool AxesSerializer::parseCartesianAxis(
+bool AxesSerializer::parseAxis(
         const QDomNode& rootNode,
         const QDomNode& pointerNode,
-        CartesianAxis*& axisPtr )const
+        AbstractAxis*& axisPtr )const
 {
     bool bOK = true;
     axisPtr = 0;
@@ -152,23 +152,23 @@ bool AxesSerializer::parseCartesianAxis(
     bool wasParsed;
     const bool pointerFound =
             AttributesSerializer::parseQObjectPointerNode(
-                    pointerNode, ptr,
-                    ptrName, wasParsed, true ) && ptr;
+            pointerNode, ptr,
+    ptrName, wasParsed, true ) && ptr;
 
     if( ptrName.isEmpty() ){
-        qDebug()<< "Could not parse CartesianAxis. Global pointer node is invalid.";
+        qDebug()<< "Could not parse AbstractAxis. Global pointer node is invalid.";
         bOK = false;
     }else{
         if( pointerFound ){
-            axisPtr = dynamic_cast<CartesianAxis*>(ptr);
+            axisPtr = dynamic_cast<AbstractAxis*>(ptr);
             if( ! axisPtr ){
-                qDebug()<< "Could not parse CartesianAxis. Global pointer"
-                        << ptrName << "is no CartesianAxis-ptr.";
+                qDebug()<< "Could not parse AbstractAxis. Global pointer"
+                        << ptrName << "is no AbstractAxis-ptr.";
                 bOK = false;
             }
         }else{
-            qDebug()<< "Could not parse CartesianAxis. Global pointer"
-                    << ptrName << "is no CartesianAxis-ptr.";
+            qDebug()<< "Could not parse AbstractAxis. Global pointer"
+                    << ptrName << "is no AbstractAxis-ptr.";
             bOK = false;
         }
     }
@@ -190,12 +190,15 @@ bool AxesSerializer::parseCartesianAxis(
         const AbstractSerializerFactory* factory = Serializer::elementSerializerFactory( axisPtr );
         QObject* obj = axisPtr;
         if( factory != 0 )
-            return factory->instance( axisPtr->metaObject()->className() )->parseElement( axisElement, obj );
+            return factory->instance( axisPtr->metaObject()->className() )
+                    ->parseElement( axisElement, obj );
         return false;
     }
 
     return bOK;
 }
+
+
 
 bool AxesSerializer::Private::doParseCartesianAxis( const QDomElement& axisElement, CartesianAxis*& axisPtr )const
 {

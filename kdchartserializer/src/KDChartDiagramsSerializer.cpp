@@ -515,10 +515,11 @@ bool DiagramsSerializer::Private::parseCartCoordDiagram(
             } else if( tagName == "kdchart:axes:pointers" ) {
                 QDomNode node2 = element.firstChild();
                 while( ! node2.isNull() ) {
-                    CartesianAxis *axis;
-                    if( m_axesS->parseCartesianAxis( container.ownerDocument().firstChild(), node2, axis ) )
+                    AbstractAxis *axis;
+                    if( m_axesS->parseAxis( container.ownerDocument().firstChild(), node2, axis )
+                        && qobject_cast< CartesianAxis * >(axis) )
                     {
-                        diagram.addAxis( axis );
+                        diagram.addAxis( qobject_cast< CartesianAxis * >(axis) );
                     }else{
                         qDebug()<< "Could not parse element of AbstractCartesianDiagram / kdchart:axes:pointers.";
                         bOK = false;
