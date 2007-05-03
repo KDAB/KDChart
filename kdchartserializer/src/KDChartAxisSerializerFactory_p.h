@@ -26,8 +26,8 @@
  ** licensing are not clear to you.
  **
  **********************************************************************/
-#ifndef __KDCHARTAXESSERIALIZER_P_H__
-#define __KDCHARTAXESSERIALIZER_P_H__
+#ifndef __KDCHARTAXISSERIALIZERFACTORY_P_H__
+#define __KDCHARTAXISSERIALIZERFACTORY_P_H__
 
 //
 //  W A R N I N G
@@ -40,26 +40,29 @@
 // We mean it.
 //
 
-#include <KDChartAxesSerializer.h>
+#include <KDChartAxisSerializerFactory.h>
+
+#include <QMap>
+
+namespace KDChart
+{
+    class AxesSerializer;
+}
 
 /**
  * \internal
  */
-class KDChart::AxesSerializer::Private
+class KDChart::AxisSerializerFactory::Private
 {
-    friend class ::KDChart::AxesSerializer;
-    AxesSerializer * const q;
+    friend class ::KDChart::AxisSerializerFactory;
+    AxisSerializerFactory* const q;
 public:
-    explicit Private( AxesSerializer * qq );
+    explicit Private( AxisSerializerFactory * qq );
     ~Private(); // non-virtual, since nothing inherits this
 
-    bool doParseCartesianAxis( const QDomElement& axisElement, CartesianAxis*& axisPtr ) const;
-//    bool doParsePolarAxis( const QDomElement& axisElement, PolarAxis*& axisPtr ) const;
-
-    void saveAbstractAxis( QDomDocument& doc, QDomElement& e, const AbstractAxis& axis, const QString& title ) const;
-    void saveCartesianAxis( QDomDocument& doc, QDomElement& axisElement, const CartesianAxis& axis ) const;
-
+protected:
+    mutable KDChart::AxesSerializer* m_instance;
 };
 
 
-#endif // KDChartAxesSerializer_p_H
+#endif // KDChartAxisSerializerFactory_p_H

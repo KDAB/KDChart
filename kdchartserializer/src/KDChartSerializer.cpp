@@ -40,16 +40,17 @@
 #include <KDChartDiagramSerializerFactory.h>
 #include <KDChartLegendSerializerFactory.h>
 #include <KDChartTextAreaSerializerFactory.h>
+#include <KDChartAxisSerializerFactory.h>
 
 #include <KDChartLineDiagram>
 #include <KDChartBarDiagram>
 #include <KDChartPieDiagram>
 #include <KDChartPolarDiagram>
 #include <KDChartRingDiagram>
-
 #include <KDChartLegend>
-
 #include <KDChartHeaderFooter>
+#include <KDChartCartesianAxis>
+//#include <KDChartPolarAxis>
 
 #include <KDXMLTools.h>
 
@@ -126,6 +127,10 @@ void Serializer::Private::registerBuiltInSerializerFactories( QObject* parent )
 
     f = new TextAreaSerializerFactory( parent );
     Serializer::registerElementSerializerFactory< HeaderFooter >( f );
+
+    f = new AxisSerializerFactory( parent );
+    Serializer::registerElementSerializerFactory< CartesianAxis >( f );
+//    Serializer::registerElementSerializerFactory< PolarAxis >( f );
 }
 
 void Serializer::setModel(QAbstractItemModel * model)

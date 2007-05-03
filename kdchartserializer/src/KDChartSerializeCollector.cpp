@@ -213,11 +213,11 @@ bool SerializeCollector::initializeGlobalPointers(
                                 }else{
                                     qDebug()<< "Could not parse AttributesModel. Node"<<objectName<<"is invalid.";
                                 }
-                            } else if( className == "KDChart::CartesianAxis" ){
+/*                            } else if( className == "KDChart::CartesianAxis" ){
                                 instance()->initializedPointersMap().insert(
                                         objectName,
                                         InitializedPointersMapItem(
-                                                new CartesianAxis( 0 ) ) );
+                                                new CartesianAxis( 0 ) ) );*/
                             /* once PolarAxis is implemented:
                             } else if( className == "KDChart::PolarAxis" ){
                                 instance()->initializedPointersMap().insert(

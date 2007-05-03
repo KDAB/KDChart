@@ -35,15 +35,15 @@
 
 #include "KDChartAttributesSerializer.h"
 
+#include <KDChartAbstractSerializer.h>
+
 #include <KDChartCartesianAxis>
 //TODO once PolarAxis is implemented: #include <KDChartPolarAxis>
 #include <KDChartChart>
 
 namespace KDChart {
 
-    //class DiagramsSerializer;
-
-    class KDCHART_EXPORT AxesSerializer : public QObject
+    class KDCHART_EXPORT AxesSerializer : public QObject, public AbstractSerializer
     {
         Q_OBJECT
 
@@ -54,20 +54,10 @@ namespace KDChart {
         explicit AxesSerializer();
         virtual ~AxesSerializer();
 
-        virtual void saveCartesianAxes(
-                QDomDocument& doc,
-                QDomElement& e,
-                const CartesianAxisList& axes,
-                const QString& title )const;
+        virtual void saveElement( QDomDocument& doc, QDomElement& e, const QObject* obj ) const;
+        virtual bool parseElement( const QDomElement& container, QObject*& ptr ) const;
 
-        //TODO once PolarAxis is implemented:
-        /*
-        virtual void savePolarAxes(
-                QDomDocument& doc,
-                QDomElement& e,
-                const PolarAxisList& planes,
-                const QString& title )const;
-        */
+        virtual void saveAxes( QDomDocument& doc, QDomElement& e, const QList< const AbstractAxis* >& axes, const QString& title ) const;
 
         /**
          * Parse the axis-pointer element, and return a CartesianAxis* in \c axisPtr
@@ -81,10 +71,6 @@ namespace KDChart {
                 const QDomNode& rootNode,
                 const QDomNode& pointerNode,
                 CartesianAxis*& axisPtr )const;
-        virtual void saveCartesianAxis(
-                QDomDocument& doc,
-                QDomElement& axisElement,
-                const CartesianAxis& axis )const;
 
         //TODO once PolarAxis is implemented:
         /*
@@ -110,24 +96,6 @@ namespace KDChart {
         virtual bool parseAbstractAxis(
                 const QDomElement& container,
                 AbstractAxis& axis )const;
-        virtual void saveAbstractAxis(
-                QDomDocument& doc,
-                QDomElement& e,
-                const AbstractAxis& axis,
-                const QString& title )const;
-
-        /**
-         * Returns the correct class name for a given class.
-         *
-         * \note Make sure to overwrite this, if you intend to use your
-         * own axis types, or the classname will be set to
-         * "UNKNOWN" for your own classes by default.
-         *
-         * When overwriting this method, you should first call the original method
-         * and set your own name only when needed.
-         */
-        virtual const QString nameOfClass( const AbstractAxis* p )const;
-
     };
 
 } // end of namespace

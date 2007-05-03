@@ -571,7 +571,11 @@ void DiagramsSerializer::Private::saveCartCoordDiagram(
     // then save what is stored in the derived class
 
     // save the axes
-    m_axesS->saveCartesianAxes( doc, diagElement, diagram.axes(), "kdchart:axes" );
+    QList< const AbstractAxis* > abstractAxes;
+    CartesianAxisList axes = diagram.axes();
+    Q_FOREACH( const AbstractAxis* ax, axes )
+        abstractAxes << ax;
+    m_axesS->saveAxes( doc, diagElement, abstractAxes, "kdchart:axes" );
 
     // save the reference diagram(-pointer) and the respective offset, if any
     const AbstractCartesianDiagram* refDiag = diagram.referenceDiagram();

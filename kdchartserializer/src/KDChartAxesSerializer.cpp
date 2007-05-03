@@ -34,6 +34,9 @@
 #include <KDChartAbstractAreaBaseSerializer.h>
 #include <KDChartSerializeCollector.h>
 
+#include <KDChartAbstractSerializerFactory.h>
+#include <KDChartSerializer.h>
+
 #include <KDXMLTools.h>
 
 #include <qglobal.h>
@@ -72,10 +75,39 @@ void AxesSerializer::init()
 {
 }
 
-void AxesSerializer::saveCartesianAxes(
+void AxesSerializer::saveElement( QDomDocument& doc, QDomElement& e, const QObject* obj ) const
+{
+    if( qobject_cast< const CartesianAxis* >( obj ) != 0 )
+    {
+        const CartesianAxis* ax = qobject_cast< const CartesianAxis* >( obj );
+        d->saveCartesianAxis( doc, e, *ax );
+    }
+//    else if( qobject_cast< const PolarAxis* >( obj ) != 0 )
+//    {
+//        const PolarAxis* ax = qobject_cast< const PolarAxis* >( obj );
+//        d->savePolarAxis( doc, e, *ax );
+//    }
+}
+
+bool AxesSerializer::parseElement( const QDomElement& container, QObject*& ptr ) const
+{
+    if( qobject_cast< CartesianAxis* >( ptr ) != 0 )
+    {   
+        CartesianAxis* axis = qobject_cast< CartesianAxis* >( ptr );
+        return d->doParseCartesianAxis( container, axis );
+    }
+//    else if( qobject_cast< PolarAxis* >( ptr ) != 0 )
+//    {   
+//        PolarAxis* axis = qobject_cast< PolarAxis* >( ptr );
+//        return d->doParsePolarAxis( container, axis );
+//    }
+    return false;
+}
+
+void AxesSerializer::saveAxes(
         QDomDocument& doc,
         QDomElement& e,
-        const CartesianAxisList& axes,
+        const QList< const AbstractAxis* >& axes,
         const QString& title )const
 {
     // access (or append, resp.) the global list
@@ -86,7 +118,7 @@ void AxesSerializer::saveCartesianAxes(
     QDomElement pointersList =
             SerializeCollector::createPointersList( doc, e, title );
 
-    Q_FOREACH ( const CartesianAxis* p, axes )
+    Q_FOREACH ( const AbstractAxis* p, axes )
     {
         bool wasFound;
         QDomElement axisElement =
@@ -95,44 +127,17 @@ void AxesSerializer::saveCartesianAxes(
                         *axesList,
                         pointersList,
                         "kdchart:axis",
-                        nameOfClass( p ),
+                        p->metaObject()->className(),
                         p,
                         wasFound );
         if( ! wasFound ){
-            saveCartesianAxis( doc, axisElement, *p );
+            const AbstractSerializerFactory* factory = Serializer::elementSerializerFactory( p );
+            const QObject* obj = p;
+            if( factory != 0 )
+                factory->instance( p->metaObject()->className() )->saveElement( doc, axisElement, obj );
         }
     }
 }
-
-//TODO once PolarAxis is implemented:
-/*
-void AxesSerializer::savePolarAxes(
-        QDomDocument& doc,
-        QDomElement& e,
-        const PolarAxisList& axes,
-        const QString& title )const
-{
-    QDomElement axesList =
-            doc.createElement( title );
-    e.appendChild( axesList );
-    Q_FOREACH ( const PolarAxis* p, axes )
-    {
-        bool wasFound;
-        QDomElement axisElement =
-                SerializeCollector::findOrMakeChild(
-                        doc,
-                        *axesList,
-                        pointersList,
-                        "kdchart:axis",
-                        nameOfClass( p ),
-                        p,
-                        wasFound );
-        if( ! wasFound ){
-            savePolarAxis( doc, axisElement, *p );
-        }
-    }
-}
-*/
 
 bool AxesSerializer::parseCartesianAxis(
         const QDomNode& rootNode,
@@ -182,64 +187,77 @@ bool AxesSerializer::parseCartesianAxis(
     if( bOK ) {
         SerializeCollector::instance()->setWasParsed( axisPtr, true );
 
-        const QString axisName = axisElement.tagName();
-        //qDebug() << "\n    AxesSerializer::parseCartesianAxis() processing" << axisName;
-        QDomNode node = axisElement.firstChild();
-        while( !node.isNull() ) {
-            QDomElement element = node.toElement();
-            if( !element.isNull() ) { // was really an element
-                QString tagName = element.tagName();
-                if( tagName == "kdchart:abstract-axis" ) {
-                    if( ! parseAbstractAxis( element, *axisPtr ) )
-                        bOK = false;
-                } else if( tagName == "Title" ) {
-                    QString s;
-                    if( KDXML::readStringNode( element, s ) )
-                        axisPtr->setTitleText( s );
-                    else
-                        bOK = false;
-                } else if( tagName == "TitleTextAttributes" ) {
-                    TextAttributes ta;
-                    if( AttributesSerializer::parseTextAttributes( element, ta ) )
-                        axisPtr->setTitleTextAttributes( ta );
-                    else
-                        bOK = false;
-                } else if( tagName == "Position" ) {
-                    QString s;
-                    if( KDXML::readStringNode( element, s ) ){
-                        CartesianAxis::Position pos;
-                        if( s.compare("bottom", Qt::CaseInsensitive) == 0 )
-                            pos = CartesianAxis::Bottom;
-                        else if( s.compare("top", Qt::CaseInsensitive) == 0 )
-                            pos = CartesianAxis::Top;
-                        else if( s.compare("right", Qt::CaseInsensitive) == 0 )
-                            pos = CartesianAxis::Right;
-                        else if( s.compare("left", Qt::CaseInsensitive) == 0 )
-                            pos = CartesianAxis::Left;
-                        else{
-                            qDebug()<< "Unknown value of CartesianAxis/Position found:"
-                                    << s;
-                            bOK = false;
-                        }
-                        if( bOK )
-                            axisPtr->setPosition( pos );
-                    }else{
-                        qDebug() << "Invalid CartesianAxis/Position element found.";
-                        bOK = false;
-                    }
-                } else {
-                    qDebug()<< "Unknown subelement of CartesianAxis found:"
-                            << tagName;
-                    bOK = false;
-                }
-            }
-            node = node.nextSibling();
-        }
+        const AbstractSerializerFactory* factory = Serializer::elementSerializerFactory( axisPtr );
+        QObject* obj = axisPtr;
+        if( factory != 0 )
+            return factory->instance( axisPtr->metaObject()->className() )->parseElement( axisElement, obj );
+        return false;
     }
+
     return bOK;
 }
 
-void AxesSerializer::saveCartesianAxis(
+bool AxesSerializer::Private::doParseCartesianAxis( const QDomElement& axisElement, CartesianAxis*& axisPtr )const
+{
+    bool bOK = true;
+    const QString axisName = axisElement.tagName();
+    //qDebug() << "\n    AxesSerializer::parseCartesianAxis() processing" << axisName;
+    QDomNode node = axisElement.firstChild();
+    while( !node.isNull() ) {
+        QDomElement element = node.toElement();
+        if( !element.isNull() ) { // was really an element
+            QString tagName = element.tagName();
+            if( tagName == "kdchart:abstract-axis" ) {
+                if( ! q->parseAbstractAxis( element, *axisPtr ) )
+                    bOK = false;
+            } else if( tagName == "Title" ) {
+                QString s;
+                if( KDXML::readStringNode( element, s ) )
+                    axisPtr->setTitleText( s );
+                else
+                    bOK = false;
+            } else if( tagName == "TitleTextAttributes" ) {
+                TextAttributes ta;
+                if( AttributesSerializer::parseTextAttributes( element, ta ) )
+                    axisPtr->setTitleTextAttributes( ta );
+                else
+                    bOK = false;
+            } else if( tagName == "Position" ) {
+                QString s;
+                if( KDXML::readStringNode( element, s ) ){
+                    CartesianAxis::Position pos;
+                    if( s.compare("bottom", Qt::CaseInsensitive) == 0 )
+                        pos = CartesianAxis::Bottom;
+                    else if( s.compare("top", Qt::CaseInsensitive) == 0 )
+                        pos = CartesianAxis::Top;
+                    else if( s.compare("right", Qt::CaseInsensitive) == 0 )
+                        pos = CartesianAxis::Right;
+                    else if( s.compare("left", Qt::CaseInsensitive) == 0 )
+                        pos = CartesianAxis::Left;
+                    else{
+                        qDebug()<< "Unknown value of CartesianAxis/Position found:"
+                                << s;
+                        bOK = false;
+                    }
+                    if( bOK )
+                        axisPtr->setPosition( pos );
+                }else{
+                    qDebug() << "Invalid CartesianAxis/Position element found.";
+                    bOK = false;
+                }
+            } else {
+                qDebug()<< "Unknown subelement of CartesianAxis found:"
+                        << tagName;
+                bOK = false;
+            }
+        }
+        node = node.nextSibling();
+    }
+    
+    return bOK;
+}
+
+void AxesSerializer::Private::saveCartesianAxis(
         QDomDocument& doc,
         QDomElement& axisElement,
         const CartesianAxis& axis )const
@@ -284,17 +302,14 @@ void AxesSerializer::saveCartesianAxis(
 
 //TODO once PolarAxis is implemented:
 /*
-bool AxesSerializer::parsePolarAxis(
-        const QDomNode& rootNode,
-        const QDomNode& pointerNode,
-        PolarAxis*& axisPtr )const
+bool AxesSerializer::Private::doParsePolarAxis( const QDomElement& container, CartesianAxis*& axisPtr )const
 {
     bool bOK = true;
     // ..
     return bOK;
 }
 
-void AxesSerializer::savePolarAxis(
+void AxesSerializer::Private::savePolarAxis(
         QDomDocument& doc,
         QDomElement& axisElement,
         const PolarAxis& axis )const
@@ -350,7 +365,7 @@ bool AxesSerializer::parseAbstractAxis(
     return bOK;
 }
 
-void AxesSerializer::saveAbstractAxis(
+void AxesSerializer::Private::saveAbstractAxis(
         QDomDocument& doc,
         QDomElement& e,
         const AbstractAxis& axis,
@@ -384,17 +399,3 @@ void AxesSerializer::saveAbstractAxis(
                 doc, axisElement,
                 "ShortLabels", &list );
 }
-
-
-const QString AxesSerializer::nameOfClass( const AbstractAxis* p )const
-{
-    QString classname;
-    if( dynamic_cast<const CartesianAxis*> (  p ) )
-        classname = "KDChart::CartesianAxis";
-    /*else if( dynamic_cast<const PolarAxis*> (  p ) )
-        classname = "KDChart::PolarAxis";*/
-    else
-        classname = "UNKNOWN";
-    return classname;
-}
-
