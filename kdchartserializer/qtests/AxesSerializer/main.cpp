@@ -48,10 +48,10 @@ private slots:
         shortList << "1" << "2" << "1-2-3";
         orgAxis.setShortLabels( shortList );
 
-        KDChart::CartesianAxisList axes;
+        QList<const KDChart::AbstractAxis*> axes;
         axes.append( &orgAxis );
 
-        mAxesS->saveCartesianAxes( mDoc, savedElement,
+        mAxesS->saveAxes( mDoc, savedElement,
                                    axes,
                                    "kdchart:axes" );
         SerializeCollector::instance()->appendDataToElement(
@@ -63,11 +63,12 @@ private slots:
         // prepare parsing
         QVERIFY( SerializeCollector::initializeGlobalPointers( mDocRoot ) );
 
-        CartesianAxis* parsedAxis=0;
-        QVERIFY( mAxesS->parseCartesianAxis(
+        AbstractAxis* parsedAxis=0;
+        QVERIFY( mAxesS->parseAxis(
                         mDocRoot, savedElement.firstChild().firstChild(), parsedAxis ) );
 
-        QVERIFY( orgAxis.compare( parsedAxis ) );
+        QVERIFY( qobject_cast< CartesianAxis * >( parsedAxis ) != 0 );
+        QVERIFY( orgAxis.compare( qobject_cast< CartesianAxis * >( parsedAxis ) ) );
     }
 
 
