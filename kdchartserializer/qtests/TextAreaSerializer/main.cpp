@@ -4,6 +4,7 @@
 
 #include <KDChartHeaderFooter>
 
+#include <KDChartSerializer>
 #include <KDChartTextAreaSerializer>
 #include <KDChartSerializeCollector>
 #include <KDXMLTools>
@@ -37,6 +38,12 @@ private slots:
 
         HeaderFooterList areas;
         areas.append( &orgFooter );
+
+
+        // Note: We do not instantiate a Serializer object, so we
+        //       must register the built-in factories explicitely:
+        Serializer::registerBuiltInSerializerFactories();
+
 
         TextAreaSerializer::saveHeadersFooters(
                 mDoc,
