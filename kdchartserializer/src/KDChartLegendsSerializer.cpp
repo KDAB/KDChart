@@ -262,11 +262,11 @@ bool LegendsSerializer::Private::doParseLegend( const QDomElement& container, Le
             } else if( tagName == "LegendStyle" ) {
                 QString s;
                 if( KDXML::readStringNode( element, s ) ){
-                    if( s.compare("MarkersOnly", Qt::CaseInsensitive) != 0 )
+                    if( s.compare("MarkersOnly", Qt::CaseInsensitive) == 0 )
                         legend->setLegendStyle( Legend::MarkersOnly );
-                    else if( s.compare("LinesOnly", Qt::CaseInsensitive) != 0 )
+                    else if( s.compare("LinesOnly", Qt::CaseInsensitive) == 0 )
                         legend->setLegendStyle( Legend::LinesOnly );
-                    else if( s.compare("MarkersAndLines", Qt::CaseInsensitive) != 0 )
+                    else if( s.compare("MarkersAndLines", Qt::CaseInsensitive) == 0 )
                         legend->setLegendStyle( Legend::MarkersAndLines );
                     else{
                         qDebug()<< "Could not parse Legend. Unknown value in element" << tagName;
