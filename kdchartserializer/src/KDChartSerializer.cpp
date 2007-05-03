@@ -97,7 +97,7 @@ Serializer::Serializer( Chart* chart, QAbstractItemModel * model )
     IdMapper::instance()->clear();
     SerializeCollector::instance()->clear();
 
-    Private::registerBuiltInSerializerFactories();
+    Serializer::registerBuiltInSerializerFactories();
 }
 
 Serializer::~Serializer()
@@ -113,7 +113,7 @@ void Serializer::init()
 {
 }
 
-void Serializer::Private::registerBuiltInSerializerFactories( QObject* parent )
+void Serializer::registerBuiltInSerializerFactories( QObject* parent )
 {
     AbstractSerializerFactory* f = new DiagramSerializerFactory( parent );
     Serializer::registerElementSerializerFactory< LineDiagram >( f );
