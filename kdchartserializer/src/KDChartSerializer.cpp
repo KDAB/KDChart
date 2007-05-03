@@ -490,7 +490,7 @@ bool Serializer::saveChartElement(
             *chartsList,
             pointersList,
             "kdchart:chart",
-            "KDChart::Chart",
+            d->m_chart->metaObject()->className(),
             d->m_chart,
             wasFound );
     // as of yet, wasFound will be FALSE always, but never mind

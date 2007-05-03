@@ -199,10 +199,21 @@ bool SerializeCollector::initializeGlobalPointers(
                                         objectName,
                                         InitializedPointersMapItem(
                                             f->createNewObject( className ) ) );
-                            } else if( className == "KDChart::AttributesModel" ){
+                            }
+                            else if( className == Chart::staticMetaObject.className() )
+                            {
+                                instance()->initializedPointersMap().insert(
+                                        objectName,
+                                        InitializedPointersMapItem(
+                                                new Chart ) );
+                            }
+                            else if( className == "KDChart::AttributesModel" )
+                            {
                                 bool bExternalFlag;
-                                if( KDXML::findBoolAttribute( e2, "external", bExternalFlag ) ){
-                                    if( bExternalFlag ){
+                                if( KDXML::findBoolAttribute( e2, "external", bExternalFlag ) )
+                                {
+                                    if( bExternalFlag )
+                                    {
                                         instance()->initializedPointersMap().insert(
                                                 objectName,
                                                 InitializedPointersMapItem(
@@ -210,72 +221,14 @@ bool SerializeCollector::initializeGlobalPointers(
                                         // Only external attribute-models are instantiated explicitely,
                                         // the other objects are found in their respective diagrams.
                                     }
-                                }else{
+                                }
+                                else
+                                {
                                     qDebug()<< "Could not parse AttributesModel. Node"<<objectName<<"is invalid.";
                                 }
-/*                            } else if( className == "KDChart::CartesianAxis" ){
-                                instance()->initializedPointersMap().insert(
-                                        objectName,
-                                        InitializedPointersMapItem(
-                                                new CartesianAxis( 0 ) ) );*/
-                            /* once PolarAxis is implemented:
-                            } else if( className == "KDChart::PolarAxis" ){
-                                instance()->initializedPointersMap().insert(
-                                        objectName,
-                                        InitializedPointersMapItem(
-                                                new PolarAxis( 0 ) ) );
-                            */
-                            } else if( className == "KDChart::Chart" ){
-                                instance()->initializedPointersMap().insert(
-                                        objectName,
-                                        InitializedPointersMapItem(
-                                                new Chart( 0 ) ) );
-/*                            } else if( className == "KDChart::CartesianCoordinatePlane" ){
-                                instance()->initializedPointersMap().insert(
-                                        objectName,
-                                        InitializedPointersMapItem(
-                                                new CartesianCoordinatePlane( 0 ) ) );
-                            } else if( className == "KDChart::PolarCoordinatePlane" ){
-                                instance()->initializedPointersMap().insert(
-                                        objectName,
-                                        InitializedPointersMapItem(
-                                                new PolarCoordinatePlane( 0 ) ) );*/
-/*                            } else if( className == "KDChart::BarDiagram" ){
-                                instance()->initializedPointersMap().insert(
-                                        objectName,
-                                        InitializedPointersMapItem(
-                                                new BarDiagram(0, 0) ) );
-                            } else if( className == "KDChart::LineDiagram" ){
-                                instance()->initializedPointersMap().insert(
-                                        objectName,
-                                        InitializedPointersMapItem(
-                                                new LineDiagram(0, 0) ) );
-                            } else if( className == "KDChart::PieDiagram" ){
-                                instance()->initializedPointersMap().insert(
-                                        objectName,
-                                        InitializedPointersMapItem(
-                                                new PieDiagram(0, 0) ) );
-                            } else if( className == "KDChart::PolarDiagram" ){
-                                instance()->initializedPointersMap().insert(
-                                        objectName,
-                                        InitializedPointersMapItem(
-                                                new PolarDiagram(0, 0) ) );
-                            } else if( className == "KDChart::RingDiagram" ){
-                                instance()->initializedPointersMap().insert(
-                                        objectName,
-                                        InitializedPointersMapItem(
-                                                new RingDiagram(0, 0) ) );*/
-/*                            } else if( className == "KDChart::HeaderFooter" ){
-                                instance()->initializedPointersMap().insert(
-                                        objectName,
-                                        InitializedPointersMapItem(
-                                                new HeaderFooter( 0 ) ) );*/
-/*                            } else if( className == "KDChart::Legend" ){
-                                instance()->initializedPointersMap().insert(
-                                        objectName,
-                                        InitializedPointersMapItem(
-                                                new Legend( 0 ) ) );*/
-                            } else {
+                            }
+                            else
+                            {
                                 qDebug() << "Non-critical information by SerializeCollector::initializeGlobalPointers()\n"
                                         "    Unknown subelement of " << tagName
                                         << " found: " << objectName << "\n"
@@ -285,7 +238,9 @@ bool SerializeCollector::initializeGlobalPointers(
                                 // It might well be that someone has stored additional
                                 // top-level information here, so we just ignore them.
                             }
-                        } else {
+                        }
+                        else
+                        {
                             qDebug() << "CRITICAL information by SerializeCollector::initializeGlobalPointers()\n"
                                     "    Subelement of " << tagName
                                     << " has no \"Classname\" attribute: " << objectName << "\n"
