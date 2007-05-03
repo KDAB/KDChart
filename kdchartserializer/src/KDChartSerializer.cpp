@@ -72,7 +72,7 @@ Serializer::Private::~Private() {}
 void Serializer::Private::setupSerializerFactoriesMap()
 {
     if( ! Serializer::Private::s_serializerFactories ){
-        qDebug() << "instantiating the serializer-factories map";
+        //qDebug() << "instantiating the serializer-factories map";
         Serializer::Private::s_serializerFactories = new QMap< QString, AbstractSerializerFactory* >();
     }
 }
@@ -556,7 +556,7 @@ AbstractSerializerFactory* Serializer::elementSerializerFactory( const QObject* 
 AbstractSerializerFactory* Serializer::elementSerializerFactory( const QString& className )
 {
     Private::setupSerializerFactoriesMap();
-    qDebug() << "number of elements in the factories map:" << Private::s_serializerFactories->count();
+    //qDebug() << "number of elements in the factories map:" << Private::s_serializerFactories->count();
     return Private::s_serializerFactories->value( className );
 }
 
