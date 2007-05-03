@@ -93,16 +93,7 @@ Serializer::Serializer( Chart* chart, QAbstractItemModel * model )
     IdMapper::instance()->clear();
     SerializeCollector::instance()->clear();
 
-    // register factories
-    AbstractSerializerFactory* f = new DiagramSerializerFactory( this );
-    registerElementSerializerFactory< LineDiagram >( f );
-    registerElementSerializerFactory< BarDiagram >( f );
-    registerElementSerializerFactory< PieDiagram >( f );
-    registerElementSerializerFactory< PolarDiagram >( f );
-    registerElementSerializerFactory< RingDiagram >( f );
-
-    f = new LegendSerializerFactory( this );
-    registerElementSerializerFactory< Legend >( f );
+    registerBuiltInSerializerFactories();
 }
 
 Serializer::~Serializer()
@@ -116,6 +107,19 @@ Serializer::~Serializer()
 
 void Serializer::init()
 {
+}
+
+void Serializer::registerBuiltInSerializerFactories( QObject* parent )
+{
+    AbstractSerializerFactory* f = new DiagramSerializerFactory( parent );
+    registerElementSerializerFactory< LineDiagram >( f );
+    registerElementSerializerFactory< BarDiagram >( f );
+    registerElementSerializerFactory< PieDiagram >( f );
+    registerElementSerializerFactory< PolarDiagram >( f );
+    registerElementSerializerFactory< RingDiagram >( f );
+
+    f = new LegendSerializerFactory( parent );
+    registerElementSerializerFactory< Legend >( f );
 }
 
 void Serializer::setModel(QAbstractItemModel * model)
@@ -552,6 +556,7 @@ AbstractSerializerFactory* Serializer::elementSerializerFactory( const QObject* 
 AbstractSerializerFactory* Serializer::elementSerializerFactory( const QString& className )
 {
     Private::setupSerializerFactoriesMap();
+    qDebug() << "number of elements in the factories map:" << Private::s_serializerFactories->count();
     return Private::s_serializerFactories->value( className );
 }
 
