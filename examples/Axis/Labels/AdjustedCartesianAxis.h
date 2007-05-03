@@ -34,7 +34,7 @@ class AdjustedCartesianAxis: public KDChart::CartesianAxis
 {
     Q_OBJECT
 
-            Q_DISABLE_COPY( AdjustedCartesianAxis )
+    Q_DISABLE_COPY( AdjustedCartesianAxis )
 
 public:
     explicit AdjustedCartesianAxis( KDChart::AbstractCartesianDiagram* diagram = 0 );
