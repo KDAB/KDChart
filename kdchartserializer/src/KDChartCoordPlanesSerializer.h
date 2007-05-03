@@ -35,6 +35,8 @@
 
 #include "KDChartAttributesSerializer.h"
 
+#include <KDChartAbstractSerializer>
+
 #include <KDChartCartesianCoordinatePlane>
 #include <KDChartPolarCoordinatePlane>
 #include <KDChartChart>
@@ -43,7 +45,7 @@ namespace KDChart {
 
     class DiagramsSerializer;
 
-    class KDCHART_EXPORT CoordPlanesSerializer : public QObject
+    class KDCHART_EXPORT CoordPlanesSerializer : public QObject, public AbstractSerializer
     {
         Q_OBJECT
         Q_DISABLE_COPY( CoordPlanesSerializer )
@@ -61,6 +63,10 @@ namespace KDChart {
         explicit CoordPlanesSerializer(QAbstractItemModel * model = 0 );
         virtual ~CoordPlanesSerializer();
 
+        void saveElement( QDomDocument& doc, QDomElement& e, const QObject* obj ) const;
+        bool parseElement( const QDomElement& container, QObject*& ptr ) const;
+
+
         /**
          * \brief Set the data model to be assigned to diagrams created by parsePlane().
          * 
@@ -76,86 +82,19 @@ namespace KDChart {
          */
         virtual void setModel(QAbstractItemModel * model);
 
+        virtual bool parsePlane(
+                const QDomNode& rootNode,
+                const QDomNode& pointerNode,
+                AbstractCoordinatePlane*& planePtr )const;
         virtual void savePlanes(
                 QDomDocument& doc,
                 QDomElement& e,
                 const CoordinatePlaneList& planes,
                 const QString& title )const;
 
-        /**
-         * Parse the plane element, and return an AbstractCoordinatePlane* in \c planePtr
-         * if the respective plane was found in the list of global elements.
-         *
-         * Make sure that you have called
-         * \c KDChart::SerializeCollector::instance()->initializeParsedGlobalPointers()
-         * before invoking this method, or it will stop parsing and return false.
-         */
-        virtual bool parsePlane(
-                const QDomNode& rootNode,
-                const QDomNode& pointerNode,
-                AbstractCoordinatePlane*& planePtr )const;
-        virtual void savePlane(
-                QDomDocument& doc,
-                QDomElement& e,
-                const AbstractCoordinatePlane* p )const;
+private:
 
-        virtual bool parseAbstractPlane(
-                const QDomElement& container, AbstractCoordinatePlane& plane )const;
-        virtual void saveAbstractPlane(
-                QDomDocument& doc,
-                QDomElement& e,
-                const AbstractCoordinatePlane& plane,
-                const QString& title )const;
-
-        virtual bool parseCartPlane(
-                const QDomElement& container, CartesianCoordinatePlane& plane )const;
-        virtual void saveCartPlane(
-                QDomDocument& doc,
-                QDomElement& planeElement,
-                const CartesianCoordinatePlane& plane )const;
-
-        virtual bool parsePolPlane(
-                const QDomElement& container, PolarCoordinatePlane& plane )const;
-        virtual void savePolPlane(
-                QDomDocument& doc,
-                QDomElement& planeElement,
-                const PolarCoordinatePlane& plane )const;
-
-        /**
-         * Returns the correct class name for a given class.
-         *
-         * \note Make sure to overwrite this, if you intend to use the
-         * saveOtherPlane routine, or the classname will be set to
-         * "UNKNOWN" for your own classes by default.
-         *
-         * When overwriting this method, you should first call the original method
-         * and set your own name only when needed.
-         */
-        virtual const QString nameOfClass( const AbstractCoordinatePlane* p )const;
-
-        virtual bool parseOtherPlane(
-                const QDomElement& container, AbstractCoordinatePlane& plane )const;
-        /** By default this does nothing, it can be used by derived classes,
-         * will be called whenever a coord. plane is found that is neither
-         *  a CartesianCoordinatePlane nor a PolarCoordinatePlane.
-         *
-         * \note Make sure to implement nameOfClass if you want to use
-         * saveOtherPlane, or the classname attribute will be stored as "UNKNOWN".
-         */
-        virtual void saveOtherPlane(
-                QDomDocument& doc,
-                QDomElement& planeElement,
-                const AbstractCoordinatePlane& plane )const;
-
-        virtual bool parseAxesCalcMode(
-                const QDomElement& container,
-                AbstractCoordinatePlane::AxesCalcMode& mode )const;
-        virtual void saveAxesCalcMode(
-                QDomDocument& doc,
-                QDomElement& e,
-                const CartesianCoordinatePlane::AxesCalcMode& mode,
-                const QString& title )const;
-
+    public:
         const QString globalList()const;
     };
 

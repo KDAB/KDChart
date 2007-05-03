@@ -481,7 +481,10 @@ void DiagramsSerializer::Private::saveAbstractDiagram(
             // So it will not be forgotten, in case it is not embedded in any
             // of the coordinate planes.
             // The wasFound test makes sure it will not be stored twice.
-            m_coordS->saveCartPlane( doc, globalListElement, *coordPlane );
+            const AbstractSerializerFactory* factory = Serializer::elementSerializerFactory( coordPlane );
+            const QObject* const obj = coordPlane;
+            if( factory != 0 )
+                factory->instance( coordPlane->metaObject()->className() )->saveElement( doc, globalListElement, obj );
         }
     }
 

@@ -57,6 +57,21 @@ protected:
     DiagramsSerializer* m_diagS;
     QAbstractItemModel* m_model;
 
+    void savePlane( QDomDocument& doc, QDomElement& e, const AbstractCoordinatePlane* p ) const;
+
+    bool doParsePlane( const QDomElement& container, AbstractCoordinatePlane* plane ) const;
+    
+    bool parseAbstractPlane( const QDomElement& container, AbstractCoordinatePlane& plane ) const;
+    void saveAbstractPlane( QDomDocument& doc, QDomElement& e, const AbstractCoordinatePlane& plane, const QString& title ) const;
+
+    bool parseCartPlane( const QDomElement& container, CartesianCoordinatePlane& plane ) const;
+    void saveCartPlane( QDomDocument& doc, QDomElement& planeElement, const CartesianCoordinatePlane& plane ) const;
+
+    bool parsePolPlane( const QDomElement& container, PolarCoordinatePlane& plane ) const;
+    void savePolPlane( QDomDocument& doc, QDomElement& planeElement, const PolarCoordinatePlane& plane ) const;
+
+    bool parseAxesCalcMode( const QDomElement& container, AbstractCoordinatePlane::AxesCalcMode& mode ) const;
+    void saveAxesCalcMode( QDomDocument& doc, QDomElement& e, const CartesianCoordinatePlane::AxesCalcMode& mode, const QString& title ) const;
 };
 
 

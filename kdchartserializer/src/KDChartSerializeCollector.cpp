@@ -230,7 +230,7 @@ bool SerializeCollector::initializeGlobalPointers(
                                         objectName,
                                         InitializedPointersMapItem(
                                                 new Chart( 0 ) ) );
-                            } else if( className == "KDChart::CartesianCoordinatePlane" ){
+/*                            } else if( className == "KDChart::CartesianCoordinatePlane" ){
                                 instance()->initializedPointersMap().insert(
                                         objectName,
                                         InitializedPointersMapItem(
@@ -239,7 +239,7 @@ bool SerializeCollector::initializeGlobalPointers(
                                 instance()->initializedPointersMap().insert(
                                         objectName,
                                         InitializedPointersMapItem(
-                                                new PolarCoordinatePlane( 0 ) ) );
+                                                new PolarCoordinatePlane( 0 ) ) );*/
 /*                            } else if( className == "KDChart::BarDiagram" ){
                                 instance()->initializedPointersMap().insert(
                                         objectName,

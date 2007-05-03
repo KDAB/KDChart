@@ -41,6 +41,7 @@
 #include <KDChartLegendSerializerFactory.h>
 #include <KDChartTextAreaSerializerFactory.h>
 #include <KDChartAxisSerializerFactory.h>
+#include <KDChartCoordPlaneSerializerFactory.h>
 
 #include <KDChartLineDiagram>
 #include <KDChartBarDiagram>
@@ -51,6 +52,8 @@
 #include <KDChartHeaderFooter>
 #include <KDChartCartesianAxis>
 //#include <KDChartPolarAxis>
+#include <KDChartCartesianCoordinatePlane>
+#include <KDChartPolarCoordinatePlane>
 
 #include <KDXMLTools.h>
 
@@ -131,6 +134,10 @@ void Serializer::registerBuiltInSerializerFactories( QObject* parent )
     f = new AxisSerializerFactory( parent );
     Serializer::registerElementSerializerFactory< CartesianAxis >( f );
 //    Serializer::registerElementSerializerFactory< PolarAxis >( f );
+
+    f = new CoordPlaneSerializerFactory( parent );
+    Serializer::registerElementSerializerFactory< CartesianCoordinatePlane >( f );
+    Serializer::registerElementSerializerFactory< PolarCoordinatePlane >( f );
 }
 
 void Serializer::setModel(QAbstractItemModel * model)
