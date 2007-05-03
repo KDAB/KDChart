@@ -9,6 +9,7 @@
 #include <KDChartFrameAttributes>
 #include <KDChartLineDiagram>
 
+#include <KDChartSerializer>
 #include <KDChartCoordPlanesSerializer>
 #include <KDChartDiagramsSerializer>
 #include <KDChartAttributesModelSerializer>
@@ -30,6 +31,12 @@ private slots:
 
         m_coordsS = new CoordPlanesSerializer();
         m_diagsS = new DiagramsSerializer( m_coordsS );
+
+
+        // Note: We do not instantiate a Serializer object, so we
+        //       must register the built-in factories explicitely:
+        Serializer::registerBuiltInSerializerFactories();
+
 
         m_chart = new Chart(0);
         TableModel *tableModel = new TableModel( this );
