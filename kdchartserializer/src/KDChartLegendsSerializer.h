@@ -33,9 +33,9 @@
     \brief Auxiliary methods for reading/saving KD Chart data and configuration in streams.
   */
 
-#include <KDChartAttributesSerializer.h>
+#include <KDChartAttributesSerializer>
 
-#include <KDChartAbstractSerializer.h>
+#include <KDChartAbstractSerializer>
 
 #include <KDChartLegend>
 #include <KDChartChart>
@@ -68,10 +68,10 @@ namespace KDChart {
          */
         virtual bool parseElement( const QDomElement& container, QObject*& ptr ) const;
 
-    protected:
-        static void saveLegends( QDomDocument& doc, QDomElement& e, const LegendList& planes, const QString& title );
-
-        static bool parseLegend( const QDomNode& rootNode, const QDomNode& pointerNode, Legend*& legend );
+        static void saveLegends( QDomDocument& doc, QDomElement& e,
+                                 const LegendList& planes, const QString& title );
+        static bool parseLegend( const QDomNode& rootNode, const QDomNode& pointerNode,
+                                 Legend*& legend );
     };
 
 } // end of namespace

@@ -79,9 +79,10 @@ namespace KDChart {
          */
         virtual bool parseElement( const QDomElement& container, QObject*& ptr ) const;
 
-    protected:
-        bool parseDiagram( const QDomNode& rootNode, const QDomNode& pointerNode, AbstractDiagram*& diagramPtr ) const;
-        void saveDiagrams( QDomDocument& doc, QDomElement& e, const ConstAbstractDiagramList& diags, const QString& title ) const;
+        bool parseDiagram( const QDomNode& rootNode, const QDomNode& pointerNode,
+                           AbstractDiagram*& diagramPtr ) const;
+        void saveDiagrams( QDomDocument& doc, QDomElement& e,
+                           const ConstAbstractDiagramList& diags, const QString& title ) const;
     };
 
 } // end of namespace

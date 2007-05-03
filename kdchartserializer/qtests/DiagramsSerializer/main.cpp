@@ -9,6 +9,7 @@
 #include <KDChartFrameAttributes>
 #include <KDChartLineDiagram>
 
+#include <KDChartCoordPlanesSerializer>
 #include <KDChartDiagramsSerializer>
 #include <KDChartAttributesModelSerializer>
 #include <KDChartSerializeCollector>
@@ -27,7 +28,8 @@ private slots:
         mDocstart = "<kdchart:kdchart/>";
         resetDoc();
 
-        m_diagsS = new DiagramsSerializer(0);
+        m_coordsS = new CoordPlanesSerializer();
+        m_diagsS = new DiagramsSerializer( m_coordsS );
 
         m_chart = new Chart(0);
         TableModel *tableModel = new TableModel( this );
@@ -143,6 +145,7 @@ private:
     QDomElement mDocRoot;
 
     DiagramsSerializer *m_diagsS;
+    CoordPlanesSerializer *m_coordsS;
     AttributesModelSerializer *mAttrModelS;
 
     Chart *m_chart;
