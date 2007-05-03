@@ -9,6 +9,7 @@
 #include <KDChartLineDiagram>
 #include <KDChartPosition>
 
+#include <KDChartSerializer>
 #include <KDChartLegendsSerializer>
 #include <KDChartSerializeCollector>
 #include <KDXMLTools>
@@ -102,6 +103,12 @@ private slots:
         QDomElement savedElement =
                 mDoc.createElement( "TESTING" );
         mDocRoot.appendChild( savedElement );
+
+
+        // Note: We do not instantiate a Serializer object, so we
+        //       must register the built-in factories explicitely:
+        Serializer::registerBuiltInSerializerFactories();
+
 
         LegendsSerializer::saveLegends(
                 mDoc,
