@@ -543,7 +543,9 @@ AbstractSerializerFactory* Serializer::elementSerializerFactory( const QObject* 
 
 AbstractSerializerFactory* Serializer::elementSerializerFactory( const QString& className )
 {
-    return Private::s_serializerFactories->value( className );
+    return Private::s_serializerFactories
+            ? Private::s_serializerFactories->value( className )
+    : 0;
 }
 
 AbstractSerializerFactory* Serializer::elementSerializerFactory( const char* className )
