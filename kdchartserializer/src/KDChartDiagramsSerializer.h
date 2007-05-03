@@ -33,10 +33,10 @@
     \brief Auxiliary methods for reading/saving KD Chart data and configuration in streams.
   */
 
-#include "KDChartAbstractSerializer.h"
-#include "KDChartLegendsSerializer.h"
+#include "KDChartAbstractSerializer"
+#include "KDChartLegendsSerializer"
 
-#include "KDChartAttributesSerializer.h"
+#include "KDChartAttributesSerializer"
 
 #include <KDChartChart>
 #include <KDChartLineDiagram>

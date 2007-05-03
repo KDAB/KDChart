@@ -36,7 +36,7 @@
 #include <KDChartHeaderFooter>
 #include <KDChartChart>
 
-#include <KDChartAbstractSerializer.h>
+#include <KDChartAbstractSerializer>
 
 #include <QDomDocument>
 

@@ -27,17 +27,17 @@
  **
  **********************************************************************/
 
-#include <KDChartAxesSerializer.h>
+#include <KDChartAxesSerializer>
 #include <KDChartAxesSerializer_p.h>
 
-#include <KDChartAttributesSerializer.h>
-#include <KDChartAbstractAreaBaseSerializer.h>
-#include <KDChartSerializeCollector.h>
+#include <KDChartAttributesSerializer>
+#include <KDChartAbstractAreaBaseSerializer>
+#include <KDChartSerializeCollector>
 
-#include <KDChartAbstractSerializerFactory.h>
-#include <KDChartSerializer.h>
+#include <KDChartAbstractSerializerFactory>
+#include <KDChartSerializer>
 
-#include <KDXMLTools.h>
+#include <KDXMLTools>
 
 #include <qglobal.h>
 #include <QMessageBox>

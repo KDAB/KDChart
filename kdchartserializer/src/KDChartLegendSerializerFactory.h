@@ -32,7 +32,7 @@
 /** \file KDChartLegendSerializerFactory.h
   */
 
-#include <KDChartAbstractSerializerFactory.h>
+#include <KDChartAbstractSerializerFactory>
 
 namespace KDChart {
 

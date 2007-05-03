@@ -33,9 +33,9 @@
     \brief Auxiliary methods for reading/saving KD Chart data and configuration in streams.
   */
 
-#include "KDChartAttributesSerializer.h"
+#include "KDChartAttributesSerializer"
 
-#include <KDChartAbstractSerializer.h>
+#include <KDChartAbstractSerializer>
 
 #include <KDChartCartesianAxis>
 //TODO once PolarAxis is implemented: #include <KDChartPolarAxis>

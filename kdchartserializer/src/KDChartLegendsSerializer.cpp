@@ -27,17 +27,17 @@
  **
  **********************************************************************/
 
-#include <KDChartLegendsSerializer.h>
+#include <KDChartLegendsSerializer>
 #include <KDChartLegendsSerializer_p.h>
 
-#include <KDChartAbstractAreaBaseSerializer.h>
-#include <KDChartDiagramsSerializer.h>
-#include <KDChartSerializeCollector.h>
-#include <KDChartIdMapper.h>
-#include <KDChartAbstractSerializerFactory.h>
-#include <KDChartSerializer.h>
+#include <KDChartAbstractAreaBaseSerializer>
+#include <KDChartDiagramsSerializer>
+#include <KDChartSerializeCollector>
+#include <KDChartIdMapper>
+#include <KDChartAbstractSerializerFactory>
+#include <KDChartSerializer>
 
-#include <KDXMLTools.h>
+#include <KDXMLTools>
 
 #include <qglobal.h>
 

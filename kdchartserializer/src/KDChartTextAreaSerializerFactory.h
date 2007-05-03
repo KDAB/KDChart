@@ -32,7 +32,7 @@
 /** \file KDChartTextAreaSerializerFactory.h
   */
 
-#include <KDChartAbstractSerializerFactory.h>
+#include <KDChartAbstractSerializerFactory>
 
 namespace KDChart {
 

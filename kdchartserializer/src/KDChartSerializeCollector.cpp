@@ -27,10 +27,10 @@
  **
  **********************************************************************/
 
-#include <KDChartSerializeCollector.h>
+#include <KDChartSerializeCollector>
 #include <KDChartSerializeCollector_p.h>
 
-#include <KDChartIdMapper.h>
+#include <KDChartIdMapper>
 
 
 // Global objects of the following classes can be
@@ -43,8 +43,8 @@
 #include <KDChartPolarCoordinatePlane>
 #include <KDChartHeaderFooter>
 #include <KDChartLegend>
-#include <KDChartAbstractSerializerFactory.h>
-#include <KDChartSerializer.h>
+#include <KDChartAbstractSerializerFactory>
+#include <KDChartSerializer>
 
 #include <KDXMLTools.h>
 

@@ -32,7 +32,7 @@
 /** \file KDChartAxisSerializerFactory.h
   */
 
-#include <KDChartAbstractSerializerFactory.h>
+#include <KDChartAbstractSerializerFactory>
 
 namespace KDChart {
 

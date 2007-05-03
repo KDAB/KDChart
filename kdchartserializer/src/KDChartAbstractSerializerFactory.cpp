@@ -27,7 +27,7 @@
  **
  **********************************************************************/
 
-#include <KDChartAbstractSerializerFactory.h>
+#include <KDChartAbstractSerializerFactory>
 
 using namespace KDChart;
 
