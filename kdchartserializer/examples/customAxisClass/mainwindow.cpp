@@ -79,8 +79,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     yAxis->setBounds(29.9, 31.0);
     xAxis->setPosition ( KDChart::CartesianAxis::Bottom );
     yAxis->setPosition ( KDChart::CartesianAxis::Left );
-    xAxis->setTitleText ( "a default Abscissa axis" );
-    yAxis->setTitleText ( "a custom Ordinate axis" );
+    yAxis->setTitleText ( "an axis class with customized labels" );
 
     lines->addAxis( xAxis );
     lines->addAxis( yAxis );
