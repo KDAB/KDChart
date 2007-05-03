@@ -92,6 +92,7 @@ private slots:
                 mDoc.createElement( "TESTING" );
         mDocRoot.appendChild( savedElement );
 
+        qDebug() << "\n\n  NOTE : Please ignore the comments following below   --- CoordPlanesSerializer ---\n";
         m_diagsS->saveDiagrams(
                 mDoc,
                 savedElement,
