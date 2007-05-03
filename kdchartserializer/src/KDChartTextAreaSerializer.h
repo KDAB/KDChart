@@ -36,11 +36,13 @@
 #include <KDChartHeaderFooter>
 #include <KDChartChart>
 
+#include <KDChartAbstractSerializer.h>
+
 #include <QDomDocument>
 
 namespace KDChart {
 
-    class KDCHART_EXPORT TextAreaSerializer : public QObject
+    class KDCHART_EXPORT TextAreaSerializer : public QObject, public AbstractSerializer
     {
         Q_OBJECT
         Q_DISABLE_COPY( TextAreaSerializer )
@@ -57,7 +59,10 @@ namespace KDChart {
                 const KDChart::HeaderFooterList& areas,
                 const QString& title );
 
-        /**
+        void saveElement( QDomDocument& doc, QDomElement& e, const QObject* obj ) const;
+        bool parseElement( const QDomElement& container, QObject*& ptr ) const;
+
+       /**
          * Parse the header/footer element, and return a HeaderFooter* in \c hdFt
          * if the respective header/footer was found in the list of global elements.
          *
@@ -70,26 +75,7 @@ namespace KDChart {
                 const QDomNode& pointerNode,
                 HeaderFooter*& hdFt );
 
-        static void saveHeaderFooter(
-                QDomDocument& doc,
-                QDomElement& hdFtElement,
-                const KDChart::HeaderFooter& hdFt );
-
-        static bool parseTextArea(
-                const QDomElement& container, TextArea& area );
-        static void saveTextArea(
-                QDomDocument& doc,
-                QDomElement& e,
-                const TextArea& area,
-                const QString& title );
-
-        static bool parseTextLayoutItem(
-                const QDomElement& container, TextLayoutItem& item );
-        static void saveTextLayoutItem(
-                QDomDocument& doc,
-                QDomElement& e,
-                const TextLayoutItem& item,
-                const QString& title );
+protected:
     };
 
 } // end of namespace

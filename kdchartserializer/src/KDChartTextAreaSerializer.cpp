@@ -33,6 +33,8 @@
 #include <KDChartAttributesSerializer.h>
 #include <KDChartAbstractAreaBaseSerializer.h>
 #include <KDChartSerializeCollector.h>
+#include <KDChartAbstractSerializerFactory.h>
+#include <KDChartSerializer.h>
 
 #include <KDXMLTools.h>
 
@@ -71,6 +73,19 @@ void TextAreaSerializer::init()
 {
 }
 
+void TextAreaSerializer::saveElement( QDomDocument& doc, QDomElement& e, const QObject* obj ) const
+{
+    const HeaderFooter* hf = qobject_cast< const HeaderFooter* >( obj );
+    if( hf != 0 )
+        Private::saveHeaderFooter( doc, e, *hf );
+}
+
+bool TextAreaSerializer::parseElement( const QDomElement& container, QObject*& ptr ) const
+{
+    HeaderFooter* hf = qobject_cast< HeaderFooter* >( ptr );
+    return d->doParseHeaderFooter( container, hf );
+}
+
 void TextAreaSerializer::saveHeadersFooters(
         QDomDocument& doc,
         QDomElement& e,
@@ -94,11 +109,16 @@ void TextAreaSerializer::saveHeadersFooters(
                 *hdFtList,
                 pointersList,
                 "kdchart:header-footer",
-                "KDChart::HeaderFooter",
+                p->metaObject()->className(),
                 p,
                 wasFound );
         if( ! wasFound )
-            saveHeaderFooter( doc, hdFtElement, *p );
+        {
+            const AbstractSerializerFactory* factory = Serializer::elementSerializerFactory( p );
+            const QObject* obj = p;
+            if( factory != 0 )
+                factory->instance( p->metaObject()->className() )->saveElement( doc, hdFtElement, obj );
+        }
     }
 }
 
@@ -150,26 +170,37 @@ bool TextAreaSerializer::parseHeaderFooter(
 
     if( bOK ) {
         SerializeCollector::instance()->setWasParsed( hdFt, true );
+        const AbstractSerializerFactory* factory = Serializer::elementSerializerFactory( hdFt );
+        QObject* obj = hdFt;
+        if( factory != 0 )
+            return factory->instance( hdFt->metaObject()->className() )->parseElement( container, obj );
+        return false;
+    }
 
-        QString s;
-        if( KDXML::findStringAttribute( container, "type", s ) ){
-            if( ! s.isEmpty() ){
-                if( s.compare("Header", Qt::CaseInsensitive) == 0 ){
-                    hdFt->setType( HeaderFooter::Header );
-                }else if( s.compare("Footer", Qt::CaseInsensitive) == 0 ){
-                    hdFt->setType( HeaderFooter::Footer );
-                }else{
-                    qDebug() << "Empty type attribute found in HeaderFooter.";
-                    bOK = false;
-                }
-            } else {
-                qDebug() << "Invalid type attribute found in HeaderFooter: \"" << s << "\"";
+    return bOK;
+}
+
+bool TextAreaSerializer::Private::doParseHeaderFooter( const QDomElement& container, HeaderFooter*& hdFt )
+{
+    bool bOK = true;
+    QString s;
+    if( KDXML::findStringAttribute( container, "type", s ) ){
+        if( ! s.isEmpty() ){
+            if( s.compare("Header", Qt::CaseInsensitive) == 0 ){
+                hdFt->setType( HeaderFooter::Header );
+            }else if( s.compare("Footer", Qt::CaseInsensitive) == 0 ){
+                hdFt->setType( HeaderFooter::Footer );
+            }else{
+                qDebug() << "Empty type attribute found in HeaderFooter.";
                 bOK = false;
             }
         } else {
-            qDebug() << "No type attribute found in HeaderFooter element.";
+            qDebug() << "Invalid type attribute found in HeaderFooter: \"" << s << "\"";
             bOK = false;
         }
+    } else {
+        qDebug() << "No type attribute found in HeaderFooter element.";
+        bOK = false;
     }
 
     if( bOK ){
@@ -199,7 +230,7 @@ bool TextAreaSerializer::parseHeaderFooter(
     return bOK;
 }
 
-void TextAreaSerializer::saveHeaderFooter(
+void TextAreaSerializer::Private::saveHeaderFooter(
         QDomDocument& doc,
         QDomElement& hdFtElement,
         const KDChart::HeaderFooter& hdFt )
@@ -226,7 +257,7 @@ void TextAreaSerializer::saveHeaderFooter(
 }
 
 
-bool TextAreaSerializer::parseTextArea(
+bool TextAreaSerializer::Private::parseTextArea(
         const QDomElement& container,
         TextArea& area )
 {
@@ -252,7 +283,7 @@ bool TextAreaSerializer::parseTextArea(
     return bOK;
 }
 
-void TextAreaSerializer::saveTextArea(
+void TextAreaSerializer::Private::saveTextArea(
         QDomDocument& doc,
         QDomElement& e,
         const TextArea& area,
@@ -272,7 +303,7 @@ void TextAreaSerializer::saveTextArea(
 }
 
 
-bool TextAreaSerializer::parseTextLayoutItem(
+bool TextAreaSerializer::Private::parseTextLayoutItem(
         const QDomElement& container,
         TextLayoutItem& item )
 {
@@ -313,7 +344,7 @@ bool TextAreaSerializer::parseTextLayoutItem(
     return bOK;
 }
 
-void TextAreaSerializer::saveTextLayoutItem(
+void TextAreaSerializer::Private::saveTextLayoutItem(
         QDomDocument& doc,
         QDomElement& e,
         const TextLayoutItem& item,

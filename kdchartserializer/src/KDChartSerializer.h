@@ -107,7 +107,6 @@ namespace KDChart {
                 QDomDocument& doc,
                 QDomElement& e ) const;
 
-        static void registerBuiltInSerializerFactories( QObject* parent = 0 );
 
         template< class T >
         static void registerElementSerializerFactory( AbstractSerializerFactory* factory )

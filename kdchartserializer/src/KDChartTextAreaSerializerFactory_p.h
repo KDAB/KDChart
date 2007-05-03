@@ -26,8 +26,8 @@
  ** licensing are not clear to you.
  **
  **********************************************************************/
-#ifndef __KDCHARTTEXTAREASERIALIZER_P_H__
-#define __KDCHARTTEXTAREASERIALIZER_P_H__
+#ifndef __KDCHARTTEXTAREASERIALIZERFACTORY_P_H__
+#define __KDCHARTTEXTAREASERIALIZERFACTORY_P_H__
 
 //
 //  W A R N I N G
@@ -40,35 +40,29 @@
 // We mean it.
 //
 
-#include <KDChartTextAreaSerializer.h>
+#include <KDChartTextAreaSerializerFactory.h>
+
+#include <QMap>
 
 namespace KDChart
 {
-    class HeaderFooter;
+    class TextAreaSerializer;
 }
 
 /**
  * \internal
  */
-class KDChart::TextAreaSerializer::Private
+class KDChart::TextAreaSerializerFactory::Private
 {
-    friend class ::KDChart::TextAreaSerializer;
-    TextAreaSerializer * const q;
+    friend class ::KDChart::TextAreaSerializerFactory;
+    TextAreaSerializerFactory* const q;
 public:
-    explicit Private( TextAreaSerializer * qq );
+    explicit Private( TextAreaSerializerFactory * qq );
     ~Private(); // non-virtual, since nothing inherits this
 
 protected:
-    static bool doParseHeaderFooter( const QDomElement& container, HeaderFooter*& ptr );
-
-    static void saveHeaderFooter( QDomDocument& doc, QDomElement& hdFtElement, const KDChart::HeaderFooter& hdFt );
-
-    static bool parseTextArea( const QDomElement& container, TextArea& area );
-    static void saveTextArea( QDomDocument& doc, QDomElement& e, const TextArea& area, const QString& title );
-
-    static bool parseTextLayoutItem( const QDomElement& container, TextLayoutItem& item );
-    static void saveTextLayoutItem( QDomDocument& doc, QDomElement& e, const TextLayoutItem& item, const QString& title );
+    mutable KDChart::TextAreaSerializer* m_instance;
 };
 
 
-#endif // KDChartTextAreaSerializer_p_H
+#endif // KDChartLegendSerializerFactory_p_H

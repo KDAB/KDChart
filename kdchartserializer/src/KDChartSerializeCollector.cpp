@@ -265,11 +265,11 @@ bool SerializeCollector::initializeGlobalPointers(
                                         objectName,
                                         InitializedPointersMapItem(
                                                 new RingDiagram(0, 0) ) );*/
-                            } else if( className == "KDChart::HeaderFooter" ){
+/*                            } else if( className == "KDChart::HeaderFooter" ){
                                 instance()->initializedPointersMap().insert(
                                         objectName,
                                         InitializedPointersMapItem(
-                                                new HeaderFooter( 0 ) ) );
+                                                new HeaderFooter( 0 ) ) );*/
 /*                            } else if( className == "KDChart::Legend" ){
                                 instance()->initializedPointersMap().insert(
                                         objectName,

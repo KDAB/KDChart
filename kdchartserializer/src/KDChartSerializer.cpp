@@ -39,14 +39,17 @@
 
 #include <KDChartDiagramSerializerFactory.h>
 #include <KDChartLegendSerializerFactory.h>
+#include <KDChartTextAreaSerializerFactory.h>
 
-#include <KDChartLineDiagram.h>
-#include <KDChartBarDiagram.h>
-#include <KDChartPieDiagram.h>
-#include <KDChartPolarDiagram.h>
-#include <KDChartRingDiagram.h>
+#include <KDChartLineDiagram>
+#include <KDChartBarDiagram>
+#include <KDChartPieDiagram>
+#include <KDChartPolarDiagram>
+#include <KDChartRingDiagram>
 
-#include <KDChartLegend.h>
+#include <KDChartLegend>
+
+#include <KDChartHeaderFooter>
 
 #include <KDXMLTools.h>
 
@@ -93,7 +96,7 @@ Serializer::Serializer( Chart* chart, QAbstractItemModel * model )
     IdMapper::instance()->clear();
     SerializeCollector::instance()->clear();
 
-    registerBuiltInSerializerFactories();
+    Private::registerBuiltInSerializerFactories();
 }
 
 Serializer::~Serializer()
@@ -109,17 +112,20 @@ void Serializer::init()
 {
 }
 
-void Serializer::registerBuiltInSerializerFactories( QObject* parent )
+void Serializer::Private::registerBuiltInSerializerFactories( QObject* parent )
 {
     AbstractSerializerFactory* f = new DiagramSerializerFactory( parent );
-    registerElementSerializerFactory< LineDiagram >( f );
-    registerElementSerializerFactory< BarDiagram >( f );
-    registerElementSerializerFactory< PieDiagram >( f );
-    registerElementSerializerFactory< PolarDiagram >( f );
-    registerElementSerializerFactory< RingDiagram >( f );
+    Serializer::registerElementSerializerFactory< LineDiagram >( f );
+    Serializer::registerElementSerializerFactory< BarDiagram >( f );
+    Serializer::registerElementSerializerFactory< PieDiagram >( f );
+    Serializer::registerElementSerializerFactory< PolarDiagram >( f );
+    Serializer::registerElementSerializerFactory< RingDiagram >( f );
 
     f = new LegendSerializerFactory( parent );
-    registerElementSerializerFactory< Legend >( f );
+    Serializer::registerElementSerializerFactory< Legend >( f );
+
+    f = new TextAreaSerializerFactory( parent );
+    Serializer::registerElementSerializerFactory< HeaderFooter >( f );
 }
 
 void Serializer::setModel(QAbstractItemModel * model)
@@ -556,6 +562,7 @@ AbstractSerializerFactory* Serializer::elementSerializerFactory( const QObject* 
 AbstractSerializerFactory* Serializer::elementSerializerFactory( const QString& className )
 {
     Private::setupSerializerFactoriesMap();
+    qDebug() << className;
     //qDebug() << "number of elements in the factories map:" << Private::s_serializerFactories->count();
     return Private::s_serializerFactories->value( className );
 }

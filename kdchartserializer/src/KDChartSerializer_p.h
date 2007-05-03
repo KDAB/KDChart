@@ -63,6 +63,7 @@ protected:
     CoordPlanesSerializer* m_coordS;
 
     static void setupSerializerFactoriesMap();
+    static void registerBuiltInSerializerFactories( QObject* parent = 0 );
     static QMap< QString, AbstractSerializerFactory* >* s_serializerFactories;
 };
 
