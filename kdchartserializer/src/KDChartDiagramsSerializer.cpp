@@ -127,7 +127,10 @@ void DiagramsSerializer::saveDiagrams(
                 p,
                 wasFound );
         if( ! wasFound ){
-            Serializer::elementSerializerFactory( p )->instance( p->metaObject()->className() )->saveElement( doc, diagElement, p );
+            const AbstractSerializerFactory* factory
+                    = Serializer::elementSerializerFactory( p );
+            if( factory )
+                factory->instance( p->metaObject()->className() )->saveElement( doc, diagElement, p );
         }
     }
 }

@@ -543,6 +543,9 @@ AbstractSerializerFactory* Serializer::elementSerializerFactory( const QObject* 
 
 AbstractSerializerFactory* Serializer::elementSerializerFactory( const QString& className )
 {
+    if( ! Private::s_serializerFactories ){
+        qDebug() << "\nError: Serializer::elementSerializerFactory("<<className<<") has no factories at all.\n";
+    }
     return Private::s_serializerFactories
             ? Private::s_serializerFactories->value( className )
             : 0;
