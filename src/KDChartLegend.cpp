@@ -236,6 +236,7 @@ bool Legend::compare( const Legend* other )const
     qDebug() << (titleText()              == other->titleText());
     qDebug() << (titleTextAttributes()    == other->titleTextAttributes());
     qDebug() << (spacing()                == other->spacing());
+    qDebug() << (legendStyle()            == other->legendStyle());
     */
     return  ( static_cast<const AbstractAreaBase*>(this)->compare( other ) ) &&
             (isVisible()              == other->isVisible()) &&
