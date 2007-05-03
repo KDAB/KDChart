@@ -122,8 +122,8 @@ namespace KDChart {
         {
             return elementSerializerFactory( T::staticMetaObject.className() );
         }
+
         static AbstractSerializerFactory* elementSerializerFactory( const QObject* element );
-        
         static AbstractSerializerFactory* elementSerializerFactory( const QString& className );
 
     protected:

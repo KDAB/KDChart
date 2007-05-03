@@ -64,12 +64,18 @@ Serializer::Private::Private( Serializer* qq )
       m_chart( 0 ),
       m_coordS( 0 )
 {
-    if( Private::s_serializerFactories == 0 )
-        Private::s_serializerFactories = new QMap< QString, AbstractSerializerFactory* >();
+    setupSerializerFactoriesMap();
 }
 
 Serializer::Private::~Private() {}
-      
+
+void Serializer::Private::setupSerializerFactoriesMap()
+{
+    if( ! Serializer::Private::s_serializerFactories ){
+        qDebug() << "instantiating the serializer-factories map";
+        Serializer::Private::s_serializerFactories = new QMap< QString, AbstractSerializerFactory* >();
+    }
+}
 
 /**
   \class KDChart::Serializer KDChartSerializer.h
@@ -528,11 +534,13 @@ void Serializer::setChart( Chart* chart )
 
 void Serializer::registerElementSerializerFactory( const char* className, AbstractSerializerFactory* factory )
 {
+    Private::setupSerializerFactoriesMap();
     Private::s_serializerFactories->insert( QString::fromLatin1( className ), factory );
 }
 
 void Serializer::unregisterElementSerializerFactory( const char* className )
 {
+    Private::setupSerializerFactoriesMap();
     Private::s_serializerFactories->remove( QString::fromLatin1( className ) );
 }
 
@@ -543,12 +551,8 @@ AbstractSerializerFactory* Serializer::elementSerializerFactory( const QObject* 
 
 AbstractSerializerFactory* Serializer::elementSerializerFactory( const QString& className )
 {
-    if( ! Private::s_serializerFactories ){
-        qDebug() << "\nError: Serializer::elementSerializerFactory("<<className<<") has no factories at all.\n";
-    }
-    return Private::s_serializerFactories
-            ? Private::s_serializerFactories->value( className )
-            : 0;
+    Private::setupSerializerFactoriesMap();
+    return Private::s_serializerFactories->value( className );
 }
 
 AbstractSerializerFactory* Serializer::elementSerializerFactory( const char* className )
