@@ -116,7 +116,10 @@ void LegendsSerializer::saveLegends(
                 p,
                 wasFound );
         if( ! wasFound ){
-            Serializer::elementSerializerFactory( p )->instance( p->metaObject()->className() )->saveElement( doc, legendElement, p );
+            const AbstractSerializerFactory* factory
+                    = Serializer::elementSerializerFactory( p );
+            if( factory )
+                factory->instance( p->metaObject()->className() )->saveElement( doc, legendElement, p );
         }
     }
 }
