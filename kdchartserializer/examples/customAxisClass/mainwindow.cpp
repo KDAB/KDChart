@@ -27,6 +27,7 @@
 
 #include "mainwindow.h"
 #include "AdjustedCartesianAxis.h"
+#include "AdjustedCartesianAxisSerializer.h"
 
 #include <KDChartBarDiagram>
 #include <KDChartChart>
@@ -59,6 +60,12 @@ MainWindow::MainWindow( QWidget* parent ) :
 
 
     initializeDataModel();
+
+
+    // register our own serializer for saving / loading the Y axis:
+    AdjustedCartesianAxisSerializer* serializer = new AdjustedCartesianAxisSerializer();
+    // registering code to follow soon:
+    Q_UNUSED( serializer )
 
 
     // Set up the diagrams
