@@ -270,11 +270,11 @@ bool SerializeCollector::initializeGlobalPointers(
                                         objectName,
                                         InitializedPointersMapItem(
                                                 new HeaderFooter( 0 ) ) );
-                            } else if( className == "KDChart::Legend" ){
+/*                            } else if( className == "KDChart::Legend" ){
                                 instance()->initializedPointersMap().insert(
                                         objectName,
                                         InitializedPointersMapItem(
-                                                new Legend( 0 ) ) );
+                                                new Legend( 0 ) ) );*/
                             } else {
                                 qDebug() << "Non-critical information by SerializeCollector::initializeGlobalPointers()\n"
                                         "    Unknown subelement of " << tagName
