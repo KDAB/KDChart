@@ -62,31 +62,32 @@ bool AdjustedCartesianAxisSerializer::parseElement( const QDomElement& container
     AdjustedCartesianAxis* axis = qobject_cast< AdjustedCartesianAxis* >( ptr );
     if( axis )
     {
+        const QString containerName = container.tagName();
         qreal upperBound = 0.0;
         qreal lowerBound = 0.0;
         QDomNode node = container.firstChild();
         while( !node.isNull() ) {
             QDomElement element = node.toElement();
             if( !element.isNull() ) { // was really an element
-                QString tagName = element.tagName();
+                const QString tagName = element.tagName();
                 //qDebug()<<tagName;
                 if( tagName == "kdchart:cartesian-axis" ) {
                     if( ! AxesSerializer::parseElement( element, ptr ) )
-                        qDebug() << "Error parsing base-class of AdjustedCartesianAxis:" << tagName;
+                        qDebug() << "Error parsing base-class of"<<containerName<<":" << tagName;
                 } else if( tagName == "LowerBound" ) {
                     qreal r;
                     if( KDXML::readRealNode( element, r ) )
                         lowerBound = r;
                     else
-                        qDebug() << "Error parsing AdjustedCartesianAxis tag:" << tagName;
+                        qDebug() << "Error parsing"<<containerName<<"tag:" << tagName;
                 } else if( tagName == "UpperBound" ) {
                     qreal r;
                     if( KDXML::readRealNode( element, r ) )
                         upperBound = r;
                     else
-                        qDebug() << "Error parsing AdjustedCartesianAxis tag:" << tagName;
+                        qDebug() << "Error parsing"<<containerName<<"tag:" << tagName;
                 } else {
-                    qDebug() << "Unknown subelement of AdjustedCartesianAxis found:" << tagName;
+                    qDebug() << "Unknown subelement of"<<containerName<<"found:" << tagName;
                     bOK = false;
                 }
             }
