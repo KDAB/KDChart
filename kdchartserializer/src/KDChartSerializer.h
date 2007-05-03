@@ -136,4 +136,6 @@ namespace KDChart {
 
 } // end of namespace
 
+#include <KDChartSerializerRegistrator>
+
 #endif

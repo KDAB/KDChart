@@ -116,6 +116,8 @@ void Serializer::init()
 {
 }
 
+#include <KDChartDiagramsSerializer>
+
 void Serializer::registerBuiltInSerializerFactories( QObject* parent )
 {
     AbstractSerializerFactory* f = new DiagramSerializerFactory( parent );

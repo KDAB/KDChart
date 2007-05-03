@@ -82,4 +82,5 @@ HEADERS= \
         KDChartCoordPlaneSerializerFactory.h \
         KDChartCoordPlaneSerializerFactory_p.h \
         KDChartAbstractSerializerFactory.h \
+        KDChartSerializerRegistrator.h \
 
