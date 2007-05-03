@@ -576,8 +576,6 @@ AbstractSerializerFactory* Serializer::elementSerializerFactory( const QObject* 
 AbstractSerializerFactory* Serializer::elementSerializerFactory( const QString& className )
 {
     Private::setupSerializerFactoriesMap();
-    qDebug() << className;
-    //qDebug() << "number of elements in the factories map:" << Private::s_serializerFactories->count();
     return Private::s_serializerFactories->value( className );
 }
 
