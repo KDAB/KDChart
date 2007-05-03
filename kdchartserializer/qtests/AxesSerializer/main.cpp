@@ -4,6 +4,7 @@
 
 #include <KDChartCartesianAxis>
 
+#include <KDChartSerializer>
 #include <KDChartAxesSerializer>
 #include <KDChartSerializeCollector>
 #include <KDXMLTools>
@@ -22,6 +23,10 @@ private slots:
         resetDoc();
 
         mAxesS = new AxesSerializer();
+
+        // Note: We do not instantiate a Serializer object, so we
+        //       must register the built-in factories explicitely:
+        Serializer::registerBuiltInSerializerFactories();
     }
 
     void testCartesianAxis()
