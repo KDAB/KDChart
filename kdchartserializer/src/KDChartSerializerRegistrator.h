@@ -37,8 +37,6 @@
 
 #include <QSet>
 
-static QSet< KDChart::AbstractSerializerFactory* > *s_SerializerRegistratorFactories = 0;
-
 namespace KDChart {
 
     template< class S, class T >
@@ -49,18 +47,12 @@ namespace KDChart {
             : AbstractSerializerFactory( parent )
             , m_instance( new S )
         {
-            if( s_SerializerRegistratorFactories == 0 )
-                s_SerializerRegistratorFactories = new QSet< AbstractSerializerFactory* >();
-
-            s_SerializerRegistratorFactories->insert( this );
         }
 
         ~SerializerRegistrator()
         {
             if( m_instance != 0 )
                 delete m_instance;
-
-            s_SerializerRegistratorFactories->remove( this );
         }
 
         AbstractSerializer* instance( const QString& className ) const
