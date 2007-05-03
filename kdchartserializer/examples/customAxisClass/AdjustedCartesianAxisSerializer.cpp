@@ -79,7 +79,7 @@ bool AdjustedCartesianAxisSerializer::parseElement( const QDomElement& container
                         lowerBound = r;
                     else
                         qDebug() << "Error parsing AdjustedCartesianAxis tag:" << tagName;
-                } else if( tagName == "LowerBound" ) {
+                } else if( tagName == "UpperBound" ) {
                     qreal r;
                     if( KDXML::readRealNode( element, r ) )
                         upperBound = r;
@@ -93,7 +93,7 @@ bool AdjustedCartesianAxisSerializer::parseElement( const QDomElement& container
             node = node.nextSibling();
         }
         if( bOK )
-            axis->setBounds( upperBound, lowerBound );
+            axis->setBounds( lowerBound, upperBound );
     }
     return bOK;
 }

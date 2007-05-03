@@ -63,9 +63,7 @@ MainWindow::MainWindow( QWidget* parent ) :
 
 
     // register our own serializer for saving / loading the Y axis:
-    AdjustedCartesianAxisSerializer* serializer = new AdjustedCartesianAxisSerializer();
-    // registering code to follow soon:
-    Q_UNUSED( serializer )
+    registerElementSerializer< AdjustedCartesianAxisSerializer, AdjustedCartesianAxis >( 0 );
 
 
     // Set up the diagrams
