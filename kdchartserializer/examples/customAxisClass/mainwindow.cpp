@@ -53,7 +53,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_chart = new KDChart::Chart();
     m_chartLayout->addWidget( m_chart );
 
-    // add a small lest-side leading because we use a coloured Y axis background
+    // add a small left-side leading because we use a coloured Y axis background
     m_chart->setGlobalLeadingLeft( 1 );
 
 
