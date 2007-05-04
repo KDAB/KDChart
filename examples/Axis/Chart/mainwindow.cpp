@@ -52,14 +52,17 @@ MainWindow::MainWindow( QWidget* parent ) :
     // create and position axis
     CartesianAxis *topAxis = new CartesianAxis( m_lines );
     CartesianAxis *leftAxis = new CartesianAxis ( m_lines );
+    CartesianAxis *rightAxis = new CartesianAxis ( m_lines );
     CartesianAxis *bottomAxis = new CartesianAxis ( m_lines );
     topAxis->setPosition ( CartesianAxis::Top );
     leftAxis->setPosition ( CartesianAxis::Left );
+    rightAxis->setPosition ( CartesianAxis::Right );
     bottomAxis->setPosition ( CartesianAxis::Bottom );
 
     // set axis titles
     topAxis->setTitleText ( "Abscissa color configured top position" );
-    leftAxis->setTitleText ( "Ordinate font configured" );
+    leftAxis->setTitleText ( "left Ordinate: fonts configured" );
+    rightAxis->setTitleText ( "right Ordinate: default settings" );
     bottomAxis->setTitleText ( "Abscissa Bottom" );
 
     // configure titles text attributes
@@ -68,6 +71,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     topAxis->setTitleTextAttributes ( taTop );
 
     TextAttributes taLeft ( leftAxis->titleTextAttributes () );
+    taLeft.setRotation( 180 );
     Measure me( taLeft.fontSize() );
     me.setValue( me.value() * 0.8 );
     taLeft.setFontSize( me );
@@ -89,6 +93,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     topAxis->setTextAttributes( taLabels );
     leftAxis->setTextAttributes( taLabels );
     bottomAxis->setTextAttributes( taLabels );
+
 
 // Set the following to 0, to see the default Abscissa labels
 // (== X headers, as read from the data file)
@@ -116,6 +121,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     // add axis
     m_lines->addAxis( topAxis );
     m_lines->addAxis( leftAxis );
+    m_lines->addAxis( rightAxis );
     m_lines->addAxis( bottomAxis );
 
     // assign diagram to chart view
