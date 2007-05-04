@@ -94,10 +94,10 @@ void MainWindow::addPlots()
 		for (int c = 0; c < m_sourceModel->columnCount(); c++)
 		{
 
-			Chart								*chart(new Chart);
+			Chart * chart = new Chart;
 			m_paramVsParamGridLayout->addWidget(chart, r, c);
 
-			CartesianCoordinatePlane	*plane(static_cast<CartesianCoordinatePlane *>(chart->coordinatePlane()));
+			CartesianCoordinatePlane * plane = static_cast<CartesianCoordinatePlane *>(chart->coordinatePlane());
 
 			// Hide grid.
 			GridAttributes ga = plane->globalGridAttributes();
@@ -180,7 +180,7 @@ void MainWindow::setMarkerAttributes(
 	ma.setMarkerColor(firstMarkerColor);
 	ma.setMarkerStyle(firstMarkerStyle);
 	dva.setMarkerAttributes(ma);
-	QAbstractItemModel	*model(p_lineDiagram->model());
+	QAbstractItemModel	*model = p_lineDiagram->model();
 	p_lineDiagram->setDataValueAttributes(model->index(0, 0), dva);
 	p_lineDiagram->setDataValueAttributes(model->index(0, 1), dva);
 } // MainWindow::setMarkerAttributes()
