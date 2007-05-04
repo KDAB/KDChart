@@ -28,3 +28,15 @@ test.depends = $(TARGET)
 QMAKE_EXTRA_TARGETS += test
 
 LIBS += -L../../lib -l$$KDCHARTLIB -ltesttools
+
+unix {
+  MOC_DIR = .moc
+  OBJECTS_DIR = .obj
+  UI_DIR = .ui
+}
+!unix {
+  MOC_DIR = _moc
+  OBJECTS_DIR = _obj
+  UI_DIR = _ui
+}
+
