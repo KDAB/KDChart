@@ -44,13 +44,12 @@
 
 using namespace KDChart;
 
-static QPixmap drawIntoPixmap( const QSize& size, KDChart::Chart* chart )
+static void drawIntoPixmap( QPixmap& pix, const QSize& size, KDChart::Chart* chart )
 {
-    QPixmap pix( size );
+    pix = QPixmap( size );
     pix.fill( Qt::white );
     QPainter painter( &pix );
     chart->paint( &painter, QRect( 0, 0, size.width(), size.height() ) );
-    return pix;
 }
 
 // When set, this example uses FrameWidget which uses Chart::paint to paint itself.
@@ -149,8 +148,8 @@ MainWindow::MainWindow( QWidget* parent ) :
     // for illustration we paint the same chart at different sizes:
     QSize size1 = QSize( 200, 200 );
     QSize size2 = QSize( 800, 800 );
-    m_pix1 = drawIntoPixmap( size1, m_chart );
-    m_pix2 = drawIntoPixmap( size2, m_chart );
+    drawIntoPixmap( m_pix1, size1, m_chart );
+    drawIntoPixmap( m_pix2, size2, m_chart );
     m_pix2 = m_pix2.scaled( size1 );
 
     m_smallChart1 = new QLabel( this );
@@ -185,8 +184,8 @@ void MainWindow::updateData(QString data)
 
     QSize size1 = QSize( 200, 200 );
     QSize size2 = QSize( 800, 800 );
-    m_pix1 = drawIntoPixmap( size1, m_chart );
-    m_pix2 = drawIntoPixmap( size2, m_chart );
+    drawIntoPixmap( m_pix1, size1, m_chart );
+    drawIntoPixmap( m_pix2, size2, m_chart );
 
     qDebug("Time for drawing pixmap %s: %d ms", data.toLatin1().constData(), t.elapsed());
     t.restart();
