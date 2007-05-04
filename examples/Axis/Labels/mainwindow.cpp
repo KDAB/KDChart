@@ -82,7 +82,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     // add a footer
     headerFooter = new KDChart::HeaderFooter( m_chart );
     headerFooter->setType( KDChart::HeaderFooter::Footer );
-    headerFooter->setPosition( KDChart::Position::South );
+    headerFooter->setPosition( KDChart::Position::West );
     headerFooter->setText( "see also kdchartserializer/examples/customAxisClass/" );
     m_chart->addHeaderFooter( headerFooter );
     // adjust the text attributes: declare a tiny fixed font size and white color
