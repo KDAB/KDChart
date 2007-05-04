@@ -366,13 +366,16 @@ static QPointF rotatedPoint( const QPointF& pt, qreal rotation )
 
 static QRectF rotatedRect( const QRectF& rect, qreal angle )
 {
-    const QPointF topLeft( rotatedPoint( rect.topLeft(), angle ) );
-    const QPointF bottomRight( rotatedPoint( rect.bottomRight(), angle ) );
+    const QPointF topLeft(  rotatedPoint( rect.topLeft(),  angle ) );
+    //const QPointF topRight( rotatedPoint( rect.topRight(), angle ) );
+    //const QPointF bottomLeft(  rotatedPoint( rect.bottomLeft(),  angle ) );
+    //const QPointF bottomRight( rotatedPoint( rect.bottomRight(), angle ) );
+    const QPointF siz( rotatedPoint( QPointF( rect.size().width(), rect.size().height() ), angle ) );
     const QRectF result(
             topLeft,
-            QSizeF( bottomRight.x() - topLeft.x(),
-                    bottomRight.y() - topLeft.y() ) );
-    //qDebug() << rect << "angle" << angle << result;
+            QSizeF( siz.x(), //bottomRight.x() - topLeft.x(),
+                    siz.y() ) ); //bottomRight.y() - topLeft.y() ) );
+    //qDebug() << "angle" << angle << "\nbefore:" << rect << "\n after:" << result;
     return result;
 }
 
@@ -388,6 +391,10 @@ void KDChart::TextLayoutItem::paint( QPainter* painter )
     painter->setFont( cachedFont );
     QRectF rect( geometry() );
 
+// #ifdef DEBUG_ITEMS_PAINT
+//     painter->setPen( Qt::black );
+//     painter->drawRect( rect );
+// #endif
     painter->translate( rect.center() );
     rect.moveTopLeft( QPointF( - rect.width() / 2, - rect.height() / 2 ) );
 #ifdef DEBUG_ITEMS_PAINT

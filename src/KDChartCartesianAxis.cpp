@@ -282,10 +282,24 @@ const TextAttributes CartesianAxis::Private::titleTextAttributesWithAdjustedRota
         int rotation = titleTA.rotation() + 270;
         if( rotation >= 360 )
             rotation -= 360;
+
+        // limit the allowed values to 0, 90, 180, 270:
+        if( rotation  < 90 )
+            rotation = 0;
+        else if( rotation  < 180 )
+            rotation = 90;
+        else if( rotation  < 270 )
+            rotation = 180;
+        else if( rotation  < 360 )
+            rotation = 270;
+        else
+            rotation = 0;
+
         titleTA.setRotation( rotation );
     }
     return titleTA;
 }
+
 
 void CartesianAxis::Private::drawTitleText( QPainter* painter, CartesianCoordinatePlane* plane, const QRect& areaGeoRect ) const
 {

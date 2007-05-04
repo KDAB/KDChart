@@ -160,6 +160,13 @@ public:
 
   /**
    * Set the rotation angle to use for the text.
+   *
+   * \note For axis titles the rotation angle can be set to one of the
+   * following angles: 0, 90, 180, 270
+   * Any other values specified will be replaced by the next smaller
+   * one of the allowed values, so no matter what you set the rotation
+   * will always be one of these four values.
+   *
    * \param rotation The rotation angle.
    */
   void setRotation( int rotation );
