@@ -43,6 +43,7 @@ class MainWindow : public QWidget, private Ui::MainWindow
 
 public:
     MainWindow( QWidget* parent = 0 );
+    virtual ~MainWindow();
 
 private slots:
 

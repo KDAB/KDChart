@@ -63,7 +63,9 @@ MainWindow::MainWindow( QWidget* parent ) :
 
 
     // register our own serializer for saving / loading the Y axis:
-    registerElementSerializer< AdjustedCartesianAxisSerializer, AdjustedCartesianAxis >( 0 );
+    registerElementSerializer<
+            AdjustedCartesianAxisSerializer,
+            AdjustedCartesianAxis >( 0 ); // will be un-registred in ~Mainwindow()
 
 
     // Set up the diagrams
@@ -111,6 +113,14 @@ MainWindow::MainWindow( QWidget* parent ) :
     yAxis->setBackgroundAttributes(ba);
 }
 
+
+MainWindow::~MainWindow()
+{
+    // un-register our own serializer for saving / loading the Y axis:
+    unregisterElementSerializer<
+            AdjustedCartesianAxisSerializer,
+            AdjustedCartesianAxis >();
+}
 
 void MainWindow::initializeDataModel()
 {
