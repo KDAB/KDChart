@@ -190,8 +190,12 @@ bool CoordPlanesSerializer::parsePlane(
         const AbstractSerializerFactory* factory = Serializer::elementSerializerFactory( planePtr );
         QObject* obj = planePtr;
         if( factory != 0 )
-            return factory->instance( planePtr->metaObject()->className() )->parseElement( container, obj );
-        return false;
+            bOK = factory->instance( planePtr->metaObject()->className() )->parseElement( container, obj );
+        if( bOK && d->m_model != 0 )
+        {
+            Q_FOREACH( AbstractDiagram* diag, planePtr->diagrams() )
+                diag->setModel( d->m_model );
+        }
     }
 
     return bOK;

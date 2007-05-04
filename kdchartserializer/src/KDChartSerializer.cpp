@@ -36,6 +36,7 @@
 #include <KDChartCoordPlanesSerializer.h>
 #include <KDChartTextAreaSerializer.h>
 #include <KDChartLegendsSerializer.h>
+#include <KDChartDiagramsSerializer.h>
 
 #include <KDChartDiagramSerializerFactory.h>
 #include <KDChartLegendSerializerFactory.h>
@@ -115,8 +116,6 @@ Serializer::~Serializer()
 void Serializer::init()
 {
 }
-
-#include <KDChartDiagramsSerializer>
 
 void Serializer::registerBuiltInSerializerFactories( QObject* parent )
 {
