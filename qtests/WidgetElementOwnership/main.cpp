@@ -104,7 +104,7 @@ private slots:
       // check add legend - take legend - delete legend
       m_widget->addLegend( Position::North );
       QCOMPARE( m_widget->allLegends().size(), 1 );
-      Legend* legend ( m_widget->legend() );
+      Legend* legend = m_widget->legend();
       m_widget->takeLegend( legend );
       QCOMPARE( m_widget->allLegends().size(), 0 );
       m_widget->replaceLegend( legend );
