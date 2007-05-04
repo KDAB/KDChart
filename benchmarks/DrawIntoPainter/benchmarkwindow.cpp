@@ -95,7 +95,6 @@ BenchmarkWindow::BenchmarkWindow( QWidget* parent ) :
 		QPushButton* updateButton = new QPushButton(tr("update"));
 
 		QSpinBox* dataCount = new QSpinBox();
-		dataCount->setRange(m_stepWidth, m_stepWidth*100);
 		dataCount->setSingleStep(m_stepWidth);
 		dataCount->setValue(DEFAULT);
 

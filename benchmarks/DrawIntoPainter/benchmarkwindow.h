@@ -31,7 +31,7 @@
 #include "testmainwindow.h"
 #include "DynamicTableModel.h"
 
-#define DEFAULT 100000
+#define DEFAULT 1000
 
 namespace KDChart {
     class Chart;
@@ -64,7 +64,7 @@ private:
 		TestMainWindow m_mainWindow;
 		QStringList m_xNotation;
 
-		static const int m_stepWidth = 10000;
+		static const int m_stepWidth = 10;
 		int m_count;
 
 };

@@ -76,15 +76,15 @@ void TestMainWindow::testLab(int count, int row, DynamicTableModel *measureModel
  		measureModel->appendData(QVariant(t.elapsed()), row, 0);
     t.restart();
 
+		// measure setModel()
+    m_lines->setModel( &m_model );
+ 		measureModel->appendData(QVariant(t.elapsed()), row, 2);
+    t.restart();
+
 		// measure drawIntoPixmap
     QSize size1 = QSize( 200, 200 );
     m_pix1 = drawIntoPixmap( size1, m_chart );
  		measureModel->appendData(QVariant(t.elapsed()), row, 1);
-    t.restart();
-
-		// measure setModel()
-    m_lines->setModel( &m_model );
- 		measureModel->appendData(QVariant(t.elapsed()), row, 2);
     t.restart();
 
 		// measure show()
