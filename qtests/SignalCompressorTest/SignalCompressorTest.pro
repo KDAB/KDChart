@@ -13,6 +13,6 @@ SOURCES += main.cpp
 
 # FIXME make work on windows (Mirko)
 test.target = test
-test.commands = LD_LIBRARY_PATH=$$KDCHART_PATH/lib ./$(TARGET)
+test.commands = ./$(TARGET)
 test.depends = $(TARGET)
 QMAKE_EXTRA_TARGETS += test
