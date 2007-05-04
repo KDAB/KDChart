@@ -274,9 +274,22 @@ void CartesianAxis::Private::drawSubUnitRulers( QPainter* painter, CartesianCoor
     }
 }
 
+
+const TextAttributes CartesianAxis::Private::titleTextAttributesWithAdjustedRotation() const
+{
+    TextAttributes titleTA( titleTextAttributes );
+    if( axis()->isOrdinate() ){
+        int rotation = titleTA.rotation() + 270;
+        if( rotation >= 360 )
+            rotation -= 360;
+        titleTA.setRotation( rotation );
+    }
+    return titleTA;
+}
+
 void CartesianAxis::Private::drawTitleText( QPainter* painter, CartesianCoordinatePlane* plane, const QRect& areaGeoRect ) const
 {
-    const TextAttributes titleTA( axis()->titleTextAttributes() );
+    const TextAttributes titleTA( titleTextAttributesWithAdjustedRotation() );
     if( titleTA.isVisible() ) {
         TextLayoutItem titleItem( titleText,
                                   titleTA,
@@ -291,27 +304,27 @@ void CartesianAxis::Private::drawTitleText( QPainter* painter, CartesianCoordina
         {
         case Top:
             point.setX( areaGeoRect.left() + areaGeoRect.width() / 2.0);
-            point.setY( areaGeoRect.top() );
+            point.setY( areaGeoRect.top()  + size.height() / 2 );
             break;
         case Bottom:
             point.setX( areaGeoRect.left() + areaGeoRect.width() / 2.0);
-            point.setY( areaGeoRect.bottom() - size.height() );
+            point.setY( areaGeoRect.bottom() - size.height() / 2 );
             break;
         case Left:
-            point.setX( areaGeoRect.left() );
+            point.setX( areaGeoRect.left() + size.width() / 2 );
             point.setY( areaGeoRect.top() + areaGeoRect.height() / 2.0);
             break;
         case Right:
-            point.setX( areaGeoRect.right() - size.height() );
+            point.setX( areaGeoRect.right() - size.width() / 2 );
             point.setY( areaGeoRect.top() + areaGeoRect.height() / 2.0);
             break;
         }
         PainterSaver painterSaver( painter );
         painter->translate( point );
-        if( axis()->isOrdinate() )
-            painter->rotate( 270.0 );
-        titleItem.setGeometry( QRect( QPoint(-size.width() / 2, 0), size ) );
-        //ptr->drawRect(titleItem.geometry().adjusted(0,0,-1,-1));
+        //if( axis()->isOrdinate() )
+        //    painter->rotate( 270.0 );
+        titleItem.setGeometry( QRect( QPoint(-size.width() / 2, -size.height() / 2), size ) );
+        //painter->drawRect(titleItem.geometry().adjusted(0,0,-1,-1));
         titleItem.paint( painter );
     }
 }
@@ -986,7 +999,7 @@ QSize CartesianAxis::maximumSize() const
     const TextAttributes labelTA = textAttributes();
     const bool drawLabels = labelTA.isVisible();
 
-    const TextAttributes titleTA( titleTextAttributes() );
+    const TextAttributes titleTA( d->titleTextAttributesWithAdjustedRotation() );
     const bool drawTitle = titleTA.isVisible() && ! titleText().isEmpty();
 
     AbstractCoordinatePlane* plane = d->diagram()->coordinatePlane();
@@ -1118,8 +1131,9 @@ QSize CartesianAxis::maximumSize() const
         // space for a possible title:
         if ( drawTitle ) {
             // we add the title height and leave a little gap between axis labels and axis title
-            w += titleItem.sizeHint().height() + titleGap;
-            h = titleItem.sizeHint().width() + 2.0;
+            w += titleItem.sizeHint().width() + titleGap;
+            h = titleItem.sizeHint().height() + 2.0;
+            //qDebug() << "left/right axis title item size-hint:" << titleItem.sizeHint();
         }
         // space for the ticks
         w += qAbs( tickLength() ) * 3.0;

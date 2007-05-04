@@ -346,11 +346,34 @@ QSize KDChart::TextLayoutItem::calcSizeHint( QFont fnt ) const
     QSize ret = unrotatedSizeHint( fnt );
     //qDebug() << "-------- "<<ret.width();
     const qreal angle = PI * mAttributes.rotation() / 180.0;
-    QSize rotated( static_cast<int>( cos( angle ) * ret.width()  + sin( angle ) * ret.height() ),
-                   static_cast<int>( cos( angle ) * ret.height() + sin( angle ) * ret.width() ) );
-    rotated.setWidth( qMax( rotated.height(), rotated.width() ) );
+    const qreal cosAngle = cos( angle );
+    const qreal sinAngle = sin( angle );
+    QSize rotated( qAbs(static_cast<int>( cosAngle * ret.width()  + sinAngle * ret.height() )),
+                   qAbs(static_cast<int>( cosAngle * ret.height() + sinAngle * ret.width()  )) );
     //qDebug() << "-------- KDChart::TextLayoutItem::calcSizeHint() returns:"<<rotated<<" ----------";
     return rotated;
+}
+
+static QPointF rotatedPoint( const QPointF& pt, qreal rotation )
+{
+    const qreal angle = PI * rotation / 180.0;
+    const qreal cosAngle = cos( angle );
+    const qreal sinAngle = sin( angle );
+    return QPointF(
+            (cosAngle * pt.x() + sinAngle * pt.y() ),
+            (cosAngle * pt.y() + sinAngle * pt.x() ) );
+}
+
+static QRectF rotatedRect( const QRectF& rect, qreal angle )
+{
+    const QPointF topLeft( rotatedPoint( rect.topLeft(), angle ) );
+    const QPointF bottomRight( rotatedPoint( rect.bottomRight(), angle ) );
+    const QRectF result(
+            topLeft,
+            QSizeF( bottomRight.x() - topLeft.x(),
+                    bottomRight.y() - topLeft.y() ) );
+    //qDebug() << rect << "angle" << angle << result;
+    return result;
 }
 
 void KDChart::TextLayoutItem::paint( QPainter* painter )
@@ -363,17 +386,21 @@ void KDChart::TextLayoutItem::paint( QPainter* painter )
 
     PainterSaver painterSaver( painter );
     painter->setFont( cachedFont );
-    painter->setPen( mAttributes.pen() );
     QRectF rect( geometry() );
 
     painter->translate( rect.center() );
     rect.moveTopLeft( QPointF( - rect.width() / 2, - rect.height() / 2 ) );
+#ifdef DEBUG_ITEMS_PAINT
+    painter->setPen( Qt::blue );
+    painter->drawRect( rect );
+#endif
     painter->rotate( mAttributes.rotation() );
+    rect = rotatedRect( rect, mAttributes.rotation() );
 #ifdef DEBUG_ITEMS_PAINT
     painter->setPen( Qt::red );
     painter->drawRect( rect );
-    painter->setPen( mAttributes.pen() );
 #endif
+    painter->setPen( mAttributes.pen() );
     painter->drawText( rect, Qt::AlignHCenter | Qt::AlignVCenter, mText );
 //    if (  calcSizeHint( cachedFont ).width() > rect.width() )
 //        qDebug() << "rect.width()" << rect.width() << "text.width()" << calcSizeHint( cachedFont ).width();

@@ -66,6 +66,8 @@ public:
                             const QPointF& rulerRef, const QVector<int>& drawnTicks ) const;
     void drawTitleText( QPainter*, CartesianCoordinatePlane* plane, const QRect& areaGeoRect ) const;
 
+    const TextAttributes titleTextAttributesWithAdjustedRotation() const;
+
 private:
     QString titleText;
     TextAttributes titleTextAttributes;
