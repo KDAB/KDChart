@@ -28,7 +28,7 @@
 
     * We now set all internally used top-level margins to Zero,
     so we get rid of that external leading, if no such leading
-    was specified by the user callins Charr::setExternalLeading()
+    was specified by the user calling Chart::setExternalLeading()
 
     * Several minor (yet annoying) layouting issues fixed.
 
@@ -70,7 +70,7 @@
     internal labels when resizing the widget to a smaller size,
     but keep the manually given labels even then.
 
-    * Do not stop painting the labels when the widget it resized to a
+    * Do not stop painting the labels when the widget is re-sized to a
     small size.
 
     * Fixed the axis labels: We do not draw a label, if its respective
@@ -91,7 +91,7 @@
 
     LineDiagram:
 
-    * Cells can use a different brush than their neoghoring cells
+    * Cells can use a different brush than their neighboring cells
     of the same dataset.
 
 
@@ -169,7 +169,7 @@
 
     other documentation:
 
-    * Added instructions about how to build staticl lib on
+    * Added instructions about how to build statical lib on
     windows to the INSTALL file.
 
 
@@ -182,11 +182,11 @@
     positioned out of their respective axis' internal area).
 
     Also many parts of the implementation have been streamlined
-    and/or refactored for both, better maintainability and
-    easier entensibility.
+    and/or re-factored for both, better maintainability and
+    easier extensibility.
 
     In general using KD Chart 2.0.3 instead of an earlier 2.x
-    version makes a lt of sense, and we strongly recommend it.
+    version makes a lot of sense, and we strongly recommend it.
     __________________
 
     The KD Chart developers team.
