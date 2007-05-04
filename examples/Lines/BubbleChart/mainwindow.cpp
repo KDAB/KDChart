@@ -69,7 +69,7 @@ static const DataType bubblesData[nBubbles] = {
     DataType(0.5, 1.0, 100,"#FF0000", "NoPen"),
     DataType(1.0, 0.5, 60, "#00FF00", "SolidLine"),
     DataType(1.6, 2.0, 28, "#0000FF", "DotLine"),
-    DataType(0.7, 0.3, 55,"#FFFF00", "DashLine"),
+    DataType(0.7, 0.3, 55, "#FFFF00", "DashLine"),
     DataType(1.3, 2.0, 95, "#FF00FF", "DashDotLine"),
     DataType(2.0, 1.0, 75, "#00FFFF", "DashDotDotLine"),
     DataType(1.4, 1.1, 85, "#FFFFFF", "DotLine")
