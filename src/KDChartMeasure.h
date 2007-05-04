@@ -150,7 +150,6 @@ class GlobalMeasureScaling
 public:
     static GlobalMeasureScaling* instance();
 
-protected:
     GlobalMeasureScaling();
     virtual ~GlobalMeasureScaling();
 
