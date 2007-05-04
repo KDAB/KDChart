@@ -12,31 +12,11 @@ SUBDIRS +=  ChartElementOwnership \
             QLayout \
             WidgetElementOwnership \
             BarDiagrams \
-	    LineDiagrams \
+            LineDiagrams \
             PieDiagrams \
             PolarDiagrams \
-            ParamVsParam \
-	    DrawIntoPainter \
-
-
-# 1. Work around a qmake bug:
-#
-#    The bug would produce invalid *.exe files when KD Chart is linked
-#    statically and examples are build right after building the lib.
-staticlib {
-  CONFIG -= staticlib
-  DEFINES += KDCHART_STATICLIB
-}
-
-
-# 2. Use the filename "kdchartd.dll" (or "kdchartd.lib") on Windows
-#    to avoid name clashes between debug/non-debug versions of the
-#    KD Chart library:
-KDCHARTLIB = kdchart
-CONFIG(debug, debug|release) {
-    !unix: KDCHARTLIB = "kdchartd"
-}
-
+#            ParamVsParam \
+#            DrawIntoPainter \
 
 unix:SUBDIRS += AxisOwnership
 test.target=test
