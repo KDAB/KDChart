@@ -48,6 +48,17 @@ static const int nBubbles = 7;
 // 4: style of surrounding line, can be one of these:
 //    "NoPen", "SolidLine", "DashLine", "DotLine", "DashDotLine", "DashDotDotLine"
 struct DataType{
+    DataType( qreal x_,
+              qreal y_,
+              qreal size_,
+              QString color_,
+              QString style_ )
+    : x(x_)
+    , y(y_)
+    , size(size_)
+    , color(color_)
+    , style(style_)
+    {}
     qreal x;
     qreal y;
     qreal size;
@@ -55,13 +66,13 @@ struct DataType{
     QString style;
 };
 static const DataType bubblesData[nBubbles] = {
-    {0.5, 1.0, 100,"#FF0000", "NoPen"},
-    {1.0, 0.5, 60, "#00FF00", "SolidLine"},
-    {1.6, 2.0, 28, "#0000FF", "DotLine"},
-    {0.7, 0.3, 55,"#FFFF00", "DashLine"},
-    {1.3, 2.0, 95, "#FF00FF", "DashDotLine"},
-    {2.0, 1.0, 75, "#00FFFF", "DashDotDotLine"},
-    {1.4, 1.1, 85, "#FFFFFF", "DotLine"}
+    DataType(0.5, 1.0, 100,"#FF0000", "NoPen"),
+    DataType(1.0, 0.5, 60, "#00FF00", "SolidLine"),
+    DataType(1.6, 2.0, 28, "#0000FF", "DotLine"),
+    DataType(0.7, 0.3, 55,"#FFFF00", "DashLine"),
+    DataType(1.3, 2.0, 95, "#FF00FF", "DashDotLine"),
+    DataType(2.0, 1.0, 75, "#00FFFF", "DashDotDotLine"),
+    DataType(1.4, 1.1, 85, "#FFFFFF", "DotLine")
 };
 
 #define ROLE_SIZE Qt::UserRole + 1
