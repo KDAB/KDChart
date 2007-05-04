@@ -81,13 +81,13 @@ private slots:
         QCOMPARE( m_plane->diagrams().size(),  1 );
         m_plane->addDiagram(  m_polar );
         QCOMPARE( m_plane->diagrams().size(),  2 );
-        QCOMPARE( m_plane->diagram(),  m_pie );
+        QCOMPARE( dynamic_cast< PieDiagram * >(m_plane->diagram()),  m_pie );
         m_plane->takeDiagram( m_pie );
         QCOMPARE( m_plane->diagrams().size(),  1 );
-        QCOMPARE( m_plane->diagram(),  m_polar );
+        QCOMPARE( dynamic_cast< PolarDiagram * >(m_plane->diagram()),  m_polar );
         m_plane->replaceDiagram( m_pie,  m_polar );
         QCOMPARE( m_plane->diagrams().size(),  1 );
-        QCOMPARE( m_plane->diagram(),  m_pie );
+        QCOMPARE( dynamic_cast< PieDiagram * >(m_plane->diagram()),  m_pie );
         m_plane->takeDiagram( m_pie );
         QCOMPARE( m_plane->diagrams().size(),  0 );
         delete m_pie;
