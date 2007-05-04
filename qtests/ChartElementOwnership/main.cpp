@@ -32,7 +32,7 @@ private slots:
         QCOMPARE( m_chart->coordinatePlanes().size(), 2 );
         m_chart->takeCoordinatePlane( orig );
         QCOMPARE( m_chart->coordinatePlanes().size(), 1 );
-        QCOMPARE( m_chart->coordinatePlane(), p );
+        QCOMPARE( dynamic_cast< CartesianCoordinatePlane * >(m_chart->coordinatePlane()), p );
         m_chart->addCoordinatePlane( orig );
         QCOMPARE( m_chart->coordinatePlanes().size(), 2 );
 
@@ -42,26 +42,26 @@ private slots:
         QCOMPARE( m_chart->coordinatePlanes().size(), 2 );
         m_chart->takeCoordinatePlane( p );
         QCOMPARE( m_chart->coordinatePlanes().size(), 1 );
-        QCOMPARE( m_chart->coordinatePlane(), po );
+        QCOMPARE( dynamic_cast< PolarCoordinatePlane * >(m_chart->coordinatePlane()), po );
         m_chart->addCoordinatePlane( p );
         QCOMPARE( m_chart->coordinatePlanes().size(), 2 );
 
         // delete
         delete po;
         QCOMPARE( m_chart->coordinatePlanes().size(), 1 );
-        QCOMPARE( m_chart->coordinatePlane(), p );
+        QCOMPARE( dynamic_cast< CartesianCoordinatePlane * >(m_chart->coordinatePlane()), p );
 
         // replace cartesian by polar
         PolarCoordinatePlane*polast = new PolarCoordinatePlane();
         m_chart->replaceCoordinatePlane( polast );
         QCOMPARE( m_chart->coordinatePlanes().size(), 1 );
-        QCOMPARE( m_chart->coordinatePlane(), polast );
+        QCOMPARE( dynamic_cast< PolarCoordinatePlane * >(m_chart->coordinatePlane()), polast );
 
         // replace polar by cartesian
         CartesianCoordinatePlane* plast = new CartesianCoordinatePlane();
         m_chart->replaceCoordinatePlane( plast,  polast );
         QCOMPARE( m_chart->coordinatePlanes().size(), 1 );
-        QCOMPARE( m_chart->coordinatePlane(), plast );
+        QCOMPARE( dynamic_cast< CartesianCoordinatePlane * >(m_chart->coordinatePlane()), plast );
 
     }
 
