@@ -45,6 +45,11 @@
 #ifndef KDAB_LIB_FAKES_H
 #define KDAB_LIB_FAKES_H
 
+#if defined Q_OS_DARWIN
+/* On Mac OS X, ensure that <cmath> will define std::isnan */
+#define _GLIBCPP_USE_C99 1
+#endif
+
 #include <cmath>
 
 #ifdef Q_OS_SOLARIS
