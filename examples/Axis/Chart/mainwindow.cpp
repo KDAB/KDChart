@@ -83,7 +83,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     bottomAxis->setTitleTextAttributes ( taBottom );
 
     // configure labels text attributes
-    TextAttributes taLabels;
+    TextAttributes taLabels( topAxis->textAttributes() );
     taLabels.setPen(  QPen( Qt::darkGreen ) );
     taLabels.setRotation( 90 );
     topAxis->setTextAttributes( taLabels );
