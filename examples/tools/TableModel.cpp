@@ -35,6 +35,7 @@ int TableModel::columnCount ( const QModelIndex & ) const
 
 QVariant TableModel::data ( const QModelIndex & index, int role) const
 {
+
     // FIXME kdchart queries (-1, -1) for empty models
     if ( index.row() == -1 || index.column() == -1 )
     {
@@ -47,8 +48,8 @@ QVariant TableModel::data ( const QModelIndex & index, int role) const
         return QVariant();
     }
 
-//     qDebug () << "TableModel::data: row: "<< index.row() << ", column: "
-//               << index.column() << endl;
+/*    qDebug () << "TableModel::data: row: "<< index.row() << ", column: "
+              << index.column() << endl;*/
     Q_ASSERT ( index.row() >= 0 && index.row() < rowCount() );
     Q_ASSERT ( index.column() >= 0 && index.column() < columnCount() );
 

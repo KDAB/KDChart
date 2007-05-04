@@ -111,9 +111,12 @@ public:
         m_supplyHeaderData = value;
     }
 
-private:
+protected:
     // the vector of rows:
     QVector< QVector<QVariant> > m_rows;
+
+private:
+
     // the header data:
     QStringList m_horizontalHeaderData;
     QStringList m_verticalHeaderData;

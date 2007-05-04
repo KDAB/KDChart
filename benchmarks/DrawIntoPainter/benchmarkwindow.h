@@ -23,13 +23,15 @@
  **
  **********************************************************************/
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef BENCHMARKWINDOW_H
+#define BENCHMARKWINDOW_H
 
-#include "ui_mainwindow.h"
-#include <TableModel.h>
+#include <KDChartCartesianAxis>
+#include "ui_benchmarkwindow.h"
+#include "testmainwindow.h"
+#include "DynamicTableModel.h"
 
-#include <QPixmap>
+#define DEFAULT 100000
 
 namespace KDChart {
     class Chart;
@@ -40,52 +42,30 @@ namespace KDChart {
     class Legend;
 }
 
-class QLabel;
-
-class MainWindow : public QWidget, private Ui::MainWindow
+class BenchmarkWindow : public QWidget, private Ui::BenchmarkWindow
 {
     Q_OBJECT
 
 public:
-    MainWindow( QWidget* parent = 0 );
-
-    protected:
-        /**
-         * Adjusts the two small charts when the window is resized.
-         */
-        /* reimp */ void resizeEvent ( QResizeEvent * );
+    BenchmarkWindow( QWidget* parent = 0 );
 
 private slots:
-
-    void on_lineTypeCB_currentIndexChanged( const QString & text );
-    void on_paintLegendCB_toggled( bool checked );
-    void on_paintValuesCB_toggled( bool checked );
-    void on_paintMarkersCB_toggled( bool checked );
-    void on_markersStyleCB_currentIndexChanged( const QString & text );
-    void on_markersWidthSB_valueChanged( int i );
-    void on_markersHeightSB_valueChanged( int i);
-    void on_displayAreasCB_toggled( bool checked );
-    void on_transparencySB_valueChanged( int i );
-    void on_zoomFactorSB_valueChanged( double factor );
-    void on_hSBar_valueChanged( int value );
-    void on_vSBar_valueChanged( int value );
-    void on_savePB_clicked();
-
+		void runTest();
+		void saveCount(int count){ m_count=count; }
 
 private:
-    TableModel m_model;
-    KDChart::DatasetProxyModel* m_datasetProxy;
-    KDChart::Legend* m_legend;
-    // mutable KDChart::CartesianAxis xAxis;
-    //mutable KDChart::CartesianAxis yAxis;
-
-protected:
     KDChart::Chart* m_chart;
+    DynamicTableModel m_model;
+    KDChart::DatasetProxyModel* m_datasetProxy;
     KDChart::LineDiagram* m_lines;
-    QPixmap m_pix1, m_pix2;
-    QLabel* m_smallChart1;
-    QLabel* m_smallChart2;
+    KDChart::Legend* m_legend;
+		KDChart::CartesianAxis *m_xAxis;
 
+		TestMainWindow m_mainWindow;
+		QStringList m_xNotation;
+
+		static const int m_stepWidth = 10000;
+		int m_count;
 
 };
 
