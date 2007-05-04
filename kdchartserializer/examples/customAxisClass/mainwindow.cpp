@@ -43,8 +43,6 @@
 
 #include <QStandardItemModel>
 
-using namespace KDChart;
-
 
 MainWindow::MainWindow( QWidget* parent ) :
     QWidget( parent )
@@ -52,7 +50,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     setupUi( this );
 
     m_chartLayout = new QHBoxLayout( chartFrame );
-    m_chart = new Chart();
+    m_chart = new KDChart::Chart();
     m_chartLayout->addWidget( m_chart );
 
     // add a small lest-side leading because we use a coloured Y axis background
@@ -63,13 +61,13 @@ MainWindow::MainWindow( QWidget* parent ) :
 
 
     // register our own serializer for saving / loading the Y axis:
-    registerElementSerializer<
+    KDChart::registerElementSerializer<
             AdjustedCartesianAxisSerializer,
             AdjustedCartesianAxis >( 0 ); // will be un-registred in ~Mainwindow()
 
 
     // Set up the diagrams
-    LineDiagram* lines = new LineDiagram();
+    KDChart::LineDiagram* lines = new KDChart::LineDiagram();
     lines->setModel( m_model );
 
     // increase the line width
@@ -81,7 +79,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     }
 
     // Assign some axes
-    CartesianAxis *xAxis = new CartesianAxis( lines );
+    KDChart::CartesianAxis *xAxis = new KDChart::CartesianAxis( lines );
     AdjustedCartesianAxis *yAxis = new AdjustedCartesianAxis( lines );
     yAxis->setBounds(29.9, 31.0);
     xAxis->setPosition ( KDChart::CartesianAxis::Bottom );
@@ -92,14 +90,15 @@ MainWindow::MainWindow( QWidget* parent ) :
     lines->addAxis( yAxis );
 
 
-    CartesianCoordinatePlane* plane =
-            static_cast<CartesianCoordinatePlane*>(m_chart->coordinatePlane());
+    KDChart::CartesianCoordinatePlane* plane =
+            static_cast< KDChart::CartesianCoordinatePlane * >(m_chart->coordinatePlane());
 
     plane->replaceDiagram( lines );
 
     KDChart::HeaderFooter* headerFooter = new KDChart::HeaderFooter( m_chart );
     m_chart->addHeaderFooter( headerFooter );
     headerFooter->setText( "Line diagram using a custom axis class" );
+
     KDChart::TextAttributes textAttrs( headerFooter->textAttributes() );
     textAttrs.setPen( QPen( Qt::red ) );
     headerFooter->setTextAttributes( textAttrs );
@@ -107,7 +106,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     headerFooter->setPosition( KDChart::Position::North );
 
     // assign some bg colors
-    BackgroundAttributes ba = yAxis->backgroundAttributes();
+    KDChart::BackgroundAttributes ba = yAxis->backgroundAttributes();
     ba.setVisible(true);
     ba.setBrush(QBrush(QColor(255,255,200)));
     yAxis->setBackgroundAttributes(ba);
@@ -117,7 +116,7 @@ MainWindow::MainWindow( QWidget* parent ) :
 MainWindow::~MainWindow()
 {
     // un-register our own serializer for saving / loading the Y axis:
-    unregisterElementSerializer<
+    KDChart::unregisterElementSerializer<
             AdjustedCartesianAxisSerializer,
             AdjustedCartesianAxis >();
 }
@@ -201,11 +200,11 @@ void MainWindow::load()
             // Remove the current chart and delete it:
             removeTheChart();
 
-            CoordinatePlaneList planes( newChart->coordinatePlanes() );
+            KDChart::CoordinatePlaneList planes( newChart->coordinatePlanes() );
             for( int iPlane=0; iPlane<planes.count(); ++iPlane){
-                AbstractDiagramList diags( planes.at(iPlane)->diagrams() );
+                KDChart::AbstractDiagramList diags( planes.at(iPlane)->diagrams() );
                 for( int iDiag=0; iDiag<diags.count(); ++iDiag){
-                    AbstractDiagram* diagram = diags.at( iDiag );
+                    KDChart::AbstractDiagram* diagram = diags.at( iDiag );
                     if( dynamic_cast<KDChart::BarDiagram*>( diagram ) ||
                         dynamic_cast<KDChart::LineDiagram*>( diagram ) )
                         diagram->setModel( m_model );
