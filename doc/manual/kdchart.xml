@@ -7713,7 +7713,7 @@ diagram->setDataValueAttributes( dva );
                             Please refer to the examples stored in
                             sub-directories of the
                             <classname>
-                                kdchartserializer/
+                                kdchartserializer/examples/
                             </classname>
                             directory showing how to use the serializer
                             and how to make sure your diagrams will be
