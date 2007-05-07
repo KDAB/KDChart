@@ -7680,10 +7680,9 @@ diagram->setDataValueAttributes( dva );
                         <para>
                             Note that <classname>KDChart::Serializer</classname> is
                             dependent on your Qt library containing
-                            the <classname>QtXml</classname> module.
-                            (remember: The <classname>QtXml</classname> module provides
-                            C++ implementations
-                            of <classname>SAX</classname> and <classname>DOM</classname>.)
+                            the <classname>QtXml</classname> module which provides
+                            C++ implementations of <classname>SAX</classname> and
+                            <classname>DOM</classname>.
                         </para>
                         <para>
                             The decision to
