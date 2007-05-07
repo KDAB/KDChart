@@ -7665,11 +7665,11 @@ diagram->setDataValueAttributes( dva );
         <titleabbrev>Appendix A</titleabbrev>
         <qandaset defaultlabel="number">
             <qandadiv>
-                <title>Storing / loading of KD Chart settings</title>
+                <title>Storing / loading of &kdchart; settings</title>
                 <qandaentry id="qa_serialize1">
                     <question>
                         <para>
-                            How can I store KD Chart's settings to a file?
+                            How can I store &kdchart; settings to a file?
                         </para>
                     </question>
                     <answer>
@@ -7679,7 +7679,7 @@ diagram->setDataValueAttributes( dva );
                         </para>
                         <para>
                             Note that <classname>KDChart::Serializer</classname> is
-                            dependent on your Qt library providing
+                            dependent on your Qt library containing
                             the <classname>QtXml</classname> module.
                             (remember: The <classname>QtXml</classname> module provides
                             C++ implementations
@@ -7688,8 +7688,8 @@ diagram->setDataValueAttributes( dva );
                         <para>
                             The decision to
                             have <classname>KDChart::Serializer</classname> in
-                            a separate library was made to allow you to build KD Chart
-                            even if your Qt does not provide any XML features.
+                            a separate library was made to allow you to build &kdchart;
+                            even if your version of Qt does not include the XML module.
                         </para>
                         <para>
                             To build it, just run
