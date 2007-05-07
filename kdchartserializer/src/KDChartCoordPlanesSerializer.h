@@ -57,7 +57,10 @@ namespace KDChart {
          * If the model is set to a non-zero value before parsePlane()
          * is called, then this model will be assigned to any diagrams
          * that will be created by parsePlane().
-         * The model could be changed via setModel.
+         * 
+         * The model could be changed via setModel, but this will not affect
+         * any digrams that have been parsed before setModel was called.
+         * 
          * \sa setModel
          */
         explicit CoordPlanesSerializer(QAbstractItemModel * model = 0 );
@@ -84,6 +87,17 @@ namespace KDChart {
          */
         virtual void setModel(QAbstractItemModel * model);
 
+       /**
+         * Parse the coordinate-plane element, and return a AbstractCoordinatePlane* in \c planePtr
+         * if the respective coordinate-plane was found in the list of global elements.
+         *
+         * This method is called transparently by the Serializer, so you should
+         * not need to call it explicitely.
+         *
+         * In case still want to call it just make sure that you have called
+         * \c KDChart::SerializeCollector::instance()->initializeParsedGlobalPointers()
+         * \em before invoking this method, or it will stop parsing and return false.
+        */
         virtual bool parsePlane(
                 const QDomNode& rootNode,
                 const QDomNode& pointerNode,

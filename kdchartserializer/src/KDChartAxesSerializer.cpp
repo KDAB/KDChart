@@ -39,8 +39,13 @@
 
 #include <KDXMLTools>
 
+#include <KDChartCartesianAxis>
+//TODO once PolarAxis is implemented: #include <KDChartPolarAxis>
+
+
 #include <qglobal.h>
 #include <QMessageBox>
+
 
 #define d d_func()
 

@@ -68,10 +68,13 @@ namespace KDChart {
          * Parse the header/footer element, and return a HeaderFooter* in \c hdFt
          * if the respective header/footer was found in the list of global elements.
          *
-         * Make sure that you have called
+         * This method is called transparently by the Serializer, so you should
+         * not need to call it explicitely.
+         *
+         * In case still want to call it just make sure that you have called
          * \c KDChart::SerializeCollector::instance()->initializeParsedGlobalPointers()
-         * before invoking this method, or it will stop parsing and return false.
-         */
+         * \em before invoking this method, or it will stop parsing and return false.
+        */
         static bool parseHeaderFooter(
                 const QDomNode& rootNode,
                 const QDomNode& pointerNode,

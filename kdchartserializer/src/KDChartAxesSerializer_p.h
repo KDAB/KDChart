@@ -41,6 +41,8 @@
 //
 
 #include <KDChartAxesSerializer.h>
+#include <KDChartCartesianAxis>
+//TODO once PolarAxis is implemented: #include <KDChartPolarAxis>
 
 /**
  * \internal

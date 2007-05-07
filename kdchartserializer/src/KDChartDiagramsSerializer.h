@@ -81,6 +81,17 @@ namespace KDChart {
          */
         virtual bool parseElement( const QDomElement& container, QObject* ptr ) const;
 
+       /**
+         * Parse the diagram element, and return a AbstractDiagram* in \c diagramPtr
+         * if the respective diagram was found in the list of global elements.
+         *
+         * This method is called transparently by the Serializer, so you should
+         * not need to call it explicitely.
+         *
+         * In case still want to call it just make sure that you have called
+         * \c KDChart::SerializeCollector::instance()->initializeParsedGlobalPointers()
+         * \em before invoking this method, or it will stop parsing and return false.
+        */
         bool parseDiagram( const QDomNode& rootNode, const QDomNode& pointerNode,
                            AbstractDiagram*& diagramPtr ) const;
         void saveDiagrams( QDomDocument& doc, QDomElement& e,

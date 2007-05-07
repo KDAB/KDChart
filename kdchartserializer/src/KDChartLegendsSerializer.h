@@ -72,6 +72,18 @@ namespace KDChart {
 
         static void saveLegends( QDomDocument& doc, QDomElement& e,
                                  const LegendList& planes, const QString& title );
+
+        /**
+         * Parse the legend element, and return a Legend* in \c legend
+         * if the respective legend was found in the list of global elements.
+         *
+         * This method is called transparently by the Serializer, so you should
+         * not need to call it explicitely.
+         *
+         * In case still want to call it just make sure that you have called
+         * \c KDChart::SerializeCollector::instance()->initializeParsedGlobalPointers()
+         * \em before invoking this method, or it will stop parsing and return false.
+        */
         static bool parseLegend( const QDomNode& rootNode, const QDomNode& pointerNode,
                                  Legend*& legend );
     };

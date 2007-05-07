@@ -37,8 +37,7 @@
 
 #include <KDChartAbstractSerializer>
 
-#include <KDChartCartesianAxis>
-//TODO once PolarAxis is implemented: #include <KDChartPolarAxis>
+#include <KDChartAbstractAxis>
 #include <KDChartChart>
 
 namespace KDChart {
@@ -66,9 +65,12 @@ namespace KDChart {
          * Parse the axis-pointer element, and return an AbstractAxis* in \c axisPtr
          * if the respective axis was found in the list of global elements.
          *
-         * Make sure that you have called
+         * This method is called transparently by the Serializer, so you should
+         * not need to call it explicitely.
+         *
+         * In case still want to call it just make sure that you have called
          * \c KDChart::SerializeCollector::instance()->initializeParsedGlobalPointers()
-         * before invoking this method, or it will stop parsing and return false.
+         * \em before invoking this method, or it will stop parsing and return false.
          */
         bool parseAxis(
                 const QDomNode& rootNode,
