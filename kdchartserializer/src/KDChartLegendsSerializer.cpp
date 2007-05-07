@@ -118,8 +118,11 @@ void LegendsSerializer::saveLegends(
         if( ! wasFound ){
             const AbstractSerializerFactory* factory
                     = Serializer::elementSerializerFactory( p );
-            if( factory )
+            if( factory ){
                 factory->instance( p->metaObject()->className() )->saveElement( doc, legendElement, p );
+            }else{
+                qDebug() << "\nProblem: Can not store legend:" << p->metaObject()->className();
+            }
         }
     }
 }

@@ -140,7 +140,6 @@ void CoordPlanesSerializer::savePlanes(
             }else{
                 qDebug() << "\nProblem: Can not store coordinate-plane:" << p->metaObject()->className();
             }
-
         }
     }
 }

@@ -116,8 +116,11 @@ void TextAreaSerializer::saveHeadersFooters(
         {
             const AbstractSerializerFactory* factory = Serializer::elementSerializerFactory( p );
             const QObject* obj = p;
-            if( factory != 0 )
+            if( factory != 0 ){
                 factory->instance( p->metaObject()->className() )->saveElement( doc, hdFtElement, obj );
+            }else{
+                qDebug() << "\nProblem: Can not store header-footer:" << p->metaObject()->className();
+            }
         }
     }
 }

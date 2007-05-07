@@ -129,8 +129,11 @@ void DiagramsSerializer::saveDiagrams(
         if( ! wasFound ){
             const AbstractSerializerFactory* factory
                     = Serializer::elementSerializerFactory( p );
-            if( factory )
+            if( factory ){
                 factory->instance( p->metaObject()->className() )->saveElement( doc, diagElement, p );
+            }else{
+                qDebug() << "\nProblem: Can not store diagram:" << p->metaObject()->className();
+            }
         }
     }
 }
