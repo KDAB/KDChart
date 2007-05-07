@@ -7718,7 +7718,7 @@ diagram->setDataValueAttributes( dva );
                             directory showing how to use the serializer
                             and how to make sure your diagram(s) will be
                             connected to the correct data model(s) after
-                            the serializer has created them.
+                            having been created by the serializer.
                         </para>
                     </answer>
                 </qandaentry>
