@@ -13,6 +13,7 @@ INCLUDEPATH += ../include \
 
 load(kdchart)
 
+LIBS += -L../../lib -lkdchart
 unix:LIBS += -L../../lib -lkdchart1support
 win32:LIBS += ..\..\lib\kdchart1support.lib
 linux-ipaq-g++:INCLUDEPATH += $(QPEDIR)/library

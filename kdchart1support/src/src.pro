@@ -10,7 +10,10 @@ QT += xml
 dll {
 	DEFINES += KDCHART1_DLL
 }
+
 DLLDESTDIR = ../../bin
+
+LIBS += -L../../lib -lkdchart
 
 
 KDCHART_PATH = ../..

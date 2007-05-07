@@ -9,6 +9,8 @@ KDCHART_COMPAT_PATH = ../..
 
 load(kdchart)
 
+LIBS += -L$$(KDCHART_PATH)/lib -lkdchart
+
 INCLUDEPATH += $$KDCHART_PATH/include \
                $$KDCHART_COMPAT_PATH/include 
 DEPENDPATH  += $$KDCHART_PATH/include \
