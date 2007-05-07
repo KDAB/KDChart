@@ -20,7 +20,8 @@ SUBDIRS +=  ChartElementOwnership \
 
 unix:SUBDIRS += AxisOwnership
 test.target=test
-!win32:test.commands=for d in $${SUBDIRS}; do cd "\$$d" && LD_LIBRARY_PATH=../../lib && $(MAKE) test && cd .. || exit -1; done
+unix:!macx:test.commands=for d in $${SUBDIRS}; do cd "\$$d" && LD_LIBRARY_PATH=../../lib && $(MAKE) test && cd .. || exit -1; done
+unix:macx:test.commands=for d in $${SUBDIRS}; do cd "\$$d" && DYLD_LIBRARY_PATH=../../lib && $(MAKE) test && cd .. || exit -1; done
 win32:test.commands=for %d in ($${SUBDIRS}); do runTest.bat "%d" release || exit -1; done
 test.depends = $(TARGET)
 
