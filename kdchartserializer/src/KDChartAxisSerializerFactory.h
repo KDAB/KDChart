@@ -38,7 +38,7 @@ namespace KDChart {
 
     class AbstractSerializer;
 
-    class KDCHART_EXPORT AxisSerializerFactory : public AbstractSerializerFactory
+    class KDCHARTSERIALIZER_EXPORT AxisSerializerFactory : public AbstractSerializerFactory
     {
         Q_OBJECT
         Q_DISABLE_COPY( AxisSerializerFactory )

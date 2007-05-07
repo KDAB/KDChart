@@ -34,6 +34,8 @@
 
 #include <KDChartGlobal>
 
+#include "kdchartserializer_export.h"
+
 class QDomDocument;
 class QDomElement;
 class QDomNode;
@@ -41,7 +43,7 @@ class QObject;
 
 namespace KDChart {
 
-    class KDCHART_EXPORT AbstractSerializer
+    class KDCHARTSERIALIZER_EXPORT AbstractSerializer
     {
     public:
         virtual ~AbstractSerializer() {}

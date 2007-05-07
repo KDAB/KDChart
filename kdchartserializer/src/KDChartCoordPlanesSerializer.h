@@ -45,7 +45,7 @@ namespace KDChart {
 
     class DiagramsSerializer;
 
-    class KDCHART_EXPORT CoordPlanesSerializer : public QObject, public AbstractSerializer
+    class KDCHARTSERIALIZER_EXPORT CoordPlanesSerializer : public QObject, public AbstractSerializer
     {
         Q_OBJECT
         Q_DISABLE_COPY( CoordPlanesSerializer )

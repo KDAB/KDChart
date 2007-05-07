@@ -36,9 +36,11 @@
 #include <KDChartAbstractAreaBase.h>
 #include <QDomDocument>
 
+#include "kdchartserializer_export.h"
+
 namespace KDChart {
 
-    class KDCHART_EXPORT AbstractAreaBaseSerializer
+    class KDCHARTSERIALIZER_EXPORT AbstractAreaBaseSerializer
     {
         Q_DISABLE_COPY( AbstractAreaBaseSerializer )
 

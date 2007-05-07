@@ -40,7 +40,7 @@
 
 namespace KDChart {
 
-    class KDCHART_EXPORT AttributesModelSerializer : public QObject
+    class KDCHARTSERIALIZER_EXPORT AttributesModelSerializer : public QObject
     {
         Q_OBJECT
         Q_DISABLE_COPY( AttributesModelSerializer )

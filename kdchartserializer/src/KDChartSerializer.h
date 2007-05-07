@@ -37,6 +37,8 @@
 #include <KDChartFrameAttributes>
 #include <KDChartBackgroundAttributes>
 
+#include "kdchartserializer_export.h"
+
 #include <QDomDocument>
 
 class QAbstractItemModel;
@@ -46,7 +48,7 @@ namespace KDChart {
     class CoordPlanesSerializer;
     class AbstractSerializerFactory;
 
-    class KDCHART_EXPORT Serializer : public QObject
+    class KDCHARTSERIALIZER_EXPORT Serializer : public QObject
     {
         Q_OBJECT
         Q_DISABLE_COPY( Serializer )

@@ -42,7 +42,7 @@
 
 namespace KDChart {
 
-    class KDCHART_EXPORT TextAreaSerializer : public QObject, public AbstractSerializer
+    class KDCHARTSERIALIZER_EXPORT TextAreaSerializer : public QObject, public AbstractSerializer
     {
         Q_OBJECT
         Q_DISABLE_COPY( TextAreaSerializer )

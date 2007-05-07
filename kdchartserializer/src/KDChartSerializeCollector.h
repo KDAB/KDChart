@@ -8,6 +8,8 @@
 #include <QDomElement>
 #include <QMap>
 
+#include "kdchartserializer_export.h"
+
 namespace KDChart {
 
     /**
@@ -39,7 +41,7 @@ namespace KDChart {
      * It is all handled automatically, if you use the main KDChart::Serializer
      * class as entry point of your serialization operations.
      */
-    class SerializeCollector
+    class KDCHARTSERIALIZER_EXPORT SerializeCollector
     {
         //friend class Serializer; // is allowed to delete the mapper instance
         Q_DISABLE_COPY( SerializeCollector )

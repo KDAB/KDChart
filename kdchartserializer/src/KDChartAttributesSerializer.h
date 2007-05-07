@@ -49,9 +49,11 @@
 
 #include <QDomDocument>
 
+#include "kdchartserializer_export.h"
+
 namespace KDChart {
 
-    class KDCHART_EXPORT AttributesSerializer
+    class KDCHARTSERIALIZER_EXPORT AttributesSerializer
     {
         Q_DISABLE_COPY( AttributesSerializer )
 

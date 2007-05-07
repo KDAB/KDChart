@@ -51,7 +51,7 @@ namespace KDChart {
     class AxesSerializer;
     class AttributesModelSerializer;
 
-    class KDCHART_EXPORT DiagramsSerializer : public QObject, public AbstractSerializer
+    class KDCHARTSERIALIZER_EXPORT DiagramsSerializer : public QObject, public AbstractSerializer
     {
         Q_OBJECT
         Q_DISABLE_COPY( DiagramsSerializer )

@@ -42,7 +42,7 @@
 
 namespace KDChart {
 
-    class KDCHART_EXPORT AxesSerializer : public QObject, public AbstractSerializer
+    class KDCHARTSERIALIZER_EXPORT AxesSerializer : public QObject, public AbstractSerializer
     {
         Q_OBJECT
 

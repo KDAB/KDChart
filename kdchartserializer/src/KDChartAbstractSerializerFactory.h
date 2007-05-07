@@ -33,6 +33,7 @@
   */
 
 #include <KDChartGlobal>
+#include "kdchartserializer_export.h"
 
 #include <QObject>
 
@@ -40,7 +41,7 @@ namespace KDChart {
 
     class AbstractSerializer;
 
-    class KDCHART_EXPORT AbstractSerializerFactory : public QObject
+    class KDCHARTSERIALIZER_EXPORT AbstractSerializerFactory : public QObject
     {
         Q_DISABLE_COPY( AbstractSerializerFactory )
 

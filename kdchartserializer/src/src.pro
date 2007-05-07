@@ -13,7 +13,7 @@ dll {
 }
 DLLDESTDIR = ../../bin
 
-DEFINES += KDCHART_BUILD_KDCHART_LIB
+DEFINES += KDCHART_BUILD_KDCHARTSERIALIZER_LIB
 
 KDCHART_PATH = ../..
 INCLUDEPATH+= ../include \
@@ -55,6 +55,7 @@ SOURCES= \
         KDChartAbstractSerializerFactory.cpp \
 
 HEADERS= \
+        kdchartserializer_export.h \
         KDChartSerializer.h \
         KDChartSerializer_p.h \
         KDChartSerializeCollector.h \
