@@ -7674,51 +7674,41 @@ diagram->setDataValueAttributes( dva );
                     </question>
                     <answer>
                         <para>
-                            This can be done by using the
-                            <classname>
-                                KDChart::Serializer()
-                            </classname> class.
+                            This can be done by using
+                            the <classname>KDChart::Serializer()</classname> class.
                         </para>
                         <para>
-                            Note that
-                            <classname>
-                                KDChart::Serializer()
-                            </classname>
-                            is dependent on your Qt library providing the
-                            <classname>
-                                QtXml
-                            </classname>
-                            module.
-                            (remember: The QtXml module provides C++
-                            implementations of SAX and DOM.)
+                            Note that <classname>KDChart::Serializer()</classname> is
+                            dependent on your Qt library providing
+                            the <classname>QtXml</classname> module.
+                            (remember: The <classname>QtXml</classname> module provides
+                            C++ implementations
+                            of <classname>SAX</classname> and <classname>DOM</classname>.)
                         </para>
                         <para>
-                            The decision to have 
-                            <classname>
-                                KDChart::Serializer()
-                            </classname>
-                            in a seperate library was made to allow you
-                            to build KD Chart even if your Qt does not provide
-                            these XML features.
+                            The decision to
+                            have <classname>KDChart::Serializer()</classname> in
+                            a separate library was made to allow you to build KD Chart
+                            even if your Qt does not provide any XML features.
                         </para>
                         <para>
                             To build it, just run
-                            <programlisting>
+                        </para>
+<programlisting>
   cd kdchartserializer
   qmake
   make   (or nmake, for Windows, resp.)
 </programlisting>
-                        </para>
                         <para>
                             Please refer to the examples stored in
-                            sub-directories of the
+                            sub-directories of
                             <classname>
                                 kdchartserializer/examples/
                             </classname>
-                            directory showing how to use the serializer
-                            and how to make sure your diagram(s) will be
-                            connected to the correct data model(s) after
-                            having been created by the serializer.
+                            showing how to use the serializer
+                            and how to connect your diagram(s) to the correct
+                            data model(s) after the serializer has finished
+                            running.
                         </para>
                     </answer>
                 </qandaentry>
