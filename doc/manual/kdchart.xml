@@ -7707,7 +7707,7 @@ diagram->setDataValueAttributes( dva );
   cd kdchartserializer
   qmake
   make   (or nmake, for Windows, resp.)
-                            <programlisting>
+</programlisting>
                         </para>
                         <para>
                             Please refer to the examples stored in
