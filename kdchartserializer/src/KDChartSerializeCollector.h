@@ -49,7 +49,6 @@ namespace KDChart {
     public:
         static SerializeCollector* instance();
 
-    protected:
         SerializeCollector();
         virtual ~SerializeCollector();
 

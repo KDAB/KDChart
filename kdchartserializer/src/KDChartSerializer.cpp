@@ -120,11 +120,11 @@ void Serializer::init()
 void Serializer::registerBuiltInSerializerFactories( QObject* parent )
 {
     AbstractSerializerFactory* f = new DiagramSerializerFactory( parent );
-    Serializer::registerElementSerializerFactory< LineDiagram >( f );
-    Serializer::registerElementSerializerFactory< BarDiagram >( f );
-    Serializer::registerElementSerializerFactory< PieDiagram >( f );
-    Serializer::registerElementSerializerFactory< PolarDiagram >( f );
-    Serializer::registerElementSerializerFactory< RingDiagram >( f );
+    registerElementSerializerFactory< LineDiagram >( f );
+    registerElementSerializerFactory< BarDiagram >( f );
+    registerElementSerializerFactory< PieDiagram >( f );
+    registerElementSerializerFactory< PolarDiagram >( f );
+    registerElementSerializerFactory< RingDiagram >( f );
 
     f = new LegendSerializerFactory( parent );
     Serializer::registerElementSerializerFactory< Legend >( f );

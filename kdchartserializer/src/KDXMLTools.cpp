@@ -35,15 +35,19 @@
 
 #include <QDebug>
 
-#include <zlib.h>
-
-
 
 
 // For some reason the ::compress algorithm is producing a list
 // of Zero bytes onye, so we disable compression for now
 // (khz, 03 27 2007)
+//
+// Also note: There is no zlib.h there on Windows.
 #define DO_NOT_COMPRESS_PIXMAP_DATA
+
+
+#ifndef DO_NOT_COMPRESS_PIXMAP_DATA
+#include <zlib.h>
+#endif
 
 
 

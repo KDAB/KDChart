@@ -55,7 +55,6 @@ namespace KDChart {
     public:
         static IdMapper* instance();
 
-    protected:
         IdMapper();
         virtual ~IdMapper();
 
