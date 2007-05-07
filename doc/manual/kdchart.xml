@@ -7693,14 +7693,13 @@ diagram->setDataValueAttributes( dva );
                         <para>
                             To build it, just run
                         </para>
-<programlisting>
+                            <programlisting>
   cd kdchartserializer
   qmake
   make   (or nmake, for Windows, resp.)
-</programlisting>
+                            </programlisting>
                         <para>
                             Please refer to the examples stored in
-                            sub-directories of
                             <classname>kdchartserializer/examples/</classname>
                             showing how to use the serializer
                             and how to connect your diagram(s) to the correct
