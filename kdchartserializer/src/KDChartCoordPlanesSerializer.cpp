@@ -71,7 +71,7 @@ CoordPlanesSerializer::CoordPlanesSerializer(QAbstractItemModel * model)
 {
     d->m_model = model;
     d->m_diagS = new DiagramsSerializer( this );
-    globalListName = "kdchart:diagrams"; // default value, can be
+    globalListName = "kdchart:coordinate-planes"; // default value, can be
     // overwritten by the title passed to CoordPlanesSerializer::savePlanes()
 }
 
@@ -120,6 +120,7 @@ void CoordPlanesSerializer::savePlanes(
 
     Q_FOREACH ( AbstractCoordinatePlane* p, planes )
     {
+        qDebug() << "\nAttempting to store coordinate-plane:" << p->metaObject()->className();
         bool wasFound;
         QDomElement planeElement =
                 SerializeCollector::findOrMakeChild(
@@ -133,8 +134,12 @@ void CoordPlanesSerializer::savePlanes(
         if( ! wasFound ){
             const AbstractSerializerFactory* factory = Serializer::elementSerializerFactory( p );
             QObject* obj = p;
-            if( factory != 0 )
-                return factory->instance( p->metaObject()->className() )->saveElement( doc, planeElement, obj );
+            if( factory != 0 ){
+                qDebug() << "Storing coordinate-plane:" << p->metaObject()->className();
+                factory->instance( p->metaObject()->className() )->saveElement( doc, planeElement, obj );
+            }else{
+                qDebug() << "Problem: Can not store coordinate-plane:" << p->metaObject()->className();
+            }
 
         }
     }
