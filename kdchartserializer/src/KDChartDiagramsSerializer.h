@@ -79,7 +79,7 @@ namespace KDChart {
          * \c KDChart::SerializeCollector::instance()->initializeParsedGlobalPointers()
          * before invoking this method, or it will stop parsing and return false.
          */
-        virtual bool parseElement( const QDomElement& container, QObject* ptr ) const;
+        bool parseElement( const QDomElement& container, QObject* ptr ) const;
 
        /**
          * Parse the diagram element, and return a AbstractDiagram* in \c diagramPtr

@@ -85,7 +85,7 @@ namespace KDChart {
          * finished parsing. File \c examples/complexLayout/mainwindow.cpp
          * illustrates a way how to do that.
          */
-        virtual void setModel(QAbstractItemModel * model);
+        void setModel(QAbstractItemModel * model);
 
        /**
          * Parse the coordinate-plane element, and return a AbstractCoordinatePlane* in \c planePtr
@@ -98,11 +98,11 @@ namespace KDChart {
          * \c KDChart::SerializeCollector::instance()->initializeParsedGlobalPointers()
          * \em before invoking this method, or it will stop parsing and return false.
         */
-        virtual bool parsePlane(
+        bool parsePlane(
                 const QDomNode& rootNode,
                 const QDomNode& pointerNode,
                 AbstractCoordinatePlane*& planePtr )const;
-        virtual void savePlanes(
+        void savePlanes(
                 QDomDocument& doc,
                 QDomElement& e,
                 const CoordinatePlaneList& planes,
