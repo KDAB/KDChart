@@ -73,8 +73,7 @@ namespace KDChart {
         /**
          * reimp
          * 
-         * Parse the diagram element, and return an AbstractDiagram* in \c diagramPtr
-         * if the respective diagram was found in the list of global elements.
+         * Parse the diagram element, and store it in \c ptr.
          *
          * Make sure that you have called
          * \c KDChart::SerializeCollector::instance()->initializeParsedGlobalPointers()
