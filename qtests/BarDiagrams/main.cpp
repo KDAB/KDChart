@@ -15,7 +15,7 @@ private slots:
     void initTestCase()
     {
         m_chart = new Chart(0);
-        m_model = new TableModel( this );
+        m_model = new TableModel( 0 );
         m_model->loadFromCSV( ":/data" );
         m_bars = new BarDiagram();
         m_bars->setModel( m_model );
