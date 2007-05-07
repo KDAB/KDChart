@@ -80,7 +80,7 @@ void TextAreaSerializer::saveElement( QDomDocument& doc, QDomElement& e, const Q
         Private::saveHeaderFooter( doc, e, *hf );
 }
 
-bool TextAreaSerializer::parseElement( const QDomElement& container, QObject*& ptr ) const
+bool TextAreaSerializer::parseElement( const QDomElement& container, QObject* ptr ) const
 {
     HeaderFooter* hf = qobject_cast< HeaderFooter* >( ptr );
     return d->doParseHeaderFooter( container, hf );

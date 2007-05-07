@@ -63,8 +63,10 @@ namespace KDChart {
         explicit CoordPlanesSerializer(QAbstractItemModel * model = 0 );
         virtual ~CoordPlanesSerializer();
 
+        /** reimp */
         void saveElement( QDomDocument& doc, QDomElement& e, const QObject* obj ) const;
-        bool parseElement( const QDomElement& container, QObject*& ptr ) const;
+        /** reimp */
+        bool parseElement( const QDomElement& container, QObject* ptr ) const;
 
 
         /**

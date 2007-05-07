@@ -54,11 +54,13 @@ namespace KDChart {
         explicit AxesSerializer();
         virtual ~AxesSerializer();
 
-        virtual void saveElement( QDomDocument& doc, QDomElement& e, const QObject* obj ) const;
-        virtual bool parseElement( const QDomElement& container, QObject*& ptr ) const;
+        /** reimp */
+        void saveElement( QDomDocument& doc, QDomElement& e, const QObject* obj ) const;
+        /** reimp */
+        bool parseElement( const QDomElement& container, QObject* ptr ) const;
 
-        virtual void saveAxes( QDomDocument& doc, QDomElement& e,
-                               const QList< const AbstractAxis* >& axes, const QString& title ) const;
+        void saveAxes( QDomDocument& doc, QDomElement& e,
+                       const QList< const AbstractAxis* >& axes, const QString& title ) const;
 
         /**
          * Parse the axis-pointer element, and return an AbstractAxis* in \c axisPtr
@@ -68,12 +70,12 @@ namespace KDChart {
          * \c KDChart::SerializeCollector::instance()->initializeParsedGlobalPointers()
          * before invoking this method, or it will stop parsing and return false.
          */
-        virtual bool parseAxis(
+        bool parseAxis(
                 const QDomNode& rootNode,
                 const QDomNode& pointerNode,
                 AbstractAxis*& axisPtr )const;
 
-        virtual bool parseAbstractAxis(
+        bool parseAbstractAxis(
                 const QDomElement& container,
                 AbstractAxis& axis )const;
     };

@@ -83,7 +83,7 @@ void LegendsSerializer::saveElement( QDomDocument& doc, QDomElement& e, const QO
         d->saveLegend( doc, e, *l );
 }
 
-bool LegendsSerializer::parseElement( const QDomElement& container, QObject*& ptr ) const
+bool LegendsSerializer::parseElement( const QDomElement& container, QObject* ptr ) const
 {
     Legend* l =  qobject_cast< Legend* >( ptr );
     return d->doParseLegend( container, l );

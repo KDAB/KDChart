@@ -67,9 +67,12 @@ namespace KDChart {
         explicit DiagramsSerializer( CoordPlanesSerializer* coordS = 0 );
         virtual ~DiagramsSerializer();
 
-        virtual void saveElement( QDomDocument& doc, QDomElement& e, const QObject* obj ) const;
+        /** reimp */
+        void saveElement( QDomDocument& doc, QDomElement& e, const QObject* obj ) const;
 
         /**
+         * reimp
+         * 
          * Parse the diagram element, and return an AbstractDiagram* in \c diagramPtr
          * if the respective diagram was found in the list of global elements.
          *
@@ -77,7 +80,7 @@ namespace KDChart {
          * \c KDChart::SerializeCollector::instance()->initializeParsedGlobalPointers()
          * before invoking this method, or it will stop parsing and return false.
          */
-        virtual bool parseElement( const QDomElement& container, QObject*& ptr ) const;
+        virtual bool parseElement( const QDomElement& container, QObject* ptr ) const;
 
         bool parseDiagram( const QDomNode& rootNode, const QDomNode& pointerNode,
                            AbstractDiagram*& diagramPtr ) const;

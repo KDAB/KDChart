@@ -47,7 +47,7 @@ namespace KDChart {
         virtual ~AbstractSerializer() {}
 
         virtual void saveElement( QDomDocument& doc, QDomElement& e, const QObject* obj ) const = 0;
-        virtual bool parseElement( const QDomElement& container, QObject*& ptr ) const = 0;
+        virtual bool parseElement( const QDomElement& container, QObject* ptr ) const = 0;
     };
 
 } // end of namespace

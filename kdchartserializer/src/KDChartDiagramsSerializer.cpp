@@ -226,7 +226,7 @@ void DiagramsSerializer::saveElement( QDomDocument& doc, QDomElement& e, const Q
     d->saveDiagram( doc, e, qobject_cast< const AbstractDiagram* >( obj ) );
 }
 
-bool DiagramsSerializer::parseElement( const QDomElement& container, QObject*& ptr ) const
+bool DiagramsSerializer::parseElement( const QDomElement& container, QObject* ptr ) const
 {
     AbstractDiagram* diag = qobject_cast< AbstractDiagram* >( ptr );
     return d->doParseDiagram( container, diag );

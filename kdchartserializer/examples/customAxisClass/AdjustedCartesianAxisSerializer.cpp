@@ -56,7 +56,7 @@ void AdjustedCartesianAxisSerializer::saveElement( QDomDocument& doc, QDomElemen
     }
 }
 
-bool AdjustedCartesianAxisSerializer::parseElement( const QDomElement& container, QObject*& ptr ) const
+bool AdjustedCartesianAxisSerializer::parseElement( const QDomElement& container, QObject* ptr ) const
 {
     bool bOK = true;
     AdjustedCartesianAxis* axis = qobject_cast< AdjustedCartesianAxis* >( ptr );

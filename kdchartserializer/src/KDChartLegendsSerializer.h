@@ -56,9 +56,12 @@ namespace KDChart {
         LegendsSerializer( QObject* parent = 0 );
         virtual ~LegendsSerializer();
 
-         virtual void saveElement( QDomDocument& doc, QDomElement& e, const QObject* obj ) const;
+        /** reimp */
+        void saveElement( QDomDocument& doc, QDomElement& e, const QObject* obj ) const;
 
         /**
+         * reimp
+         * 
          * Parse the legend element, and return an AbstractDiagram* in \c diagramPtr
          * if the respective diagram was found in the list of global elements.
          *
@@ -66,7 +69,7 @@ namespace KDChart {
          * \c KDChart::SerializeCollector::instance()->initializeParsedGlobalPointers()
          * before invoking this method, or it will stop parsing and return false.
          */
-        virtual bool parseElement( const QDomElement& container, QObject*& ptr ) const;
+        bool parseElement( const QDomElement& container, QObject* ptr ) const;
 
         static void saveLegends( QDomDocument& doc, QDomElement& e,
                                  const LegendList& planes, const QString& title );

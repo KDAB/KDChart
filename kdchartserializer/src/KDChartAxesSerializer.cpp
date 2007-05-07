@@ -89,7 +89,7 @@ void AxesSerializer::saveElement( QDomDocument& doc, QDomElement& e, const QObje
 //    }
 }
 
-bool AxesSerializer::parseElement( const QDomElement& container, QObject*& ptr ) const
+bool AxesSerializer::parseElement( const QDomElement& container, QObject* ptr ) const
 {
     if( qobject_cast< CartesianAxis* >( ptr ) != 0 )
     {   

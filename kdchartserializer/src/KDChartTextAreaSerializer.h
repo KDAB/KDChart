@@ -59,8 +59,10 @@ namespace KDChart {
                 const KDChart::HeaderFooterList& areas,
                 const QString& title );
 
+        /** reimp */
         void saveElement( QDomDocument& doc, QDomElement& e, const QObject* obj ) const;
-        bool parseElement( const QDomElement& container, QObject*& ptr ) const;
+        /** reimp */
+        bool parseElement( const QDomElement& container, QObject* ptr ) const;
 
        /**
          * Parse the header/footer element, and return a HeaderFooter* in \c hdFt

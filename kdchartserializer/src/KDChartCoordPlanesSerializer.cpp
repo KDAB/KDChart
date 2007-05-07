@@ -90,7 +90,7 @@ void CoordPlanesSerializer::saveElement( QDomDocument& doc, QDomElement& e, cons
     d->savePlane( doc, e, qobject_cast< const AbstractCoordinatePlane* >( obj ) );
 }
 
-bool CoordPlanesSerializer::parseElement( const QDomElement& container, QObject*& ptr ) const
+bool CoordPlanesSerializer::parseElement( const QDomElement& container, QObject* ptr ) const
 {
     AbstractCoordinatePlane* plane = qobject_cast< AbstractCoordinatePlane* >( ptr );
     return d->doParsePlane( container, plane );

@@ -41,8 +41,10 @@ public:
     explicit AdjustedCartesianAxisSerializer();
     virtual ~AdjustedCartesianAxisSerializer();
 
+    /** reimp */
     virtual void saveElement( QDomDocument& doc, QDomElement& e, const QObject* obj ) const;
-    virtual bool parseElement( const QDomElement& container, QObject*& ptr ) const;
+    /** reimp */
+    virtual bool parseElement( const QDomElement& container, QObject* ptr ) const;
 };
 
 #endif
