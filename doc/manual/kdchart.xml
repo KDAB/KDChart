@@ -7675,10 +7675,10 @@ diagram->setDataValueAttributes( dva );
                     <answer>
                         <para>
                             This can be done by using
-                            the <classname>KDChart::Serializer()</classname> class.
+                            the <classname>KDChart::Serializer</classname> class.
                         </para>
                         <para>
-                            Note that <classname>KDChart::Serializer()</classname> is
+                            Note that <classname>KDChart::Serializer</classname> is
                             dependent on your Qt library providing
                             the <classname>QtXml</classname> module.
                             (remember: The <classname>QtXml</classname> module provides
@@ -7687,7 +7687,7 @@ diagram->setDataValueAttributes( dva );
                         </para>
                         <para>
                             The decision to
-                            have <classname>KDChart::Serializer()</classname> in
+                            have <classname>KDChart::Serializer</classname> in
                             a separate library was made to allow you to build KD Chart
                             even if your Qt does not provide any XML features.
                         </para>
