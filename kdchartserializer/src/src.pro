@@ -21,11 +21,17 @@ INCLUDEPATH+= ../include \
             $$KDCHART_PATH/include \
             $$KDCHART_PATH/src \
             .
+
+KDCHARTLIB = kdchart
+CONFIG(debug, debug|release) {
+    !unix: KDCHARTLIB = "kdchartd"
+}
+
 DEPENDPATH += ../include \
             $(QTDIR)/src/3rdparty/zlib \
             $$KDCHART_PATH/include \
             .
-LIBS        += -L$$KDCHART_PATH/lib -lkdchart
+LIBS        += -L$$KDCHART_PATH/lib -l$$KDCHARTLIB
 
 
 SOURCES= \
