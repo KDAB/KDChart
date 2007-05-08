@@ -1,7 +1,8 @@
 :  # copy from environment:
   isEmpty( KDCHARTDIR ):KDCHARTDIR=$$(KDCHARTDIR)
   !isEmpty( KDCHARTDIR ) {
-    unix:isEmpty(QMAKE_EXTENSION_SHLIB):QMAKE_EXTENSION_SHLIB=so
+    unix:!macx:isEmpty(QMAKE_EXTENSION_SHLIB):QMAKE_EXTENSION_SHLIB=so
+    unix:macx:isEmpty(QMAKE_EXTENSION_SHLIB):QMAKE_EXTENSION_SHLIB=dylib
     unix {
       staticlib {
         !exists( $$KDCHARTDIR/lib/libkdchart.a ):error( "Cannot find libkdchart.a in $KDCHARTDIR/lib" )
