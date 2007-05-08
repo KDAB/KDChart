@@ -12,8 +12,9 @@ CONFIG += designer
 # Remove when all strings have been surrounded by tr() or QLatin1String()
 DEFINES -= QT_NO_CAST_FROM_ASCII
 
-KDCHARTDIR = ../
-
+# can't do that, man! 
+# KDCHARTDIR = ../
+KDCHARTBASE = ../
 
 # Use the filename "kdchartd.dll" (or "kdchartd.lib") on Windows
 # to avoid name clashes between debug/non-debug versions of the
@@ -22,7 +23,7 @@ KDCHARTLIB = kdchart
 CONFIG(debug, debug|release) {
     !unix: KDCHARTLIB = "kdchartd"
 }
-LIBS += -L$$KDCHARTDIR/lib -l$$KDCHARTLIB
+LIBS += -L$$KDCHARTBASE/lib -l$$KDCHARTLIB
 
 
 unix {
@@ -34,12 +35,12 @@ unix {
     LIBS += -lkdchartuitools
   }
 }
-INCLUDEPATH +=  $$KDCHARTDIR/uitools \
-                $$KDCHARTDIR/include \
-                $$KDCHARTDIR/src \
-                $$KDCHARTDIR/extra_include
+INCLUDEPATH +=  $$KDCHARTBASE/uitools \
+                $$KDCHARTBASE/include \
+                $$KDCHARTBASE/src \
+                $$KDCHARTBASE/extra_include
 
-DEPENDPATH += $$KDCHARTDIR/uitools
+DEPENDPATH += $$KDCHARTBASE/uitools
 
 HEADERS = \
 	kdchartdesignerextension.h \

@@ -6,8 +6,9 @@ CONFIG(debug, debug|release) {
 
 include( ../variables.pri )
 
-KDCHARTDIR = ..
-
+# can't do that, man:
+# KDCHARTDIR = ..
+KDCHARTBASE = ..
 
 # Use the filename "kdchartd.dll" (or "kdchartd.lib") on Windows
 # to avoid name clashes between debug/non-debug versions of the
@@ -16,7 +17,7 @@ KDCHARTLIB = kdchart
 CONFIG(debug, debug|release) {
     !unix: KDCHARTLIB = "kdchartd"
 }
-LIBS += -L$$KDCHARTDIR/lib -l$$KDCHARTLIB
+LIBS += -L$$KDCHARTBASE/lib -l$$KDCHARTLIB
 
 
 DEFINES += UITOOLS_BUILD_UITOOLS_LIB
@@ -25,8 +26,8 @@ QT += xml
 CONFIG += designer
 
 INCLUDEPATH+= $(QTDIR)/src/3rdparty/zlib \
-              $$KDCHARTDIR/extra_include \
-              $$KDCHARTDIR/src \
+              $$KDCHARTBASE/extra_include \
+              $$KDCHARTBASE/src \
               .
 DEPENDPATH += $(QTDIR)/src/3rdparty/zlib \
               .

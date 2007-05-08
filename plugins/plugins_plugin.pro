@@ -5,10 +5,11 @@ CONFIG(debug, debug|release) {
     !unix:TARGET = kdchart_plugind
 }
 
+# can't do that, man:
+# KDCHARTDIR = ../
+KDCHARTBASE = ../
 
-KDCHARTDIR = ../
-
-include( $$KDCHARTDIR/variables.pri )
+include( $$KDCHARTBASE/variables.pri )
 
 DEFINES += PLUGINS_PLUGIN_DLL
 
@@ -41,9 +42,9 @@ unix {
   }
 }
 
-INCLUDEPATH += $$KDCHARTDIR/src \
-               $$KDCHARTDIR/extra_include
-DEPENDPATH +=  $$KDCHARTDIR/src
+INCLUDEPATH += $$KDCHARTBASE/src \
+               $$KDCHARTBASE/extra_include
+DEPENDPATH +=  $$KDCHARTBASE/src
 
 target.path = $$[QT_INSTALL_PLUGINS]/designer
 INSTALLS += target

@@ -7,11 +7,17 @@
       staticlib {
         !exists( $$KDCHARTDIR/lib/libkdchart.a ):error( "Cannot find libkdchart.a in $KDCHARTDIR/lib" )
       } else {
+	message( KDCHARTDIR is $$KDCHARTDIR) 
         !exists( $$KDCHARTDIR/lib/libkdchart.$$QMAKE_EXTENSION_SHLIB ):error( "Cannot find libkdchart.$$QMAKE_EXTENSION_SHLIB in $KDCHARTDIR/lib" )
       }
     }
+
+# STOP! Only re-enable this after you have figured out a way to make it not break "make distclean"!
+# STOP!
+# STOP!
     #win32:!exists( $$KDCHARTDIR/lib/kdchart.lib ):error( "Cannot find kdchart.lib in $KDCHARTDIR/lib" )
-    !exists( $$KDCHARTDIR/include/KDChartGlobal ):error( "Cannot find KDChartGlobal in $KDCHARTDIR/include" )
+    #!exists( $$KDCHARTDIR/include/KDChartGlobal ):error( "Cannot find KDChartGlobal in $KDCHARTDIR/include" )
+# ^^^ STOP!
 
     LIBS += -L$$KDCHARTDIR/lib
     unix {
