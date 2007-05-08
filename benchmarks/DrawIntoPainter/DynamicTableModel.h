@@ -9,7 +9,7 @@
 
 #define TEST_VALUE 4.123456789
 
-class TESTTOOLS_EXPORT DynamicTableModel : public TableModel
+class DynamicTableModel : public TableModel
 {
     Q_OBJECT
 public:

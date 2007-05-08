@@ -7,6 +7,7 @@ staticlib {
   DEFINES += KDCHART_STATICLIB
 }
 
+DEFINES += TESTTOOLS_DLL
 
 # 2. Use the filename "kdchartd.dll" (or "kdchartd.lib") on Windows
 #    to avoid name clashes between debug/non-debug versions of the

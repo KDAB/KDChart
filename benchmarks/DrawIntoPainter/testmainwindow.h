@@ -29,7 +29,7 @@
 #include "mainwindow.h"
 #include "DynamicTableModel.h"
 
-class TESTTOOLS_EXPORT TestMainWindow : public MainWindow
+class TestMainWindow : public MainWindow
 {
     Q_OBJECT
 

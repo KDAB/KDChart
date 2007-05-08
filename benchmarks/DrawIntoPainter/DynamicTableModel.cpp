@@ -2,7 +2,6 @@
 #include <qglobal.h>
 
 #include "DynamicTableModel.h"
-#include "TableModel.h"
 
 DynamicTableModel::DynamicTableModel ( TableModel * parent )
      : TableModel ( parent )
