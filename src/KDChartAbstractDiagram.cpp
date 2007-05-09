@@ -158,12 +158,14 @@ bool AbstractDiagram::compare( const AbstractDiagram* other )const
     qDebug() <<
             ((alternatingRowColors() == other->alternatingRowColors()) &&
             (hasAutoScroll()         == other->hasAutoScroll()) &&
+#if QT_VERSION > 0x040199
             (dragDropMode()          == other->dragDropMode()) &&
             (dragDropOverwriteMode() == other->dragDropOverwriteMode()) &&
-            (dragEnabled()           == other->dragEnabled()) &&
-            (editTriggers()          == other->editTriggers()) &&
             (horizontalScrollMode()  == other->horizontalScrollMode ()) &&
             (verticalScrollMode()    == other->verticalScrollMode()) &&
+#endif
+            (dragEnabled()           == other->dragEnabled()) &&
+            (editTriggers()          == other->editTriggers()) &&
             (iconSize()              == other->iconSize()) &&
             (selectionBehavior()     == other->selectionBehavior()) &&
             (selectionMode()         == other->selectionMode()) &&
@@ -195,12 +197,14 @@ bool AbstractDiagram::compare( const AbstractDiagram* other )const
             // compare QAbstractItemView properties
             (alternatingRowColors()  == other->alternatingRowColors()) &&
             (hasAutoScroll()         == other->hasAutoScroll()) &&
+#if QT_VERSION > 0x040199
             (dragDropMode()          == other->dragDropMode()) &&
             (dragDropOverwriteMode() == other->dragDropOverwriteMode()) &&
-            (dragEnabled()           == other->dragEnabled()) &&
-            (editTriggers()          == other->editTriggers()) &&
             (horizontalScrollMode()  == other->horizontalScrollMode ()) &&
             (verticalScrollMode()    == other->verticalScrollMode()) &&
+#endif
+            (dragEnabled()           == other->dragEnabled()) &&
+            (editTriggers()          == other->editTriggers()) &&
             (iconSize()              == other->iconSize()) &&
             (selectionBehavior()     == other->selectionBehavior()) &&
             (selectionMode()         == other->selectionMode()) &&
