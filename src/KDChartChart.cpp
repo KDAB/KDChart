@@ -393,13 +393,13 @@ QHash<AbstractCoordinatePlane*, PlaneInfo> Chart::Private::buildPlaneLayoutInfos
                         pi.referencePlane = i.plane;
                         if ( axis->position() == CartesianAxis::Left
                             ||  axis->position() == CartesianAxis::Right )
-                            pi.horizontalOffset += 1;
+                            pi.horizontalOffset += 2;
                         planeInfos[plane] = pi;
 
                         pi = planeInfos[i.plane];
                         if ( axis->position() == CartesianAxis::Top
-                            || axis->position() == CartesianAxis::Bottom  )
-                            pi.verticalOffset += 1;
+                                || axis->position() == CartesianAxis::Bottom  )
+                            pi.verticalOffset += 2;
 
                         planeInfos[i.plane] = pi;
                     }
@@ -420,7 +420,7 @@ QHash<AbstractCoordinatePlane*, PlaneInfo> Chart::Private::buildPlaneLayoutInfos
     return planeInfos;
 }
 
-template <typename T>
+    template <typename T>
 static T* findOrCreateLayoutByObjectName( QLayout * parentLayout, const char* name )
 {
     T *box = qFindChild<T*>( parentLayout, QString::fromLatin1( name ) );
@@ -450,7 +450,7 @@ void Chart::Private::slotLayoutPlanes()
 {
     //qDebug() << "KDChart::Chart is layouting the planes";
     const QBoxLayout::Direction oldPlanesDirection =
-            planesLayout ? planesLayout->direction() : QBoxLayout::TopToBottom;
+        planesLayout ? planesLayout->direction() : QBoxLayout::TopToBottom;
     if ( planesLayout && dataAndLegendLayout )
         dataAndLegendLayout->removeItem( planesLayout );
 
@@ -475,6 +475,7 @@ void Chart::Private::slotLayoutPlanes()
     QHash<AbstractCoordinatePlane*, PlaneInfo> planeInfos = buildPlaneLayoutInfos();
     QHash<AbstractAxis*, AxisInfo> axisInfos;
     KDAB_FOREACH( AbstractCoordinatePlane* plane, coordinatePlanes ) {
+        qDebug() << "Layouting plane" << plane;
         Q_ASSERT( planeInfos.contains(plane) );
         const PlaneInfo pi = planeInfos[plane];
         int column = pi.horizontalOffset;
@@ -495,6 +496,7 @@ void Chart::Private::slotLayoutPlanes()
         planeLayoutItems << plane;
         plane->setParentLayout( planeLayout );
         planeLayout->addItem( plane, row, column, 1, 1, 0 );
+        qDebug() << "Adding it into row" << row << "column" << column;
         //qDebug() << "Chart slotLayoutPlanes() calls planeLayout->addItem("<< row << column << ")";
         planeLayout->setRowStretch(    row,    2 );
         planeLayout->setColumnStretch( column, 2 );
@@ -510,19 +512,20 @@ void Chart::Private::slotLayoutPlanes()
         KDAB_FOREACH( AbstractDiagram* abstractDiagram, plane->diagrams() )
         {
             AbstractCartesianDiagram* diagram =
-                    dynamic_cast<AbstractCartesianDiagram*> ( abstractDiagram );
+                dynamic_cast<AbstractCartesianDiagram*> ( abstractDiagram );
             //qDebug() << "--------------- diagram ???????????????????? -----------------";
             if( !diagram ) continue;  // FIXME polar ?
             //qDebug() << "--------------- diagram ! ! ! ! ! ! ! ! ! !  -----------------";
+            
             // collect all axes of a kind into sublayouts
-            if( ! topAxesLayout )
-                topAxesLayout = findOrCreateVBoxLayoutByObjectName( planeLayout, "topAxesLayout" );
-            if( ! bottomAxesLayout )
-                bottomAxesLayout = findOrCreateVBoxLayoutByObjectName( planeLayout, "bottomAxesLayout" );
-            if( ! leftAxesLayout )
-                leftAxesLayout = findOrCreateHBoxLayoutByObjectName( planeLayout, "leftAxesLayout" );
-            if( ! rightAxesLayout )
-                rightAxesLayout = findOrCreateHBoxLayoutByObjectName( planeLayout, "rightAxesLayout" );
+            topAxesLayout = new QVBoxLayout;
+            topAxesLayout->setObjectName( QString::fromLatin1( "topAxesLayout" ) );
+            bottomAxesLayout = new QVBoxLayout;
+            bottomAxesLayout->setObjectName( QString::fromLatin1( "bottomAxesLayout" ) );
+            leftAxesLayout = new QHBoxLayout;
+            leftAxesLayout->setObjectName( QString::fromLatin1( "leftAxesLayout" ) );
+            rightAxesLayout = new QHBoxLayout;
+            rightAxesLayout->setObjectName( QString::fromLatin1( "rightAxesLayout" ) );
 
             //leftAxesLayout->setSizeConstraint( QLayout::SetFixedSize );
 
@@ -536,13 +539,13 @@ void Chart::Private::slotLayoutPlanes()
                 // since we can not re-layout the planes each time when
                 // Qt layouting is calling sizeHint()
                 connect( axis, SIGNAL( needAdjustLeftRightColumnsForOverlappingLabels(
-                                CartesianAxis*, int, int ) ),
-                         this, SLOT( slotAdjustLeftRightColumnsForOverlappingLabels(
-                                 CartesianAxis*, int, int ) ) );
+                CartesianAxis*, int, int ) ),
+                this, SLOT( slotAdjustLeftRightColumnsForOverlappingLabels(
+                CartesianAxis*, int, int ) ) );
                 connect( axis, SIGNAL( needAdjustTopBottomRowsForOverlappingLabels(
-                                CartesianAxis*, int, int ) ),
-                         this, SLOT( slotAdjustTopBottomRowsForOverlappingLabels(
-                                 CartesianAxis*, int, int ) ) );
+                CartesianAxis*, int, int ) ),
+                this, SLOT( slotAdjustTopBottomRowsForOverlappingLabels(
+                CartesianAxis*, int, int ) ) );
                 */
                 switch ( axis->position() )
                 {
@@ -564,7 +567,7 @@ void Chart::Private::slotLayoutPlanes()
                         break;
                     default:
                         Q_ASSERT_X( false, "Chart::paintEvent",
-                                    "unknown axis position" );
+                                "unknown axis position" );
                         break;
                 };
                 axisInfos.insert( axis, AxisInfo() );
@@ -588,20 +591,20 @@ void Chart::Private::slotLayoutPlanes()
 
         // use up to four auto-spacer items in the corners around the diagrams:
 #define ADD_AUTO_SPACER_IF_NEEDED( \
-    spacerRow, spacerColumn, hLayoutIsAtTop, hLayout, vLayoutIsAtLeft, vLayout ) \
-{ \
-    if( hLayout || vLayout ) { \
-        AutoSpacerLayoutItem * spacer \
+        spacerRow, spacerColumn, hLayoutIsAtTop, hLayout, vLayoutIsAtLeft, vLayout ) \
+        { \
+            if( hLayout || vLayout ) { \
+                AutoSpacerLayoutItem * spacer \
                 = new AutoSpacerLayoutItem( hLayoutIsAtTop, hLayout, vLayoutIsAtLeft, vLayout ); \
-        planeLayout->addItem( spacer, spacerRow, spacerColumn, 1, 1 ); \
-        spacer->setParentLayout( planeLayout ); \
-        planeLayoutItems << spacer; \
-    } \
-}
+                planeLayout->addItem( spacer, spacerRow, spacerColumn, 1, 1 ); \
+                spacer->setParentLayout( planeLayout ); \
+                planeLayoutItems << spacer; \
+            } \
+        }
         ADD_AUTO_SPACER_IF_NEEDED( row-1, column-1, false, leftAxesLayout,  false, topAxesLayout )
-        ADD_AUTO_SPACER_IF_NEEDED( row+1, column-1, true,  leftAxesLayout,  false,  bottomAxesLayout )
-        ADD_AUTO_SPACER_IF_NEEDED( row-1, column+1, false, rightAxesLayout, true, topAxesLayout )
-        ADD_AUTO_SPACER_IF_NEEDED( row+1, column+1, true,  rightAxesLayout, true,  bottomAxesLayout )
+            ADD_AUTO_SPACER_IF_NEEDED( row+1, column-1, true,  leftAxesLayout,  false,  bottomAxesLayout )
+            ADD_AUTO_SPACER_IF_NEEDED( row-1, column+1, false, rightAxesLayout, true, topAxesLayout )
+            ADD_AUTO_SPACER_IF_NEEDED( row+1, column+1, true,  rightAxesLayout, true,  bottomAxesLayout )
     }
     // re-add our grid(s) to the chart's layout
     if ( dataAndLegendLayout ){
@@ -731,19 +734,19 @@ void Chart::Private::resizeLayout( const QSize& size )
     currentLayoutSize = size;
     //qDebug() << "Chart::resizeLayout(" << currentLayoutSize << ")";
 
-/*
+    /*
     // We need to make sure that the legend's layouts are populated,
     // so that setGeometry gets proper sizeHints from them and resizes them properly.
     KDAB_FOREACH( Legend *legend, legends ) {
-        // This forceRebuild will see a wrong areaGeometry, but I don't care about geometries yet,
-        // only about the fact that legends should have their contents populated.
-        // -> it would be better to dissociate "building contents" and "resizing" in Legend...
+    // This forceRebuild will see a wrong areaGeometry, but I don't care about geometries yet,
+    // only about the fact that legends should have their contents populated.
+    // -> it would be better to dissociate "building contents" and "resizing" in Legend...
 
-//        legend->forceRebuild();
+    //        legend->forceRebuild();
 
-        legend->resizeLayout( size );
+    legend->resizeLayout( size );
     }
-*/
+    */
     slotLayoutPlanes(); // includes slotRelayout
 
     //qDebug() << "Chart::resizeLayout done";
@@ -758,10 +761,10 @@ void Chart::Private::paintAll( QPainter* painter )
 
     // Paint the background (if any)
     KDChart::AbstractAreaBase::paintBackgroundAttributes(
-        *painter, rect, backgroundAttributes );
+            *painter, rect, backgroundAttributes );
     // Paint the frame (if any)
     KDChart::AbstractAreaBase::paintFrameAttributes(
-        *painter, rect, frameAttributes );
+            *painter, rect, frameAttributes );
 
     chart->reLayoutFloatingLegends();
 
@@ -769,7 +772,7 @@ void Chart::Private::paintAll( QPainter* painter )
         layoutItem->paintAll( *painter );
     }
     KDAB_FOREACH( KDChart::AbstractLayoutItem* planeLayoutItem, planeLayoutItems ) {
-		planeLayoutItem->paintAll( *painter );
+        planeLayoutItem->paintAll( *painter );
     }
     KDAB_FOREACH( KDChart::TextArea* textLayoutItem, textLayoutItems ) {
         textLayoutItem->paintAll( *painter );
@@ -778,9 +781,9 @@ void Chart::Private::paintAll( QPainter* painter )
 
 // ******** Chart interface implementation ***********
 
-Chart::Chart ( QWidget* parent )
+    Chart::Chart ( QWidget* parent )
     : QWidget ( parent )
-    , _d( new Private( this ) )
+      , _d( new Private( this ) )
 {
 #if defined KDAB_EVAL
     EvalDialog::checkEvalLicense( "KD Chart" );
