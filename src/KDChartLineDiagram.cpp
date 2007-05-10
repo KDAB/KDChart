@@ -432,6 +432,10 @@ void LineDiagram::paint( PaintContext* ctx )
     if ( !checkInvariants( true ) ) return;
     if ( !AbstractGrid::isBoundariesValid(dataBoundaries()) ) return;
 
+    const PainterSaver p( ctx->painter() );
+    const CartesianCoordinatePlane* plane = dynamic_cast< const CartesianCoordinatePlane* >( 
+                                                        coordinatePlane()->sharedAxisMasterPlane( ctx->painter() ) );
+
     // Make sure counted x values (== in diagrams with 1-dimensional data cells)
     // get shifted by 0.5, if the diagram's reference diagram is a BarDiagram.
     // So we get the lines to start/end at the middle of the respective bar groups.
@@ -541,15 +545,15 @@ void LineDiagram::paint( PaintContext* ctx )
                             const LineAttributes laCell = lineAttributes( index );
                             const bool bDisplayCellArea = laCell.displayArea();
 
-                            QPointF fromPoint = coordinatePlane()->translate( QPointF( valueX, valueY ) );
+                            QPointF fromPoint = plane->translate( QPointF( valueX, valueY ) );
 
                             const QPointF ptNorthWest(
                                 (bDisplayCellArea && ! isPositive)
-                                ? coordinatePlane()->translate( QPointF( valueX, 0.0 ) )
+                                ? plane->translate( QPointF( valueX, 0.0 ) )
                                 : fromPoint );
                             const QPointF ptSouthWest(
                                 (bDisplayCellArea && isPositive)
-                                ? coordinatePlane()->translate( QPointF( valueX, 0.0 ) )
+                                ? plane->translate( QPointF( valueX, 0.0 ) )
                                 : fromPoint );
                             //qDebug() << "--> ptNorthWest:" << ptNorthWest;
                             //qDebug() << "--> ptSouthWest:" << ptSouthWest;
@@ -557,15 +561,15 @@ void LineDiagram::paint( PaintContext* ctx )
                             QPointF ptSouthEast;
 
                             if( foundToPoint ){
-                                QPointF toPoint = coordinatePlane()->translate( QPointF( nextValueX, nextValueY ) );
+                                QPointF toPoint = plane->translate( QPointF( nextValueX, nextValueY ) );
                                 lineList.append( LineAttributesInfo( index, fromPoint, toPoint ) );
                                 ptNorthEast =
                                     (bDisplayCellArea && ! isPositive)
-                                    ? coordinatePlane()->translate( QPointF( nextValueX, 0.0 ) )
+                                    ? plane->translate( QPointF( nextValueX, 0.0 ) )
                                     : toPoint;
                                 ptSouthEast =
                                     (bDisplayCellArea && isPositive)
-                                    ? coordinatePlane()->translate( QPointF( nextValueX, 0.0 ) )
+                                    ? plane->translate( QPointF( nextValueX, 0.0 ) )
                                     : toPoint;
                                 // we can't take as a condition the line attributes
                                 // to be different from a cell to another.
@@ -675,14 +679,14 @@ void LineDiagram::paint( PaintContext* ctx )
                             stackedValues = 0.0;
                     }
                     //qDebug() << stackedValues << endl;
-                    QPointF nextPoint = coordinatePlane()->translate( QPointF( iRow, stackedValues ) );
+                    QPointF nextPoint = plane->translate( QPointF( iRow, stackedValues ) );
                     points << nextPoint;
 
                     const QPointF ptNorthWest( nextPoint );
                     const QPointF ptSouthWest(
                             bDisplayCellArea
                             ? ( bFirstDataset
-                                ? coordinatePlane()->translate( QPointF( iRow, 0.0 ) )
+                                ? plane->translate( QPointF( iRow, 0.0 ) )
                                 : bottomPoints.at( iRow )
                               )
                             : nextPoint );
@@ -696,13 +700,13 @@ void LineDiagram::paint( PaintContext* ctx )
                             else
                                 nextValues = 0.0;
                         }
-                        QPointF toPoint = coordinatePlane()->translate( QPointF( iRow+1, nextValues ) );
+                        QPointF toPoint = plane->translate( QPointF( iRow+1, nextValues ) );
                         lineList.append( LineAttributesInfo( index, nextPoint, toPoint ) );
                         ptNorthEast = toPoint;
                         ptSouthEast =
                             bDisplayCellArea
                             ? ( bFirstDataset
-                                ? coordinatePlane()->translate( QPointF( iRow+1, 0.0 ) )
+                                ? plane->translate( QPointF( iRow+1, 0.0 ) )
                                 : bottomPoints.at( iRow+1 )
                               )
                             : toPoint;

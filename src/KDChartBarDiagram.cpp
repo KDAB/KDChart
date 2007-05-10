@@ -350,8 +350,12 @@ void BarDiagram::paint( PaintContext* ctx )
     QPair<QPointF,QPointF> boundaries = dataBoundaries();
     if( !AbstractGrid::isBoundariesValid(boundaries) ) return;
 
-    CartesianCoordinatePlane* plane = dynamic_cast<KDChart::CartesianCoordinatePlane*>( coordinatePlane() );
+    const PainterSaver p( ctx->painter() );
+    const CartesianCoordinatePlane* plane = dynamic_cast< const CartesianCoordinatePlane* >(
+                                                        coordinatePlane()->sharedAxisMasterPlane( ctx->painter() ) );
+    
     if( ! plane ) return;
+
 
     boundLeft = plane->translate( boundaries.first );
     boundRight = plane->translate( boundaries.second );

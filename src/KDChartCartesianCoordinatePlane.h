@@ -329,6 +329,8 @@ namespace KDChart {
         /** reimpl */
         virtual void paint( QPainter* );
 
+        /** reimpl */
+        const AbstractCoordinatePlane* sharedAxisMasterPlane( QPainter* p = 0 ) const;
 
     public Q_SLOTS:
         /**

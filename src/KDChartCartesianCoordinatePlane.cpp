@@ -693,3 +693,47 @@ const bool KDChart::CartesianCoordinatePlane::autoAdjustGridToZoom() const
     return d->autoAdjustGridToZoom;
 }
 
+const AbstractCoordinatePlane* KDChart::CartesianCoordinatePlane::sharedAxisMasterPlane( QPainter* painter ) const
+{
+    const CartesianCoordinatePlane* plane = this;
+    AbstractCartesianDiagram* diag = dynamic_cast< AbstractCartesianDiagram* >( const_cast< CartesianCoordinatePlane* >( plane )->diagram() );
+    const CartesianAxis* sharedAxis = 0;
+    if( diag != 0 )
+    {
+        const CartesianAxisList axes = diag->axes();
+        KDAB_FOREACH( const CartesianAxis* a, axes )
+        {
+            CartesianCoordinatePlane* p = const_cast< CartesianCoordinatePlane* >( 
+                                              dynamic_cast< const CartesianCoordinatePlane* >( a->coordinatePlane() ) );
+            if( p != 0 && p != this )
+            {
+                plane = p;
+                sharedAxis = a;
+            }
+        }
+    }
+
+    if( plane == this || painter == 0 )
+        return plane;
+
+    const QPointF zero = QPointF( 0, 0 );
+    const QPointF tenX = QPointF( 10, 0 );
+    const QPointF tenY = QPointF( 0, 10 );
+
+    painter->translate( translate( zero ) );    
+
+    if( sharedAxis->isOrdinate() )
+    {
+        const qreal factor = (translate( tenX ) - translate( zero ) ).x() / ( plane->translate( tenX ) - plane->translate( zero ) ).x();
+        painter->scale( factor, 1.0 );
+    }
+    if( sharedAxis->isAbscissa() )
+    {
+        const qreal factor = (translate( tenY ) - translate( zero ) ).y() / ( plane->translate( tenY ) - plane->translate( zero ) ).y();
+        painter->scale( 1.0, factor );
+    }
+
+    painter->translate( -plane->translate( zero ) );
+
+    return plane;
+}
