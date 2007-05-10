@@ -170,17 +170,17 @@ void MainWindow::setMarkerAttributes()
         // set the surrounding line's style
         Qt::PenStyle style = Qt::SolidLine;
         const QString sPen = m_model->data( indexY, ROLE_STYLE ).toString();
-        if( sPen.compare("NoPen", Qt::CaseInsensitive) == 0 )
+        if( sPen.compare("NoPen") == 0 )
             style = Qt::NoPen;
-        else if( sPen.compare("SolidLine", Qt::CaseInsensitive) == 0 )
+        else if( sPen.compare("SolidLine") == 0 )
             style = Qt::SolidLine;
-        else if( sPen.compare("DashLine", Qt::CaseInsensitive) == 0 )
+        else if( sPen.compare("DashLine") == 0 )
             style = Qt::DashLine;
-        else if( sPen.compare("DotLine", Qt::CaseInsensitive) == 0 )
+        else if( sPen.compare("DotLine") == 0 )
             style = Qt::DotLine;
-        else if( sPen.compare("DashDotLine", Qt::CaseInsensitive) == 0 )
+        else if( sPen.compare("DashDotLine") == 0 )
             style = Qt::DashDotLine;
-        else if( sPen.compare("DashDotDotLine", Qt::CaseInsensitive) == 0 )
+        else if( sPen.compare("DashDotDotLine") == 0 )
             style = Qt::DashDotDotLine;
         QPen pen( style );
         pen.setWidth(2);
