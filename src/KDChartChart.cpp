@@ -475,7 +475,6 @@ void Chart::Private::slotLayoutPlanes()
     QHash<AbstractCoordinatePlane*, PlaneInfo> planeInfos = buildPlaneLayoutInfos();
     QHash<AbstractAxis*, AxisInfo> axisInfos;
     KDAB_FOREACH( AbstractCoordinatePlane* plane, coordinatePlanes ) {
-        qDebug() << "Layouting plane" << plane;
         Q_ASSERT( planeInfos.contains(plane) );
         const PlaneInfo pi = planeInfos[plane];
         int column = pi.horizontalOffset;
@@ -496,7 +495,6 @@ void Chart::Private::slotLayoutPlanes()
         planeLayoutItems << plane;
         plane->setParentLayout( planeLayout );
         planeLayout->addItem( plane, row, column, 1, 1, 0 );
-        qDebug() << "Adding it into row" << row << "column" << column;
         //qDebug() << "Chart slotLayoutPlanes() calls planeLayout->addItem("<< row << column << ")";
         planeLayout->setRowStretch(    row,    2 );
         planeLayout->setColumnStretch( column, 2 );
