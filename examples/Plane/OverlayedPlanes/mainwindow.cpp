@@ -60,7 +60,7 @@ MainWindow::MainWindow( QWidget* parent ) :
 
     plane2->setReferenceCoordinatePlane( m_chart->coordinatePlane() );
 
-    CartesianAxis *xAxis = new CartesianAxis( m_lines );
+    CartesianAxis *xAxis = new CartesianAxis( m_lines2 );
     CartesianAxis *yAxis = new CartesianAxis ( m_lines );
     CartesianAxis *yAxis2 = new CartesianAxis ( m_lines2 );
 
