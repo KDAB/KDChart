@@ -720,20 +720,22 @@ const AbstractCoordinatePlane* KDChart::CartesianCoordinatePlane::sharedAxisMast
     const QPointF tenX = QPointF( 10, 0 );
     const QPointF tenY = QPointF( 0, 10 );
 
-    painter->translate( translate( zero ) );    
 
     if( sharedAxis->isOrdinate() )
     {
+        painter->translate( translate( zero ).x(), 0.0 );    
         const qreal factor = (translate( tenX ) - translate( zero ) ).x() / ( plane->translate( tenX ) - plane->translate( zero ) ).x();
         painter->scale( factor, 1.0 );
+        painter->translate( -plane->translate( zero ).x(), 0.0 );
     }
     if( sharedAxis->isAbscissa() )
     {
+        painter->translate( 0.0, translate( zero ).y() );    
         const qreal factor = (translate( tenY ) - translate( zero ) ).y() / ( plane->translate( tenY ) - plane->translate( zero ) ).y();
         painter->scale( 1.0, factor );
+        painter->translate( 0.0, -plane->translate( zero ).y() );
     }
 
-    painter->translate( -plane->translate( zero ) );
 
     return plane;
 }
