@@ -393,13 +393,13 @@ QHash<AbstractCoordinatePlane*, PlaneInfo> Chart::Private::buildPlaneLayoutInfos
                         pi.referencePlane = i.plane;
                         if ( axis->position() == CartesianAxis::Left
                             ||  axis->position() == CartesianAxis::Right )
-                            pi.horizontalOffset += 2;
+                            pi.horizontalOffset += 1;
                         planeInfos[plane] = pi;
 
                         pi = planeInfos[i.plane];
                         if ( axis->position() == CartesianAxis::Top
                                 || axis->position() == CartesianAxis::Bottom  )
-                            pi.verticalOffset += 2;
+                            pi.verticalOffset += 1;
 
                         planeInfos[i.plane] = pi;
                     }
