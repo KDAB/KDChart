@@ -32,7 +32,7 @@
 
 #include "KDChartGlobal.h"
 #include "KDChartMarkerAttributes.h"
-
+#include "KDChartAttributesModel.h"
 
 namespace KDChart {
 
@@ -584,6 +584,12 @@ namespace KDChart {
     typedef QList<AbstractDiagram*> AbstractDiagramList;
     typedef QList<const AbstractDiagram*> ConstAbstractDiagramList;
 
+    class PrivateAttributesModel : public AttributesModel {
+        Q_OBJECT
+    public:
+        explicit PrivateAttributesModel( QAbstractItemModel* model, QObject * parent = 0 )
+            : AttributesModel(model,parent) {}
+    };
 }
 
 #endif
