@@ -43,7 +43,7 @@ namespace KDChart {
         Q_OBJECT
         Q_DISABLE_COPY( DiagramSerializerFactory )
 
-        KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC( DiagramSerializerFactory );
+        KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC( DiagramSerializerFactory )
 
     public:
         DiagramSerializerFactory( QObject* parent = 0 );

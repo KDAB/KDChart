@@ -53,7 +53,7 @@ namespace KDChart {
         Q_OBJECT
         Q_DISABLE_COPY( Serializer )
 
-        KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC( Serializer );
+        KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC( Serializer )
 
     public:
         explicit Serializer( Chart* chart = 0,
