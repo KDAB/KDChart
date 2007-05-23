@@ -1061,9 +1061,13 @@ QSize CartesianAxis::maximumSize() const
                 QStringList headerLabels = d->diagram()->itemRowLabels();
                 const int headerLabelsCount = headerLabels.count();
                 if( headerLabelsCount ){
+                    const bool useFastCalcAlgorithm 
+                        = (strcmp( metaObject()->className(), "KDChart::CartesianAxis" ) == 0);
                     const int first=0;
                     const int last=headerLabelsCount-1;
-                    for ( int i = first; i <= last; ++i )
+                    for ( int i = first;
+                          i <= last;
+                          i = (useFastCalcAlgorithm && i < last) ? last : (i+1) )
                     {
                         labelItem.setText( customizedLabel(headerLabels[ i ]) );
                         const QSize siz = labelItem.sizeHint();
