@@ -794,12 +794,19 @@ void LineDiagram::paintPolyline( PaintContext* ctx,
 {
     ctx->painter()->setBrush( brush );
     ctx->painter()->setPen(
-        QPen( pen.color(),
-              pen.width(),
-              pen.style(),
-              Qt::FlatCap,
-              Qt::MiterJoin ) );
+            QPen( pen.color(),
+                  pen.width(),
+                  pen.style(),
+                  Qt::FlatCap,
+                  Qt::MiterJoin ) );
+#if QT_VERSION > 0x040299
     ctx->painter()->drawPolyline( points );
+#else
+    // For Qt versions older than 4.3 drawPolyline is VERY slow
+    // so we use traditional line segments drawing instead then.
+    for (int i = 0; i < points.size()-1; ++i)
+        ctx->painter()->drawLine( points.at(i), points.at(i+1) );
+#endif
 }
 
 
