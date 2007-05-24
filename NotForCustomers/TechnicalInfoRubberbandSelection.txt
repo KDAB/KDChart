@@ -1,0 +1,8 @@
+= Rubber Band Selection in kdchart = 
+Rubber band selection allows the user to select an are in a diagram by
+dragging the mouse. The diagram then figures out what drawing objects
+are selected by this, and returns something. 
+
+= Requirements = 
+To implement rubber band selection, a diagram needs to remember what
+object has been drawn in what position. 

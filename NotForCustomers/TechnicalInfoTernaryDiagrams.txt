@@ -25,7 +25,7 @@ QPair<double,double> (the remaining value can be calculated)
 * it could be two, then the two rows provide a and b, and c could be
 calculated, or
 * it could be three, and a, b, and c would be provided by the
-model. In that case, confilcts are possible (the sum of a, b, and c
+model. In that case, conflicts are possible (the sum of a, b, and c
 could be 1.5, now what?)
 
 I tend to use two as the data set dimension. 

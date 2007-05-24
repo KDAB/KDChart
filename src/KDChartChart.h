@@ -412,6 +412,12 @@ namespace KDChart {
 
         /** reimp */
         void mousePressEvent( QMouseEvent* event );
+        /** reimp */
+        void mouseDoubleClickEvent( QMouseEvent* event );
+        /** reimp */
+        void mouseMoveEvent( QMouseEvent* event );
+        /** reimp */
+        void mouseReleaseEvent( QMouseEvent* event );
     };
 
 // Here we have a few docu block to be included into the API documentation:

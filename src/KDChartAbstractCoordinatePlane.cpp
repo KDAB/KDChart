@@ -262,7 +262,6 @@ void KDChart::AbstractCoordinatePlane::layoutPlanes()
     emit needLayoutPlanes();
 }
 
-
 void KDChart::AbstractCoordinatePlane::mousePressEvent( QMouseEvent* event )
 {
     KDAB_FOREACH( AbstractDiagram * a, d->diagrams )
@@ -271,6 +270,29 @@ void KDChart::AbstractCoordinatePlane::mousePressEvent( QMouseEvent* event )
     }
 }
 
+void KDChart::AbstractCoordinatePlane::mouseDoubleClickEvent( QMouseEvent* event )
+{
+    KDAB_FOREACH( AbstractDiagram * a, d->diagrams )
+    {
+        a->mouseDoubleClickEvent( event );
+    }
+}
+
+void KDChart::AbstractCoordinatePlane::mouseReleaseEvent( QMouseEvent* event )
+{
+    KDAB_FOREACH( AbstractDiagram * a, d->diagrams )
+    {
+        a->mouseReleaseEvent( event );
+    }
+}
+
+void KDChart::AbstractCoordinatePlane::mouseMoveEvent( QMouseEvent* event )
+{
+    KDAB_FOREACH( AbstractDiagram * a, d->diagrams )
+    {
+        a->mouseMoveEvent( event );
+    }
+}
 
 const bool KDChart::AbstractCoordinatePlane::isVisiblePoint( const QPointF& point ) const
 {

@@ -1,0 +1,49 @@
+= Reverse Mapping = 
+Reverse Mapping means to be able to tell, from a location within the
+diagram, what object is visible at this point. This does not involve
+QItemSelectionModel selections, but those canbe built on top of the
+reverse mapping functions. KDChart has not supported click-to-select
+or rubberband selection in diagrams in general in the past, so this
+functionality has to be added to all diagram types. 
+
+= Concept =
+To implement reverse mapping, two functions are used in the
+KDChart::AbstractDiagram base class for all diagrams: 
+
+QModelIndex indexAtt( const QPoint& point ) const;
+QModelIndexList indexesAt( const QPoint& point ) const;
+
+The first one is actually part of the QAIM interface. The second one
+is non-virtual (virtual methods cannot be added to base 
+classes, because this would break binary compatibility for previous
+releases). Instead, there are two virtual functions with the same
+names that are virtual in KDChart::AbstractDiagram::Private. The
+functions in KDChart::AbstractDiagram just forward to the calls to
+the private functions. So to overload the behaviour for an individual
+diagram, overload the private functions instead. 
+
+To make things even simpler, the default implementation of indexAt
+*always* return the first result of indexesAt. So in standard cases,
+only the implementation of indexesAt is necessary. 
+
+The default implementation of that returns nothing. This means reverse
+mapping support has to be added to all individual diagram
+implementations that are supposed to support it. The documentation
+needs to mention whether a diagram supports reverse mapping or not.
+
+Mouse press and mouse double click events are forwarded to each
+individual diagram, so that clicks on diagram elements can be
+found.
+
+= Step by Step: Adding Reverse Mapping = 
+So to add reverse mapping, the following has to be done for every
+diagram: 
+(1) When updating the diagram, make a mapping of positions to indexes
+(see below for hwo this is done). 
+(2) Overload one or both of the functions on the private class, and
+make them return the real values. 
+
+How to do the actual mapping? The idea is to use a QGraphicsScene and
+add objects with polygone shapes to it that match the shape of the
+chart elements. Then query that for the touched indexes. 
+

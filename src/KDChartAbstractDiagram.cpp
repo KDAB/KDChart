@@ -818,8 +818,7 @@ QRect AbstractDiagram::visualRect(const QModelIndex &) const
 void AbstractDiagram::scrollTo(const QModelIndex &, ScrollHint )
 {}
 
-QModelIndex AbstractDiagram::indexAt(const QPoint &) const
-{ return QModelIndex(); }
+// indexAt ... down below
 
 QModelIndex AbstractDiagram::moveCursor(CursorAction, Qt::KeyboardModifiers )
 { return QModelIndex(); }
@@ -962,3 +961,15 @@ void AbstractDiagram::update() const
     if( d->plane )
         d->plane->update();
 }
+
+QModelIndex AbstractDiagram::indexAt( const QPoint& point ) const
+{
+    return d->indexAt( point );
+}
+
+QModelIndexList AbstractDiagram::indexesAt( const QPoint& point ) const
+{
+    return d->indexesAt( point );
+}
+
+#include "KDChartAbstractDiagram.moc"
