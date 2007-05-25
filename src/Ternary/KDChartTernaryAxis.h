@@ -66,6 +66,6 @@ namespace KDChart {
     };
 
     typedef QList<TernaryAxis*> TernaryAxisList;
-};
+}
 
 #endif

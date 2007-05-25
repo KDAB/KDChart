@@ -25,6 +25,6 @@ namespace KDChart {
 
     };
 
-};
+}
 
 #endif

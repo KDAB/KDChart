@@ -36,6 +36,6 @@ namespace KDChart {
         TernaryGrid* grid() const;
     };
 
-};
+}
 
 #endif

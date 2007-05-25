@@ -972,4 +972,3 @@ QModelIndexList AbstractDiagram::indexesAt( const QPoint& point ) const
     return d->indexesAt( point );
 }
 
-#include "KDChartAbstractDiagram.moc"

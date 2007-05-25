@@ -23,6 +23,6 @@ namespace KDChart {
         virtual const QPair< QPointF, QPointF >  calculateDataBoundaries () const;
     };
 
-};
+}
 
 #endif

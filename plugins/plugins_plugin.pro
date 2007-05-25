@@ -11,6 +11,7 @@ KDCHARTBASE = ../
 
 include( $$KDCHARTBASE/variables.pri )
 
+INCLUDEPATH += $$KDCHARTBASE/include
 DEFINES += PLUGINS_PLUGIN_DLL
 
 
@@ -30,7 +31,7 @@ HEADERS += plugins.h
 SOURCES += plugins.cpp
 
 unix {
-  LIBS += -lkdchartpluginlib -lkdchartuitools
+  LIBS += -L$$KDCHARTBASE/lib -lkdchartpluginlib -lkdchartuitools -lkdchart
   kdchart_static:LIBS += -lkdchartuitools
 } else {
   CONFIG(debug, debug|release) {
