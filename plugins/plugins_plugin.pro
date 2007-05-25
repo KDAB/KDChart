@@ -14,10 +14,6 @@ include( $$KDCHARTBASE/variables.pri )
 INCLUDEPATH += $$KDCHARTBASE/include
 DEFINES += PLUGINS_PLUGIN_DLL
 
-
-# Remove when all strings have been surrounded by tr() or QLatin1String()
-DEFINES -= QT_NO_CAST_FROM_ASCII
-
 CONFIG += designer debug_and_release
 
 load(kdchart)

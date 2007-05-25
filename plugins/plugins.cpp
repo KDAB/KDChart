@@ -28,8 +28,8 @@ QWidget* createKDChartWidget( QWidget * parent )
      QVector<double> col0, col1;
      col0 << 3.0 << 0.0 << 2.0 << 1.0 << 3.0 << 0.0;
      col1 << 2.0 << 1.0 << 3.0 << 4.0 << 3.0 << 2.0;
-     w->setDataset( 0, col0, "One" );
-     w->setDataset( 1, col1, "Two" );
+     w->setDataset( 0, col0, QLatin1String( "One" ) );
+     w->setDataset( 1, col1, QLatin1String( "Two" ) );
      return w;
 }
 
