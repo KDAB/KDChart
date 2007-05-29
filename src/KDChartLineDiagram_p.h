@@ -1,5 +1,5 @@
 /****************************************************************************
- ** Copyright (C) 2006 Klarälvdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2006 Klaralvdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KD Chart library.
  **
@@ -38,42 +38,102 @@
 //
 
 #include "KDChartAbstractCartesianDiagram_p.h"
+#include "KDChartThreeDLineAttributes.h"
 
 #include <KDABLibFakes>
 
 
 namespace KDChart {
 
-  //class CartesianCoordinatePlane;
+    //class CartesianCoordinatePlane;
 
 /**
  * \internal
  */
-class LineDiagram::Private : public AbstractCartesianDiagram::Private
-{
-    friend class LineDiagram;
-public:
-    Private();
-    ~Private();
+    class LineDiagram::Private : public AbstractCartesianDiagram::Private
+    {
+        friend class LineDiagram;
+    public:
+        Private();
+        ~Private();
 
-    Private( const Private& rhs ) :
-        AbstractCartesianDiagram::Private( rhs ),
-        lineType( rhs.lineType )
+        Private( const Private& rhs )
+            : AbstractCartesianDiagram::Private( rhs )
+            , lineType( rhs.lineType )
         {
         }
 
+        void paintPolyline( PaintContext* ctx,
+                            const QBrush& brush, const QPen& pen,
+                            const QPolygonF& points ) const
+        {
+            ctx->painter()->setBrush( brush );
+            ctx->painter()->setPen(
+                QPen( pen.color(),
+                      pen.width(),
+                      pen.style(),
+                      Qt::FlatCap,
+                      Qt::MiterJoin ) );
+#if QT_VERSION > 0x040299
+            ctx->painter()->drawPolyline( points );
+#else
+            // FIXME (Mirko) verify, this sounds reverse-logical
+            // For Qt versions older than 4.3 drawPolyline is VERY slow
+            // so we use traditional line segments drawing instead then.
+            for (int i = 0; i < points.size()-1; ++i)
+                ctx->painter()->drawLine( points.at(i), points.at(i+1) );
+#endif
+        }
 
-    LineType lineType;
-};
+/*!
+  Projects a point in a space defined by its x, y, and z coordinates
+  into a point onto a plane, given two rotation angles around the x
+  resp. y axis.
+*/
+        const QPointF project( LineDiagram* that, QPointF point, QPointF maxLimits,
+                               double z, const QModelIndex& index ) const
+        {
+            ThreeDLineAttributes td = that->threeDLineAttributes( index );
 
-KDCHART_IMPL_DERIVED_DIAGRAM( LineDiagram, AbstractCartesianDiagram, CartesianCoordinatePlane )
+            //Pending Michel FIXME - the rotation does not work as expected atm
+            double xrad = DEGTORAD( td.lineXRotation() );
+            double yrad = DEGTORAD( td.lineYRotation() );
+            QPointF ret = QPointF(point.x()*cos( yrad ) + z * sin( yrad ) ,  point.y()*cos( xrad ) - z * sin( xrad ) );
+            return ret;
+        }
+
+        void paintThreeDLines( LineDiagram* that, PaintContext* ctx, const QModelIndex& index,
+                               const QPointF& from, const QPointF& to, const double depth  )
+        {
+            // retrieve the boundaries
+            const QPair<QPointF, QPointF> boundaries = that->dataBoundaries ();
+            QPointF maxLimits = boundaries.second;
+            QVector <QPointF > segmentPoints;
+            QPointF topLeft = project( that, from, maxLimits, depth, index  );
+            QPointF topRight = project ( that, to, maxLimits, depth, index  );
+
+            segmentPoints << from << topLeft << topRight << to;
+            QPolygonF segment ( segmentPoints );
+            QBrush indexBrush ( that->brush( index ) );
+            PainterSaver painterSaver( ctx->painter() );
+            if ( that->antiAliasing() )
+                ctx->painter()->setRenderHint ( QPainter::Antialiasing );
+            ctx->painter()->setBrush( indexBrush );
+            ctx->painter()->setPen( that->pen( index ) ) ;
+            ctx->painter()->drawPolygon( segment );
+        }
+
+        LineType lineType;
+    };
+
+    KDCHART_IMPL_DERIVED_DIAGRAM( LineDiagram, AbstractCartesianDiagram, CartesianCoordinatePlane );
 /*
-inline LineDiagram::LineDiagram( Private * p, CartesianCoordinatePlane* plane )
+  inline LineDiagram::LineDiagram( Private * p, CartesianCoordinatePlane* plane )
   : AbstractCartesianDiagram( p, plane ) { init(); }
-inline LineDiagram::Private * LineDiagram::d_func()
-{ return static_cast<Private*>( AbstractCartesianDiagram::d_func() ); }
-inline const LineDiagram::Private * LineDiagram::d_func() const
-{ return static_cast<const Private*>( AbstractCartesianDiagram::d_func() ); }
+  inline LineDiagram::Private * LineDiagram::d_func()
+  { return static_cast<Private*>( AbstractCartesianDiagram::d_func() ); }
+  inline const LineDiagram::Private * LineDiagram::d_func() const
+  { return static_cast<const Private*>( AbstractCartesianDiagram::d_func() ); }
 */
 
 }

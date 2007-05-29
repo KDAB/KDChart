@@ -36,7 +36,6 @@
 #include "KDChartPalette.h"
 #include "KDChartPosition.h"
 #include "KDChartTextAttributes.h"
-#include "KDChartThreeDLineAttributes.h"
 #include "KDChartAttributesModel.h"
 #include "KDChartAbstractGrid.h"
 #include "KDChartDataValueAttributes.h"
@@ -433,7 +432,7 @@ void LineDiagram::paint( PaintContext* ctx )
     if ( !AbstractGrid::isBoundariesValid(dataBoundaries()) ) return;
 
     const PainterSaver p( ctx->painter() );
-    const CartesianCoordinatePlane* plane = dynamic_cast< const CartesianCoordinatePlane* >( 
+    const CartesianCoordinatePlane* plane = dynamic_cast< const CartesianCoordinatePlane* >(
                                                         coordinatePlane()->sharedAxisMasterPlane( ctx->painter() ) );
 
     // Make sure counted x values (== in diagrams with 1-dimensional data cells)
@@ -763,7 +762,7 @@ void LineDiagram::paint( PaintContext* ctx )
             const QModelIndex& index = lineInfo.index;
             const ThreeDLineAttributes td = threeDLineAttributes( index );
             if( td.isEnabled() ){
-                paintThreeDLines( ctx, index, lineInfo.value, lineInfo.nextValue, td.depth() );
+                d->paintThreeDLines( this, ctx, index, lineInfo.value, lineInfo.nextValue, td.depth() );
             }else{
                 const QBrush br( brush( index ) );
                 const QPen   pn( pen(   index ) );
@@ -771,7 +770,7 @@ void LineDiagram::paint( PaintContext* ctx )
                     points << lineInfo.nextValue;
                 }else{
                     if( points.count() )
-                        paintPolyline( ctx, curBrush, curPen, points );
+                        d->paintPolyline( ctx, curBrush, curPen, points );
                     curBrush = br;
                     curPen   = pn;
                     points.clear();
@@ -780,35 +779,12 @@ void LineDiagram::paint( PaintContext* ctx )
             }
         }
         if( points.count() )
-            paintPolyline( ctx, curBrush, curPen, points );
+            d->paintPolyline( ctx, curBrush, curPen, points );
     }
     // paint all data value texts and the point markers
     d->paintDataValueTextsAndMarkers( this, ctx, list, true );
     //qDebug() << "Rendering 2 in: " << t.msecsTo( QTime::currentTime() ) << endl;
 }
-
-
-void LineDiagram::paintPolyline( PaintContext* ctx,
-                                 const QBrush& brush, const QPen& pen,
-                                 const QPolygonF& points ) const
-{
-    ctx->painter()->setBrush( brush );
-    ctx->painter()->setPen(
-            QPen( pen.color(),
-                  pen.width(),
-                  pen.style(),
-                  Qt::FlatCap,
-                  Qt::MiterJoin ) );
-#if QT_VERSION > 0x040299
-    ctx->painter()->drawPolyline( points );
-#else
-    // For Qt versions older than 4.3 drawPolyline is VERY slow
-    // so we use traditional line segments drawing instead then.
-    for (int i = 0; i < points.size()-1; ++i)
-        ctx->painter()->drawLine( points.at(i), points.at(i+1) );
-#endif
-}
-
 
 /* old:
 void LineDiagram::paintLines( PaintContext* ctx, const QModelIndex& index,
@@ -817,7 +793,7 @@ void LineDiagram::paintLines( PaintContext* ctx, const QModelIndex& index,
     ThreeDLineAttributes td = threeDLineAttributes(index);
     if ( td.isEnabled() ) {
         const double lineDepth = td.depth();
-        paintThreeDLines( ctx, index, from, to, lineDepth );
+        d->paintThreeDLines( ctx, index, from, to, lineDepth );
     } else {
         ctx->painter()->setBrush( brush( index ) );
         ctx->painter()->setPen( pen( index ) );
@@ -864,43 +840,6 @@ void LineDiagram::paintAreas( PaintContext* ctx, const QModelIndex& index, const
     }
     //qDebug() << endl;
     ctx->painter()->drawPath( path );
-}
-
-/*!
-  Projects a point in a space defined by its x, y, and z coordinates
-  into a point onto a plane, given two rotation angles around the x
-  resp. y axis.
-*/
-
-const QPointF LineDiagram::project( QPointF point, QPointF maxLimits, double z, const QModelIndex& index ) const
-{
-  ThreeDLineAttributes td = threeDLineAttributes( index );
-
-    //Pending Michel FIXME - the rotation does not work as expected atm
-    double xrad = DEGTORAD( td.lineXRotation() );
-    double yrad = DEGTORAD( td.lineYRotation() );
-    QPointF ret = QPointF(point.x()*cos( yrad ) + z * sin( yrad ) ,  point.y()*cos( xrad ) - z * sin( xrad ) );
-    return ret;
-}
-
-void LineDiagram::paintThreeDLines(PaintContext* ctx, const QModelIndex& index, const QPointF& from, const QPointF& to, const double depth  )
-{
-    // retrieve the boundaries
-    const QPair<QPointF, QPointF> boundaries = dataBoundaries ();
-    QPointF maxLimits = boundaries.second;
-    QVector <QPointF > segmentPoints;
-    QPointF topLeft = project( from, maxLimits, depth, index  );
-    QPointF topRight = project ( to, maxLimits, depth, index  );
-
-    segmentPoints << from << topLeft << topRight << to;
-    QPolygonF segment ( segmentPoints );
-    QBrush indexBrush ( brush( index ) );
-    PainterSaver painterSaver( ctx->painter() );
-    if ( antiAliasing() )
-        ctx->painter()->setRenderHint ( QPainter::Antialiasing );
-    ctx->painter()->setBrush( indexBrush );
-    ctx->painter()->setPen( pen( index ) ) ;
-    ctx->painter()->drawPolygon( segment );
 }
 
 void LineDiagram::resize ( const QSizeF& )
