@@ -1,5 +1,5 @@
 /****************************************************************************
- ** Copyright (C) 2006 Klarävdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2006 Klaravdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KD Chart library.
  **
@@ -80,7 +80,6 @@ bool LineDiagram::compare( const LineDiagram* other )const
 {
     if( other == this ) return true;
     if( ! other ){
-        //qDebug() << "LineDiagram::compare() cannot compare to Null pointer";
         return false;
     }
     /*
@@ -118,10 +117,10 @@ LineDiagram::LineType LineDiagram::type() const
 
 void LineDiagram::setLineAttributes( const LineAttributes & ta )
 {
-     d->attributesModel->setModelData(
+    d->attributesModel->setModelData(
         qVariantFromValue( ta ),
         LineAttributesRole );
-   emit propertiesChanged();
+    emit propertiesChanged();
 }
 
 void LineDiagram::setLineAttributes(
