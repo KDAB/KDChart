@@ -576,7 +576,7 @@ void LineDiagram::paint( PaintContext* ctx )
                                 // which is not reflected in the line attributes
                                 // see examples/Area which show such an option
                                 if( areas.count() /*&& laCell != laPreviousCell*/ ){
-                                    paintAreas( ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
+                                    d->paintAreas( this, ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
                                     areas.clear();
                                 }
                                 if( bDisplayCellArea ){
@@ -604,7 +604,7 @@ void LineDiagram::paint( PaintContext* ctx )
                     }
                 }
                 if( areas.count() ){
-                    paintAreas( ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
+                    d->paintAreas( this, ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
                     areas.clear();
                 }
             }
@@ -710,7 +710,7 @@ void LineDiagram::paint( PaintContext* ctx )
                               )
                             : toPoint;
                         if( areas.count() && laCell != laPreviousCell ){
-                            paintAreas( ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
+                            d->paintAreas( this, ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
                             areas.clear();
                         }
                         if( bDisplayCellArea ){
@@ -733,7 +733,7 @@ void LineDiagram::paint( PaintContext* ctx )
                             valueForCell( iRow, iColumn ) );
                 }
                 if( areas.count() ){
-                    paintAreas( ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
+                    d->paintAreas( this, ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
                     areas.clear();
                 }
                 bottomPoints = points;
@@ -805,42 +805,6 @@ void LineDiagram::paintLines( PaintContext* ctx, const QModelIndex& index,
     }
 }
 */
-
-
-void LineDiagram::paintAreas( PaintContext* ctx, const QModelIndex& index, const QPolygonF& area, const uint transparency )
-{
-    QColor trans( brush(index).color() );
-    QPen indexPen( pen(index) );
-    trans.setAlpha( transparency );
-    indexPen.setColor( trans );
-    PainterSaver painterSaver( ctx->painter() );
-    if ( antiAliasing() )
-        ctx->painter()->setRenderHint ( QPainter::Antialiasing );
-    ctx->painter()->setPen( indexPen );
-    ctx->painter()->setBrush( trans ) ;
-    ctx->painter()->drawPolygon( area );//pol );
-}
-
-void LineDiagram::paintAreas( PaintContext* ctx, const QModelIndex& index, const QList<QPolygonF>& areas, const uint transparency )
-{
-    QColor trans( brush(index).color() );
-    trans.setAlpha( transparency );
-    QPen indexPen( pen(index) );
-    indexPen.setColor( trans );
-    PainterSaver painterSaver( ctx->painter() );
-    if ( antiAliasing() )
-        ctx->painter()->setRenderHint ( QPainter::Antialiasing );
-    ctx->painter()->setPen( indexPen );
-    ctx->painter()->setBrush( trans );
-    QPainterPath path;
-    for( int i=0; i<areas.count(); ++i ){
-        path.addPolygon( areas[i] );
-        path.closeSubpath();
-        //qDebug() << "LineDiagram::paintAreas() adding path:"<<areas[i];
-    }
-    //qDebug() << endl;
-    ctx->painter()->drawPath( path );
-}
 
 void LineDiagram::resize ( const QSizeF& )
 {

@@ -123,6 +123,42 @@ namespace KDChart {
             ctx->painter()->drawPolygon( segment );
         }
 
+// seems to be unused, praise pimpling:
+//         void paintAreas( LineDiagram* that, PaintContext* ctx, const QModelIndex& index, const QPolygonF& area, const uint transparency )
+//         {
+//             QColor trans( that->brush(index).color() );
+//             QPen indexPen( that->pen(index) );
+//             trans.setAlpha( transparency );
+//             indexPen.setColor( trans );
+//             PainterSaver painterSaver( ctx->painter() );
+//             if ( that->antiAliasing() )
+//                 ctx->painter()->setRenderHint ( QPainter::Antialiasing );
+//             ctx->painter()->setPen( indexPen );
+//             ctx->painter()->setBrush( trans ) ;
+//             ctx->painter()->drawPolygon( area );//pol );
+//         }
+
+        void paintAreas( LineDiagram* that, PaintContext* ctx, const QModelIndex& index, const QList<QPolygonF>& areas, const uint transparency )
+        {
+            QColor trans( that->brush(index).color() );
+            trans.setAlpha( transparency );
+            QPen indexPen( that->pen(index) );
+            indexPen.setColor( trans );
+            PainterSaver painterSaver( ctx->painter() );
+            if ( that->antiAliasing() )
+                ctx->painter()->setRenderHint ( QPainter::Antialiasing );
+            ctx->painter()->setPen( indexPen );
+            ctx->painter()->setBrush( trans );
+            QPainterPath path;
+            for( int i=0; i<areas.count(); ++i ){
+                path.addPolygon( areas[i] );
+                path.closeSubpath();
+                //qDebug() << "LineDiagram::paintAreas() adding path:"<<areas[i];
+            }
+            //qDebug() << endl;
+            ctx->painter()->drawPath( path );
+        }
+
         LineType lineType;
     };
 
