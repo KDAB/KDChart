@@ -462,6 +462,9 @@ void LineDiagram::paint( PaintContext* ctx )
     LineAttributesInfoList lineList;
     LineAttributes::MissingValuesPolicy policy;
 
+    if( model()->rowCount() == 0 || model()->columnCount() == 0 )
+        return; // nothing to paint for us
+
     // paint different line types Normal - Stacked - Percent - Default Normal
     switch ( type() )
     {

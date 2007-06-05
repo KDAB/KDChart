@@ -593,7 +593,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 // we need to register data values for the steps
                 // in case it is configured by the user
                 QStringList configuredStepsLabels;
-                double value = headerLabels.first().toDouble();
+                double value = headerLabels.isEmpty() ? 0.0 : headerLabels.first().toDouble();
                 configuredStepsLabels << QString::number( value );
                 for (  int i = 0; i < numberOfUnitRulers; i++ ) {
                     value += dimX.stepWidth;
