@@ -70,6 +70,7 @@ HEADERS += KDChartGlobal.h \
            KDChartLineAttributes.h \
            KDChartLineDiagram.h \
            KDChartLineDiagram_p.h \
+           KDChartLineDiagramType_p.h \
            KDChartMarkerAttributes.h \
            KDChartPaintContext.h \
            KDChartPalette.h \
@@ -144,6 +145,7 @@ SOURCES += \
            KDChartLegend.cpp \
            KDChartLineAttributes.cpp \
            KDChartLineDiagram.cpp \
+           KDChartLineDiagramType_p.cpp \
            KDChartMarkerAttributes.cpp \
            KDChartPaintContext.cpp \
            KDChartPalette.cpp \

@@ -37,6 +37,8 @@
 // We mean it.
 //
 
+#include <QPainterPath.h>
+
 #include "KDChartAbstractCartesianDiagram_p.h"
 #include "KDChartThreeDLineAttributes.h"
 
@@ -53,6 +55,8 @@ namespace KDChart {
     class LineDiagram::Private : public AbstractCartesianDiagram::Private
     {
         friend class LineDiagram;
+        friend class LineDiagramType;
+
     public:
         Private();
         ~Private();
@@ -163,6 +167,16 @@ namespace KDChart {
     };
 
     KDCHART_IMPL_DERIVED_DIAGRAM( LineDiagram, AbstractCartesianDiagram, CartesianCoordinatePlane );
+
+    class LineDiagram::LineDiagramType : public LineDiagram::Private
+    {
+    public:
+        virtual ~LineDiagramType() {}
+        virtual LineDiagram::LineType type() const = 0;
+        virtual const QPair<QPointF,  QPointF> calculateDataBoundaries() const = 0;
+        virtual void paint(  PaintContext* ctx ) = 0;
+    };
+
 /*
   inline LineDiagram::LineDiagram( Private * p, CartesianCoordinatePlane* plane )
   : AbstractCartesianDiagram( p, plane ) { init(); }

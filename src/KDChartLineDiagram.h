@@ -117,6 +117,9 @@ protected:
     virtual const QPair<QPointF, QPointF> calculateDataBoundaries() const;
     void paintEvent ( QPaintEvent* );
     void resizeEvent ( QResizeEvent* );
+
+public:
+    class LineDiagramType;
 }; // End of class KDChartLineDiagram
 
 }
