@@ -163,7 +163,35 @@ namespace KDChart {
             ctx->painter()->drawPath( path );
         }
 
+        // publish attributes to the diagram type implementations:
+        // (some of those should have been in p in the first place)
+        QModelIndex attributesModelRootIndex() const
+        {
+            return diagram->attributesModelRootIndex();
+        }
+
+        double valueForCellTesting( int row, int column,
+                                    bool& bOK,
+                                    bool showHiddenCellsAsInvalid = false ) const
+        {
+            return diagram->valueForCellTesting( row, column, bOK, showHiddenCellsAsInvalid );
+        }
+
+        LineAttributes::MissingValuesPolicy getCellValues(
+            int row, int column,
+            bool shiftCountedXValuesByHalfSection,
+            double& valueX, double& valueY ) const
+        {
+            return diagram->getCellValues( row, column, shiftCountedXValuesByHalfSection,
+                                           valueX, valueY );
+        }
+
+        // FIXME remove all (that) parameters from functions, declare a proper q
+        LineDiagram* diagram;
         LineType lineType;
+        LineDiagramType* normalDiagram;
+        LineDiagramType* stackedDiagram;
+        LineDiagramType* percentDiagram;
     };
 
     KDCHART_IMPL_DERIVED_DIAGRAM( LineDiagram, AbstractCartesianDiagram, CartesianCoordinatePlane );

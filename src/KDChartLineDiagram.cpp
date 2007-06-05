@@ -31,7 +31,6 @@
 #include <QVector>
 
 #include "KDChartLineDiagram.h"
-#include "KDChartLineDiagram_p.h"
 #include "KDChartBarDiagram.h"
 #include "KDChartPalette.h"
 #include "KDChartPosition.h"
@@ -42,6 +41,8 @@
 
 #include <KDABLibFakes>
 
+#include "KDChartLineDiagram_p.h"
+#include "KDChartLineDiagramType_p.h"
 
 using namespace KDChart;
 
@@ -64,6 +65,10 @@ LineDiagram::LineDiagram( QWidget* parent, CartesianCoordinatePlane* plane ) :
 
 void LineDiagram::init()
 {
+    d->diagram = this;
+    d->normalDiagram = new NormalLineDiagram;
+//     LineDiagramType* stackedDiagram;
+//     LineDiagramType* percentDiagram;
 }
 
 LineDiagram::~LineDiagram()
@@ -278,43 +283,10 @@ const QPair<QPointF, QPointF> LineDiagram::calculateDataBoundaries() const
     bool bOK;
 
     // calculate boundaries for different line types Normal - Stacked - Percent - Default Normal
-    switch ( type() ){
+    switch ( type() ) {
     case LineDiagram::Normal:
     {
-        bool bStarting = true;
-        for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
-            for ( int j=0; j< rowCount; ++j ) {
-                const double value = valueForCellTesting( j, i, bOK );
-                double xvalue;
-                if( datasetDimension() > 1 && bOK )
-                    xvalue = valueForCellTesting( j, i-1, bOK );
-                if( bOK ){
-                    if( bStarting ){
-                        yMin = value;
-                        yMax = value;
-                    }else{
-                        yMin = qMin( yMin, value );
-                        yMax = qMax( yMax, value );
-                    }
-                    if ( datasetDimension() > 1 ) {
-                        if( bStarting ){
-                            xMin = xvalue;
-                            xMax = xvalue;
-                        }else{
-                            xMin = qMin( xMin, xvalue );
-                            xMax = qMax( xMax, xvalue );
-                        }
-                    }
-                    bStarting = false;
-                }
-            }
-        }
-
-        // the following code is replaced by CartesianCoordinatePlane's automatic range / zoom adjusting
-        //if( yMin > 0 && yMax / yMin >= 2.0 )
-        //    yMin = 0;
-        //else if( yMax < 0 && yMax / yMin <= 0.5 )
-        //    yMax = 0;
+        // moved to NormalLineDiagram::calculateDataBoundaries
     }
     break;
     case LineDiagram::Stacked:
@@ -391,7 +363,6 @@ double LineDiagram::valueForCellTesting( int row, int column,
                 ).toDouble( &bOK );
     return bOK ? value : 0.0;
 }
-
 
 LineAttributes::MissingValuesPolicy LineDiagram::getCellValues(
       int row, int column,
@@ -470,6 +441,8 @@ void LineDiagram::paint( PaintContext* ctx )
     {
         case LineDiagram::Normal:
         {
+            // temp: finish refactoring
+            return d->normalDiagram->paint( ctx );
             for( int iColumn  = datasetDimension()-1;
                      iColumn <= lastVisibleColumn;
                      iColumn += datasetDimension() ) {
