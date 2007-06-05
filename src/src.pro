@@ -71,6 +71,7 @@ HEADERS += KDChartGlobal.h \
            KDChartLineDiagram.h \
            KDChartLineDiagram_p.h \
            KDChartNormalLineDiagram_p.h \
+           KDChartStackedLineDiagram_p.h \
            KDChartMarkerAttributes.h \
            KDChartPaintContext.h \
            KDChartPalette.h \
@@ -146,6 +147,7 @@ SOURCES += \
            KDChartLineAttributes.cpp \
            KDChartLineDiagram.cpp \
            KDChartNormalLineDiagram_p.cpp \
+           KDChartStackedLineDiagram_p.cpp \
            KDChartMarkerAttributes.cpp \
            KDChartPaintContext.cpp \
            KDChartPalette.cpp \

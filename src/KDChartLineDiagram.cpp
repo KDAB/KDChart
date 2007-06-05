@@ -42,7 +42,8 @@
 #include <KDABLibFakes>
 
 #include "KDChartLineDiagram_p.h"
-#include "KDChartLineDiagramType_p.h"
+#include "KDChartNormalLineDiagram_p.h"
+#include "KDChartStackedLineDiagram_p.h"
 
 using namespace KDChart;
 
@@ -67,7 +68,7 @@ void LineDiagram::init()
 {
     d->diagram = this;
     d->normalDiagram = new NormalLineDiagram;
-//     LineDiagramType* stackedDiagram;
+    d->stackedDiagram = new StackedLineDiagram;
 //     LineDiagramType* percentDiagram;
 }
 
@@ -283,37 +284,14 @@ const QPair<QPointF, QPointF> LineDiagram::calculateDataBoundaries() const
     bool bOK;
 
     // calculate boundaries for different line types Normal - Stacked - Percent - Default Normal
+    // FIXME remove switch, use implementor pointer
     switch ( type() ) {
     case LineDiagram::Normal:
-    {
-        // moved to NormalLineDiagram::calculateDataBoundaries
-    }
-    break;
+        return d->normalDiagram->calculateDataBoundaries();
+        break;
     case LineDiagram::Stacked:
-    {
-        bool bStarting = true;
-        for ( int j=0; j< rowCount; ++j ) {
-            // calculate sum of values per column - Find out stacked Min/Max
-            double stackedValues = 0;
-            for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
-                const double value = valueForCellTesting( j, i, bOK );
-                if( bOK )
-                    stackedValues += value;
-            }
-            if( bStarting ){
-                yMin = stackedValues;
-                yMax = stackedValues;
-                bStarting = false;
-            }else{
-                // Pending Michel:
-                // I am taking in account all values negatives or positives
-                // take in account all stacked values
-                yMin = qMin( qMin( yMin,  0.0 ), stackedValues );
-                yMax = qMax( yMax, stackedValues );
-            }
-        }
-    }
-    break;
+        return d->stackedDiagram->calculateDataBoundaries();
+        break;
     case LineDiagram::Percent:
     {
         for( int i = datasetDimension()-1; i < colCount; i += datasetDimension() ) {
@@ -403,13 +381,13 @@ void LineDiagram::paint( PaintContext* ctx )
 
     const PainterSaver p( ctx->painter() );
     const CartesianCoordinatePlane* plane = dynamic_cast< const CartesianCoordinatePlane* >(
-                                                        coordinatePlane()->sharedAxisMasterPlane( ctx->painter() ) );
+        coordinatePlane()->sharedAxisMasterPlane( ctx->painter() ) );
 
     // Make sure counted x values (== in diagrams with 1-dimensional data cells)
     // get shifted by 0.5, if the diagram's reference diagram is a BarDiagram.
     // So we get the lines to start/end at the middle of the respective bar groups.
     const bool shiftCountedXValuesByHalfSection =
-            (dynamic_cast< BarDiagram* >( referenceDiagram() ) != 0);
+        (dynamic_cast< BarDiagram* >( referenceDiagram() ) != 0);
 
     //QTime t = QTime::currentTime();
 
@@ -421,8 +399,8 @@ void LineDiagram::paint( PaintContext* ctx )
     {   // find the last column number that is not hidden
         const int columnCount = d->attributesModel->columnCount(attributesModelRootIndex());
         for( int iColumn =  datasetDimension()-1;
-            iColumn <  columnCount;
-            iColumn += datasetDimension() )
+             iColumn <  columnCount;
+             iColumn += datasetDimension() )
             if( ! isHidden( iColumn ) )
                 maxFound = iColumn;
     }
@@ -439,286 +417,147 @@ void LineDiagram::paint( PaintContext* ctx )
     // paint different line types Normal - Stacked - Percent - Default Normal
     switch ( type() )
     {
-        case LineDiagram::Normal:
-        {
-            // temp: finish refactoring
-            return d->normalDiagram->paint( ctx );
-            for( int iColumn  = datasetDimension()-1;
-                     iColumn <= lastVisibleColumn;
-                     iColumn += datasetDimension() ) {
+    case LineDiagram::Normal:
+    {
+        // temp: finish refactoring
+        return d->normalDiagram->paint( ctx );
+        break;
+    case LineDiagram::Stacked:
+        // fall-through intended
+        return d->stackedDiagram->paint( ctx );
+        break;
+    case LineDiagram::Percent:
+    {
+        //FIXME(khz): add LineAttributes::MissingValuesPolicy support for LineDiagram::Stacked and ::Percent
 
-                //display area can be set by dataset ( == column) and/or by cell
-                LineAttributes laPreviousCell; // by default no area is drawn
-                QModelIndex indexPreviousCell;
-                QList<QPolygonF> areas;
+        const bool isPercentMode = type() == LineDiagram::Percent;
+        double maxValue = 100; // always 100%
+        double sumValues = 0;
+        QVector <double > percentSumValues;
 
-                bool bValuesFound = false;
-                double lastValueX, lastValueY;
-                double valueX, valueY;
-                for ( int iRow = 0; iRow < rowCount; ++iRow ) {
-                    bool skipThisCell = false;
-                    // trying to find a fromPoint
-                    policy = getCellValues( iRow, iColumn,
-                                            shiftCountedXValuesByHalfSection,
-                                            valueX, valueY );
-                    switch( policy ){
-                        case LineAttributes::MissingValuesAreBridged:
-                            if( bValuesFound ){
-                                valueX = lastValueX;
-                                valueY = lastValueY;
-                            }else{
-                                skipThisCell = true;
-                            }
-                            break;
-                        case LineAttributes::MissingValuesHideSegments:
-                            skipThisCell = true;
-                            break;
-                        case LineAttributes::MissingValuesShownAsZero:
-                            // fall through intended
-                        case LineAttributes::MissingValuesPolicyIgnored:
-                            lastValueX = valueX;
-                            lastValueY = valueY;
-                            bValuesFound = true;
-                            break;
+        //calculate sum of values for each column and store
+        if( isPercentMode ){
+            for ( int j=0; j<rowCount ; ++j ) {
+                for( int i =  datasetDimension()-1;
+                     i <= lastVisibleColumn;
+                     i += datasetDimension() ) {
+                    double tmpValue = valueForCell( j, i );
+                    if ( tmpValue > 0 )
+                        sumValues += tmpValue;
+                    if ( i == lastVisibleColumn ) {
+                        percentSumValues <<  sumValues ;
+                        sumValues = 0;
                     }
-                    if( ! skipThisCell ){
-                        // trying to find a toPoint
-                        double nextValueX, nextValueY;
-                        bool foundToPoint = false;
-                        int iNextRow = iRow+1;
-                        while ( ! (foundToPoint || skipThisCell || iNextRow >= rowCount) ) {
-                            policy = getCellValues(
-                                    iNextRow, iColumn,
-                                    shiftCountedXValuesByHalfSection,
-                                    nextValueX, nextValueY );
-                            switch( policy ){
-                                case LineAttributes::MissingValuesAreBridged:
-                                    // The cell has no valid value, so we  make sure that
-                                    // this cell will not be processed by the next iteration
-                                    // of the iRow loop:
-                                    ++iRow;
-                                    break;
-                                case LineAttributes::MissingValuesHideSegments:
-                                    // The cell has no valid value, so we  make sure that
-                                    // this cell will not be processed by the next iteration
-                                    // of the iRow loop:
-                                    skipThisCell = true;
-                                    ++iRow;
-                                    break;
-                                case LineAttributes::MissingValuesShownAsZero:
-                                    // fall through intended
-                                case LineAttributes::MissingValuesPolicyIgnored:
-                                    foundToPoint = true;
-                                    break;
-                            }
-                            ++iNextRow;
-                        }
-                        if( ! skipThisCell ){
-                            const bool isPositive = (valueY >= 0.0);
-                            const QModelIndex index = model()->index( iRow, iColumn, rootIndex() );
-                            const LineAttributes laCell = lineAttributes( index );
-                            const bool bDisplayCellArea = laCell.displayArea();
-
-                            QPointF fromPoint = plane->translate( QPointF( valueX, valueY ) );
-
-                            const QPointF ptNorthWest(
-                                (bDisplayCellArea && ! isPositive)
-                                ? plane->translate( QPointF( valueX, 0.0 ) )
-                                : fromPoint );
-                            const QPointF ptSouthWest(
-                                (bDisplayCellArea && isPositive)
-                                ? plane->translate( QPointF( valueX, 0.0 ) )
-                                : fromPoint );
-                            //qDebug() << "--> ptNorthWest:" << ptNorthWest;
-                            //qDebug() << "--> ptSouthWest:" << ptSouthWest;
-                            QPointF ptNorthEast;
-                            QPointF ptSouthEast;
-
-                            if( foundToPoint ){
-                                QPointF toPoint = plane->translate( QPointF( nextValueX, nextValueY ) );
-                                lineList.append( LineAttributesInfo( index, fromPoint, toPoint ) );
-                                ptNorthEast =
-                                    (bDisplayCellArea && ! isPositive)
-                                    ? plane->translate( QPointF( nextValueX, 0.0 ) )
-                                    : toPoint;
-                                ptSouthEast =
-                                    (bDisplayCellArea && isPositive)
-                                    ? plane->translate( QPointF( nextValueX, 0.0 ) )
-                                    : toPoint;
-                                // we can't take as a condition the line attributes
-                                // to be different from a cell to another.
-                                // e.g the user should be able to have different brush
-                                // which is not reflected in the line attributes
-                                // see examples/Area which show such an option
-                                if( areas.count() /*&& laCell != laPreviousCell*/ ){
-                                    d->paintAreas( this, ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
-                                    areas.clear();
-                                }
-                                if( bDisplayCellArea ){
-                                    QPolygonF poly;
-                                    poly << ptNorthWest << ptNorthEast << ptSouthEast << ptSouthWest;
-                                    //qDebug() << "ptNorthWest:" << ptNorthWest;
-                                    //qDebug() << "ptNorthEast:" << ptNorthEast;
-                                    //qDebug() << "ptSouthEast:" << ptSouthEast;
-                                    //qDebug() << "ptSouthWest:" << ptSouthWest;
-                                    //qDebug() << "polygon:" << poly;
-                                    areas << poly;
-                                    laPreviousCell = laCell;
-                                    indexPreviousCell = index;
-                                }
-                            }else{
-                                ptNorthEast = ptNorthWest;
-                                ptSouthEast = ptSouthWest;
-                            }
-
-                            const PositionPoints pts( ptNorthWest, ptNorthEast, ptSouthEast, ptSouthWest );
-                            d->appendDataValueTextInfoToList( this, list, index, pts,
-                                    Position::NorthWest, Position::SouthWest,
-                                    valueY );
-                        }
-                    }
-                }
-                if( areas.count() ){
-                    d->paintAreas( this, ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
-                    areas.clear();
                 }
             }
         }
-            break;
-        case LineDiagram::Stacked:
-            // fall-through intended
-        case LineDiagram::Percent:
-        {
-            //FIXME(khz): add LineAttributes::MissingValuesPolicy support for LineDiagram::Stacked and ::Percent
 
-            const bool isPercentMode = type() == LineDiagram::Percent;
-            double maxValue = 100; // always 100%
-            double sumValues = 0;
-            QVector <double > percentSumValues;
+        QList<QPointF> bottomPoints;
+        bool bFirstDataset = true;
 
-            //calculate sum of values for each column and store
-            if( isPercentMode ){
-                for ( int j=0; j<rowCount ; ++j ) {
-                    for( int i =  datasetDimension()-1;
-                        i <= lastVisibleColumn;
-                        i += datasetDimension() ) {
-                            double tmpValue = valueForCell( j, i );
-                            if ( tmpValue > 0 )
-                                sumValues += tmpValue;
-                            if ( i == lastVisibleColumn ) {
-                                percentSumValues <<  sumValues ;
-                                sumValues = 0;
-                            }
-                        }
-                }
-            }
+        for( int iColumn =  datasetDimension()-1;
+             iColumn <= lastVisibleColumn;
+             iColumn += datasetDimension() ) {
 
-            QList<QPointF> bottomPoints;
-            bool bFirstDataset = true;
+            //display area can be set by dataset ( == column) and/or by cell
+            LineAttributes laPreviousCell; // by default no area is drawn
+            QModelIndex indexPreviousCell;
+            QList<QPolygonF> areas;
+            QList<QPointF> points;
 
-            for( int iColumn =  datasetDimension()-1;
-                 iColumn <= lastVisibleColumn;
-                 iColumn += datasetDimension() ) {
+            for ( int iRow = 0; iRow< rowCount; ++iRow ) {
+                const QModelIndex index = model()->index( iRow, iColumn, rootIndex() );
+                const LineAttributes laCell = lineAttributes( index );
+                const bool bDisplayCellArea = laCell.displayArea();
 
-                //display area can be set by dataset ( == column) and/or by cell
-                LineAttributes laPreviousCell; // by default no area is drawn
-                QModelIndex indexPreviousCell;
-                QList<QPolygonF> areas;
-                QList<QPointF> points;
-
-                for ( int iRow = 0; iRow< rowCount; ++iRow ) {
-                    const QModelIndex index = model()->index( iRow, iColumn, rootIndex() );
-                    const LineAttributes laCell = lineAttributes( index );
-                    const bool bDisplayCellArea = laCell.displayArea();
-
-                    double stackedValues = 0, nextValues = 0;
-                    for ( int iColumn2 = iColumn;
-                          iColumn2 >= datasetDimension()-1;
-                          iColumn2 -= datasetDimension() )
-                    {
-                        const double val = valueForCell( iRow, iColumn2 );
-                        if( val > 0 || ! isPercentMode )
-                            stackedValues += val;
-                        //qDebug() << valueForCell( iRow, iColumn2 );
-                        if ( iRow+1 < rowCount ){
-                            const double val = valueForCell( iRow+1, iColumn2 );
-                            if( val > 0 || ! isPercentMode )
-                                nextValues += val;
-                        }
-                    }
-                    if( isPercentMode ){
-                        if ( percentSumValues.at( iRow ) != 0  )
-                            stackedValues = stackedValues / percentSumValues.at( iRow ) * maxValue;
-                        else
-                            stackedValues = 0.0;
-                    }
-                    //qDebug() << stackedValues << endl;
-                    QPointF nextPoint = plane->translate( QPointF( iRow, stackedValues ) );
-                    points << nextPoint;
-
-                    const QPointF ptNorthWest( nextPoint );
-                    const QPointF ptSouthWest(
-                            bDisplayCellArea
-                            ? ( bFirstDataset
-                                ? plane->translate( QPointF( iRow, 0.0 ) )
-                                : bottomPoints.at( iRow )
-                              )
-                            : nextPoint );
-                    QPointF ptNorthEast;
-                    QPointF ptSouthEast;
-
+                double stackedValues = 0, nextValues = 0;
+                for ( int iColumn2 = iColumn;
+                      iColumn2 >= datasetDimension()-1;
+                      iColumn2 -= datasetDimension() )
+                {
+                    const double val = valueForCell( iRow, iColumn2 );
+                    if( val > 0 || ! isPercentMode )
+                        stackedValues += val;
+                    //qDebug() << valueForCell( iRow, iColumn2 );
                     if ( iRow+1 < rowCount ){
-                        if( isPercentMode ){
-                            if ( percentSumValues.at( iRow+1 ) != 0  )
-                                nextValues = nextValues / percentSumValues.at( iRow+1 ) * maxValue;
-                            else
-                                nextValues = 0.0;
-                        }
-                        QPointF toPoint = plane->translate( QPointF( iRow+1, nextValues ) );
-                        lineList.append( LineAttributesInfo( index, nextPoint, toPoint ) );
-                        ptNorthEast = toPoint;
-                        ptSouthEast =
-                            bDisplayCellArea
-                            ? ( bFirstDataset
-                                ? plane->translate( QPointF( iRow+1, 0.0 ) )
-                                : bottomPoints.at( iRow+1 )
-                              )
-                            : toPoint;
-                        if( areas.count() && laCell != laPreviousCell ){
-                            d->paintAreas( this, ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
-                            areas.clear();
-                        }
-                        if( bDisplayCellArea ){
-                            QPolygonF poly;
-                            poly << ptNorthWest << ptNorthEast << ptSouthEast << ptSouthWest;
-                            areas << poly;
-                            laPreviousCell = laCell;
-                            indexPreviousCell = index;
-                        }else{
-                            //qDebug() << "no area shown for row"<<iRow<<"  column"<<iColumn;
-                        }
-                    }else{
-                        ptNorthEast = ptNorthWest;
-                        ptSouthEast = ptSouthWest;
+                        const double val = valueForCell( iRow+1, iColumn2 );
+                        if( val > 0 || ! isPercentMode )
+                            nextValues += val;
                     }
+                }
+                if( isPercentMode ){
+                    if ( percentSumValues.at( iRow ) != 0  )
+                        stackedValues = stackedValues / percentSumValues.at( iRow ) * maxValue;
+                    else
+                        stackedValues = 0.0;
+                }
+                //qDebug() << stackedValues << endl;
+                QPointF nextPoint = plane->translate( QPointF( iRow, stackedValues ) );
+                points << nextPoint;
 
-                    const PositionPoints pts( ptNorthWest, ptNorthEast, ptSouthEast, ptSouthWest );
-                    d->appendDataValueTextInfoToList( this, list, index, pts,
-                            Position::NorthWest, Position::SouthWest,
-                            valueForCell( iRow, iColumn ) );
+                const QPointF ptNorthWest( nextPoint );
+                const QPointF ptSouthWest(
+                    bDisplayCellArea
+                    ? ( bFirstDataset
+                        ? plane->translate( QPointF( iRow, 0.0 ) )
+                        : bottomPoints.at( iRow )
+                        )
+                    : nextPoint );
+                QPointF ptNorthEast;
+                QPointF ptSouthEast;
+
+                if ( iRow+1 < rowCount ){
+                    if( isPercentMode ){
+                        if ( percentSumValues.at( iRow+1 ) != 0  )
+                            nextValues = nextValues / percentSumValues.at( iRow+1 ) * maxValue;
+                        else
+                            nextValues = 0.0;
+                    }
+                    QPointF toPoint = plane->translate( QPointF( iRow+1, nextValues ) );
+                    lineList.append( LineAttributesInfo( index, nextPoint, toPoint ) );
+                    ptNorthEast = toPoint;
+                    ptSouthEast =
+                        bDisplayCellArea
+                        ? ( bFirstDataset
+                            ? plane->translate( QPointF( iRow+1, 0.0 ) )
+                            : bottomPoints.at( iRow+1 )
+                            )
+                        : toPoint;
+                    if( areas.count() && laCell != laPreviousCell ){
+                        d->paintAreas( this, ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
+                        areas.clear();
+                    }
+                    if( bDisplayCellArea ){
+                        QPolygonF poly;
+                        poly << ptNorthWest << ptNorthEast << ptSouthEast << ptSouthWest;
+                        areas << poly;
+                        laPreviousCell = laCell;
+                        indexPreviousCell = index;
+                    }else{
+                        //qDebug() << "no area shown for row"<<iRow<<"  column"<<iColumn;
+                    }
+                }else{
+                    ptNorthEast = ptNorthWest;
+                    ptSouthEast = ptSouthWest;
                 }
-                if( areas.count() ){
-                    d->paintAreas( this, ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
-                    areas.clear();
-                }
-                bottomPoints = points;
-                bFirstDataset = false;
+
+                const PositionPoints pts( ptNorthWest, ptNorthEast, ptSouthEast, ptSouthWest );
+                d->appendDataValueTextInfoToList( this, list, index, pts,
+                                                  Position::NorthWest, Position::SouthWest,
+                                                  valueForCell( iRow, iColumn ) );
             }
+            if( areas.count() ){
+                d->paintAreas( this, ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
+                areas.clear();
+            }
+            bottomPoints = points;
+            bFirstDataset = false;
         }
-            break;
-        default:
-            Q_ASSERT_X ( false, "paint()",
-                         "Type item does not match a defined line chart Type." );
+    }
+    break;
+    default:
+        Q_ASSERT_X ( false, "paint()",
+                     "Type item does not match a defined line chart Type." );
     }
     // paint all lines and their attributes
     {
@@ -759,6 +598,7 @@ void LineDiagram::paint( PaintContext* ctx )
     // paint all data value texts and the point markers
     d->paintDataValueTextsAndMarkers( this, ctx, list, true );
     //qDebug() << "Rendering 2 in: " << t.msecsTo( QTime::currentTime() ) << endl;
+    }
 }
 
 /* old:

@@ -1,15 +1,15 @@
-#ifndef KDCHARTNORMALLINEDIAGRAM_P_H
-#define KDCHARTNORMALLINEDIAGRAM_P_H
+#ifndef KDCHARTSTACKEDLINEDIAGRAM_P_H
+#define KDCHARTSTACKEDLINEDIAGRAM_P_H
 
 #include "KDChartLineDiagram_p.h"
 
 namespace KDChart {
 
-    class NormalLineDiagram : public LineDiagram::LineDiagramType
+    class StackedLineDiagram : public LineDiagram::LineDiagramType
     {
     public:
-        NormalLineDiagram();
-        virtual ~NormalLineDiagram() {}
+        StackedLineDiagram();
+        virtual ~StackedLineDiagram() {}
         virtual LineDiagram::LineType type() const;
         virtual const QPair<QPointF,  QPointF> calculateDataBoundaries() const;
         virtual void paint(  PaintContext* ctx );

@@ -186,6 +186,11 @@ namespace KDChart {
                                            valueX, valueY );
         }
 
+        double valueForCell( int row, int column ) const
+        {
+            return diagram->valueForCell( row, column );
+        }
+
         // FIXME remove all (that) parameters from functions, declare a proper q
         LineDiagram* diagram;
         LineType lineType;
