@@ -32,6 +32,7 @@
 namespace KDChart {
     class Chart;
     class BarDiagram;
+    class LineDiagram;
 }
 
 class MainWindow : public QWidget

@@ -39,6 +39,58 @@
 
 using namespace KDChart;
 
+class EmptyModel : public QAbstractItemModel
+{
+public:
+    EmptyModel( QObject* parent = 0 )
+        : QAbstractItemModel( parent )
+    {
+        qDebug() << "EmptyModel::EmptyModel()";
+    }
+
+    ~EmptyModel()
+    {
+        qDebug() << "EmptyModel::~EmptyModel()";
+    }
+
+    int columnCount( const QModelIndex& parent = QModelIndex() ) const
+    {
+        Q_UNUSED( parent );
+        qDebug() << "EmptyModel::columnCount(...)";
+        return 0;
+    }
+
+    QVariant data( const QModelIndex& index, int role = Qt::DisplayRole ) const
+    {
+        Q_UNUSED( role );
+        qDebug() << "EmptyModel::data(" << index.row() << index.column() << ")";
+        Q_ASSERT_X( false, "EmptyModel::data", "We should not end here..." );
+        return QVariant();
+    }
+
+    QModelIndex index( int row, int column, const QModelIndex& parent = QModelIndex() ) const
+    {
+        Q_UNUSED( parent );
+        qDebug() << "EmptyModel::index(" << row << column << ")";
+        Q_ASSERT_X( false, "EmptyModel::index", "We should not end here..." );
+        return QModelIndex();
+    }
+
+    QModelIndex parent( const QModelIndex& parent ) const
+    {
+        Q_UNUSED( parent );
+        qDebug() << "EmptyModel::parent(...)";
+        return QModelIndex();
+    }
+
+    int rowCount( const QModelIndex& parent = QModelIndex() ) const
+    {
+        Q_UNUSED( parent );
+        qDebug() << "EmptyModel::rowCount(...)";
+        return 0;
+    }
+};
+
 MainWindow::MainWindow( QWidget* parent ) :
     QWidget( parent )
 {
@@ -47,7 +99,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_chart->setGlobalLeading( 5, 5, 5, 5 );
     chartLayout->addWidget( m_chart );
 
-    m_model = new QStandardItemModel(0, 0, this); // model contains no data at all
+    m_model = new EmptyModel( this ); // model contains no data at all
 
     // Set up the diagram
     m_bars = new BarDiagram();
