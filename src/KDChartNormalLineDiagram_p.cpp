@@ -5,7 +5,7 @@
 #include "KDChartTextAttributes.h"
 #include "KDChartAttributesModel.h"
 #include "KDChartAbstractCartesianDiagram.h"
-#include "KDChartLineDiagramType_p.h"
+#include "KDChartNormalLineDiagram_p.h"
 
 using namespace KDChart;
 
