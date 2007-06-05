@@ -63,7 +63,7 @@ namespace KDChart {
 
         Private( const Private& rhs )
             : AbstractCartesianDiagram::Private( rhs )
-            , lineType( rhs.lineType )
+            // , lineType( rhs.lineType )
         {
         }
 
@@ -193,7 +193,7 @@ namespace KDChart {
 
         // FIXME remove all (that) parameters from functions, declare a proper q
         LineDiagram* diagram;
-        LineType lineType;
+        // LineType lineType;
         LineDiagramType* implementor; // the current type
         LineDiagramType* normalDiagram;
         LineDiagramType* stackedDiagram;
@@ -205,6 +205,11 @@ namespace KDChart {
     class LineDiagram::LineDiagramType : public LineDiagram::Private
     {
     public:
+        explicit LineDiagramType( LineDiagram* d )
+            : LineDiagram::Private()
+        {
+            diagram = d;
+        }
         virtual ~LineDiagramType() {}
         virtual LineDiagram::LineType type() const = 0;
         virtual const QPair<QPointF,  QPointF> calculateDataBoundaries() const = 0;

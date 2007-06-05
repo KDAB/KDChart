@@ -8,7 +8,7 @@ namespace KDChart {
     class StackedLineDiagram : public LineDiagram::LineDiagramType
     {
     public:
-        StackedLineDiagram();
+        explicit StackedLineDiagram( LineDiagram* );
         virtual ~StackedLineDiagram() {}
         virtual LineDiagram::LineType type() const;
         virtual const QPair<QPointF,  QPointF> calculateDataBoundaries() const;

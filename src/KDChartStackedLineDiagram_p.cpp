@@ -9,7 +9,8 @@
 
 using namespace KDChart;
 
-StackedLineDiagram::StackedLineDiagram()
+StackedLineDiagram::StackedLineDiagram( LineDiagram* d )
+    : LineDiagramType( d )
 {
 }
 

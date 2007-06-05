@@ -8,7 +8,7 @@ namespace KDChart {
     class PercentLineDiagram : public LineDiagram::LineDiagramType
     {
     public:
-        PercentLineDiagram();
+        explicit PercentLineDiagram( LineDiagram* );
         virtual ~PercentLineDiagram() {}
         virtual LineDiagram::LineType type() const;
         virtual const QPair<QPointF,  QPointF> calculateDataBoundaries() const;

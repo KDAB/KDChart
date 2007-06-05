@@ -9,7 +9,8 @@
 
 using namespace KDChart;
 
-PercentLineDiagram::PercentLineDiagram()
+PercentLineDiagram::PercentLineDiagram( LineDiagram* d )
+    : LineDiagramType( d )
 {
 }
 

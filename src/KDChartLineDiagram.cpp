@@ -49,7 +49,7 @@
 using namespace KDChart;
 
 LineDiagram::Private::Private()
-  :lineType ( Normal )
+//  :lineType ( Normal )
 {
 }
 
@@ -68,9 +68,10 @@ LineDiagram::LineDiagram( QWidget* parent, CartesianCoordinatePlane* plane ) :
 void LineDiagram::init()
 {
     d->diagram = this;
-    d->normalDiagram = new NormalLineDiagram;
-    d->stackedDiagram = new StackedLineDiagram;
-    d->percentDiagram = new PercentLineDiagram;
+    d->normalDiagram = new NormalLineDiagram( this );
+    d->stackedDiagram = new StackedLineDiagram( this );
+    d->percentDiagram = new PercentLineDiagram( this );
+    d->implementor = d->normalDiagram;
 }
 
 LineDiagram::~LineDiagram()
@@ -79,7 +80,9 @@ LineDiagram::~LineDiagram()
 
 LineDiagram * LineDiagram::clone() const
 {
-    return new LineDiagram( new Private( *d ) );
+    LineDiagram* newDiagram = new LineDiagram( new Private( *d ) );
+    newDiagram->setType( type() );
+    return newDiagram;
 }
 
 
@@ -103,7 +106,7 @@ bool LineDiagram::compare( const LineDiagram* other )const
 
 void LineDiagram::setType( const LineType type )
 {
-   if ( d->lineType == type ) return;
+    if ( d->implementor->type() == type ) return;
    if ( type != LineDiagram::Normal && datasetDimension() > 1 ) {
        Q_ASSERT_X ( false, "setType()",
                     "This line chart type can't be used with multi-dimensional data." );
@@ -123,7 +126,8 @@ void LineDiagram::setType( const LineType type )
        Q_ASSERT_X( false, "LineDiagram::setType", "unknown diagram subtype" );
    };
 
-   d->lineType = type;
+   // d->lineType = type;
+   Q_ASSERT( d->implementor->type() == type );
 
    // AbstractAxis settings - see AbstractDiagram and CartesianAxis
    setPercentMode( type == LineDiagram::Percent );
@@ -134,7 +138,7 @@ void LineDiagram::setType( const LineType type )
 
 LineDiagram::LineType LineDiagram::type() const
 {
-   return d->lineType;
+    return d->implementor->type();
 }
 
 void LineDiagram::setLineAttributes( const LineAttributes & ta )

@@ -9,7 +9,8 @@
 
 using namespace KDChart;
 
-NormalLineDiagram::NormalLineDiagram()
+NormalLineDiagram::NormalLineDiagram( LineDiagram* d )
+    : LineDiagramType( d )
 {
 }
 
