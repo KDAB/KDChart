@@ -28,7 +28,7 @@
 #include <KDChartChart>
 #include <KDChartAbstractCoordinatePlane>
 #include <KDChartCartesianAxis>
-#include <KDChartBarDiagram>
+#include <KDChartLineDiagram>
 #include <KDChartLegend>
 
 
@@ -72,7 +72,6 @@ public:
     {
         Q_UNUSED( parent );
         qDebug() << "EmptyModel::index(" << row << column << ")";
-        Q_ASSERT_X( false, "EmptyModel::index", "We should not end here..." );
         return QModelIndex();
     }
 
@@ -102,7 +101,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_model = new EmptyModel( this ); // model contains no data at all
 
     // Set up the diagram
-    m_bars = new BarDiagram();
+    m_bars = new LineDiagram();
     m_bars->setModel( m_model );
     CartesianAxis *xAxis = new CartesianAxis( m_bars );
     CartesianAxis *yAxis = new CartesianAxis ( m_bars );

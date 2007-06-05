@@ -45,7 +45,7 @@ public:
 
 private:
     KDChart::Chart* m_chart;
-    KDChart::BarDiagram* m_bars;
+    KDChart::LineDiagram* m_bars;
     QAbstractItemModel* m_model;
 };
 
