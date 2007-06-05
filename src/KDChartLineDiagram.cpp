@@ -351,96 +351,18 @@ LineAttributes::MissingValuesPolicy LineDiagram::getCellValues(
     return policy;
 }
 
-/*commenting this include: used for testing
-notice: Windows compilers need this include to
-be written before the #define d(d_func()) above*/
-//#include <QTime>
-
 void LineDiagram::paint( PaintContext* ctx )
 {
-//qDebug() << "    start diag::paint()";
     // note: Not having any data model assigned is no bug
     //       but we can not draw a diagram then either.
     if ( !checkInvariants( true ) ) return;
     if ( !AbstractGrid::isBoundariesValid(dataBoundaries()) ) return;
-
     const PainterSaver p( ctx->painter() );
-    const CartesianCoordinatePlane* plane = dynamic_cast< const CartesianCoordinatePlane* >(
-        coordinatePlane()->sharedAxisMasterPlane( ctx->painter() ) );
-
-    // Make sure counted x values (== in diagrams with 1-dimensional data cells)
-    // get shifted by 0.5, if the diagram's reference diagram is a BarDiagram.
-    // So we get the lines to start/end at the middle of the respective bar groups.
-    const bool shiftCountedXValuesByHalfSection =
-        (dynamic_cast< BarDiagram* >( referenceDiagram() ) != 0);
-
-    //QTime t = QTime::currentTime();
-
-    const QPair<QPointF, QPointF> boundaries = dataBoundaries();
-    const QPointF bottomLeft = boundaries.first;
-    const QPointF topRight = boundaries.second;
-
-    int maxFound = 0;
-    {   // find the last column number that is not hidden
-        const int columnCount = d->attributesModel->columnCount(attributesModelRootIndex());
-        for( int iColumn =  datasetDimension()-1;
-             iColumn <  columnCount;
-             iColumn += datasetDimension() )
-            if( ! isHidden( iColumn ) )
-                maxFound = iColumn;
-    }
-    const int lastVisibleColumn = maxFound;
-    const int rowCount = d->attributesModel->rowCount(attributesModelRootIndex());
-
-    DataValueTextInfoList list;
-    LineAttributesInfoList lineList;
-    LineAttributes::MissingValuesPolicy policy;
-
     if( model()->rowCount() == 0 || model()->columnCount() == 0 )
         return; // nothing to paint for us
 
     // paint different line types Normal - Stacked - Percent - Default Normal
     return d->implementor->paint( ctx );
-    // FIXME move into common method in d:
-    // paint all lines and their attributes
-    {
-        PainterSaver painterSaver( ctx->painter() );
-        if ( antiAliasing() )
-            ctx->painter()->setRenderHint ( QPainter::Antialiasing );
-        LineAttributesInfoListIterator itline ( lineList );
-
-        //qDebug() << "Rendering 1 in: " << t.msecsTo( QTime::currentTime() ) << endl;
-
-        QBrush curBrush;
-        QPen curPen;
-        QPolygonF points;
-        while ( itline.hasNext() ) {
-            const LineAttributesInfo& lineInfo = itline.next();
-            const QModelIndex& index = lineInfo.index;
-            const ThreeDLineAttributes td = threeDLineAttributes( index );
-            if( td.isEnabled() ){
-                d->paintThreeDLines( this, ctx, index, lineInfo.value, lineInfo.nextValue, td.depth() );
-            }else{
-                const QBrush br( brush( index ) );
-                const QPen   pn( pen(   index ) );
-                if( points.count() && points.last() == lineInfo.value && curBrush == br && curPen == pn ){
-                    points << lineInfo.nextValue;
-                }else{
-                    if( points.count() )
-                        d->paintPolyline( ctx, curBrush, curPen, points );
-                    curBrush = br;
-                    curPen   = pn;
-                    points.clear();
-                    points << lineInfo.value << lineInfo.nextValue;
-                }
-            }
-        }
-        if( points.count() )
-            d->paintPolyline( ctx, curBrush, curPen, points );
-    }
-    // paint all data value texts and the point markers
-    d->paintDataValueTextsAndMarkers( this, ctx, list, true );
-    //qDebug() << "Rendering 2 in: " << t.msecsTo( QTime::currentTime() ) << endl;
 }
 
 void LineDiagram::resize ( const QSizeF& )

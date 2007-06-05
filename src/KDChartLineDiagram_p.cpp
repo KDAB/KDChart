@@ -1,4 +1,6 @@
 #include "KDChartLineDiagram.h"
+#include "KDChartDataValueAttributes.h"
+
 #include "KDChartLineDiagram_p.h"
 
 using namespace KDChart;
@@ -37,10 +39,10 @@ void LineDiagram::Private::paintPolyline(
   resp. y axis.
 */
 const QPointF LineDiagram::Private::project(
-    LineDiagram* that, QPointF point, QPointF maxLimits,
+    QPointF point, QPointF maxLimits,
     double z, const QModelIndex& index ) const
 {
-    ThreeDLineAttributes td = that->threeDLineAttributes( index );
+    ThreeDLineAttributes td = diagram->threeDLineAttributes( index );
 
     //Pending Michel FIXME - the rotation does not work as expected atm
     double xrad = DEGTORAD( td.lineXRotation() );
@@ -50,36 +52,36 @@ const QPointF LineDiagram::Private::project(
 }
 
 void LineDiagram::Private::paintThreeDLines(
-    LineDiagram* that, PaintContext* ctx, const QModelIndex& index,
+    PaintContext* ctx, const QModelIndex& index,
     const QPointF& from, const QPointF& to, const double depth  )
 {
     // retrieve the boundaries
-    const QPair<QPointF, QPointF> boundaries = that->dataBoundaries ();
+    const QPair<QPointF, QPointF> boundaries = diagram->dataBoundaries ();
     QPointF maxLimits = boundaries.second;
     QVector <QPointF > segmentPoints;
-    QPointF topLeft = project( that, from, maxLimits, depth, index  );
-    QPointF topRight = project ( that, to, maxLimits, depth, index  );
+    QPointF topLeft = project( from, maxLimits, depth, index  );
+    QPointF topRight = project ( to, maxLimits, depth, index  );
 
     segmentPoints << from << topLeft << topRight << to;
     QPolygonF segment ( segmentPoints );
-    QBrush indexBrush ( that->brush( index ) );
+    QBrush indexBrush ( diagram->brush( index ) );
     PainterSaver painterSaver( ctx->painter() );
-    if ( that->antiAliasing() )
+    if ( diagram->antiAliasing() )
         ctx->painter()->setRenderHint ( QPainter::Antialiasing );
     ctx->painter()->setBrush( indexBrush );
-    ctx->painter()->setPen( that->pen( index ) ) ;
+    ctx->painter()->setPen( diagram->pen( index ) ) ;
     ctx->painter()->drawPolygon( segment );
 }
 
 // seems to be unused, praise pimpling:
-//         void paintAreas( LineDiagram* that, PaintContext* ctx, const QModelIndex& index, const QPolygonF& area, const uint transparency )
+//         void paintAreas( PaintContext* ctx, const QModelIndex& index, const QPolygonF& area, const uint transparency )
 //         {
-//             QColor trans( that->brush(index).color() );
-//             QPen indexPen( that->pen(index) );
+//             QColor trans( diagram->brush(index).color() );
+//             QPen indexPen( diagram->pen(index) );
 //             trans.setAlpha( transparency );
 //             indexPen.setColor( trans );
 //             PainterSaver painterSaver( ctx->painter() );
-//             if ( that->antiAliasing() )
+//             if ( diagram->antiAliasing() )
 //                 ctx->painter()->setRenderHint ( QPainter::Antialiasing );
 //             ctx->painter()->setPen( indexPen );
 //             ctx->painter()->setBrush( trans ) ;
@@ -87,16 +89,16 @@ void LineDiagram::Private::paintThreeDLines(
 //         }
 
 void LineDiagram::Private::paintAreas(
-    LineDiagram* that, PaintContext* ctx,
+    PaintContext* ctx,
     const QModelIndex& index, const QList<QPolygonF>& areas,
     const uint transparency )
 {
-    QColor trans( that->brush(index).color() );
+    QColor trans( diagram->brush(index).color() );
     trans.setAlpha( transparency );
-    QPen indexPen( that->pen(index) );
+    QPen indexPen( diagram->pen(index) );
     indexPen.setColor( trans );
     PainterSaver painterSaver( ctx->painter() );
-    if ( that->antiAliasing() )
+    if ( diagram->antiAliasing() )
         ctx->painter()->setRenderHint ( QPainter::Antialiasing );
     ctx->painter()->setPen( indexPen );
     ctx->painter()->setBrush( trans );
@@ -140,4 +142,51 @@ double LineDiagram::Private::valueForCell( int row, int column ) const
     return diagram->valueForCell( row, column );
 }
 
+// this method is factored out from LineDiagram::paint, and contains
+// the common parts of the method that  previously implemented all
+// chart types in one
+void LineDiagram::LineDiagramType::paintElements(
+    PaintContext* ctx,
+    DataValueTextInfoList& list,
+    LineAttributesInfoList& lineList,
+    LineAttributes::MissingValuesPolicy policy )
+{
+    // paint all lines and their attributes
+    PainterSaver painterSaver( ctx->painter() );
+    if ( diagram->antiAliasing() )
+        ctx->painter()->setRenderHint ( QPainter::Antialiasing );
+    LineAttributesInfoListIterator itline ( lineList );
+
+    //qDebug() << "Rendering 1 in: " << t.msecsTo( QTime::currentTime() ) << endl;
+
+    QBrush curBrush;
+    QPen curPen;
+    QPolygonF points;
+    while ( itline.hasNext() ) {
+        const LineAttributesInfo& lineInfo = itline.next();
+        const QModelIndex& index = lineInfo.index;
+        const ThreeDLineAttributes td = diagram->threeDLineAttributes( index );
+        if( td.isEnabled() ){
+            paintThreeDLines( ctx, index, lineInfo.value, lineInfo.nextValue, td.depth() );
+        }else{
+            const QBrush br( diagram->brush( index ) );
+            const QPen pn( diagram->pen( index ) );
+            if( points.count() && points.last() == lineInfo.value && curBrush == br && curPen == pn ){
+                points << lineInfo.nextValue;
+            }else{
+                if( points.count() )
+                    paintPolyline( ctx, curBrush, curPen, points );
+                curBrush = br;
+                curPen   = pn;
+                points.clear();
+                points << lineInfo.value << lineInfo.nextValue;
+            }
+        }
+    }
+    if( points.count() )
+        paintPolyline( ctx, curBrush, curPen, points );
+    // paint all data value texts and the point markers
+    paintDataValueTextsAndMarkers( diagram, ctx, list, true );
+    //qDebug() << "Rendering 2 in: " << t.msecsTo( QTime::currentTime() ) << endl;
+}
 

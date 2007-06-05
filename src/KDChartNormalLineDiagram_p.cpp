@@ -67,8 +67,6 @@ void NormalLineDiagram::paint(  PaintContext* ctx )
     const bool shiftCountedXValuesByHalfSection =
         (dynamic_cast< BarDiagram* >( diagram->referenceDiagram() ) != 0);
 
-    //QTime t = QTime::currentTime();
-
     const QPair<QPointF, QPointF> boundaries = diagram->dataBoundaries();
     const QPointF bottomLeft = boundaries.first;
     const QPointF topRight = boundaries.second;
@@ -88,7 +86,6 @@ void NormalLineDiagram::paint(  PaintContext* ctx )
     DataValueTextInfoList list;
     LineAttributesInfoList lineList;
     LineAttributes::MissingValuesPolicy policy;
-
 
     for( int iColumn  = datasetDimension-1;
          iColumn <= lastVisibleColumn;
@@ -197,7 +194,7 @@ void NormalLineDiagram::paint(  PaintContext* ctx )
                         // which is not reflected in the line attributes
                         // see examples/Area which show such an option
                         if( areas.count() /*&& laCell != laPreviousCell*/ ){
-                            paintAreas( diagram, ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
+                            paintAreas( ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
                             areas.clear();
                         }
                         if( bDisplayCellArea ){
@@ -225,10 +222,11 @@ void NormalLineDiagram::paint(  PaintContext* ctx )
             }
         }
         if( areas.count() ){
-            paintAreas( diagram, ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
+            paintAreas( ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
             areas.clear();
         }
     }
+    paintElements( ctx, list, lineList, policy );
 }
 
 

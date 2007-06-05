@@ -48,6 +48,8 @@
 namespace KDChart {
 
     //class CartesianCoordinatePlane;
+    class PaintContext;
+    // class DataValueTextInfoList;
 
 /**
  * \internal
@@ -67,15 +69,15 @@ namespace KDChart {
             const QBrush& brush, const QPen& pen,
             const QPolygonF& points ) const;
 
-        const QPointF project( LineDiagram* that, QPointF point, QPointF maxLimits,
+        const QPointF project( QPointF point, QPointF maxLimits,
                                double z, const QModelIndex& index ) const;
 
         void LineDiagram::Private::paintThreeDLines(
-            LineDiagram* that, PaintContext* ctx, const QModelIndex& index,
+            PaintContext* ctx, const QModelIndex& index,
             const QPointF& from, const QPointF& to, const double depth  );
 
         void LineDiagram::Private::paintAreas(
-            LineDiagram* that, PaintContext* ctx,
+            PaintContext* ctx,
             const QModelIndex& index, const QList<QPolygonF>& areas,
             const uint transparency );
 
@@ -115,8 +117,11 @@ namespace KDChart {
         virtual const QPair<QPointF,  QPointF> calculateDataBoundaries() const = 0;
         virtual void paint(  PaintContext* ctx ) = 0;
 
-    private:
-        void paintElements();
+    protected:
+        void paintElements( PaintContext* ctx,
+                            DataValueTextInfoList&,
+                            LineAttributesInfoList&,
+                            LineAttributes::MissingValuesPolicy );
     };
 
 /*

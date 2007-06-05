@@ -62,6 +62,7 @@ void PercentLineDiagram::paint(  PaintContext* ctx )
 
     DataValueTextInfoList list;
     LineAttributesInfoList lineList;
+    LineAttributes::MissingValuesPolicy policy;
 
     //FIXME(khz): add LineAttributes::MissingValuesPolicy support for LineDiagram::Stacked and ::Percent
 
@@ -159,7 +160,7 @@ void PercentLineDiagram::paint(  PaintContext* ctx )
                         )
                     : toPoint;
                 if( areas.count() && laCell != laPreviousCell ){
-                    paintAreas( diagram, ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
+                    paintAreas( ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
                     areas.clear();
                 }
                 if( bDisplayCellArea ){
@@ -182,12 +183,13 @@ void PercentLineDiagram::paint(  PaintContext* ctx )
                                            valueForCell( iRow, iColumn ) );
         }
         if( areas.count() ){
-            paintAreas( diagram, ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
+            paintAreas( ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
             areas.clear();
         }
         bottomPoints = points;
         bFirstDataset = false;
     }
+    paintElements( ctx, list, lineList, policy );
 }
 
 
