@@ -72,6 +72,7 @@ HEADERS += KDChartGlobal.h \
            KDChartLineDiagram_p.h \
            KDChartNormalLineDiagram_p.h \
            KDChartStackedLineDiagram_p.h \
+           KDChartPercentLineDiagram_p.h \
            KDChartMarkerAttributes.h \
            KDChartPaintContext.h \
            KDChartPalette.h \
@@ -148,6 +149,7 @@ SOURCES += \
            KDChartLineDiagram.cpp \
            KDChartNormalLineDiagram_p.cpp \
            KDChartStackedLineDiagram_p.cpp \
+           KDChartPercentLineDiagram_p.cpp \
            KDChartMarkerAttributes.cpp \
            KDChartPaintContext.cpp \
            KDChartPalette.cpp \
