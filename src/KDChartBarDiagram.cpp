@@ -364,6 +364,10 @@ void BarDiagram::paint( PaintContext* ctx )
     const int rowCount = d->attributesModel->rowCount(attributesModelRootIndex());
     const int colCount = d->attributesModel->columnCount(attributesModelRootIndex());
     DataValueTextInfoList list;
+
+    if( model()->columnCount() == 0 || model()->rowCount() == 0 )
+        return; // nothing to paint for us
+
     BarAttributes ba = barAttributes( model()->index( 0, 0, rootIndex() ) );
     double barWidth = 0;
     double maxDepth = 0;
