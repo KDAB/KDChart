@@ -147,6 +147,7 @@ SOURCES += \
            KDChartLegend.cpp \
            KDChartLineAttributes.cpp \
            KDChartLineDiagram.cpp \
+           KDChartLineDiagram_p.cpp \
            KDChartNormalLineDiagram_p.cpp \
            KDChartStackedLineDiagram_p.cpp \
            KDChartPercentLineDiagram_p.cpp \
