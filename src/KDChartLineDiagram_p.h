@@ -37,7 +37,7 @@
 // We mean it.
 //
 
-#include <QPainterPath.h>
+#include <QPainterPath>
 
 #include "KDChartAbstractCartesianDiagram_p.h"
 #include "KDChartThreeDLineAttributes.h"
@@ -64,7 +64,7 @@ namespace KDChart {
         Private( const Private& rhs );
         ~Private();
 
-        void LineDiagram::Private::paintPolyline(
+        void paintPolyline(
             PaintContext* ctx,
             const QBrush& brush, const QPen& pen,
             const QPolygonF& points ) const;
@@ -72,7 +72,7 @@ namespace KDChart {
         const QPointF project( QPointF point, QPointF maxLimits,
                                double z, const QModelIndex& index ) const;
 
-        void LineDiagram::Private::paintThreeDLines(
+        void paintThreeDLines(
             PaintContext* ctx, const QModelIndex& index,
             const QPointF& from, const QPointF& to, const double depth  );
 
