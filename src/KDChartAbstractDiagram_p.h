@@ -139,8 +139,8 @@ namespace KDChart {
             return mCachedFontMetrics;
         }
 
-        void paintDataValueTextsAndMarkers( AbstractDiagram* diag,
-                                            PaintContext* ctx, const DataValueTextInfoList & list, bool paintMarkers )
+        void paintDataValueTextsAndMarkers( AbstractDiagram* diag, PaintContext* ctx,
+                                            const DataValueTextInfoList & list, bool paintMarkers )
         {
             PainterSaver painterSaver( ctx->painter() );
             ctx->painter()->setClipping( false );

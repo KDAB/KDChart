@@ -88,59 +88,8 @@ void LineDiagram::Private::paintThreeDLines(
 //             ctx->painter()->drawPolygon( area );//pol );
 //         }
 
-void LineDiagram::Private::paintAreas(
-    PaintContext* ctx,
-    const QModelIndex& index, const QList<QPolygonF>& areas,
-    const uint transparency )
-{
-    QColor trans( diagram->brush(index).color() );
-    trans.setAlpha( transparency );
-    QPen indexPen( diagram->pen(index) );
-    indexPen.setColor( trans );
-    PainterSaver painterSaver( ctx->painter() );
-    if ( diagram->antiAliasing() )
-        ctx->painter()->setRenderHint ( QPainter::Antialiasing );
-    ctx->painter()->setPen( indexPen );
-    ctx->painter()->setBrush( trans );
-    QPainterPath path;
-    for( int i=0; i<areas.count(); ++i ){
-        path.addPolygon( areas[i] );
-        path.closeSubpath();
-        //qDebug() << "LineDiagram::paintAreas() adding path:"<<areas[i];
-    }
-    //qDebug() << endl;
-    ctx->painter()->drawPath( path );
-}
-
 // publish attributes to the diagram type implementations:
 // (some of those should have been in p in the first place)
-QModelIndex LineDiagram::Private::attributesModelRootIndex() const
-{
-    return diagram->attributesModelRootIndex();
-}
-
-double LineDiagram::Private::valueForCellTesting(
-    int row, int column,
-    bool& bOK,
-    bool showHiddenCellsAsInvalid) const
-{
-    return diagram->valueForCellTesting( row, column, bOK, showHiddenCellsAsInvalid );
-}
-
-LineAttributes::MissingValuesPolicy
-LineDiagram::Private::getCellValues(
-    int row, int column,
-    bool shiftCountedXValuesByHalfSection,
-    double& valueX, double& valueY ) const
-{
-    return diagram->getCellValues( row, column, shiftCountedXValuesByHalfSection,
-                                   valueX, valueY );
-}
-
-double LineDiagram::Private::valueForCell( int row, int column ) const
-{
-    return diagram->valueForCell( row, column );
-}
 
 // this method is factored out from LineDiagram::paint, and contains
 // the common parts of the method that  previously implemented all
@@ -153,7 +102,7 @@ void LineDiagram::LineDiagramType::paintElements(
 {
     // paint all lines and their attributes
     PainterSaver painterSaver( ctx->painter() );
-    if ( diagram->antiAliasing() )
+    if ( diagram()->antiAliasing() )
         ctx->painter()->setRenderHint ( QPainter::Antialiasing );
     LineAttributesInfoListIterator itline ( lineList );
 
@@ -165,12 +114,12 @@ void LineDiagram::LineDiagramType::paintElements(
     while ( itline.hasNext() ) {
         const LineAttributesInfo& lineInfo = itline.next();
         const QModelIndex& index = lineInfo.index;
-        const ThreeDLineAttributes td = diagram->threeDLineAttributes( index );
+        const ThreeDLineAttributes td = diagram()->threeDLineAttributes( index );
         if( td.isEnabled() ){
             paintThreeDLines( ctx, index, lineInfo.value, lineInfo.nextValue, td.depth() );
         }else{
-            const QBrush br( diagram->brush( index ) );
-            const QPen pn( diagram->pen( index ) );
+            const QBrush br( diagram()->brush( index ) );
+            const QPen pn( diagram()->pen( index ) );
             if( points.count() && points.last() == lineInfo.value && curBrush == br && curPen == pn ){
                 points << lineInfo.nextValue;
             }else{
@@ -186,7 +135,86 @@ void LineDiagram::LineDiagramType::paintElements(
     if( points.count() )
         paintPolyline( ctx, curBrush, curPen, points );
     // paint all data value texts and the point markers
-    paintDataValueTextsAndMarkers( diagram, ctx, list, true );
+    paintDataValueTextsAndMarkers( diagram(), ctx, list, true );
     //qDebug() << "Rendering 2 in: " << t.msecsTo( QTime::currentTime() ) << endl;
+}
+
+AttributesModel* LineDiagram::LineDiagramType::attributesModel() const
+{
+    return m_private->attributesModel;
+}
+
+QModelIndex LineDiagram::LineDiagramType::attributesModelRootIndex() const
+{
+    return m_private->diagram->attributesModelRootIndex();
+}
+
+int LineDiagram::LineDiagramType::datasetDimension() const
+{
+    return m_private->datasetDimension;
+}
+
+LineAttributes::MissingValuesPolicy LineDiagram::LineDiagramType::getCellValues(
+    int row, int column,
+    bool shiftCountedXValuesByHalfSection,
+    double& valueX, double& valueY ) const
+{
+    return m_private->diagram->getCellValues( row, column, shiftCountedXValuesByHalfSection,
+                                              valueX, valueY );
+}
+
+double LineDiagram::LineDiagramType::valueForCellTesting(
+    int row, int column,
+    bool& bOK,
+    bool showHiddenCellsAsInvalid) const
+{
+    return m_private->diagram->valueForCellTesting( row, column, bOK, showHiddenCellsAsInvalid );
+}
+
+LineDiagram* LineDiagram::LineDiagramType::diagram()
+{
+    return m_private->diagram;
+}
+
+void LineDiagram::LineDiagramType::paintAreas(
+    PaintContext* ctx,
+    const QModelIndex& index, const QList<QPolygonF>& areas,
+    const uint transparency )
+{
+    QColor trans( diagram()->brush(index).color() );
+    trans.setAlpha( transparency );
+    QPen indexPen( diagram()->pen(index) );
+    indexPen.setColor( trans );
+    PainterSaver painterSaver( ctx->painter() );
+    if ( diagram()->antiAliasing() )
+        ctx->painter()->setRenderHint ( QPainter::Antialiasing );
+    ctx->painter()->setPen( indexPen );
+    ctx->painter()->setBrush( trans );
+    QPainterPath path;
+    for( int i=0; i<areas.count(); ++i ){
+        path.addPolygon( areas[i] );
+        path.closeSubpath();
+        //qDebug() << "LineDiagram::paintAreas() adding path:"<<areas[i];
+    }
+    //qDebug() << endl;
+    ctx->painter()->drawPath( path );
+}
+
+double LineDiagram::LineDiagramType::valueForCell( int row, int column )
+{
+    return diagram()->valueForCell( row, column );
+}
+
+void LineDiagram::LineDiagramType::appendDataValueTextInfoToList(
+            AbstractDiagram * diagram,
+            DataValueTextInfoList & list,
+            const QModelIndex & index,
+            const PositionPoints& points,
+            const Position& autoPositionPositive,
+            const Position& autoPositionNegative,
+            const qreal value )
+{
+    m_private->appendDataValueTextInfoToList( diagram, list, index, points,
+                                              autoPositionPositive, autoPositionPositive, value );
 }
 

@@ -21,14 +21,14 @@ LineDiagram::LineType PercentLineDiagram::type() const
 
 const QPair<QPointF, QPointF> PercentLineDiagram::calculateDataBoundaries() const
 {
-    const int rowCount = attributesModel->rowCount( attributesModelRootIndex() );
-    const int colCount = attributesModel->columnCount( attributesModelRootIndex() );
+    const int rowCount = attributesModel()->rowCount( attributesModelRootIndex() );
+    const int colCount = attributesModel()->columnCount( attributesModelRootIndex() );
     double xMin = 0;
     double xMax = rowCount -1;
     double yMin = 0, yMax = 0;
     bool bOK;
 
-    for( int i = datasetDimension-1; i < colCount; i += datasetDimension ) {
+    for( int i = datasetDimension() - 1; i < colCount; i += datasetDimension() ) {
         for ( int j=0; j< rowCount; ++j ) {
             // Ordinate should begin at 0 the max value being the 100% pos
             const double value = valueForCellTesting( j, i, bOK );
@@ -44,21 +44,21 @@ const QPair<QPointF, QPointF> PercentLineDiagram::calculateDataBoundaries() cons
 
 void PercentLineDiagram::paint(  PaintContext* ctx )
 {
-    const QPair<QPointF, QPointF> boundaries = diagram->dataBoundaries();
+    const QPair<QPointF, QPointF> boundaries = diagram()->dataBoundaries();
     const QPointF bottomLeft = boundaries.first;
     const QPointF topRight = boundaries.second;
 
     int maxFound = 0;
     {   // find the last column number that is not hidden
-        const int columnCount = attributesModel->columnCount(attributesModelRootIndex());
-        for( int iColumn =  datasetDimension-1;
+        const int columnCount = attributesModel()->columnCount(attributesModelRootIndex());
+        for( int iColumn =  datasetDimension() - 1;
              iColumn <  columnCount;
-             iColumn += datasetDimension )
-            if( ! diagram->isHidden( iColumn ) )
+             iColumn += datasetDimension() )
+            if( ! diagram()->isHidden( iColumn ) )
                 maxFound = iColumn;
     }
     const int lastVisibleColumn = maxFound;
-    const int rowCount = attributesModel->rowCount( attributesModelRootIndex() );
+    const int rowCount = attributesModel()->rowCount( attributesModelRootIndex() );
 
     DataValueTextInfoList list;
     LineAttributesInfoList lineList;
@@ -74,9 +74,9 @@ void PercentLineDiagram::paint(  PaintContext* ctx )
     //calculate sum of values for each column and store
     if( isPercentMode ){
         for ( int j=0; j<rowCount ; ++j ) {
-            for( int i =  datasetDimension-1;
+            for( int i =  datasetDimension() - 1;
                  i <= lastVisibleColumn;
-                 i += datasetDimension ) {
+                 i += datasetDimension() ) {
                 double tmpValue = valueForCell( j, i );
                 if ( tmpValue > 0 )
                     sumValues += tmpValue;
@@ -91,9 +91,9 @@ void PercentLineDiagram::paint(  PaintContext* ctx )
     QList<QPointF> bottomPoints;
     bool bFirstDataset = true;
 
-    for( int iColumn =  datasetDimension-1;
+    for( int iColumn =  datasetDimension() - 1;
          iColumn <= lastVisibleColumn;
-         iColumn += datasetDimension ) {
+         iColumn += datasetDimension() ) {
 
         //display area can be set by dataset ( == column) and/or by cell
         LineAttributes laPreviousCell; // by default no area is drawn
@@ -102,14 +102,14 @@ void PercentLineDiagram::paint(  PaintContext* ctx )
         QList<QPointF> points;
 
         for ( int iRow = 0; iRow< rowCount; ++iRow ) {
-            const QModelIndex index = diagram->model()->index( iRow, iColumn, diagram->rootIndex() );
-            const LineAttributes laCell = diagram->lineAttributes( index );
+            const QModelIndex index = diagram()->model()->index( iRow, iColumn, diagram()->rootIndex() );
+            const LineAttributes laCell = diagram()->lineAttributes( index );
             const bool bDisplayCellArea = laCell.displayArea();
 
             double stackedValues = 0, nextValues = 0;
             for ( int iColumn2 = iColumn;
-                  iColumn2 >= datasetDimension-1;
-                  iColumn2 -= datasetDimension )
+                  iColumn2 >= datasetDimension() - 1;
+                  iColumn2 -= datasetDimension() )
             {
                 const double val = valueForCell( iRow, iColumn2 );
                 if( val > 0 || ! isPercentMode )
@@ -128,14 +128,14 @@ void PercentLineDiagram::paint(  PaintContext* ctx )
                     stackedValues = 0.0;
             }
             //qDebug() << stackedValues << endl;
-            QPointF nextPoint = plane->translate( QPointF( iRow, stackedValues ) );
+            QPointF nextPoint = diagram()->coordinatePlane()->translate( QPointF( iRow, stackedValues ) );
             points << nextPoint;
 
             const QPointF ptNorthWest( nextPoint );
             const QPointF ptSouthWest(
                 bDisplayCellArea
                 ? ( bFirstDataset
-                    ? plane->translate( QPointF( iRow, 0.0 ) )
+                    ? diagram()->coordinatePlane()->translate( QPointF( iRow, 0.0 ) )
                     : bottomPoints.at( iRow )
                     )
                 : nextPoint );
@@ -149,13 +149,13 @@ void PercentLineDiagram::paint(  PaintContext* ctx )
                     else
                         nextValues = 0.0;
                 }
-                QPointF toPoint = plane->translate( QPointF( iRow+1, nextValues ) );
+                QPointF toPoint = diagram()->coordinatePlane()->translate( QPointF( iRow+1, nextValues ) );
                 lineList.append( LineAttributesInfo( index, nextPoint, toPoint ) );
                 ptNorthEast = toPoint;
                 ptSouthEast =
                     bDisplayCellArea
                     ? ( bFirstDataset
-                        ? plane->translate( QPointF( iRow+1, 0.0 ) )
+                        ? diagram()->coordinatePlane()->translate( QPointF( iRow+1, 0.0 ) )
                         : bottomPoints.at( iRow+1 )
                         )
                     : toPoint;
@@ -178,7 +178,7 @@ void PercentLineDiagram::paint(  PaintContext* ctx )
             }
 
             const PositionPoints pts( ptNorthWest, ptNorthEast, ptSouthEast, ptSouthWest );
-            appendDataValueTextInfoToList( diagram, list, index, pts,
+            appendDataValueTextInfoToList( diagram(), list, index, pts,
                                            Position::NorthWest, Position::SouthWest,
                                            valueForCell( iRow, iColumn ) );
         }

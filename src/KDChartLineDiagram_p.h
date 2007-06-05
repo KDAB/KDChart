@@ -76,22 +76,8 @@ namespace KDChart {
             PaintContext* ctx, const QModelIndex& index,
             const QPointF& from, const QPointF& to, const double depth  );
 
-        void LineDiagram::Private::paintAreas(
-            PaintContext* ctx,
-            const QModelIndex& index, const QList<QPolygonF>& areas,
-            const uint transparency );
-
         // publish attributes to the diagram type implementations:
         // (some of those should have been in p in the first place)
-        QModelIndex attributesModelRootIndex() const;
-        double valueForCellTesting( int row, int column,
-                                    bool& bOK,
-                                    bool showHiddenCellsAsInvalid = false ) const;
-        LineAttributes::MissingValuesPolicy getCellValues(
-            int row, int column,
-            bool shiftCountedXValuesByHalfSection,
-            double& valueX, double& valueY ) const;
-        double valueForCell( int row, int column ) const;
 
         // FIXME remove all (that) parameters from functions, declare a proper q
         LineDiagram* diagram;
@@ -104,24 +90,55 @@ namespace KDChart {
 
     KDCHART_IMPL_DERIVED_DIAGRAM( LineDiagram, AbstractCartesianDiagram, CartesianCoordinatePlane );
 
-    class LineDiagram::LineDiagramType : public LineDiagram::Private
+    // we inherit privately, so that derived classes cannot call the
+    // base class functions - those reference the wrong (unattached to
+    // a diagram) d
+    class LineDiagram::LineDiagramType : private LineDiagram::Private
     {
     public:
         explicit LineDiagramType( LineDiagram* d )
             : LineDiagram::Private()
+            , m_private( d->d_func() )
         {
-            diagram = d;
         }
         virtual ~LineDiagramType() {}
         virtual LineDiagram::LineType type() const = 0;
         virtual const QPair<QPointF,  QPointF> calculateDataBoundaries() const = 0;
         virtual void paint(  PaintContext* ctx ) = 0;
+        LineDiagram* diagram();
 
     protected:
+        // method that make elements of m_private available to derived
+        // classes:
+        AttributesModel* attributesModel() const;
+        QModelIndex attributesModelRootIndex() const;
+        int datasetDimension() const;
+        LineAttributes::MissingValuesPolicy getCellValues(
+            int row, int column,
+            bool shiftCountedXValuesByHalfSection,
+            double& valueX, double& valueY ) const;
+        double valueForCellTesting( int row, int column,
+                                    bool& bOK,
+                                    bool showHiddenCellsAsInvalid = false ) const;
+        void paintAreas( PaintContext* ctx, const QModelIndex& index,
+                         const QList<QPolygonF>& areas, const uint transparency );
+        double valueForCell( int row, int column );
+        void appendDataValueTextInfoToList(
+            AbstractDiagram * diagram,
+            DataValueTextInfoList & list,
+            const QModelIndex & index,
+            const PositionPoints& points,
+            const Position& autoPositionPositive,
+            const Position& autoPositionNegative,
+            const qreal value );
+
+
         void paintElements( PaintContext* ctx,
                             DataValueTextInfoList&,
                             LineAttributesInfoList&,
                             LineAttributes::MissingValuesPolicy );
+
+        LineDiagram::Private* m_private;
     };
 
 /*

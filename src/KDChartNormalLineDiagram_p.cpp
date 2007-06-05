@@ -21,19 +21,19 @@ LineDiagram::LineType NormalLineDiagram::type() const
 
 const QPair<QPointF, QPointF> NormalLineDiagram::calculateDataBoundaries() const
 {
-    const int rowCount = attributesModel->rowCount( attributesModelRootIndex() );
-    const int colCount = attributesModel->columnCount( attributesModelRootIndex() );
+    const int rowCount = attributesModel()->rowCount( attributesModelRootIndex() );
+    const int colCount = attributesModel()->columnCount( attributesModelRootIndex() );
     double xMin = 0;
     double xMax = rowCount -1;
     double yMin = 0, yMax = 0;
     bool bOK;
 
     bool bStarting = true;
-    for( int i = datasetDimension - 1; i < colCount; i += datasetDimension ) {
+    for( int i = datasetDimension() - 1; i < colCount; i += datasetDimension() ) {
         for ( int j=0; j< rowCount; ++j ) {
             const double value = valueForCellTesting( j, i, bOK );
             double xvalue;
-            if( datasetDimension > 1 && bOK )
+            if( datasetDimension() > 1 && bOK )
                 xvalue = valueForCellTesting( j, i-1, bOK );
             if( bOK ){
                 if( bStarting ){
@@ -43,7 +43,7 @@ const QPair<QPointF, QPointF> NormalLineDiagram::calculateDataBoundaries() const
                     yMin = qMin( yMin, value );
                     yMax = qMax( yMax, value );
                 }
-                if ( datasetDimension > 1 ) {
+                if ( datasetDimension() > 1 ) {
                     if( bStarting ){
                         xMin = xvalue;
                         xMax = xvalue;
@@ -59,37 +59,38 @@ const QPair<QPointF, QPointF> NormalLineDiagram::calculateDataBoundaries() const
 
     QPointF bottomLeft( QPointF( xMin, yMin ) );
     QPointF topRight(   QPointF( xMax, yMax ) );
+    qDebug() << "LineDiagram::calculateDataBoundaries () returns ( " << bottomLeft << topRight <<")";
     return QPair<QPointF, QPointF> ( bottomLeft, topRight );
 }
 
 void NormalLineDiagram::paint(  PaintContext* ctx )
 {
     const bool shiftCountedXValuesByHalfSection =
-        (dynamic_cast< BarDiagram* >( diagram->referenceDiagram() ) != 0);
+        (dynamic_cast< BarDiagram* >( diagram()->referenceDiagram() ) != 0);
 
-    const QPair<QPointF, QPointF> boundaries = diagram->dataBoundaries();
+    const QPair<QPointF, QPointF> boundaries = diagram()->dataBoundaries();
     const QPointF bottomLeft = boundaries.first;
     const QPointF topRight = boundaries.second;
 
     int maxFound = 0;
     {   // find the last column number that is not hidden
-        const int columnCount = attributesModel->columnCount( attributesModelRootIndex() );
-        for( int iColumn =  datasetDimension-1;
+        const int columnCount = attributesModel()->columnCount( attributesModelRootIndex() );
+        for( int iColumn =  datasetDimension() - 1;
              iColumn <  columnCount;
-             iColumn += datasetDimension )
-            if( ! diagram->isHidden( iColumn ) )
+             iColumn += datasetDimension() )
+            if( ! diagram()->isHidden( iColumn ) )
                 maxFound = iColumn;
     }
     const int lastVisibleColumn = maxFound;
-    const int rowCount = attributesModel->rowCount( attributesModelRootIndex() );
+    const int rowCount = attributesModel()->rowCount( attributesModelRootIndex() );
 
     DataValueTextInfoList list;
     LineAttributesInfoList lineList;
     LineAttributes::MissingValuesPolicy policy;
 
-    for( int iColumn  = datasetDimension-1;
+    for( int iColumn  = datasetDimension()-1;
          iColumn <= lastVisibleColumn;
-         iColumn += datasetDimension ) {
+         iColumn += datasetDimension() ) {
         //display area can be set by dataset ( == column) and/or by cell
         LineAttributes laPreviousCell; // by default no area is drawn
         QModelIndex indexPreviousCell;
@@ -158,19 +159,19 @@ void NormalLineDiagram::paint(  PaintContext* ctx )
                 }
                 if( ! skipThisCell ){
                     const bool isPositive = (valueY >= 0.0);
-                    const QModelIndex index = diagram->model()->index( iRow, iColumn, diagram->rootIndex() );
-                    const LineAttributes laCell = diagram->lineAttributes( index );
+                    const QModelIndex index = diagram()->model()->index( iRow, iColumn, diagram()->rootIndex() );
+                    const LineAttributes laCell = diagram()->lineAttributes( index );
                     const bool bDisplayCellArea = laCell.displayArea();
 
-                    QPointF fromPoint = plane->translate( QPointF( valueX, valueY ) );
+                    QPointF fromPoint = diagram()->coordinatePlane()->translate( QPointF( valueX, valueY ) );
 
                     const QPointF ptNorthWest(
                         (bDisplayCellArea && ! isPositive)
-                        ? plane->translate( QPointF( valueX, 0.0 ) )
+                        ? diagram()->coordinatePlane()->translate( QPointF( valueX, 0.0 ) )
                         : fromPoint );
                     const QPointF ptSouthWest(
                         (bDisplayCellArea && isPositive)
-                        ? plane->translate( QPointF( valueX, 0.0 ) )
+                        ? diagram()->coordinatePlane()->translate( QPointF( valueX, 0.0 ) )
                         : fromPoint );
                     //qDebug() << "--> ptNorthWest:" << ptNorthWest;
                     //qDebug() << "--> ptSouthWest:" << ptSouthWest;
@@ -178,15 +179,15 @@ void NormalLineDiagram::paint(  PaintContext* ctx )
                     QPointF ptSouthEast;
 
                     if( foundToPoint ){
-                        QPointF toPoint = plane->translate( QPointF( nextValueX, nextValueY ) );
+                        QPointF toPoint = diagram()->coordinatePlane()->translate( QPointF( nextValueX, nextValueY ) );
                         lineList.append( LineAttributesInfo( index, fromPoint, toPoint ) );
                         ptNorthEast =
                             (bDisplayCellArea && ! isPositive)
-                            ? plane->translate( QPointF( nextValueX, 0.0 ) )
+                            ? diagram()->coordinatePlane()->translate( QPointF( nextValueX, 0.0 ) )
                             : toPoint;
                         ptSouthEast =
                             (bDisplayCellArea && isPositive)
-                            ? plane->translate( QPointF( nextValueX, 0.0 ) )
+                            ? diagram()->coordinatePlane()->translate( QPointF( nextValueX, 0.0 ) )
                             : toPoint;
                         // we can't take as a condition the line attributes
                         // to be different from a cell to another.
@@ -215,7 +216,7 @@ void NormalLineDiagram::paint(  PaintContext* ctx )
                     }
 
                     const PositionPoints pts( ptNorthWest, ptNorthEast, ptSouthEast, ptSouthWest );
-                    appendDataValueTextInfoToList( diagram, list, index, pts,
+                    appendDataValueTextInfoToList( diagram(), list, index, pts,
                                                    Position::NorthWest, Position::SouthWest,
                                                    valueY );
                 }
