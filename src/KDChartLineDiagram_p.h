@@ -194,6 +194,7 @@ namespace KDChart {
         // FIXME remove all (that) parameters from functions, declare a proper q
         LineDiagram* diagram;
         LineType lineType;
+        LineDiagramType* implementor; // the current type
         LineDiagramType* normalDiagram;
         LineDiagramType* stackedDiagram;
         LineDiagramType* percentDiagram;

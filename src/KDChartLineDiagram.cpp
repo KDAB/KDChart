@@ -109,7 +109,22 @@ void LineDiagram::setType( const LineType type )
                     "This line chart type can't be used with multi-dimensional data." );
        return;
    }
+   switch( type ) {
+   case Normal:
+       d->implementor = d->normalDiagram;
+       break;
+   case Stacked:
+       d->implementor = d->stackedDiagram;
+       break;
+   case Percent:
+       d->implementor = d->percentDiagram;
+       break;
+   default:
+       Q_ASSERT_X( false, "LineDiagram::setType", "unknown diagram subtype" );
+   };
+
    d->lineType = type;
+
    // AbstractAxis settings - see AbstractDiagram and CartesianAxis
    setPercentMode( type == LineDiagram::Percent );
    setDataBoundariesDirty();
@@ -278,22 +293,7 @@ const QPair<QPointF, QPointF> LineDiagram::calculateDataBoundaries() const
     // For totally removing data from KD Chart's view people can use e.g. a proxy model ...
 
     // calculate boundaries for different line types Normal - Stacked - Percent - Default Normal
-    // FIXME remove switch, use implementor pointer
-    switch ( type() ) {
-    case LineDiagram::Normal:
-        return d->normalDiagram->calculateDataBoundaries();
-        break;
-    case LineDiagram::Stacked:
-        return d->stackedDiagram->calculateDataBoundaries();
-        break;
-    case LineDiagram::Percent:
-        return d->percentDiagram->calculateDataBoundaries();
-    break;
-    default:
-        Q_ASSERT_X ( false, "calculateDataBoundaries()",
-                     "Type item does not match a defined line chart Type." );
-        return QPair<QPointF, QPointF>();
-    }
+    return d->implementor->calculateDataBoundaries();
 }
 
 
@@ -396,24 +396,8 @@ void LineDiagram::paint( PaintContext* ctx )
         return; // nothing to paint for us
 
     // paint different line types Normal - Stacked - Percent - Default Normal
-    switch ( type() )
-    {
-    case LineDiagram::Normal:
-    {
-        // temp: finish refactoring
-        return d->normalDiagram->paint( ctx );
-        break;
-    case LineDiagram::Stacked:
-        // fall-through intended
-        return d->stackedDiagram->paint( ctx );
-        break;
-    case LineDiagram::Percent:
-        return d->percentDiagram->paint( ctx );
-        break;
-    default:
-        Q_ASSERT_X ( false, "paint()",
-                     "Type item does not match a defined line chart Type." );
-    }
+    return d->implementor->paint( ctx );
+    // FIXME move into common method in d:
     // paint all lines and their attributes
     {
         PainterSaver painterSaver( ctx->painter() );
@@ -453,28 +437,7 @@ void LineDiagram::paint( PaintContext* ctx )
     // paint all data value texts and the point markers
     d->paintDataValueTextsAndMarkers( this, ctx, list, true );
     //qDebug() << "Rendering 2 in: " << t.msecsTo( QTime::currentTime() ) << endl;
-    }
 }
-
-/* old:
-void LineDiagram::paintLines( PaintContext* ctx, const QModelIndex& index,
-                              const QPointF& from, const QPointF& to )
-{
-    ThreeDLineAttributes td = threeDLineAttributes(index);
-    if ( td.isEnabled() ) {
-        const double lineDepth = td.depth();
-        d->paintThreeDLines( ctx, index, from, to, lineDepth );
-    } else {
-        ctx->painter()->setBrush( brush( index ) );
-        ctx->painter()->setPen( pen( index ) );
-        if ( index.row() + 1 < d->attributesModel->rowCount(attributesModelRootIndex()) ) {
-            if ( ctx->rectangle().contains( from ) || ctx->rectangle().contains( to ) ) {
-                ctx->painter()->drawLine( from, to );
-            }
-        }
-    }
-}
-*/
 
 void LineDiagram::resize ( const QSizeF& )
 {
