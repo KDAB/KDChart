@@ -81,7 +81,7 @@ namespace KDChart {
         LineDiagramType* percentDiagram;
     };
 
-    KDCHART_IMPL_DERIVED_DIAGRAM( LineDiagram, AbstractCartesianDiagram, CartesianCoordinatePlane );
+    KDCHART_IMPL_DERIVED_DIAGRAM( LineDiagram, AbstractCartesianDiagram, CartesianCoordinatePlane )
 
     // we inherit privately, so that derived classes cannot call the
     // base class functions - those reference the wrong (unattached to
