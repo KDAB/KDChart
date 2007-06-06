@@ -73,24 +73,6 @@ void LineDiagram::Private::paintThreeDLines(
     ctx->painter()->drawPolygon( segment );
 }
 
-// seems to be unused, praise pimpling:
-//         void paintAreas( PaintContext* ctx, const QModelIndex& index, const QPolygonF& area, const uint transparency )
-//         {
-//             QColor trans( diagram->brush(index).color() );
-//             QPen indexPen( diagram->pen(index) );
-//             trans.setAlpha( transparency );
-//             indexPen.setColor( trans );
-//             PainterSaver painterSaver( ctx->painter() );
-//             if ( diagram->antiAliasing() )
-//                 ctx->painter()->setRenderHint ( QPainter::Antialiasing );
-//             ctx->painter()->setPen( indexPen );
-//             ctx->painter()->setBrush( trans ) ;
-//             ctx->painter()->drawPolygon( area );//pol );
-//         }
-
-// publish attributes to the diagram type implementations:
-// (some of those should have been in p in the first place)
-
 // this method is factored out from LineDiagram::paint, and contains
 // the common parts of the method that  previously implemented all
 // chart types in one
@@ -105,8 +87,6 @@ void LineDiagram::LineDiagramType::paintElements(
     if ( diagram()->antiAliasing() )
         ctx->painter()->setRenderHint ( QPainter::Antialiasing );
     LineAttributesInfoListIterator itline ( lineList );
-
-    //qDebug() << "Rendering 1 in: " << t.msecsTo( QTime::currentTime() ) << endl;
 
     QBrush curBrush;
     QPen curPen;
@@ -136,7 +116,6 @@ void LineDiagram::LineDiagramType::paintElements(
         paintPolyline( ctx, curBrush, curPen, points );
     // paint all data value texts and the point markers
     paintDataValueTextsAndMarkers( diagram(), ctx, list, true );
-    //qDebug() << "Rendering 2 in: " << t.msecsTo( QTime::currentTime() ) << endl;
 }
 
 AttributesModel* LineDiagram::LineDiagramType::attributesModel() const
@@ -194,9 +173,7 @@ void LineDiagram::LineDiagramType::paintAreas(
     for( int i=0; i<areas.count(); ++i ){
         path.addPolygon( areas[i] );
         path.closeSubpath();
-        //qDebug() << "LineDiagram::paintAreas() adding path:"<<areas[i];
     }
-    //qDebug() << endl;
     ctx->painter()->drawPath( path );
 }
 

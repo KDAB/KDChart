@@ -47,9 +47,7 @@
 
 namespace KDChart {
 
-    //class CartesianCoordinatePlane;
     class PaintContext;
-    // class DataValueTextInfoList;
 
 /**
  * \internal
@@ -76,12 +74,7 @@ namespace KDChart {
             PaintContext* ctx, const QModelIndex& index,
             const QPointF& from, const QPointF& to, const double depth  );
 
-        // publish attributes to the diagram type implementations:
-        // (some of those should have been in p in the first place)
-
-        // FIXME remove all (that) parameters from functions, declare a proper q
         LineDiagram* diagram;
-        // LineType lineType;
         LineDiagramType* implementor; // the current type
         LineDiagramType* normalDiagram;
         LineDiagramType* stackedDiagram;

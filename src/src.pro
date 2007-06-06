@@ -1,4 +1,5 @@
 # Subdir relative project main directory: ./src
+
 # Target is a library:  kdchart
 TEMPLATE = lib
 # Use the filename "kdchartd.dll" (or "kdchartd.lib") on Windows
