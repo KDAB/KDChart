@@ -19,6 +19,8 @@ private slots:
     QTimer::singleShot(0, qApp, SLOT(quit()));
 
     qDebug("time show(): %d ms", t.elapsed());
+    // uncomment to see it blink:
+    // QTest::qWait( 10000 );
 
   }
 };

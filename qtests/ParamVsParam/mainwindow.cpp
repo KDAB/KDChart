@@ -15,13 +15,13 @@ using namespace KDChart;
 
 
 MainWindow::MainWindow(
-	QWidget					*p_parent)
+    QWidget					*p_parent)
 :
-	QWidget(p_parent),
+    QWidget(p_parent),
 	m_sourceModel(new ModelParamVsParam),
-	m_timeoutLineEdit(new QLineEdit("10")),
-	m_nrOfParametersLineEdit(new QLineEdit("8")),
-	m_nrOfSamplesLineEdit(new QLineEdit("100")),
+	m_timeoutLineEdit(new QLineEdit("1")),
+	m_nrOfParametersLineEdit(new QLineEdit("4")),
+	m_nrOfSamplesLineEdit(new QLineEdit("4")),
 	m_paramVsParamGridLayout(new QGridLayout)
 {
 	connect(m_timeoutLineEdit, SIGNAL(editingFinished()), SLOT(timeoutEditingFinished()));
