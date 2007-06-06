@@ -239,7 +239,7 @@ void AbstractDiagram::setModel ( QAbstractItemModel * newModel )
   amodel->initFrom( d->attributesModel );
   d->setAttributesModel(amodel);
   scheduleDelayedItemsLayout();
-  d->databoundariesDirty = true;
+  setDataBoundariesDirty();
   emit modelsChanged();
 }
 
@@ -263,7 +263,7 @@ void AbstractDiagram::setAttributesModel( AttributesModel* amodel )
     }
     d->setAttributesModel(amodel);
     scheduleDelayedItemsLayout();
-    d->databoundariesDirty = true;
+    setDataBoundariesDirty();
     emit modelsChanged();
 }
 
@@ -289,7 +289,7 @@ void AbstractDiagram::setRootIndex ( const QModelIndex& idx )
 void AbstractDiagram::setAttributesModelRootIndex( const QModelIndex& idx )
 {
   d->attributesModelRootIndex=idx;
-  d->databoundariesDirty = true;
+  setDataBoundariesDirty();
   scheduleDelayedItemsLayout();
 }
 
@@ -327,8 +327,8 @@ void AbstractDiagram::dataChanged( const QModelIndex &topLeft,
                                    const QModelIndex &bottomRight )
 {
   // We are still too dumb to do intelligent updates...
-  d->databoundariesDirty = true;
-  scheduleDelayedItemsLayout();
+    setDataBoundariesDirty();
+    scheduleDelayedItemsLayout();
 }
 
 
@@ -945,7 +945,7 @@ void AbstractDiagram::setDatasetDimension( int dimension )
 {
     if ( d->datasetDimension == dimension ) return;
     d->datasetDimension = dimension;
-    d->databoundariesDirty = true;
+    setDataBoundariesDirty();
     emit layoutChanged( this );
 }
 
