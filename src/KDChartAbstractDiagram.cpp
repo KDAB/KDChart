@@ -288,9 +288,9 @@ void AbstractDiagram::setRootIndex ( const QModelIndex& idx )
 /*! \internal */
 void AbstractDiagram::setAttributesModelRootIndex( const QModelIndex& idx )
 {
-  d->attributesModelRootIndex=idx;
-  setDataBoundariesDirty();
-  scheduleDelayedItemsLayout();
+    d->attributesModelRootIndex=idx;
+    setDataBoundariesDirty();
+    scheduleDelayedItemsLayout();
 }
 
 /*! returns a QModelIndex pointing into the AttributesModel that corresponds to the
@@ -299,7 +299,7 @@ QModelIndex AbstractDiagram::attributesModelRootIndex() const
 {
     if ( !d->attributesModelRootIndex.isValid() )
         d->attributesModelRootIndex = d->attributesModel->mapFromSource( rootIndex() );
-  return d->attributesModelRootIndex;
+    return d->attributesModelRootIndex;
 }
 
 QModelIndex AbstractDiagram::columnToIndex( int column ) const
