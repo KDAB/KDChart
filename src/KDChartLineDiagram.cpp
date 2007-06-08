@@ -336,8 +336,8 @@ LineAttributes::MissingValuesPolicy LineDiagram::getCellValues(
 
     bool bOK = true;
     valueX = ( datasetDimension() > 1 && column > 0 )
-           ? valueForCellTesting( row, column-1, bOK, true )
-           : ((shiftCountedXValuesByHalfSection ? 0.5 : 0.0) + row);
+             ? valueForCellTesting( row, column-1, bOK, true )
+             : ((shiftCountedXValuesByHalfSection ? 0.5 : 0.0) + row);
     if( bOK )
         valueY = valueForCellTesting( row, column, bOK, true );
     if( bOK ){

@@ -103,6 +103,7 @@ public:
     void resize ( const QSizeF& area );
 
 protected:
+    // FIXME what does that mean?
     double valueForCellTesting( int row, int column,
                                 bool& bOK,
                                 bool showHiddenCellsAsInvalid = false ) const;

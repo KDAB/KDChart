@@ -21,6 +21,7 @@ LineDiagram::LineType NormalLineDiagram::type() const
 
 const QPair<QPointF, QPointF> NormalLineDiagram::calculateDataBoundaries() const
 {
+    // FIXME remove hungarian notation
     const int rowCount = attributesModel()->rowCount( attributesModelRootIndex() );
     const int colCount = attributesModel()->columnCount( attributesModelRootIndex() );
     double xMin = 0;
@@ -64,10 +65,11 @@ const QPair<QPointF, QPointF> NormalLineDiagram::calculateDataBoundaries() const
 
 void NormalLineDiagram::paint(  PaintContext* ctx )
 {
+    // FIXME remove hungarian notation
     const bool shiftCountedXValuesByHalfSection =
         (dynamic_cast< BarDiagram* >( diagram()->referenceDiagram() ) != 0);
 
-    const QPair<QPointF, QPointF> boundaries = diagram()->dataBoundaries();
+    const QPair<QPointF, QPointF> boundaries = diagram()->dataBoundaries(); // cached
     const QPointF bottomLeft = boundaries.first;
     const QPointF topRight = boundaries.second;
 
