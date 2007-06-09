@@ -1,5 +1,5 @@
 /****************************************************************************
- ** Copyright (C) 2006 Klar�vdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2006 Klaralvdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KD Chart library.
  **
@@ -220,7 +220,6 @@ void Chart::Private::layoutHeadersAndFooters()
         }
     }
 }
-
 
 void Chart::Private::layoutLegends()
 {
@@ -779,9 +778,9 @@ void Chart::Private::paintAll( QPainter* painter )
 
 // ******** Chart interface implementation ***********
 
-    Chart::Chart ( QWidget* parent )
+Chart::Chart ( QWidget* parent )
     : QWidget ( parent )
-      , _d( new Private( this ) )
+    , _d( new Private( this ) )
 {
 #if defined KDAB_EVAL
     EvalDialog::checkEvalLicense( "KD Chart" );

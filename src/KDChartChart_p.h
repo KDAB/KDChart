@@ -1,5 +1,5 @@
 /****************************************************************************
- ** Copyright (C) 2006 Klarälvdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2006 Klaralvdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KD Chart library.
  **
@@ -119,7 +119,7 @@ class Chart::Private : public QObject
         Private ( Chart* );
 
         virtual ~Private();
-        
+
         void removeDummyHeaderFooters();
 
         void createLayouts( QWidget * parent );
