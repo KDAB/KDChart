@@ -107,6 +107,10 @@ public:
     /** \reimpl */
     void setSourceModel ( QAbstractItemModel* sourceModel );
 
+    /** Define the default value for a certain role.
+        Passing a default-constructed QVariant is equivalent to removing the default. */
+    void setDefaultForRole( int role, const QVariant& value );
+
 Q_SIGNALS:
     void attributesChanged( const QModelIndex&, const QModelIndex& );
 
@@ -136,6 +140,7 @@ private:
     QMap<int, QMap<int, QVariant> > mHorizontalHeaderDataMap;
     QMap<int, QMap<int, QVariant> > mVerticalHeaderDataMap;
     QMap<int, QVariant> mModelDataMap;
+    QMap<int, QVariant> mDefaultsMap;
     PaletteType mPaletteType;
 };
 

@@ -6,6 +6,8 @@
 
 #include "KDChartLineAttributes.h"
 #include "KDChartMarkerAttributes.h"
+#include "KDChartDataValueAttributes.h"
+#include "KDChartMarkerAttributes.h"
 #include "TernaryPoint.h"
 #include "TernaryConstants.h"
 #include "KDChartTernaryLineDiagram.h"
@@ -26,6 +28,16 @@ TernaryLineDiagram::TernaryLineDiagram ( QWidget* parent,
 {
     init();
     setDatasetDimension( 3 ); // the third column is implicit
+
+    DataValueAttributes dataValueAttributes;
+    dataValueAttributes.setVisible( true );
+    MarkerAttributes markerAttributes;
+    markerAttributes.setMarkerStyle( MarkerAttributes::MarkerCircle );
+    markerAttributes.setVisible( true );
+    dataValueAttributes.setMarkerAttributes( markerAttributes );
+    attributesModel()->setDefaultForRole(
+        KDChart::DataValueLabelAttributesRole,
+        qVariantFromValue( dataValueAttributes ) );
 }
 
 TernaryLineDiagram::~TernaryLineDiagram()
@@ -89,16 +101,10 @@ void  TernaryLineDiagram::paint (PaintContext *paintContext)
 
                     if ( row > 0 ) {
                         // LineAttributes la = qVariantValue<LineAttributes> (
-                        //     d->attributesModel->data( KDChart::LineAttributesRole ) );
-                        // FIXME: draw points according to selected point style:
+//                      //        d->attributesModel->data( KDChart::LineAttributesRole ) );
                         p->drawLine( start, widgetLocation );
-                        // d->drawPoint( p, row, column, widgetLocation );
-                        // FIXME draw markers:
-                        // this paints nothing, since he attributes are set to  invisible - why?
-                        paintMarker( p, model()->index( row, column ), widgetLocation );
-                    } else {
-                        d->drawPoint( p, row, column, widgetLocation );
                     }
+                    paintMarker( p, model()->index( row, column ), widgetLocation );
                     start = widgetLocation;
                 } else {
                     // ignore and do not paint this point, garbage data

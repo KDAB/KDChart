@@ -57,7 +57,9 @@ AttributesModel::AttributesModel( QAbstractItemModel* model, QObject * parent/* 
   : AbstractProxyModel( parent ),
     mPaletteType( PaletteTypeDefault )
 {
-  setSourceModel(model);
+    setSourceModel(model);
+    setDefaultForRole( KDChart::DataValueLabelAttributesRole,
+                       DataValueAttributes::defaultAttributesAsVariant() );
 }
 
 AttributesModel::~AttributesModel()
@@ -72,6 +74,7 @@ void AttributesModel::initFrom( const AttributesModel* other )
     mHorizontalHeaderDataMap = other->mHorizontalHeaderDataMap;
     mVerticalHeaderDataMap = other->mVerticalHeaderDataMap;
     mModelDataMap = other->mModelDataMap;
+    mDefaultsMap =  other->mDefaultsMap;
 
     setPaletteType( other->paletteType() );
 }
@@ -418,16 +421,8 @@ bool AttributesModel::isKnownAttributesRole( int role ) const
 
 QVariant AttributesModel::defaultsForRole( int role ) const
 {
-    switch ( role ) {
-        case KDChart::DataValueLabelAttributesRole:
-            return DataValueAttributes::defaultAttributesAsVariant();
-            // for the below there isn't a per-value default, since there's a per-column one
-        case KDChart::DatasetBrushRole:
-        case KDChart::DatasetPenRole:
-        default:
-            break;
-    }
-    return QVariant();
+    // returns default-constructed QVariant if not found
+    return mDefaultsMap.value( role );
 }
 
 bool AttributesModel::setData ( const QModelIndex & index, const QVariant & value, int role )
@@ -557,4 +552,19 @@ void AttributesModel::setVerticalHeaderDataMap( const QMap<int, QMap<int, QVaria
 void AttributesModel::setModelDataMap( const QMap<int, QVariant> map )
 {
     mModelDataMap = map;
+}
+
+void AttributesModel::setDefaultForRole( int role, const QVariant& value )
+{
+    if ( value.isValid() ) {
+        mDefaultsMap.insert( role, value );
+    } else {
+        // erase the possibily existing value to not let the map grow:
+        QMap<int, QVariant>::iterator it = mDefaultsMap.find( role );
+        if ( it != mDefaultsMap.end() ) {
+            mDefaultsMap.erase( it );
+        }
+    }
+
+    Q_ASSERT( defaultsForRole( role ) == value );
 }
