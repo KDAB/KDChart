@@ -24,7 +24,6 @@ namespace KDChart {
         const QPair< QPointF, QPointF > calculateDataBoundaries () const;
 
     };
-
 }
 
 #endif

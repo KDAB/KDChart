@@ -3,7 +3,7 @@
    */
 
 /****************************************************************************
- ** Copyright (C) 2001-2006 Klaraelvdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2001-2006 Klaralvdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KD Chart library.
  **
@@ -397,20 +397,20 @@ bool AttributesModel::isKnownAttributesRole( int role ) const
 {
     bool oneOfOurs = false;
     switch( role ) {
-      // fallthrough intended
-      case DataValueLabelAttributesRole:
-      case DatasetBrushRole:
-      case DatasetPenRole:
-      case ThreeDAttributesRole:
-      case LineAttributesRole:
-      case ThreeDLineAttributesRole:
-      case BarAttributesRole:
-      case ThreeDBarAttributesRole:
-      case PieAttributesRole:
-      case ThreeDPieAttributesRole:
-      case DataHiddenRole:
-            oneOfOurs = true;
-        default:
+        // fallthrough intended
+    case DataValueLabelAttributesRole:
+    case DatasetBrushRole:
+    case DatasetPenRole:
+    case ThreeDAttributesRole:
+    case LineAttributesRole:
+    case ThreeDLineAttributesRole:
+    case BarAttributesRole:
+    case ThreeDBarAttributesRole:
+    case PieAttributesRole:
+    case ThreeDPieAttributesRole:
+    case DataHiddenRole:
+        oneOfOurs = true;
+    default:
         break;
     }
     return oneOfOurs;

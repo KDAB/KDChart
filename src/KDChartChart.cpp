@@ -1085,7 +1085,6 @@ HeaderFooterList Chart::headerFooters()
     return d->headerFooters;
 }
 
-
 void Chart::addLegend( Legend* legend )
 {
     if( ! legend ) return;

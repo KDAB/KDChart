@@ -4,6 +4,8 @@
 
 #include <KDChartPaintContext>
 
+#include "KDChartLineAttributes.h"
+#include "KDChartMarkerAttributes.h"
 #include "TernaryPoint.h"
 #include "TernaryConstants.h"
 #include "KDChartTernaryLineDiagram.h"
@@ -86,12 +88,14 @@ void  TernaryLineDiagram::paint (PaintContext *paintContext)
                     QPointF widgetLocation = plane->translate( diagramLocation );
 
                     if ( row > 0 ) {
+                        // LineAttributes la = qVariantValue<LineAttributes> (
+                        //     d->attributesModel->data( KDChart::LineAttributesRole ) );
                         // FIXME: draw points according to selected point style:
                         p->drawLine( start, widgetLocation );
-                        d->drawPoint( p, row, column, widgetLocation );
+                        // d->drawPoint( p, row, column, widgetLocation );
                         // FIXME draw markers:
                         // this paints nothing, since he attributes are set to  invisible - why?
-                        paintMarker( p, model()->index( row, column + 0 ), widgetLocation );
+                        paintMarker( p, model()->index( row, column ), widgetLocation );
                     } else {
                         d->drawPoint( p, row, column, widgetLocation );
                     }

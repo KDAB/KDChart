@@ -1,5 +1,5 @@
 /****************************************************************************
- ** Copyright (C) 2006 Klarävdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2006 Klaralvdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KD Chart library.
  **
@@ -326,7 +326,7 @@ void AbstractDiagram::doItemsLayout()
 void AbstractDiagram::dataChanged( const QModelIndex &topLeft,
                                    const QModelIndex &bottomRight )
 {
-  // We are still too dumb to do intelligent updates...
+    // We are still too dumb to do intelligent updates...
     setDataBoundariesDirty();
     scheduleDelayedItemsLayout();
 }
@@ -416,7 +416,7 @@ DataValueAttributes AbstractDiagram::dataValueAttributes( const QModelIndex & in
 {
     return qVariantValue<DataValueAttributes>(
         attributesModel()->data( attributesModel()->mapFromSource(index),
-        KDChart::DataValueLabelAttributesRole ) );
+                                 KDChart::DataValueLabelAttributesRole ) );
 }
 
 void AbstractDiagram::setDataValueAttributes( const DataValueAttributes & a )
@@ -581,7 +581,6 @@ void AbstractDiagram::paintMarker( QPainter* painter,
                                    const QModelIndex& index,
                                    const QPointF& pos )
 {
-
     if ( !checkInvariants() ) return;
     DataValueAttributes a = dataValueAttributes(index);
     if ( !a.isVisible() ) return;

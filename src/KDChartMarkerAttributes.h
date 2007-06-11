@@ -72,7 +72,7 @@ namespace KDChart {
         /**
          * Normally you need to specify a valid QSizeF here, but for Legends you can
          * use the invalid size QSizeF(), to enable automatic marker size calculation:
-         * 
+         *
          * For Markers shown in a Legend this means the marker size will be equal to
          * the font height used for the labels that are shown next to the markers.
          */
@@ -84,7 +84,6 @@ namespace KDChart {
 
         void setPen( const QPen& pen );
         QPen pen() const;
-
 
         bool operator==( const MarkerAttributes& ) const;
         bool operator!=( const MarkerAttributes& ) const;
