@@ -12,6 +12,7 @@
 #include "TernaryConstants.h"
 #include "KDChartTernaryLineDiagram.h"
 #include "KDChartTernaryLineDiagram_p.h"
+#include "KDChartPainterSaver_p.h"
 
 using namespace KDChart;
 
@@ -56,11 +57,11 @@ void  TernaryLineDiagram::resize (const QSizeF& area)
 void  TernaryLineDiagram::paint (PaintContext *paintContext)
 {
     AbstractTernaryDiagram::paint( paintContext );
-
     // sanity checks:
     if ( model() == 0 ) return;
 
     QPainter* p = paintContext->painter();
+    PainterSaver s( p );
 
     TernaryCoordinatePlane* plane =
         (TernaryCoordinatePlane*) paintContext->coordinatePlane();
@@ -69,9 +70,6 @@ void  TernaryLineDiagram::paint (PaintContext *paintContext)
     Q_UNUSED( plane );
 
     double x, y, z;
-
-    p->setPen( QPen( QColor( "mediumorchid" ), 2 ) );
-    p->setBrush( QColor( "mediumpurple" ) );
 
     d->reverseMapper.clear();
 
@@ -83,10 +81,14 @@ void  TernaryLineDiagram::paint (PaintContext *paintContext)
         for( int row = 0; row < numrows; row++ )
         {
             // see if there is data otherwise skip
-            if( ! model()->data( model()->index( row, column+0 ) ).isNull() )
+            QModelIndex base = model()->index( row, column );
+            if( ! model()->data( base ).isNull() )
             {
+                p->setPen( pen( base ) );
+                p->setBrush( brush( base ) );
+
                 // retrieve data
-                x = qMax( model()->data( model()->index( row, column+0 ) ).toDouble(),
+                x = qMax( model()->data( model()->index( row, column ) ).toDouble(),
                           0.0 );
                 y = qMax( model()->data( model()->index( row, column+1 ) ).toDouble(),
                           0.0 );
