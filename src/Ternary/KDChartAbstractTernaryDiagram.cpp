@@ -52,14 +52,6 @@ TernaryAxisList AbstractTernaryDiagram::axes() const
 
 void AbstractTernaryDiagram::paint (PaintContext *paintContext)
 {
-    if ( !axes().isEmpty() ) {
-        paintContext->painter()->setRenderHint( QPainter::Antialiasing,
-                                                antiAliasing() );
-
-        Q_FOREACH( TernaryAxis* axis, axes() ) {
-            PainterSaver s( paintContext->painter() );
-            axis->paintCtx( paintContext );
-        }
-    }
+    d->paint( paintContext );
 }
 

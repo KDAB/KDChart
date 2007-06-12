@@ -52,6 +52,7 @@ namespace KDChart {
         void drawPoint( QPainter* p, int row, int column,
                         const QPointF& widgetLocation )
         {
+            // Q_ASSERT( false ); // unused, to be removed
             static const double Diameter = 5.0;
             static const double Radius = Diameter / 2.0;
             QRectF ellipseRect( widgetLocation - QPointF( Radius, Radius ),
@@ -61,12 +62,17 @@ namespace KDChart {
             reverseMapper.addRect( row, column, ellipseRect );
         }
 
-        ReverseMapper reverseMapper;
-
-        // reimpl
-        QModelIndexList indexesAt( const QPoint& point ) const
+        virtual void paint( PaintContext* paintContext )
         {
-            return reverseMapper.indexesAt( point );
+            if ( !axesList.isEmpty() ) {
+                paintContext->painter()->setRenderHint( QPainter::Antialiasing,
+                                                        antiAliasing );
+
+                Q_FOREACH( TernaryAxis* axis, axesList ) {
+                    PainterSaver s( paintContext->painter() );
+                    axis->paintCtx( paintContext );
+                }
+            }
         }
 
     };

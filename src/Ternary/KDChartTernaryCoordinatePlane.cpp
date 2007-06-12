@@ -46,8 +46,6 @@ void TernaryCoordinatePlane::addDiagram( AbstractDiagram* diagram )
 void TernaryCoordinatePlane::layoutDiagrams()
 {   // this is our "resize event":
     // all diagrams always take the same space, nothing to be done here
-    qDebug() << "TernaryCoordinatePlane::layoutDiagrams: area:" << areaGeometry();
-
     // the "inner" margin (adjustments to diagram coordinates)
     QRectF diagramNativeRectangle ( QPointF( 0.0, 0.0 ),
                                     QSizeF( TriangleWidth, TriangleHeight ) );
@@ -56,8 +54,6 @@ void TernaryCoordinatePlane::layoutDiagrams()
     diagramNativeRectangle.adjust
         (-margins.first.width(), -margins.first.height(),
          margins.second.width(), margins.second.height() );
-    qDebug() << "TernaryCoordinatePlane::layoutDiagrams: adjusted triangle area with ticks:"
-             << diagramNativeRectangle;
 
     // the "outer" margin (distance between diagram contents and area,
     // determined by axis label overlap
@@ -136,7 +132,6 @@ QSizePolicy TernaryCoordinatePlane::sizePolicy() const
 
 void TernaryCoordinatePlane::paint( QPainter* painter )
 {
-    qDebug() << "TernaryCoordinatePlane::paint:" << this;
     PainterSaver s( painter );
     // FIXME: this is not a good location for that:
     painter->setRenderHint(QPainter::Antialiasing, true );

@@ -56,7 +56,9 @@ void  TernaryLineDiagram::resize (const QSizeF& area)
 
 void  TernaryLineDiagram::paint (PaintContext *paintContext)
 {
-    AbstractTernaryDiagram::paint( paintContext );
+    d->reverseMapper.clear();
+
+    d->paint( paintContext );
     // sanity checks:
     if ( model() == 0 ) return;
 
@@ -65,13 +67,9 @@ void  TernaryLineDiagram::paint (PaintContext *paintContext)
 
     TernaryCoordinatePlane* plane =
         (TernaryCoordinatePlane*) paintContext->coordinatePlane();
-
-    Q_UNUSED( plane );
+    Q_ASSERT( plane );
 
     double x, y, z;
-    DataValueTextInfoList list;
-
-    d->reverseMapper.clear();
 
     int columnCount = model()->columnCount( rootIndex() );
     QPointF start;

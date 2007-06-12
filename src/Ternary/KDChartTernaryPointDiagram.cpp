@@ -41,22 +41,21 @@ void  TernaryPointDiagram::resize (const QSizeF& area)
 
 void  TernaryPointDiagram::paint (PaintContext *paintContext)
 {
-    AbstractTernaryDiagram::paint( paintContext );
+    d->reverseMapper.clear();
+
+    d->paint( paintContext );
 
     // sanity checks:
     if ( model() == 0 ) return;
 
     QPainter* p = paintContext->painter();
+    PainterSaver s( p );
 
     TernaryCoordinatePlane* plane =
         (TernaryCoordinatePlane*) paintContext->coordinatePlane();
+    Q_ASSERT( plane );
 
     double x, y, z;
-
-    p->setPen( QPen( QColor( "steelblue" ), 2 ) );
-    p->setBrush( QColor( "slateblue" ) );
-
-    d->reverseMapper.clear();
 
     int columnCount = model()->columnCount( rootIndex() );
     for(int column=0; column<columnCount; column+=datasetDimension() )
@@ -64,9 +63,13 @@ void  TernaryPointDiagram::paint (PaintContext *paintContext)
         int numrows = model()->rowCount( rootIndex() );
         for( int row = 0; row < numrows; row++ )
         {
+            QModelIndex base = model()->index( row, column );
             // see if there is data otherwise skip
             if( ! model()->data( model()->index( row, column+0 ) ).isNull() )
             {
+                p->setPen( pen( base ) );
+                p->setBrush( brush( base ) );
+
                 // retrieve data
                 x = qMax( model()->data( model()->index( row, column+0 ) ).toDouble(),
                           0.0 );
@@ -82,10 +85,12 @@ void  TernaryPointDiagram::paint (PaintContext *paintContext)
                     QPointF diagramLocation = translate( tPunkt );
                     QPointF widgetLocation = plane->translate( diagramLocation );
 
-                    d->drawPoint( p, row, column, widgetLocation );
-                    // FIXME draw markers:
-                    // this paints nothing, since he attributes are set to  invisible - why?
-                    paintMarker( p, model()->index( row, column + 0 ), widgetLocation );
+                    paintMarker( p, model()->index( row, column ), widgetLocation );
+                    QString text = tr( "(%1, %2, %3)" )
+                                   .arg( x * 100, 0, 'f', 0 )
+                                   .arg( y * 100, 0, 'f', 0 )
+                                   .arg( z * 100, 0, 'f', 0 );
+                    d->paintDataValueText( p, base, widgetLocation, text );
                 } else {
                     // ignore and do not paint this point, garbage data
                     qDebug() << "TernaryPointDiagram::paint: data point x/y/z:"

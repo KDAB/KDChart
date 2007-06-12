@@ -39,8 +39,6 @@ TernaryGrid::~TernaryGrid()
 
 void TernaryGrid::drawGrid( PaintContext* context )
 {
-    qDebug() << "TernaryGrid::drawGrid:" << this;
-
     static const int GridLineDistanceTreshold = 20; // <Treshold> pixels between each grid line
 
     QPainter& painter ( *context->painter() ); // recover from pointer madness
