@@ -159,6 +159,62 @@ namespace KDChart {
             }
         }
 
+        void paintDataValueText( QPainter* painter,
+                                 const QModelIndex& index,
+                                 const QPointF& pos,
+                                 QString text )
+        {
+            // paint one data series
+            const DataValueAttributes a( qVariantValue<DataValueAttributes>(
+                                             attributesModel->modelData( KDChart::DataValueLabelAttributesRole ) ) );
+            if ( !a.isVisible() ) return;
+
+            // handle prefix and suffix
+            if ( !a.prefix().isNull() )
+                text.prepend( a.prefix() );
+
+            if ( !a.suffix().isNull() )
+                text.append( a.suffix() );
+
+            const TextAttributes ta( a.textAttributes() );
+            if ( ta.isVisible() ) {
+
+                QPointF pt( pos );
+                // adjust the text start point position, if alignment is not Bottom/Left
+                const RelativePosition relPos( a.position( true ) );
+                const Qt::Alignment alignBottomLeft = Qt::AlignBottom | Qt::AlignLeft;
+                const QFont calculatedFont( ta.calculatedFont( plane, KDChartEnums::MeasureOrientationMinimum ) );
+                //qDebug() << "calculatedFont's point size:" << calculatedFont.pointSizeF();
+                if( (relPos.alignment() & alignBottomLeft) != alignBottomLeft ){
+                    const QRectF boundRect(
+                        cachedFontMetrics( calculatedFont, painter->device() )->boundingRect( text ) );
+                    if( relPos.alignment() & Qt::AlignRight )
+                        pt.rx() -= boundRect.width();
+                    else if( relPos.alignment() & Qt::AlignHCenter )
+                        pt.rx() -= 0.5 * boundRect.width();
+
+                    if( relPos.alignment() & Qt::AlignTop )
+                        pt.ry() += boundRect.height();
+                    else if( relPos.alignment() & Qt::AlignVCenter )
+                        pt.ry() += 0.5 * boundRect.height();
+                }
+
+                // FIXME draw the non-text bits, background, etc
+
+                if ( a.showRepetitiveDataLabels() || pos.x() <= lastX || lastRoundedValue != text ) {
+                    lastRoundedValue = text;
+                    lastX = pos.x();
+
+                    PainterSaver painterSaver( painter );
+                    painter->setPen( ta.pen() );
+                    painter->setFont( calculatedFont );
+                    painter->translate( pt );
+                    painter->rotate( ta.rotation() );
+                    painter->drawText( QPointF(0, 0), text );
+                }
+            }
+        }
+
         virtual QModelIndex indexAt( const QPoint& point ) const
         {
             QModelIndexList l = indexesAt( point );

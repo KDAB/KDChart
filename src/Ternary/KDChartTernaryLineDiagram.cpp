@@ -66,10 +66,10 @@ void  TernaryLineDiagram::paint (PaintContext *paintContext)
     TernaryCoordinatePlane* plane =
         (TernaryCoordinatePlane*) paintContext->coordinatePlane();
 
-    // temp:
     Q_UNUSED( plane );
 
     double x, y, z;
+    DataValueTextInfoList list;
 
     d->reverseMapper.clear();
 
@@ -102,12 +102,17 @@ void  TernaryLineDiagram::paint (PaintContext *paintContext)
                     QPointF widgetLocation = plane->translate( diagramLocation );
 
                     if ( row > 0 ) {
-                        // LineAttributes la = qVariantValue<LineAttributes> (
-//                      //        d->attributesModel->data( KDChart::LineAttributesRole ) );
                         p->drawLine( start, widgetLocation );
                     }
                     paintMarker( p, model()->index( row, column ), widgetLocation );
                     start = widgetLocation;
+                    // retrieve text and data value attributes
+                    // FIXME use data model DisplayRole text
+                    QString text = tr( "(%1, %2, %3)" )
+                                   .arg( x * 100, 0, 'f', 0 )
+                                   .arg( y * 100, 0, 'f', 0 )
+                                   .arg( z * 100, 0, 'f', 0 );
+                    d->paintDataValueText( p, base, widgetLocation, text );
                 } else {
                     // ignore and do not paint this point, garbage data
                     qDebug() << "TernaryPointDiagram::paint: data point x/y/z:"
