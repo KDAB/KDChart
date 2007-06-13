@@ -67,13 +67,6 @@ namespace KDChart {
             const QBrush& brush, const QPen& pen,
             const QPolygonF& points ) const;
 
-        const QPointF project( QPointF point, QPointF maxLimits,
-                               double z, const QModelIndex& index ) const;
-
-        void paintThreeDLines(
-            PaintContext* ctx, const QModelIndex& index,
-            const QPointF& from, const QPointF& to, const double depth  );
-
         LineDiagram* diagram;
         LineDiagramType* implementor; // the current type
         LineDiagramType* normalDiagram;
@@ -98,7 +91,7 @@ namespace KDChart {
         virtual LineDiagram::LineType type() const = 0;
         virtual const QPair<QPointF,  QPointF> calculateDataBoundaries() const = 0;
         virtual void paint(  PaintContext* ctx ) = 0;
-        LineDiagram* diagram();
+        LineDiagram* diagram() const;
 
     protected:
         // method that make elements of m_private available to derived
@@ -125,6 +118,13 @@ namespace KDChart {
             const Position& autoPositionNegative,
             const qreal value );
 
+
+        const QPointF project( QPointF point, QPointF maxLimits,
+                               double z, const QModelIndex& index ) const;
+
+        void paintThreeDLines(
+            PaintContext* ctx, const QModelIndex& index,
+            const QPointF& from, const QPointF& to, const double depth  );
 
         void paintElements( PaintContext* ctx,
                             DataValueTextInfoList&,

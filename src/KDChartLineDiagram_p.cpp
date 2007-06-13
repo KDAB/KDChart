@@ -38,11 +38,11 @@ void LineDiagram::Private::paintPolyline(
   into a point onto a plane, given two rotation angles around the x
   resp. y axis.
 */
-const QPointF LineDiagram::Private::project(
+const QPointF LineDiagram::LineDiagramType::project(
     QPointF point, QPointF maxLimits,
     double z, const QModelIndex& index ) const
 {
-    ThreeDLineAttributes td = diagram->threeDLineAttributes( index );
+    ThreeDLineAttributes td = diagram()->threeDLineAttributes( index );
 
     //Pending Michel FIXME - the rotation does not work as expected atm
     double xrad = DEGTORAD( td.lineXRotation() );
@@ -51,12 +51,12 @@ const QPointF LineDiagram::Private::project(
     return ret;
 }
 
-void LineDiagram::Private::paintThreeDLines(
+void LineDiagram::LineDiagramType::paintThreeDLines(
     PaintContext* ctx, const QModelIndex& index,
     const QPointF& from, const QPointF& to, const double depth  )
 {
     // retrieve the boundaries
-    const QPair<QPointF, QPointF> boundaries = diagram->dataBoundaries ();
+    const QPair<QPointF, QPointF> boundaries = diagram()->dataBoundaries ();
     QPointF maxLimits = boundaries.second;
     QVector <QPointF > segmentPoints;
     QPointF topLeft = project( from, maxLimits, depth, index  );
@@ -64,12 +64,12 @@ void LineDiagram::Private::paintThreeDLines(
 
     segmentPoints << from << topLeft << topRight << to;
     QPolygonF segment ( segmentPoints );
-    QBrush indexBrush ( diagram->brush( index ) );
+    QBrush indexBrush ( diagram()->brush( index ) );
     PainterSaver painterSaver( ctx->painter() );
-    if ( diagram->antiAliasing() )
+    if ( diagram()->antiAliasing() )
         ctx->painter()->setRenderHint ( QPainter::Antialiasing );
     ctx->painter()->setBrush( indexBrush );
-    ctx->painter()->setPen( diagram->pen( index ) ) ;
+    ctx->painter()->setPen( diagram()->pen( index ) ) ;
     ctx->painter()->drawPolygon( segment );
 }
 
@@ -150,7 +150,7 @@ double LineDiagram::LineDiagramType::valueForCellTesting(
     return m_private->diagram->valueForCellTesting( row, column, bOK, showHiddenCellsAsInvalid );
 }
 
-LineDiagram* LineDiagram::LineDiagramType::diagram()
+LineDiagram* LineDiagram::LineDiagramType::diagram() const
 {
     return m_private->diagram;
 }
