@@ -362,7 +362,7 @@ void LineDiagram::paint( PaintContext* ctx )
         return; // nothing to paint for us
 
     // paint different line types Normal - Stacked - Percent - Default Normal
-    return d->implementor->paint( ctx );
+    d->implementor->paint( ctx );
 }
 
 void LineDiagram::resize ( const QSizeF& )

@@ -48,6 +48,8 @@ class KDCHART_EXPORT LineDiagram : public AbstractCartesianDiagram
 //    KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( LineDiagram, CartesianCoordinatePlane * )
     KDCHART_DECLARE_DERIVED_DIAGRAM( LineDiagram, CartesianCoordinatePlane )
 
+    friend class LineDiagramType;
+
 public:
     LineDiagram( QWidget* parent = 0, CartesianCoordinatePlane* plane = 0 );
     virtual ~LineDiagram();
