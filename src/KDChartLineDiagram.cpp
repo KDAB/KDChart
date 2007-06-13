@@ -361,8 +361,14 @@ void LineDiagram::paint( PaintContext* ctx )
     if( model()->rowCount() == 0 || model()->columnCount() == 0 )
         return; // nothing to paint for us
 
+    AbstractCoordinatePlane* const plane = ctx->coordinatePlane();
+    ctx->setCoordinatePlane( plane->sharedAxisMasterPlane( ctx->painter() ) );
+
+    
     // paint different line types Normal - Stacked - Percent - Default Normal
     d->implementor->paint( ctx );
+
+    ctx->setCoordinatePlane( plane );
 }
 
 void LineDiagram::resize ( const QSizeF& )

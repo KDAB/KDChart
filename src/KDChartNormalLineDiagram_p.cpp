@@ -164,15 +164,15 @@ void NormalLineDiagram::paint(  PaintContext* ctx )
                     const LineAttributes laCell = diagram()->lineAttributes( index );
                     const bool bDisplayCellArea = laCell.displayArea();
 
-                    QPointF fromPoint = diagram()->coordinatePlane()->translate( QPointF( valueX, valueY ) );
+                    QPointF fromPoint = ctx->coordinatePlane()->translate( QPointF( valueX, valueY ) );
 
                     const QPointF ptNorthWest(
                         (bDisplayCellArea && ! isPositive)
-                        ? diagram()->coordinatePlane()->translate( QPointF( valueX, 0.0 ) )
+                        ? ctx->coordinatePlane()->translate( QPointF( valueX, 0.0 ) )
                         : fromPoint );
                     const QPointF ptSouthWest(
                         (bDisplayCellArea && isPositive)
-                        ? diagram()->coordinatePlane()->translate( QPointF( valueX, 0.0 ) )
+                        ? ctx->coordinatePlane()->translate( QPointF( valueX, 0.0 ) )
                         : fromPoint );
                     //qDebug() << "--> ptNorthWest:" << ptNorthWest;
                     //qDebug() << "--> ptSouthWest:" << ptSouthWest;
@@ -180,15 +180,15 @@ void NormalLineDiagram::paint(  PaintContext* ctx )
                     QPointF ptSouthEast;
 
                     if( foundToPoint ){
-                        QPointF toPoint = diagram()->coordinatePlane()->translate( QPointF( nextValueX, nextValueY ) );
+                        QPointF toPoint = ctx->coordinatePlane()->translate( QPointF( nextValueX, nextValueY ) );
                         lineList.append( LineAttributesInfo( index, fromPoint, toPoint ) );
                         ptNorthEast =
                             (bDisplayCellArea && ! isPositive)
-                            ? diagram()->coordinatePlane()->translate( QPointF( nextValueX, 0.0 ) )
+                            ? ctx->coordinatePlane()->translate( QPointF( nextValueX, 0.0 ) )
                             : toPoint;
                         ptSouthEast =
                             (bDisplayCellArea && isPositive)
-                            ? diagram()->coordinatePlane()->translate( QPointF( nextValueX, 0.0 ) )
+                            ? ctx->coordinatePlane()->translate( QPointF( nextValueX, 0.0 ) )
                             : toPoint;
                         // we can't take as a condition the line attributes
                         // to be different from a cell to another.

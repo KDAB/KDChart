@@ -299,7 +299,7 @@ const bool KDChart::AbstractCoordinatePlane::isVisiblePoint( const QPointF& poin
     return d->isVisiblePoint( this, point );
 }
 
-const AbstractCoordinatePlane* KDChart::AbstractCoordinatePlane::sharedAxisMasterPlane( QPainter* p ) const
+AbstractCoordinatePlane* KDChart::AbstractCoordinatePlane::sharedAxisMasterPlane( QPainter* p )
 {
     Q_UNUSED( p );
     return this;

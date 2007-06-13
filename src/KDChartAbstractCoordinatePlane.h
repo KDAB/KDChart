@@ -233,7 +233,7 @@ namespace KDChart {
          */
         AbstractCoordinatePlane * referenceCoordinatePlane() const;
 
-        virtual const AbstractCoordinatePlane* sharedAxisMasterPlane( QPainter* p = 0 ) const;
+        virtual AbstractCoordinatePlane* sharedAxisMasterPlane( QPainter* p = 0 );
 
 
         /** pure virtual in QLayoutItem */

@@ -693,10 +693,10 @@ const bool KDChart::CartesianCoordinatePlane::autoAdjustGridToZoom() const
     return d->autoAdjustGridToZoom;
 }
 
-const AbstractCoordinatePlane* KDChart::CartesianCoordinatePlane::sharedAxisMasterPlane( QPainter* painter ) const
+AbstractCoordinatePlane* KDChart::CartesianCoordinatePlane::sharedAxisMasterPlane( QPainter* painter )
 {
-    const CartesianCoordinatePlane* plane = this;
-    AbstractCartesianDiagram* diag = dynamic_cast< AbstractCartesianDiagram* >( const_cast< CartesianCoordinatePlane* >( plane )->diagram() );
+    CartesianCoordinatePlane* plane = this;
+    AbstractCartesianDiagram* diag = dynamic_cast< AbstractCartesianDiagram* >( plane->diagram() );
     const CartesianAxis* sharedAxis = 0;
     if( diag != 0 )
     {

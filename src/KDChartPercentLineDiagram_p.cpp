@@ -128,14 +128,14 @@ void PercentLineDiagram::paint(  PaintContext* ctx )
                     stackedValues = 0.0;
             }
             //qDebug() << stackedValues << endl;
-            QPointF nextPoint = diagram()->coordinatePlane()->translate( QPointF( iRow, stackedValues ) );
+            QPointF nextPoint = ctx->coordinatePlane()->translate( QPointF( iRow, stackedValues ) );
             points << nextPoint;
 
             const QPointF ptNorthWest( nextPoint );
             const QPointF ptSouthWest(
                 bDisplayCellArea
                 ? ( bFirstDataset
-                    ? diagram()->coordinatePlane()->translate( QPointF( iRow, 0.0 ) )
+                    ? ctx->coordinatePlane()->translate( QPointF( iRow, 0.0 ) )
                     : bottomPoints.at( iRow )
                     )
                 : nextPoint );
@@ -149,13 +149,13 @@ void PercentLineDiagram::paint(  PaintContext* ctx )
                     else
                         nextValues = 0.0;
                 }
-                QPointF toPoint = diagram()->coordinatePlane()->translate( QPointF( iRow+1, nextValues ) );
+                QPointF toPoint = ctx->coordinatePlane()->translate( QPointF( iRow+1, nextValues ) );
                 lineList.append( LineAttributesInfo( index, nextPoint, toPoint ) );
                 ptNorthEast = toPoint;
                 ptSouthEast =
                     bDisplayCellArea
                     ? ( bFirstDataset
-                        ? diagram()->coordinatePlane()->translate( QPointF( iRow+1, 0.0 ) )
+                        ? ctx->coordinatePlane()->translate( QPointF( iRow+1, 0.0 ) )
                         : bottomPoints.at( iRow+1 )
                         )
                     : toPoint;

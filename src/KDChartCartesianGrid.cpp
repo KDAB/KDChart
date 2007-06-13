@@ -40,11 +40,11 @@ void CartesianGrid::drawGrid( PaintContext* context )
 {
     //qDebug() << "KDChart::CartesianGrid::drawGrid( PaintContext* context ) called";
 
-    const CartesianCoordinatePlane* plane = dynamic_cast<CartesianCoordinatePlane*>(context->coordinatePlane());
+    CartesianCoordinatePlane* plane = dynamic_cast<CartesianCoordinatePlane*>(context->coordinatePlane());
    
     // This plane is used for tranlating the coordinates - not for the data boundaries
     PainterSaver p( context->painter() );
-    plane = dynamic_cast< const CartesianCoordinatePlane* >( plane->sharedAxisMasterPlane( context->painter() ) );
+    plane = dynamic_cast< CartesianCoordinatePlane* >( plane->sharedAxisMasterPlane( context->painter() ) );
 
     Q_ASSERT_X ( plane, "CartesianGrid::drawGrid",
                  "Bad function call: PaintContext::coodinatePlane() NOT a cartesian plane." );
