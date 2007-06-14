@@ -15,8 +15,20 @@ SUBDIRS +=  ChartElementOwnership \
             LineDiagrams \
             PieDiagrams \
             PolarDiagrams \
-#            ParamVsParam \
-#            DrawIntoPainter \
+#           ParamVsParam \
+#           DrawIntoPainter \
+###################################
+#  adding the serializer tests here            
+###################################
+            AttributesSerializer \
+            AttributesModelSerializer \
+            TextAreaSerializer \
+            AxesSerializer \
+            LegendsSerializer \
+            DiagramsSerializer \
+#           CoordPlanesSerializer \
+#           Serializer	   
+
 
 unix:SUBDIRS += AxisOwnership
 release:WIN_BINDIR=release
