@@ -335,8 +335,6 @@ void KDChart::AbstractCoordinatePlane::mouseReleaseEvent( QMouseEvent* event )
         // and this the new center
         const QPointF newZoomCenter( newCenterX, newCenterY );
 
-        qDebug() << "newZoomCenter" << newZoomCenter;
-
         setZoomFactorX( newZoomFactorX );
         setZoomFactorY( newZoomFactorY );
         setZoomCenter( newZoomCenter );
