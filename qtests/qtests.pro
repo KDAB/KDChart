@@ -14,7 +14,7 @@ SUBDIRS +=  ChartElementOwnership \
             BarDiagrams \
             LineDiagrams \
             PieDiagrams \
-            PolarDiagrams \
+            PolarDiagrams 
 #           ParamVsParam \
 #           DrawIntoPainter \
 ###################################
