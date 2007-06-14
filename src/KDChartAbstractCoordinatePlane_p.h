@@ -44,6 +44,7 @@
 
 #include <KDABLibFakes>
 
+class QRubberBand;
 
 namespace KDChart {
 
@@ -79,6 +80,10 @@ protected:
     AbstractDiagramList diagrams;
     GridAttributes gridAttributes;
     AbstractCoordinatePlane *referenceCoordinatePlane;
+
+    bool enableRubberBandZooming;
+    QRubberBand* rubberBand;
+    QPoint rubberBandOrigin;
 };
 
 

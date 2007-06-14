@@ -131,6 +131,16 @@ namespace KDChart {
         virtual QSizePolicy sizePolicy() const;
 
         /**
+         * @return Whether zooming with a rubber band using the mouse is enabled.
+         */
+        bool isRubberBandZoomingEnabled() const;
+
+        /**
+         * Enables or disables zooming with a rubber band using the mouse.
+         */
+        void setRubberBandZoomingEnabled( bool enable );
+
+        /**
          * @return The zoom factor in horizontal direction, that is applied
          * to all coordinate transformations.
          */

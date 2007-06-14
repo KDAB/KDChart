@@ -25,6 +25,8 @@
 
 
 #include <QGridLayout>
+#include <QRubberBand>
+#include <QMouseEvent>
 
 #include "KDChartChart.h"
 #include "KDChartAbstractCoordinatePlane.h"
@@ -43,6 +45,8 @@ AbstractCoordinatePlane::Private::Private()
     , parent( 0 )
     , grid( 0 )
     , referenceCoordinatePlane( 0 )
+    , enableRubberBandZooming( false )
+    , rubberBand( 0 )
 {
     // this bloc left empty intentionally
 }
@@ -262,8 +266,34 @@ void KDChart::AbstractCoordinatePlane::layoutPlanes()
     emit needLayoutPlanes();
 }
 
+void KDChart::AbstractCoordinatePlane::setRubberBandZoomingEnabled( bool enable )
+{
+    d->enableRubberBandZooming = enable;
+
+    if( !enable && d->rubberBand != 0 )
+    {
+        delete d->rubberBand;
+        d->rubberBand = 0;
+    }
+}
+
+bool KDChart::AbstractCoordinatePlane::isRubberBandZoomingEnabled() const
+{
+    return d->enableRubberBandZooming;
+}
+
 void KDChart::AbstractCoordinatePlane::mousePressEvent( QMouseEvent* event )
 {
+    if( d->enableRubberBandZooming && d->rubberBand == 0 )
+        d->rubberBand = new QRubberBand( QRubberBand::Rectangle, qobject_cast< QWidget* >( parent() ) );
+
+    if( d->rubberBand != 0 )
+    {
+        d->rubberBandOrigin = event->pos();
+        d->rubberBand->setGeometry( QRect( event->pos(), QSize() ) );
+        d->rubberBand->show();
+    }
+
     KDAB_FOREACH( AbstractDiagram * a, d->diagrams )
     {
         a->mousePressEvent( event );
@@ -280,6 +310,42 @@ void KDChart::AbstractCoordinatePlane::mouseDoubleClickEvent( QMouseEvent* event
 
 void KDChart::AbstractCoordinatePlane::mouseReleaseEvent( QMouseEvent* event )
 {
+    if( d->rubberBand != 0 )
+    {
+        // this is the height/width of the rubber band in pixel space
+        const double rubberWidth = static_cast< double >( d->rubberBand->width() );
+        const double rubberHeight = static_cast< double >( d->rubberBand->height() );
+
+        // this is the center of the rubber band in pixel space
+        const double rubberCenterX = static_cast< double >( d->rubberBand->geometry().center().x() - geometry().x() );
+        const double rubberCenterY = static_cast< double >( d->rubberBand->geometry().center().y() - geometry().y() );
+
+        // this is the height/width of the plane in pixel space
+        const double myWidth = static_cast< double >( geometry().width() );
+        const double myHeight = static_cast< double >( geometry().height() );
+
+        // this describes the new center of zooming, relative to the plane pixel space
+        const double newCenterX = rubberCenterX / myWidth / zoomFactorX() + zoomCenter().x() - 0.5 / zoomFactorX();
+        const double newCenterY = rubberCenterY / myHeight / zoomFactorY() + zoomCenter().y() - 0.5 / zoomFactorY();
+
+        // this will be the new zoom factor
+        const double newZoomFactorX = zoomFactorX() * myWidth / rubberWidth;
+        const double newZoomFactorY = zoomFactorY() * myHeight / rubberHeight;
+
+        // and this the new center
+        const QPointF newZoomCenter( newCenterX, newCenterY );
+
+        qDebug() << "newZoomCenter" << newZoomCenter;
+
+        setZoomFactorX( newZoomFactorX );
+        setZoomFactorY( newZoomFactorY );
+        setZoomCenter( newZoomCenter );
+
+        d->rubberBand->parentWidget()->update();
+        delete d->rubberBand;
+        d->rubberBand = 0;
+    }
+
     KDAB_FOREACH( AbstractDiagram * a, d->diagrams )
     {
         a->mouseReleaseEvent( event );
@@ -288,6 +354,11 @@ void KDChart::AbstractCoordinatePlane::mouseReleaseEvent( QMouseEvent* event )
 
 void KDChart::AbstractCoordinatePlane::mouseMoveEvent( QMouseEvent* event )
 {
+    if( d->rubberBand != 0 )
+    {
+        d->rubberBand->setGeometry( QRect( d->rubberBandOrigin, event->pos() ).normalized().intersected( geometry() ) );
+    }
+
     KDAB_FOREACH( AbstractDiagram * a, d->diagrams )
     {
         a->mouseMoveEvent( event );
