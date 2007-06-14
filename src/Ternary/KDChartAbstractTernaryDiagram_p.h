@@ -64,9 +64,9 @@ namespace KDChart {
 
         virtual void paint( PaintContext* paintContext )
         {
+            paintContext->painter()->setRenderHint( QPainter::Antialiasing,
+                                                    antiAliasing );
             if ( !axesList.isEmpty() ) {
-                paintContext->painter()->setRenderHint( QPainter::Antialiasing,
-                                                        antiAliasing );
 
                 Q_FOREACH( TernaryAxis* axis, axesList ) {
                     PainterSaver s( paintContext->painter() );
