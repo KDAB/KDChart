@@ -284,7 +284,7 @@ bool KDChart::AbstractCoordinatePlane::isRubberBandZoomingEnabled() const
 
 void KDChart::AbstractCoordinatePlane::mousePressEvent( QMouseEvent* event )
 {
-    if( d->enableRubberBandZooming && d->rubberBand == 0 )
+    if( event->button() == Qt::LeftButton && d->enableRubberBandZooming && d->rubberBand == 0 )
         d->rubberBand = new QRubberBand( QRubberBand::Rectangle, qobject_cast< QWidget* >( parent() ) );
 
     if( d->rubberBand != 0 )
@@ -292,6 +292,8 @@ void KDChart::AbstractCoordinatePlane::mousePressEvent( QMouseEvent* event )
         d->rubberBandOrigin = event->pos();
         d->rubberBand->setGeometry( QRect( event->pos(), QSize() ) );
         d->rubberBand->show();
+
+        event->accept();
     }
 
     KDAB_FOREACH( AbstractDiagram * a, d->diagrams )
@@ -342,6 +344,8 @@ void KDChart::AbstractCoordinatePlane::mouseReleaseEvent( QMouseEvent* event )
         d->rubberBand->parentWidget()->update();
         delete d->rubberBand;
         d->rubberBand = 0;
+
+        event->accept();
     }
 
     KDAB_FOREACH( AbstractDiagram * a, d->diagrams )
@@ -355,6 +359,8 @@ void KDChart::AbstractCoordinatePlane::mouseMoveEvent( QMouseEvent* event )
     if( d->rubberBand != 0 )
     {
         d->rubberBand->setGeometry( QRect( d->rubberBandOrigin, event->pos() ).normalized().intersected( geometry() ) );
+
+        event->accept();
     }
 
     KDAB_FOREACH( AbstractDiagram * a, d->diagrams )
