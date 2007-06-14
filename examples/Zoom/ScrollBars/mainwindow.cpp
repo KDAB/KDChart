@@ -66,6 +66,8 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_lines->addAxis( yAxis );
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
 
+    connect( m_chart, SIGNAL( propertiesChanged() ), SLOT( applyNewZoomParameters() ) );
+
     // Set up the legend
     m_legend = new Legend( m_lines, m_chart );
     m_chart->addLegend( m_legend );
@@ -97,6 +99,11 @@ void MainWindow::on_adjustGridCB_toggled( bool checked )
     m_chart->update();
 }
 
+void MainWindow::on_rubberBandZoomCB_toggled( bool checked )
+{
+    m_chart->coordinatePlane()->setRubberBandZoomingEnabled( checked );
+}
+
 void MainWindow::on_hSBar_valueChanged( int hPos )
 {
     m_chart->coordinatePlane()->setZoomCenter( QPointF(hPos/1000.0, vSBar->value()/1000.0) );
@@ -109,3 +116,9 @@ void MainWindow::on_vSBar_valueChanged( int vPos )
     m_chart->update();
 }
 
+void MainWindow::applyNewZoomParameters()
+{
+    hSBar->setValue( qRound( m_chart->coordinatePlane()->zoomCenter().x() * 1000 ) );
+    vSBar->setValue( qRound( m_chart->coordinatePlane()->zoomCenter().y() * 1000 ) );
+    zoomFactorSB->setValue( m_chart->coordinatePlane()->zoomFactorX() );
+}
