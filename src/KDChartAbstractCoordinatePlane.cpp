@@ -284,16 +284,36 @@ bool KDChart::AbstractCoordinatePlane::isRubberBandZoomingEnabled() const
 
 void KDChart::AbstractCoordinatePlane::mousePressEvent( QMouseEvent* event )
 {
-    if( event->button() == Qt::LeftButton && d->enableRubberBandZooming && d->rubberBand == 0 )
-        d->rubberBand = new QRubberBand( QRubberBand::Rectangle, qobject_cast< QWidget* >( parent() ) );
-
-    if( d->rubberBand != 0 )
+    if( event->button() == Qt::LeftButton )
     {
-        d->rubberBandOrigin = event->pos();
-        d->rubberBand->setGeometry( QRect( event->pos(), QSize() ) );
-        d->rubberBand->show();
+        if( d->enableRubberBandZooming && d->rubberBand == 0 )
+            d->rubberBand = new QRubberBand( QRubberBand::Rectangle, qobject_cast< QWidget* >( parent() ) );
 
-        event->accept();
+        if( d->rubberBand != 0 )
+        {
+            d->rubberBandOrigin = event->pos();
+            d->rubberBand->setGeometry( QRect( event->pos(), QSize() ) );
+            d->rubberBand->show();
+
+            event->accept();
+        }
+    }
+    else if( event->button() == Qt::RightButton )
+    {
+        if( d->enableRubberBandZooming && !d->rubberBandZoomConfigHistory.isEmpty() )
+        {
+            // restore the last config from the stack
+            ZoomConfiguration config = d->rubberBandZoomConfigHistory.pop();
+            setZoomFactorX( config.factorX );
+            setZoomFactorY( config.factorY );
+            setZoomCenter( config.center );
+
+            QWidget* const p = qobject_cast< QWidget* >( parent() );
+            if( p != 0 )
+                p->update();
+
+            event->accept();
+        }
     }
 
     KDAB_FOREACH( AbstractDiagram * a, d->diagrams )
@@ -314,6 +334,9 @@ void KDChart::AbstractCoordinatePlane::mouseReleaseEvent( QMouseEvent* event )
 {
     if( d->rubberBand != 0 )
     {
+        // save the old config on the stack
+        d->rubberBandZoomConfigHistory.push( ZoomConfiguration( zoomFactorX(), zoomFactorY(), zoomCenter() ) );
+
         // this is the height/width of the rubber band in pixel space
         const double rubberWidth = static_cast< double >( d->rubberBand->width() );
         const double rubberHeight = static_cast< double >( d->rubberBand->height() );
@@ -340,6 +363,7 @@ void KDChart::AbstractCoordinatePlane::mouseReleaseEvent( QMouseEvent* event )
         setZoomFactorX( newZoomFactorX );
         setZoomFactorY( newZoomFactorY );
         setZoomCenter( newZoomCenter );
+
 
         d->rubberBand->parentWidget()->update();
         delete d->rubberBand;

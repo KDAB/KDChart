@@ -44,10 +44,32 @@
 
 #include <KDABLibFakes>
 
+#include <QStack>
+
 class QRubberBand;
 
 namespace KDChart {
 
+
+/**
+ * \internal
+ */
+struct ZoomConfiguration
+{
+    ZoomConfiguration()
+    {
+    }
+    ZoomConfiguration( double factorX, double factorY, const QPointF& center )
+        : factorX( factorX ),
+          factorY( factorY ),
+          center( center )
+    {
+    }
+
+    double factorX;
+    double factorY;
+    QPointF center;
+};
 
 /**
  * \internal
@@ -84,6 +106,8 @@ protected:
     bool enableRubberBandZooming;
     QRubberBand* rubberBand;
     QPoint rubberBandOrigin;
+
+    QStack< ZoomConfiguration > rubberBandZoomConfigHistory;
 };
 
 
