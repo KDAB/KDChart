@@ -12,7 +12,15 @@ namespace KDChart {
         {
         }
 
-        void setCenter( QPointF center )
+        ZoomParameters( double xFactor, double yFactor, const QPointF& center )
+        : xFactor( xFactor ),
+          yFactor( yFactor ),
+          xCenter( center.x() ),
+          yCenter( center.y() )
+        {
+        }
+
+        void setCenter( const QPointF& center )
         {
             xCenter = center.x();
             yCenter = center.y();

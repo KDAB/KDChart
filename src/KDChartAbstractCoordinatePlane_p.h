@@ -41,6 +41,7 @@
 #include <KDChartAbstractCoordinatePlane.h>
 #include <KDChartGridAttributes.h>
 #include <KDChartAbstractGrid.h>
+#include <KDChartZoomParameters.h>
 
 #include <KDABLibFakes>
 
@@ -50,26 +51,6 @@ class QRubberBand;
 
 namespace KDChart {
 
-
-/**
- * \internal
- */
-struct ZoomConfiguration
-{
-    ZoomConfiguration()
-    {
-    }
-    ZoomConfiguration( double factorX, double factorY, const QPointF& center )
-        : factorX( factorX ),
-          factorY( factorY ),
-          center( center )
-    {
-    }
-
-    double factorX;
-    double factorY;
-    QPointF center;
-};
 
 /**
  * \internal
@@ -107,7 +88,7 @@ protected:
     QRubberBand* rubberBand;
     QPoint rubberBandOrigin;
 
-    QStack< ZoomConfiguration > rubberBandZoomConfigHistory;
+    QStack< ZoomParameters > rubberBandZoomConfigHistory;
 };
 
 

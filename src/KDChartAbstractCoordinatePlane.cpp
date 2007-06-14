@@ -303,10 +303,10 @@ void KDChart::AbstractCoordinatePlane::mousePressEvent( QMouseEvent* event )
         if( d->enableRubberBandZooming && !d->rubberBandZoomConfigHistory.isEmpty() )
         {
             // restore the last config from the stack
-            ZoomConfiguration config = d->rubberBandZoomConfigHistory.pop();
-            setZoomFactorX( config.factorX );
-            setZoomFactorY( config.factorY );
-            setZoomCenter( config.center );
+            ZoomParameters config = d->rubberBandZoomConfigHistory.pop();
+            setZoomFactorX( config.xFactor );
+            setZoomFactorY( config.yFactor );
+            setZoomCenter( config.center() );
 
             QWidget* const p = qobject_cast< QWidget* >( parent() );
             if( p != 0 )
@@ -324,6 +324,12 @@ void KDChart::AbstractCoordinatePlane::mousePressEvent( QMouseEvent* event )
 
 void KDChart::AbstractCoordinatePlane::mouseDoubleClickEvent( QMouseEvent* event )
 {
+    if( event->button() == Qt::RightButton )
+    {
+        // othewise the second click gets lost 
+        // which is pretty annoying when zooming out fast
+        mousePressEvent( event );
+    }
     KDAB_FOREACH( AbstractDiagram * a, d->diagrams )
     {
         a->mouseDoubleClickEvent( event );
@@ -335,7 +341,7 @@ void KDChart::AbstractCoordinatePlane::mouseReleaseEvent( QMouseEvent* event )
     if( d->rubberBand != 0 )
     {
         // save the old config on the stack
-        d->rubberBandZoomConfigHistory.push( ZoomConfiguration( zoomFactorX(), zoomFactorY(), zoomCenter() ) );
+        d->rubberBandZoomConfigHistory.push( ZoomParameters( zoomFactorX(), zoomFactorY(), zoomCenter() ) );
 
         // this is the height/width of the rubber band in pixel space
         const double rubberWidth = static_cast< double >( d->rubberBand->width() );
