@@ -1175,14 +1175,20 @@ LegendList Chart::legends()
 
 void Chart::mousePressEvent( QMouseEvent* event )
 {
-    KDAB_FOREACH( AbstractCoordinatePlane* plane, d->coordinatePlanes ) {
-       if ( plane->geometry().contains( event->pos() ) ) {
-           if ( plane->diagrams().size() > 0 ) {
-               QPoint pos = mapFromGlobal( event->globalPos() );
-               QMouseEvent ev( QEvent::MouseButtonPress, pos, event->globalPos(),
-                               event->button(), event->buttons(),
-                               event->modifiers() );
-               plane->mousePressEvent( &ev );
+    const QPoint pos = mapFromGlobal( event->globalPos() );
+
+    KDAB_FOREACH( AbstractCoordinatePlane* plane, d->coordinatePlanes )
+    {
+        if ( plane->geometry().contains( event->pos() ) )
+        {
+            if ( plane->diagrams().size() > 0 )
+            {
+                QMouseEvent ev( QEvent::MouseButtonPress, pos, event->globalPos(),
+                                event->button(), event->buttons(),
+                                event->modifiers() );
+
+                plane->mousePressEvent( &ev );
+                d->mouseClickedPlanes.append( plane );
            }
        }
     }
@@ -1360,45 +1366,73 @@ void Chart::Private::slotAdjustTopBottomRowsForOverlappingLabels(
 
 void Chart::mouseDoubleClickEvent( QMouseEvent* event )
 {
-    KDAB_FOREACH( AbstractCoordinatePlane* plane, d->coordinatePlanes ) {
-       if ( plane->geometry().contains( event->pos() ) ) {
-           if ( plane->diagrams().size() > 0 ) {
-               QPoint pos = mapFromGlobal( event->globalPos() );
-               QMouseEvent ev( QEvent::MouseButtonPress, pos, event->globalPos(),
-                               event->button(), event->buttons(),
-                               event->modifiers() );
-               plane->mouseDoubleClickEvent( &ev );
-           }
-       }
+    const QPoint pos = mapFromGlobal( event->globalPos() );
+
+    KDAB_FOREACH( AbstractCoordinatePlane* plane, d->coordinatePlanes )
+    {
+        if ( plane->geometry().contains( event->pos() ) )
+        {
+            if ( plane->diagrams().size() > 0 )
+            {
+                QMouseEvent ev( QEvent::MouseButtonPress, pos, event->globalPos(),
+                                event->button(), event->buttons(),
+                                event->modifiers() );
+                plane->mouseDoubleClickEvent( &ev );
+            }
+        }
     }
 }
 
 void Chart::mouseMoveEvent( QMouseEvent* event )
 {
-    KDAB_FOREACH( AbstractCoordinatePlane* plane, d->coordinatePlanes ) {
-       if ( plane->geometry().contains( event->pos() ) ) {
-           if ( plane->diagrams().size() > 0 ) {
-               QPoint pos = mapFromGlobal( event->globalPos() );
-               QMouseEvent ev( QEvent::MouseMove, pos, event->globalPos(),
-                               event->button(), event->buttons(),
-                               event->modifiers() );
-               plane->mouseMoveEvent( &ev );
-           }
-       }
+    QSet< AbstractCoordinatePlane* > eventReceivers = QSet< AbstractCoordinatePlane* >::fromList( d->mouseClickedPlanes );
+
+    KDAB_FOREACH( AbstractCoordinatePlane* plane, d->coordinatePlanes )
+    {
+        if( plane->geometry().contains( event->pos() ) )
+        {
+            if( plane->diagrams().size() > 0 )
+            {
+                eventReceivers.insert( plane );
+            }
+        }
+    }
+    
+    const QPoint pos = mapFromGlobal( event->globalPos() );
+    
+    KDAB_FOREACH( AbstractCoordinatePlane* plane, eventReceivers )
+    {
+        QMouseEvent ev( QEvent::MouseMove, pos, event->globalPos(),
+                         event->button(), event->buttons(),
+                         event->modifiers() );
+        plane->mouseMoveEvent( &ev ); 
     }
 }
 
 void Chart::mouseReleaseEvent( QMouseEvent* event )
 {
-    KDAB_FOREACH( AbstractCoordinatePlane* plane, d->coordinatePlanes ) {
-       if ( plane->geometry().contains( event->pos() ) ) {
-           if ( plane->diagrams().size() > 0 ) {
-               QPoint pos = mapFromGlobal( event->globalPos() );
-               QMouseEvent ev( QEvent::MouseButtonRelease, pos, event->globalPos(),
-                               event->button(), event->buttons(),
-                               event->modifiers() );
-               plane->mouseReleaseEvent( &ev );
-           }
-       }
+    QSet< AbstractCoordinatePlane* > eventReceivers = QSet< AbstractCoordinatePlane* >::fromList( d->mouseClickedPlanes );
+
+    KDAB_FOREACH( AbstractCoordinatePlane* plane, d->coordinatePlanes )
+    {
+        if ( plane->geometry().contains( event->pos() ) )
+        {
+            if( plane->diagrams().size() > 0 )
+            {
+                eventReceivers.insert( plane );
+            }
+        }
     }
+
+    const QPoint pos = mapFromGlobal( event->globalPos() );
+    
+    KDAB_FOREACH( AbstractCoordinatePlane* plane, eventReceivers )
+    {
+        QMouseEvent ev( QEvent::MouseButtonRelease, pos, event->globalPos(),
+                         event->button(), event->buttons(),
+                         event->modifiers() );
+        plane->mouseReleaseEvent( &ev ); 
+    }
+
+    d->mouseClickedPlanes.clear();
 }

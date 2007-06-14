@@ -116,6 +116,8 @@ class Chart::Private : public QObject
 
         int globalLeadingLeft, globalLeadingRight, globalLeadingTop, globalLeadingBottom;
 
+        QList< AbstractCoordinatePlane* > mouseClickedPlanes;
+
         Private ( Chart* );
 
         virtual ~Private();
