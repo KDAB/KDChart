@@ -1,5 +1,7 @@
 #include <QRect>
 #include <QtDebug>
+#include <QPolygonF>
+#include <QPainterPath>
 #include <QGraphicsScene>
 
 #include "ReverseMapper.h"
@@ -27,6 +29,7 @@ ReverseMapper::~ReverseMapper()
 
 void ReverseMapper::setDiagram( AbstractDiagram* diagram )
 {
+
     m_diagram = diagram;
 }
 
@@ -69,6 +72,13 @@ void ReverseMapper::addRect( int row, int column, const QRectF& rect )
     addItem( item );
 }
 
-
-
-
+void ReverseMapper::addCircle( int row, int column, const QPointF& location, const QSizeF& diameter )
+{
+    QPainterPath path;
+    QPointF ossfet( -0.5*diameter.width(), -0.5*diameter.height() );
+    path.addEllipse( QRectF( location + ossfet, diameter ) );
+    QPolygonF polygon( path.toFillPolygon() );
+    ChartGraphicsItem* item = new ChartGraphicsItem( row, column );
+    item->setPolygon( polygon );
+    addItem( item );
+}

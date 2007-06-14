@@ -110,6 +110,7 @@ AbstractDiagram::AbstractDiagram ( QWidget* parent, AbstractCoordinatePlane* pla
     : QAbstractItemView ( parent ), _d( new Private() )
 {
     _d->init( plane );
+    init();
 }
 
 AbstractDiagram::~AbstractDiagram()
@@ -119,6 +120,7 @@ AbstractDiagram::~AbstractDiagram()
 
 void AbstractDiagram::init()
 {
+    d->reverseMapper.setDiagram( this );
 }
 
 
@@ -595,8 +597,14 @@ void AbstractDiagram::paintMarker( QPainter* painter,
         indexBrush.setColor( ma.markerColor() );
 
     paintMarker( painter, ma, indexBrush, indexPen, pos, maSize );
-}
 
+    // workaround: BC cannot be changed, otherwise we would pass the
+    // index down to next-lower paintMarker function. So far, we
+    // basically save a circle of radius maSize at pos in the
+    // reverseMapper. This means that ^^^ this version of paintMarker
+    // needs to be called to reverse-map the marker.
+    d->reverseMapper.addCircle( index.row(), index.column(), pos, 2 * maSize );
+}
 
 void AbstractDiagram::paintMarker( QPainter* painter,
                                    const MarkerAttributes& markerAttributes,
@@ -605,6 +613,8 @@ void AbstractDiagram::paintMarker( QPainter* painter,
                                    const QPointF& pos,
                                    const QSizeF& maSize )
 {
+    QModelIndex index;
+
     const QPen oldPen( painter->pen() );
     // Pen is used to paint 4Pixels - 1 Pixel - Ring and FastCross types.
     // make sure to use the brush color - see above in those cases.

@@ -47,7 +47,6 @@ TernaryLineDiagram::~TernaryLineDiagram()
 
 void TernaryLineDiagram::init()
 {
-    d->reverseMapper.setDiagram( this );
 }
 
 void  TernaryLineDiagram::resize (const QSizeF& area)

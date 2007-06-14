@@ -30,6 +30,7 @@ namespace KDChart {
 
         // convenience methods:
         void addRect( int row, int column, const QRectF& rect );
+        void addCircle( int row, int column, const QPointF& location, const QSizeF& diameter );
 
     private:
         QGraphicsScene* m_scene;
