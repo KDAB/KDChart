@@ -17,14 +17,17 @@ MainWindow::MainWindow( QWidget* parent )
     , m_ternaryPlane( 0 )
 {
     setupUi( this );
+    // make a chart
     m_chart = new KDChart::Chart;
+    // replace the default (cartesian) coordinate plane with a ternary one
     m_ternaryPlane = new KDChart::TernaryCoordinatePlane;
     m_chart->replaceCoordinatePlane( m_ternaryPlane );
-    m_diagram = new KDChart::TernaryPointDiagram;
-    m_diagram2 = new KDChart::TernaryLineDiagram;
-    m_ternaryPlane->replaceDiagram( m_diagram2 );
-    m_ternaryPlane->addDiagram( m_diagram );
+    // make a ternary line diagram
+    m_diagram = new KDChart::TernaryLineDiagram;
+    // and replace the default diagram with it
+    m_ternaryPlane->replaceDiagram( m_diagram );
 
+    // add the three ternary axes, see the positions
     KDChart::TernaryAxis* axisA = new KDChart::TernaryAxis( m_diagram );
     axisA->setPosition( KDChartEnums::PositionSouth );
     KDChart::TernaryAxis* axisB = new KDChart::TernaryAxis( m_diagram );
@@ -37,10 +40,7 @@ MainWindow::MainWindow( QWidget* parent )
 
     setupModel();
     m_diagram->setModel( &m_model );
-    m_diagram2->setModel( &m_model );
     connect( m_diagram, SIGNAL( clicked( QModelIndex ) ),
-             SLOT( indexClicked( QModelIndex ) ) );
-    connect( m_diagram2, SIGNAL( clicked( QModelIndex ) ),
              SLOT( indexClicked( QModelIndex ) ) );
 }
 
