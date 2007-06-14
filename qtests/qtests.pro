@@ -29,8 +29,7 @@ SUBDIRS +=  AttributesSerializer \
             LegendsSerializer \
             DiagramsSerializer \
 #           CoordPlanesSerializer \
-#           Serializer	   
-
+#           Serializer
 }
 
 unix:SUBDIRS += AxisOwnership
