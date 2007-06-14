@@ -21,7 +21,7 @@ SUBDIRS +=  ChartElementOwnership \
 #  adding the serializer tests here
 # depending on the Qt versions             
 ###################################
-contains($$list($$[QT_VERSION]), 4.2.*) { 
+contains($$list($$[QT_VERSION]), 4.[2-9].*) { 
 SUBDIRS +=  AttributesSerializer \
             AttributesModelSerializer \
             TextAreaSerializer \
@@ -31,17 +31,6 @@ SUBDIRS +=  AttributesSerializer \
 #           CoordPlanesSerializer \
 #           Serializer	   
 
-}
-
-contains($$list($$[QT_VERSION]), 4.3.*) { 
-SUBDIRS +=  AttributesSerializer \
-            AttributesModelSerializer \
-            TextAreaSerializer \
-            AxesSerializer \
-            LegendsSerializer \
-            DiagramsSerializer \
-#           CoordPlanesSerializer \
-#           Serializer	   
 }
 
 unix:SUBDIRS += AxisOwnership
