@@ -432,35 +432,35 @@ bool CartesianCoordinatePlane::doesIsometricScaling () const
 
 bool CartesianCoordinatePlane::doneSetZoomFactorX( double factor )
 {
-    bool bDone = ( d->coordinateTransformation.zoom.xFactor != factor );
-    if( bDone ){
+    const bool done = ( d->coordinateTransformation.zoom.xFactor != factor );
+    if( done ){
         d->coordinateTransformation.zoom.xFactor = factor;
         if( d->autoAdjustGridToZoom )
             d->grid->setNeedRecalculate();
     }
-    return bDone;
+    return done;
 }
 
 bool CartesianCoordinatePlane::doneSetZoomFactorY( double factor )
 {
-    bool bDone = ( d->coordinateTransformation.zoom.yFactor != factor );
-    if( bDone ){
+    const bool done = ( d->coordinateTransformation.zoom.yFactor != factor );
+    if( done ){
         d->coordinateTransformation.zoom.yFactor = factor;
         if( d->autoAdjustGridToZoom )
             d->grid->setNeedRecalculate();
     }
-    return bDone;
+    return done;
 }
 
 bool CartesianCoordinatePlane::doneSetZoomCenter( QPointF point )
 {
-    bool bDone = ( d->coordinateTransformation.zoom.center() != point );
-    if( bDone ){
+    const bool done = ( d->coordinateTransformation.zoom.center() != point );
+    if( done ){
         d->coordinateTransformation.zoom.setCenter( point );
         if( d->autoAdjustGridToZoom )
             d->grid->setNeedRecalculate();
     }
-    return bDone;
+    return done;
 }
 
 void CartesianCoordinatePlane::setZoomFactorX( double factor )
