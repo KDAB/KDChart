@@ -18,9 +18,11 @@ SUBDIRS +=  ChartElementOwnership \
 #           ParamVsParam \
 #           DrawIntoPainter \
 ###################################
-#  adding the serializer tests here            
+#  adding the serializer tests here
+# depending on the Qt versions             
 ###################################
-            AttributesSerializer \
+contains($$list($$[QT_VERSION]), 4.2.*) { 
+SUBDIRS +=  AttributesSerializer \
             AttributesModelSerializer \
             TextAreaSerializer \
             AxesSerializer \
@@ -29,6 +31,18 @@ SUBDIRS +=  ChartElementOwnership \
 #           CoordPlanesSerializer \
 #           Serializer	   
 
+}
+
+contains($$list($$[QT_VERSION]), 4.3.*) { 
+SUBDIRS +=  AttributesSerializer \
+            AttributesModelSerializer \
+            TextAreaSerializer \
+            AxesSerializer \
+            LegendsSerializer \
+            DiagramsSerializer \
+#           CoordPlanesSerializer \
+#           Serializer	   
+}
 
 unix:SUBDIRS += AxisOwnership
 release:WIN_BINDIR=release
