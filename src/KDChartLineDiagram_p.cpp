@@ -95,6 +95,8 @@ void LineDiagram::LineDiagramType::paintElements(
         const LineAttributesInfo& lineInfo = itline.next();
         const QModelIndex& index = lineInfo.index;
         const ThreeDLineAttributes td = diagram()->threeDLineAttributes( index );
+        const ValueTrackerAttributes vt = diagram()->valueTrackerAttributes( index );
+
         if( td.isEnabled() ){
             paintThreeDLines( ctx, index, lineInfo.value, lineInfo.nextValue, td.depth() );
         }else{
@@ -111,6 +113,9 @@ void LineDiagram::LineDiagramType::paintElements(
                 points << lineInfo.value << lineInfo.nextValue;
             }
         }
+
+        if( vt.isEnabled() )
+            paintValueTracker( ctx, vt, lineInfo.value );
     }
     if( points.count() )
         paintPolyline( ctx, curBrush, curPen, points );
@@ -195,3 +200,41 @@ void LineDiagram::LineDiagramType::appendDataValueTextInfoToList(
                                               autoPositionPositive, autoPositionPositive, value );
 }
 
+void LineDiagram::LineDiagramType::paintValueTracker( PaintContext* ctx, const ValueTrackerAttributes& vt, const QPointF& at )
+{
+    DataDimensionsList gridDimensions = ctx->coordinatePlane()->gridDimensionsList();
+    const QPointF bottomLeft( ctx->coordinatePlane()->translate( QPointF( gridDimensions.at( 0 ).start, gridDimensions.at( 1 ).start ) ) );
+    const QPointF markerPoint = at;
+    const QPointF ordinatePoint( bottomLeft.x(), at.y() );
+    const QPointF abscissaPoint( at.x(), bottomLeft.y() );
+    
+    const QSizeF markerSize = vt.markerSize();
+    const QRectF ellipseMarker = QRectF( at.x() - markerSize.width() / 2,
+                                         at.y() - markerSize.height() / 2,
+                                         markerSize.width(), markerSize.height() );
+    
+    const QPointF ordinateMarker[3] = {
+        QPointF( ordinatePoint.x(), at.y() + markerSize.height() / 2 ),
+        QPointF( ordinatePoint.x() + markerSize.width() / 2, at.y() ),
+        QPointF( ordinatePoint.x(), at.y() - markerSize.height() / 2 )
+    };
+    
+    const QPointF abscissaMarker[3] = {
+        QPointF( at.x() + markerSize.width() / 2, abscissaPoint.y() ),
+        QPointF( at.x(), abscissaPoint.y() - markerSize.height() / 2 ),
+        QPointF( at.x() - markerSize.width() / 2, abscissaPoint.y() )
+    };
+    
+    
+    PainterSaver painterSaver( ctx->painter() );
+    ctx->painter()->setPen( vt.pen() );
+    ctx->painter()->setBrush( QBrush() );
+    
+    ctx->painter()->drawLine( markerPoint, ordinatePoint );
+    ctx->painter()->drawLine( markerPoint, abscissaPoint );
+    ctx->painter()->drawEllipse( ellipseMarker );
+    
+    ctx->painter()->setBrush( vt.pen().color() );
+    ctx->painter()->drawPolygon( ordinateMarker, 3 );
+    ctx->painter()->drawPolygon( abscissaMarker, 3 );
+}

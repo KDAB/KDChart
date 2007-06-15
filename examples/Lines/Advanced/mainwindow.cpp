@@ -226,3 +226,28 @@ void MainWindow::on_depthSB_valueChanged( int i )
     if ( threeDModeCB->isChecked() )
         on_threeDModeCB_toggled( true );
 }
+
+void MainWindow::on_trackAreasCB_toggled( bool checked )
+{
+    setTrackedArea( trackAreasSB->value(), checked, true );
+}
+
+void MainWindow::on_trackAreasSB_valueChanged( int i )
+{
+    Q_UNUSED( i );
+    on_trackAreasCB_toggled( trackAreasCB->isChecked() );
+}
+
+void MainWindow::setTrackedArea( int column, bool checked, bool doUpdate )
+{
+    for( int i = 0; i < m_model.rowCount( m_lines->rootIndex() ); ++i ) {
+        for( int j = 0; j < m_model.columnCount( m_lines->rootIndex() ); ++j ) {
+            QModelIndex cellIndex( m_model.index( i, j, m_lines->rootIndex() ) );
+            ValueTrackerAttributes va( m_lines->valueTrackerAttributes( cellIndex ) );
+            va.setEnabled( checked && j == column );
+            m_lines->setValueTrackerAttributes( cellIndex, va );
+        }
+    }
+    if( doUpdate )
+        m_chart->update();
+}

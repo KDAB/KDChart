@@ -47,6 +47,7 @@
 #include <KDChartThreeDLineAttributes>
 #include <KDChartThreeDPieAttributes>
 #include <KDChartGridAttributes>
+#include <KDChartValueTrackerAttributes>
 
 #include <KDABLibFakes>
 
@@ -269,6 +270,9 @@ bool AttributesModel::compareAttributes(
             case ThreeDPieAttributesRole:
                 return (qVariantValue<ThreeDPieAttributes>( a ) ==
                         qVariantValue<ThreeDPieAttributes>( b ));
+            case ValueTrackerAttributesRole:
+                return (qVariantValue<ValueTrackerAttributes>( a ) ==
+                        qVariantValue<ValueTrackerAttributes>( b ));
             case DataHiddenRole:
                 return (qVariantValue<bool>( a ) ==
                         qVariantValue<bool>( b ));
@@ -411,6 +415,7 @@ bool AttributesModel::isKnownAttributesRole( int role ) const
     case ThreeDBarAttributesRole:
     case PieAttributesRole:
     case ThreeDPieAttributesRole:
+    case ValueTrackerAttributesRole:
     case DataHiddenRole:
         oneOfOurs = true;
     default:

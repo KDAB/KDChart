@@ -32,6 +32,7 @@
 
 #include "KDChartAbstractCartesianDiagram.h"
 #include "KDChartLineAttributes.h"
+#include "KDChartValueTrackerAttributes.h"
 
 class QPainter;
 class QPolygonF;
@@ -93,6 +94,10 @@ public:
     ThreeDLineAttributes threeDLineAttributes( int column ) const;
     ThreeDLineAttributes threeDLineAttributes( const QModelIndex & index ) const;
 
+    void setValueTrackerAttributes( const QModelIndex & index,
+                                    const ValueTrackerAttributes & a );
+    ValueTrackerAttributes valueTrackerAttributes( const QModelIndex & index ) const;
+    
     // implement AbstractCartesianDiagram
     /* reimpl */
     const int numberOfAbscissaSegments () const;

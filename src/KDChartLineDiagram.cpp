@@ -284,6 +284,23 @@ double LineDiagram::threeDItemDepth( int column ) const
             KDChart::ThreeDLineAttributesRole ) ).validDepth();
 }
 
+void LineDiagram::setValueTrackerAttributes( const QModelIndex & index,
+                                             const ValueTrackerAttributes & va )
+{
+    d->attributesModel->setData( d->attributesModel->mapFromSource(index),
+                                 qVariantFromValue( va ),
+                                 KDChart::ValueTrackerAttributesRole );
+    emit propertiesChanged();
+}
+
+ValueTrackerAttributes LineDiagram::valueTrackerAttributes(
+        const QModelIndex & index ) const
+{
+    return qVariantValue<ValueTrackerAttributes>( d->attributesModel->data(
+            d->attributesModel->mapFromSource( index ),
+            KDChart::ValueTrackerAttributesRole ) );
+}
+
 void LineDiagram::resizeEvent ( QResizeEvent* )
 {
 }

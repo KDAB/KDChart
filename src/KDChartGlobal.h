@@ -253,7 +253,8 @@ enum DisplayRoles {
   ThreeDBarAttributesRole,
   PieAttributesRole,
   ThreeDPieAttributesRole,
-  DataHiddenRole
+  DataHiddenRole,
+  ValueTrackerAttributesRole
 };
 }
 

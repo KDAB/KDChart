@@ -130,6 +130,9 @@ namespace KDChart {
                             DataValueTextInfoList&,
                             LineAttributesInfoList&,
                             LineAttributes::MissingValuesPolicy );
+        
+        void paintValueTracker( PaintContext* ctx, const ValueTrackerAttributes& vt,
+                                const QPointF& at );
 
         LineDiagram::Private* m_private;
     };
