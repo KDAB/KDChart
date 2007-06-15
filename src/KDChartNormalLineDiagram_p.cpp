@@ -65,6 +65,7 @@ const QPair<QPointF, QPointF> NormalLineDiagram::calculateDataBoundaries() const
 
 void NormalLineDiagram::paint(  PaintContext* ctx )
 {
+    reverseMapper().clear();
     // FIXME remove hungarian notation
     const bool shiftCountedXValuesByHalfSection =
         (dynamic_cast< BarDiagram* >( diagram()->referenceDiagram() ) != 0);

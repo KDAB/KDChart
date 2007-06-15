@@ -74,12 +74,6 @@ namespace KDChart {
                 }
             }
         }
-
-        QModelIndexList indexesAt(  const QPoint& point ) const
-        {
-            return reverseMapper.indexesAt(  point );
-        }
-
     };
 
     KDCHART_IMPL_DERIVED_DIAGRAM( AbstractTernaryDiagram, AbstractDiagram, TernaryCoordinatePlane )

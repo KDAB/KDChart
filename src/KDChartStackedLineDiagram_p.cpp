@@ -57,6 +57,8 @@ const QPair<QPointF, QPointF> StackedLineDiagram::calculateDataBoundaries() cons
 
 void StackedLineDiagram::paint(  PaintContext* ctx )
 {
+    reverseMapper().clear();
+
     const QPair<QPointF, QPointF> boundaries = diagram()->dataBoundaries();
     const QPointF bottomLeft = boundaries.first;
     const QPointF topRight = boundaries.second;

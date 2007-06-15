@@ -99,17 +99,21 @@ void LineDiagram::LineDiagramType::paintElements(
 
         if( td.isEnabled() ){
             paintThreeDLines( ctx, index, lineInfo.value, lineInfo.nextValue, td.depth() );
-        }else{
+        } else {
             const QBrush br( diagram()->brush( index ) );
             const QPen pn( diagram()->pen( index ) );
-            if( points.count() && points.last() == lineInfo.value && curBrush == br && curPen == pn ){
+            if( points.count() && points.last() == lineInfo.value && curBrush == br && curPen == pn ) {
+                // line goes from last value in points to lineInfo.nextValue
+                reverseMapper().addLine( lineInfo.index.row(), lineInfo.index.column(), points.last(), lineInfo.nextValue );
                 points << lineInfo.nextValue;
-            }else{
+            } else {
                 if( points.count() )
                     paintPolyline( ctx, curBrush, curPen, points );
                 curBrush = br;
                 curPen   = pn;
                 points.clear();
+                // line goes from lineInfo.value to lineInfo,nextValue
+                reverseMapper().addLine( lineInfo.index.row(), lineInfo.index.column(), lineInfo.value, lineInfo.nextValue );
                 points << lineInfo.value << lineInfo.nextValue;
             }
         }
@@ -136,6 +140,11 @@ QModelIndex LineDiagram::LineDiagramType::attributesModelRootIndex() const
 int LineDiagram::LineDiagramType::datasetDimension() const
 {
     return m_private->datasetDimension;
+}
+
+ReverseMapper& LineDiagram::LineDiagramType::reverseMapper()
+{
+    return m_private->reverseMapper;
 }
 
 LineAttributes::MissingValuesPolicy LineDiagram::LineDiagramType::getCellValues(

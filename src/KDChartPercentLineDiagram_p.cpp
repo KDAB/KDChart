@@ -44,6 +44,8 @@ const QPair<QPointF, QPointF> PercentLineDiagram::calculateDataBoundaries() cons
 
 void PercentLineDiagram::paint(  PaintContext* ctx )
 {
+    reverseMapper().clear();
+
     const QPair<QPointF, QPointF> boundaries = diagram()->dataBoundaries();
     const QPointF bottomLeft = boundaries.first;
     const QPointF topRight = boundaries.second;

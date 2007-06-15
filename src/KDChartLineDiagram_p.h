@@ -98,6 +98,8 @@ namespace KDChart {
         // classes:
         AttributesModel* attributesModel() const;
         QModelIndex attributesModelRootIndex() const;
+        ReverseMapper& reverseMapper();
+
         int datasetDimension() const;
         LineAttributes::MissingValuesPolicy getCellValues(
             int row, int column,
