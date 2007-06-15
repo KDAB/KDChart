@@ -74,6 +74,8 @@ protected:
         const AbstractCoordinatePlane * plane,
         const QPointF& point ) const
     {
+        Q_UNUSED( plane );
+        Q_UNUSED( point );
         return true;
     }
 
