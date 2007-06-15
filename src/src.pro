@@ -71,8 +71,11 @@ HEADERS += KDChartGlobal.h \
            KDChartLineAttributes.h \
            KDChartLineDiagram.h \
            KDChartLineDiagram_p.h \
+           KDChartNormalBarDiagram_p.h \
            KDChartNormalLineDiagram_p.h \
+           KDChartStackedBarDiagram_p.h \
            KDChartStackedLineDiagram_p.h \
+ 	   KDChartPercentBarDiagram_p.h \
            KDChartPercentLineDiagram_p.h \
            KDChartMarkerAttributes.h \
            KDChartPaintContext.h \
@@ -137,6 +140,7 @@ SOURCES += \
            KDChartBackgroundAttributes.cpp \
            KDChartBarAttributes.cpp \
            KDChartBarDiagram.cpp \
+           KDChartBarDiagram_p.cpp \
            KDChartCartesianAxis.cpp \
            KDChartDatasetProxyModel.cpp \
            KDChartDatasetSelector.cpp \
@@ -150,8 +154,11 @@ SOURCES += \
            KDChartLineAttributes.cpp \
            KDChartLineDiagram.cpp \
            KDChartLineDiagram_p.cpp \
+           KDChartNormalBarDiagram_p.cpp \
            KDChartNormalLineDiagram_p.cpp \
+           KDChartStackedBarDiagram_p.cpp \
            KDChartStackedLineDiagram_p.cpp \
+	   KDChartPercentBarDiagram_p.cpp \
            KDChartPercentLineDiagram_p.cpp \
            KDChartMarkerAttributes.cpp \
            KDChartPaintContext.cpp \

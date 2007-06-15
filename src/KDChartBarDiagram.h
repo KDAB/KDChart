@@ -32,17 +32,22 @@
 
 #include "KDChartAbstractCartesianDiagram.h"
 #include "KDChartBarAttributes.h"
-#include "KDChartThreeDBarAttributes.h"
+//#include "KDChartThreeDBarAttributes.h"
 
 class QPainter;
 
 namespace KDChart {
+
+    class ThreeDBarAttributes;
 
 class KDCHART_EXPORT BarDiagram : public AbstractCartesianDiagram
 {
     Q_OBJECT
 
     Q_DISABLE_COPY( BarDiagram )
+
+    friend class BarDiagramType;
+
     KDCHART_DECLARE_DERIVED_DIAGRAM( BarDiagram, CartesianCoordinatePlane )
 
 public:
@@ -51,19 +56,23 @@ public:
     virtual ~BarDiagram();
 
     virtual BarDiagram * clone() const;
+    /**
+    * Returns true if both diagrams have the same settings.
+    */
+    bool compare( const BarDiagram* other )const;
 
     enum BarType { Normal,
                    Stacked,
                    Percent,
                    Rows };
 
-    void setType( BarType type );
+    void setType( const BarType type );
     BarType type() const;
 
     void setBarAttributes( const BarAttributes & a );
     void setBarAttributes( int column, const BarAttributes & a );
-    void setBarAttributes( const QModelIndex & index,
-                           const BarAttributes & a );
+    void setBarAttributes( const QModelIndex & index, const BarAttributes & a );
+
     BarAttributes barAttributes() const;
     BarAttributes barAttributes( int column ) const;
     BarAttributes barAttributes( const QModelIndex & index ) const;
@@ -110,15 +119,20 @@ protected:
     virtual double threeDItemDepth( int column ) const;
     /** \reimpl */
     const QPair<QPointF, QPointF> calculateDataBoundaries() const;
-    //void paintEvent ( QPaintEvent* );
+    void paintEvent ( QPaintEvent* );
     void resizeEvent ( QResizeEvent* );
 private:
+
+    /*
     void paintBars( PaintContext* ctx, const QModelIndex& index, const QRectF& bar, double& maxDepth );
+    */
     void calculateValueAndGapWidths( int rowCount, int colCount,
                                      double groupWidth,
                                      double& barWidth,
                                      double& spaceBetweenBars,
                                      double& spaceBetweenGroups );
+public:
+    class BarDiagramType;
 }; // End of class BarDiagram
 
 }
