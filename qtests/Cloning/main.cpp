@@ -5,6 +5,7 @@
 #include <KDChartPieDiagram>
 #include <KDChartPieAttributes>
 #include <KDChartThreeDPieAttributes>
+#include <KDChartThreeDBarAttributes>
 #include <KDChartPolarDiagram>
 #include <KDChartRingDiagram>
 #include <KDChartHeaderFooter>

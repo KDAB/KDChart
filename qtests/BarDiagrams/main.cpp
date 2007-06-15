@@ -2,6 +2,7 @@
 #include <KDChartChart>
 #include <KDChartGlobal>
 #include <KDChartBarDiagram>
+#include <KDChartThreeDBarAttributes>
 #include <KDChartCartesianCoordinatePlane>
 
 #include <TableModel.h>
