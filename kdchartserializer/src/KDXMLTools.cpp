@@ -355,7 +355,7 @@ namespace KDXML {
         QDomElement fontElement = doc.createElement( elementName );
         parent.appendChild( fontElement );
         createStringNode( doc, fontElement, "Family", font.family() );
-        createIntNode( doc, fontElement, "PointSize", font.pointSize() );
+        createRealNode( doc, fontElement, "PointSize", font.pointSizeF() );
         createIntNode( doc, fontElement, "Weight", font.weight() );
         createBoolNode( doc, fontElement, "Italic", font.italic() );
     }
@@ -1005,7 +1005,8 @@ namespace KDXML {
     {
         bool ok = true;
         QString family;
-        int pointSize, weight;
+        qreal pointSize;
+        int weight;
         bool italic;
         int charSet;
         QDomNode node = element.firstChild();
@@ -1016,7 +1017,7 @@ namespace KDXML {
                 if( tagName == "Family" ) {
                     ok = ok & readStringNode( element, family );
                 } else if( tagName == "PointSize" ) {
-                    ok = ok & readIntNode( element, pointSize );
+                    ok = ok & readRealNode( element, pointSize );
                 } else if( tagName == "Weight" ) {
                     ok = ok & readIntNode( element, weight );
                 } else if( tagName == "Italic" ) {
@@ -1032,7 +1033,7 @@ namespace KDXML {
 
         if( ok ) {
             font.setFamily( family );
-            font.setPointSize( pointSize );
+            font.setPointSizeF( pointSize );
             font.setWeight( weight );
             font.setItalic( italic );
         }
