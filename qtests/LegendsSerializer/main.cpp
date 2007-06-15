@@ -29,7 +29,7 @@ private slots:
 
         m_chart = new Chart(0);
         TableModel *tableModel = new TableModel( this );
-        tableModel->loadFromCSV( "../../../examples/tools/modeldata/KDChart-Test-Datatables.csv" );
+        tableModel->loadFromCSV( ":/data" );
         tableModel->setSupplyHeaderData( false );
 
         m_lines = new LineDiagram();
