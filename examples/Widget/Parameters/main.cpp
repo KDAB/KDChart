@@ -27,7 +27,7 @@
 #include <KDChartWidget>
 #include <KDChartBarDiagram>
 #include <QPen>
-
+#include <KDChartThreeDBarAttributes>
 
 using namespace KDChart;
 
