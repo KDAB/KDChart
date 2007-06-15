@@ -43,6 +43,7 @@
 
 #include <KDABLibFakes>
 
+#include <limits>
 
 using namespace KDChart;
 
@@ -226,7 +227,7 @@ void CartesianAxis::Private::drawSubUnitRulers( QPainter* painter, CartesianCoor
     const bool isAbscissa = axis()->isAbscissa();
     const bool isLogarithmic = (dim.calcMode == AbstractCoordinatePlane::Logarithmic );
     const int subUnitTickLength = axis()->tickLength( true );
-    while ( f <= dim.end ) {
+    while ( dim.end - f > std::numeric_limits< float >::epsilon() ) {
         if( drawnTicks.count() > nextMayBeTick )
             mayBeTick = drawnTicks[ nextMayBeTick ];
         if ( isAbscissa ) {
