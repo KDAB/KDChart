@@ -30,8 +30,10 @@ private slots:
         QCOMPARE(  m_bars->type(),  BarDiagram::Stacked );
         m_bars->setType( BarDiagram::Percent );
         QCOMPARE(  m_bars->type(),  BarDiagram::Percent );
+#ifdef TEMPORARILY_REMOVED
         m_bars->setType( BarDiagram::Rows );
         QCOMPARE(  m_bars->type(),  BarDiagram::Rows );
+#endif
         //reset to normal
         m_bars->setType( BarDiagram::Normal );
     }
