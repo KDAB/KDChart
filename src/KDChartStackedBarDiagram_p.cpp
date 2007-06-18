@@ -63,8 +63,8 @@ void StackedBarDiagram::paint(  PaintContext* ctx )
 {
     const QPair<QPointF,QPointF> boundaries = diagram()->dataBoundaries(); // cached
 
-    const QPointF boundLeft = boundaries.first;
-    const QPointF boundRight = boundaries.second;
+    const QPointF boundLeft = ctx->coordinatePlane()->translate( boundaries.first ) ;
+    const QPointF boundRight = ctx->coordinatePlane()->translate( boundaries.second );
 
     const int rowCount = attributesModel()->rowCount(attributesModelRootIndex());
     const int colCount = attributesModel()->columnCount(attributesModelRootIndex());

@@ -54,7 +54,6 @@ const QPair<QPointF, QPointF> NormalBarDiagram::calculateDataBoundaries() const
     QPointF bottomLeft ( QPointF( xMin, yMin ) );
     QPointF topRight ( QPointF( xMax, yMax ) );
 
-    //qDebug() << "BarDiagram::calculateDataBoundaries () returns ( " << bottomLeft << topRight <<")";
     return QPair<QPointF, QPointF> ( bottomLeft,  topRight );
 }
 
@@ -63,8 +62,8 @@ void NormalBarDiagram::paint(  PaintContext* ctx )
 
     const QPair<QPointF,QPointF> boundaries = diagram()->dataBoundaries(); // cached
 
-    const QPointF boundLeft = boundaries.first;
-    const QPointF boundRight = boundaries.second;
+    const QPointF boundLeft = ctx->coordinatePlane()->translate( boundaries.first ) ;
+    const QPointF boundRight = ctx->coordinatePlane()->translate( boundaries.second );
 
     const int rowCount = attributesModel()->rowCount(attributesModelRootIndex());
     const int colCount = attributesModel()->columnCount(attributesModelRootIndex());
@@ -78,6 +77,7 @@ void NormalBarDiagram::paint(  PaintContext* ctx )
     double spaceBetweenGroups = 0;
 
      if ( ba.useFixedBarWidth() ) {
+
         barWidth = ba.fixedBarWidth();
         groupWidth += barWidth;
 
@@ -103,8 +103,9 @@ void NormalBarDiagram::paint(  PaintContext* ctx )
              spaceBetweenBars = ((ctx->rectangle().width()/rowCount) - groupWidth)/(colCount-1);
      }
 
-    if ( ba.useFixedValueBlockGap() )
+     if ( ba.useFixedValueBlockGap() ) {
         spaceBetweenGroups += ba.fixedValueBlockGap();
+    }
 
     calculateValueAndGapWidths( rowCount, colCount,groupWidth,
                                 barWidth, spaceBetweenBars, spaceBetweenGroups );

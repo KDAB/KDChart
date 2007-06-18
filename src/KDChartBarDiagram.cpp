@@ -73,7 +73,7 @@ BarDiagram::~BarDiagram()
 
 BarDiagram * BarDiagram::clone() const
 {
-    //return new BarDiagram( new Private( *d ) );
+
     BarDiagram* newDiagram = new BarDiagram( new Private( *d ) );
     newDiagram->setType( type() );
     return newDiagram;
