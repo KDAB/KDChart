@@ -707,10 +707,12 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     } else {
                         const int idx = (iLabel < hardLabelsCount    ) ? iLabel     : 0;
                         const int idx2= (iLabel < hardLabelsCount - 1) ? iLabel + 1 : 0;
+                        const int shortIdx =  (iLabel < shortLabelsCount    ) ? iLabel     : 0;
+                        const int shortIdx2 = (iLabel < shortLabelsCount - 1) ? iLabel + 1 : 0;
                         labelItem->setText(  customizedLabel(
-                                useShortLabels ? shortLabels()[ idx ] : labels()[ idx ]) );
+                                useShortLabels ? shortLabels()[ shortIdx ] : labels()[ idx ] ) );
                         labelItem2->setText( customizedLabel(
-                                useShortLabels ? shortLabels()[ idx2] : labels()[ idx2]) );
+                                useShortLabels ? shortLabels()[ shortIdx2 ] : labels()[ idx2 ] ) );
                     }
 
                     QPointF firstPos( i, 0.0 );
@@ -829,7 +831,9 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     }
 
                     if( hardLabelsCount ) {
-                        if( idxLabel >= hardLabelsCount  -1 )
+                        if( useShortLabels && idxLabel >= shortLabelsCount - 1 )
+                            idxLabel = 0;
+                        else if( !useShortLabels && idxLabel >= hardLabelsCount - 1 )
                             idxLabel = 0;
                         else
                             ++idxLabel;
