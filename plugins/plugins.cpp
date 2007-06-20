@@ -22,9 +22,23 @@ QWidget * create( QWidget * parent ) {
   return new T_Widget( parent );
 }
 
+template <typename T_Widget>
+class DesignerWrapperWidget : public T_Widget
+{
+public:
+    DesignerWrapperWidget( QWidget* parent = 0 ) : T_Widget( parent )
+    {
+    }
+
+    QSize sizeHint() const
+    {
+        return QSize( 150, 150 );
+    }
+};
+
 QWidget* createKDChartWidget( QWidget * parent )
 {
-     KDChart::Widget *w = new KDChart::Widget( parent );
+     DesignerWrapperWidget<KDChart::Widget>* w = new DesignerWrapperWidget<KDChart::Widget>( parent );
      QVector<double> col0, col1;
      col0 << 3.0 << 0.0 << 2.0 << 1.0 << 3.0 << 0.0;
      col1 << 2.0 << 1.0 << 3.0 << 4.0 << 3.0 << 2.0;
@@ -36,7 +50,7 @@ QWidget* createKDChartWidget( QWidget * parent )
 QWidget* createKDChartChart( QWidget * parent )
 {
     QStandardItemModel *m_model = new QStandardItemModel;
-    KDChart::Chart *w = new KDChart::Chart(  parent );
+    DesignerWrapperWidget<KDChart::Chart>* w = new DesignerWrapperWidget<KDChart::Chart>( parent );
 
     m_model->insertRows( 0, 2, QModelIndex() );
     m_model->insertColumns(  0,  3,  QModelIndex() );
@@ -52,7 +66,7 @@ QWidget* createKDChartChart( QWidget * parent )
 
     w->coordinatePlane()->replaceDiagram(diagram);
 
-    return w;/*new KDChart::Chart( parent )*/;
+    return w;
 }
 
 void initKDChartChart( QDesignerCustomWidgetInterface *, QDesignerFormEditorInterface * core )
