@@ -303,7 +303,10 @@ void KDChartWidgetDesignerCustomEditor::slotRemoveAxis()
 void KDChartWidgetDesignerCustomEditor::slotCurrentAxisChanged( int idx )
 {
 
-    if ( idx == -1 ) return;
+    if ( idx == -1 ) {
+        mAxisEditor->setAxis( 0 );
+        return;
+    }
     KDChart::Widget::ChartType type = mChart->type();
     switch ( type ) {
     case KDChart::Widget::Bar:
@@ -353,7 +356,10 @@ void KDChartWidgetDesignerCustomEditor::slotRemoveHeaderFooter()
 
 void KDChartWidgetDesignerCustomEditor::slotCurrentHeaderFooterChanged( int idx )
 {
-    if ( idx == -1 || idx >= mChart->allHeadersFooters().count() ) return;
+    if ( idx == -1 || idx >= mChart->allHeadersFooters().count() ) {
+        mHeaderFooterEditor->setHeaderFooter( 0 );
+        return;
+    }
     HeaderFooter* l = mChart->allHeadersFooters()[idx];
     mHeaderFooterEditor->setHeaderFooter( l );
 }
