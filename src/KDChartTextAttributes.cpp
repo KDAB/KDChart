@@ -110,7 +110,7 @@ bool TextAttributes::operator==( const TextAttributes& r ) const
             minimalFontSize() == r.minimalFontSize() &&
             autoRotate() == r.autoRotate() &&
             autoShrink() == r.autoShrink() &&
-            rotation() == rotation() &&
+            rotation() == r.rotation() &&
             pen() == r.pen() );
 }
 
