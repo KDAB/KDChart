@@ -142,6 +142,8 @@ void KDChart::TextLayoutItem::setText(const QString & text)
     mText = text;
     cachedSizeHint = QSize();
     sizeHint();
+    if( mParent )
+        mParent->update();
 }
 
 QString KDChart::TextLayoutItem::text() const
@@ -159,6 +161,8 @@ void KDChart::TextLayoutItem::setTextAttributes( const TextAttributes &a )
     mAttributes = a;
     cachedSizeHint = QSize(); // invalidate size hint
     sizeHint();
+    if( mParent )
+        mParent->update();
 }
 
 /**
