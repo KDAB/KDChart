@@ -97,6 +97,7 @@ void AbstractAreaBase::alignToReferencePoint( const RelativePosition& position )
 void AbstractAreaBase::setFrameAttributes( const FrameAttributes &a )
 {
     d->frameAttributes = a;
+    // PENDING(tobias) We need some sort of update call here, positionHasChanged()?
 }
 
 FrameAttributes AbstractAreaBase::frameAttributes() const
@@ -107,6 +108,7 @@ FrameAttributes AbstractAreaBase::frameAttributes() const
 void AbstractAreaBase::setBackgroundAttributes( const BackgroundAttributes &a )
 {
     d->backgroundAttributes = a;
+    // PENDING(tobias) We need some sort of update call here, positionHasChanged()?
 }
 
 BackgroundAttributes AbstractAreaBase::backgroundAttributes() const

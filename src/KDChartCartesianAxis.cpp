@@ -96,7 +96,6 @@ bool CartesianAxis::compare( const CartesianAxis* other )const
 
 void CartesianAxis::setTitleText( const QString& text )
 {
-    //FIXME(khz): Call update al all places where axis internals are changed!
     d->titleText = text;
     layoutPlanes();
 }

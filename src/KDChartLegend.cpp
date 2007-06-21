@@ -537,6 +537,7 @@ void Legend::setColor( uint dataset, const QColor& color )
     if( d->brushes[ dataset ] == color ) return;
     d->brushes[ dataset ] = color;
     setNeedRebuild();
+    update();
 }
 
 void Legend::setBrush( uint dataset, const QBrush& brush )
@@ -544,6 +545,7 @@ void Legend::setBrush( uint dataset, const QBrush& brush )
     if( d->brushes[ dataset ] == brush ) return;
     d->brushes[ dataset ] = brush;
     setNeedRebuild();
+    update();
 }
 
 QBrush Legend::brush( uint dataset ) const
@@ -570,8 +572,10 @@ void Legend::setBrushesFromDiagram( KDChart::AbstractDiagram* diagram )
             bChangesDone = true;
         }
     }
-    if( bChangesDone )
+    if( bChangesDone ) {
         setNeedRebuild();
+        update();
+    }
 }
 
 
@@ -580,6 +584,7 @@ void Legend::setPen( uint dataset, const QPen& pen )
     if( d->pens[dataset] == pen ) return;
     d->pens[dataset] = pen;
     setNeedRebuild();
+    update();
 }
 
 QPen Legend::pen( uint dataset ) const
@@ -601,6 +606,7 @@ void Legend::setMarkerAttributes( uint dataset, const MarkerAttributes& markerAt
     if( d->markerAttributes[dataset] == markerAttributes ) return;
     d->markerAttributes[ dataset ] = markerAttributes;
     setNeedRebuild();
+    update();
 }
 
 MarkerAttributes Legend::markerAttributes( uint dataset ) const
