@@ -633,6 +633,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
         const qreal halfFontHeight = met.height() * 0.5;
 
         if ( isAbscissa() ) {
+
             // If we have a labels list AND a short labels list, we first find out,
             // if there is enough space for the labels: if not, use the short labels.
             if( drawLabels && hardLabelsCount > 0 && shortLabelsCount > 0 ){
@@ -671,7 +672,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
             }
 
             qreal labelDiff = dimX.stepWidth;
-            //qDebug() << "labelDiff " << labelDiff;
+            //      qDebug() << "initial labelDiff " << labelDiff;
             if ( drawLabels )
             {
 
@@ -724,7 +725,12 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     if ( labelItem->intersects( *labelItem2, firstPos, secondPos ) )
                     {
                         i = minValueX;
-                        labelDiff += labelDiff;
+
+                        // fix for issue #4179:
+                        labelDiff *= 10.0;
+                        // old code:
+                        // labelDiff += labelDiff;
+
                         iLabel = 0;
                     }
                     else
@@ -744,7 +750,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
             qreal iLabelF = minValueX;
             qreal i = minValueX;
             qreal labelStep = 0.0;
-            //qDebug() << "dimX.stepWidth:" << dimX.stepWidth;
+            //    qDebug() << "dimX.stepWidth:" << dimX.stepWidth  << "labelDiff:" << labelDiff;
             //dimX.stepWidth = 0.5;
             while( i <= maxValueX ) {
                 // Line charts: we want the first tick to begin at 0.0 not at 0.5 otherwise labels and
@@ -760,9 +766,13 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 const bool bIsVisibleLabel =
                         ( translatedValue >= geoRect.left() && translatedValue <= geoRect.right() );
 
+                // fix for issue #4179:
+                bool painttick = bIsVisibleLabel && labelStep <= 0;;
+                // old code:
+                // bool painttick = true;
+
                 //Dont paint more ticks than we need
                 //when diagram type is Bar
-                bool painttick = true;
                 if (  isBarDiagram && i == maxValueX )
                     painttick = false;
 
