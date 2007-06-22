@@ -452,7 +452,7 @@ bool CartesianCoordinatePlane::doneSetZoomFactorY( double factor )
     return done;
 }
 
-bool CartesianCoordinatePlane::doneSetZoomCenter( QPointF point )
+bool CartesianCoordinatePlane::doneSetZoomCenter( const QPointF& point )
 {
     const bool done = ( d->coordinateTransformation.zoom.center() != point );
     if( done ){
@@ -477,7 +477,7 @@ void CartesianCoordinatePlane::setZoomFactorY( double factor )
     }
 }
 
-void CartesianCoordinatePlane::setZoomCenter( QPointF point )
+void CartesianCoordinatePlane::setZoomCenter( const QPointF& point )
 {
     if( doneSetZoomCenter( point ) ){
         emit propertiesChanged();

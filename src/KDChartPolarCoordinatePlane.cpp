@@ -349,7 +349,7 @@ QPointF PolarCoordinatePlane::zoomCenter() const
     return QPointF( d->coordinateTransformations[0].zoom.xCenter, d->coordinateTransformations[0].zoom.yCenter );
 }
 
-void PolarCoordinatePlane::setZoomCenter( QPointF center )
+void PolarCoordinatePlane::setZoomCenter( const QPointF& center )
 {
     d->coordinateTransformations[0].zoom.xCenter = center.x();
     d->coordinateTransformations[0].zoom.yCenter = center.y();

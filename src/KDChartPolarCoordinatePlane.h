@@ -72,7 +72,7 @@ namespace KDChart {
 
         virtual QPointF zoomCenter() const;
 
-        virtual void setZoomCenter( QPointF center );
+        virtual void setZoomCenter( const QPointF& center );
 
         /**
          * Set the attributes to be used for grid lines drawn in circular

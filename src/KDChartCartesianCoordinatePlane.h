@@ -84,7 +84,7 @@ namespace KDChart {
         /**
          * \sa zoomCenter, setZoomFactorX, setZoomFactorY
          */
-        virtual void setZoomCenter( QPointF center );
+        virtual void setZoomCenter( const QPointF& center );
 
 
         /**
@@ -370,7 +370,7 @@ namespace KDChart {
         void layoutDiagrams();
         bool doneSetZoomFactorX( double factor );
         bool doneSetZoomFactorY( double factor );
-        bool doneSetZoomCenter( QPointF center );
+        bool doneSetZoomCenter( const QPointF& center );
 
     protected Q_SLOTS:
         void slotLayoutChanged( AbstractDiagram* );

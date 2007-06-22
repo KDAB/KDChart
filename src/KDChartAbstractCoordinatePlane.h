@@ -175,7 +175,7 @@ namespace KDChart {
          * center point in zoom operations.
          * @param center The point to use.
          */
-        virtual void setZoomCenter( QPointF /* center */ ) {}
+        virtual void setZoomCenter( const QPointF& /* center */ ) {}
 
         /**
          * Set the grid attributes to be used by this coordinate plane.
