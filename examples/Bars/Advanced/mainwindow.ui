@@ -25,7 +25,7 @@
    <item row="10" column="0" >
     <widget class="QCheckBox" name="fixPlaneSizeCB" >
      <property name="text" >
-      <string>Plane size fixed</string>
+      <string>Data / plane space relation fixed</string>
      </property>
     </widget>
    </item>

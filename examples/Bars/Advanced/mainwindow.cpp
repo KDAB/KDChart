@@ -194,6 +194,6 @@ void MainWindow::on_fixPlaneSizeCB_toggled( bool checked )
     if( plane == 0 )
         return;
 
-    plane->setFixedPlaneSize( checked );
+    plane->setFixedDataCoordinateSpaceRelation( checked );
     m_chart->update();
 }
