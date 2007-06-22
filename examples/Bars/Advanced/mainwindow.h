@@ -52,6 +52,7 @@ private slots:
     void on_depthSB_valueChanged( int i );
     void on_widthCB_toggled( bool checked );
     void on_widthSB_valueChanged( int i );
+    void on_fixPlaneSizeCB_toggled( bool checked );
 
 private:
     KDChart::Chart* m_chart;

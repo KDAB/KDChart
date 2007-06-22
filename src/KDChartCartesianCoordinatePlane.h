@@ -86,6 +86,9 @@ namespace KDChart {
          */
         virtual void setZoomCenter( const QPointF& center );
 
+        void setFixedPlaneSize( bool fixed );
+        bool hasFixedPlaneSize() const;
+
 
         /**
          * \brief Set the boundaries of the visible value space displayed in horizontal direction.
@@ -371,6 +374,8 @@ namespace KDChart {
         bool doneSetZoomFactorX( double factor );
         bool doneSetZoomFactorY( double factor );
         bool doneSetZoomCenter( const QPointF& center );
+
+        void handleFixedPlaneSize( const QRectF& geometry );
 
     protected Q_SLOTS:
         void slotLayoutChanged( AbstractDiagram* );

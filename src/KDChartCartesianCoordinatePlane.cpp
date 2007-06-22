@@ -59,6 +59,7 @@ CartesianCoordinatePlane::Private::Private()
     , autoAdjustHorizontalRangeToData(67)
     , autoAdjustVerticalRangeToData(  67)
     , autoAdjustGridToZoom( true )
+    , fixedPlaneSize( false )
 {
     // this bloc left empty intentionally
 }
@@ -396,10 +397,51 @@ void CartesianCoordinatePlane::layoutDiagrams()
     diagramArea.setTopLeft( translate ( dataBoundingRect.topLeft() ) );
     diagramArea.setBottomRight ( translate ( dataBoundingRect.bottomRight() ) );
 
+    // the plane area might have changed, so the zoom values might also be changed
+    handleFixedPlaneSize( drawArea );
+
     //qDebug("KDChart::CartesianCoordinatePlane::layoutDiagrams() done,\ncalling update() now:");
     update();
 }
 
+void CartesianCoordinatePlane::setFixedPlaneSize( bool fixed )
+{
+    d->fixedPlaneSize = fixed;
+    d->fixedPlaneSizeOldSize = QRectF();
+}
+
+bool CartesianCoordinatePlane::hasFixedPlaneSize() const
+{
+    return d->fixedPlaneSize;
+}
+
+void CartesianCoordinatePlane::handleFixedPlaneSize( const QRectF& geometry )
+{
+    // is the feature enabled?
+    if( !d->fixedPlaneSize )
+        return;
+
+    // is the new geometry ok?
+    if( geometry.height() < 1 || geometry.width() < 1 )
+        return;
+
+    // if the size was changed, we calculate new zoom settings
+    if( d->fixedPlaneSizeOldSize != geometry && !d->fixedPlaneSizeOldSize.isNull() )
+    {
+        const double newZoomX = zoomFactorX() * d->fixedPlaneSizeOldSize.width() / geometry.width();
+        const double newZoomY = zoomFactorY() * d->fixedPlaneSizeOldSize.height() / geometry.height();
+
+        const QPointF oldCenter = zoomCenter();
+        const QPointF newCenter = QPointF( oldCenter.x() * geometry.width() / d->fixedPlaneSizeOldSize.width(),
+                                           oldCenter.y() * geometry.height() / d->fixedPlaneSizeOldSize.height() );
+        
+        setZoomCenter( newCenter );
+        setZoomFactorX( newZoomX );
+        setZoomFactorY( newZoomY );
+    }
+
+    d->fixedPlaneSizeOldSize = geometry;
+}
 
 const QPointF CartesianCoordinatePlane::translate( const QPointF& diagramPoint ) const
 {

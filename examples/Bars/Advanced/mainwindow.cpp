@@ -187,3 +187,13 @@ void MainWindow::on_widthCB_toggled( bool checked )
         m_chart->update();
     }
 }
+
+void MainWindow::on_fixPlaneSizeCB_toggled( bool checked )
+{
+    CartesianCoordinatePlane* plane = qobject_cast< CartesianCoordinatePlane* >( m_chart->coordinatePlane() );
+    if( plane == 0 )
+        return;
+
+    plane->setFixedPlaneSize( checked );
+    m_chart->update();
+}

@@ -101,6 +101,9 @@ public:
     unsigned int autoAdjustHorizontalRangeToData;
     unsigned int autoAdjustVerticalRangeToData;
     bool autoAdjustGridToZoom;
+
+    bool fixedPlaneSize;
+    QRectF fixedPlaneSizeOldSize;
 };
 
 
