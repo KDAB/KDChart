@@ -102,8 +102,8 @@ public:
     unsigned int autoAdjustVerticalRangeToData;
     bool autoAdjustGridToZoom;
 
-    bool fixedPlaneSize;
-    QRectF fixedPlaneSizeOldSize;
+    bool fixedDataCoordinateSpaceRelation;
+    QRectF fixedDataCoordinateSpaceRelationOldSize;
 };
 
 

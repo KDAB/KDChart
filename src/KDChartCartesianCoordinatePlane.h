@@ -86,8 +86,8 @@ namespace KDChart {
          */
         virtual void setZoomCenter( const QPointF& center );
 
-        void setFixedPlaneSize( bool fixed );
-        bool hasFixedPlaneSize() const;
+        void setFixedDataCoordinateSpaceRelation( bool fixed );
+        bool hasFixedDataCoordinateSpaceRelation() const;
 
 
         /**
@@ -375,7 +375,7 @@ namespace KDChart {
         bool doneSetZoomFactorY( double factor );
         bool doneSetZoomCenter( const QPointF& center );
 
-        void handleFixedPlaneSize( const QRectF& geometry );
+        void handleFixedDataCoordinateSpaceRelation( const QRectF& geometry );
 
     protected Q_SLOTS:
         void slotLayoutChanged( AbstractDiagram* );

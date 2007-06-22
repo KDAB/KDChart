@@ -59,7 +59,7 @@ CartesianCoordinatePlane::Private::Private()
     , autoAdjustHorizontalRangeToData(67)
     , autoAdjustVerticalRangeToData(  67)
     , autoAdjustGridToZoom( true )
-    , fixedPlaneSize( false )
+    , fixedDataCoordinateSpaceRelation( false )
 {
     // this bloc left empty intentionally
 }
@@ -398,27 +398,27 @@ void CartesianCoordinatePlane::layoutDiagrams()
     diagramArea.setBottomRight ( translate ( dataBoundingRect.bottomRight() ) );
 
     // the plane area might have changed, so the zoom values might also be changed
-    handleFixedPlaneSize( drawArea );
+    handleFixedDataCoordinateSpaceRelation( drawArea );
 
     //qDebug("KDChart::CartesianCoordinatePlane::layoutDiagrams() done,\ncalling update() now:");
     update();
 }
 
-void CartesianCoordinatePlane::setFixedPlaneSize( bool fixed )
+void CartesianCoordinatePlane::setFixedDataCoordinateSpaceRelation( bool fixed )
 {
-    d->fixedPlaneSize = fixed;
-    d->fixedPlaneSizeOldSize = QRectF();
+    d->fixedDataCoordinateSpaceRelation = fixed;
+    d->fixedDataCoordinateSpaceRelationOldSize = QRectF();
 }
 
-bool CartesianCoordinatePlane::hasFixedPlaneSize() const
+bool CartesianCoordinatePlane::hasFixedDataCoordinateSpaceRelation() const
 {
-    return d->fixedPlaneSize;
+    return d->fixedDataCoordinateSpaceRelation;
 }
 
-void CartesianCoordinatePlane::handleFixedPlaneSize( const QRectF& geometry )
+void CartesianCoordinatePlane::handleFixedDataCoordinateSpaceRelation( const QRectF& geometry )
 {
     // is the feature enabled?
-    if( !d->fixedPlaneSize )
+    if( !d->fixedDataCoordinateSpaceRelation )
         return;
 
     // is the new geometry ok?
@@ -426,21 +426,21 @@ void CartesianCoordinatePlane::handleFixedPlaneSize( const QRectF& geometry )
         return;
 
     // if the size was changed, we calculate new zoom settings
-    if( d->fixedPlaneSizeOldSize != geometry && !d->fixedPlaneSizeOldSize.isNull() )
+    if( d->fixedDataCoordinateSpaceRelationOldSize != geometry && !d->fixedDataCoordinateSpaceRelationOldSize.isNull() )
     {
-        const double newZoomX = zoomFactorX() * d->fixedPlaneSizeOldSize.width() / geometry.width();
-        const double newZoomY = zoomFactorY() * d->fixedPlaneSizeOldSize.height() / geometry.height();
+        const double newZoomX = zoomFactorX() * d->fixedDataCoordinateSpaceRelationOldSize.width() / geometry.width();
+        const double newZoomY = zoomFactorY() * d->fixedDataCoordinateSpaceRelationOldSize.height() / geometry.height();
 
         const QPointF oldCenter = zoomCenter();
-        const QPointF newCenter = QPointF( oldCenter.x() * geometry.width() / d->fixedPlaneSizeOldSize.width(),
-                                           oldCenter.y() * geometry.height() / d->fixedPlaneSizeOldSize.height() );
+        const QPointF newCenter = QPointF( oldCenter.x() * geometry.width() / d->fixedDataCoordinateSpaceRelationOldSize.width(),
+                                           oldCenter.y() * geometry.height() / d->fixedDataCoordinateSpaceRelationOldSize.height() );
         
         setZoomCenter( newCenter );
         setZoomFactorX( newZoomX );
         setZoomFactorY( newZoomY );
     }
 
-    d->fixedPlaneSizeOldSize = geometry;
+    d->fixedDataCoordinateSpaceRelationOldSize = geometry;
 }
 
 const QPointF CartesianCoordinatePlane::translate( const QPointF& diagramPoint ) const
