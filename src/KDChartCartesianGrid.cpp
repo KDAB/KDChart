@@ -326,6 +326,12 @@ DataDimensionsList CartesianGrid::calculateGrid(
             //qDebug("CartesianGrid::calculateGrid()   l.last().start:  %f   l.last().end:  %f", l.last().start, l.last().end);
             //qDebug("                                 l.first().start: %f   l.first().end: %f", l.first().start, l.first().end);
 
+            // one time for the min/max value
+            const DataDimension minMaxY
+                    = calculateGridXY( l.last(), Qt::Vertical,
+                                       gridAttrsY.adjustLowerBoundToGrid(),
+                                       gridAttrsY.adjustUpperBoundToGrid() );
+
             if( plane->autoAdjustGridToZoom()
                 && plane->axesCalcModeY() == CartesianCoordinatePlane::Linear
                 && plane->zoomFactorY() > 1.0 )
@@ -333,6 +339,7 @@ DataDimensionsList CartesianGrid::calculateGrid(
                 l.last().start = translatedBottomLeft.y();
                 l.last().end   = translatedTopRight.y();
             }
+            // and one other time for the step width
             const DataDimension dimY
                     = calculateGridXY( l.last(), Qt::Vertical,
                                        gridAttrsY.adjustLowerBoundToGrid(),
@@ -342,8 +349,8 @@ DataDimensionsList CartesianGrid::calculateGrid(
                 l.first().end          = dimX.end;
                 l.first().stepWidth    = dimX.stepWidth;
                 l.first().subStepWidth = dimX.subStepWidth;
-                l.last().start        = dimY.start;
-                l.last().end          = dimY.end;
+                l.last().start        = qMax( dimY.start, minMaxY.start );
+                l.last().end          = qMin( dimY.end, minMaxY.end );
                 l.last().stepWidth    = dimY.stepWidth;
                 //qDebug() << "CartesianGrid::calculateGrid()  final grid y-range:" << l.last().end - l.last().start << "   step width:" << l.last().stepWidth << endl;
                 // calculate some reasonable subSteps if the
