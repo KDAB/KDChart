@@ -376,6 +376,10 @@ QVariant AttributesModel::data( const QModelIndex& index, int role ) const
   if( index.isValid() ) {
     Q_ASSERT( index.model() == this );
   }
+
+  if( ! sourceModel() )
+      return QVariant();
+
   QVariant sourceData = sourceModel()->data( mapToSource(index), role );
   if ( sourceData.isValid() )
       return sourceData;
@@ -459,8 +463,10 @@ bool AttributesModel::setHeaderData ( int section, Qt::Orientation orientation,
             = orientation == Qt::Horizontal ? mHorizontalHeaderDataMap : mVerticalHeaderDataMap;
         QMap<int, QVariant> &dataMap = sectionDataMap[ section ];
         dataMap.insert( role, value );
-        emit attributesChanged( index( 0, section, QModelIndex() ),
-                                index( rowCount( QModelIndex() ), section, QModelIndex() ) );
+        if( sourceModel() ){
+            emit attributesChanged( index( 0, section, QModelIndex() ),
+                                    index( rowCount( QModelIndex() ), section, QModelIndex() ) );
+        }
         return true;
     }
 }
@@ -483,9 +489,11 @@ AttributesModel::PaletteType AttributesModel::paletteType() const
 bool KDChart::AttributesModel::setModelData( const QVariant value, int role )
 {
     mModelDataMap.insert( role, value );
-    emit attributesChanged( index( 0, 0, QModelIndex() ),
-                            index( rowCount( QModelIndex() ),
-                                    columnCount( QModelIndex() ), QModelIndex() ) );
+    if( sourceModel() ){
+        emit attributesChanged( index( 0, 0, QModelIndex() ),
+                                index( rowCount( QModelIndex() ),
+                                       columnCount( QModelIndex() ), QModelIndex() ) );
+    }
     return true;
 }
 
