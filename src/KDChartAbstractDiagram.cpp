@@ -613,8 +613,6 @@ void AbstractDiagram::paintMarker( QPainter* painter,
                                    const QPointF& pos,
                                    const QSizeF& maSize )
 {
-    QModelIndex index;
-
     const QPen oldPen( painter->pen() );
     // Pen is used to paint 4Pixels - 1 Pixel - Ring and FastCross types.
     // make sure to use the brush color - see above in those cases.

@@ -217,7 +217,8 @@ void NormalLineDiagram::paint(  PaintContext* ctx )
                         ptSouthEast = ptSouthWest;
                     }
 
-                    const PositionPoints pts( ptNorthWest, ptNorthEast, ptSouthEast, ptSouthWest );
+                    const PositionPoints pts = isPositive ? PositionPoints( ptNorthWest, ptNorthEast, ptSouthEast, ptSouthWest )
+                                                          : PositionPoints( ptSouthWest, ptSouthEast, ptNorthEast, ptNorthWest );
                     appendDataValueTextInfoToList( diagram(), list, index, pts,
                                                    Position::NorthWest, Position::SouthWest,
                                                    valueY );

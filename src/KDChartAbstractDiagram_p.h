@@ -118,6 +118,12 @@ namespace KDChart {
                     //       automatic reference area detection.
                     QSizeF relativeMeasureSize( fontHeight, fontHeight );
 
+/*                    if( !bValueIsPositive )
+                    {
+                        qDebug() << relativeMeasureSize;
+                        qDebug() << relPos.calculatedPoint( relativeMeasureSize );
+                    }*/
+                    
                     // Store the anchor point, that's already shifted according to horiz./vert. padding:
                     list.append( DataValueTextInfo(
                                      index,

@@ -184,7 +184,7 @@ const QPointF RelativePosition::referencePoint() const
 
 const QPointF RelativePosition::calculatedPoint( const QSizeF& autoSize ) const
 {
-    QPointF pt( referencePoint() );
+    const QPointF pt( referencePoint() );
     const qreal dx = horizontalPadding().calculatedValue( autoSize, KDChartEnums::MeasureOrientationHorizontal );
     const qreal dy = verticalPadding()  .calculatedValue( autoSize, KDChartEnums::MeasureOrientationVertical );
     //qDebug() << "rect.center() " << rect.center();
