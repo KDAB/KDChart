@@ -60,6 +60,8 @@ CartesianCoordinatePlane::Private::Private()
     , autoAdjustVerticalRangeToData(  67)
     , autoAdjustGridToZoom( true )
     , fixedDataCoordinateSpaceRelation( false )
+    , reverseVerticalPlane( false )
+    , reverseHorizontalPlane( false )
 {
     // this bloc left empty intentionally
 }
@@ -350,9 +352,28 @@ void CartesianCoordinatePlane::layoutDiagrams()
     diagramArea.setBottomRight ( QPointF ( drawArea.right(), drawArea.bottom() ) );
 
     // determine coordinate transformation:
-    QPointF diagramTopLeft = dataBoundingRect.topLeft();
-    double diagramWidth = dataBoundingRect.width();
-    double diagramHeight = dataBoundingRect.height();
+    QPointF diagramTopLeft;
+    if( !d->reverseVerticalPlane && !d->reverseHorizontalPlane )
+        diagramTopLeft = dataBoundingRect.topLeft();
+    else if( d->reverseVerticalPlane && !d->reverseHorizontalPlane )
+        diagramTopLeft = dataBoundingRect.bottomLeft();
+    else if( d->reverseVerticalPlane && d->reverseHorizontalPlane )
+        diagramTopLeft = dataBoundingRect.bottomRight();
+    else if( !d->reverseVerticalPlane && d->reverseHorizontalPlane )
+        diagramTopLeft = dataBoundingRect.topRight();
+    
+    double diagramWidth;
+    if( !d->reverseHorizontalPlane )
+        diagramWidth = dataBoundingRect.width();
+    else
+        diagramWidth = -dataBoundingRect.width();
+    
+    double diagramHeight;
+    if( !d->reverseVerticalPlane )
+        diagramHeight = dataBoundingRect.height();
+    else
+        diagramHeight = -dataBoundingRect.height();
+    
     double planeWidth = diagramArea.width();
     double planeHeight = diagramArea.height();
     double scaleX;
@@ -780,4 +801,34 @@ AbstractCoordinatePlane* KDChart::CartesianCoordinatePlane::sharedAxisMasterPlan
 
 
     return plane;
+}
+
+void KDChart::CartesianCoordinatePlane::setReverseHorizontal( bool reverse )
+{
+    if( d->reverseHorizontalPlane == reverse )
+        return;
+
+    d->reverseHorizontalPlane = reverse;
+    layoutDiagrams();
+    emit propertiesChanged();
+}
+
+bool KDChart::CartesianCoordinatePlane::isReversedHorizontal() const
+{
+    return d->reverseHorizontalPlane;
+}
+
+void KDChart::CartesianCoordinatePlane::setReverseVertical( bool reverse )
+{
+    if( d->reverseVerticalPlane == reverse )
+        return;
+
+    d->reverseVerticalPlane = reverse;
+    layoutDiagrams();
+    emit propertiesChanged();
+}
+
+bool KDChart::CartesianCoordinatePlane::isReversedVertical() const
+{
+    return d->reverseVerticalPlane;
 }

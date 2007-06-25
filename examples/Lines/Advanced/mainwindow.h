@@ -55,6 +55,8 @@ private slots:
     void on_trackAreasSB_valueChanged( int i );
     void setTrackedArea( int column, bool checked, bool doUpdate );
     void slot_timerFired();
+    void on_reverseHorizontalCB_toggled( bool checked );
+    void on_reverseVerticalCB_toggled( bool checked );
 
 private:
     KDChart::Chart* m_chart;

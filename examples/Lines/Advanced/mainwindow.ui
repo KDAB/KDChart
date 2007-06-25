@@ -286,6 +286,44 @@
       </layout>
      </item>
      <item>
+      <widget class="Line" name="line_6" >
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" >
+       <property name="margin" >
+        <number>0</number>
+       </property>
+       <property name="spacing" >
+        <number>6</number>
+       </property>
+       <item>
+        <widget class="QLabel" name="reverseLB" >
+         <property name="text" >
+          <string>Reverse Axis</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="reverseHorizontalCB" >
+         <property name="text" >
+          <string>Reverse abscissa axis</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="reverseVerticalCB" >
+         <property name="text" >
+          <string>Reverse ordinate axis</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
       <spacer>
        <property name="orientation" >
         <enum>Qt::Vertical</enum>

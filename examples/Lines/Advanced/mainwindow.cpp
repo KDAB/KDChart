@@ -251,3 +251,13 @@ void MainWindow::setTrackedArea( int column, bool checked, bool doUpdate )
     if( doUpdate )
         m_chart->update();
 }
+
+void MainWindow::on_reverseHorizontalCB_toggled( bool checked )
+{
+    static_cast<KDChart::CartesianCoordinatePlane*>( m_chart->coordinatePlane() )->setReverseHorizontal( checked );
+}
+
+void MainWindow::on_reverseVerticalCB_toggled( bool checked )
+{
+    static_cast<KDChart::CartesianCoordinatePlane*>( m_chart->coordinatePlane() )->setReverseVertical( checked );
+}

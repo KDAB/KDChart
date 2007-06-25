@@ -104,6 +104,9 @@ public:
 
     bool fixedDataCoordinateSpaceRelation;
     QRectF fixedDataCoordinateSpaceRelationOldSize;
+    
+    bool reverseVerticalPlane;
+    bool reverseHorizontalPlane;
 };
 
 
