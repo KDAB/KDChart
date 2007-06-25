@@ -39,18 +39,18 @@ class QPainter;
 namespace KDChart {
 
     class ThreeDBarAttributes;
-
 class KDCHART_EXPORT BarDiagram : public AbstractCartesianDiagram
 {
     Q_OBJECT
 
     Q_DISABLE_COPY( BarDiagram )
 
-    friend class BarDiagramType;
-
     KDCHART_DECLARE_DERIVED_DIAGRAM( BarDiagram, CartesianCoordinatePlane )
 
 public:
+    class BarDiagramType;
+    friend class BarDiagramType;
+
     explicit BarDiagram(
         QWidget* parent = 0, CartesianCoordinatePlane* plane = 0 );
     virtual ~BarDiagram();
@@ -131,8 +131,6 @@ private:
                                      double& barWidth,
                                      double& spaceBetweenBars,
                                      double& spaceBetweenGroups );
-public:
-    class BarDiagramType;
 }; // End of class BarDiagram
 
 }

@@ -47,12 +47,14 @@ class KDCHART_EXPORT LineDiagram : public AbstractCartesianDiagram
 
     Q_DISABLE_COPY( LineDiagram )
 //    KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( LineDiagram, CartesianCoordinatePlane * )
-    friend class LineDiagramType;
-    
+
     KDCHART_DECLARE_DERIVED_DIAGRAM( LineDiagram, CartesianCoordinatePlane )
 
 
 public:
+    class LineDiagramType;
+    friend class LineDiagramType;
+
     LineDiagram( QWidget* parent = 0, CartesianCoordinatePlane* plane = 0 );
     virtual ~LineDiagram();
 
@@ -126,9 +128,6 @@ protected:
     virtual const QPair<QPointF, QPointF> calculateDataBoundaries() const;
     void paintEvent ( QPaintEvent* );
     void resizeEvent ( QResizeEvent* );
-
-public:
-    class LineDiagramType;
 }; // End of class KDChartLineDiagram
 
 }

@@ -64,7 +64,7 @@ private:
 		TestMainWindow m_mainWindow;
 		QStringList m_xNotation;
 
-		static const int m_stepWidth = 10;
+		static const int m_stepWidth;
 		int m_count;
 
 };

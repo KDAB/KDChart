@@ -40,6 +40,8 @@
 
 using namespace KDChart;
 
+const int BenchmarkWindow::m_stepWidth = 10;
+
 BenchmarkWindow::BenchmarkWindow( QWidget* parent ) :
     QWidget( parent )
 {

@@ -41,7 +41,7 @@ void TernaryGrid::drawGrid( PaintContext* context )
 {
     static const int GridLineDistanceTreshold = 20; // <Treshold> pixels between each grid line
 
-    QPainter& painter ( *context->painter() ); // recover from pointer madness
+    QPainter& painter = *context->painter(); // recover from pointer madness
     PainterSaver s( &painter ); // can i have a reference based version of that?
     TernaryCoordinatePlane* plane = dynamic_cast<TernaryCoordinatePlane*>(context->coordinatePlane());
     Q_ASSERT_X ( plane, "TernaryGrid::drawGrid",
@@ -65,7 +65,7 @@ void TernaryGrid::drawGrid( PaintContext* context )
     }
 
     QVector<QLineF> lines[MaxDepth];
-    Q_FOREACH( const TickInfo& tick, m_tickInfo ) {
+    {Q_FOREACH( const TickInfo& tick, m_tickInfo ) {
         const double& percent = tick.percentage;
         {   // draw parallels to B
             TernaryPoint ternaryStart( percent, 1.0 - percent );
@@ -91,7 +91,7 @@ void TernaryGrid::drawGrid( PaintContext* context )
             lines[tick.depth].append( QLineF( plane->translate( start ),
                                               plane->translate( end ) ) );
         }
-    }
+    }}
 
     // now draw the lines:
     painter.setPen( QPen( QColor( "lightgray" ), 1 ) );
@@ -133,7 +133,7 @@ void TernaryGrid::drawGrid( PaintContext* context )
     percentages.erase( std::unique( percentages.begin(), percentages.end() ),
                        percentages.end() );
 
-    Q_FOREACH( const TickInfo& tick, percentages ) {
+    {Q_FOREACH( const TickInfo& tick, percentages ) {
         const double& percent = tick.percentage;
         {   // BC axis markers:
             const QPointF markerDistance( FullMarkerDistanceBC
@@ -159,7 +159,7 @@ void TernaryGrid::drawGrid( PaintContext* context )
             ticks.append( QLineF( plane->translate( start ),
                                   plane->translate( end ) ) );
         }
-    }
+    }}
     painter.drawLines( ticks );
 }
 
