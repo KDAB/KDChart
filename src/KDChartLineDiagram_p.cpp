@@ -211,8 +211,18 @@ void LineDiagram::LineDiagramType::appendDataValueTextInfoToList(
 
 void LineDiagram::LineDiagramType::paintValueTracker( PaintContext* ctx, const ValueTrackerAttributes& vt, const QPointF& at )
 {
+    CartesianCoordinatePlane* plane = qobject_cast<CartesianCoordinatePlane*>( ctx->coordinatePlane() );
+    if( !plane )
+        return;
+    
     DataDimensionsList gridDimensions = ctx->coordinatePlane()->gridDimensionsList();
-    const QPointF bottomLeft( ctx->coordinatePlane()->translate( QPointF( gridDimensions.at( 0 ).start, gridDimensions.at( 1 ).start ) ) );
+    const QPointF bottomLeft( ctx->coordinatePlane()->translate(
+                              QPointF( plane->isReversedHorizontal() ?
+                                           gridDimensions.at( 0 ).end :
+                                           gridDimensions.at( 0 ).start,
+                                       plane->isReversedVertical() ?
+                                           gridDimensions.at( 1 ).end :
+                                           gridDimensions.at( 1 ).start ) ) );
     const QPointF markerPoint = at;
     const QPointF ordinatePoint( bottomLeft.x(), at.y() );
     const QPointF abscissaPoint( at.x(), bottomLeft.y() );
