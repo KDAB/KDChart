@@ -125,8 +125,6 @@ void BarDiagram::setType( const BarType type )
 
 BarDiagram::BarType BarDiagram::type() const
 {
-    //return d->barType;
-
     return d->implementor->type();
 }
 

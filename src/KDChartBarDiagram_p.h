@@ -1,5 +1,5 @@
 /****************************************************************************
- ** Copyright (C) 2006 Klarälvdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2006 Klaralvdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KD Chart library.
  **
@@ -76,8 +76,8 @@ public:
                                      double& spaceBetweenBars,
                                      double& spaceBetweenGroups );
 */
-  
-    
+
+
     BarDiagram* diagram;
     BarDiagramType* implementor; // the current type
     BarDiagramType* normalDiagram;
@@ -124,13 +124,13 @@ KDCHART_IMPL_DERIVED_DIAGRAM( BarDiagram, AbstractCartesianDiagram, CartesianCoo
             const Position& autoPositionPositive,
             const Position& autoPositionNegative,
             const qreal value );
-        void paintDataValueTextsAndMarkers( 
-	    AbstractDiagram* diag, 
+        void paintDataValueTextsAndMarkers(
+	    AbstractDiagram* diag,
 	    PaintContext* ctx,
-            const DataValueTextInfoList & list, 
+            const DataValueTextInfoList & list,
 	    bool paintMarkers );
-        
-	void paintBars( PaintContext* ctx, const QModelIndex& index, 
+
+	void paintBars( PaintContext* ctx, const QModelIndex& index,
 			const QRectF& bar, double& maxDepth );
 	void calculateValueAndGapWidths( int rowCount, int colCount,
 					 double groupWidth,
