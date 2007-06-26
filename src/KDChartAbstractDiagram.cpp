@@ -928,7 +928,7 @@ QStringList AbstractDiagram::datasetLabels() const
         const int columnCount = attributesModel()->columnCount(attributesModelRootIndex());
         for( int i = datasetDimension()-1; i < columnCount; i += datasetDimension() ){
             //qDebug() << "dataset label: " << attributesModel()->headerData( i, Qt::Horizontal, Qt::DisplayRole ).toString();
-            ret << attributesModel()->headerData( i, Qt::Horizontal, Qt::DisplayRole ).toString() +
+            ret << attributesModel()->headerData( i, Qt::Horizontal, Qt::DisplayRole ).toString();
         }
     }
     return ret;
