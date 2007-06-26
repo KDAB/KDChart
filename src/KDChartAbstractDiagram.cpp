@@ -815,6 +815,50 @@ QBrush AbstractDiagram::brush( const QModelIndex& index ) const
             DatasetBrushRole ) );
 }
 
+void AbstractDiagram::setUnitPrefix( const QString& prefix, int column, Qt::Orientation orientation )
+{
+    d->unitPrefixMap[ column ][ orientation ]= prefix;
+}
+
+void AbstractDiagram::setUnitPrefix( const QString& prefix, Qt::Orientation orientation )
+{
+    d->unitPrefix[ orientation ] = prefix;
+}
+
+void AbstractDiagram::setUnitSuffix( const QString& suffix, int column, Qt::Orientation orientation )
+{
+    d->unitSuffixMap[ column ][ orientation ]= suffix;
+}
+
+void AbstractDiagram::setUnitSuffix( const QString& suffix, Qt::Orientation orientation )
+{
+    d->unitSuffix[ orientation ] = suffix;
+}
+
+QString AbstractDiagram::unitPrefix( int column, Qt::Orientation orientation, bool fallback ) const
+{
+    if( !fallback || d->unitPrefixMap[ column ].contains( orientation ) )
+        return d->unitPrefixMap[ column ][ orientation ];
+    return d->unitPrefix[ orientation ];
+}
+
+QString AbstractDiagram::unitPrefix( Qt::Orientation orientation ) const
+{
+    return d->unitPrefix[ orientation ];
+}
+
+QString AbstractDiagram::unitSuffix( int column, Qt::Orientation orientation, bool fallback ) const
+{
+    if( !fallback || d->unitSuffixMap[ column ].contains( orientation ) )
+        return d->unitSuffixMap[ column ][ orientation ];
+    return d->unitSuffix[ orientation ];
+}
+
+QString AbstractDiagram::unitSuffix( Qt::Orientation orientation ) const
+{
+    return d->unitSuffix[ orientation ];
+}
+
 // implement QAbstractItemView:
 QRect AbstractDiagram::visualRect(const QModelIndex &) const
 {
@@ -868,7 +912,9 @@ QStringList AbstractDiagram::itemRowLabels() const
         const int rowCount = attributesModel()->rowCount(attributesModelRootIndex());
         for( int i = 0; i < rowCount; ++i ){
             //qDebug() << "item row label: " << attributesModel()->headerData( i, Qt::Vertical, Qt::DisplayRole ).toString();
-            ret << attributesModel()->headerData( i, Qt::Vertical, Qt::DisplayRole ).toString();
+            ret << unitPrefix( i, Qt::Horizontal, true ) +
+                   attributesModel()->headerData( i, Qt::Vertical, Qt::DisplayRole ).toString() +
+                   unitSuffix( i, Qt::Horizontal, true );
         }
     }
     return ret;
@@ -882,7 +928,7 @@ QStringList AbstractDiagram::datasetLabels() const
         const int columnCount = attributesModel()->columnCount(attributesModelRootIndex());
         for( int i = datasetDimension()-1; i < columnCount; i += datasetDimension() ){
             //qDebug() << "dataset label: " << attributesModel()->headerData( i, Qt::Horizontal, Qt::DisplayRole ).toString();
-            ret << attributesModel()->headerData( i, Qt::Horizontal, Qt::DisplayRole ).toString();
+            ret << attributesModel()->headerData( i, Qt::Horizontal, Qt::DisplayRole ).toString() +
         }
     }
     return ret;

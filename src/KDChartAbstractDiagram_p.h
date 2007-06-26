@@ -245,6 +245,11 @@ namespace KDChart {
         mutable bool databoundariesDirty;
         ReverseMapper reverseMapper;
 
+        QMap< Qt::Orientation, QString > unitSuffix;
+        QMap< Qt::Orientation, QString > unitPrefix;
+        QMap< int, QMap< Qt::Orientation, QString > > unitSuffixMap;
+        QMap< int, QMap< Qt::Orientation, QString > > unitPrefixMap;
+
     private:
         QString lastRoundedValue;
         qreal lastX;

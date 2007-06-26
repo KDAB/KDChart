@@ -406,6 +406,18 @@ namespace KDChart {
          */
         QBrush brush( const QModelIndex& index ) const;
 
+        void setUnitPrefix( const QString& prefix, int column, Qt::Orientation orientation );
+        void setUnitPrefix( const QString& prefix, Qt::Orientation orientation );
+
+        void setUnitSuffix( const QString& suffix, int column, Qt::Orientation orientation );
+        void setUnitSuffix( const QString& suffix, Qt::Orientation orientation );
+
+        QString unitPrefix( int column, Qt::Orientation orientation, bool fallback = false ) const;
+        QString unitPrefix( Qt::Orientation orientation ) const;
+
+        QString unitSuffix( int column, Qt::Orientation orientation, bool fallback = false ) const;
+        QString unitSuffix( Qt::Orientation orientation ) const;
+
         /**
          * Set whether data value labels are allowed to overlap.
          * @param allow True means that overlapping labels are allowed.
