@@ -36,8 +36,6 @@
 #include <KDChartFrameAttributes>
 #include <KDChartLegend>
 
-#include "kdbasicsourcepanel.h"
-
 using namespace KDChart;
 
 KDChartDemo::KDChartDemo( QWidget* parent )
@@ -49,7 +47,7 @@ KDChartDemo::KDChartDemo( QWidget* parent )
 
     // attach sourcePanel
     QHBoxLayout* sourcePanelLayout = new QHBoxLayout( sourcePanelFrame );
-    sourcePanelLayout->addWidget((KDBasicSourcePanel*) m_sourcePanel);
+    sourcePanelLayout->addWidget( m_sourcePanel );
 
     // set the color schemes for charts
     setupColors();
@@ -129,7 +127,7 @@ void KDChartDemo::setupLineChart()
     // assign diagram to chart view
     m_lineChart->coordinatePlane()->replaceDiagram( m_lines );
 
-    for(int i=0; i < ((KDBasicSourcePanel*) m_sourcePanel)->table()->columnCount(); i++){
+    for(int i=0; i < m_sourcePanel->table()->columnCount(); i++){
         QPen p( Qt::SolidLine ); p.setWidth( 5 );
         p.setColor( getDataColor( i, KDChartDemo::DecentBlue ) );
         m_lines->setPen( i, p );
@@ -153,7 +151,7 @@ void KDChartDemo::setupBarChart()
 
     m_barChart->coordinatePlane()->replaceDiagram( m_bar );
 
-    for(int i=0; i < ((KDBasicSourcePanel*) m_sourcePanel)->table()->columnCount(); i++){
+    for(int i=0; i < m_sourcePanel->table()->columnCount(); i++){
         QPen p( Qt::SolidLine ); p.setWidth( 0 );
         p.setColor( getDataColor(i, KDChartDemo::DecentBlue) );
         m_bar->setPen( i, p );
@@ -269,7 +267,7 @@ void KDChartDemo::setClassicMode(bool toggled)
         return;
 
     // paint LineChart
-    for(int i=0; i < ((KDBasicSourcePanel*) m_sourcePanel)->table()->columnCount(); i++){
+    for(int i=0; i < m_sourcePanel->table()->columnCount(); i++){
         QPen p( Qt::SolidLine ); p.setWidth( 5 );
         p.setColor( getDataColor( i, KDChartDemo::DecentBlue ) );
         m_lines->setPen( i, p );
@@ -299,7 +297,7 @@ void KDChartDemo::setClassicMode(bool toggled)
     m_pie->setPieAttributes( pa );
 
     // decent colors
-    for(int i=0; i < ((KDBasicSourcePanel*) m_sourcePanel)->table()->columnCount(); i++){
+    for(int i=0; i < m_sourcePanel->table()->columnCount(); i++){
         m_pie->setBrush(i,getDataColor(i,KDChartDemo::LightBlue));
     }
     // paint PolarDiagram
@@ -311,7 +309,7 @@ void KDChartDemo::setFreshMode(bool toggled)
         return;
 
     // paint LineChart
-    for(int i=0; i < ((KDBasicSourcePanel*) m_sourcePanel)->table()->columnCount(); i++){
+    for(int i=0; i < m_sourcePanel->table()->columnCount(); i++){
         QPen p( Qt::SolidLine ); p.setWidth( 5 );
         p.setColor( getDataColor( i, KDChartDemo::Rainbow ) );
         m_lines->setPen( i, p );
@@ -342,7 +340,7 @@ void KDChartDemo::setFreshMode(bool toggled)
     pa.setExplodeFactor( 0.1 );
     m_pie->setPieAttributes( pa );
 
-    for(int i=0; i < ((KDBasicSourcePanel*) m_sourcePanel)->table()->columnCount(); i++){
+    for(int i=0; i < m_sourcePanel->table()->columnCount(); i++){
         m_pie->setBrush(i,getDataColor(i+1,KDChartDemo::Rainbow));
     }
 }

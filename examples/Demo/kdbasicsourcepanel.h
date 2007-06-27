@@ -23,17 +23,19 @@
  **
  **********************************************************************/
 
+#ifndef KDBASICSOURCEPANEL_H
+#define KDBASICSOURCEPANEL_H
+
 #include <QtGui/QMainWindow>
 #include <QtCore/QModelIndex>
 #include <QtCore/QAbstractTableModel>
 
 class TableModel;
-#include "kdabstractsourcepanel.h"
 #include "ui_kdbasicsourcepanel.h"
 
 #define RANDOM_DIVIDEND 100000
 
-class KDBasicSourcePanel : public QWidget, public KDAbstractSourcePanel, private Ui::KDBasicSourcePanel
+class KDBasicSourcePanel : public QWidget, private Ui::KDBasicSourcePanel
 {
     Q_OBJECT
 
@@ -52,6 +54,9 @@ public Q_SLOTS:
     void changeRow(int value);
     void reset();
 
+protected:
+    TableModel* m_table;
+
 private:
     inline int random(){ return rand()/RANDOM_DIVIDEND;}
     void setupSlider(QAbstractSlider* slider);
@@ -64,3 +69,5 @@ private:
 
     int m_oldValue;
 };
+
+#endif

@@ -26,7 +26,7 @@
 #ifndef KDCHARTPRODUCT_H
 #define KDCHARTPRODUCT_H
 
-#include "kdabstractsourcepanel.h"
+#include "kdbasicsourcepanel.h"
 
 #include <KDChartChart>
 #include <KDChartLineDiagram>
@@ -63,7 +63,7 @@ private:
     void setupPolarDiagram();
     void setupPieChart();
 
-    KDAbstractSourcePanel *m_sourcePanel;
+    KDBasicSourcePanel *m_sourcePanel;
 
     KDChart::Chart* m_lineChart;
     KDChart::LineDiagram* m_lines;
