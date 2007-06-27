@@ -571,8 +571,10 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
     // this draws the unit rulers
     if ( drawUnitRulers ) {
-        const int hardLabelsCount  = labels().count();
-        const int shortLabelsCount = shortLabels().count();
+        const QStringList labelsList(      labels() );
+        const QStringList shortLabelsList( shortLabels() );
+        const int hardLabelsCount  = labelsList.count();
+        const int shortLabelsCount = shortLabelsList.count();
         bool useShortLabels = false;
 
 
@@ -649,8 +651,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     } else {
 
                         int index = iLabel;
-                        labelItem->setText(  customizedLabel(labels()[ index < hardLabelsCount ? index : 0 ]) );
-                        labelItem2->setText( customizedLabel(labels()[ index < hardLabelsCount - 1 ? index + 1 : 0]) );
+                        labelItem->setText(  customizedLabel(labelsList[ index < hardLabelsCount ? index : 0 ]) );
+                        labelItem2->setText( customizedLabel(labelsList[ index < hardLabelsCount - 1 ? index + 1 : 0]) );
                     }
                     QPointF firstPos( i, 0.0 );
                     firstPos = plane->translate( firstPos );
@@ -710,9 +712,9 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         const int shortIdx =  (iLabel < shortLabelsCount    ) ? iLabel     : 0;
                         const int shortIdx2 = (iLabel < shortLabelsCount - 1) ? iLabel + 1 : 0;
                         labelItem->setText(  customizedLabel(
-                                useShortLabels ? shortLabels()[ shortIdx ] : labels()[ idx ] ) );
+                                useShortLabels ? shortLabelsList[ shortIdx ] : labelsList[ idx ] ) );
                         labelItem2->setText( customizedLabel(
-                                useShortLabels ? shortLabels()[ shortIdx2 ] : labels()[ idx2 ] ) );
+                                useShortLabels ? shortLabelsList[ shortIdx2 ] : labelsList[ idx2 ] ) );
                     }
 
                     QPointF firstPos( i, 0.0 );
@@ -798,8 +800,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
                             labelItem->setText(
                                     customizedLabel(
                                           hardLabelsCount
-                                        ? ( useShortLabels    ? shortLabels()[ idxLabel ] : labels()[ idxLabel ] )
-                                        : ( headerLabelsCount ? headerLabels[  idxLabel ] : QString::number( iLabelF ))));
+                                    ? ( useShortLabels    ? shortLabelsList[ idxLabel ] : labelsList[ idxLabel ] )
+                                    : ( headerLabelsCount ? headerLabels[  idxLabel ] : QString::number( iLabelF ))));
                         }
                         // No need to call labelItem->setParentWidget(), since we are using
                         // the layout item temporarily only.
@@ -844,8 +846,10 @@ void CartesianAxis::paintCtx( PaintContext* context )
                             idxLabel = 0;
                         else if( !useShortLabels && idxLabel >= hardLabelsCount - 1 )
                             idxLabel = 0;
-                        else
-                            ++idxLabel;
+                        else{
+                            idxLabel += static_cast<int>(dimX.stepWidth);
+                            //qDebug() << "dimX.stepWidth:" << dimX.stepWidth << "  idxLabel:" << idxLabel;
+                        }
                     } else if( headerLabelsCount ) {
                         if( idxLabel >= headerLabelsCount - 1 ) {
                             idxLabel = 0;
@@ -1062,9 +1066,10 @@ QSize CartesianAxis::maximumSize() const
                 // find the longest label text:
                 const int first=0;
                 const int last=labels().count()-1;
+                const QStringList labelsList( labels() );
                 for ( int i = first; i <= last; ++i )
                 {
-                    labelItem.setText( customizedLabel(labels()[ i ]) );
+                    labelItem.setText( customizedLabel(labelsList[ i ]) );
                     const QSize siz = labelItem.sizeHint();
                     h = qMax( h, static_cast<qreal>(siz.height()) );
                     calculateOverlap( i, first, last, siz.width(), isBarDiagram,
@@ -1147,9 +1152,10 @@ QSize CartesianAxis::maximumSize() const
                 // find the longest label text:
                 const int first=0;
                 const int last=labels().count()-1;
+                const QStringList labelsList( labels() );
                 for ( int i = first; i <= last; ++i )
                 {
-                    labelItem.setText( customizedLabel(labels()[ i ]) );
+                    labelItem.setText( customizedLabel(labelsList[ i ]) );
                     const QSize siz = labelItem.sizeHint();
                     qreal lw = siz.width();
                     w = qMax( w, lw );
