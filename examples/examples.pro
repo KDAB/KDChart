@@ -20,4 +20,5 @@ SUBDIRS		= tools \
 	          RealTime \
 	          Polar \
 	          Plane \
-		  TernaryCharts
+		  TernaryCharts \
+		  Demo

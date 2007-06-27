@@ -1,0 +1,77 @@
+<ui version="4.0" >
+ <class>KDChartDemo</class>
+ <widget class="QWidget" name="KDChartDemo" >
+  <property name="windowTitle" >
+   <string>KD Chart Demo</string>
+  </property>
+  <layout class="QGridLayout" >
+   <item row="0" column="0" >
+    <widget class="QTabWidget" name="tabWidget" >
+     <property name="tabPosition" >
+      <enum>QTabWidget::South</enum>
+     </property>
+     <property name="currentIndex" >
+      <number>3</number>
+     </property>
+     <widget class="QWidget" name="LineDiagramTab" >
+      <attribute name="title" >
+       <string>LineDiagram</string>
+      </attribute>
+     </widget>
+     <widget class="QWidget" name="BarDiagramTab" >
+      <attribute name="title" >
+       <string>BarDiagram</string>
+      </attribute>
+     </widget>
+     <widget class="QWidget" name="PolarDiagramTab" >
+      <attribute name="title" >
+       <string>PolarDiagram</string>
+      </attribute>
+     </widget>
+     <widget class="QWidget" name="PieChartTab" >
+      <attribute name="title" >
+       <string>PieChart</string>
+      </attribute>
+     </widget>
+     <widget class="QWidget" name="TableModelTab" >
+      <attribute name="title" >
+       <string>TableModel</string>
+      </attribute>
+      <layout class="QGridLayout" >
+       <item row="0" column="0" >
+        <widget class="QTableView" name="tableView" />
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item row="1" column="0" >
+    <layout class="QHBoxLayout" >
+     <item>
+      <widget class="QFrame" name="sourcePanelFrame" />
+     </item>
+     <item>
+      <layout class="QVBoxLayout" >
+       <item>
+        <widget class="QRadioButton" name="freshStyleButton" >
+         <property name="text" >
+          <string>fresh</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QRadioButton" name="classicStyleButton" >
+         <property name="text" >
+          <string>classic</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
