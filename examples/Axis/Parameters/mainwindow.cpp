@@ -86,6 +86,9 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_lines->addAxis( axisRight );
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
 
+    m_lines->setUnitSuffix( QString::fromLatin1( "s" ), Qt::Horizontal );
+    m_lines->setUnitSuffix( QString::fromLatin1( "m" ), Qt::Vertical );
+
     // Set up the legend
     m_legend = new Legend( m_lines, m_chart );
     m_chart->addLegend( m_legend );
