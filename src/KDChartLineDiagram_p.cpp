@@ -217,10 +217,10 @@ void LineDiagram::LineDiagramType::paintValueTracker( PaintContext* ctx, const V
     
     DataDimensionsList gridDimensions = ctx->coordinatePlane()->gridDimensionsList();
     const QPointF bottomLeft( ctx->coordinatePlane()->translate(
-                              QPointF( plane->isReversedHorizontal() ?
+                              QPointF( plane->isHorizontalRangeReversed() ?
                                            gridDimensions.at( 0 ).end :
                                            gridDimensions.at( 0 ).start,
-                                       plane->isReversedVertical() ?
+                                       plane->isVerticalRangeReversed() ?
                                            gridDimensions.at( 1 ).end :
                                            gridDimensions.at( 1 ).start ) ) );
     const QPointF markerPoint = at;

@@ -803,7 +803,7 @@ AbstractCoordinatePlane* KDChart::CartesianCoordinatePlane::sharedAxisMasterPlan
     return plane;
 }
 
-void KDChart::CartesianCoordinatePlane::setReverseHorizontal( bool reverse )
+void KDChart::CartesianCoordinatePlane::setHorizontalRangeReversed( bool reverse )
 {
     if( d->reverseHorizontalPlane == reverse )
         return;
@@ -813,12 +813,12 @@ void KDChart::CartesianCoordinatePlane::setReverseHorizontal( bool reverse )
     emit propertiesChanged();
 }
 
-bool KDChart::CartesianCoordinatePlane::isReversedHorizontal() const
+bool KDChart::CartesianCoordinatePlane::isHorizontalRangeReversed() const
 {
     return d->reverseHorizontalPlane;
 }
 
-void KDChart::CartesianCoordinatePlane::setReverseVertical( bool reverse )
+void KDChart::CartesianCoordinatePlane::setVerticalRangeReversed( bool reverse )
 {
     if( d->reverseVerticalPlane == reverse )
         return;
@@ -828,7 +828,7 @@ void KDChart::CartesianCoordinatePlane::setReverseVertical( bool reverse )
     emit propertiesChanged();
 }
 
-bool KDChart::CartesianCoordinatePlane::isReversedVertical() const
+bool KDChart::CartesianCoordinatePlane::isVerticalRangeReversed() const
 {
     return d->reverseVerticalPlane;
 }

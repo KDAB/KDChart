@@ -254,10 +254,10 @@ void MainWindow::setTrackedArea( int column, bool checked, bool doUpdate )
 
 void MainWindow::on_reverseHorizontalCB_toggled( bool checked )
 {
-    static_cast<KDChart::CartesianCoordinatePlane*>( m_chart->coordinatePlane() )->setReverseHorizontal( checked );
+    static_cast<KDChart::CartesianCoordinatePlane*>( m_chart->coordinatePlane() )->setHorizontalRangeReversed( checked );
 }
 
 void MainWindow::on_reverseVerticalCB_toggled( bool checked )
 {
-    static_cast<KDChart::CartesianCoordinatePlane*>( m_chart->coordinatePlane() )->setReverseVertical( checked );
+    static_cast<KDChart::CartesianCoordinatePlane*>( m_chart->coordinatePlane() )->setVerticalRangeReversed( checked );
 }

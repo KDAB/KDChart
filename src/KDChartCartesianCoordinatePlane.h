@@ -335,11 +335,31 @@ namespace KDChart {
         /** reimpl */
         AbstractCoordinatePlane* sharedAxisMasterPlane( QPainter* p = 0 );
 
-        void setReverseHorizontal( bool reverse );
-        bool isReversedHorizontal() const;
+        /**
+         * Sets whether the horizontal range should be reversed or not, i.e. 
+         * small values to the left and large values to the right (the default)
+         * or vice versa.
+         * \param reverse Whether the horizontal range should be reversed or not
+         */
+        void setHorizontalRangeReversed( bool reverse );
 
-        void setReverseVertical( bool reverse );
-        bool isReversedVertical() const;
+        /**
+         * \return Whether the horizontal range is reversed or not
+         */
+        bool isHorizontalRangeReversed() const;
+
+        /**
+         * Sets whether the vertical range should be reversed or not, i.e.
+         * small values at the bottom and large values at the top (the default)
+         * or vice versa.
+         * \param reverse Whether the vertical range should be reversed or not
+         */
+        void setVerticalRangeReversed( bool reverse );
+
+        /**
+         * \return Whether the vertical range is reversed or not
+         */
+        bool isVerticalRangeReversed() const;
 
     public Q_SLOTS:
         /**
