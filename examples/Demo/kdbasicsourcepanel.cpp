@@ -69,11 +69,11 @@ KDBasicSourcePanel::~KDBasicSourcePanel()
 void KDBasicSourcePanel::setTableModel()
 {
     // fill the data model with random numbers
-    srand(9);
+    qsrand(9);
     for(int i = 0; i < ROWS; i++) {
         QVector< QVariant > row = m_table->getRow();
         for(int col = 0; col < COLUMNS;) {
-            row[col++] = random();
+            row[col++] = qrand();
         }
 
         QString headerString = tr("row %1").arg(i);
@@ -85,11 +85,11 @@ void KDBasicSourcePanel::setTableModel()
 void KDBasicSourcePanel::updateTableModel()
 {
     // fill the data model with random numbers
-    srand(9);
+    qsrand(9);
     for(int i = 0; i < ROWS; i++) {
         for(int col = 0; col < COLUMNS;col++) {
             const QModelIndex index_ = m_table->getIndex(i, col);
-            m_table->setData(index_,random(), Qt::EditRole);
+            m_table->setData(index_, qrand(), Qt::EditRole);
         }
     }
 
@@ -147,10 +147,10 @@ void KDBasicSourcePanel::currentCellChanged(const QModelIndex &index)
 
 void KDBasicSourcePanel::setupSlider(QAbstractSlider* slider)
 {
-    slider->setMaximum(RAND_MAX/RANDOM_DIVIDEND);
+    slider->setMaximum(RAND_MAX);
     m_elements[sliderPosition] = slider;
     // sliders call updateCell if changed
-    QObject::connect( slider, SIGNAL(valueChanged(int)), ((QMainWindow*) this), SLOT(updateCell(int)) );
+    QObject::connect( slider, SIGNAL(valueChanged(int)), this, SLOT(updateCell(int)) );
     m_table->addHeaderData(sliderPosition,Qt::Horizontal, QVariant(slider->objectName()));
     m_sliderNames << slider->objectName();
     sliderPosition++;
@@ -186,10 +186,10 @@ void KDBasicSourcePanel::changeRow(int value)
             int newValue;
             if(toggle)
             {
-                newValue = ((random()/1000)*value)+ascending;
+                newValue = ((qrand()/1000)*value)+ascending;
                 toggle = false;
             } else {
-                newValue = ((random()/1000)*value)+cascading;
+                newValue = ((qrand()/1000)*value)+cascading;
                 toggle = true;
             }
 
