@@ -236,7 +236,7 @@ KDAB_EVAL{
   SOURCES += ../evaldialog/evaldialog.cpp
   DEFINES += KDAB_EVAL
 }
-*g++*{
-  QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
-}
+#*g++*{
+#  QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
+#}
 
