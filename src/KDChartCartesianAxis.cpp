@@ -874,7 +874,10 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 // our labels, to get them drawn right aligned:
                 labelValue = minValueY;
                 while ( labelValue <= maxLimit ) {
-                    labelItem->setText( customizedLabel(QString::number( labelValue )) );
+                    const QString labelText = diagram()->unitPrefix( labelValue, Qt::Vertical, true ) + 
+                                              QString::number( labelValue ) +
+                                              diagram()->unitSuffix( labelValue, Qt::Vertical, true );
+                    labelItem->setText( customizedLabel( labelText ) );
                     maxLabelsWidth = qMax( maxLabelsWidth, labelItem->sizeHint().width() );
 
                     calculateNextLabel( labelValue, steg, isLogarithmicY );
@@ -896,8 +899,14 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 //<< "geoRect.bottom()" << geoRect.bottom() << "  translatedValue:" << translatedValue;
                 if( translatedValue > geoRect.top() && translatedValue <= geoRect.bottom() ){
                     if ( drawLabels ) {
-                        labelItem->setText(  customizedLabel(QString::number( labelValue )) );
-                        labelItem2->setText( customizedLabel(QString::number( labelValue + step )) );
+                        const QString labelText = diagram()->unitPrefix( labelValue, Qt::Vertical, true ) +
+                                                  QString::number( labelValue ) +
+                                                  diagram()->unitSuffix( labelValue, Qt::Vertical, true );
+                        const QString label2Text = diagram()->unitPrefix( labelValue + step, Qt::Vertical, true ) +
+                                                   QString::number( labelValue + step ) +
+                                                   diagram()->unitSuffix( labelValue + step, Qt::Vertical, true );
+                        labelItem->setText(  customizedLabel( labelText ) );
+                        labelItem2->setText( customizedLabel( QString::number( labelValue + step ) ) );
                         QPointF nextPoint = plane->translate(  QPointF( 0,  labelValue + step ) );
                         if ( labelItem->intersects( *labelItem2, leftPoint, nextPoint ) )
                         {
@@ -922,7 +931,10 @@ void CartesianAxis::paintCtx( PaintContext* context )
             //qDebug() << "axis labels starting at" << labelValue << "step width" << step;
             while ( labelValue <= maxLimit ) {
                 //qDebug() << "value now" << labelValue;
-                labelItem->setText( customizedLabel(QString::number( labelValue )) );
+                const QString labelText = diagram()->unitPrefix( labelValue, Qt::Vertical, true ) + 
+                                          QString::number( labelValue ) + 
+                                          diagram()->unitSuffix( labelValue, Qt::Vertical, true );
+                labelItem->setText( customizedLabel( labelText ) );
                 QPointF leftPoint = plane->translate( QPointF( 0, labelValue ) );
                 QPointF rightPoint ( 0.0, labelValue );
                 rightPoint = plane->translate( rightPoint );
