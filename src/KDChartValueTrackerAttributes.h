@@ -65,6 +65,18 @@ namespace KDChart {
              */
             QPen pen() const;
             
+            /** Set the brush the area below the value tracking
+             * lines should be filled with. Default is a black brush
+             * with the style Qt::NoBrush.
+             * \param brush The brush the area should be filled with
+             */
+            void setAreaBrush( const QBrush& brush );
+            
+            /**
+             * @return The brush the area below the value tracking lines is filled with
+             */
+            QBrush areaBrush() const;
+            
             /** Set the size of the markers. This includes both the arrows at
              * the axises and the circle at the data point.
              * \param size The size of the markers

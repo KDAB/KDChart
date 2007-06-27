@@ -28,6 +28,7 @@
 #include <KDABLibFakes>
 #include <QPen>
 #include <QSizeF>
+#include <QBrush>
 
 #define d d_func()
 
@@ -42,12 +43,14 @@ class ValueTrackerAttributes::Private
         QPen pen;
         QSizeF markerSize;
         bool enabled;
+        QBrush areaBrush;
 };
 
 ValueTrackerAttributes::Private::Private()
     : pen( QPen( QColor( 80, 80, 80, 200 ) ) ),
       markerSize( QSizeF( 6.0, 6.0 ) ),
-      enabled( false )
+      enabled( false ),
+      areaBrush( QBrush() )
 {
 }
 
@@ -81,6 +84,7 @@ ValueTrackerAttributes::~ValueTrackerAttributes()
 bool ValueTrackerAttributes::operator==( const ValueTrackerAttributes& r ) const
 {
     return ( pen() == r.pen() &&
+             areaBrush() == r.areaBrush() &&
              markerSize() == r.markerSize() &&
              isEnabled() == r.isEnabled() );
 }
@@ -93,6 +97,16 @@ void ValueTrackerAttributes::setPen( const QPen& pen )
 QPen ValueTrackerAttributes::pen() const
 {
     return d->pen;
+}
+
+void ValueTrackerAttributes::setAreaBrush( const QBrush& brush )
+{
+    d->areaBrush = brush;
+}
+
+QBrush ValueTrackerAttributes::areaBrush() const
+{
+    return d->areaBrush;
 }
 
 void ValueTrackerAttributes::setMarkerSize( const QSizeF& size )

@@ -244,6 +244,10 @@ void LineDiagram::LineDiagramType::paintValueTracker( PaintContext* ctx, const V
         QPointF( at.x() - markerSize.width() / 2, abscissaPoint.y() )
     };
     
+    QPointF topLeft = ordinatePoint;
+    QPointF bottomRightOffset = abscissaPoint - topLeft;
+    QSizeF size( bottomRightOffset.x(), bottomRightOffset.y() );
+    QRectF area( topLeft, size );
     
     PainterSaver painterSaver( ctx->painter() );
     ctx->painter()->setPen( vt.pen() );
@@ -251,8 +255,11 @@ void LineDiagram::LineDiagramType::paintValueTracker( PaintContext* ctx, const V
     
     ctx->painter()->drawLine( markerPoint, ordinatePoint );
     ctx->painter()->drawLine( markerPoint, abscissaPoint );
-    ctx->painter()->drawEllipse( ellipseMarker );
     
+    ctx->painter()->fillRect( area, vt.areaBrush() );
+    
+    ctx->painter()->drawEllipse( ellipseMarker );
+
     ctx->painter()->setBrush( vt.pen().color() );
     ctx->painter()->drawPolygon( ordinateMarker, 3 );
     ctx->painter()->drawPolygon( abscissaMarker, 3 );

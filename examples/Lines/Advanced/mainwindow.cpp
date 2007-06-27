@@ -245,6 +245,7 @@ void MainWindow::setTrackedArea( int column, bool checked, bool doUpdate )
             QModelIndex cellIndex( m_model.index( i, j, m_lines->rootIndex() ) );
             ValueTrackerAttributes va( m_lines->valueTrackerAttributes( cellIndex ) );
             va.setEnabled( checked && j == column );
+            va.setAreaBrush( QColor( 255, 255, 0, 50 ) );
             m_lines->setValueTrackerAttributes( cellIndex, va );
         }
     }
