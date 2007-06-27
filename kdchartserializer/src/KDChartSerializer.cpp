@@ -120,7 +120,7 @@ void Serializer::init()
 void Serializer::registerBuiltInSerializerFactories( QObject* parent )
 {
     AbstractSerializerFactory* f = new DiagramSerializerFactory( parent );
-#if MSC_VER >= 1300
+#if !defined(MSC_VER) || MSC_VER >= 1300
     registerElementSerializerFactory< LineDiagram >( f );
     registerElementSerializerFactory< BarDiagram >( f );
     registerElementSerializerFactory< PieDiagram >( f );
@@ -136,21 +136,21 @@ void Serializer::registerBuiltInSerializerFactories( QObject* parent )
 #endif
 
     f = new LegendSerializerFactory( parent );
-#if MSC_VER >= 1300
+#if !defined(MSC_VER) || MSC_VER >= 1300
     Serializer::registerElementSerializerFactory< Legend >( f );
 #else
     Serializer::registerElementSerializerFactory( Legend::staticMetaObject.className(), f );
 #endif
 
     f = new TextAreaSerializerFactory( parent );
-#if MSC_VER >= 1300
+#if !defined(MSC_VER) || MSC_VER >= 1300
     Serializer::registerElementSerializerFactory< HeaderFooter >( f );
 #else
     Serializer::registerElementSerializerFactory( HeaderFooter::staticMetaObject.className(), f );
 #endif
 
     f = new AxisSerializerFactory( parent );
-#if MSC_VER >= 1300
+#if !defined(MSC_VER) || MSC_VER >= 1300
     Serializer::registerElementSerializerFactory< CartesianAxis >( f );
 //    Serializer::registerElementSerializerFactory< PolarAxis >( f );
 #else
@@ -158,7 +158,7 @@ void Serializer::registerBuiltInSerializerFactories( QObject* parent )
 #endif
 
     f = new CoordPlaneSerializerFactory( parent );
-#if MSC_VER >= 1300
+#if !defined(MSC_VER) || MSC_VER >= 1300
     Serializer::registerElementSerializerFactory< CartesianCoordinatePlane >( f );
     Serializer::registerElementSerializerFactory< PolarCoordinatePlane >( f );
 #else
