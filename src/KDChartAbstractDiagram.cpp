@@ -27,8 +27,10 @@
 #include <QDebug>
 #include <QApplication>
 #include <QAbstractProxyModel>
+#include <QAbstractTextDocumentLayout>
 #include <QStandardItemModel>
 #include <QSizeF>
+#include <QTextDocument>
 
 #include "KDChartAbstractCoordinatePlane.h"
 #include "KDChartChart.h"
@@ -500,14 +502,23 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
         painter->drawLine( pos - QPointF(-1,1), pos + QPointF(-1,1) );
         */
 
-        // adjust the text start point position, if alignment is not Bottom/Left
+        QTextDocument doc;
+        if( Qt::mightBeRichText( roundedValue ) )
+            doc.setHtml( roundedValue );
+        else
+            doc.setPlainText( roundedValue );
+
         const RelativePosition relPos( a.position( value >= 0.0 ) );
         const Qt::Alignment alignBottomLeft = Qt::AlignBottom | Qt::AlignLeft;
         const QFont calculatedFont( ta.calculatedFont( d->plane, KDChartEnums::MeasureOrientationMinimum ) );
+        const QRectF boundRect( d->cachedFontMetrics( calculatedFont, this )->boundingRect( doc.toPlainText() ) );
+
+        // To place correctly
+        pt.ry() -= boundRect.height();
+
         //qDebug() << "calculatedFont's point size:" << calculatedFont.pointSizeF();
+        // adjust the text start point position, if alignment is not Bottom/Left
         if( (relPos.alignment() & alignBottomLeft) != alignBottomLeft ){
-            const QRectF boundRect(
-                    d->cachedFontMetrics( calculatedFont, this )->boundingRect( roundedValue ) );
             if( relPos.alignment() & Qt::AlignRight )
                 pt.rx() -= boundRect.width();
             else if( relPos.alignment() & Qt::AlignHCenter )
@@ -526,13 +537,18 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
              d->lastRoundedValue != roundedValue ) {
             d->lastRoundedValue = roundedValue;
             d->lastX = pos.x();
-
             PainterSaver painterSaver( painter );
-            painter->setPen( ta.pen() );
-            painter->setFont( calculatedFont );
+
+            doc.setDefaultFont( calculatedFont );
+            QAbstractTextDocumentLayout::PaintContext context;
+            context.palette = palette();
+            context.palette.setColor(QPalette::Text, ta.pen().color() );
+
             painter->translate( pt );
             painter->rotate( ta.rotation() );
-            painter->drawText( QPointF(0, 0), roundedValue );
+
+            QAbstractTextDocumentLayout* layout = doc.documentLayout();
+            layout->draw( painter, context );
         }
     }
 }
