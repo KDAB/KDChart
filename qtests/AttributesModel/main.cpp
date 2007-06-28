@@ -61,11 +61,28 @@ private slots:
 
   void testKDChartAttributesModelTestSharedModel()
   {
-      AttributesModel* attrsmodel = m_lines->attributesModel();
-      m_bars->setAttributesModel(attrsmodel);
+      // Note: a SHARED atributes-model must be owned by the USER
+      //       but it may not be owned by any of the diagrams
+      //       see API docu of AbstractDiagram::setAttributesModel()
+      AttributesModel *attrsmodel = new AttributesModel( m_model, 0 );
+
+      m_lines->setAttributesModel( attrsmodel );
+      m_bars->setAttributesModel(  attrsmodel );
+
       QModelIndex idx = m_model->index( 0, 2, QModelIndex() );
-      DataValueAttributes a = m_lines->dataValueAttributes( idx );
-      QCOMPARE( a.isVisible(), true );
+
+      DataValueAttributes attrLin = m_lines->dataValueAttributes( idx );
+      attrLin.setVisible( false );
+      m_lines->setDataValueAttributes( idx, attrLin );
+
+      DataValueAttributes attrBar = m_bars->dataValueAttributes( idx );
+      QCOMPARE( attrBar.isVisible(), false );
+
+      attrLin.setVisible( true );
+      m_lines->setDataValueAttributes( idx, attrLin );
+
+      attrBar = m_bars->dataValueAttributes( idx );
+      QCOMPARE( attrBar.isVisible(), true );
   }
 
   void testKDChartAttributesModelTestSharedFromStart()
