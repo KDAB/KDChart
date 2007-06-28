@@ -336,6 +336,12 @@ namespace KDChart {
         AbstractCoordinatePlane* sharedAxisMasterPlane( QPainter* p = 0 );
 
         /**
+         * Returns the currently visible data range. Might be greater than the
+         * range of the grid.
+         */
+        QRectF visibleDataRange() const;
+
+        /**
          * Sets whether the horizontal range should be reversed or not, i.e. 
          * small values to the left and large values to the right (the default)
          * or vice versa.

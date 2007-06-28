@@ -832,3 +832,15 @@ bool KDChart::CartesianCoordinatePlane::isVerticalRangeReversed() const
 {
     return d->reverseVerticalPlane;
 }
+
+QRectF KDChart::CartesianCoordinatePlane::visibleDataRange() const
+{
+    QRectF result;
+
+    const QRectF drawArea = drawingArea();
+
+    result.setTopLeft( translateBack( drawArea.topLeft() ) );
+    result.setBottomRight( translateBack( drawArea.bottomRight() ) );
+
+    return result.normalized();
+}
