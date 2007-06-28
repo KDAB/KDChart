@@ -172,6 +172,7 @@ public:
 
  /**
    * \brief display a string label instead of the original data value label
+   * Supports HTML code.
    * \sa dataLabel
    */
   void setDataLabel( const QString label );
