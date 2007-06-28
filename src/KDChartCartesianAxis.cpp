@@ -264,6 +264,8 @@ void CartesianAxis::Private::drawSubUnitRulers( QPainter* painter, CartesianCoor
         if ( isLogarithmic ){
             if( logSubstep == 9 ){
                 fLogSubstep *= 10.0;
+                if( fLogSubstep == 0 )
+                    fLogSubstep = 1.0;
                 logSubstep = 0;
             }
             f += fLogSubstep;
@@ -348,12 +350,14 @@ static void calculateNextLabel( qreal& labelValue, qreal step, bool isLogarithmi
 {
     if ( isLogarithmic ){
         labelValue *= 10.0;
+        if( labelValue == 0.0 )
+            labelValue = 1.0;//std::numeric_limits< double >::epsilon();
     }else{
         //qDebug() << "new axis label:" << labelValue << "+" << step << "=" << labelValue+step;
         labelValue += step;
     }
-    if( qAbs(labelValue) < 1.0e-15 )
-        labelValue = 0.0;
+/*    if( qAbs(labelValue) < 1.0e-15 )
+        labelValue = 0.0;*/
 }
 
 
@@ -860,9 +864,15 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     }
                 }
                 if ( isLogarithmicX )
+                {
                     i *= 10.0;
+                    if( i == 0.0 )
+                        i = 1.0;//std::numeric_limits< double >::epsilon();
+                }
                 else
+                {
                     i += dimX.stepWidth;
+                }
             }
         } else {
             const double maxLimit = maxValueY;
