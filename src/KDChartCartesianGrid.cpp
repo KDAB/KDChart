@@ -106,7 +106,9 @@ void CartesianGrid::drawGrid( PaintContext* context )
      * by setting the grid attribute to false
      * Same Value as for Cartesian Axis
      */
-    const qreal MinimumPixelsBetweenLines = qMin( dimX.stepWidth,  dimY.stepWidth );//0.1
+    static const qreal GridLineDistanceTreshold = 4.0; // <Treshold> pixels between each grid line
+    const qreal MinimumPixelsBetweenLines =
+            qMax( qMin(dimX.stepWidth,  dimY.stepWidth), GridLineDistanceTreshold );
     //qDebug() << "min step " << qMin( dimX.stepWidth,  dimY.stepWidth );
 
     //qreal unitFactorX = 1.0;
