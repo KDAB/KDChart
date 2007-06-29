@@ -167,8 +167,6 @@ void CartesianGrid::drawGrid( PaintContext* context )
         context->painter()->setPen( gridAttrsX.subGridPen() );
         qreal f = minValueX;
         qreal fLogSubstep = minValueX;
-        if( isLogarithmicX && ! (minValueX < 0.0 || minValueX > 0.0 ) )
-            fLogSubstep = 1.0;
 
         int logSubstep = 0;
         while ( f <= maxValueX ) {
@@ -181,6 +179,9 @@ void CartesianGrid::drawGrid( PaintContext* context )
             if ( isLogarithmicX ){
                 if( logSubstep == 9 ){
                     fLogSubstep *= 10.0;
+                    if( fLogSubstep == 0.0 )
+                        fLogSubstep = 1.0;
+
                     logSubstep = 0;
                 }
                 f += fLogSubstep;
@@ -195,8 +196,6 @@ void CartesianGrid::drawGrid( PaintContext* context )
         context->painter()->setPen( gridAttrsY.subGridPen() );
         qreal f = minValueY;
         qreal fLogSubstep = minValueY;
-        if( isLogarithmicY && ! (minValueY < 0.0 || minValueY > 0.0 ) )
-            fLogSubstep = 1.0;
 
         int logSubstep = 0;
         while ( f <= maxValueY ) {
@@ -209,6 +208,9 @@ void CartesianGrid::drawGrid( PaintContext* context )
             if ( isLogarithmicY ){
                 if( logSubstep == 9 ){
                     fLogSubstep *= 10.0;
+                    if( fLogSubstep == 0.0 )
+                        fLogSubstep = 1.0;
+
                     logSubstep = 0;
                 }
                 f += fLogSubstep;
@@ -233,8 +235,6 @@ void CartesianGrid::drawGrid( PaintContext* context )
 //        const qreal minX = dimX.start;
 
         qreal f = minValueX;
-        if( isLogarithmicX && ! ( minValueX > 0.0 || minValueX < 0.0 ) )
-            f = 1.0;
 
         while ( f <= maxValueX ) {
             // PENDING(khz) FIXME: make draving/not drawing of Zero line more sophisticated?:
@@ -251,8 +251,11 @@ void CartesianGrid::drawGrid( PaintContext* context )
                 if ( zeroLineHere )
                     context->painter()->setPen( gridAttrsX.gridPen() );
             }
-            if ( isLogarithmicX )
+            if ( isLogarithmicX ) {
                 f *= 10.0;
+                if( f == 0.0 )
+                    f = 1.0;
+            }
             else
                 f += dimX.stepWidth;
         }
@@ -271,8 +274,6 @@ void CartesianGrid::drawGrid( PaintContext* context )
         //const qreal minY = dimY.start;
         //qDebug("minY: %f   maxValueY: %f   dimY.stepWidth: %f",minY,maxValueY,dimY.stepWidth);
         qreal f = minValueY;
-        if( isLogarithmicY && ! ( minValueY > 0.0 || minValueY < 0.0 ) )
-            f = 1.0;
 
         while ( f <= maxValueY ) {
             // PENDING(khz) FIXME: make draving/not drawing of Zero line more sophisticated?:
@@ -289,8 +290,11 @@ void CartesianGrid::drawGrid( PaintContext* context )
                 if ( zeroLineHere )
                     context->painter()->setPen( gridAttrsY.gridPen() );
             }
-            if ( isLogarithmicY )
+            if ( isLogarithmicY ) {
                 f *= 10.0;
+                if( f == 0.0 )
+                    f = 1.0;
+            }
             else
                 f += dimY.stepWidth;
         }
