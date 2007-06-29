@@ -700,12 +700,12 @@ void CartesianAxis::paintCtx( PaintContext* context )
                             labelItem2->setText(customizedLabel(headerLabels[ iLabel+1 ]) );
                         }else{
                             //qDebug() << "i + labelDiff " << i + labelDiff;
-                            labelItem->setText( customizedLabel(headerLabelsCount ? headerLabels[static_cast<int>(i)]
+                            labelItem->setText( customizedLabel(headerLabelsCount > i ? headerLabels[static_cast<int>(i)]
                                 : QString::number( i, 'f', precision )) );
                             //           qDebug() << "1 - labelItem->text() " << labelItem->text();
                             //qDebug() << "labelDiff" << labelDiff
                             //        << "  index" << i+labelDiff << "  count" << headerLabelsCount;
-                            labelItem2->setText( customizedLabel(headerLabelsCount ? headerLabels[static_cast<int>(i+labelDiff)]
+                            labelItem2->setText( customizedLabel(headerLabelsCount > i + labelDiff ? headerLabels[static_cast<int>(i+labelDiff)]
                                 : QString::number( i + labelDiff, 'f', precision )) );
                             //qDebug() << "2 - labelItem->text() " << labelItem->text();
                             //qDebug() << "labelItem2->text() " << labelItem2->text();
