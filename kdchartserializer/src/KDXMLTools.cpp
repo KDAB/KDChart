@@ -376,7 +376,7 @@ namespace KDXML {
 
 
     void createDateTimeNode( QDomDocument& doc, QDomNode& parent,
-            const QString& elementName, 
+            const QString& elementName,
             const QDateTime& datetime )
     {
         QDomElement dateTimeElement = doc.createElement( elementName );
@@ -953,7 +953,7 @@ namespace KDXML {
     bool readPenNode( const QDomElement& element, QPen& pen )
     {
         bool ok = true;
-        int tempWidth;
+        int tempWidth = 0;
         QColor tempColor;
         QBrush tempBrush;
         Qt::PenStyle     tempStyle=Qt::SolidLine;

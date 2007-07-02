@@ -102,7 +102,7 @@ private slots:
                 mDoc, mDocRoot );
 
         // use cout rather that qDebug() to avoid the length limitation of the later
-        //std::cout << "\n\n" << mDoc.toString(2).toLatin1().data() << "\n\n";
+        // std::cout << "\n\n" << mDoc.toString(2).toLatin1().data() << "\n\n";
 
 
         // the created tree should look like this:

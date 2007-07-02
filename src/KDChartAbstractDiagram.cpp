@@ -179,6 +179,7 @@ bool AbstractDiagram::compare( const AbstractDiagram* other )const
             (percentMode()                    == other->percentMode()) &&
             (datasetDimension()               == other->datasetDimension()));
     */
+    // qDebug() << "frameWidth: " << frameWidth() << ", other->frameWidth: " << other->frameWidth();
     return  // compare QAbstractScrollArea properties
             (horizontalScrollBarPolicy() == other->horizontalScrollBarPolicy()) &&
             (verticalScrollBarPolicy()   == other->verticalScrollBarPolicy()) &&
@@ -215,7 +216,6 @@ bool AbstractDiagram::compare( const AbstractDiagram* other )const
             (percentMode()                    == other->percentMode()) &&
             (datasetDimension()               == other->datasetDimension());
 }
-
 
 AbstractCoordinatePlane* AbstractDiagram::coordinatePlane() const
 {

@@ -3,7 +3,7 @@
    */
 
 /****************************************************************************
- ** Copyright (C) 2001-2003 Klarälvdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2001-2003 Klaralvdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KDChart library.
  **
@@ -47,6 +47,8 @@
 
 #include <qglobal.h>
 #include <QMessageBox>
+#include <QMetaObject>
+#include <QMetaProperty>
 
 #define d d_func()
 
@@ -239,7 +241,7 @@ void DiagramsSerializer::Private::saveDiagram(
 {
     if( p == 0 )
         return;
-    
+
     const LineDiagram*  lineDiag  = dynamic_cast<const LineDiagram*> (  p );
     const BarDiagram*   barDiag   = dynamic_cast<const BarDiagram*> (   p );
     const PieDiagram*   pieDiag   = dynamic_cast<const PieDiagram*> (   p );
@@ -431,6 +433,8 @@ bool DiagramsSerializer::Private::parseAbstractDiagram(
         }
         node = node.nextSibling();
     }
+    // now parse parent class properties:
+    parseQtProperties( container, diagram );
     return bOK;
 }
 
@@ -499,6 +503,8 @@ void DiagramsSerializer::Private::saveAbstractDiagram(
                            diagram.percentMode() );
     KDXML::createIntNode( doc, diagElement, "DatasetDimension",
                           diagram.datasetDimension() );
+    // serialize Qt properties inherited from superclasses:
+    saveQtProperties( doc, diagElement, diagram );
 }
 
 
@@ -1119,3 +1125,26 @@ void DiagramsSerializer::Private::saveRingDiagram(
     // then save what is stored in the derived class
     KDXML::createBoolNode(  doc, diagElement, "RelativeThickness",   diagram.relativeThickness() );
 }
+
+void DiagramsSerializer::Private::saveQtProperties(
+    QDomDocument& doc,
+    QDomElement& e,
+    const AbstractDiagram& diagram ) const
+{   // FIXME serialize settings from diagram parent classes, like QAIV->QSCrollArea->QFrame
+    qDebug() << "DiagramSerializer::Private::saveAbstractDiagram: saving super class properties";
+    qDebug() << "Property count:" << diagram.metaObject()->propertyCount();
+    for ( int i = 0; i < diagram.metaObject()->propertyCount(); ++i ) {
+        QMetaProperty p = diagram.metaObject()->property( i );
+        qDebug() << p.name();
+    }
+}
+
+bool DiagramsSerializer::Private::parseQtProperties(
+    const QDomElement& container,
+    AbstractDiagram& diagram ) const
+{
+    qDebug() << "DiagramsSerializer::Private::parseQtProperties: parse super class properties";
+}
+
+
+

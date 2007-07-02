@@ -3,7 +3,7 @@
    */
 
 /****************************************************************************
- ** Copyright (C) 2001-2006 Klarälvdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2001-2006 Klaralvdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KD Chart library.
  **
@@ -60,6 +60,9 @@ protected:
     bool parseAbstractDiagram( const QDomElement& container, AbstractDiagram& diagram ) const;
     void saveAbstractDiagram( QDomDocument& doc, QDomElement& e, const AbstractDiagram& diagram, const QString& title ) const;
 
+    bool parseQtProperties( const QDomElement& container, AbstractDiagram& diagram ) const;
+    void saveQtProperties( QDomDocument& doc, QDomElement& e, const AbstractDiagram& diagram ) const;
+
     bool parseCartCoordDiagram( const QDomElement& container, AbstractCartesianDiagram& diagram ) const;
     void saveCartCoordDiagram( QDomDocument& doc, QDomElement& e, const AbstractCartesianDiagram& diagram, const QString& title ) const;
 
@@ -83,7 +86,7 @@ protected:
 
     bool parseRingDiagram( const QDomElement& container, RingDiagram& diagram ) const;
     void saveRingDiagram( QDomDocument& doc, QDomElement& diagElement, const RingDiagram& diagram ) const;
- 
+
     bool m_haveOwnCoordS;
     CoordPlanesSerializer* m_coordS;
     AxesSerializer* m_axesS;
