@@ -394,6 +394,7 @@ namespace KDChart {
         bool operator!=( const DataDimension& other ) const
         { return !operator==( other ); }
 
+
         qreal start;
         qreal end;
         bool  isCalculated;
@@ -403,6 +404,9 @@ namespace KDChart {
         qreal subStepWidth;
     };
 
-}
+#if !defined(QT_NO_DEBUG_STREAM)
+    QDebug operator<<( QDebug stream, const DataDimension& r );
+#endif
 
+}
 #endif
