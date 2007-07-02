@@ -1144,7 +1144,5 @@ bool DiagramsSerializer::Private::parseQtProperties(
     AbstractDiagram& diagram ) const
 {
     qDebug() << "DiagramsSerializer::Private::parseQtProperties: parse super class properties";
+    return false;
 }
-
-
-
