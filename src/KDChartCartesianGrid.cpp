@@ -69,7 +69,7 @@ void CartesianGrid::drawGrid( PaintContext* context )
     if( !isBoundariesValid( mData ) ) return;
     //qDebug() << "B";
 
-    DataDimension& dimX = mData.first();
+    DataDimension dimX = mData.first();
     const DataDimension& dimY = mData.last();
     // test for other programming errors: critical
     Q_ASSERT_X ( dimX.stepWidth, "CartesianGrid::drawGrid",
