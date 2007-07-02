@@ -413,17 +413,17 @@ AbstractCoordinatePlane* KDChart::AbstractCoordinatePlane::sharedAxisMasterPlane
 #if !defined(QT_NO_DEBUG_STREAM)
 #include "KDChartEnums.h"
 
-QDebug operator<<( QDebug stream, const DataDimension& r )
+QDebug KDChart::operator<<( QDebug stream, const DataDimension& r )
 {
     stream << "DataDimension("
-           << "start=" << r.start
-           << "end=" << r.end
-           << "sequence=" << KDChartEnums::granularitySequenceToString( r.sequence )
-           << "isCalculated=" << r.isCalculated
-           << "calcMode=" << ( r.calcMode == AbstractCoordinatePlane::Logarithmic ? "Logarithmic" : "Linear" )
-           << "stepWidth=" << r.stepWidth
-           << "subStepWidth=" << r.subStepWidth
-           << ")";
+           << " start=" << r.start
+           << " end=" << r.end
+           << " sequence=" << KDChartEnums::granularitySequenceToString( r.sequence )
+           << " isCalculated=" << r.isCalculated
+           << " calcMode=" << ( r.calcMode == AbstractCoordinatePlane::Logarithmic ? "Logarithmic" : "Linear" )
+           << " stepWidth=" << r.stepWidth
+           << " subStepWidth=" << r.subStepWidth
+           << " )";
     return stream;
 }
 #endif
