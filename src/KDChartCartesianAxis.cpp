@@ -602,6 +602,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 double value = headerLabels.isEmpty() ? 0.0 : headerLabels.first().toDouble();
                 configuredStepsLabels << QString::number( value );
                 for (  int i = 0; i < numberOfUnitRulers; i++ ) {
+                    //qDebug() << value;
                     value += dimX.stepWidth;
                     configuredStepsLabels.append( QString::number( value ) );
                 }
@@ -754,6 +755,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
             int idxLabel = 0;
             qreal iLabelF = minValueX;
+            //qDebug() << iLabelF;
             qreal i = minValueX;
             qreal labelStep = 0.0;
             //    qDebug() << "dimX.stepWidth:" << dimX.stepWidth  << "labelDiff:" << labelDiff;
@@ -801,11 +803,13 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         }
                         */
                         else {
+                            const int idx = idxLabel + static_cast<int>(minValueX);
                             labelItem->setText(
                                     customizedLabel(
                                           hardLabelsCount
-                                    ? ( useShortLabels    ? shortLabelsList[ idxLabel ] : labelsList[ idxLabel ] )
-                                    : ( headerLabelsCount ? headerLabels[  idxLabel ] : QString::number( iLabelF ))));
+                                    ? ( useShortLabels    ? shortLabelsList[ idx ] : labelsList[ idx ] )
+                                : ( headerLabelsCount ? headerLabels[ idx ] : QString::number( iLabelF ))));
+                            //qDebug() << "x - labelItem->text() " << labelItem->text() << headerLabelsCount;
                         }
                         // No need to call labelItem->setParentWidget(), since we are using
                         // the layout item temporarily only.
