@@ -45,6 +45,7 @@
 
          m_lines = new LineDiagram();
          m_lines->setModel( tableModel );
+         m_lines->setObjectName( "Line Diagram" );
 
          CartesianAxis *xAxis = new CartesianAxis( m_lines );
          CartesianAxis *yAxis = new CartesianAxis ( m_lines );

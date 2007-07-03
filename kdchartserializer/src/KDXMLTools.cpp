@@ -1343,36 +1343,58 @@ namespace KDXML {
             return Qt::SolidPattern;
     }
 
+    // FIXME readQVariantNode and createQVariantNode use a lot of
+    // static strings, this is mostly because the strings are QStrings
     bool readQVariantNode( const QDomElement& element, QVariant& v, QString& name )
     {
         QString typeString = element.attribute( "type" );
         bool ok = true;
         int type = typeString.toInt( &ok );
+        QString text = element.attribute( "value" );
+
         if ( not ok ) {
             qDebug() << "KDXML::readQVariantNode: error reading node";
         } else {
             QString name = element.attribute( "name" );
-//             switch( type ) {
-//             default:
-//                 qDebug() << "KDXML::readQVariantNode: property"
-//                          << name << "of unknown type" << type << "found";
-//             }
+            switch( type ) {
+            case QVariant::Bool:
+                v.setValue<bool>( text == "true" );
+                break;
+            case QVariant::String:
+                v.setValue<QString>( text );
+                qDebug() << "KDXML::readQVariantNode: name:" << name << " - value:" << v << " - ok:" << ok;
+                break;
+            default:
+                qDebug() << "KDXML::readQVariantNode: property"
+                         << name << "of unknown type" << type << "found";
+            }
         }
         return ok;
     }
 
     void createQVariantNode( QDomDocument& doc, QDomNode& parent, const QString& name, const QVariant& value )
     {
+        static const QString ValueAttributeName( "value" );
         QDomElement property = doc.createElement( "qtproperty" );
         property.setAttribute( "type", value.type() );
         property.setAttribute( "name", name );
-//         switch( value.type() ) {
-//         default:
-//             qDebug() << "createQVariantNode: cannot serialize QVariant subtype" << value.type()
-//                      << ", want me to abort? Nah :-)";
-//         }
+        switch( value.type() ) {
+        case QVariant::Bool:
+            if ( value.value<bool>() == true ) {
+                property.setAttribute( ValueAttributeName, "true" );
+            } else {
+                property.setAttribute( ValueAttributeName, "false" );
+            }
+            break;
+        case QVariant::String:
+            property.setAttribute( ValueAttributeName, value.value<QString>() );
+            qDebug() << "KDXML::createQVariantNode: name:" << name << " - value:" << value;
+            break;
+        default:
+            qDebug() << "createQVariantNode: cannot serialize QVariant subtype" << value.type()
+                     << ", want me to abort? Nah :-)";
+        }
         parent.appendChild( property );
-
     }
 }
 
