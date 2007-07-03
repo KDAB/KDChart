@@ -1347,15 +1347,15 @@ namespace KDXML {
 
     // FIXME readQVariantNode and createQVariantNode use a lot of
     // static strings, this is mostly because the strings are QStrings
-    const char* QRectWidth = "width";
-    const char* QRectHeight = "height";
-    const char* QRectX = "x";
-    const char* QRectY = "y";
-    const char* QSizeWidth = QRectWidth;
-    const char* QSizeHeight = QRectHeight;
-    const char* QPointX = QRectX;
-    const char* QPointY = QRectY;
-    const char* ValueAttributeName = "value";
+    static const char* QRectWidth = "width";
+    static const char* QRectHeight = "height";
+    static const char* QRectX = "x";
+    static const char* QRectY = "y";
+    static const char* QSizeWidth = QRectWidth;
+    static const char* QSizeHeight = QRectHeight;
+    static const char* QPointX = QRectX;
+    static const char* QPointY = QRectY;
+    static const char* ValueAttributeName = "value";
 
     bool readQVariantNode( const QDomElement& element, QVariant& v, QString& name )
     {
