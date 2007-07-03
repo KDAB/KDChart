@@ -3,7 +3,7 @@
    */
 
 /****************************************************************************
- ** Copyright (C) 2001-2003 Klarälvdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2001-2003 Klaralvdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KDChart library.
  **
@@ -32,6 +32,7 @@
 #include <QByteArray>
 #include <QImage>
 #include <QPoint>
+#include <QSize>
 #include <QVariant>
 #include <QImageWriter>
 
@@ -1350,6 +1351,8 @@ namespace KDXML {
     const char* QRectHeight = "height";
     const char* QRectX = "x";
     const char* QRectY = "y";
+    const char* QSizeWidth = QRectWidth;
+    const char* QSizeHeight = QRectHeight;
     const char* QPointX = QRectX;
     const char* QPointY = QRectY;
     const char* ValueAttributeName = "value";
@@ -1395,6 +1398,12 @@ namespace KDXML {
                 QPoint point( x, y );
                 v.setValue<QPoint>( point );
             } break;
+            case QVariant::Size: {
+                int w = element.attribute( QSizeWidth, "0" ).toInt();
+                int h = element.attribute( QSizeHeight, "0" ).toInt();
+                QSize size( w, h );
+                v.setValue<QSize>( size );
+            } break;
             default:
                 qDebug() << "KDXML::readQVariantNode: property"
                          << name << "of unknown type" << type << "found";
@@ -1434,6 +1443,11 @@ namespace KDXML {
             QPoint point( value.value<QPoint>() );
             property.setAttribute( QPointX, point.x() );
             property.setAttribute( QPointY, point.y() );
+        } break;
+        case QVariant::Size: {
+            QSize size( value.value<QSize>() );
+            property.setAttribute( QSizeWidth, size.width() );
+            property.setAttribute( QSizeHeight, size.height() );
         } break;
         default:
             qDebug() << "createQVariantNode: cannot serialize QVariant subtype" << value.type()
