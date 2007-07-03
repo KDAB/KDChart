@@ -31,6 +31,7 @@
 #include <QBuffer>
 #include <QByteArray>
 #include <QImage>
+#include <QPoint>
 #include <QVariant>
 #include <QImageWriter>
 
@@ -1349,6 +1350,8 @@ namespace KDXML {
     const char* QRectHeight = "height";
     const char* QRectX = "x";
     const char* QRectY = "y";
+    const char* QPointX = QRectX;
+    const char* QPointY = QRectY;
     const char* ValueAttributeName = "value";
 
     bool readQVariantNode( const QDomElement& element, QVariant& v, QString& name )
@@ -1386,6 +1389,12 @@ namespace KDXML {
                     ok = false;
                 }
             } break;
+            case QVariant::Point: {
+                int x = element.attribute( QPointX, "0" ).toInt();
+                int y = element.attribute( QPointY, "0" ).toInt();
+                QPoint point( x, y );
+                v.setValue<QPoint>( point );
+            } break;
             default:
                 qDebug() << "KDXML::readQVariantNode: property"
                          << name << "of unknown type" << type << "found";
@@ -1420,6 +1429,11 @@ namespace KDXML {
         } break;
         case QVariant::Int: {
             property.setAttribute( ValueAttributeName, value.value<int>() );
+        } break;
+        case QVariant::Point: {
+            QPoint point( value.value<QPoint>() );
+            property.setAttribute( QPointX, point.x() );
+            property.setAttribute( QPointY, point.y() );
         } break;
         default:
             qDebug() << "createQVariantNode: cannot serialize QVariant subtype" << value.type()

@@ -3,6 +3,7 @@
 #include <QtTest/QtTest>
 #include <QVariant>
 #include <QRect>
+#include <QPoint>
 
 class XmlToolsTest : public QObject
 {
@@ -38,6 +39,11 @@ private slots:
     void testInt()
     {
         runTests( QVariantList() << -1 << 0 << 1 << 2 << 1000 << 113445567 );
+    }
+
+    void testQPoint()
+    {
+        runTests( QVariantList() << QPoint() << QPoint( 0, 0 ) << QPoint( 1, 1 ) << QPoint( -1, 20 ) );
     }
 
     void cleanupTestCase()
