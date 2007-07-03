@@ -101,7 +101,7 @@ namespace KDChart {
          * while on the other hand automatic adjusting will set these ranges.
          *
          * To disable use of this range you can either pass an empty pair by using the default
-         * constructor QPair() or you can set setting both values to the same which constitutes
+         * constructor QPair() or you can set both values to the same which constitutes
          * a null range.
          * 
          * \note By default the visible data range often is larger than the
