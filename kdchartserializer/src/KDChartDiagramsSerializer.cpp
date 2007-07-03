@@ -55,6 +55,7 @@
 
 using namespace KDChart;
 
+static const char* TagNameQtProperties = "properties";
 /**
   \class KDChart::DiagramsSerializer KDChartDiagramsSerializer.h
 
@@ -427,7 +428,7 @@ bool DiagramsSerializer::Private::parseAbstractDiagram(
                     qDebug()<< "Could not parse AbstractDiagram. Element"
                             << tagName << "has invalid content.";
                 }
-            } else if ( tagName == "properties" ) {
+            } else if ( tagName == TagNameQtProperties ) {
                 // now parse parent class properties:
                 if ( not parseQtProperties( container, diagram ) ) {
                     qDebug() << "Could not parse base class Qt properties. Element"
@@ -1136,14 +1137,17 @@ void DiagramsSerializer::Private::saveQtProperties(
     QDomDocument& doc,
     QDomElement& e,
     const AbstractDiagram& diagram ) const
-{   // this function saves all properties of a QObject, creating a
-    // element for the properties and one child element per property
-    QDomElement element = doc.createElement( "properties" );
+{   // this function saves all properties of a QObject that are in the
+    // white list, creating a element for the properties and one child
+    // element per property
+    static const QStringList SerializedPropertyWhiteList
+        ( QStringList() << "frameStyle" << "lineWidth" << "midLineWidth" );
+
+    QDomElement element = doc.createElement( TagNameQtProperties );
     e.appendChild( element );
     for ( int i = 0; i < diagram.metaObject()->propertyCount(); ++i ) {
         QMetaProperty p = diagram.metaObject()->property( i );
-        if ( p.isWritable() && p.isReadable() ) {
-            // only store writable properties, because all other cannot be restored anyway :-)
+        if ( SerializedPropertyWhiteList.contains( p.name() ) ) {
             QVariant value = diagram.property( p.name() );
             KDXML::createQVariantNode( doc, element, p.name(), value );
         }

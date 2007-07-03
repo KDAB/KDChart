@@ -27,7 +27,7 @@ SUBDIRS +=  AttributesSerializer \
             TextAreaSerializer \
             AxesSerializer \
             LegendsSerializer \
-#            DiagramsSerializer \
+            DiagramsSerializer \
 	    XmlToolsTests \
 #           CoordPlanesSerializer \
 #           Serializer

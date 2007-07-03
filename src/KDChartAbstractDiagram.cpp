@@ -179,14 +179,14 @@ bool AbstractDiagram::compare( const AbstractDiagram* other )const
             (percentMode()                    == other->percentMode()) &&
             (datasetDimension()               == other->datasetDimension()));
     */
-    // qDebug() << "frameWidth: " << frameWidth() << ", other->frameWidth: " << other->frameWidth();
     return  // compare QAbstractScrollArea properties
             (horizontalScrollBarPolicy() == other->horizontalScrollBarPolicy()) &&
             (verticalScrollBarPolicy()   == other->verticalScrollBarPolicy()) &&
             // compare QFrame properties
             (frameShadow()  == other->frameShadow()) &&
             (frameShape()   == other->frameShape()) &&
-            (frameWidth()   == other->frameWidth()) &&
+// frameWidth is a read-only property defined by the style, it should not be in here:
+            // (frameWidth()   == other->frameWidth()) &&
             (lineWidth()    == other->lineWidth()) &&
             (midLineWidth() == other->midLineWidth()) &&
             // compare QAbstractItemView properties
