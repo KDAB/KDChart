@@ -48,6 +48,7 @@
 #include <qglobal.h>
 #include <QMessageBox>
 #include <QMetaObject>
+// #include <QDomNodeList>
 #include <QMetaProperty>
 
 #define d d_func()
@@ -1130,12 +1131,16 @@ void DiagramsSerializer::Private::saveQtProperties(
     QDomDocument& doc,
     QDomElement& e,
     const AbstractDiagram& diagram ) const
-{   // FIXME serialize settings from diagram parent classes, like QAIV->QSCrollArea->QFrame
+{   // this function saves all properties of a QObject, creating a
+    // element for the properties and one child element per property
     qDebug() << "DiagramSerializer::Private::saveAbstractDiagram: saving super class properties";
     qDebug() << "Property count:" << diagram.metaObject()->propertyCount();
+    QDomElement element = doc.createElement( "properties" );
+    e.appendChild( element );
     for ( int i = 0; i < diagram.metaObject()->propertyCount(); ++i ) {
         QMetaProperty p = diagram.metaObject()->property( i );
-        qDebug() << p.name();
+        QVariant value = diagram.property( p.name() );
+        KDXML::createQVariantNode( doc, element, p.name(), value );
     }
 }
 
@@ -1144,5 +1149,31 @@ bool DiagramsSerializer::Private::parseQtProperties(
     AbstractDiagram& diagram ) const
 {
     qDebug() << "DiagramsSerializer::Private::parseQtProperties: parse super class properties";
-    return false;
+    bool error = false;
+    QDomNodeList elements = container.elementsByTagName( "properties" );
+    if ( elements.size() != 1 ) {
+        qDebug() << "DiagramsSerializer::Private::parseQtProperties: XML syntax error, more than one properties elements";
+        error = true;
+    }
+    if ( elements.size() > 0 ) {
+        QDomElement properties = elements.at(0).toElement();
+        qDebug() << "DiagramsSerializer::Private::parseQtProperties: properties element found";
+
+        QDomNode n = properties.firstChild();
+        while ( !n.isNull() ) {
+            QDomElement e = n.toElement();
+            if ( !e.isNull() ) {
+                QVariant value;
+                QString name;
+                if ( not KDXML::readQVariantNode( e, value, name ) ) {
+                    qDebug() << "DiagramsSerializer::Private::parseQtProperties: error parsing property" << e.tagName();
+                    error = true;
+                } else {
+                    diagram.setProperty( qPrintable( name ), value );
+                }
+            }
+            n = n.nextSibling();
+        }
+    }
+    return error;
 }
