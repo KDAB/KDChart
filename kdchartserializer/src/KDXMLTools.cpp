@@ -1346,31 +1346,31 @@ namespace KDXML {
     bool readQVariantNode( const QDomElement& element, QVariant& v, QString& name )
     {
         QString typeString = element.attribute( "type" );
-        bool ok;
+        bool ok = true;
         int type = typeString.toInt( &ok );
         if ( not ok ) {
             qDebug() << "KDXML::readQVariantNode: error reading node";
         } else {
             QString name = element.attribute( "name" );
-            switch( type ) {
-            default:
-                qDebug() << "KDXML::readQVariantNode: property"
-                         << name << "of unknown type" << type << "found";
-            }
+//             switch( type ) {
+//             default:
+//                 qDebug() << "KDXML::readQVariantNode: property"
+//                          << name << "of unknown type" << type << "found";
+//             }
         }
         return ok;
     }
 
     void createQVariantNode( QDomDocument& doc, QDomNode& parent, const QString& name, const QVariant& value )
     {
-        QDomElement property = doc.createElement( "qmetaproperty" );
+        QDomElement property = doc.createElement( "qtproperty" );
         property.setAttribute( "type", value.type() );
         property.setAttribute( "name", name );
-        switch( value.type() ) {
-        default:
-            qDebug() << "createQVariantNode: cannot serialize QVariant subtype" << value.type()
-                     << ", want me to abort? Nah :-)";
-        }
+//         switch( value.type() ) {
+//         default:
+//             qDebug() << "createQVariantNode: cannot serialize QVariant subtype" << value.type()
+//                      << ", want me to abort? Nah :-)";
+//         }
         parent.appendChild( property );
 
     }

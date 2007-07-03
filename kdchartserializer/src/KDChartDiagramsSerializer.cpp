@@ -427,6 +427,13 @@ bool DiagramsSerializer::Private::parseAbstractDiagram(
                     qDebug()<< "Could not parse AbstractDiagram. Element"
                             << tagName << "has invalid content.";
                 }
+            } else if ( tagName == "properties" ) {
+                // now parse parent class properties:
+                if ( not parseQtProperties( container, diagram ) ) {
+                    qDebug() << "Could not parse base class Qt properties. Element"
+                             << tagName << "has invalid content.";
+                    bOK = false;
+                }
             } else {
                 qDebug() << "Unknown subelement of AbstractDiagram found:" << tagName;
                 bOK = false;
@@ -434,8 +441,6 @@ bool DiagramsSerializer::Private::parseAbstractDiagram(
         }
         node = node.nextSibling();
     }
-    // now parse parent class properties:
-    parseQtProperties( container, diagram );
     return bOK;
 }
 
@@ -1133,8 +1138,6 @@ void DiagramsSerializer::Private::saveQtProperties(
     const AbstractDiagram& diagram ) const
 {   // this function saves all properties of a QObject, creating a
     // element for the properties and one child element per property
-    qDebug() << "DiagramSerializer::Private::saveAbstractDiagram: saving super class properties";
-    qDebug() << "Property count:" << diagram.metaObject()->propertyCount();
     QDomElement element = doc.createElement( "properties" );
     e.appendChild( element );
     for ( int i = 0; i < diagram.metaObject()->propertyCount(); ++i ) {
@@ -1148,7 +1151,6 @@ bool DiagramsSerializer::Private::parseQtProperties(
     const QDomElement& container,
     AbstractDiagram& diagram ) const
 {
-    qDebug() << "DiagramsSerializer::Private::parseQtProperties: parse super class properties";
     bool error = false;
     QDomNodeList elements = container.elementsByTagName( "properties" );
     if ( elements.size() != 1 ) {
@@ -1157,7 +1159,6 @@ bool DiagramsSerializer::Private::parseQtProperties(
     }
     if ( elements.size() > 0 ) {
         QDomElement properties = elements.at(0).toElement();
-        qDebug() << "DiagramsSerializer::Private::parseQtProperties: properties element found";
 
         QDomNode n = properties.firstChild();
         while ( !n.isNull() ) {
@@ -1175,5 +1176,5 @@ bool DiagramsSerializer::Private::parseQtProperties(
             n = n.nextSibling();
         }
     }
-    return error;
+    return not error;
 }
