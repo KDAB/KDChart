@@ -427,13 +427,13 @@ bool DiagramsSerializer::Private::parseAbstractDiagram(
                     qDebug()<< "Could not parse AbstractDiagram. Element"
                             << tagName << "has invalid content.";
                 }
-//             } else if ( tagName == "properties" ) {
-//                 // now parse parent class properties:
-//                 if ( not parseQtProperties( container, diagram ) ) {
-//                     qDebug() << "Could not parse base class Qt properties. Element"
-//                              << tagName << "has invalid content.";
-//                     bOK = false;
-//                 }
+            } else if ( tagName == "properties" ) {
+                // now parse parent class properties:
+                if ( not parseQtProperties( container, diagram ) ) {
+                    qDebug() << "Could not parse base class Qt properties. Element"
+                             << tagName << "has invalid content.";
+                    bOK = false;
+                }
             } else {
                 qDebug() << "Unknown subelement of AbstractDiagram found:" << tagName;
                 bOK = false;
@@ -510,7 +510,7 @@ void DiagramsSerializer::Private::saveAbstractDiagram(
     KDXML::createIntNode( doc, diagElement, "DatasetDimension",
                           diagram.datasetDimension() );
     // serialize Qt properties inherited from superclasses:
-    // saveQtProperties( doc, diagElement, diagram );
+    saveQtProperties( doc, diagElement, diagram );
 }
 
 

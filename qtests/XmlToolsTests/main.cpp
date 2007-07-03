@@ -35,6 +35,11 @@ private slots:
                   << QRect( 10, 20, 30, 40 ) );
     }
 
+    void testInt()
+    {
+        runTests( QVariantList() << -1 << 0 << 1 << 2 << 1000 << 113445567 );
+    }
+
     void cleanupTestCase()
     {
     }

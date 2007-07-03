@@ -1349,13 +1349,14 @@ namespace KDXML {
     const char* QRectHeight = "height";
     const char* QRectX = "x";
     const char* QRectY = "y";
+    const char* ValueAttributeName = "value";
 
     bool readQVariantNode( const QDomElement& element, QVariant& v, QString& name )
     {
         QString typeString = element.attribute( "type" );
         bool ok = true;
         int type = typeString.toInt( &ok );
-        QString text = element.attribute( "value" );
+        QString text = element.attribute( ValueAttributeName );
 
         if ( not ok ) {
             qDebug() << "KDXML::readQVariantNode: error reading node";
@@ -1376,6 +1377,15 @@ namespace KDXML {
                 QRect rect( x, y, w, h );
                 v.setValue<QRect>( rect );
             } break;
+            case QVariant::Int: {
+                bool ok;
+                int number = text.toInt( &ok );
+                if ( ok ) {
+                    v.setValue<int>( number );
+                } else {
+                    ok = false;
+                }
+            } break;
             default:
                 qDebug() << "KDXML::readQVariantNode: property"
                          << name << "of unknown type" << type << "found";
@@ -1387,34 +1397,30 @@ namespace KDXML {
 
     void createQVariantNode( QDomDocument& doc, QDomNode& parent, const QString& name, const QVariant& value )
     {
-        static const QString ValueAttributeName( "value" );
         QDomElement property = doc.createElement( "qtproperty" );
         property.setAttribute( "type", value.type() );
         property.setAttribute( "name", name );
         switch( value.type() ) {
-        case QVariant::Bool:
-        {
+        case QVariant::Bool: {
             if ( value.value<bool>() == true ) {
                 property.setAttribute( ValueAttributeName, "true" );
             } else {
                 property.setAttribute( ValueAttributeName, "false" );
             }
-        }
-        break;
-        case QVariant::String:
-        {
+        } break;
+        case QVariant::String: {
             property.setAttribute( ValueAttributeName, value.value<QString>() );
-        }
-        break;
-        case QVariant::Rect:
-        {
+        } break;
+        case QVariant::Rect: {
             QRect rect( value.value<QRect>() );
             property.setAttribute( QRectX, rect.x() );
             property.setAttribute( QRectY, rect.y() );
             property.setAttribute( QRectWidth, rect.width() );
             property.setAttribute( QRectHeight, rect.height() );
-        }
-        break;
+        } break;
+        case QVariant::Int: {
+            property.setAttribute( ValueAttributeName, value.value<int>() );
+        } break;
         default:
             qDebug() << "createQVariantNode: cannot serialize QVariant subtype" << value.type()
                      << ", want me to abort? Nah :-)";
