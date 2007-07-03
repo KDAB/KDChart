@@ -1142,8 +1142,11 @@ void DiagramsSerializer::Private::saveQtProperties(
     e.appendChild( element );
     for ( int i = 0; i < diagram.metaObject()->propertyCount(); ++i ) {
         QMetaProperty p = diagram.metaObject()->property( i );
-        QVariant value = diagram.property( p.name() );
-        KDXML::createQVariantNode( doc, element, p.name(), value );
+        if ( p.isWritable() && p.isReadable() ) {
+            // only store writable properties, because all other cannot be restored anyway :-)
+            QVariant value = diagram.property( p.name() );
+            KDXML::createQVariantNode( doc, element, p.name(), value );
+        }
     }
 }
 
@@ -1177,5 +1180,4 @@ bool DiagramsSerializer::Private::parseQtProperties(
         }
     }
     return not error;
-    return false;
 }
