@@ -1177,4 +1177,5 @@ bool DiagramsSerializer::Private::parseQtProperties(
         }
     }
     return not error;
+    return false;
 }

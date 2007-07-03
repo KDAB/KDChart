@@ -1345,6 +1345,11 @@ namespace KDXML {
 
     // FIXME readQVariantNode and createQVariantNode use a lot of
     // static strings, this is mostly because the strings are QStrings
+    const char* QRectWidth = "width";
+    const char* QRectHeight = "height";
+    const char* QRectX = "x";
+    const char* QRectY = "y";
+
     bool readQVariantNode( const QDomElement& element, QVariant& v, QString& name )
     {
         QString typeString = element.attribute( "type" );
@@ -1357,12 +1362,20 @@ namespace KDXML {
         } else {
             name = element.attribute( "name" );
             switch( type ) {
-            case QVariant::Bool:
+            case QVariant::Bool: {
                 v.setValue<bool>( text == "true" );
-                break;
-            case QVariant::String:
+            } break;
+            case QVariant::String: {
                 v.setValue<QString>( text );
-                break;
+            } break;
+            case QVariant::Rect: {
+                int x = element.attribute( QRectX, "0" ).toInt();
+                int y = element.attribute( QRectY, "0" ).toInt();
+                int w = element.attribute( QRectWidth, "-1" ).toInt();
+                int h = element.attribute( QRectHeight, "-1" ).toInt();
+                QRect rect( x, y, w, h );
+                v.setValue<QRect>( rect );
+            } break;
             default:
                 qDebug() << "KDXML::readQVariantNode: property"
                          << name << "of unknown type" << type << "found";
@@ -1380,18 +1393,32 @@ namespace KDXML {
         property.setAttribute( "name", name );
         switch( value.type() ) {
         case QVariant::Bool:
+        {
             if ( value.value<bool>() == true ) {
                 property.setAttribute( ValueAttributeName, "true" );
             } else {
                 property.setAttribute( ValueAttributeName, "false" );
             }
-            break;
+        }
+        break;
         case QVariant::String:
+        {
             property.setAttribute( ValueAttributeName, value.value<QString>() );
-            break;
+        }
+        break;
+        case QVariant::Rect:
+        {
+            QRect rect( value.value<QRect>() );
+            property.setAttribute( QRectX, rect.x() );
+            property.setAttribute( QRectY, rect.y() );
+            property.setAttribute( QRectWidth, rect.width() );
+            property.setAttribute( QRectHeight, rect.height() );
+        }
+        break;
         default:
             qDebug() << "createQVariantNode: cannot serialize QVariant subtype" << value.type()
                      << ", want me to abort? Nah :-)";
+
         }
         parent.appendChild( property );
     }

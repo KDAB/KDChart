@@ -2,6 +2,7 @@
 
 #include <QtTest/QtTest>
 #include <QVariant>
+#include <QRect>
 
 class XmlToolsTest : public QObject
 {
@@ -23,6 +24,15 @@ private slots:
         runTests( QVariantList()
                   << QVariant( QString() ) // an empty one
                   << QVariant( QString( "some text" ) ) );
+    }
+
+    void testQRect()
+    {
+        runTests( QVariantList()
+                  << QRect()
+                  << QRect( 0, 0, 0, 0 )
+                  << QRect( 0, 0, -10, 30 )
+                  << QRect( 10, 20, 30, 40 ) );
     }
 
     void cleanupTestCase()
