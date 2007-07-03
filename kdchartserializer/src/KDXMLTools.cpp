@@ -1355,18 +1355,18 @@ namespace KDXML {
         if ( not ok ) {
             qDebug() << "KDXML::readQVariantNode: error reading node";
         } else {
-            QString name = element.attribute( "name" );
+            name = element.attribute( "name" );
             switch( type ) {
             case QVariant::Bool:
                 v.setValue<bool>( text == "true" );
                 break;
             case QVariant::String:
                 v.setValue<QString>( text );
-                qDebug() << "KDXML::readQVariantNode: name:" << name << " - value:" << v << " - ok:" << ok;
                 break;
             default:
                 qDebug() << "KDXML::readQVariantNode: property"
                          << name << "of unknown type" << type << "found";
+                ok = false;
             }
         }
         return ok;
@@ -1388,7 +1388,6 @@ namespace KDXML {
             break;
         case QVariant::String:
             property.setAttribute( ValueAttributeName, value.value<QString>() );
-            qDebug() << "KDXML::createQVariantNode: name:" << name << " - value:" << value;
             break;
         default:
             qDebug() << "createQVariantNode: cannot serialize QVariant subtype" << value.type()
