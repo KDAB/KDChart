@@ -1364,7 +1364,7 @@ namespace KDXML {
         int type = typeString.toInt( &ok );
         QString text = element.attribute( ValueAttributeName );
 
-        if ( not ok ) {
+        if ( ! ok ) {
             qDebug() << "KDXML::readQVariantNode: error reading node";
         } else {
             name = element.attribute( "name" );
