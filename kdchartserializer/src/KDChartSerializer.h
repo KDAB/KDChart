@@ -129,16 +129,11 @@ namespace KDChart {
 
         static AbstractSerializerFactory* elementSerializerFactory( const QObject* element );
         static AbstractSerializerFactory* elementSerializerFactory( const QString& className );
-#if defined(_MSC_VER) && _MSC_VER < 1300
+
         static void registerElementSerializerFactory( const char* name, AbstractSerializerFactory* factory );
         static void unregisterElementSerializerFactory( const char* name );
 
     protected:
-#else
-    protected:
-        static void registerElementSerializerFactory( const char* name, AbstractSerializerFactory* factory );
-        static void unregisterElementSerializerFactory( const char* name );
-#endif
         static AbstractSerializerFactory* elementSerializerFactory( const char* className );
     };
 

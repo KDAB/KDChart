@@ -120,51 +120,26 @@ void Serializer::init()
 void Serializer::registerBuiltInSerializerFactories( QObject* parent )
 {
     AbstractSerializerFactory* f = new DiagramSerializerFactory( parent );
-#if !defined(_MSC_VER) || _MSC_VER >= 1300
-    registerElementSerializerFactory< LineDiagram >( f );
-    registerElementSerializerFactory< BarDiagram >( f );
-    registerElementSerializerFactory< PieDiagram >( f );
-    registerElementSerializerFactory< PolarDiagram >( f );
-    registerElementSerializerFactory< RingDiagram >( f );
-#else
 
     registerElementSerializerFactory( LineDiagram::staticMetaObject.className(), f );
     registerElementSerializerFactory( BarDiagram::staticMetaObject.className(), f );
     registerElementSerializerFactory( PieDiagram::staticMetaObject.className(), f );
     registerElementSerializerFactory( PolarDiagram::staticMetaObject.className(), f );
     registerElementSerializerFactory( RingDiagram::staticMetaObject.className(), f );
-#endif
 
     f = new LegendSerializerFactory( parent );
-#if !defined(_MSC_VER) || _MSC_VER >= 1300
-    Serializer::registerElementSerializerFactory< Legend >( f );
-#else
     Serializer::registerElementSerializerFactory( Legend::staticMetaObject.className(), f );
-#endif
 
     f = new TextAreaSerializerFactory( parent );
-#if !defined(_MSC_VER) || _MSC_VER >= 1300
-    Serializer::registerElementSerializerFactory< HeaderFooter >( f );
-#else
     Serializer::registerElementSerializerFactory( HeaderFooter::staticMetaObject.className(), f );
-#endif
 
     f = new AxisSerializerFactory( parent );
-#if !defined(_MSC_VER) || _MSC_VER >= 1300
-    Serializer::registerElementSerializerFactory< CartesianAxis >( f );
-//    Serializer::registerElementSerializerFactory< PolarAxis >( f );
-#else
     Serializer::registerElementSerializerFactory( CartesianAxis::staticMetaObject.className(), f );
-#endif
+//    Serializer::registerElementSerializerFactory( PolarAxis::staticMetaObject.className(), f );
 
     f = new CoordPlaneSerializerFactory( parent );
-#if !defined(_MSC_VER) || _MSC_VER >= 1300
-    Serializer::registerElementSerializerFactory< CartesianCoordinatePlane >( f );
-    Serializer::registerElementSerializerFactory< PolarCoordinatePlane >( f );
-#else
     Serializer::registerElementSerializerFactory( CartesianCoordinatePlane::staticMetaObject.className(), f );
     Serializer::registerElementSerializerFactory( PolarCoordinatePlane::staticMetaObject.className(), f );
-#endif
 }
 
 void Serializer::setModel(QAbstractItemModel * model)
