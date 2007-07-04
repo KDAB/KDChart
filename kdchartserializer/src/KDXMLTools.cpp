@@ -1370,18 +1370,10 @@ namespace KDXML {
             name = element.attribute( "name" );
             switch( type ) {
             case QVariant::Bool: {
-#if !defined(_MSC_VER) || _MSC_VER >= 1300
-                v.setValue<bool>( text == QString::fromLatin1( "true" ) );
-#else
                 qVariantSetValue< bool >( v, text == QString::fromLatin1( "true" ) );
-#endif
             } break;
             case QVariant::String: {
-#if !defined(_MSC_VER) || _MSC_VER >= 1300
-                v.setValue<QString>( text );
-#else
                 qVariantSetValue< QString >( v, text );
-#endif
             } break;
             case QVariant::Rect: {
                 int x = element.attribute( QRectX, "0" ).toInt();
@@ -1389,21 +1381,13 @@ namespace KDXML {
                 int w = element.attribute( QRectWidth, "-1" ).toInt();
                 int h = element.attribute( QRectHeight, "-1" ).toInt();
                 const QRect rect( x, y, w, h );
-#if !defined(_MSC_VER) || _MSC_VER >= 1300
-                v.setValue<QRect>( rect );
-#else
                 qVariantSetValue< QRect >( v, rect );
-#endif
             } break;
             case QVariant::Int: {
                 bool ok;
                 const int number = text.toInt( &ok );
                 if ( ok ) {
-#if !defined(_MSC_VER) || _MSC_VER >= 1300
-                    v.setValue<int>( number );
-#else
                     qVariantSetValue< int >( v, number );
-#endif
                 } else {
                     ok = false;
                 }
@@ -1412,21 +1396,13 @@ namespace KDXML {
                 const int x = element.attribute( QPointX, "0" ).toInt();
                 const int y = element.attribute( QPointY, "0" ).toInt();
                 const QPoint point( x, y );
-#if !defined(_MSC_VER) || _MSC_VER >= 1300
-                v.setValue<QPoint>( point );
-#else
                 qVariantSetValue< QPoint >( v, point );
-#endif
             } break;
             case QVariant::Size: {
                 const int w = element.attribute( QSizeWidth, "0" ).toInt();
                 const int h = element.attribute( QSizeHeight, "0" ).toInt();
                 const QSize size( w, h );
-#if !defined(_MSC_VER) || _MSC_VER >= 1300
-                v.setValue<QSize>( size );
-#else
                 qVariantSetValue< QSize >( v, size );
-#endif
             } break;
             default:
                 qDebug() << "KDXML::readQVariantNode: property"
@@ -1444,32 +1420,32 @@ namespace KDXML {
         property.setAttribute( "name", name );
         switch( value.type() ) {
         case QVariant::Bool: {
-            if ( value.value<bool>() == true ) {
-                property.setAttribute( ValueAttributeName, "true" );
+            if ( qVariantValue< bool >( value ) == true ) {
+                property.setAttribute( ValueAttributeName, QString::fromLatin1( "true" ) );
             } else {
-                property.setAttribute( ValueAttributeName, "false" );
+                property.setAttribute( ValueAttributeName, QString::fromLatin1( "false" ) );
             }
         } break;
         case QVariant::String: {
-            property.setAttribute( ValueAttributeName, value.value<QString>() );
+            property.setAttribute( ValueAttributeName, qVariantValue< QString >( value ) );
         } break;
         case QVariant::Rect: {
-            QRect rect( value.value<QRect>() );
+            const QRect rect( qVariantValue< QRect >( value ) );
             property.setAttribute( QRectX, rect.x() );
             property.setAttribute( QRectY, rect.y() );
             property.setAttribute( QRectWidth, rect.width() );
             property.setAttribute( QRectHeight, rect.height() );
         } break;
         case QVariant::Int: {
-            property.setAttribute( ValueAttributeName, value.value<int>() );
+            property.setAttribute( ValueAttributeName, qVariantValue< int >( value ) );
         } break;
         case QVariant::Point: {
-            QPoint point( value.value<QPoint>() );
+            const QPoint point( qVariantValue< QPoint >( value ) );
             property.setAttribute( QPointX, point.x() );
             property.setAttribute( QPointY, point.y() );
         } break;
         case QVariant::Size: {
-            QSize size( value.value<QSize>() );
+            const QSize size( qVariantValue< QSize >( value ) );
             property.setAttribute( QSizeWidth, size.width() );
             property.setAttribute( QSizeHeight, size.height() );
         } break;
@@ -1481,4 +1457,3 @@ namespace KDXML {
         parent.appendChild( property );
     }
 }
-
