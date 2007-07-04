@@ -1370,39 +1370,63 @@ namespace KDXML {
             name = element.attribute( "name" );
             switch( type ) {
             case QVariant::Bool: {
-                v.setValue<bool>( text == "true" );
+#if !defined(_MSC_VER) || _MSC_VER >= 1300
+                v.setValue<bool>( text == QString::fromLatin1( "true" ) );
+#else
+                qVariantSetValue< bool >( v, text == QString::fromLatin1( "true" ) );
+#endif
             } break;
             case QVariant::String: {
+#if !defined(_MSC_VER) || _MSC_VER >= 1300
                 v.setValue<QString>( text );
+#else
+                qVariantSetValue< QString >( v, text );
+#endif
             } break;
             case QVariant::Rect: {
                 int x = element.attribute( QRectX, "0" ).toInt();
                 int y = element.attribute( QRectY, "0" ).toInt();
                 int w = element.attribute( QRectWidth, "-1" ).toInt();
                 int h = element.attribute( QRectHeight, "-1" ).toInt();
-                QRect rect( x, y, w, h );
+                const QRect rect( x, y, w, h );
+#if !defined(_MSC_VER) || _MSC_VER >= 1300
                 v.setValue<QRect>( rect );
+#else
+                qVariantSetValue< QRect >( v, rect );
+#endif
             } break;
             case QVariant::Int: {
                 bool ok;
-                int number = text.toInt( &ok );
+                const int number = text.toInt( &ok );
                 if ( ok ) {
+#if !defined(_MSC_VER) || _MSC_VER >= 1300
                     v.setValue<int>( number );
+#else
+                    qVariantSetValue< int >( v, number );
+#endif
                 } else {
                     ok = false;
                 }
             } break;
             case QVariant::Point: {
-                int x = element.attribute( QPointX, "0" ).toInt();
-                int y = element.attribute( QPointY, "0" ).toInt();
-                QPoint point( x, y );
+                const int x = element.attribute( QPointX, "0" ).toInt();
+                const int y = element.attribute( QPointY, "0" ).toInt();
+                const QPoint point( x, y );
+#if !defined(_MSC_VER) || _MSC_VER >= 1300
                 v.setValue<QPoint>( point );
+#else
+                qVariantSetValue< QPoint >( v, point );
+#endif
             } break;
             case QVariant::Size: {
-                int w = element.attribute( QSizeWidth, "0" ).toInt();
-                int h = element.attribute( QSizeHeight, "0" ).toInt();
-                QSize size( w, h );
+                const int w = element.attribute( QSizeWidth, "0" ).toInt();
+                const int h = element.attribute( QSizeHeight, "0" ).toInt();
+                const QSize size( w, h );
+#if !defined(_MSC_VER) || _MSC_VER >= 1300
                 v.setValue<QSize>( size );
+#else
+                qVariantSetValue< QSize >( v, size );
+#endif
             } break;
             default:
                 qDebug() << "KDXML::readQVariantNode: property"
