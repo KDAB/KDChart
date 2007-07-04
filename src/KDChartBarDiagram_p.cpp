@@ -10,7 +10,6 @@ BarDiagram::Private::Private( const Private& rhs )
 {
 }
 
-
 void BarDiagram::BarDiagramType::paintBars( PaintContext* ctx, const QModelIndex& index, const QRectF& bar, double& maxDepth )
 {
     QRectF isoRect;
@@ -120,7 +119,6 @@ void BarDiagram::BarDiagramType::paintBars( PaintContext* ctx, const QModelIndex
     //diagram()->maxDepth = threeDAttrs.depth();
 }
 
-
 AttributesModel* BarDiagram::BarDiagramType::attributesModel() const
 {
     return m_private->attributesModel;
@@ -131,13 +129,10 @@ QModelIndex BarDiagram::BarDiagramType::attributesModelRootIndex() const
     return m_private->diagram->attributesModelRootIndex();
 }
 
-
 BarDiagram* BarDiagram::BarDiagramType::diagram() const
 {
     return m_private->diagram;
 }
-
-
 
 void BarDiagram::BarDiagramType::appendDataValueTextInfoToList(
             AbstractDiagram * diagram,

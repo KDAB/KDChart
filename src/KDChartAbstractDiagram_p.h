@@ -226,9 +226,7 @@ namespace KDChart {
 
         QModelIndexList indexesAt(  const QPoint& point ) const
         {
-            QModelIndexList indexes = reverseMapper.indexesAt(  point ); // which could be empty
-            qDebug() << "KDChartAbstractDiagram p::indexesAt: " << indexes.size() << "indexes at" << point;
-            return indexes;
+            return reverseMapper.indexesAt(  point ); // which could be empty
         }
 
     protected:

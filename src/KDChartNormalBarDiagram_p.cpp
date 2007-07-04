@@ -76,7 +76,7 @@ void NormalBarDiagram::paint(  PaintContext* ctx )
     double spaceBetweenBars = 0;
     double spaceBetweenGroups = 0;
 
-     if ( ba.useFixedBarWidth() ) {
+    if ( ba.useFixedBarWidth() ) {
 
         barWidth = ba.fixedBarWidth();
         groupWidth += barWidth;
@@ -90,20 +90,20 @@ void NormalBarDiagram::paint(  PaintContext* ctx )
             groupWidth = ctx->rectangle().width() / rowCount;
     }
 
-     // maxLimit: allow the space between bars to be larger until area.width()
-     // is covered by the groups.
+    // maxLimit: allow the space between bars to be larger until area.width()
+    // is covered by the groups.
     double maxLimit = rowCount * (groupWidth + ((colCount-1) * ba.fixedDataValueGap()) );
 
 
-     //Pending Michel: FixMe
-     if ( ba.useFixedDataValueGap() ) {
-         if ( ctx->rectangle().width() > maxLimit )
-             spaceBetweenBars += ba.fixedDataValueGap();
-         else
-             spaceBetweenBars = ((ctx->rectangle().width()/rowCount) - groupWidth)/(colCount-1);
-     }
+    //Pending Michel: FixMe
+    if ( ba.useFixedDataValueGap() ) {
+        if ( ctx->rectangle().width() > maxLimit )
+            spaceBetweenBars += ba.fixedDataValueGap();
+        else
+            spaceBetweenBars = ((ctx->rectangle().width()/rowCount) - groupWidth)/(colCount-1);
+    }
 
-     if ( ba.useFixedValueBlockGap() ) {
+    if ( ba.useFixedValueBlockGap() ) {
         spaceBetweenGroups += ba.fixedValueBlockGap();
     }
 
@@ -137,8 +137,8 @@ void NormalBarDiagram::paint(  PaintContext* ctx )
             const QModelIndex index = diagram()->model()->index( i, j, diagram()->rootIndex() );
             const QRectF rect( topPoint, QSizeF( barWidth, barHeight ) );
             appendDataValueTextInfoToList( diagram(), list, index, PositionPoints( rect ),
-                                              Position::NorthWest, Position::SouthEast,
-                                              value );
+                                           Position::NorthWest, Position::SouthEast,
+                                           value );
             paintBars( ctx, index, rect, maxDepth );
 
             offset += barWidth + spaceBetweenBars;
