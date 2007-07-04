@@ -430,7 +430,7 @@ bool DiagramsSerializer::Private::parseAbstractDiagram(
                 }
             } else if ( tagName == TagNameQtProperties ) {
                 // now parse parent class properties:
-                if ( not parseQtProperties( container, diagram ) ) {
+                if ( ! parseQtProperties( container, diagram ) ) {
                     qDebug() << "Could not parse base class Qt properties. Element"
                              << tagName << "has invalid content.";
                     bOK = false;
@@ -1173,7 +1173,7 @@ bool DiagramsSerializer::Private::parseQtProperties(
             if ( !e.isNull() ) {
                 QVariant value;
                 QString name;
-                if ( not KDXML::readQVariantNode( e, value, name ) ) {
+                if ( ! KDXML::readQVariantNode( e, value, name ) ) {
                     qDebug() << "DiagramsSerializer::Private::parseQtProperties: error parsing property" << e.tagName();
                     error = true;
                 } else {
@@ -1183,5 +1183,5 @@ bool DiagramsSerializer::Private::parseQtProperties(
             n = n.nextSibling();
         }
     }
-    return not error;
+    return ! error;
 }
