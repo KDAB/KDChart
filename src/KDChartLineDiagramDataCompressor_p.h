@@ -53,7 +53,7 @@ namespace KDChart {
         // output: resulting model resolution, data points
         int modelDataColumns() const;
         int modelDataRows() const;
-        const DataPoint& data( int row, int column ) const;
+        const DataPoint& data( const CachePosition& ) const;
 
     private Q_SLOTS:
         void slotModelDataChanged( const QModelIndex&, const QModelIndex& );
@@ -73,7 +73,9 @@ namespace KDChart {
         int indexesPerPixel() const;
 
         // retrieve data from the model:
-        DataPoint retrieveModelData( int row, int column ) const;
+        DataPoint retrieveModelData( const CachePosition& ) const;
+        // check if a data point is in the cache:
+        bool isCached( const CachePosition& ) const;
 
         // one per dataset
         mutable QVector<DataPointVector> m_data;

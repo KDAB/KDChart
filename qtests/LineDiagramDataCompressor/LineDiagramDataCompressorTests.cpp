@@ -124,10 +124,15 @@ private slots:
         }
     }
 
-//     void invalidateTest()
-//     {
-//         QModelIndex index( model.index( 0, 0 ) );
-//         CachePosition
+
+   void invalidateTest()
+    {
+        CachePosition position( 0, 0 );
+        QVERIFY( compressor.isValidCachePosition( position ) );
+        compressor.retrieveModelData( position );
+        // QVERIFY2( compressor.isCached( position ),
+        //           "datapoint should be valid after retrieveModelData()" );
+    }
 
     void cleanupTestCase()
     {

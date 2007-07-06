@@ -89,16 +89,15 @@ void LineDiagramDataCompressor::rebuildCache()
     }
 }
 
-const LineDiagramDataCompressor::DataPoint& LineDiagramDataCompressor::data( int row, int column ) const
+const LineDiagramDataCompressor::DataPoint& LineDiagramDataCompressor::data( const CachePosition& position ) const
 {
     static DataPoint NullDataPoint;
-    if ( column < 0 || column > m_data.size() ) return NullDataPoint;
-    if ( row < 0 || row > m_data[column].size() ) return NullDataPoint;
-    if ( ! m_data[column][row].index.isValid() ) retrieveModelData( row, column );
-    return m_data[column][row];
+    if ( ! isValidCachePosition( position ) ) return NullDataPoint;
+    if ( ! isCached( position ) ) retrieveModelData( position );
+    return m_data[position.second][position.first];
 }
 
-LineDiagramDataCompressor::DataPoint LineDiagramDataCompressor::retrieveModelData( int row, int column ) const
+LineDiagramDataCompressor::DataPoint LineDiagramDataCompressor::retrieveModelData( const CachePosition& position ) const
 {
     return DataPoint();
 }
@@ -148,4 +147,10 @@ void LineDiagramDataCompressor::invalidate( const CachePosition& position )
 {
     if ( isValidCachePosition( position ) )
         m_data[position.second][position.first] = DataPoint();
+}
+
+bool LineDiagramDataCompressor::isCached( const CachePosition& position ) const
+{
+    Q_ASSERT( isValidCachePosition( position ) );
+    return m_data[position.second][position.first].index.isValid();
 }
