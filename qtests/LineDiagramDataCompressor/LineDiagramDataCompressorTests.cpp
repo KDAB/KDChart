@@ -5,6 +5,8 @@
 
 #include <KDChartLineDiagramDataCompressor_p.h>
 
+typedef KDChart::LineDiagramDataCompressor::CachePosition CachePosition;
+
 class LineDiagramDataCompressorTests : public QObject
 {
     Q_OBJECT
@@ -55,26 +57,26 @@ private slots:
 
     void mapToCacheTest()
     {
-        QPair<int, int> NullPoint( -1, -1 );
+        CachePosition NullPoint( -1, -1 );
         struct Match {
-            QPair<int, int> cachePosition;
+            CachePosition cachePosition;
             QModelIndex index;
         } matches[] = {
-            { QPair<int, int>( 0, 0 ), model.index( 0, 0 ) },
-            { QPair<int, int>( 0, 0 ), model.index( 1, 0 ) },
-            { QPair<int, int>( 0, 0 ), model.index( 2, 0 ) },
-            { QPair<int, int>( 0, 0 ), model.index( 3, 0 ) },
-            { QPair<int, int>( 0, 0 ), model.index( 4, 0 ) },
-            { QPair<int, int>( 0, 1 ), model.index( 0, 1 ) },
-            { QPair<int, int>( 0, 1 ), model.index( 1, 1 ) },
-            { QPair<int, int>( 0, 1 ), model.index( 2, 1 ) },
-            { QPair<int, int>( 0, 1 ), model.index( 3, 1 ) },
-            { QPair<int, int>( 0, 1 ), model.index( 4, 1 ) },
-            { QPair<int, int>( 2, 2 ), model.index( 10, 2 ) },
-            { QPair<int, int>( 2, 2 ), model.index( 11, 2 ) },
-            { QPair<int, int>( 2, 2 ), model.index( 12, 2 ) },
-            { QPair<int, int>( 2, 2 ), model.index( 13, 2 ) },
-            { QPair<int, int>( 2, 2 ), model.index( 14, 2 ) },
+            { CachePosition( 0, 0 ), model.index( 0, 0 ) },
+            { CachePosition( 0, 0 ), model.index( 1, 0 ) },
+            { CachePosition( 0, 0 ), model.index( 2, 0 ) },
+            { CachePosition( 0, 0 ), model.index( 3, 0 ) },
+            { CachePosition( 0, 0 ), model.index( 4, 0 ) },
+            { CachePosition( 0, 1 ), model.index( 0, 1 ) },
+            { CachePosition( 0, 1 ), model.index( 1, 1 ) },
+            { CachePosition( 0, 1 ), model.index( 2, 1 ) },
+            { CachePosition( 0, 1 ), model.index( 3, 1 ) },
+            { CachePosition( 0, 1 ), model.index( 4, 1 ) },
+            { CachePosition( 2, 2 ), model.index( 10, 2 ) },
+            { CachePosition( 2, 2 ), model.index( 11, 2 ) },
+            { CachePosition( 2, 2 ), model.index( 12, 2 ) },
+            { CachePosition( 2, 2 ), model.index( 13, 2 ) },
+            { CachePosition( 2, 2 ), model.index( 14, 2 ) },
             // the following are outside the model boundary:
             { NullPoint, model.index( 0, ColumnCount ) },
             { NullPoint, model.index( 1, ColumnCount ) },
@@ -83,7 +85,7 @@ private slots:
             { NullPoint, model.index( 4, ColumnCount) },
             { NullPoint, model.index( RowCount, 0 ) },
             // sentinel
-            { QPair<int, int>( 0, 0 ), QModelIndex() }
+            { CachePosition( 0, 0 ), QModelIndex() }
         };
 
         for ( int i = 0; matches[i].index.isValid(); ++i ) {
@@ -98,8 +100,8 @@ private slots:
         // test 1: valid point:
         {
             QModelIndexList indexes;
-            QPair<int, int> point( 0, 0 );
-            indexes = compressor.mapToModel( point.first, point.second );
+            CachePosition point( 0, 0 );
+            indexes = compressor.mapToModel( point );
             Q_FOREACH( QModelIndex index, indexes ) {
                 QVERIFY2( compressor.mapToCache( index ) == point,
                           "index mapToModel does not map back to the original cache point" );
@@ -108,19 +110,24 @@ private slots:
         // test 2: invalid point:
         {
             QModelIndexList indexes;
-            QPair<int, int> point( 0, ColumnCount ); // just outside column count
-            indexes = compressor.mapToModel( point.first, point.second );
+            CachePosition point( 0, ColumnCount ); // just outside column count
+            indexes = compressor.mapToModel( point );
             QVERIFY2( indexes.isEmpty(),
                       "index list for a point outside the data space should be empty" );
         }
         {
             QModelIndexList indexes;
-            QPair<int, int> point( RowCount, 0 ); // just outside row count
-            indexes = compressor.mapToModel( point.first, point.second );
+            CachePosition point( RowCount, 0 ); // just outside row count
+            indexes = compressor.mapToModel( point );
             QVERIFY2( indexes.isEmpty(),
                       "index list for a point outside the data space should be empty" );
         }
     }
+
+//     void invalidateTest()
+//     {
+//         QModelIndex index( model.index( 0, 0 ) );
+//         CachePosition
 
     void cleanupTestCase()
     {

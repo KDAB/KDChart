@@ -33,6 +33,7 @@ namespace KDChart {
             QModelIndex index;
         };
         typedef QVector<DataPoint> DataPointVector;
+        typedef QPair<int, int> CachePosition;
 
         enum ApproximationMode {
             // do not approximate, interpolate by averaging all
@@ -58,12 +59,17 @@ namespace KDChart {
         void slotModelDataChanged( const QModelIndex&, const QModelIndex& );
 
     private:
-        void rebuildCache(); // geometry has changed
-        void clearCache(); // reset all cached values, without
-                           // changing the cache geometry
+        // geometry has changed
+        void rebuildCache();
+        // reset all cached values, without changing the cache geometry
+        void clearCache();
+        // mark a cache position as invalid
+        void invalidate( const CachePosition& );
+        // verify it is within the range
+        bool isValidCachePosition( const CachePosition& ) const;
 
-        QPair<int, int> mapToCache( const QModelIndex& ) const;
-        QModelIndexList mapToModel( int row, int column ) const;
+        CachePosition mapToCache( const QModelIndex& ) const;
+        QModelIndexList mapToModel( const CachePosition& ) const;
         int indexesPerPixel() const;
 
         // retrieve data from the model:
