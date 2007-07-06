@@ -20,8 +20,8 @@ void LineDiagramDataCompressor::slotModelDataChanged(
     Q_ASSERT( topLeftIndex.column() <= bottomRightIndex.column() );
     CachePosition topleft = mapToCache( topLeftIndex );
     CachePosition bottomright = mapToCache( bottomRightIndex );
-    for ( int row = topleft.first; row < bottomright.first; ++row )
-        for ( int column = topleft.second; column < bottomright.second; ++column )
+    for ( int row = topleft.first; row <= bottomright.first; ++row )
+        for ( int column = topleft.second; column <= bottomright.second; ++column )
             invalidate( CachePosition( row, column ) );
 }
 
@@ -98,7 +98,7 @@ const LineDiagramDataCompressor::DataPoint& LineDiagramDataCompressor::data( con
     return m_data[position.second][position.first];
 }
 
-void LLineDiagramDataCompressor::retrieveModelData( const CachePosition& position ) const
+void LineDiagramDataCompressor::retrieveModelData( const CachePosition& position ) const
 {
     Q_ASSERT( isValidCachePosition( position ) );
     DataPoint result;

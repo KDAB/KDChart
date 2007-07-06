@@ -133,6 +133,23 @@ private slots:
         compressor.retrieveModelData( position );
         QVERIFY2( compressor.isCached( position ),
                   "datapoint should be valid after retrieveModelData( position )" );
+        QModelIndex index( model.index( 0, 0 ) );
+        compressor.slotModelDataChanged( index, index );
+        QVERIFY2( ! compressor.isCached( position ),
+                  "datapoint should be not valid after call to dataChanged slot" );
+        CachePosition position2( 1, 0 );
+        CachePosition position3( 2, 1 );
+        compressor.retrieveModelData( position2 );
+        compressor.retrieveModelData( position3 );
+        QVERIFY2( ! compressor.isCached( position ),
+                  "datapoint should be not valid after call to dataChanged slot" );
+        compressor.retrieveModelData( position );
+        QVERIFY2( compressor.isCached( position ) && compressor.isCached( position2 ) && compressor.isCached( position3 ),
+                  "datapoints should all be valid after retrieveModelData" );
+        QModelIndex index2( model.index( 1 * compressor.indexesPerPixel(), 0 ) );
+        compressor.slotModelDataChanged( index, index2 );
+        QVERIFY2( ! compressor.isCached( position ) && ! compressor.isCached( position2 ) && compressor.isCached( position3 ),
+                  "dataChanged needs to invalidate an exact range" );
     }
 
     void cleanupTestCase()
