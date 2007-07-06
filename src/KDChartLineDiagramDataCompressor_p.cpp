@@ -12,3 +12,18 @@ void LineDiagramDataCompressor::slotModelDataChanged(
     const QModelIndex& bottomright )
 {
 }
+
+int LineDiagramDataCompressor::modelDataColumns() const
+{
+    return m_data.size();
+}
+
+int LineDiagramDataCompressor::modelDataRows() const
+{
+    if ( m_data.size() > 0 ) {
+        return m_data.at( 0 ).size();
+    } else {
+        return 0;
+    }
+}
+
