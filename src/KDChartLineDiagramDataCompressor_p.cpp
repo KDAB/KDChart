@@ -101,9 +101,28 @@ QPair<int, int> LineDiagramDataCompressor::mapToCache( const QModelIndex& index 
     static const QPair<int, int> NullPosition( -1, -1 );
     if ( ! index.isValid() ) return NullPosition;
     if ( m_data.size() == 0 || m_data[0].size() == 0 ) return NullPosition;
+    // assumption: indexes per column == 1
+    return QPair<int, int>( index.row() / indexesPerPixel(), index.column() );
+}
 
-    const int IndexesPerPixel = m_model->rowCount() / m_data[0].size();
-    const int IndexesPerColumn = 1;
+QModelIndexList LineDiagramDataCompressor::mapToModel( int row, int column ) const
+{
+    if ( ! m_model ) return QModelIndexList();
+    if ( m_data.size() == 0 || m_data[0].size() == 0 ) return QModelIndexList();
+    if ( column < 0 || column >= m_data.size() ) return QModelIndexList();
+    if ( row < 0 || row >= m_data[0].size() ) return QModelIndexList();
+    // assumption: indexes per column == 1
+    QModelIndexList indexes;
+    for ( int i = 0; i < indexesPerPixel(); ++i ) {
+        indexes << m_model->index( row * indexesPerPixel(), column );
+    }
+    return indexes;
+}
 
-    return QPair<int, int>( index.row() / IndexesPerPixel, index.column() / IndexesPerColumn );
+int LineDiagramDataCompressor::indexesPerPixel() const
+{
+    if ( m_data.size() == 0 ) return 0;
+    if ( m_data[0].size() == 0 ) return 0;
+    if ( ! m_model ) return 0;
+    return m_model->rowCount() / m_data[0].size();
 }

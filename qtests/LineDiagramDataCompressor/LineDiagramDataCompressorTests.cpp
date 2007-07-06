@@ -1,3 +1,4 @@
+#include <QtDebug>
 #include <QtTest/QtTest>
 #include <QStandardItem>
 #include <QStandardItemModel>
@@ -13,8 +14,6 @@ private slots:
     void initTestCase()
     {
         // make 10 data sets a n elements
-        const int ColumnCount = 10;
-        const int RowCount = 1000;
         model.clear();
         model.setColumnCount( ColumnCount );
         model.setRowCount( RowCount );
@@ -77,11 +76,12 @@ private slots:
             { QPair<int, int>( 2, 2 ), model.index( 13, 2 ) },
             { QPair<int, int>( 2, 2 ), model.index( 14, 2 ) },
             // the following are outside the model boundary:
-            { NullPoint, model.index( 0, 11 ) },
-            { NullPoint, model.index( 1, 11 ) },
-            { NullPoint, model.index( 2, 11 ) },
-            { NullPoint, model.index( 3, 11 ) },
-            { NullPoint, model.index( 4, 11) },
+            { NullPoint, model.index( 0, ColumnCount ) },
+            { NullPoint, model.index( 1, ColumnCount ) },
+            { NullPoint, model.index( 2, ColumnCount ) },
+            { NullPoint, model.index( 3, ColumnCount ) },
+            { NullPoint, model.index( 4, ColumnCount) },
+            { NullPoint, model.index( RowCount, 0 ) },
             // sentinel
             { QPair<int, int>( 0, 0 ), QModelIndex() }
         };
@@ -93,6 +93,35 @@ private slots:
         QCOMPARE( NullPoint, compressor.mapToCache( QModelIndex() ) );
     }
 
+    void mapToModelTest()
+    {
+        // test 1: valid point:
+        {
+            QModelIndexList indexes;
+            QPair<int, int> point( 0, 0 );
+            indexes = compressor.mapToModel( point.first, point.second );
+            Q_FOREACH( QModelIndex index, indexes ) {
+                QVERIFY2( compressor.mapToCache( index ) == point,
+                          "index mapToModel does not map back to the original cache point" );
+            }
+        }
+        // test 2: invalid point:
+        {
+            QModelIndexList indexes;
+            QPair<int, int> point( 0, ColumnCount ); // just outside column count
+            indexes = compressor.mapToModel( point.first, point.second );
+            QVERIFY2( indexes.isEmpty(),
+                      "index list for a point outside the data space should be empty" );
+        }
+        {
+            QModelIndexList indexes;
+            QPair<int, int> point( RowCount, 0 ); // just outside row count
+            indexes = compressor.mapToModel( point.first, point.second );
+            QVERIFY2( indexes.isEmpty(),
+                      "index list for a point outside the data space should be empty" );
+        }
+    }
+
     void cleanupTestCase()
     {
     }
@@ -100,9 +129,15 @@ private slots:
 private:
     KDChart::LineDiagramDataCompressor compressor;
     QStandardItemModel model;
+    static const int RowCount;
+    static const int ColumnCount;
     int width;
     int height;
 };
+
+const int LineDiagramDataCompressorTests::ColumnCount = 10;
+const int LineDiagramDataCompressorTests::RowCount = 1000;
+
 
 QTEST_MAIN(LineDiagramDataCompressorTests)
 

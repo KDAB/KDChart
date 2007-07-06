@@ -64,6 +64,7 @@ namespace KDChart {
 
         QPair<int, int> mapToCache( const QModelIndex& ) const;
         QModelIndexList mapToModel( int row, int column ) const;
+        int indexesPerPixel() const;
 
         // retrieve data from the model:
         DataPoint retrieveModelData( int row, int column ) const;
