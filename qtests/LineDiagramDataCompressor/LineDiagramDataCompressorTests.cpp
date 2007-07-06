@@ -56,6 +56,7 @@ private slots:
 
     void mapToCacheTest()
     {
+        QPair<int, int> NullPoint( -1, -1 );
         struct Match {
             QPair<int, int> cachePosition;
             QModelIndex index;
@@ -65,12 +66,31 @@ private slots:
             { QPair<int, int>( 0, 0 ), model.index( 2, 0 ) },
             { QPair<int, int>( 0, 0 ), model.index( 3, 0 ) },
             { QPair<int, int>( 0, 0 ), model.index( 4, 0 ) },
+            { QPair<int, int>( 0, 1 ), model.index( 0, 1 ) },
+            { QPair<int, int>( 0, 1 ), model.index( 1, 1 ) },
+            { QPair<int, int>( 0, 1 ), model.index( 2, 1 ) },
+            { QPair<int, int>( 0, 1 ), model.index( 3, 1 ) },
+            { QPair<int, int>( 0, 1 ), model.index( 4, 1 ) },
+            { QPair<int, int>( 2, 2 ), model.index( 10, 2 ) },
+            { QPair<int, int>( 2, 2 ), model.index( 11, 2 ) },
+            { QPair<int, int>( 2, 2 ), model.index( 12, 2 ) },
+            { QPair<int, int>( 2, 2 ), model.index( 13, 2 ) },
+            { QPair<int, int>( 2, 2 ), model.index( 14, 2 ) },
+            // the following are outside the model boundary:
+            { NullPoint, model.index( 0, 11 ) },
+            { NullPoint, model.index( 1, 11 ) },
+            { NullPoint, model.index( 2, 11 ) },
+            { NullPoint, model.index( 3, 11 ) },
+            { NullPoint, model.index( 4, 11) },
+            // sentinel
             { QPair<int, int>( 0, 0 ), QModelIndex() }
         };
 
         for ( int i = 0; matches[i].index.isValid(); ++i ) {
-r            QCOMPARE( matches[i].cachePosition, compressor.mapToCache( matches[i].index ) );
+            QCOMPARE( matches[i].cachePosition, compressor.mapToCache( matches[i].index ) );
         }
+
+        QCOMPARE( NullPoint, compressor.mapToCache( QModelIndex() ) );
     }
 
     void cleanupTestCase()

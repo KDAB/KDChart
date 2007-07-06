@@ -105,5 +105,5 @@ QPair<int, int> LineDiagramDataCompressor::mapToCache( const QModelIndex& index 
     const int IndexesPerPixel = m_model->rowCount() / m_data[0].size();
     const int IndexesPerColumn = 1;
 
-    return QPair<int, int>( index.column() / IndexesPerColumn, index.row() / IndexesPerPixel );
+    return QPair<int, int>( index.row() / IndexesPerPixel, index.column() / IndexesPerColumn );
 }
