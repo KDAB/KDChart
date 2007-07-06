@@ -14,7 +14,7 @@ private slots:
     {
         // make 10 data sets a n elements
         const int ColumnCount = 10;
-        const int RowCount = 100 * 1000; // (a whole fricking lot :-)
+        const int RowCount = 1000;
         model.clear();
         model.setColumnCount( ColumnCount );
         model.setRowCount( RowCount );
@@ -27,6 +27,7 @@ private slots:
 
         width = 200;
         height = 100;
+        // these settings result in 5 indexes per pixel
     }
 
     void initializationTest()
@@ -51,6 +52,25 @@ private slots:
         QVERIFY2( compressor.modelDataRows() == width,
                   "row count should be equal to width when both model and resolution are set, and "
                   "model row count exceeds widget width");
+    }
+
+    void mapToCacheTest()
+    {
+        struct Match {
+            QPair<int, int> cachePosition;
+            QModelIndex index;
+        } matches[] = {
+            { QPair<int, int>( 0, 0 ), model.index( 0, 0 ) },
+            { QPair<int, int>( 0, 0 ), model.index( 1, 0 ) },
+            { QPair<int, int>( 0, 0 ), model.index( 2, 0 ) },
+            { QPair<int, int>( 0, 0 ), model.index( 3, 0 ) },
+            { QPair<int, int>( 0, 0 ), model.index( 4, 0 ) },
+            { QPair<int, int>( 0, 0 ), QModelIndex() }
+        };
+
+        for ( int i = 0; matches[i].index.isValid(); ++i ) {
+r            QCOMPARE( matches[i].cachePosition, compressor.mapToCache( matches[i].index ) );
+        }
     }
 
     void cleanupTestCase()

@@ -81,3 +81,29 @@ void LineDiagramDataCompressor::rebuildCache()
         m_data[i].fill( DataPoint() );
     }
 }
+
+const LineDiagramDataCompressor::DataPoint& LineDiagramDataCompressor::data( int row, int column ) const
+{
+    static DataPoint NullDataPoint;
+    if ( column < 0 || column > m_data.size() ) return NullDataPoint;
+    if ( row < 0 || row > m_data[column].size() ) return NullDataPoint;
+    if ( ! m_data[column][row].index.isValid() ) retrieveModelData( row, column );
+    return m_data[column][row];
+}
+
+LineDiagramDataCompressor::DataPoint LineDiagramDataCompressor::retrieveModelData( int row, int column ) const
+{
+    return DataPoint();
+}
+
+QPair<int, int> LineDiagramDataCompressor::mapToCache( const QModelIndex& index ) const
+{
+    static const QPair<int, int> NullPosition( -1, -1 );
+    if ( ! index.isValid() ) return NullPosition;
+    if ( m_data.size() == 0 || m_data[0].size() == 0 ) return NullPosition;
+
+    const int IndexesPerPixel = m_model->rowCount() / m_data[0].size();
+    const int IndexesPerColumn = 1;
+
+    return QPair<int, int>( index.column() / IndexesPerColumn, index.row() / IndexesPerPixel );
+}

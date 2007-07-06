@@ -1,12 +1,14 @@
 #ifndef KDCHARTLINEDIAGRAMDATACOMPRESSOR_H
 #define KDCHARTLINEDIAGRAMDATACOMPRESSOR_H
 
+#include <QPair>
 #include <QVector>
 #include <QObject>
 #include <QPointer>
 #include <QModelIndex>
 
 class QStandardItemModel;
+class LineDiagramDataCompressorTests;
 
 namespace KDChart {
 
@@ -23,16 +25,18 @@ namespace KDChart {
     class LineDiagramDataCompressor : public QObject
     {
         Q_OBJECT
+        friend class ::LineDiagramDataCompressorTests;
 
     public:
-        class DataPoint {
+        struct DataPoint {
             double value;
             QModelIndex index;
         };
         typedef QVector<DataPoint> DataPointVector;
 
         enum ApproximationMode {
-            // do not approximate
+            // do not approximate, interpolate by averaging all
+            // datapoints for a pixel
             Precise,
             // approximate by averaging out over prime number distances
             SamplingSeven
@@ -55,9 +59,17 @@ namespace KDChart {
 
     private:
         void rebuildCache(); // geometry has changed
-        void clearCache(); // reset all cached values, without changing the cache geometry
+        void clearCache(); // reset all cached values, without
+                           // changing the cache geometry
+
+        QPair<int, int> mapToCache( const QModelIndex& ) const;
+        QModelIndexList mapToModel( int row, int column ) const;
+
+        // retrieve data from the model:
+        DataPoint retrieveModelData( int row, int column ) const;
+
         // one per dataset
-        QVector<DataPointVector> m_data;
+        mutable QVector<DataPointVector> m_data;
         int m_xResolution;
         int m_yResolution;
         QPointer<QStandardItemModel> m_model;
