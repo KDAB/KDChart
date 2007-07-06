@@ -3,11 +3,12 @@
 
 #include <QVector>
 #include <QObject>
+#include <QPointer>
 #include <QModelIndex>
 
-namespace KDChart {
+class QStandardItemModel;
 
-    class AttributesModel;
+namespace KDChart {
 
     // - transparently compress table model data if the diagram widget
     // size does not allow to display all data points in an acceptable way
@@ -40,7 +41,7 @@ namespace KDChart {
         explicit LineDiagramDataCompressor( QObject* parent = 0 );
 
         // input: model, chart resolution, approximation mode
-        void setModel( AttributesModel* );
+        void setModel( QStandardItemModel* );
         void setResolution( int x, int y );
         void setApproximationMode( ApproximationMode mode );
 
@@ -53,8 +54,13 @@ namespace KDChart {
         void slotModelDataChanged( const QModelIndex&, const QModelIndex& );
 
     private:
+        void rebuildCache(); // geometry has changed
+        void clearCache(); // reset all cached values, without changing the cache geometry
         // one per dataset
         QVector<DataPointVector> m_data;
+        int m_xResolution;
+        int m_yResolution;
+        QPointer<QStandardItemModel> m_model;
     };
 }
 
