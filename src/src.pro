@@ -71,6 +71,7 @@ HEADERS += KDChartGlobal.h \
            KDChartLineAttributes.h \
            KDChartLineDiagram.h \
            KDChartLineDiagram_p.h \
+	   KDChartLineDiagramDataCompressor_p.h \
            KDChartNormalBarDiagram_p.h \
            KDChartNormalLineDiagram_p.h \
            KDChartStackedBarDiagram_p.h \
@@ -101,7 +102,7 @@ HEADERS += KDChartGlobal.h \
            KDChartThreeDPieAttributes.h \
            KDChartThreeDPieAttributes_p.h \ 
            PrerenderedElements/KDChartTextLabelCache.h \
-           KDChartSignalCompressor.h \
+           # unused so far: KDChartSignalCompressor.h \
 	   Ternary/TernaryPoint.h \
 	   Ternary/TernaryConstants.h \
 	   Ternary/KDChartTernaryGrid.h \
@@ -154,6 +155,7 @@ SOURCES += \
            KDChartLineAttributes.cpp \
            KDChartLineDiagram.cpp \
            KDChartLineDiagram_p.cpp \
+	   KDChartLineDiagramDataCompressor_p.cpp \
            KDChartNormalBarDiagram_p.cpp \
            KDChartNormalLineDiagram_p.cpp \
            KDChartStackedBarDiagram_p.cpp \
@@ -176,7 +178,7 @@ SOURCES += \
            KDChartThreeDLineAttributes.cpp \
            KDChartThreeDPieAttributes.cpp \
            PrerenderedElements/KDChartTextLabelCache.cpp \
-           KDChartSignalCompressor.cpp \
+           # unused so far: KDChartSignalCompressor.cpp \
 	   Ternary/KDChartTernaryAxis.cpp \
 	   Ternary/KDChartTernaryGrid.cpp \
 	   Ternary/TernaryPoint.cpp \

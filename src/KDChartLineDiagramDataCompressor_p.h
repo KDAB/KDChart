@@ -1,10 +1,13 @@
 #ifndef KDCHARTLINEDIAGRAMDATACOMPRESSOR_H
 #define KDCHARTLINEDIAGRAMDATACOMPRESSOR_H
 
+#include <QVector>
 #include <QObject>
 #include <QModelIndex>
 
 namespace KDChart {
+
+    class AttributesModel;
 
     // - transparently compress table model data if the diagram widget
     // size does not allow to display all data points in an acceptable way
@@ -34,7 +37,7 @@ namespace KDChart {
             SamplingSeven
         };
 
-        explicit LineDiagramDataCompressor( QObject* parent );
+        explicit LineDiagramDataCompressor( QObject* parent = 0 );
 
         // input: model, chart resolution, approximation mode
         void setModel( AttributesModel* );
@@ -46,8 +49,8 @@ namespace KDChart {
         int modelDataRows() const;
         const DataPoint& data( int row, int column ) const;
 
-    public slots:
-        void slotModelDataChanged();
+    private Q_SLOTS:
+        void slotModelDataChanged( const QModelIndex&, const QModelIndex& );
 
     private:
         // one per dataset
