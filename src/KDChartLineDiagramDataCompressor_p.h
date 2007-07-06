@@ -78,6 +78,8 @@ namespace KDChart {
         void retrieveModelData( const CachePosition& ) const;
         // check if a data point is in the cache:
         bool isCached( const CachePosition& ) const;
+        // set sample step width according to settings:
+        void calculateSampleStepWidth();
 
         // one per dataset
         mutable QVector<DataPointVector> m_data;
@@ -85,7 +87,9 @@ namespace KDChart {
         int m_xResolution;
         int m_yResolution;
         QPointer<QStandardItemModel> m_model;
+        unsigned int m_sampleStep;
     };
 }
 
 #endif
+

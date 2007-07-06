@@ -1,3 +1,4 @@
+#include <QtDebug>
 #include <QStandardItemModel>
 
 #include "KDChartLineDiagramDataCompressor_p.h"
@@ -9,7 +10,9 @@ LineDiagramDataCompressor::LineDiagramDataCompressor( QObject* parent )
     , m_mode( Precise )
     , m_xResolution( 0 )
     , m_yResolution( 0 )
+    , m_sampleStep( 0 )
 {
+    calculateSampleStepWidth();
 }
 
 void LineDiagramDataCompressor::slotModelDataChanged(
@@ -61,6 +64,7 @@ void LineDiagramDataCompressor::setModel( QStandardItemModel* model )
     }
 
     rebuildCache();
+    calculateSampleStepWidth();
 }
 
 void LineDiagramDataCompressor::setResolution( int x, int y )
@@ -69,6 +73,7 @@ void LineDiagramDataCompressor::setResolution( int x, int y )
         m_xResolution = x;
         m_yResolution = y;
         rebuildCache();
+        calculateSampleStepWidth();
     }
 }
 
@@ -181,4 +186,39 @@ bool LineDiagramDataCompressor::isCached( const CachePosition& position ) const
 {
     Q_ASSERT( isValidCachePosition( position ) );
     return m_data[position.second][position.first].index.isValid();
+}
+
+void LineDiagramDataCompressor::calculateSampleStepWidth()
+{
+    if ( m_mode == Precise ) {
+        m_sampleStep = 1;
+        return;
+    }
+
+    static unsigned int SomePrimes[] = {
+        2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47,
+        53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101,
+        151, 211, 313, 401, 503, 607, 701, 811, 911, 1009,
+        10037, 12911, 16001, 20011, 50021,
+        100003, 137867, 199999, 500009, 707753, 1000003, 0
+    }; // ... after that, having a model at all becomes impractical
+
+    // we want at least 17 samples per data point, using a prime step width
+    const double WantedSamples = 17;
+    if ( WantedSamples > indexesPerPixel() ) {
+        m_sampleStep = 1;
+    } else {
+        int i;
+        for ( i = 0; SomePrimes[i] != 0; ++i ) {
+            if ( WantedSamples * SomePrimes[i+1] > indexesPerPixel() ) {
+                break;
+            }
+        }
+        m_sampleStep = SomePrimes[i];
+        if ( SomePrimes[i] == 0 ) {
+            m_sampleStep = SomePrimes[i-1];
+        } else {
+            m_sampleStep = SomePrimes[i];
+        }
+    }
 }
