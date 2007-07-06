@@ -28,7 +28,9 @@ namespace KDChart {
         friend class ::LineDiagramDataCompressorTests;
 
     public:
-        struct DataPoint {
+        class DataPoint {
+        public:
+            DataPoint() : value() {}
             double value;
             QModelIndex index;
         };
@@ -72,13 +74,14 @@ namespace KDChart {
         QModelIndexList mapToModel( const CachePosition& ) const;
         int indexesPerPixel() const;
 
-        // retrieve data from the model:
-        DataPoint retrieveModelData( const CachePosition& ) const;
+        // retrieve data from the model, put it into the cache
+        void retrieveModelData( const CachePosition& ) const;
         // check if a data point is in the cache:
         bool isCached( const CachePosition& ) const;
 
         // one per dataset
         mutable QVector<DataPointVector> m_data;
+        ApproximationMode m_mode;
         int m_xResolution;
         int m_yResolution;
         QPointer<QStandardItemModel> m_model;

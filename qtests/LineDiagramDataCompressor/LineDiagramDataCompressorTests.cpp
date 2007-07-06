@@ -128,10 +128,11 @@ private slots:
    void invalidateTest()
     {
         CachePosition position( 0, 0 );
+        // KDChart::LineDiagramDataCompressor::DataPoint point;
         QVERIFY( compressor.isValidCachePosition( position ) );
         compressor.retrieveModelData( position );
-        // QVERIFY2( compressor.isCached( position ),
-        //           "datapoint should be valid after retrieveModelData()" );
+        QVERIFY2( compressor.isCached( position ),
+                  "datapoint should be valid after retrieveModelData( position )" );
     }
 
     void cleanupTestCase()

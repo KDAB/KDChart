@@ -6,6 +6,7 @@ using namespace KDChart;
 
 LineDiagramDataCompressor::LineDiagramDataCompressor( QObject* parent )
     : QObject( parent )
+    , m_mode( Precise )
     , m_xResolution( 0 )
     , m_yResolution( 0 )
 {
@@ -97,9 +98,36 @@ const LineDiagramDataCompressor::DataPoint& LineDiagramDataCompressor::data( con
     return m_data[position.second][position.first];
 }
 
-LineDiagramDataCompressor::DataPoint LineDiagramDataCompressor::retrieveModelData( const CachePosition& position ) const
+void LLineDiagramDataCompressor::retrieveModelData( const CachePosition& position ) const
 {
-    return DataPoint();
+    Q_ASSERT( isValidCachePosition( position ) );
+    DataPoint result;
+
+    switch(m_mode ) {
+    case Precise:
+    {
+        QModelIndexList indexes = mapToModel( position );
+        if ( ! indexes.isEmpty() ) {
+            Q_FOREACH( QModelIndex index, indexes ) {
+                bool ok;
+                QVariant valueVariant = m_model->data( index, Qt::DisplayRole );
+                double value = valueVariant.toDouble( &ok );
+                if ( ok ) result.value += value;
+            }
+            result.index = indexes.at( 0 );
+            result.value /= indexes.size();
+        }
+    }
+    break;
+    case SamplingSeven:
+    default:
+    {
+    }
+    break;
+    };
+
+    m_data[position.second][position.first] = result;
+    Q_ASSERT( isCached( position ) );
 }
 
 LineDiagramDataCompressor::CachePosition LineDiagramDataCompressor::mapToCache(
