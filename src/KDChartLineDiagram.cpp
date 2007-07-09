@@ -72,6 +72,7 @@ void LineDiagram::init()
     d->stackedDiagram = new StackedLineDiagram( this );
     d->percentDiagram = new PercentLineDiagram( this );
     d->implementor = d->normalDiagram;
+    d->compressor.setModel( attributesModel() );
 }
 
 LineDiagram::~LineDiagram()
@@ -404,10 +405,10 @@ const int LineDiagram::numberOfOrdinateSegments () const
     return d->attributesModel->columnCount(attributesModelRootIndex());
 }
 
-void LineDiagram::setModel ( QAbstractItemModel * newModel )
+void LineDiagram::setRootIndex ( const QModelIndex& idx )
 {
-    AbstractDiagram::setModel( newModel );
-    d->compressor.setModel( newModel );
+    d->compressor.setRootIndex( idx );
+    AbstractCartesianDiagram::setRootIndex( idx );
 }
 
 //#endif

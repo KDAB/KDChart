@@ -7,8 +7,8 @@
 #include <QPointer>
 #include <QModelIndex>
 
-class QStandardItemModel;
 class LineDiagramDataCompressorTests;
+class QAbstractItemModel;
 
 namespace KDChart {
 
@@ -49,6 +49,7 @@ namespace KDChart {
 
         // input: model, chart resolution, approximation mode
         void setModel( QAbstractItemModel* );
+        void setRootIndex( const QModelIndex& root );
         void setResolution( int x, int y );
         void setApproximationMode( ApproximationMode mode );
 
@@ -88,6 +89,7 @@ namespace KDChart {
         int m_yResolution;
         QPointer<QAbstractItemModel> m_model;
         unsigned int m_sampleStep;
+        QModelIndex m_rootIndex;
     };
 }
 

@@ -1,5 +1,5 @@
 #include <QtDebug>
-#include <QStandardItemModel>
+#include <QAbstractItemModel>
 
 #include "KDChartLineDiagramDataCompressor_p.h"
 
@@ -32,8 +32,8 @@ int LineDiagramDataCompressor::modelDataColumns() const
 {
     // only operational if there is a model and a resolution
     if ( m_model ) {
-        Q_ASSERT( m_model->columnCount() == m_data.size() );
-        return m_model->columnCount();
+        Q_ASSERT( m_model->columnCount( m_rootIndex ) == m_data.size() );
+        return m_model->columnCount( m_rootIndex );
     } else {
         return 0;
     }
@@ -42,7 +42,7 @@ int LineDiagramDataCompressor::modelDataColumns() const
 int LineDiagramDataCompressor::modelDataRows() const
 {
     // only operational if there is a model, columns, and a resolution
-    if ( m_model && m_model->columnCount() > 0 && m_xResolution > 0 ) {
+    if ( m_model && m_model->columnCount( m_rootIndex ) > 0 && m_xResolution > 0 ) {
         return m_data[0].size();
     } else {
         return 0;
@@ -67,6 +67,14 @@ void LineDiagramDataCompressor::setModel( QAbstractItemModel* model )
     calculateSampleStepWidth();
 }
 
+void LineDiagramDataCompressor::setRootIndex( const QModelIndex& root )
+{
+    if ( m_rootIndex != root ) {
+        m_rootIndex = root;
+        rebuildCache();
+        calculateSampleStepWidth();
+    }
+}
 void LineDiagramDataCompressor::setResolution( int x, int y )
 {
     if ( x != m_xResolution || y != m_yResolution ) {
@@ -86,8 +94,8 @@ void LineDiagramDataCompressor::clearCache()
 void LineDiagramDataCompressor::rebuildCache()
 {
     m_data.clear();
-    const int columnCount = m_model ? m_model->columnCount() : 0;
-    const int rowCount = qMin( m_model ? m_model->rowCount() : 0, m_xResolution );
+    const int columnCount = m_model ? m_model->columnCount( m_rootIndex ) : 0;
+    const int rowCount = qMin( m_model ? m_model->rowCount( m_rootIndex ) : 0, m_xResolution );
     m_data.resize( columnCount );
     for ( int i = 0; i < columnCount; ++i ) {
         m_data[i].resize( rowCount );
@@ -151,7 +159,7 @@ QModelIndexList LineDiagramDataCompressor::mapToModel( const CachePosition& posi
         // assumption: indexes per column == 1
         QModelIndexList indexes;
         for ( int i = 0; i < indexesPerPixel(); ++i ) {
-            indexes << m_model->index( position.first * indexesPerPixel(), position.second );
+            indexes << m_model->index( position.first * indexesPerPixel(), position.second, m_rootIndex );
         }
         return indexes;
     } else {
@@ -164,7 +172,7 @@ int LineDiagramDataCompressor::indexesPerPixel() const
     if ( m_data.size() == 0 ) return 0;
     if ( m_data[0].size() == 0 ) return 0;
     if ( ! m_model ) return 0;
-    return m_model->rowCount() / m_data[0].size();
+    return m_model->rowCount( m_rootIndex ) / m_data[0].size();
 }
 
 bool LineDiagramDataCompressor::isValidCachePosition( const CachePosition& position ) const

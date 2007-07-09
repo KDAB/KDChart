@@ -106,8 +106,7 @@ public:
     /* reimpl */
     const int numberOfOrdinateSegments () const;
     /* reimpl */
-    void setModel ( QAbstractItemModel * newModel );
-
+    void setRootIndex ( const QModelIndex& idx );
 
 protected:
     void paint ( PaintContext* paintContext );
