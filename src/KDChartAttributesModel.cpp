@@ -504,14 +504,20 @@ QVariant KDChart::AttributesModel::modelData( int role ) const
 
 int AttributesModel::rowCount( const QModelIndex& index ) const
 {
-    Q_ASSERT(sourceModel());
-    return sourceModel()->rowCount( mapToSource(index) );
+    if ( sourceModel() ) {
+        return sourceModel()->rowCount( mapToSource(index) );
+    } else {
+        return 0;
+    }
 }
 
 int AttributesModel::columnCount( const QModelIndex& index ) const
 {
-    Q_ASSERT(sourceModel());
-    return sourceModel()->columnCount( mapToSource(index) );
+    if ( sourceModel() ) {
+        return sourceModel()->columnCount( mapToSource(index) );
+    } else {
+        return 0;
+    }
 }
 
 void AttributesModel::setSourceModel( QAbstractItemModel* sourceModel )

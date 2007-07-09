@@ -152,6 +152,17 @@ private slots:
                   "dataChanged needs to invalidate an exact range" );
     }
 
+    void datasetDimensionTest()
+    {
+        int oldDimension = compressor.m_datasetDimension;
+        compressor.setDatasetDimension( 2 );
+        QVERIFY2( compressor.modelDataColumns() == ColumnCount / 2,
+                  "datasetDimension == 2 should cut the column count in half" );
+        compressor.setDatasetDimension( oldDimension );
+        QVERIFY2( compressor.modelDataColumns() == ColumnCount,
+                  "datasetDimension == 1 should restore the old column count" );
+    }
+
     void cleanupTestCase()
     {
     }

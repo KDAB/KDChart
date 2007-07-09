@@ -268,7 +268,8 @@ void LineDiagram::LineDiagramType::paintValueTracker( PaintContext* ctx, const V
     ctx->painter()->drawPolygon( abscissaMarker, 3 );
 }
 
-LineDiagramDataCompressor& LineDiagram::LineDiagramType::compressor()
+LineDiagramDataCompressor& LineDiagram::LineDiagramType::compressor() const
 {
     return m_private->compressor;
 }
+

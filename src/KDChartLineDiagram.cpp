@@ -49,7 +49,6 @@
 using namespace KDChart;
 
 LineDiagram::Private::Private()
-//  :lineType ( Normal )
 {
 }
 
@@ -73,6 +72,8 @@ void LineDiagram::init()
     d->percentDiagram = new PercentLineDiagram( this );
     d->implementor = d->normalDiagram;
     d->compressor.setModel( attributesModel() );
+    connect( this, SIGNAL( layoutChanged( AbstractDiagram* ) ),
+             &( d->compressor ), SLOT( slotDiagramLayoutChanged( AbstractDiagram* ) ) );
 }
 
 LineDiagram::~LineDiagram()
@@ -410,7 +411,5 @@ void LineDiagram::setRootIndex ( const QModelIndex& idx )
     d->compressor.setRootIndex( idx );
     AbstractCartesianDiagram::setRootIndex( idx );
 }
-
-//#endif
 
 

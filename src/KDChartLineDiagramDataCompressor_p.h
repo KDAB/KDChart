@@ -12,6 +12,8 @@ class QAbstractItemModel;
 
 namespace KDChart {
 
+    class AbstractDiagram;
+
     // - transparently compress table model data if the diagram widget
     // size does not allow to display all data points in an acceptable way
     // - the class acts much like a proxy model, but is not
@@ -52,14 +54,20 @@ namespace KDChart {
         void setRootIndex( const QModelIndex& root );
         void setResolution( int x, int y );
         void setApproximationMode( ApproximationMode mode );
+        void setDatasetDimension( int dimension );
 
         // output: resulting model resolution, data points
+        // FIXME (Mirko) rather stupid naming, Mirko!
         int modelDataColumns() const;
         int modelDataRows() const;
         const DataPoint& data( const CachePosition& ) const;
 
     private Q_SLOTS:
         void slotModelDataChanged( const QModelIndex&, const QModelIndex& );
+        void slotModelLayoutChanged();
+        // FIXME resolution changes and root index changes should all
+        // be catchable with this method:
+        void slotDiagramLayoutChanged( AbstractDiagram* );
 
     private:
         // geometry has changed
@@ -90,6 +98,7 @@ namespace KDChart {
         QPointer<QAbstractItemModel> m_model;
         unsigned int m_sampleStep;
         QModelIndex m_rootIndex;
+        int m_datasetDimension;
     };
 }
 
