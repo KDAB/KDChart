@@ -6,6 +6,7 @@
 #include "KDChartAttributesModel.h"
 #include "KDChartAbstractCartesianDiagram.h"
 #include "KDChartNormalLineDiagram_p.h"
+#include "KDChartLineDiagramDataCompressor_p.h"
 
 using namespace KDChart;
 
@@ -21,39 +22,28 @@ LineDiagram::LineType NormalLineDiagram::type() const
 
 const QPair<QPointF, QPointF> NormalLineDiagram::calculateDataBoundaries() const
 {
-    const int rowCount = attributesModel()->rowCount( attributesModelRootIndex() );
-    const int colCount = attributesModel()->columnCount( attributesModelRootIndex() );
+    const int rowCount = compressor().modelDataRows();
+    const int colCount = compressor().modelDataColumns();
     double xMin = 0;
     double xMax = rowCount -1;
-    double yMin = 0, yMax = 0;
-    bool ok;
+    double yMin = 0;
+    double yMax = 0;
 
-    bool bStarting = true;
-    for( int i = datasetDimension() - 1; i < colCount; i += datasetDimension() ) {
-        for ( int j=0; j< rowCount; ++j ) {
-            const double value = valueForCellTesting( j, i, ok );
-            double xvalue;
-            if( datasetDimension() > 1 && ok )
-                xvalue = valueForCellTesting( j, i-1, ok );
-            if( ok ){
-                if( bStarting ){
-                    yMin = value;
-                    yMax = value;
-                }else{
-                    yMin = qMin( yMin, value );
-                    yMax = qMax( yMax, value );
-                }
-                if ( datasetDimension() > 1 ) {
-                    if( bStarting ){
-                        xMin = xvalue;
-                        xMax = xvalue;
-                    }else{
-                        xMin = qMin( xMin, xvalue );
-                        xMax = qMax( xMax, xvalue );
-                    }
-                }
-                bStarting = false;
+    bool first = true;
+    for( int i = 0; i < colCount; ++i ) {
+        for ( int j = 0; j < rowCount; ++j ) {
+            LineDiagramDataCompressor::CachePosition position( j, i );
+            LineDiagramDataCompressor::DataPoint point = compressor().data( position );
+
+            if ( first ) {
+                    yMin = point.value;
+                    yMax = point.value;
+            } else {
+                yMin = qMin( yMin, point.value );
+                yMax = qMax( yMax, point.value );
             }
+
+            first = false;
         }
     }
 

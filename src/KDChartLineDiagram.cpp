@@ -394,6 +394,7 @@ void LineDiagram::resize ( const QSizeF& size )
 {
     d->compressor.setResolution( static_cast<int>( size.width() ),
                                  static_cast<int>( size.height() ) );
+    setDataBoundariesDirty();
 }
 
 const int LineDiagram::numberOfAbscissaSegments () const
@@ -412,4 +413,8 @@ void LineDiagram::setRootIndex ( const QModelIndex& idx )
     AbstractCartesianDiagram::setRootIndex( idx );
 }
 
-
+void LineDiagram::setModel ( QAbstractItemModel * model )
+{
+    AbstractCartesianDiagram::setModel( model );
+    d->compressor.setModel( attributesModel() );
+}

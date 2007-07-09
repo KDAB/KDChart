@@ -101,8 +101,8 @@ namespace KDChart {
         AttributesModel* attributesModel() const;
         QModelIndex attributesModelRootIndex() const;
         ReverseMapper& reverseMapper();
-
         LineDiagramDataCompressor& compressor() const;
+
         int datasetDimension() const;
         LineAttributes::MissingValuesPolicy getCellValues(
             int row, int column,
