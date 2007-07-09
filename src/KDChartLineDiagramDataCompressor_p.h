@@ -48,7 +48,7 @@ namespace KDChart {
         explicit LineDiagramDataCompressor( QObject* parent = 0 );
 
         // input: model, chart resolution, approximation mode
-        void setModel( QStandardItemModel* );
+        void setModel( QAbstractItemModel* );
         void setResolution( int x, int y );
         void setApproximationMode( ApproximationMode mode );
 
@@ -86,7 +86,7 @@ namespace KDChart {
         ApproximationMode m_mode;
         int m_xResolution;
         int m_yResolution;
-        QPointer<QStandardItemModel> m_model;
+        QPointer<QAbstractItemModel> m_model;
         unsigned int m_sampleStep;
     };
 }

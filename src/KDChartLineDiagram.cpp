@@ -390,6 +390,8 @@ void LineDiagram::paint( PaintContext* ctx )
 
 void LineDiagram::resize ( const QSizeF& size )
 {
+    d->compressor.setResolution( static_cast<int>( size.width() ),
+                                 static_cast<int>( size.height() ) );
 }
 
 const int LineDiagram::numberOfAbscissaSegments () const
@@ -400,6 +402,12 @@ const int LineDiagram::numberOfAbscissaSegments () const
 const int LineDiagram::numberOfOrdinateSegments () const
 {
     return d->attributesModel->columnCount(attributesModelRootIndex());
+}
+
+void LineDiagram::setModel ( QAbstractItemModel * newModel )
+{
+    AbstractDiagram::setModel( newModel );
+    d->compressor.setModel( newModel );
 }
 
 //#endif

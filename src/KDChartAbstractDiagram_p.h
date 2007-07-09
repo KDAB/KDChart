@@ -164,6 +164,7 @@ namespace KDChart {
                                  const QPointF& pos,
                                  QString text )
         {
+            Q_UNUSED( index );
             // paint one data series
             const DataValueAttributes a( qVariantValue<DataValueAttributes>(
                                              attributesModel->modelData( KDChart::DataValueLabelAttributesRole ) ) );

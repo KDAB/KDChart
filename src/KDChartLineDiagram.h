@@ -63,7 +63,7 @@ public:
     /**
      * Returns true if both diagrams have the same settings.
      */
-    bool compare( const LineDiagram* other )const;
+    bool compare( const LineDiagram* other ) const;
 
     enum LineType {
         Normal =  0,
@@ -105,6 +105,9 @@ public:
     const int numberOfAbscissaSegments () const;
     /* reimpl */
     const int numberOfOrdinateSegments () const;
+    /* reimpl */
+    void setModel ( QAbstractItemModel * newModel );
+
 
 protected:
     void paint ( PaintContext* paintContext );

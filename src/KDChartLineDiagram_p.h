@@ -73,6 +73,7 @@ namespace KDChart {
         LineDiagramType* normalDiagram;
         LineDiagramType* stackedDiagram;
         LineDiagramType* percentDiagram;
+        LineDiagramDataCompressor compressor;
     };
 
     KDCHART_IMPL_DERIVED_DIAGRAM( LineDiagram, AbstractCartesianDiagram, CartesianCoordinatePlane )
@@ -101,6 +102,7 @@ namespace KDChart {
         QModelIndex attributesModelRootIndex() const;
         ReverseMapper& reverseMapper();
 
+        LineDiagramDataCompressor& compressor();
         int datasetDimension() const;
         LineAttributes::MissingValuesPolicy getCellValues(
             int row, int column,
@@ -138,7 +140,6 @@ namespace KDChart {
                                 const QPointF& at );
 
         LineDiagram::Private* m_private;
-        LineDiagramDataCompressor m_compressor;
     };
 
 /*

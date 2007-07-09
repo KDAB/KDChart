@@ -850,5 +850,4 @@ void CartesianCoordinatePlane::setGeometry( const QRect& rectangle )
     Q_FOREACH( AbstractDiagram* diagram, diagrams() ) {
         diagram->resize( drawingArea().size() );
     }
-    qDebug() << "CartesianCoordinatePlane::setGeometry: drawing Rect:" << drawingArea();
 }

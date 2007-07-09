@@ -49,7 +49,7 @@ int LineDiagramDataCompressor::modelDataRows() const
     }
 }
 
-void LineDiagramDataCompressor::setModel( QStandardItemModel* model )
+void LineDiagramDataCompressor::setModel( QAbstractItemModel* model )
 {
     if ( m_model != 0 && m_model != model ) {
         disconnect( m_model, SIGNAL( dataChanged( QModelIndex, QModelIndex ) ),
