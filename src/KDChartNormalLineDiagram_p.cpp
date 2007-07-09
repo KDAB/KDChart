@@ -21,22 +21,21 @@ LineDiagram::LineType NormalLineDiagram::type() const
 
 const QPair<QPointF, QPointF> NormalLineDiagram::calculateDataBoundaries() const
 {
-    // FIXME remove hungarian notation
     const int rowCount = attributesModel()->rowCount( attributesModelRootIndex() );
     const int colCount = attributesModel()->columnCount( attributesModelRootIndex() );
     double xMin = 0;
     double xMax = rowCount -1;
     double yMin = 0, yMax = 0;
-    bool bOK;
+    bool ok;
 
     bool bStarting = true;
     for( int i = datasetDimension() - 1; i < colCount; i += datasetDimension() ) {
         for ( int j=0; j< rowCount; ++j ) {
-            const double value = valueForCellTesting( j, i, bOK );
+            const double value = valueForCellTesting( j, i, ok );
             double xvalue;
-            if( datasetDimension() > 1 && bOK )
-                xvalue = valueForCellTesting( j, i-1, bOK );
-            if( bOK ){
+            if( datasetDimension() > 1 && ok )
+                xvalue = valueForCellTesting( j, i-1, ok );
+            if( ok ){
                 if( bStarting ){
                     yMin = value;
                     yMax = value;
