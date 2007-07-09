@@ -1,5 +1,5 @@
 /****************************************************************************
- ** Copyright (C) 2006 Klarälvdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2006 Klaralvdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KD Chart library.
  **
@@ -318,7 +318,7 @@ QRectF CartesianCoordinatePlane::drawingArea() const
 
 void CartesianCoordinatePlane::layoutDiagrams()
 {
-    //qDebug("KDChart::CartesianCoordinatePlane::layoutDiagrams() called");
+    //qDebug("CartesianCoordinatePlane::layoutDiagrams() called");
     if ( diagrams().isEmpty() )
     {   // FIXME evaluate what can still be prepared
         // FIXME decide default dimension if no diagrams are present (to make empty planes useable)
@@ -361,19 +361,19 @@ void CartesianCoordinatePlane::layoutDiagrams()
         diagramTopLeft = dataBoundingRect.bottomRight();
     else if( !d->reverseVerticalPlane && d->reverseHorizontalPlane )
         diagramTopLeft = dataBoundingRect.topRight();
-    
+
     double diagramWidth;
     if( !d->reverseHorizontalPlane )
         diagramWidth = dataBoundingRect.width();
     else
         diagramWidth = -dataBoundingRect.width();
-    
+
     double diagramHeight;
     if( !d->reverseVerticalPlane )
         diagramHeight = dataBoundingRect.height();
     else
         diagramHeight = -dataBoundingRect.height();
-    
+
     double planeWidth = diagramArea.width();
     double planeHeight = diagramArea.height();
     double scaleX;
@@ -421,7 +421,7 @@ void CartesianCoordinatePlane::layoutDiagrams()
     // the plane area might have changed, so the zoom values might also be changed
     handleFixedDataCoordinateSpaceRelation( drawArea );
 
-    //qDebug("KDChart::CartesianCoordinatePlane::layoutDiagrams() done,\ncalling update() now:");
+    //qDebug("CartesianCoordinatePlane::layoutDiagrams() done,\ncalling update() now:");
     update();
 }
 
@@ -455,7 +455,7 @@ void CartesianCoordinatePlane::handleFixedDataCoordinateSpaceRelation( const QRe
         const QPointF oldCenter = zoomCenter();
         const QPointF newCenter = QPointF( oldCenter.x() * geometry.width() / d->fixedDataCoordinateSpaceRelationOldSize.width(),
                                            oldCenter.y() * geometry.height() / d->fixedDataCoordinateSpaceRelationOldSize.height() );
-        
+
         setZoomCenter( newCenter );
         setZoomFactorX( newZoomX );
         setZoomFactorY( newZoomY );
@@ -599,7 +599,7 @@ void CartesianCoordinatePlane::setAxesCalcModeX( AxesCalcMode mode )
     }
 }
 
-void KDChart::CartesianCoordinatePlane::setHorizontalRange( const QPair< qreal, qreal > & range )
+void CartesianCoordinatePlane::setHorizontalRange( const QPair< qreal, qreal > & range )
 {
     if ( d->horizontalMin != range.first || d->horizontalMax != range.second ) {
         d->autoAdjustHorizontalRangeToData = 100;
@@ -610,7 +610,7 @@ void KDChart::CartesianCoordinatePlane::setHorizontalRange( const QPair< qreal, 
     }
 }
 
-void KDChart::CartesianCoordinatePlane::setVerticalRange( const QPair< qreal, qreal > & range )
+void CartesianCoordinatePlane::setVerticalRange( const QPair< qreal, qreal > & range )
 {
 
     if ( d->verticalMin != range.first || d->verticalMax != range.second ) {
@@ -622,12 +622,12 @@ void KDChart::CartesianCoordinatePlane::setVerticalRange( const QPair< qreal, qr
     }
 }
 
-QPair< qreal, qreal > KDChart::CartesianCoordinatePlane::horizontalRange( ) const
+QPair< qreal, qreal > CartesianCoordinatePlane::horizontalRange( ) const
 {
     return QPair<qreal, qreal>( d->horizontalMin, d->horizontalMax );
 }
 
-QPair< qreal, qreal > KDChart::CartesianCoordinatePlane::verticalRange( ) const
+QPair< qreal, qreal > CartesianCoordinatePlane::verticalRange( ) const
 {
     return QPair<qreal, qreal>( d->verticalMin, d->verticalMax );
 }
@@ -689,8 +689,7 @@ unsigned int CartesianCoordinatePlane::autoAdjustVerticalRangeToData() const
     return d->autoAdjustVerticalRangeToData;
 }
 
-
-void KDChart::CartesianCoordinatePlane::setGridAttributes(
+void CartesianCoordinatePlane::setGridAttributes(
     Qt::Orientation orientation,
     const GridAttributes& a )
 {
@@ -703,14 +702,14 @@ void KDChart::CartesianCoordinatePlane::setGridAttributes(
     emit propertiesChanged();
 }
 
-void KDChart::CartesianCoordinatePlane::resetGridAttributes(
+void CartesianCoordinatePlane::resetGridAttributes(
     Qt::Orientation orientation )
 {
     setHasOwnGridAttributes( orientation, false );
     update();
 }
 
-const GridAttributes KDChart::CartesianCoordinatePlane::gridAttributes(
+const GridAttributes CartesianCoordinatePlane::gridAttributes(
     Qt::Orientation orientation ) const
 {
     if( hasOwnGridAttributes( orientation ) ){
@@ -723,7 +722,7 @@ const GridAttributes KDChart::CartesianCoordinatePlane::gridAttributes(
     }
 }
 
-void KDChart::CartesianCoordinatePlane::setHasOwnGridAttributes(
+void CartesianCoordinatePlane::setHasOwnGridAttributes(
     Qt::Orientation orientation, bool on )
 {
     if( orientation == Qt::Horizontal )
@@ -733,7 +732,7 @@ void KDChart::CartesianCoordinatePlane::setHasOwnGridAttributes(
     emit propertiesChanged();
 }
 
-bool KDChart::CartesianCoordinatePlane::hasOwnGridAttributes(
+bool CartesianCoordinatePlane::hasOwnGridAttributes(
     Qt::Orientation orientation ) const
 {
     return
@@ -742,7 +741,7 @@ bool KDChart::CartesianCoordinatePlane::hasOwnGridAttributes(
         : d->hasOwnGridAttributesVertical;
 }
 
-void KDChart::CartesianCoordinatePlane::setAutoAdjustGridToZoom( bool autoAdjust )
+void CartesianCoordinatePlane::setAutoAdjustGridToZoom( bool autoAdjust )
 {
     if( d->autoAdjustGridToZoom != autoAdjust ){
         d->autoAdjustGridToZoom = autoAdjust;
@@ -751,12 +750,12 @@ void KDChart::CartesianCoordinatePlane::setAutoAdjustGridToZoom( bool autoAdjust
     }
 }
 
-const bool KDChart::CartesianCoordinatePlane::autoAdjustGridToZoom() const
+const bool CartesianCoordinatePlane::autoAdjustGridToZoom() const
 {
     return d->autoAdjustGridToZoom;
 }
 
-AbstractCoordinatePlane* KDChart::CartesianCoordinatePlane::sharedAxisMasterPlane( QPainter* painter )
+AbstractCoordinatePlane* CartesianCoordinatePlane::sharedAxisMasterPlane( QPainter* painter )
 {
     CartesianCoordinatePlane* plane = this;
     AbstractCartesianDiagram* diag = dynamic_cast< AbstractCartesianDiagram* >( plane->diagram() );
@@ -766,7 +765,7 @@ AbstractCoordinatePlane* KDChart::CartesianCoordinatePlane::sharedAxisMasterPlan
         const CartesianAxisList axes = diag->axes();
         KDAB_FOREACH( const CartesianAxis* a, axes )
         {
-            CartesianCoordinatePlane* p = const_cast< CartesianCoordinatePlane* >( 
+            CartesianCoordinatePlane* p = const_cast< CartesianCoordinatePlane* >(
                                               dynamic_cast< const CartesianCoordinatePlane* >( a->coordinatePlane() ) );
             if( p != 0 && p != this )
             {
@@ -786,14 +785,14 @@ AbstractCoordinatePlane* KDChart::CartesianCoordinatePlane::sharedAxisMasterPlan
 
     if( sharedAxis->isOrdinate() )
     {
-        painter->translate( translate( zero ).x(), 0.0 );    
+        painter->translate( translate( zero ).x(), 0.0 );
         const qreal factor = (translate( tenX ) - translate( zero ) ).x() / ( plane->translate( tenX ) - plane->translate( zero ) ).x();
         painter->scale( factor, 1.0 );
         painter->translate( -plane->translate( zero ).x(), 0.0 );
     }
     if( sharedAxis->isAbscissa() )
     {
-        painter->translate( 0.0, translate( zero ).y() );    
+        painter->translate( 0.0, translate( zero ).y() );
         const qreal factor = (translate( tenY ) - translate( zero ) ).y() / ( plane->translate( tenY ) - plane->translate( zero ) ).y();
         painter->scale( 1.0, factor );
         painter->translate( 0.0, -plane->translate( zero ).y() );
@@ -803,7 +802,7 @@ AbstractCoordinatePlane* KDChart::CartesianCoordinatePlane::sharedAxisMasterPlan
     return plane;
 }
 
-void KDChart::CartesianCoordinatePlane::setHorizontalRangeReversed( bool reverse )
+void CartesianCoordinatePlane::setHorizontalRangeReversed( bool reverse )
 {
     if( d->reverseHorizontalPlane == reverse )
         return;
@@ -813,12 +812,12 @@ void KDChart::CartesianCoordinatePlane::setHorizontalRangeReversed( bool reverse
     emit propertiesChanged();
 }
 
-bool KDChart::CartesianCoordinatePlane::isHorizontalRangeReversed() const
+bool CartesianCoordinatePlane::isHorizontalRangeReversed() const
 {
     return d->reverseHorizontalPlane;
 }
 
-void KDChart::CartesianCoordinatePlane::setVerticalRangeReversed( bool reverse )
+void CartesianCoordinatePlane::setVerticalRangeReversed( bool reverse )
 {
     if( d->reverseVerticalPlane == reverse )
         return;
@@ -828,12 +827,12 @@ void KDChart::CartesianCoordinatePlane::setVerticalRangeReversed( bool reverse )
     emit propertiesChanged();
 }
 
-bool KDChart::CartesianCoordinatePlane::isVerticalRangeReversed() const
+bool CartesianCoordinatePlane::isVerticalRangeReversed() const
 {
     return d->reverseVerticalPlane;
 }
 
-QRectF KDChart::CartesianCoordinatePlane::visibleDataRange() const
+QRectF CartesianCoordinatePlane::visibleDataRange() const
 {
     QRectF result;
 
@@ -843,4 +842,13 @@ QRectF KDChart::CartesianCoordinatePlane::visibleDataRange() const
     result.setBottomRight( translateBack( drawArea.bottomRight() ) );
 
     return result.normalized();
+}
+
+void CartesianCoordinatePlane::setGeometry( const QRect& rectangle )
+{
+    AbstractCoordinatePlane::setGeometry( rectangle );
+    Q_FOREACH( AbstractDiagram* diagram, diagrams() ) {
+        diagram->resize( drawingArea().size() );
+    }
+    qDebug() << "CartesianCoordinatePlane::setGeometry: drawing Rect:" << drawingArea();
 }

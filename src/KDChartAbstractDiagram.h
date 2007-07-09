@@ -569,6 +569,7 @@ namespace KDChart {
          * @param row The row to query.
          * @param column The column to query.
          * @return The value of the display role at the given row and column as a double.
+         * @deprecated
          */
         double valueForCell( int row, int column ) const;
 

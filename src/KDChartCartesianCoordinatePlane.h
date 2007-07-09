@@ -1,5 +1,5 @@
 /****************************************************************************
- ** Copyright (C) 2006 Klarälvdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2006 Klaralvdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KD Chart library.
  **
@@ -103,7 +103,7 @@ namespace KDChart {
          * To disable use of this range you can either pass an empty pair by using the default
          * constructor QPair() or you can set both values to the same which constitutes
          * a null range.
-         * 
+         *
          * \note By default the visible data range often is larger than the
          * range calculated from the data model (or set by setHoriz.|Vert.Range(), resp.).
          * This is due to the built-in grid calculation feature: The visible start/end
@@ -307,7 +307,7 @@ namespace KDChart {
          * Disable / re-enable the built-in grid adjusting feature.
          *
          * By default additional lines will be drawn in a Linear grid when zooming in.
-         * 
+         *
          * \sa autoAdjustGridToZoom, setGridAttributes
          */
         void setAutoAdjustGridToZoom( bool autoAdjust );
@@ -342,7 +342,7 @@ namespace KDChart {
         QRectF visibleDataRange() const;
 
         /**
-         * Sets whether the horizontal range should be reversed or not, i.e. 
+         * Sets whether the horizontal range should be reversed or not, i.e.
          * small values to the left and large values to the right (the default)
          * or vice versa.
          * \param reverse Whether the horizontal range should be reversed or not
@@ -366,6 +366,11 @@ namespace KDChart {
          * \return Whether the vertical range is reversed or not
          */
         bool isVerticalRangeReversed() const;
+
+        /**
+         * reimplement from AbstractCoordinatePlane
+         */
+        void setGeometry( const QRect& r );
 
     public Q_SLOTS:
         /**

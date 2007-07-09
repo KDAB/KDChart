@@ -39,8 +39,9 @@
 
 #include <QPainterPath>
 
-#include "KDChartAbstractCartesianDiagram_p.h"
 #include "KDChartThreeDLineAttributes.h"
+#include "KDChartAbstractCartesianDiagram_p.h"
+#include "KDChartLineDiagramDataCompressor_p.h"
 
 #include <KDABLibFakes>
 
@@ -132,11 +133,12 @@ namespace KDChart {
                             DataValueTextInfoList&,
                             LineAttributesInfoList&,
                             LineAttributes::MissingValuesPolicy );
-        
+
         void paintValueTracker( PaintContext* ctx, const ValueTrackerAttributes& vt,
                                 const QPointF& at );
 
         LineDiagram::Private* m_private;
+        LineDiagramDataCompressor m_compressor;
     };
 
 /*

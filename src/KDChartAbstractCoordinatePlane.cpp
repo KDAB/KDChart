@@ -1,5 +1,5 @@
 /****************************************************************************
- ** Copyright (C) 2006 Klarälvdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2006 Klaralvdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KD Chart library.
  **
@@ -326,7 +326,7 @@ void KDChart::AbstractCoordinatePlane::mouseDoubleClickEvent( QMouseEvent* event
 {
     if( event->button() == Qt::RightButton )
     {
-        // othewise the second click gets lost 
+        // othewise the second click gets lost
         // which is pretty annoying when zooming out fast
         mousePressEvent( event );
     }

@@ -1,5 +1,5 @@
 /****************************************************************************
- ** Copyright (C) 2006 Klaravdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2006 Klaralvdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KD Chart library.
  **
@@ -381,14 +381,14 @@ void LineDiagram::paint( PaintContext* ctx )
     AbstractCoordinatePlane* const plane = ctx->coordinatePlane();
     ctx->setCoordinatePlane( plane->sharedAxisMasterPlane( ctx->painter() ) );
 
-    
+
     // paint different line types Normal - Stacked - Percent - Default Normal
     d->implementor->paint( ctx );
 
     ctx->setCoordinatePlane( plane );
 }
 
-void LineDiagram::resize ( const QSizeF& )
+void LineDiagram::resize ( const QSizeF& size )
 {
 }
 
