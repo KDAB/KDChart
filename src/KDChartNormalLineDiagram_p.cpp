@@ -108,7 +108,10 @@ void NormalLineDiagram::paint(  PaintContext* ctx )
                 laCell = diagram()->lineAttributes( point.index );
                 lineList.append( LineAttributesInfo( point.index, a, b ) );
                 // add data point labels:
-                // ...
+                const PositionPoints pts = point.value > 0 ? PositionPoints( b, a, d, c ) : PositionPoints( d, c, b, a );
+                appendDataValueTextInfoToList( diagram(), list, point.index, pts,
+                                               Position::NorthWest, Position::SouthWest,
+                                               point.value );
                 // if necessary, add the area to the area list:
                 QList<QPolygonF> areas;
                 if ( laCell.displayArea() ) {
@@ -116,7 +119,7 @@ void NormalLineDiagram::paint(  PaintContext* ctx )
                     polygon << a << b << d << c;
                     areas << polygon;
                 }
-                paintAreas( ctx, lastPoint.index, areas, laPreviousCell.transparency() );
+                paintAreas( ctx, lastPoint.index, areas, laCell.transparency() );
             }
             // wrap it up:
             previousCellPosition = position;
