@@ -307,7 +307,7 @@ QModelIndex AbstractDiagram::attributesModelRootIndex() const
 }
 
 QModelIndex AbstractDiagram::columnToIndex( int column ) const
-{
+{   // FIXME (Mirko): shouldn't this be headerData? instead of the index for the first row?
     if( model() )
         return QModelIndex( model()->index( 0, column, rootIndex() ) );
     return QModelIndex();

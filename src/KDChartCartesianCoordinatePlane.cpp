@@ -63,9 +63,7 @@ CartesianCoordinatePlane::Private::Private()
     , reverseVerticalPlane( false )
     , reverseHorizontalPlane( false )
 {
-    // this bloc left empty intentionally
 }
-
 
 CartesianCoordinatePlane::CartesianCoordinatePlane ( Chart* parent )
     : AbstractCoordinatePlane ( new Private(), parent )

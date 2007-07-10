@@ -174,6 +174,7 @@ LineDiagramDataCompressor::CachePosition LineDiagramDataCompressor::mapToCache(
     if ( ! index.isValid() ) return NullPosition;
     if ( m_data.size() == 0 || m_data[0].size() == 0 ) return NullPosition;
     // assumption: indexes per column == 1
+    if ( indexesPerPixel() == 0 ) return NullPosition;
     return CachePosition( index.row() / indexesPerPixel(), index.column() / m_datasetDimension );
 }
 

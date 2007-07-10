@@ -416,5 +416,5 @@ void LineDiagram::setRootIndex ( const QModelIndex& idx )
 void LineDiagram::setModel ( QAbstractItemModel * model )
 {
     AbstractCartesianDiagram::setModel( model );
-    d->compressor.setModel( attributesModel() );
+    d->compressor.setModel( model );
 }
