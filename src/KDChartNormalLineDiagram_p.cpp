@@ -55,7 +55,6 @@ const QPair<QPointF, QPointF> NormalLineDiagram::calculateDataBoundaries() const
 void NormalLineDiagram::paint(  PaintContext* ctx )
 {
     reverseMapper().clear();
-    // FIXME remove hungarian notation: iColumn, bOK, bValuesFound
     Q_ASSERT( dynamic_cast<CartesianCoordinatePlane*>( ctx->coordinatePlane() ) );
     CartesianCoordinatePlane* plane = static_cast<CartesianCoordinatePlane*>( ctx->coordinatePlane() );
     const int columnCount = compressor().modelDataColumns();
@@ -65,11 +64,11 @@ void NormalLineDiagram::paint(  PaintContext* ctx )
 // FIXME integrate column index retrieval to compressor:
     int maxFound = 0;
 //     {   // find the last column number that is not hidden
-//         for( int iColumn =  datasetDimension() - 1;
-//              iColumn <  columnCount;
-//              iColumn += datasetDimension() )
-//             if( ! diagram()->isHidden( iColumn ) )
-//                 maxFound = iColumn;
+//         for( int column =  datasetDimension() - 1;
+//              column <  columnCount;
+//              column += datasetDimension() )
+//             if( ! diagram()->isHidden( column ) )
+//                 maxFound = column;
 //     }
     maxFound = columnCount;
     // ^^^ temp
@@ -78,12 +77,12 @@ void NormalLineDiagram::paint(  PaintContext* ctx )
     LineAttributesInfoList lineList;
     LineAttributes::MissingValuesPolicy policy; // ???
 
-    for( int iColumn  = 0; iColumn < columnCount; ++iColumn ) {
+    for( int column  = 0; column < columnCount; ++column ) {
         LineAttributes laPreviousCell;
         LineDiagramDataCompressor::CachePosition previousCellPosition;
 
         for ( int row = 0; row < rowCount; ++row ) {
-            LineDiagramDataCompressor::CachePosition position( row, iColumn );
+            LineDiagramDataCompressor::CachePosition position( row, column );
             // get where to draw the line from:
             LineDiagramDataCompressor::DataPoint point = compressor().data( position );
             LineAttributes laCell;
