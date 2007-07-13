@@ -21,24 +21,24 @@ LineDiagram::LineType PercentLineDiagram::type() const
 
 const QPair<QPointF, QPointF> PercentLineDiagram::calculateDataBoundaries() const
 {
-    const int rowCount = attributesModel()->rowCount( attributesModelRootIndex() );
-    const int colCount = attributesModel()->columnCount( attributesModelRootIndex() );
-    double xMin = 0;
+    const int rowCount = compressor().modelDataRows();
+    const int colCount = compressor().modelDataColumns();
+    double xMin = 0.0;
     double xMax = rowCount -1;
-    double yMin = 0, yMax = 0;
-    bool bOK;
+    const double yMin = 0.0;
+    double yMax = 0.0;
 
-    for( int i = datasetDimension() - 1; i < colCount; i += datasetDimension() ) {
-        for ( int j=0; j< rowCount; ++j ) {
-            // Ordinate should begin at 0 the max value being the 100% pos
-            const double value = valueForCellTesting( j, i, bOK );
-            if( bOK )
-                yMax = qMax( yMax, value );
+    for( int i = 0; i < colCount; ++i ) {
+        for ( int j = 0; j < rowCount; ++j ) {
+            LineDiagramDataCompressor::CachePosition position( j, i );
+            LineDiagramDataCompressor::DataPoint point = compressor().data( position );
+
+            yMax = qMax( yMax, point.value );
         }
     }
 
     QPointF bottomLeft( QPointF( xMin, yMin ) );
-    QPointF topRight(   QPointF( xMax, yMax ) );
+    QPointF topRight( QPointF( xMax, yMax ) );
     return QPair<QPointF, QPointF> ( bottomLeft, topRight );
 }
 

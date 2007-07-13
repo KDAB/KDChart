@@ -1397,15 +1397,15 @@ void Chart::mouseMoveEvent( QMouseEvent* event )
             }
         }
     }
-    
+
     const QPoint pos = mapFromGlobal( event->globalPos() );
-    
+
     KDAB_FOREACH( AbstractCoordinatePlane* plane, eventReceivers )
     {
         QMouseEvent ev( QEvent::MouseMove, pos, event->globalPos(),
                          event->button(), event->buttons(),
                          event->modifiers() );
-        plane->mouseMoveEvent( &ev ); 
+        plane->mouseMoveEvent( &ev );
     }
 }
 
@@ -1425,13 +1425,13 @@ void Chart::mouseReleaseEvent( QMouseEvent* event )
     }
 
     const QPoint pos = mapFromGlobal( event->globalPos() );
-    
+
     KDAB_FOREACH( AbstractCoordinatePlane* plane, eventReceivers )
     {
         QMouseEvent ev( QEvent::MouseButtonRelease, pos, event->globalPos(),
                          event->button(), event->buttons(),
                          event->modifiers() );
-        plane->mouseReleaseEvent( &ev ); 
+        plane->mouseReleaseEvent( &ev );
     }
 
     d->mouseClickedPlanes.clear();

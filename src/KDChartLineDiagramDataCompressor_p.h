@@ -37,8 +37,9 @@ namespace KDChart {
     public:
         class DataPoint {
         public:
-            DataPoint() : value() {}
+            DataPoint() : value(), hidden( false ) {}
             double value;
+            bool hidden;
             QModelIndex index;
         };
         typedef QVector<DataPoint> DataPointVector;
