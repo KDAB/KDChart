@@ -63,6 +63,7 @@ private slots:
     void mapToCacheTest()
     {
         CachePosition NullPoint( -1, -1 );
+        Match test = { CachePosition( 0, 0 ), model.index( 0, 0 ) };
         Match  matches[] = {
             { CachePosition( 0, 0 ), model.index( 0, 0 ) },
             { CachePosition( 0, 0 ), model.index( 1, 0 ) },
