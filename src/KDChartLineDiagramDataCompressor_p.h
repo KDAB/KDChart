@@ -7,6 +7,8 @@
 #include <QPointer>
 #include <QModelIndex>
 
+#include "kdchart_export.h"
+
 class LineDiagramDataCompressorTests;
 class QAbstractItemModel;
 
@@ -24,7 +26,10 @@ namespace KDChart {
     // (a) this is absolutely strictly seriously private API of KDChart
     // (b) if possible, this class is going to be templatized for
     // different diagram types
-    class LineDiagramDataCompressor : public QObject
+
+    // KDCHART_EXPORT is needed as long there's a test using
+    // this class directly
+    class KDCHART_EXPORT LineDiagramDataCompressor : public QObject
     {
         Q_OBJECT
         friend class ::LineDiagramDataCompressorTests;
