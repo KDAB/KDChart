@@ -50,7 +50,12 @@ int LineDiagramDataCompressor::modelDataColumns() const
     Q_ASSERT( m_datasetDimension != 0 );
     // only operational if there is a model and a resolution
     if ( m_model ) {
-        int columns = m_model->columnCount( m_rootIndex ) / m_datasetDimension;
+        const int columns = m_model->columnCount( m_rootIndex ) / m_datasetDimension;
+
+        if( columns != m_data.size() )
+        {
+            rebuildCache();
+        }
 
         Q_ASSERT( columns == m_data.size() );
         return columns;
@@ -111,7 +116,7 @@ void LineDiagramDataCompressor::clearCache()
         m_data[column].fill( DataPoint() );
 }
 
-void LineDiagramDataCompressor::rebuildCache()
+void LineDiagramDataCompressor::rebuildCache() const
 {
     Q_ASSERT( m_datasetDimension != 0 );
 

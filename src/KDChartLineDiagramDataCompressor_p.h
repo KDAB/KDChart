@@ -76,7 +76,7 @@ namespace KDChart {
 
     private:
         // geometry has changed
-        void rebuildCache();
+        void rebuildCache() const;
         // reset all cached values, without changing the cache geometry
         void clearCache();
         // mark a cache position as invalid
