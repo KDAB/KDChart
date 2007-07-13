@@ -170,10 +170,6 @@ private slots:
                   "datasetDimension == 1 should restore the old column count" );
     }
 
-    void attributesModelTest()
-    {
-
-
     void cleanupTestCase()
     {
     }
