@@ -64,6 +64,10 @@ private slots:
     void mapToCacheTest()
     {
         CachePosition NullPoint( -1, -1 );
+#if defined _MSC_VER && _MSC_VER < 1300
+#define { Match(
+#define } )
+#endif
         Match test = { CachePosition( 0, 0 ), model.index( 0, 0 ) };
         Match  matches[] = {
             { CachePosition( 0, 0 ), model.index( 0, 0 ) },
@@ -91,6 +95,10 @@ private slots:
             // sentinel
             { CachePosition( 0, 0 ), QModelIndex() }
         };
+#if defined _MSC_VER && _MSC_VER < 1300
+#undef {
+#undef }
+#endif
 
         for ( int i = 0; matches[i].index.isValid(); ++i ) {
             QCOMPARE( matches[i].cachePosition, compressor.mapToCache( matches[i].index ) );
