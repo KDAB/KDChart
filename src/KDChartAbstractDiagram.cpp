@@ -236,7 +236,7 @@ void AbstractDiagram::setDataBoundariesDirty() const
     d->databoundariesDirty = true;
 }
 
-void AbstractDiagram::setModel ( QAbstractItemModel * newModel )
+void AbstractDiagram::setModel( QAbstractItemModel * newModel )
 {
   QAbstractItemView::setModel( newModel );
   AttributesModel* amodel = new PrivateAttributesModel( newModel, this );

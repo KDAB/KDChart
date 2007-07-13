@@ -109,6 +109,8 @@ public:
     void setRootIndex ( const QModelIndex& idx );
     /* reimpl */
     void setModel ( QAbstractItemModel * model );
+    /* reimpl */
+    void setAttributesModel( AttributesModel* model );
 
 protected:
     void paint ( PaintContext* paintContext );

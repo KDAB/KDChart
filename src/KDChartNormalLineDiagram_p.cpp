@@ -87,6 +87,7 @@ void NormalLineDiagram::paint(  PaintContext* ctx )
             LineDiagramDataCompressor::DataPoint point = compressor().data( position );
             LineAttributes laCell;
             if ( row > 0 ) { // position 0 is not really painted, since it takes two points to make a line :-)
+                QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );
                 LineDiagramDataCompressor::DataPoint lastPoint = compressor().data( previousCellPosition );
                 // area corners, a + b are the line ends:
                 QPointF a( plane->translate( QPointF( row - 1, lastPoint.value ) ) );
@@ -94,11 +95,11 @@ void NormalLineDiagram::paint(  PaintContext* ctx )
                 QPointF c( plane->translate( QPointF( row - 1, 0.0 ) ) );
                 QPointF d( plane->translate( QPointF( row, 0.0 ) ) );
                 // add the line to the list:
-                laCell = diagram()->lineAttributes( point.index );
-                lineList.append( LineAttributesInfo( point.index, a, b ) );
+                laCell = diagram()->lineAttributes( sourceIndex );
+                lineList.append( LineAttributesInfo( sourceIndex, a, b ) );
                 // add data point labels:
                 const PositionPoints pts = point.value > 0 ? PositionPoints( b, a, d, c ) : PositionPoints( d, c, b, a );
-                appendDataValueTextInfoToList( diagram(), textInfoList, point.index, pts,
+                appendDataValueTextInfoToList( diagram(), textInfoList, sourceIndex, pts,
                                                Position::NorthWest, Position::SouthWest,
                                                point.value );
                 // if necessary, add the area to the area list:
@@ -108,7 +109,7 @@ void NormalLineDiagram::paint(  PaintContext* ctx )
                     polygon << a << b << d << c;
                     areas << polygon;
                 }
-                paintAreas( ctx, lastPoint.index, areas, laCell.transparency() );
+                paintAreas( ctx, attributesModel()->mapToSource( lastPoint.index ), areas, laCell.transparency() );
             }
             // wrap it up:
             previousCellPosition = position;

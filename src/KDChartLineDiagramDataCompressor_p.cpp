@@ -79,6 +79,8 @@ void LineDiagramDataCompressor::setModel( QAbstractItemModel* model )
     if ( m_model != 0 && m_model != model ) {
         disconnect( m_model, SIGNAL( dataChanged( QModelIndex, QModelIndex ) ),
                     this, SLOT( slotModelDataChanged( QModelIndex, QModelIndex ) ) );
+        disconnect( m_model, SIGNAL( layoutChanged() ),
+                    this, SLOT( slotModelLayoutChanged() ) );
         m_model = 0;
     }
 
@@ -86,6 +88,8 @@ void LineDiagramDataCompressor::setModel( QAbstractItemModel* model )
         m_model = model;
         connect( m_model, SIGNAL( dataChanged( QModelIndex, QModelIndex ) ),
                  SLOT( slotModelDataChanged( QModelIndex, QModelIndex ) ) );
+        connect( m_model, SIGNAL( layoutChanged() ),
+                 SLOT( slotModelLayoutChanged() ) );
     }
 
     rebuildCache();
