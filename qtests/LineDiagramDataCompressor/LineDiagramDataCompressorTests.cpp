@@ -7,6 +7,11 @@
 
 typedef KDChart::LineDiagramDataCompressor::CachePosition CachePosition;
 
+struct Match {
+    CachePosition cachePosition;
+    QModelIndex index;
+};
+
 class LineDiagramDataCompressorTests : public QObject
 {
     Q_OBJECT
@@ -58,10 +63,7 @@ private slots:
     void mapToCacheTest()
     {
         CachePosition NullPoint( -1, -1 );
-        struct Match {
-            CachePosition cachePosition;
-            QModelIndex index;
-        } matches[] = {
+        Match  matches[] = {
             { CachePosition( 0, 0 ), model.index( 0, 0 ) },
             { CachePosition( 0, 0 ), model.index( 1, 0 ) },
             { CachePosition( 0, 0 ), model.index( 2, 0 ) },
