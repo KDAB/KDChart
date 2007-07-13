@@ -62,6 +62,7 @@ void NormalLineDiagram::paint(  PaintContext* ctx )
     if ( columnCount == 0 || rowCount == 0 ) return; // maybe blank out the area?
 
 // FIXME integrate column index retrieval to compressor:
+// the compressor should only pass through visiblel columns
     int maxFound = 0;
 //     {   // find the last column number that is not hidden
 //         for( int column =  datasetDimension() - 1;
@@ -96,12 +97,8 @@ void NormalLineDiagram::paint(  PaintContext* ctx )
                 QPointF d( plane->translate( QPointF( row, 0.0 ) ) );
                 // add the line to the list:
                 laCell = diagram()->lineAttributes( sourceIndex );
-                lineList.append( LineAttributesInfo( sourceIndex, a, b ) );
                 // add data point labels:
                 const PositionPoints pts = point.value > 0 ? PositionPoints( b, a, d, c ) : PositionPoints( d, c, b, a );
-                appendDataValueTextInfoToList( diagram(), textInfoList, sourceIndex, pts,
-                                               Position::NorthWest, Position::SouthWest,
-                                               point.value );
                 // if necessary, add the area to the area list:
                 QList<QPolygonF> areas;
                 if ( laCell.displayArea() ) {
@@ -109,7 +106,14 @@ void NormalLineDiagram::paint(  PaintContext* ctx )
                     polygon << a << b << d << c;
                     areas << polygon;
                 }
-                paintAreas( ctx, attributesModel()->mapToSource( lastPoint.index ), areas, laCell.transparency() );
+                // add the pieces to painting if this is not hidden:
+                if ( ! point.hidden ) {
+                    appendDataValueTextInfoToList( diagram(), textInfoList, sourceIndex, pts,
+                                                   Position::NorthWest, Position::SouthWest,
+                                                   point.value );
+                    paintAreas( ctx, attributesModel()->mapToSource( lastPoint.index ), areas, laCell.transparency() );
+                    lineList.append( LineAttributesInfo( sourceIndex, a, b ) );
+                }
             }
             // wrap it up:
             previousCellPosition = position;

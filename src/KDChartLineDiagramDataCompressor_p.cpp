@@ -150,6 +150,7 @@ void LineDiagramDataCompressor::retrieveModelData( const CachePosition& position
     switch(m_mode ) {
     case Precise:
     {
+        result.hidden = true;
         QModelIndexList indexes = mapToModel( position );
         if ( ! indexes.isEmpty() ) {
             Q_FOREACH( QModelIndex index, indexes ) {
@@ -157,6 +158,10 @@ void LineDiagramDataCompressor::retrieveModelData( const CachePosition& position
                 QVariant valueVariant = m_model->data( index, Qt::DisplayRole );
                 double value = valueVariant.toDouble( &ok );
                 if ( ok ) result.value += value;
+                // the point is visible if any of the points at this pixel position is visible
+                if ( qVariantValue<bool>( m_model->data( index, DataHiddenRole ) ) == false ) {
+                    result.hidden = false;
+                }
             }
             result.index = indexes.at( 0 );
             result.value /= indexes.size();
