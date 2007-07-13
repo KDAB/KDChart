@@ -7,8 +7,12 @@
 
 typedef KDChart::LineDiagramDataCompressor::CachePosition CachePosition;
 
-class Match {
-public:
+struct Match {
+    Match( const CachePosition& pos, const QModelIndex& index )
+        : cachePosition( pos ),
+          index( index )
+    {
+    }
     CachePosition cachePosition;
     QModelIndex index;
 };
@@ -64,36 +68,31 @@ private slots:
     void mapToCacheTest()
     {
         CachePosition NullPoint( -1, -1 );
-#if defined _MSC_VER && _MSC_VER < 1300
-        Match test( CachePosition( 0, 0 ), model.index( 0, 0 ) );
-#else
-        Match test = { CachePosition( 0, 0 ), model.index( 0, 0 ) };
-#endif
         Match  matches[] = {
-            { CachePosition( 0, 0 ), model.index( 0, 0 ) },
-            { CachePosition( 0, 0 ), model.index( 1, 0 ) },
-            { CachePosition( 0, 0 ), model.index( 2, 0 ) },
-            { CachePosition( 0, 0 ), model.index( 3, 0 ) },
-            { CachePosition( 0, 0 ), model.index( 4, 0 ) },
-            { CachePosition( 0, 1 ), model.index( 0, 1 ) },
-            { CachePosition( 0, 1 ), model.index( 1, 1 ) },
-            { CachePosition( 0, 1 ), model.index( 2, 1 ) },
-            { CachePosition( 0, 1 ), model.index( 3, 1 ) },
-            { CachePosition( 0, 1 ), model.index( 4, 1 ) },
-            { CachePosition( 2, 2 ), model.index( 10, 2 ) },
-            { CachePosition( 2, 2 ), model.index( 11, 2 ) },
-            { CachePosition( 2, 2 ), model.index( 12, 2 ) },
-            { CachePosition( 2, 2 ), model.index( 13, 2 ) },
-            { CachePosition( 2, 2 ), model.index( 14, 2 ) },
+            Match( CachePosition( 0, 0 ), model.index( 0, 0 ) ),
+            Match( CachePosition( 0, 0 ), model.index( 1, 0 ) ),
+            Match( CachePosition( 0, 0 ), model.index( 2, 0 ) ),
+            Match( CachePosition( 0, 0 ), model.index( 3, 0 ) ),
+            Match( CachePosition( 0, 0 ), model.index( 4, 0 ) ),
+            Match( CachePosition( 0, 1 ), model.index( 0, 1 ) ),
+            Match( CachePosition( 0, 1 ), model.index( 1, 1 ) ),
+            Match( CachePosition( 0, 1 ), model.index( 2, 1 ) ),
+            Match( CachePosition( 0, 1 ), model.index( 3, 1 ) ),
+            Match( CachePosition( 0, 1 ), model.index( 4, 1 ) ),
+            Match( CachePosition( 2, 2 ), model.index( 10, 2 ) ),
+            Match( CachePosition( 2, 2 ), model.index( 11, 2 ) ),
+            Match( CachePosition( 2, 2 ), model.index( 12, 2 ) ),
+            Match( CachePosition( 2, 2 ), model.index( 13, 2 ) ),
+            Match( CachePosition( 2, 2 ), model.index( 14, 2 ) ),
             // the following are outside the model boundary:
-            { NullPoint, model.index( 0, ColumnCount ) },
-            { NullPoint, model.index( 1, ColumnCount ) },
-            { NullPoint, model.index( 2, ColumnCount ) },
-            { NullPoint, model.index( 3, ColumnCount ) },
-            { NullPoint, model.index( 4, ColumnCount) },
-            { NullPoint, model.index( RowCount, 0 ) },
+            Match( NullPoint, model.index( 0, ColumnCount ) ),
+            Match( NullPoint, model.index( 1, ColumnCount ) ),
+            Match( NullPoint, model.index( 2, ColumnCount ) ),
+            Match( NullPoint, model.index( 3, ColumnCount ) ),
+            Match( NullPoint, model.index( 4, ColumnCount) ),
+            Match( NullPoint, model.index( RowCount, 0 ) ),
             // sentinel
-            { CachePosition( 0, 0 ), QModelIndex() }
+            Match( CachePosition( 0, 0 ), QModelIndex() )
         };
 
         for ( int i = 0; matches[i].index.isValid(); ++i ) {
