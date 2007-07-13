@@ -64,12 +64,12 @@ private slots:
     void mapToCacheTest()
     {
         CachePosition NullPoint( -1, -1 );
-        Match test = { CachePosition( 0, 0 ), model.index( 0, 0 ) };
-        Match  matches[] = {
 #if defined _MSC_VER && _MSC_VER < 1300
-#define { Match(
-#define } )
+        Match test( CachePosition( 0, 0 ), model.index( 0, 0 ) );
+#else
+        Match test = { CachePosition( 0, 0 ), model.index( 0, 0 ) };
 #endif
+        Match  matches[] = {
             { CachePosition( 0, 0 ), model.index( 0, 0 ) },
             { CachePosition( 0, 0 ), model.index( 1, 0 ) },
             { CachePosition( 0, 0 ), model.index( 2, 0 ) },
@@ -94,10 +94,6 @@ private slots:
             { NullPoint, model.index( RowCount, 0 ) },
             // sentinel
             { CachePosition( 0, 0 ), QModelIndex() }
-#if defined _MSC_VER && _MSC_VER < 1300
-#undef {
-#undef }
-#endif
         };
 
         for ( int i = 0; matches[i].index.isValid(); ++i ) {
