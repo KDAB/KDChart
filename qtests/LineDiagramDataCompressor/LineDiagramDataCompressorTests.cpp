@@ -7,7 +7,8 @@
 
 typedef KDChart::LineDiagramDataCompressor::CachePosition CachePosition;
 
-struct Match {
+class Match {
+public:
     CachePosition cachePosition;
     QModelIndex index;
 };
