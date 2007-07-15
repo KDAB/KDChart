@@ -21,22 +21,23 @@ LineDiagram::LineType StackedLineDiagram::type() const
 
 const QPair<QPointF, QPointF> StackedLineDiagram::calculateDataBoundaries() const
 {
-    const int rowCount = attributesModel()->rowCount( attributesModelRootIndex() );
-    const int colCount = attributesModel()->columnCount( attributesModelRootIndex() );
+    const int rowCount = compressor().modelDataRows();
+    const int colCount = compressor().modelDataColumns();
     double xMin = 0;
     double xMax = rowCount -1;
     double yMin = 0, yMax = 0;
-    bool bOK;
 
     bool bStarting = true;
     for ( int j=0; j< rowCount; ++j ) {
         // calculate sum of values per column - Find out stacked Min/Max
         double stackedValues = 0;
         for( int i = datasetDimension() - 1; i < colCount; i += datasetDimension() ) {
-            const double value = valueForCellTesting( j, i, bOK );
-            if( bOK )
-                stackedValues += value;
+            LineDiagramDataCompressor::CachePosition position( j, i );
+            LineDiagramDataCompressor::DataPoint point = compressor().data( position );
+
+            stackedValues += point.value;
         }
+
         if( bStarting ){
             yMin = stackedValues;
             yMax = stackedValues;
@@ -62,18 +63,23 @@ void StackedLineDiagram::paint(  PaintContext* ctx )
     const QPair<QPointF, QPointF> boundaries = diagram()->dataBoundaries();
     const QPointF bottomLeft = boundaries.first;
     const QPointF topRight = boundaries.second;
+        
+    const int columnCount = compressor().modelDataColumns();
+    const int rowCount = compressor().modelDataRows();
 
+// FIXME integrate column index retrieval to compressor:
     int maxFound = 0;
-    {   // find the last column number that is not hidden
-        const int columnCount = attributesModel()->columnCount(attributesModelRootIndex());
-        for( int iColumn =  datasetDimension() - 1;
-             iColumn <  columnCount;
-             iColumn += datasetDimension() )
-            if( ! diagram()->isHidden( iColumn ) )
-                maxFound = iColumn;
-    }
+//    {   // find the last column number that is not hidden
+//        for( int iColumn =  datasetDimension() - 1;
+//             iColumn <  columnCount;
+//             iColumn += datasetDimension() )
+//            if( ! diagram()->isHidden( iColumn ) )
+//                maxFound = iColumn;
+//    }
+    maxFound = columnCount;
+    // ^^^ temp
+
     const int lastVisibleColumn = maxFound;
-    const int rowCount = attributesModel()->rowCount( attributesModelRootIndex() );
 
     DataValueTextInfoList list;
     LineAttributesInfoList lineList;
@@ -81,34 +87,20 @@ void StackedLineDiagram::paint(  PaintContext* ctx )
 
     //FIXME(khz): add LineAttributes::MissingValuesPolicy support for LineDiagram::Stacked and ::Percent
 
-    const bool isPercentMode = type() == LineDiagram::Percent;
     double maxValue = 100; // always 100%
     double sumValues = 0;
     QVector <double > percentSumValues;
 
-    //calculate sum of values for each column and store
-    if( isPercentMode ){
-        for ( int j=0; j<rowCount ; ++j ) {
-            for( int i =  datasetDimension() - 1;
-                 i <= lastVisibleColumn;
-                 i += datasetDimension() ) {
-                double tmpValue = valueForCell( j, i );
-                if ( tmpValue > 0 )
-                    sumValues += tmpValue;
-                if ( i == lastVisibleColumn ) {
-                    percentSumValues <<  sumValues ;
-                    sumValues = 0;
-                }
-            }
-        }
-    }
-
     QList<QPointF> bottomPoints;
     bool bFirstDataset = true;
 
-    for( int iColumn =  datasetDimension() - 1;
-         iColumn <= lastVisibleColumn;
-         iColumn += datasetDimension() ) {
+//    for( int iColumn =  datasetDimension() - 1;
+//         iColumn <= lastVisibleColumn;
+//         iColumn += datasetDimension() ) {
+
+    for( int column = 0; column < columnCount; ++column )
+    {
+        LineDiagramDataCompressor::CachePosition previousCellPosition;
 
         //display area can be set by dataset ( == column) and/or by cell
         LineAttributes laPreviousCell; // by default no area is drawn
@@ -116,62 +108,52 @@ void StackedLineDiagram::paint(  PaintContext* ctx )
         QList<QPolygonF> areas;
         QList<QPointF> points;
 
-        for ( int iRow = 0; iRow< rowCount; ++iRow ) {
-            const QModelIndex index = diagram()->model()->index( iRow, iColumn, diagram()->rootIndex() );
-            const LineAttributes laCell = diagram()->lineAttributes( index );
+        for ( int row = 0; row < rowCount; ++row ) {
+            LineDiagramDataCompressor::CachePosition position( row, column );
+            LineDiagramDataCompressor::DataPoint point = compressor().data( position );
+
+            const LineAttributes laCell = diagram()->lineAttributes( point.index );
             const bool bDisplayCellArea = laCell.displayArea();
 
             double stackedValues = 0, nextValues = 0;
-            for ( int iColumn2 = iColumn;
-                  iColumn2 >= datasetDimension() - 1;
-                  iColumn2 -= datasetDimension() )
+            for ( int column2 = column;
+                  column2 >= datasetDimension() - 1;
+                  column2 -= datasetDimension() )
             {
-                const double val = valueForCell( iRow, iColumn2 );
-                if( val > 0 || ! isPercentMode )
-                    stackedValues += val;
+                LineDiagramDataCompressor::CachePosition position( row, column2 );
+                LineDiagramDataCompressor::DataPoint point = compressor().data( position );
+                stackedValues += point.value;
                 //qDebug() << valueForCell( iRow, iColumn2 );
-                if ( iRow+1 < rowCount ){
-                    const double val = valueForCell( iRow+1, iColumn2 );
-                    if( val > 0 || ! isPercentMode )
-                        nextValues += val;
+                if ( row + 1 < rowCount ){
+                    LineDiagramDataCompressor::CachePosition position( row + 1, column2 );
+                    LineDiagramDataCompressor::DataPoint point = compressor().data( position );
+                    nextValues += point.value;
                 }
             }
-            if( isPercentMode ){
-                if ( percentSumValues.at( iRow ) != 0  )
-                    stackedValues = stackedValues / percentSumValues.at( iRow ) * maxValue;
-                else
-                    stackedValues = 0.0;
-            }
             //qDebug() << stackedValues << endl;
-            QPointF nextPoint = ctx->coordinatePlane()->translate( QPointF( iRow, stackedValues ) );
+            QPointF nextPoint = ctx->coordinatePlane()->translate( QPointF( row, stackedValues ) );
             points << nextPoint;
 
             const QPointF ptNorthWest( nextPoint );
             const QPointF ptSouthWest(
                 bDisplayCellArea
                 ? ( bFirstDataset
-                    ? ctx->coordinatePlane()->translate( QPointF( iRow, 0.0 ) )
-                    : bottomPoints.at( iRow )
+                    ? ctx->coordinatePlane()->translate( QPointF( row, 0.0 ) )
+                    : bottomPoints.at( row )
                     )
                 : nextPoint );
             QPointF ptNorthEast;
             QPointF ptSouthEast;
 
-            if ( iRow+1 < rowCount ){
-                if( isPercentMode ){
-                    if ( percentSumValues.at( iRow+1 ) != 0  )
-                        nextValues = nextValues / percentSumValues.at( iRow+1 ) * maxValue;
-                    else
-                        nextValues = 0.0;
-                }
-                QPointF toPoint = ctx->coordinatePlane()->translate( QPointF( iRow+1, nextValues ) );
-                lineList.append( LineAttributesInfo( index, nextPoint, toPoint ) );
+            if ( row + 1 < rowCount ){
+                QPointF toPoint = ctx->coordinatePlane()->translate( QPointF( row + 1, nextValues ) );
+                lineList.append( LineAttributesInfo( point.index, nextPoint, toPoint ) );
                 ptNorthEast = toPoint;
                 ptSouthEast =
                     bDisplayCellArea
                     ? ( bFirstDataset
-                        ? ctx->coordinatePlane()->translate( QPointF( iRow+1, 0.0 ) )
-                        : bottomPoints.at( iRow+1 )
+                        ? ctx->coordinatePlane()->translate( QPointF( row + 1, 0.0 ) )
+                        : bottomPoints.at( row + 1 )
                         )
                     : toPoint;
                 if( areas.count() && laCell != laPreviousCell ){
@@ -183,7 +165,7 @@ void StackedLineDiagram::paint(  PaintContext* ctx )
                     poly << ptNorthWest << ptNorthEast << ptSouthEast << ptSouthWest;
                     areas << poly;
                     laPreviousCell = laCell;
-                    indexPreviousCell = index;
+                    indexPreviousCell = point.index;
                 }else{
                     //qDebug() << "no area shown for row"<<iRow<<"  column"<<iColumn;
                 }
@@ -193,9 +175,9 @@ void StackedLineDiagram::paint(  PaintContext* ctx )
             }
 
             const PositionPoints pts( ptNorthWest, ptNorthEast, ptSouthEast, ptSouthWest );
-            appendDataValueTextInfoToList( diagram(), list, index, pts,
+            appendDataValueTextInfoToList( diagram(), list, point.index, pts,
                                            Position::NorthWest, Position::SouthWest,
-                                           valueForCell( iRow, iColumn ) );
+                                           point.value );
         }
         if( areas.count() ){
             paintAreas( ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
@@ -206,6 +188,3 @@ void StackedLineDiagram::paint(  PaintContext* ctx )
     }
     paintElements( ctx, list, lineList, policy );
 }
-
-
-
