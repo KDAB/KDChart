@@ -32,8 +32,8 @@ const QPair<QPointF, QPointF> StackedLineDiagram::calculateDataBoundaries() cons
         // calculate sum of values per column - Find out stacked Min/Max
         double stackedValues = 0;
         for( int i = datasetDimension() - 1; i < colCount; i += datasetDimension() ) {
-            LineDiagramDataCompressor::CachePosition position( j, i );
-            LineDiagramDataCompressor::DataPoint point = compressor().data( position );
+            CartesianDiagramDataCompressor::CachePosition position( j, i );
+            CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
 
             stackedValues += point.value;
         }
@@ -92,7 +92,7 @@ void StackedLineDiagram::paint(  PaintContext* ctx )
 
     for( int column = 0; column < columnCount; ++column )
     {
-        LineDiagramDataCompressor::CachePosition previousCellPosition;
+        CartesianDiagramDataCompressor::CachePosition previousCellPosition;
 
         //display area can be set by dataset ( == column) and/or by cell
         LineAttributes laPreviousCell; // by default no area is drawn
@@ -101,8 +101,8 @@ void StackedLineDiagram::paint(  PaintContext* ctx )
         QList<QPointF> points;
 
         for ( int row = 0; row < rowCount; ++row ) {
-            const LineDiagramDataCompressor::CachePosition position( row, column );
-            const LineDiagramDataCompressor::DataPoint point = compressor().data( position );
+            const CartesianDiagramDataCompressor::CachePosition position( row, column );
+            const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
             const QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );
 
             const LineAttributes laCell = diagram()->lineAttributes( sourceIndex );
@@ -113,14 +113,14 @@ void StackedLineDiagram::paint(  PaintContext* ctx )
 /*                  column2 >= datasetDimension() - 1;
                   column2 -= datasetDimension() )*/
             {
-                const LineDiagramDataCompressor::CachePosition position( row, column2 );
-                const LineDiagramDataCompressor::DataPoint point = compressor().data( position );
+                const CartesianDiagramDataCompressor::CachePosition position( row, column2 );
+                const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
                 const QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );
                 stackedValues += point.value;
                 //qDebug() << valueForCell( iRow, iColumn2 );
                 if ( row + 1 < rowCount ){
-                    LineDiagramDataCompressor::CachePosition position( row + 1, column2 );
-                    LineDiagramDataCompressor::DataPoint point = compressor().data( position );
+                    CartesianDiagramDataCompressor::CachePosition position( row + 1, column2 );
+                    CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
                     nextValues += point.value;
                 }
             }

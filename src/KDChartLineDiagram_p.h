@@ -41,7 +41,7 @@
 
 #include "KDChartThreeDLineAttributes.h"
 #include "KDChartAbstractCartesianDiagram_p.h"
-#include "KDChartLineDiagramDataCompressor_p.h"
+#include "KDChartCartesianDiagramDataCompressor_p.h"
 
 #include <KDABLibFakes>
 
@@ -73,7 +73,7 @@ namespace KDChart {
         LineDiagramType* normalDiagram;
         LineDiagramType* stackedDiagram;
         LineDiagramType* percentDiagram;
-        mutable LineDiagramDataCompressor compressor;
+        mutable CartesianDiagramDataCompressor compressor;
     };
 
     KDCHART_IMPL_DERIVED_DIAGRAM( LineDiagram, AbstractCartesianDiagram, CartesianCoordinatePlane )
@@ -101,7 +101,7 @@ namespace KDChart {
         AttributesModel* attributesModel() const;
         QModelIndex attributesModelRootIndex() const;
         ReverseMapper& reverseMapper();
-        LineDiagramDataCompressor& compressor() const;
+        CartesianDiagramDataCompressor& compressor() const;
 
         int datasetDimension() const;
         LineAttributes::MissingValuesPolicy getCellValues(

@@ -1,5 +1,5 @@
-#ifndef KDCHARTLINEDIAGRAMDATACOMPRESSOR_H
-#define KDCHARTLINEDIAGRAMDATACOMPRESSOR_H
+#ifndef KDCHARTCARTESIANDIAGRAMDATACOMPRESSOR_H
+#define KDCHARTCARTESIANDIAGRAMDATACOMPRESSOR_H
 
 #include <QPair>
 #include <QVector>
@@ -9,7 +9,7 @@
 
 #include "kdchart_export.h"
 
-class LineDiagramDataCompressorTests;
+class CartesianDiagramDataCompressorTests;
 class QAbstractItemModel;
 
 namespace KDChart {
@@ -29,10 +29,10 @@ namespace KDChart {
 
     // KDCHART_EXPORT is needed as long there's a test using
     // this class directly
-    class KDCHART_EXPORT LineDiagramDataCompressor : public QObject
+    class KDCHART_EXPORT CartesianDiagramDataCompressor : public QObject
     {
         Q_OBJECT
-        friend class ::LineDiagramDataCompressorTests;
+        friend class ::CartesianDiagramDataCompressorTests;
 
     public:
         class DataPoint {
@@ -53,7 +53,7 @@ namespace KDChart {
             SamplingSeven
         };
 
-        explicit LineDiagramDataCompressor( QObject* parent = 0 );
+        explicit CartesianDiagramDataCompressor( QObject* parent = 0 );
 
         // input: model, chart resolution, approximation mode
         void setModel( QAbstractItemModel* );

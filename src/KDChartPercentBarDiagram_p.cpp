@@ -23,13 +23,15 @@ const QPair<QPointF, QPointF> PercentBarDiagram::calculateDataBoundaries() const
     const int rowCount = attributesModel()->rowCount(attributesModelRootIndex());
     const int colCount = attributesModel()->columnCount(attributesModelRootIndex());
 
-    double xMin = 0;
-    double xMax = rowCount;
-    double yMin = 0, yMax = 0;
-    for ( int i=0; i<colCount; ++i ) {
-        for ( int j=0; j< rowCount; ++j ) {
+    const double xMin = 0;
+    const double xMax = rowCount;
+    double yMin = 0.0, yMax = 0.0;
+    for( int i = 0; i < colCount; ++i )
+    {
+        for ( int j=0; j< rowCount; ++j )
+        {
             // Ordinate should begin at 0 the max value being the 100% pos
-            QModelIndex idx = diagram()->model()->index( j, i, diagram()->rootIndex() );
+            const QModelIndex idx = diagram()->model()->index( j, i, diagram()->rootIndex() );
             // only positive values are handled
             double value = diagram()->model()->data( idx ).toDouble();
             if ( value > 0 )
@@ -167,6 +169,3 @@ void PercentBarDiagram::paint(  PaintContext* ctx )
     }
     paintDataValueTextsAndMarkers(  diagram(),  ctx,  list,  false );
 }
-
-
-

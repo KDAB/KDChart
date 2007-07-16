@@ -2,11 +2,11 @@
 #include <QAbstractItemModel>
 
 #include "KDChartAbstractCartesianDiagram.h"
-#include "KDChartLineDiagramDataCompressor_p.h"
+#include "KDChartCartesianDiagramDataCompressor_p.h"
 
 using namespace KDChart;
 
-LineDiagramDataCompressor::LineDiagramDataCompressor( QObject* parent )
+CartesianDiagramDataCompressor::CartesianDiagramDataCompressor( QObject* parent )
     : QObject( parent )
     , m_mode( Precise )
     , m_xResolution( 0 )
@@ -17,7 +17,7 @@ LineDiagramDataCompressor::LineDiagramDataCompressor( QObject* parent )
     calculateSampleStepWidth();
 }
 
-void LineDiagramDataCompressor::slotModelDataChanged(
+void CartesianDiagramDataCompressor::slotModelDataChanged(
     const QModelIndex& topLeftIndex,
     const QModelIndex& bottomRightIndex )
 {
@@ -30,13 +30,13 @@ void LineDiagramDataCompressor::slotModelDataChanged(
             invalidate( CachePosition( row, column ) );
 }
 
-void LineDiagramDataCompressor::slotModelLayoutChanged()
+void CartesianDiagramDataCompressor::slotModelLayoutChanged()
 {
     rebuildCache();
     calculateSampleStepWidth();
 }
 
-void LineDiagramDataCompressor::slotDiagramLayoutChanged( AbstractDiagram* diagramBase )
+void CartesianDiagramDataCompressor::slotDiagramLayoutChanged( AbstractDiagram* diagramBase )
 {
     AbstractCartesianDiagram* diagram = qobject_cast< AbstractCartesianDiagram* >( diagramBase );
     Q_ASSERT( diagram );
@@ -45,7 +45,7 @@ void LineDiagramDataCompressor::slotDiagramLayoutChanged( AbstractDiagram* diagr
     }
 }
 
-int LineDiagramDataCompressor::modelDataColumns() const
+int CartesianDiagramDataCompressor::modelDataColumns() const
 {
     Q_ASSERT( m_datasetDimension != 0 );
     // only operational if there is a model and a resolution
@@ -64,7 +64,7 @@ int LineDiagramDataCompressor::modelDataColumns() const
     }
 }
 
-int LineDiagramDataCompressor::modelDataRows() const
+int CartesianDiagramDataCompressor::modelDataRows() const
 {
     // only operational if there is a model, columns, and a resolution
     if ( m_model && m_model->columnCount( m_rootIndex ) > 0 && m_xResolution > 0 ) {
@@ -74,7 +74,7 @@ int LineDiagramDataCompressor::modelDataRows() const
     }
 }
 
-void LineDiagramDataCompressor::setModel( QAbstractItemModel* model )
+void CartesianDiagramDataCompressor::setModel( QAbstractItemModel* model )
 {
     if ( m_model != 0 && m_model != model ) {
         disconnect( m_model, SIGNAL( dataChanged( QModelIndex, QModelIndex ) ),
@@ -96,7 +96,7 @@ void LineDiagramDataCompressor::setModel( QAbstractItemModel* model )
     calculateSampleStepWidth();
 }
 
-void LineDiagramDataCompressor::setRootIndex( const QModelIndex& root )
+void CartesianDiagramDataCompressor::setRootIndex( const QModelIndex& root )
 {
     if ( m_rootIndex != root ) {
         m_rootIndex = root;
@@ -104,7 +104,7 @@ void LineDiagramDataCompressor::setRootIndex( const QModelIndex& root )
         calculateSampleStepWidth();
     }
 }
-void LineDiagramDataCompressor::setResolution( int x, int y )
+void CartesianDiagramDataCompressor::setResolution( int x, int y )
 {
     if ( x != m_xResolution || y != m_yResolution ) {
         m_xResolution = x;
@@ -114,13 +114,13 @@ void LineDiagramDataCompressor::setResolution( int x, int y )
     }
 }
 
-void LineDiagramDataCompressor::clearCache()
+void CartesianDiagramDataCompressor::clearCache()
 {
     for ( int column = 0; column < m_data.size(); ++column )
         m_data[column].fill( DataPoint() );
 }
 
-void LineDiagramDataCompressor::rebuildCache() const
+void CartesianDiagramDataCompressor::rebuildCache() const
 {
     Q_ASSERT( m_datasetDimension != 0 );
 
@@ -134,7 +134,7 @@ void LineDiagramDataCompressor::rebuildCache() const
     }
 }
 
-const LineDiagramDataCompressor::DataPoint& LineDiagramDataCompressor::data( const CachePosition& position ) const
+const CartesianDiagramDataCompressor::DataPoint& CartesianDiagramDataCompressor::data( const CachePosition& position ) const
 {
     static DataPoint NullDataPoint;
     if ( ! isValidCachePosition( position ) ) return NullDataPoint;
@@ -142,7 +142,7 @@ const LineDiagramDataCompressor::DataPoint& LineDiagramDataCompressor::data( con
     return m_data[position.second][position.first];
 }
 
-void LineDiagramDataCompressor::retrieveModelData( const CachePosition& position ) const
+void CartesianDiagramDataCompressor::retrieveModelData( const CachePosition& position ) const
 {
     Q_ASSERT( isValidCachePosition( position ) );
     DataPoint result;
@@ -179,7 +179,7 @@ void LineDiagramDataCompressor::retrieveModelData( const CachePosition& position
     Q_ASSERT( isCached( position ) );
 }
 
-LineDiagramDataCompressor::CachePosition LineDiagramDataCompressor::mapToCache(
+CartesianDiagramDataCompressor::CachePosition CartesianDiagramDataCompressor::mapToCache(
     const QModelIndex& index ) const
 {
     Q_ASSERT( m_datasetDimension != 0 );
@@ -192,7 +192,7 @@ LineDiagramDataCompressor::CachePosition LineDiagramDataCompressor::mapToCache(
     return CachePosition( index.row() / indexesPerPixel(), index.column() / m_datasetDimension );
 }
 
-QModelIndexList LineDiagramDataCompressor::mapToModel( const CachePosition& position ) const
+QModelIndexList CartesianDiagramDataCompressor::mapToModel( const CachePosition& position ) const
 {
     if ( isValidCachePosition( position ) ) {
         // assumption: indexes per column == 1
@@ -206,7 +206,7 @@ QModelIndexList LineDiagramDataCompressor::mapToModel( const CachePosition& posi
     }
 }
 
-int LineDiagramDataCompressor::indexesPerPixel() const
+int CartesianDiagramDataCompressor::indexesPerPixel() const
 {
     if ( m_data.size() == 0 ) return 0;
     if ( m_data[0].size() == 0 ) return 0;
@@ -214,7 +214,7 @@ int LineDiagramDataCompressor::indexesPerPixel() const
     return m_model->rowCount( m_rootIndex ) / m_data[0].size();
 }
 
-bool LineDiagramDataCompressor::isValidCachePosition( const CachePosition& position ) const
+bool CartesianDiagramDataCompressor::isValidCachePosition( const CachePosition& position ) const
 {
     if ( ! m_model ) return false;
     if ( m_data.size() == 0 || m_data[0].size() == 0 ) return false;
@@ -223,19 +223,19 @@ bool LineDiagramDataCompressor::isValidCachePosition( const CachePosition& posit
     return true;
 }
 
-void LineDiagramDataCompressor::invalidate( const CachePosition& position )
+void CartesianDiagramDataCompressor::invalidate( const CachePosition& position )
 {
     if ( isValidCachePosition( position ) )
         m_data[position.second][position.first] = DataPoint();
 }
 
-bool LineDiagramDataCompressor::isCached( const CachePosition& position ) const
+bool CartesianDiagramDataCompressor::isCached( const CachePosition& position ) const
 {
     Q_ASSERT( isValidCachePosition( position ) );
     return m_data[position.second][position.first].index.isValid();
 }
 
-void LineDiagramDataCompressor::calculateSampleStepWidth()
+void CartesianDiagramDataCompressor::calculateSampleStepWidth()
 {
     if ( m_mode == Precise ) {
         m_sampleStep = 1;
@@ -270,7 +270,7 @@ void LineDiagramDataCompressor::calculateSampleStepWidth()
     }
 }
 
-void LineDiagramDataCompressor::setDatasetDimension( int dimension )
+void CartesianDiagramDataCompressor::setDatasetDimension( int dimension )
 {
     if ( dimension != m_datasetDimension ) {
         m_datasetDimension = dimension;

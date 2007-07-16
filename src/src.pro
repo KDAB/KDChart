@@ -71,12 +71,12 @@ HEADERS += KDChartGlobal.h \
            KDChartLineAttributes.h \
            KDChartLineDiagram.h \
            KDChartLineDiagram_p.h \
-	   KDChartLineDiagramDataCompressor_p.h \
+           KDChartCartesianDiagramDataCompressor_p.h \
            KDChartNormalBarDiagram_p.h \
            KDChartNormalLineDiagram_p.h \
            KDChartStackedBarDiagram_p.h \
            KDChartStackedLineDiagram_p.h \
- 	   KDChartPercentBarDiagram_p.h \
+           KDChartPercentBarDiagram_p.h \
            KDChartPercentLineDiagram_p.h \
            KDChartMarkerAttributes.h \
            KDChartPaintContext.h \
@@ -103,19 +103,19 @@ HEADERS += KDChartGlobal.h \
            KDChartThreeDPieAttributes_p.h \ 
            PrerenderedElements/KDChartTextLabelCache.h \
            # unused so far: KDChartSignalCompressor.h \
-	   Ternary/TernaryPoint.h \
-	   Ternary/TernaryConstants.h \
-	   Ternary/KDChartTernaryGrid.h \
-	   Ternary/KDChartTernaryCoordinatePlane.h \
-	   Ternary/KDChartTernaryCoordinatePlane_p.h \
-	   Ternary/KDChartTernaryAxis.h \
-	   Ternary/KDChartAbstractTernaryDiagram.h \
-	   Ternary/KDChartAbstractTernaryDiagram_p.h \
-	   Ternary/KDChartTernaryPointDiagram.h \
-	   Ternary/KDChartTernaryLineDiagram.h \
-	   Scenery/ChartGraphicsItem.h \
-	   Scenery/ReverseMapper.h \
-	   KDChartValueTrackerAttributes.h
+           Ternary/TernaryPoint.h \
+           Ternary/TernaryConstants.h \
+           Ternary/KDChartTernaryGrid.h \
+           Ternary/KDChartTernaryCoordinatePlane.h \
+           Ternary/KDChartTernaryCoordinatePlane_p.h \
+           Ternary/KDChartTernaryAxis.h \
+           Ternary/KDChartAbstractTernaryDiagram.h \
+           Ternary/KDChartAbstractTernaryDiagram_p.h \
+           Ternary/KDChartTernaryPointDiagram.h \
+           Ternary/KDChartTernaryLineDiagram.h \
+           Scenery/ChartGraphicsItem.h \
+           Scenery/ReverseMapper.h \
+           KDChartValueTrackerAttributes.h
 
 SOURCES += \
            KDChartMeasure.cpp \
@@ -155,12 +155,12 @@ SOURCES += \
            KDChartLineAttributes.cpp \
            KDChartLineDiagram.cpp \
            KDChartLineDiagram_p.cpp \
-	   KDChartLineDiagramDataCompressor_p.cpp \
+           KDChartCartesianDiagramDataCompressor_p.cpp \
            KDChartNormalBarDiagram_p.cpp \
            KDChartNormalLineDiagram_p.cpp \
            KDChartStackedBarDiagram_p.cpp \
            KDChartStackedLineDiagram_p.cpp \
-	   KDChartPercentBarDiagram_p.cpp \
+           KDChartPercentBarDiagram_p.cpp \
            KDChartPercentLineDiagram_p.cpp \
            KDChartMarkerAttributes.cpp \
            KDChartPaintContext.cpp \
@@ -179,17 +179,17 @@ SOURCES += \
            KDChartThreeDPieAttributes.cpp \
            PrerenderedElements/KDChartTextLabelCache.cpp \
            # unused so far: KDChartSignalCompressor.cpp \
-	   Ternary/KDChartTernaryAxis.cpp \
-	   Ternary/KDChartTernaryGrid.cpp \
-	   Ternary/TernaryPoint.cpp \
-	   Ternary/TernaryConstants.cpp \
-	   Ternary/KDChartTernaryCoordinatePlane.cpp \
-	   Ternary/KDChartAbstractTernaryDiagram.cpp \
-	   Ternary/KDChartTernaryPointDiagram.cpp \
-	   Ternary/KDChartTernaryLineDiagram.cpp \
-	   Scenery/ChartGraphicsItem.cpp \
-	   Scenery/ReverseMapper.cpp \
-	   KDChartValueTrackerAttributes.cpp
+           Ternary/KDChartTernaryAxis.cpp \
+           Ternary/KDChartTernaryGrid.cpp \
+           Ternary/TernaryPoint.cpp \
+           Ternary/TernaryConstants.cpp \
+           Ternary/KDChartTernaryCoordinatePlane.cpp \
+           Ternary/KDChartAbstractTernaryDiagram.cpp \
+           Ternary/KDChartTernaryPointDiagram.cpp \
+           Ternary/KDChartTernaryLineDiagram.cpp \
+           Scenery/ChartGraphicsItem.cpp \
+           Scenery/ReverseMapper.cpp \
+           KDChartValueTrackerAttributes.cpp
 
 CONFIG += warn-on
 

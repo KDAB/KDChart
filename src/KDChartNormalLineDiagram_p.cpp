@@ -6,7 +6,6 @@
 #include "KDChartAttributesModel.h"
 #include "KDChartAbstractCartesianDiagram.h"
 #include "KDChartNormalLineDiagram_p.h"
-#include "KDChartLineDiagramDataCompressor_p.h"
 
 using namespace KDChart;
 
@@ -32,8 +31,8 @@ const QPair< QPointF, QPointF > NormalLineDiagram::calculateDataBoundaries() con
     bool first = true;
     for( int i = 0; i < colCount; ++i ) {
         for ( int j = 0; j < rowCount; ++j ) {
-            LineDiagramDataCompressor::CachePosition position( j, i );
-            LineDiagramDataCompressor::DataPoint point = compressor().data( position );
+            CartesianDiagramDataCompressor::CachePosition position( j, i );
+            CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
 
             if ( first ) {
                     yMin = point.value;
@@ -80,16 +79,16 @@ void NormalLineDiagram::paint(  PaintContext* ctx )
 
     for( int column  = 0; column < columnCount; ++column ) {
         LineAttributes laPreviousCell;
-        LineDiagramDataCompressor::CachePosition previousCellPosition;
+        CartesianDiagramDataCompressor::CachePosition previousCellPosition;
 
         for ( int row = 0; row < rowCount; ++row ) {
-            const LineDiagramDataCompressor::CachePosition position( row, column );
+            const CartesianDiagramDataCompressor::CachePosition position( row, column );
             // get where to draw the line from:
-            const LineDiagramDataCompressor::DataPoint point = compressor().data( position );
+            const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
             LineAttributes laCell;
             if ( row > 0 ) { // position 0 is not really painted, since it takes two points to make a line :-)
                 const QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );
-                const LineDiagramDataCompressor::DataPoint lastPoint = compressor().data( previousCellPosition );
+                const CartesianDiagramDataCompressor::DataPoint lastPoint = compressor().data( previousCellPosition );
                 // area corners, a + b are the line ends:
                 QPointF a( plane->translate( QPointF( row - 1, lastPoint.value ) ) );
                 QPointF b( plane->translate( QPointF( row, point.value ) ) );

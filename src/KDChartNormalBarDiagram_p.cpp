@@ -145,4 +145,3 @@ void NormalBarDiagram::paint(  PaintContext* ctx )
     }
     paintDataValueTextsAndMarkers(  diagram(),  ctx,  list,  false );
 }
-
