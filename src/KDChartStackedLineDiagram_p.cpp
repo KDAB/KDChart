@@ -79,24 +79,16 @@ void StackedLineDiagram::paint(  PaintContext* ctx )
     maxFound = columnCount;
     // ^^^ temp
 
-    const int lastVisibleColumn = maxFound;
-
     DataValueTextInfoList list;
     LineAttributesInfoList lineList;
     LineAttributes::MissingValuesPolicy policy;
 
     //FIXME(khz): add LineAttributes::MissingValuesPolicy support for LineDiagram::Stacked and ::Percent
 
-    double maxValue = 100; // always 100%
-    double sumValues = 0;
     QVector <double > percentSumValues;
 
     QList<QPointF> bottomPoints;
     bool bFirstDataset = true;
-
-//    for( int iColumn =  datasetDimension() - 1;
-//         iColumn <= lastVisibleColumn;
-//         iColumn += datasetDimension() ) {
 
     for( int column = 0; column < columnCount; ++column )
     {
@@ -109,19 +101,21 @@ void StackedLineDiagram::paint(  PaintContext* ctx )
         QList<QPointF> points;
 
         for ( int row = 0; row < rowCount; ++row ) {
-            LineDiagramDataCompressor::CachePosition position( row, column );
-            LineDiagramDataCompressor::DataPoint point = compressor().data( position );
+            const LineDiagramDataCompressor::CachePosition position( row, column );
+            const LineDiagramDataCompressor::DataPoint point = compressor().data( position );
+            const QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );
 
-            const LineAttributes laCell = diagram()->lineAttributes( point.index );
+            const LineAttributes laCell = diagram()->lineAttributes( sourceIndex );
             const bool bDisplayCellArea = laCell.displayArea();
 
             double stackedValues = 0, nextValues = 0;
-            for ( int column2 = column;
-                  column2 >= datasetDimension() - 1;
-                  column2 -= datasetDimension() )
+            for ( int column2 = column; column2 >= 0; --column2 )
+/*                  column2 >= datasetDimension() - 1;
+                  column2 -= datasetDimension() )*/
             {
-                LineDiagramDataCompressor::CachePosition position( row, column2 );
-                LineDiagramDataCompressor::DataPoint point = compressor().data( position );
+                const LineDiagramDataCompressor::CachePosition position( row, column2 );
+                const LineDiagramDataCompressor::DataPoint point = compressor().data( position );
+                const QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );
                 stackedValues += point.value;
                 //qDebug() << valueForCell( iRow, iColumn2 );
                 if ( row + 1 < rowCount ){
@@ -131,7 +125,7 @@ void StackedLineDiagram::paint(  PaintContext* ctx )
                 }
             }
             //qDebug() << stackedValues << endl;
-            QPointF nextPoint = ctx->coordinatePlane()->translate( QPointF( row, stackedValues ) );
+            const QPointF nextPoint = ctx->coordinatePlane()->translate( QPointF( row, stackedValues ) );
             points << nextPoint;
 
             const QPointF ptNorthWest( nextPoint );
@@ -147,7 +141,7 @@ void StackedLineDiagram::paint(  PaintContext* ctx )
 
             if ( row + 1 < rowCount ){
                 QPointF toPoint = ctx->coordinatePlane()->translate( QPointF( row + 1, nextValues ) );
-                lineList.append( LineAttributesInfo( point.index, nextPoint, toPoint ) );
+                lineList.append( LineAttributesInfo( sourceIndex, nextPoint, toPoint ) );
                 ptNorthEast = toPoint;
                 ptSouthEast =
                     bDisplayCellArea
@@ -165,7 +159,7 @@ void StackedLineDiagram::paint(  PaintContext* ctx )
                     poly << ptNorthWest << ptNorthEast << ptSouthEast << ptSouthWest;
                     areas << poly;
                     laPreviousCell = laCell;
-                    indexPreviousCell = point.index;
+                    indexPreviousCell = sourceIndex;
                 }else{
                     //qDebug() << "no area shown for row"<<iRow<<"  column"<<iColumn;
                 }
@@ -175,7 +169,7 @@ void StackedLineDiagram::paint(  PaintContext* ctx )
             }
 
             const PositionPoints pts( ptNorthWest, ptNorthEast, ptSouthEast, ptSouthWest );
-            appendDataValueTextInfoToList( diagram(), list, point.index, pts,
+            appendDataValueTextInfoToList( diagram(), list, sourceIndex, pts,
                                            Position::NorthWest, Position::SouthWest,
                                            point.value );
         }
