@@ -20,19 +20,23 @@ BarDiagram::BarType StackedBarDiagram::type() const
 
 const QPair<QPointF, QPointF> StackedBarDiagram::calculateDataBoundaries() const
 {
-    const int rowCount = attributesModel()->rowCount(attributesModelRootIndex());
-    const int colCount = attributesModel()->columnCount(attributesModelRootIndex());
+    const int rowCount = compressor().modelDataRows();
+    const int colCount = compressor().modelDataColumns();
 
     double xMin = 0;
     double xMax = rowCount;
     double yMin = 0, yMax = 0;
+
     bool bStarting = true;
-    for ( int j=0; j< rowCount; ++j ) {
+    for( int j = 0; j < rowCount; ++j )
+    {
         // calculate sum of values per column - Find out stacked Min/Max
         double stackedValues = 0;
-        for ( int i=0; i<colCount ; ++i ) {
-            QModelIndex idx = diagram()->model()->index( j, i, diagram()->rootIndex() );
-            stackedValues +=  diagram()->model()->data( idx ).toDouble();
+        for ( int i=0; i<colCount ; ++i )
+        {
+            const CartesianDiagramDataCompressor::CachePosition position( j, i );
+            const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
+            stackedValues +=  point.value;
             // this is always true yMin can be 0 in case all values
             // are the same
             // same for yMax it can be zero if all values are negative
@@ -53,10 +57,10 @@ const QPair<QPointF, QPointF> StackedBarDiagram::calculateDataBoundaries() const
         else
             yMax = 0.0; // they are the same but negative
     }
-    QPointF bottomLeft ( QPointF( xMin, yMin ) );
-    QPointF topRight ( QPointF( xMax, yMax ) );
+    const QPointF bottomLeft ( QPointF( xMin, yMin ) );
+    const QPointF topRight ( QPointF( xMax, yMax ) );
 
-    return QPair<QPointF, QPointF> ( bottomLeft,  topRight );
+    return QPair< QPointF, QPointF >( bottomLeft,  topRight );
 }
 
 void StackedBarDiagram::paint(  PaintContext* ctx )
@@ -66,8 +70,8 @@ void StackedBarDiagram::paint(  PaintContext* ctx )
     const QPointF boundLeft = ctx->coordinatePlane()->translate( boundaries.first ) ;
     const QPointF boundRight = ctx->coordinatePlane()->translate( boundaries.second );
 
-    const int rowCount = attributesModel()->rowCount(attributesModelRootIndex());
-    const int colCount = attributesModel()->columnCount(attributesModelRootIndex());
+    const int rowCount = compressor().modelDataRows();
+    const int colCount = compressor().modelDataColumns();
 
     BarAttributes ba = diagram()->barAttributes( diagram()->model()->index( 0, 0, diagram()->rootIndex() ) );
     double barWidth = 0;
@@ -110,13 +114,18 @@ void StackedBarDiagram::paint(  PaintContext* ctx )
                                 barWidth, spaceBetweenBars, spaceBetweenGroups );
 
     DataValueTextInfoList list;
-    for ( int i = 0; i<colCount; ++i ) {
+    for( int i = 0; i < colCount; ++i )
+    {
         double offset = spaceBetweenGroups;
-        for ( int j = 0; j< rowCount; ++j ) {
-            QModelIndex index = diagram()->model()->index( j, i, diagram()->rootIndex() );
+        for( int j = 0; j < rowCount; ++j )
+        {
+            const CartesianDiagramDataCompressor::CachePosition position( j, i );
+            const CartesianDiagramDataCompressor::DataPoint p = compressor().data( position );
+ 
+            const QModelIndex index = attributesModel()->mapToSource( p.index );
             ThreeDBarAttributes threeDAttrs = diagram()->threeDBarAttributes( index );
-            double value = 0, stackedValues = 0;
-            QPointF point, previousPoint;
+            const double value = p.value;
+            double stackedValues = 0.0;
 
             if ( threeDAttrs.isEnabled() ) {
                 if ( barWidth > 0 )
@@ -128,12 +137,15 @@ void StackedBarDiagram::paint(  PaintContext* ctx )
             } else
                 barWidth =  (ctx->rectangle().width() - (offset*rowCount))/ rowCount ;
 
-            value = diagram()->model()->data( index ).toDouble();
-            for ( int k = i; k >= 0 ; --k )
-                stackedValues += diagram()->model()->data( diagram()->model()->index( j, k, diagram()->rootIndex() ) ).toDouble();
-            point = ctx->coordinatePlane()->translate( QPointF( j, stackedValues ) );
-            point.setX( point.x() + offset/2 );
-            previousPoint = ctx->coordinatePlane()->translate( QPointF( j, stackedValues - value ) );
+            for ( int k = i; k >= 0; --k )
+            {
+                const CartesianDiagramDataCompressor::CachePosition position( j, k );
+                const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
+                stackedValues += point.value;
+            }
+            QPointF point = ctx->coordinatePlane()->translate( QPointF( j, stackedValues ) );
+            point.rx() += offset / 2;
+            const QPointF previousPoint = ctx->coordinatePlane()->translate( QPointF( j, stackedValues - value ) );
             const double barHeight = previousPoint.y() - point.y();
 
             const QRectF rect( point, QSizeF( barWidth , barHeight ) );
@@ -142,9 +154,6 @@ void StackedBarDiagram::paint(  PaintContext* ctx )
                                               value );
             paintBars( ctx, index, rect, maxDepth );
         }
-
     }
-    paintDataValueTextsAndMarkers(  diagram(),  ctx,  list,  false );
+    paintDataValueTextsAndMarkers( diagram(), ctx, list, false );
 }
-
-

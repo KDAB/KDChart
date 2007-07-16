@@ -116,22 +116,28 @@ void NormalBarDiagram::paint(  PaintContext* ctx )
 
     DataValueTextInfoList list;
 
-    for ( int i=0; i<rowCount; ++i ) {
+    for( int i = 0; i < rowCount; ++i )
+    {
         double offset = -groupWidth/2 + spaceBetweenGroups/2;
 
-        if ( ba.useFixedDataValueGap() ) {
-            if ( spaceBetweenBars > 0 ) {
+        if ( ba.useFixedDataValueGap() )
+        {
+            if ( spaceBetweenBars > 0 )
+            {
                 if ( ctx->rectangle().width() > maxLimit )
                     offset -= ba.fixedDataValueGap();
                 else
                     offset -= ((ctx->rectangle().width()/rowCount) - groupWidth)/(colCount-1);
 
-            } else {
+            }
+            else
+            {
                 offset += barWidth/2;
             }
         }
 
-        for ( int j=0; j< colCount; ++j ) {
+        for( int j=0; j< colCount; ++j )
+        {
             // paint one group
             const CartesianDiagramDataCompressor::CachePosition position( j, i );
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
