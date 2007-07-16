@@ -147,7 +147,6 @@ void NormalBarDiagram::paint(  PaintContext* ctx )
             QPointF bottomPoint =  ctx->coordinatePlane()->translate( QPointF( i, 0 ) );
             const double barHeight = bottomPoint.y() - topPoint.y();
             topPoint.setX( topPoint.x() + offset );
-            const QModelIndex index = diagram()->model()->index( i, j, diagram()->rootIndex() );
             const QRectF rect( topPoint, QSizeF( barWidth, barHeight ) );
             appendDataValueTextInfoToList( diagram(), list, sourceIndex, PositionPoints( rect ),
                                            Position::NorthWest, Position::SouthEast,
