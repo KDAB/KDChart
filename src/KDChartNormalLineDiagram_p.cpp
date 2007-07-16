@@ -29,10 +29,12 @@ const QPair< QPointF, QPointF > NormalLineDiagram::calculateDataBoundaries() con
     double yMax = 0;
 
     bool first = true;
-    for( int i = 0; i < colCount; ++i ) {
-        for ( int j = 0; j < rowCount; ++j ) {
-            CartesianDiagramDataCompressor::CachePosition position( j, i );
-            CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
+    for( int i = 0; i < colCount; ++i )
+    {
+        for ( int j = 0; j < rowCount; ++j )
+        {
+            const CartesianDiagramDataCompressor::CachePosition position( j, i );
+            const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
 
             if ( first ) {
                     yMin = point.value;

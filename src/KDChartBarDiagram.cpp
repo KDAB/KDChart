@@ -256,21 +256,16 @@ const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries() const
     // For totally removing data from KD Chart's view people can use e.g. a proxy model
     // calculate boundaries for different line types Normal - Stacked - Percent - Default Normal
     return d->implementor->calculateDataBoundaries();
-
 }
-
 
 void BarDiagram::paintEvent ( QPaintEvent*)
 {
-    qDebug() << "BarDiagram::paintEvent";
     QPainter painter ( viewport() );
     PaintContext ctx;
     ctx.setPainter ( &painter );
     ctx.setRectangle( QRectF ( 0, 0, width(), height() ) );
     paint ( &ctx );
 }
-
-
 
 void BarDiagram::paint( PaintContext* ctx )
 {
@@ -283,17 +278,17 @@ void BarDiagram::paint( PaintContext* ctx )
     AbstractCoordinatePlane* const plane = ctx->coordinatePlane();
     ctx->setCoordinatePlane( plane->sharedAxisMasterPlane( ctx->painter() ) );
 
-
     // paint different bar types Normal - Stacked - Percent - Default Normal
     d->implementor->paint( ctx );
 
     ctx->setCoordinatePlane( plane );
 }
 
-
-
-void BarDiagram::resize ( const QSizeF& )
+void BarDiagram::resize( const QSizeF& size )
 {
+    d->compressor.setResolution( static_cast< int >( size.width() ),
+                                 static_cast< int >( size.height() ) );
+    setDataBoundariesDirty();
 }
 
 const int BarDiagram::numberOfAbscissaSegments () const

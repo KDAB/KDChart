@@ -20,16 +20,21 @@ BarDiagram::BarType NormalBarDiagram::type() const
 
 const QPair<QPointF, QPointF> NormalBarDiagram::calculateDataBoundaries() const
 {
-    const int rowCount = attributesModel()->rowCount(attributesModelRootIndex());
-    const int colCount = attributesModel()->columnCount(attributesModelRootIndex());
+    const int rowCount = compressor().modelDataRows();
+    const int colCount = compressor().modelDataColumns();
 
-    double xMin = 0;
+    double xMin = 0.0;
     double xMax = rowCount;
-    double yMin = 0, yMax = 0;
+    double yMin = 0.0, yMax = 0.0;
+
     bool bStarting = true;
-    for ( int i=0; i<colCount; ++i ) {
-        for ( int j=0; j< rowCount; ++j ) {
-            const double value = attributesModel()->data( attributesModel()->index( j, i, attributesModelRootIndex() ) ).toDouble();
+    for ( int i = 0; i < colCount; ++i )
+    {
+        for ( int j = 0; j < rowCount; ++j )
+        {
+            const CartesianDiagramDataCompressor::CachePosition position( j, i );
+            const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
+            const double value = point.value;
             // this is always true yMin can be 0 in case all values
             // are the same
             // same for yMax it can be zero if all values are negative
@@ -51,10 +56,10 @@ const QPair<QPointF, QPointF> NormalBarDiagram::calculateDataBoundaries() const
         else
             yMax = 0.0; // they are the same but negative
     }
-    QPointF bottomLeft ( QPointF( xMin, yMin ) );
-    QPointF topRight ( QPointF( xMax, yMax ) );
+    const QPointF bottomLeft ( QPointF( xMin, yMin ) );
+    const QPointF topRight ( QPointF( xMax, yMax ) );
 
-    return QPair<QPointF, QPointF> ( bottomLeft,  topRight );
+    return QPair< QPointF, QPointF >( bottomLeft,  topRight );
 }
 
 void NormalBarDiagram::paint(  PaintContext* ctx )
@@ -128,17 +133,20 @@ void NormalBarDiagram::paint(  PaintContext* ctx )
 
         for ( int j=0; j< colCount; ++j ) {
             // paint one group
-            const qreal value = attributesModel()->data( attributesModel()->index( i, j, attributesModelRootIndex() ) ).toDouble();
+            const CartesianDiagramDataCompressor::CachePosition position( j, i );
+            const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
+            const QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );
+            const qreal value = point.value;//attributesModel()->data( sourceIndex ).toDouble();
             QPointF topPoint = ctx->coordinatePlane()->translate( QPointF( i + 0.5, value ) );
             QPointF bottomPoint =  ctx->coordinatePlane()->translate( QPointF( i, 0 ) );
             const double barHeight = bottomPoint.y() - topPoint.y();
             topPoint.setX( topPoint.x() + offset );
             const QModelIndex index = diagram()->model()->index( i, j, diagram()->rootIndex() );
             const QRectF rect( topPoint, QSizeF( barWidth, barHeight ) );
-            appendDataValueTextInfoToList( diagram(), list, index, PositionPoints( rect ),
+            appendDataValueTextInfoToList( diagram(), list, sourceIndex, PositionPoints( rect ),
                                            Position::NorthWest, Position::SouthEast,
-                                           value );
-            paintBars( ctx, index, rect, maxDepth );
+                                           point.value );
+            paintBars( ctx, sourceIndex, rect, maxDepth );
 
             offset += barWidth + spaceBetweenBars;
         }
