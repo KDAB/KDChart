@@ -1,7 +1,7 @@
 #include <QtDebug>
 #include <QAbstractItemModel>
 
-#include "KDChartLineDiagram.h"
+#include "KDChartAbstractCartesianDiagram.h"
 #include "KDChartLineDiagramDataCompressor_p.h"
 
 using namespace KDChart;
@@ -38,7 +38,7 @@ void LineDiagramDataCompressor::slotModelLayoutChanged()
 
 void LineDiagramDataCompressor::slotDiagramLayoutChanged( AbstractDiagram* diagramBase )
 {
-    LineDiagram* diagram = qobject_cast<LineDiagram*>( diagramBase );
+    AbstractCartesianDiagram* diagram = qobject_cast< AbstractCartesianDiagram* >( diagramBase );
     Q_ASSERT( diagram );
     if ( diagram->datasetDimension() != m_datasetDimension ) {
         setDatasetDimension( diagram->datasetDimension() );
@@ -278,4 +278,3 @@ void LineDiagramDataCompressor::setDatasetDimension( int dimension )
         calculateSampleStepWidth();
     }
 }
-
