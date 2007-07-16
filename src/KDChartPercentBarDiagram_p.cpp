@@ -54,6 +54,8 @@ const QPair<QPointF, QPointF> PercentBarDiagram::calculateDataBoundaries() const
 
 void PercentBarDiagram::paint( PaintContext* ctx )
 {
+    reverseMapper().clear();
+
     const QPair<QPointF,QPointF> boundaries = diagram()->dataBoundaries(); // cached
 
     const QPointF boundLeft = ctx->coordinatePlane()->translate( boundaries.first ) ;

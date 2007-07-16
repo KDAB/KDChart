@@ -190,6 +190,11 @@ void BarDiagram::BarDiagramType::calculateValueAndGapWidths( int rowCount,int co
 
 }
 
+ReverseMapper& BarDiagram::BarDiagramType::reverseMapper()
+{
+    return m_private->reverseMapper;
+}
+
 CartesianDiagramDataCompressor& BarDiagram::BarDiagramType::compressor() const
 {
     return m_private->compressor;

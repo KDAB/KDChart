@@ -116,7 +116,7 @@ KDCHART_IMPL_DERIVED_DIAGRAM( BarDiagram, AbstractCartesianDiagram, CartesianCoo
         // classes:
         AttributesModel* attributesModel() const;
         QModelIndex attributesModelRootIndex() const;
-
+        ReverseMapper& reverseMapper();
         CartesianDiagramDataCompressor& compressor() const;
 
         void appendDataValueTextInfoToList(

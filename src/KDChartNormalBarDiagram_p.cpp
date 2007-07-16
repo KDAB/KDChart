@@ -64,6 +64,7 @@ const QPair<QPointF, QPointF> NormalBarDiagram::calculateDataBoundaries() const
 
 void NormalBarDiagram::paint(  PaintContext* ctx )
 {
+    reverseMapper().clear();
 
     const QPair<QPointF,QPointF> boundaries = diagram()->dataBoundaries(); // cached
 
