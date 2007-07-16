@@ -20,7 +20,7 @@ LineDiagram::LineType NormalLineDiagram::type() const
     return LineDiagram::Normal;
 }
 
-const QPair<QPointF, QPointF> NormalLineDiagram::calculateDataBoundaries() const
+const QPair< QPointF, QPointF > NormalLineDiagram::calculateDataBoundaries() const
 {
     const int rowCount = compressor().modelDataRows();
     const int colCount = compressor().modelDataColumns();
@@ -47,9 +47,9 @@ const QPair<QPointF, QPointF> NormalLineDiagram::calculateDataBoundaries() const
         }
     }
 
-    QPointF bottomLeft( QPointF( xMin, qMin( 0.0, yMin ) ) );
-    QPointF topRight( QPointF( xMax, yMax ) );
-    return QPair<QPointF, QPointF> ( bottomLeft, topRight );
+    const QPointF bottomLeft( QPointF( xMin, qMin( 0.0, yMin ) ) );
+    const QPointF topRight( QPointF( xMax, yMax ) );
+    return QPair< QPointF, QPointF >( bottomLeft, topRight );
 }
 
 void NormalLineDiagram::paint(  PaintContext* ctx )
@@ -83,13 +83,13 @@ void NormalLineDiagram::paint(  PaintContext* ctx )
         LineDiagramDataCompressor::CachePosition previousCellPosition;
 
         for ( int row = 0; row < rowCount; ++row ) {
-            LineDiagramDataCompressor::CachePosition position( row, column );
+            const LineDiagramDataCompressor::CachePosition position( row, column );
             // get where to draw the line from:
-            LineDiagramDataCompressor::DataPoint point = compressor().data( position );
+            const LineDiagramDataCompressor::DataPoint point = compressor().data( position );
             LineAttributes laCell;
             if ( row > 0 ) { // position 0 is not really painted, since it takes two points to make a line :-)
-                QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );
-                LineDiagramDataCompressor::DataPoint lastPoint = compressor().data( previousCellPosition );
+                const QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );
+                const LineDiagramDataCompressor::DataPoint lastPoint = compressor().data( previousCellPosition );
                 // area corners, a + b are the line ends:
                 QPointF a( plane->translate( QPointF( row - 1, lastPoint.value ) ) );
                 QPointF b( plane->translate( QPointF( row, point.value ) ) );
@@ -123,6 +123,3 @@ void NormalLineDiagram::paint(  PaintContext* ctx )
 
     paintElements( ctx, textInfoList, lineList, policy );
 }
-
-
-
