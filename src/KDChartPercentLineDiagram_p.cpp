@@ -109,7 +109,8 @@ void PercentLineDiagram::paint(  PaintContext* ctx )
         {
             LineDiagramDataCompressor::CachePosition position( row, column );
             LineDiagramDataCompressor::DataPoint point = compressor().data( position );
-            const LineAttributes laCell = diagram()->lineAttributes( point.index );
+            const QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );
+            const LineAttributes laCell = diagram()->lineAttributes( sourceIndex );
             const bool bDisplayCellArea = laCell.displayArea();
 
             double stackedValues = 0, nextValues = 0;
@@ -119,6 +120,7 @@ void PercentLineDiagram::paint(  PaintContext* ctx )
             {
                 LineDiagramDataCompressor::CachePosition position( row, column2 );
                 LineDiagramDataCompressor::DataPoint point = compressor().data( position );
+                const QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );
                 const double val = point.value;
                 if( val > 0 )
                     stackedValues += val;
@@ -156,7 +158,7 @@ void PercentLineDiagram::paint(  PaintContext* ctx )
                  else
                      nextValues = 0.0;
                 QPointF toPoint = ctx->coordinatePlane()->translate( QPointF( row + 1, nextValues ) );
-                lineList.append( LineAttributesInfo( point.index, nextPoint, toPoint ) );
+                lineList.append( LineAttributesInfo( sourceIndex, nextPoint, toPoint ) );
                 ptNorthEast = toPoint;
                 ptSouthEast =
                     bDisplayCellArea
@@ -174,7 +176,7 @@ void PercentLineDiagram::paint(  PaintContext* ctx )
                     poly << ptNorthWest << ptNorthEast << ptSouthEast << ptSouthWest;
                     areas << poly;
                     laPreviousCell = laCell;
-                    indexPreviousCell = point.index;
+                    indexPreviousCell = sourceIndex;
                 }else{
                     //qDebug() << "no area shown for row"<<iRow<<"  column"<<iColumn;
                 }
@@ -184,7 +186,7 @@ void PercentLineDiagram::paint(  PaintContext* ctx )
             }
 
             const PositionPoints pts( ptNorthWest, ptNorthEast, ptSouthEast, ptSouthWest );
-            appendDataValueTextInfoToList( diagram(), list, point.index, pts,
+            appendDataValueTextInfoToList( diagram(), list, sourceIndex, pts,
                                            Position::NorthWest, Position::SouthWest,
                                            point.value );
         }
