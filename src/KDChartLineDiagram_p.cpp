@@ -272,4 +272,3 @@ CartesianDiagramDataCompressor& LineDiagram::LineDiagramType::compressor() const
 {
     return m_private->compressor;
 }
-

@@ -73,7 +73,6 @@ namespace KDChart {
         LineDiagramType* normalDiagram;
         LineDiagramType* stackedDiagram;
         LineDiagramType* percentDiagram;
-        mutable CartesianDiagramDataCompressor compressor;
     };
 
     KDCHART_IMPL_DERIVED_DIAGRAM( LineDiagram, AbstractCartesianDiagram, CartesianCoordinatePlane )
@@ -154,4 +153,3 @@ namespace KDChart {
 }
 
 #endif /* KDCHARTLINEDIAGRAM_P_H */
-

@@ -190,3 +190,7 @@ void BarDiagram::BarDiagramType::calculateValueAndGapWidths( int rowCount,int co
 
 }
 
+CartesianDiagramDataCompressor& BarDiagram::BarDiagramType::compressor() const
+{
+    return m_private->compressor;
+}

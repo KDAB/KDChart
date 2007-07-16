@@ -88,6 +88,13 @@ namespace KDChart {
         virtual AbstractCartesianDiagram* referenceDiagram() const;
         virtual QPointF referenceDiagramOffset() const;
 
+        /* reimpl */
+        void setModel( QAbstractItemModel* model );
+        /* reimpl */
+        void setRootIndex( const QModelIndex& index );
+        /* reimpl */
+        void setAttributesModel( AttributesModel* model );
+
     protected:
         virtual double threeDItemDepth( const QModelIndex & index ) const = 0;
         virtual double threeDItemDepth( int column ) const = 0;

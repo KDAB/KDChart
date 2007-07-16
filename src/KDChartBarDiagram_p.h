@@ -116,7 +116,10 @@ KDCHART_IMPL_DERIVED_DIAGRAM( BarDiagram, AbstractCartesianDiagram, CartesianCoo
         // classes:
         AttributesModel* attributesModel() const;
         QModelIndex attributesModelRootIndex() const;
-	void appendDataValueTextInfoToList(
+
+        CartesianDiagramDataCompressor& compressor() const;
+
+        void appendDataValueTextInfoToList(
             AbstractDiagram * diagram,
             DataValueTextInfoList & list,
             const QModelIndex & index,
@@ -125,24 +128,21 @@ KDCHART_IMPL_DERIVED_DIAGRAM( BarDiagram, AbstractCartesianDiagram, CartesianCoo
             const Position& autoPositionNegative,
             const qreal value );
         void paintDataValueTextsAndMarkers(
-	    AbstractDiagram* diag,
-	    PaintContext* ctx,
+            AbstractDiagram* diag,
+            PaintContext* ctx,
             const DataValueTextInfoList & list,
-	    bool paintMarkers );
+            bool paintMarkers );
 
-	void paintBars( PaintContext* ctx, const QModelIndex& index,
-			const QRectF& bar, double& maxDepth );
-	void calculateValueAndGapWidths( int rowCount, int colCount,
-					 double groupWidth,
-					 double& barWidth,
-					 double& spaceBetweenBars,
-					 double& spaceBetweenGroups );
+        void paintBars( PaintContext* ctx, const QModelIndex& index,
+            const QRectF& bar, double& maxDepth );
+        void calculateValueAndGapWidths( int rowCount, int colCount,
+            double groupWidth,
+            double& barWidth,
+            double& spaceBetweenBars,
+            double& spaceBetweenGroups );
 
         BarDiagram::Private* m_private;
     };
-
-
 }
 
 #endif /* KDCHARTBARDIAGRAM_P_H */
-

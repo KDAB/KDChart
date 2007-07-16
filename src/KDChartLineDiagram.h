@@ -105,12 +105,6 @@ public:
     const int numberOfAbscissaSegments () const;
     /* reimpl */
     const int numberOfOrdinateSegments () const;
-    /* reimpl */
-    void setRootIndex ( const QModelIndex& idx );
-    /* reimpl */
-    void setModel ( QAbstractItemModel * model );
-    /* reimpl */
-    void setAttributesModel( AttributesModel* model );
 
 protected:
     void paint ( PaintContext* paintContext );

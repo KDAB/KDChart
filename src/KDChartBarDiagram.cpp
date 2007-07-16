@@ -65,6 +65,7 @@ void BarDiagram::init()
     d->stackedDiagram = new StackedBarDiagram( this );
     d->percentDiagram = new PercentBarDiagram( this );
     d->implementor = d->normalDiagram;
+    d->compressor.setModel( attributesModel() );
 }
 
 BarDiagram::~BarDiagram()
