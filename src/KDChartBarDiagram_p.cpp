@@ -54,7 +54,7 @@ void BarDiagram::BarDiagramType::paintBars( PaintContext* ctx, const QModelIndex
             Q_ASSERT_X ( false, "dataBoundaries()",
                          "Type item does not match a defined bar chart Type." );
         }
-        isoRect =  bar.translated( usedDepth, -usedDepth );
+        isoRect = bar.translated( usedDepth, -usedDepth );
         // we need to find out if the height is negative
         // and in this case paint it up and down
         //qDebug() << isoRect.height();
@@ -71,6 +71,7 @@ void BarDiagram::BarDiagramType::paintBars( PaintContext* ctx, const QModelIndex
           }
 
         } else {
+            reverseMapper().addRect( index.row(), index.column(), isoRect );
             ctx->painter()->drawRect( isoRect );
             topPoints << bar.topLeft() << bar.topRight() << isoRect.topRight() << isoRect.topLeft();
         }
@@ -95,6 +96,7 @@ void BarDiagram::BarDiagramType::paintBars( PaintContext* ctx, const QModelIndex
                 needToSetClippingOffForTop = hasPointOutside && ctx->painter()->hasClipping();
                 if( needToSetClippingOffForTop )
                     ctx->painter()->setClipping( false );
+                reverseMapper().addPolygon( index.row(), index.column(), topPoints );
                 ctx->painter()->drawPolygon( topPoints );
                 if( needToSetClippingOffForTop )
                     ctx->painter()->setClipping( true );
@@ -107,14 +109,18 @@ void BarDiagram::BarDiagramType::paintBars( PaintContext* ctx, const QModelIndex
         if (  bar.height() != 0 ){
             if( needToSetClippingOffForTop )
                 ctx->painter()->setClipping( false );
+            reverseMapper().addPolygon( index.row(), index.column(), sidePoints );
             ctx->painter()->drawPolygon( sidePoints );
             if( needToSetClippingOffForTop )
                 ctx->painter()->setClipping( true );
         }
     }
 
-    if (  bar.height() != 0 )
+    if( bar.height() != 0 )
+    {
+        reverseMapper().addRect( index.row(), index.column(), bar );
         ctx->painter()->drawRect( bar );
+    }
     // reset
     //diagram()->maxDepth = threeDAttrs.depth();
 }

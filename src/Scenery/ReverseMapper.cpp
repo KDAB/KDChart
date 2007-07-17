@@ -68,7 +68,11 @@ void ReverseMapper::addItem( ChartGraphicsItem* item )
 
 void ReverseMapper::addRect( int row, int column, const QRectF& rect )
 {
-    QPolygonF polygon( rect );
+    addPolygon( row, column, QPolygonF( rect ) );
+}
+
+void ReverseMapper::addPolygon( int row, int column, const QPolygonF& polygon )
+{
     ChartGraphicsItem* item = new ChartGraphicsItem( row, column );
     item->setPolygon( polygon );
     addItem( item );
@@ -79,10 +83,7 @@ void ReverseMapper::addCircle( int row, int column, const QPointF& location, con
     QPainterPath path;
     QPointF ossfet( -0.5*diameter.width(), -0.5*diameter.height() );
     path.addEllipse( QRectF( location + ossfet, diameter ) );
-    QPolygonF polygon( path.toFillPolygon() );
-    ChartGraphicsItem* item = new ChartGraphicsItem( row, column );
-    item->setPolygon( polygon );
-    addItem( item );
+    addPolygon( row, column, QPolygonF( path.toFillPolygon() ) );
 }
 
 void ReverseMapper::addLine( int row, int column, const QPointF& from, const QPointF& to )
@@ -91,7 +92,7 @@ void ReverseMapper::addLine( int row, int column, const QPointF& from, const QPo
     // pixel wide rectangle, where the original line is excatly
     // centered in.
     // make a 3 pixel wide polygon from the line:
-    static QPointF pixel( 1.0, 1.0 );
+    static const QPointF pixel( 1.0, 1.0 );
     QPointF left, right;
     if ( from.x() < to.x() ) {
         left = from;
@@ -100,19 +101,14 @@ void ReverseMapper::addLine( int row, int column, const QPointF& from, const QPo
         right = from;
         left = to;
     }
-    QPointF lineVector( right - left );
-    qreal lineVectorLength = sqrt( lineVector.rx()*lineVector.rx() + lineVector.ry()*lineVector.ry() );
-    QPointF lineVectorUnit( lineVector / lineVectorLength );
-    QPointF normOfLineVectorUnit( -lineVectorUnit.ry(), lineVectorUnit.rx() );
+    const QPointF lineVector( right - left );
+    const qreal lineVectorLength = sqrt( lineVector.x() * lineVector.x() + lineVector.y() * lineVector.y() );
+    const QPointF lineVectorUnit( lineVector / lineVectorLength );
+    const QPointF normOfLineVectorUnit( -lineVectorUnit.y(), lineVectorUnit.x() );
     // now the four polygon end points:
-    QPointF one( left - lineVectorUnit + normOfLineVectorUnit );
-    QPointF two( left - lineVectorUnit - normOfLineVectorUnit );
-    QPointF three( right + lineVectorUnit - normOfLineVectorUnit );
-    QPointF four( right + lineVectorUnit + normOfLineVectorUnit );
-    QPolygonF polygon;
-    polygon << one << two << three << four << one;
-    ChartGraphicsItem* item = new ChartGraphicsItem( row, column );
-    item->setPolygon( polygon );
-    addItem( item );
+    const QPointF one( left - lineVectorUnit + normOfLineVectorUnit );
+    const QPointF two( left - lineVectorUnit - normOfLineVectorUnit );
+    const QPointF three( right + lineVectorUnit - normOfLineVectorUnit );
+    const QPointF four( right + lineVectorUnit + normOfLineVectorUnit );
+    addPolygon( row, column, QPolygonF() << one << two << three << four );
 }
-

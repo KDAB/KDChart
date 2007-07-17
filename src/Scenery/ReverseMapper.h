@@ -29,6 +29,7 @@ namespace KDChart {
         void addItem( ChartGraphicsItem* item );
 
         // convenience methods:
+        void addPolygon( int row, int column, const QPolygonF& polygon );
         void addRect( int row, int column, const QRectF& rect );
         void addCircle( int row, int column, const QPointF& location, const QSizeF& diameter );
         void addLine( int row, int column, const QPointF& from, const QPointF& to );
