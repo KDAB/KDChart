@@ -3,9 +3,9 @@
 #include <QStandardItem>
 #include <QStandardItemModel>
 
-#include <KDChartLineDiagramDataCompressor_p.h>
+#include <KDChartCartesianDiagramDataCompressor_p.h>
 
-typedef KDChart::LineDiagramDataCompressor::CachePosition CachePosition;
+typedef KDChart::CartesianDiagramDataCompressor::CachePosition CachePosition;
 
 struct Match {
     Match( const CachePosition& pos, const QModelIndex& index )
@@ -17,7 +17,7 @@ struct Match {
     QModelIndex index;
 };
 
-class LineDiagramDataCompressorTests : public QObject
+class CartesianDiagramDataCompressorTests : public QObject
 {
     Q_OBJECT
 
@@ -135,7 +135,7 @@ private slots:
    void invalidateTest()
     {
         CachePosition position( 0, 0 );
-        // KDChart::LineDiagramDataCompressor::DataPoint point;
+        // KDChart::CartesianDiagramDataCompressor::DataPoint point;
         QVERIFY( compressor.isValidCachePosition( position ) );
         compressor.retrieveModelData( position );
         QVERIFY2( compressor.isCached( position ),
@@ -175,7 +175,7 @@ private slots:
     }
 
 private:
-    KDChart::LineDiagramDataCompressor compressor;
+    KDChart::CartesianDiagramDataCompressor compressor;
     QStandardItemModel model;
     static const int RowCount;
     static const int ColumnCount;
@@ -183,10 +183,10 @@ private:
     int height;
 };
 
-const int LineDiagramDataCompressorTests::ColumnCount = 10;
-const int LineDiagramDataCompressorTests::RowCount = 1000;
+const int CartesianDiagramDataCompressorTests::ColumnCount = 10;
+const int CartesianDiagramDataCompressorTests::RowCount = 1000;
 
 
-QTEST_MAIN(LineDiagramDataCompressorTests)
+QTEST_MAIN(CartesianDiagramDataCompressorTests)
 
-#include "LineDiagramDataCompressorTests.moc"
+#include "CartesianDiagramDataCompressorTests.moc"
