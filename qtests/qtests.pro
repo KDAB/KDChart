@@ -13,7 +13,7 @@ SUBDIRS +=  ChartElementOwnership \
             WidgetElementOwnership \
             BarDiagrams \
             LineDiagrams \
-	    LineDiagramDataCompressor \
+            CartesianDiagramDataCompressor \
             PieDiagrams \
             PolarDiagrams 
 #           ParamVsParam \
