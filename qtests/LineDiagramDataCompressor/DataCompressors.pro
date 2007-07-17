@@ -1,3 +1,3 @@
 TEMPLATE	= subdirs
-SUBDIRS		= LineDiagramDataCompressor.pro
+SUBDIRS		= CartesianDiagramDataCompressor.pro
 
