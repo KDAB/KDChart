@@ -19,8 +19,8 @@ solaris-cc:DEFINES += SUN7
 #  _USE_MATH_DEFINES makes M_PI defined
 win32 {
 !win32-g++ {
-win32:DEFINES += NOMINMAX _USE_MATH_DEFINES
-win32:QMAKE_CXXFLAGS += /GR /EHsc /wd4251
+    DEFINES += NOMINMAX _USE_MATH_DEFINES
+    QMAKE_CXXFLAGS += /GR /EHsc /wd4251
 }
 }
 
