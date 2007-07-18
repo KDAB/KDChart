@@ -175,21 +175,27 @@ LineDiagram* LineDiagram::LineDiagramType::diagram() const
 
 void LineDiagram::LineDiagramType::paintAreas(
     PaintContext* ctx,
-    const QModelIndex& index, const QList<QPolygonF>& areas,
+    const QModelIndex& index, const QList< QPolygonF >& areas,
     const uint transparency )
 {
-    QColor trans( diagram()->brush(index).color() );
+    QColor trans = diagram()->brush( index ).color();
     trans.setAlpha( transparency );
-    QPen indexPen( diagram()->pen(index) );
+    QPen indexPen = diagram()->pen(index);
     indexPen.setColor( trans );
-    PainterSaver painterSaver( ctx->painter() );
-    if ( diagram()->antiAliasing() )
-        ctx->painter()->setRenderHint ( QPainter::Antialiasing );
+    const PainterSaver painterSaver( ctx->painter() );
+
+    if( diagram()->antiAliasing() )
+        ctx->painter()->setRenderHint( QPainter::Antialiasing );
+
     ctx->painter()->setPen( indexPen );
     ctx->painter()->setBrush( trans );
+
     QPainterPath path;
-    for( int i=0; i<areas.count(); ++i ){
-        path.addPolygon( areas[i] );
+    for( int i = 0; i < areas.count(); ++i )
+    {
+        const QPolygonF& p = areas[ i ];
+        path.addPolygon( p );
+        reverseMapper().addPolygon( index.row(), index.column(), p );
         path.closeSubpath();
     }
     ctx->painter()->drawPath( path );
