@@ -57,20 +57,22 @@ void LineDiagram::LineDiagramType::paintThreeDLines(
     const QPointF& from, const QPointF& to, const double depth  )
 {
     // retrieve the boundaries
-    const QPair<QPointF, QPointF> boundaries = diagram()->dataBoundaries ();
-    QPointF maxLimits = boundaries.second;
-    QVector <QPointF > segmentPoints;
-    QPointF topLeft = project( from, maxLimits, depth, index  );
-    QPointF topRight = project ( to, maxLimits, depth, index  );
+    const QPair< QPointF, QPointF > boundaries = diagram()->dataBoundaries();
+    const QPointF& maxLimits = boundaries.second;
+    const QPointF topLeft = project( from, maxLimits, depth, index  );
+    const QPointF topRight = project ( to, maxLimits, depth, index  );
 
-    segmentPoints << from << topLeft << topRight << to;
-    QPolygonF segment ( segmentPoints );
-    QBrush indexBrush ( diagram()->brush( index ) );
-    PainterSaver painterSaver( ctx->painter() );
-    if ( diagram()->antiAliasing() )
-        ctx->painter()->setRenderHint ( QPainter::Antialiasing );
+    const QPolygonF segment = QPolygonF() << from << topLeft << topRight << to;
+    const QBrush indexBrush ( diagram()->brush( index ) );
+    const PainterSaver painterSaver( ctx->painter() );
+
+    if( diagram()->antiAliasing() )
+        ctx->painter()->setRenderHint( QPainter::Antialiasing );
+
     ctx->painter()->setBrush( indexBrush );
     ctx->painter()->setPen( diagram()->pen( index ) ) ;
+
+    reverseMapper().addPolygon( index.row(), index.column(), segment );
     ctx->painter()->drawPolygon( segment );
 }
 
