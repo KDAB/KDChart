@@ -53,16 +53,16 @@ TableModel::~TableModel ()
 
 QVariant TableModel::data ( const QModelIndex & index, int role) const
 {
-
-    Q_ASSERT ( index.row() >= 0 && index.row() < rowCount() );
-    Q_ASSERT ( index.column() >= 0 && index.column() < columnCount() );
+    if( !index.isValid() )
+        return QVariant();
+        
+    Q_ASSERT( index.model() == this );
+    Q_ASSERT( index.row() >= 0 && index.row() < rowCount() );
+    Q_ASSERT( index.column() >= 0 && index.column() < columnCount() );
 
     if ( role == Qt::DisplayRole || role == Qt::EditRole )
-    {
-        return m_table[index.row()] [index.column()];
-    } else {
-        return QVariant();
-    }
+        return m_table[ index.row() ] [index.column() ];
+    return QVariant();
 }
 
 bool
