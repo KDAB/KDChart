@@ -372,35 +372,41 @@ QVariant AttributesModel::data( int column, int role ) const
 
 QVariant AttributesModel::data( const QModelIndex& index, int role ) const
 {
-  //qDebug() << "AttributesModel::data(" << index << role << ")";
-  if( index.isValid() ) {
-    Q_ASSERT( index.model() == this );
-  }
+    //qDebug() << "AttributesModel::data(" << index << role << ")";
+    if( index.isValid() ) {
+        Q_ASSERT( index.model() == this );
+    }
 
-  if( ! sourceModel() )
-      return QVariant();
+    if( sourceModel() == 0 )
+        return QVariant();
 
-  QVariant sourceData = sourceModel()->data( mapToSource(index), role );
-  if ( sourceData.isValid() )
-      return sourceData;
+    if( index.isValid() )
+    {
+        const QVariant sourceData = sourceModel()->data( mapToSource(index), role );
+        if( sourceData.isValid() )
+            return sourceData;
+    }
 
-  // check if we are storing a value for this role at this cell index
-  if ( mDataMap.contains( index.column() ) ) {
-      const QMap< int,  QMap< int, QVariant> > &colDataMap = mDataMap[ index.column() ];
-      if ( colDataMap.contains( index.row() ) ) {
-          const QMap<int, QVariant> &dataMap = colDataMap[ index.row() ];
-          if ( dataMap.contains( role ) ) {
-              QVariant v = dataMap[ role ];
+    // check if we are storing a value for this role at this cell index
+    if( mDataMap.contains( index.column() ) )
+    {
+        const QMap< int,  QMap< int, QVariant > >& colDataMap = mDataMap[ index.column() ];
+        if( colDataMap.contains( index.row() ) ) 
+        {
+            const QMap< int, QVariant >& dataMap = colDataMap[ index.row() ];
+            if( dataMap.contains( role ) )
+            {
+              const QVariant v = dataMap[ role ];
               if( v.isValid() )
-                  return dataMap[ role ];
-          }
-      }
-  }
-  // check if there is something set for the column (dataset), or at global level
-  if( index.isValid() )
-      return data( index.column(), role ); // includes automatic fallback to default
+                  return v;
+            }
+        }
+    }
+    // check if there is something set for the column (dataset), or at global level
+    if( index.isValid() )
+        return data( index.column(), role ); // includes automatic fallback to default
 
-  return QVariant();
+    return QVariant();
 }
 
 
