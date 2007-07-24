@@ -330,6 +330,8 @@ void AbstractDiagram::doItemsLayout()
 void AbstractDiagram::dataChanged( const QModelIndex &topLeft,
                                    const QModelIndex &bottomRight )
 {
+    Q_UNUSED( topLeft );
+    Q_UNUSED( bottomRight );
     // We are still too dumb to do intelligent updates...
     setDataBoundariesDirty();
     scheduleDelayedItemsLayout();
@@ -666,7 +668,6 @@ void AbstractDiagram::paintMarker( QPainter* painter,
                     QRectF rect( 0 - maSize.width()/2, 0 - maSize.height()/2,
                                 maSize.width(), maSize.height() );
                     painter->drawRect( rect );
-                    painter->fillRect( rect, brush.color() );
                     break;
                 }
             case MarkerAttributes::MarkerDiamond:

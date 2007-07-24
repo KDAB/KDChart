@@ -765,6 +765,7 @@ static const QColor SUBDUEDCOLORS[ NUM_SUBDUEDCOLORS ] = {
 
 void Legend::resizeEvent ( QResizeEvent * event )
 {
+    Q_UNUSED( event );
 #ifdef DEBUG_LEGEND_PAINT
     qDebug() << "Legend::resizeEvent() called";
 #endif
