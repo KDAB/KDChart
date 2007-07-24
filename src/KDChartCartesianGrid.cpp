@@ -367,8 +367,8 @@ DataDimensionsList CartesianGrid::calculateGrid(
                 l.first().end          = dimX.end;
                 l.first().stepWidth    = dimX.stepWidth;
                 l.first().subStepWidth = dimX.subStepWidth;
-                l.last().start        = qMax( dimY.start, minMaxY.start );
-                l.last().end          = qMin( dimY.end, minMaxY.end );
+                l.last().start        = minMaxY.start;
+                l.last().end          = minMaxY.end;
                 l.last().stepWidth    = dimY.stepWidth;
                 //qDebug() << "CartesianGrid::calculateGrid()  final grid y-range:" << l.last().end - l.last().start << "   step width:" << l.last().stepWidth << endl;
                 // calculate some reasonable subSteps if the
@@ -523,6 +523,7 @@ void CartesianGrid::calculateStepWidth(
     qreal& stepWidth, qreal& subStepWidth,
     bool adjustLower, bool adjustUpper ) const
 {
+    Q_UNUSED( orientation );
 
     Q_ASSERT_X ( granularities.count(), "CartesianGrid::calculateStepWidth",
                  "Error: The list of GranularitySequence values is empty." );
