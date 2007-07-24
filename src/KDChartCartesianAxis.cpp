@@ -554,7 +554,10 @@ void CartesianAxis::paintCtx( PaintContext* context )
         ;
 #endif
 
-    ptr->setPen ( Qt::black );
+    // solving issue #4075 in a quick way:
+    ptr->setPen ( labelTA.pen() ); // perhaps we want to add a setter method later?
+
+    //ptr->setPen ( Qt::black );
 
     const QObject* referenceArea = plane->parent();
 
