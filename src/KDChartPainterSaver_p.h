@@ -73,7 +73,7 @@ class PainterSaver {
     Q_DISABLE_COPY( PainterSaver )
 public:
     explicit PainterSaver( QPainter* p ) : painter( p ) { p->save(); }
-    ~PainterSaver() { painter->restore(); }
+    ~PainterSaver() { painter->setClipRect( 0, 0, 2, 2 ); painter->restore(); }
 
 private:
     QPainter* const painter;
