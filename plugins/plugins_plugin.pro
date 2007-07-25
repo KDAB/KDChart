@@ -31,10 +31,10 @@ unix {
   kdchart_static:LIBS += -lkdchartuitools
 } else {
   CONFIG(debug, debug|release) {
-    LIBS += -lkdchartpluginlibd
+    LIBS += -L$$KDCHARTBASE/lib -lkdchartpluginlibd -lkdchartd
     kdchart_static:LIBS += -lkdchartuitoolsd
   } else {
-    LIBS += -lkdchartpluginlib
+    LIBS += -L$$KDCHARTBASE/lib -lkdchartpluginlib -lkdchart
     kdchart_static:LIBS += -lkdchartuitools
   }
 }
