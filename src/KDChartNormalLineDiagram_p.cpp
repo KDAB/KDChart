@@ -53,7 +53,7 @@ const QPair< QPointF, QPointF > NormalLineDiagram::calculateDataBoundaries() con
     return QPair< QPointF, QPointF >( bottomLeft, topRight );
 }
 
-void NormalLineDiagram::paint(  PaintContext* ctx )
+void NormalLineDiagram::paint( PaintContext* ctx )
 {
     reverseMapper().clear();
     Q_ASSERT( dynamic_cast<CartesianCoordinatePlane*>( ctx->coordinatePlane() ) );
@@ -92,14 +92,14 @@ void NormalLineDiagram::paint(  PaintContext* ctx )
                 const QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );
                 const CartesianDiagramDataCompressor::DataPoint lastPoint = compressor().data( previousCellPosition );
                 // area corners, a + b are the line ends:
-                QPointF a( plane->translate( QPointF( row - 1, lastPoint.value ) ) );
-                QPointF b( plane->translate( QPointF( row, point.value ) ) );
-                QPointF c( plane->translate( QPointF( row - 1, 0.0 ) ) );
-                QPointF d( plane->translate( QPointF( row, 0.0 ) ) );
+                const QPointF a( plane->translate( QPointF( row - 1, lastPoint.value ) ) );
+                const QPointF b( plane->translate( QPointF( row, point.value ) ) );
+                const QPointF c( plane->translate( QPointF( row - 1, 0.0 ) ) );
+                const QPointF d( plane->translate( QPointF( row, 0.0 ) ) );
                 // add the line to the list:
                 laCell = diagram()->lineAttributes( sourceIndex );
                 // add data point labels:
-                const PositionPoints pts = point.value > 0 ? PositionPoints( b, a, d, c ) : PositionPoints( d, c, b, a );
+                const PositionPoints pts = PositionPoints( b, a, d, c );
                 // if necessary, add the area to the area list:
                 QList<QPolygonF> areas;
                 if ( laCell.displayArea() ) {

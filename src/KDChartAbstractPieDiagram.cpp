@@ -76,6 +76,7 @@ qreal AbstractPieDiagram::granularity() const
 
 void AbstractPieDiagram::setStartPosition( int degrees )
 {
+    Q_UNUSED( degrees );
     qWarning() << "Deprecated AbstractPieDiagram::setStartPosition() called, setting ignored.";
 }
 
