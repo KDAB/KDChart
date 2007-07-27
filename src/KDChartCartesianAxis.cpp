@@ -817,6 +817,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         // No need to call labelItem->setParentWidget(), since we are using
                         // the layout item temporarily only.
                         if( labelStep <= 0 ) {
+                            const PainterSaver p( ptr );
                             const QSize size( labelItem->sizeHint() );
                             labelItem->setGeometry(
                                 QRect(
@@ -827,8 +828,6 @@ void CartesianAxis::paintCtx( PaintContext* context )
                                                             ? halfFontHeight
                                                             : ((halfFontHeight + size.height()) * -1.0) ) ) ),
                                     size ) );
-
-                            bool origClipping = ptr->hasClipping();
 
                             QRect labelGeo = labelItem->geometry();
                             // if our item would only half fit, we disable clipping for that one
@@ -845,8 +844,6 @@ void CartesianAxis::paintCtx( PaintContext* context )
                             // do not call customizedLabel() again:
                             labelItem2->setText( labelItem->text() );
 
-                            // maybe enable clipping afterwards
-                            ptr->setClipping( origClipping );
                         } else {
                             labelStep -= dimX.stepWidth;
                         }
@@ -882,6 +879,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 }
             }
         } else {
+            const PainterSaver p( ptr );
             const double maxLimit = maxValueY;
             const double steg = dimY.stepWidth;
             int maxLabelsWidth = 0;
@@ -901,7 +899,6 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 }
             }
 
-            bool origClipping = ptr->hasClipping();
             ptr->setClipping( false );
             labelValue = minValueY;
             qreal step = steg;
@@ -978,8 +975,6 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
                 calculateNextLabel( labelValue, step, isLogarithmicY );
             }
-
-            ptr->setClipping( origClipping );
         }
         delete labelItem;
         delete labelItem2;

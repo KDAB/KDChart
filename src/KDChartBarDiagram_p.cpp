@@ -93,13 +93,12 @@ void BarDiagram::BarDiagramType::paintBars( PaintContext* ctx, const QModelIndex
                     hasPointOutside = true;
             }
             if( drawIt ){
+                const PainterSaver p( ctx->painter() );
                 needToSetClippingOffForTop = hasPointOutside && ctx->painter()->hasClipping();
                 if( needToSetClippingOffForTop )
                     ctx->painter()->setClipping( false );
                 reverseMapper().addPolygon( index.row(), index.column(), topPoints );
                 ctx->painter()->drawPolygon( topPoints );
-                if( needToSetClippingOffForTop )
-                    ctx->painter()->setClipping( true );
             }
         }
 
@@ -107,12 +106,11 @@ void BarDiagram::BarDiagramType::paintBars( PaintContext* ctx, const QModelIndex
 
         sidePoints << bar.topRight() << isoRect.topRight() << isoRect.bottomRight() << bar.bottomRight();
         if (  bar.height() != 0 ){
+            const PainterSaver p( ctx->painter() );
             if( needToSetClippingOffForTop )
                 ctx->painter()->setClipping( false );
             reverseMapper().addPolygon( index.row(), index.column(), sidePoints );
             ctx->painter()->drawPolygon( sidePoints );
-            if( needToSetClippingOffForTop )
-                ctx->painter()->setClipping( true );
         }
     }
 
