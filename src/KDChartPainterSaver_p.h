@@ -73,8 +73,7 @@ class PainterSaver {
     Q_DISABLE_COPY( PainterSaver )
 public:
     explicit PainterSaver( QPainter* p ) : painter( p ) { p->save(); }
-// TODO(christoph): Investigate, wheter it's fixed in Qt > 4.3
-#if QT_VERSION >= 0x040300 && defined Q_OS_WIN
+#if QT_VERSION == 0x040300 && defined Q_OS_WIN
     // the use of setClipRect is a workaround for a bug in Qt 4.3 which could
     // lead to an assert on Windows
     ~PainterSaver() { painter->setClipRect( 0, 0, 2, 2 ); painter->restore(); }
