@@ -28,11 +28,11 @@ const QPair<QPointF, QPointF> NormalBarDiagram::calculateDataBoundaries() const
     double yMin = 0.0, yMax = 0.0;
 
     bool bStarting = true;
-    for ( int i = 0; i < colCount; ++i )
+    for ( int column = 0; column < colCount; ++column )
     {
-        for ( int j = 0; j < rowCount; ++j )
+        for ( int row = 0; row < rowCount; ++row )
         {
-            const CartesianDiagramDataCompressor::CachePosition position( j, i );
+            const CartesianDiagramDataCompressor::CachePosition position( row, column );
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
             const double value = point.value;
             // this is always true yMin can be 0 in case all values
@@ -117,7 +117,7 @@ void NormalBarDiagram::paint(  PaintContext* ctx )
 
     DataValueTextInfoList list;
 
-    for( int i = 0; i < rowCount; ++i )
+    for( int row = 0; row < rowCount; ++row )
     {
         double offset = -groupWidth/2 + spaceBetweenGroups/2;
 
@@ -137,15 +137,15 @@ void NormalBarDiagram::paint(  PaintContext* ctx )
             }
         }
 
-        for( int j=0; j< colCount; ++j )
+        for( int column=0; column< colCount; ++column )
         {
             // paint one group
-            const CartesianDiagramDataCompressor::CachePosition position( j, i );
+            const CartesianDiagramDataCompressor::CachePosition position( row,  column );
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
             const QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );
             const qreal value = point.value;//attributesModel()->data( sourceIndex ).toDouble();
-            QPointF topPoint = ctx->coordinatePlane()->translate( QPointF( i + 0.5, value ) );
-            QPointF bottomPoint =  ctx->coordinatePlane()->translate( QPointF( i, 0 ) );
+            QPointF topPoint = ctx->coordinatePlane()->translate( QPointF( row + 0.5, value ) );
+            QPointF bottomPoint =  ctx->coordinatePlane()->translate( QPointF( row, 0 ) );
             const double barHeight = bottomPoint.y() - topPoint.y();
             topPoint.setX( topPoint.x() + offset );
             const QRectF rect( topPoint, QSizeF( barWidth, barHeight ) );
