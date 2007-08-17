@@ -19,15 +19,19 @@ CONFIG(debug, debug|release) {
 
 CONFIG+=qtestlib
 TEMPLATE = app
-INCLUDEPATH +=  ../../examples/tools ../../include
-DEPENDPATH += . ../../src ../../lib ../../examples/tools ../../include
+INCLUDEPATH +=  ../../examples/tools ../../include \
+	../../kdchartserializer/include
+DEPENDPATH += . ../../src ../../lib ../../examples/tools ../../include \
+	../../kdchartserializer/include \
+	../../kdchartserializer/src
+
 
 test.target = test
 test.commands = ./$(TARGET)
 test.depends = $(TARGET)
 QMAKE_EXTRA_TARGETS += test
 
-LIBS += -L../../lib -l$$KDCHARTLIB -ltesttools
+LIBS += -L../../lib -l$$KDCHARTLIB -lkdchartserializer -ltesttools
 
 unix {
   MOC_DIR = .moc

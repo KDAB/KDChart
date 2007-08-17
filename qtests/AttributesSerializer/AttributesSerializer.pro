@@ -1,7 +1,7 @@
-KDCHART_PATH = ../..
-include( ../serializertests.pri )
+include( ../qtests.pri )
 
 SOURCES += main.cpp
+QT += xml
 
 RESOURCES = Data.qrc
 
