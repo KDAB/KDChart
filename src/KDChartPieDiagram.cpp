@@ -312,8 +312,8 @@ void PieDiagram::paint( PaintContext* ctx )
     {
         drawOnePie( ctx->painter(), 0, frontmostpie, granularity(), sizeFor3DEffect );
     // otherwise, this gets a bit more complicated...
-    } else if( threeDPieAttributes().isEnabled() ) {
-        drawPieSurface( ctx->painter(), 0, frontmostpie, granularity() );
+/*    } else if( threeDPieAttributes().isEnabled() ) {
+        //drawPieSurface( ctx->painter(), 0, frontmostpie, granularity() );
         const QModelIndex index = model()->index( 0, frontmostpie, rootIndex() );
         QPen pen = this->pen( index );
         ctx->painter()->setBrush( brush( index ) );
@@ -329,7 +329,7 @@ void PieDiagram::paint( PaintContext* ctx )
         startAngle = qMax( startAngle, 180.0 );
 
         drawArcEffectSegment( ctx->painter(), piePosition( 0, frontmostpie),
-                sizeFor3DEffect, startAngle, endAngle, granularity() );
+                sizeFor3DEffect, startAngle, endAngle, granularity() );*/
     }
 }
 
@@ -420,9 +420,9 @@ void PieDiagram::drawPieSurface( QPainter* painter,
         QPen pen = this->pen( index );
         painter->setRenderHint ( QPainter::Antialiasing );
         painter->setBrush( brush( index ) );
-        if ( threeDAttrs.isEnabled() )
-            pen.setColor( QColor( 0, 0, 0 ) );
-        painter->setPen( pen );
+//        if ( threeDAttrs.isEnabled() )
+//            pen.setColor( QColor( 0, 0, 0 ) );
+//        painter->setPen( pen );
 
         if ( angleLen == 360 ) {
             // full circle, avoid nasty line in the middle
