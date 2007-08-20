@@ -925,7 +925,7 @@ void Legend::buildLegend()
                         diagram(),
                         markerAttrs[dataset],
                         brush( dataset ),
-                        pen( dataset ),
+                        markerAttrs[dataset].pen(),
                         Qt::AlignLeft );
                 break;
             case( LinesOnly ):
@@ -943,7 +943,7 @@ void Legend::buildLegend()
                         markerOffsOnLine,
                         markerAttrs[dataset],
                         brush( dataset ),
-                        pen( dataset ),
+                        markerAttrs[dataset].pen(),
                         Qt::AlignCenter );
                 break;
             default:
