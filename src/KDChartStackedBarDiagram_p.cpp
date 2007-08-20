@@ -28,13 +28,13 @@ const QPair<QPointF, QPointF> StackedBarDiagram::calculateDataBoundaries() const
     double yMin = 0, yMax = 0;
 
     bool bStarting = true;
-    for( int j = 0; j < rowCount; ++j )
+    for( int row = 0; row < rowCount; ++row )
     {
         // calculate sum of values per column - Find out stacked Min/Max
         double stackedValues = 0;
-        for ( int i=0; i<colCount ; ++i )
+        for ( int col = 0; col < colCount ; ++col )
         {
-            const CartesianDiagramDataCompressor::CachePosition position( j, i );
+            const CartesianDiagramDataCompressor::CachePosition position( row, col );
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
             stackedValues +=  point.value;
             // this is always true yMin can be 0 in case all values
@@ -116,12 +116,12 @@ void StackedBarDiagram::paint(  PaintContext* ctx )
                                 barWidth, spaceBetweenBars, spaceBetweenGroups );
 
     DataValueTextInfoList list;
-    for( int i = 0; i < colCount; ++i )
+    for( int col = 0; col < colCount; ++col )
     {
         double offset = spaceBetweenGroups;
-        for( int j = 0; j < rowCount; ++j )
+        for( int row = 0; row < rowCount; ++row )
         {
-            const CartesianDiagramDataCompressor::CachePosition position( j, i );
+            const CartesianDiagramDataCompressor::CachePosition position( row, col );
             const CartesianDiagramDataCompressor::DataPoint p = compressor().data( position );
  
             const QModelIndex index = attributesModel()->mapToSource( p.index );
@@ -139,15 +139,15 @@ void StackedBarDiagram::paint(  PaintContext* ctx )
             } else
                 barWidth =  (ctx->rectangle().width() - (offset*rowCount))/ rowCount ;
 
-            for ( int k = i; k >= 0; --k )
+            for ( int k = col; k >= 0; --k )
             {
-                const CartesianDiagramDataCompressor::CachePosition position( j, k );
+                const CartesianDiagramDataCompressor::CachePosition position( row, k );
                 const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
                 stackedValues += point.value;
             }
-            QPointF point = ctx->coordinatePlane()->translate( QPointF( j, stackedValues ) );
+            QPointF point = ctx->coordinatePlane()->translate( QPointF( row, stackedValues ) );
             point.rx() += offset / 2;
-            const QPointF previousPoint = ctx->coordinatePlane()->translate( QPointF( j, stackedValues - value ) );
+            const QPointF previousPoint = ctx->coordinatePlane()->translate( QPointF( row, stackedValues - value ) );
             const double barHeight = previousPoint.y() - point.y();
 
             const QRectF rect( point, QSizeF( barWidth , barHeight ) );

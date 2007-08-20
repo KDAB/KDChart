@@ -28,9 +28,9 @@ const QPair<QPointF, QPointF> PercentLineDiagram::calculateDataBoundaries() cons
     const double yMin = 0.0;
     double yMax = 0.0;
 
-    for( int i = 0; i < colCount; ++i ) {
-        for ( int j = 0; j < rowCount; ++j ) {
-            CartesianDiagramDataCompressor::CachePosition position( j, i );
+    for( int col = 0; col < colCount; ++col ) {
+        for ( int row = 0; row < rowCount; ++row ) {
+            CartesianDiagramDataCompressor::CachePosition position( row, col );
             CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
 
             yMax = qMax( yMax, point.value );
@@ -77,16 +77,16 @@ void PercentLineDiagram::paint(  PaintContext* ctx )
     QVector <double > percentSumValues;
 
     //calculate sum of values for each column and store
-    for ( int j = 0; j < rowCount; ++j )
+    for ( int row = 0; row < rowCount; ++row )
     {
-        for( int i = 0; i < columnCount; ++i )
+        for( int col = 0; col < columnCount; ++col )
         {
-            CartesianDiagramDataCompressor::CachePosition position( j, i );
+            CartesianDiagramDataCompressor::CachePosition position( row, col );
             CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
             const double tmpValue = point.value;
             if ( tmpValue > 0 )
                 sumValues += tmpValue;
-            if ( i == lastVisibleColumn ) 
+            if ( col == lastVisibleColumn ) 
             {
                 percentSumValues << sumValues ;
                 sumValues = 0;
@@ -105,7 +105,7 @@ void PercentLineDiagram::paint(  PaintContext* ctx )
         QList<QPolygonF> areas;
         QList<QPointF> points;
 
-        for ( int row = 0; row < rowCount; ++row ) 
+        for( int row = 0; row < rowCount; ++row ) 
         {
             CartesianDiagramDataCompressor::CachePosition position( row, column );
             CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );

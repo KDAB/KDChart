@@ -28,11 +28,12 @@ const QPair<QPointF, QPointF> StackedLineDiagram::calculateDataBoundaries() cons
     double yMin = 0, yMax = 0;
 
     bool bStarting = true;
-    for ( int j=0; j< rowCount; ++j ) {
+    for( int row = 0; row < rowCount; ++row )
+    {
         // calculate sum of values per column - Find out stacked Min/Max
         double stackedValues = 0;
-        for( int i = datasetDimension() - 1; i < colCount; i += datasetDimension() ) {
-            CartesianDiagramDataCompressor::CachePosition position( j, i );
+        for( int col = datasetDimension() - 1; col < colCount; col += datasetDimension() ) {
+            CartesianDiagramDataCompressor::CachePosition position( row, col );
             CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
 
             stackedValues += point.value;
