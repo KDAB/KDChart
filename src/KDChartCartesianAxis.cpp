@@ -466,6 +466,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
     //qDebug() << "isAbscissa():" << isAbscissa() << "   dimX.isCalculated:" << dimX.isCalculated << "   dimX.stepWidth: "<<dimX.stepWidth;
     //FIXME(khz): Remove this code, and do the calculation in the grid calc function
+    // PENDING(tobias) Not sure about #if'ing out this code, but it solves #4065. Any unwanted sideeffects? Please review
+#if 0
     if( isAbscissa() && ! dimX.isCalculated ){
         // dont ignore the users settings
         dimX.stepWidth = dimX.stepWidth ? dimX.stepWidth : 1.0;
@@ -476,6 +478,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
             numberOfUnitRulers = qAbs( dimX.distance() / dimX.stepWidth );
         }
     }
+#endif
 
     const bool drawUnitRulers = screenRange / ( numberOfUnitRulers / dimX.stepWidth ) > MinimumPixelsBetweenRulers;
     const bool drawSubUnitRulers =
