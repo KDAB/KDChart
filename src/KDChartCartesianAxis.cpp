@@ -462,23 +462,6 @@ void CartesianAxis::paintCtx( PaintContext* context )
     }
 
     const bool useItemCountLabels = isAbscissa() && ! dimX.isCalculated;
-    //qDebug() << "CartesianAxis::paintCtx useItemCountLabels "<< useItemCountLabels;
-
-    //qDebug() << "isAbscissa():" << isAbscissa() << "   dimX.isCalculated:" << dimX.isCalculated << "   dimX.stepWidth: "<<dimX.stepWidth;
-    //FIXME(khz): Remove this code, and do the calculation in the grid calc function
-    // PENDING(tobias) Not sure about #if'ing out this code, but it solves #4065. Any unwanted sideeffects? Please review
-#if 0
-    if( isAbscissa() && ! dimX.isCalculated ){
-        // dont ignore the users settings
-        dimX.stepWidth = dimX.stepWidth ? dimX.stepWidth : 1.0;
-        //qDebug() << "screenRange / numberOfUnitRulers <= MinimumPixelsBetweenRulers" << screenRange <<"/" << numberOfUnitRulers <<"<=" << MinimumPixelsBetweenRulers;
-        while( screenRange / numberOfUnitRulers <= MinimumPixelsBetweenRulers ){
-            dimX.stepWidth *= 10.0;
-            dimX.subStepWidth  *= 10.0;
-            numberOfUnitRulers = qAbs( dimX.distance() / dimX.stepWidth );
-        }
-    }
-#endif
 
     const bool drawUnitRulers = screenRange / ( numberOfUnitRulers / dimX.stepWidth ) > MinimumPixelsBetweenRulers;
     const bool drawSubUnitRulers =
@@ -496,7 +479,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
     double rulerWidth;
     double rulerHeight;
 
-    QPainter* ptr = context->painter();
+    QPainter* const ptr = context->painter();
 
     //for debugging: if( isAbscissa() )ptr->drawRect(areaGeoRect.adjusted(0,0,-1,-1));
     //qDebug() << "         " << (isAbscissa() ? "Abscissa":"Ordinate") << "axis painting with geometry" << areaGeoRect;
@@ -894,9 +877,9 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 // our labels, to get them drawn right aligned:
                 labelValue = minValueY;
                 while ( labelValue <= maxLimit ) {
-                    const QString labelText = diagram()->unitPrefix( labelValue, Qt::Vertical, true ) + 
+                    const QString labelText = diagram()->unitPrefix( static_cast< int >( labelValue ), Qt::Vertical, true ) + 
                                               QString::number( labelValue ) +
-                                              diagram()->unitSuffix( labelValue, Qt::Vertical, true );
+                                              diagram()->unitSuffix( static_cast< int >( labelValue ), Qt::Vertical, true );
                     labelItem->setText( customizedLabel( labelText ) );
                     maxLabelsWidth = qMax( maxLabelsWidth, labelItem->sizeHint().width() );
 
@@ -919,12 +902,12 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     //qDebug() << "geoRect:" << geoRect << "   geoRect.top()" << geoRect.top()
                     //<< "geoRect.bottom()" << geoRect.bottom() << "  translatedValue:" << translatedValue;
                     if( translatedValue > geoRect.top() && translatedValue <= geoRect.bottom() ){
-                        const QString labelText = diagram()->unitPrefix( labelValue, Qt::Vertical, true ) +
+                        const QString labelText = diagram()->unitPrefix( static_cast< int >( labelValue ), Qt::Vertical, true ) +
                                                   QString::number( labelValue ) +
-                                                  diagram()->unitSuffix( labelValue, Qt::Vertical, true );
-                        const QString label2Text = diagram()->unitPrefix( labelValue + step, Qt::Vertical, true ) +
+                                                  diagram()->unitSuffix( static_cast< int >( labelValue ), Qt::Vertical, true );
+                        const QString label2Text = diagram()->unitPrefix( static_cast< int >( labelValue + step ), Qt::Vertical, true ) +
                                                    QString::number( labelValue + step ) +
-                                                   diagram()->unitSuffix( labelValue + step, Qt::Vertical, true );
+                                                   diagram()->unitSuffix( static_cast< int >( labelValue + step ), Qt::Vertical, true );
                         labelItem->setText(  customizedLabel( labelText ) );
                         labelItem2->setText( customizedLabel( QString::number( labelValue + step ) ) );
                         QPointF nextPoint = plane->translate(  QPointF( 0,  labelValue + step ) );
@@ -950,9 +933,9 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 //qDebug() << "axis labels starting at" << labelValue << "step width" << step;
                 while( labelValue <= maxLimit ) {
                     //qDebug() << "value now" << labelValue;
-                    const QString labelText = diagram()->unitPrefix( labelValue, Qt::Vertical, true ) + 
+                    const QString labelText = diagram()->unitPrefix( static_cast< int >( labelValue ), Qt::Vertical, true ) + 
                                               QString::number( labelValue ) + 
-                                              diagram()->unitSuffix( labelValue, Qt::Vertical, true );
+                                              diagram()->unitSuffix( static_cast< int >( labelValue ), Qt::Vertical, true );
                     labelItem->setText( customizedLabel( labelText ) );
                     QPointF leftPoint = plane->translate( QPointF( 0, labelValue ) );
                     QPointF rightPoint ( 0.0, labelValue );
