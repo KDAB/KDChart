@@ -311,12 +311,11 @@ void PieDiagram::paint( PaintContext* ctx )
     if( backmostpie != frontmostpie || ! threeDPieAttributes().isEnabled() )
     {
         drawOnePie( ctx->painter(), 0, frontmostpie, granularity(), sizeFor3DEffect );
-    // else, this gets a bit mor complicated...
+    // otherwise, this gets a bit more complicated...
     } else if( threeDPieAttributes().isEnabled() ) {
         drawPieSurface( ctx->painter(), 0, frontmostpie, granularity() );
         const QModelIndex index = model()->index( 0, frontmostpie, rootIndex() );
         QPen pen = this->pen( index );
-        ctx->painter()->setRenderHint ( QPainter::Antialiasing );
         ctx->painter()->setBrush( brush( index ) );
         if ( threeDAttrs.isEnabled() )
             pen.setColor( QColor( 0, 0, 0 ) );
@@ -340,6 +339,7 @@ void PieDiagram::paint( PaintContext* ctx )
 
 QRectF PieDiagram::piePosition( uint dataset, uint pie ) const
 {
+    Q_UNUSED( dataset );
     qreal angleLen = d->angleLens[ pie ];
     qreal startAngle = d->startAngles[ pie ];
     QModelIndex index( model()->index( 0, pie, rootIndex() ) );
@@ -375,24 +375,15 @@ void PieDiagram::drawOnePie( QPainter* painter,
         qreal granularity,
         qreal threeDPieHeight )
 {
+    Q_UNUSED( threeDPieHeight );
     // Is there anything to draw at all?
-    qreal angleLen = d->angleLens[ pie ];
+    const qreal angleLen = d->angleLens[ pie ];
     if ( angleLen ) {
-  //      qreal startAngle = d->startAngles[ pie ];
-/*
-        KDChartDataRegion* datReg = 0;
-        QRegion* region = 0;
-        bool mustDeleteRegion = false;
-        if ( regions ){
-            region = new QRegion();
-            mustDeleteRegion = true;
-        }
-*/
-        QModelIndex index( model()->index( 0, pie, rootIndex() ) );
+        const QModelIndex index( model()->index( 0, pie, rootIndex() ) );
         const PieAttributes attrs( pieAttributes( index ) );
         const ThreeDPieAttributes threeDAttrs( threeDPieAttributes( index ) );
 
-        QRectF drawPosition = piePosition( dataset, pie );
+        const QRectF drawPosition = piePosition( dataset, pie );
 
         draw3DEffect( painter,
             drawPosition, dataset, pie,
@@ -419,36 +410,14 @@ void PieDiagram::drawPieSurface( QPainter* painter,
     qreal angleLen = d->angleLens[ pie ];
     if ( angleLen ) {
         qreal startAngle = d->startAngles[ pie ];
-/*
-        KDChartDataRegion* datReg = 0;
-        QRegion* region = 0;
-        bool mustDeleteRegion = false;
-        if ( regions ){
-            region = new QRegion();
-            mustDeleteRegion = true;
-        }
-*/
+        
         QModelIndex index( model()->index( 0, pie, rootIndex() ) );
         const PieAttributes attrs( pieAttributes( index ) );
         const ThreeDPieAttributes threeDAttrs( threeDPieAttributes( index ) );
 
         QRectF drawPosition = piePosition( dataset, pie );
-//        QRectF drawPosition( d->position );
-
-/*        if ( attrs.explode() ) {
-            qreal explodeAngle = ( startAngle + angleLen / 2.0 );
-            qreal explodeAngleRad = DEGTORAD( explodeAngle );
-            qreal cosAngle = cos( explodeAngleRad );
-            qreal sinAngle = -sin( explodeAngleRad );
-            qreal explodeX = attrs.explodeFactor() * d->size * cosAngle;
-            qreal explodeY = attrs.explodeFactor() * d->size * sinAngle;
-            drawPosition.translate( explodeX, explodeY );
-        }else{
-            drawPosition = d->position;
-        }*/
 
         QPen pen = this->pen( index );
-        PainterSaver painterSaver( painter );
         painter->setRenderHint ( QPainter::Antialiasing );
         painter->setBrush( brush( index ) );
         if ( threeDAttrs.isEnabled() )
@@ -458,39 +427,6 @@ void PieDiagram::drawPieSurface( QPainter* painter,
         if ( angleLen == 360 ) {
             // full circle, avoid nasty line in the middle
             painter->drawEllipse( drawPosition );
-/*
-            if ( regions ) {
-                QPointArray hitregion;
-                hitregion.makeEllipse( drawPosition.x(), drawPosition.y(),
-                                       drawPosition.width(),
-                                       drawPosition.height() );
-                datReg = new KDChartDataRegion( region->unite( QRegion( hitregion ) ),
-                                                dataset,
-                                                pie,
-                                                chart );
-                datReg->points[ KDChartEnums::PosCenter ]
-                    = drawPosition.center();
-                datReg->points[ KDChartEnums::PosCenterRight ]
-                    = pointOnCircle( drawPosition,    0 );
-                datReg->points[ KDChartEnums::PosTopRight ]
-                    = pointOnCircle( drawPosition,  45 );
-                datReg->points[ KDChartEnums::PosTopCenter ]
-                    = pointOnCircle( drawPosition, 90 );
-                datReg->points[ KDChartEnums::PosTopLeft ]
-                    = pointOnCircle( drawPosition, 135 );
-                datReg->points[ KDChartEnums::PosCenterLeft ]
-                    = pointOnCircle( drawPosition, 180 );
-                datReg->points[ KDChartEnums::PosBottomLeft ]
-                    = pointOnCircle( drawPosition, 225 );
-                datReg->points[ KDChartEnums::PosBottomCenter ]
-                    = pointOnCircle( drawPosition, 270 );
-                datReg->points[ KDChartEnums::PosBottomRight ]
-                    = pointOnCircle( drawPosition, 315 );
-                datReg->startAngle = 180;
-                datReg->angleLen   = 360;
-                regions->append( datReg );
-            }
-*/
         } else {
             // draw the top of this piece
             // Start with getting the points for the arc.
@@ -512,15 +448,11 @@ void PieDiagram::drawPieSurface( QPainter* painter,
             if( ! perfectMatch ){
                 poly[ iPoint ] = pointOnCircle( drawPosition, startAngle + angleLen );
 
-//qDebug() << "adding" << poly[ iPoint ];
                 // add the center point of the piece
                 poly.append( drawPosition.center() );
-//qDebug() << "center:" << poly[ ++iPoint ];
             }else{
                 poly[ iPoint ] = drawPosition.center();
-//qDebug() << "center:" << poly[ iPoint ];
             }
-//qDebug() << "a";
             //find the value and paint it
             //fix value position
             const qreal sum = valueTotals();
@@ -534,64 +466,7 @@ void PieDiagram::drawPieSurface( QPainter* painter,
 
             paintDataValueText( painter, index, valuePos, angleLen*sum / 360  );
 
-//if( bHelp ){
-                            //painter->drawPolyline( collect );
-//bHelp=false;
-//}
-
-
-/*
-            if ( regions ) {
-                QPointArray hitregion;
-                hitregion.makeArc( drawPosition.x(), drawPosition.y(),
-                        drawPosition.width(),
-                        drawPosition.height(),
-                        ( int ) startAngle, ( int ) angleLen );
-                hitregion.resize( hitregion.size() + 1 );
-                hitregion.setPoint( hitregion.size() - 1,
-                        drawPosition.center() );
-                datReg = new KDChartDataRegion( region->unite( QRegion( hitregion ) ),
-                                                dataset,
-                                                pie,
-                                                chart );
-
-                datReg->points[ KDChartEnums::PosTopLeft ]
-                    = pointOnCircle( drawPosition, startAngle + angleLen );
-                datReg->points[ KDChartEnums::PosTopCenter ]
-                    = pointOnCircle( drawPosition, startAngle + angleLen / 2 );
-                datReg->points[ KDChartEnums::PosTopRight ]
-                    = pointOnCircle( drawPosition, startAngle );
-
-                datReg->points[   KDChartEnums::PosBottomLeft   ] = drawPosition.center();
-                datReg->points[   KDChartEnums::PosBottomCenter ]
-                    = datReg->points[ KDChartEnums::PosBottomLeft   ];
-                datReg->points[   KDChartEnums::PosBottomRight  ]
-                    = datReg->points[ KDChartEnums::PosBottomLeft   ];
-
-                datReg->points[ KDChartEnums::PosCenterLeft ]
-                    = QPoint( (   datReg->points[ KDChartEnums::PosTopLeft      ].x()
-                                + datReg->points[ KDChartEnums::PosBottomLeft   ].x() ) / 2,
-                            (   datReg->points[ KDChartEnums::PosTopLeft      ].y()
-                                + datReg->points[ KDChartEnums::PosBottomLeft   ].y() ) / 2 );
-                datReg->points[ KDChartEnums::PosCenter ]
-                    = QPoint( (   datReg->points[ KDChartEnums::PosTopCenter    ].x()
-                                + datReg->points[ KDChartEnums::PosBottomCenter ].x() ) / 2,
-                            (   datReg->points[ KDChartEnums::PosTopCenter    ].y()
-                                + datReg->points[ KDChartEnums::PosBottomCenter ].y() ) / 2 );
-                datReg->points[ KDChartEnums::PosCenterRight ]
-                    = QPoint( (   datReg->points[ KDChartEnums::PosTopRight     ].x()
-                                + datReg->points[ KDChartEnums::PosBottomRight  ].x() ) / 2,
-                            (   datReg->points[ KDChartEnums::PosTopRight     ].y()
-                                + datReg->points[ KDChartEnums::PosBottomRight  ].y() ) / 2 );
-
-                datReg->startAngle = startAngle;
-                datReg->angleLen   = angleLen;
-                regions->append( datReg );
-            }
-*/
         }
-//        if( mustDeleteRegion )
-//            delete region;
     }
 }
 
@@ -612,6 +487,8 @@ void PieDiagram::draw3DEffect( QPainter* painter,
         const ThreeDPieAttributes& threeDAttrs,
         bool /*explode*/ )
 {
+    Q_UNUSED( dataset );
+
     if( ! threeDAttrs.isEnabled() )
         return;
 
