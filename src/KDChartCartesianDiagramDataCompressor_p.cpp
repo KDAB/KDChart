@@ -107,8 +107,8 @@ void CartesianDiagramDataCompressor::setRootIndex( const QModelIndex& root )
 void CartesianDiagramDataCompressor::setResolution( int x, int y )
 {
     if ( x != m_xResolution || y != m_yResolution ) {
-        m_xResolution = x;
-        m_yResolution = y;
+        m_xResolution = qMax( 0, x );
+        m_yResolution = qMax( 0, y );
         rebuildCache();
         calculateSampleStepWidth();
     }
