@@ -119,6 +119,12 @@ void StackedBarDiagram::paint(  PaintContext* ctx )
     for( int col = 0; col < colCount; ++col )
     {
         double offset = spaceBetweenGroups;
+        if( ba.useFixedBarWidth() )
+            offset -= ba.fixedBarWidth();
+        
+        if( offset < 0 )
+            offset = 0;
+
         for( int row = 0; row < rowCount; ++row )
         {
             const CartesianDiagramDataCompressor::CachePosition position( row, col );
