@@ -388,7 +388,8 @@ void KDChart::AbstractCoordinatePlane::mouseMoveEvent( QMouseEvent* event )
 {
     if( d->rubberBand != 0 )
     {
-        d->rubberBand->setGeometry( QRect( d->rubberBandOrigin, event->pos() ).normalized().intersected( geometry() ) );
+        const QRect normalized = QRect( d->rubberBandOrigin, event->pos() ).normalized();
+        d->rubberBand->setGeometry( normalized &  geometry() );
 
         event->accept();
     }
