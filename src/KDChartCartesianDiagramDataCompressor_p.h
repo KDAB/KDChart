@@ -69,6 +69,8 @@ namespace KDChart {
         const DataPoint& data( const CachePosition& ) const;
 
     private Q_SLOTS:
+        void slotRowsInserted( const QModelIndex&, int, int );
+        void slotRowsRemoved( const QModelIndex&, int, int );
         void slotModelDataChanged( const QModelIndex&, const QModelIndex& );
         void slotModelLayoutChanged();
         // FIXME resolution changes and root index changes should all

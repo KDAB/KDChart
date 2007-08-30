@@ -529,12 +529,24 @@ int AttributesModel::columnCount( const QModelIndex& index ) const
 void AttributesModel::setSourceModel( QAbstractItemModel* sourceModel )
 {
     if( this->sourceModel() != 0 )
+    {
         disconnect( this->sourceModel(), SIGNAL( dataChanged( const QModelIndex&, const QModelIndex&)),
                                   this, SIGNAL( dataChanged( const QModelIndex&, const QModelIndex&)));
+        disconnect( this->sourceModel(), SIGNAL( rowsInserted( const QModelIndex&, int, int ) ),
+                                  this, SIGNAL( rowsInserted( const QModelIndex&, int, int ) ) );
+        disconnect( this->sourceModel(), SIGNAL( rowsRemoved( const QModelIndex&, int, int ) ),
+                                  this, SIGNAL( rowsRemoved( const QModelIndex&, int, int ) ) );
+    }
     QAbstractProxyModel::setSourceModel( sourceModel );
     if( this->sourceModel() != NULL )
+    {
         connect( this->sourceModel(), SIGNAL( dataChanged( const QModelIndex&, const QModelIndex&)),
                                 this, SIGNAL( dataChanged( const QModelIndex&, const QModelIndex&)));
+        connect( this->sourceModel(), SIGNAL( rowsInserted( const QModelIndex&, int, int ) ),
+                                this, SIGNAL( rowsInserted( const QModelIndex&, int, int ) ) );
+        connect( this->sourceModel(), SIGNAL( rowsRemoved( const QModelIndex&, int, int ) ),
+                                this, SIGNAL( rowsRemoved( const QModelIndex&, int, int ) ) );
+    }
 }
 
 /** needed for serialization */

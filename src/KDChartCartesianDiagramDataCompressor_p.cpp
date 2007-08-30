@@ -17,6 +17,31 @@ CartesianDiagramDataCompressor::CartesianDiagramDataCompressor( QObject* parent 
     calculateSampleStepWidth();
 }
 
+void CartesianDiagramDataCompressor::slotRowsInserted( const QModelIndex& parent, int start, int end )
+{
+    Q_UNUSED( parent );
+    Q_ASSERT( start <= end );
+ 
+    const int columnCount = m_model ? m_model->columnCount( m_rootIndex ) / m_datasetDimension : 0;
+
+    for( int i = 0; i < columnCount; ++i )
+    {
+        m_data[ i ].insert( start, end - start + 1, DataPoint() );
+    }
+}
+
+void CartesianDiagramDataCompressor::slotRowsRemoved( const QModelIndex& parent, int start, int end )
+{
+    Q_UNUSED( parent );
+    Q_ASSERT( start <= end );
+    const int columnCount = m_model ? m_model->columnCount( m_rootIndex ) / m_datasetDimension : 0;
+
+    for( int i = 0; i < columnCount; ++i )
+    {
+        m_data[ i ].remove( start, end - start + 1 );
+    }
+}
+
 void CartesianDiagramDataCompressor::slotModelDataChanged(
     const QModelIndex& topLeftIndex,
     const QModelIndex& bottomRightIndex )
@@ -81,6 +106,10 @@ void CartesianDiagramDataCompressor::setModel( QAbstractItemModel* model )
                     this, SLOT( slotModelDataChanged( QModelIndex, QModelIndex ) ) );
         disconnect( m_model, SIGNAL( layoutChanged() ),
                     this, SLOT( slotModelLayoutChanged() ) );
+        disconnect( m_model, SIGNAL( rowsInserted( QModelIndex, int, int ) ),
+                    this, SLOT( slotRowsInserted( QModelIndex, int, int ) ) );
+        disconnect( m_model, SIGNAL( rowsRemoved( QModelIndex, int, int ) ),
+                    this, SLOT( slotRowsRemoved( QModelIndex, int, int ) ) );
         m_model = 0;
     }
 
@@ -90,6 +119,10 @@ void CartesianDiagramDataCompressor::setModel( QAbstractItemModel* model )
                  SLOT( slotModelDataChanged( QModelIndex, QModelIndex ) ) );
         connect( m_model, SIGNAL( layoutChanged() ),
                  SLOT( slotModelLayoutChanged() ) );
+        connect( m_model, SIGNAL( rowsInserted( QModelIndex, int, int ) ),
+                 SLOT( slotRowsInserted( QModelIndex, int, int ) ) );
+        connect( m_model, SIGNAL( rowsRemoved( QModelIndex, int, int ) ),
+                 SLOT( slotRowsRemoved( QModelIndex, int, int ) ) );
     }
 
     rebuildCache();
