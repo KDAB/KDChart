@@ -319,7 +319,7 @@ QSize KDChart::TextLayoutItem::unrotatedSizeHint( QFont fnt ) const
     if ( fnt == QFont() )
         fnt = cachedFont;
 
-    const QFontMetricsF met( fnt, mParent );
+    const QFontMetricsF met( fnt, GlobalMeasureScaling::paintDevice() );
     QSize ret(0, 0);
     // note: boundingRect() does NOT take any newlines into account
     //       so we need to calculate the size by combining several
@@ -338,7 +338,7 @@ QSize KDChart::TextLayoutItem::unrotatedSizeHint( QFont fnt ) const
     //qDebug() << "frame:"<< frame;
     ret += QSize( frame, frame );
     return ret;
-    //const QFontMetricsF met( fnt, mParent );
+    //const QFontMetricsF met( fnt, GlobalMeasureScaling::paintDevice() );
     //const int frame = QApplication::style()->pixelMetric( QStyle::PM_ButtonMargin, 0, 0 );
     //return
     //    met.boundingRect( mText ).size().toSize() + QSize( frame, frame );

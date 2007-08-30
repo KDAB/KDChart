@@ -217,8 +217,15 @@ const QPair< qreal, qreal > GlobalMeasureScaling::currentFactors()
     return instance()->mFactors.top();
 }
 
+void GlobalMeasureScaling::setPaintDevice( QPaintDevice* paintDevice )
+{
+    instance()->m_paintDevice = paintDevice;
+}
 
-
+QPaintDevice* GlobalMeasureScaling::paintDevice()
+{
+    return instance()->m_paintDevice;
+}
 
 }
 

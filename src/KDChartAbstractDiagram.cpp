@@ -513,7 +513,7 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
         const RelativePosition relPos( a.position( value >= 0.0 ) );
         const Qt::Alignment alignBottomLeft = Qt::AlignBottom | Qt::AlignLeft;
         const QFont calculatedFont( ta.calculatedFont( d->plane, KDChartEnums::MeasureOrientationMinimum ) );
-        const QRectF boundRect( d->cachedFontMetrics( calculatedFont, this )->boundingRect( doc.toPlainText() ) );
+        const QRectF boundRect( d->cachedFontMetrics( calculatedFont, painter->device() )->boundingRect( doc.toPlainText() ) );
 
         // To place correctly
         pt.ry() -= boundRect.height();

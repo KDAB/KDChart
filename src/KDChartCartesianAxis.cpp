@@ -625,7 +625,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
         const QFontMetricsF met(
             drawLabels
             ? labelItem->realFont()
-            : QFontMetricsF( QApplication::font() ) );
+            : QFontMetricsF( QApplication::font(), GlobalMeasureScaling::paintDevice() ) );
         const qreal halfFontHeight = met.height() * 0.5;
 
         if ( isAbscissa() ) {
@@ -1056,11 +1056,11 @@ QSize CartesianAxis::maximumSize() const
                               KDChartEnums::MeasureOrientationMinimum, Qt::AlignHCenter | Qt::AlignVCenter );
     const qreal labelGap =
         drawLabels
-        ? (QFontMetricsF( labelItem.realFont() ).height() / 3.0)
+        ? (QFontMetricsF( labelItem.realFont(), GlobalMeasureScaling::paintDevice() ).height() / 3.0)
         : 0.0;
     const qreal titleGap =
         drawTitle
-        ? (QFontMetricsF( titleItem.realFont() ).height() / 3.0)
+        ? (QFontMetricsF( titleItem.realFont(), GlobalMeasureScaling::paintDevice() ).height() / 3.0)
         : 0.0;
 
     switch ( position() )
