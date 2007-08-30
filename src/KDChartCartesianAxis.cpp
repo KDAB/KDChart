@@ -221,7 +221,7 @@ void CartesianAxis::Private::drawSubUnitRulers( QPainter* painter, CartesianCoor
     int nextMayBeTick = 0;
     int mayBeTick = 0;
     int logSubstep = 0;
-    float f = dim.start;
+    qreal f = dim.start;
     qreal fLogSubstep = f;
     const bool isAbscissa = axis()->isAbscissa();
     const bool isLogarithmic = (dim.calcMode == AbstractCoordinatePlane::Logarithmic );
