@@ -462,7 +462,7 @@ bool AttributesModel::resetData ( const QModelIndex & index, int role )
 bool AttributesModel::setHeaderData ( int section, Qt::Orientation orientation,
                                       const QVariant & value, int role )
 {
-    if( headerData( section, orientation, role ) == value )
+    if( sourceModel() != 0 && headerData( section, orientation, role ) == value )
         return true;
     if ( !isKnownAttributesRole( role ) ) {
         return sourceModel()->setHeaderData( section, orientation, value, role );
@@ -474,8 +474,8 @@ bool AttributesModel::setHeaderData ( int section, Qt::Orientation orientation,
         if( sourceModel() ){
             emit attributesChanged( index( 0, section, QModelIndex() ),
                                     index( rowCount( QModelIndex() ), section, QModelIndex() ) );
+            emit headerDataChanged( orientation, section, section );
         }
-        emit headerDataChanged( orientation, section, section );
         return true;
     }
 }
