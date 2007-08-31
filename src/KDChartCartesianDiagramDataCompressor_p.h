@@ -71,6 +71,7 @@ namespace KDChart {
     private Q_SLOTS:
         void slotRowsInserted( const QModelIndex&, int, int );
         void slotRowsRemoved( const QModelIndex&, int, int );
+        void slotModelHeaderDataChanged( Qt::Orientation, int, int );
         void slotModelDataChanged( const QModelIndex&, const QModelIndex& );
         void slotModelLayoutChanged();
         // FIXME resolution changes and root index changes should all
@@ -88,6 +89,7 @@ namespace KDChart {
         bool isValidCachePosition( const CachePosition& ) const;
 
         CachePosition mapToCache( const QModelIndex& ) const;
+        CachePosition mapToCache( int row, int column ) const;
         QModelIndexList mapToModel( const CachePosition& ) const;
         int indexesPerPixel() const;
 
