@@ -60,6 +60,8 @@ private slots:
     void openFile(const QString &path = QString());
     void saveFile();
 
+    void itemClicked( const QModelIndex& index );
+
 private:
     void setupModel();
     void setupViews();
