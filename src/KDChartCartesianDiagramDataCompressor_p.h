@@ -91,7 +91,7 @@ namespace KDChart {
         CachePosition mapToCache( const QModelIndex& ) const;
         CachePosition mapToCache( int row, int column ) const;
         QModelIndexList mapToModel( const CachePosition& ) const;
-        int indexesPerPixel() const;
+        qreal indexesPerPixel() const;
 
         // retrieve data from the model, put it into the cache
         void retrieveModelData( const CachePosition& ) const;
