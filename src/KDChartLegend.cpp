@@ -420,6 +420,8 @@ void Legend::setNeedRebuild()
 
 void Legend::setPosition( Position position )
 {
+    if( d->position == position )
+        return;
     d->position = position;
     emitPositionChanged();
 }
@@ -438,6 +440,8 @@ Position Legend::position() const
 
 void Legend::setAlignment( Qt::Alignment alignment )
 {
+    if( d->alignment == alignment )
+        return;
     d->alignment = alignment;
     emitPositionChanged();
 }
@@ -1026,4 +1030,3 @@ void Legend::buildLegend()
     qDebug() << "leaving Legend::buildLegend()";
 #endif
 }
-
