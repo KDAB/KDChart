@@ -405,6 +405,8 @@ void Legend::resetDiagram( AbstractDiagram* oldDiagram )
 
 void Legend::setVisible( bool visible )
 {
+    if( isVisible() == visible )
+        return;
     QWidget::setVisible( visible );
     emitPositionChanged();
 }
