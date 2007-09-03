@@ -41,6 +41,25 @@ void ReverseMapper::clear()
     m_scene = new QGraphicsScene();
 }
 
+QModelIndexList ReverseMapper::indexesIn( const QRect& rect ) const
+{
+    Q_ASSERT( m_diagram );
+    if ( m_scene && m_scene->sceneRect().intersects( rect ) ) {
+        QList<QGraphicsItem *> items = m_scene->items( rect );
+        QModelIndexList indexes;
+        Q_FOREACH( QGraphicsItem* item, items ) {
+            ChartGraphicsItem* i = qgraphicsitem_cast<ChartGraphicsItem*>( item );
+            if ( i ) {
+                QModelIndex index ( m_diagram->model()->index( i->row(), i->column() ) );
+                indexes << index;
+            }
+        }
+        return indexes;
+    } else {
+        return QModelIndexList();
+    }
+}
+
 QModelIndexList ReverseMapper::indexesAt( const QPointF& point ) const
 {
     Q_ASSERT( m_diagram );

@@ -230,6 +230,11 @@ namespace KDChart {
             return reverseMapper.indexesAt(  point ); // which could be empty
         }
 
+        QModelIndexList indexesIn( const QRect& rect ) const
+        {
+            return reverseMapper.indexesIn( rect );
+        }
+
     protected:
         void init();
         void init( AbstractCoordinatePlane* plane );

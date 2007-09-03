@@ -899,8 +899,16 @@ int AbstractDiagram::verticalOffset() const
 bool AbstractDiagram::isIndexHidden(const QModelIndex &) const
 { return true; }
 
-void AbstractDiagram::setSelection(const QRect &, QItemSelectionModel::SelectionFlags)
-{}
+void AbstractDiagram::setSelection(const QRect& rect , QItemSelectionModel::SelectionFlags command )
+{
+    const QModelIndexList indexes = d->indexesIn( rect );
+    QItemSelection selection;
+    KDAB_FOREACH( const QModelIndex& index, indexes )
+    {
+        selection.append( QItemSelectionRange( index ) );
+    }
+    selectionModel()->select( selection, command );
+}
 
 QRegion AbstractDiagram::visualRegionForSelection(const QItemSelection &) const
 { return QRegion(); }
