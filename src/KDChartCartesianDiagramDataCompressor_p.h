@@ -71,6 +71,10 @@ namespace KDChart {
     private Q_SLOTS:
         void slotRowsInserted( const QModelIndex&, int, int );
         void slotRowsRemoved( const QModelIndex&, int, int );
+
+        void slotColumnsInserted( const QModelIndex&, int, int );
+        void slotColumnsRemoved( const QModelIndex&, int, int );
+
         void slotModelHeaderDataChanged( Qt::Orientation, int, int );
         void slotModelDataChanged( const QModelIndex&, const QModelIndex& );
         void slotModelLayoutChanged();
