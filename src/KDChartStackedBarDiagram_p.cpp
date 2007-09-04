@@ -53,9 +53,11 @@ const QPair<QPointF, QPointF> StackedBarDiagram::calculateDataBoundaries() const
     // special cases
     if (  yMax == yMin ) {
         if ( yMin == 0.0 )
-            yMax = 0.1; //we need at list a range
-        else
-            yMax = 0.0; // they are the same but negative
+            yMax = 0.1; //we need at least a range
+        else if( yMax < 0.0 )
+            yMax = 0.0; // they are the same and negative
+        else if( yMin > 0.0 )
+            yMin = 0.0; // they are the same but positive
     }
     const QPointF bottomLeft ( QPointF( xMin, yMin ) );
     const QPointF topRight ( QPointF( xMax, yMax ) );
