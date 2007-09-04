@@ -539,6 +539,10 @@ void AttributesModel::setSourceModel( QAbstractItemModel* sourceModel )
                                   this, SIGNAL( rowsInserted( const QModelIndex&, int, int ) ) );
         disconnect( this->sourceModel(), SIGNAL( rowsRemoved( const QModelIndex&, int, int ) ),
                                   this, SIGNAL( rowsRemoved( const QModelIndex&, int, int ) ) );
+        disconnect( this->sourceModel(), SIGNAL( columnsInserted( const QModelIndex&, int, int ) ),
+                                  this, SIGNAL( columnsInserted( const QModelIndex&, int, int ) ) );
+        disconnect( this->sourceModel(), SIGNAL( columnsRemoved( const QModelIndex&, int, int ) ),
+                                  this, SIGNAL( columnsRemoved( const QModelIndex&, int, int ) ) );
     }
     QAbstractProxyModel::setSourceModel( sourceModel );
     if( this->sourceModel() != NULL )
@@ -549,6 +553,10 @@ void AttributesModel::setSourceModel( QAbstractItemModel* sourceModel )
                                 this, SIGNAL( rowsInserted( const QModelIndex&, int, int ) ) );
         connect( this->sourceModel(), SIGNAL( rowsRemoved( const QModelIndex&, int, int ) ),
                                 this, SIGNAL( rowsRemoved( const QModelIndex&, int, int ) ) );
+        connect( this->sourceModel(), SIGNAL( columnsInserted( const QModelIndex&, int, int ) ),
+                                this, SIGNAL( columnsInserted( const QModelIndex&, int, int ) ) );
+        connect( this->sourceModel(), SIGNAL( columnsRemoved( const QModelIndex&, int, int ) ),
+                                this, SIGNAL( columnsRemoved( const QModelIndex&, int, int ) ) );
     }
 }
 

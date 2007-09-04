@@ -27,9 +27,14 @@ void CartesianDiagramDataCompressor::slotRowsInserted( const QModelIndex& parent
 
     start = startPos.first;
     end = endPos.first;
+    
+    static const CachePosition NullPosition( -1, -1 );
+    if( startPos == NullPosition )
+        return rebuildCache();
 
     for( int i = 0; i < m_data.size(); ++i )
     {
+        Q_ASSERT( start >= 0 && start <= m_data[ i ].size() );
         m_data[ i ].insert( start, end - start + 1, DataPoint() );
     }
 }
@@ -38,14 +43,20 @@ void CartesianDiagramDataCompressor::slotColumnsInserted( const QModelIndex& par
 {
     Q_UNUSED( parent );
     Q_ASSERT( start <= end );
- 
+
+
     const CachePosition startPos = mapToCache( 0, start );
     const CachePosition endPos = mapToCache( 0, end );
+
+    static const CachePosition NullPosition( -1, -1 );
+    if( startPos == NullPosition )
+        return rebuildCache();
 
     start = startPos.second;
     end = endPos.second;
 
     const int rowCount = qMin( m_model ? m_model->rowCount( m_rootIndex ) : 0, m_xResolution );
+    Q_ASSERT( start >= 0 && start <= m_data.size() );
     m_data.insert( start, end - start + 1, QVector< DataPoint >( rowCount ) );
 }
 
