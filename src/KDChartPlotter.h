@@ -32,6 +32,9 @@
 
 #include "KDChartAbstractCartesianDiagram.h"
 
+#include "KDChartLineAttributes.h"
+#include "KDChartValueTrackerAttributes.h"
+
 namespace KDChart {
 
     class ThreeDLineAttributes;
@@ -69,7 +72,7 @@ public:
     void setType( const PlotType type );
     PlotType type() const;
 
-/*    void setLineAttributes( const LineAttributes & a );
+    void setLineAttributes( const LineAttributes & a );
     void setLineAttributes( int column, const LineAttributes & a );
     void setLineAttributes( const QModelIndex & index, const LineAttributes & a );
     void resetLineAttributes( int column );
@@ -81,18 +84,18 @@ public:
     void setThreeDLineAttributes( const ThreeDLineAttributes & a );
     void setThreeDLineAttributes( int column, const ThreeDLineAttributes & a );
     void setThreeDLineAttributes( const QModelIndex & index,
-                                  const ThreeDLineAttributes & a );*/
+                                  const ThreeDLineAttributes & a );
 
     //FIXME(khz): big TODO(khz): add a lot of reset...Attributes() methods to all
     // appropriate places, for 2.1 (that is: after we have release 2.0.2)  :-)
 
-/*    ThreeDLineAttributes threeDLineAttributes() const;
+    ThreeDLineAttributes threeDLineAttributes() const;
     ThreeDLineAttributes threeDLineAttributes( int column ) const;
     ThreeDLineAttributes threeDLineAttributes( const QModelIndex & index ) const;
 
     void setValueTrackerAttributes( const QModelIndex & index,
                                     const ValueTrackerAttributes & a );
-    ValueTrackerAttributes valueTrackerAttributes( const QModelIndex & index ) const;*/
+    ValueTrackerAttributes valueTrackerAttributes( const QModelIndex & index ) const;
 
     // implement AbstractCartesianDiagram
     /* reimpl */

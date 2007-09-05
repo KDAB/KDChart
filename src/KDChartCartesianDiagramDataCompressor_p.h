@@ -38,6 +38,7 @@ namespace KDChart {
         class DataPoint {
         public:
             DataPoint() : value(), hidden( false ) {}
+            double key;
             double value;
             bool hidden;
             QModelIndex index;

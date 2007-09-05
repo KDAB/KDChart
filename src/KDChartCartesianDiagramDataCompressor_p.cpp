@@ -211,9 +211,24 @@ void CartesianDiagramDataCompressor::setRootIndex( const QModelIndex& root )
 }
 void CartesianDiagramDataCompressor::setResolution( int x, int y )
 {
-    if ( x != m_xResolution || y != m_yResolution ) {
+    const int oldX = m_xResolution;
+    const int oldY = m_yResolution;
+
+    if( m_datasetDimension != 1 )
+    {
+        // just ignore the resolution in that case
+        m_xResolution = m_model == 0 ? 0 : m_model->rowCount( m_rootIndex );
+        m_yResolution = qMax( 0, y );
+    }
+    else if ( x != m_xResolution || y != m_yResolution ) {
         m_xResolution = qMax( 0, x );
         m_yResolution = qMax( 0, y );
+        rebuildCache();
+        calculateSampleStepWidth();
+    }
+
+    if( oldX != m_xResolution || oldY != m_yResolution )
+    {
         rebuildCache();
         calculateSampleStepWidth();
     }
@@ -257,19 +272,39 @@ void CartesianDiagramDataCompressor::retrieveModelData( const CachePosition& pos
     {
         result.hidden = true;
         const QModelIndexList indexes = mapToModel( position );
-        if ( ! indexes.isEmpty() ) {
-            Q_FOREACH( const QModelIndex& index, indexes ) {
-                bool ok;
-                const QVariant valueVariant = m_model->data( index, Qt::DisplayRole );
-                const double value = valueVariant.toDouble( &ok );
-                if ( ok ) result.value += value;
-                // the point is visible if any of the points at this pixel position is visible
-                if ( qVariantValue<bool>( m_model->data( index, DataHiddenRole ) ) == false ) {
-                    result.hidden = false;
+        if( m_datasetDimension != 1 )
+        {
+            Q_ASSERT( indexes.count() == 2 );
+            const QModelIndex xIndex = indexes.first();
+            const QModelIndex yIndex = indexes.last();
+            result.index = xIndex;
+            result.key = m_model->data( xIndex ).toDouble();
+            result.value = m_model->data( yIndex ).toDouble();
+        }
+        else
+        {
+            if ( ! indexes.isEmpty() ) {
+                Q_FOREACH( const QModelIndex& index, indexes ) {
+                    bool ok;
+                    const QVariant valueVariant = m_model->data( index, Qt::DisplayRole );
+                    const double value = valueVariant.toDouble( &ok );
+                    if( ok )
+                    {
+                        result.value += value;
+                        result.key += index.row();
+                    }
                 }
+                result.index = indexes.at( 0 );
+                result.key /= indexes.size();
+                result.value /= indexes.size();
             }
-            result.index = indexes.at( 0 );
-            result.value /= indexes.size();
+        }
+        Q_FOREACH( const QModelIndex& index, indexes )
+        {
+            // the point is visible if any of the points at this pixel position is visible
+            if ( qVariantValue<bool>( m_model->data( index, DataHiddenRole ) ) == false ) {
+                result.hidden = false;
+            }
         }
     }
     break;
@@ -308,11 +343,19 @@ CartesianDiagramDataCompressor::CachePosition CartesianDiagramDataCompressor::ma
 QModelIndexList CartesianDiagramDataCompressor::mapToModel( const CachePosition& position ) const
 {
     if ( isValidCachePosition( position ) ) {
-        // assumption: indexes per column == 1
         QModelIndexList indexes;
-        const qreal ipp = indexesPerPixel();
-        for ( int i = 0; i < ipp; ++i ) {
-            indexes << m_model->index( qRound( position.first * ipp ), position.second * m_datasetDimension, m_rootIndex );
+        if( m_datasetDimension == 2 )
+        {
+            indexes << m_model->index( position.first, position.second, m_rootIndex );
+            indexes << m_model->index( position.first, position.second + 1, m_rootIndex );
+        }
+        else
+        {
+        // assumption: indexes per column == 1
+            const qreal ipp = indexesPerPixel();
+            for ( int i = 0; i < ipp; ++i ) {
+                indexes << m_model->index( qRound( position.first * ipp ), position.second, m_rootIndex );
+            }
         }
         return indexes;
     } else {

@@ -123,7 +123,7 @@ Plotter::PlotType Plotter::type() const
     return d->implementor->type();
 }
 
-/*void Plotter::setLineAttributes( const LineAttributes & ta )
+void Plotter::setLineAttributes( const LineAttributes & ta )
 {
     d->attributesModel->setModelData(
         qVariantFromValue( ta ),
@@ -159,12 +159,12 @@ void Plotter::setLineAttributes(
     qVariantFromValue( ta ),
     LineAttributesRole );
     emit propertiesChanged();
-}*/
+}
 
 /**
  * Remove any explicit line attributes settings that might have been specified before.
  */
-/*void Plotter::resetLineAttributes( const QModelIndex & index )
+void Plotter::resetLineAttributes( const QModelIndex & index )
 {
     d->attributesModel->resetData(
             d->attributesModel->mapFromSource(index), LineAttributesRole );
@@ -250,7 +250,7 @@ ThreeDLineAttributes Plotter::threeDLineAttributes(
         d->attributesModel->data(
             d->attributesModel->mapFromSource( index ),
             KDChart::ThreeDLineAttributesRole ) );
-}*/
+}
 
 double Plotter::threeDItemDepth( const QModelIndex & index ) const
 {
@@ -268,7 +268,7 @@ double Plotter::threeDItemDepth( int column ) const
             KDChart::ThreeDLineAttributesRole ) ).validDepth();*/
 }
 
-/*void Plotter::setValueTrackerAttributes( const QModelIndex & index,
+void Plotter::setValueTrackerAttributes( const QModelIndex & index,
                                              const ValueTrackerAttributes & va )
 {
     d->attributesModel->setData( d->attributesModel->mapFromSource(index),
@@ -283,7 +283,7 @@ ValueTrackerAttributes Plotter::valueTrackerAttributes(
     return qVariantValue<ValueTrackerAttributes>( d->attributesModel->data(
             d->attributesModel->mapFromSource( index ),
             KDChart::ValueTrackerAttributesRole ) );
-}*/
+}
 
 void Plotter::resizeEvent ( QResizeEvent* )
 {

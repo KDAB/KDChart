@@ -2,6 +2,8 @@
 
 #include "KDChartPlotter_p.h"
 
+#include "KDChartValueTrackerAttributes.h"
+
 using namespace KDChart;
 
 Plotter::Private::Private( const Private& rhs )
@@ -9,8 +11,7 @@ Plotter::Private::Private( const Private& rhs )
 {
 }
 
-#if 0
-void LineDiagram::Private::paintPolyline(
+void Plotter::Private::paintPolyline(
     PaintContext* ctx,
     const QBrush& brush, const QPen& pen,
     const QPolygonF& points ) const
@@ -38,7 +39,7 @@ void LineDiagram::Private::paintPolyline(
   into a point onto a plane, given two rotation angles around the x
   resp. y axis.
 */
-const QPointF LineDiagram::LineDiagramType::project(
+const QPointF Plotter::PlotterType::project(
     QPointF point, QPointF maxLimits,
     double z, const QModelIndex& index ) const
 {
@@ -52,7 +53,7 @@ const QPointF LineDiagram::LineDiagramType::project(
     return ret;
 }
 
-void LineDiagram::LineDiagramType::paintThreeDLines(
+void Plotter::PlotterType::paintThreeDLines(
     PaintContext* ctx, const QModelIndex& index,
     const QPointF& from, const QPointF& to, const double depth  )
 {
@@ -79,7 +80,7 @@ void LineDiagram::LineDiagramType::paintThreeDLines(
 // this method is factored out from LineDiagram::paint, and contains
 // the common parts of the method that  previously implemented all
 // chart types in one
-void LineDiagram::LineDiagramType::paintElements(
+void Plotter::PlotterType::paintElements(
     PaintContext* ctx,
     DataValueTextInfoList& list,
     LineAttributesInfoList& lineList,
@@ -131,11 +132,12 @@ void LineDiagram::LineDiagramType::paintElements(
     paintDataValueTextsAndMarkers( diagram(), ctx, list, true );
 }
 
-AttributesModel* LineDiagram::LineDiagramType::attributesModel() const
+AttributesModel* Plotter::PlotterType::attributesModel() const
 {
     return m_private->attributesModel;
 }
 
+#if 0
 QModelIndex LineDiagram::LineDiagramType::attributesModelRootIndex() const
 {
     return m_private->diagram->attributesModelRootIndex();
@@ -145,12 +147,14 @@ int LineDiagram::LineDiagramType::datasetDimension() const
 {
     return m_private->datasetDimension;
 }
+#endif
 
-ReverseMapper& LineDiagram::LineDiagramType::reverseMapper()
+ReverseMapper& Plotter::PlotterType::reverseMapper()
 {
     return m_private->reverseMapper;
 }
 
+#if 0
 LineAttributes::MissingValuesPolicy LineDiagram::LineDiagramType::getCellValues(
     int row, int column,
     bool shiftCountedXValuesByHalfSection,
@@ -174,8 +178,7 @@ Plotter* Plotter::PlotterType::diagram() const
     return m_private->diagram;
 }
 
-#if 0
-void LineDiagram::LineDiagramType::paintAreas(
+void Plotter::PlotterType::paintAreas(
     PaintContext* ctx,
     const QModelIndex& index, const QList< QPolygonF >& areas,
     const uint transparency )
@@ -203,12 +206,14 @@ void LineDiagram::LineDiagramType::paintAreas(
     ctx->painter()->drawPath( path );
 }
 
+#if 0
 double LineDiagram::LineDiagramType::valueForCell( int row, int column )
 {
     return diagram()->valueForCell( row, column );
 }
+#endif
 
-void LineDiagram::LineDiagramType::appendDataValueTextInfoToList(
+void Plotter::PlotterType::appendDataValueTextInfoToList(
             AbstractDiagram * diagram,
             DataValueTextInfoList & list,
             const QModelIndex & index,
@@ -222,7 +227,7 @@ void LineDiagram::LineDiagramType::appendDataValueTextInfoToList(
                                               autoPositionPositive, autoPositionPositive, value );
 }
 
-void LineDiagram::LineDiagramType::paintValueTracker( PaintContext* ctx, const ValueTrackerAttributes& vt, const QPointF& at )
+void Plotter::PlotterType::paintValueTracker( PaintContext* ctx, const ValueTrackerAttributes& vt, const QPointF& at )
 {
     CartesianCoordinatePlane* plane = qobject_cast<CartesianCoordinatePlane*>( ctx->coordinatePlane() );
     if( !plane )
@@ -278,8 +283,7 @@ void LineDiagram::LineDiagramType::paintValueTracker( PaintContext* ctx, const V
     ctx->painter()->drawPolygon( abscissaMarker, 3 );
 }
 
-CartesianDiagramDataCompressor& LineDiagram::LineDiagramType::compressor() const
+CartesianDiagramDataCompressor& Plotter::PlotterType::compressor() const
 {
     return m_private->compressor;
 }
-#endif

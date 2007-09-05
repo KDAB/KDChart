@@ -63,10 +63,10 @@ namespace KDChart {
         Private( const Private& rhs );
         ~Private();
 
-/*        void paintPolyline(
+        void paintPolyline(
             PaintContext* ctx,
             const QBrush& brush, const QPen& pen,
-            const QPolygonF& points ) const;*/
+            const QPolygonF& points ) const;
 
         Plotter* diagram;
         PlotterType* implementor; // the current type
@@ -109,10 +109,10 @@ namespace KDChart {
             double& valueX, double& valueY ) const;
         double valueForCellTesting( int row, int column,
                                     bool& bOK,
-                                    bool showHiddenCellsAsInvalid = false ) const;
+                                    bool showHiddenCellsAsInvalid = false ) const;*/
         void paintAreas( PaintContext* ctx, const QModelIndex& index,
                          const QList<QPolygonF>& areas, const uint transparency );
-        double valueForCell( int row, int column );
+/*        double valueForCell( int row, int column );*/
         void appendDataValueTextInfoToList(
             AbstractDiagram * diagram,
             DataValueTextInfoList & list,
@@ -136,7 +136,7 @@ namespace KDChart {
                             LineAttributes::MissingValuesPolicy );
 
         void paintValueTracker( PaintContext* ctx, const ValueTrackerAttributes& vt,
-                                const QPointF& at );*/
+                                const QPointF& at );
 
         Plotter::Private* m_private;
     };

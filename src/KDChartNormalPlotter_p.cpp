@@ -15,11 +15,8 @@ Plotter::PlotType NormalPlotter::type() const
 
 const QPair< QPointF, QPointF > NormalPlotter::calculateDataBoundaries() const
 {
-/*    const int rowCount = compressor().modelDataRows();
-    const int colCount = compressor().modelDataColumns();*/
-    const QAbstractItemModel* const model = diagram()->model();
-    const int rowCount = model->rowCount();
-    const int colCount = model->columnCount();
+    const int rowCount = compressor().modelDataRows();
+    const int colCount = compressor().modelDataColumns();
     double xMin = 0;
     double xMax = 0;
     double yMin = 0;
@@ -30,14 +27,11 @@ const QPair< QPointF, QPointF > NormalPlotter::calculateDataBoundaries() const
     {
         for ( int row = 0; row < rowCount; ++row )
         {
-/*            const CartesianDiagramDataCompressor::CachePosition position( row, column );
-            const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );*/
+            const CartesianDiagramDataCompressor::CachePosition position( row, column );
+            const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
 
-            const QModelIndex indexX = model->index( row, column );
-            const QModelIndex indexY = model->index( row, column + 1 );
-
-            const double valueX = model->data( indexX ).toDouble();
-            const double valueY = model->data( indexY ).toDouble();
+            const double valueX = point.key;
+            const double valueY = point.value;
 
             if( first )
             {
@@ -54,14 +48,6 @@ const QPair< QPointF, QPointF > NormalPlotter::calculateDataBoundaries() const
                 yMax = qMax( yMax, valueY );
             }
 
-/*            if ( first ) {
-                    yMin = point.value;
-                    yMax = point.value;
-            } else {
-                yMin = qMin( yMin, point.value );
-                yMax = qMax( yMax, point.value );
-            }*/
-
             first = false;
         }
     }
@@ -73,67 +59,39 @@ const QPair< QPointF, QPointF > NormalPlotter::calculateDataBoundaries() const
 
 void NormalPlotter::paint( PaintContext* ctx )
 {
-    const CartesianCoordinatePlane* const plane = static_cast<CartesianCoordinatePlane*>( ctx->coordinatePlane() );
-    const QAbstractItemModel* const model = diagram()->model();
-    const int rowCount = model->rowCount();
-    const int colCount = model->columnCount();
+    reverseMapper().clear();
 
-    for( int column = 0; column < colCount; column += 2 )
-    {
-        for( int row = 0; row < rowCount; ++row )
-        {
-            const QModelIndex indexX = model->index( row, column );
-            const QModelIndex indexY = model->index( row, column + 1 );
-
-            const double valueX = model->data( indexX ).toDouble();
-            const double valueY = model->data( indexY ).toDouble();
-
-            ctx->painter()->setPen( diagram()->pen( indexX ) );
-            ctx->painter()->drawPoint( plane->translate( QPointF( valueX, valueY ) ) );
-        }
-    }
-
-/*    reverseMapper().clear();
-    Q_ASSERT( dynamic_cast<CartesianCoordinatePlane*>( ctx->coordinatePlane() ) );
-    CartesianCoordinatePlane* plane = static_cast<CartesianCoordinatePlane*>( ctx->coordinatePlane() );
-    const int columnCount = compressor().modelDataColumns();
+    Q_ASSERT( dynamic_cast< CartesianCoordinatePlane* >( ctx->coordinatePlane() ) );
+    const CartesianCoordinatePlane* const plane = static_cast< CartesianCoordinatePlane* >( ctx->coordinatePlane() );
+    const int colCount = compressor().modelDataColumns();
     const int rowCount = compressor().modelDataRows();
-    if ( columnCount == 0 || rowCount == 0 ) return; // maybe blank out the area?
 
-// FIXME integrate column index retrieval to compressor:
-// the compressor should only pass through visiblel columns
-    int maxFound = 0;
-//     {   // find the last column number that is not hidden
-//         for( int column =  datasetDimension() - 1;
-//              column <  columnCount;
-//              column += datasetDimension() )
-//             if( ! diagram()->isHidden( column ) )
-//                 maxFound = column;
-//     }
-    maxFound = columnCount;
-    // ^^^ temp
+    if( colCount == 0 || rowCount == 0 )
+        return;
 
     DataValueTextInfoList textInfoList;
     LineAttributesInfoList lineList;
     LineAttributes::MissingValuesPolicy policy; // ???
-
-    for( int column  = 0; column < columnCount; ++column ) {
+    
+    for( int column = 0; column < colCount; ++column )
+    {
         LineAttributes laPreviousCell;
         CartesianDiagramDataCompressor::CachePosition previousCellPosition;
 
-        for ( int row = 0; row < rowCount; ++row ) {
+        for( int row = 0; row < rowCount; ++row )
+        {
             const CartesianDiagramDataCompressor::CachePosition position( row, column );
-            // get where to draw the line from:
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
             LineAttributes laCell;
-            if ( row > 0 ) { // position 0 is not really painted, since it takes two points to make a line :-)
+            if( row > 0 )
+            {
                 const QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );
                 const CartesianDiagramDataCompressor::DataPoint lastPoint = compressor().data( previousCellPosition );
                 // area corners, a + b are the line ends:
-                const QPointF a( plane->translate( QPointF( row - 1, lastPoint.value ) ) );
-                const QPointF b( plane->translate( QPointF( row, point.value ) ) );
-                const QPointF c( plane->translate( QPointF( row - 1, 0.0 ) ) );
-                const QPointF d( plane->translate( QPointF( row, 0.0 ) ) );
+                const QPointF a( plane->translate( QPointF( lastPoint.key, lastPoint.value ) ) );
+                const QPointF b( plane->translate( QPointF( point.key, point.value ) ) );
+                const QPointF c( plane->translate( QPointF( lastPoint.key, 0.0 ) ) );
+                const QPointF d( plane->translate( QPointF( point.key, 0.0 ) ) );
                 // add the line to the list:
                 laCell = diagram()->lineAttributes( sourceIndex );
                 // add data point labels:
@@ -159,6 +117,5 @@ void NormalPlotter::paint( PaintContext* ctx )
             laPreviousCell = laCell;
         }
     }
-
-    paintElements( ctx, textInfoList, lineList, policy );*/
+    paintElements( ctx, textInfoList, lineList, policy );
 }
