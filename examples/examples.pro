@@ -15,10 +15,11 @@ SUBDIRS		= tools \
                   MultidimensionalData \
                   EmptyValues \
                   NoValues \
-	          Background \
-	          Grids \
-	          RealTime \
-	          Polar \
-	          Plane \
-		  TernaryCharts \
-		  Demo
+                  Background \
+                  Grids \
+                  RealTime \
+                  Polar \
+                  Plane \
+                  TernaryCharts \
+                  Plotter \
+                  Demo
