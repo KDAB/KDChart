@@ -63,9 +63,7 @@ public:
     bool compare( const Plotter* other ) const;
 
     enum PlotType {
-        Normal =  0/*,
-        Stacked = 1,
-        Percent = 2*/
+        Normal =  0
     };
 
 

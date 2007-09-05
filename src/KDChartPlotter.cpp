@@ -31,8 +31,6 @@
 
 #include "KDChartPlotter_p.h"
 #include "KDChartNormalPlotter_p.h"
-/*#include "KDChartStackedPlotter_p.h"
-#include "KDChartPercentPlotter_p.h"*/
 
 using namespace KDChart;
 
@@ -56,8 +54,6 @@ void Plotter::init()
 {
     d->diagram = this;
     d->normalPlotter = new NormalPlotter( this );
-/*    d->stackedPlotter = new StackedPlotter( this );
-    d->percentPlotter = new PercentPlotter( this );*/
     d->implementor = d->normalPlotter;
 
     setDatasetDimension( 2 );
@@ -98,12 +94,6 @@ void Plotter::setType( const PlotType type )
    case Normal:
        d->implementor = d->normalPlotter;
        break;
-/*   case Stacked:
-       d->implementor = d->stackedPlotter;
-       break;
-   case Percent:
-       d->implementor = d->percentPlotter;
-       break;*/
    default:
        Q_ASSERT_X( false, "Plotter::setType", "unknown plotter subtype" );
    };
@@ -111,8 +101,6 @@ void Plotter::setType( const PlotType type )
    // d->lineType = type;
    Q_ASSERT( d->implementor->type() == type );
 
-   // AbstractAxis settings - see AbstractDiagram and CartesianAxis
-/*   setPercentMode( type == Plotter::Percent );*/
    setDataBoundariesDirty();
    emit layoutChanged( this );
    emit propertiesChanged();
@@ -254,18 +242,16 @@ ThreeDLineAttributes Plotter::threeDLineAttributes(
 
 double Plotter::threeDItemDepth( const QModelIndex & index ) const
 {
-    return 0.0;
-//    return threeDLineAttributes( index ).validDepth();
+    return threeDLineAttributes( index ).validDepth();
 }
 
 double Plotter::threeDItemDepth( int column ) const
 {
-    return 0.0;
-/*    return qVariantValue<ThreeDLineAttributes>(
+    return qVariantValue<ThreeDLineAttributes>(
         d->attributesModel->headerData (
             column,
             Qt::Vertical,
-            KDChart::ThreeDLineAttributesRole ) ).validDepth();*/
+            KDChart::ThreeDLineAttributesRole ) ).validDepth();
 }
 
 void Plotter::setValueTrackerAttributes( const QModelIndex & index,
