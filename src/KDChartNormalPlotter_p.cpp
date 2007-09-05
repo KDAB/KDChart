@@ -23,7 +23,7 @@ const QPair< QPointF, QPointF > NormalPlotter::calculateDataBoundaries() const
     double yMax = 0;
 
     bool first = true;
-    for( int column = 0; column < colCount; column += 2 )
+    for( int column = 0; column < colCount; ++column )
     {
         for ( int row = 0; row < rowCount; ++row )
         {

@@ -259,7 +259,7 @@ const CartesianDiagramDataCompressor::DataPoint& CartesianDiagramDataCompressor:
     static DataPoint NullDataPoint;
     if ( ! isValidCachePosition( position ) ) return NullDataPoint;
     if ( ! isCached( position ) ) retrieveModelData( position );
-    return m_data[position.second][position.first];
+    return m_data[ position.second ][ position.first ];
 }
 
 void CartesianDiagramDataCompressor::retrieveModelData( const CachePosition& position ) const
@@ -346,8 +346,8 @@ QModelIndexList CartesianDiagramDataCompressor::mapToModel( const CachePosition&
         QModelIndexList indexes;
         if( m_datasetDimension == 2 )
         {
-            indexes << m_model->index( position.first, position.second, m_rootIndex );
-            indexes << m_model->index( position.first, position.second + 1, m_rootIndex );
+            indexes << m_model->index( position.first, position.second * 2, m_rootIndex );
+            indexes << m_model->index( position.first, position.second * 2 + 1, m_rootIndex );
         }
         else
         {

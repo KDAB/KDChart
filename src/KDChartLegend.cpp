@@ -525,10 +525,8 @@ void Legend::setText( uint dataset, const QString& text )
 QString Legend::text( uint dataset ) const
 {
     if( d->texts.find( dataset ) != d->texts.end() ){
-        //qDebug() << "Legend::text(" << dataset << ") returning d->texts[" << dataset << "] :" << d->texts[ dataset ];
         return d->texts[ dataset ];
     }else{
-        //qDebug() << "Legend::text(" << dataset << ") returning d->modelLabels[" << dataset << "] :" << d->modelLabels[ dataset ];
         return d->modelLabels[ dataset ];
     }
 }
