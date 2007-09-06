@@ -24,7 +24,7 @@ const QPair<QPointF, QPointF> PercentBarDiagram::calculateDataBoundaries() const
     const int colCount = compressor().modelDataColumns();
 
     const double xMin = 0;
-    const double xMax = rowCount;
+    const double xMax = diagram()->model()->rowCount( diagram()->rootIndex() );
     double yMin = 0.0, yMax = 0.0;
     for( int col = 0; col < colCount; ++col )
     {
@@ -155,6 +155,7 @@ void PercentBarDiagram::paint( PaintContext* ctx )
 
             const double value = p.value;
             double stackedValues = 0.0;
+            double key = 0.0;
             
             // calculate stacked percent value
             // we only take in account positives values for now.
@@ -164,14 +165,15 @@ void PercentBarDiagram::paint( PaintContext* ctx )
                 const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
                 if ( point.value > 0)
                     stackedValues += point.value;
+                key = point.key;
             }
 
             QPointF point, previousPoint;
             if(  sumValuesVector.at( row ) != 0 && value > 0 ) {
-                point = ctx->coordinatePlane()->translate( QPointF( row,  stackedValues / sumValuesVector.at( row ) * maxValue ) );
+                point = ctx->coordinatePlane()->translate( QPointF( key,  stackedValues / sumValuesVector.at( row ) * maxValue ) );
                 point.rx() += offset / 2;
 
-                previousPoint = ctx->coordinatePlane()->translate( QPointF( row, ( stackedValues - value)/sumValuesVector.at(row)* maxValue ) );
+                previousPoint = ctx->coordinatePlane()->translate( QPointF( key, ( stackedValues - value)/sumValuesVector.at(row)* maxValue ) );
             }
             const double barHeight = previousPoint.y() - point.y();
 

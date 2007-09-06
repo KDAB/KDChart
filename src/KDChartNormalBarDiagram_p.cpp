@@ -24,7 +24,7 @@ const QPair<QPointF, QPointF> NormalBarDiagram::calculateDataBoundaries() const
     const int colCount = compressor().modelDataColumns();
 
     double xMin = 0.0;
-    double xMax = rowCount;
+    double xMax = diagram()->model()->rowCount( diagram()->rootIndex() );;
     double yMin = 0.0, yMax = 0.0;
 
     bool bStarting = true;
@@ -146,8 +146,8 @@ void NormalBarDiagram::paint(  PaintContext* ctx )
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
             const QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );
             const qreal value = point.value;//attributesModel()->data( sourceIndex ).toDouble();
-            QPointF topPoint = ctx->coordinatePlane()->translate( QPointF( row + 0.5, value ) );
-            QPointF bottomPoint =  ctx->coordinatePlane()->translate( QPointF( row, 0 ) );
+            QPointF topPoint = ctx->coordinatePlane()->translate( QPointF( point.key + 0.5, value ) );
+            QPointF bottomPoint =  ctx->coordinatePlane()->translate( QPointF( point.key, 0 ) );
             const double barHeight = bottomPoint.y() - topPoint.y();
             topPoint.setX( topPoint.x() + offset );
             const QRectF rect( topPoint, QSizeF( barWidth, barHeight ) );
