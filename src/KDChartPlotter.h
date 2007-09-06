@@ -123,7 +123,7 @@ protected:
     virtual const QPair<QPointF, QPointF> calculateDataBoundaries() const;
     void paintEvent ( QPaintEvent* );
     void resizeEvent ( QResizeEvent* );
-}; // End of class KDChartLineDiagram
+}; // End of class KDChart::Plotter
 
 }
 

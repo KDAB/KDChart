@@ -1,5 +1,5 @@
 /****************************************************************************
- ** Copyright (C) 2006 Klarälvdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2006 Klaralvdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KD Chart library.
  **
@@ -44,9 +44,9 @@ int main( int argc, char** argv )
     const double xMin = -2 * PI;
     const double xMax = 2 * PI;
     const double step = ( xMax - xMin ) / ( points - 1 );
-    
+
     QStandardItemModel model( points, 4 );
-   
+
     double x = xMin;
     for( int n = 0; n < points; ++n, x += step) {
         QModelIndex index = model.index( n, 0 );
@@ -68,7 +68,7 @@ int main( int argc, char** argv )
     KDChart::AbstractCartesianDiagram* diagram = new KDChart::Plotter;
     diagram->setModel( &model );
     chart->coordinatePlane()->replaceDiagram( diagram );
-   
+
     KDChart::CartesianAxis* xAxis = new KDChart::CartesianAxis( diagram );
     KDChart::CartesianAxis* yAxis = new KDChart::CartesianAxis( diagram );
     xAxis->setPosition( KDChart::CartesianAxis::Bottom );
