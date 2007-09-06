@@ -24,7 +24,7 @@ const QPair<QPointF, QPointF> StackedLineDiagram::calculateDataBoundaries() cons
     const int rowCount = compressor().modelDataRows();
     const int colCount = compressor().modelDataColumns();
     double xMin = 0;
-    double xMax = diagram()->model()->rowCount( diagram()->rootIndex() ) - 1;
+    double xMax = diagram()->model() ? diagram()->model()->rowCount( diagram()->rootIndex() ) - 1 : 0;
     double yMin = 0, yMax = 0;
 
     bool bStarting = true;

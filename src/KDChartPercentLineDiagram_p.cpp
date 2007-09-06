@@ -24,7 +24,7 @@ const QPair<QPointF, QPointF> PercentLineDiagram::calculateDataBoundaries() cons
     const int rowCount = compressor().modelDataRows();
     const int colCount = compressor().modelDataColumns();
     double xMin = 0.0;
-    double xMax = diagram()->model()->rowCount( diagram()->rootIndex() ) - 1;
+    double xMax = diagram()->model() ? diagram()->model()->rowCount( diagram()->rootIndex() ) - 1 : 0;
     const double yMin = 0.0;
     double yMax = 0.0;
 

@@ -24,7 +24,7 @@ const QPair<QPointF, QPointF> PercentBarDiagram::calculateDataBoundaries() const
     const int colCount = compressor().modelDataColumns();
 
     const double xMin = 0;
-    const double xMax = diagram()->model()->rowCount( diagram()->rootIndex() );
+    const double xMax = diagram()->model() ? diagram()->model()->rowCount( diagram()->rootIndex() ) : 0;
     double yMin = 0.0, yMax = 0.0;
     for( int col = 0; col < colCount; ++col )
     {
