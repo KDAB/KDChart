@@ -37,7 +37,7 @@ namespace KDChart {
     public:
         class DataPoint {
         public:
-            DataPoint() : value(), hidden( false ) {}
+            DataPoint() : key(), value(), hidden( false ) {}
             double key;
             double value;
             bool hidden;
