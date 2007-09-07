@@ -126,6 +126,7 @@ void Serializer::registerBuiltInSerializerFactories( QObject* parent )
     registerElementSerializerFactory( PieDiagram::staticMetaObject.className(), f );
     registerElementSerializerFactory( PolarDiagram::staticMetaObject.className(), f );
     registerElementSerializerFactory( RingDiagram::staticMetaObject.className(), f );
+    registerElementSerializerFactory( Plotter::staticMetaObject.className(), f );
 
     f = new LegendSerializerFactory( parent );
     Serializer::registerElementSerializerFactory( Legend::staticMetaObject.className(), f );

@@ -205,11 +205,12 @@ bool DiagramsSerializer::Private::doParseDiagram(
 {
     bool result = false;
 
-    LineDiagram*  lineDiag  = qobject_cast< LineDiagram*> (  diagramPtr );
-    BarDiagram*   barDiag   = qobject_cast< BarDiagram*> (   diagramPtr );
-    PieDiagram*   pieDiag   = qobject_cast< PieDiagram*> (   diagramPtr );
-    PolarDiagram* polarDiag = qobject_cast< PolarDiagram*> ( diagramPtr );
-    RingDiagram*  ringDiag  = qobject_cast< RingDiagram*> (  diagramPtr );
+    LineDiagram*  lineDiag  = qobject_cast< LineDiagram* >(  diagramPtr );
+    BarDiagram*   barDiag   = qobject_cast< BarDiagram* >(   diagramPtr );
+    PieDiagram*   pieDiag   = qobject_cast< PieDiagram* >(   diagramPtr );
+    PolarDiagram* polarDiag = qobject_cast< PolarDiagram* >( diagramPtr );
+    RingDiagram*  ringDiag  = qobject_cast< RingDiagram* >(  diagramPtr );
+    Plotter*      plotDiag  = qobject_cast< Plotter* >(      diagramPtr );
 
     if( lineDiag )
         result = parseLineDiagram(  container, *lineDiag );
@@ -221,6 +222,8 @@ bool DiagramsSerializer::Private::doParseDiagram(
         result = parsePolarDiagram( container, *polarDiag );
     else if( ringDiag )
         result = parseRingDiagram(  container, *ringDiag );
+    else if( plotDiag )
+        result = parsePlotter( container, *plotDiag );
 
     return result;
 }
@@ -743,6 +746,67 @@ void DiagramsSerializer::Private::saveLineDiagram(
     KDXML::createStringNode( doc, diagElement, "LineType", s );
 }
 
+bool DiagramsSerializer::Private::parsePlotter(
+        const QDomElement& container, Plotter& diagram )const
+{
+    //qDebug() << "-------->" << container.tagName();
+
+    bool bOK = true;
+    if( !container.isNull() ) {
+        //qDebug() << "\n    DiagramsSerializer::parsePlotter() processing" << diagName;
+        QDomNode node = container.firstChild();
+        while( !node.isNull() ) {
+            QDomElement element = node.toElement();
+            if( !element.isNull() ) { // was really an element
+                QString tagName = element.tagName();
+                if( tagName == "kdchart:cartesian-coordinate-diagram" ) {
+                    if( ! parseCartCoordDiagram( element, diagram ) ){
+                        qDebug() << "Could not parse base class of Platter.";
+                        bOK = false;
+                    }
+                } else if( tagName == "PlotType" ) {
+                    QString s;
+                    if( KDXML::readStringNode( element, s ) ){
+                        if( s.compare("Normal", Qt::CaseInsensitive) == 0 )
+                            diagram.setType( Plotter::Normal );
+                        else{
+                            bOK = false;
+                            Q_ASSERT( false ); // all of the types need to be handled
+                        }
+                    }
+                    else
+                        bOK = false;
+                } else {
+                    qDebug() << "Unknown subelement of Plotter found:" << tagName;
+                    bOK = false;
+                }
+            }
+            node = node.nextSibling();
+        }
+    }
+    return bOK;
+}
+
+void DiagramsSerializer::Private::savePlotter(
+        QDomDocument& doc,
+        QDomElement& diagElement,
+        const Plotter& diagram )const
+{
+    // first save the information hold by the base class
+    saveCartCoordDiagram( doc, diagElement, diagram,
+                          "kdchart:cartesian-coordinate-diagram" );
+    // then save what is stored in the derived class
+    QString s;
+    switch( diagram.type() ){
+        case Plotter::Normal:
+                s = "Normal";
+                break;
+        default:
+            Q_ASSERT( false ); // all of the types need to be handled
+            break;
+    }
+    KDXML::createStringNode( doc, diagElement, "PlotType", s );
+}
 
 bool DiagramsSerializer::Private::parseBarDiagram(
         const QDomElement& container, BarDiagram& diagram )const

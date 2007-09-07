@@ -75,6 +75,9 @@ protected:
     bool parseLineDiagram( const QDomElement& container, LineDiagram& diagram ) const;
     void saveLineDiagram( QDomDocument& doc, QDomElement& diagElement, const LineDiagram& diagram ) const;
 
+    bool parsePlotter( const QDomElement& container, Plotter& diagram ) const;
+    void savePlotter( QDomDocument& doc, QDomElement& diagElement, const Plotter& diagram ) const;
+
     bool parseBarDiagram( const QDomElement& container, BarDiagram& diagram ) const;
     void saveBarDiagram( QDomDocument& doc, QDomElement& diagElement, const BarDiagram& diagram ) const;
 
