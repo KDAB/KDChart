@@ -1,8 +1,9 @@
 include( variables.pri )
 
-TEMPLATE=subdirs
-SUBDIRS = src examples uitools plugins tests qtests
 CONFIG += ordered
+
+TEMPLATE=subdirs
+SUBDIRS = src examples uitools plugins tests benchmarks
 
 contains($$list($$[QT_VERSION]), 4.[2-9].*) { SUBDIRS += kdchartserializer }
 

@@ -86,6 +86,7 @@ protected:
 inline AbstractAxis::AbstractAxis( Private * p, AbstractDiagram* diagram )
     :  AbstractArea( p )
 {
+    Q_UNUSED( diagram );
     init();
     QTimer::singleShot(0, this, SLOT(delayedInit()));
 }

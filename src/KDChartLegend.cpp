@@ -405,6 +405,8 @@ void Legend::resetDiagram( AbstractDiagram* oldDiagram )
 
 void Legend::setVisible( bool visible )
 {
+    if( isVisible() == visible )
+        return;
     QWidget::setVisible( visible );
     emitPositionChanged();
 }
@@ -418,6 +420,8 @@ void Legend::setNeedRebuild()
 
 void Legend::setPosition( Position position )
 {
+    if( d->position == position )
+        return;
     d->position = position;
     emitPositionChanged();
 }
@@ -436,6 +440,8 @@ Position Legend::position() const
 
 void Legend::setAlignment( Qt::Alignment alignment )
 {
+    if( d->alignment == alignment )
+        return;
     d->alignment = alignment;
     emitPositionChanged();
 }
@@ -519,10 +525,8 @@ void Legend::setText( uint dataset, const QString& text )
 QString Legend::text( uint dataset ) const
 {
     if( d->texts.find( dataset ) != d->texts.end() ){
-        //qDebug() << "Legend::text(" << dataset << ") returning d->texts[" << dataset << "] :" << d->texts[ dataset ];
         return d->texts[ dataset ];
     }else{
-        //qDebug() << "Legend::text(" << dataset << ") returning d->modelLabels[" << dataset << "] :" << d->modelLabels[ dataset ];
         return d->modelLabels[ dataset ];
     }
 }
@@ -925,7 +929,7 @@ void Legend::buildLegend()
                         diagram(),
                         markerAttrs[dataset],
                         brush( dataset ),
-                        pen( dataset ),
+                        markerAttrs[dataset].pen(),
                         Qt::AlignLeft );
                 break;
             case( LinesOnly ):
@@ -943,7 +947,7 @@ void Legend::buildLegend()
                         markerOffsOnLine,
                         markerAttrs[dataset],
                         brush( dataset ),
-                        pen( dataset ),
+                        markerAttrs[dataset].pen(),
                         Qt::AlignCenter );
                 break;
             default:
@@ -1024,4 +1028,3 @@ void Legend::buildLegend()
     qDebug() << "leaving Legend::buildLegend()";
 #endif
 }
-

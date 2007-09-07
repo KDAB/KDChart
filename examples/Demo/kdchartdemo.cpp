@@ -287,9 +287,9 @@ void KDChartDemo::setClassicMode(bool toggled)
     m_pieChart->update();
 
     // no pen
-    QPen piePen;
-    piePen.setStyle(Qt::NoPen);
-    m_pie->setPen(2, piePen);
+//    QPen piePen;
+//    piePen.setStyle(Qt::NoPen);
+//    m_pie->setPen(2, piePen);
 
     // not exploded
     PieAttributes pa( m_pie->pieAttributes() );
@@ -332,9 +332,9 @@ void KDChartDemo::setFreshMode(bool toggled)
     m_pie->setThreeDPieAttributes( attrs );
     m_pieChart->update();
 
-    QPen piePen;
-    piePen.setStyle(Qt::NoPen);
-    m_pie->setPen(2, piePen);
+//    QPen piePen;
+//    piePen.setStyle(Qt::NoPen);
+//    m_pie->setPen(2, piePen);
 
     PieAttributes pa( m_pie->pieAttributes() );
     pa.setExplodeFactor( 0.1 );

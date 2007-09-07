@@ -61,6 +61,8 @@ MainWindow::MainWindow()
     connect(m_selectionModel, SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
             this,               SLOT(selectionChanged(const QItemSelection &, const QItemSelection &)));
 
+    connect( m_diagramView, SIGNAL( clicked( const QModelIndex& ) ), SLOT( itemClicked( const QModelIndex& ) ) );
+
     menuBar()->addMenu(fileMenu);
     statusBar();
 
@@ -123,6 +125,14 @@ void MainWindow::setupViews()
     m_tableView->setSelectionModel(   m_selectionModel );
 
     setCentralWidget(splitter);
+}
+
+void MainWindow::itemClicked( const QModelIndex& index )
+{
+    QItemSelectionModel::SelectionFlags command = QItemSelectionModel::Clear | QItemSelectionModel::Select;
+    if( QApplication::keyboardModifiers() & Qt::ControlModifier )
+        command = QItemSelectionModel::Toggle;
+    m_selectionModel->setCurrentIndex( static_cast< const QAbstractProxyModel* >( index.model() )->mapToSource( index ), command );
 }
 
 void MainWindow::selectionChanged( const QItemSelection & selected, const QItemSelection & deselected )

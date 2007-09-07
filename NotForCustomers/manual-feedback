@@ -1,0 +1,31 @@
+Till:
+
+1/
+The attributes sets section says that getters are only per cell, which is not 
+true anymore, I think. I'd still keep the fallback mechanism explanation there and suggest using per-cell getters, in general.
+There are now per-column and per-model getters too.
+I would write that we encourage use of per-cell, since then the fallbacks 
+work, as you are already explaining.
+
+2/
+Secondly, I think you have implicit and explicit confused, semantically.
+Explicit is when it is actually, factually there, implicit is when it has to 
+be guessed from the context.
+I found two or three places where you refer to an "implicit parameter", for 
+example.
+Which makes me think you mean explicit.
+
+3/
+And the final thing is really more a _khz question. There's this very strange 
+thing about avoiding compiler warnings about not freed memory by static 
+casting a return value.
+I think khz introduced that in the API overview.
+BarDiagram *bars =
+     static_cast<BarDiagram *>(myChart->replaceDiagram( new BarDiagram ));
+That makes no sense at all.
+And it's ugly.
+Let's ask khz if there is a reasoning behind this. Maybe it has a point we 
+fail to grasp.
+
+4/
+Multiple axes and axes sharing and such I found missing, but I guess that's advanced stuff? 

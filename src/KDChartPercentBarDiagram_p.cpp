@@ -24,14 +24,14 @@ const QPair<QPointF, QPointF> PercentBarDiagram::calculateDataBoundaries() const
     const int colCount = compressor().modelDataColumns();
 
     const double xMin = 0;
-    const double xMax = rowCount;
+    const double xMax = diagram()->model() ? diagram()->model()->rowCount( diagram()->rootIndex() ) : 0;
     double yMin = 0.0, yMax = 0.0;
-    for( int i = 0; i < colCount; ++i )
+    for( int col = 0; col < colCount; ++col )
     {
-        for ( int j=0; j< rowCount; ++j )
+        for( int row = 0; row < rowCount; ++row )
         {
             // Ordinate should begin at 0 the max value being the 100% pos
-            const QModelIndex idx = diagram()->model()->index( j, i, diagram()->rootIndex() );
+            const QModelIndex idx = diagram()->model()->index( row, col, diagram()->rootIndex() );
             // only positive values are handled
             double value = diagram()->model()->data( idx ).toDouble();
             if ( value > 0 )
@@ -110,15 +110,15 @@ void PercentBarDiagram::paint( PaintContext* ctx )
     QVector <double > sumValuesVector;
 
     //calculate sum of values for each column and store
-    for( int j = 0; j < rowCount; ++j )
+    for( int row = 0; row < rowCount; ++row )
     {
-        for( int i = 0; i < colCount; ++i )
+        for( int col = 0; col < colCount; ++col )
         {
-            const CartesianDiagramDataCompressor::CachePosition position( j, i );
+            const CartesianDiagramDataCompressor::CachePosition position( row, col );
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
             if ( point.value > 0 )
                 sumValues += point.value;
-            if ( i == colCount - 1 ) {
+            if ( col == colCount - 1 ) {
                 sumValuesVector <<  sumValues ;
                 sumValues = 0;
             }
@@ -126,12 +126,18 @@ void PercentBarDiagram::paint( PaintContext* ctx )
     }
 
     // calculate stacked percent value
-    for( int i = 0; i < colCount; ++i )
+    for( int col = 0; col < colCount; ++col )
     {
         double offset = spaceBetweenGroups;
-        for( int j=0; j<rowCount ; ++j )
+        if( ba.useFixedBarWidth() )
+            offset -= ba.fixedBarWidth();
+        
+        if( offset < 0 )
+            offset = 0;
+
+        for( int row = 0; row < rowCount ; ++row )
         {
-            const CartesianDiagramDataCompressor::CachePosition position( j, i );
+            const CartesianDiagramDataCompressor::CachePosition position( row, col );
             const CartesianDiagramDataCompressor::DataPoint p = compressor().data( position );
             QModelIndex sourceIndex = attributesModel()->mapToSource( p.index );
             ThreeDBarAttributes threeDAttrs = diagram()->threeDBarAttributes( sourceIndex );
@@ -149,23 +155,25 @@ void PercentBarDiagram::paint( PaintContext* ctx )
 
             const double value = p.value;
             double stackedValues = 0.0;
+            double key = 0.0;
             
             // calculate stacked percent value
             // we only take in account positives values for now.
-            for( int k = i; k >= 0 ; --k )
+            for( int k = col; k >= 0 ; --k )
             {
-                const CartesianDiagramDataCompressor::CachePosition position( j, k );
+                const CartesianDiagramDataCompressor::CachePosition position( row, k );
                 const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
                 if ( point.value > 0)
                     stackedValues += point.value;
+                key = point.key;
             }
 
             QPointF point, previousPoint;
-            if(  sumValuesVector.at( j ) != 0 && value > 0 ) {
-                point = ctx->coordinatePlane()->translate( QPointF( j,  stackedValues / sumValuesVector.at( j ) * maxValue ) );
+            if(  sumValuesVector.at( row ) != 0 && value > 0 ) {
+                point = ctx->coordinatePlane()->translate( QPointF( key,  stackedValues / sumValuesVector.at( row ) * maxValue ) );
                 point.rx() += offset / 2;
 
-                previousPoint = ctx->coordinatePlane()->translate( QPointF( j, ( stackedValues - value)/sumValuesVector.at(j)* maxValue ) );
+                previousPoint = ctx->coordinatePlane()->translate( QPointF( key, ( stackedValues - value)/sumValuesVector.at(row)* maxValue ) );
             }
             const double barHeight = previousPoint.y() - point.y();
 

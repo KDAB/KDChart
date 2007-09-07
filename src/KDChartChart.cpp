@@ -435,6 +435,7 @@ static T* findOrCreateLayoutByObjectName( QLayout * parentLayout, const char* na
     return box;
 }
 
+#if 0
 static QVBoxLayout* findOrCreateVBoxLayoutByObjectName( QLayout* parentLayout, const char* name )
 {
     return findOrCreateLayoutByObjectName<QVBoxLayout>( parentLayout, name );
@@ -444,6 +445,7 @@ static QHBoxLayout* findOrCreateHBoxLayoutByObjectName( QLayout* parentLayout, c
 {
     return findOrCreateLayoutByObjectName<QHBoxLayout>( parentLayout, name );
 }
+#endif
 
 void Chart::Private::slotLayoutPlanes()
 {
@@ -942,11 +944,30 @@ void Chart::paint( QPainter* painter, const QRect& target )
     if( target.isEmpty() || !painter ) return;
     //qDebug() << "Chart::paint( ..," << target << ")";
 
-    GlobalMeasureScaling::instance()->setFactors(
-            static_cast<qreal>(target.width()) /
-            static_cast<qreal>(geometry().size().width()),
-            static_cast<qreal>(target.height()) /
-            static_cast<qreal>(geometry().size().height()) );
+    GlobalMeasureScaling::setPaintDevice( painter->device() );
+
+    // Output on a widget
+    if( dynamic_cast< QWidget* >( painter->device() ) != 0 )
+    {
+        GlobalMeasureScaling::setFactors(
+                static_cast< qreal >( target.width() ) /
+                static_cast< qreal >( geometry().size().width() ),
+                static_cast< qreal >( target.height() ) /
+                static_cast< qreal >( geometry().size().height() ) );
+    }
+    // Output onto a QPixmap 
+    else
+    {
+        const qreal resX = static_cast< qreal >( logicalDpiX() ) / static_cast< qreal >( painter->device()->logicalDpiX() );
+        const qreal resY = static_cast< qreal >( logicalDpiY() ) / static_cast< qreal >( painter->device()->logicalDpiY() );
+
+        GlobalMeasureScaling::setFactors( 
+                static_cast< qreal >( target.width() ) /
+                static_cast< qreal >( geometry().size().width() ) * resX,
+                static_cast< qreal >( target.height() ) /
+                static_cast< qreal >( geometry().size().height() ) * resY );
+    }
+
 
     if( target.size() != d->currentLayoutSize ){
         d->resizeLayout( target.size() );

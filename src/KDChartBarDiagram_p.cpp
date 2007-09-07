@@ -179,9 +179,13 @@ void BarDiagram::BarDiagramType::calculateValueAndGapWidths( int rowCount,int co
      * the gaps between bars are 0.5 wide, and the gap between groups is
      * also one unit, by default. */
 
-    const double units = colCount // number of bars in group * 1.0
-        + (colCount-1) * ba.barGapFactor() // number of bar gaps
-        + 1 * ba.groupGapFactor(); // number of group gaps
+    double units;
+    if( type() == Normal )
+        units = colCount // number of bars in group * 1.0
+                + (colCount-1) * ba.barGapFactor() // number of bar gaps
+                + 1 * ba.groupGapFactor(); // number of group gaps
+    else
+        units = 1 + 1 * ba.groupGapFactor();
 
     double unitWidth = groupWidth / units;
     outBarWidth = unitWidth;
@@ -190,8 +194,8 @@ void BarDiagram::BarDiagramType::calculateValueAndGapWidths( int rowCount,int co
     // is that what we want?
     if ( outSpaceBetweenBars < 0 )
         outSpaceBetweenBars = 0;
-    outSpaceBetweenGroups += unitWidth * ba.groupGapFactor();
 
+    outSpaceBetweenGroups += unitWidth * ba.groupGapFactor();
 }
 
 ReverseMapper& BarDiagram::BarDiagramType::reverseMapper()

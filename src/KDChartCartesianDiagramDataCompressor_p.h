@@ -37,7 +37,8 @@ namespace KDChart {
     public:
         class DataPoint {
         public:
-            DataPoint() : value(), hidden( false ) {}
+            DataPoint() : key(), value(), hidden( false ) {}
+            double key;
             double value;
             bool hidden;
             QModelIndex index;
@@ -69,6 +70,13 @@ namespace KDChart {
         const DataPoint& data( const CachePosition& ) const;
 
     private Q_SLOTS:
+        void slotRowsInserted( const QModelIndex&, int, int );
+        void slotRowsRemoved( const QModelIndex&, int, int );
+
+        void slotColumnsInserted( const QModelIndex&, int, int );
+        void slotColumnsRemoved( const QModelIndex&, int, int );
+
+        void slotModelHeaderDataChanged( Qt::Orientation, int, int );
         void slotModelDataChanged( const QModelIndex&, const QModelIndex& );
         void slotModelLayoutChanged();
         // FIXME resolution changes and root index changes should all
@@ -86,8 +94,9 @@ namespace KDChart {
         bool isValidCachePosition( const CachePosition& ) const;
 
         CachePosition mapToCache( const QModelIndex& ) const;
+        CachePosition mapToCache( int row, int column ) const;
         QModelIndexList mapToModel( const CachePosition& ) const;
-        int indexesPerPixel() const;
+        qreal indexesPerPixel() const;
 
         // retrieve data from the model, put it into the cache
         void retrieveModelData( const CachePosition& ) const;

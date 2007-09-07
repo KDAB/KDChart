@@ -1,0 +1,631 @@
+Index: src/KDChartLineDiagram.cpp
+===================================================================
+--- src/KDChartLineDiagram.cpp	(revision 3262)
++++ src/KDChartLineDiagram.cpp	(working copy)
+@@ -41,12 +41,15 @@
+ 
+ #include <KDABLibFakes>
+ 
++static const int SELECTION_LINE_WIDTH = 10;
+ 
+ using namespace KDChart;
+ 
+ LineDiagram::Private::Private()
+   :lineType ( Normal )
+ {
++  // FIXME make configurable?
++   painterPathStroker.setWidth( SELECTION_LINE_WIDTH );
+ }
+ 
+ LineDiagram::Private::~Private() {}
+@@ -421,6 +424,7 @@
+ //qDebug() << "    start diag::paint()";
+     if ( !checkInvariants( true ) ) return;
+     if ( !AbstractGrid::isBoundariesValid(dataBoundaries()) ) return;
++    d->clearScene();
+ 
+     //QTime t = QTime::currentTime();
+ 
+@@ -735,6 +739,24 @@
+         }
+     }
+     // paint all data value texts and the point markers
++    if (0) // FIXME TILL
++    {
++        PainterSaver painterSaver( ctx->painter() );
++        DataValueTextInfoListIterator it( list );
++        while ( it.hasNext() ) {
++            const DataValueTextInfo& info = it.next();
++            paintDataValueText( ctx->painter(), info.index, info.pos, info.value );
++            paintMarker( ctx->painter(), info.index, info.pos );
++            ChartGraphicsItem *item = new ChartGraphicsItem( info.index.row(), info.index.column() );
++            QPolygonF hitpoints;
++            hitpoints << info.pos + QPointF( -SELECTION_LINE_WIDTH/2, -SELECTION_LINE_WIDTH/2 );
++            hitpoints << info.pos + QPointF( -SELECTION_LINE_WIDTH/2, SELECTION_LINE_WIDTH/2);
++            hitpoints << info.pos + QPointF( SELECTION_LINE_WIDTH/2, SELECTION_LINE_WIDTH/2 );
++            hitpoints << info.pos + QPointF( SELECTION_LINE_WIDTH/2, -SELECTION_LINE_WIDTH/2);
++            item->setPolygon( hitpoints );
++            d->scene->addItem( item );
++        }
++    }
+     d->paintDataValueTextsAndMarkers( this, ctx, list, true );
+     //qDebug() << "Rendering 2 in: " << t.msecsTo( QTime::currentTime() ) << endl;
+ }
+@@ -749,11 +771,20 @@
+     } else {
+         ctx->painter()->setBrush( brush( index ) );
+         ctx->painter()->setPen( pen( index ) );
+-        if ( index.row() + 1 < d->attributesModel->rowCount(attributesModelRootIndex()) ) {
+-            if ( ctx->rectangle().contains( from ) || ctx->rectangle().contains( to ) ) {
+-                ctx->painter()->drawLine( from, to );
+-            }
+-        }
++        if ( index.row() + 1 >= d->attributesModel->rowCount(attributesModelRootIndex()) )
++            return;
++        if ( !ctx->rectangle().contains( from ) && !ctx->rectangle().contains( to ) )
++            return;
++        if ( ctx->painter()->pen().style() == Qt::NoPen )
++            return;
++        ctx->painter()->drawLine( from, to );
++        ChartGraphicsItem *item = new ChartGraphicsItem( index.row(), index.column() );
++        // create the selection polygon for this line
++        QPainterPath path( from );
++        path.lineTo( to );
++        QPainterPath strokedPath = d->painterPathStroker.createStroke( path );
++        item->setPolygon( strokedPath.toFillPolygon() );
++        d->scene->addItem( item );
+     }
+ }
+ 
+@@ -769,6 +800,9 @@
+     ctx->painter()->setPen( indexPen );
+     ctx->painter()->setBrush( trans ) ;
+     ctx->painter()->drawPolygon( area );//pol );
++    ChartGraphicsItem *item = new ChartGraphicsItem( index.row(), index.column() );
++    item->setPolygon( area );
++    d->scene->addItem( item );
+ }
+ 
+ /*!
+Index: src/KDChartPolarCoordinatePlane.h
+===================================================================
+--- src/KDChartPolarCoordinatePlane.h	(revision 3262)
++++ src/KDChartPolarCoordinatePlane.h	(working copy)
+@@ -50,6 +50,7 @@
+         void addDiagram ( AbstractDiagram* diagram );
+ 
+         const QPointF translate ( const QPointF& diagramPoint ) const;
++
+         const QPointF translatePolar ( const QPointF& diagramPoint ) const;
+ 
+         /** \brief Specify the rotation of the coordinate plane.
+Index: src/KDChartAbstractDiagram_p.h
+===================================================================
+--- src/KDChartAbstractDiagram_p.h	(revision 3262)
++++ src/KDChartAbstractDiagram_p.h	(working copy)
+@@ -44,6 +44,8 @@
+ 
+ #include <QPoint>
+ #include <QPointer>
++#include <QGraphicsScene>
++#include <QGraphicsPolygonItem>
+ #include <QFont>
+ #include <QFontMetrics>
+ #include <QPaintDevice>
+@@ -85,6 +87,8 @@
+ 
+     void setAttributesModel( AttributesModel* );
+ 
++    void clearScene();
++
+     void appendDataValueTextInfoToList(
+             AbstractDiagram * diagram,
+             DataValueTextInfoList & list,
+@@ -155,6 +159,8 @@
+     int datasetDimension;
+     mutable QPair<QPointF,QPointF> databoundaries;
+     mutable bool databoundariesDirty;
++    // FIXME make conditional
++    QGraphicsScene *scene;
+ private:
+     QFontMetrics   mCachedFontMetrics;
+     QFont          mCachedFont;
+@@ -200,6 +206,21 @@
+   double value;
+ };
+ 
++class ChartGraphicsItem : public QGraphicsPolygonItem
++{
++public:
++    ChartGraphicsItem()
++        :row(-1), column(-1)
++    {
++    }
++    ChartGraphicsItem( int _row, int _column )
++        :row( _row ), column( _column )
++    {
++    }
++    int row;
++    int column;
++};
++
+ typedef QVector<DataValueMarkerInfo> DataValueMarkerInfoList;
+ typedef QVectorIterator<DataValueMarkerInfo> DataValueMarkerInfoListIterator;
+ 
+Index: src/KDChartAbstractDiagram.h
+===================================================================
+--- src/KDChartAbstractDiagram.h	(revision 3262)
++++ src/KDChartAbstractDiagram.h	(working copy)
+@@ -68,7 +68,6 @@
+     public:
+         virtual ~AbstractDiagram();
+ 
+-
+         /**
+          * @brief Return the bottom left and top right data point, that the
+          * diagram will display (unless the grid adjusts these values).
+@@ -85,6 +84,14 @@
+          */
+         const QPair<QPointF, QPointF> dataBoundaries() const;
+ 
++
++        /**
++         * @brief Return the list of indexes (cells) under the given
++         * point. What constitues a "hit" is determined by the concrete
++         * implementations.
++         */
++        const QList<QModelIndex> indexesAtPoint( const QPointF& coordinate );
++
+     protected:
+         /**
+          * Draw the diagram contents to the rectangle and painter, that are
+@@ -94,6 +101,9 @@
+          */
+         virtual void paint ( PaintContext* paintContext ) = 0;
+ 
++        void mousePressEvent( QMouseEvent* event );
++
++
+     public:
+         /**
+          * Called by the widget's sizeEvent. Adjust all internal structures,
+Index: src/KDChartAbstractCoordinatePlane.h
+===================================================================
+--- src/KDChartAbstractCoordinatePlane.h	(revision 3262)
++++ src/KDChartAbstractCoordinatePlane.h	(working copy)
+@@ -255,6 +255,10 @@
+ 
+         /** reimp */
+         void mousePressEvent( QMouseEvent* event );
++        /** reimp */
++        void mouseMoveEvent( QMouseEvent* event );
++        /** reimp */
++        void mouseReleaseEvent( QMouseEvent* event );
+ 
+         /**
+           * Called internally by KDChart::Chart
+Index: src/KDChartLineDiagram_p.h
+===================================================================
+--- src/KDChartLineDiagram_p.h	(revision 3262)
++++ src/KDChartLineDiagram_p.h	(working copy)
+@@ -35,8 +35,9 @@
+ // version without notice, or even be removed.
+ //
+ // We mean it.
+-//
+ 
++#include <QPainterPathStroker>
++
+ #include "KDChartAbstractCartesianDiagram_p.h"
+ 
+ #include <KDABLibFakes>
+@@ -64,6 +65,7 @@
+ 
+ 
+     LineType lineType;
++    QPainterPathStroker painterPathStroker;
+ };
+ 
+ KDCHART_IMPL_DERIVED_DIAGRAM( LineDiagram, AbstractCartesianDiagram, CartesianCoordinatePlane )
+Index: src/KDChartBarDiagram.cpp
+===================================================================
+--- src/KDChartBarDiagram.cpp	(revision 3262)
++++ src/KDChartBarDiagram.cpp	(working copy)
+@@ -383,6 +383,8 @@
+ {
+     if ( !checkInvariants() )
+         return;
++
++    d->clearScene();
+     // Calculate width
+     QPointF boundLeft, boundRight;
+     QPair<QPointF,QPointF> boundaries = dataBoundaries();
+@@ -593,7 +595,7 @@
+ void BarDiagram::paintBars( PaintContext* ctx, const QModelIndex& index, const QRectF& bar, double& maxDepth )
+ {
+     QRectF isoRect;
+-    QPolygonF topPoints, sidePoints;
++    QPolygonF topPoints, sidePoints, hitPoints;
+     ThreeDBarAttributes tda = threeDBarAttributes( index );
+     double usedDepth;
+ 
+@@ -651,9 +653,11 @@
+           }
+ 
+         } else {
+-            ctx->painter()->drawRect( isoRect );
++          ctx->painter()->drawRect( isoRect );
+           topPoints << bar.topLeft() << bar.topRight() << isoRect.topRight() << isoRect.topLeft();
+-      }
++          hitPoints << bar.bottomLeft() << bar.topLeft() << isoRect.topLeft()
++                    << isoRect.topRight() << isoRect.bottomRight();
++        }
+ 
+         if ( percentMode && isoRect.height() == 0 )
+             paintTop = false;
+@@ -664,11 +668,18 @@
+ 
+       sidePoints << bar.topRight() << isoRect.topRight() << isoRect.bottomRight() << bar.bottomRight();
+       if (  bar.height() != 0 )
+-      ctx->painter()->drawPolygon( sidePoints );
++        ctx->painter()->drawPolygon( sidePoints );
++    } else {
++          hitPoints << bar.bottomLeft() << bar.topLeft()
++                    << bar.topRight() << bar.bottomRight();
+     }
+ 
+-    if (  bar.height() != 0 )
++    if ( bar.height() != 0 ) {
+         ctx->painter()->drawRect( bar );
++        ChartGraphicsItem *item = new ChartGraphicsItem( index.row(), index.column() );
++        item->setPolygon( hitPoints );
++        d->scene->addItem( item );
++    }
+     // reset
+     d->maxDepth = tda.depth();
+ }
+Index: src/KDChartChart.cpp
+===================================================================
+--- src/KDChartChart.cpp	(revision 3262)
++++ src/KDChartChart.cpp	(working copy)
+@@ -1025,7 +1025,6 @@
+     return d->legends;
+ }
+ 
+-
+ void Chart::mousePressEvent( QMouseEvent* event )
+ {
+     KDAB_FOREACH( AbstractCoordinatePlane* plane, d->coordinatePlanes ) {
+@@ -1041,3 +1040,32 @@
+     }
+ }
+ 
++void Chart::mouseReleaseEvent( QMouseEvent* event )
++{
++    KDAB_FOREACH( AbstractCoordinatePlane* plane, d->coordinatePlanes ) {
++       if ( plane->geometry().contains( event->pos() ) ) {
++           if ( plane->diagrams().size() > 0 ) {
++               QPoint pos = plane->diagram()->mapFromGlobal( event->globalPos() );
++               QMouseEvent ev( QEvent::MouseButtonRelease, pos, event->globalPos(),
++                               event->button(), event->buttons(),
++                               event->modifiers() );
++               plane->mouseReleaseEvent( &ev );
++           }
++       }
++    }
++}
++
++void Chart::mouseMoveEvent( QMouseEvent* event )
++{
++    KDAB_FOREACH( AbstractCoordinatePlane* plane, d->coordinatePlanes ) {
++       if ( plane->geometry().contains( event->pos() ) ) {
++           if ( plane->diagrams().size() > 0 ) {
++               QPoint pos = plane->diagram()->mapFromGlobal( event->globalPos() );
++               QMouseEvent ev( QEvent::MouseMove, pos, event->globalPos(),
++                               event->button(), event->buttons(),
++                               event->modifiers() );
++               plane->mouseMoveEvent( &ev );
++           }
++       }
++    }
++}
+Index: src/KDChartAbstractCoordinatePlane.cpp
+===================================================================
+--- src/KDChartAbstractCoordinatePlane.cpp	(revision 3262)
++++ src/KDChartAbstractCoordinatePlane.cpp	(working copy)
+@@ -266,11 +266,25 @@
+     }
+ }
+ 
++void KDChart::AbstractCoordinatePlane::mouseReleaseEvent( QMouseEvent* event )
++{
++    KDAB_FOREACH( AbstractDiagram * a, d->diagrams )
++    {
++        a->mouseReleaseEvent( event );
++    }
++}
+ 
++void KDChart::AbstractCoordinatePlane::mouseMoveEvent( QMouseEvent* event )
++{
++    KDAB_FOREACH( AbstractDiagram * a, d->diagrams )
++    {
++        a->mouseMoveEvent( event );
++    }
++}
++
+ const bool KDChart::AbstractCoordinatePlane::isVisiblePoint( const QPointF& point ) const
+ {
+     return d->isVisiblePoint( this, point );
+ }
+ 
+-
+ #undef d
+Index: src/KDChartChart.h
+===================================================================
+--- src/KDChartChart.h	(revision 3262)
++++ src/KDChartChart.h	(working copy)
+@@ -386,6 +386,10 @@
+ 
+         /** reimp */
+         void mousePressEvent( QMouseEvent* event );
++        /** reimp */
++        void mouseReleaseEvent( QMouseEvent* event );
++        /** reimp */
++        void mouseMoveEvent( QMouseEvent* event );
+     };
+ 
+ }
+Index: src/KDChartAbstractDiagram.cpp
+===================================================================
+--- src/KDChartAbstractDiagram.cpp	(revision 3262)
++++ src/KDChartAbstractDiagram.cpp	(working copy)
+@@ -29,6 +29,7 @@
+ #include <QAbstractProxyModel>
+ #include <QStandardItemModel>
+ #include <QSizeF>
++#include <QMouseEvent>
+ 
+ #include "KDChartAbstractCoordinatePlane.h"
+ #include "KDChartChart.h"
+@@ -48,7 +49,6 @@
+ 
+ namespace KDChart {
+   class PrivateAttributesModel : public AttributesModel {
+-    Q_OBJECT
+   public:
+         explicit PrivateAttributesModel( QAbstractItemModel* model, QObject * parent = 0 )
+ 	  : AttributesModel(model,parent) {}
+@@ -63,6 +63,7 @@
+   , percent( false )
+   , datasetDimension( 1 )
+   , databoundariesDirty(true)
++  , scene( 0 )
+   , mCachedFontMetrics( QFontMetrics( qApp->font() ) )
+ {
+ }
+@@ -71,6 +72,7 @@
+ {
+   if( attributesModel && qobject_cast<PrivateAttributesModel*>(attributesModel) )
+     delete attributesModel;
++  delete scene;
+ }
+ 
+ void AbstractDiagram::Private::init()
+@@ -100,12 +102,23 @@
+     antiAliasing( rhs.antiAliasing ),
+     percent( rhs.percent ),
+     datasetDimension( rhs.datasetDimension ),
++    scene( 0 ),
+     mCachedFontMetrics( rhs.cachedFontMetrics() )
+ {
+     attributesModel = new PrivateAttributesModel( 0, 0);
+     attributesModel->initFrom( rhs.attributesModel );
+ }
+ 
++
++void AbstractDiagram::Private::clearScene()
++{
++    delete scene; scene = 0;
++    QRectF rect;
++    rect.setBottomLeft( plane->translate( databoundaries.first ) );
++    rect.setTopRight( plane->translate( databoundaries.second ) );
++    scene = new QGraphicsScene( rect );
++}
++
+ #define d d_func()
+ 
+ AbstractDiagram::AbstractDiagram ( QWidget* parent, AbstractCoordinatePlane* plane )
+@@ -810,4 +823,24 @@
+ }
+ 
+ 
+-#include "KDChartAbstractDiagram.moc"
++const QList<QModelIndex> AbstractDiagram::indexesAtPoint( const QPointF& coordinate )
++{
++    QList<QGraphicsItem *> items = d->scene->items( coordinate );
++    QList<QModelIndex> hits;
++    Q_FOREACH( QGraphicsItem* item, items ) {
++        ChartGraphicsItem *cgi = dynamic_cast<ChartGraphicsItem*>( item );
++        if ( !cgi ) continue;
++        QModelIndex index = d->attributesModel->index( cgi->row, cgi->column, d->attributesModelRootIndex );
++        hits.append( d->attributesModel->mapToSource( index ) );
++    }
++    return hits;
++}
++
++void AbstractDiagram::mousePressEvent ( QMouseEvent * event )
++{
++    QList<QModelIndex> hits = indexesAtPoint( event->pos() );
++    if ( hits.size() > 0 ) {
++        emit clicked( hits[0] );
++    }
++}
++
+Index: examples/Bars/Simple/main.cpp
+===================================================================
+--- examples/Bars/Simple/main.cpp	(revision 3262)
++++ examples/Bars/Simple/main.cpp	(working copy)
+@@ -19,19 +19,27 @@
+             }
+     }
+ 
+-    KDChart::BarDiagram* diagram = new KDChart::BarDiagram;
+-    diagram->setModel(&m_model);
++    m_diagram = new KDChart::BarDiagram;
++    m_diagram->setModel(&m_model);
++    connect( m_diagram, SIGNAL( clicked( const QModelIndex& ) ),
++            this, SLOT( slotClicked( const QModelIndex&) ) );
+ 
+-    m_chart.coordinatePlane()->replaceDiagram(diagram);
++    m_chart.coordinatePlane()->replaceDiagram(m_diagram);
+ 
+     QVBoxLayout* l = new QVBoxLayout(this);
+     l->addWidget(&m_chart);
+-    setLayout(l);
+   }
+ 
++  private slots:
++  void slotClicked( const QModelIndex& idx )
++  {
++    qDebug() << "Clicked: " << m_model.data( idx ).toString();
++  }
++
+ private:
+   KDChart::Chart m_chart;
+   QStandardItemModel m_model;
++  KDChart::BarDiagram* m_diagram;
+ };
+ 
+ int main( int argc, char** argv ) {
+Index: examples/Lines/Advanced/mainwindow.h
+===================================================================
+--- examples/Lines/Advanced/mainwindow.h	(revision 3262)
++++ examples/Lines/Advanced/mainwindow.h	(working copy)
+@@ -34,6 +34,8 @@
+     class LineDiagram;
+ }
+ 
++class QModelIndex;
++
+ class MainWindow : public QWidget, private Ui::MainWindow
+ {
+     Q_OBJECT
+@@ -52,6 +54,7 @@
+     void on_highlightAreaSB_valueChanged( int i );
+     void setHighlightArea( int column, int opacity, bool checked, bool doUpdate );
+     void slot_timerFired();
++    void slotClicked( const QModelIndex & );
+ 
+ private:
+     KDChart::Chart* m_chart;
+Index: examples/Lines/Advanced/mainwindow.cpp
+===================================================================
+--- examples/Lines/Advanced/mainwindow.cpp	(revision 3262)
++++ examples/Lines/Advanced/mainwindow.cpp	(working copy)
+@@ -62,6 +62,8 @@
+     m_lines->addAxis( yAxis );
+ 
+     m_chart->coordinatePlane()->replaceDiagram( m_lines );
++    connect( m_lines, SIGNAL( clicked( const QModelIndex& ) ),
++             this, SLOT( slotClicked( const QModelIndex& ) ) );
+ 
+     // Instantiate the timer
+     QTimer *timer = new QTimer(this);
+@@ -186,3 +188,8 @@
+     if ( threeDModeCB->isChecked() )
+         on_threeDModeCB_toggled( true );
+ }
++
++void MainWindow::slotClicked( const QModelIndex& idx )
++{
++    qDebug( ) << "Clicked: " << idx.row() << "/ " <<  m_model.data( idx ).toString( );
++}
+Index: examples/Lines/PointChart/mainwindow.h
+===================================================================
+--- examples/Lines/PointChart/mainwindow.h	(revision 3262)
++++ examples/Lines/PointChart/mainwindow.h	(working copy)
+@@ -34,6 +34,14 @@
+     class LineDiagram;
+ }
+ 
++struct DragData {
++    DragData() :row(-1), column(-1) { }
++    bool isValid() { return row != -1 && column != -1; }
++    double value;
++    int row;
++    int column;
++};
++
+ class MainWindow : public QWidget, private Ui::MainWindow
+ {
+     Q_OBJECT
+@@ -41,6 +49,9 @@
+ public:
+     MainWindow( QWidget* parent = 0 );
+ 
++protected:
++    void mouseReleaseEvent( QMouseEvent* event );
++
+ private slots:
+ 
+     void on_lineTypeCB_currentIndexChanged( const QString & text );
+@@ -51,10 +62,12 @@
+     void on_markersWidthSB_valueChanged( int i );
+     void on_markersHeightSB_valueChanged( int i);
+    
++    void slotClicked( const QModelIndex & );
+ private:
+     KDChart::Chart* m_chart;
+     KDChart::LineDiagram* m_lines;
+     TableModel m_model;
++    DragData m_dragData;
+ };
+ 
+ 
+Index: examples/Lines/PointChart/mainwindow.cpp
+===================================================================
+--- examples/Lines/PointChart/mainwindow.cpp	(revision 3262)
++++ examples/Lines/PointChart/mainwindow.cpp	(working copy)
+@@ -25,6 +25,8 @@
+ 
+ #include "mainwindow.h"
+ 
++#include <QMouseEvent>
++
+ #include <KDChartChart>
+ #include <KDChartLineDiagram>
+ #include <KDChartTextAttributes>
+@@ -49,6 +51,8 @@
+     m_lines = new LineDiagram();
+     m_lines->setModel( &m_model );
+     m_chart->coordinatePlane()->replaceDiagram( m_lines );
++    connect( m_lines, SIGNAL( clicked( const QModelIndex& ) ),
++             this, SLOT( slotClicked( const QModelIndex& ) ) );
+ 
+ }
+ 
+@@ -199,3 +203,24 @@
+     if ( paintMarkersCB->isChecked() )
+         on_paintMarkersCB_toggled( true );
+ }
++
++void MainWindow::slotClicked( const QModelIndex& idx )
++{
++    qDebug( ) << "Clicked: " << idx.row() << "/ " <<  m_model.data( idx ).toString( );
++    DragData data;
++    data.value = m_model.data( idx, Qt::EditRole ).toDouble();
++    data.row = idx.row();
++    data.column = idx.column();
++    m_dragData = data;
++}
++
++
++void MainWindow::mouseReleaseEvent( QMouseEvent* )
++{
++    if ( m_dragData.isValid() ) {
++        QModelIndex idx = m_model.index( m_dragData.row, m_dragData.column, QModelIndex() );
++        m_model.setData( idx, m_dragData.value+2 );
++        m_dragData = DragData();
++    }
++}
++

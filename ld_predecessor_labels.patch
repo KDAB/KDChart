@@ -1,0 +1,106 @@
+Index: KDChartDataValueAttributes.cpp
+===================================================================
+--- KDChartDataValueAttributes.cpp	(revision 2781)
++++ KDChartDataValueAttributes.cpp	(arbetskopia)
+@@ -62,6 +62,7 @@
+     bool showInfinite;
+     RelativePosition    negativeRelPos;
+     RelativePosition    positiveRelPos;
++    bool showRepetitiveDataLabels;
+ };
+ 
+ DataValueAttributes::Private::Private() :
+@@ -70,7 +71,8 @@
+     powerOfTenDivisor( 0 ),
+     showInfinite( true ),
+     negativeRelPos(),  // use the default: centered alignment, no padding, no rotation
+-    positiveRelPos()
++    positiveRelPos(),
++    showRepetitiveDataLabels( true )
+ {
+   textAttributes.setRotation( -45 );
+ }
+@@ -116,7 +118,8 @@
+ 	     powerOfTenDivisor() == r.powerOfTenDivisor() &&
+ 	     showInfinite() == r.showInfinite() &&
+ 	     negativePosition() == r.negativePosition() &&
+-	     positivePosition() == r.positivePosition() );
++	     positivePosition() == r.positivePosition() &&
++         showRepetitiveDataLabels() == r.showRepetitiveDataLabels() );
+ }
+ 
+ /*static*/
+@@ -225,6 +228,16 @@
+     return d->dataLabel;
+ }
+ 
++bool DataValueAttributes::showRepetitiveDataLabels() const
++{
++    return d->showRepetitiveDataLabels;
++}
++
++void DataValueAttributes::setShowRepetitiveDataLabels( bool showRepetitiveDataLabels )
++{
++    d->showRepetitiveDataLabels = showRepetitiveDataLabels;
++}
++
+ void DataValueAttributes::setPowerOfTenDivisor( int powerOfTenDivisor )
+ {
+     d->powerOfTenDivisor = powerOfTenDivisor;
+@@ -278,6 +291,7 @@
+ 	<< "showinfinite="<<val.showInfinite()
+ 	<< "negativerelativeposition="<<val.negativePosition()
+ 	<< "positiverelativeposition="<<val.positivePosition()
++    << "showRepetitiveDataLabels="<<val.showRepetitiveDataLabels()
+ 	<<")";
+     return dbg;
+ }
+Index: KDChartDataValueAttributes.h
+===================================================================
+--- KDChartDataValueAttributes.h	(revision 2781)
++++ KDChartDataValueAttributes.h	(arbetskopia)
+@@ -175,7 +175,16 @@
+    */
+   QString dataLabel() const;
+ 
++ /**
++   * \return Wheter data values not different from their predecessors are drawn.
++   */
++  bool showRepetitiveDataLabels() const;
+ 
++ /** Set whether data value labels not different from their predecessors should be drawn.
++   * \param showRepetitiveDataLabels Whether data value not different from their predecessors are drawn.
++   */
++  void setShowRepetitiveDataLabels( bool showRepetitiveDataLabels );
++
+   void setPowerOfTenDivisor( int powerOfTenDivisor );
+   int powerOfTenDivisor() const;
+ 
+Index: KDChartAbstractDiagram.cpp
+===================================================================
+--- KDChartAbstractDiagram.cpp	(revision 2781)
++++ KDChartAbstractDiagram.cpp	(arbetskopia)
+@@ -318,6 +318,8 @@
+                                           const QPointF& pos,
+                                           double value )
+ {
++    static QString lastRoundedValue;
++    static qreal lastX = 0;
+     // paint one data series
+     DataValueAttributes a = dataValueAttributes(index);
+     if ( !a.isVisible() ) return;
+@@ -343,7 +345,13 @@
+     PainterSaver painterSaver( painter );
+     // FIXME draw the non-text bits, background, etc
+     const TextAttributes &ta = a.textAttributes();
+-    if ( ta.isVisible() ) {
++
++    bool valueDiffersFromPredecessor = lastRoundedValue != roundedValue || pos.x() <= lastX;
++
++    if ( ta.isVisible() && ( valueDiffersFromPredecessor || a.showRepetitiveDataLabels() ) ) {
++        lastRoundedValue = roundedValue;
++        lastX = pos.x();
++
+         painter->setPen( ta.pen() );
+         painter->setFont( ta.font() );
+         painter->translate( pos );

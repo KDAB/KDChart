@@ -1,0 +1,312 @@
+
+Table of Contents
+-----------------
+
+1/ Introduction
+
+        - What is KD Chart? - Quick description - same style some for KD Chart 1
+	- What can you use KD Chart for?
+	- We could (in very short sentences, and with one screenshot each) demonstrate that kdc can be used for BOTH, busines charts and engineering charts 
+	- KD Chart 2.0 - Introduction ( see the Getting Started with KD Chart 2 introd). 
+	-Also show two small diagrams with arrows explaining how the main classes work together
+   
+	1.1/ What you should now
+ 
+	    - Same as for KD Chart 1 but reffering to Qt4.
+	    - A bit of the General Information from the Getting Started file )     
+
+        1.2/ The Structure of this Manual
+
+            - How we will proceed to present KD Chart for Qt4 
+
+        1.3/ What is next 
+
+            - API introduction
+
+2/ KD Chart 2.0 and Qt4 - APi introduction 
+   Introduction to KDC2.0 API / Qt4 
+
+	2.1/ Overview
+          Text....
+	  2.1.1 Example code
+          ....  May be more examples
+
+        2.2/ Ownership passing and parameters handling
+          Text: "Pending michel shift thwe following sections" 
+          handling of value parameters (like TextAttributes) vs. pointer 
+          classes (like axes)
+          2.2.1 Example code
+          .... May be more examples
+
+	2.3/ Qt4 Interview support
+          Text
+          2.3.1 Example code
+          ....  May be more examples
+
+        2.4/ Attribute sets
+	  Text
+          2.4.1 Example code
+          .... May be more examples
+
+        2.5/ Memory Management
+          Text
+	  2.5.1 Example code
+          .....May be more examples
+
+        2.6/ What's next
+	  Basic steps to create your Chart Widget 
+
+3/ KD Chart 2.0 - Basic steps
+
+        Introduction 
+
+        3.1 The two different ways: KDChartWidget vs. KDChart::Chart own Widget
+          Text...
+        
+        3.2 The Procedure 
+          Text...
+
+            3.2.1. Example code (widget) 
+            .... May be more examples
+
+            3.2.2 Example code (Chart)
+            .... May be more example code 
+
+        3.3 What's next
+          Coordinate planes and diagrams
+
+4/ KD Chart 2.0 Coordinate Planes,Diagrams and Attributes
+
+	Introduction tp planes, diagrams and attributes
+      
+        4.1 Cartesian coordinate plane
+
+	    4.1.1 Bar Charts
+		Text....
+		4.1.1.1 Example code
+		... May be more examples 
+		4.1.1.2 Bar Attributes
+		Text...
+		4.1.1.2.1 Example code
+		... May be more examples
+		4.1.1.3 Tips and notes
+		Some tips and tricks
+		... A cool bar complete Bar example
+
+	    4.1.2 Line Charts
+		Text....
+		4.1.2.1 Example code
+		... May be more examples 
+		4.1.2.2 Lines Attributes
+		Text...
+		4.1.2.2.1 Example code
+		... May be more examples
+		4.1.2.3 Tips and notes
+		Some tips and tricks
+		... A cool complete line example
+
+	    4.1.3 Point Charts
+		Text....
+		4.1.3.1 Example code
+		... May be more examples 
+		4.1.3.2 Attributes
+		Text...
+		4.1.3.2.1 Example code
+		... May be more examples
+		4.1.3.3 Tips and notes
+		Some tips and tricks
+		... A cool Point example
+
+            4.1.4 Area Charts
+		Text....
+		4.1.4.1 Example code
+		... May be more examples 
+		4.1.4.2 Attributes
+		Text...
+		4.1.4.2.1 Example code
+		... May be more examples
+		4.1.4.3 Tips and tricks
+		Some tips and notes
+		... A cool Area example
+
+	    4.1.5 High/Low Charts
+		Text....
+		4.1.5.1 Example code
+		... May be more examples 
+		4.1.5.2 Attributes
+		Text...
+		4.1.5.2.1 Example code
+		... May be more examples
+		4.1.5.3 Tips and notes
+		Some tips and tricks
+		... A cool High/Low example
+
+	    4.1.6 Box&Whisker Charts
+		Text....
+		4.1.6.1 Example code
+		... May be more examples 
+		4.1.6.2 Attributes
+		Text...
+		4.1.6.2.1 Example code
+		... May be more examples
+		4.1.6.3 Tips and notes
+		Some tips and notes
+		... A cool B&W example
+	
+	4.2 Polar coordinate plane	
+
+            4.2.1 Pie Charts
+		Text....
+		4.2.1.1 Example code
+		... May be more examples 
+		4.2.1.2 Attributes
+		Text...
+		4.2.1.2.1 Example code
+		... May be more examples
+		4.2.1.3 Tips and tricks
+		Some tips and notes
+		... A cool Pie example
+
+	    4.2.2 Ring Charts
+		Text....
+		4.2.2.1 Example code
+		... May be more examples 
+		4.2.2.2 Attributes
+		Text...
+		4.2.2.2.1 Example code
+		... May be more examples
+		4.2.2.3 Tips and tricks
+		Some tips and notes
+		... A cool Ring example
+
+	    4.2.3 Polar Charts
+	        Text....
+		4.2.3.1 Example code
+		... May be more examples 
+		4.2.3.2 Attributes
+		Text...
+		4.2.3.2.1 Example code
+		... May be more examples
+		4.2.3.2 Tips and tricks
+		Some tips and notes
+		... A cool Polar example
+
+	    4.3 What is next
+	      Txt - Customizing your chart - Tips and tricks
+
+5/ Customizing your Chart
+
+        Text (Common and per types' attributes)
+
+            5.1 Colors        
+	    Text....
+
+	        5.1.1 Example code
+	        ... May be more examples 
+	    5.2 Fonts
+	    Text....
+
+	        5.2.1 Example code
+		....May be more example
+
+	    5.3 Markers
+	    Text....
+
+		5.3.1 Example code
+		... May be more examples
+
+            5.4 ThreeD Charts
+	    Text....
+
+		5.4.1 Example code 
+		....May be more examples 
+
+	    5.5 Tips and Tricks
+	    Some tips and notes
+
+		5.5.1 ... Some cool examples using the attributes
+
+	    5.6 What is next
+	    text / Headers and footers
+
+6/ Header and Footers
+
+	Text....
+
+	    6.1 HowTo configure
+	    Text...
+   
+		6.1.1 Example code
+		....May be more examples
+
+	    6.2 Tips and notes
+	    Some tips and notes
+
+		6.2.1...A cool example 
+
+7/ Legends
+
+	Text....
+
+	    7.1 HowTo configure
+	    Text...
+   
+		7.1.1 Example code
+		....May be more examples
+
+	    7.2 Tips and notes
+	    Some tips and notes
+
+		7.2.1 ...A cool example 	 
+
+	    7.3 What's next
+	    text / Axes
+
+8/ Axes
+
+        Text....
+
+	    8.1 HowTo configure
+	    Text...
+
+		8.1.1 Example code
+		....May be more examples
+
+	    8.2 Tips and tricks
+	    Some tips and tricks
+		8.2.1 ...Some cool example
+
+	    8.3 What's next
+	    text / Advanced Charting
+
+9/ Advanced Charting
+
+        Text ...
+
+	     9.1 Frame and background
+	     text and example(s)
+
+	     9.2 Data Value manipulation
+	     text and example(s)
+
+	     9.3 Axis manipulation
+	     text and example(s)
+
+	     9.4 Grid manipulation
+	     text and example(s)
+
+	     9.5 Interactive Charts
+	     text and example(s) 
+
+	     9.6 Multiple charts
+	     text and example(s) 
+
+             9.7 Zooming
+	     text and example(s)
+
+10/ FAQ
+
+        Questions and answers
+
+
+        

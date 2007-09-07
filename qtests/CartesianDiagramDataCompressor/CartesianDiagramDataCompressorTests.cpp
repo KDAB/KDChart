@@ -68,22 +68,22 @@ private slots:
     void mapToCacheTest()
     {
         CachePosition NullPoint( -1, -1 );
-        Match  matches[] = {
-            Match( CachePosition( 0, 0 ), model.index( 0, 0 ) ),
-            Match( CachePosition( 0, 0 ), model.index( 1, 0 ) ),
-            Match( CachePosition( 0, 0 ), model.index( 2, 0 ) ),
-            Match( CachePosition( 0, 0 ), model.index( 3, 0 ) ),
-            Match( CachePosition( 0, 0 ), model.index( 4, 0 ) ),
+        Match  matches[] = {                                       // the value is rounded
+            Match( CachePosition( 0, 0 ), model.index( 0, 0 ) ),   // 0/5 = 0.0 -> 0
+            Match( CachePosition( 0, 0 ), model.index( 1, 0 ) ),   // 1/5 = 0.2 -> 0
+            Match( CachePosition( 0, 0 ), model.index( 2, 0 ) ),   // 2/5 = 0.4 -> 0
+            Match( CachePosition( 1, 0 ), model.index( 3, 0 ) ),   // 3/5 = 0.6 -> 1
+            Match( CachePosition( 1, 0 ), model.index( 4, 0 ) ),   // 4/5 = 0.8 -> 1
             Match( CachePosition( 0, 1 ), model.index( 0, 1 ) ),
             Match( CachePosition( 0, 1 ), model.index( 1, 1 ) ),
             Match( CachePosition( 0, 1 ), model.index( 2, 1 ) ),
-            Match( CachePosition( 0, 1 ), model.index( 3, 1 ) ),
-            Match( CachePosition( 0, 1 ), model.index( 4, 1 ) ),
-            Match( CachePosition( 2, 2 ), model.index( 10, 2 ) ),
-            Match( CachePosition( 2, 2 ), model.index( 11, 2 ) ),
-            Match( CachePosition( 2, 2 ), model.index( 12, 2 ) ),
-            Match( CachePosition( 2, 2 ), model.index( 13, 2 ) ),
-            Match( CachePosition( 2, 2 ), model.index( 14, 2 ) ),
+            Match( CachePosition( 1, 1 ), model.index( 3, 1 ) ),
+            Match( CachePosition( 1, 1 ), model.index( 4, 1 ) ),
+            Match( CachePosition( 2, 2 ), model.index( 10, 2 ) ),  // 10/5 = 2.0 -> 2
+            Match( CachePosition( 2, 2 ), model.index( 11, 2 ) ),  // 11/5 = 2.2 -> 2
+            Match( CachePosition( 2, 2 ), model.index( 12, 2 ) ),  // ...
+            Match( CachePosition( 3, 2 ), model.index( 13, 2 ) ),  // 13/5 = 2.6 -> 3
+            Match( CachePosition( 3, 2 ), model.index( 14, 2 ) ),  // ...
             // the following are outside the model boundary:
             Match( NullPoint, model.index( 0, ColumnCount ) ),
             Match( NullPoint, model.index( 1, ColumnCount ) ),

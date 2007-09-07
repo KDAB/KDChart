@@ -65,6 +65,10 @@ namespace KDChart {
         */
         explicit DatasetProxyModel ( QObject* parent = 0 );
 
+        QModelIndex buddy( const QModelIndex& index ) const;
+
+        Qt::ItemFlags flags( const QModelIndex& index ) const;
+
         QModelIndex index( int row, int column,
                            const QModelIndex &parent = QModelIndex() ) const;
         QModelIndex parent(const QModelIndex &child ) const;
@@ -77,6 +81,9 @@ namespace KDChart {
 
         /** Overloaded from base class. */
         QVariant data(const QModelIndex &index, int role) const;
+
+        /** Overloaded from base class. */
+        bool setData( const QModelIndex& index, const QVariant& value, int role );
 
         /** Overloaded from base class. */
         QVariant headerData ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;

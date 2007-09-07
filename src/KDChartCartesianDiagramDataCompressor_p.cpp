@@ -17,6 +17,91 @@ CartesianDiagramDataCompressor::CartesianDiagramDataCompressor( QObject* parent 
     calculateSampleStepWidth();
 }
 
+void CartesianDiagramDataCompressor::slotRowsInserted( const QModelIndex& parent, int start, int end )
+{
+    Q_UNUSED( parent );
+    Q_ASSERT( start <= end );
+
+    const CachePosition startPos = mapToCache( start, 0 );
+    const CachePosition endPos = mapToCache( end, 0 );
+
+    start = startPos.first;
+    end = endPos.first;
+    
+    static const CachePosition NullPosition( -1, -1 );
+    if( startPos == NullPosition )
+        return rebuildCache();
+
+    for( int i = 0; i < m_data.size(); ++i )
+    {
+        Q_ASSERT( start >= 0 && start <= m_data[ i ].size() );
+        m_data[ i ].insert( start, end - start + 1, DataPoint() );
+    }
+}
+
+void CartesianDiagramDataCompressor::slotColumnsInserted( const QModelIndex& parent, int start, int end )
+{
+    Q_UNUSED( parent );
+    Q_ASSERT( start <= end );
+
+
+    const CachePosition startPos = mapToCache( 0, start );
+    const CachePosition endPos = mapToCache( 0, end );
+
+    static const CachePosition NullPosition( -1, -1 );
+    if( startPos == NullPosition )
+        return rebuildCache();
+
+    start = startPos.second;
+    end = endPos.second;
+
+    const int rowCount = qMin( m_model ? m_model->rowCount( m_rootIndex ) : 0, m_xResolution );
+    Q_ASSERT( start >= 0 && start <= m_data.size() );
+    m_data.insert( start, end - start + 1, QVector< DataPoint >( rowCount ) );
+}
+
+void CartesianDiagramDataCompressor::slotRowsRemoved( const QModelIndex& parent, int start, int end )
+{
+    Q_UNUSED( parent );
+    Q_ASSERT( start <= end );
+
+    const CachePosition startPos = mapToCache( start, 0 );
+    const CachePosition endPos = mapToCache( end, 0 );
+
+    start = startPos.first;
+    end = endPos.first;
+
+    for( int i = 0; i < m_data.size(); ++i )
+    {
+        m_data[ i ].remove( start, end - start + 1 );
+    }
+}
+
+void CartesianDiagramDataCompressor::slotColumnsRemoved( const QModelIndex& parent, int start, int end )
+{
+    Q_UNUSED( parent );
+    Q_ASSERT( start <= end );
+
+    const CachePosition startPos = mapToCache( 0, start );
+    const CachePosition endPos = mapToCache( 0, end );
+
+    start = startPos.second;
+    end = endPos.second;
+
+    m_data.remove( start, end - start + 1 );
+}
+
+void CartesianDiagramDataCompressor::slotModelHeaderDataChanged( Qt::Orientation orientation, int first, int last )
+{
+    if( orientation != Qt::Vertical )
+        return;
+
+    const QModelIndex firstRow = m_model->index( 0, first, m_rootIndex );
+    const QModelIndex lastRow = m_model->index( m_model->rowCount( m_rootIndex ) - 1, last, m_rootIndex );
+    
+    slotModelDataChanged( firstRow, lastRow );
+}
+
 void CartesianDiagramDataCompressor::slotModelDataChanged(
     const QModelIndex& topLeftIndex,
     const QModelIndex& bottomRightIndex )
@@ -77,19 +162,39 @@ int CartesianDiagramDataCompressor::modelDataRows() const
 void CartesianDiagramDataCompressor::setModel( QAbstractItemModel* model )
 {
     if ( m_model != 0 && m_model != model ) {
+        disconnect( m_model, SIGNAL( headerDataChanged( Qt::Orientation, int, int ) ),
+                    this, SLOT( slotModelHeaderDataChanged( Qt::Orientation, int, int ) ) );
         disconnect( m_model, SIGNAL( dataChanged( QModelIndex, QModelIndex ) ),
                     this, SLOT( slotModelDataChanged( QModelIndex, QModelIndex ) ) );
         disconnect( m_model, SIGNAL( layoutChanged() ),
                     this, SLOT( slotModelLayoutChanged() ) );
+        disconnect( m_model, SIGNAL( rowsInserted( QModelIndex, int, int ) ),
+                    this, SLOT( slotRowsInserted( QModelIndex, int, int ) ) );
+        disconnect( m_model, SIGNAL( rowsRemoved( QModelIndex, int, int ) ),
+                    this, SLOT( slotRowsRemoved( QModelIndex, int, int ) ) );
+        disconnect( m_model, SIGNAL( columnsInserted( QModelIndex, int, int ) ),
+                    this, SLOT( slotColumnsInserted( QModelIndex, int, int ) ) );
+        disconnect( m_model, SIGNAL( columnsRemoved( QModelIndex, int, int ) ),
+                    this, SLOT( slotColumnsRemoved( QModelIndex, int, int ) ) );
         m_model = 0;
     }
 
     if ( model != 0 ) {
         m_model = model;
+        connect( m_model, SIGNAL( headerDataChanged( Qt::Orientation, int, int ) ),
+                 SLOT( slotModelHeaderDataChanged( Qt::Orientation, int, int ) ) );
         connect( m_model, SIGNAL( dataChanged( QModelIndex, QModelIndex ) ),
                  SLOT( slotModelDataChanged( QModelIndex, QModelIndex ) ) );
         connect( m_model, SIGNAL( layoutChanged() ),
                  SLOT( slotModelLayoutChanged() ) );
+        connect( m_model, SIGNAL( rowsInserted( QModelIndex, int, int ) ),
+                 SLOT( slotRowsInserted( QModelIndex, int, int ) ) );
+        connect( m_model, SIGNAL( rowsRemoved( QModelIndex, int, int ) ),
+                 SLOT( slotRowsRemoved( QModelIndex, int, int ) ) );
+        connect( m_model, SIGNAL( columnsInserted( QModelIndex, int, int ) ),
+                 SLOT( slotColumnsInserted( QModelIndex, int, int ) ) );
+        connect( m_model, SIGNAL( columnsRemoved( QModelIndex, int, int ) ),
+                 SLOT( slotColumnsRemoved( QModelIndex, int, int ) ) );
     }
 
     rebuildCache();
@@ -106,9 +211,24 @@ void CartesianDiagramDataCompressor::setRootIndex( const QModelIndex& root )
 }
 void CartesianDiagramDataCompressor::setResolution( int x, int y )
 {
-    if ( x != m_xResolution || y != m_yResolution ) {
-        m_xResolution = x;
-        m_yResolution = y;
+    const int oldX = m_xResolution;
+    const int oldY = m_yResolution;
+
+    if( m_datasetDimension != 1 )
+    {
+        // just ignore the resolution in that case
+        m_xResolution = m_model == 0 ? 0 : m_model->rowCount( m_rootIndex );
+        m_yResolution = qMax( 0, y );
+    }
+    else if ( x != m_xResolution || y != m_yResolution ) {
+        m_xResolution = qMax( 0, x );
+        m_yResolution = qMax( 0, y );
+        rebuildCache();
+        calculateSampleStepWidth();
+    }
+
+    if( oldX != m_xResolution || oldY != m_yResolution )
+    {
         rebuildCache();
         calculateSampleStepWidth();
     }
@@ -139,7 +259,7 @@ const CartesianDiagramDataCompressor::DataPoint& CartesianDiagramDataCompressor:
     static DataPoint NullDataPoint;
     if ( ! isValidCachePosition( position ) ) return NullDataPoint;
     if ( ! isCached( position ) ) retrieveModelData( position );
-    return m_data[position.second][position.first];
+    return m_data[ position.second ][ position.first ];
 }
 
 void CartesianDiagramDataCompressor::retrieveModelData( const CachePosition& position ) const
@@ -151,20 +271,40 @@ void CartesianDiagramDataCompressor::retrieveModelData( const CachePosition& pos
     case Precise:
     {
         result.hidden = true;
-        QModelIndexList indexes = mapToModel( position );
-        if ( ! indexes.isEmpty() ) {
-            Q_FOREACH( QModelIndex index, indexes ) {
-                bool ok;
-                QVariant valueVariant = m_model->data( index, Qt::DisplayRole );
-                double value = valueVariant.toDouble( &ok );
-                if ( ok ) result.value += value;
-                // the point is visible if any of the points at this pixel position is visible
-                if ( qVariantValue<bool>( m_model->data( index, DataHiddenRole ) ) == false ) {
-                    result.hidden = false;
+        const QModelIndexList indexes = mapToModel( position );
+        if( m_datasetDimension != 1 )
+        {
+            Q_ASSERT( indexes.count() == 2 );
+            const QModelIndex xIndex = indexes.first();
+            const QModelIndex yIndex = indexes.last();
+            result.index = xIndex;
+            result.key = m_model->data( xIndex ).toDouble();
+            result.value = m_model->data( yIndex ).toDouble();
+        }
+        else
+        {
+            if ( ! indexes.isEmpty() ) {
+                Q_FOREACH( const QModelIndex& index, indexes ) {
+                    bool ok;
+                    const QVariant valueVariant = m_model->data( index, Qt::DisplayRole );
+                    const double value = valueVariant.toDouble( &ok );
+                    if( ok )
+                    {
+                        result.value += value;
+                        result.key += index.row();
+                    }
                 }
+                result.index = indexes.at( 0 );
+                result.key /= indexes.size();
+                result.value /= indexes.size();
             }
-            result.index = indexes.at( 0 );
-            result.value /= indexes.size();
+        }
+        Q_FOREACH( const QModelIndex& index, indexes )
+        {
+            // the point is visible if any of the points at this pixel position is visible
+            if ( qVariantValue<bool>( m_model->data( index, DataHiddenRole ) ) == false ) {
+                result.hidden = false;
+            }
         }
     }
     break;
@@ -186,19 +326,36 @@ CartesianDiagramDataCompressor::CachePosition CartesianDiagramDataCompressor::ma
 
     static const CachePosition NullPosition( -1, -1 );
     if ( ! index.isValid() ) return NullPosition;
-    if ( m_data.size() == 0 || m_data[0].size() == 0 ) return NullPosition;
+    return mapToCache( index.row(), index.column() );
+}
+
+CartesianDiagramDataCompressor::CachePosition CartesianDiagramDataCompressor::mapToCache(
+    int row, int column ) const
+{
+    Q_ASSERT( m_datasetDimension != 0 );
+
+    if ( m_data.size() == 0 || m_data[0].size() == 0 ) return mapToCache( QModelIndex() );
     // assumption: indexes per column == 1
-    if ( indexesPerPixel() == 0 ) return NullPosition;
-    return CachePosition( index.row() / indexesPerPixel(), index.column() / m_datasetDimension );
+    if ( indexesPerPixel() == 0 ) return mapToCache( QModelIndex() );
+    return CachePosition( qRound( static_cast< qreal >( row ) / indexesPerPixel() ), column / m_datasetDimension );
 }
 
 QModelIndexList CartesianDiagramDataCompressor::mapToModel( const CachePosition& position ) const
 {
     if ( isValidCachePosition( position ) ) {
-        // assumption: indexes per column == 1
         QModelIndexList indexes;
-        for ( int i = 0; i < indexesPerPixel(); ++i ) {
-            indexes << m_model->index( position.first * indexesPerPixel(), position.second * m_datasetDimension, m_rootIndex );
+        if( m_datasetDimension == 2 )
+        {
+            indexes << m_model->index( position.first, position.second * 2, m_rootIndex );
+            indexes << m_model->index( position.first, position.second * 2 + 1, m_rootIndex );
+        }
+        else
+        {
+        // assumption: indexes per column == 1
+            const qreal ipp = indexesPerPixel();
+            for ( int i = 0; i < ipp; ++i ) {
+                indexes << m_model->index( qRound( position.first * ipp ), position.second, m_rootIndex );
+            }
         }
         return indexes;
     } else {
@@ -206,12 +363,12 @@ QModelIndexList CartesianDiagramDataCompressor::mapToModel( const CachePosition&
     }
 }
 
-int CartesianDiagramDataCompressor::indexesPerPixel() const
+qreal CartesianDiagramDataCompressor::indexesPerPixel() const
 {
     if ( m_data.size() == 0 ) return 0;
     if ( m_data[0].size() == 0 ) return 0;
     if ( ! m_model ) return 0;
-    return m_model->rowCount( m_rootIndex ) / m_data[0].size();
+    return static_cast< qreal >( m_model->rowCount( m_rootIndex ) ) / static_cast< qreal >( m_data[0].size() );
 }
 
 bool CartesianDiagramDataCompressor::isValidCachePosition( const CachePosition& position ) const

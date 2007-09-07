@@ -221,7 +221,7 @@ void CartesianAxis::Private::drawSubUnitRulers( QPainter* painter, CartesianCoor
     int nextMayBeTick = 0;
     int mayBeTick = 0;
     int logSubstep = 0;
-    float f = dim.start;
+    qreal f = dim.start;
     qreal fLogSubstep = f;
     const bool isAbscissa = axis()->isAbscissa();
     const bool isLogarithmic = (dim.calcMode == AbstractCoordinatePlane::Logarithmic );
@@ -462,20 +462,6 @@ void CartesianAxis::paintCtx( PaintContext* context )
     }
 
     const bool useItemCountLabels = isAbscissa() && ! dimX.isCalculated;
-    //qDebug() << "CartesianAxis::paintCtx useItemCountLabels "<< useItemCountLabels;
-
-    //qDebug() << "isAbscissa():" << isAbscissa() << "   dimX.isCalculated:" << dimX.isCalculated << "   dimX.stepWidth: "<<dimX.stepWidth;
-    //FIXME(khz): Remove this code, and do the calculation in the grid calc function
-    if( isAbscissa() && ! dimX.isCalculated ){
-        // dont ignore the users settings
-        dimX.stepWidth = dimX.stepWidth ? dimX.stepWidth : 1.0;
-        //qDebug() << "screenRange / numberOfUnitRulers <= MinimumPixelsBetweenRulers" << screenRange <<"/" << numberOfUnitRulers <<"<=" << MinimumPixelsBetweenRulers;
-        while( screenRange / numberOfUnitRulers <= MinimumPixelsBetweenRulers ){
-            dimX.stepWidth *= 10.0;
-            dimX.subStepWidth  *= 10.0;
-            numberOfUnitRulers = qAbs( dimX.distance() / dimX.stepWidth );
-        }
-    }
 
     const bool drawUnitRulers = screenRange / ( numberOfUnitRulers / dimX.stepWidth ) > MinimumPixelsBetweenRulers;
     const bool drawSubUnitRulers =
@@ -493,7 +479,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
     double rulerWidth;
     double rulerHeight;
 
-    QPainter* ptr = context->painter();
+    QPainter* const ptr = context->painter();
 
     //for debugging: if( isAbscissa() )ptr->drawRect(areaGeoRect.adjusted(0,0,-1,-1));
     //qDebug() << "         " << (isAbscissa() ? "Abscissa":"Ordinate") << "axis painting with geometry" << areaGeoRect;
@@ -639,7 +625,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
         const QFontMetricsF met(
             drawLabels
             ? labelItem->realFont()
-            : QFontMetricsF( QApplication::font() ) );
+            : QFontMetricsF( QApplication::font(), GlobalMeasureScaling::paintDevice() ) );
         const qreal halfFontHeight = met.height() * 0.5;
 
         if ( isAbscissa() ) {
@@ -891,9 +877,9 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 // our labels, to get them drawn right aligned:
                 labelValue = minValueY;
                 while ( labelValue <= maxLimit ) {
-                    const QString labelText = diagram()->unitPrefix( labelValue, Qt::Vertical, true ) + 
+                    const QString labelText = diagram()->unitPrefix( static_cast< int >( labelValue ), Qt::Vertical, true ) + 
                                               QString::number( labelValue ) +
-                                              diagram()->unitSuffix( labelValue, Qt::Vertical, true );
+                                              diagram()->unitSuffix( static_cast< int >( labelValue ), Qt::Vertical, true );
                     labelItem->setText( customizedLabel( labelText ) );
                     maxLabelsWidth = qMax( maxLabelsWidth, labelItem->sizeHint().width() );
 
@@ -907,20 +893,21 @@ void CartesianAxis::paintCtx( PaintContext* context )
             bool nextLabel = false;
             //qDebug("minValueY: %f   maxLimit: %f   steg: %f", minValueY, maxLimit, steg);
 
-            // first calculate the steps depending on labels colision
-            while ( labelValue <= maxLimit ) {
-                QPointF leftPoint = plane->translate( QPointF( 0, labelValue ) );
-                const qreal translatedValue = leftPoint.y();
-                //qDebug() << "geoRect:" << geoRect << "   geoRect.top()" << geoRect.top()
-                //<< "geoRect.bottom()" << geoRect.bottom() << "  translatedValue:" << translatedValue;
-                if( translatedValue > geoRect.top() && translatedValue <= geoRect.bottom() ){
-                    if ( drawLabels ) {
-                        const QString labelText = diagram()->unitPrefix( labelValue, Qt::Vertical, true ) +
+            if( drawLabels )
+            {
+                // first calculate the steps depending on labels colision
+                while( labelValue <= maxLimit ) {
+                    QPointF leftPoint = plane->translate( QPointF( 0, labelValue ) );
+                    const qreal translatedValue = leftPoint.y();
+                    //qDebug() << "geoRect:" << geoRect << "   geoRect.top()" << geoRect.top()
+                    //<< "geoRect.bottom()" << geoRect.bottom() << "  translatedValue:" << translatedValue;
+                    if( translatedValue > geoRect.top() && translatedValue <= geoRect.bottom() ){
+                        const QString labelText = diagram()->unitPrefix( static_cast< int >( labelValue ), Qt::Vertical, true ) +
                                                   QString::number( labelValue ) +
-                                                  diagram()->unitSuffix( labelValue, Qt::Vertical, true );
-                        const QString label2Text = diagram()->unitPrefix( labelValue + step, Qt::Vertical, true ) +
+                                                  diagram()->unitSuffix( static_cast< int >( labelValue ), Qt::Vertical, true );
+                        const QString label2Text = diagram()->unitPrefix( static_cast< int >( labelValue + step ), Qt::Vertical, true ) +
                                                    QString::number( labelValue + step ) +
-                                                   diagram()->unitSuffix( labelValue + step, Qt::Vertical, true );
+                                                   diagram()->unitSuffix( static_cast< int >( labelValue + step ), Qt::Vertical, true );
                         labelItem->setText(  customizedLabel( labelText ) );
                         labelItem2->setText( customizedLabel( QString::number( labelValue + step ) ) );
                         QPointF nextPoint = plane->translate(  QPointF( 0,  labelValue + step ) );
@@ -931,51 +918,51 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         }else{
                             nextLabel = true;
                         }
+                    }else{
+                        nextLabel = true;
                     }
-                }else{
-                    nextLabel = true;
+
+                    if ( nextLabel || isLogarithmicY )
+                        calculateNextLabel( labelValue, step, isLogarithmicY );
+                    else
+                        labelValue = minValueY;
                 }
 
-                if ( nextLabel || isLogarithmicY )
+                // Second - Paint the labels
+                labelValue = minValueY;
+                //qDebug() << "axis labels starting at" << labelValue << "step width" << step;
+                while( labelValue <= maxLimit ) {
+                    //qDebug() << "value now" << labelValue;
+                    const QString labelText = diagram()->unitPrefix( static_cast< int >( labelValue ), Qt::Vertical, true ) + 
+                                              QString::number( labelValue ) + 
+                                              diagram()->unitSuffix( static_cast< int >( labelValue ), Qt::Vertical, true );
+                    labelItem->setText( customizedLabel( labelText ) );
+                    QPointF leftPoint = plane->translate( QPointF( 0, labelValue ) );
+                    QPointF rightPoint ( 0.0, labelValue );
+                    rightPoint = plane->translate( rightPoint );
+                    leftPoint.setX( rulerRef.x() + tickLength() );
+                    rightPoint.setX( rulerRef.x() );
+
+                    const qreal translatedValue = rightPoint.y();
+                    const bool bIsVisibleLabel =
+                            ( translatedValue >= geoRect.top() && translatedValue <= geoRect.bottom() );
+
+                    if( bIsVisibleLabel ){
+                        ptr->drawLine( leftPoint, rightPoint );
+                        drawnYTicks.append( static_cast<int>( leftPoint.y() ) );
+                        const QSize labelSize( labelItem->sizeHint() );
+                        leftPoint.setX( leftPoint.x() );
+                        const int x =
+                            static_cast<int>( leftPoint.x() + met.height() * ( position() == Left ? -0.5 : 0.5) )
+                            - ( position() == Left ? labelSize.width() : (labelSize.width() - maxLabelsWidth) );
+                        const int y =
+                            static_cast<int>( leftPoint.y() - ( met.ascent() + met.descent() ) * 0.6 );
+                        labelItem->setGeometry( QRect( QPoint( x, y ), labelSize ) );
+                        labelItem->paint( ptr );
+                    }
+
                     calculateNextLabel( labelValue, step, isLogarithmicY );
-                else
-                    labelValue = minValueY;
-            }
-
-            // Second - Paint the labels
-            labelValue = minValueY;
-            //qDebug() << "axis labels starting at" << labelValue << "step width" << step;
-            while ( labelValue <= maxLimit ) {
-                //qDebug() << "value now" << labelValue;
-                const QString labelText = diagram()->unitPrefix( labelValue, Qt::Vertical, true ) + 
-                                          QString::number( labelValue ) + 
-                                          diagram()->unitSuffix( labelValue, Qt::Vertical, true );
-                labelItem->setText( customizedLabel( labelText ) );
-                QPointF leftPoint = plane->translate( QPointF( 0, labelValue ) );
-                QPointF rightPoint ( 0.0, labelValue );
-                rightPoint = plane->translate( rightPoint );
-                leftPoint.setX( rulerRef.x() + tickLength() );
-                rightPoint.setX( rulerRef.x() );
-
-                const qreal translatedValue = rightPoint.y();
-                const bool bIsVisibleLabel =
-                        ( translatedValue >= geoRect.top() && translatedValue <= geoRect.bottom() );
-
-                if( bIsVisibleLabel ){
-                    ptr->drawLine( leftPoint, rightPoint );
-                    drawnYTicks.append( static_cast<int>( leftPoint.y() ) );
-                    const QSize labelSize( labelItem->sizeHint() );
-                    leftPoint.setX( leftPoint.x() );
-                    const int x =
-                        static_cast<int>( leftPoint.x() + met.height() * ( position() == Left ? -0.5 : 0.5) )
-                        - ( position() == Left ? labelSize.width() : (labelSize.width() - maxLabelsWidth) );
-                    const int y =
-                        static_cast<int>( leftPoint.y() - ( met.ascent() + met.descent() ) * 0.6 );
-                    labelItem->setGeometry( QRect( QPoint( x, y ), labelSize ) );
-                    labelItem->paint( ptr );
                 }
-
-                calculateNextLabel( labelValue, step, isLogarithmicY );
             }
         }
         delete labelItem;
@@ -1069,11 +1056,11 @@ QSize CartesianAxis::maximumSize() const
                               KDChartEnums::MeasureOrientationMinimum, Qt::AlignHCenter | Qt::AlignVCenter );
     const qreal labelGap =
         drawLabels
-        ? (QFontMetricsF( labelItem.realFont() ).height() / 3.0)
+        ? (QFontMetricsF( labelItem.realFont(), GlobalMeasureScaling::paintDevice() ).height() / 3.0)
         : 0.0;
     const qreal titleGap =
         drawTitle
-        ? (QFontMetricsF( titleItem.realFont() ).height() / 3.0)
+        ? (QFontMetricsF( titleItem.realFont(), GlobalMeasureScaling::paintDevice() ).height() / 3.0)
         : 0.0;
 
     switch ( position() )

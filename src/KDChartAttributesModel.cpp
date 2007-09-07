@@ -462,6 +462,8 @@ bool AttributesModel::resetData ( const QModelIndex & index, int role )
 bool AttributesModel::setHeaderData ( int section, Qt::Orientation orientation,
                                       const QVariant & value, int role )
 {
+    if( sourceModel() != 0 && headerData( section, orientation, role ) == value )
+        return true;
     if ( !isKnownAttributesRole( role ) ) {
         return sourceModel()->setHeaderData( section, orientation, value, role );
     } else {
@@ -472,6 +474,7 @@ bool AttributesModel::setHeaderData ( int section, Qt::Orientation orientation,
         if( sourceModel() ){
             emit attributesChanged( index( 0, section, QModelIndex() ),
                                     index( rowCount( QModelIndex() ), section, QModelIndex() ) );
+            emit headerDataChanged( orientation, section, section );
         }
         return true;
     }
@@ -529,12 +532,32 @@ int AttributesModel::columnCount( const QModelIndex& index ) const
 void AttributesModel::setSourceModel( QAbstractItemModel* sourceModel )
 {
     if( this->sourceModel() != 0 )
+    {
         disconnect( this->sourceModel(), SIGNAL( dataChanged( const QModelIndex&, const QModelIndex&)),
                                   this, SIGNAL( dataChanged( const QModelIndex&, const QModelIndex&)));
+        disconnect( this->sourceModel(), SIGNAL( rowsInserted( const QModelIndex&, int, int ) ),
+                                  this, SIGNAL( rowsInserted( const QModelIndex&, int, int ) ) );
+        disconnect( this->sourceModel(), SIGNAL( rowsRemoved( const QModelIndex&, int, int ) ),
+                                  this, SIGNAL( rowsRemoved( const QModelIndex&, int, int ) ) );
+        disconnect( this->sourceModel(), SIGNAL( columnsInserted( const QModelIndex&, int, int ) ),
+                                  this, SIGNAL( columnsInserted( const QModelIndex&, int, int ) ) );
+        disconnect( this->sourceModel(), SIGNAL( columnsRemoved( const QModelIndex&, int, int ) ),
+                                  this, SIGNAL( columnsRemoved( const QModelIndex&, int, int ) ) );
+    }
     QAbstractProxyModel::setSourceModel( sourceModel );
     if( this->sourceModel() != NULL )
+    {
         connect( this->sourceModel(), SIGNAL( dataChanged( const QModelIndex&, const QModelIndex&)),
                                 this, SIGNAL( dataChanged( const QModelIndex&, const QModelIndex&)));
+        connect( this->sourceModel(), SIGNAL( rowsInserted( const QModelIndex&, int, int ) ),
+                                this, SIGNAL( rowsInserted( const QModelIndex&, int, int ) ) );
+        connect( this->sourceModel(), SIGNAL( rowsRemoved( const QModelIndex&, int, int ) ),
+                                this, SIGNAL( rowsRemoved( const QModelIndex&, int, int ) ) );
+        connect( this->sourceModel(), SIGNAL( columnsInserted( const QModelIndex&, int, int ) ),
+                                this, SIGNAL( columnsInserted( const QModelIndex&, int, int ) ) );
+        connect( this->sourceModel(), SIGNAL( columnsRemoved( const QModelIndex&, int, int ) ),
+                                this, SIGNAL( columnsRemoved( const QModelIndex&, int, int ) ) );
+    }
 }
 
 /** needed for serialization */

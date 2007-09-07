@@ -115,7 +115,10 @@ HEADERS += KDChartGlobal.h \
            Ternary/KDChartTernaryLineDiagram.h \
            Scenery/ChartGraphicsItem.h \
            Scenery/ReverseMapper.h \
-           KDChartValueTrackerAttributes.h
+           KDChartValueTrackerAttributes.h \
+           KDChartPlotter.h \
+           KDChartPlotter_p.h \
+           KDChartNormalPlotter_p.h \
 
 SOURCES += \
            KDChartMeasure.cpp \
@@ -189,7 +192,10 @@ SOURCES += \
            Ternary/KDChartTernaryLineDiagram.cpp \
            Scenery/ChartGraphicsItem.cpp \
            Scenery/ReverseMapper.cpp \
-           KDChartValueTrackerAttributes.cpp
+           KDChartValueTrackerAttributes.cpp \
+           KDChartPlotter.cpp \
+           KDChartPlotter_p.cpp \
+           KDChartNormalPlotter_p.cpp \
 
 CONFIG += warn-on
 

@@ -1,0 +1,19 @@
+- CoordinatePlane also needs to translate with perspective (x, y, and z
+  coordinates)
+- CoordinatePlane also needs to translate distances from diagram to screen
+  space (double to pixel)
+- it should be simple to make the coordinate plane only display the upper
+  right quadrant, possibly with 3D decorations like in the example (used in
+  most diagrams, I guess)
+- 3D diagrams look good if they are drawn without isometric distortion,
+  otherwise they quickly look ugly
+- 2D and 3D diagrams of the same logical type (bar diagrams, line diagrams)
+  should possibly be done as different diagram types that share private helper
+  functions, or use separate drawing delegates for the same type (separate
+  drawing delegates for objects like bars seem to be a better solution, as it
+  allows for mixed 2D/3D diagrams, as Till pointed out)
+- dataBoundaries is called in all different places, and seems to be very
+  expensive (it iterates over the whole model and visits all items, so that
+  can be expected). The example implementation here holds a ModelDataCache
+  class that reduces the number of data() calls into the model drastically. I
+  hope this can be factored out for all diagrams. 

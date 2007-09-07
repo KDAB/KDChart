@@ -1,0 +1,139 @@
+
+This is a list of examples and screen-shots needed for the Programmer Manual
+
+1/ Chapt3 
+
+1/SimpleWidget example (very simple widget - may be with a Legend)
+  * screen-shot: simplewidget.png
+
+Suggested location: /examples/Widget/SimpleWidget
+
+2/SimpleChart example (very simple bar chart)
+  * screen-shot: simplechart.png 
+
+Suggested location /examples/Chart/SimpleChart
+
+3/FullFeaturedBarChart example.
+
+ * for the tips and trick section of the bar chart 
+
+Suggested location /examples/Bars/BarsFullFeatured
+
+
+4/SimpleLineChart Example (very simple line chart)
+
+ * for Line example
+
+Suggested location /examples/Lines/SimpleLine
+
+5/FullFeaturedLineChart example
+
+* for the tips and trick section of the line chart
+
+Suggested location /examples/Lines/LinesFullFeatured
+
+ 
+6/SimplePointChartExample 
+
+ *for point example
+
+Suggested location /examples/Lines/SimplePoint
+
+7/FullFeaturedPointexample 
+
+* for the tips and tricks section of the point charts 
+Playing with display values and markers styles
+
+
+Suggested location /examples/Lines/PointsFullFeatured
+
+8/SimpleAreaChartExample 
+
+ *for area example
+
+Suggested location /examples/Lines/SimpleArea
+
+9/FullFeaturedAreaexample 
+
+* for the tips and tricks section of the area charts 
+Playing with line/point types transparency - animation etc...
+
+
+Suggested location /examples/Lines/AreaFullFeatured
+
+10/SimpleHighLowExample 
+
+ *for HighLow example
+
+Suggested location /examples/HighLow/SimpleHilo
+
+11/FullFeaturedHighLowexample 
+
+* for the tips and tricks section of the HighLow charts 
+
+
+Suggested location /examples/HighLow/HiLoFullFeatured
+
+12/SimpleBWExample 
+
+ *for BW example
+
+Suggested location /examples/BWCharts/SimpleBW
+
+13/FullFeaturedBWexample 
+
+* for the tips and tricks section of the BW charts 
+
+
+Suggested location /examples/BWCharts/BWFullFeatured
+
+12/SimplePieExample 
+
+ *for simple pie example (shall display values and have legend)
+
+Suggested location /examples/Pie/SimplePie
+
+13/SimplePieexploded in threed mode
+
+ *for simple pie exploded in ThreeD mode 
+ * should display datavalue and have a legend and a title 
+
+Suggested location /examples/Pie/ThreeDPieExploded
+
+14/FullFeaturedPieexample 
+
+* for the tips and tricks section of the Pie charts 
+
+
+Suggested location /examples/Pie/PieFullFeatured
+
+15/SimpleRing example
+
+* for simple ring example - default no relative thickness - with legend and values
+
+Suggested location /examples/Ring/SimpleRing
+
+16/RingRelativeThickness example 
+
+Description (see also this example in the kdc11x manual):
+
+Relative thickness mode is activated by calling the <classname>KDChartRingAttributes</classname> function <methodname>setRelativeThickness( true )</methodname> where each ring represents one dataset and the ring widths show the relationsof the dataset totals to each other.
+the thickness of the middle ring shows clearly that this series represents the biggest total value.
+
+Shall have a legend and data values.
+
+Suggested location /examples/Ring/RingRelativeThickness
+
+17/ RingExploded example
+
+Description (see also this example in the kdc11x manual):
+
+explode with different factors segments by call the 
+<methodname>KDChartRingAttributes::setExplodeFactors()</methodname> function 
+and pass to it a <literal>KDChartRingAttributes::ExplodeFactorsMap</literal>
+with one <literal>double</literal> value for every segment. 
+The  resulting ring chart should have exploded all segments with values less 
+than their ring's average while the smallest value is exploded even more.
+
+A ring chart featuring both relative thickness of the rings and differently 
+exploded segments on the outer ring. 

@@ -25,6 +25,7 @@ namespace KDChart {
         void clear();
 
         QModelIndexList indexesAt( const QPointF& point ) const;
+        QModelIndexList indexesIn( const QRect& rect ) const;
 
         void addItem( ChartGraphicsItem* item );
 

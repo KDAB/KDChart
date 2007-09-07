@@ -44,6 +44,7 @@
 
 
 class QObject;
+class QPaintDevice;
 
 namespace KDChart {
 
@@ -173,8 +174,19 @@ public:
      */
     static const QPair< qreal, qreal > currentFactors();
 
+    /**
+     * Sets the paint device usable for calculating fort metrics.
+     */
+    static void setPaintDevice( QPaintDevice* paintDevice );
+
+    /**
+     * Returns the paint device usable for calculating fort metrics.
+     */
+    static QPaintDevice* paintDevice();
+
 private:
     QStack< QPair< qreal, qreal > > mFactors;
+    QPaintDevice* m_paintDevice;
 };
 
 }

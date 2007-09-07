@@ -1,4 +1,4 @@
-#include <QModelIndex>
+#include <QAbstractItemModel>
 
 #include "KDChartBarDiagram.h"
 #include "KDChartLineDiagram.h"
@@ -24,16 +24,16 @@ const QPair< QPointF, QPointF > NormalLineDiagram::calculateDataBoundaries() con
     const int rowCount = compressor().modelDataRows();
     const int colCount = compressor().modelDataColumns();
     double xMin = 0;
-    double xMax = rowCount -1;
+    double xMax = diagram()->model() ? diagram()->model()->rowCount( diagram()->rootIndex() ) - 1 : 0;
     double yMin = 0;
     double yMax = 0;
 
     bool first = true;
-    for( int i = 0; i < colCount; ++i )
+    for( int column = 0; column < colCount; ++column )
     {
-        for ( int j = 0; j < rowCount; ++j )
+        for ( int row = 0; row < rowCount; ++row )
         {
-            const CartesianDiagramDataCompressor::CachePosition position( j, i );
+            const CartesianDiagramDataCompressor::CachePosition position( row, column );
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
 
             if ( first ) {
@@ -92,10 +92,10 @@ void NormalLineDiagram::paint( PaintContext* ctx )
                 const QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );
                 const CartesianDiagramDataCompressor::DataPoint lastPoint = compressor().data( previousCellPosition );
                 // area corners, a + b are the line ends:
-                const QPointF a( plane->translate( QPointF( row - 1, lastPoint.value ) ) );
-                const QPointF b( plane->translate( QPointF( row, point.value ) ) );
-                const QPointF c( plane->translate( QPointF( row - 1, 0.0 ) ) );
-                const QPointF d( plane->translate( QPointF( row, 0.0 ) ) );
+                const QPointF a( plane->translate( QPointF( lastPoint.key, lastPoint.value ) ) );
+                const QPointF b( plane->translate( QPointF( point.key, point.value ) ) );
+                const QPointF c( plane->translate( QPointF( lastPoint.key, 0.0 ) ) );
+                const QPointF d( plane->translate( QPointF( point.key, 0.0 ) ) );
                 // add the line to the list:
                 laCell = diagram()->lineAttributes( sourceIndex );
                 // add data point labels:

@@ -24,17 +24,17 @@ const QPair<QPointF, QPointF> StackedBarDiagram::calculateDataBoundaries() const
     const int colCount = compressor().modelDataColumns();
 
     double xMin = 0;
-    double xMax = rowCount;
+    double xMax = diagram()->model() ? diagram()->model()->rowCount( diagram()->rootIndex() ) : 0;
     double yMin = 0, yMax = 0;
 
     bool bStarting = true;
-    for( int j = 0; j < rowCount; ++j )
+    for( int row = 0; row < rowCount; ++row )
     {
         // calculate sum of values per column - Find out stacked Min/Max
         double stackedValues = 0;
-        for ( int i=0; i<colCount ; ++i )
+        for ( int col = 0; col < colCount ; ++col )
         {
-            const CartesianDiagramDataCompressor::CachePosition position( j, i );
+            const CartesianDiagramDataCompressor::CachePosition position( row, col );
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
             stackedValues +=  point.value;
             // this is always true yMin can be 0 in case all values
@@ -53,9 +53,11 @@ const QPair<QPointF, QPointF> StackedBarDiagram::calculateDataBoundaries() const
     // special cases
     if (  yMax == yMin ) {
         if ( yMin == 0.0 )
-            yMax = 0.1; //we need at list a range
-        else
-            yMax = 0.0; // they are the same but negative
+            yMax = 0.1; //we need at least a range
+        else if( yMax < 0.0 )
+            yMax = 0.0; // they are the same and negative
+        else if( yMin > 0.0 )
+            yMin = 0.0; // they are the same but positive
     }
     const QPointF bottomLeft ( QPointF( xMin, yMin ) );
     const QPointF topRight ( QPointF( xMax, yMax ) );
@@ -116,18 +118,25 @@ void StackedBarDiagram::paint(  PaintContext* ctx )
                                 barWidth, spaceBetweenBars, spaceBetweenGroups );
 
     DataValueTextInfoList list;
-    for( int i = 0; i < colCount; ++i )
+    for( int col = 0; col < colCount; ++col )
     {
         double offset = spaceBetweenGroups;
-        for( int j = 0; j < rowCount; ++j )
+        if( ba.useFixedBarWidth() )
+            offset -= ba.fixedBarWidth();
+        
+        if( offset < 0 )
+            offset = 0;
+
+        for( int row = 0; row < rowCount; ++row )
         {
-            const CartesianDiagramDataCompressor::CachePosition position( j, i );
+            const CartesianDiagramDataCompressor::CachePosition position( row, col );
             const CartesianDiagramDataCompressor::DataPoint p = compressor().data( position );
  
             const QModelIndex index = attributesModel()->mapToSource( p.index );
             ThreeDBarAttributes threeDAttrs = diagram()->threeDBarAttributes( index );
             const double value = p.value;
             double stackedValues = 0.0;
+            double key = 0.0;
 
             if ( threeDAttrs.isEnabled() ) {
                 if ( barWidth > 0 )
@@ -139,15 +148,16 @@ void StackedBarDiagram::paint(  PaintContext* ctx )
             } else
                 barWidth =  (ctx->rectangle().width() - (offset*rowCount))/ rowCount ;
 
-            for ( int k = i; k >= 0; --k )
+            for ( int k = col; k >= 0; --k )
             {
-                const CartesianDiagramDataCompressor::CachePosition position( j, k );
+                const CartesianDiagramDataCompressor::CachePosition position( row, k );
                 const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
                 stackedValues += point.value;
+                key = point.key;
             }
-            QPointF point = ctx->coordinatePlane()->translate( QPointF( j, stackedValues ) );
+            QPointF point = ctx->coordinatePlane()->translate( QPointF( key, stackedValues ) );
             point.rx() += offset / 2;
-            const QPointF previousPoint = ctx->coordinatePlane()->translate( QPointF( j, stackedValues - value ) );
+            const QPointF previousPoint = ctx->coordinatePlane()->translate( QPointF( key, stackedValues - value ) );
             const double barHeight = previousPoint.y() - point.y();
 
             const QRectF rect( point, QSizeF( barWidth , barHeight ) );

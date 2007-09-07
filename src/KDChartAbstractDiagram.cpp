@@ -513,7 +513,7 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
         const RelativePosition relPos( a.position( value >= 0.0 ) );
         const Qt::Alignment alignBottomLeft = Qt::AlignBottom | Qt::AlignLeft;
         const QFont calculatedFont( ta.calculatedFont( d->plane, KDChartEnums::MeasureOrientationMinimum ) );
-        const QRectF boundRect( d->cachedFontMetrics( calculatedFont, this )->boundingRect( doc.toPlainText() ) );
+        const QRectF boundRect( d->cachedFontMetrics( calculatedFont, painter->device() )->boundingRect( doc.toPlainText() ) );
 
         // To place correctly
         pt.ry() -= boundRect.height();
@@ -742,6 +742,8 @@ void AbstractDiagram::paintMarkers( QPainter* painter )
 
 void AbstractDiagram::setPen( const QModelIndex& index, const QPen& pen )
 {
+    if( datasetDimension() > 1 )
+        return setPen( index.column(), pen );
     attributesModel()->setData(
         attributesModel()->mapFromSource( index ),
         qVariantFromValue( pen ), DatasetPenRole );
@@ -757,6 +759,8 @@ void AbstractDiagram::setPen( const QPen& pen )
 
 void AbstractDiagram::setPen( int column,const QPen& pen )
 {
+    if( datasetDimension() > 1 )
+        column *= datasetDimension();
     attributesModel()->setHeaderData(
         column, Qt::Vertical,
         qVariantFromValue( pen ),
@@ -772,6 +776,9 @@ QPen AbstractDiagram::pen() const
 
 QPen AbstractDiagram::pen( int dataset ) const
 {
+    if( datasetDimension() > 1 )
+        dataset /= datasetDimension();
+
     return qVariantValue<QPen>(
         attributesModel()->data(
             attributesModel()->mapFromSource( columnToIndex( dataset ) ),
@@ -780,6 +787,8 @@ QPen AbstractDiagram::pen( int dataset ) const
 
 QPen AbstractDiagram::pen( const QModelIndex& index ) const
 {
+    if( datasetDimension() > 1 )
+        return pen( index.column() );
     return qVariantValue<QPen>(
         attributesModel()->data(
             attributesModel()->mapFromSource( index ),
@@ -818,6 +827,8 @@ QBrush AbstractDiagram::brush() const
 
 QBrush AbstractDiagram::brush( int dataset ) const
 {
+    if( datasetDimension() > 1 )
+        dataset /= datasetDimension();
     return qVariantValue<QBrush>(
         attributesModel()->data(
             attributesModel()->mapFromSource( columnToIndex( dataset ) ),
@@ -826,6 +837,8 @@ QBrush AbstractDiagram::brush( int dataset ) const
 
 QBrush AbstractDiagram::brush( const QModelIndex& index ) const
 {
+    if( datasetDimension() > 1 )
+        return brush( index.column() );
     return qVariantValue<QBrush>(
         attributesModel()->data(
             attributesModel()->mapFromSource( index ),
@@ -899,8 +912,16 @@ int AbstractDiagram::verticalOffset() const
 bool AbstractDiagram::isIndexHidden(const QModelIndex &) const
 { return true; }
 
-void AbstractDiagram::setSelection(const QRect &, QItemSelectionModel::SelectionFlags)
-{}
+void AbstractDiagram::setSelection(const QRect& rect , QItemSelectionModel::SelectionFlags command )
+{
+    const QModelIndexList indexes = d->indexesIn( rect );
+    QItemSelection selection;
+    KDAB_FOREACH( const QModelIndex& index, indexes )
+    {
+        selection.append( QItemSelectionRange( index ) );
+    }
+    selectionModel()->select( selection, command );
+}
 
 QRegion AbstractDiagram::visualRegionForSelection(const QItemSelection &) const
 { return QRegion(); }
@@ -940,27 +961,25 @@ QStringList AbstractDiagram::itemRowLabels() const
 QStringList AbstractDiagram::datasetLabels() const
 {
     QStringList ret;
-    if( model() ){
-        //qDebug() << "AbstractDiagram::datasetLabels(): " << attributesModel()->columnCount(attributesModelRootIndex()) << "entries";
-        const int columnCount = attributesModel()->columnCount(attributesModelRootIndex());
-        for( int i = datasetDimension()-1; i < columnCount; i += datasetDimension() ){
-            //qDebug() << "dataset label: " << attributesModel()->headerData( i, Qt::Horizontal, Qt::DisplayRole ).toString();
-            ret << attributesModel()->headerData( i, Qt::Horizontal, Qt::DisplayRole ).toString();
-        }
-    }
+    if( model() == 0 )
+        return ret;
+    
+    const int columnCount = attributesModel()->columnCount(attributesModelRootIndex());
+    for( int i = 0; i < columnCount / datasetDimension(); ++i )
+        ret << attributesModel()->headerData( i, Qt::Horizontal, Qt::DisplayRole ).toString();
+    
     return ret;
 }
 
 QList<QBrush> AbstractDiagram::datasetBrushes() const
 {
     QList<QBrush> ret;
-    if( model() ){
-        const int columnCount = attributesModel()->columnCount(attributesModelRootIndex());
-        for( int i = datasetDimension()-1; i < columnCount; i += datasetDimension() ) {
-            QBrush brush = qVariantValue<QBrush>( attributesModel()->headerData( i, Qt::Vertical, DatasetBrushRole ) );
-            ret << brush;
-        }
-    }
+    if( model() == 0 )
+        return ret;
+
+    const int columnCount = attributesModel()->columnCount(attributesModelRootIndex());
+    for( int i = 0; i < columnCount / datasetDimension(); ++i )
+        ret << qVariantValue<QBrush>( attributesModel()->headerData( i, Qt::Vertical, DatasetBrushRole ) );
 
     return ret;
 }
@@ -968,27 +987,28 @@ QList<QBrush> AbstractDiagram::datasetBrushes() const
 QList<QPen> AbstractDiagram::datasetPens() const
 {
     QList<QPen> ret;
-    if( model() ){
-        const int columnCount = attributesModel()->columnCount(attributesModelRootIndex());
-        for( int i = datasetDimension()-1; i < columnCount; i += datasetDimension() ) {
-            QPen pen = qVariantValue<QPen>( attributesModel()->headerData( i, Qt::Vertical, DatasetPenRole ) );
-            ret << pen;
-        }
-    }
+    if( model() == 0 )
+        return ret;
+    
+    const int columnCount = attributesModel()->columnCount(attributesModelRootIndex());
+    for( int i = 0; i < columnCount / datasetDimension(); ++i )
+        ret << qVariantValue<QPen>( attributesModel()->headerData( i, Qt::Vertical, DatasetPenRole ) );
+    
     return ret;
 }
 
 QList<MarkerAttributes> AbstractDiagram::datasetMarkers() const
 {
     QList<MarkerAttributes> ret;
-    if( model() ){
-        const int columnCount = attributesModel()->columnCount(attributesModelRootIndex());
-        for( int i = datasetDimension()-1; i < columnCount; i += datasetDimension() ) {
-            DataValueAttributes a =
-                qVariantValue<DataValueAttributes>( attributesModel()->headerData( i, Qt::Vertical, DataValueLabelAttributesRole ) );
-            const MarkerAttributes &ma = a.markerAttributes();
-            ret << ma;
-        }
+    if( model() == 0 )
+        return ret;
+    
+    const int columnCount = attributesModel()->columnCount(attributesModelRootIndex());
+    for( int i = 0; i < columnCount / datasetDimension(); ++i )
+    {
+        const DataValueAttributes a =
+            qVariantValue<DataValueAttributes>( attributesModel()->headerData( i, Qt::Vertical, DataValueLabelAttributesRole ) );
+        ret << a.markerAttributes();
     }
     return ret;
 }

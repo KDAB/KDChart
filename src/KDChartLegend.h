@@ -84,7 +84,7 @@ public:
     virtual Legend * clone() const;
 
     /**
-     * Returns true if both axes have the same settings.
+     * Returns true if both legends have the same settings.
      */
     bool compare( const Legend* other )const;
 

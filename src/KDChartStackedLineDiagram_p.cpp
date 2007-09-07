@@ -1,4 +1,4 @@
-#include <QModelIndex>
+#include <QAbstractItemModel>
 
 #include "KDChartBarDiagram.h"
 #include "KDChartLineDiagram.h"
@@ -24,15 +24,16 @@ const QPair<QPointF, QPointF> StackedLineDiagram::calculateDataBoundaries() cons
     const int rowCount = compressor().modelDataRows();
     const int colCount = compressor().modelDataColumns();
     double xMin = 0;
-    double xMax = rowCount -1;
+    double xMax = diagram()->model() ? diagram()->model()->rowCount( diagram()->rootIndex() ) - 1 : 0;
     double yMin = 0, yMax = 0;
 
     bool bStarting = true;
-    for ( int j=0; j< rowCount; ++j ) {
+    for( int row = 0; row < rowCount; ++row )
+    {
         // calculate sum of values per column - Find out stacked Min/Max
         double stackedValues = 0;
-        for( int i = datasetDimension() - 1; i < colCount; i += datasetDimension() ) {
-            CartesianDiagramDataCompressor::CachePosition position( j, i );
+        for( int col = datasetDimension() - 1; col < colCount; col += datasetDimension() ) {
+            CartesianDiagramDataCompressor::CachePosition position( row, col );
             CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
 
             stackedValues += point.value;
@@ -108,10 +109,8 @@ void StackedLineDiagram::paint(  PaintContext* ctx )
             const LineAttributes laCell = diagram()->lineAttributes( sourceIndex );
             const bool bDisplayCellArea = laCell.displayArea();
 
-            double stackedValues = 0, nextValues = 0;
+            double stackedValues = 0, nextValues = 0, nextKey = 0;
             for ( int column2 = column; column2 >= 0; --column2 )
-/*                  column2 >= datasetDimension() - 1;
-                  column2 -= datasetDimension() )*/
             {
                 const CartesianDiagramDataCompressor::CachePosition position( row, column2 );
                 const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
@@ -122,17 +121,18 @@ void StackedLineDiagram::paint(  PaintContext* ctx )
                     CartesianDiagramDataCompressor::CachePosition position( row + 1, column2 );
                     CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
                     nextValues += point.value;
+                    nextKey = point.key;
                 }
             }
             //qDebug() << stackedValues << endl;
-            const QPointF nextPoint = ctx->coordinatePlane()->translate( QPointF( row, stackedValues ) );
+            const QPointF nextPoint = ctx->coordinatePlane()->translate( QPointF( point.key, stackedValues ) );
             points << nextPoint;
 
             const QPointF ptNorthWest( nextPoint );
             const QPointF ptSouthWest(
                 bDisplayCellArea
                 ? ( bFirstDataset
-                    ? ctx->coordinatePlane()->translate( QPointF( row, 0.0 ) )
+                    ? ctx->coordinatePlane()->translate( QPointF( point.key, 0.0 ) )
                     : bottomPoints.at( row )
                     )
                 : nextPoint );
@@ -140,13 +140,13 @@ void StackedLineDiagram::paint(  PaintContext* ctx )
             QPointF ptSouthEast;
 
             if ( row + 1 < rowCount ){
-                QPointF toPoint = ctx->coordinatePlane()->translate( QPointF( row + 1, nextValues ) );
+                QPointF toPoint = ctx->coordinatePlane()->translate( QPointF( nextKey, nextValues ) );
                 lineList.append( LineAttributesInfo( sourceIndex, nextPoint, toPoint ) );
                 ptNorthEast = toPoint;
                 ptSouthEast =
                     bDisplayCellArea
                     ? ( bFirstDataset
-                        ? ctx->coordinatePlane()->translate( QPointF( row + 1, 0.0 ) )
+                        ? ctx->coordinatePlane()->translate( QPointF( nextKey, 0.0 ) )
                         : bottomPoints.at( row + 1 )
                         )
                     : toPoint;
