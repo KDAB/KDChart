@@ -37,7 +37,7 @@ SUBDIRS +=  AttributesSerializer \
 unix:SUBDIRS += AxisOwnership
 release:WIN_BINDIR=release
 debug:WIN_BINDIR=debug
-debug_and_release:WIN_BINDIR=release
+#debug_and_release:WIN_BINDIR=release
 test.target=test
 unix:!macx {
     LIB_PATH=../../lib:\$\$LD_LIBRARY_PATH
