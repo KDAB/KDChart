@@ -68,15 +68,16 @@ public:
     static const Palette& subduedPalette();
     static const Palette& rainbowPalette();
 
-    /** Returns wether this represents a valid palette. For a palette to be
+    /** @return wether this represents a valid palette. For a palette to be
      * valid it needs to have at least one brush associated. */
     bool isValid() const;
 
-    /** Return the number of brushed in the palette.  */
+    /** @return the number of brushed in the palette.  */
     int size() const;
 
-    /** Adds \a brush to the palette. If no position is specified, the
-     * brush is appended. */
+    /** Adds \a brush to the palette. If no \a position is specified, the
+     * brush is appended. 
+     */
     void addBrush( const QBrush & brush, int position = -1 );
 
     /**
@@ -85,7 +86,7 @@ public:
      */
     QBrush getBrush( int position ) const;
 
-    /** Remove the brush at position @param position, if there is one.  */
+    /** Remove the brush at position \a position, if there is one.  */
     void removeBrush( int position );
 
 Q_SIGNALS:

@@ -109,7 +109,7 @@ public:
       Converts the specified granularity sequence enum to a
       string representation.
 
-      \param type the granularity sequence enum to convert
+      \param sequence the granularity sequence enum to convert
       \return the string representation of the granularity sequence
       */
     static QString granularitySequenceToString( GranularitySequence sequence ) {
@@ -236,7 +236,7 @@ public:
       Converts the specified measure calculation mode enum to a
       string representation.
 
-      \param type the measure calculation mode to convert
+      \param mode the measure calculation mode to convert
       \return the string representation of the Measure calculation mode enum
       */
     static QString measureCalculationModeToString( MeasureCalculationMode mode ) {
@@ -305,7 +305,7 @@ public:
       Converts the specified measure orientation enum to a
       string representation.
 
-      \param type the measure orientation to convert
+      \param mode the measure orientation to convert
       \return the string representation of the measure orientation enum
       */
     static QString measureOrientationToString( MeasureOrientation mode ) {

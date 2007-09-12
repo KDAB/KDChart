@@ -155,14 +155,16 @@ namespace KDChart {
         /**
          * Sets the zoom factor in horizontal direction, that is applied
          * to all coordinate transformations.
+         * @param factor The new zoom factor
          */
-        virtual void setZoomFactorX( double /* factor */ ) {}
+        virtual void setZoomFactorX( double  factor ) { Q_UNUSED( factor ); }
 
         /**
          * Sets the zoom factor in vertical direction, that is applied
          * to all coordinate transformations.
+         * @param factor The new zoom factor
          */
-        virtual void setZoomFactorY( double /* factor */ ) {}
+        virtual void setZoomFactorY( double factor ) { Q_UNUSED( factor ); }
 
         /**
          * @return The center point (in value coordinates) of the
@@ -175,7 +177,7 @@ namespace KDChart {
          * center point in zoom operations.
          * @param center The point to use.
          */
-        virtual void setZoomCenter( const QPointF& /* center */ ) {}
+        virtual void setZoomCenter( const QPointF& center ) { Q_UNUSED( center ); }
 
         /**
          * Set the grid attributes to be used by this coordinate plane.

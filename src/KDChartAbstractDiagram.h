@@ -228,7 +228,7 @@ namespace KDChart {
          * e.g. you could define a proxy model on top of your data model, and register
          * the proxy model calling setModel() instead of registering your real data model.
          *
-         * @param dataset The dataset to set the hidden status for.
+         * @param column The dataset to set the hidden status for.
          * @param hidden The hidden status to set.
          */
         void setHidden( int column, bool hidden );
@@ -258,7 +258,7 @@ namespace KDChart {
          * Retrieve the hidden status for the given dataset. This will fall
          * back automatically to what was set at diagram level, if there
          * are no dataset specific settings.
-         * @param dataset The dataset to retrieve the hidden status for.
+         * @param column The dataset to retrieve the hidden status for.
          * @return The hidden status for the given dataset.
          */
         bool isHidden( int column ) const;
@@ -306,7 +306,7 @@ namespace KDChart {
          * Retrieve the DataValueAttributes for the given dataset. This will fall
          * back automatically to what was set at model level, if there
          * are no dataset specific settings.
-         * @param dataset The dataset to retrieve the attributes for.
+         * @param column The dataset to retrieve the attributes for.
          * @return The DataValueAttributes for the given dataset.
          */
         DataValueAttributes dataValueAttributes( int column ) const;
@@ -373,7 +373,7 @@ namespace KDChart {
         /**
          * Set the brush to be used, for painting the given dataset.
          * @param dataset The dataset's column in the model.
-         * @param pen The brush to use.
+         * @param brush The brush to use.
          */
         void setBrush( int dataset, const QBrush& brush );
 

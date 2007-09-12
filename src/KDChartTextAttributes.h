@@ -178,7 +178,7 @@ public:
 
   /**
    * Set the pen to use for rendering the text.
-   * \param rotation The pen to use.
+   * \param pen The pen to use.
    */
   void setPen( const QPen& pen );
 

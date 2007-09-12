@@ -40,13 +40,12 @@ namespace KDChart {
   public:
     explicit AbstractProxyModel( QObject* parent = 0 );
 
-    /*! \reimp*/ QModelIndex mapFromSource( const QModelIndex & sourceIndex ) const;
-    /*! \reimp*/ QModelIndex mapToSource( const QModelIndex &proxyIndex ) const;
+    /*! \reimpl */ QModelIndex mapFromSource( const QModelIndex & sourceIndex ) const;
+    /*! \reimpl */ QModelIndex mapToSource( const QModelIndex &proxyIndex ) const;
 
-    /*! \reimp*/ QModelIndex index( int row, int col, const QModelIndex& index ) const;
-    /*! \reimp*/ QModelIndex parent( const QModelIndex& index ) const;
+    /*! \reimpl */ QModelIndex index( int row, int col, const QModelIndex& index ) const;
+    /*! \reimpl */ QModelIndex parent( const QModelIndex& index ) const;
   };
 }
 
 #endif /* KDCHARTABSTRACTPROXYMODEL_H */
-

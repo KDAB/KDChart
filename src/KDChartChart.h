@@ -437,7 +437,7 @@ namespace KDChart {
      * directory may be directly used by your application.
      *
      * The recommended way to include classes of the KDChart API is including
- * them by class name, so instead of including KDChartChart.h you would say:
+     * them by class name, so instead of including KDChartChart.h you would say:
      *
     \verbatim
 #include <KDChartChart>
@@ -451,7 +451,7 @@ namespace KDChart {
      * @class QAbstractItemView "(do not include)"
      * @brief Class only listed here to document inheritance of some KDChart classes.
      *
- * Please consult the respective Qt documentation for details:
+     * Please consult the respective Qt documentation for details:
      * <A HREF="http://doc.trolltech.com/">http://doc.trolltech.com/</A>
  */
 /**
