@@ -39,6 +39,9 @@ namespace KDChart {
 
     class ThreeDLineAttributes;
 
+/**
+  * @brief Plotter defines a diagram type plotting two-dimensional data.
+  */
 class KDCHART_EXPORT Plotter : public AbstractCartesianDiagram
 {
     Q_OBJECT

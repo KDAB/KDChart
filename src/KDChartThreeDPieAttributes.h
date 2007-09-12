@@ -32,6 +32,9 @@
 
 namespace KDChart {
 
+  /**
+    * @brief A set of 3D pie attributes
+    */
   class KDCHART_EXPORT ThreeDPieAttributes : public AbstractThreeDAttributes
   {
   public:

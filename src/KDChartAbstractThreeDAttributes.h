@@ -35,6 +35,9 @@
 
 namespace KDChart {
 
+/**
+  * @brief Base class for 3D attributes
+  */
 class KDCHART_EXPORT AbstractThreeDAttributes
 {
 public:

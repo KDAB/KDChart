@@ -33,6 +33,9 @@ namespace KDChart {
 
     class GridAttributes;
 
+    /**
+      * @brief Base class for diagrams based on a polar coordinate system.
+      */
     class KDCHART_EXPORT AbstractPolarDiagram : public AbstractDiagram
     {
         Q_OBJECT

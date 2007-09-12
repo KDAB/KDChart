@@ -41,7 +41,9 @@ namespace KDChart {
 
     typedef QList<DataDimension> DataDimensionsList;
 
-
+    /**
+      * @brief Base class common for all coordinate planes, CartesianCoordinatePlane, PolarCoordinatePlane, TernaryCoordinatePlane
+      */
     class KDCHART_EXPORT AbstractCoordinatePlane : public AbstractArea
     {
         Q_OBJECT

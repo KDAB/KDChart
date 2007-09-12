@@ -5,8 +5,9 @@
 
 #include "KDChartEnums.h"
 
-// base class for prerendered elements like labels, pixmaps, markers,
-// etc
+/**
+  * @brief  base class for prerendered elements like labels, pixmaps, markers, etc.
+  */
 class PrerenderedElement {
 public:
     PrerenderedElement();
@@ -48,8 +49,10 @@ private:
     KDChartEnums::PositionValue m_referencePoint;
 };
 
-/** CachedLabel is an internal KDChart class that simplifies creation
+/** 
+    @brief PrerenderedLabel is an internal KDChart class that simplifies creation
     and caching of cached text labels.
+    
     It provides referenze points to anchor the text to other
     elements. Reference points use the positions defined in
     KDChartEnums.

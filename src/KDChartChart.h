@@ -489,5 +489,27 @@ namespace KDChart {
  * Please consult the respective Qt documentation for details:
  * <A HREF="http://doc.trolltech.com/">http://doc.trolltech.com/</A>
  */
+/**
+ * @class QTextDocument "(do not include)"
+ * @brief Class only listed here to document inheritance of some KDChart classes.
+ *
+ * Please consult the respective Qt documentation for details:
+ * <A HREF="http://doc.trolltech.com/">http://doc.trolltech.com/</A>
+ */
+/**
+ * @class QLayoutItem "(do not include)"
+ * @brief Class only listed here to document inheritance of some KDChart classes.
+ *
+ * Please consult the respective Qt documentation for details:
+ * <A HREF="http://doc.trolltech.com/">http://doc.trolltech.com/</A>
+ */
+/**
+ * @class QGraphicsPolygonItem "(do not include)"
+ * @brief Class only listed here to document inheritance of some KDChart classes.
+ *
+ * Please consult the respective Qt documentation for details:
+ * <A HREF="http://doc.trolltech.com/">http://doc.trolltech.com/</A>
+ */
+
 
 #endif

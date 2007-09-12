@@ -39,6 +39,12 @@ class QPainter;
 namespace KDChart {
 
     class ThreeDBarAttributes;
+
+/**
+ * @brief BarDiagram defiens a common bar diagram.
+ *
+ * It provides different subtypes which are set using \a setType.
+ */
 class KDCHART_EXPORT BarDiagram : public AbstractCartesianDiagram
 {
     Q_OBJECT

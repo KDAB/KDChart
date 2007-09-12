@@ -41,6 +41,11 @@ namespace KDChart {
 
     class ThreeDLineAttributes;
 
+/**
+ * @brief LineDiagram defines a common line diagram.
+ * 
+ * It provides different subtypes which are set using \a setType.
+ */
 class KDCHART_EXPORT LineDiagram : public AbstractCartesianDiagram
 {
     Q_OBJECT

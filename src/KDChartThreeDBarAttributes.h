@@ -32,6 +32,9 @@
 
 namespace KDChart {
 
+  /**
+    * @brief A set of 3D bar attributes
+    */
   class KDCHART_EXPORT ThreeDBarAttributes : public AbstractThreeDAttributes
   {
   public:
