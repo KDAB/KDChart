@@ -25,12 +25,18 @@ A) The following is a short list of the most important new
    in your environment and make it ready to use.
 
 
-2. New diagram type: Ternary diagrams
-   ----------------------------------
-   The new group of classes around KDChart::AbstractTernaryDiagram
-   (and TernaryAxis, TernaryGrid, ...) are providing a diagram
-   type that had been frequently requested by our customers.
-   see: examples/TernaryCharts/
+2. New diagram types
+   -----------------
+   * Ternary diagrams
+     The new group of classes around KDChart::AbstractTernaryDiagram
+     (and TernaryAxis, TernaryGrid, ...) are providing a diagram
+     type that had been frequently requested by our customers.
+     see: examples/TernaryCharts/
+   * Plotter
+     The new diagram KDChart::Plotter can be added to cartesian
+     coordinate planes and provides a way to plot multi-dimensional
+     datasets.
+     see: examples/Plotter/
 
 
 3. User interface
