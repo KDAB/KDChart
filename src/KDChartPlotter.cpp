@@ -84,10 +84,12 @@ bool Plotter::compare( const Plotter* other )const
 
 void Plotter::setType( const PlotType type )
 {
-    if ( d->implementor->type() == type ) return;
-   if ( type != Plotter::Normal && datasetDimension() > 1 ) {
+    if( d->implementor->type() == type ) 
+        return;
+    if( type != Plotter::Normal && datasetDimension() != 2 ) 
+    {
        Q_ASSERT_X ( false, "setType()",
-                    "This line chart type can't be used with multi-dimensional data." );
+                    "This line chart type can only be used with two-dimensional data." );
        return;
    }
    switch( type ) {
