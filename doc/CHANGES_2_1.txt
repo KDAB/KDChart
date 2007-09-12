@@ -120,6 +120,7 @@ Issue   First letters of the issue title
 -----   --------------------------------
 2287    Values optionally decreasing
 2308    KD Chart 2.1 demo programs 
+2311	KD Chart Technical API
 2313    KD Chart 20 XML interface load/save 
 2483    for KD Chart 2.1 we will allow QML strings for DataValueL... 
 2485    KD Chart 2.1 : the axis labels and texts are not repositi... 
@@ -135,6 +136,7 @@ Issue   First letters of the issue title
 2559    KD Chart 2.1 no line style indication in legends 
 2560    KDChart 2.1 legends are not movable freely
 2562    KD Chart 2.1 add ternary chart type(s)
+2564	KD Chart 2.1 diagram element selection and reverse mapping
 2565    KDChart 2.0 The (sub) tics for the x Axis are not painted
 2569    KDChart 2.0 Value labels are truncated at the grid limits
 2570    KDChart 2.0 We get a segmentation fault at some point whe...
@@ -149,6 +151,7 @@ Issue   First letters of the issue title
 2708    shared axis doesn't adjust properly in case the planes ha...
 2792    KD Chart 2.1 - Labels are overlapping or missing even if ...
 3122    does not compile on solaris platforms
+3173	fixed performance issue at drawing time
 3174    KD Chart 2.1 Bad performance issue
 3175    KD Chart 2.1 The layout does is not refreshed properly
 3176    KD Chart 2.1  The marker color cannot be changed using Ma...
@@ -182,6 +185,8 @@ Issue   First letters of the issue title
 4200    implement reverse mapping for bar diagrams
 4202    Unit Tests for trunk fail on MacOsX
 4212    Segfault with setHorizontalRange
+4234	Axis font size wrong when drawing into a high-resolution QPrinter
+4255	Crash in label painting
 
 
 Best regards,
