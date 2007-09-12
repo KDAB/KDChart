@@ -102,7 +102,10 @@ bool LineDiagram::compare( const LineDiagram* other )const
             (type() == other->type());
 }
 
-
+/**
+  * Sets the line diagram's type to \a type
+  * \sa LineDiagram::LineType
+  */
 void LineDiagram::setType( const LineType type )
 {
     if ( d->implementor->type() == type ) return;
@@ -135,11 +138,17 @@ void LineDiagram::setType( const LineType type )
    emit propertiesChanged();
 }
 
+/**
+  * @return the type of the line diagram
+  */
 LineDiagram::LineType LineDiagram::type() const
 {
     return d->implementor->type();
 }
 
+/**
+  * Sets the global line attributes to \a ta
+  */
 void LineDiagram::setLineAttributes( const LineAttributes & ta )
 {
     d->attributesModel->setModelData(
@@ -148,6 +157,9 @@ void LineDiagram::setLineAttributes( const LineAttributes & ta )
     emit propertiesChanged();
 }
 
+/** 
+  * Sets the line attributes of data set \a column to \a ta
+  */
 void LineDiagram::setLineAttributes(
         int column,
     const LineAttributes & ta )
@@ -160,6 +172,9 @@ void LineDiagram::setLineAttributes(
     emit propertiesChanged();
 }
 
+/**
+  * Resets the line attributes of data set \a column
+  */
 void LineDiagram::resetLineAttributes( int column )
 {
     d->attributesModel->resetHeaderData(
@@ -167,6 +182,9 @@ void LineDiagram::resetLineAttributes( int column )
     emit propertiesChanged();
 }
 
+/**
+  * Sets the line attributes for the model index \a index to \a ta
+  */
 void LineDiagram::setLineAttributes(
         const QModelIndex & index,
     const LineAttributes & ta )
@@ -188,12 +206,18 @@ void LineDiagram::resetLineAttributes( const QModelIndex & index )
     emit propertiesChanged();
 }
 
+/**
+  * @return the global line attribute set
+  */
 LineAttributes LineDiagram::lineAttributes() const
 {
     return qVariantValue<LineAttributes>(
         d->attributesModel->data( KDChart::LineAttributesRole ) );
 }
 
+/**
+  * @return the line attribute set of data set \a column
+  */
 LineAttributes LineDiagram::lineAttributes( int column ) const
 {
     return qVariantValue<LineAttributes>(
@@ -202,6 +226,9 @@ LineAttributes LineDiagram::lineAttributes( int column ) const
             KDChart::LineAttributesRole ) );
 }
 
+/**
+  * @return the line attribute set of the model index \a index
+  */
 LineAttributes LineDiagram::lineAttributes(
     const QModelIndex & index ) const
 {
@@ -211,6 +238,9 @@ LineAttributes LineDiagram::lineAttributes(
             KDChart::LineAttributesRole ) );
 }
 
+/**
+  * Sets the global 3D line attributes to \a ta
+  */
 void LineDiagram::setThreeDLineAttributes(
     const ThreeDLineAttributes & ta )
 {
@@ -221,6 +251,9 @@ void LineDiagram::setThreeDLineAttributes(
    emit propertiesChanged();
 }
 
+/**
+  * Sets the 3D line attributes of dataset \a column to \a ta
+  */
 void LineDiagram::setThreeDLineAttributes(
     int column,
     const ThreeDLineAttributes & ta )
@@ -234,6 +267,9 @@ void LineDiagram::setThreeDLineAttributes(
    emit propertiesChanged();
 }
 
+/**
+  * Sets the 3D line attributes of model index \a index to \a ta
+  */
 void LineDiagram::setThreeDLineAttributes(
     const QModelIndex & index,
     const ThreeDLineAttributes & ta )
@@ -246,12 +282,18 @@ void LineDiagram::setThreeDLineAttributes(
    emit propertiesChanged();
 }
 
+/**
+  * @return the global 3D line attributes
+  */
 ThreeDLineAttributes LineDiagram::threeDLineAttributes() const
 {
     return qVariantValue<ThreeDLineAttributes>(
         d->attributesModel->data( KDChart::ThreeDLineAttributesRole ) );
 }
 
+/**
+  * @return the 3D line attributes of data set \a column
+  */
 ThreeDLineAttributes LineDiagram::threeDLineAttributes( int column ) const
 {
     return qVariantValue<ThreeDLineAttributes>(
@@ -260,6 +302,9 @@ ThreeDLineAttributes LineDiagram::threeDLineAttributes( int column ) const
             KDChart::ThreeDLineAttributesRole ) );
 }
 
+/**
+  * @return the 3D line attributes of the model index \a index
+  */
 ThreeDLineAttributes LineDiagram::threeDLineAttributes(
     const QModelIndex & index ) const
 {
@@ -269,11 +314,17 @@ ThreeDLineAttributes LineDiagram::threeDLineAttributes(
             KDChart::ThreeDLineAttributesRole ) );
 }
 
+/**
+  * @return the 3D item depth of the model index \a index
+  */
 double LineDiagram::threeDItemDepth( const QModelIndex & index ) const
 {
     return threeDLineAttributes( index ).validDepth();
 }
 
+/**
+  * @return the 3D item depth of the data set \a column
+  */
 double LineDiagram::threeDItemDepth( int column ) const
 {
     return qVariantValue<ThreeDLineAttributes>(
@@ -283,6 +334,9 @@ double LineDiagram::threeDItemDepth( int column ) const
             KDChart::ThreeDLineAttributesRole ) ).validDepth();
 }
 
+/**
+  * Sets the value tracker attributes of the model index \a index to \a va
+  */
 void LineDiagram::setValueTrackerAttributes( const QModelIndex & index,
                                              const ValueTrackerAttributes & va )
 {
@@ -292,6 +346,9 @@ void LineDiagram::setValueTrackerAttributes( const QModelIndex & index,
     emit propertiesChanged();
 }
 
+/**
+  * Returns the value tracker attributes of the model index \a index
+  */
 ValueTrackerAttributes LineDiagram::valueTrackerAttributes(
         const QModelIndex & index ) const
 {

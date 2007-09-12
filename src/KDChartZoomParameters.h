@@ -2,6 +2,9 @@
 #define ZOOMPARAMETERS_H
 
 namespace KDChart {
+    /**
+      * \internal
+      */
     class ZoomParameters {
     public:
         ZoomParameters()
