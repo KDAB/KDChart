@@ -63,6 +63,9 @@ void PieDiagram::init()
 {
 }
 
+/**
+  * Creates an exact copy of this diagram.
+  */
 PieDiagram * PieDiagram::clone() const
 {
     return new PieDiagram( new Private( *d ) );

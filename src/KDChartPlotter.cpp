@@ -63,6 +63,9 @@ Plotter::~Plotter()
 {
 }
 
+/**
+  * Creates an exact copy of this diagram.
+  */
 Plotter* Plotter::clone() const
 {
     Plotter* newDiagram = new Plotter( new Private( *d ) );
@@ -82,6 +85,10 @@ bool Plotter::compare( const Plotter* other )const
             ( type() == other->type() );
 }
 
+/**
+  * Sets the plotter's type to \a type
+  * Currently, there's no other type than PlotType::Normal, but others might be added in future.
+  */
 void Plotter::setType( const PlotType type )
 {
     if( d->implementor->type() == type ) 
@@ -108,31 +115,43 @@ void Plotter::setType( const PlotType type )
    emit propertiesChanged();
 }
 
+/**
+  * @return the type of the plotter
+  */
 Plotter::PlotType Plotter::type() const
 {
     return d->implementor->type();
 }
 
-void Plotter::setLineAttributes( const LineAttributes & ta )
+/**
+  * Sets the global line attributes to \a la
+  */
+void Plotter::setLineAttributes( const LineAttributes& la )
 {
     d->attributesModel->setModelData(
-        qVariantFromValue( ta ),
+        qVariantFromValue( la ),
         LineAttributesRole );
     emit propertiesChanged();
 }
 
+/**
+  * Sets the line attributes of data set \a column to \a la
+  */
 void Plotter::setLineAttributes(
         int column,
-    const LineAttributes & ta )
+    const LineAttributes& la )
 {
     d->attributesModel->setHeaderData(
             column,
             Qt::Vertical,
-            qVariantFromValue( ta ),
+            qVariantFromValue( la ),
             LineAttributesRole );
     emit propertiesChanged();
 }
 
+/**
+  * Resets the line attributes of data set \a column
+  */
 void Plotter::resetLineAttributes( int column )
 {
     d->attributesModel->resetHeaderData(
@@ -140,13 +159,16 @@ void Plotter::resetLineAttributes( int column )
     emit propertiesChanged();
 }
 
+/**
+  * Sets the line attributes for the model index \a index to \a la
+  */
 void Plotter::setLineAttributes(
         const QModelIndex & index,
-    const LineAttributes & ta )
+    const LineAttributes& la )
 {
     d->attributesModel->setData(
             d->attributesModel->mapFromSource(index),
-    qVariantFromValue( ta ),
+    qVariantFromValue( la ),
     LineAttributesRole );
     emit propertiesChanged();
 }
@@ -161,12 +183,18 @@ void Plotter::resetLineAttributes( const QModelIndex & index )
     emit propertiesChanged();
 }
 
+/**
+  * @return the global line attribute set
+  */
 LineAttributes Plotter::lineAttributes() const
 {
     return qVariantValue<LineAttributes>(
         d->attributesModel->data( KDChart::LineAttributesRole ) );
 }
 
+/**
+  * @return the line attribute set of data set \a column
+  */
 LineAttributes Plotter::lineAttributes( int column ) const
 {
     return qVariantValue<LineAttributes>(
@@ -175,8 +203,11 @@ LineAttributes Plotter::lineAttributes( int column ) const
             KDChart::LineAttributesRole ) );
 }
 
+/**
+  * @return the line attribute set of the model index \a index
+  */
 LineAttributes Plotter::lineAttributes(
-    const QModelIndex & index ) const
+    const QModelIndex& index ) const
 {
     return qVariantValue<LineAttributes>(
         d->attributesModel->data(
@@ -184,47 +215,62 @@ LineAttributes Plotter::lineAttributes(
             KDChart::LineAttributesRole ) );
 }
 
+/**
+  * Sets the global 3D line attributes to \a la
+  */
 void Plotter::setThreeDLineAttributes(
-    const ThreeDLineAttributes & ta )
+    const ThreeDLineAttributes& la )
 {
     setDataBoundariesDirty();
     d->attributesModel->setModelData(
-        qVariantFromValue( ta ),
+        qVariantFromValue( la ),
         ThreeDLineAttributesRole );
    emit propertiesChanged();
 }
 
+/**
+  * Sets the 3D line attributes of data set \a column to \a la
+  */
 void Plotter::setThreeDLineAttributes(
     int column,
-    const ThreeDLineAttributes & ta )
+    const ThreeDLineAttributes& la )
 {
     setDataBoundariesDirty();
     d->attributesModel->setHeaderData(
         column,
         Qt::Vertical,
-        qVariantFromValue( ta ),
+        qVariantFromValue( la ),
         ThreeDLineAttributesRole );
    emit propertiesChanged();
 }
 
+/**
+  * Sets the 3D line attributes of model index \a index to \a la
+  */
 void Plotter::setThreeDLineAttributes(
-    const QModelIndex & index,
-    const ThreeDLineAttributes & ta )
+    const QModelIndex& index,
+    const ThreeDLineAttributes& la )
 {
     setDataBoundariesDirty();
     d->attributesModel->setData(
         d->attributesModel->mapFromSource(index),
-        qVariantFromValue( ta ),
+        qVariantFromValue( la ),
         ThreeDLineAttributesRole );
    emit propertiesChanged();
 }
 
+/** 
+  * @return the global 3D line attributes
+  */
 ThreeDLineAttributes Plotter::threeDLineAttributes() const
 {
     return qVariantValue<ThreeDLineAttributes>(
         d->attributesModel->data( KDChart::ThreeDLineAttributesRole ) );
 }
 
+/**
+  * @return the 3D line attributes of data set \a column
+  */
 ThreeDLineAttributes Plotter::threeDLineAttributes( int column ) const
 {
     return qVariantValue<ThreeDLineAttributes>(
@@ -233,8 +279,11 @@ ThreeDLineAttributes Plotter::threeDLineAttributes( int column ) const
             KDChart::ThreeDLineAttributesRole ) );
 }
 
+/**
+  * @return the 3D line attributes of the model index \a index
+  */
 ThreeDLineAttributes Plotter::threeDLineAttributes(
-    const QModelIndex & index ) const
+    const QModelIndex& index ) const
 {
     return qVariantValue<ThreeDLineAttributes>(
         d->attributesModel->data(
@@ -256,6 +305,9 @@ double Plotter::threeDItemDepth( int column ) const
             KDChart::ThreeDLineAttributesRole ) ).validDepth();
 }
 
+/**
+  * Sets the value tracker attributes of the model index \a index to \a va
+  */
 void Plotter::setValueTrackerAttributes( const QModelIndex & index,
                                              const ValueTrackerAttributes & va )
 {
@@ -265,6 +317,9 @@ void Plotter::setValueTrackerAttributes( const QModelIndex & index,
     emit propertiesChanged();
 }
 
+/**
+  * Returns the value tracker attributes of the model index \a index
+  */
 ValueTrackerAttributes Plotter::valueTrackerAttributes(
         const QModelIndex & index ) const
 {
@@ -299,44 +354,6 @@ void Plotter::paintEvent ( QPaintEvent*)
     ctx.setRectangle ( QRectF ( 0, 0, width(), height() ) );
     paint ( &ctx );
 }
-
-/*double Plotter::valueForCellTesting( int row, int column,
-                                         bool& bOK,
-                                         bool showHiddenCellsAsInvalid ) const
-{
-    double value;
-    if( showHiddenCellsAsInvalid && isHidden( model()->index( row, column, rootIndex() ) ) )
-        bOK = false;
-    else
-        value = d->attributesModel->data(
-                    d->attributesModel->index( row, column, attributesModelRootIndex() )
-                ).toDouble( &bOK );
-    return bOK ? value : 0.0;
-}*/
-/*
-LineAttributes::MissingValuesPolicy Plotter::getCellValues(
-      int row, int column,
-      bool shiftCountedXValuesByHalfSection,
-      double& valueX, double& valueY ) const
-{
-    LineAttributes::MissingValuesPolicy policy;
-
-    bool bOK = true;
-    valueX = ( datasetDimension() > 1 && column > 0 )
-             ? valueForCellTesting( row, column-1, bOK, true )
-             : ((shiftCountedXValuesByHalfSection ? 0.5 : 0.0) + row);
-    if( bOK )
-        valueY = valueForCellTesting( row, column, bOK, true );
-    if( bOK ){
-        policy = LineAttributes::MissingValuesPolicyIgnored;
-    }else{
-        // missing value: find out the policy
-        QModelIndex index = model()->index( row, column, rootIndex() );
-        LineAttributes la = lineAttributes( index );
-        policy = la.missingValuesPolicy();
-    }
-    return policy;
-}*/
 
 void Plotter::paint( PaintContext* ctx )
 {

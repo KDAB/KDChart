@@ -61,6 +61,9 @@ void RingDiagram::init()
 {
 }
 
+/**
+  * Creates an exact copy of this diagram.
+  */
 RingDiagram * RingDiagram::clone() const
 {
     return new RingDiagram( new Private( *d ) );

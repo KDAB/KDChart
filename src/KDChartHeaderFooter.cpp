@@ -89,6 +89,9 @@ void HeaderFooter::init()
     setTextAttributes( ta );
 }
 
+/**
+  * Creates an exact copy of this header/footer.
+  */
 HeaderFooter * HeaderFooter::clone() const
 {
     HeaderFooter* headerFooter = new HeaderFooter( new Private( *d ), 0 );

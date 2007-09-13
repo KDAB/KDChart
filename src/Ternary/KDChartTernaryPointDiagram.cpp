@@ -37,6 +37,7 @@ void TernaryPointDiagram::init()
 
 void  TernaryPointDiagram::resize (const QSizeF& area)
 {
+    Q_UNUSED( area );
 }
 
 void  TernaryPointDiagram::paint (PaintContext *paintContext)

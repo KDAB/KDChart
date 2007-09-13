@@ -198,6 +198,9 @@ Legend::LegendStyle Legend::legendStyle() const
     return d->legendStyle;
 }
 
+/**
+  * Creates an exact copy of this legend.
+  */
 Legend* Legend::clone() const
 {
     Legend* legend = new Legend( new Private( *d ), 0 );

@@ -79,13 +79,36 @@ namespace KDChart {
          * \sa addAxis
         */
         virtual void takeAxis( CartesianAxis * axis );
+        /**
+         * @return a list of all axes added to the diagram
+        */
         virtual KDChart::CartesianAxisList axes () const;
 
+        /**
+          * Triggers layouting of all coordinate planes on the current chart.
+          * Normally you don't need to call this method. It's handled automatically for you.
+         */
         virtual void layoutPlanes();
+        /** \reimpl */
         virtual void setCoordinatePlane( AbstractCoordinatePlane* plane );
 
+        /**
+          * Makes this diagram use another diagram \a diagram as reference diagram with relative offset 
+          * \a offset.
+          * To share cartesian axes between different diagrams there might be cases when you need that.
+          * Normally you don't.
+          * \sa examples/SharedAbscissa
+          */
         virtual void setReferenceDiagram( AbstractCartesianDiagram* diagram, const QPointF& offset = QPointF() );
+        /**
+          * @return this diagram's reference diagram
+          *  \sa setReferenceDiagram
+          */
         virtual AbstractCartesianDiagram* referenceDiagram() const;
+        /**
+          * @return the relative offset of this diagram's reference diagram
+          * \sa setReferenceDiagram
+          */
         virtual QPointF referenceDiagramOffset() const;
 
         /* reimpl */
@@ -96,7 +119,9 @@ namespace KDChart {
         void setAttributesModel( AttributesModel* model );
 
     protected:
-        virtual double threeDItemDepth( const QModelIndex & index ) const = 0;
+        /** @return the 3D item depth of the model index \a index */
+        virtual double threeDItemDepth( const QModelIndex& index ) const = 0;
+        /** @return the 3D item depth of the data set \a column */
         virtual double threeDItemDepth( int column ) const = 0;
     };
 

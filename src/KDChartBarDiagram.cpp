@@ -72,6 +72,9 @@ BarDiagram::~BarDiagram()
 {
 }
 
+/**
+  * Creates an exact copy of this diagram.
+  */
 BarDiagram * BarDiagram::clone() const
 {
 
@@ -93,7 +96,10 @@ bool BarDiagram::compare( const BarDiagram* other )const
             (type() == other->type());
 }
 
-
+/**
+  * Sets the bar diagram's type to \a type
+  * \sa BarDiagram::BarType
+  */
 void BarDiagram::setType( const BarType type )
 {
     //if ( type == d->barType ) return;
@@ -123,42 +129,59 @@ void BarDiagram::setType( const BarType type )
     emit propertiesChanged();
 }
 
-
+/**
+  * @return the type of the line diagram
+  */
 BarDiagram::BarType BarDiagram::type() const
 {
     return d->implementor->type();
 }
 
-void BarDiagram::setBarAttributes( const BarAttributes & ta )
+/**
+  * Sets the global bar attributes to \a ba
+  */
+void BarDiagram::setBarAttributes( const BarAttributes& ba )
 {
-    d->attributesModel->setModelData( qVariantFromValue( ta ), BarAttributesRole );
+    d->attributesModel->setModelData( qVariantFromValue( ba ), BarAttributesRole );
     emit propertiesChanged();
 }
 
-void BarDiagram::setBarAttributes( int column, const BarAttributes & ta )
+/**
+  * Sets the bar attributes of data set \a column to \a ba
+  */
+void BarDiagram::setBarAttributes( int column, const BarAttributes& ba )
 {
     d->attributesModel->setHeaderData(
         column, Qt::Vertical,
-        qVariantFromValue( ta ),
+        qVariantFromValue( ba ),
         BarAttributesRole );
     emit propertiesChanged();
 }
 
-void BarDiagram::setBarAttributes( const QModelIndex & index, const BarAttributes & ta )
+/**
+  * Sets the line attributes for the model index \a index to \a ba
+  */
+void BarDiagram::setBarAttributes( const QModelIndex& index, const BarAttributes& ba )
 {
     attributesModel()->setData(
         d->attributesModel->mapFromSource( index ),
-        qVariantFromValue( ta ),
+        qVariantFromValue( ba ),
         BarAttributesRole );
     emit propertiesChanged();
 }
 
+/**
+  * @return the global bar attribute set
+  */
 BarAttributes BarDiagram::barAttributes() const
 {
     return qVariantValue<BarAttributes>(
         d->attributesModel->data( KDChart::BarAttributesRole ) );
 }
 
+/**
+  * @return the bar attribute set of data set \a column
+  */
 BarAttributes BarDiagram::barAttributes( int column ) const
 {
     return qVariantValue<BarAttributes>(
@@ -167,7 +190,10 @@ BarAttributes BarDiagram::barAttributes( int column ) const
             KDChart::BarAttributesRole ) );
 }
 
-BarAttributes BarDiagram::barAttributes( const QModelIndex & index ) const
+/**
+  * @return the bar attribute set of the model index \a index
+  */
+BarAttributes BarDiagram::barAttributes( const QModelIndex& index ) const
 {
     return qVariantValue<BarAttributes>(
         d->attributesModel->data(
@@ -175,7 +201,10 @@ BarAttributes BarDiagram::barAttributes( const QModelIndex & index ) const
             KDChart::BarAttributesRole ) );
 }
 
-void BarDiagram::setThreeDBarAttributes( const ThreeDBarAttributes & threeDAttrs )
+/**
+  * Sets the global 3D bar attributes to \a threeDAttrs
+  */
+void BarDiagram::setThreeDBarAttributes( const ThreeDBarAttributes& threeDAttrs )
 {
     setDataBoundariesDirty();
     d->attributesModel->setModelData( qVariantFromValue( threeDAttrs ), ThreeDBarAttributesRole );
@@ -183,7 +212,10 @@ void BarDiagram::setThreeDBarAttributes( const ThreeDBarAttributes & threeDAttrs
      emit propertiesChanged();
 }
 
-void BarDiagram::setThreeDBarAttributes( int column, const ThreeDBarAttributes & threeDAttrs )
+/**
+  * Sets the 3D bar attributes of dataset \a column to \a threeDAttrs
+  */
+void BarDiagram::setThreeDBarAttributes( int column, const ThreeDBarAttributes& threeDAttrs )
 {
     setDataBoundariesDirty();
     d->attributesModel->setHeaderData(
@@ -195,7 +227,10 @@ void BarDiagram::setThreeDBarAttributes( int column, const ThreeDBarAttributes &
 
 }
 
-void BarDiagram::setThreeDBarAttributes( const QModelIndex & index, const ThreeDBarAttributes & threeDAttrs )
+/**
+  * Sets the 3D line attributes of model index \a index to \a threeDAttrs
+  */
+void BarDiagram::setThreeDBarAttributes( const QModelIndex& index, const ThreeDBarAttributes& threeDAttrs )
 {
     setDataBoundariesDirty();
     d->attributesModel->setData(
@@ -206,12 +241,18 @@ void BarDiagram::setThreeDBarAttributes( const QModelIndex & index, const ThreeD
     emit propertiesChanged();
 }
 
+/**
+  * @return the global 3D bar attributes
+  */
 ThreeDBarAttributes BarDiagram::threeDBarAttributes() const
 {
     return qVariantValue<ThreeDBarAttributes>(
         d->attributesModel->data( KDChart::ThreeDBarAttributesRole ) );
 }
 
+/**
+  * @return the 3D bar attributes of data set \a column
+  */
 ThreeDBarAttributes BarDiagram::threeDBarAttributes( int column ) const
 {
     return qVariantValue<ThreeDBarAttributes>(
@@ -220,7 +261,10 @@ ThreeDBarAttributes BarDiagram::threeDBarAttributes( int column ) const
             KDChart::ThreeDBarAttributesRole ) );
 }
 
-ThreeDBarAttributes BarDiagram::threeDBarAttributes( const QModelIndex & index ) const
+/**
+  * @return the 3D bar attributes of the model index \a index
+  */
+ThreeDBarAttributes BarDiagram::threeDBarAttributes( const QModelIndex& index ) const
 {
     return qVariantValue<ThreeDBarAttributes>(
         d->attributesModel->data(
@@ -228,7 +272,7 @@ ThreeDBarAttributes BarDiagram::threeDBarAttributes( const QModelIndex & index )
             KDChart::ThreeDBarAttributesRole ) );
 }
 
-double BarDiagram::threeDItemDepth( const QModelIndex & index ) const
+double BarDiagram::threeDItemDepth( const QModelIndex& index ) const
 {
     return threeDBarAttributes( index ).validDepth();
 }

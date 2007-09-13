@@ -41,7 +41,7 @@ namespace KDChart {
     class ThreeDBarAttributes;
 
 /**
- * @brief BarDiagram defiens a common bar diagram.
+ * @brief BarDiagram defines a common bar diagram.
  *
  * It provides different subtypes which are set using \a setType.
  */
