@@ -3172,6 +3172,54 @@ m_chart->update();
 		    </mediaobject>
 		</figure>
 	    </sect2>
+        <sect2>
+            <title id="plotter">Plotter Charts</title>
+            <para>
+                Plotter charts are almost the same as normal line diagrams except of an important fact:
+                Line diagrams always expect the values running from 1..n having step width 1. Plotters can
+                instead of that handle free X/Y-pairs in any order and not being equidistant.
+            </para>
+            <para>
+                Therefore, <classname>KDChart::Plotter</classname> expects two columns in the model for 
+                each dataset being plotted. See the example below to find out how to use this. Apart fom that
+                difference, please refer to the line diagram section in this manual. There's explained how
+                to set the different attributes for that diagram type.
+            </para>
+        </sect2>
+        <sect2>
+            <title id="plottersample">Plotter Sample Code</title>
+            <para>
+                The following code sample is plotting a sine wave and an exponential curve from -2*pi - 2*pi
+                consisting of 400 points on the x-axis:
+            </para>
+            <programlisting>
+    QStandardItemModel model( points, 4 );
+
+    double x = -2 * 3.141592653589793;
+    for( int n = 0; n < 400; ++n ) {
+        QModelIndex index = model.index( n, 0 );
+        model.setData( index, QVariant( x ) );
+        // the x value: x
+        index = model.index( n, 1 );
+        // the y value sin( x ) * 100
+        model.setData( index, QVariant( sin( x ) * 100 ) );
+
+        index = model.index( n, 2 );
+        model.setData( index, QVariant( x ) );
+        index = model.index( n, 3 );
+        model.setData( index, QVariant( x * x * x ) );
+
+        x += 4 * 3.141592653589793 / 399.0;
+    }
+
+    KDChart::Chart chart;
+    KDChart::Plotter plotter;
+    plotter.setmodel( & model );
+    chart.coordinatePlane()->replaceDiagram( &plotter );
+
+    chart.show();
+            </programlisting>
+        </sect2>
 <!--	  	
 	    <sect2>
 		<title id="highlow">High/Low Charts</title>		
