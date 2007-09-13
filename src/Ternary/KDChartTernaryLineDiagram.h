@@ -7,6 +7,9 @@
 
 namespace KDChart {
 
+    /**
+      * @brief A TernaryLineDiagram is a line diagram with a ternary coordinate plane
+      */
     class KDCHART_EXPORT TernaryLineDiagram : public AbstractTernaryDiagram
     {
         Q_OBJECT

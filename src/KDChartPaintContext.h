@@ -36,9 +36,11 @@ namespace KDChart {
 
     class AbstractCoordinatePlane;
 
-    // This class is internal (and mostly related to AbstractDiagram)
-    // but it's exported for examples/LineChart/SineFunctionPlotter.
-    class KDCHART_EXPORT PaintContext
+    /**
+      * @brief Stores information about painting diagrams
+      * \internal
+      */
+    class PaintContext
     {
     public:
         PaintContext();

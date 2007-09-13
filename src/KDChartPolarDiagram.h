@@ -40,6 +40,9 @@ class QPolygonF;
 
 namespace KDChart {
 
+/**
+  * @brief PolarDiagram defines a common polar diagram
+  */
 class KDCHART_EXPORT PolarDiagram : public AbstractPolarDiagram
 {
     Q_OBJECT

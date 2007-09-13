@@ -85,4 +85,3 @@ namespace KDChart {
 }
 
 #endif
-

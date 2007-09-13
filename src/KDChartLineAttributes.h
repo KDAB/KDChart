@@ -31,6 +31,9 @@
 
 namespace KDChart {
 
+/**
+  * @brief Set of attributes for changing the appearance of line charts
+  */
 class KDCHART_EXPORT LineAttributes
 {
 public:

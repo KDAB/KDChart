@@ -32,6 +32,9 @@
 
 namespace KDChart {
 
+/**
+  * @brief A set of attributes controlling the appearance of pie charts
+  */
 class KDCHART_EXPORT PieAttributes
 {
 public:

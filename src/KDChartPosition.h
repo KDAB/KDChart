@@ -131,7 +131,10 @@ private:
 inline bool Position::operator!=( const Position & other ) const { return !operator==( other ); }
 inline bool Position::operator!=( int other ) const { return !operator==( other ); }
 
-
+/**
+  * @brief Stores the absolute target points of a Position
+  * \internal
+  */
 class KDCHART_EXPORT PositionPoints
 {
   public:

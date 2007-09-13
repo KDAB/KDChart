@@ -37,6 +37,9 @@
 
 namespace KDChart {
 
+/**
+  * Set of attributes usable for background pixmaps
+  */
 class KDCHART_EXPORT BackgroundAttributes
 {
 public:

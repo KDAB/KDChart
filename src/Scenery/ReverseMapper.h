@@ -11,6 +11,10 @@ namespace KDChart {
     class AbstractDiagram;
     class ChartGraphicsItem;
 
+    /**
+      * @brief The ReverseMapper stores information about objects on a chart and their respective model indexes
+      * \internal
+      */
     class ReverseMapper
     {
 

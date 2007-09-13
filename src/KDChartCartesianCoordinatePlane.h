@@ -36,6 +36,9 @@ namespace KDChart {
     class CartesianAxis;
     class CartesianGrid;
 
+    /**
+      * @brief Cartesian coordinate plane
+      */
     class KDCHART_EXPORT CartesianCoordinatePlane : public AbstractCoordinatePlane
     {
         Q_OBJECT

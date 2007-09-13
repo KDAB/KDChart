@@ -41,6 +41,9 @@ template <typename T, typename K> class QMap;
 
 namespace KDChart {
 
+    /**
+      * @brief A set of ottributes controlling the appearance of data set markers
+      */
     class KDCHART_EXPORT MarkerAttributes
     {
     public:

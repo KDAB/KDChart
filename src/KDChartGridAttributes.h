@@ -38,6 +38,9 @@ class QPen;
 
 namespace KDChart {
 
+/**
+  * @brief A set of attributes controlling the appearance of grids
+  */
 class KDCHART_EXPORT GridAttributes
 {
 public:

@@ -33,6 +33,9 @@ namespace KDChart {
     class Chart;
     class PaintContext;
 
+    /**
+      * @brief Polar coordinate plane
+      */
     class KDCHART_EXPORT PolarCoordinatePlane : public AbstractCoordinatePlane
     {
         Q_OBJECT

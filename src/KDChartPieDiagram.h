@@ -34,6 +34,9 @@
 
 namespace KDChart {
 
+/**
+  * @brief PieDiagram defines a common pie diagram
+  */
 class KDCHART_EXPORT PieDiagram : public AbstractPieDiagram
 {
     Q_OBJECT

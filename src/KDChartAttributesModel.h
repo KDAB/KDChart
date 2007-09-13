@@ -37,6 +37,9 @@
 
 namespace KDChart {
 
+/**
+  * @brief A proxy model used for storing attributes
+  */
 class KDCHART_EXPORT AttributesModel : public AbstractProxyModel
 {
     Q_OBJECT

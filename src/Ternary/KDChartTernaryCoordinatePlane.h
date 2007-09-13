@@ -7,6 +7,9 @@ namespace KDChart {
 
     class TernaryGrid;
 
+    /**
+      * @brief Ternary coordinate plane
+      */
     class KDCHART_EXPORT TernaryCoordinatePlane
         : public AbstractCoordinatePlane
     {

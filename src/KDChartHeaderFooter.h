@@ -38,6 +38,9 @@ namespace KDChart {
     class Chart;
     class TextAttributes;
 
+/**
+  * @brief A header or even footer displaying text above or below charts
+  */
 class KDCHART_EXPORT HeaderFooter : public TextArea
 {
     Q_OBJECT

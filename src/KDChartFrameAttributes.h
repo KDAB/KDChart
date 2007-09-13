@@ -37,6 +37,9 @@
 
 namespace KDChart {
 
+/**
+  * @brief A set of attributes for frames around items
+  */
 class KDCHART_EXPORT FrameAttributes
 {
 public:

@@ -4,7 +4,10 @@
 #include <QtDebug>
 #include <QPointF>
 
-// this class is not part of the published KDChart API
+/**
+  * @brief TernaryPoint defines a point within a ternary coordinate plane
+  * \internal
+  */
 class TernaryPoint
 {
 public:

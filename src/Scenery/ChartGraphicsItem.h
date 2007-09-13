@@ -5,6 +5,10 @@
 
 namespace KDChart {
 
+    /**
+      * @brief Graphics item used inside of the ReverseMapper
+      * \internal
+      */
     class ChartGraphicsItem : public QGraphicsPolygonItem
     {
     public:

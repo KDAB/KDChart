@@ -41,6 +41,7 @@
 #include <QSize>
 
 /**
+  * KDTextDocument is an internally used enhanced QTextDocument
   * \internal
   */
 class KDTextDocument : public QTextDocument
