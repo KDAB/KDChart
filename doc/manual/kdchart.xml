@@ -4766,6 +4766,58 @@ m_chart->update();
 	    </sect2>
 -->
 	</sect1>
+    <sect1>
+        <title id="ternaryplane">Ternary coordinate plane</title>
+        <para>
+            KD Chart has support for ternary charts and has therefore an appropriate coordinate
+            plane. This is the class <classname>KDChart::TernaryCoordinatePlane</classname>.
+        </para>
+        <para>
+            The idea of ternary charts is to plot triple values on a triangle. Triple values are
+            represented by three floating point values having the fixed sum 1.0. Therefore each
+            plotted dataset needs three columns in the model.
+        </para>
+        <!-- TODO: Screenshot? -->
+        <para>    
+            <tip>
+                KD Chart is using only the first two of them and calculates the third one out of those. If the 
+                sum of the first two columns is already greater than 1.0, the data triple is considered
+                invalid and disregarded.
+            </tip>
+        </para>
+        <para>
+            This section will describe the chart types which can be added to a ternary coordinate
+            plane.
+        </para>
+        <para>
+            To use such a diagram, you need to create an instance of <classname>KDChart::TernaryCoordinatePlane</classname>.
+            After that, you can make KD Chart using it by using <methodname>KDChart::Chart::replaceCoordinatePlane</methodname> and
+            add a diagram to it.
+        </para>
+        <sect2>
+            <title id="ternalylinecharts">Ternary Line Charts</title>
+            <para>
+                A ternary line charts connects all points of each dataset with a line.
+            </para>
+            <para>
+                Have a look at the following code example explaining how to work with it:
+            </para>
+            <para>
+                <programlisting>
+KDChart::Chart chart;
+// replace the default (cartesian) coordinate plane with a ternary one
+KDChart::TernaryCoordinatePlane* ternaryPlane = new KDChart::TernaryCoordinatePlane;
+chart.replaceCoordinatePlane( ternaryPlane );
+// make a ternary line diagram
+KDChart::TernaryLineDiagram* diagram = new KDChart::TernaryLineDiagram;
+// and replace the default diagram with it
+ternaryPlane->replaceDiagram( diagram );
+
+chart.show();
+                </programlisting>
+            </para>
+        </sect2>
+    </sect1>
 	<sect1>
             <title>What's next</title>
             <para>
