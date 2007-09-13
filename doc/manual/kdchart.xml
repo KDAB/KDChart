@@ -4892,6 +4892,18 @@ chart.show();
 		to study its interface - See <filename>KDChartCaretesianAxis.h</filename>.
 	    </para>
 	</sect1>
+    <sect1>
+        <title id="ternaryaxis">Ternary Axis</title>
+            <para>
+                The class <classname>KDChart::TernaryAxis</classname> is made for use with
+                diagrams displayed in a ternary coordinate plane.
+            </para>
+            <para>
+                Since ternary diagrams are not rectangular but triangular, ternary axes can
+                be added at three different positions relative to the diagram: South, East
+                and West.
+            </para>
+    </sect1>
 	<sect1>
             <title id="caxeshowtoconfigure">How to configure</title>
             <para>
