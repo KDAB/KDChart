@@ -3196,7 +3196,7 @@ m_chart->update();
     QStandardItemModel model( points, 4 );
 
     double x = -2 * 3.141592653589793;
-    for( int n = 0; n < 400; ++n ) {
+    for( int n = 0; n &lt; 400; ++n ) {
         QModelIndex index = model.index( n, 0 );
         model.setData( index, QVariant( x ) );
         // the x value: x
@@ -3214,8 +3214,8 @@ m_chart->update();
 
     KDChart::Chart chart;
     KDChart::Plotter plotter;
-    plotter.setmodel( & model );
-    chart.coordinatePlane()->replaceDiagram( &plotter );
+    plotter.setmodel( &amp; model );
+    chart.coordinatePlane()->replaceDiagram( &amp;plotter );
 
     chart.show();
             </programlisting>
@@ -4778,13 +4778,13 @@ m_chart->update();
             plotted dataset needs three columns in the model.
         </para>
         <!-- TODO: Screenshot? -->
-        <para>    
-            <tip>
+        <tip>    
+            <para>
                 KD Chart is using only the first two of them and calculates the third one out of those. If the 
                 sum of the first two columns is already greater than 1.0, the data triple is considered
                 invalid and disregarded.
-            </tip>
-        </para>
+            </para>
+        </tip>
         <para>
             This section will describe the chart types which can be added to a ternary coordinate
             plane.
