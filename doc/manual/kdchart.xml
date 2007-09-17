@@ -153,7 +153,7 @@
 	    </para>
 	    <para>
 		Chapter 9 <filename>Advanced Charting</filename>, will guide 
-		you through &kdchart; other more advanced features and 
+		you through &kdchart;'s other more advanced features and 
 		describe the way to use them (frames and backgrounds, 
 		data values, axis and grid manipulations etc...). It will also
 		show in details a number of interesting features like 
@@ -220,7 +220,7 @@
 		various types of charts are provided, such as 
                 <classname>KDChart::PieDiagram</classname>, and users can 
 		subclass <classname>KDChart::AbstractDiagram</classname> (or 
-		one of the other Diagram classes starting with Abstract, 
+		one of the other Diagram classes starting with 'Abstract', 
 		which are designed to be base classes) to implement custom 
 		chart types. A typical use of a simple Bar Diagram looks like 
 		this:
@@ -288,7 +288,7 @@ chart->coordinatePlane()->replaceDiagram( bars );
 			<para>
 			    In order to share an axis among two planes (and also diagrams)
 			    we just need to add it to both diagrams. The Chart 
-			    lay-outing engine will take care of adjusting positions 
+			    layouting engine will take care of adjusting positions 
 			    accordingly.
 			</para>
 		    </listitem>
@@ -414,13 +414,13 @@ or
 		of the new Interview framework in Qt 4. We would still advise 
 		to use KDChart::Chart so that you can make use of all the 
 		benefits that Interview brings you once you have a good 
-		undertanding of it.
+		understanding of it.
 	    </para>
 	    <para>
-		In order to better understand the relationship between 
+		In order to understand the relationship between 
 		<classname>KDChart::View</classname>
 		and <classname>KDChart::Widget</classname> better, compare for
-		example <classname>KDChart::View</classname> and
+		example <classname>KDChart::Chart</classname> and
 		<classname>KDChart::Widget</classname> to 
 		<classname>QListView</classname> and 
 		<classname>QListWidget</classname> in the Qt 4 documentation. 
@@ -433,7 +433,7 @@ or
                     lines of code where we are using  
 		    <classname>QStandardItemModel</classname> to store the 
 		    data which will be displayed by the diagram in a 
-		    <classname>KDChartChart</classname> widget. 
+		    <classname>KDChart::Chart</classname> widget. 
                 </para>                
                 <programlisting>
 // set up your model
@@ -507,18 +507,18 @@ chart->legend()->setTextAttributes( ta );
             </programlisting>
                 <para>
 		    All attribute sets can be set per cell, per column or per 
-		    model, and only be queried per cell. Access at the cell 
+		    modelindex, and only be queried per cell. Access at the cell 
 		    level only ensures that the proper fallback hierarchy can 
 		    be observed. If there is a value set at cell level, it 
-		    will be used, otherwise the dataset (column) level is 
+		    will be used. Otherwise, the dataset (column) level is 
 		    checked. If nothing was found at the dataset level, either
-		    the model wide setting is used, and if there is none 
+		    the model wide setting is used or if there is none 
 		    either, the default values will be applied. 
 		    All of this happens automatically, so that the code using
 		    these values only has to ask the cell for its attributes, 
-		    and will get the correct values. This avoids duplicating 
-		    the fallback logic all over the library and 
-		    the application, and avoids thus (expensive) error handling.
+		    and will get the correct values. This avoids duplication 
+		    of the fallback logic in numerous places in the library, 
+		    thus avoiding unnecessary and expensive error handling.
                 </para>
                 <para>
                     When using attributes sets, you need to be aware of this 
@@ -617,9 +617,9 @@ the full power of both the new Qt and the new KD Chart.
 	    Basically, <classname>KDChart::Widget</classname> has been designed for 
 	    beginners, while <classname>KDChart::Chart</classname> is designed for 
 	    experienced users and/or users who need more features and flexibility.
-	    Once again, we recommend you to check out both interfaces for those classes in order
-	    to give yourself a idea about which of the classes better
-matches your needs.( See <filename>KDChartWidget.h</filename> and 
+	    Once again, we recommend you to check out both interfaces of those classes in order
+	    to give yourself an idea about which one of the classes matches your needs
+	    better. ( See <filename>KDChartWidget.h</filename> and 
 	    <filename>KDChartChart.h</filename> ).
 <!-- PENDING(michel) What about changing all those references to
 header files to references to the reference documentation?  -->	</para>
@@ -628,7 +628,7 @@ header files to references to the reference documentation?  -->	</para>
             <para>
 		As described above (Section KD Chart and Interview), a
 		prerequisite for using the full KD Chart API is that the data to
-		be charted is made available through a class implementing the
+		be charted are made available through a class implementing the
 		<classname>QAbstractItemModel</classname> interface.
 		Before looking at some code, let us show you a few
 top-level classes of the KD Chart 2 API:
@@ -677,7 +677,7 @@ data. There can
 this point. We will then build  a
 		complete example and create a small application displaying a 
 		chart using <classname>KDChartWidget</classname> and 
-		<classname>KDChartChart</classname> respectively.
+		<classname>KDChart::Chart</classname> respectively.
 	    </para>
 	    <para>
 		First of all, we need to include the appropriate headers, and 
@@ -846,7 +846,7 @@ see later in greater
 		    <classname>KDChartWidget</classname> is a 
 		    <classname>KDChartLineDiagram</classname>.
 		    In the following example, we will look at how to display a Chart widget using
-		    <classname>KDChartChart</classname>.
+		    <classname>KDChart::Chart</classname>.
 		</para>
 	    </sect2>
 	    <sect2>	
@@ -909,13 +909,13 @@ give you a few examples.
 	 <itemizedlist>
             <listitem>
                 <para>
-                    A Cartesian coordinate plane, determined by a horizontal axis and a vertical 
+                    A Cartesian coordinate plane, determined by a horizontal and a vertical 
 		    axis, often called the x axis and y axis. 
                 </para>
             </listitem>
             <listitem>
                 <para>
-                    A Polar coordinate plane which makes use of the radius or the polar angle 
+                    A Polar coordinate plane which makes use of the radius and the polar angle 
 		    which defines the position of a point on a plane.
                 </para>
             </listitem>
@@ -1227,11 +1227,11 @@ chart displayed by the code shown above.
 		<note>
 		    <para>
 			Configuring the attributes for a <classname>KDChartBarDiagram</classname> making use
-			of a <classname>KDChartChart</classname> is
+			of a <classname>KDChart::Chart</classname> is
 done in the same way as for a 
 			<classname>KDChartWidget</classname>. You just need to assign the configured attributes 
 			to your bar diagram and assign it to the chart by calling 
-			<methodname>KDChartChart::replaceDiagram()</methodname>.
+			<methodname>KDChart::Chart::replaceDiagram()</methodname>.
 		    </para>
 		</note>
 	    </sect2>
@@ -1338,7 +1338,7 @@ using namespace KDChart;
 		    charts and are not specifical to the Bar diagrams.
 		</para>
 		<para>
-		    In this example we are using a <classname>KDChartChart</classname> class as well
+		    In this example we are using a <classname>KDChart::Chart</classname> class as well
 		    as a <classname>QStandardItemModel</classname> in order to store the data which 
 		    will be assigned to our diagram
 		</para>
@@ -1568,7 +1568,7 @@ int main( int argc, char** argv ) {
 		    <classname>KDChartThreeDBarAttributes</classname>
 		</para>
 		<para>
-		    We are making use of a <classname>KDChartChart</classname> class and also of 
+		    We are making use of a <classname>KDChart::Chart</classname> class and also of 
 		    an home made <classname>TableModel</classname> for the convenience and derived 
 		    from <classname>QAbstractTableModel</classname>.
 		</para>
@@ -1600,7 +1600,7 @@ int main( int argc, char** argv ) {
 		<para>
 		    In the above code we bring up the KDChart namespace as usual and declare our 
 		    slots. The prupose is to let the user configure its bar chart attributes 
-		    manually . As you can see we are using a KDChartChart object ( m_chart ),
+		    manually . As you can see we are using a KDChart::Chart object ( m_chart ),
 		    a KDChartBarDiagram object ( m_bars ), and our home made TableModel ( m_model ).		    
 		</para>
 		<para>
@@ -2031,10 +2031,10 @@ int main( int argc, char** argv ) {
 		<note>
 		    <para>
 			Configuring the attributes for a <classname>KDChartLineDiagram</classname> making use
-			of a <classname>KDChartChart</classname> is done the same way as for a 
+			of a <classname>KDChart::Chart</classname> is done the same way as for a 
 			<classname>KDChartWidget</classname>. You just need to assign the configured attributes 
 			to your line diagram and assign the diagram to the chart by calling 
-			<methodname>KDChartChart::replaceDiagram()</methodname>.
+			<methodname>KDChart::Chart::replaceDiagram()</methodname>.
 		    </para>
 		</note>
 		</sect2>
@@ -2141,7 +2141,7 @@ using namespace KDChart;
 		    charts and are not specifical to the Line diagram.
 		</para>
 		<para>
-		    In this example we are using a <classname>KDChartChart</classname> class as well
+		    In this example we are using a <classname>KDChart::Chart</classname> class as well
 		    as a <classname>QStandardItemModel</classname> in order to store the data which 
 		    will be assigned to our diagram. 
 		</para>
@@ -2351,7 +2351,7 @@ int main( int argc, char** argv ) {
 		    <classname>KDChartTextAttributes</classname>.
 		</para>
 		<para>
-		    We are making use of a <classname>KDChartChart</classname> class and also of 
+		    We are making use of a <classname>KDChart::Chart</classname> class and also of 
 		    an home made <classname>TableModel</classname> for the convenience and derived 
 		    from <classname>QAbstractTableModel</classname>.
 		</para>
@@ -2383,7 +2383,7 @@ int main( int argc, char** argv ) {
 		<para>		
 		    In the above code we bring up the KDChart namespace as usual and declare our 
 		    slots. The purpose is to let the user configure its line chart attributes 
-		    manually . As you can see we are using a KDChartChart object ( m_chart ),
+		    manually . As you can see we are using a KDChart::Chart object ( m_chart ),
 		    a KDChartLineDiagram object ( m_lines ), and our home made TableModel ( m_model ).
 		</para>
 		<para>
@@ -2615,7 +2615,7 @@ widget.lineDiagram()->setDataValueAttributes( dva );
 		<para>
 		    This sample code is making use of a <classname>KDChartWidget</classname> and a 
 		    <classname>KDChartLineDiagram</classname> but of course the process is very 
-		    similar if we were working with a <classname>KDChartChart</classname>. 
+		    similar if we were working with a <classname>KDChart::Chart</classname>. 
 		</para> 
 		<para>
 		    We recommend you to run the complete example presented in the following Tips 
@@ -2674,7 +2674,7 @@ widget.lineDiagram()->setDataValueAttributes( dva );
 		    </listitem>		   
 		</itemizedlist>		
 		<para>
-		    We are using a <classname>KDChartChart</classname> class and also an home made 
+		    We are using a <classname>KDChart::Chart</classname> class and also an home made 
 		    <classname>TableModel</classname> for the convenience. It is  derived from 
 		    <classname>QAbstractTableModel</classname>.
 		</para>
@@ -2706,7 +2706,7 @@ widget.lineDiagram()->setDataValueAttributes( dva );
 		<para>		
 		    In the above code we bring up the KDChart namespace as usual and declare our 
 		    slots. The purpose is to let the user configure its line chart attributes 
-		    manually from the GUI. As you can see we are using a KDChartChart object (m_chart),
+		    manually from the GUI. As you can see we are using a KDChart::Chart object (m_chart),
 		    a KDChartLineDiagram object (m_lines), and our home made TableModel (m_model).
 		</para>
 		<para>
@@ -2989,7 +2989,7 @@ m_lines->setLineAttributes( index, la );
 		    </listitem>			   		    		   
 		</itemizedlist>
 		<para>
-		    We are using a <classname>KDChartChart</classname> class and also an home made 
+		    We are using a <classname>KDChart::Chart</classname> class and also an home made 
 		    <classname>TableModel</classname> for the convenience. It is  derived from 
 		    <classname>QAbstractTableModel</classname>.
 		</para>
@@ -3021,7 +3021,7 @@ m_lines->setLineAttributes( index, la );
 		<para>		
 		    In the above code we bring up the KDChart namespace as usual and declare our 
 		    slots. The purpose is to let the user configure its line chart attributes 
-		    manually from the GUI. As you can see we are using a KDChartChart object (m_chart),
+		    manually from the GUI. As you can see we are using a KDChart::Chart object (m_chart),
 		    a KDChartLineDiagram object (m_lines), and our home made TableModel (m_model).
 		</para>
 		<para>
@@ -3846,10 +3846,10 @@ int main( int argc, char** argv ) {
 		<note>
 		    <para>
 			Configuring the attributes for a <classname>KDChartPieDiagram</classname> making use
-			of a <classname>KDChartChart</classname> is done the same way as for a 
+			of a <classname>KDChart::Chart</classname> is done the same way as for a 
 			<classname>KDChartWidget</classname>. You just need to assign the configured attributes 
 			to your pie diagram and assign the diagram to the chart by calling 
-			<methodname>KDChartChart::replaceDiagram()</methodname>.
+			<methodname>KDChart::Chart::replaceDiagram()</methodname>.
 		    </para>
 		</note>	
 	    </sect2>
@@ -3857,7 +3857,7 @@ int main( int argc, char** argv ) {
 		<title id="pieattributes">Pies Attributes</title>
 		<para>
 		    By "Pie attributes" we are talking about all parameters that can be 
-		    configured and set by the user and which are specifics to the Pie Chart type.
+		    configured and set by the user and which are specific to the Pie Chart type.
 		    KD Chart 2.0 API separates the attributes specifics to a chart type itself and 
 		    the generic attributes which are common to all chart types as for example the 
 		    setters and getters for a brush or a pen (See 
@@ -3999,7 +3999,7 @@ using namespace KDChart;
 		    specifical to the Pie types.
 		</para>
 		<para>
-		    In this example we are using a <classname>KDChartChart</classname> class as well
+		    In this example we are using a <classname>KDChart::Chart</classname> class as well
 		    as a <classname>QStandardItemModel</classname> in order to store the data which 
 		    will be assigned to our diagram. 
 		</para>
@@ -4184,7 +4184,7 @@ using namespace KDChart;
 		    </listitem>
 		</itemizedlist>
 		<para>
-		    In the example below we are using a <classname>KDChartChart</classname> class and 
+		    In the example below we are using a <classname>KDChart::Chart</classname> class and 
 		    also an home made <classname>TableModel</classname> for the convenience. It is  
 		    derived from <classname>QAbstractTableModel</classname>.
 		</para>
@@ -4216,7 +4216,7 @@ using namespace KDChart;
 		<para>		
 		    In the above code we bring up the KDChart namespace as usual and declare our 
 		    slots. The purpose is to let the user configure its line chart attributes 
-		    manually from the GUI. As you can see we are using a KDChartChart object (m_chart),
+		    manually from the GUI. As you can see we are using a KDChart::Chart object (m_chart),
 		    a KDChartPieDiagram object (m_pie), and our home made TableModel (m_model).
 		</para>
 		<note>
@@ -4686,7 +4686,7 @@ m_chart->update();
 		    <classname>KDChartWidget</classname> function 
 		    <methodname>setType(Widget::Polar)</methodname> or create an object of type 
 		    <classname>KDChartPolarDiagram</classname> and assign it to your 
-		    <classname>KDChartChart</classname> by calling its 
+		    <classname>KDChart::Chart</classname> by calling its 
 		    <methodname>replaceDiagram()</methodname> method.
 		</para>	
 	    </sect2>
@@ -4865,7 +4865,7 @@ chart.show();
 	</para>
 	<tip>
 	    <para>
-		If you a smaller number of strings than the number od labels drawn at this
+		If you set a smaller number of strings than the number of labels drawn at this
 		axis, KD Chart will iterate over the list, repeating the strings, until all
 		labels are drawn. 
 	    </para>
@@ -5016,7 +5016,7 @@ int main( int argc, char** argv ) {
 		</para>			             
                 <para>
                     In the Tips section below we will present you a more elaborate example which uses 
-		    <classname>KDChartChart</classname> and where we are configuring our axis title
+		    <classname>KDChart::Chart</classname> and where we are configuring our axis title
 		    text attributes. We also use our own labels and their shortened version. 	    
                 </para>
             </sect2>
@@ -5089,8 +5089,8 @@ int main( int argc, char** argv ) {
 		    </listitem>
 		</itemizedlist>
 		<para>
-		    In the example below we are using a <classname>KDChartChart</classname> class and 
-		    also an home made <classname>TableModel</classname> for the convenience. It is  
+		    In the example below we are using a <classname>KDChart::Chart</classname> class and 
+		    also a home made <classname>TableModel</classname> for the convenience. It is  
 		    derived from <classname>QAbstractTableModel</classname>.
 		</para>
 		<para>
@@ -5120,7 +5120,7 @@ int main( int argc, char** argv ) {
 		</programlisting>                
 		<para>		
 		    In the above code we bring up the KDChart namespace as usual. As you can see we are 
-		    using a KDChartChart object (m_chart), a KDChartLineDiagram object (m_lines), and 
+		    using a KDChart::Chart object (m_chart), a KDChartLineDiagram object (m_lines), and 
 		    our home made TableModel (m_model). 
 		</para>	
 		<programlisting linenumbering="numbered" id="axeslabels_mainwindow_cpp">
@@ -5128,7 +5128,7 @@ int main( int argc, char** argv ) {
 		</programlisting>
 		<para>
 		    First of all we are adding our chart to the layout as for any other Qt widget. Load 
-		    the data to be display into our model, and assign the model to our diagram.		   
+		    the data to be displayed into our model, and assign the model to our diagram.		   
 		</para>
 		<programlisting>
 ...
@@ -5146,7 +5146,7 @@ m_lines->setModel( &amp;m_model );
 ...
 		</programlisting>
 		<para>
-		    We want to display three axis, respectively positionned at
+		    We want to display three axis, respectively positioned at
 		    the top, left and bottom side of our diagram. This is straight
 		    forward:
 		</para>
@@ -5179,13 +5179,13 @@ bottomAxis->setTitleText ( "Abscissa Bottom" );
 		    <methodname>setTitleText()</methodname> and 
 		    <methodname>setTitleTextAttributes()</methodname> are implemented in 
 		    <classname>KDChartCartesianAxis</classname>, we recommend you to 
-		    consult its interface ( see <filename>KDChartCartesianAxis.h</filename>
-		</para>
-		<para>
-		    In this example and to demonstrate the text configuration for the title 
+		    consult its interface ( see <filename>KDChartCartesianAxis.h )</filename>
+<!//		</para>
+		<para>//-->
+		    contained in this example and to demonstrate the text configuration for the title 
 		    and the labels we want to have a different configuration for each of 
-		    our tilte axis and also for our labels. The process is the same as for 
-		    configuring any type of attributes, as follow:
+		    our title axis and also for our labels. The process is the same as for 
+		    configuring any type of attributes, as follows:
 		</para>
 		<para>
 		    Create an attribute object, configure it and assign it.
@@ -5253,7 +5253,7 @@ bottomAxis->setShortLabels( shortBottomLabels );
 		    </para>
 		</note>
 		<para>
-		    Finally the last step i to assign our axis to the diagram and the 
+		    Finally the last step is to assign our axis to the diagram and the 
 		    diagram to our chart view.
 		</para>
 		<programlisting>
@@ -5301,19 +5301,19 @@ m_chart->coordinatePlane()->replaceDiagram( m_lines );
 	    Legends can be drawn for all kind of diagrams and are drawn at the chart 
 	    level (in relation to diagram level). We can have more than one legend per 
 	    chart and add it to our chart or our widget view by using respectively 
-	    <methodname>KDChartChart::addLegend()</methodname> or  
-	    <methodname>KDChartWidget::addLegend()</methodname>
+	    <methodname>KDChart::Chart::addLegend()</methodname> or  
+	    <methodname>KDChart::Widget::addLegend()</methodname>
 	</para>
 	<note>
 	    <para>
 		Legend is different from all other classes ofd KD Chart, since it 
 		can be displayed outside of the Chart's area. If we want to, we 
 		can embedd the legend into your own widget, or into another part 
-		of a bigger grid, into which we might have inserted the Chart.
+		of a bigger grid, into which we might have inserted the chart.
 	    </para>
 	    <para>
 		On the other hand, please note that we need to (MUST) call 
-		<methodname>KDChartChart::addLegend()</methodname> to get our legend 
+		<methodname>KDChart::Chart::addLegend()</methodname> to get our legend 
 		positioned at the correct position in our chart in case we want to 
 		display the legend inside of the chart which is probably true for most 
 		cases.
@@ -5321,27 +5321,27 @@ m_chart->coordinatePlane()->replaceDiagram( m_lines );
 	</note>
 	<para>
 	    Let us go through the main configuration features offered by
-	    <classname>KDChartLegend</classname>. Of course we also recommend you to 
+	    <classname>KDChart::Legend</classname>. Of course we also recommend you to 
 	    consult its interface see <filename>KDChartLegend.h</filename> as well as
-	    the interfaces for <classname>KDChartChart</classname> and 
-	    <classname>KDChartWidget</classname> to have a complete idea over how to
+	    the interfaces for <classname>KDChart::Chart</classname> and 
+	    <classname>KDChart::Widget</classname> to have a complete idea over how to
 	    handle legends and what are the configurations parameters available.
 	</para>
 	<sect1>
             <title id="legendshowtoconfigure">How to configure</title>
              <para>
                 In order to add a legend to our chart we need to use the  
-		<methodname>KDChartChart::AddLegend()</methodname> method.
+		<methodname>KDChart::Chart::addLegend()</methodname> method.
 		The chart takes ownership of the legend and will take care of
-		removing it by itself. The <classname>KDChartChart</classname> method 
+		removing it by itself. The <classname>KDChart::Chart</classname> method 
 		above and the ones discussed in the paragraphs are similar for the
-		<classname>KDChartWidget</classname> class. In order to make the 
+		<classname>KDChart::Widget</classname> class. In order to make the 
 		following description simpler we will only mention 
-		<classname>KDChartChart</classname> in the following paragraphs.
+		<classname>KDChart::Chart</classname> in the following paragraphs.
             </para>
 	    <tip>		
 		<para>
-		    You may also wish to use <classname>KDChartChart</classname>
+		    You may also wish to use <classname>KDChart::Chart</classname>
 		    <methodname>replaceLegend( Legend newLegend , Legend oldLegend)</methodname> 
 		    which is also available for the convenience:
 		</para>
@@ -5357,13 +5357,13 @@ m_chart->coordinatePlane()->replaceDiagram( m_lines );
 	    </para>
 	    <note>
 		<para>
-		    <methodname>KDChartChart::takeLegend()</methodname>Removes the 
+		    <methodname>KDChart::Chart::takeLegend()</methodname>Removes the 
 		    legend from the chart without deleting it. The chart no longer owns 
 		    the legend, it is the caller's responsibility to delete the legend.
 		</para>
 	    </note>	   
 	    <para>
-		The main configurations elements for <classname>KDChartLegend</classname> are:
+		The main configurations elements for <classname>KDChart::Legend</classname> are:
 	    </para>
 	    <itemizedlist>
 		<listitem>
@@ -5380,7 +5380,7 @@ m_chart->coordinatePlane()->replaceDiagram( m_lines );
 		</listitem>
 		<listitem>
 		    <para>
-			Position, Alignment and Orientation are of course configurable.
+			Position, alignment and orientation are of course configurable.
 		    </para>
 		</listitem>
 		<listitem>
@@ -5390,14 +5390,14 @@ m_chart->coordinatePlane()->replaceDiagram( m_lines );
 		</listitem>
 		<listitem>
 		    <para>			    
-			Title, Markers and Text attributes can be set, as well as colors and 
+			Title, markers and text attributes can be set, as well as colors and 
 			spacing.
 		    </para>
 		</listitem>
 	    </itemizedlist>
 	    <note>
 		<para>
-		    The <classname>KDChartPosition</classname> class, defines positions, 
+		    The <classname>KDChart::Position</classname> class, defines positions, 
 		    using compass terminologie. Using this class you can specify one of 
 		    nine pre-defined, logical points , in a similar way, as you would use 
 		    a compass to navigate on a map. We recommend you to consult its interface 
@@ -5406,7 +5406,7 @@ m_chart->coordinatePlane()->replaceDiagram( m_lines );
 	    </note>
 	    <para>
 		Please consult the setters and getters methods available in the 
-		<classname>KDChartLegend</classname> interface. See 
+		<classname>KDChart::Legend</classname> interface. See 
 		<filename>KDChartLegend.h</filename>.
 	    </para>
             <sect2>
@@ -5459,7 +5459,7 @@ int main( int argc, char** argv ) {
 		<note>
 		    <para>
 			We need to change the default chart type (Line Charts) by calling  
-			the <methodname>KDChartWidget::setType</methodname> method in order 
+			the <methodname>KDChart::Widget::setType</methodname> method in order 
 			to display a bar type diagram.     
 		    </para>
 		</note>
@@ -5478,7 +5478,7 @@ int main( int argc, char** argv ) {
 		</programlisting>    
 		<para>
 		    The interesting point here is how we call 
-		    <methodname>KDChartWidget::firstlegend()</methodname> to get a pointer to 
+		    <methodname>KDChart::Widget::firstlegend()</methodname> to get a pointer to 
 		    to our legend object and be able to set up and configure it. We will see 
 		    further on in the next code example (see - Section Tips - how to configure 
 		    the elements of a legend (e.g Title text, markers, etc....).
@@ -5494,7 +5494,7 @@ int main( int argc, char** argv ) {
 }
 		</programlisting> 
 		<para>
-		    See the screen-shot below to view The resulting chart displayed by the 
+		    See the screenshot below to view The resulting chart displayed by the 
 		    above code. 
 		</para>
 		<figure float="0" id="fig-samplelegendwidget">
@@ -5513,8 +5513,8 @@ int main( int argc, char** argv ) {
 		    we recommend you to do so.
 		</para>			             
                 <para>
-                    In the Tips section below we will present you a more elaborate example 
-		    which uses  <classname>KDChartChart</classname> and where we are setting
+                    In the Tips section below, we will present you a more elaborate example 
+		    which uses  <classname>KDChart::Chart</classname> and where we are setting
 		    up our legend elements ( title, texts, markers, etc...). 
                 </para>
             </sect2>
@@ -5524,7 +5524,7 @@ int main( int argc, char** argv ) {
 	     <para>
 		In this section we want to give you some example about how to use some 
 		interesting features offered by the KD Chart 2.0 API. We will study the 
-		code and display a screen-shot showing the resulting widget. 
+		code and display a screenshot showing the resulting widget. 
 	    </para>
 	    <para>
 		Before we go through this example, let us study a very simple chart 
@@ -5567,8 +5567,8 @@ public:
         m_chart.coordinatePlane()-&gt;replaceDiagram(diagram);
 	    </programlisting>
 	    <para>
-		We will set the legend position as well as its  Background and Frame
-		attributes and includes those header files on this purpose. That will 
+		We will set the legend position as well as its  background and frame
+		attributes and include those header files on this purpose. That will 
 		allow us to make use of the methods available in those classes.
 	    </para>
 	    <para>
@@ -5586,8 +5586,8 @@ public:
 	    </programlisting>
 	    <para>
 		The code above handle the attributes specific to a legend, the setters
-		and getters for the methods we have been used here are implemented 
-		in the <classname>KDChartLegend</classname> class. We recommend you
+		and getters for the methods we have used here are implemented 
+		in the <classname>KDChart::Legend</classname> class. We recommend you
 		to consult its interface. See <filename>KDChartLegend.h</filename>.	
 	    </para>	    
 	    <para>
@@ -5631,13 +5631,13 @@ public:
 		Text attributes configuration and assignment is done as for all other 
 		types of attribute. Create a text attribute object, configure it and 
 		assign it. In this case we assign it to our legend by using its method 
-		<methodname>KDChartLegend::setTextAttributes()</methodname>.
+		<methodname>KDChart::Legend::setTextAttributes()</methodname>.
 	    </para>
 	    <tip>
 		<para>
 		    If we wish to paint a surrounding line round our legend markers we 
 		    just need to configure a pen and assign it to our legend by calling
-		    <methodname>KDChartLegend::setPen()</methodname>. See the following 
+		    <methodname>KDChart::Legend::setPen()</methodname>. See the following 
 		    code sample that demonstrate that.		    
 		</para>
 	    </tip>
@@ -5716,94 +5716,8 @@ int main( int argc, char** argv ) {
 #include "main.moc"
 	    </programlisting>
 	    <para>
-		See the screen-shot below to view The resulting chart displayed by the 
-		above code. 
-	    </para>
-	    <figure float="0" id="fig-samplelegendchart">
-                <title>A Chart with configured Legend</title>
-                <mediaobject>
-                    <imageobject>
-                        <imagedata
-			    fileref="images/legendparameters.png"
-			    width="3in" scalefit="1"/>
-                    </imageobject>
-                </mediaobject>
-            </figure>
-	    <para>
-	   	We recommend you to compile and run the above example, it is available 
-		at the following location: <filename>examples/Legends/LegendParameters
-		</filename>.
-	    </para>
-            <sect2>
-		<title id="legendtipsample" xreflabel="codexample">Legend Example</title>
-		<para>		  
-		    In the following implementation we want to be able to:
-		</para>
-		<itemizedlist>
-		     <listitem>
-			<para>
-			   Add, edit or remove Legends in/from our chart view.
-			</para>
-		    </listitem>
-		    <listitem>
-			<para>
-			   Configure its position, and a few attributes.  
-			</para>
-		    </listitem>		    
-		    <listitem>
-			<para>			    
-			   Set its Title
-			</para>
-		    </listitem>
-		     <listitem>
-			<para>			    
-			   All of the above operations should be available to the user from
-			   the GUI and performed dinamically. 
-			</para>
-		    </listitem>
-		</itemizedlist>
-		<para>
-		    In the example below we are using a <classname>KDChartChart</classname> class and 
-		    also an home made <classname>TableModel</classname> for the convenience. It is  
-		    derived from <classname>QAbstractTableModel</classname>.
-		</para>
-		<para>
-		    TableModel uses a simple rectangular vector of vectors to represent a data
-		    table that can be displayed in regular Qt Interview views. Additionally, it 
-		    provides a method to load CSV files exported by OpenOffice Calc in the default 
-		    configuration. This allows to prepare test data using spreadsheet software.
-		</para>
-		<para>
-		    It expects the CSV files in the subfolder ./modeldata. If the application
-		    is started from another location, it will ask for the location of the
-		    model data files.
-		</para>
-		<para>
-		    We recommend you to consult the "TableModel" interface and implementation files
-		    which are located in the <filename>examples/tools</filename> directory of your 
-		    KD Chart installation.
-		</para>
-		<para>
-		    Let us concentrate on our diagram _with_ axis implementation for now and consult the 
-		    following files: other needed files like the ui, pro , qrc ,CSV and main.cpp files 
-		    can be consulted from the <filename>examples/Legends/LegendAdvanced</filename> directory
-		    of your installation.
-		</para>
-		<programlisting linenumbering="numbered" id="legendadvanced_mainwindow_h">
-<textobject><textdata fileref="../../examples/Legends/LegendAdvanced/mainwindow.h"/></textobject>
-		</programlisting>                
-		<para>		
-		    In the above code we bring up the KDChart namespace as usual. As you can see we are 
-		    using a KDChartChart object (m_chart), a KDChartLineDiagram object (m_lines), and 
-		    our home made TableModel (m_model). 
-		</para>	
-		<programlisting linenumbering="numbered" id="legendadvanced_mainwindow_cpp">
-<textobject><textdata fileref="../../examples/Legends/LegendAdvanced/mainwindow.cpp"/></textobject>
-		</programlisting>
-		<para>		    
-		    See the screen-shot below to view The resulting chart displayed by the 
-		    above code. 
-		</para>     	  
+	    The screenshot shows the chart of the code listened above.
+	    </para>     	  
 		<figure float="0" id="fig-legendsconfigured">
 		    <title>Legend advanced example</title>
 		    <mediaobject>
@@ -5833,34 +5747,34 @@ int main( int argc, char** argv ) {
         <title id="chtxt_headersfooters">Header and Footers</title>
         <titleabbrev id="chnum_headersfooters">Chapter 7</titleabbrev>
 	<para>
-	    Headers and Footers can be added and configured in several ways. That will 
+	    Headers and footers can be added and configured in several ways. That will 
 	    be the subject of this section where we will go through the main features 
 	    and methods available. Of course we recommend you to consult the  
-	    <classname>KDChartHeaderFooter</classname> class interface to learn more 
+	    <classname>KDChartHeader::Footer</classname> class interface to learn more 
 	    about those features and methods. See <filename>KDChartHeaderFooter.h</filename>
         </para>
 	<sect1>
             <title id="headersfootershowtoconfigure">How to configure</title>
                 <para>
-                In order to add a Header or a Footer to our chart we need to use the  
-		<methodname>KDChartChart::AddHeaderFooter( HeaderFooter* hf )</methodname>
+                In order to add a header or a footer to our chart we need to use the  
+		<methodname>KDChart::Chart::AddHeaderFooter( HeaderFooter* hf )</methodname>
 		method. The chart takes ownership and will take care of removing it by itself. 
-		The <classname>KDChartChart</classname> method above and the ones discussed 
+		The <classname>KDChart::Chart</classname> method above and the ones discussed 
 		in the next paragraphs of this section are similar for the
-		<classname>KDChartWidget</classname> class. In order to make this  
+		<classname>KDChart::Widget</classname> class. In order to make this  
 		description simpler we will only mention 
-		<classname>KDChartChart</classname> there.
+		<classname>KDChart::Chart</classname> there.
             </para>
 	    <tip>		
 		<para>
-		    You may also wish to use <classname>KDChartChart</classname>
-		    <methodname>replaceHeaderFooter( HeaderFooter newHf, HeaderFooter oldHf)</methodname> 
+		    You may also wish to use <classname>KDChart::Chart</classname>
+		    <methodname>replaceHeaderFooter( HeaderFooter* newHf, HeaderFooter* oldHf)</methodname> 
 		    which is also available for the convenience:
 		</para>
 		<para>
 		    The new header or footer to be used instead of the old one must not be 
-		    zero, or the method will do nothing. The second parameter of this method
-		    is header or footer to be removed by the new one. This header or footer 
+		    zero. Otherwise the method will just do nothing. The second parameter of this method
+		    is the header or footer to be removed by the new one. This header or footer 
 		    will be deleted automatically. If the parameter is omitted, the very first 
 		    header or footer will be replaced. In case, there was no header and no footer 
 		    yet, the new header or footer will just be added.
@@ -5872,39 +5786,39 @@ int main( int argc, char** argv ) {
 	    </para>
 	    <note>
 		<para>
-		    <methodname>KDChartChart::takeHeaderFooter()</methodname>Removes the 
+		    <methodname>KDChart::Chart::takeHeaderFooter()</methodname>removes the 
 		    header or footer from the chart without deleting it. The chart no longer 
 		    owns the header or footer, it is the caller's responsibility to delete it.
 		</para>
 	    </note>	   
 	    <para>
-		The main configurations elements for <classname>KDChartHeaderFooter</classname>
+		The main configurations elements for <classname>KDChart::HeaderFooter</classname>
 		are:
 	    </para>
 	     <itemizedlist>
 		<listitem>
 		    <para>
-			Type: Can be Header or Footer. 
+			Type: Can be header or footer. 
 		    </para>
 		</listitem>
 		<listitem>
 		    <para>
-			Position: Allow the user to define or retrieve the Header or footer
+			Position: Allow the user to define or retrieve the header or footer
 			position.
 		    </para>
 		</listitem>	
 		<listitem>
 		    <para>			    
-			Text and Text attributes can of course also be configured as we will see
+			Text and text attributes can of course also be configured as we will see
 			in the following examples.
 		    </para>
 		</listitem>
 	    </itemizedlist>
 	    <note>
 		<para>
-		    The <classname>KDChartPosition</classname> class, defines positions, 
-		    using compass terminologie. Using this class you can specify one of 
-		    nine pre-defined, logical points , in a similar way, as you would use 
+		    The <classname>KDChart::Position</classname> class defines positions 
+		    using compass terminology. Using this class you can specify one of 
+		    nine pre-defined, logical points in a similar way, as you would use 
 		    a compass to navigate on a map. We recommend you to consult its interface 
 		    to learn more about it (<filename>KDChartPosition.h</filename>).
 		</para>
@@ -5915,12 +5829,12 @@ int main( int argc, char** argv ) {
                     We will now describe those features a more concrete way by looking at the following
                     sample code based on the <filename>Simple Widget</filename> example we have been 
 		    demonstrating above <filename>Chapter 3 - Two Ways - Widget Example</filename>.
-		    Through the following code we demonstrate how to add and position a header and a 
-		    footer to a chart Widget using a KDChartWidget.		    
+		    Through the following code, we demonstrate how to add and position a header and a 
+		    footer to a chart Widget using a <classname>KDChart::Widget<classname>.		    
                 </para>	
 		<para>
-		    First include the appropriate headers and bring in the "KDChart namespace":
-		</para>	    		 	
+		    First include the appropriate headers and bring in the "KDChart" namespace:
+		</para>	    		 
 		<programlisting>
 #include &lt;QApplication&gt;
 #include &lt;KDChartWidget&gt;
@@ -5931,9 +5845,9 @@ using namespace KDChart;
 		</programlisting>     	    
 		<para>
 		    In this sample code we want to display a bar chart and need to include our
-		    <classname>KDChartBarDiagram</classname> class. In order to be able to 
+		    <classname>KDChart::BarDiagram</classname> class. In order to be able to 
 		    give a location (position) to our header and our footer in the widget view we also 
-		    include <classname>KDChartPosition</classname>.
+		    include KDChartPosition.h.
 		</para>
 		<programlisting>
 int main( int argc, char** argv ) {
@@ -5959,7 +5873,7 @@ int main( int argc, char** argv ) {
 		<note>
 		    <para>
 			We need to change the default chart type (Line Charts) by calling  
-			the <methodname>KDChartWidget::setType</methodname> method in order 
+			the <methodname>KDChart::Widget::setType</methodname> method in order 
 			to display a bar type diagram.     
 		    </para>
 		</note>
@@ -5974,7 +5888,7 @@ int main( int argc, char** argv ) {
 		</programlisting>    
 		<para>
 		    As you can see the code above is straight forward and we just need to call 
-		    <methodname>KDChartWidget::addHeaderFooter()</methodname> passing the text, type
+		    <methodname>KDChart::Widget::addHeaderFooter()</methodname> passing the text, type
 		    and position we want to assign to it. 
 		</para>
 		<para>
@@ -5987,11 +5901,11 @@ int main( int argc, char** argv ) {
 }
 		</programlisting> 
 		<para>
-		    See the screen-shot below to view The resulting chart displayed by the 
+		    See the screenshot below to view The resulting chart displayed by the 
 		    above code. 
 		</para>
 		<figure float="0" id="fig-sampleheaderfooterwidget">
-                <title>A Widget With a Header and a Footer</title>
+                <title>A Widget with a header and a footer</title>
                 <mediaobject>
                     <imageobject>
                         <imagedata
@@ -6007,7 +5921,7 @@ int main( int argc, char** argv ) {
 		</para>			             
                 <para>
                     In the Tips section below we will present you a more elaborate example 
-		    which uses  <classname>KDChartChart</classname> and where we are setting
+		    which uses  <classname>KDChart::Chart</classname> and where we are setting
 		    up our headers and footers ( texts, background, frame etc...). 
                 </para>
             </sect2>
@@ -6017,7 +5931,7 @@ int main( int argc, char** argv ) {
 	     <para>
 		In this section we want to give you some example about how to use some 
 		interesting features offered by the KD Chart 2.0 API. We will study the 
-		code and display a screen-shot showing the resulting widget. 
+		code and display a screenshot showing the resulting widget. 
 	    </para>
 	    <para>
 		Before we go through this example, let us study a very simple chart 
@@ -6061,8 +5975,8 @@ public:
         m_chart.coordinatePlane()-&gt;replaceDiagram(diagram);
 	    </programlisting>
 	    <para>
-		We will configure the header position as well as its  text, Background and 
-		Frame attributes and includes the header files related to those attributes
+		We will configure the header position as well as its  text, background and 
+		frame attributes and include the header files related to those attributes
 		on this purpose. That will allow us to make use of the methods available 
 		in these classes.
 	    </para>
@@ -6079,7 +5993,7 @@ public:
 	    <para>
 		The code above handle the attributes specific to a headers and footers
 		the setters and getters for the methods we have been used here are 
-		implemented in the <classname>KDCharthEADERfOOTER</classname> class.
+		implemented in the <classname>KDChart::HeaderFooter</classname> class.
 		We recommend you to consult its interface. See 
 		<filename>KDChartHeaderFooter.h</filename>.	
 	    </para>	    
@@ -6108,12 +6022,12 @@ public:
         header->setTextAttributes( hta );
 	    </programlisting>
 	    <para>
-		Our header text is now displayed using a blue pen, the font are 
+		Our header text is now displayed using a blue pen, the fonts are 
 		configured to take a relative size. 
 	    </para>
 	    <para>
 	        We also want to configure a white background to make it nicer, and 
-		proceed as follow:
+		proceed as follows:
 	    </para>
 	    <programlisting>
         // Configure the header Background attributes
@@ -6173,7 +6087,7 @@ int main( int argc, char** argv ) {
 #include "main.moc"
 	    </programlisting>
 	    <para>
-		See the screen-shot below to view The resulting chart displayed by the 
+		See the screenshot below to view the resulting chart displayed by the 
 		above code. 
 	    </para>
 	    <figure float="0" id="fig-sampleheaderchart">
@@ -6187,7 +6101,7 @@ int main( int argc, char** argv ) {
                 </mediaobject>
             </figure>
 	    <para>
-	   	We recommend you to compile and run the above example, it is available 
+	   	We recommend you to compile and run the above example. It is available 
 		at the following location: 
 		<filename>examples/HeadersFooters/HeadersFootersParameters
 		</filename>.
@@ -6221,7 +6135,7 @@ int main( int argc, char** argv ) {
 		    </listitem>
 		</itemizedlist>
 		<para>
-		    In the example below we are using a <classname>KDChartChart</classname> class and 
+		    In the example below we are using a <classname>KDChart::Chart</classname> class and 
 		    also an home made <classname>TableModel</classname> for the convenience. It is  
 		    derived from <classname>QAbstractTableModel</classname>.
 		</para>
@@ -6252,14 +6166,15 @@ int main( int argc, char** argv ) {
 		</programlisting>                
 		<para>		
 		    In the above code we bring up the KDChart namespace as usual. As you can see we are 
-		    using a KDChartChart object (m_chart), a KDChartLineDiagram object (m_lines), and 
-		    our home made TableModel (m_model). 
+		    using a <classname>KDChart::Chart</classname> object (m_chart), a 
+		    <classname>KDChart::LineDiagram</classname> object (m_lines), and our home made 
+		    TableModel (m_model). 
 		</para>
 		<programlisting linenumbering="numbered" id="headeradvanced_mainwindow_cpp">
 <textobject><textdata fileref="../../examples/HeadersFooters/Advanced/mainwindow.cpp"/></textobject>
 		</programlisting>
 		<para>		    
-		    See the screen-shot below to view The resulting chart displayed by the 
+		    See the screenshot below to view The resulting chart displayed by the 
 		    above code. 
 		</para> 	  
 		<figure float="0" id="fig-headersconfigured">
@@ -6302,9 +6217,9 @@ int main( int argc, char** argv ) {
 	<sect1>
             <title id="customizingattributes">Attributes Model, Abstract Diagram</title>
             <para>
-                The <classname>KDChartAttributesModel</classname> class is derived from 
+                The <classname>KDChart::AttributesModel</classname> class is derived from 
 		<classname>QAbstractProxyModel</classname> and used internally by the base 
-		class for all diagrams <classname>KDChartAbstractDiagram</classname> which 
+		class for all diagrams <classname>KDChart::AbstractDiagram</classname> which 
 		<methodname>setAttributesModel( AttributesModel* model )</methodname> method 
 		associates an AttributesModel with a diagram.
             </para>
@@ -6333,7 +6248,7 @@ diagram1->setAttributesModel( diagram2->attributesModel() );
 	    </programlisting>
 	    <para>
 		To retrieve the attribute model associated to a particular diagram, we can make 
-		use of the <classname>KDChartAbstractDiagram</classname> method
+		use of the <classname>KDChart::AbstractDiagram</classname> method
 		<methodname>attributesModel()</methodname>.
 	    </para>
 	    <note>
@@ -6344,10 +6259,10 @@ diagram1->setAttributesModel( diagram2->attributesModel() );
 		</para>
 	    </note>
             <sect2>
-                <title id="attributeassample" xreflabel="codesample">How it Works</title>
+                <title id="attributeassample" xreflabel="codesample">How it works</title>
                 <para>
                     Let us make this more concrete by looking at the following methods for settings  
-		    a Pen and extracted from <classname>KDChartAbstractDiagram</classname>'s 
+		    a Pen and extracted from <classname>KDChart::AbstractDiagram</classname>'s 
 		    interface. 
                 </para>
                 <programlisting>		    
@@ -6357,7 +6272,7 @@ void setPen( const QPen&amp; pen );
 	        </programlisting>
 		<note>
 		    <para>
-			<classname>KDChartAbstractDiagram</classname> defines the interface, that 
+			<classname>KDChart::AbstractDiagram</classname> defines the interface, that 
 			needs to be implemented for the diagram, to function within the KDChart 
 			framework. It extends Interview's AbstractItemView. 
 		    </para>
@@ -6368,7 +6283,7 @@ void setPen( const QPen&amp; pen );
                 </para>
 		<para>
 		    By looking at their implementations we can see how we make use of the 
-		    <classname>KDChartAttributesModel</classname> methods 
+		    <classname>KDChart::AttributesModel</classname> methods 
 		    <methodname>setData(), setHeaderData(), and setModelData()</methodname>
 		    to achieve this task.
 		</para>
@@ -6422,8 +6337,8 @@ void AbstractDiagram::setPen( int column,const QPen&amp; pen )
 			</itemizedlist>
 			Which means that once you have set the attributes for a column or a cell, you will
 			not be able to change those settings by calling the "global" method to reset it 
-			to another value, but instead call the per column or per index setter. As 
-			demonstrated in the above code.
+			to another value, but instead call the per column or per index setter as 
+			demonstrated in the code above.
 		    </para>
 		</note>
 		<para>
@@ -6441,15 +6356,15 @@ void AbstractDiagram::setPen( int column,const QPen&amp; pen )
 		and how many decimal digits are displayed, etc.
             </para>
 	    <para>
-		We recommend you to consult <classname>KDChartDataValueAttributes</classname>' interface 
+		We recommend you to consult <classname>KDChart::DataValueAttributes</classname>' interface 
 		to find out more in details what can be done. In this section we will describe quickly 
 	        its main properties and go through a commented example that will demonstrates how to 
 		proceed in order to use and configure those attributes.		
 	    </para>
 	    <para>
-		Data values can be set with some defined text, background, frame and markers, the list 
+		Data values can be set with some defined text, background, frame and markers. The list 
 		below gives us an overview about the most used features. We will only list the setters 
-		here and explain them - Of course each of those setters has a corresponding getter:		
+		here and explain them. Of course each of those setters has a corresponding getter:		
 	    </para>
 	    <itemizedlist>
 		<listitem>
@@ -6561,7 +6476,7 @@ m_chart.setGlobalLeading( 15, 15, 15, 15 );
 		    as for setting all others types of attributes.
 		</para>
 		<para>
-		    See the screen-shot below to view The resulting chart displayed by the 
+		    See the screenshot below to view The resulting chart displayed by the 
 		    above code. 
 		</para>
 		<figure float="0" id="fig-sampledatavaluesattributes">
@@ -6584,7 +6499,7 @@ m_chart.setGlobalLeading( 15, 15, 15, 15 );
             <title id="customizingtext">Text Attributes</title>
             <para>
                 <classname>TextAttributes</classname> encapsulates settings that have to do with text. This includes font,
-		fontsize, color, whether the text is rotated, etc...
+		font size, color, whether the text is rotated, etc...
             </para>  
              <para>
 		We recommend studying the <classname>KDChart::TextAttributes</classname> API documentation
@@ -6596,7 +6511,7 @@ m_chart.setGlobalLeading( 15, 15, 15, 15 );
 		Text attributes can be set with some defined font, pen, rotation etc... The text font 
 		size can be fixed or relative (e.g it will adapt to the widget size), the list 
 		below gives us an overview about the most used features. We will only list the setters 
-		here and explain them - Of course each of those setters has a corresponding getter:		
+		here and explain them. Of course each of those setters has a corresponding getter:		
 	    </para>
 	    <itemizedlist>
 		<listitem>
@@ -6688,7 +6603,7 @@ header->setTextAttributes( hta );
 		    as for setting all others types of attributes.
 		</para>
 		<para>
-		    See the screen-shot below to view The resulting chart displayed by the 
+		    See the screenshot below to view the resulting chart displayed by the 
 		    above code. 
 		</para>
 		<figure float="0" id="fig-sampletextattributes">
@@ -6712,10 +6627,10 @@ header->setTextAttributes( hta );
              <para>
                 MarkerAttributes encapsulates settings that have to do with markers. This includes 
 		there types ( square, diamond, ring etc...), size and colors. For the convenience 
-		the user may also set up a Map of markers...
+		the user may also set up a map of markers.
             </para>  
              <para>
-		We recommend you to consult <classname>KDChartMarkerAttributes</classname>' interface 
+		We recommend you to consult <classname>KDChart::MarkerAttributes</classname>' interface 
 		to find out more in details what can be done. In this section we will describe quickly 
 	        its main properties and go through a commented example that will demonstrates how to 
 		proceed in order to use and configure those attributes.		
@@ -6773,7 +6688,7 @@ enum MarkerStyle { MarkerCircle  = 0,
 	        </programlisting>
 	    </note>
 	    <para>
-		The process to configure the marker attributes is very simple, and similar to all 
+		The process of configuring the marker attributes is very simple and similar to all 
 		other kind of attributes:
 	    </para>
 	     <itemizedlist>
@@ -6837,7 +6752,7 @@ m_lines->setDataValueAttributes( iColumn, dva );
 		    as for setting all others types of attributes.
 		</para>
 		<para>
-		    See the screen-shot below to view The resulting chart displayed by the 
+		    See the screenshot below to view the resulting chart displayed by the 
 		    above code. 
 		</para>
 		<figure float="0" id="fig-samplemarkerattributes">
@@ -6860,18 +6775,18 @@ m_lines->setDataValueAttributes( iColumn, dva );
             <title id="customizingbackground">Background Attributes</title>
 	    <para>
                 Background attributes encapsulates settings that have to do with backgounds for 
-		the divers elements of a chart view. This includes there modes( pixmap and its 
-		sub-modes and brush)...
+		the divers elements of a chart view. This includes their modes ( pixmap and its 
+		sub-modes and brush).
             </para>  
              <para>
-		We recommend you to consult <classname>KDChartBackgroundAttributes</classname>'interface 
+		We recommend you to consult <classname>KDChart::BackgroundAttributes</classname>'interface 
 		to find out more in details what can be done. In this section we will describe quickly 
 	        its main properties and go through a commented example that will demonstrates how to 
 		proceed in order to use and configure those attributes.		
 	    </para>
 	    <para>
 		The list below gives us an overview about the most used features. We will only list the 
-		setters here and explain them - Of course each of those setters has a corresponding getter.
+		setters here and explain them. Of course, each of those setters has a corresponding getter.
 	    </para>
 	    <itemizedlist>
 		<listitem>
@@ -6897,7 +6812,7 @@ m_lines->setDataValueAttributes( iColumn, dva );
 	    </itemizedlist>
 	    <note>
 		<para>
-		    As defined in the <classname>KDChartBackgroundAttributes</classname> class'interface
+		    As defined in the <classname>KDChart::BackgroundAttributes</classname>' interface
 		    the different <filename>BackgroundPixmapMode</filename> available are:
 		</para>
 		<programlisting>
@@ -6958,7 +6873,7 @@ header->setBackgroundAttributes(  hba );
 		    as for setting all others types of attributes.
 		</para>
 		<para>
-		    See the screen-shot below to view The resulting chart displayed by the 
+		    See the screenshot below to view the resulting chart displayed by the 
 		    above code. 
 		</para>
 		<figure float="0" id="fig-samplebgattributes">
@@ -6981,11 +6896,11 @@ header->setBackgroundAttributes(  hba );
             <title id="customizingframes">Frame Attributes</title>
             <para>
                 Frame attributes encapsulates settings that have to do with frames for 
-		the divers elements of a chart view. This includes their pen and padding 
-		properties...
+		the diverse elements of a chart view. This includes their pen and padding 
+		properties.
             </para>  
              <para>
-		We recommend you to consult <classname>KDChartFrameAttributes</classname>'interface 
+		We recommend you to consult <classname>KDChart::FrameAttributes</classname>' interface 
 		to find out more in details what can be done. In this section we will describe quickly 
 	        its main properties and go through a commented example that will demonstrates how to 
 		proceed in order to use and configure those attributes.		
@@ -7023,7 +6938,7 @@ header->setBackgroundAttributes(  hba );
 		</listitem>
 		<listitem>
 		    <para>
-			Assign the configurated attributes to the element of a chart.
+			Assign the configurated attributes to the element of a chart:
 			<methodname>element.setFrameAttributes( fa )</methodname>.
 		    </para>
 		</listitem>			
@@ -7031,7 +6946,7 @@ header->setBackgroundAttributes(  hba );
             <sect2>
                 <title id="framesample" xreflabel="codesample">Frame Attributes Sample code</title>
                 <para>
-                    Let us make this more concrete by looking at the following lines of code which describe 
+                    Let us make this more concrete by looking at the following lines of code which describes 
 		    the above process. This example is based on the <filename>main.cpp</filename> 
 		    file of the <filename>examples/Background</filename>. We recommend  you to compile
 		    and run this example and to study its code.
@@ -7057,7 +6972,7 @@ header->setFrameAttributes(  hfa );
 		    as for setting all others types of attributes.
 		</para>
 		<para>
-		    See the screen-shot below to view The resulting chart displayed by the 
+		    See the screenshot below to view the resulting chart displayed by the 
 		    above code. 
 		</para>
 		<figure float="0" id="fig-sampleframeattributes">
@@ -7083,14 +6998,14 @@ header->setFrameAttributes(  hfa );
 		includes their pen, step width, visibility properties ...etc
             </para>  
              <para>
-		We recommend you to consult <classname>KDChartGridAttributes</classname>'interface 
+		We recommend you to consult <classname>KDChart::GridAttributes</classname>' interface 
 		to find out more in details what can be done. In this section we will describe quickly 
 	        its main properties and go through a commented example that demonstrates how to 
 		proceed in order to use and configure those attributes.		
 	    </para>
 	    <para>
 		The list below gives us an overview about the most used features. We will only list 
-		the setters here and explain them - Of course each of those setters has a 
+		the setters here and explain them. Of course, each of those setters has a 
 		corresponding getter.
 	    </para>
 	    <itemizedlist>
@@ -7209,7 +7124,7 @@ plane->setGridAttributes( Qt::Vertical,  ga );
 		    as for setting all others types of attributes.
 		</para>
 		<para>
-		    See the screen-shot below to view The resulting chart displayed by the 
+		    See the screenshot below to view the resulting chart displayed by the 
 		    above code. 
 		</para>
 		<figure float="0" id="fig-samplegridattributes">
@@ -7223,7 +7138,7 @@ plane->setGridAttributes( Qt::Vertical,  ga );
 		    </mediaobject>
 		</figure>
 		<para>
-		    We recommend you to modify, compile and run the example at the following location: 
+		    We recommend you to modify, compile and run the example at the following location.
 		    See file: <filename>examples/Grids</filename>.
 		</para>
             </sect2> 
@@ -7233,21 +7148,21 @@ plane->setGridAttributes( Qt::Vertical,  ga );
             <para>
                 ThreeDAttributes properties are defined at different levels in the KD Chart 2 API.
 		We have the properties available to all types of diagram which are defined in the 
-		<classname>KDChartAbstractThreeDAttributes</classname> and the ones specific to 
-		a type of diagram. At the moment we support THreeD for Bar, lines and Pie diagrams
+		<classname>KDChart::AbstractThreeDAttributes</classname> and the ones specific to 
+		a type of diagram. At the moment we support ThreeD for Bar, Lines and Pie diagrams
 		and the ThreeD attributes for those diagrams types are defined in their own 
-		attributes classes. We have <classname>KDChartThreeDBarAttributes</classname>,
-		<classname>KDChartThreeDLineAttributes</classname> and 
-		<classname>KDChartThreeDPieAttributes</classname>
+		attributes classes. We have <classname>KDChart::ThreeDBarAttributes</classname>,
+		<classname>KDChart::ThreeDLineAttributes</classname> and 
+		<classname>KDChart::ThreeDPieAttributes</classname>
             </para>  
 	    <para>
-                ThreeD attributes encapsulates settings that have to do with threeD display. This 
+                ThreeD attributes encapsulates settings that have to do with 3D display. This 
 		includes their depth, angle, rotation etc ... depending of the chart type we are 
 		working with.
             </para>  
              <para>
-		We recommend you to consult the <classname>*ThreeDAttributes</classname> 
-		class'interface to find out more in details what can be done. In this section we 
+		We recommend you to consult the <classname>KDChart::ThreeDAttributes</classname>' 
+		interface to find out more in details what can be done. In this section we 
 		will describe quickly its main properties and go through a commented example that 
 		demonstrates how to proceed in order to use and configure those attributes.		
 	    </para>
@@ -7313,7 +7228,7 @@ plane->setGridAttributes( Qt::Vertical,  ga );
 	     <itemizedlist>
 		<listitem>
 		    <para>
-			Call the threeD attributes and configure it.
+			Call the 3D attributes and configure it.
 		    </para>
 		</listitem>
 		<listitem>
@@ -7353,7 +7268,7 @@ m_chart->update();
 		    as for setting all others types of attributes.
 		</para>
 		<para>
-		    See the screen-shot below to view The resulting chart displayed by the 
+		    See the screenshot below to view the resulting chart displayed by the 
 		    above code. 
 		</para>
 		<figure float="0" id="fig-samplethreedattributes">
@@ -7520,13 +7435,13 @@ me.setCalculationMode(      KDChartEnums::MeasureCalculationModeRelative );
             <sect2>
                 <title>What is relative positioning all about?</title>
                 <para>
-                    Introduced for floating objects in &kdchart; 2 relative positioning
-                    is defining a point in relation to a reference point that in
+                    Introduced for floating objects in &kdchart; 2, relative positioning
+                    is defining a point in relation to a reference point, that in
                     turn is specified in relation to a reference area.
                 </para>
                 <para>
-                    This illustration shows the nine position points defined for a bar,
-                    see the magnified area for the relative positioning of negative /
+                    This illustration shows the nine position points defined for a bar.
+                    See the magnified area for the relative positioning of negative /
                     positive data value texts.
                 </para>
                 <figure float="0" id="fig-relativeposition">
@@ -7579,8 +7494,8 @@ me.setCalculationMode(      KDChartEnums::MeasureCalculationModeRelative );
                 </para>
                 <para>
                     The reason for this is to make it easy to specify rotated data
-                    value texts: Because of different reference points and alignment
-                    the texts will look good even when rotated, without the need of
+                    value texts: Because of different reference points and alignment,
+                    the texts will look good even when rotated without the need of
                     adjusting other settings than just the rotation angle itself.
                 </para>
                 <para>
