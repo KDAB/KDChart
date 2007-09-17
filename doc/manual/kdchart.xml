@@ -5180,7 +5180,7 @@ bottomAxis->setTitleText ( "Abscissa Bottom" );
 		    <methodname>setTitleTextAttributes()</methodname> are implemented in 
 		    <classname>KDChartCartesianAxis</classname>, we recommend you to 
 		    consult its interface ( see <filename>KDChartCartesianAxis.h )</filename>
-<!//		</para>
+<!--//		</para>
 		<para>//-->
 		    contained in this example and to demonstrate the text configuration for the title 
 		    and the labels we want to have a different configuration for each of 
@@ -5731,7 +5731,6 @@ int main( int argc, char** argv ) {
 		    <filename>examples/Legends/LegendAdvanced</filename> of your KD Chart 
 		    installation, we recommend you to study its code, compile and run it.
 		</para>
-            </sect2>	    
         </sect1>
         <sect1>
             <title>What's next</title>
@@ -5830,7 +5829,7 @@ int main( int argc, char** argv ) {
                     sample code based on the <filename>Simple Widget</filename> example we have been 
 		    demonstrating above <filename>Chapter 3 - Two Ways - Widget Example</filename>.
 		    Through the following code, we demonstrate how to add and position a header and a 
-		    footer to a chart Widget using a <classname>KDChart::Widget<classname>.		    
+		    footer to a chart Widget using a <classname>KDChart::Widget</classname>.		    
                 </para>	
 		<para>
 		    First include the appropriate headers and bring in the "KDChart" namespace:
