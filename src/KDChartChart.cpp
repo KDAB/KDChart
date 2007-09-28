@@ -1019,7 +1019,7 @@ void Chart::reLayoutFloatingLegends()
             // find the legends corner point (reference point plus any paddings)
             const RelativePosition relPos( legend->floatingPosition() );
             QPointF pt( relPos.calculatedPoint( size() ) );
-            qDebug() << pt;
+            //qDebug() << pt;
             // calculate the legend's top left point
             const Qt::Alignment alignTopLeft = Qt::AlignBottom | Qt::AlignLeft;
             if( (relPos.alignment() & alignTopLeft) != alignTopLeft ){
@@ -1033,7 +1033,7 @@ void Chart::reLayoutFloatingLegends()
                 else if( relPos.alignment() & Qt::AlignVCenter )
                     pt.ry() -= 0.5 * legendSize.height();
             }
-            qDebug() << pt << endl;
+            //qDebug() << pt << endl;
             legend->move( static_cast<int>(pt.x()), static_cast<int>(pt.y()) );
         }
     }
