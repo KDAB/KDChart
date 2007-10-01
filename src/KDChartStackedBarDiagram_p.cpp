@@ -60,22 +60,28 @@ const QPair<QPointF, QPointF> StackedBarDiagram::calculateDataBoundaries() const
     for( int row = 0; row < rowCount; ++row )
     {
         // calculate sum of values per column - Find out stacked Min/Max
-        double stackedValues = 0;
+        double stackedValues = 0.0;
+        double negativeStackedValues = 0.0;
         for ( int col = 0; col < colCount ; ++col )
         {
             const CartesianDiagramDataCompressor::CachePosition position( row, col );
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
-            stackedValues +=  point.value;
+
+            if( point.value > 0.0 )
+                stackedValues += point.value;
+            else
+                negativeStackedValues += point.value;
+
             // this is always true yMin can be 0 in case all values
             // are the same
             // same for yMax it can be zero if all values are negative
             if( bStarting ){
-                yMin = stackedValues;
-                yMax = stackedValues;
+                yMin = negativeStackedValues < 0.0 ? negativeStackedValues : stackedValues;
+                yMax = stackedValues > 0.0 ? stackedValues : negativeStackedValues;
                 bStarting = false;
             }else{
-                yMin = qMin( yMin, stackedValues );
-                yMax = qMax( yMax, stackedValues );
+                yMin = qMin( qMin( yMin, stackedValues ), negativeStackedValues );
+                yMax = qMax( qMax( yMax, stackedValues ), negativeStackedValues );
             }
         }
     }
@@ -181,7 +187,8 @@ void StackedBarDiagram::paint(  PaintContext* ctx )
             {
                 const CartesianDiagramDataCompressor::CachePosition position( row, k );
                 const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
-                stackedValues += point.value;
+                if( p.value >= 0.0 && point.value >= 0.0 || p.value < 0.0 && point.value < 0.0 )
+                    stackedValues += point.value;
                 key = point.key;
             }
             QPointF point = ctx->coordinatePlane()->translate( QPointF( key, stackedValues ) );
