@@ -588,16 +588,20 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 // we need to register data values for the steps
                 // in case it is configured by the user
                 QStringList configuredStepsLabels;
-                double value = headerLabels.isEmpty() ? 0.0 : headerLabels.first().toDouble();
+                double value = dimX.start;// headerLabels.isEmpty() ? 0.0 : headerLabels.first().toDouble();
                 configuredStepsLabels << QString::number( value );
-                for (  int i = 0; i < numberOfUnitRulers; i++ ) {
+                
+                for( int i = 0; i < numberOfUnitRulers; i++ )
+                {
                     //qDebug() << value;
                     value += dimX.stepWidth;
-                    configuredStepsLabels.append( QString::number( value ) );
+                    configuredStepsLabels.append( d->diagram()->unitPrefix( i, Qt::Horizontal, true ) +
+                                                  QString::number( value ) +
+                                                  d->diagram()->unitSuffix( i, Qt::Horizontal, true ) );
                 }
                 headerLabels = configuredStepsLabels;
             }
-
+    
             if (  isBarDiagram )
                 headerLabels.append( QString::null );
         }
