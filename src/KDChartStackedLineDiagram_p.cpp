@@ -60,12 +60,16 @@ const QPair<QPointF, QPointF> StackedLineDiagram::calculateDataBoundaries() cons
     for( int row = 0; row < rowCount; ++row )
     {
         // calculate sum of values per column - Find out stacked Min/Max
-        double stackedValues = 0;
+        double stackedValues = 0.0;
+        double negativeStackedValues = 0.0;
         for( int col = datasetDimension() - 1; col < colCount; col += datasetDimension() ) {
-            CartesianDiagramDataCompressor::CachePosition position( row, col );
-            CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
+            const CartesianDiagramDataCompressor::CachePosition position( row, col );
+            const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
 
-            stackedValues += point.value;
+            if( point.value >= 0.0 )
+                stackedValues += point.value;
+            else
+                negativeStackedValues += point.value;
         }
 
         if( bStarting ){
@@ -73,16 +77,15 @@ const QPair<QPointF, QPointF> StackedLineDiagram::calculateDataBoundaries() cons
             yMax = stackedValues;
             bStarting = false;
         }else{
-            // Pending Michel:
-            // I am taking in account all values negatives or positives
             // take in account all stacked values
-            yMin = qMin( qMin( yMin,  0.0 ), stackedValues );
-            yMax = qMax( yMax, stackedValues );
+            yMin = qMin( qMin( yMin, negativeStackedValues ), stackedValues );
+            yMax = qMax( qMax( yMax, negativeStackedValues ), stackedValues );
         }
     }
 
-    QPointF bottomLeft( QPointF( xMin, yMin ) );
-    QPointF topRight(   QPointF( xMax, yMax ) );
+    const QPointF bottomLeft( xMin, yMin );
+    const QPointF topRight( xMax, yMax );
+
     return QPair<QPointF, QPointF> ( bottomLeft, topRight );
 }
 
