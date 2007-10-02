@@ -108,7 +108,8 @@ const QPair<QPointF, QPointF> PolarDiagram::calculateDataBoundaries () const
     for ( int j=0; j<colCount; ++j ) {
         for ( int i=0; i< rowCount; ++i ) {
             double value = model()->data( model()->index( i, j, rootIndex() ) ).toDouble();
-            yMax = qMax( yMax, qAbs(value) );
+            yMax = qMax( yMax, value );
+            yMin = qMin( yMin, value );
         }
     }
     QPointF bottomLeft ( QPointF( xMin, yMin ) );

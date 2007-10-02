@@ -257,7 +257,7 @@ void PolarCoordinatePlane::layoutDiagrams()
 
             const double angleUnit = 360 / polarDiagram->valueTotals();
 //qDebug() << "--------------------------------------------------------";
-            const double radius = dataBoundariesPair.second.y();
+            const double radius = qAbs( dataBoundariesPair.first.y() ) + dataBoundariesPair.second.y();
 //qDebug() << radius <<"="<<dataBoundariesPair.second.y();
             const double diagramWidth = radius * 2; // == height
             const double planeWidth = d->contentRect.width();
@@ -273,6 +273,7 @@ void PolarCoordinatePlane::layoutDiagrams()
             diagramTransposition.angleUnit = angleUnit;
             diagramTransposition.startPosition = oldStartPosition;
             diagramTransposition.zoom = ZoomParameters();
+            diagramTransposition.minValue = dataBoundariesPair.first.y() < 0 ? dataBoundariesPair.first.y() : 0.0;
             d->coordinateTransformations.append( diagramTransposition );
         }
 }
