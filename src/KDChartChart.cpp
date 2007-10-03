@@ -944,6 +944,7 @@ void Chart::paint( QPainter* painter, const QRect& target )
     if( target.isEmpty() || !painter ) return;
     //qDebug() << "Chart::paint( ..," << target << ")";
 
+    QPaintDevice* prevDevice = GlobalMeasureScaling::paintDevice();
     GlobalMeasureScaling::setPaintDevice( painter->device() );
 
     // Output on a widget
@@ -994,6 +995,7 @@ void Chart::paint( QPainter* painter, const QRect& target )
     painter->translate( -translation.x(), -translation.y() );
 
     GlobalMeasureScaling::instance()->resetFactors();
+    GlobalMeasureScaling::setPaintDevice( prevDevice );
 
     //qDebug() << "KDChart::Chart::paint() done.\n";
 }
