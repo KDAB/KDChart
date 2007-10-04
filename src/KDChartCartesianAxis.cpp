@@ -1156,16 +1156,30 @@ QSize CartesianAxis::maximumSize() const
         qreal w = 0.0;
         qreal h = 10.0;
         if( drawLabels ){
-            // if there're no label strings, we take the biggest needed number as width
+            // if there're no label strings, we loop through the values
+            // taking the longest (not largest) number - e.g. 0.00001 is longer than 100
             if ( labels().count() == 0 )
             {
-                labelItem.setText(
-                        customizedLabel(
-                                QString::number( plane->gridDimensionsList().last().end, 'f', 0 )));
-                const QSize siz = labelItem.sizeHint();
-                w = siz.width();
-                calculateOverlap( 0, 0, 0, siz.height(), false,// bar diagram flag is ignored for Ordinates
-                                  topOverlap, bottomOverlap );
+                const DataDimension dimY = AbstractGrid::adjustedLowerUpperRange( plane->gridDimensionsList().last(), true, true );
+                const double step = dimY.stepWidth;
+                const qreal minValue = dimY.start;
+                const qreal maxValue = dimY.end;
+                const bool isLogarithmicY = (dimY.calcMode == AbstractCoordinatePlane::Logarithmic );
+                qreal labelValue = minValue;
+
+                while( labelValue <= maxValue ) {
+                    const QString labelText = diagram()->unitPrefix( static_cast< int >( labelValue ), Qt::Vertical, true ) +
+                                            QString::number( labelValue ) +
+                                            diagram()->unitSuffix( static_cast< int >( labelValue ), Qt::Vertical, true );
+                    labelItem.setText( customizedLabel( labelText ) );
+
+                    const QSize siz = labelItem.sizeHint();
+                    qreal lw = siz.width();
+                    w = qMax( w, lw );
+                    calculateOverlap( 0, 0, 0, siz.height(), false,// bar diagram flag is ignored for Ordinates
+                                    topOverlap, bottomOverlap );
+                    calculateNextLabel( labelValue, step, isLogarithmicY );
+                }
             }else{
                 // find the longest label text:
                 const int first=0;
