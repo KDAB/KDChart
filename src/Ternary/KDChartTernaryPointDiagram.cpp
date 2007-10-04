@@ -97,7 +97,7 @@ void  TernaryPointDiagram::paint (PaintContext *paintContext)
             // see if there is data otherwise skip
             if( ! model()->data( model()->index( row, column+0 ) ).isNull() )
             {
-                p->setPen( pen( base ) );
+                p->setPen( PrintingParameters::scalePen( pen( base ) ) );
                 p->setBrush( brush( base ) );
 
                 // retrieve data

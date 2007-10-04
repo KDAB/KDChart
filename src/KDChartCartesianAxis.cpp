@@ -40,6 +40,7 @@
 #include "KDChartPainterSaver_p.h"
 #include "KDChartLayoutItems.h"
 #include "KDChartBarDiagram.h"
+#include "KDChartPrintingParameters.h"
 
 #include <KDABLibFakes>
 
@@ -541,7 +542,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
 #endif
 
     // solving issue #4075 in a quick way:
-    ptr->setPen ( labelTA.pen() ); // perhaps we want to add a setter method later?
+    ptr->setPen ( PrintingParameters::scalePen( labelTA.pen() ) ); // perhaps we want to add a setter method later?
 
     //ptr->setPen ( Qt::black );
 

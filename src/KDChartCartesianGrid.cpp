@@ -27,6 +27,7 @@
 #include "KDChartAbstractCartesianDiagram.h"
 #include "KDChartPaintContext.h"
 #include "KDChartPainterSaver_p.h"
+#include "KDChartPrintingParameters.h"
 
 #include <QPainter>
 
@@ -164,7 +165,7 @@ void CartesianGrid::drawGrid( PaintContext* context )
     AbstractGrid::adjustLowerUpperRange( minValueY, maxValueY, dimY.stepWidth, true, true );
 
     if ( drawSubGridLinesX ) {
-        context->painter()->setPen( gridAttrsX.subGridPen() );
+        context->painter()->setPen( PrintingParameters::scalePen( gridAttrsX.subGridPen() ) );
         qreal f = minValueX;
         qreal fLogSubstep = minValueX;
 
@@ -193,7 +194,7 @@ void CartesianGrid::drawGrid( PaintContext* context )
     }
 
     if ( drawSubGridLinesY ) {
-        context->painter()->setPen( gridAttrsY.subGridPen() );
+        context->painter()->setPen( PrintingParameters::scalePen( gridAttrsY.subGridPen() ) );
         qreal f = minValueY;
         qreal fLogSubstep = minValueY;
 
@@ -231,7 +232,7 @@ void CartesianGrid::drawGrid( PaintContext* context )
     if ( drawUnitLinesX || drawXZeroLineX ) {
         //qDebug() << "E";
         if ( drawUnitLinesX )
-            context->painter()->setPen( gridAttrsX.gridPen() );
+            context->painter()->setPen( PrintingParameters::scalePen( gridAttrsX.gridPen() ) );
 //        const qreal minX = dimX.start;
 
         qreal f = minValueX;
@@ -246,10 +247,10 @@ void CartesianGrid::drawGrid( PaintContext* context )
                 topPoint = plane->translate( topPoint );
                 bottomPoint = plane->translate( bottomPoint );
                 if ( zeroLineHere )
-                    context->painter()->setPen( gridAttrsX.zeroLinePen() );
+                    context->painter()->setPen( PrintingParameters::scalePen( gridAttrsX.zeroLinePen() ) );
                 context->painter()->drawLine( topPoint, bottomPoint );
                 if ( zeroLineHere )
-                    context->painter()->setPen( gridAttrsX.gridPen() );
+                    context->painter()->setPen( PrintingParameters::scalePen( gridAttrsX.gridPen() ) );
             }
             if ( isLogarithmicX ) {
                 f *= 10.0;
@@ -270,7 +271,7 @@ void CartesianGrid::drawGrid( PaintContext* context )
     if ( drawUnitLinesY || drawZeroLineY ) {
         //qDebug() << "F";
         if ( drawUnitLinesY )
-            context->painter()->setPen( gridAttrsY.gridPen() );
+            context->painter()->setPen( PrintingParameters::scalePen( gridAttrsY.gridPen() ) );
         //const qreal minY = dimY.start;
         //qDebug("minY: %f   maxValueY: %f   dimY.stepWidth: %f",minY,maxValueY,dimY.stepWidth);
         qreal f = minValueY;
@@ -285,10 +286,10 @@ void CartesianGrid::drawGrid( PaintContext* context )
                 leftPoint  = plane->translate( leftPoint );
                 rightPoint = plane->translate( rightPoint );
                 if ( zeroLineHere )
-                    context->painter()->setPen( gridAttrsY.zeroLinePen() );
+                    context->painter()->setPen( PrintingParameters::scalePen( gridAttrsY.zeroLinePen() ) );
                 context->painter()->drawLine( leftPoint, rightPoint );
                 if ( zeroLineHere )
-                    context->painter()->setPen( gridAttrsY.gridPen() );
+                    context->painter()->setPen( PrintingParameters::scalePen( gridAttrsY.gridPen() ) );
             }
             if ( isLogarithmicY ) {
                 f *= 10.0;

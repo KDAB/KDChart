@@ -111,7 +111,7 @@ void  TernaryLineDiagram::paint (PaintContext *paintContext)
             QModelIndex base = model()->index( row, column );
             if( ! model()->data( base ).isNull() )
             {
-                p->setPen( pen( base ) );
+                p->setPen( PrintingParameters::scalePen( pen( base ) ) );
                 p->setBrush( brush( base ) );
 
                 // retrieve data

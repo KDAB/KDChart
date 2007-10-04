@@ -43,6 +43,7 @@
 #include "KDChartPosition.h"
 #include "KDChartPainterSaver_p.h"
 #include "KDChartPaintContext.h"
+#include "KDChartPrintingParameters.h"
 #include "Scenery/ReverseMapper.h"
 
 #include <QPoint>
@@ -207,7 +208,7 @@ namespace KDChart {
                     lastX = pos.x();
 
                     PainterSaver painterSaver( painter );
-                    painter->setPen( ta.pen() );
+                    painter->setPen( PrintingParameters::scalePen( ta.pen() ) );
                     painter->setFont( calculatedFont );
                     painter->translate( pt );
                     painter->rotate( ta.rotation() );

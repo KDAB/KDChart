@@ -47,6 +47,7 @@
 #include <KDChartTextAttributes.h>
 #include <KDChartMarkerAttributes>
 #include "KDChartPainterSaver_p.h"
+#include "KDChartPrintingParameters.h"
 
 #if defined KDAB_EVAL
 #include "../evaldialog/evaldialog.h"
@@ -959,10 +960,12 @@ void Chart::paint( QPainter* painter, const QRect& target )
     // Output onto a QPixmap 
     else
     {
+        PrintingParameters::setScaleFactor( static_cast< qreal >( painter->device()->logicalDpiX() ) / static_cast< qreal >( logicalDpiX() ) );
+
         const qreal resX = static_cast< qreal >( logicalDpiX() ) / static_cast< qreal >( painter->device()->logicalDpiX() );
         const qreal resY = static_cast< qreal >( logicalDpiY() ) / static_cast< qreal >( painter->device()->logicalDpiY() );
 
-        GlobalMeasureScaling::setFactors( 
+        GlobalMeasureScaling::setFactors(
                 static_cast< qreal >( target.width() ) /
                 static_cast< qreal >( geometry().size().width() ) * resX,
                 static_cast< qreal >( target.height() ) /
@@ -995,6 +998,7 @@ void Chart::paint( QPainter* painter, const QRect& target )
     painter->translate( -translation.x(), -translation.y() );
 
     GlobalMeasureScaling::instance()->resetFactors();
+    PrintingParameters::resetScaleFactor();
     GlobalMeasureScaling::setPaintDevice( prevDevice );
 
     //qDebug() << "KDChart::Chart::paint() done.\n";

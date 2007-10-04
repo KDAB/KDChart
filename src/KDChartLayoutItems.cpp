@@ -31,6 +31,7 @@
 #include "KDChartFrameAttributes.h"
 #include "KDChartPaintContext.h"
 #include "KDChartPainterSaver_p.h"
+#include "KDChartPrintingParameters.h"
 #include <QTextCursor>
 #include <QTextBlockFormat>
 #include <QTextDocumentFragment>
@@ -411,7 +412,7 @@ void KDChart::TextLayoutItem::paint( QPainter* painter )
     painter->setPen( Qt::red );
     painter->drawRect( rect );
 #endif
-    painter->setPen( mAttributes.pen() );
+    painter->setPen( PrintingParameters::scalePen( mAttributes.pen() ) );
     painter->drawText( rect, Qt::AlignHCenter | Qt::AlignVCenter, mText );
 //    if (  calcSizeHint( cachedFont ).width() > rect.width() )
 //        qDebug() << "rect.width()" << rect.width() << "text.width()" << calcSizeHint( cachedFont ).width();
@@ -676,7 +677,7 @@ void KDChart::LineLayoutItem::paintIntoRect(
         return;
 
     const QPen oldPen = painter->pen();
-    painter->setPen( pen );
+    painter->setPen( PrintingParameters::scalePen( pen ) );
     const qreal y = rect.center().y();
     painter->drawLine( QPointF( rect.left(), y ),
                        QPointF( rect.right(), y ) );

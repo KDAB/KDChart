@@ -119,6 +119,7 @@ HEADERS += KDChartGlobal.h \
            KDChartPlotter.h \
            KDChartPlotter_p.h \
            KDChartNormalPlotter_p.h \
+           KDChartPrintingParameters.h \
 
 SOURCES += \
            KDChartMeasure.cpp \
@@ -196,6 +197,7 @@ SOURCES += \
            KDChartPlotter.cpp \
            KDChartPlotter_p.cpp \
            KDChartNormalPlotter_p.cpp \
+           KDChartPrintingParameters.cpp \
 
 CONFIG += warn-on
 

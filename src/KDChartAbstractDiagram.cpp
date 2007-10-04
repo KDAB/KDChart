@@ -85,8 +85,8 @@ bool AbstractDiagram::Private::usesExternalAttributesModel()const
 void AbstractDiagram::Private::setAttributesModel( AttributesModel* amodel )
 {
     if( !attributesModel.isNull() &&
-	qobject_cast<PrivateAttributesModel*>(attributesModel) ) {
-	delete attributesModel;
+        qobject_cast<PrivateAttributesModel*>(attributesModel) ) {
+        delete attributesModel;
     }
     attributesModel = amodel;
 }
@@ -255,15 +255,15 @@ void AbstractDiagram::setModel( QAbstractItemModel * newModel )
 void AbstractDiagram::setAttributesModel( AttributesModel* amodel )
 {
     if( amodel->sourceModel() != model() ) {
-	qWarning("KDChart::AbstractDiagram::setAttributesModel() failed: "
-		 "Trying to set an attributesmodel which works on a different "
-		 "model than the diagram.");
-	return;
+        qWarning("KDChart::AbstractDiagram::setAttributesModel() failed: "
+                 "Trying to set an attributesmodel which works on a different "
+                 "model than the diagram.");
+        return;
     }
     if( qobject_cast<PrivateAttributesModel*>(amodel) ) {
-	qWarning("KDChart::AbstractDiagram::setAttributesModel() failed: "
-		 "Trying to set an attributesmodel that is private to another diagram.");
-	return;
+        qWarning("KDChart::AbstractDiagram::setAttributesModel() failed: "
+                 "Trying to set an attributesmodel that is private to another diagram.");
+        return;
     }
     d->setAttributesModel(amodel);
     scheduleDelayedItemsLayout();
@@ -637,7 +637,7 @@ void AbstractDiagram::paintMarker( QPainter* painter,
     const bool isFourPixels = (markerAttributes.markerStyle() == MarkerAttributes::Marker4Pixels);
     if( isFourPixels || (markerAttributes.markerStyle() == MarkerAttributes::Marker1Pixel) ){
         // for high-performance point charts with tiny point markers:
-        painter->setPen( QPen( brush.color().light() ) );
+        painter->setPen( PrintingParameters::scalePen( QPen( brush.color().light() ) ) );
         if( isFourPixels ){
             const qreal x = pos.x();
             const qreal y = pos.y();
@@ -654,7 +654,7 @@ void AbstractDiagram::paintMarker( QPainter* painter,
         // we only a solid line surrounding the markers
         QPen painterPen( pen );
         painterPen.setStyle( Qt::SolidLine );
-        painter->setPen( painterPen );
+        painter->setPen( PrintingParameters::scalePen( painterPen ) );
         painter->setBrush( brush );
         painter->setRenderHint ( QPainter::Antialiasing );
         painter->translate( pos );
@@ -688,7 +688,7 @@ void AbstractDiagram::paintMarker( QPainter* painter,
                     break;
             case MarkerAttributes::MarkerRing:
                 {
-                    painter->setPen( QPen( brush.color() ) );
+                    painter->setPen( PrintingParameters::scalePen( QPen( brush.color() ) ) );
                     painter->setBrush( Qt::NoBrush );
                     painter->drawEllipse( QRectF( 0 - maSize.height()/2, 0 - maSize.width()/2,
                                         maSize.height(), maSize.width()) );
@@ -711,7 +711,7 @@ void AbstractDiagram::paintMarker( QPainter* painter,
                     right = QPointF( maSize.width()/2, 0 );
                     top   = QPointF( 0, -maSize.height()/2 );
                     bottom= QPointF( 0, maSize.height()/2 );
-                    painter->setPen( QPen( brush.color() ) );
+                    painter->setPen( PrintingParameters::scalePen( QPen( brush.color() ) ) );
                     painter->drawLine( left, right );
                     painter->drawLine(  top, bottom );
                     break;

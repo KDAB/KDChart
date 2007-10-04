@@ -27,6 +27,7 @@
 #include "KDChartPaintContext.h"
 #include "KDChartPolarDiagram.h"
 #include "KDChartPieDiagram.h"
+#include "KDChartPrintingParameters.h"
 
 #include <QPainter>
 
@@ -73,7 +74,7 @@ void PolarGrid::drawGrid( PaintContext* context )
     if( dynamic_cast<PieDiagram*> (plane->diagrams().first() ) ) return;
 
 
-    context->painter()->setPen ( QColor ( Qt::lightGray ) );
+    context->painter()->setPen ( PrintingParameters::scalePen( QColor ( Qt::lightGray ) ) );
     const double min = dgr->dataBoundaries().first.y();
     QPointF origin = plane->translate( QPointF( min, 0 ) ) + context->rectangle().topLeft();
     //qDebug() << "origin" << origin;

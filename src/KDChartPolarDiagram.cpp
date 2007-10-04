@@ -177,7 +177,7 @@ void PolarDiagram::paint( PaintContext* ctx )
         QPen p( ctx->painter()->pen() );
         p.setColor( brush.color() ); // FIXME use DatasetPenRole
         p.setWidth( 2 );// FIXME properties
-        ctx->painter()->setPen( p );
+        ctx->painter()->setPen( PrintingParameters::scalePen( p ) );
         polygon.translate( ctx->rectangle().topLeft() );
         ctx->painter()->drawPolyline( polygon );
         paintPolarMarkers( ctx, polygon );
