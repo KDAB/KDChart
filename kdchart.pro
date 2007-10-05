@@ -9,7 +9,7 @@ contains($$list($$[QT_VERSION]), 4.[2-9].*) { SUBDIRS += kdchartserializer }
 
 SUBDIRS +=qtests
 
-unix: SUBDIRS += kdchart1support
+# unix: SUBDIRS += kdchart1support
 
 # forward make test calls to qtests:
 test.target=test
