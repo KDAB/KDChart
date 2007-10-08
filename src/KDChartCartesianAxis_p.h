@@ -57,6 +57,8 @@ public:
     Private( AbstractCartesianDiagram* diagram, CartesianAxis* axis )
         : AbstractAxis::Private( diagram, axis )
         , useDefaultTextAttributes( true )
+        , cachedHeaderLabels( QStringList() )
+        , cachedLabelHeight( 0.0 )
     {}
     ~Private() {}
 
@@ -74,6 +76,8 @@ private:
     bool useDefaultTextAttributes;
     Position position;
     QRect geometry;
+    mutable QStringList cachedHeaderLabels;
+    mutable qreal cachedLabelHeight;
 };
 
 inline CartesianAxis::CartesianAxis( Private * p, AbstractDiagram* diagram )
