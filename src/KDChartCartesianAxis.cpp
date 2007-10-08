@@ -314,7 +314,7 @@ void CartesianAxis::Private::drawTitleText( QPainter* painter, CartesianCoordina
                                   KDChartEnums::MeasureOrientationMinimum,
                                   Qt::AlignHCenter|Qt::AlignVCenter );
         QPointF point;
-        const QSize size( titleItem.sizeHint() );
+        QSize size( titleItem.sizeHint() );
         //FIXME(khz): We definitely need to provide a way that users can decide
         //            the position of an axis title.
         switch( position )
@@ -322,21 +322,25 @@ void CartesianAxis::Private::drawTitleText( QPainter* painter, CartesianCoordina
         case Top:
             point.setX( areaGeoRect.left() + areaGeoRect.width() / 2.0);
             point.setY( areaGeoRect.top()  + size.height() / 2 );
+            size.setWidth( qMin( size.width(), axis()->geometry().width() ) );
             break;
         case Bottom:
             point.setX( areaGeoRect.left() + areaGeoRect.width() / 2.0);
             point.setY( areaGeoRect.bottom() - size.height() / 2 );
+            size.setWidth( qMin( size.width(), axis()->geometry().width() ) );
             break;
         case Left:
             point.setX( areaGeoRect.left() + size.width() / 2 );
             point.setY( areaGeoRect.top() + areaGeoRect.height() / 2.0);
+            size.setHeight( qMin( size.height(), axis()->geometry().height() ) );
             break;
         case Right:
             point.setX( areaGeoRect.right() - size.width() / 2 );
             point.setY( areaGeoRect.top() + areaGeoRect.height() / 2.0);
+            size.setHeight( qMin( size.height(), axis()->geometry().height() ) );
             break;
         }
-        PainterSaver painterSaver( painter );
+        const PainterSaver painterSaver( painter );
         painter->translate( point );
         //if( axis()->isOrdinate() )
         //    painter->rotate( 270.0 );

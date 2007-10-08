@@ -143,6 +143,8 @@ namespace KDChart {
         QSize unrotatedSizeHint( QFont fnt = QFont() ) const;
         QSize calcSizeHint( QFont fnt ) const;
 
+        qreal fitFontSizeToGeometry() const;
+
         QRect mRect;
         QString mText;
         TextAttributes mAttributes;

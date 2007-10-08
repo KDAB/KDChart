@@ -207,6 +207,54 @@ void KDChart::TextLayoutItem::setGeometry( const QRect& r )
     mRect = r;
 }
 
+static QPointF rotatedPoint( const QPointF& pt, qreal rotation )
+{
+    const qreal angle = PI * rotation / 180.0;
+    const qreal cosAngle = cos( angle );
+    const qreal sinAngle = sin( angle );
+    return QPointF(
+            (cosAngle * pt.x() + sinAngle * pt.y() ),
+            (cosAngle * pt.y() + sinAngle * pt.x() ) );
+}
+
+static QRectF rotatedRect( const QRectF& rect, qreal angle )
+{
+    const QPointF topLeft(  rotatedPoint( rect.topLeft(),  angle ) );
+    //const QPointF topRight( rotatedPoint( rect.topRight(), angle ) );
+    //const QPointF bottomLeft(  rotatedPoint( rect.bottomLeft(),  angle ) );
+    //const QPointF bottomRight( rotatedPoint( rect.bottomRight(), angle ) );
+    const QPointF siz( rotatedPoint( QPointF( rect.size().width(), rect.size().height() ), angle ) );
+    const QRectF result(
+            topLeft,
+            QSizeF( siz.x(), //bottomRight.x() - topLeft.x(),
+                    siz.y() ) ); //bottomRight.y() - topLeft.y() ) );
+    //qDebug() << "angle" << angle << "\nbefore:" << rect << "\n after:" << result;
+    return result;
+}
+
+qreal KDChart::TextLayoutItem::fitFontSizeToGeometry() const
+{
+    QFont f = realFont();
+    const qreal origResult = f.pointSizeF();
+    qreal result = origResult;
+    const QSize mySize = geometry().size();
+    if( mySize.isNull() )
+        return result;
+
+    const QString t = text();
+    QFontMetrics fm( f );
+    while( true )
+    {
+        const QSizeF textSize = rotatedRect( fm.boundingRect( t ), mAttributes.rotation() ).size();
+        if( textSize.height() <= mySize.height() && textSize.width() <= mySize.width() )
+            return result;
+        result -= 0.5;
+        if( result <= 0.0 )
+            return origResult;
+        f.setPointSizeF( result );
+        fm = QFontMetrics( f );
+    }
+}
 
 qreal KDChart::TextLayoutItem::realFontSize() const
 {
@@ -359,31 +407,6 @@ QSize KDChart::TextLayoutItem::calcSizeHint( QFont fnt ) const
     return rotated;
 }
 
-static QPointF rotatedPoint( const QPointF& pt, qreal rotation )
-{
-    const qreal angle = PI * rotation / 180.0;
-    const qreal cosAngle = cos( angle );
-    const qreal sinAngle = sin( angle );
-    return QPointF(
-            (cosAngle * pt.x() + sinAngle * pt.y() ),
-            (cosAngle * pt.y() + sinAngle * pt.x() ) );
-}
-
-static QRectF rotatedRect( const QRectF& rect, qreal angle )
-{
-    const QPointF topLeft(  rotatedPoint( rect.topLeft(),  angle ) );
-    //const QPointF topRight( rotatedPoint( rect.topRight(), angle ) );
-    //const QPointF bottomLeft(  rotatedPoint( rect.bottomLeft(),  angle ) );
-    //const QPointF bottomRight( rotatedPoint( rect.bottomRight(), angle ) );
-    const QPointF siz( rotatedPoint( QPointF( rect.size().width(), rect.size().height() ), angle ) );
-    const QRectF result(
-            topLeft,
-            QSizeF( siz.x(), //bottomRight.x() - topLeft.x(),
-                    siz.y() ) ); //bottomRight.y() - topLeft.y() ) );
-    //qDebug() << "angle" << angle << "\nbefore:" << rect << "\n after:" << result;
-    return result;
-}
-
 void KDChart::TextLayoutItem::paint( QPainter* painter )
 {
     // make sure, cached font is updated, if needed:
@@ -392,8 +415,10 @@ void KDChart::TextLayoutItem::paint( QPainter* painter )
     if( !mRect.isValid() )
         return;
 
-    PainterSaver painterSaver( painter );
-    painter->setFont( cachedFont );
+    const PainterSaver painterSaver( painter );
+    QFont f = realFont();
+    f.setPointSizeF( fitFontSizeToGeometry() );
+    painter->setFont( f );
     QRectF rect( geometry() );
 
 // #ifdef DEBUG_ITEMS_PAINT
