@@ -356,9 +356,9 @@ static void calculateNextLabel( qreal& labelValue, qreal step, bool isLogarithmi
     }else{
         //qDebug() << "new axis label:" << labelValue << "+" << step << "=" << labelValue+step;
         labelValue += step;
+        if( qAbs(labelValue) < 1.0e-15 )
+            labelValue = 0.0;
     }
-/*    if( qAbs(labelValue) < 1.0e-15 )
-        labelValue = 0.0;*/
 }
 
 
