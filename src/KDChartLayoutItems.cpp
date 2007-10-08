@@ -245,9 +245,11 @@ qreal KDChart::TextLayoutItem::fitFontSizeToGeometry() const
     QFontMetrics fm( f );
     while( true )
     {
-        const QSizeF textSize = rotatedRect( fm.boundingRect( t ), mAttributes.rotation() ).size();
+        const QSizeF textSize = rotatedRect( fm.boundingRect( t ), mAttributes.rotation() ).normalized().size();
+
         if( textSize.height() <= mySize.height() && textSize.width() <= mySize.width() )
             return result;
+        
         result -= 0.5;
         if( result <= 0.0 )
             return origResult;
