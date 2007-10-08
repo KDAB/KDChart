@@ -88,7 +88,10 @@ void PolarGrid::drawGrid( PaintContext* context )
         }
     }
 
-    if ( gridAttrsCircular.isGridVisible() ){
+    if ( gridAttrsCircular.isGridVisible() )
+    {
+        const qreal startPos = plane->startPosition();
+        plane->setStartPosition( 0.0 );
         const int numberOfGridRings = ( int )dgr->numberOfGridRings();
         for ( int j = 0; j < numberOfGridRings; ++j ) {
             const double rad = min - ( ( j + 1) * r / numberOfGridRings );
@@ -110,5 +113,6 @@ void PolarGrid::drawGrid( PaintContext* context )
 
             context->painter()->drawEllipse( rect );
         }
+        plane->setStartPosition( startPos );
     }
 }
