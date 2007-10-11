@@ -743,7 +743,10 @@ void AbstractDiagram::paintMarkers( QPainter* painter )
 void AbstractDiagram::setPen( const QModelIndex& index, const QPen& pen )
 {
     if( datasetDimension() > 1 )
-        return setPen( index.column(), pen );
+    {
+        setPen( index.column(), pen );
+        return;
+    }
     attributesModel()->setData(
         attributesModel()->mapFromSource( index ),
         qVariantFromValue( pen ), DatasetPenRole );

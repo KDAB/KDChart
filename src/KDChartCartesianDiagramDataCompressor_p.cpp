@@ -59,7 +59,10 @@ void CartesianDiagramDataCompressor::slotRowsInserted( const QModelIndex& parent
     
     static const CachePosition NullPosition( -1, -1 );
     if( startPos == NullPosition )
-        return rebuildCache();
+    {
+        rebuildCache();
+        return;
+    }
 
     for( int i = 0; i < m_data.size(); ++i )
     {
@@ -79,7 +82,10 @@ void CartesianDiagramDataCompressor::slotColumnsInserted( const QModelIndex& par
 
     static const CachePosition NullPosition( -1, -1 );
     if( startPos == NullPosition )
-        return rebuildCache();
+    {
+        rebuildCache();
+        return;
+    }
 
     start = startPos.second;
     end = endPos.second;
