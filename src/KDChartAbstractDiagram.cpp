@@ -779,9 +779,6 @@ QPen AbstractDiagram::pen() const
 
 QPen AbstractDiagram::pen( int dataset ) const
 {
-    if( datasetDimension() > 1 )
-        dataset /= datasetDimension();
-
     return qVariantValue<QPen>(
         attributesModel()->data(
             attributesModel()->mapFromSource( columnToIndex( dataset ) ),
@@ -800,6 +797,11 @@ QPen AbstractDiagram::pen( const QModelIndex& index ) const
 
 void AbstractDiagram::setBrush( const QModelIndex& index, const QBrush& brush )
 {
+    if( datasetDimension() > 1 )
+    {
+        setBrush( index.column(), brush );
+        return;
+    }
     attributesModel()->setData(
         attributesModel()->mapFromSource( index ),
         qVariantFromValue( brush ), DatasetBrushRole );
@@ -815,6 +817,8 @@ void AbstractDiagram::setBrush( const QBrush& brush )
 
 void AbstractDiagram::setBrush( int column, const QBrush& brush )
 {
+    if( datasetDimension() > 1 )
+        column *= datasetDimension();
     attributesModel()->setHeaderData(
         column, Qt::Vertical,
         qVariantFromValue( brush ),
@@ -830,8 +834,6 @@ QBrush AbstractDiagram::brush() const
 
 QBrush AbstractDiagram::brush( int dataset ) const
 {
-    if( datasetDimension() > 1 )
-        dataset /= datasetDimension();
     return qVariantValue<QBrush>(
         attributesModel()->data(
             attributesModel()->mapFromSource( columnToIndex( dataset ) ),
@@ -1026,7 +1028,7 @@ QList<QBrush> AbstractDiagram::datasetBrushes() const
 
     const int columnCount = attributesModel()->columnCount(attributesModelRootIndex());
     for( int i = 0; i < columnCount / datasetDimension(); ++i )
-        ret << qVariantValue<QBrush>( attributesModel()->headerData( i, Qt::Vertical, DatasetBrushRole ) );
+        ret << qVariantValue<QBrush>( attributesModel()->headerData( i * datasetDimension(), Qt::Vertical, DatasetBrushRole ) );
 
     return ret;
 }
@@ -1039,7 +1041,7 @@ QList<QPen> AbstractDiagram::datasetPens() const
     
     const int columnCount = attributesModel()->columnCount(attributesModelRootIndex());
     for( int i = 0; i < columnCount / datasetDimension(); ++i )
-        ret << qVariantValue<QPen>( attributesModel()->headerData( i, Qt::Vertical, DatasetPenRole ) );
+        ret << qVariantValue<QPen>( attributesModel()->headerData( i * datasetDimension(), Qt::Vertical, DatasetPenRole ) );
     
     return ret;
 }
