@@ -27,6 +27,8 @@
  **
  **********************************************************************/
 
+#include <limits>
+
 #include <QtDebug>
 #include <QAbstractItemModel>
 
@@ -313,8 +315,11 @@ void CartesianDiagramDataCompressor::retrieveModelData( const CachePosition& pos
             const QModelIndex xIndex = indexes.first();
             const QModelIndex yIndex = indexes.last();
             result.index = xIndex;
-            result.key = m_model->data( xIndex ).toDouble();
-            result.value = m_model->data( yIndex ).toDouble();
+            const QVariant xData = m_model->data( xIndex );
+            const QVariant yData = m_model->data( yIndex );
+            result.key   = xData.isNull() ? static_cast< double >( 0 ) : xData.toDouble();
+            result.value = yData.isNull() ? static_cast< double >( 0 ) : yData.toDouble();
+            //result.value = yData.isNull() ? std::numeric_limits< double >::quiet_NaN : yData.toDouble();
         }
         else
         {

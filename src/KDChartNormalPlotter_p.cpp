@@ -111,6 +111,9 @@ void NormalPlotter::paint( PaintContext* ctx )
         {
             const CartesianDiagramDataCompressor::CachePosition position( row, column );
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
+            if( point.key == static_cast< double >( 0 ) )
+                continue;
+
             LineAttributes laCell;
             if( row > 0 )
             {
