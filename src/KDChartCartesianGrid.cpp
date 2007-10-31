@@ -171,7 +171,6 @@ void CartesianGrid::drawGrid( PaintContext* context )
 
         int logSubstep = 0;
         while ( f <= maxValueX ) {
-            //qDebug() << "sub grid line X at" << f;
             QPointF topPoint( f, maxValueY );
             QPointF bottomPoint( f, minValueY );
             topPoint = plane->translate( topPoint );
@@ -184,8 +183,12 @@ void CartesianGrid::drawGrid( PaintContext* context )
                         fLogSubstep = 1.0;
 
                     logSubstep = 0;
+                    f = fLogSubstep;
                 }
-                f += fLogSubstep;
+                else
+                {
+                    f += fLogSubstep;
+                }
                 ++logSubstep;
             }else{
                 f += dimX.subStepWidth;
@@ -213,8 +216,12 @@ void CartesianGrid::drawGrid( PaintContext* context )
                         fLogSubstep = 1.0;
 
                     logSubstep = 0;
+                    f = fLogSubstep;
                 }
-                f += fLogSubstep;
+                else
+                {
+                    f += fLogSubstep;
+                }
                 ++logSubstep;
             }else{
                 f += dimY.subStepWidth;
