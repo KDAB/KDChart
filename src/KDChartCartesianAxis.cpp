@@ -268,8 +268,12 @@ void CartesianAxis::Private::drawSubUnitRulers( QPainter* painter, CartesianCoor
                 if( fLogSubstep == 0 )
                     fLogSubstep = 1.0;
                 logSubstep = 0;
+                f = fLogSubstep;
             }
-            f += fLogSubstep;
+            else
+            {
+                f += fLogSubstep;
+            }
             ++logSubstep;
         }else{
             f += dim.subStepWidth;
