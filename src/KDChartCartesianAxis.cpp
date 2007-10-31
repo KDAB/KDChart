@@ -772,7 +772,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
                 const qreal translatedValue = topPoint.x();
                 const bool bIsVisibleLabel =
-                        ( translatedValue >= geoRect.left() && translatedValue <= geoRect.right() );
+                        ( translatedValue >= geoRect.left() && translatedValue <= geoRect.right() && !isLogarithmicX || i != 0.0 );
 
                 // fix for issue #4179:
                 bool painttick = bIsVisibleLabel && labelStep <= 0;;
@@ -830,12 +830,15 @@ void CartesianAxis::paintCtx( PaintContext* context )
                             // if our item would only half fit, we disable clipping for that one
                             if( labelGeo.left() < geoRect.left() && labelGeo.right() > geoRect.left() )
                                 ptr->setClipping( false );
-                            if( labelGeo.left() < geoRect.right() && labelGeo.right() > geoRect.right() )
+                            else if( labelGeo.left() < geoRect.right() && labelGeo.right() > geoRect.right() )
                                 ptr->setClipping( false );
 
                             labelItem->setGeometry( labelGeo );
 
-                            labelStep = labelDiff - dimX.stepWidth;
+                           
+                            if( !isLogarithmicX )
+                                labelStep = labelDiff - dimX.stepWidth;
+
                             labelItem->paint( ptr );
 
                             // do not call customizedLabel() again:
@@ -954,7 +957,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
                     const qreal translatedValue = rightPoint.y();
                     const bool bIsVisibleLabel =
-                            ( translatedValue >= geoRect.top() && translatedValue <= geoRect.bottom() );
+                            ( translatedValue >= geoRect.top() && translatedValue <= geoRect.bottom() && !isLogarithmicY || labelValue != 0.0 );
 
                     if( bIsVisibleLabel ){
                         ptr->drawLine( leftPoint, rightPoint );
