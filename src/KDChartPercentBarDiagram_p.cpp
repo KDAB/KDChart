@@ -145,8 +145,8 @@ void PercentBarDiagram::paint( PaintContext* ctx )
         {
             const CartesianDiagramDataCompressor::CachePosition position( row, col );
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
-            if ( point.value > 0 )
-                sumValues += point.value;
+            //if ( point.value > 0 )
+            sumValues += qMax( point.value, -point.value );
             if ( col == colCount - 1 ) {
                 sumValuesVector <<  sumValues ;
                 sumValues = 0;
@@ -182,7 +182,7 @@ void PercentBarDiagram::paint( PaintContext* ctx )
                 barWidth = (ctx->rectangle().width() - (offset*rowCount))/ rowCount;
             }
 
-            const double value = p.value;
+            const double value = qMax( p.value, -p.value );
             double stackedValues = 0.0;
             double key = 0.0;
             
@@ -192,8 +192,7 @@ void PercentBarDiagram::paint( PaintContext* ctx )
             {
                 const CartesianDiagramDataCompressor::CachePosition position( row, k );
                 const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
-                if ( point.value > 0)
-                    stackedValues += point.value;
+                stackedValues += qMax( point.value, -point.value );
                 key = point.key;
             }
 
@@ -209,7 +208,7 @@ void PercentBarDiagram::paint( PaintContext* ctx )
             const QRectF rect( point, QSizeF( barWidth, barHeight ) );
             appendDataValueTextInfoToList( diagram(), list, sourceIndex, PositionPoints( rect ),
                                               Position::NorthWest, Position::SouthEast,
-                                              p.value );
+                                              value );
             paintBars( ctx, sourceIndex, rect, maxDepth );
         }
     }
