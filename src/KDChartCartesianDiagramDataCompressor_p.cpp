@@ -207,11 +207,11 @@ void CartesianDiagramDataCompressor::setModel( QAbstractItemModel* model )
                     this, SLOT( slotModelLayoutChanged() ) );
         disconnect( m_model, SIGNAL( rowsInserted( QModelIndex, int, int ) ),
                     this, SLOT( slotRowsInserted( QModelIndex, int, int ) ) );
-        disconnect( m_model, SIGNAL( rowsRemoved( QModelIndex, int, int ) ),
+        disconnect( m_model, SIGNAL( rowsAboutToBeRemoved( QModelIndex, int, int ) ),
                     this, SLOT( slotRowsRemoved( QModelIndex, int, int ) ) );
         disconnect( m_model, SIGNAL( columnsInserted( QModelIndex, int, int ) ),
                     this, SLOT( slotColumnsInserted( QModelIndex, int, int ) ) );
-        disconnect( m_model, SIGNAL( columnsRemoved( QModelIndex, int, int ) ),
+        disconnect( m_model, SIGNAL( columnsAboutToBeRemoved( QModelIndex, int, int ) ),
                     this, SLOT( slotColumnsRemoved( QModelIndex, int, int ) ) );
         disconnect( m_model, SIGNAL( modelReset() ),
                     this, SLOT( rebuildCache() ) );
@@ -228,11 +228,11 @@ void CartesianDiagramDataCompressor::setModel( QAbstractItemModel* model )
                  SLOT( slotModelLayoutChanged() ) );
         connect( m_model, SIGNAL( rowsInserted( QModelIndex, int, int ) ),
                  SLOT( slotRowsInserted( QModelIndex, int, int ) ) );
-        connect( m_model, SIGNAL( rowsRemoved( QModelIndex, int, int ) ),
+        connect( m_model, SIGNAL( rowsAboutToBeRemoved( QModelIndex, int, int ) ),
                  SLOT( slotRowsRemoved( QModelIndex, int, int ) ) );
         connect( m_model, SIGNAL( columnsInserted( QModelIndex, int, int ) ),
                  SLOT( slotColumnsInserted( QModelIndex, int, int ) ) );
-        connect( m_model, SIGNAL( columnsRemoved( QModelIndex, int, int ) ),
+        connect( m_model, SIGNAL( columnsAboutToBeRemoved( QModelIndex, int, int ) ),
                  SLOT( slotColumnsRemoved( QModelIndex, int, int ) ) );
         connect( m_model, SIGNAL( modelReset() ),
                     this, SLOT( rebuildCache() ) );
