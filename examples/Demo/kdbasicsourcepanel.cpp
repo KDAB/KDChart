@@ -166,7 +166,7 @@ void KDBasicSourcePanel::changeRow(int value)
     bool toggle = true;
     m_currentRowIndex = 1;
     for(int j=0;j<m_table->columnCount();j++){
-        for(int i=1; i < m_table->rowCount(); i++)
+        for(int i=0; i < m_table->rowCount(); i++)
         {
             const QModelIndex index_ = m_table->getIndex(i, j);
             QVariant oldValue = m_table->data(index_);
