@@ -207,7 +207,7 @@ namespace KDChart {
                     lastRoundedValue = text;
                     lastX = pos.x();
 
-                    PainterSaver painterSaver( painter );
+                    const PainterSaver painterSaver( painter );
                     painter->setPen( PrintingParameters::scalePen( ta.pen() ) );
                     painter->setFont( calculatedFont );
                     painter->translate( pt );
