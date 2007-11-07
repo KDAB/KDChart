@@ -52,6 +52,7 @@ Legend::Private::Private() :
     position( Position::East ),
     alignment( Qt::AlignCenter ),
     relativePosition( RelativePosition() ),
+    order( Qt::AscendingOrder ),
     orientation( Qt::Vertical ),
     showLines( false ),
     texts(),
@@ -481,6 +482,20 @@ Qt::Orientation Legend::orientation() const
     return d->orientation;
 }
 
+void Legend::setSortOrder( Qt::SortOrder order )
+{
+    if( d->order == order )
+        return;
+    d->order = order;
+    setNeedRebuild();
+    emitPositionChanged();
+}
+
+Qt::SortOrder Legend::sortOrder() const
+{
+    return d->order;
+}
+
 void Legend::setShowLines( bool legendShowLines )
 {
     if( d->showLines == legendShowLines ) return;
@@ -824,7 +839,10 @@ void Legend::buildLegend()
             const QList<QBrush>           diagramBrushes( diagram->datasetBrushes() );
             const QList<QPen>             diagramPens(    diagram->datasetPens()    );
             const QList<MarkerAttributes> diagramMarkers( diagram->datasetMarkers() );
-            for ( int dataset = 0; dataset < diagramLabels.count(); dataset++ ) {
+            const int begin = sortOrder() == Qt::AscendingOrder ? 0 : diagramLabels.count() - 1;
+            const int end = sortOrder() == Qt::AscendingOrder ? diagramLabels.count() : -1;
+            for ( int dataset = begin; dataset != end; dataset += begin < end ? 1 : -1 )
+            {
                 // only show the label if the diagrams is NOT having the dataset set to hidden
                 if( ! diagram->isHidden( dataset ) ){
                     d->modelLabels  += diagramLabels[   dataset ];
