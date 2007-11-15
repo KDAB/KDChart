@@ -96,9 +96,9 @@ private slots:
         topLevelWidget->resize( geom.size() );
         topLevelWidget->show();
         QApplication::sendPostedEvents();
-		QRect expected = geom.adjusted(marg,marg,-marg,-marg);
+        QRect expected = geom.adjusted(marg,marg,-marg,-marg);
         qDebug() << "widget1: " << widget1->geometry() << "expecting" << expected;
-        QCOMPARE( widget1->geometry(), expected );
+        QCOMPARE( widget1->frameGeometry(), expected );
         QVERIFY( widget1->isVisible() );
 
         delete topLevelWidget;
