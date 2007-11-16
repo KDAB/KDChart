@@ -44,6 +44,7 @@
 
 #include <KDABLibFakes>
 
+#define PI 3.141592653589793
 
 using namespace KDChart;
 
@@ -473,7 +474,7 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
     // paint one data series
     const DataValueAttributes a( dataValueAttributes(index) );
     if ( !a.isVisible() ) return;
-
+    
     // handle decimal digits
     int decimalDigits = a.decimalDigits();
     int decimalPos = QString::number(  value ).indexOf( QLatin1Char( '.' ) );
@@ -503,7 +504,7 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
         painter->drawLine( pos - QPointF( 1,1), pos + QPointF( 1,1) );
         painter->drawLine( pos - QPointF(-1,1), pos + QPointF(-1,1) );
         */
-
+        
         QTextDocument doc;
         if( Qt::mightBeRichText( roundedValue ) )
             doc.setHtml( roundedValue );
@@ -513,10 +514,16 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
         const RelativePosition relPos( a.position( value >= 0.0 ) );
         const Qt::Alignment alignBottomLeft = Qt::AlignBottom | Qt::AlignLeft;
         const QFont calculatedFont( ta.calculatedFont( d->plane, KDChartEnums::MeasureOrientationMinimum ) );
-        const QRectF boundRect( d->cachedFontMetrics( calculatedFont, painter->device() )->boundingRect( doc.toPlainText() ) );
+
+        const QRectF plainRect( d->cachedFontMetrics( calculatedFont, painter->device() )->boundingRect( doc.toPlainText() ) );
+        const QRectF boundRect = rotatedRect( plainRect, ta.rotation(), plainRect.center() );
+        pt += boundRect.center() - plainRect.center();
 
         // To place correctly
-        pt.ry() -= boundRect.height();
+        if( value >= 0.0 )
+            pt.ry() -= boundRect.height();
+        else
+            pt.ry() -= boundRect.height() * 0.5;
 
         //qDebug() << "calculatedFont's point size:" << calculatedFont.pointSizeF();
         // adjust the text start point position, if alignment is not Bottom/Left
@@ -539,17 +546,18 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
              d->lastRoundedValue != roundedValue ) {
             d->lastRoundedValue = roundedValue;
             d->lastX = pos.x();
-            PainterSaver painterSaver( painter );
+            const PainterSaver painterSaver( painter );
 
             doc.setDefaultFont( calculatedFont );
             QAbstractTextDocumentLayout::PaintContext context;
             context.palette = palette();
             context.palette.setColor(QPalette::Text, ta.pen().color() );
 
-            painter->translate( pt );
+            QAbstractTextDocumentLayout* const layout = doc.documentLayout();
+
+            painter->translate( pt + rotatedPoint( QPointF(), ta.rotation(), plainRect.center() - plainRect.topLeft() ) );
             painter->rotate( ta.rotation() );
 
-            QAbstractTextDocumentLayout* layout = doc.documentLayout();
             layout->draw( painter, context );
         }
     }

@@ -207,30 +207,49 @@ void KDChart::TextLayoutItem::setGeometry( const QRect& r )
     mRect = r;
 }
 
-static QPointF rotatedPoint( const QPointF& pt, qreal rotation )
+QPointF rotatedPoint( const QPointF& pt, qreal rotation, const QPointF& center )
 {
     const qreal angle = PI * rotation / 180.0;
     const qreal cosAngle = cos( angle );
-    const qreal sinAngle = sin( angle );
+    const qreal sinAngle = -sin( angle );
     return QPointF(
-            (cosAngle * pt.x() + sinAngle * pt.y() ),
-            (cosAngle * pt.y() + sinAngle * pt.x() ) );
+            (cosAngle * ( pt.x() - center.x() ) + sinAngle * ( pt.y() - center.y() ) ),
+            (cosAngle * ( pt.y() - center.y() ) - sinAngle * ( pt.x() - center.x() ) ) ) + center;
 }
 
-static QRectF rotatedRect( const QRectF& rect, qreal angle )
+QRectF rotatedRect( const QRectF& rect, qreal angle, const QPointF& center )
+{
+    const QPointF topLeft( rotatedPoint( rect.topLeft(), angle, center ) );
+    const QPointF topRight( rotatedPoint( rect.topRight(), angle, center ) );
+    const QPointF bottomLeft( rotatedPoint( rect.bottomLeft(), angle, center ) );
+    const QPointF bottomRight( rotatedPoint( rect.bottomRight(), angle, center ) );
+   
+    const qreal x = qMin( qMin( topLeft.x(), topRight.x() ), qMin( bottomLeft.x(), topLeft.x() ) );
+    const qreal y = qMin( qMin( topLeft.y(), topRight.y() ), qMin( bottomLeft.y(), topLeft.y() ) );
+    const qreal width = qMax( qMax( topLeft.x(), topRight.x() ), qMax( bottomLeft.x(), topLeft.x() ) ) - x;
+    const qreal height = qMax( qMax( topLeft.y(), topRight.y() ), qMax( bottomLeft.y(), topLeft.y() ) ) - y;
+
+    return QRectF( x, y, width, height );
+}
+/*
+QRectF rotatedRect( const QRectF& rect, qreal angle )
 {
     const QPointF topLeft(  rotatedPoint( rect.topLeft(),  angle ) );
     //const QPointF topRight( rotatedPoint( rect.topRight(), angle ) );
     //const QPointF bottomLeft(  rotatedPoint( rect.bottomLeft(),  angle ) );
-    //const QPointF bottomRight( rotatedPoint( rect.bottomRight(), angle ) );
+#if 1
+    const QPointF bottomRight( rotatedPoint( rect.bottomRight(), angle ) );
+    const QRectF result( topLeft, QSizeF( bottomRight.x() - topLeft.x(), bottomRight.y() - topLeft.y() ) );
+#else
     const QPointF siz( rotatedPoint( QPointF( rect.size().width(), rect.size().height() ), angle ) );
     const QRectF result(
             topLeft,
             QSizeF( siz.x(), //bottomRight.x() - topLeft.x(),
                     siz.y() ) ); //bottomRight.y() - topLeft.y() ) );
     //qDebug() << "angle" << angle << "\nbefore:" << rect << "\n after:" << result;
+#endif
     return result;
-}
+}*/
 
 qreal KDChart::TextLayoutItem::fitFontSizeToGeometry() const
 {

@@ -39,6 +39,9 @@
 class QPainter;
 class KDTextDocument;
 
+QPointF rotatedPoint( const QPointF& pt, qreal rotation, const QPointF& center = QPointF() );
+QRectF rotatedRect( const QRectF& pt, qreal rotation, const QPointF& center = QPointF() );
+
 namespace KDChart {
     class AbstractDiagram;
     class PaintContext;
