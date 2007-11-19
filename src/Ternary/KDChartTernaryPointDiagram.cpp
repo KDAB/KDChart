@@ -52,7 +52,7 @@ TernaryPointDiagram::TernaryPointDiagram ( QWidget* parent,
     : AbstractTernaryDiagram( new Private(), parent, plane )
 {
     init();
-    setDatasetDimension( 3 ); // the third column is implicit
+    setDatasetDimensionInternal( 3 ); // the third column is implicit
 }
 
 TernaryPointDiagram::~TernaryPointDiagram()

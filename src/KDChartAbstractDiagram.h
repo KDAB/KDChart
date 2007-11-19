@@ -584,12 +584,16 @@ namespace KDChart {
         int datasetDimension() const;
 
         /**
-         * Sets the dataset dimension of the diagram.
+         * Sets the dataset dimension of the diagram. Using this method is obolete.
          * @see datasetDimension.
          * @param dimension
          */
         void setDatasetDimension( int dimension );
 
+    protected:
+        void setDatasetDimensionInternal( int dimension );
+
+    public:
         void update() const;
 
         void paintMarker( QPainter* painter, const QModelIndex& index,

@@ -1089,6 +1089,12 @@ int AbstractDiagram::datasetDimension( ) const
 
 void AbstractDiagram::setDatasetDimension( int dimension )
 {
+    Q_UNUSED( dimension );
+    qDebug() << "Setting the dataset dimension using AbstractDiagram::setDatasetDimension is obsolete. Use the specific diagram types instead.";
+}
+
+void AbstractDiagram::setDatasetDimensionInternal( int dimension )
+{
     if ( d->datasetDimension == dimension ) return;
     d->datasetDimension = dimension;
     setDataBoundariesDirty();

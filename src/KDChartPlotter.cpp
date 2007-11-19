@@ -56,7 +56,7 @@ void Plotter::init()
     d->normalPlotter = new NormalPlotter( this );
     d->implementor = d->normalPlotter;
 
-    setDatasetDimension( 2 );
+    setDatasetDimensionInternal( 2 );
 }
 
 Plotter::~Plotter()

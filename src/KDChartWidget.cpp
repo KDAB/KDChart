@@ -449,8 +449,7 @@ void Widget::setType( ChartType chartType, SubType chartSubType )
             LegendList legends = d->m_chart.legends();
             Q_FOREACH(Legend* l, legends)
                 l->setDiagram( diag );
-            if( d->usedDatasetWidth )
-                diag->setDatasetDimension( d->usedDatasetWidth );
+            //checkDatasetWidth( d->usedDatasetWidth );
         }
     }
 
@@ -576,14 +575,20 @@ Widget::SubType Widget::subType() const
  */
 bool Widget::checkDatasetWidth( int width )
 {
-    if ( d->usedDatasetWidth == width || d->usedDatasetWidth == 0 ) {
+    if( width == diagram()->datasetDimension() )
+    {
+        d->usedDatasetWidth = width;
+        return true;
+    }
+    qDebug() << "The current diagram type doesn't support this data dimension.";
+    return false;
+/*    if ( d->usedDatasetWidth == width || d->usedDatasetWidth == 0 ) {
         d->usedDatasetWidth = width;
         diagram()->setDatasetDimension( width );
-        //qDebug() << "KDChart::Widget::checkDatasetWidth():  DatasetWidth is set to" << width << "now.";
         return true;
     }
     qDebug() << "It's impossible to mix up the different setDataset() methods on the same widget.";
-    return false;
+    return false;*/
 }
 
 /**
