@@ -67,15 +67,23 @@ namespace KDChart {
  */
 struct PlaneInfo {
     PlaneInfo()
-        : referencePlane(0)
-        , horizontalOffset(1)
-        , verticalOffset(1)
-        , gridLayout( 0 )
+        : referencePlane( 0 ),
+          horizontalOffset( 1 ),
+          verticalOffset( 1 ),
+          gridLayout( 0 ),
+          topAxesLayout( 0 ),
+          bottomAxesLayout( 0 ),
+          leftAxesLayout( 0 ),
+          rightAxesLayout( 0 )
     {}
     AbstractCoordinatePlane *referencePlane;
     int horizontalOffset;
     int verticalOffset;
-    QGridLayout *gridLayout;
+    QGridLayout* gridLayout;
+    QVBoxLayout* topAxesLayout;
+    QVBoxLayout* bottomAxesLayout;
+    QHBoxLayout* leftAxesLayout;
+    QHBoxLayout* rightAxesLayout;
 };
 
 

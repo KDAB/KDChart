@@ -478,7 +478,7 @@ void Chart::Private::slotLayoutPlanes()
     QHash<AbstractAxis*, AxisInfo> axisInfos;
     KDAB_FOREACH( AbstractCoordinatePlane* plane, coordinatePlanes ) {
         Q_ASSERT( planeInfos.contains(plane) );
-        const PlaneInfo pi = planeInfos[plane];
+        PlaneInfo& pi = planeInfos[ plane ];
         int column = pi.horizontalOffset;
         int row = pi.verticalOffset;
         //qDebug() << "processing plane at column" << column << "and row" << row;
@@ -501,14 +501,6 @@ void Chart::Private::slotLayoutPlanes()
         planeLayout->setRowStretch(    row,    2 );
         planeLayout->setColumnStretch( column, 2 );
 
-        // These four layouts will be instantiated in the following loop,
-        // if they are needed.
-        // They will then be passed to the auto-spacer items after the loop.
-        QVBoxLayout *topAxesLayout    = 0;
-        QVBoxLayout *bottomAxesLayout = 0;
-        QHBoxLayout *leftAxesLayout   = 0;
-        QHBoxLayout *rightAxesLayout  = 0;
-
         KDAB_FOREACH( AbstractDiagram* abstractDiagram, plane->diagrams() )
         {
             AbstractCartesianDiagram* diagram =
@@ -517,17 +509,45 @@ void Chart::Private::slotLayoutPlanes()
             if( !diagram ) continue;  // FIXME polar ?
             //qDebug() << "--------------- diagram ! ! ! ! ! ! ! ! ! !  -----------------";
 
-            // collect all axes of a kind into sublayouts
-            topAxesLayout = new QVBoxLayout;
-            topAxesLayout->setObjectName( QString::fromLatin1( "topAxesLayout" ) );
-            bottomAxesLayout = new QVBoxLayout;
-            bottomAxesLayout->setObjectName( QString::fromLatin1( "bottomAxesLayout" ) );
-            leftAxesLayout = new QHBoxLayout;
-            leftAxesLayout->setObjectName( QString::fromLatin1( "leftAxesLayout" ) );
-            rightAxesLayout = new QHBoxLayout;
-            rightAxesLayout->setObjectName( QString::fromLatin1( "rightAxesLayout" ) );
+            if( pi.referencePlane != 0 )
+            {
+                pi.topAxesLayout = planeInfos[ pi.referencePlane ].topAxesLayout;
+                pi.bottomAxesLayout = planeInfos[ pi.referencePlane ].bottomAxesLayout;
+                pi.leftAxesLayout = planeInfos[ pi.referencePlane ].leftAxesLayout;
+                pi.rightAxesLayout = planeInfos[ pi.referencePlane ].rightAxesLayout;
+            }
 
-            //leftAxesLayout->setSizeConstraint( QLayout::SetFixedSize );
+            // collect all axes of a kind into sublayouts
+            if( pi.topAxesLayout == 0 )
+            {
+                pi.topAxesLayout = pi.topAxesLayout = new QVBoxLayout;
+                pi.topAxesLayout->setObjectName( QString::fromLatin1( "topAxesLayout" ) );
+            }
+            if( pi.bottomAxesLayout == 0 )
+            {
+                pi.bottomAxesLayout = new QVBoxLayout;
+                pi.bottomAxesLayout->setObjectName( QString::fromLatin1( "bottomAxesLayout" ) );
+            }
+            if( pi.leftAxesLayout == 0 )
+            {
+                pi.leftAxesLayout = new QHBoxLayout;
+                pi.leftAxesLayout->setObjectName( QString::fromLatin1( "leftAxesLayout" ) );
+            }
+            if( pi.rightAxesLayout == 0 )
+            {
+                pi.rightAxesLayout = new QHBoxLayout;
+                pi.rightAxesLayout->setObjectName( QString::fromLatin1( "rightAxesLayout" ) );
+            }
+
+            if( pi.referencePlane != 0 )
+            {
+                planeInfos[ pi.referencePlane ].topAxesLayout = pi.topAxesLayout;
+                planeInfos[ pi.referencePlane ].bottomAxesLayout = pi.bottomAxesLayout;
+                planeInfos[ pi.referencePlane ].leftAxesLayout = pi.leftAxesLayout;
+                planeInfos[ pi.referencePlane ].rightAxesLayout = pi.rightAxesLayout;
+            }
+ 
+            //pi.leftAxesLayout->setSizeConstraint( QLayout::SetFixedSize );
 
             KDAB_FOREACH( CartesianAxis* axis, diagram->axes() ) {
                 if ( axisInfos.contains( axis ) ) continue; // already layed this one out
@@ -550,20 +570,20 @@ void Chart::Private::slotLayoutPlanes()
                 switch ( axis->position() )
                 {
                     case CartesianAxis::Top:
-                        axis->setParentLayout( topAxesLayout );
-                        topAxesLayout->addItem( axis );
+                        axis->setParentLayout( pi.topAxesLayout );
+                        pi.topAxesLayout->addItem( axis );
                         break;
                     case CartesianAxis::Bottom:
-                        axis->setParentLayout( bottomAxesLayout );
-                        bottomAxesLayout->addItem( axis );
+                        axis->setParentLayout( pi.bottomAxesLayout );
+                        pi.bottomAxesLayout->addItem( axis );
                         break;
                     case CartesianAxis::Left:
-                        axis->setParentLayout( leftAxesLayout );
-                        leftAxesLayout->addItem( axis );
+                        axis->setParentLayout( pi.leftAxesLayout );
+                        pi.leftAxesLayout->addItem( axis );
                         break;
                     case CartesianAxis::Right:
-                        axis->setParentLayout( rightAxesLayout );
-                        rightAxesLayout->addItem( axis );
+                        axis->setParentLayout( pi.rightAxesLayout );
+                        pi.rightAxesLayout->addItem( axis );
                         break;
                     default:
                         Q_ASSERT_X( false, "Chart::paintEvent",
@@ -576,17 +596,17 @@ void Chart::Private::slotLayoutPlanes()
              * associated plane. We are laying out in the oder the planes
              * were added, and the first one gets to lay out shared axes.
              * Private axes go here as well, of course. */
-            if ( !topAxesLayout->parent() )
-                planeLayout->addLayout( topAxesLayout,    row - 1, column );
-            if ( !bottomAxesLayout->parent() )
-                planeLayout->addLayout( bottomAxesLayout, row + 1, column );
-            if ( !leftAxesLayout->parent() ){
-                planeLayout->addLayout( leftAxesLayout,   row,     column - 1);
+            if ( !pi.topAxesLayout->parent() )
+                planeLayout->addLayout( pi.topAxesLayout,    row - 1, column );
+            if ( !pi.bottomAxesLayout->parent() )
+                planeLayout->addLayout( pi.bottomAxesLayout, row + 1, column );
+            if ( !pi.leftAxesLayout->parent() ){
+                planeLayout->addLayout( pi.leftAxesLayout,   row,     column - 1);
                 //planeLayout->setRowStretch(    row, 0 );
                 //planeLayout->setColumnStretch( 0,   0 );
             }
-            if ( !rightAxesLayout->parent() )
-                planeLayout->addLayout( rightAxesLayout,  row,     column + 1);
+            if ( !pi.rightAxesLayout->parent() )
+                planeLayout->addLayout( pi.rightAxesLayout,  row,     column + 1);
         }
 
         // use up to four auto-spacer items in the corners around the diagrams:
@@ -601,10 +621,10 @@ void Chart::Private::slotLayoutPlanes()
                 planeLayoutItems << spacer; \
             } \
         }
-        ADD_AUTO_SPACER_IF_NEEDED( row-1, column-1, false, leftAxesLayout,  false, topAxesLayout )
-            ADD_AUTO_SPACER_IF_NEEDED( row+1, column-1, true,  leftAxesLayout,  false,  bottomAxesLayout )
-            ADD_AUTO_SPACER_IF_NEEDED( row-1, column+1, false, rightAxesLayout, true, topAxesLayout )
-            ADD_AUTO_SPACER_IF_NEEDED( row+1, column+1, true,  rightAxesLayout, true,  bottomAxesLayout )
+        ADD_AUTO_SPACER_IF_NEEDED( row-1, column-1, false, pi.leftAxesLayout,  false, pi.topAxesLayout )
+            ADD_AUTO_SPACER_IF_NEEDED( row+1, column-1, true,  pi.leftAxesLayout,  false,  pi.bottomAxesLayout )
+            ADD_AUTO_SPACER_IF_NEEDED( row-1, column+1, false, pi.rightAxesLayout, true, pi.topAxesLayout )
+            ADD_AUTO_SPACER_IF_NEEDED( row+1, column+1, true,  pi.rightAxesLayout, true,  pi.bottomAxesLayout )
     }
     // re-add our grid(s) to the chart's layout
     if ( dataAndLegendLayout ){
