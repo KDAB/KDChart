@@ -615,7 +615,7 @@ void AbstractDiagram::paintMarker( QPainter* painter,
     const MarkerAttributes &ma = a.markerAttributes();
     if ( !ma.isVisible() ) return;
 
-    PainterSaver painterSaver( painter );
+    const PainterSaver painterSaver( painter );
     QSizeF maSize( ma.markerSize() );
     QBrush indexBrush( brush( index ) );
     QPen indexPen( ma.pen() );
@@ -658,7 +658,7 @@ void AbstractDiagram::paintMarker( QPainter* painter,
         }
         painter->drawPoint( pos );
     }else{
-        PainterSaver painterSaver( painter );
+        const PainterSaver painterSaver( painter );
         // we only a solid line surrounding the markers
         QPen painterPen( pen );
         painterPen.setStyle( Qt::SolidLine );

@@ -111,7 +111,7 @@ namespace KDChart {
                     relPos.setReferencePosition( bValueIsPositive ? autoPositionPositive : autoPositionNegative );
 
                 const QPointF referencePoint = relPos.referencePoint();
-                if( diagram->coordinatePlane()->isVisiblePoint( referencePoint ) ){
+                /*if( diagram->coordinatePlane()->isVisiblePoint( referencePoint ) )*/{
                     const qreal fontHeight = cachedFontMetrics( attrs.textAttributes().font(), diagram )->height();
 
                     // Note: When printing data value texts the font height is used as reference size for both,
@@ -143,7 +143,7 @@ namespace KDChart {
         void paintDataValueTextsAndMarkers( AbstractDiagram* diag, PaintContext* ctx,
                                             const DataValueTextInfoList & list, bool paintMarkers )
         {
-            PainterSaver painterSaver( ctx->painter() );
+            const PainterSaver painterSaver( ctx->painter() );
             ctx->painter()->setClipping( false );
             if( paintMarkers )
             {
