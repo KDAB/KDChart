@@ -311,6 +311,7 @@ void CartesianDiagramDataCompressor::retrieveModelData( const CachePosition& pos
     switch(m_mode ) {
     case Precise:
     {
+        bool forceHidden = false;
         result.hidden = true;
         const QModelIndexList indexes = mapToModel( position );
         if( m_datasetDimension != 1 )
@@ -318,12 +319,16 @@ void CartesianDiagramDataCompressor::retrieveModelData( const CachePosition& pos
             Q_ASSERT( indexes.count() == 2 );
             const QModelIndex xIndex = indexes.first();
             const QModelIndex yIndex = indexes.last();
-            result.index = xIndex;
             const QVariant xData = m_model->data( xIndex );
             const QVariant yData = m_model->data( yIndex );
+            result.index = xIndex;
             result.key   = xData.isNull() ? static_cast< double >( 0 ) : xData.toDouble();
             result.value = yData.isNull() ? static_cast< double >( 0 ) : yData.toDouble();
-            //result.value = yData.isNull() ? std::numeric_limits< double >::quiet_NaN : yData.toDouble();
+            if( xData.isNull() && yData.isNull() )
+                forceHidden = true;
+            
+            //result.key   = xData.isNull() ? std::numeric_limits< double >::quiet_NaN() : xData.toDouble();
+            //result.value = yData.isNull() ? std::numeric_limits< double >::quiet_NaN() : yData.toDouble();
         }
         else
         {
@@ -343,12 +348,15 @@ void CartesianDiagramDataCompressor::retrieveModelData( const CachePosition& pos
                 result.value /= indexes.size();
             }
         }
+        if( !forceHidden )
+        {
         Q_FOREACH( const QModelIndex& index, indexes )
         {
             // the point is visible if any of the points at this pixel position is visible
             if ( qVariantValue<bool>( m_model->data( index, DataHiddenRole ) ) == false ) {
                 result.hidden = false;
             }
+        }
         }
     }
     break;
@@ -364,7 +372,7 @@ void CartesianDiagramDataCompressor::retrieveModelData( const CachePosition& pos
 }
 
 CartesianDiagramDataCompressor::CachePosition CartesianDiagramDataCompressor::mapToCache(
-    const QModelIndex& index ) const
+        const QModelIndex& index ) const
 {
     Q_ASSERT( m_datasetDimension != 0 );
 
@@ -374,7 +382,7 @@ CartesianDiagramDataCompressor::CachePosition CartesianDiagramDataCompressor::ma
 }
 
 CartesianDiagramDataCompressor::CachePosition CartesianDiagramDataCompressor::mapToCache(
-    int row, int column ) const
+        int row, int column ) const
 {
     Q_ASSERT( m_datasetDimension != 0 );
 
@@ -433,7 +441,8 @@ void CartesianDiagramDataCompressor::invalidate( const CachePosition& position )
 bool CartesianDiagramDataCompressor::isCached( const CachePosition& position ) const
 {
     Q_ASSERT( isValidCachePosition( position ) );
-    return m_data[position.second][position.first].index.isValid();
+    const DataPoint& p = m_data[position.second][position.first];
+    return p.index.isValid();
 }
 
 void CartesianDiagramDataCompressor::calculateSampleStepWidth()

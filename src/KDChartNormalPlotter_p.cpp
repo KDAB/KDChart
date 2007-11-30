@@ -30,6 +30,8 @@
 #include "KDChartPlotter.h"
 #include "KDChartNormalPlotter_p.h"
 
+#include <QDebug>
+
 using namespace KDChart;
 
 NormalPlotter::NormalPlotter( Plotter* d )
@@ -111,8 +113,8 @@ void NormalPlotter::paint( PaintContext* ctx )
         {
             const CartesianDiagramDataCompressor::CachePosition position( row, column );
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
-            if( point.key == static_cast< double >( 0 ) )
-                continue;
+            //if( !point.index.isValid() )
+              //  continue;
 
             LineAttributes laCell;
             
@@ -138,12 +140,9 @@ void NormalPlotter::paint( PaintContext* ctx )
             if ( ! point.hidden ) {
                 appendDataValueTextInfoToList( diagram(), textInfoList, sourceIndex, pts,
                                                Position::NorthWest, Position::SouthWest,
-                                               point.value );
+                                               1.0 );//point.value );
                 paintAreas( ctx, attributesModel()->mapToSource( lastPoint.index ), areas, laCell.transparency() );
-                if( row > 0 )
-                {
-                    lineList.append( LineAttributesInfo( sourceIndex, a, b ) );
-                }
+                lineList.append( LineAttributesInfo( sourceIndex, a, b ) );
             }
             
             // wrap it up:
