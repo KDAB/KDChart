@@ -120,7 +120,15 @@ HEADERS += KDChartGlobal.h \
            KDChartPlotter_p.h \
            KDChartNormalPlotter_p.h \
            KDChartPrintingParameters.h \
-
+           KDChartModelDataCache_p.h \
+           #LeveyJennings/KDChartLeveyJenningsCoordinatePlane.h \
+           #LeveyJennings/KDChartLeveyJenningsCoordinatePlane_p.h \
+           #LeveyJennings/KDChartLeveyJenningsDiagram.h \
+           #LeveyJennings/KDChartLeveyJenningsDiagram_p.h \
+           #LeveyJennings/KDChartLeveyJenningsGrid.h \
+           #LeveyJennings/KDChartLeveyJenningsAxis.h \
+           #LeveyJennings/KDChartLeveyJenningsAxis_p.h \
+ 
 SOURCES += \
            KDChartMeasure.cpp \
            KDChartAbstractCartesianDiagram.cpp \
@@ -198,6 +206,12 @@ SOURCES += \
            KDChartPlotter_p.cpp \
            KDChartNormalPlotter_p.cpp \
            KDChartPrintingParameters.cpp \
+           KDChartModelDataCache_p.cpp \
+           #LeveyJennings/KDChartLeveyJenningsCoordinatePlane.cpp \
+           #LeveyJennings/KDChartLeveyJenningsDiagram.cpp \
+           #LeveyJennings/KDChartLeveyJenningsDiagram_p.cpp \
+           #LeveyJennings/KDChartLeveyJenningsGrid.cpp \
+           #LeveyJennings/KDChartLeveyJenningsAxis.cpp \
 
 CONFIG += warn-on
 

@@ -36,6 +36,8 @@
 #include <QPointer>
 #include <QModelIndex>
 
+#include "KDChartModelDataCache_p.h"
+
 #include "kdchart_export.h"
 
 class CartesianDiagramDataCompressorTests;
@@ -143,6 +145,7 @@ namespace KDChart {
         QPointer<QAbstractItemModel> m_model;
         unsigned int m_sampleStep;
         QModelIndex m_rootIndex;
+        ModelDataCache m_modelCache;
         int m_datasetDimension;
     };
 }

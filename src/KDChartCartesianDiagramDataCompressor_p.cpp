@@ -237,7 +237,7 @@ void CartesianDiagramDataCompressor::setModel( QAbstractItemModel* model )
         connect( m_model, SIGNAL( modelReset() ),
                     this, SLOT( rebuildCache() ) );
     }
-
+    m_modelCache.setModel( model );
     rebuildCache();
     calculateSampleStepWidth();
 }
@@ -319,8 +319,8 @@ void CartesianDiagramDataCompressor::retrieveModelData( const CachePosition& pos
             Q_ASSERT( indexes.count() == 2 );
             const QModelIndex xIndex = indexes.first();
             const QModelIndex yIndex = indexes.last();
-            const QVariant xData = m_model->data( xIndex );
-            const QVariant yData = m_model->data( yIndex );
+            const QVariant xData = m_modelCache.data( xIndex );
+            const QVariant yData = m_modelCache.data( yIndex );
             result.index = xIndex;
             result.key   = xData.isNull() ? static_cast< double >( 0 ) : xData.toDouble();
             result.value = yData.isNull() ? static_cast< double >( 0 ) : yData.toDouble();
@@ -335,7 +335,7 @@ void CartesianDiagramDataCompressor::retrieveModelData( const CachePosition& pos
             if ( ! indexes.isEmpty() ) {
                 Q_FOREACH( const QModelIndex& index, indexes ) {
                     bool ok;
-                    const QVariant valueVariant = m_model->data( index, Qt::DisplayRole );
+                    const QVariant valueVariant = m_modelCache.data( index, Qt::DisplayRole );
                     const double value = valueVariant.toDouble( &ok );
                     if( ok )
                     {
