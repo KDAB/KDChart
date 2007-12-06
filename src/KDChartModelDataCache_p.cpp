@@ -64,7 +64,7 @@ void ModelDataCache::setModel( QAbstractItemModel* model )
 
 void ModelDataCache::resetModel()
 {
-    // no need to disconnect, this is a responce to SIGNAL( destroyed() )
+    // no need to disconnect, this is a response to SIGNAL( destroyed() )
     m_model = 0;
     modelReset();
 }
