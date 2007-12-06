@@ -36,6 +36,7 @@
 #include <KDChartChart.h>
 #include <KDChartAbstractCoordinatePlane.h>
 #include <KDChartLineDiagram.h>
+#include <KDChartPlotter.h>
 #include <KDChartPieDiagram.h>
 #include <KDChartPolarCoordinatePlane.h>
 #include <KDChartPolarDiagram.h>
@@ -364,6 +365,10 @@ LineDiagram* Widget::lineDiagram()
 {
     return dynamic_cast<LineDiagram*>( diagram() );
 }
+Plotter* Widget::plotter()
+{
+    return dynamic_cast<Plotter*>( diagram() );
+}
 PieDiagram* Widget::pieDiagram()
 {
     return dynamic_cast<PieDiagram*>( diagram() );
@@ -408,8 +413,11 @@ void Widget::setType( ChartType chartType, SubType chartSubType )
               diag = new BarDiagram( &d->m_chart, cartPlane );
               break;
             case Line:
-              diag = new LineDiagram( &d->m_chart, cartPlane );
-              break;
+                diag = new LineDiagram( &d->m_chart, cartPlane );
+                break;
+            case Plot:
+                diag = new Plotter( &d->m_chart, cartPlane );
+                break;
             case Pie:
               diag = new PieDiagram( &d->m_chart, polPlane );
               break;
@@ -460,8 +468,9 @@ void Widget::setType( ChartType chartType, SubType chartSubType )
 
 void Widget::setSubType( SubType subType )
 {
-    BarDiagram*  barDia  = qobject_cast< BarDiagram* >(   diagram() );
-    LineDiagram* lineDia = qobject_cast< LineDiagram* >(  diagram() );
+    BarDiagram*  barDia     = qobject_cast< BarDiagram* >(   diagram() );
+    LineDiagram* lineDia    = qobject_cast< LineDiagram* >(  diagram() );
+    Plotter*     plotterDia = qobject_cast< Plotter* >(      diagram() );
 
 //FIXME(khz): Add the impl for these chart types - or remove them from here:
 //    PieDiagram*   pieDia   = qobject_cast< PieDiagram* >(   diagram() );
@@ -476,8 +485,9 @@ void Widget::setSubType( SubType subType )
     switch ( subType )
     {
         case Normal:
-           SET_SUB_TYPE( barDia,  BarDiagram::Normal );
-           SET_SUB_TYPE( lineDia, LineDiagram::Normal );
+           SET_SUB_TYPE( barDia,     BarDiagram::Normal );
+           SET_SUB_TYPE( lineDia,    LineDiagram::Normal );
+           SET_SUB_TYPE( plotterDia, Plotter::Normal );
            break;
         case Stacked:
            SET_SUB_TYPE( barDia,  BarDiagram::Stacked );
@@ -509,6 +519,8 @@ Widget::ChartType Widget::type() const
         return Bar;
     else if ( qobject_cast< LineDiagram* >( dia ) )
         return Line;
+    else if ( qobject_cast< Plotter* >( dia ) )
+        return Plot;
     else if( qobject_cast< PieDiagram* >( dia ) )
         return Pie;
     else if( qobject_cast< PolarDiagram* >( dia ) )
@@ -525,8 +537,9 @@ Widget::SubType Widget::subType() const
     Widget::SubType retVal = Normal;
 
     AbstractDiagram * const dia = const_cast<Widget*>( this )->diagram();
-    BarDiagram*  barDia  = qobject_cast< BarDiagram* >(   dia );
-    LineDiagram* lineDia = qobject_cast< LineDiagram* >(  dia );
+    BarDiagram*  barDia     = qobject_cast< BarDiagram* >(   dia );
+    LineDiagram* lineDia    = qobject_cast< LineDiagram* >(  dia );
+    Plotter*     plotterDia = qobject_cast< Plotter* >(  dia );
 
 //FIXME(khz): Add the impl for these chart types - or remove them from here:
 //    PieDiagram*   pieDia   = qobject_cast< PieDiagram* >(   diagram() );
@@ -548,10 +561,13 @@ Widget::SubType Widget::subType() const
            TEST_SUB_TYPE( barDia, BarDiagram::Rows,    Rows );
            break;
         case Line:
-           TEST_SUB_TYPE( lineDia, LineDiagram::Normal,  Normal );
-           TEST_SUB_TYPE( lineDia, LineDiagram::Stacked, Stacked );
-           TEST_SUB_TYPE( lineDia, LineDiagram::Percent, Percent );
-           break;
+            TEST_SUB_TYPE( lineDia, LineDiagram::Normal,  Normal );
+            TEST_SUB_TYPE( lineDia, LineDiagram::Stacked, Stacked );
+            TEST_SUB_TYPE( lineDia, LineDiagram::Percent, Percent );
+            break;
+        case Plot:
+            TEST_SUB_TYPE( plotterDia, Plotter::Normal,  Normal );
+            break;
         case Pie:
            // no impl. yet
            break;
