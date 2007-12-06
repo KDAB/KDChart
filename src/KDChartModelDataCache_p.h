@@ -35,6 +35,8 @@ namespace KDChart
         void rowsInserted( const QModelIndex& parent, int start, int end );
         void rowsRemoved( const QModelIndex& parent, int start, int end );
 
+        void resetModel();
+
     private:
         QAbstractItemModel* m_model;
         QModelIndex m_rootIndex;

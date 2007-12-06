@@ -33,10 +33,12 @@ float ModelDataCache::data( int row, int column, int role ) const
     return fetchFromModel( row, column, role );
 }
 
+#include <QDebug>
 void ModelDataCache::setModel( QAbstractItemModel* model )
 {
-/*    if( m_model != 0 )
+    if( m_model != 0 )
     {
+        disconnect( m_model, SIGNAL( destroyed() ),                              this, SLOT( resetModel() ) );
         disconnect( m_model, SIGNAL( columnsInserted( QModelIndex, int, int ) ), this, SLOT( columnsInserted( QModelIndex, int, int ) ) );
         disconnect( m_model, SIGNAL( columnsRemoved( QModelIndex, int, int ) ),  this, SLOT( columnsRemoved( QModelIndex, int, int ) ) );
         disconnect( m_model, SIGNAL( dataChanged( QModelIndex, QModelIndex ) ),  this, SLOT( dataChanged( QModelIndex, QModelIndex ) ) );
@@ -44,10 +46,11 @@ void ModelDataCache::setModel( QAbstractItemModel* model )
         disconnect( m_model, SIGNAL( modelReset() ),                             this, SLOT( modelReset() ) );
         disconnect( m_model, SIGNAL( rowsInserted( QModelIndex, int, int ) ),    this, SLOT( rowsInserted( QModelIndex, int, int )) );
         disconnect( m_model, SIGNAL( rowsRemoved( QModelIndex, int, int ) ),     this, SLOT( rowsRemoved( QModelIndex, int, int ) ) );
-    }*/
+    }
     m_model = model;
     if( m_model != 0 )
     {
+        connect( m_model, SIGNAL( destroyed() ),                              this, SLOT( resetModel() ) );
         connect( m_model, SIGNAL( columnsInserted( QModelIndex, int, int ) ), this, SLOT( columnsInserted( QModelIndex, int, int ) ) );
         connect( m_model, SIGNAL( columnsRemoved( QModelIndex, int, int ) ),  this, SLOT( columnsRemoved( QModelIndex, int, int ) ) );
         connect( m_model, SIGNAL( dataChanged( QModelIndex, QModelIndex ) ),  this, SLOT( dataChanged( QModelIndex, QModelIndex ) ) );
@@ -56,6 +59,13 @@ void ModelDataCache::setModel( QAbstractItemModel* model )
         connect( m_model, SIGNAL( rowsInserted( QModelIndex, int, int ) ),    this, SLOT( rowsInserted( QModelIndex, int, int )) );
         connect( m_model, SIGNAL( rowsRemoved( QModelIndex, int, int ) ),     this, SLOT( rowsRemoved( QModelIndex, int, int ) ) );
     }
+    modelReset();
+}
+
+void ModelDataCache::resetModel()
+{
+    // no need to disconnect, this is a responce to SIGNAL( destroyed() )
+    m_model = 0;
     modelReset();
 }
 
@@ -151,7 +161,8 @@ void ModelDataCache::modelReset()
     m_data.clear();
     m_cacheValid.clear();
 
-    Q_ASSERT( m_model != 0 );
+    if( m_model == 0 )
+        return;
    
     m_data.fill( QVector< float >( m_model->columnCount( m_rootIndex ), 0.0 ), m_model->rowCount( m_rootIndex ) );
     m_cacheValid.fill( QVector< bool >( m_model->columnCount( m_rootIndex ), false ), m_model->rowCount( m_rootIndex ) );
