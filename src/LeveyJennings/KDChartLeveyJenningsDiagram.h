@@ -66,6 +66,9 @@ public:
      */
     bool compare( const LeveyJenningsDiagram* other ) const;
 
+    void setLotChangedSymbolPosition( Qt::Alignment pos );
+    Qt::Alignment lotChangedSymbolPosition() const;
+
     void setExpectedMeanValue( float meanValue );
     float expectedMeanValue() const;
 
@@ -81,7 +84,7 @@ public:
 protected:
     void paint( PaintContext* paintContext );
 
-    virtual void drawDataPointSymbol( PaintContext* paintContext, const QPointF& pos );
+    virtual void drawDataPointSymbol( PaintContext* paintContext, const QPointF& pos, bool ok );
     virtual void drawLotChangeSymbol( PaintContext* paintContext, const QPointF& pos );
 
     /** \reimpl */

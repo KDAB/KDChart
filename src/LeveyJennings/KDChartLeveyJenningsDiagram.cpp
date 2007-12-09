@@ -63,6 +63,7 @@ LeveyJenningsDiagram::LeveyJenningsDiagram( QWidget* parent, LeveyJenningsCoordi
 
 void LeveyJenningsDiagram::init()
 {
+    d->lotChangedPosition = Qt::AlignTop;
     d->diagram = this;
 }
 
@@ -92,6 +93,16 @@ bool LeveyJenningsDiagram::compare( const LeveyJenningsDiagram* other )const
     */
     return  // compare the base class
             ( static_cast<const LineDiagram*>(this)->compare( other ) );
+}
+
+void LeveyJenningsDiagram::setLotChangedSymbolPosition( Qt::Alignment pos )
+{
+    d->lotChangedPosition = pos;
+}
+
+Qt::Alignment LeveyJenningsDiagram::lotChangedSymbolPosition() const
+{
+    return d->lotChangedPosition;
 }
 
 void LeveyJenningsDiagram::setExpectedMeanValue( float meanValue )
@@ -520,11 +531,13 @@ void LeveyJenningsDiagram::paint( PaintContext* ctx )
     {
         const QModelIndex lotIndex = m.index( row, 0, rootIndex() );
         const QModelIndex valueIndex = m.index( row, 1, rootIndex() );
+        const QModelIndex okIndex = m.index( row, 2, rootIndex() );
 
         painter->setPen( pen( valueIndex ) );
 
         const int lot = m.data( lotIndex ).toInt();
         const double value = m.data( valueIndex ).toDouble();
+        const bool ok = m.data( okIndex ).toBool();
 
         const QPointF point = ctx->coordinatePlane()->translate( QPointF( row, value ) );
 
@@ -553,7 +566,7 @@ void LeveyJenningsDiagram::paint( PaintContext* ctx )
             drawLotChangeSymbol( ctx, QPointF( row, value ) );
         }
 
-        drawDataPointSymbol( ctx, QPointF( row, value ) );
+        drawDataPointSymbol( ctx, QPointF( row, value ), ok );
 
         if( selectionModel()->currentIndex() == lotIndex )
         {
@@ -572,18 +585,28 @@ void LeveyJenningsDiagram::paint( PaintContext* ctx )
     ctx->setCoordinatePlane( plane );
 }
 
-void LeveyJenningsDiagram::drawDataPointSymbol( PaintContext* ctx, const QPointF& pos )
+void LeveyJenningsDiagram::drawDataPointSymbol( PaintContext* ctx, const QPointF& pos, bool ok )
 {
     // TODO: This has to be a SVG image
+    QPainter* const painter = ctx->painter();
+    const PainterSaver ps( painter );
     const QPointF transPos = ctx->coordinatePlane()->translate( pos ).toPoint();
-    const QRectF rect( transPos.x() - 5, transPos.y() - 5 , 9, 9 );
-    ctx->painter()->drawEllipse( rect );
+    const QRectF rect( transPos.x() - 6, transPos.y() - 6 , 11, 11 );
+    painter->drawEllipse( rect );
+    if( ok )
+        return;
+    painter->setBrush( QBrush( Qt::red ) );
+    painter->setPen( Qt::transparent );
+    const QRectF dotRect( transPos.x() - 4, transPos.y() - 4, 7, 7 );
+    painter->drawEllipse( dotRect );
 }
 
 void LeveyJenningsDiagram::drawLotChangeSymbol( PaintContext* ctx, const QPointF& pos )
 {
     // TODO: This has to be a SVG image
-    const QPointF transPos = ctx->coordinatePlane()->translate( QPointF( pos.x(), d->expectedMeanValue + 4 * d->expectedStandardDeviation ) );
+    const QPointF transPos = ctx->coordinatePlane()->translate( QPointF( pos.x(), 
+                                                                d->lotChangedPosition & Qt::AlignTop ? d->expectedMeanValue + 4 * d->expectedStandardDeviation
+                                                                                                     : d->expectedMeanValue - 4 * d->expectedStandardDeviation ) );
     QPainter* const painter = ctx->painter();
     const PainterSaver ps( painter );
     painter->setClipping( false );

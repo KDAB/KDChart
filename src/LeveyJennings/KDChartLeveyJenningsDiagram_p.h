@@ -62,6 +62,8 @@ namespace KDChart {
 
         void setYAxisRange() const;
 
+        Qt::Alignment lotChangedPosition;
+
         float expectedMeanValue;
         float expectedStandardDeviation;
 
