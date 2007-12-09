@@ -23,7 +23,7 @@ MainWindow::MainWindow( QWidget* parent )
     m_ternaryPlane = new KDChart::TernaryCoordinatePlane;
     m_chart->replaceCoordinatePlane( m_ternaryPlane );
     // make a ternary line diagram
-    m_diagram = new KDChart::TernaryLineDiagram;
+    m_diagram = new KDChart::TernaryPointDiagram;
     // and replace the default diagram with it
     m_ternaryPlane->replaceDiagram( m_diagram );
 

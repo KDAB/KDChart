@@ -30,7 +30,7 @@ private:
     void setupModel();
 
     KDChart::Chart* m_chart;
-    KDChart::TernaryLineDiagram* m_diagram;
+    KDChart::TernaryPointDiagram* m_diagram;
     KDChart::TernaryCoordinatePlane* m_ternaryPlane;
 
     QStandardItemModel m_model;
