@@ -24,65 +24,63 @@
  **********************************************************************/
 
 #include <QApplication>
-
 #include <KDChartChart>
-#include <KDChartLeveyJenningsAxis>
-#include <KDChartLeveyJenningsDiagram>
-#include <KDChartLeveyJenningsCoordinatePlane>
-#include <KDChartLeveyJenningsGridAttributes>
-
+#include <KDChartPlotter>
+#include <KDChartLineDiagram>
+#include <KDChartCartesianAxis>
+#include <KDChartCartesianCoordinatePlane>
+#include <KDChartLegend>
 #include <QStandardItemModel>
+
+#include <cmath>
+
+#define PI 3.141592653589793
 
 int main( int argc, char** argv )
 {
     QApplication app( argc, argv );
 
-    QStandardItemModel model( 10, 2 );
+    const int points = 300;
+    const double xMin = -2 * PI;
+    const double xMax = 2 * PI;
+    const double step = ( xMax - xMin ) / ( points - 1 );
 
-    // Lot 1
-    model.setData( model.index( 0, 0 ), 1 );
-    model.setData( model.index( 0, 1 ), 210 );
-    model.setData( model.index( 1, 0 ), 1 );
-    model.setData( model.index( 1, 1 ), 195 );
-    model.setData( model.index( 2, 0 ), 1 );
-    model.setData( model.index( 2, 1 ), 200 );
-    model.setData( model.index( 3, 0 ), 1 );
-//    model.setData( model.index( 3, 1 ), 210 );
-    model.setData( model.index( 4, 0 ), 1 );
-    model.setData( model.index( 4, 1 ), 180 );
-    
-    // Lot 2
-    model.setData( model.index( 5, 0 ), 2 );
-    model.setData( model.index( 5, 1 ), 210 );
-    model.setData( model.index( 6, 0 ), 2 );
-    model.setData( model.index( 6, 1 ), 195 );
-    model.setData( model.index( 7, 0 ), 2 );
-    model.setData( model.index( 7, 1 ), 200 );
-    model.setData( model.index( 8, 0 ), 2 );
-    model.setData( model.index( 8, 1 ), 210 );
-    model.setData( model.index( 9, 0 ), 2 );
-    model.setData( model.index( 9, 1 ), 180 );
- 
+    QStandardItemModel model( points, 4 );
+
+    double x = xMin;
+    for( int n = 0; n < points; ++n, x += step) {
+        QModelIndex index = model.index( n, 0 );
+        model.setData( index, QVariant( x ) );
+        index = model.index( n, 1 );
+        model.setData( index, QVariant( sin( x ) * 100 ) );
+
+        index = model.index( n, 2 );
+        model.setData( index, QVariant( x ) );
+        index = model.index( n, 3 );
+        model.setData( index, QVariant( x*x*x ) );
+    }
+
+    model.setHeaderData( 0, Qt::Horizontal, QString::fromLatin1( "100 * sin(x)" ) );
+    model.setHeaderData( 1, Qt::Horizontal, QString::fromLatin1( "x^3" ) );
+
     KDChart::Chart* chart = new KDChart::Chart();
 
-    KDChart::LeveyJenningsDiagram* diagram = new KDChart::LeveyJenningsDiagram;
+    KDChart::AbstractCartesianDiagram* diagram = new KDChart::Plotter;
     diagram->setModel( &model );
-    diagram->setExpectedMeanValue( 200 );
-    diagram->setExpectedStandardDeviation( 20 );
-    KDChart::LeveyJenningsCoordinatePlane* plane = new KDChart::LeveyJenningsCoordinatePlane;
-    chart->replaceCoordinatePlane( plane );
-    plane->replaceDiagram( diagram );
+    chart->coordinatePlane()->replaceDiagram( diagram );
 
-    KDChart::LeveyJenningsAxis* axis = new KDChart::LeveyJenningsAxis( diagram );
-    axis->setPosition( KDChart::CartesianAxis::Left );
-    diagram->addAxis( axis );
+    KDChart::CartesianAxis* xAxis = new KDChart::CartesianAxis( diagram );
+    KDChart::CartesianAxis* yAxis = new KDChart::CartesianAxis( diagram );
+    xAxis->setPosition( KDChart::CartesianAxis::Bottom );
+    yAxis->setPosition( KDChart::CartesianAxis::Left );
+    diagram->addAxis( xAxis );
+    diagram->addAxis( yAxis );
 
-    KDChart::LeveyJenningsAxis* axis2 = new KDChart::LeveyJenningsAxis( diagram );
-    axis2->setPosition( KDChart::CartesianAxis::Right );
-    axis2->setType( KDChart::LeveyJenningsGridAttributes::Calculated );
-    diagram->addAxis( axis2 );
-
-    diagram->selectionModel()->setCurrentIndex( model.index( 1, 0 ), QItemSelectionModel::Current );
+    KDChart::Legend* legend = new KDChart::Legend( diagram, chart );
+    legend->setPosition( KDChart::Position::East );
+    legend->setAlignment( Qt::AlignCenter );
+    legend->setTitleText( "Legend" );
+    chart->addLegend( legend );
 
     chart->show();
 
