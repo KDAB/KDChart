@@ -345,26 +345,31 @@ void LeveyJenningsGrid::drawGrid( PaintContext* context )
 
 
     // draw the normal range
-    context->painter()->fillRect( QRectF( plane->translate( QPointF( dimX.start, meanValue - 2 * standardDeviation ) ),
-                                          plane->translate( QPointF( dimX.end, meanValue + 2 * standardDeviation ) ) ),
+    QPointF topLeft = plane->translate( QPointF( dimX.start, meanValue - 2 * standardDeviation ) );
+    QPointF bottomRight = plane->translate( QPointF( dimX.end, meanValue + 2 * standardDeviation ) );
+    context->painter()->fillRect( QRectF( topLeft, QSizeF( bottomRight.x() - topLeft.x(), bottomRight.y() - topLeft.y() ) ),
                                   gridAttrs.rangeBrush( LeveyJenningsGridAttributes::NormalRange ) ); 
 
     // draw the critical range
-    context->painter()->fillRect( QRectF( plane->translate( QPointF( dimX.start, meanValue + 2 * standardDeviation ) ),
-                                          plane->translate( QPointF( dimX.end, meanValue + 3 * standardDeviation ) ) ),
+    topLeft = plane->translate( QPointF( dimX.start, meanValue + 2 * standardDeviation ) );
+    bottomRight = plane->translate( QPointF( dimX.end, meanValue + 3 * standardDeviation ) );
+    context->painter()->fillRect( QRectF( topLeft, QSizeF( bottomRight.x() - topLeft.x(), bottomRight.y() - topLeft.y() ) ),
                                   gridAttrs.rangeBrush( LeveyJenningsGridAttributes::CriticalRange ) );
 
-    context->painter()->fillRect( QRectF( plane->translate( QPointF( dimX.start, meanValue - 2 * standardDeviation ) ),
-                                          plane->translate( QPointF( dimX.end, meanValue - 3 * standardDeviation ) ) ),
+    topLeft = plane->translate( QPointF( dimX.start, meanValue - 2 * standardDeviation ) );
+    bottomRight = plane->translate( QPointF( dimX.end, meanValue - 3 * standardDeviation ) );
+    context->painter()->fillRect( QRectF( topLeft, QSizeF( bottomRight.x() - topLeft.x(), bottomRight.y() - topLeft.y() ) ),
                                   gridAttrs.rangeBrush( LeveyJenningsGridAttributes::CriticalRange ) );
 
     // draw the "out of range" range
-    context->painter()->fillRect( QRectF( plane->translate( QPointF( dimX.start, meanValue + 3 * standardDeviation ) ),
-                                          plane->translate( QPointF( dimX.end, meanValue + 4 * standardDeviation ) ) ),
+    topLeft = plane->translate( QPointF( dimX.start, meanValue + 3 * standardDeviation ) );
+    bottomRight = plane->translate( QPointF( dimX.end, meanValue + 4 * standardDeviation ) );
+    context->painter()->fillRect( QRectF( topLeft, QSizeF( bottomRight.x() - topLeft.x(), bottomRight.y() - topLeft.y() ) ),
                                   gridAttrs.rangeBrush( LeveyJenningsGridAttributes::OutOfRange ) );
 
-    context->painter()->fillRect( QRectF( plane->translate( QPointF( dimX.start, meanValue - 3 * standardDeviation ) ),
-                                          plane->translate( QPointF( dimX.end, meanValue - 4 * standardDeviation ) ) ),
+    topLeft = plane->translate( QPointF( dimX.start, meanValue - 3 * standardDeviation ) );
+    bottomRight = plane->translate( QPointF( dimX.end, meanValue - 4 * standardDeviation ) );
+    context->painter()->fillRect( QRectF( topLeft, QSizeF( bottomRight.x() - topLeft.x(), bottomRight.y() - topLeft.y() ) ),
                                   gridAttrs.rangeBrush( LeveyJenningsGridAttributes::OutOfRange ) );
 
     // the "expected" grid
