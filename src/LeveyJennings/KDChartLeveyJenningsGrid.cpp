@@ -120,64 +120,34 @@ DataDimension LeveyJenningsGrid::calculateGridXY(
 {
     DataDimension dim( rawDataDimension );
     if( dim.isCalculated && dim.start != dim.end ){
-        if( dim.calcMode == AbstractCoordinatePlane::Linear ){
-            // linear ( == not-logarithmic) calculation
-            if( dim.stepWidth == 0.0 ){
-                QList<qreal> granularities;
-                switch( dim.sequence ){
-                    case KDChartEnums::GranularitySequence_10_20:
-                        granularities << 1.0 << 2.0;
-                        break;
-                    case KDChartEnums::GranularitySequence_10_50:
-                        granularities << 1.0 << 5.0;
-                        break;
-                    case KDChartEnums::GranularitySequence_25_50:
-                        granularities << 2.5 << 5.0;
-                        break;
-                    case KDChartEnums::GranularitySequence_125_25:
-                        granularities << 1.25 << 2.5;
-                        break;
-                    case KDChartEnums::GranularitySequenceIrregular:
-                        granularities << 1.0 << 1.25 << 2.0 << 2.5 << 5.0;
-                        break;
-                    default:
-                        break;
-                }
-                //qDebug("CartesianGrid::calculateGridXY()   dim.start: %f   dim.end: %f", dim.start, dim.end);
-                calculateStepWidth(
-                    dim.start, dim.end, granularities, orientation,
-                    dim.stepWidth, dim.subStepWidth,
-                    adjustLower, adjustUpper );
+        // linear ( == not-logarithmic) calculation
+        if( dim.stepWidth == 0.0 ){
+            QList<qreal> granularities;
+            switch( dim.sequence ){
+                case KDChartEnums::GranularitySequence_10_20:
+                    granularities << 1.0 << 2.0;
+                    break;
+                case KDChartEnums::GranularitySequence_10_50:
+                    granularities << 1.0 << 5.0;
+                    break;
+                case KDChartEnums::GranularitySequence_25_50:
+                    granularities << 2.5 << 5.0;
+                    break;
+                case KDChartEnums::GranularitySequence_125_25:
+                    granularities << 1.25 << 2.5;
+                    break;
+                case KDChartEnums::GranularitySequenceIrregular:
+                    granularities << 1.0 << 1.25 << 2.0 << 2.5 << 5.0;
+                    break;
+                default:
+                    break;
             }
-            // if needed, adjust start/end to match the step width:
-            //qDebug() << "CartesianGrid::calculateGridXY() has 1st linear range: min " << dim.start << " and max" << dim.end;
-            AbstractGrid::adjustLowerUpperRange( dim.start, dim.end, dim.stepWidth,
-                    adjustLower, adjustUpper );
-            //qDebug() << "CartesianGrid::calculateGridXY() returns linear range: min " << dim.start << " and max" << dim.end;
-        }else{
-            // logarithmic calculation (ignoring all negative values)
-            qreal min;
-            const qreal minRaw = qMax( qMin( dim.start, dim.end ), 0.0 );
-            const int minLog = static_cast<int>(trunc( log10( minRaw ) ) );
-            if( minLog <= 0 )
-                min = 1;
-            else
-                min = fastPow10( minLog-1 );
-
-            qreal max;
-            const qreal maxRaw = qMax( qMax( dim.start, dim.end ), 0.0 );
-            const int maxLog = static_cast<int>(trunc( log10( maxRaw ) ) );
-            if( maxLog <= 0 )
-                max = 1;
-            else if( fastPow10( maxLog ) < maxRaw )
-                max = fastPow10( maxLog+1 );
-            else
-                max = fastPow10( maxLog );
-            dim.start = min;
-            dim.end   = max;
-            dim.stepWidth = qAbs(max - min) / 10.0;
-            //qDebug() << "CartesianGrid::calculateGridXY() returns logarithmic:  min " << min << " and max" << max;
-        }
+            //qDebug("CartesianGrid::calculateGridXY()   dim.start: %f   dim.end: %f", dim.start, dim.end);
+            calculateStepWidth(
+                dim.start, dim.end, granularities, orientation,
+                dim.stepWidth, dim.subStepWidth,
+                adjustLower, adjustUpper );
+            }
     }else{
         //qDebug() << "CartesianGrid::calculateGridXY() returns stepWidth 1.0  !!";
         // Do not ignore the user configuration
