@@ -59,7 +59,7 @@ public:
     LeveyJenningsDiagram( QWidget* parent = 0, LeveyJenningsCoordinatePlane* plane = 0 );
     virtual ~LeveyJenningsDiagram();
 
-    virtual LeveyJenningsDiagram * clone() const;
+    virtual LineDiagram * clone() const;
 
     /**
      * Returns true if both diagrams have the same settings.

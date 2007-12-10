@@ -74,7 +74,7 @@ LeveyJenningsDiagram::~LeveyJenningsDiagram()
 /**
   * Creates an exact copy of this diagram.
   */
-LeveyJenningsDiagram * LeveyJenningsDiagram::clone() const
+LineDiagram * LeveyJenningsDiagram::clone() const
 {
     LeveyJenningsDiagram* newDiagram = new LeveyJenningsDiagram( new Private( *d ) );
     return newDiagram;
