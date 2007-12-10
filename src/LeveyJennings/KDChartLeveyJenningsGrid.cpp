@@ -109,6 +109,10 @@ DataDimensionsList LeveyJenningsGrid::calculateGrid( const DataDimensionsList& r
     return l;
 }
 
+#if defined ( Q_WS_WIN)
+#define trunc(x) ((int)(x))
+#endif
+
 DataDimension LeveyJenningsGrid::calculateGridXY(
     const DataDimension& rawDataDimension,
     Qt::Orientation orientation,
