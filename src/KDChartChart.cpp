@@ -810,7 +810,8 @@ Chart::Chart ( QWidget* parent )
 #endif
 
     FrameAttributes frameAttrs;
-    frameAttrs.setVisible( true );
+// no frame per default...
+//    frameAttrs.setVisible( true );
     frameAttrs.setPen( QPen( Qt::black ) );
     frameAttrs.setPadding( 1 );
     setFrameAttributes( frameAttrs );
