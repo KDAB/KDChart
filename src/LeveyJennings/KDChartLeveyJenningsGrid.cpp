@@ -268,14 +268,6 @@ void LeveyJenningsGrid::calculateStepWidth(
     //qDebug("LeveyJenningsGrid::calculateStepWidth() found stepWidth %f (%f steps) and sub-stepWidth %f", stepWidth, steps, subStepWidth);
 }
 
-/*DataDimensionsList LeveyJenningsGrid::calculateGrid( const DataDimensionsList& rawDataDimensions ) const
-{
-    DataDimensionsList result = rawDataDimensions;
-    result.first().stepWidth = 1.0;
-    result.last().stepWidth = 1.0;
-    return result;
-}*/
-
 void LeveyJenningsGrid::drawGrid( PaintContext* context )
 {
     LeveyJenningsCoordinatePlane* plane = dynamic_cast<LeveyJenningsCoordinatePlane*>(context->coordinatePlane());
