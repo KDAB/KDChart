@@ -136,8 +136,7 @@ void Widget::setDataset( int column, const QVector< QPair< double, double > > & 
         model.setData( index, QVariant( data[i].second ), Qt::DisplayRole );
     }
     if ( ! title.isEmpty() ){
-        model.setHeaderData( column * 2,   Qt::Horizontal, QVariant( title ) );
-        model.setHeaderData( column * 2+1, Qt::Horizontal, QVariant( title ) );
+        model.setHeaderData( column,   Qt::Horizontal, QVariant( title ) );
     }
 }
 
