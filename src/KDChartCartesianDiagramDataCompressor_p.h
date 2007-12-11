@@ -30,6 +30,8 @@
 #ifndef KDCHARTCARTESIANDIAGRAMDATACOMPRESSOR_H
 #define KDCHARTCARTESIANDIAGRAMDATACOMPRESSOR_H
 
+#include <limits>
+
 #include <QPair>
 #include <QVector>
 #include <QObject>
@@ -68,14 +70,36 @@ namespace KDChart {
     public:
         class DataPoint {
         public:
-            DataPoint() : key(), value(), hidden( false ) {}
+            DataPoint() 
+                : key( std::numeric_limits< double >::quiet_NaN() ), 
+                  value( std::numeric_limits< double >::quiet_NaN() ), 
+                  hidden( false ) 
+                  {}
             double key;
             double value;
             bool hidden;
             QModelIndex index;
         };
         typedef QVector<DataPoint> DataPointVector;
-        typedef QPair<int, int> CachePosition;
+        class CachePosition {
+        public:
+            CachePosition()
+                : first( -1 ),
+                  second( -1 )
+                  {}
+            CachePosition( int first, int second )
+                : first( first ),
+                  second( second )
+                  {}
+            int first;
+            int second;
+
+            bool operator==( const CachePosition& rhs ) const
+            {
+                return first == rhs.first &&
+                       second == rhs.second;
+            }
+        };
 
         enum ApproximationMode {
             // do not approximate, interpolate by averaging all

@@ -27,8 +27,6 @@
  **
  **********************************************************************/
 
-#include <limits>
-
 #include <QtDebug>
 #include <QAbstractItemModel>
 
@@ -319,20 +317,17 @@ void CartesianDiagramDataCompressor::retrieveModelData( const CachePosition& pos
             Q_ASSERT( indexes.count() == 2 );
             const QModelIndex xIndex = indexes.first();
             const QModelIndex yIndex = indexes.last();
-            const QVariant xData = m_modelCache.data( xIndex );
-            const QVariant yData = m_modelCache.data( yIndex );
+            const float xData = m_modelCache.data( xIndex );
+            const float yData = m_modelCache.data( yIndex );
             result.index = xIndex;
-            result.key   = xData.isNull() ? static_cast< double >( 0 ) : xData.toDouble();
-            result.value = yData.isNull() ? static_cast< double >( 0 ) : yData.toDouble();
-            if( xData.isNull() && yData.isNull() )
-                forceHidden = true;
-            
-            //result.key   = xData.isNull() ? std::numeric_limits< double >::quiet_NaN() : xData.toDouble();
-            //result.value = yData.isNull() ? std::numeric_limits< double >::quiet_NaN() : yData.toDouble();
+            result.key   = xData;
+            result.value = yData;
         }
         else
         {
             if ( ! indexes.isEmpty() ) {
+                result.value = 0.0;
+                result.key = 0.0;
                 Q_FOREACH( const QModelIndex& index, indexes ) {
                     bool ok;
                     const QVariant valueVariant = m_modelCache.data( index, Qt::DisplayRole );

@@ -1,5 +1,7 @@
 #include "KDChartModelDataCache_p.h"
 
+#include <limits>
+
 using namespace KDChart;
 
 ModelDataCache::ModelDataCache( QObject* parent )
@@ -12,14 +14,14 @@ ModelDataCache::~ModelDataCache()
 {
 }
 
-float ModelDataCache::data( const QModelIndex& index, int role ) const
+double ModelDataCache::data( const QModelIndex& index, int role ) const
 {
     if( !index.isValid() || index.model() != m_model )
-        return 0.0;
+        return std::numeric_limits< double >::quiet_NaN();
     return data( index.row(), index.column(), role );
 }
 
-float ModelDataCache::data( int row, int column, int role ) const
+double ModelDataCache::data( int row, int column, int role ) const
 {
     if( row < 0 || column < 0 )
         return 0.0;
@@ -33,7 +35,6 @@ float ModelDataCache::data( int row, int column, int role ) const
     return fetchFromModel( row, column, role );
 }
 
-#include <QDebug>
 void ModelDataCache::setModel( QAbstractItemModel* model )
 {
     if( m_model != 0 )
@@ -79,13 +80,15 @@ bool ModelDataCache::isCached( int row, int column ) const
     return m_cacheValid.at( row ).at( column );
 }
 
-float ModelDataCache::fetchFromModel( int row, int column, int role ) const
+double ModelDataCache::fetchFromModel( int row, int column, int role ) const
 {
     Q_ASSERT( m_model != 0 );
 
     const QModelIndex index = m_model->index( row, column );
-    const float value = index.data( role ).toDouble();
-
+    const QVariant data = index.data( role );
+    const double value = data.isNull() ? std::numeric_limits< double >::quiet_NaN() 
+                                       : data.toDouble();
+    
     m_data[ row ][ column ] = value;
     m_cacheValid[ row ][ column ] = true;
 
@@ -164,7 +167,7 @@ void ModelDataCache::modelReset()
     if( m_model == 0 )
         return;
    
-    m_data.fill( QVector< float >( m_model->columnCount( m_rootIndex ), 0.0 ), m_model->rowCount( m_rootIndex ) );
+    m_data.fill( QVector< double >( m_model->columnCount( m_rootIndex ), 0.0 ), m_model->rowCount( m_rootIndex ) );
     m_cacheValid.fill( QVector< bool >( m_model->columnCount( m_rootIndex ), false ), m_model->rowCount( m_rootIndex ) );
 
     Q_ASSERT( m_data.count() == m_model->rowCount( m_rootIndex ) );
@@ -178,7 +181,7 @@ void ModelDataCache::rowsInserted( const QModelIndex& parent, int start, int end
     if( parent != m_rootIndex )
         return;
 
-    m_data.insert( start, end - start + 1, QVector< float >( m_model->columnCount( m_rootIndex ), 0.0 ) );
+    m_data.insert( start, end - start + 1, QVector< double >( m_model->columnCount( m_rootIndex ), 0.0 ) );
     m_cacheValid.insert( start, end - start + 1, QVector< bool >( m_model->columnCount( m_rootIndex ), false ) );
 
     Q_ASSERT( m_data.count() == m_model->rowCount( m_rootIndex ) );

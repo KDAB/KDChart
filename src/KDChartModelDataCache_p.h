@@ -16,15 +16,15 @@ namespace KDChart
         ModelDataCache( QObject* parent = 0 );
         ~ModelDataCache();
 
-        float data( const QModelIndex& index, int role = Qt::DisplayRole ) const;
-        float data( int row, int column, int role = Qt::DisplayRole ) const;
+        double data( const QModelIndex& index, int role = Qt::DisplayRole ) const;
+        double data( int row, int column, int role = Qt::DisplayRole ) const;
 
         void setModel( QAbstractItemModel* model );
         QAbstractItemModel* model() const;
 
     protected:
         bool isCached( int row, int column ) const;
-        float fetchFromModel( int row, int column, int role = Qt::DisplayRole ) const;
+        double fetchFromModel( int row, int column, int role = Qt::DisplayRole ) const;
 
     private Q_SLOTS:
         void columnsInserted( const QModelIndex& parent, int start, int end );
@@ -40,7 +40,7 @@ namespace KDChart
     private:
         QAbstractItemModel* m_model;
         QModelIndex m_rootIndex;
-        mutable QVector< QVector< float > > m_data;
+        mutable QVector< QVector< double > > m_data;
         mutable QVector< QVector< bool > > m_cacheValid;
     };
 }

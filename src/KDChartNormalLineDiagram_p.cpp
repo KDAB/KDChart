@@ -27,6 +27,8 @@
  **
  **********************************************************************/
 
+#include <limits>
+
 #include <QAbstractItemModel>
 
 #include "KDChartBarDiagram.h"
@@ -52,28 +54,26 @@ const QPair< QPointF, QPointF > NormalLineDiagram::calculateDataBoundaries() con
 {
     const int rowCount = compressor().modelDataRows();
     const int colCount = compressor().modelDataColumns();
-    double xMin = 0;
+    double xMin = 0.0;
     double xMax = diagram()->model() ? diagram()->model()->rowCount( diagram()->rootIndex() ) - 1 : 0;
-    double yMin = 0;
-    double yMax = 0;
+    double yMin = std::numeric_limits< double >::quiet_NaN();
+    double yMax = std::numeric_limits< double >::quiet_NaN();
 
-    bool first = true;
     for( int column = 0; column < colCount; ++column )
     {
         for ( int row = 0; row < rowCount; ++row )
         {
             const CartesianDiagramDataCompressor::CachePosition position( row, column );
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
-
-            if ( first ) {
-                    yMin = point.value;
-                    yMax = point.value;
+            const double value = ISNAN( point.value ) ? 0.0 : point.value;
+            
+            if ( ISNAN( yMin ) ) {
+                    yMin = value;
+                    yMax = value;
             } else {
-                yMin = qMin( yMin, point.value );
-                yMax = qMax( yMax, point.value );
+                yMin = qMin( yMin, value );
+                yMax = qMax( yMax, value );
             }
-
-            first = false;
         }
     }
 
@@ -119,7 +119,6 @@ void NormalLineDiagram::paint( PaintContext* ctx )
             
             const QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );
             const CartesianDiagramDataCompressor::DataPoint lastPoint = compressor().data( previousCellPosition );
-            
             // area corners, a + b are the line ends:
             const QPointF a( plane->translate( QPointF( lastPoint.key, lastPoint.value ) ) );
             const QPointF b( plane->translate( QPointF( point.key, point.value ) ) );
@@ -131,13 +130,11 @@ void NormalLineDiagram::paint( PaintContext* ctx )
             const PositionPoints pts = PositionPoints( b, a, d, c );
             // if necessary, add the area to the area list:
             QList<QPolygonF> areas;
-            if ( laCell.displayArea() ) {
-                QPolygonF polygon;
-                polygon << a << b << d << c;
-                areas << polygon;
+            if ( !ISNAN( point.value ) && !ISNAN( lastPoint.value ) && laCell.displayArea() ) {
+                areas << ( QPolygonF() << a << b << d << c );//polygon;
             }
             // add the pieces to painting if this is not hidden:
-            if ( ! point.hidden ) {
+            if ( ! point.hidden && !ISNAN( point.value ) ) {
                 appendDataValueTextInfoToList( diagram(), textInfoList, sourceIndex, pts,
                                                Position::NorthWest, Position::SouthWest,
                                                point.value );
