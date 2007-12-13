@@ -4,200 +4,76 @@
 
 using namespace KDChart;
 
-ModelDataCache::ModelDataCache( QObject* parent )
-    : QObject( parent ),
-      m_model( 0 )
+ModelSignalMapperConnector::ModelSignalMapperConnector( ModelSignalMapper& mapper )
+    : QObject( 0 ),
+      m_mapper( mapper )
 {
 }
 
-ModelDataCache::~ModelDataCache()
+ModelSignalMapperConnector::~ModelSignalMapperConnector()
 {
 }
 
-double ModelDataCache::data( const QModelIndex& index, int role ) const
+void ModelSignalMapperConnector::connectSignals( QAbstractItemModel* model )
 {
-    if( !index.isValid() || index.model() != m_model )
-        return std::numeric_limits< double >::quiet_NaN();
-    return data( index.row(), index.column(), role );
+    connect( model, SIGNAL( destroyed() ),                              this, SLOT( resetModel() ) );
+    connect( model, SIGNAL( columnsInserted( QModelIndex, int, int ) ), this, SLOT( columnsInserted( QModelIndex, int, int ) ) );
+    connect( model, SIGNAL( columnsRemoved( QModelIndex, int, int ) ),  this, SLOT( columnsRemoved( QModelIndex, int, int ) ) );
+    connect( model, SIGNAL( dataChanged( QModelIndex, QModelIndex ) ),  this, SLOT( dataChanged( QModelIndex, QModelIndex ) ) );
+    connect( model, SIGNAL( layoutChanged() ),                          this, SLOT( layoutChanged() ) );
+    connect( model, SIGNAL( modelReset() ),                             this, SLOT( modelReset() ) );
+    connect( model, SIGNAL( rowsInserted( QModelIndex, int, int ) ),    this, SLOT( rowsInserted( QModelIndex, int, int )) );
+    connect( model, SIGNAL( rowsRemoved( QModelIndex, int, int ) ),     this, SLOT( rowsRemoved( QModelIndex, int, int ) ) );
 }
 
-double ModelDataCache::data( int row, int column, int role ) const
+void ModelSignalMapperConnector::disconnectSignals( QAbstractItemModel* model )
 {
-    if( row < 0 || column < 0 )
-        return 0.0;
-
-    Q_ASSERT( row < m_data.count() );
-    Q_ASSERT( column < m_data.first().count() );
-
-    if( isCached( row, column ) )
-        return m_data.at( row ).at( column );
-
-    return fetchFromModel( row, column, role );
+    disconnect( model, SIGNAL( destroyed() ),                              this, SLOT( resetModel() ) );
+    disconnect( model, SIGNAL( columnsInserted( QModelIndex, int, int ) ), this, SLOT( columnsInserted( QModelIndex, int, int ) ) );
+    disconnect( model, SIGNAL( columnsRemoved( QModelIndex, int, int ) ),  this, SLOT( columnsRemoved( QModelIndex, int, int ) ) );
+    disconnect( model, SIGNAL( dataChanged( QModelIndex, QModelIndex ) ),  this, SLOT( dataChanged( QModelIndex, QModelIndex ) ) );
+    disconnect( model, SIGNAL( layoutChanged() ),                          this, SLOT( layoutChanged() ) );
+    disconnect( model, SIGNAL( modelReset() ),                             this, SLOT( modelReset() ) );
+    disconnect( model, SIGNAL( rowsInserted( QModelIndex, int, int ) ),    this, SLOT( rowsInserted( QModelIndex, int, int )) );
+    disconnect( model, SIGNAL( rowsRemoved( QModelIndex, int, int ) ),     this, SLOT( rowsRemoved( QModelIndex, int, int ) ) );
 }
 
-void ModelDataCache::setModel( QAbstractItemModel* model )
+void ModelSignalMapperConnector::resetModel()
 {
-    if( m_model != 0 )
-    {
-        disconnect( m_model, SIGNAL( destroyed() ),                              this, SLOT( resetModel() ) );
-        disconnect( m_model, SIGNAL( columnsInserted( QModelIndex, int, int ) ), this, SLOT( columnsInserted( QModelIndex, int, int ) ) );
-        disconnect( m_model, SIGNAL( columnsRemoved( QModelIndex, int, int ) ),  this, SLOT( columnsRemoved( QModelIndex, int, int ) ) );
-        disconnect( m_model, SIGNAL( dataChanged( QModelIndex, QModelIndex ) ),  this, SLOT( dataChanged( QModelIndex, QModelIndex ) ) );
-        disconnect( m_model, SIGNAL( layoutChanged() ),                          this, SLOT( layoutChanged() ) );
-        disconnect( m_model, SIGNAL( modelReset() ),                             this, SLOT( modelReset() ) );
-        disconnect( m_model, SIGNAL( rowsInserted( QModelIndex, int, int ) ),    this, SLOT( rowsInserted( QModelIndex, int, int )) );
-        disconnect( m_model, SIGNAL( rowsRemoved( QModelIndex, int, int ) ),     this, SLOT( rowsRemoved( QModelIndex, int, int ) ) );
-    }
-    m_model = model;
-    if( m_model != 0 )
-    {
-        connect( m_model, SIGNAL( destroyed() ),                              this, SLOT( resetModel() ) );
-        connect( m_model, SIGNAL( columnsInserted( QModelIndex, int, int ) ), this, SLOT( columnsInserted( QModelIndex, int, int ) ) );
-        connect( m_model, SIGNAL( columnsRemoved( QModelIndex, int, int ) ),  this, SLOT( columnsRemoved( QModelIndex, int, int ) ) );
-        connect( m_model, SIGNAL( dataChanged( QModelIndex, QModelIndex ) ),  this, SLOT( dataChanged( QModelIndex, QModelIndex ) ) );
-        connect( m_model, SIGNAL( layoutChanged() ),                          this, SLOT( layoutChanged() ) );
-        connect( m_model, SIGNAL( modelReset() ),                             this, SLOT( modelReset() ) );
-        connect( m_model, SIGNAL( rowsInserted( QModelIndex, int, int ) ),    this, SLOT( rowsInserted( QModelIndex, int, int )) );
-        connect( m_model, SIGNAL( rowsRemoved( QModelIndex, int, int ) ),     this, SLOT( rowsRemoved( QModelIndex, int, int ) ) );
-    }
-    modelReset();
+    m_mapper.resetModel();
 }
 
-void ModelDataCache::resetModel()
+void ModelSignalMapperConnector::columnsInserted( const QModelIndex& parent, int start, int end )
 {
-    // no need to disconnect, this is a response to SIGNAL( destroyed() )
-    m_model = 0;
-    modelReset();
+    m_mapper.columnsInserted( parent, start, end );
 }
 
-QAbstractItemModel* ModelDataCache::model() const
+void ModelSignalMapperConnector::columnsRemoved( const QModelIndex& parent, int start, int end )
 {
-    return m_model;
+    m_mapper.columnsRemoved( parent, start, end );
 }
 
-bool ModelDataCache::isCached( int row, int column ) const
+void ModelSignalMapperConnector::dataChanged( const QModelIndex& topLeft, const QModelIndex& bottomRight )
 {
-    return m_cacheValid.at( row ).at( column );
+    m_mapper.dataChanged( topLeft, bottomRight );
 }
 
-double ModelDataCache::fetchFromModel( int row, int column, int role ) const
+void ModelSignalMapperConnector::layoutChanged()
 {
-    Q_ASSERT( m_model != 0 );
-
-    const QModelIndex index = m_model->index( row, column );
-    const QVariant data = index.data( role );
-    const double value = data.isNull() ? std::numeric_limits< double >::quiet_NaN() 
-                                       : data.toDouble();
-    
-    m_data[ row ][ column ] = value;
-    m_cacheValid[ row ][ column ] = true;
-
-    return value;
+    m_mapper.layoutChanged();
 }
 
-void ModelDataCache::columnsInserted( const QModelIndex& parent, int start, int end )
+void ModelSignalMapperConnector::modelReset()
 {
-    Q_ASSERT( m_model != 0 );
-
-    if( parent != m_rootIndex )
-        return;
-
-    const int rowCount = m_data.count();
-
-    for( int row = 0; row < rowCount; ++row )
-    {
-        m_data[ row ].insert( start, end - start + 1, 0.0 );
-        m_cacheValid[ row ].insert( start, end - start + 1, false );
-        Q_ASSERT( m_data.at( row ).count() == m_model->columnCount( m_rootIndex ) );
-        Q_ASSERT( m_cacheValid.at( row ).count() == m_model->columnCount( m_rootIndex ) );
-    }
+    m_mapper.modelReset();
 }
 
-void ModelDataCache::columnsRemoved( const QModelIndex& parent, int start, int end )
+void ModelSignalMapperConnector::rowsInserted( const QModelIndex& parent, int start, int end )
 {
-    Q_ASSERT( m_model != 0 );
-
-    if( parent != m_rootIndex )
-        return;
-
-    const int rowCount = m_data.count();
-
-    for( int row = 0; row < rowCount; ++row )
-    {
-        m_data[ row ].remove( start, end - start + 1 );
-        m_cacheValid[ row ].remove( start, end - start + 1 );
-        Q_ASSERT( m_data.at( row ).count() == m_model->columnCount( m_rootIndex ) );
-        Q_ASSERT( m_cacheValid.at( row ).count() == m_model->columnCount( m_rootIndex ) );
-    }
+    m_mapper.rowsInserted( parent, start, end );
 }
 
-void ModelDataCache::dataChanged( const QModelIndex& topLeft, const QModelIndex& bottomRight )
+void ModelSignalMapperConnector::rowsRemoved( const QModelIndex& parent, int start, int end )
 {
-    Q_ASSERT( m_model != 0 );
-    Q_ASSERT( topLeft.parent() == bottomRight.parent() );
-
-    if( topLeft.parent() != m_rootIndex )
-        return;
-    
-    const int minRow = topLeft.row();
-    const int maxRow = bottomRight.row();
-    const int minCol = topLeft.column();
-    const int maxCol = bottomRight.column();
-
-    for( int row = minRow; row <= maxRow; ++row )
-    {
-        for( int col = minCol; col <= maxCol; ++col )
-        {
-            m_cacheValid[ row ][ col ] = false;
-            Q_ASSERT( !isCached( row, col ) );
-        }
-    }
-}
-
-void ModelDataCache::layoutChanged()
-{
-    modelReset();
-}
-
-void ModelDataCache::modelReset()
-{
-    m_data.clear();
-    m_cacheValid.clear();
-
-    if( m_model == 0 )
-        return;
-   
-    m_data.fill( QVector< double >( m_model->columnCount( m_rootIndex ), 0.0 ), m_model->rowCount( m_rootIndex ) );
-    m_cacheValid.fill( QVector< bool >( m_model->columnCount( m_rootIndex ), false ), m_model->rowCount( m_rootIndex ) );
-
-    Q_ASSERT( m_data.count() == m_model->rowCount( m_rootIndex ) );
-    Q_ASSERT( m_cacheValid.count() == m_model->rowCount( m_rootIndex ) );
-}
-
-void ModelDataCache::rowsInserted( const QModelIndex& parent, int start, int end )
-{
-    Q_ASSERT( m_model != 0 );
-
-    if( parent != m_rootIndex )
-        return;
-
-    m_data.insert( start, end - start + 1, QVector< double >( m_model->columnCount( m_rootIndex ), 0.0 ) );
-    m_cacheValid.insert( start, end - start + 1, QVector< bool >( m_model->columnCount( m_rootIndex ), false ) );
-
-    Q_ASSERT( m_data.count() == m_model->rowCount( m_rootIndex ) );
-    Q_ASSERT( m_cacheValid.count() == m_model->rowCount( m_rootIndex ) );
-}
-
-void ModelDataCache::rowsRemoved( const QModelIndex& parent, int start, int end )
-{
-    Q_ASSERT( m_model != 0 );
-
-    if( parent != m_rootIndex )
-        return;
-
-    m_data.remove( start, end - start + 1 );
-    m_cacheValid.remove( start, end - start + 1 );
-
-    Q_ASSERT( m_data.count() == m_model->rowCount( m_rootIndex ) );
-    Q_ASSERT( m_cacheValid.count() == m_model->rowCount( m_rootIndex ) );
+    m_mapper.rowsRemoved( parent, start, end );
 }

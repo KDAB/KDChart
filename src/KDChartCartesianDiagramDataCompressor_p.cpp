@@ -330,7 +330,7 @@ void CartesianDiagramDataCompressor::retrieveModelData( const CachePosition& pos
                 result.key = 0.0;
                 Q_FOREACH( const QModelIndex& index, indexes ) {
                     bool ok;
-                    const QVariant valueVariant = m_modelCache.data( index, Qt::DisplayRole );
+                    const QVariant valueVariant = m_modelCache.data( index );
                     const double value = valueVariant.toDouble( &ok );
                     if( ok )
                     {

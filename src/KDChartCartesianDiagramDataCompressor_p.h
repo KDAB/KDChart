@@ -169,7 +169,7 @@ namespace KDChart {
         QPointer<QAbstractItemModel> m_model;
         unsigned int m_sampleStep;
         QModelIndex m_rootIndex;
-        ModelDataCache m_modelCache;
+        ModelDataCache< double > m_modelCache;
         int m_datasetDimension;
     };
 }
