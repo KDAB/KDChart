@@ -101,8 +101,8 @@ void AbstractGrid::adjustLowerUpperRange(
         qreal stepWidth,
         bool adjustLower, bool adjustUpper )
 {
-    const qreal startAdjust = 0.0;//( start >= 0.0 ) ? 0.0 : -1.0;
-    const qreal endAdjust   = 1.0;//( end   >= 0.0 ) ? 1.0 :  0.0;
+    const qreal startAdjust = ( start >= 0.0 ) ? 0.0 : -1.0;
+    const qreal endAdjust   = ( end   >= 0.0 ) ? 1.0 :  0.0;
     if ( adjustLower && (fmod( start, stepWidth ) != 0.0) )
         start = stepWidth * (_trunc( start / stepWidth ) + startAdjust);
     if ( adjustUpper && (fmod( end, stepWidth ) != 0.0) )

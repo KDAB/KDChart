@@ -418,6 +418,13 @@ DataDimension CartesianGrid::calculateGridXY(
     Qt::Orientation orientation,
     bool adjustLower, bool adjustUpper ) const
 {
+    CartesianCoordinatePlane* const plane = dynamic_cast<CartesianCoordinatePlane*>( mPlane );
+    if( plane->autoAdjustVerticalRangeToData() == 100 )
+    {
+        adjustLower = false;
+        adjustUpper = false;
+    }
+
     DataDimension dim( rawDataDimension );
     if( dim.isCalculated && dim.start != dim.end ){
         if( dim.calcMode == AbstractCoordinatePlane::Linear ){
@@ -451,6 +458,7 @@ DataDimension CartesianGrid::calculateGridXY(
             }
             // if needed, adjust start/end to match the step width:
             //qDebug() << "CartesianGrid::calculateGridXY() has 1st linear range: min " << dim.start << " and max" << dim.end;
+
             AbstractGrid::adjustLowerUpperRange( dim.start, dim.end, dim.stepWidth,
                     adjustLower, adjustUpper );
             //qDebug() << "CartesianGrid::calculateGridXY() returns linear range: min " << dim.start << " and max" << dim.end;
