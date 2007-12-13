@@ -616,7 +616,9 @@ void AbstractDiagram::paintMarker( QPainter* painter,
     if ( !ma.isVisible() ) return;
 
     const PainterSaver painterSaver( painter );
-    QSizeF maSize( ma.markerSize() );
+    // the size of the marker - unscaled
+    const QSizeF maSize( ma.markerSize().width() / painter->matrix().m11(), 
+                         ma.markerSize().height() / painter->matrix().m22() );
     QBrush indexBrush( brush( index ) );
     QPen indexPen( ma.pen() );
     if ( ma.markerColor().isValid() )
