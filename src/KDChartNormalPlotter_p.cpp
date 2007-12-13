@@ -137,12 +137,15 @@ void NormalPlotter::paint( PaintContext* ctx )
                 areas << polygon;
             }
             // add the pieces to painting if this is not hidden:
-            if ( !point.hidden && !ISNAN( lastPoint.key ) && !ISNAN( lastPoint.value ) ) {
+            if ( !point.hidden /*&& !ISNAN( lastPoint.key ) && !ISNAN( lastPoint.value ) */) {
                 appendDataValueTextInfoToList( diagram(), textInfoList, sourceIndex, pts,
                                                Position::NorthWest, Position::SouthWest,
                                                1.0 );//point.value );
-                paintAreas( ctx, attributesModel()->mapToSource( lastPoint.index ), areas, laCell.transparency() );
-                lineList.append( LineAttributesInfo( sourceIndex, a, b ) );
+                if( !ISNAN( lastPoint.key ) && !ISNAN( lastPoint.value ) )
+                {
+                    paintAreas( ctx, attributesModel()->mapToSource( lastPoint.index ), areas, laCell.transparency() );
+                    lineList.append( LineAttributesInfo( sourceIndex, a, b ) );
+                }
             }
             
             // wrap it up:
