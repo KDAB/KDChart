@@ -2,7 +2,7 @@
 
 #include <limits>
 
-using namespace KDChart;
+using namespace KDChart::ModelDataCachePrivate;
 
 ModelSignalMapperConnector::ModelSignalMapperConnector( ModelSignalMapper& mapper )
     : QObject( 0 ),

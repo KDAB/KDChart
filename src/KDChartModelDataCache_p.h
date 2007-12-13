@@ -11,61 +11,64 @@ class QAbstractItemModel;
 
 namespace KDChart
 {
-    class ModelSignalMapper
+    namespace ModelDataCachePrivate
     {
-    protected:
-        ModelSignalMapper() {}
-    public:
-        virtual ~ModelSignalMapper() {}
-        virtual void resetModel() = 0;
-        virtual void columnsInserted( const QModelIndex&, int, int ) = 0;
-        virtual void columnsRemoved( const QModelIndex&, int, int ) = 0;
-        virtual void dataChanged( const QModelIndex&, const QModelIndex& ) = 0;
-        virtual void layoutChanged() = 0;
-        virtual void modelReset() = 0;
-        virtual void rowsInserted( const QModelIndex&, int, int ) = 0;
-        virtual void rowsRemoved( const QModelIndex&, int, int ) = 0;
-    };
+        class ModelSignalMapper
+        {
+        protected:
+            ModelSignalMapper() {}
+        public:
+            virtual ~ModelSignalMapper() {}
+            virtual void resetModel() = 0;
+            virtual void columnsInserted( const QModelIndex&, int, int ) = 0;
+            virtual void columnsRemoved( const QModelIndex&, int, int ) = 0;
+            virtual void dataChanged( const QModelIndex&, const QModelIndex& ) = 0;
+            virtual void layoutChanged() = 0;
+            virtual void modelReset() = 0;
+            virtual void rowsInserted( const QModelIndex&, int, int ) = 0;
+            virtual void rowsRemoved( const QModelIndex&, int, int ) = 0;
+        };
 
-    // this class maps slots to a non-QObject instantiating ModelSignalMapper
-    class ModelSignalMapperConnector : public QObject
-    {
-        Q_OBJECT
-    public:
-        explicit ModelSignalMapperConnector( ModelSignalMapper& mapper );
-        ~ModelSignalMapperConnector();
+        // this class maps slots to a non-QObject instantiating ModelSignalMapper
+        class ModelSignalMapperConnector : public QObject
+        {
+            Q_OBJECT
+        public:
+            explicit ModelSignalMapperConnector( ModelSignalMapper& mapper );
+            ~ModelSignalMapperConnector();
 
-        void connectSignals( QAbstractItemModel* model );
-        void disconnectSignals( QAbstractItemModel* model );
+            void connectSignals( QAbstractItemModel* model );
+            void disconnectSignals( QAbstractItemModel* model );
 
-    protected Q_SLOTS:
-        void resetModel();
-        void columnsInserted( const QModelIndex&, int, int );
-        void columnsRemoved( const QModelIndex&, int, int );
-        void dataChanged( const QModelIndex&, const QModelIndex& );
-        void layoutChanged();
-        void modelReset();
-        void rowsInserted( const QModelIndex&, int, int );
-        void rowsRemoved( const QModelIndex&, int, int );
+        protected Q_SLOTS:
+            void resetModel();
+            void columnsInserted( const QModelIndex&, int, int );
+            void columnsRemoved( const QModelIndex&, int, int );
+            void dataChanged( const QModelIndex&, const QModelIndex& );
+            void layoutChanged();
+            void modelReset();
+            void rowsInserted( const QModelIndex&, int, int );
+            void rowsRemoved( const QModelIndex&, int, int );
 
-    private:
-        ModelSignalMapper& m_mapper;
-    };
+        private:
+            ModelSignalMapper& m_mapper;
+        };
 
-    template< class T>
-    T nan()
-    {
-        return T();
-    }
+        template< class T>
+        T nan()
+        {
+            return T();
+        }
 
-    template<>
-    static double nan< double >()
-    {
-        return std::numeric_limits< double >::quiet_NaN();
+        template<>
+        static double nan< double >()
+        {
+            return std::numeric_limits< double >::quiet_NaN();
+        }
     }
 
     template< class T, int ROLE = Qt::DisplayRole >
-    class ModelDataCache : public ModelSignalMapper
+    class ModelDataCache : public ModelDataCachePrivate::ModelSignalMapper
     {
     public:
         ModelDataCache()
@@ -86,7 +89,7 @@ namespace KDChart
         T data( int row, int column ) const
         {
             if( row < 0 || column < 0 )
-                return nan< T >();
+                return ModelDataCachePrivate::nan< T >();
 
             Q_ASSERT( row < m_data.count() );
             Q_ASSERT( column < m_data.first().count() );
@@ -127,7 +130,7 @@ namespace KDChart
 
             const QModelIndex index = m_model->index( row, column );
             const QVariant data = index.data( role );
-            const T value = data.isNull() ? nan< T >() 
+            const T value = data.isNull() ? ModelDataCachePrivate::nan< T >() 
                                           : qVariantValue< T >( data );
     
             m_data[ row ][ column ] = value;
@@ -254,7 +257,7 @@ namespace KDChart
     private:
         QAbstractItemModel* m_model;
         QModelIndex m_rootIndex;
-        ModelSignalMapperConnector m_connector;
+        ModelDataCachePrivate::ModelSignalMapperConnector m_connector;
         mutable QVector< QVector< T > > m_data;
         mutable QVector< QVector< bool > > m_cacheValid;
     };
