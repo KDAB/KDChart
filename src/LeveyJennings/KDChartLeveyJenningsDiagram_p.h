@@ -70,6 +70,8 @@ namespace KDChart {
         QVector< QDateTime > fluidicsPackChanges;
         QVector< QDateTime > sensorChanges;
 
+        QPen scanLinePen;
+
         float expectedMeanValue;
         float expectedStandardDeviation;
 

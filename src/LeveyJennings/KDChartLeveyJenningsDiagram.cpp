@@ -24,21 +24,12 @@
  **********************************************************************/
 
 #include <QDateTime>
-#include <QDebug>
 #include <QPainter>
-#include <QString>
-#include <QPainterPath>
-#include <QPen>
 #include <QVector>
 
 #include "KDChartLeveyJenningsDiagram.h"
-#include "KDChartBarDiagram.h"
-#include "KDChartPalette.h"
-#include "KDChartPosition.h"
 #include "KDChartTextAttributes.h"
-#include "KDChartAttributesModel.h"
 #include "KDChartAbstractGrid.h"
-#include "KDChartDataValueAttributes.h"
 
 #include <KDABLibFakes>
 
@@ -67,6 +58,9 @@ void LeveyJenningsDiagram::init()
     d->lotChangedPosition = Qt::AlignTop;
     d->fluidicsPackChangedPosition = Qt::AlignBottom;
     d->sensorChangedPosition = Qt::AlignBottom;
+
+    d->scanLinePen = QPen( Qt::blue );
+    setPen( d->scanLinePen );
 
     d->expectedMeanValue = 0.0;
     d->expectedStandardDeviation = 0.0;
@@ -102,6 +96,10 @@ bool LeveyJenningsDiagram::compare( const LeveyJenningsDiagram* other )const
             ( static_cast<const LineDiagram*>(this)->compare( other ) );
 }
 
+/**
+ * Sets the position of the lot change symbol to \a pos.
+ * Valid values are: Qt::AlignTop (default), Qt::AlignBottom.
+ */
 void LeveyJenningsDiagram::setLotChangedSymbolPosition( Qt::Alignment pos )
 {
     if( d->lotChangedPosition == pos )
@@ -111,11 +109,18 @@ void LeveyJenningsDiagram::setLotChangedSymbolPosition( Qt::Alignment pos )
     update();
 }
 
+/**
+ * Returns the position of the lot change symbol.
+ */
 Qt::Alignment LeveyJenningsDiagram::LeveyJenningsDiagram::lotChangedSymbolPosition() const
 {
     return d->lotChangedPosition;
 }
 
+/**
+ * Sets the position of the fluidics pack changed symbol to \a pos.
+ * Valid values are: Qt::AlignBottom (default), Qt::AlignTop.
+ */
 void LeveyJenningsDiagram::setFluidicsPackChangedSymbolPosition( Qt::Alignment pos )
 {
     if( d->fluidicsPackChangedPosition == pos )
@@ -125,11 +130,18 @@ void LeveyJenningsDiagram::setFluidicsPackChangedSymbolPosition( Qt::Alignment p
     update();
 }
 
+/**
+ * Returns the position of the fluidics pack changed symbol.
+ */
 Qt::Alignment LeveyJenningsDiagram::fluidicsPackChangedSymbolPosition() const
 {
     return d->fluidicsPackChangedPosition;
 }
 
+/**
+ * Sets the position of the sensor changed symbol to \a pos.
+ * Valid values are: Qt::AlignBottom (default), Qt::AlignTop.
+ */
 void LeveyJenningsDiagram::setSensorChangedSymbolPosition( Qt::Alignment pos )
 {
     if( d->sensorChangedPosition == pos )
@@ -139,11 +151,17 @@ void LeveyJenningsDiagram::setSensorChangedSymbolPosition( Qt::Alignment pos )
     update();
 }
 
+/**
+ * Returns the position of the sensor changed symbol.
+ */
 Qt::Alignment LeveyJenningsDiagram::sensorChangedSymbolPosition() const
 {
     return d->sensorChangedPosition;
 }
 
+/**
+ * Sets the date/time of all fluidics pack changes to \a changes.
+ */
 void LeveyJenningsDiagram::setFluidicsPackChanges( const QVector< QDateTime > changes )
 {
     if( d->fluidicsPackChanges == changes )
@@ -153,11 +171,17 @@ void LeveyJenningsDiagram::setFluidicsPackChanges( const QVector< QDateTime > ch
     update();
 }
 
+/**
+ * Returns the list of all fluidics pack changes.
+ */
 QVector< QDateTime > LeveyJenningsDiagram::fluidicsPackChanges() const
 {
     return d->fluidicsPackChanges;
 }
 
+/**
+ * Sets the date/time of all sensor changes to \a changes.
+ */
 void LeveyJenningsDiagram::setSensorChanges( const QVector< QDateTime > changes )
 {
     if( d->sensorChanges == changes )
@@ -167,11 +191,37 @@ void LeveyJenningsDiagram::setSensorChanges( const QVector< QDateTime > changes 
     update();
 }
 
+/**
+ * Sets the pen used for drawing the scan line to \a pen
+ */
+void LeveyJenningsDiagram::setScanLinePen( const QPen& pen )
+{
+    if( d->scanLinePen == pen )
+        return;
+
+    d->scanLinePen = pen;
+    update();
+}
+
+/**
+ * Returns the pen being used for drawing the scan line.
+ */
+QPen LeveyJenningsDiagram::scanLinePen() const
+{
+    return d->scanLinePen;
+}
+
+/**
+ * Returns the list of all sensor changes.
+ */
 QVector< QDateTime > LeveyJenningsDiagram::sensorChanges() const
 {
     return d->sensorChanges;
 }
 
+/**
+ * Sets the expected mean value over all QC values to \a meanValue.
+ */
 void LeveyJenningsDiagram::setExpectedMeanValue( float meanValue )
 {
     if( d->expectedMeanValue == meanValue )
@@ -182,11 +232,17 @@ void LeveyJenningsDiagram::setExpectedMeanValue( float meanValue )
     update();
 }
 
+/**
+ * Returns the expected mean values over all QC values.
+ */
 float LeveyJenningsDiagram::expectedMeanValue() const
 {
     return d->expectedMeanValue;
 }
 
+/**
+ * Sets the expected standard deviaction over all QC values to \a sd.
+ */
 void LeveyJenningsDiagram::setExpectedStandardDeviation( float sd )
 {
     if( d->expectedStandardDeviation == sd )
@@ -197,16 +253,25 @@ void LeveyJenningsDiagram::setExpectedStandardDeviation( float sd )
     update();
 }
 
+/**
+ * Returns the expected standard deviation over all QC values.
+ */
 float LeveyJenningsDiagram::expectedStandardDeviation() const
 {
     return d->expectedStandardDeviation;
 }
 
+/**
+ * Returns the calculated mean values over all QC values.
+ */
 float LeveyJenningsDiagram::calculatedMeanValue() const
 {
     return d->calculatedMeanValue;
 }
 
+/**
+ * Returns the calculated standard deviation over all QC values.
+ */
 float LeveyJenningsDiagram::calculatedStandardDeviation() const
 {
     return d->calculatedStandardDeviation;
@@ -288,17 +353,19 @@ void LeveyJenningsDiagram::calculateMeanAndStandardDeviation() const
     d->calculatedStandardDeviation = sqrt( ( static_cast< double >( N ) * sumSquares - sum * sum ) / ( N * ( N - 1 ) ) );
 }
 
-QDateTime floor( const QDateTime& dt )
+// calculates the largest QDate not greater than \a dt.
+static QDate floor( const QDateTime& dt )
 {
-    return QDateTime( dt.date(), QTime() );
+    return dt.date();
 }
 
-QDateTime ceil( const QDateTime& dt )
+// calculates the smallest QDate not less than \a dt.
+static QDate ceil( const QDateTime& dt )
 {
-    QDateTime result( dt.date(), QTime() );
+    QDate result = dt.date();
     
-    if( dt.time() != QTime() )
-        result.addDays( 1 );
+    if( QDateTime( result, QTime() ) < dt )
+        result = result.addDays( 1 );
 
     return result;
 }
@@ -317,7 +384,7 @@ const QPair<QPointF, QPointF> LeveyJenningsDiagram::calculateDataBoundaries() co
     const unsigned int maxTime = range.second.toTime_t();
 
     const double xMin = minTime / static_cast< double >( 24 * 60 * 60 );
-    const double xMax = maxTime / static_cast< double >( 24 * 60 * 60 ) - xMin + 1.0;
+    const double xMax = maxTime / static_cast< double >( 24 * 60 * 60 ) - xMin;
 
     const QPointF bottomLeft( QPointF( 0, yMin ) );
     const QPointF topRight( QPointF( xMax, yMax ) );
@@ -325,291 +392,24 @@ const QPair<QPointF, QPointF> LeveyJenningsDiagram::calculateDataBoundaries() co
     return QPair< QPointF, QPointF >( bottomLeft, topRight );
 }
 
+/**
+ * Returns the timerange of the diagram's data.
+ */
 QPair< QDateTime, QDateTime > LeveyJenningsDiagram::timeRange() const
 {
     const QAbstractItemModel& m = *model();
     const int rowCount = m.rowCount( rootIndex() );
 
     // round down/up to the prev/next midnight
-    const QDateTime min = floor( m.data( m.index( 0, 3, rootIndex() ) ).toDateTime() );
-    const QDateTime max = ceil( m.data( m.index( rowCount - 1, 3, rootIndex() ) ).toDateTime() );
+    const QDate min = floor( m.data( m.index( 0, 3, rootIndex() ) ).toDateTime() );
+    const QDate max = ceil( m.data( m.index( rowCount - 1, 3, rootIndex() ) ).toDateTime() );
 
-    return QPair< QDateTime, QDateTime >( min, max );
-}
-
-#if 0
-/**
-  * Sets the global line attributes to \a la
-  */
-void LineDiagram::setLineAttributes( const LineAttributes& la )
-{
-    d->attributesModel->setModelData(
-        qVariantFromValue( la ),
-        LineAttributesRole );
-    emit propertiesChanged();
-}
-
-/** 
-  * Sets the line attributes of data set \a column to \a la
-  */
-void LineDiagram::setLineAttributes(
-        int column,
-    const LineAttributes& la )
-{
-    d->attributesModel->setHeaderData(
-            column,
-            Qt::Vertical,
-            qVariantFromValue( la ),
-            LineAttributesRole );
-    emit propertiesChanged();
+    return QPair< QDateTime, QDateTime >( QDateTime( min ), QDateTime( max ) );
 }
 
 /**
-  * Resets the line attributes of data set \a column
-  */
-void LineDiagram::resetLineAttributes( int column )
-{
-    d->attributesModel->resetHeaderData(
-            column, Qt::Vertical, LineAttributesRole );
-    emit propertiesChanged();
-}
-
-/**
-  * Sets the line attributes for the model index \a index to \a la
-  */
-void LineDiagram::setLineAttributes(
-        const QModelIndex& index,
-    const LineAttributes& la )
-{
-    d->attributesModel->setData(
-            d->attributesModel->mapFromSource(index),
-    qVariantFromValue( la ),
-    LineAttributesRole );
-    emit propertiesChanged();
-}
-
-/**
- * Remove any explicit line attributes settings that might have been specified before.
+ * Draws the fluidics pack and sensor changed symbols.
  */
-void LineDiagram::resetLineAttributes( const QModelIndex & index )
-{
-    d->attributesModel->resetData(
-            d->attributesModel->mapFromSource(index), LineAttributesRole );
-    emit propertiesChanged();
-}
-
-/**
-  * @return the global line attribute set
-  */
-LineAttributes LineDiagram::lineAttributes() const
-{
-    return qVariantValue<LineAttributes>(
-        d->attributesModel->data( KDChart::LineAttributesRole ) );
-}
-
-/**
-  * @return the line attribute set of data set \a column
-  */
-LineAttributes LineDiagram::lineAttributes( int column ) const
-{
-    return qVariantValue<LineAttributes>(
-        d->attributesModel->data(
-            d->attributesModel->mapFromSource( columnToIndex( column ) ),
-            KDChart::LineAttributesRole ) );
-}
-
-/**
-  * @return the line attribute set of the model index \a index
-  */
-LineAttributes LineDiagram::lineAttributes(
-    const QModelIndex& index ) const
-{
-    return qVariantValue<LineAttributes>(
-        d->attributesModel->data(
-            d->attributesModel->mapFromSource(index),
-            KDChart::LineAttributesRole ) );
-}
-
-/**
-  * Sets the global 3D line attributes to \a la
-  */
-void LineDiagram::setThreeDLineAttributes(
-    const ThreeDLineAttributes& la )
-{
-    setDataBoundariesDirty();
-    d->attributesModel->setModelData(
-        qVariantFromValue( la ),
-        ThreeDLineAttributesRole );
-   emit propertiesChanged();
-}
-
-/**
-  * Sets the 3D line attributes of data set \a column to \a ta
-  */
-void LineDiagram::setThreeDLineAttributes(
-    int column,
-    const ThreeDLineAttributes& la )
-{
-    setDataBoundariesDirty();
-    d->attributesModel->setHeaderData(
-        column,
-        Qt::Vertical,
-        qVariantFromValue( la ),
-        ThreeDLineAttributesRole );
-   emit propertiesChanged();
-}
-
-/**
-  * Sets the 3D line attributes of model index \a index to \a la
-  */
-void LineDiagram::setThreeDLineAttributes(
-    const QModelIndex & index,
-    const ThreeDLineAttributes& la )
-{
-    setDataBoundariesDirty();
-    d->attributesModel->setData(
-        d->attributesModel->mapFromSource(index),
-        qVariantFromValue( la ),
-        ThreeDLineAttributesRole );
-   emit propertiesChanged();
-}
-
-/**
-  * @return the global 3D line attributes
-  */
-ThreeDLineAttributes LineDiagram::threeDLineAttributes() const
-{
-    return qVariantValue<ThreeDLineAttributes>(
-        d->attributesModel->data( KDChart::ThreeDLineAttributesRole ) );
-}
-
-/**
-  * @return the 3D line attributes of data set \a column
-  */
-ThreeDLineAttributes LineDiagram::threeDLineAttributes( int column ) const
-{
-    return qVariantValue<ThreeDLineAttributes>(
-        d->attributesModel->data(
-            d->attributesModel->mapFromSource( columnToIndex( column ) ),
-            KDChart::ThreeDLineAttributesRole ) );
-}
-
-/**
-  * @return the 3D line attributes of the model index \a index
-  */
-ThreeDLineAttributes LineDiagram::threeDLineAttributes( const QModelIndex& index ) const
-{
-    return qVariantValue<ThreeDLineAttributes>(
-        d->attributesModel->data(
-            d->attributesModel->mapFromSource( index ),
-            KDChart::ThreeDLineAttributesRole ) );
-}
-
-double LineDiagram::threeDItemDepth( const QModelIndex& index ) const
-{
-    return threeDLineAttributes( index ).validDepth();
-}
-
-double LineDiagram::threeDItemDepth( int column ) const
-{
-    return qVariantValue<ThreeDLineAttributes>(
-        d->attributesModel->headerData (
-            column,
-            Qt::Vertical,
-            KDChart::ThreeDLineAttributesRole ) ).validDepth();
-}
-
-/**
-  * Sets the value tracker attributes of the model index \a index to \a va
-  */
-void LineDiagram::setValueTrackerAttributes( const QModelIndex & index,
-                                             const ValueTrackerAttributes & va )
-{
-    d->attributesModel->setData( d->attributesModel->mapFromSource(index),
-                                 qVariantFromValue( va ),
-                                 KDChart::ValueTrackerAttributesRole );
-    emit propertiesChanged();
-}
-
-/**
-  * Returns the value tracker attributes of the model index \a index
-  */
-ValueTrackerAttributes LineDiagram::valueTrackerAttributes(
-        const QModelIndex & index ) const
-{
-    return qVariantValue<ValueTrackerAttributes>( d->attributesModel->data(
-            d->attributesModel->mapFromSource( index ),
-            KDChart::ValueTrackerAttributesRole ) );
-}
-
-void LineDiagram::resizeEvent ( QResizeEvent* )
-{
-}
-
-const QPair<QPointF, QPointF> LineDiagram::calculateDataBoundaries() const
-{
-    if ( !checkInvariants( true ) ) return QPair<QPointF, QPointF>( QPointF( 0, 0 ), QPointF( 0, 0 ) );
-
-    // note: calculateDataBoundaries() is ignoring the hidden flags.
-    //       That's not a bug but a feature: Hiding data does not mean removing them.
-    // For totally removing data from KD Chart's view people can use e.g. a proxy model ...
-
-    // calculate boundaries for different line types Normal - Stacked - Percent - Default Normal
-    return d->implementor->calculateDataBoundaries();
-}
-
-
-void LineDiagram::paintEvent ( QPaintEvent*)
-{
-//qDebug() << "starting LineDiagram::paintEvent ( QPaintEvent*)";
-    QPainter painter ( viewport() );
-    PaintContext ctx;
-    ctx.setPainter ( &painter );
-    ctx.setRectangle ( QRectF ( 0, 0, width(), height() ) );
-    paint ( &ctx );
-//qDebug() << "         LineDiagram::paintEvent ( QPaintEvent*) ended.";
-}
-
-
-double LineDiagram::valueForCellTesting( int row, int column,
-                                         bool& bOK,
-                                         bool showHiddenCellsAsInvalid ) const
-{
-    double value;
-    if( showHiddenCellsAsInvalid && isHidden( model()->index( row, column, rootIndex() ) ) )
-        bOK = false;
-    else
-        value = d->attributesModel->data(
-                    d->attributesModel->index( row, column, attributesModelRootIndex() )
-                ).toDouble( &bOK );
-    return bOK ? value : 0.0;
-}
-
-LineAttributes::MissingValuesPolicy LineDiagram::getCellValues(
-      int row, int column,
-      bool shiftCountedXValuesByHalfSection,
-      double& valueX, double& valueY ) const
-{
-    LineAttributes::MissingValuesPolicy policy;
-
-    bool bOK = true;
-    valueX = ( datasetDimension() > 1 && column > 0 )
-             ? valueForCellTesting( row, column-1, bOK, true )
-             : ((shiftCountedXValuesByHalfSection ? 0.5 : 0.0) + row);
-    if( bOK )
-        valueY = valueForCellTesting( row, column, bOK, true );
-    if( bOK ){
-        policy = LineAttributes::MissingValuesPolicyIgnored;
-    }else{
-        // missing value: find out the policy
-        QModelIndex index = model()->index( row, column, rootIndex() );
-        LineAttributes la = lineAttributes( index );
-        policy = la.missingValuesPolicy();
-    }
-    return policy;
-}
-#endif
-
 void LeveyJenningsDiagram::drawChanges( PaintContext* ctx )
 {
     const unsigned int minTime = timeRange().first.toTime_t();
@@ -629,6 +429,7 @@ void LeveyJenningsDiagram::drawChanges( PaintContext* ctx )
     }
 }
 
+/** \reimpl */
 void LeveyJenningsDiagram::paint( PaintContext* ctx )
 {
     // note: Not having any data model assigned is no bug
@@ -662,7 +463,7 @@ void LeveyJenningsDiagram::paint( PaintContext* ctx )
         const QModelIndex okIndex = m.index( row, 2, rootIndex() );
         const QModelIndex timeIndex = m.index( row, 3, rootIndex() );
 
-        painter->setPen( pen( valueIndex ) );
+        painter->setPen( pen( lotIndex ) );
 
         const int lot = m.data( lotIndex ).toInt();
         const double value = m.data( valueIndex ).toDouble();
@@ -702,7 +503,7 @@ void LeveyJenningsDiagram::paint( PaintContext* ctx )
         if( selectionModel()->currentIndex() == lotIndex )
         {
             const QPen pen = ctx->painter()->pen();
-            painter->setPen( Qt::blue );
+            painter->setPen( d->scanLinePen );
             painter->drawLine( ctx->coordinatePlane()->translate( QPointF( xValue, d->expectedMeanValue - 4 * 
                                                                                    d->expectedStandardDeviation ) ),
                                ctx->coordinatePlane()->translate( QPointF( xValue, d->expectedMeanValue + 4 * 
@@ -720,6 +521,11 @@ void LeveyJenningsDiagram::paint( PaintContext* ctx )
     ctx->setCoordinatePlane( plane );
 }
 
+/**
+ * Draws a data point symbol for the data point at \a pos.
+ * @param ok True, when the data point is ok, false otherwise (different symbol)
+ * @param ctx The PaintContext being used
+ */
 void LeveyJenningsDiagram::drawDataPointSymbol( PaintContext* ctx, const QPointF& pos, bool ok )
 {
     // TODO: This has to be a SVG image
@@ -736,6 +542,11 @@ void LeveyJenningsDiagram::drawDataPointSymbol( PaintContext* ctx, const QPointF
     painter->drawEllipse( dotRect );
 }
 
+/**
+ * Draws a lot changed symbol for the data point at \a pos.
+ * @param ctx The PaintContext being used
+ * \sa lotChangedSymbolPosition
+ */
 void LeveyJenningsDiagram::drawLotChangeSymbol( PaintContext* ctx, const QPointF& pos )
 {
     // TODO: This has to be a SVG image
@@ -755,6 +566,11 @@ void LeveyJenningsDiagram::drawLotChangeSymbol( PaintContext* ctx, const QPointF
     painter->drawRect( rect );
 }
 
+/**
+ * Draws a sensor changed symbol for the data point at \a pos.
+ * @param ctx The PaintContext being used
+ * \sa sensorChangedSymbolPosition
+ */
 void LeveyJenningsDiagram::drawSensorChangedSymbol( PaintContext* ctx, const QPointF& pos )
 {
     // TODO: This has to be a SVG image
@@ -774,6 +590,11 @@ void LeveyJenningsDiagram::drawSensorChangedSymbol( PaintContext* ctx, const QPo
     painter->drawRect( rect );
 }
 
+/**
+ * Draws a fluidics pack changed symbol for the data point at \a pos.
+ * @param ctx The PaintContext being used
+ * \sa fluidicsPackChangedSymbolPosition
+ */
 void LeveyJenningsDiagram::drawFluidicsPackChangedSymbol( PaintContext* ctx, const QPointF& pos )
 {
     // TODO: This has to be a SVG image

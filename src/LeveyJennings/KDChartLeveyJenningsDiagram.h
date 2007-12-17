@@ -41,7 +41,7 @@ namespace KDChart {
     class ThreeDLineAttributes;
 
 /**
- * @brief LineDiagram defines a common line diagram.
+ * @brief LeveyDiagram defines a Levey Jennings
  * 
  * It provides different subtypes which are set using \a setType.
  */
@@ -89,6 +89,9 @@ public:
 
     void setSensorChanges( const QVector< QDateTime > changes );
     QVector< QDateTime > sensorChanges() const;
+
+    void setScanLinePen( const QPen& pen );
+    QPen scanLinePen() const;
 
     /* \reimpl */
     void setModel( QAbstractItemModel* model );

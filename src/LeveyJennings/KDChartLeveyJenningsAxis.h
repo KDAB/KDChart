@@ -68,15 +68,7 @@ namespace KDChart {
         explicit LeveyJenningsAxis ( LeveyJenningsDiagram* diagram = 0 );
         ~LeveyJenningsAxis();
 
-        /**
-         * Returns the type of the axis, if it's an ordinate.
-         * If the axis is an abscissa, it always shows the timeline.
-         */
         LeveyJenningsGridAttributes::GridType type() const;
-        /**
-         * Set's the type of the axis to \a type
-         * \sa type
-         */
         void setType( LeveyJenningsGridAttributes::GridType type );
 
         /**

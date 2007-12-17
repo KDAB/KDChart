@@ -53,10 +53,6 @@ DataDimensionsList LeveyJenningsGrid::calculateGrid( const DataDimensionsList& r
     if( isBoundariesValid( l ) ) {
         const QPointF translatedBottomLeft( plane->translateBack( plane->geometry().bottomLeft() ) );
         const QPointF translatedTopRight(   plane->translateBack( plane->geometry().topRight() ) );
-        //qDebug() << "CartesianGrid::calculateGrid()         first:" << l.first().start << l.first().end <<                   "   last:" << l.last().start << l.last().end;
-        //qDebug() << "CartesianGrid::calculateGrid()  translated x:" << translatedBottomLeft.x() << translatedTopRight.x() << "      y:" << translatedBottomLeft.y() << translatedTopRight.y();
-        //qDebug() << "CartesianGrid::calculateGrid()  raw data y-range  :" << l.last().end - l.last().start;
-        //qDebug() << "CartesianGrid::calculateGrid()  translated y-range:" << translatedTopRight.y() - translatedBottomLeft.y();
 
         if( l.first().isCalculated
             && plane->autoAdjustGridToZoom()

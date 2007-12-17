@@ -23,14 +23,8 @@
  **
  **********************************************************************/
 
-#include <cmath>
-
 #include <QDateTime>
-#include <QtDebug>
 #include <QPainter>
-#include <QPen>
-#include <QBrush>
-#include <QApplication>
 
 #include "KDChartPaintContext.h"
 #include "KDChartChart.h"
@@ -40,7 +34,6 @@
 #include "KDChartAbstractGrid.h"
 #include "KDChartPainterSaver_p.h"
 #include "KDChartLayoutItems.h"
-#include "KDChartBarDiagram.h"
 #include "KDChartPrintingParameters.h"
 
 #include <KDABLibFakes>
@@ -94,6 +87,8 @@ LeveyJenningsGridAttributes::GridType LeveyJenningsAxis::type() const
   * respective type.
   * Please make sure to re-set the colors after calling this,
   * if you want them different.
+  * Setting the type is only valid for axes located right or left
+  * from the diagram. An axis on the bottom always shows the timeline.
   */
 void LeveyJenningsAxis::setType( LeveyJenningsGridAttributes::GridType type )
 {
@@ -195,6 +190,14 @@ void LeveyJenningsAxis::paintAsOrdinate( PaintContext* context )
         const QSize size = labelItem.sizeHint();
         const float xPos = position() == Left ? geometry().right() - size.width() : geometry().left();
         labelItem.setGeometry( QRectF( QPointF( xPos, labelPos.y() - size.height() / 2.0 ), size ).toRect() );
+
+        // don't draw labels which aren't in the valid range (might happen for calculated SDs)
+        if( values.at( i ) > diag->expectedMeanValue() + 4 * diag->expectedStandardDeviation() )
+            continue;
+
+        if( values.at( i ) < diag->expectedMeanValue() - 4 * diag->expectedStandardDeviation() )
+            continue;
+
         labelItem.paint( painter );
     }    
 }
