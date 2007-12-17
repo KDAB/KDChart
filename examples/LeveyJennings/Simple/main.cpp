@@ -33,6 +33,8 @@
 
 #include <QDateTime>
 #include <QStandardItemModel>
+#include <QSplitter>
+#include <QTableView>
 
 int main( int argc, char** argv )
 {
@@ -148,7 +150,14 @@ int main( int argc, char** argv )
 
     diagram->selectionModel()->setCurrentIndex( model.index( 1, 0 ), QItemSelectionModel::Current );
 
-    chart->show();
+    QTableView* tv = new QTableView;
+    tv->setModel( &model );
+
+    QSplitter* splitter = new QSplitter;
+    splitter->addWidget( tv );
+    splitter->addWidget( chart );
+
+    splitter->show();
 
     return app.exec();
 }
