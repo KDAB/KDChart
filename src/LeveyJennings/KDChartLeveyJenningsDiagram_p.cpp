@@ -36,8 +36,13 @@ using namespace KDChart;
 
 LeveyJenningsDiagram::Private::Private( const Private& rhs )
     : LineDiagram::Private( rhs ),
-      expectedMeanValue( 0.0 ),
-      expectedStandardDeviation( 0.0 )
+      lotChangedPosition( rhs.lotChangedPosition ),
+      fluidicsPackChangedPosition( rhs.fluidicsPackChangedPosition ),
+      sensorChangedPosition( rhs.sensorChangedPosition ),
+      fluidicsPackChanges( rhs.fluidicsPackChanges ),
+      sensorChanges( rhs.sensorChanges ),
+      expectedMeanValue( rhs.expectedMeanValue ),
+      expectedStandardDeviation( rhs.expectedStandardDeviation )
 {
 }
 

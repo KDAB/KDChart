@@ -37,6 +37,7 @@
 // We mean it.
 //
 
+#include <QDateTime>
 #include <QPainterPath>
 
 #include "KDChartThreeDLineAttributes.h"
@@ -63,6 +64,11 @@ namespace KDChart {
         void setYAxisRange() const;
 
         Qt::Alignment lotChangedPosition;
+        Qt::Alignment fluidicsPackChangedPosition;
+        Qt::Alignment sensorChangedPosition;
+
+        QVector< QDateTime > fluidicsPackChanges;
+        QVector< QDateTime > sensorChanges;
 
         float expectedMeanValue;
         float expectedStandardDeviation;

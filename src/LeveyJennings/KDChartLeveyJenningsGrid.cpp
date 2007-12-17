@@ -299,7 +299,7 @@ void LeveyJenningsGrid::drawGrid( PaintContext* context )
     //qDebug() << "B";
 
     const DataDimension dimX = mData.first();
-
+    
     // first we draw the expected lines
     // draw the "mean" line
     const float meanValue = diag->expectedMeanValue();

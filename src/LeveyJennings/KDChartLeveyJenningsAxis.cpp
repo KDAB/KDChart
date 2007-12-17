@@ -25,6 +25,7 @@
 
 #include <cmath>
 
+#include <QDateTime>
 #include <QtDebug>
 #include <QPainter>
 #include <QPen>
@@ -139,12 +140,18 @@ void LeveyJenningsAxis::paintCtx( PaintContext* context )
     if( ! d->diagram()->model() )
         return;
 
+    if( isOrdinate() )
+        paintAsOrdinate( context );
+    else
+        paintAsAbscissa( context );
+}
 
-
+void LeveyJenningsAxis::paintAsOrdinate( PaintContext* context )
+{
     const LeveyJenningsDiagram* const diag = dynamic_cast< const LeveyJenningsDiagram* >( d->diagram() );
 
-    Q_ASSERT_X( isOrdinate(), "LeveyJenningsAxis::paintCtx", "Levei jennings axes can only be drawn at left or right side" );
-
+    Q_ASSERT( isOrdinate() );
+    LeveyJenningsCoordinatePlane* plane = dynamic_cast<LeveyJenningsCoordinatePlane*>(context->coordinatePlane());
     
     const qreal meanValue =         type() == LeveyJenningsGridAttributes::Expected ? diag->expectedMeanValue() 
                                                                                     : diag->calculatedMeanValue();
@@ -165,7 +172,7 @@ void LeveyJenningsAxis::paintCtx( PaintContext* context )
                                                        << ( meanValue + 2 * standardDeviation )
                                                        << ( meanValue + 3 * standardDeviation );
 
-    Q_ASSERT_X( values.count() <= labels().count(), "LeveyJenningsAxis::paintCtx", "Need to have at least 5 labels" );
+    Q_ASSERT_X( values.count() <= labels().count(), "LeveyJenningsAxis::paintAsOrdinate", "Need to have at least 5 labels" );
 
     TextLayoutItem labelItem( tr( "mean" ), 
                               labelTA,
@@ -190,4 +197,54 @@ void LeveyJenningsAxis::paintCtx( PaintContext* context )
         labelItem.setGeometry( QRectF( QPointF( xPos, labelPos.y() - size.height() / 2.0 ), size ).toRect() );
         labelItem.paint( painter );
     }    
+}
+
+void LeveyJenningsAxis::paintAsAbscissa( PaintContext* context )
+{
+    Q_ASSERT( isAbscissa() );
+
+    // this triggers drawing of the ticks
+    setLabels( QStringList() << QString::fromLatin1( " " ) );
+    CartesianAxis::paintCtx( context );
+
+    const LeveyJenningsDiagram* const diag = dynamic_cast< const LeveyJenningsDiagram* >( d->diagram() );
+    LeveyJenningsCoordinatePlane* plane = dynamic_cast<LeveyJenningsCoordinatePlane*>(context->coordinatePlane());
+
+    const QObject* referenceArea = plane->parent();
+    const TextAttributes labelTA = textAttributes();
+    
+    const bool drawLabels = labelTA.isVisible();
+
+    if( !drawLabels )
+        return;
+
+
+    const QPair< QDateTime, QDateTime > range = diag->timeRange();
+
+    QPainter* const painter = context->painter();
+    const PainterSaver ps( painter );
+    painter->setRenderHint( QPainter::Antialiasing, true );
+    painter->setClipping( false );
+     
+
+    TextLayoutItem labelItem( range.first.date().toString(), 
+                              labelTA,
+                              referenceArea,
+                              KDChartEnums::MeasureOrientationMinimum,
+                              Qt::AlignLeft );
+    QSize size = labelItem.sizeHint();
+    float yPos = position() == Bottom ? geometry().bottom() - size.height() : geometry().top();
+    labelItem.setGeometry( QRectF( QPointF( geometry().left() - size.width() / 2.0, yPos ), size ).toRect() );
+    labelItem.paint( painter );
+
+    
+    TextLayoutItem labelItem2( range.second.date().toString(), 
+                              labelTA,
+                              referenceArea,
+                              KDChartEnums::MeasureOrientationMinimum,
+                              Qt::AlignLeft );
+    size = labelItem2.sizeHint();
+    yPos = position() == Bottom ? geometry().bottom() - size.height() : geometry().top();
+    labelItem2.setGeometry( QRectF( QPointF( geometry().right() - size.width() / 2.0, yPos ), size ).toRect() );
+    labelItem2.paint( painter );
 }

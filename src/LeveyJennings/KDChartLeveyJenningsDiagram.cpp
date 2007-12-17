@@ -23,6 +23,7 @@
  **
  **********************************************************************/
 
+#include <QDateTime>
 #include <QDebug>
 #include <QPainter>
 #include <QString>
@@ -64,6 +65,12 @@ LeveyJenningsDiagram::LeveyJenningsDiagram( QWidget* parent, LeveyJenningsCoordi
 void LeveyJenningsDiagram::init()
 {
     d->lotChangedPosition = Qt::AlignTop;
+    d->fluidicsPackChangedPosition = Qt::AlignBottom;
+    d->sensorChangedPosition = Qt::AlignBottom;
+
+    d->expectedMeanValue = 0.0;
+    d->expectedStandardDeviation = 0.0;
+
     d->diagram = this;
 }
 
@@ -97,18 +104,82 @@ bool LeveyJenningsDiagram::compare( const LeveyJenningsDiagram* other )const
 
 void LeveyJenningsDiagram::setLotChangedSymbolPosition( Qt::Alignment pos )
 {
+    if( d->lotChangedPosition == pos )
+        return;
+
     d->lotChangedPosition = pos;
+    update();
 }
 
-Qt::Alignment LeveyJenningsDiagram::lotChangedSymbolPosition() const
+Qt::Alignment LeveyJenningsDiagram::LeveyJenningsDiagram::lotChangedSymbolPosition() const
 {
     return d->lotChangedPosition;
 }
 
+void LeveyJenningsDiagram::setFluidicsPackChangedSymbolPosition( Qt::Alignment pos )
+{
+    if( d->fluidicsPackChangedPosition == pos )
+        return;
+
+    d->fluidicsPackChangedPosition = pos;
+    update();
+}
+
+Qt::Alignment LeveyJenningsDiagram::fluidicsPackChangedSymbolPosition() const
+{
+    return d->fluidicsPackChangedPosition;
+}
+
+void LeveyJenningsDiagram::setSensorChangedSymbolPosition( Qt::Alignment pos )
+{
+    if( d->sensorChangedPosition == pos )
+        return;
+
+    d->sensorChangedPosition = pos;
+    update();
+}
+
+Qt::Alignment LeveyJenningsDiagram::sensorChangedSymbolPosition() const
+{
+    return d->sensorChangedPosition;
+}
+
+void LeveyJenningsDiagram::setFluidicsPackChanges( const QVector< QDateTime > changes )
+{
+    if( d->fluidicsPackChanges == changes )
+        return;
+
+    d->fluidicsPackChanges = changes;
+    update();
+}
+
+QVector< QDateTime > LeveyJenningsDiagram::fluidicsPackChanges() const
+{
+    return d->fluidicsPackChanges;
+}
+
+void LeveyJenningsDiagram::setSensorChanges( const QVector< QDateTime > changes )
+{
+    if( d->sensorChanges == changes )
+        return;
+
+    d->sensorChanges = changes;
+    update();
+}
+
+QVector< QDateTime > LeveyJenningsDiagram::sensorChanges() const
+{
+    return d->sensorChanges;
+}
+
 void LeveyJenningsDiagram::setExpectedMeanValue( float meanValue )
 {
+    if( d->expectedMeanValue == meanValue )
+        return;
+
     d->expectedMeanValue = meanValue;
     d->setYAxisRange();
+    update();
 }
 
 float LeveyJenningsDiagram::expectedMeanValue() const
@@ -118,8 +189,12 @@ float LeveyJenningsDiagram::expectedMeanValue() const
 
 void LeveyJenningsDiagram::setExpectedStandardDeviation( float sd )
 {
+    if( d->expectedStandardDeviation == sd )
+        return;
+
     d->expectedStandardDeviation = sd;
     d->setYAxisRange();
+    update();
 }
 
 float LeveyJenningsDiagram::expectedStandardDeviation() const
@@ -213,22 +288,54 @@ void LeveyJenningsDiagram::calculateMeanAndStandardDeviation() const
     d->calculatedStandardDeviation = sqrt( ( static_cast< double >( N ) * sumSquares - sum * sum ) / ( N * ( N - 1 ) ) );
 }
 
+QDateTime floor( const QDateTime& dt )
+{
+    return QDateTime( dt.date(), QTime() );
+}
+
+QDateTime ceil( const QDateTime& dt )
+{
+    QDateTime result( dt.date(), QTime() );
+    
+    if( dt.time() != QTime() )
+        result.addDays( 1 );
+
+    return result;
+}
+
 /** \reimpl */
 const QPair<QPointF, QPointF> LeveyJenningsDiagram::calculateDataBoundaries() const
 {
-    const double xMin = 0;
-    const double xMax = model() ? model()->rowCount( rootIndex() ) - 1 : 0;
     const double yMin = d->expectedMeanValue - 4 * d->expectedStandardDeviation;
     const double yMax = d->expectedMeanValue + 4 * d->expectedStandardDeviation;
 
-    const QPointF bottomLeft( QPointF( xMin, qMin( 0.0, yMin ) ) );
-    const QPointF topRight( QPointF( xMax, yMax ) );
-
     d->setYAxisRange();
+
+    // rounded down/up to the prev/next midnight
+    const QPair< QDateTime, QDateTime > range = timeRange();
+    const unsigned int minTime = range.first.toTime_t();
+    const unsigned int maxTime = range.second.toTime_t();
+
+    const double xMin = minTime / static_cast< double >( 24 * 60 * 60 );
+    const double xMax = maxTime / static_cast< double >( 24 * 60 * 60 ) - xMin + 1.0;
+
+    const QPointF bottomLeft( QPointF( 0, yMin ) );
+    const QPointF topRight( QPointF( xMax, yMax ) );
 
     return QPair< QPointF, QPointF >( bottomLeft, topRight );
 }
 
+QPair< QDateTime, QDateTime > LeveyJenningsDiagram::timeRange() const
+{
+    const QAbstractItemModel& m = *model();
+    const int rowCount = m.rowCount( rootIndex() );
+
+    // round down/up to the prev/next midnight
+    const QDateTime min = floor( m.data( m.index( 0, 3, rootIndex() ) ).toDateTime() );
+    const QDateTime max = ceil( m.data( m.index( rowCount - 1, 3, rootIndex() ) ).toDateTime() );
+
+    return QPair< QDateTime, QDateTime >( min, max );
+}
 
 #if 0
 /**
@@ -503,6 +610,25 @@ LineAttributes::MissingValuesPolicy LineDiagram::getCellValues(
 }
 #endif
 
+void LeveyJenningsDiagram::drawChanges( PaintContext* ctx )
+{
+    const unsigned int minTime = timeRange().first.toTime_t();
+
+    KDAB_FOREACH( const QDateTime& dt, d->fluidicsPackChanges )
+    {
+        const double xValue = ( dt.toTime_t() - minTime ) / static_cast< double >( 24 * 60 * 60 );
+        const QPointF point( xValue, 0.0 );
+        drawFluidicsPackChangedSymbol( ctx, point );
+    }
+
+    KDAB_FOREACH( const QDateTime& dt, d->sensorChanges )
+    {
+        const double xValue = ( dt.toTime_t() - minTime ) / static_cast< double >( 24 * 60 * 60 );
+        const QPointF point( xValue, 0.0 );
+        drawSensorChangedSymbol( ctx, point );
+    }
+}
+
 void LeveyJenningsDiagram::paint( PaintContext* ctx )
 {
     // note: Not having any data model assigned is no bug
@@ -512,7 +638,7 @@ void LeveyJenningsDiagram::paint( PaintContext* ctx )
 
     QPainter* const painter = ctx->painter();
     const PainterSaver p( painter );
-    if( model()->rowCount( rootIndex() ) == 0 || model()->columnCount( rootIndex() ) < 2 )
+    if( model()->rowCount( rootIndex() ) == 0 || model()->columnCount( rootIndex() ) < 4 )
         return; // nothing to paint for us
 
     AbstractCoordinatePlane* const plane = ctx->coordinatePlane();
@@ -520,6 +646,8 @@ void LeveyJenningsDiagram::paint( PaintContext* ctx )
 
     const QAbstractItemModel& m = *model();
     const int rowCount = m.rowCount( rootIndex() );
+
+    const unsigned int minTime = timeRange().first.toTime_t();
 
     painter->setRenderHint( QPainter::Antialiasing, true );
 
@@ -532,14 +660,17 @@ void LeveyJenningsDiagram::paint( PaintContext* ctx )
         const QModelIndex lotIndex = m.index( row, 0, rootIndex() );
         const QModelIndex valueIndex = m.index( row, 1, rootIndex() );
         const QModelIndex okIndex = m.index( row, 2, rootIndex() );
+        const QModelIndex timeIndex = m.index( row, 3, rootIndex() );
 
         painter->setPen( pen( valueIndex ) );
 
         const int lot = m.data( lotIndex ).toInt();
         const double value = m.data( valueIndex ).toDouble();
         const bool ok = m.data( okIndex ).toBool();
+        const QDateTime time = m.data( timeIndex ).toDateTime();
+        const double xValue = ( time.toTime_t() - minTime ) / static_cast< double >( 24 * 60 * 60 );
 
-        const QPointF point = ctx->coordinatePlane()->translate( QPointF( row, value ) );
+        const QPointF point = ctx->coordinatePlane()->translate( QPointF( xValue, value ) );
 
         if( static_cast< int >( value ) == 0 )
         {
@@ -563,17 +694,19 @@ void LeveyJenningsDiagram::paint( PaintContext* ctx )
         }
         else if( row > 0 )
         {
-            drawLotChangeSymbol( ctx, QPointF( row, value ) );
+            drawLotChangeSymbol( ctx, QPointF( xValue, value ) );
         }
 
-        drawDataPointSymbol( ctx, QPointF( row, value ), ok );
+        drawDataPointSymbol( ctx, QPointF( xValue, value ), ok );
 
         if( selectionModel()->currentIndex() == lotIndex )
         {
             const QPen pen = ctx->painter()->pen();
             painter->setPen( Qt::blue );
-            painter->drawLine( ctx->coordinatePlane()->translate( QPointF( row, d->expectedMeanValue - 4 * d->expectedStandardDeviation ) ),
-                               ctx->coordinatePlane()->translate( QPointF( row, d->expectedMeanValue + 4 * d->expectedStandardDeviation ) ) );
+            painter->drawLine( ctx->coordinatePlane()->translate( QPointF( xValue, d->expectedMeanValue - 4 * 
+                                                                                   d->expectedStandardDeviation ) ),
+                               ctx->coordinatePlane()->translate( QPointF( xValue, d->expectedMeanValue + 4 * 
+                                                                                   d->expectedStandardDeviation ) ) );
             painter->setPen( pen );
         }
 
@@ -581,6 +714,8 @@ void LeveyJenningsDiagram::paint( PaintContext* ctx )
         prevPoint = point;
         hadMissingValue = false;
     }
+
+    drawChanges( ctx );
 
     ctx->setCoordinatePlane( plane );
 }
@@ -604,9 +739,11 @@ void LeveyJenningsDiagram::drawDataPointSymbol( PaintContext* ctx, const QPointF
 void LeveyJenningsDiagram::drawLotChangeSymbol( PaintContext* ctx, const QPointF& pos )
 {
     // TODO: This has to be a SVG image
-    const QPointF transPos = ctx->coordinatePlane()->translate( QPointF( pos.x(), 
-                                                                d->lotChangedPosition & Qt::AlignTop ? d->expectedMeanValue + 4 * d->expectedStandardDeviation
-                                                                                                     : d->expectedMeanValue - 4 * d->expectedStandardDeviation ) );
+    const QPointF transPos = ctx->coordinatePlane()->translate( 
+        QPointF( pos.x(), d->lotChangedPosition & Qt::AlignTop ? d->expectedMeanValue + 
+                                                                 4 * d->expectedStandardDeviation
+                                                               : d->expectedMeanValue - 
+                                                                 4 * d->expectedStandardDeviation ) );
     QPainter* const painter = ctx->painter();
     const PainterSaver ps( painter );
     painter->setClipping( false );
@@ -614,6 +751,44 @@ void LeveyJenningsDiagram::drawLotChangeSymbol( PaintContext* ctx, const QPointF
     painter->rotate( 45 );
     painter->setPen( Qt::white );
     painter->setBrush( QBrush( Qt::black ) );
+    const QRectF rect( -5, -5, 9, 9 );
+    painter->drawRect( rect );
+}
+
+void LeveyJenningsDiagram::drawSensorChangedSymbol( PaintContext* ctx, const QPointF& pos )
+{
+    // TODO: This has to be a SVG image
+    const QPointF transPos = ctx->coordinatePlane()->translate( 
+        QPointF( pos.x(), d->sensorChangedPosition & Qt::AlignTop ? d->expectedMeanValue + 
+                                                                    4 * d->expectedStandardDeviation
+                                                                  : d->expectedMeanValue - 
+                                                                    4 * d->expectedStandardDeviation ) );
+    QPainter* const painter = ctx->painter();
+    const PainterSaver ps( painter );
+    painter->setClipping( false );
+    painter->translate( transPos );
+    painter->rotate( 45 );
+    painter->setPen( Qt::white );
+    painter->setBrush( QBrush( Qt::red ) );
+    const QRectF rect( -5, -5, 9, 9 );
+    painter->drawRect( rect );
+}
+
+void LeveyJenningsDiagram::drawFluidicsPackChangedSymbol( PaintContext* ctx, const QPointF& pos )
+{
+    // TODO: This has to be a SVG image
+    const QPointF transPos = ctx->coordinatePlane()->translate( 
+        QPointF( pos.x(), d->fluidicsPackChangedPosition & Qt::AlignTop ? d->expectedMeanValue + 
+                                                                          4 * d->expectedStandardDeviation
+                                                                        : d->expectedMeanValue - 
+                                                                          4 * d->expectedStandardDeviation ) );
+    QPainter* const painter = ctx->painter();
+    const PainterSaver ps( painter );
+    painter->setClipping( false );
+    painter->translate( transPos );
+    painter->rotate( 45 );
+    painter->setPen( Qt::white );
+    painter->setBrush( QBrush( Qt::blue ) );
     const QRectF rect( -5, -5, 9, 9 );
     painter->drawRect( rect );
 }
