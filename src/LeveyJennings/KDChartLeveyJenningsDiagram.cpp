@@ -531,7 +531,9 @@ void LeveyJenningsDiagram::paint( PaintContext* ctx )
             drawLotChangeSymbol( ctx, QPointF( xValue, value ) );
         }
 
-        drawDataPointSymbol( ctx, QPointF( xValue, value ), ok );
+        if( value <= d->expectedMeanValue + 4 * d->expectedStandardDeviation &&
+            value >= d->expectedMeanValue - 4 * d->expectedStandardDeviation )
+            drawDataPointSymbol( ctx, QPointF( xValue, value ), ok );
 
         if( selectionModel()->currentIndex() == lotIndex )
         {

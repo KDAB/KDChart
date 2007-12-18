@@ -42,6 +42,11 @@ int main( int argc, char** argv )
 
     QStandardItemModel model( 14, 4 );
 
+    model.setHeaderData( 0, Qt::Horizontal, QObject::tr( "Lot" ) );
+    model.setHeaderData( 1, Qt::Horizontal, QObject::tr( "Value" ) );
+    model.setHeaderData( 2, Qt::Horizontal, QObject::tr( "OK" ) );
+    model.setHeaderData( 3, Qt::Horizontal, QObject::tr( "Date/Time" ) );
+
     // Lot 1
     model.setData( model.index( 0, 0 ), 1 );        // lot number
     model.setData( model.index( 0, 1 ), 210 );      // value
@@ -131,6 +136,8 @@ int main( int argc, char** argv )
     diagram->setFluidicsPackChangedSymbolPosition( Qt::AlignTop );*/
 
     //diagram->setScanLinePen( QPen( Qt::green ) );
+    //diagram->setSymbol( KDChart::LeveyJenningsDiagram::NotOkDataPoint, 
+    //                    diagram->symbol( KDChart::LeveyJenningsDiagram::OkDataPoint ) );
 
     diagram->setFluidicsPackChanges( QVector< QDateTime >() << QDateTime::fromString( "2007-07-11T15:00:00", Qt::ISODate ) );
     diagram->setSensorChanges( QVector< QDateTime >() << QDateTime::fromString( "2007-07-10T11:00:00", Qt::ISODate ) );
