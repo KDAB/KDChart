@@ -239,13 +239,27 @@ void AbstractDiagram::setDataBoundariesDirty() const
 
 void AbstractDiagram::setModel( QAbstractItemModel * newModel )
 {
-  QAbstractItemView::setModel( newModel );
-  AttributesModel* amodel = new PrivateAttributesModel( newModel, this );
-  amodel->initFrom( d->attributesModel );
-  d->setAttributesModel(amodel);
-  scheduleDelayedItemsLayout();
-  setDataBoundariesDirty();
-  emit modelsChanged();
+    if( model() )
+    {
+        disconnect( model(), SIGNAL( rowsInserted( QModelIndex, int, int ) ), this, SLOT( setDataBoundariesDirty() ) );
+        disconnect( model(), SIGNAL( columnsInserted( QModelIndex, int, int ) ), this, SLOT( setDataBoundariesDirty() ) );
+        disconnect( model(), SIGNAL( rowsRemoved( QModelIndex, int, int ) ), this, SLOT( setDataBoundariesDirty() ) );
+        disconnect( model(), SIGNAL( columnsRemoved( QModelIndex, int, int ) ), this, SLOT( setDataBoundariesDirty() ) );
+    }
+    QAbstractItemView::setModel( newModel );
+    AttributesModel* amodel = new PrivateAttributesModel( newModel, this );
+    amodel->initFrom( d->attributesModel );
+    d->setAttributesModel(amodel);
+    scheduleDelayedItemsLayout();
+    setDataBoundariesDirty();
+    if( model() )
+    {
+        connect( model(), SIGNAL( rowsInserted( QModelIndex, int, int ) ), this, SLOT( setDataBoundariesDirty() ) );
+        connect( model(), SIGNAL( columnsInserted( QModelIndex, int, int ) ), this, SLOT( setDataBoundariesDirty() ) );
+        connect( model(), SIGNAL( rowsRemoved( QModelIndex, int, int ) ), this, SLOT( setDataBoundariesDirty() ) );
+        connect( model(), SIGNAL( columnsRemoved( QModelIndex, int, int ) ), this, SLOT( setDataBoundariesDirty() ) );
+    }
+    emit modelsChanged();
 }
 
 /*! Sets an external AttributesModel on this diagram. By default, a diagram has it's
