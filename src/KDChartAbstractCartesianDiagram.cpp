@@ -124,10 +124,31 @@ void KDChart::AbstractCartesianDiagram::layoutPlanes()
 
 void KDChart::AbstractCartesianDiagram::setCoordinatePlane( AbstractCoordinatePlane* plane )
 {
-    if( coordinatePlane() ) disconnect( coordinatePlane() );
+    if( coordinatePlane() ) {
+        disconnect( attributesModel(), SIGNAL( rowsRemoved( const QModelIndex&, int, int ) ),
+                 coordinatePlane(), SLOT( relayout() ) );
+        disconnect( attributesModel(), SIGNAL( rowsInserted( const QModelIndex&, int, int ) ),
+                 coordinatePlane(), SLOT( relayout() ) );
+        disconnect( attributesModel(), SIGNAL( columnsRemoved( const QModelIndex&, int, int ) ),
+                 coordinatePlane(), SLOT( relayout() ) );
+        disconnect( attributesModel(), SIGNAL( columnsInserted( const QModelIndex&, int, int ) ),
+                 coordinatePlane(), SLOT( relayout() ) );
+        disconnect( coordinatePlane() );
+    }
+    
     AbstractDiagram::setCoordinatePlane(plane);
-
-    // show the axes, after all have been adjusted
+    if ( plane ) {
+        // Readjust the layout when the dataset count changes
+        connect( attributesModel(), SIGNAL( rowsRemoved( const QModelIndex&, int, int ) ),
+                 plane, SLOT( relayout() ) );
+        connect( attributesModel(), SIGNAL( rowsInserted( const QModelIndex&, int, int ) ),
+                 plane, SLOT( relayout() ) );
+        connect( attributesModel(), SIGNAL( columnsRemoved( const QModelIndex&, int, int ) ),
+                 plane, SLOT( relayout() ) );
+        connect( attributesModel(), SIGNAL( columnsInserted( const QModelIndex&, int, int ) ),
+                 plane, SLOT( relayout() ) );
+    }
+    // show the axes, after all have been layoutPlanes
     // (because they might be dependend on each other)
     /*
     if( plane )
