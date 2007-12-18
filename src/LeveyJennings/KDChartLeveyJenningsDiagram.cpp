@@ -24,9 +24,12 @@
  **********************************************************************/
 
 #include <QDateTime>
+#include <QFontMetrics>
 #include <QPainter>
+#include <QSvgRenderer>
 #include <QVector>
 
+#include "KDChartChart.h"
 #include "KDChartLeveyJenningsDiagram.h"
 #include "KDChartTextAttributes.h"
 #include "KDChartAbstractGrid.h"
@@ -47,8 +50,8 @@ LeveyJenningsDiagram::Private::~Private() {}
 #define d d_func()
 
 
-LeveyJenningsDiagram::LeveyJenningsDiagram( QWidget* parent, LeveyJenningsCoordinatePlane* plane ) :
-    LineDiagram( new Private(), parent, plane )
+LeveyJenningsDiagram::LeveyJenningsDiagram( QWidget* parent, LeveyJenningsCoordinatePlane* plane )
+    : LineDiagram( new Private(), parent, plane )
 {
     init();
 }
@@ -66,6 +69,12 @@ void LeveyJenningsDiagram::init()
     d->expectedStandardDeviation = 0.0;
 
     d->diagram = this;
+
+    d->icons[ LotChanged ] = QString::fromLatin1( ":/KDAB/kdchart/LeveyJennings/karo_black.svg" );
+    d->icons[ SensorChanged ] = QString::fromLatin1( ":/KDAB/kdchart/LeveyJennings/karo_red.svg" );
+    d->icons[ FluidicsPackChanged ] = QString::fromLatin1( ":/KDAB/kdchart/LeveyJennings/karo_blue.svg" );
+    d->icons[ OkDataPoint ] = QString::fromLatin1( ":/KDAB/kdchart/LeveyJennings/circle_blue.svg" );
+    d->icons[ NotOkDataPoint ] = QString::fromLatin1( ":/KDAB/kdchart/LeveyJennings/circle_blue_red.svg" );
 }
 
 LeveyJenningsDiagram::~LeveyJenningsDiagram()
@@ -209,6 +218,30 @@ void LeveyJenningsDiagram::setScanLinePen( const QPen& pen )
 QPen LeveyJenningsDiagram::scanLinePen() const
 {
     return d->scanLinePen;
+}
+
+/**
+ * Returns the SVG file name usef for \a symbol
+ */
+QString LeveyJenningsDiagram::symbol( Symbol symbol ) const
+{
+    return d->icons[ symbol ];
+}
+
+/**
+ * Sets the symbol being used for \a symbol to a SVG file \a filename.
+ */
+void LeveyJenningsDiagram::setSymbol( Symbol symbol, const QString& filename )
+{
+    if( d->icons[ symbol ] == filename )
+        return;
+
+    delete d->iconRenderer[ symbol ];
+    d->iconRenderer[ symbol ] = 0;
+
+    d->icons[ symbol ] = filename;
+
+    update();
 }
 
 /**
@@ -528,18 +561,15 @@ void LeveyJenningsDiagram::paint( PaintContext* ctx )
  */
 void LeveyJenningsDiagram::drawDataPointSymbol( PaintContext* ctx, const QPointF& pos, bool ok )
 {
-    // TODO: This has to be a SVG image
+    const Symbol type = ok ? OkDataPoint : NotOkDataPoint;
+
     QPainter* const painter = ctx->painter();
     const PainterSaver ps( painter );
     const QPointF transPos = ctx->coordinatePlane()->translate( pos ).toPoint();
-    const QRectF rect( transPos.x() - 6, transPos.y() - 6 , 11, 11 );
-    painter->drawEllipse( rect );
-    if( ok )
-        return;
-    painter->setBrush( QBrush( Qt::red ) );
-    painter->setPen( Qt::transparent );
-    const QRectF dotRect( transPos.x() - 4, transPos.y() - 4, 7, 7 );
-    painter->drawEllipse( dotRect );
+    painter->translate( transPos );
+
+    painter->setClipping( false );
+    iconRenderer( type )->render( painter, iconRect() );
 }
 
 /**
@@ -549,21 +579,18 @@ void LeveyJenningsDiagram::drawDataPointSymbol( PaintContext* ctx, const QPointF
  */
 void LeveyJenningsDiagram::drawLotChangeSymbol( PaintContext* ctx, const QPointF& pos )
 {
-    // TODO: This has to be a SVG image
     const QPointF transPos = ctx->coordinatePlane()->translate( 
         QPointF( pos.x(), d->lotChangedPosition & Qt::AlignTop ? d->expectedMeanValue + 
                                                                  4 * d->expectedStandardDeviation
                                                                : d->expectedMeanValue - 
                                                                  4 * d->expectedStandardDeviation ) );
+    
+
     QPainter* const painter = ctx->painter();
     const PainterSaver ps( painter );
     painter->setClipping( false );
     painter->translate( transPos );
-    painter->rotate( 45 );
-    painter->setPen( Qt::white );
-    painter->setBrush( QBrush( Qt::black ) );
-    const QRectF rect( -5, -5, 9, 9 );
-    painter->drawRect( rect );
+    iconRenderer( LotChanged )->render( painter, iconRect() );
 }
 
 /**
@@ -573,21 +600,17 @@ void LeveyJenningsDiagram::drawLotChangeSymbol( PaintContext* ctx, const QPointF
  */
 void LeveyJenningsDiagram::drawSensorChangedSymbol( PaintContext* ctx, const QPointF& pos )
 {
-    // TODO: This has to be a SVG image
     const QPointF transPos = ctx->coordinatePlane()->translate( 
         QPointF( pos.x(), d->sensorChangedPosition & Qt::AlignTop ? d->expectedMeanValue + 
                                                                     4 * d->expectedStandardDeviation
                                                                   : d->expectedMeanValue - 
                                                                     4 * d->expectedStandardDeviation ) );
+
     QPainter* const painter = ctx->painter();
     const PainterSaver ps( painter );
     painter->setClipping( false );
     painter->translate( transPos );
-    painter->rotate( 45 );
-    painter->setPen( Qt::white );
-    painter->setBrush( QBrush( Qt::red ) );
-    const QRectF rect( -5, -5, 9, 9 );
-    painter->drawRect( rect );
+    iconRenderer( SensorChanged )->render( painter, iconRect() );
 }
 
 /**
@@ -597,19 +620,39 @@ void LeveyJenningsDiagram::drawSensorChangedSymbol( PaintContext* ctx, const QPo
  */
 void LeveyJenningsDiagram::drawFluidicsPackChangedSymbol( PaintContext* ctx, const QPointF& pos )
 {
-    // TODO: This has to be a SVG image
     const QPointF transPos = ctx->coordinatePlane()->translate( 
         QPointF( pos.x(), d->fluidicsPackChangedPosition & Qt::AlignTop ? d->expectedMeanValue + 
                                                                           4 * d->expectedStandardDeviation
                                                                         : d->expectedMeanValue - 
                                                                           4 * d->expectedStandardDeviation ) );
+
     QPainter* const painter = ctx->painter();
     const PainterSaver ps( painter );
     painter->setClipping( false );
     painter->translate( transPos );
-    painter->rotate( 45 );
-    painter->setPen( Qt::white );
-    painter->setBrush( QBrush( Qt::blue ) );
-    const QRectF rect( -5, -5, 9, 9 );
-    painter->drawRect( rect );
+    iconRenderer( FluidicsPackChanged )->render( painter, iconRect() );
+}
+
+/**
+ * Returns the rectangle being used for drawing the icons
+ */
+QRectF LeveyJenningsDiagram::iconRect() const
+{
+    Measure m( 12.5, KDChartEnums::MeasureCalculationModeAuto, KDChartEnums::MeasureOrientationAuto );
+    TextAttributes test;
+    test.setFontSize( m );
+    const QFontMetrics fm( test.calculatedFont( coordinatePlane()->parent(), KDChartEnums::MeasureOrientationAuto ) );
+    const qreal height = fm.height() / 1.2;
+    return QRectF( -height / 2.0, -height / 2.0, height, height );
+}
+
+/**
+ * Returns the SVG icon renderer for \a symbol
+ */
+QSvgRenderer* LeveyJenningsDiagram::iconRenderer( Symbol symbol )
+{
+    if( d->iconRenderer[ symbol ] == 0 )
+        d->iconRenderer[ symbol ] = new QSvgRenderer( d->icons[ symbol ], this );
+
+    return d->iconRenderer[ symbol ];
 }

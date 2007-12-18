@@ -35,6 +35,7 @@
 
 class QPainter;
 class QPolygonF;
+class QSvgRenderer;
 
 namespace KDChart {
 
@@ -60,6 +61,15 @@ public:
     virtual ~LeveyJenningsDiagram();
 
     virtual LineDiagram * clone() const;
+
+    enum Symbol
+    {
+        OkDataPoint,
+        NotOkDataPoint,
+        LotChanged,
+        SensorChanged,
+        FluidicsPackChanged
+    };
 
     /**
      * Returns true if both diagrams have the same settings.
@@ -93,6 +103,9 @@ public:
     void setScanLinePen( const QPen& pen );
     QPen scanLinePen() const;
 
+    void setSymbol( Symbol symbol, const QString& filename );
+    QString symbol( Symbol symbol ) const;
+
     /* \reimpl */
     void setModel( QAbstractItemModel* model );
 
@@ -106,6 +119,10 @@ protected:
     virtual void drawLotChangeSymbol( PaintContext* paintContext, const QPointF& pos );
     virtual void drawSensorChangedSymbol( PaintContext* paintContext, const QPointF& pos );
     virtual void drawFluidicsPackChangedSymbol( PaintContext* paintContext, const QPointF& pos );
+
+    virtual QRectF iconRect() const;
+
+    QSvgRenderer* iconRenderer( Symbol symbol );
 
     /** \reimpl */
     const QPair<QPointF, QPointF> calculateDataBoundaries() const;

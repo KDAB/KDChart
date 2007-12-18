@@ -14,6 +14,10 @@ include( ../variables.pri )
 
 DEFINES += KDCHART_BUILD_KDCHART_LIB
 
+RESOURCES += LeveyJennings/KDAB_kdchart_LeveyJennings_resources.qrc
+
+QT += svg
+
 FORMS += KDChartDatasetSelector.ui
 HEADERS += KDChartGlobal.h \
            KDChartMeasure.h \

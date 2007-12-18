@@ -38,13 +38,13 @@
 //
 
 #include <QDateTime>
-#include <QPainterPath>
 
 #include "KDChartThreeDLineAttributes.h"
 #include "KDChartLineDiagram_p.h"
 
 #include <KDABLibFakes>
 
+class QSvgRenderer;
 
 namespace KDChart {
 
@@ -71,6 +71,9 @@ namespace KDChart {
         QVector< QDateTime > sensorChanges;
 
         QPen scanLinePen;
+
+        QMap< LeveyJenningsDiagram::Symbol, QString >  icons;
+        QMap< LeveyJenningsDiagram::Symbol, QSvgRenderer* > iconRenderer;
 
         float expectedMeanValue;
         float expectedStandardDeviation;

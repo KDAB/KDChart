@@ -42,6 +42,7 @@ LeveyJenningsDiagram::Private::Private( const Private& rhs )
       fluidicsPackChanges( rhs.fluidicsPackChanges ),
       sensorChanges( rhs.sensorChanges ),
       scanLinePen( rhs.scanLinePen ),
+      icons( rhs.icons ),
       expectedMeanValue( rhs.expectedMeanValue ),
       expectedStandardDeviation( rhs.expectedStandardDeviation )
 {

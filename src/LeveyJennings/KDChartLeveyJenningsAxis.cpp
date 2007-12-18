@@ -68,7 +68,7 @@ void LeveyJenningsAxis::init ()
 {
     setType( LeveyJenningsGridAttributes::Expected );
     const QStringList labels = QStringList() << tr( "-3sd" ) << tr( "-2sd" ) << tr( "mean" )
-                                             << tr( "2sd" ) << tr( "3sd" );
+                                             << tr( "+2sd" ) << tr( "+3sd" );
 
     setLabels( labels );
 }
