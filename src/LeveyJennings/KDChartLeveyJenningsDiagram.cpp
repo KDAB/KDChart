@@ -121,7 +121,7 @@ void LeveyJenningsDiagram::setLotChangedSymbolPosition( Qt::Alignment pos )
 /**
  * Returns the position of the lot change symbol.
  */
-Qt::Alignment LeveyJenningsDiagram::LeveyJenningsDiagram::lotChangedSymbolPosition() const
+Qt::Alignment LeveyJenningsDiagram::lotChangedSymbolPosition() const
 {
     return d->lotChangedPosition;
 }
