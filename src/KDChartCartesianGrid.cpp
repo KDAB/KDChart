@@ -565,7 +565,7 @@ void CartesianGrid::calculateStepWidth(
     const int count = list.count();
     QList<qreal> testList;
 
-    for( int dec = -1; fastPow10( dec + 1 ) >= distance; --dec )
+    for( int dec = -1; dec == -1 || fastPow10( dec + 1 ) >= distance; --dec )
         for( int i = 0;  i < count;  ++i )
             testList << list.at(i) * fastPow10( dec );
 
