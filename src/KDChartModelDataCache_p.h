@@ -189,9 +189,9 @@ namespace KDChart
             const int minCol = topLeft.column();
             const int maxCol = bottomRight.column();
 
-            for( int row = minRow; row <= maxRow; ++row )
+            for( int row = qMax( 0, minRow ); row <= maxRow; ++row )
             {
-                for( int col = minCol; col <= maxCol; ++col )
+                for( int col = qMax( 0, minCol ); col <= maxCol; ++col )
                 {
                     m_cacheValid[ row ][ col ] = false;
                     Q_ASSERT( !isCached( row, col ) );
