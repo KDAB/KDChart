@@ -62,6 +62,11 @@ void CartesianGrid::drawGrid( PaintContext* context )
     //            before we may use it!
     updateData( context->coordinatePlane() );
 
+    if( plane->axesCalcModeX() == KDChart::AbstractCoordinatePlane::Logarithmic && mData.first().stepWidth == 0.0 )
+            mData.first().stepWidth = 1.0;
+    if( plane->axesCalcModeY() == KDChart::AbstractCoordinatePlane::Logarithmic && mData.last().stepWidth == 0.0 )
+            mData.last().stepWidth = 1.0;
+
     // test for programming errors: critical
     Q_ASSERT_X ( mData.count() == 2, "CartesianGrid::drawGrid",
                  "Error: updateData did not return exactly two dimensions." );
@@ -419,7 +424,8 @@ DataDimension CartesianGrid::calculateGridXY(
     bool adjustLower, bool adjustUpper ) const
 {
     CartesianCoordinatePlane* const plane = dynamic_cast<CartesianCoordinatePlane*>( mPlane );
-    if( plane->autoAdjustVerticalRangeToData() == 100 )
+    if(  orientation == Qt::Vertical && plane->autoAdjustVerticalRangeToData() > 67 
+      || orientation == Qt::Horizontal && plane->autoAdjustHorizontalRangeToData() > 67 )
     {
         adjustLower = false;
         adjustUpper = false;
@@ -481,10 +487,11 @@ DataDimension CartesianGrid::calculateGridXY(
                 max = fastPow10( maxLog+1 );
             else
                 max = fastPow10( maxLog );
-            dim.start = min;
-            dim.end   = max;
-            dim.stepWidth = qAbs(max - min) / 10.0;
-            //qDebug() << "CartesianGrid::calculateGridXY() returns logarithmic:  min " << min << " and max" << max;
+            if( adjustLower )
+                dim.start = min;
+            if( adjustUpper )
+                dim.end   = max;
+            dim.stepWidth = qMax( 1.0, qAbs(max - min) / 10.0 );
         }
     }else{
         //qDebug() << "CartesianGrid::calculateGridXY() returns stepWidth 1.0  !!";

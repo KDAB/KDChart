@@ -98,7 +98,7 @@ namespace KDChart {
             if ( axesCalcModeX == CartesianCoordinatePlane::Logarithmic ){
                 //qDebug() << "X diagramRect.x(): " << diagramRect.x();
                 //qDebug() << "X tempPoint old: " << tempPoint;
-                tempPoint.setX( makeLogarithmic( diagramRect.width(), tempPoint.x() ) );
+                empPoint.setX( makeLogarithmic( diagramRect.right(), tempPoint.x() ) );
                 //qDebug() << "X tempPoint new: " << tempPoint;
             }
             //qDebug() << "CoordinateTransformation::translate() using diagramRect: "
