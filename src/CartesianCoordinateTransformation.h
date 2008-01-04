@@ -33,6 +33,7 @@
 #include "KDChartZoomParameters.h"
 
 #include <cmath>
+#include <limits>
 
 namespace KDChart {
 
@@ -75,19 +76,19 @@ namespace KDChart {
             else
                 relation = 10.0;
 
-            if( result == 1.0 )
-                result = 1.0;
-            else if( result > 0.0 )
+            if( value == 0.0 )
+                result = 0.0;//std::numeric_limits< qreal >::quiet_NaN();
+            else if( value > 0.0 )
                 result = log10( result ) * relation;
-            else if( result < 0.0 )
+            else if( value < 0.0 )
                 result = -log10( -result ) * relation;
 
-            if( reference.first != 1.0 )
-            {
-                result -= log10( reference.first ) * relation;
-                result *= ( reference.second - reference.first - 1.0 ) / relation / (log10(reference.second)-log10(reference.first));
-                result += reference.first;
-            }
+            if( value == 0.0 )
+                return result;
+            
+            result -= log10( reference.first ) * relation;
+            result *= ( reference.second - reference.first ) / relation / (log10(reference.second)-log10(reference.first));
+            result += reference.first;
 
             return result;
         }

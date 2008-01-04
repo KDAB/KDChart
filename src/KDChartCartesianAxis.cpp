@@ -266,7 +266,7 @@ void CartesianAxis::Private::drawSubUnitRulers( QPainter* painter, CartesianCoor
             if( logSubstep == 9 ){
                 fLogSubstep *= 10.0;
                 if( fLogSubstep == 0 )
-                    fLogSubstep = 1.0;
+                    fLogSubstep = 0.01;
                 logSubstep = 0;
                 f = fLogSubstep;
             }
@@ -355,12 +355,12 @@ void CartesianAxis::Private::drawTitleText( QPainter* painter, CartesianCoordina
 }
 
 
-static void calculateNextLabel( qreal& labelValue, qreal step, bool isLogarithmic)
+static void calculateNextLabel( qreal& labelValue, qreal step, bool isLogarithmic, qreal min )
 {
     if ( isLogarithmic ){
         labelValue *= 10.0;
         if( labelValue == 0.0 )
-            labelValue = 1.0;//std::numeric_limits< double >::epsilon();
+            labelValue = pow( 10, floor( log10( min ) ) );
     }else{
         //qDebug() << "new axis label:" << labelValue << "+" << step << "=" << labelValue+step;
         labelValue += step;
@@ -409,7 +409,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
     // test for programming errors: critical
     Q_ASSERT_X ( dimensions.count() == 2, "CartesianAxis::paint",
                  "Error: plane->gridDimensionsList() did not return exactly two dimensions." );
-    DataDimension dimX =
+    const DataDimension dimX =
             AbstractGrid::adjustedLowerUpperRange( dimensions.first(), true, true );
     const DataDimension dimY =
             AbstractGrid::adjustedLowerUpperRange( dimensions.last(), true, true );
@@ -653,8 +653,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 {
                     if ( dimX.stepWidth != 1.0 && ! dim.isCalculated )
                     {
-                        labelItem->setText(  customizedLabel(QString::number( i, 'f', 0 )) );
-                        labelItem2->setText( customizedLabel(QString::number( i + dimX.stepWidth, 'f', 0 )) );
+                        labelItem->setText(  customizedLabel(QString::number( i ) ) );//, 'f', 0 )) );
+                        labelItem2->setText( customizedLabel(QString::number( i + dimX.stepWidth ) ) );//, 'f', 0 )) );
                     } else {
 
                         int index = iLabel;
@@ -795,7 +795,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 if( drawLabels ) {
                     if( bIsVisibleLabel ){
                         if ( isLogarithmicX )
-                            labelItem->setText( customizedLabel(QString::number( i, 'f', 0 )) );
+                            labelItem->setText( customizedLabel(QString::number( i ) ) );
                         /* We dont need that
                         * it causes header labels to be skipped even if there is enough
                         * space for them to displayed.
@@ -875,7 +875,10 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 {
                     i *= 10.0;
                     if( i == 0.0 )
-                        i = 1.0;//std::numeric_limits< double >::epsilon();
+                    {   
+                        const qreal j = dimensions.first().start;
+                        i = j == 0.0 ? 1.0 : pow( 10, floor( log10( j ) ) );
+                    }
                 }
                 else
                 {
@@ -899,7 +902,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     labelItem->setText( customizedLabel( labelText ) );
                     maxLabelsWidth = qMax( maxLabelsWidth, labelItem->sizeHint().width() );
 
-                    calculateNextLabel( labelValue, steg, isLogarithmicY );
+                    calculateNextLabel( labelValue, steg, isLogarithmicY, dimensions.last().start );
                 }
             }
 
@@ -939,7 +942,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     }
 
                     if ( nextLabel || isLogarithmicY )
-                        calculateNextLabel( labelValue, step, isLogarithmicY );
+                        calculateNextLabel( labelValue, step, isLogarithmicY, dimensions.last().start );
                     else
                         labelValue = minValueY;
                 }
@@ -977,7 +980,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         labelItem->paint( ptr );
                     }
 
-                    calculateNextLabel( labelValue, step, isLogarithmicY );
+                    calculateNextLabel( labelValue, step, isLogarithmicY, dimensions.last().start );
                 }
             }
         }
@@ -1195,7 +1198,7 @@ QSize CartesianAxis::maximumSize() const
                     w = qMax( w, lw );
                     calculateOverlap( 0, 0, 0, siz.height(), false,// bar diagram flag is ignored for Ordinates
                                     topOverlap, bottomOverlap );
-                    calculateNextLabel( labelValue, step, isLogarithmicY );
+                    calculateNextLabel( labelValue, step, isLogarithmicY, plane->gridDimensionsList().last().start );
                 }
             }else{
                 // find the longest label text:

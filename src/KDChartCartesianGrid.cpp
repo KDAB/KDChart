@@ -185,7 +185,7 @@ void CartesianGrid::drawGrid( PaintContext* context )
                 if( logSubstep == 9 ){
                     fLogSubstep *= 10.0;
                     if( fLogSubstep == 0.0 )
-                        fLogSubstep = 1.0;
+                        fLogSubstep = pow( 10, floor( log10( dimX.start ) ) );
 
                     logSubstep = 0;
                     f = fLogSubstep;
@@ -218,7 +218,7 @@ void CartesianGrid::drawGrid( PaintContext* context )
                 if( logSubstep == 9 ){
                     fLogSubstep *= 10.0;
                     if( fLogSubstep == 0.0 )
-                        fLogSubstep = 1.0;
+                        fLogSubstep = pow( 10, floor( log10( dimY.start ) ) );
 
                     logSubstep = 0;
                     f = fLogSubstep;
@@ -267,7 +267,7 @@ void CartesianGrid::drawGrid( PaintContext* context )
             if ( isLogarithmicX ) {
                 f *= 10.0;
                 if( f == 0.0 )
-                    f = 1.0;
+                    f = pow( 10, floor( log10( dimX.start ) ) );
             }
             else
                 f += dimX.stepWidth;
@@ -306,7 +306,7 @@ void CartesianGrid::drawGrid( PaintContext* context )
             if ( isLogarithmicY ) {
                 f *= 10.0;
                 if( f == 0.0 )
-                    f = 1.0;
+                    f = pow( 10, floor( log10( dimY.start ) ) );
             }
             else
                 f += dimY.stepWidth;
