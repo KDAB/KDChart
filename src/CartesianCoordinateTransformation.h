@@ -32,7 +32,7 @@
 
 #include "KDChartZoomParameters.h"
 
-#include <math.h>
+#include <cmath>
 
 namespace KDChart {
 
@@ -59,19 +59,21 @@ namespace KDChart {
 
         ZoomParameters zoom;
 
-        inline const qreal makeLogarithmic( qreal reference, qreal value ) const
+        typedef QPair< qreal, qreal > qrealPair;
+
+        inline const qreal makeLogarithmic( qrealPair reference, qreal value ) const
         {
             qreal result = value;
             //qDebug() << "value == " << value;
             //qDebug() << "log10( " << reference << " ) == " << log10( reference );
 
             qreal relation;
-            if( reference == 1.0 )
+            if( reference.second == 1.0 )
                 relation = 1.0;
-            else if( reference > 0.0 )
-                relation = reference / log10( reference );
+            else if( reference.second > 0.0 )
+                relation = reference.second / log10( reference.second );
             else if( result < 0.0 )
-                relation = reference / log10( -reference );
+                relation = reference.second / log10( -reference.second );
             else
                 relation = 10.0;
 
@@ -81,6 +83,10 @@ namespace KDChart {
                 result = log10( result ) * relation;
             else if( result < 0.0 )
                 result = -log10( -result ) * relation;
+
+            result -= log10( reference.first ) * relation;
+           
+            result *= reference.second / ( relation * ( log10( reference.second ) - log10( reference.first ) ) );
 
             return result;
         }
@@ -92,13 +98,13 @@ namespace KDChart {
             QPointF tempPoint = diagramPoint;
 
             if ( axesCalcModeY == CartesianCoordinatePlane::Logarithmic ){
-                tempPoint.setY( makeLogarithmic( diagramRect.y(), tempPoint.y() ) );
+                tempPoint.setY( makeLogarithmic( qrealPair( diagramRect.bottom(), diagramRect.y() ), tempPoint.y() ) );
                 //qDebug() << "Y: " << tempPoint.y();
             }
             if ( axesCalcModeX == CartesianCoordinatePlane::Logarithmic ){
                 //qDebug() << "X diagramRect.x(): " << diagramRect.x();
                 //qDebug() << "X tempPoint old: " << tempPoint;
-                tempPoint.setX( makeLogarithmic( diagramRect.right(), tempPoint.x() ) );
+                tempPoint.setX( makeLogarithmic( qrealPair( diagramRect.x(), diagramRect.right() ), tempPoint.x() ) );
                 //qDebug() << "X tempPoint new: " << tempPoint;
             }
             //qDebug() << "CoordinateTransformation::translate() using diagramRect: "
