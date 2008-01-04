@@ -59,6 +59,7 @@ public:
         , useDefaultTextAttributes( true )
         , cachedHeaderLabels( QStringList() )
         , cachedLabelHeight( 0.0 )
+        , cachedFontHeight( 0 )
     {}
     ~Private() {}
 
@@ -78,6 +79,7 @@ private:
     QRect geometry;
     mutable QStringList cachedHeaderLabels;
     mutable qreal cachedLabelHeight;
+    mutable int cachedFontHeight;
 };
 
 inline CartesianAxis::CartesianAxis( Private * p, AbstractDiagram* diagram )

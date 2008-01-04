@@ -1073,9 +1073,12 @@ QSize CartesianAxis::maximumSize() const
                               KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft );
     TextLayoutItem titleItem( titleText(), titleTA, refArea,
                               KDChartEnums::MeasureOrientationMinimum, Qt::AlignHCenter | Qt::AlignVCenter );
+
+    const QFontMetrics fm( labelItem.realFont(), GlobalMeasureScaling::paintDevice() );
+
     const qreal labelGap =
         drawLabels
-        ? (QFontMetricsF( labelItem.realFont(), GlobalMeasureScaling::paintDevice() ).height() / 3.0)
+        ? ( fm.height() / 3.0)
         : 0.0;
     const qreal titleGap =
         drawTitle
@@ -1112,10 +1115,11 @@ QSize CartesianAxis::maximumSize() const
                 QStringList headerLabels = d->diagram()->itemRowLabels();
                 const int headerLabelsCount = headerLabels.count();
                 if( headerLabelsCount ){
-                    if( d->cachedHeaderLabels == headerLabels )
+                    if( d->cachedHeaderLabels == headerLabels && d->cachedFontHeight == fm.height() )
                         h = d->cachedLabelHeight;
                     else {
                         d->cachedHeaderLabels = headerLabels;
+                        d->cachedFontHeight = fm.height();
                         const bool useFastCalcAlgorithm
                             = (strcmp( metaObject()->className(), "KDChart::CartesianAxis" ) == 0);
                         const int first=0;
