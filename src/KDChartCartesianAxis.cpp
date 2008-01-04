@@ -360,7 +360,7 @@ static void calculateNextLabel( qreal& labelValue, qreal step, bool isLogarithmi
     if ( isLogarithmic ){
         labelValue *= 10.0;
         if( labelValue == 0.0 )
-            labelValue = pow( 10, floor( log10( min ) ) );
+            labelValue = pow( 10, static_cast< int >( floor( log10( min ) ) ) );
     }else{
         //qDebug() << "new axis label:" << labelValue << "+" << step << "=" << labelValue+step;
         labelValue += step;
@@ -877,7 +877,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     if( i == 0.0 )
                     {   
                         const qreal j = dimensions.first().start;
-                        i = j == 0.0 ? 1.0 : pow( 10, floor( log10( j ) ) );
+                        i = j == 0.0 ? 1.0 : pow( 10, static_cast< int >( floor( log10( j ) ) ) );
                     }
                 }
                 else
