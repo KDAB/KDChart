@@ -49,13 +49,13 @@ BarDiagram::BarType PercentBarDiagram::type() const
 
 const QPair<QPointF, QPointF> PercentBarDiagram::calculateDataBoundaries() const
 {
-    const int rowCount = compressor().modelDataRows();
-    const int colCount = compressor().modelDataColumns();
+    //const int rowCount = compressor().modelDataRows();
+    //const int colCount = compressor().modelDataColumns();
 
     const double xMin = 0;
     const double xMax = diagram()->model() ? diagram()->model()->rowCount( diagram()->rootIndex() ) : 0;
-    double yMin = 0.0, yMax = 0.0;
-    for( int col = 0; col < colCount; ++col )
+    double yMin = 0.0, yMax = 100.0;
+    /*for( int col = 0; col < colCount; ++col )
     {
         for( int row = 0; row < rowCount; ++row )
         {
@@ -66,7 +66,7 @@ const QPair<QPointF, QPointF> PercentBarDiagram::calculateDataBoundaries() const
             if ( value > 0 )
                 yMax = qMax( yMax, value );
         }
-    }
+    }*/
     // special cases
     if (  yMax == yMin ) {
         if ( yMin == 0.0 )
@@ -110,8 +110,8 @@ void PercentBarDiagram::paint( PaintContext* ctx )
         if ( groupWidth < 0 )
             groupWidth = 0;
 
-        if ( groupWidth  * rowCount > ctx->rectangle().width() )
-            groupWidth = ctx->rectangle().width() / rowCount;
+        if ( groupWidth  * rowCount > width )
+            groupWidth = width / rowCount;
     }
 
     // maxLimit: allow the space between bars to be larger until area.width()
@@ -121,10 +121,10 @@ void PercentBarDiagram::paint( PaintContext* ctx )
 
     //Pending Michel: FixMe
     if ( ba.useFixedDataValueGap() ) {
-        if ( ctx->rectangle().width() > maxLimit )
+        if ( width > maxLimit )
             spaceBetweenBars += ba.fixedDataValueGap();
         else
-            spaceBetweenBars = ((ctx->rectangle().width()/rowCount) - groupWidth)/(colCount-1);
+            spaceBetweenBars = ((width/rowCount) - groupWidth)/(colCount-1);
     }
 
     if ( ba.useFixedValueBlockGap() )
@@ -179,7 +179,7 @@ void PercentBarDiagram::paint( PaintContext* ctx )
                     maxDepth = offset - ( width/rowCount);
                 }
             }else{
-                barWidth = (ctx->rectangle().width() - (offset*rowCount))/ rowCount;
+                barWidth = (width - (offset*rowCount))/ rowCount;
             }
 
             const double value = qMax( p.value, -p.value );

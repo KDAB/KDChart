@@ -123,8 +123,8 @@ void NormalBarDiagram::paint(  PaintContext* ctx )
         if ( groupWidth < 0 )
             groupWidth = 0;
 
-        if ( groupWidth  * rowCount > ctx->rectangle().width() )
-            groupWidth = ctx->rectangle().width() / rowCount;
+        if ( groupWidth  * rowCount > width )
+            groupWidth = width / rowCount;
     }
 
     // maxLimit: allow the space between bars to be larger until area.width()
@@ -133,10 +133,10 @@ void NormalBarDiagram::paint(  PaintContext* ctx )
 
     //Pending Michel: FixMe
     if ( ba.useFixedDataValueGap() ) {
-        if ( ctx->rectangle().width() > maxLimit )
+        if ( width > maxLimit )
             spaceBetweenBars += ba.fixedDataValueGap();
         else
-            spaceBetweenBars = ((ctx->rectangle().width()/rowCount) - groupWidth)/(colCount-1);
+            spaceBetweenBars = ((width/rowCount) - groupWidth)/(colCount-1);
     }
 
     if ( ba.useFixedValueBlockGap() ) {
@@ -156,10 +156,10 @@ void NormalBarDiagram::paint(  PaintContext* ctx )
         {
             if ( spaceBetweenBars > 0 )
             {
-                if ( ctx->rectangle().width() > maxLimit )
+                if ( width > maxLimit )
                     offset -= ba.fixedDataValueGap();
                 else
-                    offset -= ((ctx->rectangle().width()/rowCount) - groupWidth)/(colCount-1);
+                    offset -= ((width/rowCount) - groupWidth)/(colCount-1);
 
             }
             else
