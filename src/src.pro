@@ -77,10 +77,13 @@ HEADERS += KDChartGlobal.h \
            KDChartLineDiagram_p.h \
            KDChartCartesianDiagramDataCompressor_p.h \
            KDChartNormalBarDiagram_p.h \
+           KDChartNormalLyingBarDiagram_p.h \
            KDChartNormalLineDiagram_p.h \
            KDChartStackedBarDiagram_p.h \
+           KDChartStackedLyingBarDiagram_p.h \
            KDChartStackedLineDiagram_p.h \
            KDChartPercentBarDiagram_p.h \
+           KDChartPercentLyingBarDiagram_p.h \
            KDChartPercentLineDiagram_p.h \
            KDChartMarkerAttributes.h \
            KDChartPaintContext.h \
@@ -174,10 +177,13 @@ SOURCES += \
            KDChartLineDiagram_p.cpp \
            KDChartCartesianDiagramDataCompressor_p.cpp \
            KDChartNormalBarDiagram_p.cpp \
+           KDChartNormalLyingBarDiagram_p.cpp \
            KDChartNormalLineDiagram_p.cpp \
            KDChartStackedBarDiagram_p.cpp \
+           KDChartStackedLyingBarDiagram_p.cpp \
            KDChartStackedLineDiagram_p.cpp \
            KDChartPercentBarDiagram_p.cpp \
+           KDChartPercentLyingBarDiagram_p.cpp \
            KDChartPercentLineDiagram_p.cpp \
            KDChartMarkerAttributes.cpp \
            KDChartPaintContext.cpp \
