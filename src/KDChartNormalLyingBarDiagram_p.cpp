@@ -87,8 +87,6 @@ const QPair<QPointF, QPointF> NormalLyingBarDiagram::calculateDataBoundaries() c
         else if( yMin > 0.0 )
             yMin = 0.0; // they are the same but positive
     }
-    //const QPointF bottomLeft ( QPointF( xMin, yMin ) );
-    //const QPointF topRight ( QPointF( xMax, yMax ) );
     const QPointF bottomLeft ( QPointF( yMin, xMin ) );
     const QPointF topRight ( QPointF( yMax, xMax ) );
 
@@ -101,8 +99,8 @@ void NormalLyingBarDiagram::paint(  PaintContext* ctx )
 
     const QPair<QPointF,QPointF> boundaries = diagram()->dataBoundaries(); // cached
 
-    const QPointF boundTop = ctx->coordinatePlane()->translate( boundaries.first ) ;
-    const QPointF boundBottom = ctx->coordinatePlane()->translate( boundaries.second );
+    const QPointF boundLeft = ctx->coordinatePlane()->translate( boundaries.first ) ;
+    const QPointF boundRight = ctx->coordinatePlane()->translate( boundaries.second );
 
     const int rowCount = attributesModel()->rowCount(attributesModelRootIndex());
     const int colCount = attributesModel()->columnCount(attributesModelRootIndex());
@@ -110,12 +108,13 @@ void NormalLyingBarDiagram::paint(  PaintContext* ctx )
     BarAttributes ba = diagram()->barAttributes( diagram()->model()->index( 0, 0, diagram()->rootIndex() ) );
     double barWidth = 0;
     double maxDepth = 0;
-    double width = boundTop.y() - boundBottom.y();
-    double groupWidth = width / (colCount + 2);
+    double width = boundLeft.y() - boundRight.y();
+    double groupWidth = width / (rowCount + 2);
     double spaceBetweenBars = 0;
     double spaceBetweenGroups = 0;
 
     if ( ba.useFixedBarWidth() ) {
+
         barWidth = ba.fixedBarWidth();
         groupWidth += barWidth;
 
@@ -124,8 +123,8 @@ void NormalLyingBarDiagram::paint(  PaintContext* ctx )
         if ( groupWidth < 0 )
             groupWidth = 0;
 
-        if ( groupWidth  * colCount > width )
-            groupWidth = width / colCount;
+        if ( groupWidth  * rowCount > width )
+            groupWidth = width / rowCount;
     }
 
     // maxLimit: allow the space between bars to be larger until area.width()
@@ -144,16 +143,14 @@ void NormalLyingBarDiagram::paint(  PaintContext* ctx )
         spaceBetweenGroups += ba.fixedValueBlockGap();
     }
 
-    calculateValueAndGapWidths( colCount, rowCount,groupWidth,
+    calculateValueAndGapWidths( rowCount, colCount,groupWidth,
                                 barWidth, spaceBetweenBars, spaceBetweenGroups );
 
     DataValueTextInfoList list;
 
-    // Make sure the top bars are painted first, and thus iterate through
-    // them starting from the top
     for( int row = rowCount - 1; row >= 0; --row )
     {
-        double offset = -groupWidth/2 + spaceBetweenGroups/2;
+        double offset = (groupWidth + spaceBetweenGroups) / 2.0 - spaceBetweenBars;
 
         if ( ba.useFixedDataValueGap() )
         {
@@ -171,27 +168,25 @@ void NormalLyingBarDiagram::paint(  PaintContext* ctx )
             }
         }
 
-        offset += (double)colCount * (barWidth + spaceBetweenBars);
         for( int column = colCount - 1; column >= 0; --column )
         {
+            offset -= barWidth + spaceBetweenBars;
+            
             // paint one group
             const CartesianDiagramDataCompressor::CachePosition position( row,  column );
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
             const QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );
             const qreal value = point.value;//attributesModel()->data( sourceIndex ).toDouble();
-            // To reverse the y-values, we need to get the upper y-value bound
-            const double topValue = calculateDataBoundaries().second.y() - 1;
-            QPointF leftPoint =  ctx->coordinatePlane()->translate( QPointF( 0, topValue - point.key + 0.5 ) );
-            QPointF rightPoint = ctx->coordinatePlane()->translate( QPointF( value, topValue - point.key ) );
-            const double barHeight = rightPoint.x() - leftPoint.x();
-            leftPoint.setY( leftPoint.y() + offset );
-            const QRectF rect( leftPoint, QSizeF( barHeight, barWidth ) );
+            QPointF topPoint = ctx->coordinatePlane()->translate( QPointF( value, rowCount - (point.key + 0.5) ) );
+            QPointF bottomPoint =  ctx->coordinatePlane()->translate( QPointF( 0, rowCount - point.key ) );
+            const double barHeight = topPoint.x() - bottomPoint.x();
+            topPoint.ry() += offset;
+            topPoint.rx() -= barHeight;
+            const QRectF rect( topPoint, QSizeF( barHeight, barWidth ) );
             appendDataValueTextInfoToList( diagram(), list, sourceIndex, PositionPoints( rect ),
-                                           Position::NorthEast, Position::SouthWest,
+                                           Position::NorthWest, Position::SouthEast,
                                            point.value );
             paintBars( ctx, sourceIndex, rect, maxDepth );
-            
-            offset -= barWidth + spaceBetweenBars;
         }
     }
     paintDataValueTextsAndMarkers(  diagram(),  ctx,  list,  false );
