@@ -131,7 +131,7 @@ void PercentLyingBarDiagram::paint( PaintContext* ctx )
     if ( ba.useFixedValueBlockGap() )
         spaceBetweenGroups += ba.fixedValueBlockGap();
 
-    calculateValueAndGapWidths( colCount, rowCount,groupWidth,
+    calculateValueAndGapWidths( rowCount, colCount,groupWidth,
                                 barWidth, spaceBetweenBars, spaceBetweenGroups );
     
     DataValueTextInfoList list;
