@@ -78,6 +78,18 @@ void MainWindow::on_barTypeCB_currentIndexChanged( const QString & text )
     m_chart->update();
 }
 
+void MainWindow::on_barOrientationCB_currentIndexChanged( const QString & text )
+{
+    if ( text == "Vertical" )
+        m_bars->setOrientation( Qt::Vertical );
+    else if ( text == "Horizontal" )
+        m_bars->setOrientation( Qt::Horizontal );
+    else
+        qWarning (" Does not match any orientation");
+
+    m_chart->update();
+}
+
 
 void MainWindow::on_paintValuesCB_toggled( bool checked )
 {
