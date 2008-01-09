@@ -171,7 +171,7 @@ Qt::Alignment LeveyJenningsDiagram::sensorChangedSymbolPosition() const
 /**
  * Sets the date/time of all fluidics pack changes to \a changes.
  */
-void LeveyJenningsDiagram::setFluidicsPackChanges( const QVector< QDateTime > changes )
+void LeveyJenningsDiagram::setFluidicsPackChanges( const QVector< QDateTime >& changes )
 {
     if( d->fluidicsPackChanges == changes )
         return;
@@ -191,7 +191,7 @@ QVector< QDateTime > LeveyJenningsDiagram::fluidicsPackChanges() const
 /**
  * Sets the date/time of all sensor changes to \a changes.
  */
-void LeveyJenningsDiagram::setSensorChanges( const QVector< QDateTime > changes )
+void LeveyJenningsDiagram::setSensorChanges( const QVector< QDateTime >& changes )
 {
     if( d->sensorChanges == changes )
         return;
@@ -366,8 +366,11 @@ void LeveyJenningsDiagram::calculateMeanAndStandardDeviation() const
 
     for( int row = 0; row < rowCount; ++row )
     {
-        const double value = m.data( m.index( row, 1, rootIndex() ) ).toDouble();
-        if( static_cast< int >( value ) == 0 )
+        const QVariant var = m.data( m.index( row, 1, rootIndex() ) );
+        if( !var.isValid() )
+            continue;
+        const double value = var.toDouble();
+        if( ISNAN( value ) )
             continue;
         values << value;
     }
@@ -465,6 +468,8 @@ void LeveyJenningsDiagram::drawChanges( PaintContext* ctx )
 /** \reimpl */
 void LeveyJenningsDiagram::paint( PaintContext* ctx )
 {
+    d->reverseMapper.clear();
+
     // note: Not having any data model assigned is no bug
     //       but we can not draw a diagram then either.
     if ( !checkInvariants( true ) ) return;
@@ -525,6 +530,7 @@ void LeveyJenningsDiagram::paint( PaintContext* ctx )
             painter->setPen( newPen );
             painter->drawLine( prevPoint, point );
             painter->setPen( pen );
+            d->reverseMapper.addLine( valueIndex.row(), valueIndex.column(), prevPoint, point );
         }
         else if( row > 0 )
         {
@@ -533,7 +539,14 @@ void LeveyJenningsDiagram::paint( PaintContext* ctx )
 
         if( value <= d->expectedMeanValue + 4 * d->expectedStandardDeviation &&
             value >= d->expectedMeanValue - 4 * d->expectedStandardDeviation )
-            drawDataPointSymbol( ctx, QPointF( xValue, value ), ok );
+        {
+            const QPointF location( xValue, value );
+            drawDataPointSymbol( ctx, location, ok );
+            d->reverseMapper.addCircle( valueIndex.row(), 
+                                        valueIndex.column(), 
+                                        ctx->coordinatePlane()->translate( location ),
+                                        iconRect().size() );
+        }
 
         if( selectionModel()->currentIndex() == lotIndex )
         {
@@ -640,7 +653,7 @@ void LeveyJenningsDiagram::drawFluidicsPackChangedSymbol( PaintContext* ctx, con
  */
 QRectF LeveyJenningsDiagram::iconRect() const
 {
-    Measure m( 12.5, KDChartEnums::MeasureCalculationModeAuto, KDChartEnums::MeasureOrientationAuto );
+    const Measure m( 12.5, KDChartEnums::MeasureCalculationModeAuto, KDChartEnums::MeasureOrientationAuto );
     TextAttributes test;
     test.setFontSize( m );
     const QFontMetrics fm( test.calculatedFont( coordinatePlane()->parent(), KDChartEnums::MeasureOrientationAuto ) );

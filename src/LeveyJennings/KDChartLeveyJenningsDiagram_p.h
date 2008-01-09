@@ -55,7 +55,7 @@ namespace KDChart {
  */
     class LeveyJenningsDiagram::Private : public LineDiagram::Private
     {
-
+        friend class LeveyJenningsDiagram;
     public:
         Private();
         Private( const Private& rhs );

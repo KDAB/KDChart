@@ -94,10 +94,10 @@ public:
     float calculatedMeanValue() const;
     float calculatedStandardDeviation() const;
 
-    void setFluidicsPackChanges( const QVector< QDateTime > changes );
+    void setFluidicsPackChanges( const QVector< QDateTime >& changes );
     QVector< QDateTime > fluidicsPackChanges() const;
 
-    void setSensorChanges( const QVector< QDateTime > changes );
+    void setSensorChanges( const QVector< QDateTime >& changes );
     QVector< QDateTime > sensorChanges() const;
 
     void setScanLinePen( const QPen& pen );
