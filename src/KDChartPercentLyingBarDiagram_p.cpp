@@ -156,7 +156,7 @@ void PercentLyingBarDiagram::paint( PaintContext* ctx )
     }
 
     // calculate stacked percent value
-    for( int col = 0; col < colCount; ++col )
+    for( int row = rowCount - 1; row >= 0; --row )
     {
         double offset = spaceBetweenGroups;
         if( ba.useFixedBarWidth() )
@@ -165,7 +165,7 @@ void PercentLyingBarDiagram::paint( PaintContext* ctx )
         if( offset < 0 )
             offset = 0;
 
-        for( int row = 0; row < rowCount ; ++row )
+        for( int col = 0; col < colCount ; ++col )
         {
         	double threeDOffset = 0.0;
             const CartesianDiagramDataCompressor::CachePosition position( row, col );
