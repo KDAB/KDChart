@@ -156,7 +156,7 @@ void PercentLyingBarDiagram::paint( PaintContext* ctx )
     }
 
     // calculate stacked percent value
-    for( int row = rowCount - 1; row >= 0; --row )
+    for( int curRow = rowCount - 1; curRow >= 0; --curRow )
     {
         double offset = spaceBetweenGroups;
         if( ba.useFixedBarWidth() )
@@ -168,7 +168,7 @@ void PercentLyingBarDiagram::paint( PaintContext* ctx )
         for( int col = 0; col < colCount ; ++col )
         {
         	double threeDOffset = 0.0;
-            const CartesianDiagramDataCompressor::CachePosition position( row, col );
+            const CartesianDiagramDataCompressor::CachePosition position( curRow, col );
             const CartesianDiagramDataCompressor::DataPoint p = compressor().data( position );
             QModelIndex sourceIndex = attributesModel()->mapToSource( p.index );
             ThreeDBarAttributes threeDAttrs = diagram()->threeDBarAttributes( sourceIndex );
@@ -194,19 +194,19 @@ void PercentLyingBarDiagram::paint( PaintContext* ctx )
             // we only take in account positives values for now.
             for( int k = col; k >= 0 ; --k )
             {
-                const CartesianDiagramDataCompressor::CachePosition position( row, k );
+                const CartesianDiagramDataCompressor::CachePosition position( curRow, k );
                 const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
                 stackedValues += qMax( point.value, -point.value );
                 key = point.key;
             }
 
             QPointF point, previousPoint;
-            if(  sumValuesVector.at( row ) != 0 && value > 0 ) {
-            	QPointF dataPoint( ( stackedValues / sumValuesVector.at( row ) * maxValue ), rowCount - key );
+            if(  sumValuesVector.at( curRow ) != 0 && value > 0 ) {
+            	QPointF dataPoint( ( stackedValues / sumValuesVector.at( curRow ) * maxValue ), rowCount - key );
                 point = ctx->coordinatePlane()->translate( dataPoint );
                 point.ry() += offset / 2 + threeDOffset;
 
-                previousPoint = ctx->coordinatePlane()->translate( QPointF( ( ( stackedValues - value) / sumValuesVector.at( row ) * maxValue ), rowCount - key ) );
+                previousPoint = ctx->coordinatePlane()->translate( QPointF( ( ( stackedValues - value) / sumValuesVector.at( curRow ) * maxValue ), rowCount - key ) );
             }
             
             const double barHeight = point.x() - previousPoint.x();
