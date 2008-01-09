@@ -22,4 +22,5 @@ SUBDIRS		= tools \
                   Plane \
                   TernaryCharts \
                   Plotter \
+                  LeveyJennings \
                   Demo
