@@ -77,6 +77,7 @@ private:
     bool useDefaultTextAttributes;
     Position position;
     QRect geometry;
+    QMap< double, QString > annotations;
     mutable QStringList cachedHeaderLabels;
     mutable qreal cachedLabelHeight;
     mutable int cachedFontHeight;

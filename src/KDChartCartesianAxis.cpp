@@ -643,9 +643,47 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
         if ( isAbscissa() ) {
 
+            if( !d->annotations.isEmpty() )
+            {
+                const QList< double > values = d->annotations.keys();
+                KDAB_FOREACH( const double v, values )
+                {
+                   QPointF topPoint( v, 0.0 );
+                   QPointF bottomPoint = topPoint;
+                   topPoint = plane->translate( topPoint );
+                   bottomPoint = plane->translate( bottomPoint );
+                   topPoint.setY( rulerRef.y() + tickLength() );
+                   bottomPoint.setY( rulerRef.y() );
+
+                   ptr->drawLine( topPoint, bottomPoint );
+
+                   labelItem->setText( d->annotations[ v ] );
+                   const QSize size( labelItem->sizeHint() );
+                   labelItem->setGeometry(
+                       QRect(
+                           QPoint(
+                               static_cast<int>( topPoint.x() - size.width() / 2 ),
+                               static_cast<int>( topPoint.y() +
+                                               ( position() == Bottom
+                                                   ? halfFontHeight
+                                                   : ((halfFontHeight + size.height()) * -1.0) ) ) ),
+                           size ) );
+
+                   QRect labelGeo = labelItem->geometry();
+                   // if our item would only half fit, we disable clipping for that one
+                   if( labelGeo.left() < geoRect.left() && labelGeo.right() > geoRect.left() )
+                       ptr->setClipping( false );
+                   else if( labelGeo.left() < geoRect.right() && labelGeo.right() > geoRect.right() )
+                       ptr->setClipping( false );
+
+                   labelItem->paint( ptr );
+                }
+            }
+
+
             // If we have a labels list AND a short labels list, we first find out,
             // if there is enough space for the labels: if not, use the short labels.
-            if( drawLabels && hardLabelsCount > 0 && shortLabelsCount > 0 ){
+            if( drawLabels && hardLabelsCount > 0 && shortLabelsCount > 0 && d->annotations.isEmpty() ){
                 bool labelsAreOverlapping = false;
                 int iLabel = 0;
                 qreal i = minValueX;
@@ -682,7 +720,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
             qreal labelDiff = dimX.stepWidth;
             //      qDebug() << "initial labelDiff " << labelDiff;
-            if ( drawLabels )
+            if ( drawLabels && d->annotations.isEmpty() )
             {
 
                 qreal i = minValueX;
@@ -764,7 +802,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
             qreal labelStep = 0.0;
             //    qDebug() << "dimX.stepWidth:" << dimX.stepWidth  << "labelDiff:" << labelDiff;
             //dimX.stepWidth = 0.5;
-            while( i <= maxValueX ) {
+            while( i <= maxValueX && d->annotations.isEmpty() )
+            {
                 // Line charts: we want the first tick to begin at 0.0 not at 0.5 otherwise labels and
                 // values does not fit each others
                 QPointF topPoint ( i + ( isBarDiagram ? 0.5 : 0.0 ), 0.0 );
@@ -836,8 +875,6 @@ void CartesianAxis::paintCtx( PaintContext* context )
                                 ptr->setClipping( false );
                             else if( labelGeo.left() < geoRect.right() && labelGeo.right() > geoRect.right() )
                                 ptr->setClipping( false );
-
-                            labelItem->setGeometry( labelGeo );
 
                            
                             if( !isLogarithmicX )
@@ -950,6 +987,37 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 // Second - Paint the labels
                 labelValue = minValueY;
                 //qDebug() << "axis labels starting at" << labelValue << "step width" << step;
+                if( !d->annotations.isEmpty() )
+                {
+                    const QList< double > annotations = d->annotations.keys();
+                    KDAB_FOREACH( const double annotation, annotations )
+                    {
+                        QPointF leftPoint = plane->translate( QPointF( 0.0, annotation ) );
+                        QPointF rightPoint = plane->translate( QPointF( 0.0, annotation ) );
+                        leftPoint.setX( rulerRef.x() + tickLength() );
+                        rightPoint.setX( rulerRef.x() );
+                
+                        const qreal translatedValue = rightPoint.y();
+                        const bool bIsVisibleLabel =
+                                ( translatedValue >= geoRect.top() && translatedValue <= geoRect.bottom() && !isLogarithmicY || labelValue != 0.0 );
+
+                        if( bIsVisibleLabel )
+                        {
+                            ptr->drawLine( leftPoint, rightPoint );
+                            labelItem->setText( d->annotations[ annotation ] );
+                            const QSize labelSize( labelItem->sizeHint() );
+                            const int x =
+                                static_cast<int>( leftPoint.x() + met.height() * ( position() == Left ? -0.5 : 0.5) )
+                                - ( position() == Left ? labelSize.width() : 0/*(labelSize.width() - maxLabelsWidth)*/ );
+                            const int y =
+                                static_cast<int>( leftPoint.y() - ( met.ascent() + met.descent() ) * 0.6 );
+                            labelItem->setGeometry( QRect( QPoint( x, y ), labelSize ) );
+                            labelItem->paint( ptr );
+                        }
+                    }
+                }
+                else
+                {
                 while( labelValue <= maxLimit ) {
                     //qDebug() << "value now" << labelValue;
                     const QString labelText = diagram()->unitPrefix( static_cast< int >( labelValue ), Qt::Vertical, true ) + 
@@ -970,7 +1038,6 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         ptr->drawLine( leftPoint, rightPoint );
                         drawnYTicks.append( static_cast<int>( leftPoint.y() ) );
                         const QSize labelSize( labelItem->sizeHint() );
-                        leftPoint.setX( leftPoint.x() );
                         const int x =
                             static_cast<int>( leftPoint.x() + met.height() * ( position() == Left ? -0.5 : 0.5) )
                             - ( position() == Left ? labelSize.width() : (labelSize.width() - maxLabelsWidth) );
@@ -982,6 +1049,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
                     calculateNextLabel( labelValue, step, isLogarithmicY, dimensions.last().start );
                 }
+                }
             }
         }
         delete labelItem;
@@ -989,7 +1057,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
     }
 
     // this draws the subunit rulers
-    if ( drawSubUnitRulers ) {
+    if ( drawSubUnitRulers && d->annotations.isEmpty() ) {
         d->drawSubUnitRulers( ptr, plane, dim, rulerRef, isAbscissa() ? drawnXTicks : drawnYTicks );
     }
 
@@ -1097,7 +1165,18 @@ QSize CartesianAxis::maximumSize() const
         qreal h = 0.0;
         if( drawLabels ){
             // if there're no label strings, we take the biggest needed number as height
-            if ( labels().count() ){
+            if( !d->annotations.isEmpty() )
+            {
+                const QStringList strings = d->annotations.values();
+                KDAB_FOREACH( const QString& string, strings )
+                {
+                    labelItem.setText( string );
+                    const QSize siz = labelItem.sizeHint();
+                    h = qMax( h, static_cast< qreal >( siz.height() ) );
+                }
+            }
+            else if ( !labels().isEmpty() )
+            {
                 // find the longest label text:
                 const int first=0;
                 const int last=labels().count()-1;
@@ -1111,7 +1190,9 @@ QSize CartesianAxis::maximumSize() const
                                       leftOverlap, rightOverlap );
 
                 }
-            }else{
+            }
+            else
+            {
                 QStringList headerLabels = d->diagram()->itemRowLabels();
                 const int headerLabelsCount = headerLabels.count();
                 if( headerLabelsCount ){
@@ -1182,7 +1263,17 @@ QSize CartesianAxis::maximumSize() const
         if( drawLabels ){
             // if there're no label strings, we loop through the values
             // taking the longest (not largest) number - e.g. 0.00001 is longer than 100
-            if ( labels().count() == 0 )
+            if( !d->annotations.isEmpty() )
+            {
+                const QStringList strings = d->annotations.values();
+                KDAB_FOREACH( const QString& string, strings )
+                {
+                    labelItem.setText( string );
+                    const QSize siz = labelItem.sizeHint();
+                    w = qMax( w, static_cast< qreal >( siz.width() ) );
+                }
+            }
+            else if( labels().isEmpty() )
             {
                 const DataDimension dimY = AbstractGrid::adjustedLowerUpperRange( plane->gridDimensionsList().last(), true, true );
                 const double step = dimY.stepWidth;
@@ -1295,8 +1386,19 @@ int CartesianAxis::tickLength( bool subUnitTicks ) const
     return result;
 }
 
+QMap< double, QString > CartesianAxis::annotations() const
+{
+    return d->annotations;
+}
 
+void CartesianAxis::setAnnotations( const QMap< double, QString >& annotations )
+{
+    if( d->annotations == annotations )
+        return;
 
+    d->annotations = annotations;
+    update();
+}
 
 
 /* unused code from KDChartCartesianAxis.h for using a push-model:
