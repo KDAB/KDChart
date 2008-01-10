@@ -337,6 +337,7 @@ DataDimensionsList CartesianGrid::calculateGrid(
         //qDebug() << "CartesianGrid::calculateGrid()  raw data y-range  :" << l.last().end - l.last().start;
         //qDebug() << "CartesianGrid::calculateGrid()  translated y-range:" << translatedTopRight.y() - translatedBottomLeft.y();
 
+        /* Code is obsolete. The dataset dimension of the diagram should *never* be > 1.
         if( l.first().isCalculated
             && plane->autoAdjustGridToZoom()
             && plane->axesCalcModeX() == CartesianCoordinatePlane::Linear
@@ -345,6 +346,7 @@ DataDimensionsList CartesianGrid::calculateGrid(
             l.first().start = translatedBottomLeft.x();
             l.first().end   = translatedTopRight.x();
         }
+        */
 
         const GridAttributes gridAttrsX( plane->gridAttributes( Qt::Horizontal ) );
         const GridAttributes gridAttrsY( plane->gridAttributes( Qt::Vertical ) );
@@ -383,19 +385,25 @@ DataDimensionsList CartesianGrid::calculateGrid(
                 l.last().start        = minMaxY.start;
                 l.last().end          = minMaxY.end;
                 l.last().stepWidth    = dimY.stepWidth;
+                l.last().subStepWidth    = dimY.subStepWidth;
                 //qDebug() << "CartesianGrid::calculateGrid()  final grid y-range:" << l.last().end - l.last().start << "   step width:" << l.last().stepWidth << endl;
                 // calculate some reasonable subSteps if the
                 // user did not set the sub grid but did set
                 // the stepWidth.
-                if ( dimY.subStepWidth == 0 )
-                    l.last().subStepWidth = dimY.stepWidth/2;
-                else
-                    l.last().subStepWidth = dimY.subStepWidth;
+                
+                // FIXME (Johannes)
+                // the last (y) dimension is not always the dimension for the ordinate!
+                // since there's no way to check for the orientation of this dimension here,
+                // we cannot automatically assume substep values
+                //if ( dimY.subStepWidth == 0 )
+                //    l.last().subStepWidth = dimY.stepWidth/2;
+                //else
+                //    l.last().subStepWidth = dimY.subStepWidth;
             }
         }
     }
-    //qDebug() << "CartesianGrid::calculateGrid()  final grid Y-range:" << l.last().end - l.last().start << "   step width:" << l.last().stepWidth;
-    //qDebug() << "CartesianGrid::calculateGrid()  final grid X-range:" << l.first().end - l.first().start << "   step width:" << l.first().stepWidth;
+    //qDebug() << "CartesianGrid::calculateGrid()  final grid Y-range:" << l.last().end - l.last().start << "   substep width:" << l.last().subStepWidth;
+    //qDebug() << "CartesianGrid::calculateGrid()  final grid X-range:" << l.first().end - l.first().start << "   substep width:" << l.first().subStepWidth;
 
     return l;
 }
