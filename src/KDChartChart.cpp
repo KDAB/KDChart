@@ -28,7 +28,7 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <QHash>
-
+#include <QToolTip>
 #include <QPainter>
 #include <QPaintEvent>
 #include <QLayoutItem>
@@ -1483,4 +1483,31 @@ void Chart::mouseReleaseEvent( QMouseEvent* event )
     }
 
     d->mouseClickedPlanes.clear();
+}
+
+bool Chart::event( QEvent* event )
+{
+    switch( event->type() )
+    {
+    case QEvent::ToolTip:
+    {
+        const QHelpEvent* const helpEvent = static_cast< QHelpEvent* >( event );
+        KDAB_FOREACH( const AbstractCoordinatePlane* const plane, d->coordinatePlanes )
+        {
+            KDAB_FOREACH( const AbstractDiagram* const diag, plane->diagrams() )
+            {
+                const QModelIndex index = diag->indexAt( helpEvent->pos() );
+                const QVariant toolTip = index.data( Qt::ToolTipRole );
+                if( toolTip.isValid() )
+                {
+                    QToolTip::showText( helpEvent->globalPos(), toolTip.toString() );
+                    return true;
+                }
+            }
+        }
+        // fall-through intended
+    }
+    default:
+        return QWidget::event( event );
+    }
 }
