@@ -215,7 +215,7 @@ void PercentLyingBarDiagram::paint( PaintContext* ctx )
 
             const QRectF rect( point, QSizeF( barHeight, barWidth ) );
             appendDataValueTextInfoToList( diagram(), list, sourceIndex, PositionPoints( rect ),
-                                              Position::NorthWest, Position::SouthEast,
+                                              Position::NorthEast, Position::SouthWest,
                                               value );
             paintBars( ctx, sourceIndex, rect, maxDepth );
         }
