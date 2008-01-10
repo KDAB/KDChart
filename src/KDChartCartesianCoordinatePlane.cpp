@@ -37,6 +37,7 @@
 #include "KDChartGridAttributes.h"
 #include "KDChartPaintContext.h"
 #include "KDChartPainterSaver_p.h"
+#include "KDChartBarDiagram.h"
 
 #include <KDABLibFakes>
 
@@ -263,6 +264,18 @@ DataDimensionsList CartesianCoordinatePlane::getDataDimensionsList() const
     DataDimensionsList l;
     const AbstractCartesianDiagram* dgr
         = diagrams().isEmpty() ? 0 : dynamic_cast<const AbstractCartesianDiagram*> (diagrams().first() );
+    if( dgr && dgr->referenceDiagram() )
+    	dgr = dgr->referenceDiagram();
+	const BarDiagram *barDiagram = qobject_cast< const BarDiagram* >( dgr );
+	
+	// note:
+	// It does make sense to retrieve the orientation from the first diagram. This is because
+	// a coordinate plane can either be for horizontal *or* for vertical diagrams. Both at the
+	// same time won't work, and thus the orientation for all diagrams is the same as for the first one.
+	const Qt::Orientation diagramOrientation = barDiagram != 0 ? barDiagram->orientation() : Qt::Vertical;
+	
+    const bool diagramIsVertical = diagramOrientation == Qt::Vertical;
+        
 
     if( dgr ){
         const QRectF r( calculateRawDataBoundingRect() );
@@ -276,7 +289,7 @@ DataDimensionsList CartesianCoordinatePlane::getDataDimensionsList() const
         l.append(
             DataDimension(
                 r.left(), r.right(),
-                dgr->datasetDimension() > 1,
+                diagramIsVertical ? ( dgr->datasetDimension() > 1 ) : true,
                 axesCalcModeX(),
                 gaH.gridGranularitySequence(),
                 gaH.gridStepWidth(),
@@ -285,7 +298,7 @@ DataDimensionsList CartesianCoordinatePlane::getDataDimensionsList() const
         l.append(
             DataDimension(
                 r.bottom(), r.top(),
-                true,
+                diagramIsVertical ? true : ( dgr->datasetDimension() > 1 ),
                 axesCalcModeY(),
                 gaV.gridGranularitySequence(),
                 gaV.gridStepWidth(),
