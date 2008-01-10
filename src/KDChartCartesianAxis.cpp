@@ -423,7 +423,6 @@ void CartesianAxis::paintCtx( PaintContext* context )
 	const BarDiagram *barDiagram = qobject_cast< const BarDiagram* >( dia );
 	const Qt::Orientation diagramOrientation = barDiagram != 0 ? barDiagram->orientation() : Qt::Vertical;
     const bool diagramIsVertical = diagramOrientation == Qt::Vertical;
-    const bool referenceDiagramIsPercentLyingBarDiagram = barDiagram != 0 && barDiagram->type() == BarDiagram::Percent;
 
     /*
      * let us paint the labels at a
@@ -1216,6 +1215,13 @@ QSize CartesianAxis::maximumSize() const
     if ( !d->diagram() )
         return result;
 
+    const AbstractCartesianDiagram * dia = qobject_cast< const AbstractCartesianDiagram * >( d->diagram() );
+    if( dia && dia->referenceDiagram() )
+        dia = dia->referenceDiagram();
+	const BarDiagram *barDiagram = qobject_cast< const BarDiagram* >( dia );
+	const Qt::Orientation diagramOrientation = barDiagram != 0 ? barDiagram->orientation() : Qt::Vertical;
+    const bool diagramIsVertical = diagramOrientation == Qt::Vertical;
+    
     const TextAttributes labelTA = textAttributes();
     const bool drawLabels = labelTA.isVisible();
 
@@ -1234,23 +1240,21 @@ QSize CartesianAxis::maximumSize() const
 
     const qreal labelGap =
         drawLabels
-        ? ( fm.height() / 3.0)
+        ? ( (diagramIsVertical ? fm.height() : fm.averageCharWidth()) / 3.0)
         : 0.0;
+    const QFontMetricsF titleFM = QFontMetricsF( titleItem.realFont(), GlobalMeasureScaling::paintDevice() );
     const qreal titleGap =
         drawTitle
-        ? (QFontMetricsF( titleItem.realFont(), GlobalMeasureScaling::paintDevice() ).height() / 3.0)
+        ? ( (diagramIsVertical ? titleFM.height() : titleFM.averageCharWidth()) / 3.0)
         : 0.0;
 
-    switch ( position() )
-    {
-    case Bottom:
-    case Top: {
+    if ( isAbscissa() ) {
         const bool isBarDiagram = referenceDiagramIsBarDiagram(d->diagram());
         int leftOverlap = 0;
         int rightOverlap = 0;
 
-        qreal w = 10.0;
-        qreal h = 0.0;
+        qreal w = diagramIsVertical ? 10.0 : 0.0;
+        qreal h = diagramIsVertical ? 0.0 : 10.0;
         if( drawLabels ){
             // if there're no label strings, we take the biggest needed number as height
             if( !d->annotations.isEmpty() )
@@ -1273,8 +1277,11 @@ QSize CartesianAxis::maximumSize() const
                 {
                     labelItem.setText( customizedLabel(labelsList[ i ]) );
                     const QSize siz = labelItem.sizeHint();
-                    h = qMax( h, static_cast<qreal>(siz.height()) );
-                    calculateOverlap( i, first, last, siz.width(), isBarDiagram,
+                    if ( diagramIsVertical )
+                    	h = qMax( h, static_cast<qreal>(siz.height()) );
+                    else
+                    	w = qMax( w, static_cast<qreal>(siz.width()) );
+                    calculateOverlap( i, first, last, diagramIsVertical ? siz.width() : siz.height(), isBarDiagram,
                                       leftOverlap, rightOverlap );
 
                 }
@@ -1284,11 +1291,17 @@ QSize CartesianAxis::maximumSize() const
                 QStringList headerLabels = d->diagram()->itemRowLabels();
                 const int headerLabelsCount = headerLabels.count();
                 if( headerLabelsCount ){
-                    if( d->cachedHeaderLabels == headerLabels && d->cachedFontHeight == fm.height() )
-                        h = d->cachedLabelHeight;
-                    else {
+                    if( d->cachedHeaderLabels == headerLabels && ( diagramIsVertical ? d->cachedFontHeight == fm.height() : d->cachedFontWidth == fm.averageCharWidth() )) {
+                    	if ( diagramIsVertical )
+                    		h = d->cachedLabelHeight;
+                    	else
+                    		w = d->cachedLabelWidth;
+                    } else {
                         d->cachedHeaderLabels = headerLabels;
-                        d->cachedFontHeight = fm.height();
+                        if ( diagramIsVertical )
+                        	d->cachedFontWidth = fm.averageCharWidth();
+                        else
+                        	d->cachedFontHeight = fm.height();
                         const bool useFastCalcAlgorithm
                             = (strcmp( metaObject()->className(), "KDChart::CartesianAxis" ) == 0);
                         const int first=0;
@@ -1299,18 +1312,27 @@ QSize CartesianAxis::maximumSize() const
                         {
                             labelItem.setText( customizedLabel(headerLabels[ i ]) );
                             const QSize siz = labelItem.sizeHint();
-                            h = qMax( h, static_cast<qreal>(siz.height()) );
-                            calculateOverlap( i, first, last, siz.width(), isBarDiagram,
+                            if ( diagramIsVertical ) {
+                            	h = qMax( h, static_cast<qreal>(siz.height()) );
+                                d->cachedLabelHeight = h;
+                            } else {
+                                d->cachedLabelWidth = w;
+                            	w = qMax( w, static_cast<qreal>(siz.width()) );
+                            }
+                            calculateOverlap( i, first, last, diagramIsVertical ? siz.width() : siz.height(), isBarDiagram,
                                             leftOverlap, rightOverlap );
                         }
-                        d->cachedLabelHeight = h;
                     }
                 }else{
                     labelItem.setText(
                             customizedLabel(
-                                    QString::number( plane->gridDimensionsList().first().end, 'f', 0 )));
+                                    QString::number( diagramIsVertical ? plane->gridDimensionsList().first().end
+                                    								   : plane->gridDimensionsList().last().end, 'f', 0 )));
                     const QSize siz = labelItem.sizeHint();
-                    h = siz.height();
+                    if ( diagramIsVertical )
+                    	h = siz.height();
+                    else
+                    	w = siz.width();
                     calculateOverlap( 0, 0, 0, siz.width(), isBarDiagram,
                                       leftOverlap, rightOverlap );
                 }
@@ -1321,11 +1343,19 @@ QSize CartesianAxis::maximumSize() const
         // space for a possible title:
         if ( drawTitle ) {
             // we add the title height and leave a little gap between axis labels and axis title
-            h += titleItem.sizeHint().height() + titleGap;
-            w = titleItem.sizeHint().width() + 2.0;
+        	if ( diagramIsVertical ) {
+        		h += titleItem.sizeHint().height() + titleGap;
+        		w = titleItem.sizeHint().width() + 2.0;
+        	} else {
+        		h = titleItem.sizeHint().height() + 2.0;
+        		w += titleItem.sizeHint().width() + titleGap;
+        	}
         }
         // space for the ticks
-        h += qAbs( tickLength() ) * 3.0;
+        if ( diagramIsVertical )
+        	h += qAbs( tickLength() ) * 3.0;
+        else
+        	w += qAbs( tickLength() ) * 3.0;
         result = QSize ( static_cast<int>( w ), static_cast<int>( h ) );
 
 
@@ -1339,15 +1369,12 @@ QSize CartesianAxis::maximumSize() const
                                SLOT(adjustLeftRightGridColumnWidths()));
         }
         */
-    }
-        break;
-    case Left:
-    case Right: {
+    } else {
         int topOverlap = 0;
         int bottomOverlap = 0;
 
-        qreal w = 0.0;
-        qreal h = 10.0;
+        qreal w = diagramIsVertical ? 0.0 : 10.0;
+        qreal h = diagramIsVertical ? 10.0 : 0.0;
         if( drawLabels ){
             // if there're no label strings, we loop through the values
             // taking the longest (not largest) number - e.g. 0.00001 is longer than 100
@@ -1363,7 +1390,9 @@ QSize CartesianAxis::maximumSize() const
             }
             else if( labels().isEmpty() )
             {
-                const DataDimension dimY = AbstractGrid::adjustedLowerUpperRange( plane->gridDimensionsList().last(), true, true );
+                const DataDimension dimY = AbstractGrid::adjustedLowerUpperRange(
+                		diagramIsVertical ? plane->gridDimensionsList().last()
+                				          : plane->gridDimensionsList().first(), true, true );
                 const double step = dimY.stepWidth;
                 const qreal minValue = dimY.start;
                 const qreal maxValue = dimY.end;
@@ -1371,15 +1400,17 @@ QSize CartesianAxis::maximumSize() const
                 qreal labelValue = minValue;
 
                 while( labelValue <= maxValue ) {
-                    const QString labelText = diagram()->unitPrefix( static_cast< int >( labelValue ), Qt::Vertical, true ) +
+                    const QString labelText = diagram()->unitPrefix( static_cast< int >( labelValue ), diagramOrientation, true ) +
                                             QString::number( labelValue ) +
-                                            diagram()->unitSuffix( static_cast< int >( labelValue ), Qt::Vertical, true );
+                                            diagram()->unitSuffix( static_cast< int >( labelValue ), diagramOrientation, true );
                     labelItem.setText( customizedLabel( labelText ) );
 
                     const QSize siz = labelItem.sizeHint();
-                    qreal lw = siz.width();
-                    w = qMax( w, lw );
-                    calculateOverlap( 0, 0, 0, siz.height(), false,// bar diagram flag is ignored for Ordinates
+                    if ( diagramIsVertical )
+                    	w = qMax( w, (qreal)siz.width() );
+                    else
+                    	h = qMax( h, (qreal)siz.height() );
+                    calculateOverlap( 0, 0, 0, diagramIsVertical ? siz.height() : siz.width(), false,// bar diagram flag is ignored for Ordinates
                                     topOverlap, bottomOverlap );
                     calculateNextLabel( labelValue, step, isLogarithmicY, plane->gridDimensionsList().last().start );
                 }
@@ -1392,9 +1423,11 @@ QSize CartesianAxis::maximumSize() const
                 {
                     labelItem.setText( customizedLabel(labelsList[ i ]) );
                     const QSize siz = labelItem.sizeHint();
-                    qreal lw = siz.width();
-                    w = qMax( w, lw );
-                    calculateOverlap( 0, 0, 0, siz.height(), false,// bar diagram flag is ignored for Ordinates
+                    if ( diagramIsVertical )
+                                        	w = qMax( w, (qreal)siz.width() );
+                                        else
+                                        	h = qMax( h, (qreal)siz.height() );
+                    calculateOverlap( 0, 0, 0, diagramIsVertical ? siz.height() : siz.width(), false,// bar diagram flag is ignored for Ordinates
                                       topOverlap, bottomOverlap );
                 }
             }
@@ -1404,12 +1437,20 @@ QSize CartesianAxis::maximumSize() const
         // space for a possible title:
         if ( drawTitle ) {
             // we add the title height and leave a little gap between axis labels and axis title
-            w += titleItem.sizeHint().width() + titleGap;
-            h = titleItem.sizeHint().height() + 2.0;
+        	if ( diagramIsVertical ) {
+        		w += titleItem.sizeHint().width() + titleGap;
+        		h = titleItem.sizeHint().height() + 2.0;
+        	} else {
+        		w = titleItem.sizeHint().width() + 2.0;
+        		h += titleItem.sizeHint().height() + titleGap;
+        	}
             //qDebug() << "left/right axis title item size-hint:" << titleItem.sizeHint();
         }
         // space for the ticks
-        w += qAbs( tickLength() ) * 3.0;
+        if ( diagramIsVertical )
+        	w += qAbs( tickLength() ) * 3.0;
+        else
+        	h += qAbs( tickLength() ) * 3.0;
 
         result = QSize ( static_cast<int>( w ), static_cast<int>( h ) );
         //qDebug() << "left/right axis width:" << result << "   w:" << w;
@@ -1426,11 +1467,6 @@ QSize CartesianAxis::maximumSize() const
         }
         */
     }
-        break;
-    default:
-        Q_ASSERT( false ); // all positions need to be handled
-        break;
-    };
 //qDebug() << "*******************" << result;
     //result=QSize(0,0);
     return result;

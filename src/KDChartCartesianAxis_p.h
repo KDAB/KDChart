@@ -80,7 +80,9 @@ private:
     QMap< double, QString > annotations;
     mutable QStringList cachedHeaderLabels;
     mutable qreal cachedLabelHeight;
+    mutable qreal cachedLabelWidth;
     mutable int cachedFontHeight;
+    mutable int cachedFontWidth;
 };
 
 inline CartesianAxis::CartesianAxis( Private * p, AbstractDiagram* diagram )
