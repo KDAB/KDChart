@@ -697,26 +697,44 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 const QList< double > values = d->annotations.keys();
                 KDAB_FOREACH( const double v, values )
                 {
-                   QPointF topPoint( v, 0.0 );
+                   QPointF topPoint = diagramIsVertical ? QPointF( v, 0.0 ) : QPointF( 0.0, v );
                    QPointF bottomPoint = topPoint;
                    topPoint = plane->translate( topPoint );
                    bottomPoint = plane->translate( bottomPoint );
-                   topPoint.setY( rulerRef.y() + tickLength() );
-                   bottomPoint.setY( rulerRef.y() );
+                   if ( diagramIsVertical ) {
+                	   topPoint.setY( rulerRef.y() + tickLength() );
+                	   bottomPoint.setY( rulerRef.y() );
+                   } else {
+                	   topPoint.setX( rulerRef.x() + tickLength() );
+                	   bottomPoint.setX( rulerRef.x() );
+                   }
 
                    ptr->drawLine( topPoint, bottomPoint );
 
                    labelItem->setText( d->annotations[ v ] );
                    const QSize size( labelItem->sizeHint() );
-                   labelItem->setGeometry(
-                       QRect(
-                           QPoint(
-                               static_cast<int>( topPoint.x() - size.width() / 2 ),
-                               static_cast<int>( topPoint.y() +
-                                               ( position() == Bottom
-                                                   ? halfFontHeight
-                                                   : ((halfFontHeight + size.height()) * -1.0) ) ) ),
-                           size ) );
+                   if ( diagramIsVertical ) {
+					labelItem->setGeometry(
+					    QRect(
+					        QPoint(
+					            static_cast<int>( topPoint.x() - size.width() / 2.0 ),
+					            static_cast<int>( topPoint.y() +
+					                            ( position() == Bottom
+					                                ? halfFontHeight
+					                                : ((halfFontHeight + size.height()) * -1.0) ) ) ),
+					        size ) );
+                   } else {
+                    labelItem->setGeometry(
+                        QRect(
+                            QPoint(
+                                static_cast<int>( bottomPoint.x() +
+                                                ( position() == Right
+                                                    ? halfFontWidth
+                                                    : (-halfFontWidth - size.width()) ) ),
+
+        	                    static_cast<int>( topPoint.y() - ( size.height() ) * 0.5 ) ),
+                            size ) );
+                   }
 
                    QRect labelGeo = labelItem->geometry();
                    // if our item would only half fit, we disable clipping for that one
@@ -1062,25 +1080,39 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     const QList< double > annotations = d->annotations.keys();
                     KDAB_FOREACH( const double annotation, annotations )
                     {
-                        QPointF leftPoint = plane->translate( QPointF( 0.0, annotation ) );
-                        QPointF rightPoint = plane->translate( QPointF( 0.0, annotation ) );
-                        leftPoint.setX( rulerRef.x() + tickLength() );
-                        rightPoint.setX( rulerRef.x() );
+                    	QPointF annoPoint = (diagramIsVertical ? QPointF( 0.0, annotation ) : QPointF( annotation, 0.0 ));
+                        QPointF leftPoint = plane->translate( annoPoint );
+                        QPointF rightPoint = plane->translate( annoPoint );
+                        
+                        if ( diagramIsVertical ) {
+                        	leftPoint.setX( rulerRef.x() + tickLength() );
+                        	rightPoint.setX( rulerRef.x() );
+                        } else {
+                        	leftPoint.setY( rulerRef.y() + ((position() == Bottom) ? tickLength() : -tickLength()) );
+                        	rightPoint.setY( rulerRef.y() );
+                        }
                 
-                        const qreal translatedValue = rightPoint.y();
-                        const bool bIsVisibleLabel =
-                                ( translatedValue >= geoRect.top() && translatedValue <= geoRect.bottom() && !isLogarithmicY || labelValue != 0.0 );
+                        const qreal translatedValue = diagramIsVertical ? rightPoint.y() : rightPoint.x();
+                        const bool bIsVisibleLabel = diagramIsVertical ?
+                                ( translatedValue >= geoRect.top() && translatedValue <= geoRect.bottom() && !isLogarithmicY || labelValue != 0.0 )
+                              : ( translatedValue >= geoRect.left() && translatedValue <= geoRect.right() && !isLogarithmicY || labelValue != 0.0 );
 
                         if( bIsVisibleLabel )
                         {
                             ptr->drawLine( leftPoint, rightPoint );
                             labelItem->setText( d->annotations[ annotation ] );
                             const QSize labelSize( labelItem->sizeHint() );
-                            const int x =
-                                static_cast<int>( leftPoint.x() + met.height() * ( position() == Left ? -0.5 : 0.5) )
-                                - ( position() == Left ? labelSize.width() : 0/*(labelSize.width() - maxLabelsWidth)*/ );
-                            const int y =
-                                static_cast<int>( leftPoint.y() - ( met.ascent() + met.descent() ) * 0.6 );
+                            int x, y;
+                            if ( diagramIsVertical ) {
+    	                        x = static_cast<int>( leftPoint.x() + met.height() * ( position() == Left ? -0.5 : 0.5) )
+    	                            - ( position() == Left ? labelSize.width() : (labelSize.width() - maxLabelsWidth) );
+    	                        y = static_cast<int>( leftPoint.y() - ( met.ascent() + met.descent() ) * 0.6 );
+                            } else {
+                            	const qreal halfFontHeight = met.height() * 0.5;
+    	                        x = static_cast<int>( leftPoint.x() - labelSize.width() * 0.5 );
+    	                        y = static_cast<int>( (position() == Bottom ? leftPoint.y() : rightPoint.y()) +
+    	                                                        + ( position() == Bottom ? halfFontHeight : -(halfFontHeight + labelSize.height()) ) );
+                            }
                             labelItem->setGeometry( QRect( QPoint( x, y ), labelSize ) );
                             labelItem->paint( ptr );
                         }
@@ -1264,7 +1296,10 @@ QSize CartesianAxis::maximumSize() const
                 {
                     labelItem.setText( string );
                     const QSize siz = labelItem.sizeHint();
-                    h = qMax( h, static_cast< qreal >( siz.height() ) );
+                    if ( diagramIsVertical )
+                    	h = qMax( h, static_cast< qreal >( siz.height() ) );
+                    else
+                    	w = qMax( w, static_cast< qreal >( siz.width() ) );
                 }
             }
             else if ( !labels().isEmpty() )
@@ -1385,7 +1420,10 @@ QSize CartesianAxis::maximumSize() const
                 {
                     labelItem.setText( string );
                     const QSize siz = labelItem.sizeHint();
-                    w = qMax( w, static_cast< qreal >( siz.width() ) );
+                    if ( diagramIsVertical )
+                    	w = qMax( w, static_cast< qreal >( siz.width() ) );
+                    else
+                    	h = qMax( h, static_cast< qreal >( siz.height() ) );
                 }
             }
             else if( labels().isEmpty() )
