@@ -44,6 +44,7 @@
 #include "KDChartPainterSaver_p.h"
 #include "KDChartPaintContext.h"
 #include "KDChartPrintingParameters.h"
+#include "KDChartChart.h"
 #include "Scenery/ReverseMapper.h"
 
 #include <QPoint>
@@ -103,7 +104,7 @@ namespace KDChart {
             const qreal value )
         {
             const DataValueAttributes attrs( diagram->dataValueAttributes( index ) );
-            if( attrs.isVisible() ) {
+            /*if( attrs.isVisible() )*/ {
                 const bool bValueIsPositive = (value >= 0.0);
                 RelativePosition relPos( attrs.position( bValueIsPositive ) );
                 relPos.setReferencePoints( points );
@@ -154,9 +155,24 @@ namespace KDChart {
                 }
             }
             DataValueTextInfoListIterator it( list );
+            Measure m;
+            m.setValue( 12.0 );
+            TextAttributes ta;
+            ta.setFontSize( m );
             while ( it.hasNext() ) {
                 const DataValueTextInfo& info = it.next();
                 diag->paintDataValueText( ctx->painter(), info.index, info.pos, info.value );
+
+                const QString comment = info.index.data( KDChart::CommentRole ).toString();
+                if( comment.isEmpty() )
+                    continue;
+                TextBubbleLayoutItem item( comment, 
+                                           ta,
+                                           ctx->coordinatePlane()->parent(), 
+                                           KDChartEnums::MeasureOrientationMinimum,
+                                           Qt::AlignHCenter|Qt::AlignVCenter );
+                item.setGeometry( QRect( info.pos.toPoint(), item.sizeHint() ) );
+                item.paint( ctx->painter() );
             }
         }
 

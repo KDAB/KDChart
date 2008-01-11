@@ -96,6 +96,113 @@ void KDChart::AbstractLayoutItem::sizeHintChanged()const
     }
 }
 
+KDChart::TextBubbleLayoutItem::TextBubbleLayoutItem( const QString& text,
+                                         const KDChart::TextAttributes& attributes,
+                                         const QObject* area,
+                                         KDChartEnums::MeasureOrientation orientation,
+                                         Qt::Alignment alignment )
+    : AbstractLayoutItem( alignment ),
+      m_text( new TextLayoutItem( text, attributes, area, orientation, alignment ) )
+{
+}
+
+KDChart::TextBubbleLayoutItem::TextBubbleLayoutItem()
+    : AbstractLayoutItem( Qt::AlignLeft ),
+      m_text( new TextLayoutItem() )
+{
+}
+
+KDChart::TextBubbleLayoutItem::~TextBubbleLayoutItem()
+{
+    delete m_text;
+}
+
+void KDChart::TextBubbleLayoutItem::setAutoReferenceArea( const QObject* area )
+{
+    m_text->setAutoReferenceArea( area );
+}
+
+const QObject* KDChart::TextBubbleLayoutItem::autoReferenceArea() const
+{
+    return m_text->autoReferenceArea();
+}
+
+void KDChart::TextBubbleLayoutItem::setText( const QString& text )
+{
+    m_text->setText( text );
+}
+
+QString KDChart::TextBubbleLayoutItem::text() const
+{
+    return m_text->text();
+}
+
+void KDChart::TextBubbleLayoutItem::setTextAttributes( const TextAttributes& a )
+{
+    m_text->setTextAttributes( a );
+}
+
+KDChart::TextAttributes KDChart::TextBubbleLayoutItem::textAttributes() const
+{
+    return m_text->textAttributes();
+}
+
+bool KDChart::TextBubbleLayoutItem::isEmpty() const
+{
+    return m_text->isEmpty();
+}
+
+Qt::Orientations KDChart::TextBubbleLayoutItem::expandingDirections() const
+{
+    return m_text->expandingDirections();
+}
+
+QSize KDChart::TextBubbleLayoutItem::maximumSize() const
+{
+    const int border = borderWidth();
+    return m_text->maximumSize() + QSize( 2 * border, 2 * border );
+}
+
+QSize KDChart::TextBubbleLayoutItem::minimumSize() const
+{
+    const int border = borderWidth();
+    return m_text->minimumSize() + QSize( 2 * border, 2 * border );
+}
+
+QSize KDChart::TextBubbleLayoutItem::sizeHint() const
+{
+    const int border = borderWidth();
+    return m_text->sizeHint() + QSize( 2 * border, 2 * border );
+}
+
+void KDChart::TextBubbleLayoutItem::setGeometry( const QRect& r )
+{
+    const int border = borderWidth();
+    m_text->setGeometry( r.adjusted( border, border, -border, -border ) );
+}
+
+QRect KDChart::TextBubbleLayoutItem::geometry() const
+{
+    const int border = borderWidth();
+    return m_text->geometry().adjusted( -border, -border, border, border );
+}
+
+void KDChart::TextBubbleLayoutItem::paint( QPainter* painter )
+{
+    const QPen oldPen = painter->pen();
+    const QBrush oldBrush = painter->brush();
+    painter->setPen( Qt::black );
+    painter->setBrush( QColor( 255, 255, 220 ) );
+    painter->drawRoundRect( geometry(), 10 );
+    painter->setPen( oldPen );
+    painter->setBrush( oldBrush );
+    m_text->paint( painter );
+}
+
+int KDChart::TextBubbleLayoutItem::borderWidth() const
+{
+    return 1;
+}
 
 KDChart::TextLayoutItem::TextLayoutItem( const QString& text,
                                          const KDChart::TextAttributes& attributes,

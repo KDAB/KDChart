@@ -116,7 +116,7 @@ void LineDiagram::LineDiagramType::paintElements(
 {
     Q_UNUSED( policy );
     // paint all lines and their attributes
-    PainterSaver painterSaver( ctx->painter() );
+    const PainterSaver painterSaver( ctx->painter() );
     if ( diagram()->antiAliasing() )
         ctx->painter()->setRenderHint ( QPainter::Antialiasing );
     LineAttributesInfoListIterator itline ( lineList );
