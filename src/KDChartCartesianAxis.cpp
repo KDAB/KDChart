@@ -1029,7 +1029,6 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 }
             }
 
-            ptr->setClipping( false );
             labelValue = minValueY;
             qreal step = steg;
             bool nextLabel = false;
@@ -1162,7 +1161,15 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         }
                         
                         labelItem->setGeometry( QRect( QPoint( x, y ), labelSize ) );
+                        const QRect labelGeo = labelItem->geometry();
+                        const bool hadClipping = ptr->hasClipping();
+                        if( labelGeo.top() < geoRect.top() && labelGeo.bottom() > geoRect.top() )
+                           ptr->setClipping( false );
+                        else if( labelGeo.top() < geoRect.bottom() && labelGeo.bottom() > geoRect.bottom() )
+                           ptr->setClipping( false );
+                            
                         labelItem->paint( ptr );
+                        ptr->setClipping( hadClipping );
                     }
 
                     //qDebug() << step;
