@@ -16,12 +16,6 @@
    <iconset/>
   </property>
   <layout class="QGridLayout" >
-   <property name="horizontalSpacing" >
-    <number>6</number>
-   </property>
-   <property name="verticalSpacing" >
-    <number>6</number>
-   </property>
    <item row="10" column="0" >
     <widget class="QCheckBox" name="fixPlaneSizeCB" >
      <property name="text" >
