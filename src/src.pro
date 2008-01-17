@@ -67,6 +67,7 @@ HEADERS += KDChartGlobal.h \
            KDChartEnums.h \
            KDChartFrameAttributes.h \
            KDChartGridAttributes.h \
+           KDChartRulerAttributes.h \
            KDChartHeaderFooter.h \
            KDChartHeaderFooter_p.h \
            KDChartLayoutItems.h \
@@ -169,6 +170,7 @@ SOURCES += \
            KDChartDiagramObserver.cpp \
            KDChartFrameAttributes.cpp \
            KDChartGridAttributes.cpp \
+           KDChartRulerAttributes.cpp \
            KDChartHeaderFooter.cpp \
            KDChartLayoutItems.cpp \
            KDChartLegend.cpp \

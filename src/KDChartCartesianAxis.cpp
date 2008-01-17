@@ -243,6 +243,7 @@ void CartesianAxis::Private::drawSubUnitRulers( QPainter* painter, CartesianCoor
     const bool isAbscissa = axis()->isAbscissa();
     const bool isLogarithmic = (dim.calcMode == AbstractCoordinatePlane::Logarithmic );
     const int subUnitTickLength = axis()->tickLength( true );
+    
     while ( dim.end - f > std::numeric_limits< float >::epsilon() ) {
         if( drawnTicks.count() > nextMayBeTick )
             mayBeTick = drawnTicks[ nextMayBeTick ];
@@ -607,6 +608,9 @@ void CartesianAxis::paintCtx( PaintContext* context )
     QVector< int > drawnXTicks;
     // and that does the same for the y-ticks
     QVector< int > drawnYTicks;
+    
+    // attributes used to customize ruler appearance
+    const RulerAttributes rulerAttr = rulerAttributes();
 
     /*
      * Find out if it is a bar diagram
@@ -708,8 +712,6 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 	   topPoint.setX( rulerRef.x() + tickLength() );
                 	   bottomPoint.setX( rulerRef.x() );
                    }
-
-                   ptr->drawLine( topPoint, bottomPoint );
 
                    labelItem->setText( d->annotations[ v ] );
                    const QSize size( labelItem->sizeHint() );
@@ -900,8 +902,12 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 if (  isBarDiagram && i == maxValueX )
                     painttick = false;
 
-                if ( bIsVisibleLabel && painttick )
+                if ( bIsVisibleLabel && painttick ) {
+                    ptr->save();
+                    ptr->setPen( rulerAttr.tickMarkPen() );
                     ptr->drawLine( topPoint, bottomPoint );
+                    ptr->restore();
+                }
 
                 drawnXTicks.append( static_cast<int>( diagramIsVertical ? topPoint.x() : topPoint.y() ) );
                 if( drawLabels ) {
@@ -1098,7 +1104,11 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
                         if( bIsVisibleLabel )
                         {
+                        	ptr->save();
+                        	ptr->setPen( rulerAttr.tickMarkPen() );
                             ptr->drawLine( leftPoint, rightPoint );
+                            ptr->restore();
+                            
                             labelItem->setText( d->annotations[ annotation ] );
                             const QSize labelSize( labelItem->sizeHint() );
                             int x, y;
@@ -1144,7 +1154,11 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     	bIsVisibleLabel = ( translatedValue >= geoRect.left() && translatedValue <= geoRect.right() && !isLogarithmicY || labelValue != 0.0 );
 
                     if( bIsVisibleLabel ){
+                    	ptr->save();
+                        ptr->setPen( rulerAttr.tickMarkPen() );
                         ptr->drawLine( leftPoint, rightPoint );
+                        ptr->restore();
+                        
                         drawnYTicks.append( static_cast<int>( diagramIsVertical ? leftPoint.y() : leftPoint.x() ) );
                         const QSize labelSize( labelItem->sizeHint() );
 
@@ -1184,7 +1198,12 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
     // this draws the subunit rulers
     if ( drawSubUnitRulers && d->annotations.isEmpty() ) {
+    	ptr->save();
+        
+    	ptr->setPen( rulerAttr.tickMarkPen() );
         d->drawSubUnitRulers( ptr, plane, dim, rulerRef, isAbscissa() ? drawnXTicks : drawnYTicks, diagramIsVertical );
+        
+        ptr->restore();
     }
 
     if( ! titleText().isEmpty() ){
