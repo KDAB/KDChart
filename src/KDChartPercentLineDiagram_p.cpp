@@ -55,8 +55,7 @@ const QPair<QPointF, QPointF> PercentLineDiagram::calculateDataBoundaries() cons
     double xMin = 0.0;
     double xMax = diagram()->model() ? diagram()->model()->rowCount( diagram()->rootIndex() ) - 1 : 0;
 
-    const double yMin =   0.0;
-    const double yMax = 100.0;
+    double yMin = 0.0, yMax = 100.0;
 
     // Sorry, but the following just does not make sense for Percent diagrams.
     // (khz, 2008-01-21)
@@ -73,8 +72,15 @@ const QPair<QPointF, QPointF> PercentLineDiagram::calculateDataBoundaries() cons
     }
     */
 
-    QPointF bottomLeft( QPointF( xMin, yMin ) );
-    QPointF topRight( QPointF( xMax, yMax ) );
+    // special cases
+    if (  yMax == yMin ) {
+        if ( yMin == 0.0 )
+            yMax = 0.1; //we need at list a range
+        else
+            yMax = 0.0; // they are the same but negative
+    }
+    const QPointF bottomLeft( QPointF( xMin, yMin ) );
+    const QPointF topRight( QPointF( xMax, yMax ) );
     return QPair<QPointF, QPointF> ( bottomLeft, topRight );
 }
 
