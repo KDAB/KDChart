@@ -50,11 +50,17 @@ LineDiagram::LineType PercentLineDiagram::type() const
 
 const QPair<QPointF, QPointF> PercentLineDiagram::calculateDataBoundaries() const
 {
-    const int rowCount = compressor().modelDataRows();
-    const int colCount = compressor().modelDataColumns();
+    //const int rowCount = compressor().modelDataRows();
+    //const int colCount = compressor().modelDataColumns();
     double xMin = 0.0;
     double xMax = diagram()->model() ? diagram()->model()->rowCount( diagram()->rootIndex() ) - 1 : 0;
-    const double yMin = 0.0;
+
+    const double yMin =   0.0;
+    const double yMax = 100.0;
+
+    // Sorry, but the following just does not make sense for Percent diagrams.
+    // (khz, 2008-01-21)
+    /*
     double yMax = 0.0;
 
     for( int col = 0; col < colCount; ++col ) {
@@ -65,6 +71,7 @@ const QPair<QPointF, QPointF> PercentLineDiagram::calculateDataBoundaries() cons
             yMax = qMax( yMax, point.value );
         }
     }
+    */
 
     QPointF bottomLeft( QPointF( xMin, yMin ) );
     QPointF topRight( QPointF( xMax, yMax ) );
