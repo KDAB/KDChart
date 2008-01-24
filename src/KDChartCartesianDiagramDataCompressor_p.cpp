@@ -33,6 +33,8 @@
 #include "KDChartAbstractCartesianDiagram.h"
 #include "KDChartCartesianDiagramDataCompressor_p.h"
 
+#include <KDABLibFakes>
+
 using namespace KDChart;
 
 CartesianDiagramDataCompressor::CartesianDiagramDataCompressor( QObject* parent )
@@ -455,8 +457,8 @@ void CartesianDiagramDataCompressor::retrieveModelData( const CachePosition& pos
             Q_ASSERT( indexes.count() == 2 );
             const QModelIndex xIndex = indexes.first();
             const QModelIndex yIndex = indexes.last();
-            const float xData = m_modelCache.data( xIndex );
-            const float yData = m_modelCache.data( yIndex );
+            const double xData = m_modelCache.data( xIndex );
+            const double yData = m_modelCache.data( yIndex );
             result.index = xIndex;
             result.key   = xData;
             result.value = yData;
@@ -467,10 +469,8 @@ void CartesianDiagramDataCompressor::retrieveModelData( const CachePosition& pos
                 result.value = 0.0;
                 result.key = 0.0;
                 Q_FOREACH( const QModelIndex& index, indexes ) {
-                    bool ok;
-                    const QVariant valueVariant = m_modelCache.data( index );
-                    const double value = valueVariant.toDouble( &ok );
-                    if( ok )
+                    const double value = m_modelCache.data( index );
+                    if( !ISNAN( value ) )
                     {
                         result.value += value;
                         result.key += index.row();
@@ -522,7 +522,7 @@ CartesianDiagramDataCompressor::CachePosition CartesianDiagramDataCompressor::ma
     if ( m_data.size() == 0 || m_data[0].size() == 0 ) return mapToCache( QModelIndex() );
     // assumption: indexes per column == 1
     if ( indexesPerPixel() == 0 ) return mapToCache( QModelIndex() );
-    return CachePosition( qRound( static_cast< qreal >( row ) / indexesPerPixel() ), column / m_datasetDimension );
+    return CachePosition( static_cast< int >( ( row ) / indexesPerPixel() ), column / m_datasetDimension );
 }
 
 QModelIndexList CartesianDiagramDataCompressor::mapToModel( const CachePosition& position ) const
@@ -539,7 +539,7 @@ QModelIndexList CartesianDiagramDataCompressor::mapToModel( const CachePosition&
         // assumption: indexes per column == 1
             const qreal ipp = indexesPerPixel();
             for ( int i = 0; i < ipp; ++i ) {
-                indexes << m_model->index( qRound( position.first * ipp ), position.second, m_rootIndex );
+                indexes << m_model->index( qRound( position.first * ipp ) + i, position.second, m_rootIndex );
             }
         }
         return indexes;
