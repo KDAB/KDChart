@@ -177,7 +177,7 @@ QRectF CartesianCoordinatePlane::adjustedToMaxEmptyInnerPercentage(
         const QRectF& r, unsigned int percentX, unsigned int percentY ) const
 {
     QRectF erg( r );
-    if( percentX < 100 || percentX == 1000 ) {
+    if( percentX > 0 ) {
         const bool isPositive = (r.left() >= 0);
         if( (r.right() >= 0) == isPositive ){
             const qreal innerBound =
@@ -193,13 +193,15 @@ QRectF CartesianCoordinatePlane::adjustedToMaxEmptyInnerPercentage(
             }
         }
     }
-    if( percentY < 100 || percentY == 1000 ) {
+    if( percentY > 0 ){
+        //qDebug() << erg.bottom() << erg.top();
         const bool isPositive = (r.bottom() >= 0);
         if( (r.top() >= 0) == isPositive ){
             const qreal innerBound =
                     isPositive ? qMin(r.top(), r.bottom()) : qMax(r.top(), r.bottom());
             const qreal outerBound =
                     isPositive ? qMax(r.top(), r.bottom()) : qMin(r.top(), r.bottom());
+            //qDebug() << innerBound << outerBound;
             if( innerBound / outerBound * 100 <= percentY )
             {
                 if( isPositive )
@@ -208,6 +210,7 @@ QRectF CartesianCoordinatePlane::adjustedToMaxEmptyInnerPercentage(
                     erg.setTop( 0.0 );
             }
         }
+        //qDebug() << erg.bottom() << erg.top() << "!!";
     }
     return erg;
 }

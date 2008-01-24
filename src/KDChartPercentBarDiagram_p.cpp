@@ -49,31 +49,11 @@ BarDiagram::BarType PercentBarDiagram::type() const
 
 const QPair<QPointF, QPointF> PercentBarDiagram::calculateDataBoundaries() const
 {
-    //const int rowCount = compressor().modelDataRows();
-    //const int colCount = compressor().modelDataColumns();
-
-    const double xMin = 0;
+    const double xMin = 0.0;
     const double xMax = diagram()->model() ? diagram()->model()->rowCount( diagram()->rootIndex() ) : 0;
-    double yMin = 0.0, yMax = 100.0;
-    /*for( int col = 0; col < colCount; ++col )
-    {
-        for( int row = 0; row < rowCount; ++row )
-        {
-            // Ordinate should begin at 0 the max value being the 100% pos
-            const QModelIndex idx = diagram()->model()->index( row, col, diagram()->rootIndex() );
-            // only positive values are handled
-            double value = diagram()->model()->data( idx ).toDouble();
-            if ( value > 0 )
-                yMax = qMax( yMax, value );
-        }
-    }*/
-    // special cases
-    if (  yMax == yMin ) {
-        if ( yMin == 0.0 )
-            yMax = 0.1; //we need at list a range
-        else
-            yMax = 0.0; // they are the same but negative
-    }
+    const double yMin = 0.0;
+    const double yMax = 100.0;
+
     const QPointF bottomLeft( QPointF( xMin, yMin ) );
     const QPointF topRight( QPointF( xMax, yMax ) );
 

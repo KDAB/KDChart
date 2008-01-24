@@ -511,14 +511,13 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
     // FIXME draw the non-text bits, background, etc
     if ( ta.isVisible() ) {
 
-        QPointF pt( pos );
         /* for debugging:
         PainterSaver painterSaver( painter );
         painter->setPen( Qt::black );
-        painter->drawLine( pos - QPointF( 1,1), pos + QPointF( 1,1) );
-        painter->drawLine( pos - QPointF(-1,1), pos + QPointF(-1,1) );
+        painter->drawLine( pos - QPointF( 2,2), pos + QPointF( 2,2) );
+        painter->drawLine( pos - QPointF(-2,2), pos + QPointF(-2,2) );
         */
-        
+
         QTextDocument doc;
         if( Qt::mightBeRichText( roundedValue ) )
             doc.setHtml( roundedValue );
@@ -529,29 +528,10 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
         const Qt::Alignment alignBottomLeft = Qt::AlignBottom | Qt::AlignLeft;
         const QFont calculatedFont( ta.calculatedFont( d->plane, KDChartEnums::MeasureOrientationMinimum ) );
 
-        const QRectF plainRect( d->cachedFontMetrics( calculatedFont, painter->device() )->boundingRect( doc.toPlainText() ) );
-        const QRectF boundRect = rotatedRect( plainRect, ta.rotation(), plainRect.center() );
-        pt += boundRect.center() - plainRect.center();
-
-        // To place correctly
-        if( value >= 0.0 )
-            pt.ry() -= boundRect.height();
-        else
-            pt.ry() -= boundRect.height() * 0.5;
-
-        //qDebug() << "calculatedFont's point size:" << calculatedFont.pointSizeF();
-        // adjust the text start point position, if alignment is not Bottom/Left
-        if( (relPos.alignment() & alignBottomLeft) != alignBottomLeft ){
-            if( relPos.alignment() & Qt::AlignRight )
-                pt.rx() -= boundRect.width();
-            else if( relPos.alignment() & Qt::AlignHCenter )
-                pt.rx() -= 0.5 * boundRect.width();
-
-            if( relPos.alignment() & Qt::AlignTop )
-                pt.ry() += boundRect.height();
-            else if( relPos.alignment() & Qt::AlignVCenter )
-                pt.ry() += 0.5 * boundRect.height();
-        }
+        // note: We can not use boundingRect() to retrieve the width, as that returnes a too small value
+        const QSizeF plainSize(
+                d->cachedFontMetrics( calculatedFont, painter->device() )->width( doc.toPlainText() ),
+                d->cachedFontMetrics( calculatedFont, painter->device() )->boundingRect( doc.toPlainText() ).height() );
 
         // FIXME draw the non-text bits, background, etc
 
@@ -569,8 +549,23 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
 
             QAbstractTextDocumentLayout* const layout = doc.documentLayout();
 
-            painter->translate( pt + rotatedPoint( QPointF(), ta.rotation(), plainRect.center() - plainRect.topLeft() ) );
+            painter->translate( pos );
             painter->rotate( ta.rotation() );
+            qreal dx = 0.0;
+            qreal dy = 0.0;
+            const Qt::Alignment alignTopLeft = (Qt::AlignLeft | Qt::AlignTop);
+            if(     (relPos.alignment() & alignTopLeft) != alignTopLeft ){
+                if( relPos.alignment() & Qt::AlignRight )
+                    dx = - plainSize.width();
+                else if( relPos.alignment() & Qt::AlignHCenter )
+                    dx = - 0.5 * plainSize.width();
+
+                if( relPos.alignment() & Qt::AlignBottom )
+                    dy = - plainSize.height();
+                else if( relPos.alignment() & Qt::AlignVCenter )
+                    dy = - 0.5 * plainSize.height();
+            }
+            painter->translate( QPointF( dx, dy ) );
 
             layout->draw( painter, context );
         }

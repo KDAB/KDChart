@@ -432,8 +432,8 @@ DataDimension CartesianGrid::calculateGridXY(
     bool adjustLower, bool adjustUpper ) const
 {
     CartesianCoordinatePlane* const plane = dynamic_cast<CartesianCoordinatePlane*>( mPlane );
-    if(  orientation == Qt::Vertical && plane->autoAdjustVerticalRangeToData() > 67 
-      || orientation == Qt::Horizontal && plane->autoAdjustHorizontalRangeToData() > 67 )
+    if(    ((orientation == Qt::Vertical)   && (plane->autoAdjustVerticalRangeToData()   >= 100))
+        || ((orientation == Qt::Horizontal) && (plane->autoAdjustHorizontalRangeToData() >= 100)) )
     {
         adjustLower = false;
         adjustUpper = false;

@@ -90,16 +90,19 @@ DataValueAttributes::Private::Private() :
 
     showRepetitiveDataLabels = false;
 
-    // By default use 0.25 of the font height as horizontal distance between
+    // By default use 0.4 (or 0.5, resp.) of the font height as horizontal distance between
     // the data and their respective data value texts,
-    // and use 0.33 as the vertical distance.
-    Measure m(   250.0, KDChartEnums::MeasureCalculationModeAuto );
-                          positiveRelPos.setHorizontalPadding( m );
-    m.setValue( -333.3 ); positiveRelPos.setVerticalPadding( m );
-
-    m.setValue( -250.0 ); negativeRelPos.setHorizontalPadding( m );
-    m.setValue(  100.0 ); negativeRelPos.setVerticalPadding( m );
-    // note: we use a smaller default vertical gap, because the fonts have top leading anyway
+    // and use 0.75 as the vertical distance.
+    const double posHoriPadding =  400.0; const double posVertPadding = -75.0;
+    const double negHoriPadding = -500.0; const double negVertPadding =  75.0;
+    Measure m( posHoriPadding, KDChartEnums::MeasureCalculationModeAuto );
+    positiveRelPos.setHorizontalPadding( m );
+    m.setValue( posVertPadding );
+    positiveRelPos.setVerticalPadding( m );
+    m.setValue( negHoriPadding );
+    negativeRelPos.setHorizontalPadding( m );
+    m.setValue( negVertPadding );
+    negativeRelPos.setVerticalPadding( m );
 }
 
 

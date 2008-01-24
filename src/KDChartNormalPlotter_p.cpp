@@ -80,7 +80,10 @@ const QPair< QPointF, QPointF > NormalPlotter::calculateDataBoundaries() const
         }
     }
 
-    const QPointF bottomLeft( QPointF( xMin, qMin( 0.0, yMin ) ) );
+    // NOTE: calculateDataBoundaries must return the *real* data boundaries!
+    //       i.e. we may NOT fake yMin to be qMin( 0.0, yMin )
+    //       (khz, 2008-01-24)
+    const QPointF bottomLeft( QPointF( xMin, yMin ) );
     const QPointF topRight( QPointF( xMax, yMax ) );
     return QPair< QPointF, QPointF >( bottomLeft, topRight );
 }

@@ -50,37 +50,13 @@ LineDiagram::LineType PercentLineDiagram::type() const
 
 const QPair<QPointF, QPointF> PercentLineDiagram::calculateDataBoundaries() const
 {
-    //const int rowCount = compressor().modelDataRows();
-    //const int colCount = compressor().modelDataColumns();
-    double xMin = 0.0;
-    double xMax = diagram()->model() ? diagram()->model()->rowCount( diagram()->rootIndex() ) - 1 : 0;
+    const double xMin = 0.0;
+    const double xMax = diagram()->model() ? diagram()->model()->rowCount( diagram()->rootIndex() ) - 1 : 0;
+    const double yMin = 0.0;
+    const double yMax = 100.0;
 
-    double yMin = 0.0, yMax = 100.0;
-
-    // Sorry, but the following just does not make sense for Percent diagrams.
-    // (khz, 2008-01-21)
-    /*
-    double yMax = 0.0;
-
-    for( int col = 0; col < colCount; ++col ) {
-        for ( int row = 0; row < rowCount; ++row ) {
-            CartesianDiagramDataCompressor::CachePosition position( row, col );
-            CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
-
-            yMax = qMax( yMax, point.value );
-        }
-    }
-    */
-
-    // special cases
-    if (  yMax == yMin ) {
-        if ( yMin == 0.0 )
-            yMax = 0.1; //we need at list a range
-        else
-            yMax = 0.0; // they are the same but negative
-    }
-    const QPointF bottomLeft( QPointF( xMin, yMin ) );
-    const QPointF topRight( QPointF( xMax, yMax ) );
+    QPointF bottomLeft( QPointF( xMin, yMin ) );
+    QPointF topRight( QPointF( xMax, yMax ) );
     return QPair<QPointF, QPointF> ( bottomLeft, topRight );
 }
 
