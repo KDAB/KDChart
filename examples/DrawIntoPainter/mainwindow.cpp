@@ -111,6 +111,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     }
 
     FrameAttributes faChart( m_chart->frameAttributes() );
+    faChart.setVisible( true );
     faChart.setPen( QPen(QColor(0x60,0x60,0xb0), 8) );
     m_chart->setFrameAttributes( faChart );
 
@@ -128,8 +129,10 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_legend->setTitleText( tr( "Legend" ) );
     m_legend->setOrientation( Qt::Horizontal );
 
+    // setting the legend frame and background to the same color:
     const QColor legendColor(0xff,0xe0,0x80);
     FrameAttributes faLegend( m_legend->frameAttributes() );
+    faLegend.setVisible( true );
     faLegend.setPen( QPen(legendColor, 1) );
     m_legend->setFrameAttributes( faLegend );
 

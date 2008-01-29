@@ -83,17 +83,11 @@ int main( int argc, char** argv ) {
     window.widget->setDataset( 2, vec2 );
 
     window.widget->addHeaderFooter( "Zoom Example",
-                                    HeaderFooter::Header, Position::NorthWest );
-    window.widget->addHeaderFooter( "zoom in/out: PageDn / PageUp",
                                     HeaderFooter::Header, Position::North );
+    window.widget->addHeaderFooter( "zoom in/out: PageDn / PageUp",
+                                    HeaderFooter::Footer, Position::North );
     window.widget->addHeaderFooter( "pan around: Left / Right / Up / Down",
-                                    HeaderFooter::Header, Position::NorthEast );
-    window.widget->addHeaderFooter( "SouthEast",
-                                    HeaderFooter::Footer, Position::SouthEast );
-    window.widget->addHeaderFooter( "South",
                                     HeaderFooter::Footer, Position::South );
-    window.widget->addHeaderFooter( "SouthWest",
-                                    HeaderFooter::Footer, Position::SouthWest );
 
     window.widget->addLegend( Position::East );
 

@@ -261,10 +261,12 @@ BarAttributes BarDiagram::barAttributes() const
   */
 BarAttributes BarDiagram::barAttributes( int column ) const
 {
-    return qVariantValue<BarAttributes>(
-        d->attributesModel->data(
-            d->attributesModel->mapFromSource( columnToIndex( column ) ),
-            KDChart::BarAttributesRole ) );
+    const QVariant attrs(
+            d->attributesModel->headerData( column, Qt::Vertical,
+                    KDChart::BarAttributesRole ) );
+    if( attrs.isValid() )
+        return qVariantValue< BarAttributes >( attrs );
+    return barAttributes();
 }
 
 /**
@@ -332,10 +334,12 @@ ThreeDBarAttributes BarDiagram::threeDBarAttributes() const
   */
 ThreeDBarAttributes BarDiagram::threeDBarAttributes( int column ) const
 {
-    return qVariantValue<ThreeDBarAttributes>(
-        d->attributesModel->data(
-            d->attributesModel->mapFromSource( columnToIndex( column ) ),
-            KDChart::ThreeDBarAttributesRole ) );
+    const QVariant attrs(
+            d->attributesModel->headerData( column, Qt::Vertical,
+                                            KDChart::ThreeDBarAttributesRole ) );
+    if( attrs.isValid() )
+        return qVariantValue< ThreeDBarAttributes >( attrs );
+    return threeDBarAttributes();
 }
 
 /**

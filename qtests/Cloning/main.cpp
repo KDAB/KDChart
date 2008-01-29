@@ -53,7 +53,6 @@ private slots:
             QCOMPARE( diagram->percentMode(), clone->percentMode() );
             QCOMPARE( diagram->datasetDimension(), clone->datasetDimension() );
             QCOMPARE( diagram->barAttributes(), clone->barAttributes() );
-            QCOMPARE( diagram->barAttributes( 0 ), clone->barAttributes( 0 ) );
             QCOMPARE( diagram->threeDBarAttributes(), clone->threeDBarAttributes() );
 
             QVERIFY( diagram->attributesModel() != clone->attributesModel() );

@@ -109,27 +109,51 @@ void NormalLineDiagram::paint( PaintContext* ctx )
 
     DataValueTextInfoList textInfoList;
     LineAttributesInfoList lineList;
-    LineAttributes::MissingValuesPolicy policy; // ???
+
+    LineAttributes::MissingValuesPolicy policy;
 
     for( int column  = 0; column < columnCount; ++column ) {
         LineAttributes laPreviousCell;
+        CartesianDiagramDataCompressor::DataPoint lastPoint;
 
-            CartesianDiagramDataCompressor::CachePosition previousCellPosition;
+        CartesianDiagramDataCompressor::CachePosition previousCellPosition;
         for ( int row = 0; row < rowCount; ++row ) {
             const CartesianDiagramDataCompressor::CachePosition position( row, column );
             // get where to draw the line from:
-            const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
+            CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
             
             const QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );
-            const CartesianDiagramDataCompressor::DataPoint lastPoint = compressor().data( previousCellPosition );
+
+            const LineAttributes laCell = diagram()->lineAttributes( sourceIndex );
+            const LineAttributes::MissingValuesPolicy policy = laCell.missingValuesPolicy();
+            
+            if( ISNAN( point.value ) )
+            {
+                switch( policy )
+                {
+                case LineAttributes::MissingValuesAreBridged:
+                    // we just bridge both values
+                    continue;
+                case LineAttributes::MissingValuesShownAsZero:
+                    // set it to zero
+                    point.value = 0.0;
+                    break;
+                case LineAttributes::MissingValuesHideSegments:
+                    // they're just hidden
+                    break;
+                default:
+                    break;
+                    // hm....
+                }
+            }
+            
             // area corners, a + b are the line ends:
             const QPointF a( plane->translate( QPointF( lastPoint.key, lastPoint.value ) ) );
             const QPointF b( plane->translate( QPointF( point.key, point.value ) ) );
             const QPointF c( plane->translate( QPointF( lastPoint.key, 0.0 ) ) );
             const QPointF d( plane->translate( QPointF( point.key, 0.0 ) ) );
             // add the line to the list:
-            const LineAttributes laCell = diagram()->lineAttributes( sourceIndex );
-            // add data point labels:
+           // add data point labels:
             const PositionPoints pts = PositionPoints( b, a, d, c );
             // if necessary, add the area to the area list:
             QList<QPolygonF> areas;
@@ -137,7 +161,7 @@ void NormalLineDiagram::paint( PaintContext* ctx )
                 areas << ( QPolygonF() << a << b << d << c );//polygon;
             }
             // add the pieces to painting if this is not hidden:
-            if ( ! point.hidden && !ISNAN( point.value ) ) {
+            if ( ! point.hidden && !ISNAN( point.value ) && !ISNAN( lastPoint.value ) ) {
                 appendDataValueTextInfoToList( diagram(), textInfoList, sourceIndex, pts,
                                                Position::NorthWest, Position::SouthWest,
                                                point.value );
@@ -149,6 +173,7 @@ void NormalLineDiagram::paint( PaintContext* ctx )
             // wrap it up:
             previousCellPosition = position;
             laPreviousCell = laCell;
+            lastPoint = point;
         }
     }
 

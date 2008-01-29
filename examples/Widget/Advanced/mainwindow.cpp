@@ -26,7 +26,9 @@
 #include "mainwindow.h"
 
 #include <KDChartWidget>
+#include <KDChartAbstractDiagram>
 #include <QDebug>
+#include <QMessageBox>
 
 using namespace KDChart;
 
@@ -38,6 +40,8 @@ MainWindow::MainWindow( QWidget* parent )
     QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
     widget = new Widget( chartFrame );
     chartLayout->addWidget( widget );
+
+    typeSelector->setCurrentIndex(2); // we start by LineDiagram
 
     connect( typeSelector, SIGNAL( activated( int )), SLOT( changeType() ));
 
@@ -75,7 +79,16 @@ void MainWindow::addDataset()
     bool ok;
     QVector< double > vec;
     foreach (QString str, parts ) {
-        vec.append( str.toDouble(&ok) );
+        const double val = str.toDouble(&ok);
+        if(ok)
+            vec.append( val );
     }
-    widget->setDataset( datasetCount++, vec );
+    const int rows = widget->diagram()->model()->rowCount();
+    if( vec.count() != rows )
+        QMessageBox::warning( this, "Wrong number of values entered!",
+                              QString("You have entered %1 values,<br>but the data model needs %2 ones.")
+                                      .arg( vec.count() )
+                                      .arg( rows ) );
+    else
+        widget->setDataset( datasetCount++, vec, "user data" );
 }

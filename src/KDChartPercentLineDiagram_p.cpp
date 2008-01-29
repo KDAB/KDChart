@@ -99,11 +99,15 @@ void PercentLineDiagram::paint(  PaintContext* ctx )
     {
         for( int col = 0; col < columnCount; ++col )
         {
-            CartesianDiagramDataCompressor::CachePosition position( row, col );
+            const CartesianDiagramDataCompressor::CachePosition position( row, col );
             CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
-            const double tmpValue = point.value;
-            if ( tmpValue > 0 )
-                sumValues += tmpValue;
+            const QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );
+            const LineAttributes laCell = diagram()->lineAttributes( sourceIndex );
+            const LineAttributes::MissingValuesPolicy policy = laCell.missingValuesPolicy();
+            if( ISNAN( point.value ) && policy == LineAttributes::MissingValuesAreBridged )
+                point.value = interpolateMissingValue( position );
+            if ( point.value > 0 )
+                sumValues += point.value;
             if ( col == lastVisibleColumn ) 
             {
                 percentSumValues << sumValues ;
@@ -125,7 +129,7 @@ void PercentLineDiagram::paint(  PaintContext* ctx )
 
         for( int row = 0; row < rowCount; ++row ) 
         {
-            CartesianDiagramDataCompressor::CachePosition position( row, column );
+            const CartesianDiagramDataCompressor::CachePosition position( row, column );
             CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
             const QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );
             const LineAttributes laCell = diagram()->lineAttributes( sourceIndex );
@@ -136,16 +140,27 @@ void PercentLineDiagram::paint(  PaintContext* ctx )
                   column2 >= 0;//datasetDimension() - 1;
                   column2 -= 1 )//datasetDimension() )
             {
-                CartesianDiagramDataCompressor::CachePosition position( row, column2 );
+                const CartesianDiagramDataCompressor::CachePosition position( row, column2 );
                 CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
+
                 const QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );
+                const LineAttributes::MissingValuesPolicy policy = laCell.missingValuesPolicy();
+                if( ISNAN( point.value ) && policy == LineAttributes::MissingValuesAreBridged )
+                    point.value = interpolateMissingValue( position );
+
                 const double val = point.value;
                 if( val > 0 )
                     stackedValues += val;
                 //qDebug() << valueForCell( iRow, iColumn2 );
                 if ( row + 1 < rowCount ){
-                    CartesianDiagramDataCompressor::CachePosition position( row + 1, column2 );
+                    const CartesianDiagramDataCompressor::CachePosition position( row + 1, column2 );
                     CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
+                
+                    const QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );
+                    const LineAttributes::MissingValuesPolicy policy = laCell.missingValuesPolicy();
+                    if( ISNAN( point.value ) && policy == LineAttributes::MissingValuesAreBridged )
+                        point.value = interpolateMissingValue( position );
+
                     const double val = point.value;
                     if( val > 0 )
                         nextValues += val;

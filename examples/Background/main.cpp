@@ -26,7 +26,7 @@ public:
             }
     }
 
-    QPixmap* pixmap = new QPixmap ( "../../doc/manual/images/background.png" );
+    QPixmap* pixmap = new QPixmap ( "background.png" );
     BarDiagram* diagram = new BarDiagram;
     diagram->setModel(&m_model);
 

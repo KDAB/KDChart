@@ -130,7 +130,7 @@ void MainWindow::on_sagittalGridCB_toggled( bool toggle )
     m_polarPlane->setGridAttributes( false, attrs );
     update();
 }
-
+/* planned for future release:
 void MainWindow::on_circularAxisCB_toggled( bool toggle )
 {
     Q_UNUSED( toggle );
@@ -141,4 +141,4 @@ void MainWindow::on_sagittalAxisCB_toggled( bool toggle )
     Q_UNUSED( toggle );
     update();
 }
-
+*/

@@ -52,9 +52,11 @@ private slots:
     void on_circularGridCB_toggled( bool toggle );
     void on_sagittalGridCB_toggled( bool toggle );
 
+    /* planned for future release:
     // show axes
     void on_circularAxisCB_toggled( bool toggle );
     void on_sagittalAxisCB_toggled( bool toggle );
+    */
 
 private:
     void initKDChartClasses();

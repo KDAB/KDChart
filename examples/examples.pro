@@ -22,5 +22,6 @@ SUBDIRS		= tools \
                   Plane \
                   TernaryCharts \
                   Plotter \
-                  LeveyJennings
+                  LeveyJennings \
+                  DataValueTexts
 #                  Demo

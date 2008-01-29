@@ -309,3 +309,38 @@ CartesianDiagramDataCompressor& LineDiagram::LineDiagramType::compressor() const
 {
     return m_private->compressor;
 }
+
+double LineDiagram::LineDiagramType::interpolateMissingValue( const CartesianDiagramDataCompressor::CachePosition& pos ) const
+{
+    double leftValue = std::numeric_limits< double >::quiet_NaN();
+    double rightValue = std::numeric_limits< double >::quiet_NaN();
+    int missingCount = 1;
+    
+    const int column = pos.second;
+    const int row = pos.first;
+    const int rowCount = compressor().modelDataRows();
+    
+    // iterate back and forth to find valid values
+    for( int r = row - 1; r > 0; ++r )
+    {
+        const CartesianDiagramDataCompressor::CachePosition position( r, column );
+        const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
+        leftValue = point.value;
+        if( !ISNAN( point.value ) )
+            break;
+        ++missingCount;
+    }
+    for( int r = row + 1; r < rowCount; ++r )
+    {
+        const CartesianDiagramDataCompressor::CachePosition position( r, column );
+        const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
+        rightValue = point.value;
+        if( !ISNAN( point.value ) )
+            break;
+        ++missingCount;
+    }
+    if( !ISNAN( leftValue ) && !ISNAN( rightValue ) )
+        return leftValue + ( rightValue - leftValue ) / ( missingCount + 1 );
+    else
+        return std::numeric_limits< double >::quiet_NaN();
+}

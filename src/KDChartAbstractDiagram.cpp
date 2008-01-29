@@ -321,13 +321,6 @@ QModelIndex AbstractDiagram::attributesModelRootIndex() const
     return d->attributesModelRootIndex;
 }
 
-QModelIndex AbstractDiagram::columnToIndex( int column ) const
-{   // FIXME (Mirko): shouldn't this be headerData? instead of the index for the first row?
-    if( model() )
-        return QModelIndex( model()->index( 0, column, rootIndex() ) );
-    return QModelIndex();
-}
-
 void AbstractDiagram::setCoordinatePlane( AbstractCoordinatePlane* parent )
 {
     d->plane = parent;
@@ -387,11 +380,14 @@ bool AbstractDiagram::isHidden() const
 
 bool AbstractDiagram::isHidden( int column ) const
 {
-    return qVariantValue<bool>(
-        attributesModel()->data(
-            attributesModel()->mapFromSource(columnToIndex( column )),
-            DataHiddenRole ) );
+    const QVariant boolFlag(
+            attributesModel()->headerData( column, Qt::Vertical,
+                    DataHiddenRole ) );
+    if( boolFlag.isValid() )
+        return qVariantValue< bool >( boolFlag );
+    return isHidden();
 }
+
 bool AbstractDiagram::isHidden( const QModelIndex & index ) const
 {
     return qVariantValue<bool>(
@@ -428,9 +424,23 @@ DataValueAttributes AbstractDiagram::dataValueAttributes() const
 
 DataValueAttributes AbstractDiagram::dataValueAttributes( int column ) const
 {
+    /*
+    The following did not work!
+    (khz, 2008-01-25)
+    If there was some attrs specified for the 0-th cells of a dataset,
+    then this logic would return the cell's settings instead of the header settings:
+
     return qVariantValue<DataValueAttributes>(
         attributesModel()->data( attributesModel()->mapFromSource(columnToIndex( column )),
         KDChart::DataValueLabelAttributesRole ) );
+    */
+
+    const QVariant headerAttrs(
+            attributesModel()->headerData( column, Qt::Vertical,
+                KDChart::DataValueLabelAttributesRole ) );
+    if( headerAttrs.isValid() )
+        return qVariantValue< DataValueAttributes >( headerAttrs );
+    return dataValueAttributes();
 }
 
 DataValueAttributes AbstractDiagram::dataValueAttributes( const QModelIndex & index ) const
@@ -798,10 +808,12 @@ QPen AbstractDiagram::pen() const
 
 QPen AbstractDiagram::pen( int dataset ) const
 {
-    return qVariantValue<QPen>(
-        attributesModel()->data(
-            attributesModel()->mapFromSource( columnToIndex( dataset ) ),
-            DatasetPenRole ) );
+    const QVariant penSettings(
+            attributesModel()->headerData( dataset, Qt::Vertical,
+                    DatasetPenRole ) );
+    if( penSettings.isValid() )
+        return qVariantValue< QPen >( penSettings );
+    return pen();
 }
 
 QPen AbstractDiagram::pen( const QModelIndex& index ) const
@@ -853,10 +865,12 @@ QBrush AbstractDiagram::brush() const
 
 QBrush AbstractDiagram::brush( int dataset ) const
 {
-    return qVariantValue<QBrush>(
-        attributesModel()->data(
-            attributesModel()->mapFromSource( columnToIndex( dataset ) ),
-            DatasetBrushRole ) );
+    const QVariant brushSettings(
+            attributesModel()->headerData( dataset, Qt::Vertical,
+                    DatasetBrushRole ) );
+    if( brushSettings.isValid() )
+        return qVariantValue< QBrush >( brushSettings );
+    return brush();
 }
 
 QBrush AbstractDiagram::brush( const QModelIndex& index ) const

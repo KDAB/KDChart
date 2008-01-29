@@ -619,7 +619,7 @@ namespace KDChart {
         virtual void paintMarkers( QPainter* painter );
         void setAttributesModelRootIndex( const QModelIndex& );
         QModelIndex attributesModelRootIndex() const;
-        QModelIndex columnToIndex( int column ) const;
+
         /**
          * Helper method, retrieving the data value (DisplayRole) for a given row and column
          * @param row The row to query.

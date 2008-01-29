@@ -3,6 +3,7 @@
 #include <KDChartPieDiagram>
 #include <KDChartDataValueAttributes>
 #include <KDChartPieAttributes>
+#include <KDChartPosition>
 
 using namespace KDChart;
 
@@ -59,9 +60,12 @@ public:
             TextAttributes ta( dva.textAttributes() );
             ta.setRotation( 0 );
             ta.setFont( font );
-            ta .setPen( QPen( Qt::gray  ) );
+            ta .setPen( QPen( Qt::darkBlue ) );
             ta.setVisible( true );
             dva.setTextAttributes( ta );
+            RelativePosition posPos( dva.positivePosition() );
+            posPos.setAlignment( Qt::AlignCenter );
+            dva.setPositivePosition( posPos );
             dva.setVisible( true );
             diagram->setDataValueAttributes( iColumn, dva);
         }

@@ -173,8 +173,12 @@ bool TableModel::loadFromCSV ( const QString& filename )
                             // interpret cell values as floating point:
                             bool convertedOk = false;
                             double value = cell.toDouble ( &convertedOk );
+                            //qDebug() << convertedOk;
                             const int destColumn = m_dataHasVerticalHeaders ? column - 1 : column;
-                            values[destColumn] = convertedOk ? QVariant( value ) : cell;
+                            values[destColumn] = convertedOk
+                                    ? QVariant( value )
+                                    : (cell.isEmpty() ? QVariant() : QVariant( cell ));
+                            //qDebug() << values[destColumn];
                         }
                     }
                 }

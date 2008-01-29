@@ -151,7 +151,7 @@ namespace KDChart
 
             for( int row = 0; row < rowCount; ++row )
             {
-                m_data[ row ].insert( start, end - start + 1, 0.0 );
+                m_data[ row ].insert( start, end - start + 1, T() );
                 m_cacheValid[ row ].insert( start, end - start + 1, false );
                 Q_ASSERT( m_data.at( row ).count() == m_model->columnCount( m_rootIndex ) );
                 Q_ASSERT( m_cacheValid.at( row ).count() == m_model->columnCount( m_rootIndex ) );

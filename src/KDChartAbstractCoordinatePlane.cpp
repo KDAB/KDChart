@@ -67,6 +67,9 @@ AbstractCoordinatePlane::~AbstractCoordinatePlane()
 void AbstractCoordinatePlane::init()
 {
     d->initialize();  // virtual method to init the correct grid: cartesian, polar, ...
+    connect( this, SIGNAL(internal_geometryChanged( QRect, QRect )),
+             this, SIGNAL(geometryChanged(          QRect, QRect )),
+             Qt::QueuedConnection );
 }
 
 void AbstractCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
@@ -239,9 +242,15 @@ void KDChart::AbstractCoordinatePlane::setGeometry( const QRect& r )
 {
 //    qDebug() << "KDChart::AbstractCoordinatePlane::setGeometry(" << r << ") called";
     if( d->geometry != r ){
+        //qDebug() << "entering KDChart::AbstractCoordinatePlane::setGeometry(" << r << ")";
+        // inform the outside word by Signal geometryChanged()
+        // via a queued connection to internal_geometryChanged()
+        emit internal_geometryChanged( d->geometry, r );
+
         d->geometry = r;
         // Note: We do *not* call update() here
         //       because it would invoke KDChart::update() recursively.
+        //qDebug() << "leaving  KDChart::AbstractCoordinatePlane::setGeometry(" << r << ")";
     }
 }
 /* pure virtual in QLayoutItem */

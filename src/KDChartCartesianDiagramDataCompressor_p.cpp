@@ -347,6 +347,8 @@ void CartesianDiagramDataCompressor::setModel( QAbstractItemModel* model )
                     this, SLOT( rebuildCache() ) );
         m_model = 0;
     }
+    
+    m_modelCache.setModel( model );
 
     if ( model != 0 ) {
         m_model = model;
@@ -375,7 +377,6 @@ void CartesianDiagramDataCompressor::setModel( QAbstractItemModel* model )
         connect( m_model, SIGNAL( modelReset() ),
                     this, SLOT( rebuildCache() ) );
     }
-    m_modelCache.setModel( model );
     rebuildCache();
     calculateSampleStepWidth();
 }
@@ -466,15 +467,15 @@ void CartesianDiagramDataCompressor::retrieveModelData( const CachePosition& pos
         else
         {
             if ( ! indexes.isEmpty() ) {
-                result.value = 0.0;
+                result.value = std::numeric_limits< double >::quiet_NaN();
                 result.key = 0.0;
                 Q_FOREACH( const QModelIndex& index, indexes ) {
                     const double value = m_modelCache.data( index );
                     if( !ISNAN( value ) )
                     {
-                        result.value += value;
-                        result.key += index.row();
+                        result.value = ISNAN( result.value ) ? value : result.value + value;
                     }
+                    result.key += index.row();
                 }
                 result.index = indexes.at( 0 );
                 result.key /= indexes.size();
