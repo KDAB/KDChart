@@ -122,15 +122,15 @@ void PercentPlotter::paint( PaintContext* ctx )
     // this map contains the y-values to each x-value
     QMap< double, QVector< QPair< Value, QModelIndex > > > diagramValues;
 
-    for( int column = 0; column < colCount; ++column )
+    for( int col = 0; col < colCount; ++col )
     {
         for( int row = 0; row < rowCount; ++row )
         {   
-            const CartesianDiagramDataCompressor::CachePosition position( row, column );
+            const CartesianDiagramDataCompressor::CachePosition position( row, col );
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
             diagramValues[ point.key ].resize( colCount );
-            diagramValues[ point.key ][ column ].first = point.value;
-            diagramValues[ point.key ][ column ].second = point.index;
+            diagramValues[ point.key ][ col ].first = point.value;
+            diagramValues[ point.key ][ col ].second = point.index;
         }
     }
    
@@ -154,8 +154,9 @@ void PercentPlotter::paint( PaintContext* ctx )
             {
                 QPair< QPair< double, Value >, QModelIndex > left;
                 QPair< QPair< double, Value >, QModelIndex > right;
+                int xIndex = 0;
                 // let's find the next lower value
-                for( int xIndex = xValues.indexOf( xValue ); xIndex >= 0; --xIndex )
+                for( xIndex = xValues.indexOf( xValue ); xIndex >= 0; --xIndex )
                 {
                     if( diagramValues[ xValues[ xIndex ] ][ column ].second.isValid() )
                     {
@@ -166,7 +167,7 @@ void PercentPlotter::paint( PaintContext* ctx )
                     }
                 }
                 // let's find the next higher value
-                for( int xIndex = xValues.indexOf( xValue ); xIndex < xValues.count(); ++xIndex )
+                for( xIndex = xValues.indexOf( xValue ); xIndex < xValues.count(); ++xIndex )
                 {
                     if( diagramValues[ xValues[ xIndex ] ][ column ].second.isValid() )
                     {
