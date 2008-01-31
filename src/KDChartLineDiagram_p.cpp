@@ -321,7 +321,7 @@ double LineDiagram::LineDiagramType::interpolateMissingValue( const CartesianDia
     const int rowCount = compressor().modelDataRows();
     
     // iterate back and forth to find valid values
-    for( int r1 = row - 1; r > 0; ++r )
+    for( int r1 = row - 1; r1 > 0; ++r1 )
     {
         const CartesianDiagramDataCompressor::CachePosition position( r1, column );
         const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
@@ -330,7 +330,7 @@ double LineDiagram::LineDiagramType::interpolateMissingValue( const CartesianDia
             break;
         ++missingCount;
     }
-    for( int r2 = row + 1; r < rowCount; ++r )
+    for( int r2 = row + 1; r2 < rowCount; ++r2 )
     {
         const CartesianDiagramDataCompressor::CachePosition position( r2, column );
         const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
