@@ -321,18 +321,18 @@ double LineDiagram::LineDiagramType::interpolateMissingValue( const CartesianDia
     const int rowCount = compressor().modelDataRows();
     
     // iterate back and forth to find valid values
-    for( int r = row - 1; r > 0; ++r )
+    for( int r1 = row - 1; r > 0; ++r )
     {
-        const CartesianDiagramDataCompressor::CachePosition position( r, column );
+        const CartesianDiagramDataCompressor::CachePosition position( r1, column );
         const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
         leftValue = point.value;
         if( !ISNAN( point.value ) )
             break;
         ++missingCount;
     }
-    for( int r = row + 1; r < rowCount; ++r )
+    for( int r2 = row + 1; r < rowCount; ++r )
     {
-        const CartesianDiagramDataCompressor::CachePosition position( r, column );
+        const CartesianDiagramDataCompressor::CachePosition position( r2, column );
         const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
         rightValue = point.value;
         if( !ISNAN( point.value ) )
