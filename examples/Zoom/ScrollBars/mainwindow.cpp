@@ -118,7 +118,13 @@ void MainWindow::on_vSBar_valueChanged( int vPos )
 
 void MainWindow::applyNewZoomParameters()
 {
+    hSBar->blockSignals( true );
+    vSBar->blockSignals( true );
+
     hSBar->setValue( qRound( m_chart->coordinatePlane()->zoomCenter().x() * 1000 ) );
     vSBar->setValue( qRound( m_chart->coordinatePlane()->zoomCenter().y() * 1000 ) );
     zoomFactorSB->setValue( m_chart->coordinatePlane()->zoomFactorX() );
+
+    hSBar->blockSignals( false );
+    vSBar->blockSignals( false );
 }
