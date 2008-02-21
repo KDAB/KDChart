@@ -370,7 +370,7 @@ void Plotter::paint( PaintContext* ctx )
     if ( !checkInvariants( true ) ) return;
     if ( !AbstractGrid::isBoundariesValid(dataBoundaries()) ) return;
     const PainterSaver p( ctx->painter() );
-    if( model()->rowCount() == 0 || model()->columnCount() == 0 )
+    if( model()->rowCount( rootIndex() ) == 0 || model()->columnCount( rootIndex() ) == 0 )
         return; // nothing to paint for us
 
     AbstractCoordinatePlane* const plane = ctx->coordinatePlane();

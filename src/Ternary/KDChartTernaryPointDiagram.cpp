@@ -93,19 +93,19 @@ void  TernaryPointDiagram::paint (PaintContext *paintContext)
         int numrows = model()->rowCount( rootIndex() );
         for( int row = 0; row < numrows; row++ )
         {
-            QModelIndex base = model()->index( row, column );
+            QModelIndex base = model()->index( row, column, rootIndex() );
             // see if there is data otherwise skip
-            if( ! model()->data( model()->index( row, column+0 ) ).isNull() )
+            if( ! model()->data( model()->index( row, column+0, rootIndex() ) ).isNull() )
             {
                 p->setPen( PrintingParameters::scalePen( pen( base ) ) );
                 p->setBrush( brush( base ) );
 
                 // retrieve data
-                x = qMax( model()->data( model()->index( row, column+0 ) ).toDouble(),
+                x = qMax( model()->data( model()->index( row, column+0, rootIndex() ) ).toDouble(),
                           0.0 );
-                y = qMax( model()->data( model()->index( row, column+1 ) ).toDouble(),
+                y = qMax( model()->data( model()->index( row, column+1, rootIndex() ) ).toDouble(),
                           0.0 );
-                z = qMax( model()->data( model()->index( row, column+2 ) ).toDouble(),
+                z = qMax( model()->data( model()->index( row, column+2, rootIndex() ) ).toDouble(),
                           0.0 );
 
                 // fix messed up data values (paint as much as possible)
@@ -115,7 +115,7 @@ void  TernaryPointDiagram::paint (PaintContext *paintContext)
                     QPointF diagramLocation = translate( tPunkt );
                     QPointF widgetLocation = plane->translate( diagramLocation );
 
-                    paintMarker( p, model()->index( row, column ), widgetLocation );
+                    paintMarker( p, model()->index( row, column, rootIndex() ), widgetLocation );
                     QString text = tr( "(%1, %2, %3)" )
                                    .arg( x * 100, 0, 'f', 0 )
                                    .arg( y * 100, 0, 'f', 0 )

@@ -115,11 +115,11 @@ void  TernaryLineDiagram::paint (PaintContext *paintContext)
                 p->setBrush( brush( base ) );
 
                 // retrieve data
-                x = qMax( model()->data( model()->index( row, column ) ).toDouble(),
+                x = qMax( model()->data( model()->index( row, column, rootIndex() ) ).toDouble(),
                           0.0 );
-                y = qMax( model()->data( model()->index( row, column+1 ) ).toDouble(),
+                y = qMax( model()->data( model()->index( row, column+1, rootIndex() ) ).toDouble(),
                           0.0 );
-                z = qMax( model()->data( model()->index( row, column+2 ) ).toDouble(),
+                z = qMax( model()->data( model()->index( row, column+2, rootIndex() ) ).toDouble(),
                           0.0 );
 
                 double total = x + y + z;
@@ -131,7 +131,7 @@ void  TernaryLineDiagram::paint (PaintContext *paintContext)
                     if ( row > 0 ) {
                         p->drawLine( start, widgetLocation );
                     }
-                    paintMarker( p, model()->index( row, column ), widgetLocation );
+                    paintMarker( p, model()->index( row, column, rootIndex() ), widgetLocation );
                     start = widgetLocation;
                     // retrieve text and data value attributes
                     // FIXME use data model DisplayRole text
