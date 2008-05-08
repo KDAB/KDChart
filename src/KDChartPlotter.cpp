@@ -385,8 +385,8 @@ void Plotter::paint( PaintContext* ctx )
 
 void Plotter::resize ( const QSizeF& size )
 {
-    d->compressor.setResolution( static_cast<int>( size.width() ),
-                                 static_cast<int>( size.height() ) );
+    d->compressor.setResolution( static_cast<int>( size.width() * coordinatePlane()->zoomFactorX() ),
+                                 static_cast<int>( size.height() * coordinatePlane()->zoomFactorY() ) );
     setDataBoundariesDirty();
 }
 
