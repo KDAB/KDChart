@@ -232,7 +232,8 @@ void CartesianAxis::paint( QPainter* painter )
 }
 
 void CartesianAxis::Private::drawSubUnitRulers( QPainter* painter, CartesianCoordinatePlane* plane, const DataDimension& dim,
-                                                const QPointF& rulerRef, const QVector<int>& drawnTicks, const bool diagramIsVertical ) const
+                                                const QPointF& rulerRef, const QVector<int>& drawnTicks, const bool diagramIsVertical,
+                                                const RulerAttributes& rulerAttr) const
 {
     const QRect geoRect( axis()->geometry() );
     int nextMayBeTick = 0;
@@ -268,7 +269,13 @@ void CartesianAxis::Private::drawSubUnitRulers( QPainter* painter, CartesianCoor
 		            bottomPoint.setX( rulerRef.x() );
 	            }
 	            if( qAbs( mayBeTick - topPoint.x() ) > 1 )
+	            {
+                    if ( rulerAttr.hasTickMarkPenAt( topPoint.x() ) )
+                    	painter->setPen( rulerAttr.tickMarkPen( topPoint.x() ) );
+                    else
+                    	painter->setPen( rulerAttr.minorTickMarkPen() );
 	                painter->drawLine( topPoint, bottomPoint );
+	            }
 	            else {
 	                ++nextMayBeTick;
 	            }
@@ -296,6 +303,10 @@ void CartesianAxis::Private::drawSubUnitRulers( QPainter* painter, CartesianCoor
 		                    leftPoint.setY( rulerRef.y() + (position == Bottom ? subUnitTickLength : -subUnitTickLength) );
 		                    rightPoint.setY( rulerRef.y() );
 	                    }
+	                    if ( rulerAttr.hasTickMarkPenAt( f ) )
+	                    	painter->setPen( rulerAttr.tickMarkPen( f ) );
+	                    else
+	                    	painter->setPen( rulerAttr.minorTickMarkPen() );
 	                    painter->drawLine( leftPoint, rightPoint );
 	                }
 	            } else {
@@ -912,7 +923,10 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
                 if ( bIsVisibleLabel && painttick ) {
                     ptr->save();
-                    ptr->setPen( rulerAttr.tickMarkPen() );
+                    if ( rulerAttr.hasTickMarkPenAt( i ) )
+                    	ptr->setPen( rulerAttr.tickMarkPen( i ) );
+                    else
+                    	ptr->setPen( rulerAttr.majorTickMarkPen() );
                     ptr->drawLine( topPoint, bottomPoint );
                     ptr->restore();
                 }
@@ -1113,7 +1127,10 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         if( bIsVisibleLabel )
                         {
                         	ptr->save();
-                        	ptr->setPen( rulerAttr.tickMarkPen() );
+                            if ( rulerAttr.hasTickMarkPenAt( annotation ) )
+                            	ptr->setPen( rulerAttr.tickMarkPen( annotation ) );
+                            else
+                            	ptr->setPen( rulerAttr.majorTickMarkPen() );
                             ptr->drawLine( leftPoint, rightPoint );
                             ptr->restore();
                             
@@ -1163,7 +1180,10 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
                     if( bIsVisibleLabel ){
                     	ptr->save();
-                        ptr->setPen( rulerAttr.tickMarkPen() );
+                        if ( rulerAttr.hasTickMarkPenAt( labelValue ) )
+                        	ptr->setPen( rulerAttr.tickMarkPen( labelValue ) );
+                        else
+                        	ptr->setPen( rulerAttr.majorTickMarkPen() );
                         ptr->drawLine( leftPoint, rightPoint );
                         ptr->restore();
                         
@@ -1208,8 +1228,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
     if ( drawSubUnitRulers && d->annotations.isEmpty() ) {
     	ptr->save();
         
-    	ptr->setPen( rulerAttr.tickMarkPen() );
-        d->drawSubUnitRulers( ptr, plane, dim, rulerRef, isAbscissa() ? drawnXTicks : drawnYTicks, diagramIsVertical );
+        d->drawSubUnitRulers( ptr, plane, dim, rulerRef, isAbscissa() ? drawnXTicks : drawnYTicks, diagramIsVertical, rulerAttr );
         
         ptr->restore();
     }
