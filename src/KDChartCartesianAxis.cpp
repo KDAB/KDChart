@@ -245,56 +245,64 @@ void CartesianAxis::Private::drawSubUnitRulers( QPainter* painter, CartesianCoor
     const int subUnitTickLength = axis()->tickLength( true );
     
     while ( dim.end - f > std::numeric_limits< float >::epsilon() ) {
+    	const qreal quotient = f / dim.stepWidth;
+    	const bool isMinorTickMark = qAbs(round(quotient) - quotient) > std::numeric_limits< float >::epsilon();
+    	// 'Drawn' ticks isn't quite the right naming here, it also counts major tick marks, which are not drawn.
         if( drawnTicks.count() > nextMayBeTick )
             mayBeTick = drawnTicks[ nextMayBeTick ];
-        if ( isAbscissa ) {
-            // for the x-axis
-            QPointF topPoint = diagramIsVertical ? QPointF( f, 0 ) : QPointF( 0, f );
-            QPointF bottomPoint( topPoint );
-            // we don't draw the sub ticks, if we are at the same position as a normal tick
-            topPoint = plane->translate( topPoint );
-            bottomPoint = plane->translate( bottomPoint );
-            if ( diagramIsVertical ) {
-	            topPoint.setY( rulerRef.y() + subUnitTickLength );
-	            bottomPoint.setY( rulerRef.y() );
-            } else {
-	            topPoint.setX( rulerRef.x() + subUnitTickLength );
-	            bottomPoint.setX( rulerRef.x() );
-            }
-            if( qAbs( mayBeTick - topPoint.x() ) > 1 )
-                painter->drawLine( topPoint, bottomPoint );
-            else {
-                ++nextMayBeTick;
-            }
-        } else {
-            // for the y-axis
-            QPointF leftPoint = plane->translate( diagramIsVertical ? QPointF( 0, f ) : QPointF( f, 0 ) );
-            //qDebug() << "geoRect:" << geoRect << "   geoRect.top()" << geoRect.top() << "geoRect.bottom()" << geoRect.bottom() << "  translatedValue:" << translatedValue;
-            // we don't draw the sub ticks, if we are at the same position as a normal tick
-            if( qAbs( mayBeTick - diagramIsVertical ? leftPoint.y() : leftPoint.x() ) > 1 ){
-                const qreal translatedValue = leftPoint.y();
-                bool translatedValueIsWithinBoundaries;
-                if ( diagramIsVertical ) {
-                	translatedValueIsWithinBoundaries = translatedValue > geoRect.top() && translatedValue <= geoRect.bottom();
-                } else {
-                	translatedValueIsWithinBoundaries = translatedValue > geoRect.left() && translatedValue <= geoRect.right();
-                }
-                if( translatedValueIsWithinBoundaries ){
-                    QPointF rightPoint = diagramIsVertical ? QPointF( 0, f ) : QPointF( f, 0 );
-                    rightPoint = plane->translate( rightPoint );
-                    if ( diagramIsVertical ) {
-	                    leftPoint.setX( rulerRef.x() + subUnitTickLength );
-	                    rightPoint.setX( rulerRef.x() );
-                    } else {
-	                    leftPoint.setY( rulerRef.y() + (position == Bottom ? subUnitTickLength : -subUnitTickLength) );
-	                    rightPoint.setY( rulerRef.y() );
-                    }
-                    painter->drawLine( leftPoint, rightPoint );
-                }
-            } else {
-                ++nextMayBeTick;
-            }
-        }
+    	// Paint only minor, not major, tick marks
+    	if ( isMinorTickMark )
+    	{
+	        if ( isAbscissa ) {
+	            // for the x-axis
+	            QPointF topPoint = diagramIsVertical ? QPointF( f, 0 ) : QPointF( 0, f );
+	            QPointF bottomPoint( topPoint );
+	            // we don't draw the sub ticks, if we are at the same position as a normal tick
+	            topPoint = plane->translate( topPoint );
+	            bottomPoint = plane->translate( bottomPoint );
+	            if ( diagramIsVertical ) {
+		            topPoint.setY( rulerRef.y() + subUnitTickLength );
+		            bottomPoint.setY( rulerRef.y() );
+	            } else {
+		            topPoint.setX( rulerRef.x() + subUnitTickLength );
+		            bottomPoint.setX( rulerRef.x() );
+	            }
+	            if( qAbs( mayBeTick - topPoint.x() ) > 1 )
+	                painter->drawLine( topPoint, bottomPoint );
+	            else {
+	                ++nextMayBeTick;
+	            }
+	        } else {
+	            // for the y-axis
+	        	
+	            QPointF leftPoint = plane->translate( diagramIsVertical ? QPointF( 0, f ) : QPointF( f, 0 ) );
+	            //qDebug() << "geoRect:" << geoRect << "   geoRect.top()" << geoRect.top() << "geoRect.bottom()" << geoRect.bottom() << "  translatedValue:" << translatedValue;
+	            // we don't draw the sub ticks, if we are at the same position as a normal tick
+	            if( qAbs( mayBeTick - diagramIsVertical ? leftPoint.y() : leftPoint.x() ) > 1 ){
+	                const qreal translatedValue = leftPoint.y();
+	                bool translatedValueIsWithinBoundaries;
+	                if ( diagramIsVertical ) {
+	                	translatedValueIsWithinBoundaries = translatedValue > geoRect.top() && translatedValue <= geoRect.bottom();
+	                } else {
+	                	translatedValueIsWithinBoundaries = translatedValue > geoRect.left() && translatedValue <= geoRect.right();
+	                }
+	                if( translatedValueIsWithinBoundaries ){
+	                    QPointF rightPoint = diagramIsVertical ? QPointF( 0, f ) : QPointF( f, 0 );
+	                    rightPoint = plane->translate( rightPoint );
+	                    if ( diagramIsVertical ) {
+		                    leftPoint.setX( rulerRef.x() + subUnitTickLength );
+		                    rightPoint.setX( rulerRef.x() );
+	                    } else {
+		                    leftPoint.setY( rulerRef.y() + (position == Bottom ? subUnitTickLength : -subUnitTickLength) );
+		                    rightPoint.setY( rulerRef.y() );
+	                    }
+	                    painter->drawLine( leftPoint, rightPoint );
+	                }
+	            } else {
+	                ++nextMayBeTick;
+	            }
+	        }
+    	}
         if ( isLogarithmic ){
             if( logSubstep == 9 ){
                 fLogSubstep *= 10.0;
