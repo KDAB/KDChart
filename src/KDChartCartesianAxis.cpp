@@ -247,7 +247,7 @@ void CartesianAxis::Private::drawSubUnitRulers( QPainter* painter, CartesianCoor
     
     while ( dim.end - f > std::numeric_limits< float >::epsilon() ) {
     	const qreal quotient = f / dim.stepWidth;
-    	const bool isMinorTickMark = qAbs(round(quotient) - quotient) > std::numeric_limits< float >::epsilon();
+    	const bool isMinorTickMark = qAbs(qRound(quotient) - quotient) > std::numeric_limits< float >::epsilon();
     	// 'Drawn' ticks isn't quite the right naming here, it also counts major tick marks, which are not drawn.
         if( drawnTicks.count() > nextMayBeTick )
             mayBeTick = drawnTicks[ nextMayBeTick ];
