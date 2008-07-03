@@ -25,8 +25,6 @@
 
 #include "KDChartRulerAttributes.h"
 
-#include <limits>
-
 #include <QPen>
 #include <QDebug>
 
@@ -43,26 +41,12 @@ public:
     Private();
 private:
     QPen tickMarkPen;
-    QPen majorTickMarkPen;
-    QPen minorTickMarkPen;
-    
-    bool majorTickMarkPenIsSet;
-    bool minorTickMarkPenIsSet;
-    
-    QMap<qreal, QPen> customTickMarkPens;
 };
 
 RulerAttributes::Private::Private()
     : tickMarkPen( QColor( 0x00, 0x00, 0x00 ) )
-    , majorTickMarkPen( QColor( 0x00, 0x00, 0x00 ) )
-    , minorTickMarkPen( QColor( 0x00, 0x00, 0x00 ) )
 {
 	tickMarkPen.setCapStyle( Qt::FlatCap );
-	majorTickMarkPen.setCapStyle( Qt::FlatCap );
-	minorTickMarkPen.setCapStyle( Qt::FlatCap );
-	
-	majorTickMarkPenIsSet = false;
-	minorTickMarkPenIsSet = false;
 }
 
 
@@ -85,56 +69,6 @@ void RulerAttributes::setTickMarkPen( const QPen& pen )
 QPen RulerAttributes::tickMarkPen() const
 {
 	return d->tickMarkPen;
-}
-
-void RulerAttributes::setMajorTickMarkPen( const QPen& pen )
-{
-	d->majorTickMarkPen = pen;
-	d->majorTickMarkPenIsSet = true;
-}
-
-QPen RulerAttributes::majorTickMarkPen() const
-{
-	return d->majorTickMarkPenIsSet ? d->majorTickMarkPen : d->tickMarkPen;
-}
-
-void RulerAttributes::setMinorTickMarkPen( const QPen& pen )
-{
-	d->minorTickMarkPen = pen;
-	d->minorTickMarkPenIsSet = true;
-}
-
-QPen RulerAttributes::minorTickMarkPen() const
-{
-	return d->minorTickMarkPenIsSet ? d->minorTickMarkPen : d->tickMarkPen;
-}
-
-void RulerAttributes::setTickMarkPen( qreal value, const QPen& pen )
-{
-	if ( !d->customTickMarkPens.contains( value ) )
-		d->customTickMarkPens.insert( value, pen );
-}
-
-QPen RulerAttributes::tickMarkPen( qreal value ) const
-{
-	QMapIterator<qreal, QPen> it( d->customTickMarkPens );
-	while( it.hasNext() ) {
-		it.next();
-		if ( qAbs( value - it.key() ) < std::numeric_limits< float >::epsilon() )
-			return it.value();
-	}
-	return d->tickMarkPen;
-}
-
-bool RulerAttributes::hasTickMarkPenAt( qreal value ) const
-{
-	QMapIterator<qreal, QPen> it( d->customTickMarkPens );
-	while( it.hasNext() ) {
-		it.next();
-		if ( qAbs( value - it.key() ) < std::numeric_limits< float >::epsilon() )
-			return true;
-	}
-	return false;
 }
 
 void RulerAttributes::setTickMarkColor( const QColor& color )

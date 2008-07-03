@@ -66,8 +66,7 @@ public:
     const CartesianAxis* axis() const { return static_cast<CartesianAxis *>( mAxis ); }
 
     void drawSubUnitRulers( QPainter*, CartesianCoordinatePlane* plane, const DataDimension& dim,
-                            const QPointF& rulerRef, const QVector<int>& drawnTicks, const bool diagramIsVertical,
-                            const RulerAttributes& rulerAttr) const;
+                            const QPointF& rulerRef, const QVector<int>& drawnTicks, const bool diagramIsVertical ) const;
     void drawTitleText( QPainter*, CartesianCoordinatePlane* plane, const QRect& areaGeoRect ) const;
 
     const TextAttributes titleTextAttributesWithAdjustedRotation() const;

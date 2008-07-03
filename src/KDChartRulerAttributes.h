@@ -57,29 +57,6 @@ public:
     QPen tickMarkPen() const;
 
     /**
-      * Sets the pen used to draw major tick marks
-      */
-    void setMajorTickMarkPen( const QPen& pen );
-    QPen majorTickMarkPen() const;
-
-    /**
-      * Sets the pen used to draw minor tick marks
-      */
-    void setMinorTickMarkPen( const QPen& pen );
-    QPen minorTickMarkPen() const;
-
-    /**
-      * Sets the pen used to draw the tick mark at a specific value
-      * 
-      * Note: This will not paint a tick mark at the specified value
-      * if it wasn't already drawn before. 
-      */
-    void setTickMarkPen( qreal value, const QPen& pen );
-    QPen tickMarkPen( qreal value ) const;
-    
-    bool hasTickMarkPenAt( qreal value) const;
-
-    /**
       * Color setter method provided for convenience
       */
     void setTickMarkColor( const QColor& color );

@@ -850,9 +850,6 @@ QRectF CartesianCoordinatePlane::visibleDataRange() const
 
 void CartesianCoordinatePlane::setGeometry( const QRect& rectangle )
 {
-    if( rectangle == geometry() )
-        return;
-
     AbstractCoordinatePlane::setGeometry( rectangle );
     Q_FOREACH( AbstractDiagram* diagram, diagrams() ) {
         diagram->resize( drawingArea().size() );

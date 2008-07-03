@@ -359,6 +359,8 @@ QRectF PieDiagram::piePosition( uint dataset, uint pie ) const
         qreal explodeX = attrs.explodeFactor() * d->size * cosAngle;
         qreal explodeY = attrs.explodeFactor() * d->size * sinAngle;
         drawPosition.translate( explodeX, explodeY );
+    }else{
+        drawPosition = d->position;
     }
     return drawPosition;
  }
