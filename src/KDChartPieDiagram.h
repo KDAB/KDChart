@@ -114,4 +114,4 @@ private:
 }; // End of class KDChartPieDiagram
 
 }
-#endif // KDCHARTPIEDIAGRA_H
+#endif // KDCHARTPIEDIAGRAM_H
