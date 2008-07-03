@@ -6,4 +6,6 @@ TARGET = LeveyJenningsSimple
 
 SOURCES= main.cpp
 
+QT += svg
+
 message( "Building ''$$TARGET'' using LIBS ''$$LIBS''" )
