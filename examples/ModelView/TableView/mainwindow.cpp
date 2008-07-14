@@ -92,7 +92,7 @@ void MainWindow::setupViews()
 
     m_tableView = new QTableView;
 
-    QSplitter *splitter = new QSplitter;
+    QSplitter *splitter = new QSplitter(Qt::Vertical);
     splitter->addWidget(m_tableView);
     splitter->addWidget(m_chart);
     splitter->setStretchFactor(0, 0);
@@ -139,8 +139,12 @@ void MainWindow::selectionChanged( const QItemSelection & selected, const QItemS
 {
     if( deselected != selected ){
 
+        // First we set pItemSelection to the de-selected bars
+        // and we use an invisible pen, then we set it to the selected ones
+        // using a dark blue pen:
         const QItemSelection * pItemSelection = &deselected;
         QPen pen( Qt::NoPen );
+
         for (int iItemSelection = 0; iItemSelection<2; ++iItemSelection){
             for (int i = 0; i < pItemSelection->size(); ++i) {
                 QItemSelectionRange range( pItemSelection->at(i) );

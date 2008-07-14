@@ -68,7 +68,8 @@ MainWindow::MainWindow( QWidget* parent ) :
 }
 
 
-void MainWindow::setupAddHeaderDialog( QDialog* dlg, Ui::AddHeaderDialog& conf )const
+void MainWindow::setupAddHeaderDialog( QDialog* dlg,
+                                       Ui::AddHeaderDialog& conf )const
 {
     conf.setupUi( dlg );
     conf.textED->setFocus();
@@ -76,7 +77,9 @@ void MainWindow::setupAddHeaderDialog( QDialog* dlg, Ui::AddHeaderDialog& conf )
     const QStringList labels = KDChart::Position::printableNames();
     const QList<QByteArray> names = KDChart::Position::names();
 
-    for ( int i = 0, end = qMin( labels.size(), names.size() ) ; i != end ; ++i )
+    for ( int i = 0, end = qMin( labels.size(), names.size() ) ;
+          i != end ;
+          ++i )
         conf.positionCO->addItem( labels[i], names[i] );
 }
 
@@ -89,7 +92,8 @@ void MainWindow::on_addHeaderPB_clicked()
     conf.typeCO->setCurrentIndex( 0 ); // let us start with "Header"
     conf.positionCO->setCurrentIndex( 0 );
     if( dlg.exec() ) {
-        KDChart::HeaderFooter* headerFooter = new KDChart::HeaderFooter( m_chart );
+        KDChart::HeaderFooter* headerFooter
+                = new KDChart::HeaderFooter( m_chart );
         m_chart->addHeaderFooter( headerFooter );
         headerFooter->setText( conf.textED->text() );
         KDChart::TextAttributes attrs( headerFooter->textAttributes() );
@@ -100,13 +104,15 @@ void MainWindow::on_addHeaderPB_clicked()
             ? KDChart::HeaderFooter::Header
             : KDChart::HeaderFooter::Footer );
         headerFooter->setPosition(
-            KDChart::Position::fromName( conf.positionCO->itemData( conf.positionCO->currentIndex() ).toByteArray() ) );
+            KDChart::Position::fromName( conf.positionCO->itemData(
+                conf.positionCO->currentIndex() ).toByteArray() ) );
         //headerFooter->show();
         HeaderItem* newItem = new HeaderItem( headerFooter, headersTV );
         newItem->setText( 0, conf.textED->text() );
-        newItem->setText( 1, headerFooter->type() == KDChart::HeaderFooter::Header
-                        ? tr("Header")
-                        : tr("Footer") );
+        newItem->setText( 1, headerFooter->type()
+                             == KDChart::HeaderFooter::Header
+                             ? tr("Header")
+                             : tr("Footer") );
         newItem->setText( 2, conf.positionCO->currentText() );
         m_chart->update();
     }
@@ -116,7 +122,8 @@ void MainWindow::on_addHeaderPB_clicked()
 void MainWindow::on_editHeaderPB_clicked()
 {
     if ( headersTV->selectedItems().size() == 0 ) return;
-    HeaderItem* item = static_cast<HeaderItem*>( headersTV->selectedItems().first() );
+    HeaderItem* item =
+            static_cast<HeaderItem*>( headersTV->selectedItems().first() );
     KDChart::HeaderFooter* headerFooter = item->header();
     QDialog dlg;
     Ui::AddHeaderDialog conf;
@@ -126,7 +133,7 @@ void MainWindow::on_editHeaderPB_clicked()
         headerFooter->type() == KDChart::HeaderFooter::Header
             ? 0 : 1 );
     conf.positionCO->setCurrentIndex(
-        conf.positionCO->findText( headerFooter->position().printableName() ) );
+        conf.positionCO->findText(headerFooter->position().printableName()));
     if( dlg.exec() ) {
         headerFooter->setText( conf.textED->text() );
         headerFooter->setType(
@@ -134,11 +141,13 @@ void MainWindow::on_editHeaderPB_clicked()
             ? KDChart::HeaderFooter::Header
             : KDChart::HeaderFooter::Footer );
         headerFooter->setPosition(
-            KDChart::Position::fromName( conf.positionCO->itemData( conf.positionCO->currentIndex() ).toByteArray() ) );
+            KDChart::Position::fromName( conf.positionCO->itemData(
+                conf.positionCO->currentIndex() ).toByteArray() ) );
         item->setText( 0, conf.textED->text() );
-        item->setText( 1, headerFooter->type() == KDChart::HeaderFooter::Header
-            ? tr("Header")
-            : tr("Footer") );
+        item->setText( 1, headerFooter->type()
+                          == KDChart::HeaderFooter::Header
+                          ? tr("Header")
+                          : tr("Footer") );
         item->setText( 2, conf.positionCO->currentText() );
         m_chart->update();
     }
@@ -154,13 +163,16 @@ void MainWindow::on_removeHeaderPB_clicked()
     for( QList<QTreeWidgetItem*>::const_iterator it = items.begin();
          it != items.end(); ++it )
     {
-        KDChart::HeaderFooter* headerFooter = static_cast<HeaderItem*>( (*it) )->header();
+        KDChart::HeaderFooter* headerFooter
+                = static_cast<HeaderItem*>( (*it) )->header();
 #if 0
-        // Note: Despite it being owned by the Chart, you *can* just delete
-        //       the header: KD Chart will notice that and adjust its layout ...
+        // Note: Despite it being owned by the Chart, you *can* just
+        //       delete the header: KD Chart will notice that and
+        //       it will adjust its layout ...
         delete headerFooter;
 #else
-        // ... but the correct way is to first take it, so the Chart is no longer owning it:
+        // ... but the correct way is to first take it, so the Chart
+        // is no longer owning it:
         m_chart->takeHeaderFooter( headerFooter );
         // ... and then delete it:
         delete headerFooter;

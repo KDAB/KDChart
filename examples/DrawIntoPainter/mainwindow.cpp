@@ -188,7 +188,13 @@ void MainWindow::on_lineTypeCB_currentIndexChanged( const QString & text )
 
 void MainWindow::on_paintLegendCB_toggled( bool checked )
 {
-    m_legend->setVisible( checked );
+    KDChart::Legend* legend = m_chart->legend();
+    if( checked != (legend != 0) ){
+        if( checked )
+            m_chart->addLegend( m_legend );
+        else
+            m_chart->takeLegend( legend );
+    }
 }
 
 void MainWindow::on_paintValuesCB_toggled( bool checked )
@@ -296,7 +302,7 @@ void MainWindow::on_paintMarkersCB_toggled( bool checked )
             QBrush brush = qVariantValue<QBrush>( m_lines->model()->headerData( iColumn, Qt::Vertical, DatasetBrushRole ) );
             double value = m_lines->model()->data( index ).toDouble();
             /* Set a specific color - marker for a specific value */
-            if ( value == 8 ) {
+            if ( value == 13 ) {
                 m_lines->setDataValueAttributes( index, yellowAttributes );
             }
         }
@@ -331,33 +337,23 @@ void MainWindow::on_markersHeightSB_valueChanged( int i )
 
 void MainWindow::on_displayAreasCB_toggled( bool checked )
 {
-    const int rowCount = m_lines->model()->rowCount();
     const int colCount = m_lines->model()->columnCount();
-     for ( int iColumn = 0; iColumn<colCount; ++iColumn ) {
-         for ( int j=0; j< rowCount; ++j ) {
-             LineAttributes la( m_lines->lineAttributes( iColumn ) );
-             if ( checked  ) {
-                 la.setDisplayArea( true );
-                 la.setTransparency( transparencySB->value() );
-             } else
-                 la.setDisplayArea( false );
-             m_lines->setLineAttributes( iColumn,  la );
-         }
-     }
+    for ( int iColumn = 0; iColumn<colCount; ++iColumn ) {
+        LineAttributes la( m_lines->lineAttributes( iColumn ) );
+        la.setDisplayArea( checked );
+        if ( checked  )
+            la.setTransparency( transparencySB->value() );
+        m_lines->setLineAttributes( iColumn,  la );
+    }
 }
 
 void MainWindow::on_transparencySB_valueChanged( int alpha )
 {
-    const int rowCount = m_lines->model()->rowCount();
-    const int colCount = m_lines->model()->columnCount();
-    for ( int iColumn = 0; iColumn<colCount; ++iColumn ) {
-        for ( int j=0; j< rowCount; ++j ) {
-            LineAttributes la = m_lines->lineAttributes( iColumn );
-            la.setTransparency( alpha );
-            m_lines->setLineAttributes( la );
-        }
-    }
-    on_displayAreasCB_toggled( true );
+    Q_UNUSED(alpha)
+    if( ! displayAreasCB->isChecked() )
+        displayAreasCB->setChecked( true );
+    else
+        on_displayAreasCB_toggled( true );
 }
 
 void MainWindow::on_zoomFactorSB_valueChanged( double factor )

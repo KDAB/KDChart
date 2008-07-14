@@ -50,23 +50,30 @@ CartesianDiagramDataCompressor::CartesianDiagramDataCompressor( QObject* parent 
 
 void CartesianDiagramDataCompressor::slotRowsAboutToBeInserted( const QModelIndex& parent, int start, int end )
 {
-    Q_UNUSED( parent );
+    if ( parent != m_rootIndex )
+		return;
     Q_ASSERT( start <= end );
 
-    const CachePosition startPos = mapToCache( start, 0 );
-    const CachePosition endPos = mapToCache( end, 0 );
-
-    start = startPos.first;
-    end = endPos.first;
+    CachePosition startPos = mapToCache( start, 0 );
+    CachePosition endPos = mapToCache( end, 0 );
     
     static const CachePosition NullPosition( -1, -1 );
     if( startPos == NullPosition )
     {
         rebuildCache();
-        return;
+		startPos = mapToCache( start, 0 );
+		endPos = mapToCache( end, 0 );
+		// The start position still isn't valid,
+		// means that no resolution was set yet or we're about to add the first rows
+		if( startPos == NullPosition ) {
+			return;
+		}
     }
 
-    for( int i = 0; i < m_data.size(); ++i )
+    start = startPos.first;
+    end = endPos.first;
+
+	for( int i = 0; i < m_data.size(); ++i )
     {
         Q_ASSERT( start >= 0 && start <= m_data[ i ].size() );
         m_data[ i ].insert( start, end - start + 1, DataPoint() );
@@ -75,26 +82,33 @@ void CartesianDiagramDataCompressor::slotRowsAboutToBeInserted( const QModelInde
 
 void CartesianDiagramDataCompressor::slotRowsInserted( const QModelIndex& parent, int start, int end )
 {
-    Q_UNUSED( parent );
+    if ( parent != m_rootIndex )
+		return;
     Q_ASSERT( start <= end );
     
-    const CachePosition startPos = mapToCache( start, 0 );
-    const CachePosition endPos = mapToCache( end, 0 );
+    CachePosition startPos = mapToCache( start, 0 );
+    CachePosition endPos = mapToCache( end, 0 );
+
+    static const CachePosition NullPosition( -1, -1 );
+    if( startPos == NullPosition )
+    {
+		// Rebuild the cache at this point if we have added the first rows
+        rebuildCache();
+		startPos = mapToCache( start, 0 );
+		endPos = mapToCache( end, 0 );
+		// The start position still isn't valid,
+		// means that no resolution was set yet
+		if( startPos == NullPosition ) {
+			return;
+		}
+    }
 
     start = startPos.first;
     end = endPos.first;
     
-    static const CachePosition NullPosition( -1, -1 );
-    if( startPos == NullPosition )
-    {
-        // Since we should already have rebuilt the cache, it won't help to rebuild it again.
-        // Do not Q_ASSERT() though, since the resolution might simply not be set
-        return;
-    }
-
     for( int i = 0; i < m_data.size(); ++i )
     {
-        for( int j = 0; j < m_data[i].size(); ++j ) {
+        for( int j = start; j < m_data[i].size(); ++j ) {
             retrieveModelData( CachePosition( j, i ) );
         }
     }
@@ -102,18 +116,24 @@ void CartesianDiagramDataCompressor::slotRowsInserted( const QModelIndex& parent
 
 void CartesianDiagramDataCompressor::slotColumnsAboutToBeInserted( const QModelIndex& parent, int start, int end )
 {
-    Q_UNUSED( parent );
+    if ( parent != m_rootIndex )
+		return;
     Q_ASSERT( start <= end );
 
-
-    const CachePosition startPos = mapToCache( 0, start );
-    const CachePosition endPos = mapToCache( 0, end );
+    CachePosition startPos = mapToCache( 0, start );
+    CachePosition endPos = mapToCache( 0, end );
 
     static const CachePosition NullPosition( -1, -1 );
     if( startPos == NullPosition )
     {
         rebuildCache();
-        return;
+		startPos = mapToCache( 0, start );
+		endPos = mapToCache( 0, end );
+		// The start position still isn't valid,
+		// means that no resolution was set yet or we're about to add the first columns
+		if( startPos == NullPosition ) {
+			return;
+		}
     }
 
     start = startPos.second;
@@ -126,27 +146,33 @@ void CartesianDiagramDataCompressor::slotColumnsAboutToBeInserted( const QModelI
 
 void CartesianDiagramDataCompressor::slotColumnsInserted( const QModelIndex& parent, int start, int end )
 {
-    Q_UNUSED( parent );
+    if ( parent != m_rootIndex )
+		return;
     Q_ASSERT( start <= end );
 
-
-    const CachePosition startPos = mapToCache( 0, start );
-    const CachePosition endPos = mapToCache( 0, end );
+    CachePosition startPos = mapToCache( 0, start );
+    CachePosition endPos = mapToCache( 0, end );
 
     static const CachePosition NullPosition( -1, -1 );
     if( startPos == NullPosition )
     {
-        // Since we should already have rebuilt the cache, it won't help to rebuild it again.
-        // Do not Q_ASSERT() though, since the resolution might simply not be set
-        return;
+		// Rebuild the cache at this point if we have added the first columns
+        rebuildCache();
+		startPos = mapToCache( 0, start );
+		endPos = mapToCache( 0, end );
+		// The start position still isn't valid,
+		// means that no resolution was set yet
+		if( startPos == NullPosition ) {
+			return;
+		}
     }
 
     start = startPos.second;
     end = endPos.second;
 
-    for( int i = 0; i < m_data.size(); ++i )
+    for( int i = start; i < m_data.size(); ++i )
     {
-        for(int j = end + 1; j < m_data[i].size(); ++j ) {
+        for(int j = 0; j < m_data[i].size(); ++j ) {
             retrieveModelData( CachePosition( j, i ) );
         }
     }
@@ -154,21 +180,28 @@ void CartesianDiagramDataCompressor::slotColumnsInserted( const QModelIndex& par
 
 void CartesianDiagramDataCompressor::slotRowsAboutToBeRemoved( const QModelIndex& parent, int start, int end )
 {
-    Q_UNUSED( parent );
+    if ( parent != m_rootIndex )
+		return;
     Q_ASSERT( start <= end );
     
-    const CachePosition startPos = mapToCache( start, 0 );
-    const CachePosition endPos = mapToCache( end, 0 );
-
-    start = startPos.first;
-    end = endPos.first;
+    CachePosition startPos = mapToCache( start, 0 );
+    CachePosition endPos = mapToCache( end, 0 );
 
     static const CachePosition NullPosition( -1, -1 );
     if( startPos == NullPosition )
     {
         rebuildCache();
-        return;
+		startPos = mapToCache( start, 0 );
+		endPos = mapToCache( end, 0 );
+		// The start position still isn't valid,
+		// probably means that no resolution was set yet
+		if( startPos == NullPosition ) {
+			return;
+		}
     }
+
+    start = startPos.first;
+    end = endPos.first;
 
     for( int i = 0; i < m_data.size(); ++i )
     {
@@ -178,11 +211,12 @@ void CartesianDiagramDataCompressor::slotRowsAboutToBeRemoved( const QModelIndex
 
 void CartesianDiagramDataCompressor::slotRowsRemoved( const QModelIndex& parent, int start, int end )
 {
-    Q_UNUSED( parent );
+    if ( parent != m_rootIndex )
+		return;
     Q_ASSERT( start <= end );
     
-    const CachePosition startPos = mapToCache( start, 0 );
-    const CachePosition endPos = mapToCache( end, 0 );
+    CachePosition startPos = mapToCache( start, 0 );
+    CachePosition endPos = mapToCache( end, 0 );
 
     start = startPos.first;
     end = endPos.first;
@@ -190,9 +224,8 @@ void CartesianDiagramDataCompressor::slotRowsRemoved( const QModelIndex& parent,
     static const CachePosition NullPosition( -1, -1 );
     if( startPos == NullPosition )
     {
-        
         // Since we should already have rebuilt the cache, it won't help to rebuild it again.
-        // Do not Q_ASSERT() though, since the resolution might simply not be set
+        // Do not Q_ASSERT() though, since the resolution might simply not be set or we might now have 0 rows
         return;
     }
     
@@ -205,28 +238,36 @@ void CartesianDiagramDataCompressor::slotRowsRemoved( const QModelIndex& parent,
 
 void CartesianDiagramDataCompressor::slotColumnsAboutToBeRemoved( const QModelIndex& parent, int start, int end )
 {
-    Q_UNUSED( parent );
+    if ( parent != m_rootIndex )
+		return;
     Q_ASSERT( start <= end );
 
-    const CachePosition startPos = mapToCache( 0, start );
-    const CachePosition endPos = mapToCache( 0, end );
-
-    start = startPos.second;
-    end = endPos.second;
+    CachePosition startPos = mapToCache( 0, start );
+    CachePosition endPos = mapToCache( 0, end );
 
     static const CachePosition NullPosition( -1, -1 );
     if( startPos == NullPosition )
     {
         rebuildCache();
-        return;
+		startPos = mapToCache( 0, start );
+		endPos = mapToCache( 0, end );
+		// The start position still isn't valid,
+		// probably means that no resolution was set yet
+		if( startPos == NullPosition ) {
+			return;
+		}
     }
+
+    start = startPos.second;
+    end = endPos.second;
 
     m_data.remove( start, end - start + 1 );
 }
 
 void CartesianDiagramDataCompressor::slotColumnsRemoved( const QModelIndex& parent, int start, int end )
 {
-    Q_UNUSED( parent );
+    if ( parent != m_rootIndex )
+		return;
     Q_ASSERT( start <= end );
 
     const CachePosition startPos = mapToCache( 0, start );
@@ -239,7 +280,7 @@ void CartesianDiagramDataCompressor::slotColumnsRemoved( const QModelIndex& pare
     if( startPos == NullPosition )
     {
         // Since we should already have rebuilt the cache, it won't help to rebuild it again.
-        // Do not Q_ASSERT() though, since the resolution might simply not be set
+        // Do not Q_ASSERT() though, since the resolution might simply not be set or we might now have 0 columns
         return;
     }
 
@@ -265,6 +306,9 @@ void CartesianDiagramDataCompressor::slotModelDataChanged(
     const QModelIndex& topLeftIndex,
     const QModelIndex& bottomRightIndex )
 {
+    if ( topLeftIndex.parent() != m_rootIndex )
+		return;
+    Q_ASSERT( topLeftIndex.parent() == bottomRightIndex.parent() );
     Q_ASSERT( topLeftIndex.row() <= bottomRightIndex.row() );
     Q_ASSERT( topLeftIndex.column() <= bottomRightIndex.column() );
     CachePosition topleft = mapToCache( topLeftIndex );
@@ -312,7 +356,7 @@ int CartesianDiagramDataCompressor::modelDataRows() const
 {
     // only operational if there is a model, columns, and a resolution
     if ( m_model && m_model->columnCount( m_rootIndex ) > 0 && m_xResolution > 0 ) {
-        return m_data[0].size();
+        return m_data.isEmpty() ? 0 : m_data.first().size();
     } else {
         return 0;
     }
@@ -384,7 +428,9 @@ void CartesianDiagramDataCompressor::setModel( QAbstractItemModel* model )
 void CartesianDiagramDataCompressor::setRootIndex( const QModelIndex& root )
 {
     if ( m_rootIndex != root ) {
+        Q_ASSERT( root.model() == m_model || !root.isValid() );
         m_rootIndex = root;
+        m_modelCache.setRootIndex( root );
         rebuildCache();
         calculateSampleStepWidth();
     }
@@ -430,7 +476,6 @@ void CartesianDiagramDataCompressor::rebuildCache() const
     m_data.resize( columnCount );
     for ( int i = 0; i < columnCount; ++i ) {
         m_data[i].resize( rowCount );
-        m_data[i].fill( DataPoint() );
     }
 }
 

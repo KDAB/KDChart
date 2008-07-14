@@ -36,7 +36,10 @@
 using namespace KDChart;
 
 MainWindow::MainWindow( QWidget* parent ) :
-    QWidget( parent ), m_currentFactor( 0 ), m_currentDirection( 1 ), m_currentSlice( 0 )
+    QWidget( parent ),
+    m_currentFactor( 0 ),
+    m_currentDirection( 1 ),
+    m_currentSlice( 0 )
 {
     setupUi( this );
 
@@ -67,7 +70,8 @@ void MainWindow::on_startPositionSB_valueChanged( double pos )
     startPositionSL->blockSignals( true );
     startPositionSL->setValue( intValue );
     startPositionSL->blockSignals( false );
-    static_cast<PolarCoordinatePlane*>(m_chart->coordinatePlane())->setStartPosition( pos );
+    static_cast<PolarCoordinatePlane*>( m_chart->coordinatePlane()
+                                      )->setStartPosition( pos );
     m_chart->update();
 }
 
@@ -77,7 +81,8 @@ void MainWindow::on_startPositionSL_valueChanged( int pos )
     startPositionSB->blockSignals( true );
     startPositionSB->setValue( doubleValue  );
     startPositionSB->blockSignals( false );
-    static_cast<PolarCoordinatePlane*>(m_chart->coordinatePlane())->setStartPosition( pos );
+    static_cast<PolarCoordinatePlane*>( m_chart->coordinatePlane()
+                                      )->setStartPosition( pos );
     m_chart->update();
 }
 
@@ -89,8 +94,9 @@ void MainWindow::on_explodeSubmitPB_clicked()
 
 void MainWindow::setExplodeFactor( int column, double value )
 {
-    // note: We use the per-column getter method here, it will fall back
-    //       automatically to return the global (or even the default) settings.
+    // Note:
+    // We use the per-column getter method here, it will fall back
+    // automatically to return the global (or even the default) settings.
     PieAttributes attrs( m_pie->pieAttributes( column ) );
     attrs.setExplodeFactor( value );
     m_pie->setPieAttributes( column, attrs );

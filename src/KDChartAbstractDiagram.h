@@ -584,9 +584,10 @@ namespace KDChart {
         int datasetDimension() const;
 
         /**
-         * Sets the dataset dimension of the diagram. Using this method is obolete.
-         * @see datasetDimension.
-         * @param dimension
+         * \obsolete
+         *
+         * Sets the dataset dimension of the diagram. Using this method
+         * is obsolete. Use the specific diagram types instead.
          */
         void setDatasetDimension( int dimension );
 
@@ -615,7 +616,21 @@ namespace KDChart {
         void setDataBoundariesDirty() const;
 
     protected:
+        /**
+         * \obsolete
+         * This method is obsolete and provided for backward-compatibility only.
+         * Your own diagram classes should call
+         * d->paintDataValueTextsAndMarkers() instead
+         * which also is taking care for showing your cell-specific comments, if any,
+         */
         virtual void paintDataValueTexts( QPainter* painter );
+        /**
+         * \obsolete
+         * This method is obsolete and provided for backward-compatibility only.
+         * Your own diagram classes should call
+         * d->paintDataValueTextsAndMarkers() instead
+         * which also is taking care for showing your cell-specific comments, if any,
+         */
         virtual void paintMarkers( QPainter* painter );
         void setAttributesModelRootIndex( const QModelIndex& );
         QModelIndex attributesModelRootIndex() const;

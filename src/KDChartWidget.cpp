@@ -491,10 +491,12 @@ void Widget::setSubType( SubType subType )
         case Stacked:
            SET_SUB_TYPE( barDia,  BarDiagram::Stacked );
            SET_SUB_TYPE( lineDia, LineDiagram::Stacked );
+           //SET_SUB_TYPE( plotterDia, Plotter::Stacked );
            break;
         case Percent:
            SET_SUB_TYPE( barDia,  BarDiagram::Percent );
            SET_SUB_TYPE( lineDia, LineDiagram::Percent );
+           SET_SUB_TYPE( plotterDia, Plotter::Percent );
            break;
         case Rows:
            SET_SUB_TYPE( barDia, BarDiagram::Rows );

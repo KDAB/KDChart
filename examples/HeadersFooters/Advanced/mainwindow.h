@@ -53,7 +53,8 @@ private slots:
     void on_headersTV_itemSelectionChanged();
 
 private:
-    void setupAddHeaderDialog( QDialog* dlg, Ui::AddHeaderDialog& conf ) const;
+    void setupAddHeaderDialog( QDialog* dlg,
+                               Ui::AddHeaderDialog& conf ) const;
 
     KDChart::Chart* m_chart;
     TableModel m_model;

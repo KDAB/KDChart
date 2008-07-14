@@ -433,6 +433,21 @@ void CartesianCoordinatePlane::setFixedDataCoordinateSpaceRelation( bool fixed )
 {
     d->fixedDataCoordinateSpaceRelation = fixed;
     d->fixedDataCoordinateSpaceRelationOldSize = QRectF();
+    /*
+    //TODO(khz): We need to discuss if we want to do this:
+    if( ! fixed ){
+        bool bChanged = false;
+        if( doneSetZoomFactorY( 1.0 ) )
+            bChanged = true;
+        if( doneSetZoomFactorX( 1.0 ) )
+            bChanged = true;
+        if( doneSetZoomCenter( QPointF(0.5, 0.5) ) )
+            bChanged = true;
+        if( bChanged ){
+            emit propertiesChanged();
+        }
+    }
+    */
 }
 
 bool CartesianCoordinatePlane::hasFixedDataCoordinateSpaceRelation() const
@@ -460,9 +475,18 @@ void CartesianCoordinatePlane::handleFixedDataCoordinateSpaceRelation( const QRe
         const QPointF newCenter = QPointF( oldCenter.x() * geometry.width() / d->fixedDataCoordinateSpaceRelationOldSize.width(),
                                            oldCenter.y() * geometry.height() / d->fixedDataCoordinateSpaceRelationOldSize.height() );
 
-        setZoomCenter( newCenter );
-        setZoomFactorX( newZoomX );
-        setZoomFactorY( newZoomY );
+        // Use these internal methods to avoid sending
+        // the propertiesChanged signal three times:
+        bool bChanged = false;
+        if( doneSetZoomFactorY( newZoomY ) )
+            bChanged = true;
+        if( doneSetZoomFactorX( newZoomX ) )
+            bChanged = true;
+        if( doneSetZoomCenter( newCenter ) )
+            bChanged = true;
+        if( bChanged ){
+            emit propertiesChanged();
+        }
     }
 
     d->fixedDataCoordinateSpaceRelationOldSize = geometry;
@@ -850,6 +874,9 @@ QRectF CartesianCoordinatePlane::visibleDataRange() const
 
 void CartesianCoordinatePlane::setGeometry( const QRect& rectangle )
 {
+    if( rectangle == geometry() )
+        return;
+
     AbstractCoordinatePlane::setGeometry( rectangle );
     Q_FOREACH( AbstractDiagram* diagram, diagrams() ) {
         diagram->resize( drawingArea().size() );

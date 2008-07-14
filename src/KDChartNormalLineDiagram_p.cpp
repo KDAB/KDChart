@@ -161,12 +161,14 @@ void NormalLineDiagram::paint( PaintContext* ctx )
                 areas << ( QPolygonF() << a << b << d << c );//polygon;
             }
             // add the pieces to painting if this is not hidden:
-            if ( ! point.hidden && !ISNAN( point.value ) && !ISNAN( lastPoint.value ) ) {
+            if ( ! point.hidden && !ISNAN( point.value ) )
+            {
                 appendDataValueTextInfoToList( diagram(), textInfoList, sourceIndex, pts,
                                                Position::NorthWest, Position::SouthWest,
                                                point.value );
                 paintAreas( ctx, attributesModel()->mapToSource( lastPoint.index ), areas, laCell.transparency() );
-                if ( row > 0 )  // position 0 is not really painted, since it takes two points to make a line :-)
+                // position 0 is not really painted, since it takes two points to make a line :-)
+                if( row > 0 && !ISNAN( lastPoint.value ) )
                     lineList.append( LineAttributesInfo( sourceIndex, a, b ) );
             }
             

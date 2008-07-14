@@ -83,6 +83,31 @@ namespace KDChart
 
         T data( const QModelIndex& index ) const
         {
+            if( !index.isValid() || index.parent() != m_rootIndex )
+                return ModelDataCachePrivate::nan< T >();
+
+            if( index.row() >= m_data.count() )
+            {
+                qWarning( "KDChart didn't got signal rowsInserted, resetModel or layoutChanged, "
+                          "but an index with a row outside of the known bounds." );
+                // apparently, data were added behind our back (w/o signals)
+                const_cast< ModelDataCache< T, ROLE >* >( this )->rowsInserted( m_rootIndex, 
+                                                                                m_data.count(), 
+                                                                                m_model->rowCount( m_rootIndex ) - 1 );
+                Q_ASSERT( index.row() < m_data.count() );
+            }
+
+            if( index.column() >= m_data.first().count() )
+            {
+                qWarning( "KDChart didn't got signal columnsInserted, resetModel or layoutChanged, "
+                          "but an index with a column outside of the known bounds." );
+                // apparently, data were added behind our back (w/o signals)
+                const_cast< ModelDataCache< T, ROLE >* >( this )->columnsInserted( m_rootIndex, 
+                                                                                   m_data.first().count(), 
+                                                                                   m_model->columnCount( m_rootIndex ) - 1 );
+                Q_ASSERT( index.column() < m_data.first().count() );
+            }
+
             return data( index.row(), index.column() );
         }
 
@@ -118,6 +143,18 @@ namespace KDChart
             return m_model;
         }
 
+        void setRootIndex( const QModelIndex& rootIndex )
+        {
+            Q_ASSERT( rootIndex.model() == m_model || !rootIndex.isValid() );
+            m_rootIndex = rootIndex;
+            modelReset();
+        }
+
+        QModelIndex rootIndex() const
+        {
+            return m_rootIndex;
+        }
+
     protected:
         bool isCached( int row, int column ) const
         {
@@ -128,7 +165,7 @@ namespace KDChart
         {
             Q_ASSERT( m_model != 0 );
 
-            const QModelIndex index = m_model->index( row, column );
+            const QModelIndex index = m_model->index( row, column, m_rootIndex );
             const QVariant data = index.data( role );
             const T value = data.isNull() ? ModelDataCachePrivate::nan< T >() 
                                           : qVariantValue< T >( data );
@@ -253,6 +290,7 @@ namespace KDChart
             m_model = 0;
             modelReset();
         }
+
 
     private:
         QAbstractItemModel* m_model;

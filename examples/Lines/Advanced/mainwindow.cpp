@@ -140,14 +140,16 @@ void MainWindow::slot_timerFired()
         if( m_curRow >= m_lines->model()->rowCount(m_lines->rootIndex()) ){
             m_curRow = 0;
             ++m_curColumn;
-            if( m_curColumn >= m_lines->model()->columnCount(m_lines->rootIndex()) )
+            if( m_curColumn >=
+                m_lines->model()->columnCount( m_lines->rootIndex() ) )
                 m_curColumn = 0;
         }
     }
     setHighlightArea( m_curRow, m_curColumn, m_curOpacity, true, true );
 }
 
-void MainWindow::setHighlightArea( int row, int column, int opacity, bool checked, bool doUpdate )
+void MainWindow::setHighlightArea( int row, int column, int opacity,
+                                   bool checked, bool doUpdate )
 {
     if( row < 0 ){
         // highlight a complete dataset
@@ -162,7 +164,8 @@ void MainWindow::setHighlightArea( int row, int column, int opacity, bool checke
     }else{
         // highlight two segments only
         if( row ){
-            QModelIndex cellIndex( m_lines->model()->index( row-1, column, m_lines->rootIndex() ) );
+            QModelIndex cellIndex( m_lines->model()->index(
+                    row-1, column, m_lines->rootIndex() ) );
             if ( checked ) {
                 LineAttributes la( m_lines->lineAttributes( cellIndex ) );
                 la.setDisplayArea( true );
@@ -170,12 +173,14 @@ void MainWindow::setHighlightArea( int row, int column, int opacity, bool checke
                 // set specific line attribute settings for this cell
                 m_lines->setLineAttributes( cellIndex, la );
             }  else {
-                // remove any cell-specific line attribute settings from the indexed cell
+                // remove any cell-specific line attribute settings
+                // from the indexed cell
                 m_lines->resetLineAttributes( cellIndex );
             }
         }
         if( row < m_lines->model()->rowCount(m_lines->rootIndex()) ){
-            QModelIndex cellIndex( m_lines->model()->index( row, column, m_lines->rootIndex() ) );
+            QModelIndex cellIndex( m_lines->model()->index(
+                    row, column, m_lines->rootIndex() ) );
             if ( checked ) {
                 LineAttributes la( m_lines->lineAttributes( cellIndex ) );
                 la.setDisplayArea( true );
@@ -183,7 +188,8 @@ void MainWindow::setHighlightArea( int row, int column, int opacity, bool checke
                 // set specific line attribute settings for this cell
                 m_lines->setLineAttributes( cellIndex, la );
             }  else {
-                // remove any cell-specific line attribute settings from the indexed cell
+                // remove any cell-specific line attribute settings
+                // from the indexed cell
                 m_lines->resetLineAttributes( cellIndex );
             }
         }
@@ -240,10 +246,14 @@ void MainWindow::on_trackAreasSB_valueChanged( int i )
 
 void MainWindow::setTrackedArea( int column, bool checked, bool doUpdate )
 {
-    for( int i = 0; i < m_model.rowCount( m_lines->rootIndex() ); ++i ) {
-        for( int j = 0; j < m_model.columnCount( m_lines->rootIndex() ); ++j ) {
-            QModelIndex cellIndex( m_model.index( i, j, m_lines->rootIndex() ) );
-            ValueTrackerAttributes va( m_lines->valueTrackerAttributes( cellIndex ) );
+    const int rowCount    = m_model.rowCount(    m_lines->rootIndex() );
+    const int columnCount = m_model.columnCount( m_lines->rootIndex() );
+    for( int i = 0; i < rowCount; ++i ) {
+        for( int j = 0; j < columnCount; ++j ) {
+            QModelIndex cellIndex( m_model.index( i, j,
+                                   m_lines->rootIndex() ) );
+            ValueTrackerAttributes va(
+                    m_lines->valueTrackerAttributes( cellIndex ) );
             va.setEnabled( checked && j == column );
             va.setAreaBrush( QColor( 255, 255, 0, 50 ) );
             m_lines->setValueTrackerAttributes( cellIndex, va );
@@ -255,10 +265,14 @@ void MainWindow::setTrackedArea( int column, bool checked, bool doUpdate )
 
 void MainWindow::on_reverseHorizontalCB_toggled( bool checked )
 {
-    static_cast<KDChart::CartesianCoordinatePlane*>( m_chart->coordinatePlane() )->setHorizontalRangeReversed( checked );
+    static_cast<KDChart::CartesianCoordinatePlane*>(
+            m_chart->coordinatePlane() )->setHorizontalRangeReversed(
+                checked );
 }
 
 void MainWindow::on_reverseVerticalCB_toggled( bool checked )
 {
-    static_cast<KDChart::CartesianCoordinatePlane*>( m_chart->coordinatePlane() )->setVerticalRangeReversed( checked );
+    static_cast<KDChart::CartesianCoordinatePlane*>(
+            m_chart->coordinatePlane() )->setVerticalRangeReversed(
+                checked );
 }

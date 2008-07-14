@@ -106,6 +106,8 @@ class Chart::Private : public QObject
         QGridLayout* footerLayout;
         QGridLayout* dataAndLegendLayout;
 
+        QVBoxLayout* innerHdFtLayouts[2][3][3]; // auxiliary pointers
+
         QMap< int, QMap< int, HorizontalLineLayoutItem > > dummyHeaders;
         QMap< int, QMap< int, HorizontalLineLayoutItem > > dummyFooters;
 

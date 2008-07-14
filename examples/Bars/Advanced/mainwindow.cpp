@@ -32,6 +32,7 @@
 #include <KDChartTextAttributes>
 #include <KDChartDataValueAttributes>
 #include <KDChartThreeDBarAttributes>
+#include <KDChartBackgroundAttributes>
 
 
 #include <QDebug>
@@ -59,6 +60,13 @@ MainWindow::MainWindow( QWidget* parent ) :
     pen.setWidth( 1 );
     m_bars->setPen( pen );
     m_chart->coordinatePlane()->replaceDiagram( m_bars );
+
+    // Configure the plane's Background
+    BackgroundAttributes pba;
+    pba.setBrush( QBrush(QColor(0x20,0x20,0x60)) );
+    pba.setVisible( true );
+    m_chart->coordinatePlane()->setBackgroundAttributes(  pba );
+
     m_chart->setGlobalLeadingTop( 20 );
 }
 
@@ -78,7 +86,7 @@ void MainWindow::on_barTypeCB_currentIndexChanged( const QString & text )
     m_chart->update();
 }
 
-void MainWindow::on_barOrientationCB_currentIndexChanged( const QString & text )
+void MainWindow::on_barOrientationCB_currentIndexChanged(const QString & text)
 {
     if ( text == "Vertical" )
         m_bars->setOrientation( Qt::Vertical );
@@ -202,10 +210,18 @@ void MainWindow::on_widthCB_toggled( bool checked )
 
 void MainWindow::on_fixPlaneSizeCB_toggled( bool checked )
 {
-    CartesianCoordinatePlane* plane = qobject_cast< CartesianCoordinatePlane* >( m_chart->coordinatePlane() );
+    CartesianCoordinatePlane* plane =
+        qobject_cast<CartesianCoordinatePlane*>( m_chart->coordinatePlane() );
     if( plane == 0 )
         return;
-
     plane->setFixedDataCoordinateSpaceRelation( checked );
+    // just a little adjustment:
+    // Reset the zoom settings to their initial values
+    // when the releation-adjust checkbox is unchecked:
+    if( ! checked ){
+        m_chart->coordinatePlane()->setZoomFactorX( 1.0 );
+        m_chart->coordinatePlane()->setZoomFactorY( 1.0 );
+        m_chart->coordinatePlane()->setZoomCenter( QPointF(0.5, 0.5) );
+    }
     m_chart->update();
 }

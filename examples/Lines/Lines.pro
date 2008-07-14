@@ -4,6 +4,5 @@ SUBDIRS		= SimpleLineWidget \
 	          AreaPerCell \
 	          Parameters \
 	          PointWidget \
-	          PointChart \
-	          BubbleChart
+	          PointChart 
 

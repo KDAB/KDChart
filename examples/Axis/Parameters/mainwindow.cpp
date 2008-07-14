@@ -65,7 +65,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     xAxis->setPosition ( KDChart::CartesianAxis::Bottom );
     yAxis->setPosition ( KDChart::CartesianAxis::Left );
     axisTop->setPosition( KDChart::CartesianAxis::Top );
-    axisRight->setPosition( KDChart::CartesianAxis::Left);//Right );
+    axisRight->setPosition( KDChart::CartesianAxis::Right );
 
     xAxis->setTitleText ( "Abscissa axis at the bottom" );
     yAxis->setTitleText ( "Ordinate axis at the left side" );

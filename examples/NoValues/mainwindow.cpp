@@ -45,21 +45,31 @@ public:
     EmptyModel( QObject* parent = 0 )
         : QAbstractItemModel( parent )
     {
-        qDebug() << "EmptyModel::EmptyModel()";
+        //qDebug() << "EmptyModel::EmptyModel()";
     }
 
     ~EmptyModel()
     {
-        qDebug() << "EmptyModel::~EmptyModel()";
+        //qDebug() << "EmptyModel::~EmptyModel()";
     }
 
     int columnCount( const QModelIndex& parent = QModelIndex() ) const
     {
         Q_UNUSED( parent );
-        qDebug() << "EmptyModel::columnCount(...)";
+        //qDebug() << "EmptyModel::columnCount(...)";
         return 0;
     }
 
+    int rowCount( const QModelIndex& parent = QModelIndex() ) const
+    {
+        Q_UNUSED( parent );
+        //qDebug() << "EmptyModel::rowCount(...)";
+        return 0;
+    }
+
+
+    // NOTE: The following method will not be called by KD Chart,
+    //       because the model is returning 0 for columnCount() / rowCount().
     QVariant data( const QModelIndex& index, int role = Qt::DisplayRole ) const
     {
         Q_UNUSED( role );
@@ -70,23 +80,18 @@ public:
 
     QModelIndex index( int row, int column, const QModelIndex& parent = QModelIndex() ) const
     {
+        Q_UNUSED( row );
+        Q_UNUSED( column );
         Q_UNUSED( parent );
-        qDebug() << "EmptyModel::index(" << row << column << ")";
+        //qDebug() << "EmptyModel::index(" << row << column << ")";
         return QModelIndex();
     }
 
     QModelIndex parent( const QModelIndex& parent ) const
     {
         Q_UNUSED( parent );
-        qDebug() << "EmptyModel::parent(...)";
+        //qDebug() << "EmptyModel::parent(...)";
         return QModelIndex();
-    }
-
-    int rowCount( const QModelIndex& parent = QModelIndex() ) const
-    {
-        Q_UNUSED( parent );
-        qDebug() << "EmptyModel::rowCount(...)";
-        return 0;
     }
 };
 

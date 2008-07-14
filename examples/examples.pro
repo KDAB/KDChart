@@ -12,7 +12,6 @@ SUBDIRS		= tools \
                   Bars \
                   Lines \
                   ModelView \
-                  MultidimensionalData \
                   EmptyValues \
                   NoValues \
                   Background \

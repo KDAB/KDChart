@@ -100,6 +100,13 @@ void  TernaryLineDiagram::paint (PaintContext *paintContext)
 
     double x, y, z;
 
+
+    // for some reason(?) TernaryPointDiagram is using per-diagram DVAs only:
+    const DataValueAttributes attrs( dataValueAttributes() );
+
+
+    d->clearListOfAlreadyDrawnDataValueTexts();
+
     int columnCount = model()->columnCount( rootIndex() );
     QPointF start;
     for(int column=0; column<columnCount; column+=datasetDimension() )
@@ -139,7 +146,7 @@ void  TernaryLineDiagram::paint (PaintContext *paintContext)
                                    .arg( x * 100, 0, 'f', 0 )
                                    .arg( y * 100, 0, 'f', 0 )
                                    .arg( z * 100, 0, 'f', 0 );
-                    d->paintDataValueText( p, base, widgetLocation, text );
+                    d->paintDataValueText( this, p, attrs, widgetLocation, text, true );
                 } else {
                     // ignore and do not paint this point, garbage data
                     qDebug() << "TernaryPointDiagram::paint: data point x/y/z:"

@@ -115,7 +115,7 @@ void PercentLineDiagram::paint(  PaintContext* ctx )
             }
         }
     }
-
+    
     QList<QPointF> bottomPoints;
     bool bFirstDataset = true;
 
@@ -219,10 +219,13 @@ void PercentLineDiagram::paint(  PaintContext* ctx )
                 ptSouthEast = ptSouthWest;
             }
 
-            const PositionPoints pts( ptNorthWest, ptNorthEast, ptSouthEast, ptSouthWest );
-            appendDataValueTextInfoToList( diagram(), list, sourceIndex, pts,
-                                           Position::NorthWest, Position::SouthWest,
-                                           point.value );
+            if( !ISNAN( point.value ) )
+            {
+                const PositionPoints pts( ptNorthWest, ptNorthEast, ptSouthEast, ptSouthWest );
+                appendDataValueTextInfoToList( diagram(), list, sourceIndex, pts,
+                                               Position::NorthWest, Position::SouthWest,
+                                               point.value );
+            }
         }
         if( areas.count() ){
             paintAreas( ctx, indexPreviousCell, areas, laPreviousCell.transparency() );

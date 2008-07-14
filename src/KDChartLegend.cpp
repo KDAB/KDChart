@@ -879,10 +879,12 @@ void Legend::buildLegend()
         if( showLines() && d->modelLabels.count() ) {
             KDChart::HorizontalLineLayoutItem* lineItem = new KDChart::HorizontalLineLayoutItem();
             d->layoutItems << lineItem;
-            if( orientation() == Qt::Vertical )
+            if( orientation() == Qt::Vertical ){
                 d->layout->addItem( lineItem, 1, 0, 1, 5, Qt::AlignCenter );
-            else
-                d->layout->addItem( lineItem, 1, 0, 1, d->modelLabels.count()*4, Qt::AlignCenter );
+            }else{
+                // we have 1+count*4 columns, because we have both, a leading and a trailing spacer
+                d->layout->addItem( lineItem, 1, 0, 1, 1+d->modelLabels.count()*4, Qt::AlignCenter );
+            }
         }
     }
 
@@ -917,7 +919,7 @@ void Legend::buildLegend()
         }
     }
 
-    // If we show a marker on a line, we paint it after 4 pixels
+    // If we show a marker on a line, we paint it after 8 pixels
     // of the line have been painted. This allows to see the line style
     // at the right side of the marker without the line needing to
     // be too long.
@@ -942,6 +944,18 @@ void Legend::buildLegend()
                     static_cast<int>(maxMarkersSize.width());
     }
 
+#define ADD_MARKER_SPACER_FOR_HORIZONTAL_MODE( column ) \
+{ \
+    if( orientation() != Qt::Vertical ) \
+        d->layout->addItem( new QSpacerItem( spacing(), 1 ), \
+                            2, \
+                            column ); \
+}
+
+    // Horizontal needs a leading spacer
+    ADD_MARKER_SPACER_FOR_HORIZONTAL_MODE( 0 )
+
+    // for all datasets: add (line)marker items and text items to the layout
     for ( int dataset = 0; dataset < d->modelLabels.count(); ++dataset ) {
         KDChart::AbstractLayoutItem* markerLineItem = 0;
         switch( style ){
@@ -984,7 +998,7 @@ void Legend::buildLegend()
             else
                 d->layout->addItem( markerLineItem,
                                     2, // all in row two
-                                    dataset*4 );
+                                    dataset*4+1 );
         }
 
         // PENDING(kalle) Other properties!
@@ -1003,7 +1017,7 @@ void Legend::buildLegend()
         else
             d->layout->addItem( labelItem,
                                 2, // all in row two
-                                dataset*4+1 );
+                                dataset*4+2 );
 
         // horizontal lines (only in vertical mode, and not after the last item)
         if( orientation() == Qt::Vertical && showLines() && dataset != d->modelLabels.count()-1 ) {
@@ -1021,15 +1035,12 @@ void Legend::buildLegend()
             d->layoutItems << lineItem;
             d->layout->addItem( lineItem,
                                 2, // all in row two
-                                style == MarkersAndLines ? dataset*4+3 : dataset*4+2 ,
+                                style == MarkersAndLines ? dataset*4+4 : dataset*4+3 ,
                                 1, 1, Qt::AlignCenter );
         }
 
-        if( orientation() != Qt::Vertical ) { // Horizontal needs a spacer
-            d->layout->addItem( new QSpacerItem( spacing(), 1 ),
-                                2, // all in row two
-                                dataset*4+3 );
-        }
+        // Horizontal needs a spacer
+        ADD_MARKER_SPACER_FOR_HORIZONTAL_MODE( dataset*4+4 )
     }
 
     // vertical line (only in vertical mode)

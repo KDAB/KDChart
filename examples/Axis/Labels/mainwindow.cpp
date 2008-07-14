@@ -104,7 +104,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     // colourize the axes' backgrounds
     ba = yAxis->backgroundAttributes();
     ba.setVisible( true );
-    ba.setBrush( QBrush( QColor(0xff,0xff,0xc0) ) );
+    ba.setBrush( QBrush( QColor(0xff,0xff,0x40) ) );
     yAxis->setBackgroundAttributes( ba );
     xAxis->setBackgroundAttributes( ba );
 #else

@@ -63,7 +63,7 @@ const QPair<QPointF, QPointF> NormalLyingBarDiagram::calculateDataBoundaries() c
         {
             const CartesianDiagramDataCompressor::CachePosition position( row, column );
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
-            const double value = point.value;
+            const double value = ISNAN( point.value ) ? 0.0 : point.value;
             // this is always true yMin can be 0 in case all values
             // are the same
             // same for yMax it can be zero if all values are negative

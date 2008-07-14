@@ -66,6 +66,9 @@ const QPair<QPointF, QPointF> StackedLineDiagram::calculateDataBoundaries() cons
             const CartesianDiagramDataCompressor::CachePosition position( row, col );
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
 
+            if( ISNAN( point.value ) )
+                continue;
+
             if( point.value >= 0.0 )
                 stackedValues += point.value;
             else

@@ -64,6 +64,7 @@ private:
     RelativePosition negativeRelPos;
     RelativePosition positiveRelPos;
     bool showRepetitiveDataLabels;
+    bool showOverlappingDataLabels;
 };
 
 DataValueAttributes::Private::Private() :
@@ -89,6 +90,7 @@ DataValueAttributes::Private::Private() :
     negativeRelPos.setAlignment( Qt::AlignRight | Qt::AlignTop );
 
     showRepetitiveDataLabels = false;
+    showOverlappingDataLabels = false;
 
     // By default use 0.4 (or 0.5, resp.) of the font height as horizontal distance between
     // the data and their respective data value texts,
@@ -149,7 +151,8 @@ bool DataValueAttributes::operator==( const DataValueAttributes& r ) const
             << "l" << (showInfinite() == r.showInfinite())
             << "m" << (negativePosition() == r.negativePosition())
             << "n" << (positivePosition() == r.positivePosition())
-            << "o" << (showRepetitiveDataLabels() == r.showRepetitiveDataLabels());
+            << "o" << (showRepetitiveDataLabels() == r.showRepetitiveDataLabels())
+            << "p" << (showOverlappingDataLabels() == r.showOverlappingDataLabels());
     */
     return ( isVisible() == r.isVisible() &&
             textAttributes() == r.textAttributes() &&
@@ -164,7 +167,8 @@ bool DataValueAttributes::operator==( const DataValueAttributes& r ) const
             showInfinite() == r.showInfinite() &&
             negativePosition() == r.negativePosition() &&
             positivePosition() == r.positivePosition() &&
-            showRepetitiveDataLabels() == r.showRepetitiveDataLabels() );
+            showRepetitiveDataLabels() == r.showRepetitiveDataLabels() &&
+            showOverlappingDataLabels() == r.showOverlappingDataLabels() );
 }
 
 /*static*/
@@ -283,6 +287,16 @@ void DataValueAttributes::setShowRepetitiveDataLabels( bool showRepetitiveDataLa
     d->showRepetitiveDataLabels = showRepetitiveDataLabels;
 }
 
+bool DataValueAttributes::showOverlappingDataLabels() const
+{
+    return d->showOverlappingDataLabels;
+}
+
+void DataValueAttributes::setShowOverlappingDataLabels( bool showOverlappingDataLabels )
+{
+    d->showOverlappingDataLabels = showOverlappingDataLabels;
+}
+
 void DataValueAttributes::setPowerOfTenDivisor( int powerOfTenDivisor )
 {
     d->powerOfTenDivisor = powerOfTenDivisor;
@@ -336,8 +350,9 @@ QDebug operator<<(QDebug dbg, const KDChart::DataValueAttributes& val )
 	<< "showinfinite="<<val.showInfinite()
 	<< "negativerelativeposition="<<val.negativePosition()
 	<< "positiverelativeposition="<<val.positivePosition()
-	<< "showRepetitiveDataLabels="<<val.showRepetitiveDataLabels()
-	<<")";
+    << "showRepetitiveDataLabels="<<val.showRepetitiveDataLabels()
+    << "showOverlappingDataLabels="<<val.showOverlappingDataLabels()
+    <<")";
     return dbg;
 }
 #endif /* QT_NO_DEBUG_STREAM */

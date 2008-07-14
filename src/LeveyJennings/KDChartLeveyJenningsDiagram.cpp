@@ -320,15 +320,13 @@ void LeveyJenningsDiagram::setModel( QAbstractItemModel* model )
                                    this, SLOT( calculateMeanAndStandardDeviation() ) );
         disconnect( this->model(), SIGNAL( rowsRemoved( const QModelIndex&, int, int ) ),
                                    this, SLOT( calculateMeanAndStandardDeviation() ) );
-        disconnect( this->model(), SIGNAL( rowsAboutToBeRemoved( const QModelIndex&, int, int ) ),
-                                   this, SLOT( calculateMeanAndStandardDeviation() ) );
         disconnect( this->model(), SIGNAL( columnsInserted( const QModelIndex&, int, int ) ),
                                    this, SLOT( calculateMeanAndStandardDeviation() ) );
         disconnect( this->model(), SIGNAL( columnsRemoved( const QModelIndex&, int, int ) ),
                                    this, SLOT( calculateMeanAndStandardDeviation() ) );
-        disconnect( this->model(), SIGNAL( columnsAboutToBeRemoved( const QModelIndex&, int, int ) ),
-                                   this, SLOT( calculateMeanAndStandardDeviation() ) );
         disconnect( this->model(), SIGNAL( modelReset() ),
+                                   this, SLOT( calculateMeanAndStandardDeviation() ) );
+        disconnect( this->model(), SIGNAL( layoutChanged() ),
                                    this, SLOT( calculateMeanAndStandardDeviation() ) );
     }
     LineDiagram::setModel( model ); 
@@ -340,15 +338,13 @@ void LeveyJenningsDiagram::setModel( QAbstractItemModel* model )
                                 this, SLOT( calculateMeanAndStandardDeviation() ) );
         connect( this->model(), SIGNAL( rowsRemoved( const QModelIndex&, int, int ) ),
                                 this, SLOT( calculateMeanAndStandardDeviation() ) );
-        connect( this->model(), SIGNAL( rowsAboutToBeRemoved( const QModelIndex&, int, int ) ),
-                                this, SLOT( calculateMeanAndStandardDeviation() ) );
         connect( this->model(), SIGNAL( columnsInserted( const QModelIndex&, int, int ) ),
                                 this, SLOT( calculateMeanAndStandardDeviation() ) );
         connect( this->model(), SIGNAL( columnsRemoved( const QModelIndex&, int, int ) ),
                                 this, SLOT( calculateMeanAndStandardDeviation() ) );
-        connect( this->model(), SIGNAL( columnsAboutToBeRemoved( const QModelIndex&, int, int ) ),
-                                this, SLOT( calculateMeanAndStandardDeviation() ) );
         connect( this->model(), SIGNAL( modelReset() ),
+                                this, SLOT( calculateMeanAndStandardDeviation() ) );
+        connect( this->model(), SIGNAL( layoutChanged() ),
                                 this, SLOT( calculateMeanAndStandardDeviation() ) );
 
         calculateMeanAndStandardDeviation();

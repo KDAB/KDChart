@@ -469,7 +469,9 @@ bool KDChart::TextLayoutItem::intersects( const TextLayoutItem& other, const QPo
         otherP1 = QPointF( r * cos( -angle ), r * sin( -angle ) );
 
         // finally we look, whether both rectangles intersect or even not
-        return QRectF( myP1, mySize ).intersects( QRectF( otherP1, otherSize ) );
+        const bool res = QRectF( myP1, mySize ).intersects( QRectF( otherP1, otherSize ) );
+        //qDebug() << res << QRectF( myP1, mySize ) << QRectF( otherP1, otherSize );
+        return res;
     }
 }
 
@@ -494,7 +496,7 @@ QSize KDChart::TextLayoutItem::sizeHint() const
 QSize KDChart::TextLayoutItem::unrotatedSizeHint( QFont fnt ) const
 {
     if ( fnt == QFont() )
-        fnt = cachedFont;
+        fnt = realFont(); // this *is* the chached font in most of the time
 
     const QFontMetricsF met( fnt, GlobalMeasureScaling::paintDevice() );
     QSize ret(0, 0);
@@ -567,8 +569,8 @@ void KDChart::TextLayoutItem::paint( QPainter* painter )
 #endif
     painter->setPen( PrintingParameters::scalePen( mAttributes.pen() ) );
     painter->drawText( rect, Qt::AlignHCenter | Qt::AlignVCenter, mText );
-//    if (  calcSizeHint( cachedFont ).width() > rect.width() )
-//        qDebug() << "rect.width()" << rect.width() << "text.width()" << calcSizeHint( cachedFont ).width();
+//    if (  calcSizeHint( realFont() ).width() > rect.width() )
+//        qDebug() << "rect.width()" << rect.width() << "text.width()" << calcSizeHint( realFont() ).width();
 //
 //    //painter->drawText( rect, Qt::AlignHCenter | Qt::AlignVCenter, mText );
 }

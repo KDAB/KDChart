@@ -4,6 +4,14 @@ TEMPLATE = lib
 TARGET = kdchartserializer
 DESTDIR	= ../../lib
 
+# Use the filename "kdchartserializerd.dll" (or "kdchartserializerd.lib") on Windows
+# to avoid name clashes between debug/non-debug versions of the
+# KD Chart library:
+TARGET = kdchartserializer
+CONFIG(debug, debug|release) {
+    !unix: TARGET = kdchartserializerd
+}
+
 QT += xml
 
 # use qmake CONFIG+=dll to compile

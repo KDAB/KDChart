@@ -121,6 +121,7 @@ void RingDiagram::paint( PaintContext* ctx )
         ctx->painter()->setPen( PrintingParameters::scalePen( p ) );
         //ctx->painter()->drawPolyline( polygon );
     }
+    d->clearListOfAlreadyDrawnDataValueTexts();
     DataValueTextInfoListIterator it( list );
     while ( it.hasNext() ) {
         const DataValueTextInfo& info = it.next();

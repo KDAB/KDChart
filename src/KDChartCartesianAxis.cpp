@@ -232,8 +232,7 @@ void CartesianAxis::paint( QPainter* painter )
 }
 
 void CartesianAxis::Private::drawSubUnitRulers( QPainter* painter, CartesianCoordinatePlane* plane, const DataDimension& dim,
-                                                const QPointF& rulerRef, const QVector<int>& drawnTicks, const bool diagramIsVertical,
-                                                const RulerAttributes& rulerAttr) const
+                                                const QPointF& rulerRef, const QVector<int>& drawnTicks, const bool diagramIsVertical ) const
 {
     const QRect geoRect( axis()->geometry() );
     int nextMayBeTick = 0;
@@ -508,7 +507,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
         if( dimX.isCalculated )
             numberOfUnitRulers = absRange / qAbs( dimX.stepWidth ) + 1.0;
         else
-            numberOfUnitRulers = d->diagram()->model()->rowCount() - 1.0;
+            numberOfUnitRulers = d->diagram()->model()->rowCount(d->diagram()->rootIndex()) - 1.0;
     }else{
         numberOfUnitRulers = absRange / qAbs( dimY.stepWidth ) + 1.0;
     }
@@ -768,51 +767,80 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 }
             }
 
+            qreal labelDiff = dimX.stepWidth;
+            const int precision = ( QString::number( labelDiff ).section( QLatin1Char('.'), 1,  2 ) ).length();
 
             // If we have a labels list AND a short labels list, we first find out,
-            // if there is enough space for the labels: if not, use the short labels.
+            // if there is enough space for showing ALL of the long labels:
+            // If not, use the short labels.
             if( drawLabels && hardLabelsCount > 0 && shortLabelsCount > 0 && d->annotations.isEmpty() ){
                 bool labelsAreOverlapping = false;
                 int iLabel = 0;
                 qreal i = minValueX;
-                while ( i < maxValueX && !labelsAreOverlapping )
+                while ( i < maxValueX-1 && !labelsAreOverlapping )
                 {
                     if ( dimX.stepWidth != 1.0 && ! dim.isCalculated )
                     {
-                        labelItem->setText(  customizedLabel(QString::number( i ) ) );//, 'f', 0 )) );
-                        labelItem2->setText( customizedLabel(QString::number( i + dimX.stepWidth ) ) );//, 'f', 0 )) );
+                        // Check intersects for the header label - we need to pass the full string
+                        // here and not only the i value.
+                        if( useConfiguredStepsLabels ){
+                            labelItem->setText( customizedLabel(headerLabels[ iLabel   ]) );
+                            labelItem2->setText(customizedLabel(headerLabels[ iLabel+1 ]) );
+                        }else{
+                            //qDebug() << "i + labelDiff " << i + labelDiff;
+                            labelItem->setText( customizedLabel(headerLabelsCount > i && i >= 0 ?
+                                    headerLabels[static_cast<int>(i)] :
+                                    QString::number( i, 'f', precision )) );
+                            //           qDebug() << "1 - labelItem->text() " << labelItem->text();
+                            //qDebug() << "labelDiff" << labelDiff
+                            //        << "  index" << i+labelDiff << "  count" << headerLabelsCount;
+                            labelItem2->setText( customizedLabel(headerLabelsCount > i + labelDiff && i + labelDiff >= 0 ?
+                                    headerLabels[static_cast<int>(i+labelDiff)] :
+                                    QString::number( i + labelDiff, 'f', precision )) );
+                            //qDebug() << "2 - labelItem->text() " << labelItem->text();
+                            //qDebug() << "labelItem2->text() " << labelItem2->text();
+                        }
                     } else {
-
-                        int index = iLabel;
-                        labelItem->setText(  customizedLabel(labelsList[ index < hardLabelsCount ? index : 0 ]) );
-                        labelItem2->setText( customizedLabel(labelsList[ index < hardLabelsCount - 1 ? index + 1 : 0]) );
+                        //qDebug() << iLabel << i << "("<<hardLabelsCount<<")   :";
+                        const int idx = (iLabel < hardLabelsCount    ) ? iLabel     : 0;
+                        const int idx2= (iLabel < hardLabelsCount - 1) ? iLabel + 1 : 0;
+                        const int shortIdx =  (iLabel < shortLabelsCount    ) ? iLabel     : 0;
+                        const int shortIdx2 = (iLabel < shortLabelsCount - 1) ? iLabel + 1 : 0;
+                        labelItem->setText(  customizedLabel(
+                                useShortLabels ? shortLabelsList[ shortIdx ] : labelsList[ idx ] ) );
+                        labelItem2->setText( customizedLabel(
+                                useShortLabels ? shortLabelsList[ shortIdx2 ] : labelsList[ idx2 ] ) );
                     }
+
                     QPointF firstPos = diagramIsVertical ? QPointF( i, 0.0 ) : QPointF( 0.0, i );
                     firstPos = plane->translate( firstPos );
 
-                    QPointF secondPos = diagramIsVertical ? QPointF( i + dimX.stepWidth, 0.0 ) : QPointF( 0.0, i + dimX.stepWidth );
+                    QPointF secondPos = diagramIsVertical ? QPointF( i + labelDiff, 0.0 ) : QPointF( 0.0, i + labelDiff );
                     secondPos = plane->translate( secondPos );
 
                     labelsAreOverlapping = labelItem->intersects( *labelItem2, firstPos, secondPos );
-                    if ( iLabel++ > hardLabelsCount - 1 )
+
+
+                    //qDebug() << labelsAreOverlapping;
+                    if ( ++iLabel > hardLabelsCount - 1 )
                         iLabel = 0;
                     if ( isLogarithmicX )
                         i *= 10.0;
                     else
                         i += dimX.stepWidth;
 
+                    //qDebug() << iLabel << i << labelsAreOverlapping << firstPos << secondPos.x()-firstPos .x() << labelItem->text() << labelItem2->text();
                 }
+                //qDebug() << "-----------------------";
 
                 useShortLabels = labelsAreOverlapping;
             }
 
-            qreal labelDiff = dimX.stepWidth;
             //      qDebug() << "initial labelDiff " << labelDiff;
             if ( drawLabels && d->annotations.isEmpty() )
             {
                 qreal i = minValueX;
                 int iLabel = 0;
-                const int precision = ( QString::number( labelDiff  ).section( QLatin1Char('.'), 1,  2 ) ).length();
 
                 while ( i + labelDiff < maxValueX )
                 {
@@ -867,18 +895,27 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         // labelDiff += labelDiff;
 
                         iLabel = 0;
+                        //qDebug() << firstPos << secondPos.x()-firstPos .x() << labelItem->text() << labelItem2->text();
+                        //qDebug() << labelDiff;
                     }
                     else
                     {
                         i += labelDiff;
+                        //qDebug() << firstPos << secondPos.x()-firstPos .x() << labelItem->text() << labelItem2->text();
+                        //qDebug() << "ok";
                     }
 
-                    ++iLabel;
-                    if ( (iLabel > hardLabelsCount - 1) && !useConfiguredStepsLabels )
+                    if ( (++iLabel > hardLabelsCount - 1) && !useConfiguredStepsLabels )
                     {
                         iLabel = 0;
                     }
                 }
+                // fixing bugz issue #5018 without breaking issue #4179:
+                if( minValueX + labelDiff > maxValueX )
+                    labelDiff = maxValueX - minValueX;
+                // This makes sure the first and the last X label are drawn
+                // if there is not enouth place to draw some more of them
+                // according to labelDiff calculation performed above.
             }
 
             int idxLabel = 0;
@@ -984,6 +1021,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                             }
 
                             QRect labelGeo = labelItem->geometry();
+                            //ptr->drawRect(labelGeo);
                             // if our item would only half fit, we disable clipping for that one
                             if( labelGeo.left() < geoRect.left() && labelGeo.right() > geoRect.left() )
                                 ptr->setClipping( false );
@@ -1014,10 +1052,9 @@ void CartesianAxis::paintCtx( PaintContext* context )
                             //qDebug() << "dimX.stepWidth:" << dimX.stepWidth << "  idxLabel:" << idxLabel;
                         }
                     } else if( headerLabelsCount ) {
-                        if( idxLabel >= headerLabelsCount - 1 ) {
+                        if( ++idxLabel > headerLabelsCount - 1 ) {
                             idxLabel = 0;
-                        }else
-                            ++idxLabel;
+                        }
                     } else {
                         iLabelF += dimX.stepWidth;
                     }

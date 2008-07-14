@@ -179,8 +179,8 @@ QPointF AbstractCartesianDiagram::referenceDiagramOffset() const
 
 void AbstractCartesianDiagram::setRootIndex( const QModelIndex& index )
 {
-    d->compressor.setRootIndex( index );
     AbstractDiagram::setRootIndex( index );
+    d->compressor.setRootIndex( attributesModel()->mapFromSource( index ) );
 }
 
 void AbstractCartesianDiagram::setModel( QAbstractItemModel* model )

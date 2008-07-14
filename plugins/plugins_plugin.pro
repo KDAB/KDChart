@@ -43,5 +43,14 @@ INCLUDEPATH += $$KDCHARTBASE/src \
                $$KDCHARTBASE/extra_include
 DEPENDPATH +=  $$KDCHARTBASE/src
 
-target.path = $$[QT_INSTALL_PLUGINS]/designer
+CONFIG(install-qt){
+  target.path = $$[QT_INSTALL_PLUGINS]/designer
+  message( "Installation of KD Chart Plug-in into" $$target.path)
+} else {
+  target.path = $$INSTALL_PREFIX/lib/plugins
+  message( "" )
+  message( "Installation of KD Chart Plug-in into" $$target.path)
+  message( ( Use \"qmake CONFIG+=install-qt\" to install into $$[QT_INSTALL_PLUGINS]/designer ) )
+  message( "" )
+}
 INSTALLS += target

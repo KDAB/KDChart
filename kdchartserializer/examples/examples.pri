@@ -18,15 +18,24 @@ QT += xml
 staticlib {
   CONFIG -= staticlib
   DEFINES += KDCHART_STATICLIB
+  DEFINES += KDCHARTSERIALIZER_STATICLIB
 }
 
 
-# 2. Use the filename "kdchartd.dll" (or "kdchartd.lib") on Windows
+# 2a.Use the filename "kdchartd.dll" (or "kdchartd.lib") on Windows
 #    to avoid name clashes between debug/non-debug versions of the
 #    KD Chart library:
 KDCHARTLIB = kdchart
 CONFIG(debug, debug|release) {
     !unix: KDCHARTLIB = "kdchartd"
+}
+
+# 2b.Use the filename "kdchartserializerd.dll" (or "kdchartservializerd.lib") on Windows
+#    to avoid name clashes between debug/non-debug versions of the
+#    KD Chart library:
+KDCHARTSERIALIZERLIB = kdchartserializer
+CONFIG(debug, debug|release) {
+    !unix: KDCHARTSERIALIZERLIB = "kdchartserializerd"
 }
 
 
@@ -39,7 +48,7 @@ INCLUDEPATH += \
 DEPENDPATH += \
             $$KDCHART_PATH/include \
             $$KDCHART_PATH/kdchartserializer/include
-LIBS        += -L$$KDCHART_PATH/lib -l$$KDCHARTLIB -lkdchartserializer
+LIBS        += -L$$KDCHART_PATH/lib -l$$KDCHARTSERIALIZERLIB -l$$KDCHARTLIB 
 
 
 # 4. Miscellaneous settings:

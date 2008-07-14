@@ -63,7 +63,7 @@ const QPair<QPointF, QPointF> NormalBarDiagram::calculateDataBoundaries() const
         {
             const CartesianDiagramDataCompressor::CachePosition position( row, column );
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
-            const double value = point.value;
+            const double value = ISNAN( point.value ) ? 0.0 : point.value;
             // this is always true yMin can be 0 in case all values
             // are the same
             // same for yMax it can be zero if all values are negative
@@ -175,16 +175,17 @@ void NormalBarDiagram::paint(  PaintContext* ctx )
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
             const QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );
             const qreal value = point.value;//attributesModel()->data( sourceIndex ).toDouble();
-            QPointF topPoint = ctx->coordinatePlane()->translate( QPointF( point.key + 0.5, value ) );
-            QPointF bottomPoint =  ctx->coordinatePlane()->translate( QPointF( point.key, 0 ) );
-            const double barHeight = bottomPoint.y() - topPoint.y();
-            topPoint.setX( topPoint.x() + offset );
-            const QRectF rect( topPoint, QSizeF( barWidth, barHeight ) );
-            appendDataValueTextInfoToList( diagram(), list, sourceIndex, PositionPoints( rect ),
-                                           Position::NorthWest, Position::SouthEast,
-                                           point.value );
-            paintBars( ctx, sourceIndex, rect, maxDepth );
-
+            if ( !ISNAN( value ) ) {
+                QPointF topPoint = ctx->coordinatePlane()->translate( QPointF( point.key + 0.5, value ) );
+                QPointF bottomPoint =  ctx->coordinatePlane()->translate( QPointF( point.key, 0 ) );
+                const double barHeight = bottomPoint.y() - topPoint.y();
+                topPoint.setX( topPoint.x() + offset );
+                const QRectF rect( topPoint, QSizeF( barWidth, barHeight ) );
+                appendDataValueTextInfoToList( diagram(), list, sourceIndex, PositionPoints( rect ),
+                                               Position::NorthWest, Position::SouthEast,
+                                               point.value );
+                paintBars( ctx, sourceIndex, rect, maxDepth );
+            }
             offset += barWidth + spaceBetweenBars;
         }
     }

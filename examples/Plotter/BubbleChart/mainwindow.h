@@ -26,37 +26,30 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QWidget>
-#include <TableModel.h>
+#include "ui_mainwindow.h"
+
+class QStandardItemModel;
 
 namespace KDChart {
     class Chart;
-    class DatasetProxyModel;
-    class LineDiagram;
-    class LineAttributes;
-    class CartesianAxis;
-    class CartesianCoordinatePlane;
+    class Plotter;
 }
 
-class MainWindow : public QWidget
+class MainWindow : public QWidget, private Ui::MainWindow
 {
     Q_OBJECT
 
 public:
     MainWindow( QWidget* parent = 0 );
-    virtual ~MainWindow() { }
+
+private slots:
+    void initializeDataModel();
+    void setMarkerAttributes();
 
 private:
+    QStandardItemModel* m_model;
     KDChart::Chart* m_chart;
-    TableModel m_model;
-    TableModel m_model2;
-    KDChart::DatasetProxyModel* m_datasetProxy;
-    KDChart::LineDiagram* m_lines;
-    KDChart::LineDiagram* m_lines2;
-    KDChart::CartesianCoordinatePlane* plane;
-    // mutable KDChart::CartesianAxis xAxis;
-    //mutable KDChart::CartesianAxis yAxis;
-
+    KDChart::Plotter* m_plotter;
 };
 
 

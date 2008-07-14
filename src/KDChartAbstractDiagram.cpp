@@ -245,6 +245,8 @@ void AbstractDiagram::setModel( QAbstractItemModel * newModel )
         disconnect( model(), SIGNAL( columnsInserted( QModelIndex, int, int ) ), this, SLOT( setDataBoundariesDirty() ) );
         disconnect( model(), SIGNAL( rowsRemoved( QModelIndex, int, int ) ), this, SLOT( setDataBoundariesDirty() ) );
         disconnect( model(), SIGNAL( columnsRemoved( QModelIndex, int, int ) ), this, SLOT( setDataBoundariesDirty() ) );
+        disconnect( model(), SIGNAL( modelReset() ), this, SLOT( setDataBoundariesDirty() ) );
+        disconnect( model(), SIGNAL( layoutChanged() ), this, SLOT( setDataBoundariesDirty() ) );
     }
     QAbstractItemView::setModel( newModel );
     AttributesModel* amodel = new PrivateAttributesModel( newModel, this );
@@ -258,6 +260,8 @@ void AbstractDiagram::setModel( QAbstractItemModel * newModel )
         connect( model(), SIGNAL( columnsInserted( QModelIndex, int, int ) ), this, SLOT( setDataBoundariesDirty() ) );
         connect( model(), SIGNAL( rowsRemoved( QModelIndex, int, int ) ), this, SLOT( setDataBoundariesDirty() ) );
         connect( model(), SIGNAL( columnsRemoved( QModelIndex, int, int ) ), this, SLOT( setDataBoundariesDirty() ) );
+        connect( model(), SIGNAL( modelReset() ), this, SLOT( setDataBoundariesDirty() ) );
+        connect( model(), SIGNAL( layoutChanged() ), this, SLOT( setDataBoundariesDirty() ) );
     }
     emit modelsChanged();
 }
@@ -495,117 +499,15 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
                                           const QPointF& pos,
                                           double value )
 {
-    // paint one data series
-    const DataValueAttributes a( dataValueAttributes(index) );
-    if ( !a.isVisible() ) return;
-    
-    // handle decimal digits
-    int decimalDigits = a.decimalDigits();
-    int decimalPos = QString::number(  value ).indexOf( QLatin1Char( '.' ) );
-    QString roundedValue;
-    if ( a.dataLabel().isNull() ) {
-        if ( decimalPos > 0 && value != 0 )
-            roundedValue =  roundValues ( value, decimalPos, decimalDigits );
-        else
-            roundedValue = QString::number(  value );
-    } else
-        roundedValue = a.dataLabel();
-        // handle prefix and suffix
-    if ( !a.prefix().isNull() )
-        roundedValue.prepend( a.prefix() );
-
-    if ( !a.suffix().isNull() )
-        roundedValue.append( a.suffix() );
-
-    const TextAttributes ta( a.textAttributes() );
-    // FIXME draw the non-text bits, background, etc
-    if ( ta.isVisible() ) {
-
-        /* for debugging:
-        PainterSaver painterSaver( painter );
-        painter->setPen( Qt::black );
-        painter->drawLine( pos - QPointF( 2,2), pos + QPointF( 2,2) );
-        painter->drawLine( pos - QPointF(-2,2), pos + QPointF(-2,2) );
-        */
-
-        QTextDocument doc;
-        if( Qt::mightBeRichText( roundedValue ) )
-            doc.setHtml( roundedValue );
-        else
-            doc.setPlainText( roundedValue );
-
-        const RelativePosition relPos( a.position( value >= 0.0 ) );
-        const Qt::Alignment alignBottomLeft = Qt::AlignBottom | Qt::AlignLeft;
-        const QFont calculatedFont( ta.calculatedFont( d->plane, KDChartEnums::MeasureOrientationMinimum ) );
-
-        // note: We can not use boundingRect() to retrieve the width, as that returnes a too small value
-        const QSizeF plainSize(
-                d->cachedFontMetrics( calculatedFont, painter->device() )->width( doc.toPlainText() ),
-                d->cachedFontMetrics( calculatedFont, painter->device() )->boundingRect( doc.toPlainText() ).height() );
-
-        // FIXME draw the non-text bits, background, etc
-
-        if ( a.showRepetitiveDataLabels() ||
-             pos.x() <= d->lastX ||
-             d->lastRoundedValue != roundedValue ) {
-            d->lastRoundedValue = roundedValue;
-            d->lastX = pos.x();
-            const PainterSaver painterSaver( painter );
-
-            doc.setDefaultFont( calculatedFont );
-            QAbstractTextDocumentLayout::PaintContext context;
-            context.palette = palette();
-            context.palette.setColor(QPalette::Text, ta.pen().color() );
-
-            QAbstractTextDocumentLayout* const layout = doc.documentLayout();
-
-            painter->translate( pos );
-            painter->rotate( ta.rotation() );
-            qreal dx = 0.0;
-            qreal dy = 0.0;
-            const Qt::Alignment alignTopLeft = (Qt::AlignLeft | Qt::AlignTop);
-            if(     (relPos.alignment() & alignTopLeft) != alignTopLeft ){
-                if( relPos.alignment() & Qt::AlignRight )
-                    dx = - plainSize.width();
-                else if( relPos.alignment() & Qt::AlignHCenter )
-                    dx = - 0.5 * plainSize.width();
-
-                if( relPos.alignment() & Qt::AlignBottom )
-                    dy = - plainSize.height();
-                else if( relPos.alignment() & Qt::AlignVCenter )
-                    dy = - 0.5 * plainSize.height();
-            }
-            painter->translate( QPointF( dx, dy ) );
-
-            layout->draw( painter, context );
-        }
-    }
+    d->paintDataValueText( this, painter, index, pos, value );
 }
 
 
-QString  AbstractDiagram::roundValues( double value,
-                                       const int decimalPos,
-                                       const int decimalDigits ) const {
-
-    QString digits( QString::number( value ).mid( decimalPos+1 ) );
-    QString num( QString::number( value ) );
-    num.truncate( decimalPos );
-    int count = 0;
-        for (  int i = digits.length(); i >= decimalDigits ; --i ) {
-            count += 1;
-            int lastval = QString( digits.data() [i] ).toInt();
-            int val = QString( digits.data() [i-1] ) .toInt();
-            if ( lastval >= 5 ) {
-                val += 1;
-                digits.replace( digits.length() - count,1 , QString::number( val ) );
-            }
-        }
-
-    digits.truncate( decimalDigits );
-    num.append( QLatin1Char( '.' ) + digits );
-
-    return num;
-
+QString AbstractDiagram::roundValues( double value,
+                                      const int decimalPos,
+                                      const int decimalDigits ) const
+{
+    return d->roundValues( value, decimalPos, decimalDigits );
 }
 
 void AbstractDiagram::paintDataValueTexts( QPainter* painter )
@@ -613,6 +515,7 @@ void AbstractDiagram::paintDataValueTexts( QPainter* painter )
     if ( !checkInvariants() ) return;
     const int rowCount = model()->rowCount(rootIndex());
     const int columnCount = model()->columnCount(rootIndex());
+    d->clearListOfAlreadyDrawnDataValueTexts();
     for ( int i=datasetDimension()-1; i<columnCount; i += datasetDimension() ) {
        for ( int j=0; j< rowCount; ++j ) {
            const QModelIndex index = model()->index( j, i, rootIndex() );
@@ -629,9 +532,9 @@ void AbstractDiagram::paintMarker( QPainter* painter,
                                    const QPointF& pos )
 {
     if ( !checkInvariants() ) return;
-    DataValueAttributes a = dataValueAttributes(index);
+    const DataValueAttributes a = dataValueAttributes(index);
     if ( !a.isVisible() ) return;
-    const MarkerAttributes &ma = a.markerAttributes();
+    const MarkerAttributes ma = a.markerAttributes();
     if ( !ma.isVisible() ) return;
 
     const PainterSaver painterSaver( painter );
@@ -725,12 +628,30 @@ void AbstractDiagram::paintMarker( QPainter* painter,
                 }
             case MarkerAttributes::MarkerCross:
                 {
-                    QRectF rect( maSize.width()*-0.5, maSize.height()*-0.2,
-                                 maSize.width(), maSize.height()*0.4 );
-                    painter->drawRect( rect );
-                    rect.setTopLeft(QPointF( maSize.width()*-0.2, maSize.height()*-0.5 ));
-                    rect.setSize(QSizeF( maSize.width()*0.4, maSize.height() ));
-                    painter->drawRect( rect );
+                    // Note: Markers can have outline,
+                    //       so just drawing two rects is NOT the solution here!
+                    const qreal w02 = maSize.width() * 0.2;
+                    const qreal w05 = maSize.width() * 0.5;
+                    const qreal h02 = maSize.height()* 0.2;
+                    const qreal h05 = maSize.height()* 0.5;
+                    QVector <QPointF > crossPoints;
+                    QPointF p[12];
+                    p[ 0] = QPointF( -w02, -h05 );
+                    p[ 1] = QPointF(  w02, -h05 );
+                    p[ 2] = QPointF(  w02, -h02 );
+                    p[ 3] = QPointF(  w05, -h02 );
+                    p[ 4] = QPointF(  w05,  h02 );
+                    p[ 5] = QPointF(  w02,  h02 );
+                    p[ 6] = QPointF(  w02,  h05 );
+                    p[ 7] = QPointF( -w02,  h05 );
+                    p[ 8] = QPointF( -w02,  h02 );
+                    p[ 9] = QPointF( -w05,  h02 );
+                    p[10] = QPointF( -w05, -h02 );
+                    p[11] = QPointF( -w02, -h02 );
+                    for( int i=0; i<12; ++i )
+                        crossPoints << p[i];
+                    crossPoints << p[0];
+                    painter->drawPolygon( crossPoints );
                     break;
                 }
             case MarkerAttributes::MarkerFastCross:

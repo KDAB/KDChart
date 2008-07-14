@@ -31,16 +31,28 @@
 #include <KDChartCartesianCoordinatePlane>
 #include <KDChartLegend>
 #include <QStandardItemModel>
+#include <KDChartDataValueAttributes>
+#include <KDChartTextAttributes>
+#include <KDChartMarkerAttributes>
 
 #include <cmath>
 
 #define PI 3.141592653589793
 
+
+// enable the next line to see points instead of lines:
+// #define PLOTTED_POINTS
+
+
 int main( int argc, char** argv )
 {
     QApplication app( argc, argv );
 
+#if defined PLOTTED_POINTS
+    const int points = 60;
+#else
     const int points = 300;
+#endif
     const double xMin = -2 * PI;
     const double xMax = 2 * PI;
     const double step = ( xMax - xMin ) / ( points - 1 );
@@ -68,6 +80,28 @@ int main( int argc, char** argv )
     KDChart::AbstractCartesianDiagram* diagram = new KDChart::Plotter;
     diagram->setModel( &model );
     chart->coordinatePlane()->replaceDiagram( diagram );
+
+
+#if defined PLOTTED_POINTS
+    diagram->setPen( QPen(Qt::NoPen) );
+    const int colCount = model.columnCount( diagram->rootIndex() );
+    for ( int iColumn = 0; iColumn<colCount; ++iColumn ) {
+        const QPen markerPen( diagram->brush( iColumn ).color() );
+        KDChart::DataValueAttributes dva( diagram->dataValueAttributes( iColumn ) );
+        KDChart::TextAttributes ta( dva.textAttributes() );
+        KDChart::MarkerAttributes ma( dva.markerAttributes() );
+        ma.setPen( markerPen );
+        ma.setMarkerStyle( KDChart::MarkerAttributes::MarkerCircle );
+        ma.setMarkerSize( QSize( 3,3 ) );
+
+        dva.setVisible( true );
+        ta.setVisible(  false );
+        ma.setVisible(  true );
+        dva.setTextAttributes(   ta );
+        dva.setMarkerAttributes( ma );
+        diagram->setDataValueAttributes( iColumn, dva );
+    }
+#endif
 
     KDChart::CartesianAxis* xAxis = new KDChart::CartesianAxis( diagram );
     KDChart::CartesianAxis* yAxis = new KDChart::CartesianAxis( diagram );
