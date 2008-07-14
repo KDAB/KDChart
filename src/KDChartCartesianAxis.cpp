@@ -232,7 +232,8 @@ void CartesianAxis::paint( QPainter* painter )
 }
 
 void CartesianAxis::Private::drawSubUnitRulers( QPainter* painter, CartesianCoordinatePlane* plane, const DataDimension& dim,
-                                                const QPointF& rulerRef, const QVector<int>& drawnTicks, const bool diagramIsVertical ) const
+                                                const QPointF& rulerRef, const QVector<int>& drawnTicks, const bool diagramIsVertical,
+						const RulerAttributes& rulerAttr ) const
 {
     const QRect geoRect( axis()->geometry() );
     int nextMayBeTick = 0;
