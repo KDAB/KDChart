@@ -585,7 +585,9 @@ QModelIndexList CartesianDiagramDataCompressor::mapToModel( const CachePosition&
         // assumption: indexes per column == 1
             const qreal ipp = indexesPerPixel();
             for ( int i = 0; i < ipp; ++i ) {
-                indexes << m_model->index( qRound( position.first * ipp ) + i, position.second, m_rootIndex );
+                const QModelIndex index = m_model->index( qRound( position.first * ipp ) + i, position.second, m_rootIndex );
+                if( index.isValid() )
+                    indexes << index;
             }
         }
         return indexes;
