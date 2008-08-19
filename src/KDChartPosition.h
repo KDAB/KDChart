@@ -110,11 +110,18 @@ public:
 
     static const Position& Floating;
 
-    enum Option { IncludeCenter=0, ExcludeCenter=1 };
+    // boolean flags: 1, 2, 4, 8, ...
+    enum Option { 
+        IncludeCenter   = 0x1,
+        IncludeFloating = 0x2 };
     Q_DECLARE_FLAGS( Options, Option )
 
-    static QList<QByteArray> names( Options options=IncludeCenter );
-    static QStringList printableNames( Options options=IncludeCenter );
+    // Unfortunately the following typecast from int to Options is needed
+    // as the | operator is not defined yet, this will be done by 
+    // the makro Q_DECLARE_OPERATORS_FOR_FLAGS( KDChart::Position::Options )
+    // at the bottom of this file.
+    static QList<QByteArray> names( Options options    = Options(IncludeCenter | IncludeFloating) );
+    static QStringList printableNames( Options options = Options(IncludeCenter | IncludeFloating) );
 
     static Position fromName(const char * name);
     static Position fromName(const QByteArray & name);

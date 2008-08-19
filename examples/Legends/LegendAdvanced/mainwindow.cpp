@@ -106,8 +106,9 @@ void MainWindow::initAddLegendDialog( DerivedAddLegendDialog& conf,
 {
     conf.titleTextED->setFocus();
 
-    const QStringList labels = KDChart::Position::printableNames();
-    const QList<QByteArray> names = KDChart::Position::names();
+    // Note: Legend position can be Floating but it can not be Center
+    const QStringList labels = KDChart::Position::printableNames( KDChart::Position::IncludeFloating );
+    const QList<QByteArray> names = KDChart::Position::names( KDChart::Position::IncludeFloating );
 
 
     for ( int i = 0, end = qMin( labels.size(), names.size() ) ; i != end ; ++i )

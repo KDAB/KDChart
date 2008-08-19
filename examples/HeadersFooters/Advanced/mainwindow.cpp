@@ -74,8 +74,9 @@ void MainWindow::setupAddHeaderDialog( QDialog* dlg,
     conf.setupUi( dlg );
     conf.textED->setFocus();
 
-    const QStringList labels = KDChart::Position::printableNames();
-    const QList<QByteArray> names = KDChart::Position::names();
+    // Note: Header/Footer position can be Center but it can not be Floating
+    const QStringList labels = KDChart::Position::printableNames( KDChart::Position::IncludeCenter );
+    const QList<QByteArray> names = KDChart::Position::names( KDChart::Position::IncludeCenter );
 
     for ( int i = 0, end = qMin( labels.size(), names.size() ) ;
           i != end ;
