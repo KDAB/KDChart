@@ -38,6 +38,8 @@ using namespace KDChart;
 
 PieAttributes::Private::Private()
     : explodeFactor( 0.0 )
+    , tangentialGapFactor( 0.0 )
+    , radialGapFactor( 0.0 )
 {
 }
 
@@ -100,6 +102,19 @@ void PieAttributes::setExplodeFactor( qreal factor )
 qreal PieAttributes::explodeFactor() const
 {
     return d->explodeFactor;
+}
+
+void PieAttributes::setGapFactor( bool circular, qreal factor )
+{
+	if ( circular )
+		d->tangentialGapFactor = factor;
+	else
+		d->radialGapFactor = factor;
+}
+
+qreal PieAttributes::gapFactor( bool circular ) const
+{
+	return circular ? d->tangentialGapFactor : d->radialGapFactor;
 }
 
 #if !defined(QT_NO_DEBUG_STREAM)

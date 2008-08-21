@@ -99,6 +99,12 @@ void AbstractPieDiagram::setPieAttributes( int column, const PieAttributes & att
     emit layoutChanged( this );
 }
 
+void AbstractPieDiagram::setPieAttributes( const QModelIndex & index, const PieAttributes & attrs )
+{
+	d->attributesModel->setData( index, qVariantFromValue( attrs), PieAttributesRole );
+	emit layoutChanged( this );
+}
+
 // Note: Our users NEED this method - even if
 //       we do not need it at drawing time!
 //       (khz, 2006-07-28)

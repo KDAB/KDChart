@@ -413,7 +413,7 @@ void PieDiagram::drawPieSurface( QPainter* painter,
     qreal angleLen = d->angleLens[ pie ];
     if ( angleLen ) {
         qreal startAngle = d->startAngles[ pie ];
-        
+
         QModelIndex index( model()->index( 0, pie, rootIndex() ) );
         const PieAttributes attrs( pieAttributes( index ) );
         const ThreeDPieAttributes threeDAttrs( threeDPieAttributes( index ) );

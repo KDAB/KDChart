@@ -69,6 +69,8 @@ public:
     void setPieAttributes( const PieAttributes & a );
     void setPieAttributes( int   column,
                            const PieAttributes & a );
+    void setPieAttributes( const QModelIndex & index,
+                           const PieAttributes & a );
     PieAttributes pieAttributes() const;
     PieAttributes pieAttributes( int column ) const;
     PieAttributes pieAttributes( const QModelIndex & index ) const;
