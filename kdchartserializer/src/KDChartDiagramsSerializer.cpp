@@ -1182,6 +1182,14 @@ bool DiagramsSerializer::Private::parseRingDiagram(
                         qDebug()<< "Could not parse RingDiagram. Element"
                                 << tagName << "has invalid content.";
                     }
+                } else if( tagName == "ExpandWhenExploded" ) {
+                    bool b;
+                    if( KDXML::readBoolNode( element, b ) ){
+                        diagram.setExpandWhenExploded( b );
+                    }else{
+                        qDebug()<< "Could not parse RingDiagram. Element"
+                                << tagName << "has invalid content.";
+                    }
                 } else {
                     qDebug() << "Unknown subelement of RingDiagram found:" << tagName;
                     bOK = false;
@@ -1204,6 +1212,7 @@ void DiagramsSerializer::Private::saveRingDiagram(
 
     // then save what is stored in the derived class
     KDXML::createBoolNode(  doc, diagElement, "RelativeThickness",   diagram.relativeThickness() );
+    KDXML::createBoolNode(  doc, diagElement, "ExpandWhenExploded",   diagram.expandWhenExploded() );
 }
 
 void DiagramsSerializer::Private::saveQtProperties(

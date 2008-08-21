@@ -759,6 +759,18 @@ bool AttributesSerializer::parsePieAttributes(
                     a.setExplodeFactor( r );
                 else
                     qDebug() << "Error parsing PieAttributes tag: " << tagName;
+            } else if( tagName == "GapFactor_Circular" ) {
+                qreal r;
+                if( KDXML::readRealNode( element, r ) )
+                    a.setGapFactor( true, r );
+                else
+                    qDebug() << "Error parsing PieAttributes tag: " << tagName;
+            } else if( tagName == "GapFactor_Radial" ) {
+                qreal r;
+                if( KDXML::readRealNode( element, r ) )
+                    a.setGapFactor( false, r );
+                else
+                    qDebug() << "Error parsing PieAttributes tag: " << tagName;
             } else {
                 qDebug() << "Unknown subelement of PieAttributes found:" << tagName;
                 bOK = false;
@@ -779,6 +791,8 @@ void AttributesSerializer::savePieAttributes(
     e.appendChild( element );
     KDXML::createBoolNode( doc, element, "Explode",       a.explode() );
     KDXML::createRealNode( doc, element, "ExplodeFactor", a.explodeFactor() );
+    KDXML::createRealNode( doc, element, "GapFactor_Circular", a.gapFactor( true ) );
+    KDXML::createRealNode( doc, element, "GapFactor_Radial",   a.gapFactor( false ) );
 }
 
 
