@@ -40,6 +40,7 @@
 #include "KDChartPainterSaver_p.h"
 #include "KDChartLayoutItems.h"
 #include "KDChartBarDiagram.h"
+#include "KDChartLineDiagram.h"
 #include "KDChartPrintingParameters.h"
 
 #include <KDABLibFakes>
@@ -191,6 +192,19 @@ static bool referenceDiagramIsBarDiagram( const AbstractDiagram * diagram )
     return qobject_cast< const BarDiagram* >( dia ) != 0;
 }
 
+static bool referenceDiagramNeedsCenteredAbscissaTicks( const AbstractDiagram *diagram )
+{
+    const AbstractCartesianDiagram * dia =
+            qobject_cast< const AbstractCartesianDiagram * >( diagram );
+    if( dia && dia->referenceDiagram() )
+        dia = dia->referenceDiagram();
+    if ( qobject_cast< const BarDiagram* >( dia ) )
+    	return true;
+    
+    const LineDiagram * lineDiagram = qobject_cast< const LineDiagram* >( dia );
+    return lineDiagram && lineDiagram->centerDataPoints();
+}
+
 bool CartesianAxis::isAbscissa() const
 {
 	const Qt::Orientation diagramOrientation = referenceDiagramIsBarDiagram( d->diagram() ) ? ((BarDiagram*)(d->diagram()))->orientation()
@@ -252,8 +266,7 @@ void CartesianAxis::Private::drawSubUnitRulers( QPainter* painter, CartesianCoor
         if( drawnTicks.count() > nextMayBeTick )
             mayBeTick = drawnTicks[ nextMayBeTick ];
     	// Paint only minor, not major, tick marks
-    	if ( isMinorTickMark )
-    	{
+    	if ( isMinorTickMark ) {
 	        if ( isAbscissa ) {
 	            // for the x-axis
 	            QPointF topPoint = diagramIsVertical ? QPointF( f, 0 ) : QPointF( 0, f );
@@ -624,7 +637,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
     const QObject* referenceArea = plane->parent();
 
     // that QVector contains all drawn x-ticks (so no subticks are drawn there also)
-    QVector< int > drawnXTicks;
+    QVector< int > drawnAbscissaTicks;
     // and that does the same for the y-ticks
     QVector< int > drawnYTicks;
     
@@ -639,7 +652,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
      * 2 - Display labels and ticks in the middle of the column
      */
 
-    const bool isBarDiagram = referenceDiagramIsBarDiagram(d->diagram());
+    const bool centerAbscissaTicks = referenceDiagramNeedsCenteredAbscissaTicks( d->diagram() );
 
     // this draws the unit rulers
     if ( drawUnitRulers ) {
@@ -682,7 +695,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 headerLabels = configuredStepsLabels;
             }
     
-            if (  isBarDiagram )
+            if (  centerAbscissaTicks )
                 headerLabels.append( QString::null );
         }
 
@@ -930,7 +943,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
             {
                 // Line charts: we want the first tick to begin at 0.0 not at 0.5 otherwise labels and
                 // values does not fit each others
-                QPointF topPoint = diagramIsVertical ? QPointF( i + ( isBarDiagram ? 0.5 : 0.0 ), 0.0 ) : QPointF( 0.0, i + ( isBarDiagram ? 0.5 : 0.0 ) );
+                QPointF topPoint = diagramIsVertical ? QPointF( i + ( centerAbscissaTicks ? 0.5 : 0.0 ), 0.0 ) : QPointF( 0.0, i + ( centerAbscissaTicks ? 0.5 : 0.0 ) );
                 QPointF bottomPoint ( topPoint );
                 topPoint = plane->translate( topPoint );
                 bottomPoint = plane->translate( bottomPoint );
@@ -956,7 +969,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
                 //Dont paint more ticks than we need
                 //when diagram type is Bar
-                if (  isBarDiagram && i == maxValueX )
+                if (  centerAbscissaTicks && i == maxValueX )
                     painttick = false;
 
                 if ( bIsVisibleLabel && painttick ) {
@@ -969,7 +982,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     ptr->restore();
                 }
 
-                drawnXTicks.append( static_cast<int>( diagramIsVertical ? topPoint.x() : topPoint.y() ) );
+                drawnAbscissaTicks.append( static_cast<int>( diagramIsVertical ? topPoint.x() : topPoint.y() ) );
                 if( drawLabels ) {
                     if( bIsVisibleLabel ){
                         if ( isLogarithmicX )
@@ -1266,7 +1279,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
     if ( drawSubUnitRulers && d->annotations.isEmpty() ) {
     	ptr->save();
         
-        d->drawSubUnitRulers( ptr, plane, dim, rulerRef, isAbscissa() ? drawnXTicks : drawnYTicks, diagramIsVertical, rulerAttr );
+        d->drawSubUnitRulers( ptr, plane, dim, rulerRef, isAbscissa() ? drawnAbscissaTicks : drawnYTicks, diagramIsVertical, rulerAttr );
         
         ptr->restore();
     }
@@ -1308,11 +1321,11 @@ Qt::Orientations CartesianAxis::expandingDirections() const
 
 static void calculateOverlap( int i, int first, int last,
                               int measure,
-                              bool isBarDiagram,
+                              bool centerAbscissaTicks,
                               int& firstOverlap, int& lastOverlap )
 {
     if( i == first ){
-        if( isBarDiagram ){
+        if( centerAbscissaTicks ){
             //TODO(khz): Calculate the amount of left overlap
             //           for bar diagrams.
         }else{
@@ -1321,7 +1334,7 @@ static void calculateOverlap( int i, int first, int last,
     }
     // we test both bounds in on go: first and last might be equal
     if( i == last ){
-        if( isBarDiagram ){
+        if( centerAbscissaTicks ){
             //TODO(khz): Calculate the amount of right overlap
             //           for bar diagrams.
         }else{
@@ -1372,7 +1385,7 @@ QSize CartesianAxis::maximumSize() const
         : 0.0;
 
     if ( isAbscissa() ) {
-        const bool isBarDiagram = referenceDiagramIsBarDiagram(d->diagram());
+        const bool centerAbscissaTicks = referenceDiagramNeedsCenteredAbscissaTicks(d->diagram());
         int leftOverlap = 0;
         int rightOverlap = 0;
 
@@ -1407,7 +1420,7 @@ QSize CartesianAxis::maximumSize() const
                     	h = qMax( h, static_cast<qreal>(siz.height()) );
                     else
                     	w = qMax( w, static_cast<qreal>(siz.width()) );
-                    calculateOverlap( i, first, last, diagramIsVertical ? siz.width() : siz.height(), isBarDiagram,
+                    calculateOverlap( i, first, last, diagramIsVertical ? siz.width() : siz.height(), centerAbscissaTicks,
                                       leftOverlap, rightOverlap );
 
                 }
@@ -1445,7 +1458,7 @@ QSize CartesianAxis::maximumSize() const
                                 d->cachedLabelWidth = w;
                             	w = qMax( w, static_cast<qreal>(siz.width()) );
                             }
-                            calculateOverlap( i, first, last, diagramIsVertical ? siz.width() : siz.height(), isBarDiagram,
+                            calculateOverlap( i, first, last, diagramIsVertical ? siz.width() : siz.height(), centerAbscissaTicks,
                                             leftOverlap, rightOverlap );
                         }
                     }
@@ -1459,7 +1472,7 @@ QSize CartesianAxis::maximumSize() const
                     	h = siz.height();
                     else
                     	w = siz.width();
-                    calculateOverlap( 0, 0, 0, siz.width(), isBarDiagram,
+                    calculateOverlap( 0, 0, 0, siz.width(), centerAbscissaTicks,
                                       leftOverlap, rightOverlap );
                 }
             }
