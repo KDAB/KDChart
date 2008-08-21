@@ -73,6 +73,7 @@ namespace KDChart {
         LineDiagramType* normalDiagram;
         LineDiagramType* stackedDiagram;
         LineDiagramType* percentDiagram;
+        bool centerDataPoints;
     };
 
     KDCHART_IMPL_DERIVED_DIAGRAM( LineDiagram, AbstractCartesianDiagram, CartesianCoordinatePlane )
