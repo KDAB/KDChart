@@ -918,16 +918,18 @@ bool DiagramsSerializer::Private::parseAbstractPieDiagram(
                             << tagName << "has invalid content.";
                 }
             } else if( tagName == "StartPosition" ) {
-                // setStartPosition is deprecated!
-                /*
+                // setStartPosition is deprecated,
+                // but we still accept it from old XLM files:
                 int i;
                 if( KDXML::readIntNode( element, i ) ){
-                    diagram.setStartPosition( i );
+                    PolarCoordinatePlane * plane =
+                        const_cast<PolarCoordinatePlane *>(diagram.polarCoordinatePlane());
+                    if( plane )
+                        plane->setStartPosition( i );
                 }else{
                     qDebug()<< "Could not parse AbstractPieDiagram. Element"
                             << tagName << "has invalid content.";
                 }
-                */
             } else {
                 qDebug() << "Unknown subelement of AbstractPieDiagram found:" << tagName;
                 bOK = false;
