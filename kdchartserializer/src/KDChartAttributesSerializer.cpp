@@ -325,7 +325,7 @@ void AttributesSerializer::saveRulerAttributes(
     if( a.minorTickMarkPenIsSet() )
         KDXML::createPenNode( doc, rulerAttributesElement, "MinorTickMarkPen",
                               a.minorTickMarkPen() );
-    // save the custom the map of tick mark pens
+    // save the map of custom tick mark pens
     {
         const RulerAttributes::TickMarkerPensMap map( a.tickMarkPens() );
         if( map.count() ){
