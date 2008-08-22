@@ -176,6 +176,8 @@ QDebug operator << ( QDebug dbg, const KDChart::RulerAttributes& a )
 {
     dbg << "KDChart::RulerAttributes("
             << "tickMarkPen=" << a.tickMarkPen()
+            << "majorTickMarkPen=" << a.majorTickMarkPen()
+            << "minorTickMarkPen=" << a.minorTickMarkPen()
             << ")";
     return dbg;
 }
