@@ -228,6 +228,124 @@ void AttributesSerializer::saveTextAttributes(
 }
 
 
+bool AttributesSerializer::parseRulerAttributes(
+        const QDomElement& container,
+        RulerAttributes& a )
+{
+    bool bOK = true;
+    QDomNode node = container.firstChild();
+    while( !node.isNull() ) {
+        QDomElement element = node.toElement();
+        if( !element.isNull() ) { // was really an element
+            QString tagName = element.tagName();
+            if( tagName == "TickMarkPen" ) {
+                QPen p;
+                if( KDXML::readPenNode( element, p ) )
+                    a.setTickMarkPen( p );
+            } else if( tagName == "MajorTickMarkPen" ) {
+                QPen p;
+                if( KDXML::readPenNode( element, p ) )
+                    a.setMajorTickMarkPen( p );
+            } else if( tagName == "MinorTickMarkPen" ) {
+                QPen p;
+                if( KDXML::readPenNode( element, p ) )
+                    a.setMinorTickMarkPen( p );
+            } else if( tagName == "TickMarkPensMap" ) {
+                // parse custom the map of tick mark pens
+                QDomNode node2 = element.firstChild();
+                while( !node2.isNull() ) {
+                    QDomElement ele2 = node2.toElement();
+                    if( !ele2.isNull() ) { // was really an element
+                        QString tagName2 = ele2.tagName();
+                        if( tagName2 == "item" ) {
+                            double value;
+                            QPen pen;
+                            bool penFound = false;
+                            if( KDXML::findDoubleAttribute( ele2, "value", value ) ){
+                                QDomNode node3 = ele2.firstChild();
+                                while( !node3.isNull() ) {
+                                    QDomElement ele3 = node3.toElement();
+                                    if( !ele3.isNull() ) { // was really an element
+                                        QString tagName3 = ele3.tagName();
+                                        if( tagName3 == "pen" ) {
+                                            QPen pe;
+                                            if( KDXML::readPenNode( ele3, pe ) ){
+                                                pen = pe;
+                                                penFound = true;
+                                            }else{
+                                                qDebug() << "Error parsing item in RulerAttributes/TickMarkPensMap.";
+                                            }
+                                        }else{
+                                            qDebug() << "Unknown subelement of RulerAttributes/TickMarkPensMap found:" << tagName3;
+                                        }
+                                    }
+                                    node3 = node3.nextSibling();
+                                }
+                                if( penFound ){
+                                    a.setTickMarkPen( value, pen );
+                                }else{
+                                    qDebug() << "Error parsing RulerAttributes/TickMarkPensMap.";
+                                    bOK = false;
+                                }
+                            }else{
+                                qDebug() << "Invalid item in RulerAttributes/TickMarkPensMap found.";
+                                bOK = false;
+                            }
+                        }else{
+                            qDebug() << "Unknown subelement of RulerAttributes/TickMarkPensMap found:" << tagName2;
+                            bOK = false;
+                        }
+                    }
+                    node2 = node2.nextSibling();
+                }
+            } else {
+                qDebug() << "Unknown subelement of RulerAttributes found:" << tagName;
+                bOK = false;
+            }
+        }
+        node = node.nextSibling();
+    }
+    return bOK;
+}
+
+void AttributesSerializer::saveRulerAttributes(
+        QDomDocument& doc,
+        QDomElement& e,
+        const RulerAttributes& a,
+        const QString& title )
+{
+    QDomElement rulerAttributesElement =
+            doc.createElement( title );
+    e.appendChild( rulerAttributesElement );
+    KDXML::createPenNode( doc, rulerAttributesElement, "TickMarkPen",
+                          a.tickMarkPen() );
+    if( a.majorTickMarkPenIsSet() )
+        KDXML::createPenNode( doc, rulerAttributesElement, "MajorTickMarkPen",
+                              a.majorTickMarkPen() );
+    if( a.minorTickMarkPenIsSet() )
+        KDXML::createPenNode( doc, rulerAttributesElement, "MinorTickMarkPen",
+                              a.minorTickMarkPen() );
+    // save the custom the map of tick mark pens
+    {
+        const RulerAttributes::TickMarkerPensMap map( a.tickMarkPens() );
+        if( map.count() ){
+            QDomElement mapElement =
+                    doc.createElement( "TickMarkPensMap" );
+            e.appendChild( mapElement );
+            QMap<qreal,QPen>::const_iterator i = map.constBegin();
+            while (i != map.constEnd()) {
+                QDomElement penElement =
+                        doc.createElement( "item" );
+                mapElement.appendChild( penElement );
+                penElement.setAttribute( "value", i.key() );
+                KDXML::createPenNode( doc, penElement, "pen", i.value() );
+                ++i;
+            }
+        }
+    }
+}
+
+
 bool AttributesSerializer::parseMeasure(
         const QDomElement& container,
         Measure& a )

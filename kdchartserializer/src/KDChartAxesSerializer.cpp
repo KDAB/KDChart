@@ -351,6 +351,12 @@ bool AxesSerializer::parseAbstractAxis(
                     axis.setTextAttributes( ta );
                 else
                     bOK = false;
+            } else if( tagName == "RulerAttributes" ) {
+                RulerAttributes ra;
+                if( AttributesSerializer::parseRulerAttributes( element, ra ) )
+                    axis.setRulerAttributes( ra );
+                else
+                    bOK = false;
             } else if( tagName == "Labels" ) {
                 QStringList list;
                 if( KDXML::readStringListNode( element, list ) )
@@ -394,6 +400,11 @@ void AxesSerializer::Private::saveAbstractAxis(
             doc, axisElement,
             axis.textAttributes(),
             "TextAttributes" );
+    // save the ruler attributes
+    AttributesSerializer::saveRulerAttributes(
+            doc, axisElement,
+            axis.rulerAttributes(),
+            "RulerAttributes" );
     // save the labels
     QStringList list( axis.labels() );
     if( list.count() )

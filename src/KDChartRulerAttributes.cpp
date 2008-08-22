@@ -49,7 +49,7 @@ private:
     bool majorTickMarkPenIsSet;
     bool minorTickMarkPenIsSet;
     
-    QMap<qreal, QPen> customTickMarkPens;
+    RulerAttributes::TickMarkerPensMap customTickMarkPens;
 };
 
 RulerAttributes::Private::Private()
@@ -136,7 +136,7 @@ QPen RulerAttributes::tickMarkPen( qreal value ) const
 	return d->tickMarkPen;
 }
 
-QMap<qreal, QPen> RulerAttributes::tickMarkPens() const
+RulerAttributes::TickMarkerPensMap RulerAttributes::tickMarkPens() const
 {
     return d->customTickMarkPens;
 }
@@ -202,7 +202,7 @@ QDebug operator << ( QDebug dbg, const KDChart::RulerAttributes& a )
             << "tickMarkPen=" << a.tickMarkPen()
             << "majorTickMarkPen=" << a.majorTickMarkPen()
             << "minorTickMarkPen=" << a.minorTickMarkPen();
-    const QMap<qreal, QPen> pens( a.tickMarkPens() );
+    const RulerAttributes::TickMarkerPensMap pens( a.tickMarkPens() );
     QMapIterator<qreal, QPen> it( pens );
     while( it.hasNext() ) {
         it.next();

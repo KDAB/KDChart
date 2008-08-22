@@ -34,6 +34,7 @@
   */
 
 #include <KDChartTextAttributes>
+#include <KDChartRulerAttributes>
 #include <KDChartFrameAttributes>
 #include <KDChartBackgroundAttributes>
 #include <KDChartDataValueAttributes>
@@ -77,6 +78,14 @@ namespace KDChart {
                 QDomDocument& doc,
                 QDomElement& e,
                 const TextAttributes& a,
+                const QString& title );
+
+        static bool parseRulerAttributes(
+                const QDomElement& container, RulerAttributes& a );
+        static void saveRulerAttributes(
+                QDomDocument& doc,
+                QDomElement& e,
+                const RulerAttributes& a,
                 const QString& title );
 
         static bool parseMeasure(
