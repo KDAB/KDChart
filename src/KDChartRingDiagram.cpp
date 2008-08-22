@@ -31,7 +31,6 @@
 #include "KDChartRingDiagram_p.h"
 #include "KDChartPainterSaver_p.h"
 #include "KDChartPieAttributes.h"
-#include "KDChartThreeDPieAttributes.h"
 #include "KDChartDataValueAttributes.h"
 
 #include <KDABLibFakes>
@@ -183,7 +182,6 @@ void RingDiagram::paint( PaintContext* ctx )
         return;
 
     const PieAttributes attrs( pieAttributes() );
-    const ThreeDPieAttributes threeDAttrs( threeDPieAttributes( model()->index( 0, 0, rootIndex() ) ) );
 
 	const int rCount = rowCount();
     const int colCount = columnCount();
@@ -227,9 +225,6 @@ void RingDiagram::paint( PaintContext* ctx )
     	totalOffset /= ( rCount + 1 );
     d->size /= ( 1.0 + totalOffset );
 
-
-    //qreal sizeFor3DEffect = 0.0;
-    //if ( ! threeDAttrs.isEnabled() ) {
 
     qreal x = ( contentsRect.width() == d->size ) ? 0.0 : ( ( contentsRect.width() - d->size ) / 2.0 );
     qreal y = ( contentsRect.height() == d->size ) ? 0.0 : ( ( contentsRect.height() - d->size ) / 2.0 );
@@ -287,7 +282,6 @@ void RingDiagram::paint( PaintContext* ctx )
   \param painter the QPainter to draw in
   \param dataset the dataset to draw the pie for
   \param pie the pie to draw
-  \param threeDPieHeight the height of the three dimnensional effect
   */
 void RingDiagram::drawOnePie( QPainter* painter,
         uint dataset, uint pie,
@@ -298,15 +292,6 @@ void RingDiagram::drawOnePie( QPainter* painter,
     if ( angleLen ) {
         const QModelIndex index( model()->index( dataset, pie, rootIndex() ) );
         const PieAttributes attrs( pieAttributes( index ) );
-        const ThreeDPieAttributes threeDAttrs( threeDPieAttributes( index ) );
-
-        //const QRectF drawPosition = piePosition( dataset, pie );
-
-        /*draw3DEffect( painter,
-            d->position, dataset, pie,
-            granularity,
-            threeDAttrs,
-            attrs.explode() );*/
 
         drawPieSurface( painter, dataset, pie, granularity );
     }
@@ -334,10 +319,6 @@ void RingDiagram::drawPieSurface( QPainter* painter,
 
         QModelIndex index( model()->index( dataset, pie, rootIndex() ) );
         const PieAttributes attrs( pieAttributes( index ) );
-        const ThreeDPieAttributes threeDAttrs( threeDPieAttributes( index ) );
-
-        const bool threeD = threeDAttrs.isEnabled();
-        const qreal threeDDepth = threeDAttrs.depth();
 
     	const int rCount = rowCount();
     	const int colCount = columnCount();
@@ -349,45 +330,30 @@ void RingDiagram::drawPieSurface( QPainter* painter,
         QPen pen = this->pen( index );
         painter->setRenderHint ( QPainter::Antialiasing );
         painter->setBrush( brush( index ) );
-//        if ( threeDAttrs.isEnabled() )
-//            pen.setColor( QColor( 0, 0, 0 ) );
 //        painter->setPen( pen );
         //painter->setPen( Qt::red );
         if ( angleLen == 360 ) {
             // full circle, avoid nasty line in the middle
+            // FIXME: Draw a complete ring here
             //painter->drawEllipse( drawPosition );
         } else {
             bool perfectMatch = false;
 
-            qreal innerGap = 0.0;
-            qreal outerGap = 0.0;
+            qreal circularGap = 0.0;
 
             if ( attrs.gapFactor( true ) > 0.0 )
             {
-	            //const qreal halfWidth = d->size / 2.0;
-	            //qreal innerRadius = radiusOf( drawPosition, 0, pie, false ) / halfWidth;
-	            //qreal outerRadius = radiusOf( drawPosition, 0, pie, true ) / halfWidth;
-	            //qDebug() << innerRadius << outerRadius;
-
 	            // FIXME: Measure in degrees!
-	            innerGap = attrs.gapFactor( true );
-	            //outerGap = attrs.gapFactor( true ) / outerRadius;
+	            circularGap = attrs.gapFactor( true );
 	            //qDebug() << "gapFactor=" << attrs.gapFactor( false );
             }
-            //qDebug() << "inner/outer" << innerGap << outerGap;
-            //angleLen -= innerGap;
-            //startAngle += gap;
 
-            // draw the top of this piece
-            // Start with getting the points for the arc.
-            //const int arcPoints = static_cast<int>(trunc( ( angleLen - innerGap * 2 ) / granularity ))
-            //					+ static_cast<int>(trunc( ( angleLen - outerGap * 2 ) / granularity ));
-            QPolygonF poly;//( arcPoints + 7 );
+            QPolygonF poly;
 
             qreal degree = 0;
 
-            qreal actualStartAngle = startAngle + innerGap;
-            qreal actualAngleLen = angleLen - 2 * innerGap;
+            qreal actualStartAngle = startAngle + circularGap;
+            qreal actualAngleLen = angleLen - 2 * circularGap;
 
             qreal totalRadialExplode = 0.0;
             qreal maxRadialExplode = 0.0;
@@ -433,8 +399,8 @@ void RingDiagram::drawPieSurface( QPainter* painter,
             // The center point of the inner brink
             const QPointF innerCenterPoint( poly[ int(iPoint / 2) ] );
 	    
-            actualStartAngle = startAngle + innerGap;
-            actualAngleLen = angleLen - 2 * innerGap;
+            actualStartAngle = startAngle + circularGap;
+            actualAngleLen = angleLen - 2 * circularGap;
 
             degree = actualAngleLen;
 
@@ -478,13 +444,8 @@ QPointF RingDiagram::pointOnCircle( const QRectF& rect, int dataset, int pie, bo
     qreal startAngle = d->startAngles[ dataset ][ pie ];
     QModelIndex index( model()->index( dataset, pie, rootIndex() ) );
     const PieAttributes attrs( pieAttributes( index ) );
-    const ThreeDPieAttributes threeDAttrs( threeDPieAttributes( index ) );
-
-    //if ( pie == 2 )
-    //	qDebug() << attrs.explode() << attrs.explodeFactor();
 
 	const int rCount = rowCount();
-	const int colCount = columnCount();
 
     //const qreal gapFactor = attrs.gapFactor( false );
 
