@@ -59,6 +59,28 @@ void AbstractPieDiagram::init()
 }
 
 
+bool AbstractPieDiagram::compare( const AbstractPieDiagram* other )const
+{
+    if( other == this ) return true;
+    if( ! other ){
+        //qDebug() << "AbstractPieDiagram::compare() cannot compare to Null pointer";
+        return false;
+    }
+    /*
+    qDebug() << "\n             AbstractPieDiagram::compare():";
+            // compare own properties
+    qDebug() <<
+            (granularity() == other->granularity()) &&
+            (startPosition() == other->startPosition());
+    */
+    return  // compare the base class
+            ( static_cast<const AbstractPolarDiagram*>(this)->compare( other ) ) &&
+            // compare own properties
+            (granularity() == other->granularity()) &&
+            (startPosition() == other->startPosition());
+}
+
+
 #define d d_func()
 
 void AbstractPieDiagram::setGranularity( qreal value )
