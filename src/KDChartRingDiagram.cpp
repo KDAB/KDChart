@@ -70,6 +70,24 @@ RingDiagram * RingDiagram::clone() const
     return new RingDiagram( new Private( *d ) );
 }
 
+bool RingDiagram::compare( const RingDiagram* other )const
+{
+    if( other == this ) return true;
+    if( ! other ){
+        return false;
+    }
+    /*
+    qDebug() <<"\n             RingDiagram::compare():";
+            // compare own properties
+    qDebug() << (type() == other->type());
+    */
+    return  // compare the base class
+            ( static_cast<const AbstractPieDiagram*>(this)->compare( other ) ) &&
+            // compare own properties
+            (relativeThickness()  == other->relativeThickness()) &&
+            (expandWhenExploded() == other->expandWhenExploded());
+}
+
 void RingDiagram::setRelativeThickness( bool relativeThickness )
 {
     d->relativeThickness = relativeThickness;

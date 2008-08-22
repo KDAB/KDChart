@@ -70,6 +70,11 @@ public:
 
     virtual RingDiagram * clone() const;
 
+    /**
+     * Returns true if both diagrams have the same settings.
+     */
+    bool compare( const RingDiagram* other ) const;
+
     void setRelativeThickness( bool relativeThickness );
     bool relativeThickness() const;
 

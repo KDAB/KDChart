@@ -72,10 +72,10 @@ PieAttributes::~PieAttributes()
 
 bool PieAttributes::operator==( const PieAttributes& r ) const
 {
-    if( explodeFactor() == r.explodeFactor() )
-        return true;
-    else
-        return false;
+    return 
+        explodeFactor()   == r.explodeFactor() &&
+        gapFactor( true ) == r.gapFactor( true ) &&
+        gapFactor( false) == r.gapFactor( false);
 }
 
 
