@@ -394,7 +394,7 @@ void RingDiagram::drawPieSurface( QPainter* painter,
 
             qreal totalRadialGap = 0.0;
             qreal maxRadialGap = 0.0;
-            for( int i = rCount - 1; i > dataset; --i ){
+            for( uint i = rCount - 1; i > dataset; --i ){
             	qreal maxRadialExplodeInThisRow = 0.0;
             	qreal maxRadialGapInThisRow = 0.0;
             	for( int j = 0; j < colCount; ++j ){
