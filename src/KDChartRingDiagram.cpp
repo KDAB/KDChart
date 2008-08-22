@@ -80,6 +80,8 @@ bool RingDiagram::compare( const RingDiagram* other )const
     qDebug() <<"\n             RingDiagram::compare():";
             // compare own properties
     qDebug() << (type() == other->type());
+    qDebug() << (relativeThickness()  == other->relativeThickness());
+    qDebug() << (expandWhenExploded() == other->expandWhenExploded());
     */
     return  // compare the base class
             ( static_cast<const AbstractPieDiagram*>(this)->compare( other ) ) &&
