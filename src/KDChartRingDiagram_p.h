@@ -57,7 +57,8 @@ public:
     Private( const Private& rhs ) :
         AbstractPieDiagram::Private( rhs )
         {
-            // just for consistency
+            relativeThickness = rhs.relativeThickness;
+            expandWhenExploded = rhs.expandWhenExploded;
         }
 
 protected:
