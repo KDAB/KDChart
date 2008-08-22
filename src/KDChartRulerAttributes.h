@@ -60,12 +60,14 @@ public:
       * Sets the pen used to draw major tick marks
       */
     void setMajorTickMarkPen( const QPen& pen );
+    bool majorTickMarkPenIsSet() const;
     QPen majorTickMarkPen() const;
 
     /**
       * Sets the pen used to draw minor tick marks
       */
     void setMinorTickMarkPen( const QPen& pen );
+    bool minorTickMarkPenIsSet() const;
     QPen minorTickMarkPen() const;
 
     /**
