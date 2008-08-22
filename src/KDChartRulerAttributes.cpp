@@ -126,6 +126,11 @@ QPen RulerAttributes::tickMarkPen( qreal value ) const
 	return d->tickMarkPen;
 }
 
+QMap<qreal, QPen> RulerAttributes::tickMarkPens() const
+{
+    return d->customTickMarkPens;
+}
+
 bool RulerAttributes::hasTickMarkPenAt( qreal value ) const
 {
 	QMapIterator<qreal, QPen> it( d->customTickMarkPens );
@@ -165,10 +170,19 @@ RulerAttributes::~RulerAttributes()
 
 bool RulerAttributes::operator == ( const RulerAttributes& r ) const
 {
-    return 
+    bool isEqual =
         tickMarkPen()      == r.tickMarkPen() &&
         majorTickMarkPen() == r.majorTickMarkPen() &&
         minorTickMarkPen() == r.minorTickMarkPen();
+    if( isEqual ) {
+        QMapIterator<qreal, QPen> it( d->customTickMarkPens );
+        while( it.hasNext() ) {
+            it.next();
+            if ( it.value() != r.tickMarkPen(it.key()) )
+                return false;
+        }
+    }
+    return isEqual;
 }
 
 #if !defined( QT_NO_DEBUG_STREAM )
@@ -177,8 +191,14 @@ QDebug operator << ( QDebug dbg, const KDChart::RulerAttributes& a )
     dbg << "KDChart::RulerAttributes("
             << "tickMarkPen=" << a.tickMarkPen()
             << "majorTickMarkPen=" << a.majorTickMarkPen()
-            << "minorTickMarkPen=" << a.minorTickMarkPen()
-            << ")";
+            << "minorTickMarkPen=" << a.minorTickMarkPen();
+    const QMap<qreal, QPen> pens( a.tickMarkPens() );
+    QMapIterator<qreal, QPen> it( pens );
+    while( it.hasNext() ) {
+        it.next();
+        dbg << "customTickMarkPen=(" << it.value() << " : " << it.key() << ")";
+    }
+    dbg << ")";
     return dbg;
 }
 #endif /* QT_NO_DEBUG_STREAM */

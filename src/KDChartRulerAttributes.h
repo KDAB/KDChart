@@ -76,6 +76,7 @@ public:
       */
     void setTickMarkPen( qreal value, const QPen& pen );
     QPen tickMarkPen( qreal value ) const;
+    QMap<qreal, QPen> tickMarkPens() const;
     
     bool hasTickMarkPenAt( qreal value) const;
 
