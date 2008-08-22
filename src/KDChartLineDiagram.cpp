@@ -103,7 +103,8 @@ bool LineDiagram::compare( const LineDiagram* other )const
     return  // compare the base class
             ( static_cast<const AbstractCartesianDiagram*>(this)->compare( other ) ) &&
             // compare own properties
-            (type() == other->type());
+            (type()             == other->type()) &&
+            (centerDataPoints() == other->centerDataPoints());
 }
 
 /**
