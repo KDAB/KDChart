@@ -165,7 +165,10 @@ RulerAttributes::~RulerAttributes()
 
 bool RulerAttributes::operator == ( const RulerAttributes& r ) const
 {
-    return  tickMarkPen() == r.tickMarkPen();
+    return 
+        tickMarkPen()      == r.tickMarkPen() &&
+        majorTickMarkPen() == r.majorTickMarkPen() &&
+        minorTickMarkPen() == r.minorTickMarkPen();
 }
 
 #if !defined( QT_NO_DEBUG_STREAM )
