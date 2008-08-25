@@ -24,15 +24,15 @@
  **
  **********************************************************************/
 
+#include <KDChartAxisPropertiesWidget.h>
+#include <KDChartAxisPropertiesWidget_p.h>
+
 #include <QWidget>
 #include <QDebug>
 #include <QLabel>
 
 #include <KDChartPosition.h>
 #include <KDChartCartesianAxis.h>
-
-#include <KDChartAxisPropertiesWidget.h>
-#include <KDChartAxisPropertiesWidget_p.h>
 
 
 

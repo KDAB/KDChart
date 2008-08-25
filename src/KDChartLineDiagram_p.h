@@ -37,6 +37,8 @@
 // We mean it.
 //
 
+#include "KDChartLineDiagram.h"
+
 #include <QPainterPath>
 
 #include "KDChartThreeDLineAttributes.h"

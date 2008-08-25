@@ -27,8 +27,8 @@
  **
  **********************************************************************/
 
-#include "KDChartPlotter.h"
 #include "KDChartPercentPlotter_p.h"
+#include "KDChartPlotter.h"
 
 #include <limits>
 

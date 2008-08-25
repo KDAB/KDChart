@@ -27,8 +27,8 @@
 **
 **********************************************************************/
 
-#ifndef KDCHARTREALTIVEPOSITION_H
-#define KDCHARTREALTIVEPOSITION_H
+#ifndef KDCHARTRELATIVEPOSITION_H
+#define KDCHARTRELATIVEPOSITION_H
 
 #include <QDebug>
 #include <QMetaType>
@@ -190,7 +190,7 @@ public:
      *
      * This method is called at drawing time: The returned point is used as anchor point.
      * Note that calculatedPoint ignores the alignment setting, it just returns the point,
-     * so the calling code needs to take alignment into account explicitely.
+     * so the calling code needs to take alignment into account explicitly.
      *
      * \sa referencePoint, setReferenceArea, setReferencePosition, setHorizontalPadding, setVerticalPadding
      */
@@ -216,4 +216,4 @@ KDCHART_EXPORT QDebug operator<<(QDebug, const KDChart::RelativePosition& );
 #endif /* QT_NO_DEBUG_STREAM */
 
 
-#endif // KDCHARTREALTIVEPOSITION_H
+#endif // KDCHARTRELATIVEPOSITION_H

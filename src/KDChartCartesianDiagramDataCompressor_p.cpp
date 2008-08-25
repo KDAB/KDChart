@@ -27,11 +27,12 @@
  **
  **********************************************************************/
 
+#include "KDChartCartesianDiagramDataCompressor_p.h"
+
 #include <QtDebug>
 #include <QAbstractItemModel>
 
 #include "KDChartAbstractCartesianDiagram.h"
-#include "KDChartCartesianDiagramDataCompressor_p.h"
 
 #include <KDABLibFakes>
 

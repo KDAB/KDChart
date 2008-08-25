@@ -39,6 +39,7 @@
 
 #include "KDChartHeaderFooter.h"
 #include "KDChartTextArea_p.h"
+#include "KDChartChart.h"
 #include <QMap>
 
 #include <KDABLibFakes>

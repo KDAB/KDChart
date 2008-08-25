@@ -23,11 +23,11 @@
  **
  **********************************************************************/
 
-#include <QRectF>
-#include <QPainter>
-
 #include "KDChartPaintContext.h"
 #include "KDChartAbstractCoordinatePlane.h"
+
+#include <QRectF>
+#include <QPainter>
 
 #include <KDABLibFakes>
 

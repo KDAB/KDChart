@@ -56,14 +56,14 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_bars->setModel( &m_model );
 
     QPen pen(  m_bars->pen() );
-    pen.setColor( Qt::darkGray );
-    pen.setWidth( 1 );
+    pen.setColor( Qt::black );
+    pen.setWidth( 0 );
     m_bars->setPen( pen );
     m_chart->coordinatePlane()->replaceDiagram( m_bars );
 
     // Configure the plane's Background
     BackgroundAttributes pba;
-    pba.setBrush( QBrush(QColor(0x20,0x20,0x60)) );
+    //pba.setBrush( QBrush(QColor(0x20,0x20,0x60)) );
     pba.setVisible( true );
     m_chart->coordinatePlane()->setBackgroundAttributes(  pba );
 

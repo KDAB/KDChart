@@ -23,6 +23,9 @@
  **
  **********************************************************************/
 
+#include "KDChartAbstractDiagram.h"
+#include "KDChartAbstractDiagram_p.h"
+
 #include <QPainter>
 #include <QDebug>
 #include <QApplication>
@@ -37,8 +40,6 @@
 #include "KDChartDataValueAttributes.h"
 #include "KDChartTextAttributes.h"
 #include "KDChartMarkerAttributes.h"
-#include "KDChartAbstractDiagram.h"
-#include "KDChartAbstractDiagram_p.h"
 #include "KDChartAbstractThreeDAttributes.h"
 #include "KDChartThreeDLineAttributes.h"
 

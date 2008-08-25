@@ -23,19 +23,19 @@
  **
  **********************************************************************/
 
-#include <QPainter>
-#include <QDebug>
-
 #include "KDChartBarDiagram.h"
 #include "KDChartBarDiagram_p.h"
+
 #include "KDChartThreeDBarAttributes.h"
 #include "KDChartPosition.h"
 #include "KDChartAttributesModel.h"
 #include "KDChartAbstractGrid.h"
 
+#include <QPainter>
+#include <QDebug>
+
 #include <KDABLibFakes>
 
-#include "KDChartBarDiagram_p.h"
 #include "KDChartNormalBarDiagram_p.h"
 #include "KDChartStackedBarDiagram_p.h"
 #include "KDChartPercentBarDiagram_p.h"

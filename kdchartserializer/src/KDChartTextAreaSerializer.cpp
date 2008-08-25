@@ -27,7 +27,7 @@
  **
  **********************************************************************/
 
-#include <KDChartTextAreaSerializer>
+#include <KDChartTextAreaSerializer.h>
 #include <KDChartTextAreaSerializer_p.h>
 
 #include <KDChartAttributesSerializer>

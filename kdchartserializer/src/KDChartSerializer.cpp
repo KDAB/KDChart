@@ -173,7 +173,7 @@ bool Serializer::read(QIODevice *device)
 
 bool Serializer::write(QIODevice *device) const
 {
-    // Create an inital DOM document
+    // Create an initial DOM document
     QString docstart = "<kdchart:kdchart/>";
 
     QDomDocument doc( "KDChart" );

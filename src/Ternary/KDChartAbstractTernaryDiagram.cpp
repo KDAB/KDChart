@@ -28,9 +28,9 @@
  **********************************************************************/
 
 #include "KDChartAbstractTernaryDiagram.h"
-#include "KDChartTernaryCoordinatePlane.h"
-
 #include "KDChartAbstractTernaryDiagram_p.h"
+
+#include "KDChartTernaryCoordinatePlane.h"
 
 using namespace KDChart;
 

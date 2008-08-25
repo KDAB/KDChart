@@ -23,6 +23,9 @@
  **
  **********************************************************************/
 
+#include "KDChartLeveyJenningsDiagram.h"
+#include "KDChartLeveyJenningsDiagram_p.h"
+
 #include <QDateTime>
 #include <QFontMetrics>
 #include <QPainter>
@@ -30,13 +33,10 @@
 #include <QVector>
 
 #include "KDChartChart.h"
-#include "KDChartLeveyJenningsDiagram.h"
 #include "KDChartTextAttributes.h"
 #include "KDChartAbstractGrid.h"
 
 #include <KDABLibFakes>
-
-#include "KDChartLeveyJenningsDiagram_p.h"
 
 using namespace KDChart;
 
@@ -352,7 +352,7 @@ void LeveyJenningsDiagram::setModel( QAbstractItemModel* model )
 }
 
 // TODO: This is the 'easy' solution
-// eruate, wheter this is enough or we need some better one or even boost here
+// evaluate whether this is enough or we need some better one or even boost here
 void LeveyJenningsDiagram::calculateMeanAndStandardDeviation() const
 {
     QVector< double > values;

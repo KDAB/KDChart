@@ -31,7 +31,7 @@
 
 namespace KDChart {
     class Chart;
-    class LineDiagram;
+    class BarDiagram;
 }
 
 class MainWindow : public QWidget, private Ui::MainWindow
@@ -45,7 +45,7 @@ public:
 private:
     KDChart::Chart* m_chart;
     TableModel m_model;   
-    KDChart::LineDiagram* m_lines;
+    KDChart::BarDiagram* m_lines;
 };
 
 

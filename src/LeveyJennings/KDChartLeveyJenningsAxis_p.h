@@ -23,7 +23,7 @@
  **
  **********************************************************************/
 
-#ifndef KDCHARTLEVEYJENNINGLAXIS_P_H
+#ifndef KDCHARTLEVEYJENNINGSAXIS_P_H
 #define KDCHARTLEVEYJENNINGSAXIS_P_H
 
 //

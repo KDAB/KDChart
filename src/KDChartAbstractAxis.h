@@ -27,8 +27,8 @@
  **
  **********************************************************************/
 
-#ifndef KDCHARTAXIS_H
-#define KDCHARTAXIS_H
+#ifndef KDCHARTABSTRACTAXIS_H
+#define KDCHARTABSTRACTAXIS_H
 
 // #include <QObject>
 // #include <QRectF>
@@ -134,4 +134,4 @@ namespace KDChart {
     };
 }
 
-#endif // KDCHARTAXIS_H
+#endif // KDCHARTABSTRACTAXIS_H

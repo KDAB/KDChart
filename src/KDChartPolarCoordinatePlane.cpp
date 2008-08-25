@@ -23,20 +23,21 @@
  **
  **********************************************************************/
 
+#include "KDChartPolarCoordinatePlane.h"
+#include "KDChartPolarCoordinatePlane_p.h"
+
+#include "KDChartPainterSaver_p.h"
+#include "KDChartChart.h"
+#include "KDChartPaintContext.h"
+#include "KDChartAbstractDiagram.h"
+#include "KDChartAbstractPolarDiagram.h"
+
 #include <math.h>
 
 #include <QFont>
 #include <QList>
 #include <QtDebug>
 #include <QPainter>
-
-#include "KDChartChart.h"
-#include "KDChartPaintContext.h"
-#include "KDChartAbstractDiagram.h"
-#include "KDChartAbstractPolarDiagram.h"
-#include "KDChartPolarCoordinatePlane.h"
-#include "KDChartPolarCoordinatePlane_p.h"
-#include "KDChartPainterSaver_p.h"
 
 #include <KDABLibFakes>
 

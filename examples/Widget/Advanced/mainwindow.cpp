@@ -75,10 +75,10 @@ void MainWindow::changeLeading( int leading )
 
 void MainWindow::addDataset()
 {
-    QStringList parts = lineAddDataset->text().split(";");
+    QStringList parts = lineAddDataset->text().split(';');
     bool ok;
     QVector< double > vec;
-    foreach (QString str, parts ) {
+    foreach ( const QString &str, parts ) {
         const double val = str.toDouble(&ok);
         if(ok)
             vec.append( val );

@@ -24,12 +24,12 @@
  **********************************************************************/
 
 #include "KDChartPlotter.h"
+#include "KDChartPlotter_p.h"
 
 #include "KDChartAbstractGrid.h"
 
 #include <KDABLibFakes>
 
-#include "KDChartPlotter_p.h"
 #include "KDChartNormalPlotter_p.h"
 #include "KDChartPercentPlotter_p.h"
 

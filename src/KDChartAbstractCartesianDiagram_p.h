@@ -37,6 +37,8 @@
 // We mean it.
 //
 
+#include "KDChartAbstractCartesianDiagram.h"
+
 #include <KDChartAbstractDiagram_p.h>
 #include <KDChartAbstractThreeDAttributes.h>
 #include <KDChartGridAttributes.h>

@@ -1660,7 +1660,7 @@ const QString AttributesSerializer::showDomPath( const QDomElement& container )
         QDomElement element = n.toElement(); // try to convert the node to an element.
         if( element.isNull() )
             return path;
-        path.prepend( element.tagName()+"/" );
+        path.prepend( element.tagName()+'/' );
         n = n.parentNode();
     }
     return path;

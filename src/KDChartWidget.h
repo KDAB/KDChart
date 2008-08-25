@@ -238,7 +238,7 @@ namespace KDChart {
     private:
         /** Justifies the model, so that the given rows and columns fit into it. */
         void justifyModelSize( int rows, int columns );
-        /** Checks, wheter the given width matches with the one used until now. */
+        /** Checks wether the given width matches with the one used until now. */
         bool checkDatasetWidth( int width );
     };
 }

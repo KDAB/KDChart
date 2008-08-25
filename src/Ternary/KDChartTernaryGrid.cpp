@@ -27,6 +27,8 @@
  **
  **********************************************************************/
 
+#include "KDChartTernaryGrid.h"
+
 #include <cmath>
 
 #include <algorithm>
@@ -38,7 +40,6 @@
 #include "TernaryPoint.h"
 #include "TernaryConstants.h"
 #include "KDChartPaintContext.h"
-#include "KDChartTernaryGrid.h"
 #include "KDChartPainterSaver_p.h"
 #include "KDChartTernaryCoordinatePlane.h"
 #include "KDChartPrintingParameters.h"

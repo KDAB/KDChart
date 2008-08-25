@@ -105,6 +105,12 @@ void MainWindow::on_paintValuesCB_toggled( bool checked )
     m_chart->update();
 }
 
+void MainWindow::on_centerDataPointsCB_toggled( bool checked )
+{
+    m_lines->setCenterDataPoints( checked );
+    m_chart->update();
+}
+
 void MainWindow::on_animateAreasCB_toggled( bool checked )
 {
     if( checked ){

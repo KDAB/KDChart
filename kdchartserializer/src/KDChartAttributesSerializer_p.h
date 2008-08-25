@@ -26,7 +26,7 @@
  ** licensing are not clear to you.
  **
  **********************************************************************/
-#ifndef __KDCHARTATTRIBUTESSESERIALIZER_P_H__
+#ifndef __KDCHARTATTRIBUTESSERIALIZER_P_H__
 #define __KDCHARTATTRIBUTESSERIALIZER_P_H__
 
 //
@@ -55,4 +55,4 @@ public:
 };
 
 
-#endif // KDChartAttributesSerializer_p_H
+#endif // __KDCHARTATTRIBUTESSERIALIZER_P_H__

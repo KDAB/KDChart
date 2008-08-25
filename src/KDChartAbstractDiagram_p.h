@@ -37,6 +37,7 @@
 // We mean it.
 //
 
+#include "KDChartAbstractDiagram.h"
 #include "KDChartAbstractCoordinatePlane.h"
 #include "KDChartDataValueAttributes.h"
 #include "KDChartRelativePosition.h"

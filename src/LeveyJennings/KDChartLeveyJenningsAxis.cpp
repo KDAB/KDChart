@@ -23,13 +23,14 @@
  **
  **********************************************************************/
 
+#include "KDChartLeveyJenningsAxis.h"
+#include "KDChartLeveyJenningsAxis_p.h"
+
 #include <QDateTime>
 #include <QPainter>
 
 #include "KDChartPaintContext.h"
 #include "KDChartChart.h"
-#include "KDChartLeveyJenningsAxis.h"
-#include "KDChartLeveyJenningsAxis_p.h"
 #include "KDChartAbstractCartesianDiagram.h"
 #include "KDChartAbstractGrid.h"
 #include "KDChartPainterSaver_p.h"

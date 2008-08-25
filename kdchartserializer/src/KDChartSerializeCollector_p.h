@@ -26,8 +26,9 @@
  ** licensing are not clear to you.
  **
  **********************************************************************/
-#ifndef __KDCHARTTEXTAREASERIALIZER_P_H__
-#define __KDCHARTTEXTAREASERIALIZER_P_H__
+
+#ifndef __KDCHARTSERIALIZECOLLECTOR_P_H__
+#define __KDCHARTSERIALIZECOLLECTOR_P_H__
 
 //
 //  W A R N I N G
@@ -61,4 +62,4 @@ protected:
 };
 
 
-#endif // KDChartTextAreaSerializer_p_H
+#endif // __KDCHARTSERIALIZECOLLECTOR_P_H__

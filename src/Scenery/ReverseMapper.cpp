@@ -27,6 +27,8 @@
  **
  **********************************************************************/
 
+#include "ReverseMapper.h"
+
 #include <math.h>
 
 #include <QRect>
@@ -35,7 +37,6 @@
 #include <QPainterPath>
 #include <QGraphicsScene>
 
-#include "ReverseMapper.h"
 #include "../KDChartAbstractDiagram.h"
 #include "ChartGraphicsItem.h"
 

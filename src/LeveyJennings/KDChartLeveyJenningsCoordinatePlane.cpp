@@ -27,6 +27,9 @@
  **
  **********************************************************************/
 
+#include "KDChartLeveyJenningsCoordinatePlane.h"
+#include "KDChartLeveyJenningsCoordinatePlane_p.h"
+
 #include <QtDebug>
 #include <QPainter>
 
@@ -34,8 +37,6 @@
 #include "KDChartPainterSaver_p.h"
 #include "KDChartCartesianAxis.h"
 #include "KDChartLeveyJenningsDiagram.h"
-#include "KDChartLeveyJenningsCoordinatePlane.h"
-#include "KDChartLeveyJenningsCoordinatePlane_p.h"
 
 using namespace KDChart;
 

@@ -27,9 +27,8 @@
  **
  **********************************************************************/
 
-#include "KDChartPlotter.h"
-
 #include "KDChartPlotter_p.h"
+#include "KDChartPlotter.h"
 
 #include "KDChartValueTrackerAttributes.h"
 

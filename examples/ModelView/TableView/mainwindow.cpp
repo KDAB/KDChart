@@ -23,9 +23,9 @@
  **
  **********************************************************************/
 
-#include <QtGui>
-
 #include "mainwindow.h"
+
+#include <QtGui>
 
 #include <KDChartChart>
 #include <KDChartHeaderFooter>

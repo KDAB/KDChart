@@ -23,9 +23,10 @@
  **
  **********************************************************************/
 
+#include "KDChartMeasure.h"
+
 #include <QWidget>
 
-#include "KDChartMeasure.h"
 #include <QtXml/QDomDocumentFragment>
 #include <KDChartAbstractArea.h>
 #include <KDChartTextAttributes.h>

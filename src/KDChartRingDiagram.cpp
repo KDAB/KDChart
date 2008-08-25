@@ -23,15 +23,16 @@
  **
  **********************************************************************/
 
-#include <QPainter>
+#include "KDChartRingDiagram.h"
+#include "KDChartRingDiagram_p.h"
 
 #include "KDChartAttributesModel.h"
 #include "KDChartPaintContext.h"
-#include "KDChartRingDiagram.h"
-#include "KDChartRingDiagram_p.h"
 #include "KDChartPainterSaver_p.h"
 #include "KDChartPieAttributes.h"
 #include "KDChartDataValueAttributes.h"
+
+#include <QPainter>
 
 #include <KDABLibFakes>
 

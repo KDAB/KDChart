@@ -45,6 +45,7 @@ public:
 
     KDChart::BarDiagram* diagram = new KDChart::BarDiagram;
     diagram->setModel(&m_model);
+    diagram->setPen( QPen( Qt::black, 0 ) );
 
     m_chart.coordinatePlane()->replaceDiagram(diagram);
 

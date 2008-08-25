@@ -44,7 +44,6 @@
 #include "KDChartAbstractDiagram.h"
 #include <KDChartTextAttributes.h>
 #include <KDChartRulerAttributes.h>
-#include <KDChartAbstractDiagram.h>
 #include <KDChartDiagramObserver.h>
 
 #include <KDABLibFakes>

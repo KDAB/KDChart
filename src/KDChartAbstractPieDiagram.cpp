@@ -23,13 +23,14 @@
  **
  **********************************************************************/
 
-#include <QMap>
-
 #include "KDChartAbstractPieDiagram.h"
 #include "KDChartAbstractPieDiagram_p.h"
+
 #include "KDChartAttributesModel.h"
 #include "KDChartPieAttributes.h"
 #include "KDChartThreeDPieAttributes.h"
+
+#include <QMap>
 
 #include <KDABLibFakes>
 

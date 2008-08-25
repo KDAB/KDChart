@@ -23,14 +23,9 @@
  **
  **********************************************************************/
 
-#include <QDebug>
-#include <QPainter>
-#include <QString>
-#include <QPainterPath>
-#include <QPen>
-#include <QVector>
-
 #include "KDChartLineDiagram.h"
+#include "KDChartLineDiagram_p.h"
+
 #include "KDChartBarDiagram.h"
 #include "KDChartPalette.h"
 #include "KDChartPosition.h"
@@ -41,10 +36,16 @@
 
 #include <KDABLibFakes>
 
-#include "KDChartLineDiagram_p.h"
 #include "KDChartNormalLineDiagram_p.h"
 #include "KDChartStackedLineDiagram_p.h"
 #include "KDChartPercentLineDiagram_p.h"
+
+#include <QDebug>
+#include <QPainter>
+#include <QString>
+#include <QPainterPath>
+#include <QPen>
+#include <QVector>
 
 using namespace KDChart;
 

@@ -26,13 +26,14 @@
  ** licensing are not clear to you.
  **
  **********************************************************************/
-#include <QDebug>
-#include <QPen>
-#include <QPointer>
 
 #include "KDChartAttributesModel.h"
 #include "KDChartPalette.h"
 #include "KDChartGlobal.h"
+
+#include <QDebug>
+#include <QPen>
+#include <QPointer>
 
 #include <KDChartTextAttributes>
 #include <KDChartFrameAttributes>

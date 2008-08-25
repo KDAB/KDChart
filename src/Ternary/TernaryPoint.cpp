@@ -27,13 +27,13 @@
  **
  **********************************************************************/
 
+#include "TernaryPoint.h"
+#include "TernaryConstants.h"
+
 #include <limits>
 
 #include <QChar>
 #include <QTextStream>
-
-#include "TernaryPoint.h"
-#include "TernaryConstants.h"
 
 TernaryPoint::TernaryPoint()
     : m_a( -1.0 )

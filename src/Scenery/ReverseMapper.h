@@ -34,6 +34,7 @@
 
 class QRectF;
 class QGraphicsScene;
+class QPolygonF;
 
 namespace KDChart {
 

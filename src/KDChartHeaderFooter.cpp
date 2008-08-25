@@ -23,9 +23,10 @@
  **
  **********************************************************************/
 
-#include "KDChartChart.h"
 #include "KDChartHeaderFooter.h"
 #include "KDChartHeaderFooter_p.h"
+
+#include "KDChartChart.h"
 #include <KDChartTextAttributes.h>
 #include <QFont>
 #include <QPainter>

@@ -27,7 +27,7 @@
  **
  **********************************************************************/
 
-#include <KDChartAxesSerializer>
+#include <KDChartAxesSerializer.h>
 #include <KDChartAxesSerializer_p.h>
 
 #include <KDChartAttributesSerializer>

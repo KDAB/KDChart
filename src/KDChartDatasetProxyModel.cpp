@@ -23,9 +23,9 @@
  **
  **********************************************************************/
 
-#include <QtDebug>
-
 #include "KDChartDatasetProxyModel.h"
+
+#include <QtDebug>
 
 #include <KDABLibFakes>
 

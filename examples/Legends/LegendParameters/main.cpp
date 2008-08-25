@@ -57,7 +57,7 @@ public:
     lta.setPen( QPen( Qt::darkGray ) );
     Measure me( lta.fontSize() );
     me.setValue( me.value() * 1.5 );
-    lta.setFontSize( me );
+    lta.setFontSize( Measure( 9, KDChartEnums::MeasureCalculationModeAbsolute ) );
     legend->setTextAttributes(  lta );
 
     // adjust the legend title's font:

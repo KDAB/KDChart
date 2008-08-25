@@ -24,15 +24,15 @@
  **
  **********************************************************************/
 
+#include <KDChartLegendPropertiesWidget.h>
+#include <KDChartLegendPropertiesWidget_p.h>
+
 #include <QWidget>
 #include <QDebug>
 #include <QLabel>
 
 #include <KDChartPosition.h>
 #include <KDChartLegend.h>
-
-#include <KDChartLegendPropertiesWidget.h>
-#include <KDChartLegendPropertiesWidget_p.h>
 
 
 #define d d_func()

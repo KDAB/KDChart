@@ -23,15 +23,16 @@
  ** licensing are not clear to you.
  **
  **********************************************************************/
+
+#include <KDChartHeaderFooterPropertiesWidget.h>
+#include <KDChartHeaderFooterPropertiesWidget_p.h>
+
 #include <QWidget>
 #include <QDebug>
 #include <QLabel>
 
 #include <KDChartPosition.h>
 #include <KDChartHeaderFooter.h>
-
-#include <KDChartHeaderFooterPropertiesWidget.h>
-#include <KDChartHeaderFooterPropertiesWidget_p.h>
 
 
 #define d d_func()

@@ -27,10 +27,11 @@
 #include <QPainter>
 #include <QStack>
 
-#include "KDChartAttributesModel.h"
-#include "KDChartPaintContext.h"
 #include "KDChartPieDiagram.h"
 #include "KDChartPieDiagram_p.h"
+
+#include "KDChartAttributesModel.h"
+#include "KDChartPaintContext.h"
 #include "KDChartPieAttributes.h"
 #include "KDChartThreeDPieAttributes.h"
 #include "KDChartPainterSaver_p.h"

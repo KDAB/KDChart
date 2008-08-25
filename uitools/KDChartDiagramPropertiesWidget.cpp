@@ -23,6 +23,10 @@
  ** licensing are not clear to you.
  **
  **********************************************************************/
+
+#include <KDChartDiagramPropertiesWidget.h>
+#include <KDChartDiagramPropertiesWidget_p.h>
+
 #include <QWidget>
 #include <QDebug>
 #include <QLabel>
@@ -31,9 +35,6 @@
 #include <KDChartLineDiagram.h>
 #include <KDChartBarDiagram.h>
 #include <KDChartPieDiagram.h>
-
-#include <KDChartDiagramPropertiesWidget.h>
-#include <KDChartDiagramPropertiesWidget_p.h>
 
 
 #define d d_func()

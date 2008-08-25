@@ -23,6 +23,9 @@
  **
  **********************************************************************/
 
+#include "KDChartCartesianCoordinatePlane.h"
+#include "KDChartCartesianCoordinatePlane_p.h"
+
 #include <QFont>
 #include <QList>
 #include <QtDebug>
@@ -31,8 +34,6 @@
 
 #include "KDChartAbstractDiagram.h"
 #include "KDChartAbstractCartesianDiagram.h"
-#include "KDChartCartesianCoordinatePlane.h"
-#include "KDChartCartesianCoordinatePlane_p.h"
 #include "CartesianCoordinateTransformation.h"
 #include "KDChartGridAttributes.h"
 #include "KDChartPaintContext.h"

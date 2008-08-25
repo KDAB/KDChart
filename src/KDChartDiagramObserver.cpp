@@ -27,8 +27,8 @@
  **
  **********************************************************************/
 
-#include <KDChartAbstractDiagram.h>
 #include <KDChartDiagramObserver.h>
+#include <KDChartAbstractDiagram.h>
 #include <KDChartAttributesModel.h>
 
 #include <KDABLibFakes>

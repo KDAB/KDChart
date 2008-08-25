@@ -150,7 +150,7 @@ void KDChart::AbstractCartesianDiagram::setCoordinatePlane( AbstractCoordinatePl
                  plane, SLOT( relayout() ), Qt::QueuedConnection );
     }
     // show the axes, after all have been layoutPlanes
-    // (because they might be dependend on each other)
+    // (because they might depend on each other)
     /*
     if( plane )
         Q_FOREACH( CartesianAxis* axis, d->axesList )

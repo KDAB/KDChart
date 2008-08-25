@@ -26,8 +26,8 @@
  ** licensing are not clear to you.
  **
  **********************************************************************/
-#ifndef __ADJUSTED_SERIALIZER_H__
-#define __ADJUSTED_SERIALIZER_H__
+#ifndef __ADJUSTEDCARTESIANAXISSERIALIZER_H__
+#define __ADJUSTEDCARTESIANAXISSERIALIZER_H__
 
 #include <KDChartAxesSerializer>
 

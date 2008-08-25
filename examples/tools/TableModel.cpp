@@ -1,11 +1,11 @@
+#include "TableModel.h"
+
 #include <QtGlobal>
 #include <QtDebug>
 #include <QFile>
 #include <QByteArray>
 #include <QString>
 #include <QStringList>
-
-#include "TableModel.h"
 
 TableModel::TableModel ( QObject * parent )
     : QAbstractTableModel ( parent ),
@@ -148,11 +148,11 @@ bool TableModel::loadFromCSV ( const QString& filename )
                     // get rid of trailing or leading whitespaces and quotes:
                     QString cell ( parts.at( column ).simplified() );
 
-                    if ( cell.startsWith( "\"") )
+                    if ( cell.startsWith( '\"') )
                     {
                         cell.remove ( 0, 1 );
                     }
-                    if ( cell.endsWith( "\"") )
+                    if ( cell.endsWith( '\"') )
                     {
                         cell.remove ( cell.length()-1, 1 );
                     }

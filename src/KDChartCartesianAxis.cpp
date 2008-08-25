@@ -23,6 +23,9 @@
  **
  **********************************************************************/
 
+#include "KDChartCartesianAxis.h"
+#include "KDChartCartesianAxis_p.h"
+
 #include <cmath>
 
 #include <QtDebug>
@@ -33,8 +36,6 @@
 
 #include "KDChartPaintContext.h"
 #include "KDChartChart.h"
-#include "KDChartCartesianAxis.h"
-#include "KDChartCartesianAxis_p.h"
 #include "KDChartAbstractCartesianDiagram.h"
 #include "KDChartAbstractGrid.h"
 #include "KDChartPainterSaver_p.h"
@@ -987,7 +988,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     if( bIsVisibleLabel ){
                         if ( isLogarithmicX )
                             labelItem->setText( customizedLabel(QString::number( i ) ) );
-                        /* We dont need that
+                        /* We don't need that
                         * it causes header labels to be skipped even if there is enough
                         * space for them to displayed.
                         * Commenting for now - I need to test more in details - Let me know if I am wrong here.

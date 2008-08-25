@@ -10,7 +10,6 @@
 #include <KDChartCartesianCoordinatePlane>
 #include <KDChartAbstractCartesianDiagram>
 #include <KDChartDataValueAttributes>
-#include <KDChartPosition>
 
 
 using namespace KDChart;

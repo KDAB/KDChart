@@ -27,6 +27,8 @@
  **
  **********************************************************************/
 
+#include "KDChartStackedLineDiagram_p.h"
+
 #include <QAbstractItemModel>
 
 #include "KDChartBarDiagram.h"
@@ -34,7 +36,6 @@
 #include "KDChartTextAttributes.h"
 #include "KDChartAttributesModel.h"
 #include "KDChartAbstractCartesianDiagram.h"
-#include "KDChartStackedLineDiagram_p.h"
 
 using namespace KDChart;
 

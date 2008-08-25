@@ -60,7 +60,7 @@ public:
     class LineDiagramType;
     friend class LineDiagramType;
 
-    LineDiagram( QWidget* parent = 0, CartesianCoordinatePlane* plane = 0 );
+    explicit LineDiagram( QWidget* parent = 0, CartesianCoordinatePlane* plane = 0 );
     virtual ~LineDiagram();
 
     virtual LineDiagram * clone() const;

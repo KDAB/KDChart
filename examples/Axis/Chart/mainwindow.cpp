@@ -26,8 +26,9 @@
 #include "mainwindow.h"
 
 #include <KDChartChart>
-#include <KDChartLineDiagram>
+#include <KDChartBarDiagram>
 #include <KDChartTextAttributes>
+#include <KDChartRulerAttributes>
 
 using namespace KDChart;
 
@@ -46,12 +47,17 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_model.loadFromCSV( ":/data" );
 
     // Set up the diagram
-    m_lines = new LineDiagram();
+    m_lines = new BarDiagram();
     m_lines->setModel( &m_model );
 
     // create and position axis
     CartesianAxis *topAxis = new CartesianAxis( m_lines );
     CartesianAxis *leftAxis = new CartesianAxis ( m_lines );
+    RulerAttributes rulerAttr = topAxis->rulerAttributes();
+    rulerAttr.setTickMarkPen( 0.9999999, QPen( Qt::red ) );
+    rulerAttr.setTickMarkPen( 2.0, QPen( Qt::green ) );
+    rulerAttr.setTickMarkPen( 3.0, QPen( Qt::blue ) );
+    topAxis->setRulerAttributes( rulerAttr );
     CartesianAxis *rightAxis = new CartesianAxis ( m_lines );
     CartesianAxis *bottomAxis = new CartesianAxis ( m_lines );
     topAxis->setPosition ( CartesianAxis::Top );

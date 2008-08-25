@@ -27,7 +27,7 @@
  **
  **********************************************************************/
 
-#include <KDChartDiagramsSerializer>
+#include <KDChartDiagramsSerializer.h>
 #include <KDChartDiagramsSerializer_p.h>
 
 #include <KDChartSerializeCollector>

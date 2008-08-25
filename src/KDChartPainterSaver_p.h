@@ -23,8 +23,8 @@
  **
  **********************************************************************/
 
-#ifndef KDPAINTERSAVER_P_H
-#define KDPAINTERSAVER_P_H
+#ifndef KDCHARTPAINTERSAVER_P_H
+#define KDCHARTPAINTERSAVER_P_H
 
 //
 //  W A R N I N G
@@ -110,5 +110,5 @@ private:
 
 }
 
-#endif /* KDPAINTERSAVER_P_H */
+#endif /* KDCHARTPAINTERSAVER_P_H */
 

@@ -27,9 +27,9 @@
  **
  **********************************************************************/
 
-#include <cmath>
-
 #include "TernaryConstants.h"
+
+#include <cmath>
 
 extern const double Sqrt3 = sqrt( 3.0 );
 extern const double TriangleWidth = 1.0;

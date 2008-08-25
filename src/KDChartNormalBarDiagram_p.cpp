@@ -27,13 +27,14 @@
  **
  **********************************************************************/
 
+#include "KDChartNormalBarDiagram_p.h"
+
 #include <QModelIndex>
 
 #include "KDChartBarDiagram.h"
 #include "KDChartTextAttributes.h"
 #include "KDChartAttributesModel.h"
 #include "KDChartAbstractCartesianDiagram.h"
-#include "KDChartNormalBarDiagram_p.h"
 
 using namespace KDChart;
 

@@ -23,12 +23,12 @@
  **
  **********************************************************************/
 
+#include "KDChartPolarDiagram.h"
+#include "KDChartPolarDiagram_p.h"
 
 #include <QPainter>
 #include "KDChartAttributesModel.h"
 #include "KDChartPaintContext.h"
-#include "KDChartPolarDiagram.h"
-#include "KDChartPolarDiagram_p.h"
 #include "KDChartPainterSaver_p.h"
 #include "KDChartDataValueAttributes.h"
 

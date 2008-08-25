@@ -23,14 +23,14 @@
  **
  **********************************************************************/
 
+#include "KDChartAbstractCoordinatePlane.h"
+#include "KDChartAbstractCoordinatePlane_p.h"
 
 #include <QGridLayout>
 #include <QRubberBand>
 #include <QMouseEvent>
 
 #include "KDChartChart.h"
-#include "KDChartAbstractCoordinatePlane.h"
-#include "KDChartAbstractCoordinatePlane_p.h"
 #include "KDChartGridAttributes.h"
 
 #include <KDABLibFakes>

@@ -102,7 +102,7 @@ QString IdMapper::findOrMakeName(
         }
 
         // store a new name using the counter value, and return it
-        name = baseName + ":" + QString::number( counter );
+        name = baseName + ':' + QString::number( counter );
         map[ id ] = name;
     }
     return name;

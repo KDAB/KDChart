@@ -27,6 +27,8 @@
  **
  **********************************************************************/
 
+#include "KDChartPercentLineDiagram_p.h"
+
 #include <QModelIndex>
 
 #include "KDChartBarDiagram.h"
@@ -34,7 +36,6 @@
 #include "KDChartTextAttributes.h"
 #include "KDChartAttributesModel.h"
 #include "KDChartAbstractCartesianDiagram.h"
-#include "KDChartPercentLineDiagram_p.h"
 
 using namespace KDChart;
 

@@ -41,6 +41,9 @@
 // We mean it.
 //
 
+#include "KDChartAbstractTernaryDiagram.h"
+
+#include "KDChartTernaryCoordinatePlane.h"
 #include <KDChartAbstractDiagram_p.h>
 #include <KDChartAbstractThreeDAttributes.h>
 #include <KDChartGridAttributes.h>

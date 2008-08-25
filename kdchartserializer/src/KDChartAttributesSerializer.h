@@ -26,8 +26,8 @@
  ** licensing are not clear to you.
  **
  **********************************************************************/
-#ifndef __KDCHARTATTRSSERIALIZER_H__
-#define __KDCHARTATTRSSERIALIZER_H__
+#ifndef __KDCHARTATTRIBUTESSSERIALIZER_H__
+#define __KDCHARTATTRIBUTESSSERIALIZER_H__
 
 /** \file KDChartAttributesSerializer.h
     \brief Auxiliary methods for reading/saving KD Chart data and configuration in streams.
