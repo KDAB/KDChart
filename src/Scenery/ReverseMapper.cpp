@@ -109,10 +109,17 @@ QModelIndexList ReverseMapper::indexesAt( const QPointF& point ) const
     }
 }
 
+QRectF ReverseMapper::boundingRect( int row, int column ) const
+{
+    const QModelIndex index = m_diagram->model()->index( row, column, m_diagram->rootIndex() );
+    return m_itemMap.contains( index ) ? m_itemMap[ index ]->polygon().boundingRect() : QRectF();
+}
+
 void ReverseMapper::addItem( ChartGraphicsItem* item )
 {
     Q_ASSERT( m_scene );
     m_scene->addItem( item );
+    m_itemMap.insert( m_diagram->model()->index( item->row(), item->column(), m_diagram->rootIndex() ), item );
 }
 
 void ReverseMapper::addRect( int row, int column, const QRectF& rect )

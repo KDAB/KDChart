@@ -178,6 +178,8 @@ void PieDiagram::paint( PaintContext* ctx )
     if ( !checkInvariants(true) )
         return;
 
+    d->reverseMapper.clear();
+
     const PieAttributes attrs( pieAttributes() );
     const ThreeDPieAttributes threeDAttrs( threeDPieAttributes( model()->index( 0, 0, rootIndex() ) ) );
 
@@ -460,6 +462,7 @@ void PieDiagram::drawPieSurface( QPainter* painter,
             //find the value and paint it
             //fix value position
             const qreal sum = valueTotals();
+            d->reverseMapper.addPolygon( index.row(), index.column(), poly );
             painter->drawPolygon( poly );
 
             QLineF centerLine(  drawPosition.center(),
@@ -728,6 +731,7 @@ void PieDiagram::drawStraightEffectSegment( QPainter* painter,
     poly[1] = circlePoint;
     poly[2] = QPointF( circlePoint.x(), circlePoint.y() + threeDHeight );
     poly[3] = QPointF( center.x(), center.y() + threeDHeight );
+    // TODO: add polygon to ReverseMapper
     painter->drawPolygon( poly );
 //    if ( region )
 //        *region += QRegion( points );
@@ -805,6 +809,7 @@ void PieDiagram::drawArcEffectSegment( QPainter* painter,
         poly[ numHalfPoints * 2 - i - 1 ] = pointOnFirstArc;
     }
 
+    // TODO: Add polygon to ReverseMapper
     painter->drawPolygon( poly );
 //    if ( region )
 //        *region += QRegion( collect );

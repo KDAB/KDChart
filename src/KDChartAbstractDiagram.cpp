@@ -894,9 +894,9 @@ QString AbstractDiagram::unitSuffix( Qt::Orientation orientation ) const
 }
 
 // implement QAbstractItemView:
-QRect AbstractDiagram::visualRect(const QModelIndex &) const
+QRect AbstractDiagram::visualRect( const QModelIndex &index ) const
 {
-    return QRect();
+    return d->reverseMapper.boundingRect( index.row(), index.column() ).toRect();
 }
 
 void AbstractDiagram::scrollTo(const QModelIndex &, ScrollHint )
