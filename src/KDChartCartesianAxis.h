@@ -140,6 +140,10 @@ namespace KDChart {
         /** pure virtual in QLayoutItem */
         virtual QRect geometry() const;
 
+    public Q_SLOTS:
+        void setCachedSizeDirty() const;
+
+
         int tickLength( bool subUnitTicks = false ) const;
     };
 

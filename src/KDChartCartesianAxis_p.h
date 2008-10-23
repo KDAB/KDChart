@@ -72,6 +72,8 @@ public:
 
     const TextAttributes titleTextAttributesWithAdjustedRotation() const;
 
+    QSize calculateMaximumSize() const;
+
 private:
     QString titleText;
     TextAttributes titleTextAttributes;
@@ -84,6 +86,7 @@ private:
     mutable qreal cachedLabelWidth;
     mutable int cachedFontHeight;
     mutable int cachedFontWidth;
+    mutable QSize cachedMaximumSize;
 };
 
 inline CartesianAxis::CartesianAxis( Private * p, AbstractDiagram* diagram )

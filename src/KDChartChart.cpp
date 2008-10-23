@@ -582,6 +582,7 @@ void Chart::Private::slotLayoutPlanes()
             KDAB_FOREACH( CartesianAxis* axis, diagram->axes() ) {
                 if ( axisInfos.contains( axis ) ) continue; // already laid this one out
                 Q_ASSERT ( axis );
+                axis->setCachedSizeDirty();
                 //qDebug() << "--------------- axis added to planeLayoutItems  -----------------";
                 planeLayoutItems << axis;
                 /*

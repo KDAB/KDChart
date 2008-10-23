@@ -75,6 +75,7 @@ CartesianAxis::~CartesianAxis ()
 void CartesianAxis::init ()
 {
     d->position = Bottom;
+    setCachedSizeDirty();
 }
 
 
@@ -1345,32 +1346,44 @@ static void calculateOverlap( int i, int first, int last,
 }
 
 
+void CartesianAxis::setCachedSizeDirty() const
+{
+    d->cachedMaximumSize = QSize();
+}
+
 /* pure virtual in QLayoutItem */
 QSize CartesianAxis::maximumSize() const
 {
+    if( ! d->cachedMaximumSize.isValid() )
+        d->cachedMaximumSize = d->calculateMaximumSize();
+    return d->cachedMaximumSize;
+}
+
+QSize CartesianAxis::Private::calculateMaximumSize() const
+{
     QSize result;
-    if ( !d->diagram() )
+    if ( !diagram() )
         return result;
 
-    const AbstractCartesianDiagram * dia = qobject_cast< const AbstractCartesianDiagram * >( d->diagram() );
+    const AbstractCartesianDiagram * dia = qobject_cast< const AbstractCartesianDiagram * >( diagram() );
     if( dia && dia->referenceDiagram() )
         dia = dia->referenceDiagram();
 	const BarDiagram *barDiagram = qobject_cast< const BarDiagram* >( dia );
 	const Qt::Orientation diagramOrientation = barDiagram != 0 ? barDiagram->orientation() : Qt::Vertical;
     const bool diagramIsVertical = diagramOrientation == Qt::Vertical;
     
-    const TextAttributes labelTA = textAttributes();
+    const TextAttributes labelTA = mAxis->textAttributes();
     const bool drawLabels = labelTA.isVisible();
 
-    const TextAttributes titleTA( d->titleTextAttributesWithAdjustedRotation() );
-    const bool drawTitle = titleTA.isVisible() && ! titleText().isEmpty();
+    const TextAttributes titleTA( titleTextAttributesWithAdjustedRotation() );
+    const bool drawTitle = titleTA.isVisible() && ! axis()->titleText().isEmpty();
 
-    AbstractCoordinatePlane* plane = d->diagram()->coordinatePlane();
+    AbstractCoordinatePlane* plane = diagram()->coordinatePlane();
     //qDebug() << this<<"::maximumSize() uses plane geometry" << plane->geometry();
     QObject* refArea = plane->parent();
     TextLayoutItem labelItem( QString::null, labelTA, refArea,
                               KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft );
-    TextLayoutItem titleItem( titleText(), titleTA, refArea,
+    TextLayoutItem titleItem( axis()->titleText(), titleTA, refArea,
                               KDChartEnums::MeasureOrientationMinimum, Qt::AlignHCenter | Qt::AlignVCenter );
 
     const QFontMetrics fm( labelItem.realFont(), GlobalMeasureScaling::paintDevice() );
@@ -1385,8 +1398,8 @@ QSize CartesianAxis::maximumSize() const
         ? ( (diagramIsVertical ? titleFM.height() : titleFM.averageCharWidth()) / 3.0)
         : 0.0;
 
-    if ( isAbscissa() ) {
-        const bool centerAbscissaTicks = referenceDiagramNeedsCenteredAbscissaTicks(d->diagram());
+    if ( axis()->isAbscissa() ) {
+        const bool centerAbscissaTicks = referenceDiagramNeedsCenteredAbscissaTicks(diagram());
         int leftOverlap = 0;
         int rightOverlap = 0;
 
@@ -1394,9 +1407,9 @@ QSize CartesianAxis::maximumSize() const
         qreal h = diagramIsVertical ? 0.0 : 10.0;
         if( drawLabels ){
             // if there're no label strings, we take the biggest needed number as height
-            if( !d->annotations.isEmpty() )
+            if( !annotations.isEmpty() )
             {
-                const QStringList strings = d->annotations.values();
+                const QStringList strings = annotations.values();
                 KDAB_FOREACH( const QString& string, strings )
                 {
                     labelItem.setText( string );
@@ -1407,15 +1420,15 @@ QSize CartesianAxis::maximumSize() const
                     	w = qMax( w, static_cast< qreal >( siz.width() ) );
                 }
             }
-            else if ( !labels().isEmpty() )
+            else if ( !axis()->labels().isEmpty() )
             {
                 // find the longest label text:
                 const int first=0;
-                const int last=labels().count()-1;
-                const QStringList labelsList( labels() );
+                const int last=axis()->labels().count()-1;
+                const QStringList labelsList( axis()->labels() );
                 for ( int i = first; i <= last; ++i )
                 {
-                    labelItem.setText( customizedLabel(labelsList[ i ]) );
+                    labelItem.setText( axis()->customizedLabel(labelsList[ i ]) );
                     const QSize siz = labelItem.sizeHint();
                     if ( diagramIsVertical )
                     	h = qMax( h, static_cast<qreal>(siz.height()) );
@@ -1428,35 +1441,35 @@ QSize CartesianAxis::maximumSize() const
             }
             else
             {
-                QStringList headerLabels = d->diagram()->itemRowLabels();
+                QStringList headerLabels = diagram()->itemRowLabels();
                 const int headerLabelsCount = headerLabels.count();
                 if( headerLabelsCount ){
-                    if( d->cachedHeaderLabels == headerLabels && ( diagramIsVertical ? d->cachedFontHeight == fm.height() : d->cachedFontWidth == fm.averageCharWidth() )) {
+                    if( cachedHeaderLabels == headerLabels && ( diagramIsVertical ? cachedFontHeight == fm.height() : cachedFontWidth == fm.averageCharWidth() )) {
                     	if ( diagramIsVertical )
-                    		h = d->cachedLabelHeight;
+                    		h = cachedLabelHeight;
                     	else
-                    		w = d->cachedLabelWidth;
+                    		w = cachedLabelWidth;
                     } else {
-                        d->cachedHeaderLabels = headerLabels;
+                        cachedHeaderLabels = headerLabels;
                         if ( diagramIsVertical )
-                        	d->cachedFontWidth = fm.averageCharWidth();
+                        	cachedFontWidth = fm.averageCharWidth();
                         else
-                        	d->cachedFontHeight = fm.height();
+                        	cachedFontHeight = fm.height();
                         const bool useFastCalcAlgorithm
-                            = (strcmp( metaObject()->className(), "KDChart::CartesianAxis" ) == 0);
+                            = (strcmp( axis()->metaObject()->className(), "KDChart::CartesianAxis" ) == 0);
                         const int first=0;
                         const int last=headerLabelsCount-1;
                         for ( int i = first;
                             i <= last;
                             i = (useFastCalcAlgorithm && i < last) ? last : (i+1) )
                         {
-                            labelItem.setText( customizedLabel(headerLabels[ i ]) );
+                            labelItem.setText( axis()->customizedLabel(headerLabels[ i ]) );
                             const QSize siz = labelItem.sizeHint();
                             if ( diagramIsVertical ) {
                             	h = qMax( h, static_cast<qreal>(siz.height()) );
-                                d->cachedLabelHeight = h;
+                                cachedLabelHeight = h;
                             } else {
-                                d->cachedLabelWidth = w;
+                                cachedLabelWidth = w;
                             	w = qMax( w, static_cast<qreal>(siz.width()) );
                             }
                             calculateOverlap( i, first, last, diagramIsVertical ? siz.width() : siz.height(), centerAbscissaTicks,
@@ -1465,7 +1478,7 @@ QSize CartesianAxis::maximumSize() const
                     }
                 }else{
                     labelItem.setText(
-                            customizedLabel(
+                            axis()->customizedLabel(
                                     QString::number( diagramIsVertical ? plane->gridDimensionsList().first().end
                                     								   : plane->gridDimensionsList().last().end, 'f', 0 )));
                     const QSize siz = labelItem.sizeHint();
@@ -1493,16 +1506,16 @@ QSize CartesianAxis::maximumSize() const
         }
         // space for the ticks
         if ( diagramIsVertical )
-        	h += qAbs( tickLength() ) * 3.0;
+        	h += qAbs( axis()->tickLength() ) * 3.0;
         else
-        	w += qAbs( tickLength() ) * 3.0;
+        	w += qAbs( axis()->tickLength() ) * 3.0;
         result = QSize ( static_cast<int>( w ), static_cast<int>( h ) );
 
 
         // If necessary adjust the widths
         // of the left (or right, resp.) side neighboring columns:
-        d->amountOfLeftOverlap = leftOverlap;
-        d->amountOfRightOverlap = rightOverlap;
+        amountOfLeftOverlap = leftOverlap;
+        amountOfRightOverlap = rightOverlap;
         /* Unused code for a push-model:
         if( leftOverlap || rightOverlap ){
             QTimer::singleShot(200, const_cast<CartesianAxis*>(this),
@@ -1518,9 +1531,9 @@ QSize CartesianAxis::maximumSize() const
         if( drawLabels ){
             // if there're no label strings, we loop through the values
             // taking the longest (not largest) number - e.g. 0.00001 is longer than 100
-            if( !d->annotations.isEmpty() )
+            if( !annotations.isEmpty() )
             {
-                const QStringList strings = d->annotations.values();
+                const QStringList strings = annotations.values();
                 KDAB_FOREACH( const QString& string, strings )
                 {
                     labelItem.setText( string );
@@ -1531,7 +1544,7 @@ QSize CartesianAxis::maximumSize() const
                     	h = qMax( h, static_cast< qreal >( siz.height() ) );
                 }
             }
-            else if( labels().isEmpty() )
+            else if( axis()->labels().isEmpty() )
             {
                 const DataDimension dimY = AbstractGrid::adjustedLowerUpperRange(
                 		diagramIsVertical ? plane->gridDimensionsList().last()
@@ -1546,7 +1559,7 @@ QSize CartesianAxis::maximumSize() const
                     const QString labelText = diagram()->unitPrefix( static_cast< int >( labelValue ), diagramOrientation, true ) +
                                             QString::number( labelValue ) +
                                             diagram()->unitSuffix( static_cast< int >( labelValue ), diagramOrientation, true );
-                    labelItem.setText( customizedLabel( labelText ) );
+                    labelItem.setText( axis()->customizedLabel( labelText ) );
 
                     const QSize siz = labelItem.sizeHint();
                     if ( diagramIsVertical )
@@ -1560,11 +1573,11 @@ QSize CartesianAxis::maximumSize() const
             }else{
                 // find the longest label text:
                 const int first=0;
-                const int last=labels().count()-1;
-                const QStringList labelsList( labels() );
+                const int last=axis()->labels().count()-1;
+                const QStringList labelsList( axis()->labels() );
                 for ( int i = first; i <= last; ++i )
                 {
-                    labelItem.setText( customizedLabel(labelsList[ i ]) );
+                    labelItem.setText( axis()->customizedLabel(labelsList[ i ]) );
                     const QSize siz = labelItem.sizeHint();
                     if ( diagramIsVertical )
                                         	w = qMax( w, (qreal)siz.width() );
@@ -1591,9 +1604,9 @@ QSize CartesianAxis::maximumSize() const
         }
         // space for the ticks
         if ( diagramIsVertical )
-        	w += qAbs( tickLength() ) * 3.0;
+        	w += qAbs( axis()->tickLength() ) * 3.0;
         else
-        	h += qAbs( tickLength() ) * 3.0;
+        	h += qAbs( axis()->tickLength() ) * 3.0;
 
         result = QSize ( static_cast<int>( w ), static_cast<int>( h ) );
         //qDebug() << "left/right axis width:" << result << "   w:" << w;
@@ -1601,8 +1614,8 @@ QSize CartesianAxis::maximumSize() const
 
         // If necessary adjust the heights
         // of the top (or bottom, resp.) side neighboring rows:
-        d->amountOfTopOverlap = topOverlap;
-        d->amountOfBottomOverlap = bottomOverlap;
+        amountOfTopOverlap = topOverlap;
+        amountOfBottomOverlap = bottomOverlap;
         /* Unused code for a push-model:
         if( topOverlap || bottomOverlap ){
             QTimer::singleShot(200, const_cast<CartesianAxis*>(this),
@@ -1630,6 +1643,7 @@ void CartesianAxis::setGeometry( const QRect& r )
 //    qDebug() << "KDChart::CartesianAxis::setGeometry(" << r << ") called"
 //             << (isAbscissa() ? "for Abscissa":"for Ordinate") << "axis";
     d->geometry = r;
+    setCachedSizeDirty();
 }
 /* pure virtual in QLayoutItem */
 QRect CartesianAxis::geometry() const
