@@ -1000,7 +1000,16 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         }
                         */
                         else {
-                            const int idx = idxLabel + static_cast<int>(minValueX);
+                            int idx = idxLabel + static_cast<int>(minValueX);
+                            if( hardLabelsCount ){
+                                if( useShortLabels ){
+                                    if( idx >= shortLabelsList.count() )
+                                        idx = 0;
+                                }else{
+                                    if( idx >= labelsList.count() )
+                                        idx = 0;
+                                }
+                            }
                             labelItem->setText(
                                     customizedLabel(
                                           hardLabelsCount
