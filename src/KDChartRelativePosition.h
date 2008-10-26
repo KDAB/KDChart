@@ -181,9 +181,13 @@ public:
      * The returned point is used to test if the label of a data value is to be printed: labels
      * are printed only, if their reference points are either inside or touching the coordinate plane.
      *
+     * If polarDegrees is set, the degree information will be returned that was stored for the
+     * respective point.  This is used by the PieDiagram class to determin how vertical/horizontal
+     * padding settings should affect the position of the data value texts' reference points.
+     *
      * \sa calculatedPoint, setReferenceArea, setReferencePosition, setHorizontalPadding, setVerticalPadding
      */
-    const QPointF referencePoint() const;
+    const QPointF referencePoint(qreal* polarDegrees=0) const;
 
     /**
      * \brief Calculate a point, according to the reference area/position and horiz/vert padding.

@@ -209,6 +209,18 @@ class KDCHART_EXPORT PositionPoints
       , mPositionWest(      (northWest + southWest) / 2.0 )
         {}
 
+    void setDegrees( KDChartEnums::PositionValue pos, qreal degrees )
+    {
+        mapOfDegrees[pos] = degrees;
+    }
+
+    const qreal degrees( KDChartEnums::PositionValue pos ) const
+    {
+        if( mapOfDegrees.contains(pos) )
+            return mapOfDegrees[pos];
+        return 0.0;
+    }
+
     const QPointF point( Position position ) const
     {
       //qDebug() << "point( " << position.name() << " )";
@@ -258,6 +270,8 @@ class KDCHART_EXPORT PositionPoints
     QPointF mPositionSouth;
     QPointF mPositionSouthWest;
     QPointF mPositionWest;
+    QMap<KDChartEnums::PositionValue, qreal> mapOfDegrees;
+
 }; // End of class PositionPoints
 
 

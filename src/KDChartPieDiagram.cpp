@@ -293,7 +293,8 @@ void PieDiagram::paint( PaintContext* ctx )
     int currentRightPie = backmostpie;
 
     d->clearListOfAlreadyDrawnDataValueTexts();
-    drawOnePie( ctx->painter(), 0, backmostpie, granularity(), sizeFor3DEffect );
+
+    drawOnePie( ctx->painter(), &list, 0, backmostpie, granularity(), sizeFor3DEffect );
 
     if( backmostpie == frontmostpie )
     {
@@ -305,20 +306,20 @@ void PieDiagram::paint( PaintContext* ctx )
     while( currentLeftPie != frontmostpie )
     {
         if( currentLeftPie != backmostpie )
-            drawOnePie( ctx->painter(), 0, currentLeftPie, granularity(), sizeFor3DEffect );
+            drawOnePie( ctx->painter(), &list, 0, currentLeftPie, granularity(), sizeFor3DEffect );
         currentLeftPie = findLeftPie( currentLeftPie, colCount );
     }
     while( currentRightPie != frontmostpie )
     {
         if( currentRightPie != backmostpie )
-            drawOnePie( ctx->painter(), 0, currentRightPie, granularity(), sizeFor3DEffect );
+            drawOnePie( ctx->painter(), &list, 0, currentRightPie, granularity(), sizeFor3DEffect );
         currentRightPie = findRightPie( currentRightPie, colCount );
     }
 
     // if the backmost pie is not the frontmost pie, we draw the frontmost at last
     if( backmostpie != frontmostpie || ! threeDPieAttributes().isEnabled() )
     {
-        drawOnePie( ctx->painter(), 0, frontmostpie, granularity(), sizeFor3DEffect );
+        drawOnePie( ctx->painter(), &list, 0, frontmostpie, granularity(), sizeFor3DEffect );
     // otherwise, this gets a bit more complicated...
 /*    } else if( threeDPieAttributes().isEnabled() ) {
         //drawPieSurface( ctx->painter(), 0, frontmostpie, granularity() );
@@ -339,6 +340,7 @@ void PieDiagram::paint( PaintContext* ctx )
         drawArcEffectSegment( ctx->painter(), piePosition( 0, frontmostpie),
                 sizeFor3DEffect, startAngle, endAngle, granularity() );*/
     }
+    d->paintDataValueTextsAndMarkers(  this,  ctx,  list,  false );
 }
 
 #if defined ( Q_WS_WIN)
@@ -377,6 +379,7 @@ QRectF PieDiagram::piePosition( uint dataset, uint pie ) const
   \param threeDPieHeight the height of the three dimnensional effect
   */
 void PieDiagram::drawOnePie( QPainter* painter,
+        DataValueTextInfoList* list,
         uint dataset, uint pie,
         qreal granularity,
         qreal threeDPieHeight )
@@ -397,7 +400,7 @@ void PieDiagram::drawOnePie( QPainter* painter,
             threeDAttrs,
             attrs.explode() );
 
-        drawPieSurface( painter, dataset, pie, granularity );
+        drawPieSurface( painter, list, dataset, pie, granularity );
     }
 }
 
@@ -409,6 +412,7 @@ void PieDiagram::drawOnePie( QPainter* painter,
   \param pie the pie to draw
   */
 void PieDiagram::drawPieSurface( QPainter* painter,
+        DataValueTextInfoList* list,
         uint dataset, uint pie,
         qreal granularity )
 {
@@ -465,14 +469,45 @@ void PieDiagram::drawPieSurface( QPainter* painter,
             d->reverseMapper.addPolygon( index.row(), index.column(), poly );
             painter->drawPolygon( poly );
 
-            QLineF centerLine(  drawPosition.center(),
-                            QPointF( (poly[ last - 2].x() + poly.first().x())/2,
-                                     ( poly.first().y() + poly[last-2].y() )/2 ) );
-            QPointF valuePos( ( centerLine.x1() + centerLine.x2() )/2,
-                                  ( centerLine.y1() + centerLine.y2() )/2 ) ;
+            // the new code is setting the needed position points according to the slice:
+            // all is calculated as if the slice were 'standing' on it's tip and the border
+            // were on top, so North is the middle of the curved outside line and South is the tip
+            //
+            const QPointF south = drawPosition.center();
+            const QPointF southEast = south;
+            const QPointF southWest = south;
+            const QPointF north = pointOnCircle( drawPosition, startAngle + angleLen/2.0 );
+            const QPointF northEast = pointOnCircle( drawPosition, startAngle );
+            const QPointF northWest = pointOnCircle( drawPosition, startAngle + angleLen );
+            const QPointF center    = (south + north) / 2.0;
+            const QPointF east      = (south + northEast) / 2.0;
+            const QPointF west      = (south + northWest) / 2.0;
+            PositionPoints points( center, northWest, north, northEast, east, southEast, south, southWest, west);
+            qreal topAngle = startAngle - 90;
+            if( topAngle < 0.0 )
+                topAngle += 360;
+            points.setDegrees(KDChartEnums::PositionEast,      topAngle);
+            points.setDegrees(KDChartEnums::PositionNorthEast, topAngle);
+            points.setDegrees(KDChartEnums::PositionWest,      topAngle + angleLen);
+            points.setDegrees(KDChartEnums::PositionNorthWest, topAngle + angleLen);
+            points.setDegrees(KDChartEnums::PositionCenter,    topAngle + angleLen/2.0);
+            points.setDegrees(KDChartEnums::PositionNorth,     topAngle + angleLen/2.0);
+            d->appendDataValueTextInfoToList(
+                    this, *list, index, points,
+                    Position::Center, Position::Center,
+                    angleLen*sum / 360 );
 
-            paintDataValueText( painter, index, valuePos, angleLen*sum / 360  );
-
+            // The following, old code (since kdc 2.0.0) was not correct:
+            // Settings made for the position had been totally ignored,
+            // AND the center was NOT the center - except for pieces of 45 degrees size
+            //
+            // QLineF centerLine(  drawPosition.center(),
+            //                 QPointF( (poly[ last - 2].x() + poly.first().x())/2,
+            //                          ( poly.first().y() + poly[last-2].y() )/2 ) );
+            // QPointF valuePos( ( centerLine.x1() + centerLine.x2() )/2,
+            //                       ( centerLine.y1() + centerLine.y2() )/2 ) ;
+            //
+            // paintDataValueText( painter, index, valuePos, angleLen*sum / 360  );
         }
     }
 }
