@@ -20,6 +20,12 @@ public:
             for (int column = 0; column < 6; ++column) {
                 QModelIndex index = m_model.index(row, column, QModelIndex());
                 m_model.setData(index, QVariant(row+1 * column+1) );
+
+                // this shows the index as static comments:
+                // m_model.setData(index, QString("row: %1,  column: %2").arg(row).arg(column), KDChart::CommentRole);
+
+                // this shows the index as volatile tooltips:
+                m_model.setData(index, QString("row: %1,  column: %2").arg(row).arg(column), Qt::ToolTipRole);
             }
         }
         // We need a Polar plane for the Pie type
@@ -64,12 +70,14 @@ public:
             ta.setVisible( true );
             dva.setTextAttributes( ta );
             RelativePosition posPos( dva.positivePosition() );
+            posPos.setReferencePosition( KDChart::Position::North );
             posPos.setAlignment( Qt::AlignCenter );
+            posPos.setHorizontalPadding( KDChart::Measure(0.0) );
+            posPos.setVerticalPadding( KDChart::Measure(-1000.0) );
             dva.setPositivePosition( posPos );
             dva.setVisible( true );
             diagram->setDataValueAttributes( iColumn, dva);
         }
-
 
         // Assign our diagram to the Chart
         m_chart.coordinatePlane()->replaceDiagram(diagram);
