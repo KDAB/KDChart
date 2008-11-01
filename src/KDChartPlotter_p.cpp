@@ -39,6 +39,15 @@ Plotter::Private::Private( const Private& rhs )
 {
 }
 
+void Plotter::Private::setCompressorResolution(
+    const QSizeF& size,
+    const AbstractCoordinatePlane* plane )
+{
+    compressor.setResolution( static_cast<int>( size.width()  * plane->zoomFactorX() ),
+                              static_cast<int>( size.height() * plane->zoomFactorY() ) );
+}
+
+
 void Plotter::Private::paintPolyline(
     PaintContext* ctx,
     const QBrush& brush, const QPen& pen,

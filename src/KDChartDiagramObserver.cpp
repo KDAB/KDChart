@@ -78,6 +78,8 @@ void DiagramObserver::init()
     if( m_diagram->model() ){
         connect( m_diagram->model(), SIGNAL(dataChanged(QModelIndex,QModelIndex)),
                  SLOT(slotDataChanged(QModelIndex,QModelIndex)));
+        connect( m_diagram->model(), SIGNAL(modelReset()),
+                 SLOT(slotDataChanged()));
         connect( m_diagram->model(), SIGNAL(headerDataChanged(Qt::Orientation,int,int)),
                  SLOT(slotHeaderDataChanged(Qt::Orientation,int,int)));
     }

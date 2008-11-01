@@ -368,14 +368,18 @@ void Plotter::paint( PaintContext* ctx )
     // note: Not having any data model assigned is no bug
     //       but we can not draw a diagram then either.
     if ( !checkInvariants( true ) ) return;
+
+    AbstractCoordinatePlane* const plane = ctx->coordinatePlane();
+    if( ! plane ) return;
+    d->setCompressorResolution( size(), plane );
+
     if ( !AbstractGrid::isBoundariesValid(dataBoundaries()) ) return;
+
     const PainterSaver p( ctx->painter() );
     if( model()->rowCount( rootIndex() ) == 0 || model()->columnCount( rootIndex() ) == 0 )
         return; // nothing to paint for us
 
-    AbstractCoordinatePlane* const plane = ctx->coordinatePlane();
     ctx->setCoordinatePlane( plane->sharedAxisMasterPlane( ctx->painter() ) );
-
 
     // paint different line types Normal - Stacked - Percent - Default Normal
     d->implementor->paint( ctx );
@@ -385,8 +389,7 @@ void Plotter::paint( PaintContext* ctx )
 
 void Plotter::resize ( const QSizeF& size )
 {
-    d->compressor.setResolution( static_cast<int>( size.width() * coordinatePlane()->zoomFactorX() ),
-                                 static_cast<int>( size.height() * coordinatePlane()->zoomFactorY() ) );
+    d->setCompressorResolution( size, coordinatePlane() );
     setDataBoundariesDirty();
 }
 
