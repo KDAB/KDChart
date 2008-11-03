@@ -97,6 +97,9 @@ public:
 
     bool showLabelsAtPosition( Position position ) const;
 
+protected Q_SLOTS:
+    void adjustZoomAndRepaint();
+
 protected:
     /** \reimpl */
     virtual const QPair<QPointF, QPointF> calculateDataBoundaries() const;

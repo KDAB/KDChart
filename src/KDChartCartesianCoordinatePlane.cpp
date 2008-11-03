@@ -555,6 +555,13 @@ bool CartesianCoordinatePlane::doneSetZoomCenter( const QPointF& point )
     return done;
 }
 
+void CartesianCoordinatePlane::setZoomFactors( double factorX, double factorY )
+{
+    if( doneSetZoomFactorX( factorX ) || doneSetZoomFactorY( factorY ) ){
+        emit propertiesChanged();
+    }
+}
+
 void CartesianCoordinatePlane::setZoomFactorX( double factor )
 {
     if( doneSetZoomFactorX( factor ) ){

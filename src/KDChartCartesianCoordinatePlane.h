@@ -71,6 +71,10 @@ namespace KDChart {
         virtual double zoomFactorY() const;
 
         /**
+         * \sa setZoomFactorX,setZoomFactorY
+         */
+        virtual void setZoomFactors( double factorX, double factorY );
+        /**
          * \sa zoomFactorX, setZoomCenter
          */
         virtual void setZoomFactorX( double factor );

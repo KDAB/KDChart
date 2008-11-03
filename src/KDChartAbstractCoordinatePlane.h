@@ -155,6 +155,12 @@ namespace KDChart {
         virtual double zoomFactorY() const { return 1.0; }
 
         /**
+         * Sets both zoom factors in one go.
+         * \sa setZoomFactorX,setZoomFactorY
+         */
+        virtual void setZoomFactors( double factorX, double factorY ) { Q_UNUSED( factorX ); Q_UNUSED( factorY ); }
+
+        /**
          * Sets the zoom factor in horizontal direction, that is applied
          * to all coordinate transformations.
          * @param factor The new zoom factor

@@ -282,6 +282,12 @@ double PolarCoordinatePlane::zoomFactorY() const
         : d->coordinateTransformations.first().zoom.yFactor;
 }
 
+void PolarCoordinatePlane::setZoomFactors( double factorX, double factorY )
+{
+    setZoomFactorX( factorX );
+    setZoomFactorY( factorY );
+}
+
 void PolarCoordinatePlane::setZoomFactorX( double factor )
 {
     for( CoordinateTransformationList::iterator it = d->coordinateTransformations.begin(); 

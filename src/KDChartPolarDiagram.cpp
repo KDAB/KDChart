@@ -27,6 +27,7 @@
 #include "KDChartPolarDiagram_p.h"
 
 #include <QPainter>
+#include <QTimer>
 #include "KDChartAttributesModel.h"
 #include "KDChartPaintContext.h"
 #include "KDChartPainterSaver_p.h"
@@ -105,9 +106,9 @@ const QPair<QPointF, QPointF> PolarDiagram::calculateDataBoundaries () const
     double xMin = 0.0;
     double xMax = colCount;
     double yMin = 0, yMax = 0;
-    for ( int j=0; j<colCount; ++j ) {
-        for ( int i=0; i< rowCount; ++i ) {
-            double value = model()->data( model()->index( i, j, rootIndex() ) ).toDouble();
+    for ( int iCol=0; iCol<colCount; ++iCol ) {
+        for ( int iRow=0; iRow< rowCount; ++iRow ) {
+            double value = model()->data( model()->index( iRow, iCol, rootIndex() ) ).toDouble();
             yMax = qMax( yMax, value );
             yMin = qMin( yMin, value );
         }
@@ -150,43 +151,83 @@ void PolarDiagram::paint( PaintContext* ctx )
 
     const int rowCount = model()->rowCount( rootIndex() );
     const int colCount = model()->columnCount( rootIndex() );
-    DataValueTextInfoList list;
 
-    for ( int j=0; j < colCount; ++j ) {
-        //TODO(khz): As of yet PolarDiagram can not show per-segment line attributes
-        //           but it draws every polyline in one go - using one color.
-        //           This needs to be enhanced to allow for cell-specific settings
-        //           in the same way as LineDiagram does it.
-        QBrush brush = qVariantValue<QBrush>( attributesModel()->headerData( j, Qt::Vertical, KDChart::DatasetBrushRole ) );
-        QPolygonF polygon;
-        QPointF point0;
-        for ( int i=0; i < rowCount; ++i ) {
-            QModelIndex index = model()->index( i, j, rootIndex() );
+    DataValueTextInfoList list;
+    int iRow, iCol;
+
+    // first check if all of the data value texts and comment TextBubbleLayoutItems will
+    // fit into the available space:
+    for ( iCol=0; iCol < colCount; ++iCol ) {
+        for ( iRow=0; iRow < rowCount; ++iRow ) {
+            QModelIndex index = model()->index( iRow, iCol, rootIndex() );
             const double value = model()->data( index ).toDouble();
             QPointF point = coordinatePlane()->translate(
-                    QPointF( value, i ) ) + ctx->rectangle().topLeft();
-            polygon.append( point );
+                    QPointF( value, iRow ) ) + ctx->rectangle().topLeft();
             //qDebug() << point;
             d->appendDataValueTextInfoToList( this, list, index, PositionPoints( point ),
                                               Position::Center, Position::Center,
                                               value );
-            if( ! i )
-                point0= point;
         }
-        if( closeDatasets() && rowCount )
-            polygon.append( point0 );
-
-        PainterSaver painterSaver( ctx->painter() );
-        ctx->painter()->setRenderHint ( QPainter::Antialiasing );
-        ctx->painter()->setBrush( brush );
-        QPen p( ctx->painter()->pen() );
-        p.setColor( brush.color() ); // FIXME use DatasetPenRole
-        p.setWidth( 2 );// FIXME properties
-        ctx->painter()->setPen( PrintingParameters::scalePen( p ) );
-        ctx->painter()->drawPolyline( polygon );
     }
+    QRectF txtRectF;
+    d->paintDataValueTextsAndMarkers( this, ctx, list, true, true, &txtRectF );
+    const QRect txtRect = txtRectF.toRect();
+    const QRect curRect = coordinatePlane()->geometry();
+    const int gapX = qMin( txtRect.left() - curRect.left(), curRect.right()  - txtRect.right() );
+    const int gapY = qMin( txtRect.top()  - curRect.top(),  curRect.bottom() - txtRect.bottom() );
+    const qreal oldZoomX = coordinatePlane()->zoomFactorX();
+    const qreal oldZoomY = coordinatePlane()->zoomFactorY();
+    d->newZoomX = oldZoomX;
+    d->newZoomY = oldZoomY;
+    if( gapX < 0.0 )
+        d->newZoomX *= 1.0 + 1.0*gapX / curRect.width();
+    if( gapY < 0.0 )
+        d->newZoomY *= 1.0 + 1.0*gapY / curRect.height();
 
-    d->paintDataValueTextsAndMarkers( this, ctx, list, true );
+    if( d->newZoomX != oldZoomX || d->newZoomY != oldZoomY ){
+        //qDebug()<<d->newZoomX<<oldZoomX;
+        //qDebug()<<d->newZoomY<<oldZoomY;
+        QTimer::singleShot(100, this, SLOT(adjustZoomAndRepaint()));
+    }else{
+        for ( iCol=0; iCol < colCount; ++iCol ) {
+            //TODO(khz): As of yet PolarDiagram can not show per-segment line attributes
+            //           but it draws every polyline in one go - using one color.
+            //           This needs to be enhanced to allow for cell-specific settings
+            //           in the same way as LineDiagram does it.
+            QBrush brush = qVariantValue<QBrush>( attributesModel()->headerData( iCol, Qt::Vertical, KDChart::DatasetBrushRole ) );
+            QPolygonF polygon;
+            QPointF point0;
+            for ( iRow=0; iRow < rowCount; ++iRow ) {
+                QModelIndex index = model()->index( iRow, iCol, rootIndex() );
+                const double value = model()->data( index ).toDouble();
+                QPointF point = coordinatePlane()->translate(
+                        QPointF( value, iRow ) ) + ctx->rectangle().topLeft();
+                polygon.append( point );
+                //qDebug() << point;
+                if( ! iRow )
+                    point0= point;
+            }
+            if( closeDatasets() && rowCount )
+                polygon.append( point0 );
+
+            PainterSaver painterSaver( ctx->painter() );
+            ctx->painter()->setRenderHint ( QPainter::Antialiasing );
+            ctx->painter()->setBrush( brush );
+            QPen p( ctx->painter()->pen() );
+            p.setColor( brush.color() ); // FIXME use DatasetPenRole
+            p.setWidth( 2 );// FIXME properties
+            ctx->painter()->setPen( PrintingParameters::scalePen( p ) );
+            ctx->painter()->drawPolyline( polygon );
+        }
+        d->paintDataValueTextsAndMarkers( this, ctx, list, true );
+    }
+}
+
+void PolarDiagram::adjustZoomAndRepaint()
+{
+    const qreal newZoom = qMin(d->newZoomX, d->newZoomY);
+    coordinatePlane()->setZoomFactors(newZoom, newZoom);
+    coordinatePlane()->update();
 }
 
 void PolarDiagram::resize ( const QSizeF& )

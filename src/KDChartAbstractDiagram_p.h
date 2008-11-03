@@ -175,8 +175,12 @@ namespace KDChart {
             alreadyDrawnDataValueTexts.clear();
         }
 
-        void paintDataValueTextsAndMarkers( AbstractDiagram* diag, PaintContext* ctx,
-                                            const DataValueTextInfoList & list, bool paintMarkers )
+        void paintDataValueTextsAndMarkers( AbstractDiagram* diag,
+                                            PaintContext* ctx,
+                                            const DataValueTextInfoList & list,
+                                            bool paintMarkers,
+                                            bool justCalculateRect=false,
+                                            QRectF* cumulatedBoundingRect=0 )
         {
             const PainterSaver painterSaver( ctx->painter() );
             ctx->painter()->setClipping( false );
@@ -200,7 +204,9 @@ namespace KDChart {
             clearListOfAlreadyDrawnDataValueTexts();
             while ( it.hasNext() ) {
                 const DataValueTextInfo& info = it.next();
-                paintDataValueText( diag, ctx->painter(), info.index, info.pos, info.value );
+                paintDataValueText( diag, ctx->painter(), info.index, info.pos, info.value,
+                                    justCalculateRect,
+                                    cumulatedBoundingRect );
 
                 const QString comment = info.index.data( KDChart::CommentRole ).toString();
                 if( comment.isEmpty() )
@@ -210,8 +216,13 @@ namespace KDChart {
                                            ctx->coordinatePlane()->parent(),
                                            KDChartEnums::MeasureOrientationMinimum,
                                            Qt::AlignHCenter|Qt::AlignVCenter );
-                item.setGeometry( QRect( info.pos.toPoint(), item.sizeHint() ) );
-                item.paint( ctx->painter() );
+                const QRect rect( info.pos.toPoint(), item.sizeHint() );
+                if( justCalculateRect &&  cumulatedBoundingRect ){
+                    (*cumulatedBoundingRect) |= rect;
+                }else{
+                    item.setGeometry( rect );
+                    item.paint( ctx->painter() );
+                }
             }
         }
 
@@ -220,7 +231,9 @@ namespace KDChart {
                                  QPainter* painter,
                                  const QModelIndex& index,
                                  const QPointF& pos,
-                                 double value )
+                                 double value,
+                                 bool justCalculateRect=false,
+                                 QRectF* cumulatedBoundingRect=0 )
         {
             const DataValueAttributes a( diag->dataValueAttributes( index ) );
 
@@ -246,7 +259,8 @@ namespace KDChart {
             if ( !a.suffix().isNull() )
                 roundedValue.append( a.suffix() );
 
-            paintDataValueText( diag, painter, a, pos, roundedValue, value >= 0.0 );
+            paintDataValueText( diag, painter, a, pos, roundedValue, value >= 0.0,
+                                justCalculateRect, cumulatedBoundingRect );
         }
 
 
@@ -255,7 +269,9 @@ namespace KDChart {
                                  const DataValueAttributes& attrs,
                                  const QPointF& pos,
                                  QString text,
-                                 bool valueIsPositive )
+                                 bool valueIsPositive,
+                                 bool justCalculateRect=false,
+                                 QRectF* cumulatedBoundingRect=0 )
         {
             if ( !attrs.isVisible() ) return;
 
@@ -348,8 +364,14 @@ namespace KDChart {
                             alreadyDrawnDataValueTexts << pr;
                     }
                     if( drawIt ){
-                        painter->translate( QPointF( dx, dy ) );
-                        layout->draw( painter, context );
+                        if( justCalculateRect && cumulatedBoundingRect ){
+                            QRectF rect = layout->frameBoundingRect(doc.rootFrame());
+                            rect.moveTo(pos.x()+dx, pos.y()+dy);
+                            (*cumulatedBoundingRect) |= rect;
+                        }else{
+                            painter->translate( QPointF( dx, dy ) );
+                            layout->draw( painter, context );
+                        }
                     }
                 }
 
