@@ -68,7 +68,7 @@ private:
     QMap<int,bool> showLabelsAtPosition;
     bool rotateCircularLabels;
     bool closeDatasets;
-    qreal newZoomX, newZoomY;
+    DataValueTextInfoList dataValueInfoList;
 };
 
 KDCHART_IMPL_DERIVED_DIAGRAM( PolarDiagram, AbstractPolarDiagram, PolarCoordinatePlane )

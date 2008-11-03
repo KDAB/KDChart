@@ -184,7 +184,7 @@ namespace KDChart {
         {
             const PainterSaver painterSaver( ctx->painter() );
             ctx->painter()->setClipping( false );
-            if( paintMarkers )
+            if( paintMarkers && ! justCalculateRect )
             {
                 DataValueTextInfoListIterator it( list );
                 while ( it.hasNext() ) {

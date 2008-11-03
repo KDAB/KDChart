@@ -27,7 +27,6 @@
 #include "KDChartPolarDiagram_p.h"
 
 #include <QPainter>
-#include <QTimer>
 #include "KDChartAttributesModel.h"
 #include "KDChartPaintContext.h"
 #include "KDChartPainterSaver_p.h"
@@ -142,6 +141,15 @@ void PolarDiagram::paintPolarMarkers( PaintContext* ctx, const QPolygonF& polygo
 
 void PolarDiagram::paint( PaintContext* ctx )
 {
+    qreal dummy1, dummy2;
+    paint( ctx, true,  dummy1, dummy2 );
+    paint( ctx, false, dummy1, dummy2 );
+}
+
+void PolarDiagram::paint( PaintContext* ctx,
+                          bool calculateListAndReturnScale,
+                          qreal& newZoomX, qreal& newZoomY )
+{
     // note: Not having any data model assigned is no bug
     //       but we can not draw a diagram then either.
     if ( !checkInvariants(true) )
@@ -152,43 +160,45 @@ void PolarDiagram::paint( PaintContext* ctx )
     const int rowCount = model()->rowCount( rootIndex() );
     const int colCount = model()->columnCount( rootIndex() );
 
-    DataValueTextInfoList list;
     int iRow, iCol;
 
-    // first check if all of the data value texts and comment TextBubbleLayoutItems will
-    // fit into the available space:
-    for ( iCol=0; iCol < colCount; ++iCol ) {
-        for ( iRow=0; iRow < rowCount; ++iRow ) {
-            QModelIndex index = model()->index( iRow, iCol, rootIndex() );
-            const double value = model()->data( index ).toDouble();
-            QPointF point = coordinatePlane()->translate(
-                    QPointF( value, iRow ) ) + ctx->rectangle().topLeft();
-            //qDebug() << point;
-            d->appendDataValueTextInfoToList( this, list, index, PositionPoints( point ),
-                                              Position::Center, Position::Center,
-                                              value );
-        }
-    }
-    QRectF txtRectF;
-    d->paintDataValueTextsAndMarkers( this, ctx, list, true, true, &txtRectF );
-    const QRect txtRect = txtRectF.toRect();
-    const QRect curRect = coordinatePlane()->geometry();
-    const int gapX = qMin( txtRect.left() - curRect.left(), curRect.right()  - txtRect.right() );
-    const int gapY = qMin( txtRect.top()  - curRect.top(),  curRect.bottom() - txtRect.bottom() );
-    const qreal oldZoomX = coordinatePlane()->zoomFactorX();
-    const qreal oldZoomY = coordinatePlane()->zoomFactorY();
-    d->newZoomX = oldZoomX;
-    d->newZoomY = oldZoomY;
-    if( gapX < 0.0 )
-        d->newZoomX *= 1.0 + 1.0*gapX / curRect.width();
-    if( gapY < 0.0 )
-        d->newZoomY *= 1.0 + 1.0*gapY / curRect.height();
+    if( calculateListAndReturnScale ){
 
-    if( d->newZoomX != oldZoomX || d->newZoomY != oldZoomY ){
-        //qDebug()<<d->newZoomX<<oldZoomX;
-        //qDebug()<<d->newZoomY<<oldZoomY;
-        QTimer::singleShot(100, this, SLOT(adjustZoomAndRepaint()));
+        // Check if all of the data value texts / data comments will fit
+        // into the available space:
+        d->dataValueInfoList.clear();
+        for ( iCol=0; iCol < colCount; ++iCol ) {
+            for ( iRow=0; iRow < rowCount; ++iRow ) {
+                QModelIndex index = model()->index( iRow, iCol, rootIndex() );
+                const double value = model()->data( index ).toDouble();
+                QPointF point = coordinatePlane()->translate(
+                        QPointF( value, iRow ) ) + ctx->rectangle().topLeft();
+                //qDebug() << point;
+                d->appendDataValueTextInfoToList( this, d->dataValueInfoList,
+                                                  index, PositionPoints( point ),
+                                                  Position::Center, Position::Center,
+                                                  value );
+            }
+        }
+        QRectF txtRectF;
+        d->paintDataValueTextsAndMarkers( this, ctx, d->dataValueInfoList, true, true, &txtRectF );
+        const QRect txtRect = txtRectF.toRect();
+        const QRect curRect = coordinatePlane()->geometry();
+        const qreal gapX = qMin( txtRect.left() - curRect.left(), curRect.right()  - txtRect.right() );
+        const qreal gapY = qMin( txtRect.top()  - curRect.top(),  curRect.bottom() - txtRect.bottom() );
+        const qreal oldZoomX = coordinatePlane()->zoomFactorX();
+        const qreal oldZoomY = coordinatePlane()->zoomFactorY();
+        newZoomX = oldZoomX;
+        newZoomY = oldZoomY;
+        if( gapX < 0.0 )
+            newZoomX *= 1.0 + (gapX-1.0) / curRect.width();
+        if( gapY < 0.0 )
+            newZoomY *= 1.0 + (gapY-1.0) / curRect.height();
+
+        //qDebug()<<"gapY:"<<gapY;
+
     }else{
+
         for ( iCol=0; iCol < colCount; ++iCol ) {
             //TODO(khz): As of yet PolarDiagram can not show per-segment line attributes
             //           but it draws every polyline in one go - using one color.
@@ -219,15 +229,8 @@ void PolarDiagram::paint( PaintContext* ctx )
             ctx->painter()->setPen( PrintingParameters::scalePen( p ) );
             ctx->painter()->drawPolyline( polygon );
         }
-        d->paintDataValueTextsAndMarkers( this, ctx, list, true );
+        d->paintDataValueTextsAndMarkers( this, ctx, d->dataValueInfoList, true );
     }
-}
-
-void PolarDiagram::adjustZoomAndRepaint()
-{
-    const qreal newZoom = qMin(d->newZoomX, d->newZoomY);
-    coordinatePlane()->setZoomFactors(newZoom, newZoom);
-    coordinatePlane()->update();
 }
 
 void PolarDiagram::resize ( const QSizeF& )

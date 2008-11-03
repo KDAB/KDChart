@@ -156,6 +156,7 @@ namespace KDChart {
         void layoutDiagrams();
     protected Q_SLOTS:
         void slotLayoutChanged( AbstractDiagram* diagram );
+        void adjustZoomAndRepaint();
 
     private:
         void setHasOwnGridAttributes(

@@ -97,8 +97,9 @@ public:
 
     bool showLabelsAtPosition( Position position ) const;
 
-protected Q_SLOTS:
-    void adjustZoomAndRepaint();
+    virtual void paint ( PaintContext* paintContext,
+                         bool calculateListAndReturnScale,
+                         qreal& newZoomX, qreal& newZoomY );
 
 protected:
     /** \reimpl */
