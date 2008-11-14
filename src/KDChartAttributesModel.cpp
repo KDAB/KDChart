@@ -292,8 +292,11 @@ QVariant AttributesModel::headerData ( int section,
                                        Qt::Orientation orientation,
                                        int role/* = Qt::DisplayRole */ ) const
 {
-  QVariant sourceData = sourceModel()->headerData( section, orientation, role );
-  if ( sourceData.isValid() ) return sourceData;
+  if( sourceModel() ) {
+      QVariant sourceData = sourceModel()->headerData( section, orientation, role );
+      if ( sourceData.isValid() ) return sourceData;
+  }
+
   // the source model didn't have data set, let's use our stored values
   const QMap<int, QMap<int, QVariant> >& map = orientation == Qt::Horizontal ? mHorizontalHeaderDataMap : mVerticalHeaderDataMap;
   if ( map.contains( section ) ) {
