@@ -52,7 +52,7 @@
 
 
 
-//#define DEBUG_ITEMS_PAINT
+#define DEBUG_ITEMS_PAINT
 
 /**
     Inform the item about its widget: This enables the item,
@@ -505,7 +505,7 @@ QSize KDChart::TextLayoutItem::unrotatedSizeHint( QFont fnt ) const
     //       rectangles: one per line.  This fixes bugz issue #3720.
     //       (khz, 2007 04 14)
     QStringList lines = mText.split(QString::fromAscii("\n"));
-    for (int i = 0; i < lines.size(); ++i){
+    for (int i = 0; i < lines.size(); ++i) {
         const QSize lSize = met.boundingRect(lines.at(i) ).toRect().size();
         ret.setWidth(qMax( ret.width(), lSize.width() ));
         ret.rheight() += lSize.height();
@@ -526,16 +526,26 @@ QSize KDChart::TextLayoutItem::unrotatedSizeHint( QFont fnt ) const
 
 QSize KDChart::TextLayoutItem::calcSizeHint( QFont fnt ) const
 {
-    QSize ret = unrotatedSizeHint( fnt );
-    //qDebug() << "-------- "<<ret.width();
+    const QSize siz( unrotatedSizeHint( fnt ));
+    //qDebug() << "-------- "<<siz.width();
+    if( ! mAttributes.rotation() )
+        return siz;
+
+    const QRect rect(QPoint(0, 0), siz + QSize(4,4));
     const qreal angle = PI * mAttributes.rotation() / 180.0;
     const qreal cosAngle = cos( angle );
     const qreal sinAngle = sin( angle );
-    QSize rotated( qAbs(static_cast<int>( cosAngle * ret.width()  + sinAngle * ret.height() )),
-                   qAbs(static_cast<int>( cosAngle * ret.height() + sinAngle * ret.width()  )) );
-    //qDebug() << "-------- KDChart::TextLayoutItem::calcSizeHint() returns:"<<rotated<<" ----------";
-    return rotated;
+    QMatrix rotationMatrix(cosAngle, sinAngle, -sinAngle, cosAngle, 0, 0);
+    QPolygon rotPts(4);
+    rotPts << QPoint(0,0)
+            << rotationMatrix.map(rect.topRight())
+            << rotationMatrix.map(rect.bottomRight())
+            << rotationMatrix.map(rect.bottomLeft());
+    QSize rotSiz( rotPts.boundingRect().size() );
+    //qDebug() << "-------- KDChart::TextLayoutItem::calcSizeHint() returns:"<<rotSiz<<" ----------";
+    return rotSiz;
 }
+
 
 void KDChart::TextLayoutItem::paint( QPainter* painter )
 {
