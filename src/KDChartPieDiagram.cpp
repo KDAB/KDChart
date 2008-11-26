@@ -493,8 +493,8 @@ void PieDiagram::drawPieSurface( QPainter* painter,
             points.setDegrees(KDChartEnums::PositionCenter,    topAngle + angleLen/2.0);
             points.setDegrees(KDChartEnums::PositionNorth,     topAngle + angleLen/2.0);
             d->appendDataValueTextInfoToList(
-                    this, *list, index, points,
-                    Position::Center, Position::Center,
+                    this, *list, index, 0,
+                    points, Position::Center, Position::Center,
                     angleLen*sum / 360 );
 
             // The following, old code (since kdc 2.0.0) was not correct:

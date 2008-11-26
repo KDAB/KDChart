@@ -239,13 +239,14 @@ void LineDiagram::LineDiagramType::appendDataValueTextInfoToList(
             AbstractDiagram * diagram,
             DataValueTextInfoList & list,
             const QModelIndex & index,
+            const CartesianDiagramDataCompressor::CachePosition * position,
             const PositionPoints& points,
             const Position& autoPositionPositive,
             const Position& autoPositionNegative,
             const qreal value )
 {
     Q_UNUSED( autoPositionNegative );
-    m_private->appendDataValueTextInfoToList( diagram, list, index, points,
+    m_private->appendDataValueTextInfoToList( diagram, list, index, position, points,
                                               autoPositionPositive, autoPositionPositive, value );
 }
 

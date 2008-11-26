@@ -232,8 +232,8 @@ void StackedLineDiagram::paint(  PaintContext* ctx )
 
             const PositionPoints pts( ptNorthWest, ptNorthEast, ptSouthEast, ptSouthWest );
             if( !ISNAN( point.value ) )
-                appendDataValueTextInfoToList( diagram(), list, sourceIndex, pts,
-                                               Position::NorthWest, Position::SouthWest,
+                appendDataValueTextInfoToList( diagram(), list, sourceIndex, &position,
+                                               pts, Position::NorthWest, Position::SouthWest,
                                                point.value );
         }
         if( areas.count() ){

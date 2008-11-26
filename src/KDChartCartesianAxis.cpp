@@ -1022,6 +1022,9 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         if( labelStep <= 0 ) {
                             const PainterSaver p( ptr );
                             const QSize size( labelItem->sizeHint() );
+                            qDebug()<<"------"<<size;
+    ptr->setPen( Qt::green );
+    ptr->drawRect( QRectF(topPoint, QSizeF(size)) );
                             if ( diagramIsVertical ) {
 	                            labelItem->setGeometry(
 	                                QRect(
@@ -1439,6 +1442,7 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
                 {
                     labelItem.setText( axis()->customizedLabel(labelsList[ i ]) );
                     const QSize siz = labelItem.sizeHint();
+                    qDebug()<<siz;
                     if ( diagramIsVertical )
                     	h = qMax( h, static_cast<qreal>(siz.height()) );
                     else
@@ -1520,6 +1524,7 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
         	w += qAbs( axis()->tickLength() ) * 3.0;
         result = QSize ( static_cast<int>( w ), static_cast<int>( h ) );
 
+        qDebug()<<"calculated size of x axis:"<<result;
 
         // If necessary adjust the widths
         // of the left (or right, resp.) side neighboring columns:

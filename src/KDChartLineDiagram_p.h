@@ -122,6 +122,7 @@ namespace KDChart {
             AbstractDiagram * diagram,
             DataValueTextInfoList & list,
             const QModelIndex & index,
+            const CartesianDiagramDataCompressor::CachePosition * position,
             const PositionPoints& points,
             const Position& autoPositionPositive,
             const Position& autoPositionNegative,

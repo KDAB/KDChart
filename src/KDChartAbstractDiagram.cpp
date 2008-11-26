@@ -529,12 +529,11 @@ void AbstractDiagram::paintDataValueTexts( QPainter* painter )
 
 
 void AbstractDiagram::paintMarker( QPainter* painter,
+                                   const DataValueAttributes& a,
                                    const QModelIndex& index,
                                    const QPointF& pos )
 {
-    if ( !checkInvariants() ) return;
-    const DataValueAttributes a = dataValueAttributes(index);
-    if ( !a.isVisible() ) return;
+    if ( !checkInvariants() || !a.isVisible() ) return;
     const MarkerAttributes ma = a.markerAttributes();
     if ( !ma.isVisible() ) return;
 
@@ -555,6 +554,14 @@ void AbstractDiagram::paintMarker( QPainter* painter,
     // reverseMapper. This means that ^^^ this version of paintMarker
     // needs to be called to reverse-map the marker.
     d->reverseMapper.addCircle( index.row(), index.column(), pos, 2 * maSize );
+}
+
+void AbstractDiagram::paintMarker( QPainter* painter,
+                                   const QModelIndex& index,
+                                   const QPointF& pos )
+{
+    if ( !checkInvariants() ) return;
+    paintMarker( painter, dataValueAttributes( index ), index, pos );
 }
 
 void AbstractDiagram::paintMarker( QPainter* painter,

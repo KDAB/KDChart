@@ -38,6 +38,7 @@
 #include <QPointer>
 #include <QModelIndex>
 
+#include "KDChartDataValueAttributes.h"
 #include "KDChartModelDataCache_p.h"
 
 #include "kdchart_export.h"
@@ -48,6 +49,8 @@ class QAbstractItemModel;
 namespace KDChart {
 
     class AbstractDiagram;
+
+    typedef QMap<QModelIndex, DataValueAttributes> DataValueAttributesList;
 
     // - transparently compress table model data if the diagram widget
     // size does not allow to display all data points in an acceptable way
@@ -101,6 +104,8 @@ namespace KDChart {
             }
         };
 
+        typedef QMap<CartesianDiagramDataCompressor::CachePosition, DataValueAttributes> DataValueAttributesCache;
+
         enum ApproximationMode {
             // do not approximate, interpolate by averaging all
             // datapoints for a pixel
@@ -123,6 +128,12 @@ namespace KDChart {
         int modelDataColumns() const;
         int modelDataRows() const;
         const DataPoint& data( const CachePosition& ) const;
+
+        QModelIndexList indexesAt( const CachePosition& position ) const;
+        DataValueAttributesList aggregatedAttrs(
+                AbstractDiagram * diagram,
+                const QModelIndex & index,
+                const CachePosition& position ) const;
 
     private Q_SLOTS:
         void slotRowsAboutToBeInserted( const QModelIndex&, int, int );
@@ -174,6 +185,7 @@ namespace KDChart {
         unsigned int m_sampleStep;
         QModelIndex m_rootIndex;
         ModelDataCache< double > m_modelCache;
+        DataValueAttributesCache m_dataValueAttributesCache;
         int m_datasetDimension;
     };
 }

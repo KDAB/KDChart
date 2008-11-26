@@ -174,10 +174,10 @@ void PolarDiagram::paint( PaintContext* ctx,
                 QPointF point = coordinatePlane()->translate(
                         QPointF( value, iRow ) ) + ctx->rectangle().topLeft();
                 //qDebug() << point;
-                d->appendDataValueTextInfoToList( this, d->dataValueInfoList,
-                                                  index, PositionPoints( point ),
-                                                  Position::Center, Position::Center,
-                                                  value );
+                d->appendDataValueTextInfoToList(
+                        this, d->dataValueInfoList, index, 0,
+                        PositionPoints( point ), Position::Center, Position::Center,
+                        value );
             }
         }
         QRectF txtRectF;

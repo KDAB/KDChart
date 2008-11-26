@@ -164,8 +164,8 @@ void NormalLineDiagram::paint( PaintContext* ctx )
             // add the pieces to painting if this is not hidden:
             if ( ! point.hidden && !ISNAN( point.value ) )
             {
-                appendDataValueTextInfoToList( diagram(), textInfoList, sourceIndex, pts,
-                                               Position::NorthWest, Position::SouthWest,
+                appendDataValueTextInfoToList( diagram(), textInfoList, sourceIndex, &position,
+                                               pts, Position::NorthWest, Position::SouthWest,
                                                point.value );
                 paintAreas( ctx, attributesModel()->mapToSource( lastPoint.index ), areas, laCell.transparency() );
                 // position 0 is not really painted, since it takes two points to make a line :-)

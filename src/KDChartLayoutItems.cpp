@@ -324,20 +324,35 @@ QPointF rotatedPoint( const QPointF& pt, qreal rotation, const QPointF& center )
             (cosAngle * ( pt.y() - center.y() ) - sinAngle * ( pt.x() - center.x() ) ) ) + center;
 }
 
-QRectF rotatedRect( const QRectF& rect, qreal angle, const QPointF& center )
+
+QRectF rotatedRect( const QRectF& oldRect, qreal angleInt, const QPointF& center )
 {
-    const QPointF topLeft( rotatedPoint( rect.topLeft(), angle, center ) );
-    const QPointF topRight( rotatedPoint( rect.topRight(), angle, center ) );
-    const QPointF bottomLeft( rotatedPoint( rect.bottomLeft(), angle, center ) );
-    const QPointF bottomRight( rotatedPoint( rect.bottomRight(), angle, center ) );
-   
+    const QRect rect( oldRect.translated( center ).toRect() );
+    const qreal angle = PI * angleInt / 180.0;
+    const qreal cosAngle = cos( angle );
+    const qreal sinAngle = sin( angle );
+    QMatrix rotationMatrix(cosAngle, sinAngle, -sinAngle, cosAngle, 0, 0);
+    QPolygon rotPts(4);
+    rotPts << QPoint(0,0)
+            << rotationMatrix.map(rect.topRight())
+            << rotationMatrix.map(rect.bottomRight())
+            << rotationMatrix.map(rect.bottomLeft());
+    return rotPts.boundingRect();
+/*
+    const QPointF topLeft( rotatedPoint( oldRect.topLeft(), angle, center ) );
+    const QPointF topRight( rotatedPoint( oldRect.topRight(), angle, center ) );
+    const QPointF bottomLeft( rotatedPoint( oldRect.bottomLeft(), angle, center ) );
+    const QPointF bottomRight( rotatedPoint( oldRect.bottomRight(), angle, center ) );
+
     const qreal x = qMin( qMin( topLeft.x(), topRight.x() ), qMin( bottomLeft.x(), topLeft.x() ) );
     const qreal y = qMin( qMin( topLeft.y(), topRight.y() ), qMin( bottomLeft.y(), topLeft.y() ) );
     const qreal width = qMax( qMax( topLeft.x(), topRight.x() ), qMax( bottomLeft.x(), topLeft.x() ) ) - x;
     const qreal height = qMax( qMax( topLeft.y(), topRight.y() ), qMax( bottomLeft.y(), topLeft.y() ) ) - y;
 
     return QRectF( x, y, width, height );
+*/
 }
+
 /*
 QRectF rotatedRect( const QRectF& rect, qreal angle )
 {

@@ -260,8 +260,9 @@ void Plotter::PlotterType::appendDataValueTextInfoToList(
             const qreal value )
 {
     Q_UNUSED( autoPositionNegative );
-    m_private->appendDataValueTextInfoToList( diagram, list, index, points,
-                                              autoPositionPositive, autoPositionPositive, value );
+    m_private->appendDataValueTextInfoToList(
+                    diagram, list, index, 0,
+                    points, autoPositionPositive, autoPositionPositive, value );
 }
 
 void Plotter::PlotterType::paintValueTracker( PaintContext* ctx, const ValueTrackerAttributes& vt, const QPointF& at )

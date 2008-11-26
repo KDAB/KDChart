@@ -176,7 +176,8 @@ void BarDiagram::BarDiagramType::appendDataValueTextInfoToList(
             const Position& autoPositionNegative,
             const qreal value )
 {
-    m_private->appendDataValueTextInfoToList( diagram, list, index, points,
+    m_private->appendDataValueTextInfoToList( diagram, list, index, 0,
+                                              points,
                                               autoPositionPositive, autoPositionNegative, value );
 }
 

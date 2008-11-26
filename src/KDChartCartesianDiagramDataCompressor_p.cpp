@@ -49,6 +49,72 @@ CartesianDiagramDataCompressor::CartesianDiagramDataCompressor( QObject* parent 
     calculateSampleStepWidth();
 }
 
+QModelIndexList CartesianDiagramDataCompressor::indexesAt( const CachePosition& position ) const
+{
+    if ( isValidCachePosition( position ) ) {
+        CachePosition posPrev( position );
+        if( m_datasetDimension == 2 ){
+            if(posPrev.second)
+                --posPrev.second;
+        }else{
+            if(posPrev.first)
+                --posPrev.first;
+        }
+        const QModelIndexList indPrev = mapToModel( posPrev );
+        const QModelIndexList indCur  = mapToModel( position );
+
+        QModelIndexList indexes;
+        if( m_datasetDimension == 2 )
+        {
+            const int iStart = (indPrev.empty() || indPrev==indCur) ? indCur.first().column()
+                             : indPrev.first().column() + 1;
+            const int iEnd   = indCur.last().column();
+            for( int i=iStart; i<=iEnd; ++i){
+                indexes << m_model->index( position.first, i, m_rootIndex );
+            }
+        }
+        else
+        {
+            const int iStart = (indPrev.empty() || indPrev==indCur)  ? indCur.first().row()
+                             : indPrev.first().row() + 1;
+            const int iEnd   = indCur.first().row();
+            //qDebug()<<iStart<<iEnd << iEnd-iStart;
+            for( int i=iStart; i<=iEnd; ++i){
+                indexes << m_model->index( i, position.second, m_rootIndex );
+            }
+        }
+        return indexes;
+    } else {
+        return QModelIndexList();
+    }
+}
+
+
+DataValueAttributesList CartesianDiagramDataCompressor::aggregatedAttrs(
+        AbstractDiagram * diagram,
+        const QModelIndex & index,
+        const CachePosition& position ) const
+{
+    DataValueAttributesList allAttrs;
+    const QModelIndexList indexes( indexesAt( position ) );
+    if( indexes.empty() ){
+        allAttrs[index] = diagram->dataValueAttributes( index );
+        return allAttrs;
+    }
+    KDAB_FOREACH( QModelIndex idx, indexes ) {
+        DataValueAttributes attrs( diagram->dataValueAttributes( idx ) );
+        if( attrs.isVisible() ){
+            //qDebug()<<idx.row();
+            allAttrs[idx] = attrs;
+        }
+    }
+
+    //typedef QMap<CartesianDiagramDataCompressor::CachePosition, DataValueAttributes> DataValueAttributesCache;
+
+    return allAttrs;
+}
+
+
 void CartesianDiagramDataCompressor::slotRowsAboutToBeInserted( const QModelIndex& parent, int start, int end )
 {
     if ( parent != m_rootIndex )

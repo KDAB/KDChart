@@ -597,7 +597,11 @@ namespace KDChart {
     public:
         void update() const;
 
-        void paintMarker( QPainter* painter, const QModelIndex& index,
+        void paintMarker( QPainter* painter, const DataValueAttributes& a,
+                          const QModelIndex& index,
+                          const QPointF& pos );
+        void paintMarker( QPainter* painter,
+                          const QModelIndex& index,
                           const QPointF& pos );
         void paintDataValueText( QPainter* painter, const QModelIndex& index,
                                  const QPointF& pos, double value );
