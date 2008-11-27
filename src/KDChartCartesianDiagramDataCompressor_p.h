@@ -50,8 +50,6 @@ namespace KDChart {
 
     class AbstractDiagram;
 
-    typedef QMap<QModelIndex, DataValueAttributes> DataValueAttributesList;
-
     // - transparently compress table model data if the diagram widget
     // size does not allow to display all data points in an acceptable way
     // - the class acts much like a proxy model, but is not
@@ -102,9 +100,15 @@ namespace KDChart {
                 return first == rhs.first &&
                        second == rhs.second;
             }
+            bool operator<( const CachePosition& rhs ) const
+            {
+                return first < rhs.first ||
+                       second < rhs.second;
+            }
         };
 
-        typedef QMap<CartesianDiagramDataCompressor::CachePosition, DataValueAttributes> DataValueAttributesCache;
+        typedef QMap<QModelIndex, DataValueAttributes > DataValueAttributesList;
+        typedef QMap<CartesianDiagramDataCompressor::CachePosition, DataValueAttributesList > DataValueAttributesCache;
 
         enum ApproximationMode {
             // do not approximate, interpolate by averaging all
@@ -185,7 +189,7 @@ namespace KDChart {
         unsigned int m_sampleStep;
         QModelIndex m_rootIndex;
         ModelDataCache< double > m_modelCache;
-        DataValueAttributesCache m_dataValueAttributesCache;
+        mutable DataValueAttributesCache m_dataValueAttributesCache;
         int m_datasetDimension;
     };
 }

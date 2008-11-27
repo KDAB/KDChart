@@ -110,7 +110,7 @@ namespace KDChart {
             const Position& autoPositionNegative,
             const qreal value )
         {
-            DataValueAttributesList allAttrs( aggregatedAttrs( diagram, index, position ) );
+            CartesianDiagramDataCompressor::DataValueAttributesList allAttrs( aggregatedAttrs( diagram, index, position ) );
             QMap<QModelIndex, DataValueAttributes>::const_iterator i;
             for (i = allAttrs.constBegin(); i != allAttrs.constEnd(); ++i){
                 if( i.value().isVisible() ){
@@ -405,13 +405,13 @@ namespace KDChart {
             return reverseMapper.indexesIn( rect );
         }
 
-        virtual DataValueAttributesList aggregatedAttrs(
+        virtual CartesianDiagramDataCompressor::DataValueAttributesList aggregatedAttrs(
                 AbstractDiagram * diagram,
                 const QModelIndex & index,
                 const CartesianDiagramDataCompressor::CachePosition * position ) const
         {
             Q_UNUSED( position ); // used by cartesian diagrams only
-            DataValueAttributesList allAttrs;
+            CartesianDiagramDataCompressor::DataValueAttributesList allAttrs;
             allAttrs[index] = diagram->dataValueAttributes( index );
             return allAttrs;
         }

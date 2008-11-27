@@ -90,27 +90,44 @@ QModelIndexList CartesianDiagramDataCompressor::indexesAt( const CachePosition& 
 }
 
 
-DataValueAttributesList CartesianDiagramDataCompressor::aggregatedAttrs(
+CartesianDiagramDataCompressor::DataValueAttributesList CartesianDiagramDataCompressor::aggregatedAttrs(
         AbstractDiagram * diagram,
         const QModelIndex & index,
         const CachePosition& position ) const
 {
-    DataValueAttributesList allAttrs;
+    // return cached attrs, if any
+    DataValueAttributesCache::const_iterator i = m_dataValueAttributesCache.find(position);
+    if( i != m_dataValueAttributesCache.end() )
+        return i.value();
+    // retrieve attrs from all cells between the prev. cell and the current one
+    CartesianDiagramDataCompressor::DataValueAttributesList allAttrs;
     const QModelIndexList indexes( indexesAt( position ) );
-    if( indexes.empty() ){
-        allAttrs[index] = diagram->dataValueAttributes( index );
-        return allAttrs;
-    }
     KDAB_FOREACH( QModelIndex idx, indexes ) {
         DataValueAttributes attrs( diagram->dataValueAttributes( idx ) );
         if( attrs.isVisible() ){
-            //qDebug()<<idx.row();
-            allAttrs[idx] = attrs;
+            // make sure no duplicate attrs are stored
+            bool isDuplicate = false;
+            CartesianDiagramDataCompressor::DataValueAttributesList::const_iterator i = allAttrs.constBegin();
+            while (i != allAttrs.constEnd()) {
+                if( i.value() == attrs ){
+                    isDuplicate = true;
+                    continue;
+                }
+                ++i;
+            }
+            if( !isDuplicate ){
+                //qDebug()<<idx.row();
+                allAttrs[idx] = attrs;
+            }
         }
     }
-
-    //typedef QMap<CartesianDiagramDataCompressor::CachePosition, DataValueAttributes> DataValueAttributesCache;
-
+    // if none of the attrs had the visible flag set
+    // we just take the one set for the index to not return an empty list
+    if( allAttrs.empty() ){
+        allAttrs[index] = diagram->dataValueAttributes( index );
+    }
+    // cache the attrs
+    m_dataValueAttributesCache[position] = allAttrs;
     return allAttrs;
 }
 
@@ -544,6 +561,8 @@ void CartesianDiagramDataCompressor::rebuildCache() const
     for ( int i = 0; i < columnCount; ++i ) {
         m_data[i].resize( rowCount );
     }
+    // also empty the attrs cache
+    m_dataValueAttributesCache.clear();
 }
 
 const CartesianDiagramDataCompressor::DataPoint& CartesianDiagramDataCompressor::data( const CachePosition& position ) const
