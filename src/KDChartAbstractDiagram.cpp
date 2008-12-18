@@ -450,9 +450,10 @@ DataValueAttributes AbstractDiagram::dataValueAttributes( int column ) const
 
 DataValueAttributes AbstractDiagram::dataValueAttributes( const QModelIndex & index ) const
 {
+    Q_ASSERT( !index.isValid() || index.model() == attributesModel() || index.model() == attributesModel()->sourceModel() );
+    const QModelIndex idx = index.model() == attributesModel() ? index : attributesModel()->mapFromSource( index );
     return qVariantValue<DataValueAttributes>(
-        attributesModel()->data( attributesModel()->mapFromSource(index),
-                                 KDChart::DataValueLabelAttributesRole ) );
+        attributesModel()->data( idx, KDChart::DataValueLabelAttributesRole ) );
 }
 
 void AbstractDiagram::setDataValueAttributes( const DataValueAttributes & a )
