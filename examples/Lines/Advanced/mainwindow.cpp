@@ -80,18 +80,3 @@ void MainWindow::on_stockTypeCB_currentIndexChanged( const QString &text )
     m_chart->coordinatePlane()->replaceDiagram( &m_diagram );
 }
 
-void MainWindow::on_trackAreasCB_toggled( bool checked )
-{
-}
-
-void MainWindow::on_trackAreasSB_valueChanged( int value )
-{
-}
-
-void MainWindow::on_reverseHorizontalCB_toggled( bool checked )
-{
-}
-
-void MainWindow::on_reverseVerticalCB_toggled( bool checked )
-{
-}

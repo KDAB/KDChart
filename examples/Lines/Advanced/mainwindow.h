@@ -41,12 +41,6 @@ public:
 private slots:
     void on_stockTypeCB_currentIndexChanged( const QString &text );
 
-    void on_trackAreasCB_toggled( bool checked );
-    void on_trackAreasSB_valueChanged( int value );
-
-    void on_reverseHorizontalCB_toggled( bool checked );
-    void on_reverseVerticalCB_toggled( bool checked );
-
 private:
     KDChart::Chart *m_chart;
     TableModel m_HLCModel;
