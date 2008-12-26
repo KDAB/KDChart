@@ -41,6 +41,7 @@
 #include "KDChartPainterSaver_p.h"
 #include "KDChartLayoutItems.h"
 #include "KDChartBarDiagram.h"
+#include "KDChartStockDiagram.h"
 #include "KDChartLineDiagram.h"
 #include "KDChartPrintingParameters.h"
 
@@ -201,6 +202,8 @@ static bool referenceDiagramNeedsCenteredAbscissaTicks( const AbstractDiagram *d
     if( dia && dia->referenceDiagram() )
         dia = dia->referenceDiagram();
     if ( qobject_cast< const BarDiagram* >( dia ) )
+    	return true;
+    if ( qobject_cast< const StockDiagram* >( dia ) )
     	return true;
     
     const LineDiagram * lineDiagram = qobject_cast< const LineDiagram* >( dia );
@@ -452,11 +455,14 @@ void CartesianAxis::paintCtx( PaintContext* context )
     if( ! d->diagram()->model() )
         return;
     
-    const AbstractCartesianDiagram * dia = qobject_cast< const AbstractCartesianDiagram * >( d->diagram() );
-    if( dia && dia->referenceDiagram() )
-        dia = dia->referenceDiagram();
-	const BarDiagram *barDiagram = qobject_cast< const BarDiagram* >( dia );
-	const Qt::Orientation diagramOrientation = barDiagram != 0 ? barDiagram->orientation() : Qt::Vertical;
+    // Determine the diagram that specifies the orientation of the diagram we're painting here
+    // That diagram is the reference diagram, if it exists, or otherwise the diagram itself.
+    // Note: In KDChart 2.3 or earlier, only a bar diagram can be vertical instead of horizontal.
+    const AbstractCartesianDiagram * refDiagram = qobject_cast< const AbstractCartesianDiagram * >( d->diagram() );
+    if( refDiagram && refDiagram->referenceDiagram() )
+        refDiagram = refDiagram->referenceDiagram();
+    const BarDiagram *barDiagram = qobject_cast< const BarDiagram* >( refDiagram );
+    const Qt::Orientation diagramOrientation = barDiagram ? barDiagram->orientation() : Qt::Vertical;
     const bool diagramIsVertical = diagramOrientation == Qt::Vertical;
 
     /*
@@ -1022,9 +1028,9 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         if( labelStep <= 0 ) {
                             const PainterSaver p( ptr );
                             const QSize size( labelItem->sizeHint() );
-                            qDebug()<<"------"<<size;
-    ptr->setPen( Qt::green );
-    ptr->drawRect( QRectF(topPoint, QSizeF(size)) );
+                            //qDebug()<<"------"<<size;
+    //ptr->setPen( Qt::green );
+    //ptr->drawRect( QRectF(topPoint, QSizeF(size)) );
                             if ( diagramIsVertical ) {
 	                            labelItem->setGeometry(
 	                                QRect(
@@ -1524,7 +1530,7 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
         	w += qAbs( axis()->tickLength() ) * 3.0;
         result = QSize ( static_cast<int>( w ), static_cast<int>( h ) );
 
-        qDebug()<<"calculated size of x axis:"<<result;
+        //qDebug()<<"calculated size of x axis:"<<result;
 
         // If necessary adjust the widths
         // of the left (or right, resp.) side neighboring columns:
