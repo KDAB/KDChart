@@ -10,6 +10,15 @@ using namespace KDChart;
 StockDiagram::StockDiagram( QWidget *parent, CartesianCoordinatePlane *plane )
     : AbstractCartesianDiagram( new Private(), parent, plane )
 {
+    init();
+}
+
+StockDiagram::~StockDiagram()
+{
+}
+
+void StockDiagram::init()
+{
     d->diagram = this;
     d->compressor.setModel( attributesModel() );
 
@@ -27,10 +36,6 @@ StockDiagram::StockDiagram( QWidget *parent, CartesianCoordinatePlane *plane )
     d->candlestickWidth = 0.3;
 
     setPen( QPen( Qt::black ) );
-}
-
-StockDiagram::~StockDiagram()
-{
 }
 
 void StockDiagram::setType( Type type )

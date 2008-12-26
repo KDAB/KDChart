@@ -70,9 +70,6 @@ public:
 
 protected:
     virtual const QPair<QPointF, QPointF> calculateDataBoundaries() const;
-
-private:
-
 };
 
 } // Namespace KDChart
