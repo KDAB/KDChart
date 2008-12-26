@@ -1,5 +1,5 @@
 /****************************************************************************
- ** Copyright (C) 2006 Klarälvdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2008 Klarälvdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KD Chart library.
  **
@@ -16,7 +16,7 @@
  ** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  **
  ** See http://www.kdab.net/kdchart for
- **   information about KDChart Commercial License Agreements.
+ **    information about KDChart Commercial License Agreements.
  **
  ** Contact info@kdab.net if any conditions of this
  ** licensing are not clear to you.
@@ -28,47 +28,31 @@
 
 #include "ui_mainwindow.h"
 #include <TableModel.h>
-
-namespace KDChart {
-    class Chart;
-    class LineDiagram;
-}
+#include <KDChartChart>
+#include <KDChartStockDiagram>
 
 class MainWindow : public QWidget, private Ui::MainWindow
 {
     Q_OBJECT
 
 public:
-    MainWindow( QWidget* parent = 0 );
+    MainWindow( QWidget *parent = 0 );
 
 private slots:
+    void on_stockTypeCB_currentIndexChanged( const QString &text );
 
-    void on_lineTypeCB_currentIndexChanged( const QString & text );
-    void on_paintValuesCB_toggled( bool checked );
-    void on_centerDataPointsCB_toggled( bool checked );
-    void on_threeDModeCB_toggled( bool checked );
-    void on_depthSB_valueChanged( int i );
-    void on_animateAreasCB_toggled( bool checked );
-    void on_highlightAreaCB_toggled( bool checked );
-    void on_highlightAreaSB_valueChanged( int i );
-    void setHighlightArea( int row, int column, int opacity,
-                           bool checked, bool doUpdate );
     void on_trackAreasCB_toggled( bool checked );
-    void on_trackAreasSB_valueChanged( int i );
-    void setTrackedArea( int column, bool checked, bool doUpdate );
-    void slot_timerFired();
+    void on_trackAreasSB_valueChanged( int value );
+
     void on_reverseHorizontalCB_toggled( bool checked );
     void on_reverseVerticalCB_toggled( bool checked );
 
 private:
-    KDChart::Chart* m_chart;
-    KDChart::LineDiagram* m_lines;
-    TableModel m_model;
-    int m_curRow;
-    int m_curColumn;
-    int m_curOpacity;
+    KDChart::Chart *m_chart;
+    TableModel m_HLCModel;
+    TableModel m_OHLCModel;
+
+    KDChart::StockDiagram m_diagram;
 };
 
-
-#endif /* MAINWINDOW_H */
-
+#endif // MAINWINDOW_H
