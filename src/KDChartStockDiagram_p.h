@@ -14,10 +14,6 @@ public:
     Type type;
     StockDiagram *diagram;
 
-    double openMarkerLength;
-    double closeMarkerLength;
-    double candlestickWidth;
-
     QBrush upTrendCandlestickBrush;
     QBrush downTrendCandlestickBrush;
     QPen upTrendCandlestickPen;

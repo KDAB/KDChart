@@ -41,6 +41,7 @@
 #include <KDChartDataValueAttributes>
 #include <KDChartMarkerAttributes>
 #include <KDChartBarAttributes>
+#include <KDChartStockBarAttributes>
 #include <KDChartLineAttributes>
 #include <KDChartPieAttributes>
 #include <KDChartAbstractThreeDAttributes>
@@ -262,6 +263,9 @@ bool AttributesModel::compareAttributes(
             case BarAttributesRole:
                 return (qVariantValue<BarAttributes>( a ) ==
                         qVariantValue<BarAttributes>( b ));
+            case StockBarAttributesRole:
+                return (qVariantValue<StockBarAttributes>( a ) ==
+                        qVariantValue<StockBarAttributes>( b ));
             case ThreeDBarAttributesRole:
                 return (qVariantValue<ThreeDBarAttributes>( a ) ==
                         qVariantValue<ThreeDBarAttributes>( b ));
@@ -426,6 +430,7 @@ bool AttributesModel::isKnownAttributesRole( int role ) const
     case LineAttributesRole:
     case ThreeDLineAttributesRole:
     case BarAttributesRole:
+    case StockBarAttributesRole:
     case ThreeDBarAttributesRole:
     case PieAttributesRole:
     case ThreeDPieAttributesRole:

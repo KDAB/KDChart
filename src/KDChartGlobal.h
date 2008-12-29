@@ -250,6 +250,7 @@ enum DisplayRoles {
   LineAttributesRole,
   ThreeDLineAttributesRole,
   BarAttributesRole,
+  StockBarAttributesRole,
   ThreeDBarAttributesRole,
   PieAttributesRole,
   ThreeDPieAttributesRole,

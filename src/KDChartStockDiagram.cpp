@@ -17,6 +17,9 @@ StockDiagram::~StockDiagram()
 {
 }
 
+/**
+  * Initializes the diagram
+  */
 void StockDiagram::init()
 {
     d->diagram = this;
@@ -31,23 +34,60 @@ void StockDiagram::init()
 
     d->lowHighLinePen = QPen( Qt::black );
 
-    d->openMarkerLength = 0.15;
-    d->closeMarkerLength = 0.15;
-    d->candlestickWidth = 0.3;
-
     setPen( QPen( Qt::black ) );
 }
 
+/**
+  * Switches between the supported types of stock charts,
+  * depending on \a type
+  */
 void StockDiagram::setType( Type type )
 {
     d->type = type;
     emit propertiesChanged();
 }
 
+/**
+  * @return the type of this diagram
+  */
 StockDiagram::Type StockDiagram::type() const
 {
    return d->type;
 }
+
+void StockDiagram::setStockBarAttributes( const StockBarAttributes &attr )
+{
+    attributesModel()->setModelData(
+        qVariantFromValue( attr ),
+        StockBarAttributesRole );
+    emit propertiesChanged();
+}
+
+StockBarAttributes StockDiagram::stockBarAttributes() const
+{
+    return qVariantValue<StockBarAttributes>(
+        attributesModel()->modelData( StockBarAttributesRole ) );
+}
+
+void StockDiagram::setStockBarAttributes( int column, const StockBarAttributes &attr )
+{
+    attributesModel()->setHeaderData(
+        column, Qt::Vertical,
+        qVariantFromValue( attr ),
+        StockBarAttributesRole );
+    emit propertiesChanged();
+}
+
+StockBarAttributes StockDiagram::stockBarAttributes( int column ) const
+{
+    return qVariantValue<StockBarAttributes>( attributesModel()->headerData(
+        column, Qt::Vertical,
+        StockBarAttributesRole ) );
+}
+
+void StockDiagram::setStockBarAttributes( int column, const StockBarAttributes &attr );
+StockBarAttributes StockDiagram::stockBarAttributes( int column ) const;
+
 
 void StockDiagram::setLowHighLinePen( const QPen &pen )
 {
@@ -166,10 +206,7 @@ const int StockDiagram::numberOfOrdinateSegments() const { return 1; }
 void StockDiagram::paint( PaintContext *context )
 {
     PainterSaver painterSaver( context->painter() );
-    int width = 500;
-    int stepWidth = 50;
     int rowCount = attributesModel()->rowCount( attributesModelRootIndex() );
-    int columnCount = attributesModel()->columnCount( attributesModelRootIndex() );
     for ( int row = 0; row < rowCount; row++ ) {
         CartesianDiagramDataCompressor::DataPoint low;
         CartesianDiagramDataCompressor::DataPoint high;
@@ -214,8 +251,19 @@ void StockDiagram::resize( const QSizeF &size )
     setDataBoundariesDirty();
 }
 
-double StockDiagram::threeDItemDepth( int column ) const { return 1.0; }
-double StockDiagram::threeDItemDepth( const QModelIndex &index ) const { return 1.0; }
+double StockDiagram::threeDItemDepth( int column ) const
+{
+    Q_UNUSED( column );
+    //FIXME: Implement threeD functionality
+    return 1.0;
+}
+
+double StockDiagram::threeDItemDepth( const QModelIndex &index ) const
+{
+    Q_UNUSED( index );
+    //FIXME: Implement threeD functionality
+    return 1.0;
+}
 
 const QPair<QPointF, QPointF> StockDiagram::calculateDataBoundaries() const
 {

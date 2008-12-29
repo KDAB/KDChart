@@ -3,6 +3,7 @@
 
 #include "KDChartAbstractCartesianDiagram.h"
 #include "KDChartCartesianCoordinatePlane.h"
+#include "KDChartStockBarAttributes.h"
 
 namespace KDChart {
     class PaintContext;
@@ -27,6 +28,12 @@ public:
 
     void setType( Type type );
     Type type() const;
+
+    void setStockBarAttributes( const StockBarAttributes &attr );
+    StockBarAttributes stockBarAttributes() const;
+
+    void setStockBarAttributes( int column, const StockBarAttributes &attr );
+    StockBarAttributes stockBarAttributes( int column ) const;
 
     void setLowHighLinePen( const QPen &pen );
     QPen lowHighLinePen() const;

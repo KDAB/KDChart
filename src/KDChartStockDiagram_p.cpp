@@ -2,13 +2,20 @@
 
 using namespace KDChart;
 
+/**
+  * Draws a line connecting the low and the high value of an OHLC chart
+  *
+  * @param low The low data point
+  * @param high The high data point
+  * @param context The context to draw the low-high line in
+  */
 void StockDiagram::Private::drawLowHighLine( const CartesianDiagramDataCompressor::DataPoint &low,
                                              const CartesianDiagramDataCompressor::DataPoint &high,
                                              PaintContext *context )
 {
     PainterSaver painterSaver( context->painter() );
 
-    context->painter()->setPen( diagram->lowHighLinePen( low.key ) );
+    context->painter()->setPen( diagram->lowHighLinePen( (int)low.key ) );
 
     QPointF lowPoint = context->coordinatePlane()->translate( QPointF( low.key + 0.5, low.value ) );
     QPointF highPoint = context->coordinatePlane()->translate( QPointF( high.key + 0.5, high.value ) );
@@ -22,6 +29,13 @@ void StockDiagram::Private::drawLowHighLine( const CartesianDiagramDataCompresso
     paintDataValueTextsAndMarkers( diagram, context, list, false );
 }
 
+/**
+  * Draws a line connecting the low and the high value of an OHLC chart
+  *
+  * @param low The low data point
+  * @param high The high data point
+  * @param context The context to draw the candlestick in
+  */
 void StockDiagram::Private::drawCandlestick( const CartesianDiagramDataCompressor::DataPoint &low,
                                              const CartesianDiagramDataCompressor::DataPoint &high,
                                              PaintContext *context )
@@ -29,13 +43,18 @@ void StockDiagram::Private::drawCandlestick( const CartesianDiagramDataCompresso
     PainterSaver painterSaver( context->painter() );
 
     if ( low.value <= high.value ) {
-        context->painter()->setPen( diagram->upTrendCandlestickPen( low.key ) );
-        context->painter()->setBrush( diagram->upTrendCandlestickBrush( low.key ) );
+        context->painter()->setPen( diagram->upTrendCandlestickPen( (int)low.key ) );
+        context->painter()->setBrush( diagram->upTrendCandlestickBrush( (int)low.key ) );
     } else {
-        context->painter()->setPen( diagram->downTrendCandlestickPen( low.key ) );
-        context->painter()->setBrush( diagram->downTrendCandlestickBrush( low.key ) );
+        context->painter()->setPen( diagram->downTrendCandlestickPen( (int)low.key ) );
+        context->painter()->setBrush( diagram->downTrendCandlestickBrush( (int)low.key ) );
     }
 
+    // If the keys are not equal, something must have gone wong
+    Q_ASSERT( (int)low.key == (int)high.key );
+
+    StockBarAttributes attr = diagram->stockBarAttributes( (int)low.key );
+    const qreal candlestickWidth = attr.candlestickWidth();
     QPointF leftLowPoint = context->coordinatePlane()->translate( QPointF( low.key + 0.5 - candlestickWidth / 2.0, low.value ) );
     QPointF rightLowPoint = context->coordinatePlane()->translate( QPointF( low.key + 0.5 + candlestickWidth / 2.0, low.value ) );
     QPointF leftHighPoint = context->coordinatePlane()->translate( QPointF( high.key + 0.5 - candlestickWidth / 2.0, high.value ) );
@@ -56,6 +75,12 @@ void StockDiagram::Private::drawCandlestick( const CartesianDiagramDataCompresso
     paintDataValueTextsAndMarkers( diagram, context, list, false );
 }
 
+/**
+  * Draws a tick indicating the open value
+  *
+  * @param low The open data point
+  * @param context The context to draw the open marker in
+  */
 void StockDiagram::Private::drawOpenMarker( const CartesianDiagramDataCompressor::DataPoint &open,
                                             PaintContext *context )
 {
@@ -63,7 +88,8 @@ void StockDiagram::Private::drawOpenMarker( const CartesianDiagramDataCompressor
 
     context->painter()->setPen( diagram->pen( diagram->attributesModel()->mapToSource( open.index ) ) );
 
-    QPointF leftPoint = context->coordinatePlane()->translate( QPointF( open.key + 0.5 - openMarkerLength, open.value ) );
+    StockBarAttributes attr = diagram->stockBarAttributes( (int)open.key );
+    QPointF leftPoint = context->coordinatePlane()->translate( QPointF( open.key + 0.5 - attr.tickLength(), open.value ) );
     QPointF rightPoint = context->coordinatePlane()->translate( QPointF( open.key + 0.5, open.value ) );
     context->painter()->drawLine( leftPoint, rightPoint );
 
@@ -73,6 +99,12 @@ void StockDiagram::Private::drawOpenMarker( const CartesianDiagramDataCompressor
     paintDataValueTextsAndMarkers( diagram, context, list, false );
 }
 
+/**
+  * Draws a tick indicating the close value
+  *
+  * @param low The close data point
+  * @param context The context to draw the close marker in
+  */
 void StockDiagram::Private::drawCloseMarker( const CartesianDiagramDataCompressor::DataPoint &close,
                                              PaintContext *context )
 {
@@ -80,8 +112,9 @@ void StockDiagram::Private::drawCloseMarker( const CartesianDiagramDataCompresso
 
     context->painter()->setPen( diagram->pen( diagram->attributesModel()->mapToSource( close.index ) ) );
 
+    StockBarAttributes attr = diagram->stockBarAttributes( (int)close.key );
     QPointF leftPoint = context->coordinatePlane()->translate( QPointF( close.key + 0.5, close.value ) );
-    QPointF rightPoint = context->coordinatePlane()->translate( QPointF( close.key + 0.5 + closeMarkerLength, close.value ) );
+    QPointF rightPoint = context->coordinatePlane()->translate( QPointF( close.key + 0.5 + attr.tickLength(), close.value ) );
     context->painter()->drawLine( leftPoint, rightPoint );
 
     DataValueTextInfoList list;

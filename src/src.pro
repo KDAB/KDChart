@@ -33,6 +33,7 @@ INSTALLHEADERS_INCLUDE = \
     KDChartAttributesModel \
     KDChartBackgroundAttributes \
     KDChartBarAttributes \
+    KDChartStockBarAttributes \
     KDChartStockDiagram \
     KDChartBarDiagram \
     KDChartCartesianAxis \
@@ -106,6 +107,7 @@ INSTALLHEADERS_SRC = \
            KDChartAttributesModel.h \
            KDChartBackgroundAttributes.h \
            KDChartBarAttributes.h \
+           KDChartStockBarAttributes.h \
            KDChartStockDiagram.h \
            KDChartBarDiagram.h \
            KDChartCartesianAxis.h \
@@ -211,6 +213,7 @@ HEADERS += KDChartGlobal.h \
            KDChartAttributesModel.h \
            KDChartBackgroundAttributes.h \
            KDChartBarAttributes.h \
+           KDChartStockBarAttributes.h \
            KDChartStockDiagram.h \
            KDChartStockDiagram_p.h \
            KDChartBarDiagram.h \
@@ -319,6 +322,7 @@ SOURCES += \
            KDChartAttributesModel.cpp \
            KDChartBackgroundAttributes.cpp \
            KDChartBarAttributes.cpp \
+           KDChartStockBarAttributes.cpp \
            KDChartStockDiagram.cpp \
            KDChartStockDiagram_p.cpp \
            KDChartBarDiagram.cpp \
