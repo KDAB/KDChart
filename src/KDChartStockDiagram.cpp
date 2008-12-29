@@ -269,10 +269,10 @@ const QPair<QPointF, QPointF> StockDiagram::calculateDataBoundaries() const
 {
     const int rowCount = attributesModel()->rowCount( attributesModelRootIndex() );
     const int colCount = attributesModel()->columnCount( attributesModelRootIndex() );
-    double xMin = 0.0;
-    double xMax = rowCount;
-    double yMin = 0.0;
-    double yMax = 0.0;
+    qreal xMin = 0.0;
+    qreal xMax = rowCount;
+    qreal yMin = 0.0;
+    qreal yMax = 0.0;
     for ( int row = 0; row < rowCount; row++ ) {
         for ( int col = 0; col < colCount; col++ ) {
             const CartesianDiagramDataCompressor::CachePosition pos( row, col );
