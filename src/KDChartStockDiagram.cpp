@@ -85,9 +85,6 @@ StockBarAttributes StockDiagram::stockBarAttributes( int column ) const
         StockBarAttributesRole ) );
 }
 
-void StockDiagram::setStockBarAttributes( int column, const StockBarAttributes &attr );
-StockBarAttributes StockDiagram::stockBarAttributes( int column ) const;
-
 
 void StockDiagram::setLowHighLinePen( const QPen &pen )
 {
