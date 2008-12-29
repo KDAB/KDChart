@@ -40,6 +40,7 @@
 #include <KDChartDataValueAttributes>
 #include <KDChartMarkerAttributes>
 #include <KDChartBarAttributes>
+#include <KDChartStockBarAttributes>
 #include <KDChartLineAttributes>
 #include <KDChartPieAttributes>
 #include <KDChartAbstractThreeDAttributes>
@@ -134,6 +135,14 @@ namespace KDChart {
                 QDomDocument& doc,
                 QDomElement& e,
                 const BarAttributes& a,
+                const QString& title );
+
+        static bool parseStockBarAttributes(
+                const QDomElement& container, StockBarAttributes& a );
+        static void saveStockBarAttributes(
+                QDomDocument& doc,
+                QDomElement& e,
+                const StockBarAttributes& a,
                 const QString& title );
 
         static bool parsePieAttributes(

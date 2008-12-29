@@ -39,6 +39,7 @@
 
 #include <KDChartLineDiagram>
 #include <KDChartBarDiagram>
+#include <KDChartStockDiagram>
 #include <KDChartPieDiagram>
 #include <KDChartPolarDiagram>
 #include <KDChartRingDiagram>
@@ -207,6 +208,7 @@ bool DiagramsSerializer::Private::doParseDiagram(
 
     LineDiagram*  lineDiag  = qobject_cast< LineDiagram* >(  diagramPtr );
     BarDiagram*   barDiag   = qobject_cast< BarDiagram* >(   diagramPtr );
+    StockDiagram* stockDiag = qobject_cast< StockDiagram* >( diagramPtr );
     PieDiagram*   pieDiag   = qobject_cast< PieDiagram* >(   diagramPtr );
     PolarDiagram* polarDiag = qobject_cast< PolarDiagram* >( diagramPtr );
     RingDiagram*  ringDiag  = qobject_cast< RingDiagram* >(  diagramPtr );
@@ -215,7 +217,9 @@ bool DiagramsSerializer::Private::doParseDiagram(
     if( lineDiag )
         result = parseLineDiagram(  container, *lineDiag );
     else if( barDiag )
-        result = parseBarDiagram(   container,  *barDiag );
+        result = parseBarDiagram(   container, *barDiag );
+    else if( stockDiag )
+        result = parseStockDiagram( container, *stockDiag );
     else if( pieDiag )
         result = parsePieDiagram(   container, *pieDiag );
     else if( polarDiag )
@@ -249,6 +253,7 @@ void DiagramsSerializer::Private::saveDiagram(
 
     const LineDiagram*  lineDiag  = dynamic_cast<const LineDiagram*> (  p );
     const BarDiagram*   barDiag   = dynamic_cast<const BarDiagram*> (   p );
+    const StockDiagram* stockDiag = dynamic_cast<const StockDiagram*> ( p );
     const PieDiagram*   pieDiag   = dynamic_cast<const PieDiagram*> (   p );
     const PolarDiagram* polarDiag = dynamic_cast<const PolarDiagram*> ( p );
     const RingDiagram*  ringDiag  = dynamic_cast<const RingDiagram*> (  p );
@@ -257,6 +262,8 @@ void DiagramsSerializer::Private::saveDiagram(
         saveLineDiagram( doc, e, *lineDiag );
     else if( barDiag )
         saveBarDiagram( doc, e, *barDiag );
+    else if( stockDiag )
+        saveStockDiagram( doc, e, *stockDiag );
     else if( pieDiag )
         savePieDiagram( doc, e, *pieDiag );
     else if( polarDiag )
@@ -892,6 +899,78 @@ void DiagramsSerializer::Private::saveBarDiagram(
         break;
     }
     KDXML::createStringNode( doc, diagElement, "BarType", s );
+}
+
+
+bool DiagramsSerializer::Private::parseStockDiagram(
+        const QDomElement& container, StockDiagram& diagram )const
+{
+    bool bOK = true;
+    if( !container.isNull() ) {
+        QDomNode node = container.firstChild();
+        while( !node.isNull() ) {
+            QDomElement element = node.toElement();
+            if( !element.isNull() ) { // was really an element
+                QString tagName = element.tagName();
+                if( tagName == "kdchart:cartesian-coordinate-diagram" ) {
+                    if( ! parseCartCoordDiagram( element, diagram ) ){
+                        qDebug() << "Could not parse base class of StockDiagram.";
+                        bOK = false;
+                    }
+                } else if( tagName == "Type" ) {
+                    QString s;
+                    if( KDXML::readStringNode( element, s ) ){
+                        if( s.compare("HighLowClose", Qt::CaseInsensitive) == 0 )
+                            diagram.setType( StockDiagram::HighLowClose );
+                        else if( s.compare("OpenHighLowClose", Qt::CaseInsensitive) == 0 )
+                            diagram.setType( StockDiagram::OpenHighLowClose );
+                        else if( s.compare("Candlestick", Qt::CaseInsensitive) == 0 )
+                            diagram.setType( StockDiagram::Candlestick );
+                        else{
+                            bOK = false;
+                            Q_ASSERT( false ); // all of the types need to be handled
+                        }
+                    }
+                    else
+                        bOK = false;
+                } else {
+                    qDebug() << "Unknown subelement of StockDiagram found:" << tagName;
+                    bOK = false;
+                }
+            }
+            node = node.nextSibling();
+        }
+    }
+    return bOK;
+}
+
+void DiagramsSerializer::Private::saveStockDiagram(
+        QDomDocument& doc,
+        QDomElement& diagElement,
+        const StockDiagram& diagram )const
+{
+    // first save the information hold by the base class
+    saveCartCoordDiagram( doc, diagElement, diagram,
+                          "kdchart:cartesian-coordinate-diagram" );
+
+    // then save what is stored in the derived class
+    QString s;
+    switch( diagram.type() )
+    {
+    case StockDiagram::HighLowClose:
+        s = "HighLowClose";
+        break;
+    case StockDiagram::OpenHighLowClose:
+        s = "OpenHighLowClose";
+        break;
+    case StockDiagram::Candlestick:
+        s = "Candlestick";
+        break;
+    default:
+        Q_ASSERT( false ); // all of the types need to be handled
+        break;
+    }
+    KDXML::createStringNode( doc, diagElement, "Type", s );
 }
 
 

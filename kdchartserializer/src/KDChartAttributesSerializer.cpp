@@ -761,6 +761,47 @@ void AttributesSerializer::saveLineAttributes(
 }
 
 
+bool AttributesSerializer::parseStockBarAttributes(
+        const QDomElement& container, StockBarAttributes& a )
+{
+    bool bOK = true;
+    QDomNode node = container.firstChild();
+    while( !node.isNull() ) {
+        const QDomElement element = node.toElement();
+        if( !element.isNull() ) {
+            const QString tagName = element.tagName();
+            if ( tagName == "CandlestickWidth" ) {
+                qreal r;
+                if ( KDXML::readRealNode( element, r ) )
+                    a.setCandlestickWidth( r );
+                else
+                    qDebug() << "Error parsing StockBarAttributes tag: " << tagName;
+            } else if ( tagName == "TickLength" ) {
+                qreal r;
+                if ( KDXML::readRealNode( element, r ) )
+                    a.setTickLength( r );
+                else
+                    qDebug() << "Error parsing StockBarAttributes tag: " << tagName;
+            }
+        }
+        node = node.nextSibling();
+    }
+    return bOK;
+}
+
+void AttributesSerializer::saveStockBarAttributes(
+        QDomDocument& doc,
+        QDomElement& e,
+        const StockBarAttributes& a,
+        const QString& title )
+{
+    QDomElement element = doc.createElement( title );
+    e.appendChild( element );
+    KDXML::createRealNode( doc, element, "CandlestickWidth", a.candlestickWidth() );
+    KDXML::createRealNode( doc, element, "TickLength",       a.tickLength() );
+}
+
+
 bool AttributesSerializer::parseBarAttributes(
         const QDomElement& container, BarAttributes& a )
 {

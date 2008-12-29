@@ -39,6 +39,7 @@
 #include <KDChartPolarDiagram>
 #include <KDChartRingDiagram>
 #include <KDChartBarDiagram>
+#include <KDChartStockDiagram>
 #include <KDChartPlotter>
 
 #define d d_func()
@@ -94,6 +95,8 @@ QObject* DiagramSerializerFactory::createNewObject( const QString& className ) c
         return new RingDiagram;
     if( className == BarDiagram::staticMetaObject.className() )
         return new BarDiagram;
+    if( className == StockDiagram::staticMetaObject.className() )
+        return new StockDiagram;
     if( className == Plotter::staticMetaObject.className() )
         return new Plotter;
     return 0;

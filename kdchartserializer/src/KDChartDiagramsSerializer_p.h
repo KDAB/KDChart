@@ -81,6 +81,9 @@ protected:
     bool parseBarDiagram( const QDomElement& container, BarDiagram& diagram ) const;
     void saveBarDiagram( QDomDocument& doc, QDomElement& diagElement, const BarDiagram& diagram ) const;
 
+    bool parseStockDiagram( const QDomElement& container, StockDiagram& diagram ) const;
+    void saveStockDiagram( QDomDocument& doc, QDomElement& diagElement, const StockDiagram& diagram ) const;
+
     bool parsePieDiagram( const QDomElement& container, PieDiagram& diagram ) const;
     void savePieDiagram( QDomDocument& doc, QDomElement& diagElement, const PieDiagram& diagram ) const;
 

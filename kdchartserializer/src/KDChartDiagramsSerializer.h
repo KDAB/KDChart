@@ -41,6 +41,7 @@
 #include <KDChartChart>
 #include <KDChartLineDiagram>
 #include <KDChartBarDiagram>
+#include <KDChartStockDiagram>
 #include <KDChartPieDiagram>
 #include <KDChartPolarDiagram>
 #include <KDChartRingDiagram>

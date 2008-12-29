@@ -382,6 +382,14 @@ bool AttributesModelSerializer::parseAttributesNode(
                         value = qVariantFromValue( a );
                     else
                         qDebug() << "Error parsing BarAttributesRole element";
+                }else if( roleName == "StockBarAttributesRole" ){
+                    roleValue       =  StockBarAttributesRole;
+                    StockBarAttributes a;
+                    bOK = AttributesSerializer::parseStockBarAttributes( element, a );
+                    if( bOK )
+                        value = qVariantFromValue( a );
+                    else
+                        qDebug() << "Error parsing StockBarAttributesRole element";
                 }else if( roleName == "ThreeDBarAttributesRole" ){
                     roleValue       =  ThreeDBarAttributesRole;
                     ThreeDBarAttributes a;
@@ -634,6 +642,14 @@ void AttributesModelSerializer::createAttributesNode(
                         element,
                         qVariantValue<BarAttributes>( attributes ),
                         "BarAttributes" );
+                break;
+            case StockBarAttributesRole:
+                name = QString::fromLatin1("StockBarAttributesRole");
+                AttributesSerializer::saveStockBarAttributes(
+                        doc,
+                        element,
+                        qVariantValue<StockBarAttributes>( attributes ),
+                        "StockBarAttributes" );
                 break;
             case ThreeDBarAttributesRole:
                 name = QString::fromLatin1("ThreeDBarAttributesRole");
