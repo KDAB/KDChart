@@ -1,7 +1,5 @@
 KDCHART_PATH = ../../..
 
-TARGET = LinesAdvanced
-
 include( $$KDCHART_PATH/examples/examples.pri )
 
 HEADERS= mainwindow.h

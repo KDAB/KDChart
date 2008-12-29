@@ -1,12 +1,9 @@
 KDCHART_PATH = ../../..
 
-TARGET = LinesAdvanced
+TARGET = LinesParameters
 
 include( $$KDCHART_PATH/examples/examples.pri )
 
-HEADERS= mainwindow.h
-SOURCES= main.cpp mainwindow.cpp
-FORMS  = mainwindow.ui
-RESOURCES = LineChart.qrc
+SOURCES= main.cpp
 
 message( "Building ''$$TARGET'' using LIBS ''$$LIBS''" )

@@ -1,5 +1,5 @@
 /****************************************************************************
- ** Copyright (C) 2008 Klarälvdalens Datakonsult AB.  All rights reserved.
+ ** Copyright (C) 2006 Klarälvdalens Datakonsult AB.  All rights reserved.
  **
  ** This file is part of the KD Chart library.
  **
@@ -16,7 +16,7 @@
  ** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  **
  ** See http://www.kdab.net/kdchart for
- **    information about KDChart Commercial License Agreements.
+ **   information about KDChart Commercial License Agreements.
  **
  ** Contact info@kdab.net if any conditions of this
  ** licensing are not clear to you.
@@ -24,59 +24,261 @@
  **********************************************************************/
 
 #include "mainwindow.h"
+
 #include <KDChartChart>
-#include <KDChartCartesianAxis>
+#include <KDChartLineDiagram>
+#include <KDChartTextAttributes>
+#include <KDChartDataValueAttributes>
+#include <KDChartThreeDLineAttributes>
+
+
+#include <QTimer>
 
 using namespace KDChart;
 
-MainWindow::MainWindow( QWidget *parent )
-    : QWidget( parent )
-    , m_chart( new Chart() )
-    , m_diagram( m_chart )
+MainWindow::MainWindow( QWidget* parent ) :
+    QWidget( parent )
 {
     setupUi( this );
 
-    m_HLCModel.loadFromCSV( ":/HLC" );
-    m_OHLCModel.loadFromCSV( ":/OHLC" );
+    m_curColumn = -1;
+    m_curOpacity = 0;
 
-    m_diagram.setType( StockDiagram::HighLowClose );
-    m_diagram.setModel( &m_HLCModel );
-    m_chart->coordinatePlane()->replaceDiagram( &m_diagram );
+    QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
+    m_chart = new Chart();
+    chartLayout->addWidget( m_chart );
 
-    chartFrame->addWidget( m_chart );
+    m_model.loadFromCSV( ":/data" );
 
-    // Abscissa
-    CartesianAxis *leftAxis = new CartesianAxis( &m_diagram );
-    // Ordinate
-    CartesianAxis *bottomAxis = new CartesianAxis( &m_diagram );
+    // Set up the diagram
+    m_lines = new LineDiagram();
+    m_lines->setModel( &m_model );
 
-    leftAxis->setPosition( CartesianAxis::Left );
+    CartesianAxis *xAxis = new CartesianAxis( m_lines );
+    CartesianAxis *yAxis = new CartesianAxis ( m_lines );
+    xAxis->setPosition ( KDChart::CartesianAxis::Bottom );
+    yAxis->setPosition ( KDChart::CartesianAxis::Left );
+    m_lines->addAxis( xAxis );
+    m_lines->addAxis( yAxis );
 
-    TextAttributes attributes = bottomAxis->textAttributes();
-    attributes.setRotation( 90 );
-    attributes.setFontSize( Measure( 7.0, KDChartEnums::MeasureCalculationModeAbsolute ) );
-    bottomAxis->setTextAttributes( attributes );
-    bottomAxis->setPosition( CartesianAxis::Bottom );
-    m_diagram.addAxis( leftAxis );
-    m_diagram.addAxis( bottomAxis );
+    m_chart->coordinatePlane()->replaceDiagram( m_lines );
+    m_chart->setGlobalLeading( 20,  20,  20,  20 );
+    // Instantiate the timer
+    QTimer *timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(slot_timerFired()));
+    timer->start(30);
 }
 
-void MainWindow::on_stockTypeCB_currentIndexChanged( const QString &text )
+void MainWindow::on_lineTypeCB_currentIndexChanged( const QString & text )
 {
-    // FIXME: Workaround for disappearing diagram when setting new model
-    m_chart->coordinatePlane()->takeDiagram( &m_diagram );
+    if ( text == "Normal" )
+        m_lines->setType( LineDiagram::Normal );
+    else if ( text == "Stacked" )
+        m_lines->setType( LineDiagram::Stacked );
+    else if ( text == "Percent" )
+        m_lines->setType( LineDiagram::Percent );
+    else
+        qWarning (" Does not match any type");
 
-    if ( text == "High-Low-Close" ) {
-        m_diagram.setType( StockDiagram::HighLowClose );
-        m_diagram.setModel( &m_HLCModel );
-    } else if ( text == "Open-High-Low-Close" ) {
-        m_diagram.setType( StockDiagram::OpenHighLowClose );
-        m_diagram.setModel( &m_OHLCModel );
-    } else if ( text == "Candlestick" ) {
-        m_diagram.setType( StockDiagram::Candlestick );
-        m_diagram.setModel( &m_OHLCModel );
-    }
-
-    m_chart->coordinatePlane()->replaceDiagram( &m_diagram );
+    m_chart->update();
 }
 
+void MainWindow::on_paintValuesCB_toggled( bool checked )
+{
+    const int colCount = m_lines->model()->columnCount(m_lines->rootIndex());
+    for ( int iColumn = 0; iColumn<colCount; ++iColumn ) {
+        DataValueAttributes a( m_lines->dataValueAttributes( iColumn ) );
+        QBrush brush( m_lines->brush( iColumn ) );
+        TextAttributes ta( a.textAttributes() );
+        ta.setRotation( 0 );
+        ta.setFont( QFont( "Comic", 10 ) );
+        ta.setPen( QPen( brush.color() ) );
+
+        if ( checked )
+            ta.setVisible( true );
+        else
+            ta.setVisible( false );
+        a.setVisible( true );
+        a.setTextAttributes( ta );
+        m_lines->setDataValueAttributes( iColumn, a );
+    }
+    m_chart->update();
+}
+
+void MainWindow::on_centerDataPointsCB_toggled( bool checked )
+{
+    m_lines->setCenterDataPoints( checked );
+    m_chart->update();
+}
+
+void MainWindow::on_animateAreasCB_toggled( bool checked )
+{
+    if( checked ){
+        highlightAreaCB->setCheckState( Qt::Unchecked );
+        m_curRow = 0;
+        m_curColumn = 0;
+    }else{
+        m_curColumn = -1;
+    }
+    highlightAreaCB->setEnabled( ! checked );
+    highlightAreaSB->setEnabled( ! checked );
+    // un-highlight all previously highlighted columns
+    const int rowCount = m_lines->model()->rowCount();
+    const int colCount = m_lines->model()->columnCount();
+    for ( int iColumn = 0; iColumn<colCount; ++iColumn ){
+        setHighlightArea( -1, iColumn, 127, false, false );
+        for ( int iRow = 0; iRow<rowCount; ++iRow )
+        //    m_lines->resetLineAttributes( cellIndex );
+            setHighlightArea( iRow, iColumn, 127, false, false );
+    }
+    m_chart->update();
+    m_curOpacity = 0;
+}
+
+void MainWindow::slot_timerFired()
+{
+    if( m_curColumn < 0 ) return;
+    m_curOpacity += 8;
+    if( m_curOpacity > 255 ){
+        setHighlightArea( m_curRow, m_curColumn, 127, false, false );
+        m_curOpacity = 5;
+        ++m_curRow;
+        if( m_curRow >= m_lines->model()->rowCount(m_lines->rootIndex()) ){
+            m_curRow = 0;
+            ++m_curColumn;
+            if( m_curColumn >=
+                m_lines->model()->columnCount( m_lines->rootIndex() ) )
+                m_curColumn = 0;
+        }
+    }
+    setHighlightArea( m_curRow, m_curColumn, m_curOpacity, true, true );
+}
+
+void MainWindow::setHighlightArea( int row, int column, int opacity,
+                                   bool checked, bool doUpdate )
+{
+    if( row < 0 ){
+        // highlight a complete dataset
+        LineAttributes la = m_lines->lineAttributes( column );
+        if ( checked ) {
+            la.setDisplayArea( true );
+            la.setTransparency( opacity );
+        }  else {
+            la.setDisplayArea( false );
+        }
+        m_lines->setLineAttributes( column, la );
+    }else{
+        // highlight two segments only
+        if( row ){
+            QModelIndex cellIndex( m_lines->model()->index(
+                    row-1, column, m_lines->rootIndex() ) );
+            if ( checked ) {
+                LineAttributes la( m_lines->lineAttributes( cellIndex ) );
+                la.setDisplayArea( true );
+                la.setTransparency( 255-opacity );
+                // set specific line attribute settings for this cell
+                m_lines->setLineAttributes( cellIndex, la );
+            }  else {
+                // remove any cell-specific line attribute settings
+                // from the indexed cell
+                m_lines->resetLineAttributes( cellIndex );
+            }
+        }
+        if( row < m_lines->model()->rowCount(m_lines->rootIndex()) ){
+            QModelIndex cellIndex( m_lines->model()->index(
+                    row, column, m_lines->rootIndex() ) );
+            if ( checked ) {
+                LineAttributes la( m_lines->lineAttributes( cellIndex ) );
+                la.setDisplayArea( true );
+                la.setTransparency( opacity );
+                // set specific line attribute settings for this cell
+                m_lines->setLineAttributes( cellIndex, la );
+            }  else {
+                // remove any cell-specific line attribute settings
+                // from the indexed cell
+                m_lines->resetLineAttributes( cellIndex );
+            }
+        }
+    }
+    if( doUpdate )
+        m_chart->update();
+}
+
+void MainWindow::on_highlightAreaCB_toggled( bool checked )
+{
+    setHighlightArea( -1, highlightAreaSB->value(), 127, checked, true );
+}
+
+void MainWindow::on_highlightAreaSB_valueChanged( int i )
+{
+    Q_UNUSED( i );
+    if ( highlightAreaCB->isChecked() )
+        on_highlightAreaCB_toggled( true );
+    else
+        on_highlightAreaCB_toggled( false);
+}
+
+void MainWindow::on_threeDModeCB_toggled( bool checked )
+{
+    ThreeDLineAttributes td( m_lines->threeDLineAttributes() );
+    td.setDepth( depthSB->value() );
+    if ( checked )
+        td.setEnabled(  true );
+    else
+        td.setEnabled(  false );
+
+    m_lines->setThreeDLineAttributes( td );
+
+    m_chart->update();
+}
+
+void MainWindow::on_depthSB_valueChanged( int i )
+{
+    Q_UNUSED( i );
+    if ( threeDModeCB->isChecked() )
+        on_threeDModeCB_toggled( true );
+}
+
+void MainWindow::on_trackAreasCB_toggled( bool checked )
+{
+    setTrackedArea( trackAreasSB->value(), checked, true );
+}
+
+void MainWindow::on_trackAreasSB_valueChanged( int i )
+{
+    Q_UNUSED( i );
+    on_trackAreasCB_toggled( trackAreasCB->isChecked() );
+}
+
+void MainWindow::setTrackedArea( int column, bool checked, bool doUpdate )
+{
+    const int rowCount    = m_model.rowCount(    m_lines->rootIndex() );
+    const int columnCount = m_model.columnCount( m_lines->rootIndex() );
+    for( int i = 0; i < rowCount; ++i ) {
+        for( int j = 0; j < columnCount; ++j ) {
+            QModelIndex cellIndex( m_model.index( i, j,
+                                   m_lines->rootIndex() ) );
+            ValueTrackerAttributes va(
+                    m_lines->valueTrackerAttributes( cellIndex ) );
+            va.setEnabled( checked && j == column );
+            va.setAreaBrush( QColor( 255, 255, 0, 50 ) );
+            m_lines->setValueTrackerAttributes( cellIndex, va );
+        }
+    }
+    if( doUpdate )
+        m_chart->update();
+}
+
+void MainWindow::on_reverseHorizontalCB_toggled( bool checked )
+{
+    static_cast<KDChart::CartesianCoordinatePlane*>(
+            m_chart->coordinatePlane() )->setHorizontalRangeReversed(
+                checked );
+}
+
+void MainWindow::on_reverseVerticalCB_toggled( bool checked )
+{
+    static_cast<KDChart::CartesianCoordinatePlane*>(
+            m_chart->coordinatePlane() )->setVerticalRangeReversed(
+                checked );
+}
