@@ -1,0 +1,9 @@
+<!DOCTYPE RCC>
+<RCC>
+  <qresource>
+    <file alias="OHLC">OHLC.csv</file>
+  </qresource>
+  <qresource>
+    <file alias="HLC">HLC.csv</file>
+  </qresource>
+</RCC>
