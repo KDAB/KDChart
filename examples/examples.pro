@@ -10,6 +10,7 @@ SUBDIRS		= tools \
                   Zoom \
                   Pie \
                   Bars \
+                  Stock \
                   Lines \
                   ModelView \
                   EmptyValues \
