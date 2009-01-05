@@ -202,6 +202,10 @@ const int StockDiagram::numberOfOrdinateSegments() const { return 1; }
 
 void StockDiagram::paint( PaintContext *context )
 {
+    // Clear old reverse mapping data and create new
+    // reverse mapping scene
+    d->reverseMapper.clear();
+
     PainterSaver painterSaver( context->painter() );
     int rowCount = attributesModel()->rowCount( attributesModelRootIndex() );
     for ( int row = 0; row < rowCount; row++ ) {

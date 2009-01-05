@@ -2,6 +2,21 @@
 
 using namespace KDChart;
 
+
+StockDiagram::Private::Private()
+    : AbstractCartesianDiagram::Private()
+{
+}
+
+StockDiagram::Private::Private( const Private& r )
+    : AbstractCartesianDiagram::Private( r )
+{
+}
+
+StockDiagram::Private::~Private()
+{
+}
+
 /**
   * Draws a line connecting the low and the high value of an OHLC chart
   *
@@ -19,6 +34,8 @@ void StockDiagram::Private::drawLowHighLine( const CartesianDiagramDataCompresso
 
     QPointF lowPoint = context->coordinatePlane()->translate( QPointF( low.key + 0.5, low.value ) );
     QPointF highPoint = context->coordinatePlane()->translate( QPointF( high.key + 0.5, high.value ) );
+    // FIXME: Would it make more sense here to use the column of either the low or high index?
+    reverseMapper.addLine( low.index.row(), 0, lowPoint, highPoint );
     context->painter()->drawLine( lowPoint, highPoint );
 
     DataValueTextInfoList list;
@@ -65,6 +82,7 @@ void StockDiagram::Private::drawCandlestick( const CartesianDiagramDataCompresso
     candlestick.append( rightHighPoint );
     candlestick.append( leftHighPoint );
     candlestick.append( leftLowPoint );
+    reverseMapper.addPolygon( low.index.row(), 0, candlestick );
     context->painter()->drawPolygon( candlestick );
 
     DataValueTextInfoList list;
@@ -91,6 +109,8 @@ void StockDiagram::Private::drawOpenMarker( const CartesianDiagramDataCompressor
     StockBarAttributes attr = diagram->stockBarAttributes( (int)open.key );
     QPointF leftPoint = context->coordinatePlane()->translate( QPointF( open.key + 0.5 - attr.tickLength(), open.value ) );
     QPointF rightPoint = context->coordinatePlane()->translate( QPointF( open.key + 0.5, open.value ) );
+    // FIXME: Should we stick to the 0th column, or use index.column()?
+    reverseMapper.addLine( open.index.row(), 0, leftPoint, rightPoint );
     context->painter()->drawLine( leftPoint, rightPoint );
 
     DataValueTextInfoList list;
@@ -115,6 +135,7 @@ void StockDiagram::Private::drawCloseMarker( const CartesianDiagramDataCompresso
     StockBarAttributes attr = diagram->stockBarAttributes( (int)close.key );
     QPointF leftPoint = context->coordinatePlane()->translate( QPointF( close.key + 0.5, close.value ) );
     QPointF rightPoint = context->coordinatePlane()->translate( QPointF( close.key + 0.5 + attr.tickLength(), close.value ) );
+    reverseMapper.addLine( close.index.row(), 0, leftPoint, rightPoint );
     context->painter()->drawLine( leftPoint, rightPoint );
 
     DataValueTextInfoList list;

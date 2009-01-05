@@ -10,7 +10,13 @@ namespace KDChart {
 
 class StockDiagram::Private : public AbstractCartesianDiagram::Private
 {
+    friend class StockDiagram;
+
 public:
+    Private();
+    Private( const Private& r );
+    ~Private();
+
     Type type;
     StockDiagram *diagram;
 
