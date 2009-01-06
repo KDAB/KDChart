@@ -1027,32 +1027,82 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         // the layout item temporarily only.
                         if( labelStep <= 0 ) {
                             const PainterSaver p( ptr );
-                            const QSize size( labelItem->sizeHint() );
-                            //qDebug()<<"------"<<size;
-    //ptr->setPen( Qt::green );
-    //ptr->drawRect( QRectF(topPoint, QSizeF(size)) );
-                            if ( diagramIsVertical ) {
-	                            labelItem->setGeometry(
-	                                QRect(
-	                                    QPoint(
-	                                        static_cast<int>( topPoint.x() - size.width() / 2.0 ),
-	                                        static_cast<int>( topPoint.y() +
-	                                                        ( position() == Bottom
-	                                                            ? halfFontHeight
-	                                                            : ((halfFontHeight + size.height()) * -1.0) ) ) ),
-	                                    size ) );
-                            } else {
-	                            labelItem->setGeometry(
-	                                QRect(
-	                                    QPoint(
-	                                        static_cast<int>( bottomPoint.x() +
-	                                                        ( position() == Right
-	                                                            ? halfFontWidth
-	                                                            : (-halfFontWidth - size.width()) ) ),
-
-	                	                    static_cast<int>( topPoint.y() - ( size.height() ) * 0.5 ) ),
-	                                    size ) );
+                            //const QSize size( labelItem->sizeHint() );
+                            QPoint topLeft, topRight, bottomRight, bottomLeft;
+                            const QSize size(
+                                    labelItem->sizeHintAndRotatedCorners(
+                                            topLeft, topRight, bottomRight, bottomLeft) );
+                            const QSize sizeUnrotated( labelItem->sizeHintUnrotated() );
+                            const int rotation = labelTA.rotation();
+                            const bool rotPositive = (rotation > 0 && rotation < 180);
+                            QPoint midOfSide(0,0);
+                            int dX = 0;
+                            int dY = 0;
+                            if( rotation ){
+                                if( rotPositive ){
+                                    midOfSide = (topLeft + bottomLeft)  / 2;
+                                    dX = topLeft.x() - midOfSide.x();
+                                    dY = bottomLeft.y() - midOfSide.y();
+                                }else{
+                                    midOfSide = (topRight + bottomRight) / 2;
+                                    dX = midOfSide.x() - topLeft.x();
+                                    dY = midOfSide.y() - topRight.y();
+                                }
                             }
+/*
+if( i == 2 ){
+    qDebug()<<"------"<<size<<topPoint<<topLeft<<topRight<<bottomRight<<bottomLeft<<"   m:"<<midOfSide<<" dx"<<dX<<" dy"<<dY;
+    ptr->setPen( Qt::black );
+    QRectF rect(topPoint, QSizeF(sizeUnrotated));
+    ptr->drawRect( rect );
+    ptr->drawRect( QRectF(topPoint, QSizeF(2,2)) );
+    ptr->drawRect( QRectF(topPoint+topLeft, QSizeF(2,2)) );
+    ptr->drawRect( QRectF(topPoint+bottomLeft, QSizeF(2,2)) );
+    ptr->drawRect( QRectF(topPoint+bottomRight, QSizeF(2,2)) );
+    ptr->drawRect( QRectF(topPoint+topRight, QSizeF(2,2)) );
+    ptr->drawRect( QRectF(topPoint+midOfSide, QSizeF(2,2)) );
+    ptr->setPen( Qt::green );
+    rect = QRectF(topPoint, QSizeF(size));
+    ptr->drawRect( rect );
+    ptr->drawRect( QRectF(QPointF((rect.topLeft()  + rect.bottomLeft())  / 2.0 - QPointF(2.0,2.0)), QSizeF(3.0,3.0)) );
+    //ptr->drawRect( QRectF(QPointF((rect.topRight() + rect.bottomRight()) / 2.0 - QPointF(2.0,2.0)), QSizeF(3.0,3.0)) );
+}
+*/
+                            QPoint topLeftPt;
+                            if( diagramIsVertical ){
+                                if( rotation ){
+                                    topLeftPt = QPoint(
+                                        static_cast<int>( topPoint.x() ) - dX,
+                                        static_cast<int>( topPoint.y()   - dY +
+                                                        ( position() == Bottom
+                                                            ? halfFontHeight
+                                                            : ((halfFontHeight + size.height()) * -1.0) ) ) );
+                                }else{
+                                    topLeftPt = QPoint(
+                                        static_cast<int>( topPoint.x() - size.width() / 2.0 ),
+                                        static_cast<int>( topPoint.y() +
+                                                        ( position() == Bottom
+                                                            ? halfFontHeight
+                                                            : ((halfFontHeight + size.height()) * -1.0) ) ) );
+                                }
+                            }else{
+                                if( rotation ){
+                                    topLeftPt = QPoint(
+                                        static_cast<int>( topPoint.x() ) + dX,
+                                        static_cast<int>( topPoint.y()   - dY +
+                                                        ( position() == Bottom
+                                                            ? halfFontHeight
+                                                            : ((halfFontHeight + size.height()) * -1.0) ) ) );
+                                }else{
+                                    topLeftPt = QPoint(
+                                        static_cast<int>( bottomPoint.x() +
+                                                            ( position() == Right
+                                                                ? halfFontWidth
+                                                                : (-halfFontWidth - size.width()) ) ),
+                                        static_cast<int>( topPoint.y() - ( size.height() ) * 0.5 ) );
+                                }
+                            }
+                            labelItem->setGeometry( QRect(topLeftPt, size) );
 
                             QRect labelGeo = labelItem->geometry();
                             //ptr->drawRect(labelGeo);
@@ -1448,7 +1498,7 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
                 {
                     labelItem.setText( axis()->customizedLabel(labelsList[ i ]) );
                     const QSize siz = labelItem.sizeHint();
-                    qDebug()<<siz;
+                    //qDebug()<<siz;
                     if ( diagramIsVertical )
                     	h = qMax( h, static_cast<qreal>(siz.height()) );
                     else
