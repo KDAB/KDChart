@@ -302,6 +302,14 @@ AttributesModel* AbstractDiagram::attributesModel() const
     return d->attributesModel;
 }
 
+QModelIndex AbstractDiagram::conditionallyMapFromSource( const QModelIndex & index ) const
+{
+    Q_ASSERT( !index.isValid() || index.model() == d->attributesModel() || index.model() == attributesModel()->sourceModel() );
+    return index.model() == attributesModel()
+            ? index
+            : attributesModel()->mapFromSource( index );
+}
+
 /*! \reimpl */
 void AbstractDiagram::setRootIndex ( const QModelIndex& idx )
 {
@@ -354,7 +362,7 @@ void AbstractDiagram::dataChanged( const QModelIndex &topLeft,
 void AbstractDiagram::setHidden( const QModelIndex & index, bool hidden )
 {
     d->attributesModel->setData(
-        d->attributesModel->mapFromSource( index ),
+        conditionallyMapFromSource( index ),
         qVariantFromValue( hidden ),
         DataHiddenRole );
     emit dataHidden();
@@ -397,7 +405,7 @@ bool AbstractDiagram::isHidden( const QModelIndex & index ) const
 {
     return qVariantValue<bool>(
         attributesModel()->data(
-            attributesModel()->mapFromSource(index),
+            conditionallyMapFromSource(index),
             DataHiddenRole ) );
 }
 
@@ -406,7 +414,7 @@ void AbstractDiagram::setDataValueAttributes( const QModelIndex & index,
                                               const DataValueAttributes & a )
 {
     d->attributesModel->setData(
-        d->attributesModel->mapFromSource( index ),
+        conditionallyMapFromSource( index ),
         qVariantFromValue( a ),
         DataValueLabelAttributesRole );
     emit propertiesChanged();
@@ -450,10 +458,10 @@ DataValueAttributes AbstractDiagram::dataValueAttributes( int column ) const
 
 DataValueAttributes AbstractDiagram::dataValueAttributes( const QModelIndex & index ) const
 {
-    Q_ASSERT( !index.isValid() || index.model() == attributesModel() || index.model() == attributesModel()->sourceModel() );
-    const QModelIndex idx = index.model() == attributesModel() ? index : attributesModel()->mapFromSource( index );
     return qVariantValue<DataValueAttributes>(
-        attributesModel()->data( idx, KDChart::DataValueLabelAttributesRole ) );
+        attributesModel()->data(
+            conditionallyMapFromSource( index ),
+            KDChart::DataValueLabelAttributesRole ) );
 }
 
 void AbstractDiagram::setDataValueAttributes( const DataValueAttributes & a )
@@ -707,7 +715,7 @@ void AbstractDiagram::setPen( const QModelIndex& index, const QPen& pen )
         return;
     }
     attributesModel()->setData(
-        attributesModel()->mapFromSource( index ),
+        conditionallyMapFromSource( index ),
         qVariantFromValue( pen ), DatasetPenRole );
     emit propertiesChanged();
 }
@@ -752,7 +760,7 @@ QPen AbstractDiagram::pen( const QModelIndex& index ) const
         return pen( index.column() );
     return qVariantValue<QPen>(
         attributesModel()->data(
-            attributesModel()->mapFromSource( index ),
+            conditionallyMapFromSource( index ),
             DatasetPenRole ) );
 }
 
@@ -764,7 +772,7 @@ void AbstractDiagram::setBrush( const QModelIndex& index, const QBrush& brush )
         return;
     }
     attributesModel()->setData(
-        attributesModel()->mapFromSource( index ),
+        conditionallyMapFromSource( index ),
         qVariantFromValue( brush ), DatasetBrushRole );
     emit propertiesChanged();
 }
@@ -808,9 +816,7 @@ QBrush AbstractDiagram::brush( const QModelIndex& index ) const
     if( datasetDimension() > 1 )
         return brush( index.column() );
     return qVariantValue<QBrush>(
-        attributesModel()->data(
-            attributesModel()->mapFromSource( index ),
-            DatasetBrushRole ) );
+        attributesModel()->data( conditionallyMapFromSource( index ), DatasetBrushRole ) );
 }
 
 /**

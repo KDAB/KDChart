@@ -669,6 +669,7 @@ namespace KDChart {
         void propertiesChanged();
 
     private:
+        QModelIndex conditionallyMapFromSource( const QModelIndex & sourceIndex ) const;
 	QString roundValues( double value, const int decimalPos,
 			      const int decimalDigits ) const;
 
