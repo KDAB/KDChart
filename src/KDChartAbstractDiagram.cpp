@@ -304,7 +304,7 @@ AttributesModel* AbstractDiagram::attributesModel() const
 
 QModelIndex AbstractDiagram::conditionallyMapFromSource( const QModelIndex & index ) const
 {
-    Q_ASSERT( !index.isValid() || index.model() == d->attributesModel() || index.model() == attributesModel()->sourceModel() );
+    Q_ASSERT( !index.isValid() || index.model() == attributesModel() || index.model() == attributesModel()->sourceModel() );
     return index.model() == attributesModel()
             ? index
             : attributesModel()->mapFromSource( index );
