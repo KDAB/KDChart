@@ -1,7 +1,4 @@
 <ui version="4.0" >
- <author></author>
- <comment></comment>
- <exportmacro></exportmacro>
  <class>MainWindow</class>
  <widget class="QWidget" name="MainWindow" >
   <property name="geometry" >
@@ -9,14 +6,16 @@
     <x>0</x>
     <y>0</y>
     <width>735</width>
-    <height>702</height>
+    <height>680</height>
    </rect>
   </property>
   <property name="windowTitle" >
    <string>Axes </string>
   </property>
   <property name="windowIcon" >
-   <iconset/>
+   <iconset>
+    <normaloff/>
+   </iconset>
   </property>
   <layout class="QGridLayout" >
    <property name="margin" >
@@ -86,11 +85,11 @@
    </item>
    <item row="0" column="0" >
     <layout class="QVBoxLayout" >
-     <property name="margin" >
-      <number>0</number>
-     </property>
      <property name="spacing" >
       <number>6</number>
+     </property>
+     <property name="margin" >
+      <number>0</number>
      </property>
      <item>
       <widget class="QCheckBox" name="paintValuesCB" >
@@ -108,11 +107,11 @@
      </item>
      <item>
       <layout class="QVBoxLayout" >
-       <property name="margin" >
-        <number>0</number>
-       </property>
        <property name="spacing" >
         <number>6</number>
+       </property>
+       <property name="margin" >
+        <number>0</number>
        </property>
        <item>
         <widget class="QLabel" name="lineTypeLB" >
@@ -151,11 +150,11 @@
      </item>
      <item>
       <layout class="QVBoxLayout" >
-       <property name="margin" >
-        <number>0</number>
-       </property>
        <property name="spacing" >
         <number>6</number>
+       </property>
+       <property name="margin" >
+        <number>0</number>
        </property>
        <item>
         <widget class="QLabel" name="markersLB" >
@@ -238,11 +237,11 @@
      </item>
      <item>
       <layout class="QVBoxLayout" >
-       <property name="margin" >
-        <number>0</number>
-       </property>
        <property name="spacing" >
         <number>6</number>
+       </property>
+       <property name="margin" >
+        <number>0</number>
        </property>
        <item>
         <widget class="QLabel" name="markersSizeLB" >
@@ -253,19 +252,19 @@
        </item>
        <item>
         <layout class="QHBoxLayout" >
-         <property name="margin" >
-          <number>0</number>
-         </property>
          <property name="spacing" >
           <number>6</number>
          </property>
+         <property name="margin" >
+          <number>0</number>
+         </property>
          <item>
           <layout class="QVBoxLayout" >
-           <property name="margin" >
-            <number>0</number>
-           </property>
            <property name="spacing" >
             <number>6</number>
+           </property>
+           <property name="margin" >
+            <number>0</number>
            </property>
            <item>
             <widget class="QLabel" name="markersWidthLB" >
@@ -285,11 +284,11 @@
          </item>
          <item>
           <layout class="QVBoxLayout" >
-           <property name="margin" >
-            <number>0</number>
-           </property>
            <property name="spacing" >
             <number>6</number>
+           </property>
+           <property name="margin" >
+            <number>0</number>
            </property>
            <item>
             <widget class="QSpinBox" name="markersWidthSB" >
@@ -320,11 +319,11 @@
      </item>
      <item>
       <layout class="QVBoxLayout" >
-       <property name="margin" >
-        <number>0</number>
-       </property>
        <property name="spacing" >
         <number>6</number>
+       </property>
+       <property name="margin" >
+        <number>0</number>
        </property>
        <item>
         <widget class="QLabel" name="AreaChartLB" >
@@ -342,11 +341,11 @@
        </item>
        <item>
         <layout class="QHBoxLayout" >
-         <property name="margin" >
-          <number>0</number>
-         </property>
          <property name="spacing" >
           <number>6</number>
+         </property>
+         <property name="margin" >
+          <number>0</number>
          </property>
          <item>
           <widget class="QLabel" name="transparencyLB" >
@@ -378,11 +377,11 @@
      </item>
      <item>
       <layout class="QVBoxLayout" >
-       <property name="margin" >
-        <number>0</number>
-       </property>
        <property name="spacing" >
         <number>6</number>
+       </property>
+       <property name="margin" >
+        <number>0</number>
        </property>
        <item>
         <widget class="QLabel" name="zoomingLB" >
@@ -393,11 +392,11 @@
        </item>
        <item>
         <layout class="QHBoxLayout" >
-         <property name="margin" >
-          <number>0</number>
-         </property>
          <property name="spacing" >
           <number>6</number>
+         </property>
+         <property name="margin" >
+          <number>0</number>
          </property>
          <item>
           <widget class="QLabel" name="zoomFactorLB" >
@@ -408,17 +407,17 @@
          </item>
          <item>
           <widget class="QDoubleSpinBox" name="zoomFactorSB" >
-           <property name="maximum" >
-            <double>9.9</double>
-           </property>
            <property name="minimum" >
-            <double>0.01</double>
+            <double>0.010000000000000</double>
+           </property>
+           <property name="maximum" >
+            <double>9.900000000000000</double>
            </property>
            <property name="singleStep" >
-            <double>0.1</double>
+            <double>0.100000000000000</double>
            </property>
            <property name="value" >
-            <double>1</double>
+            <double>1.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -438,6 +437,9 @@
        <property name="text" >
         <string>Display Legend</string>
        </property>
+       <property name="checked" >
+        <bool>true</bool>
+       </property>
       </widget>
      </item>
      <item>
@@ -445,7 +447,7 @@
        <property name="orientation" >
         <enum>Qt::Vertical</enum>
        </property>
-       <property name="sizeHint" >
+       <property name="sizeHint" stdset="0" >
         <size>
          <width>170</width>
          <height>16</height>
@@ -457,7 +459,6 @@
    </item>
   </layout>
  </widget>
- <pixmapfunction></pixmapfunction>
  <resources>
   <include location="BarChart" />
  </resources>

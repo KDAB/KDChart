@@ -92,7 +92,6 @@ MainWindow::MainWindow( QWidget* parent ) :
     // Set up the legend
     m_legend = new Legend( m_lines, m_chart );
     m_chart->addLegend( m_legend );
-    m_legend->hide();
 }
 
 void MainWindow::on_lineTypeCB_currentIndexChanged( const QString & text )
