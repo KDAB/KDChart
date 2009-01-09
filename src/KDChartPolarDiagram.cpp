@@ -49,6 +49,7 @@ PolarDiagram::Private::~Private() {}
 PolarDiagram::PolarDiagram( QWidget* parent, PolarCoordinatePlane* plane ) :
     AbstractPolarDiagram( new Private( ), parent, plane )
 {
+    //init();
 }
 
 PolarDiagram::~PolarDiagram()
@@ -154,7 +155,6 @@ void PolarDiagram::paint( PaintContext* ctx,
     //       but we can not draw a diagram then either.
     if ( !checkInvariants(true) )
         return;
-
     d->reverseMapper.clear();
 
     const int rowCount = model()->rowCount( rootIndex() );
@@ -180,22 +180,24 @@ void PolarDiagram::paint( PaintContext* ctx,
                         value );
             }
         }
-        QRectF txtRectF;
-        d->paintDataValueTextsAndMarkers( this, ctx, d->dataValueInfoList, true, true, &txtRectF );
-        const QRect txtRect = txtRectF.toRect();
-        const QRect curRect = coordinatePlane()->geometry();
-        const qreal gapX = qMin( txtRect.left() - curRect.left(), curRect.right()  - txtRect.right() );
-        const qreal gapY = qMin( txtRect.top()  - curRect.top(),  curRect.bottom() - txtRect.bottom() );
         const qreal oldZoomX = coordinatePlane()->zoomFactorX();
         const qreal oldZoomY = coordinatePlane()->zoomFactorY();
         newZoomX = oldZoomX;
         newZoomY = oldZoomY;
-        if( gapX < 0.0 )
-            newZoomX *= 1.0 + (gapX-1.0) / curRect.width();
-        if( gapY < 0.0 )
-            newZoomY *= 1.0 + (gapY-1.0) / curRect.height();
-
-        //qDebug()<<"gapY:"<<gapY;
+        if( d->dataValueInfoList.count() ){
+            QRectF txtRectF;
+            d->paintDataValueTextsAndMarkers( this, ctx, d->dataValueInfoList, true, true, &txtRectF );
+            const QRect txtRect = txtRectF.toRect();
+            const QRect curRect = coordinatePlane()->geometry();
+            const qreal gapX = qMin( txtRect.left() - curRect.left(), curRect.right()  - txtRect.right() );
+            const qreal gapY = qMin( txtRect.top()  - curRect.top(),  curRect.bottom() - txtRect.bottom() );
+            newZoomX = oldZoomX;
+            newZoomY = oldZoomY;
+            if( gapX < 0.0 )
+                newZoomX *= 1.0 + (gapX-1.0) / curRect.width();
+            if( gapY < 0.0 )
+                newZoomY *= 1.0 + (gapY-1.0) / curRect.height();
+        }
 
     }else{
 

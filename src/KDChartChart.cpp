@@ -947,8 +947,11 @@ void Chart::replaceCoordinatePlane( AbstractCoordinatePlane* plane,
     if( plane && oldPlane_ != plane ){
         AbstractCoordinatePlane* oldPlane = oldPlane_;
         if( d->coordinatePlanes.count() ){
-            if( ! oldPlane )
+            if( ! oldPlane ){
                 oldPlane = d->coordinatePlanes.first();
+                if( oldPlane == plane )
+                    return;
+            }
             takeCoordinatePlane( oldPlane );
         }
         delete oldPlane;
@@ -1162,8 +1165,11 @@ void Chart::replaceHeaderFooter( HeaderFooter* headerFooter,
     if( headerFooter && oldHeaderFooter_ != headerFooter ){
         HeaderFooter* oldHeaderFooter = oldHeaderFooter_;
         if( d->headerFooters.count() ){
-            if( ! oldHeaderFooter )
+            if( ! oldHeaderFooter ){
                 oldHeaderFooter =  d->headerFooters.first();
+                if( oldHeaderFooter == headerFooter )
+                    return;
+            }
             takeHeaderFooter( oldHeaderFooter );
         }
         delete oldHeaderFooter;
@@ -1252,8 +1258,11 @@ void Chart::replaceLegend( Legend* legend, Legend* oldLegend_ )
     if( legend && oldLegend_ != legend ){
         Legend* oldLegend = oldLegend_;
         if( d->legends.count() ){
-            if( ! oldLegend )
+            if( ! oldLegend ){
                 oldLegend = d->legends.first();
+                if( oldLegend == legend )
+                    return;
+            }
             takeLegend( oldLegend );
         }
         delete oldLegend;

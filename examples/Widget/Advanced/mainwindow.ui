@@ -49,11 +49,6 @@
     <widget class="QComboBox" name="typeSelector" >
      <item>
       <property name="text" >
-       <string>Widget::NoType</string>
-      </property>
-     </item>
-     <item>
-      <property name="text" >
        <string>Widget::Bar</string>
       </property>
      </item>
@@ -65,11 +60,6 @@
      <item>
       <property name="text" >
        <string>Widget::Pie</string>
-      </property>
-     </item>
-     <item>
-      <property name="text" >
-       <string>Widget::Ring</string>
       </property>
      </item>
      <item>

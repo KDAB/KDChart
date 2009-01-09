@@ -41,7 +41,7 @@ MainWindow::MainWindow( QWidget* parent )
     widget = new Widget( chartFrame );
     chartLayout->addWidget( widget );
 
-    typeSelector->setCurrentIndex(2); // we start by LineDiagram
+    typeSelector->setCurrentIndex(1); // we start by LineDiagram
 
     connect( typeSelector, SIGNAL( activated( int )), SLOT( changeType() ));
 
@@ -62,8 +62,6 @@ void MainWindow::changeType()
         widget->setType( Widget::Pie );
     else if ( text == "Widget::Polar" )
         widget->setType( Widget::Polar );
-    else if ( text == "Widget::Ring" )
-        widget->setType( Widget::Ring );
     else
         widget->setType( Widget::NoType );
 }
@@ -86,7 +84,7 @@ void MainWindow::addDataset()
     const int rows = widget->diagram()->model()->rowCount();
     if( vec.count() != rows )
         QMessageBox::warning( this, "Wrong number of values entered!",
-                              QString("You have entered %1 values,<br>but the data model needs %2 ones.")
+                              QString("You have entered %1 values,<br>but the data model needs %2 ones.<br><br>Note: Use <b>;</b> to separate the values!")
                                       .arg( vec.count() )
                                       .arg( rows ) );
     else

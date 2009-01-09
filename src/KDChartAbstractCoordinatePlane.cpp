@@ -92,8 +92,11 @@ void AbstractCoordinatePlane::replaceDiagram ( AbstractDiagram* diagram, Abstrac
     if( diagram && oldDiagram_ != diagram ){
         AbstractDiagram* oldDiagram = oldDiagram_;
         if( d->diagrams.count() ){
-            if( ! oldDiagram )
+            if( ! oldDiagram ){
                 oldDiagram = d->diagrams.first();
+                if( oldDiagram == diagram )
+                    return;
+            }
             takeDiagram( oldDiagram );
         }
         delete oldDiagram;
