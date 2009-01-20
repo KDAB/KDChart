@@ -709,11 +709,6 @@ void AbstractDiagram::paintMarkers( QPainter* painter )
 
 void AbstractDiagram::setPen( const QModelIndex& index, const QPen& pen )
 {
-    if( datasetDimension() > 1 )
-    {
-        setPen( index.column(), pen );
-        return;
-    }
     attributesModel()->setData(
         conditionallyMapFromSource( index ),
         qVariantFromValue( pen ), DatasetPenRole );
@@ -756,8 +751,6 @@ QPen AbstractDiagram::pen( int dataset ) const
 
 QPen AbstractDiagram::pen( const QModelIndex& index ) const
 {
-    if( datasetDimension() > 1 )
-        return pen( index.column() );
     return qVariantValue<QPen>(
         attributesModel()->data(
             conditionallyMapFromSource( index ),
@@ -766,11 +759,6 @@ QPen AbstractDiagram::pen( const QModelIndex& index ) const
 
 void AbstractDiagram::setBrush( const QModelIndex& index, const QBrush& brush )
 {
-    if( datasetDimension() > 1 )
-    {
-        setBrush( index.column(), brush );
-        return;
-    }
     attributesModel()->setData(
         conditionallyMapFromSource( index ),
         qVariantFromValue( brush ), DatasetBrushRole );
@@ -813,8 +801,6 @@ QBrush AbstractDiagram::brush( int dataset ) const
 
 QBrush AbstractDiagram::brush( const QModelIndex& index ) const
 {
-    if( datasetDimension() > 1 )
-        return brush( index.column() );
     return qVariantValue<QBrush>(
         attributesModel()->data( conditionallyMapFromSource( index ), DatasetBrushRole ) );
 }
