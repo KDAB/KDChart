@@ -66,6 +66,69 @@
       </widget>
      </item>
      <item>
+      <widget class="Line" name="line_2" >
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="threeDProperties" >
+       <property name="title" >
+        <string>3D</string>
+       </property>
+       <property name="checkable" >
+        <bool>true</bool>
+       </property>
+       <property name="checked" >
+        <bool>false</bool>
+       </property>
+       <layout class="QGridLayout" name="gridLayout" >
+        <item row="0" column="0" >
+         <widget class="QLabel" name="label" >
+          <property name="text" >
+           <string>Perspective Angle (0°-360°)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0" >
+         <widget class="QSlider" name="perspectiveAngle" >
+          <property name="maximum" >
+           <number>360</number>
+          </property>
+          <property name="orientation" >
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0" >
+         <widget class="QCheckBox" name="useShadowColors" >
+          <property name="text" >
+           <string>Use shadow colors</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0" >
+         <widget class="QSlider" name="perspectiveDepth" >
+          <property name="maximum" >
+           <number>25</number>
+          </property>
+          <property name="orientation" >
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0" >
+         <widget class="QLabel" name="label_2" >
+          <property name="text" >
+           <string>Depth (0-25px)</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
       <spacer>
        <property name="orientation" >
         <enum>Qt::Vertical</enum>

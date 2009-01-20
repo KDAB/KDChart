@@ -59,6 +59,47 @@ MainWindow::MainWindow( QWidget *parent )
     bottomAxis->setPosition( CartesianAxis::Bottom );
     m_diagram.addAxis( leftAxis );
     m_diagram.addAxis( bottomAxis );
+
+    // Initialize all values for the stock chart to sane defaults
+    initValues();
+}
+
+void MainWindow::initValues() {
+    m_threeDBarAttributes = m_diagram.threeDBarAttributes();
+    m_threeDBarAttributes.setDepth( 10.0 );
+    threeDProperties->setChecked( m_threeDBarAttributes.isEnabled() );
+    perspectiveAngle->setValue( m_threeDBarAttributes.angle() );
+    perspectiveDepth->setValue( (int)m_threeDBarAttributes.depth() );
+    useShadowColors->setChecked( m_threeDBarAttributes.useShadowColors() );
+    m_diagram.setThreeDBarAttributes( m_threeDBarAttributes );
+}
+
+void MainWindow::on_threeDProperties_toggled( bool checked )
+{
+    m_threeDBarAttributes.setEnabled( checked );
+    m_diagram.setThreeDBarAttributes( m_threeDBarAttributes );
+    m_chart->update();
+}
+
+void MainWindow::on_perspectiveAngle_valueChanged( int value )
+{
+    m_threeDBarAttributes.setAngle( value );
+    m_diagram.setThreeDBarAttributes( m_threeDBarAttributes );
+    m_chart->update();
+}
+
+void MainWindow::on_perspectiveDepth_valueChanged( int value )
+{
+    m_threeDBarAttributes.setDepth( value );
+    m_diagram.setThreeDBarAttributes( m_threeDBarAttributes );
+    m_chart->update();
+}
+
+void MainWindow::on_useShadowColors_toggled( bool checked )
+{
+    m_threeDBarAttributes.setUseShadowColors( checked );
+    m_diagram.setThreeDBarAttributes( m_threeDBarAttributes );
+    m_chart->update();
 }
 
 void MainWindow::on_stockTypeCB_currentIndexChanged( const QString &text )
