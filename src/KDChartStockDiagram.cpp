@@ -58,8 +58,8 @@ StockDiagram::Type StockDiagram::type() const
 void StockDiagram::setStockBarAttributes( const StockBarAttributes &attr )
 {
     attributesModel()->setModelData(
-        qVariantFromValue( attr ),
-        StockBarAttributesRole );
+            qVariantFromValue( attr ),
+            StockBarAttributesRole );
     emit propertiesChanged();
 }
 
@@ -80,9 +80,71 @@ void StockDiagram::setStockBarAttributes( int column, const StockBarAttributes &
 
 StockBarAttributes StockDiagram::stockBarAttributes( int column ) const
 {
-    return qVariantValue<StockBarAttributes>( attributesModel()->headerData(
-        column, Qt::Vertical,
-        StockBarAttributesRole ) );
+    const QVariant attr( attributesModel()->headerData(
+            column, Qt::Vertical, StockBarAttributesRole ) );
+    if ( attr.isValid() )
+        return qVariantValue<StockBarAttributes>( attr );
+    return stockBarAttributes();
+}
+
+/**
+ * Sets the 3D attributes for all bars (i.e. candlesticks)
+ *
+ * @param attr The 3D attributes to set
+ */
+void StockDiagram::setThreeDBarAttributes( const ThreeDBarAttributes &attr )
+{
+    attributesModel()->setModelData(
+            qVariantFromValue( attr ),
+            ThreeDBarAttributesRole );
+    emit propertiesChanged();
+}
+
+/**
+ * Returns the 3D attributes for all bars (i.e. candlesticks)
+ *
+ * @return the 3D bar attributes
+ */
+ThreeDBarAttributes StockDiagram::threeDBarAttributes() const
+{
+	return qVariantValue<ThreeDBarAttributes>(
+			attributesModel()->modelData( ThreeDBarAttributesRole ) );
+}
+
+/**
+ * Sets the 3D attributes for the bar (i.e. candlestick) in certain column
+ * of the diagram
+ *
+ * Note: Every column in a StockDiagram is represented by a row in the model
+ *
+ * @param column The column to set the 3D bar attributes for
+ * @param attr The 3D attributes to set
+ */
+void StockDiagram::setThreeDBarAttributes( int column, const ThreeDBarAttributes &attr )
+{
+    attributesModel()->setHeaderData(
+            column, Qt::Vertical,
+            qVariantFromValue( attr ),
+            StockBarAttributesRole );
+    emit propertiesChanged();
+}
+
+/**
+ * Returns the 3D attributes for a bars (i.e. candlestick) in a certain column
+ * of the diagram
+ *
+ * Note: Every column in a StockDiagram is represented by a row in the model
+ *
+ * @param column The column to get the 3D bar attributes for
+ * @return The 3D attributes for the specified column
+ */
+ThreeDBarAttributes StockDiagram::threeDBarAttributes( int column ) const
+{
+    const QVariant attr( attributesModel()->headerData(
+            column, Qt::Vertical, ThreeDBarAttributesRole ) );
+    if ( attr.isValid() )
+        return qVariantValue<ThreeDBarAttributes>( attr );
+    return threeDBarAttributes();
 }
 
 
@@ -233,15 +295,14 @@ void StockDiagram::paint( PaintContext *context )
             close = d->compressor.data( closePos );
         }
 
-        // All types have at least a line connecting
-        // the Low and High values
-        d->drawLowHighLine( low, high, context );
-        if ( d->type == OpenHighLowClose )
+        if ( d->type == OpenHighLowClose ) {
+            d->drawLowHighLine( low, high, context );
             d->drawOpenMarker( open, context );
-        if ( d->type == OpenHighLowClose || d->type == HighLowClose )
+        } if ( d->type == OpenHighLowClose || d->type == HighLowClose ) {
+            d->drawLowHighLine( low, high, context );
             d->drawCloseMarker( close, context );
-        if ( d->type == Candlestick )
-            d->drawCandlestick( open, close, context );
+        } if ( d->type == Candlestick )
+            d->drawCandlestick( open, high, low, close, context );
     }
 }
 
