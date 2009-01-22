@@ -77,7 +77,7 @@ QModelIndexList CartesianDiagramDataCompressor::indexesAt( const CachePosition& 
         {
             const int iStart = (indPrev.empty() || indPrev==indCur)  ? indCur.first().row()
                              : indPrev.first().row() + 1;
-            const int iEnd   = indCur.first().row();
+            const int iEnd   = (indCur.isEmpty()) ? iStart : indCur.first().row();
             //qDebug()<<iStart<<iEnd << iEnd-iStart;
             for( int i=iStart; i<=iEnd; ++i){
                 indexes << m_model->index( i, position.second, m_rootIndex );
