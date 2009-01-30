@@ -295,14 +295,17 @@ void StockDiagram::paint( PaintContext *context )
             close = d->compressor.data( closePos );
         }
 
-        if ( d->type == OpenHighLowClose ) {
-            d->drawLowHighLine( low, high, context );
-            d->drawOpenMarker( open, context );
-        } if ( d->type == OpenHighLowClose || d->type == HighLowClose ) {
-            d->drawLowHighLine( low, high, context );
-            d->drawCloseMarker( close, context );
-        } if ( d->type == Candlestick )
+        switch( d->type ) {
+        case HighLowClose:
+            open.hidden = true;
+            // Fall-through intended!
+        case OpenHighLowClose:
+            d->drawOHLCBar( open, high, low, close, context );
+            break;
+        case Candlestick:
             d->drawCandlestick( open, high, low, close, context );
+            break;
+        }
     }
 }
 

@@ -33,20 +33,24 @@ public:
     QPen lowHighLinePen;
     QMap<int, QPen> lowHighLinePens;
 
-    void drawLowHighLine( const CartesianDiagramDataCompressor::DataPoint &low,
-                          const CartesianDiagramDataCompressor::DataPoint &high,
-                          PaintContext *context );
+
+    void drawOHLCBar( const CartesianDiagramDataCompressor::DataPoint &open,
+                      const CartesianDiagramDataCompressor::DataPoint &high,
+                      const CartesianDiagramDataCompressor::DataPoint &low,
+                      const CartesianDiagramDataCompressor::DataPoint &close,
+                      PaintContext *context );
+    void drawHLCBar( const CartesianDiagramDataCompressor::DataPoint &high,
+                     const CartesianDiagramDataCompressor::DataPoint &low,
+                     const CartesianDiagramDataCompressor::DataPoint &close,
+                     PaintContext *context );
     void drawCandlestick( const CartesianDiagramDataCompressor::DataPoint &open,
                           const CartesianDiagramDataCompressor::DataPoint &high,
                           const CartesianDiagramDataCompressor::DataPoint &low,
                           const CartesianDiagramDataCompressor::DataPoint &close,
                           PaintContext *context );
-    void drawOpenMarker( const CartesianDiagramDataCompressor::DataPoint &open,
-                         PaintContext *context );
-    void drawCloseMarker( const CartesianDiagramDataCompressor::DataPoint &close,
-                          PaintContext *context );
 
 private:
+    void drawLine( int col, const QPointF &point1, const QPointF &p2, PaintContext *context );
     QPointF projectPoint( PaintContext *context, const QPointF &point ) const;
     QRectF projectCandlestick( PaintContext *context, const QPointF &open, const QPointF &close, qreal width ) const;
     int openValueColumn() const;

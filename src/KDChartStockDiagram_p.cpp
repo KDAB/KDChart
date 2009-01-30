@@ -211,35 +211,6 @@ StockDiagram::Private::~Private()
 }
 
 /**
-  * Draws a line connecting the low and the high value of an OHLC chart
-  *
-  * @param low The low data point
-  * @param high The high data point
-  * @param context The context to draw the low-high line in
-  */
-void StockDiagram::Private::drawLowHighLine( const CartesianDiagramDataCompressor::DataPoint &low,
-                                             const CartesianDiagramDataCompressor::DataPoint &high,
-                                             PaintContext *context )
-{
-    PainterSaver painterSaver( context->painter() );
-
-    context->painter()->setPen( diagram->lowHighLinePen( (int)low.key ) );
-
-    QPointF lowPoint = context->coordinatePlane()->translate( QPointF( low.key + 0.5, low.value ) );
-    QPointF highPoint = context->coordinatePlane()->translate( QPointF( high.key + 0.5, high.value ) );
-    // FIXME: Would it make more sense here to use the column of either the low or high index?
-    reverseMapper.addLine( low.index.row(), 0, lowPoint, highPoint );
-    context->painter()->drawLine( lowPoint, highPoint );
-
-    DataValueTextInfoList list;
-    appendDataValueTextInfoToList( diagram, list, diagram->attributesModel()->mapToSource( low.index ), 0,
-                                   PositionPoints( lowPoint ), Position::South, Position::South, low.value );
-    appendDataValueTextInfoToList( diagram, list, diagram->attributesModel()->mapToSource( high.index ), 0,
-                                   PositionPoints( highPoint ), Position::South, Position::South, high.value );
-    paintDataValueTextsAndMarkers( diagram, context, list, false );
-}
-
-/**
  * Projects a point onto the coordinate plane
  *
  * @param context The context to paint the point in
@@ -267,6 +238,70 @@ QRectF StockDiagram::Private::projectCandlestick( PaintContext *context, const Q
                                           rightLowPoint.y() - leftHighPoint.y() ) );
 }
 
+void StockDiagram::Private::drawOHLCBar( const CartesianDiagramDataCompressor::DataPoint &open,
+        const CartesianDiagramDataCompressor::DataPoint &high,
+        const CartesianDiagramDataCompressor::DataPoint &low,
+        const CartesianDiagramDataCompressor::DataPoint &close,
+        PaintContext *context )
+{
+    // Note: A row in the model is a column in a StockDiagram
+    const int col = low.index.row();
+
+    StockBarAttributes attr = diagram->stockBarAttributes( col );
+    ThreeDBarAttributes threeDAttr = diagram->threeDBarAttributes( col );
+    const qreal tickLength = attr.tickLength();
+
+    const QPointF leftOpenPoint( open.key + 0.5 - tickLength, open.value );
+    const QPointF rightOpenPoint( open.key + 0.5, open.value );
+    const QPointF highPoint( high.key + 0.5, high.value );
+    const QPointF lowPoint( low.key + 0.5, low.value );
+    const QPointF leftClosePoint( close.key + 0.5, close.value );
+    const QPointF rightClosePoint( close.key + 0.5 + tickLength, close.value );
+
+    bool reversedOrder = false;
+    // If 3D mode is enabled, we have to make sure the z-order is right
+    if ( threeDAttr.isEnabled() ) {
+        const int angle = threeDAttr.angle();
+        // Z-order is from right to left
+        if ( angle >= 0 && angle < 90 || angle >= 180 && angle < 270 )
+            reversedOrder = true;
+        // Z-order is from left to right
+        if ( angle >= 90 && angle < 180 || angle >= 270 && angle < 0 )
+            reversedOrder = false;
+    }
+
+    if ( reversedOrder ) {
+        if ( !open.hidden )
+            drawLine( col, leftOpenPoint, rightOpenPoint, context ); // Open marker
+        if ( !low.hidden && !high.hidden )
+            drawLine( col, lowPoint, highPoint, context ); // Low-High line
+        if ( !close.hidden )
+            drawLine( col, leftClosePoint, rightClosePoint, context ); // Close marker
+    } else {
+        if ( !close.hidden )
+            drawLine( col, leftClosePoint, rightClosePoint, context ); // Close marker
+        if ( !low.hidden && !high.hidden )
+            drawLine( col, lowPoint, highPoint, context ); // Low-High line
+        if ( !open.hidden )
+            drawLine( col, leftOpenPoint, rightOpenPoint, context ); // Open marker
+    }
+
+    DataValueTextInfoList list;
+    if ( !open.hidden )
+        appendDataValueTextInfoToList( diagram, list, diagram->attributesModel()->mapToSource( open.index ), 0,
+                                       PositionPoints( leftOpenPoint ), Position::South, Position::South, open.value );
+    if ( !high.hidden )
+        appendDataValueTextInfoToList( diagram, list, diagram->attributesModel()->mapToSource( high.index ), 0,
+                                       PositionPoints( highPoint ), Position::South, Position::South, high.value );
+    if ( !low.hidden )
+        appendDataValueTextInfoToList( diagram, list, diagram->attributesModel()->mapToSource( low.index ), 0,
+                                       PositionPoints( lowPoint ), Position::South, Position::South, low.value );
+    if ( !close.hidden )
+        appendDataValueTextInfoToList( diagram, list, diagram->attributesModel()->mapToSource( close.index ), 0,
+                                       PositionPoints( rightClosePoint ), Position::South, Position::South, close.value );
+    paintDataValueTextsAndMarkers( diagram, context, list, false );
+}
+
 /**
   * Draws a line connecting the low and the high value of an OHLC chart
   *
@@ -290,6 +325,10 @@ void StockDiagram::Private::drawCandlestick( const CartesianDiagramDataCompresso
     QPointF topCandlestickPoint;
     QBrush brush;
     QPen pen;
+    bool drawLowerLine;
+    bool drawCandlestick = !open.hidden && !close.hidden;
+    bool drawUpperLine;
+
     // Find out if we need to paint a down-trend or up-trend candlestick
     // and set brush and pen accordingly
     // Also, determine what the top and bottom points of the candlestick are
@@ -298,20 +337,24 @@ void StockDiagram::Private::drawCandlestick( const CartesianDiagramDataCompresso
         brush = diagram->upTrendCandlestickBrush( row );
         bottomCandlestickPoint = QPointF( open.key, open.value );
         topCandlestickPoint = QPointF( close.key, close.value );
+        drawLowerLine = !low.hidden && !open.hidden;
+        drawUpperLine = !low.hidden && !close.hidden;
     } else {
         pen = diagram->downTrendCandlestickPen( row );
         brush = diagram->downTrendCandlestickBrush( row );
         bottomCandlestickPoint = QPointF( close.key, close.value );
         topCandlestickPoint = QPointF( open.key, open.value );
+        drawLowerLine = !low.hidden && !close.hidden;
+        drawUpperLine = !low.hidden && !open.hidden;
     }
 
     StockBarAttributes attr = diagram->stockBarAttributes( col );
     ThreeDBarAttributes threeDAttr = diagram->threeDBarAttributes( col );
 
-    const QLineF lowerLine = QLineF( projectPoint( context, QPointF( low.key, low.value ) ),
-                                     projectPoint( context, bottomCandlestickPoint ) );
-    const QLineF upperLine = QLineF( projectPoint( context, topCandlestickPoint ),
-                                     projectPoint( context, QPointF( high.key, high.value ) ) );
+    const QPointF lowPoint = projectPoint( context, QPointF( low.key, low.value ) );
+    const QPointF highPoint = projectPoint( context, QPointF( high.key, high.value ) );
+    const QLineF lowerLine = QLineF( lowPoint, projectPoint( context, bottomCandlestickPoint ) );
+    const QLineF upperLine = QLineF( projectPoint( context, topCandlestickPoint ), highPoint );
 
     // Convert the data point into coordinates on the coordinate plane
     QRectF candlestick = projectCandlestick( context, bottomCandlestickPoint,
@@ -332,87 +375,97 @@ void StockDiagram::Private::drawCandlestick( const CartesianDiagramDataCompresso
         // If the perspective angle is within [0,180], we paint from bottom to top,
         // otherwise from top to bottom to ensure the correct z order
         if ( threeDProps.angle > 0.0 && threeDProps.angle < 180.0 ) {
-            drawnPolygon = threeDPainter.drawTwoDLine( lowerLine, pen, threeDProps );
-            drawnPolygon = threeDPainter.drawThreeDRect( candlestick, brush, pen, threeDProps );
+            if ( drawLowerLine )
+                drawnPolygon = threeDPainter.drawTwoDLine( lowerLine, pen, threeDProps );
+            if ( drawCandlestick )
+                drawnPolygon = threeDPainter.drawThreeDRect( candlestick, brush, pen, threeDProps );
+            if ( drawUpperLine )
             drawnPolygon = threeDPainter.drawTwoDLine( upperLine, pen, threeDProps );
         } else {
-            drawnPolygon = threeDPainter.drawTwoDLine( upperLine, pen, threeDProps );
-            drawnPolygon = threeDPainter.drawThreeDRect( candlestick, brush, pen, threeDProps );
-            drawnPolygon = threeDPainter.drawTwoDLine( lowerLine, pen, threeDProps );
+            if ( drawUpperLine )
+                drawnPolygon = threeDPainter.drawTwoDLine( upperLine, pen, threeDProps );
+            if ( drawCandlestick )
+                drawnPolygon = threeDPainter.drawThreeDRect( candlestick, brush, pen, threeDProps );
+            if ( drawLowerLine )
+                drawnPolygon = threeDPainter.drawTwoDLine( lowerLine, pen, threeDProps );
         }
     } else {
         QPainter *const painter = context->painter();
         painter->setBrush( brush );
         painter->setPen( pen );
-        painter->drawLine( lowerLine );
-        painter->drawLine( upperLine );
-        painter->drawRect( candlestick );
+        if ( drawLowerLine )
+            painter->drawLine( lowerLine );
+        if ( drawUpperLine )
+            painter->drawLine( upperLine );
+        if ( drawCandlestick )
+            painter->drawRect( candlestick );
 
         // The 2D representation is the projected candlestick itself
         drawnPolygon = candlestick;
+
+        // FIXME: Add lower and upper line to reverse mapper
     }
 
-    // Both, the open as well as the close value are represented by this candlestick
-    reverseMapper.addPolygon( row, openValueColumn(), drawnPolygon );
-    reverseMapper.addPolygon( row, closeValueColumn(), drawnPolygon );
-
     DataValueTextInfoList list;
-    appendDataValueTextInfoToList( diagram, list, diagram->attributesModel()->mapToSource( open.index ), 0,
-                                   PositionPoints( candlestick.bottomRight() ), Position::South, Position::South, open.value );
-    appendDataValueTextInfoToList( diagram, list, diagram->attributesModel()->mapToSource( close.index ), 0,
-                                   PositionPoints( candlestick.topRight() ), Position::South, Position::South, close.value );
+
+    if ( !low.hidden )
+        appendDataValueTextInfoToList( diagram, list, diagram->attributesModel()->mapToSource( low.index ), 0,
+                                       PositionPoints( lowPoint ), Position::South, Position::South, low.value );
+    if ( drawCandlestick ) {
+        // Both, the open as well as the close value are represented by this candlestick
+        reverseMapper.addPolygon( row, openValueColumn(), drawnPolygon );
+        reverseMapper.addPolygon( row, closeValueColumn(), drawnPolygon );
+
+        appendDataValueTextInfoToList( diagram, list, diagram->attributesModel()->mapToSource( open.index ), 0,
+                                       PositionPoints( candlestick.bottomRight() ), Position::South, Position::South, open.value );
+        appendDataValueTextInfoToList( diagram, list, diagram->attributesModel()->mapToSource( close.index ), 0,
+                                       PositionPoints( candlestick.topRight() ), Position::South, Position::South, close.value );
+    }
+    if ( !high.hidden )
+        appendDataValueTextInfoToList( diagram, list, diagram->attributesModel()->mapToSource( high.index ), 0,
+                                       PositionPoints( highPoint ), Position::South, Position::South, high.value );
+
     paintDataValueTextsAndMarkers( diagram, context, list, false );
 }
 
 /**
-  * Draws a tick indicating the open value
+  * Draws a line connecting two points
   *
-  * @param low The open data point
-  * @param context The context to draw the open marker in
+  * @param col The column of the diagram to paint the line in
+  * @param point1 The first point
+  * @param point2 The second point
+  * @param context The context to draw the low-high line in
   */
-void StockDiagram::Private::drawOpenMarker( const CartesianDiagramDataCompressor::DataPoint &open,
-                                            PaintContext *context )
+void StockDiagram::Private::drawLine( int col, const QPointF &point1, const QPointF &point2, PaintContext *context )
 {
     PainterSaver painterSaver( context->painter() );
 
-    context->painter()->setPen( diagram->pen( diagram->attributesModel()->mapToSource( open.index ) ) );
+    // A row in the model is a column in the diagram
+    const int modelRow = col;
+    const int modelCol = 0;
 
-    StockBarAttributes attr = diagram->stockBarAttributes( (int)open.key );
-    QPointF leftPoint = context->coordinatePlane()->translate( QPointF( open.key + 0.5 - attr.tickLength(), open.value ) );
-    QPointF rightPoint = context->coordinatePlane()->translate( QPointF( open.key + 0.5, open.value ) );
-    // FIXME: Should we stick to the 0th column, or use index.column()?
-    reverseMapper.addLine( open.index.row(), 0, leftPoint, rightPoint );
-    context->painter()->drawLine( leftPoint, rightPoint );
+    const QPen pen = diagram->pen( col );
+    const QBrush brush = diagram->brush( col );
+    const ThreeDBarAttributes threeDBarAttr = diagram->threeDBarAttributes( col );
 
-    DataValueTextInfoList list;
-    appendDataValueTextInfoToList( diagram, list, diagram->attributesModel()->mapToSource( open.index ), 0,
-                                   PositionPoints( leftPoint ), Position::South, Position::South, open.value );
-    paintDataValueTextsAndMarkers( diagram, context, list, false );
-}
+    QPointF transP1 = context->coordinatePlane()->translate( point1 );
+    QPointF transP2 = context->coordinatePlane()->translate( point2 );
+    QLineF line = QLineF( transP1, transP2 );
 
-/**
-  * Draws a tick indicating the close value
-  *
-  * @param low The close data point
-  * @param context The context to draw the close marker in
-  */
-void StockDiagram::Private::drawCloseMarker( const CartesianDiagramDataCompressor::DataPoint &close,
-                                             PaintContext *context )
-{
-    PainterSaver painterSaver( context->painter() );
+    if ( threeDBarAttr.isEnabled() ) {
+        ThreeDPainter::ThreeDProperties threeDProps;
+        threeDProps.angle = threeDBarAttr.angle();
+        threeDProps.depth = threeDBarAttr.depth();
+        threeDProps.useShadowColors = threeDBarAttr.useShadowColors();
 
-    context->painter()->setPen( diagram->pen( diagram->attributesModel()->mapToSource( close.index ) ) );
-
-    StockBarAttributes attr = diagram->stockBarAttributes( (int)close.key );
-    QPointF leftPoint = context->coordinatePlane()->translate( QPointF( close.key + 0.5, close.value ) );
-    QPointF rightPoint = context->coordinatePlane()->translate( QPointF( close.key + 0.5 + attr.tickLength(), close.value ) );
-    reverseMapper.addLine( close.index.row(), 0, leftPoint, rightPoint );
-    context->painter()->drawLine( leftPoint, rightPoint );
-
-    DataValueTextInfoList list;
-    appendDataValueTextInfoToList( diagram, list, diagram->attributesModel()->mapToSource( close.index ), 0,
-                                   PositionPoints( rightPoint ), Position::South, Position::South, close.value );
-    paintDataValueTextsAndMarkers( diagram, context, list, false );
+        ThreeDPainter painter( context->painter() );
+        reverseMapper.addPolygon( modelCol, modelRow, painter.drawThreeDLine( line, brush, pen, threeDProps ) );
+    } else {
+        context->painter()->setPen( pen );
+        //context->painter()->setBrush( brush );
+        reverseMapper.addLine( modelCol, modelRow, transP1, transP2 );
+        context->painter()->drawLine( line );
+    }
 }
 
 /**
