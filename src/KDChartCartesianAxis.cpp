@@ -1260,7 +1260,7 @@ if( i == 2 ){
                             int x, y;
                             if ( diagramIsVertical ) {
     	                        x = static_cast<int>( leftPoint.x() + met.height() * ( position() == Left ? -0.5 : 0.5) )
-    	                            - ( position() == Left ? labelSize.width() : (labelSize.width() - maxLabelsWidth) );
+    	                            - ( position() == Left ? labelSize.width() : 0.0 );
     	                        y = static_cast<int>( leftPoint.y() - ( met.ascent() + met.descent() ) * 0.6 );
                             } else {
                             	const qreal halfFontHeight = met.height() * 0.5;
