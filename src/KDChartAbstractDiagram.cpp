@@ -264,6 +264,19 @@ void AbstractDiagram::setModel( QAbstractItemModel * newModel )
         connect( model(), SIGNAL( modelReset() ), this, SLOT( setDataBoundariesDirty() ) );
         connect( model(), SIGNAL( layoutChanged() ), this, SLOT( setDataBoundariesDirty() ) );
     }
+}
+        
+void AbstractDiagram::setSelectionModel( QItemSelectionModel* newSelectionModel )
+{
+    if( selectionModel() )
+    {
+        disconnect( selectionModel(), SIGNAL( selectionChanged( QItemSelection, QItemSelection ) ), this, SIGNAL( modelsChanged() ) );
+    }
+    QAbstractItemView::setSelectionModel( newSelectionModel );
+    if( selectionModel() )
+    {
+        connect( selectionModel(), SIGNAL( selectionChanged( QItemSelection, QItemSelection ) ), this, SIGNAL( modelsChanged() ) );
+    }
     emit modelsChanged();
 }
 

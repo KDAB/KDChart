@@ -389,6 +389,7 @@ namespace KDChart {
         virtual QModelIndex indexAt( const QPoint& point ) const
         {
             QModelIndexList l = indexesAt( point );
+            qSort( l );
             if ( !l.isEmpty() )
                 return l.first();
             else

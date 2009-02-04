@@ -75,6 +75,8 @@ void LeveyJenningsDiagram::init()
     d->icons[ FluidicsPackChanged ] = QString::fromLatin1( ":/KDAB/kdchart/LeveyJennings/karo_blue.svg" );
     d->icons[ OkDataPoint ] = QString::fromLatin1( ":/KDAB/kdchart/LeveyJennings/circle_blue.svg" );
     d->icons[ NotOkDataPoint ] = QString::fromLatin1( ":/KDAB/kdchart/LeveyJennings/circle_blue_red.svg" );
+
+    setSelectionMode( QAbstractItemView::SingleSelection );
 }
 
 LeveyJenningsDiagram::~LeveyJenningsDiagram()
@@ -544,7 +546,8 @@ void LeveyJenningsDiagram::paint( PaintContext* ctx )
                                         iconRect().size() );
         }
 
-        if( selectionModel()->currentIndex() == lotIndex )
+        const QModelIndex current = selectionModel()->currentIndex();
+        if( selectionModel()->rowIntersectsSelection( lotIndex.row(), lotIndex.parent() ) || current.sibling( current.row(), 0 ) == lotIndex )
         {
             const QPen pen = ctx->painter()->pen();
             painter->setPen( d->scanLinePen );

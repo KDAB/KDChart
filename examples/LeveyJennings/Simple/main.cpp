@@ -155,10 +155,11 @@ int main( int argc, char** argv )
     axis3->setPosition( KDChart::CartesianAxis::Bottom );
     diagram->addAxis( axis3 );
 
-    diagram->selectionModel()->setCurrentIndex( model.index( 1, 0 ), QItemSelectionModel::Current );
-
     QTableView* tv = new QTableView;
     tv->setModel( &model );
+    tv->setSelectionModel( diagram->selectionModel() );
+    
+    diagram->selectionModel()->setCurrentIndex( model.index( 1, 0 ), QItemSelectionModel::Current );
 
     QSplitter* splitter = new QSplitter;
     splitter->addWidget( tv );

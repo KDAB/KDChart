@@ -111,6 +111,9 @@ namespace KDChart {
         /** Associate a model with the diagram. */
         virtual void setModel ( QAbstractItemModel * model );
 
+        /** Associate a seleection model with the diagrom. */
+        virtual void setSelectionModel( QItemSelectionModel* selectionModel );
+
         /**
          * Associate an AttributesModel with this diagram. Note that
          * the diagram does _not_ take ownership of the AttributesModel.
