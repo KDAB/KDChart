@@ -32,13 +32,15 @@
 #include <QModelIndex>
 #include <QVector>
 
+#include "kdchart_export.h"
+
 class QAbstractItemModel;
 
 namespace KDChart
 {
     namespace ModelDataCachePrivate
     {
-        class ModelSignalMapper
+        class KDCHART_EXPORT ModelSignalMapper
         {
         protected:
             ModelSignalMapper() {}
@@ -55,7 +57,7 @@ namespace KDChart
         };
 
         // this class maps slots to a non-QObject instantiating ModelSignalMapper
-        class ModelSignalMapperConnector : public QObject
+        class KDCHART_EXPORT ModelSignalMapperConnector : public QObject
         {
             Q_OBJECT
         public:
