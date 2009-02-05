@@ -43,7 +43,8 @@ MainWindow::MainWindow( QWidget *parent )
     m_diagram.setModel( &m_HLCModel );
     m_chart->coordinatePlane()->replaceDiagram( &m_diagram );
 
-    chartFrame->addWidget( m_chart );
+    QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
+    chartLayout->addWidget( m_chart );
 
     // Abscissa
     CartesianAxis *leftAxis = new CartesianAxis( &m_diagram );

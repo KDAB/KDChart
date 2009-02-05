@@ -148,8 +148,13 @@
      <property name="orientation" >
       <enum>Qt::Horizontal</enum>
      </property>
-     <widget class="QWidget" name="gridLayoutWidget" >
-      <layout class="QGridLayout" name="chartFrame" />
+     <widget class="QFrame" name="chartFrame" >
+      <property name="frameShape" >
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow" >
+       <enum>QFrame::Raised</enum>
+      </property>
      </widget>
     </widget>
    </item>
