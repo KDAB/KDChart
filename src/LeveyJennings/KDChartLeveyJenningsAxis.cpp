@@ -236,9 +236,17 @@ void LeveyJenningsAxis::paintAsAbscissa( PaintContext* context )
                               referenceArea,
                               KDChartEnums::MeasureOrientationMinimum,
                               Qt::AlignLeft );
+    QSize origSize = labelItem.sizeHint();
+    if( range.first.secsTo( range.second ) < 86400 )
+        labelItem = TextLayoutItem( range.first.toString(), 
+                                  labelTA,
+                                  referenceArea,
+                                  KDChartEnums::MeasureOrientationMinimum,
+                                  Qt::AlignLeft );
     QSize size = labelItem.sizeHint();
+
     float yPos = position() == Bottom ? geometry().bottom() - size.height() : geometry().top();
-    labelItem.setGeometry( QRectF( QPointF( geometry().left() - size.width() / 2.0, yPos ), size ).toRect() );
+    labelItem.setGeometry( QRectF( QPointF( geometry().left() - origSize.width() / 2.0, yPos ), size ).toRect() );
     labelItem.paint( painter );
 
     
@@ -247,8 +255,15 @@ void LeveyJenningsAxis::paintAsAbscissa( PaintContext* context )
                               referenceArea,
                               KDChartEnums::MeasureOrientationMinimum,
                               Qt::AlignLeft );
+    origSize = labelItem2.sizeHint();
+    if( range.first.secsTo( range.second ) < 86400 )
+        labelItem2 = TextLayoutItem( range.second.toString(), 
+                                     labelTA,
+                                     referenceArea,
+                                     KDChartEnums::MeasureOrientationMinimum,
+                                     Qt::AlignLeft );
     size = labelItem2.sizeHint();
     yPos = position() == Bottom ? geometry().bottom() - size.height() : geometry().top();
-    labelItem2.setGeometry( QRectF( QPointF( geometry().right() - size.width() / 2.0, yPos ), size ).toRect() );
+    labelItem2.setGeometry( QRectF( QPointF( geometry().right() - size.width() + origSize.width() / 2.0, yPos ), size ).toRect() );
     labelItem2.paint( painter );
 }

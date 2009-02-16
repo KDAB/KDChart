@@ -110,6 +110,7 @@ public:
     void setModel( QAbstractItemModel* model );
 
     QPair< QDateTime, QDateTime > timeRange() const;
+    void setTimeRange( const QPair< QDateTime, QDateTime >& timeRange );
 
 protected:
     void paint( PaintContext* paintContext );

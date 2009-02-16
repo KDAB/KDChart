@@ -388,18 +388,35 @@ void LeveyJenningsDiagram::calculateMeanAndStandardDeviation() const
 }
 
 // calculates the largest QDate not greater than \a dt.
-static QDate floor( const QDateTime& dt )
+static QDate floorDay( const QDateTime& dt )
 {
     return dt.date();
 }
 
 // calculates the smallest QDate not less than \a dt.
-static QDate ceil( const QDateTime& dt )
+static QDate ceilDay( const QDateTime& dt )
 {
     QDate result = dt.date();
     
     if( QDateTime( result, QTime() ) < dt )
         result = result.addDays( 1 );
+
+    return result;
+}
+
+// calculates the largest QDateTime like xx:00 not greater than \a dt.
+static QDateTime floorHour( const QDateTime& dt )
+{
+    return QDateTime( dt.date(), QTime( dt.time().hour(), 0 ) );
+}
+
+// calculates the smallest QDateTime like xx:00 not less than \a dt.
+static QDateTime ceilHour( const QDateTime& dt )
+{
+    QDateTime result( dt.date(), QTime( dt.time().hour(), 0 ) );
+    
+    if( result < dt )
+        result = result.addSecs( 3600 );
 
     return result;
 }
@@ -412,7 +429,7 @@ const QPair<QPointF, QPointF> LeveyJenningsDiagram::calculateDataBoundaries() co
 
     d->setYAxisRange();
 
-    // rounded down/up to the prev/next midnight
+    // rounded down/up to the prev/next midnight (at least that's the default)
     const QPair< QDateTime, QDateTime > range = timeRange();
     const unsigned int minTime = range.first.toTime_t();
     const unsigned int maxTime = range.second.toTime_t();
@@ -431,14 +448,45 @@ const QPair<QPointF, QPointF> LeveyJenningsDiagram::calculateDataBoundaries() co
  */
 QPair< QDateTime, QDateTime > LeveyJenningsDiagram::timeRange() const
 {
+    if( d->timeRange != QPair< QDateTime, QDateTime >() )
+        return d->timeRange;
+
     const QAbstractItemModel& m = *model();
     const int rowCount = m.rowCount( rootIndex() );
 
-    // round down/up to the prev/next midnight
-    const QDate min = floor( m.data( m.index( 0, 3, rootIndex() ) ).toDateTime() );
-    const QDate max = ceil( m.data( m.index( rowCount - 1, 3, rootIndex() ) ).toDateTime() );
+    const QDateTime begin = m.data( m.index( 0, 3, rootIndex() ) ).toDateTime();
+    const QDateTime end = m.data( m.index( rowCount - 1, 3, rootIndex() ) ).toDateTime();
+    
+    if( begin.secsTo( end ) > 86400 )
+    {
+        // if begin to end is more than 24h
+        // round down/up to the prev/next midnight
+        const QDate min = floorDay( begin );
+        const QDate max = ceilDay( end );
+        return QPair< QDateTime, QDateTime >( QDateTime( min ), QDateTime( max ) );
+    }
+    else if( begin.secsTo( end ) > 3600 )
+    {
+        // more than 1h: rond down up to the prex/next hour
+        // if begin to end is more than 24h
+        const QDateTime min = floorHour( begin );
+        const QDateTime max = ceilHour( end );
+        return QPair< QDateTime, QDateTime >( min, max );
+    }
+    return QPair< QDateTime, QDateTime >( begin, end );
+}
+ 
+/**
+ * Sets the \a timeRange visible on the x axis. Set it to QPair< QDateTime, QDateTime >()
+ * to use the default auto calculation.
+ */
+void LeveyJenningsDiagram::setTimeRange( const QPair< QDateTime, QDateTime >& timeRange )
+{
+    if( d->timeRange == timeRange )
+        return;
 
-    return QPair< QDateTime, QDateTime >( QDateTime( min ), QDateTime( max ) );
+    d->timeRange = timeRange;
+    update();
 }
 
 /**
