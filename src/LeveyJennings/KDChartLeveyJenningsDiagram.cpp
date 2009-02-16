@@ -512,38 +512,42 @@ void LeveyJenningsDiagram::paint( PaintContext* ctx )
         if( static_cast< int >( value ) == 0 )
         {
             hadMissingValue = true;
-            continue;
         }
-
-        if( prevLot == lot )
+        else
         {
-            const QPen pen = painter->pen();
-            QPen newPen = pen;
-            
-            if( hadMissingValue )
+            if( prevLot == lot )
             {
-                newPen.setDashPattern( QVector< qreal >() << 4.0 << 4.0 );
-            }
+                const QPen pen = painter->pen();
+                QPen newPen = pen;
             
-            painter->setPen( newPen );
-            painter->drawLine( prevPoint, point );
-            painter->setPen( pen );
-            d->reverseMapper.addLine( valueIndex.row(), valueIndex.column(), prevPoint, point );
-        }
-        else if( row > 0 )
-        {
-            drawLotChangeSymbol( ctx, QPointF( xValue, value ) );
-        }
+                if( hadMissingValue )
+                {
+                    newPen.setDashPattern( QVector< qreal >() << 4.0 << 4.0 );
+                }
+            
+                painter->setPen( newPen );
+                painter->drawLine( prevPoint, point );
+                painter->setPen( pen );
+                d->reverseMapper.addLine( valueIndex.row(), valueIndex.column(), prevPoint, point );
+            }
+            else if( row > 0 )
+            {
+                drawLotChangeSymbol( ctx, QPointF( xValue, value ) );
+            }
 
-        if( value <= d->expectedMeanValue + 4 * d->expectedStandardDeviation &&
-            value >= d->expectedMeanValue - 4 * d->expectedStandardDeviation )
-        {
-            const QPointF location( xValue, value );
-            drawDataPointSymbol( ctx, location, ok );
-            d->reverseMapper.addCircle( valueIndex.row(), 
-                                        valueIndex.column(), 
-                                        ctx->coordinatePlane()->translate( location ),
-                                        iconRect().size() );
+            if( value <= d->expectedMeanValue + 4 * d->expectedStandardDeviation &&
+                value >= d->expectedMeanValue - 4 * d->expectedStandardDeviation )
+            {
+                const QPointF location( xValue, value );
+                drawDataPointSymbol( ctx, location, ok );
+                d->reverseMapper.addCircle( valueIndex.row(), 
+                                            valueIndex.column(), 
+                                            ctx->coordinatePlane()->translate( location ),
+                                            iconRect().size() );
+            }
+            prevLot = lot;
+            prevPoint = point;
+            hadMissingValue = false;
         }
 
         const QModelIndex current = selectionModel()->currentIndex();
@@ -557,10 +561,6 @@ void LeveyJenningsDiagram::paint( PaintContext* ctx )
                                                                                    d->expectedStandardDeviation ) ) );
             painter->setPen( pen );
         }
-
-        prevLot = lot;
-        prevPoint = point;
-        hadMissingValue = false;
     }
 
     drawChanges( ctx );

@@ -35,6 +35,34 @@
 #include <QStandardItemModel>
 #include <QSplitter>
 #include <QTableView>
+#include <QTimer>
+
+class SelectionAnimator : public QObject
+{
+    Q_OBJECT
+public:
+    SelectionAnimator( QAbstractItemView* view )
+        : QObject( view ),
+          view( view )
+    {
+        QTimer* const t = new QTimer( this );
+        connect( t, SIGNAL( timeout() ), this, SLOT( animate() ) );
+        t->start( 1000 );
+    }
+
+protected Q_SLOTS:
+    void animate()
+    {
+        const int row = ( view->selectionModel()->currentIndex().row() + 1 ) % view->model()->rowCount();
+        view->selectionModel()->setCurrentIndex( view->model()->index( row, 0 ), QItemSelectionModel::Current );
+    }
+
+private:
+    QAbstractItemView* const view;
+
+};
+
+#include "main.moc"
 
 int main( int argc, char** argv )
 {
@@ -65,6 +93,7 @@ int main( int argc, char** argv )
 
     // This values should be missing (lot is needed anyway)
     model.setData( model.index( 3, 0 ), 1 );
+    model.setData( model.index( 3, 3 ), QDateTime::fromString( "2007-07-07T21:00:00", Qt::ISODate ) );
 
     model.setData( model.index( 4, 0 ), 1 );
     model.setData( model.index( 4, 1 ), 180 );
@@ -158,14 +187,14 @@ int main( int argc, char** argv )
     QTableView* tv = new QTableView;
     tv->setModel( &model );
     tv->setSelectionModel( diagram->selectionModel() );
-    
-    diagram->selectionModel()->setCurrentIndex( model.index( 1, 0 ), QItemSelectionModel::Current );
 
     QSplitter* splitter = new QSplitter;
     splitter->addWidget( tv );
     splitter->addWidget( chart );
 
     splitter->show();
+
+    new SelectionAnimator( tv );//diagram );
 
     return app.exec();
 }
