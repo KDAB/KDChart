@@ -143,7 +143,7 @@ void NormalPlotter::paint( PaintContext* ctx )
             if ( !point.hidden /*&& !ISNAN( lastPoint.key ) && !ISNAN( lastPoint.value ) */) {
                 appendDataValueTextInfoToList( diagram(), textInfoList, sourceIndex, pts,
                                                Position::NorthWest, Position::SouthWest,
-                                               1.0 );//point.value );
+                                               point.value );
                 if( !ISNAN( lastPoint.key ) && !ISNAN( lastPoint.value ) )
                 {
                     paintAreas( ctx, attributesModel()->mapToSource( lastPoint.index ), areas, laCell.transparency() );
