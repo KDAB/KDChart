@@ -68,6 +68,7 @@ LeveyJenningsAxis::~LeveyJenningsAxis ()
 void LeveyJenningsAxis::init ()
 {
     setType( LeveyJenningsGridAttributes::Expected );
+    setDateFormat( Qt::TextDate );
     const QStringList labels = QStringList() << tr( "-3sd" ) << tr( "-2sd" ) << tr( "mean" )
                                              << tr( "+2sd" ) << tr( "+3sd" );
 
@@ -108,6 +109,16 @@ void LeveyJenningsAxis::setType( LeveyJenningsGridAttributes::GridType type )
         setTextAttributes( ta );
     }
     d->type = type;
+}
+
+Qt::DateFormat LeveyJenningsAxis::dateFormat() const
+{
+    return d->format;
+}
+
+void LeveyJenningsAxis::setDateFormat(Qt::DateFormat format)
+{
+    d->format = format;
 }
 
 bool LeveyJenningsAxis::compare( const LeveyJenningsAxis* other )const
@@ -231,14 +242,14 @@ void LeveyJenningsAxis::paintAsAbscissa( PaintContext* context )
     painter->setClipping( false );
      
 
-    TextLayoutItem labelItem( range.first.date().toString(), 
+    TextLayoutItem labelItem( range.first.date().toString( dateFormat() ), 
                               labelTA,
                               referenceArea,
                               KDChartEnums::MeasureOrientationMinimum,
                               Qt::AlignLeft );
     QSize origSize = labelItem.sizeHint();
     if( range.first.secsTo( range.second ) < 86400 )
-        labelItem = TextLayoutItem( range.first.toString(), 
+        labelItem = TextLayoutItem( range.first.toString( dateFormat() ), 
                                   labelTA,
                                   referenceArea,
                                   KDChartEnums::MeasureOrientationMinimum,
@@ -250,14 +261,14 @@ void LeveyJenningsAxis::paintAsAbscissa( PaintContext* context )
     labelItem.paint( painter );
 
     
-    TextLayoutItem labelItem2( range.second.date().toString(), 
+    TextLayoutItem labelItem2( range.second.date().toString( dateFormat() ), 
                               labelTA,
                               referenceArea,
                               KDChartEnums::MeasureOrientationMinimum,
                               Qt::AlignLeft );
     origSize = labelItem2.sizeHint();
     if( range.first.secsTo( range.second ) < 86400 )
-        labelItem2 = TextLayoutItem( range.second.toString(), 
+        labelItem2 = TextLayoutItem( range.second.toString( dateFormat() ), 
                                      labelTA,
                                      referenceArea,
                                      KDChartEnums::MeasureOrientationMinimum,

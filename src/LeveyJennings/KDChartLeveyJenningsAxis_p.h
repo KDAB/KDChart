@@ -61,6 +61,7 @@ public:
 
 private:
     LeveyJenningsGridAttributes::GridType type;
+    Qt::DateFormat format;
 };
 
 inline LeveyJenningsAxis::LeveyJenningsAxis( Private * p, AbstractDiagram* diagram )
