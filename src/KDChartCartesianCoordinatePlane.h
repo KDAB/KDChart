@@ -93,6 +93,15 @@ namespace KDChart {
          */
         virtual void setZoomCenter( const QPointF& center );
 
+        /**
+         * Allows to specify a fixed data-space / coordinate-space relation. If set
+         * to true then fixed bar widths are used, so you see more bars as the window
+         * is made wider.
+         *
+         * This allows to completely restrict the size of bars in a graph such that,
+         * upon resizing a window, the graphs coordinate plane will grow (add more
+         * ticks to x- and y-coordinates) rather than have the image grow.
+         */
         void setFixedDataCoordinateSpaceRelation( bool fixed );
         bool hasFixedDataCoordinateSpaceRelation() const;
 
