@@ -2,9 +2,14 @@
 
 set PRODUCT_CAP=KDCHART
 set product_low=kdchart
-set Product_mix=KDChart
+set Product_mix=KDCHart
 
-set VERSION=2.2.1
+set VERSION=2.2.1-trunk
+
+set INSTALLATION_SUPPORTED="true"
+set STATIC_BUILD_SUPPORTED="true"
+
+set PACKSCRIPTS_DIR=../admin/packscripts
 
 set default_prefix=C:\%Product_mix%-%VERSION%
 
@@ -14,14 +19,13 @@ set release=no
 set prefix=
 set unittests=no
 
-if exist packscripts (
+if exist %PACKSCRIPTS_DIR% (
     set unittests=yes
     goto :CheckLicenseComplete
 )
 
 if exist .license.accepted goto :CheckLicenseComplete
 
-set region=
 set license_file=
 
 if exist LICENSE.GPL (
@@ -29,40 +33,33 @@ if exist LICENSE.GPL (
     set license_file=LICENSE.GPL
 ) else (
     if exist LICENSE.US (
-	set license_name="%Product_mix% Commercial License"
-	if exist LICENSE (
-	    echo.
-	    echo Please choose your region.
-	    echo.
-	    echo Type 1 for North or South America.
-	    echo Type 2 for anywhere outside North and South America.
-	    echo Anything else cancels.
-	    echo.
-	    set /p region=Select:
-	) else (
-	    set license_file=LICENSE.US
-	)
+        set license_name="%Product_mix% Commercial License"
+        if exist LICENSE (
+            echo.
+            echo Please choose your region.
+            echo.
+            echo Type 1 for North or South America.
+            echo Type 2 for anywhere outside North and South America.
+            echo Anything else cancels.
+            echo.
+            set /p region=Select:
+        ) else (
+            set license_file=LICENSE.US
+        )
     ) else (
-	if exist LICENSE (
-	    set license_name="%Product_mix% Commercial License"
-	    set license_file=LICENSE
-	) else ( 
-	    echo "Couldn't find license file, aborting"
-	    exit /B 1
+        if exist LICENSE (
+            set license_name="%Product_mix% Commercial License"
+            set license_file=LICENSE
+        ) else (
+            echo "Couldn't find license file, aborting"
+            exit /B 1
         )
     )
 )
 
 if "%license_file%" == "" (
-    if "%region%" == "1" (
-	set license_file=LICENSE.US
-	goto :CheckLicense
-    )
-    if "%region%" == "2" (
 	set license_file=LICENSE
 	goto :CheckLicense
-    )
-    goto :CheckLicenseFailed
 )
 
 :CheckLicense
@@ -93,21 +90,16 @@ exit /B 1
 :CheckLicenseComplete
 
 if "%QTDIR%" == "" (
-  echo You need to set QTDIR
-  goto :end
+  rem This is the batch equivalent of QTDIR=`qmake -query QT_INSTALL_PREFIX`...
+  for /f "tokens=*" %%V in ('qmake -query QT_INSTALL_PREFIX') do set QTDIR=%%V
 )
 
-
-# QTDIR is set, so we can test if shared libs are available.
-# Note: This default setting can be overwritten by command line param.
-if exist "%QTDIR%"\lib\QtGui*.dll (
-    shared=yes
-) else (
-    echo "No shared QT lib found."
-    shared=no
-    hide_symbols=no
+if "%QTDIR%" == "" (
+  echo You need to set QTDIR or add qmake to the PATH
+  exit /B 1
 )
 
+echo Qt found: %QTDIR%
 
 del /Q /S Makefile* 2> NUL
 del /Q /S debug 2> NUL
@@ -159,8 +151,14 @@ shift
 goto :Options
 
 :Prefix
-    set prefix="%2"
-    goto :OptionWithArg
+    if "%INSTALLATION_SUPPORTED%" == "true" (
+      set prefix="%2"
+      goto :OptionWithArg
+    ) else (
+      echo Installation not supported, -prefix option ignored
+      goto :OptionWithArg
+rem   goto :usage
+    )
 :Unittests
     set unittests=yes
     goto :OptionNoArg
@@ -171,8 +169,13 @@ goto :Options
     set shared=yes
     goto :OptionNoArg
 :Static
+if "%STATIC_BUILD_SUPPORTED%" == "true" (
     set shared=no
     goto :OptionNoArg
+) else (
+  echo Static build not supported, -static option not allowed
+  goto :usage
+)
 :Release
     set release=yes
     goto :OptionNoArg
@@ -184,12 +187,12 @@ goto :Options
 
 :EndOfOptions
 
-if exist packscripts (
+if exist %PACKSCRIPTS_DIR% (
     echo.
     echo Creating include directory...
-    perl packscripts/makeincludes.pl > makeincludes.log 2>&1
+    perl %PACKSCRIPTS_DIR%/makeincludes.pl > makeincludes.log 2>&1
     if errorlevel 1 (
-	echo Failed to run packscripts/makeincludes.pl
+	echo Failed to run %PACKSCRIPTS_DIR%/makeincludes.pl
 	goto :CleanEnd
     )
     del makeincludes.log
@@ -232,10 +235,6 @@ if "%prefix%" == "" (
 )
 echo %PRODUCT_CAP%_INSTALL_PREFIX = %prefix% >> .qmake.cache
 
-rem set KDCHARTDIR to enable making the plug-ins from Autobuild autotools
-if "x%KDCHARTDIR%" == "x" (
-    echo KDCHARTDIR="%CD%" >> .qmake.cache
-)
 
 echo CONFIG += %product_low%_target >> .qmake.cache
 
@@ -247,41 +246,43 @@ if exist "%QTDIR%\include\Qt\private" (
     rem echo Some features will not be available.
 )
 
-copy .qmake.cache .confqmake.cache
-
 echo %Product_mix% v%VERSION% configuration:
 echo.
-echo   Install Prefix..........: %prefix%
-echo     (default: %default_prefix%)
 echo   Debug...................: %debug% (default: combined)
 echo   Release.................: %release% (default: combined)
-echo   Shared build............: %shared% (default: yes)
+if "%STATIC_BUILD_SUPPORTED%" == "true" (
+  echo   Shared build............: %shared% (default: yes)
+)
 echo   Compiled-In Unit Tests..: %unittests% (default: no)
 echo.
 
-%QTDIR%\bin\qmake %product_low%.pro
+%QTDIR%\bin\qmake %product_low%.pro -recursive "%PRODUCT_CAP%_BASE=%CD%"
 
 if errorlevel 1 (
     echo qmake failed
     goto :CleanEnd
 )
 
-echo Ok, now run nmake, then nmake install to install into %prefix%
+echo Ok, now run nmake to build the framework.
 goto :end
 
 :usage
 IF "%1" NEQ "" echo %0: unknown option "%1"
 echo usage: %0 [options]
 echo where options include:
-echo. 
-echo   -prefix ^<path^>
-echo       install $Product_mix% into ^<path^>
+if "%INSTALLATION_SUPPORTED%" == "true" (
+  echo.
+  echo   -prefix <dir> 
+  echo       set installation prefix to <dir>, used by make install
+)
 echo.
 echo   -release / -debug
 echo       build in debug/release mode
-echo.
-echo   -static / -shared
-echo       build static/shared libraries
+if "%STATIC_BUILD_SUPPORTED%" == "true" (
+  echo.
+  echo   -static / -shared
+  echo       build static/shared libraries
+)
 echo.
 echo   -unittests / -no-unittests
 echo       enable/disable compiled-in unittests
