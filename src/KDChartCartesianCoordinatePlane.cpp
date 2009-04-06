@@ -271,15 +271,15 @@ DataDimensionsList CartesianCoordinatePlane::getDataDimensionsList() const
     if( dgr && dgr->referenceDiagram() )
     	dgr = dgr->referenceDiagram();
 	const BarDiagram *barDiagram = qobject_cast< const BarDiagram* >( dgr );
-	
+
 	// note:
 	// It does make sense to retrieve the orientation from the first diagram. This is because
 	// a coordinate plane can either be for horizontal *or* for vertical diagrams. Both at the
 	// same time won't work, and thus the orientation for all diagrams is the same as for the first one.
 	const Qt::Orientation diagramOrientation = barDiagram != 0 ? barDiagram->orientation() : Qt::Vertical;
-	
+
     const bool diagramIsVertical = diagramOrientation == Qt::Vertical;
-        
+
 
     if( dgr ){
         const QRectF r( calculateRawDataBoundingRect() );
@@ -786,7 +786,10 @@ void CartesianCoordinatePlane::setAutoAdjustGridToZoom( bool autoAdjust )
     }
 }
 
-const bool CartesianCoordinatePlane::autoAdjustGridToZoom() const
+#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
+const
+#endif
+bool CartesianCoordinatePlane::autoAdjustGridToZoom() const
 {
     return d->autoAdjustGridToZoom;
 }

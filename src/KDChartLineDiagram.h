@@ -43,7 +43,7 @@ namespace KDChart {
 
 /**
  * @brief LineDiagram defines a common line diagram.
- * 
+ *
  * It provides different subtypes which are set using \a setType.
  */
 class KDCHART_EXPORT LineDiagram : public AbstractCartesianDiagram
@@ -79,11 +79,11 @@ public:
 
     void setType( const LineType type );
     LineType type() const;
-    
+
     /** If centerDataPoints() is true, all data points are moved by an
      * offset of 0.5 to the right. This is useful in conjunction with
      * bar diagrams, since data points are then centered just like bars.
-     * 
+     *
      * \sa centerDataPoints()
      */
     void setCenterDataPoints( bool center );
@@ -115,11 +115,19 @@ public:
                                     const ValueTrackerAttributes & a );
     ValueTrackerAttributes valueTrackerAttributes( const QModelIndex & index ) const;
 
+#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
     // implement AbstractCartesianDiagram
     /* reimpl */
     const int numberOfAbscissaSegments () const;
     /* reimpl */
     const int numberOfOrdinateSegments () const;
+#else
+    // implement AbstractCartesianDiagram
+    /* reimpl */
+    int numberOfAbscissaSegments () const;
+    /* reimpl */
+    int numberOfOrdinateSegments () const;
+#endif
 
 protected:
     void paint ( PaintContext* paintContext );

@@ -92,9 +92,9 @@ bool Plotter::compare( const Plotter* other )const
   */
 void Plotter::setType( const PlotType type )
 {
-    if( d->implementor->type() == type ) 
+    if( d->implementor->type() == type )
         return;
-    if( datasetDimension() != 2 ) 
+    if( datasetDimension() != 2 )
     {
        Q_ASSERT_X ( false, "setType()",
                     "This line chart type can only be used with two-dimensional data." );
@@ -265,7 +265,7 @@ void Plotter::setThreeDLineAttributes(
    emit propertiesChanged();
 }
 
-/** 
+/**
   * @return the global 3D line attributes
   */
 ThreeDLineAttributes Plotter::threeDLineAttributes() const
@@ -342,7 +342,7 @@ void Plotter::resizeEvent ( QResizeEvent* )
 
 const QPair< QPointF, QPointF > Plotter::calculateDataBoundaries() const
 {
-    if ( !checkInvariants( true ) ) 
+    if ( !checkInvariants( true ) )
         return QPair< QPointF, QPointF >( QPointF( 0, 0 ), QPointF( 0, 0 ) );
 
     // note: calculateDataBoundaries() is ignoring the hidden flags.
@@ -393,12 +393,18 @@ void Plotter::resize ( const QSizeF& size )
     setDataBoundariesDirty();
 }
 
-const int Plotter::numberOfAbscissaSegments () const
+#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
+const
+#endif
+int Plotter::numberOfAbscissaSegments () const
 {
     return d->attributesModel->rowCount( attributesModelRootIndex() );
 }
 
-const int Plotter::numberOfOrdinateSegments () const
+#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
+const
+#endif
+int Plotter::numberOfOrdinateSegments () const
 {
     return d->attributesModel->columnCount( attributesModelRootIndex() );
 }

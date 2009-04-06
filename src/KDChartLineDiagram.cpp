@@ -173,7 +173,7 @@ void LineDiagram::setLineAttributes( const LineAttributes& la )
     emit propertiesChanged();
 }
 
-/** 
+/**
   * Sets the line attributes of data set \a column to \a la
   */
 void LineDiagram::setLineAttributes(
@@ -464,12 +464,18 @@ void LineDiagram::resize ( const QSizeF& size )
     setDataBoundariesDirty();
 }
 
-const int LineDiagram::numberOfAbscissaSegments () const
+#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
+const
+#endif
+int LineDiagram::numberOfAbscissaSegments () const
 {
     return d->attributesModel->rowCount(attributesModelRootIndex());
 }
 
-const int LineDiagram::numberOfOrdinateSegments () const
+#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
+const
+#endif
+int LineDiagram::numberOfOrdinateSegments () const
 {
     return d->attributesModel->columnCount(attributesModelRootIndex());
 }

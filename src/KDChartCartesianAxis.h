@@ -105,7 +105,11 @@ namespace KDChart {
         bool hasDefaultTitleTextAttributes() const;
 
         virtual void setPosition ( Position p );
+#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
         virtual const Position position () const;
+#else
+        virtual Position position () const;
+#endif
 
         virtual void layoutPlanes();
 

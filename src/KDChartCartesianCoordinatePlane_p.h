@@ -64,18 +64,18 @@ public:
         grid = new CartesianGrid();
     }
 
-    virtual const bool isVisiblePoint(
+    virtual bool isVisiblePoint(
         const AbstractCoordinatePlane * plane,
         const QPointF& point ) const
     {
         QPointF p = point;
-        const CartesianCoordinatePlane* const ref = 
+        const CartesianCoordinatePlane* const ref =
             dynamic_cast< const CartesianCoordinatePlane* >( const_cast< AbstractCoordinatePlane* >( plane )->sharedAxisMasterPlane() );
-        const CartesianCoordinatePlane* const cartPlane = 
+        const CartesianCoordinatePlane* const cartPlane =
             dynamic_cast< const CartesianCoordinatePlane* >( plane );
         if( ref != 0 && ref != cartPlane )
         {
-            const QPointF logical = ref->translateBack( point ) - cartPlane->visibleDataRange().topLeft() 
+            const QPointF logical = ref->translateBack( point ) - cartPlane->visibleDataRange().topLeft()
                                                                       + ref->visibleDataRange().topLeft();
             p = ref->translate( logical );
         }
@@ -114,7 +114,7 @@ public:
 
     bool fixedDataCoordinateSpaceRelation;
     QRectF fixedDataCoordinateSpaceRelationOldSize;
-    
+
     bool reverseVerticalPlane;
     bool reverseHorizontalPlane;
 };

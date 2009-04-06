@@ -62,7 +62,7 @@ namespace KDChart {
 
         typedef QPair< qreal, qreal > qrealPair;
 
-        inline const qreal makeLogarithmic( qrealPair reference, qreal value ) const
+        inline qreal makeLogarithmic( qrealPair reference, qreal value ) const
         {
             qreal result = value;
 
@@ -85,7 +85,7 @@ namespace KDChart {
 
             if( value == 0.0 )
                 return result;
-            
+
             result -= log10( reference.first ) * relation;
             result *= ( reference.second - reference.first ) / relation / (log10(reference.second)-log10(reference.first));
             result += reference.first;
@@ -93,7 +93,7 @@ namespace KDChart {
             return result;
         }
 
-        inline const QPointF translate( const QPointF& diagramPoint ) const
+        inline QPointF translate( const QPointF& diagramPoint ) const
         {
             // ### de-inline me
             QPointF result = originTranslation;

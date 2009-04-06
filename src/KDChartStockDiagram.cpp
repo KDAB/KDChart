@@ -259,8 +259,15 @@ QPen StockDiagram::downTrendCandlestickPen( int column ) const
     return d->downTrendCandlestickPen;
 }
 
-const int StockDiagram::numberOfAbscissaSegments() const { return 1; }
-const int StockDiagram::numberOfOrdinateSegments() const { return 1; }
+#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
+const
+#endif
+int StockDiagram::numberOfAbscissaSegments() const { return 1; }
+
+#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
+const
+#endif
+int StockDiagram::numberOfOrdinateSegments() const { return 1; }
 
 void StockDiagram::paint( PaintContext *context )
 {

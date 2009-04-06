@@ -416,7 +416,10 @@ void KDChart::AbstractCoordinatePlane::mouseMoveEvent( QMouseEvent* event )
     }
 }
 
-const bool KDChart::AbstractCoordinatePlane::isVisiblePoint( const QPointF& point ) const
+#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
+const
+#endif
+bool KDChart::AbstractCoordinatePlane::isVisiblePoint( const QPointF& point ) const
 {
     return d->isVisiblePoint( this, point );
 }

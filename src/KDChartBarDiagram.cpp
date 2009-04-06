@@ -198,7 +198,7 @@ void BarDiagram::setOrientation( Qt::Orientation orientation )
              Q_ASSERT_X( false, "BarDiagram::setType", "unknown diagram subtype" );
          }
      }
-    
+
     // AbstractAxis settings - see AbstractDiagram and CartesianAxis
     setPercentMode( type() == BarDiagram::Percent );
     setDataBoundariesDirty();
@@ -416,12 +416,18 @@ void BarDiagram::resize( const QSizeF& size )
     setDataBoundariesDirty();
 }
 
-const int BarDiagram::numberOfAbscissaSegments () const
+#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
+const
+#endif
+int BarDiagram::numberOfAbscissaSegments () const
 {
     return d->attributesModel->rowCount(attributesModelRootIndex());
 }
 
-const int BarDiagram::numberOfOrdinateSegments () const
+#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
+const
+#endif
+int BarDiagram::numberOfOrdinateSegments () const
 {
     return d->attributesModel->columnCount(attributesModelRootIndex());
 }

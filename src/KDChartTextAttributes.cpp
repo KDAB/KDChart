@@ -170,7 +170,10 @@ bool TextAttributes::hasAbsoluteFontSize() const
 }
 
 
-const qreal TextAttributes::calculatedFontSize(
+#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
+const
+#endif
+qreal TextAttributes::calculatedFontSize(
         const QObject*                   autoReferenceArea,
         KDChartEnums::MeasureOrientation autoReferenceOrientation ) const
 {

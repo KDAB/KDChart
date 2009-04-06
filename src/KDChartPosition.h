@@ -111,13 +111,13 @@ public:
     static const Position& Floating;
 
     // boolean flags: 1, 2, 4, 8, ...
-    enum Option { 
+    enum Option {
         IncludeCenter   = 0x1,
         IncludeFloating = 0x2 };
     Q_DECLARE_FLAGS( Options, Option )
 
     // Unfortunately the following typecast from int to Options is needed
-    // as the | operator is not defined yet, this will be done by 
+    // as the | operator is not defined yet, this will be done by
     // the makro Q_DECLARE_OPERATORS_FOR_FLAGS( KDChart::Position::Options )
     // at the bottom of this file.
     static QList<QByteArray> names( Options options    = Options(IncludeCenter | IncludeFloating) );
@@ -214,14 +214,22 @@ class KDCHART_EXPORT PositionPoints
         mapOfDegrees[pos] = degrees;
     }
 
+#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
     const qreal degrees( KDChartEnums::PositionValue pos ) const
+#else
+    qreal degrees( KDChartEnums::PositionValue pos ) const
+#endif
     {
         if( mapOfDegrees.contains(pos) )
             return mapOfDegrees[pos];
         return 0.0;
     }
 
+#if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
     const QPointF point( Position position ) const
+#else
+    QPointF point( Position position ) const
+#endif
     {
       //qDebug() << "point( " << position.name() << " )";
       if( position ==  Position::Center)
