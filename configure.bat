@@ -2,7 +2,7 @@
 
 set PRODUCT_CAP=KDCHART
 set product_low=kdchart
-set Product_mix=KDCHart
+set Product_mix=KDChart
 
 set VERSION=2.2.1-trunk
 

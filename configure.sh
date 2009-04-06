@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PRODUCT=KDCHART
-Product=KDCHart
+Product=KDChart
 product=kdchart
 
 VERSION=2.2.1-trunk
