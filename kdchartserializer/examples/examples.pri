@@ -21,24 +21,6 @@ staticlib {
   DEFINES += KDCHARTSERIALIZER_STATICLIB
 }
 
-
-# 2a.Use the filename "kdchartd.dll" (or "kdchartd.lib") on Windows
-#    to avoid name clashes between debug/non-debug versions of the
-#    KD Chart library:
-KDCHARTLIB = kdchart
-CONFIG(debug, debug|release) {
-    !unix: KDCHARTLIB = "kdchartd"
-}
-
-# 2b.Use the filename "kdchartserializerd.dll" (or "kdchartservializerd.lib") on Windows
-#    to avoid name clashes between debug/non-debug versions of the
-#    KD Chart library:
-KDCHARTSERIALIZERLIB = kdchartserializer
-CONFIG(debug, debug|release) {
-    !unix: KDCHARTSERIALIZERLIB = "kdchartserializerd"
-}
-
-
 # 3. Adjust the paths and LIBS according to KDCHART_PATH.
 #    Note: KDCHART_PATH is set in the calling .pro file,
 #          before examples.pri is included
