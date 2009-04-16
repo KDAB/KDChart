@@ -15,16 +15,6 @@ staticlib {
   DEFINES += KDCHART_STATICLIB
 }
 
-
-# 2. Use the filename "kdchartd.dll" (or "kdchartd.lib") on Windows
-#    to avoid name clashes between debug/non-debug versions of the
-#    KD Chart library:
-KDCHARTLIB = kdchart
-CONFIG(debug, debug|release) {
-    !unix: KDCHARTLIB = "kdchartd"
-}
-
-
 # 3. Adjust the paths and LIBS according to KDCHART_PATH.
 #    Note: KDCHART_PATH is set in the calling .pro file,
 #          before examples.pri is included
@@ -34,7 +24,7 @@ INCLUDEPATH += \
 DEPENDPATH += \
             $$KDCHART_PATH/include \
             $$KDCHART_PATH/examples/tools
-LIBS        += -L$$KDCHART_PATH/lib -l$$KDCHARTLIB -ltesttools
+LIBS        += -L$$KDCHART_PATH/lib -l$$KDCHARTLIB -l$$TESTTOOLSLIB
 
 
 # 4. Miscellaneous settings:
