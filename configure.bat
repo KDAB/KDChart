@@ -6,8 +6,8 @@ set Product_mix=KDChart
 
 set VERSION=2.3.0
 
-set INSTALLATION_SUPPORTED="true"
-set STATIC_BUILD_SUPPORTED="true"
+set INSTALLATION_SUPPORTED=true
+set STATIC_BUILD_SUPPORTED=true
 
 set PACKSCRIPTS_DIR=../admin/packscripts
 
