@@ -9,23 +9,6 @@ staticlib {
 }
 
 
-# 2a.Use the filename "kdchartd.dll" (or "kdchartd.lib") on Windows
-#    to avoid name clashes between debug/non-debug versions of the
-#    KD Chart library:
-KDCHARTLIB = kdchart
-CONFIG(debug, debug|release) {
-    !unix: KDCHARTLIB = "kdchartd"
-}
-
-# 2b.Use the filename "kdchartserializerd.dll" (or "kdchartserializerd.lib") on Windows
-#    to avoid name clashes between debug/non-debug versions of the
-#    KD Chart library:
-KDCHARTSERIALIZERLIB = kdchartserializer
-CONFIG(debug, debug|release) {
-    !unix: KDCHARTSERIALIZERLIB = "kdchartserializerd"
-}
-
-
 CONFIG+=qtestlib
 TEMPLATE = app
 INCLUDEPATH +=  ../../examples/tools ../../include \
@@ -40,7 +23,7 @@ test.commands = ./$(TARGET)
 test.depends = $(TARGET)
 QMAKE_EXTRA_TARGETS += test
 
-LIBS += -L../../lib -l$$KDCHARTSERIALIZERLIB -l$$KDCHARTLIB -ltesttools
+LIBS += -L../../lib -l$$KDCHARTSERIALIZERLIB -l$$KDCHARTLIB -l$$TESTTOOLSLIB
 
 unix {
   MOC_DIR = .moc

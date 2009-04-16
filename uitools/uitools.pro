@@ -10,13 +10,6 @@ include( ../variables.pri )
 # KDCHARTDIR = ..
 KDCHARTBASE = ..
 
-# Use the filename "kdchartd.dll" (or "kdchartd.lib") on Windows
-# to avoid name clashes between debug/non-debug versions of the
-# KD Chart library:
-KDCHARTLIB = kdchart
-CONFIG(debug, debug|release) {
-    !unix: KDCHARTLIB = "kdchartd"
-}
 LIBS += -L$$KDCHARTBASE/lib -l$$KDCHARTLIB
 
 

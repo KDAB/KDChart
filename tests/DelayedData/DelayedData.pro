@@ -1,14 +1,5 @@
 KDCHART_PATH = ../..
 
-
-# Use the filename "kdchartd.dll" (or "kdchartd.lib") on Windows
-# to avoid name clashes between debug/non-debug versions of the
-# KD Chart library:
-KDCHARTLIB = kdchart
-CONFIG(debug, debug|release) {
-    !unix: KDCHARTLIB = "kdchartd"
-}
-
 SOURCES= main.cpp
 
 
@@ -17,7 +8,7 @@ INCLUDEPATH += $$KDCHART_PATH/include \
 DEPENDPATH += $$KDCHART_PATH/include \
             $$KDCHART_PATH/examples/tools
 
-LIBS        += -L$$KDCHART_PATH/lib -l$$KDCHARTLIB -ltesttools
+LIBS        += -L$$KDCHART_PATH/lib -l$$KDCHARTLIB -l$$TESTTOOLSLIB
 message( "Building ''$$TARGET'' using LIBS ''$$LIBS''" )
 
 unix {

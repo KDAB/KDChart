@@ -12,6 +12,7 @@ SUBDIRS +=qtests
 
 VERSION  = 2.3.0
 
+MAJOR_VERSION = 2
 
 QT_VERSION=$$[QT_VERSION]
 isEmpty(QT_VERSION) {
@@ -37,6 +38,21 @@ equals( KDCHART_INSTALL_PREFIX, $$DEFAULT_INSTALL_PREFIX ){
 } else {
     INSTALL_PREFIX=\"$$KDCHART_INSTALL_PREFIX\"
 }
+
+DEBUG_SUFFIX=""
+CONFIG(debug, debug|release) {
+  !unix: KDCHARTLIB = "kdchartd"
+}
+unix {
+  VERSION_SUFFIX=""
+} else {
+  VERSION_SUFFIX=$$MAJOR_VERSION
+}
+
+KDCHARTLIB = kdchart$$VERSION_SUFFIX$$DEBUG_SUFFIX
+TESTTOOLSLIB = testtools$$VERSION_SUFFIX$$DEBUG_SUFFIX
+KDCHARTSERIALIZERLIB = kdchartserializer$$VERSION_SUFFIX$$DEBUG_SUFFIX
+
 message(Install prefix is $$INSTALL_PREFIX)
 message(This is KD Chart version $$VERSION)
 
@@ -50,7 +66,9 @@ system('echo $${MESSAGE} >> .qmake.cache')
 # store PREFIX:
 system('echo INSTALL_PREFIX=$$INSTALL_PREFIX >> .qmake.cache')
 system('echo VERSION=$$VERSION >> .qmake.cache')
-
+system('echo KDCHARTLIB=$$KDCHARTLIB >> .qmake.cache')
+system('echo TESTTOOLSLIB=$$TESTTOOLSLIB >> .qmake.cache')
+system('echo KDCHARTSERIALIZERLIB=$$KDCHARTSERIALIZERLIB >> .qmake.cache')
 
 # install license(s):
 exists( LICENSE ):     licenses.files  = LICENSE
