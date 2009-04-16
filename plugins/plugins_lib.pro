@@ -16,18 +16,8 @@ DEFINES -= QT_NO_CAST_FROM_ASCII
 # KDCHARTDIR = ../
 KDCHARTBASE = ../
 
-LIBS += -L$$KDCHARTBASE/lib -l$$KDCHARTLIB
+LIBS += -L$$KDCHARTBASE/lib -l$$KDCHARTLIB -l$$KDCHARTUITOOLSLIB
 
-
-unix {
-  LIBS += -lkdchartuitools
-} else {
-  CONFIG(debug, debug|release) {
-    LIBS += -lkdchartuitoolsd
-  } else {
-    LIBS += -lkdchartuitools
-  }
-}
 INCLUDEPATH +=  $$KDCHARTBASE/uitools \
                 $$KDCHARTBASE/include \
                 $$KDCHARTBASE/src \

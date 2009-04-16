@@ -26,18 +26,8 @@ staticlib {
 HEADERS += plugins.h
 SOURCES += plugins.cpp
 
-unix {
-  LIBS += -L$$KDCHARTBASE/lib -lkdchartpluginlib -lkdchartuitools -lkdchart
-  kdchart_static:LIBS += -lkdchartuitools
-} else {
-  CONFIG(debug, debug|release) {
-    LIBS += -L$$KDCHARTBASE/lib -lkdchartpluginlibd -lkdchartd
-    kdchart_static:LIBS += -lkdchartuitoolsd
-  } else {
-    LIBS += -L$$KDCHARTBASE/lib -lkdchartpluginlib -lkdchart
-    kdchart_static:LIBS += -lkdchartuitools
-  }
-}
+LIBS += -L$$KDCHARTBASE/lib -l$$KDCHARTPLUGINLIBLIB  -l$$KDCHARTLIB
+kdchart_static: LIBS += -l$$KDCHARTUITOOLSLIB
 
 INCLUDEPATH += $$KDCHARTBASE/src \
                $$KDCHARTBASE/extra_include

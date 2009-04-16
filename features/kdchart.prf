@@ -1,3 +1,5 @@
+KDCHART_MAJOR_VERSION = 2
+
 :  # copy from environment:
   isEmpty( KDCHARTDIR ):KDCHARTDIR=$$(KDCHARTDIR)
   !isEmpty( KDCHARTDIR ) {
@@ -19,17 +21,19 @@
     #!exists( $$KDCHARTDIR/include/KDChartGlobal ):error( "Cannot find KDChartGlobal in $KDCHARTDIR/include" )
 # ^^^ STOP!
 
+    KDCHART_LIB_TYPE_SUFFIX=""
+    KDCHART_LIB_VERSION_SUFFIX=""
+	win32 {
+	    CONFIG(debug, debug|release) {
+            KDCHART_LIB_TYPE_SUFFIX="d"
+	    }
+        KDCHART_LIB_VERSION_SUFFIX=$$KDCHART_MAJOR_VERSION
+	}
     LIBS += -L$$KDCHARTDIR/lib
+	LIBS += -lkdchart$$KDCHART_LIB_TYPE_SUFFIX$$KDCHART_LIB_VERSION_SUFFIX
+	
     unix {
       !isEmpty(QMAKE_RPATH):LIBS += $$QMAKE_RPATH$$KDCHARTDIR/lib
-      LIBS += -lkdchart
-    }
-    win32 {
-      CONFIG(debug, debug|release) {
-        LIBS += -lkdchartd
-      } else {
-        LIBS += -lkdchart
-      }
     }
 
     INCLUDEPATH += $$KDCHARTDIR/include

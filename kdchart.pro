@@ -52,6 +52,8 @@ unix {
 KDCHARTLIB = kdchart$$DEBUG_SUFFIX$$VERSION_SUFFIX
 TESTTOOLSLIB = testtools$$VERSION_SUFFIX
 KDCHARTSERIALIZERLIB = kdchartserializer$$DEBUG_SUFFIX$$VERSION_SUFFIX
+KDCHARTUITOOLSLIB = kdchartuitools$$DEBUG_SUFFIX$$VERSION_SUFFIX
+KDCHARTPLUGINLIBLIB = kdchartpluginlib$$DEBUG_SUFFIX$$VERSION_SUFFIX
 
 message(Install prefix is $$INSTALL_PREFIX)
 message(This is KD Chart version $$VERSION)
@@ -69,6 +71,8 @@ system('echo VERSION=$$VERSION >> .qmake.cache')
 system('echo KDCHARTLIB=$$KDCHARTLIB >> .qmake.cache')
 system('echo TESTTOOLSLIB=$$TESTTOOLSLIB >> .qmake.cache')
 system('echo KDCHARTSERIALIZERLIB=$$KDCHARTSERIALIZERLIB >> .qmake.cache')
+system('echo KDCHARTUITOOLSLIB=$$KDCHARTUITOOLSLIB >> .qmake.cache')
+system('echo KDCHARTPLUGINLIBLIB=$$KDCHARTPLUGINLIBLIB >> .qmake.cache')
 
 # install license(s):
 exists( LICENSE ):     licenses.files  = LICENSE
