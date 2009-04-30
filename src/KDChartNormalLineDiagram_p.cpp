@@ -116,6 +116,7 @@ void NormalLineDiagram::paint( PaintContext* ctx )
         LineAttributesInfoList lineList;
         LineAttributes laPreviousCell;
         CartesianDiagramDataCompressor::DataPoint lastPoint;
+        qreal lastAreaBoundingValue;
 
         CartesianDiagramDataCompressor::CachePosition previousCellPosition;
         for ( int row = 0; row < rowCount; ++row ) {
@@ -127,6 +128,15 @@ void NormalLineDiagram::paint( PaintContext* ctx )
 
             const LineAttributes laCell = diagram()->lineAttributes( sourceIndex );
             const LineAttributes::MissingValuesPolicy policy = laCell.missingValuesPolicy();
+
+            qreal areaBoundingValue;
+            // Point to which the line is to be drawn (zero line, in most cases)
+            if ( laCell.areaBoundingDataset() != -1 ) {
+                const CartesianDiagramDataCompressor::CachePosition areaBoundingCachePosition( row, laCell.areaBoundingDataset() );
+                areaBoundingValue = compressor().data( areaBoundingCachePosition ).value;
+            } else
+                // Use zero line if no bounding dataset is set
+                areaBoundingValue = 0.0;
             
             if( ISNAN( point.value ) )
             {
@@ -151,8 +161,8 @@ void NormalLineDiagram::paint( PaintContext* ctx )
             // area corners, a + b are the line ends:
             const QPointF a( plane->translate( QPointF( diagram()->centerDataPoints() ? lastPoint.key + 0.5 : lastPoint.key, lastPoint.value ) ) );
             const QPointF b( plane->translate( QPointF( diagram()->centerDataPoints() ? point.key + 0.5 : point.key, point.value ) ) );
-            const QPointF c( plane->translate( QPointF( diagram()->centerDataPoints() ? lastPoint.key + 0.5 : lastPoint.key, 0.0 ) ) );
-            const QPointF d( plane->translate( QPointF( diagram()->centerDataPoints() ? point.key + 0.5 : point.key, 0.0 ) ) );
+            const QPointF c( plane->translate( QPointF( diagram()->centerDataPoints() ? lastPoint.key + 0.5 : lastPoint.key, lastAreaBoundingValue ) ) );
+            const QPointF d( plane->translate( QPointF( diagram()->centerDataPoints() ? point.key + 0.5 : point.key, areaBoundingValue ) ) );
             // add the line to the list:
            // add data point labels:
             const PositionPoints pts = PositionPoints( b, a, d, c );
@@ -176,6 +186,7 @@ void NormalLineDiagram::paint( PaintContext* ctx )
             // wrap it up:
             previousCellPosition = position;
             laPreviousCell = laCell;
+            lastAreaBoundingValue = areaBoundingValue;
             lastPoint = point;
         }
 		paintElements( ctx, textInfoList, lineList, policy );

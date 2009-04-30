@@ -72,6 +72,15 @@ public:
     MissingValuesPolicy missingValuesPolicy() const;
 
     /* area chart - all types */
+    /**
+     * Sets the lower or upper (depending on the displayed value being positive or
+     * negative, resp.) bounding line (i.e., the dataset with the line data). The area
+     * is then drawn between this line and the line of the specified dataset.
+     * Pass -1 to draw the area between this line and the zero line.
+     */
+    void setAreaBoundingDataset( int dataset );
+    int areaBoundingDataset() const;
+
     void setDisplayArea( bool display );
     bool displayArea() const;
     /*allows viewing the covered areas*/
