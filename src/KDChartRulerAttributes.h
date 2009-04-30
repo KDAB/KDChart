@@ -89,6 +89,18 @@ public:
     void setTickMarkColor( const QColor& color );
     QColor tickMarkColor() const;
 
+    /**
+      * Shows or hides major tick marks
+      */
+    void setShowMinorTickMarks( bool show );
+    bool showMinorTickMarks() const;
+
+    /**
+      * Shows or hides minor tick marks
+      */
+    void setShowMajorTickMarks( bool show );
+    bool showMajorTickMarks() const;
+
     bool operator==( const RulerAttributes& ) const;
     inline bool operator!=( const RulerAttributes& other ) const { return !operator==(other); }
 

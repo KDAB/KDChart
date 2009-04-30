@@ -267,14 +267,16 @@ void CartesianAxis::Private::drawSubUnitRulers( QPainter* painter, CartesianCoor
     const bool isLogarithmic = (dim.calcMode == AbstractCoordinatePlane::Logarithmic );
     const int subUnitTickLength = axis()->tickLength( true );
 
-    while ( dim.end - f > std::numeric_limits< float >::epsilon() ) {
+    // Use negative limit to ensure that also the last tick is painted,
+    // which is needed if major tick marks are disabled
+    while ( dim.end - f > -std::numeric_limits< float >::epsilon() ) {
     	const qreal quotient = f / dim.stepWidth;
     	const bool isMinorTickMark = qAbs(qRound(quotient) - quotient) > std::numeric_limits< float >::epsilon();
     	// 'Drawn' ticks isn't quite the right naming here, it also counts major tick marks, which are not drawn.
         if( drawnTicks.count() > nextMayBeTick )
             mayBeTick = drawnTicks[ nextMayBeTick ];
-    	// Paint only minor, not major, tick marks
-    	if ( isMinorTickMark ) {
+        // Paint minor tick mark only if there is no major tick mark drawn at this point
+        if ( isMinorTickMark || !rulerAttr.showMajorTickMarks() ) {
 	        if ( isAbscissa ) {
 	            // for the x-axis
 	            QPointF topPoint = diagramIsVertical ? QPointF( f, 0 ) : QPointF( 0, f );
@@ -333,7 +335,7 @@ void CartesianAxis::Private::drawSubUnitRulers( QPainter* painter, CartesianCoor
 	            } else {
 	                ++nextMayBeTick;
 	            }
-	        }
+                }
     	}
         if ( isLogarithmic ){
             if( logSubstep == 9 ){
@@ -563,8 +565,11 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
     const bool useItemCountLabels = isAbscissa() && ! dimX.isCalculated;
 
-    const bool drawUnitRulers = screenRange / ( numberOfUnitRulers / dimX.stepWidth ) > MinimumPixelsBetweenRulers;
-    const bool drawSubUnitRulers =
+    // attributes used to customize ruler appearance
+    const RulerAttributes rulerAttr = rulerAttributes();
+
+    const bool drawUnitRulers = rulerAttr.showMajorTickMarks() && (screenRange / ( numberOfUnitRulers / dimX.stepWidth ) > MinimumPixelsBetweenRulers);
+    const bool drawSubUnitRulers = rulerAttr.showMinorTickMarks() &&
         (numberOfSubUnitRulers != 0.0) &&
         (screenRange / numberOfSubUnitRulers > MinimumPixelsBetweenRulers);
 
@@ -651,9 +656,6 @@ void CartesianAxis::paintCtx( PaintContext* context )
     QVector< int > drawnAbscissaTicks;
     // and that does the same for the y-ticks
     QVector< int > drawnYTicks;
-
-    // attributes used to customize ruler appearance
-    const RulerAttributes rulerAttr = rulerAttributes();
 
     /*
      * Find out if it is a bar diagram

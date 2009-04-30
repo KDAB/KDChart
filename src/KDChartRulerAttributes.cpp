@@ -48,6 +48,9 @@ private:
     
     bool majorTickMarkPenIsSet;
     bool minorTickMarkPenIsSet;
+
+    bool showMajorTickMarks;
+    bool showMinorTickMarks;
     
     RulerAttributes::TickMarkerPensMap customTickMarkPens;
 };
@@ -63,6 +66,9 @@ RulerAttributes::Private::Private()
 	
 	majorTickMarkPenIsSet = false;
 	minorTickMarkPenIsSet = false;
+
+        showMajorTickMarks = true;
+        showMinorTickMarks = true;
 }
 
 
@@ -160,6 +166,26 @@ void RulerAttributes::setTickMarkColor( const QColor& color )
 QColor RulerAttributes::tickMarkColor() const
 {
 	return d->tickMarkPen.color();
+}
+
+void RulerAttributes::setShowMajorTickMarks( bool show )
+{
+    d->showMajorTickMarks = show;
+}
+
+bool RulerAttributes::showMajorTickMarks() const
+{
+    return d->showMajorTickMarks;
+}
+
+void RulerAttributes::setShowMinorTickMarks( bool show )
+{
+    d->showMinorTickMarks = show;
+}
+
+bool RulerAttributes::showMinorTickMarks() const
+{
+    return d->showMinorTickMarks;
 }
 
 RulerAttributes & RulerAttributes::operator=( const RulerAttributes& r )
