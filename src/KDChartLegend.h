@@ -288,6 +288,18 @@ m_legend->setFloatingPosition( relativePosition );
     QString text( uint dataset ) const;
     const QMap<uint,QString> texts() const;
 
+    /**
+     * Sets a list of datasets that are to be hidden in the legend.
+     *
+     * By passing an empty list, you show all datasets.
+     * Note that by default, all datasets are shown, which means
+     * that hiddenDatasets() == QList<uint>()
+     */
+    void setHiddenDatasets( const QList<uint> hiddenDatasets );
+    const QList<uint> hiddenDatasets() const;
+    void setDatasetHidden( uint dataset, bool hidden );
+    bool datasetIsHidden( uint dataset ) const;
+
     uint datasetCount() const;
 
     void setDefaultColors();

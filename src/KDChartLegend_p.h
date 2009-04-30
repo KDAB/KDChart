@@ -118,6 +118,7 @@ private:
     QMap<uint,QBrush> brushes;
     QMap<uint,QPen> pens;
     QMap<uint, MarkerAttributes> markerAttributes;
+    QList<uint> hiddenDatasets;
     TextAttributes textAttributes;
     QString titleText;
     TextAttributes titleTextAttributes;

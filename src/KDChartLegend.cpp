@@ -844,7 +844,8 @@ void Legend::buildLegend()
             for ( int dataset = begin; dataset != end; dataset += begin < end ? 1 : -1 )
             {
                 // only show the label if the diagrams is NOT having the dataset set to hidden
-                if( ! diagram->isHidden( dataset ) ){
+                // and the dataset is not hidden in this legend either
+                if( !diagram->isHidden( dataset ) && !datasetIsHidden( dataset ) ){
                     d->modelLabels  += diagramLabels[   dataset ];
                     d->modelBrushes += diagramBrushes[  dataset ];
                     d->modelPens    += diagramPens[     dataset ];
@@ -1060,3 +1061,27 @@ void Legend::buildLegend()
     qDebug() << "leaving Legend::buildLegend()";
 #endif
 }
+
+void Legend::setHiddenDatasets( const QList<uint> hiddenDatasets )
+{
+    d->hiddenDatasets = hiddenDatasets;
+}
+
+const QList<uint> Legend::hiddenDatasets() const
+{
+    return d->hiddenDatasets;
+}
+
+void Legend::setDatasetHidden( uint dataset, bool hidden )
+{
+    if( hidden && !d->hiddenDatasets.contains( dataset ) )
+        d->hiddenDatasets.append( dataset );
+    else if( !hidden && d->hiddenDatasets.contains( dataset ) )
+        d->hiddenDatasets.removeAll( dataset );
+}
+
+bool Legend::datasetIsHidden( uint dataset ) const
+{
+    return d->hiddenDatasets.contains( dataset );
+}
+
