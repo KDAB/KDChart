@@ -109,8 +109,6 @@ void NormalLineDiagram::paint( PaintContext* ctx )
     maxFound = columnCount;
     // ^^^ temp
 
-    LineAttributes::MissingValuesPolicy policy;
-
     for( int column = 0; column < columnCount; ++column ) {
         DataValueTextInfoList textInfoList;
         LineAttributesInfoList lineList;
@@ -189,6 +187,8 @@ void NormalLineDiagram::paint( PaintContext* ctx )
             lastAreaBoundingValue = areaBoundingValue;
             lastPoint = point;
         }
+
+		LineAttributes::MissingValuesPolicy policy = LineAttributes::MissingValuesAreBridged; //unused
 		paintElements( ctx, textInfoList, lineList, policy );
     }
 }
