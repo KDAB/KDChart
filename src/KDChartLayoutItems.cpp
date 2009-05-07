@@ -267,6 +267,7 @@ QString KDChart::TextLayoutItem::text() const
 void KDChart::TextLayoutItem::setTextAttributes( const TextAttributes &a )
 {
     mAttributes = a;
+    cachedFont = a.font();
     cachedSizeHint = QSize(); // invalidate size hint
     sizeHint();
     if( mParent )
@@ -393,7 +394,7 @@ qreal KDChart::TextLayoutItem::fitFontSizeToGeometry() const
 
         if( textSize.height() <= mySize.height() && textSize.width() <= mySize.width() )
             return result;
-        
+
         result -= 0.5;
         if( result <= 0.0 )
             return origResult;
@@ -640,7 +641,7 @@ void KDChart::TextLayoutItem::paint( QPainter* painter )
     // better than just centering the text's bounding rect.
     rect.translate( 0.0, rect.height() / 2.0 - AVCenter );
     painter->drawText( rect, Qt::AlignHCenter | Qt::AlignTop, mText );
-    
+
 //    if (  calcSizeHint( realFont() ).width() > rect.width() )
 //        qDebug() << "rect.width()" << rect.width() << "text.width()" << calcSizeHint( realFont() ).width();
 //
