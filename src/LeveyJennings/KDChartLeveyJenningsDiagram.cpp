@@ -576,7 +576,7 @@ void LeveyJenningsDiagram::paint( PaintContext* ctx )
                 painter->setPen( newPen );
                 painter->drawLine( prevPoint, point );
                 painter->setPen( pen );
-                d->reverseMapper.addLine( valueIndex.row(), valueIndex.column(), prevPoint, point );
+                // d->reverseMapper.addLine( valueIndex.row(), valueIndex.column(), prevPoint, point );
             }
             else if( row > 0 )
             {
