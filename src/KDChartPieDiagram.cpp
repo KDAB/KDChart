@@ -36,6 +36,7 @@
 #include "KDChartThreeDPieAttributes.h"
 #include "KDChartPainterSaver_p.h"
 #include "KDChartDataValueAttributes.h"
+#include "KDChartNullPaintDevice.h"
 
 #include <KDABLibFakes>
 
@@ -170,8 +171,28 @@ void PieDiagram::paint( PaintContext* ctx )
 }
 */
 
+void PieDiagram::paint(PaintContext* ctx)
+{
+    // Painting is a two stage process
+    // In the first stage we figure out how much space is needed
+    // for text labels.
+    // In the second stage, we make use of that information and
+    // perform the actual painting.
+    QPainter* actualPainter = ctx->painter();
+    QRectF textBoundingRect;
 
-void PieDiagram::paint( PaintContext* ctx )
+    // Use a null paint device and perform the first painting.
+    KDChart::NullPaintDevice nullPd(ctx->rectangle().size().toSize());
+    QPainter nullPainter(&nullPd);
+    ctx->setPainter(&nullPainter);
+    paintInternal(ctx, textBoundingRect);
+
+    // Now perform the real painting
+    ctx->setPainter(actualPainter);
+    paintInternal(ctx, textBoundingRect);
+}
+
+void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
 {
     // note: Not having any data model assigned is no bug
     //       but we can not draw a diagram then either.
@@ -213,6 +234,34 @@ void PieDiagram::paint( PaintContext* ctx )
     }
     d->size /= ( 1.0 + 2.0 * maxExplode );
 
+    if(!textBoundingRect.isEmpty())
+    {
+        // Find out the maximum distance from every corner of the rectangle with
+        // the center.
+        double maxDistance = 0, dist = 0;
+
+        QPointF center = ctx->rectangle().center();
+
+        dist = qAbs(textBoundingRect.right() - center.x());
+        if(dist > maxDistance)
+            maxDistance = dist;
+
+        dist = qAbs(textBoundingRect.left() - center.x());
+        if(dist > maxDistance)
+            maxDistance = dist;
+
+        dist = qAbs(textBoundingRect.top() - center.y());
+        if(dist > maxDistance)
+            maxDistance = dist;
+
+        dist = qAbs(textBoundingRect.bottom() - center.y());
+        if(dist > maxDistance)
+            maxDistance = dist;
+
+        double size = d->size;
+        double diff = (2*maxDistance - d->size);
+        d->size *= 1.0-(diff/size);
+    }
 
     qreal sizeFor3DEffect = 0.0;
     if ( ! threeDAttrs.isEnabled() ) {
@@ -340,7 +389,8 @@ void PieDiagram::paint( PaintContext* ctx )
         drawArcEffectSegment( ctx->painter(), piePosition( 0, frontmostpie),
                 sizeFor3DEffect, startAngle, endAngle, granularity() );*/
     }
-    d->paintDataValueTextsAndMarkers(  this,  ctx,  list,  false );
+
+    d->paintDataValueTextsAndMarkers(  this,  ctx,  list,  false, false, &textBoundingRect );
 }
 
 #if defined ( Q_WS_WIN)

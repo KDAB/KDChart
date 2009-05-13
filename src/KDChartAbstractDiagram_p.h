@@ -230,6 +230,10 @@ namespace KDChart {
                 }else{
                     item.setGeometry( rect );
                     item.paint( ctx->painter() );
+
+                    // Return the cumulatedBoundingRect if asked for
+                    if(cumulatedBoundingRect)
+                        (*cumulatedBoundingRect) |= rect;
                 }
             }
         }
@@ -372,13 +376,18 @@ namespace KDChart {
                             alreadyDrawnDataValueTexts << pr;
                     }
                     if( drawIt ){
+                        QRectF rect = layout->frameBoundingRect(doc.rootFrame());
+                        rect.moveTo(pos.x()+dx, pos.y()+dy);
+
                         if( justCalculateRect && cumulatedBoundingRect ){
-                            QRectF rect = layout->frameBoundingRect(doc.rootFrame());
-                            rect.moveTo(pos.x()+dx, pos.y()+dy);
                             (*cumulatedBoundingRect) |= rect;
                         }else{
                             painter->translate( QPointF( dx, dy ) );
                             layout->draw( painter, context );
+
+                            // Return the cumulatedBoundingRect if asked for
+                            if(cumulatedBoundingRect)
+                                (*cumulatedBoundingRect) |= rect;
                         }
                     }
                 }

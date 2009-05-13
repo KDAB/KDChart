@@ -56,6 +56,7 @@ protected:
     // Implement AbstractDiagram
     /** \reimpl */
     virtual void paint ( PaintContext* paintContext );
+    void paintInternal(PaintContext* paintContext, QRectF& textBoundingRect);
 
 public:
     /** \reimpl */
