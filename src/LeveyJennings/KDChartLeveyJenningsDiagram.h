@@ -42,7 +42,7 @@ namespace KDChart {
     class ThreeDLineAttributes;
 
 /**
- * @brief LeveyDiagram defines a Levey Jennings
+ * @brief LeveyDiagram defines a Levey Jennings chart.
  * 
  * It provides different subtypes which are set using \a setType.
  */
