@@ -33,6 +33,7 @@
 #include <limits>
 
 using namespace KDChart;
+using namespace std;
 
 PercentPlotter::PercentPlotter( Plotter* d )
     : PlotterType( d )
@@ -118,14 +119,14 @@ void PercentPlotter::paint( PaintContext* ctx )
 
     DataValueTextInfoList textInfoList;
     LineAttributes::MissingValuesPolicy policy; // ???
-    
+
     // this map contains the y-values to each x-value
     QMap< double, QVector< QPair< Value, QModelIndex > > > diagramValues;
 
     for( int col = 0; col < colCount; ++col )
     {
         for( int row = 0; row < rowCount; ++row )
-        {   
+        {
             const CartesianDiagramDataCompressor::CachePosition position( row, col );
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
             diagramValues[ point.key ].resize( colCount );
@@ -133,7 +134,7 @@ void PercentPlotter::paint( PaintContext* ctx )
             diagramValues[ point.key ][ col ].second = point.index;
         }
     }
-   
+
     // the sums of the y-values per x-value
     QMap< double, double > yValueSums;
     // the x-values
@@ -189,24 +190,24 @@ void PercentPlotter::paint( PaintContext* ctx )
                 if( !ISNAN( data.first ) )
                     data.second = left.second;
             }
-        
+
             // sum it up
             if( !ISNAN( yValues[ column ].first ) )
                 yValueSums[ xValue ] += yValues[ column ].first;
         }
     }
-    
+
     for( int column = 0; column < colCount; ++column )
     {
         LineAttributesInfoList lineList;
         LineAttributes laPreviousCell;
         CartesianDiagramDataCompressor::CachePosition previousCellPosition;
-            
+
         CartesianDiagramDataCompressor::DataPoint lastPoint;
 
         qreal lastExtraY = 0.0;
         qreal lastValue = 0.0;
-        
+
         QMapIterator< double, QVector< QPair< Value, QModelIndex > > >  i( diagramValues );
         while( i.hasNext() )
         {
@@ -216,7 +217,7 @@ void PercentPlotter::paint( PaintContext* ctx )
             const QPair< Value, QModelIndex >& data = i.value().at( column );
             point.value = data.first;
             point.index = data.second;
-            
+
             if( ISNAN( point.key ) || ISNAN( point.value ) )
             {
                 previousCellPosition = CartesianDiagramDataCompressor::CachePosition();
@@ -230,11 +231,11 @@ void PercentPlotter::paint( PaintContext* ctx )
                 if( !ISNAN( y ) )
                     extraY += y;
             }
-            
+
             LineAttributes laCell;
-           
+
             const qreal value = ( point.value + extraY ) / yValueSums[ i.key() ] * 100;
-            
+
             const QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );
             // area corners, a + b are the line ends:
             const QPointF a( plane->translate( QPointF( lastPoint.key, lastValue ) ) );
@@ -263,7 +264,7 @@ void PercentPlotter::paint( PaintContext* ctx )
                     lineList.append( LineAttributesInfo( sourceIndex, a, b ) );
                 }
             }
-            
+
             // wrap it up:
             laPreviousCell = laCell;
             lastPoint = point;

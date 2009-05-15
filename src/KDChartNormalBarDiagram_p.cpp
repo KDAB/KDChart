@@ -37,6 +37,7 @@
 #include "KDChartAbstractCartesianDiagram.h"
 
 using namespace KDChart;
+using namespace std;
 
 NormalBarDiagram::NormalBarDiagram( BarDiagram* d )
     : BarDiagramType( d )

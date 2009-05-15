@@ -39,6 +39,7 @@
 #include "KDChartNormalLineDiagram_p.h"
 
 using namespace KDChart;
+using namespace std;
 
 NormalLineDiagram::NormalLineDiagram( LineDiagram* d )
     : LineDiagramType( d )
@@ -57,7 +58,7 @@ const QPair< QPointF, QPointF > NormalLineDiagram::calculateDataBoundaries() con
     const double xMin = 0.0;
     double xMax = diagram()->model() ? diagram()->model()->rowCount( diagram()->rootIndex() ) : 0;
     if ( !diagram()->centerDataPoints() && diagram()->model() )
-    	xMax -= 1;
+        xMax -= 1;
     double yMin = std::numeric_limits< double >::quiet_NaN();
     double yMax = std::numeric_limits< double >::quiet_NaN();
 
@@ -68,7 +69,7 @@ const QPair< QPointF, QPointF > NormalLineDiagram::calculateDataBoundaries() con
             const CartesianDiagramDataCompressor::CachePosition position( row, column );
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
             const double value = ISNAN( point.value ) ? 0.0 : point.value;
-            
+
             if ( ISNAN( yMin ) ) {
                     yMin = value;
                     yMax = value;
@@ -121,7 +122,7 @@ void NormalLineDiagram::paint( PaintContext* ctx )
             const CartesianDiagramDataCompressor::CachePosition position( row, column );
             // get where to draw the line from:
             CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
-            
+
             const QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );
 
             const LineAttributes laCell = diagram()->lineAttributes( sourceIndex );
@@ -135,7 +136,7 @@ void NormalLineDiagram::paint( PaintContext* ctx )
             } else
                 // Use zero line if no bounding dataset is set
                 areaBoundingValue = 0.0;
-            
+
             if( ISNAN( point.value ) )
             {
                 switch( policy )
@@ -155,7 +156,7 @@ void NormalLineDiagram::paint( PaintContext* ctx )
                     // hm....
                 }
             }
-            
+
             // area corners, a + b are the line ends:
             const QPointF a( plane->translate( QPointF( diagram()->centerDataPoints() ? lastPoint.key + 0.5 : lastPoint.key, lastPoint.value ) ) );
             const QPointF b( plane->translate( QPointF( diagram()->centerDataPoints() ? point.key + 0.5 : point.key, point.value ) ) );
@@ -180,7 +181,7 @@ void NormalLineDiagram::paint( PaintContext* ctx )
                 if( row > 0 && !ISNAN( lastPoint.value ) )
                     lineList.append( LineAttributesInfo( sourceIndex, a, b ) );
             }
-            
+
             // wrap it up:
             previousCellPosition = position;
             laPreviousCell = laCell;
@@ -188,7 +189,7 @@ void NormalLineDiagram::paint( PaintContext* ctx )
             lastPoint = point;
         }
 
-		LineAttributes::MissingValuesPolicy policy = LineAttributes::MissingValuesAreBridged; //unused
-		paintElements( ctx, textInfoList, lineList, policy );
+        LineAttributes::MissingValuesPolicy policy = LineAttributes::MissingValuesAreBridged; //unused
+        paintElements( ctx, textInfoList, lineList, policy );
     }
 }

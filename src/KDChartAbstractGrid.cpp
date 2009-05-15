@@ -32,6 +32,7 @@
 
 
 using namespace KDChart;
+using namespace std;
 
 
 static qreal _trunc( qreal v )

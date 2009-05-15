@@ -33,6 +33,7 @@
 #include <limits>
 
 using namespace KDChart;
+using namespace std;
 
 NormalPlotter::NormalPlotter( Plotter* d )
     : PlotterType( d )
@@ -101,7 +102,7 @@ void NormalPlotter::paint( PaintContext* ctx )
         return;
 
     DataValueTextInfoList textInfoList;
-    
+
     for( int column = 0; column < colCount; ++column )
     {
         LineAttributesInfoList lineList;
@@ -123,7 +124,7 @@ void NormalPlotter::paint( PaintContext* ctx )
                 {
                 case LineAttributes::MissingValuesAreBridged: // we just bridge both values
                     continue;
-                case LineAttributes::MissingValuesShownAsZero: // fall-through since that attribute makes no sense for the plotter 
+                case LineAttributes::MissingValuesShownAsZero: // fall-through since that attribute makes no sense for the plotter
                 case LineAttributes::MissingValuesHideSegments: // fall-through since they're just hidden
                 default:
                     previousCellPosition = CartesianDiagramDataCompressor::CachePosition();
@@ -158,7 +159,7 @@ void NormalPlotter::paint( PaintContext* ctx )
                     lineList.append( LineAttributesInfo( sourceIndex, a, b ) );
                 }
             }
-            
+
             // wrap it up:
             previousCellPosition = position;
             laPreviousCell = laCell;

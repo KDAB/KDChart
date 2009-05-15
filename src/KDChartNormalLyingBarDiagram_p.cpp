@@ -37,6 +37,7 @@
 #include "KDChartAbstractCartesianDiagram.h"
 
 using namespace KDChart;
+using namespace std;
 
 NormalLyingBarDiagram::NormalLyingBarDiagram( BarDiagram* d )
     : BarDiagramType( d )
@@ -172,7 +173,7 @@ void NormalLyingBarDiagram::paint(  PaintContext* ctx )
         for( int column = colCount - 1; column >= 0; --column )
         {
             offset -= barWidth + spaceBetweenBars;
-            
+
             // paint one group
             const CartesianDiagramDataCompressor::CachePosition position( row,  column );
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );

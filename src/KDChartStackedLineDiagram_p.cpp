@@ -38,6 +38,7 @@
 #include "KDChartAbstractCartesianDiagram.h"
 
 using namespace KDChart;
+using namespace std;
 
 StackedLineDiagram::StackedLineDiagram( LineDiagram* d )
     : LineDiagramType( d )
@@ -56,7 +57,7 @@ const QPair<QPointF, QPointF> StackedLineDiagram::calculateDataBoundaries() cons
     const double xMin = 0;
     double xMax = diagram()->model() ? diagram()->model()->rowCount( diagram()->rootIndex() ) : 0;
     if ( !diagram()->centerDataPoints() && diagram()->model() )
-    	xMax -= 1;
+        xMax -= 1;
     double yMin = 0, yMax = 0;
 
     bool bStarting = true;
@@ -102,7 +103,7 @@ void StackedLineDiagram::paint(  PaintContext* ctx )
     const QPair<QPointF, QPointF> boundaries = diagram()->dataBoundaries();
     const QPointF bottomLeft = boundaries.first;
     const QPointF topRight = boundaries.second;
-        
+
     const int columnCount = compressor().modelDataColumns();
     const int rowCount = compressor().modelDataRows();
 
@@ -146,7 +147,7 @@ void StackedLineDiagram::paint(  PaintContext* ctx )
 
             const LineAttributes laCell = diagram()->lineAttributes( sourceIndex );
             const bool bDisplayCellArea = laCell.displayArea();
-    
+
             const LineAttributes::MissingValuesPolicy policy = laCell.missingValuesPolicy();
 
             if( ISNAN( point.value ) && policy == LineAttributes::MissingValuesShownAsZero )
