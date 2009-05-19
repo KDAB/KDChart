@@ -150,8 +150,6 @@ INSTALLHEADERS_SRC = \
            Ternary/KDChartAbstractTernaryDiagram.h \
            Ternary/KDChartTernaryPointDiagram.h \
            Ternary/KDChartTernaryLineDiagram.h \
-           Scenery/ChartGraphicsItem.h \
-           Scenery/ReverseMapper.h \
            KDChartValueTrackerAttributes.h \
            KDChartPlotter.h \
            KDChartPrintingParameters.h \
