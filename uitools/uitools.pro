@@ -18,12 +18,10 @@ DEFINES += UITOOLS_BUILD_UITOOLS_LIB
 QT += xml 
 CONFIG += designer
 
-INCLUDEPATH+= $(QTDIR)/src/3rdparty/zlib \
-              $$KDCHARTBASE/extra_include \
+INCLUDEPATH+= $$KDCHARTBASE/extra_include \
               $$KDCHARTBASE/src \
               .
-DEPENDPATH += $(QTDIR)/src/3rdparty/zlib \
-              .
+DEPENDPATH += .
 
 UI_DIR = .
 

@@ -400,11 +400,9 @@ LIBFAKES_PATH = ../kdablibfakes
 
 DEPENDPATH = ../include \
             $$LIBFAKES_PATH/include \
-            $(QTDIR)/src/3rdparty/zlib \
             .
 INCLUDEPATH = ../include \
               $$LIBFAKES_PATH/include \
-              $(QTDIR)/src/3rdparty/zlib \
               .
 linux-*{
   version_script{
