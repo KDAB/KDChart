@@ -222,6 +222,20 @@ public:
     Qt::Alignment alignment() const;
 
     /**
+     * \brief Specify the alignment of the text elements within the legend
+     *
+     * \sa textAlignment()
+     */
+    void setTextAlignment( Qt::Alignment );
+
+    /**
+     * \brief Returns the alignment used while rendering text elements within the legend.
+     *
+     * \sa setTextAlignment()
+     */
+     Qt::Alignment textAlignment() const;
+
+    /**
      * \brief Specify the position and alignment of a floating legend.
      *
      * Use setPosition and setAlignment to set position and alignment

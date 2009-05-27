@@ -46,7 +46,7 @@ namespace KDChart {
     class AbstractDiagram;
     class PaintContext;
 
-    /** 
+    /**
      * Base class for all layout items of KD Chart
      * \internal
      */
@@ -60,7 +60,7 @@ namespace KDChart {
 
         /**
          * Default impl: just call paint.
-         * 
+         *
          * Derived classes like KDChart::AbstractArea are providing
          * additional action here.
          */
@@ -95,7 +95,7 @@ namespace KDChart {
     };
 
     /**
-     * Layout item showing a text 
+     * Layout item showing a text
      *\internal
      */
     class KDCHART_EXPORT TextLayoutItem : public AbstractLayoutItem
@@ -113,6 +113,9 @@ namespace KDChart {
 
         void setText(const QString & text);
         QString text() const;
+
+        void setTextAlignment( Qt::Alignment );
+        Qt::Alignment textAlignment() const;
 
         void setTextAttributes( const TextAttributes& a );
         TextAttributes textAttributes() const;
@@ -155,6 +158,7 @@ namespace KDChart {
 
         QRect mRect;
         QString mText;
+        Qt::Alignment mTextAlignment;
         TextAttributes mAttributes;
         const QObject* mAutoReferenceArea;
         KDChartEnums::MeasureOrientation mAutoReferenceOrientation;
@@ -213,7 +217,7 @@ namespace KDChart {
     };
 
     /**
-     * Layout item showing a data point marker 
+     * Layout item showing a data point marker
      * \internal
      */
     class KDCHART_EXPORT MarkerLayoutItem : public AbstractLayoutItem
@@ -285,7 +289,7 @@ namespace KDChart {
             QRect mRect;
     };
 
-    /** 
+    /**
      * Layout item showing a coloured line and a data point marker
      * \internal
      */
@@ -369,7 +373,7 @@ namespace KDChart {
             QRect mRect;
     };
 
-    /** 
+    /**
      * @brief An empty layout item
      * \internal
      *
@@ -377,7 +381,7 @@ namespace KDChart {
      * the planeLayout grid: one of its reference-layouts is a QVBoxLayout (for
      * the top, or bottom axes resp.), the other one is a QHBoxLayout (for the
      * left/right sided axes).
-     * 
+     *
      * The spacer reserves enough space so all of the AbstractAreas contained
      * in the two reference-layouts can display not only their in-bounds
      * content but also their overlapping content reaching out of their area.

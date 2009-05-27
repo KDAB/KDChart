@@ -211,6 +211,7 @@ KDChart::TextLayoutItem::TextLayoutItem( const QString& text,
                                          Qt::Alignment alignment )
     : AbstractLayoutItem( alignment )
     , mText( text )
+    , mTextAlignment( alignment )
     , mAttributes( attributes )
     , mAutoReferenceArea( area )
     , mAutoReferenceOrientation( orientation )
@@ -223,6 +224,7 @@ KDChart::TextLayoutItem::TextLayoutItem( const QString& text,
 KDChart::TextLayoutItem::TextLayoutItem()
     : AbstractLayoutItem( Qt::AlignLeft )
     , mText()
+    , mTextAlignment( Qt::AlignLeft )
     , mAttributes()
     , mAutoReferenceArea( 0 )
     , mAutoReferenceOrientation( KDChartEnums::MeasureOrientationHorizontal )
@@ -257,6 +259,20 @@ void KDChart::TextLayoutItem::setText(const QString & text)
 QString KDChart::TextLayoutItem::text() const
 {
     return mText;
+}
+
+void KDChart::TextLayoutItem::setTextAlignment( Qt::Alignment alignment)
+{
+    if( mTextAlignment == alignment )
+        return;
+    mTextAlignment = alignment;
+    if( mParent )
+        mParent->update();
+}
+
+Qt::Alignment KDChart::TextLayoutItem::textAlignment() const
+{
+    return mTextAlignment;
 }
 
 /**
@@ -640,7 +656,8 @@ void KDChart::TextLayoutItem::paint( QPainter* painter )
     // Make sure that capital letters are vertically centered. This looks much
     // better than just centering the text's bounding rect.
     rect.translate( 0.0, rect.height() / 2.0 - AVCenter );
-    painter->drawText( rect, Qt::AlignHCenter | Qt::AlignTop, mText );
+    //painter->drawText( rect, Qt::AlignHCenter | Qt::AlignTop, mText );
+    painter->drawText( rect, mTextAlignment, mText );
 
 //    if (  calcSizeHint( realFont() ).width() > rect.width() )
 //        qDebug() << "rect.width()" << rect.width() << "text.width()" << calcSizeHint( realFont() ).width();

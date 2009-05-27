@@ -77,6 +77,7 @@ public:
         referenceArea( 0 ),
         position( rhs.position ),
         alignment( rhs.alignment ),
+        textAlignment( rhs.textAlignment ),
         relativePosition( rhs.relativePosition ),
         orientation( rhs.orientation ),
         order( rhs.order ),
@@ -110,6 +111,7 @@ private:
     const QWidget* referenceArea;
     Position position;
     Qt::Alignment alignment;
+    Qt::Alignment textAlignment;
     RelativePosition relativePosition;
     Qt::Orientation orientation;
     Qt::SortOrder order;
