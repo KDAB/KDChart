@@ -339,7 +339,7 @@ void CartesianAxis::Private::drawSubUnitRulers( QPainter* painter, CartesianCoor
     	}
         if ( isLogarithmic ){
             if( logSubstep == 9 ){
-                fLogSubstep *= 10.0;
+                fLogSubstep *= ( fLogSubstep > 0.0 ) ? 10.0 : 0.1;
                 if( fLogSubstep == 0 )
                     fLogSubstep = 0.01;
                 logSubstep = 0;
@@ -433,7 +433,10 @@ void CartesianAxis::Private::drawTitleText( QPainter* painter, CartesianCoordina
 static void calculateNextLabel( qreal& labelValue, qreal step, bool isLogarithmic, qreal min )
 {
     if ( isLogarithmic ){
-        labelValue *= 10.0;
+        if( step > 0.0 )
+            labelValue *= 10.0;
+        else
+            labelValue /= 10.0;
         if( labelValue == 0.0 )
             labelValue = pow( 10.0, floor( log10( min ) ) );
     }else{
