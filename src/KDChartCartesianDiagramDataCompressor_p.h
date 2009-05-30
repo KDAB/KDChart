@@ -102,8 +102,12 @@ namespace KDChart {
             }
             bool operator<( const CachePosition& rhs ) const
             {
-                return first < rhs.first ||
-                       second < rhs.second;
+                // This function is used to topologically sort all cache positions.
+
+                // Think of them as entries in a matrix or table:
+                // An entry comes before another entry if it is either above the other
+                // entry, or in the same row and to the left of the other entry.
+                return first < rhs.first || first == rhs.first && second < rhs.second;
             }
         };
 

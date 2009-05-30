@@ -702,8 +702,13 @@ bool CartesianDiagramDataCompressor::isValidCachePosition( const CachePosition& 
 
 void CartesianDiagramDataCompressor::invalidate( const CachePosition& position )
 {
-    if ( isValidCachePosition( position ) )
+    if ( isValidCachePosition( position ) ) {
         m_data[position.second][position.first] = DataPoint();
+        // Also invalidate the data value attributes at "position".
+        // Otherwise the user overwrites the attributes without us noticing
+        // it because we keep reading what's in the cache.
+        m_dataValueAttributesCache.remove( position );
+    }
 }
 
 bool CartesianDiagramDataCompressor::isCached( const CachePosition& position ) const
