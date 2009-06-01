@@ -976,12 +976,17 @@ void Legend::buildLegend()
     // for all datasets: add (line)marker items and text items to the layout
     for ( int dataset = 0; dataset < d->modelLabels.count(); ++dataset ) {
         KDChart::AbstractLayoutItem* markerLineItem = 0;
+        // It is possible to set the marker brush both through the MarkerAttributes,
+        // as well as through the dataset brush set in the diagram, whereas the
+        // MarkerAttributes are preferred.
+        const QBrush markerBrush = markerAttrs[dataset].markerColor().isValid() ?
+                                   markerAttrs[dataset].markerColor() : brush( dataset );
         switch( style ){
             case( MarkersOnly ):
                 markerLineItem = new KDChart::MarkerLayoutItem(
                         diagram(),
                         markerAttrs[dataset],
-                        brush( dataset ),
+                        markerBrush,
                         markerAttrs[dataset].pen(),
                         Qt::AlignLeft );
                 break;
@@ -999,7 +1004,7 @@ void Legend::buildLegend()
                         pen( dataset ),
                         markerOffsOnLine,
                         markerAttrs[dataset],
-                        brush( dataset ),
+                        markerBrush,
                         markerAttrs[dataset].pen(),
                         Qt::AlignCenter );
                 break;

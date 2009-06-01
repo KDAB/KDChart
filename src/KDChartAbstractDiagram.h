@@ -217,7 +217,8 @@ namespace KDChart {
          * e.g. you could define a proxy model on top of your data model, and register
          * the proxy model calling setModel() instead of registering your real data model.
          *
-         * @param index The datapoint to set the hidden status for.
+         * @param index The datapoint to set the hidden status for. With a dataset dimension
+         * of two, this is the index of the key of each key/value pair.
          * @param hidden The hidden status to set.
          */
         void setHidden( const QModelIndex & index, bool hidden );
@@ -231,10 +232,10 @@ namespace KDChart {
          * e.g. you could define a proxy model on top of your data model, and register
          * the proxy model calling setModel() instead of registering your real data model.
          *
-         * @param column The dataset to set the hidden status for.
+         * @param dataset The dataset to set the hidden status for.
          * @param hidden The hidden status to set.
          */
-        void setHidden( int column, bool hidden );
+        void setHidden( int dataset, bool hidden );
 
         /**
          * Hide (or unhide, resp.) all datapoints in the model.
@@ -261,10 +262,10 @@ namespace KDChart {
          * Retrieve the hidden status for the given dataset. This will fall
          * back automatically to what was set at diagram level, if there
          * are no dataset specific settings.
-         * @param column The dataset to retrieve the hidden status for.
+         * @param dataset The dataset to retrieve the hidden status for.
          * @return The hidden status for the given dataset.
          */
-        bool isHidden( int column ) const;
+        bool isHidden( int dataset ) const;
 
         /**
          * Retrieve the hidden status for the given index. This will fall
@@ -278,7 +279,8 @@ namespace KDChart {
 
         /**
          * Set the DataValueAttributes for the given index.
-         * @param index The datapoint to set the attributes for.
+         * @param index The datapoint to set the attributes for. With a dataset dimension
+         * of two, this is the index of the key of each key/value pair.
          * @param a The attributes to set.
          */
         void setDataValueAttributes( const QModelIndex & index,
@@ -309,30 +311,32 @@ namespace KDChart {
          * Retrieve the DataValueAttributes for the given dataset. This will fall
          * back automatically to what was set at model level, if there
          * are no dataset specific settings.
-         * @param column The dataset to retrieve the attributes for.
+         * @param dataset The dataset to retrieve the attributes for.
          * @return The DataValueAttributes for the given dataset.
          */
-        DataValueAttributes dataValueAttributes( int column ) const;
+        DataValueAttributes dataValueAttributes( int dataset ) const;
 
         /**
          * Retrieve the DataValueAttributes for the given index. This will fall
          * back automatically to what was set at dataset or model level, if there
          * are no datapoint specific settings.
-         * @param index The datapoint to retrieve the attributes for.
+         * @param index The datapoint to retrieve the attributes for. With a dataset dimension
+         * of two, this is the index of the key of each key/value pair.
          * @return The DataValueAttributes for the given index.
          */
         DataValueAttributes dataValueAttributes( const QModelIndex & index ) const;
 
         /**
          * Set the pen to be used, for painting the datapoint at the given index.
-         * @param index The datapoint's index in the model.
+         * @param index The datapoint's index in the model. With a dataset dimension
+         * of two, this is the index of the key of each key/value pair.
          * @param pen The pen to use.
          */
         void setPen( const QModelIndex& index, const QPen& pen );
 
         /**
          * Set the pen to be used, for painting the given dataset.
-         * @param dataset The dataset's row in the model.
+         * @param dataset The dataset to set the pen for.
          * @param pen The pen to use.
          */
         void setPen( int dataset, const QPen& pen );
@@ -361,21 +365,23 @@ namespace KDChart {
         /**
          * Retrieve the pen to be used, for painting the datapoint at the given
          * index in the model.
-         * @param index The index of the datapoint in the model.
+         * @param index The index of the datapoint in the model. With a dataset dimension
+         * of two, this is the index of the key of each key/value pair.
          * @return The pen to use for painting.
          */
         QPen pen( const QModelIndex& index ) const;
 
         /**
          * Set the brush to be used, for painting the datapoint at the given index.
-         * @param index The datapoint's index in the model.
+         * @param index The datapoint's index in the model. With a dataset dimension
+         * of two, this is the index of the key of each key/value pair.
          * @param brush The brush to use.
          */
         void setBrush( const QModelIndex& index, const QBrush& brush);
 
         /**
          * Set the brush to be used, for painting the given dataset.
-         * @param dataset The dataset's column in the model.
+         * @param dataset The dataset to set the brush for.
          * @param brush The brush to use.
          */
         void setBrush( int dataset, const QBrush& brush );
@@ -404,7 +410,8 @@ namespace KDChart {
         /**
          * Retrieve the brush to be used, for painting the datapoint at the given
          * index in the model.
-         * @param index The index of the datapoint in the model.
+         * @param index The index of the datapoint in the model. With a dataset dimension
+         * of two, this is the index of the key of each key/value pair.
          * @return The brush to use for painting.
          */
         QBrush brush( const QModelIndex& index ) const;
