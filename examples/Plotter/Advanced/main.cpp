@@ -43,6 +43,10 @@ int main(int argc, char *argv[]) {
 		index = model.index( i, 5 );
 		model.setData( index, QVariant( v ) );
 	}
+	
+	model.setHeaderData( 0, Qt::Horizontal, "Dataset 1" );
+	model.setHeaderData( 2, Qt::Horizontal, "Dataset 2" );
+	model.setHeaderData( 4, Qt::Horizontal, "Dataset 3" );
 
 	// general chart layout
 	KDChart::FrameAttributes fm = chart.frameAttributes();
@@ -132,12 +136,18 @@ int main(int argc, char *argv[]) {
 	legend_bg.setBrush(Qt::white);
 	legend_bg.setVisible(true);
 	legend->setBackgroundAttributes(legend_bg);
+	
+	KDChart::DataValueAttributes attr = plotter->dataValueAttributes();
+	KDChart::TextAttributes tattr = attr.textAttributes();
+	tattr.setRotation( 0 );
+	attr.setTextAttributes( tattr );
+	plotter->setDataValueAttributes( attr );
 
 	// customize marker properties
 
 	// Dataset 1 : green, MarkerRing, no line
 	QColor SERIES_1_OUTLINE = QColor(0,128,0);
-	KDChart::DataValueAttributes attr = plotter->dataValueAttributes(0);
+	attr = plotter->dataValueAttributes(0);
 	KDChart::MarkerAttributes mattr = attr.markerAttributes();
 	mattr.setMarkerColor(SERIES_1_OUTLINE);
 	mattr.setMarkerStyle(KDChart::MarkerAttributes::MarkerRing);
@@ -147,44 +157,35 @@ int main(int argc, char *argv[]) {
 	attr.setVisible(true);
 	plotter->setDataValueAttributes(0, attr);
 	plotter->setPen(0, Qt::NoPen);
-	legend->setBrush(0, SERIES_1_OUTLINE );
-	legend->setText(0, "Dataset 1");
-	// this works so far
 
 	// Dataset 2 : MarkerDiamond, (black outline, red inside), no line
 	QColor SERIES_2_OUTLINE = Qt::black;
 	QColor SERIES_2_INSIDE = QColor(255,100,100);
-	attr = plotter->dataValueAttributes(1); // BUG? Which index to use here?
+	attr = plotter->dataValueAttributes(1);
 	mattr = attr.markerAttributes();
-	mattr.setMarkerColor(SERIES_2_OUTLINE);
+	mattr.setMarkerColor(SERIES_2_INSIDE);
 	mattr.setMarkerStyle(KDChart::MarkerAttributes::MarkerDiamond);
 	mattr.setMarkerSize(QSizeF(8.0, 8.0));
 	mattr.setVisible(true);
 	attr.setMarkerAttributes(mattr);
 	attr.setVisible(true);
-	plotter->setDataValueAttributes(1, attr); // BUG? Which index to use here?
+	plotter->setDataValueAttributes(1, attr);
 	plotter->setPen(1, Qt::NoPen);
-	legend->setBrush(1, SERIES_2_INSIDE );
-	legend->setPen(1, QPen(SERIES_2_OUTLINE));
-	legend->setText(1, "Dataset 2");
 
 	// Dataset 3 : MarkerCircle, (green outline, yellow inside), blue line
 	QColor SERIES_3_OUTLINE = QColor(100,255,150);
 	QColor SERIES_3_INSIDE = QColor("yellow");
 	QColor SERIES_3_LINE = QColor("navy");
-	attr = plotter->dataValueAttributes(2); // BUG? Which index to use here?
+	attr = plotter->dataValueAttributes(2);
 	mattr = attr.markerAttributes();
-	mattr.setMarkerColor(SERIES_3_OUTLINE);
+	mattr.setMarkerColor(SERIES_3_INSIDE);
 	mattr.setMarkerStyle(KDChart::MarkerAttributes::MarkerCircle);
 	mattr.setMarkerSize(QSizeF(8.0, 8.0));
 	mattr.setVisible(true);
 	attr.setMarkerAttributes(mattr);
 	attr.setVisible(true);
-	plotter->setDataValueAttributes(2, attr); // BUG? Which index to use here?
+	plotter->setDataValueAttributes(2, attr);
 	plotter->setPen(2, QPen(SERIES_3_LINE));
-	legend->setBrush(2, SERIES_3_INSIDE );
-	legend->setPen(2, QPen(SERIES_3_OUTLINE));
-	legend->setText(2, "Dataset 3");
 
 	chart.show();
 	return a.exec();
