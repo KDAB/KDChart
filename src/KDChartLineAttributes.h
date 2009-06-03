@@ -92,7 +92,7 @@ public:
 
 private:
     KDCHART_DECLARE_PRIVATE_BASE_VALUE( LineAttributes )
-}; // End of class GridAttributes
+}; // End of class LineAttributes
 
 }
 
