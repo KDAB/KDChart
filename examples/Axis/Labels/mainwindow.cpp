@@ -68,7 +68,7 @@ MainWindow::MainWindow( QWidget* parent ) :
 // set the following to 0, to have only one of the axes with background
 #if 1
     // colourize the axes' backgrounds
-    ba = yAxis->backgroundAttributes();
+    KDChart::BackgroundAttributes ba = yAxis->backgroundAttributes();
     ba.setVisible( true );
     ba.setBrush( QBrush( QColor(0xff,0xff,0x40) ) );
     yAxis->setBackgroundAttributes( ba );
