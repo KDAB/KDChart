@@ -975,9 +975,21 @@ void AbstractDiagram::setSelection(const QRect& rect , QItemSelectionModel::Sele
     selectionModel()->select( selection, command );
 }
 
-QRegion AbstractDiagram::visualRegionForSelection(const QItemSelection &) const
-{ return QRegion(); }
+QRegion AbstractDiagram::visualRegionForSelection(const QItemSelection &selection) const
+{
+    QPolygonF polygon;
+    KDAB_FOREACH( const QModelIndex& index, selection.indexes() )
+    {
+        polygon << d->reverseMapper.polygon(index.row(), index.column());
+    }
+    return polygon.isEmpty() ? QRegion() : QRegion( polygon.toPolygon() );
+}
 
+QRegion AbstractDiagram::visualRegion(const QModelIndex &index) const
+{
+    QPolygonF polygon = d->reverseMapper.polygon(index.row(), index.column());
+    return polygon.isEmpty() ? QRegion() : QRegion( polygon.toPolygon() );
+}
 
 void KDChart::AbstractDiagram::useDefaultColors( )
 {

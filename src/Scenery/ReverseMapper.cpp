@@ -110,6 +110,12 @@ QModelIndexList ReverseMapper::indexesAt( const QPointF& point ) const
     }
 }
 
+QPolygonF ReverseMapper::polygon( int row, int column ) const
+{
+    const QModelIndex index = m_diagram->model()->index( row, column, m_diagram->rootIndex() );
+    return m_itemMap.contains( index ) ? m_itemMap[ index ]->polygon() : QPolygon();
+}
+
 QRectF ReverseMapper::boundingRect( int row, int column ) const
 {
     const QModelIndex index = m_diagram->model()->index( row, column, m_diagram->rootIndex() );

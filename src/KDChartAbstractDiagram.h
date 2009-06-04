@@ -186,6 +186,7 @@ namespace KDChart {
         virtual void setSelection(const QRect &rect, QItemSelectionModel::SelectionFlags command);
         /** \reimpl */
         virtual QRegion visualRegionForSelection(const QItemSelection &selection) const;
+        virtual QRegion visualRegion(const QModelIndex &index) const;
         /** \reimpl */
         virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
         /** \reimpl */
