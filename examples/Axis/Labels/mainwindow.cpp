@@ -98,6 +98,14 @@ MainWindow::MainWindow( QWidget* parent ) :
     //xAxis->setShortLabels( shortDays );
 #endif
 
+// set custom axis labels at custom positions
+#if 0
+    QMap< double, QString > annotations;
+    annotations[0.5] = "Left";
+    annotations[3.5] = "Center";
+    annotations[6.5] = "Right";
+    xAxis->setAnnotations(annotations);
+#endif
 
     // rotate abscissa labels by -60 degrees:
     KDChart::TextAttributes ta( xAxis->textAttributes() );
