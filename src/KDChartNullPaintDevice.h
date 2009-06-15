@@ -62,6 +62,7 @@ namespace KDChart
             case QPaintDevice::PdmPhysicalDpiY:
                 return 1;
             }
+            return 1;
         }
 
         QPaintEngine* paintEngine() const
