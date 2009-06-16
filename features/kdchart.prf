@@ -2,7 +2,7 @@ KDCHART_MAJOR_VERSION = 2
 
 :  # copy from environment:
   isEmpty( KDCHARTDIR ):KDCHARTDIR=$$(KDCHARTDIR)
-  isEmpty( KDCHARTDIR ):KDCHARTDIR=$$PWD
+  isEmpty( KDCHARTDIR ):KDCHARTDIR=../
   !isEmpty( KDCHARTDIR ) {
     unix:!macx:isEmpty(QMAKE_EXTENSION_SHLIB):QMAKE_EXTENSION_SHLIB=so
     unix:macx:isEmpty(QMAKE_EXTENSION_SHLIB):QMAKE_EXTENSION_SHLIB=dylib
