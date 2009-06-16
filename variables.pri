@@ -1,4 +1,4 @@
-CONFIG += qt warn_on zlib
+CONFIG += qt warn_on
 
 exists( g++.pri ):include( g++.pri )
 
@@ -41,12 +41,6 @@ staticlib {
     DLLDESTDIR = $$PWD/bin
     CONFIG += dll
   }
-}
-
-# If CONFIG += qsa is set, KDChart will be compiled for QSA
-qsa {
-  load(qsa)
-  DEFINES += QSA
 }
 
 unix {
