@@ -4,16 +4,17 @@ KDCHART_MAJOR_VERSION = 2
   isEmpty( KDCHARTDIR ):KDCHARTDIR=$$(KDCHARTDIR)
   isEmpty( KDCHARTDIR ):KDCHARTDIR=../
   !isEmpty( KDCHARTDIR ) {
-    unix:!macx:isEmpty(QMAKE_EXTENSION_SHLIB):QMAKE_EXTENSION_SHLIB=so
-    unix:macx:isEmpty(QMAKE_EXTENSION_SHLIB):QMAKE_EXTENSION_SHLIB=dylib
-    unix {
-      staticlib {
-        !exists( $$KDCHARTDIR/lib/libkdchart.a ):error( "Cannot find libkdchart.a in $KDCHARTDIR/lib" )
-      } else {
-        message( KDCHARTDIR is $$KDCHARTDIR) 
-        !exists( $$KDCHARTDIR/lib/libkdchart.$$QMAKE_EXTENSION_SHLIB ):error( "Cannot find libkdchart.$$QMAKE_EXTENSION_SHLIB in $KDCHARTDIR/lib" )
-      }
-    }
+    #Invalid check since the moment this prf is loaded the kdchart-lib wasn't build yet.
+    #unix:!macx:isEmpty(QMAKE_EXTENSION_SHLIB):QMAKE_EXTENSION_SHLIB=so
+    #unix:macx:isEmpty(QMAKE_EXTENSION_SHLIB):QMAKE_EXTENSION_SHLIB=dylib
+    #unix {
+    #  staticlib {
+    #    !exists( $$KDCHARTDIR/lib/libkdchart.a ):error( "Cannot find libkdchart.a in $KDCHARTDIR/lib" )
+    #  } else {
+    #    message( KDCHARTDIR is $$KDCHARTDIR) 
+    #    !exists( $$KDCHARTDIR/lib/libkdchart.$$QMAKE_EXTENSION_SHLIB ):error( "Cannot find libkdchart.$$QMAKE_EXTENSION_SHLIB in $KDCHARTDIR/lib" )
+    #  }
+    #}
 
     #Only re-enable this after you have figured out a way to make it not break "make distclean"!
     #win32:!exists( $$KDCHARTDIR/lib/kdchart.lib ):error( "Cannot find kdchart.lib in $KDCHARTDIR/lib" )
