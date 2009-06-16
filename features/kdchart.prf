@@ -2,6 +2,7 @@ KDCHART_MAJOR_VERSION = 2
 
 :  # copy from environment:
   isEmpty( KDCHARTDIR ):KDCHARTDIR=$$(KDCHARTDIR)
+  isEmpty( KDCHARTDIR ):KDCHARTDIR=$$PWD
   !isEmpty( KDCHARTDIR ) {
     unix:!macx:isEmpty(QMAKE_EXTENSION_SHLIB):QMAKE_EXTENSION_SHLIB=so
     unix:macx:isEmpty(QMAKE_EXTENSION_SHLIB):QMAKE_EXTENSION_SHLIB=dylib
@@ -9,17 +10,14 @@ KDCHART_MAJOR_VERSION = 2
       staticlib {
         !exists( $$KDCHARTDIR/lib/libkdchart.a ):error( "Cannot find libkdchart.a in $KDCHARTDIR/lib" )
       } else {
-	message( KDCHARTDIR is $$KDCHARTDIR) 
+        message( KDCHARTDIR is $$KDCHARTDIR) 
         !exists( $$KDCHARTDIR/lib/libkdchart.$$QMAKE_EXTENSION_SHLIB ):error( "Cannot find libkdchart.$$QMAKE_EXTENSION_SHLIB in $KDCHARTDIR/lib" )
       }
     }
 
-# STOP! Only re-enable this after you have figured out a way to make it not break "make distclean"!
-# STOP!
-# STOP!
+    #Only re-enable this after you have figured out a way to make it not break "make distclean"!
     #win32:!exists( $$KDCHARTDIR/lib/kdchart.lib ):error( "Cannot find kdchart.lib in $KDCHARTDIR/lib" )
     #!exists( $$KDCHARTDIR/include/KDChartGlobal ):error( "Cannot find KDChartGlobal in $KDCHARTDIR/include" )
-# ^^^ STOP!
 
     KDCHART_LIB_TYPE_SUFFIX=""
     KDCHART_LIB_VERSION_SUFFIX=""
@@ -43,5 +41,5 @@ KDCHART_MAJOR_VERSION = 2
     DEFINES += HAVE_KDCHART
 
   } else:equals( builddir, $$top_builddir ) {
-    message( "WARNING: kdchart not found. Please set KDCHARTDIR either as an environment variable or on the qmake command line if you want kdchart support")
+    error( "WARNING: kdchart not found. Please set KDCHARTDIR either as an environment variable or on the qmake command line if you want kdchart support")
   }

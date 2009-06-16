@@ -12,7 +12,8 @@ CONFIG += designer
 # Remove when all strings have been surrounded by tr() or QLatin1String()
 DEFINES -= QT_NO_CAST_FROM_ASCII
 
-# can't do that, man! 
+load(kdchart)
+
 # KDCHARTDIR = ../
 KDCHARTBASE = ../
 

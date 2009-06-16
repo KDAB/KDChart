@@ -5,9 +5,8 @@ CONFIG(debug, debug|release) {
     !unix:TARGET = kdchart_plugind
 }
 
-# can't do that, man:
 # KDCHARTDIR = ../
-KDCHARTBASE = ../
+KDCHARTBASE = ..
 
 include( $$KDCHARTBASE/variables.pri )
 
@@ -15,8 +14,6 @@ INCLUDEPATH += $$KDCHARTBASE/include
 DEFINES += PLUGINS_PLUGIN_DLL
 
 CONFIG += designer debug_and_release
-
-load(kdchart)
 
 staticlib {
   CONFIG += kdchart_static
