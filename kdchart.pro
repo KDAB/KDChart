@@ -44,7 +44,7 @@ VERSION_SUFFIX=""
 CONFIG(debug, debug|release) {
   !unix: DEBUG_SUFFIX = d
 }
-!unix:!mac:VERSION_SUFFIX=$$MAJOR_VERSION
+!unix:!mac:!staticlib:VERSION_SUFFIX=$$MAJOR_VERSION
 
 KDCHARTLIB = kdchart$$DEBUG_SUFFIX$$VERSION_SUFFIX
 TESTTOOLSLIB = testtools$$VERSION_SUFFIX
