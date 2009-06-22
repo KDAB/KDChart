@@ -880,7 +880,7 @@ QRectF CartesianCoordinatePlane::visibleDataRange() const
     result.setTopLeft( translateBack( drawArea.topLeft() ) );
     result.setBottomRight( translateBack( drawArea.bottomRight() ) );
 
-    return result.normalized();
+    return result;
 }
 
 void CartesianCoordinatePlane::setGeometry( const QRect& rectangle )
