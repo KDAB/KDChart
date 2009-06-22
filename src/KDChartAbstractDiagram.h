@@ -417,35 +417,35 @@ namespace KDChart {
          */
         QBrush brush( const QModelIndex& index ) const;
 
-        /*
+        /**
          * Set the unit prefix to be used on axes for one specific column.
          * @param prefix The prefix to be used.
          * @param column The column which should be set.
          * @param orientation The orientation of the axis to use.
          */
         void setUnitPrefix( const QString& prefix, int column, Qt::Orientation orientation );
-        /*
+        /**
          * Set the unit prefix to be used on axes for all columns.
          * @param prefix The prefix to be used.
          * @param orientation The orientation of the axis to use.
          */
         void setUnitPrefix( const QString& prefix, Qt::Orientation orientation );
 
-        /*
+        /**
          * Set the unit prefix to be used on axes for one specific column.
          * @param suffix The suffix to be used.
          * @param column The column which should be set.
          * @param orientation The orientation of the axis to use.
          */
         void setUnitSuffix( const QString& suffix, int column, Qt::Orientation orientation );
-        /*
+        /**
          * Set the unit prefix to be used on axes for all columns.
          * @param suffix The suffix to be used.
          * @param orientation The orientation of the axis to use.
          */
          void setUnitSuffix( const QString& suffix, Qt::Orientation orientation );
 
-        /*
+        /**
          * Retrieves the axis unit prefix for a specific column.
          * @param column The column whose prefix should be retrieved.
          * @param orientation The orientation of the axis.
@@ -454,14 +454,14 @@ namespace KDChart {
          * @return The axis unit prefix.
          */
         QString unitPrefix( int column, Qt::Orientation orientation, bool fallback = false ) const;
-        /*
+        /**
          * Retrieves the axis unit prefix.
          * @param orientation The orientation of the axis.
          * @return The axis unit prefix.
          */
         QString unitPrefix( Qt::Orientation orientation ) const;
 
-        /*
+        /**
          * Retrieves the axis unit suffix for a specific column.
          * @param column The column whose prefix should be retrieved.
          * @param orientation The orientation of the axis.
@@ -470,7 +470,7 @@ namespace KDChart {
          * @return The axis unit suffix.
          */
         QString unitSuffix( int column, Qt::Orientation orientation, bool fallback = false ) const;
-        /*
+        /**
          * Retrieves the axis unit suffix.
          * @param orientation The orientation of the axis.
          * @return The axis unit suffix.
