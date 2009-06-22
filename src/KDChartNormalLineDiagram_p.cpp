@@ -117,6 +117,11 @@ void NormalLineDiagram::paint( PaintContext* ctx )
         CartesianDiagramDataCompressor::DataPoint lastPoint;
         qreal lastAreaBoundingValue;
 
+        // Get min. y value, used as lower or upper bounding for area highlighting
+        CartesianCoordinatePlane *plane = dynamic_cast< CartesianCoordinatePlane* >( diagram()->coordinatePlane() );
+        Q_ASSERT( plane );
+        const qreal minYValue = plane->visibleDataRange().bottom();
+
         CartesianDiagramDataCompressor::CachePosition previousCellPosition;
         for ( int row = 0; row < rowCount; ++row ) {
             const CartesianDiagramDataCompressor::CachePosition position( row, column );
@@ -128,14 +133,14 @@ void NormalLineDiagram::paint( PaintContext* ctx )
             const LineAttributes laCell = diagram()->lineAttributes( sourceIndex );
             const LineAttributes::MissingValuesPolicy policy = laCell.missingValuesPolicy();
 
+            // lower or upper bounding for the highlighted area
             qreal areaBoundingValue;
-            // Point to which the line is to be drawn (zero line, in most cases)
             if ( laCell.areaBoundingDataset() != -1 ) {
                 const CartesianDiagramDataCompressor::CachePosition areaBoundingCachePosition( row, laCell.areaBoundingDataset() );
                 areaBoundingValue = compressor().data( areaBoundingCachePosition ).value;
             } else
-                // Use zero line if no bounding dataset is set
-                areaBoundingValue = 0.0;
+                // Use min. y value (i.e. zero line in most cases) if no bounding dataset is set
+                areaBoundingValue = minYValue;
 
             if( ISNAN( point.value ) )
             {
