@@ -1,2 +1,2 @@
 TEMPLATE    = subdirs
-SUBDIRS	    = Simple BubbleChart
+SUBDIRS	    = Simple BubbleChart Advanced
