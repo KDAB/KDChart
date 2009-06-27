@@ -118,8 +118,6 @@ void NormalLineDiagram::paint( PaintContext* ctx )
         qreal lastAreaBoundingValue;
 
         // Get min. y value, used as lower or upper bounding for area highlighting
-        CartesianCoordinatePlane *plane = dynamic_cast< CartesianCoordinatePlane* >( diagram()->coordinatePlane() );
-        Q_ASSERT( plane );
         const qreal minYValue = plane->visibleDataRange().bottom();
 
         CartesianDiagramDataCompressor::CachePosition previousCellPosition;
