@@ -625,7 +625,8 @@ void KDChart::TextLayoutItem::paint( QPainter* painter )
 
     const PainterSaver painterSaver( painter );
     QFont f = realFont();
-    f.setPointSizeF( fitFontSizeToGeometry() );
+    if ( mAttributes.autoShrink() )
+        f.setPointSizeF( fitFontSizeToGeometry() );
     painter->setFont( f );
     QRectF rect( geometry() );
 
