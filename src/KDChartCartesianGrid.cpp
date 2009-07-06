@@ -517,6 +517,10 @@ DataDimension CartesianGrid::calculateGridXY(
                 else
                     min = fastPow10( minLog-1 );
 
+                // Uh oh. Logarithmic scaling doesn't work with a lower or upper
+                // bound being 0.
+                const bool zeroBound = dim.start == 0.0 || dim.end == 0.0;
+
                 qreal max;
                 const qreal maxRaw = qMax( qMax( dim.start, dim.end ), qreal( 0.0 ) );
                 const int maxLog = static_cast<int>(ceil( log10( maxRaw ) ) );
@@ -526,9 +530,9 @@ DataDimension CartesianGrid::calculateGridXY(
                     max = fastPow10( maxLog+1 );
                 else
                     max = fastPow10( maxLog );
-                if( adjustLower )
+                if( adjustLower || zeroBound )
                     dim.start = min;
-                if( adjustUpper )
+                if( adjustUpper || zeroBound )
                     dim.end   = max;
                 dim.stepWidth = pow( 10.0, ceil( log10( qAbs( max - min ) / 10.0 ) ) );
             }
