@@ -115,6 +115,8 @@ public:
     bool fixedDataCoordinateSpaceRelation;
     QRectF fixedDataCoordinateSpaceRelationOldSize;
 
+    DataDimensionsList dimensions;
+
     bool reverseVerticalPlane;
     bool reverseHorizontalPlane;
 };

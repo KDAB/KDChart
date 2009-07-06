@@ -316,79 +316,86 @@ DataDimensionsList CartesianCoordinatePlane::getDataDimensionsList() const
 
 QRectF CartesianCoordinatePlane::drawingArea() const
 {
-    const QRect rect( areaGeometry() );
-    return QRectF ( rect.left()+1, rect.top()+1, rect.width() - 3, rect.height() - 3 );
-}
-
-
-void CartesianCoordinatePlane::layoutDiagrams()
-{
-    //qDebug("CartesianCoordinatePlane::layoutDiagrams() called");
-    if ( diagrams().isEmpty() )
-    {   // FIXME evaluate what can still be prepared
-        // FIXME decide default dimension if no diagrams are present (to make empty planes useable)
-    }
     // the rectangle the diagrams cover in the *plane*:
     // (Why -3? We save 1px on each side for the antialiased drawing, and
     // respect the way QPainter calculates the width of a painted rect (the
     // size is the rectangle size plus the pen width). This way, most clipping
     // for regular pens should be avoided. When pens with a penWidth or larger
     // than 1 are used, this may not be sufficient.
-    const QRectF drawArea( drawingArea() );
-    //qDebug() << "drawingArea() returns" << drawArea;
+    const QRect rect( areaGeometry() );
+    return QRectF ( rect.left()+1, rect.top()+1, rect.width() - 3, rect.height() - 3 );
+}
 
-    const DataDimensionsList dimensions( gridDimensionsList() );
-    // test for programming errors: critical
-    Q_ASSERT_X ( dimensions.count() == 2, "CartesianCoordinatePlane::layoutDiagrams",
-                 "Error: gridDimensionsList() did not return exactly two dimensions." );
-    const DataDimension dimX = dimensions.first();
-    const DataDimension dimY = dimensions.last();
-    const qreal distX = dimX.distance();
-    const qreal distY = dimY.distance();
-    //qDebug() << distX << distY;
-    const QPointF pt(qMin(dimX.start, dimX.end), qMax(dimY.start, dimY.end));
-    const QSizeF siz( qAbs(distX), -qAbs(distY) );
+
+QRectF CartesianCoordinatePlane::logicalArea() const
+{
+    if ( d->dimensions.isEmpty() )
+        return QRectF();
+
+    const DataDimension dimX = d->dimensions.first();
+    const DataDimension dimY = d->dimensions.last();
+    const QPointF pt( qMin( dimX.start, dimX.end ), qMax( dimY.start, dimY.end ) );
+    const QSizeF siz( qAbs( dimX.distance() ), -qAbs( dimY.distance() ) );
     const QRectF dataBoundingRect( pt, siz );
-    //qDebug() << "dataBoundingRect" << dataBoundingRect;
 
-    // calculate the remaining rectangle, and use it as the diagram area:
-    QRectF diagramArea = drawArea;
-    diagramArea.setTopLeft ( QPointF ( drawArea.left(), drawArea.top() ) );
-    diagramArea.setBottomRight ( QPointF ( drawArea.right(), drawArea.bottom() ) );
-
-    // determine coordinate transformation:
-    QPointF diagramTopLeft;
+    // determine logical top left, taking the "reverse" option of
+    // horizontal and vertical dimension into account
+    QPointF topLeft;
     if( !d->reverseVerticalPlane && !d->reverseHorizontalPlane )
-        diagramTopLeft = dataBoundingRect.topLeft();
+        topLeft = dataBoundingRect.topLeft();
     else if( d->reverseVerticalPlane && !d->reverseHorizontalPlane )
-        diagramTopLeft = dataBoundingRect.bottomLeft();
+        topLeft = dataBoundingRect.bottomLeft();
     else if( d->reverseVerticalPlane && d->reverseHorizontalPlane )
-        diagramTopLeft = dataBoundingRect.bottomRight();
+        topLeft = dataBoundingRect.bottomRight();
     else if( !d->reverseVerticalPlane && d->reverseHorizontalPlane )
-        diagramTopLeft = dataBoundingRect.topRight();
+        topLeft = dataBoundingRect.topRight();
 
-    double diagramWidth;
-    if( !d->reverseHorizontalPlane )
-        diagramWidth = dataBoundingRect.width();
-    else
-        diagramWidth = -dataBoundingRect.width();
+    const double width  = dataBoundingRect.width()  * ( d->reverseHorizontalPlane ? -1.0 : 1.0 );
+    const double height = dataBoundingRect.height() * ( d->reverseVerticalPlane   ? -1.0 : 1.0 );
 
-    double diagramHeight;
-    if( !d->reverseVerticalPlane )
-        diagramHeight = dataBoundingRect.height();
-    else
-        diagramHeight = -dataBoundingRect.height();
+    return QRectF( topLeft, QSizeF( width, height ) );
+}
 
-    double planeWidth = diagramArea.width();
-    double planeHeight = diagramArea.height();
+QRectF CartesianCoordinatePlane::diagramArea() const
+{
+    const QRectF logArea( logicalArea() );
+    QPointF physicalTopLeft = d->coordinateTransformation.translate( logArea.topLeft() );
+    QPointF physicalBottomRight = d->coordinateTransformation.translate( logArea.bottomRight() );
+
+    return QRectF( physicalTopLeft, physicalBottomRight ).normalized();
+}
+
+QRectF CartesianCoordinatePlane::visibleDiagramArea() const
+{
+    return diagramArea().intersected( drawingArea() );
+}
+
+void CartesianCoordinatePlane::layoutDiagrams()
+{
+    if ( diagrams().isEmpty() )
+    {   // FIXME evaluate what can still be prepared
+        // FIXME decide default dimension if no diagrams are present (to make empty planes useable)
+    }
+
+    d->dimensions = gridDimensionsList();
+    // test for programming errors: critical
+    Q_ASSERT_X ( d->dimensions.count() == 2, "CartesianCoordinatePlane::layoutDiagrams",
+                 "Error: gridDimensionsList() did not return exactly two dimensions." );
+
+    // physical area of the plane
+    const QRectF physicalArea( drawingArea() );
+    // .. in contrast to the logical area
+    const QRectF logArea( logicalArea() );
+
+    d->coordinateTransformation.unitVectorX = logArea.width()  != 0 ? physicalArea.width()  / logArea.width()  : 1.0;
+    d->coordinateTransformation.unitVectorY = logArea.height() != 0 ? physicalArea.height() / logArea.height() : 1.0;
+
+    const double diagramXUnitInCoordinatePlane = d->coordinateTransformation.unitVectorX;
+    const double diagramYUnitInCoordinatePlane = d->coordinateTransformation.unitVectorY;
+
     double scaleX;
     double scaleY;
 
-    double diagramXUnitInCoordinatePlane;
-    double diagramYUnitInCoordinatePlane;
-
-    diagramXUnitInCoordinatePlane = diagramWidth != 0 ? planeWidth / diagramWidth : 1;
-    diagramYUnitInCoordinatePlane = diagramHeight != 0 ? planeHeight / diagramHeight : 1;
     // calculate isometric scaling factor to maxscale the diagram into
     // the coordinate system:
     if ( d->isometricScaling )
@@ -403,30 +410,25 @@ void CartesianCoordinatePlane::layoutDiagrams()
         scaleY = 1.0;
     }
 
+    const QPointF logicalTopLeft = logArea.topLeft();
     // calculate diagram origin in plane coordinates:
-    QPointF coordinateOrigin = QPointF (
-            diagramTopLeft.x() * -diagramXUnitInCoordinatePlane,
-    diagramTopLeft.y() * -diagramYUnitInCoordinatePlane );
-    coordinateOrigin += diagramArea.topLeft();
+    QPointF coordinateOrigin = QPointF ( logicalTopLeft.x() * -diagramXUnitInCoordinatePlane,
+                                         logicalTopLeft.y() * -diagramYUnitInCoordinatePlane );
+    coordinateOrigin += physicalArea.topLeft();
 
     d->coordinateTransformation.originTranslation = coordinateOrigin;
 
-    d->coordinateTransformation.diagramRect = dataBoundingRect;
-
-    d->coordinateTransformation.unitVectorX = diagramXUnitInCoordinatePlane;
-    d->coordinateTransformation.unitVectorY = diagramYUnitInCoordinatePlane;
+    // As in the first quadrant of the coordinate system, the origin is the bottom left, not top left.
+    // This origin is then the top left point of the resulting diagramRect for our coordinateTransformation.
+    const QRectF normalizedLogArea = logArea.normalized();
+    d->coordinateTransformation.diagramRect = QRectF( normalizedLogArea.bottomLeft(), normalizedLogArea.topRight() );
 
     d->coordinateTransformation.isoScaleX = scaleX;
     d->coordinateTransformation.isoScaleY = scaleY;
 
-    //      adapt diagram area to effect of isometric scaling:
-    diagramArea.setTopLeft( translate ( dataBoundingRect.topLeft() ) );
-    diagramArea.setBottomRight ( translate ( dataBoundingRect.bottomRight() ) );
-
     // the plane area might have changed, so the zoom values might also be changed
-    handleFixedDataCoordinateSpaceRelation( drawArea );
+    handleFixedDataCoordinateSpaceRelation( physicalArea );
 
-    //qDebug("CartesianCoordinatePlane::layoutDiagrams() done,\ncalling update() now:");
     update();
 }
 

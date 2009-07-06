@@ -368,6 +368,28 @@ namespace KDChart {
         QRectF visibleDataRange() const;
 
         /**
+         * Returns the logical area, i.e., the rectangle defined by the very top
+         * left and very bottom right coordinate.
+         */
+        QRectF logicalArea() const;
+
+        /**
+         * Returns the (physical) area occupied by the diagram. Unless zoom is applied
+         * (which is also true when a fixed data coordinate / space relation is used),
+         * \code diagramArea() == drawingArea() \endcode .
+         * \sa setFixedDataCoordinateSpaceRelation
+         * \sa drawingArea
+         */
+        QRectF diagramArea() const;
+
+        /**
+         * Returns the visible part of the diagram area, i.e.
+         * \code diagramArea().intersected( drawingArea() ) \endcode
+         * \sa diagramArea
+         */
+        QRectF visibleDiagramArea() const;
+
+        /**
          * Sets whether the horizontal range should be reversed or not, i.e.
          * small values to the left and large values to the right (the default)
          * or vice versa.
