@@ -57,8 +57,10 @@ QColor StockDiagram::Private::ThreeDPainter::calcShadowColor( const QColor &colo
     // of the color can be reduced. That is, the darkest shadow color
     // is color * shadowFactor.
     const qreal shadowFactor = 0.5;
-    const qreal sinAngle = 1 - qAbs( sin( DEGTORAD( angle ) ) ) * shadowFactor;
-    return QColor( color.red() * sinAngle, color.green() * sinAngle, color.blue() * sinAngle );
+    const qreal sinAngle = 1.0 - qAbs( sin( DEGTORAD( angle ) ) ) * shadowFactor;
+    return QColor( qRound( color.red()   * sinAngle ),
+                   qRound( color.green() * sinAngle ),
+                   qRound( color.blue()  * sinAngle ) );
 }
 
 /**
