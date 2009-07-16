@@ -1,7 +1,7 @@
 #include <QtGui>
+#include <QtSvg/QSvgGenerator>
 #include <KDChartChart>
 #include <KDChartBarDiagram>
-
 
 class ChartWidget : public QWidget {
   Q_OBJECT
@@ -52,6 +52,20 @@ public:
     QVBoxLayout* l = new QVBoxLayout(this);
     l->addWidget(&m_chart);
     setLayout(l);
+
+    /*
+    // render chart to a SVG
+    QSvgGenerator generator;
+    generator.setFileName("/home/kdab/chart.svg");
+    generator.setSize(QSize(300, 300));
+    generator.setViewBox(QRect(0, 0, 300, 300));
+    generator.setTitle(tr("SVG Chart"));
+    QPainter painter;
+    painter.begin(&generator);
+    painter.setRenderHint(QPainter::Antialiasing);
+    m_chart.paint(&painter, generator.viewBox());
+    painter.end();
+    */
   }
 
 private:
