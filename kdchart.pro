@@ -87,6 +87,6 @@ exists( README ) {
 
 # forward make test calls to qtests:
 test.target=test
-test.commands=@(cd qtests && $(MAKE) test)
+test.commands=(cd qtests && $(MAKE) test)
 test.depends = $(TARGET)
 QMAKE_EXTRA_TARGETS += test
