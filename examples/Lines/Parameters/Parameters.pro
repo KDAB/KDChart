@@ -1,7 +1,5 @@
 KDCHART_PATH = ../../..
 
-TARGET = LinesParameters
-
 include( $$KDCHART_PATH/examples/examples.pri )
 
 SOURCES= main.cpp
