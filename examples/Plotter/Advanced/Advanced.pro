@@ -1,8 +1,8 @@
 KDCHART_PATH = ../../..
 
-include( $$KDCHART_PATH/examples/examples.pri )
-
 TARGET = PlotterAdvanced
+
+include( $$KDCHART_PATH/examples/examples.pri )
 
 SOURCES= main.cpp
 

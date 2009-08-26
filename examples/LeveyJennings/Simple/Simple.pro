@@ -1,8 +1,9 @@
 KDCHART_PATH = ../../..
 
+TARGET = LeveyJenningsSimple
+
 include( $$KDCHART_PATH/examples/examples.pri )
 
-TARGET = LeveyJenningsSimple
 QT+=svg
 SOURCES= main.cpp
 

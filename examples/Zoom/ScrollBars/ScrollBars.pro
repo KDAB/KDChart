@@ -1,8 +1,8 @@
 KDCHART_PATH = ../../..
 
-include( $$KDCHART_PATH/examples/examples.pri )
-
 TARGET = ZoomScrollBars
+
+include( $$KDCHART_PATH/examples/examples.pri )
 
 HEADERS= mainwindow.h
 SOURCES= main.cpp mainwindow.cpp
