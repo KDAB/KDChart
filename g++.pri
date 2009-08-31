@@ -13,8 +13,11 @@
         NORMAL_CFLAGS += -pedantic
   }
 
-  debug:NORMAL_CXXFLAGS += -O0 -g3
-  debug:NORMAL_CXXFLAGS -= -g
+  # Increase the debugging level from Qt's default
+  CONFIG(debug, debug|release) {
+    NORMAL_CXXFLAGS += -g3
+  }
+
   USABLE_CXXFLAGS = -Wold-style-cast
   HARD_CXXFLAGS = -Weffc++ -Wshadow
   PITA_CXXFLAGS = -Wunreachable-code
