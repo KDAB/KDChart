@@ -547,14 +547,19 @@ void LeveyJenningsDiagram::paint( PaintContext* ctx )
         const QModelIndex valueIndex = m.index( row, 1, rootIndex() );
         const QModelIndex okIndex = m.index( row, 2, rootIndex() );
         const QModelIndex timeIndex = m.index( row, 3, rootIndex() );
+        const QModelIndex expectedMeanIndex = m.index( row, 4, rootIndex() );
+        const QModelIndex expectedSDIndex = m.index( row, 5, rootIndex() );
 
         painter->setPen( pen( lotIndex ) );
 
         const int lot = m.data( lotIndex ).toInt();
-        const double value = m.data( valueIndex ).toDouble();
+        double value = m.data( valueIndex ).toDouble();
         const bool ok = m.data( okIndex ).toBool();
         const QDateTime time = m.data( timeIndex ).toDateTime();
         const double xValue = ( time.toTime_t() - minTime ) / static_cast< double >( 24 * 60 * 60 );
+
+        const double expectedMean = m.data( expectedMeanIndex ).toDouble();
+        const double expectedSD = m.data( expectedSDIndex ).toDouble();
 
         const QPointF point = ctx->coordinatePlane()->translate( QPointF( xValue, value ) );
 
@@ -564,6 +569,15 @@ void LeveyJenningsDiagram::paint( PaintContext* ctx )
         }
         else
         {
+            if( static_cast< int >( expectedMean ) != 0 && static_cast< int >( expectedSD ) != 0 )
+            {
+                // this calculates the 'logical' value relative to the expected mean and SD of this point
+                value -= expectedMean;
+                value /= expectedSD;
+                value *= d->expectedStandardDeviation;
+                value += d->expectedMeanValue;
+            }
+
             if( prevLot == lot )
             {
                 const QPen pen = painter->pen();
