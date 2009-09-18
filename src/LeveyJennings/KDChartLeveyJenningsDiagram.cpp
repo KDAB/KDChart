@@ -561,7 +561,7 @@ void LeveyJenningsDiagram::paint( PaintContext* ctx )
         const double expectedMean = m.data( expectedMeanIndex ).toDouble();
         const double expectedSD = m.data( expectedSDIndex ).toDouble();
 
-        const QPointF point = ctx->coordinatePlane()->translate( QPointF( xValue, value ) );
+        QPointF point = ctx->coordinatePlane()->translate( QPointF( xValue, value ) );
 
         if( static_cast< int >( value ) == 0 )
         {
@@ -576,6 +576,7 @@ void LeveyJenningsDiagram::paint( PaintContext* ctx )
                 value /= expectedSD;
                 value *= d->expectedStandardDeviation;
                 value += d->expectedMeanValue;
+                point = ctx->coordinatePlane()->translate( QPointF( xValue, value ) );
             }
 
             if( prevLot == lot )
