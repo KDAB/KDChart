@@ -68,12 +68,14 @@ int main( int argc, char** argv )
 {
     QApplication app( argc, argv );
 
-    QStandardItemModel model( 14, 4 );
+    QStandardItemModel model( 14, 6 );
 
     model.setHeaderData( 0, Qt::Horizontal, QObject::tr( "Lot" ) );
     model.setHeaderData( 1, Qt::Horizontal, QObject::tr( "Value" ) );
     model.setHeaderData( 2, Qt::Horizontal, QObject::tr( "OK" ) );
     model.setHeaderData( 3, Qt::Horizontal, QObject::tr( "Date/Time" ) );
+    model.setHeaderData( 4, Qt::Horizontal, QObject::tr( "Mean Value" ) );
+    model.setHeaderData( 5, Qt::Horizontal, QObject::tr( "Standard Deviation" ) );
 
     // Lot 1
     model.setData( model.index( 0, 0 ), 1 );        // lot number
@@ -82,9 +84,11 @@ int main( int argc, char** argv )
     model.setData( model.index( 0, 3 ), QDateTime::fromString( "2007-07-06T09:00:00", Qt::ISODate ) );
 
     model.setData( model.index( 1, 0 ), 1 );
-    model.setData( model.index( 1, 1 ), 195 );
+    model.setData( model.index( 1, 1 ), 9.5 );
     model.setData( model.index( 1, 2 ), true );
     model.setData( model.index( 1, 3 ), QDateTime::fromString( "2007-07-06T21:00:00", Qt::ISODate ) );
+    model.setData( model.index( 1, 4 ), 7.5 );
+    model.setData( model.index( 1, 5 ), 1.0 );
 
     model.setData( model.index( 2, 0 ), 1 );
     model.setData( model.index( 2, 1 ), 200 );
