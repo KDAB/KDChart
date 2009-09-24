@@ -1,26 +1,6 @@
-KDGANTT_PATH = ../..
+KDCHART_PATH = ../../..
 
-TEMPLATE = app
-TARGET =
-DEPENDPATH += . $$KDGANTT_PATH/include
-INCLUDEPATH += . $$KDGANTT_PATH/include
-
-
-KDGANTTLIB=kdgantt
-KDGANTT_MAJOR_VERSION=2
-
-CONFIG(debug,debug|release) {
-        !unix {
-            staticlib {
-                KDGANTTLIB=kdganttd
-            } else {
-                KDGANTTLIB=kdganttd$$KDGANTT_MAJOR_VERSION
-            }
-        }
-}
-
-
-LIBS += -L$$KDGANTT_PATH/lib -l$$KDGANTTLIB
+include( $$KDCHART_PATH/examples/examples.pri )
 
 HEADERS += mainwindow.h \
            entrydialog.h \
@@ -33,3 +13,5 @@ SOURCES += main.cpp \
 
 FORMS += mainwindow.ui \
          entrydialog.ui
+
+message( "Building ''$$TARGET'' using LIBS ''$$LIBS''" )

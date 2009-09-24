@@ -23,5 +23,5 @@ SUBDIRS		= tools \
                   TernaryCharts \
                   Plotter \
                   LeveyJennings \
-                  DataValueTexts
-#                  Demo
+                  DataValueTexts \
+                  Gantt
