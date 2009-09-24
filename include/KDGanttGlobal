@@ -1,1 +1,1 @@
-#include "kdganttglobal.h"
+#include "../src/Gantt/kdganttglobal.h"

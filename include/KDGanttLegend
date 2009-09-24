@@ -1,1 +1,1 @@
-#include "kdganttlegend.h"
+#include "../src/Gantt/kdganttlegend.h"

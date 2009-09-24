@@ -1,1 +1,1 @@
-#include "kdganttitemdelegate.h"
+#include "../src/Gantt/kdganttitemdelegate.h"

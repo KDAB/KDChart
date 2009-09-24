@@ -80,6 +80,20 @@ INSTALLHEADERS_INCLUDE = \
     KDChartWidget \
     KDChartZoomParameters \
     KDTextDocument \
+    KDGanttAbstractGrid \
+    KDGanttAbstractRowController \
+    KDGanttConstraintModel \
+    KDGanttDateTimeGrid \
+    KDGanttForwardingProxyModel \
+    KDGanttGlobal \
+    KDGanttGraphicsView \
+    KDGanttItemDelegate \
+    KDGanttLegend \
+    KDGanttListViewRowController \
+    KDGanttStyleOptionGanttItem \
+    KDGanttSummaryHandlingProxyModel \
+    KDGanttTreeViewRowController \
+    KDGanttView \
 
 INSTALLHEADERS_SRC = \
 	   kdchart_export.h \

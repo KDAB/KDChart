@@ -1,1 +1,1 @@
-#include "kdganttabstractrowcontroller.h"
+#include "../src/Gantt/kdganttabstractrowcontroller.h"

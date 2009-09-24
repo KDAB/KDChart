@@ -1,1 +1,1 @@
-#include "kdgantttreeviewrowcontroller.h"
+#include "../src/Gantt/kdgantttreeviewrowcontroller.h"

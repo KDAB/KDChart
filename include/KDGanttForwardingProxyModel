@@ -1,1 +1,1 @@
-#include "kdganttforwardingproxymodel.h"
+#include "../src/Gantt/kdganttforwardingproxymodel.h"

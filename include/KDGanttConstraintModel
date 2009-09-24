@@ -1,2 +1,2 @@
-#include "kdganttconstraintmodel.h"
+#include "../src/Gantt/kdganttconstraintmodel.h"
 

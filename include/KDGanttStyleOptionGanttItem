@@ -1,1 +1,1 @@
-#include "kdganttstyleoptionganttitem.h"
+#include "../src/Gantt/kdganttstyleoptionganttitem.h"

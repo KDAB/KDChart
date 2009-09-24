@@ -1,1 +1,1 @@
-#include "kdganttsummaryhandlingproxymodel.h"
+#include "../src/Gantt/kdganttsummaryhandlingproxymodel.h"

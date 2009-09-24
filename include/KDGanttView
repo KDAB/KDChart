@@ -1,1 +1,1 @@
-#include "kdganttview.h"
+#include "../src/Gantt/kdganttview.h"

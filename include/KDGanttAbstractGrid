@@ -1,1 +1,1 @@
-#include "kdganttabstractgrid.h"
+#include "../src/Gantt/kdganttabstractgrid.h"
