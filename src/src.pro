@@ -497,6 +497,7 @@ DEPENDPATH = ../include \
 INCLUDEPATH = ../include \
               $$LIBFAKES_PATH/include \
               .
+
 linux-*{
   version_script{
     QMAKE_LFLAGS += -Wl,--version-script=libkdchart.map

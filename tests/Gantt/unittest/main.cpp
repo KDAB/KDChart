@@ -1,4 +1,4 @@
-#include "../../src/unittest/testregistry.h"
+#include "../../../src/Gantt/unittest/testregistry.h"
 
 #include <QApplication>
 #include <iostream>

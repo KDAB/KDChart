@@ -30,7 +30,7 @@
 #include <QDebug>
 #include <QMetaType>
 
-#include "kdgantt_export.h"
+#include "../kdchart_export.h"
 
 #ifndef KDAB_SET_OBJECT_NAME
 template <typename T>
@@ -286,10 +286,10 @@ Q_DECLARE_TYPEINFO(KDGantt::DateTimeSpan, Q_MOVABLE_TYPE);
 #ifndef QT_NO_DEBUG_STREAM
 
 
-QDebug KDGANTT_EXPORT operator<<( QDebug dbg, KDGantt::ItemDataRole r);
-QDebug KDGANTT_EXPORT operator<<( QDebug dbg, KDGantt::ItemType t);
-QDebug KDGANTT_EXPORT operator<<( QDebug dbg, const KDGantt::Span& s );
-QDebug KDGANTT_EXPORT operator<<( QDebug dbg, const KDGantt::DateTimeSpan& s );
+QDebug KDCHART_EXPORT operator<<( QDebug dbg, KDGantt::ItemDataRole r);
+QDebug KDCHART_EXPORT operator<<( QDebug dbg, KDGantt::ItemType t);
+QDebug KDCHART_EXPORT operator<<( QDebug dbg, const KDGantt::Span& s );
+QDebug KDCHART_EXPORT operator<<( QDebug dbg, const KDGantt::DateTimeSpan& s );
 
 #endif /* QT_NO_DEBUG_STREAM */
 

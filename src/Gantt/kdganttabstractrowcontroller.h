@@ -31,7 +31,7 @@
 class QModelIndex;
 
 namespace KDGantt {
-    class KDGANTT_EXPORT AbstractRowController {
+    class KDCHART_EXPORT AbstractRowController {
     public:
         AbstractRowController();
         virtual ~AbstractRowController();

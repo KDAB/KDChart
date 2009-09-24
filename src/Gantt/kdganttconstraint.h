@@ -29,13 +29,13 @@
 #include <QObject>
 #include <QSharedDataPointer>
 
-#include "kdgantt_export.h"
+#include "../kdchart_export.h"
 #ifndef QT_NO_DEBUG_STREAM
 #include <QDebug>
 #endif
 
 namespace KDGantt {
-    class KDGANTT_EXPORT Constraint {
+    class KDCHART_EXPORT Constraint {
         class Private;
     public:
         enum Type

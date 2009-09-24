@@ -8,7 +8,7 @@
 #include <vector>
 #include <cassert>
 
-#include "../kdgantt_export.h"
+#include "../../kdchart_export.h"
 
 namespace KDAB {
 namespace UnitTest {
@@ -16,7 +16,7 @@ namespace UnitTest {
     class Test;
     class TestFactory;
 
-    class KDGANTT_EXPORT TestRegistry {
+    class KDCHART_EXPORT TestRegistry {
         friend class ::KDAB::UnitTest::TestFactory;
         static TestRegistry * mSelf;
         TestRegistry();
@@ -38,7 +38,7 @@ namespace UnitTest {
         std::map< std::string, std::vector<const TestFactory*> > mTests;
     };
 
-    class KDGANTT_EXPORT Runner {
+    class KDCHART_EXPORT Runner {
     public:
         ~Runner();
         unsigned int run( const char * group=0 ) const;

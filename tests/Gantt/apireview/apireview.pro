@@ -1,11 +1,11 @@
-include(../test.pri)
+KDCHART_PATH = ../../..
 
 TEMPLATE = app
 TARGET =
-DEPENDPATH += . ../../include
-INCLUDEPATH += . ../../include
+DEPENDPATH += . ../../../include
+INCLUDEPATH += . ../../../include
 
-LIBS += -L../../lib -l$$KDGANTTLIB
+LIBS += -L$$KDCHART_PATH/lib -l$$KDCHARTLIB
 
 HEADERS += mainwindow.h \
            entrydialog.h \

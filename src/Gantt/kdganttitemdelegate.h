@@ -30,14 +30,14 @@
 #include <QPen>
 #include <QDebug>
 
-#include "kdgantt_export.h"
+#include "../kdchart_export.h"
 #include "kdganttglobal.h"
 
 namespace KDGantt {
     class StyleOptionGanttItem;
     class Constraint;
 
-    class KDGANTT_EXPORT ItemDelegate : public QItemDelegate {
+    class KDCHART_EXPORT ItemDelegate : public QItemDelegate {
         Q_OBJECT
         KDGANTT_DECLARE_PRIVATE_BASE_POLYMORPHIC( ItemDelegate )
     public:

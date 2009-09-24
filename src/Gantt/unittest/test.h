@@ -6,7 +6,7 @@
 #include <string>
 #include <iostream>
 
-#include "../kdgantt_export.h"
+#include "kdchart_export.h"
 
 namespace KDAB {
 namespace UnitTest {

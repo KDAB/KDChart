@@ -8,6 +8,7 @@ SUBDIRS = src examples uitools plugins
 contains($$list($$[QT_VERSION]), 4.[2-9].*) { SUBDIRS += kdchartserializer }
 
 SUBDIRS +=qtests
+SUBDIRS +=tests
 
 
 VERSION  = 2.3.0

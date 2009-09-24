@@ -25,7 +25,7 @@
 #ifndef KDGANTTSTYLEOPTIONGANTTITEM_H
 #define KDGANTTSTYLEOPTIONGANTTITEM_H
 
-#include "kdgantt_export.h"
+#include "../kdchart_export.h"
 
 #include <QStyleOptionViewItem>
 #include <QRectF>
@@ -33,7 +33,7 @@
 
 namespace KDGantt {
     class AbstractGrid;
-    class KDGANTT_EXPORT StyleOptionGanttItem : public QStyleOptionViewItem {
+    class KDCHART_EXPORT StyleOptionGanttItem : public QStyleOptionViewItem {
     public:
         enum Position { Left, Right, Center };
 
