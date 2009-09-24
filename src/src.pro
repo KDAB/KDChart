@@ -157,7 +157,28 @@ INSTALLHEADERS_SRC = \
            LeveyJennings/KDChartLeveyJenningsDiagram.h \
            LeveyJennings/KDChartLeveyJenningsGrid.h \
            LeveyJennings/KDChartLeveyJenningsGridAttributes.h \
-           LeveyJennings/KDChartLeveyJenningsAxis.h 
+           LeveyJennings/KDChartLeveyJenningsAxis.h \
+           Gantt/kdgantt_export.h \
+           Gantt/kdganttglobal.h \
+           Gantt/kdganttabstractrowcontroller.h \
+           Gantt/kdgantttreeviewrowcontroller.h \
+           Gantt/kdganttlistviewrowcontroller.h \
+           Gantt/kdganttview.h \
+           Gantt/kdganttstyleoptionganttitem.h \
+           Gantt/kdganttgraphicsview.h \
+           Gantt/kdganttgraphicsscene.h \
+           Gantt/kdganttgraphicsitem.h \
+           Gantt/kdganttconstraint.h \
+           Gantt/kdganttconstraintproxy.h \
+           Gantt/kdganttconstraintgraphicsitem.h \
+           Gantt/kdganttitemdelegate.h \
+           Gantt/kdganttforwardingproxymodel.h \
+           Gantt/kdganttsummaryhandlingproxymodel.h \
+           Gantt/kdganttproxymodel.h \
+           Gantt/kdganttconstraintmodel.h \
+           Gantt/kdganttabstractgrid.h \
+           Gantt/kdganttdatetimegrid.h \
+           Gantt/kdganttlegend.h \
 
 # installation targets:
 headers_include.files = $$INSTALLHEADERS_INCLUDE
@@ -296,7 +317,43 @@ HEADERS += KDChartGlobal.h \
            LeveyJennings/KDChartLeveyJenningsGridAttributes.h \
            LeveyJennings/KDChartLeveyJenningsAxis.h \
            LeveyJennings/KDChartLeveyJenningsAxis_p.h \
- 
+           Gantt/kdganttglobal.h \
+           Gantt/kdganttview.h \
+           Gantt/kdganttstyleoptionganttitem.h \
+           Gantt/kdganttgraphicsview.h \
+           Gantt/kdganttabstractrowcontroller.h \
+           Gantt/kdgantttreeviewrowcontroller.h \
+           Gantt/kdganttlistviewrowcontroller.h \
+           Gantt/kdganttgraphicsscene.h \
+           Gantt/kdganttgraphicsitem.h \
+           Gantt/kdganttconstraint.h \
+           Gantt/kdganttconstraintproxy.h \
+           Gantt/kdganttconstraintgraphicsitem.h \
+           Gantt/kdganttitemdelegate.h \
+           Gantt/kdganttforwardingproxymodel.h \
+           Gantt/kdganttsummaryhandlingproxymodel.h \
+           Gantt/kdganttproxymodel.h \
+           Gantt/kdganttconstraintmodel.h \
+           Gantt/kdganttabstractgrid.h \
+           Gantt/kdganttdatetimegrid.h \
+           Gantt/kdganttlegend.h \
+           Gantt/kdgantttreeviewrowcontroller_p.h \
+           Gantt/kdganttlistviewrowcontroller_p.h \
+           Gantt/kdganttview_p.h \
+           Gantt/kdganttgraphicsview_p.h \
+           Gantt/kdganttgraphicsscene_p.h \
+           Gantt/kdganttconstraint_p.h \
+           Gantt/kdganttitemdelegate_p.h \
+           Gantt/kdganttsummaryhandlingproxymodel_p.h \
+           Gantt/kdganttproxymodel_p.h \
+           Gantt/kdganttconstraintmodel_p.h \
+           Gantt/kdganttabstractgrid_p.h \
+           Gantt/kdganttdatetimegrid_p.h \
+           Gantt/kdganttlegend_p.h \
+           Gantt/unittest/test.h \
+           Gantt/unittest/testregistry.h \
+           Gantt/unittest/libutil.h
+
 SOURCES += \
            KDChartMeasure.cpp \
            KDChartAbstractCartesianDiagram.cpp \
@@ -389,6 +446,28 @@ SOURCES += \
            LeveyJennings/KDChartLeveyJenningsGrid.cpp \
            LeveyJennings/KDChartLeveyJenningsGridAttributes.cpp \
            LeveyJennings/KDChartLeveyJenningsAxis.cpp \
+           Gantt/kdganttglobal.cpp \
+           Gantt/kdganttview.cpp \
+           Gantt/kdganttstyleoptionganttitem.cpp \
+           Gantt/kdganttgraphicsview.cpp \
+           Gantt/kdganttabstractrowcontroller.cpp \
+           Gantt/kdgantttreeviewrowcontroller.cpp \
+           Gantt/kdganttlistviewrowcontroller.cpp \
+           Gantt/kdganttgraphicsscene.cpp \
+           Gantt/kdganttgraphicsitem.cpp \
+           Gantt/kdganttconstraint.cpp \
+           Gantt/kdganttconstraintproxy.cpp \
+           Gantt/kdganttconstraintgraphicsitem.cpp \
+           Gantt/kdganttitemdelegate.cpp \
+           Gantt/kdganttforwardingproxymodel.cpp \
+           Gantt/kdganttsummaryhandlingproxymodel.cpp \
+           Gantt/kdganttproxymodel.cpp \
+           Gantt/kdganttconstraintmodel.cpp \
+           Gantt/kdganttabstractgrid.cpp \
+           Gantt/kdganttdatetimegrid.cpp \
+           Gantt/kdganttlegend.cpp \
+           Gantt/unittest/test.cpp \
+           Gantt/unittest/testregistry.cpp \
 
 CONFIG += warn-on
 
