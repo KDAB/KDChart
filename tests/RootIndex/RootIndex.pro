@@ -9,7 +9,7 @@ INCLUDEPATH += $$KDCHART_PATH/include \
 DEPENDPATH += $$KDCHART_PATH/include \
             $$KDCHART_PATH/examples/tools
 
-LIBS        += -L$$KDCHART_PATH/lib -l$$KDCHARTLIB -l$TESTTOOLSLIB
+LIBS        += -L$$KDCHART_PATH/lib -l$$KDCHARTLIB -l$$TESTTOOLSLIB
 message( "Building ''$$TARGET'' using LIBS ''$$LIBS''" )
 
 unix {
