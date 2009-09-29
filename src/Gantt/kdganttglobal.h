@@ -219,7 +219,7 @@ namespace KDGantt {
         TypeUser    = 1000
     };
 
-    class Span {
+    class KDCHART_EXPORT Span {
         qreal m_start;
         qreal m_length;
     public:
