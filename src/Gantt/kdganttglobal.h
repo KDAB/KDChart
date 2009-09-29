@@ -219,14 +219,13 @@ namespace KDGantt {
         TypeUser    = 1000
     };
 
-    class KDCHART_EXPORT Span {
+    class Span {
         qreal m_start;
         qreal m_length;
     public:
         inline Span() : m_start( -1 ), m_length( 0 ) {}
         inline Span( qreal start, qreal length ) : m_start( start ), m_length( length ) {}
         inline Span( const Span& other ) : m_start(other.m_start), m_length(other.m_length) {}
-        ~Span();
 
         inline Span& operator=( const Span& other ) { m_start=other.m_start; m_length=other.m_length; return *this; }
 
@@ -243,10 +242,10 @@ namespace KDGantt {
         inline bool equals( const Span& other ) const {
             return m_start == other.m_start && m_length == other.m_length;
         }
-	inline Span expandedTo( const Span& other) const {
-	    const qreal new_start = qMin(start(),other.start());
-	    return Span( new_start, (end()<other.end())?other.end()-new_start:end()-new_start);
-	}
+        inline Span expandedTo( const Span& other) const {
+            const qreal new_start = qMin(start(),other.start());
+            return Span( new_start, (end()<other.end())?other.end()-new_start:end()-new_start);
+        }
     };
 
     inline bool operator==( const Span& s1, const Span& s2) { return s1.equals( s2 ); }
