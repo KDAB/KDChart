@@ -19,6 +19,8 @@ private slots:
     void slotFileQuit();
     void slotToolsNewItem();
     void slotToolsAppendItem();
+    void slotCollapseAll();
+    void slotExpandAll();
 
 private:
     ProjectModel* m_model;

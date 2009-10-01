@@ -143,6 +143,10 @@ MainWindow::MainWindow( QWidget* parent )
 
     toolsMenu->addAction( tr( "New Item" ), this, SLOT( slotToolsNewItem() ) );
     toolsMenu->addAction( tr( "Add Item" ), this, SLOT( slotToolsAppendItem() ) );
+    toolsMenu->addSeparator();
+    toolsMenu->addAction( tr( "Collapse All" ), this, SLOT( slotCollapseAll() ) );
+    toolsMenu->addAction( tr( "Expand All" ), this, SLOT( slotExpandAll() ) );
+    
     mb->addMenu( toolsMenu );
 }
 
@@ -177,6 +181,20 @@ void MainWindow::slotToolsAppendItem()
     } else {
         m_model->insertRows( m_model->rowCount( m_view->rootIndex() ), 1, m_view->rootIndex() );
     }
+}
+
+void MainWindow::slotCollapseAll()
+{
+    QTreeView* view = qobject_cast<QTreeView*>( m_view->leftView() );
+    Q_ASSERT(view);
+    view->collapseAll();
+}
+
+void MainWindow::slotExpandAll()
+{
+    QTreeView* view = qobject_cast<QTreeView*>( m_view->leftView() );
+    Q_ASSERT(view);
+    view->expandAll();
 }
 
 #include "mainwindow.moc"
