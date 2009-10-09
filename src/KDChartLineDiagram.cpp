@@ -155,6 +155,7 @@ LineDiagram::LineType LineDiagram::type() const
 void LineDiagram::setCenterDataPoints( bool center )
 {
 	d->centerDataPoints = center;
+	emit propertiesChanged();
 }
 
 bool LineDiagram::centerDataPoints() const
