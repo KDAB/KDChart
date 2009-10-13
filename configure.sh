@@ -126,6 +126,9 @@ cat <<EOF 1>&2
   -[no-]unittests
       enable/disable compiled-in unittests
 
+  -[spec]
+      compile kdchart for a specific Qt-supported target
+
 EOF
     exit 1
 }
@@ -182,6 +185,14 @@ while [ $# -ne 0 ] ; do
         -release)
             debug=no
             release=yes
+            ;;
+        -spec)
+	    shift
+            if [ $# -eq 0 ] ; then
+		    echo "-prefix needs an argument" 2>&1
+		    usage
+	    fi
+            SPEC="-spec $1"
             ;;
         *)
             usage "$1"
@@ -274,6 +285,11 @@ if [ "$STATIC_BUILD_SUPPORTED" = "true" ]; then
   Shared build...............: $shared (default: yes)
 EOF
 fi
+if [ "$SPEC" != "" ]; then
+  cat <<EOF 1>&2
+  Spec.......................: ${SPEC#-spec }
+EOF
+fi
 cat <<EOF 1>&2
   Compiled-In Unit Tests.....: $unittests (default: no)
   Restricted symbol export
@@ -281,7 +297,7 @@ cat <<EOF 1>&2
 
 EOF
 
-$QTDIR/bin/qmake $product.pro -recursive "${PRODUCT}_BASE=`pwd`" || die "qmake failed"
+$QTDIR/bin/qmake ${SPEC} $product.pro -recursive "${PRODUCT}_BASE=`pwd`" || die "qmake failed"
 
 if [ "$INSTALLATION_SUPPORTED" = "true" ]; then
   echo "Ok, now run make, then make install to install into $prefix"
