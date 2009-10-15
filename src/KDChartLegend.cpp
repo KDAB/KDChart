@@ -400,6 +400,25 @@ void Legend::replaceDiagram( AbstractDiagram* newDiagram,
         addDiagram( newDiagram );
 }
 
+uint Legend::dataSetOffset(KDChart::AbstractDiagram* diagram)
+{
+    uint offset = 0;
+
+    for (int i = 0; i < d->observers.count(); ++i)
+    {
+        if(d->observers.at(i)->diagram() == diagram)
+            return offset;
+
+        KDChart::AbstractDiagram* diagram = d->observers.at(i)->diagram();
+        if(!diagram->model())
+            continue;
+
+        offset = offset + diagram->model()->columnCount();
+    }
+
+    return offset;
+}
+
 void Legend::setDiagram( KDChart::AbstractDiagram* newDiagram )
 {
     replaceDiagram( newDiagram );

@@ -179,6 +179,12 @@ public:
     void replaceDiagram( KDChart::AbstractDiagram* newDiagram,
                          KDChart::AbstractDiagram* oldDiagram = 0 );
 
+    /** 
+      * Returns the offset of the first dataset of \c diagram.
+      *
+      */
+    uint dataSetOffset( KDChart::AbstractDiagram* diagram );
+
     /**
       * @brief A convenience method doing the same as replaceDiagram( newDiagram, 0 );
       *
