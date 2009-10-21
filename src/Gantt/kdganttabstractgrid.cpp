@@ -94,6 +94,27 @@ bool AbstractGrid::isSatisfiedConstraint( const Constraint& c ) const
     return ( ss.end() <= es.start() );
 }
 
+/*!
+ * Implement this to map from \a value to the corresponding location in the view.
+ * Return a negative value if \a value cannot be mapped.
+ * The default implementation returns -1.0.
+ */
+qreal AbstractGrid::mapToChart( const QVariant& value ) const
+{
+    Q_UNUSED( value );
+    return -1.0;
+}
+
+/*!
+ * Implement this to map from \a x to the corresponding location in the view.
+ * Return an invalid value if \a x cannot be mapped.
+ */
+QVariant AbstractGrid::mapFromChart( qreal x ) const
+{
+    Q_UNUSED( x );
+    return QVariant();
+}
+
 /*!\fn virtual Span AbstractGrid::mapToChart( const QModelIndex& idx ) const
  * Implement this to map from the data in the model to the location of
  * the corresponding item in the view.

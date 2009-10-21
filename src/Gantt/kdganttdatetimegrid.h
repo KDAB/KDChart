@@ -113,6 +113,8 @@ namespace KDGantt {
         /*reimp*/ Span mapToChart( const QModelIndex& idx ) const;
         /*reimp*/ bool mapFromChart( const Span& span, const QModelIndex& idx,
                                      const QList<Constraint>& constraints=QList<Constraint>() ) const;
+        /*reimp*/ qreal mapToChart( const QVariant& value ) const;
+        /*reimp*/ QVariant mapFromChart( qreal x ) const;
         /*reimp*/ void paintGrid( QPainter* painter, 
 				  const QRectF& sceneRect, const QRectF& exposedRect,
                                   AbstractRowController* rowController = 0,

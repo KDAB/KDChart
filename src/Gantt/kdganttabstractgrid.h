@@ -52,6 +52,8 @@ namespace KDGantt {
         virtual Span mapToChart( const QModelIndex& idx ) const = 0;
         virtual bool mapFromChart( const Span& span, const QModelIndex& idx,
                                    const QList<Constraint>& constraints=QList<Constraint>() ) const = 0;
+        virtual qreal mapToChart( const QVariant &value ) const;
+        virtual QVariant mapFromChart( qreal x ) const;
         bool isSatisfiedConstraint( const Constraint& c ) const;
 
         virtual void paintGrid( QPainter* painter, const QRectF& sceneRect, const QRectF& exposedRect,

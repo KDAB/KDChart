@@ -473,6 +473,29 @@ QBrush DateTimeGrid::noInformationBrush() const
     return d->noInformationBrush;
 }
 
+/*!
+ * \param value The datetime to get the x value for.
+ * \returns The x value corresponding to \a value or -1.0 if \a value is not a datetime variant.
+ */
+qreal DateTimeGrid::mapToChart( const QVariant& value ) const
+{
+    if ( ! qVariantCanConvert<QDateTime>( value ) ||
+         ( value.type() == QVariant::String && qVariantValue<QString>(value).isEmpty() ) )
+    {
+        return -1.0;
+    }
+    return d->dateTimeToChartX( value.toDateTime() );
+}
+
+/*!
+ * \param x The x value get the datetime for.
+ * \returns The datetime corresponding to \a x or an invalid datetime if x cannot be mapped.
+ */
+QVariant DateTimeGrid::mapFromChart( qreal x ) const
+{
+    return d->chartXtoDateTime( x );
+}
+
 /*! \param idx The index to get the Span for.
  * \returns The start and end pixels, in a Span, of the specified index.
  */

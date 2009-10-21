@@ -43,6 +43,7 @@ namespace KDGantt {
     public Q_SLOTS:
         void scrollTo( int );
     protected:
+        /*reimp*/ bool event( QEvent* ev );
         /*reimp*/ void paintEvent( QPaintEvent* ev );
         /*reimp*/ void contextMenuEvent( QContextMenuEvent* ev );
     private:

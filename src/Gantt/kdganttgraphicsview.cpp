@@ -71,6 +71,19 @@ void HeaderWidget::paintEvent( QPaintEvent* ev )
     view()->grid()->paintHeader( &p, rect(), ev->rect(), m_offset, this );
 }
 
+bool HeaderWidget::event( QEvent* event )
+{
+    if ( event->type() == QEvent::ToolTip ) {
+        DateTimeGrid* const grid = qobject_cast< DateTimeGrid* >( view()->grid() );
+        if ( grid ) {
+            QHelpEvent *e = static_cast<QHelpEvent*>( event );
+            QDateTime dt = grid->mapFromChart( e->x() ).toDateTime();
+            setToolTip( dt.toString() );
+        }
+    }
+    return QWidget::event( event );
+}
+
 void HeaderWidget::contextMenuEvent( QContextMenuEvent* event )
 {
     QMenu contextMenu;
