@@ -82,6 +82,10 @@ void SummaryHandlingProxyModel::Private::insertInCache( const SummaryHandlingPro
             continue;
         }
 
+        // check for valid datetimes
+        if( tmpsv.type() == QVariant::DateTime && !qVariantValue<QDateTime>(tmpsv).isValid()) continue;
+        if( tmpev.type() == QVariant::DateTime && !qVariantValue<QDateTime>(tmpev).isValid()) continue;
+
 	// We need to test for empty strings to
 	// avoid a stupid Qt warning
 	if( tmpsv.type() == QVariant::String && qVariantValue<QString>(tmpsv).isEmpty()) continue;
