@@ -77,7 +77,7 @@ bool HeaderWidget::event( QEvent* event )
         DateTimeGrid* const grid = qobject_cast< DateTimeGrid* >( view()->grid() );
         if ( grid ) {
             QHelpEvent *e = static_cast<QHelpEvent*>( event );
-            QDateTime dt = grid->mapFromChart( e->x() ).toDateTime();
+            QDateTime dt = grid->mapFromChart( view()->mapToScene( e->x(), 0 ).x() ).toDateTime();
             setToolTip( dt.toString() );
         }
     }
