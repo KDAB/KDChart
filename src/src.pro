@@ -82,11 +82,15 @@ INSTALLHEADERS_INCLUDE = \
     KDTextDocument \
     KDGanttAbstractGrid \
     KDGanttAbstractRowController \
+    KDGanttConstraint \
+    KDGanttConstraintGraphicsItem \
     KDGanttConstraintModel \
     KDGanttDateTimeGrid \
     KDGanttForwardingProxyModel \
     KDGanttGlobal \
+    KDGanttGraphicsItem \
     KDGanttGraphicsView \
+    KDGanttGraphicsScene \
     KDGanttItemDelegate \
     KDGanttLegend \
     KDGanttListViewRowController \
@@ -94,6 +98,7 @@ INSTALLHEADERS_INCLUDE = \
     KDGanttSummaryHandlingProxyModel \
     KDGanttTreeViewRowController \
     KDGanttView \
+    KDGanttProxyModel \
 
 INSTALLHEADERS_SRC = \
 	   kdchart_export.h \
@@ -172,6 +177,8 @@ INSTALLHEADERS_SRC = \
            LeveyJennings/KDChartLeveyJenningsGrid.h \
            LeveyJennings/KDChartLeveyJenningsGridAttributes.h \
            LeveyJennings/KDChartLeveyJenningsAxis.h \
+
+INSTALLHEADERS_GANTT_SRC = \
            Gantt/kdgantt_export.h \
            Gantt/kdganttglobal.h \
            Gantt/kdganttabstractrowcontroller.h \
@@ -197,10 +204,11 @@ INSTALLHEADERS_SRC = \
 # installation targets:
 headers_include.files = $$INSTALLHEADERS_INCLUDE
 headers_include.path = $$INSTALL_PREFIX/include
-INSTALLS += headers_include
 headers_src.files = $$INSTALLHEADERS_SRC
 headers_src.path = $$INSTALL_PREFIX/src
-INSTALLS += headers_src
+headers_gantt_src.files = $$INSTALLHEADERS_GANTT_SRC
+headers_gantt_src.path = $$INSTALL_PREFIX/src/Gantt
+INSTALLS += headers_include headers_src headers_gantt_src
 
 # install target to install the src code for license holders:
 lib.files = $${DESTDIR}
