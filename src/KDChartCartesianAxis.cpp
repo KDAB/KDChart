@@ -1124,7 +1124,13 @@ if( i == 2 ){
                             if( !isLogarithmicX )
                                 labelStep = labelDiff - dimX.stepWidth;
 
-                            labelItem->paint( ptr );
+							// if our item would only half fit, we disable clipping for that one
+							if( labelGeo.left() < geoRect.left() && labelGeo.right() > geoRect.left() )
+								ptr->setClipping( false );
+							else if( labelGeo.left() < geoRect.right() && labelGeo.right() > geoRect.right() )
+								ptr->setClipping( false );
+							
+							labelItem->paint( ptr );
 
                             // do not call customizedLabel() again:
                             labelItem2->setText( labelItem->text() );
@@ -1277,7 +1283,15 @@ if( i == 2 ){
     	                                                        + ( position() == Bottom ? halfFontHeight : -(halfFontHeight + labelSize.height()) ) );
                             }
                             labelItem->setGeometry( QRect( QPoint( x, y ), labelSize ) );
-                            labelItem->paint( ptr );
+                            
+							QRect labelGeo = labelItem->geometry();
+							// if our item would only half fit, we disable clipping for that one
+							if( labelGeo.left() < geoRect.left() && labelGeo.right() > geoRect.left() )
+								ptr->setClipping( false );
+							else if( labelGeo.left() < geoRect.right() && labelGeo.right() > geoRect.right() )
+								ptr->setClipping( false );
+
+							labelItem->paint( ptr );
                         }
                     }
                 }
@@ -1338,8 +1352,15 @@ if( i == 2 ){
                            ptr->setClipping( false );
                         else if( labelGeo.top() < geoRect.bottom() && labelGeo.bottom() > geoRect.bottom() )
                            ptr->setClipping( false );
+					
 
-                        labelItem->paint( ptr );
+						// if our item would only half fit, we disable clipping for that one
+						if( labelGeo.left() < geoRect.left() && labelGeo.right() > geoRect.left() )
+							ptr->setClipping( false );
+						else if( labelGeo.left() < geoRect.right() && labelGeo.right() > geoRect.right() )
+							ptr->setClipping( false );
+                        
+						labelItem->paint( ptr );
                         ptr->setClipping( hadClipping );
                     }
 
