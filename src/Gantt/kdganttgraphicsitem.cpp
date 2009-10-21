@@ -190,20 +190,7 @@ void GraphicsItem::setIndex( const QPersistentModelIndex& idx )
 
 QString GraphicsItem::ganttToolTip() const
 {
-    // TODO: Make delegate handle this
-    const QAbstractItemModel* model = index().model();
-    if ( !model ) return QString();
-#if 0
-    QString dbgstr;
-    QDebug( &dbgstr ) << m_index;
-    return dbgstr;
-#endif
-    QString tip = model->data( index(), Qt::ToolTipRole ).toString();
-    if ( !tip.isNull() ) return tip;
-    else return GraphicsScene::tr( "%1 -> %2: %3" )
-        .arg( model->data( index(), StartTimeRole ).toString() )
-        .arg( model->data( index(), EndTimeRole ).toString() )
-        .arg( model->data( index(), Qt::DisplayRole ).toString() );
+    return scene()->itemDelegate()->toolTip( index() );
 }
 
 QRectF GraphicsItem::boundingRect() const

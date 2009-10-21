@@ -67,6 +67,8 @@ namespace KDGantt {
         virtual void paintConstraintItem( QPainter* p, const QStyleOptionGraphicsItem& opt,
                                           const QPointF& start, const QPointF& end, const Constraint &constraint );
         
+        virtual QString toolTip( const QModelIndex &idx ) const;
+
     protected:
         void paintFinishStartConstraint( QPainter* p, const QStyleOptionGraphicsItem& opt,
                 const QPointF& start, const QPointF& end, const Constraint &constraint );
