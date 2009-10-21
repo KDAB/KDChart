@@ -243,15 +243,25 @@ ItemDelegate::InteractionState ItemDelegate::interactionStateFor( const QPointF&
     if ( !( idx.model()->flags( idx ) & Qt::ItemIsEditable ) ) return State_None;
 
     const int typ = static_cast<ItemType>( idx.model()->data( idx, ItemTypeRole ).toInt() );
+
+    QRectF itemRect( opt.itemRect );
+
+    // An event item is infinitely thin, basically just a line, because it has only one date instead of two.
+    // It is painted with an offset of -height/2, which is taken into account here.
+    if ( typ == TypeEvent )
+        itemRect = QRectF( itemRect.topLeft() - QPointF( itemRect.height() / 2.0, 0 ), QSizeF( itemRect.height(),
+                                                                                               itemRect.height() ) );
+
     if ( typ == TypeNone || typ == TypeSummary ) return State_None;
-    if ( typ == TypeEvent ) return State_Move;
-    if ( !opt.itemRect.contains(pos) ) return State_None;
+    if ( !itemRect.contains(pos) ) return State_None;
+    if ( typ == TypeEvent )
+        return State_Move;
 
     qreal delta = 5.;
-    if ( opt.itemRect.width() < 15 ) delta = 1.;
-    if( pos.x() >= opt.itemRect.left() && pos.x() < opt.itemRect.left()+delta ) {
+    if ( itemRect.width() < 15 ) delta = 1.;
+    if( pos.x() >= itemRect.left() && pos.x() < itemRect.left()+delta ) {
         return State_ExtendLeft;
-    } else   if( pos.x() <= opt.itemRect.right() && pos.x() > opt.itemRect.right()-delta ) {
+    } else   if( pos.x() <= itemRect.right() && pos.x() > itemRect.right()-delta ) {
         return State_ExtendRight;
     } else {
         return State_Move;

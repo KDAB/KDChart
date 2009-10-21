@@ -406,17 +406,25 @@ void GraphicsItem::mousePressEvent( QGraphicsSceneMouseEvent* event )
 {
     //qDebug() << "GraphicsItem::mousePressEvent("<<event<<")";
     StyleOptionGanttItem opt = getStyleOption();
-    m_istate = scene()->itemDelegate()->interactionStateFor( event->pos(), opt, index() );
-    m_presspos = event->pos();
-    m_pressscenepos = event->scenePos();
-    scene()->itemPressed( index() );
+    int istate = scene()->itemDelegate()->interactionStateFor( event->pos(), opt, index() );
+    // If State_None is returned by interactionStateFor(), we ignore this event so that
+    // it can get forwarded to another item that's below this one. Needed, for example,
+    // to allow items to be moved that are placed below the label of another item.
+    if ( istate != ItemDelegate::State_None ) {
+        m_istate = istate;
+        m_presspos = event->pos();
+        m_pressscenepos = event->scenePos();
+        scene()->itemPressed( index() );
 
-    switch( m_istate ) {
-    case ItemDelegate::State_ExtendLeft:
-    case ItemDelegate::State_ExtendRight:
-    default: /* None and Move */
-        BASE::mousePressEvent( event );
-        break;
+        switch( m_istate ) {
+        case ItemDelegate::State_ExtendLeft:
+        case ItemDelegate::State_ExtendRight:
+        default: /* State_Move */
+            BASE::mousePressEvent( event );
+            break;
+        }
+    } else {
+        event->ignore();
     }
 }
 
