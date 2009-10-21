@@ -54,7 +54,7 @@ bool SummaryHandlingProxyModel::Private::cacheLookup( const QModelIndex& idx,
 {
     //qDebug() << "cacheLookup("<<idx<<"), cache has " << cached_summary_items.count() << "items";
     QHash<QModelIndex,QPair<QDateTime,QDateTime> >::const_iterator it =
-        cached_summary_items.find( idx );
+        cached_summary_items.constFind( idx );
     if ( it != cached_summary_items.constEnd() ) {
         *result = *it;
         return true;
