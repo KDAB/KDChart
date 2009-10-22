@@ -254,14 +254,19 @@ void DatasetProxyModel::initializeDatasetDecriptors (
     DatasetDescriptionVector& outSourceToProxyMap,
     DatasetDescriptionVector& outProxyToSourceMap )
 {
-    // in the current mapping implementation, the proxy-to-source map is
+	// in the current mapping implementation, the proxy-to-source map is
     // identical to the configuration vector:
     outProxyToSourceMap = inConfiguration;
     outSourceToProxyMap.fill ( -1,  sourceCount );
-
+	
     for ( int index = 0; index < inConfiguration.size(); ++index )
-    {   // make sure the values in inConfiguration point to columns in the
+    {   
+		// make sure the values in inConfiguration point to columns in the
         // source model:
+		
+		if (inConfiguration[index] == -1)
+			continue;
+
         Q_ASSERT_X ( inConfiguration[index] >= 0
                    && inConfiguration[index] < sourceCount,
                      "DatasetProxyModel::initializeDatasetDecriptors",
@@ -269,7 +274,9 @@ void DatasetProxyModel::initializeDatasetDecriptors (
         Q_ASSERT_X ( outSourceToProxyMap[inConfiguration[index]] == -1 ,
                      "DatasetProxyModel::initializeDatasetDecriptors",
                      "no duplicates allowed in mapping configuration, mapping has to be revertible" );
+		
         outSourceToProxyMap[inConfiguration[index]] = index;
+		
     }
 }
 
