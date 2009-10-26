@@ -46,22 +46,22 @@ CartesianGrid::~CartesianGrid()
 {
 }
         
-int CartesianGrid::minSteps() const
+int CartesianGrid::minimalSteps() const
 {
     return m_minsteps;
 }
 
-void CartesianGrid::setMinSteps(int minsteps)
+void CartesianGrid::setMinimalSteps(int minsteps)
 {
     m_minsteps = minsteps;
 }
 
-int CartesianGrid::maxSteps() const
+int CartesianGrid::maximalSteps() const
 {
     return m_maxsteps;
 }
 
-void CartesianGrid::setMaxSteps(int maxsteps)
+void CartesianGrid::setMaximalSteps(int maxsteps)
 {
     m_maxsteps = maxsteps;
 }

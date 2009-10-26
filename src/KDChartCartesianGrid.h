@@ -50,11 +50,11 @@ namespace KDChart {
         CartesianGrid();
         virtual ~CartesianGrid();
 
-        int minSteps() const;
-        void setMinSteps(int minsteps);
+        int minimalSteps() const;
+        void setMinimalSteps(int minsteps);
 
-        int maxSteps() const;
-        void setMaxSteps(int maxsteps);
+        int maximalSteps() const;
+        void setMaximalSteps(int maxsteps);
 
         void drawGrid( PaintContext* context );
 
