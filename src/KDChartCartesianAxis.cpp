@@ -979,7 +979,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 	bIsVisibleLabel = ( translatedValue >= geoRect.top() && translatedValue <= geoRect.bottom() && !isLogarithmicX || i != 0.0 );
 
                 // fix for issue #4179:
-                bool painttick = bIsVisibleLabel && labelStep <= 0;;
+                bool painttick = bIsVisibleLabel && labelStep <= 0;
                 // old code:
                 // bool painttick = true;
 

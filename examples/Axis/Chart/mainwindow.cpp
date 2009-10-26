@@ -57,6 +57,8 @@ MainWindow::MainWindow( QWidget* parent ) :
     rulerAttr.setTickMarkPen( 0.9999999, QPen( Qt::red ) );
     rulerAttr.setTickMarkPen( 2.0, QPen( Qt::green ) );
     rulerAttr.setTickMarkPen( 3.0, QPen( Qt::blue ) );
+    rulerAttr.setShowMinorTickMarks(true);
+    //rulerAttr.setShowMajorTickMarks(false);
     topAxis->setRulerAttributes( rulerAttr );
     CartesianAxis *rightAxis = new CartesianAxis ( m_lines );
     CartesianAxis *bottomAxis = new CartesianAxis ( m_lines );
