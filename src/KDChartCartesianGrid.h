@@ -47,12 +47,21 @@ namespace KDChart {
     class CartesianGrid : public AbstractGrid
     {
     public:
-        CartesianGrid() : AbstractGrid(){}
-        virtual ~CartesianGrid(){}
+        CartesianGrid();
+        virtual ~CartesianGrid();
+
+        int minSteps() const;
+        void setMinSteps(int minsteps);
+
+        int maxSteps() const;
+        void setMaxSteps(int maxsteps);
 
         void drawGrid( PaintContext* context );
 
     private:
+        int m_minsteps;
+        int m_maxsteps;
+        
         DataDimensionsList calculateGrid(
             const DataDimensionsList& rawDataDimensions ) const;
 

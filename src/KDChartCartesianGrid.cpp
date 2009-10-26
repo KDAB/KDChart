@@ -37,6 +37,34 @@
 
 using namespace KDChart;
 
+CartesianGrid::CartesianGrid()
+    : AbstractGrid(), m_minsteps( 2 ), m_maxsteps( 12 )
+{
+}
+
+CartesianGrid::~CartesianGrid()
+{
+}
+        
+int CartesianGrid::minSteps() const
+{
+    return m_minsteps;
+}
+
+void CartesianGrid::setMinSteps(int minsteps)
+{
+    m_minsteps = minsteps;
+}
+
+int CartesianGrid::maxSteps() const
+{
+    return m_maxsteps;
+}
+
+void CartesianGrid::setMaxSteps(int maxsteps)
+{
+    m_maxsteps = maxsteps;
+}
 
 void CartesianGrid::drawGrid( PaintContext* context )
 {
@@ -602,10 +630,6 @@ void CartesianGrid::calculateStepWidth(
     const qreal distance = end - start;
     //qDebug( "raw data start: %f   end: %f", start, end);
 
-    //FIXME(khz): make minSteps and maxSteps configurable by the user.
-    const int minSteps = 2;
-    const int maxSteps = 12;
-
     qreal steps;
     int power = 0;
     while( list.last() * fastPow10( power ) < distance ){
@@ -625,7 +649,7 @@ void CartesianGrid::calculateStepWidth(
     do{
         //qDebug() << "list:" << testList;
         //qDebug( "calculating steps: power: %i", power);
-        calculateSteps( start, end, testList, minSteps, maxSteps, power,
+        calculateSteps( start, end, testList, m_minsteps, m_maxsteps, power,
                         steps, stepWidth,
                         adjustLower, adjustUpper );
         --power;
