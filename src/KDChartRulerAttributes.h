@@ -90,13 +90,13 @@ public:
     QColor tickMarkColor() const;
 
     /**
-      * Shows or hides major tick marks
+      * Shows or hides minor tick marks
       */
     void setShowMinorTickMarks( bool show );
     bool showMinorTickMarks() const;
 
     /**
-      * Shows or hides minor tick marks
+      * Shows or hides major tick marks
       */
     void setShowMajorTickMarks( bool show );
     bool showMajorTickMarks() const;
