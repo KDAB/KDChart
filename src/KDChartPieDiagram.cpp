@@ -186,7 +186,20 @@ void PieDiagram::paint(PaintContext* ctx)
     QPainter nullPainter(&nullPd);
     ctx->setPainter(&nullPainter);
     paintInternal(ctx, textBoundingRect);
+	
+	//edit start
+	// point from the text is getting printed 
+	/*QPoint currentPosition = textBoundingRect.bottomLeft().toPoint();
+	
+	QPoint textRectCenter = textBoundingRect.center().toPoint();
 
+	qreal newX = currentPosition.x() - textRectCenter.x();
+	qreal newY =  currentPosition.y() - textRectCenter.y();
+	currentPosition.setX(newX);
+	currentPosition.setY(newY);
+
+	textBoundingRect.translate(currentPosition);*/
+	//edit end
     // Now perform the real painting
     ctx->setPainter(actualPainter);
     paintInternal(ctx, textBoundingRect);
@@ -241,8 +254,8 @@ void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
         double maxDistance = 0, dist = 0;
 
         QPointF center = ctx->rectangle().center();
-
-        dist = qAbs(textBoundingRect.right() - center.x());
+		
+		dist = qAbs(textBoundingRect.right() - center.x());
         if(dist > maxDistance)
             maxDistance = dist;
 
@@ -263,6 +276,9 @@ void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
         if(diff > 0)
             d->size *= 1.0-(diff/size);
     }
+
+    if(d->size < 0)
+        d->size = 0; 
 
     qreal sizeFor3DEffect = 0.0;
     if ( ! threeDAttrs.isEnabled() ) {
@@ -516,8 +532,9 @@ void PieDiagram::drawPieSurface( QPainter* painter,
             }
             //find the value and paint it
             //fix value position
-            const qreal sum = valueTotals();
+			const qreal sum = valueTotals();
             d->reverseMapper.addPolygon( index.row(), index.column(), poly );
+			
             painter->drawPolygon( poly );
 
             // the new code is setting the needed position points according to the slice:
@@ -528,12 +545,27 @@ void PieDiagram::drawPieSurface( QPainter* painter,
             const QPointF southEast = south;
             const QPointF southWest = south;
             const QPointF north = pointOnCircle( drawPosition, startAngle + angleLen/2.0 );
+			
             const QPointF northEast = pointOnCircle( drawPosition, startAngle );
             const QPointF northWest = pointOnCircle( drawPosition, startAngle + angleLen );
-            const QPointF center    = (south + north) / 2.0;
+            QPointF center    = (south + north) / 2.0;
             const QPointF east      = (south + northEast) / 2.0;
             const QPointF west      = (south + northWest) / 2.0;
-            PositionPoints points( center, northWest, north, northEast, east, southEast, south, southWest, west);
+			
+			CartesianDiagramDataCompressor::DataValueAttributesList allAttrs( d->aggregatedAttrs( this, index, 0 ) );		
+			const QFontMetrics * fm = (d->cachedFontMetrics( allAttrs.value(index).textAttributes().calculatedFont(d->plane,KDChartEnums::MeasureOrientationMinimum ), this ));
+			if(!list->isEmpty())
+			{	
+				QRect textRect = fm->boundingRect(QString::number(list->last().value));
+				textRect.translated(center.toPoint());
+				QPoint textRectCenter = textRect.center();
+				qreal newX = center.x() - textRectCenter.x();
+				qreal newY =  center.y() - textRectCenter.y();
+				center.setX(newX);
+				center.setY(newY);
+			}
+            
+			PositionPoints points( center, northWest, north, northEast, east, southEast, south, southWest, west);
             qreal topAngle = startAngle - 90;
             if( topAngle < 0.0 )
                 topAngle += 360;
@@ -543,7 +575,10 @@ void PieDiagram::drawPieSurface( QPainter* painter,
             points.setDegrees(KDChartEnums::PositionNorthWest, topAngle + angleLen);
             points.setDegrees(KDChartEnums::PositionCenter,    topAngle + angleLen/2.0);
             points.setDegrees(KDChartEnums::PositionNorth,     topAngle + angleLen/2.0);
-            d->appendDataValueTextInfoToList(
+			
+			//painter->drawText(points.mPositionCenter,QLatin1String("P"));
+
+			d->appendDataValueTextInfoToList(
                     this, *list, index, 0,
                     points, Position::Center, Position::Center,
                     angleLen*sum / 360 );
