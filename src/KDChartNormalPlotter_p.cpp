@@ -47,46 +47,7 @@ Plotter::PlotType NormalPlotter::type() const
 
 const QPair< QPointF, QPointF > NormalPlotter::calculateDataBoundaries() const
 {
-    const int rowCount = compressor().modelDataRows();
-    const int colCount = compressor().modelDataColumns();
-    double xMin = std::numeric_limits< double >::quiet_NaN();
-    double xMax = std::numeric_limits< double >::quiet_NaN();
-    double yMin = std::numeric_limits< double >::quiet_NaN();
-    double yMax = std::numeric_limits< double >::quiet_NaN();
-
-    for( int column = 0; column < colCount; ++column )
-    {
-        for ( int row = 0; row < rowCount; ++row )
-        {
-            const CartesianDiagramDataCompressor::CachePosition position( row, column );
-            const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
-
-            const double valueX = ISNAN( point.key ) ? 0.0 : point.key;
-            const double valueY = ISNAN( point.value ) ? 0.0 : point.value;
-
-            if( ISNAN( xMin ) )
-            {
-                xMin = valueX;
-                xMax = valueX;
-                yMin = valueY;
-                yMax = valueY;
-            }
-            else
-            {
-                xMin = qMin( xMin, valueX );
-                xMax = qMax( xMax, valueX );
-                yMin = qMin( yMin, valueY );
-                yMax = qMax( yMax, valueY );
-            }
-        }
-    }
-
-    // NOTE: calculateDataBoundaries must return the *real* data boundaries!
-    //       i.e. we may NOT fake yMin to be qMin( 0.0, yMin )
-    //       (khz, 2008-01-24)
-    const QPointF bottomLeft( QPointF( xMin, yMin ) );
-    const QPointF topRight( QPointF( xMax, yMax ) );
-    return QPair< QPointF, QPointF >( bottomLeft, topRight );
+    return compressor().dataBoundaries();
 }
 
 void NormalPlotter::paint( PaintContext* ctx )
@@ -108,6 +69,7 @@ void NormalPlotter::paint( PaintContext* ctx )
         LineAttributesInfoList lineList;
         LineAttributes laPreviousCell;
         CartesianDiagramDataCompressor::CachePosition previousCellPosition;
+        CartesianDiagramDataCompressor::DataPoint lastPoint;
 
         for( int row = 0; row < rowCount; ++row )
         {
@@ -132,24 +94,26 @@ void NormalPlotter::paint( PaintContext* ctx )
                 }
             }
 
-            const CartesianDiagramDataCompressor::DataPoint lastPoint = compressor().data( previousCellPosition );
             // area corners, a + b are the line ends:
             const QPointF a( plane->translate( QPointF( lastPoint.key, lastPoint.value ) ) );
             const QPointF b( plane->translate( QPointF( point.key, point.value ) ) );
+            if( a.toPoint() == b.toPoint() )
+                continue;
+
             const QPointF c( plane->translate( QPointF( lastPoint.key, 0.0 ) ) );
             const QPointF d( plane->translate( QPointF( point.key, 0.0 ) ) );
 
-            // add data point labels:
-            const PositionPoints pts = PositionPoints( b, a, d, c );
-            // if necessary, add the area to the area list:
-            QList<QPolygonF> areas;
-            if ( laCell.displayArea() ) {
-                QPolygonF polygon;
-                polygon << a << b << d << c;
-                areas << polygon;
-            }
             // add the pieces to painting if this is not hidden:
             if ( !point.hidden /*&& !ISNAN( lastPoint.key ) && !ISNAN( lastPoint.value ) */) {
+                // add data point labels:
+                const PositionPoints pts = PositionPoints( b, a, d, c );
+                // if necessary, add the area to the area list:
+                QList<QPolygonF> areas;
+                if ( laCell.displayArea() ) {
+                    QPolygonF polygon;
+                    polygon << a << b << d << c;
+                    areas << polygon;
+                }
                 appendDataValueTextInfoToList( diagram(), textInfoList, sourceIndex, pts,
                                                Position::NorthWest, Position::SouthWest,
                                                point.value );
@@ -163,6 +127,7 @@ void NormalPlotter::paint( PaintContext* ctx )
             // wrap it up:
             previousCellPosition = position;
             laPreviousCell = laCell;
+            lastPoint = point;
         }
         LineAttributes::MissingValuesPolicy policy = LineAttributes::MissingValuesAreBridged; //unused
         paintElements( ctx, textInfoList, lineList, policy );

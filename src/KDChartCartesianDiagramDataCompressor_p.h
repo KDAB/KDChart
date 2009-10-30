@@ -137,6 +137,8 @@ namespace KDChart {
         int modelDataRows() const;
         const DataPoint& data( const CachePosition& ) const;
 
+        QPair< QPointF, QPointF > dataBoundaries() const;
+
         QModelIndexList indexesAt( const CachePosition& position ) const;
         DataValueAttributesList aggregatedAttrs(
                 AbstractDiagram * diagram,

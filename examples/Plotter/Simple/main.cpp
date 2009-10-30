@@ -51,7 +51,7 @@ int main( int argc, char** argv )
 #if defined PLOTTED_POINTS
     const int points = 60;
 #else
-    const int points = 300;
+    const int points = 100000;
 #endif
     const double xMin = -2 * PI;
     const double xMax = 2 * PI;
@@ -59,21 +59,35 @@ int main( int argc, char** argv )
 
     QStandardItemModel model( points, 4 );
 
+    QVariantList column0;
+    QVariantList column1;
+    QVariantList column2;
+    QVariantList column3;
+
     double x = xMin;
     for( int n = 0; n < points; ++n, x += step) {
         QModelIndex index = model.index( n, 0 );
         model.setData( index, QVariant( x ) );
+        column0.push_back( model.data( index ) );
         index = model.index( n, 1 );
         model.setData( index, QVariant( sin( x ) * 100 ) );
+        column1.push_back( model.data( index ) );
 
         index = model.index( n, 2 );
         model.setData( index, QVariant( x ) );
+        column2.push_back( model.data( index ) );
         index = model.index( n, 3 );
         model.setData( index, QVariant( x*x*x ) );
+        column3.push_back( model.data( index ) );
     }
 
     model.setHeaderData( 0, Qt::Horizontal, QString::fromLatin1( "100 * sin(x)" ) );
-    model.setHeaderData( 1, Qt::Horizontal, QString::fromLatin1( "x^3" ) );
+    model.setHeaderData( 2, Qt::Horizontal, QString::fromLatin1( "x^3" ) );
+    
+/*    model.setHeaderData( 0, Qt::Horizontal, column0, KDChart::ColumnDataRole );
+    model.setHeaderData( 1, Qt::Horizontal, column1, KDChart::ColumnDataRole );
+    model.setHeaderData( 2, Qt::Horizontal, column2, KDChart::ColumnDataRole );
+    model.setHeaderData( 3, Qt::Horizontal, column3, KDChart::ColumnDataRole );*/
 
     KDChart::Chart* chart = new KDChart::Chart();
 

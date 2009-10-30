@@ -538,7 +538,7 @@ void CartesianDiagramDataCompressor::setResolution( int x, int y )
         calculateSampleStepWidth();
     }
 
-    if( oldX != m_xResolution || oldY != m_yResolution )
+    if( oldX != m_xResolution || ( oldY != m_yResolution && m_datasetDimension == 1 ) )
     {
         rebuildCache();
         calculateSampleStepWidth();
@@ -573,7 +573,52 @@ const CartesianDiagramDataCompressor::DataPoint& CartesianDiagramDataCompressor:
     if ( ! isCached( position ) ) retrieveModelData( position );
     return m_data[ position.second ][ position.first ];
 }
+        
+QPair< QPointF, QPointF > CartesianDiagramDataCompressor::dataBoundaries() const
+{
+    const int colCount = modelDataColumns();
+    double xMin = std::numeric_limits< double >::quiet_NaN();
+    double xMax = std::numeric_limits< double >::quiet_NaN();
+    double yMin = std::numeric_limits< double >::quiet_NaN();
+    double yMax = std::numeric_limits< double >::quiet_NaN();
 
+    for( int column = 0; column < colCount; ++column )
+    {
+        const DataPointVector& data = m_data[ column ];
+        int row = 0;
+        for( DataPointVector::const_iterator it = data.begin(); it != data.end(); ++it, ++row )
+        {
+            const DataPoint& p = *it;
+            if( !p.index.isValid() )
+                retrieveModelData( CachePosition( row, column ) );
+
+            const double valueX = ISNAN( p.key ) ? 0.0 : p.key;
+            const double valueY = ISNAN( p.value ) ? 0.0 : p.value;
+            if( ISNAN( xMin ) )
+            {
+                xMin = valueX;
+                xMax = valueX;
+                yMin = valueY;
+                yMax = valueY;
+            }
+            else
+            {
+                xMin = qMin( xMin, valueX );
+                xMax = qMax( xMax, valueX );
+                yMin = qMin( yMin, valueY );
+                yMax = qMax( yMax, valueY );
+            }
+        }
+    }
+
+    // NOTE: calculateDataBoundaries must return the *real* data boundaries!
+    //       i.e. we may NOT fake yMin to be qMin( 0.0, yMin )
+    //       (khz, 2008-01-24)
+    const QPointF bottomLeft( QPointF( xMin, yMin ) );
+    const QPointF topRight( QPointF( xMax, yMax ) );
+    return QPair< QPointF, QPointF >( bottomLeft, topRight );
+}
+        
 void CartesianDiagramDataCompressor::retrieveModelData( const CachePosition& position ) const
 {
     Q_ASSERT( isValidCachePosition( position ) );
@@ -588,8 +633,32 @@ void CartesianDiagramDataCompressor::retrieveModelData( const CachePosition& pos
         if( m_datasetDimension != 1 )
         {
             Q_ASSERT( indexes.count() == 2 );
-            const QModelIndex xIndex = indexes.first();
-            const QModelIndex yIndex = indexes.last();
+            
+            // try the ColumnDataRole approach first
+            const int xColumn = indexes.first().column();
+            const int yColumn = indexes.last().column();
+            const QVariantList xValues = m_model->headerData( xColumn, Qt::Horizontal, ColumnDataRole ).toList();
+            const QVariantList yValues = m_model->headerData( yColumn, Qt::Horizontal, ColumnDataRole ).toList();
+
+            if( !xValues.isEmpty() && !yValues.isEmpty() )
+            {
+                Q_ASSERT( xValues.count() == yValues.count() );
+                int row = 0;
+                QVariantList::const_iterator itX = xValues.begin();
+                QVariantList::const_iterator itY = yValues.begin();
+                for( ; itX != xValues.end(); ++itX, ++itY, ++row )
+                {
+                    DataPoint result;
+                    result.index = m_model->index( row, xColumn, m_rootIndex );
+                    result.key = itX->toDouble();
+                    result.value = itY->toDouble();
+                    m_data[ position.second ][ row ] = result;
+                }
+                return;
+            }
+
+            const QModelIndex& xIndex = indexes.first();
+            const QModelIndex& yIndex = indexes.last();
             const double xData = m_modelCache.data( xIndex );
             const double yData = m_modelCache.data( yIndex );
             result.index = xIndex;

@@ -258,7 +258,8 @@ enum DisplayRoles {
   ThreeDPieAttributesRole,
   DataHiddenRole,
   ValueTrackerAttributesRole,
-  CommentRole
+  CommentRole,
+  ColumnDataRole
 };
 }
 
