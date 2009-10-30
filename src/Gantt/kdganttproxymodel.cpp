@@ -46,8 +46,8 @@ ProxyModel::Private::Private( ProxyModel* _q )
 
     roleMap[Qt::DisplayRole]    = Qt::DisplayRole;
     roleMap[ItemTypeRole]       = Qt::DisplayRole;
-    roleMap[StartTimeRole]      = Qt::DisplayRole;
-    roleMap[EndTimeRole]        = Qt::DisplayRole;
+    roleMap[StartTimeRole]      = StartTimeRole;
+    roleMap[EndTimeRole]        = EndTimeRole;
     roleMap[TaskCompletionRole] = Qt::DisplayRole;
     roleMap[LegendRole]         = Qt::DisplayRole;
 }

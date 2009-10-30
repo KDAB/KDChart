@@ -117,6 +117,7 @@ namespace KDGantt {
     protected:
         /*reimp*/ void helpEvent( QGraphicsSceneHelpEvent *helpEvent );
         /*reimp*/ void drawBackground( QPainter* painter, const QRectF& rect );
+        /*reimp*/ void drawForeground( QPainter* painter, const QRectF& rect );
 
     public Q_SLOTS:
         void setModel( QAbstractItemModel* );

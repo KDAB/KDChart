@@ -591,6 +591,13 @@ void GraphicsScene::drawBackground( QPainter* painter, const QRectF& _rect )
         rect = rect.intersected( scn );
     }
     d->grid->paintGrid( painter, scn, rect, d->rowController );
+
+    d->grid->drawBackground(painter, rect);
+}
+
+void GraphicsScene::drawForeground( QPainter* painter, const QRectF& rect )
+{
+    d->grid->drawForeground(painter, rect);
 }
 
 void GraphicsScene::itemEntered( const QModelIndex& idx )

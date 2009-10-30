@@ -34,6 +34,7 @@
 #include <QStyleOptionHeader>
 #include <QWidget>
 #include <QDebug>
+#include <QList>
 
 #include <cassert>
 
@@ -741,6 +742,7 @@ void DateTimeGrid::paintGrid( QPainter* painter,
         const qreal tabw = QApplication::fontMetrics().width( QLatin1String( "XXXXX" ) );
         const qreal dayw = dayWidth();
         if ( dayw > 24*60*60*tabw ) {
+
             d->paintVerticalUserDefinedLines( painter, sceneRect, exposedRect, &d->minute_lower, widget );
         } else if ( dayw > 24*60*tabw ) {
             d->paintVerticalLines( painter, sceneRect, exposedRect, widget, Private::HeaderHour );
@@ -1087,6 +1089,112 @@ void DateTimeGrid::paintMonthScaleHeader( QPainter* painter,  const QRectF& head
     };
     d->paintHeader( painter, headerRect, exposedRect, offset, widget, // General parameters
                     Private::HeaderYear, new YearFormatter ); // Custom parameters
+}
+
+/*!
+\todo document this function
+*/
+void DateTimeGrid::drawDayBackground(QPainter* painter, const QRectF& rect, const QDate& date)
+{
+    Q_UNUSED(painter);
+    Q_UNUSED(rect);
+    Q_UNUSED(date);
+}
+
+/*!
+\todo document this function
+*/
+void DateTimeGrid::drawDayForeground(QPainter* painter, const QRectF& rect, const QDate& date)
+{
+    Q_UNUSED(painter);
+    Q_UNUSED(rect);
+    Q_UNUSED(date);
+}
+
+void DateTimeGrid::drawBackground(QPainter* paint, const QRectF& rect)
+{
+    int offset = (int)dayWidth();
+
+    // Figure out the date at the extreme left
+    QDate date = d->chartXtoDateTime(rect.left()).date();
+
+    // We need to paint from one end to the other
+    int startx = rect.left();
+    int endx = rect.right();
+
+    // Save the painter state
+    paint->save();
+
+    // Paint the first date column
+    while(1)
+    {
+        QDate nextDate = d->chartXtoDateTime(startx+1).date();
+        if(date != nextDate)
+        {
+            QRectF dayRect(startx-dayWidth(), rect.top(), dayWidth(), rect.height());
+            dayRect = dayRect.adjusted(1, 0, 0, 0);
+            drawDayBackground(paint, dayRect, date);
+            break;
+        }
+
+        ++startx;
+    }
+
+    // Paint the remaining dates
+    for(int i=startx; i<endx; i+=offset)
+    {
+        date = d->chartXtoDateTime(i+1).date();
+
+        QRectF dayRect(i, rect.top(), dayWidth(), rect.height());
+        dayRect = dayRect.adjusted(1, 0, 0, 0);
+        drawDayBackground(paint, dayRect, date);
+    }
+
+    // Restore the painter state
+    paint->restore();
+}
+
+void DateTimeGrid::drawForeground(QPainter* paint, const QRectF& rect)
+{
+    int offset = (int)dayWidth();
+
+    // Figure out the date at the extreme left
+    QDate date = d->chartXtoDateTime(rect.left()).date();
+
+    // We need to paint from one end to the other
+    int startx = rect.left();
+    int endx = rect.right();
+
+    // Save the painter state
+    paint->save();
+
+    // Paint the first date column
+    while(1)
+    {
+        QDate nextDate = d->chartXtoDateTime(startx+1).date();
+        if(date != nextDate)
+        {
+            QRectF dayRect(startx-dayWidth(), rect.top(), dayWidth(), rect.height());
+            dayRect = dayRect.adjusted(1, 0, 0, 0);
+            drawDayForeground(paint, dayRect, date);
+            break;
+        }
+
+        ++startx;
+    }
+
+    // Paint the remaining dates
+    for(int i=startx; i<endx; i+=offset)
+    {
+        date = d->chartXtoDateTime(i+1).date();
+
+        QRectF dayRect(i, rect.top(), dayWidth(), rect.height());
+        dayRect = dayRect.adjusted(1, 0, 0, 0);
+        drawDayForeground(paint, dayRect, date);
+    }
+
+    // Restore the painter state
+    paint->restore();
 }
 
 #undef d

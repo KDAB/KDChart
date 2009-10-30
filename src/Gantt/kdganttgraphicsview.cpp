@@ -364,6 +364,10 @@ GraphicsView::GraphicsView( QWidget* parent )
     // HACK!
     setSummaryHandlingModel( _d->scene.summaryHandlingModel() );
 
+    // So that AbstractGrid::drawBackground() and AbstractGrid::drawForeground() 
+    // works properly
+    setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+
     //setCacheMode( CacheBackground );
 }
 

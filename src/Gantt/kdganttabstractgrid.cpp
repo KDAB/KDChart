@@ -25,6 +25,8 @@
 #include "kdganttabstractgrid.h"
 #include "kdganttabstractgrid_p.h"
 
+#include <QRectF>
+
 using namespace KDGantt;
 
 /*!\class KDGantt::AbstractGrid kdganttabstractgrid.h KDGanttAbstractGrid
@@ -147,6 +149,25 @@ QVariant AbstractGrid::mapFromChart( qreal x ) const
  * \param offset -- the horizontal scroll offset of the view.
  * \param widget -- the widget used by the view -- may be 0.
  */
+
+/*!
+\todo document this function
+*/
+void AbstractGrid::drawBackground(QPainter* paint, const QRectF& rect)
+{
+    Q_UNUSED(paint);
+    Q_UNUSED(rect);
+}
+
+/*!
+\todo document this function
+*/
+void AbstractGrid::drawForeground(QPainter* paint, const QRectF& rect)
+{
+    Q_UNUSED(paint);
+    Q_UNUSED(rect);
+}
+
 
 #include "moc_kdganttabstractgrid.cpp"
 

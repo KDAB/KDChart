@@ -141,7 +141,14 @@ namespace KDGantt {
 				     const QRectF& headerRect, const QRectF& exposedRect, 
                                      qreal offset, const DateTimeScaleFormatter* formatter, 
 				     QWidget* widget = 0 );
-    };
+
+        virtual void drawDayBackground(QPainter* painter, const QRectF& rect, const QDate& date);
+        virtual void drawDayForeground(QPainter* painter, const QRectF& rect, const QDate& date);
+
+       protected:
+        /* reimp */ void drawBackground(QPainter* paint, const QRectF& rect);
+        /* reimp */ void drawForeground(QPainter* paint, const QRectF& rect);
+       };
 }
 
 #ifndef QT_NO_DEBUG_STREAM

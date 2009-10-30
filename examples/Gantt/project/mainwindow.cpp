@@ -10,9 +10,12 @@
 #include <QItemSelectionModel>
 #include <QTreeView>
 #include <QDebug>
+#include <QBrush>
+#include <QPainter>
 
 #include <KDGanttView>
 #include <KDGanttItemDelegate>
+#include <KDGanttDateTimeGrid>
 
 class ItemTypeComboBox : public QComboBox {
     Q_OBJECT
@@ -111,6 +114,56 @@ void MyItemDelegate::drawDisplay( QPainter* painter, const QStyleOptionViewItem&
   ItemDelegate::drawDisplay(painter,option,rect,str);
 }
 
+///////////////////////////////////////////////////////////////////////////////
+// Provide custom background and foreground
+///////////////////////////////////////////////////////////////////////////////
+
+class DateTimeGrid : public KDGantt::DateTimeGrid
+{
+public:
+    DateTimeGrid(QObject* parent=0) { 
+        setParent(parent);
+    }
+    ~DateTimeGrid() { }
+
+    void drawDayBackground(QPainter* painter, const QRectF& rect, const QDate& date);
+    void drawDayForeground(QPainter* painter, const QRectF& rect, const QDate& date);
+};
+
+void DateTimeGrid::drawDayBackground(QPainter* painter, const QRectF& rect, const QDate& date)
+{
+    if(date.dayOfWeek() >= Qt::Monday && date.dayOfWeek() <= Qt::Friday)
+        return;
+
+    // if the date is a sunday or saturday, paint a gray filled background
+    QBrush brush(Qt::Dense5Pattern);
+    brush.setColor(Qt::lightGray);
+    painter->fillRect(rect, brush);
+}
+
+void DateTimeGrid::drawDayForeground(QPainter* painter, const QRectF& rect, const QDate& date)
+{
+    if(date.dayOfWeek() >= Qt::Monday && date.dayOfWeek() <= Qt::Friday)
+        return;
+
+    painter->save();
+
+    static QString text("Holiday");
+    QFont font = painter->font();
+    font.setPixelSize(rect.width()/3);
+
+    QFontMetrics fm(font);
+    int width = fm.width(text);
+    int height = fm.boundingRect(text).height();
+
+    painter->translate(rect.center());
+    painter->rotate(90);
+    painter->translate(-width/2, height/2);
+    painter->setFont(font);
+    painter->drawText(0, 0, text);
+
+    painter->restore();
+}
 
 MainWindow::MainWindow( QWidget* parent )
     : QMainWindow( parent ),
@@ -122,6 +175,8 @@ MainWindow::MainWindow( QWidget* parent )
 
     slotToolsNewItem();
     m_view->leftView()->setItemDelegateForColumn( 1, new MyItemDelegate( this ) );
+    m_view->setGrid(new DateTimeGrid(this));
+
   //QItemEditorCreatorBase *creator = new QItemEditorCreator<ItemTypeComboBox>("itemType");
   //QItemEditorFactory* factory = new QItemEditorFactory;
   //factory->registerEditor( QVariant( KDGantt::TypeTask ).type(), creator );

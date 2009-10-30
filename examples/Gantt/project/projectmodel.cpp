@@ -213,13 +213,17 @@ QVariant ProjectModel::data( const QModelIndex& idx, int role ) const
     } else if ( idx.column() == 2 ) {
         switch( role ) {
         case Qt::DisplayRole:
+            return n->start().date().toString("dd-MM-yyyy");
         case Qt::EditRole:
+        case KDGantt::StartTimeRole:
             return n->start();
         }
     } else if ( idx.column() == 3 ) {
         switch( role ) {
         case Qt::DisplayRole:
+            return n->end().date().toString("dd-MM-yyyy");
         case Qt::EditRole:
+        case KDGantt::EndTimeRole:
             return n->end();
         }
     } else if ( idx.column() == 4 && n->completion() >= 0 ) {
@@ -276,6 +280,7 @@ bool ProjectModel::setData( const QModelIndex& idx,  const QVariant& value,
         switch( role ) {
         case Qt::DisplayRole:
         case Qt::EditRole:
+        case KDGantt::StartTimeRole:
             n->setStart(value.toDateTime());
             emit dataChanged( idx, idx );
             break;
@@ -284,6 +289,7 @@ bool ProjectModel::setData( const QModelIndex& idx,  const QVariant& value,
         switch( role ) {
         case Qt::DisplayRole:
         case Qt::EditRole:
+        case KDGantt::EndTimeRole:
             n->setEnd(value.toDateTime());
             emit dataChanged( idx, idx );
             break;
