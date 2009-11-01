@@ -520,7 +520,6 @@ void PieDiagram::drawPieSurface( QPainter* painter,
                 degree += granularity;
                 ++iPoint;
             }
-            int last = poly.size();
             // if necessary add one more point to fill the last small gap
             if( ! perfectMatch ){
                 poly[ iPoint ] = pointOnCircle( drawPosition, startAngle + angleLen );
@@ -551,21 +550,21 @@ void PieDiagram::drawPieSurface( QPainter* painter,
             QPointF center    = (south + north) / 2.0;
             const QPointF east      = (south + northEast) / 2.0;
             const QPointF west      = (south + northWest) / 2.0;
-			
-			CartesianDiagramDataCompressor::DataValueAttributesList allAttrs( d->aggregatedAttrs( this, index, 0 ) );		
-			const QFontMetrics * fm = (d->cachedFontMetrics( allAttrs.value(index).textAttributes().calculatedFont(d->plane,KDChartEnums::MeasureOrientationMinimum ), this ));
-			if(!list->isEmpty())
-			{	
-				QRect textRect = fm->boundingRect(QString::number(list->last().value));
-				textRect.translated(center.toPoint());
-				QPoint textRectCenter = textRect.center();
-				qreal newX = center.x() - textRectCenter.x();
-				qreal newY =  center.y() - textRectCenter.y();
-				center.setX(newX);
-				center.setY(newY);
-			}
+
+            CartesianDiagramDataCompressor::DataValueAttributesList allAttrs( d->aggregatedAttrs( this, index, 0 ) );
+            const QFontMetrics * fm = (d->cachedFontMetrics( allAttrs.value(index).textAttributes().calculatedFont(d->plane,KDChartEnums::MeasureOrientationMinimum ), this ));
+            if(!list->isEmpty())
+            {
+                    QRect textRect = fm->boundingRect(QString::number(list->last().value));
+                    textRect.translated(center.toPoint());
+                    QPoint textRectCenter = textRect.center();
+                    qreal newX = center.x() - textRectCenter.x();
+                    qreal newY =  center.y() - textRectCenter.y();
+                    center.setX(newX);
+                    center.setY(newY);
+            }
             
-			PositionPoints points( center, northWest, north, northEast, east, southEast, south, southWest, west);
+            PositionPoints points( center, northWest, north, northEast, east, southEast, south, southWest, west);
             qreal topAngle = startAngle - 90;
             if( topAngle < 0.0 )
                 topAngle += 360;
