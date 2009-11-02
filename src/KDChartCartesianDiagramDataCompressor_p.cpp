@@ -650,8 +650,11 @@ void CartesianDiagramDataCompressor::retrieveModelData( const CachePosition& pos
                 {
                     DataPoint result;
                     result.index = m_model->index( row, xColumn, m_rootIndex );
-                    result.key = itX->toDouble();
-                    result.value = itY->toDouble();
+                    if( !itX->isNull() )
+                    {
+                        result.key = itX->toDouble();
+                        result.value = itY->toDouble();
+                    }
                     m_data[ position.second ][ row ] = result;
                 }
                 return;

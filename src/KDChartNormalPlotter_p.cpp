@@ -90,6 +90,7 @@ void NormalPlotter::paint( PaintContext* ctx )
                 case LineAttributes::MissingValuesHideSegments: // fall-through since they're just hidden
                 default:
                     previousCellPosition = CartesianDiagramDataCompressor::CachePosition();
+                    lastPoint = CartesianDiagramDataCompressor::DataPoint();
                     continue;
                 }
             }
