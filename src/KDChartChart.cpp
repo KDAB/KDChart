@@ -907,6 +907,14 @@ BackgroundAttributes Chart::backgroundAttributes() const
     return d->backgroundAttributes;
 }
 
+//TODO KDChart 3.0; change QLayout into QBoxLayout::Direction
+void Chart::setCoordinatePlaneLayout( QLayout * layout )
+{
+    delete d->planesLayout;
+    d->planesLayout = dynamic_cast<QBoxLayout*>( layout );
+    d->slotLayoutPlanes();
+}
+
 QLayout* Chart::coordinatePlaneLayout()
 {
     return d->planesLayout;

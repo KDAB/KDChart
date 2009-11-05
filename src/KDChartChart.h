@@ -167,7 +167,11 @@ namespace KDChart {
          */
         void takeCoordinatePlane( AbstractCoordinatePlane* plane );
 
-
+        /**
+         * Set the coordinate plane layout that should be used as model for
+         * the internal used layout. The layout needs to be an instance of
+         * QHBoxLayout or QVBoxLayout.
+         */
         void setCoordinatePlaneLayout( QLayout * layout );
         QLayout* coordinatePlaneLayout();
 
