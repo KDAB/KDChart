@@ -108,7 +108,18 @@ public:
     qreal verticalMin;
     qreal verticalMax;
 
+    // autoAdjustHorizontalRangeToData determines if and how much the horizontal range is adjusted.
+    // A value of 100 means that the fixed horizontal range will be used (e.g. set by the user),
+    // otherwise the value will be the percentage of the diagram's horizontal range that is to be
+    // left empty (i.e., it resembles the 'gap' between the horizontal extremes and the border of the
+    // diagram).
     unsigned int autoAdjustHorizontalRangeToData;
+
+    // autoAdjustVerticalRangeToData determines if and how much the vertical range is adjusted.
+    // A value of 100 means that the fixed vertical range will be used (e.g. set by the user),
+    // otherwise the value will be the percentage of the diagram's vertical range that is to be
+    // left empty (i.e., it resembles the 'gap' between the vertical extremes and the border of the
+    // diagram).
     unsigned int autoAdjustVerticalRangeToData;
     bool autoAdjustGridToZoom;
 
