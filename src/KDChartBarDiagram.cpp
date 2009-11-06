@@ -403,6 +403,11 @@ void BarDiagram::paint( PaintContext* ctx )
     AbstractCoordinatePlane* const plane = ctx->coordinatePlane();
     ctx->setCoordinatePlane( plane->sharedAxisMasterPlane( ctx->painter() ) );
 
+    // Only paint elements that are in the paint context's rectangle
+    // (in this case boundaries of the diagram, see paintEvent())
+    ctx->painter()->setClipping( true );
+    ctx->painter()->setClipRect( ctx->rectangle() );
+
     // paint different bar types Normal - Stacked - Percent - Default Normal
     d->implementor->paint( ctx );
 
