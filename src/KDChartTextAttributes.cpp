@@ -30,6 +30,7 @@
 #include <QApplication>
 
 #include <KDABLibFakes>
+#include <KDChartCartesianCoordinatePlane>
 
 #define d d_func()
 
@@ -188,13 +189,18 @@ const QFont TextAttributes::calculatedFont(
         const QObject*                   autoReferenceArea,
         KDChartEnums::MeasureOrientation autoReferenceOrientation ) const
 {
-    const qreal size = calculatedFontSize( autoReferenceArea, autoReferenceOrientation );
-    //qDebug() << "TextAttributes::calculatedFont() has   d->cachedFontSize" << d->cachedFontSize << "  calculatedFontSize" << size;
+    const CartesianCoordinatePlane* plane = dynamic_cast<const CartesianCoordinatePlane*>( autoReferenceArea );
+
+    static qreal size = calculatedFontSize( autoReferenceArea, autoReferenceOrientation );
+    if ( ! plane->hasFixedDataCoordinateSpaceRelation() )
+        size = calculatedFontSize( autoReferenceArea, autoReferenceOrientation );
+
     if( size > 0.0 && d->cachedFontSize != size ){
         //qDebug() << "new into the cache:" << size;
         d->cachedFontSize = size;
         d->cachedFont.setPointSizeF( d->cachedFontSize );
     }
+
     return d->cachedFont;
 }
 
