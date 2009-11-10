@@ -186,13 +186,18 @@ qreal TextAttributes::calculatedFontSize(
 
 
 const QFont TextAttributes::calculatedFont(
-        const QObject*                   autoReferenceArea,
-        KDChartEnums::MeasureOrientation autoReferenceOrientation ) const
+    const QObject*                   autoReferenceArea,
+    KDChartEnums::MeasureOrientation autoReferenceOrientation ) const
 {
     const CartesianCoordinatePlane* plane = dynamic_cast<const CartesianCoordinatePlane*>( autoReferenceArea );
 
     static qreal size = calculatedFontSize( autoReferenceArea, autoReferenceOrientation );
-    if ( ! plane->hasFixedDataCoordinateSpaceRelation() )
+    if ( plane )
+    {
+        if(!plane->hasFixedDataCoordinateSpaceRelation())
+            size = calculatedFontSize( autoReferenceArea, autoReferenceOrientation );
+    }
+    else
         size = calculatedFontSize( autoReferenceArea, autoReferenceOrientation );
 
     if( size > 0.0 && d->cachedFontSize != size ){
@@ -249,15 +254,15 @@ QPen TextAttributes::pen() const
 QDebug operator<<(QDebug dbg, const KDChart::TextAttributes& ta)
 {
     dbg << "KDChart::TextAttributes("
-	<< "visible="<<ta.isVisible()
-	<< "font="<<ta.font().toString() /* What? No QDebug for QFont? */
-	<< "fontsize="<<ta.fontSize()
-	<< "minimalfontsize="<<ta.minimalFontSize()
-	<< "autorotate="<<ta.autoRotate()
-	<< "autoshrink="<<ta.autoShrink()
-	<< "rotation="<<ta.rotation()
-	<< "pen="<<ta.pen()
-	<< ")";
+    << "visible="<<ta.isVisible()
+    << "font="<<ta.font().toString() /* What? No QDebug for QFont? */
+    << "fontsize="<<ta.fontSize()
+    << "minimalfontsize="<<ta.minimalFontSize()
+    << "autorotate="<<ta.autoRotate()
+    << "autoshrink="<<ta.autoShrink()
+    << "rotation="<<ta.rotation()
+    << "pen="<<ta.pen()
+    << ")";
     return dbg;
 }
 #endif /* QT_NO_DEBUG_STREAM */
