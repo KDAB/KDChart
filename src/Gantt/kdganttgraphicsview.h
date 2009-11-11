@@ -49,7 +49,7 @@ namespace KDGantt {
 
         Q_PRIVATE_SLOT( d, void slotGridChanged() )
         Q_PRIVATE_SLOT( d, void slotHorizontalScrollValueChanged( int ) )
-	Q_PRIVATE_SLOT( d, void slotHeaderContextMenuRequested( const QPoint& ) )
+        Q_PRIVATE_SLOT( d, void slotHeaderContextMenuRequested( const QPoint& ) )
         /* slots for QAbstractItemModel signals */
         Q_PRIVATE_SLOT( d, void slotColumnsInserted( const QModelIndex& parent,  int start, int end ) )
         Q_PRIVATE_SLOT( d, void slotColumnsRemoved( const QModelIndex& parent,  int start, int end ) )
@@ -78,8 +78,8 @@ namespace KDGantt {
 
         bool isReadOnly() const;
 
-	void setHeaderContextMenuPolicy( Qt::ContextMenuPolicy );
-	Qt::ContextMenuPolicy headerContextMenuPolicy() const;
+        void setHeaderContextMenuPolicy( Qt::ContextMenuPolicy );
+        Qt::ContextMenuPolicy headerContextMenuPolicy() const;
 
         QModelIndex indexAt( const QPoint& pos ) const;
 
@@ -97,11 +97,11 @@ namespace KDGantt {
     public:
         void deleteSubtree( const QModelIndex& );
 
-	void print( QPrinter* printer, bool drawRowLabels = true );
-	void print( QPrinter* printer, qreal start, qreal end, bool drawRowLabels = true );
+        void print( QPrinter* printer, bool drawRowLabels = true );
+        void print( QPrinter* printer, qreal start, qreal end, bool drawRowLabels = true );
         void print( QPainter* painter, const QRectF& target = QRectF(), bool drawRowLabels = true );
         void print( QPainter* painter, qreal start, qreal end, 
-		    const QRectF& target = QRectF(), bool drawRowLabels = true );
+                    const QRectF& target = QRectF(), bool drawRowLabels = true );
 
     public Q_SLOTS:
         void setModel( QAbstractItemModel* );
@@ -120,7 +120,7 @@ namespace KDGantt {
         void doubleClicked( const QModelIndex & index );
         void entered( const QModelIndex & index );
         void pressed( const QModelIndex & index );
-	void headerContextMenuRequested( const QPoint& pt );
+        void headerContextMenuRequested( const QPoint& pt );
 
     protected:
         /*reimp*/void resizeEvent( QResizeEvent* );
