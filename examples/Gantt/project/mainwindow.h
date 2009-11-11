@@ -22,6 +22,11 @@ private slots:
     void slotCollapseAll();
     void slotExpandAll();
 
+    void slotAlignLeft();
+    void slotAlignCenter();
+    void slotAlignRight();
+    void slotAlignHidden();
+    
 private:
     ProjectModel* m_model;
     KDGantt::View* m_view;

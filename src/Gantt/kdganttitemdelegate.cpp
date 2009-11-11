@@ -223,6 +223,7 @@ Span ItemDelegate::itemBoundingSpan( const StyleOptionGanttItem& opt,
         s = Span( itemRect.left()-tw, itemRect.width()+tw ); break;
     case StyleOptionGanttItem::Right:
         s = Span( itemRect.left(), itemRect.width()+tw ); break;
+    case StyleOptionGanttItem::Hidden: // fall through
     case StyleOptionGanttItem::Center:
         s = Span( itemRect.left(), itemRect.width() ); break;
     }
@@ -292,6 +293,7 @@ void ItemDelegate::paintGanttItem( QPainter* painter,
     painter->setPen( pen );
     painter->setBrush( defaultBrush( typ ) );
 
+    bool drawText = true;
     qreal pw = painter->pen().width()/2.;
     switch( typ ) {
     case TypeTask:
@@ -317,13 +319,6 @@ void ItemDelegate::paintGanttItem( QPainter* painter,
                 painter->fillRect( cr, compcolor );
             }
             painter->restore();
-            Qt::Alignment ta;
-            switch( opt.displayPosition ) {
-            case StyleOptionGanttItem::Left: ta = Qt::AlignLeft; break;
-            case StyleOptionGanttItem::Right: ta = Qt::AlignRight; break;
-            case StyleOptionGanttItem::Center: ta = Qt::AlignCenter; break;
-            }
-            painter->drawText( boundingRect, ta | Qt::AlignVCenter, txt );
         }
         break;
     case TypeSummary:
@@ -349,13 +344,6 @@ void ItemDelegate::paintGanttItem( QPainter* painter,
             painter->translate( 0.5, 0.5 );
             painter->drawPath( path );
             painter->restore();
-            Qt::Alignment ta;
-            switch( opt.displayPosition ) {
-            case StyleOptionGanttItem::Left: ta = Qt::AlignLeft; break;
-            case StyleOptionGanttItem::Right: ta = Qt::AlignRight; break;
-            case StyleOptionGanttItem::Center: ta = Qt::AlignCenter; break;
-            }
-            painter->drawText( boundingRect, ta | Qt::AlignVCenter, txt );
         }
         break;
     case TypeEvent: /* TODO */
@@ -375,13 +363,6 @@ void ItemDelegate::paintGanttItem( QPainter* painter,
             painter->translate( 0, 0.5 );
             painter->drawPath( path );
             painter->restore();
-            Qt::Alignment ta;
-            switch( opt.displayPosition ) {
-            case StyleOptionGanttItem::Left: ta = Qt::AlignLeft; break;
-            case StyleOptionGanttItem::Right: ta = Qt::AlignRight; break;
-            case StyleOptionGanttItem::Center: ta = Qt::AlignCenter; break;
-            }
-            painter->drawText( boundingRect, ta | Qt::AlignVCenter, txt );
 #if 0
             painter->setBrush( Qt::NoBrush );
             painter->setPen( Qt::black );
@@ -392,8 +373,21 @@ void ItemDelegate::paintGanttItem( QPainter* painter,
         }
         break;
     default:
+        drawText = false;
         break;
     }
+    
+    Qt::Alignment ta;
+    switch( opt.displayPosition ) {
+        case StyleOptionGanttItem::Left: ta = Qt::AlignLeft; break;
+        case StyleOptionGanttItem::Right: ta = Qt::AlignRight; break;
+        case StyleOptionGanttItem::Center: ta = Qt::AlignCenter; break;
+        case StyleOptionGanttItem::Hidden: drawText = false; break;
+    }
+    if ( drawText ) {
+        painter->drawText( boundingRect, ta | Qt::AlignVCenter, txt );
+    }
+
     painter->restore();
 }
 

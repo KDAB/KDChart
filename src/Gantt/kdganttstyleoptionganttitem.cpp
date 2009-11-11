@@ -68,6 +68,7 @@ QDebug operator<<( QDebug dbg, KDGantt::StyleOptionGanttItem::Position p)
     case KDGantt::StyleOptionGanttItem::Left:   dbg << "KDGantt::StyleOptionGanttItem::Left"; break;
     case KDGantt::StyleOptionGanttItem::Right:  dbg << "KDGantt::StyleOptionGanttItem::Right"; break;
     case KDGantt::StyleOptionGanttItem::Center: dbg << "KDGantt::StyleOptionGanttItem::Center"; break;
+    case KDGantt::StyleOptionGanttItem::Hidden: dbg << "KDGantt::StyleOptionGanttItem::Hidden"; break;
     default: dbg << static_cast<int>( p );
     }
     return dbg;

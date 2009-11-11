@@ -8,6 +8,7 @@
 #include <QDebug>
 
 #include <KDGanttGlobal>
+#include <KDGanttStyleOptionGanttItem>
 
 #include <cassert>
 
@@ -47,6 +48,9 @@ public:
     void setCompletion( int c ) {
         m_completion = c;
     }
+    void setPosition( KDGantt::StyleOptionGanttItem::Position p ) {
+        m_position = p;
+    }
 
     QDateTime start() const { return m_start; }
     QDateTime end() const { return m_end; }
@@ -56,6 +60,8 @@ public:
     KDGantt::ItemType type() const { return m_type; }
 
     int completion() const { return m_completion; }
+    
+    KDGantt::StyleOptionGanttItem::Position position() const { return m_position; }
 
 private:
     Node* m_parent;
@@ -65,6 +71,7 @@ private:
     QDateTime m_start, m_end;
     QString m_label;
     int m_completion;
+    KDGantt::StyleOptionGanttItem::Position m_position;
 };
 
 static int unnamed_count = 0;
@@ -75,7 +82,8 @@ ProjectModel::Node::Node( Node* parent )
       m_start( QDateTime::currentDateTime() ),
       m_end( QDateTime::currentDateTime().addDays( 1 ) ),
       m_label( tr( "Unnamed task %1" ).arg( ++unnamed_count ) ),
-      m_completion( -1 )
+      m_completion( -1 ),
+      m_position( KDGantt::StyleOptionGanttItem::Right )
 {
     if ( m_parent ) m_parent->addChild( this );
 }
@@ -203,6 +211,8 @@ QVariant ProjectModel::data( const QModelIndex& idx, int role ) const
         case Qt::DisplayRole:
         case Qt::EditRole:
 			return n->label();
+        case KDGantt::TextPositionRole:
+            return n->position();
         }
     } else if ( idx.column() == 1 ) {
         switch( role ) {
@@ -265,6 +275,10 @@ bool ProjectModel::setData( const QModelIndex& idx,  const QVariant& value,
         case Qt::DisplayRole:
         case Qt::EditRole:
             n->setLabel( value.toString() );
+            emit dataChanged( idx, idx );
+            break;
+        case KDGantt::TextPositionRole:
+            n->setPosition( static_cast<KDGantt::StyleOptionGanttItem::Position>(value.toInt()) );
             emit dataChanged( idx, idx );
             break;
         }

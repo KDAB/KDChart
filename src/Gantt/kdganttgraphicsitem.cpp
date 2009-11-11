@@ -127,6 +127,7 @@ StyleOptionGanttItem GraphicsItem::getStyleOption() const
         switch( opt.displayPosition ) {
         case StyleOptionGanttItem::Left: opt.displayAlignment = Qt::AlignLeft|Qt::AlignVCenter; break;
         case StyleOptionGanttItem::Right: opt.displayAlignment = Qt::AlignRight|Qt::AlignVCenter; break;
+        case StyleOptionGanttItem::Hidden: // fall through
         case StyleOptionGanttItem::Center: opt.displayAlignment = Qt::AlignCenter; break;
         }
     }

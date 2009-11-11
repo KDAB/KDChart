@@ -13,9 +13,11 @@
 #include <QBrush>
 #include <QPainter>
 
+#include <KDGanttGlobal>
 #include <KDGanttView>
 #include <KDGanttItemDelegate>
 #include <KDGanttDateTimeGrid>
+#include <KDGanttStyleOptionGanttItem>
 
 class ItemTypeComboBox : public QComboBox {
     Q_OBJECT
@@ -199,6 +201,12 @@ MainWindow::MainWindow( QWidget* parent )
     toolsMenu->addAction( tr( "New Item" ), this, SLOT( slotToolsNewItem() ) );
     toolsMenu->addAction( tr( "Add Item" ), this, SLOT( slotToolsAppendItem() ) );
     toolsMenu->addSeparator();
+    QMenu *alignMenu = toolsMenu->addMenu( tr( "Align" ) );
+    alignMenu->addAction( tr( "Left" ), this, SLOT( slotAlignLeft() ) );
+    alignMenu->addAction( tr( "Center" ), this, SLOT( slotAlignCenter() ) );
+    alignMenu->addAction( tr( "Right" ), this, SLOT( slotAlignRight() ) );
+    alignMenu->addAction( tr( "Hidden" ), this, SLOT( slotAlignHidden() ) );
+    toolsMenu->addSeparator();
     toolsMenu->addAction( tr( "Collapse All" ), this, SLOT( slotCollapseAll() ) );
     toolsMenu->addAction( tr( "Expand All" ), this, SLOT( slotExpandAll() ) );
     
@@ -252,4 +260,36 @@ void MainWindow::slotExpandAll()
     view->expandAll();
 }
 
+void MainWindow::slotAlignLeft()
+{
+    QModelIndex idx = m_view->selectionModel()->currentIndex();
+    if ( idx.isValid() ) {
+        m_model->setData( idx, KDGantt::StyleOptionGanttItem::Left, KDGantt::TextPositionRole );
+    }
+}
+
+void MainWindow::slotAlignCenter()
+{
+    QModelIndex idx = m_view->selectionModel()->currentIndex();
+    if ( idx.isValid() ) {
+        m_model->setData( idx, KDGantt::StyleOptionGanttItem::Center, KDGantt::TextPositionRole );
+    }
+}
+
+void MainWindow::slotAlignRight()
+{
+    QModelIndex idx = m_view->selectionModel()->currentIndex();
+    if ( idx.isValid() ) {
+        m_model->setData( idx, KDGantt::StyleOptionGanttItem::Right, KDGantt::TextPositionRole );
+    }
+}
+
+void MainWindow::slotAlignHidden()
+{
+    QModelIndex idx = m_view->selectionModel()->currentIndex();
+    if ( idx.isValid() ) {
+        m_model->setData( idx, KDGantt::StyleOptionGanttItem::Hidden, KDGantt::TextPositionRole );
+    }
+}
+    
 #include "mainwindow.moc"
