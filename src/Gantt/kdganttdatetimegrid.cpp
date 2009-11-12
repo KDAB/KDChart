@@ -923,7 +923,7 @@ void DateTimeGrid::Private::paintHeader( QPainter* painter,
     int offsetSeconds = 0;
     int offsetDays = 0;
     int offsetMonths = 0;
-    
+
     switch ( headerType ) {
         case Private::HeaderHour:
             offsetSeconds = 60*60;
@@ -1109,6 +1109,31 @@ void DateTimeGrid::drawDayForeground(QPainter* painter, const QRectF& rect, cons
     Q_UNUSED(painter);
     Q_UNUSED(rect);
     Q_UNUSED(date);
+}
+
+/**
+\todo document this function
+*/
+QRectF DateTimeGrid::computeRect(const QDateTime& from, const QDateTime& to, const QRectF& rect) const
+{
+    qreal topLeft = d->dateTimeToChartX(from);
+    qreal topRight = d->dateTimeToChartX(to);
+
+    return QRectF(topLeft, rect.top(), topRight - topLeft, rect.height());
+}
+
+/**
+\todo document this function
+*/
+QPair<QDateTime, QDateTime> DateTimeGrid::dateTimeRange(const QRectF& rect) const
+{
+    QDateTime start;
+    QDateTime end;
+
+    start = d->chartXtoDateTime(rect.left());
+    end = d->chartXtoDateTime(rect.right());
+
+    return qMakePair(start, end);
 }
 
 void DateTimeGrid::drawBackground(QPainter* paint, const QRectF& rect)

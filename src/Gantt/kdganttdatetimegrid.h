@@ -144,6 +144,9 @@ namespace KDGantt {
 
         virtual void drawDayBackground(QPainter* painter, const QRectF& rect, const QDate& date);
         virtual void drawDayForeground(QPainter* painter, const QRectF& rect, const QDate& date);
+        
+        QRectF computeRect(const QDateTime& from, const QDateTime& to, const QRectF& rect) const;
+        QPair<QDateTime, QDateTime> dateTimeRange(const QRectF& rect) const;
 
        protected:
         /* reimp */ void drawBackground(QPainter* paint, const QRectF& rect);

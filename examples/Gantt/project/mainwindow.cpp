@@ -128,38 +128,38 @@ public:
     }
     ~DateTimeGrid() { }
 
-    void drawDayBackground(QPainter* painter, const QRectF& rect, const QDate& date);
-    void drawDayForeground(QPainter* painter, const QRectF& rect, const QDate& date);
+    void drawBackground(QPainter* painter, const QRectF& rect);
+    void drawForeground(QPainter* painter, const QRectF& rect);
 };
 
-void DateTimeGrid::drawDayBackground(QPainter* painter, const QRectF& rect, const QDate& date)
+void DateTimeGrid::drawBackground(QPainter* painter, const QRectF& rect)
 {
-    if(date.dayOfWeek() >= Qt::Monday && date.dayOfWeek() <= Qt::Friday)
-        return;
-
-    // if the date is a sunday or saturday, paint a gray filled background
     QBrush brush(Qt::Dense5Pattern);
     brush.setColor(Qt::lightGray);
-    painter->fillRect(rect, brush);
+
+    QRectF r = computeRect(QDateTime::currentDateTime(),
+                           QDateTime::currentDateTime().addDays(2), 
+                           rect);
+    painter->fillRect(r, brush);
 }
 
-void DateTimeGrid::drawDayForeground(QPainter* painter, const QRectF& rect, const QDate& date)
+void DateTimeGrid::drawForeground(QPainter* painter, const QRectF& rect)
 {
-    if(date.dayOfWeek() >= Qt::Monday && date.dayOfWeek() <= Qt::Friday)
-        return;
-
     painter->save();
+
+    QRectF r = computeRect(QDateTime::currentDateTime(),
+                           QDateTime::currentDateTime().addDays(2), 
+                           rect);
 
     static QString text("Holiday");
     QFont font = painter->font();
-    font.setPixelSize(rect.width()/3);
+    font.setPixelSize(r.width()/5);
 
     QFontMetrics fm(font);
     int width = fm.width(text);
     int height = fm.boundingRect(text).height();
 
-    painter->translate(rect.center());
-    painter->rotate(90);
+    painter->translate(r.center());
     painter->translate(-width/2, height/2);
     painter->setFont(font);
     painter->drawText(0, 0, text);
@@ -175,7 +175,7 @@ MainWindow::MainWindow( QWidget* parent )
     m_view->setModel( m_model );
     m_view->setSelectionModel( new QItemSelectionModel(m_model));
 
-    slotToolsNewItem();
+    // slotToolsNewItem();
     m_view->leftView()->setItemDelegateForColumn( 1, new MyItemDelegate( this ) );
     m_view->setGrid(new DateTimeGrid(this));
 
