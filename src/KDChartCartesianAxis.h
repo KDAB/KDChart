@@ -129,6 +129,17 @@ namespace KDChart {
          */
         QMap< double, QString > annotations() const;
 
+        /**
+         * Sets custom ticks on the axis.
+         * Ticks are a QList of doubles defining their special position.
+         */
+        void setCustomTicks( const QList< double >& ticksPostions );
+        /**
+         * Returns the currently set custom ticks on the axis.
+         */
+        QList< double > customTicks() const;
+
+
         /** pure virtual in QLayoutItem */
         virtual bool isEmpty() const;
         /** pure virtual in QLayoutItem */

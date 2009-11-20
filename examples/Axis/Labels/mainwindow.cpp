@@ -99,13 +99,23 @@ MainWindow::MainWindow( QWidget* parent ) :
 #endif
 
 // set custom axis labels at custom positions
-#if 0
+#if 1
     QMap< double, QString > annotations;
     annotations[0.5] = "Left";
     annotations[3.5] = "Center";
+    annotations[4.2] = "After Center";
     annotations[6.5] = "Right";
     xAxis->setAnnotations(annotations);
 #endif
+
+    // Illustration of custom ticks
+    QList<double> ticks;
+    ticks.append( 0.5 );
+    ticks.append( 3.5 );
+    ticks.append( 4.2 );
+    ticks.append( 6.5 );
+    xAxis->setCustomTicks(ticks);
+    yAxis->setCustomTicks(ticks);
 
     // rotate abscissa labels by -60 degrees:
     KDChart::TextAttributes ta( xAxis->textAttributes() );
@@ -114,7 +124,6 @@ MainWindow::MainWindow( QWidget* parent ) :
 
     m_lines->addAxis( xAxis );
     m_lines->addAxis( yAxis );
-
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
     // Set up the legend
     m_legend = new KDChart::Legend( m_lines, m_chart );
