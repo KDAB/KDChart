@@ -71,7 +71,6 @@ switch( yourPosition().value() ) {
 \endverbatim
  * \sa RelativePosition, KDChartEnums::PositionValue
  */
-
 class KDCHART_EXPORT Position
 {
     Q_DECLARE_TR_FUNCTIONS( Position )

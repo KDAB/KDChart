@@ -56,14 +56,14 @@ public:
     explicit AttributesModel( QAbstractItemModel* model, QObject * parent = 0 );
     ~AttributesModel();
 
-    /* Copies the internal data (maps and palette) of another
-       AttributesModel* into this one.
-    */
+    /** Copies the internal data (maps and palette) of another
+     *  AttributesModel* into this one.
+     */
     void initFrom( const AttributesModel* other );
 
-    /* Returns true if both, all of the attributes set, and
+    /** Returns true if both, all of the attributes set, and
      * the palette set is equal in both of the AttributeModels.
-    */
+     */
     bool compare( const AttributesModel* other )const;
 
     bool compareAttributes( int role, const QVariant& a, const QVariant& b )const;
