@@ -55,11 +55,22 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_bars = new BarDiagram();
     m_bars->setModel( &m_model );
 
+    // define custom color for the borders of the bars
     QPen pen(  m_bars->pen() );
     pen.setColor( Qt::black );
     pen.setWidth( 0 );
     m_bars->setPen( pen );
     m_chart->coordinatePlane()->replaceDiagram( m_bars );
+
+    // define custom colours for the bars
+    QList<QColor> bcolor;
+    bcolor.append(Qt::darkGreen);
+    bcolor.append(Qt::green);
+    bcolor.append(Qt::darkRed);
+    bcolor.append(Qt::red);
+    for (int row=0; row < m_model.columnCount(); ++row) {
+        m_bars->setBrush(row, QBrush(bcolor[row]));
+    }
 
     // Configure the plane's Background
     BackgroundAttributes pba;
