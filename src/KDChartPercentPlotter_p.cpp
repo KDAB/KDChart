@@ -187,12 +187,12 @@ void PercentPlotter::paint( PaintContext* ctx )
 
                 data.first = leftY + ( rightY - leftY ) * ( xValue - leftX ) / ( rightX - leftX );
                 // if the result is a valid value, let's assign the index, too
-                if( !ISNAN( data.first ) )
+                if( !ISNAN( data.first.operator double() ) )
                     data.second = left.second;
             }
 
             // sum it up
-            if( !ISNAN( yValues[ column ].first ) )
+            if( !ISNAN( yValues[ column ].first.operator double() ) )
                 yValueSums[ xValue ] += yValues[ column ].first;
         }
     }
