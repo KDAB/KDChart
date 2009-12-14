@@ -290,6 +290,7 @@ namespace KDChart
             if( parent != m_rootIndex )
                 return;
 
+            Q_ASSERT( start >= 0 && start <= m_data.size() );
             m_data.insert( start, end - start + 1, QVector< T >( m_model->columnCount( m_rootIndex ) ) );
             m_cacheValid.insert( start, end - start + 1, QVector< bool >( m_model->columnCount( m_rootIndex ), false ) );
 
