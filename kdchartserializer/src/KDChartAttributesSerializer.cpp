@@ -1149,6 +1149,8 @@ MarkerAttributes::MarkerStyle AttributesSerializer::markerStyleFromName( QString
         style = MarkerAttributes::MarkerCross;
     else if( name == "MarkerFastCross" )
         style = MarkerAttributes::MarkerFastCross;
+    else if( name == "NoMarker" )
+        style = MarkerAttributes::NoMarker;
     else 
         Q_ASSERT( false ); // all of the style types need to be handled
     return style;
@@ -1181,6 +1183,9 @@ QString AttributesSerializer::markerStyleToName( MarkerAttributes::MarkerStyle s
             break;
         case MarkerAttributes::MarkerFastCross:
             name = "MarkerFastCross";
+            break;
+        case MarkerAttributes::NoMarker:
+            name = "NoMarker";
             break;
         default:
             Q_ASSERT( false ); // all of the style types need to be handled

@@ -715,6 +715,8 @@ void AbstractDiagram::paintMarker( QPainter* painter,
                     painter->drawLine(  top, bottom );
                     break;
                 }
+            case MarkerAttributes::NoMarker:
+                break;
             default:
                 Q_ASSERT_X ( false, "paintMarkers()",
                             "Type item does not match a defined Marker Type." );

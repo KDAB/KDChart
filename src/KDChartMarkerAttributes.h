@@ -60,7 +60,8 @@ namespace KDChart {
                            Marker4Pixels = 4,
                            MarkerRing    = 5,
                            MarkerCross   = 6,
-                           MarkerFastCross = 7 };
+                           MarkerFastCross = 7,
+                           NoMarker = 8 };
 
         void setVisible( bool visible );
         bool isVisible() const;
