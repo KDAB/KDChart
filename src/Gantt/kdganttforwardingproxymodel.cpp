@@ -28,7 +28,7 @@
 
 using namespace KDGantt;
 
-typedef QAbstractProxyModel BASE;
+typedef QSortFilterProxyModel BASE;
 
 /*! Constructor. Creates a new ForwardingProxyModel with
  * parent \a parent

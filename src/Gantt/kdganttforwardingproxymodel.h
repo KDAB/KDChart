@@ -25,12 +25,12 @@
 #ifndef KDGANTTFORWARDINGPROXYMODEL_H
 #define KDGANTTFORWARDINGPROXYMODEL_H
 
-#include <QAbstractProxyModel>
+#include <QSortFilterProxyModel>
 
 #include "kdganttglobal.h"
 
 namespace KDGantt {
-    class KDCHART_EXPORT ForwardingProxyModel : public QAbstractProxyModel {
+    class KDCHART_EXPORT ForwardingProxyModel : public QSortFilterProxyModel {
         Q_OBJECT
         Q_DISABLE_COPY(ForwardingProxyModel)
     public:
