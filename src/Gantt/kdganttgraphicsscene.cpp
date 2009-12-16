@@ -703,13 +703,23 @@ void GraphicsScene::doPrint( QPainter* painter, const QRectF& targetRect,
     QFont sceneFont( font() );
     if ( printer ) {
         sceneFont = QFont( font(), printer );
-        sceneFont.setPixelSize( font().pointSize() );
+        if ( font().pointSizeF() >= 0.0 )
+            sceneFont.setPointSizeF( font().pointSizeF() );
+        else if ( font().pointSize() >= 0 )
+            sceneFont.setPointSize( font().pointSize() );
+        else
+            sceneFont.setPixelSize( font().pixelSize() );
     }
 #else
     QFont sceneFont( painter->font() );
     if ( printer ) {
         sceneFont = QFont( painter->font(), printer );
-        sceneFont.setPixelSize( painter->font().pointSize() );
+        if ( painter->font().pointSizeF() >= 0.0 )
+            sceneFont.setPointSizeF( painter->font().pointSizeF() );
+        else if ( painter->font().pointSize() >= 0 )
+            sceneFont.setPointSize( painter->font().pointSize() );
+        else
+            sceneFont.setPixelSize( painter->font().pixelSize() );
     }
 #endif
 
