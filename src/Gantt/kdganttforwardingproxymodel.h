@@ -25,12 +25,12 @@
 #ifndef KDGANTTFORWARDINGPROXYMODEL_H
 #define KDGANTTFORWARDINGPROXYMODEL_H
 
-#include <QSortFilterProxyModel>
+#include <QAbstractProxyModel>
 
 #include "kdganttglobal.h"
 
 namespace KDGantt {
-    class KDCHART_EXPORT ForwardingProxyModel : public QSortFilterProxyModel {
+    class KDCHART_EXPORT ForwardingProxyModel : public QAbstractProxyModel {
         Q_OBJECT
         Q_DISABLE_COPY(ForwardingProxyModel)
     public:
@@ -50,6 +50,11 @@ namespace KDGantt {
 
         /*reimp*/ bool setData( const QModelIndex& index, const QVariant& value, int role = Qt::EditRole );
 
+        /*reimp*/ QMimeData *mimeData(const QModelIndexList &indexes) const;
+        /*reimp*/ bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
+        /*reimp*/ QStringList mimeTypes() const;
+        /*reimp*/ Qt::DropActions supportedDropActions() const;
+    
     protected Q_SLOTS:
         virtual void sourceModelAboutToBeReset();
         virtual void sourceModelReset();

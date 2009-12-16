@@ -25,10 +25,11 @@
 #include "kdganttforwardingproxymodel.h"
 
 #include <cassert>
+#include <QStringList>
 
 using namespace KDGantt;
 
-typedef QSortFilterProxyModel BASE;
+typedef QAbstractProxyModel BASE;
 
 /*! Constructor. Creates a new ForwardingProxyModel with
  * parent \a parent
@@ -276,5 +277,43 @@ bool ForwardingProxyModel::setData( const QModelIndex& index, const QVariant& va
     return sourceModel()->setData( mapToSource( index ), value, role );
 }
 
+QMimeData *ForwardingProxyModel::mimeData(const QModelIndexList &indexes) const
+{
+    QModelIndexList source_indexes;
+    for (int i = 0; i < indexes.count(); ++i)
+        source_indexes << mapToSource(indexes.at(i));
+    return sourceModel()->mimeData(source_indexes);
+}
+
+bool ForwardingProxyModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent)
+{
+    if ((row == -1) && (column == -1))
+        return sourceModel()->dropMimeData(data, action, -1, -1, mapToSource(parent));
+    int source_destination_row = -1;
+    int source_destination_column = -1;
+    QModelIndex source_parent;
+    if (row == rowCount(parent)) {
+        source_parent = mapToSource(parent);
+        source_destination_row = sourceModel()->rowCount(source_parent);
+    } else {
+        QModelIndex proxy_index = index(row, column, parent);
+        QModelIndex source_index = mapToSource(proxy_index);
+        source_destination_row = source_index.row();
+        source_destination_column = source_index.column();
+        source_parent = source_index.parent();
+    }
+    return sourceModel()->dropMimeData(data, action, source_destination_row, source_destination_column, source_parent);
+}
+
+QStringList ForwardingProxyModel::mimeTypes() const
+{
+    return sourceModel()->mimeTypes();
+}
+
+Qt::DropActions ForwardingProxyModel::supportedDropActions() const
+{
+    return sourceModel()->supportedDropActions();
+}
+        
 #include "moc_kdganttforwardingproxymodel.cpp"
 
