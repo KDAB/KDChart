@@ -264,6 +264,7 @@ void AbstractDiagram::setModel( QAbstractItemModel * newModel )
         connect( model(), SIGNAL( modelReset() ), this, SLOT( setDataBoundariesDirty() ) );
         connect( model(), SIGNAL( layoutChanged() ), this, SLOT( setDataBoundariesDirty() ) );
     }
+    emit modelsChanged();
 }
         
 void AbstractDiagram::setSelectionModel( QItemSelectionModel* newSelectionModel )
