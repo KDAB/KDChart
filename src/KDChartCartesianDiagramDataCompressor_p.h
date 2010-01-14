@@ -72,12 +72,12 @@ namespace KDChart {
         class DataPoint {
         public:
             DataPoint() 
-                : key( std::numeric_limits< double >::quiet_NaN() ), 
-                  value( std::numeric_limits< double >::quiet_NaN() ), 
+                : key( std::numeric_limits< qreal >::quiet_NaN() ), 
+                  value( std::numeric_limits< qreal >::quiet_NaN() ), 
                   hidden( false ) 
                   {}
-            double key;
-            double value;
+            qreal key;
+            qreal value;
             bool hidden;
             QModelIndex index;
         };
@@ -194,7 +194,7 @@ namespace KDChart {
         QPointer<QAbstractItemModel> m_model;
         unsigned int m_sampleStep;
         QModelIndex m_rootIndex;
-        ModelDataCache< double > m_modelCache;
+        ModelDataCache< qreal > m_modelCache;
         mutable DataValueAttributesCache m_dataValueAttributesCache;
         int m_datasetDimension;
     };
