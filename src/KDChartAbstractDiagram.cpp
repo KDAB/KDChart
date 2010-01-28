@@ -248,6 +248,7 @@ void AbstractDiagram::setModel( QAbstractItemModel * newModel )
         disconnect( model(), SIGNAL( columnsRemoved( QModelIndex, int, int ) ), this, SLOT( setDataBoundariesDirty() ) );
         disconnect( model(), SIGNAL( modelReset() ), this, SLOT( setDataBoundariesDirty() ) );
         disconnect( model(), SIGNAL( layoutChanged() ), this, SLOT( setDataBoundariesDirty() ) );
+        disconnect( model(), SIGNAL( dataChanged(QModelIndex,QModelIndex) ), this, SIGNAL( modelDataChanged() ));
     }
     QAbstractItemView::setModel( newModel );
     AttributesModel* amodel = new PrivateAttributesModel( newModel, this );
