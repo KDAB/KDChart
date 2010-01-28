@@ -673,6 +673,9 @@ namespace KDChart {
         /** This signal is emitted, when either the model or the AttributesModel is replaced. */
         void modelsChanged();
 
+        /** This signal is emitted, when the model data is changed. */
+        void modelDataChanged();
+
         /** This signal is emitted, when the hidden status of at least one data cell was (un)set. */
         void dataHidden();
 

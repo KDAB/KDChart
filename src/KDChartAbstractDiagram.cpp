@@ -263,6 +263,7 @@ void AbstractDiagram::setModel( QAbstractItemModel * newModel )
         connect( model(), SIGNAL( columnsRemoved( QModelIndex, int, int ) ), this, SLOT( setDataBoundariesDirty() ) );
         connect( model(), SIGNAL( modelReset() ), this, SLOT( setDataBoundariesDirty() ) );
         connect( model(), SIGNAL( layoutChanged() ), this, SLOT( setDataBoundariesDirty() ) );
+        connect( model(), SIGNAL( dataChanged(QModelIndex,QModelIndex) ), this, SIGNAL( modelDataChanged() ));
     }
     emit modelsChanged();
 }

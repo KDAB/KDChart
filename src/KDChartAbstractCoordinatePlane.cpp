@@ -83,6 +83,8 @@ void AbstractCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
     layoutDiagrams();
     layoutPlanes(); // there might be new axes, etc
     connect( diagram, SIGNAL( modelsChanged() ), this, SLOT( layoutPlanes() ) );
+    connect( diagram, SIGNAL( modelDataChanged() ), this, SLOT( update()) );
+
     update();
 }
 
@@ -116,6 +118,7 @@ void AbstractCoordinatePlane::takeDiagram ( AbstractDiagram* diagram )
         diagram->setParent( 0 );
         diagram->setCoordinatePlane( 0 );
         disconnect( diagram, SIGNAL( modelsChanged() ), this, SLOT( layoutPlanes() ) );
+        disconnect( diagram, SIGNAL( modelDataChanged() ), this, SLOT( update()) );
         layoutDiagrams();
         update();
     }
