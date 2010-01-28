@@ -39,6 +39,7 @@
 #include <QSplitter>
 #include <QTreeView>
 #include <QGraphicsView>
+#include <QModelIndex>
 #include <QPointer>
 
 class QAbstractProxyModel;
@@ -52,11 +53,17 @@ namespace KDGantt {
 
     /*! \internal */
     class KDGanttTreeView : public QTreeView {
+        Q_OBJECT
     public:
         explicit KDGanttTreeView( QAbstractProxyModel* proxy, QWidget* parent=0 );
         virtual ~KDGanttTreeView();
 
         AbstractRowController* rowController() { return &m_controller; }
+
+    public Q_SLOTS:
+        void expandAll(QModelIndex index = QModelIndex());
+        void collapseAll(QModelIndex index = QModelIndex());
+
     private:
         TreeViewRowController m_controller;
     };

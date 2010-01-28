@@ -67,6 +67,30 @@ KDGanttTreeView::~KDGanttTreeView()
 {
 }
 
+void KDGanttTreeView::expandAll(QModelIndex index)
+{
+    for(int i = 0; i < model()->rowCount(index); i++) {
+        QModelIndex indexAt = model()->index(i, 0, index);
+        if(model()->hasChildren(indexAt))
+            expandAll(indexAt);
+        if(isExpanded(indexAt))
+            continue;
+        expand(indexAt);
+    }
+}
+
+void KDGanttTreeView::collapseAll(QModelIndex index)
+{
+    for(int i = 0; i < model()->rowCount(index); i++) {
+        QModelIndex indexAt = model()->index(i, 0, index);
+        if(model()->hasChildren(indexAt))
+            collapseAll(indexAt);
+        if(!isExpanded(indexAt))
+            continue;
+        collapse(indexAt);
+    }
+}
+
 View::Private::Private(View* v)
     : q(v),
       splitter(v),
@@ -386,6 +410,18 @@ void View::setSelectionModel( QItemSelectionModel* smodel )
 void View::setGrid( AbstractGrid* grid )
 {
     d->gfxview.setGrid( grid );
+}
+
+void View::expandAll( QModelIndex index )
+{
+    KDGanttTreeView* tw = qobject_cast<KDGanttTreeView*>(leftView());
+    tw->expandAll(index);
+}
+
+void View::collapseAll( QModelIndex index )
+{
+    KDGanttTreeView* tw = qobject_cast<KDGanttTreeView*>(leftView());
+    tw->collapseAll(index);
 }
 
 /*! \returns the AbstractGrid used by this view.

@@ -26,12 +26,12 @@
 #define KDGANTTVIEW_H
 
 #include <QWidget>
+#include <QModelIndex>
 #include "kdganttglobal.h"
 
 class QAbstractItemModel;
 class QAbstractProxyModel;
 class QAbstractItemView;
-class QModelIndex;
 class QItemSelectionModel;
 class QPrinter;
 class QSplitter;
@@ -71,8 +71,8 @@ namespace KDGantt {
         const QAbstractItemView* leftView() const;
         QAbstractItemView* leftView();
 
-	const QSplitter* splitter() const;
-	QSplitter* splitter();
+        const QSplitter* splitter() const;
+        QSplitter* splitter();
 
         void setRowController( AbstractRowController* );
         AbstractRowController* rowController();
@@ -83,8 +83,8 @@ namespace KDGantt {
         const QAbstractProxyModel* ganttProxyModel() const;
         QAbstractProxyModel* ganttProxyModel();
 
-	void print( QPrinter* printer, bool drawRowLabels=true );
-	void print( QPrinter* printer, qreal start, qreal end, bool drawRowLabels=true );
+        void print( QPrinter* printer, bool drawRowLabels=true );
+        void print( QPrinter* printer, qreal start, qreal end, bool drawRowLabels=true );
         void print( QPainter* painter, const QRectF& target = QRectF(), bool drawRowLabels=true);
         void print( QPainter* painter, qreal start, qreal end, 
 		    const QRectF& target = QRectF(), bool drawRowLabels=true);
@@ -96,6 +96,8 @@ namespace KDGantt {
         void setItemDelegate( ItemDelegate* );
         void setConstraintModel( ConstraintModel* );
         void setGrid( AbstractGrid* );
+        void expandAll( QModelIndex index = QModelIndex() );
+        void collapseAll( QModelIndex index = QModelIndex() );
 
     protected:
         /*reimp*/ void resizeEvent(QResizeEvent*);
