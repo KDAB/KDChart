@@ -2,6 +2,7 @@
 #include <KDChartChart>
 #include <KDChartPieDiagram>
 #include <KDChartDataValueAttributes>
+#include <KDChartBackgroundAttributes>
 #include <KDChartPieAttributes>
 #include <KDChartPosition>
 
@@ -69,6 +70,12 @@ public:
             ta .setPen( QPen( Qt::darkBlue ) );
             ta.setVisible( true );
             dva.setTextAttributes( ta );
+
+            BackgroundAttributes back( dva.backgroundAttributes() );
+            back.setBrush( QBrush( QColor(255,0,0) ) );
+            back.setVisible( true );
+            dva.setBackgroundAttributes( back );
+
             RelativePosition posPos( dva.positivePosition() );
             posPos.setReferencePosition( KDChart::Position::North );
             posPos.setAlignment( Qt::AlignCenter );
