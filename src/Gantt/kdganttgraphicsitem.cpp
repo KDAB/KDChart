@@ -528,7 +528,6 @@ void GraphicsItem::mouseMoveEvent( QGraphicsSceneMouseEvent* event )
             m_dragline = new QGraphicsLineItem( this );
             m_dragline->setPen( QPen( Qt::DashLine ) );
             m_dragline->setLine(QLineF( rect().center(), event->pos() ));
-            scene()->addItem( m_dragline );
             scene()->setDragSource( this );
             break;
         }
