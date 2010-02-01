@@ -472,7 +472,12 @@ void Chart::Private::slotLayoutPlanes()
         planesLayout ? planesLayout->direction() : QBoxLayout::TopToBottom;
     if ( planesLayout && dataAndLegendLayout )
         dataAndLegendLayout->removeItem( planesLayout );
-
+    
+    const bool hadPlanesLayout = planesLayout != 0;
+    int left, top, right, bottom;
+    if(hadPlanesLayout)
+        planesLayout->getContentsMargins(&left, &top, &right, &bottom);
+        
     KDAB_FOREACH( KDChart::AbstractLayoutItem* plane, planeLayoutItems ) {
         plane->removeFromParentLayout();
     }
@@ -481,6 +486,9 @@ void Chart::Private::slotLayoutPlanes()
     //hint: The direction is configurable by the user now, as
     //      we are using a QBoxLayout rather than a QVBoxLayout.  (khz, 2007/04/25)
     planesLayout = new QBoxLayout( oldPlanesDirection );
+
+    if(hadPlanesLayout)
+        planesLayout->setContentsMargins(left, top, right, bottom);
 
     // TESTING(khz): set the margin of all of the layouts to Zero
 #if defined SET_ALL_MARGINS_TO_ZERO
