@@ -92,3 +92,26 @@ HEADERS= \
         KDChartAbstractSerializerFactory.h \
         KDChartSerializerRegistrator.h \
 
+INSTALLHEADERS = \
+    KDChartAbstractAreaBaseSerializer \
+    KDChartAttributesModelSerializer \
+    KDChartCoordPlanesSerializer \
+    KDChartLegendsSerializer \
+    KDChartSerializerRegistrator \
+    KDChartAbstractSerializer \
+    KDChartAttributesSerializer \
+    KDChartDiagramsSerializer \
+    KDChartSerializeCollector \
+    KDChartTextAreaSerializer \
+    KDChartAbstractSerializerFactory \
+    KDChartAxesSerializer \
+    KDChartIdMapper \
+    KDChartSerializer \
+    KDXMLTools
+
+# installation targets:
+serializer_headers_include.files = $$INSTALLHEADERS
+serializer_headers_include.path = $$INSTALL_PREFIX/include
+serializer_headers_src.files = $$HEADERS
+serializer_headers_src.path = $$INSTALL_PREFIX/src
+INSTALLS += serializer_headers_include serializer_headers_src
