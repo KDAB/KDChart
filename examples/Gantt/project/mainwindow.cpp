@@ -18,6 +18,7 @@
 #include <KDGanttItemDelegate>
 #include <KDGanttDateTimeGrid>
 #include <KDGanttStyleOptionGanttItem>
+#include <KDGanttConstraintModel>
 
 class ItemTypeComboBox : public QComboBox {
     Q_OBJECT
@@ -211,6 +212,19 @@ MainWindow::MainWindow( QWidget* parent )
     toolsMenu->addAction( tr( "Expand All" ), this, SLOT( slotExpandAll() ) );
     
     mb->addMenu( toolsMenu );
+    
+    /*
+    slotToolsNewItem();
+    slotToolsNewItem();
+    slotToolsNewItem();
+    for(int i = 0; i < 3; ++i) {
+        m_model->setData(m_model->index(i,2,QModelIndex()), qVariantFromValue(QDateTime::currentDateTime().addDays(i)), KDGantt::StartTimeRole);
+        m_model->setData(m_model->index(i,3,QModelIndex()), qVariantFromValue(QDateTime::currentDateTime().addDays(i+1)), KDGantt::EndTimeRole);
+    }
+    m_view->setConstraintModel(new KDGantt::ConstraintModel(m_view));
+    m_view->constraintModel()->addConstraint(KDGantt::Constraint(m_model->index(0,0,QModelIndex()),m_model->index(1,0,QModelIndex())));
+    m_view->constraintModel()->addConstraint(KDGantt::Constraint(m_model->index(1,0,QModelIndex()),m_model->index(2,0,QModelIndex())));
+    */
 }
 
 void MainWindow::slotFileOpen()
