@@ -40,6 +40,8 @@
 
 #include <QDebug>
 #include <QPainter>
+#include <QFileDialog>
+#include <QPrinter>
 
 using namespace KDChart;
 
@@ -384,17 +386,33 @@ void MainWindow::on_vSBar_valueChanged( int vPos )
 
 void MainWindow::on_savePB_clicked()
 {
+    const QString file = QFileDialog::getSaveFileName(this, tr("Choose PNG File..."));
+    if(file.isEmpty()) return;
     qDebug() << "Painting into PNG";
     QPixmap qpix(600,600);
     QPainter painter(&qpix);
     painter.setBrush(Qt::white);
     painter.fillRect( 0, 0, 600, 600, Qt::white);
-    m_chart->paint(
-            &painter,
-            QRect(100, 100, 400, 400) );
+    m_chart->paint(&painter, QRect(100, 100, 400, 400));
     painter.end();
-    qpix.save("kdchart-demo.png", "PNG");
+    qpix.save(file, "PNG");
     qDebug() << "Painting into PNG - done";
+}
+
+void MainWindow::on_savePDF_clicked()
+{
+    const QString file = QFileDialog::getSaveFileName(this, tr("Choose PDF File..."));
+    if(file.isEmpty()) return;
+    qDebug() << "Painting into PDF";
+    QPrinter printer(QPrinter::HighResolution);
+    printer.setOrientation(QPrinter::Landscape);
+    printer.setOutputFormat(QPrinter::PdfFormat);
+    printer.setOutputFileName(file);
+    QPainter painter;
+    painter.begin(&printer);
+    m_chart->paint(&painter, printer.pageRect());
+    painter.end();
+    qDebug() << "Painting into PDF - done";
 }
 
 void MainWindow::resizeEvent ( QResizeEvent * )

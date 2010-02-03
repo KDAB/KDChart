@@ -70,6 +70,7 @@ private slots:
     void on_hSBar_valueChanged( int value );
     void on_vSBar_valueChanged( int value );
     void on_savePB_clicked();
+    void on_savePDF_clicked();
 
 
 private:
