@@ -85,6 +85,8 @@ exists( README ) {
     INSTALLS += readme
 }
 
+##DEFINES = std=c++98
+DEFINES = std=gnu++98
 
 # forward make test calls to qtests:
 test.target=test

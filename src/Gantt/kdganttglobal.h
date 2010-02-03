@@ -32,6 +32,12 @@
 
 #include "../kdchart_export.h"
 
+#if (defined(__MINGW32__) || defined(__MINGW64__)) && (__GNUC__ == 4) && (__GNUC_MINOR__ == 4) && (__GNUC_PATCHLEVEL__ == 0)
+// workaround a mingw bug, http://sourceforge.net/tracker/index.php?func=detail&aid=2373234&group_id=2435&atid=102435
+int swprintf (wchar_t *, size_t, const wchar_t *, ...); 
+int vswprintf(wchar_t *, const wchar_t *, va_list);
+#endif
+
 #ifndef KDAB_SET_OBJECT_NAME
 template <typename T>
 inline T & __kdab__dereference_for_methodcall( T & o ) {

@@ -3,10 +3,11 @@
 
 #ifndef KDAB_NO_UNIT_TESTS
 
+#include "kdchart_export.h"
+#include "../kdganttglobal.h"
+
 #include <string>
 #include <iostream>
-
-#include "kdchart_export.h"
 
 namespace KDAB {
 namespace UnitTest {
