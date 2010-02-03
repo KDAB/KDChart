@@ -74,22 +74,22 @@ void MainWindow::initModel()
     ui->ganttView->setModel( model );
 
 
-	QStandardItemModel* lmodel = new QStandardItemModel;
-	lmodel->appendRow( QList<QStandardItem*>()
-		<< new MyStandardItem( QVariant() )
-		<< new MyStandardItem( KDGantt::TypeEvent ) 
+        QStandardItemModel* lmodel = new QStandardItemModel;
+        lmodel->appendRow( QList<QStandardItem*>()
+                << new MyStandardItem( QVariant() )
+                << new MyStandardItem( KDGantt::TypeEvent )
         << new MyStandardItem( QVariant() )
         << new MyStandardItem( QVariant() )
         << new MyStandardItem( QVariant() )
         << new MyStandardItem( QString::fromLatin1("Event") ) );
-	lmodel->appendRow( QList<QStandardItem*>()
+        lmodel->appendRow( QList<QStandardItem*>()
         << new MyStandardItem( QVariant() )
         << new MyStandardItem( KDGantt::TypeTask )
         << new MyStandardItem( QVariant() )
         << new MyStandardItem( QVariant() )
         << new MyStandardItem( QVariant() )
         << new MyStandardItem( QString::fromLatin1("Task") ) );
-	lmodel->appendRow( QList<QStandardItem*>()
+        lmodel->appendRow( QList<QStandardItem*>()
         << new MyStandardItem( QVariant() )
         << new MyStandardItem( KDGantt::TypeSummary )
         << new MyStandardItem( QVariant() )
@@ -208,8 +208,8 @@ void MainWindow::addNewEntry()
     model->setData( model->index( row, 0, parent ), dialog.name() );
     model->setData( model->index( row, 1, parent ), dialog.type() );
     if( dialog.type() != KDGantt::TypeSummary ) {
-        model->setData( model->index( row, 2, parent ), dialog.startDate() );
-        model->setData( model->index( row, 3, parent ), dialog.endDate() );
+        model->setData( model->index( row, 2, parent ), dialog.startDate(), KDGantt::StartTimeRole );
+        model->setData( model->index( row, 3, parent ), dialog.endDate(), KDGantt::EndTimeRole );
     }
     model->setData( model->index( row, 4, parent ), dialog.completion() );
     const QString legend( dialog.legend() );
