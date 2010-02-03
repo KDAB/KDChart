@@ -504,6 +504,7 @@ DEPENDPATH = ../include \
             .
 INCLUDEPATH = ../include \
               $$LIBFAKES_PATH/include \
+              Gantt \
               .
 
 linux-*{
