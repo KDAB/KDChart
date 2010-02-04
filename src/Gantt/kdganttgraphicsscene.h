@@ -133,9 +133,9 @@ namespace KDGantt {
         void slotConstraintRemoved( const KDGantt::Constraint& );
         void slotGridChanged();
     private:
-	void doPrint( QPainter* painter, const QRectF& targetRect,
-		      qreal start, qreal end,
-		      QPrinter* printer, bool drawRowLabels );
+        void doPrint( QPainter* painter, const QRectF& targetRect,
+                      qreal start, qreal end,
+                      QPrinter* printer, bool drawRowLabels );
     };
 }
 

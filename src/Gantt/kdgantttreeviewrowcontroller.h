@@ -39,9 +39,9 @@ namespace KDGantt {
 
         /*reimp*/ int headerHeight() const;
         /*reimp*/ int maximumItemHeight() const;
-	/*reimp*/ int totalHeight() const;
+        /*reimp*/ int totalHeight() const;
         /*reimp*/ bool isRowVisible( const QModelIndex& idx ) const;
-	/*reimp*/ bool isRowExpanded( const QModelIndex& idx ) const;
+        /*reimp*/ bool isRowExpanded( const QModelIndex& idx ) const;
         /*reimp*/ Span rowGeometry( const QModelIndex& idx ) const;
         /*reimp*/ QModelIndex indexAt( int height ) const;
         /*reimp*/ QModelIndex indexAbove( const QModelIndex& idx ) const;

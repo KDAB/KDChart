@@ -99,7 +99,7 @@ namespace KDGantt {
         StyleOptionGanttItem getStyleOption() const;
         void updateModel();
         void updateItemFromMouse( const QPointF& scenepos );
-	void constraintsChanged();
+        void constraintsChanged();
 
         QRectF m_rect;
         QRectF m_boundingrect;

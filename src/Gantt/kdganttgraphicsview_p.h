@@ -73,7 +73,7 @@ namespace KDGantt {
         void slotItemClicked( const QModelIndex& idx );
         void slotItemDoubleClicked( const QModelIndex& idx );
 
-	void slotHeaderContextMenuRequested( const QPoint& pt );
+        void slotHeaderContextMenuRequested( const QPoint& pt );
 
         GraphicsView* q;
         AbstractRowController* rowcontroller;

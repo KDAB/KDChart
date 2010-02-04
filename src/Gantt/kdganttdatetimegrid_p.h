@@ -62,8 +62,8 @@ namespace KDGantt {
               freeDays( QSet<Qt::DayOfWeek>() << Qt::Saturday << Qt::Sunday ),
               rowSeparators( false ),
               noInformationBrush( Qt::red, Qt::DiagCrossPattern ),
-	      upper( new DateTimeScaleFormatter( DateTimeScaleFormatter::Week, QString::fromLatin1( "w" ) ) ),
-	      lower( new DateTimeScaleFormatter( DateTimeScaleFormatter::Day, QString::fromLatin1( "ddd" ) ) ),
+              upper( new DateTimeScaleFormatter( DateTimeScaleFormatter::Week, QString::fromLatin1( "w" ) ) ),
+              lower( new DateTimeScaleFormatter( DateTimeScaleFormatter::Day, QString::fromLatin1( "ddd" ) ) ),
               year_upper( DateTimeScaleFormatter::Year, QString::fromLatin1("yyyy" ) ),
               year_lower( DateTimeScaleFormatter::Month, QString::fromLatin1("MMM" ) ),
               month_upper( DateTimeScaleFormatter::Month, QString::fromLatin1("MMMM" ) ),
@@ -87,9 +87,8 @@ namespace KDGantt {
         qreal dateTimeToChartX( const QDateTime& dt ) const;
         QDateTime chartXtoDateTime( qreal x ) const;
 
-
-	int tabHeight( const QString& txt, QWidget* widget = 0 ) const;
-	void getAutomaticFormatters( DateTimeScaleFormatter** lower, DateTimeScaleFormatter** upper);
+        int tabHeight( const QString& txt, QWidget* widget = 0 ) const;
+        void getAutomaticFormatters( DateTimeScaleFormatter** lower, DateTimeScaleFormatter** upper);
 
         class DateTextFormatter {
         public:
@@ -132,7 +131,7 @@ namespace KDGantt {
         QDateTime startDateTime;
         QDateTime endDateTime;
         qreal dayWidth;
-	Scale scale;
+        Scale scale;
         Qt::DayOfWeek weekStart;
         QSet<Qt::DayOfWeek> freeDays;
         bool rowSeparators;
@@ -141,18 +140,18 @@ namespace KDGantt {
         DateTimeScaleFormatter* upper;
         DateTimeScaleFormatter* lower;
 
-	DateTimeScaleFormatter year_upper;
-	DateTimeScaleFormatter year_lower;
-	DateTimeScaleFormatter month_upper;
-	DateTimeScaleFormatter month_lower;
-	DateTimeScaleFormatter week_upper;
-	DateTimeScaleFormatter week_lower;
-	DateTimeScaleFormatter day_upper;
-	DateTimeScaleFormatter day_lower;
-	DateTimeScaleFormatter hour_upper;
-	DateTimeScaleFormatter hour_lower;
-	DateTimeScaleFormatter minute_upper;
-	DateTimeScaleFormatter minute_lower;
+        DateTimeScaleFormatter year_upper;
+        DateTimeScaleFormatter year_lower;
+        DateTimeScaleFormatter month_upper;
+        DateTimeScaleFormatter month_lower;
+        DateTimeScaleFormatter week_upper;
+        DateTimeScaleFormatter week_lower;
+        DateTimeScaleFormatter day_upper;
+        DateTimeScaleFormatter day_lower;
+        DateTimeScaleFormatter hour_upper;
+        DateTimeScaleFormatter hour_lower;
+        DateTimeScaleFormatter minute_upper;
+        DateTimeScaleFormatter minute_lower;
     };
 
     inline DateTimeGrid::DateTimeGrid( DateTimeGrid::Private* d ) : AbstractGrid( d ) {}
