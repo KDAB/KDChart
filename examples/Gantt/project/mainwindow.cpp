@@ -129,8 +129,9 @@ public:
     }
     ~DateTimeGrid() { }
 
-    void drawBackground(QPainter* painter, const QRectF& rect);
-    void drawForeground(QPainter* painter, const QRectF& rect);
+    virtual void paintUserDefinedHeader(QPainter* painter, const QRectF& headerRect, const QRectF& exposedRect, qreal offset, const KDGantt::DateTimeScaleFormatter* formatter, QWidget* widget = 0);
+    virtual void drawBackground(QPainter* painter, const QRectF& rect);
+    virtual void drawForeground(QPainter* painter, const QRectF& rect);
 };
 
 void DateTimeGrid::drawBackground(QPainter* painter, const QRectF& rect)
@@ -166,6 +167,34 @@ void DateTimeGrid::drawForeground(QPainter* painter, const QRectF& rect)
     painter->drawText(0, 0, text);
 
     painter->restore();
+}
+
+void DateTimeGrid::paintUserDefinedHeader( QPainter* painter, const QRectF& headerRect, const QRectF& exposedRect, qreal offset, const KDGantt::DateTimeScaleFormatter* formatter, QWidget* widget)
+{
+    const QStyle* const style = widget ? widget->style() : QApplication::style();
+
+    QDateTime dt = formatter->currentRangeBegin( mapToDateTime( offset + exposedRect.left() ) ).toUTC();
+    qreal x = mapFromDateTime( dt );
+
+    while( x < exposedRect.right() + offset ) {
+        const QDateTime next = formatter->nextRangeBegin( dt );
+        const qreal nextx = mapFromDateTime( next );
+
+        QStyleOptionHeader opt;
+        if ( widget ) opt.init( widget );
+        opt.rect = QRectF( x - offset+1, headerRect.top(), qMax( 1., nextx-x-1 ), headerRect.height() ).toAlignedRect();
+        opt.textAlignment = formatter->alignment();
+        opt.text = formatter->text( dt );
+
+        // use white text on black background
+        opt.palette.setColor(QPalette::Button, QColor("black"));
+        opt.palette.setColor(QPalette::ButtonText, QColor("white"));
+
+        style->drawControl( QStyle::CE_Header, &opt, painter, widget );
+
+        dt = next;
+        x = nextx;
+    }
 }
 
 MainWindow::MainWindow( QWidget* parent )

@@ -888,8 +888,7 @@ void DateTimeGrid::paintUserDefinedHeader( QPainter* painter,
     QDateTime dt = formatter->currentRangeBegin( d->chartXtoDateTime( offset + exposedRect.left() ) ).toUTC();
     qreal x = d->dateTimeToChartX( dt );
 
-    while( x < exposedRect.right() + offset )
-    {
+    while( x < exposedRect.right() + offset ) {
         const QDateTime next = formatter->nextRangeBegin( dt );
         const qreal nextx = d->dateTimeToChartX( next );
 
