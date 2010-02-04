@@ -31,12 +31,12 @@
 #include <QSet>
 
 namespace KDGantt {
+
     class KDCHART_EXPORT DateTimeScaleFormatter
     {
         KDGANTT_DECLARE_PRIVATE_BASE_POLYMORPHIC( DateTimeScaleFormatter )
     public:
-        enum Range
-        {
+        enum Range {
             Second,
             Minute,
             Hour,
@@ -45,10 +45,11 @@ namespace KDGantt {
             Month,
             Year
         };
+
         DateTimeScaleFormatter( Range range, const QString& formatString, 
-				Qt::Alignment alignment = Qt::AlignCenter );
+                                Qt::Alignment alignment = Qt::AlignCenter );
         DateTimeScaleFormatter( Range range, const QString& formatString, 
-				const QString& templ, Qt::Alignment alignment = Qt::AlignCenter );
+                                const QString& templ, Qt::Alignment alignment = Qt::AlignCenter );
         DateTimeScaleFormatter( const DateTimeScaleFormatter& other );
         virtual ~DateTimeScaleFormatter();
 
@@ -70,12 +71,13 @@ namespace KDGantt {
         Q_OBJECT
         KDGANTT_DECLARE_PRIVATE_DERIVED( DateTimeGrid )
     public:
-        enum Scale { ScaleAuto, 
-                         ScaleHour,
-                         ScaleDay,
-                         ScaleWeek,
-                         ScaleMonth,
-                         ScaleUserDefined
+        enum Scale {
+            ScaleAuto, 
+            ScaleHour,
+            ScaleDay,
+            ScaleWeek,
+            ScaleMonth,
+            ScaleUserDefined
         };
 	
         DateTimeGrid();
