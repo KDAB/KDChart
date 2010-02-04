@@ -37,7 +37,7 @@ namespace KDGantt {
     public:
         enum Range
         {
-	    Second,
+            Second,
             Minute,
             Hour,
             Day,
@@ -62,21 +62,21 @@ namespace KDGantt {
         virtual QDateTime currentRangeBegin( const QDateTime& datetime ) const;
 
         QString format( const QDateTime& datetime ) const;
-	virtual QString text( const QDateTime& datetime ) const;
+        virtual QString text( const QDateTime& datetime ) const;
     };
 
-
-    class KDCHART_EXPORT DateTimeGrid : public AbstractGrid {
+    class KDCHART_EXPORT DateTimeGrid : public AbstractGrid
+    {
         Q_OBJECT
         KDGANTT_DECLARE_PRIVATE_DERIVED( DateTimeGrid )
     public:
-	enum Scale { ScaleAuto, 
-                     ScaleHour,
-                     ScaleDay,
-                     ScaleWeek,
-                     ScaleMonth,
-                     ScaleUserDefined
-	};
+        enum Scale { ScaleAuto, 
+                         ScaleHour,
+                         ScaleDay,
+                         ScaleWeek,
+                         ScaleMonth,
+                         ScaleUserDefined
+        };
 	
         DateTimeGrid();
         virtual ~DateTimeGrid();
@@ -87,8 +87,8 @@ namespace KDGantt {
         qreal dayWidth() const;
         void setDayWidth( qreal );
 
-	qreal mapFromDateTime( const QDateTime& dt) const;
-	QDateTime mapToDateTime( qreal x ) const;
+        qreal mapFromDateTime( const QDateTime& dt) const;
+        QDateTime mapToDateTime( qreal x ) const;
 
         void setWeekStart( Qt::DayOfWeek );
         Qt::DayOfWeek weekStart() const;
@@ -107,8 +107,8 @@ namespace KDGantt {
         bool rowSeparators() const;
         void setRowSeparators( bool enable );
 
-	void setNoInformationBrush( const QBrush& brush );
-	QBrush noInformationBrush() const;
+        void setNoInformationBrush( const QBrush& brush );
+        QBrush noInformationBrush() const;
 
         /*reimp*/ Span mapToChart( const QModelIndex& idx ) const;
         /*reimp*/ bool mapFromChart( const Span& span, const QModelIndex& idx,
@@ -116,20 +116,20 @@ namespace KDGantt {
         /*reimp*/ qreal mapToChart( const QVariant& value ) const;
         /*reimp*/ QVariant mapFromChart( qreal x ) const;
         /*reimp*/ void paintGrid( QPainter* painter, 
-				  const QRectF& sceneRect, const QRectF& exposedRect,
+                                  const QRectF& sceneRect, const QRectF& exposedRect,
                                   AbstractRowController* rowController = 0,
                                   QWidget* widget=0 );
         /*reimp*/ void paintHeader( QPainter* painter, 
-				    const QRectF& headerRect, const QRectF& exposedRect,
+                                    const QRectF& headerRect, const QRectF& exposedRect,
                                     qreal offset, QWidget* widget=0 );
 
     protected:
-	virtual void paintHourScaleHeader( QPainter* painter, 
-					   const QRectF& headerRect, const QRectF& exposedRect,
-					   qreal offset, QWidget* widget=0 );
-	virtual void paintDayScaleHeader( QPainter* painter, 
-					  const QRectF& headerRect, const QRectF& exposedRect,
-					  qreal offset, QWidget* widget=0 );
+        virtual void paintHourScaleHeader( QPainter* painter, 
+                           const QRectF& headerRect, const QRectF& exposedRect,
+                           qreal offset, QWidget* widget=0 );
+        virtual void paintDayScaleHeader( QPainter* painter, 
+                          const QRectF& headerRect, const QRectF& exposedRect,
+                          qreal offset, QWidget* widget=0 );
         virtual void paintWeekScaleHeader( QPainter* painter,
                                            const QRectF& headerRect, const QRectF& exposedRect,
                                            qreal offset, QWidget* widget=0 );
@@ -138,9 +138,9 @@ namespace KDGantt {
                                             qreal offset, QWidget* widget=0 );
 
         virtual void paintUserDefinedHeader( QPainter* painter, 
-				     const QRectF& headerRect, const QRectF& exposedRect, 
+                                     const QRectF& headerRect, const QRectF& exposedRect, 
                                      qreal offset, const DateTimeScaleFormatter* formatter, 
-				     QWidget* widget = 0 );
+                                     QWidget* widget = 0 );
 
         virtual void drawDayBackground(QPainter* painter, const QRectF& rect, const QDate& date);
         virtual void drawDayForeground(QPainter* painter, const QRectF& rect, const QDate& date);
@@ -148,10 +148,9 @@ namespace KDGantt {
         QRectF computeRect(const QDateTime& from, const QDateTime& to, const QRectF& rect) const;
         QPair<QDateTime, QDateTime> dateTimeRange(const QRectF& rect) const;
 
-       protected:
         /* reimp */ void drawBackground(QPainter* paint, const QRectF& rect);
         /* reimp */ void drawForeground(QPainter* paint, const QRectF& rect);
-       };
+    };
 }
 
 #ifndef QT_NO_DEBUG_STREAM
