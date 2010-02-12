@@ -291,16 +291,26 @@ void MainWindow::slotToolsAppendItem()
 
 void MainWindow::slotCollapseAll()
 {
-    QTreeView* view = qobject_cast<QTreeView*>( m_view->leftView() );
-    Q_ASSERT(view);
-    view->collapseAll();
+    // don't use the treeview's collapseAll/expandAll methods but use the one provided by the
+    // view cause that one will take care to update everyt6hing as needed.
+    //QTreeView* view = qobject_cast<QTreeView*>( m_view->leftView() );
+    //view->collapseAll();
+    
+    QModelIndex idx = m_view->selectionModel()->currentIndex();
+    if ( idx.isValid() )
+        m_view->collapseAll();
 }
 
 void MainWindow::slotExpandAll()
 {
-    QTreeView* view = qobject_cast<QTreeView*>( m_view->leftView() );
-    Q_ASSERT(view);
-    view->expandAll();
+    // don't use the treeview's collapseAll/expandAll methods but use the one provided by the
+    // view cause that one will take care to update everyt6hing as needed.
+    //QTreeView* view = qobject_cast<QTreeView*>( m_view->leftView() );
+    //view->expandAll();
+    
+    QModelIndex idx = m_view->selectionModel()->currentIndex();
+    if ( idx.isValid() )
+        m_view->expandAll();
 }
 
 void MainWindow::slotAlignLeft()
