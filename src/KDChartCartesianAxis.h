@@ -158,8 +158,7 @@ namespace KDChart {
     public Q_SLOTS:
         void setCachedSizeDirty() const;
 
-
-        int tickLength( bool subUnitTicks = false ) const;
+        virtual int tickLength( bool subUnitTicks = false ) const;
     };
 
     typedef QList<CartesianAxis*> CartesianAxisList;
