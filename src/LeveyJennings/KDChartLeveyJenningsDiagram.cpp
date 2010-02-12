@@ -552,24 +552,27 @@ void LeveyJenningsDiagram::paint( PaintContext* ctx )
 
         painter->setPen( pen( lotIndex ) );
 
+        QVariant vValue = m.data( valueIndex );
+        double value = vValue.toDouble();
         const int lot = m.data( lotIndex ).toInt();
-        double value = m.data( valueIndex ).toDouble();
         const bool ok = m.data( okIndex ).toBool();
         const QDateTime time = m.data( timeIndex ).toDateTime();
         const double xValue = ( time.toTime_t() - minTime ) / static_cast< double >( 24 * 60 * 60 );
 
-        const double expectedMean = m.data( expectedMeanIndex ).toDouble();
-        const double expectedSD = m.data( expectedSDIndex ).toDouble();
+        QVariant vExpectedMean = m.data( expectedMeanIndex );
+        const double expectedMean = vExpectedMean.toDouble();
+        QVariant vExpectedSD = m.data( expectedSDIndex );
+        const double expectedSD = vExpectedSD.toDouble();
 
         QPointF point = ctx->coordinatePlane()->translate( QPointF( xValue, value ) );
 
-        if( static_cast< int >( value ) == 0 )
+        if( vValue.isNull() )
         {
             hadMissingValue = true;
         }
         else
         {
-            if( static_cast< int >( expectedMean ) != 0 && static_cast< int >( expectedSD ) != 0 )
+            if( !vExpectedMean.isNull() && !vExpectedSD.isNull() )
             {
                 // this calculates the 'logical' value relative to the expected mean and SD of this point
                 value -= expectedMean;
