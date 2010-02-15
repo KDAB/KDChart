@@ -728,8 +728,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
             drawLabels
             ? labelItem->realFont()
             : QFontMetricsF( QApplication::font(), GlobalMeasureScaling::paintDevice() ) );
-        const qreal halfFontHeight = met.height() * 0.5;
-        const qreal halfFontWidth = met.averageCharWidth() * 0.5;
+        const qreal halfFontHeight = rulerAttr.labelMargin() >= 0 ? rulerAttr.labelMargin() : met.height() * 0.5;
+        const qreal halfFontWidth = rulerAttr.labelMargin() >= 0 ? rulerAttr.labelMargin() : met.averageCharWidth() * 0.5;
 
         if ( isAbscissa() ) {
             //Draw ticks at custom postions on x-axis

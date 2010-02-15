@@ -29,6 +29,7 @@
 #include <KDChartBarDiagram>
 #include <KDChartTextAttributes>
 #include <KDChartRulerAttributes>
+#include <KDChartFrameAttributes>
 
 using namespace KDChart;
 
@@ -67,6 +68,21 @@ MainWindow::MainWindow( QWidget* parent ) :
     rightAxis->setPosition ( CartesianAxis::Right );
     bottomAxis->setPosition ( CartesianAxis::Bottom );
 
+// set the margin that should be used between the displayed labels and the ticks to zero
+#if 0
+    RulerAttributes ra = bottomAxis->rulerAttributes();
+    ra.setLabelMargin(0);
+    bottomAxis->setRulerAttributes( ra );
+#endif
+
+// show a red frame around the bottom axis
+#if 0
+    FrameAttributes fa( bottomAxis->frameAttributes() );
+    fa.setPen( QPen(QBrush(QColor("#ff0000")),1.0) );
+    fa.setVisible( true );
+    bottomAxis->setFrameAttributes( fa );
+#endif
+    
     // set axis titles
     topAxis->setTitleText ( "Abscissa color configured top position" );
     leftAxis->setTitleText ( "left Ordinate: fonts configured" );
@@ -83,6 +99,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     Measure me( taLeft.fontSize() );
     me.setValue( me.value() * 0.8 );
     taLeft.setFontSize( me );
+
 // Set the following to 1, to hide the left axis title
 //  - no matter if a title text is set or not
 #if 0

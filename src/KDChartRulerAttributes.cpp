@@ -52,6 +52,8 @@ private:
     bool showMajorTickMarks;
     bool showMinorTickMarks;
     
+    int labelMargin;
+    
     RulerAttributes::TickMarkerPensMap customTickMarkPens;
 };
 
@@ -60,17 +62,18 @@ RulerAttributes::Private::Private()
     , majorTickMarkPen( QColor( 0x00, 0x00, 0x00 ) )
     , minorTickMarkPen( QColor( 0x00, 0x00, 0x00 ) )
 {
-	tickMarkPen.setCapStyle( Qt::FlatCap );
-	majorTickMarkPen.setCapStyle( Qt::FlatCap );
-	minorTickMarkPen.setCapStyle( Qt::FlatCap );
-	
-	majorTickMarkPenIsSet = false;
-	minorTickMarkPenIsSet = false;
+    tickMarkPen.setCapStyle( Qt::FlatCap );
+    majorTickMarkPen.setCapStyle( Qt::FlatCap );
+    minorTickMarkPen.setCapStyle( Qt::FlatCap );
 
-        showMajorTickMarks = true;
-        showMinorTickMarks = true;
+    majorTickMarkPenIsSet = false;
+    minorTickMarkPenIsSet = false;
+
+    showMajorTickMarks = true;
+    showMinorTickMarks = true;
+    
+    labelMargin = -1;
 }
-
 
 RulerAttributes::RulerAttributes()
     : _d( new Private() )
@@ -188,6 +191,16 @@ bool RulerAttributes::showMinorTickMarks() const
     return d->showMinorTickMarks;
 }
 
+void RulerAttributes::setLabelMargin(int margin)
+{
+    d->labelMargin = margin;
+}
+
+int RulerAttributes::labelMargin() const
+{
+    return d->labelMargin;
+}
+    
 RulerAttributes & RulerAttributes::operator=( const RulerAttributes& r )
 {
     if( this == &r )

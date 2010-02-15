@@ -100,6 +100,14 @@ public:
       */
     void setShowMajorTickMarks( bool show );
     bool showMajorTickMarks() const;
+    
+    /**
+     * Set margin that should be used between the labals and the ticks. Per
+     * default the value is -1 what means, that half of the label's font
+     * height/width should be used as margin.
+     */
+    void setLabelMargin(int margin);
+    int labelMargin() const;
 
     bool operator==( const RulerAttributes& ) const;
     inline bool operator!=( const RulerAttributes& other ) const { return !operator==(other); }
