@@ -84,6 +84,7 @@ void AbstractCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
     layoutPlanes(); // there might be new axes, etc
     connect( diagram, SIGNAL( modelsChanged() ), this, SLOT( layoutPlanes() ) );
     connect( diagram, SIGNAL( modelDataChanged() ), this, SLOT( update()) );
+    connect( diagram, SIGNAL( modelDataChanged() ), this, SLOT( relayout()) );
 
     update();
 }
