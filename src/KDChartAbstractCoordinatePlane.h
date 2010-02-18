@@ -276,10 +276,10 @@ namespace KDChart {
         /** pure virtual in QLayoutItem */
         virtual QRect geometry() const;
 
-        void mousePressEvent( QMouseEvent* event );
-        void mouseDoubleClickEvent( QMouseEvent* event );
-        void mouseMoveEvent( QMouseEvent* event );
-        void mouseReleaseEvent( QMouseEvent* event );
+        virtual void mousePressEvent( QMouseEvent* event );
+        virtual void mouseDoubleClickEvent( QMouseEvent* event );
+        virtual void mouseMoveEvent( QMouseEvent* event );
+        virtual void mouseReleaseEvent( QMouseEvent* event );
 
         /**
           * Called internally by KDChart::Chart
