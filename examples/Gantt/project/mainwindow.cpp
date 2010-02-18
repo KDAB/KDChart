@@ -76,9 +76,9 @@ QWidget* MyItemDelegate::createEditor( QWidget* parent,
                                        const QModelIndex& idx ) const
 {
     qDebug() << "MyItemDelegate::createEditor("<<parent<<idx<<")";
-    if ( idx.isValid() && idx.column() == 1 ) {
+    if ( idx.isValid() && idx.column() == 1 )
       return new ItemTypeComboBox(parent);
-    } else return ItemDelegate::createEditor( parent, option, idx );
+    return ItemDelegate::createEditor( parent, option, idx );
 }
 
 void MyItemDelegate::setEditorData ( QWidget* editor, const QModelIndex& index ) const
@@ -94,25 +94,25 @@ void MyItemDelegate::setEditorData ( QWidget* editor, const QModelIndex& index )
 void MyItemDelegate::setModelData ( QWidget* editor, QAbstractItemModel* model,
 				  const QModelIndex & index ) const
 {
-    ItemTypeComboBox* c;
-    if( (c = qobject_cast<ItemTypeComboBox*>(editor)) && index.isValid() ) {
-        model->setData(index,c->itemType());
+  ItemTypeComboBox* c;
+  if( (c = qobject_cast<ItemTypeComboBox*>(editor)) && index.isValid() ) {
+      model->setData(index,c->itemType());
   } else {
-        ItemDelegate::setModelData(editor,model,index);
+      ItemDelegate::setModelData(editor,model,index);
   }
 }
 
 void MyItemDelegate::drawDisplay( QPainter* painter, const QStyleOptionViewItem& option,
 				  const QRect& rect, const QString& text ) const
 {
-  qDebug() << "MyItemDelegate::drawDisplay(" <<painter<<rect<<text<<")";
+  //qDebug() << "MyItemDelegate::drawDisplay(" <<painter<<rect<<text<<")";
   KDGantt::ItemType typ = static_cast<KDGantt::ItemType>(text.toInt());
   QString str;
   switch(typ){
-  case KDGantt::TypeTask: str = tr("Task"); break;
-  case KDGantt::TypeEvent: str = tr("Event"); break;
-  case KDGantt::TypeSummary: str = tr("Summary"); break;
-  default: str = tr("None"); break;
+      case KDGantt::TypeTask: str = tr("Task"); break;
+      case KDGantt::TypeEvent: str = tr("Event"); break;
+      case KDGantt::TypeSummary: str = tr("Summary"); break;
+      default: str = tr("None"); break;
   }
   ItemDelegate::drawDisplay(painter,option,rect,str);
 }
@@ -209,9 +209,9 @@ MainWindow::MainWindow( QWidget* parent )
     m_view->leftView()->setItemDelegateForColumn( 1, new MyItemDelegate( this ) );
     m_view->setGrid(new DateTimeGrid(this));
 
-  //QItemEditorCreatorBase *creator = new QItemEditorCreator<ItemTypeComboBox>("itemType");
-  //QItemEditorFactory* factory = new QItemEditorFactory;
-  //factory->registerEditor( QVariant( KDGantt::TypeTask ).type(), creator );
+    //QItemEditorCreatorBase *creator = new QItemEditorCreator<ItemTypeComboBox>("itemType");
+    //QItemEditorFactory* factory = new QItemEditorFactory;
+    //factory->registerEditor( QVariant( KDGantt::TypeTask ).type(), creator );
     //m_view->itemDelegate()->setItemEditorFactory( factory );
 
     setCentralWidget( m_view );
@@ -219,8 +219,6 @@ MainWindow::MainWindow( QWidget* parent )
     QMenuBar* mb = menuBar();
 
     QMenu* fileMenu = new QMenu( tr( "&File" ) );
-
-    //  QAction* fileOpen = fileMenu->addAction( tr( "&Open..." ), this, SLOT( slotFileOpen() ) );
 
     QAction* fileQuit = fileMenu->addAction( tr( "&Quit" ), this, SLOT( slotFileQuit() ) );
 
@@ -256,11 +254,6 @@ MainWindow::MainWindow( QWidget* parent )
     */
 }
 
-void MainWindow::slotFileOpen()
-{
-    // TODO
-}
-
 void MainWindow::slotFileQuit()
 {
     // TODO
@@ -271,7 +264,7 @@ void MainWindow::slotToolsNewItem()
 {
     QModelIndex idx = m_view->selectionModel()->currentIndex();
     if ( idx.isValid() ) {
-        qDebug() << idx;
+        qDebug() << "MainWindow::slotToolsNewItem" << idx;
         m_model->insertRows( 0, 1, m_model->index( idx.row(),0,idx.parent() ) );
     } else {
         m_model->insertRows( 0, 1, m_view->rootIndex() );
@@ -282,7 +275,7 @@ void MainWindow::slotToolsAppendItem()
 {
     QModelIndex idx = m_view->selectionModel()->currentIndex();
     if ( idx.isValid() ) {
-        qDebug() << idx;
+        qDebug() << "MainWindow::slotToolsAppendItem" << idx;
         m_model->insertRows( m_model->rowCount( idx ), 1, m_model->index( idx.row(),0,idx.parent() ) );
     } else {
         m_model->insertRows( m_model->rowCount( m_view->rootIndex() ), 1, m_view->rootIndex() );

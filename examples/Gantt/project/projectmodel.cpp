@@ -266,6 +266,7 @@ bool ProjectModel::setData( const QModelIndex& idx,  const QVariant& value,
                             int role )
 {
     if ( !idx.isValid() ) return false;
+    qDebug() << "ProjectModel::setData" << idx.column() << role << value;
 
     Node* n = static_cast<Node*>( idx.internalPointer() );
     assert( n );

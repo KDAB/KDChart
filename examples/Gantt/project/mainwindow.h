@@ -15,7 +15,6 @@ public:
     explicit MainWindow( QWidget* parent = 0 );
 
 private slots:
-    void slotFileOpen();
     void slotFileQuit();
     void slotToolsNewItem();
     void slotToolsAppendItem();
