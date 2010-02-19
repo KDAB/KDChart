@@ -366,6 +366,24 @@ void Legend::addDiagram( AbstractDiagram* newDiagram )
 
 void Legend::removeDiagram( AbstractDiagram* oldDiagram )
 {
+    int datasetBrushOffset = 0;
+    QList<AbstractDiagram*> diagrams = this->diagrams();
+    for(int i =0; i <diagrams.count(); i++)
+    {
+        if(diagrams.at(i) == oldDiagram)
+        {
+            for( int i = 0; i < oldDiagram->datasetBrushes().count(); i++ ){
+                d->brushes.remove(datasetBrushOffset + i);
+                d->texts.remove(datasetBrushOffset + i);
+            }
+            for( int i = 0; i < oldDiagram->datasetPens().count(); i++ ){
+                d->pens.remove(datasetBrushOffset + i);
+            }
+            break;
+        }
+        datasetBrushOffset += diagrams.at(i)->datasetBrushes().count();
+    }
+
     if( oldDiagram ){
         DiagramObserver* oldObs = d->findObserverForDiagram( oldDiagram );
         if( oldObs ){
