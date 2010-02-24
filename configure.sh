@@ -127,7 +127,7 @@ cat <<EOF 1>&2
       enable/disable compiled-in unittests
 
   -[spec]
-      compile kdchart for a specific Qt-supported target
+      compile $product for a specific Qt-supported target
 
 EOF
     exit 1
