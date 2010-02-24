@@ -297,6 +297,9 @@ cat <<EOF 1>&2
 
 EOF
 
+# Make a copy so that each run of qmake on $product.pro starts clean
+cp -f .qmake.cache .confqmake.cache
+
 $QTDIR/bin/qmake ${SPEC} $product.pro -recursive "${PRODUCT}_BASE=`pwd`" || die "qmake failed"
 
 if [ "$INSTALLATION_SUPPORTED" = "true" ]; then

@@ -256,6 +256,9 @@ if "%STATIC_BUILD_SUPPORTED%" == "true" (
 echo   Compiled-In Unit Tests..: %unittests% (default: no)
 echo.
 
+REM Make a copy so that each run of qmake on $product.pro starts clean
+copy .qmake.cache .confqmake.cache
+
 %QTDIR%\bin\qmake %product_low%.pro -recursive "%PRODUCT_CAP%_BASE=%CD%"
 
 if errorlevel 1 (
