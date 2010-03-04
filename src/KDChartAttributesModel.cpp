@@ -337,7 +337,7 @@ QVariant AttributesModel::headerData ( int section,
           return Palette::defaultPalette().getBrush( section );
       else
           qWarning("Unknown type of fallback palette!");
-  }
+  } break;
   case KDChart::DatasetPenRole: {
       // default to the color set for the brush (or it's defaults)
       // but only if no per model override was set
@@ -345,7 +345,7 @@ QVariant AttributesModel::headerData ( int section,
           QBrush brush = qVariantValue<QBrush>( headerData( section, orientation, DatasetBrushRole ) );
           return QPen( brush.color() );
       }
-  }
+  } break;
   default:
       break;
   }
