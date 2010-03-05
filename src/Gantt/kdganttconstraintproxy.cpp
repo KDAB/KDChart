@@ -84,39 +84,70 @@ void ConstraintProxy::copyFromSource()
         m_destination->clear();
         if ( !m_source ) return;
         QList<Constraint> lst = m_source->constraints();
-        Q_FOREACH( const Constraint& c, lst ) {
-            m_destination->addConstraint( Constraint( m_proxy->mapFromSource( c.startIndex() ),
-                                                      m_proxy->mapFromSource( c.endIndex() ) ) );
+        Q_FOREACH( const Constraint& c, lst )
+        {
+           Constraint temp( m_proxy->mapFromSource( c.startIndex() ), m_proxy->mapFromSource( c.endIndex() ) );
+           temp.setData(Constraint::ValidConstraintPen, c.data(Constraint::ValidConstraintPen));
+           temp.setData(Constraint::InvalidConstraintPen, c.data(Constraint::InvalidConstraintPen));
+           m_destination->addConstraint( temp );
         }
     }
 }
 
 void ConstraintProxy::slotSourceConstraintAdded( const KDGantt::Constraint& c )
 {
-    if ( m_destination ) m_destination->addConstraint( Constraint( m_proxy->mapFromSource( c.startIndex() ),
-                                                                   m_proxy->mapFromSource( c.endIndex() ),
-                                                                   c.type(), c.relationType() ) );
+    if ( m_destination )
+    {
+        Constraint temp( m_proxy->mapFromSource( c.startIndex() ), m_proxy->mapFromSource( c.endIndex() ), c.type(), c.relationType() );
+        temp.setData(Constraint::ValidConstraintPen, c.data(Constraint::ValidConstraintPen));
+        temp.setData(Constraint::InvalidConstraintPen, c.data(Constraint::InvalidConstraintPen));
+        m_destination->addConstraint( temp );
+    }
 }
 
 void ConstraintProxy::slotSourceConstraintRemoved( const KDGantt::Constraint& c )
 {
-    if ( m_destination ) m_destination->removeConstraint( Constraint( m_proxy->mapFromSource( c.startIndex() ),
-                                                                      m_proxy->mapFromSource( c.endIndex() ),
-                                                                   c.type(), c.relationType() ) );
+    if ( m_destination )
+    {
+        Constraint temp( m_proxy->mapFromSource( c.startIndex() ), m_proxy->mapFromSource( c.endIndex() ), c.type(), c.relationType() );
+        temp.setData(Constraint::ValidConstraintPen, c.data(Constraint::ValidConstraintPen));
+        temp.setData(Constraint::InvalidConstraintPen, c.data(Constraint::InvalidConstraintPen));
+        m_destination->removeConstraint( temp );
+    }
 }
 
 void ConstraintProxy::slotDestinationConstraintAdded( const KDGantt::Constraint& c )
 {
-    if ( m_source ) m_source->addConstraint( Constraint( m_proxy->mapToSource( c.startIndex() ),
-                                                         m_proxy->mapToSource( c.endIndex() ),
-                                                         c.type(), c.relationType() ) );
+    ConstraintModel* source = static_cast<ConstraintModel*> (m_source);
+
+    if(source)
+    {
+        Q_FOREACH(Constraint temp, source->constraints())
+        {
+            if(temp.data(Constraint::ValidConstraintPen) == c.data(Constraint::ValidConstraintPen) &&
+               temp.data(Constraint::InvalidConstraintPen) == c.data(Constraint::InvalidConstraintPen) )
+                return;
+        }
+    }
+
+    if ( m_source )
+    {
+        Constraint temp( m_proxy->mapToSource( c.startIndex() ), m_proxy->mapToSource( c.endIndex() ), c.type(), c.relationType() );
+        temp.setData(Constraint::ValidConstraintPen, c.data(Constraint::ValidConstraintPen));
+        temp.setData(Constraint::InvalidConstraintPen, c.data(Constraint::InvalidConstraintPen));
+        m_source->addConstraint( temp );
+    }
 }
 
 void ConstraintProxy::slotDestinationConstraintRemoved( const KDGantt::Constraint& c )
 {
-    if ( m_source ) m_source->removeConstraint( Constraint( m_proxy->mapToSource( c.startIndex() ),
-                                                            m_proxy->mapToSource( c.endIndex() ),
-                                                                   c.type(), c.relationType() ) );
+    if ( m_source )
+    {
+        Constraint temp( m_proxy->mapToSource( c.startIndex() ), m_proxy->mapToSource( c.endIndex() ), c.type(), c.relationType() );
+        temp.setData(Constraint::ValidConstraintPen, c.data(Constraint::ValidConstraintPen));
+        temp.setData(Constraint::InvalidConstraintPen, c.data(Constraint::InvalidConstraintPen));
+        m_source->removeConstraint( temp );
+    }
 }
 
 #include "moc_kdganttconstraintproxy.cpp"
