@@ -118,18 +118,6 @@ void ConstraintProxy::slotSourceConstraintRemoved( const KDGantt::Constraint& c 
 
 void ConstraintProxy::slotDestinationConstraintAdded( const KDGantt::Constraint& c )
 {
-    ConstraintModel* source = static_cast<ConstraintModel*> (m_source);
-
-    if(source)
-    {
-        Q_FOREACH(Constraint temp, source->constraints())
-        {
-            if(temp.data(Constraint::ValidConstraintPen) == c.data(Constraint::ValidConstraintPen) &&
-               temp.data(Constraint::InvalidConstraintPen) == c.data(Constraint::InvalidConstraintPen) )
-                return;
-        }
-    }
-
     if ( m_source )
     {
         Constraint temp( m_proxy->mapToSource( c.startIndex() ), m_proxy->mapToSource( c.endIndex() ), c.type(), c.relationType() );
