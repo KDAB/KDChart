@@ -131,9 +131,6 @@ qreal Measure::calculatedValue( const QSizeF& autoSize,
                     referenceValue = size.height();
                     break;
             }
-
-            Q_ASSERT(referenceValue);
-
             value = mValue / 1000.0 * referenceValue;
         }
         return value;
