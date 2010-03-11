@@ -141,7 +141,7 @@ void LeveyJenningsAxis::paintCtx( PaintContext* context )
     LeveyJenningsCoordinatePlane* plane = dynamic_cast<LeveyJenningsCoordinatePlane*>(context->coordinatePlane());
     Q_ASSERT_X ( plane, "LeveyJenningsAxis::paint",
                  "Bad function call: PaintContext::coodinatePlane() NOT a levey jennings plane." );
-
+    Q_UNUSED(plane);
     // note: Not having any data model assigned is no bug
     //       but we can not draw an axis then either.
     if( ! d->diagram()->model() )

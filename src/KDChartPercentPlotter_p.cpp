@@ -118,7 +118,7 @@ void PercentPlotter::paint( PaintContext* ctx )
         return;
 
     DataValueTextInfoList textInfoList;
-    LineAttributes::MissingValuesPolicy policy; // ???
+    LineAttributes::MissingValuesPolicy policy = LineAttributes::MissingValuesAreBridged; // ???
 
     // this map contains the y-values to each x-value
     QMap< double, QVector< QPair< Value, QModelIndex > > > diagramValues;

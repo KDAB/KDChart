@@ -93,6 +93,7 @@ namespace KDGantt {
 
         class DateTextFormatter {
         public:
+            virtual ~DateTextFormatter() {}
             virtual QString format( const QDateTime& dt ) = 0;
             virtual QRect   textRect( qreal x, qreal offset, qreal dayWidth, const QRectF& headerRect, const QDateTime& dt ) = 0;
         };

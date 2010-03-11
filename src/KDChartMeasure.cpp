@@ -115,7 +115,7 @@ qreal Measure::calculatedValue( const QSizeF& autoSize,
             else
                 size = sizeOfArea( area );
             //qDebug() << ( area == autoArea ) << "size" << size;
-            qreal referenceValue;
+            qreal referenceValue = 0;
             switch( orientation ){
                 case KDChartEnums::MeasureOrientationAuto: // fall through intended
                 case KDChartEnums::MeasureOrientationMinimum:
@@ -131,6 +131,9 @@ qreal Measure::calculatedValue( const QSizeF& autoSize,
                     referenceValue = size.height();
                     break;
             }
+
+            Q_ASSERT(referenceValue);
+
             value = mValue / 1000.0 * referenceValue;
         }
         return value;

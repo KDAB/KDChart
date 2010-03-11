@@ -90,7 +90,7 @@ void PercentLineDiagram::paint(  PaintContext* ctx )
 
     DataValueTextInfoList list;
     LineAttributesInfoList lineList;
-    LineAttributes::MissingValuesPolicy policy;
+    LineAttributes::MissingValuesPolicy policy = LineAttributes::MissingValuesAreBridged;
 
     //FIXME(khz): add LineAttributes::MissingValuesPolicy support for LineDiagram::Stacked and ::Percent
 

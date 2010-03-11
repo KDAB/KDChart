@@ -485,6 +485,8 @@ QPolygonF ItemDelegate::finishStartLine( const QPointF& start, const QPointF& en
 
 QPolygonF ItemDelegate::finishStartArrow( const QPointF& start, const QPointF& end ) const
 {
+    Q_UNUSED(start);
+
     QPolygonF poly;
     poly << end
             << QPointF( end.x()-TURN/2., end.y()-TURN/2. )
@@ -529,6 +531,8 @@ QPolygonF ItemDelegate::finishFinishLine( const QPointF& start, const QPointF& e
 
 QPolygonF ItemDelegate::finishFinishArrow( const QPointF& start, const QPointF& end ) const
 {
+    Q_UNUSED(start);
+
     QPolygonF poly;
     poly << end
             << QPointF( end.x()+TURN/2., end.y()-TURN/2. )
@@ -552,9 +556,9 @@ void ItemDelegate::paintStartStartConstraint( QPainter* painter, const QStyleOpt
 
 QPolygonF ItemDelegate::startStartLine( const QPointF& start, const QPointF& end ) const
 {
+    Q_UNUSED(start);
+
     QPolygonF poly;
-    qreal midx = start.x() - TURN;
-    qreal midy = ( end.y()-start.y() )/2. + start.y();
 
     if ( start.x() > end.x() ) {
         poly << start
@@ -573,6 +577,8 @@ QPolygonF ItemDelegate::startStartLine( const QPointF& start, const QPointF& end
 
 QPolygonF ItemDelegate::startStartArrow( const QPointF& start, const QPointF& end ) const
 {
+    Q_UNUSED(start);
+
     QPolygonF poly;
     poly << end
             << QPointF( end.x()-TURN/2., end.y()-TURN/2. )
@@ -595,6 +601,8 @@ void ItemDelegate::paintStartFinishConstraint( QPainter* painter, const QStyleOp
 
 QPolygonF ItemDelegate::startFinishLine( const QPointF& start, const QPointF& end ) const
 {
+    Q_UNUSED(start);
+
     QPolygonF poly;
     qreal midx = end.x() + TURN;
     qreal midy = ( end.y()-start.y() )/2. + start.y();
@@ -617,6 +625,8 @@ QPolygonF ItemDelegate::startFinishLine( const QPointF& start, const QPointF& en
 
 QPolygonF ItemDelegate::startFinishArrow( const QPointF& start, const QPointF& end ) const
 {
+    Q_UNUSED(start);
+
     QPolygonF poly;
     poly << end
             << QPointF( end.x()+TURN/2., end.y()-TURN/2. )

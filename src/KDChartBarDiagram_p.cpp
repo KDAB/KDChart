@@ -44,7 +44,7 @@ void BarDiagram::BarDiagramType::paintBars( PaintContext* ctx, const QModelIndex
     QRectF isoRect;
     QPolygonF topPoints, sidePoints;
     ThreeDBarAttributes threeDAttrs = diagram()->threeDBarAttributes( index );
-    double usedDepth;
+    double usedDepth = 0;
 
     //Pending Michel: configure threeDBrush settings - shadowColor etc...
     QBrush indexBrush ( diagram()->brush( index ) );

@@ -985,10 +985,14 @@ void DateTimeGrid::paintHourScaleHeader( QPainter* painter,
 {
     class HourFormatter : public Private::DateTextFormatter {
     public:
+        virtual ~HourFormatter() {}
+
         QString format( const QDateTime& dt ) {
             return dt.time().toString( QString::fromAscii( "hh" ) );
         }
         QRect textRect( qreal x, qreal offset, qreal dayWidth, const QRectF& headerRect, const QDateTime& dt ) {
+            Q_UNUSED(dt);
+
             return QRectF( QPointF( x, headerRect.top() ) + QPointF( -offset + 1.0, headerRect.height() / 2.0 ),
                            QSizeF( dayWidth / 24.0, headerRect.height() / 2.0 ) ).toAlignedRect();
         }
@@ -998,10 +1002,13 @@ void DateTimeGrid::paintHourScaleHeader( QPainter* painter,
 
     class DayFormatter : public Private::DateTextFormatter {
     public:
+        virtual ~DayFormatter() {}
         QString format( const QDateTime& dt ) {
             return dt.date().toString();
         }
         QRect textRect( qreal x, qreal offset, qreal dayWidth, const QRectF& headerRect, const QDateTime& dt ) {
+            Q_UNUSED(dt);
+
             return QRectF( QPointF( x, headerRect.top() ) + QPointF( -offset, 0.0 ),
                            QSizeF( dayWidth, headerRect.height() / 2.0 ) ).toRect();
         }
@@ -1018,10 +1025,14 @@ void DateTimeGrid::paintDayScaleHeader( QPainter* painter,  const QRectF& header
 {
     class DayFormatter : public Private::DateTextFormatter {
     public:
+        virtual ~DayFormatter() {}
+
         QString format( const QDateTime& dt ) {
             return dt.toString( QString::fromAscii( "ddd" ) ).left( 1 );
         }
         QRect textRect( qreal x, qreal offset, qreal dayWidth, const QRectF& headerRect, const QDateTime& dt ) {
+            Q_UNUSED(dt);
+
             return QRectF( QPointF( x, headerRect.top() ) + QPointF( -offset + 1.0, headerRect.height() / 2.0 ),
                            QSizeF( dayWidth, headerRect.height() / 2.0 ) ).toAlignedRect();
         }
@@ -1031,10 +1042,13 @@ void DateTimeGrid::paintDayScaleHeader( QPainter* painter,  const QRectF& header
 
     class WeekFormatter : public Private::DateTextFormatter {
     public:
+        virtual ~WeekFormatter() {}
         QString format( const QDateTime& dt ) {
             return QString::number( dt.date().weekNumber() );
         }
         QRect textRect( qreal x, qreal offset, qreal dayWidth, const QRectF& headerRect, const QDateTime& dt ) {
+            Q_UNUSED(dt);
+            
             return QRectF( QPointF( x, headerRect.top() ) + QPointF( -offset, 0.0 ),
                            QSizeF( dayWidth * 7, headerRect.height() / 2.0 ) ).toRect();
         }
@@ -1051,10 +1065,14 @@ void DateTimeGrid::paintWeekScaleHeader( QPainter* painter,  const QRectF& heade
 {
     class WeekFormatter : public Private::DateTextFormatter {
     public:
+        virtual ~WeekFormatter() {}
+
         QString format( const QDateTime& dt ) {
             return QString::number( dt.date().weekNumber() );
         }
         QRect textRect( qreal x, qreal offset, qreal dayWidth, const QRectF& headerRect, const QDateTime& dt ) {
+            Q_UNUSED(dt);
+            
             return QRectF( QPointF( x, headerRect.top() ) + QPointF( -offset, headerRect.height() / 2.0 ),
                            QSizeF( dayWidth * 7, headerRect.height() / 2.0 ) ).toRect();
         }
@@ -1064,6 +1082,8 @@ void DateTimeGrid::paintWeekScaleHeader( QPainter* painter,  const QRectF& heade
 
     class MonthFormatter : public Private::DateTextFormatter {
     public:
+        virtual ~MonthFormatter() {}
+
         QString format( const QDateTime& dt ) {
             return QDate::longMonthName( dt.date().month() );
         }
@@ -1084,6 +1104,8 @@ void DateTimeGrid::paintMonthScaleHeader( QPainter* painter,  const QRectF& head
 {
     class MonthFormatter : public Private::DateTextFormatter {
     public:
+        virtual ~MonthFormatter() {}
+
         QString format( const QDateTime& dt ) {
             return QDate::shortMonthName( dt.date().month() );
         }
@@ -1097,6 +1119,8 @@ void DateTimeGrid::paintMonthScaleHeader( QPainter* painter,  const QRectF& head
 
     class YearFormatter : public Private::DateTextFormatter {
     public:
+        virtual ~YearFormatter() {}
+
         QString format( const QDateTime& dt ) {
             return QString::number( dt.date().year() );
         }

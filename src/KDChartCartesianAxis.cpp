@@ -974,9 +974,9 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 const qreal translatedValue = diagramIsVertical ? topPoint.x() : topPoint.y();
                 bool bIsVisibleLabel;
                 if ( diagramIsVertical )
-                    bIsVisibleLabel = ( translatedValue >= geoRect.left() && translatedValue <= geoRect.right() && !isLogarithmicX || i != 0.0 );
+                    bIsVisibleLabel = ( (translatedValue >= geoRect.left() && translatedValue <= geoRect.right() && !isLogarithmicX) || i != 0.0 );
                 else
-                    bIsVisibleLabel = ( translatedValue >= geoRect.top() && translatedValue <= geoRect.bottom() && !isLogarithmicX || i != 0.0 );
+                    bIsVisibleLabel = ( (translatedValue >= geoRect.top() && translatedValue <= geoRect.bottom() && !isLogarithmicX) || i != 0.0 );
 
                 // fix for issue #4179:
                 bool painttick = bIsVisibleLabel && labelStep <= 0;
@@ -1275,8 +1275,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
                         const qreal translatedValue = diagramIsVertical ? rightPoint.y() : rightPoint.x();
                         const bool bIsVisibleLabel = diagramIsVertical ?
-                                ( translatedValue >= geoRect.top() && translatedValue <= geoRect.bottom() && !isLogarithmicY || labelValue != 0.0 )
-                              : ( translatedValue >= geoRect.left() && translatedValue <= geoRect.right() && !isLogarithmicY || labelValue != 0.0 );
+                                ( (translatedValue >= geoRect.top() && translatedValue <= geoRect.bottom() && !isLogarithmicY) || labelValue != 0.0 )
+                              : ( (translatedValue >= geoRect.left() && translatedValue <= geoRect.right() && !isLogarithmicY) || labelValue != 0.0 );
 
                         if( bIsVisibleLabel )
                         {
@@ -1336,9 +1336,9 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         bool bIsVisibleLabel;
                         const qreal translatedValue = diagramIsVertical ? rightPoint.y() : rightPoint.x();
                         if ( diagramIsVertical)
-                            bIsVisibleLabel = ( translatedValue >= geoRect.top() && translatedValue <= geoRect.bottom() && !isLogarithmicY || labelValue != 0.0 );
+                            bIsVisibleLabel = ( (translatedValue >= geoRect.left() && translatedValue <= geoRect.right() && !isLogarithmicX) || labelValue != 0.0 );
                         else
-                            bIsVisibleLabel = ( translatedValue >= geoRect.left() && translatedValue <= geoRect.right() && !isLogarithmicY || labelValue != 0.0 );
+                            bIsVisibleLabel = ( (translatedValue >= geoRect.top() && translatedValue <= geoRect.bottom() && !isLogarithmicX) || labelValue != 0.0 );
 
                         if( bIsVisibleLabel ){
                             ptr->save();
