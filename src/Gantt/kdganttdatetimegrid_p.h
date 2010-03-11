@@ -62,6 +62,7 @@ namespace KDGantt {
               freeDays( QSet<Qt::DayOfWeek>() << Qt::Saturday << Qt::Sunday ),
               rowSeparators( false ),
               noInformationBrush( Qt::red, Qt::DiagCrossPattern ),
+              freeDaysBrush(QBrush()),
               upper( new DateTimeScaleFormatter( DateTimeScaleFormatter::Week, QString::fromLatin1( "w" ) ) ),
               lower( new DateTimeScaleFormatter( DateTimeScaleFormatter::Day, QString::fromLatin1( "ddd" ) ) ),
               year_upper( DateTimeScaleFormatter::Year, QString::fromLatin1("yyyy" ) ),
@@ -136,6 +137,7 @@ namespace KDGantt {
         QSet<Qt::DayOfWeek> freeDays;
         bool rowSeparators;
         QBrush noInformationBrush;
+        QBrush freeDaysBrush;
 
         DateTimeScaleFormatter* upper;
         DateTimeScaleFormatter* lower;

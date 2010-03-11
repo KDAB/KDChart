@@ -446,6 +446,21 @@ QSet<Qt::DayOfWeek> DateTimeGrid::freeDays() const
     return d->freeDays;
 }
 
+/*! Sets the brush to use to paint free days.
+*/
+void DateTimeGrid::setFreeDaysBrush(const QBrush brush)
+{
+    d->freeDaysBrush = brush;
+}
+
+/*!
+  \returns The brush used to paint free days.
+*/
+QBrush DateTimeGrid::freeDaysBrush() const
+{
+    return d->freeDaysBrush;
+}
+
 /*! \returns true if row separators are used. */
 bool DateTimeGrid::rowSeparators() const
 {
@@ -675,8 +690,12 @@ void DateTimeGrid::Private::paintVerticalLines( QPainter* painter,
                 pen.setStyle( gridLinePenStyle( dt, headerType ) );
                 painter->setPen( pen );
                 if ( freeDays.contains( static_cast<Qt::DayOfWeek>( dt.date().dayOfWeek() ) ) ) {
-                    painter->setBrush( widget?widget->palette().midlight()
-                                       :QApplication::palette().midlight() );
+                    if(freeDaysBrush.style() == Qt::NoBrush)
+                        painter->setBrush( widget?widget->palette().midlight()
+                                           :QApplication::palette().midlight() );
+                    else
+                        painter->setBrush(freeDaysBrush);
+
                     painter->fillRect( QRectF( x, exposedRect.top(), dayWidth, exposedRect.height() ), painter->brush() );
                 }
                 painter->drawLine( QPointF( x, sceneRect.top() ), QPointF( x, sceneRect.bottom() ) );

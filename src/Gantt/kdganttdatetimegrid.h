@@ -98,6 +98,9 @@ namespace KDGantt {
         void setFreeDays( const QSet<Qt::DayOfWeek>& fd );
         QSet<Qt::DayOfWeek> freeDays() const;
 
+        void setFreeDaysBrush(const QBrush brush);
+        QBrush freeDaysBrush() const;
+
         void setScale( Scale s );
         Scale scale() const;
 
