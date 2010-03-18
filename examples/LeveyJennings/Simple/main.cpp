@@ -54,7 +54,7 @@ protected Q_SLOTS:
     void animate()
     {
         const int row = ( view->selectionModel()->currentIndex().row() + 1 ) % view->model()->rowCount();
-        view->selectionModel()->setCurrentIndex( view->model()->index( row, 0 ), QItemSelectionModel::Current );
+        view->selectionModel()->setCurrentIndex( view->model()->index( row, 0 ), QItemSelectionModel::ClearAndSelect );
     }
 
 private:
