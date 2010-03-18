@@ -33,6 +33,7 @@
 
 
 #include <QTimer>
+#include <QMouseEvent>
 
 using namespace KDChart;
 
@@ -67,6 +68,26 @@ MainWindow::MainWindow( QWidget* parent ) :
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(slot_timerFired()));
     timer->start(30);
+
+    //Change the cursor to IBeamCursor inside Chart widget.
+    m_chart->setCursor(Qt::IBeamCursor);
+
+    //Install event filter on Chart to get the mouse position
+    m_chart->installEventFilter(this);
+}
+
+/**
+  Event filter for getting mouse position
+*/
+bool MainWindow::eventFilter(QObject* target, QEvent* event)
+{
+    if (target == m_chart) {
+        if (event->type() == QEvent::MouseMove) {
+            QMouseEvent* mouseEvent = static_cast<QMouseEvent *>(event);
+            qDebug() << "Mouse position " << mouseEvent->pos();
+        }
+    }
+    return QWidget::eventFilter(target, event);
 }
 
 void MainWindow::on_lineTypeCB_currentIndexChanged( const QString & text )

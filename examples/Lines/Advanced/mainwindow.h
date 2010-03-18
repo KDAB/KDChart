@@ -41,6 +41,9 @@ class MainWindow : public QWidget, private Ui::MainWindow
 public:
     MainWindow( QWidget* parent = 0 );
 
+private:
+    bool eventFilter(QObject* target, QEvent* event);
+
 private slots:
 
     void on_lineTypeCB_currentIndexChanged( const QString & text );
