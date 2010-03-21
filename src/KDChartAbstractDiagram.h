@@ -569,8 +569,30 @@ namespace KDChart {
         QList<MarkerAttributes> datasetMarkers() const;
 
 
-        // configure the ordinate in percent mode - values 0 to 100
+        /**
+         * \deprecated
+         *
+         * \brief Deprecated method that turns the percent mode of this diagram on or off.
+         *
+         * This method is deprecated. Use the setType() method of a supporting diagram implementation
+         * instead, e.g. BarDiagram::setType().
+         *
+         * \see percentMode
+         */
         void setPercentMode( bool percent );
+
+
+        /**
+         * \brief Returns whether this diagram is drawn in percent mode.
+         *
+         * If true, all data points in the same column of a diagram will
+         * be be drawn at the same X coordinate and stacked up so that the distance from the
+         * last data point (or the zero line) to a data point P is always the ratio of (Y-Value of P)/
+         * (sum of all Y-Values in same column as P) relative to the diagrams height
+         * (or width, if abscissa and ordinate are swapped).
+         *
+         * Note that this property is not applicable to all diagram types.
+         */
         bool percentMode() const;
 
         virtual void paintMarker( QPainter* painter,
