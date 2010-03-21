@@ -164,50 +164,17 @@ const QString AbstractAxis::customizedLabel( const QString& label )const
 }
 
 
-/**
-  * \internal
-  *
-  * Method invoked by AbstractCartesianDiagram::addAxis().
-  *
-  * You should not call this function, unless you know exactly,
-  * what you are doing.
-  *
-  * \sa connectSignals(), AbstractCartesianDiagram::addAxis()
-  */
 void AbstractAxis::createObserver( AbstractDiagram* diagram )
 {
     if( d->setDiagram( diagram ) )
         connectSignals();
 }
 
-/**
-  * \internal
-  *
-  * Method invoked by AbstractCartesianDiagram::takeAxis().
-  *
-  * You should not call this function, unless you know exactly,
-  * what you are doing.
-  *
-  * \sa AbstractCartesianDiagram::takeAxis()
-  */
 void AbstractAxis::deleteObserver( AbstractDiagram* diagram )
 {
     d->unsetDiagram( diagram );
 }
 
-/**
-  * Wireing the signal/slot connections.
-  *
-  * This method gets called automatically, each time, when you assign
-  * the axis to a diagram, either by passing a diagram* to the c'tor,
-  * or by calling the diagram's setAxis method, resp.
-  *
-  * If overwriting this method in derived classes, make sure to call
-  * this base method AbstractAxis::connectSignals(), so your axis
-  * gets connected to the diagram's built-in signals.
-  *
-  * \sa AbstractCartesianDiagram::addAxis()
-  */
 void AbstractAxis::connectSignals()
 {
     if( d->observer ){
@@ -217,17 +184,6 @@ void AbstractAxis::connectSignals()
 }
 
 
-/**
-  \brief Use this to specify the text attributes to be used for axis labels.
-
-  By default, the reference area will be set at painting time.
-  It will be the then-valid coordinate plane's parent widget,
-  so normally, it will be the KDChart::Chart.
-  Thus the labels of all of your axes in all of your diagrams
-  within that Chart will be drawn in same font size, by default.
-
-  \sa textAttributes, setLabels
-*/
 void AbstractAxis::setTextAttributes( const TextAttributes &a )
 {
     if( d->textAttributes == a )
@@ -237,58 +193,23 @@ void AbstractAxis::setTextAttributes( const TextAttributes &a )
     update();
 }
 
-/**
-  \brief Returns the text attributes to be used for axis labels.
-
-  \sa setTextAttributes
-*/
 TextAttributes AbstractAxis::textAttributes() const
 {
     return d->textAttributes;
 }
 
 
-/**
-  \brief Use this to specify the attributes used to paint the axis ruler
-  
-  Every axis has a default set of ruler attributes that is exactly the
-  same among them. Use this method to specify your own attributes.
-  
-  \sa rulerAttributes
-*/
 void AbstractAxis::setRulerAttributes( const RulerAttributes &a )
 {
 	d->rulerAttributes = a;
 	update();
 }
 
-/**
-  \brief Returns the attributes to be used for painting the rulers
-  
-  \sa setRulerAttributes
-*/
 RulerAttributes AbstractAxis::rulerAttributes() const
 {
 	return d->rulerAttributes;
 }
 
-/**
-  \brief Use this to specify your own set of strings, to be used as axis labels.
-
-  Labels specified via setLabels take precedence:
-  If a non-empty list is passed, KD Chart will use these strings as axis labels,
-  instead of calculating them.
-
-  If you a smaller number of strings than the number of labels drawn at this
-  axis, KD Chart will iterate over the list, repeating the strings, until all
-  labels are drawn.
-  As an example you could specify the seven days of the week as abscissa labels,
-  which would be repeatedly used then.
-
-  By passing an empty QStringList you can reset the default behaviour.
-
-  \sa labels, setShortLabels
-*/
 void AbstractAxis::setLabels( const QStringList& list )
 {
     if( d->hardLabels == list )
@@ -298,27 +219,11 @@ void AbstractAxis::setLabels( const QStringList& list )
     update();
 }
 
-/**
-  Returns a list of strings, that are used as axis labels, as set via setLabels.
-
-  \sa setLabels
-*/
 QStringList AbstractAxis::labels() const
 {
     return d->hardLabels;
 }
 
-/**
-  \brief Use this to specify your own set of strings, to be used as axis labels,
-  in case the normal labels are too long.
-
-  \note Setting done via setShortLabels will be ignored, if you did not pass
-  a non-empty string list via setLabels too!
-
-  By passing an empty QStringList you can reset the default behaviour.
-
-  \sa shortLabels, setLabels
-*/
 void AbstractAxis::setShortLabels( const QStringList& list )
 {
     if( d->hardShortLabels == list )
@@ -328,24 +233,11 @@ void AbstractAxis::setShortLabels( const QStringList& list )
     update();
 }
 
-/**
-  Returns a list of strings, that are used as axis labels, as set via setShortLabels.
-
-  \note Setting done via setShortLabels will be ignored, if you did not pass
-  a non-empty string list via setLabels too!
-
-  \sa setShortLabels
-*/
 QStringList AbstractAxis::shortLabels() const
 {
     return d->hardShortLabels;
 }
 
-/**
-    \brief Convenience function, returns the coordinate plane, in which this axis is used.
-
-    If the axis is not used in a coordinate plane, the return value is Zero.
- */
 const AbstractCoordinatePlane* AbstractAxis::coordinatePlane() const
 {
     if( d->diagram() )
