@@ -75,16 +75,59 @@ namespace KDChart {
           */
         virtual void drawGrid( PaintContext* context ) = 0;
 
+        /**
+         * Causes grid to be recalculated upon the next call
+         * of updateData().
+         *
+         * \see calculateGrid
+         */
         void setNeedRecalculate();
 
+        /**
+         * Checks whether both coordinates of r are valid according
+         * to isValueValid
+         *
+         * \see isValueValid
+         */
         static bool isBoundariesValid(const QRectF& r );
+
+        /**
+         * Checks whether both coordinates of both points are valid
+         * according to isValueValid
+         *
+         * \see isValueValid
+         */
         static bool isBoundariesValid(const QPair<QPointF,QPointF>& b );
+
+        /**
+         * Checks whether all start and end properties of every
+         * DataDimension in the list l are valid according to
+         * isValueValid().
+         *
+         * \see isValueValid
+         */
         static bool isBoundariesValid(const DataDimensionsList& l );
+
+        /**
+         * Checks if r is neither NaN nor infinity.
+         */
         static bool isValueValid(const qreal& r );
+
+        /**
+         * Adjusts \a start and/or \a end so that they are a multiple of
+         * \a stepWidth
+         */
         static void adjustLowerUpperRange(
                 qreal& start, qreal& end,
                 qreal stepWidth,
                 bool adjustLower, bool adjustUpper );
+
+        /**
+         * Adjusts \a dim so that \c dim.start and/or \c dim.end are a multiple
+         * of \c dim.stepWidth.
+         *
+         * \see adjustLowerUpperRange
+         */
         static const DataDimension adjustedLowerUpperRange(
                 const DataDimension& dim,
                 bool adjustLower, bool adjustUpper );
