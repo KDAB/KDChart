@@ -58,6 +58,8 @@ namespace KDChart {
         /** This signal is emitted immediately before the diagram is
           * being destroyed. */
         void diagramDestroyed( AbstractDiagram* diagram );
+        /** Emitted when a diagram is being destroyed, but before its data is invalidated **/
+        void diagramAboutToBeDestroyed( AbstractDiagram* diagram );
         /** This signal is emitted whenever the data of the diagram changes. */
         void diagramDataChanged( AbstractDiagram* diagram );
         /** This signal is emitted whenever any of the data of the diagram was set (un)hidden. */
@@ -67,6 +69,7 @@ namespace KDChart {
 
     private Q_SLOTS:
         void slotDestroyed(QObject*);
+        void slotAboutToBeDestroyed();
         void slotHeaderDataChanged(Qt::Orientation,int,int);
         void slotDataChanged(QModelIndex,QModelIndex);
         void slotDataChanged();

@@ -42,6 +42,7 @@ DiagramObserver::DiagramObserver( AbstractDiagram * diagram, QObject* parent )
 {
     if ( m_diagram ) {
         connect( m_diagram, SIGNAL(destroyed(QObject*)), SLOT(slotDestroyed(QObject*)));
+        connect( m_diagram, SIGNAL(aboutToBeDestroyed()), SLOT(slotAboutToBeDestroyed()));
         connect( m_diagram, SIGNAL(modelsChanged()), SLOT(slotModelsChanged()));
     }
     init();
@@ -100,6 +101,11 @@ void DiagramObserver::slotDestroyed(QObject*)
     disconnect( m_diagram, 0, this, 0);
     m_diagram = 0;
     emit diagramDestroyed( diag );
+}
+
+void DiagramObserver::slotAboutToBeDestroyed()
+{
+    emit diagramAboutToBeDestroyed( m_diagram );
 }
 
 void DiagramObserver::slotModelsChanged()

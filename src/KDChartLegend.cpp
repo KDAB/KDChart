@@ -352,8 +352,8 @@ void Legend::addDiagram( AbstractDiagram* newDiagram )
         }else{
             d->observers.append( observer );
         }
-        connect( observer, SIGNAL( diagramDestroyed(AbstractDiagram*) ),
-                        SLOT( resetDiagram(AbstractDiagram*) ));
+        connect( observer, SIGNAL( diagramAboutToBeDestroyed(AbstractDiagram*) ),
+                           SLOT( resetDiagram(AbstractDiagram*) ));
         connect( observer, SIGNAL( diagramDataChanged(AbstractDiagram*) ),
                  SLOT( setNeedRebuild() ));
         connect( observer, SIGNAL( diagramDataHidden(AbstractDiagram*) ),

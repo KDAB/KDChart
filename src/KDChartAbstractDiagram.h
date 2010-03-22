@@ -692,6 +692,12 @@ namespace KDChart {
         */
         void layoutChanged( AbstractDiagram* );
 
+        /**
+         * This signal is emitted when this diagram is being destroyed, but before all the
+         * data, i.e. the attributes model, is invalidated.
+         */
+        void aboutToBeDestroyed();
+
         /** This signal is emitted, when either the model or the AttributesModel is replaced. */
         void modelsChanged();
 
