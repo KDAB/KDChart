@@ -105,6 +105,8 @@ public:
     /** \reimpl */
     bool setHeaderData ( int section, Qt::Orientation orientation, const QVariant & value,
                          int role = Qt::DisplayRole);
+    /** Returns default values for the header data. */
+    virtual QVariant defaultHeaderData ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
     /** Remove any explicit attributes settings that might have been specified before. */
     bool resetHeaderData ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole);
     /** \reimpl */

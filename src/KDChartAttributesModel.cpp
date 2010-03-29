@@ -323,6 +323,12 @@ QVariant AttributesModel::headerData ( int section,
       }
   }
 
+  return defaultHeaderData( section, orientation, role );
+}
+
+
+QVariant AttributesModel::defaultHeaderData ( int section, Qt::Orientation orientation, int role ) const
+{
   // Default values if nothing else matches
   switch ( role ) {
   case Qt::DisplayRole:
@@ -352,7 +358,6 @@ QVariant AttributesModel::headerData ( int section,
 
   return QVariant();
 }
-
 
 // Note: Our users NEED this method - even if
 //       we do not need it at drawing time!
