@@ -513,10 +513,11 @@ void Chart::Private::slotLayoutPlanes()
             // this plane is sharing an axis with another one, so use
             // the grid of that one as well
             planeLayout = planeInfos[pi.referencePlane].gridLayout;
+            Q_ASSERT( planeLayout );
         } else {
             planesLayout->addLayout( planeLayout );
         }
-        Q_ASSERT( planeLayout );
+
         /* Put the plane in the center of the layout. If this is our own, that's
          * the middle of the layout, if we are sharing, it's a cell in the center
          * column of the shared grid. */
