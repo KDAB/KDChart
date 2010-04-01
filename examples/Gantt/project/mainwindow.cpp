@@ -207,6 +207,8 @@ MainWindow::MainWindow( QWidget* parent )
 
     // slotToolsNewItem();
     m_view->leftView()->setItemDelegateForColumn( 1, new MyItemDelegate( this ) );
+    m_view->leftView()->setStyleSheet( "QHeaderView { color: white; background: black }" );
+
     m_view->setGrid(new DateTimeGrid(this));
 
     //QItemEditorCreatorBase *creator = new QItemEditorCreator<ItemTypeComboBox>("itemType");
