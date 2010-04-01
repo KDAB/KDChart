@@ -187,7 +187,7 @@ void DateTimeGrid::paintUserDefinedHeader( QPainter* painter, const QRectF& head
         opt.text = formatter->text( dt );
 
         // use white text on black background
-        opt.palette.setColor(QPalette::Button, QColor("black"));
+        opt.palette.setColor(QPalette::Window, QColor("black"));
         opt.palette.setColor(QPalette::ButtonText, QColor("white"));
 
         style->drawControl( QStyle::CE_Header, &opt, painter, widget );
