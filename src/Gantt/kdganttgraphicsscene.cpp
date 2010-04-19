@@ -771,13 +771,13 @@ void GraphicsScene::doPrint( QPainter* painter, const QRectF& targetRect,
 
     qreal offset = scnRect.left();
     int pagecount = 0;
-    while ( offset < scnRect.width() ) {
+    while ( offset < scnRect.right() ) {
         painter->setFont( sceneFont );
         render( painter, targetRect, QRectF( QPointF( offset, scnRect.top()),
                                              QSizeF( targetRect.width()/yratio, scnRect.height() ) ) );
         offset += targetRect.width()/yratio;
         ++pagecount;
-        if ( printer && offset < scnRect.width() ) {
+        if ( printer && offset < scnRect.right() ) {
             printer->newPage();
         } else {
             break;
