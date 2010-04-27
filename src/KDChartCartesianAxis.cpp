@@ -382,6 +382,15 @@ const TextAttributes CartesianAxis::Private::titleTextAttributesWithAdjustedRota
     return titleTA;
 }
 
+void CartesianAxis::setAxisTitleSpace( qreal axisTitleSpace )
+{
+    d->axisTitleSpace = axisTitleSpace;
+}
+
+qreal CartesianAxis::axisTitleSpace() const
+{
+    return d->axisTitleSpace;
+}
 
 void CartesianAxis::Private::drawTitleText( QPainter* painter, CartesianCoordinatePlane* plane, const QRect& areaGeoRect ) const
 {
@@ -400,21 +409,21 @@ void CartesianAxis::Private::drawTitleText( QPainter* painter, CartesianCoordina
         {
         case Top:
             point.setX( areaGeoRect.left() + areaGeoRect.width() / 2.0);
-            point.setY( areaGeoRect.top()  + size.height() / 2 );
+            point.setY( areaGeoRect.top()  + (size.height() / 2)*1/axisTitleSpace );
             size.setWidth( qMin( size.width(), axis()->geometry().width() ) );
             break;
         case Bottom:
             point.setX( areaGeoRect.left() + areaGeoRect.width() / 2.0);
-            point.setY( areaGeoRect.bottom() - size.height() / 2 );
+            point.setY( areaGeoRect.bottom() - (size.height()/2)*1/axisTitleSpace);
             size.setWidth( qMin( size.width(), axis()->geometry().width() ) );
             break;
         case Left:
-            point.setX( areaGeoRect.left() + size.width() / 2 );
+            point.setX( areaGeoRect.left() + (size.width() / 2)*1/axisTitleSpace);
             point.setY( areaGeoRect.top() + areaGeoRect.height() / 2.0);
             size.setHeight( qMin( size.height(), axis()->geometry().height() ) );
             break;
         case Right:
-            point.setX( areaGeoRect.right() - size.width() / 2 );
+            point.setX( areaGeoRect.right() - (size.width() / 2)*1/axisTitleSpace);
             point.setY( areaGeoRect.top() + areaGeoRect.height() / 2.0);
             size.setHeight( qMin( size.height(), axis()->geometry().height() ) );
             break;

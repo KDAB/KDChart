@@ -83,8 +83,17 @@ namespace KDChart {
         /** reimpl */
         virtual void paintCtx( PaintContext* );
 
+        /**
+         * Sets the optional text displayed as chart title.
+         */
         void setTitleText( const QString& text );
         QString titleText() const;
+        
+        /**
+         * Sets the spacing between the title and the diagram.
+         */
+        void setAxisTitleSpace( qreal value );
+        qreal axisTitleSpace() const;
 
         void setTitleTextAttributes( const TextAttributes &a );
         /**

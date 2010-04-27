@@ -60,6 +60,7 @@ public:
         , cachedHeaderLabels( QStringList() )
         , cachedLabelHeight( 0.0 )
         , cachedFontHeight( 0 )
+        , axisTitleSpace( 1.0 )
     {}
     ~Private() {}
 
@@ -88,6 +89,7 @@ private:
     mutable int cachedFontHeight;
     mutable int cachedFontWidth;
     mutable QSize cachedMaximumSize;
+    qreal axisTitleSpace;
 };
 
 inline CartesianAxis::CartesianAxis( Private * p, AbstractDiagram* diagram )
