@@ -92,8 +92,8 @@ namespace KDChart {
         /**
          * Sets the spacing between the title and the diagram.
          */
-        void setAxisTitleSpace( qreal value );
-        qreal axisTitleSpace() const;
+        void setTitleSpace( qreal value );
+        qreal titleSpace() const;
 
         void setTitleTextAttributes( const TextAttributes &a );
         /**

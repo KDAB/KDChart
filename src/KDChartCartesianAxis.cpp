@@ -382,12 +382,12 @@ const TextAttributes CartesianAxis::Private::titleTextAttributesWithAdjustedRota
     return titleTA;
 }
 
-void CartesianAxis::setAxisTitleSpace( qreal axisTitleSpace )
+void CartesianAxis::setTitleSpace( qreal axisTitleSpace )
 {
     d->axisTitleSpace = axisTitleSpace;
 }
 
-qreal CartesianAxis::axisTitleSpace() const
+qreal CartesianAxis::titleSpace() const
 {
     return d->axisTitleSpace;
 }
