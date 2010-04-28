@@ -39,8 +39,8 @@ namespace KDGantt {
         explicit ConstraintModel( QObject* parent=0 );
         virtual ~ConstraintModel();
 
-        void addConstraint( const Constraint& c );
-        bool removeConstraint( const Constraint& c );
+        virtual void addConstraint( const Constraint& c );
+        virtual bool removeConstraint( const Constraint& c );
 
         void clear();
         void cleanup();
