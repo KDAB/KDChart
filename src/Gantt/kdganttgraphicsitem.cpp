@@ -471,9 +471,10 @@ void GraphicsItem::mouseReleaseEvent( QGraphicsSceneMouseEvent* event )
 
 void GraphicsItem::mouseDoubleClickEvent( QGraphicsSceneMouseEvent* event )
 {
+    const int typ = static_cast<ItemType>( index().model()->data( index(), ItemTypeRole ).toInt() );
     StyleOptionGanttItem opt = getStyleOption();
     ItemDelegate::InteractionState istate = scene()->itemDelegate()->interactionStateFor( event->pos(), opt, index() );
-    if ( istate != ItemDelegate::State_None ) {
+    if ( (istate != ItemDelegate::State_None) || (typ == TypeSummary)) {
         scene()->itemDoubleClicked( index() );
     }
     BASE::mouseDoubleClickEvent( event );
