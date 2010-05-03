@@ -90,6 +90,15 @@ public:
     /** @return option set by setCenterDataPoints() */
     bool centerDataPoints() const;
 
+    /** With this property set to true, data sets in a normal line diagram
+     * are drawn in reversed order. More clearly, the first (top-most) data set
+     * in the source model will then appear in front. This is mostly due to
+     * historical reasons.
+     */
+    void setReverseDatasetOrder( bool reverse );
+    /** \see setReverseDatasetOrder */
+    bool reverseDatasetOrder() const;
+
     void setLineAttributes( const LineAttributes & a );
     void setLineAttributes( int column, const LineAttributes & a );
     void setLineAttributes( const QModelIndex & index, const LineAttributes & a );

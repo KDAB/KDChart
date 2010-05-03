@@ -110,7 +110,11 @@ void NormalLineDiagram::paint( PaintContext* ctx )
     maxFound = columnCount;
     // ^^^ temp
 
-    for( int column = 0; column < columnCount; ++column ) {
+    // Reverse order of data sets?
+    bool rev = diagram()->reverseDatasetOrder();
+    for( int column = rev ? columnCount - 1 : 0;
+         rev ? (column >= 0) : (column < columnCount);
+         rev ? --column : ++column ) {
         DataValueTextInfoList textInfoList;
         LineAttributesInfoList lineList;
         LineAttributes laPreviousCell;

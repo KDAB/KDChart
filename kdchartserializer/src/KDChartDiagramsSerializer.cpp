@@ -723,6 +723,14 @@ bool DiagramsSerializer::Private::parseLineDiagram(
                         qDebug()<< "Could not parse LineDiagram. Element"
                                 << tagName << "has invalid content.";
                     }
+                } else if( tagName == "ReverseDatasetOrder" ) {
+                    bool b;
+                    if( KDXML::readBoolNode( element, b ) ){
+                        diagram.setReverseDatasetOrder( b );
+                    }else{
+                        qDebug()<< "Could not parse LineDiagram. Element"
+                                << tagName << "has invalid content.";
+                    }
                 } else {
                     qDebug() << "Unknown subelement of LineDiagram found:" << tagName;
                     bOK = false;
@@ -760,6 +768,7 @@ void DiagramsSerializer::Private::saveLineDiagram(
     }
     KDXML::createStringNode( doc, diagElement, "LineType", s );
     KDXML::createBoolNode(   doc, diagElement, "CenterDataPoints", diagram.centerDataPoints() );
+    KDXML::createBoolNode(   doc, diagElement, "ReverseDatasetOrder", diagram.reverseDatasetOrder() );
 }
 
 bool DiagramsSerializer::Private::parsePlotter(

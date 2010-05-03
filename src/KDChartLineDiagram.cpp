@@ -73,6 +73,7 @@ void LineDiagram::init()
     d->percentDiagram = new PercentLineDiagram( this );
     d->implementor = d->normalDiagram;
     d->centerDataPoints = false;
+    d->reverseDatasetOrder = false;
 }
 
 LineDiagram::~LineDiagram()
@@ -105,7 +106,8 @@ bool LineDiagram::compare( const LineDiagram* other )const
             ( static_cast<const AbstractCartesianDiagram*>(this)->compare( other ) ) &&
             // compare own properties
             (type()             == other->type()) &&
-            (centerDataPoints() == other->centerDataPoints());
+            (centerDataPoints() == other->centerDataPoints()) &&
+            (reverseDatasetOrder() == other->reverseDatasetOrder());
 }
 
 /**
@@ -161,6 +163,16 @@ void LineDiagram::setCenterDataPoints( bool center )
 bool LineDiagram::centerDataPoints() const
 {
 	return d->centerDataPoints;
+}
+
+void LineDiagram::setReverseDatasetOrder( bool reverse )
+{
+    d->reverseDatasetOrder = reverse;
+}
+
+bool LineDiagram::reverseDatasetOrder() const
+{
+    return d->reverseDatasetOrder;
 }
 
 /**
