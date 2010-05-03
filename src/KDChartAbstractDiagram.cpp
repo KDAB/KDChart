@@ -485,7 +485,7 @@ DataValueAttributes AbstractDiagram::dataValueAttributes( int dataset ) const
     const int column = dataset * datasetDimension();
 
     const QVariant headerAttrs(
-            attributesModel()->headerData( column, Qt::Vertical,
+            attributesModel()->headerData( column, Qt::Horizontal,
                 KDChart::DataValueLabelAttributesRole ) );
     if( headerAttrs.isValid() )
         return qVariantValue< DataValueAttributes >( headerAttrs );
@@ -768,7 +768,7 @@ void AbstractDiagram::setPen( int dataset, const QPen& pen )
     const int column = dataset * datasetDimension();
     
     attributesModel()->setHeaderData(
-        column, Qt::Vertical,
+        column, Qt::Horizontal,
         qVariantFromValue( pen ),
         DatasetPenRole );
     emit propertiesChanged();
@@ -788,7 +788,7 @@ QPen AbstractDiagram::pen( int dataset ) const
     const int column = dataset * datasetDimension();
     
     const QVariant penSettings(
-            attributesModel()->headerData( column, Qt::Vertical,
+            attributesModel()->headerData( column, Qt::Horizontal,
                     DatasetPenRole ) );
     if( penSettings.isValid() )
         return qVariantValue< QPen >( penSettings );
@@ -826,7 +826,7 @@ void AbstractDiagram::setBrush( int dataset, const QBrush& brush )
     const int column = dataset * datasetDimension();
     
     attributesModel()->setHeaderData(
-        column, Qt::Vertical,
+        column, Qt::Horizontal,
         qVariantFromValue( brush ),
         DatasetBrushRole );
     emit propertiesChanged();
@@ -846,7 +846,7 @@ QBrush AbstractDiagram::brush( int dataset ) const
     const int column = dataset * datasetDimension();
     
     const QVariant brushSettings(
-            attributesModel()->headerData( column, Qt::Vertical,
+            attributesModel()->headerData( column, Qt::Horizontal,
                     DatasetBrushRole ) );
     if( brushSettings.isValid() )
         return qVariantValue< QBrush >( brushSettings );
