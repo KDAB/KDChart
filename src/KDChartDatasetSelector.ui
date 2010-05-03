@@ -27,7 +27,7 @@
    </size>
   </property>
   <property name="windowTitle" >
-   <string>Form</string>
+   <string>Data Selector</string>
   </property>
   <layout class="QHBoxLayout" >
    <property name="margin" >
