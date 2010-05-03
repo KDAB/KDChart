@@ -65,6 +65,7 @@ private:
     RelativePosition positiveRelPos;
     bool showRepetitiveDataLabels;
     bool showOverlappingDataLabels;
+    bool usePercentage;
 };
 
 DataValueAttributes::Private::Private() :
@@ -168,7 +169,8 @@ bool DataValueAttributes::operator==( const DataValueAttributes& r ) const
             negativePosition() == r.negativePosition() &&
             positivePosition() == r.positivePosition() &&
             showRepetitiveDataLabels() == r.showRepetitiveDataLabels() &&
-            showOverlappingDataLabels() == r.showOverlappingDataLabels() );
+            showOverlappingDataLabels() == r.showOverlappingDataLabels() &&
+            usePercentage() == r.usePercentage() );
 }
 
 /*static*/
@@ -236,6 +238,15 @@ MarkerAttributes DataValueAttributes::markerAttributes() const
     return d->markerAttributes;
 }
 
+void DataValueAttributes::setUsePercentage( bool enable )
+{
+    d->usePercentage = enable;
+}
+
+bool DataValueAttributes::usePercentage() const
+{
+    return d->usePercentage;
+}
 
 void DataValueAttributes::setDecimalDigits( int digits )
 {
