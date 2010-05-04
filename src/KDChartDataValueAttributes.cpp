@@ -106,6 +106,8 @@ DataValueAttributes::Private::Private() :
     negativeRelPos.setHorizontalPadding( m );
     m.setValue( negVertPadding );
     negativeRelPos.setVerticalPadding( m );
+
+    usePercentage = false;
 }
 
 
