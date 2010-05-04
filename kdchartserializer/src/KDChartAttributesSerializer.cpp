@@ -608,6 +608,12 @@ bool AttributesSerializer::parseDataValueAttributes(
                     a.setPositivePosition( pos );
                 else
                     qDebug() << "Error parsing DataValueAttributes tag: " << tagName;
+            } else if( tagName == "UsePercentage" ) {
+                bool b;
+                if( KDXML::readBoolNode( element, b ) )
+                    a.setUsePercentage( b );
+                else
+                    qDebug() << "Error parsing DataValueAttributes tag: " << tagName;
             } else {
                 qDebug() << "Unknown subelement of DataValueAttributes found:" << tagName;
                 bOK = false;
@@ -674,6 +680,8 @@ void AttributesSerializer::saveDataValueAttributes(
             doc, element,
             a.positivePosition(),
             "PositivePosition" );
+    // save the usePercentage flag
+    KDXML::createBoolNode( doc, element, "UsePercentage", a.usePercentage() );
 }
 
 
