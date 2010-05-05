@@ -266,7 +266,12 @@ if errorlevel 1 (
     goto :CleanEnd
 )
 
-echo Ok, now run nmake to build the framework.
+if "%QMAKESPEC%" == "win32-msvc2008" (
+   echo Ok, now run nmake to build the framework.
+)
+else
+   echo Ok, now run mingw32-make to build the framework.
+
 goto :end
 
 :usage
