@@ -330,7 +330,12 @@ namespace KDChart {
 
                 if ( attrs.showRepetitiveDataLabels() || pos.x() <= lastX || lastRoundedValue != text ) {
                     //qDebug() << text;
-                    lastRoundedValue = text;
+
+                    //Check if there is only one and only one pie.
+                    //If not then update lastRoundedValue for further checking.
+                    if(!(diag->model()->columnCount() == 1))
+                        lastRoundedValue = text;
+
                     lastX = pos.x();
                     const PainterSaver painterSaver( painter );
                     painter->setPen( PrintingParameters::scalePen( ta.pen() ) );
