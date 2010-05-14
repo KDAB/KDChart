@@ -1048,7 +1048,7 @@ void DateTimeGrid::paintDayScaleHeader( QPainter* painter,  const QRectF& header
         }
         QRect textRect( qreal x, qreal offset, qreal dayWidth, const QRectF& headerRect, const QDateTime& dt ) {
             Q_UNUSED(dt);
-            
+
             return QRectF( QPointF( x, headerRect.top() ) + QPointF( -offset, 0.0 ),
                            QSizeF( dayWidth * 7, headerRect.height() / 2.0 ) ).toRect();
         }
@@ -1072,7 +1072,7 @@ void DateTimeGrid::paintWeekScaleHeader( QPainter* painter,  const QRectF& heade
         }
         QRect textRect( qreal x, qreal offset, qreal dayWidth, const QRectF& headerRect, const QDateTime& dt ) {
             Q_UNUSED(dt);
-            
+
             return QRectF( QPointF( x, headerRect.top() ) + QPointF( -offset, headerRect.height() / 2.0 ),
                            QSizeF( dayWidth * 7, headerRect.height() / 2.0 ) ).toRect();
         }

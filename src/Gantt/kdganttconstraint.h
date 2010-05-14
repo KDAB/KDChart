@@ -39,12 +39,12 @@ namespace KDGantt {
         class Private;
     public:
         enum Type
-        { 
-            TypeSoft = 0, 
+        {
+            TypeSoft = 0,
             TypeHard = 1
-        };	
+        };
         enum RelationType
-        { 
+        {
             FinishStart = 0,
             FinishFinish = 1,
             StartStart = 2,
@@ -90,7 +90,7 @@ namespace KDGantt {
 }
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<( QDebug dbg, const KDGantt::Constraint& c );
+QDebug KDCHART_EXPORT operator<<( QDebug dbg, const KDGantt::Constraint& c );
 #endif /* QT_NO_DEBUG_STREAM */
 
 #endif /* KDGANTTCONSTRAINT_H */

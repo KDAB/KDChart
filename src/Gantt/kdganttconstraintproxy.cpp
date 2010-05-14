@@ -70,7 +70,13 @@ void ConstraintProxy::setDestinationModel( ConstraintModel* dest )
 
 void ConstraintProxy::setProxyModel( QAbstractProxyModel* proxy )
 {
+    if ( m_proxy == proxy ) return;
+    if ( m_proxy  ) disconnect( m_proxy );
     m_proxy = proxy;
+    if ( m_proxy ) {
+        connect( m_proxy, SIGNAL( layoutChanged() ), this, SLOT( slotLayoutChanged() ) );
+        connect( m_proxy, SIGNAL( modelReset() ), this, SLOT( slotLayoutChanged() ) );
+    }
 }
 
 ConstraintModel* ConstraintProxy::sourceModel() const { return m_source; }
@@ -136,6 +142,11 @@ void ConstraintProxy::slotDestinationConstraintRemoved( const KDGantt::Constrain
         temp.setData(Constraint::InvalidConstraintPen, c.data(Constraint::InvalidConstraintPen));
         m_source->removeConstraint( temp );
     }
+}
+
+void ConstraintProxy::slotLayoutChanged()
+{
+    copyFromSource();
 }
 
 #include "moc_kdganttconstraintproxy.cpp"

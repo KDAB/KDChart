@@ -58,6 +58,8 @@ namespace KDGantt {
         void slotDestinationConstraintAdded( const KDGantt::Constraint& );
         void slotDestinationConstraintRemoved( const KDGantt::Constraint& );
 
+        void slotLayoutChanged();
+
     private:
         void copyFromSource();
 

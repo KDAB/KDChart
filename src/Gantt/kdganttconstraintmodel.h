@@ -48,7 +48,7 @@ namespace KDGantt {
         QList<Constraint> constraints() const;
 
         bool hasConstraint( const Constraint& c ) const;
-        inline bool hasConstraint( const QModelIndex& s, 
+        inline bool hasConstraint( const QModelIndex& s,
                                    const QModelIndex& e ) const;
 
         QList<Constraint> constraintsForIndex( const QModelIndex& ) const;
@@ -71,8 +71,8 @@ namespace KDGantt {
 #ifndef QT_NO_DEBUG_STREAM
 #include <QDebug>
 
-QDebug operator<<( QDebug dbg, const KDGantt::ConstraintModel& model );
-inline QDebug operator<<( QDebug dbg, KDGantt::ConstraintModel* model ) 
+QDebug KDCHART_EXPORT operator<<( QDebug dbg, const KDGantt::ConstraintModel& model );
+inline QDebug KDCHART_EXPORT operator<<( QDebug dbg, KDGantt::ConstraintModel* model )
 {
     return operator<<(dbg,*model);
 }
