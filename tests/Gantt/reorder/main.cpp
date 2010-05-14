@@ -111,7 +111,7 @@ public:
         showContraints( "After:" );
 
         // Hack until KDGantt supports this:
-        m_view->setConstraintModel( m_constraints );
+        //m_view->setConstraintModel( m_constraints );
     }
 
 private:
