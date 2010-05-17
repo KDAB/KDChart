@@ -83,6 +83,8 @@ namespace KDGantt {
         const QAbstractProxyModel* ganttProxyModel() const;
         QAbstractProxyModel* ganttProxyModel();
 
+        void ensureVisible(const QModelIndex& index);
+
         void print( QPrinter* printer, bool drawRowLabels=true );
         void print( QPrinter* printer, qreal start, qreal end, bool drawRowLabels=true );
         void print( QPainter* painter, const QRectF& target = QRectF(), bool drawRowLabels=true);

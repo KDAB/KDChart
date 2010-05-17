@@ -27,6 +27,7 @@
 
 #include "kdganttitemdelegate.h"
 #include "kdganttgraphicsitem.h"
+#include "kdganttsummaryhandlingproxymodel.h"
 
 #include <QAbstractItemModel>
 #include <QHeaderView>
@@ -487,6 +488,22 @@ const QAbstractProxyModel* View::ganttProxyModel() const
 QAbstractProxyModel* View::ganttProxyModel()
 {
     return &( d->ganttProxyModel );
+}
+
+void View::ensureVisible(const QModelIndex& index)
+{
+    QGraphicsView* view = graphicsView();
+    KDGantt::GraphicsScene* scene = (KDGantt::GraphicsScene*)view->scene();
+    if(!scene)
+        return;
+
+    KDGantt::SummaryHandlingProxyModel* model =
+            (KDGantt::SummaryHandlingProxyModel*)scene->summaryHandlingModel();
+
+    const QModelIndex pidx = d->ganttProxyModel.mapFromSource(index);
+    const QModelIndex idx = model->mapFromSource( pidx );
+    QGraphicsItem* item = scene->findItem(idx);
+    view->ensureVisible(item);
 }
 
 void View::resizeEvent(QResizeEvent*ev)
