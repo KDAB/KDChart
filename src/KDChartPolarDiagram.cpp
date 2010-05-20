@@ -200,13 +200,13 @@ void PolarDiagram::paint( PaintContext* ctx,
         }
 
     }else{
-
+        // Iterate through data sets
         for ( iCol=0; iCol < colCount; ++iCol ) {
             //TODO(khz): As of yet PolarDiagram can not show per-segment line attributes
             //           but it draws every polyline in one go - using one color.
             //           This needs to be enhanced to allow for cell-specific settings
             //           in the same way as LineDiagram does it.
-            QBrush brush = qVariantValue<QBrush>( attributesModel()->headerData( iCol, Qt::Vertical, KDChart::DatasetBrushRole ) );
+            QBrush brush = qVariantValue<QBrush>( d->datasetAttrs( iCol, KDChart::DatasetBrushRole ) );
             QPolygonF polygon;
             QPointF point0;
             for ( iRow=0; iRow < rowCount; ++iRow ) {

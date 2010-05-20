@@ -71,17 +71,13 @@ StockBarAttributes StockDiagram::stockBarAttributes() const
 
 void StockDiagram::setStockBarAttributes( int column, const StockBarAttributes &attr )
 {
-    attributesModel()->setHeaderData(
-        column, Qt::Vertical,
-        qVariantFromValue( attr ),
-        StockBarAttributesRole );
+    d->setDatasetAttrs( column, qVariantFromValue( attr ), StockBarAttributesRole );
     emit propertiesChanged();
 }
 
 StockBarAttributes StockDiagram::stockBarAttributes( int column ) const
 {
-    const QVariant attr( attributesModel()->headerData(
-            column, Qt::Vertical, StockBarAttributesRole ) );
+    const QVariant attr( d->datasetAttrs( column, StockBarAttributesRole ) );
     if ( attr.isValid() )
         return qVariantValue<StockBarAttributes>( attr );
     return stockBarAttributes();
@@ -122,10 +118,7 @@ ThreeDBarAttributes StockDiagram::threeDBarAttributes() const
  */
 void StockDiagram::setThreeDBarAttributes( int column, const ThreeDBarAttributes &attr )
 {
-    attributesModel()->setHeaderData(
-            column, Qt::Vertical,
-            qVariantFromValue( attr ),
-            StockBarAttributesRole );
+    d->setDatasetAttrs( column, qVariantFromValue( attr ), StockBarAttributesRole );
     emit propertiesChanged();
 }
 
@@ -140,8 +133,7 @@ void StockDiagram::setThreeDBarAttributes( int column, const ThreeDBarAttributes
  */
 ThreeDBarAttributes StockDiagram::threeDBarAttributes( int column ) const
 {
-    const QVariant attr( attributesModel()->headerData(
-            column, Qt::Vertical, ThreeDBarAttributesRole ) );
+    const QVariant attr( d->datasetAttrs( column, ThreeDBarAttributesRole ) );
     if ( attr.isValid() )
         return qVariantValue<ThreeDBarAttributes>( attr );
     return threeDBarAttributes();

@@ -386,7 +386,7 @@ QVariant AttributesModel::data( int column, int role ) const
   if ( isKnownAttributesRole( role ) ) {
       // check if there is something set for the column (dataset)
       QVariant v;
-      v = headerData( column, Qt::Vertical, role );
+      v = headerData( column, Qt::Horizontal, role );
 
       // check if there is something set at global level
       if ( !v.isValid() )

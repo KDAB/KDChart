@@ -457,6 +457,39 @@ namespace KDChart {
             return allAttrs;
         }
 
+        /**
+         * Sets arbitrary attributes of a data set.
+         */
+        void setDatasetAttrs( int dataset, QVariant data, DisplayRoles role )
+        {
+            // To store attributes for a dataset, we use the first column
+            // that's associated with it. (i.e., with a dataset dimension
+            // of two, the column of the keys). In most cases however, there's
+            // only one data dimension, and thus also only one column per data set.
+            int column = dataset * datasetDimension;
+            attributesModel->setHeaderData( column, Qt::Horizontal, data, role );
+        }
+
+        /**
+         * Retrieves arbitrary attributes of a data set.
+         */
+        QVariant datasetAttrs( int dataset, DisplayRoles role ) const
+        {
+            // See setDataSetAttrs for explanation of column
+            int column = dataset * datasetDimension;
+            return attributesModel->headerData( column, Qt::Horizontal, role );
+        }
+        
+        /**
+         * Resets an attribute of a dataset back to its default.
+         */
+        void resetDatasetAttrs( int dataset, DisplayRoles role )
+        {
+            // See setDataSetAttrs for explanation of column
+            int column = dataset * datasetDimension;
+            attributesModel->resetHeaderData( column, Qt::Horizontal, role );
+        }
+
     protected:
         void init();
         void init( AbstractCoordinatePlane* plane );

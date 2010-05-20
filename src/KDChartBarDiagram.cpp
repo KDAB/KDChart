@@ -228,10 +228,7 @@ void BarDiagram::setBarAttributes( const BarAttributes& ba )
   */
 void BarDiagram::setBarAttributes( int column, const BarAttributes& ba )
 {
-    d->attributesModel->setHeaderData(
-        column, Qt::Vertical,
-        qVariantFromValue( ba ),
-        BarAttributesRole );
+    d->setDatasetAttrs( column, qVariantFromValue( ba ), BarAttributesRole );
     emit propertiesChanged();
 }
 
@@ -261,9 +258,7 @@ BarAttributes BarDiagram::barAttributes() const
   */
 BarAttributes BarDiagram::barAttributes( int column ) const
 {
-    const QVariant attrs(
-            d->attributesModel->headerData( column, Qt::Vertical,
-                    KDChart::BarAttributesRole ) );
+    const QVariant attrs( d->datasetAttrs( column, KDChart::BarAttributesRole ) );
     if( attrs.isValid() )
         return qVariantValue< BarAttributes >( attrs );
     return barAttributes();
@@ -297,10 +292,7 @@ void BarDiagram::setThreeDBarAttributes( const ThreeDBarAttributes& threeDAttrs 
 void BarDiagram::setThreeDBarAttributes( int column, const ThreeDBarAttributes& threeDAttrs )
 {
     setDataBoundariesDirty();
-    d->attributesModel->setHeaderData(
-        column, Qt::Vertical,
-        qVariantFromValue( threeDAttrs ),
-        ThreeDBarAttributesRole );
+    d->setDatasetAttrs( column,  qVariantFromValue( threeDAttrs ), ThreeDBarAttributesRole );
     //emit layoutChanged( this );
     emit propertiesChanged();
 
@@ -334,9 +326,7 @@ ThreeDBarAttributes BarDiagram::threeDBarAttributes() const
   */
 ThreeDBarAttributes BarDiagram::threeDBarAttributes( int column ) const
 {
-    const QVariant attrs(
-            d->attributesModel->headerData( column, Qt::Vertical,
-                                            KDChart::ThreeDBarAttributesRole ) );
+    const QVariant attrs( d->datasetAttrs( column, KDChart::ThreeDBarAttributesRole ) );
     if( attrs.isValid() )
         return qVariantValue< ThreeDBarAttributes >( attrs );
     return threeDBarAttributes();
@@ -361,10 +351,7 @@ double BarDiagram::threeDItemDepth( const QModelIndex& index ) const
 double BarDiagram::threeDItemDepth( int column ) const
 {
     return qVariantValue<ThreeDBarAttributes>(
-        d->attributesModel->headerData (
-            column,
-            Qt::Vertical,
-            KDChart::ThreeDBarAttributesRole ) ).validDepth();
+        d->datasetAttrs( column, KDChart::ThreeDBarAttributesRole ) ).validDepth();
 }
 
 void BarDiagram::resizeEvent ( QResizeEvent*)

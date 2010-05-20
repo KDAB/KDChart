@@ -193,11 +193,7 @@ void LineDiagram::setLineAttributes(
         int column,
     const LineAttributes& la )
 {
-    d->attributesModel->setHeaderData(
-            column,
-            Qt::Vertical,
-            qVariantFromValue( la ),
-            LineAttributesRole );
+    d->setDatasetAttrs( column, qVariantFromValue( la ), LineAttributesRole );
     emit propertiesChanged();
 }
 
@@ -206,8 +202,7 @@ void LineDiagram::setLineAttributes(
   */
 void LineDiagram::resetLineAttributes( int column )
 {
-    d->attributesModel->resetHeaderData(
-            column, Qt::Vertical, LineAttributesRole );
+    d->resetDatasetAttrs( column, LineAttributesRole );
     emit propertiesChanged();
 }
 
@@ -249,9 +244,7 @@ LineAttributes LineDiagram::lineAttributes() const
   */
 LineAttributes LineDiagram::lineAttributes( int column ) const
 {
-    const QVariant attrs(
-            d->attributesModel->headerData( column, Qt::Vertical,
-                                            LineAttributesRole ) );
+    const QVariant attrs( d->datasetAttrs( column, LineAttributesRole ) );
     if( attrs.isValid() )
         return qVariantValue< LineAttributes >( attrs );
     return lineAttributes();
@@ -290,11 +283,7 @@ void LineDiagram::setThreeDLineAttributes(
     const ThreeDLineAttributes& la )
 {
     setDataBoundariesDirty();
-    d->attributesModel->setHeaderData(
-        column,
-        Qt::Vertical,
-        qVariantFromValue( la ),
-        ThreeDLineAttributesRole );
+    d->setDatasetAttrs( column, qVariantFromValue( la ), ThreeDLineAttributesRole );
    emit propertiesChanged();
 }
 
@@ -327,9 +316,7 @@ ThreeDLineAttributes LineDiagram::threeDLineAttributes() const
   */
 ThreeDLineAttributes LineDiagram::threeDLineAttributes( int column ) const
 {
-    const QVariant attrs(
-            d->attributesModel->headerData( column, Qt::Vertical,
-                                            ThreeDLineAttributesRole ) );
+    const QVariant attrs( d->datasetAttrs( column, ThreeDLineAttributesRole ) );
     if( attrs.isValid() )
         return qVariantValue< ThreeDLineAttributes >( attrs );
     return threeDLineAttributes();
@@ -354,10 +341,7 @@ double LineDiagram::threeDItemDepth( const QModelIndex& index ) const
 double LineDiagram::threeDItemDepth( int column ) const
 {
     return qVariantValue<ThreeDLineAttributes>(
-        d->attributesModel->headerData (
-            column,
-            Qt::Vertical,
-            KDChart::ThreeDLineAttributesRole ) ).validDepth();
+        d->datasetAttrs( column, KDChart::ThreeDLineAttributesRole ) ).validDepth();
 }
 
 /**

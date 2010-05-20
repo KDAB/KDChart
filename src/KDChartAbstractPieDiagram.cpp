@@ -117,8 +117,7 @@ void AbstractPieDiagram::setPieAttributes( const PieAttributes & attrs )
 
 void AbstractPieDiagram::setPieAttributes( int column, const PieAttributes & attrs )
 {
-    d->attributesModel->setHeaderData(
-        column, Qt::Vertical, qVariantFromValue( attrs ), PieAttributesRole );
+    d->setDatasetAttrs( column, qVariantFromValue( attrs ), PieAttributesRole );
     emit layoutChanged( this );
 }
 
@@ -142,9 +141,7 @@ PieAttributes AbstractPieDiagram::pieAttributes() const
 //       (khz, 2006-07-28)
 PieAttributes AbstractPieDiagram::pieAttributes( int column ) const
 {
-    const QVariant attrs(
-            d->attributesModel->headerData( column, Qt::Vertical,
-                                            PieAttributesRole ) );
+    const QVariant attrs( d->datasetAttrs( column, PieAttributesRole ) );
     if( attrs.isValid() )
         return qVariantValue< PieAttributes >( attrs );
     return pieAttributes();
@@ -167,8 +164,7 @@ void AbstractPieDiagram::setThreeDPieAttributes( const ThreeDPieAttributes & tda
 
 void AbstractPieDiagram::setThreeDPieAttributes( int column, const ThreeDPieAttributes & tda )
 {
-    d->attributesModel->setHeaderData(
-        column, Qt::Vertical, qVariantFromValue( tda ), ThreeDPieAttributesRole );
+    d->setDatasetAttrs( column, qVariantFromValue( tda ), ThreeDPieAttributesRole );
     emit layoutChanged( this );
 }
 
@@ -192,9 +188,7 @@ ThreeDPieAttributes AbstractPieDiagram::threeDPieAttributes() const
 //       (khz, 2006-07-28)
 ThreeDPieAttributes AbstractPieDiagram::threeDPieAttributes( int column ) const
 {
-    const QVariant attrs(
-            d->attributesModel->headerData( column, Qt::Vertical,
-                                            ThreeDPieAttributesRole ) );
+    const QVariant attrs( d->datasetAttrs( column, ThreeDPieAttributesRole ) );
     if( attrs.isValid() )
         return qVariantValue< ThreeDPieAttributes >( attrs );
     return threeDPieAttributes();
