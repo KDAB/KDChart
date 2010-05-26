@@ -1,2 +1,2 @@
 TEMPLATE    = subdirs
-SUBDIRS	    = Simple BubbleChart Advanced
+SUBDIRS	    = Simple BubbleChart Advanced Timeline
