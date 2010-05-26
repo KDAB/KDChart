@@ -118,12 +118,7 @@ void LineDiagram::LineDiagramType::paintElements(
     Q_UNUSED( policy );
     // paint all lines and their attributes
     const PainterSaver painterSaver( ctx->painter() );
-	
-	//set Cliping for all the Elements
-	ctx->painter()->setClipping(true);
-	ctx->painter()->setClipRect(ctx->rectangle());
-    
-	if ( diagram()->antiAliasing() )
+    if ( diagram()->antiAliasing() )
         ctx->painter()->setRenderHint ( QPainter::Antialiasing );
     LineAttributesInfoListIterator itline ( lineList );
 
