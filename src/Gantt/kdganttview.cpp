@@ -493,12 +493,11 @@ QAbstractProxyModel* View::ganttProxyModel()
 void View::ensureVisible(const QModelIndex& index)
 {
     QGraphicsView* view = graphicsView();
-    KDGantt::GraphicsScene* scene = (KDGantt::GraphicsScene*)view->scene();
+    KDGantt::GraphicsScene* scene = static_cast<KDGantt::GraphicsScene*>(view->scene());
     if(!scene)
         return;
 
-    KDGantt::SummaryHandlingProxyModel* model =
-            (KDGantt::SummaryHandlingProxyModel*)scene->summaryHandlingModel();
+    KDGantt::SummaryHandlingProxyModel* model = static_cast<KDGantt::SummaryHandlingProxyModel*>(scene->summaryHandlingModel());
 
     const QModelIndex pidx = d->ganttProxyModel.mapFromSource(index);
     const QModelIndex idx = model->mapFromSource( pidx );
