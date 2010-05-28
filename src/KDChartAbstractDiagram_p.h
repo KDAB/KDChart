@@ -333,7 +333,7 @@ namespace KDChart {
 
                     //Check if there is only one and only one pie.
                     //If not then update lastRoundedValue for further checking.
-                    if(!(diag->model()->columnCount() == 1))
+                    if(!(diag->model()->rowCount() == 1))
                         lastRoundedValue = text;
 
                     lastX = pos.x();
