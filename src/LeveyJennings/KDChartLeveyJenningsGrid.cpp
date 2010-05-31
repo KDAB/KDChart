@@ -294,8 +294,11 @@ void LeveyJenningsGrid::drawGrid( PaintContext* context )
     if( !isBoundariesValid( mData ) ) return;
     //qDebug() << "B";
 
-    const DataDimension dimX = mData.first();
-    
+    DataDimension dimX = mData.first();
+    // this happens if there's only one data point
+    if( dimX.start == 0.0 && dimX.end == 0.0 )
+        dimX.end += plane->geometry().width();
+
     // first we draw the expected lines
     // draw the "mean" line
     const float meanValue = diag->expectedMeanValue();
