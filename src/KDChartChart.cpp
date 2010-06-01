@@ -1604,7 +1604,9 @@ bool Chart::event( QEvent* event )
                 const QVariant toolTip = index.data( Qt::ToolTipRole );
                 if( toolTip.isValid() )
                 {
-                    QToolTip::showText( helpEvent->globalPos(), toolTip.toString() );
+                    QPoint pos = mapFromGlobal(helpEvent->pos());
+                    QRect rect(pos-QPoint(1,1), QSize(3,3));
+                    QToolTip::showText( QCursor::pos(), toolTip.toString(), this, rect );
                     return true;
                 }
             }
