@@ -39,11 +39,11 @@ namespace KDGantt {
 
         inline bool equals( const Private& other ) const {
             /* Due to a Qt bug we have to check separately for invalid indexes */
-                return (start==other.start || (!start.isValid() && !other.start.isValid())) 
-            && (end==other.end || (!end.isValid() && !other.end.isValid())) 
-            && type==other.type
-                    && relationType==other.relationType
-            && data==other.data;
+            return (start==other.start || (!start.isValid() && !other.start.isValid())) 
+                && (end==other.end || (!end.isValid() && !other.end.isValid())) 
+                && type==other.type
+                && relationType==other.relationType
+                && data==other.data;
         }
 
         QPersistentModelIndex start;
