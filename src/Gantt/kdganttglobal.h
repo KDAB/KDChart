@@ -214,7 +214,7 @@ namespace KDGantt {
         TaskCompletionRole  = KDGanttRoleBase + 3,
         ItemTypeRole        = KDGanttRoleBase + 4,
         LegendRole          = KDGanttRoleBase + 5,
-	TextPositionRole    = KDGanttRoleBase + 6
+        TextPositionRole    = KDGanttRoleBase + 6
     };
     enum ItemType {
         TypeNone    = 0,
@@ -289,7 +289,6 @@ Q_DECLARE_TYPEINFO(KDGantt::Span, Q_MOVABLE_TYPE);
 Q_DECLARE_TYPEINFO(KDGantt::DateTimeSpan, Q_MOVABLE_TYPE);
 
 #ifndef QT_NO_DEBUG_STREAM
-
 
 QDebug KDCHART_EXPORT operator<<( QDebug dbg, KDGantt::ItemDataRole r);
 QDebug KDCHART_EXPORT operator<<( QDebug dbg, KDGantt::ItemType t);
