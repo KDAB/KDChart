@@ -47,8 +47,8 @@ void EntryDialog::initFrom( const QModelIndex & index, const KDGantt::Constraint
     ui->legend->setText( model->data( model->index( row, 5, parent ) ).toString() );
     int idx = ui->type->findData( model->data( model->index( row, 1, parent ) ).toInt() );
     ui->type->setCurrentIndex( idx );
-    ui->startDate->setDateTime( model->data( model->index( row, 2, parent ) ).toDateTime() );
-    ui->endDate->setDateTime( model->data( model->index( row, 3, parent ) ).toDateTime() );
+    ui->startDate->setDateTime( model->data( model->index( row, 2, parent ), KDGantt::StartTimeRole ).toDateTime() );
+    ui->endDate->setDateTime( model->data( model->index( row, 3, parent ), KDGantt::EndTimeRole ).toDateTime() );
     ui->completion->setValue( model->data( model->index( row, 4, parent ) ).toInt() );
     ui->readOnly->setChecked( !(model->flags( model->index( row, 0, parent ) ) & Qt::ItemIsEditable) );
     

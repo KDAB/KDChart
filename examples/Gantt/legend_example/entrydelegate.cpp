@@ -32,8 +32,8 @@ bool EntryDelegate::editorEvent( QEvent* event, QAbstractItemModel *model, const
     model->setData( model->index( row, 0, parent ), dialog.name() );
     model->setData( model->index( row, 1, parent ), dialog.type() );
     if( dialog.type() != KDGantt::TypeSummary ) {
-        model->setData( model->index( row, 2, parent ), dialog.startDate() );
-        model->setData( model->index( row, 3, parent ), dialog.endDate() );
+        model->setData( model->index( row, 2, parent ), dialog.startDate(), KDGantt::StartTimeRole );
+        model->setData( model->index( row, 3, parent ), dialog.endDate(), KDGantt::EndTimeRole );
     }
     model->setData( model->index( row, 4, parent ), dialog.completion() );
     model->setData( model->index( row, 5, parent ), dialog.legend() );
