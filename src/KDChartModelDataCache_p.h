@@ -210,8 +210,9 @@ namespace KDChart
 
             if( parent != m_rootIndex )
                 return;
-            
-            Q_ASSERT( start >= end );
+
+            Q_ASSERT( start >= 0 && start <= m_data.size() );
+            Q_ASSERT( start <= end );
 
             const int rowCount = m_data.count();
             for( int row = 0; row < rowCount; ++row )
@@ -230,7 +231,7 @@ namespace KDChart
             if( parent != m_rootIndex )
                 return;
 
-            Q_ASSERT( start >= end );
+            Q_ASSERT( start <= end );
 
             const int rowCount = m_data.count();
             for( int row = 0; row < rowCount; ++row )
@@ -299,7 +300,7 @@ namespace KDChart
                 return;
 
             Q_ASSERT( start >= 0 && start <= m_data.size() );
-            Q_ASSERT( start >= end );
+            Q_ASSERT( start <= end );
 
             m_data.insert( start, end - start + 1, QVector< T >( m_model->columnCount( m_rootIndex ) ) );
             m_cacheValid.insert( start, end - start + 1, QVector< bool >( m_model->columnCount( m_rootIndex ), false ) );
@@ -315,7 +316,7 @@ namespace KDChart
             if( parent != m_rootIndex )
                 return;
 
-            Q_ASSERT( start >= end );
+            Q_ASSERT( start <= end );
 
             m_data.remove( start, end - start + 1 );
             m_cacheValid.remove( start, end - start + 1 );
