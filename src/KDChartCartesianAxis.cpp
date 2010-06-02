@@ -828,13 +828,15 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 qreal i = minValueX;
                 while ( i < maxValueX-1 && !labelsAreOverlapping )
                 {
+                    const int idx = (iLabel < hardLabelsCount    ) ? iLabel     : 0;
+                    const int idx2= (iLabel < hardLabelsCount - 1) ? iLabel + 1 : 0;
                     if ( dimX.stepWidth != 1.0 && ! dim.isCalculated )
                     {
                         // Check intersects for the header label - we need to pass the full string
                         // here and not only the i value.
                         if( useConfiguredStepsLabels ){
-                            labelItem->setText( customizedLabel(headerLabels[ iLabel   ]) );
-                            labelItem2->setText(customizedLabel(headerLabels[ iLabel+1 ]) );
+                            labelItem->setText( customizedLabel(headerLabels[ idx ]) );
+                            labelItem2->setText( customizedLabel(headerLabels[ idx2 ]) );
                         }else{
                             //qDebug() << "i + labelDiff " << i + labelDiff;
                             labelItem->setText( customizedLabel(headerLabelsCount > i && i >= 0 ?
@@ -850,8 +852,6 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         }
                     } else {
                         //qDebug() << iLabel << i << "("<<hardLabelsCount<<")   :";
-                        const int idx = (iLabel < hardLabelsCount    ) ? iLabel     : 0;
-                        const int idx2= (iLabel < hardLabelsCount - 1) ? iLabel + 1 : 0;
                         const int shortIdx =  (iLabel < shortLabelsCount    ) ? iLabel     : 0;
                         const int shortIdx2 = (iLabel < shortLabelsCount - 1) ? iLabel + 1 : 0;
                         labelItem->setText(  customizedLabel(
@@ -888,6 +888,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
                 while ( i + labelDiff < maxValueX )
                 {
+                    const int idx = (iLabel < hardLabelsCount    ) ? iLabel     : 0;
+                    const int idx2= (iLabel < hardLabelsCount - 1) ? iLabel + 1 : 0;
                     //qDebug() << "drawLabels" << drawLabels << "  hardLabelsCount" << hardLabelsCount
                     //        << "  dimX.stepWidth" << dimX.stepWidth << "  dim.isCalculated" << dim.isCalculated;
                     if ( !drawLabels || hardLabelsCount < 1 || ( dimX.stepWidth != 1.0 && ! dim.isCalculated ) )
@@ -895,8 +897,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         // Check intersects for the header label - we need to pass the full string
                         // here and not only the i value.
                         if( useConfiguredStepsLabels ){
-                            labelItem->setText( customizedLabel(headerLabels[ iLabel   ]) );
-                            labelItem2->setText(customizedLabel(headerLabels[ iLabel+1 ]) );
+                            labelItem->setText( customizedLabel(headerLabels[ idx ]) );
+                            labelItem2->setText( customizedLabel(headerLabels[ idx2 ]) );
                         }else{
                             //qDebug() << "i + labelDiff " << i + labelDiff;
                             labelItem->setText( customizedLabel(headerLabelsCount > i && i >= 0 ?
@@ -911,8 +913,6 @@ void CartesianAxis::paintCtx( PaintContext* context )
                             //qDebug() << "2 - labelItem->text() " << labelItem->text();
                         }
                     } else {
-                        const int idx = (iLabel < hardLabelsCount    ) ? iLabel     : 0;
-                        const int idx2= (iLabel < hardLabelsCount - 1) ? iLabel + 1 : 0;
                         const int shortIdx =  (iLabel < shortLabelsCount    ) ? iLabel     : 0;
                         const int shortIdx2 = (iLabel < shortLabelsCount - 1) ? iLabel + 1 : 0;
                         labelItem->setText(  customizedLabel(
