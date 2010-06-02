@@ -328,7 +328,7 @@ void MainWindow::setAttributes( const KDChart::DataValueAttributes& da )
 // diagram-specific default positions.
 const char* MainWindow::positionToScreenName( const Position& pos ) const
 {
-    static char* defaultPositionName = "( Default Value )";
+    static const char* defaultPositionName = "( Default Value )";
     if( pos.isUnknown() )
         return defaultPositionName;
     return pos.name();
