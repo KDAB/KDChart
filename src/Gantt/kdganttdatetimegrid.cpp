@@ -555,7 +555,7 @@ static void debug_print_idx( const QModelIndex& idx )
         return;
     }
     QDateTime st = idx.data( StartTimeRole ).toDateTime();
-    QDateTime et = idx.data( StartTimeRole ).toDateTime();
+    QDateTime et = idx.data( EndTimeRole ).toDateTime();
     qDebug() << idx << "["<<st<<et<<"]";
 }
 #endif
