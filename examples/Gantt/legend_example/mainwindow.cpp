@@ -14,6 +14,7 @@
 #include <QStandardItemModel>
 #include <QTreeView>
 #include <QCloseEvent>
+#include <QPointer>
 
 class MyStandardItem : public QStandardItem {
 public:

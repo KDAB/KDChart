@@ -15,6 +15,7 @@
 #include <QStandardItem>
 #include <QTreeView>
 #include <QLabel>
+#include <QPointer>
 
 MainWindow::MainWindow( QWidget* parent, Qt::WindowFlags flags )
     : QMainWindow( parent, flags ),

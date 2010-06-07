@@ -7,6 +7,7 @@
 #include <QEvent>
 #include <QModelIndex>
 #include <QStandardItemModel>
+#include <QPointer>
 
 EntryDelegate::EntryDelegate( KDGantt::ConstraintModel* constraintModel, QObject* parent )
     : QItemDelegate( parent )
