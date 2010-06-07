@@ -193,10 +193,10 @@ void MainWindow::addNewEntry()
 {
     QPointer<EntryDialog> dialog = new EntryDialog( model );
     dialog->setWindowTitle( tr( "New Entry") );
-    const int execResult = dialog->exec();
-    delete dialog;
-    if( execResult == QDialog::Rejected )
+    if( dialog->exec() == QDialog::Rejected || !dialog ) {
+        delete dialog;
         return;
+    }
 
     QModelIndexList selectedIndexes = ui->ganttView->selectionModel()->selectedIndexes();
     const QModelIndex parent = selectedIndexes.value( 0 );
@@ -208,19 +208,21 @@ void MainWindow::addNewEntry()
     if( row == 0 && parent.isValid() )
         model->insertColumns( model->columnCount( parent ), 5, parent );
 
-    model->setData( model->index( row, 0, parent ), dialog.name() );
-    model->setData( model->index( row, 1, parent ), dialog.type() );
-    if( dialog.type() != KDGantt::TypeSummary ) {
-        model->setData( model->index( row, 2, parent ), dialog.startDate(), KDGantt::StartTimeRole );
-        model->setData( model->index( row, 3, parent ), dialog.endDate(), KDGantt::EndTimeRole );
+    model->setData( model->index( row, 0, parent ), dialog->name() );
+    model->setData( model->index( row, 1, parent ), dialog->type() );
+    if( dialog->type() != KDGantt::TypeSummary ) {
+        model->setData( model->index( row, 2, parent ), dialog->startDate(), KDGantt::StartTimeRole );
+        model->setData( model->index( row, 3, parent ), dialog->endDate(), KDGantt::EndTimeRole );
     }
-    model->setData( model->index( row, 4, parent ), dialog.completion() );
-    const QString legend( dialog.legend() );
+    model->setData( model->index( row, 4, parent ), dialog->completion() );
+    const QString legend( dialog->legend() );
     if( ! legend.isEmpty() )
         model->setData( model->index( row, 5, parent ), legend );
 
-    addConstraint( dialog.depends(), model->index( row, 0, parent ) );
-    setReadOnly( model->index( row, 0, parent ), dialog.readOnly() );
+    addConstraint( dialog->depends(), model->index( row, 0, parent ) );
+    setReadOnly( model->index( row, 0, parent ), dialog->readOnly() );
+
+    delete dialog;
 }
 
 void MainWindow::setReadOnly(const QModelIndex & index, bool readOnly)
