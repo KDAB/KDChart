@@ -3,6 +3,7 @@
 
 #include <QDateTime>
 #include <QSortFilterProxyModel>
+#include <QPair>
 
 class TimeChartModel : public QSortFilterProxyModel
 {
