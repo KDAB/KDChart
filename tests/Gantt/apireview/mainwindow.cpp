@@ -148,9 +148,11 @@ void MainWindow::enableActions(const QItemSelection & selected)
 
 void MainWindow::addNewEntry()
 {
-    EntryDialog dialog( model );
+    QPointer<EntryDialog> dialog = new EntryDialog( model );
     dialog.setWindowTitle( tr( "New Entry") );
-    if( dialog.exec() == QDialog::Rejected )
+    const int execResult = dialog.exec();
+    delete dialog;
+    if( execResult == QDialog::Rejected )
         return;
 
     QModelIndexList selectedIndexes = ui->ganttView->selectionModel()->selectedIndexes();

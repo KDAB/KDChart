@@ -24,7 +24,7 @@ public:
         Candlestick
     };
 
-    StockDiagram( QWidget *parent = 0, CartesianCoordinatePlane *plane = 0 );
+    explicit StockDiagram( QWidget *parent = 0, CartesianCoordinatePlane *plane = 0 );
     ~StockDiagram();
 
     void setType( Type type );

@@ -56,21 +56,21 @@ public:
                                  << new MyStandardItem( KDGantt::TypeEvent )
                                  << new MyStandardItem( QDateTime::currentDateTime() )
                                  << new MyStandardItem( QDateTime() )
-                                 << new MyStandardItem( QString::null ) );
+                                 << new MyStandardItem( QString() ) );
 
                 topitem->appendRow( QList<QStandardItem*>()
                                     << item
                                     << new MyStandardItem( KDGantt::TypeMulti )
-                                    << new MyStandardItem( QString::null )
-                                    << new MyStandardItem( QString::null )
-                                    << new MyStandardItem( QString::null ) );
+                                    << new MyStandardItem( QString() )
+                                    << new MyStandardItem( QString() )
+                                    << new MyStandardItem( QString() ) );
             }
             model.appendRow( QList<QStandardItem*>()
                              << topitem
                              << new MyStandardItem(KDGantt::TypeMulti/*Summary*/ )
-                             << new MyStandardItem(QString::null)
-                             << new MyStandardItem(QString::null)
-                             << new MyStandardItem(QString::null) );
+                             << new MyStandardItem(QString())
+                             << new MyStandardItem(QString())
+                             << new MyStandardItem(QString()) );
         }
         model.appendRow( QList<QStandardItem*>()
                          << new MyStandardItem( QString::fromLatin1( "No data" ) ) );

@@ -22,10 +22,11 @@ bool EntryDelegate::editorEvent( QEvent* event, QAbstractItemModel *model, const
     if( !index.isValid() )
         return QItemDelegate::editorEvent( event, model, option, index );
 
-    EntryDialog dialog( model );
-    dialog.initFrom( index, constraintModel );
-    dialog.setWindowTitle( tr( "Edit Entry" ) );
-    dialog.exec();
+    QPointer<EntryDialog> dialog = new EntryDialog( model );
+    dialog->initFrom( index, constraintModel );
+    dialog->setWindowTitle( tr( "Edit Entry" ) );
+    dialog->exec();  
+    delete dialog;
     
     int row = index.row();
     const QModelIndex parent = index.parent();

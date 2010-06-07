@@ -19,6 +19,7 @@
 #include <KDGanttDateTimeGrid>
 #include <KDGanttStyleOptionGanttItem>
 #include <KDGanttConstraintModel>
+#include <KDGanttGraphicsView>
 
 class ItemTypeComboBox : public QComboBox {
     Q_OBJECT
@@ -129,7 +130,7 @@ public:
     }
     ~DateTimeGrid() { }
 
-    virtual void paintUserDefinedHeader(QPainter* painter, const QRectF& headerRect, const QRectF& exposedRect, qreal offset, const KDGantt::DateTimeScaleFormatter* formatter, QWidget* widget = 0);
+    //virtual void paintUserDefinedHeader(QPainter* painter, const QRectF& headerRect, const QRectF& exposedRect, qreal offset, const KDGantt::DateTimeScaleFormatter* formatter, QWidget* widget = 0);
     virtual void drawBackground(QPainter* painter, const QRectF& rect);
     virtual void drawForeground(QPainter* painter, const QRectF& rect);
 };
@@ -168,7 +169,7 @@ void DateTimeGrid::drawForeground(QPainter* painter, const QRectF& rect)
 
     painter->restore();
 }
-
+/*
 void DateTimeGrid::paintUserDefinedHeader( QPainter* painter, const QRectF& headerRect, const QRectF& exposedRect, qreal offset, const KDGantt::DateTimeScaleFormatter* formatter, QWidget* widget)
 {
     const QStyle* const style = widget ? widget->style() : QApplication::style();
@@ -196,7 +197,7 @@ void DateTimeGrid::paintUserDefinedHeader( QPainter* painter, const QRectF& head
         x = nextx;
     }
 }
-
+*/
 MainWindow::MainWindow( QWidget* parent )
     : QMainWindow( parent ),
       m_model( new ProjectModel( this ) ),
@@ -207,7 +208,15 @@ MainWindow::MainWindow( QWidget* parent )
 
     // slotToolsNewItem();
     m_view->leftView()->setItemDelegateForColumn( 1, new MyItemDelegate( this ) );
-    m_view->leftView()->setStyleSheet( "QHeaderView { color: white; background: black }" );
+    //m_view->leftView()->setStyleSheet( "QHeaderView { color: white; background: black }" );
+    m_view->leftView()->setStyleSheet(
+        //"* { background-color : rgb( 17, 13, 13 ); color : rgb( 255, 255, 255 ); selection-background-color : rgb( 252, 225, 142); selection-color : rgb( 0, 0, 0 ); }\n"
+        "* { background-color : rgb( 17, 13, 13 ); color : rgb( 255, 255, 255 ); }\n"
+    );
+    m_view->graphicsView()->setStyleSheet(
+        //"* { background-color : rgb( 17, 13, 13 ); color : rgb( 255, 255, 255 ); selection-background-color : rgb( 252, 225, 142); selection-color : rgb( 0, 0, 0 ); }\n"
+        "* { background-color : rgb( 17, 13, 13 ); color : rgb( 255, 255, 255 ); }\n"
+    );
 
     m_view->setGrid(new DateTimeGrid(this));
 

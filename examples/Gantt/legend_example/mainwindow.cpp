@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+    #include "mainwindow.h"
 
 #include "ui_mainwindow.h"
 #include "entrydelegate.h"
@@ -190,9 +190,11 @@ void MainWindow::enableActions(const QItemSelection & selected)
 
 void MainWindow::addNewEntry()
 {
-    EntryDialog dialog( model );
-    dialog.setWindowTitle( tr( "New Entry") );
-    if( dialog.exec() == QDialog::Rejected )
+    QPointer<EntryDialog> dialog = new EntryDialog( model );
+    dialog->setWindowTitle( tr( "New Entry") );
+    const int execResult = dialog->exec();
+    delete dialog;
+    if( execResult == QDialog::Rejected )
         return;
 
     QModelIndexList selectedIndexes = ui->ganttView->selectionModel()->selectedIndexes();

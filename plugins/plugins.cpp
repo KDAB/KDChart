@@ -152,7 +152,7 @@ public:
       inited = true;
     }
   QString codeTemplate() const
-    { return QString::null; }
+    { return QString(); }
   QString domXml() const
   { return QString::fromLatin1( "<widget class=\"%1\" name=\"%2\">\n"
                                 "</widget>\n" ).arg( name(), name().toLower() ); }

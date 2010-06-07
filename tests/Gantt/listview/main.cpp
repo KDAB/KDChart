@@ -56,14 +56,14 @@ public:
 			   << new MyStandardItem( KDGantt::TypeEvent )
 			   << new MyStandardItem( QDateTime::currentDateTime() )
 			   << new MyStandardItem( QDateTime() )
-			   << new MyStandardItem( QString::null ) );
+			   << new MyStandardItem( QString() ) );
 
 	  model.appendRow( QList<QStandardItem*>()
 			   << item
 			   << new MyStandardItem( KDGantt::TypeMulti )
-			   << new MyStandardItem( QString::null )
-			   << new MyStandardItem( QString::null )
-			   << new MyStandardItem( QString::null ) );
+			   << new MyStandardItem( QString() )
+			   << new MyStandardItem( QString() )
+			   << new MyStandardItem( QString() ) );
 	}
 
         //cmodel.addConstraint( KDGantt::Constraint( proxyModel.index( 0, 3 ), proxyModel.index( 10, 3 ) ) );

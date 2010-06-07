@@ -711,7 +711,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
             }
 
             if (  centerAbscissaTicks )
-                headerLabels.append( QString::null );
+                headerLabels.append( QString() );
         }
 
         const int headerLabelsCount = headerLabels.count();
@@ -1505,7 +1505,7 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
     AbstractCoordinatePlane* plane = diagram()->coordinatePlane();
     //qDebug() << this<<"::maximumSize() uses plane geometry" << plane->geometry();
     QObject* refArea = plane->parent();
-    TextLayoutItem labelItem( QString::null, labelTA, refArea,
+    TextLayoutItem labelItem( QString(), labelTA, refArea,
                               KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft );
     TextLayoutItem titleItem( axis()->titleText(), titleTA, refArea,
                               KDChartEnums::MeasureOrientationMinimum, Qt::AlignHCenter | Qt::AlignVCenter );
