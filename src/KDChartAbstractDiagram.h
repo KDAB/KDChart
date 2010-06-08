@@ -592,10 +592,10 @@ namespace KDChart {
         int datasetDimension() const;
 
         /**
-         * \obsolete
+         * \deprecated
          *
          * Sets the dataset dimension of the diagram. Using this method
-         * is obsolete. Use the specific diagram types instead.
+         * is deprecated. Use the specific diagram types instead.
          */
         void setDatasetDimension( int dimension );
 
@@ -629,16 +629,16 @@ namespace KDChart {
 
     protected:
         /**
-         * \obsolete
-         * This method is obsolete and provided for backward-compatibility only.
+         * \deprecated
+         * This method is deprecated and provided for backward-compatibility only.
          * Your own diagram classes should call
          * d->paintDataValueTextsAndMarkers() instead
          * which also is taking care for showing your cell-specific comments, if any,
          */
         virtual void paintDataValueTexts( QPainter* painter );
         /**
-         * \obsolete
-         * This method is obsolete and provided for backward-compatibility only.
+         * \deprecated
+         * This method is deprecated and provided for backward-compatibility only.
          * Your own diagram classes should call
          * d->paintDataValueTextsAndMarkers() instead
          * which also is taking care for showing your cell-specific comments, if any,
