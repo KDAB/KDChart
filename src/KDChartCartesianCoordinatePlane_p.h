@@ -124,6 +124,7 @@ public:
     bool autoAdjustGridToZoom;
 
     bool fixedDataCoordinateSpaceRelation;
+    bool xAxisStartAtZero;
     QRectF fixedDataCoordinateSpaceRelationOldSize;
 
     DataDimensionsList dimensions;

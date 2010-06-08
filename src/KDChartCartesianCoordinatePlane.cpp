@@ -62,6 +62,7 @@ CartesianCoordinatePlane::Private::Private()
     , autoAdjustVerticalRangeToData(  67)
     , autoAdjustGridToZoom( true )
     , fixedDataCoordinateSpaceRelation( false )
+    , xAxisStartAtZero(true)
     , reverseVerticalPlane( false )
     , reverseHorizontalPlane( false )
 {
@@ -194,10 +195,13 @@ QRectF CartesianCoordinatePlane::adjustedToMaxEmptyInnerPercentage(
                     isPositive ? qMax(r.left(), r.right()) : qMin(r.left(), r.right());
             if( innerBound / outerBound * 100 <= percentX )
             {
-                if( isPositive )
-                    erg.setLeft( 0.0 );
-                else
-                    erg.setRight( 0.0 );
+                if(d->xAxisStartAtZero)
+                {
+                    if( isPositive )
+                        erg.setLeft( 0.0 );
+                    else
+                        erg.setRight( 0.0 );
+                }
             }
         }
     }
@@ -463,6 +467,19 @@ void CartesianCoordinatePlane::setFixedDataCoordinateSpaceRelation( bool fixed )
 bool CartesianCoordinatePlane::hasFixedDataCoordinateSpaceRelation() const
 {
     return d->fixedDataCoordinateSpaceRelation;
+}
+
+void CartesianCoordinatePlane::setXAxisStartAtZero(bool fixedStart)
+{
+    if(d->xAxisStartAtZero == fixedStart)
+        return;
+
+    d->xAxisStartAtZero = fixedStart;
+}
+
+bool CartesianCoordinatePlane::xAxisStartAtZero() const
+{
+    return d->xAxisStartAtZero;
 }
 
 void CartesianCoordinatePlane::handleFixedDataCoordinateSpaceRelation( const QRectF& geometry )

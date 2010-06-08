@@ -105,6 +105,15 @@ namespace KDChart {
         void setFixedDataCoordinateSpaceRelation( bool fixed );
         bool hasFixedDataCoordinateSpaceRelation() const;
 
+        /**
+          * Allows to fix the lower bound of X axis to zero when diagram is in first quadrant.
+          * 
+          * The default behavior is to lower x or y bound to be 0. If this behaviour is not wanted,
+          * either \a CartesianCoordinatePlane::setHorizontalRange could be used instead of letting
+          * KDChart auto-adjust the ranges, or this method can be used to disable this behavior.
+          */
+        void setXAxisStartAtZero(bool fixedStart);
+        bool xAxisStartAtZero() const;
 
         /**
          * \brief Set the boundaries of the visible value space displayed in horizontal direction.
