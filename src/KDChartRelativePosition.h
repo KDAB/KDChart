@@ -23,7 +23,7 @@ namespace KDChart {
   of some position information, and you can specify the absolute parts:
   the reference area, and the position in this area.
 
-  \Note To get an absolute position, you have three options:
+  \note To get an absolute position, you have three options:
   \li either you declare both, the relative and the absolute parts,
   using setReferenceArea for the later,
   \li or you specify a set of points, using setReferencePoints,
