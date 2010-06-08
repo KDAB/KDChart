@@ -904,7 +904,7 @@ void DateTimeGrid::paintUserDefinedHeader( QPainter* painter,
 {
     const QStyle* const style = widget ? widget->style() : QApplication::style();
 
-    QDateTime dt = formatter->currentRangeBegin( d->chartXtoDateTime( offset + exposedRect.left() ) ).toUTC();
+    QDateTime dt = formatter->currentRangeBegin( d->chartXtoDateTime( offset + exposedRect.left() ));
     qreal x = d->dateTimeToChartX( dt );
 
     while( x < exposedRect.right() + offset ) {
