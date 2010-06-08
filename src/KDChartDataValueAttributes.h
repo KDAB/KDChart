@@ -200,6 +200,7 @@ public:
   void setShowOverlappingDataLabels( bool showOverlappingDataLabels );
 
   /**
+    * \cond PLANNED_FOR_FUTURE
     *
     * These method are planned for future versions of KD Chart,
     * so they are not part of the documented API yet.
