@@ -4,7 +4,7 @@ set PRODUCT_CAP=KDCHART
 set product_low=kdchart
 set Product_mix=KDChart
 
-set VERSION=2.3.0
+set VERSION=2.4.0
 
 set INSTALLATION_SUPPORTED=true
 set STATIC_BUILD_SUPPORTED=true
