@@ -348,6 +348,9 @@ void LineDiagram::resizeEvent ( QResizeEvent* )
 
 const QPair<QPointF, QPointF> LineDiagram::calculateDataBoundaries() const
 {
+    d->compressor.setResolution( static_cast<int>( this->size().width() * coordinatePlane()->zoomFactorX() ),
+                                 static_cast<int>( this->size().height() * coordinatePlane()->zoomFactorY() ) );
+
     if ( !checkInvariants( true ) ) return QPair<QPointF, QPointF>( QPointF( 0, 0 ), QPointF( 0, 0 ) );
 
     // note: calculateDataBoundaries() is ignoring the hidden flags.
