@@ -148,7 +148,7 @@ bool ProjectModel::load( const QString& filename )
 
 bool ProjectModel::save( const QString& filename )
 {
-
+    Q_UNUSED(filename);
     return true;
 }
 
@@ -160,6 +160,7 @@ int ProjectModel::rowCount( const QModelIndex& idx ) const
 
 int ProjectModel::columnCount( const QModelIndex& idx ) const
 {
+    Q_UNUSED(idx);
     return 5;
 }
 
