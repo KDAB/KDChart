@@ -184,6 +184,7 @@ void DateTimeGrid::paintUserDefinedHeader( QPainter* painter, const QRectF& head
         QStyleOptionHeader opt;
         if ( widget ) opt.init( widget );
         opt.rect = QRectF( x - offset+1, headerRect.top(), qMax( 1., nextx-x-1 ), headerRect.height() ).toAlignedRect();
+        //opt.state = QStyle::State_Raised | QStyle::State_Enabled;
         opt.textAlignment = formatter->alignment();
         opt.text = formatter->text( dt );
 
