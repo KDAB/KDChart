@@ -1142,6 +1142,13 @@ void Chart::paintEvent( QPaintEvent* )
 
 void Chart::addHeaderFooter( HeaderFooter* headerFooter )
 {
+    TextAttributes textAttrs( headerFooter->textAttributes() );
+    KDChart::Measure measure( textAttrs.fontSize() );
+    measure.setRelativeMode( this, KDChartEnums::MeasureOrientationMinimum );
+    measure.setValue( 20 );
+    textAttrs.setFontSize( measure );
+    headerFooter->setTextAttributes( textAttrs );
+    
     d->headerFooters.append( headerFooter );
     headerFooter->setParent( this );
     connect( headerFooter, SIGNAL( destroyedHeaderFooter( HeaderFooter* ) ),
