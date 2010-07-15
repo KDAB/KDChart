@@ -589,7 +589,6 @@ QSize KDChart::TextLayoutItem::calcSizeHint(
     return rotSiz;
 }
 
-
 void KDChart::TextLayoutItem::paint( QPainter* painter )
 {
     // make sure, cached font is updated, if needed:
@@ -626,13 +625,7 @@ void KDChart::TextLayoutItem::paint( QPainter* painter )
     //painter->drawRect( QRect(QPoint((rect.topRight().toPoint() + rect.bottomRight().toPoint()) / 2 - QPoint(2,2)), QSize(3,3)) );
 #endif
     painter->setPen( PrintingParameters::scalePen( mAttributes.pen() ) );
-    QFontMetrics fontMetrics( f );
-    const int AHight = fontMetrics.boundingRect( QChar::fromAscii( 'A' ) ).height();
-    const qreal AVCenter = fontMetrics.ascent() - AHight / 2.0;
-    // Make sure that capital letters are vertically centered. This looks much
-    // better than just centering the text's bounding rect.
-    rect.translate( 0.0, rect.height() / 2.0 - AVCenter );
-    //painter->drawText( rect, Qt::AlignHCenter | Qt::AlignTop, mText );
+
     painter->drawText( rect, mTextAlignment, mText );
 
 //    if (  calcSizeHint( realFont() ).width() > rect.width() )
@@ -838,11 +831,13 @@ void KDChart::MarkerLayoutItem::paintIntoRect(
 KDChart::LineLayoutItem::LineLayoutItem( KDChart::AbstractDiagram* diagram,
                                          int length,
                                          const QPen& pen,
+                                         Qt::Alignment legendLineSymbolAlignment,
                                          Qt::Alignment alignment )
     : AbstractLayoutItem( alignment )
     , mDiagram( diagram )
     , mLength( length )
     , mPen( pen )
+    , mLegendLineSymbolAlignment(legendLineSymbolAlignment)
 {
     //have a mini pen width
     if ( pen.width() < 2 )
@@ -884,22 +879,44 @@ QSize KDChart::LineLayoutItem::sizeHint() const
     return QSize( mLength, mPen.width()+2 );
 }
 
+
+void KDChart::LineLayoutItem::setLegendLineSymbolAlignment(Qt::Alignment legendLineSymbolAlignment)
+{
+    if(mLegendLineSymbolAlignment == legendLineSymbolAlignment)
+        return;
+
+    mLegendLineSymbolAlignment = legendLineSymbolAlignment;
+}
+
+Qt::Alignment KDChart::LineLayoutItem::legendLineSymbolAlignment() const
+{
+    return mLegendLineSymbolAlignment;
+}
+
 void KDChart::LineLayoutItem::paint( QPainter* painter )
 {
-    paintIntoRect( painter, mRect, mPen );
+    paintIntoRect( painter, mRect, mPen, mLegendLineSymbolAlignment );
 }
 
 void KDChart::LineLayoutItem::paintIntoRect(
         QPainter* painter,
         const QRect& rect,
-        const QPen& pen )
+        const QPen& pen,
+        Qt::Alignment lineAlignment)
 {
     if( ! rect.isValid() )
         return;
 
     const QPen oldPen = painter->pen();
     painter->setPen( PrintingParameters::scalePen( pen ) );
-    const qreal y = rect.center().y();
+    qreal y = 0;
+    if(lineAlignment == Qt::AlignTop)
+        y = rect.top();
+    else if(lineAlignment == Qt::AlignBottom)
+        y = rect.bottom();
+    else
+        y = rect.center().y();
+
     painter->drawLine( QPointF( rect.left(), y ),
                        QPointF( rect.right(), y ) );
     painter->setPen( oldPen );
@@ -967,7 +984,7 @@ QSize KDChart::LineWithMarkerLayoutItem::sizeHint() const
 void KDChart::LineWithMarkerLayoutItem::paint( QPainter* painter )
 {
     // paint the line over the full width, into the vertical middle of the rect
-    LineLayoutItem::paintIntoRect( painter, mRect, mLinePen );
+    LineLayoutItem::paintIntoRect( painter, mRect, mLinePen, Qt::AlignCenter );
 
     // paint the marker with the given offset from the left side of the line
     const QRect r(
@@ -976,8 +993,6 @@ void KDChart::LineWithMarkerLayoutItem::paint( QPainter* painter )
     MarkerLayoutItem::paintIntoRect(
             painter, r, mDiagram, mMarker, mMarkerBrush, mMarkerPen );
 }
-
-
 
 KDChart::AutoSpacerLayoutItem::AutoSpacerLayoutItem(
         bool layoutIsAtTopPosition, QHBoxLayout *rightLeftLayout,

@@ -240,6 +240,7 @@ namespace KDChart {
             LineLayoutItem( AbstractDiagram* diagram,
                             int length,
                             const QPen& pen,
+                            Qt::Alignment mLegendLineSymbolAlignment,
                             Qt::Alignment alignment = 0 );
 
             virtual Qt::Orientations expandingDirections() const;
@@ -250,18 +251,23 @@ namespace KDChart {
             virtual void setGeometry( const QRect& r );
             virtual QSize sizeHint() const;
 
+            void setLegendLineSymbolAlignment(Qt::Alignment legendLineSymbolAlignment);
+            virtual Qt::Alignment legendLineSymbolAlignment() const;
+
             virtual void paint( QPainter* );
 
             static void paintIntoRect(
                     QPainter* painter,
                     const QRect& rect,
-                    const QPen& pen );
+                    const QPen& pen,
+                    Qt::Alignment lineAlignment);
 
         private:
             AbstractDiagram* mDiagram;
             int mLength;
             QPen mPen;
             QRect mRect;
+            Qt::Alignment mLegendLineSymbolAlignment;
     };
 
     /**

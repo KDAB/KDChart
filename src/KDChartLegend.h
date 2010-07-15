@@ -212,6 +212,22 @@ public:
      */
      Qt::Alignment textAlignment() const;
 
+     /**
+      * \brief Specify the alignment of the legend symbol( alignment of Legend::LinesOnly)
+      *  within the legend
+      *
+      * \sa legendSymbolAlignment()
+      */
+     void setLegendSymbolAlignment(Qt::Alignment);
+
+     /**
+      * \brief Returns the alignment used while drawing legend symbol(alignment of Legend::LinesOnly)
+      * within the legend.
+      *
+      * \sa setLegendSymbolAlignment()
+      */
+     Qt::Alignment legendSymbolAlignment() const;
+
     /**
      * \brief Specify the position and alignment of a floating legend.
      *

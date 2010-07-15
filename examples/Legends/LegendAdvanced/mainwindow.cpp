@@ -161,6 +161,7 @@ void MainWindow::on_editLegendPB_clicked()
     initAddLegendDialog( conf, legend->alignment() );
     conf.showLinesCB->setChecked( legend->showLines() );
     conf.titleTextED->setText( legend->titleText() );
+    legend->setLegendSymbolAlignment(Qt::AlignBottom);
 
     // In this example we are using legend position names, that match
     // exactly the names in KDChart::Legend::LegendPosition,

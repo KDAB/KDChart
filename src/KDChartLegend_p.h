@@ -53,6 +53,7 @@ public:
         position( rhs.position ),
         alignment( rhs.alignment ),
         textAlignment( rhs.textAlignment ),
+        legendLineSymbolAlignment(Qt::AlignCenter),
         relativePosition( rhs.relativePosition ),
         orientation( rhs.orientation ),
         order( rhs.order ),
@@ -87,6 +88,7 @@ private:
     Position position;
     Qt::Alignment alignment;
     Qt::Alignment textAlignment;
+    Qt::Alignment legendLineSymbolAlignment;
     RelativePosition relativePosition;
     Qt::Orientation orientation;
     Qt::SortOrder order;

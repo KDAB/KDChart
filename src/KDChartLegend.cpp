@@ -484,6 +484,20 @@ Qt::Alignment Legend::textAlignment() const
     return d->textAlignment;
 }
 
+void Legend::setLegendSymbolAlignment(Qt::Alignment alignment)
+{
+    if(d->legendLineSymbolAlignment == alignment)
+        return;
+
+    d->legendLineSymbolAlignment = alignment;
+    emitPositionChanged();
+}
+
+Qt::Alignment Legend::legendSymbolAlignment() const
+{
+    return d->legendLineSymbolAlignment ;
+}
+
 void Legend::setFloatingPosition( const RelativePosition& relativePosition )
 {
     d->position = Position::Floating;
@@ -1007,6 +1021,7 @@ void Legend::buildLegend()
                         diagram(),
                         maxLineLength,
                         pen( dataset ),
+                        d->legendLineSymbolAlignment,
                         Qt::AlignCenter );
                 break;
             case( MarkersAndLines ):
