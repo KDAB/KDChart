@@ -1159,6 +1159,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
             const double steg = dimY.stepWidth;
             int maxLabelsWidth = 0;
             qreal labelValue;
+
             if( drawLabels && position() == Right ){
                 // Find the widest label, so we to know how much we need to right-shift
                 // our labels, to get them drawn right aligned:
@@ -1169,8 +1170,10 @@ void CartesianAxis::paintCtx( PaintContext* context )
                                               diagram()->unitSuffix( static_cast< int >( labelValue ), diagramOrientation, true );
                     labelItem->setText( customizedLabel( labelText ) );
                     maxLabelsWidth = qMax( maxLabelsWidth, diagramIsVertical ? labelItem->sizeHint().width() : labelItem->sizeHint().height() );
-
                     calculateNextLabel( labelValue, steg, isLogarithmicY, dimensions.last().start );
+
+                    if(maxValueY == 0 && minValueY == 0)
+                       break;
                 }
             }
 
@@ -1670,6 +1673,9 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
                     calculateOverlap( 0, 0, 0, diagramIsVertical ? siz.height() : siz.width(), false,// bar diagram flag is ignored for Ordinates
                                     topOverlap, bottomOverlap );
                     calculateNextLabel( labelValue, step, isLogarithmicY, plane->gridDimensionsList().last().start );
+
+                    if(maxValue == 0 && minValue == 0)
+                        break;
                 }
             }else{
                 // find the longest label text:

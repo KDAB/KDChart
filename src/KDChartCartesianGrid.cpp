@@ -202,6 +202,9 @@ void CartesianGrid::drawGrid( PaintContext* context )
             }else{
                 f += dimX.subStepWidth;
             }
+
+            if(maxValueX == 0 && minValueX == 0)
+                break;
         }
     }
 
@@ -235,6 +238,9 @@ void CartesianGrid::drawGrid( PaintContext* context )
             }else{
                 f += dimY.subStepWidth;
             }
+
+            if(maxValueY == 0 && minValueY == 0)
+                break;
         }
     }
 
@@ -275,6 +281,9 @@ void CartesianGrid::drawGrid( PaintContext* context )
             }
             else
                 f += dimX.stepWidth;
+
+            if(maxValueX == 0 && minValueX == 0)
+                break;
         }
         // draw the last line if not logarithmic calculation
         // we need the in order to get the right grid line painted
@@ -314,6 +323,9 @@ void CartesianGrid::drawGrid( PaintContext* context )
             }
             else
                 f += dimY.stepWidth;
+
+            if(maxValueY == 0 && minValueY == 0)
+                break;
         }
     }
     //qDebug() << "Z";
