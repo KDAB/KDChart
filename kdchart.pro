@@ -79,8 +79,8 @@ exists( LICENSE.GPL ): licenses.files += LICENSE.GPL
 licenses.path = $$INSTALL_PREFIX
 INSTALLS += licenses
 
-exists( README ) {
-    readme.files = README
+exists( README.txt ) {
+    readme.files = README.txt
     readme.path = $$INSTALL_PREFIX
     INSTALLS += readme
 }
