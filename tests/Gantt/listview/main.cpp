@@ -13,9 +13,9 @@
 
 class MyStandardItem : public QStandardItem {
 public:
-    MyStandardItem( const QVariant& v ) : QStandardItem()
+    MyStandardItem( const QVariant& v, int role = Qt::DisplayRole ) : QStandardItem()
     {
-        setData( v, Qt::DisplayRole );
+        setData( v, role );
     }
     MyStandardItem( const QString& v ) : QStandardItem()
     {
@@ -47,15 +47,15 @@ public:
 	    item->appendRow( QList<QStandardItem*>()
 			     << new MyStandardItem( QString::fromLatin1( "Item %1" ).arg( j ) )
 			     << new MyStandardItem( KDGantt::TypeTask )
-			     << new MyStandardItem( QDateTime::currentDateTime().addDays( j ) )
-			     << new MyStandardItem( QDateTime::currentDateTime().addDays( j+1+i/7 ) )
+			     << new MyStandardItem( QDateTime::currentDateTime().addDays( j ), KDGantt::StartTimeRole )
+			     << new MyStandardItem( QDateTime::currentDateTime().addDays( j+1+i/7 ), KDGantt::EndTimeRole )
 			     << new MyStandardItem( 50 ) );
 	  }
 	  item->appendRow( QList<QStandardItem*>()
 			   << new MyStandardItem( QString::fromLatin1( "Event" ) )
 			   << new MyStandardItem( KDGantt::TypeEvent )
-			   << new MyStandardItem( QDateTime::currentDateTime() )
-			   << new MyStandardItem( QDateTime() )
+			   << new MyStandardItem( QDateTime::currentDateTime(), KDGantt::StartTimeRole )
+			   << new MyStandardItem( QDateTime(), KDGantt::EndTimeRole )
 			   << new MyStandardItem( QString() ) );
 
 	  model.appendRow( QList<QStandardItem*>()

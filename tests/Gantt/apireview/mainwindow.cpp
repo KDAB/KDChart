@@ -169,15 +169,15 @@ void MainWindow::addNewEntry()
     model->setData( model->index( row, 0, parent ), dialog->name() );
     model->setData( model->index( row, 1, parent ), dialog->type() );
     if( dialog->type() != KDGantt::TypeSummary ) {
-        model->setData( model->index( row, 2, parent ), dialog->startDate() );
-        model->setData( model->index( row, 3, parent ), dialog->endDate() );
+        model->setData( model->index( row, 2, parent ), dialog->startDate(), KDGantt::StartTimeRole );
+        model->setData( model->index( row, 3, parent ), dialog->endDate(), KDGantt::EndTimeRole );
     }
     model->setData( model->index( row, 4, parent ), dialog->completion() );
     model->setData( model->index( row, 5, parent ), dialog->legend() );
 
     addConstraint( dialog->depends(), model->index( row, 0, parent ) );
     setReadOnly( model->index( row, 0, parent ), dialog->readOnly() );
-    
+
     delete dialog;
 }
 
@@ -238,6 +238,10 @@ public:
     {
         setData( v, Qt::DisplayRole );
     }
+    MyStandardItem( const QDateTime& dt, int role ) : QStandardItem()
+    {
+        setData( QVariant::fromValue( dt ), role );
+    }
 };
 
 void MainWindow::addDemoEntry()
@@ -254,23 +258,23 @@ void MainWindow::addDemoEntry()
 
     softwareRelease->appendRow( QList<QStandardItem*>()
                                 << codeFreeze << new MyStandardItem( KDGantt::TypeEvent )
-                                << new MyStandardItem( now ) );
+                                << new MyStandardItem( now, KDGantt::StartTimeRole ) );
     softwareRelease->appendRow( QList<QStandardItem*>()
                                 << packaging << new MyStandardItem( KDGantt::TypeTask )
-                                << new MyStandardItem( now.addDays( 5 ) )
-                                << new MyStandardItem( now.addDays( 10 ) ) );
+                                << new MyStandardItem( now.addDays( 5 ), KDGantt::StartTimeRole )
+                                << new MyStandardItem( now.addDays( 10 ), KDGantt::EndTimeRole ) );
     softwareRelease->appendRow( QList<QStandardItem*>()
                                 << upload << new MyStandardItem( KDGantt::TypeTask )
-                                << new MyStandardItem( now.addDays( 10 ).addSecs( 2*60*60 ) )
-                                << new MyStandardItem( now.addDays( 11 ) ) );
+                                << new MyStandardItem( now.addDays( 10 ).addSecs( 2*60*60 ), KDGantt::StartTimeRole )
+                                << new MyStandardItem( now.addDays( 11 ), KDGantt::EndTimeRole ) );
     softwareRelease->appendRow( QList<QStandardItem*>()
                                 << testing << new MyStandardItem( KDGantt::TypeTask )
-                                << new MyStandardItem( now.addSecs( 3*60*60 ) )
-                                << new MyStandardItem( now.addDays( 5 ) ) );
+                                << new MyStandardItem( now.addSecs( 3*60*60 ), KDGantt::StartTimeRole )
+                                << new MyStandardItem( now.addDays( 5 ), KDGantt::EndTimeRole ) );
     softwareRelease->appendRow( QList<QStandardItem*>()
                                 << updateDocumentation << new MyStandardItem( KDGantt::TypeTask )
-                                << new MyStandardItem( now.addSecs( 3*60*60 ) )
-                                << new MyStandardItem( now.addDays( 3 ) ) );
+                                << new MyStandardItem( now.addSecs( 3*60*60 ), KDGantt::StartTimeRole )
+                                << new MyStandardItem( now.addDays( 3 ), KDGantt::EndTimeRole ) );
 
     model->appendRow( QList<QStandardItem*>()
                       << softwareRelease << new MyStandardItem( KDGantt::TypeSummary ) );
