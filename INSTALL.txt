@@ -91,4 +91,4 @@ b) manual installation
    the designer.  If set, Qt will look for plugins in the paths
    (separated by the system path separator) specified in the variable.
 
-7) Have a look at the examples applications it will get you started with KD Chart 2.x and it's new API.
+7) Have a look at the examples applications it will get you started with KD Chart 2.x and its new API.
