@@ -111,7 +111,7 @@ ConstraintGraphicsItem* GraphicsScene::Private::findConstraintItem( const Constr
         QList<ConstraintGraphicsItem*>::iterator it = clst.begin();
         //qDebug()<<"GraphicsScene::Private::findConstraintItem start:"<<c<<item<<clst;
         for( ; it != clst.end() ; ++it )
-            if ((*it)->constraint() == c )
+            if ( c.compareIndexes((*it)->constraint()) )
                 break;
         if (  it != clst.end() ) {
             return *it;

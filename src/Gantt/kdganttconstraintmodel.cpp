@@ -35,7 +35,7 @@ void ConstraintModel::Private::removeConstraintFromIndex( const QModelIndex& idx
 {
     IndexType::iterator it = indexMap.find(idx);
     while (it != indexMap.end() && it.key() == idx) {
-        if ( *it == c ) {
+        if ( c.compareIndexes(*it) ) {
             it =indexMap.erase( it );
         } else {
             ++it;
@@ -98,13 +98,24 @@ void ConstraintModel::addConstraint( const Constraint& c )
 bool ConstraintModel::removeConstraint( const Constraint& c )
 {
     //qDebug() << "ConstraintModel::removeConstraint("<<c<<") from "<< d->constraints;
-    bool rc = d->constraints.removeAll( c );
-    //bool rc = d->constraints.remove( c );
+
+    bool rc = false;
+
+    for(int i = 0; i < d->constraints.count(); i++)
+    {
+        if(c.compareIndexes(d->constraints.at(i)))
+        {
+            d->constraints.removeAt(i);
+            rc = true;
+        }
+    }
+
     if ( rc ) {
         d->removeConstraintFromIndex( c.startIndex(), c );
         d->removeConstraintFromIndex( c.endIndex(), c );
         emit constraintRemoved( c );
     }
+
     return rc;
 }
 
@@ -179,7 +190,13 @@ bool ConstraintModel::hasConstraint( const Constraint& c ) const
     }
     return false;
     */
-    return d->constraints.contains( c );
+    bool hc = false;
+
+    for(int i = 0; i < d->constraints.count(); i++)
+        if(c.compareIndexes(d->constraints.at(i)))
+            hc = true;
+
+    return hc;
 }
 
 #ifndef QT_NO_DEBUG_STREAM

@@ -45,8 +45,9 @@ namespace KDGantt {
         void setData( int role, const QVariant& value );
         QVariant data( int role ) const;
 
-        Constraint& operator=( const Constraint& other );
+        bool compareIndexes(const Constraint& other) const;
 
+        Constraint& operator=( const Constraint& other );
         bool operator==( const Constraint& other ) const;
 
         inline bool operator!=( const Constraint& other ) const {

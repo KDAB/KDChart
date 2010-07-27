@@ -122,6 +122,12 @@ void Constraint::setData( int role, const QVariant& value )
     d->data.insert( role, value );
 }
 
+bool Constraint::compareIndexes(const Constraint& other) const
+{
+    return (d->start==other.startIndex() || (!d->start.isValid() && !other.startIndex().isValid()))
+        && (d->end==other.endIndex() || (!d->end.isValid() && !other.endIndex().isValid()));
+}
+
 /*! Compare two Constraint objects. Two Constraints are equal
  * if the have the same start and end indexes
  */
