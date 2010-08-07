@@ -37,7 +37,7 @@ public:
         return ROW_HEIGHT/2;
     }
     /*reimp*/ int totalHeight() const {
-        return m_model->rowCount()*ROW_HEIGHT;
+        return m_model.isNull()?0:m_model->rowCount()*ROW_HEIGHT;
     }
 
     /*reimp*/ QModelIndex indexAt( int height ) const {
@@ -94,7 +94,7 @@ int main( int argc, char** argv ) {
 
     KDGantt::GraphicsView* view = new KDGantt::GraphicsView;
     MyRowController* rowController = new MyRowController;
-	view->setReadOnly(true);
+    view->setReadOnly(true);
     view->setRowController( rowController );
     view->show();
 
