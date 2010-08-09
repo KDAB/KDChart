@@ -2,6 +2,7 @@ KDCHART_PATH = ../..
 
 SOURCES= main.cpp
 
+QT += svg
 
 INCLUDEPATH += $$KDCHART_PATH/include \
             $$KDCHART_PATH/examples/tools

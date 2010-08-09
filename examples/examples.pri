@@ -28,6 +28,8 @@ LIBS        += -L$$KDCHART_PATH/lib -l$$KDCHARTLIB -l$$TESTTOOLSLIB
 
 
 # 4. Miscellaneous settings:
+QT += svg
+
 unix {
   MOC_DIR = .moc
   OBJECTS_DIR = .obj

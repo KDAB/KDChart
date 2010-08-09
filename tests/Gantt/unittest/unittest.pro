@@ -5,6 +5,7 @@ TARGET =
 DEPENDPATH += . ../../../include
 INCLUDEPATH += . ../../../include
 CONFIG += console
+QT += svg
 macx:CONFIG -= app_bundle
 
 ## !win32:LIBS+= -L$$QMAKE_RPATH$$PWD/../../../lib 

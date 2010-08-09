@@ -1,5 +1,7 @@
 include (../variables.pri)
 
+QT += svg
+
 staticlib {
   DEFINES += KDCHARTSERIALIZER_STATICLIB
 } else {

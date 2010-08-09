@@ -3,6 +3,7 @@ KDCHART_PATH = ../..
 HEADERS= mainwindow.h
 SOURCES= main.cpp mainwindow.cpp
 FORMS  = mainwindow.ui
+QT    += svg
 
 INCLUDEPATH += $$KDCHART_PATH/include \
             $$KDCHART_PATH/examples/tools

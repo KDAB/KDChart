@@ -4,6 +4,7 @@ TEMPLATE = app
 TARGET =
 DEPENDPATH += . ../../../include
 INCLUDEPATH += . ../../../include
+QT += svg
 
 LIBS += -L$$KDCHART_PATH/lib -l$$KDCHARTLIB
 

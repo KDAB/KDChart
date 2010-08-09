@@ -8,6 +8,7 @@ staticlib {
   DEFINES += KDCHARTSERIALIZER_STATICLIB
 }
 
+QT += xml svg
 
 CONFIG+=qtestlib
 TEMPLATE = app
