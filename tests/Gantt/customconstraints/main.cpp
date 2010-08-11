@@ -102,7 +102,6 @@ private:
     KDGantt::DateTimeGrid grid;
     QSlider slider;
     QStandardItemModel model;
-    MyConstraintModel cmodel;
 };
 
 int main( int argc, char** argv ) {
