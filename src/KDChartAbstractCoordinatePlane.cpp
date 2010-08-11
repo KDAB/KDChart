@@ -95,6 +95,7 @@ void AbstractCoordinatePlane::takeDiagram ( AbstractDiagram* diagram )
         diagram->setCoordinatePlane( 0 );
         disconnect( diagram, SIGNAL( modelsChanged() ), this, SLOT( layoutPlanes() ) );
         disconnect( diagram, SIGNAL( modelDataChanged() ), this, SLOT( update()) );
+        disconnect( diagram, SIGNAL( modelDataChanged() ), this, SLOT( relayout()) );
         layoutDiagrams();
         update();
     }
