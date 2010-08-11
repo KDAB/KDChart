@@ -33,7 +33,12 @@ namespace KDGantt {
             InvalidConstraintPen
         };
 
-        Constraint( const QModelIndex& idx1,  const QModelIndex& idx2, Type type=TypeSoft, RelationType=FinishStart );
+        Constraint();
+        Constraint( const QModelIndex& idx1,
+                    const QModelIndex& idx2,
+                    Type type=TypeSoft,
+                    RelationType=FinishStart,
+                    const QMap<int, QVariant>& dataMap = QMap<int, QVariant>() );
         Constraint( const Constraint& other);
         ~Constraint();
 
@@ -44,6 +49,9 @@ namespace KDGantt {
 
         void setData( int role, const QVariant& value );
         QVariant data( int role ) const;
+
+        void setDataMap( const QMap< int, QVariant >& datamap );
+        QMap< int, QVariant > dataMap() const;
 
         bool compareIndexes(const Constraint& other) const;
 

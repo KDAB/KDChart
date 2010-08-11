@@ -104,6 +104,8 @@ QDebug operator<<( QDebug dbg, KDGantt::ItemDataRole r)
   case KDGantt::TaskCompletionRole: dbg << "KDGantt::TaskCompletionRole"; break;
   case KDGantt::ItemTypeRole:       dbg << "KDGantt::ItemTypeRole"; break;
   case KDGantt::LegendRole:         dbg << "KDGantt::LegendRole"; break;
+  case Qt::DisplayRole:             dbg << "Qt::DisplayRole"; break;
+  case Qt::DecorationRole:          dbg << "Qt::DecorationRole"; break;
   default: dbg << static_cast<Qt::ItemDataRole>(r);
   }
   return dbg;
@@ -114,7 +116,7 @@ QDebug operator<<( QDebug dbg, KDGantt::ItemType t)
     switch( t ) {
     case KDGantt::TypeNone:        dbg << "KDGantt::TypeNone"; break;
     case KDGantt::TypeEvent:       dbg << "KDGantt::TypeEvent"; break;
-    case KDGantt::TypeTask:       dbg << "KDGantt::TypeTask"; break;
+    case KDGantt::TypeTask:        dbg << "KDGantt::TypeTask"; break;
     case KDGantt::TypeSummary:     dbg << "KDGantt::TypeSummary"; break;
     case KDGantt::TypeMulti:       dbg << "KDGantt::TypeMulti"; break;
     case KDGantt::TypeUser:        dbg << "KDGantt::TypeUser"; break;

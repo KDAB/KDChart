@@ -56,6 +56,8 @@ namespace KDGantt {
 
         void updateScene();
 
+        void setupGraphicsView();
+
         // slots
         void slotCollapsed(const QModelIndex&);
         void slotExpanded(const QModelIndex&);
@@ -71,7 +73,7 @@ namespace KDGantt {
         //KDGanttTreeView treeview;
         QPointer<QAbstractItemView> leftWidget;
         AbstractRowController* rowController;
-        GraphicsView gfxview;
+        QPointer<GraphicsView> gfxview;
         //KDGanttHeaderWidget headerwidget;
 
         QPointer<QAbstractItemModel> model;

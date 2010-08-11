@@ -30,12 +30,13 @@ Constraint::Private::Private()
 }
 
 Constraint::Private::Private( const Private& other )
-    : QSharedData( other )
+    : QSharedData( other ),
+      start( other.start ),
+      end( other.end ),
+      type( other.type ),
+      relationType( other.relationType ),
+      data( other.data )
 {
-    start=other.start;
-    end=other.end;
-    type=other.type;
-    relationType=other.relationType;
 }
 
 /*! Constructor. Creates a dependency for \a idx2 on \a idx1.
@@ -51,14 +52,25 @@ Constraint::Private::Private( const Private& other )
  * \param relationType defines how the tasks depends on each other.
  * relationType can be FinishStart (default), FinishFinish, StartStart or StartFinish.
  */
-Constraint::Constraint( const QModelIndex& idx1,  const QModelIndex& idx2, Constraint::Type type, Constraint::RelationType relationType )
+Constraint::Constraint( const QModelIndex& idx1,
+                        const QModelIndex& idx2,
+                        Constraint::Type type,
+                        Constraint::RelationType relationType,
+                        const QMap<int, QVariant>& dataMap )
     : d( new Private )
 {
     d->start=idx1;
     d->end=idx2;
     d->type=type;
     d->relationType=relationType;
+    d->data=dataMap;
     Q_ASSERT_X( idx1 != idx2 || !idx1.isValid(), "Constraint::Constraint", "cannot create a constraint with idx1 == idx2" );
+}
+
+/*! Default constructor, created an invalid constraint. */
+Constraint::Constraint()
+    : d( new Private )
+{
 }
 
 /*! Copy-Constructor. */
@@ -122,6 +134,22 @@ void Constraint::setData( int role, const QVariant& value )
     d->data.insert( role, value );
 }
 
+/*! Set data on this constraint to the keys/values in \a datamap.
+ * Clears any existing data from the constraint.
+ */
+void Constraint::setDataMap( const QMap< int, QVariant >& datamap )
+{
+    d->data = datamap;
+}
+
+/*! \returns all the data set on this constraint. \see setDataMap
+ */
+QMap< int, QVariant > Constraint::dataMap() const
+{
+    return d->data;
+}
+
+
 bool Constraint::compareIndexes(const Constraint& other) const
 {
     return (d->start==other.startIndex() || (!d->start.isValid() && !other.startIndex().isValid()))
@@ -152,7 +180,7 @@ QDebug operator<<( QDebug dbg, const Constraint& c )
 
 QDebug Constraint::debug( QDebug dbg ) const
 {
-    dbg << "KDGantt::Constraint[ start=" << d->start << "end=" << d->end << "relationType=" << d->relationType << "]";
+    dbg << "KDGantt::Constraint[ start=" << d->start << "end=" << d->end << "relationType=" << d->relationType << "], data=" << d->data;
     return dbg;
 }
 

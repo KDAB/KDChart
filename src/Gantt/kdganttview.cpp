@@ -72,7 +72,7 @@ View::Private::Private(View* v)
     : q(v),
       splitter(v),
       rowController(0),
-      gfxview(&splitter),
+      gfxview( new GraphicsView( &splitter ) ),
       model(0)
 {
     //init();
@@ -91,11 +91,9 @@ void View::Private::init()
     q->setLeftView( tw );
     q->setRowController( tw->rowController() );
 
-    gfxview.setAlignment(Qt::AlignTop|Qt::AlignLeft);
     //gfxview.setRenderHints( QPainter::Antialiasing );
 
     tw->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-    gfxview.setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 
     QVBoxLayout* layout = new QVBoxLayout(q);
     layout->setMargin(0);
@@ -104,26 +102,37 @@ void View::Private::init()
 
     constraintProxy.setProxyModel( &ganttProxyModel );
     constraintProxy.setDestinationModel( &mappedConstraintModel );
-    gfxview.setSelectionModel( leftWidget->selectionModel() );
-    gfxview.setConstraintModel( &mappedConstraintModel );
+    setupGraphicsView();
+}
+
+void View::Private::setupGraphicsView()
+{
+    gfxview->setParent( &splitter );
+    gfxview->setAlignment(Qt::AlignTop|Qt::AlignLeft);
+    gfxview->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    gfxview->setSelectionModel( leftWidget->selectionModel() );
+    gfxview->setConstraintModel( &mappedConstraintModel );
+    q->setLeftView( leftWidget );
+    q->setRowController( rowController );
+    updateScene();
 }
 
 void View::Private::updateScene()
 {
-    gfxview.clearItems();
+    gfxview->clearItems();
     if( !model) return;
 
     if( QTreeView* tw = qobject_cast<QTreeView*>(leftWidget)) {
       QModelIndex idx = ganttProxyModel.mapFromSource( model->index( 0, 0, leftWidget->rootIndex() ) );
       do {
-        gfxview.updateRow( idx );
+        gfxview->updateRow( idx );
       } while ( ( idx = tw->indexBelow( idx ) ) != QModelIndex() &&
-		gfxview.rowController()->isRowVisible(idx) );
-      gfxview.updateSceneRect();
+		gfxview->rowController()->isRowVisible(idx) );
+      gfxview->updateSceneRect();
     } else {
       const QModelIndex rootidx = ganttProxyModel.mapFromSource( leftWidget->rootIndex() );
       for( int r = 0; r < ganttProxyModel.rowCount(rootidx); ++r ) {
-	gfxview.updateRow( ganttProxyModel.index( r, 0, rootidx ) );
+	gfxview->updateRow( ganttProxyModel.index( r, 0, rootidx ) );
       }
     }
 }
@@ -133,7 +142,7 @@ void View::Private::slotCollapsed(const QModelIndex& _idx)
     QTreeView* tw = qobject_cast<QTreeView*>(leftWidget);
     if(!tw) return;
 
-    bool blocked = gfxview.blockSignals( true );
+    bool blocked = gfxview->blockSignals( true );
 
     QModelIndex idx( _idx );
     const QAbstractItemModel* model = leftWidget->model();
@@ -141,7 +150,7 @@ void View::Private::slotCollapsed(const QModelIndex& _idx)
     bool isMulti = false;
     for( QModelIndex treewalkidx = pidx; treewalkidx.isValid(); treewalkidx = treewalkidx.parent() ) {
         if ( treewalkidx.data( ItemTypeRole ).toInt() == TypeMulti
-             && !gfxview.rowController()->isRowExpanded( treewalkidx ) ) {
+             && !gfxview->rowController()->isRowExpanded( treewalkidx ) ) {
             isMulti = true;
             break;
         }
@@ -149,19 +158,19 @@ void View::Private::slotCollapsed(const QModelIndex& _idx)
 
     if ( !isMulti ) {
         for ( int i = 0; i < model->rowCount( idx ); ++i ) {
-            gfxview.deleteSubtree( ganttProxyModel.index( i, 0, pidx ) );
+            gfxview->deleteSubtree( ganttProxyModel.index( i, 0, pidx ) );
         }
     } else {
-        gfxview.updateRow(pidx);
+        gfxview->updateRow(pidx);
     }
     //qDebug() << "Looking to update from " << idx;
     while ( ( idx=tw->indexBelow( idx ) ) != QModelIndex() &&
-            gfxview.rowController()->isRowVisible( ganttProxyModel.mapFromSource(idx) ) ) {
+            gfxview->rowController()->isRowVisible( ganttProxyModel.mapFromSource(idx) ) ) {
         const QModelIndex proxyidx( ganttProxyModel.mapFromSource( idx ) );
-        gfxview.updateRow(proxyidx);
+        gfxview->updateRow(proxyidx);
     }
-    gfxview.blockSignals( blocked );
-    gfxview.updateSceneRect();
+    gfxview->blockSignals( blocked );
+    gfxview->updateSceneRect();
 }
 
 void View::Private::slotExpanded(const QModelIndex& _idx)
@@ -169,26 +178,26 @@ void View::Private::slotExpanded(const QModelIndex& _idx)
     QModelIndex idx( ganttProxyModel.mapFromSource( _idx ) );
     do {
         //qDebug() << "Updating row" << idx << idx.data( Qt::DisplayRole ).toString();
-        gfxview.updateRow(idx);
-    } while( ( idx=gfxview.rowController()->indexBelow( idx ) ) != QModelIndex()
-             && gfxview.rowController()->isRowVisible( idx ) );
-    gfxview.updateSceneRect();
+        gfxview->updateRow(idx);
+    } while( ( idx=gfxview->rowController()->indexBelow( idx ) ) != QModelIndex()
+             && gfxview->rowController()->isRowVisible( idx ) );
+    gfxview->updateSceneRect();
 }
 
 void View::Private::slotVerticalScrollValueChanged( int val )
 {
 #if 0
     qDebug() << "View::Private::slotVerticalScrollValueChanged("<<val<<")="
-             << val/gfxview.verticalScrollBar()->singleStep();
+             << val/gfxview->verticalScrollBar()->singleStep();
 #endif
-    leftWidget->verticalScrollBar()->setValue( val/gfxview.verticalScrollBar()->singleStep() );
+    leftWidget->verticalScrollBar()->setValue( val/gfxview->verticalScrollBar()->singleStep() );
 }
 
 void View::Private::slotLeftWidgetVerticalRangeChanged(int min, int max )
 {
     //qDebug() << "View::Private::slotLeftWidgetVerticalRangeChanged("<<min<<max<<")";
-    gfxview.verticalScrollBar()->setRange( min, max );
-    gfxview.updateSceneRect();
+    gfxview->verticalScrollBar()->setRange( min, max );
+    gfxview->updateSceneRect();
 }
 
 void View::Private::slotGfxViewVerticalRangeChanged( int min, int max )
@@ -196,9 +205,9 @@ void View::Private::slotGfxViewVerticalRangeChanged( int min, int max )
     //qDebug() << "View::Private::slotGfxViewVerticalRangeChanged("<<min<<max<<")";
     int leftMin = leftWidget->verticalScrollBar()->minimum();
     int leftMax = leftWidget->verticalScrollBar()->maximum();
-    bool blocked = gfxview.verticalScrollBar()->blockSignals( true );
-    gfxview.verticalScrollBar()->setRange( qMax( min, leftMin ), qMax( max, leftMax ) );
-    gfxview.verticalScrollBar()->blockSignals( blocked );
+    bool blocked = gfxview->verticalScrollBar()->blockSignals( true );
+    gfxview->verticalScrollBar()->setRange( qMax( min, leftMin ), qMax( max, leftMax ) );
+    gfxview->verticalScrollBar()->blockSignals( blocked );
 }
 
 /*!\class KDGantt::View kdganttview.h KDGanttView
@@ -243,8 +252,8 @@ void View::setLeftView( QAbstractItemView* aiv )
     if ( !d->leftWidget.isNull() ) {
         d->leftWidget->disconnect( this );
         d->leftWidget->hide();
-        d->leftWidget->verticalScrollBar()->disconnect( d->gfxview.verticalScrollBar() );
-        d->gfxview.verticalScrollBar()->disconnect( d->leftWidget->verticalScrollBar() );
+        d->leftWidget->verticalScrollBar()->disconnect( d->gfxview->verticalScrollBar() );
+        d->gfxview->verticalScrollBar()->disconnect( d->leftWidget->verticalScrollBar() );
     }
 
     d->leftWidget = aiv;
@@ -257,13 +266,13 @@ void View::setLeftView( QAbstractItemView* aiv )
 	       this, SLOT( slotExpanded( const QModelIndex& ) ) );
     }
 
-    connect( d->gfxview.verticalScrollBar(), SIGNAL( valueChanged( int ) ),
+    connect( d->gfxview->verticalScrollBar(), SIGNAL( valueChanged( int ) ),
              d->leftWidget->verticalScrollBar(), SLOT( setValue( int ) ) );
     connect( d->leftWidget->verticalScrollBar(), SIGNAL( valueChanged( int ) ),
-             d->gfxview.verticalScrollBar(), SLOT( setValue( int ) ) );
+             d->gfxview->verticalScrollBar(), SLOT( setValue( int ) ) );
     connect( d->leftWidget->verticalScrollBar(), SIGNAL( rangeChanged( int, int ) ),
              this, SLOT( slotLeftWidgetVerticalRangeChanged( int, int ) ) );
-    connect( d->gfxview.verticalScrollBar(), SIGNAL( rangeChanged( int, int ) ),
+    connect( d->gfxview->verticalScrollBar(), SIGNAL( rangeChanged( int, int ) ),
              this, SLOT( slotGfxViewVerticalRangeChanged( int, int ) ) );
 }
 
@@ -274,9 +283,9 @@ void View::setLeftView( QAbstractItemView* aiv )
  */
 void View::setRowController( AbstractRowController* ctrl )
 {
-    if ( ctrl == d->rowController ) return;
+    if ( ctrl == d->rowController && d->gfxview->rowController() == ctrl ) return;
     d->rowController = ctrl;
-    d->gfxview.setRowController( d->rowController );
+    d->gfxview->setRowController( d->rowController );
 }
 
 /*! \returns a pointer to the current rowcontroller.
@@ -311,12 +320,29 @@ QAbstractItemView* View::leftView()
     return d->leftWidget;
 }
 
+/*! Set the GraphicsView to be used for this View. It only makes sense to call this
+ * if you need to subclass GraphicsView.
+ *
+ * NOTE: _Only_ call this right after creating the View, before setting a model or any other
+ * attributes.
+ */
+void View::setGraphicsView( GraphicsView* gv )
+{
+    if ( gv != d->gfxview ) {
+        GraphicsView* old = d->gfxview;
+        d->gfxview = gv;
+        d->setupGraphicsView();
+        d->gfxview->setGrid( old->grid() );
+        delete old;
+    }
+}
+
 /*!
  * \returns a pointer to the GraphicsView
  */
 const GraphicsView* View::graphicsView() const
 {
-    return &d->gfxview;
+    return d->gfxview;
 }
 
 /*!
@@ -324,7 +350,7 @@ const GraphicsView* View::graphicsView() const
  */
 GraphicsView* View::graphicsView()
 {
-    return &d->gfxview;
+    return d->gfxview;
 }
 
 /*!
@@ -360,7 +386,7 @@ void View::setModel( QAbstractItemModel* model )
 {
     leftView()->setModel( model );
     d->ganttProxyModel.setSourceModel( model );
-    d->gfxview.setModel( &d->ganttProxyModel );
+    d->gfxview->setModel( &d->ganttProxyModel );
 }
 
 /*! \returns the QItemSelectionModel used by this view
@@ -376,7 +402,7 @@ QItemSelectionModel* View::selectionModel() const
 void View::setSelectionModel( QItemSelectionModel* smodel )
 {
     leftView()->setSelectionModel( smodel );
-    d->gfxview.setSelectionModel( new QItemSelectionModel( &( d->ganttProxyModel ),this ) );
+    d->gfxview->setSelectionModel( new QItemSelectionModel( &( d->ganttProxyModel ),this ) );
 }
 
 /*! Sets the AbstractGrid for this view. The grid is an
@@ -386,7 +412,7 @@ void View::setSelectionModel( QItemSelectionModel* smodel )
  */
 void View::setGrid( AbstractGrid* grid )
 {
-    d->gfxview.setGrid( grid );
+    d->gfxview->setGrid( grid );
 }
 
 void View::expandAll( QModelIndex index )
@@ -405,7 +431,7 @@ void View::collapseAll( QModelIndex index )
  */
 AbstractGrid* View::grid() const
 {
-    return d->gfxview.grid();
+    return d->gfxview->grid();
 }
 
 /*! \returns the rootindex for this view.
@@ -421,14 +447,14 @@ QModelIndex View::rootIndex() const
 void View::setRootIndex( const QModelIndex& idx )
 {
     leftView()->setRootIndex( idx );
-    d->gfxview.setRootIndex( idx );
+    d->gfxview->setRootIndex( idx );
 }
 
 /*! \returns the ItemDelegate used by this view to render items
 */
 ItemDelegate* View::itemDelegate() const
 {
-    return d->gfxview.itemDelegate();
+    return d->gfxview->itemDelegate();
 }
 
 /*! Sets the KDGantt::ItemDelegate used for rendering items on this
@@ -437,7 +463,7 @@ ItemDelegate* View::itemDelegate() const
 void View::setItemDelegate( ItemDelegate* delegate )
 {
     leftView()->setItemDelegate( delegate );
-    d->gfxview.setItemDelegate( delegate );
+    d->gfxview->setItemDelegate( delegate );
 }
 
 /*! Sets the constraintmodel displayed by this view.
@@ -446,7 +472,7 @@ void View::setItemDelegate( ItemDelegate* delegate )
 void View::setConstraintModel( ConstraintModel* cm )
 {
     d->constraintProxy.setSourceModel( cm );
-    d->gfxview.setConstraintModel( &d->mappedConstraintModel );
+    d->gfxview->setConstraintModel( &d->mappedConstraintModel );
 }
 
 /*! \returns the KDGantt::ConstraintModel displayed by this view.
@@ -494,7 +520,7 @@ void View::resizeEvent(QResizeEvent*ev)
  */
 QModelIndex View::indexAt( const QPoint& pos ) const
 {
-    return d->gfxview.indexAt( pos );
+    return d->gfxview->indexAt( pos );
 }
 
 /*! Print the Gantt chart using \a printer. If \a drawRowLabels
@@ -529,7 +555,7 @@ void View::print( QPrinter* printer, qreal start, qreal end, bool drawRowLabels 
  */
 void View::print( QPainter* painter, const QRectF& target, bool drawRowLabels)
 {
-    d->gfxview.print( painter,
+    d->gfxview->print( painter,
 		      target,
 		      drawRowLabels);
 }
@@ -544,7 +570,7 @@ void View::print( QPainter* painter, const QRectF& target, bool drawRowLabels)
  */
 void View::print( QPainter* painter, qreal start, qreal end, const QRectF& target, bool drawRowLabels)
 {
-    d->gfxview.print( painter,
+    d->gfxview->print( painter,
                       start, end,
 		      target,
 		      drawRowLabels);

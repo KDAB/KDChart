@@ -4,6 +4,8 @@
 #include <QDebug>
 
 #include <cassert>
+#include <algorithm>
+#include <functional>
 
 using namespace KDGantt;
 
@@ -70,17 +72,39 @@ void ConstraintModel::init()
 {
 }
 
+namespace {
+    struct compare_constraint_indexes_to : public std::unary_function<bool,Constraint> {
+        compare_constraint_indexes_to( const Constraint& c )
+            : m_c( c ) {
+        }
+        bool operator()( const Constraint& c ) const
+        {
+            return m_c.compareIndexes( c );
+        }
+
+        const Constraint& m_c;
+    };
+}
+
 /*! Adds the constraint \a c to this ConstraintModel
  *  If the Constraint \a c is already in this ConstraintModel,
  *  nothing happens.
  */
 void ConstraintModel::addConstraint( const Constraint& c )
 {
-    //int size = d->constraints.size();
-    bool hasConstraint = d->constraints.contains( c );
-    //d->constraints.insert( c );
-    //if ( size != d->constraints.size() ) {
-    if ( !hasConstraint ) {
+    //qDebug() << "ConstraintModel::addConstraint("<<c<<") (this="<<this<<") items=" << d->constraints.size();
+    QList<Constraint>::iterator it = std::find_if ( d->constraints.begin(),
+                                                    d->constraints.end(),
+                                                    compare_constraint_indexes_to(c) );
+
+    if ( it == d->constraints.end() ) {
+        d->constraints.push_back( c );
+        d->addConstraintToIndex( c.startIndex(), c );
+        d->addConstraintToIndex( c.endIndex(), c );
+        emit constraintAdded( c );
+    } else if ( ( *it ).dataMap() != c.dataMap() ) {
+        Constraint tmp( *it ); // save to avoid re-entrancy issues
+        removeConstraint( tmp );
         d->constraints.push_back( c );
         d->addConstraintToIndex( c.startIndex(), c );
         d->addConstraintToIndex( c.endIndex(), c );
@@ -97,8 +121,6 @@ void ConstraintModel::addConstraint( const Constraint& c )
  */
 bool ConstraintModel::removeConstraint( const Constraint& c )
 {
-    //qDebug() << "ConstraintModel::removeConstraint("<<c<<") from "<< d->constraints;
-
     bool rc = false;
 
     for(int i = 0; i < d->constraints.count(); i++)
@@ -203,8 +225,11 @@ bool ConstraintModel::hasConstraint( const Constraint& c ) const
 
 QDebug operator<<( QDebug dbg, const KDGantt::ConstraintModel& model )
 {
-    dbg << "KDGantt::ConstraintModel[ " << static_cast<const QObject*>( &model ) << ":"
-        << model.constraints() << "]";
+    dbg << "KDGantt::ConstraintModel[ " << static_cast<const QObject*>( &model ) << ": [\n";
+    Q_FOREACH( const Constraint& c, model.constraints() ) {
+        dbg << "\t" << c << "\n";
+    }
+    dbg << "]\n";
     return dbg;
 }
 

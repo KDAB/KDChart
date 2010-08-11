@@ -20,7 +20,7 @@ ConstraintProxy::~ConstraintProxy()
 
 void ConstraintProxy::setSourceModel( ConstraintModel* src )
 {
-    if ( m_source ) disconnect( m_source );
+    if ( m_source ) m_source->disconnect( this );
     m_source = src;
 
     copyFromSource();
@@ -33,7 +33,7 @@ void ConstraintProxy::setSourceModel( ConstraintModel* src )
 
 void ConstraintProxy::setDestinationModel( ConstraintModel* dest )
 {
-    if ( m_destination ) disconnect( m_destination );
+    if ( m_destination ) m_destination->disconnect( this );
     m_destination = dest;
 
     copyFromSource();
@@ -47,7 +47,7 @@ void ConstraintProxy::setDestinationModel( ConstraintModel* dest )
 void ConstraintProxy::setProxyModel( QAbstractProxyModel* proxy )
 {
     if ( m_proxy == proxy ) return;
-    if ( m_proxy  ) disconnect( m_proxy );
+    if ( m_proxy  ) m_proxy->disconnect( this );
     m_proxy = proxy;
     if ( m_proxy ) {
         connect( m_proxy, SIGNAL( layoutChanged() ), this, SLOT( slotLayoutChanged() ) );
@@ -65,12 +65,11 @@ void ConstraintProxy::copyFromSource()
     if ( m_destination ) {
         m_destination->clear();
         if ( !m_source ) return;
-        QList<Constraint> lst = m_source->constraints();
+        const QList<Constraint> lst = m_source->constraints();
         Q_FOREACH( const Constraint& c, lst )
         {
-           Constraint temp( m_proxy->mapFromSource( c.startIndex() ), m_proxy->mapFromSource( c.endIndex() ) );
-           temp.setData(Constraint::ValidConstraintPen, c.data(Constraint::ValidConstraintPen));
-           temp.setData(Constraint::InvalidConstraintPen, c.data(Constraint::InvalidConstraintPen));
+           Constraint temp( m_proxy->mapFromSource( c.startIndex() ), m_proxy->mapFromSource( c.endIndex() ),
+                            c.type(), c.relationType(), c.dataMap() );
            m_destination->addConstraint( temp );
         }
     }
@@ -80,9 +79,8 @@ void ConstraintProxy::slotSourceConstraintAdded( const KDGantt::Constraint& c )
 {
     if ( m_destination )
     {
-        Constraint temp( m_proxy->mapFromSource( c.startIndex() ), m_proxy->mapFromSource( c.endIndex() ), c.type(), c.relationType() );
-        temp.setData(Constraint::ValidConstraintPen, c.data(Constraint::ValidConstraintPen));
-        temp.setData(Constraint::InvalidConstraintPen, c.data(Constraint::InvalidConstraintPen));
+        Constraint temp( m_proxy->mapFromSource( c.startIndex() ), m_proxy->mapFromSource( c.endIndex() ),
+                         c.type(), c.relationType(), c.dataMap() );
         m_destination->addConstraint( temp );
     }
 }
@@ -91,9 +89,8 @@ void ConstraintProxy::slotSourceConstraintRemoved( const KDGantt::Constraint& c 
 {
     if ( m_destination )
     {
-        Constraint temp( m_proxy->mapFromSource( c.startIndex() ), m_proxy->mapFromSource( c.endIndex() ), c.type(), c.relationType() );
-        temp.setData(Constraint::ValidConstraintPen, c.data(Constraint::ValidConstraintPen));
-        temp.setData(Constraint::InvalidConstraintPen, c.data(Constraint::InvalidConstraintPen));
+        Constraint temp( m_proxy->mapFromSource( c.startIndex() ), m_proxy->mapFromSource( c.endIndex() ),
+                         c.type(), c.relationType(), c.dataMap() );
         m_destination->removeConstraint( temp );
     }
 }
@@ -102,9 +99,8 @@ void ConstraintProxy::slotDestinationConstraintAdded( const KDGantt::Constraint&
 {
     if ( m_source )
     {
-        Constraint temp( m_proxy->mapToSource( c.startIndex() ), m_proxy->mapToSource( c.endIndex() ), c.type(), c.relationType() );
-        temp.setData(Constraint::ValidConstraintPen, c.data(Constraint::ValidConstraintPen));
-        temp.setData(Constraint::InvalidConstraintPen, c.data(Constraint::InvalidConstraintPen));
+        Constraint temp( m_proxy->mapToSource( c.startIndex() ), m_proxy->mapToSource( c.endIndex() ),
+                         c.type(), c.relationType(), c.dataMap() );
         m_source->addConstraint( temp );
     }
 }
@@ -113,9 +109,8 @@ void ConstraintProxy::slotDestinationConstraintRemoved( const KDGantt::Constrain
 {
     if ( m_source )
     {
-        Constraint temp( m_proxy->mapToSource( c.startIndex() ), m_proxy->mapToSource( c.endIndex() ), c.type(), c.relationType() );
-        temp.setData(Constraint::ValidConstraintPen, c.data(Constraint::ValidConstraintPen));
-        temp.setData(Constraint::InvalidConstraintPen, c.data(Constraint::InvalidConstraintPen));
+        Constraint temp( m_proxy->mapToSource( c.startIndex() ), m_proxy->mapToSource( c.endIndex() ),
+                         c.type(), c.relationType(), c.dataMap() );
         m_source->removeConstraint( temp );
     }
 }

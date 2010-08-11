@@ -40,7 +40,7 @@ Constraint ConstraintGraphicsItem::proxyConstraint() const
 {
     return Constraint( scene()->summaryHandlingModel()->mapFromSource( m_constraint.startIndex() ),
                        scene()->summaryHandlingModel()->mapFromSource( m_constraint.endIndex() ),
-                       m_constraint.type() );
+                       m_constraint.type(), m_constraint.relationType(), m_constraint.dataMap() );
 }
 
 QRectF ConstraintGraphicsItem::boundingRect() const
@@ -52,7 +52,7 @@ void ConstraintGraphicsItem::paint( QPainter* painter, const QStyleOptionGraphic
                                     QWidget* widget )
 {
     Q_UNUSED( widget );
-
+    //qDebug() << "ConstraintGraphicsItem::paint(...), c=" << m_constraint;
     scene()->itemDelegate()->paintConstraintItem( painter, *option, m_start, m_end, m_constraint );
 }
 

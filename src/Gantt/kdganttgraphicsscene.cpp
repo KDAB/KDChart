@@ -70,36 +70,30 @@ void GraphicsScene::Private::createConstraintItem( const Constraint& c )
         q->addItem( citem );
     }
 
-
-
     //q->insertConstraintItem( c, citem );
 }
 
 // Delete the constraint item, and clean up pointers in the start- and end item
 void GraphicsScene::Private::deleteConstraintItem( ConstraintGraphicsItem *citem )
 {
-    //qDebug()<<"GraphicsScene::Private::deleteConstraintItem citem="<<(void*)citem;
+    //qDebug()<<"GraphicsScene::Private::deleteConstraintItem citem="<<citem;
     if ( citem == 0 ) {
         return;
     }
     Constraint c = citem->constraint();
     GraphicsItem* item = items.value( summaryHandlingModel->mapFromSource( c.startIndex() ), 0 );
     if ( item ) {
-        //qDebug()<<"GraphicsScene::Private::deleteConstraintItem startConstraints"<<item<<(void*)citem;
         item->removeStartConstraint( citem );
-    } //else qDebug()<<"GraphicsScene::Private::deleteConstraintItem"<<c.startIndex()<<"start item not found";
+    }
     item = items.value( summaryHandlingModel->mapFromSource( c.endIndex() ), 0 );
     if ( item ) {
-        //qDebug()<<"GraphicsScene::Private::deleteConstraintItem endConstraints"<<item<<(void*)citem;
         item->removeEndConstraint( citem );
-    } //else qDebug()<<"GraphicsScene::Private::deleteConstraintItem"<<c.endIndex()<<"end item not found";
-    //qDebug()<<"GraphicsScene::Private::deleteConstraintItem"<<citem<<"deleted";
+    }
     delete citem;
 }
 
 void GraphicsScene::Private::deleteConstraintItem( const Constraint& c )
 {
-    //qDebug()<<"GraphicsScene::Private::deleteConstraintItem c="<<c;
     deleteConstraintItem( findConstraintItem( c ) );
 }
 
@@ -107,29 +101,28 @@ ConstraintGraphicsItem* GraphicsScene::Private::findConstraintItem( const Constr
 {
     GraphicsItem* item = items.value( summaryHandlingModel->mapFromSource( c.startIndex() ), 0 );
     if ( item ) {
-        QList<ConstraintGraphicsItem*> clst = item->startConstraints();
-        QList<ConstraintGraphicsItem*>::iterator it = clst.begin();
-        //qDebug()<<"GraphicsScene::Private::findConstraintItem start:"<<c<<item<<clst;
-        for( ; it != clst.end() ; ++it )
+        const QList<ConstraintGraphicsItem*> clst = item->startConstraints();
+        QList<ConstraintGraphicsItem*>::const_iterator it = clst.begin();
+        for( ; it != clst.end() ; ++it ) {
             if ( c.compareIndexes((*it)->constraint()) )
                 break;
+        }
         if (  it != clst.end() ) {
             return *it;
         }
     }
     item = items.value( summaryHandlingModel->mapFromSource( c.endIndex() ), 0 );
     if ( item ) {
-        QList<ConstraintGraphicsItem*> clst = item->endConstraints();
-        QList<ConstraintGraphicsItem*>::iterator it = clst.begin();
-        //qDebug()<<"GraphicsScene::Private::findConstraintItem end:"<<c<<item<<clst;
-        for( ; it != clst.end() ; ++it )
-            if ((*it)->constraint() == c )
+        const QList<ConstraintGraphicsItem*> clst = item->endConstraints();
+        QList<ConstraintGraphicsItem*>::const_iterator it = clst.begin();
+        for( ; it != clst.end() ; ++it ) {
+            if ( c.compareIndexes( (*it)->constraint() ) )
                 break;
+        }
         if (  it != clst.end() ) {
             return *it;
         }
     }
-    //qDebug()<<"GraphicsScene::Private::findConstraintItem No item or constraintitem"<<c;
     return 0;
 }
 
@@ -213,12 +206,14 @@ ConstraintModel* GraphicsScene::constraintModel() const
 void GraphicsScene::setConstraintModel( ConstraintModel* cm )
 {
     if ( !d->constraintModel.isNull() ) {
-        disconnect( d->constraintModel );
+        d->constraintModel->disconnect( this );
     }
     d->constraintModel = cm;
 
-    connect( cm, SIGNAL( constraintAdded( const KDGantt::Constraint& ) ), this, SLOT( slotConstraintAdded( const KDGantt::Constraint& ) ) );
-    connect( cm, SIGNAL( constraintRemoved( const KDGantt::Constraint& ) ), this, SLOT( slotConstraintRemoved( const KDGantt::Constraint& ) ) );
+    connect( cm, SIGNAL( constraintAdded( const KDGantt::Constraint& ) ),
+             this, SLOT( slotConstraintAdded( const KDGantt::Constraint& ) ) );
+    connect( cm, SIGNAL( constraintRemoved( const KDGantt::Constraint& ) ),
+             this, SLOT( slotConstraintRemoved( const KDGantt::Constraint& ) ) );
     d->resetConstraintItems();
 }
 
@@ -247,7 +242,7 @@ void GraphicsScene::setGrid( AbstractGrid* grid )
 {
     QAbstractItemModel* model = d->grid->model();
     if ( grid == 0 ) grid = &d->default_grid;
-    if ( d->grid ) disconnect( d->grid );
+    if ( d->grid ) d->grid->disconnect( this );
     d->grid = grid;
     connect( d->grid, SIGNAL( gridChanged() ), this, SLOT( slotGridChanged() ) );
     d->grid->setModel( model );
