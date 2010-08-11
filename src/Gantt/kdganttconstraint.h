@@ -1,9 +1,11 @@
 #ifndef KDGANTTCONSTRAINT_H
 #define KDGANTTCONSTRAINT_H
 
+#include <QMap>
 #include <QModelIndex>
 #include <QObject>
 #include <QSharedDataPointer>
+#include <QVariant>
 
 #include "../kdchart_export.h"
 #ifndef QT_NO_DEBUG_STREAM
