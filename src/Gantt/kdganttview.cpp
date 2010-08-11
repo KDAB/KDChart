@@ -80,6 +80,7 @@ View::Private::Private(View* v)
 
 View::Private::~Private()
 {
+    delete gfxview;
 }
 
 void View::Private::init()
@@ -203,11 +204,13 @@ void View::Private::slotLeftWidgetVerticalRangeChanged(int min, int max )
 void View::Private::slotGfxViewVerticalRangeChanged( int min, int max )
 {
     //qDebug() << "View::Private::slotGfxViewVerticalRangeChanged("<<min<<max<<")";
-    int leftMin = leftWidget->verticalScrollBar()->minimum();
-    int leftMax = leftWidget->verticalScrollBar()->maximum();
-    bool blocked = gfxview->verticalScrollBar()->blockSignals( true );
-    gfxview->verticalScrollBar()->setRange( qMax( min, leftMin ), qMax( max, leftMax ) );
-    gfxview->verticalScrollBar()->blockSignals( blocked );
+    if ( !leftWidget.isNull() && !gfxview.isNull() ) {
+        int leftMin = leftWidget->verticalScrollBar()->minimum();
+        int leftMax = leftWidget->verticalScrollBar()->maximum();
+        bool blocked = gfxview->verticalScrollBar()->blockSignals( true );
+        gfxview->verticalScrollBar()->setRange( qMax( min, leftMin ), qMax( max, leftMax ) );
+        gfxview->verticalScrollBar()->blockSignals( blocked );
+    }
 }
 
 /*!\class KDGantt::View kdganttview.h KDGanttView
