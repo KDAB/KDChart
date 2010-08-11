@@ -8,6 +8,7 @@
 
 class QPen;
 class QFont;
+class QTextDocument;
 
 namespace KDChart {
 
@@ -167,6 +168,17 @@ public:
    * \return The pen used for rendering the text.
    */
   QPen pen() const;
+
+  /**
+   * \return The document used for the drawing the text or NULL if the
+   * default document is used.
+   */
+  QTextDocument* textDocument() const;
+
+  /**
+   * Sets the document to use for the text. The previous document is deleted.
+   */
+  void setTextDocument(QTextDocument* layout);
 
   // FIXME KDChartEnums::TextLayoutPolicy?
 

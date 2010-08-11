@@ -3,7 +3,8 @@
 #include <QPen>
 #include <qglobal.h>
 #include <QApplication>
-
+#include <QSharedPointer>
+#include <QTextDocument>
 #include <KDABLibFakes>
 #include <KDChartCartesianCoordinatePlane>
 
@@ -15,7 +16,7 @@ class TextAttributes::Private
 {
     friend class TextAttributes;
 public:
-    Private();
+     Private();
 private:
     bool visible;
     QFont font;
@@ -27,13 +28,13 @@ private:
     bool autoShrink;
     int rotation;
     QPen pen;
+    QSharedPointer<QTextDocument> document;
 };
 
 TextAttributes::Private::Private()
 {
     cachedFontSize = -1.0;
 }
-
 
 TextAttributes::TextAttributes()
     : _d( new Private() )
@@ -92,7 +93,8 @@ bool TextAttributes::operator==( const TextAttributes& r ) const
             autoRotate() == r.autoRotate() &&
             autoShrink() == r.autoShrink() &&
             rotation() == r.rotation() &&
-            pen() == r.pen() );
+            pen() == r.pen() &&
+            textDocument() == r.textDocument() );
 }
 
 
@@ -223,6 +225,16 @@ void TextAttributes::setPen( const QPen& pen )
 QPen TextAttributes::pen() const
 {
     return d->pen;
+}
+
+QTextDocument* TextAttributes::textDocument() const
+{
+    return d->document.data();
+}
+
+void TextAttributes::setTextDocument(QTextDocument* document)
+{
+    d->document = QSharedPointer<QTextDocument>(document);
 }
 
 #if !defined(QT_NO_DEBUG_STREAM)

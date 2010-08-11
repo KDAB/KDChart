@@ -14,7 +14,7 @@
 #include <QDebug>
 #include <QPainter>
 #include <QLinearGradient>
-
+#include <QTextDocument>
 
 MainWindow::MainWindow( QWidget* parent ) :
     QWidget( parent )
@@ -34,6 +34,8 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_lines->setModel( &m_model );
 
     KDChart::CartesianAxis *xAxis = new KDChart::CartesianAxis( m_lines );
+    KDChart::TextAttributes ta( xAxis->textAttributes() );
+
     AdjustedCartesianAxis *yAxis = new AdjustedCartesianAxis( m_lines );
     yAxis->setBounds(3, 6);
     xAxis->setPosition ( KDChart::CartesianAxis::Bottom );
@@ -68,13 +70,23 @@ MainWindow::MainWindow( QWidget* parent ) :
     QStringList daysOfWeek;
     daysOfWeek << "Monday" << "Tuesday" << "Wednesday" << "Thursday" << "Friday" << "Saturday" << "Sunday";
     xAxis->setLabels( daysOfWeek );
-    QStringList shortDays;
-    shortDays << "Mon" << "Tue" << "Wed" << "Thu" << "Fri" << "Sat" << "Sun";
+
+    //QStringList shortDays;
+    //shortDays << "Mon" << "Tue" << "Wed" << "Thu" << "Fri" << "Sat" << "Sun";
     //xAxis->setShortLabels( shortDays );
 #endif
 
+// Use HTML for drawing the text in the axis labels.
+#if 0
+    QStringList htmlStyles;
+    htmlStyles << "<b>Bold</b>" << "<i>Italic</i>" << "<u>Underline</u>" << "<font color='red'>Red</font>";
+    xAxis->setLabels( htmlStyles );
+    ta.setTextDocument(new QTextDocument);
+#endif
+
+
 // set custom axis labels at custom positions
-#if 1
+#if 0
     QMap< double, QString > annotations;
     annotations[0.5] = "Left";
     annotations[3.5] = "Center";
@@ -93,10 +105,9 @@ MainWindow::MainWindow( QWidget* parent ) :
     yAxis->setCustomTicks(ticks);
 
     // rotate abscissa labels by -60 degrees:
-    KDChart::TextAttributes ta( xAxis->textAttributes() );
     ta.setRotation( -60 );
-    xAxis->setTextAttributes( ta );
 
+    xAxis->setTextAttributes( ta );
     m_lines->addAxis( xAxis );
     m_lines->addAxis( yAxis );
     m_chart->coordinatePlane()->replaceDiagram( m_lines );

@@ -626,7 +626,16 @@ void KDChart::TextLayoutItem::paint( QPainter* painter )
 #endif
     painter->setPen( PrintingParameters::scalePen( mAttributes.pen() ) );
 
-    painter->drawText( rect, mTextAlignment, mText );
+    QTextDocument* document = mAttributes.textDocument();
+    if ( document ) {
+        document->setPageSize(QSize(rect.width(), rect.height()));
+        document->setHtml(mText);
+        QAbstractTextDocumentLayout::PaintContext paintcontext;
+        paintcontext.clip = rect;
+        document->documentLayout()->draw(painter, paintcontext);
+    } else {
+        painter->drawText( rect, mTextAlignment, mText );
+    }
 
 //    if (  calcSizeHint( realFont() ).width() > rect.width() )
 //        qDebug() << "rect.width()" << rect.width() << "text.width()" << calcSizeHint( realFont() ).width();
