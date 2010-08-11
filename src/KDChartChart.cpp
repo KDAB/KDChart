@@ -488,7 +488,9 @@ void Chart::Private::slotLayoutPlanes()
             // this plane is sharing an axis with another one, so use
             // the grid of that one as well
             planeLayout = planeInfos[pi.referencePlane].gridLayout;
-            Q_ASSERT( planeLayout );
+            Q_ASSERT_X(planeLayout,
+                       "Chart::Private::slotLayoutPlanes()",
+                       "Invalid reference plane. Please Check whether the reference plane is added to the Chart or not" );
         } else {
             planesLayout->addLayout( planeLayout );
         }
