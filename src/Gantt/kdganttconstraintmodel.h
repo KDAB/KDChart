@@ -15,6 +15,11 @@ namespace KDGantt {
         explicit ConstraintModel( QObject* parent=0 );
         virtual ~ConstraintModel();
 
+        /**
+        * Subclassing ConstraintModel and overriding addConstraint() and removeConstraint() can provide
+        * re-entrancy issues in the ConstraintModel<->ConstraintProxy interaction. Therefore it is recommed
+        * to better subclass GraphicsView and override addConstraint() there.
+        */
         virtual void addConstraint( const Constraint& c );
         virtual bool removeConstraint( const Constraint& c );
 
