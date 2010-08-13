@@ -128,6 +128,9 @@ void MainWindow::initActions()
     zoomOutAction = new QAction( tr( "Zoom Out" ), this );
     zoomOutAction->setShortcut( QKeySequence::ZoomOut );
     connect( zoomOutAction, SIGNAL( triggered() ), this, SLOT( zoomOut() ) );
+    
+    zoomFitAction = new QAction( tr( "Zoom to Fit" ), this );
+    connect( zoomFitAction, SIGNAL( triggered() ), this, SLOT( zoomFit() ) );
 
     ui->ganttView->leftView()->setContextMenuPolicy( Qt::CustomContextMenu );
     ui->ganttView->leftView()->addAction( newEntryAction );
@@ -140,6 +143,7 @@ void MainWindow::initActions()
     QMenu* zoomMenu = menuBar()->addMenu( tr( "Zoom" ) );
     zoomMenu->addAction( zoomInAction );
     zoomMenu->addAction( zoomOutAction );
+    zoomMenu->addAction( zoomFitAction );
 
     enableActions( QItemSelection() );
 }
@@ -286,4 +290,22 @@ void MainWindow::zoomOut()
         grid->setScale( KDGantt::DateTimeGrid::ScaleDay );
 
     grid->setDayWidth( dayWidth );
+}
+
+void MainWindow::zoomFit()
+{
+    QModelIndexList selectedIndexes = ui->ganttView->selectionModel()->selectedIndexes();
+    QModelIndex index = selectedIndexes.value( 0 );
+
+    if( !index.isValid() )
+        return;
+
+    KDGantt::Span span = grid->mapToChart( grid->model()->index( index.row(), 0 ) );
+
+    QRectF rect = ui->ganttView->graphicsView()->sceneRect();
+    const qreal w = span.end() - span.start();
+    const qreal s = rect.width() / qMax(qreal(1.0),w);
+    rect.setWidth( rect.width() * s );
+    rect.setHeight( rect.height() * s );
+    ui->ganttView->graphicsView()->fitInView(rect);
 }

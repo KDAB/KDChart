@@ -32,6 +32,7 @@ private slots:
     void enableActions( const QItemSelection& selected );
     void zoomIn();
     void zoomOut();
+    void zoomFit();
     
 private:
     void initModel();
@@ -53,6 +54,7 @@ private:
     QAction* removeEntryAction;
     QAction* zoomInAction;
     QAction* zoomOutAction;
+    QAction* zoomFitAction;
     
     Ui::MainWindow* ui;
 };
