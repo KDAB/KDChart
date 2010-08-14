@@ -24,7 +24,7 @@ public:
     explicit MainWindow( QWidget * parent = 0, Qt::WindowFlags flags = 0 );
     virtual ~MainWindow();
     virtual void closeEvent(QCloseEvent *event);
-    
+
 private slots:
     void addNewEntry();
     void removeEntry();
@@ -33,29 +33,28 @@ private slots:
     void zoomIn();
     void zoomOut();
     void zoomFit();
-    
+
 private:
     void initModel();
     void initActions();
     void initItemDelegate();
     void initGrid();
-    
+
     void setReadOnly( const QModelIndex& index, bool readOnly );
     void addConstraint( const QModelIndex& index1, const QModelIndex& index2 );
-    
+
     QStandardItemModel* model;
     KDGantt::ConstraintModel* constraintModel;
     KDGantt::DateTimeGrid* grid;
     KDGantt::Legend* smallLegend;
     KDGantt::Legend* detailedLegend;
-    int dayWidth;
-    
+
     QAction* newEntryAction;
     QAction* removeEntryAction;
     QAction* zoomInAction;
     QAction* zoomOutAction;
     QAction* zoomFitAction;
-    
+
     Ui::MainWindow* ui;
 };
 

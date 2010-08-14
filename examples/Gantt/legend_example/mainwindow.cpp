@@ -15,6 +15,7 @@
 #include <QTreeView>
 #include <QCloseEvent>
 #include <QPointer>
+#include <QScrollBar>
 
 class MyStandardItem : public QStandardItem {
 public:
@@ -32,7 +33,6 @@ MainWindow::MainWindow( QWidget* parent, Qt::WindowFlags flags )
     : QMainWindow( parent, flags ),
       smallLegend( 0 ),
       detailedLegend( 0 ),
-      dayWidth( 70 ),
       ui( new Ui::MainWindow )
 {
     ui->setupUi( this );
@@ -128,7 +128,7 @@ void MainWindow::initActions()
     zoomOutAction = new QAction( tr( "Zoom Out" ), this );
     zoomOutAction->setShortcut( QKeySequence::ZoomOut );
     connect( zoomOutAction, SIGNAL( triggered() ), this, SLOT( zoomOut() ) );
-    
+
     zoomFitAction = new QAction( tr( "Zoom to Fit" ), this );
     connect( zoomFitAction, SIGNAL( triggered() ), this, SLOT( zoomFit() ) );
 
@@ -157,7 +157,7 @@ void MainWindow::initItemDelegate()
 void MainWindow::initGrid()
 {
     grid = new KDGantt::DateTimeGrid();
-    grid->setDayWidth( dayWidth );
+    grid->setDayWidth( 70 );
     ui->ganttView->setGrid( grid );
 }
 
@@ -273,7 +273,7 @@ void MainWindow::removeEntry()
 
 void MainWindow::zoomIn()
 {
-    dayWidth += 10;
+    qreal dayWidth = grid->dayWidth() + 10;
     if( dayWidth > 400 )
         grid->setScale( KDGantt::DateTimeGrid::ScaleHour );
 
@@ -282,7 +282,7 @@ void MainWindow::zoomIn()
 
 void MainWindow::zoomOut()
 {
-    dayWidth -= 10;
+    qreal dayWidth = grid->dayWidth() - 10;
     if( dayWidth < 10 )
         dayWidth = 10;
 
@@ -295,17 +295,37 @@ void MainWindow::zoomOut()
 void MainWindow::zoomFit()
 {
     QModelIndexList selectedIndexes = ui->ganttView->selectionModel()->selectedIndexes();
-    QModelIndex index = selectedIndexes.value( 0 );
 
-    if( !index.isValid() )
+    if ( selectedIndexes.isEmpty() ) {
         return;
+    }
 
-    KDGantt::Span span = grid->mapToChart( grid->model()->index( index.row(), 0 ) );
+    KDGantt::Span span;
+    Q_FOREACH( QModelIndex idx, selectedIndexes ) {
+        const KDGantt::Span s = grid->mapToChart( grid->model()->index( idx.row(), 0 ) );
+        if ( span.isValid() ) {
+            span = span.expandedTo( s );
+        } else {
+            span = s;
+        }
+    }
 
-    QRectF rect = ui->ganttView->graphicsView()->sceneRect();
-    const qreal w = span.end() - span.start();
-    const qreal s = rect.width() / qMax(qreal(1.0),w);
-    rect.setWidth( rect.width() * s );
-    rect.setHeight( rect.height() * s );
-    ui->ganttView->graphicsView()->fitInView(rect);
+    span.setLength( span.length()+20 );
+    span.setStart( span.start()-10 );
+
+    qDebug() << selectedIndexes << span;
+
+    const qreal view_width = ui->ganttView->graphicsView()->viewport()->width();
+    const QDateTime start = grid->mapFromChart( span.start() ).value<QDateTime>();
+    const QDateTime end = grid->mapFromChart( span.end() ).value<QDateTime>();
+
+    qreal delta = start.date().daysTo(end.date());
+    delta += start.time().msecsTo(end.time())/( 1000.*24.*60.*60. );
+
+
+    qDebug() << view_width << "/" << delta;
+    grid->setDayWidth( view_width/( std::max( 1., delta ) ) );
+    qDebug() << "daywidth set to" << grid->dayWidth();
+    qDebug() << "start scroll to" << grid->mapToChart( start );
+    ui->ganttView->graphicsView()->horizontalScrollBar()->setValue( grid->mapToChart( start ) );
 }
