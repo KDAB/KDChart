@@ -39,8 +39,8 @@ namespace KDGantt {
         Constraint( const QModelIndex& idx1,
                     const QModelIndex& idx2,
                     Type type=TypeSoft,
-                    RelationType=FinishStart,
-                    const QMap<int, QVariant>& dataMap = QMap<int, QVariant>() );
+                    RelationType relType=FinishStart,
+                    const QMap<int, QVariant>& dataMap=QMap<int, QVariant>() );
         Constraint( const Constraint& other);
         ~Constraint();
 
