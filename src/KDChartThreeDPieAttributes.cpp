@@ -18,12 +18,13 @@ ThreeDPieAttributes::Private::Private()
 ThreeDPieAttributes::ThreeDPieAttributes()
     : AbstractThreeDAttributes( new Private() )
 {
-
+    init();
 }
 
 ThreeDPieAttributes::ThreeDPieAttributes( const ThreeDPieAttributes& r )
     : AbstractThreeDAttributes( new Private( *r.d) )
 {
+    init();
 }
 
 ThreeDPieAttributes& ThreeDPieAttributes::operator= ( const ThreeDPieAttributes& r )
@@ -42,6 +43,7 @@ ThreeDPieAttributes::~ThreeDPieAttributes()
 
 void ThreeDPieAttributes::init()
 {
+    setDepth( -10 );
 }
 
 

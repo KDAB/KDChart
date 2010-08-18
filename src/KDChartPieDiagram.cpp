@@ -471,10 +471,11 @@ void PieDiagram::drawPieSurface( QPainter* painter,
 
         painter->setRenderHint ( QPainter::Antialiasing );
         painter->setBrush( brush( index ) );
-        painter->setPen( pen( index ) );
-//        if ( threeDAttrs.isEnabled() )
-//            pen.setColor( QColor( 0, 0, 0 ) );
-//        painter->setPen( pen );
+        //painter->setPen( pen( index ) );
+        QPen pen = this->pen( index );
+        if ( threeDAttrs.isEnabled() )
+            pen.setColor( QColor( 0, 0, 0 ) );
+        painter->setPen( pen );
 
         if ( angleLen == 360 ) {
             // full circle, avoid nasty line in the middle
@@ -607,7 +608,7 @@ void PieDiagram::draw3DEffect( QPainter* painter,
     // method anyway.
     if( threeDAttrs.useShadowColors() ){
         const QPen pen = this->pen( model()->index( 0, pie, rootIndex() ) );
-        painter->setBrush( QBrush( pen.color() ) );
+        painter->setBrush( QBrush( pen.color().darker() ) );
     }
     //painter->setBrush( QBrush( threeDAttrs.dataShadow1Color( pie ),
     //            params()->shadowPattern() ) );
@@ -623,58 +624,62 @@ void PieDiagram::draw3DEffect( QPainter* painter,
     Q_ASSERT( endAngle >= 0 && endAngle <= 360 );
 
     //int centerY = drawPosition.center().y();
-
+    
+    // positive pie height: absolute value
+    // negative pie height: relative value
+    const int depth = threeDAttrs.depth() >= 0.0 ? threeDAttrs.depth() : -threeDAttrs.depth() / 100.0 * drawPosition.height();
+ 
     if ( startAngle == endAngle ||
             startAngle == endAngle - 360 ) { // full circle
         drawArcEffectSegment( painter, drawPosition,
-                threeDAttrs.depth(),
+                depth,
                 180, 360, granularity );
     } else if ( startAngle <= 90 ) {
         if ( endAngle <= 90 ) {
             if ( startAngle <= endAngle ) {
                 /// starts and ends in first quadrant, less than 1/4
                 drawStraightEffectSegment( painter, drawPosition,
-                    threeDAttrs.depth(), startAngle );
+                    depth, startAngle );
                 drawUpperBrinkEffect( painter, drawPosition, endAngle );
             } else {
                 /// starts and ends in first quadrant, more than 3/4
                 drawStraightEffectSegment( painter, drawPosition,
-                    threeDAttrs.depth(), startAngle );
+                    depth, startAngle );
                 drawUpperBrinkEffect( painter, drawPosition, endAngle );
                 drawArcEffectSegment( painter, drawPosition,
-                    threeDAttrs.depth(),
+                    depth,
                     180, 360, granularity );
             }
         } else if ( endAngle <= 180 ) {
             /// starts in first quadrant, ends in second quadrant,
             /// less than 1/2
             drawStraightEffectSegment( painter, drawPosition,
-                threeDAttrs.depth(), startAngle );
+                depth, startAngle );
             drawStraightEffectSegment( painter, drawPosition,
-                threeDAttrs.depth(), endAngle );
+                depth, endAngle );
         } else if ( endAngle <= 270 ) {
             /// starts in first quadrant, ends in third quadrant
             drawStraightEffectSegment( painter, drawPosition,
-                threeDAttrs.depth(), startAngle );
+                depth, startAngle );
             drawStraightEffectSegment( painter, drawPosition,
-                threeDAttrs.depth(), endAngle );
+                depth, endAngle );
             drawArcEffectSegment( painter, drawPosition,
-                threeDAttrs.depth(),
+                depth,
                 180, endAngle, granularity );
         } else { // 270*16 < endAngle < 360*16
             /// starts in first quadrant, ends in fourth quadrant,
             /// more than 3/4
             drawStraightEffectSegment( painter, drawPosition,
-                threeDAttrs.depth(), startAngle );
+                depth, startAngle );
             drawUpperBrinkEffect( painter, drawPosition, endAngle );
             drawArcEffectSegment( painter, drawPosition,
-                threeDAttrs.depth(),
+                depth,
                 180, endAngle, granularity );
         }
     } else if ( startAngle <= 180 ) {
         if ( endAngle <= 90 ) {
             drawArcEffectSegment( painter, drawPosition,
-                threeDAttrs.depth(),
+                depth,
                 180, 360, granularity );
             drawUpperBrinkEffect( painter, drawPosition, startAngle );
             drawUpperBrinkEffect( painter, drawPosition, endAngle );
@@ -683,28 +688,28 @@ void PieDiagram::draw3DEffect( QPainter* painter,
                 /// starts in second quadrant, ends in second
                 /// quadrant, less than 1/4
                 drawStraightEffectSegment( painter, drawPosition,
-                    threeDAttrs.depth(), endAngle );
+                    depth, endAngle );
                 drawUpperBrinkEffect( painter, drawPosition, startAngle );
             } else {
                 /// starts in second quadrant, ends in second
                 /// quadrant, more than 1/4
                 drawStraightEffectSegment( painter, drawPosition,
-                    threeDAttrs.depth(), endAngle );
+                    depth, endAngle );
                 drawUpperBrinkEffect( painter, drawPosition, startAngle );
                 drawArcEffectSegment( painter, drawPosition,
-                    threeDAttrs.depth(),
+                    depth,
                     180, 360, granularity );
             }
         } else if ( endAngle <= 270 ) {
             drawStraightEffectSegment( painter, drawPosition,
-                threeDAttrs.depth(), endAngle );
+                depth, endAngle );
             drawUpperBrinkEffect( painter, drawPosition, startAngle );
             drawArcEffectSegment( painter, drawPosition,
-                threeDAttrs.depth(),
+                depth,
                 180, endAngle, granularity );
         } else { // 270*16 < endAngle < 360*16
             drawArcEffectSegment( painter, drawPosition,
-                threeDAttrs.depth(),
+                depth,
                 180, endAngle, granularity );
             drawUpperBrinkEffect( painter, drawPosition, startAngle );
             drawUpperBrinkEffect( painter, drawPosition, endAngle );
@@ -712,43 +717,43 @@ void PieDiagram::draw3DEffect( QPainter* painter,
     } else if ( startAngle <= 270 ) {
         if ( endAngle <= 90 ) {
             drawArcEffectSegment( painter, drawPosition,
-                threeDAttrs.depth(),
+                depth,
                 startAngle, 360, granularity );
             drawUpperBrinkEffect( painter, drawPosition, startAngle );
             drawUpperBrinkEffect( painter, drawPosition, endAngle );
         } else if ( endAngle <= 180 ) {
             drawStraightEffectSegment( painter, drawPosition,
-                threeDAttrs.depth(), endAngle );
+                depth, endAngle );
             drawUpperBrinkEffect( painter, drawPosition, startAngle );
             drawArcEffectSegment( painter, drawPosition,
-                threeDAttrs.depth(),
+                depth,
                 startAngle, 360, granularity );
         } else if ( endAngle <= 270 ) {
             if ( startAngle <= endAngle ) {
                 /// starts in third quadrant, ends in third quadrant,
                 /// less than 1/4
                 drawStraightEffectSegment( painter, drawPosition,
-                    threeDAttrs.depth(), endAngle );
+                    depth, endAngle );
                 drawUpperBrinkEffect( painter, drawPosition, startAngle );
                 drawArcEffectSegment( painter, drawPosition,
-                    threeDAttrs.depth(),
+                    depth,
                     startAngle, endAngle, granularity );
             } else {
                 /// starts in third quadrant, ends in third quadrant,
                 /// more than 3/4
                 drawStraightEffectSegment( painter, drawPosition,
-                    threeDAttrs.depth(), endAngle );
+                    depth, endAngle );
                 drawUpperBrinkEffect( painter, drawPosition, startAngle );
                 drawArcEffectSegment( painter, drawPosition,
-                    threeDAttrs.depth(),
+                    depth,
                     180, endAngle, granularity );
                 drawArcEffectSegment( painter, drawPosition,
-                    threeDAttrs.depth(),
+                    depth,
                     startAngle, 360, granularity );
             }
         } else { // 270*16 < endAngle < 360*16
             drawArcEffectSegment( painter, drawPosition,
-                threeDAttrs.depth(),
+                depth,
                 startAngle, endAngle, granularity );
             drawUpperBrinkEffect( painter, drawPosition, startAngle );
             drawUpperBrinkEffect( painter, drawPosition, endAngle );
@@ -756,51 +761,51 @@ void PieDiagram::draw3DEffect( QPainter* painter,
     } else { // 270*16 < startAngle < 360*16
         if ( endAngle <= 90 ) {
             drawStraightEffectSegment( painter, drawPosition,
-                threeDAttrs.depth(), startAngle );
+                depth, startAngle );
             drawUpperBrinkEffect( painter, drawPosition, endAngle );
             drawArcEffectSegment( painter, drawPosition,
-                threeDAttrs.depth(),
+                depth,
                 startAngle, 360, granularity );
         } else if ( endAngle <= 180 ) {
             drawStraightEffectSegment( painter, drawPosition,
-                threeDAttrs.depth(), startAngle );
+                depth, startAngle );
             drawStraightEffectSegment( painter, drawPosition,
-                threeDAttrs.depth(), endAngle );
+                depth, endAngle );
             drawArcEffectSegment( painter, drawPosition,
-                threeDAttrs.depth(),
+                depth,
                 startAngle, 360, granularity );
         } else if ( endAngle <= 270 ) {
             drawStraightEffectSegment( painter, drawPosition,
-                threeDAttrs.depth(), startAngle );
+                depth, startAngle );
             drawStraightEffectSegment( painter, drawPosition,
-                threeDAttrs.depth(), endAngle );
+                depth, endAngle );
             drawArcEffectSegment( painter, drawPosition,
-                threeDAttrs.depth(),
+                depth,
                 180, endAngle, granularity );
             drawArcEffectSegment( painter, drawPosition,
-                threeDAttrs.depth(),
+                depth,
                 startAngle, 360, granularity );
         } else { // 270*16 < endAngle < 360*16
             if ( startAngle <= endAngle ) {
                 /// starts in fourth quadrant, ends in fourth
                 /// quadrant, less than 1/4
                 drawStraightEffectSegment( painter, drawPosition,
-                    threeDAttrs.depth(), startAngle );
+                    depth, startAngle );
                 drawUpperBrinkEffect( painter, drawPosition, endAngle );
                 drawArcEffectSegment( painter, drawPosition,
-                    threeDAttrs.depth(),
+                    depth,
                     startAngle, endAngle, granularity );
             } else {
                 /// starts in fourth quadrant, ends in fourth
                 /// quadrant, more than 3/4
                 drawStraightEffectSegment( painter, drawPosition,
-                    threeDAttrs.depth(), startAngle );
+                    depth, startAngle );
                 drawUpperBrinkEffect( painter, drawPosition, endAngle );
                 drawArcEffectSegment( painter, drawPosition,
-                    threeDAttrs.depth(),
+                    depth,
                     startAngle, 360, granularity );
                 drawArcEffectSegment( painter, drawPosition,
-                    threeDAttrs.depth(),
+                    depth,
                     180, endAngle, granularity );
             }
         }
