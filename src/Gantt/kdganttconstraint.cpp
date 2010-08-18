@@ -56,14 +56,14 @@ Constraint::Constraint( const QModelIndex& idx1,
                         const QModelIndex& idx2,
                         Constraint::Type type,
                         Constraint::RelationType relationType,
-                        const QMap<int, QVariant>& dataMap )
+                        const Constraint::DataMap& datamap )
     : d( new Private )
 {
     d->start=idx1;
     d->end=idx2;
     d->type=type;
     d->relationType=relationType;
-    d->data=dataMap;
+    d->data=datamap;
     Q_ASSERT_X( idx1 != idx2 || !idx1.isValid(), "Constraint::Constraint", "cannot create a constraint with idx1 == idx2" );
 }
 

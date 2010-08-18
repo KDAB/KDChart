@@ -35,12 +35,14 @@ namespace KDGantt {
             InvalidConstraintPen
         };
 
+        typedef QMap<int, QVariant> DataMap;
+
         Constraint();
         Constraint( const QModelIndex& idx1,
                     const QModelIndex& idx2,
                     Type type=TypeSoft,
                     RelationType relType=FinishStart,
-                    const QMap<int, QVariant>& dataMap=QMap<int, QVariant>() );
+                    const DataMap& datamap=DataMap() );
         Constraint( const Constraint& other);
         ~Constraint();
 
