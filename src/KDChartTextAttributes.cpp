@@ -26,6 +26,7 @@ private:
     Measure minimalFontSize;
     bool autoRotate;
     bool autoShrink;
+    bool hasRotation;
     int rotation;
     QPen pen;
     QSharedPointer<QTextDocument> document;
@@ -44,6 +45,7 @@ TextAttributes::TextAttributes()
     setAutoRotate( false );
     setAutoShrink( false );
     setRotation( 0 );
+    resetRotation();
     setPen( QPen( Qt::black ) );
 }
 
@@ -209,12 +211,24 @@ bool TextAttributes::autoShrink() const
 
 void TextAttributes::setRotation( int rotation )
 {
+    d->hasRotation = true;
     d->rotation = rotation;
 }
 
 int TextAttributes::rotation() const
 {
     return d->rotation;
+}
+
+void TextAttributes::resetRotation()
+{
+    d->hasRotation = false;
+    d->rotation = 0;
+}
+
+bool TextAttributes::hasRotation() const
+{
+    return d->hasRotation;
 }
 
 void TextAttributes::setPen( const QPen& pen )

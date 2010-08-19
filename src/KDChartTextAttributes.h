@@ -152,6 +152,8 @@ public:
    * \param rotation The rotation angle.
    */
   void setRotation( int rotation );
+  void resetRotation();
+  bool hasRotation() const;
 
   /**
    * \return The rotation angle used for rendering the text.

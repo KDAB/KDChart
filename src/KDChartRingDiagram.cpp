@@ -402,6 +402,19 @@ void RingDiagram::drawPieSurface( QPainter* painter,
             painter->drawPolygon( poly );
 
             const QPointF centerPoint = (innerCenterPoint + outerCenterPoint) / 2.0;
+            
+            const PainterSaver ps( painter );
+            const TextAttributes ta = dataValueAttributes( index ).textAttributes();
+            if( !ta.hasRotation() )
+            {
+                const QPointF& p1 = poly.last();
+                const QPointF& p2 = poly[ lastInnerBrinkPoint ];
+                const QLineF line( p1, p2 );
+                const qreal angle = line.dx() == 0 ? 0.0 : atan( line.dy() / line.dx() );
+                painter->translate( centerPoint );
+                painter->rotate( angle / 2.0 / 3.141592653589793 * 360.0 );
+                painter->translate( -centerPoint );
+            }
 
             paintDataValueText( painter, index, centerPoint, angleLen*sum / 360  );
 
@@ -421,7 +434,7 @@ QPointF RingDiagram::pointOnCircle( const QRectF& rect, int dataset, int pie, bo
     QModelIndex index( model()->index( dataset, pie, rootIndex() ) );
     const PieAttributes attrs( pieAttributes( index ) );
 
-	const int rCount = rowCount();
+	const int rCount = rowCount() * 2;
 
     //const qreal gapFactor = attrs.gapFactor( false );
 
