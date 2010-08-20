@@ -1,12 +1,12 @@
 KDCHART_PATH = ../../..
 
-TEMPLATE = app
-TARGET = 
+TARGET = TestHeaders
+
+include( $$KDCHART_PATH/examples/examples.pri )
+
 DEPENDPATH += . ../../../include ../../../src/Gantt
 INCLUDEPATH += . ../../../include
 QT += svg
-
-LIBS+= -L$$KDCHART_PATH/lib -l$$KDCHARTLIB
 
 # Input
 SOURCES += main.cpp

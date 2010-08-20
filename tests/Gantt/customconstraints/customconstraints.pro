@@ -1,7 +1,9 @@
 KDCHART_PATH = ../../..
 
-TEMPLATE = app
-TARGET = 
+TARGET = TestCustomConstraints
+
+include( $$KDCHART_PATH/examples/examples.pri )
+
 DEPENDPATH += . ../../../include ../../../src ../../../src/Gantt
 INCLUDEPATH += . ../../../include
 

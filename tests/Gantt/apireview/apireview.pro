@@ -1,12 +1,12 @@
 KDCHART_PATH = ../../..
 
-TEMPLATE = app
-TARGET =
+TARGET = TestApiReview
+
+include( $$KDCHART_PATH/examples/examples.pri )
+
 DEPENDPATH += . ../../../include
 INCLUDEPATH += . ../../../include
 QT += svg
-
-LIBS += -L$$KDCHART_PATH/lib -l$$KDCHARTLIB
 
 HEADERS += mainwindow.h \
            entrydialog.h \
