@@ -95,12 +95,14 @@ namespace KDChart {
             const PositionPoints& points,
             const Position& autoPositionPositive,
             const Position& autoPositionNegative,
-            const qreal value )
+            const qreal value,
+            qreal favoriteAngle = 0.0 )
         {
             CartesianDiagramDataCompressor::DataValueAttributesList allAttrs( aggregatedAttrs( diagram, index, position ) );
             QMap<QModelIndex, DataValueAttributes>::const_iterator i;
             for (i = allAttrs.constBegin(); i != allAttrs.constEnd(); ++i){
-                if( i.value().isVisible() ){
+                DataValueAttributes dva = i.value();
+                if( dva.isVisible() ){
                     const bool bValueIsPositive = (value >= 0.0);
                     RelativePosition relPos( i.value().position( bValueIsPositive ) );
                     relPos.setReferencePoints( points );
@@ -109,7 +111,7 @@ namespace KDChart {
 
                     const QPointF referencePoint = relPos.referencePoint();
                     if( diagram->coordinatePlane()->isVisiblePoint( referencePoint ) ){
-                        const qreal fontHeight = cachedFontMetrics( i.value().textAttributes().
+                        const qreal fontHeight = cachedFontMetrics( dva.textAttributes().
                                 calculatedFont( plane, KDChartEnums::MeasureOrientationMinimum ), diagram )->height();
                         // Note: When printing data value texts the font height is used as reference size for both,
                         //       horizontal and vertical padding, if the respective padding's Measure is using
@@ -117,10 +119,17 @@ namespace KDChart {
                         QSizeF relativeMeasureSize( fontHeight, fontHeight );
                         //qDebug()<<"fontHeight"<<fontHeight;
 
+                        if( !dva.textAttributes().hasRotation() )
+                        {
+                            TextAttributes ta = dva.textAttributes();
+                            ta.setRotation( favoriteAngle );
+                            dva.setTextAttributes( ta );
+                        }
+
                         // Store the anchor point, that's already shifted according to horiz./vert. padding:
                         list.append( DataValueTextInfo(
                                         i.key(),
-                                        i.value(),
+                                        dva,
                                         relPos.calculatedPoint( relativeMeasureSize ),
                                         referencePoint,
                                         value ) );
@@ -199,6 +208,13 @@ namespace KDChart {
             clearListOfAlreadyDrawnDataValueTexts();
             while ( it.hasNext() ) {
                 const DataValueTextInfo& info = it.next();
+                const PainterSaver ps( ctx->painter() );
+                if( !diag->dataValueAttributes( info.index ).textAttributes().hasRotation() )
+                {
+                    ctx->painter()->translate( info.pos );
+                    ctx->painter()->rotate( info.attrs.textAttributes().rotation() );
+                    ctx->painter()->translate( -info.pos );
+                }
                 paintDataValueText( diag, ctx->painter(), info.index, info.pos, info.value,
                                     justCalculateRect,
                                     cumulatedBoundingRect );

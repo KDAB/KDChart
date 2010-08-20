@@ -477,6 +477,8 @@ void PieDiagram::drawPieSurface( QPainter* painter,
             pen.setColor( QColor( 0, 0, 0 ) );
         painter->setPen( pen );
 
+        qreal favoriteTextAngle = 0.0;
+
         if ( angleLen == 360 ) {
             // full circle, avoid nasty line in the middle
             painter->drawEllipse( drawPosition );
@@ -514,6 +516,10 @@ void PieDiagram::drawPieSurface( QPainter* painter,
             d->reverseMapper.addPolygon( index.row(), index.column(), poly );
 			
             painter->drawPolygon( poly );
+
+            const QLineF line( poly.first(), poly[ poly.count() - 2 ] );
+            favoriteTextAngle = line.dx() == 0 ? 0.0 : atan( line.dy() / line.dx() );
+            favoriteTextAngle = favoriteTextAngle / 2.0 / 3.141592653589793 * 360.0;
         }
         // the new code is setting the needed position points according to the slice:
         // all is calculated as if the slice were 'standing' on it's tip and the border
@@ -560,7 +566,7 @@ void PieDiagram::drawPieSurface( QPainter* painter,
         d->appendDataValueTextInfoToList(
                 this, *list, index, 0,
                 points, Position::Center, Position::Center,
-                angleLen*sum / 360 );
+                angleLen*sum / 360, favoriteTextAngle );
 
         // The following, old code (since kdc 2.0.0) was not correct:
         // Settings made for the position had been totally ignored,
