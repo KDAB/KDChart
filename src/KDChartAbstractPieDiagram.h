@@ -42,6 +42,14 @@ public:
     /** \deprecated Use qreal PolarCoordinatePlane::startPosition instead. */
     int startPosition() const;
 
+    /** If this property is set, and if a pie's TextAttributes have no rotation set, its labels will
+     * automatically be rotated according to the pie's angle.
+     */
+    void setAutoRotateLabels( bool autoRotate );
+    /** \see setAutoRotateLabels( bool autoRotate )
+     */
+    bool autoRotateLabels() const;
+
     void setPieAttributes( const PieAttributes & a );
     void setPieAttributes( int   column,
                            const PieAttributes & a );

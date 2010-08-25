@@ -12,8 +12,9 @@
 
 using namespace KDChart;
 
-AbstractPieDiagram::Private::Private() :
-    granularity( 1.0 )
+AbstractPieDiagram::Private::Private()
+    : granularity( 1.0 )
+    , autoRotateLabels( false )
 {
 }
 
@@ -82,6 +83,16 @@ int AbstractPieDiagram::startPosition() const
 {
     qWarning() << "Deprecated AbstractPieDiagram::startPosition() called.";
     return 0;
+}
+
+void AbstractPieDiagram::setAutoRotateLabels( bool autoRotate )
+{
+    d->autoRotateLabels = autoRotate;
+}
+
+bool AbstractPieDiagram::autoRotateLabels() const
+{
+    return d->autoRotateLabels;
 }
 
 void AbstractPieDiagram::setPieAttributes( const PieAttributes & attrs )

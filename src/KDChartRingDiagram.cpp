@@ -405,7 +405,7 @@ void RingDiagram::drawPieSurface( QPainter* painter,
             
             const PainterSaver ps( painter );
             const TextAttributes ta = dataValueAttributes( index ).textAttributes();
-            if( !ta.hasRotation() )
+            if( !ta.hasRotation() && autoRotateLabels() )
             {
                 const QPointF& p1 = poly.last();
                 const QPointF& p2 = poly[ lastInnerBrinkPoint ];

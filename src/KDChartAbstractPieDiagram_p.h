@@ -40,6 +40,7 @@ public:
 
 private:
     double granularity;
+    bool autoRotateLabels;
 };
 
 KDCHART_IMPL_DERIVED_DIAGRAM( AbstractPieDiagram, AbstractPolarDiagram, PolarCoordinatePlane )
