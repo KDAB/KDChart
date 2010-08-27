@@ -11,7 +11,7 @@ set STATIC_BUILD_SUPPORTED=true
 
 set PACKSCRIPTS_DIR=../admin/packscripts
 
-set default_prefix=C:\%Product_mix%-%VERSION%
+set default_prefix=C:\KDAB\%Product_mix%-%VERSION%
 
 set shared=yes
 set debug=no
