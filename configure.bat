@@ -223,7 +223,7 @@ if "%release%" == "yes" (
 if "%shared%" == "yes" (
     echo CONFIG += shared >> .qmake.cache
 ) else (
-    echo CONFIG += static staticlib >> .qmake.cache
+    echo CONFIG += static >> .qmake.cache
 )
 
 if "%unittests%" == "yes" (

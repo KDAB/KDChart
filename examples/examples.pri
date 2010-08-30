@@ -4,14 +4,8 @@
 # Note: KDCHART_PATH is set in the calling .pro file,
 #       before examples.pri is included
 
-
-
-# 1. Work around a qmake bug:
-#
-#    The bug would produce invalid *.exe files when KD Chart is linked
-#    statically and examples are build right after building the lib.
+# needed for the export macros.
 staticlib {
-  CONFIG -= staticlib
   DEFINES += KDCHART_STATICLIB
 }
 
