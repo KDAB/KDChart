@@ -120,6 +120,14 @@ namespace KDChart {
          */
         QList< double > customTicks() const;
 
+        /**
+         * Sets the length of custom ticks on the axis.
+         */
+        void setCustomTickLength(int value);
+        /**
+         * Returns the length of custom ticks on the axis.
+         */
+        int customTickLength() const;
 
         /** pure virtual in QLayoutItem */
         virtual bool isEmpty() const;
@@ -135,9 +143,6 @@ namespace KDChart {
         virtual void setGeometry( const QRect& r );
         /** pure virtual in QLayoutItem */
         virtual QRect geometry() const;
-
-        void setCustomTickLength(int value);
-        int customTickLength() const;
 
     public Q_SLOTS:
         void setCachedSizeDirty() const;
