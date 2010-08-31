@@ -416,13 +416,33 @@ void GraphicsItem::mouseReleaseEvent( QGraphicsSceneMouseEvent* event )
         // Create a new constraint
         GraphicsItem* other = qgraphicsitem_cast<GraphicsItem*>( scene()->itemAt( event->scenePos() ) );
         if ( other && scene()->dragSource()!=other &&
-             other->mapToScene( other->rect() ).boundingRect().contains( event->scenePos() )) {
-            GraphicsView* view = qobject_cast<GraphicsView*>( event->widget()->parentWidget() );
-            if ( view ) {
-                view->addConstraint( scene()->summaryHandlingModel()->mapToSource( scene()->dragSource()->index() ),
-                                     scene()->summaryHandlingModel()->mapToSource( other->index() ), event->modifiers() );
+             other->index().data(KDGantt::ItemTypeRole) == KDGantt::TypeEvent )
+        {
+            // The code below fixes bug KDCH-696.
+            // Modified the code to add constraint even if the user drags and drops
+            // constraint on left part of the TypeEvent symbol(i.e diamond symbol)
+            QRectF itemRect = other->rect().adjusted(-other->rect().height()/2.0, 0, 0, 0 );
+            if ( other->mapToScene( itemRect ).boundingRect().contains( event->scenePos() ))
+            {
+                GraphicsView* view = qobject_cast<GraphicsView*>( event->widget()->parentWidget() );
+                if ( view ) {
+                    view->addConstraint( scene()->summaryHandlingModel()->mapToSource( scene()->dragSource()->index() ),
+                                         scene()->summaryHandlingModel()->mapToSource( other->index() ), event->modifiers() );
+                }
             }
         }
+        else
+        {
+            if ( other && scene()->dragSource()!=other &&
+                 other->mapToScene( other->rect() ).boundingRect().contains( event->scenePos() )) {
+                GraphicsView* view = qobject_cast<GraphicsView*>( event->widget()->parentWidget() );
+                if ( view ) {
+                    view->addConstraint( scene()->summaryHandlingModel()->mapToSource( scene()->dragSource()->index() ),
+                                         scene()->summaryHandlingModel()->mapToSource( other->index() ), event->modifiers() );
+                }
+            }
+        }
+
         scene()->setDragSource( 0 );
         //scene()->update();
     } else {
