@@ -56,6 +56,7 @@ private:
     bool useDefaultTextAttributes;
     Position position;
     QRect geometry;
+    int customTickLength;
     QMap< double, QString > annotations;
     QList< double > customTicksPositions;
     mutable QStringList cachedHeaderLabels;

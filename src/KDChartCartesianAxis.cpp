@@ -50,6 +50,7 @@ CartesianAxis::~CartesianAxis ()
 
 void CartesianAxis::init ()
 {
+    d->customTickLength = 3;
     d->position = Bottom;
     setCachedSizeDirty();
 }
@@ -727,10 +728,10 @@ void CartesianAxis::paintCtx( PaintContext* context )
                    topPoint = plane->translate( topPoint );
                    bottomPoint = plane->translate( bottomPoint );
                    if ( diagramIsVertical ) {
-                       topPoint.setY( rulerRef.y() + tickLength() );
+                       topPoint.setY( rulerRef.y() + d->customTickLength );
                        bottomPoint.setY( rulerRef.y() );
                    } else {
-                       topPoint.setX( rulerRef.x() + tickLength() );
+                       topPoint.setX( rulerRef.x() + d->customTickLength );
                        bottomPoint.setX( rulerRef.x() );
                    }
 
@@ -1193,10 +1194,10 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     QPointF rightPoint = plane->translate( annoPoint );
 
                     if ( diagramIsVertical ) {
-                        leftPoint.setX( rulerRef.x() + tickLength() );
+                        leftPoint.setX( rulerRef.x() - d->customTickLength );
                         rightPoint.setX( rulerRef.x() );
                     } else {
-                        leftPoint.setY( rulerRef.y() + ((position() == Bottom) ? tickLength() : -tickLength()) );
+                        leftPoint.setY( rulerRef.y() + ((position() == Bottom) ? d->customTickLength : -d->customTickLength) );
                         rightPoint.setY( rulerRef.y() );
                     }
 
@@ -1756,6 +1757,27 @@ void CartesianAxis::setGeometry( const QRect& r )
 QRect CartesianAxis::geometry() const
 {
     return d->geometry;
+}
+
+void CartesianAxis::setCustomTickLength(int value)
+{
+    if(d->customTickLength == value)
+        return;
+
+    d->customTickLength = value;
+}
+
+int CartesianAxis::customTickLength() const
+{
+    int result = 0;
+
+    if ( isAbscissa() ) {
+        result = (position() == Top) ? -d->customTickLength : d->customTickLength;
+    } else {
+        result = (position() == Left) ? -d->customTickLength : d->customTickLength;
+    }
+
+    return result;
 }
 
 int CartesianAxis::tickLength( bool subUnitTicks ) const

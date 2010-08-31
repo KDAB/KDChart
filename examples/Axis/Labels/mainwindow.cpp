@@ -112,6 +112,8 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_lines->addAxis( yAxis );
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
     // Set up the legend
+    xAxis->setCustomTickLength(11);
+    yAxis->setCustomTickLength(11);
     m_legend = new KDChart::Legend( m_lines, m_chart );
     m_legend->setPosition( KDChart::Position::East );
     m_legend->setAlignment( Qt::AlignTop );
