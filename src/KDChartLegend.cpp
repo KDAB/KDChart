@@ -374,8 +374,13 @@ void Legend::removeDiagram( AbstractDiagram* oldDiagram )
 
 void Legend::removeDiagrams()
 {
+    // removeDiagram() may change the d->observers list. So, build up the list of
+    // diagrams to remove first and then remove them one by one.
+    QList<AbstractDiagram*> diagrams;
     for (int i = 0; i < d->observers.size(); ++i)
-        removeDiagram( d->observers.at(i)->diagram() );
+        diagrams.append( d->observers.at(i)->diagram() );
+    for (int i = 0; i < diagrams.count(); ++i)
+        removeDiagram( diagrams[i] );
 }
 
 void Legend::replaceDiagram( AbstractDiagram* newDiagram,
