@@ -1064,7 +1064,7 @@ void DateTimeGrid::paintWeekScaleHeader( QPainter* painter,  const QRectF& heade
         virtual ~MonthFormatter() {}
 
         QString format( const QDateTime& dt ) {
-            return QDate::longMonthName( dt.date().month() ) + QLatin1String("/") + QString::number(dt.date().year());
+            return QLocale().monthName(dt.date().month(), Locale::LongFormat) + QLatin1String("/") + QString::number(dt.date().year());
         }
         QRect textRect( qreal x, qreal offset, qreal dayWidth, const QRectF& headerRect, const QDateTime& dt ) {
             return QRectF( QPointF( x, headerRect.top() ) + QPointF( -offset, 0.0 ),
@@ -1086,7 +1086,7 @@ void DateTimeGrid::paintMonthScaleHeader( QPainter* painter,  const QRectF& head
         virtual ~MonthFormatter() {}
 
         QString format( const QDateTime& dt ) {
-            return QDate::shortMonthName( dt.date().month()) + QLatin1String("/") + QString::number(dt.date().year());
+            return QLocale().monthName(dt.date().month(), QLocale::ShortFormat) + QLatin1String("/") + QString::number(dt.date().year());
         }
         QRect textRect( qreal x, qreal offset, qreal dayWidth, const QRectF& headerRect, const QDateTime& dt ) {
             return QRectF( QPointF( x, headerRect.top() ) + QPointF( -offset, headerRect.height() / 2.0 ),
