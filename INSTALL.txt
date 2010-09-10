@@ -71,6 +71,12 @@ a) automatic installation
 
    This will copy the Plug-in into the QT plugin path,
    e.g. this might be $QTDIR/plugins/designer/
+   
+   NOTE: On Windows to make the plugin working it is needed to build kdchart
+   with the exact same configuration designer was build with (what is usually
+   "configure.bat -shared -release" if you installed the pre-compiled Qt
+   provided by Nokia). Also it is needed to add your KD Chart installation
+   directory to the PATH variable (e.g. set PATH=C:\KDAB\KDChart\lib;%PATH%).
 
 b) manual installation
 
