@@ -30,7 +30,8 @@ public:
 
 private:
     bool enabled;
-    int height;
+// FIXME: What is this needed for? height is not referenced anywhere.
+//    int height;
     double depth;
 };
 
