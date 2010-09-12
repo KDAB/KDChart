@@ -385,6 +385,7 @@ SOURCES += \
            KDChartChart.cpp \
            KDChartWidget.cpp \
            KDChartAbstractDiagram.cpp \
+           KDChartAbstractDiagram_p.cpp \
            KDChartAbstractPieDiagram.cpp \
            KDChartAbstractPolarDiagram.cpp \
            KDChartAbstractAreaBase.cpp \

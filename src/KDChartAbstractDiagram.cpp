@@ -24,65 +24,6 @@
 
 using namespace KDChart;
 
-AbstractDiagram::Private::Private()
-  : plane( 0 )
-  , attributesModel( new PrivateAttributesModel(0,0) )
-  , allowOverlappingDataValueTexts( false )
-  , antiAliasing( true )
-  , percent( false )
-  , datasetDimension( 1 )
-  , databoundariesDirty(true)
-  , lastRoundedValue()
-  , lastX( 0 )
-  , mCachedFontMetrics( QFontMetrics( qApp->font() ) )
-{
-}
-
-AbstractDiagram::Private::~Private()
-{
-  if( attributesModel && qobject_cast<PrivateAttributesModel*>(attributesModel) )
-    delete attributesModel;
-}
-
-void AbstractDiagram::Private::init()
-{
-}
-
-void AbstractDiagram::Private::init( AbstractCoordinatePlane* newPlane )
-{
-    plane = newPlane;
-}
-
-bool AbstractDiagram::Private::usesExternalAttributesModel()const
-{
-    return ( ! attributesModel.isNull() ) &&
-           ( ! qobject_cast<PrivateAttributesModel*>(attributesModel) );
-}
-
-void AbstractDiagram::Private::setAttributesModel( AttributesModel* amodel )
-{
-    if( !attributesModel.isNull() &&
-        qobject_cast<PrivateAttributesModel*>(attributesModel) ) {
-        delete attributesModel;
-    }
-    attributesModel = amodel;
-}
-
-AbstractDiagram::Private::Private( const AbstractDiagram::Private& rhs ) :
-    // Do not copy the plane
-    plane( 0 ),
-    attributesModelRootIndex( QModelIndex() ),
-    attributesModel( rhs.attributesModel ),
-    allowOverlappingDataValueTexts( rhs.allowOverlappingDataValueTexts ),
-    antiAliasing( rhs.antiAliasing ),
-    percent( rhs.percent ),
-    datasetDimension( rhs.datasetDimension ),
-    mCachedFontMetrics( rhs.cachedFontMetrics() )
-{
-    attributesModel = new PrivateAttributesModel( 0, 0);
-    attributesModel->initFrom( rhs.attributesModel );
-}
-
 #define d d_func()
 
 AbstractDiagram::AbstractDiagram ( QWidget* parent, AbstractCoordinatePlane* plane )
