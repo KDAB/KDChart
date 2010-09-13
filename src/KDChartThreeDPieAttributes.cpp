@@ -24,7 +24,6 @@ ThreeDPieAttributes::ThreeDPieAttributes()
 ThreeDPieAttributes::ThreeDPieAttributes( const ThreeDPieAttributes& r )
     : AbstractThreeDAttributes( new Private( *r.d) )
 {
-    init();
 }
 
 ThreeDPieAttributes& ThreeDPieAttributes::operator= ( const ThreeDPieAttributes& r )
