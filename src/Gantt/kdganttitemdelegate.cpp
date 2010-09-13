@@ -81,7 +81,7 @@ QPen ItemDelegate::Private::constraintPen( const QPointF& start, const QPointF& 
     QVariant dataPen;
 
     // Use default pens...
-    if ( start.x() <= end.x() ) {
+    if ( start.x() < end.x() ) {
         pen = QPen( Qt::black );
         dataPen = constraint.data( Constraint::ValidConstraintPen );
     } else {
