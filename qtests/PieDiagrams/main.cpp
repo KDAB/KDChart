@@ -95,7 +95,7 @@ private slots:
         QCOMPARE( m_pie->threeDPieAttributes( cols - 2 ),  tdCol );
         // try and override the cols and index level - should not work
         m_pie->setThreeDPieAttributes( td );
-        QVERIFY( m_pie->threeDPieAttributes().depth() == 20 );
+        QVERIFY( m_pie->threeDPieAttributes().depth() == -10 );
         QVERIFY( m_pie->threeDPieAttributes( cols-2 ).depth() == 25 );
     }
 
@@ -105,7 +105,7 @@ private slots:
         ThreeDPieAttributes td( m_pie->threeDPieAttributes() );
         //check default values
         QVERIFY( td.isEnabled() == false );
-        QVERIFY( td.depth() == 20 );
+        QVERIFY( td.depth() == -10 );
         QVERIFY( td.validDepth() == 0.0 );
         //pie specifics
         QVERIFY( td.useShadowColors() ==  true );
