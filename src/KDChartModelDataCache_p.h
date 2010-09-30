@@ -182,6 +182,7 @@ namespace KDChart
         void columnsInserted( const QModelIndex& parent, int start, int end )
         {
             Q_ASSERT( m_model != 0 );
+            Q_ASSERT( parent.model() == m_model || !parent.isValid() );
 
             if( parent != m_rootIndex )
                 return;
@@ -201,6 +202,7 @@ namespace KDChart
         void columnsRemoved( const QModelIndex& parent, int start, int end )
         {
             Q_ASSERT( m_model != 0 );
+            Q_ASSERT( parent.model() == m_model || !parent.isValid() );
 
             if( parent != m_rootIndex )
                 return;
@@ -269,6 +271,7 @@ namespace KDChart
         void rowsInserted( const QModelIndex& parent, int start, int end )
         {
             Q_ASSERT( m_model != 0 );
+            Q_ASSERT( parent.model() == m_model || !parent.isValid() );
 
             if( parent != m_rootIndex )
                 return;
@@ -286,6 +289,7 @@ namespace KDChart
         void rowsRemoved( const QModelIndex& parent, int start, int end )
         {
             Q_ASSERT( m_model != 0 );
+            Q_ASSERT( parent.model() == m_model || !parent.isValid() );
 
             if( parent != m_rootIndex )
                 return;
