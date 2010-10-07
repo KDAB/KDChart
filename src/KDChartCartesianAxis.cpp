@@ -666,7 +666,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
             // check if configured stepWidth
             useConfiguredStepsLabels = isAbscissa() &&
                     dimX.stepWidth &&
-                    (( (headerLabels.count() - 1)/ dimX.stepWidth ) != numberOfUnitRulers);
+                    (( (headerLabels.count() - 1)/ dimX.stepWidth ) != (numberOfUnitRulers / dimX.stepWidth));
             if( useConfiguredStepsLabels ) {
                 numberOfUnitRulers = ( headerLabels.count() - 1 )/ dimX.stepWidth;
                 // we need to register data values for the steps
