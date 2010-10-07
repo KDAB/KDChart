@@ -175,10 +175,10 @@ namespace KDChart {
                 QDomElement& e,
                 const MarkerAttributes& a,
                 const QString& title );
-        static MarkerAttributes::MarkerStyle markerStyleFromName(
+        static uint markerStyleFromName(
                 QString name );
         static QString markerStyleToName(
-                MarkerAttributes::MarkerStyle style );
+                uint style );
 
         static bool parseRelativePosition(
                 const QDomElement& container, RelativePosition& a );

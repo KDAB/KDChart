@@ -1109,9 +1109,9 @@ void AttributesSerializer::saveThreeDPieAttributes(
                            a.useShadowColors() );
 }
 
-MarkerAttributes::MarkerStyle AttributesSerializer::markerStyleFromName( QString name )
+uint AttributesSerializer::markerStyleFromName( QString name )
 {
-    MarkerAttributes::MarkerStyle style;
+    uint style;
     if( name == "MarkerCircle" )
         style = MarkerAttributes::MarkerCircle;
     else if( name == "MarkerSquare" )
@@ -1130,12 +1130,12 @@ MarkerAttributes::MarkerStyle AttributesSerializer::markerStyleFromName( QString
         style = MarkerAttributes::MarkerFastCross;
     else if( name == "NoMarker" )
         style = MarkerAttributes::NoMarker;
-    else 
-        Q_ASSERT( false ); // all of the style types need to be handled
+    else
+        style = QVariant(name).toUInt();
     return style;
 }
 
-QString AttributesSerializer::markerStyleToName( MarkerAttributes::MarkerStyle style )
+QString AttributesSerializer::markerStyleToName( uint style )
 {
     QString name;
     switch( style ){
@@ -1167,7 +1167,7 @@ QString AttributesSerializer::markerStyleToName( MarkerAttributes::MarkerStyle s
             name = "NoMarker";
             break;
         default:
-            Q_ASSERT( false ); // all of the style types need to be handled
+            name = QString::number(style);
             break;
     }
     return name;
@@ -1192,7 +1192,7 @@ bool AttributesSerializer::parseMarkerAttributes(
                 QString s;
                 if( KDXML::findStringAttribute( element, "style", s ) ){
                     //qDebug() << "MarkerAttributes/MarkerStyle found: \"" << s << "\"";
-                    const MarkerAttributes::MarkerStyle style = markerStyleFromName( s );
+                    const uint style = markerStyleFromName( s );
                     if( ! s.isEmpty() ){
                         a.setMarkerStyle( style );
                     } else {

@@ -17,8 +17,8 @@ public:
     Private();
 private:
     bool visible;
-    QMap<uint,MarkerStyle> markerStylesMap;
-    MarkerStyle markerStyle;
+    QMap<uint,uint> markerStylesMap;
+    uint markerStyle;
     QSizeF markerSize;
     QColor markerColor;
     QPen markerPen;
@@ -101,12 +101,12 @@ MarkerAttributes::MarkerStylesMap MarkerAttributes::markerStylesMap() const
     return d->markerStylesMap;
 }
 
-void MarkerAttributes::setMarkerStyle( MarkerStyle style )
+void MarkerAttributes::setMarkerStyle( uint style )
 {
     d->markerStyle = style;
 }
 
-MarkerAttributes::MarkerStyle MarkerAttributes::markerStyle() const
+uint MarkerAttributes::markerStyle() const
 {
     return d->markerStyle;
 }

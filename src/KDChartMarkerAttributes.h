@@ -32,17 +32,27 @@ namespace KDChart {
                            MarkerRing    = 5,
                            MarkerCross   = 6,
                            MarkerFastCross = 7,
-                           NoMarker = 8 };
+                           NoMarker = 8,
+                           StartCustomMarkers = 9 };
 
         void setVisible( bool visible );
         bool isVisible() const;
 
-        typedef QMap<uint, MarkerStyle> MarkerStylesMap;
+        typedef QMap<uint, uint> MarkerStylesMap;
         void setMarkerStylesMap( const MarkerStylesMap & map );
         MarkerStylesMap markerStylesMap() const;
 
-        void setMarkerStyle( MarkerStyle style );
-        MarkerStyle markerStyle() const;
+        /**
+         * Set the marker-style to use. This could be either one of the
+         * predefined \a MarkerStyle or a custom one that has a value
+         * biger or equal to StartCustomMarkers.
+         *
+         * Such a custom marker does then allow to fetch a custom pixmap
+         * for each point (value pair) from the model using the
+         * Qt::DecorationRole .
+         */
+        void setMarkerStyle( uint style );
+        uint markerStyle() const;
 
         /**
          * Normally you need to specify a valid QSizeF here, but for Legends you can
