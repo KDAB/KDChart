@@ -484,15 +484,20 @@ void Chart::Private::slotLayoutPlanes()
         int row = pi.verticalOffset;
         //qDebug() << "processing plane at column" << column << "and row" << row;
         QGridLayout *planeLayout = pi.gridLayout;
-        if ( !planeLayout ) {
-            // this plane is sharing an axis with another one, so use
-            // the grid of that one as well
-            planeLayout = planeInfos[pi.referencePlane].gridLayout;
+
+        if(!planeLayout){
+            PlaneInfo& refPi = pi;
+            // if this plane is sharing an axis with another one, recursively check for the original plane and use
+            // the grid of that as planeLayout.
+            while ( !planeLayout && refPi.referencePlane) {
+                refPi = planeInfos[refPi.referencePlane];
+                planeLayout = refPi.gridLayout;
+            }
             Q_ASSERT_X(planeLayout,
                        "Chart::Private::slotLayoutPlanes()",
                        "Invalid reference plane. Please Check whether the reference plane is added to the Chart or not" );
         } else {
-            planesLayout->addLayout( planeLayout );
+             planesLayout->addLayout( planeLayout );
         }
 
         /* Put the plane in the center of the layout. If this is our own, that's
