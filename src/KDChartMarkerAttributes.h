@@ -45,7 +45,7 @@ namespace KDChart {
         /**
          * Set the marker-style to use. This could be either one of the
          * predefined \a MarkerStyle or a custom one that has a value
-         * biger or equal to StartCustomMarkers.
+         * bigger or equal to StartCustomMarkers.
          *
          * Such a custom marker does then allow to fetch a custom pixmap
          * for each point (value pair) from the model using the
