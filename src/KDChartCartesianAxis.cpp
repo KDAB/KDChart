@@ -368,6 +368,19 @@ qreal CartesianAxis::titleSpace() const
     return d->axisTitleSpace;
 }
 
+void CartesianAxis::setTitleSize(qreal value)
+{
+    if(d->axisSize == value)
+        return;
+
+    d->axisSize = value;
+}
+
+qreal CartesianAxis::titleSize() const
+{
+    return d->axisSize;
+}
+
 void CartesianAxis::Private::drawTitleText( QPainter* painter, CartesianCoordinatePlane* plane, const QRect& areaGeoRect ) const
 {
     const TextAttributes titleTA( titleTextAttributesWithAdjustedRotation() );
@@ -1542,6 +1555,10 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
                                       leftOverlap, rightOverlap );
 
                 }
+                if ( position == CartesianAxis::Top || position == CartesianAxis::Bottom )
+                    h*= axisSize>=0.0 ? axisSize : -1.0*(1.0/axisSize);
+                else
+                    w*= axisSize>=0.0 ? axisSize : -1.0*(1.0/axisSize);
             }
             else
             {
@@ -1678,6 +1695,12 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
                     if(maxValue == 0 && minValue == 0)
                         break;
                 }
+
+                if ( position == CartesianAxis::Top || position == CartesianAxis::Bottom )
+                    h*= axisSize>=0.0 ? axisSize : -1.0*(1.0/axisSize);
+                else
+                    w*= axisSize>=0.0 ? axisSize : -1.0*(1.0/axisSize);
+
             }else{
                 // find the longest label text:
                 const int first=0;

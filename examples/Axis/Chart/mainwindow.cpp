@@ -63,6 +63,8 @@ MainWindow::MainWindow( QWidget* parent ) :
     leftAxis->setTitleText ( "left Ordinate: fonts configured" );
     rightAxis->setTitleText ( "right Ordinate: default settings" );
     bottomAxis->setTitleText ( "Abscissa Bottom" );
+    topAxis->setTitleSize(1.1);
+    topAxis->setTitleSpace(.2);
 
     // configure titles text attributes
     TextAttributes taTop ( topAxis->titleTextAttributes () );

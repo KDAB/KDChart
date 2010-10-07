@@ -67,6 +67,12 @@ namespace KDChart {
         void setTitleSpace( qreal value );
         qreal titleSpace() const;
 
+        /**
+         * Sets the size of the title.
+         */
+        void setTitleSize(qreal value);
+        qreal titleSize() const;
+
         void setTitleTextAttributes( const TextAttributes &a );
         /**
           * Returns the text attributes that will be used for displaying the
