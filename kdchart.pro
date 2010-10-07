@@ -11,7 +11,7 @@ unittests: SUBDIRS +=qtests
 SUBDIRS +=tests
 
 
-VERSION  = 2.3.0
+VERSION  = 2.5.0
 
 MAJOR_VERSION = 2
 
