@@ -2,19 +2,17 @@
 # This file was generated automatically.
 # Please edit generate-configure.sh rather than this file.
 
-PRODUCT=KDCHART
-Product=KDChart
-product=kdchart
-ProductSpace="KD Chart"
+PRODUCT=KDSOAP
+Product=KDSoap
+product=kdsoap
+ProductSpace="KD Soap"
 
-VERSION=2.5.0
+VERSION=1.0.0
 
 INSTALLATION_SUPPORTED=true
 STATIC_BUILD_SUPPORTED=true
 
 PACKSCRIPTS_DIR=../admin/packscripts
-
-default_prefix=/usr/local/KDAB/$Product-$VERSION
 
 hide_symbols=yes
 shared=yes
@@ -131,8 +129,8 @@ cat <<EOF 1>&2
   -[no-]unittests
       enable/disable compiled-in unittests
 
-  -[spec]
-      compile $ProductSpace for a specific Qt-supported target
+  -spec <mkspec>
+      compile $ProductSpace for specific Qt-supported target <mkspec>
 
 EOF
     exit 1
@@ -166,6 +164,14 @@ while [ $# -ne 0 ] ; do
             ;;
         -hide-symbols)
             hide_symbols=yes
+            ;;
+        -override-version) # undocumented by design
+            shift
+            if [ $# -eq 0 ] ; then
+                    echo "-override-version needs an argument" 2>&1
+                    usage
+            fi
+            VERSION="$1"
             ;;
 	-no-unittests)
 	    unittests=no
@@ -221,12 +227,14 @@ if [ -d $PACKSCRIPTS_DIR ] ; then
     echo
 fi
 
+default_prefix=/usr/local/KDAB/$Product-$VERSION
 if [ -z "$prefix" ] ; then
     prefix="$default_prefix"
 fi
 
 echo -n > ".qmake.cache"
 (
+    echo "VERSION=$VERSION"
     echo "CONFIG += ${product}_target"
 
     if [ "$debug" = "yes" ]; then

@@ -2,19 +2,17 @@
 rem This file was generated automatically.
 rem Please edit generate-configure.sh rather than this file.
 
-set PRODUCT_CAP=KDCHART
-set product_low=kdchart
-set Product_mix=KDChart
-set Product_Space="KD Chart"
+set PRODUCT_CAP=KDSOAP
+set product_low=kdsoap
+set Product_mix=KDSoap
+set Product_Space="KD Soap"
 
-set VERSION=2.5.0
+set VERSION=1.0.0
 
 set INSTALLATION_SUPPORTED=true
 set STATIC_BUILD_SUPPORTED=true
 
 set PACKSCRIPTS_DIR=../admin/packscripts
-
-set default_prefix=C:\KDAB\%Product_mix%-%VERSION%
 
 set shared=yes
 set debug=no
@@ -135,6 +133,9 @@ if "%1" == ""          goto :EndOfOptions
 if "%1" == "-prefix"   goto :Prefix
 if "%1" == "/prefix"   goto :Prefix
 
+if "%1" == "-override-version"  goto :OverrideVersion
+if "%1" == "/override-version"  goto :OverrideVersion
+
 if "%1" == "-unittests"    goto :Unittests
 if "%1" == "/unittests"    goto :Unittests
 
@@ -176,6 +177,9 @@ goto :Options
       goto :OptionWithArg
 rem   goto :usage
     )
+:OverrideVersion
+    set VERSION=%2
+    goto :OptionWithArg
 :Unittests
     set unittests=yes
     goto :OptionNoArg
@@ -241,11 +245,15 @@ if "%shared%" == "yes" (
     echo CONFIG += shared >> .qmake.cache
 ) else (
     echo CONFIG += static >> .qmake.cache
+    rem This is needed too, when Qt is static, otherwise it sets -DQT_DLL and linking fails.
+    echo CONFIG += qt_static >> .qmake.cache
 )
 
 if "%unittests%" == "yes" (
     echo CONFIG += unittests >> .qmake.cache
 )
+
+set default_prefix=C:\KDAB\%Product_mix%-%VERSION%
 
 if "%prefix%" == "" (
     set prefix="%default_prefix%"
@@ -253,6 +261,7 @@ if "%prefix%" == "" (
 echo %PRODUCT_CAP%_INSTALL_PREFIX = %prefix% >> .qmake.cache
 
 
+echo VERSION=%VERSION% >> .qmake.cache
 echo CONFIG += %product_low%_target >> .qmake.cache
 
 if exist "%QTDIR%\include\Qt\private" (
