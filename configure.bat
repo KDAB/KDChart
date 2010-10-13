@@ -2,12 +2,12 @@
 rem This file was generated automatically.
 rem Please edit generate-configure.sh rather than this file.
 
-set PRODUCT_CAP=KDSOAP
-set product_low=kdsoap
-set Product_mix=KDSoap
-set Product_Space="KD Soap"
+set PRODUCT_CAP=KDCHART
+set product_low=kdchart
+set Product_mix=KDChart
+set Product_Space="KD Chart"
 
-set VERSION=1.0.0
+set VERSION=2.5.0
 
 set INSTALLATION_SUPPORTED=true
 set STATIC_BUILD_SUPPORTED=true

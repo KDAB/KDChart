@@ -2,12 +2,12 @@
 # This file was generated automatically.
 # Please edit generate-configure.sh rather than this file.
 
-PRODUCT=KDSOAP
-Product=KDSoap
-product=kdsoap
-ProductSpace="KD Soap"
+PRODUCT=KDCHART
+Product=KDChart
+product=kdchart
+ProductSpace="KD Chart"
 
-VERSION=1.0.0
+VERSION=2.5.0
 
 INSTALLATION_SUPPORTED=true
 STATIC_BUILD_SUPPORTED=true
