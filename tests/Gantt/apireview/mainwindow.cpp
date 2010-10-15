@@ -42,6 +42,11 @@ MainWindow::MainWindow( QWidget* parent, Qt::WindowFlags flags )
              this, SLOT( showContextMenu( const QPoint& ) ) );
     connect( ui->ganttView->selectionModel(), SIGNAL( selectionChanged( const QItemSelection&, const QItemSelection& ) ),
              this, SLOT( enableActions( const QItemSelection& ) ) );
+
+    connect( ui->ganttView->graphicsView(), SIGNAL( clicked( const QModelIndex& ) ),
+             this, SLOT( slotClicked( const QModelIndex& ) ) );
+    connect( ui->ganttView->graphicsView(), SIGNAL( doubleClicked( const QModelIndex& ) ),
+             this, SLOT( slotDoubleClicked( const QModelIndex& ) ) );
 }
 
 void MainWindow::initModel()
@@ -323,4 +328,19 @@ void MainWindow::printPreview()
     }
     preview->setPixmap( pix );
     preview->show();
+}
+
+void MainWindow::slotClicked( const QModelIndex& index )
+{
+    statusBar()->showMessage( tr( "(%1,%2,_,%4) clicked" )
+                          .arg( index.row() )
+                          .arg( index.column() )
+                          .arg( ( quint64 )index.model() ) );
+}
+void MainWindow::slotDoubleClicked( const QModelIndex& index )
+{
+    statusBar()->showMessage( tr( "(%1,%2,_,%4) double clicked" )
+                          .arg( index.row() )
+                          .arg( index.column() )
+                          .arg( ( quint64 )index.model() ) );
 }

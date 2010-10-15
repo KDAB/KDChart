@@ -21,7 +21,7 @@ class MainWindow : public QMainWindow {
 
 public:
     MainWindow( QWidget * parent = 0, Qt::WindowFlags flags = 0 );
-    
+
 private slots:
     void addNewEntry();
     void removeEntry();
@@ -31,29 +31,32 @@ private slots:
     void enableActions( const QItemSelection& selected );
     void zoomIn();
     void zoomOut();
-    
+
+    void slotClicked( const QModelIndex& );
+    void slotDoubleClicked( const QModelIndex& );
+
 private:
     void initModel();
     void initActions();
     void initItemDelegate();
     void initGrid();
-    
+
     void setReadOnly( const QModelIndex& index, bool readOnly );
     void addConstraint( const QModelIndex& index1, const QModelIndex& index2 );
     void addConstraint( const QStandardItem* item1, const QStandardItem* item2 );
-    
+
     QStandardItemModel* model;
     KDGantt::ConstraintModel* constraintModel;
     KDGantt::DateTimeGrid* grid;
     int dayWidth;
-    
+
     QAction* newEntryAction;
     QAction* removeEntryAction;
     QAction* demoAction;
     QAction* printAction;
     QAction* zoomInAction;
     QAction* zoomOutAction;
-    
+
     Ui::MainWindow* ui;
 };
 
