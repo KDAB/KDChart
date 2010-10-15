@@ -892,7 +892,7 @@ void DateTimeGrid::paintUserDefinedHeader( QPainter* painter,
 
         QStyleOptionHeader opt;
         if ( widget ) opt.init( widget );
-        opt.rect = QRectF( x - offset+1, headerRect.top(), qMax( 1., nextx-x-1 ), headerRect.height() ).toAlignedRect();
+        opt.rect = QRectF( x - offset+1, headerRect.top(), qMax<qreal>( 1., nextx-x-1 ), headerRect.height() ).toAlignedRect();
         opt.textAlignment = formatter->alignment();
         opt.text = formatter->text( dt );
         style->drawControl( QStyle::CE_Header, &opt, painter, widget );
