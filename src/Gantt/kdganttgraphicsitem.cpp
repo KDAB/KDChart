@@ -358,25 +358,36 @@ void GraphicsItem::hoverMoveEvent( QGraphicsSceneHoverEvent* event )
     ItemDelegate::InteractionState istate = scene()->itemDelegate()->interactionStateFor( event->pos(), opt, index() );
     switch( istate ) {
     case ItemDelegate::State_ExtendLeft:
+#ifndef QT_NO_CURSOR
         setCursor( Qt::SizeHorCursor );
+#endif
         scene()->itemEntered( index() );
         break;
     case ItemDelegate::State_ExtendRight:
+#ifndef QT_NO_CURSOR
         setCursor( Qt::SizeHorCursor );
+#endif
         scene()->itemEntered( index() );
         break;
     case ItemDelegate::State_Move:
+#ifndef QT_NO_CURSOR
         setCursor( Qt::SplitHCursor );
+#endif
         scene()->itemEntered( index() );
         break;
     default:
+#ifndef QT_NO_CURSOR
         unsetCursor();
+#endif
+        break;
     };
 }
 
 void GraphicsItem::hoverLeaveEvent( QGraphicsSceneHoverEvent* )
 {
+#ifndef QT_NO_CURSOR
     unsetCursor();
+#endif
 }
 
 void GraphicsItem::mousePressEvent( QGraphicsSceneMouseEvent* event )
