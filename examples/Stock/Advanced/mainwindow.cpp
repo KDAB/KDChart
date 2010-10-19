@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include <KDChartChart>
+#include <KDChartLegend>
 #include <KDChartCartesianAxis>
 
 using namespace KDChart;
@@ -17,6 +18,8 @@ MainWindow::MainWindow( QWidget *parent )
     m_diagram.setType( StockDiagram::HighLowClose );
     m_diagram.setModel( &m_HLCModel );
     m_chart->coordinatePlane()->replaceDiagram( &m_diagram );
+    KDChart::Legend* legend  = new KDChart::Legend( &m_diagram, m_chart );
+    m_chart->addLegend( legend );
 
     QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
     chartLayout->addWidget( m_chart );
