@@ -65,6 +65,8 @@ INSTALLHEADERS_INCLUDE = \
     KDChartPlotter \
     KDChartPolarCoordinatePlane \
     KDChartPolarDiagram \
+    KDChartRadarCoordinatePlane \
+    KDChartRadarDiagram \
     KDChartPosition \
     KDChartRelativePosition \
     KDChartRingDiagram \
@@ -149,6 +151,7 @@ INSTALLHEADERS_SRC = \
            KDChartPalette.h \
            KDChartPieDiagram.h \
            KDChartPolarDiagram.h \
+           KDChartRadarDiagram.h \
            KDChartPosition.h \
            KDChartRelativePosition.h \
            KDChartRingDiagram.h \
@@ -228,6 +231,8 @@ HEADERS += KDChartGlobal.h \
            KDChartCartesianCoordinatePlane_p.h \
            KDChartPolarCoordinatePlane.h \
            KDChartPolarCoordinatePlane_p.h \
+           KDChartRadarCoordinatePlane.h \
+           KDChartRadarCoordinatePlane_p.h \
            KDChartChart.h \
            KDChartChart_p.h \
            KDChartWidget.h \
@@ -251,6 +256,7 @@ HEADERS += KDChartGlobal.h \
            KDChartAbstractGrid.h \
            KDChartCartesianGrid.h \
            KDChartPolarGrid.h \
+           KDChartRadarGrid.h \
            KDChartAttributesModel.h \
            KDChartBackgroundAttributes.h \
            KDChartBarAttributes.h \
@@ -294,6 +300,8 @@ HEADERS += KDChartGlobal.h \
            KDChartPieDiagram_p.h \
            KDChartPolarDiagram.h \
            KDChartPolarDiagram_p.h \
+           KDChartRadarDiagram.h \
+           KDChartRadarDiagram_p.h \
            KDChartPosition.h \
            KDChartRelativePosition.h \
            KDChartRingDiagram.h \
@@ -382,6 +390,7 @@ SOURCES += \
            KDChartAbstractCoordinatePlane.cpp \
            KDChartCartesianCoordinatePlane.cpp \
            KDChartPolarCoordinatePlane.cpp \
+           KDChartRadarCoordinatePlane.cpp \
            KDChartChart.cpp \
            KDChartWidget.cpp \
            KDChartAbstractDiagram.cpp \
@@ -397,6 +406,7 @@ SOURCES += \
            KDChartAbstractGrid.cpp \
            KDChartCartesianGrid.cpp \
            KDChartPolarGrid.cpp \
+           KDChartRadarGrid.cpp \
            KDChartAttributesModel.cpp \
            KDChartBackgroundAttributes.cpp \
            KDChartBarAttributes.cpp \
@@ -434,6 +444,7 @@ SOURCES += \
            KDChartPalette.cpp \
            KDChartPieDiagram.cpp \
            KDChartPolarDiagram.cpp \
+           KDChartRadarDiagram.cpp \
            KDChartPosition.cpp \
            KDChartRelativePosition.cpp \
            KDChartRingDiagram.cpp \
