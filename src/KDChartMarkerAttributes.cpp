@@ -17,6 +17,7 @@ public:
     Private();
 private:
     bool visible;
+    bool threeD;
     QMap<uint,uint> markerStylesMap;
     uint markerStyle;
     QSizeF markerSize;
@@ -26,6 +27,7 @@ private:
 
 MarkerAttributes::Private::Private()
     : visible( false ),
+      threeD( false ),
       markerStyle( MarkerSquare ),
       markerSize( 10, 10 ),
       markerPen( Qt::black )
@@ -89,6 +91,16 @@ void MarkerAttributes::setVisible( bool visible )
 bool MarkerAttributes::isVisible() const
 {
     return d->visible;
+}
+
+void MarkerAttributes::setThreeD( bool value )
+{
+    d->threeD = value;
+}
+
+bool MarkerAttributes::threeD() const
+{
+    return d->threeD;
 }
 
 void MarkerAttributes::setMarkerStylesMap( const MarkerStylesMap & map )

@@ -41,6 +41,9 @@ namespace KDChart {
         typedef QMap<uint, uint> MarkerStylesMap;
         void setMarkerStylesMap( const MarkerStylesMap & map );
         MarkerStylesMap markerStylesMap() const;
+        
+        void setThreeD( bool value );
+        bool threeD() const;
 
         /**
          * Set the marker-style to use. This could be either one of the

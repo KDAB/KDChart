@@ -73,6 +73,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_plotter->addAxis( xAxis2 );
     m_plotter->addAxis( yAxis );
     m_plotter->addAxis( yAxis2 );
+    connect( threeDEnabled, SIGNAL( toggled(bool) ), this, SLOT( setMarkerAttributes() ) );
 
     m_chart->coordinatePlane()->replaceDiagram( m_plotter );
     m_chart->setGlobalLeading( 20, 20, 20, 20 );
@@ -114,7 +115,8 @@ void MainWindow::setMarkerAttributes()
 
         MarkerAttributes ma( dva.markerAttributes() );
         ma.setVisible( true );
-        ma.setMarkerStyle( MarkerAttributes::MarkerRing );
+        ma.setMarkerStyle( MarkerAttributes::MarkerCircle );
+        ma.setThreeD( threeDEnabled->isChecked() );
 
         // set the size
         const qreal d = m_model->data( indexY, ROLE_SIZE ).toDouble();
