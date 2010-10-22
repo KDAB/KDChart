@@ -189,11 +189,11 @@ namespace KDChart
             Q_ASSERT( m_model != 0 );
             Q_ASSERT( parent.model() == m_model || !parent.isValid() );
 
-            if( parent != m_rootIndex || start >= m_model->columnCount(m_rootIndex) )
+            if( parent != m_rootIndex )
                 return;
 
             Q_ASSERT( start <= end );
-            Q_ASSERT( end - start + 1 <= m_model->columnCount(m_rootIndex) );
+            Q_ASSERT( start < m_model->columnCount(m_rootIndex) );
             
             const int rowCount = m_data.count();
             for( int row = 0; row < rowCount; ++row )
@@ -210,11 +210,11 @@ namespace KDChart
             Q_ASSERT( m_model != 0 );
             Q_ASSERT( parent.model() == m_model || !parent.isValid() );
 
-            if( parent != m_rootIndex || start >= m_model->columnCount(m_rootIndex) )
+            if( parent != m_rootIndex )
                 return;
 
             Q_ASSERT( start <= end );
-            Q_ASSERT( end - start + 1 <= m_model->columnCount(m_rootIndex) );
+            Q_ASSERT( start < m_model->columnCount(m_rootIndex) + end - start + 1 );
 
             const int rowCount = m_data.count();
             for( int row = 0; row < rowCount; ++row )
