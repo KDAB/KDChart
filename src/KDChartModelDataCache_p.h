@@ -193,7 +193,7 @@ namespace KDChart
                 return;
 
             Q_ASSERT( start <= end );
-            Q_ASSERT( start < m_model->columnCount(m_rootIndex) );
+            Q_ASSERT( start <= m_model->columnCount(m_rootIndex) );
             
             const int rowCount = m_data.count();
             for( int row = 0; row < rowCount; ++row )
