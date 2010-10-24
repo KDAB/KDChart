@@ -230,10 +230,11 @@ namespace KDChart
         {
             Q_ASSERT( m_model != 0 );
             Q_ASSERT( topLeft.parent() == bottomRight.parent() );
-            Q_ASSERT( topLeft.model() == m_model && bottomRight.model() == m_model );
 
             if( !topLeft.isValid() || !bottomRight.isValid() || topLeft.parent() != m_rootIndex )
                 return;
+
+            Q_ASSERT( topLeft.model() == m_model && bottomRight.model() == m_model );
 
             const int minRow = qMax( 0, topLeft.row() );
             const int maxRow = bottomRight.row();
