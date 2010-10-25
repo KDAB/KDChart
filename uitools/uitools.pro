@@ -20,10 +20,10 @@ CONFIG += designer
 
 INCLUDEPATH+= $$KDCHARTBASE/extra_include \
               $$KDCHARTBASE/src \
-              .
-DEPENDPATH += .
+              $${OUT_PWD}
+DEPENDPATH += $${OUT_PWD}
 
-UI_DIR = .
+UI_DIR = $${OUT_PWD}
 
 KDAB_EVAL{
   HEADERS += ../evaldialog/evaldialog.h

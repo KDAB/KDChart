@@ -1,8 +1,15 @@
 KDCHART_MAJOR_VERSION = 2
 
 :  # copy from environment:
-  isEmpty( KDCHARTDIR ):KDCHARTDIR=$$(KDCHARTDIR)
-  isEmpty( KDCHARTDIR ):KDCHARTDIR=../
+  isEmpty( KDCHARTDIR ) {
+    KDCHARTDIR=$$(KDCHARTDIR)
+    KDCHARTDIR_BUILD=$$(KDCHARTDIR)
+  }
+  # If no KDCHARTDIR was specified, assume it is the current [build/source] directory
+  isEmpty( KDCHARTDIR ) {
+    KDCHARTDIR=$${TOP_SOURCE_DIR}
+    KDCHARTDIR_BUILD=$${TOP_BUILD_DIR}
+  }
   !isEmpty( KDCHARTDIR ) {
     #Invalid check since the moment this prf is loaded the kdchart-lib wasn't build yet.
     #unix:!macx:isEmpty(QMAKE_EXTENSION_SHLIB):QMAKE_EXTENSION_SHLIB=so
@@ -28,14 +35,15 @@ KDCHART_MAJOR_VERSION = 2
 	    }
         KDCHART_LIB_VERSION_SUFFIX=$$KDCHART_MAJOR_VERSION
 	}
-    LIBS += -L$$KDCHARTDIR/lib
+    LIBS += -L$${KDCHARTDIR_BUILD}/lib
 	LIBS += -lkdchart$$KDCHART_LIB_TYPE_SUFFIX$$KDCHART_LIB_VERSION_SUFFIX
 	
     unix {
-      !isEmpty(QMAKE_RPATH):LIBS += $$QMAKE_RPATH$$KDCHARTDIR/lib
+      !isEmpty(QMAKE_RPATH):LIBS += $$QMAKE_RPATH$${KDCHARTDIR_BUILD}/lib
     }
 
     INCLUDEPATH += $$KDCHARTDIR/include
+# What dependencies are in /include ?
     DEPENDPATH += $$KDCHARTDIR/include
 
     CONFIG += have_kdchart

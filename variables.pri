@@ -27,10 +27,10 @@ win32 {
 CONFIG += depend_includepath
 
 contains(TEMPLATE, lib) {
-  DESTDIR = $$PWD/lib
+  DESTDIR = $${TOP_BUILD_DIR}/lib
 }
 contains(TEMPLATE, app) {
-  DESTDIR = $$PWD/bin
+  DESTDIR = $${TOP_BUILD_DIR}/bin
 }
 
 staticlib {
