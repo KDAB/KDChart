@@ -26,21 +26,23 @@ if exist %PACKSCRIPTS_DIR% (
 )
 
 if exist .license.accepted goto :CheckLicenseComplete
-
 set license_file=
 
 if exist LICENSE.GPL (
+echo "k1"
     if exist LICENSE.US (
-        if exist LICENSE (
+    echo "k2"
+        if not exist LICENSE (
             echo.
             echo Please choose your license.
             echo.
-            echo Type 1 for the GNU General Public License (GPL).
+            echo "Type 1 for the GNU General Public License (GPL)."
             echo Type 2 for the %Product_Space% Commercial License for USA/Canada.
             echo Type 3 for the %Product_Space% Commercial License for anywhere outside USA/Canada.
             echo Anything else cancels.
             echo.
             set /p license=Select:
+	)
     ) else (
         license=1
     )
@@ -56,6 +58,7 @@ if exist LICENSE.GPL (
         )
     )
 )
+echo "license set"
 
 if "%license%" == "1" (
     set license_name="GNU General Public License (GPL)"
@@ -78,6 +81,7 @@ if "%license%" == "1" (
 )
 
 :CheckLicense
+echo "license about to be checked"
 echo.
 echo License Agreement
 echo.
