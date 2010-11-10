@@ -477,7 +477,7 @@ CartesianDiagramDataCompressor::DataValueAttributesList AbstractDiagram::Private
     return allAttrs;
 }
 
-void AbstractDiagram::Private::setDatasetAttrs( int dataset, QVariant data, DisplayRoles role )
+void AbstractDiagram::Private::setDatasetAttrs( int dataset, QVariant data, int role )
 {
     // To store attributes for a dataset, we use the first column
     // that's associated with it. (i.e., with a dataset dimension
@@ -487,14 +487,14 @@ void AbstractDiagram::Private::setDatasetAttrs( int dataset, QVariant data, Disp
     attributesModel->setHeaderData( column, Qt::Horizontal, data, role );
 }
 
-QVariant AbstractDiagram::Private::datasetAttrs( int dataset, DisplayRoles role ) const
+QVariant AbstractDiagram::Private::datasetAttrs( int dataset, int role ) const
 {
     // See setDataSetAttrs for explanation of column
     int column = dataset * datasetDimension;
     return attributesModel->headerData( column, Qt::Horizontal, role );
 }
 
-void AbstractDiagram::Private::resetDatasetAttrs( int dataset, DisplayRoles role )
+void AbstractDiagram::Private::resetDatasetAttrs( int dataset, int role )
 {
     // See setDataSetAttrs for explanation of column
     int column = dataset * datasetDimension;

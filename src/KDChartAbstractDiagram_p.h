@@ -133,17 +133,17 @@ namespace KDChart {
         /**
          * Sets arbitrary attributes of a data set.
          */
-        void setDatasetAttrs( int dataset, QVariant data, DisplayRoles role );
+        void setDatasetAttrs( int dataset, QVariant data, int role );
 
         /**
          * Retrieves arbitrary attributes of a data set.
          */
-        QVariant datasetAttrs( int dataset, DisplayRoles role ) const;
+        QVariant datasetAttrs( int dataset, int role ) const;
         
         /**
          * Resets an attribute of a dataset back to its default.
          */
-        void resetDatasetAttrs( int dataset, DisplayRoles role );
+        void resetDatasetAttrs( int dataset, int role );
 
     protected:
         void init();
