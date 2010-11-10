@@ -336,10 +336,13 @@ bool AbstractDiagram::isHidden( int dataset ) const
 
 bool AbstractDiagram::isHidden( const QModelIndex & index ) const
 {
-    return qVariantValue<bool>(
-        attributesModel()->data(
-            conditionallyMapFromSource(index),
-            DataHiddenRole ) );
+    const QVariant boolFlag( attributesModel()->data(
+                                conditionallyMapFromSource( index ),
+                                DataHiddenRole ) );
+    if ( boolFlag.isValid() )
+        return qVariantValue<bool>( boolFlag );
+    int dataset = index.column() / d->datasetDimension;
+    return isHidden( dataset );
 }
 
 

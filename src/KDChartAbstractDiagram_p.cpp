@@ -484,7 +484,17 @@ void AbstractDiagram::Private::setDatasetAttrs( int dataset, QVariant data, int 
     // of two, the column of the keys). In most cases however, there's
     // only one data dimension, and thus also only one column per data set.
     int column = dataset * datasetDimension;
-    attributesModel->setHeaderData( column, Qt::Horizontal, data, role );
+    for ( int i = 0; i < datasetDimension; i++ ) {
+        attributesModel->setHeaderData( column + i, Qt::Horizontal, data, role );
+        // For DataHiddenRole, also store the flag in the other data points
+        // that belong to this data set, otherwise it's impossible to hide
+        // data points in a plotter diagram because there will always be
+        // one model index that belongs to this data point that is not hidden.
+        // For more details on how hiding works, see the data compressor.
+        // Also see KDCH-503 for which this is a workaround.
+        if ( role != DataHiddenRole )
+            break;
+    }
 }
 
 QVariant AbstractDiagram::Private::datasetAttrs( int dataset, int role ) const
