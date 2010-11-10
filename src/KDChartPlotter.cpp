@@ -269,8 +269,7 @@ double Plotter::threeDItemDepth( const QModelIndex & index ) const
 
 double Plotter::threeDItemDepth( int column ) const
 {
-    return qVariantValue<ThreeDLineAttributes>(
-        d->datasetAttrs( column, KDChart::ThreeDLineAttributesRole ) ).validDepth();
+    return threeDLineAttributes( column ).validDepth();
 }
 
 /**

@@ -315,8 +315,7 @@ double LineDiagram::threeDItemDepth( const QModelIndex& index ) const
 
 double LineDiagram::threeDItemDepth( int column ) const
 {
-    return qVariantValue<ThreeDLineAttributes>(
-        d->datasetAttrs( column, KDChart::ThreeDLineAttributesRole ) ).validDepth();
+    return threeDLineAttributes( column ).validDepth();
 }
 
 /**

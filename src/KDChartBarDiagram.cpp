@@ -325,8 +325,7 @@ double BarDiagram::threeDItemDepth( const QModelIndex& index ) const
 
 double BarDiagram::threeDItemDepth( int column ) const
 {
-    return qVariantValue<ThreeDBarAttributes>(
-        d->datasetAttrs( column, KDChart::ThreeDBarAttributesRole ) ).validDepth();
+    return threeDBarAttributes( column ).validDepth();
 }
 
 void BarDiagram::resizeEvent ( QResizeEvent*)
