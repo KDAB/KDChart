@@ -628,7 +628,10 @@ void CartesianDiagramDataCompressor::retrieveModelData( const CachePosition& pos
                     }
                     m_data[ position.second ][ row ] = result;
                 }
-                return;
+                // FIXME (christoph): We can't return here as we haven't
+                // determined yet if the data point is hidden or not. Does
+                // this optimization (r31276) still work this way?
+                //return;
             }
 
             const QModelIndex& xIndex = indexes.first();
