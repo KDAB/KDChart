@@ -106,6 +106,7 @@ SummaryHandlingProxyModel::SummaryHandlingProxyModel( QObject* parent )
 #define d d_func()
 SummaryHandlingProxyModel::~SummaryHandlingProxyModel()
 {
+    delete _d;
 }
 
 void SummaryHandlingProxyModel::init()

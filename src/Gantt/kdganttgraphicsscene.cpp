@@ -136,6 +136,7 @@ GraphicsScene::~GraphicsScene()
 {
     clearConstraintItems();
     clearItems();
+    delete _d;
 }
 
 #define d d_func()
