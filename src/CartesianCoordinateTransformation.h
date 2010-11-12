@@ -19,6 +19,16 @@ namespace KDChart {
       * \internal
       */
     struct CoordinateTransformation {
+
+        CoordinateTransformation()
+            : unitVectorX( 1.0 )
+            , unitVectorY( 1.0 )
+            , isoScaleX( 1.0 )
+            , isoScaleY( 1.0 )
+            , axesCalcModeY( CartesianCoordinatePlane::Linear )
+            , axesCalcModeX( CartesianCoordinatePlane::Linear )
+        {}
+
         QRectF diagramRect;
         // represents the distance of the diagram coordinate origin to the
         // origin of the coordinate plane space:

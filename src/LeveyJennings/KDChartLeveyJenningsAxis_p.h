@@ -31,6 +31,8 @@ class LeveyJenningsAxis::Private : public CartesianAxis::Private
 public:
     Private( LeveyJenningsDiagram* diagram, LeveyJenningsAxis* axis )
         : CartesianAxis::Private( diagram, axis )
+        , type( LeveyJenningsGridAttributes::Expected )
+        , format( Qt::ISODate )
     {}
     ~Private() {}
 
