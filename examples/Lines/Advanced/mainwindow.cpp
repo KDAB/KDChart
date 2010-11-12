@@ -27,7 +27,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     m_model.loadFromCSV( ":/data" );
 
     // Set up the diagram
-    m_lines = new LineDiagram();
+    m_lines = new LineDiagram( this );
     m_lines->setModel( &m_model );
 
     CartesianAxis *xAxis = new CartesianAxis( m_lines );

@@ -23,10 +23,26 @@ using namespace KDChart;
 
 BarDiagram::Private::Private()
     : orientation( Qt::Vertical )
-{
+    , diagram( 0 )
+    , implementor( 0 )
+    , normalDiagram( 0 )
+    , stackedDiagram( 0 )
+    , percentDiagram( 0 )
+    , normalLyingDiagram( 0 )
+    , stackedLyingDiagram( 0 )
+    , percentLyingDiagram( 0 )
+{    
 }
 
-BarDiagram::Private::~Private() {}
+BarDiagram::Private::~Private()
+{
+    delete normalDiagram;
+    delete stackedDiagram;
+    delete percentDiagram;
+    delete normalLyingDiagram;
+    delete stackedLyingDiagram;
+    delete percentLyingDiagram;
+}
 
 #define d d_func()
 

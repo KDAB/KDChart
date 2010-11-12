@@ -53,6 +53,9 @@ void LineDiagram::init()
 
 LineDiagram::~LineDiagram()
 {
+    delete d->normalDiagram;
+    delete d->stackedDiagram;
+    delete d->percentDiagram;
 }
 
 /**
