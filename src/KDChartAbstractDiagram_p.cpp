@@ -419,12 +419,19 @@ void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
                                 static_cast<int>(pos.x() + x*cosRot + y*sinRot),
                                 static_cast<int>(pos.y() - x*sinRot + y*cosRot));
                 }
-                KDAB_FOREACH( QPolygon oldPoly, alreadyDrawnDataValueTexts ) {
-                    if( ! oldPoly.intersected( pr ).isEmpty() )
+                // Using QPainterPath allows us to use intersects() (which has many early-exits)
+                // instead of QPolygon::intersected (which calculates a slow and precise intersection polygon)
+                QPainterPath path;
+                path.addPolygon( pr );
+                //qDebug() << "Comparing new poly" << br << "(rotated" << radRot << ") with" << alreadyDrawnDataValueTexts.count() << "already drawn data value texts";
+                KDAB_FOREACH( const QPainterPath& oldPoly, alreadyDrawnDataValueTexts ) {
+                    if ( oldPoly.intersects( path ) ) {
                         drawIt = false;
+                        break;
+                    }
                 }
                 if( drawIt )
-                    alreadyDrawnDataValueTexts << pr;
+                    alreadyDrawnDataValueTexts << path;
             }
             if( drawIt ){
                 QRectF rect = layout->frameBoundingRect(doc.rootFrame());

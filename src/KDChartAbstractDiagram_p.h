@@ -139,7 +139,7 @@ namespace KDChart {
          * Retrieves arbitrary attributes of a data set.
          */
         QVariant datasetAttrs( int dataset, int role ) const;
-        
+
         /**
          * Resets an attribute of a dataset back to its default.
          */
@@ -163,7 +163,7 @@ namespace KDChart {
         QMap< Qt::Orientation, QString > unitPrefix;
         QMap< int, QMap< Qt::Orientation, QString > > unitSuffixMap;
         QMap< int, QMap< Qt::Orientation, QString > > unitPrefixMap;
-        QList< QPolygon > alreadyDrawnDataValueTexts;
+        QList< QPainterPath > alreadyDrawnDataValueTexts;
 
     private:
         QString lastRoundedValue;
