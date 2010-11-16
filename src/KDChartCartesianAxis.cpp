@@ -1771,10 +1771,12 @@ QSize CartesianAxis::sizeHint() const
 /* pure virtual in QLayoutItem */
 void CartesianAxis::setGeometry( const QRect& r )
 {
+    if (d->geometry != r) {
 //    qDebug() << "KDChart::CartesianAxis::setGeometry(" << r << ") called"
 //             << (isAbscissa() ? "for Abscissa":"for Ordinate") << "axis";
-    d->geometry = r;
-    setCachedSizeDirty();
+        d->geometry = r;
+        setCachedSizeDirty();
+    }
 }
 /* pure virtual in QLayoutItem */
 QRect CartesianAxis::geometry() const
