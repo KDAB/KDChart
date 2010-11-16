@@ -341,10 +341,11 @@ void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
         const Qt::Alignment alignBottomLeft = Qt::AlignBottom | Qt::AlignLeft;
         const QFont calculatedFont( ta.calculatedFont( plane, KDChartEnums::MeasureOrientationMinimum ) );
 
-        // note: We can not use boundingRect() to retrieve the width, as that returnes a too small value
-        const QSizeF plainSize(
-                cachedFontMetrics( calculatedFont, painter->device() )->width( doc.toPlainText() ),
-        cachedFontMetrics( calculatedFont, painter->device() )->boundingRect( doc.toPlainText() ).height() );
+        const QString plainText = doc.toPlainText();
+        const QFontMetrics *cfm = cachedFontMetrics( calculatedFont, painter->device() );
+        // note: We can not use boundingRect() to retrieve the width, as that returns a too small value
+        const QSizeF plainSize( cfm->width( plainText ),
+                                cfm->boundingRect( plainText ).height() );
 
         // FIXME draw the non-text bits, background, etc
 
