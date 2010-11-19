@@ -214,7 +214,6 @@ namespace KDChart
                 return;
 
             Q_ASSERT( start <= end );
-            Q_ASSERT( start < m_model->columnCount(m_rootIndex) + end - start + 1 );
 
             const int rowCount = m_data.count();
             for( int row = 0; row < rowCount; ++row )
@@ -303,7 +302,6 @@ namespace KDChart
                 return;
 
             Q_ASSERT( start <= end );
-            Q_ASSERT( end - start + 1 <= m_model->rowCount(m_rootIndex) );
 
             m_data.remove( start, end - start + 1 );
             m_cacheValid.remove( start, end - start + 1 );
