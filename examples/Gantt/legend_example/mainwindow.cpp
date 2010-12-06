@@ -74,29 +74,29 @@ void MainWindow::initModel()
     model->setHeaderData( 0, Qt::Horizontal, tr( "Tree View of Entries" ) );
     ui->ganttView->setModel( model );
 
-
-        QStandardItemModel* lmodel = new QStandardItemModel;
-        lmodel->appendRow( QList<QStandardItem*>()
-                << new MyStandardItem( QVariant() )
-                << new MyStandardItem( KDGantt::TypeEvent )
+    QStandardItemModel* lmodel = new QStandardItemModel;
+    lmodel->appendRow( QList<QStandardItem*>()
+        << new MyStandardItem( QVariant() )
+        << new MyStandardItem( KDGantt::TypeEvent )
         << new MyStandardItem( QVariant() )
         << new MyStandardItem( QVariant() )
         << new MyStandardItem( QVariant() )
         << new MyStandardItem( QString::fromLatin1("Event") ) );
-        lmodel->appendRow( QList<QStandardItem*>()
+    lmodel->appendRow( QList<QStandardItem*>()
         << new MyStandardItem( QVariant() )
         << new MyStandardItem( KDGantt::TypeTask )
         << new MyStandardItem( QVariant() )
         << new MyStandardItem( QVariant() )
         << new MyStandardItem( QVariant() )
         << new MyStandardItem( QString::fromLatin1("Task") ) );
-        lmodel->appendRow( QList<QStandardItem*>()
+    lmodel->appendRow( QList<QStandardItem*>()
         << new MyStandardItem( QVariant() )
         << new MyStandardItem( KDGantt::TypeSummary )
         << new MyStandardItem( QVariant() )
         << new MyStandardItem( QVariant() )
         << new MyStandardItem( QVariant() )
         << new MyStandardItem( QString::fromLatin1("Summary") ) );
+
     smallLegend = new KDGantt::Legend();
     smallLegend->setWindowTitle( tr( "Legend" ) );
     smallLegend->show();
@@ -144,6 +144,14 @@ void MainWindow::initActions()
     zoomMenu->addAction( zoomInAction );
     zoomMenu->addAction( zoomOutAction );
     zoomMenu->addAction( zoomFitAction );
+    
+    QMenu* scaleMenu = menuBar()->addMenu( tr( "Scale" ) );
+    
+    scaleMenu->addAction( tr( "Auto" ), this, SLOT(scaleAuto()) );
+    scaleMenu->addAction( tr( "Hour" ), this, SLOT(scaleHour()) );
+    scaleMenu->addAction( tr( "Day" ), this, SLOT(scaleDay()) );
+    scaleMenu->addAction( tr( "Week" ), this, SLOT(scaleWeek()) );
+    scaleMenu->addAction( tr( "Month" ), this, SLOT(scaleMonth()) );
 
     enableActions( QItemSelection() );
 }
@@ -322,10 +330,40 @@ void MainWindow::zoomFit()
     qreal delta = start.date().daysTo(end.date());
     delta += start.time().msecsTo(end.time())/( 1000.*24.*60.*60. );
 
-
     qDebug() << view_width << "/" << delta;
     grid->setDayWidth( view_width/( std::max( 1., delta ) ) );
     qDebug() << "daywidth set to" << grid->dayWidth();
     qDebug() << "start scroll to" << grid->mapToChart( start );
     ui->ganttView->graphicsView()->horizontalScrollBar()->setValue( grid->mapToChart( start ) );
 }
+
+void MainWindow::scaleAuto()
+{
+    KDGantt::DateTimeGrid* grid = static_cast<KDGantt::DateTimeGrid*>(ui->ganttView->grid());
+    grid->setScale( KDGantt::DateTimeGrid::ScaleAuto );
+}
+
+void MainWindow::scaleHour()
+{
+    KDGantt::DateTimeGrid* grid = static_cast<KDGantt::DateTimeGrid*>(ui->ganttView->grid());
+    grid->setScale( KDGantt::DateTimeGrid::ScaleHour );
+}
+
+void MainWindow::scaleDay()
+{
+    KDGantt::DateTimeGrid* grid = static_cast<KDGantt::DateTimeGrid*>(ui->ganttView->grid());
+    grid->setScale( KDGantt::DateTimeGrid::ScaleDay );
+}
+
+void MainWindow::scaleWeek()
+{
+    KDGantt::DateTimeGrid* grid = static_cast<KDGantt::DateTimeGrid*>(ui->ganttView->grid());
+    grid->setScale( KDGantt::DateTimeGrid::ScaleWeek );
+}
+
+void MainWindow::scaleMonth()
+{
+    KDGantt::DateTimeGrid* grid = static_cast<KDGantt::DateTimeGrid*>(ui->ganttView->grid());
+    grid->setScale( KDGantt::DateTimeGrid::ScaleMonth );
+}
+    

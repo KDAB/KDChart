@@ -33,6 +33,11 @@ private slots:
     void zoomIn();
     void zoomOut();
     void zoomFit();
+    void scaleAuto();
+    void scaleHour();
+    void scaleDay();
+    void scaleWeek();
+    void scaleMonth();
 
 private:
     void initModel();
