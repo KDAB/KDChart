@@ -329,6 +329,15 @@ void DateTimeGrid::setDayWidth( qreal w )
  *
  * The signal gridChanged() is emitted after the scale has changed.
  * \sa Scale
+ *
+ * Following example demonstrates how to change the format of the header to use
+ * a date-scaling with the header-label displayed with the ISO date-notation.
+ * \code
+ * DateTimeScaleFormatter* formatter = new DateTimeScaleFormatter(DateTimeScaleFormatter::Day, QString::fromLatin1("yyyy-MMMM-dddd"));
+ * grid->setUserDefinedUpperScale( formatter );
+ * grid->setUserDefinedLowerScale( formatter );
+ * grid->setScale( DateTimeGrid::ScaleUserDefined ); 
+ * \endcode
  */
 void DateTimeGrid::setScale( Scale s )
 {
