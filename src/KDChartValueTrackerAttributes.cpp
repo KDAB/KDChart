@@ -19,13 +19,15 @@ class ValueTrackerAttributes::Private
         QSizeF markerSize;
         bool enabled;
         QBrush areaBrush;
+        Qt::Orientations orientations;
 };
 
 ValueTrackerAttributes::Private::Private()
     : pen( QPen( QColor( 80, 80, 80, 200 ) ) ),
       markerSize( QSizeF( 6.0, 6.0 ) ),
       enabled( false ),
-      areaBrush( QBrush() )
+      areaBrush( QBrush() ),
+      orientations(Qt::Vertical|Qt::Horizontal)
 {
 }
 
@@ -92,6 +94,16 @@ void ValueTrackerAttributes::setMarkerSize( const QSizeF& size )
 QSizeF ValueTrackerAttributes::markerSize() const
 {
     return d->markerSize;
+}
+
+Qt::Orientations ValueTrackerAttributes::orientations() const
+{
+    return d->orientations;
+}
+
+void ValueTrackerAttributes::setOrientations( Qt::Orientations orientations )
+{
+    d->orientations = orientations;
 }
 
 void ValueTrackerAttributes::setEnabled( bool enabled )

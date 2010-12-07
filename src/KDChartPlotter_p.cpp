@@ -250,29 +250,59 @@ void Plotter::PlotterType::paintValueTracker( PaintContext* ctx, const ValueTrac
                                        plane->isVerticalRangeReversed() ?
                                            gridDimensions.at( 1 ).end :
                                            gridDimensions.at( 1 ).start ) ) );
+    const QPointF topRight( ctx->coordinatePlane()->translate(
+                            QPointF( plane->isHorizontalRangeReversed() ?
+                                         gridDimensions.at( 0 ).start :
+                                         gridDimensions.at( 0 ).end,
+                                     plane->isVerticalRangeReversed() ?
+                                         gridDimensions.at( 1 ).start :
+                                         gridDimensions.at( 1 ).end ) ) );
     const QPointF markerPoint = at;
-    const QPointF ordinatePoint( bottomLeft.x(), at.y() );
-    const QPointF abscissaPoint( at.x(), bottomLeft.y() );
+
+    QPointF startPoint;
+    if ( vt.orientations() & Qt::Horizontal ) {
+        startPoint = QPointF( bottomLeft.x(), at.y() );
+    } else {
+        startPoint = QPointF( at.x(), topRight.y() );
+    }
+
+    QPointF endPoint;
+    if ( vt.orientations() & Qt::Vertical ) {
+        endPoint = QPointF( at.x(), bottomLeft.y() );
+    } else {
+        endPoint = QPointF( topRight.x(), at.y() );
+    }
 
     const QSizeF markerSize = vt.markerSize();
     const QRectF ellipseMarker = QRectF( at.x() - markerSize.width() / 2,
                                          at.y() - markerSize.height() / 2,
                                          markerSize.width(), markerSize.height() );
 
-    const QPointF ordinateMarker[3] = {
-        QPointF( ordinatePoint.x(), at.y() + markerSize.height() / 2 ),
-        QPointF( ordinatePoint.x() + markerSize.width() / 2, at.y() ),
-        QPointF( ordinatePoint.x(), at.y() - markerSize.height() / 2 )
-    };
+    QPointF startMarker[3];
+    if ( vt.orientations() & Qt::Horizontal ) {
+        startMarker[0] = startPoint + QPointF( 0,  markerSize.height() / 2 );
+        startMarker[1] = startPoint + QPointF( markerSize.width() / 2, 0 );
+        startMarker[2] = startPoint - QPointF( 0, markerSize.height() / 2 );
+    } else {
+        startMarker[0] = startPoint + QPointF( 0, markerSize.height() / 2 );
+        startMarker[1] = startPoint + QPointF( markerSize.width() / 2, 0 );
+        startMarker[2] = startPoint - QPointF( markerSize.width() / 2, 0 );
+    }
 
-    const QPointF abscissaMarker[3] = {
-        QPointF( at.x() + markerSize.width() / 2, abscissaPoint.y() ),
-        QPointF( at.x(), abscissaPoint.y() - markerSize.height() / 2 ),
-        QPointF( at.x() - markerSize.width() / 2, abscissaPoint.y() )
-    };
+    QPointF endMarker[3];
 
-    QPointF topLeft = ordinatePoint;
-    QPointF bottomRightOffset = abscissaPoint - topLeft;
+    if ( vt.orientations() & Qt::Vertical ) {
+        endMarker[0] = endPoint + QPointF( markerSize.width() / 2, 0 );
+        endMarker[1] = endPoint - QPointF( 0, markerSize.height() / 2 );
+        endMarker[2] = endPoint - QPointF( markerSize.width() / 2, 0 );
+    } else {
+        endMarker[0] = endPoint + QPointF( 0,  markerSize.width() / 2 );
+        endMarker[1] = endPoint - QPointF( 0, markerSize.height() / 2 );
+        endMarker[2] = endPoint - QPointF( markerSize.width() / 2, 0 );
+    }
+
+    QPointF topLeft = startPoint;
+    QPointF bottomRightOffset = endPoint - topLeft;
     QSizeF size( bottomRightOffset.x(), bottomRightOffset.y() );
     QRectF area( topLeft, size );
 
@@ -280,16 +310,16 @@ void Plotter::PlotterType::paintValueTracker( PaintContext* ctx, const ValueTrac
     ctx->painter()->setPen( PrintingParameters::scalePen( vt.pen() ) );
     ctx->painter()->setBrush( QBrush() );
 
-    ctx->painter()->drawLine( markerPoint, ordinatePoint );
-    ctx->painter()->drawLine( markerPoint, abscissaPoint );
+    ctx->painter()->drawLine( markerPoint, startPoint );
+    ctx->painter()->drawLine( markerPoint, endPoint );
 
     ctx->painter()->fillRect( area, vt.areaBrush() );
 
     ctx->painter()->drawEllipse( ellipseMarker );
 
     ctx->painter()->setBrush( vt.pen().color() );
-    ctx->painter()->drawPolygon( ordinateMarker, 3 );
-    ctx->painter()->drawPolygon( abscissaMarker, 3 );
+    ctx->painter()->drawPolygon( startMarker, 3 );
+    ctx->painter()->drawPolygon( endMarker, 3 );
 }
 
 CartesianDiagramDataCompressor& Plotter::PlotterType::compressor() const
