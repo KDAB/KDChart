@@ -40,7 +40,7 @@ namespace KDChart {
 /**
  * \internal
  */
-class KDChart::Legend::Private : public AbstractAreaWidget::Private
+class KDChart::Legend::Private : public KDChart::AbstractAreaWidget::Private
 {
     friend class KDChart::Legend;
 public:

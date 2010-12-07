@@ -2,6 +2,10 @@
 
 #include <cmath>
 
+using namespace std;
+
+using namespace std;
+
 extern const double Sqrt3 = sqrt( 3.0 );
 extern const double TriangleWidth = 1.0;
 extern const double TriangleHeight = 0.5 * Sqrt3;

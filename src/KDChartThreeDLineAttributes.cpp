@@ -55,7 +55,7 @@ bool ThreeDLineAttributes::operator==( const ThreeDLineAttributes& r ) const
 
 
 
-void ThreeDLineAttributes::setLineXRotation( uint degrees )
+void ThreeDLineAttributes::setLineXRotation( const uint degrees )
 {
     d->lineXRotation = degrees;
 }
@@ -65,7 +65,7 @@ uint ThreeDLineAttributes::lineXRotation() const
     return d->lineXRotation;
 }
 
-void ThreeDLineAttributes::setLineYRotation( uint degrees )
+void ThreeDLineAttributes::setLineYRotation( const uint degrees )
 {
     d->lineYRotation = degrees;
 }

@@ -714,6 +714,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                                   KDChartEnums::MeasureOrientationMinimum,
                                   Qt::AlignLeft )
             : 0;
+        labelItem->setTextAttributes( textAttributes() );
         TextLayoutItem* labelItem2 =
             drawLabels
             ? new TextLayoutItem( QString::number( minValueY ),
@@ -722,6 +723,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                                   KDChartEnums::MeasureOrientationMinimum,
                                   Qt::AlignLeft )
             : 0;
+        labelItem2->setTextAttributes( textAttributes() );
         const QFontMetricsF met(
             drawLabels
             ? labelItem->realFont()

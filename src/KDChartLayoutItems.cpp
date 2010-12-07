@@ -373,6 +373,7 @@ qreal KDChart::TextLayoutItem::fitFontSizeToGeometry() const
     QFont f = realFont();
     const qreal origResult = f.pointSizeF();
     qreal result = origResult;
+    const qreal minSize = mAttributes.minimalFontSize().value();
     const QSize mySize = geometry().size();
     if( mySize.isNull() )
         return result;
@@ -387,6 +388,8 @@ qreal KDChart::TextLayoutItem::fitFontSizeToGeometry() const
             return result;
 
         result -= 0.5;
+        if ( minSize > 0 && result < minSize )
+            return result += 0.5;
         if( result <= 0.0 )
             return origResult;
         f.setPointSizeF( result );
