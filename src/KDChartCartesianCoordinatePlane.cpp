@@ -700,20 +700,26 @@ void CartesianCoordinatePlane::adjustVerticalRangeToData()
 
 void CartesianCoordinatePlane::setAutoAdjustHorizontalRangeToData( unsigned int percentEmpty )
 {
-    d->autoAdjustHorizontalRangeToData = percentEmpty;
-    d->horizontalMin = 0.0;
-    d->horizontalMax = 0.0;
-    layoutDiagrams();
-    emit propertiesChanged();
+    if ( d->autoAdjustHorizontalRangeToData != percentEmpty )
+    {
+        d->autoAdjustHorizontalRangeToData = percentEmpty;
+        d->horizontalMin = 0.0;
+        d->horizontalMax = 0.0;
+        layoutDiagrams();
+        emit propertiesChanged();
+    }
 }
 
 void CartesianCoordinatePlane::setAutoAdjustVerticalRangeToData( unsigned int percentEmpty )
 {
-    d->autoAdjustVerticalRangeToData = percentEmpty;
-    d->verticalMin = 0.0;
-    d->verticalMax = 0.0;
-    layoutDiagrams();
-    emit propertiesChanged();
+    if ( d->autoAdjustVerticalRangeToData != percentEmpty )
+    {
+        d->autoAdjustVerticalRangeToData = percentEmpty;
+        d->verticalMin = 0.0;
+        d->verticalMax = 0.0;
+        layoutDiagrams();
+        emit propertiesChanged();
+    }
 }
 
 unsigned int CartesianCoordinatePlane::autoAdjustHorizontalRangeToData() const
