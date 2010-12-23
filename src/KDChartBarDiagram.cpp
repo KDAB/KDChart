@@ -273,7 +273,7 @@ void BarDiagram::setThreeDBarAttributes( const ThreeDBarAttributes& threeDAttrs 
 {
     setDataBoundariesDirty();
     d->attributesModel->setModelData( qVariantFromValue( threeDAttrs ), ThreeDBarAttributesRole );
-    //emit layoutChanged( this );
+    emit layoutChanged( this );
      emit propertiesChanged();
 }
 

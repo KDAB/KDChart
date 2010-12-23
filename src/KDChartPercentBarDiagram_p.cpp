@@ -26,8 +26,28 @@ const QPair<QPointF, QPointF> PercentBarDiagram::calculateDataBoundaries() const
     const double yMin = 0.0;
     const double yMax = 100.0;
 
+    const int rowCount = xMax;
+    const int colCount = diagram()->model() ? diagram()->model()->columnCount( diagram()->rootIndex() ) : 0;
+
+    double usedDepth = 0;
+
+    for( int row = 0; row < rowCount ; ++row )
+    {
+        for( int col = 0; col < colCount; ++col ) {
+            const CartesianDiagramDataCompressor::CachePosition position( row, col );
+            const CartesianDiagramDataCompressor::DataPoint p = compressor().data( position );
+            QModelIndex sourceIndex = attributesModel()->mapToSource( p.index );
+            ThreeDBarAttributes threeDAttrs = diagram()->threeDBarAttributes( sourceIndex );
+
+            if( threeDAttrs.isEnabled() )
+                if( threeDAttrs.depth() > usedDepth )
+                    usedDepth = threeDAttrs.depth();
+        }
+
+    }
+
     const QPointF bottomLeft( QPointF( xMin, yMin ) );
-    const QPointF topRight( QPointF( xMax, yMax ) );
+    const QPointF topRight( QPointF( xMax, yMax + usedDepth * 0.3 ) );
 
     //qDebug() << "BarDiagram::calculateDataBoundaries () returns ( " << bottomLeft << topRight <<")";
     return QPair< QPointF, QPointF >( bottomLeft,  topRight );
