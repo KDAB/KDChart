@@ -22,6 +22,10 @@
 
 #define DEGTORAD(d) (d)*M_PI/180
 
+// Smybian's math.h doesn't define a trunc function
+#if defined(Q_OS_SYMBIAN) || defined(QT_SIMULATOR)
+#define trunc(x) (double) ((int) (x + (x >= 0.0 ? -0.5 : 0.5)))
+#endif
 
 // We use our own ISNAN / ISINF in the code to detect
 // that we defined them.

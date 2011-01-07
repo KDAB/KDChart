@@ -27,6 +27,15 @@
 #  define QT_VERSION_CHECK(major, minor, patch) ((major<<16)|(minor<<8)|(patch))
 #endif
 
+// defines HAVE_PRINTER if support for printing should be included
+#ifdef _WIN32_WCE
+    // There is no printer support under wince even if QT_NO_PRINTER is not set
+#else
+#ifndef QT_NO_PRINTER
+    #define HAVE_PRINTER
+#endif
+#endif
+
 /*!\class KDGantt::GraphicsScene
  * \internal
  */
@@ -610,8 +619,10 @@ GraphicsItem* GraphicsScene::dragSource() const
  */
 void GraphicsScene::print( QPrinter* printer, bool drawRowLabels )
 {
-//There is no printer support under wince
-#ifndef _WIN32_WCE
+#ifndef HAVE_PRINTER
+    Q_UNUSED( printer );
+    Q_UNUSED( drawRowLabels );
+#else
     QPainter painter( printer );
     doPrint( &painter, printer->pageRect(), sceneRect().left(), sceneRect().right(), printer, drawRowLabels );
 #endif
@@ -629,8 +640,12 @@ void GraphicsScene::print( QPrinter* printer, bool drawRowLabels )
  */
 void GraphicsScene::print( QPrinter* printer, qreal start, qreal end, bool drawRowLabels )
 {
-//There is no printer support under wince
-#ifndef _WIN32_WCE
+#ifndef HAVE_PRINTER
+    Q_UNUSED( printer );
+    Q_UNUSED( start );
+    Q_UNUSED( end );
+    Q_UNUSED( drawRowLabels );
+#else
     QPainter painter( printer );
     doPrint( &painter, printer->pageRect(), start, end, printer, drawRowLabels );
 #endif
@@ -642,15 +657,12 @@ void GraphicsScene::print( QPrinter* printer, qreal start, qreal end, bool drawR
  */
 void GraphicsScene::print( QPainter* painter, const QRectF& _targetRect, bool drawRowLabels )
 {
-//There is no printer support under wince
-#ifndef _WIN32_WCE
     QRectF targetRect( _targetRect );
     if ( targetRect.isNull() ) {
         targetRect = sceneRect();
     }
 
     doPrint( painter, targetRect, sceneRect().left(), sceneRect().right(), 0, drawRowLabels );
-#endif
 }
 
 /*! Render the GanttView inside the rectangle \a target using the painter \a painter.
@@ -664,15 +676,12 @@ void GraphicsScene::print( QPainter* painter, const QRectF& _targetRect, bool dr
 void GraphicsScene::print( QPainter* painter, qreal start, qreal end,
                            const QRectF& _targetRect, bool drawRowLabels )
 {
-//There is no printer support under wince
-#ifndef _WIN32_WCE
     QRectF targetRect( _targetRect );
     if ( targetRect.isNull() ) {
         targetRect = sceneRect();
     }
 
     doPrint( painter, targetRect, start, end, 0, drawRowLabels );
-#endif
 }
 
 /*!\internal
@@ -681,12 +690,12 @@ void GraphicsScene::doPrint( QPainter* painter, const QRectF& targetRect,
                              qreal start, qreal end,
                              QPrinter* printer, bool drawRowLabels )
 {
-//There is no printer support under wince
-#ifndef _WIN32_WCE
+
     assert( painter );
     d->isPrinting = true;
 #if QT_VERSION >= QT_VERSION_CHECK(4, 4, 0)
     QFont sceneFont( font() );
+#ifdef HAVE_PRINTER
     if ( printer ) {
         sceneFont = QFont( font(), printer );
         if ( font().pointSizeF() >= 0.0 )
@@ -696,8 +705,10 @@ void GraphicsScene::doPrint( QPainter* painter, const QRectF& targetRect,
         else
             sceneFont.setPixelSize( font().pixelSize() );
     }
+#endif
 #else
     QFont sceneFont( painter->font() );
+#ifdef HAVE_PRINTER
     if ( printer ) {
         sceneFont = QFont( painter->font(), printer );
         if ( painter->font().pointSizeF() >= 0.0 )
@@ -707,6 +718,7 @@ void GraphicsScene::doPrint( QPainter* painter, const QRectF& targetRect,
         else
             sceneFont.setPixelSize( painter->font().pixelSize() );
     }
+#endif
 #endif
 
     const QRectF oldScnRect( sceneRect() );
@@ -764,7 +776,9 @@ void GraphicsScene::doPrint( QPainter* painter, const QRectF& targetRect,
         offset += targetRect.width()/yratio;
         ++pagecount;
         if ( printer && offset < scnRect.right() ) {
+#ifdef HAVE_PRINTER
             printer->newPage();
+#endif
         } else {
             break;
         }
@@ -775,7 +789,6 @@ void GraphicsScene::doPrint( QPainter* painter, const QRectF& targetRect,
     blockSignals( b );
     setSceneRect( oldScnRect );
     painter->restore();
-#endif
 }
 
 #include "moc_kdganttgraphicsscene.cpp"
