@@ -9,12 +9,15 @@ namespace KDChart {
     class LineDiagram;
 }
 
+class QPainterPath;
+
 class MainWindow : public QWidget, private Ui::MainWindow
 {
     Q_OBJECT
 
 public:
     MainWindow( QWidget* parent = 0 );
+    ~MainWindow();
 
 private slots:
 
@@ -30,6 +33,7 @@ private:
     KDChart::Chart* m_chart;
     KDChart::LineDiagram* m_lines;
     TableModel m_model;
+    QPainterPath* path;
 };
 
 

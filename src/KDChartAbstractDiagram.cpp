@@ -637,6 +637,15 @@ void AbstractDiagram::paintMarker( QPainter* painter,
                 }
             case MarkerAttributes::NoMarker:
                 break;
+            case MarkerAttributes::PainterPathMarker:
+                {
+                    QPainterPath path = markerAttributes.customMarkerPath();
+                    painter->scale(maSize.height()/path.boundingRect().height(),
+                                   maSize.width()/path.boundingRect().width());
+                    painter->setPen( PrintingParameters::scalePen( QPen( brush.color() ) ) );
+                    painter->drawPath(path);
+                    break;
+                }
             default:
                 Q_ASSERT_X ( false, "paintMarkers()",
                             "Type item does not match a defined Marker Type." );

@@ -7,6 +7,7 @@
 class QColor;
 class QSizeF;
 class QPen;
+class QPainterPath;
 class QDebug;
 template <typename T, typename K> class QMap;
 
@@ -33,7 +34,8 @@ namespace KDChart {
                            MarkerCross   = 6,
                            MarkerFastCross = 7,
                            NoMarker = 8,
-                           StartCustomMarkers = 9 };
+                           PainterPathMarker = 9,
+                           StartCustomMarkers = 10 };
 
         void setVisible( bool visible );
         bool isVisible() const;
@@ -69,6 +71,9 @@ namespace KDChart {
 
         void setMarkerColor( const QColor& color );
         QColor markerColor() const;
+
+        void setCustomMarkerPath( const QPainterPath& path );
+        QPainterPath customMarkerPath() const;
 
         void setPen( const QPen& pen );
         QPen pen() const;

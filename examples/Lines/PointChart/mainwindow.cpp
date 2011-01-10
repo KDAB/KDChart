@@ -6,6 +6,8 @@
 #include <KDChartDataValueAttributes>
 #include <KDChartMarkerAttributes>
 
+#include <QtGui/QPainterPath>
+
 
 using namespace KDChart;
 
@@ -13,6 +15,8 @@ MainWindow::MainWindow( QWidget* parent ) :
     QWidget( parent )
 {
     setupUi( this );
+    path = new QPainterPath();
+    path->addEllipse( 0.5, 0.5, 0.5, 0.2 );
 
     QHBoxLayout* chartLayout = new QHBoxLayout( chartFrame );
     m_chart = new Chart();
@@ -28,6 +32,12 @@ MainWindow::MainWindow( QWidget* parent ) :
 
     on_paintLinesCB_toggled( false );
     on_paintMarkersCB_toggled( true );
+
+}
+
+MainWindow::~MainWindow()
+{
+    delete path;
 }
 
 void MainWindow::on_lineTypeCB_currentIndexChanged( const QString & text )
@@ -136,11 +146,14 @@ void MainWindow::on_paintMarkersCB_toggled( bool checked )
         case 8:
             ma.setMarkerStyle( MarkerAttributes::MarkerFastCross );
             break;
+        case 9:
+            ma.setMarkerStyle( MarkerAttributes::PainterPathMarker );
         }
 
         QPen markerPen( lineBrush.color() );
         ma.setPen( markerPen );
         ma.setVisible(  true );
+        ma.setCustomMarkerPath( *path );
         dva.setTextAttributes( ta );
         dva.setMarkerAttributes( ma );
 

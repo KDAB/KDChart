@@ -2,6 +2,7 @@
 #include <QColor>
 #include <QMap>
 #include <QPen>
+#include <QPainterPath>
 #include <QSizeF>
 #include <QDebug>
 #include <qglobal.h>
@@ -22,6 +23,7 @@ private:
     uint markerStyle;
     QSizeF markerSize;
     QColor markerColor;
+    QPainterPath customMarkerPath;
     QPen markerPen;
 };
 
@@ -70,6 +72,7 @@ bool MarkerAttributes::operator==( const MarkerAttributes& r ) const
             << "d" << (markerStyle() == r.markerStyle()) << markerStyle() <<r.markerStyle()
             << "e" << (markerSize() == r.markerSize())
             << "f" << (markerColor() == r.markerColor())
+            << "p" << (customMarkerPath() == r.customMarkerPath())
             << "g" << (pen() == r.pen())
             << "h" << (markerColor() == r.markerColor()) << markerColor() << r.markerColor();
     */
@@ -78,6 +81,7 @@ bool MarkerAttributes::operator==( const MarkerAttributes& r ) const
             markerStyle() == r.markerStyle() &&
             markerSize() == r.markerSize() &&
             markerColor() == r.markerColor() &&
+            customMarkerPath() == r.customMarkerPath() &&
             pen() == r.pen() );
 }
 
@@ -143,6 +147,16 @@ QColor MarkerAttributes::markerColor() const
     return d->markerColor;
 }
 
+void MarkerAttributes::setCustomMarkerPath( const QPainterPath& path )
+{
+    d->customMarkerPath = path;
+}
+
+QPainterPath MarkerAttributes::customMarkerPath() const
+{
+    return d->customMarkerPath;
+}
+
 void MarkerAttributes::setPen( const QPen& pen )
 {
     d->markerPen = pen;
@@ -162,6 +176,7 @@ QDebug operator<<( QDebug dbg, const MarkerAttributes & ma ) {
                << "markerStylesMap=" << ma.markerStylesMap()
                << "markerStyle=" << ma.markerStyle()
                << "markerColor=" << ma.markerColor()
+               << "customMarkerPath=" << ma.customMarkerPath()
                << "pen=" << ma.pen()
                << ")";
 }
