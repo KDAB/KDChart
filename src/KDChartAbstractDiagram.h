@@ -619,6 +619,7 @@ namespace KDChart {
         since in kdchart multiple indexes can be displayed at the same
         spot. */
         QModelIndexList indexesAt( const QPoint& point ) const;
+        QModelIndexList indexesIn( const QRect& rect ) const;
 
     protected:
         virtual bool checkInvariants( bool justReturnTheStatus=false ) const;

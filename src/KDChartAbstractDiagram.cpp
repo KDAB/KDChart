@@ -1031,3 +1031,8 @@ QModelIndexList AbstractDiagram::indexesAt( const QPoint& point ) const
     return d->indexesAt( point );
 }
 
+QModelIndexList AbstractDiagram::indexesIn( const QRect& rect ) const
+{
+    return d->indexesIn( rect );
+}
+
