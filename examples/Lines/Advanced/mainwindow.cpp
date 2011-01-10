@@ -259,6 +259,9 @@ void MainWindow::setTrackedArea( int column, bool checked, bool doUpdate )
             va.setEnabled( checked && j == column );
             va.setAreaBrush( QColor( 255, 255, 0, 50 ) );
 	    va.setOrientations( Qt::Horizontal | Qt::Vertical );
+            QColor color = Qt::cyan;
+            color.setAlphaF( 0.5 );
+            va.setAreaBrush( color );
             m_lines->setValueTrackerAttributes( cellIndex, va );
         }
     }

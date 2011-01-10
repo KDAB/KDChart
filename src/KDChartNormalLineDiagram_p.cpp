@@ -83,11 +83,11 @@ void NormalLineDiagram::paint( PaintContext* ctx )
 
     // Reverse order of data sets?
     bool rev = diagram()->reverseDatasetOrder();
+    DataValueTextInfoList textInfoList;
+    LineAttributesInfoList lineList;
     for( int column = rev ? columnCount - 1 : 0;
          rev ? (column >= 0) : (column < columnCount);
          rev ? --column : ++column ) {
-        DataValueTextInfoList textInfoList;
-        LineAttributesInfoList lineList;
         LineAttributes laPreviousCell;
         CartesianDiagramDataCompressor::DataPoint lastPoint;
         qreal lastAreaBoundingValue = 0;
@@ -167,7 +167,8 @@ void NormalLineDiagram::paint( PaintContext* ctx )
             lastPoint = point;
         }
 
-        LineAttributes::MissingValuesPolicy policy = LineAttributes::MissingValuesAreBridged; //unused
-        paintElements( ctx, textInfoList, lineList, policy );
     }
+
+    LineAttributes::MissingValuesPolicy policy = LineAttributes::MissingValuesAreBridged; //unused
+    paintElements( ctx, textInfoList, lineList, policy );
 }
