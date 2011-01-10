@@ -36,6 +36,18 @@ namespace KDChart {
              */
             QPen pen() const;
 
+            void setLinePen( const QPen &pen );
+            QPen linePen() const;
+
+            void setMarkerPen( const QPen &pen );
+            QPen markerPen() const;
+
+            void setMarkerBrush( const QBrush &brush );
+            QBrush markerBrush() const;
+
+            void setArrowBrush( const QBrush &brush );
+            QBrush arrowBrush() const;
+
             /** Set the brush the area below the value tracking
              * lines should be filled with. Default is a black brush
              * with the style Qt::NoBrush.

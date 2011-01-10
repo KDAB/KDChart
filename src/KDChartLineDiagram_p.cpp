@@ -293,17 +293,19 @@ void LineDiagram::LineDiagramType::paintValueTracker( PaintContext* ctx, const V
     QRectF area( topLeft, size );
 
     PainterSaver painterSaver( ctx->painter() );
-    ctx->painter()->setPen( PrintingParameters::scalePen( vt.pen() ) );
+    ctx->painter()->setPen( PrintingParameters::scalePen( vt.linePen() ) );
     ctx->painter()->setBrush( QBrush() );
-
     ctx->painter()->drawLine( markerPoint, startPoint );
     ctx->painter()->drawLine( markerPoint, endPoint );
 
     ctx->painter()->fillRect( area, vt.areaBrush() );
 
+    ctx->painter()->setPen( PrintingParameters::scalePen( vt.markerPen() ) );
+    ctx->painter()->setBrush( vt.markerBrush() );
     ctx->painter()->drawEllipse( ellipseMarker );
 
-    ctx->painter()->setBrush( vt.pen().color() );
+    ctx->painter()->setPen( PrintingParameters::scalePen( vt.arrowBrush().color() ) );
+    ctx->painter()->setBrush( vt.arrowBrush() );
     ctx->painter()->drawPolygon( startMarker, 3 );
     ctx->painter()->drawPolygon( endMarker, 3 );
 }
