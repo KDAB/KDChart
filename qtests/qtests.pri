@@ -19,6 +19,14 @@ test.target = test
 test.commands = ./$(TARGET)
 test.depends = $(TARGET)
 QMAKE_EXTRA_TARGETS += test
+win32{
+LIB_PATH=../../lib:\$\$PATH
+QMAKE_POST_LINK+=set PATH=$$LIB_PATH && $(TARGET)
+}
+else {
+LIB_PATH=../../lib:\$\$LD_LIBRARY_PATH
+QMAKE_POST_LINK+=export LD_LIBRARY_PATH=$$LIB_PATH && ./$(TARGET)
+}
 
 LIBS += -L../../lib -l$$KDCHARTSERIALIZERLIB -l$$KDCHARTLIB -l$$TESTTOOLSLIB
 
