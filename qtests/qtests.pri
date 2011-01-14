@@ -20,7 +20,7 @@ test.commands = ./$(TARGET)
 test.depends = $(TARGET)
 QMAKE_EXTRA_TARGETS += test
 win32{
-LIB_PATH=../../lib:\$\$PATH
+LIB_PATH=../../lib;%PATH%
 QMAKE_POST_LINK+=set PATH=$$LIB_PATH && $(TARGET)
 }
 else {
