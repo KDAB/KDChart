@@ -85,6 +85,8 @@ public:
         l->addWidget( &slider );
         grid.setStartDateTime( QDateTime::currentDateTime().addDays( -3 ) );
         grid.setDayWidth( 100 );
+		grid.setFreeDays( QSet<Qt::DayOfWeek>() << Qt::Saturday << Qt::Sunday );
+		grid.setFreeDaysBrush( QBrush( Qt::red ) );
 	QListView* lv = new MyListView;
 	view.setLeftView(lv);
 	view.setRowController( new KDGantt::ListViewRowController(lv,view.ganttProxyModel()));
