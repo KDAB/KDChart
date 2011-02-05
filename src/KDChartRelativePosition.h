@@ -90,7 +90,7 @@ public:
      * If the anchor point of a RelativePosition is reset (or never changed from the
      * default setting, resp.) KD Chart will choose an appropriate Position at run-time.
      *
-     * e.g. BarDiagrams will use Position::NorthWest / Position::SouthEast for positive / negative values.
+     * e.g. BarDiagrams will use Position::North / Position::South for positive / negative values.
      *
      *  \sa setReferencePosition, setReferenceArea, setAlignment, setHorizontalPadding, setVerticalPadding, KDChart::Position
      */

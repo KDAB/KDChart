@@ -155,7 +155,7 @@ void NormalBarDiagram::paint(  PaintContext* ctx )
                 topPoint.setX( topPoint.x() + offset );
                 const QRectF rect( topPoint, QSizeF( barWidth, barHeight ) );
                 appendDataValueTextInfoToList( diagram(), list, sourceIndex, PositionPoints( rect ),
-                                               Position::NorthWest, Position::SouthEast,
+                                               Position::North, Position::South,
                                                point.value );
                 paintBars( ctx, sourceIndex, rect, maxDepth );
             }

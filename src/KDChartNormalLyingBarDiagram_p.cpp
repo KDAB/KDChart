@@ -157,7 +157,7 @@ void NormalLyingBarDiagram::paint(  PaintContext* ctx )
             topPoint.rx() -= barHeight;
             const QRectF rect( topPoint, QSizeF( barHeight, barWidth ) );
             appendDataValueTextInfoToList( diagram(), list, sourceIndex, PositionPoints( rect ),
-                                           Position::NorthEast, Position::SouthWest,
+                                           Position::North, Position::South,
                                            point.value );
             paintBars( ctx, sourceIndex, rect, maxDepth );
         }

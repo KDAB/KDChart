@@ -174,7 +174,7 @@ void StackedLyingBarDiagram::paint(  PaintContext* ctx )
 
             const QRectF rect( point, QSizeF( barHeight , barWidth ) );
             appendDataValueTextInfoToList( diagram(), list, index, PositionPoints( rect ),
-                                              Position::NorthEast, Position::SouthWest,
+                                              Position::North, Position::South,
                                               value );
             paintBars( ctx, index, rect, maxDepth );
         }

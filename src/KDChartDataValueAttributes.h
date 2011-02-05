@@ -67,6 +67,19 @@ public:
   TextAttributes textAttributes() const;
 
   /**
+   * If true, rotation of negative value labels is negated, so that negative
+   * values are rotated in opposite direction of textAttributes().rotation(),
+   * and in this sense appear "mirrored" to positive value labels, though the
+   * text itself is *not* mirrored, only its rotation.
+   */
+  bool mirrorNegativeValueTextRotation() const;
+
+  /**
+   * \see mirrorNegativeValueTextRotation()
+   */
+  void setMirrorNegativeValueTextRotation( bool enable );
+
+  /**
    * Set the frame attributes to use for the data value labels area.
    * \param a The frame attributes to set.
    * \see FrameAttributes

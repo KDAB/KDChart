@@ -338,14 +338,17 @@ void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
             doc.setPlainText( text );
 
         const RelativePosition relPos( attrs.position( valueIsPositive ) );
-        const Qt::Alignment alignBottomLeft = Qt::AlignBottom | Qt::AlignLeft;
         const QFont calculatedFont( ta.calculatedFont( plane, KDChartEnums::MeasureOrientationMinimum ) );
 
+#if 0
         const QString plainText = doc.toPlainText();
         const QFontMetrics *cfm = cachedFontMetrics( calculatedFont, painter->device() );
         // note: We can not use boundingRect() to retrieve the width, as that returns a too small value
         const QSizeF plainSize( cfm->width( plainText ),
                                 cfm->boundingRect( plainText ).height() );
+#endif
+        // Take margins of text frame into account
+        const QSizeF plainSize( doc.size() );
 
         // FIXME draw the non-text bits, background, etc
 
@@ -380,21 +383,58 @@ void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
             QAbstractTextDocumentLayout* const layout = doc.documentLayout();
 
             painter->translate( pos );
-            painter->rotate( ta.rotation() );
-            qreal dx = 0.0;
-            qreal dy = 0.0;
-            const Qt::Alignment alignTopLeft = (Qt::AlignLeft | Qt::AlignTop);
-            if(     (relPos.alignment() & alignTopLeft) != alignTopLeft ){
-                if( relPos.alignment() & Qt::AlignRight )
-                    dx = - plainSize.width();
-                else if( relPos.alignment() & Qt::AlignHCenter )
-                    dx = - 0.5 * plainSize.width();
 
-                if( relPos.alignment() & Qt::AlignBottom )
-                    dy = - plainSize.height();
-                else if( relPos.alignment() & Qt::AlignVCenter )
-                    dy = - 0.5 * plainSize.height();
-            }
+            /**
+             * A few hints on how the positioning of the text frame is done:
+             *
+             * Let's assume we have a bar chart, a text for a positive value
+             * to be drawn, and "North" as attrs.positivePosition().
+             *
+             * The reference point (pos) is then set to the top center point
+             * of a bar. The offset now depends on the alignment:
+             *
+             *    Top: text is centered horizontally to the bar, bottom of
+             *         text frame starts at top of bar
+             *
+             *    Bottom: text is centered horizontally to the bar, top of
+             *            text frame starts at top of bar
+             *
+             *    Center: text is centered horizontally to the bar, center
+             *            line of text frame is same as top of bar
+             *
+             *    TopLeft: right edge of text frame is horizontal center of
+             *             bar, bottom of text frame is top of bar.
+             *
+             *    ...
+             *
+             * Positive and negative value labels are treated equally, "North"
+             * also refers to the top of a negative bar, and *not* to the bottom.
+             *
+             *
+             * "NorthEast" likewise refers to the top right edge of the bar,
+             * "NorthWest" to the top left edge of the bar, and so on.
+             *
+             * In other words, attrs.positivePosition() always refers to a
+             * position of the *bar*, and relPos.alignment() always refers
+             * to an alignment of the text frame relative to this position.
+             */
+
+            int rotation = ta.rotation();
+            if ( !valueIsPositive && attrs.mirrorNegativeValueTextRotation() )
+                rotation *= -1;
+            painter->rotate( rotation );
+            qreal dx =  - 0.5 * plainSize.width();
+            qreal dy =  - 0.5 * plainSize.height();
+
+            if(relPos.alignment() & Qt::AlignLeft)
+                dx += - 0.5 * plainSize.width();
+            else if(relPos.alignment() & Qt::AlignRight)
+                dx += 0.5 * plainSize.width();
+
+            if(relPos.alignment() & Qt::AlignTop)
+                dy += - 0.5 * plainSize.height();
+            else if(relPos.alignment() & Qt::AlignBottom)
+                dy += 0.5 * plainSize.height();
 
             bool drawIt = true;
             // note: This flag can be set differently for every label text!

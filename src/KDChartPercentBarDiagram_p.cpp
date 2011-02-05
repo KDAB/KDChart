@@ -179,7 +179,7 @@ void PercentBarDiagram::paint( PaintContext* ctx )
 
             const QRectF rect( point, QSizeF( barWidth, barHeight ) );
             appendDataValueTextInfoToList( diagram(), list, sourceIndex, PositionPoints( rect ),
-                                              Position::NorthWest, Position::SouthEast,
+                                              Position::North, Position::South,
                                               value );
             paintBars( ctx, sourceIndex, rect, maxDepth );
         }
