@@ -34,8 +34,8 @@ Proceed as described above, but using DYLD_LIBRARY_PATH instead
 of LD_LIBRARY_PATH
 
 3) Windows 
-Add the path to KDChart lib into your LIB environment variable and the path 
-to KDChart bin into your PATH environment variable.
+Add the path to KD Chart lib into your LIB environment variable and the path 
+to KD Chart bin into your PATH environment variable.
 
 Or run:
 set PATH=\path\to\kdchart\bin;%PATH%
@@ -64,7 +64,7 @@ nmake install  # Windows
 6) (optionally:) Install the Qt Designer Plug-in:
 
 a) automatic installation
-   * Go to the plugins directory of your KDChart installation.
+   * Go to the plugins directory of your KD Chart installation.
    * Run "make distclean" (Unix/Linux, Mac), or "nmake distclean" (Windows)
    * Run "qmake CONFIG+=install-qt"
    * Run "make install" (Unix/Linux, Mac), or "nmake install" (Windows)
@@ -84,7 +84,7 @@ b) manual installation
          described above:
 
    Run "make install" (Unix/Linux, Mac), or "nmake install" (Windows)
-   from the plugins directory of your KDChart installation.
+   from the plugins directory of your KD Chart installation.
    Make sure that your environment variable are set (see above) before doing so.
 
    This will copy the Plug-in into the lib/plugin/ directory of your installation path:
