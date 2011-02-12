@@ -33,6 +33,7 @@ private:
 // FIXME: What is this needed for? height is not referenced anywhere.
 //    int height;
     double depth;
+    bool threeDBrushEnabled;
 };
 
 inline AbstractThreeDAttributes::AbstractThreeDAttributes( Private * p ) : _d( p ) { init(); }

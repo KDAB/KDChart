@@ -2,7 +2,7 @@
 #include "KDChartAbstractThreeDAttributes_p.h"
 
 #include <QDebug>
-
+#include <QBrush>
 #include <KDABLibFakes>
 
 #define d d_func()
@@ -13,7 +13,8 @@ using namespace KDChart;
 
 AbstractThreeDAttributes::Private::Private()
     : enabled( false ),
-      depth( 20 )
+      depth( 20 ),
+      threeDBrushEnabled( false )
 {
 }
 
@@ -46,11 +47,9 @@ AbstractThreeDAttributes::~AbstractThreeDAttributes()
 
 bool AbstractThreeDAttributes::operator==( const AbstractThreeDAttributes& r ) const
 {
-    if( isEnabled() == r.isEnabled() &&
-        depth() == r.depth() )
-        return true;
-    else
-        return false;
+    return isEnabled() == r.isEnabled() &&
+        depth() == r.depth() && 
+        isThreeDBrushEnabled() == r.isThreeDBrushEnabled();
 }
 
 
@@ -86,6 +85,27 @@ double AbstractThreeDAttributes::validDepth() const
     return isEnabled() ? d->depth : 0.0;
 }
 
+bool AbstractThreeDAttributes::isThreeDBrushEnabled() const
+{
+    return d->threeDBrushEnabled;
+}
+
+void AbstractThreeDAttributes::setThreeDBrushEnabled( bool enabled )
+{
+    d->threeDBrushEnabled = enabled;
+}
+
+QBrush AbstractThreeDAttributes::threeDBrush( const QBrush& brush, const QRectF& rect ) const
+{
+    if( isThreeDBrushEnabled() ) {
+        QLinearGradient gr(rect.topLeft(), rect.bottomRight());
+        gr.setColorAt(0.0, brush.color());
+        gr.setColorAt(0.5, brush.color().lighter(180));
+        gr.setColorAt(1.0, brush.color());
+        return QBrush(gr);
+    }
+    return brush;
+}
 
 #if !defined(QT_NO_DEBUG_STREAM)
 QDebug operator<<(QDebug dbg, const KDChart::AbstractThreeDAttributes& a)

@@ -466,11 +466,15 @@ void PieDiagram::drawPieSurface( QPainter* painter,
         QModelIndex index( model()->index( 0, pie, rootIndex() ) );
         const PieAttributes attrs( pieAttributes( index ) );
         const ThreeDPieAttributes threeDAttrs( threeDPieAttributes( index ) );
-
-        QRectF drawPosition = piePosition( dataset, pie );
-
+        const QRectF drawPosition = piePosition( dataset, pie );
         painter->setRenderHint ( QPainter::Antialiasing );
-        painter->setBrush( brush( index ) );
+
+        QBrush br = brush( index );
+        if( threeDAttrs.isEnabled() ) {
+            br = threeDAttrs.threeDBrush( br, drawPosition );
+        }
+        painter->setBrush( br );
+
         //painter->setPen( pen( index ) );
         QPen pen = this->pen( index );
         if ( threeDAttrs.isEnabled() )

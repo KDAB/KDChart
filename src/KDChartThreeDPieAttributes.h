@@ -26,7 +26,6 @@ namespace KDChart {
     bool operator==( const ThreeDPieAttributes& ) const;
     inline bool operator!=( const ThreeDPieAttributes& other ) const { return !operator==(other); }
 
-
     KDCHART_DECLARE_SWAP_DERIVED(ThreeDPieAttributes)
 
 private:
