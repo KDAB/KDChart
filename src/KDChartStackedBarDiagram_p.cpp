@@ -151,8 +151,9 @@ void StackedBarDiagram::paint(  PaintContext* ctx )
                     barWidth = 0;
                     maxDepth = offset - (width/rowCount);
                 }
-            } else
+            } else {
                 barWidth =  (width - (offset*rowCount))/ rowCount ;
+            }
 
             for ( int k = col; k >= 0; --k )
             {
@@ -162,7 +163,17 @@ void StackedBarDiagram::paint(  PaintContext* ctx )
                     stackedValues += point.value;
                 key = point.key;
             }
+
+            const double usedDepth = threeDAttrs.depth();
+
             QPointF point = ctx->coordinatePlane()->translate( QPointF( key, stackedValues ) );
+
+            const double dy = point.y() - usedDepth;
+            if ( dy < 0 ) {
+                threeDAttrs.setDepth( point.y() - 1 );
+                diagram()->setThreeDBarAttributes( threeDAttrs );
+            }
+
             point.rx() += offset / 2;
             const QPointF previousPoint = ctx->coordinatePlane()->translate( QPointF( key, stackedValues - value ) );
             const double barHeight = previousPoint.y() - point.y();

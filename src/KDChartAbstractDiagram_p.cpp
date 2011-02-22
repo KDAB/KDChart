@@ -482,6 +482,7 @@ void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
                     (*cumulatedBoundingRect) |= rect;
                 }else{
                     painter->translate( QPointF( dx, dy ) );
+                    painter->rotate( ta.rotation() );
                     layout->draw( painter, context );
 
                     // Return the cumulatedBoundingRect if asked for
