@@ -223,7 +223,7 @@ QSize KDChart::AbstractCoordinatePlane::sizeHint() const
 /* pure virtual in QLayoutItem */
 void KDChart::AbstractCoordinatePlane::setGeometry( const QRect& r )
 {
-//    qDebug() << "KDChart::AbstractCoordinatePlane::setGeometry(" << r << ") called";
+    //qDebug() << "KDChart::AbstractCoordinatePlane::setGeometry(" << r << ") called";
     if( d->geometry != r ){
         //qDebug() << "entering KDChart::AbstractCoordinatePlane::setGeometry(" << r << ")";
         // inform the outside word by Signal geometryChanged()

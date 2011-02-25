@@ -17,8 +17,10 @@ namespace KDChart
 class PlotterDiagramCompressor : public QObject
 {
     Q_OBJECT
+    Q_ENUMS( CompressionMode )
 public:
 
+    enum CompressionMode{ SLOPE, DISTANCE, BOTH };
     class DataPoint {
     public:
         DataPoint()
@@ -29,6 +31,16 @@ public:
         inline qreal distance( const DataPoint &other )
         {
             return std::sqrt( std::pow( key - other.key, 2 ) + std::pow( value - other.value, 2 ) );
+        }
+
+        inline bool operator==( const DataPoint &other )
+        {
+            return key == other.key && value == other.value;
+        }
+
+        inline bool operator!=( const DataPoint &other )
+        {
+            return !( *this == other );
         }
 
         qreal key;
@@ -57,6 +69,7 @@ public:
     protected:
         Iterator( int dataSet, PlotterDiagramCompressor *parent, QVector< DataPoint > buffer );
     private:
+        void handleSlopeForward( const DataPoint &dp );
         QWeakPointer< PlotterDiagramCompressor > m_parent;
         QVector< DataPoint > m_buffer;
         int m_index;
@@ -96,6 +109,8 @@ public:
     DataPoint data( const CachePosition& pos ) const;
     int rowCount() const;
     int datasetCount() const;
+    void setCompressionModel( CompressionMode value );
+    void setMaxSlopeChange( qreal value );
     void cleanCache();
     QPair< QPointF, QPointF > dataBoundaries() const;
     void setForcedDataBoundaries( const QPair< qreal, qreal > &bounds, Qt::Orientation direction );

@@ -24,15 +24,19 @@ public:
     PlotterDiagramCompressor *m_parent;
     QAbstractItemModel *m_model;
     qreal m_mergeRadius;
+    qreal m_maxSlopeRadius;
     QVector< QVector< DataPoint > > m_bufferlist;
     Boundaries m_boundary;
     QPair< qreal, qreal > m_forcedXBoundaries;
     QPair< qreal, qreal > m_forcedYBoundaries;
     QDateTime m_timeOfLastInvalidation;
+    PlotterDiagramCompressor::CompressionMode m_mode;
+    QVector< qreal > m_accumulatedDistances;
     //QVector< PlotterDiagramCompressor::Iterator > exisitingIterators;
 public Q_SLOTS:
     void rowsInserted( const QModelIndex& parent, int start, int end );
     void clearBuffer();
+    void setModelToZero();
 };
 
 }

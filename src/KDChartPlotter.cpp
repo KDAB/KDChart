@@ -41,8 +41,7 @@ void Plotter::init()
     d->percentPlotter = new PercentPlotter( this );
     d->implementor = d->normalPlotter;
 
-    setDatasetDimensionInternal( 2 );
-    connect( coordinatePlane(), SIGNAL( internal_geometryChanged( QRect,QRect ) ), this, SLOT( setDataBoundariesDirty() ) );
+    setDatasetDimensionInternal( 2 );    
 }
 
 Plotter::~Plotter()
@@ -73,12 +72,18 @@ bool Plotter::compare( const Plotter* other )const
 
 void Plotter::setModel( QAbstractItemModel *model )
 {
+    d->plotterCompressor.setModel( NULL );
     AbstractCartesianDiagram::setModel( model );
     if ( useDataCompression() )
     {
         d->compressor.setModel( NULL );
         if ( attributesModel() != d->plotterCompressor.model() )
-            d->plotterCompressor.setModel( attributesModel() );        
+        {
+            d->plotterCompressor.setModel( attributesModel() );
+            connect( coordinatePlane(), SIGNAL( internal_geometryChanged( QRect,QRect ) ), this, SLOT( setDataBoundariesDirty() ), Qt::QueuedConnection );
+            connect( coordinatePlane(), SIGNAL( geometryChanged( QRect,QRect ) ), this, SLOT( setDataBoundariesDirty() ), Qt::QueuedConnection );
+            calcMergeRadius();
+        }
     }
 }
 
@@ -94,7 +99,7 @@ void Plotter::setUseDataCompression( bool value )
         if ( useDataCompression() )
         {
             d->compressor.setModel( NULL );
-            if ( attributesModel() != d->plotterCompressor.model() )
+            if ( attributesModel() != d->plotterCompressor.model() )                
                 d->plotterCompressor.setModel( attributesModel() );
         }
     }
@@ -110,7 +115,7 @@ void Plotter::setMergeRadiusPercentage( qreal value )
     {
         d->mergeRadiusPercentage = value;
         //d->plotterCompressor.setMergeRadiusPercentage( value );
-        update();
+        //update();
     }
 }
 
@@ -425,9 +430,11 @@ void Plotter::calcMergeRadius()
     Q_ASSERT( plane );
     //Q_ASSERT( plane->translate( plane->translateBack( plane->visibleDiagramArea().topLeft() ) ) == plane->visibleDiagramArea().topLeft() );
     QRectF range = plane->visibleDataRange();
-    qDebug() << range;
-    const qreal radius = std::sqrt( range.width() * qAbs( range.height() ) );
-    qDebug() << radius;
+    //qDebug() << range;
+    const qreal radius = std::sqrt( ( range.x() + range.width() ) * ( range.y() +  range.height() ) );
+    //qDebug() << radius;
+    //qDebug() << radius * d->mergeRadiusPercentage;
+    //qDebug() << d->mergeRadiusPercentage;
     d->plotterCompressor.setMergeRadius( radius * d->mergeRadiusPercentage );
 }
 
