@@ -11,16 +11,6 @@ Plotter::Private::Private( const Private& rhs )
 {
 }
 
-// Plotter::Private::Private()
-//     : diagram( 0 )
-//     , implementor( 0 )
-//     , normalPlotter( 0 )
-//     , percentPlotter( 0 )
-//     , useCompression( false )
-// {
-// 
-// }
-
 void Plotter::Private::init()
 {
     AbstractCartesianDiagram::Private::init();

@@ -248,8 +248,10 @@ void PlotterDiagramCompressor::Iterator::handleSlopeForward( const DataPoint &dp
     PlotterDiagramCompressor::DataPoint olddp = PlotterDiagramCompressor::DataPoint();
     if ( m_bufferIndex > 1 )
     {
-        oldSlope = calculateSlope( m_buffer[ m_bufferIndex - 2 ], m_buffer[ m_bufferIndex - 1 ] );
-        newSlope = calculateSlope( m_buffer[ m_bufferIndex - 1 ], newdp );
+        //oldSlope = calculateSlope( m_buffer[ m_bufferIndex - 2 ], m_buffer[ m_bufferIndex - 1 ] );
+        //newSlope = calculateSlope( m_buffer[ m_bufferIndex - 1 ], newdp );
+        oldSlope = calculateSlope( parent->data( CachePosition( m_index - 2, m_dataset ) ) , parent->data( CachePosition( m_index - 1, m_dataset ) ) );
+        newSlope = calculateSlope( parent->data( CachePosition( m_index - 1, m_dataset ) ), newdp );
         qreal accumulatedDist = qAbs( newSlope - oldSlope );
         qreal olddist = accumulatedDist;
         qreal newdist;
@@ -260,6 +262,8 @@ void PlotterDiagramCompressor::Iterator::handleSlopeForward( const DataPoint &dp
             if ( m_index >= m_parent.data()->rowCount() )
             {
                 m_index = - 1;
+                if ( m_buffer.last() != parent->data( CachePosition( parent->rowCount() -1, m_dataset ) ) )
+                    m_index = parent->rowCount();
                 break;
             }
             oldSlope = newSlope;
