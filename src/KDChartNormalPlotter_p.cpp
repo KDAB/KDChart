@@ -18,7 +18,7 @@ Plotter::PlotType NormalPlotter::type() const
 
 const QPair< QPointF, QPointF > NormalPlotter::calculateDataBoundaries() const
 {
-    if ( diagram()->useDataCompression() )
+    if ( diagram()->useDataCompression() != Plotter::NONE )
         return plotterCompressor().dataBoundaries();
     else
         return compressor().dataBoundaries();
@@ -35,7 +35,7 @@ void NormalPlotter::paint( PaintContext* ctx )
 
     DataValueTextInfoList textInfoList;
     int counter = 0;
-    if ( diagram()->useDataCompression() )
+    if ( diagram()->useDataCompression() != Plotter::NONE )
     {
         for ( int dataset = 0; dataset < plotterCompressor().datasetCount(); ++dataset )
         {

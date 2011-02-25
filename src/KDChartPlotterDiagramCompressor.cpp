@@ -548,6 +548,9 @@ bool PlotterDiagramCompressor::Private::inBoundaries( Qt::Orientation orient, co
 void PlotterDiagramCompressor::Private::rowsInserted( const QModelIndex& /*parent*/, int start, int end )
 {
 
+    //Q_ASSERT( std::numeric_limits<qreal>::quiet_NaN() < 5 || std::numeric_limits<qreal>::quiet_NaN() > 5 );
+    //Q_ASSERT( 5 == qMin( std::numeric_limits<qreal>::quiet_NaN(),  5.0 ) );
+    //Q_ASSERT( 5 == qMax( 5.0, std::numeric_limits<qreal>::quiet_NaN()  ) );
     if( m_bufferlist.count() > 0 && !m_bufferlist[ 0 ].isEmpty() && start < m_bufferlist[ 0 ].count() )
     {
         calculateDataBoundaries();
@@ -556,6 +559,10 @@ void PlotterDiagramCompressor::Private::rowsInserted( const QModelIndex& /*paren
     }
 
     // we are handling appends only here, a prepend might be added, insert is expensive if not needed
+    qreal minX = m_boundary.first.x();
+    qreal minY = m_boundary.first.y();
+    qreal maxX = m_boundary.second.x();
+    qreal maxY = m_boundary.second.y();
     for ( int dataset = 0; dataset < m_bufferlist.size(); ++dataset )
     {
         if ( m_mode == PlotterDiagramCompressor::SLOPE )
@@ -563,7 +570,7 @@ void PlotterDiagramCompressor::Private::rowsInserted( const QModelIndex& /*paren
             PlotterDiagramCompressor::DataPoint predecessor = m_bufferlist[ dataset ].isEmpty() ? DataPoint() : m_bufferlist[ dataset ].last();
             qreal oldSlope = 0;
             qreal newSlope = 0;
-            int counter = 0;
+            int counter = 0;            
 
             PlotterDiagramCompressor::DataPoint newdp = m_parent->data( CachePosition( start, dataset ) );
             PlotterDiagramCompressor::DataPoint olddp = PlotterDiagramCompressor::DataPoint();
@@ -575,15 +582,15 @@ void PlotterDiagramCompressor::Private::rowsInserted( const QModelIndex& /*paren
             else
             {
                 m_bufferlist[ dataset ].append( newdp );
+                minX = qMin( minX, newdp.key );
+                minY = qMin( minY, newdp.value );
+                maxX = qMax( newdp.key, maxX );
+                maxY = qMax( newdp.value, maxY );
                 continue;
             }
 
             qreal olddist = 0;
-            qreal newdist = 0;
-            qreal minX = m_boundary.first.x();
-            qreal minY = m_boundary.first.y();
-            qreal maxX = m_boundary.second.x();
-            qreal maxY = m_boundary.second.y();
+            qreal newdist = 0;            
             for ( int row = start; row <= end; ++row )
             {
                 PlotterDiagramCompressor::DataPoint curdp = m_parent->data( CachePosition( row, dataset ) );
@@ -609,10 +616,11 @@ void PlotterDiagramCompressor::Private::rowsInserted( const QModelIndex& /*paren
                     predecessor = curdp;
                     m_accumulatedDistances[ dataset ] = 0;
                 }
-                minX = qMin( curdp.key, minX );
-                minY = qMin( curdp.value, minY );
+                minX = qMin( minX, curdp.key );
+                minY = qMin( minY, curdp.value );
                 maxX = qMax( curdp.key, maxX );
                 maxY = qMax( curdp.value, maxY );
+
                 oldSlope = newSlope;
                 olddp = newdp;
                 if ( olddist == newdist )
@@ -687,21 +695,25 @@ void PlotterDiagramCompressor::Private::setBoundaries( const Boundaries & bound 
 
 void PlotterDiagramCompressor::Private::calculateDataBoundaries()
 {
-    if ( !forcedBoundaries( Qt::Vertical) && !forcedBoundaries( Qt::Horizontal ) )
+    if ( !forcedBoundaries( Qt::Vertical ) || !forcedBoundaries( Qt::Horizontal ) )
     {
-        qreal minX = std::numeric_limits<qreal>::max();
-        qreal minY = std::numeric_limits<qreal>::max();
-        qreal maxX = std::numeric_limits<qreal>::min();
-        qreal maxY = std::numeric_limits<qreal>::min();
+        qreal minX = std::numeric_limits<qreal>::quiet_NaN();
+        qreal minY = std::numeric_limits<qreal>::quiet_NaN();
+        qreal maxX = std::numeric_limits<qreal>::quiet_NaN();
+        qreal maxY = std::numeric_limits<qreal>::quiet_NaN();
         for ( int dataset = 0; dataset < m_parent->datasetCount(); ++dataset )
         {
             for ( int row = 0; row < m_parent->rowCount(); ++ row )
             {
                 PlotterDiagramCompressor::DataPoint dp = m_parent->data( CachePosition( row, dataset ) );
                 minX = qMin( minX, dp.key );
-                maxX = qMax( maxX, dp.key );
                 minY = qMin( minY, dp.value );
-                maxY = qMax( maxY, dp.value );
+                maxX = qMax( dp.key, maxX );
+                maxY = qMax( dp.value, maxY );
+                Q_ASSERT( !std::isnan( minX ) );
+                Q_ASSERT( !std::isnan( minY ) );
+                Q_ASSERT( !std::isnan( maxX ) );
+                Q_ASSERT( !std::isnan( maxY ) );
             }
         }
         if ( forcedBoundaries( Qt::Vertical ) )

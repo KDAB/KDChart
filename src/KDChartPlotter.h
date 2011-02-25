@@ -18,12 +18,14 @@ class KDCHART_EXPORT Plotter : public AbstractCartesianDiagram
     Q_OBJECT
 
     Q_DISABLE_COPY( Plotter )
+    Q_ENUMS( CompressionMode )
 
     KDCHART_DECLARE_DERIVED_DIAGRAM( Plotter, CartesianCoordinatePlane )
-    Q_PROPERTY( bool useDataCompression READ useDataCompression WRITE setUseDataCompression )
+    Q_PROPERTY( CompressionMode useDataCompression READ useDataCompression WRITE setUseDataCompression )
     Q_PROPERTY( qreal mergeRadiusPercentage READ mergeRadiusPercentage WRITE setMergeRadiusPercentage )
 
 public:
+    enum CompressionMode{ SLOPE, DISTANCE, BOTH, NONE };
     class PlotterType;
     friend class PlotterType;
 
@@ -73,8 +75,8 @@ public:
 
     void setModel( QAbstractItemModel *model );
 
-    bool useDataCompression() const;
-    void setUseDataCompression( bool value );
+    CompressionMode useDataCompression() const;
+    void setUseDataCompression( CompressionMode value );
 
     qreal mergeRadiusPercentage() const;
     void setMergeRadiusPercentage( qreal value );

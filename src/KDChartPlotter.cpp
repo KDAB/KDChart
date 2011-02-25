@@ -74,29 +74,33 @@ void Plotter::setModel( QAbstractItemModel *model )
 {
     d->plotterCompressor.setModel( NULL );
     AbstractCartesianDiagram::setModel( model );
-    if ( useDataCompression() )
+    if ( useDataCompression() != Plotter::NONE )
     {
         d->compressor.setModel( NULL );
         if ( attributesModel() != d->plotterCompressor.model() )
         {
             d->plotterCompressor.setModel( attributesModel() );
-            connect( coordinatePlane(), SIGNAL( internal_geometryChanged( QRect,QRect ) ), this, SLOT( setDataBoundariesDirty() ), Qt::QueuedConnection );
-            connect( coordinatePlane(), SIGNAL( geometryChanged( QRect,QRect ) ), this, SLOT( setDataBoundariesDirty() ), Qt::QueuedConnection );
-            calcMergeRadius();
+            connect( &d->plotterCompressor, SIGNAL( boundariesChanged() ), this, SLOT(setDataBoundariesDirty() ) );
+            if ( useDataCompression() != Plotter::SLOPE )
+            {
+                connect( coordinatePlane(), SIGNAL( internal_geometryChanged( QRect,QRect ) ), this, SLOT( setDataBoundariesDirty() ), Qt::QueuedConnection );
+                connect( coordinatePlane(), SIGNAL( geometryChanged( QRect,QRect ) ), this, SLOT( setDataBoundariesDirty() ), Qt::QueuedConnection );
+                calcMergeRadius();
+            }
         }
     }
 }
 
-bool Plotter::useDataCompression() const
-{
-    return d->useCompression;
+Plotter::CompressionMode Plotter::useDataCompression() const
+{    
+    return d->implementor->useCompression();
 }
-void Plotter::setUseDataCompression( bool value )
+void Plotter::setUseDataCompression( Plotter::CompressionMode value )
 {
-    if ( d->useCompression != value )
+    if ( useDataCompression() != value )
     {
-        d->useCompression = value;
-        if ( useDataCompression() )
+        d->implementor->setUseCompression( value );
+        if ( useDataCompression() != Plotter::NONE )
         {
             d->compressor.setModel( NULL );
             if ( attributesModel() != d->plotterCompressor.model() )                
@@ -406,7 +410,7 @@ void Plotter::paint( PaintContext* ctx )
 void Plotter::resize ( const QSizeF& size )
 {
     d->setCompressorResolution( size, coordinatePlane() );
-    if ( useDataCompression() )
+    if ( useDataCompression() == Plotter::BOTH || useDataCompression() == Plotter::DISTANCE )
     {
         d->plotterCompressor.cleanCache();
         calcMergeRadius();
@@ -417,7 +421,7 @@ void Plotter::resize ( const QSizeF& size )
 void Plotter::setDataBoundariesDirty()
 {
     AbstractCartesianDiagram::setDataBoundariesDirty();
-    if ( useDataCompression() )
+    if ( useDataCompression() == Plotter::DISTANCE || useDataCompression() == Plotter::BOTH )
     {
         calcMergeRadius();
         //d->plotterCompressor.setMergeRadiusPercentage( d->mergeRadiusPercentage );

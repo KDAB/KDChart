@@ -20,7 +20,7 @@ class PlotterDiagramCompressor : public QObject
     Q_ENUMS( CompressionMode )
 public:
 
-    enum CompressionMode{ SLOPE, DISTANCE, BOTH };
+    enum CompressionMode{ SLOPE = 0, DISTANCE, BOTH };
     class DataPoint {
     public:
         DataPoint()

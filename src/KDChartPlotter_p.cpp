@@ -14,7 +14,7 @@ Plotter::Private::Private( const Private& rhs )
 void Plotter::Private::init()
 {
     AbstractCartesianDiagram::Private::init();
-    useCompression = false;
+    useCompression = Plotter::NONE;
 }
 
 void Plotter::Private::setCompressorResolution(
@@ -339,7 +339,12 @@ PlotterDiagramCompressor& Plotter::PlotterType::plotterCompressor() const
     return m_private->plotterCompressor;
 }
 
-bool Plotter::PlotterType::useCompression() const
+Plotter::CompressionMode Plotter::PlotterType::useCompression() const
 {
     return m_private->useCompression;
+}
+
+void Plotter::PlotterType::setUseCompression( Plotter::CompressionMode value )
+{
+    m_private->useCompression = value;
 }

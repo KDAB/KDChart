@@ -127,7 +127,7 @@ private slots:
             _dataValues[i].append(value);
         }
         endInsertRows();
-        //emit dataChanged(index(_count, 0), index(_count, 2*96-1));
+        emit dataChanged(index(_count, 0), index(_count, 2*96-1));
         ++_count;
     }
 
@@ -169,6 +169,7 @@ void Dialog::setupWidget()
     gridLayout->addWidget(_pChart, 0, 0, 1, 1);
 
     _pLineDiagram = new KDChart::Plotter();
+    _pLineDiagram->setUseDataCompression( KDChart::Plotter::SLOPE );
 
     KDChart::CartesianAxis *pLeftAxis = new KDChart::CartesianAxis(_pLineDiagram);
     KDChart::CartesianAxis *pBottomAxis = new KDChart::CartesianAxis(_pLineDiagram);
@@ -186,13 +187,14 @@ void Dialog::setupWidget()
     KDChart::CartesianCoordinatePlane* pPlane = dynamic_cast <KDChart::CartesianCoordinatePlane*>( _pLineDiagram->coordinatePlane() );
     if (pPlane)
     {
-        pPlane->setVerticalRange(QPair<qreal, qreal>(0, 65));
-        pPlane->setHorizontalRange(QPair<qreal, qreal>(0, 110));
+        //pPlane->setVerticalRange(QPair<qreal, qreal>(0, 65));
+        //pPlane->setHorizontalRange(QPair<qreal, qreal>(0, 110));
     }
 
     setupModel();
-    _pLineDiagram->setUseDataCompression( true );
-    _pLineDiagram->setMergeRadiusPercentage( 0.1 );
+    //_pLineDiagram->setUseDataCompression( KDChart::Plotter::NONE );
+    //_pLineDiagram->setMergeRadiusPercentage( 0.1 );
+    //_pLineDiagram->setUseDataCompression( KDChart::Plotter::SLOPE );
 }
 
 void Dialog::setupModel()

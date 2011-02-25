@@ -54,7 +54,7 @@ namespace KDChart {
         PlotterType* normalPlotter;
         PlotterType* percentPlotter;
         PlotterDiagramCompressor plotterCompressor;
-        bool useCompression;
+        Plotter::CompressionMode useCompression;
         qreal mergeRadiusPercentage;
     protected:
         void init();
@@ -72,12 +72,15 @@ namespace KDChart {
             : Plotter::Private()
             , m_private( d->d_func() )            
         {
+            m_private->init();
         }
         virtual ~PlotterType() {}
         virtual Plotter::PlotType type() const = 0;
         virtual const QPair<QPointF,  QPointF> calculateDataBoundaries() const = 0;
         virtual void paint(  PaintContext* ctx ) = 0;
         Plotter* diagram() const;
+        Plotter::CompressionMode useCompression() const;
+        void setUseCompression( Plotter::CompressionMode value );
 
     protected:
         // method that make elements of m_private available to derived
@@ -86,8 +89,7 @@ namespace KDChart {
         QModelIndex attributesModelRootIndex() const;
         ReverseMapper& reverseMapper();
         CartesianDiagramDataCompressor& compressor() const;
-        PlotterDiagramCompressor& plotterCompressor() const;
-        bool useCompression() const;
+        PlotterDiagramCompressor& plotterCompressor() const;        
 
         int datasetDimension() const;
 /*        LineAttributes::MissingValuesPolicy getCellValues(

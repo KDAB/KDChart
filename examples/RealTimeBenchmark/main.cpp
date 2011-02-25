@@ -161,7 +161,7 @@ class MySmallBenchTest : public QObject
 
 public:
     MySmallBenchTest();
-    void bench( int dataPoint );
+    void bench( int dataPoint, bool compress = false );
 
 private Q_SLOTS:
     void benchTen();
@@ -173,16 +173,30 @@ private Q_SLOTS:
     void benchThousand();
     void benchTwoThousandFiveHundred();
     void benchFiveThousand();
+    void benchTenThousand();
+
+    void benchCompressedTen();
+    void benchCompressedTwentyFive();
+    void benchCompressedFifty();
+    void benchCompressedNinetyNine();
+    void benchCompressedTwoHundredFifty();
+    void benchCompressedFiveHundred();
+    void benchCompressedThousand();
+    void benchCompressedTwoThousandFiveHundred();
+    void benchCompressedFiveThousand();
+    void benchCompressedTenThousand();
 };
 
 MySmallBenchTest::MySmallBenchTest()
 {
 }
 
-void MySmallBenchTest::bench( int dataPoint )
+void MySmallBenchTest::bench( int dataPoint, bool compress )
 {
     KDChart::Chart *chart = new KDChart::Chart;
     KDChart::Plotter *plotter = new KDChart::Plotter();
+    if ( compress )
+        plotter->setUseDataCompression( KDChart::Plotter::SLOPE );
 
     KDChart::CartesianAxis *leftAxis = new KDChart::CartesianAxis( plotter );
     KDChart::CartesianAxis *bottomAxis = new KDChart::CartesianAxis( plotter );
@@ -197,7 +211,6 @@ void MySmallBenchTest::bench( int dataPoint )
     chart->coordinatePlane()->replaceDiagram( plotter );
     TestDataModelDynamic model( dataPoint );
     plotter->setModel( &model );
-    chart->show();
 
 
     KDChart::CartesianCoordinatePlane *plane = dynamic_cast <KDChart::CartesianCoordinatePlane*>( plotter->coordinatePlane() );
@@ -206,6 +219,7 @@ void MySmallBenchTest::bench( int dataPoint )
         plane->setVerticalRange( QPair< qreal, qreal >( 0, 65 ) );
         plane->setHorizontalRange( QPair< qreal, qreal >( 0, dataPoint + 110 ) );
     }
+    chart->show();
     QEventLoop endMeasure;
     connect( chart, SIGNAL( finishedDrawing() ), &endMeasure, SLOT( quit() ) );
     QBENCHMARK{
@@ -258,6 +272,61 @@ void MySmallBenchTest::benchTwoThousandFiveHundred()
 void MySmallBenchTest::benchFiveThousand()
 {
     bench( 4999 );
+}
+
+void MySmallBenchTest::benchTenThousand()
+{
+    bench( 9999 );
+}
+
+void MySmallBenchTest::benchCompressedTen()
+{
+    bench( 9 , true );
+}
+
+void MySmallBenchTest::benchCompressedTwentyFive()
+{
+    bench( 24 , true );
+}
+
+void MySmallBenchTest::benchCompressedFifty()
+{
+    bench( 49 , true );
+}
+
+void MySmallBenchTest::benchCompressedNinetyNine()
+{
+    bench( 99 , true );
+}
+
+void MySmallBenchTest::benchCompressedTwoHundredFifty()
+{
+    bench( 249 , true );
+}
+
+void MySmallBenchTest::benchCompressedFiveHundred()
+{
+    bench( 499 , true );
+}
+
+void MySmallBenchTest::benchCompressedThousand()
+{
+    bench( 1000 , true );
+}
+
+void MySmallBenchTest::benchCompressedTwoThousandFiveHundred()
+{
+    bench( 2500 , true );
+}
+
+void MySmallBenchTest::benchCompressedFiveThousand()
+{
+    bench( 4999 , true );
+}
+
+void MySmallBenchTest::benchCompressedTenThousand()
+{
+    bench( 9999, true );
 }
 
 QTEST_MAIN(MySmallBenchTest);
