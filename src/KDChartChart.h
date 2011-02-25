@@ -373,6 +373,7 @@ namespace KDChart {
     Q_SIGNALS:
         /** Emitted upon change of a property of the Chart or any of its components. */
         void propertiesChanged();
+        void finishedDrawing();
 
     protected:
         /**

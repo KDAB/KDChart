@@ -1146,6 +1146,7 @@ void Chart::paintEvent( QPaintEvent* )
     //FIXME(khz): Paint the background/frame too!
     //            (can we derive Chart from AreaWidget ??)
     d->paintAll( &painter );
+    emit finishedDrawing();
 }
 
 void Chart::addHeaderFooter( HeaderFooter* headerFooter )

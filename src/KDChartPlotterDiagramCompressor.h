@@ -10,6 +10,10 @@
 #include <cmath>
 #include <limits>
 
+namespace KDChart
+{
+
+
 class PlotterDiagramCompressor : public QObject
 {
     Q_OBJECT
@@ -81,24 +85,18 @@ public:
             return first == rhs.first &&
                    second == rhs.second;
         }
-        bool operator<( const CachePosition& rhs ) const
-        {
-            // This function is used to topologically sort all cache positions.
-
-            // Think of them as entries in a matrix or table:
-            // An entry comes before another entry if it is either above the other
-            // entry, or in the same row and to the left of the other entry.
-            return first < rhs.first || ( first == rhs.first && second < rhs.second );
-        }
     };
     explicit PlotterDiagramCompressor(QObject *parent = 0);
     Iterator begin( int dataSet );
-    Iterator end( int dataSet );
+    Iterator end( int dataSet );    
     void setMergeRadius( qreal radius );
+    void setMergeRadiusPercentage( qreal radius );
     void setModel( QAbstractItemModel *model );
+    QAbstractItemModel* model() const;
     DataPoint data( const CachePosition& pos ) const;
     int rowCount() const;
-    int columnCount() const;
+    int datasetCount() const;
+    void cleanCache();
     QPair< QPointF, QPointF > dataBoundaries() const;
     void setForcedDataBoundaries( const QPair< qreal, qreal > &bounds, Qt::Orientation direction );
 Q_SIGNALS:
@@ -109,5 +107,7 @@ private:
     class Private;
     Private *d;
 };
+
+}
 
 #endif // PLOTTERDIAGRAMCOMPRESSOR_H

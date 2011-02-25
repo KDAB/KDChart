@@ -42,6 +42,7 @@ void Plotter::init()
     d->implementor = d->normalPlotter;
 
     setDatasetDimensionInternal( 2 );
+    connect( coordinatePlane(), SIGNAL( internal_geometryChanged( QRect,QRect ) ), this, SLOT( setDataBoundariesDirty() ) );
 }
 
 Plotter::~Plotter()
@@ -68,6 +69,49 @@ bool Plotter::compare( const Plotter* other )const
             ( static_cast< const AbstractCartesianDiagram* >( this )->compare( other ) ) &&
             // compare own properties
             ( type() == other->type() );
+}
+
+void Plotter::setModel( QAbstractItemModel *model )
+{
+    AbstractCartesianDiagram::setModel( model );
+    if ( useDataCompression() )
+    {
+        d->compressor.setModel( NULL );
+        if ( attributesModel() != d->plotterCompressor.model() )
+            d->plotterCompressor.setModel( attributesModel() );        
+    }
+}
+
+bool Plotter::useDataCompression() const
+{
+    return d->useCompression;
+}
+void Plotter::setUseDataCompression( bool value )
+{
+    if ( d->useCompression != value )
+    {
+        d->useCompression = value;
+        if ( useDataCompression() )
+        {
+            d->compressor.setModel( NULL );
+            if ( attributesModel() != d->plotterCompressor.model() )
+                d->plotterCompressor.setModel( attributesModel() );
+        }
+    }
+}
+
+qreal Plotter::mergeRadiusPercentage() const
+{
+    return d->mergeRadiusPercentage;
+}
+void Plotter::setMergeRadiusPercentage( qreal value )
+{
+    if ( d->mergeRadiusPercentage != value )
+    {
+        d->mergeRadiusPercentage = value;
+        //d->plotterCompressor.setMergeRadiusPercentage( value );
+        update();
+    }
 }
 
 /**
@@ -357,7 +401,34 @@ void Plotter::paint( PaintContext* ctx )
 void Plotter::resize ( const QSizeF& size )
 {
     d->setCompressorResolution( size, coordinatePlane() );
+    if ( useDataCompression() )
+    {
+        d->plotterCompressor.cleanCache();
+        calcMergeRadius();
+    }
     setDataBoundariesDirty();
+}
+
+void Plotter::setDataBoundariesDirty()
+{
+    AbstractCartesianDiagram::setDataBoundariesDirty();
+    if ( useDataCompression() )
+    {
+        calcMergeRadius();
+        //d->plotterCompressor.setMergeRadiusPercentage( d->mergeRadiusPercentage );
+    }
+}
+
+void Plotter::calcMergeRadius()
+{
+    CartesianCoordinatePlane *plane = dynamic_cast< CartesianCoordinatePlane* >( coordinatePlane() );
+    Q_ASSERT( plane );
+    //Q_ASSERT( plane->translate( plane->translateBack( plane->visibleDiagramArea().topLeft() ) ) == plane->visibleDiagramArea().topLeft() );
+    QRectF range = plane->visibleDataRange();
+    qDebug() << range;
+    const qreal radius = std::sqrt( range.width() * qAbs( range.height() ) );
+    qDebug() << radius;
+    d->plotterCompressor.setMergeRadius( radius * d->mergeRadiusPercentage );
 }
 
 #if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)

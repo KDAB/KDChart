@@ -339,6 +339,8 @@ HEADERS += KDChartGlobal.h \
            KDChartPercentPlotter_p.h \
            KDChartPrintingParameters.h \
            KDChartModelDataCache_p.h \
+	   KDChartPlotterDiagramCompressor.h \
+	   KDChartPlotterDiagramCompressor_p.h \
            LeveyJennings/KDChartLeveyJenningsCoordinatePlane.h \
            LeveyJennings/KDChartLeveyJenningsCoordinatePlane_p.h \
            LeveyJennings/KDChartLeveyJenningsDiagram.h \
@@ -474,6 +476,7 @@ SOURCES += \
            KDChartPercentPlotter_p.cpp \
            KDChartPrintingParameters.cpp \
            KDChartModelDataCache_p.cpp \
+	   KDChartPlotterDiagramCompressor.cpp \
            LeveyJennings/KDChartLeveyJenningsCoordinatePlane.cpp \
            LeveyJennings/KDChartLeveyJenningsDiagram.cpp \
            LeveyJennings/KDChartLeveyJenningsDiagram_p.cpp \

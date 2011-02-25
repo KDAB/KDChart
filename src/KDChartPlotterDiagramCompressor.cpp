@@ -1,9 +1,11 @@
-#include "plotterdiagramcompressor.h"
+#include "KDChartPlotterDiagramCompressor.h"
 
-#include "PlotterDiagramCompressor_p.h"
+#include "KDChartPlotterDiagramCompressor_p.h"
 #include <QtCore/QPointF>
 
 #include <limits>
+
+using namespace KDChart;
 
 PlotterDiagramCompressor::Iterator::Iterator( int dataSet, PlotterDiagramCompressor *parent )
     : m_parent( parent )
@@ -43,7 +45,7 @@ PlotterDiagramCompressor::Iterator::Iterator( int dataSet, PlotterDiagramCompres
     else
     {
         // buffer needs to be filled
-        if ( parent->columnCount() > m_dataset && parent->rowCount() > 0 && m_buffer.isEmpty() )
+        if ( parent->datasetCount() > m_dataset && parent->rowCount() > 0 && m_buffer.isEmpty() )
         {
             m_buffer.append( parent->data( CachePosition( m_index, m_dataset ) ) );
             m_rebuffer = true;
@@ -315,7 +317,7 @@ void PlotterDiagramCompressor::Private::calculateDataBoundaries()
         qreal minY = std::numeric_limits<qreal>::max();
         qreal maxX = std::numeric_limits<qreal>::min();
         qreal maxY = std::numeric_limits<qreal>::min();
-        for ( int dataset = 0; dataset < m_parent->columnCount(); ++dataset )
+        for ( int dataset = 0; dataset < m_parent->datasetCount(); ++dataset )
         {
             for ( int row = 0; row < m_parent->rowCount(); ++ row )
             {
@@ -365,7 +367,7 @@ void PlotterDiagramCompressor::Private::clearBuffer()
 {
     //TODO all iterator have to be invalid after this operation
     m_bufferlist.clear();
-    m_bufferlist.resize( m_parent->columnCount() );
+    m_bufferlist.resize( m_parent->datasetCount() );
     m_timeOfLastInvalidation = QDateTime::currentDateTime();
 }
 
@@ -389,6 +391,12 @@ void PlotterDiagramCompressor::setForcedDataBoundaries( const QPair< qreal, qrea
     emit boundariesChanged();
 }
 
+QAbstractItemModel* PlotterDiagramCompressor::model() const
+{
+    Q_ASSERT( d );
+    return d->m_model;
+}
+
 void PlotterDiagramCompressor::setModel( QAbstractItemModel *model )
 {
     Q_ASSERT( d );
@@ -400,7 +408,7 @@ void PlotterDiagramCompressor::setModel( QAbstractItemModel *model )
     d->m_model = model;
     if ( d->m_model)
     {
-        d->m_bufferlist.resize( columnCount() );
+        d->m_bufferlist.resize( datasetCount() );
         d->calculateDataBoundaries();
         connect( d->m_model, SIGNAL( rowsInserted ( QModelIndex, int, int ) ), d, SLOT( rowsInserted( QModelIndex, int, int ) ) );
         connect( d->m_model, SIGNAL( modelReset() ), d, SLOT( clearBuffer() ) );
@@ -420,8 +428,9 @@ PlotterDiagramCompressor::DataPoint PlotterDiagramCompressor::data( const CacheP
     point.key = xValue.toDouble( &ok );
     Q_ASSERT( ok );
     ok = false;
-    point.value = yValue.toDouble( &ok );
+    point.value = yValue.toDouble( &ok );    
     Q_ASSERT( ok );
+    point.index = indexes.first();
     return point;
 }
 
@@ -431,12 +440,26 @@ void PlotterDiagramCompressor::setMergeRadius( qreal radius )
     emit rowCountChanged();
 }
 
+void PlotterDiagramCompressor::setMergeRadiusPercentage( qreal radius )
+{
+    Boundaries bounds = dataBoundaries();
+    const qreal width = radius * ( bounds.second.x() - bounds.first.x() );
+    const qreal height = radius * ( bounds.second.y() - bounds.first.y() );
+    const qreal realRadius = std::sqrt( width * height );
+    setMergeRadius( realRadius );
+}
+
 int PlotterDiagramCompressor::rowCount() const
 {
     return d->m_model ? d->m_model->rowCount() : 0;
 }
 
-int PlotterDiagramCompressor::columnCount() const
+void PlotterDiagramCompressor::cleanCache()
+{
+    d->clearBuffer();
+}
+
+int PlotterDiagramCompressor::datasetCount() const
 {
     if ( d->m_model && d->m_model->columnCount() == 0 )
         return 0;

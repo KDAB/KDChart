@@ -20,7 +20,8 @@ class KDCHART_EXPORT Plotter : public AbstractCartesianDiagram
     Q_DISABLE_COPY( Plotter )
 
     KDCHART_DECLARE_DERIVED_DIAGRAM( Plotter, CartesianCoordinatePlane )
-
+    Q_PROPERTY( bool useDataCompression READ useDataCompression WRITE setUseDataCompression )
+    Q_PROPERTY( qreal mergeRadiusPercentage READ mergeRadiusPercentage WRITE setMergeRadiusPercentage )
 
 public:
     class PlotterType;
@@ -70,6 +71,14 @@ public:
                                     const ValueTrackerAttributes & a );
     ValueTrackerAttributes valueTrackerAttributes( const QModelIndex & index ) const;
 
+    void setModel( QAbstractItemModel *model );
+
+    bool useDataCompression() const;
+    void setUseDataCompression( bool value );
+
+    qreal mergeRadiusPercentage() const;
+    void setMergeRadiusPercentage( qreal value );
+
 #if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
     // implement AbstractCartesianDiagram
     /* reimpl */
@@ -97,6 +106,9 @@ protected:
     virtual const QPair<QPointF, QPointF> calculateDataBoundaries() const;
     void paintEvent ( QPaintEvent* );
     void resizeEvent ( QResizeEvent* );
+protected Q_SLOTS:
+    void setDataBoundariesDirty();
+    void calcMergeRadius();
 }; // End of class KDChart::Plotter
 
 }

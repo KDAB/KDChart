@@ -1,12 +1,15 @@
 #ifndef PLOTTERDIAGRAMCOMPRESSOR_P_H
 #define PLOTTERDIAGRAMCOMPRESSOR_P_H
 
-#include "plotterdiagramcompressor.h"
+#include "KDChartPlotterDiagramCompressor.h"
 
 #include <QtCore/QPointF>
 #include <QtCore/QDateTime>
 
 typedef QPair< QPointF, QPointF > Boundaries;
+
+namespace KDChart
+{
 
 class PlotterDiagramCompressor::Private : public QObject
 {
@@ -31,5 +34,7 @@ public Q_SLOTS:
     void rowsInserted( const QModelIndex& parent, int start, int end );
     void clearBuffer();
 };
+
+}
 
 #endif // PLOTTERDIAGRAMCOMPRESSOR_P_H

@@ -7,7 +7,24 @@ using namespace KDChart;
 
 Plotter::Private::Private( const Private& rhs )
     : AbstractCartesianDiagram::Private( rhs )
+    , useCompression( rhs.useCompression )
 {
+}
+
+// Plotter::Private::Private()
+//     : diagram( 0 )
+//     , implementor( 0 )
+//     , normalPlotter( 0 )
+//     , percentPlotter( 0 )
+//     , useCompression( false )
+// {
+// 
+// }
+
+void Plotter::Private::init()
+{
+    AbstractCartesianDiagram::Private::init();
+    useCompression = false;
 }
 
 void Plotter::Private::setCompressorResolution(
@@ -325,4 +342,14 @@ void Plotter::PlotterType::paintValueTracker( PaintContext* ctx, const ValueTrac
 CartesianDiagramDataCompressor& Plotter::PlotterType::compressor() const
 {
     return m_private->compressor;
+}
+
+PlotterDiagramCompressor& Plotter::PlotterType::plotterCompressor() const
+{
+    return m_private->plotterCompressor;
+}
+
+bool Plotter::PlotterType::useCompression() const
+{
+    return m_private->useCompression;
 }

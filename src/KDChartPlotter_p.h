@@ -19,6 +19,7 @@
 #include "KDChartThreeDLineAttributes.h"
 #include "KDChartAbstractCartesianDiagram_p.h"
 #include "KDChartCartesianDiagramDataCompressor_p.h"
+#include "KDChartPlotterDiagramCompressor.h"
 
 #include <KDABLibFakes>
 
@@ -52,6 +53,11 @@ namespace KDChart {
         PlotterType* implementor; // the current type
         PlotterType* normalPlotter;
         PlotterType* percentPlotter;
+        PlotterDiagramCompressor plotterCompressor;
+        bool useCompression;
+        qreal mergeRadiusPercentage;
+    protected:
+        void init();
     };
 
     KDCHART_IMPL_DERIVED_DIAGRAM( Plotter, AbstractCartesianDiagram, CartesianCoordinatePlane )
@@ -64,7 +70,7 @@ namespace KDChart {
     public:
         explicit PlotterType( Plotter* d )
             : Plotter::Private()
-            , m_private( d->d_func() )
+            , m_private( d->d_func() )            
         {
         }
         virtual ~PlotterType() {}
@@ -80,6 +86,8 @@ namespace KDChart {
         QModelIndex attributesModelRootIndex() const;
         ReverseMapper& reverseMapper();
         CartesianDiagramDataCompressor& compressor() const;
+        PlotterDiagramCompressor& plotterCompressor() const;
+        bool useCompression() const;
 
         int datasetDimension() const;
 /*        LineAttributes::MissingValuesPolicy getCellValues(
