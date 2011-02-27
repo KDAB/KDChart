@@ -60,8 +60,10 @@ void AbstractCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
     connect( diagram, SIGNAL( modelsChanged() ), this, SLOT( layoutPlanes() ) );
     connect( diagram, SIGNAL( modelDataChanged() ), this, SLOT( update()) );
     connect( diagram, SIGNAL( modelDataChanged() ), this, SLOT( relayout()) );
+    connect( this, SIGNAL( boundariesChanged() ), diagram, SIGNAL( boundariesChanged() ) );
 
     update();
+    emit boundariesChanged();
 }
 
 /*virtual*/

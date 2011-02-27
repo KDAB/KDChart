@@ -308,6 +308,8 @@ namespace KDChart {
         /** Emitted upon change of a property of the Coordinate Plane or any of its components. */
         void propertiesChanged();
 
+        void boundariesChanged();
+
         /** Emitted after the geometry of the Coordinate Plane has been changed.
          *  and control has returned to the event loop.
          *

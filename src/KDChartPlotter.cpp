@@ -40,6 +40,9 @@ void Plotter::init()
     d->normalPlotter = new NormalPlotter( this );
     d->percentPlotter = new PercentPlotter( this );
     d->implementor = d->normalPlotter;
+    QObject* test = d->implementor->plotterPrivate();
+    bool connection = connect( this, SIGNAL( boundariesChanged() ), test, SLOT( changedProperties() ) );
+    Q_ASSERT( connection );
 
     setDatasetDimensionInternal( 2 );    
 }
@@ -146,6 +149,8 @@ void Plotter::setType( const PlotType type )
     default:
         Q_ASSERT_X( false, "Plotter::setType", "unknown plotter subtype" );
     };
+    bool connection = connect( this, SIGNAL( boundariesChanged() ), d->implementor->plotterPrivate(), SLOT( changedProperties() ) );
+    Q_ASSERT( connection );
 
     // d->lineType = type;
     Q_ASSERT( d->implementor->type() == type );

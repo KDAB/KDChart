@@ -49,6 +49,19 @@ void Plotter::Private::paintPolyline(
 #endif
 }
 
+void Plotter::Private::changedProperties()
+{
+    if ( CartesianCoordinatePlane* plane = dynamic_cast< CartesianCoordinatePlane* > ( diagram->coordinatePlane() ) )
+    {
+        QPair< qreal, qreal > verticalRange = plane->verticalRange();
+        if ( verticalRange.first != verticalRange.second )
+            implementor->plotterCompressor().setForcedDataBoundaries( verticalRange, Qt::Vertical );
+        QPair< qreal, qreal > horizontalRange = plane->horizontalRange();
+        if ( verticalRange.first != horizontalRange.second )
+            implementor->plotterCompressor().setForcedDataBoundaries( horizontalRange, Qt::Horizontal );
+    }
+}
+
 /*!
   Projects a point in a space defined by its x, y, and z coordinates
   into a point onto a plane, given two rotation angles around the x

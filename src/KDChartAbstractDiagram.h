@@ -686,6 +686,9 @@ namespace KDChart {
         /** Emitted upon change of a property of the Diagram. */
         void propertiesChanged();
 
+        /** Emitted upon change of a data boundary */
+        void boundariesChanged();
+
     private:
         QModelIndex conditionallyMapFromSource( const QModelIndex & sourceIndex ) const;
 	QString roundValues( double value, const int decimalPos,

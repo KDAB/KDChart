@@ -644,6 +644,7 @@ void CartesianCoordinatePlane::setHorizontalRange( const QPair< qreal, qreal > &
         d->horizontalMax = range.second;
         layoutDiagrams();
         emit propertiesChanged();
+        emit boundariesChanged();
     }
 }
 
@@ -656,6 +657,7 @@ void CartesianCoordinatePlane::setVerticalRange( const QPair< qreal, qreal > & r
         d->verticalMax = range.second;
         layoutDiagrams();
         emit propertiesChanged();
+        emit boundariesChanged();
     }
 }
 

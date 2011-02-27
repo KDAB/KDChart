@@ -31,8 +31,9 @@ namespace KDChart {
 /**
  * \internal
  */
-    class Plotter::Private : public AbstractCartesianDiagram::Private
+    class Plotter::Private : public QObject, public AbstractCartesianDiagram::Private
     {
+        Q_OBJECT
         friend class Plotter;
         friend class PlotterType;
 
@@ -58,6 +59,8 @@ namespace KDChart {
         qreal mergeRadiusPercentage;
     protected:
         void init();
+    public Q_SLOTS:
+        void changedProperties();
     };
 
     KDCHART_IMPL_DERIVED_DIAGRAM( Plotter, AbstractCartesianDiagram, CartesianCoordinatePlane )
@@ -81,6 +84,9 @@ namespace KDChart {
         Plotter* diagram() const;
         Plotter::CompressionMode useCompression() const;
         void setUseCompression( Plotter::CompressionMode value );
+        PlotterDiagramCompressor& plotterCompressor() const;
+
+        Plotter::Private* plotterPrivate() const { return m_private; }
 
     protected:
         // method that make elements of m_private available to derived
@@ -88,8 +94,7 @@ namespace KDChart {
         AttributesModel* attributesModel() const;
         QModelIndex attributesModelRootIndex() const;
         ReverseMapper& reverseMapper();
-        CartesianDiagramDataCompressor& compressor() const;
-        PlotterDiagramCompressor& plotterCompressor() const;        
+        CartesianDiagramDataCompressor& compressor() const;        
 
         int datasetDimension() const;
 /*        LineAttributes::MissingValuesPolicy getCellValues(

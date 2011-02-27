@@ -108,7 +108,7 @@ private slots:
     void addData()
     {
         //qDebug() << "addData()";
-        if (_count > 99)
+        if (_count > 199)
         {
             onStop();
             return;
@@ -187,8 +187,8 @@ void Dialog::setupWidget()
     KDChart::CartesianCoordinatePlane* pPlane = dynamic_cast <KDChart::CartesianCoordinatePlane*>( _pLineDiagram->coordinatePlane() );
     if (pPlane)
     {
-        //pPlane->setVerticalRange(QPair<qreal, qreal>(0, 65));
-        //pPlane->setHorizontalRange(QPair<qreal, qreal>(0, 110));
+        pPlane->setVerticalRange(QPair<qreal, qreal>(0, 65));
+        pPlane->setHorizontalRange(QPair<qreal, qreal>(0, 110));
     }
 
     setupModel();
