@@ -25,6 +25,8 @@ class KDCHART_EXPORT Plotter : public AbstractCartesianDiagram
     Q_PROPERTY( qreal mergeRadiusPercentage READ mergeRadiusPercentage WRITE setMergeRadiusPercentage )
 
 public:
+    // SLOPE enables a compression based on minmal slope changes
+    // DISTANCE is still buggy and can fail, same for BOTH, NONE is the default mode
     enum CompressionMode{ SLOPE, DISTANCE, BOTH, NONE };
     class PlotterType;
     friend class PlotterType;
