@@ -34,7 +34,7 @@ void NormalPlotter::paint( PaintContext* ctx )
     const int rowCount = compressor().modelDataRows();    
 
     DataValueTextInfoList textInfoList;
-    int counter = 0;
+    //int counter = 0;
     if ( diagram()->useDataCompression() != Plotter::NONE )
     {
         for ( int dataset = 0; dataset < plotterCompressor().datasetCount(); ++dataset )
@@ -44,7 +44,7 @@ void NormalPlotter::paint( PaintContext* ctx )
             PlotterDiagramCompressor::DataPoint lastPoint;
             for ( PlotterDiagramCompressor::Iterator it = plotterCompressor().begin( dataset ); it != plotterCompressor().end( dataset ); ++ it )
             {
-                ++counter;
+                //++counter;
                 const PlotterDiagramCompressor::DataPoint point = *it;
 
                 const QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );
@@ -102,7 +102,7 @@ void NormalPlotter::paint( PaintContext* ctx )
             LineAttributes::MissingValuesPolicy policy = LineAttributes::MissingValuesAreBridged; //unused
             paintElements( ctx, textInfoList, lineList, policy );
         }
-        qDebug() << counter;
+        //qDebug() << counter;
     }
     else
     {
