@@ -33,7 +33,7 @@ function check_license {
     [ -d $PACKSCRIPTS_DIR ] && return 0 
     [ -f .license.accepted ] && return 0
 
-    if [ -f LICENSE.GPL -a -f LICENSE.US -a -f LICENSE ] ; then
+    if [ -f LICENSE.GPL.txt -a -f LICENSE.US.txt -a -f LICENSE.txt ] ; then
         echo
         echo "Please choose your license."
         echo
@@ -45,13 +45,13 @@ function check_license {
         echo -n "Select: "
         read license
 
-    elif [ -f LICENSE.GPL ] ; then
+    elif [ -f LICENSE.GPL.txt ] ; then
         license="1"
 
-    elif [ -f LICENSE.US ] ; then
+    elif [ -f LICENSE.US.txt ] ; then
         license="2"
 
-    elif [ -f LICENSE ] ; then
+    elif [ -f LICENSE.txt ] ; then
         license="3"
     else
         die "Couldn't find license file, aborting"
@@ -59,13 +59,13 @@ function check_license {
 
     if [ "$license" = "1" ]; then
         license_name="GNU General Public License (GPL)"
-        license_file=LICENSE.GPL
+        license_file=LICENSE.GPL.txt
     elif [ "$license" = "2" ]; then
         license_name="$ProductSpace USA/Canada Commercial License"
-        license_file=LICENSE.US
+        license_file=LICENSE.US.txt
     elif [ "$license" = "3" ]; then
         license_name="$ProductSpace Commercial License"
-        license_file=LICENSE
+        license_file=LICENSE.txt
     else
         return 1
     fi

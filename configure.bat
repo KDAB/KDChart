@@ -29,9 +29,9 @@ if exist .license.accepted goto :CheckLicenseComplete
 
 set license_file=
 
-if exist LICENSE.GPL (
-    if exist LICENSE.US (
-        if exist LICENSE (
+if exist LICENSE.GPL.txt (
+    if exist LICENSE.US.txt (
+        if exist LICENSE.txt (
             echo.
             echo Please choose your license.
             echo.
@@ -45,10 +45,10 @@ if exist LICENSE.GPL (
         license=1
     )
 ) else (
-    if exist LICENSE.US (
+    if exist LICENSE.US.txt (
         license=2
     ) else (
-        if exist LICENSE (
+        if exist LICENSE.txt (
             license=3
         ) else (
             echo "Couldn't find license file, aborting"
@@ -59,17 +59,17 @@ if exist LICENSE.GPL (
 
 if "%license%" == "1" (
     set license_name="GNU General Public License (GPL)"
-    set license_file=LICENSE.GPL
+    set license_file=LICENSE.GPL.txt
 	goto :CheckLicense
 ) else (
     if "%license%" == "2" (
         set license_name="%Product_Space% USA/Canada Commercial License"
-        set license_file=LICENSE.US
+        set license_file=LICENSE.US.txt
         goto :CheckLicense
     ) else (
         if "%license%" == "3" (
             set license_name="%Product_Space% Commercial License"
-            set license_file=LICENSE
+            set license_file=LICENSE.txt
             goto :CheckLicense
         ) else (
             exit /B 1
