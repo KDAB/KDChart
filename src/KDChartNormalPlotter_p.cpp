@@ -64,6 +64,7 @@ void NormalPlotter::paint( PaintContext* ctx )
             LineAttributesInfoList lineList;
             LineAttributes laPreviousCell;
             PlotterDiagramCompressor::DataPoint lastPoint;
+            QPointF lastTransformedPoint;
             for ( PlotterDiagramCompressor::Iterator it = plotterCompressor().begin( dataset ); it != plotterCompressor().end( dataset ); ++ it )
             {
                 //++counter;
@@ -83,29 +84,35 @@ void NormalPlotter::paint( PaintContext* ctx )
                     case LineAttributes::MissingValuesHideSegments: // fall-through since they're just hidden
                     default:
                         lastPoint = PlotterDiagramCompressor::DataPoint();
+                        lastTransformedPoint = QPointF();
                         continue;
                     }
                 }
 
                 // area corners, a + b are the line ends:
-                const QPointF a( plane->translate( QPointF( lastPoint.key, lastPoint.value ) ) );
+                const QPointF a = lastTransformedPoint;//( plane->translate( QPointF( lastPoint.key, lastPoint.value ) ) );
                 const QPointF b( plane->translate( QPointF( point.key, point.value ) ) );
+                lastTransformedPoint = b;
                 if( a.toPoint() == b.toPoint() )
-                    continue;
-
-                const QPointF c( plane->translate( QPointF( lastPoint.key, 0.0 ) ) );
-                const QPointF d( plane->translate( QPointF( point.key, 0.0 ) ) );
+                    continue;                
 
                 // add the pieces to painting if this is not hidden:
                 if ( !point.hidden /*&& !ISNAN( lastPoint.key ) && !ISNAN( lastPoint.value ) */) {
                     // add data point labels:
-                    const PositionPoints pts = PositionPoints( b, a, d, c );
-                    // if necessary, add the area to the area list:
+                    DataValueAttributes dv = diagram()->dataValueAttributes( sourceIndex );
+                    PositionPoints pts;
                     QList<QPolygonF> areas;
-                    if ( laCell.displayArea() ) {
-                        QPolygonF polygon;
-                        polygon << a << b << d << c;
-                        areas << polygon;
+                    if ( dv.isVisible() )
+                    {
+                        const QPointF c( plane->translate( QPointF( lastPoint.key, 0.0 ) ) );
+                        const QPointF d( plane->translate( QPointF( point.key, 0.0 ) ) );
+                        pts = PositionPoints( b, a, d, c );
+                    // if necessary, add the area to the area list:                        
+                        if ( laCell.displayArea() ) {
+                            QPolygonF polygon;
+                            polygon << a << b << d << c;
+                            areas << polygon;
+                        }
                     }
                     appendDataValueTextInfoToList( diagram(), textInfoList, sourceIndex, pts,
                                                    Position::NorthWest, Position::SouthWest,

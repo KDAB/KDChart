@@ -102,6 +102,9 @@ public:
     CompressionMode useDataCompression() const;
     void setUseDataCompression( CompressionMode value );
 
+    bool pickingActive() const;
+    void setPickingActive( bool value );
+
     qreal maxSlopeChange() const;
     void setMaxSlopeChange( qreal value );
 

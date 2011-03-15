@@ -79,6 +79,7 @@ namespace KDChart {
         PlotterDiagramCompressor plotterCompressor;
         Plotter::CompressionMode useCompression;
         qreal mergeRadiusPercentage;
+        bool useReverseMapper;
     protected:
         void init();
     public Q_SLOTS:
@@ -106,6 +107,8 @@ namespace KDChart {
         Plotter* diagram() const;
         Plotter::CompressionMode useCompression() const;
         void setUseCompression( Plotter::CompressionMode value );
+        bool useReverseMapper() const;
+        void setUseReverseMapper( bool value );
         PlotterDiagramCompressor& plotterCompressor() const;
 
         Plotter::Private* plotterPrivate() const { return m_private; }

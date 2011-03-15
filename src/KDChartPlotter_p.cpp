@@ -37,6 +37,7 @@ void Plotter::Private::init()
 {
     AbstractCartesianDiagram::Private::init();
     useCompression = Plotter::NONE;
+    useReverseMapper = true;
 }
 
 void Plotter::Private::setCompressorResolution(
@@ -123,7 +124,8 @@ void Plotter::PlotterType::paintThreeDLines(
     ctx->painter()->setBrush( indexBrush );
     ctx->painter()->setPen( PrintingParameters::scalePen( diagram()->pen( index ) )  );
 
-    reverseMapper().addPolygon( index.row(), index.column(), segment );
+    if ( implementor->useReverseMapper() )
+        reverseMapper().addPolygon( index.row(), index.column(), segment );
     ctx->painter()->drawPolygon( segment );
 }
 
@@ -159,7 +161,8 @@ void Plotter::PlotterType::paintElements(
             const QPen pn( diagram()->pen( index ) );
             if( points.count() && points.last() == lineInfo.value && curBrush == br && curPen == pn ) {
                 // line goes from last value in points to lineInfo.nextValue
-                reverseMapper().addLine( lineInfo.index.row(), lineInfo.index.column(), points.last(), lineInfo.nextValue );
+                if ( useReverseMapper() )
+                    reverseMapper().addLine( lineInfo.index.row(), lineInfo.index.column(), points.last(), lineInfo.nextValue );
                 points << lineInfo.nextValue;
             } else {
                 if( points.count() )
@@ -168,7 +171,8 @@ void Plotter::PlotterType::paintElements(
                 curPen   = pn;
                 points.clear();
                 // line goes from lineInfo.value to lineInfo,nextValue
-                reverseMapper().addLine( lineInfo.index.row(), lineInfo.index.column(), lineInfo.value, lineInfo.nextValue );
+                if ( useReverseMapper() )
+                    reverseMapper().addLine( lineInfo.index.row(), lineInfo.index.column(), lineInfo.value, lineInfo.nextValue );
                 points << lineInfo.value << lineInfo.nextValue;
             }
         }
@@ -250,7 +254,8 @@ void Plotter::PlotterType::paintAreas(
     {
         const QPolygonF& p = areas[ i ];
         path.addPolygon( p );
-        reverseMapper().addPolygon( index.row(), index.column(), p );
+        if ( implementor->useReverseMapper() )
+            reverseMapper().addPolygon( index.row(), index.column(), p );
         path.closeSubpath();
     }
     ctx->painter()->drawPath( path );
@@ -382,4 +387,13 @@ Plotter::CompressionMode Plotter::PlotterType::useCompression() const
 void Plotter::PlotterType::setUseCompression( Plotter::CompressionMode value )
 {
     m_private->useCompression = value;
+}
+
+bool Plotter::PlotterType::useReverseMapper() const
+{
+    return m_private->useReverseMapper;
+}
+void Plotter::PlotterType::setUseReverseMapper( bool value )
+{
+    m_private->useReverseMapper = value;
 }
