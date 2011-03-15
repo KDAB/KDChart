@@ -19,7 +19,6 @@ SUBDIRS		= tools \
                   Grids \
                   RealTime \
 		  RealTimeBenchmark \
-		  RealTimeLineChart \
                   Polar \
                   Plane \
                   TernaryCharts \
