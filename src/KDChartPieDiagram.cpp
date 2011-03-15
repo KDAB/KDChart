@@ -237,6 +237,7 @@ void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
 
     // if the pies explode, we need to give them additional space =>
     // make the basic size smaller
+    // TODO this can be cached
     qreal maxExplode = 0.0;
     for( int j = 0; j < colCount; ++j ){
         const PieAttributes columnAttrs( pieAttributes( model()->index( 0, j, rootIndex() ) ) );
@@ -252,7 +253,7 @@ void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
 
         QPointF center = ctx->rectangle().center();
 		
-		dist = qAbs(textBoundingRect.right() - center.x());
+        dist = qAbs(textBoundingRect.right() - center.x());
         if(dist > maxDistance)
             maxDistance = dist;
 

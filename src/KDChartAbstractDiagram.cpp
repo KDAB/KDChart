@@ -427,6 +427,9 @@ void AbstractDiagram::setDataValueAttributes( const DataValueAttributes & a )
 
 void AbstractDiagram::setAllowOverlappingDataValueTexts( bool allow )
 {
+    DataValueAttributes attrs = dataValueAttributes();
+    attrs.setShowOverlappingDataLabels( allow );
+    setDataValueAttributes( attrs );
     d->allowOverlappingDataValueTexts = allow;
     emit propertiesChanged();
 }
