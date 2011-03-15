@@ -116,17 +116,6 @@ void Plotter::setModel( QAbstractItemModel *model )
     }
 }
 
-
-bool Plotter::pickingActive() const
-{
-    return d->implementor->useReverseMapper();
-}
-void Plotter::setPickingActive( bool value )
-{
-    if ( d->implementor->useReverseMapper() != value )
-        d->implementor->setUseReverseMapper( value );
-}
-
 Plotter::CompressionMode Plotter::useDataCompression() const
 {    
     return d->implementor->useCompression();
