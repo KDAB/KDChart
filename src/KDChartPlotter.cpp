@@ -134,6 +134,15 @@ void Plotter::setUseDataCompression( Plotter::CompressionMode value )
     }
 }
 
+qreal Plotter::maxSlopeChange() const
+{
+    return d->plotterCompressor.maxSlopeChange();
+}
+void Plotter::setMaxSlopeChange( qreal value )
+{
+    d->plotterCompressor.setMaxSlopeChange( value );
+}
+
 qreal Plotter::mergeRadiusPercentage() const
 {
     return d->mergeRadiusPercentage;

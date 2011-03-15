@@ -102,6 +102,9 @@ public:
     CompressionMode useDataCompression() const;
     void setUseDataCompression( CompressionMode value );
 
+    qreal maxSlopeChange() const;
+    void setMaxSlopeChange( qreal value );
+
     qreal mergeRadiusPercentage() const;
     void setMergeRadiusPercentage( qreal value );
 

@@ -847,6 +847,11 @@ void PlotterDiagramCompressor::setMaxSlopeChange( qreal value )
     }
 }
 
+qreal PlotterDiagramCompressor::maxSlopeChange() const
+{
+    return d->m_maxSlopeRadius;
+}
+
 void PlotterDiagramCompressor::setMergeRadiusPercentage( qreal radius )
 {
     Boundaries bounds = dataBoundaries();

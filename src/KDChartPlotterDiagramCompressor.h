@@ -111,6 +111,7 @@ public:
     int datasetCount() const;
     void setCompressionModel( CompressionMode value );
     void setMaxSlopeChange( qreal value );
+    qreal maxSlopeChange() const;
     void cleanCache();
     QPair< QPointF, QPointF > dataBoundaries() const;
     void setForcedDataBoundaries( const QPair< qreal, qreal > &bounds, Qt::Orientation direction );
