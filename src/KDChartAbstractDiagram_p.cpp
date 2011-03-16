@@ -153,7 +153,6 @@ void AbstractDiagram::Private::appendDataValueTextInfoToList(
                     ta.setRotation( favoriteAngle );
                     dva.setTextAttributes( ta );
                 }
-
                 // Store the anchor point, that's already shifted according to horiz./vert. padding:
                 list.append( DataValueTextInfo(
                                 i.key(),
@@ -348,7 +347,7 @@ void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
                                 cfm->boundingRect( plainText ).height() );
 #endif
         // Take margins of text frame into account
-        const QSizeF plainSize( doc.size() );
+        //const QSizeF plainSize( doc.size() );
 
         // FIXME draw the non-text bits, background, etc
 
@@ -381,7 +380,8 @@ void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
             }
 
             QAbstractTextDocumentLayout* const layout = doc.documentLayout();
-
+            const QRectF plainRect = layout->frameBoundingRect( doc.rootFrame() );
+            const QSizeF plainSize = layout->frameBoundingRect( doc.rootFrame() ).size();
             painter->translate( pos );
 
             /**
@@ -422,7 +422,6 @@ void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
             int rotation = ta.rotation();
             if ( !valueIsPositive && attrs.mirrorNegativeValueTextRotation() )
                 rotation *= -1;
-            painter->rotate( rotation );
             qreal dx =  - 0.5 * plainSize.width();
             qreal dy =  - 0.5 * plainSize.height();
 
@@ -482,7 +481,9 @@ void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
                     (*cumulatedBoundingRect) |= rect;
                 }else{
                     painter->translate( QPointF( dx, dy ) );
-                    painter->rotate( ta.rotation() );
+                    painter->translate( plainRect.center() );
+                    painter->rotate( rotation );
+                    painter->translate( -plainRect.center() );
                     layout->draw( painter, context );
 
                     // Return the cumulatedBoundingRect if asked for
