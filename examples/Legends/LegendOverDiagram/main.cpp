@@ -68,7 +68,7 @@ int main( int argc, char** argv ) {
     relativePosition.setReferencePosition( Position::NorthEast );
     relativePosition.setAlignment( Qt::AlignTop | Qt::AlignRight );
     relativePosition.setHorizontalPadding( KDChart::Measure( -1.0, KDChartEnums::MeasureCalculationModeAbsolute ) );
-    relativePosition.setVerticalPadding(   KDChart::Measure(  0.0, KDChartEnums::MeasureCalculationModeAbsolute ) );
+    relativePosition.setVerticalPadding(   KDChart::Measure(  1.0, KDChartEnums::MeasureCalculationModeAbsolute ) );
     legend->setFloatingPosition( relativePosition );
 
     widget.addLegend( legend );
