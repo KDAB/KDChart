@@ -345,6 +345,8 @@ namespace KDChart {
         // This is connected via QueuedConnection to the geometryChanged() Signal
         // that users can connect to safely then.
         void internal_geometryChanged( QRect, QRect );
+        /** Emitted upon change of the view coordinate system */
+        void viewportCoordinateSystemChanged();
 
     protected:
         virtual DataDimensionsList getDataDimensionsList() const = 0;

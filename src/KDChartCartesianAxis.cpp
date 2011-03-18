@@ -75,6 +75,7 @@ void CartesianAxis::init ()
     d->customTickLength = 3;
     d->position = Bottom;
     setCachedSizeDirty();
+    connect( this, SIGNAL( coordinateSystemChanged() ), SLOT( coordinateSystemChanged() ) );
 }
 
 
@@ -94,6 +95,11 @@ bool CartesianAxis::compare( const CartesianAxis* other )const
             ( position()            == other->position() ) &&
             ( titleText()           == other->titleText() ) &&
             ( titleTextAttributes() == other->titleTextAttributes() );
+}
+
+void CartesianAxis::coordinateSystemChanged()
+{
+    layoutPlanes();
 }
 
 
@@ -336,7 +342,7 @@ void CartesianAxis::Private::drawSubUnitRulers( QPainter* painter, CartesianCoor
                 }
         }
         if ( isLogarithmic ){
-            if( logSubstep == 9 ){
+            if( logSubstep == 9 ){                
                 fLogSubstep *= ( fLogSubstep > 0.0 ) ? 10.0 : 0.1;
                 if( fLogSubstep == 0 )
                     fLogSubstep = 0.01;

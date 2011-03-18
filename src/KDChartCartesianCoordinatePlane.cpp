@@ -639,6 +639,9 @@ void CartesianCoordinatePlane::setAxesCalcModes( AxesCalcMode mode )
         d->coordinateTransformation.axesCalcModeY = mode;
         d->coordinateTransformation.axesCalcModeX = mode;
         emit propertiesChanged();
+        emit viewportCoordinateSystemChanged();
+        Q_FOREACH( AbstractDiagram* diag, diagrams() )
+        slotLayoutChanged( diag );
     }
 }
 
@@ -647,6 +650,8 @@ void CartesianCoordinatePlane::setAxesCalcModeY( AxesCalcMode mode )
     if( d->coordinateTransformation.axesCalcModeY != mode ){
         d->coordinateTransformation.axesCalcModeY = mode;
         emit propertiesChanged();
+        setGridNeedsRecalculate();
+        emit viewportCoordinateSystemChanged();
     }
 }
 
@@ -655,6 +660,7 @@ void CartesianCoordinatePlane::setAxesCalcModeX( AxesCalcMode mode )
     if( d->coordinateTransformation.axesCalcModeX != mode ){
         d->coordinateTransformation.axesCalcModeX = mode;
         emit propertiesChanged();
+        emit viewportCoordinateSystemChanged();
     }
 }
 

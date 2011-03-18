@@ -84,6 +84,11 @@ void AbstractCartesianDiagram::init()
     d->compressor.setModel( attributesModel() );
     connect( this, SIGNAL( layoutChanged( AbstractDiagram* ) ),
              &( d->compressor ), SLOT( slotDiagramLayoutChanged( AbstractDiagram* ) ) );
+    if ( d->plane )
+    {
+        const bool res = connect( d->plane, SIGNAL( viewportCoordinateSystemChanged() ), this, SIGNAL( viewportCoordinateSystemChanged() ) );
+        Q_ASSERT( res );
+    }
 }
 
 void AbstractCartesianDiagram::addAxis( CartesianAxis *axis )
@@ -145,6 +150,11 @@ void KDChart::AbstractCartesianDiagram::setCoordinatePlane( AbstractCoordinatePl
                  plane, SLOT( relayout() ), Qt::QueuedConnection );
         connect( attributesModel(), SIGNAL( columnsInserted( const QModelIndex&, int, int ) ),
                  plane, SLOT( relayout() ), Qt::QueuedConnection );
+        Q_ASSERT( plane );
+        bool con = connect( plane, SIGNAL( viewportCoordinateSystemChanged() ), this, SIGNAL( viewportCoordinateSystemChanged() ) );
+        Q_ASSERT( con );
+        con = connect( plane, SIGNAL( viewportCoordinateSystemChanged() ), this, SLOT( update() ) );
+        Q_ASSERT( con );
     }
     // show the axes, after all have been layoutPlanes
     // (because they might depend on each other)

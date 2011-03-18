@@ -1041,7 +1041,7 @@ double AbstractDiagram::valueForCell( int row, int column ) const
 
 void AbstractDiagram::update() const
 {
-    //qDebug("KDChart::AbstractDiagram::update() called");
+    qDebug("KDChart::AbstractDiagram::update() called");
     if( d->plane )
         d->plane->update();
 }

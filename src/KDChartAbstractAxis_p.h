@@ -61,7 +61,7 @@ public:
 
     bool setDiagram(   AbstractDiagram* diagram, bool delayedInit = false );
     void unsetDiagram( AbstractDiagram* diagram );
-    const AbstractDiagram* diagram() const
+    AbstractDiagram* diagram() const
     {
         return mDiagram;
     }

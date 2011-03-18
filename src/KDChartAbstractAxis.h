@@ -239,6 +239,9 @@ namespace KDChart {
 
     public Q_SLOTS:
         void update();
+
+    Q_SIGNALS:
+        void coordinateSystemChanged();
     };
 }
 

@@ -531,7 +531,6 @@ void Chart::Private::slotLayoutPlanes()
         //qDebug() << "Chart slotLayoutPlanes() calls planeLayout->addItem("<< row << column << ")";
         planeLayout->setRowStretch(    row,    2 );
         planeLayout->setColumnStretch( column, 2 );
-
         KDAB_FOREACH( AbstractDiagram* abstractDiagram, plane->diagrams() )
         {
             AbstractCartesianDiagram* diagram =
@@ -591,7 +590,6 @@ void Chart::Private::slotLayoutPlanes()
             }
  
             //pi.leftAxesLayout->setSizeConstraint( QLayout::SetFixedSize );
-
             KDAB_FOREACH( CartesianAxis* axis, diagram->axes() ) {
                 if ( axisInfos.contains( axis ) ) continue; // already laid this one out
                 Q_ASSERT ( axis );

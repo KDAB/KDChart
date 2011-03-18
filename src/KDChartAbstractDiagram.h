@@ -710,6 +710,8 @@ namespace KDChart {
 
         /** Emitted upon change of a data boundary */
         void boundariesChanged();
+        /** Emitted upon change of the view coordinate system */
+        void viewportCoordinateSystemChanged();
 
     private:
         QModelIndex conditionallyMapFromSource( const QModelIndex & sourceIndex ) const;

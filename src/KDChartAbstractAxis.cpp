@@ -71,6 +71,9 @@ bool AbstractAxis::Private::setDiagram(
         if ( mDiagram ) {
 //qDebug() << "axis" << (axis != 0);
             observer = new DiagramObserver( mDiagram, mAxis );
+            bool con = connect( observer, SIGNAL( diagramDataChanged( AbstractDiagram *) ),
+                    mAxis, SIGNAL( coordinateSystemChanged() ) );
+            Q_ASSERT( con );
             bNewDiagramStored = true;
         }else{
             observer = 0;
@@ -126,6 +129,8 @@ void AbstractAxis::init()
     m.setValue( 5 );
     m.setCalculationMode( KDChartEnums::MeasureCalculationModeAbsolute );
     d->textAttributes.setMinimalFontSize( m  );
+    if ( d->diagram() )
+        createObserver( d->diagram() );
 }
 
 void AbstractAxis::delayedInit()
@@ -163,8 +168,7 @@ const QString AbstractAxis::customizedLabel( const QString& label )const
 
 void AbstractAxis::createObserver( AbstractDiagram* diagram )
 {
-    if( d->setDiagram( diagram ) )
-        connectSignals();
+    d->setDiagram( diagram );
 }
 
 void AbstractAxis::deleteObserver( AbstractDiagram* diagram )
@@ -175,11 +179,11 @@ void AbstractAxis::deleteObserver( AbstractDiagram* diagram )
 void AbstractAxis::connectSignals()
 {
     if( d->observer ){
-        connect( d->observer, SIGNAL( diagramDataChanged( AbstractDiagram *) ),
-                this, SLOT( update() ) );
+        bool con = connect( d->observer, SIGNAL( diagramDataChanged( AbstractDiagram *) ),
+                this, SIGNAL( coordinateSystemChanged() ) );
+        Q_ASSERT( con );
     }
 }
-
 
 void AbstractAxis::setTextAttributes( const TextAttributes &a )
 {
