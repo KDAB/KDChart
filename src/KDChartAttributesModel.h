@@ -148,6 +148,8 @@ private:
     // helper
     QVariant defaultsForRole( int role ) const;
 
+    void removeEntriesFromDataMap( int start, int end );
+    void removeEntriesFromDirectionDataMaps( Qt::Orientation dir, int start, int end );
     QMap<int, QMap<int, QMap<int, QVariant> > > mDataMap;
     QMap<int, QMap<int, QVariant> > mHorizontalHeaderDataMap;
     QMap<int, QMap<int, QVariant> > mVerticalHeaderDataMap;
