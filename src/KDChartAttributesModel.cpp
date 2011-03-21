@@ -652,7 +652,6 @@ void AttributesModel::slotRowsRemoved( const QModelIndex& parent, int start, int
 void AttributesModel::removeEntriesFromDataMap( int start, int end )
 {
     QMap<int, QMap<int, QMap<int, QVariant> > >::iterator it = mDataMap.find( end );
-    qDebug() << mDataMap;
     // check that the element was found
     if ( it != mDataMap.end() )
     {
@@ -716,7 +715,6 @@ void AttributesModel::slotColumnsRemoved( const QModelIndex& parent, int start, 
     for ( int i = start; i <= end; ++i )
     {
         mVerticalHeaderDataMap.remove( start );
-        qDebug() << "RemoveHeader at " << i;
     }
     removeEntriesFromDataMap( start, end );
     removeEntriesFromDirectionDataMaps( Qt::Horizontal, start, end );
