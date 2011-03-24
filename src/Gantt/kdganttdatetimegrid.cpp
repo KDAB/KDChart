@@ -694,7 +694,9 @@ void DateTimeGrid::Private::paintVerticalLines( QPainter* painter,
 
         for ( qreal x = dateTimeToChartX( dt ); x < exposedRect.right();
               dt = dt.addSecs( offsetSeconds ), dt = dt.addDays( offsetDays ), x = dateTimeToChartX( dt ) ) {
-            if ( x >= exposedRect.left() ) {
+                  //TODO not the best solution as it might be one paint too much, but i don't know what
+                  //causes the test to fail yet, i think it might be a rounding error
+            //if ( x >= exposedRect.left() ) {
                 QPen pen = painter->pen();
                 pen.setBrush( QApplication::palette().dark() );
                 pen.setStyle( gridLinePenStyle( dt, headerType ) );
@@ -709,7 +711,7 @@ void DateTimeGrid::Private::paintVerticalLines( QPainter* painter,
                     painter->fillRect( QRectF( x, exposedRect.top(), dayWidth, exposedRect.height() ), painter->brush() );
                 }
                 painter->drawLine( QPointF( x, sceneRect.top() ), QPointF( x, sceneRect.bottom() ) );
-            }
+            //}
         }
 }
 
@@ -728,10 +730,12 @@ void DateTimeGrid::Private::paintVerticalUserDefinedLines( QPainter* painter,
     painter->setPen( pen );
     for ( qreal x = dateTimeToChartX( dt ); x < exposedRect.right();
           dt = formatter->nextRangeBegin( dt ),x=dateTimeToChartX( dt ) ) {
-        if ( x >= exposedRect.left() ) {
+              //TODO not the best solution as it might be one paint too much, but i don't know what
+              //causes the test to fail yet, i think it might be a rounding error
+        //if ( x >= exposedRect.left() ) {
             // FIXME: Also fill area between this and the next vertical line to indicate free days? (Johannes)
             painter->drawLine( QPointF( x, sceneRect.top() ), QPointF( x, sceneRect.bottom() ) );
-        }
+        //}
     }
 }
 
