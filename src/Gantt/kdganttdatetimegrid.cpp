@@ -729,12 +729,23 @@ void DateTimeGrid::Private::paintVerticalUserDefinedLines( QPainter* painter,
     pen.setStyle( Qt::DashLine );
     painter->setPen( pen );
     for ( qreal x = dateTimeToChartX( dt ); x < exposedRect.right();
-          dt = formatter->nextRangeBegin( dt ),x=dateTimeToChartX( dt ) ) {
+        dt = formatter->nextRangeBegin( dt ),x=dateTimeToChartX( dt ) ) {
+        if ( freeDays.contains( static_cast<Qt::DayOfWeek>( dt.date().dayOfWeek() ) ) ) {
+            QBrush oldBrush = painter->brush();
+            if(freeDaysBrush.style() == Qt::NoBrush)
+                painter->setBrush( widget?widget->palette().midlight()
+                                 :QApplication::palette().midlight() );
+            else
+                painter->setBrush(freeDaysBrush);
+
+          painter->fillRect( QRectF( x, exposedRect.top(), dayWidth, exposedRect.height() ), painter->brush() );
+          painter->setBrush( oldBrush );
+        }
               //TODO not the best solution as it might be one paint too much, but i don't know what
               //causes the test to fail yet, i think it might be a rounding error
         //if ( x >= exposedRect.left() ) {
             // FIXME: Also fill area between this and the next vertical line to indicate free days? (Johannes)
-            painter->drawLine( QPointF( x, sceneRect.top() ), QPointF( x, sceneRect.bottom() ) );
+    painter->drawLine( QPointF( x, sceneRect.top() ), QPointF( x, sceneRect.bottom() ) );
         //}
     }
 }
