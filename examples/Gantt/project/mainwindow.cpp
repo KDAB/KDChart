@@ -149,6 +149,8 @@ class DateTimeGrid : public KDGantt::DateTimeGrid
 public:
     DateTimeGrid(QObject* parent=0) { 
         setParent(parent);
+        setFreeDays( QSet<Qt::DayOfWeek>() );
+        setFreeDaysBrush( QBrush( Qt::NoBrush ) );
     }
     ~DateTimeGrid() { }
 
@@ -159,8 +161,22 @@ public:
 
 void DateTimeGrid::drawBackground(QPainter* painter, const QRectF& rect)
 {
-    QBrush brush(Qt::Dense5Pattern);
-    brush.setColor(Qt::lightGray);
+    QLinearGradient grad;
+    grad.setCoordinateMode( QGradient::ObjectBoundingMode );
+    grad.setStart( 0.5, 0.5 );
+    grad.setFinalStop( 0.5, 0.0 );
+    grad.setSpread( QGradient::ReflectSpread );
+//    grad.setCenter( 0.5, 0.5 );
+//    grad.setFocalPoint( 0.5, 0.5 );
+//    grad.setRadius( 0.5 );
+    QColor currentColor = Qt::blue;
+    for ( qreal i = 0; i <= 1.0; i += 0.1 )
+    {
+        currentColor = currentColor.lighter( 100 + 20 * i );
+        grad.setColorAt( i, currentColor );
+    }
+    QBrush brush( grad);
+    //brush.setColor(Qt::lightGray);
 
     QRectF r = computeRect(QDateTime::currentDateTime(),
                            QDateTime::currentDateTime().addDays(2), 
@@ -240,6 +256,8 @@ MainWindow::MainWindow( QWidget* parent )
         //"* { background-color : rgb( 17, 13, 13 ); color : rgb( 255, 255, 255 ); selection-background-color : rgb( 252, 225, 142); selection-color : rgb( 0, 0, 0 ); }\n"
         "* { background-color : rgb( 17, 13, 13 ); color : rgb( 255, 255, 255 ); }\n"
     );
+    m_view->leftView()->setHorizontalScrollBarPolicy( Qt::ScrollBarAsNeeded );
+    m_view->graphicsView()->setHorizontalScrollBarPolicy( Qt::ScrollBarAsNeeded );
 
     m_view->setGrid(new DateTimeGrid(this));
 
