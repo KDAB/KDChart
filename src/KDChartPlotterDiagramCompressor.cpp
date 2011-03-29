@@ -4,6 +4,7 @@
 #include <QtCore/QPointF>
 
 #include <limits>
+#include "KDABLibFakes"
 
 using namespace KDChart;
 
@@ -710,10 +711,10 @@ void PlotterDiagramCompressor::Private::calculateDataBoundaries()
                 minY = qMin( minY, dp.value );
                 maxX = qMax( dp.key, maxX );
                 maxY = qMax( dp.value, maxY );
-                Q_ASSERT( !std::isnan( minX ) );
-                Q_ASSERT( !std::isnan( minY ) );
-                Q_ASSERT( !std::isnan( maxX ) );
-                Q_ASSERT( !std::isnan( maxY ) );
+                Q_ASSERT( !ISNAN( minX ) );
+                Q_ASSERT( !ISNAN( minY ) );
+                Q_ASSERT( !ISNAN( maxX ) );
+                Q_ASSERT( !ISNAN( maxY ) );
             }
         }
         if ( forcedBoundaries( Qt::Vertical ) )
@@ -746,9 +747,9 @@ QModelIndexList PlotterDiagramCompressor::Private::mapToModel( const CachePositi
 bool PlotterDiagramCompressor::Private::forcedBoundaries( Qt::Orientation orient ) const
 {
     if ( orient == Qt::Vertical )
-        return !std::isnan( m_forcedYBoundaries.first ) && !std::isnan( m_forcedYBoundaries.second );
+        return !ISNAN( m_forcedYBoundaries.first ) && !ISNAN( m_forcedYBoundaries.second );
     else
-        return !std::isnan( m_forcedXBoundaries.first ) && !std::isnan( m_forcedXBoundaries.second );
+        return !ISNAN( m_forcedXBoundaries.first ) && !ISNAN( m_forcedXBoundaries.second );
 }
 
 void PlotterDiagramCompressor::Private::clearBuffer()
