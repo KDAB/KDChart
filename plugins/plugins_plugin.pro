@@ -15,7 +15,7 @@ DEFINES += PLUGINS_PLUGIN_DLL
 
 CONFIG += designer debug_and_release
 
-staticlib {
+CONFIG( static ) {
   CONFIG += kdchart_static
   CONFIG -= staticlib
 }

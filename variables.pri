@@ -23,7 +23,6 @@ win32 {
     QMAKE_CXXFLAGS += /GR /EHsc /wd4251
 }
 }
-
 CONFIG += depend_includepath
 
 contains(TEMPLATE, lib) {
@@ -33,7 +32,7 @@ contains(TEMPLATE, app) {
   DESTDIR = $${TOP_BUILD_DIR}/bin
 }
 
-staticlib {
+CONFIG( static ) {
   DEFINES += KDCHART_STATICLIB
 } else {
   DEFINES += KDCHART_SHAREDLIB

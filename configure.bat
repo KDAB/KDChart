@@ -35,12 +35,13 @@ if exist LICENSE.GPL.txt (
             echo.
             echo Please choose your license.
             echo.
-            echo Type 1 for the GNU General Public License (GPL).
+            echo Type 1 for the GNU General Public License ^(GPL^).
             echo Type 2 for the %Product_Space% Commercial License for USA/Canada.
             echo Type 3 for the %Product_Space% Commercial License for anywhere outside USA/Canada.
             echo Anything else cancels.
             echo.
             set /p license=Select:
+		)
     ) else (
         license=1
     )
@@ -211,7 +212,7 @@ if "%STATIC_BUILD_SUPPORTED%" == "true" (
 if exist %PACKSCRIPTS_DIR% (
     echo.
     echo Creating include directory...
-    perl %PACKSCRIPTS_DIR%/makeincludes.pl > makeincludes.log 2>&1
+    rem perl %PACKSCRIPTS_DIR%/makeincludes.pl > makeincludes.log 2>&1
     if errorlevel 1 (
 	echo Failed to run %PACKSCRIPTS_DIR%/makeincludes.pl
 	goto :CleanEnd
@@ -246,7 +247,7 @@ if "%shared%" == "yes" (
 ) else (
     echo CONFIG += static >> .qmake.cache
     rem This is needed too, when Qt is static, otherwise it sets -DQT_DLL and linking fails.
-    echo CONFIG += qt_static >> .qmake.cache
+    rem echo CONFIG += qt_static >> .qmake.cache
 )
 
 if "%unittests%" == "yes" (
@@ -258,7 +259,8 @@ set default_prefix=C:\KDAB\%Product_mix%-%VERSION%
 if "%prefix%" == "" (
     set prefix="%default_prefix%"
 )
-echo %PRODUCT_CAP%_INSTALL_PREFIX = %prefix% >> .qmake.cache
+set prefixes=%prefix:\=\\%
+echo %PRODUCT_CAP%_INSTALL_PREFIX = %prefixes% >> .qmake.cache
 
 
 echo VERSION=%VERSION% >> .qmake.cache

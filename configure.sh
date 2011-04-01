@@ -258,7 +258,7 @@ echo -n > ".qmake.cache"
       echo "CONFIG += shared"
     else
       echo "CONFIG += static"
-      echo "CONFIG += staticlib"
+      #echo "CONFIG += staticlib"
       echo "CONFIG -= shared"
     fi
 

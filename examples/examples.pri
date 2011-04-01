@@ -5,7 +5,7 @@
 #       before examples.pri is included
 
 # needed for the export macros.
-staticlib {
+CONFIG( static ) {
   DEFINES += KDCHART_STATICLIB
 }
 

@@ -15,7 +15,7 @@ QT += xml
 #
 #    The bug would produce invalid *.exe files when KD Chart is linked
 #    statically and examples are build right after building the lib.
-staticlib {
+CONFIG( static ) {
   CONFIG -= staticlib
   DEFINES += KDCHART_STATICLIB
   DEFINES += KDCHARTSERIALIZER_STATICLIB

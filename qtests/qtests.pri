@@ -1,5 +1,5 @@
 # # needed for the export macros.
-staticlib {
+CONFIG( static ) {
   DEFINES += KDCHART_STATICLIB
   DEFINES += KDCHARTSERIALIZER_STATICLIB
 }

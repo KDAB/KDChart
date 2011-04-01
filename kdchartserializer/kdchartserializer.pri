@@ -2,7 +2,7 @@ include (../variables.pri)
 
 QT += svg
 
-staticlib {
+CONFIG( static ) {
   DEFINES += KDCHARTSERIALIZER_STATICLIB
 } else {
   DEFINES += KDCHARTSERIALIZER_SHAREDLIB
