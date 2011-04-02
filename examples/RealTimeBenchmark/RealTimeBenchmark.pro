@@ -4,7 +4,6 @@
 #
 #-------------------------------------------------
 
-#include(outdirs.pri)
 KDCHART_PATH = ../..
 
 include( $$KDCHART_PATH/examples/examples.pri )
@@ -27,4 +26,4 @@ INCLUDEPATH +=  ../IMS_UserInterface/KDChart/include
 
 LIBS += -L../IMS_UserInterface/lib
 
-LIBS += -lkdchart
+LIBS += -l$$KDCHARTLIB
