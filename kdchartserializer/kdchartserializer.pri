@@ -1,6 +1,7 @@
 include (../variables.pri)
 
 QT += svg
+QT += xml
 
 CONFIG( static ) {
   DEFINES += KDCHARTSERIALIZER_STATICLIB
