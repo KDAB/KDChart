@@ -93,6 +93,20 @@ public:
       */
     void setShowMajorTickMarks( bool show );
     bool showMajorTickMarks() const;
+
+    /**
+     * Sets the length of major tick marks
+     */
+    void setMajorTickMarkLength( int length );
+    int majorTickMarkLength() const;
+    bool majorTickMarkLengthIsSet() const;
+
+    /**
+     * Sets the length of minor tick marks
+     */
+    void setMinorTickMarkLength( int length );
+    int minorTickMarkLength() const;
+    bool minorTickMarkLengthIsSet() const;
     
     /**
      * Set margin that should be used between the labals and the ticks. Per

@@ -50,6 +50,10 @@ private:
     bool showMinorTickMarks;
     
     int labelMargin;
+    int majorTickLength;
+    int minorTickLength;
+    bool majorTickLengthIsSet;
+    bool minorTickLengthIsSet;
     
     RulerAttributes::TickMarkerPensMap customTickMarkPens;
 };
@@ -68,6 +72,11 @@ RulerAttributes::Private::Private()
 
     showMajorTickMarks = true;
     showMinorTickMarks = true;
+
+    majorTickLength = 3;
+    minorTickLength = 2;
+    majorTickLengthIsSet = false;
+    minorTickLengthIsSet = false;
     
     labelMargin = -1;
 }
@@ -196,6 +205,38 @@ void RulerAttributes::setLabelMargin(int margin)
 int RulerAttributes::labelMargin() const
 {
     return d->labelMargin;
+}
+
+void RulerAttributes::setMajorTickMarkLength( int length )
+{
+    d->majorTickLength = length;
+    d->majorTickLengthIsSet = true;
+}
+
+int RulerAttributes::majorTickMarkLength() const
+{
+    return d->majorTickLength;
+}
+
+bool RulerAttributes::majorTickMarkLengthIsSet() const
+{
+    return d->majorTickLengthIsSet;
+}
+
+void RulerAttributes::setMinorTickMarkLength( int length )
+{
+    d->minorTickLength = length;
+    d->minorTickLengthIsSet = true;
+}
+
+int RulerAttributes::minorTickMarkLength() const
+{
+    return d->minorTickLength;
+}
+
+bool RulerAttributes::minorTickMarkLengthIsSet() const
+{
+    return d->minorTickLengthIsSet;
 }
     
 RulerAttributes & RulerAttributes::operator=( const RulerAttributes& r )

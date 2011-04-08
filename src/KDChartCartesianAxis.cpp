@@ -1837,16 +1837,13 @@ int CartesianAxis::customTickLength() const
 
 int CartesianAxis::tickLength( bool subUnitTicks ) const
 {
-    int result = 0;
+    const RulerAttributes& rulerAttr = rulerAttributes();
+    int result = subUnitTicks ? rulerAttr.minorTickMarkLength()
+                              : rulerAttr.majorTickMarkLength();
 
-    if ( isAbscissa() ) {
-        result = position() == Top ? -4 : 3;
-    } else {
-        result = position() == Left ? -4 : 3;
-    }
-
-    if ( subUnitTicks )
-        result = result < 0 ? result + 1 : result - 1;
+    if (  isAbscissa() && position() == Top ||
+         !isAbscissa() && position() == Left )
+        result *= -1;
 
     return result;
 }
