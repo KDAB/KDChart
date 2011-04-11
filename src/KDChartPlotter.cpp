@@ -65,6 +65,7 @@ void Plotter::init()
     QObject* test = d->implementor->plotterPrivate();
     bool connection = connect( this, SIGNAL( boundariesChanged() ), test, SLOT( changedProperties() ) );
     Q_ASSERT( connection );
+    Q_UNUSED( connection );
 
     setDatasetDimensionInternal( 2 );    
 }
@@ -182,6 +183,7 @@ void Plotter::setType( const PlotType type )
     };
     bool connection = connect( this, SIGNAL( boundariesChanged() ), d->implementor->plotterPrivate(), SLOT( changedProperties() ) );
     Q_ASSERT( connection );
+    Q_UNUSED( connection );
 
     // d->lineType = type;
     Q_ASSERT( d->implementor->type() == type );
