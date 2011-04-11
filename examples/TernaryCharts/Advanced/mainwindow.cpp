@@ -71,9 +71,9 @@ void MainWindow::setupModel()
     m_model.insertRows( 0, 5 );
     m_model.insertColumns(  0,  3 );
 
-    const float column0Share = 1.0/3.0;
-    const float column1Share = 1.0/3.0;
-    const float column2Share = 1.0/3.0;
+    const float column0Share = 1.0f/3.0f;
+    const float column1Share = 1.0f/3.0f;
+    const float column2Share = 1.0f/3.0f;
 
     for ( int row = 0; row < m_model.rowCount(); ++row ) {
         const double SkewX = column0Share * ( 1 - 1.0/( 5 * row*row*row + 1 ) );

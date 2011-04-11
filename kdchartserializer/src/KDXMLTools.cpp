@@ -875,7 +875,7 @@ namespace KDXML {
     bool readPixmapNode( const QDomElement& element, QPixmap& pixmap )
     {
         bool ok = true;
-        unsigned long tempLength;
+        unsigned long tempLength = 0;
         QString tempData;
         QDomNode node = element.firstChild();
         while( !node.isNull() ) {

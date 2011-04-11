@@ -87,6 +87,7 @@ void AbstractCartesianDiagram::init()
     if ( d->plane )
     {
         const bool res = connect( d->plane, SIGNAL( viewportCoordinateSystemChanged() ), this, SIGNAL( viewportCoordinateSystemChanged() ) );
+        Q_UNUSED( res )
         Q_ASSERT( res );
     }
 }

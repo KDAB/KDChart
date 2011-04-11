@@ -257,6 +257,9 @@ if "%shared%" == "yes" (
     rem echo CONFIG += qt_static >> .qmake.cache
 )
 
+echo CONFIG += warn_on >> .qmake.cache
+echo QMAKE_CXXFLAGS += -WX >> .qmake.cache
+
 if "%unittests%" == "yes" (
     echo CONFIG += unittests >> .qmake.cache
 )

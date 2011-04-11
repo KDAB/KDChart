@@ -766,6 +766,7 @@ DateTimeGrid::Private::HeaderType DateTimeGrid::Private::headerTypeForScale( Dat
             assert( false );
             break;
     }
+	return Private::HeaderDay;
 }
 
 void DateTimeGrid::paintGrid( QPainter* painter,

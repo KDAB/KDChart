@@ -67,9 +67,9 @@ void DiagramObserver::init()
     if ( m_attributesmodel )
         disconnect(m_attributesmodel);
 
-    bool con = connect( m_diagram, SIGNAL( viewportCoordinateSystemChanged() ), this, SLOT( slotDataChanged() ) );
+    const bool con = connect( m_diagram, SIGNAL( viewportCoordinateSystemChanged() ), this, SLOT( slotDataChanged() ) );
     Q_ASSERT( con );
-
+    Q_UNUSED( con )
     connect( m_diagram, SIGNAL(dataHidden()), SLOT(slotDataHidden()) );
 
     if( m_diagram->model() ){

@@ -71,8 +71,9 @@ bool AbstractAxis::Private::setDiagram(
         if ( mDiagram ) {
 //qDebug() << "axis" << (axis != 0);
             observer = new DiagramObserver( mDiagram, mAxis );
-            bool con = connect( observer, SIGNAL( diagramDataChanged( AbstractDiagram *) ),
+            const bool con = connect( observer, SIGNAL( diagramDataChanged( AbstractDiagram *) ),
                     mAxis, SIGNAL( coordinateSystemChanged() ) );
+            Q_UNUSED( con )
             Q_ASSERT( con );
             bNewDiagramStored = true;
         }else{
@@ -179,8 +180,9 @@ void AbstractAxis::deleteObserver( AbstractDiagram* diagram )
 void AbstractAxis::connectSignals()
 {
     if( d->observer ){
-        bool con = connect( d->observer, SIGNAL( diagramDataChanged( AbstractDiagram *) ),
+        const bool con = connect( d->observer, SIGNAL( diagramDataChanged( AbstractDiagram *) ),
                 this, SIGNAL( coordinateSystemChanged() ) );
+        Q_UNUSED( con );
         Q_ASSERT( con );
     }
 }

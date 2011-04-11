@@ -155,13 +155,10 @@ bool TableModel::loadFromCSV ( const QString& filename )
             m_rows.resize ( data.size() - 1 );
 
             // debugging code:
-            int previousColumnCount = 0;
 
             for ( int row = 0; row < data.size(); ++row )
             {
                 QStringList parts = data.at( row ).split ( QString( ',' ) );
-
-                Q_ASSERT ( previousColumnCount == parts.size() || previousColumnCount == 0 );
 
                 QVector<QVariant> values( m_dataHasVerticalHeaders ? parts.size() - 1 : parts.size() );
 

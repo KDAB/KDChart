@@ -52,10 +52,16 @@ QModelIndex ForwardingProxyModel::mapFromSource ( const QModelIndex & sourceInde
     // this way KDDataConverterProxyModel preserves the structure of the source model
     return createIndex( sourceIndex.row(), sourceIndex.column(), sourceIndex.internalPointer() );
 }
-
+#ifdef __GNUC__
+#if __GNUC__ > 3
+#define ATTRIBUTE __attribute__((__may_alias__))
+#else
+#define ATTRIBUTE
+#endif
+#endif
 namespace {
     // Think this is ugly? Well, it's not from me, it comes from QProxyModel
-    struct KDPrivateModelIndex {
+    struct ATTRIBUTE KDPrivateModelIndex {
         int r, c;
         void *p;
         const QAbstractItemModel *m;

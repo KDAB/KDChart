@@ -1490,7 +1490,7 @@ bool AttributesSerializer::parseGridAttributes(
             } else if( tagName == "GranularitySequence" ) {
                 QString name;
                 if( KDXML::readStringNode( element, name ) ){
-                    KDChartEnums::GranularitySequence seq;
+                    KDChartEnums::GranularitySequence seq = KDChartEnums::GranularitySequence_10_20;
                     if( name == "10_20" )
                         seq = KDChartEnums::GranularitySequence_10_20;
                     else if( name == "10_50" )
