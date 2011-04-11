@@ -116,7 +116,7 @@ public:
     {
     }
 
-    void showContraints( const QString& pfx ) {
+    void showContraints( const QString& /*pfx*/ ) {
 #if 0
         qDebug() << pfx << *m_constraints;
         qDebug() << "0:" << m_constraints->constraintsForIndex( m_model->index( 0, 0 ) );

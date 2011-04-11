@@ -261,6 +261,8 @@ echo -n > ".qmake.cache"
       #echo "CONFIG += staticlib"
       echo "CONFIG -= shared"
     fi
+    echo "CONFIG += warn_on"
+    echo "QMAKE_CXXFLAGS += -Werror"
 
     if [ -d "$QTDIR/include/Qt/private" ] ; then
 	echo "CONFIG += have_private_qt_headers"

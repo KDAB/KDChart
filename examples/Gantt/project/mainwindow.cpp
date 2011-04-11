@@ -272,7 +272,7 @@ MainWindow::MainWindow( QWidget* parent )
 
     QMenu* fileMenu = new QMenu( tr( "&File" ) );
 
-    QAction* fileQuit = fileMenu->addAction( tr( "&Quit" ), this, SLOT( slotFileQuit() ) );
+    /*QAction* fileQuit =*/ fileMenu->addAction( tr( "&Quit" ), this, SLOT( slotFileQuit() ) );
 
     mb->addMenu( fileMenu );
 

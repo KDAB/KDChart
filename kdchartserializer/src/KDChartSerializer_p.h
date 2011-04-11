@@ -38,7 +38,11 @@
 
 #include <QMap>
 
-class KDChart::AbstractSerializerFactory;
+namespace KDChart
+{
+    class AbstractSerializerFactory;
+}
+
 
 /**
  * \internal
