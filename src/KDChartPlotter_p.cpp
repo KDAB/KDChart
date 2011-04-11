@@ -28,7 +28,8 @@
 using namespace KDChart;
 
 Plotter::Private::Private( const Private& rhs )
-    : AbstractCartesianDiagram::Private( rhs )
+    : QObject()
+    , AbstractCartesianDiagram::Private( rhs )
     , useCompression( rhs.useCompression )
 {
 }

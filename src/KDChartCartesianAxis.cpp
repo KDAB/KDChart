@@ -1841,8 +1841,8 @@ int CartesianAxis::tickLength( bool subUnitTicks ) const
     int result = subUnitTicks ? rulerAttr.minorTickMarkLength()
                               : rulerAttr.majorTickMarkLength();
 
-    if (  isAbscissa() && position() == Top ||
-         !isAbscissa() && position() == Left )
+    if ( ( isAbscissa() && ( position() == Top ) ) ||
+         ( !isAbscissa() && position() == Left ) )
         result *= -1;
 
     return result;
