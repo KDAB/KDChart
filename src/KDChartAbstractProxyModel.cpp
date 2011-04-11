@@ -29,12 +29,12 @@
 #ifdef __GNUC__
 #if __GNUC__ > 3
 #define ATTRIBUTE __attribute__((__may_alias__))
+#endif
 #else
 #define ATTRIBUTE
 #endif
-#endif
 
-namespace KDChart {
+namespace KDChart {	
 
   /** This is basically KDAbstractProxyModel, but only the
       bits that we really need from it */
@@ -47,7 +47,7 @@ struct ATTRIBUTE KDPrivateModelIndex
   int r, c;
   void *p;
   const QAbstractItemModel *m;
-} ;
+};
 
 QModelIndex AbstractProxyModel::mapFromSource( const QModelIndex & sourceIndex ) const
 {
