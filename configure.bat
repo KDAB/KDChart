@@ -17,6 +17,7 @@ set PACKSCRIPTS_DIR=../admin/packscripts
 set shared=yes
 set debug=no
 set release=no
+set designer_plugins_in_debug=no
 set prefix=
 set unittests=no
 
@@ -143,6 +144,9 @@ if "%1" == "/unittests"    goto :Unittests
 if "%1" == "-no-unittests" goto :NoUnittests
 if "%1" == "/no-unittests" goto :NoUnittests
 
+if "%1" == "-designer-plugins" goto :DesignerPluginsInDebug
+if "%1" == "/designer-plugins" goto :DesignerPluginsInDebug
+
 if "%1" == "-shared"   goto :Shared
 if "%1" == "/shared"   goto :Shared
 
@@ -186,6 +190,9 @@ rem   goto :usage
     goto :OptionNoArg
 :NoUnittests
     set unittests=no
+    goto :OptionNoArg
+:DesignerPluginsInDebug
+    set designer_plugins_in_debug=yes
     goto :OptionNoArg
 :Shared
     set shared=yes
@@ -254,6 +261,10 @@ if "%unittests%" == "yes" (
     echo CONFIG += unittests >> .qmake.cache
 )
 
+if "%designer_plugins_in_debug%" == "yes" (
+    echo CONFIG += designer_plugins_in_debug >> .qmake.cache
+)
+
 set default_prefix=C:\KDAB\%Product_mix%-%VERSION%
 
 if "%prefix%" == "" (
@@ -282,6 +293,7 @@ if "%STATIC_BUILD_SUPPORTED%" == "true" (
   echo   Shared build............: %shared% (default: yes)
 )
 echo   Compiled-In Unit Tests..: %unittests% (default: no)
+echo   Build designer plugins..: %designer_plugins_in_debug% (default: release mode only)
 echo.
 
 rem Make a copy so that each run of qmake on $product.pro starts clean
@@ -317,6 +329,10 @@ if "%STATIC_BUILD_SUPPORTED%" == "true" (
 echo.
 echo   -unittests / -no-unittests
 echo       enable/disable compiled-in unittests
+echo.
+echo   -designer-plugins
+echo 	   Build designer plugins. By default, this is only done for release builds, as the
+echo       designer plugins require a Qt Designer built in debug mode.
 echo.
 
 :CleanEnd

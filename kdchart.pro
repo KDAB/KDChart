@@ -3,7 +3,20 @@ include( variables.pri )
 CONFIG += ordered
 
 TEMPLATE=subdirs
-SUBDIRS = src examples uitools plugins 
+SUBDIRS = src examples
+
+!win32:SUBDIRS += uitools plugins
+win32 {
+    CONFIG(debug, debug|release) {
+        designer_plugins_in_debug {
+            SUBDIRS += uitools plugins
+        } else {
+            message( "Disabling designer plugins. Pass -release to re-enable them, or -designer-plugins-in-debug" )
+        }
+    } else {
+        SUBDIRS += uitools plugins
+    }
+}
 
 contains($$list($$[QT_VERSION]), 4.[2-9].*) { SUBDIRS += kdchartserializer }
 
