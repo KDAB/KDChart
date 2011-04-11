@@ -253,7 +253,6 @@ bool AbstractDiagram::usesExternalAttributesModel()const
     return d->usesExternalAttributesModel();
 }
 
-/*! \returns a pointer to the AttributesModel currently used by this diagram. */
 AttributesModel* AbstractDiagram::attributesModel() const
 {
     return d->attributesModel;
