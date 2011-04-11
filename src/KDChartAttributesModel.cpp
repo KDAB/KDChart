@@ -496,6 +496,9 @@ bool AttributesModel::setHeaderData ( int section, Qt::Orientation orientation,
             emit attributesChanged( index( 0, section, QModelIndex() ),
                                     index( rowCount( QModelIndex() ), section, QModelIndex() ) );
             emit headerDataChanged( orientation, section, section );
+            if ( section != -1 )
+                emit dataChanged( index( 0, section, QModelIndex() ),
+                                        index( rowCount( QModelIndex() ) - 1, section, QModelIndex() ) );
         }
         return true;
     }
