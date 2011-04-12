@@ -340,7 +340,7 @@ PlotterDiagramCompressor::Iterator PlotterDiagramCompressor::Iterator::operator+
 
 PlotterDiagramCompressor::Iterator& PlotterDiagramCompressor::Iterator::operator += ( int value )
 {    
-    for ( int index = m_index; index + value != m_index; ++( *this ) );
+    for ( int index = m_index; index + value != m_index; ++( *this ) ){};
     return *this;
 }
 
