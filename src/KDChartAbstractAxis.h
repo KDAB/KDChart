@@ -183,7 +183,7 @@ namespace KDChart {
 
           If you a smaller number of strings than the number of labels drawn at this
           axis, KD Chart will iterate over the list, repeating the strings, until all
-          labels are drawn.
+          labels are drawn. This only works on horizontal axis
           As an example you could specify the seven days of the week as abscissa labels,
           which would be repeatedly used then.
 
