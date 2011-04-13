@@ -381,6 +381,95 @@ void MainWindow::on_vSBar_valueChanged( int vPos )
     m_chart->coordinatePlane()->setZoomCenter( QPointF( hSBar->value()/1000.0, vPos/1000.0) );
 }
 
+// since DataValue markers have no relative sizeing mode we need to scale them
+// for printing
+void MainWindow::paintMarkers( bool checked, const QRect & printSize )
+{
+   //testing
+    DataValueAttributes a( m_lines->dataValueAttributes() );
+    // don't paint the values
+    if ( !paintValuesCB->isChecked() ) {
+        TextAttributes ta = a.textAttributes();
+        ta.setVisible( false );
+        a.setTextAttributes( ta );
+    }
+    MarkerAttributes ma( a.markerAttributes() );
+    MarkerAttributes::MarkerStylesMap map;
+    map.insert( 0, MarkerAttributes::MarkerSquare );
+    map.insert( 1, MarkerAttributes::MarkerCircle );
+    map.insert( 2, MarkerAttributes::MarkerRing );
+    map.insert( 3, MarkerAttributes::MarkerCross );
+    map.insert( 4, MarkerAttributes::MarkerDiamond );
+    ma.setMarkerStylesMap( map );
+
+    switch ( markersStyleCB->currentIndex() ) {
+        case 0:{
+                   break; }
+        case 1:{
+                   ma.setMarkerStyle( MarkerAttributes::MarkerCircle );
+                   break; }
+        case 2:{
+                   ma.setMarkerStyle( MarkerAttributes::MarkerSquare );
+                   break; }
+        case 3:{
+                   ma.setMarkerStyle( MarkerAttributes::MarkerDiamond );
+                   break; }
+        case 4:{
+                   ma.setMarkerStyle( MarkerAttributes::Marker1Pixel );
+                   break; }
+        case 5:{
+                   ma.setMarkerStyle( MarkerAttributes::Marker4Pixels );
+                   break; }
+        case 6:{
+                   ma.setMarkerStyle( MarkerAttributes::MarkerRing );
+                   break; }
+        case 7:{
+                   ma.setMarkerStyle( MarkerAttributes::MarkerCross );
+                   break; }
+        case 8:{
+                   ma.setMarkerStyle( MarkerAttributes::MarkerFastCross );
+                   break; }
+    }
+    qreal factorWidth = printSize.width() / m_chart->rect().width();
+    qreal factorHeight = printSize.height() / m_chart->rect().height();
+    ma.setMarkerSize( QSize( markersWidthSB->value() * factorWidth, markersHeightSB->value() * factorHeight ) );
+
+    if ( checked )
+        ma.setVisible( true );
+    else
+        ma.setVisible( false );
+
+    a.setMarkerAttributes( ma );
+    a.setVisible( true );
+
+    // make a special one for certain values
+    DataValueAttributes yellowAttributes( a );
+    MarkerAttributes yellowMarker( yellowAttributes.markerAttributes() );
+    yellowMarker.setMarkerColor( Qt::yellow );
+    yellowAttributes.setMarkerAttributes( yellowMarker );
+
+    const int rowCount = m_lines->model()->rowCount();
+    const int colCount = m_lines->model()->columnCount();
+    for ( int iColumn = 0; iColumn<colCount; ++iColumn ) {
+        DataValueAttributes colAttributes( a );
+        if ( markersStyleCB->currentIndex() == 0 ) {
+            MarkerAttributes ma( colAttributes.markerAttributes() );
+            ma.setMarkerStyle( ma.markerStylesMap().value(iColumn) );
+            colAttributes.setMarkerAttributes( ma );
+        }
+        for ( int j=0; j< rowCount; ++j ) {
+            QModelIndex index = m_lines->model()->index( j, iColumn, QModelIndex() );
+            QBrush brush = qVariantValue<QBrush>( m_lines->model()->headerData( iColumn, Qt::Vertical, DatasetBrushRole ) );
+            double value = m_lines->model()->data( index ).toDouble();
+            /* Set a specific color - marker for a specific value */
+            if ( value == 13 ) {
+                m_lines->setDataValueAttributes( index, yellowAttributes );
+            }
+        }
+        m_lines->setDataValueAttributes( iColumn, colAttributes );
+    }
+}
+
 void MainWindow::on_savePB_clicked()
 {
     const QString file = QFileDialog::getSaveFileName(this, tr("Choose PNG File..."));
@@ -405,10 +494,12 @@ void MainWindow::on_savePDF_clicked()
     printer.setOrientation(QPrinter::Landscape);
     printer.setOutputFormat(QPrinter::PdfFormat);
     printer.setOutputFileName(file);
+    paintMarkers( paintMarkersCB->isChecked(), printer.pageRect() );
     QPainter painter;
     painter.begin(&printer);
     m_chart->paint(&painter, printer.pageRect());
     painter.end();
+    paintMarkers( paintMarkersCB->isChecked(), m_chart->geometry() );
     qDebug() << "Painting into PDF - done";
 }
 

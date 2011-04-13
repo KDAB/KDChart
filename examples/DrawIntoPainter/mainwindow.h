@@ -77,6 +77,8 @@ private:
     // mutable KDChart::CartesianAxis xAxis;
     //mutable KDChart::CartesianAxis yAxis;
 
+    void paintMarkers( bool checked, const QRect & printSize );
+
 protected:
     KDChart::Chart* m_chart;
     KDChart::LineDiagram* m_lines;
