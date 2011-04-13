@@ -380,6 +380,7 @@ void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
             }
 
             QAbstractTextDocumentLayout* const layout = doc.documentLayout();
+            layout->setPaintDevice( painter->device() );
             const QRectF plainRect = layout->frameBoundingRect( doc.rootFrame() );
             const QSizeF plainSize = layout->frameBoundingRect( doc.rootFrame() ).size();
             painter->translate( pos );
