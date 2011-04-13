@@ -85,7 +85,8 @@ namespace KDChart {
         
         /**
          * Sets the spacing between the title and the diagram.
-         * This can create overlapping axis and axis title labels
+         * Be aware that setting this value can lead to
+         * collisions between axis labels and the title
          */
         void setTitleSpace( qreal value );
         qreal titleSpace() const;
