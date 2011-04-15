@@ -42,6 +42,7 @@ private slots:
     void on_perspectiveAngle_valueChanged( int value );
     void on_useShadowColors_toggled( bool checked );
     void on_stockTypeCB_currentIndexChanged( const QString &text );
+    void chooseColor();
 
 private:
     void initValues();

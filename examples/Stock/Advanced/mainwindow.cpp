@@ -24,6 +24,7 @@
 #include <KDChartChart>
 #include <KDChartLegend>
 #include <KDChartCartesianAxis>
+#include <QtGui/QColorDialog>
 
 using namespace KDChart;
 
@@ -60,9 +61,19 @@ MainWindow::MainWindow( QWidget *parent )
     bottomAxis->setPosition( CartesianAxis::Bottom );
     m_diagram.addAxis( leftAxis );
     m_diagram.addAxis( bottomAxis );
+    m_diagram.addAxis( bottomAxis );
+    const bool connected = connect( colorChooser, SIGNAL( clicked() ), SLOT( chooseColor() ) );
+    Q_ASSERT( connected );
 
     // Initialize all values for the stock chart to sane defaults
     initValues();
+}
+
+void MainWindow::chooseColor()
+{
+    QColor col = QColorDialog::getColor( Qt::red, this );
+    if ( col.isValid() )
+        m_diagram.setPen( 0, QPen( col ) );
 }
 
 void MainWindow::initValues() {
