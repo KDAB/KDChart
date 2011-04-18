@@ -74,7 +74,16 @@ void MainWindow::chooseColor()
 {
     QColor col = QColorDialog::getColor( Qt::red, this );
     if ( col.isValid() )
+    {
         m_diagram.setPen( 0, QPen( col ) );
+        m_diagram.setBrush( 0, QBrush( col ) );
+        QColor inverse( 255 - col.red(), 255 - col.green(), 255 - col.blue() );
+        m_diagram.setPen( 1, QPen( inverse ) );
+        m_diagram.setBrush( 1, QBrush( inverse ) );
+        QPalette pal = colorChooser->palette();
+        pal.setBrush( QPalette::Button, QBrush( col ) );
+        colorChooser->setPalette( pal );
+    }
 }
 
 void MainWindow::initValues() {
