@@ -62,6 +62,9 @@ MainWindow::MainWindow( QWidget *parent )
     m_diagram.addAxis( leftAxis );
     m_diagram.addAxis( bottomAxis );
     m_diagram.addAxis( bottomAxis );
+    QPalette pal = colorChooser->palette();
+    pal.setBrush( QPalette::Button, QBrush( m_diagram.pen( 0 ).color() ) );
+    colorChooser->setPalette( pal );
     const bool connected = connect( colorChooser, SIGNAL( clicked() ), SLOT( chooseColor() ) );
     Q_ASSERT( connected );
     Q_UNUSED( connected );
