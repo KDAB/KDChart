@@ -62,7 +62,9 @@ MainWindow::MainWindow( QWidget *parent )
     m_diagram.addAxis( leftAxis );
     m_diagram.addAxis( bottomAxis );
     m_diagram.addAxis( bottomAxis );
-    Q_ASSERT( connect( colorChooser, SIGNAL( clicked() ), SLOT( chooseColor() ) ) );
+    const bool connected = connect( colorChooser, SIGNAL( clicked() ), SLOT( chooseColor() ) );
+    Q_ASSERT( connected );
+    Q_UNUSED( connected );
 
     // Initialize all values for the stock chart to sane defaults
     initValues();
