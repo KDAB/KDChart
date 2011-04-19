@@ -36,6 +36,7 @@
 #include "KDChartPaintContext.h"
 #include "KDChartPainterSaver_p.h"
 #include "KDChartBarDiagram.h"
+#include "KDChartStockDiagram.h"
 
 #include <KDABLibFakes>
 
@@ -279,6 +280,7 @@ DataDimensionsList CartesianCoordinatePlane::getDataDimensionsList() const
     if( dgr && dgr->referenceDiagram() )
     	dgr = dgr->referenceDiagram();
 	const BarDiagram *barDiagram = qobject_cast< const BarDiagram* >( dgr );
+        const StockDiagram *stockDiagram = qobject_cast< const StockDiagram* >( dgr );
 
 	// note:
 	// It does make sense to retrieve the orientation from the first diagram. This is because
@@ -301,7 +303,7 @@ DataDimensionsList CartesianCoordinatePlane::getDataDimensionsList() const
         l.append(
             DataDimension(
                 r.left(), r.right(),
-                diagramIsVertical ? ( dgr->datasetDimension() > 1 ) : true,
+                diagramIsVertical ? ( !stockDiagram && dgr->datasetDimension() > 1 ) : true,
                 axesCalcModeX(),
                 gaH.gridGranularitySequence(),
                 gaH.gridStepWidth(),
