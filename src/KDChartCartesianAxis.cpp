@@ -496,6 +496,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
     if( refDiagram && refDiagram->referenceDiagram() )
         refDiagram = refDiagram->referenceDiagram();
     const BarDiagram *barDiagram = qobject_cast< const BarDiagram* >( refDiagram );
+    const StockDiagram *stockDiagram = qobject_cast< const StockDiagram* >( refDiagram );
     const Qt::Orientation diagramOrientation = barDiagram ? barDiagram->orientation() : Qt::Vertical;
     const bool diagramIsVertical = diagramOrientation == Qt::Vertical;
 
@@ -587,7 +588,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
     else
         screenRange = qAbs ( p1.y() - p2.y() );
 
-    const bool useItemCountLabels = isAbscissa() && ! dimX.isCalculated;
+    const bool useItemCountLabels = isAbscissa() && ( ! dimX.isCalculated || stockDiagram );
 
     // attributes used to customize ruler appearance
     const RulerAttributes rulerAttr = rulerAttributes();
@@ -708,7 +709,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
             useConfiguredStepsLabels = isAbscissa() &&
                     dimX.stepWidth &&
                     (( (headerLabels.count() - 1)/ dimX.stepWidth ) != (numberOfUnitRulers / dimX.stepWidth));
-            if( useConfiguredStepsLabels ) {
+            if( useConfiguredStepsLabels && !stockDiagram ) {
                 numberOfUnitRulers = ( headerLabels.count() - 1 )/ dimX.stepWidth;
                 // we need to register data values for the steps
                 // in case it is configured by the user
