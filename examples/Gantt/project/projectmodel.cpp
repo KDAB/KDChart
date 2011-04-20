@@ -56,9 +56,12 @@ public:
     }
 
     void setStart( const QDateTime& dt ) {
+        m_bStart = m_start;
         m_start = dt;
     }
     void setEnd( const QDateTime& dt ) {
+        if ( m_end.isValid() )
+        m_bEnd = m_end;
         m_end = dt;
     }
     void setLabel( const QString& str ) {
@@ -66,6 +69,10 @@ public:
     }
     void setType( int t ) {
         m_type = static_cast<KDGantt::ItemType>( t );
+        if ( !m_start.isValid() )
+            m_start = m_bStart;
+        if ( !m_end.isValid() )
+            m_end = m_bEnd;
     }
     void setCompletion( int c ) {
         m_completion = c;
@@ -91,6 +98,7 @@ private:
 
     KDGantt::ItemType m_type;
     QDateTime m_start, m_end;
+    QDateTime m_bStart, m_bEnd;
     QString m_label;
     int m_completion;
     KDGantt::StyleOptionGanttItem::Position m_position;
