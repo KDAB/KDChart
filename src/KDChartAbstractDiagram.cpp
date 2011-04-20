@@ -175,6 +175,7 @@ const QPair<QPointF, QPointF> AbstractDiagram::dataBoundaries () const
 void AbstractDiagram::setDataBoundariesDirty() const
 {
     d->databoundariesDirty = true;
+    update();
 }
 
 void AbstractDiagram::setModel( QAbstractItemModel * newModel )

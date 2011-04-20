@@ -288,6 +288,7 @@ void DatasetProxyModel::setSourceModel (QAbstractItemModel *m)
     if ( m ) {
         connect ( m,  SIGNAL ( layoutChanged() ),
                   this, SLOT( resetDatasetDescriptions() ) );
+        connect ( m, SIGNAL( layoutChanged() ), this, SIGNAL( layoutChanged() ) );
     }
     resetDatasetDescriptions();
 }
