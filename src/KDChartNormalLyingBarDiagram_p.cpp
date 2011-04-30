@@ -100,7 +100,7 @@ void NormalLyingBarDiagram::paint(  PaintContext* ctx )
     const int rowCount = attributesModel()->rowCount(attributesModelRootIndex());
     const int colCount = attributesModel()->columnCount(attributesModelRootIndex());
 
-    BarAttributes ba = diagram()->barAttributes( diagram()->model()->index( 0, 0, diagram()->rootIndex() ) );
+    BarAttributes ba = diagram()->barAttributes();
     double barWidth = 0;
     double maxDepth = 0;
     double width = boundLeft.y() - boundRight.y();

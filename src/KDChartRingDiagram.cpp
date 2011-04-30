@@ -112,7 +112,7 @@ const QPair<QPointF, QPointF> RingDiagram::calculateDataBoundaries () const
 {
     if ( !checkInvariants( true ) ) return QPair<QPointF, QPointF>( QPointF( 0, 0 ), QPointF( 0, 0 ) );
 
-    const PieAttributes attrs( pieAttributes( model()->index( 0, 0, rootIndex() ) ) );
+    const PieAttributes attrs( pieAttributes() );
 
     QPointF bottomLeft ( QPointF( 0, 0 ) );
     QPointF topRight;

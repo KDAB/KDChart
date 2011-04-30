@@ -196,7 +196,7 @@ void BarDiagram::BarDiagramType::calculateValueAndGapWidths( int rowCount,int co
 
     Q_UNUSED( rowCount );
 
-    BarAttributes ba = diagram()->barAttributes( diagram()->model()->index( 0, 0, diagram()->rootIndex() ) );
+    BarAttributes ba = diagram()->barAttributes();
 
     // Pending Michel Fixme
     /* We are colCount groups to paint. Each group is centered around the

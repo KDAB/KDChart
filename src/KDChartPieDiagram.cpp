@@ -74,7 +74,7 @@ const QPair<QPointF, QPointF> PieDiagram::calculateDataBoundaries () const
 {
     if ( !checkInvariants( true ) ) return QPair<QPointF, QPointF>( QPointF( 0, 0 ), QPointF( 0, 0 ) );
 
-    const PieAttributes attrs( pieAttributes( model()->index( 0, 0, rootIndex() ) ) );
+    const PieAttributes attrs( pieAttributes() );
 
     QPointF bottomLeft ( QPointF( 0, 0 ) );
     QPointF topRight;
@@ -211,8 +211,7 @@ void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
 
     d->reverseMapper.clear();
 
-    const PieAttributes attrs( pieAttributes() );
-    const ThreeDPieAttributes threeDAttrs( threeDPieAttributes( model()->index( 0, 0, rootIndex() ) ) );
+    const ThreeDPieAttributes threeDAttrs( threeDPieAttributes() );
 
     const int colCount = columnCount();
 

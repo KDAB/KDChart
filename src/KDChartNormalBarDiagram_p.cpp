@@ -111,8 +111,8 @@ void NormalBarDiagram::paint(  PaintContext* ctx )
     const int rowCount = attributesModel()->rowCount(attributesModelRootIndex());
     const int colCount = attributesModel()->columnCount(attributesModelRootIndex());
 
-    BarAttributes ba = diagram()->barAttributes( diagram()->model()->index( 0, 0, diagram()->rootIndex() ) );
-    ThreeDBarAttributes threeDAttrs = diagram()->threeDBarAttributes( diagram()->model()->index( 0, 0, diagram()->rootIndex() ) );
+    BarAttributes ba = diagram()->barAttributes();
+    ThreeDBarAttributes threeDAttrs = diagram()->threeDBarAttributes();
 
     //we need some margin (hence the 2.5) for the three dimensional depth
     const double threeDepthMargin = ( threeDAttrs.isEnabled() ) ? 2.5 * threeDAttrs.depth() : 0;

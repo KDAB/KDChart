@@ -87,7 +87,7 @@ void PercentBarDiagram::paint( PaintContext* ctx )
     const int rowCount = compressor().modelDataRows();
     const int colCount = compressor().modelDataColumns();
 
-    BarAttributes ba = diagram()->barAttributes( diagram()->model()->index( 0, 0, diagram()->rootIndex() ) );
+    BarAttributes ba = diagram()->barAttributes();
     double barWidth = 0;
     double maxDepth = 0;
     double width = boundRight.x() - boundLeft.x();
