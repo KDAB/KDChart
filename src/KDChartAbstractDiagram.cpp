@@ -42,6 +42,8 @@
 
 #include <KDABLibFakes>
 
+#include <limits>
+
 #define PI 3.141592653589793
 
 using namespace KDChart;
@@ -1041,7 +1043,7 @@ double AbstractDiagram::valueForCell( int row, int column ) const
 {
     if ( !d->attributesModel->hasIndex( row, column, attributesModelRootIndex() ) ) {
         qWarning() << "AbstractDiagram::valueForCell(): Requesting value for invalid index!";
-        return NAN;
+        return std::numeric_limits<double>::quiet_NaN();
     }
     return d->attributesModel->data(
             d->attributesModel->index( row, column, attributesModelRootIndex() ) ).toDouble(); // checked
