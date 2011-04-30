@@ -80,7 +80,7 @@ const QPair<QPointF, QPointF> RadarDiagram::calculateDataBoundaries () const
     double yMin = 0, yMax = 0;
     for ( int iCol=0; iCol<colCount; ++iCol ) {
         for ( int iRow=0; iRow< rowCount; ++iRow ) {
-            double value = model()->data( model()->index( iRow, iCol, rootIndex() ) ).toDouble();
+            double value = model()->data( model()->index( iRow, iCol, rootIndex() ) ).toDouble(); // checked
             yMax = qMax( yMax, value );
             yMin = qMin( yMin, value );
         }
@@ -198,7 +198,7 @@ void RadarDiagram::paint( PaintContext* ctx,
         ctx->painter()->save();
         for ( iCol=0; iCol < colCount; ++iCol ) {
             for ( iRow=0; iRow < rowCount; ++iRow ) {
-                QModelIndex index = model()->index( iRow, iCol, rootIndex() );
+                QModelIndex index = model()->index( iRow, iCol, rootIndex() ); // checked
                 const double value = model()->data( index ).toDouble();
                 QPointF point = scaleToRealPosition( QPointF( value, iRow ), ctx->rectangle(), destRect, *ctx->coordinatePlane() );
                 d->appendDataValueTextInfoToList(
@@ -239,7 +239,7 @@ void RadarDiagram::paint( PaintContext* ctx,
             QPolygonF polygon;
             QPointF point0;
             for ( iRow=0; iRow < rowCount; ++iRow ) {
-                QModelIndex index = model()->index( iRow, iCol, rootIndex() );
+                QModelIndex index = model()->index( iRow, iCol, rootIndex() ); // checked
                 const double value = model()->data( index ).toDouble();
                 QPointF point = scaleToRealPosition( QPointF( value, d->reverseData ? ( rowCount - iRow ) : iRow ), ctx->rectangle(), destRect, *ctx->coordinatePlane() );
                 polygon.append( point );

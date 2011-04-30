@@ -183,7 +183,7 @@ ReverseMapper& LineDiagram::LineDiagramType::reverseMapper()
 {
     return m_private->reverseMapper;
 }
-
+/*
 LineAttributes::MissingValuesPolicy LineDiagram::LineDiagramType::getCellValues(
     int row, int column,
     bool shiftCountedXValuesByHalfSection,
@@ -199,7 +199,7 @@ double LineDiagram::LineDiagramType::valueForCellTesting(
     bool showHiddenCellsAsInvalid) const
 {
     return m_private->diagram->valueForCellTesting( row, column, bOK, showHiddenCellsAsInvalid );
-}
+}*/
 
 LineDiagram* LineDiagram::LineDiagramType::diagram() const
 {

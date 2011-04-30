@@ -299,9 +299,11 @@ QVariant AttributesModel::headerData ( int section,
     // it seems the source model doesn't like the idea of handing out all the column data at once...
     // so we have to do it manually.
     QVariantList result;
-    const int rows = sourceModel()->rowCount();
-    for( int row = 0; row < rows; ++row )
-        result.push_back( sourceModel()->index( row, section ).data() );
+    if ( section < sourceModel()->columnCount() ) {
+        const int rows = sourceModel()->rowCount();
+        for( int row = 0; row < rows; ++row )
+            result.push_back( sourceModel()->index( row, section ).data() ); // checked
+    }
 
     return result;
   }

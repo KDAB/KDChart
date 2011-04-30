@@ -180,6 +180,7 @@ namespace KDChart {
 
         CachePosition mapToCache( const QModelIndex& ) const;
         CachePosition mapToCache( int row, int column ) const;
+        // Note: returns only valid model indices
         QModelIndexList mapToModel( const CachePosition& ) const;
         qreal indexesPerPixel() const;
 

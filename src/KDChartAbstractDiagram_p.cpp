@@ -109,7 +109,7 @@ qreal AbstractDiagram::Private::calcPercentValue( const QModelIndex & index )
 {
     qreal sum = 0.0;
     for ( int col = 0; col < attributesModel->columnCount( QModelIndex() ); col++ )
-        sum += attributesModel->data( attributesModel->index( index.row(), col, QModelIndex() ) ).toDouble();
+        sum += attributesModel->data( attributesModel->index( index.row(), col, QModelIndex() ) ).toDouble(); // checked
     if ( sum == 0.0 )
         return 0.0;
     return attributesModel->data( attributesModel->mapFromSource( index ) ).toDouble() / sum * 100.0;

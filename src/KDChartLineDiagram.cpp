@@ -402,12 +402,16 @@ double LineDiagram::valueForCellTesting( int row, int column,
                                          bool& bOK,
                                          bool showHiddenCellsAsInvalid ) const
 {
+    if ( !model()->hasIndex( row, column, rootIndex() ) ) {
+        bOK = false;
+        return 0.0;
+    }
     double value;
-    if( showHiddenCellsAsInvalid && isHidden( model()->index( row, column, rootIndex() ) ) )
+    if( showHiddenCellsAsInvalid && isHidden( model()->index( row, column, rootIndex() ) ) ) // checked
         bOK = false;
     else
         value = d->attributesModel->data(
-                    d->attributesModel->index( row, column, attributesModelRootIndex() )
+                    d->attributesModel->index( row, column, attributesModelRootIndex() ) // checked
                 ).toDouble( &bOK );
     return bOK ? value : 0.0;
 }
@@ -427,9 +431,9 @@ LineAttributes::MissingValuesPolicy LineDiagram::getCellValues(
         valueY = valueForCellTesting( row, column, bOK, true );
     if( bOK ){
         policy = LineAttributes::MissingValuesPolicyIgnored;
-    }else{
+    } else if ( model()->hasIndex( row, column, rootIndex() ) ) {
         // missing value: find out the policy
-        QModelIndex index = model()->index( row, column, rootIndex() );
+        QModelIndex index = model()->index( row, column, rootIndex() ); // checked
         LineAttributes la = lineAttributes( index );
         policy = la.missingValuesPolicy();
     }

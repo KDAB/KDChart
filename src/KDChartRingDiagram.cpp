@@ -125,7 +125,7 @@ const QPair<QPointF, QPointF> RingDiagram::calculateDataBoundaries () const
         for( int i = 0; i < rCount; ++i ){
         	qreal maxExplodeInThisRow = 0.0;
         	for( int j = 0; j < colCount; ++j ){
-        		const PieAttributes columnAttrs( pieAttributes( model()->index( i, j, rootIndex() ) ) );
+                const PieAttributes columnAttrs( pieAttributes( model()->index( i, j, rootIndex() ) ) ); // checked
         		//qDebug() << columnAttrs.explodeFactor();
         		maxExplodeInThisRow = qMax( maxExplodeInThisRow, columnAttrs.explodeFactor() );
         	}
@@ -204,7 +204,7 @@ void RingDiagram::paint( PaintContext* ctx )
     for( int i = 0; i < rCount; ++i ){
         qreal maxOffsetInThisRow = 0.0;
     	for( int j = 0; j < colCount; ++j ){
-    		const PieAttributes cellAttrs( pieAttributes( model()->index( i, j, rootIndex() ) ) );
+            const PieAttributes cellAttrs( pieAttributes( model()->index( i, j, rootIndex() ) ) ); // checked
     		//qDebug() << cellAttrs.explodeFactor();
     		const qreal explode = cellAttrs.explode() ? cellAttrs.explodeFactor() : 0.0;
     		maxOffsetInThisRow = qMax( maxOffsetInThisRow, cellAttrs.gapFactor( false ) + explode );
@@ -246,7 +246,7 @@ void RingDiagram::paint( PaintContext* ctx )
             for ( int iColumn = 0; iColumn < colCount; ++iColumn ) {
     	        // is there anything at all at this column?
     	        bool bOK;
-    	        const double cellValue = qAbs( model()->data( model()->index( iRow, iColumn, rootIndex() ) )
+                const double cellValue = qAbs( model()->data( model()->index( iRow, iColumn, rootIndex() ) ) // checked
     	            .toDouble( &bOK ) );
 
     	        if( bOK ){
@@ -289,8 +289,7 @@ void RingDiagram::drawOnePie( QPainter* painter,
     // Is there anything to draw at all?
     const qreal angleLen = d->angleLens[ dataset ][ pie ];
     if ( angleLen ) {
-        const QModelIndex index( model()->index( dataset, pie, rootIndex() ) );
-        const PieAttributes attrs( pieAttributes( index ) );
+        const QModelIndex index( model()->index( dataset, pie, rootIndex() ) ); // checked
 
         drawPieSurface( painter, dataset, pie, granularity );
     }
@@ -316,7 +315,7 @@ void RingDiagram::drawPieSurface( QPainter* painter,
     if ( angleLen ) {
         qreal startAngle = d->startAngles[ dataset ][ pie ];
 
-        QModelIndex index( model()->index( dataset, pie, rootIndex() ) );
+        QModelIndex index( model()->index( dataset, pie, rootIndex() ) ); // checked
         const PieAttributes attrs( pieAttributes( index ) );
         const ThreeDPieAttributes threeDAttrs( threeDPieAttributes( index ) );
 
@@ -370,7 +369,7 @@ void RingDiagram::drawPieSurface( QPainter* painter,
             	qreal maxRadialExplodeInThisRow = 0.0;
             	qreal maxRadialGapInThisRow = 0.0;
             	for( int j = 0; j < colCount; ++j ){
-            		const PieAttributes cellAttrs( pieAttributes( model()->index( i, j, rootIndex() ) ) );
+                    const PieAttributes cellAttrs( pieAttributes( model()->index( i, j, rootIndex() ) ) ); // checked
             		//qDebug() << cellAttrs.explodeFactor();
             		if ( d->expandWhenExploded )
             			maxRadialGapInThisRow = qMax( maxRadialGapInThisRow, cellAttrs.gapFactor( false ) );
@@ -461,8 +460,7 @@ QPointF RingDiagram::pointOnCircle( const QRectF& rect, int dataset, int pie, bo
 {
     qreal angleLen = d->angleLens[ dataset ][ pie ];
     qreal startAngle = d->startAngles[ dataset ][ pie ];
-    QModelIndex index( model()->index( dataset, pie, rootIndex() ) );
-    const PieAttributes attrs( pieAttributes( index ) );
+    QModelIndex index( model()->index( dataset, pie, rootIndex() ) ); // checked
 
 	const int rCount = rowCount() * 2;
 
@@ -507,8 +505,7 @@ double RingDiagram::valueTotals() const
     double total = 0.0;
     for ( int i = 0; i < rCount; ++i ) {
     	for ( int j = 0; j < colCount; ++j ) {
-    		total += qAbs(model()->data( model()->index( 0, j, rootIndex() ) ).toDouble());
-    		//qDebug() << model()->data( model()->index( 0, j, rootIndex() ) ).toDouble();
+            total += qAbs(model()->data( model()->index( i, j, rootIndex() ) ).toDouble()); // checked
     	}
     }
     return total;
@@ -516,11 +513,11 @@ double RingDiagram::valueTotals() const
 
 double RingDiagram::valueTotals( int dataset ) const
 {
+    Q_ASSERT( dataset < model()->rowCount() );
     const int colCount = columnCount();
     double total = 0.0;
     for ( int j = 0; j < colCount; ++j ) {
-      total += qAbs(model()->data( model()->index( dataset, j, rootIndex() ) ).toDouble());
-      //qDebug() << model()->data( model()->index( 0, j, rootIndex() ) ).toDouble();
+      total += qAbs(model()->data( model()->index( dataset, j, rootIndex() ) ).toDouble()); // checked
     }
     return total;
 }

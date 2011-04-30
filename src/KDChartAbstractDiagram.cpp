@@ -486,7 +486,7 @@ void AbstractDiagram::paintDataValueTexts( QPainter* painter )
     d->clearListOfAlreadyDrawnDataValueTexts();
     for ( int i=datasetDimension()-1; i<columnCount; i += datasetDimension() ) {
        for ( int j=0; j< rowCount; ++j ) {
-           const QModelIndex index = model()->index( j, i, rootIndex() );
+           const QModelIndex index = model()->index( j, i, rootIndex() ); // checked
            double value = model()->data( index ).toDouble();
            const QPointF pos = coordinatePlane()->translate( QPointF( j, value ) );
            paintDataValueText( painter, index, pos, value );
@@ -686,7 +686,7 @@ void AbstractDiagram::paintMarkers( QPainter* painter )
     const int columnCount = model()->columnCount(rootIndex());
     for ( int i=datasetDimension()-1; i<columnCount; i += datasetDimension() ) {
        for ( int j=0; j< rowCount; ++j ) {
-           const QModelIndex index = model()->index( j, i, rootIndex() );
+           const QModelIndex index = model()->index( j, i, rootIndex() ); // checked
            double value = model()->data( index ).toDouble();
            const QPointF pos = coordinatePlane()->translate( QPointF( j, value ) );
            paintMarker( painter, index, pos );
@@ -1039,8 +1039,12 @@ void AbstractDiagram::setDatasetDimensionInternal( int dimension )
 
 double AbstractDiagram::valueForCell( int row, int column ) const
 {
+    if ( !d->attributesModel->hasIndex( row, column, attributesModelRootIndex() ) ) {
+        qWarning() << "AbstractDiagram::valueForCell(): Requesting value for invalid index!";
+        return NAN;
+    }
     return d->attributesModel->data(
-            d->attributesModel->index( row, column, attributesModelRootIndex() ) ).toDouble();
+            d->attributesModel->index( row, column, attributesModelRootIndex() ) ).toDouble(); // checked
 }
 
 void AbstractDiagram::update() const

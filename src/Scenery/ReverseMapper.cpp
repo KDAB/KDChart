@@ -73,7 +73,7 @@ QModelIndexList ReverseMapper::indexesIn( const QRect& rect ) const
         Q_FOREACH( QGraphicsItem* item, items ) {
             ChartGraphicsItem* i = qgraphicsitem_cast<ChartGraphicsItem*>( item );
             if ( i ) {
-                QModelIndex index ( m_diagram->model()->index( i->row(), i->column(), m_diagram->rootIndex() ) );
+                QModelIndex index ( m_diagram->model()->index( i->row(), i->column(), m_diagram->rootIndex() ) ); // checked
                 indexes << index;
             }
         }
@@ -92,7 +92,7 @@ QModelIndexList ReverseMapper::indexesAt( const QPointF& point ) const
         Q_FOREACH( QGraphicsItem* item, items ) {
             ChartGraphicsItem* i = qgraphicsitem_cast<ChartGraphicsItem*>( item );
             if ( i ) {
-                QModelIndex index ( m_diagram->model()->index( i->row(), i->column(), m_diagram->rootIndex() ) );
+                QModelIndex index ( m_diagram->model()->index( i->row(), i->column(), m_diagram->rootIndex() ) ); // checked
                 if( !indexes.contains(index) )
                     indexes << index;
             }
@@ -105,13 +105,17 @@ QModelIndexList ReverseMapper::indexesAt( const QPointF& point ) const
 
 QPolygonF ReverseMapper::polygon( int row, int column ) const
 {
-    const QModelIndex index = m_diagram->model()->index( row, column, m_diagram->rootIndex() );
+    if ( !m_diagram->model()->hasIndex( row, column, m_diagram->rootIndex() ) )
+        return QPolygon();
+    const QModelIndex index = m_diagram->model()->index( row, column, m_diagram->rootIndex() ); // checked
     return m_itemMap.contains( index ) ? m_itemMap[ index ]->polygon() : QPolygon();
 }
 
 QRectF ReverseMapper::boundingRect( int row, int column ) const
 {
-    const QModelIndex index = m_diagram->model()->index( row, column, m_diagram->rootIndex() );
+    if ( !m_diagram->model()->hasIndex( row, column, m_diagram->rootIndex() ) )
+        return QRectF();
+    const QModelIndex index = m_diagram->model()->index( row, column, m_diagram->rootIndex() ); // checked
     return m_itemMap.contains( index ) ? m_itemMap[ index ]->polygon().boundingRect() : QRectF();
 }
 
@@ -119,7 +123,7 @@ void ReverseMapper::addItem( ChartGraphicsItem* item )
 {
     Q_ASSERT( m_scene );
     m_scene->addItem( item );
-    m_itemMap.insert( m_diagram->model()->index( item->row(), item->column(), m_diagram->rootIndex() ), item );
+    m_itemMap.insert( m_diagram->model()->index( item->row(), item->column(), m_diagram->rootIndex() ), item ); // checked
 }
 
 void ReverseMapper::addRect( int row, int column, const QRectF& rect )

@@ -72,7 +72,7 @@ PieDiagram * PieDiagram::clone() const
 
 const QPair<QPointF, QPointF> PieDiagram::calculateDataBoundaries () const
 {
-    if ( !checkInvariants( true ) ) return QPair<QPointF, QPointF>( QPointF( 0, 0 ), QPointF( 0, 0 ) );
+    if ( !checkInvariants( true ) || model()->rowCount() < 1 ) return QPair<QPointF, QPointF>( QPointF( 0, 0 ), QPointF( 0, 0 ) );
 
     const PieAttributes attrs( pieAttributes() );
 
@@ -84,7 +84,7 @@ const QPair<QPointF, QPointF> PieDiagram::calculateDataBoundaries () const
         const int colCount = columnCount();
         qreal maxExplode = 0.0;
         for( int j = 0; j < colCount; ++j ){
-            const PieAttributes columnAttrs( pieAttributes( model()->index( 0, j, rootIndex() ) ) );
+            const PieAttributes columnAttrs( pieAttributes( model()->index( 0, j, rootIndex() ) ) ); // checked
             maxExplode = qMax( maxExplode, columnAttrs.explodeFactor() );
         }
         topRight = QPointF( 1.0+maxExplode, 1.0+maxExplode );
@@ -206,7 +206,7 @@ void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
 {
     // note: Not having any data model assigned is no bug
     //       but we can not draw a diagram then either.
-    if ( !checkInvariants(true) )
+    if ( !checkInvariants(true) || model()->rowCount() < 1 )
         return;
 
     d->reverseMapper.clear();
@@ -239,7 +239,7 @@ void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
     // TODO this can be cached
     qreal maxExplode = 0.0;
     for( int j = 0; j < colCount; ++j ){
-        const PieAttributes columnAttrs( pieAttributes( model()->index( 0, j, rootIndex() ) ) );
+        const PieAttributes columnAttrs( pieAttributes( model()->index( 0, j, rootIndex() ) ) ); // checked
         maxExplode = qMax( maxExplode, columnAttrs.explodeFactor() );
     }
     d->size /= ( 1.0 + 1.0 * maxExplode );
@@ -315,7 +315,7 @@ void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
     for ( int iColumn = 0; iColumn < colCount; ++iColumn ) {
         // is there anything at all at this column?
         bool bOK;
-        const double cellValue = qAbs( model()->data( model()->index( 0, iColumn, rootIndex() ) )
+        const double cellValue = qAbs( model()->data( model()->index( 0, iColumn, rootIndex() ) ) // checked
             .toDouble( &bOK ) );
 
         if( bOK ){
@@ -416,7 +416,7 @@ QRectF PieDiagram::piePosition( uint dataset, uint pie ) const
     Q_UNUSED( dataset );
     qreal angleLen = d->angleLens[ pie ];
     qreal startAngle = d->startAngles[ pie ];
-    QModelIndex index( model()->index( 0, pie, rootIndex() ) );
+    QModelIndex index( model()->index( 0, pie, rootIndex() ) ); // checked
     const PieAttributes attrs( pieAttributes( index ) );
     const ThreeDPieAttributes threeDAttrs( threeDPieAttributes( index ) );
 
@@ -452,7 +452,7 @@ void PieDiagram::drawOnePie( QPainter* painter,
     // Is there anything to draw at all?
     const qreal angleLen = d->angleLens[ pie ];
     if ( angleLen ) {
-        const QModelIndex index( model()->index( 0, pie, rootIndex() ) );
+        const QModelIndex index( model()->index( 0, pie, rootIndex() ) ); // checked
         const PieAttributes attrs( pieAttributes( index ) );
         const ThreeDPieAttributes threeDAttrs( threeDPieAttributes( index ) );
 
@@ -485,7 +485,7 @@ void PieDiagram::drawPieSurface( QPainter* painter,
     if ( angleLen ) {
         qreal startAngle = d->startAngles[ pie ];
 
-        QModelIndex index( model()->index( 0, pie, rootIndex() ) );
+        QModelIndex index( model()->index( 0, pie, rootIndex() ) ); // checked
         const PieAttributes attrs( pieAttributes( index ) );
         const ThreeDPieAttributes threeDAttrs( threeDPieAttributes( index ) );
         const QRectF drawPosition = piePosition( dataset, pie );
@@ -640,7 +640,7 @@ void PieDiagram::draw3DEffect( QPainter* painter,
 
     // No need to save the brush, will be changed on return from this
     // method anyway.
-    const QBrush brush = this->brush( model()->index( 0, pie, rootIndex() ) );
+    const QBrush brush = this->brush( model()->index( 0, pie, rootIndex() ) ); // checked
     if( threeDAttrs.useShadowColors() ){        
         painter->setBrush( QBrush( brush.color().darker() ) );
     }
@@ -1116,9 +1116,9 @@ double PieDiagram::valueTotals() const
 {
     const int colCount = columnCount();
     double total = 0.0;
+    Q_ASSERT( model()->rowCount() >= 1 );
     for ( int j = 0; j < colCount; ++j ) {
-      total += qAbs(model()->data( model()->index( 0, j, rootIndex() ) ).toDouble());
-      //qDebug() << model()->data( model()->index( 0, j, rootIndex() ) ).toDouble();
+      total += qAbs(model()->data( model()->index( 0, j, rootIndex() ) ).toDouble()); // checked
     }
     return total;
 }

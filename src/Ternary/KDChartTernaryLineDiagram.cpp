@@ -108,18 +108,18 @@ void  TernaryLineDiagram::paint (PaintContext *paintContext)
         for( int row = 0; row < numrows; row++ )
         {
             // see if there is data otherwise skip
-            QModelIndex base = model()->index( row, column );
+            QModelIndex base = model()->index( row, column ); // checked
             if( ! model()->data( base ).isNull() )
             {
                 p->setPen( PrintingParameters::scalePen( pen( base ) ) );
                 p->setBrush( brush( base ) );
 
                 // retrieve data
-                x = qMax( model()->data( model()->index( row, column, rootIndex() ) ).toDouble(),
+                x = qMax( model()->data( model()->index( row, column, rootIndex() ) ).toDouble(), // checked
                           0.0 );
-                y = qMax( model()->data( model()->index( row, column+1, rootIndex() ) ).toDouble(),
+                y = qMax( model()->data( model()->index( row, column+1, rootIndex() ) ).toDouble(), // checked
                           0.0 );
-                z = qMax( model()->data( model()->index( row, column+2, rootIndex() ) ).toDouble(),
+                z = qMax( model()->data( model()->index( row, column+2, rootIndex() ) ).toDouble(), // checked
                           0.0 );
 
                 double total = x + y + z;
@@ -131,7 +131,7 @@ void  TernaryLineDiagram::paint (PaintContext *paintContext)
                     if ( row > 0 ) {
                         p->drawLine( start, widgetLocation );
                     }
-                    paintMarker( p, model()->index( row, column, rootIndex() ), widgetLocation );
+                    paintMarker( p, model()->index( row, column, rootIndex() ), widgetLocation ); // checked
                     start = widgetLocation;
                     // retrieve text and data value attributes
                     // FIXME use data model DisplayRole text

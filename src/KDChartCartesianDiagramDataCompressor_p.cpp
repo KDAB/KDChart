@@ -64,7 +64,8 @@ QModelIndexList CartesianDiagramDataCompressor::indexesAt( const CachePosition& 
                              : indPrev.first().column() + 1;
             const int iEnd   = indCur.last().column();
             for( int i=iStart; i<=iEnd; ++i){
-                indexes << m_model->index( position.first, i, m_rootIndex );
+                Q_ASSERT( m_model->hasIndex( position.first, i, m_rootIndex ) );
+                indexes << m_model->index( position.first, i, m_rootIndex ); // checked
             }
         }
         else
@@ -74,7 +75,8 @@ QModelIndexList CartesianDiagramDataCompressor::indexesAt( const CachePosition& 
             const int iEnd   = (indCur.isEmpty()) ? iStart : indCur.first().row();
             //qDebug()<<iStart<<iEnd << iEnd-iStart;
             for( int i=iStart; i<=iEnd; ++i){
-                indexes << m_model->index( i, position.second, m_rootIndex );
+                Q_ASSERT( m_model->hasIndex( i, position.second, m_rootIndex ) );
+                indexes << m_model->index( i, position.second, m_rootIndex ); // checked
             }
         }
         return indexes;
@@ -374,10 +376,12 @@ void CartesianDiagramDataCompressor::slotModelHeaderDataChanged( Qt::Orientation
     if( orientation != Qt::Vertical )
         return;
 
-    const QModelIndex firstRow = m_model->index( 0, first, m_rootIndex );
-    const QModelIndex lastRow = m_model->index( m_model->rowCount( m_rootIndex ) - 1, last, m_rootIndex );
+    if ( m_model->rowCount() > 0 ) {
+        const QModelIndex firstRow = m_model->index( 0, first, m_rootIndex ); // checked
+        const QModelIndex lastRow = m_model->index( m_model->rowCount( m_rootIndex ) - 1, last, m_rootIndex ); // checked
 
-    slotModelDataChanged( firstRow, lastRow );
+        slotModelDataChanged( firstRow, lastRow );
+    }
 }
 
 void CartesianDiagramDataCompressor::slotModelDataChanged(
@@ -637,13 +641,14 @@ void CartesianDiagramDataCompressor::retrieveModelData( const CachePosition& pos
             if( !xValues.isEmpty() && !yValues.isEmpty() )
             {
                 Q_ASSERT( xValues.count() == yValues.count() );
+                Q_ASSERT( xValues.count() == m_model->rowCount() );
                 int row = 0;
                 QVariantList::const_iterator itX = xValues.begin();
                 QVariantList::const_iterator itY = yValues.begin();
                 for( ; itX != xValues.end(); ++itX, ++itY, ++row )
                 {
                     DataPoint result;
-                    result.index = m_model->index( row, xColumn, m_rootIndex );
+                    result.index = m_model->index( row, xColumn, m_rootIndex ); // checked
                     if( !itX->isNull() )
                     {
                         result.key = itX->toDouble();
@@ -733,15 +738,20 @@ QModelIndexList CartesianDiagramDataCompressor::mapToModel( const CachePosition&
         QModelIndexList indexes;
         if( m_datasetDimension == 2 )
         {
-            indexes << m_model->index( position.first, position.second * 2, m_rootIndex );
-            indexes << m_model->index( position.first, position.second * 2 + 1, m_rootIndex );
+            // check consistency with data dimension of 2
+            Q_ASSERT( m_model->columnCount() > position.second * 2 + 1 );
+            indexes << m_model->index( position.first, position.second * 2, m_rootIndex ); // checked
+            indexes << m_model->index( position.first, position.second * 2 + 1, m_rootIndex ); // checked
         }
         else
         {
         // assumption: indexes per column == 1
             const qreal ipp = indexesPerPixel();
             for ( int i = 0; i < ipp; ++i ) {
-                const QModelIndex index = m_model->index( qRound( position.first * ipp ) + i, position.second, m_rootIndex );
+                int row = qRound( position.first * ipp ) + i;
+                int col = position.second;
+                Q_ASSERT( row < m_model->rowCount() && col < m_model->columnCount() );
+                const QModelIndex index = m_model->index( row, col, m_rootIndex ); // checked
                 if( index.isValid() )
                     indexes << index;
             }

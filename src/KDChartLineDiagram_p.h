@@ -106,6 +106,7 @@ namespace KDChart {
         double interpolateMissingValue( const CartesianDiagramDataCompressor::CachePosition& pos ) const;
 
         int datasetDimension() const;
+        /*
         LineAttributes::MissingValuesPolicy getCellValues(
             int row, int column,
             bool shiftCountedXValuesByHalfSection,
@@ -113,6 +114,7 @@ namespace KDChart {
         double valueForCellTesting( int row, int column,
                                     bool& bOK,
                                     bool showHiddenCellsAsInvalid = false ) const;
+                                    */
         void paintAreas( PaintContext* ctx, const QModelIndex& index,
                          const QList<QPolygonF>& areas, const uint transparency );
         double valueForCell( int row, int column );
