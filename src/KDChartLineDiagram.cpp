@@ -421,7 +421,7 @@ LineAttributes::MissingValuesPolicy LineDiagram::getCellValues(
       bool shiftCountedXValuesByHalfSection,
       double& valueX, double& valueY ) const
 {
-    LineAttributes::MissingValuesPolicy policy;
+    LineAttributes::MissingValuesPolicy policy = LineAttributes::MissingValuesPolicyIgnored;
 
     bool bOK = true;
     valueX = ( datasetDimension() > 1 && column > 0 )
@@ -429,9 +429,7 @@ LineAttributes::MissingValuesPolicy LineDiagram::getCellValues(
              : ((shiftCountedXValuesByHalfSection ? 0.5 : 0.0) + row);
     if( bOK )
         valueY = valueForCellTesting( row, column, bOK, true );
-    if( bOK ){
-        policy = LineAttributes::MissingValuesPolicyIgnored;
-    } else if ( model()->hasIndex( row, column, rootIndex() ) ) {
+    else if ( model()->hasIndex( row, column, rootIndex() ) ) {
         // missing value: find out the policy
         QModelIndex index = model()->index( row, column, rootIndex() ); // checked
         LineAttributes la = lineAttributes( index );
