@@ -20,6 +20,7 @@ CONFIG += designer
 
 INCLUDEPATH+= $$KDCHARTBASE/extra_include \
               $$KDCHARTBASE/src \
+              $$KDCHARTBASE/src/KDChart \
               $$KDCHARTBASE/uitools \
               $${OUT_PWD}
 DEPENDPATH += $${OUT_PWD}

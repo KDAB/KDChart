@@ -20,27 +20,40 @@
 **
 **********************************************************************/
 
-#include "../../../src/KDGantt/unittest/testregistry.h"
+#ifndef KDCHART_EXPORT_H
+#define KDCHART_EXPORT_H
 
-#include <QApplication>
-#include <iostream>
+#include <qglobal.h>
 
-int main( int argc , char ** argv ) {
+# ifdef KDCHART_STATICLIB
+#  undef KDCHART_SHAREDLIB
+#  define KDCHART_EXPORT
+#  define UITOOLS_EXPORT
+#  define KDCHART_COMPAT_EXPORT
+#  define KDCHART_PLUGIN_EXPORT
+# else
+#  ifdef KDCHART_BUILD_KDCHART_LIB
+#   define KDCHART_EXPORT Q_DECL_EXPORT
+#   define KDGANTT_EXPORT Q_DECL_EXPORT
+#  else
+#   define KDCHART_EXPORT Q_DECL_IMPORT
+#   define KDGANTT_EXPORT Q_DECL_IMPORT
+#  endif
+#  ifdef UITOOLS_BUILD_UITOOLS_LIB
+#   define UITOOLS_EXPORT Q_DECL_EXPORT
+#  else
+#   define UITOOLS_EXPORT Q_DECL_IMPORT
+#  endif
+#  ifdef KDCHART_BUILD_KDCHART_COMPAT_LIB
+#   define KDCHART_COMPAT_EXPORT Q_DECL_EXPORT
+#  else
+#   define KDCHART_COMPAT_EXPORT Q_DECL_IMPORT
+#  endif
+#  ifdef KDCHART_BUILD_PLUGIN_LIB
+#   define KDCHART_PLUGIN_EXPORT Q_DECL_EXPORT
+#  else
+#   define KDCHART_PLUGIN_EXPORT Q_DECL_IMPORT
+#  endif
+# endif
 
-  QApplication app( argc, argv );
-
-  KDAB::UnitTest::Runner r;
-  unsigned int failed = 0;
-  if ( argc == 1 )
-    failed = r.run();
-  else {
-    for ( int i = 1 ; i < argc ; ++i )
-      if ( argv[i] && *argv[i] )
-        failed += r.run( argv[i] );
-      else{
-        std::cerr << argv[0] << ": skipping empty group name" << std::endl;
-      }
-  }
-  std::cout << failed << " tests failed." << std::endl;
-  return failed;
-}
+#endif // KDCHART_EXPORT_H

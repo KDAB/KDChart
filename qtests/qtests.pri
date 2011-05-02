@@ -9,7 +9,9 @@ QT += xml svg
 CONFIG+=qtestlib
 TEMPLATE = app
 INCLUDEPATH +=  ../../examples/tools ../../include \
-	../../kdchartserializer/include
+        ../../kdchartserializer/include \
+        ../../src/KDChart
+
 DEPENDPATH += . ../../src ../../lib ../../examples/tools ../../include \
 	../../kdchartserializer/include \
 	../../kdchartserializer/src

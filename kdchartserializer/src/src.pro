@@ -27,6 +27,7 @@ KDCHART_PATH = ../..
 INCLUDEPATH+= ../include \
             $$KDCHART_PATH/include \
             $$KDCHART_PATH/src \
+            $$KDCHART_PATH/KDChart/src \
             .
 DEPENDPATH += ../include \
             $$KDCHART_PATH/include \

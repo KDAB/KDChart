@@ -20,27 +20,34 @@
 **
 **********************************************************************/
 
-#include "../../../src/KDGantt/unittest/testregistry.h"
+#ifndef KDGANTTABSTRACTROWCONTROLLER_H
+#define KDGANTTABSTRACTROWCONTROLLER_H
 
-#include <QApplication>
-#include <iostream>
+#include <QPair>
+#include "kdganttglobal.h"
 
-int main( int argc , char ** argv ) {
+class QModelIndex;
 
-  QApplication app( argc, argv );
+namespace KDGantt {
+    class KDGANTT_EXPORT AbstractRowController {
+    public:
+        AbstractRowController();
+        virtual ~AbstractRowController();
 
-  KDAB::UnitTest::Runner r;
-  unsigned int failed = 0;
-  if ( argc == 1 )
-    failed = r.run();
-  else {
-    for ( int i = 1 ; i < argc ; ++i )
-      if ( argv[i] && *argv[i] )
-        failed += r.run( argv[i] );
-      else{
-        std::cerr << argv[0] << ": skipping empty group name" << std::endl;
-      }
-  }
-  std::cout << failed << " tests failed." << std::endl;
-  return failed;
+        virtual int headerHeight() const = 0;
+        virtual int maximumItemHeight() const = 0;
+	virtual int totalHeight() const = 0;
+
+        virtual bool isRowVisible( const QModelIndex& idx ) const = 0;
+	virtual bool isRowExpanded( const QModelIndex& idx ) const = 0;
+        virtual Span rowGeometry( const QModelIndex& idx ) const = 0;
+
+
+        virtual QModelIndex indexAt( int height ) const = 0;
+        virtual QModelIndex indexAbove( const QModelIndex& idx ) const = 0;
+        virtual QModelIndex indexBelow( const QModelIndex& idx ) const = 0;
+    };
 }
+
+#endif /* KDGANTTABSTRACTROWCONTROLLER_H */
+

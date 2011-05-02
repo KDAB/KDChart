@@ -3,7 +3,7 @@ include( variables.pri )
 CONFIG += ordered
 
 TEMPLATE=subdirs
-SUBDIRS = src examples
+SUBDIRS = src examples include/KDChart.pro
 
 !win32:SUBDIRS += uitools plugins
 win32 {
@@ -118,3 +118,4 @@ test.target=test
 test.commands=(cd qtests && $(MAKE) test)
 test.depends = $(TARGET)
 QMAKE_EXTRA_TARGETS += test
+
