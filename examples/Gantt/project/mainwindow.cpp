@@ -247,15 +247,6 @@ MainWindow::MainWindow( QWidget* parent )
 
     // slotToolsNewItem();
     m_view->leftView()->setItemDelegateForColumn( 1, new MyItemDelegate( this ) );
-    //m_view->leftView()->setStyleSheet( "QHeaderView { color: white; background: black }" );
-    m_view->leftView()->setStyleSheet(
-        //"* { background-color : rgb( 17, 13, 13 ); color : rgb( 255, 255, 255 ); selection-background-color : rgb( 252, 225, 142); selection-color : rgb( 0, 0, 0 ); }\n"
-        "* { background-color : rgb( 17, 13, 13 ); color : rgb( 255, 255, 255 ); }\n"
-    );
-    m_view->graphicsView()->setStyleSheet(
-        //"* { background-color : rgb( 17, 13, 13 ); color : rgb( 255, 255, 255 ); selection-background-color : rgb( 252, 225, 142); selection-color : rgb( 0, 0, 0 ); }\n"
-        "* { background-color : rgb( 17, 13, 13 ); color : rgb( 255, 255, 255 ); }\n"
-    );
     m_view->leftView()->setHorizontalScrollBarPolicy( Qt::ScrollBarAsNeeded );
     m_view->graphicsView()->setHorizontalScrollBarPolicy( Qt::ScrollBarAsNeeded );
 
