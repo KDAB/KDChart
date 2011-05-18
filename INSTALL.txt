@@ -34,6 +34,8 @@ make
 
 make install
 
+   NOTE: Maybe admin rights are needed for installing it to /usr/local. Run "sudo make install", to install with admin rights.
+
    This will copy the necessary files into the sub-directories of
    your installation path: /usr/local/KDAB/KDChart-VERSION/
 
