@@ -152,8 +152,8 @@ void MainWindow::addPlots()
 				CartesianAxis	*yAxis = new CartesianAxis(lineDiagram);
 				xAxis->setPosition(CartesianAxis::Bottom);
 				yAxis->setPosition(CartesianAxis::Left);
-				xAxis->setTitleText("P" + QString().setNum(c));
-				yAxis->setTitleText("P" + QString().setNum(r));
+				xAxis->setTitleText('P' + QString::number(c));
+				yAxis->setTitleText('P' + QString::number(r));
 				lineDiagram->addAxis(xAxis);
 				lineDiagram->addAxis(yAxis);
 
