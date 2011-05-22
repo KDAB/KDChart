@@ -116,7 +116,7 @@ private slots:
        QVERIFY( l->alignment() == Qt::AlignCenter );
        QVERIFY( l->orientation() == Qt::Vertical );
        QVERIFY( l->showLines() == false );
-       QVERIFY( l->titleText() != QString() );
+       QVERIFY( !l->titleText().isEmpty() );
        QVERIFY( l->spacing() == 1 );
        QVERIFY( l->legendStyle() == Legend::MarkersOnly );
        l->setPosition( Position::North );
