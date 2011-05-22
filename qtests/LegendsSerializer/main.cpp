@@ -128,7 +128,7 @@ private slots:
 
 
         // Note: We do not instantiate a Serializer object, so we
-        //       must register the built-in factories explicitely:
+        //       must register the built-in factories explicitly:
         Serializer::registerBuiltInSerializerFactories();
 
 

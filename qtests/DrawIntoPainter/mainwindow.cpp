@@ -252,7 +252,7 @@ void MainWindow::on_paintMarkersCB_toggled( bool checked )
 {
    //testing
     DataValueAttributes a( m_lines->dataValueAttributes() );
-    // dont paint the values
+    // don't paint the values
     if ( !paintValuesCB->isChecked() ) {
         TextAttributes ta = a.textAttributes();
         ta.setVisible( false );

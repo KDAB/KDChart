@@ -44,7 +44,7 @@
 #include <algorithm>
 #include <cassert>
 
-/* Older Qt dont have this macro, so define it... */
+/* Older Qt don't have this macro, so define it... */
 #ifndef QT_VERSION_CHECK
 #  define QT_VERSION_CHECK(major, minor, patch) ((major<<16)|(minor<<8)|(patch))
 #endif

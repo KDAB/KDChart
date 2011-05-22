@@ -230,7 +230,7 @@ void Chart::Private::layoutLegends()
     // To support more than one Legend, we first collect them all
     // in little lists: one list per grid position.
     // Since the dataAndLegendLayout is a 3x3 grid, we need 9 little lists.
-    QList<Legend*> infos[3][3];
+    QList<Legend*> infoGrid[3][3];
 
     Q_FOREACH( Legend *legend, legends ) {
 
@@ -269,13 +269,13 @@ void Chart::Private::layoutLegends()
                 break;
         }
         if( bOK )
-            infos[row][column] << legend;
+            infoGrid[row][column] << legend;
     }
     // We have collected all legend information,
     // so we can design their layout now.
     for (int iR = 0; iR < 3; ++iR) {
         for (int iC = 0; iC < 3; ++iC) {
-            QList<Legend*>& list = infos[iR][iC];
+            QList<Legend*>& list = infoGrid[iR][iC];
             const int count = list.size();
             switch( count ){
             case 0:

@@ -129,7 +129,7 @@ int main( int argc, char** argv )
     model.setData( model.index( 9, 2 ), true );
     model.setData( model.index( 9, 3 ), QDateTime::fromString( "2007-07-10T21:00:00", Qt::ISODate ) );
 
-    // this values is completely out of bounds and therefore cutted
+    // this values is completely out of bounds and therefore cut/truncated
     model.setData( model.index( 10,0 ), 2 );
     model.setData( model.index( 10,1 ), 290 );
     model.setData( model.index( 10,2 ), true );

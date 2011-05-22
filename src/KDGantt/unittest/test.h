@@ -172,7 +172,7 @@ namespace UnitTest {
     static const KDAB::UnitTest::GenericFactory< Namespace::Class > __##Class##_unittest( Group ); \
     KDAB_EXPORT_STATIC_SYMBOLS( Class )
 
-// Use this macro to import the test explicitely (for windows static libs only)
+// Use this macro to import the test explicitly (for windows static libs only)
 #define KDAB_IMPORT_UNITTEST( Class ) KDAB_IMPORT_STATIC_SYMBOLS( Class )
 
 // Convenience macros that create a simple test class for a single test and export it.

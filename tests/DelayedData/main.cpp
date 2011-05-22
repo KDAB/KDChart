@@ -58,7 +58,7 @@ public:
     diagram->addAxis(ordinate);
 
     // NOTE: If this is done before adding axes,
-    // the axes dont show up at all
+    // the axes don't show up at all
     m_chart.coordinatePlane()->replaceDiagram(diagram);
 
     m_rowbutton.setText( tr("Add rows") );

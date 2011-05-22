@@ -119,7 +119,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     CartesianAxis *yAxis2 = new CartesianAxis ( m_bars );
     yAxis2->setPosition ( KDChart::CartesianAxis::Right );
 
-    // explicitely add it to the second diagram, we want to share it
+    // explicitly add it to the second diagram, we want to share it
     m_bars->addAxis( xAxis );
 
     m_chart->coordinatePlane()->replaceDiagram( m_lines );
