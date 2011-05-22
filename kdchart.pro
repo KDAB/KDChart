@@ -3,7 +3,7 @@ include( variables.pri )
 CONFIG += ordered
 
 TEMPLATE=subdirs
-SUBDIRS = src examples include/KDChart.pro
+SUBDIRS = src include/KDChart.pro
 
 !win32:SUBDIRS += uitools plugins
 win32 {
@@ -19,6 +19,8 @@ win32 {
 }
 
 contains($$list($$[QT_VERSION]), 4.[2-9].*) { SUBDIRS += kdchartserializer }
+
+SUBDIRS += examples
 
 unittests: SUBDIRS +=qtests
 SUBDIRS +=tests
