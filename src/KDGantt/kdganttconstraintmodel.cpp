@@ -207,13 +207,13 @@ QList<Constraint> ConstraintModel::constraintsForIndex( const QModelIndex& idx )
     if ( !idx.isValid() ) {
         // Because of a Qt bug we need to treat this as a special case
         QSet<Constraint> result;
-        Q_FOREACH( Constraint c, d->constraints ) {
+        Q_FOREACH( const Constraint& c, d->constraints ) {
             if ( !c.startIndex().isValid() || !c.endIndex().isValid() ) result.insert( c );
         }
         return result.toList();
     } else {
         QList<Constraint> result;
-        Q_FOREACH( Constraint c, d->constraints ) {
+        Q_FOREACH( const Constraint& c, d->constraints ) {
             if ( c.startIndex() == idx || c.endIndex() == idx ) result.push_back( c );
         }
         return result;

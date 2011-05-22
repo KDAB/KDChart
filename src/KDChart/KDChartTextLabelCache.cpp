@@ -265,7 +265,7 @@ void PrerenderedLabel::paint() const
                   << KDChartEnums::PositionSouth
                   << KDChartEnums::PositionSouthWest
                   << KDChartEnums::PositionWest;
-        Q_FOREACH( KDChartEnums::PositionValue position, positions ) {
+        Q_FOREACH( KDChartEnums::PositionValue position, positions ) { //krazy:exclude=foreach
             static const double Radius = 0.5;
             static const double Diameter = 2 * Radius;
 

@@ -83,7 +83,7 @@ void GraphicsScene::Private::resetConstraintItems()
     q->clearConstraintItems();
     if ( constraintModel.isNull() ) return;
     QList<Constraint> clst = constraintModel->constraints();
-    Q_FOREACH( Constraint c, clst ) {
+    Q_FOREACH( const Constraint& c, clst ) {
         createConstraintItem( c );
     }
     q->updateItems();
@@ -424,7 +424,7 @@ void GraphicsScene::insertItem( const QPersistentModelIndex& idx, GraphicsItem* 
         // Create items for constraints
         const QModelIndex sidx = summaryHandlingModel()->mapToSource( idx );
         const QList<Constraint> clst = d->constraintModel->constraintsForIndex( sidx );
-        Q_FOREACH( Constraint c,  clst ) {
+        Q_FOREACH( const Constraint& c,  clst ) {
             QModelIndex other_idx;
             if ( c.startIndex() == sidx ) {
                 other_idx = c.endIndex();

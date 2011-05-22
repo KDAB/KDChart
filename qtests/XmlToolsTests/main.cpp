@@ -86,7 +86,7 @@ private:
         QDomElement root = doc.createElement( "properties" );
         doc.appendChild( root );
 
-        Q_FOREACH( QVariant value, variants ) {
+        Q_FOREACH( const QVariant& value, variants ) {
             // serialize value, deserialize it, and compare the results
             KDXML::createQVariantNode( doc, root, name, value );
         }
@@ -95,7 +95,7 @@ private:
         QCOMPARE( variants.size(), elements.size() );
 
         int at = 0;
-        Q_FOREACH( QVariant value, variants ) {
+        Q_FOREACH( const QVariant& value, variants ) {
             QDomElement element = elements.at( at ).toElement();
             ++at;
             QVariant result;
