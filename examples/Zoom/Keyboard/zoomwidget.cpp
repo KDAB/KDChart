@@ -112,7 +112,7 @@ void ZoomWidget::keyPressEvent( QKeyEvent* e )
             e->ignore();
     }
     if( dZoom || dX || dY ){
-        const double factor = qMax( 1.0, coordinatePlane()->zoomFactorX() + dZoom );
+        const double factor = qMax( double(1.0), coordinatePlane()->zoomFactorX() + dZoom );
         const qreal x = coordinatePlane()->zoomCenter().x() + dX;
         const qreal y = coordinatePlane()->zoomCenter().y() + dY;
         coordinatePlane()->setZoomFactorX( factor );
