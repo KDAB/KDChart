@@ -514,6 +514,14 @@ void CartesianAxis::paintCtx( PaintContext* context )
                  "Error: plane->gridDimensionsList() did not return exactly two dimensions." );
     DataDimension dimX, dimY;
     DataDimension dim;
+
+    const GridAttributes gridAttrsX( plane->gridAttributes( Qt::Horizontal ) );
+    const GridAttributes gridAttrsY( plane->gridAttributes( Qt::Vertical ) );
+    bool adjustXLower = gridAttrsX.adjustLowerBoundToGrid();
+    bool adjustXUpper = gridAttrsX.adjustUpperBoundToGrid();
+    bool adjustYLower = gridAttrsY.adjustLowerBoundToGrid();
+    bool adjustYUpper = gridAttrsY.adjustUpperBoundToGrid();
+
     // If the diagram is horizontal, we need to inverse the x/y ranges
     if ( diagramIsVertical ) {
         /*double yStart = dimY.start;
@@ -522,8 +530,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
         dimY.end = dimX.end;
         dimX.start = yStart;
         dimX.end = yEnd;*/
-        dimX = AbstractGrid::adjustedLowerUpperRange( dimensions.first(), true, true );
-        dimY = AbstractGrid::adjustedLowerUpperRange( dimensions.last(), true, true );
+        dimX = AbstractGrid::adjustedLowerUpperRange( dimensions.first(), adjustXLower, adjustXUpper );
+        dimY = AbstractGrid::adjustedLowerUpperRange( dimensions.last(), adjustYLower, adjustYUpper );
 
         // FIXME
         // Ugly workaround for dimensions being bound to both, the x coordinate direction and the abscissa
@@ -532,8 +540,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
         //  dimY.subStepWidth = 2.0;
         //}
     } else {
-        dimX = AbstractGrid::adjustedLowerUpperRange( dimensions.last(), true, true );
-        dimY = AbstractGrid::adjustedLowerUpperRange( dimensions.first(), true, true );
+        dimX = AbstractGrid::adjustedLowerUpperRange( dimensions.last(), adjustXLower, adjustXUpper );
+        dimY = AbstractGrid::adjustedLowerUpperRange( dimensions.first(), adjustYLower, adjustYUpper );
     }
     dim = (isAbscissa() ? dimX : dimY);
 

@@ -190,8 +190,12 @@ void CartesianGrid::drawGrid( PaintContext* context )
     qreal maxValueX = qMax( dimX.start, dimX.end );
     qreal minValueY = qMin( dimY.start, dimY.end );
     qreal maxValueY = qMax( dimY.start, dimY.end );
-    AbstractGrid::adjustLowerUpperRange( minValueX, maxValueX, dimX.stepWidth, true, true );
-    AbstractGrid::adjustLowerUpperRange( minValueY, maxValueY, dimY.stepWidth, true, true );
+    bool adjustXLower = gridAttrsX.adjustLowerBoundToGrid();
+    bool adjustXUpper = gridAttrsX.adjustUpperBoundToGrid();
+    bool adjustYLower = gridAttrsY.adjustLowerBoundToGrid();
+    bool adjustYUpper = gridAttrsY.adjustUpperBoundToGrid();
+    AbstractGrid::adjustLowerUpperRange( minValueX, maxValueX, dimX.stepWidth, adjustXLower, adjustXUpper );
+    AbstractGrid::adjustLowerUpperRange( minValueY, maxValueY, dimY.stepWidth, adjustYLower, adjustYUpper );
 
     if ( drawSubGridLinesX ) {
         context->painter()->setPen( PrintingParameters::scalePen( gridAttrsX.subGridPen() ) );
