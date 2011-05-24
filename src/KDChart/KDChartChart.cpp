@@ -663,10 +663,13 @@ void Chart::Private::slotLayoutPlanes()
                 planeLayoutItems << spacer; \
             } \
         }
-        ADD_AUTO_SPACER_IF_NEEDED( row-1, column-1, false, pi.leftAxesLayout,  false, pi.topAxesLayout )
+
+        if ( plane->isCornerSpacersEnabled() ) {
+            ADD_AUTO_SPACER_IF_NEEDED( row-1, column-1, false, pi.leftAxesLayout,  false, pi.topAxesLayout )
             ADD_AUTO_SPACER_IF_NEEDED( row+1, column-1, true,  pi.leftAxesLayout,  false,  pi.bottomAxesLayout )
             ADD_AUTO_SPACER_IF_NEEDED( row-1, column+1, false, pi.rightAxesLayout, true, pi.topAxesLayout )
             ADD_AUTO_SPACER_IF_NEEDED( row+1, column+1, true,  pi.rightAxesLayout, true,  pi.bottomAxesLayout )
+        }
     }
     // re-add our grid(s) to the chart's layout
     if ( dataAndLegendLayout ){

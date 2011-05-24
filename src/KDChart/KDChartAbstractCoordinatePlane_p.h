@@ -83,6 +83,8 @@ protected:
     GridAttributes gridAttributes;
     AbstractCoordinatePlane *referenceCoordinatePlane;
 
+    bool enableCornerSpacers;
+
     bool enableRubberBandZooming;
     QRubberBand* rubberBand;
     QPoint rubberBandOrigin;

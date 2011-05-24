@@ -250,6 +250,17 @@ namespace KDChart {
          */
         AbstractCoordinatePlane * referenceCoordinatePlane() const;
 
+        /**
+         * @return Whether this plane should have spacers in the corners
+         * formed by the presence of axes.
+         */
+        bool isCornerSpacersEnabled() const;
+
+        /**
+         * Enables or disables the use of spacers in the plane corners.
+         */
+        void setCornerSpacersEnabled( bool enable );
+
         virtual AbstractCoordinatePlane* sharedAxisMasterPlane( QPainter* p = 0 );
 
 

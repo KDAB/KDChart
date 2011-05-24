@@ -42,6 +42,7 @@ AbstractCoordinatePlane::Private::Private()
     , parent( 0 )
     , grid( 0 )
     , referenceCoordinatePlane( 0 )
+    , enableCornerSpacers( true )
     , enableRubberBandZooming( false )
     , rubberBand( 0 )
 {
@@ -298,6 +299,19 @@ void KDChart::AbstractCoordinatePlane::setRubberBandZoomingEnabled( bool enable 
 bool KDChart::AbstractCoordinatePlane::isRubberBandZoomingEnabled() const
 {
     return d->enableRubberBandZooming;
+}
+
+void KDChart::AbstractCoordinatePlane::setCornerSpacersEnabled( bool enable )
+{
+    if ( d->enableCornerSpacers == enable ) return;
+
+    d->enableCornerSpacers = enable;
+    emit needRelayout();
+}
+
+bool KDChart::AbstractCoordinatePlane::isCornerSpacersEnabled() const
+{
+    return d->enableCornerSpacers;
 }
 
 void KDChart::AbstractCoordinatePlane::mousePressEvent( QMouseEvent* event )
