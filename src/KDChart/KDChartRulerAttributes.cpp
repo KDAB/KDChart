@@ -48,6 +48,8 @@ private:
 
     bool showMajorTickMarks;
     bool showMinorTickMarks;
+
+    bool showRulerLine;
     
     int labelMargin;
     int majorTickLength;
@@ -62,6 +64,7 @@ RulerAttributes::Private::Private()
     : tickMarkPen( QColor( 0x00, 0x00, 0x00 ) )
     , majorTickMarkPen( QColor( 0x00, 0x00, 0x00 ) )
     , minorTickMarkPen( QColor( 0x00, 0x00, 0x00 ) )
+    , showRulerLine( false )
 {
     tickMarkPen.setCapStyle( Qt::FlatCap );
     majorTickMarkPen.setCapStyle( Qt::FlatCap );
@@ -270,6 +273,16 @@ bool RulerAttributes::operator == ( const RulerAttributes& r ) const
         }
     }
     return isEqual;
+}
+
+void RulerAttributes::setShowRulerLine( bool show )
+{
+    d->showRulerLine = show;
+}
+
+bool RulerAttributes::showRulerLine() const
+{
+    return d->showRulerLine;
 }
 
 #if !defined( QT_NO_DEBUG_STREAM )
