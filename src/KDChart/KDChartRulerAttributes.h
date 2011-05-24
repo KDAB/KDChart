@@ -119,6 +119,12 @@ public:
     void setLabelMargin(int margin);
     int labelMargin() const;
 
+    /**
+     * Shows or hides the label for the zero value
+     */
+    void setShowZeroLabel(bool show);
+    bool showZeroLabel() const;
+
     bool operator==( const RulerAttributes& ) const;
     inline bool operator!=( const RulerAttributes& other ) const { return !operator==(other); }
 

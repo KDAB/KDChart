@@ -56,7 +56,9 @@ private:
     int minorTickLength;
     bool majorTickLengthIsSet;
     bool minorTickLengthIsSet;
-    
+
+    bool showZeroLabel;
+
     RulerAttributes::TickMarkerPensMap customTickMarkPens;
 };
 
@@ -65,6 +67,7 @@ RulerAttributes::Private::Private()
     , majorTickMarkPen( QColor( 0x00, 0x00, 0x00 ) )
     , minorTickMarkPen( QColor( 0x00, 0x00, 0x00 ) )
     , showRulerLine( false )
+    , showZeroLabel( false )
 {
     tickMarkPen.setCapStyle( Qt::FlatCap );
     majorTickMarkPen.setCapStyle( Qt::FlatCap );
@@ -242,6 +245,16 @@ bool RulerAttributes::minorTickMarkLengthIsSet() const
     return d->minorTickLengthIsSet;
 }
     
+void RulerAttributes::setShowZeroLabel( bool show )
+{
+    d->showZeroLabel = show;
+}
+
+bool RulerAttributes::showZeroLabel() const
+{
+    return d->showZeroLabel;
+}
+
 RulerAttributes & RulerAttributes::operator=( const RulerAttributes& r )
 {
     if( this == &r )
