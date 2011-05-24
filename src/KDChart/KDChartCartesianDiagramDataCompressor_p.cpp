@@ -652,7 +652,10 @@ void CartesianDiagramDataCompressor::retrieveModelData( const CachePosition& pos
                     if( !itX->isNull() )
                     {
                         result.key = itX->toDouble();
-                        result.value = itY->toDouble();
+                        if ( itY->value<QVariant>() == QVariant() )
+                            result.value = std::numeric_limits< qreal >::quiet_NaN();
+                        else
+                            result.value = itY->toDouble();
                     }
                     m_data[ position.second ][ row ] = result;
                 }

@@ -173,12 +173,19 @@ void Plotter::PlotterType::paintElements(
                 points << lineInfo.value << lineInfo.nextValue;
             }
         }
+    }
+    if ( points.count() )
+        paintPolyline( ctx, curBrush, curPen, points );
 
+    itline.toFront();
+    while ( itline.hasNext() ) {
+        const LineAttributesInfo& lineInfo = itline.next();
+        const QModelIndex& index = lineInfo.index;
+        const ValueTrackerAttributes vt = diagram()->valueTrackerAttributes( index );
         if( vt.isEnabled() )
             paintValueTracker( ctx, vt, lineInfo.value );
     }
-    if( points.count() )
-        paintPolyline( ctx, curBrush, curPen, points );
+
     // paint all data value texts and the point markers
     paintDataValueTextsAndMarkers( diagram(), ctx, list, true );
 }
