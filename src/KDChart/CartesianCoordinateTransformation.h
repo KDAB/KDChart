@@ -139,6 +139,10 @@ namespace KDChart {
 
             result.rx() += isoScaleX * unitVectorX * tempPoint.x();
             result.ry() += isoScaleY * unitVectorY * tempPoint.y();
+            qDebug() << "result" << result << isoScaleX << " " << tempPoint.x();
+            qDebug() << "zoom " << zoom.xFactor << " zoomcenter " << zoom.xCenter;
+            qDebug() << "diagrect" << diagRect;
+            qDebug() << "transpoint " << diagramPoint;
 
             return result;
         }

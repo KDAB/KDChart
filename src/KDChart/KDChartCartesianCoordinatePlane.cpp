@@ -413,8 +413,10 @@ void CartesianCoordinatePlane::layoutDiagrams()
         qreal scale = qMin ( qAbs ( diagramXUnitInCoordinatePlane ),
                               qAbs ( diagramYUnitInCoordinatePlane ) );
 
+        qDebug() << diagramXUnitInCoordinatePlane << " j " << diagramYUnitInCoordinatePlane;
         scaleX = qAbs( scale / diagramXUnitInCoordinatePlane );
         scaleY = qAbs( scale / diagramYUnitInCoordinatePlane );
+        qDebug() << scaleX << " " << scaleY;
     } else {
         scaleX = 1.0;
         scaleY = 1.0;
