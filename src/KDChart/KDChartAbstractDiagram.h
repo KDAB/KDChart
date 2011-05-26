@@ -634,7 +634,7 @@ namespace KDChart {
                           const QModelIndex& index,
                           const QPointF& pos );
         void paintDataValueText( QPainter* painter, const QModelIndex& index,
-                                 const QPointF& pos, double value );
+                                 const QPointF& pos, qreal value );
 
         // reverse mapping:
         /** This method is added alongside with indexAt from QAIM,
@@ -674,10 +674,10 @@ namespace KDChart {
          * Helper method, retrieving the data value (DisplayRole) for a given row and column
          * @param row The row to query.
          * @param column The column to query.
-         * @return The value of the display role at the given row and column as a double.
+         * @return The value of the display role at the given row and column as a qreal.
          * @deprecated
          */
-        double valueForCell( int row, int column ) const;
+        qreal valueForCell( int row, int column ) const;
 
     Q_SIGNALS:
         /** Diagrams are supposed to emit this signal, when the layout of one
@@ -715,7 +715,7 @@ namespace KDChart {
 
     private:
         QModelIndex conditionallyMapFromSource( const QModelIndex & sourceIndex ) const;
-	QString roundValues( double value, const int decimalPos,
+	QString roundValues( qreal value, const int decimalPos,
 			      const int decimalDigits ) const;
 
     };

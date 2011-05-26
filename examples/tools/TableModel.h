@@ -73,7 +73,7 @@ public:
      * The cell data is expected to be floating point values, except for the
      * first row and the first column, where string values are exected (those
      * will be used as axis descriptors). If values cannot be converted to
-     * doubles, their string representation will be used.
+     * qreals, their string representation will be used.
      * 
      * @returns true if successful, false otherwise
      *

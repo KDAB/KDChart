@@ -41,13 +41,13 @@ public:
 
 private slots:
     // start position
-    void on_startPositionSB_valueChanged( double pos );
+    void on_startPositionSB_valueChanged( qreal pos );
     void on_startPositionSL_valueChanged( int pos );
 
     // explode
     void on_explodeSubmitPB_clicked();
     void on_animateExplosionCB_toggled( bool toggle );
-    void setExplodeFactor( int column, double value );
+    void setExplodeFactor( int column, qreal value );
 
     // animation
     void slotNextFrame();

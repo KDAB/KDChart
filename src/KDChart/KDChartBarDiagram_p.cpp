@@ -32,12 +32,12 @@ BarDiagram::Private::Private( const Private& rhs )
 {
 }
 
-void BarDiagram::BarDiagramType::paintBars( PaintContext* ctx, const QModelIndex& index, const QRectF& bar, double& maxDepth )
+void BarDiagram::BarDiagramType::paintBars( PaintContext* ctx, const QModelIndex& index, const QRectF& bar, qreal& maxDepth )
 {
     QRectF isoRect;
     QPolygonF topPoints, sidePoints;
     ThreeDBarAttributes threeDAttrs = diagram()->threeDBarAttributes( index );
-    double usedDepth = 0;
+    qreal usedDepth = 0;
 
     //Pending Michel: configure threeDBrush settings - shadowColor etc...
     QBrush indexBrush( diagram()->brush( index ) );
@@ -188,10 +188,10 @@ void BarDiagram::BarDiagramType::paintDataValueTextsAndMarkers(
 
 
 void BarDiagram::BarDiagramType::calculateValueAndGapWidths( int rowCount,int colCount,
-                                             double groupWidth,
-                                             double& outBarWidth,
-                                             double& outSpaceBetweenBars,
-                                             double& outSpaceBetweenGroups )
+                                             qreal groupWidth,
+                                             qreal& outBarWidth,
+                                             qreal& outSpaceBetweenBars,
+                                             qreal& outSpaceBetweenGroups )
 {
 
     Q_UNUSED( rowCount );
@@ -205,7 +205,7 @@ void BarDiagram::BarDiagramType::calculateValueAndGapWidths( int rowCount,int co
      * the gaps between bars are 0.5 wide, and the gap between groups is
      * also one unit, by default. */
 
-    double units;
+    qreal units;
     if( type() == Normal )
         units = colCount // number of bars in group * 1.0
                 + (colCount-1) * ba.barGapFactor() // number of bar gaps
@@ -213,7 +213,7 @@ void BarDiagram::BarDiagramType::calculateValueAndGapWidths( int rowCount,int co
     else
         units = 1 + 1 * ba.groupGapFactor();
 
-    double unitWidth = groupWidth / units;
+    qreal unitWidth = groupWidth / units;
     outBarWidth = unitWidth;
     outSpaceBetweenBars += unitWidth * ba.barGapFactor();
 

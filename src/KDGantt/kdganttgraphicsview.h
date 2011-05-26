@@ -115,7 +115,7 @@ namespace KDGantt {
     Q_SIGNALS:
         void activated( const QModelIndex & index );
         void clicked( const QModelIndex & index );
-        void doubleClicked( const QModelIndex & index );
+        void qrealClicked( const QModelIndex & index );
         void entered( const QModelIndex & index );
         void pressed( const QModelIndex & index );
         void headerContextMenuRequested( const QPoint& pt );

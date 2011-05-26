@@ -51,14 +51,14 @@ struct PolarCoordinatePlane::CoordinateTransformation
     // represents the distance of the diagram coordinate origin to the
     // origin of the coordinate plane space:
     QPointF originTranslation;
-    double radiusUnit;
-    double angleUnit;
-    double minValue;
+    qreal radiusUnit;
+    qreal angleUnit;
+    qreal minValue;
 
     qreal startPosition;
     ZoomParameters zoom;
 
-    static QPointF polarToCartesian( double R, double theta )
+    static QPointF polarToCartesian( qreal R, qreal theta )
     {
         // de-inline me
         return QPointF( R * cos( DEGTORAD( theta  ) ), R * sin( DEGTORAD( theta ) ) );
@@ -68,16 +68,16 @@ struct PolarCoordinatePlane::CoordinateTransformation
     {
         // ### de-inline me
         // calculate the polar coordinates
-        const double x = (diagramPoint.x() * radiusUnit) - (minValue * radiusUnit);
+        const qreal x = (diagramPoint.x() * radiusUnit) - (minValue * radiusUnit);
 //qDebug() << x << "=" << diagramPoint.x() << "*" << radiusUnit << "  startPosition: " << startPosition;
-        const double y = ( diagramPoint.y() * -angleUnit) - 90.0 - startPosition;
+        const qreal y = ( diagramPoint.y() * -angleUnit) - 90.0 - startPosition;
         // convert to cartesian coordinates
         QPointF cartesianPoint = polarToCartesian( x, y );
         cartesianPoint.setX( cartesianPoint.x() * zoom.xFactor );
         cartesianPoint.setY( cartesianPoint.y() * zoom.yFactor );
 
         QPointF newOrigin = originTranslation;
-        double minOrigin = qMin( newOrigin.x(), newOrigin.y() );
+        qreal minOrigin = qMin( newOrigin.x(), newOrigin.y() );
         newOrigin.setX( newOrigin.x() + minOrigin * ( 1 - zoom.xCenter * 2 ) * zoom.xFactor );
         newOrigin.setY( newOrigin.y() + minOrigin * ( 1 - zoom.yCenter * 2 ) * zoom.yFactor );
 

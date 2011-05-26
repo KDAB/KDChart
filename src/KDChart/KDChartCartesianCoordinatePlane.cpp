@@ -360,8 +360,8 @@ QRectF CartesianCoordinatePlane::logicalArea() const
     else if( !d->reverseVerticalPlane && d->reverseHorizontalPlane )
         topLeft = dataBoundingRect.topRight();
 
-    const double width  = dataBoundingRect.width()  * ( d->reverseHorizontalPlane ? -1.0 : 1.0 );
-    const double height = dataBoundingRect.height() * ( d->reverseVerticalPlane   ? -1.0 : 1.0 );
+    const qreal width  = dataBoundingRect.width()  * ( d->reverseHorizontalPlane ? -1.0 : 1.0 );
+    const qreal height = dataBoundingRect.height() * ( d->reverseVerticalPlane   ? -1.0 : 1.0 );
 
     return QRectF( topLeft, QSizeF( width, height ) );
 }
@@ -400,17 +400,17 @@ void CartesianCoordinatePlane::layoutDiagrams()
     d->coordinateTransformation.unitVectorX = logArea.width()  != 0 ? physicalArea.width()  / logArea.width()  : 1.0;
     d->coordinateTransformation.unitVectorY = logArea.height() != 0 ? physicalArea.height() / logArea.height() : 1.0;
 
-    const double diagramXUnitInCoordinatePlane = d->coordinateTransformation.unitVectorX;
-    const double diagramYUnitInCoordinatePlane = d->coordinateTransformation.unitVectorY;
+    const qreal diagramXUnitInCoordinatePlane = d->coordinateTransformation.unitVectorX;
+    const qreal diagramYUnitInCoordinatePlane = d->coordinateTransformation.unitVectorY;
 
-    double scaleX;
-    double scaleY;
+    qreal scaleX;
+    qreal scaleY;
 
     // calculate isometric scaling factor to maxscale the diagram into
     // the coordinate system:
     if ( d->isometricScaling )
     {
-        double scale = qMin ( qAbs ( diagramXUnitInCoordinatePlane ),
+        qreal scale = qMin ( qAbs ( diagramXUnitInCoordinatePlane ),
                               qAbs ( diagramYUnitInCoordinatePlane ) );
 
         scaleX = qAbs( scale / diagramXUnitInCoordinatePlane );
@@ -494,8 +494,8 @@ void CartesianCoordinatePlane::handleFixedDataCoordinateSpaceRelation( const QRe
     // if the size was changed, we calculate new zoom settings
     if( d->fixedDataCoordinateSpaceRelationOldSize != geometry && !d->fixedDataCoordinateSpaceRelationOldSize.isNull() )
     {
-        const double newZoomX = zoomFactorX() * d->fixedDataCoordinateSpaceRelationOldSize.width() / geometry.width();
-        const double newZoomY = zoomFactorY() * d->fixedDataCoordinateSpaceRelationOldSize.height() / geometry.height();
+        const qreal newZoomX = zoomFactorX() * d->fixedDataCoordinateSpaceRelationOldSize.width() / geometry.width();
+        const qreal newZoomY = zoomFactorY() * d->fixedDataCoordinateSpaceRelationOldSize.height() / geometry.height();
 
         const QPointF oldCenter = zoomCenter();
         const QPointF newCenter = QPointF( oldCenter.x() * geometry.width() / d->fixedDataCoordinateSpaceRelationOldSize.width(),
@@ -547,7 +547,7 @@ bool CartesianCoordinatePlane::doesIsometricScaling () const
     return d->isometricScaling;
 }
 
-bool CartesianCoordinatePlane::doneSetZoomFactorX( double factor )
+bool CartesianCoordinatePlane::doneSetZoomFactorX( qreal factor )
 {
     const bool done = ( d->coordinateTransformation.zoom.xFactor != factor );
     if( done ){
@@ -558,7 +558,7 @@ bool CartesianCoordinatePlane::doneSetZoomFactorX( double factor )
     return done;
 }
 
-bool CartesianCoordinatePlane::doneSetZoomFactorY( double factor )
+bool CartesianCoordinatePlane::doneSetZoomFactorY( qreal factor )
 {
     const bool done = ( d->coordinateTransformation.zoom.yFactor != factor );
     if( done ){
@@ -580,21 +580,21 @@ bool CartesianCoordinatePlane::doneSetZoomCenter( const QPointF& point )
     return done;
 }
 
-void CartesianCoordinatePlane::setZoomFactors( double factorX, double factorY )
+void CartesianCoordinatePlane::setZoomFactors( qreal factorX, qreal factorY )
 {
     if( doneSetZoomFactorX( factorX ) || doneSetZoomFactorY( factorY ) ){
         emit propertiesChanged();
     }
 }
 
-void CartesianCoordinatePlane::setZoomFactorX( double factor )
+void CartesianCoordinatePlane::setZoomFactorX( qreal factor )
 {
     if( doneSetZoomFactorX( factor ) ){
         emit propertiesChanged();
     }
 }
 
-void CartesianCoordinatePlane::setZoomFactorY( double factor )
+void CartesianCoordinatePlane::setZoomFactorY( qreal factor )
 {
     if( doneSetZoomFactorY( factor ) ){
         emit propertiesChanged();
@@ -613,12 +613,12 @@ QPointF CartesianCoordinatePlane::zoomCenter() const
     return d->coordinateTransformation.zoom.center();
 }
 
-double CartesianCoordinatePlane::zoomFactorX() const
+qreal CartesianCoordinatePlane::zoomFactorX() const
 {
     return d->coordinateTransformation.zoom.xFactor;
 }
 
-double CartesianCoordinatePlane::zoomFactorY() const
+qreal CartesianCoordinatePlane::zoomFactorY() const
 {
     return d->coordinateTransformation.zoom.yFactor;
 }

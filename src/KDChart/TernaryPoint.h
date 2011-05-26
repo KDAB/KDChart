@@ -34,19 +34,19 @@ class TernaryPoint
 {
 public:
     TernaryPoint();
-    TernaryPoint( double a, double b );
+    TernaryPoint( qreal a, qreal b );
 
-    double a() const { return m_a; }
-    double b() const { return m_b; }
-    double c() const { return 1.0 - m_a - m_b; }
+    qreal a() const { return m_a; }
+    qreal b() const { return m_b; }
+    qreal c() const { return 1.0 - m_a - m_b; }
 
-    void set( double a, double b );
+    void set( qreal a, qreal b );
 
     bool isValid() const;
 
 private:
-    double m_a;
-    double m_b;
+    qreal m_a;
+    qreal m_b;
 };
 
 QDebug operator<<( QDebug stream, const TernaryPoint& point );

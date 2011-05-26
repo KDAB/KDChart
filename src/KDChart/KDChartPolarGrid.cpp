@@ -74,11 +74,11 @@ void PolarGrid::drawGrid( PaintContext* context )
 
 
     context->painter()->setPen ( PrintingParameters::scalePen( QColor ( Qt::lightGray ) ) );
-    const double min = dgr->dataBoundaries().first.y();
+    const qreal min = dgr->dataBoundaries().first.y();
     QPointF origin = plane->translate( QPointF( min, 0 ) ) + context->rectangle().topLeft();
     //qDebug() << "origin" << origin;
 
-    const double r = qAbs( min ) + dgr->dataBoundaries().second.y(); // use the full extents
+    const qreal r = qAbs( min ) + dgr->dataBoundaries().second.y(); // use the full extents
 
     if ( gridAttrsSagittal.isGridVisible() ){
         const int numberOfSpokes = ( int ) ( 360 / plane->angleUnit() );
@@ -93,7 +93,7 @@ void PolarGrid::drawGrid( PaintContext* context )
         plane->setStartPosition( 0.0 );
         const int numberOfGridRings = ( int )dgr->numberOfGridRings();
         for ( int j = 0; j < numberOfGridRings; ++j ) {
-            const double rad = min - ( ( j + 1) * r / numberOfGridRings );
+            const qreal rad = min - ( ( j + 1) * r / numberOfGridRings );
     
             if ( rad == 0 )
                 continue;

@@ -48,12 +48,12 @@ const QPair< QPointF, QPointF > NormalLineDiagram::calculateDataBoundaries() con
 {
     const int rowCount = compressor().modelDataRows();
     const int colCount = compressor().modelDataColumns();
-    const double xMin = 0.0;
-    double xMax = diagram()->model() ? diagram()->model()->rowCount( diagram()->rootIndex() ) : 0;
+    const qreal xMin = 0.0;
+    qreal xMax = diagram()->model() ? diagram()->model()->rowCount( diagram()->rootIndex() ) : 0;
     if ( !diagram()->centerDataPoints() && diagram()->model() )
         xMax -= 1;
-    double yMin = std::numeric_limits< double >::quiet_NaN();
-    double yMax = std::numeric_limits< double >::quiet_NaN();
+    qreal yMin = std::numeric_limits< qreal >::quiet_NaN();
+    qreal yMax = std::numeric_limits< qreal >::quiet_NaN();
 
     for( int column = 0; column < colCount; ++column )
     {
@@ -61,7 +61,7 @@ const QPair< QPointF, QPointF > NormalLineDiagram::calculateDataBoundaries() con
         {
             const CartesianDiagramDataCompressor::CachePosition position( row, column );
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
-            const double value = ISNAN( point.value ) ? 0.0 : point.value;
+            const qreal value = ISNAN( point.value ) ? 0.0 : point.value;
 
             if ( ISNAN( yMin ) ) {
                     yMin = value;

@@ -28,6 +28,8 @@
 #include "kdchart_export.h"
 #include "kdganttglobal.h"
 
+#include <QtGlobal>
+
 #include <string>
 #include <iostream>
 
@@ -98,14 +100,14 @@ do {                           \
     void _assertNotNull( const void * x, const char * expression, const char * file, unsigned int line );
     void _assertNull( const void * x, const char * expression, const char * file, unsigned int line );
 #if 0
-    void _assertIsNaN( double v, const char * expression, const char * file, unsigned int line );
-    void _assertIsNotNaN( double v, const char * expression, const char * file, unsigned int line );
+    void _assertIsNaN( qreal v, const char * expression, const char * file, unsigned int line );
+    void _assertIsNotNaN( qreal v, const char * expression, const char * file, unsigned int line );
 #endif
     void _assertTrue( bool x, const char * expression, const char * file, unsigned int line );
     void _assertFalse( bool x, const char * expression, const char * file, unsigned int line );
 
     void _assertEqualWithEpsilons( float x1, float x2, int prec, const char * expr1, const char * expr2, const char * exprPrec, const char * file, unsigned int line );
-    void _assertEqualWithEpsilons( double x1, double x2, int prec, const char * expr1, const char * expr2, const char * exprPrec, const char * file, unsigned int line );
+    void _assertEqualWithEpsilons( qreal x1, qreal x2, int prec, const char * expr1, const char * expr2, const char * exprPrec, const char * file, unsigned int line );
     void _assertEqualWithEpsilons( long double x1, long double x2, int prec, const char * expr1, const char * expr2, const char * exprPrec, const char * file, unsigned int line );
 
     template <typename T, typename S>

@@ -376,26 +376,26 @@ void KDChart::AbstractCoordinatePlane::mouseReleaseEvent( QMouseEvent* event )
         d->rubberBandZoomConfigHistory.push( ZoomParameters( zoomFactorX(), zoomFactorY(), zoomCenter() ) );
 
         // this is the height/width of the rubber band in pixel space
-        const double rubberWidth = static_cast< double >( d->rubberBand->width() );
-        const double rubberHeight = static_cast< double >( d->rubberBand->height() );
+        const qreal rubberWidth = static_cast< qreal >( d->rubberBand->width() );
+        const qreal rubberHeight = static_cast< qreal >( d->rubberBand->height() );
 
         if( rubberWidth > 0.0 && rubberHeight > 0.0 )
         {
             // this is the center of the rubber band in pixel space
-            const double rubberCenterX = static_cast< double >( d->rubberBand->geometry().center().x() - geometry().x() );
-            const double rubberCenterY = static_cast< double >( d->rubberBand->geometry().center().y() - geometry().y() );
+            const qreal rubberCenterX = static_cast< qreal >( d->rubberBand->geometry().center().x() - geometry().x() );
+            const qreal rubberCenterY = static_cast< qreal >( d->rubberBand->geometry().center().y() - geometry().y() );
 
             // this is the height/width of the plane in pixel space
-            const double myWidth = static_cast< double >( geometry().width() );
-            const double myHeight = static_cast< double >( geometry().height() );
+            const qreal myWidth = static_cast< qreal >( geometry().width() );
+            const qreal myHeight = static_cast< qreal >( geometry().height() );
 
             // this describes the new center of zooming, relative to the plane pixel space
-            const double newCenterX = rubberCenterX / myWidth / zoomFactorX() + zoomCenter().x() - 0.5 / zoomFactorX();
-            const double newCenterY = rubberCenterY / myHeight / zoomFactorY() + zoomCenter().y() - 0.5 / zoomFactorY();
+            const qreal newCenterX = rubberCenterX / myWidth / zoomFactorX() + zoomCenter().x() - 0.5 / zoomFactorX();
+            const qreal newCenterY = rubberCenterY / myHeight / zoomFactorY() + zoomCenter().y() - 0.5 / zoomFactorY();
 
             // this will be the new zoom factor
-            const double newZoomFactorX = zoomFactorX() * myWidth / rubberWidth;
-            const double newZoomFactorY = zoomFactorY() * myHeight / rubberHeight;
+            const qreal newZoomFactorX = zoomFactorX() * myWidth / rubberWidth;
+            const qreal newZoomFactorY = zoomFactorY() * myHeight / rubberHeight;
 
             // and this the new center
             const QPointF newZoomCenter( newCenterX, newCenterY );

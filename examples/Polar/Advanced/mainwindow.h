@@ -42,7 +42,7 @@ public:
 
 private slots:
     // start position of circular grid
-    void on_startPositionSB_valueChanged( double pos );
+    void on_startPositionSB_valueChanged( qreal pos );
     void on_startPositionSL_valueChanged( int pos );
 
     // show grid

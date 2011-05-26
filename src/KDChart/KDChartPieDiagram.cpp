@@ -118,7 +118,7 @@ static QRectF buildReferenceRect( const PolarCoordinatePlane* plane )
 //qDebug() << "..........................................";
     QPointF referencePointAtTop = plane->translate( QPointF( 1, 0 ) );
     QPointF temp = plane->translate( QPointF( 0, 0 ) ) - referencePointAtTop;
-    const double offset = temp.y();
+    const qreal offset = temp.y();
     referencePointAtTop.setX( referencePointAtTop.x() - offset );
     contentsRect.setTopLeft( referencePointAtTop );
     contentsRect.setBottomRight( referencePointAtTop + QPointF( 2*offset, 2*offset) );
@@ -132,11 +132,11 @@ void PieDiagram::paint( PaintContext* ctx )
     const int colCount = model()->columnCount(rootIndex());
     QRectF contentsRect = buildReferenceRect( polarCoordinatePlane() );
     DataValueTextInfoList list;
-    double startAngle = startPosition();
-    double startAngleValueSpace = valueTotals() / 360 * startAngle;
+    qreal startAngle = startPosition();
+    qreal startAngleValueSpace = valueTotals() / 360 * startAngle;
     for ( int j=0; j<colCount; ++j ) {
-        const double nextValue = qAbs( model()->data( model()->index( 0, j,rootIndex() ) ).toDouble() );
-        double spanAngle = polarCoordinatePlane()->translatePolar( QPointF( nextValue, 1 ) ).x();
+        const qreal nextValue = qAbs( model()->data( model()->index( 0, j,rootIndex() ) ).toDouble() );
+        qreal spanAngle = polarCoordinatePlane()->translatePolar( QPointF( nextValue, 1 ) ).x();
         if ( spanAngle == 0 ) continue;
         QBrush brush = qVariantValue<QBrush>( attributesModel()->headerData( j, Qt::Vertical, KDChart::DatasetBrushRole ) );
         QPen pen = qVariantValue<QPen>( attributesModel()->headerData( j, Qt::Vertical, KDChart::DatasetPenRole ) );
@@ -248,7 +248,7 @@ void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
     {
         // Find out the maximum distance from every corner of the rectangle with
         // the center.
-        double maxDistance = 0, dist = 0;
+        qreal maxDistance = 0, dist = 0;
 
         QPointF center = ctx->rectangle().center();
 		
@@ -268,8 +268,8 @@ void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
         if(dist > maxDistance)
             maxDistance = dist;
 
-        double size = d->size;
-        double diff = (2*maxDistance - d->size);
+        qreal size = d->size;
+        qreal diff = (2*maxDistance - d->size);
         if(diff > 0)
             d->size *= 1.0-(diff/size);
     }
@@ -315,7 +315,7 @@ void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
     for ( int iColumn = 0; iColumn < colCount; ++iColumn ) {
         // is there anything at all at this column?
         bool bOK;
-        const double cellValue = qAbs( model()->data( model()->index( 0, iColumn, rootIndex() ) ) // checked
+        const qreal cellValue = qAbs( model()->data( model()->index( 0, iColumn, rootIndex() ) ) // checked
             .toDouble( &bOK ) );
 
         if( bOK ){
@@ -1112,10 +1112,10 @@ QPointF PieDiagram::pointOnCircle( const QRectF& rect, qreal angle )
 }
 
 /*virtual*/
-double PieDiagram::valueTotals() const
+qreal PieDiagram::valueTotals() const
 {
     const int colCount = columnCount();
-    double total = 0.0;
+    qreal total = 0.0;
     Q_ASSERT( model()->rowCount() >= 1 );
     for ( int j = 0; j < colCount; ++j ) {
       total += qAbs(model()->data( model()->index( 0, j, rootIndex() ) ).toDouble()); // checked
@@ -1124,13 +1124,13 @@ double PieDiagram::valueTotals() const
 }
 
 /*virtual*/
-double PieDiagram::numberOfValuesPerDataset() const
+qreal PieDiagram::numberOfValuesPerDataset() const
 {
     return model() ? model()->columnCount( rootIndex() ) : 0.0;
 }
 
 /*virtual*/
-double PieDiagram::numberOfGridRings() const
+qreal PieDiagram::numberOfGridRings() const
 {
     return 1;
 }

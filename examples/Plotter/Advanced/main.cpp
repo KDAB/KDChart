@@ -42,8 +42,8 @@ int main(int argc, char *argv[]) {
 	model.setColumnCount(6); // 3 data sets
 	for (int i=0; i<100; ++i) {
 		// dateset 1
-		double t = i;
-		double v = double(i)*i;
+		qreal t = i;
+		qreal v = qreal(i)*i;
 		QModelIndex index = model.index( i, 0 );
 		model.setData( index, QVariant( t ) );
 		index = model.index( i, 1 );
@@ -51,15 +51,15 @@ int main(int argc, char *argv[]) {
 
 		// dateset 2
 		t = i*2;
-		v = double(i)*i-i;
+		v = qreal(i)*i-i;
 		index = model.index( i, 2 );
 		model.setData( index, QVariant( t ) );
 		index = model.index( i, 3 );
 		model.setData( index, QVariant( v ) );
 
 		// dateset 3
-		t = double(i)/2;
-		v = double(i)*i+i;
+		t = qreal(i)/2;
+		v = qreal(i)*i+i;
 		index = model.index( i, 4 );
 		model.setData( index, QVariant( t ) );
 		index = model.index( i, 5 );

@@ -27,7 +27,7 @@ DataValueTextInfo::DataValueTextInfo()
 }
 
 DataValueTextInfo::DataValueTextInfo( const QModelIndex& _index, const DataValueAttributes& _attrs,
-                                      const QPointF& _pos, const QPointF& _markerPos, double _value )
+                                      const QPointF& _pos, const QPointF& _markerPos, qreal _value )
     : index( _index )
     , attrs( _attrs )
     , pos( _pos )
@@ -176,7 +176,7 @@ const QFontMetrics AbstractDiagram::Private::cachedFontMetrics() const
     return mCachedFontMetrics;
 }
 
-QString AbstractDiagram::Private::roundValues( double value,
+QString AbstractDiagram::Private::roundValues( qreal value,
                      const int decimalPos,
                      const int decimalDigits ) const
 {
@@ -274,7 +274,7 @@ void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
     QPainter* painter,
     const QModelIndex& index,
     const QPointF& pos,
-    double value,
+    qreal value,
     bool justCalculateRect /* = false */,
     QRectF* cumulatedBoundingRect /* = 0 */ )
 {

@@ -57,7 +57,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     
     for( int i = 0; i < 5; ++i ) {
       for( int j = 0; j < 5; ++j ) {
-	m_model.setData( m_model.index( i,j,idx1), (double)i*j );
+	m_model.setData( m_model.index( i,j,idx1), (qreal)i*j );
       }
     }
 
@@ -76,7 +76,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     
     for( int i = 0; i < 5; ++i ) {
       for( int j = 0; j < 5; ++j ) {
-	m_model.setData( m_model.index( i,j,idx1), (double)i*j );
+	m_model.setData( m_model.index( i,j,idx1), (qreal)i*j );
       }
     }
     QModelIndex idx2 = idx1;

@@ -64,12 +64,12 @@ namespace KDChart {
           */
         qreal startPosition() const;
 
-        virtual double zoomFactorX() const;
-        virtual double zoomFactorY() const;
+        virtual qreal zoomFactorX() const;
+        virtual qreal zoomFactorY() const;
 
-        virtual void setZoomFactors( double factorX, double factorY );
-        virtual void setZoomFactorX( double factor );
-        virtual void setZoomFactorY( double factor );
+        virtual void setZoomFactors( qreal factorX, qreal factorY );
+        virtual void setZoomFactorX( qreal factor );
+        virtual void setZoomFactorY( qreal factor );
 
         virtual QPointF zoomCenter() const;
 

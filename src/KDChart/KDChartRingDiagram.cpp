@@ -162,7 +162,7 @@ static QRectF buildReferenceRect( const PolarCoordinatePlane* plane )
     QRectF contentsRect;
     QPointF referencePointAtTop = plane->translate( QPointF( 1, 0 ) );
     QPointF temp = plane->translate( QPointF( 0, 0 ) ) - referencePointAtTop;
-    const double offset = temp.y();
+    const qreal offset = temp.y();
     referencePointAtTop.setX( referencePointAtTop.x() - offset );
     contentsRect.setTopLeft( referencePointAtTop );
     contentsRect.setBottomRight( referencePointAtTop + QPointF( 2*offset, 2*offset) );
@@ -246,7 +246,7 @@ void RingDiagram::paint( PaintContext* ctx )
             for ( int iColumn = 0; iColumn < colCount; ++iColumn ) {
     	        // is there anything at all at this column?
     	        bool bOK;
-                const double cellValue = qAbs( model()->data( model()->index( iRow, iColumn, rootIndex() ) ) // checked
+                const qreal cellValue = qAbs( model()->data( model()->index( iRow, iColumn, rootIndex() ) ) // checked
     	            .toDouble( &bOK ) );
 
     	        if( bOK ){
@@ -498,11 +498,11 @@ QPointF RingDiagram::pointOnCircle( const QRectF& rect, int dataset, int pie, bo
 }
 
 /*virtual*/
-double RingDiagram::valueTotals() const
+qreal RingDiagram::valueTotals() const
 {
 	const int rCount = rowCount();
     const int colCount = columnCount();
-    double total = 0.0;
+    qreal total = 0.0;
     for ( int i = 0; i < rCount; ++i ) {
     	for ( int j = 0; j < colCount; ++j ) {
             total += qAbs(model()->data( model()->index( i, j, rootIndex() ) ).toDouble()); // checked
@@ -511,11 +511,11 @@ double RingDiagram::valueTotals() const
     return total;
 }
 
-double RingDiagram::valueTotals( int dataset ) const
+qreal RingDiagram::valueTotals( int dataset ) const
 {
     Q_ASSERT( dataset < model()->rowCount() );
     const int colCount = columnCount();
-    double total = 0.0;
+    qreal total = 0.0;
     for ( int j = 0; j < colCount; ++j ) {
       total += qAbs(model()->data( model()->index( dataset, j, rootIndex() ) ).toDouble()); // checked
     }
@@ -523,18 +523,18 @@ double RingDiagram::valueTotals( int dataset ) const
 }
 
 /*virtual*/
-double RingDiagram::numberOfValuesPerDataset() const
+qreal RingDiagram::numberOfValuesPerDataset() const
 {
     return model() ? model()->columnCount( rootIndex() ) : 0.0;
 }
 
-double RingDiagram::numberOfDatasets() const
+qreal RingDiagram::numberOfDatasets() const
 {
     return model() ? model()->rowCount( rootIndex() ) : 0.0;
 }
 
 /*virtual*/
-double RingDiagram::numberOfGridRings() const
+qreal RingDiagram::numberOfGridRings() const
 {
     return 1;
 }

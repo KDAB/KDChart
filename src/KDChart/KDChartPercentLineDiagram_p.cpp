@@ -45,12 +45,12 @@ LineDiagram::LineType PercentLineDiagram::type() const
 
 const QPair<QPointF, QPointF> PercentLineDiagram::calculateDataBoundaries() const
 {
-    const double xMin = 0.0;
-    double xMax = diagram()->model() ? diagram()->model()->rowCount( diagram()->rootIndex() ) : 0;
+    const qreal xMin = 0.0;
+    qreal xMax = diagram()->model() ? diagram()->model()->rowCount( diagram()->rootIndex() ) : 0;
     if ( !diagram()->centerDataPoints() && diagram()->model() )
         xMax -= 1;
-    const double yMin = 0.0;
-    const double yMax = 100.0;
+    const qreal yMin = 0.0;
+    const qreal yMax = 100.0;
 
     QPointF bottomLeft( QPointF( xMin, yMin ) );
     QPointF topRight( QPointF( xMax, yMax ) );
@@ -87,9 +87,9 @@ void PercentLineDiagram::paint(  PaintContext* ctx )
 
     //FIXME(khz): add LineAttributes::MissingValuesPolicy support for LineDiagram::Stacked and ::Percent
 
-    double maxValue = 100; // always 100%
-    double sumValues = 0;
-    QVector <double > percentSumValues;
+    qreal maxValue = 100; // always 100%
+    qreal sumValues = 0;
+    QVector <qreal > percentSumValues;
 
     //calculate sum of values for each column and store
     for ( int row = 0; row < rowCount; ++row )
@@ -132,7 +132,7 @@ void PercentLineDiagram::paint(  PaintContext* ctx )
             const LineAttributes laCell = diagram()->lineAttributes( sourceIndex );
             const bool bDisplayCellArea = laCell.displayArea();
 
-            double stackedValues = 0, nextValues = 0, nextKey = 0;
+            qreal stackedValues = 0, nextValues = 0, nextKey = 0;
             for ( int column2 = column;
                   column2 >= 0;//datasetDimension() - 1;
                   column2 -= 1 )//datasetDimension() )
@@ -145,7 +145,7 @@ void PercentLineDiagram::paint(  PaintContext* ctx )
                 if( ISNAN( point.value ) && policy == LineAttributes::MissingValuesAreBridged )
                     point.value = interpolateMissingValue( position );
 
-                const double val = point.value;
+                const qreal val = point.value;
                 if( val > 0 )
                     stackedValues += val;
                 //qDebug() << valueForCell( iRow, iColumn2 );
@@ -158,7 +158,7 @@ void PercentLineDiagram::paint(  PaintContext* ctx )
                     if( ISNAN( point.value ) && policy == LineAttributes::MissingValuesAreBridged )
                         point.value = interpolateMissingValue( position );
 
-                    const double val = point.value;
+                    const qreal val = point.value;
                     if( val > 0 )
                         nextValues += val;
                     nextKey = point.key;

@@ -52,14 +52,14 @@ public:
 
     // Implement AbstractPolarDiagram
     /** \reimpl */
-    virtual double valueTotals () const;
+    virtual qreal valueTotals () const;
     /** \reimpl */
-    virtual double numberOfValuesPerDataset() const;
-    virtual double numberOfDatasets() const;
+    virtual qreal numberOfValuesPerDataset() const;
+    virtual qreal numberOfDatasets() const;
     /** \reimpl */
-    virtual double numberOfGridRings() const;
+    virtual qreal numberOfGridRings() const;
 
-    double valueTotals( int dataset ) const;
+    qreal valueTotals( int dataset ) const;
 
     virtual RingDiagram * clone() const;
 

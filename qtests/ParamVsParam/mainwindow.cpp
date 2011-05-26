@@ -127,10 +127,10 @@ void MainWindow::addPlots()
 			plane->setGlobalGridAttributes(ga);
 
 			// Set axes fixed scale.
-			double						xoffset(c * 10);
-			double						yoffset(r * 10);
-			QPair<double, double>	horizontalRange(xoffset, xoffset + 10);
-			QPair<double, double>	verticalRange(yoffset, yoffset + 10);
+			qreal						xoffset(c * 10);
+			qreal						yoffset(r * 10);
+			QPair<qreal, qreal>	horizontalRange(xoffset, xoffset + 10);
+			QPair<qreal, qreal>	verticalRange(yoffset, yoffset + 10);
 			plane->setHorizontalRange(horizontalRange);
 			plane->setVerticalRange(verticalRange);
 

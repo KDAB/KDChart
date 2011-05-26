@@ -78,9 +78,9 @@ namespace KDChart {
         QRectF diagramRect;
         // multiply m_xUnit with a [0..1] value to get an isometric
         // widget coordinate
-        double xUnit;
+        qreal xUnit;
         // same for y:
-        double yUnit;
+        qreal yUnit;
 
     };
 

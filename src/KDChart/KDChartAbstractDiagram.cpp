@@ -467,13 +467,13 @@ bool AbstractDiagram::percentMode() const
 void AbstractDiagram::paintDataValueText( QPainter* painter,
                                           const QModelIndex& index,
                                           const QPointF& pos,
-                                          double value )
+                                          qreal value )
 {
     d->paintDataValueText( this, painter, index, pos, value );
 }
 
 
-QString AbstractDiagram::roundValues( double value,
+QString AbstractDiagram::roundValues( qreal value,
                                       const int decimalPos,
                                       const int decimalDigits ) const
 {
@@ -489,7 +489,7 @@ void AbstractDiagram::paintDataValueTexts( QPainter* painter )
     for ( int i=datasetDimension()-1; i<columnCount; i += datasetDimension() ) {
        for ( int j=0; j< rowCount; ++j ) {
            const QModelIndex index = model()->index( j, i, rootIndex() ); // checked
-           double value = model()->data( index ).toDouble();
+           qreal value = model()->data( index ).toDouble();
            const QPointF pos = coordinatePlane()->translate( QPointF( j, value ) );
            paintDataValueText( painter, index, pos, value );
        }
@@ -689,7 +689,7 @@ void AbstractDiagram::paintMarkers( QPainter* painter )
     for ( int i=datasetDimension()-1; i<columnCount; i += datasetDimension() ) {
        for ( int j=0; j< rowCount; ++j ) {
            const QModelIndex index = model()->index( j, i, rootIndex() ); // checked
-           double value = model()->data( index ).toDouble();
+           qreal value = model()->data( index ).toDouble();
            const QPointF pos = coordinatePlane()->translate( QPointF( j, value ) );
            paintMarker( painter, index, pos );
        }
@@ -1039,11 +1039,11 @@ void AbstractDiagram::setDatasetDimensionInternal( int dimension )
     emit layoutChanged( this );
 }
 
-double AbstractDiagram::valueForCell( int row, int column ) const
+qreal AbstractDiagram::valueForCell( int row, int column ) const
 {
     if ( !d->attributesModel->hasIndex( row, column, attributesModelRootIndex() ) ) {
         qWarning() << "AbstractDiagram::valueForCell(): Requesting value for invalid index!";
-        return std::numeric_limits<double>::quiet_NaN();
+        return std::numeric_limits<qreal>::quiet_NaN();
     }
     return d->attributesModel->data(
             d->attributesModel->index( row, column, attributesModelRootIndex() ) ).toDouble(); // checked

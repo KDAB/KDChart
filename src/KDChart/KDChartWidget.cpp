@@ -93,7 +93,7 @@ void Widget::init()
 {
 }
 
-void Widget::setDataset( int column, const QVector< double > & data, const QString& title )
+void Widget::setDataset( int column, const QVector< qreal > & data, const QString& title )
 {
     if ( ! checkDatasetWidth( 1 ) )
         return;
@@ -111,7 +111,7 @@ void Widget::setDataset( int column, const QVector< double > & data, const QStri
         model.setHeaderData( column, Qt::Horizontal, QVariant( title ) );
 }
 
-void Widget::setDataset( int column, const QVector< QPair< double, double > > & data, const QString& title )
+void Widget::setDataset( int column, const QVector< QPair< qreal, qreal > > & data, const QString& title )
 {
     if ( ! checkDatasetWidth( 2 ))
         return;
@@ -133,7 +133,7 @@ void Widget::setDataset( int column, const QVector< QPair< double, double > > & 
     }
 }
 
-void Widget::setDataCell( int row, int column, double data )
+void Widget::setDataCell( int row, int column, qreal data )
 {
     if ( ! checkDatasetWidth( 1 ) )
         return;
@@ -146,7 +146,7 @@ void Widget::setDataCell( int row, int column, double data )
     model.setData( index, QVariant( data ), Qt::DisplayRole );
 }
 
-void Widget::setDataCell( int row, int column, QPair< double, double > data )
+void Widget::setDataCell( int row, int column, QPair< qreal, qreal > data )
 {
     if ( ! checkDatasetWidth( 2 ))
         return;

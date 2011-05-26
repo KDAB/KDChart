@@ -47,10 +47,10 @@ namespace KDChart {
         virtual void paint(  PaintContext* ctx );
 /*
         virtual void calculateValueAndGapWidths( int rowCount,int colCount,
-				    double groupWidth,
-				    double& outBarWidth,
-				    double& outSpaceBetweenBars,
-				    double& outSpaceBetweenGroups );
+				    qreal groupWidth,
+				    qreal& outBarWidth,
+				    qreal& outSpaceBetweenBars,
+				    qreal& outSpaceBetweenGroups );
 */
     };
 

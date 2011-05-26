@@ -63,13 +63,13 @@ namespace KDChart {
     public:
         DataValueTextInfo();
         DataValueTextInfo( const QModelIndex& _index, const DataValueAttributes& _attrs,
-                           const QPointF& _pos, const QPointF& _markerPos, double _value );
+                           const QPointF& _pos, const QPointF& _markerPos, qreal _value );
         DataValueTextInfo( const DataValueTextInfo& other );
         QModelIndex index;
         DataValueAttributes attrs;
         QPointF pos;
         QPointF markerPos;
-        double value;
+        qreal value;
     };
 
     typedef QVector<DataValueTextInfo> DataValueTextInfoList;
@@ -109,7 +109,7 @@ namespace KDChart {
         const QFontMetrics * cachedFontMetrics( const QFont& font, QPaintDevice * paintDevice);
         const QFontMetrics cachedFontMetrics() const;
 
-        QString roundValues( double value,
+        QString roundValues( qreal value,
                              const int decimalPos,
                              const int decimalDigits ) const;
 
@@ -127,7 +127,7 @@ namespace KDChart {
                                  QPainter* painter,
                                  const QModelIndex& index,
                                  const QPointF& pos,
-                                 double value,
+                                 qreal value,
                                  bool justCalculateRect=false,
                                  QRectF* cumulatedBoundingRect=0 );
 

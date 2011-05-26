@@ -1382,8 +1382,8 @@ public:
 
     // attribute accessors
     inline bool hasAttributePosition() { return m_has_attr_position; }
-    inline double attributePosition() { return m_attr_position; }
-    inline void setAttributePosition(double a) { m_attr_position = a; m_has_attr_position = true; }
+    inline qreal attributePosition() { return m_attr_position; }
+    inline void setAttributePosition(qreal a) { m_attr_position = a; m_has_attr_position = true; }
     inline void clearAttributePosition() { m_has_attr_position = false; }
 
     // child element accessors
@@ -1397,7 +1397,7 @@ private:
     void clear(bool clear_all = true);
 
     // attribute data
-    double m_attr_position;
+    qreal m_attr_position;
     bool m_has_attr_position;
 
     // child element data
@@ -1423,53 +1423,53 @@ public:
 
     // attribute accessors
     inline bool hasAttributeStartX() { return m_has_attr_startX; }
-    inline double attributeStartX() { return m_attr_startX; }
-    inline void setAttributeStartX(double a) { m_attr_startX = a; m_has_attr_startX = true; }
+    inline qreal attributeStartX() { return m_attr_startX; }
+    inline void setAttributeStartX(qreal a) { m_attr_startX = a; m_has_attr_startX = true; }
     inline void clearAttributeStartX() { m_has_attr_startX = false; }
 
     inline bool hasAttributeStartY() { return m_has_attr_startY; }
-    inline double attributeStartY() { return m_attr_startY; }
-    inline void setAttributeStartY(double a) { m_attr_startY = a; m_has_attr_startY = true; }
+    inline qreal attributeStartY() { return m_attr_startY; }
+    inline void setAttributeStartY(qreal a) { m_attr_startY = a; m_has_attr_startY = true; }
     inline void clearAttributeStartY() { m_has_attr_startY = false; }
 
     inline bool hasAttributeEndX() { return m_has_attr_endX; }
-    inline double attributeEndX() { return m_attr_endX; }
-    inline void setAttributeEndX(double a) { m_attr_endX = a; m_has_attr_endX = true; }
+    inline qreal attributeEndX() { return m_attr_endX; }
+    inline void setAttributeEndX(qreal a) { m_attr_endX = a; m_has_attr_endX = true; }
     inline void clearAttributeEndX() { m_has_attr_endX = false; }
 
     inline bool hasAttributeEndY() { return m_has_attr_endY; }
-    inline double attributeEndY() { return m_attr_endY; }
-    inline void setAttributeEndY(double a) { m_attr_endY = a; m_has_attr_endY = true; }
+    inline qreal attributeEndY() { return m_attr_endY; }
+    inline void setAttributeEndY(qreal a) { m_attr_endY = a; m_has_attr_endY = true; }
     inline void clearAttributeEndY() { m_has_attr_endY = false; }
 
     inline bool hasAttributeCentralX() { return m_has_attr_centralX; }
-    inline double attributeCentralX() { return m_attr_centralX; }
-    inline void setAttributeCentralX(double a) { m_attr_centralX = a; m_has_attr_centralX = true; }
+    inline qreal attributeCentralX() { return m_attr_centralX; }
+    inline void setAttributeCentralX(qreal a) { m_attr_centralX = a; m_has_attr_centralX = true; }
     inline void clearAttributeCentralX() { m_has_attr_centralX = false; }
 
     inline bool hasAttributeCentralY() { return m_has_attr_centralY; }
-    inline double attributeCentralY() { return m_attr_centralY; }
-    inline void setAttributeCentralY(double a) { m_attr_centralY = a; m_has_attr_centralY = true; }
+    inline qreal attributeCentralY() { return m_attr_centralY; }
+    inline void setAttributeCentralY(qreal a) { m_attr_centralY = a; m_has_attr_centralY = true; }
     inline void clearAttributeCentralY() { m_has_attr_centralY = false; }
 
     inline bool hasAttributeFocalX() { return m_has_attr_focalX; }
-    inline double attributeFocalX() { return m_attr_focalX; }
-    inline void setAttributeFocalX(double a) { m_attr_focalX = a; m_has_attr_focalX = true; }
+    inline qreal attributeFocalX() { return m_attr_focalX; }
+    inline void setAttributeFocalX(qreal a) { m_attr_focalX = a; m_has_attr_focalX = true; }
     inline void clearAttributeFocalX() { m_has_attr_focalX = false; }
 
     inline bool hasAttributeFocalY() { return m_has_attr_focalY; }
-    inline double attributeFocalY() { return m_attr_focalY; }
-    inline void setAttributeFocalY(double a) { m_attr_focalY = a; m_has_attr_focalY = true; }
+    inline qreal attributeFocalY() { return m_attr_focalY; }
+    inline void setAttributeFocalY(qreal a) { m_attr_focalY = a; m_has_attr_focalY = true; }
     inline void clearAttributeFocalY() { m_has_attr_focalY = false; }
 
     inline bool hasAttributeRadius() { return m_has_attr_radius; }
-    inline double attributeRadius() { return m_attr_radius; }
-    inline void setAttributeRadius(double a) { m_attr_radius = a; m_has_attr_radius = true; }
+    inline qreal attributeRadius() { return m_attr_radius; }
+    inline void setAttributeRadius(qreal a) { m_attr_radius = a; m_has_attr_radius = true; }
     inline void clearAttributeRadius() { m_has_attr_radius = false; }
 
     inline bool hasAttributeAngle() { return m_has_attr_angle; }
-    inline double attributeAngle() { return m_attr_angle; }
-    inline void setAttributeAngle(double a) { m_attr_angle = a; m_has_attr_angle = true; }
+    inline qreal attributeAngle() { return m_attr_angle; }
+    inline void setAttributeAngle(qreal a) { m_attr_angle = a; m_has_attr_angle = true; }
     inline void clearAttributeAngle() { m_has_attr_angle = false; }
 
     inline bool hasAttributeType() { return m_has_attr_type; }
@@ -1496,34 +1496,34 @@ private:
     void clear(bool clear_all = true);
 
     // attribute data
-    double m_attr_startX;
+    qreal m_attr_startX;
     bool m_has_attr_startX;
 
-    double m_attr_startY;
+    qreal m_attr_startY;
     bool m_has_attr_startY;
 
-    double m_attr_endX;
+    qreal m_attr_endX;
     bool m_has_attr_endX;
 
-    double m_attr_endY;
+    qreal m_attr_endY;
     bool m_has_attr_endY;
 
-    double m_attr_centralX;
+    qreal m_attr_centralX;
     bool m_has_attr_centralX;
 
-    double m_attr_centralY;
+    qreal m_attr_centralY;
     bool m_has_attr_centralY;
 
-    double m_attr_focalX;
+    qreal m_attr_focalX;
     bool m_has_attr_focalX;
 
-    double m_attr_focalY;
+    qreal m_attr_focalY;
     bool m_has_attr_focalY;
 
-    double m_attr_radius;
+    qreal m_attr_radius;
     bool m_has_attr_radius;
 
-    double m_attr_angle;
+    qreal m_attr_angle;
     bool m_has_attr_angle;
 
     QString m_attr_type;
@@ -2264,13 +2264,13 @@ public:
 
     // attribute accessors
     // child element accessors
-    inline double elementX() { return m_x; }
-    void setElementX(double a);
+    inline qreal elementX() { return m_x; }
+    void setElementX(qreal a);
     inline bool hasElementX() const { return m_children & X; }
     void clearElementX();
 
-    inline double elementY() { return m_y; }
-    void setElementY(double a);
+    inline qreal elementY() { return m_y; }
+    void setElementY(qreal a);
     inline bool hasElementY() const { return m_children & Y; }
     void clearElementY();
 
@@ -2281,8 +2281,8 @@ private:
     // attribute data
     // child element data
     uint m_children;
-    double m_x;
-    double m_y;
+    qreal m_x;
+    qreal m_y;
     enum Child {
         X = 1,
         Y = 2,
@@ -2304,23 +2304,23 @@ public:
 
     // attribute accessors
     // child element accessors
-    inline double elementX() { return m_x; }
-    void setElementX(double a);
+    inline qreal elementX() { return m_x; }
+    void setElementX(qreal a);
     inline bool hasElementX() const { return m_children & X; }
     void clearElementX();
 
-    inline double elementY() { return m_y; }
-    void setElementY(double a);
+    inline qreal elementY() { return m_y; }
+    void setElementY(qreal a);
     inline bool hasElementY() const { return m_children & Y; }
     void clearElementY();
 
-    inline double elementWidth() { return m_width; }
-    void setElementWidth(double a);
+    inline qreal elementWidth() { return m_width; }
+    void setElementWidth(qreal a);
     inline bool hasElementWidth() const { return m_children & Width; }
     void clearElementWidth();
 
-    inline double elementHeight() { return m_height; }
-    void setElementHeight(double a);
+    inline qreal elementHeight() { return m_height; }
+    void setElementHeight(qreal a);
     inline bool hasElementHeight() const { return m_children & Height; }
     void clearElementHeight();
 
@@ -2331,10 +2331,10 @@ private:
     // attribute data
     // child element data
     uint m_children;
-    double m_x;
-    double m_y;
-    double m_width;
-    double m_height;
+    qreal m_x;
+    qreal m_y;
+    qreal m_width;
+    qreal m_height;
     enum Child {
         X = 1,
         Y = 2,
@@ -2358,13 +2358,13 @@ public:
 
     // attribute accessors
     // child element accessors
-    inline double elementWidth() { return m_width; }
-    void setElementWidth(double a);
+    inline qreal elementWidth() { return m_width; }
+    void setElementWidth(qreal a);
     inline bool hasElementWidth() const { return m_children & Width; }
     void clearElementWidth();
 
-    inline double elementHeight() { return m_height; }
-    void setElementHeight(double a);
+    inline qreal elementHeight() { return m_height; }
+    void setElementHeight(qreal a);
     inline bool hasElementHeight() const { return m_children & Height; }
     void clearElementHeight();
 
@@ -2375,8 +2375,8 @@ private:
     // attribute data
     // child element data
     uint m_children;
-    double m_width;
-    double m_height;
+    qreal m_width;
+    qreal m_height;
     enum Child {
         Width = 1,
         Height = 2,
@@ -2531,8 +2531,8 @@ public:
     inline float elementFloat() { return m_float; }
     void setElementFloat(float a);
 
-    inline double elementDouble() { return m_double; }
-    void setElementDouble(double a);
+    inline qreal elementDouble() { return m_qreal; }
+    void setElementDouble(qreal a);
 
     inline DomDate* elementDate() { return m_date; }
     void setElementDate(DomDate* a);
@@ -2592,7 +2592,7 @@ private:
     DomStringList* m_stringList;
     int m_number;
     float m_float;
-    double m_double;
+    qreal m_qreal;
     DomDate* m_date;
     DomTime* m_time;
     DomDateTime* m_dateTime;

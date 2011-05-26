@@ -54,7 +54,7 @@ private:
     bool enabled;
 // FIXME: What is this needed for? height is not referenced anywhere.
 //    int height;
-    double depth;
+    qreal depth;
     bool threeDBrushEnabled;
 };
 

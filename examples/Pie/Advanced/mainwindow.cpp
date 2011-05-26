@@ -61,7 +61,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     connect( m_timer, SIGNAL( timeout() ), this, SLOT( slotNextFrame() ) );
 }
 
-void MainWindow::on_startPositionSB_valueChanged( double pos )
+void MainWindow::on_startPositionSB_valueChanged( qreal pos )
 {
     const int intValue = static_cast<int>( pos );
     startPositionSL->blockSignals( true );
@@ -74,9 +74,9 @@ void MainWindow::on_startPositionSB_valueChanged( double pos )
 
 void MainWindow::on_startPositionSL_valueChanged( int pos )
 {
-    double doubleValue = static_cast<double>( pos );
+    qreal qrealValue = static_cast<qreal>( pos );
     startPositionSB->blockSignals( true );
-    startPositionSB->setValue( doubleValue  );
+    startPositionSB->setValue( qrealValue  );
     startPositionSB->blockSignals( false );
     static_cast<PolarCoordinatePlane*>( m_chart->coordinatePlane()
                                       )->setStartPosition( pos );
@@ -89,7 +89,7 @@ void MainWindow::on_explodeSubmitPB_clicked()
     m_chart->update();
 }
 
-void MainWindow::setExplodeFactor( int column, double value )
+void MainWindow::setExplodeFactor( int column, qreal value )
 {
     // Note:
     // We use the per-column getter method here, it will fall back
@@ -123,7 +123,7 @@ void MainWindow::slotNextFrame()
 
     setExplodeFactor(
         m_currentSlice,
-        static_cast<double>( m_currentFactor ) / 10.0 );
+        static_cast<qreal>( m_currentFactor ) / 10.0 );
     m_chart->update();
 }
 

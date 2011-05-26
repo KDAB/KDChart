@@ -74,7 +74,7 @@ public:
     }
 
 private:
-    double granularity;
+    qreal granularity;
 };
 
 KDCHART_IMPL_DERIVED_DIAGRAM( AbstractPolarDiagram, AbstractDiagram, PolarCoordinatePlane )

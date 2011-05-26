@@ -31,8 +31,8 @@
 namespace KDChart {
 
     struct TickInfo {
-        TickInfo( double percentage = 0, int depth = 0 );
-        double percentage;
+        TickInfo( qreal percentage = 0, int depth = 0 );
+        qreal percentage;
         int depth;
     };
 

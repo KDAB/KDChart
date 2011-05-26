@@ -109,7 +109,7 @@ MainWindow::MainWindow( QWidget* parent ) :
 
 // set custom axis labels at custom positions
 #if 0
-    QMap< double, QString > annotations;
+    QMap< qreal, QString > annotations;
     annotations[0.5] = "Left";
     annotations[3.5] = "Center";
     annotations[4.2] = "After Center";
@@ -118,7 +118,7 @@ MainWindow::MainWindow( QWidget* parent ) :
 #endif
 
     // Illustration of custom ticks
-    QList<double> ticks;
+    QList<qreal> ticks;
     ticks.append( 0.5 );
     ticks.append( 3.5 );
     ticks.append( 4.2 );

@@ -35,18 +35,18 @@ TernaryPoint::TernaryPoint()
     Q_ASSERT( !isValid() );
 }
 
-TernaryPoint::TernaryPoint( double a, double b )
+TernaryPoint::TernaryPoint( qreal a, qreal b )
     : m_a( -1.0 )
     , m_b( -1.0 )
 {
     set( a, b );
 }
 
-void TernaryPoint::set( double a, double b )
+void TernaryPoint::set( qreal a, qreal b )
 {
     if ( a >= 0.0 && a <= 1.0
          && b >= 0.0 && b <= 1.0
-         && 1.0 - a - b >= -2.0 * std::numeric_limits<double>::epsilon() ) {
+         && 1.0 - a - b >= -2.0 * std::numeric_limits<qreal>::epsilon() ) {
         m_a = a;
         m_b = b;
         Q_ASSERT( isValid() ); // more a test for isValid
@@ -62,7 +62,7 @@ bool TernaryPoint::isValid() const
     return
         m_a >= 0.0 && m_a <= 1.0
         && m_b >= 0.0 && m_b <= 1.0
-        && 1.0 - m_a + m_b >= - std::numeric_limits<double>::epsilon();
+        && 1.0 - m_a + m_b >= - std::numeric_limits<qreal>::epsilon();
 }
 
 QDebug operator<<( QDebug stream, const TernaryPoint& point )

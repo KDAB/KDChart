@@ -333,12 +333,12 @@ ThreeDLineAttributes LineDiagram::threeDLineAttributes( const QModelIndex& index
             KDChart::ThreeDLineAttributesRole ) );
 }
 
-double LineDiagram::threeDItemDepth( const QModelIndex& index ) const
+qreal LineDiagram::threeDItemDepth( const QModelIndex& index ) const
 {
     return threeDLineAttributes( index ).validDepth();
 }
 
-double LineDiagram::threeDItemDepth( int column ) const
+qreal LineDiagram::threeDItemDepth( int column ) const
 {
     return threeDLineAttributes( column ).validDepth();
 }
@@ -398,7 +398,7 @@ void LineDiagram::paintEvent ( QPaintEvent*)
 }
 
 
-double LineDiagram::valueForCellTesting( int row, int column,
+qreal LineDiagram::valueForCellTesting( int row, int column,
                                          bool& bOK,
                                          bool showHiddenCellsAsInvalid ) const
 {
@@ -406,7 +406,7 @@ double LineDiagram::valueForCellTesting( int row, int column,
         bOK = false;
         return 0.0;
     }
-    double value;
+    qreal value;
     if( showHiddenCellsAsInvalid && isHidden( model()->index( row, column, rootIndex() ) ) ) // checked
         bOK = false;
     else
@@ -419,7 +419,7 @@ double LineDiagram::valueForCellTesting( int row, int column,
 LineAttributes::MissingValuesPolicy LineDiagram::getCellValues(
       int row, int column,
       bool shiftCountedXValuesByHalfSection,
-      double& valueX, double& valueY ) const
+      qreal& valueX, qreal& valueY ) const
 {
     LineAttributes::MissingValuesPolicy policy = LineAttributes::MissingValuesPolicyIgnored;
 

@@ -61,7 +61,7 @@ public:
         }
 
 private:
-    double granularity;
+    qreal granularity;
     bool autoRotateLabels;
 };
 

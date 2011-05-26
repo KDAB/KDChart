@@ -46,9 +46,9 @@ const QPair<QPointF, QPointF> PercentLyingBarDiagram::calculateDataBoundaries() 
     //const int rowCount = compressor().modelDataRows();
     //const int colCount = compressor().modelDataColumns();
 
-    const double xMin = 0;
-    const double xMax = diagram()->model() ? diagram()->model()->rowCount( diagram()->rootIndex() ) : 0;
-    double yMin = 0.0, yMax = 100.0;
+    const qreal xMin = 0;
+    const qreal xMax = diagram()->model() ? diagram()->model()->rowCount( diagram()->rootIndex() ) : 0;
+    qreal yMin = 0.0, yMax = 100.0;
     /*for( int col = 0; col < colCount; ++col )
     {
         for( int row = 0; row < rowCount; ++row )
@@ -56,7 +56,7 @@ const QPair<QPointF, QPointF> PercentLyingBarDiagram::calculateDataBoundaries() 
             // Ordinate should begin at 0 the max value being the 100% pos
             const QModelIndex idx = diagram()->model()->index( row, col, diagram()->rootIndex() );
             // only positive values are handled
-            double value = diagram()->model()->data( idx ).toDouble();
+            qreal value = diagram()->model()->data( idx ).toDouble();
             if ( value > 0 )
                 yMax = qMax( yMax, value );
         }
@@ -88,13 +88,13 @@ void PercentLyingBarDiagram::paint( PaintContext* ctx )
     const int colCount = compressor().modelDataColumns();
 
     BarAttributes ba = diagram()->barAttributes();
-    double barWidth = 0;
-    double maxDepth = 0;
-    double width = boundLeft.y() - boundRight.y();
+    qreal barWidth = 0;
+    qreal maxDepth = 0;
+    qreal width = boundLeft.y() - boundRight.y();
     QPointF testVector = boundRight - boundLeft;
-    double groupWidth = width/ (rowCount + 2);
-    double spaceBetweenBars = 0;
-    double spaceBetweenGroups = 0;
+    qreal groupWidth = width/ (rowCount + 2);
+    qreal spaceBetweenBars = 0;
+    qreal spaceBetweenGroups = 0;
 
     if ( ba.useFixedBarWidth() ) {
         barWidth = ba.fixedBarWidth();
@@ -111,7 +111,7 @@ void PercentLyingBarDiagram::paint( PaintContext* ctx )
 
     // maxLimit: allow the space between bars to be larger until area.width()
     // is covered by the groups.
-    double maxLimit = rowCount * (groupWidth + ((colCount-1) * ba.fixedDataValueGap()) );
+    qreal maxLimit = rowCount * (groupWidth + ((colCount-1) * ba.fixedDataValueGap()) );
 
 
     //Pending Michel: FixMe
@@ -129,9 +129,9 @@ void PercentLyingBarDiagram::paint( PaintContext* ctx )
                                 barWidth, spaceBetweenBars, spaceBetweenGroups );
     
     DataValueTextInfoList list;
-    const double maxValue = 100.0; // always 100 %
-    double sumValues = 0;
-    QVector <double > sumValuesVector;
+    const qreal maxValue = 100.0; // always 100 %
+    qreal sumValues = 0;
+    QVector <qreal > sumValuesVector;
 
     //calculate sum of values for each column and store
     for( int row = 0; row < rowCount; ++row )
@@ -152,7 +152,7 @@ void PercentLyingBarDiagram::paint( PaintContext* ctx )
     // calculate stacked percent value
     for( int curRow = rowCount - 1; curRow >= 0; --curRow )
     {
-        double offset = spaceBetweenGroups;
+        qreal offset = spaceBetweenGroups;
         if( ba.useFixedBarWidth() )
             offset -= ba.fixedBarWidth();
         
@@ -161,7 +161,7 @@ void PercentLyingBarDiagram::paint( PaintContext* ctx )
 
         for( int col = 0; col < colCount ; ++col )
         {
-        	double threeDOffset = 0.0;
+        	qreal threeDOffset = 0.0;
             const CartesianDiagramDataCompressor::CachePosition position( curRow, col );
             const CartesianDiagramDataCompressor::DataPoint p = compressor().data( position );
             QModelIndex sourceIndex = attributesModel()->mapToSource( p.index );
@@ -180,9 +180,9 @@ void PercentLyingBarDiagram::paint( PaintContext* ctx )
                 barWidth = (width - (offset*rowCount))/ rowCount;
             }
 
-            const double value = qMax( p.value, -p.value );
-            double stackedValues = 0.0;
-            double key = 0.0;
+            const qreal value = qMax( p.value, -p.value );
+            qreal stackedValues = 0.0;
+            qreal key = 0.0;
             
             // calculate stacked percent value
             // we only take in account positives values for now.
@@ -203,7 +203,7 @@ void PercentLyingBarDiagram::paint( PaintContext* ctx )
                 previousPoint = ctx->coordinatePlane()->translate( QPointF( ( ( stackedValues - value) / sumValuesVector.at( curRow ) * maxValue ), rowCount - key ) );
             }
             
-            const double barHeight = point.x() - previousPoint.x();
+            const qreal barHeight = point.x() - previousPoint.x();
             
             point.setX ( point.x() - barHeight );
 

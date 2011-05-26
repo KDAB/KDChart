@@ -356,12 +356,12 @@ ThreeDBarAttributes BarDiagram::threeDBarAttributes( const QModelIndex& index ) 
             KDChart::ThreeDBarAttributesRole ) );
 }
 
-double BarDiagram::threeDItemDepth( const QModelIndex& index ) const
+qreal BarDiagram::threeDItemDepth( const QModelIndex& index ) const
 {
     return threeDBarAttributes( index ).validDepth();
 }
 
-double BarDiagram::threeDItemDepth( int column ) const
+qreal BarDiagram::threeDItemDepth( int column ) const
 {
     return threeDBarAttributes( column ).validDepth();
 }

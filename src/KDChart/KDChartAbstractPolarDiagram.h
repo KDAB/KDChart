@@ -44,10 +44,10 @@ namespace KDChart {
             QWidget* parent = 0, PolarCoordinatePlane* plane = 0 );
         virtual ~AbstractPolarDiagram() {}
 
-        virtual double valueTotals () const = 0;
-        virtual double numberOfValuesPerDataset() const = 0;
-        virtual double numberOfDatasets() const { return 1; };
-        virtual double numberOfGridRings() const = 0;
+        virtual qreal valueTotals () const = 0;
+        virtual qreal numberOfValuesPerDataset() const = 0;
+        virtual qreal numberOfDatasets() const { return 1; };
+        virtual qreal numberOfGridRings() const = 0;
 
         const PolarCoordinatePlane * polarCoordinatePlane() const;
 

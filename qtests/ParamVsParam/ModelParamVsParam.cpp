@@ -75,8 +75,8 @@ void ModelParamVsParam::timeout()
 		for (int c = 0; c < columnCount(); c++)
 		{
 			// First column values in range 0..10, second column in range 10..20 etc.
-			double	offset(c * 10);
-			double	value(offset + (10.0 * rand()) / RAND_MAX);
+			qreal	offset(c * 10);
+			qreal	value(offset + (10.0 * rand()) / RAND_MAX);
 			setData(index(r, c), value);
 		}
 

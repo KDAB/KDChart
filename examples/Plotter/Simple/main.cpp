@@ -50,9 +50,9 @@ int main( int argc, char** argv )
 #else
     const int points = 100000;
 #endif
-    const double xMin = -2 * PI;
-    const double xMax = 2 * PI;
-    const double step = ( xMax - xMin ) / ( points - 1 );
+    const qreal xMin = -2 * PI;
+    const qreal xMax = 2 * PI;
+    const qreal step = ( xMax - xMin ) / ( points - 1 );
 
     QStandardItemModel model( points, 4 );
 
@@ -61,7 +61,7 @@ int main( int argc, char** argv )
     QVariantList column2;
     QVariantList column3;
 
-    double x = xMin;
+    qreal x = xMin;
     for( int n = 0; n < points; ++n, x += step) {
         QModelIndex index = model.index( n, 0 );
         model.setData( index, QVariant( x ) );

@@ -56,12 +56,12 @@ struct PolarCoordinatePlane::CoordinateTransformation
     // represents the distance of the diagram coordinate origin to the
     // origin of the coordinate plane space:
     QPointF originTranslation;
-    double radiusUnit;
-    double angleUnit;
+    qreal radiusUnit;
+    qreal angleUnit;
 
     ZoomParameters zoom;
 
-    static QPointF polarToCartesian( double R, double theta )
+    static QPointF polarToCartesian( qreal R, qreal theta )
     {
         return QPointF( R * cos( DEGTORAD( theta  ) ), R * sin( DEGTORAD( theta ) ) );
     }
@@ -69,15 +69,15 @@ struct PolarCoordinatePlane::CoordinateTransformation
     inline const QPointF translate( const QPointF& diagramPoint ) const
     {
         // calculate the polar coordinates
-        const double x = diagramPoint.x() * radiusUnit;
-        const double y = ( diagramPoint.y() * angleUnit) - 90;
+        const qreal x = diagramPoint.x() * radiusUnit;
+        const qreal y = ( diagramPoint.y() * angleUnit) - 90;
         // convert to cartesian coordinates
         QPointF cartesianPoint = polarToCartesian( x, y );
         cartesianPoint.setX( cartesianPoint.x() * zoom.xFactor );
         cartesianPoint.setY( cartesianPoint.y() * zoom.yFactor );
 
         QPointF newOrigin = originTranslation;
-        double minOrigin = qMin( newOrigin.x(), newOrigin.y() );
+        qreal minOrigin = qMin( newOrigin.x(), newOrigin.y() );
         newOrigin.setX( newOrigin.x() + minOrigin * ( 1 - zoom.xCenter * 2 ) * zoom.xFactor );
         newOrigin.setY( newOrigin.y() + minOrigin * ( 1 - zoom.yCenter * 2 ) * zoom.yFactor );
 
@@ -236,14 +236,14 @@ void PolarCoordinatePlane::layoutDiagrams()
             Q_ASSERT( polarDiagram );
             QPair<QPointF, QPointF> dataBoundariesPair = polarDiagram->dataBoundaries();
 
-            const double angleUnit = 360 / polarDiagram->valueTotals();
+            const qreal angleUnit = 360 / polarDiagram->valueTotals();
 //qDebug() << "--------------------------------------------------------";
-            const double radius = qAbs( dataBoundariesPair.first.y() ) + dataBoundariesPair.second.y();
+            const qreal radius = qAbs( dataBoundariesPair.first.y() ) + dataBoundariesPair.second.y();
 //qDebug() << radius <<"="<<dataBoundariesPair.second.y();
-            const double diagramWidth = radius * 2; // == height
-            const double planeWidth = d->contentRect.width();
-            const double planeHeight = d->contentRect.height();
-            const double radiusUnit = qMin( planeWidth, planeHeight ) / diagramWidth;
+            const qreal diagramWidth = radius * 2; // == height
+            const qreal planeWidth = d->contentRect.width();
+            const qreal planeHeight = d->contentRect.height();
+            const qreal radiusUnit = qMin( planeWidth, planeHeight ) / diagramWidth;
 //qDebug() << radiusUnit <<"=" << "qMin( "<<planeWidth<<","<< planeHeight <<") / "<<diagramWidth;
             QPointF coordinateOrigin = QPointF ( planeWidth / 2, planeHeight / 2 );
             coordinateOrigin += d->contentRect.topLeft();
@@ -312,27 +312,27 @@ qreal PolarCoordinatePlane::startPosition() const
         :  d->coordinateTransformations.first().startPosition;
 }
 
-double PolarCoordinatePlane::zoomFactorX() const
+qreal PolarCoordinatePlane::zoomFactorX() const
 {
     return d->coordinateTransformations.isEmpty()
         ? 1.0
         : d->coordinateTransformations.first().zoom.xFactor;
 }
 
-double PolarCoordinatePlane::zoomFactorY() const
+qreal PolarCoordinatePlane::zoomFactorY() const
 {
     return d->coordinateTransformations.isEmpty()
         ? 1.0
         : d->coordinateTransformations.first().zoom.yFactor;
 }
 
-void PolarCoordinatePlane::setZoomFactors( double factorX, double factorY )
+void PolarCoordinatePlane::setZoomFactors( qreal factorX, qreal factorY )
 {
     setZoomFactorX( factorX );
     setZoomFactorY( factorY );
 }
 
-void PolarCoordinatePlane::setZoomFactorX( double factor )
+void PolarCoordinatePlane::setZoomFactorX( qreal factor )
 {
     for( CoordinateTransformationList::iterator it = d->coordinateTransformations.begin(); 
                                                 it != d->coordinateTransformations.end();
@@ -343,7 +343,7 @@ void PolarCoordinatePlane::setZoomFactorX( double factor )
     }
 }
 
-void PolarCoordinatePlane::setZoomFactorY( double factor )
+void PolarCoordinatePlane::setZoomFactorY( qreal factor )
 {
     for( CoordinateTransformationList::iterator it = d->coordinateTransformations.begin(); 
                                                 it != d->coordinateTransformations.end();

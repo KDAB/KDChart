@@ -620,7 +620,7 @@ void GraphicsScene::itemClicked( const QModelIndex& idx )
 
 void GraphicsScene::itemDoubleClicked( const QModelIndex& idx )
 {
-    emit doubleClicked( idx );
+    emit qrealClicked( idx );
 }
 
 void GraphicsScene::setDragSource( GraphicsItem* item )

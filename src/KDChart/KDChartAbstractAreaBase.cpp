@@ -147,12 +147,12 @@ void AbstractAreaBase::paintBackgroundAttributes( QPainter& painter, const QRect
             painter.drawPixmap( ol, attributes.pixmap() );
         } else {
             QMatrix m;
-            double zW = (double)rect.width()  / (double)attributes.pixmap().width();
-            double zH = (double)rect.height() / (double)attributes.pixmap().height();
+            qreal zW = (qreal)rect.width()  / (qreal)attributes.pixmap().width();
+            qreal zH = (qreal)rect.height() / (qreal)attributes.pixmap().height();
             switch( attributes.pixmapMode() ) {
             case BackgroundAttributes::BackgroundPixmapModeScaled:
             {
-                double z;
+                qreal z;
                 z = qMin( zW, zH );
                 m.scale( z, z );
             }

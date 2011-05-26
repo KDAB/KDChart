@@ -80,8 +80,8 @@ private:
     Position position;
     QRect geometry;
     int customTickLength;
-    QMap< double, QString > annotations;
-    QList< double > customTicksPositions;
+    QMap< qreal, QString > annotations;
+    QList< qreal > customTicksPositions;
     mutable QStringList cachedHeaderLabels;
     mutable qreal cachedLabelHeight;
     mutable qreal cachedLabelWidth;

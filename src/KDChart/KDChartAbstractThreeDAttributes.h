@@ -43,11 +43,11 @@ public:
     void setEnabled( bool enabled );
     bool isEnabled() const;
 
-    void setDepth( double depth );
-    double depth() const;
+    void setDepth( qreal depth );
+    qreal depth() const;
 
     // returns the depth(), if is isEnabled() is true, otherwise returns 0.0
-    double validDepth() const;
+    qreal validDepth() const;
 
     bool isThreeDBrushEnabled() const;
     void setThreeDBrushEnabled( bool enabled );

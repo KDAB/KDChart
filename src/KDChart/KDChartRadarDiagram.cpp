@@ -75,12 +75,12 @@ const QPair<QPointF, QPointF> RadarDiagram::calculateDataBoundaries () const
     if ( !checkInvariants(true) ) return QPair<QPointF, QPointF>( QPointF( 0, 0 ), QPointF( 0, 0 ) );
     const int rowCount = model()->rowCount(rootIndex());
     const int colCount = model()->columnCount(rootIndex());
-    double xMin = 0.0;
-    double xMax = colCount;
-    double yMin = 0, yMax = 0;
+    qreal xMin = 0.0;
+    qreal xMax = colCount;
+    qreal yMin = 0, yMax = 0;
     for ( int iCol=0; iCol<colCount; ++iCol ) {
         for ( int iRow=0; iRow< rowCount; ++iRow ) {
-            double value = model()->data( model()->index( iRow, iCol, rootIndex() ) ).toDouble(); // checked
+            qreal value = model()->data( model()->index( iRow, iCol, rootIndex() ) ).toDouble(); // checked
             yMax = qMax( yMax, value );
             yMin = qMin( yMin, value );
         }
@@ -168,9 +168,9 @@ void RadarDiagram::paint( PaintContext* ctx,
 
     int iRow, iCol;
 
-    const double min = dataBoundaries().first.y();
-    const double r = qAbs( min ) + dataBoundaries().second.y();
-    const double step = ( r - qAbs( min ) ) / ( numberOfGridRings() );
+    const qreal min = dataBoundaries().first.y();
+    const qreal r = qAbs( min ) + dataBoundaries().second.y();
+    const qreal step = ( r - qAbs( min ) ) / ( numberOfGridRings() );
     
     RadarCoordinatePlane* plane = dynamic_cast<RadarCoordinatePlane*>(ctx->coordinatePlane());
     TextAttributes ta = plane->textAttributes();
@@ -199,7 +199,7 @@ void RadarDiagram::paint( PaintContext* ctx,
         for ( iCol=0; iCol < colCount; ++iCol ) {
             for ( iRow=0; iRow < rowCount; ++iRow ) {
                 QModelIndex index = model()->index( iRow, iCol, rootIndex() ); // checked
-                const double value = model()->data( index ).toDouble();
+                const qreal value = model()->data( index ).toDouble();
                 QPointF point = scaleToRealPosition( QPointF( value, iRow ), ctx->rectangle(), destRect, *ctx->coordinatePlane() );
                 d->appendDataValueTextInfoToList(
                         this, d->dataValueInfoList, index, 0,
@@ -240,7 +240,7 @@ void RadarDiagram::paint( PaintContext* ctx,
             QPointF point0;
             for ( iRow=0; iRow < rowCount; ++iRow ) {
                 QModelIndex index = model()->index( iRow, iCol, rootIndex() ); // checked
-                const double value = model()->data( index ).toDouble();
+                const qreal value = model()->data( index ).toDouble();
                 QPointF point = scaleToRealPosition( QPointF( value, d->reverseData ? ( rowCount - iRow ) : iRow ), ctx->rectangle(), destRect, *ctx->coordinatePlane() );
                 polygon.append( point );
                 if( ! iRow )
@@ -268,19 +268,19 @@ void RadarDiagram::resize ( const QSizeF& )
 }
 
 /*virtual*/
-double RadarDiagram::valueTotals () const
+qreal RadarDiagram::valueTotals () const
 {
     return model()->rowCount(rootIndex());
 }
 
 /*virtual*/
-double RadarDiagram::numberOfValuesPerDataset() const
+qreal RadarDiagram::numberOfValuesPerDataset() const
 {
     return model() ? model()->rowCount(rootIndex()) : 0.0;
 }
 
 /*virtual*/
-double RadarDiagram::numberOfGridRings() const
+qreal RadarDiagram::numberOfGridRings() const
 {
     return 5; // FIXME
 }

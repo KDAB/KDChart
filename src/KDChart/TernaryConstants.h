@@ -25,9 +25,9 @@
 
 #include <QPointF>
 
-extern const double Sqrt3;
-extern const double TriangleWidth;
-extern const double TriangleHeight;
+extern const qreal Sqrt3;
+extern const qreal TriangleWidth;
+extern const qreal TriangleHeight;
 extern const QPointF TriangleTop;
 extern const QPointF TriangleBottomLeft;
 extern const QPointF TriangleBottomRight;
@@ -37,7 +37,7 @@ extern const QPointF AxisVector_B_A;
 extern const QPointF Norm_B_A;
 extern const QPointF AxisVector_B_C;
 extern const QPointF Norm_B_C;
-extern const double RelMarkerLength;
+extern const qreal RelMarkerLength;
 extern const QPointF FullMarkerDistanceBC;
 extern const QPointF FullMarkerDistanceAC;
 extern const QPointF FullMarkerDistanceBA;

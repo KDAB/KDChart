@@ -56,11 +56,11 @@ public:
     virtual void resize ( const QSizeF& area );
     
     /** \reimpl */
-    virtual double valueTotals () const;
+    virtual qreal valueTotals () const;
     /** \reimpl */
-    virtual double numberOfValuesPerDataset() const;
+    virtual qreal numberOfValuesPerDataset() const;
     /** \reimpl */
-    virtual double numberOfGridRings() const;
+    virtual qreal numberOfGridRings() const;
     
     /**
      * if val is true the diagram will mirror the diagram datapoints

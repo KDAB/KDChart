@@ -40,7 +40,7 @@ private slots:
   void initTestCase()
   {
       m_widget = new Widget(0);
-      QVector< double > vec0;
+      QVector< qreal > vec0;
       vec0.append( -2 );
       vec0.append( -1 );
       vec0.append( 0 );
@@ -48,7 +48,7 @@ private slots:
       vec0.append( 2 );
       m_widget->setDataset( 0, vec0, "Linear" );
 
-      QVector< double > vec1;
+      QVector< qreal > vec1;
       vec1.append( -4 );
       vec1.append( -2 );
       vec1.append( 0 );
@@ -56,7 +56,7 @@ private slots:
       vec1.append( 4 );
       m_widget->setDataset( 1, vec1, "Quadratic" );
 
-      QVector< double > vec2;
+      QVector< qreal > vec2;
       vec2.append( -8 );
       vec2.append( -2 );
       vec2.append( 0 );

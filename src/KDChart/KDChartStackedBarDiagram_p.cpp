@@ -45,16 +45,16 @@ const QPair<QPointF, QPointF> StackedBarDiagram::calculateDataBoundaries() const
     const int rowCount = compressor().modelDataRows();
     const int colCount = compressor().modelDataColumns();
 
-    double xMin = 0;
-    double xMax = diagram()->model() ? diagram()->model()->rowCount( diagram()->rootIndex() ) : 0;
-    double yMin = 0, yMax = 0;
+    qreal xMin = 0;
+    qreal xMax = diagram()->model() ? diagram()->model()->rowCount( diagram()->rootIndex() ) : 0;
+    qreal yMin = 0, yMax = 0;
 
     bool bStarting = true;
     for( int row = 0; row < rowCount; ++row )
     {
         // calculate sum of values per column - Find out stacked Min/Max
-        double stackedValues = 0.0;
-        double negativeStackedValues = 0.0;
+        qreal stackedValues = 0.0;
+        qreal negativeStackedValues = 0.0;
         for ( int col = 0; col < colCount ; ++col )
         {
             const CartesianDiagramDataCompressor::CachePosition position( row, col );
@@ -106,12 +106,12 @@ void StackedBarDiagram::paint(  PaintContext* ctx )
     const int colCount = compressor().modelDataColumns();
 
     BarAttributes ba = diagram()->barAttributes();
-    double barWidth = 0;
-    double maxDepth = 0;
-    double width = boundRight.x() - boundLeft.x();
-    double groupWidth = width/ (rowCount + 2);
-    double spaceBetweenBars = 0;
-    double spaceBetweenGroups = 0;
+    qreal barWidth = 0;
+    qreal maxDepth = 0;
+    qreal width = boundRight.x() - boundLeft.x();
+    qreal groupWidth = width/ (rowCount + 2);
+    qreal spaceBetweenBars = 0;
+    qreal spaceBetweenGroups = 0;
 
     if ( ba.useFixedBarWidth() ) {
         barWidth = ba.fixedBarWidth();
@@ -128,7 +128,7 @@ void StackedBarDiagram::paint(  PaintContext* ctx )
 
     // maxLimit: allow the space between bars to be larger until area.width()
     // is covered by the groups.
-    double maxLimit = rowCount * (groupWidth + ((colCount-1) * ba.fixedDataValueGap()) );
+    qreal maxLimit = rowCount * (groupWidth + ((colCount-1) * ba.fixedDataValueGap()) );
 
 
     //Pending Michel: FixMe
@@ -148,7 +148,7 @@ void StackedBarDiagram::paint(  PaintContext* ctx )
     DataValueTextInfoList list;
     for( int col = 0; col < colCount; ++col )
     {
-        double offset = spaceBetweenGroups;
+        qreal offset = spaceBetweenGroups;
         if( ba.useFixedBarWidth() )
             offset -= ba.fixedBarWidth();
         
@@ -162,9 +162,9 @@ void StackedBarDiagram::paint(  PaintContext* ctx )
  
             const QModelIndex index = attributesModel()->mapToSource( p.index );
             ThreeDBarAttributes threeDAttrs = diagram()->threeDBarAttributes( index );
-            const double value = p.value;
-            double stackedValues = 0.0;
-            double key = 0.0;
+            const qreal value = p.value;
+            qreal stackedValues = 0.0;
+            qreal key = 0.0;
 
             if ( threeDAttrs.isEnabled() ) {
                 if ( barWidth > 0 )
@@ -186,11 +186,11 @@ void StackedBarDiagram::paint(  PaintContext* ctx )
                 key = point.key;
             }
 
-            const double usedDepth = threeDAttrs.depth();
+            const qreal usedDepth = threeDAttrs.depth();
 
             QPointF point = ctx->coordinatePlane()->translate( QPointF( key, stackedValues ) );
 
-            const double dy = point.y() - usedDepth;
+            const qreal dy = point.y() - usedDepth;
             if ( dy < 0 ) {
                 threeDAttrs.setDepth( point.y() - 1 );
                 diagram()->setThreeDBarAttributes( threeDAttrs );
@@ -198,7 +198,7 @@ void StackedBarDiagram::paint(  PaintContext* ctx )
 
             point.rx() += offset / 2;
             const QPointF previousPoint = ctx->coordinatePlane()->translate( QPointF( key, stackedValues - value ) );
-            const double barHeight = previousPoint.y() - point.y();
+            const qreal barHeight = previousPoint.y() - point.y();
 
             const QRectF rect( point, QSizeF( barWidth , barHeight ) );
             appendDataValueTextInfoToList( diagram(), list, index, PositionPoints( rect ),

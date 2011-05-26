@@ -39,7 +39,7 @@
 
 using namespace KDChart;
 
-TickInfo::TickInfo( double _percentage, int _depth )
+TickInfo::TickInfo( qreal _percentage, int _depth )
     : percentage ( _percentage )
     , depth( _depth )
 {
@@ -48,7 +48,7 @@ TickInfo::TickInfo( double _percentage, int _depth )
 bool KDChart::operator==(const TickInfo& left, const TickInfo& right)
 {
     return fabs( left.percentage - right.percentage )
-        <= std::numeric_limits<double>::epsilon()
+        <= std::numeric_limits<qreal>::epsilon()
         && left.depth == right.depth;
 }
 
@@ -73,7 +73,7 @@ void TernaryGrid::drawGrid( PaintContext* context )
 
     // translate the points and see how many grid lines we can draw:
     const int MaxDepth = 3;
-    double xPixels = plane->translate( TriangleBottomRight ).x() -
+    qreal xPixels = plane->translate( TriangleBottomRight ).x() -
                      plane->translate( TriangleBottomLeft ).x();
     int granularity = 20;
     if ( xPixels > 10 * GridLineDistanceTreshold ) granularity = 10;
@@ -90,7 +90,7 @@ void TernaryGrid::drawGrid( PaintContext* context )
 
     QVector<QLineF> lines[MaxDepth];
     {Q_FOREACH( const TickInfo& tick, m_tickInfo ) {
-        const double& percent = tick.percentage;
+        const qreal& percent = tick.percentage;
         {   // draw parallels to B
             TernaryPoint ternaryStart( percent, 1.0 - percent );
             TernaryPoint ternaryEnd( 0.0, 1.0 - percent );
@@ -158,7 +158,7 @@ void TernaryGrid::drawGrid( PaintContext* context )
                        percentages.end() );
 
     {Q_FOREACH( const TickInfo& tick, percentages ) {
-        const double& percent = tick.percentage;
+        const qreal& percent = tick.percentage;
         {   // BC axis markers:
             const QPointF markerDistance( FullMarkerDistanceBC
                                           / ( tick.depth + 1 ) );
@@ -194,10 +194,10 @@ DataDimensionsList TernaryGrid::calculateGrid( const DataDimensionsList& ) const
 
 QPair<QSizeF, QSizeF> TernaryGrid::requiredMargins() const
 {
-//    double topMargin = ( FullMarkerDistanceBA * RelMarkerLength ).x();
-    double topMargin = 0.0; // no markers on tip of triangle
-    double leftMargin = fabs( FullMarkerDistanceBA.x() );
-    double bottomMargin = fabs( FullMarkerDistanceBC.y() );
+//    qreal topMargin = ( FullMarkerDistanceBA * RelMarkerLength ).x();
+    qreal topMargin = 0.0; // no markers on tip of triangle
+    qreal leftMargin = fabs( FullMarkerDistanceBA.x() );
+    qreal bottomMargin = fabs( FullMarkerDistanceBC.y() );
 //     qDebug() << "TernaryGrid::requiredMargins: leftMargin:" << leftMargin
 //              << ", bottomMargin:" << bottomMargin
 //              << ", topMargin:" << topMargin

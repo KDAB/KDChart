@@ -92,21 +92,21 @@ void Plotter::Private::changedProperties()
 */
 const QPointF Plotter::PlotterType::project(
     QPointF point, QPointF maxLimits,
-    double z, const QModelIndex& index ) const
+    qreal z, const QModelIndex& index ) const
 {
     Q_UNUSED( maxLimits );
     ThreeDLineAttributes td = diagram()->threeDLineAttributes( index );
 
     //Pending Michel FIXME - the rotation does not work as expected atm
-    double xrad = DEGTORAD( td.lineXRotation() );
-    double yrad = DEGTORAD( td.lineYRotation() );
+    qreal xrad = DEGTORAD( td.lineXRotation() );
+    qreal yrad = DEGTORAD( td.lineYRotation() );
     QPointF ret = QPointF(point.x()*cos( yrad ) + z * sin( yrad ) ,  point.y()*cos( xrad ) - z * sin( xrad ) );
     return ret;
 }
 
 void Plotter::PlotterType::paintThreeDLines(
     PaintContext* ctx, const QModelIndex& index,
-    const QPointF& from, const QPointF& to, const double depth  )
+    const QPointF& from, const QPointF& to, const qreal depth  )
 {
     // retrieve the boundaries
     const QPair< QPointF, QPointF > boundaries = diagram()->dataBoundaries();
@@ -216,13 +216,13 @@ ReverseMapper& Plotter::PlotterType::reverseMapper()
 LineAttributes::MissingValuesPolicy LineDiagram::LineDiagramType::getCellValues(
     int row, int column,
     bool shiftCountedXValuesByHalfSection,
-    double& valueX, double& valueY ) const
+    qreal& valueX, qreal& valueY ) const
 {
     return m_private->diagram->getCellValues( row, column, shiftCountedXValuesByHalfSection,
                                               valueX, valueY );
 }
 
-double LineDiagram::LineDiagramType::valueForCellTesting(
+qreal LineDiagram::LineDiagramType::valueForCellTesting(
     int row, int column,
     bool& bOK,
     bool showHiddenCellsAsInvalid) const
@@ -265,7 +265,7 @@ void Plotter::PlotterType::paintAreas(
 }
 
 #if 0
-double LineDiagram::LineDiagramType::valueForCell( int row, int column )
+qreal LineDiagram::LineDiagramType::valueForCell( int row, int column )
 {
     return diagram()->valueForCell( row, column );
 }

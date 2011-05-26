@@ -100,12 +100,12 @@ const QPair<QPointF, QPointF> PolarDiagram::calculateDataBoundaries () const
     if ( !checkInvariants(true) ) return QPair<QPointF, QPointF>( QPointF( 0, 0 ), QPointF( 0, 0 ) );
     const int rowCount = model()->rowCount(rootIndex());
     const int colCount = model()->columnCount(rootIndex());
-    double xMin = 0.0;
-    double xMax = colCount;
-    double yMin = 0, yMax = 0;
+    qreal xMin = 0.0;
+    qreal xMax = colCount;
+    qreal yMin = 0, yMax = 0;
     for ( int iCol=0; iCol<colCount; ++iCol ) {
         for ( int iRow=0; iRow< rowCount; ++iRow ) {
-            double value = model()->data( model()->index( iRow, iCol, rootIndex() ) ).toDouble(); // checked
+            qreal value = model()->data( model()->index( iRow, iCol, rootIndex() ) ).toDouble(); // checked
             yMax = qMax( yMax, value );
             yMin = qMin( yMin, value );
         }
@@ -167,7 +167,7 @@ void PolarDiagram::paint( PaintContext* ctx,
         for ( iCol=0; iCol < colCount; ++iCol ) {
             for ( iRow=0; iRow < rowCount; ++iRow ) {
                 QModelIndex index = model()->index( iRow, iCol, rootIndex() ); // checked
-                const double value = model()->data( index ).toDouble();
+                const qreal value = model()->data( index ).toDouble();
                 QPointF point = coordinatePlane()->translate(
                         QPointF( value, iRow ) ) + ctx->rectangle().topLeft();
                 //qDebug() << point;
@@ -208,7 +208,7 @@ void PolarDiagram::paint( PaintContext* ctx,
             QPointF point0;
             for ( iRow=0; iRow < rowCount; ++iRow ) {
                 QModelIndex index = model()->index( iRow, iCol, rootIndex() ); // checked
-                const double value = model()->data( index ).toDouble();
+                const qreal value = model()->data( index ).toDouble();
                 QPointF point = coordinatePlane()->translate(
                         QPointF( value, iRow ) ) + ctx->rectangle().topLeft();
                 polygon.append( point );
@@ -238,19 +238,19 @@ void PolarDiagram::resize ( const QSizeF& )
 }
 
 /*virtual*/
-double PolarDiagram::valueTotals () const
+qreal PolarDiagram::valueTotals () const
 {
     return model()->rowCount(rootIndex());
 }
 
 /*virtual*/
-double PolarDiagram::numberOfValuesPerDataset() const
+qreal PolarDiagram::numberOfValuesPerDataset() const
 {
     return model() ? model()->rowCount(rootIndex()) : 0.0;
 }
 
 /*virtual*/
-double PolarDiagram::numberOfGridRings() const
+qreal PolarDiagram::numberOfGridRings() const
 {
     return 5; // FIXME
 }

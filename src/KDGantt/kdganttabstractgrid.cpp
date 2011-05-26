@@ -30,7 +30,7 @@ using namespace KDGantt;
 /*!\class KDGantt::AbstractGrid kdganttabstractgrid.h KDGanttAbstractGrid
  * \ingroup KDGantt
  * \brief Abstract baseclass for grids. A grid is used to convert between
- * QModelIndex'es and gantt chart values (doubles) and to paint the
+ * QModelIndex'es and gantt chart values (qreals) and to paint the
  * background and header of the view.
  *
  * \see KDGantt::DateTimeGrid

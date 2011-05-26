@@ -49,7 +49,7 @@ namespace KDChart {
         {
         }
 
-        ZoomParameters( double xFactor, double yFactor, const QPointF& center )
+        ZoomParameters( qreal xFactor, qreal yFactor, const QPointF& center )
         : xFactor( xFactor ),
           yFactor( yFactor ),
           xCenter( center.x() ),
@@ -67,11 +67,11 @@ namespace KDChart {
             return QPointF( xCenter, yCenter );
         }
 
-        double xFactor;
-        double yFactor;
+        qreal xFactor;
+        qreal yFactor;
 
-        double xCenter;
-        double yCenter;
+        qreal xCenter;
+        qreal yCenter;
     };
 }
 

@@ -355,7 +355,7 @@ void LeveyJenningsDiagram::setModel( QAbstractItemModel* model )
 // evaluate whether this is enough or we need some better one or even boost here
 void LeveyJenningsDiagram::calculateMeanAndStandardDeviation() const
 {
-    QVector< double > values;
+    QVector< qreal > values;
     // first fetch all values
     const QAbstractItemModel& m = *model();
     const int rowCount = m.rowCount( rootIndex() );
@@ -365,15 +365,15 @@ void LeveyJenningsDiagram::calculateMeanAndStandardDeviation() const
         const QVariant var = m.data( m.index( row, 1, rootIndex() ) );
         if( !var.isValid() )
             continue;
-        const double value = var.toDouble();
+        const qreal value = var.toDouble();
         if( ISNAN( value ) )
             continue;
         values << value;
     }
 
-    double sum = 0.0;
-    double sumSquares = 0.0;
-    KDAB_FOREACH( double value, values )
+    qreal sum = 0.0;
+    qreal sumSquares = 0.0;
+    KDAB_FOREACH( qreal value, values )
     {
         sum += value;
         sumSquares += value * value;
@@ -382,7 +382,7 @@ void LeveyJenningsDiagram::calculateMeanAndStandardDeviation() const
     const int N = values.count();
 
     d->calculatedMeanValue = sum / N;
-    d->calculatedStandardDeviation = sqrt( ( static_cast< double >( N ) * sumSquares - sum * sum ) / ( N * ( N - 1 ) ) );
+    d->calculatedStandardDeviation = sqrt( ( static_cast< qreal >( N ) * sumSquares - sum * sum ) / ( N * ( N - 1 ) ) );
 }
 
 // calculates the largest QDate not greater than \a dt.
@@ -422,8 +422,8 @@ static QDateTime ceilHour( const QDateTime& dt )
 /** \reimpl */
 const QPair<QPointF, QPointF> LeveyJenningsDiagram::calculateDataBoundaries() const
 {
-    const double yMin = d->expectedMeanValue - 4 * d->expectedStandardDeviation;
-    const double yMax = d->expectedMeanValue + 4 * d->expectedStandardDeviation;
+    const qreal yMin = d->expectedMeanValue - 4 * d->expectedStandardDeviation;
+    const qreal yMax = d->expectedMeanValue + 4 * d->expectedStandardDeviation;
 
     d->setYAxisRange();
 
@@ -432,8 +432,8 @@ const QPair<QPointF, QPointF> LeveyJenningsDiagram::calculateDataBoundaries() co
     const unsigned int minTime = range.first.toTime_t();
     const unsigned int maxTime = range.second.toTime_t();
 
-    const double xMin = minTime / static_cast< double >( 24 * 60 * 60 );
-    const double xMax = maxTime / static_cast< double >( 24 * 60 * 60 ) - xMin;
+    const qreal xMin = minTime / static_cast< qreal >( 24 * 60 * 60 );
+    const qreal xMax = maxTime / static_cast< qreal >( 24 * 60 * 60 ) - xMin;
 
     const QPointF bottomLeft( QPointF( 0, yMin ) );
     const QPointF topRight( QPointF( xMax, yMax ) );
@@ -496,14 +496,14 @@ void LeveyJenningsDiagram::drawChanges( PaintContext* ctx )
 
     KDAB_FOREACH( const QDateTime& dt, d->fluidicsPackChanges )
     {
-        const double xValue = ( dt.toTime_t() - minTime ) / static_cast< double >( 24 * 60 * 60 );
+        const qreal xValue = ( dt.toTime_t() - minTime ) / static_cast< qreal >( 24 * 60 * 60 );
         const QPointF point( xValue, 0.0 );
         drawFluidicsPackChangedSymbol( ctx, point );
     }
 
     KDAB_FOREACH( const QDateTime& dt, d->sensorChanges )
     {
-        const double xValue = ( dt.toTime_t() - minTime ) / static_cast< double >( 24 * 60 * 60 );
+        const qreal xValue = ( dt.toTime_t() - minTime ) / static_cast< qreal >( 24 * 60 * 60 );
         const QPointF point( xValue, 0.0 );
         drawSensorChangedSymbol( ctx, point );
     }
@@ -550,16 +550,16 @@ void LeveyJenningsDiagram::paint( PaintContext* ctx )
         painter->setPen( pen( lotIndex ) );
 
         QVariant vValue = m.data( valueIndex );
-        double value = vValue.toDouble();
+        qreal value = vValue.toDouble();
         const int lot = m.data( lotIndex ).toInt();
         const bool ok = m.data( okIndex ).toBool();
         const QDateTime time = m.data( timeIndex ).toDateTime();
-        const double xValue = ( time.toTime_t() - minTime ) / static_cast< double >( 24 * 60 * 60 );
+        const qreal xValue = ( time.toTime_t() - minTime ) / static_cast< qreal >( 24 * 60 * 60 );
 
         QVariant vExpectedMean = m.data( expectedMeanIndex );
-        const double expectedMean = vExpectedMean.toDouble();
+        const qreal expectedMean = vExpectedMean.toDouble();
         QVariant vExpectedSD = m.data( expectedSDIndex );
-        const double expectedSD = vExpectedSD.toDouble();
+        const qreal expectedSD = vExpectedSD.toDouble();
 
         QPointF point = ctx->coordinatePlane()->translate( QPointF( xValue, value ) );
 

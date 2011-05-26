@@ -122,13 +122,13 @@ namespace KDChart {
 /*        LineAttributes::MissingValuesPolicy getCellValues(
             int row, int column,
             bool shiftCountedXValuesByHalfSection,
-            double& valueX, double& valueY ) const;
-        double valueForCellTesting( int row, int column,
+            qreal& valueX, qreal& valueY ) const;
+        qreal valueForCellTesting( int row, int column,
                                     bool& bOK,
                                     bool showHiddenCellsAsInvalid = false ) const;*/
         void paintAreas( PaintContext* ctx, const QModelIndex& index,
                          const QList<QPolygonF>& areas, const uint transparency );
-/*        double valueForCell( int row, int column );*/
+/*        qreal valueForCell( int row, int column );*/
         void appendDataValueTextInfoToList(
             AbstractDiagram * diagram,
             DataValueTextInfoList & list,
@@ -140,11 +140,11 @@ namespace KDChart {
 
 
         const QPointF project( QPointF point, QPointF maxLimits,
-                               double z, const QModelIndex& index ) const;
+                               qreal z, const QModelIndex& index ) const;
 
         void paintThreeDLines(
             PaintContext* ctx, const QModelIndex& index,
-            const QPointF& from, const QPointF& to, const double depth  );
+            const QPointF& from, const QPointF& to, const qreal depth  );
 
         void paintElements( PaintContext* ctx,
                             DataValueTextInfoList&,

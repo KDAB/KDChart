@@ -67,7 +67,7 @@ MainWindow::MainWindow( QWidget* parent, Qt::WindowFlags flags )
 
     connect( ui->ganttView->graphicsView(), SIGNAL( clicked( const QModelIndex& ) ),
              this, SLOT( slotClicked( const QModelIndex& ) ) );
-    connect( ui->ganttView->graphicsView(), SIGNAL( doubleClicked( const QModelIndex& ) ),
+    connect( ui->ganttView->graphicsView(), SIGNAL( qrealClicked( const QModelIndex& ) ),
              this, SLOT( slotDoubleClicked( const QModelIndex& ) ) );
 }
 
@@ -361,7 +361,7 @@ void MainWindow::slotClicked( const QModelIndex& index )
 }
 void MainWindow::slotDoubleClicked( const QModelIndex& index )
 {
-    statusBar()->showMessage( tr( "(%1,%2,_,%4) double clicked" )
+    statusBar()->showMessage( tr( "(%1,%2,_,%4) qreal clicked" )
                           .arg( index.row() )
                           .arg( index.column() )
                           .arg( ( quint64 )index.model() ) );

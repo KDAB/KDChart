@@ -54,7 +54,7 @@ namespace KDXML {
     void KDCHARTSERIALIZER_EXPORT setBoolAttribute( QDomElement& element,
                                                     const QString& attrName, bool value );
     void KDCHARTSERIALIZER_EXPORT setDoubleAttribute( QDomElement& element,
-                                                      const QString& attrName, double value );
+                                                      const QString& attrName, qreal value );
 
     void KDCHARTSERIALIZER_EXPORT createNodeWithAttribute( QDomDocument& doc, QDomNode& parent,
                                                            const QString& elementName,
@@ -76,7 +76,7 @@ namespace KDXML {
     void KDCHARTSERIALIZER_EXPORT createIntNode( QDomDocument& doc, QDomNode& parent,
                                                  const QString& elementName, int value );
     void KDCHARTSERIALIZER_EXPORT createDoubleNode( QDomDocument& doc, QDomNode& parent,
-                                                    const QString& elementName, double value );
+                                                    const QString& elementName, qreal value );
     void KDCHARTSERIALIZER_EXPORT createRealNode( QDomDocument& doc, QDomNode& parent,
                                                   const QString& elementName, qreal value );
     void KDCHARTSERIALIZER_EXPORT createStringNode( QDomDocument& doc, QDomNode& parent,
@@ -129,13 +129,13 @@ namespace KDXML {
 
     bool KDCHARTSERIALIZER_EXPORT findStringAttribute( const QDomElement& e, const QString & name, QString& attr );
     bool KDCHARTSERIALIZER_EXPORT findIntAttribute(    const QDomElement& e, const QString & name, int&  attr );
-    bool KDCHARTSERIALIZER_EXPORT findDoubleAttribute( const QDomElement& e, const QString & name, double& attr );
+    bool KDCHARTSERIALIZER_EXPORT findDoubleAttribute( const QDomElement& e, const QString & name, qreal& attr );
     bool KDCHARTSERIALIZER_EXPORT findBoolAttribute(   const QDomElement& e, const QString & name, bool& attr );
 
     bool KDCHARTSERIALIZER_EXPORT readIntNode( const QDomElement& element, int& value );
     bool KDCHARTSERIALIZER_EXPORT readStringNode( const QDomElement& element, QString& value );
     bool KDCHARTSERIALIZER_EXPORT readStringListNode( const QDomElement& element, QStringList& value );
-    bool KDCHARTSERIALIZER_EXPORT readDoubleNode( const QDomElement& element, double& value );
+    bool KDCHARTSERIALIZER_EXPORT readDoubleNode( const QDomElement& element, qreal& value );
     bool KDCHARTSERIALIZER_EXPORT readRealNode( const QDomElement& element, qreal& value );
     bool KDCHARTSERIALIZER_EXPORT readBoolNode( const QDomElement& element, bool& value );
     bool KDCHARTSERIALIZER_EXPORT readOrientationNode( const QDomElement& element, Qt::Orientation& value );

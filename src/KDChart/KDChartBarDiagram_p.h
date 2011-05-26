@@ -71,10 +71,10 @@ public:
         }
 
     void calculateValueAndGapWidths( int rowCount, int colCount,
-                                     double groupWidth,
-                                     double& barWidth,
-                                     double& spaceBetweenBars,
-                                     double& spaceBetweenGroups );
+                                     qreal groupWidth,
+                                     qreal& barWidth,
+                                     qreal& spaceBetweenBars,
+                                     qreal& spaceBetweenGroups );
 */
 
     Qt::Orientation orientation;
@@ -92,7 +92,7 @@ public:
 /*
     BarType barType;
 private:
-    double maxDepth;
+    qreal maxDepth;
 */
 };
 
@@ -138,12 +138,12 @@ KDCHART_IMPL_DERIVED_DIAGRAM( BarDiagram, AbstractCartesianDiagram, CartesianCoo
             bool paintMarkers );
 
         void paintBars( PaintContext* ctx, const QModelIndex& index,
-            const QRectF& bar, double& maxDepth );
+            const QRectF& bar, qreal& maxDepth );
         void calculateValueAndGapWidths( int rowCount, int colCount,
-            double groupWidth,
-            double& barWidth,
-            double& spaceBetweenBars,
-            double& spaceBetweenGroups );
+            qreal groupWidth,
+            qreal& barWidth,
+            qreal& spaceBetweenBars,
+            qreal& spaceBetweenGroups );
 
         BarDiagram::Private* m_private;
     };

@@ -323,7 +323,7 @@ void MainWindow::on_paintMarkersCB_toggled( bool checked )
         for ( int j=0; j< rowCount; ++j ) {
             QModelIndex index = m_lines->model()->index( j, iColumn, QModelIndex() );
             QBrush brush = qVariantValue<QBrush>( m_lines->model()->headerData( iColumn, Qt::Vertical, DatasetBrushRole ) );
-            double value = m_lines->model()->data( index ).toDouble();
+            qreal value = m_lines->model()->data( index ).toDouble();
             /* Set a specific color - marker for a specific value */
             if ( value == 8 ) {
                 m_lines->setDataValueAttributes( index, yellowAttributes );
@@ -389,7 +389,7 @@ void MainWindow::on_transparencySB_valueChanged( int alpha )
     on_displayAreasCB_toggled( true );
 }
 
-void MainWindow::on_zoomFactorSB_valueChanged( double factor )
+void MainWindow::on_zoomFactorSB_valueChanged( qreal factor )
 {
     if ( factor > 1 ) {
         hSBar->setVisible( true );

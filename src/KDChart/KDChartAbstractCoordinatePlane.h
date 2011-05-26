@@ -143,33 +143,33 @@ namespace KDChart {
          * @return The zoom factor in horizontal direction, that is applied
          * to all coordinate transformations.
          */
-        virtual double zoomFactorX() const { return 1.0; }
+        virtual qreal zoomFactorX() const { return 1.0; }
 
         /**
          * @return The zoom factor in vertical direction, that is applied
          * to all coordinate transformations.
          */
-        virtual double zoomFactorY() const { return 1.0; }
+        virtual qreal zoomFactorY() const { return 1.0; }
 
         /**
          * Sets both zoom factors in one go.
          * \sa setZoomFactorX,setZoomFactorY
          */
-        virtual void setZoomFactors( double factorX, double factorY ) { Q_UNUSED( factorX ); Q_UNUSED( factorY ); }
+        virtual void setZoomFactors( qreal factorX, qreal factorY ) { Q_UNUSED( factorX ); Q_UNUSED( factorY ); }
 
         /**
          * Sets the zoom factor in horizontal direction, that is applied
          * to all coordinate transformations.
          * @param factor The new zoom factor
          */
-        virtual void setZoomFactorX( double  factor ) { Q_UNUSED( factor ); }
+        virtual void setZoomFactorX( qreal  factor ) { Q_UNUSED( factor ); }
 
         /**
          * Sets the zoom factor in vertical direction, that is applied
          * to all coordinate transformations.
          * @param factor The new zoom factor
          */
-        virtual void setZoomFactorY( double factor ) { Q_UNUSED( factor ); }
+        virtual void setZoomFactorY( qreal factor ) { Q_UNUSED( factor ); }
 
         /**
          * @return The center point (in value coordinates) of the

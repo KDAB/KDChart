@@ -47,11 +47,11 @@ const QPair<QPointF, QPointF> NormalBarDiagram::calculateDataBoundaries() const
     const int rowCount = compressor().modelDataRows();
     const int colCount = compressor().modelDataColumns();
 
-    double xMin = 0.0;
-    double xMax = diagram()->model() ? diagram()->model()->rowCount( diagram()->rootIndex() ) : 0;
-    double yMin = 0.0, yMax = 0.0;
+    qreal xMin = 0.0;
+    qreal xMax = diagram()->model() ? diagram()->model()->rowCount( diagram()->rootIndex() ) : 0;
+    qreal yMin = 0.0, yMax = 0.0;
 
-    double usedDepth = 0;
+    qreal usedDepth = 0;
 
     bool bStarting = true;
     for ( int column = 0; column < colCount; ++column )
@@ -60,7 +60,7 @@ const QPair<QPointF, QPointF> NormalBarDiagram::calculateDataBoundaries() const
         {
             const CartesianDiagramDataCompressor::CachePosition position( row, column );
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
-            const double value = ISNAN( point.value ) ? 0.0 : point.value;
+            const qreal value = ISNAN( point.value ) ? 0.0 : point.value;
 
             QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );
             ThreeDBarAttributes threeDAttrs = diagram()->threeDBarAttributes( sourceIndex );
@@ -115,14 +115,14 @@ void NormalBarDiagram::paint(  PaintContext* ctx )
     ThreeDBarAttributes threeDAttrs = diagram()->threeDBarAttributes();
 
     //we need some margin (hence the 2.5) for the three dimensional depth
-    const double threeDepthMargin = ( threeDAttrs.isEnabled() ) ? 2.5 * threeDAttrs.depth() : 0;
+    const qreal threeDepthMargin = ( threeDAttrs.isEnabled() ) ? 2.5 * threeDAttrs.depth() : 0;
 
-    double barWidth = 0;
-    double maxDepth = 0;
-    double width = boundRight.x() - boundLeft.x() - threeDepthMargin;
-    double groupWidth = width / rowCount;
-    double spaceBetweenBars = 0;
-    double spaceBetweenGroups = 0;
+    qreal barWidth = 0;
+    qreal maxDepth = 0;
+    qreal width = boundRight.x() - boundLeft.x() - threeDepthMargin;
+    qreal groupWidth = width / rowCount;
+    qreal spaceBetweenBars = 0;
+    qreal spaceBetweenGroups = 0;
 
     if ( ba.useFixedBarWidth() ) {
 
@@ -140,7 +140,7 @@ void NormalBarDiagram::paint(  PaintContext* ctx )
 
     // maxLimit: allow the space between bars to be larger until area.width()
     // is covered by the groups.
-    double maxLimit = rowCount * (groupWidth + ((colCount-1) * ba.fixedDataValueGap()) );
+    qreal maxLimit = rowCount * (groupWidth + ((colCount-1) * ba.fixedDataValueGap()) );
 
     //Pending Michel: FixMe
     if ( ba.useFixedDataValueGap() ) {
@@ -161,7 +161,7 @@ void NormalBarDiagram::paint(  PaintContext* ctx )
 
     for( int row = 0; row < rowCount; ++row )
     {
-        double offset = -groupWidth/2 + spaceBetweenGroups/2;
+        qreal offset = -groupWidth/2 + spaceBetweenGroups/2;
 
         if ( ba.useFixedDataValueGap() )
         {
@@ -191,11 +191,11 @@ void NormalBarDiagram::paint(  PaintContext* ctx )
                 QPointF bottomPoint =  ctx->coordinatePlane()->translate( QPointF( point.key, 0 ) );
 
                 if ( threeDAttrs.isEnabled() ) {
-                    const double usedDepth = threeDAttrs.depth()/4;
+                    const qreal usedDepth = threeDAttrs.depth()/4;
                     topPoint.setY( topPoint.y() + usedDepth + 1.0 );
                 }
 
-                const double barHeight = bottomPoint.y() - topPoint.y();
+                const qreal barHeight = bottomPoint.y() - topPoint.y();
                 topPoint.setX( topPoint.x() + offset );
                 const QRectF rect( topPoint, QSizeF( barWidth, barHeight ) );
                 appendDataValueTextInfoToList( diagram(), list, sourceIndex, PositionPoints( rect ),

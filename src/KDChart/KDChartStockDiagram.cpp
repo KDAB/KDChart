@@ -346,14 +346,14 @@ void StockDiagram::resize( const QSizeF &size )
     setDataBoundariesDirty();
 }
 
-double StockDiagram::threeDItemDepth( int column ) const
+qreal StockDiagram::threeDItemDepth( int column ) const
 {
     Q_UNUSED( column );
     //FIXME: Implement threeD functionality
     return 1.0;
 }
 
-double StockDiagram::threeDItemDepth( const QModelIndex &index ) const
+qreal StockDiagram::threeDItemDepth( const QModelIndex &index ) const
 {
     Q_UNUSED( index );
     //FIXME: Implement threeD functionality

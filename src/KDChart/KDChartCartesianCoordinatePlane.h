@@ -61,24 +61,24 @@ namespace KDChart {
         /**
          * \sa setZoomFactorX, setZoomCenter
          */
-        virtual double zoomFactorX() const;
+        virtual qreal zoomFactorX() const;
         /**
          * \sa setZoomFactorY, setZoomCenter
          */
-        virtual double zoomFactorY() const;
+        virtual qreal zoomFactorY() const;
 
         /**
          * \sa setZoomFactorX,setZoomFactorY
          */
-        virtual void setZoomFactors( double factorX, double factorY );
+        virtual void setZoomFactors( qreal factorX, qreal factorY );
         /**
          * \sa zoomFactorX, setZoomCenter
          */
-        virtual void setZoomFactorX( double factor );
+        virtual void setZoomFactorX( qreal factor );
         /**
          * \sa zoomFactorY, setZoomCenter
          */
-        virtual void setZoomFactorY( double factor );
+        virtual void setZoomFactorY( qreal factor );
 
         /**
          * \sa setZoomCenter, setZoomFactorX, setZoomFactorY
@@ -464,8 +464,8 @@ namespace KDChart {
     protected:
         void paintEvent ( QPaintEvent* );
         void layoutDiagrams();
-        bool doneSetZoomFactorX( double factor );
-        bool doneSetZoomFactorY( double factor );
+        bool doneSetZoomFactorX( qreal factor );
+        bool doneSetZoomFactorY( qreal factor );
         bool doneSetZoomCenter( const QPointF& center );
 
         void handleFixedDataCoordinateSpaceRelation( const QRectF& geometry );

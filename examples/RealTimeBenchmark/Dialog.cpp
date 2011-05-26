@@ -115,12 +115,12 @@ private slots:
         }
 
         beginInsertRows(QModelIndex(),_count, _count);
-        _timeValues.append(double(_count));
+        _timeValues.append(qreal(_count));
         for (int i=0; i < 96; ++i)
         {
-            double value;
+            qreal value;
             if (_count > i)
-                value = 10.0 + 40.0 * (0.5 + (cos(M_PI  + M_PI *(double(_count-i)/100.0))/2.0));
+                value = 10.0 + 40.0 * (0.5 + (cos(M_PI  + M_PI *(qreal(_count-i)/100.0))/2.0));
             else
                 value = 10.0;
 
@@ -132,8 +132,8 @@ private slots:
     }
 
 private:
-    QVector<double>             _timeValues;
-    QVector<QVector<double> >   _dataValues;
+    QVector<qreal>             _timeValues;
+    QVector<QVector<qreal> >   _dataValues;
     int                         _count;
     QTimer*                     _pTimer;
 };

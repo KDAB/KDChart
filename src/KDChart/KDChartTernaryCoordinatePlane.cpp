@@ -103,10 +103,10 @@ void TernaryCoordinatePlane::layoutDiagrams()
     // now calculate isometric projection, x and y widget coordinate
     // units, and location of (0.0, 0.0) in diagram coordinates
     QPointF zeroZeroPoint = d->diagramRectContainer.bottomLeft();
-    double w = d->diagramRectContainer.width();
-    double h = d->diagramRectContainer.height();
-    double usableWidth;
-    double usableHeight;
+    qreal w = d->diagramRectContainer.width();
+    qreal h = d->diagramRectContainer.height();
+    qreal usableWidth;
+    qreal usableHeight;
 
     if ( TriangleHeight * w > h ) {
         // shorten width:
@@ -126,8 +126,8 @@ void TernaryCoordinatePlane::layoutDiagrams()
 
     // now move zeroZeroPoint so that it does not include the tick marks
     {
-        double descent = diagramNativeRectangle.height() - TriangleHeight;
-        double rightShift = -diagramNativeRectangle.x();
+        qreal descent = diagramNativeRectangle.height() - TriangleHeight;
+        qreal rightShift = -diagramNativeRectangle.x();
         zeroZeroPoint += QPointF( rightShift * d->xUnit, descent * d->yUnit );
     }
 

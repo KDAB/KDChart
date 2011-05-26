@@ -106,8 +106,8 @@ public:
 
     virtual void resize( const QSizeF &size );
 
-    virtual double threeDItemDepth( int column ) const;
-    virtual double threeDItemDepth( const QModelIndex &index ) const;
+    virtual qreal threeDItemDepth( int column ) const;
+    virtual qreal threeDItemDepth( const QModelIndex &index ) const;
 
 protected:
     virtual const QPair<QPointF, QPointF> calculateDataBoundaries() const;

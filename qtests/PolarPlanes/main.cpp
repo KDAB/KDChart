@@ -75,7 +75,7 @@ private slots:
     {
         m_plane->addDiagram(  m_pie );
         QVERIFY( m_plane->startPosition() ==  0.0 );
-        double pos = 45;
+        qreal pos = 45;
         m_plane->addDiagram(  m_pie );
         m_plane->setStartPosition( pos );
         QVERIFY( m_plane->startPosition() ==  pos );

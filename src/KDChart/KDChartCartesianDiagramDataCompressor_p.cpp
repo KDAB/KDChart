@@ -575,10 +575,10 @@ const CartesianDiagramDataCompressor::DataPoint& CartesianDiagramDataCompressor:
 QPair< QPointF, QPointF > CartesianDiagramDataCompressor::dataBoundaries() const
 {
     const int colCount = modelDataColumns();
-    double xMin = std::numeric_limits< double >::quiet_NaN();
-    double xMax = std::numeric_limits< double >::quiet_NaN();
-    double yMin = std::numeric_limits< double >::quiet_NaN();
-    double yMax = std::numeric_limits< double >::quiet_NaN();
+    qreal xMin = std::numeric_limits< qreal >::quiet_NaN();
+    qreal xMax = std::numeric_limits< qreal >::quiet_NaN();
+    qreal yMin = std::numeric_limits< qreal >::quiet_NaN();
+    qreal yMax = std::numeric_limits< qreal >::quiet_NaN();
 
     for( int column = 0; column < colCount; ++column )
     {
@@ -590,8 +590,8 @@ QPair< QPointF, QPointF > CartesianDiagramDataCompressor::dataBoundaries() const
             if( !p.index.isValid() )
                 retrieveModelData( CachePosition( row, column ) );
 
-            const double valueX = ISNAN( p.key ) ? 0.0 : p.key;
-            const double valueY = ISNAN( p.value ) ? 0.0 : p.value;
+            const qreal valueX = ISNAN( p.key ) ? 0.0 : p.key;
+            const qreal valueY = ISNAN( p.value ) ? 0.0 : p.value;
             if( ISNAN( xMin ) )
             {
                 xMin = valueX;
@@ -667,8 +667,8 @@ void CartesianDiagramDataCompressor::retrieveModelData( const CachePosition& pos
 
             const QModelIndex& xIndex = indexes.first();
             const QModelIndex& yIndex = indexes.last();
-            const double xData = m_modelCache.data( xIndex );
-            const double yData = m_modelCache.data( yIndex );
+            const qreal xData = m_modelCache.data( xIndex );
+            const qreal yData = m_modelCache.data( yIndex );
             result.index = xIndex;
             result.key   = xData;
             result.value = yData;
@@ -676,10 +676,10 @@ void CartesianDiagramDataCompressor::retrieveModelData( const CachePosition& pos
         else
         {
             if ( ! indexes.isEmpty() ) {
-                result.value = std::numeric_limits< double >::quiet_NaN();
+                result.value = std::numeric_limits< qreal >::quiet_NaN();
                 result.key = 0.0;
                 Q_FOREACH( const QModelIndex& index, indexes ) {
-                    const double value = m_modelCache.data( index );
+                    const qreal value = m_modelCache.data( index );
                     if( !ISNAN( value ) )
                     {
                         result.value = ISNAN( result.value ) ? value : result.value + value;
@@ -816,7 +816,7 @@ void CartesianDiagramDataCompressor::calculateSampleStepWidth()
     }; // ... after that, having a model at all becomes impractical
 
     // we want at least 17 samples per data point, using a prime step width
-    const double WantedSamples = 17;
+    const qreal WantedSamples = 17;
     if ( WantedSamples > indexesPerPixel() ) {
         m_sampleStep = 1;
     } else {

@@ -84,7 +84,7 @@ private:
 
     Usage:
     <pre>
-    double angle = 90.0;
+    qreal angle = 90.0;
     CachedLabel label;
     label.paint( font, tr("Label"), angle );
     </pre>
@@ -112,8 +112,8 @@ public:
     void setPen( const QPen& );
     const QPen& pen() const;
 
-    void setAngle( double angle );
-    double angle() const;
+    void setAngle( qreal angle );
+    qreal angle() const;
 
     // reimpl PrerenderedElement:
     const QPixmap& pixmap() const;
@@ -136,7 +136,7 @@ private:
     QString m_text;
     QBrush m_brush;
     QPen m_pen;
-    double m_angle;
+    qreal m_angle;
 
     // these are valid once the label has been rendered:
     mutable QPixmap m_pixmap;

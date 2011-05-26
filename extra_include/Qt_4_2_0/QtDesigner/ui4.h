@@ -1801,8 +1801,8 @@ public:
     inline float elementFloat() { return m_float; }
     void setElementFloat(float a);
 
-    inline double elementDouble() { return m_double; }
-    void setElementDouble(double a);
+    inline qreal elementDouble() { return m_qreal; }
+    void setElementDouble(qreal a);
 
     inline DomDate* elementDate() { return m_date; }
     void setElementDate(DomDate* a);
@@ -1844,7 +1844,7 @@ private:
     DomStringList* m_stringList;
     int m_number;
     float m_float;
-    double m_double;
+    qreal m_qreal;
     DomDate* m_date;
     DomTime* m_time;
     DomDateTime* m_dateTime;

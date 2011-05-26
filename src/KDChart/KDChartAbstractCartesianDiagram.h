@@ -122,9 +122,9 @@ namespace KDChart {
 
     protected:
         /** @return the 3D item depth of the model index \a index */
-        virtual double threeDItemDepth( const QModelIndex& index ) const = 0;
+        virtual qreal threeDItemDepth( const QModelIndex& index ) const = 0;
         /** @return the 3D item depth of the data set \a column */
-        virtual double threeDItemDepth( int column ) const = 0;
+        virtual qreal threeDItemDepth( int column ) const = 0;
     };
 
 }

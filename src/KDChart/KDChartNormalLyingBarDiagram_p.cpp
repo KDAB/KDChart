@@ -47,9 +47,9 @@ const QPair<QPointF, QPointF> NormalLyingBarDiagram::calculateDataBoundaries() c
     const int rowCount = compressor().modelDataRows();
     const int colCount = compressor().modelDataColumns();
 
-    double xMin = 0.0;
-    double xMax = diagram()->model() ? diagram()->model()->rowCount( diagram()->rootIndex() ) : 0;
-    double yMin = 0.0, yMax = 0.0;
+    qreal xMin = 0.0;
+    qreal xMax = diagram()->model() ? diagram()->model()->rowCount( diagram()->rootIndex() ) : 0;
+    qreal yMin = 0.0, yMax = 0.0;
 
     bool bStarting = true;
     for ( int column = 0; column < colCount; ++column )
@@ -58,7 +58,7 @@ const QPair<QPointF, QPointF> NormalLyingBarDiagram::calculateDataBoundaries() c
         {
             const CartesianDiagramDataCompressor::CachePosition position( row, column );
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
-            const double value = ISNAN( point.value ) ? 0.0 : point.value;
+            const qreal value = ISNAN( point.value ) ? 0.0 : point.value;
             // this is always true yMin can be 0 in case all values
             // are the same
             // same for yMax it can be zero if all values are negative
@@ -101,12 +101,12 @@ void NormalLyingBarDiagram::paint(  PaintContext* ctx )
     const int colCount = attributesModel()->columnCount(attributesModelRootIndex());
 
     BarAttributes ba = diagram()->barAttributes();
-    double barWidth = 0;
-    double maxDepth = 0;
-    double width = boundLeft.y() - boundRight.y();
-    double groupWidth = width / (rowCount + 2);
-    double spaceBetweenBars = 0;
-    double spaceBetweenGroups = 0;
+    qreal barWidth = 0;
+    qreal maxDepth = 0;
+    qreal width = boundLeft.y() - boundRight.y();
+    qreal groupWidth = width / (rowCount + 2);
+    qreal spaceBetweenBars = 0;
+    qreal spaceBetweenGroups = 0;
 
     if ( ba.useFixedBarWidth() ) {
 
@@ -124,7 +124,7 @@ void NormalLyingBarDiagram::paint(  PaintContext* ctx )
 
     // maxLimit: allow the space between bars to be larger until area.width()
     // is covered by the groups.
-    double maxLimit = rowCount * (groupWidth + ((colCount-1) * ba.fixedDataValueGap()) );
+    qreal maxLimit = rowCount * (groupWidth + ((colCount-1) * ba.fixedDataValueGap()) );
 
     //Pending Michel: FixMe
     if ( ba.useFixedDataValueGap() ) {
@@ -145,7 +145,7 @@ void NormalLyingBarDiagram::paint(  PaintContext* ctx )
 
     for( int row = rowCount - 1; row >= 0; --row )
     {
-        double offset = (groupWidth + spaceBetweenGroups) / 2.0 - spaceBetweenBars;
+        qreal offset = (groupWidth + spaceBetweenGroups) / 2.0 - spaceBetweenBars;
 
         if ( ba.useFixedDataValueGap() )
         {
@@ -174,7 +174,7 @@ void NormalLyingBarDiagram::paint(  PaintContext* ctx )
             const qreal value = point.value;//attributesModel()->data( sourceIndex ).toDouble();
             QPointF topPoint = ctx->coordinatePlane()->translate( QPointF( value, rowCount - (point.key + 0.5) ) );
             QPointF bottomPoint =  ctx->coordinatePlane()->translate( QPointF( 0, rowCount - point.key ) );
-            const double barHeight = topPoint.x() - bottomPoint.x();
+            const qreal barHeight = topPoint.x() - bottomPoint.x();
             topPoint.ry() += offset;
             topPoint.rx() -= barHeight;
             const QRectF rect( topPoint, QSizeF( barHeight, barWidth ) );

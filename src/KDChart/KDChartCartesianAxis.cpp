@@ -524,8 +524,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
     // If the diagram is horizontal, we need to inverse the x/y ranges
     if ( diagramIsVertical ) {
-        /*double yStart = dimY.start;
-        double yEnd = dimY.end;
+        /*qreal yStart = dimY.start;
+        qreal yEnd = dimY.end;
         dimY.start = dimX.start;
         dimY.end = dimX.end;
         dimX.start = yStart;
@@ -589,7 +589,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
     const QPointF p1 = plane->translate( diagramIsVertical ? QPointF(dimX.start, dimY.start) : QPointF(dimY.start, dimX.start) );
     const QPointF p2 = plane->translate( diagramIsVertical ? QPointF(dimX.end,   dimY.end)   : QPointF(dimY.end,   dimX.end  ) );
 
-    double screenRange;
+    qreal screenRange;
     if ( isAbscissa() )
         screenRange = qAbs ( p1.x() - p2.x() );
     else
@@ -721,7 +721,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 // we need to register data values for the steps
                 // in case it is configured by the user
                 QStringList configuredStepsLabels;
-                double value = dimX.start;// headerLabels.isEmpty() ? 0.0 : headerLabels.first().toDouble();
+                qreal value = dimX.start;// headerLabels.isEmpty() ? 0.0 : headerLabels.first().toDouble();
                 configuredStepsLabels << QString::number( value );
 
                 for( int i = 0; i < numberOfUnitRulers; i++ )
@@ -802,8 +802,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
             //Draw ticks at custom postions on x-axis
             if( !d->customTicksPositions.isEmpty() )
             {
-                const QList< double > values = d->customTicksPositions;
-                KDAB_FOREACH( const double v, values )
+                const QList< qreal > values = d->customTicksPositions;
+                KDAB_FOREACH( const qreal v, values )
                 {
                    QPointF topPoint = diagramIsVertical ? QPointF( v, 0.0 ) : QPointF( 0.0, v );
                    QPointF bottomPoint = topPoint;
@@ -823,8 +823,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
             if( !d->annotations.isEmpty() )
             {
-                const QList< double > values = d->annotations.keys();
-                KDAB_FOREACH( const double v, values )
+                const QList< qreal > values = d->annotations.keys();
+                KDAB_FOREACH( const qreal v, values )
                 {
                    QPointF topPoint = diagramIsVertical ? QPointF( v, 0.0 ) : QPointF( 0.0, v );
                    QPointF bottomPoint = topPoint;
@@ -1238,8 +1238,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
             }
         } else {
             const PainterSaver p( ptr );
-            const double maxLimit = maxValueY;
-            const double steg = dimY.stepWidth;
+            const qreal maxLimit = maxValueY;
+            const qreal steg = dimY.stepWidth;
             int maxLabelsWidth = 0;
             qreal labelValue;
 
@@ -1268,8 +1268,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
             //Draws custom tick marks in the y-axis
             if( !d->customTicksPositions.isEmpty() )
             {
-                const QList< double > values = d->customTicksPositions;
-                KDAB_FOREACH( const double value, values )
+                const QList< qreal > values = d->customTicksPositions;
+                KDAB_FOREACH( const qreal value, values )
                 {
                     QPointF annoPoint = (diagramIsVertical ? QPointF( 0.0, value ) : QPointF( value, 0.0 ));
                     QPointF leftPoint = plane->translate( annoPoint );
@@ -1328,8 +1328,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 //qDebug() << "axis labels starting at" << labelValue << "step width" << step;
                 if( !d->annotations.isEmpty() )
                 {
-                    const QList< double > annotations = d->annotations.keys();
-                    KDAB_FOREACH( const double annotation, annotations )
+                    const QList< qreal > annotations = d->annotations.keys();
+                    KDAB_FOREACH( const qreal annotation, annotations )
                     {
                         QPointF annoPoint = (diagramIsVertical ? QPointF( 0.0, annotation ) : QPointF( annotation, 0.0 ));
                         QPointF leftPoint = plane->translate( annoPoint );
@@ -1740,7 +1740,7 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
                 const DataDimension dimY = AbstractGrid::adjustedLowerUpperRange(
                         diagramIsVertical ? plane->gridDimensionsList().last()
                                           : plane->gridDimensionsList().first(), true, true );
-                const double step = dimY.stepWidth;
+                const qreal step = dimY.stepWidth;
                 const qreal minValue = dimY.start;
                 const qreal maxValue = dimY.end;
                 const bool isLogarithmicY = (dimY.calcMode == AbstractCoordinatePlane::Logarithmic );
@@ -1887,12 +1887,12 @@ int CartesianAxis::tickLength( bool subUnitTicks ) const
     return result;
 }
 
-QMap< double, QString > CartesianAxis::annotations() const
+QMap< qreal, QString > CartesianAxis::annotations() const
 {
     return d->annotations;
 }
 
-void CartesianAxis::setAnnotations( const QMap< double, QString >& annotations )
+void CartesianAxis::setAnnotations( const QMap< qreal, QString >& annotations )
 {
     if( d->annotations == annotations )
         return;
@@ -1901,12 +1901,12 @@ void CartesianAxis::setAnnotations( const QMap< double, QString >& annotations )
     update();
 }
 
-QList< double > CartesianAxis::customTicks() const
+QList< qreal > CartesianAxis::customTicks() const
 {
     return d->customTicksPositions;
 }
 
-void CartesianAxis::setCustomTicks( const QList< double >& customTicksPositions )
+void CartesianAxis::setCustomTicks( const QList< qreal >& customTicksPositions )
 {
     if( d->customTicksPositions == customTicksPositions )
         return;

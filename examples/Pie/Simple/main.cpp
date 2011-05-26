@@ -36,7 +36,7 @@ int main( int argc, char** argv ) {
     widget.resize( 600, 600 );
     widget.setGlobalLeading( 5, 5, 5, 5 );
 
-    QVector< double > vec0,  vec1,  vec2;
+    QVector< qreal > vec0,  vec1,  vec2;
 
     vec0 << 1 << -4 << -3 << -2 << -1 << 0
          << 1 << 2 << 3 << 4 << 5;

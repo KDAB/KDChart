@@ -38,7 +38,7 @@ int MissCount = 0;
 #define DUMP_CACHE_STATS \
     if ( HitCount != 0 && MissCount != 0 ) { \
         int total = HitCount + MissCount; \
-        double hitQuote = ( 1.0 * HitCount ) / total; \
+        qreal hitQuote = ( 1.0 * HitCount ) / total; \
         qDebug() << "PrerenderedLabel dtor: hits/misses/total:" \
         << HitCount << "/" << MissCount << "/" << total \
                  << "(" << 100 * hitQuote << "% hits)"; \
@@ -151,7 +151,7 @@ const QBrush& PrerenderedLabel::brush() const
 /**
   * Sets the angle of the label to \a angle degrees
   */
-void PrerenderedLabel::setAngle( double angle )
+void PrerenderedLabel::setAngle( qreal angle )
 {
     m_angle = angle;
     invalidate();
@@ -160,7 +160,7 @@ void PrerenderedLabel::setAngle( double angle )
 /**
   * @return the label's angle in degrees
   */
-double PrerenderedLabel::angle() const
+qreal PrerenderedLabel::angle() const
 {
     return m_angle;
 }

@@ -56,11 +56,11 @@ namespace KDChart {
         // origin of the coordinate plane space:
         QPointF originTranslation;
         // make a vector base for R2:
-        double unitVectorX;
-        double unitVectorY;
+        qreal unitVectorX;
+        qreal unitVectorY;
         // implement isometric scaling:
-        double isoScaleX;
-        double isoScaleY;
+        qreal isoScaleX;
+        qreal isoScaleY;
 
         CartesianCoordinatePlane::AxesCalcMode axesCalcModeY;
         CartesianCoordinatePlane::AxesCalcMode axesCalcModeX;

@@ -85,9 +85,9 @@ namespace KDChart
         }
 
         template<>
-        inline double nan< double >()
+        inline qreal nan< qreal >()
         {
-            return std::numeric_limits< double >::quiet_NaN();
+            return std::numeric_limits< qreal >::quiet_NaN();
         }
     }
 

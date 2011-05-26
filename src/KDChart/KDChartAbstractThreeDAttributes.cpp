@@ -90,19 +90,19 @@ bool AbstractThreeDAttributes::isEnabled() const
     return d->enabled;
 }
 
-void AbstractThreeDAttributes::setDepth( double depth )
+void AbstractThreeDAttributes::setDepth( qreal depth )
 {
     d->depth = depth;
 }
 
 
-double AbstractThreeDAttributes::depth() const
+qreal AbstractThreeDAttributes::depth() const
 {
     return d->depth;
 }
 
 
-double AbstractThreeDAttributes::validDepth() const
+qreal AbstractThreeDAttributes::validDepth() const
 {
     return isEnabled() ? d->depth : 0.0;
 }

@@ -36,7 +36,7 @@ public:
 
     m_model.insertRows( 0,5, QModelIndex() );
     m_model.insertColumns( 0,5, QModelIndex() );
-    double increase = 1.15;
+    qreal increase = 1.15;
     for( int i = 0; i < 5; ++i ) {
         increase += 0.06;
         for( int j = 0; j < 5; ++j ) {

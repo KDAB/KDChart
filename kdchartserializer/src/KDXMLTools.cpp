@@ -57,7 +57,7 @@ namespace KDXML {
     }
 
     void setDoubleAttribute( QDomElement& element,
-                             const QString& attrName, double value )
+                             const QString& attrName, qreal value )
     {
         element.setAttribute( attrName, value );
     }
@@ -177,7 +177,7 @@ namespace KDXML {
 
 
     void createDoubleNode( QDomDocument& doc, QDomNode& parent,
-                           const QString& elementName, double value )
+                           const QString& elementName, qreal value )
     {
         QDomElement newElement =
             doc.createElement( elementName );
@@ -571,11 +571,11 @@ namespace KDXML {
         return bOK;
     }
 
-    bool findDoubleAttribute( const QDomElement& e, const QString & name, double& attr )
+    bool findDoubleAttribute( const QDomElement& e, const QString & name, qreal& attr )
     {
         bool bOK = false;
         if( e.hasAttribute( name ) ){
-            double val = e.attribute( name ).toDouble( &bOK );
+            qreal val = e.attribute( name ).toDouble( &bOK );
             if( bOK )
                 attr = val;
         }
@@ -633,10 +633,10 @@ namespace KDXML {
     }
 
 
-    bool readDoubleNode( const QDomElement& element, double& value )
+    bool readDoubleNode( const QDomElement& element, qreal& value )
     {
         bool ok = false;
-        double temp = element.text().toDouble( &ok );
+        qreal temp = element.text().toDouble( &ok );
         if( ok )
             value = temp;
         return ok;
@@ -772,7 +772,7 @@ namespace KDXML {
         bool bOk = false;
         bool bFlag;
         if( findBoolAttribute( element, "Valid", bFlag ) && bFlag ){
-            double width, height;
+            qreal width, height;
             if( findDoubleAttribute( element, "Width", width ) &&
                 findDoubleAttribute( element, "Height", height ) )
             {

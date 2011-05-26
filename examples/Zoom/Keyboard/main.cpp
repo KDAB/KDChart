@@ -37,7 +37,7 @@ int main( int argc, char** argv ) {
 
     window.resize( 800, 600 );
 
-    QVector< double > vec0;
+    QVector< qreal > vec0;
     vec0.append( -5 );
     vec0.append( -4 );
     vec0.append( -3 );
@@ -51,7 +51,7 @@ int main( int argc, char** argv ) {
     vec0.append( 5 );
     window.widget->setDataset( 0, vec0);
 
-    QVector< double > vec1;
+    QVector< qreal > vec1;
     vec1.append( 25 );
     vec1.append( 16 );
     vec1.append( 9 );
@@ -65,7 +65,7 @@ int main( int argc, char** argv ) {
     vec1.append( 25 );
     window.widget->setDataset( 1, vec1 );
 
-    QVector< double > vec2;
+    QVector< qreal > vec2;
     vec2.append( -125 );
     vec2.append( -64 );
     vec2.append( -27 );

@@ -73,7 +73,7 @@ MainWindow::MainWindow( QWidget* parent ) :
 }
 
 
-void MainWindow::on_zoomFactorSB_valueChanged( double factor )
+void MainWindow::on_zoomFactorSB_valueChanged( qreal factor )
 {
     if ( factor > 1 ) {
         hSBar->setVisible( true );

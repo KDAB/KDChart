@@ -90,7 +90,7 @@ void MainWindow::setItemModelData()
 }
 
 
-void MainWindow::on_startPositionSB_valueChanged( double pos )
+void MainWindow::on_startPositionSB_valueChanged( qreal pos )
 {
     const int intValue = static_cast<int>( pos );
     startPositionSL->blockSignals( true );
@@ -104,9 +104,9 @@ void MainWindow::on_startPositionSB_valueChanged( double pos )
 
 void MainWindow::on_startPositionSL_valueChanged( int pos )
 {
-    double doubleValue = static_cast<double>( pos );
+    qreal qrealValue = static_cast<qreal>( pos );
     startPositionSB->blockSignals( true );
-    startPositionSB->setValue( doubleValue  );
+    startPositionSB->setValue( qrealValue  );
     startPositionSB->blockSignals( false );
     // note: We use the global getter method here, it will fall back
     //       automatically to return the default settings.

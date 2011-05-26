@@ -119,15 +119,15 @@ public:
     void setThreeDimensionalBarAngle( uint angle );
     uint threeDimensionalBarAngle() const;
 
-    void setThreeDimensionalBarDepth( double depth );
-    double threeDimensionalBarDepth() const;
+    void setThreeDimensionalBarDepth( qreal depth );
+    qreal threeDimensionalBarDepth() const;
 
 #endif
 
 
 protected:
-    virtual double threeDItemDepth( const QModelIndex & index ) const;
-    virtual double threeDItemDepth( int column ) const;
+    virtual qreal threeDItemDepth( const QModelIndex & index ) const;
+    virtual qreal threeDItemDepth( int column ) const;
     /** \reimpl */
     const QPair<QPointF, QPointF> calculateDataBoundaries() const;
     void paintEvent ( QPaintEvent* );
@@ -135,13 +135,13 @@ protected:
 private:
 
     /*
-    void paintBars( PaintContext* ctx, const QModelIndex& index, const QRectF& bar, double& maxDepth );
+    void paintBars( PaintContext* ctx, const QModelIndex& index, const QRectF& bar, qreal& maxDepth );
     */
     void calculateValueAndGapWidths( int rowCount, int colCount,
-                                     double groupWidth,
-                                     double& barWidth,
-                                     double& spaceBetweenBars,
-                                     double& spaceBetweenGroups );
+                                     qreal groupWidth,
+                                     qreal& barWidth,
+                                     qreal& spaceBetweenBars,
+                                     qreal& spaceBetweenGroups );
 }; // End of class BarDiagram
 
 }

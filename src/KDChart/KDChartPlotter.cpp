@@ -361,12 +361,12 @@ ThreeDLineAttributes Plotter::threeDLineAttributes(
             KDChart::ThreeDLineAttributesRole ) );
 }
 
-double Plotter::threeDItemDepth( const QModelIndex & index ) const
+qreal Plotter::threeDItemDepth( const QModelIndex & index ) const
 {
     return threeDLineAttributes( index ).validDepth();
 }
 
-double Plotter::threeDItemDepth( int column ) const
+qreal Plotter::threeDItemDepth( int column ) const
 {
     return threeDLineAttributes( column ).validDepth();
 }

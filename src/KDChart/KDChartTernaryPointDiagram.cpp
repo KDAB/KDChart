@@ -79,7 +79,7 @@ void  TernaryPointDiagram::paint (PaintContext *paintContext)
         (TernaryCoordinatePlane*) paintContext->coordinatePlane();
     Q_ASSERT( plane );
 
-    double x, y, z;
+    qreal x, y, z;
 
 
     // for some reason(?) TernaryPointDiagram is using per-diagram DVAs only:
@@ -109,8 +109,8 @@ void  TernaryPointDiagram::paint (PaintContext *paintContext)
                           0.0 );
 
                 // fix messed up data values (paint as much as possible)
-                double total = x + y + z;
-                if ( fabs( total ) > 3 * std::numeric_limits<double>::epsilon() ) {
+                qreal total = x + y + z;
+                if ( fabs( total ) > 3 * std::numeric_limits<qreal>::epsilon() ) {
                     TernaryPoint tPunkt( x / total, y / total );
                     QPointF diagramLocation = translate( tPunkt );
                     QPointF widgetLocation = plane->translate( diagramLocation );

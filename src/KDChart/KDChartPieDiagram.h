@@ -57,11 +57,11 @@ public:
 
     // Implement AbstractPolarDiagram
     /** \reimpl */
-    virtual double valueTotals () const;
+    virtual qreal valueTotals () const;
     /** \reimpl */
-    virtual double numberOfValuesPerDataset() const;
+    virtual qreal numberOfValuesPerDataset() const;
     /** \reimpl */
-    virtual double numberOfGridRings() const;
+    virtual qreal numberOfGridRings() const;
 
     virtual PieDiagram * clone() const;
 

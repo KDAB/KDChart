@@ -269,7 +269,7 @@ bool CoordPlanesSerializer::Private::parseAbstractPlane(
                     node2 = node2.nextSibling();
                 }
             } else if( tagName == "ZoomFactorX" ) {
-                double factor;
+                qreal factor;
                 if( KDXML::readDoubleNode( element, factor ) ){
                     plane.setZoomFactorX( factor );
                 }else{
@@ -277,7 +277,7 @@ bool CoordPlanesSerializer::Private::parseAbstractPlane(
                             << tagName << "has invalid content.";
                 }
             } else if( tagName == "ZoomFactorY" ) {
-                double factor;
+                qreal factor;
                 if( KDXML::readDoubleNode( element, factor ) ){
                     plane.setZoomFactorY( factor );
                 }else{

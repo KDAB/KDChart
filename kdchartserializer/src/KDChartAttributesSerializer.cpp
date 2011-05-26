@@ -251,7 +251,7 @@ bool AttributesSerializer::parseRulerAttributes(
                     if( !ele2.isNull() ) { // was really an element
                         QString tagName2 = ele2.tagName();
                         if( tagName2 == "item" ) {
-                            double value;
+                            qreal value;
                             QPen pen;
                             bool penFound = false;
                             if( KDXML::findDoubleAttribute( ele2, "value", value ) ){
@@ -960,7 +960,7 @@ bool AttributesSerializer::parseAbstractThreeDAttributes(
         const QDomElement& container, AbstractThreeDAttributes& a )
 {
     bool bFlag;
-    double depth;
+    qreal depth;
     const bool bOK =
             KDXML::findBoolAttribute(   container, "enabled", bFlag ) &&
             KDXML::findDoubleAttribute( container, "depth", depth );

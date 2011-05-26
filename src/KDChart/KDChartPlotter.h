@@ -129,8 +129,8 @@ public:
     void resize ( const QSizeF& area );
 
 protected:
-    virtual double threeDItemDepth( const QModelIndex & index ) const;
-    virtual double threeDItemDepth( int column ) const;
+    virtual qreal threeDItemDepth( const QModelIndex & index ) const;
+    virtual qreal threeDItemDepth( int column ) const;
     /** \reimpl */
     virtual const QPair<QPointF, QPointF> calculateDataBoundaries() const;
     void paintEvent ( QPaintEvent* );

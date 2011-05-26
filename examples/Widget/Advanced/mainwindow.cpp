@@ -72,9 +72,9 @@ void MainWindow::addDataset()
 {
     QStringList parts = lineAddDataset->text().split(';');
     bool ok;
-    QVector< double > vec;
+    QVector< qreal > vec;
     foreach ( const QString &str, parts ) {
-        const double val = str.toDouble(&ok);
+        const qreal val = str.toDouble(&ok);
         if(ok)
             vec.append( val );
     }

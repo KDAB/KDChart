@@ -35,7 +35,7 @@ int main( int argc, char** argv ) {
     Widget widget;
     widget.resize( 600, 600 );
 
-    QVector< double > vec0,  vec1,  vec2;
+    QVector< qreal > vec0,  vec1,  vec2;
 
     vec0 << 5 << 1 << 3 << 4 << 1;
     vec1 << 3 << 6 << 2 << 4 << 8;

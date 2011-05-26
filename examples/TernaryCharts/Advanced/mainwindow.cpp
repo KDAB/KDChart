@@ -76,8 +76,8 @@ void MainWindow::setupModel()
     const float column2Share = 1.0f/3.0f;
 
     for ( int row = 0; row < m_model.rowCount(); ++row ) {
-        const double SkewX = column0Share * ( 1 - 1.0/( 5 * row*row*row + 1 ) );
-        const double SkewY = SkewX;
+        const qreal SkewX = column0Share * ( 1 - 1.0/( 5 * row*row*row + 1 ) );
+        const qreal SkewY = SkewX;
         QModelIndex index;
 
         index = m_model.index( row, 0 );

@@ -303,7 +303,7 @@ void GraphicsView::Private::slotItemClicked( const QModelIndex& idx )
 void GraphicsView::Private::slotItemDoubleClicked( const QModelIndex& idx )
 {
     QModelIndex sidx = idx;//scene.summaryHandlingModel()->mapToSource( idx );
-    emit q->doubleClicked( sidx );
+    emit q->qrealClicked( sidx );
     if (!q->style()->styleHint(QStyle::SH_ItemView_ActivateItemOnSingleClick, 0, q))
         emit q->activated( sidx );
 }
@@ -322,7 +322,7 @@ void GraphicsView::Private::slotHeaderContextMenuRequested( const QPoint& pt )
 
 /*! \signal void GraphicsView::activated( const QModelIndex & index ) */
 /*! \signal void GraphicsView::clicked( const QModelIndex & index ); */
-/*! \signal void GraphicsView::doubleClicked( const QModelIndex & index ); */
+/*! \signal void GraphicsView::qrealClicked( const QModelIndex & index ); */
 /*! \signal void GraphicsView::entered( const QModelIndex & index ); */
 /*! \signal void GraphicsView::pressed( const QModelIndex & index ); */
 /*! \signal void GraphicsView::headerContextMenuRequested( const QPoint& pt )
@@ -351,7 +351,7 @@ GraphicsView::GraphicsView( QWidget* parent )
              this, SIGNAL( pressed( const QModelIndex& ) ) );
     connect( &_d->scene, SIGNAL( clicked( const QModelIndex& ) ),
              this, SLOT( slotItemClicked( const QModelIndex& ) ) );
-    connect( &_d->scene, SIGNAL( doubleClicked( const QModelIndex& ) ),
+    connect( &_d->scene, SIGNAL( qrealClicked( const QModelIndex& ) ),
              this, SLOT( slotItemDoubleClicked( const QModelIndex& ) ) );
     connect( &_d->scene, SIGNAL( sceneRectChanged( const QRectF& ) ),
              this, SLOT( updateSceneRect() ) );

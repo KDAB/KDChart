@@ -63,21 +63,21 @@ void LineDiagram::Private::paintPolyline(
 */
 const QPointF LineDiagram::LineDiagramType::project(
     QPointF point, QPointF maxLimits,
-    double z, const QModelIndex& index ) const
+    qreal z, const QModelIndex& index ) const
 {
     Q_UNUSED( maxLimits );
     ThreeDLineAttributes td = diagram()->threeDLineAttributes( index );
 
     //Pending Michel FIXME - the rotation does not work as expected atm
-    double xrad = DEGTORAD( td.lineXRotation() );
-    double yrad = DEGTORAD( td.lineYRotation() );
+    qreal xrad = DEGTORAD( td.lineXRotation() );
+    qreal yrad = DEGTORAD( td.lineYRotation() );
     QPointF ret = QPointF(point.x()*cos( yrad ) + z * sin( yrad ) ,  point.y()*cos( xrad ) - z * sin( xrad ) );
     return ret;
 }
 
 void LineDiagram::LineDiagramType::paintThreeDLines(
     PaintContext* ctx, const QModelIndex& index,
-    const QPointF& from, const QPointF& to, const double depth  )
+    const QPointF& from, const QPointF& to, const qreal depth  )
 {
     // retrieve the boundaries
     const QPair< QPointF, QPointF > boundaries = diagram()->dataBoundaries();
@@ -187,13 +187,13 @@ ReverseMapper& LineDiagram::LineDiagramType::reverseMapper()
 LineAttributes::MissingValuesPolicy LineDiagram::LineDiagramType::getCellValues(
     int row, int column,
     bool shiftCountedXValuesByHalfSection,
-    double& valueX, double& valueY ) const
+    qreal& valueX, qreal& valueY ) const
 {
     return m_private->diagram->getCellValues( row, column, shiftCountedXValuesByHalfSection,
                                               valueX, valueY );
 }
 
-double LineDiagram::LineDiagramType::valueForCellTesting(
+qreal LineDiagram::LineDiagramType::valueForCellTesting(
     int row, int column,
     bool& bOK,
     bool showHiddenCellsAsInvalid) const
@@ -241,7 +241,7 @@ void LineDiagram::LineDiagramType::paintAreas(
     ctx->painter()->drawPath( path );
 }
 
-double LineDiagram::LineDiagramType::valueForCell( int row, int column )
+qreal LineDiagram::LineDiagramType::valueForCell( int row, int column )
 {
     return diagram()->valueForCell( row, column );
 }
@@ -354,10 +354,10 @@ CartesianDiagramDataCompressor& LineDiagram::LineDiagramType::compressor() const
     return m_private->compressor;
 }
 
-double LineDiagram::LineDiagramType::interpolateMissingValue( const CartesianDiagramDataCompressor::CachePosition& pos ) const
+qreal LineDiagram::LineDiagramType::interpolateMissingValue( const CartesianDiagramDataCompressor::CachePosition& pos ) const
 {
-    double leftValue = std::numeric_limits< double >::quiet_NaN();
-    double rightValue = std::numeric_limits< double >::quiet_NaN();
+    qreal leftValue = std::numeric_limits< qreal >::quiet_NaN();
+    qreal rightValue = std::numeric_limits< qreal >::quiet_NaN();
     int missingCount = 1;
 
     const int column = pos.second;
@@ -386,5 +386,5 @@ double LineDiagram::LineDiagramType::interpolateMissingValue( const CartesianDia
     if( !ISNAN( leftValue ) && !ISNAN( rightValue ) )
         return leftValue + ( rightValue - leftValue ) / ( missingCount + 1 );
     else
-        return std::numeric_limits< double >::quiet_NaN();
+        return std::numeric_limits< qreal >::quiet_NaN();
 }

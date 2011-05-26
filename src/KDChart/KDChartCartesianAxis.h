@@ -129,26 +129,26 @@ namespace KDChart {
 
         /**
          * Sets the axis annotations to \a annotations.
-         * Annotations are a QMap of doubles and QStrings defining special
+         * Annotations are a QMap of qreals and QStrings defining special
          * markers and their position.
          * If you use annotations, the normal ticks and values will be invisible.
          * To unset the annotations, pass an empty QMap.
          */
-        void setAnnotations( const QMap< double, QString >& annotations );
+        void setAnnotations( const QMap< qreal, QString >& annotations );
         /**
          * Returns the currently set axis annotations.
          */
-        QMap< double, QString > annotations() const;
+        QMap< qreal, QString > annotations() const;
 
         /**
          * Sets custom ticks on the axis.
-         * Ticks are a QList of doubles defining their special position.
+         * Ticks are a QList of qreals defining their special position.
          */
-        void setCustomTicks( const QList< double >& ticksPostions );
+        void setCustomTicks( const QList< qreal >& ticksPostions );
         /**
          * Returns the currently set custom ticks on the axis.
          */
-        QList< double > customTicks() const;
+        QList< qreal > customTicks() const;
 
         /**
          * Sets the length of custom ticks on the axis.

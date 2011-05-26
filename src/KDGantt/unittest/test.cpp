@@ -45,12 +45,12 @@ void KDAB::UnitTest::Test::_assertNull( const void * x, const char * expression,
 }
 
 #if 0
-void KDAB::UnitTest::Test::_assertIsNaN( double d, const char * expression, const char * file, unsigned int line ) {
+void KDAB::UnitTest::Test::_assertIsNaN( qreal d, const char * expression, const char * file, unsigned int line ) {
     if ( std::isnan( d ) ) success();
     else fail( file, line ) << '"' << expression << "\" yielded " << d << "; expected NaN" << std::endl;
 }
 
-void KDAB::UnitTest::Test::_assertIsNotNaN( double d, const char * expression, const char * file, unsigned int line ) {
+void KDAB::UnitTest::Test::_assertIsNotNaN( qreal d, const char * expression, const char * file, unsigned int line ) {
     if ( !std::isnan( d ) ) success();
     else fail( file, line ) << '"' << expression << "\" yielded nan; expected something else" << std::endl;
 }
@@ -73,8 +73,8 @@ void KDAB::UnitTest::Test::_assertEqualWithEpsilons( float x1, float x2, int pre
                             << prec << " (" << exprP << ") epsilons." << std::endl;
 }
 
-void KDAB::UnitTest::Test::_assertEqualWithEpsilons( double x1, double x2, int prec, const char * expr1, const char * expr2, const char * exprP, const char * file, unsigned int line ) {
-    if ( qAbs( x1/x2 - 1.0 ) <= prec * std::numeric_limits<double>::epsilon() ) success();
+void KDAB::UnitTest::Test::_assertEqualWithEpsilons( qreal x1, qreal x2, int prec, const char * expr1, const char * expr2, const char * exprP, const char * file, unsigned int line ) {
+    if ( qAbs( x1/x2 - 1.0 ) <= prec * std::numeric_limits<qreal>::epsilon() ) success();
     else fail( file, line ) << x1 << " (" << expr1 << ") deviates from expected "
                             << x2 << " (" << expr2 << ") by more than "
                             << prec << " (" << exprP << ") epsilons." << std::endl;

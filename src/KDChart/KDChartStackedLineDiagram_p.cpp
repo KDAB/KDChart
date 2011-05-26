@@ -47,18 +47,18 @@ const QPair<QPointF, QPointF> StackedLineDiagram::calculateDataBoundaries() cons
 {
     const int rowCount = compressor().modelDataRows();
     const int colCount = compressor().modelDataColumns();
-    const double xMin = 0;
-    double xMax = diagram()->model() ? diagram()->model()->rowCount( diagram()->rootIndex() ) : 0;
+    const qreal xMin = 0;
+    qreal xMax = diagram()->model() ? diagram()->model()->rowCount( diagram()->rootIndex() ) : 0;
     if ( !diagram()->centerDataPoints() && diagram()->model() )
         xMax -= 1;
-    double yMin = 0, yMax = 0;
+    qreal yMin = 0, yMax = 0;
 
     bool bStarting = true;
     for( int row = 0; row < rowCount; ++row )
     {
         // calculate sum of values per column - Find out stacked Min/Max
-        double stackedValues = 0.0;
-        double negativeStackedValues = 0.0;
+        qreal stackedValues = 0.0;
+        qreal negativeStackedValues = 0.0;
         for( int col = datasetDimension() - 1; col < colCount; col += datasetDimension() ) {
             const CartesianDiagramDataCompressor::CachePosition position( row, col );
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
@@ -118,7 +118,7 @@ void StackedLineDiagram::paint(  PaintContext* ctx )
 
     //FIXME(khz): add LineAttributes::MissingValuesPolicy support for LineDiagram::Stacked and ::Percent
 
-    QVector <double > percentSumValues;
+    QVector <qreal > percentSumValues;
 
     QList<QPointF> bottomPoints;
     bool bFirstDataset = true;
@@ -146,7 +146,7 @@ void StackedLineDiagram::paint(  PaintContext* ctx )
             if( ISNAN( point.value ) && policy == LineAttributes::MissingValuesShownAsZero )
                 point.value = 0.0;
 
-            double stackedValues = 0, nextValues = 0, nextKey = 0;
+            qreal stackedValues = 0, nextValues = 0, nextKey = 0;
             for ( int column2 = column; column2 >= 0; --column2 )
             {
                 const CartesianDiagramDataCompressor::CachePosition position( row, column2 );
@@ -158,7 +158,7 @@ void StackedLineDiagram::paint(  PaintContext* ctx )
                 }
                 else if( policy == LineAttributes::MissingValuesAreBridged )
                 {
-                    const double interpolation = interpolateMissingValue( position );
+                    const qreal interpolation = interpolateMissingValue( position );
                     if( !ISNAN( interpolation ) )
                         stackedValues += interpolation;
                 }
@@ -173,7 +173,7 @@ void StackedLineDiagram::paint(  PaintContext* ctx )
                     }
                     else if( policy == LineAttributes::MissingValuesAreBridged )
                     {
-                        const double interpolation = interpolateMissingValue( position );
+                        const qreal interpolation = interpolateMissingValue( position );
                         if( !ISNAN( interpolation ) )
                             nextValues += interpolation;
                     }

@@ -78,8 +78,8 @@ namespace KDChart {
                         const QPointF& widgetLocation )
         {
             // Q_ASSERT( false ); // unused, to be removed
-            static const double Diameter = 5.0;
-            static const double Radius = Diameter / 2.0;
+            static const qreal Diameter = 5.0;
+            static const qreal Radius = Diameter / 2.0;
             QRectF ellipseRect( widgetLocation - QPointF( Radius, Radius ),
                                 QSizeF( Diameter, Diameter ) );
             p->drawEllipse( ellipseRect );

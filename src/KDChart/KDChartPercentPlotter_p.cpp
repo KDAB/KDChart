@@ -42,10 +42,10 @@ const QPair< QPointF, QPointF > PercentPlotter::calculateDataBoundaries() const
 {
     const int rowCount = compressor().modelDataRows();
     const int colCount = compressor().modelDataColumns();
-    double xMin = std::numeric_limits< double >::quiet_NaN();
-    double xMax = std::numeric_limits< double >::quiet_NaN();
-    const double yMin = 0.0;
-    const double yMax = 100.0;
+    qreal xMin = std::numeric_limits< qreal >::quiet_NaN();
+    qreal xMax = std::numeric_limits< qreal >::quiet_NaN();
+    const qreal yMin = 0.0;
+    const qreal yMax = 100.0;
 
     for( int column = 0; column < colCount; ++column )
     {
@@ -54,7 +54,7 @@ const QPair< QPointF, QPointF > PercentPlotter::calculateDataBoundaries() const
             const CartesianDiagramDataCompressor::CachePosition position( row, column );
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
 
-            const double valueX = ISNAN( point.key ) ? 0.0 : point.key;
+            const qreal valueX = ISNAN( point.key ) ? 0.0 : point.key;
 
             if( ISNAN( xMin ) )
             {
@@ -81,21 +81,21 @@ class Value
 {
 public:
     Value()
-        : value( std::numeric_limits< double >::quiet_NaN() )
+        : value( std::numeric_limits< qreal >::quiet_NaN() )
     {
     }
     // allow implicit conversion
-    Value( double value )
+    Value( qreal value )
         : value( value )
     {
     }
-    operator double() const
+    operator qreal() const
     {
         return value;
     }
 
 private:
-    double value;
+    qreal value;
 };
 
 void PercentPlotter::paint( PaintContext* ctx )
@@ -114,7 +114,7 @@ void PercentPlotter::paint( PaintContext* ctx )
     LineAttributes::MissingValuesPolicy policy = LineAttributes::MissingValuesAreBridged; // ???
 
     // this map contains the y-values to each x-value
-    QMap< double, QVector< QPair< Value, QModelIndex > > > diagramValues;
+    QMap< qreal, QVector< QPair< Value, QModelIndex > > > diagramValues;
 
     for( int col = 0; col < colCount; ++col )
     {
@@ -129,12 +129,12 @@ void PercentPlotter::paint( PaintContext* ctx )
     }
 
     // the sums of the y-values per x-value
-    QMap< double, double > yValueSums;
+    QMap< qreal, qreal > yValueSums;
     // the x-values
-    QList< double > xValues = diagramValues.keys();
+    QList< qreal > xValues = diagramValues.keys();
     // make sure it's sorted
     qSort( xValues );
-    Q_FOREACH( const double xValue, xValues )
+    Q_FOREACH( const qreal xValue, xValues )
     {
         // the y-values to the current x-value
         QVector< QPair< Value, QModelIndex > >& yValues = diagramValues[ xValue ];
@@ -146,8 +146,8 @@ void PercentPlotter::paint( PaintContext* ctx )
             // if the index is invalid, there was no value. Let's interpolate.
             if( !data.second.isValid() )
             {
-                QPair< QPair< double, Value >, QModelIndex > left;
-                QPair< QPair< double, Value >, QModelIndex > right;
+                QPair< QPair< qreal, Value >, QModelIndex > left;
+                QPair< QPair< qreal, Value >, QModelIndex > right;
                 int xIndex = 0;
                 // let's find the next lower value
                 for( xIndex = xValues.indexOf( xValue ); xIndex >= 0; --xIndex )
@@ -173,19 +173,19 @@ void PercentPlotter::paint( PaintContext* ctx )
                 }
 
                 // interpolate out of them (left and/or right might be invalid, but this doesn't matter here)
-                const double leftX = left.first.first;
-                const double rightX = right.first.first;
-                const double leftY = left.first.second;
-                const double rightY = right.first.second;
+                const qreal leftX = left.first.first;
+                const qreal rightX = right.first.first;
+                const qreal leftY = left.first.second;
+                const qreal rightY = right.first.second;
 
                 data.first = leftY + ( rightY - leftY ) * ( xValue - leftX ) / ( rightX - leftX );
                 // if the result is a valid value, let's assign the index, too
-                if( !ISNAN( data.first.operator double() ) )
+                if( !ISNAN( data.first.operator qreal() ) )
                     data.second = left.second;
             }
 
             // sum it up
-            if( !ISNAN( yValues[ column ].first.operator double() ) )
+            if( !ISNAN( yValues[ column ].first.operator qreal() ) )
                 yValueSums[ xValue ] += yValues[ column ].first;
         }
     }
@@ -201,7 +201,7 @@ void PercentPlotter::paint( PaintContext* ctx )
         qreal lastExtraY = 0.0;
         qreal lastValue = 0.0;
 
-        QMapIterator< double, QVector< QPair< Value, QModelIndex > > >  i( diagramValues );
+        QMapIterator< qreal, QVector< QPair< Value, QModelIndex > > >  i( diagramValues );
         while( i.hasNext() )
         {
             i.next();
@@ -217,10 +217,10 @@ void PercentPlotter::paint( PaintContext* ctx )
                 continue;
             }
 
-            double extraY = 0.0;
+            qreal extraY = 0.0;
             for( int col = column - 1; col >= 0; --col )
             {
-                const double y = i.value().at( col ).first;
+                const qreal y = i.value().at( col ).first;
                 if( !ISNAN( y ) )
                     extraY += y;
             }

@@ -216,7 +216,7 @@ void MainWindow::on_paintMarkersCB_toggled( bool checked )
         for ( int j=0; j< rowCount; ++j ) {
             const QModelIndex index( m_lines->model()->index( j, iColumn, QModelIndex() ) );
             //const QBrush brush( m_lines->brush( index ) );
-            const double value = m_lines->model()->data( index ).toDouble();
+            const qreal value = m_lines->model()->data( index ).toDouble();
             /* Set a specific color - marker for a specific value */
             if ( value == 8 ) {
                 // retrieve cell specific attributes
@@ -291,7 +291,7 @@ void MainWindow::on_transparencySB_valueChanged( int alpha )
     on_displayAreasCB_toggled( true );
 }
 
-void MainWindow::on_zoomFactorSB_valueChanged( double factor )
+void MainWindow::on_zoomFactorSB_valueChanged( qreal factor )
 {
     if ( factor > 1 ) {
         hSBar->setVisible( true );

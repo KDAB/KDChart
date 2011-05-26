@@ -139,7 +139,7 @@ void MainWindow::on_paintValuesCB_toggled( bool checked )
 void MainWindow::on_paintThreeDBarsCB_toggled( bool checked )
 {
     ThreeDBarAttributes td( m_bars->threeDBarAttributes() );
-    double defaultDepth = td.depth();
+    qreal defaultDepth = td.depth();
     if ( checked ) {
         td.setEnabled( true );
         if ( threeDDepthCB->isChecked() )

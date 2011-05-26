@@ -120,14 +120,14 @@ void RadarGrid::drawGrid( PaintContext* context )
 
 
     context->painter()->setPen ( PrintingParameters::scalePen( QColor ( Qt::lightGray ) ) );
-    const double min = dgr->dataBoundaries().first.y();
+    const qreal min = dgr->dataBoundaries().first.y();
     QPointF origin = plane->translate( QPointF( min, 0 ) ) + context->rectangle().topLeft();
     //qDebug() << "origin" << origin;
 
-    const double r = qAbs( min ) + dgr->dataBoundaries().second.y(); // use the full extents
+    const qreal r = qAbs( min ) + dgr->dataBoundaries().second.y(); // use the full extents
     
     // distance between two axis lines
-    const double step = ( r - qAbs( min ) ) / ( dgr->numberOfGridRings() );
+    const qreal step = ( r - qAbs( min ) ) / ( dgr->numberOfGridRings() );
     
     // calculate the height needed for text to be displayed at the bottom and top of the chart
     QPointF topLeft = context->rectangle().topLeft();
@@ -197,8 +197,8 @@ void RadarGrid::drawGrid( PaintContext* context )
             const QString text = QString::number( i * stepWidth );
             const QPointF translatedPoint = scaleToRealPosition( QPointF( i * step - qAbs( min ), 0 ), context->rectangle(), destRect, *plane );
             const QFontMetrics metric( ta.font()/*QFont( "Arial", 10 )*/ );
-            const double textLength = metric.width( text );
-            const double textHeight = metric.height() / 2.0;
+            const qreal textLength = metric.width( text );
+            const qreal textHeight = metric.height() / 2.0;
             QPointF textOffset( textLength, -textHeight );
             textOffset = scaleToRect( textOffset, context->rectangle(), destRect );
             QPointF p = translatedPoint - textOffset;
@@ -212,7 +212,7 @@ void RadarGrid::drawGrid( PaintContext* context )
                 paintFont.setPointSizeF( calcFontSize );
                 ta.setFont( paintFont );
                 ta.setFontSize( calcFontSize );
-                const double textHeight2 = QFontMetricsF( paintFont ).height() / 2.0;
+                const qreal textHeight2 = QFontMetricsF( paintFont ).height() / 2.0;
                 textOffset.setY( - textHeight2 );
                 textOffset = scaleToRect( textOffset, context->rectangle(), destRect );
                 context->painter()->setFont( paintFont );
