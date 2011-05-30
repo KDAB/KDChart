@@ -560,9 +560,7 @@ void AbstractDiagram::paintMarker( QPainter* painter,
         painter->drawPoint( pos );
     }else{
         const PainterSaver painterSaver( painter );
-        // we only a solid line surrounding the markers
         QPen painterPen( pen );
-        painterPen.setStyle( Qt::SolidLine );
         painter->setPen( PrintingParameters::scalePen( painterPen ) );
         painter->setBrush( brush );
         painter->setRenderHint ( QPainter::Antialiasing );
@@ -616,7 +614,6 @@ void AbstractDiagram::paintMarker( QPainter* painter,
                     break;
             case MarkerAttributes::MarkerRing:
                 {
-                    painter->setPen( PrintingParameters::scalePen( QPen( brush.color() ) ) );
                     painter->setBrush( Qt::NoBrush );
                     painter->drawEllipse( QRectF( 0 - maSize.height()/2, 0 - maSize.width()/2,
                                         maSize.height(), maSize.width()) );

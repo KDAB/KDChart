@@ -413,22 +413,42 @@ void CartesianCoordinatePlane::layoutDiagrams()
         qreal scale = qMin ( qAbs ( diagramXUnitInCoordinatePlane ),
                               qAbs ( diagramYUnitInCoordinatePlane ) );
 
-        qDebug() << diagramXUnitInCoordinatePlane << " j " << diagramYUnitInCoordinatePlane;
         scaleX = qAbs( scale / diagramXUnitInCoordinatePlane );
         scaleY = qAbs( scale / diagramYUnitInCoordinatePlane );
-        qDebug() << scaleX << " " << scaleY;
     } else {
         scaleX = 1.0;
         scaleY = 1.0;
     }
 
     const QPointF logicalTopLeft = logArea.topLeft();
-    // calculate diagram origin in plane coordinates:
-    QPointF coordinateOrigin = QPointF ( logicalTopLeft.x() * -diagramXUnitInCoordinatePlane,
-                                         logicalTopLeft.y() * -diagramYUnitInCoordinatePlane );
-    coordinateOrigin += physicalArea.topLeft();
+    if ( d->isometricScaling )
+    {
+        QRectF physicalArea( drawingArea() );
+        QSizeF size = physicalArea.size();
+        size.rheight() *= scaleY;
+        size.rwidth() *= scaleX;
+        physicalArea.setSize( size );
 
-    d->coordinateTransformation.originTranslation = coordinateOrigin;
+        d->coordinateTransformation.unitVectorX = logArea.width()  != 0 ? physicalArea.width()  / logArea.width()  : 1.0;
+        d->coordinateTransformation.unitVectorY = logArea.height() != 0 ? physicalArea.height() / logArea.height() : 1.0;
+
+        // calculate diagram origin in plane coordinates:
+        QPointF coordinateOrigin = QPointF ( logicalTopLeft.x() * -d->coordinateTransformation.unitVectorX,
+                                             logicalTopLeft.y() * -d->coordinateTransformation.unitVectorY );
+        coordinateOrigin += physicalArea.topLeft();
+
+        d->coordinateTransformation.originTranslation = coordinateOrigin;
+    }
+    else
+    {
+        // calculate diagram origin in plane coordinates:
+        QPointF coordinateOrigin = QPointF ( logicalTopLeft.x() * -diagramXUnitInCoordinatePlane,
+                                             logicalTopLeft.y() * -diagramYUnitInCoordinatePlane );
+        coordinateOrigin += physicalArea.topLeft();
+
+        d->coordinateTransformation.originTranslation = coordinateOrigin;
+    }
+
 
     // As in the first quadrant of the coordinate system, the origin is the bottom left, not top left.
     // This origin is then the top left point of the resulting diagramRect for our coordinateTransformation.
