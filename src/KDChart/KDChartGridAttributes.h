@@ -93,6 +93,10 @@ public:
     QPen subGridPen() const;
 
 
+    void setOuterLinesVisible( bool visible );
+    bool isOuterLinesVisible() const;
+
+
     void setZeroLinePen( const QPen & pen );
     QPen zeroLinePen() const;
 
