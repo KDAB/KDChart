@@ -103,9 +103,9 @@ system('echo KDCHARTUITOOLSLIB=$$KDCHARTUITOOLSLIB >> $${QMAKE_CACHE}')
 system('echo KDCHARTPLUGINLIBLIB=$$KDCHARTPLUGINLIBLIB >> $${QMAKE_CACHE}')
 
 # install license(s):
-exists( LICENSE ):     licenses.files  = LICENSE
-exists( LICENSE.US ):  licenses.files += LICENSE.US
-exists( LICENSE.GPL ): licenses.files += LICENSE.GPL
+exists( LICENSE.txt ):     licenses.files  = LICENSE.txt
+exists( LICENSE.US.txt ):  licenses.files += LICENSE.US.txt
+exists( LICENSE.GPL.txt ): licenses.files += LICENSE.GPL.txt
 licenses.path = $$INSTALL_PREFIX
 INSTALLS += licenses
 
