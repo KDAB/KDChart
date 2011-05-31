@@ -409,7 +409,7 @@ qreal CartesianAxis::titleSize() const
     return d->axisSize;
 }
 
-void CartesianAxis::Private::drawTitleText( QPainter* painter, CartesianCoordinatePlane* plane, const QRect& areaGeoRect ) const
+void CartesianAxis::Private::drawTitleText( QPainter* painter, CartesianCoordinatePlane* plane, const QRect& geoRect ) const
 {
     const TextAttributes titleTA( titleTextAttributesWithAdjustedRotation() );
     if( titleTA.isVisible() ) {
@@ -425,23 +425,23 @@ void CartesianAxis::Private::drawTitleText( QPainter* painter, CartesianCoordina
         switch( position )
         {
         case Top:
-            point.setX( areaGeoRect.left() + areaGeoRect.width() / 2.0);
-            point.setY( areaGeoRect.top()  + (size.height() / 2)*1/axisTitleSpace );
+            point.setX( geoRect.left() + geoRect.width() / 2.0);
+            point.setY( geoRect.top()  + (size.height() / 2)*1/axisTitleSpace );
             size.setWidth( qMin( size.width(), axis()->geometry().width() ) );
             break;
         case Bottom:
-            point.setX( areaGeoRect.left() + areaGeoRect.width() / 2.0);
-            point.setY( areaGeoRect.bottom() - (size.height()/2)*1/axisTitleSpace);
+            point.setX( geoRect.left() + geoRect.width() / 2.0);
+            point.setY( geoRect.bottom() - (size.height()/2)*1/axisTitleSpace);
             size.setWidth( qMin( size.width(), axis()->geometry().width() ) );
             break;
         case Left:
-            point.setX( areaGeoRect.left() + (size.width() / 2)*1/axisTitleSpace);
-            point.setY( areaGeoRect.top() + areaGeoRect.height() / 2.0);
+            point.setX( geoRect.left() + (size.width() / 2)*1/axisTitleSpace);
+            point.setY( geoRect.top() + geoRect.height() / 2.0);
             size.setHeight( qMin( size.height(), axis()->geometry().height() ) );
             break;
         case Right:
-            point.setX( areaGeoRect.right() - (size.width() / 2)*1/axisTitleSpace);
-            point.setY( areaGeoRect.top() + areaGeoRect.height() / 2.0);
+            point.setX( geoRect.right() - (size.width() / 2)*1/axisTitleSpace);
+            point.setY( geoRect.top() + geoRect.height() / 2.0);
             size.setHeight( qMin( size.height(), axis()->geometry().height() ) );
             break;
         }
@@ -610,33 +610,32 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
     // - find the reference point at which to start drawing and the increment (line distance);
     QPointF rulerRef;
-    const QRect areaGeoRect( areaGeometry() );
     const QRect geoRect( geometry() );
     QRectF rulerRect;
 
     QPainter* const ptr = context->painter();
 
-    //for debugging: if( isAbscissa() )ptr->drawRect(areaGeoRect.adjusted(0,0,-1,-1));
-    //qDebug() << "         " << (isAbscissa() ? "Abscissa":"Ordinate") << "axis painting with geometry" << areaGeoRect;
+    //for debugging: if( isAbscissa() )ptr->drawRect(geoRect.adjusted(0,0,-1,-1));
+    //qDebug() << "         " << (isAbscissa() ? "Abscissa":"Ordinate") << "axis painting with geometry" << geoRect;
 
     // FIXME references are of course different for all locations:
     switch( position() )
     {
     case Top:
-        rulerRef.setX( areaGeoRect.topLeft().x() );
-        rulerRef.setY( areaGeoRect.topLeft().y() + areaGeoRect.height() );
+        rulerRef.setX( geoRect.topLeft().x() );
+        rulerRef.setY( geoRect.topLeft().y() + geoRect.height() );
         break;
     case Bottom:
-        rulerRef.setX( areaGeoRect.bottomLeft().x() );
-        rulerRef.setY( areaGeoRect.bottomLeft().y() - areaGeoRect.height() );
+        rulerRef.setX( geoRect.bottomLeft().x() );
+        rulerRef.setY( geoRect.bottomLeft().y() - geoRect.height() );
         break;
     case Right:
-        rulerRef.setX( areaGeoRect.bottomRight().x() - areaGeoRect.width() );
-        rulerRef.setY( areaGeoRect.bottomRight().y() );
+        rulerRef.setX( geoRect.bottomRight().x() - geoRect.width() );
+        rulerRef.setY( geoRect.bottomRight().y() );
         break;
     case Left:
-        rulerRef.setX( areaGeoRect.bottomLeft().x() + areaGeoRect.width() );
-        rulerRef.setY( areaGeoRect.bottomLeft().y() );
+        rulerRef.setX( geoRect.bottomLeft().x() + geoRect.width() );
+        rulerRef.setY( geoRect.bottomLeft().y() );
         break;
     }
 
@@ -1472,7 +1471,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
     }
 
     if( ! titleText().isEmpty() ) {
-        d->drawTitleText( ptr, plane, areaGeoRect );
+        d->drawTitleText( ptr, plane, geoRect );
     }
 
     //qDebug() << "KDChart::CartesianAxis::paintCtx() done.";
