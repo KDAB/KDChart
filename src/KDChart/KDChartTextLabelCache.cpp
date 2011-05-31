@@ -204,7 +204,10 @@ void PrerenderedLabel::paint() const
         // QImage (X11 workaround) does not have fill():
         painter.setPen( FullTransparent );
         painter.setBrush( FullTransparent );
+        QPainter::CompositionMode mode = painter.compositionMode();
+        painter.setCompositionMode( QPainter::CompositionMode_Clear );
         painter.drawRect( 0, 0, Width, Height );
+        painter.setCompositionMode( mode );
 
         QMatrix matrix;
         matrix.translate( 0.5 * Width,  0.5 * Height );
