@@ -12,6 +12,8 @@ KD Chart 2.x requires a Qt version >= 4 with XML support enabled.
 
    To define the install-location use for example;
      ./configure.sh -shared -debug -prefix /opt/kdchart
+	 
+   NOTE: Don't use releative paths for the prefix, they will not work.
 
 
 1) set your LD_LIBRARY_PATH to point to your KD Chart installation lib directory.
@@ -84,6 +86,8 @@ b) manual installation
      
     To define the install-location use for example;
      configure.bat -shared -debug -prefix c:/kdchart
+	 
+    NOTE: Don't use releative paths for the prefix, they will not work.
 
 1) Add the path to KD Chart lib into your LIB environment variable and the path 
 to KD Chart bin into your PATH environment variable.
@@ -155,6 +159,7 @@ b) manual installation
    To define the install-location use for example;
      ./configure.sh -shared -debug -prefix /opt/kdchart
 
+   NOTE: Don't use releative paths for the prefix, they will not work.
 
 1) set your DYLD_LIBRARY_PATH to point to your KD Chart installation lib directory.
 
