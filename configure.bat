@@ -258,7 +258,10 @@ if "%shared%" == "yes" (
 )
 
 echo CONFIG += warn_on >> .qmake.cache
-echo QMAKE_CXXFLAGS += -WX >> .qmake.cache
+
+rem Treat warnings as errors
+echo win32-msvc*:QMAKE_CXXFLAGS += -WX >> .qmake.cache
+echo win32-g++*:QMAKE_CXXFLAGS += -Wer >> .qmake.cache
 
 if "%unittests%" == "yes" (
     echo CONFIG += unittests >> .qmake.cache
