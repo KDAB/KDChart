@@ -495,12 +495,21 @@ bool AttributesModel::setHeaderData ( int section, Qt::Orientation orientation,
         QMap<int, QVariant> &dataMap = sectionDataMap[ section ];
         dataMap.insert( role, value );
         if( sourceModel() ){
-            emit attributesChanged( index( 0, section, QModelIndex() ),
-                                    index( rowCount( QModelIndex() ), section, QModelIndex() ) );
+            int numRows = rowCount( QModelIndex() );
+            int numCols = columnCount( QModelIndex() );
+            if ( orientation == Qt::Horizontal && numRows > 0 )
+                emit attributesChanged( index( 0, section, QModelIndex() ),
+                                        index( numRows - 1, section, QModelIndex() ) );
+            else if ( orientation == Qt::Vertical && numCols > 0 )
+                emit attributesChanged( index( section, 0, QModelIndex() ),
+                                        index( section, numCols - 1, QModelIndex() ) );
             emit headerDataChanged( orientation, section, section );
-            if ( section != -1 )
+
+            // FIXME: This only makes sense for orientation == Qt::Horizontal,
+            // but what if orientation == Qt::Vertical?
+            if ( section != -1 && numRows > 0 )
                 emit dataChanged( index( 0, section, QModelIndex() ),
-                                        index( rowCount( QModelIndex() ) - 1, section, QModelIndex() ) );
+                                  index( numRows - 1, section, QModelIndex() ) );
         }
         return true;
     }
@@ -524,10 +533,11 @@ AttributesModel::PaletteType AttributesModel::paletteType() const
 bool KDChart::AttributesModel::setModelData( const QVariant value, int role )
 {
     mModelDataMap.insert( role, value );
-    if( sourceModel() ){
+    int numRows = rowCount( QModelIndex() );
+    int numCols = columnCount( QModelIndex() );
+    if( sourceModel() && numRows > 0 && numCols > 0 ) {
         emit attributesChanged( index( 0, 0, QModelIndex() ),
-                                index( rowCount( QModelIndex() ),
-                                       columnCount( QModelIndex() ), QModelIndex() ) );
+                                index( numRows - 1, numCols - 1, QModelIndex() ) );
     }
     return true;
 }
