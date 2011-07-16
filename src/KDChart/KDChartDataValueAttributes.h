@@ -264,8 +264,11 @@ public:
    * \brief Defines the relative positioning of the data value labels for negative values.
     *
     * The position is specified in relation to the respective data value point, or in
-    * releation to the respective data representation area, that's one area segment in
+    * relation to the respective data representation area, that's one area segment in
     * a LineDiagram showing areas, or one bar in a BarDiagram, one pie slice ...
+    *
+    * See detailed description of \a KDChart::Position for an illustration of the
+    * different possible reference positions.
     *
    * \sa negativePosition
    */
@@ -281,8 +284,11 @@ public:
    * \brief Defines the relative position of the data value labels for positive values.
    *
    * The position is specified in relation to the respective data value point, or in
-   * releation to the respective data representation area, that's one area segment in
+   * relation to the respective data representation area, that's one area segment in
    * a LineDiagram showing areas, or one bar in a BarDiagram, one pie slice ...
+   *
+   * See detailed description of \a KDChart::Position for an illustration of the
+   * different possible reference positions.
    *
    * \sa positivePosition
    */

@@ -45,6 +45,12 @@ namespace KDChart {
  * methods below), in a similar way, as you would use a
  * compass to navigate on a map.
  *
+ * For each piece (slice/bar, etc.) of a chart for example, you can specify the position of the value
+ * labels. Figure 1 illustrates which cardinal points refer to which points
+ * on a pie or bar chart, resp. In the graphic, "N" stands for North, "S" for South, etc.
+ *
+ * \image html position-alignments.png "Figure 1: Different interpretations of KDChart::Position within KDChart"
+ *
  * \note Often you will declare a \c Position together with the
  * RelativePosition class, to specify a logical point,
  * which then will be used to layout your chart at runtime,
