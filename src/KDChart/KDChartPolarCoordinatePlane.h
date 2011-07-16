@@ -54,8 +54,11 @@ namespace KDChart {
 
         /** \brief Specify the rotation of the coordinate plane.
           *
-          * In a Pie diagram this indicates the position where the first pie starts,
-          * in a Polar diagram it specifies the Zero position of the circular axis.
+          * In a pie diagram this indicates the position where the first pie starts,
+          * in a polar diagram it specifies the Zero position of the circular axis:
+          *
+          * \image html polar-plane-start-position.png "Illustration of \"start position\" property"
+          *
           * \sa startPosition
           */
         void setStartPosition( qreal degrees );
