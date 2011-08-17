@@ -181,7 +181,6 @@ int main(int argc, char *argv[]) {
 	plotter->setPen(0, Qt::NoPen);
 
 	// Dataset 2 : MarkerDiamond, (black outline, red inside), no line
-	QColor SERIES_2_OUTLINE = Qt::black;
 	QColor SERIES_2_INSIDE = QColor(255,100,100);
 	attr = plotter->dataValueAttributes(1);
 	mattr = attr.markerAttributes();
@@ -195,7 +194,6 @@ int main(int argc, char *argv[]) {
 	plotter->setPen(1, Qt::NoPen);
 
 	// Dataset 3 : MarkerCircle, (green outline, yellow inside), blue line
-	QColor SERIES_3_OUTLINE = QColor(100,255,150);
 	QColor SERIES_3_INSIDE = QColor("yellow");
 	QColor SERIES_3_LINE = QColor("navy");
 	attr = plotter->dataValueAttributes(2);
