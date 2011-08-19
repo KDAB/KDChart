@@ -37,7 +37,7 @@
 #include "KDChartAbstractDiagram.h"
 #include "KDChartAbstractCoordinatePlane.h"
 #include "KDChartDataValueAttributes.h"
-#include "KDChartBackgroundAttributes"
+#include "KDChartBackgroundAttributes.h"
 #include "KDChartRelativePosition.h"
 #include "KDChartPosition.h"
 #include "KDChartPaintContext.h"
