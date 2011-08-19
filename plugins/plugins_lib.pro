@@ -1,11 +1,12 @@
+include( $${TOP_SOURCE_DIR}/variables.pri )
+include( $${TOP_SOURCE_DIR}/features/kdchart.prf )
+
 TEMPLATE = lib
 TARGET = kdchartpluginlib
+DESTDIR = ../lib
 CONFIG(debug, debug|release) {
   !unix:TARGET = kdchartpluginlibd
 }
-
-include( $${TOP_SOURCE_DIR}/variables.pri )
-include( $${TOP_SOURCE_DIR}/features/kdchart.prf )
 
 DEFINES += KDCHART_BUILD_PLUGIN_LIB
 CONFIG += designer

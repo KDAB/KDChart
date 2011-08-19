@@ -1,3 +1,5 @@
+include( $$KDCHARTBASE/variables.pri )
+
 TEMPLATE = lib
 CONFIG += plugin
 TARGET = kdchart_plugin
@@ -7,8 +9,6 @@ CONFIG(debug, debug|release) {
 
 # KDCHARTDIR = ../
 KDCHARTBASE = ..
-
-include( $$KDCHARTBASE/variables.pri )
 
 INCLUDEPATH += $$KDCHARTBASE/include
 DEFINES += PLUGINS_PLUGIN_DLL
