@@ -4,7 +4,7 @@
 #include <QtCore/QPointF>
 
 #include <limits>
-#include "KDABLibFakes"
+#include <KDABLibFakes>
 
 using namespace KDChart;
 
