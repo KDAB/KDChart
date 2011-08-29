@@ -180,6 +180,8 @@ void RingDiagram::paint( PaintContext* ctx )
     if ( !checkInvariants(true) )
         return;
 
+    d->reverseMapper.clear();
+
     const PieAttributes attrs( pieAttributes() );
 
 	const int rCount = rowCount();
@@ -427,6 +429,8 @@ void RingDiagram::drawPieSurface( QPainter* painter,
             //fix value position
             const qreal sum = valueTotals( dataset );
             painter->drawPolygon( poly );
+
+            d->reverseMapper.addPolygon( index.row(), index.column(), poly );
 
             const QPointF centerPoint = (innerCenterPoint + outerCenterPoint) / 2.0;
             
