@@ -382,8 +382,9 @@ void KDChart::AbstractCoordinatePlane::mouseReleaseEvent( QMouseEvent* event )
         if( rubberWidth > 0.0 && rubberHeight > 0.0 )
         {
             // this is the center of the rubber band in pixel space
-            const qreal rubberCenterX = static_cast< qreal >( d->rubberBand->geometry().center().x() - geometry().x() );
-            const qreal rubberCenterY = static_cast< qreal >( d->rubberBand->geometry().center().y() - geometry().y() );
+            const int marginFactor = 1;
+            const qreal rubberCenterX = static_cast< qreal >( d->rubberBand->geometry().center().x() - geometry().x() ) - marginFactor;
+            const qreal rubberCenterY = static_cast< qreal >( d->rubberBand->geometry().center().y() - geometry().y() ) + marginFactor;
 
             // this is the height/width of the plane in pixel space
             const qreal myWidth = static_cast< qreal >( geometry().width() );
