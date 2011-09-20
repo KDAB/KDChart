@@ -249,6 +249,8 @@ namespace KDChart
 
         void dataChanged( const QModelIndex& topLeft, const QModelIndex& bottomRight )
         {
+            if ( !m_model )
+                return;
             Q_ASSERT( m_model != 0 );
             Q_ASSERT( topLeft.parent() == bottomRight.parent() );
 
