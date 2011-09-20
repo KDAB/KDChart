@@ -952,13 +952,22 @@ CoordinatePlaneList Chart::coordinatePlanes()
 
 void Chart::addCoordinatePlane( AbstractCoordinatePlane* plane )
 {
+	// Append
+	insertCoordinatePlane( d->coordinatePlanes.count(), plane );
+}
+
+void Chart::insertCoordinatePlane( int index, AbstractCoordinatePlane* plane )
+{
+	if  ( index < 0 || index > d->coordinatePlanes.count() )
+		return;
+
     connect( plane, SIGNAL( destroyedCoordinatePlane( AbstractCoordinatePlane* ) ),
              d,   SLOT( slotUnregisterDestroyedPlane( AbstractCoordinatePlane* ) ) );
     connect( plane, SIGNAL( needUpdate() ),       this,   SLOT( update() ) );
     connect( plane, SIGNAL( needRelayout() ),     d,      SLOT( slotRelayout() ) ) ;
     connect( plane, SIGNAL( needLayoutPlanes() ), d,      SLOT( slotLayoutPlanes() ) ) ;
     connect( plane, SIGNAL( propertiesChanged() ),this, SIGNAL( propertiesChanged() ) );
-    d->coordinatePlanes.append( plane );
+    d->coordinatePlanes.insert( index, plane );
     plane->setParent( this );
     d->slotLayoutPlanes();
 }

@@ -135,6 +135,17 @@ namespace KDChart {
         void addCoordinatePlane( AbstractCoordinatePlane* plane );
 
         /**
+         * Inserts a coordinate plane to the chart at index @p index.
+		 * The chart takes ownership.
+		 *
+		 * @param index The index where to add the plane
+         * @param plane The coordinate plane to add.
+         *
+         * \sa replaceCoordinatePlane, takeCoordinatePlane
+         */
+		void insertCoordinatePlane( int index, AbstractCoordinatePlane* plane );
+
+        /**
          * Replaces the old coordinate plane, or appends the
          * plane, it there is none yet.
          *
