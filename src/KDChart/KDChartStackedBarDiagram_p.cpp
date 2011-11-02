@@ -59,11 +59,12 @@ const QPair<QPointF, QPointF> StackedBarDiagram::calculateDataBoundaries() const
         {
             const CartesianDiagramDataCompressor::CachePosition position( row, col );
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
+            const double value = ISNAN( point.value ) ? 0.0 : point.value;
 
-            if( point.value > 0.0 )
-                stackedValues += point.value;
+            if( value > 0.0 )
+                stackedValues += value;
             else
-                negativeStackedValues += point.value;
+                negativeStackedValues += value;
 
             // this is always true yMin can be 0 in case all values
             // are the same
@@ -181,30 +182,33 @@ void StackedBarDiagram::paint(  PaintContext* ctx )
             {
                 const CartesianDiagramDataCompressor::CachePosition position( row, k );
                 const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
-                if( ( p.value >= 0.0 && point.value >= 0.0 ) || ( p.value < 0.0 && point.value < 0.0 ) )
+                if( !ISNAN( point.value ) && (( p.value >= 0.0 && point.value >= 0.0 ) || ( p.value < 0.0 && point.value < 0.0 )) )
                     stackedValues += point.value;
                 key = point.key;
             }
 
-            const qreal usedDepth = threeDAttrs.depth();
+            if (!ISNAN( value ))
+            {
+                const qreal usedDepth = threeDAttrs.depth();
 
-            QPointF point = ctx->coordinatePlane()->translate( QPointF( key, stackedValues ) );
+                QPointF point = ctx->coordinatePlane()->translate( QPointF( key, stackedValues ) );
 
-            const qreal dy = point.y() - usedDepth;
-            if ( dy < 0 ) {
-                threeDAttrs.setDepth( point.y() - 1 );
-                diagram()->setThreeDBarAttributes( threeDAttrs );
+                const qreal dy = point.y() - usedDepth;
+                if ( dy < 0 ) {
+                    threeDAttrs.setDepth( point.y() - 1 );
+                    diagram()->setThreeDBarAttributes( threeDAttrs );
+                }
+
+                point.rx() += offset / 2;
+                const QPointF previousPoint = ctx->coordinatePlane()->translate( QPointF( key, stackedValues - value ) );
+                const qreal barHeight = previousPoint.y() - point.y();
+
+                const QRectF rect( point, QSizeF( barWidth , barHeight ) );
+                appendDataValueTextInfoToList( diagram(), list, index, PositionPoints( rect ),
+                                                Position::North, Position::South,
+                                                value );
+                paintBars( ctx, index, rect, maxDepth );
             }
-
-            point.rx() += offset / 2;
-            const QPointF previousPoint = ctx->coordinatePlane()->translate( QPointF( key, stackedValues - value ) );
-            const qreal barHeight = previousPoint.y() - point.y();
-
-            const QRectF rect( point, QSizeF( barWidth , barHeight ) );
-            appendDataValueTextInfoToList( diagram(), list, index, PositionPoints( rect ),
-                                              Position::North, Position::South,
-                                              value );
-            paintBars( ctx, index, rect, maxDepth );
         }
     }
     paintDataValueTextsAndMarkers( diagram(), ctx, list, false );
