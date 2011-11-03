@@ -26,6 +26,8 @@
 #include "entrydelegate.h"
 #include "entrydialog.h"
 
+#include <algorithm>
+
 #include <KDGanttConstraintModel>
 #include <KDGanttDateTimeGrid>
 #include <KDGanttGraphicsView>
