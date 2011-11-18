@@ -269,7 +269,7 @@ void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
             maxDistance = dist;
 
         qreal size = d->size;
-        qreal diff = (2*maxDistance - d->size);
+        qreal diff = maxDistance - d->size/2.0;
         if(diff > 0)
             d->size *= 1.0-(diff/size);
     }
