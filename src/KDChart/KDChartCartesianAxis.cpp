@@ -1040,7 +1040,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 else
                     bIsVisibleLabel = ( (translatedValue >= geoRect.top() && translatedValue <= geoRect.bottom() && !isLogarithmicX) || i != 0.0 || rulerAttr.showZeroLabel() );
 
-                painttick = true;
+                bool painttick = true;
 
                 //Dont paint more ticks than we need
                 //when diagram type is Bar
