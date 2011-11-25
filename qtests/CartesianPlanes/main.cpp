@@ -116,23 +116,33 @@ private slots:
     void testRangeSettings()
     {
         initTestCase ();
-        const QPair< qreal,  qreal> hrange( 0, 30 );
-        const QPair< qreal,  qreal> vrange( 34, 45 );
+        const QPair< qreal,  qreal> expectedHrange( 0, 30 );
+        const QPair< qreal,  qreal> expectedVrange( 34, 45 );
         m_plane->addDiagram(  m_bars );
         // note: the range is only Null, if auto-adjusting is turned off!
         m_plane->setAutoAdjustHorizontalRangeToData(100);
         m_plane->setAutoAdjustVerticalRangeToData(100);
         //qDebug() << m_plane->horizontalRange() << m_plane->verticalRange();
-        QCOMPARE( m_plane->horizontalRange(), hrange );
-        QCOMPARE( m_plane->verticalRange(), vrange );
+        const QPair<qreal, qreal> hrange = m_plane->horizontalRange();
+        const QPair<qreal, qreal> vrange = m_plane->verticalRange();
+        
+        //use single-component QCOMPARE instead of QCOMPARE on the pairs, to make sure qFuzzyCompare is used
+        QCOMPARE( hrange.first + 1, expectedHrange.first + 1 ); //avoid comparison against 0, which doesn't work with qFuzzyCompare
+        QCOMPARE( hrange.second, expectedHrange.second );
+        QCOMPARE( vrange.first, expectedVrange.first );
+        QCOMPARE( vrange.second, expectedVrange.second );
         QPair< qreal,  qreal> hboundaries( m_bars->dataBoundaries().first.x(),
                                            m_bars->dataBoundaries().second.x() );
         QPair< qreal,  qreal> vboundaries( int(m_bars->dataBoundaries().first.y()+0.5),
                                            int(m_bars->dataBoundaries().second.y()+0.5) );
         m_plane->setHorizontalRange( hboundaries );
         m_plane->setVerticalRange( vboundaries );
-        QCOMPARE( m_plane->horizontalRange(), hboundaries );
-        QCOMPARE( m_plane->verticalRange(), vboundaries );
+        const QPair<qreal, qreal> newhb = m_plane->horizontalRange();
+        const QPair<qreal, qreal> newvb = m_plane->verticalRange();
+        QCOMPARE( newhb.first, hboundaries.first );
+        QCOMPARE( newhb.second, hboundaries.second );
+        QCOMPARE( newvb.first, vboundaries.first );
+        QCOMPARE( newvb.second, vboundaries.second );
     }
 
     void testGlobalGridAttributesSettings()
