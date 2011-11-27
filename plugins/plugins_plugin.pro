@@ -10,7 +10,7 @@ CONFIG(debug, debug|release) {
 # KDCHARTDIR = ../
 KDCHARTBASE = ..
 
-INCLUDEPATH += $$KDCHARTBASE/include
+INCLUDEPATH += $$KDCHARTBASE/include $$KDCHARTBASE/include/KDChart
 DEFINES += PLUGINS_PLUGIN_DLL
 
 CONFIG += designer debug_and_release

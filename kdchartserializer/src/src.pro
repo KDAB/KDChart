@@ -26,6 +26,7 @@ DEFINES += KDCHART_BUILD_KDCHARTSERIALIZER_LIB
 KDCHART_PATH = ../..
 INCLUDEPATH+= ../include \
             $$KDCHART_PATH/include \
+            $$KDCHART_PATH/include/KDChart \
             $$KDCHART_PATH/src \
             $$KDCHART_PATH/KDChart/src \
             .

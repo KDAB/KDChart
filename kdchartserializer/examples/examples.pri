@@ -26,6 +26,7 @@ CONFIG( static ) {
 #          before examples.pri is included
 INCLUDEPATH += \
             $$KDCHART_PATH/include \
+            $$KDCHART_PATH/include/KDChart \
             $$KDCHART_PATH/kdchartserializer/include
 DEPENDPATH += \
             $$KDCHART_PATH/include \

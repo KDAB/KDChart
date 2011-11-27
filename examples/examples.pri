@@ -14,6 +14,8 @@ CONFIG( static ) {
 #          before examples.pri is included
 INCLUDEPATH += \
             $$KDCHART_PATH/include \
+            $$KDCHART_PATH/include/KDChart \
+            $$KDCHART_PATH/include/KDGantt \
             $$KDCHART_PATH/examples/tools
 DEPENDPATH += \
             $$KDCHART_PATH/include \

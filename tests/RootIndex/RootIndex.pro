@@ -1,16 +1,12 @@
 KDCHART_PATH = ../..
 
+include( $$KDCHART_PATH/examples/examples.pri )
+
 HEADERS= mainwindow.h
 SOURCES= main.cpp mainwindow.cpp
 FORMS  = mainwindow.ui
 QT    += svg
 
-INCLUDEPATH += $$KDCHART_PATH/include \
-            $$KDCHART_PATH/examples/tools
-DEPENDPATH += $$KDCHART_PATH/include \
-            $$KDCHART_PATH/examples/tools
-
-LIBS        += -L$$KDCHART_PATH/lib -l$$KDCHARTLIB -l$$TESTTOOLSLIB
 message( "Building ''$$TARGET'' using LIBS ''$$LIBS''" )
 
 unix {
