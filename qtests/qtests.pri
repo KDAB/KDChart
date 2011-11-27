@@ -10,7 +10,8 @@ CONFIG+=qtestlib
 TEMPLATE = app
 INCLUDEPATH +=  ../../examples/tools ../../include \
         ../../kdchartserializer/include \
-        ../../src/KDChart
+        ../../src/KDChart \
+        ../../include/KDChart
 
 DEPENDPATH += . ../../src ../../lib ../../examples/tools ../../include \
 	../../kdchartserializer/include \
