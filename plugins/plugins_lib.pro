@@ -24,6 +24,7 @@ LIBS += -L$$KDCHARTBASE/lib -l$$KDCHARTLIB -l$$KDCHARTUITOOLSLIB
 INCLUDEPATH +=  $${TOP_SOURCE_DIR}/uitools \
                 $${TOP_BUILD_DIR}/uitools \
                 $$KDCHARTBASE/include \
+                $$KDCHARTBASE/include/KDChart \
                 $$KDCHARTBASE/src \
                 $$KDCHARTBASE/extra_include
 
