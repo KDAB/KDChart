@@ -43,7 +43,7 @@
 #include "KDChartLegend.h"
 #include "KDChartLayoutItems.h"
 #include <KDChartTextAttributes.h>
-#include <KDChartMarkerAttributes>
+#include <KDChartMarkerAttributes.h>
 #include "KDChartPainterSaver_p.h"
 #include "KDChartPrintingParameters.h"
 

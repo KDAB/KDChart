@@ -27,7 +27,7 @@
 
 #include <QPainter>
 
-#include <KDChartPaintContext>
+#include <KDChartPaintContext.h>
 
 #include "KDChartLineAttributes.h"
 #include "KDChartDataValueAttributes.h"

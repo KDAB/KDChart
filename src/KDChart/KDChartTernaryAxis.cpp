@@ -24,8 +24,8 @@
 
 #include <QPainter>
 
-#include <KDChartChart>
-#include <KDChartPaintContext>
+#include <KDChartChart.h>
+#include <KDChartPaintContext.h>
 
 #include "TernaryConstants.h"
 #include "KDChartTernaryCoordinatePlane.h"

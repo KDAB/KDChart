@@ -24,9 +24,9 @@
 #define KDCHARTTERNARYAXIS_H
 
 
-#include <KDChartAbstractAxis>
-#include <KDChartPosition>
-#include <KDChartTextAttributes>
+#include <KDChartAbstractAxis.h>
+#include <KDChartPosition.h>
+#include <KDChartTextAttributes.h>
 
 class PrerenderedLabel;
 

@@ -28,21 +28,21 @@
 #include <QPen>
 #include <QPointer>
 
-#include <KDChartTextAttributes>
-#include <KDChartFrameAttributes>
-#include <KDChartBackgroundAttributes>
-#include <KDChartDataValueAttributes>
-#include <KDChartMarkerAttributes>
-#include <KDChartBarAttributes>
-#include <KDChartStockBarAttributes>
-#include <KDChartLineAttributes>
-#include <KDChartPieAttributes>
-#include <KDChartAbstractThreeDAttributes>
-#include <KDChartThreeDBarAttributes>
-#include <KDChartThreeDLineAttributes>
-#include <KDChartThreeDPieAttributes>
-#include <KDChartGridAttributes>
-#include <KDChartValueTrackerAttributes>
+#include <KDChartTextAttributes.h>
+#include <KDChartFrameAttributes.h>
+#include <KDChartBackgroundAttributes.h>
+#include <KDChartDataValueAttributes.h>
+#include <KDChartMarkerAttributes.h>
+#include <KDChartBarAttributes.h>
+#include <KDChartStockBarAttributes.h>
+#include <KDChartLineAttributes.h>
+#include <KDChartPieAttributes.h>
+#include <KDChartAbstractThreeDAttributes.h>
+#include <KDChartThreeDBarAttributes.h>
+#include <KDChartThreeDLineAttributes.h>
+#include <KDChartThreeDPieAttributes.h>
+#include <KDChartGridAttributes.h>
+#include <KDChartValueTrackerAttributes.h>
 
 #include <KDABLibFakes>
 
