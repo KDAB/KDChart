@@ -268,7 +268,7 @@ void RadarDiagram::paint( PaintContext* ctx,
 
         // first fill the areas with the brush-color and the defined alpha-value.
         if (d->fillAlpha > 0.0) {
-            foreach(const Polygon& p, polygons) {
+            Q_FOREACH(const Polygon& p, polygons) {
                 PainterSaver painterSaver( ctx->painter() );
                 ctx->painter()->setRenderHint ( QPainter::Antialiasing );
                 QBrush br = p.brush;
@@ -282,7 +282,7 @@ void RadarDiagram::paint( PaintContext* ctx,
         }
 
         // then draw the poly-lines.
-        foreach(const Polygon& p, polygons) {
+        Q_FOREACH(const Polygon& p, polygons) {
             PainterSaver painterSaver( ctx->painter() );
             ctx->painter()->setRenderHint ( QPainter::Antialiasing );
             ctx->painter()->setBrush( p.brush );
