@@ -25,9 +25,10 @@
 
 #include "KDChartAbstractCartesianDiagram.h"
 #include "KDChartBarAttributes.h"
-//#include "KDChartThreeDBarAttributes.h"
 
+QT_BEGIN_NAMESPACE
 class QPainter;
+QT_END_NAMESPACE
 
 namespace KDChart {
 
@@ -68,7 +69,7 @@ public:
 
     void setType( const BarType type );
     BarType type() const;
-    
+
     void setOrientation( Qt::Orientation orientation );
     Qt::Orientation orientation() const;
 

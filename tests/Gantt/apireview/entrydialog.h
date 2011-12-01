@@ -27,14 +27,15 @@
 #include <QDialog>
 #include <QModelIndex>
 
+QT_BEGIN_NAMESPACE
 class QAbstractItemModel;
+namespace Ui {
+    class EntryDialog;
+}
+QT_END_NAMESPACE
 
 namespace KDGantt {
     class ConstraintModel;
-}
-
-namespace Ui {
-    class EntryDialog;
 }
 
 class EntryDialog : public QDialog {

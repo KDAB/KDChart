@@ -26,9 +26,11 @@
 #include "KDChartLineDiagram.h"
 #include "KDChartLeveyJenningsCoordinatePlane.h"
 
+QT_BEGIN_NAMESPACE
 class QPainter;
 class QPolygonF;
 class QSvgRenderer;
+QT_END_NAMESPACE
 
 namespace KDChart {
 
@@ -36,7 +38,7 @@ namespace KDChart {
 
 /**
  * @brief LeveyDiagram defines a Levey Jennings chart.
- * 
+ *
  * It provides different subtypes which are set using \a setType.
  */
 class KDCHART_EXPORT LeveyJenningsDiagram : public LineDiagram
@@ -82,7 +84,7 @@ public:
     float expectedMeanValue() const;
 
     void setExpectedStandardDeviation( float sd );
-    float expectedStandardDeviation() const; 
+    float expectedStandardDeviation() const;
 
     float calculatedMeanValue() const;
     float calculatedStandardDeviation() const;

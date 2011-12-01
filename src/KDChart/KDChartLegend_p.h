@@ -46,10 +46,11 @@
 
 #include <KDABLibFakes>
 
-
+QT_BEGIN_NAMESPACE
 class QGridLayout;
 class KDTextDocument;
 class QTextDocument;
+QT_END_NAMESPACE
 
 namespace KDChart {
     class AbstractDiagram;

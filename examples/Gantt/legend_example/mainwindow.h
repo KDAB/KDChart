@@ -26,17 +26,18 @@
 #include <QItemSelection>
 #include <QMainWindow>
 
+QT_BEGIN_NAMESPACE
 class QStandardItemModel;
 class QCloseEvent;
+namespace Ui {
+    class MainWindow;
+}
+QT_END_NAMESPACE
 
 namespace KDGantt {
     class ConstraintModel;
     class DateTimeGrid;
     class Legend;
-}
-
-namespace Ui {
-    class MainWindow;
 }
 
 class MainWindow : public QMainWindow {

@@ -37,7 +37,9 @@ namespace KDChart {
     class Legend;
 }
 
+QT_BEGIN_NAMESPACE
 class QLabel;
+QT_END_NAMESPACE
 
 class MainWindow : public QWidget, private Ui::MainWindow
 {

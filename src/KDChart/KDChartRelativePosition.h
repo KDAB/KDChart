@@ -134,7 +134,7 @@ public:
      * \note When printing data value texts at a centered point you might want to call
      * setAlignment( Qt::AlignCenter ) and also set the horizontal/vertical padding to Zero
      * to have your texts centered more precisely.
-     * 
+     *
      * \sa setReferencePosition, setReferenceArea, setHorizontalPadding, setVerticalPadding
      */
     void setAlignment( Qt::Alignment flags );
@@ -209,14 +209,16 @@ private:
 inline bool RelativePosition::operator!=( const RelativePosition & other ) const { return !operator==( other ); }
 }
 
-KDCHART_DECLARE_SWAP_SPECIALISATION( KDChart::RelativePosition )
-
-Q_DECLARE_TYPEINFO( KDChart::RelativePosition, Q_MOVABLE_TYPE );
-Q_DECLARE_METATYPE( KDChart::RelativePosition )
-
 #if !defined(QT_NO_DEBUG_STREAM)
 KDCHART_EXPORT QDebug operator<<(QDebug, const KDChart::RelativePosition& );
 #endif /* QT_NO_DEBUG_STREAM */
 
+KDCHART_DECLARE_SWAP_SPECIALISATION( KDChart::RelativePosition )
+
+QT_BEGIN_NAMESPACE
+Q_DECLARE_TYPEINFO( KDChart::RelativePosition, Q_MOVABLE_TYPE );
+QT_END_NAMESPACE
+
+Q_DECLARE_METATYPE( KDChart::RelativePosition )
 
 #endif // KDCHARTRELATIVEPOSITION_H

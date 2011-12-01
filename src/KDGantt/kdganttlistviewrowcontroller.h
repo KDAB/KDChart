@@ -25,8 +25,10 @@
 
 #include "kdganttabstractrowcontroller.h"
 
+QT_BEGIN_NAMESPACE
 class QAbstractProxyModel;
 class QListView;
+QT_END_NAMESPACE
 
 namespace KDGantt {
     class KDGANTT_EXPORT ListViewRowController : public AbstractRowController {

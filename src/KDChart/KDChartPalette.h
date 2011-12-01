@@ -70,7 +70,7 @@ public:
     int size() const;
 
     /** Adds \a brush to the palette. If no \a position is specified, the
-     * brush is appended. 
+     * brush is appended.
      */
     void addBrush( const QBrush & brush, int position = -1 );
 
@@ -93,5 +93,7 @@ private:
 };
 
 }
+
 KDCHART_DECLARE_SWAP_SPECIALISATION( KDChart::Palette )
+
 #endif

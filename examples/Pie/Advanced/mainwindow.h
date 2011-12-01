@@ -26,7 +26,9 @@
 #include "ui_mainwindow.h"
 #include <TableModel.h>
 
+QT_BEGIN_NAMESPACE
 class QTimer;
+QT_END_NAMESPACE
 namespace KDChart {
     class Chart;    
     class PieDiagram;

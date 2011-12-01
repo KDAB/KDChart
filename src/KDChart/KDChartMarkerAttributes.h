@@ -26,12 +26,14 @@
 #include <QMetaType>
 #include "KDChartGlobal.h"
 
+QT_BEGIN_NAMESPACE
 class QColor;
 class QSizeF;
 class QPen;
 class QPainterPath;
 class QDebug;
 template <typename T, typename K> class QMap;
+QT_END_NAMESPACE
 
 namespace KDChart {
 
@@ -65,7 +67,7 @@ namespace KDChart {
         typedef QMap<uint, uint> MarkerStylesMap;
         void setMarkerStylesMap( const MarkerStylesMap & map );
         MarkerStylesMap markerStylesMap() const;
-        
+
         void setThreeD( bool value );
         bool threeD() const;
 
@@ -110,12 +112,16 @@ namespace KDChart {
     inline bool MarkerAttributes::operator!=( const MarkerAttributes & other ) const { return !operator==( other ); }
 }
 
-KDCHART_DECLARE_SWAP_SPECIALISATION( KDChart::MarkerAttributes )
-Q_DECLARE_TYPEINFO( KDChart::MarkerAttributes, Q_MOVABLE_TYPE );
-Q_DECLARE_METATYPE( KDChart::MarkerAttributes )
-
 #ifndef QT_NO_DEBUG_STREAM
 KDCHART_EXPORT QDebug operator<<( QDebug, const KDChart::MarkerAttributes & );
 #endif
+
+KDCHART_DECLARE_SWAP_SPECIALISATION( KDChart::MarkerAttributes )
+
+QT_BEGIN_NAMESPACE
+Q_DECLARE_TYPEINFO( KDChart::MarkerAttributes, Q_MOVABLE_TYPE );
+QT_END_NAMESPACE
+
+Q_DECLARE_METATYPE( KDChart::MarkerAttributes )
 
 #endif // KDCHARTMARKERATTRIBUTES_H

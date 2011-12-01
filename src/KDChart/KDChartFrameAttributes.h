@@ -65,8 +65,12 @@ private:
 KDCHART_EXPORT QDebug operator<<(QDebug, const KDChart::FrameAttributes& );
 #endif /* QT_NO_DEBUG_STREAM */
 
-Q_DECLARE_METATYPE( KDChart::FrameAttributes )
 KDCHART_DECLARE_SWAP_SPECIALISATION( KDChart::FrameAttributes )
+
+QT_BEGIN_NAMESPACE
 Q_DECLARE_TYPEINFO( KDChart::FrameAttributes, Q_MOVABLE_TYPE );
+QT_END_NAMESPACE
+
+Q_DECLARE_METATYPE( KDChart::FrameAttributes )
 
 #endif // KDCHARTFRAMEATTRIBUTES_H

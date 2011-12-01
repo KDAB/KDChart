@@ -27,12 +27,14 @@
 #include <QModelIndex>
 #include "kdganttglobal.h"
 
+QT_BEGIN_NAMESPACE
 class QAbstractItemModel;
 class QAbstractProxyModel;
 class QAbstractItemView;
 class QItemSelectionModel;
 class QPrinter;
 class QSplitter;
+QT_END_NAMESPACE
 
 namespace KDGantt {
     class ItemDelegate;

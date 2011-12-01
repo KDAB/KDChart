@@ -67,7 +67,7 @@ public:
 
     /** @return the explode factor set by setExplode or by setExplodeFactor. */
     qreal explodeFactor() const;
-    
+
     void setGapFactor( bool circular, qreal factor );
     qreal gapFactor( bool circular ) const;
 
@@ -84,9 +84,12 @@ private:
 KDCHART_EXPORT QDebug operator<<(QDebug, const KDChart::PieAttributes& );
 #endif /* QT_NO_DEBUG_STREAM */
 
+KDCHART_DECLARE_SWAP_SPECIALISATION( KDChart::PieAttributes )
+
+QT_BEGIN_NAMESPACE
+Q_DECLARE_TYPEINFO( KDChart::PieAttributes, Q_MOVABLE_TYPE );
+QT_END_NAMESPACE
 
 Q_DECLARE_METATYPE( KDChart::PieAttributes )
-Q_DECLARE_TYPEINFO( KDChart::PieAttributes, Q_MOVABLE_TYPE );
-KDCHART_DECLARE_SWAP_SPECIALISATION( KDChart::PieAttributes )
 
 #endif // KDCHART_PIE_ATTRIBUTES_H

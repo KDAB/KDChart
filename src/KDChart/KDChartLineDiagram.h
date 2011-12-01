@@ -27,8 +27,10 @@
 #include "KDChartLineAttributes.h"
 #include "KDChartValueTrackerAttributes.h"
 
+QT_BEGIN_NAMESPACE
 class QPainter;
 class QPolygonF;
+QT_END_NAMESPACE
 
 namespace KDChart {
 

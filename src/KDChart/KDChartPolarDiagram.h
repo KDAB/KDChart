@@ -27,9 +27,9 @@
 #include "KDChartPosition.h"
 #include "KDChartAbstractPolarDiagram.h"
 
-
+QT_BEGIN_NAMESPACE
 class QPolygonF;
-
+QT_END_NAMESPACE
 
 namespace KDChart {
 

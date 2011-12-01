@@ -33,9 +33,11 @@
  *
  * ( This class is used internally by DatasetSelectorWidget. )
  */
+QT_BEGIN_NAMESPACE
 namespace Ui {
     class DatasetSelector;
 }
+QT_END_NAMESPACE
 /**
  * \endcond
  */

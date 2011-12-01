@@ -33,8 +33,10 @@
 #include "KDChartTextAttributes.h"
 #include "KDChartMarkerAttributes.h"
 
+QT_BEGIN_NAMESPACE
 class QPainter;
 class KDTextDocument;
+QT_END_NAMESPACE
 
 QPointF rotatedPoint( const QPointF& pt, qreal rotation, const QPointF& center = QPointF() );
 QRectF rotatedRect( const QRectF& pt, qreal rotation, const QPointF& center = QPointF() );

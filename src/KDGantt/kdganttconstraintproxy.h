@@ -27,7 +27,9 @@
 
 #include <QPointer>
 
+QT_BEGIN_NAMESPACE
 class QAbstractProxyModel;
+QT_END_NAMESPACE
 
 namespace KDGantt {
     class Constraint;

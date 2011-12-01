@@ -31,7 +31,9 @@
 
 #include "kdchart_export.h"
 
+QT_BEGIN_NAMESPACE
 class QAbstractItemModel;
+QT_END_NAMESPACE
 
 namespace KDChart
 {
@@ -114,10 +116,10 @@ namespace KDChart
             {
                 qWarning( "KDChart didn't got signal rowsInserted, resetModel or layoutChanged, "
                           "but an index with a row outside of the known bounds." );
-                          
+
                 // apparently, data were added behind our back (w/o signals)
-                const_cast< ModelDataCache< T, ROLE >* >( this )->rowsInserted( m_rootIndex, 
-                                                                                m_data.count(), 
+                const_cast< ModelDataCache< T, ROLE >* >( this )->rowsInserted( m_rootIndex,
+                                                                                m_data.count(),
                                                                                 m_model->rowCount( m_rootIndex ) - 1 );
                 Q_ASSERT( index.row() < m_data.count() );
             }
@@ -126,10 +128,10 @@ namespace KDChart
             {
                 qWarning( "KDChart didn't got signal columnsInserted, resetModel or layoutChanged, "
                           "but an index with a column outside of the known bounds." );
-                          
+
                 // apparently, data were added behind our back (w/o signals)
-                const_cast< ModelDataCache< T, ROLE >* >( this )->columnsInserted( m_rootIndex, 
-                                                                                   m_data.first().count(), 
+                const_cast< ModelDataCache< T, ROLE >* >( this )->columnsInserted( m_rootIndex,
+                                                                                   m_data.first().count(),
                                                                                    m_model->columnCount( m_rootIndex ) - 1 );
                 Q_ASSERT( index.column() < m_data.first().count() );
             }
@@ -160,10 +162,10 @@ namespace KDChart
                 m_connector.disconnectSignals( m_model );
 
             m_model = model;
-            
+
             if( m_model != 0 )
                 m_connector.connectSignals( m_model );
-            
+
             modelReset();
         }
 
@@ -196,9 +198,9 @@ namespace KDChart
 
             const QModelIndex index = m_model->index( row, column, m_rootIndex );
             const QVariant data = index.data( role );
-            const T value = data.isNull() ? ModelDataCachePrivate::nan< T >() 
+            const T value = data.isNull() ? ModelDataCachePrivate::nan< T >()
                                           : qVariantValue< T >( data );
-    
+
             m_data[ row ][ column ] = value;
             m_cacheValid[ row ][ column ] = true;
 
@@ -216,7 +218,7 @@ namespace KDChart
 
             Q_ASSERT( start <= end );
             Q_ASSERT( start <= m_model->columnCount(m_rootIndex) );
-            
+
             const int rowCount = m_data.count();
             for( int row = 0; row < rowCount; ++row )
             {
@@ -263,7 +265,7 @@ namespace KDChart
             const int maxRow = bottomRight.row();
             const int minCol = qMax( 0, topLeft.column() );
             const int maxCol = bottomRight.column();
-            
+
             Q_ASSERT( minRow <= maxRow );
             Q_ASSERT( minCol <= maxCol );
             Q_ASSERT( maxRow < m_model->rowCount( m_rootIndex ) );
@@ -284,14 +286,14 @@ namespace KDChart
             modelReset();
         }
 
-        void modelReset() 
+        void modelReset()
         {
             m_data.clear();
             m_cacheValid.clear();
 
             if( m_model == 0 )
                 return;
-   
+
             m_data.fill( QVector< T >( m_model->columnCount( m_rootIndex ) ), m_model->rowCount( m_rootIndex ) );
             m_cacheValid.fill( QVector< bool >( m_model->columnCount( m_rootIndex ), false ), m_model->rowCount( m_rootIndex ) );
 
@@ -309,7 +311,7 @@ namespace KDChart
 
             Q_ASSERT( start <= end );
             Q_ASSERT( end - start + 1 <= m_model->rowCount(m_rootIndex) );
-            
+
             m_data.insert( start, end - start + 1, QVector< T >( m_model->columnCount( m_rootIndex ) ) );
             m_cacheValid.insert( start, end - start + 1, QVector< bool >( m_model->columnCount( m_rootIndex ), false ) );
 

@@ -30,7 +30,9 @@
 #include <QDateTime>
 #include <QPersistentModelIndex>
 
+QT_BEGIN_NAMESPACE
 class QGraphicsLineItem;
+QT_END_NAMESPACE
 
 namespace KDGantt {
     class GraphicsScene;

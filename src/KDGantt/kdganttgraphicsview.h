@@ -27,10 +27,12 @@
 
 #include "kdganttglobal.h"
 
+QT_BEGIN_NAMESPACE
 class QModelIndex;
 class QAbstractItemModel;
 class QAbstractProxyModel;
 class QItemSelectionModel;
+QT_END_NAMESPACE
 
 namespace KDGantt {
     class AbstractRowController;
@@ -98,7 +100,7 @@ namespace KDGantt {
         void print( QPrinter* printer, bool drawRowLabels = true );
         void print( QPrinter* printer, qreal start, qreal end, bool drawRowLabels = true );
         void print( QPainter* painter, const QRectF& target = QRectF(), bool drawRowLabels = true );
-        void print( QPainter* painter, qreal start, qreal end, 
+        void print( QPainter* painter, qreal start, qreal end,
                     const QRectF& target = QRectF(), bool drawRowLabels = true );
 
     public Q_SLOTS:

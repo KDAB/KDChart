@@ -30,7 +30,10 @@
 
 #include <qpointer.h>
 
+QT_BEGIN_NAMESPACE
 class QDesignerFormEditorInterface;
+QT_END_NAMESPACE
+
 namespace KDChart {
   class Chart;
   class Widget;

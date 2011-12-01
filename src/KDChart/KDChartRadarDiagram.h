@@ -28,9 +28,9 @@
 #include "KDChartPolarDiagram.h"
 #include "KDChartRadarCoordinatePlane.h"
 
-
+QT_BEGIN_NAMESPACE
 class QPolygonF;
-
+QT_END_NAMESPACE
 
 namespace KDChart {
 
@@ -54,22 +54,22 @@ public:
                          qreal& newZoomX, qreal& newZoomY );
     /** \reimpl */
     virtual void resize ( const QSizeF& area );
-    
+
     /** \reimpl */
     virtual qreal valueTotals () const;
     /** \reimpl */
     virtual qreal numberOfValuesPerDataset() const;
     /** \reimpl */
     virtual qreal numberOfGridRings() const;
-    
+
     /**
      * if val is true the diagram will mirror the diagram datapoints
      */
     void setReverseData( bool val );
     bool reverseData();
-    
+
     virtual RadarDiagram * clone() const;
-    
+
     /**
      * Close each of the data series by connecting the last point to its
      * respective start point
@@ -96,6 +96,6 @@ protected:
 
 }; // End of class RadarDiagram
 
-} 
+}
 
 #endif // KDCHARTRADARDIAGRAM_H

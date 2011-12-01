@@ -30,9 +30,11 @@
 
 #include "kdganttglobal.h"
 
+QT_BEGIN_NAMESPACE
 class QAbstractProxyModel;
 class QItemSelectionModel;
 class QPrinter;
+QT_END_NAMESPACE
 
 namespace KDGantt {
     class AbstractGrid;

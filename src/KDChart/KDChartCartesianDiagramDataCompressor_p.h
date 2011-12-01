@@ -48,7 +48,9 @@
 #include "kdchart_export.h"
 
 class CartesianDiagramDataCompressorTests;
+QT_BEGIN_NAMESPACE
 class QAbstractItemModel;
+QT_END_NAMESPACE
 
 namespace KDChart {
 
@@ -75,10 +77,10 @@ namespace KDChart {
     public:
         class DataPoint {
         public:
-            DataPoint() 
-                : key( std::numeric_limits< qreal >::quiet_NaN() ), 
-                  value( std::numeric_limits< qreal >::quiet_NaN() ), 
-                  hidden( false ) 
+            DataPoint()
+                : key( std::numeric_limits< qreal >::quiet_NaN() ),
+                  value( std::numeric_limits< qreal >::quiet_NaN() ),
+                  hidden( false )
                   {}
             qreal key;
             qreal value;

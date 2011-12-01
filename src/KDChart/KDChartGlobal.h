@@ -206,16 +206,20 @@ inline const CLASS::Private * CLASS::d_func() const           \
 #ifndef QT_NO_STL
 #include <algorithm>
 #define KDCHART_DECLARE_SWAP_SPECIALISATION( X )            \
+QT_BEGIN_NAMESPACE                                          \
     template <> inline void qSwap<X>( X & lhs, X & rhs )    \
     { lhs.swap( rhs ); }                                    \
+QT_END_NAMESPACE                                            \
     namespace std {                                         \
         template <> inline void swap<X>( X & lhs, X & rhs ) \
         { lhs.swap( rhs ); }                                \
     }
 #else
 #define KDCHART_DECLARE_SWAP_SPECIALISATION( X )            \
+QT_BEGIN_NAMESPACE                                          \
     template <> inline void qSwap<X>( X & lhs, X & rhs )    \
-    { lhs.swap( rhs ); }
+    { lhs.swap( rhs ); }                                    \
+QT_END_NAMESPACE
 #endif
 
 #define KDCHART_DECLARE_SWAP_SPECIALISATION_DERIVED( X )    \

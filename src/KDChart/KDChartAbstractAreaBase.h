@@ -33,8 +33,11 @@
 #include "KDChartAbstractAreaBase.h"
 
 
+QT_BEGIN_NAMESPACE
 class QPainter;
 class QString;
+QT_END_NAMESPACE
+
 namespace KDChart {
     class TextAttributes;
     class BackgroundAttributes;

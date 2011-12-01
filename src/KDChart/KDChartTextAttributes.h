@@ -28,9 +28,11 @@
 #include "KDChartGlobal.h"
 #include "KDChartMeasure.h"
 
+QT_BEGIN_NAMESPACE
 class QPen;
 class QFont;
 class QTextDocument;
+QT_END_NAMESPACE
 
 namespace KDChart {
 
@@ -218,7 +220,10 @@ KDCHART_EXPORT QDebug operator<<(QDebug, const KDChart::TextAttributes& );
 #endif /* QT_NO_DEBUG_STREAM */
 
 KDCHART_DECLARE_SWAP_SPECIALISATION( KDChart::TextAttributes )
-Q_DECLARE_METATYPE( KDChart::TextAttributes )
+
+QT_BEGIN_NAMESPACE
 Q_DECLARE_TYPEINFO( KDChart::TextAttributes, Q_MOVABLE_TYPE );
+QT_END_NAMESPACE
+Q_DECLARE_METATYPE( KDChart::TextAttributes )
 
 #endif // KDCHARTTEXTATTRIBUTES_H

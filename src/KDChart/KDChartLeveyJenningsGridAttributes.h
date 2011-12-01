@@ -27,7 +27,9 @@
 #include "KDChartGlobal.h"
 #include "KDChartEnums.h"
 
+QT_BEGIN_NAMESPACE
 class QPen;
+QT_END_NAMESPACE
 
 namespace KDChart {
 
@@ -75,8 +77,11 @@ private:
 }
 
 KDCHART_DECLARE_SWAP_SPECIALISATION( KDChart::LeveyJenningsGridAttributes )
-Q_DECLARE_METATYPE( KDChart::LeveyJenningsGridAttributes )
-Q_DECLARE_TYPEINFO( KDChart::LeveyJenningsGridAttributes, Q_MOVABLE_TYPE );
 
+QT_BEGIN_NAMESPACE
+Q_DECLARE_TYPEINFO( KDChart::LeveyJenningsGridAttributes, Q_MOVABLE_TYPE );
+QT_END_NAMESPACE
+
+Q_DECLARE_METATYPE( KDChart::LeveyJenningsGridAttributes )
 
 #endif // KDCHARTLEVEYJENNINGSGRIDATTRIBUTES_H

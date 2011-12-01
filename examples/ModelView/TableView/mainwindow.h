@@ -33,10 +33,12 @@ namespace KDChart {
     class DatasetProxyModel;
 }
 
+QT_BEGIN_NAMESPACE
 class QAbstractItemView;
 class QStandardItemModel;
 class QTableView;
 class QItemSelectionModel;
+QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow
 {

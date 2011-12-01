@@ -31,7 +31,9 @@ namespace KDChart {
     class LineDiagram;
 }
 
+QT_BEGIN_NAMESPACE
 class QPainterPath;
+QT_END_NAMESPACE
 
 class MainWindow : public QWidget, private Ui::MainWindow
 {

@@ -41,7 +41,9 @@
 
 #include <KDABLibFakes>
 
+QT_BEGIN_NAMESPACE
 class QSvgRenderer;
+QT_END_NAMESPACE
 
 namespace KDChart {
 

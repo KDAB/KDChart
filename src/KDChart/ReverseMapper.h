@@ -26,9 +26,11 @@
 #include <QModelIndex>
 #include <QHash>
 
+QT_BEGIN_NAMESPACE
 class QRectF;
 class QGraphicsScene;
 class QPolygonF;
+QT_END_NAMESPACE
 
 namespace KDChart {
 

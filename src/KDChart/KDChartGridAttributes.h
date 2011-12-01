@@ -27,7 +27,9 @@
 #include "KDChartGlobal.h"
 #include "KDChartEnums.h"
 
+QT_BEGIN_NAMESPACE
 class QPen;
+QT_END_NAMESPACE
 
 namespace KDChart {
 
@@ -114,8 +116,11 @@ KDCHART_EXPORT QDebug operator<<(QDebug, const KDChart::GridAttributes& );
 #endif /* QT_NO_DEBUG_STREAM */
 
 KDCHART_DECLARE_SWAP_SPECIALISATION( KDChart::GridAttributes )
-Q_DECLARE_METATYPE( KDChart::GridAttributes )
-Q_DECLARE_TYPEINFO( KDChart::GridAttributes, Q_MOVABLE_TYPE );
 
+QT_BEGIN_NAMESPACE
+Q_DECLARE_TYPEINFO( KDChart::GridAttributes, Q_MOVABLE_TYPE );
+QT_END_NAMESPACE
+
+Q_DECLARE_METATYPE( KDChart::GridAttributes )
 
 #endif // KDCHARTGRIDATTRIBUTES_H

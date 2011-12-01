@@ -27,7 +27,9 @@
 #include "KDChartGlobal.h"
 #include "KDChartEnums.h"
 
+QT_BEGIN_NAMESPACE
 class QPen;
+QT_END_NAMESPACE
 
 namespace KDChart {
 
@@ -42,7 +44,7 @@ public:
 	RulerAttributes &operator= ( const RulerAttributes& );
 
     ~RulerAttributes();
-    
+
     /**
       * Sets the pen used to draw the tick marks
       */
@@ -65,15 +67,15 @@ public:
 
     /**
       * Sets the pen used to draw the tick mark at a specific value
-      * 
+      *
       * Note: This will not paint a tick mark at the specified value
-      * if it wasn't already drawn before. 
+      * if it wasn't already drawn before.
       */
     void setTickMarkPen( qreal value, const QPen& pen );
     QPen tickMarkPen( qreal value ) const;
     typedef QMap<qreal, QPen> TickMarkerPensMap;
     TickMarkerPensMap tickMarkPens() const;
-    
+
     bool hasTickMarkPenAt( qreal value) const;
 
     /**
@@ -110,7 +112,7 @@ public:
     void setMinorTickMarkLength( int length );
     int minorTickMarkLength() const;
     bool minorTickMarkLengthIsSet() const;
-    
+
     /**
      * Set margin that should be used between the labals and the ticks. Per
      * default the value is -1 what means, that half of the label's font
@@ -139,8 +141,11 @@ KDCHART_EXPORT QDebug operator<<(QDebug, const KDChart::RulerAttributes& );
 #endif /* QT_NO_DEBUG_STREAM */
 
 KDCHART_DECLARE_SWAP_SPECIALISATION( KDChart::RulerAttributes )
-Q_DECLARE_METATYPE( KDChart::RulerAttributes )
-Q_DECLARE_TYPEINFO( KDChart::RulerAttributes, Q_MOVABLE_TYPE );
 
+QT_BEGIN_NAMESPACE
+Q_DECLARE_TYPEINFO( KDChart::RulerAttributes, Q_MOVABLE_TYPE );
+QT_END_NAMESPACE
+
+Q_DECLARE_METATYPE( KDChart::RulerAttributes )
 
 #endif // KDCHARTRULERATTRIBUTES_H

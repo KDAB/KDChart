@@ -23,10 +23,12 @@
 #ifndef PAINTCONTEXT_H
 #define PAINTCONTEXT_H
 
-class QPainter;
-
 #include <QRectF>
 #include "KDChartGlobal.h"
+
+QT_BEGIN_NAMESPACE
+class QPainter;
+QT_END_NAMESPACE
 
 namespace KDChart {
 

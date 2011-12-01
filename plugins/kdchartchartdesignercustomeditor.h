@@ -29,7 +29,9 @@
 
 #include "ui_kdchartchartdesignercustomeditor.h"
 
+QT_BEGIN_NAMESPACE
 class QStandardItemModel;
+QT_END_NAMESPACE
 
 namespace KDChart {
     class Chart;
@@ -38,7 +40,7 @@ namespace KDChart {
     class HeaderFooterPropertiesWidget;
     class DiagramPropertiesWidget;
     class AbstractDiagram;
-    class AbstractCartesianDiagram; 
+    class AbstractCartesianDiagram;
 }
 
 class KDCHART_PLUGIN_EXPORT KDChartChartDesignerCustomEditor
@@ -48,7 +50,7 @@ class KDCHART_PLUGIN_EXPORT KDChartChartDesignerCustomEditor
     public:
     KDChartChartDesignerCustomEditor( KDChart::Chart *chart );
 
-    
+
       enum ChartType {
         Bar =  0,
         Line = 1,
@@ -77,7 +79,7 @@ class KDCHART_PLUGIN_EXPORT KDChartChartDesignerCustomEditor
         void slotCurrentLegendChanged( int idx );
         void slotAddAxis();
         void slotRemoveAxis();
-        void slotCurrentAxisChanged( int idx ); 
+        void slotCurrentAxisChanged( int idx );
         void slotAddHeaderFooter();
         void slotRemoveHeaderFooter();
         void slotCurrentHeaderFooterChanged( int idx );
@@ -92,7 +94,7 @@ class KDCHART_PLUGIN_EXPORT KDChartChartDesignerCustomEditor
         void switchToCartesianPlaneAndMoveStuffToDiagram(
                 KDChart::AbstractCartesianDiagram *diagram );
         void moveLegendsToDiagram( KDChart::AbstractDiagram* diagram );
-        
+
 	//KDChart::DiagramPropertiesWidget * mDiagramEditor;
         KDChart::LegendPropertiesWidget * mLegendEditor;
         KDChart::AxisPropertiesWidget * mAxisEditor;

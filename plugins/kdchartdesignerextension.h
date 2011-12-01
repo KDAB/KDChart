@@ -36,7 +36,9 @@ namespace KDChart {
   class Chart;
 }
 
+QT_BEGIN_NAMESPACE
 class QAction;
+QT_END_NAMESPACE
 
 // This is for extending the popupmenu on charts, to add "Edit chart properties..."
 class KDCHART_PLUGIN_EXPORT KDChartBaseTaskMenu: public QObject, public QDesignerTaskMenuExtension

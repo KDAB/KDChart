@@ -25,7 +25,9 @@
 
 #include "kdchart_export.h"
 
+QT_BEGIN_NAMESPACE
 class DomWidget;
+QT_END_NAMESPACE
 
 namespace KDChart
 {

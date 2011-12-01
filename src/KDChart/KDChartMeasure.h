@@ -35,9 +35,10 @@
  *
  */
 
-
+QT_BEGIN_NAMESPACE
 class QObject;
 class QPaintDevice;
+QT_END_NAMESPACE
 
 namespace KDChart {
 
@@ -132,7 +133,7 @@ private:
  * Auxiliary class used by the KDChart::Measure and KDChart::Chart class.
  *
  * Normally there should be no need to call any of these methods yourself.
- * 
+ *
  * They are used by KDChart::Chart::paint( QPainter*, const QRect& )
  * to adjust all of the relative Measures according to the target
  * rectangle's size.

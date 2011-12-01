@@ -40,10 +40,12 @@
 #include <QModelIndex>
 #include <QPointer>
 
+QT_BEGIN_NAMESPACE
 class QAbstractProxyModel;
 class QGraphicsView;
 class QGraphicsScene;
 class QGraphicsRectItem;
+QT_END_NAMESPACE
 
 namespace KDGantt {
     class GraphicsItem;

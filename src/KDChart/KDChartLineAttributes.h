@@ -98,8 +98,11 @@ KDCHART_EXPORT QDebug operator<<(QDebug, const KDChart::LineAttributes& );
 #endif /* QT_NO_DEBUG_STREAM */
 
 KDCHART_DECLARE_SWAP_SPECIALISATION( KDChart::LineAttributes )
-Q_DECLARE_METATYPE( KDChart::LineAttributes )
-Q_DECLARE_TYPEINFO( KDChart::LineAttributes, Q_MOVABLE_TYPE );
 
+QT_BEGIN_NAMESPACE
+Q_DECLARE_TYPEINFO( KDChart::LineAttributes, Q_MOVABLE_TYPE );
+QT_END_NAMESPACE
+
+Q_DECLARE_METATYPE( KDChart::LineAttributes )
 
 #endif // KDCHARTLINEATTRIBUTES_H

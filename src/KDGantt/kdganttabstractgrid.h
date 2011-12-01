@@ -26,10 +26,12 @@
 #include "kdganttglobal.h"
 #include "kdganttconstraint.h"
 
+QT_BEGIN_NAMESPACE
 class QPainter;
 class QRectF;
 class QAbstractItemModel;
 class QModelIndex;
+QT_END_NAMESPACE
 
 namespace KDGantt {
     class AbstractRowController;
@@ -72,4 +74,3 @@ namespace KDGantt {
 }
 
 #endif /* KDGANTTABSTRACTGRID_H */
-

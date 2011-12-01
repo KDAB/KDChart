@@ -316,8 +316,12 @@ private:
 KDCHART_EXPORT QDebug operator<<(QDebug, const KDChart::DataValueAttributes& );
 #endif /* QT_NO_DEBUG_STREAM */
 
-Q_DECLARE_METATYPE( KDChart::DataValueAttributes )
-Q_DECLARE_TYPEINFO( KDChart::DataValueAttributes, Q_MOVABLE_TYPE );
 KDCHART_DECLARE_SWAP_SPECIALISATION( KDChart::DataValueAttributes )
+
+QT_BEGIN_NAMESPACE
+Q_DECLARE_TYPEINFO( KDChart::DataValueAttributes, Q_MOVABLE_TYPE );
+QT_END_NAMESPACE
+
+Q_DECLARE_METATYPE( KDChart::DataValueAttributes )
 
 #endif // KDCHARTDATAVALUEATTRIBUTES_H

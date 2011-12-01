@@ -33,10 +33,10 @@
 #include "KDChartTextAttributes.h"
 #include "KDChartRulerAttributes.h"
 
-
+QT_BEGIN_NAMESPACE
 class QPainter;
 class QSizeF;
-// class QRectF;
+QT_END_NAMESPACE
 
 
 namespace KDChart {
@@ -82,7 +82,7 @@ namespace KDChart {
          * KD Chart is calling this method immediately before drawing the
          * text, this  means: What you return here will be drawn without
          * further modifications.
-         * 
+         *
          * \param label The text of the label as KD Chart has calculated it
          * automatically (or as it was taken from a QStringList provided
          * by you, resp.)
@@ -156,7 +156,7 @@ namespace KDChart {
           \sa setTextAttributes
         */
         TextAttributes textAttributes() const;
-        
+
         /**
           \brief Use this to specify the attributes used to paint the axis ruler
 

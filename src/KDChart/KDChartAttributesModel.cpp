@@ -413,7 +413,7 @@ QVariant AttributesModel::data( const QModelIndex& index, int role ) const
     if( mDataMap.contains( index.column() ) )
     {
         const QMap< int,  QMap< int, QVariant > >& colDataMap = mDataMap[ index.column() ];
-        if( colDataMap.contains( index.row() ) ) 
+        if( colDataMap.contains( index.row() ) )
         {
             const QMap< int, QVariant >& dataMap = colDataMap[ index.row() ];
             if( dataMap.contains( role ) )

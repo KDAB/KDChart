@@ -30,9 +30,11 @@
 #include "KDChartGlobal.h"
 #include "KDChartEnums.h"
 
+QT_BEGIN_NAMESPACE
 class QStringList;
 class QByteArray;
 template <typename T> class QList;
+QT_END_NAMESPACE
 
 namespace KDChart {
 
@@ -283,12 +285,16 @@ class KDCHART_EXPORT PositionPoints
 
 }
 
-Q_DECLARE_TYPEINFO( KDChart::Position, Q_MOVABLE_TYPE );
-Q_DECLARE_METATYPE( KDChart::Position )
-Q_DECLARE_OPERATORS_FOR_FLAGS( KDChart::Position::Options )
 
 #if !defined(QT_NO_DEBUG_STREAM)
 KDCHART_EXPORT QDebug operator<<(QDebug, const KDChart::Position& );
 #endif /* QT_NO_DEBUG_STREAM */
+
+QT_BEGIN_NAMESPACE
+Q_DECLARE_TYPEINFO( KDChart::Position, Q_MOVABLE_TYPE );
+Q_DECLARE_OPERATORS_FOR_FLAGS( KDChart::Position::Options )
+QT_END_NAMESPACE
+
+Q_DECLARE_METATYPE( KDChart::Position )
 
 #endif // KDCHARTPOSITION_H

@@ -36,7 +36,7 @@ Contains KDGantt macros.  */
 
 #if (defined(__MINGW32__) || defined(__MINGW64__)) && (__GNUC__ == 4) && (__GNUC_MINOR__ == 4) && (__GNUC_PATCHLEVEL__ == 0)
 // workaround a mingw bug, http://sourceforge.net/tracker/index.php?func=detail&aid=2373234&group_id=2435&atid=102435
-int swprintf (wchar_t *, size_t, const wchar_t *, ...); 
+int swprintf (wchar_t *, size_t, const wchar_t *, ...);
 int vswprintf(wchar_t *, const wchar_t *, va_list);
 #endif
 
@@ -176,16 +176,20 @@ private:                                              \
 #ifndef QT_NO_STL
 #include <algorithm>
 #define KDGANTT_DECLARE_SWAP_SPECIALISATION( X )            \
+QT_BEGIN_NAMESPACE                                          \
     template <> inline void qSwap<X>( X & lhs, X & rhs )    \
     { lhs.swap( rhs ); }                                    \
+QT_END_NAMESPACE                                            \
     namespace std {                                         \
         template <> inline void swap<X>( X & lhs, X & rhs ) \
         { lhs.swap( rhs ); }                                \
     }
 #else
 #define KDGANTT_DECLARE_SWAP_SPECIALISATION( X )            \
+QT_BEGIN_NAMESPACE                                          \
     template <> inline void qSwap<X>( X & lhs, X & rhs )    \
-    { lhs.swap( rhs ); }
+    { lhs.swap( rhs ); }                                    \
+QT_END_NAMESPACE
 #endif
 
 #define KDGANTT_DECLARE_SWAP_SPECIALISATION_DERIVED( X )    \
@@ -287,16 +291,17 @@ namespace KDGantt {
 }
 
 Q_DECLARE_METATYPE(KDGantt::ItemType)
-Q_DECLARE_TYPEINFO(KDGantt::Span, Q_MOVABLE_TYPE);
-Q_DECLARE_TYPEINFO(KDGantt::DateTimeSpan, Q_MOVABLE_TYPE);
 
 #ifndef QT_NO_DEBUG_STREAM
-
 QDebug KDGANTT_EXPORT operator<<( QDebug dbg, KDGantt::ItemDataRole r);
 QDebug KDGANTT_EXPORT operator<<( QDebug dbg, KDGantt::ItemType t);
 QDebug KDGANTT_EXPORT operator<<( QDebug dbg, const KDGantt::Span& s );
 QDebug KDGANTT_EXPORT operator<<( QDebug dbg, const KDGantt::DateTimeSpan& s );
-
 #endif /* QT_NO_DEBUG_STREAM */
+
+QT_BEGIN_NAMESPACE
+Q_DECLARE_TYPEINFO(KDGantt::Span, Q_MOVABLE_TYPE);
+Q_DECLARE_TYPEINFO(KDGantt::DateTimeSpan, Q_MOVABLE_TYPE);
+QT_END_NAMESPACE
 
 #endif /* KDGANTTGLOBAL_H */
