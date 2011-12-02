@@ -125,48 +125,6 @@ static QRectF buildReferenceRect( const PolarCoordinatePlane* plane )
 //qDebug() << contentsRect;
     return contentsRect;
 }
-/*
-void PieDiagram::paint( PaintContext* ctx )
-{
-    if ( !checkInvariants(true) ) return;
-    const int colCount = model()->columnCount(rootIndex());
-    QRectF contentsRect = buildReferenceRect( polarCoordinatePlane() );
-    DataValueTextInfoList list;
-    qreal startAngle = startPosition();
-    qreal startAngleValueSpace = valueTotals() / 360 * startAngle;
-    for ( int j=0; j<colCount; ++j ) {
-        const qreal nextValue = qAbs( model()->data( model()->index( 0, j,rootIndex() ) ).toDouble() );
-        qreal spanAngle = polarCoordinatePlane()->translatePolar( QPointF( nextValue, 1 ) ).x();
-        if ( spanAngle == 0 ) continue;
-        QBrush brush = qVariantValue<QBrush>( attributesModel()->headerData( j, Qt::Vertical, KDChart::DatasetBrushRole ) );
-        QPen pen = qVariantValue<QPen>( attributesModel()->headerData( j, Qt::Vertical, KDChart::DatasetPenRole ) );
-        PainterSaver painterSaver( ctx->painter() );
-        ctx->painter()->setRenderHint ( QPainter::Antialiasing );
-        ctx->painter()->setBrush( brush );
-        ctx->painter()->setPen( pen );
-
-        // Explosion support
-        QRectF pieRect = contentsRect;
-        if( explode() ) {
-            QPointF oldCenter = contentsRect.center();
-            QPointF newCenter = polarCoordinatePlane()->translate( QPointF( explodeFactor( j ),
-                                                                            startAngleValueSpace + nextValue/2.0 ) );
-            QPointF difference = newCenter - oldCenter;
-            pieRect.translate( difference );
-        }
-
-        ctx->painter()->drawPie( pieRect, ( int ) ((-startAngle + 90 )), ( int ) (-spanAngle) );
-        startAngle += spanAngle;
-        startAngleValueSpace += nextValue;
-    }
-    d->clearListOfAlreadyDrawnDataValueTexts();
-    DataValueTextInfoListIterator it( list );
-    while ( it.hasNext() ) {
-        const DataValueTextInfo& info = it.next();
-        paintDataValueText( ctx->painter(), info.index, info.pos, info.value );
-    }
-}
-*/
 
 void PieDiagram::paint(PaintContext* ctx)
 {
@@ -183,20 +141,7 @@ void PieDiagram::paint(PaintContext* ctx)
     QPainter nullPainter(&nullPd);
     ctx->setPainter(&nullPainter);
     paintInternal(ctx, textBoundingRect);
-	
-	//edit start
-	// point from the text is getting printed 
-	/*QPoint currentPosition = textBoundingRect.bottomLeft().toPoint();
-	
-	QPoint textRectCenter = textBoundingRect.center().toPoint();
 
-	qreal newX = currentPosition.x() - textRectCenter.x();
-	qreal newY =  currentPosition.y() - textRectCenter.y();
-	currentPosition.setX(newX);
-	currentPosition.setY(newY);
-
-	textBoundingRect.translate(currentPosition);*/
-	//edit end
     // Now perform the real painting
     ctx->setPainter(actualPainter);
     paintInternal(ctx, textBoundingRect);
@@ -217,8 +162,7 @@ void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
 
     QRectF contentsRect( buildReferenceRect( polarCoordinatePlane() ) );
     contentsRect = ctx->rectangle();
-//    contentsRect = geometry();
-//qDebug() << contentsRect;
+
     if( contentsRect.isEmpty() )
         return;
 
@@ -323,7 +267,6 @@ void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
 
         d->position = QRectF( contentsRect.left() + x, contentsRect.top() + y,
                 d->size, height );
-        //  d->position.moveBy( contentsRect.left(), contentsRect.top() );
     }
 
     const PolarCoordinatePlane * plane = polarCoordinatePlane();
@@ -560,7 +503,7 @@ void PieDiagram::drawPieSurface( QPainter* painter,
             //find the value and paint it
             //fix value position
             d->reverseMapper.addPolygon( index.row(), index.column(), poly );
-			
+
             painter->drawPolygon( poly );
 
             if ( autoRotateLabels() ) {
@@ -615,18 +558,6 @@ void PieDiagram::drawPieSurface( QPainter* painter,
                 this, *list, index, 0,
                 points, Position::Center, Position::Center,
                 angleLen*sum / 360, favoriteTextAngle );
-
-        // The following, old code (since kdc 2.0.0) was not correct:
-        // Settings made for the position had been totally ignored,
-        // AND the center was NOT the center - except for pieces of 45 degrees size
-        //
-        // QLineF centerLine(  drawPosition.center(),
-        //                 QPointF( (poly[ last - 2].x() + poly.first().x())/2,
-        //                          ( poly.first().y() + poly[last-2].y() )/2 ) );
-        // QPointF valuePos( ( centerLine.x1() + centerLine.x2() )/2,
-        //                       ( centerLine.y1() + centerLine.y2() )/2 ) ;
-        //
-        // paintDataValueText( painter, index, valuePos, angleLen*sum / 360  );
     }
 }
 
@@ -661,7 +592,7 @@ void PieDiagram::draw3DEffect( QPainter* painter,
     // No need to save the brush, will be changed on return from this
     // method anyway.
     const QBrush brush = this->brush( model()->index( 0, pie, rootIndex() ) ); // checked
-    if( threeDAttrs.useShadowColors() ){        
+    if( threeDAttrs.useShadowColors() ){
         painter->setBrush( QBrush( brush.color().darker() ) );
     }
     else{
@@ -680,12 +611,10 @@ void PieDiagram::draw3DEffect( QPainter* painter,
     Q_ASSERT( startAngle >= 0 && startAngle <= 360 );
     Q_ASSERT( endAngle >= 0 && endAngle <= 360 );
 
-    //int centerY = drawPosition.center().y();
-    
     // positive pie height: absolute value
     // negative pie height: relative value
     const int depth = threeDAttrs.depth() >= 0.0 ? threeDAttrs.depth() : -threeDAttrs.depth() / 100.0 * drawPosition.height();
- 
+
     if ( startAngle == endAngle ||
             startAngle == endAngle - 360 ) { // full circle
         drawArcEffectSegment( painter, drawPosition,
@@ -893,8 +822,6 @@ void PieDiagram::drawStraightEffectSegment( QPainter* painter,
     poly[3] = QPointF( center.x(), center.y() + threeDHeight );
     // TODO: add polygon to ReverseMapper
     painter->drawPolygon( poly );
-//    if ( region )
-//        *region += QRegion( points );
 }
 
 /**
@@ -971,8 +898,6 @@ void PieDiagram::drawArcEffectSegment( QPainter* painter,
 
     // TODO: Add polygon to ReverseMapper
     painter->drawPolygon( poly );
-//    if ( region )
-//        *region += QRegion( collect );
 }
 
 /**
@@ -1016,8 +941,6 @@ void PieDiagram::drawArcUpperBrinkEffectSegment( QPainter* painter,
     }
 
     painter->drawPolyline( poly );
-//    if ( region )
-//        *region += QRegion( collect );
 }
 
 /**
@@ -1081,39 +1004,6 @@ uint PieDiagram::findRightPie( uint pie, int colCount  )
     return rightpie;
 }
 
-/*
-/ **
-  This method is a specialization that returns a fallback legend text
-  appropriate for pies that do not have more than one dataset
-
-  This method is only used when automatic legends are used, because
-  manual and first-column legends do not need fallback texts.
-
-  \param uint dataset the dataset number for which to generate a
-  fallback text
-  \return the fallback text to use for describing the specified
-  dataset in the legend
-  * /
-QString PieDiagram::fallbackLegendText( uint dataset ) const
-{
-    return QObject::tr( "Item " ) + QString::number( dataset + 1 );
-}
-
-
-/ **
-  This methods returns the number of elements to be shown in the
-  legend in case fallback texts are used.
-
-  This method is only used when automatic legends are used, because
-  manual and first-column legends do not need fallback texts.
-
-  \return the number of fallback texts to use
-  * /
-uint PieDiagram::numLegendFallbackTexts( KDChartTableDataBase* data ) const
-{
-    return data->usedCols();
-}
-*/
 
 /**
   * Auxiliary method returning a point to a given boundary
