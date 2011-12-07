@@ -210,7 +210,7 @@ void AbstractDiagram::setModel( QAbstractItemModel * newModel )
     }
     emit modelsChanged();
 }
-        
+
 void AbstractDiagram::setSelectionModel( QItemSelectionModel* newSelectionModel )
 {
     if( selectionModel() )
@@ -473,13 +473,6 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
 }
 
 
-QString AbstractDiagram::roundValues( qreal value,
-                                      const int decimalPos,
-                                      const int decimalDigits ) const
-{
-    return d->roundValues( value, decimalPos, decimalDigits );
-}
-
 void AbstractDiagram::paintDataValueTexts( QPainter* painter )
 {
     if ( !checkInvariants() ) return;
@@ -508,7 +501,7 @@ void AbstractDiagram::paintMarker( QPainter* painter,
 
     const PainterSaver painterSaver( painter );
     // the size of the marker - unscaled
-    const QSizeF maSize( ma.markerSize().width() / painter->matrix().m11(), 
+    const QSizeF maSize( ma.markerSize().width() / painter->matrix().m11(),
                          ma.markerSize().height() / painter->matrix().m22() );
     QBrush indexBrush( brush( index ) );
     QPen indexPen( ma.pen() );
@@ -952,7 +945,7 @@ QStringList AbstractDiagram::datasetLabels() const
     QStringList ret;
     if( model() == 0 )
         return ret;
-    
+
     const int columnCount = attributesModel()->columnCount(attributesModelRootIndex());
     const int dataSetCount =  datasetDimension();
     const int loopEnd = columnCount / dataSetCount;
@@ -960,7 +953,7 @@ QStringList AbstractDiagram::datasetLabels() const
     {
         ret << d->datasetAttrs( i, Qt::DisplayRole ).toString();
     }
-    
+
     return ret;
 }
 
@@ -982,11 +975,11 @@ QList<QPen> AbstractDiagram::datasetPens() const
     QList<QPen> ret;
     if( model() == 0 )
         return ret;
-    
+
     const int datasetCount = attributesModel()->columnCount(attributesModelRootIndex()) / datasetDimension();
     for ( int dataset = 0; dataset < datasetCount; dataset++ )
         ret << pen( dataset );
-    
+
     return ret;
 }
 
@@ -995,7 +988,7 @@ QList<MarkerAttributes> AbstractDiagram::datasetMarkers() const
     QList<MarkerAttributes> ret;
     if( model() == 0 )
         return ret;
-    
+
     const int datasetCount = attributesModel()->columnCount(attributesModelRootIndex()) / datasetDimension();
     for ( int dataset = 0; dataset < datasetCount; dataset++ )
         ret << dataValueAttributes( dataset ).markerAttributes();
@@ -1029,7 +1022,7 @@ void AbstractDiagram::setDatasetDimension( int dimension )
 void AbstractDiagram::setDatasetDimensionInternal( int dimension )
 {
     Q_ASSERT( dimension != 0 );
-    
+
     if ( d->datasetDimension == dimension ) return;
     d->datasetDimension = dimension;
     setDataBoundariesDirty();

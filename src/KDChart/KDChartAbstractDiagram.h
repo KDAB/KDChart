@@ -446,7 +446,7 @@ namespace KDChart {
          * Retrieves the axis unit prefix for a specific column.
          * @param column The column whose prefix should be retrieved.
          * @param orientation The orientation of the axis.
-         * @param fallback If true, the prefix for all columns is returned, when 
+         * @param fallback If true, the prefix for all columns is returned, when
          *                 none is set for the selected column.
          * @return The axis unit prefix.
          */
@@ -462,7 +462,7 @@ namespace KDChart {
          * Retrieves the axis unit suffix for a specific column.
          * @param column The column whose prefix should be retrieved.
          * @param orientation The orientation of the axis.
-         * @param fallback If true, the suffix for all columns is returned, when 
+         * @param fallback If true, the suffix for all columns is returned, when
          *                 none is set for the selected column.
          * @return The axis unit suffix.
          */
@@ -715,9 +715,6 @@ namespace KDChart {
 
     private:
         QModelIndex conditionallyMapFromSource( const QModelIndex & sourceIndex ) const;
-	QString roundValues( qreal value, const int decimalPos,
-			      const int decimalDigits ) const;
-
     };
 
     typedef QList<AbstractDiagram*> AbstractDiagramList;
