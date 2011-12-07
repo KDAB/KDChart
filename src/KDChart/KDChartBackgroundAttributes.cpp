@@ -150,7 +150,7 @@ QDebug operator<<(QDebug dbg, const KDChart::BackgroundAttributes& ba)
 	<< "visible="<<ba.isVisible()
 	<< "brush="<<ba.brush()
 	<< "pixmapmode="<<ba.pixmapMode()
-	<< "pixmap="<<ba.pixmap()
+	<< "pixmap="<<ba.pixmap().cacheKey()
 	<< ")";
     return dbg;
 }
