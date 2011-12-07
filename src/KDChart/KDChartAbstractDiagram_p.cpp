@@ -176,7 +176,7 @@ const QFontMetrics AbstractDiagram::Private::cachedFontMetrics() const
     return mCachedFontMetrics;
 }
 
-QString AbstractDiagram::Private::formatNumber( qreal value, uint decimalDigits ) const
+QString AbstractDiagram::Private::formatNumber( qreal value, int decimalDigits ) const
 {
     QString asString = QString::number( value, 'f' );
     int decimalPos = asString.indexOf( QLatin1Char( '.' ) );
@@ -283,11 +283,6 @@ void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
 
     if ( a.usePercentage() )
         value = calcPercentValue( index );
-
-    // handle decimal digits
-    int decimalDigits = a.decimalDigits();
-    QString asString = QString::number( value, 'f' );
-    int decimalPos = asString.indexOf( QLatin1Char( '.' ) );
 
     QString roundedValue;
     if ( a.dataLabel().isNull() ) {
