@@ -109,9 +109,7 @@ namespace KDChart {
         const QFontMetrics * cachedFontMetrics( const QFont& font, QPaintDevice * paintDevice);
         const QFontMetrics cachedFontMetrics() const;
 
-        QString roundValues( qreal value,
-                             const int decimalPos,
-                             const int decimalDigits ) const;
+        QString formatNumber( qreal value, uint decimalDigits ) const;
 
         void clearListOfAlreadyDrawnDataValueTexts();
 

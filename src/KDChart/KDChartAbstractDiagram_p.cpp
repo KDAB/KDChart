@@ -176,29 +176,28 @@ const QFontMetrics AbstractDiagram::Private::cachedFontMetrics() const
     return mCachedFontMetrics;
 }
 
-QString AbstractDiagram::Private::roundValues( qreal value,
-                     const int decimalPos,
-                     const int decimalDigits ) const
+QString AbstractDiagram::Private::formatNumber( qreal value, uint decimalDigits ) const
 {
-    QString digits( QString::number( value ).mid( decimalPos+1 ) );
-    QString num( QString::number( value ) );
-    num.truncate( decimalPos );
-    int count = 0;
-    for (  int i = digits.length(); i >= decimalDigits ; --i ) {
-        count += 1;
-        int lastval = QString( digits.data() [i] ).toInt();
-        int val = QString( digits.data() [i-1] ) .toInt();
-        if ( lastval >= 5 ) {
-            val += 1;
-            digits.replace( digits.length() - count,1 , QString::number( val ) );
-        }
+    QString asString = QString::number( value, 'f' );
+    int decimalPos = asString.indexOf( QLatin1Char( '.' ) );
+    QString digits( asString.mid( decimalPos + 1, decimalDigits + 1 ) ); // keep one more for rounding
+
+    if ( digits.count() > decimalDigits && digits.at( decimalDigits ) >= QLatin1Char( '5' ) ) {
+        const qreal stepUp = pow( 0.1, decimalDigits ) * 0.5;
+        value += stepUp;
+        asString = QString::number( value, 'f' );
+        decimalPos = asString.indexOf( QLatin1Char( '.' ) );
+        digits = asString.mid( decimalPos + 1, decimalDigits );
+    } else {
+        digits.chop(1);
     }
 
-    digits.truncate( decimalDigits );
-    num.append( QLatin1Char( '.' ) + digits );
+    QString ret( asString.left( decimalPos ) );
+    if ( decimalDigits > 0 ) {
+        ret.append( QLatin1Char( '.' ) + digits );
+    }
 
-    return num;
-
+    return ret;
 }
 
 void AbstractDiagram::Private::clearListOfAlreadyDrawnDataValueTexts()
@@ -287,14 +286,13 @@ void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
 
     // handle decimal digits
     int decimalDigits = a.decimalDigits();
-    int decimalPos = QString::number(  value ).indexOf( QLatin1Char( '.' ) );
+    QString asString = QString::number( value, 'f' );
+    int decimalPos = asString.indexOf( QLatin1Char( '.' ) );
+
     QString roundedValue;
-    if ( a.dataLabel().isNull() ){
-        if ( decimalPos > 0 && value != 0 )
-            roundedValue = roundValues ( value, decimalPos, decimalDigits );
-        else
-            roundedValue = QString::number(  value );
-    }else{
+    if ( a.dataLabel().isNull() ) {
+        roundedValue = formatNumber( value, a.decimalDigits() );
+    } else {
         roundedValue = a.dataLabel();
     }
 
@@ -464,9 +462,11 @@ void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
                 // instead of QPolygon::intersected (which calculates a slow and precise intersection polygon)
                 QPainterPath path;
                 path.addPolygon( pr );
-                //qDebug() << "Comparing new poly" << br << "(rotated" << radRot << ") with" << alreadyDrawnDataValueTexts.count() << "already drawn data value texts";
+                // qDebug() << "Comparing new poly" << br << "(rotated" << radRot << ") with"
+                //          << alreadyDrawnDataValueTexts.count() << "already drawn data value texts";
                 KDAB_FOREACH( const QPainterPath& oldPoly, alreadyDrawnDataValueTexts ) {
                     if ( oldPoly.intersects( path ) ) {
+                        // qDebug() << "not painting this label due to overlap";
                         drawIt = false;
                         break;
                     }
