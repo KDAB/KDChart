@@ -332,16 +332,6 @@ void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
         const RelativePosition relPos( attrs.position( valueIsPositive ) );
         const QFont calculatedFont( ta.calculatedFont( plane, KDChartEnums::MeasureOrientationMinimum ) );
 
-#if 0
-        const QString plainText = doc.toPlainText();
-        const QFontMetrics *cfm = cachedFontMetrics( calculatedFont, painter->device() );
-        // note: We can not use boundingRect() to retrieve the width, as that returns a too small value
-        const QSizeF plainSize( cfm->width( plainText ),
-                                cfm->boundingRect( plainText ).height() );
-#endif
-        // Take margins of text frame into account
-        //const QSizeF plainSize( doc.size() );
-
         // FIXME draw the non-text bits, background, etc
 
         if ( attrs.showRepetitiveDataLabels() || pos.x() <= lastX || lastRoundedValue != text ) {
