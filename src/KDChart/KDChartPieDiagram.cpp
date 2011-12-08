@@ -528,17 +528,19 @@ void PieDiagram::drawPieSurface( QPainter* painter,
         const QPointF east      = (south + northEast) / 2.0;
         const QPointF west      = (south + northWest) / 2.0;
 
-        CartesianDiagramDataCompressor::DataValueAttributesList allAttrs( d->aggregatedAttrs( this, index, 0 ) );
-        const QFontMetrics * fm = (d->cachedFontMetrics( allAttrs.value(index).textAttributes().calculatedFont(d->plane,KDChartEnums::MeasureOrientationMinimum ), this ));
-        if(!list->isEmpty())
-        {
-                QRect textRect = fm->boundingRect(QString::number(list->last().value));
+        if ( !list->isEmpty() ) {
+                CartesianDiagramDataCompressor::DataValueAttributesList allAttrs( d->aggregatedAttrs( this, index, 0 ) );
+                const QFontMetrics* fm = d->cachedFontMetrics( allAttrs.value( index ).textAttributes()
+                                             .calculatedFont( d->plane, KDChartEnums::MeasureOrientationMinimum ), this );
+
+                QRect textRect = fm->boundingRect( d->formatNumber( list->last().value,
+                                                                    list->last().attrs.decimalDigits() ) );
                 textRect.translated(center.toPoint());
                 QPoint textRectCenter = textRect.center();
                 qreal newX = center.x() - textRectCenter.x();
-                qreal newY =  center.y() - textRectCenter.y();
-                center.setX(newX);
-                center.setY(newY);
+                qreal newY = center.y() - textRectCenter.y();
+                center.setX( newX );
+                center.setY( newY );
         }
 
         PositionPoints points( center, northWest, north, northEast, east, southEast, south, southWest, west);
