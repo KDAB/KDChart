@@ -30,6 +30,7 @@
 #include "KDChartAttributesModel.h"
 #include "KDChartPaintContext.h"
 #include "KDChartPieAttributes.h"
+#include "KDChartPolarCoordinatePlane_p.h"
 #include "KDChartThreeDPieAttributes.h"
 #include "KDChartPainterSaver_p.h"
 #include "KDChartDataValueAttributes.h"
@@ -111,20 +112,6 @@ void PieDiagram::resize ( const QSizeF& )
 {
 }
 
-static QRectF buildReferenceRect( const PolarCoordinatePlane* plane )
-{
-    QRectF contentsRect;
-//qDebug() << "..........................................";
-    QPointF referencePointAtTop = plane->translate( QPointF( 1, 0 ) );
-    QPointF temp = plane->translate( QPointF( 0, 0 ) ) - referencePointAtTop;
-    const qreal offset = temp.y();
-    referencePointAtTop.setX( referencePointAtTop.x() - offset );
-    contentsRect.setTopLeft( referencePointAtTop );
-    contentsRect.setBottomRight( referencePointAtTop + QPointF( 2*offset, 2*offset) );
-//qDebug() << contentsRect;
-    return contentsRect;
-}
-
 void PieDiagram::paint(PaintContext* ctx)
 {
     // Painting is a two stage process
@@ -159,7 +146,7 @@ void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
 
     const int colCount = columnCount();
 
-    QRectF contentsRect( buildReferenceRect( polarCoordinatePlane() ) );
+    QRectF contentsRect( boundingRect( polarCoordinatePlane() ) );
     contentsRect = ctx->rectangle();
 
     if( contentsRect.isEmpty() )

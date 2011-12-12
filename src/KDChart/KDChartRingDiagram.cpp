@@ -27,6 +27,7 @@
 #include "KDChartPaintContext.h"
 #include "KDChartPainterSaver_p.h"
 #include "KDChartPieAttributes.h"
+#include "KDChartPolarCoordinatePlane_p.h"
 #include "KDChartThreeDPieAttributes.h"
 #include "KDChartDataValueAttributes.h"
 
@@ -157,22 +158,6 @@ void RingDiagram::resizeEvent( QResizeEvent* )
 {
 }
 
-static QRectF buildReferenceRect( const PolarCoordinatePlane* plane )
-{
-    QRectF contentsRect;
-    QPointF referencePointAtTop = plane->translate( QPointF( 1, 0 ) );
-    QPointF temp = plane->translate( QPointF( 0, 0 ) ) - referencePointAtTop;
-    const qreal offset = temp.y();
-    referencePointAtTop.setX( referencePointAtTop.x() - offset );
-    contentsRect.setTopLeft( referencePointAtTop );
-    contentsRect.setBottomRight( referencePointAtTop + QPointF( 2*offset, 2*offset) );
-    return contentsRect;
-}
-/*
-
-*/
-
-
 void RingDiagram::paint( PaintContext* ctx )
 {
     // note: Not having any data model assigned is no bug
@@ -184,10 +169,10 @@ void RingDiagram::paint( PaintContext* ctx )
 
     const PieAttributes attrs( pieAttributes() );
 
-	const int rCount = rowCount();
+    const int rCount = rowCount();
     const int colCount = columnCount();
 
-    QRectF contentsRect( buildReferenceRect( polarCoordinatePlane() ) );
+    QRectF contentsRect( boundingRect( polarCoordinatePlane() ) );
     contentsRect = ctx->rectangle();
     if( contentsRect.isEmpty() )
         return;
@@ -403,7 +388,7 @@ void RingDiagram::drawPieSurface( QPainter* painter,
 
             // The center point of the inner brink
             const QPointF innerCenterPoint( poly[ int(iPoint / 2) ] );
-	    
+
             actualStartAngle = startAngle + circularGap;
             actualAngleLen = angleLen - 2 * circularGap;
 
@@ -433,7 +418,7 @@ void RingDiagram::drawPieSurface( QPainter* painter,
             d->reverseMapper.addPolygon( index.row(), index.column(), poly );
 
             const QPointF centerPoint = (innerCenterPoint + outerCenterPoint) / 2.0;
-            
+
             const PainterSaver ps( painter );
             const TextAttributes ta = dataValueAttributes( index ).textAttributes();
             if( !ta.hasRotation() && autoRotateLabels() )

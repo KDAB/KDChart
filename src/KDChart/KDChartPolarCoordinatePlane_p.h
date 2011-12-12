@@ -131,6 +131,17 @@ public:
     qreal newZoomX, newZoomY;
 };
 
+static QRectF boundingRect( const PolarCoordinatePlane *plane )
+{
+    QRectF contentsRect;
+    QPointF referencePointAtTop = plane->translate( QPointF( 1, 0 ) );
+    QPointF temp = plane->translate( QPointF( 0, 0 ) ) - referencePointAtTop;
+    const qreal offset = temp.y();
+    referencePointAtTop.setX( referencePointAtTop.x() - offset );
+    contentsRect.setTopLeft( referencePointAtTop );
+    contentsRect.setBottomRight( referencePointAtTop + QPointF( 2.0 * offset, 2.0 * offset) );
+    return contentsRect;
+}
 
 KDCHART_IMPL_DERIVED_PLANE(PolarCoordinatePlane, AbstractCoordinatePlane)
 
