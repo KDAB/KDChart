@@ -303,7 +303,6 @@ void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
     if( ! atLeastOneValue )
         return;
 
-
     // The backmost slice, which is at +90°, needs to be drawn first
     const int backmostSlice = findSliceAt( 90, colCount );
     // The frontmost slice (at -90°/+270°) needs to be drawn last
@@ -339,28 +338,8 @@ void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
     }
 
     // if the backmost slice is not the frontmost slice, we draw the frontmost one last
-    if( backmostSlice != frontmostSlice || ! threeDPieAttributes().isEnabled() )
-    {
+    if ( backmostSlice != frontmostSlice || ! threeDPieAttributes().isEnabled() ) {
         drawSlice( ctx->painter(), &list, 0, frontmostSlice, granularity(), sizeFor3DEffect );
-    // otherwise, this gets a bit more complicated...
-/*    } else if( threeDPieAttributes().isEnabled() ) {
-        //drawSliceSurface( ctx->painter(), 0, frontmostSlice, granularity() );
-        const QModelIndex index = model()->index( 0, frontmostSlice, rootIndex() );
-        QPen pen = this->pen( index );
-        ctx->painter()->setBrush( brush( index ) );
-        if ( threeDAttrs.isEnabled() )
-            pen.setColor( QColor( 0, 0, 0 ) );
-        ctx->painter()->setPen( pen );
-
-        qreal startAngle = d->startAngles[ frontmostSlice ];
-        if( startAngle > 360 )
-            startAngle -= 360;
-
-        qreal endAngle = startAngle + d->angleLens[ frontmostSlice ];
-        startAngle = qMax( startAngle, 180.0 );
-
-        drawArcEffectSegment( ctx->painter(), slicePosition( 0, frontmostSlice),
-                sizeFor3DEffect, startAngle, endAngle, granularity() );*/
     }
 
     d->paintDataValueTextsAndMarkers(  this,  ctx,  list,  false, false, &textBoundingRect );
@@ -456,7 +435,6 @@ void PieDiagram::drawSliceSurface( QPainter* painter,
         }
         painter->setBrush( br );
 
-        //painter->setPen( pen( index ) );
         QPen pen = this->pen( index );
         if ( threeDAttrs.isEnabled() )
             pen.setColor( QColor( 0, 0, 0 ) );
