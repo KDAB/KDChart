@@ -78,8 +78,7 @@ const QPair<QPointF, QPointF> PieDiagram::calculateDataBoundaries () const
 
     QPointF bottomLeft ( QPointF( 0, 0 ) );
     QPointF topRight;
-    // If we explode, we need extra space for the pie slice that has
-    // the largest explosion distance.
+    // If we explode, we need extra space for the slice that has the largest explosion distance.
     if ( attrs.explode() ) {
         const int colCount = columnCount();
         qreal maxExplode = 0.0;
@@ -305,65 +304,64 @@ void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
         return;
 
 
-    // Find the backmost pie which is at +90° and needs to be drawn
-    // first
-    int backmostpie = findPieAt( 90, colCount );
-    // Find the frontmost pie (at -90°/+270°) that should be drawn last
-    int frontmostpie = findPieAt( 270, colCount );
+    // Find the backmost slice which is at +90° and needs to be drawn first
+    int backmostSlice = findSliceAt( 90, colCount );
+    // Find the frontmost slice (at -90°/+270°) that should be drawn last
+    int frontmostSlice = findSliceAt( 270, colCount );
     // the right- and the leftmost (only needed in some special cases...)
-    int rightmostpie = findPieAt( 0, colCount );
-    int leftmostpie = findPieAt( 180, colCount );
+    int rightmostSlice = findSliceAt( 0, colCount );
+    int leftmostSlice = findSliceAt( 180, colCount );
 
 
-    int currentLeftPie = backmostpie;
-    int currentRightPie = backmostpie;
+    int currentLeftSlice = backmostSlice;
+    int currentRightSlice = backmostSlice;
 
     d->clearListOfAlreadyDrawnDataValueTexts();
 
-    drawOnePie( ctx->painter(), &list, 0, backmostpie, granularity(), sizeFor3DEffect );
+    drawSlice( ctx->painter(), &list, 0, backmostSlice, granularity(), sizeFor3DEffect );
 
-    if( backmostpie == frontmostpie )
+    if( backmostSlice == frontmostSlice )
     {
-        if( backmostpie == leftmostpie )
-            currentLeftPie = findLeftPie( currentLeftPie, colCount );
-        if( backmostpie == rightmostpie )
-            currentRightPie = findRightPie( currentRightPie, colCount );
+        if( backmostSlice == leftmostSlice )
+            currentLeftSlice = findLeftSlice( currentLeftSlice, colCount );
+        if( backmostSlice == rightmostSlice )
+            currentRightSlice = findRightSlice( currentRightSlice, colCount );
     }
-    while( currentLeftPie != frontmostpie )
+    while( currentLeftSlice != frontmostSlice )
     {
-        if( currentLeftPie != backmostpie )
-            drawOnePie( ctx->painter(), &list, 0, currentLeftPie, granularity(), sizeFor3DEffect );
-        currentLeftPie = findLeftPie( currentLeftPie, colCount );
+        if( currentLeftSlice != backmostSlice )
+            drawSlice( ctx->painter(), &list, 0, currentLeftSlice, granularity(), sizeFor3DEffect );
+        currentLeftSlice = findLeftSlice( currentLeftSlice, colCount );
     }
-    while( currentRightPie != frontmostpie )
+    while( currentRightSlice != frontmostSlice )
     {
-        if( currentRightPie != backmostpie )
-            drawOnePie( ctx->painter(), &list, 0, currentRightPie, granularity(), sizeFor3DEffect );
-        currentRightPie = findRightPie( currentRightPie, colCount );
+        if( currentRightSlice != backmostSlice )
+            drawSlice( ctx->painter(), &list, 0, currentRightSlice, granularity(), sizeFor3DEffect );
+        currentRightSlice = findRightSlice( currentRightSlice, colCount );
     }
 
-    // if the backmost pie is not the frontmost pie, we draw the frontmost at last
-    if( backmostpie != frontmostpie || ! threeDPieAttributes().isEnabled() )
+    // if the backmost slice is not the frontmost slice, we draw the frontmost one last
+    if( backmostSlice != frontmostSlice || ! threeDPieAttributes().isEnabled() )
     {
-        drawOnePie( ctx->painter(), &list, 0, frontmostpie, granularity(), sizeFor3DEffect );
+        drawSlice( ctx->painter(), &list, 0, frontmostSlice, granularity(), sizeFor3DEffect );
     // otherwise, this gets a bit more complicated...
 /*    } else if( threeDPieAttributes().isEnabled() ) {
-        //drawPieSurface( ctx->painter(), 0, frontmostpie, granularity() );
-        const QModelIndex index = model()->index( 0, frontmostpie, rootIndex() );
+        //drawSliceSurface( ctx->painter(), 0, frontmostSlice, granularity() );
+        const QModelIndex index = model()->index( 0, frontmostSlice, rootIndex() );
         QPen pen = this->pen( index );
         ctx->painter()->setBrush( brush( index ) );
         if ( threeDAttrs.isEnabled() )
             pen.setColor( QColor( 0, 0, 0 ) );
         ctx->painter()->setPen( pen );
 
-        qreal startAngle = d->startAngles[ frontmostpie ];
+        qreal startAngle = d->startAngles[ frontmostSlice ];
         if( startAngle > 360 )
             startAngle -= 360;
 
-        qreal endAngle = startAngle + d->angleLens[ frontmostpie ];
+        qreal endAngle = startAngle + d->angleLens[ frontmostSlice ];
         startAngle = qMax( startAngle, 180.0 );
 
-        drawArcEffectSegment( ctx->painter(), piePosition( 0, frontmostpie),
+        drawArcEffectSegment( ctx->painter(), slicePosition( 0, frontmostSlice),
                 sizeFor3DEffect, startAngle, endAngle, granularity() );*/
     }
 
@@ -374,12 +372,12 @@ void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
 #define trunc(x) ((int)(x))
 #endif
 
-QRectF PieDiagram::piePosition( uint dataset, uint pie ) const
+QRectF PieDiagram::slicePosition( uint dataset, uint slice ) const
 {
     Q_UNUSED( dataset );
-    qreal angleLen = d->angleLens[ pie ];
-    qreal startAngle = d->startAngles[ pie ];
-    QModelIndex index( model()->index( 0, pie, rootIndex() ) ); // checked
+    qreal angleLen = d->angleLens[ slice ];
+    qreal startAngle = d->startAngles[ slice ];
+    QModelIndex index( model()->index( 0, slice, rootIndex() ) ); // checked
     const PieAttributes attrs( pieAttributes( index ) );
     const ThreeDPieAttributes threeDAttrs( threeDPieAttributes( index ) );
 
@@ -398,60 +396,60 @@ QRectF PieDiagram::piePosition( uint dataset, uint pie ) const
  }
 
 /**
-  Internal method that draws one of the pies in a pie chart.
+  Internal method that draws one of the slices in a pie chart.
 
   \param painter the QPainter to draw in
   \param dataset the dataset to draw the pie for
-  \param pie the pie to draw
+  \param slice the slice to draw
   \param threeDPieHeight the height of the three dimnensional effect
   */
-void PieDiagram::drawOnePie( QPainter* painter,
+void PieDiagram::drawSlice( QPainter* painter,
         DataValueTextInfoList* list,
-        uint dataset, uint pie,
+        uint dataset, uint slice,
         qreal granularity,
         qreal threeDPieHeight )
 {
     Q_UNUSED( threeDPieHeight );
     // Is there anything to draw at all?
-    const qreal angleLen = d->angleLens[ pie ];
+    const qreal angleLen = d->angleLens[ slice ];
     if ( angleLen ) {
-        const QModelIndex index( model()->index( 0, pie, rootIndex() ) ); // checked
+        const QModelIndex index( model()->index( 0, slice, rootIndex() ) ); // checked
         const PieAttributes attrs( pieAttributes( index ) );
         const ThreeDPieAttributes threeDAttrs( threeDPieAttributes( index ) );
 
-        const QRectF drawPosition = piePosition( dataset, pie );
+        const QRectF drawPosition = slicePosition( dataset, slice );
 
         draw3DEffect( painter,
-            drawPosition, dataset, pie,
+            drawPosition, dataset, slice,
             granularity,
             threeDAttrs,
             attrs.explode() );
 
-        drawPieSurface( painter, list, dataset, pie, granularity );
+        drawSliceSurface( painter, list, dataset, slice, granularity );
     }
 }
 
 /**
-  Internal method that draws the surface of one of the pies in a pie chart.
+  Internal method that draws the surface of one of the slices in a pie chart.
 
   \param painter the QPainter to draw in
-  \param dataset the dataset to draw the pie for
-  \param pie the pie to draw
+  \param dataset the dataset to draw the slice for
+  \param slice the slice to draw
   */
-void PieDiagram::drawPieSurface( QPainter* painter,
+void PieDiagram::drawSliceSurface( QPainter* painter,
         DataValueTextInfoList* list,
-        uint dataset, uint pie,
+        uint dataset, uint slice,
         qreal granularity )
 {
     // Is there anything to draw at all?
-    qreal angleLen = d->angleLens[ pie ];
+    qreal angleLen = d->angleLens[ slice ];
     if ( angleLen ) {
-        qreal startAngle = d->startAngles[ pie ];
+        qreal startAngle = d->startAngles[ slice ];
 
-        QModelIndex index( model()->index( 0, pie, rootIndex() ) ); // checked
+        QModelIndex index( model()->index( 0, slice, rootIndex() ) ); // checked
         const PieAttributes attrs( pieAttributes( index ) );
         const ThreeDPieAttributes threeDAttrs( threeDPieAttributes( index ) );
-        const QRectF drawPosition = piePosition( dataset, pie );
+        const QRectF drawPosition = slicePosition( dataset, slice );
         painter->setRenderHint ( QPainter::Antialiasing );
 
         QBrush br = brush( index );
@@ -485,7 +483,7 @@ void PieDiagram::drawPieSurface( QPainter* painter,
             bool perfectMatch = false;
 
             while ( degree <= angleLen ){
-                poly[ iPoint ] = pointOnCircle( drawPosition, startAngle + degree );
+                poly[ iPoint ] = pointOnEllipse( drawPosition, startAngle + degree );
                 //qDebug() << degree << angleLen << poly[ iPoint ];
                 perfectMatch = (degree == angleLen);
                 degree += granularity;
@@ -493,7 +491,7 @@ void PieDiagram::drawPieSurface( QPainter* painter,
             }
             // if necessary add one more point to fill the last small gap
             if( ! perfectMatch ){
-                poly[ iPoint ] = pointOnCircle( drawPosition, startAngle + angleLen );
+                poly[ iPoint ] = pointOnEllipse( drawPosition, startAngle + angleLen );
 
                 // add the center point of the piece
                 poly.append( drawPosition.center() );
@@ -520,10 +518,10 @@ void PieDiagram::drawPieSurface( QPainter* painter,
         const QPointF south = drawPosition.center();
         const QPointF southEast = south;
         const QPointF southWest = south;
-        const QPointF north = pointOnCircle( drawPosition, startAngle + angleLen/2.0 );
+        const QPointF north = pointOnEllipse( drawPosition, startAngle + angleLen/2.0 );
 
-        const QPointF northEast = pointOnCircle( drawPosition, startAngle );
-        const QPointF northWest = pointOnCircle( drawPosition, startAngle + angleLen );
+        const QPointF northEast = pointOnEllipse( drawPosition, startAngle );
+        const QPointF northWest = pointOnEllipse( drawPosition, startAngle + angleLen );
         QPointF center    = (south + north) / 2.0;
         const QPointF east      = (south + northEast) / 2.0;
         const QPointF west      = (south + northWest) / 2.0;
@@ -570,12 +568,12 @@ void PieDiagram::drawPieSurface( QPainter* painter,
   \param painter the QPainter to draw in
   \param drawPosition the position to draw at
   \param dataset the dataset to draw the pie for
-  \param pie the pie to draw the shadow for
+  \param slice the slice to draw the shadow for
   \param threeDHeight the height of the shadow
   */
 void PieDiagram::draw3DEffect( QPainter* painter,
         const QRectF& drawPosition,
-        uint dataset, uint pie,
+        uint dataset, uint slice,
         qreal granularity,
         const ThreeDPieAttributes& threeDAttrs,
         bool /*explode*/ )
@@ -593,7 +591,7 @@ void PieDiagram::draw3DEffect( QPainter* painter,
 
     // No need to save the brush, will be changed on return from this
     // method anyway.
-    const QBrush brush = this->brush( model()->index( 0, pie, rootIndex() ) ); // checked
+    const QBrush brush = this->brush( model()->index( 0, slice, rootIndex() ) ); // checked
     if( threeDAttrs.useShadowColors() ){
         painter->setBrush( QBrush( brush.color().darker() ) );
     }
@@ -603,8 +601,8 @@ void PieDiagram::draw3DEffect( QPainter* painter,
     //painter->setBrush( QBrush( threeDAttrs.dataShadow1Color( pie ),
     //            params()->shadowPattern() ) );
 
-    qreal startAngle = d->startAngles[ pie ];
-    qreal endAngle = startAngle + d->angleLens[ pie ];
+    qreal startAngle = d->startAngles[ slice ];
+    qreal endAngle = startAngle + d->angleLens[ slice ];
     // Normalize angles
     while ( startAngle >= 360 )
         startAngle -= 360;
@@ -817,7 +815,7 @@ void PieDiagram::drawStraightEffectSegment( QPainter* painter,
 {
     QPolygonF poly( 4 );
     const QPointF center = rect.center();
-    const QPointF circlePoint = pointOnCircle( rect, angle );
+    const QPointF circlePoint = pointOnEllipse( rect, angle );
     poly[0] = center;
     poly[1] = circlePoint;
     poly[2] = QPointF( circlePoint.x(), circlePoint.y() + threeDHeight );
@@ -838,7 +836,7 @@ void PieDiagram::drawUpperBrinkEffect( QPainter* painter,
         qreal angle )
 {
     const QPointF center = rect.center();
-    const QPointF circlePoint = pointOnCircle( rect, angle );
+    const QPointF circlePoint = pointOnEllipse( rect, angle );
     painter->drawLine( center, circlePoint );
 }
 
@@ -876,7 +874,7 @@ void PieDiagram::drawArcEffectSegment( QPainter* painter,
     int iPoint = 0;
     bool perfectMatch = false;
     while ( degree >= startA ){
-        poly[ numHalfPoints - iPoint - 1 ] = pointOnCircle( rect, degree );
+        poly[ numHalfPoints - iPoint - 1 ] = pointOnEllipse( rect, degree );
 
         perfectMatch = (degree == startA);
         degree -= granularity;
@@ -884,7 +882,7 @@ void PieDiagram::drawArcEffectSegment( QPainter* painter,
     }
     // if necessary add one more point to fill the last small gap
     if( ! perfectMatch ){
-        poly.prepend( pointOnCircle( rect, startA ) );
+        poly.prepend( pointOnEllipse( rect, startA ) );
         ++numHalfPoints;
     }
 
@@ -930,7 +928,7 @@ void PieDiagram::drawArcUpperBrinkEffectSegment( QPainter* painter,
     int iPoint = 0;
     bool perfectMatch = false;
     while ( degree >= startA ){
-        poly[ numHalfPoints - iPoint - 1 ] = pointOnCircle( rect, degree );
+        poly[ numHalfPoints - iPoint - 1 ] = pointOnEllipse( rect, degree );
 
         perfectMatch = (degree == startA);
         degree -= granularity;
@@ -938,7 +936,7 @@ void PieDiagram::drawArcUpperBrinkEffectSegment( QPainter* painter,
     }
     // if necessary add one more point to fill the last small gap
     if( ! perfectMatch ){
-        poly.prepend( pointOnCircle( rect, startA ) );
+        poly.prepend( pointOnEllipse( rect, startA ) );
         ++numHalfPoints;
     }
 
@@ -946,13 +944,12 @@ void PieDiagram::drawArcUpperBrinkEffectSegment( QPainter* painter,
 }
 
 /**
-  Internal method that finds the pie that is located at the position
-  specified by \c angle.
+  Internal method that finds the slice that is located at the position specified by \c angle.
 
-  \param angle the angle at which to search for a pie
-  \return the number of the pie found
+  \param angle the angle at which to search for a slice
+  \return the number of the slice found
   */
-uint PieDiagram::findPieAt( qreal angle, int colCount )
+uint PieDiagram::findSliceAt( qreal angle, int colCount )
 {
     for ( int i = 0; i < colCount; ++i ) {
         qreal endseg = d->startAngles[ i ] + d->angleLens[ i ];
@@ -965,45 +962,45 @@ uint PieDiagram::findPieAt( qreal angle, int colCount )
     // If we have not found it, try wrap around
     // but only if the current searched angle is < 360 degree
     if ( angle < 360 )
-        return findPieAt( angle + 360, colCount );
+        return findSliceAt( angle + 360, colCount );
     // otherwise - what ever went wrong - we return 0
     return 0;
 }
 
 
 /**
-  Internal method that finds the pie that is located to the left of
-  the pie specified by \c pie.
+  Internal method that finds the slice that is located to the left of \c slice.
 
-  \param pie the pie to start the search from
+  \param slice the slice to start the search from
   \return the number of the pie to the left of \c pie
   */
-uint PieDiagram::findLeftPie( uint pie, int colCount )
+uint PieDiagram::findLeftSlice( uint slice, int colCount )
 {
-    if ( pie == 0 )
-        if ( colCount > 1 )
+    if ( slice == 0 ) {
+        if ( colCount > 1 ) {
             return colCount - 1;
-        else
+        } else {
             return 0;
-    else {
-        return pie - 1;
+        }
+    } else {
+        return slice - 1;
     }
 }
 
 
 /**
-  Internal method that finds the pie that is located to the right of
-  the pie specified by \c pie.
+  Internal method that finds the slice that is located to the right of \c slice.
 
-  \param pie the pie to start the search from
-  \return the number of the pie to the right of \c pie
+  \param slice the slice to start the search from
+  \return the number of the slice to the right of \c slice
   */
-uint PieDiagram::findRightPie( uint pie, int colCount  )
+uint PieDiagram::findRightSlice( uint slice, int colCount  )
 {
-    int rightpie = pie + 1;
-    if ( rightpie == colCount )
-        rightpie = 0;
-    return rightpie;
+    int rightSlice = slice + 1;
+    if ( rightSlice == colCount ) {
+        rightSlice = 0;
+    }
+    return rightSlice;
 }
 
 
@@ -1011,15 +1008,15 @@ uint PieDiagram::findRightPie( uint pie, int colCount  )
   * Auxiliary method returning a point to a given boundary
   * rectangle of the enclosed ellipse and an angle.
   */
-QPointF PieDiagram::pointOnCircle( const QRectF& rect, qreal angle )
+QPointF PieDiagram::pointOnEllipse( const QRectF& boundingBox, qreal angle )
 {
     qreal angleRad = DEGTORAD( angle );
     qreal cosAngle = cos( angleRad );
     qreal sinAngle = -sin( angleRad );
-    qreal posX = cosAngle * rect.width() / 2.0;
-    qreal posY = sinAngle * rect.height() / 2.0;
-    return QPointF( posX + rect.center().x(),
-                    posY + rect.center().y() );
+    qreal posX = cosAngle * boundingBox.width() / 2.0;
+    qreal posY = sinAngle * boundingBox.height() / 2.0;
+    return QPointF( posX + boundingBox.center().x(),
+                    posY + boundingBox.center().y() );
 
 }
 

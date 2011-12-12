@@ -72,19 +72,19 @@ protected:
     void resizeEvent( QResizeEvent* );
 
 private:
-    QRectF piePosition( uint dataset, uint pie ) const;
-    void drawOnePie( QPainter* painter,
+    QRectF slicePosition( uint dataset, uint slice ) const;
+    void drawSlice( QPainter* painter,
         DataValueTextInfoList* list,
-        uint dataset, uint pie,
+        uint dataset, uint slice,
         qreal granularity,
         qreal threeDPieHeight );
-    void drawPieSurface( QPainter* painter,
+    void drawSliceSurface( QPainter* painter,
         DataValueTextInfoList* list,
-        uint dataset, uint pie,
+        uint dataset, uint slice,
         qreal granularity );
     void draw3DEffect( QPainter* painter,
         const QRectF& drawPosition,
-        uint dataset, uint pie,
+        uint dataset, uint slice,
         qreal granularity,
         const ThreeDPieAttributes& threeDAttrs,
         bool /*explode*/ );
@@ -106,10 +106,10 @@ private:
         qreal startAngle,
         qreal endAngle,
         qreal granularity );
-    uint findPieAt( qreal angle, int columnCount );
-    uint findLeftPie( uint pie, int columnCount );
-    uint findRightPie( uint pie, int columnCount );
-    QPointF pointOnCircle( const QRectF& rect, qreal angle );
+    uint findSliceAt( qreal angle, int columnCount );
+    uint findLeftSlice( uint slice, int columnCount );
+    uint findRightSlice( uint slice, int columnCount );
+    QPointF pointOnEllipse( const QRectF& boundingBox, qreal angle );
 }; // End of class KDChartPieDiagram
 
 }

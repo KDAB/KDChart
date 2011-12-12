@@ -337,7 +337,7 @@ void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
         if ( attrs.showRepetitiveDataLabels() || pos.x() <= lastX || lastRoundedValue != text ) {
             //qDebug() << text;
 
-            //Check if there is only one and only one pie.
+            //Check if there is only one and only one slice.
             //If not then update lastRoundedValue for further checking.
             if(!(diag->model()->rowCount() == 1))
                 lastRoundedValue = text;
