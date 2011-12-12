@@ -304,14 +304,10 @@ void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
         return;
 
 
-    // Find the backmost slice which is at +90° and needs to be drawn first
-    int backmostSlice = findSliceAt( 90, colCount );
-    // Find the frontmost slice (at -90°/+270°) that should be drawn last
-    int frontmostSlice = findSliceAt( 270, colCount );
-    // the right- and the leftmost (only needed in some special cases...)
-    int rightmostSlice = findSliceAt( 0, colCount );
-    int leftmostSlice = findSliceAt( 180, colCount );
-
+    // The backmost slice, which is at +90°, needs to be drawn first
+    const int backmostSlice = findSliceAt( 90, colCount );
+    // The frontmost slice (at -90°/+270°) needs to be drawn last
+    const int frontmostSlice = findSliceAt( 270, colCount );
 
     int currentLeftSlice = backmostSlice;
     int currentRightSlice = backmostSlice;
@@ -320,21 +316,23 @@ void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
 
     drawSlice( ctx->painter(), &list, 0, backmostSlice, granularity(), sizeFor3DEffect );
 
-    if( backmostSlice == frontmostSlice )
-    {
+    if ( backmostSlice == frontmostSlice ) {
+        const int rightmostSlice = findSliceAt( 0, colCount );
+        const int leftmostSlice = findSliceAt( 180, colCount );
+
         if( backmostSlice == leftmostSlice )
             currentLeftSlice = findLeftSlice( currentLeftSlice, colCount );
         if( backmostSlice == rightmostSlice )
             currentRightSlice = findRightSlice( currentRightSlice, colCount );
     }
-    while( currentLeftSlice != frontmostSlice )
-    {
+
+    while ( currentLeftSlice != frontmostSlice ) {
         if( currentLeftSlice != backmostSlice )
             drawSlice( ctx->painter(), &list, 0, currentLeftSlice, granularity(), sizeFor3DEffect );
         currentLeftSlice = findLeftSlice( currentLeftSlice, colCount );
     }
-    while( currentRightSlice != frontmostSlice )
-    {
+
+    while ( currentRightSlice != frontmostSlice ) {
         if( currentRightSlice != backmostSlice )
             drawSlice( ctx->painter(), &list, 0, currentRightSlice, granularity(), sizeFor3DEffect );
         currentRightSlice = findRightSlice( currentRightSlice, colCount );
