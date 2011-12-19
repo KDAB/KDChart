@@ -41,7 +41,7 @@ namespace KDChart {
   * coordinate planes or axes.
   *
   * @note This class inherits from AbstractAreaBase, AbstractLayoutItem, QObject.
-  * The reason for this tripple inheritance is that neither AbstractAreaBase nor
+  * The reason for this triple inheritance is that neither AbstractAreaBase nor
   * AbstractLayoutItem are QObject.
   */
 class KDCHART_EXPORT AbstractArea : public QObject,
@@ -57,7 +57,6 @@ class KDCHART_EXPORT AbstractArea : public QObject,
 public:
     virtual ~AbstractArea() ;
 
-//    virtual AbstractArea * clone() const = 0;
     /**
       * @brief Draws the background and frame, then calls paint().
       *
@@ -132,8 +131,6 @@ protected:
 
 Q_SIGNALS:
     void positionChanged( AbstractArea * );
-
-    //KDCHART_DECLARE_PRIVATE_DERIVED(AbstractArea)
 }; // End of class AbstractArea
 
 }

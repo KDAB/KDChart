@@ -286,7 +286,7 @@ void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
     }
 
     // If there was no value at all, bail out, to avoid endless loops
-    // later on (e.g. in findPieAt()).
+    // later on (e.g. in findSliceAt()).
     if( ! atLeastOneValue )
         return;
 

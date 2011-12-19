@@ -50,7 +50,7 @@ namespace KDChart {
    * The DataValueAttributes group all properties that can be set
    * wrt data value labels and if and how they are displayed. This
    * includes things like the text attributes (font, color), what
-   * markers are used, howmany decimal digits are displayed, etc.
+   * markers are used, how many decimal digits are displayed, etc.
    */
 class KDCHART_EXPORT DataValueAttributes
 {
