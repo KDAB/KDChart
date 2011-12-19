@@ -73,6 +73,7 @@ void PolarCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
 
 void PolarCoordinatePlane::paint ( QPainter* painter )
 {
+    qDebug() << Q_FUNC_INFO;
     AbstractDiagramList diags = diagrams();
     if ( d->coordinateTransformations.size() == diags.size() )
     {
@@ -88,6 +89,7 @@ void PolarCoordinatePlane::paint ( QPainter* painter )
         d->newZoomY = oldZoomY;
         for ( int i = 0; i < diags.size(); i++ )
         {
+            qDebug() << " * check *";
             d->currentTransformation = & ( d->coordinateTransformations[i] );
             qreal zoomX;
             qreal zoomY;
@@ -102,7 +104,7 @@ void PolarCoordinatePlane::paint ( QPainter* painter )
 
         // if re-scaling is needed start the timer and bail out
         if( d->newZoomX != oldZoomX || d->newZoomY != oldZoomY ){
-            //qDebug()<<"new zoom:"<<d->newZoomY<<"  old zoom"<<oldZoomY;
+            qDebug() << "new zoom:" << d->newZoomY << "  old zoom" << oldZoomY;
             QTimer::singleShot(10, this, SLOT(adjustZoomAndRepaint()));
             return;
         }

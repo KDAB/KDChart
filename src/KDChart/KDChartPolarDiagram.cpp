@@ -158,10 +158,9 @@ void PolarDiagram::paint( PaintContext* ctx,
     const int colCount = model()->columnCount( rootIndex() );
 
     if( calculateListAndReturnScale ){
-
-        // Check if all of the data value texts / data comments will fit
-        // into the available space:
+        // Check if all of the data value texts / data comments fit into the available space...
         d->dataValueInfoList.clear();
+        
         for ( int iCol = 0; iCol < colCount; ++iCol ) {
             for ( int iRow=0; iRow < rowCount; ++iRow ) {
                 QModelIndex index = model()->index( iRow, iCol, rootIndex() ); // checked
@@ -175,11 +174,14 @@ void PolarDiagram::paint( PaintContext* ctx,
                         value );
             }
         }
-        const qreal oldZoomX = coordinatePlane()->zoomFactorX();
-        const qreal oldZoomY = coordinatePlane()->zoomFactorY();
-        newZoomX = oldZoomX;
-        newZoomY = oldZoomY;
-        if( d->dataValueInfoList.count() ){
+        
+        if ( d->dataValueInfoList.count() ) {
+            // ...and zoom out if necessary
+            const qreal oldZoomX = coordinatePlane()->zoomFactorX();
+            const qreal oldZoomY = coordinatePlane()->zoomFactorY();
+            newZoomX = oldZoomX;
+            newZoomY = oldZoomY;
+
             QRectF txtRectF;
             d->paintDataValueTextsAndMarkers( this, ctx, d->dataValueInfoList, true, true, &txtRectF );
             const QRect txtRect = txtRectF.toRect();
@@ -193,10 +195,9 @@ void PolarDiagram::paint( PaintContext* ctx,
             if( gapY < 0.0 )
                 newZoomY *= 1.0 + (gapY-1.0) / curRect.height();
         }
-
-    }else{
-        // Iterate through data sets
-        for ( int iCol=0; iCol < colCount; ++iCol ) {
+    } else {
+        // Paint the data sets
+        for ( int iCol = 0; iCol < colCount; ++iCol ) {
             //TODO(khz): As of yet PolarDiagram can not show per-segment line attributes
             //           but it draws every polyline in one go - using one color.
             //           This needs to be enhanced to allow for cell-specific settings

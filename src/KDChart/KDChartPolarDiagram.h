@@ -92,7 +92,7 @@ public:
 
     virtual void paint ( PaintContext* paintContext,
                          bool calculateListAndReturnScale,
-                         qreal& newZoomX, qreal& newZoomY );
+                         qreal& newZoomX, qreal& newZoomY ); // KDChart 3: references -> pointers
 
 protected:
     /** \reimpl */
