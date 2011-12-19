@@ -157,15 +157,13 @@ void PolarDiagram::paint( PaintContext* ctx,
     const int rowCount = model()->rowCount( rootIndex() );
     const int colCount = model()->columnCount( rootIndex() );
 
-    int iRow, iCol;
-
     if( calculateListAndReturnScale ){
 
         // Check if all of the data value texts / data comments will fit
         // into the available space:
         d->dataValueInfoList.clear();
-        for ( iCol=0; iCol < colCount; ++iCol ) {
-            for ( iRow=0; iRow < rowCount; ++iRow ) {
+        for ( int iCol = 0; iCol < colCount; ++iCol ) {
+            for ( int iRow=0; iRow < rowCount; ++iRow ) {
                 QModelIndex index = model()->index( iRow, iCol, rootIndex() ); // checked
                 const qreal value = model()->data( index ).toDouble();
                 QPointF point = coordinatePlane()->translate(
@@ -198,26 +196,25 @@ void PolarDiagram::paint( PaintContext* ctx,
 
     }else{
         // Iterate through data sets
-        for ( iCol=0; iCol < colCount; ++iCol ) {
+        for ( int iCol=0; iCol < colCount; ++iCol ) {
             //TODO(khz): As of yet PolarDiagram can not show per-segment line attributes
             //           but it draws every polyline in one go - using one color.
             //           This needs to be enhanced to allow for cell-specific settings
             //           in the same way as LineDiagram does it.
             QBrush brush = qVariantValue<QBrush>( d->datasetAttrs( iCol, KDChart::DatasetBrushRole ) );
             QPolygonF polygon;
-            QPointF point0;
-            for ( iRow=0; iRow < rowCount; ++iRow ) {
+            for ( int iRow = 0; iRow < rowCount; ++iRow ) {
                 QModelIndex index = model()->index( iRow, iCol, rootIndex() ); // checked
                 const qreal value = model()->data( index ).toDouble();
                 QPointF point = coordinatePlane()->translate(
                         QPointF( value, iRow ) ) + ctx->rectangle().topLeft();
                 polygon.append( point );
                 //qDebug() << point;
-                if( ! iRow )
-                    point0= point;
             }
-            if( closeDatasets() && rowCount )
-                polygon.append( point0 );
+            if ( closeDatasets() && !polygon.isEmpty() ) {
+                // close the circle by connecting the last data point to the first
+                polygon.append( polygon.first() );
+            }
 
             PainterSaver painterSaver( ctx->painter() );
             ctx->painter()->setRenderHint ( QPainter::Antialiasing );
