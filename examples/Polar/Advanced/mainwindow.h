@@ -42,16 +42,12 @@ public:
 
 private slots:
     // start position of circular grid
-    void on_startPositionSB_valueChanged( qreal pos );
+    void on_startPositionSB_valueChanged( double pos );
     void on_startPositionSL_valueChanged( int pos );
 
     // show grid
     void on_circularGridCB_toggled( bool toggle );
     void on_sagittalGridCB_toggled( bool toggle );
-
-    // show axes
-    void on_circularAxisCB_toggled( bool toggle );
-    void on_sagittalAxisCB_toggled( bool toggle );
 
 private:
     void initKDChartClasses();
