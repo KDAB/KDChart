@@ -160,7 +160,7 @@ void PolarDiagram::paint( PaintContext* ctx,
     if( calculateListAndReturnScale ){
         // Check if all of the data value texts / data comments fit into the available space...
         d->dataValueInfoList.clear();
-        
+
         for ( int iCol = 0; iCol < colCount; ++iCol ) {
             for ( int iRow=0; iRow < rowCount; ++iRow ) {
                 QModelIndex index = model()->index( iRow, iCol, rootIndex() ); // checked
@@ -174,13 +174,14 @@ void PolarDiagram::paint( PaintContext* ctx,
                         value );
             }
         }
-        
+
+        newZoomX = coordinatePlane()->zoomFactorX();
+        newZoomY = coordinatePlane()->zoomFactorY();
+
         if ( d->dataValueInfoList.count() ) {
             // ...and zoom out if necessary
-            const qreal oldZoomX = coordinatePlane()->zoomFactorX();
-            const qreal oldZoomY = coordinatePlane()->zoomFactorY();
-            newZoomX = oldZoomX;
-            newZoomY = oldZoomY;
+            const qreal oldZoomX = newZoomX;
+            const qreal oldZoomY = newZoomY;
 
             QRectF txtRectF;
             d->paintDataValueTextsAndMarkers( this, ctx, d->dataValueInfoList, true, true, &txtRectF );
@@ -188,12 +189,12 @@ void PolarDiagram::paint( PaintContext* ctx,
             const QRect curRect = coordinatePlane()->geometry();
             const qreal gapX = qMin( txtRect.left() - curRect.left(), curRect.right()  - txtRect.right() );
             const qreal gapY = qMin( txtRect.top()  - curRect.top(),  curRect.bottom() - txtRect.bottom() );
-            newZoomX = oldZoomX;
-            newZoomY = oldZoomY;
-            if( gapX < 0.0 )
-                newZoomX *= 1.0 + (gapX-1.0) / curRect.width();
-            if( gapY < 0.0 )
-                newZoomY *= 1.0 + (gapY-1.0) / curRect.height();
+            if ( gapX < 0.0 ) {
+                newZoomX = oldZoomX * ( 1.0 + ( gapX - 1.0 ) / curRect.width() );
+            }
+            if ( gapY < 0.0 ) {
+                newZoomY = oldZoomY * ( 1.0 + ( gapY - 1.0 ) / curRect.height() );
+            }
         }
     } else {
         // Paint the data sets
