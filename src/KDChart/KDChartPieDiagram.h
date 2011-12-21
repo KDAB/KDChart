@@ -72,13 +72,14 @@ protected:
     void resizeEvent( QResizeEvent* );
 
 private:
-    QRectF slicePosition( uint dataset, uint slice ) const;
     void drawSlice( QPainter* painter,
+        const QRectF &drawPosition,
         DataValueTextInfoList* list,
         uint dataset, uint slice,
         qreal granularity,
         qreal threeDPieHeight );
     void drawSliceSurface( QPainter* painter,
+        const QRectF &drawPosition,
         DataValueTextInfoList* list,
         uint dataset, uint slice,
         qreal granularity );

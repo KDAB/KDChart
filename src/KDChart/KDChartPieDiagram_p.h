@@ -61,7 +61,6 @@ protected:
     // this information needed temporarily at drawing time
     QVector < qreal > startAngles;
     QVector < qreal > angleLens;
-    QRectF position;
     qreal size;
 };
 

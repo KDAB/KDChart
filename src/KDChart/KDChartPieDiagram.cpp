@@ -227,13 +227,14 @@ void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
         }
     }
 
+    QRectF slicePosition;
     qreal sizeFor3DEffect = 0.0;
+    
     if ( ! threeDAttrs.isEnabled() ) {
-
         qreal x = ( contentsRect.width() == d->size ) ? 0.0 : ( ( contentsRect.width() - d->size ) / 2.0 );
         qreal y = ( contentsRect.height() == d->size ) ? 0.0 : ( ( contentsRect.height() - d->size ) / 2.0 );
-        d->position = QRectF( x, y, d->size, d->size );
-        d->position.translate( contentsRect.left(), contentsRect.top() );
+        slicePosition = QRectF( x, y, d->size, d->size );
+        slicePosition.translate( contentsRect.left(), contentsRect.top() );
     } else {
         // threeD: width is the maximum possible width; height is 1/2 of that
         qreal x = ( contentsRect.width() == d->size ) ? 0.0 : ( ( contentsRect.width() - d->size ) / 2.0 );
@@ -251,8 +252,7 @@ void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
         }
         qreal y = ( contentsRect.height() == height ) ? 0.0 : ( ( contentsRect.height() - height - sizeFor3DEffect ) / 2.0 );
 
-        d->position = QRectF( contentsRect.left() + x, contentsRect.top() + y,
-                d->size, height );
+        slicePosition = QRectF( contentsRect.left() + x, contentsRect.top() + y, d->size, height );
     }
 
     const PolarCoordinatePlane * plane = polarCoordinatePlane();
@@ -300,7 +300,7 @@ void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
 
     d->clearListOfAlreadyDrawnDataValueTexts();
 
-    drawSlice( ctx->painter(), &list, 0, backmostSlice, granularity(), sizeFor3DEffect );
+    drawSlice( ctx->painter(), slicePosition, &list, 0, backmostSlice, granularity(), sizeFor3DEffect );
 
     if ( backmostSlice == frontmostSlice ) {
         const int rightmostSlice = findSliceAt( 0, colCount );
@@ -314,19 +314,21 @@ void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
 
     while ( currentLeftSlice != frontmostSlice ) {
         if( currentLeftSlice != backmostSlice )
-            drawSlice( ctx->painter(), &list, 0, currentLeftSlice, granularity(), sizeFor3DEffect );
+            drawSlice( ctx->painter(), slicePosition, &list, 0, currentLeftSlice, granularity(),
+                       sizeFor3DEffect );
         currentLeftSlice = findLeftSlice( currentLeftSlice, colCount );
     }
 
     while ( currentRightSlice != frontmostSlice ) {
         if( currentRightSlice != backmostSlice )
-            drawSlice( ctx->painter(), &list, 0, currentRightSlice, granularity(), sizeFor3DEffect );
+            drawSlice( ctx->painter(), slicePosition, &list, 0, currentRightSlice, granularity(),
+                       sizeFor3DEffect );
         currentRightSlice = findRightSlice( currentRightSlice, colCount );
     }
 
     // if the backmost slice is not the frontmost slice, we draw the frontmost one last
     if ( backmostSlice != frontmostSlice || ! threeDPieAttributes().isEnabled() ) {
-        drawSlice( ctx->painter(), &list, 0, frontmostSlice, granularity(), sizeFor3DEffect );
+        drawSlice( ctx->painter(), slicePosition, &list, 0, frontmostSlice, granularity(), sizeFor3DEffect );
     }
 
     d->paintDataValueTextsAndMarkers(  this,  ctx,  list,  false, false, &textBoundingRect );
@@ -336,38 +338,16 @@ void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
 #define trunc(x) ((int)(x))
 #endif
 
-QRectF PieDiagram::slicePosition( uint dataset, uint slice ) const
-{
-    Q_UNUSED( dataset );
-    qreal angleLen = d->angleLens[ slice ];
-    qreal startAngle = d->startAngles[ slice ];
-    QModelIndex index( model()->index( 0, slice, rootIndex() ) ); // checked
-    const PieAttributes attrs( pieAttributes( index ) );
-    const ThreeDPieAttributes threeDAttrs( threeDPieAttributes( index ) );
-
-    QRectF drawPosition( d->position );
-
-    if ( attrs.explode() ) {
-        qreal explodeAngle = ( startAngle + angleLen / 2.0 );
-        qreal explodeAngleRad = DEGTORAD( explodeAngle );
-        qreal cosAngle = cos( explodeAngleRad );
-        qreal sinAngle = -sin( explodeAngleRad );
-        qreal explodeX = attrs.explodeFactor() * d->size / 2.0 * cosAngle;
-        qreal explodeY = attrs.explodeFactor() * d->size / 2.0 * sinAngle;
-        drawPosition.translate( explodeX, explodeY );
-    }
-    return drawPosition;
- }
-
 /**
   Internal method that draws one of the slices in a pie chart.
 
   \param painter the QPainter to draw in
   \param dataset the dataset to draw the pie for
   \param slice the slice to draw
-  \param threeDPieHeight the height of the three dimnensional effect
+  \param threeDPieHeight the height of the three dimensional effect
   */
 void PieDiagram::drawSlice( QPainter* painter,
+        const QRectF &drawPosition,
         DataValueTextInfoList* list,
         uint dataset, uint slice,
         qreal granularity,
@@ -376,21 +356,27 @@ void PieDiagram::drawSlice( QPainter* painter,
     Q_UNUSED( threeDPieHeight );
     // Is there anything to draw at all?
     const qreal angleLen = d->angleLens[ slice ];
-    if ( angleLen ) {
-        const QModelIndex index( model()->index( 0, slice, rootIndex() ) ); // checked
-        const PieAttributes attrs( pieAttributes( index ) );
-        const ThreeDPieAttributes threeDAttrs( threeDPieAttributes( index ) );
-
-        const QRectF drawPosition = slicePosition( dataset, slice );
-
-        draw3DEffect( painter,
-            drawPosition, dataset, slice,
-            granularity,
-            threeDAttrs,
-            attrs.explode() );
-
-        drawSliceSurface( painter, list, dataset, slice, granularity );
+    if ( !angleLen ) {
+        return;
     }
+    
+    const QModelIndex index( model()->index( 0, slice, rootIndex() ) ); // checked
+    const PieAttributes attrs( pieAttributes( index ) );
+    const ThreeDPieAttributes threeDAttrs( threeDPieAttributes( index ) );
+
+    QRectF adjustedDrawPosition = drawPosition;
+    if ( attrs.explode() ) {
+        qreal startAngle = d->startAngles[ slice ];
+        qreal explodeAngle = ( DEGTORAD( startAngle + angleLen / 2.0 ) );
+        qreal explodeDistance = attrs.explodeFactor() * d->size / 2.0;
+
+        adjustedDrawPosition.translate( explodeDistance * cos( explodeAngle ),
+                                        explodeDistance * - sin( explodeAngle ) );
+    }
+
+    draw3DEffect( painter, adjustedDrawPosition, dataset, slice, granularity, threeDAttrs,
+                  attrs.explode() );
+    drawSliceSurface( painter, adjustedDrawPosition, list, dataset, slice, granularity );
 }
 
 /**
@@ -401,6 +387,7 @@ void PieDiagram::drawSlice( QPainter* painter,
   \param slice the slice to draw
   */
 void PieDiagram::drawSliceSurface( QPainter* painter,
+        const QRectF &drawPosition,
         DataValueTextInfoList* list,
         uint dataset, uint slice,
         qreal granularity )
@@ -413,7 +400,6 @@ void PieDiagram::drawSliceSurface( QPainter* painter,
         QModelIndex index( model()->index( 0, slice, rootIndex() ) ); // checked
         const PieAttributes attrs( pieAttributes( index ) );
         const ThreeDPieAttributes threeDAttrs( threeDPieAttributes( index ) );
-        const QRectF drawPosition = slicePosition( dataset, slice );
         painter->setRenderHint ( QPainter::Antialiasing );
 
         QBrush br = brush( index );
