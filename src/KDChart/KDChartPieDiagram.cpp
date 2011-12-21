@@ -300,7 +300,7 @@ void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
 
     d->clearListOfAlreadyDrawnDataValueTexts();
 
-    drawSlice( ctx->painter(), slicePosition, &list, 0, backmostSlice, granularity(), sizeFor3DEffect );
+    drawSlice( ctx->painter(), slicePosition, &list, backmostSlice, granularity(), sizeFor3DEffect );
 
     if ( backmostSlice == frontmostSlice ) {
         const int rightmostSlice = findSliceAt( 0, colCount );
@@ -314,21 +314,21 @@ void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
 
     while ( currentLeftSlice != frontmostSlice ) {
         if( currentLeftSlice != backmostSlice )
-            drawSlice( ctx->painter(), slicePosition, &list, 0, currentLeftSlice, granularity(),
+            drawSlice( ctx->painter(), slicePosition, &list, currentLeftSlice, granularity(),
                        sizeFor3DEffect );
         currentLeftSlice = findLeftSlice( currentLeftSlice, colCount );
     }
 
     while ( currentRightSlice != frontmostSlice ) {
         if( currentRightSlice != backmostSlice )
-            drawSlice( ctx->painter(), slicePosition, &list, 0, currentRightSlice, granularity(),
+            drawSlice( ctx->painter(), slicePosition, &list, currentRightSlice, granularity(),
                        sizeFor3DEffect );
         currentRightSlice = findRightSlice( currentRightSlice, colCount );
     }
 
     // if the backmost slice is not the frontmost slice, we draw the frontmost one last
     if ( backmostSlice != frontmostSlice || ! threeDPieAttributes().isEnabled() ) {
-        drawSlice( ctx->painter(), slicePosition, &list, 0, frontmostSlice, granularity(), sizeFor3DEffect );
+        drawSlice( ctx->painter(), slicePosition, &list, frontmostSlice, granularity(), sizeFor3DEffect );
     }
 
     d->paintDataValueTextsAndMarkers(  this,  ctx,  list,  false, false, &textBoundingRect );
@@ -349,7 +349,7 @@ void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
 void PieDiagram::drawSlice( QPainter* painter,
         const QRectF &drawPosition,
         DataValueTextInfoList* list,
-        uint dataset, uint slice,
+        uint slice,
         qreal granularity,
         qreal threeDPieHeight )
 {
@@ -375,7 +375,7 @@ void PieDiagram::drawSlice( QPainter* painter,
     }
 
     draw3DEffect( painter, adjustedDrawPosition, slice, granularity, threeDAttrs );
-    drawSliceSurface( painter, adjustedDrawPosition, list, dataset, slice, granularity );
+    drawSliceSurface( painter, adjustedDrawPosition, list, slice, granularity );
 }
 
 /**
@@ -388,7 +388,7 @@ void PieDiagram::drawSlice( QPainter* painter,
 void PieDiagram::drawSliceSurface( QPainter* painter,
         const QRectF &drawPosition,
         DataValueTextInfoList* list,
-        uint dataset, uint slice,
+        uint slice,
         qreal granularity )
 {
     // Is there anything to draw at all?

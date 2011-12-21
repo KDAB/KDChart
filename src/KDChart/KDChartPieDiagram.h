@@ -75,13 +75,13 @@ private:
     void drawSlice( QPainter* painter,
         const QRectF &drawPosition,
         DataValueTextInfoList* list,
-        uint dataset, uint slice,
+        uint slice,
         qreal granularity,
         qreal threeDPieHeight );
     void drawSliceSurface( QPainter* painter,
         const QRectF &drawPosition,
         DataValueTextInfoList* list,
-        uint dataset, uint slice,
+        uint slice,
         qreal granularity );
     void draw3DEffect( QPainter* painter,
         const QRectF& drawPosition,
