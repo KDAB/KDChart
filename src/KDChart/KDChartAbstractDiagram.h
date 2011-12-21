@@ -76,7 +76,7 @@ namespace KDChart {
          * @brief Return the bottom left and top right data point, that the
          * diagram will display (unless the grid adjusts these values).
          *
-         * This method returns a chached result of calculations done by
+         * This method returns a cached result of calculations done by
          * calculateDataBoundaries.
          * Classes derived from AbstractDiagram must implement the
          * calculateDataBoundaries function, to specify their own
