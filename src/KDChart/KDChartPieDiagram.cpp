@@ -374,8 +374,7 @@ void PieDiagram::drawSlice( QPainter* painter,
                                         explodeDistance * - sin( explodeAngle ) );
     }
 
-    draw3DEffect( painter, adjustedDrawPosition, dataset, slice, granularity, threeDAttrs,
-                  attrs.explode() );
+    draw3DEffect( painter, adjustedDrawPosition, slice, granularity, threeDAttrs );
     drawSliceSurface( painter, adjustedDrawPosition, list, dataset, slice, granularity );
 }
 
@@ -516,19 +515,15 @@ void PieDiagram::drawSliceSurface( QPainter* painter,
 
   \param painter the QPainter to draw in
   \param drawPosition the position to draw at
-  \param dataset the dataset to draw the pie for
   \param slice the slice to draw the shadow for
   \param threeDHeight the height of the shadow
   */
 void PieDiagram::draw3DEffect( QPainter* painter,
         const QRectF& drawPosition,
-        uint dataset, uint slice,
+        uint slice,
         qreal granularity,
-        const ThreeDPieAttributes& threeDAttrs,
-        bool /*explode*/ )
+        const ThreeDPieAttributes& threeDAttrs )
 {
-    Q_UNUSED( dataset );
-
     if( ! threeDAttrs.isEnabled() )
         return;
 

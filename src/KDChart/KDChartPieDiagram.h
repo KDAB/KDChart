@@ -85,10 +85,9 @@ private:
         qreal granularity );
     void draw3DEffect( QPainter* painter,
         const QRectF& drawPosition,
-        uint dataset, uint slice,
+        uint slice,
         qreal granularity,
-        const ThreeDPieAttributes& threeDAttrs,
-        bool /*explode*/ );
+        const ThreeDPieAttributes& threeDAttrs );
     void drawStraightEffectSegment( QPainter* painter,
         const QRectF& rect,
         qreal threeDHeight,
