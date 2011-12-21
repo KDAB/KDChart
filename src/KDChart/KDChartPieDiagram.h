@@ -75,17 +75,14 @@ private:
     void drawSlice( QPainter* painter,
         const QRectF &drawPosition,
         DataValueTextInfoList* list,
-        uint slice,
-        qreal granularity );
+        uint slice );
     void drawSliceSurface( QPainter* painter,
         const QRectF &drawPosition,
         DataValueTextInfoList* list,
-        uint slice,
-        qreal granularity );
+        uint slice );
     void draw3DEffect( QPainter* painter,
         const QRectF& drawPosition,
         uint slice,
-        qreal granularity,
         const ThreeDPieAttributes& threeDAttrs );
     void drawStraightEffectSegment( QPainter* painter,
         const QRectF& rect,
@@ -98,13 +95,11 @@ private:
         const QRectF& rect,
         qreal threeDHeight,
         qreal startAngle,
-        qreal endAngle,
-        qreal granularity );
+        qreal endAngle );
     void drawArcUpperBrinkEffectSegment( QPainter* painter,
         const QRectF& rect,
         qreal startAngle,
-        qreal endAngle,
-        qreal granularity );
+        qreal endAngle );
     uint findSliceAt( qreal angle, int columnCount );
     uint findLeftSlice( uint slice, int columnCount );
     uint findRightSlice( uint slice, int columnCount );
