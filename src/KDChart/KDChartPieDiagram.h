@@ -76,8 +76,7 @@ private:
         const QRectF &drawPosition,
         DataValueTextInfoList* list,
         uint slice,
-        qreal granularity,
-        qreal threeDPieHeight );
+        qreal granularity );
     void drawSliceSurface( QPainter* painter,
         const QRectF &drawPosition,
         DataValueTextInfoList* list,

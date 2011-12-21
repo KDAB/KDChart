@@ -228,8 +228,7 @@ void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
     }
 
     QRectF slicePosition;
-    qreal sizeFor3DEffect = 0.0;
-    
+        
     if ( ! threeDAttrs.isEnabled() ) {
         qreal x = ( contentsRect.width() == d->size ) ? 0.0 : ( ( contentsRect.width() - d->size ) / 2.0 );
         qreal y = ( contentsRect.height() == d->size ) ? 0.0 : ( ( contentsRect.height() - d->size ) / 2.0 );
@@ -237,6 +236,8 @@ void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
         slicePosition.translate( contentsRect.left(), contentsRect.top() );
     } else {
         // threeD: width is the maximum possible width; height is 1/2 of that
+        qreal sizeFor3DEffect = 0.0;
+        
         qreal x = ( contentsRect.width() == d->size ) ? 0.0 : ( ( contentsRect.width() - d->size ) / 2.0 );
         qreal height = d->size;
         // make sure that the height plus the threeDheight is not more than the
@@ -300,7 +301,7 @@ void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
 
     d->clearListOfAlreadyDrawnDataValueTexts();
 
-    drawSlice( ctx->painter(), slicePosition, &list, backmostSlice, granularity(), sizeFor3DEffect );
+    drawSlice( ctx->painter(), slicePosition, &list, backmostSlice, granularity() );
 
     if ( backmostSlice == frontmostSlice ) {
         const int rightmostSlice = findSliceAt( 0, colCount );
@@ -314,21 +315,19 @@ void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
 
     while ( currentLeftSlice != frontmostSlice ) {
         if( currentLeftSlice != backmostSlice )
-            drawSlice( ctx->painter(), slicePosition, &list, currentLeftSlice, granularity(),
-                       sizeFor3DEffect );
+            drawSlice( ctx->painter(), slicePosition, &list, currentLeftSlice, granularity() );
         currentLeftSlice = findLeftSlice( currentLeftSlice, colCount );
     }
 
     while ( currentRightSlice != frontmostSlice ) {
         if( currentRightSlice != backmostSlice )
-            drawSlice( ctx->painter(), slicePosition, &list, currentRightSlice, granularity(),
-                       sizeFor3DEffect );
+            drawSlice( ctx->painter(), slicePosition, &list, currentRightSlice, granularity() );
         currentRightSlice = findRightSlice( currentRightSlice, colCount );
     }
 
     // if the backmost slice is not the frontmost slice, we draw the frontmost one last
     if ( backmostSlice != frontmostSlice || ! threeDPieAttributes().isEnabled() ) {
-        drawSlice( ctx->painter(), slicePosition, &list, frontmostSlice, granularity(), sizeFor3DEffect );
+        drawSlice( ctx->painter(), slicePosition, &list, frontmostSlice, granularity() );
     }
 
     d->paintDataValueTextsAndMarkers(  this,  ctx,  list,  false, false, &textBoundingRect );
@@ -350,10 +349,8 @@ void PieDiagram::drawSlice( QPainter* painter,
         const QRectF &drawPosition,
         DataValueTextInfoList* list,
         uint slice,
-        qreal granularity,
-        qreal threeDPieHeight )
+        qreal granularity )
 {
-    Q_UNUSED( threeDPieHeight );
     // Is there anything to draw at all?
     const qreal angleLen = d->angleLens[ slice ];
     if ( !angleLen ) {
