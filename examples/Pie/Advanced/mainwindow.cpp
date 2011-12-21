@@ -49,6 +49,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     vSBar->setVisible( false );
 
     m_model.loadFromCSV( ":/data" );
+    explodeDatasetSB->setMaximum( m_model.columnCount() - 1 );
 
     // Set up the diagram
     PolarCoordinatePlane* polarPlane = new PolarCoordinatePlane( m_chart );
@@ -61,7 +62,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     connect( m_timer, SIGNAL( timeout() ), this, SLOT( slotNextFrame() ) );
 }
 
-void MainWindow::on_startPositionSB_valueChanged( qreal pos )
+void MainWindow::on_startPositionSB_valueChanged( double pos )
 {
     const int intValue = static_cast<int>( pos );
     startPositionSL->blockSignals( true );
@@ -117,7 +118,7 @@ void MainWindow::slotNextFrame()
     if( m_currentFactor == 0 ) {
         setExplodeFactor( m_currentSlice, 0.0 );
         m_currentSlice++;
-        if( m_currentSlice == 4 )
+        if( m_currentSlice >= m_model.columnCount() )
             m_currentSlice = 0;
     }
 

@@ -30,7 +30,7 @@ QT_BEGIN_NAMESPACE
 class QTimer;
 QT_END_NAMESPACE
 namespace KDChart {
-    class Chart;    
+    class Chart;
     class PieDiagram;
 }
 
@@ -43,7 +43,7 @@ public:
 
 private slots:
     // start position
-    void on_startPositionSB_valueChanged( qreal pos );
+    void on_startPositionSB_valueChanged( double pos );
     void on_startPositionSL_valueChanged( int pos );
 
     // explode
@@ -60,7 +60,7 @@ private slots:
 
 private:
     KDChart::Chart* m_chart;
-    TableModel m_model;   
+    TableModel m_model;
     KDChart::PieDiagram* m_pie;
     QTimer* m_timer;
 
