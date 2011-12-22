@@ -84,19 +84,19 @@ private:
         const QRectF& drawPosition,
         uint slice,
         const ThreeDPieAttributes& threeDAttrs );
-    void drawStraightEffectSegment( QPainter* painter,
+    void draw3dCutSurface( QPainter* painter,
         const QRectF& rect,
         qreal threeDHeight,
         qreal angle );
-    void drawUpperBrinkEffect( QPainter* painter,
+    void draw3dCutSurfaceUpperBrink( QPainter* painter,
         const QRectF& rect,
         qreal angle );
-    void drawArcEffectSegment( QPainter* painter,
+    void draw3dOuterRim( QPainter* painter,
         const QRectF& rect,
         qreal threeDHeight,
         qreal startAngle,
         qreal endAngle );
-    void drawArcUpperBrinkEffectSegment( QPainter* painter,
+    void draw3dOuterRimUpperBrink( QPainter* painter,
         const QRectF& rect,
         qreal startAngle,
         qreal endAngle );

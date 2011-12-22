@@ -504,6 +504,36 @@ void PieDiagram::drawSliceSurface( QPainter* painter,
     }
 }
 
+static bool doSpansOverlap( qreal s1Start, qreal s1End, qreal s2Start, qreal s2End )
+{
+    if ( s1Start < s2Start ) {
+        return s1End >= s2Start;
+    } else {
+        return s1Start <= s2End;
+    }
+}
+
+static bool doArcsOverlap( qreal a1Start, qreal a1End, qreal a2Start, qreal a2End )
+{
+    Q_ASSERT( a1Start >= 0 && a1Start <= 360 && a1End >= 0 && a1End <= 360 &&
+              a2Start >= 0 && a2Start <= 360 && a2End >= 0 && a2End <= 360 );
+    // all of this could probably be done better...
+    if ( a1End < a1Start ) {
+        a1End += 360;
+    }
+    if ( a2End < a2Start ) {
+        a2End += 360;
+    }
+
+    if ( doSpansOverlap( a1Start, a1End, a2Start, a2End ) ) {
+        return true;
+    }
+    if ( a1Start > a2Start ) {
+        return doSpansOverlap( a1Start - 360.0, a1End - 360.0, a2Start, a2End );
+    } else {
+        return doSpansOverlap( a1Start + 360.0, a1End + 360.0, a2Start, a2End );
+    }
+}
 
 /**
   Internal method that draws the shadow creating the 3D effect of a pie
@@ -511,7 +541,6 @@ void PieDiagram::drawSliceSurface( QPainter* painter,
   \param painter the QPainter to draw in
   \param drawPosition the position to draw at
   \param slice the slice to draw the shadow for
-  \param threeDHeight the height of the shadow
   */
 void PieDiagram::draw3DEffect( QPainter* painter,
         const QRectF& drawPosition,
@@ -536,8 +565,6 @@ void PieDiagram::draw3DEffect( QPainter* painter,
     else{
         painter->setBrush( brush );
     }
-    //painter->setBrush( QBrush( threeDAttrs.dataShadow1Color( pie ),
-    //            params()->shadowPattern() ) );
 
     qreal startAngle = d->startAngles[ slice ];
     qreal endAngle = startAngle + d->angleLens[ slice ];
@@ -554,136 +581,38 @@ void PieDiagram::draw3DEffect( QPainter* painter,
     const int depth = threeDAttrs.depth() >= 0.0 ? threeDAttrs.depth() : -threeDAttrs.depth() / 100.0 * drawPosition.height();
 
     if ( startAngle == endAngle || startAngle == endAngle - 360 ) { // full circle
-        drawArcEffectSegment( painter, drawPosition, depth, 180, 360 );
-    } else if ( startAngle <= 90 ) {
-        if ( endAngle <= 90 ) {
-            if ( startAngle <= endAngle ) {
-                /// starts and ends in first quadrant, less than 1/4
-                drawStraightEffectSegment( painter, drawPosition, depth, startAngle );
-                drawUpperBrinkEffect( painter, drawPosition, endAngle );
-            } else {
-                /// starts and ends in first quadrant, more than 3/4
-                drawStraightEffectSegment( painter, drawPosition, depth, startAngle );
-                drawUpperBrinkEffect( painter, drawPosition, endAngle );
-                drawArcEffectSegment( painter, drawPosition, depth, 180, 360 );
-            }
-        } else if ( endAngle <= 180 ) {
-            /// starts in first quadrant, ends in second quadrant,
-            /// less than 1/2
-            drawStraightEffectSegment( painter, drawPosition, depth, startAngle );
-            drawStraightEffectSegment( painter, drawPosition, depth, endAngle );
-        } else if ( endAngle <= 270 ) {
-            /// starts in first quadrant, ends in third quadrant
-            drawStraightEffectSegment( painter, drawPosition, depth, startAngle );
-            drawStraightEffectSegment( painter, drawPosition, depth, endAngle );
-            drawArcEffectSegment( painter, drawPosition, depth, 180, endAngle );
-        } else { // 270*16 < endAngle < 360*16
-            /// starts in first quadrant, ends in fourth quadrant,
-            /// more than 3/4
-            drawStraightEffectSegment( painter, drawPosition, depth, startAngle );
-            drawUpperBrinkEffect( painter, drawPosition, endAngle );
-            drawArcEffectSegment( painter, drawPosition, depth, 180, endAngle );
+        draw3dOuterRim( painter, drawPosition, depth, 180, 360 );
+    } else {
+        if ( doArcsOverlap( startAngle, endAngle, 180, 359.999 ) ) {
+            draw3dOuterRim( painter, drawPosition, depth, startAngle, endAngle );
         }
-    } else if ( startAngle <= 180 ) {
-        if ( endAngle <= 90 ) {
-            drawArcEffectSegment( painter, drawPosition, depth, 180, 360 );
-            drawUpperBrinkEffect( painter, drawPosition, startAngle );
-            drawUpperBrinkEffect( painter, drawPosition, endAngle );
-        } else if ( endAngle <= 180 ) {
-            if ( startAngle <= endAngle ) {
-                /// starts in second quadrant, ends in second
-                /// quadrant, less than 1/4
-                drawStraightEffectSegment( painter, drawPosition, depth, endAngle );
-                drawUpperBrinkEffect( painter, drawPosition, startAngle );
-            } else {
-                /// starts in second quadrant, ends in second
-                /// quadrant, more than 1/4
-                drawStraightEffectSegment( painter, drawPosition, depth, endAngle );
-                drawUpperBrinkEffect( painter, drawPosition, startAngle );
-                drawArcEffectSegment( painter, drawPosition, depth, 180, 360);
-            }
-        } else if ( endAngle <= 270 ) {
-            drawStraightEffectSegment( painter, drawPosition, depth, endAngle );
-            drawUpperBrinkEffect( painter, drawPosition, startAngle );
-            drawArcEffectSegment( painter, drawPosition, depth, 180, endAngle );
-        } else { // 270*16 < endAngle < 360*16
-            drawArcEffectSegment( painter, drawPosition, depth, 180, endAngle );
-            drawUpperBrinkEffect( painter, drawPosition, startAngle );
-            drawUpperBrinkEffect( painter, drawPosition, endAngle );
+
+        if ( startAngle >= 270 || startAngle <= 90 ) {
+            draw3dCutSurface( painter, drawPosition, depth, startAngle );
+        } else {
+            draw3dCutSurfaceUpperBrink( painter, drawPosition, startAngle );
         }
-    } else if ( startAngle <= 270 ) {
-        if ( endAngle <= 90 ) {
-            drawArcEffectSegment( painter, drawPosition, depth, startAngle, 360 );
-            drawUpperBrinkEffect( painter, drawPosition, startAngle );
-            drawUpperBrinkEffect( painter, drawPosition, endAngle );
-        } else if ( endAngle <= 180 ) {
-            drawStraightEffectSegment( painter, drawPosition, depth, endAngle );
-            drawUpperBrinkEffect( painter, drawPosition, startAngle );
-            drawArcEffectSegment( painter, drawPosition, depth, startAngle, 360 );
-        } else if ( endAngle <= 270 ) {
-            if ( startAngle <= endAngle ) {
-                /// starts in third quadrant, ends in third quadrant,
-                /// less than 1/4
-                drawStraightEffectSegment( painter, drawPosition, depth, endAngle );
-                drawUpperBrinkEffect( painter, drawPosition, startAngle );
-                drawArcEffectSegment( painter, drawPosition, depth, startAngle, endAngle );
-            } else {
-                /// starts in third quadrant, ends in third quadrant,
-                /// more than 3/4
-                drawStraightEffectSegment( painter, drawPosition, depth, endAngle );
-                drawUpperBrinkEffect( painter, drawPosition, startAngle );
-                drawArcEffectSegment( painter, drawPosition, depth, 180, endAngle );
-                drawArcEffectSegment( painter, drawPosition, depth, startAngle, 360 );
-            }
-        } else { // 270*16 < endAngle < 360*16
-            drawArcEffectSegment( painter, drawPosition, depth, startAngle, endAngle );
-            drawUpperBrinkEffect( painter, drawPosition, startAngle );
-            drawUpperBrinkEffect( painter, drawPosition, endAngle );
-        }
-    } else { // 270*16 < startAngle < 360*16
-        if ( endAngle <= 90 ) {
-            drawStraightEffectSegment( painter, drawPosition, depth, startAngle );
-            drawUpperBrinkEffect( painter, drawPosition, endAngle );
-            drawArcEffectSegment( painter, drawPosition, depth, startAngle, 360 );
-        } else if ( endAngle <= 180 ) {
-            drawStraightEffectSegment( painter, drawPosition, depth, startAngle );
-            drawStraightEffectSegment( painter, drawPosition, depth, endAngle );
-            drawArcEffectSegment( painter, drawPosition, depth, startAngle, 360 );
-        } else if ( endAngle <= 270 ) {
-            drawStraightEffectSegment( painter, drawPosition, depth, startAngle );
-            drawStraightEffectSegment( painter, drawPosition, depth, endAngle );
-            drawArcEffectSegment( painter, drawPosition, depth, 180, endAngle );
-            drawArcEffectSegment( painter, drawPosition, depth, startAngle, 360 );
-        } else { // 270*16 < endAngle < 360*16
-            if ( startAngle <= endAngle ) {
-                /// starts in fourth quadrant, ends in fourth
-                /// quadrant, less than 1/4
-                drawStraightEffectSegment( painter, drawPosition,  depth, startAngle );
-                drawUpperBrinkEffect( painter, drawPosition, endAngle );
-                drawArcEffectSegment( painter, drawPosition, depth, startAngle, endAngle );
-            } else {
-                /// starts in fourth quadrant, ends in fourth
-                /// quadrant, more than 3/4
-                drawStraightEffectSegment( painter, drawPosition, depth, startAngle );
-                drawUpperBrinkEffect( painter, drawPosition, endAngle );
-                drawArcEffectSegment( painter, drawPosition, depth, startAngle, 360 );
-                drawArcEffectSegment( painter, drawPosition, depth, 180, endAngle );
-            }
+        if ( endAngle >= 90 && endAngle <= 270 ) {
+            draw3dCutSurface( painter, drawPosition, depth, endAngle );
+        } else {
+            draw3dCutSurfaceUpperBrink( painter, drawPosition, endAngle );
         }
     }
-    drawArcUpperBrinkEffectSegment( painter, drawPosition, startAngle, endAngle );
+
+    draw3dOuterRimUpperBrink( painter, drawPosition, startAngle, endAngle );
 }
 
 
 /**
-  Internal method that draws a segment with a straight 3D effect
+  Internal method that draws the cut surface of a slice (think of a real pie cut into slices)
+  in 3D mode, for surfaces that are facing the observer.
 
   \param painter the QPainter to draw in
   \param rect the position to draw at
   \param threeDHeight the height of the shadow
   \param angle the angle of the segment
   */
-void PieDiagram::drawStraightEffectSegment( QPainter* painter,
+void PieDiagram::draw3dCutSurface( QPainter* painter,
         const QRectF& rect,
         qreal threeDHeight,
         qreal angle )
@@ -700,13 +629,15 @@ void PieDiagram::drawStraightEffectSegment( QPainter* painter,
 }
 
 /**
-  Internal method that draws the upper brink of a 3D pie piece
+  Internal method that draws the upper brink of the cut surface of a 3D pie piece.
+  This one is used when the cut surface itself is facing away from the observer,
+  i.e. when draw3dCutSurface is NOT used for a given cut surface.
 
   \param painter the QPainter to draw in
   \param rect the position to draw at
   \param angle the angle of the segment
   */
-void PieDiagram::drawUpperBrinkEffect( QPainter* painter,
+void PieDiagram::draw3dCutSurfaceUpperBrink( QPainter* painter,
         const QRectF& rect,
         qreal angle )
 {
@@ -716,7 +647,7 @@ void PieDiagram::drawUpperBrinkEffect( QPainter* painter,
 }
 
 /**
-  Internal method that draws a segment with an arc 3D effect
+  Internal method that draws the outer rim of a slice when the rim is facing the observer.
 
   \param painter the QPainter to draw in
   \param rect the position to draw at
@@ -724,39 +655,36 @@ void PieDiagram::drawUpperBrinkEffect( QPainter* painter,
   \param startAngle the starting angle of the segment
   \param endAngle the ending angle of the segment
   */
-void PieDiagram::drawArcEffectSegment( QPainter* painter,
+void PieDiagram::draw3dOuterRim( QPainter* painter,
         const QRectF& rect,
         qreal threeDHeight,
         qreal startAngle,
         qreal endAngle )
 {
     // Start with getting the points for the inner arc.
-    qreal startA = qMin( startAngle, endAngle );
-    qreal endA   = qMax( startAngle, endAngle );
+    if ( endAngle < startAngle ) {
+        endAngle += 360;
+    }
+    startAngle = qMax( startAngle, qreal( 180.0 ) );
+    endAngle = qMin( endAngle, qreal( 360.0 ) );
 
-    // sometimes we have to draw two segments, which are on different sides of the pie
-    if( endA > 540 )
-        drawArcEffectSegment( painter, rect, threeDHeight, 180, endA - 360 );
-    if( endA > 360 )
-        endA = qMin( endA, qreal( 360.0 ) );
-
-    int numHalfPoints = static_cast<int>( trunc( ( endA - startA ) / granularity() ) ) + 1;
+    int numHalfPoints = trunc( ( endAngle - startAngle ) / granularity() ) + 1;
 
     QPolygonF poly( numHalfPoints );
 
-    qreal degree = endA;
+    qreal degree = endAngle;
     int iPoint = 0;
     bool perfectMatch = false;
-    while ( degree >= startA ){
+    while ( degree >= startAngle  ){
         poly[ numHalfPoints - iPoint - 1 ] = pointOnEllipse( rect, degree );
 
-        perfectMatch = (degree == startA);
+        perfectMatch = (degree == startAngle);
         degree -= granularity();
         ++iPoint;
     }
     // if necessary add one more point to fill the last small gap
     if( ! perfectMatch ){
-        poly.prepend( pointOnEllipse( rect, startA ) );
+        poly.prepend( pointOnEllipse( rect, startAngle ) );
         ++numHalfPoints;
     }
 
@@ -775,14 +703,15 @@ void PieDiagram::drawArcEffectSegment( QPainter* painter,
 }
 
 /**
-  Internal method that draws the upper brink of a 3D pie segment
+  Internal method that draws the upper brink of the outer rim of a slice when the rim is facing
+  away from the observer.
 
   \param painter the QPainter to draw in
   \param rect the position to draw at
   \param startAngle the starting angle of the segment
   \param endAngle the ending angle of the segment
   */
-void PieDiagram::drawArcUpperBrinkEffectSegment( QPainter* painter,
+void PieDiagram::draw3dOuterRimUpperBrink( QPainter* painter,
         const QRectF& rect,
         qreal startAngle,
         qreal endAngle )
