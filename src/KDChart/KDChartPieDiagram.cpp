@@ -589,17 +589,11 @@ void PieDiagram::draw3DEffect( QPainter* painter,
 
         if ( startAngle >= 270 || startAngle <= 90 ) {
             draw3dCutSurface( painter, drawPosition, depth, startAngle );
-        } else {
-            draw3dCutSurfaceUpperBrink( painter, drawPosition, startAngle );
         }
         if ( endAngle >= 90 && endAngle <= 270 ) {
             draw3dCutSurface( painter, drawPosition, depth, endAngle );
-        } else {
-            draw3dCutSurfaceUpperBrink( painter, drawPosition, endAngle );
         }
     }
-
-    draw3dOuterRimUpperBrink( painter, drawPosition, startAngle, endAngle );
 }
 
 
@@ -626,24 +620,6 @@ void PieDiagram::draw3dCutSurface( QPainter* painter,
     poly[3] = QPointF( center.x(), center.y() + threeDHeight );
     // TODO: add polygon to ReverseMapper
     painter->drawPolygon( poly );
-}
-
-/**
-  Internal method that draws the upper brink of the cut surface of a 3D pie piece.
-  This one is used when the cut surface itself is facing away from the observer,
-  i.e. when draw3dCutSurface is NOT used for a given cut surface.
-
-  \param painter the QPainter to draw in
-  \param rect the position to draw at
-  \param angle the angle of the segment
-  */
-void PieDiagram::draw3dCutSurfaceUpperBrink( QPainter* painter,
-        const QRectF& rect,
-        qreal angle )
-{
-    const QPointF center = rect.center();
-    const QPointF circlePoint = pointOnEllipse( rect, angle );
-    painter->drawLine( center, circlePoint );
 }
 
 /**
@@ -700,49 +676,6 @@ void PieDiagram::draw3dOuterRim( QPainter* painter,
 
     // TODO: Add polygon to ReverseMapper
     painter->drawPolygon( poly );
-}
-
-/**
-  Internal method that draws the upper brink of the outer rim of a slice when the rim is facing
-  away from the observer.
-
-  \param painter the QPainter to draw in
-  \param rect the position to draw at
-  \param startAngle the starting angle of the segment
-  \param endAngle the ending angle of the segment
-  */
-void PieDiagram::draw3dOuterRimUpperBrink( QPainter* painter,
-        const QRectF& rect,
-        qreal startAngle,
-        qreal endAngle )
-{
-    if ( endAngle < startAngle )
-        endAngle += 360;
-    // Start with getting the poits for the inner arc.
-    const qreal startA = qMin( startAngle, endAngle );
-    const qreal endA   = qMax( startAngle, endAngle );
-
-    int numHalfPoints = static_cast<int>( trunc( ( endA - startA ) / granularity() ) ) + 1;
-
-    QPolygonF poly( numHalfPoints );
-
-    qreal degree = endA;
-    int iPoint = 0;
-    bool perfectMatch = false;
-    while ( degree >= startA ){
-        poly[ numHalfPoints - iPoint - 1 ] = pointOnEllipse( rect, degree );
-
-        perfectMatch = (degree == startA);
-        degree -= granularity();
-        ++iPoint;
-    }
-    // if necessary add one more point to fill the last small gap
-    if( ! perfectMatch ){
-        poly.prepend( pointOnEllipse( rect, startA ) );
-        ++numHalfPoints;
-    }
-
-    painter->drawPolyline( poly );
 }
 
 /**

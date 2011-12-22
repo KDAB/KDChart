@@ -88,16 +88,9 @@ private:
         const QRectF& rect,
         qreal threeDHeight,
         qreal angle );
-    void draw3dCutSurfaceUpperBrink( QPainter* painter,
-        const QRectF& rect,
-        qreal angle );
     void draw3dOuterRim( QPainter* painter,
         const QRectF& rect,
         qreal threeDHeight,
-        qreal startAngle,
-        qreal endAngle );
-    void draw3dOuterRimUpperBrink( QPainter* painter,
-        const QRectF& rect,
         qreal startAngle,
         qreal endAngle );
     uint findSliceAt( qreal angle, int columnCount );
