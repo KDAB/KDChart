@@ -583,7 +583,7 @@ void PieDiagram::draw3DEffect( QPainter* painter,
     if ( startAngle == endAngle || startAngle == endAngle - 360 ) { // full circle
         draw3dOuterRim( painter, drawPosition, depth, 180, 360 );
     } else {
-        if ( doArcsOverlap( startAngle, endAngle, 180, 359.999 ) ) {
+        if ( doArcsOverlap( startAngle, endAngle, 180, 360 ) ) {
             draw3dOuterRim( painter, drawPosition, depth, startAngle, endAngle );
         }
 
@@ -645,6 +645,9 @@ void PieDiagram::draw3dOuterRim( QPainter* painter,
     endAngle = qMin( endAngle, qreal( 360.0 ) );
 
     int numHalfPoints = trunc( ( endAngle - startAngle ) / granularity() ) + 1;
+    if ( numHalfPoints < 2 ) {
+        return;
+    }
 
     QPolygonF poly( numHalfPoints );
 
