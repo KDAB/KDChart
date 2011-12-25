@@ -62,7 +62,7 @@ public:
 
     /** \reimpl */
     // FIXME: Optimize when needed
-    virtual qreal calcPercentValue( const QModelIndex & index )
+    virtual qreal calcPercentValue( const QModelIndex & index ) const
     {
         Q_ASSERT( index.isValid() );
         qreal sum = 0.0;

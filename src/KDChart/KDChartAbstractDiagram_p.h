@@ -93,7 +93,7 @@ namespace KDChart {
         bool usesExternalAttributesModel()const;
 
         // FIXME: Optimize if necessary
-        virtual qreal calcPercentValue( const QModelIndex & index );
+        virtual qreal calcPercentValue( const QModelIndex & index ) const;
 
         void appendDataValueTextInfoToList(
             AbstractDiagram * diagram,
@@ -110,6 +110,8 @@ namespace KDChart {
         const QFontMetrics cachedFontMetrics() const;
 
         QString formatNumber( qreal value, int decimalDigits ) const;
+        QString formatDataValueText( const DataValueAttributes &dva,
+                                     const QModelIndex& index, qreal value ) const;
 
         void clearListOfAlreadyDrawnDataValueTexts();
 
@@ -120,7 +122,6 @@ namespace KDChart {
                                             bool justCalculateRect=false,
                                             QRectF* cumulatedBoundingRect=0 );
 
-
         void paintDataValueText( const AbstractDiagram* diag,
                                  QPainter* painter,
                                  const QModelIndex& index,
@@ -128,7 +129,6 @@ namespace KDChart {
                                  qreal value,
                                  bool justCalculateRect=false,
                                  QRectF* cumulatedBoundingRect=0 );
-
 
         void paintDataValueText( const AbstractDiagram* diag,
                                  QPainter* painter,

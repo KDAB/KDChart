@@ -228,7 +228,7 @@ void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
     }
 
     QRectF slicePosition;
-        
+
     if ( ! threeDAttrs.isEnabled() ) {
         qreal x = ( contentsRect.width() == d->size ) ? 0.0 : ( ( contentsRect.width() - d->size ) / 2.0 );
         qreal y = ( contentsRect.height() == d->size ) ? 0.0 : ( ( contentsRect.height() - d->size ) / 2.0 );
@@ -237,7 +237,7 @@ void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
     } else {
         // threeD: width is the maximum possible width; height is 1/2 of that
         qreal sizeFor3DEffect = 0.0;
-        
+
         qreal x = ( contentsRect.width() == d->size ) ? 0.0 : ( ( contentsRect.width() - d->size ) / 2.0 );
         qreal height = d->size;
         // make sure that the height plus the threeDheight is not more than the
@@ -291,9 +291,10 @@ void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
     if( ! atLeastOneValue )
         return;
 
-    // The backmost slice, which is at +90°, needs to be drawn first
+    // Paint from back to front ("painter's algorithm") - first draw the backmost slice,
+    // then the slices on the left and right from back to front, then the frontmost one.
+
     const int backmostSlice = findSliceAt( 90, colCount );
-    // The frontmost slice (at -90°/+270°) needs to be drawn last
     const int frontmostSlice = findSliceAt( 270, colCount );
 
     int currentLeftSlice = backmostSlice;
@@ -355,7 +356,7 @@ void PieDiagram::drawSlice( QPainter* painter,
     if ( !angleLen ) {
         return;
     }
-    
+
     const QModelIndex index( model()->index( 0, slice, rootIndex() ) ); // checked
     const PieAttributes attrs( pieAttributes( index ) );
     const ThreeDPieAttributes threeDAttrs( threeDPieAttributes( index ) );
@@ -453,10 +454,11 @@ void PieDiagram::drawSliceSurface( QPainter* painter,
                 favoriteTextAngle = favoriteTextAngle / 2.0 / 3.141592653589793 * 360.0;
             }
         }
-        // the new code is setting the needed position points according to the slice:
-        // all is calculated as if the slice were 'standing' on it's tip and the border
-        // were on top, so North is the middle of the curved outside line and South is the tip
-        //
+
+        // Position points are calculated relative to the slice.
+        // They are calculated as if the slice was 'standing' on its tip and the rim was up,
+        // so North is the middle (also highest part) of the rim and South is the tip of the slice.
+
         const qreal sum = valueTotals();
         const QPointF south = drawPosition.center();
         const QPointF southEast = south;
@@ -470,24 +472,26 @@ void PieDiagram::drawSliceSurface( QPainter* painter,
         const QPointF west      = (south + northWest) / 2.0;
 
         if ( !list->isEmpty() ) {
-                CartesianDiagramDataCompressor::DataValueAttributesList allAttrs( d->aggregatedAttrs( this, index, 0 ) );
-                const QFontMetrics* fm = d->cachedFontMetrics( allAttrs.value( index ).textAttributes()
-                                             .calculatedFont( d->plane, KDChartEnums::MeasureOrientationMinimum ), this );
+            CartesianDiagramDataCompressor::DataValueAttributesList allAttrs =
+                d->aggregatedAttrs( this, index, 0 );
+            DataValueAttributes dva = allAttrs.value( index );
+            const QFontMetrics* fm = d->cachedFontMetrics( dva.textAttributes()
+                .calculatedFont( d->plane, KDChartEnums::MeasureOrientationMinimum ), this );
 
-                QRect textRect = fm->boundingRect( d->formatNumber( list->last().value,
-                                                                    list->last().attrs.decimalDigits() ) );
-                textRect.translated(center.toPoint());
-                QPoint textRectCenter = textRect.center();
-                qreal newX = center.x() - textRectCenter.x();
-                qreal newY = center.y() - textRectCenter.y();
-                center.setX( newX );
-                center.setY( newY );
+            QRect textRect = fm->boundingRect( d->formatDataValueText( dva, index, list->last().value ) );
+            textRect.translated(center.toPoint());
+            QPoint textRectCenter = textRect.center();
+            qreal newX = center.x() - textRectCenter.x();
+            qreal newY = center.y() - textRectCenter.y();
+            center.setX( newX );
+            center.setY( newY );
         }
 
-        PositionPoints points( center, northWest, north, northEast, east, southEast, south, southWest, west);
+        PositionPoints points( center, northWest, north, northEast, east, southEast, south, southWest, west );
         qreal topAngle = startAngle - 90;
         if( topAngle < 0.0 )
             topAngle += 360;
+
         points.setDegrees(KDChartEnums::PositionEast,      topAngle);
         points.setDegrees(KDChartEnums::PositionNorthEast, topAngle);
         points.setDegrees(KDChartEnums::PositionWest,      topAngle + angleLen);

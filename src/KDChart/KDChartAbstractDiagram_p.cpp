@@ -105,7 +105,7 @@ AbstractDiagram::Private::Private( const AbstractDiagram::Private& rhs ) :
 }
 
 // FIXME: Optimize if necessary
-qreal AbstractDiagram::Private::calcPercentValue( const QModelIndex & index )
+qreal AbstractDiagram::Private::calcPercentValue( const QModelIndex & index ) const
 {
     qreal sum = 0.0;
     for ( int col = 0; col < attributesModel->columnCount( QModelIndex() ); col++ )
@@ -126,42 +126,44 @@ void AbstractDiagram::Private::appendDataValueTextInfoToList(
     const qreal value,
     qreal favoriteAngle /* = 0.0 */ )
 {
-    CartesianDiagramDataCompressor::DataValueAttributesList allAttrs( aggregatedAttrs( diagram, index, position ) );
-    QMap<QModelIndex, DataValueAttributes>::const_iterator i;
-    for (i = allAttrs.constBegin(); i != allAttrs.constEnd(); ++i){
-        DataValueAttributes dva = i.value();
-        if( dva.isVisible() ){
-            const bool bValueIsPositive = (value >= 0.0);
-            RelativePosition relPos( i.value().position( bValueIsPositive ) );
-            relPos.setReferencePoints( points );
-            if( relPos.referencePosition().isUnknown() )
-                relPos.setReferencePosition( bValueIsPositive ? autoPositionPositive : autoPositionNegative );
+    CartesianDiagramDataCompressor::DataValueAttributesList allAttrs(
+        aggregatedAttrs( diagram, index, position ) );
 
-            const QPointF referencePoint = relPos.referencePoint();
-            if( diagram->coordinatePlane()->isVisiblePoint( referencePoint ) ){
-                const qreal fontHeight = cachedFontMetrics( dva.textAttributes().
-                        calculatedFont( plane, KDChartEnums::MeasureOrientationMinimum ), diagram )->height();
-                // Note: When printing data value texts the font height is used as reference size for both,
-                //       horizontal and vertical padding, if the respective padding's Measure is using
-                //       automatic reference area detection.
-                QSizeF relativeMeasureSize( fontHeight, fontHeight );
-                //qDebug()<<"fontHeight"<<fontHeight;
-
-                if( !dva.textAttributes().hasRotation() )
-                {
-                    TextAttributes ta = dva.textAttributes();
-                    ta.setRotation( favoriteAngle );
-                    dva.setTextAttributes( ta );
-                }
-                // Store the anchor point, that's already shifted according to horiz./vert. padding:
-                list.append( DataValueTextInfo(
-                                i.key(),
-                                dva,
-                                relPos.calculatedPoint( relativeMeasureSize ),
-                                referencePoint,
-                                value ) );
-            }
+    QMap<QModelIndex, DataValueAttributes>::const_iterator it;
+    for (it = allAttrs.constBegin(); it != allAttrs.constEnd(); ++it) {
+        DataValueAttributes dva = it.value();
+        if ( !dva.isVisible() ) {
+            continue;
         }
+
+        const bool isPositive = (value >= 0.0);
+        RelativePosition relPos( dva.position( isPositive ) );
+        relPos.setReferencePoints( points );
+        if ( relPos.referencePosition().isUnknown() ) {
+            relPos.setReferencePosition( isPositive ? autoPositionPositive : autoPositionNegative );
+        }
+
+        const QPointF referencePoint = relPos.referencePoint();
+        if ( !diagram->coordinatePlane()->isVisiblePoint( referencePoint ) ) {
+            continue;
+        }
+
+        const qreal fontHeight = cachedFontMetrics( dva.textAttributes().
+                calculatedFont( plane, KDChartEnums::MeasureOrientationMinimum ), diagram )->height();
+        // Note: When printing data value texts the font height is used as reference size for both,
+        //       horizontal and vertical padding, if the respective padding's Measure is using
+        //       automatic reference area detection.
+        QSizeF relativeMeasureSize( fontHeight, fontHeight );
+        //qDebug()<<"fontHeight"<<fontHeight;
+
+        if ( !dva.textAttributes().hasRotation() ) {
+            TextAttributes ta = dva.textAttributes();
+            ta.setRotation( favoriteAngle );
+            dva.setTextAttributes( ta );
+        }
+        // Store the anchor point, that's already shifted according to horiz./vert. padding:
+        list.append( DataValueTextInfo( it.key(), dva, relPos.calculatedPoint( relativeMeasureSize ),
+                                        referencePoint, value ) );
     }
 }
 
@@ -171,6 +173,7 @@ const QFontMetrics * AbstractDiagram::Private::cachedFontMetrics( const QFont& f
         mCachedFontMetrics = QFontMetrics( font, paintDevice );
     return & mCachedFontMetrics;
 }
+
 const QFontMetrics AbstractDiagram::Private::cachedFontMetrics() const
 {
     return mCachedFontMetrics;
@@ -189,7 +192,7 @@ QString AbstractDiagram::Private::formatNumber( qreal value, int decimalDigits )
         decimalPos = asString.indexOf( QLatin1Char( '.' ) );
         digits = asString.mid( decimalPos + 1, decimalDigits );
     } else {
-        digits.chop(1);
+        digits.chop( 1 );
     }
 
     QString ret( asString.left( decimalPos ) );
@@ -268,6 +271,28 @@ void AbstractDiagram::Private::paintDataValueTextsAndMarkers(
     }
 }
 
+QString AbstractDiagram::Private::formatDataValueText( const DataValueAttributes &dva,
+                                                       const QModelIndex& index, qreal value ) const
+{
+    if ( !dva.isVisible() ) {
+        return QString();
+    }
+    if ( dva.usePercentage() ) {
+        value = calcPercentValue( index );
+    }
+
+    QString ret;
+    if ( dva.dataLabel().isNull() ) {
+        ret = formatNumber( value, dva.decimalDigits() );
+    } else {
+        ret = dva.dataLabel();
+    }
+
+    ret.prepend( dva.prefix() );
+    ret.append( dva.suffix() );
+
+    return ret;
+}
 
 void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
     QPainter* painter,
@@ -277,31 +302,11 @@ void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
     bool justCalculateRect /* = false */,
     QRectF* cumulatedBoundingRect /* = 0 */ )
 {
-    const DataValueAttributes a( diag->dataValueAttributes( index ) );
-
-    if ( !a.isVisible() ) return;
-
-    if ( a.usePercentage() )
-        value = calcPercentValue( index );
-
-    QString roundedValue;
-    if ( a.dataLabel().isNull() ) {
-        roundedValue = formatNumber( value, a.decimalDigits() );
-    } else {
-        roundedValue = a.dataLabel();
-    }
-
-    // handle prefix and suffix
-    if ( !a.prefix().isNull() )
-        roundedValue.prepend( a.prefix() );
-
-    if ( !a.suffix().isNull() )
-        roundedValue.append( a.suffix() );
-
-    paintDataValueText( diag, painter, a, pos, roundedValue, value >= 0.0,
+    const DataValueAttributes dva( diag->dataValueAttributes( index ) );
+    QString text = formatDataValueText( dva, index, value );
+    paintDataValueText( diag, painter, dva, pos, text, value >= 0.0,
                         justCalculateRect, cumulatedBoundingRect );
 }
-
 
 void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
     QPainter* painter,
