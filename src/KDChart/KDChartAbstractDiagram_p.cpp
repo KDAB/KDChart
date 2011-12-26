@@ -340,13 +340,13 @@ void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
     const RelativePosition relPos( attrs.position( valueIsPositive ) );
     const QFont calculatedFont( ta.calculatedFont( plane, KDChartEnums::MeasureOrientationMinimum ) );
 
-    // what's up with lastX anyway?
+    // ### what is the purpose of lastX?
     if ( !attrs.showRepetitiveDataLabels() && prevPaintedDataValueText == text && pos.x() > lastX ) {
         return;
     }
     prevPaintedDataValueText = text;
 
-    lastX = pos.x(); // OMG WTF BBQ, this assumes left to right painting on a cartesian axis, right???
+    lastX = pos.x();
     const PainterSaver painterSaver( painter );
     painter->setPen( PrintingParameters::scalePen( ta.pen() ) );
 
