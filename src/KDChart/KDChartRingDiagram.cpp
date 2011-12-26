@@ -221,7 +221,7 @@ void RingDiagram::paint( PaintContext* ctx )
 
     QVariant vValY;
 
-    d->clearListOfAlreadyDrawnDataValueTexts();
+    d->forgetAlreadyPaintedDataValues();
     for ( int iRow = 0; iRow < rCount; ++iRow ) {
             const qreal sum = valueTotals( iRow );
             if( sum == 0.0 ) //nothing to draw

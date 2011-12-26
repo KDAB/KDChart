@@ -93,12 +93,10 @@ void  TernaryLineDiagram::paint (PaintContext *paintContext)
 
     qreal x, y, z;
 
-
     // for some reason(?) TernaryPointDiagram is using per-diagram DVAs only:
     const DataValueAttributes attrs( dataValueAttributes() );
 
-
-    d->clearListOfAlreadyDrawnDataValueTexts();
+    d->forgetAlreadyPaintedDataValues();
 
     int columnCount = model()->columnCount( rootIndex() );
     QPointF start;

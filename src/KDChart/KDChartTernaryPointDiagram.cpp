@@ -85,7 +85,7 @@ void  TernaryPointDiagram::paint (PaintContext *paintContext)
     // for some reason(?) TernaryPointDiagram is using per-diagram DVAs only:
     const DataValueAttributes attrs( dataValueAttributes() );
 
-    d->clearListOfAlreadyDrawnDataValueTexts();
+    d->forgetAlreadyPaintedDataValues();
 
     int columnCount = model()->columnCount( rootIndex() );
     for(int column=0; column<columnCount; column+=datasetDimension() )

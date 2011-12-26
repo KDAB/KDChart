@@ -300,7 +300,7 @@ void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
     int currentLeftSlice = backmostSlice;
     int currentRightSlice = backmostSlice;
 
-    d->clearListOfAlreadyDrawnDataValueTexts();
+    d->forgetAlreadyPaintedDataValues();
 
     drawSlice( ctx->painter(), slicePosition, &list, backmostSlice );
 

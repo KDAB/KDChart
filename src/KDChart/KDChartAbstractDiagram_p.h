@@ -113,7 +113,7 @@ namespace KDChart {
         QString formatDataValueText( const DataValueAttributes &dva,
                                      const QModelIndex& index, qreal value ) const;
 
-        void clearListOfAlreadyDrawnDataValueTexts();
+        void forgetAlreadyPaintedDataValues();
 
         void paintDataValueTextsAndMarkers( AbstractDiagram* diag,
                                             PaintContext* ctx,
@@ -186,7 +186,7 @@ namespace KDChart {
         QList< QPainterPath > alreadyDrawnDataValueTexts;
 
     private:
-        QString lastRoundedValue;
+        QString prevPaintedDataValueText;
         qreal lastX;
         QFontMetrics   mCachedFontMetrics;
         QFont          mCachedFont;

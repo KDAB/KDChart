@@ -53,7 +53,6 @@ AbstractDiagram::Private::Private()
   , percent( false )
   , datasetDimension( 1 )
   , databoundariesDirty(true)
-  , lastRoundedValue()
   , lastX( 0 )
   , mCachedFontMetrics( QFontMetrics( qApp->font() ) )
 {
@@ -203,9 +202,10 @@ QString AbstractDiagram::Private::formatNumber( qreal value, int decimalDigits )
     return ret;
 }
 
-void AbstractDiagram::Private::clearListOfAlreadyDrawnDataValueTexts()
+void AbstractDiagram::Private::forgetAlreadyPaintedDataValues()
 {
     alreadyDrawnDataValueTexts.clear();
+    prevPaintedDataValueText.clear();
 }
 
 void AbstractDiagram::Private::paintDataValueTextsAndMarkers(
@@ -216,17 +216,18 @@ void AbstractDiagram::Private::paintDataValueTextsAndMarkers(
     bool justCalculateRect /* = false */,
     QRectF* cumulatedBoundingRect /* = 0 */ )
 {
+    if ( justCalculateRect && !cumulatedBoundingRect ) {
+        qWarning() << Q_FUNC_INFO << "Neither painting nor finding the bounding rect, what are we doing?";
+    }
+
     const PainterSaver painterSaver( ctx->painter() );
     ctx->painter()->setClipping( false );
-    if( paintMarkers && ! justCalculateRect )
-    {
-        DataValueTextInfoListIterator it( list );
-        while ( it.hasNext() ) {
-            const DataValueTextInfo& info = it.next();
+
+    if ( paintMarkers && !justCalculateRect ) {
+        KDAB_FOREACH ( const DataValueTextInfo& info, list ) {
             diag->paintMarker( ctx->painter(), info.index, info.markerPos );
         }
     }
-    DataValueTextInfoListIterator it( list );
 
     Measure m( 18.0, KDChartEnums::MeasureCalculationModeRelative,
                KDChartEnums::MeasureOrientationMinimum );
@@ -235,38 +236,37 @@ void AbstractDiagram::Private::paintDataValueTextsAndMarkers(
     ta.setFontSize( m );
     m.setAbsoluteValue( 6.0 );
     ta.setMinimalFontSize( m );
-    clearListOfAlreadyDrawnDataValueTexts();
-    while ( it.hasNext() ) {
-        const DataValueTextInfo& info = it.next();
+
+    forgetAlreadyPaintedDataValues();
+
+    KDAB_FOREACH ( const DataValueTextInfo& info, list ) {
         const PainterSaver ps( ctx->painter() );
-        if( !diag->dataValueAttributes( info.index ).textAttributes().hasRotation() )
-        {
+
+        if ( !diag->dataValueAttributes( info.index ).textAttributes().hasRotation() ) {
             ctx->painter()->translate( info.pos );
             ctx->painter()->rotate( info.attrs.textAttributes().rotation() );
             ctx->painter()->translate( -info.pos );
         }
+
         paintDataValueText( diag, ctx->painter(), info.index, info.pos, info.value,
                             justCalculateRect,
                             cumulatedBoundingRect );
 
         const QString comment = info.index.data( KDChart::CommentRole ).toString();
-        if( comment.isEmpty() )
+        if ( comment.isEmpty() ) {
             continue;
-        TextBubbleLayoutItem item( comment,
-                                   ta,
-                                   ctx->coordinatePlane()->parent(),
+        }
+        TextBubbleLayoutItem item( comment, ta, ctx->coordinatePlane()->parent(),
                                    KDChartEnums::MeasureOrientationMinimum,
-                                   Qt::AlignHCenter|Qt::AlignVCenter );
+                                   Qt::AlignHCenter | Qt::AlignVCenter );
         const QRect rect( info.pos.toPoint(), item.sizeHint() );
-        if( justCalculateRect &&  cumulatedBoundingRect ){
+
+        if (cumulatedBoundingRect) {
             (*cumulatedBoundingRect) |= rect;
-        }else{
+        }
+        if ( !justCalculateRect ) {
             item.setGeometry( rect );
             item.paint( ctx->painter() );
-
-            // Return the cumulatedBoundingRect if asked for
-            if(cumulatedBoundingRect)
-                (*cumulatedBoundingRect) |= rect;
         }
     }
 }
@@ -320,170 +320,166 @@ void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
     if ( !attrs.isVisible() ) return;
 
     const TextAttributes ta( attrs.textAttributes() );
-    if ( ta.isVisible() ) {
-        /* for debugging:
-        PainterSaver painterSaver( painter );
-        painter->setPen( Qt::black );
-        painter->drawLine( pos - QPointF( 2,2), pos + QPointF( 2,2) );
-        painter->drawLine( pos - QPointF(-2,2), pos + QPointF(-2,2) );
-        */
+    if ( !ta.isVisible() ) {
+        return;
+    }
+    /* for debugging:
+    PainterSaver painterSaver( painter );
+    painter->setPen( Qt::black );
+    painter->drawLine( pos - QPointF( 2,2), pos + QPointF( 2,2) );
+    painter->drawLine( pos - QPointF(-2,2), pos + QPointF(-2,2) );
+    */
 
-        QTextDocument doc;
-        if( Qt::mightBeRichText( text ) )
-            doc.setHtml( text );
-        else
-            doc.setPlainText( text );
+    QTextDocument doc;
+    if ( Qt::mightBeRichText( text ) ) {
+        doc.setHtml( text );
+    } else {
+        doc.setPlainText( text );
+    }
 
-        const RelativePosition relPos( attrs.position( valueIsPositive ) );
-        const QFont calculatedFont( ta.calculatedFont( plane, KDChartEnums::MeasureOrientationMinimum ) );
+    const RelativePosition relPos( attrs.position( valueIsPositive ) );
+    const QFont calculatedFont( ta.calculatedFont( plane, KDChartEnums::MeasureOrientationMinimum ) );
 
-        // FIXME draw the non-text bits, background, etc
+    // what's up with lastX anyway?
+    if ( !attrs.showRepetitiveDataLabels() && prevPaintedDataValueText == text && pos.x() > lastX ) {
+        return;
+    }
+    prevPaintedDataValueText = text;
 
-        if ( attrs.showRepetitiveDataLabels() || pos.x() <= lastX || lastRoundedValue != text ) {
-            //qDebug() << text;
+    lastX = pos.x(); // OMG WTF BBQ, this assumes left to right painting on a cartesian axis, right???
+    const PainterSaver painterSaver( painter );
+    painter->setPen( PrintingParameters::scalePen( ta.pen() ) );
 
-            //Check if there is only one and only one slice.
-            //If not then update lastRoundedValue for further checking.
-            if(!(diag->model()->rowCount() == 1))
-                lastRoundedValue = text;
+    doc.setDefaultFont( calculatedFont );
+    QAbstractTextDocumentLayout::PaintContext context;
+    context.palette = diag->palette();
+    context.palette.setColor(QPalette::Text, ta.pen().color() );
 
-            lastX = pos.x();
-            const PainterSaver painterSaver( painter );
-            painter->setPen( PrintingParameters::scalePen( ta.pen() ) );
+    // set text background
+    BackgroundAttributes back(attrs.backgroundAttributes());
+    if ( back.isVisible() ) {
+        QTextBlockFormat fmt;
+        fmt.setBackground( back.brush() );
+        QTextCursor cursor( &doc );
+        cursor.setPosition( 0 );
+        cursor.movePosition( QTextCursor::End, QTextCursor::KeepAnchor, 1 );
+        cursor.mergeBlockFormat( fmt );
+    }
 
-            doc.setDefaultFont( calculatedFont );
-            QAbstractTextDocumentLayout::PaintContext context;
-            context.palette = diag->palette();
-            context.palette.setColor(QPalette::Text, ta.pen().color() );
+    QAbstractTextDocumentLayout* const layout = doc.documentLayout();
+    layout->setPaintDevice( painter->device() );
+    const QRectF plainRect = layout->frameBoundingRect( doc.rootFrame() );
+    const QSizeF plainSize = layout->frameBoundingRect( doc.rootFrame() ).size();
+    painter->translate( pos );
 
-            BackgroundAttributes back(attrs.backgroundAttributes());
-            if(back.isVisible())
-            {
-                QTextBlockFormat fmt;
-                fmt.setBackground(back.brush());
-                QTextCursor cursor(&doc);
-                cursor.setPosition(0);
-                cursor.movePosition(QTextCursor::End, QTextCursor::KeepAnchor, 1);
-                cursor.mergeBlockFormat(fmt);
-            }
+    /**
+     * A few hints on how the positioning of the text frame is done:
+     *
+     * Let's assume we have a bar chart, a text for a positive value
+     * to be drawn, and "North" as attrs.positivePosition().
+     *
+     * The reference point (pos) is then set to the top center point
+     * of a bar. The offset now depends on the alignment:
+     *
+     *    Top: text is centered horizontally to the bar, bottom of
+     *         text frame starts at top of bar
+     *
+     *    Bottom: text is centered horizontally to the bar, top of
+     *            text frame starts at top of bar
+     *
+     *    Center: text is centered horizontally to the bar, center
+     *            line of text frame is same as top of bar
+     *
+     *    TopLeft: right edge of text frame is horizontal center of
+     *             bar, bottom of text frame is top of bar.
+     *
+     *    ...
+     *
+     * Positive and negative value labels are treated equally, "North"
+     * also refers to the top of a negative bar, and *not* to the bottom.
+     *
+     *
+     * "NorthEast" likewise refers to the top right edge of the bar,
+     * "NorthWest" to the top left edge of the bar, and so on.
+     *
+     * In other words, attrs.positivePosition() always refers to a
+     * position of the *bar*, and relPos.alignment() always refers
+     * to an alignment of the text frame relative to this position.
+     */
 
-            QAbstractTextDocumentLayout* const layout = doc.documentLayout();
-            layout->setPaintDevice( painter->device() );
-            const QRectF plainRect = layout->frameBoundingRect( doc.rootFrame() );
-            const QSizeF plainSize = layout->frameBoundingRect( doc.rootFrame() ).size();
-            painter->translate( pos );
+    int rotation = ta.rotation();
+    if ( !valueIsPositive && attrs.mirrorNegativeValueTextRotation() ) {
+        rotation *= -1;
+    }
+    qreal dx = - 0.5 * plainSize.width();
+    qreal dy = - 0.5 * plainSize.height();
 
-            /**
-             * A few hints on how the positioning of the text frame is done:
-             *
-             * Let's assume we have a bar chart, a text for a positive value
-             * to be drawn, and "North" as attrs.positivePosition().
-             *
-             * The reference point (pos) is then set to the top center point
-             * of a bar. The offset now depends on the alignment:
-             *
-             *    Top: text is centered horizontally to the bar, bottom of
-             *         text frame starts at top of bar
-             *
-             *    Bottom: text is centered horizontally to the bar, top of
-             *            text frame starts at top of bar
-             *
-             *    Center: text is centered horizontally to the bar, center
-             *            line of text frame is same as top of bar
-             *
-             *    TopLeft: right edge of text frame is horizontal center of
-             *             bar, bottom of text frame is top of bar.
-             *
-             *    ...
-             *
-             * Positive and negative value labels are treated equally, "North"
-             * also refers to the top of a negative bar, and *not* to the bottom.
-             *
-             *
-             * "NorthEast" likewise refers to the top right edge of the bar,
-             * "NorthWest" to the top left edge of the bar, and so on.
-             *
-             * In other words, attrs.positivePosition() always refers to a
-             * position of the *bar*, and relPos.alignment() always refers
-             * to an alignment of the text frame relative to this position.
-             */
+    if ( relPos.alignment() & Qt::AlignLeft ) {
+        dx -= 0.5 * plainSize.width();
+    } else if ( relPos.alignment() & Qt::AlignRight ) {
+        dx += 0.5 * plainSize.width();
+    }
 
-            int rotation = ta.rotation();
-            if ( !valueIsPositive && attrs.mirrorNegativeValueTextRotation() )
-                rotation *= -1;
-            qreal dx =  - 0.5 * plainSize.width();
-            qreal dy =  - 0.5 * plainSize.height();
+    if ( relPos.alignment() & Qt::AlignTop ) {
+        dy -= 0.5 * plainSize.height();
+    } else if( relPos.alignment() & Qt::AlignBottom ) {
+        dy += 0.5 * plainSize.height();
+    }
 
-            if(relPos.alignment() & Qt::AlignLeft)
-                dx += - 0.5 * plainSize.width();
-            else if(relPos.alignment() & Qt::AlignRight)
-                dx += 0.5 * plainSize.width();
-
-            if(relPos.alignment() & Qt::AlignTop)
-                dy += - 0.5 * plainSize.height();
-            else if(relPos.alignment() & Qt::AlignBottom)
-                dy += 0.5 * plainSize.height();
-
-            bool drawIt = true;
-            // note: This flag can be set differently for every label text!
-            // In theory a user could e.g. have some small red text on one of the
-            // values that she wants to have written in any case - so we just
-            // do not test if such texts would cover some of the others.
-            if( ! attrs.showOverlappingDataLabels() ){
-                const QRectF br( layout->blockBoundingRect( doc.begin() ) );
-                qreal radRot = DEGTORAD( - ((ta.rotation() < 0) ? ta.rotation()+360 : ta.rotation()) );
-                //qDebug() << radRot;
-                qreal cosRot = cos( radRot );
-                qreal sinRot = sin( radRot );
-                QPolygon pr( br.toRect(), true );
-                // YES, people, the following stuff NEEDS to be done that way!
-                // Otherwise we will not get the texts' individual rotation
-                // and/or the shifting of the texts correctly.
-                // Just believe me - I did tests ..   :-)    (khz, 2008-02-19)
-                for( int i=0; i<pr.count(); ++i ){
-                    const QPoint p( pr.point( i ) );
-                    const qreal x = p.x()+dx;
-                    const qreal y = p.y()+dy;
-                    pr.setPoint(i,
-                                static_cast<int>(pos.x() + x*cosRot + y*sinRot),
-                                static_cast<int>(pos.y() - x*sinRot + y*cosRot));
-                }
-                // Using QPainterPath allows us to use intersects() (which has many early-exits)
-                // instead of QPolygon::intersected (which calculates a slow and precise intersection polygon)
-                QPainterPath path;
-                path.addPolygon( pr );
-                // qDebug() << "Comparing new poly" << br << "(rotated" << radRot << ") with"
-                //          << alreadyDrawnDataValueTexts.count() << "already drawn data value texts";
-                KDAB_FOREACH( const QPainterPath& oldPoly, alreadyDrawnDataValueTexts ) {
-                    if ( oldPoly.intersects( path ) ) {
-                        // qDebug() << "not painting this label due to overlap";
-                        drawIt = false;
-                        break;
-                    }
-                }
-                if( drawIt )
-                    alreadyDrawnDataValueTexts << path;
-            }
-            if( drawIt ){
-                QRectF rect = layout->frameBoundingRect(doc.rootFrame());
-                rect.moveTo(pos.x()+dx, pos.y()+dy);
-
-                if( justCalculateRect && cumulatedBoundingRect ){
-                    (*cumulatedBoundingRect) |= rect;
-                }else{
-                    painter->translate( QPointF( dx, dy ) );
-                    painter->translate( plainRect.center() );
-                    painter->rotate( rotation );
-                    painter->translate( -plainRect.center() );
-                    layout->draw( painter, context );
-
-                    // Return the cumulatedBoundingRect if asked for
-                    if(cumulatedBoundingRect)
-                        (*cumulatedBoundingRect) |= rect;
-                }
+    bool drawIt = true;
+    // note: This flag can be set differently for every label text!
+    // In theory a user could e.g. have some small red text on one of the
+    // values that she wants to have written in any case - so we just
+    // do not test if such texts would cover some of the others.
+    if ( ! attrs.showOverlappingDataLabels() ) {
+        const QRectF br( layout->blockBoundingRect( doc.begin() ) );
+        qreal radRot = DEGTORAD( - ( ( ta.rotation() < 0 ) ? ta.rotation() + 360 : ta.rotation() ) );
+        // qDebug() << Q_FUNC_INFO << radRot;
+        qreal cosRot = cos( radRot );
+        qreal sinRot = sin( radRot );
+        QPolygon pr( br.toRect(), true );
+        // YES, people, the following stuff NEEDS to be done that way!
+        // Otherwise we will not get the texts' individual rotation
+        // and/or the shifting of the texts correctly.
+        // Just believe me - I did tests ..   :-)    (khz, 2008-02-19)
+        for ( int i = 0; i < pr.count(); i++ ) {
+            const QPoint p( pr.point( i ) );
+            const qreal x = p.x() + dx;
+            const qreal y = p.y() + dy;
+            pr.setPoint( i, int( pos.x() + x * cosRot + y * sinRot ),
+                            int( pos.y() - x * sinRot + y * cosRot ) );
+        }
+        // Using QPainterPath allows us to use intersects() (which has many early-exits)
+        // instead of QPolygon::intersected (which calculates a slow and precise intersection polygon)
+        QPainterPath path;
+        path.addPolygon( pr );
+        // qDebug() << "Comparing new poly" << br << "(rotated" << radRot << ") with"
+        //          << alreadyDrawnDataValueTexts.count() << "already drawn data value texts";
+        KDAB_FOREACH( const QPainterPath& oldPoly, alreadyDrawnDataValueTexts ) {
+            if ( oldPoly.intersects( path ) ) {
+                // qDebug() << "not painting this label due to overlap";
+                drawIt = false;
+                break;
             }
         }
+        if( drawIt ) {
+            alreadyDrawnDataValueTexts << path;
+        }
+    }
+    if ( drawIt ) {
+        QRectF rect = layout->frameBoundingRect(doc.rootFrame());
+        rect.moveTo(pos.x() + dx, pos.y() + dy);
 
+        if ( cumulatedBoundingRect ) {
+            (*cumulatedBoundingRect) |= rect;
+        }
+        if ( !justCalculateRect ) {
+            painter->translate( QPointF( dx, dy ) );
+            painter->translate( plainRect.center() );
+            painter->rotate( rotation );
+            painter->translate( - plainRect.center() );
+            layout->draw( painter, context );
+        }
     }
 }
 
@@ -497,9 +493,9 @@ QModelIndex AbstractDiagram::Private::indexAt( const QPoint& point ) const
         return QModelIndex();
 }
 
-QModelIndexList AbstractDiagram::Private::indexesAt(  const QPoint& point ) const
+QModelIndexList AbstractDiagram::Private::indexesAt( const QPoint& point ) const
 {
-    return reverseMapper.indexesAt(  point ); // which could be empty
+    return reverseMapper.indexesAt( point ); // which could be empty
 }
 
 QModelIndexList AbstractDiagram::Private::indexesIn( const QRect& rect ) const

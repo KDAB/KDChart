@@ -478,7 +478,7 @@ void AbstractDiagram::paintDataValueTexts( QPainter* painter )
     if ( !checkInvariants() ) return;
     const int rowCount = model()->rowCount(rootIndex());
     const int columnCount = model()->columnCount(rootIndex());
-    d->clearListOfAlreadyDrawnDataValueTexts();
+    d->forgetAlreadyPaintedDataValues();
     for ( int i=datasetDimension()-1; i<columnCount; i += datasetDimension() ) {
        for ( int j=0; j< rowCount; ++j ) {
            const QModelIndex index = model()->index( j, i, rootIndex() ); // checked
