@@ -422,7 +422,7 @@ void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
 
     if ( relPos.alignment() & Qt::AlignTop ) {
         dy -= 0.5 * plainSize.height();
-    } else if( relPos.alignment() & Qt::AlignBottom ) {
+    } else if ( relPos.alignment() & Qt::AlignBottom ) {
         dy += 0.5 * plainSize.height();
     }
 
@@ -467,8 +467,8 @@ void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
         }
     }
     if ( drawIt ) {
-        QRectF rect = layout->frameBoundingRect(doc.rootFrame());
-        rect.moveTo(pos.x() + dx, pos.y() + dy);
+        QRectF rect = layout->frameBoundingRect( doc.rootFrame() );
+        rect.moveTo( pos.x() + dx, pos.y() + dy );
 
         if ( cumulatedBoundingRect ) {
             (*cumulatedBoundingRect) |= rect;
