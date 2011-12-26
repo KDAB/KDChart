@@ -431,7 +431,7 @@ void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
     // In theory a user could e.g. have some small red text on one of the
     // values that she wants to have written in any case - so we just
     // do not test if such texts would cover some of the others.
-    if ( ! attrs.showOverlappingDataLabels() ) {
+    if ( !attrs.showOverlappingDataLabels() ) {
         const QRectF br( layout->blockBoundingRect( doc.begin() ) );
         qreal radRot = DEGTORAD( - ( ( ta.rotation() < 0 ) ? ta.rotation() + 360 : ta.rotation() ) );
         // qDebug() << Q_FUNC_INFO << radRot;

@@ -48,8 +48,9 @@ public:
 protected:
     // Implement AbstractDiagram
     /** \reimpl */
-    virtual void paint ( PaintContext* paintContext );
-    void paintInternal(PaintContext* paintContext, QRectF& textBoundingRect);
+    virtual void paint( PaintContext* paintContext );
+    void paintInternal( PaintContext* paintContext, QRectF& textBoundingRect,
+                        bool justCalculateSpace );
 
 public:
     /** \reimpl */

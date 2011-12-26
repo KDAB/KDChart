@@ -122,18 +122,18 @@ void PieDiagram::paint(PaintContext* ctx)
     QPainter* actualPainter = ctx->painter();
     QRectF textBoundingRect;
 
-    // Use a null paint device and perform the first painting.
+    // Use a null paint device and perform "phantom" painting, which determines how much space is required.
     KDChart::NullPaintDevice nullPd(ctx->rectangle().size().toSize());
     QPainter nullPainter(&nullPd);
     ctx->setPainter(&nullPainter);
-    paintInternal(ctx, textBoundingRect);
+    paintInternal( ctx, textBoundingRect, true );
 
     // Now perform the real painting
     ctx->setPainter(actualPainter);
-    paintInternal(ctx, textBoundingRect);
+    paintInternal( ctx, textBoundingRect, false );
 }
 
-void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
+void PieDiagram::paintInternal( PaintContext* ctx, QRectF& textBoundingRect, bool justCalculateSpace )
 {
     // note: Not having any data model assigned is no bug
     //       but we can not draw a diagram then either.
@@ -331,7 +331,7 @@ void PieDiagram::paintInternal(PaintContext* ctx, QRectF& textBoundingRect)
         drawSlice( ctx->painter(), slicePosition, &list, frontmostSlice );
     }
 
-    d->paintDataValueTextsAndMarkers(  this,  ctx,  list,  false, false, &textBoundingRect );
+    d->paintDataValueTextsAndMarkers(  this,  ctx,  list,  false, justCalculateSpace, &textBoundingRect );
 }
 
 #if defined ( Q_WS_WIN)
