@@ -45,8 +45,6 @@ inline T & __kdab__dereference_for_methodcall( T * o ) {
 #define KDAB_SET_OBJECT_NAME( x ) __kdab__dereference_for_methodcall( x ).setObjectName( QLatin1String( #x ) )
 #endif
 
-/* vc.net2002 is 1300, vc.net2003 is 1310 */
-#if defined(_MSC_VER) && _MSC_VER <= 1300
 #define KDCHART_DECLARE_PRIVATE_DERIVED( X )      \
 public:                                           \
     class Private;                                \
@@ -56,18 +54,7 @@ protected:                                        \
     explicit inline X( Private * );               \
 private:                                          \
     void init();
-#else
-#define KDCHART_DECLARE_PRIVATE_DERIVED( X )      \
-protected:                                        \
-    class Private;                                \
-    inline Private * d_func();                    \
-    inline const Private * d_func() const;        \
-    explicit inline X( Private * );               \
-private:                                          \
-    void init();
-#endif
 
-#if defined(_MSC_VER) && _MSC_VER <= 1300
 #define KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( X, ParentType )      \
 public:                                           \
     class Private;                                \
@@ -77,16 +64,6 @@ protected:                                        \
     explicit inline X( Private *, ParentType );   \
 private:                                          \
     void init();
-#else
-#define KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( X, ParentType )      \
-protected:                                        \
-    class Private;                                \
-    inline Private * d_func();                    \
-    inline const Private * d_func() const;        \
-    explicit inline X( Private *, ParentType );   \
-private:                                          \
-    void init();
-#endif
 
 #define KDCHART_DECLARE_PRIVATE_DERIVED_QWIDGET( X )         \
     KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( X, QWidget* )
@@ -102,7 +79,6 @@ private:                                                     \
     void init();                                             \
     Private * _d;
 
-#if defined(_MSC_VER) && _MSC_VER <= 1300
 #define KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC( X ) \
 public:                                           \
     class Private;                                    \
@@ -113,19 +89,7 @@ protected:                                        \
 private:                                              \
     void init();                                      \
     Private * _d;
-#else
-#define KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC( X ) \
-protected:                                        \
-    class Private;                                    \
-    Private * d_func() { return _d; }                 \
-    const Private * d_func() const { return _d; }     \
-    explicit inline X( Private * );                   \
-private:                                              \
-    void init();                                      \
-    Private * _d;
-#endif
 
-#if defined(_MSC_VER) && _MSC_VER <= 1300
 #define KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC_QWIDGET( X ) \
 public:                                           \
     class Private;                                    \
@@ -136,18 +100,6 @@ protected:                                        \
 private:                                              \
     void init();                                      \
     Private * _d;
-#else
-#define KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC_QWIDGET( X ) \
-protected:                                        \
-    class Private;                                    \
-    Private * d_func() { return _d; }                 \
-    const Private * d_func() const { return _d; }     \
-    explicit inline X( Private *, QWidget* );                  \
-private:                                              \
-    void init();                                      \
-    Private * _d;
-#endif
-
 
 #define KDCHART_DERIVED_PRIVATE_FOOTER( CLASS, PARENT )     \
 inline CLASS::CLASS( Private * p )                          \
@@ -158,7 +110,6 @@ inline const CLASS::Private * CLASS::d_func() const         \
 { return static_cast<const Private*>( PARENT::d_func() ); }
 
 
-#if defined(_MSC_VER) && _MSC_VER <= 1300
 #define KDCHART_DECLARE_DERIVED_DIAGRAM( X, PLANE )     \
 public:                                                 \
     class Private;                                      \
@@ -169,17 +120,6 @@ protected:                                              \
     explicit inline X( Private *, QWidget *, PLANE * ); \
 private:                                                \
     void init();
-#else
-#define KDCHART_DECLARE_DERIVED_DIAGRAM( X, PLANE )     \
-protected:                                              \
-    class Private;                                      \
-    inline Private * d_func();                          \
-    inline const Private * d_func() const;              \
-    explicit inline X( Private * );                     \
-    explicit inline X( Private *, QWidget *, PLANE * ); \
-private:                                                \
-    void init();
-#endif
 
 #define KDCHART_IMPL_DERIVED_DIAGRAM( CLASS, PARENT, PLANE ) \
 inline CLASS::CLASS( Private * p )                           \
