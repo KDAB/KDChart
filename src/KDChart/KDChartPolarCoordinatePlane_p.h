@@ -109,6 +109,8 @@ public:
         grid = new PolarGrid();
     }
 
+    static QRectF contentsRect( const PolarCoordinatePlane* plane );
+
     // the coordinate plane will calculate coordinate transformations for all
     // diagrams and store them here:
     CoordinateTransformationList coordinateTransformations;
@@ -131,17 +133,7 @@ public:
     qreal newZoomX, newZoomY;
 };
 
-static QRectF boundingRect( const PolarCoordinatePlane *plane )
-{
-    QRectF contentsRect;
-    QPointF referencePointAtTop = plane->translate( QPointF( 1, 0 ) );
-    QPointF temp = plane->translate( QPointF( 0, 0 ) ) - referencePointAtTop;
-    const qreal offset = temp.y();
-    referencePointAtTop.setX( referencePointAtTop.x() - offset );
-    contentsRect.setTopLeft( referencePointAtTop );
-    contentsRect.setBottomRight( referencePointAtTop + QPointF( 2.0 * offset, 2.0 * offset) );
-    return contentsRect;
-}
+
 
 KDCHART_IMPL_DERIVED_PLANE(PolarCoordinatePlane, AbstractCoordinatePlane)
 

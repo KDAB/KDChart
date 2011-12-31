@@ -157,7 +157,7 @@ void PolarCoordinatePlane::layoutDiagrams()
     const QRect rect( areaGeometry() );
     d->contentRect = QRectF ( 1, 1, rect.width() - 3, rect.height() - 3 );
 
-    const ZoomParameters zoom = d->coordinateTransformations.isEmpty() ? ZoomParameters() 
+    const ZoomParameters zoom = d->coordinateTransformations.isEmpty() ? ZoomParameters()
                                                                        : d->coordinateTransformations.front().zoom;
     // FIXME distribute space according to options:
     const qreal oldStartPosition = startPosition();
@@ -228,7 +228,7 @@ void PolarCoordinatePlane::setStartPosition( qreal degrees )
 {
     Q_ASSERT_X ( diagram(), "PolarCoordinatePlane::setStartPosition",
                  "setStartPosition() needs a diagram to be associated to the plane." );
-    for( CoordinateTransformationList::iterator it = d->coordinateTransformations.begin(); 
+    for( CoordinateTransformationList::iterator it = d->coordinateTransformations.begin();
                                                 it != d->coordinateTransformations.end();
                                                 ++it )
     {
@@ -266,7 +266,7 @@ void PolarCoordinatePlane::setZoomFactors( qreal factorX, qreal factorY )
 
 void PolarCoordinatePlane::setZoomFactorX( qreal factor )
 {
-    for( CoordinateTransformationList::iterator it = d->coordinateTransformations.begin(); 
+    for( CoordinateTransformationList::iterator it = d->coordinateTransformations.begin();
                                                 it != d->coordinateTransformations.end();
                                                 ++it )
     {
@@ -277,7 +277,7 @@ void PolarCoordinatePlane::setZoomFactorX( qreal factor )
 
 void PolarCoordinatePlane::setZoomFactorY( qreal factor )
 {
-    for( CoordinateTransformationList::iterator it = d->coordinateTransformations.begin(); 
+    for( CoordinateTransformationList::iterator it = d->coordinateTransformations.begin();
                                                 it != d->coordinateTransformations.end();
                                                 ++it )
     {
@@ -295,7 +295,7 @@ QPointF PolarCoordinatePlane::zoomCenter() const
 
 void PolarCoordinatePlane::setZoomCenter( const QPointF& center )
 {
-    for( CoordinateTransformationList::iterator it = d->coordinateTransformations.begin(); 
+    for( CoordinateTransformationList::iterator it = d->coordinateTransformations.begin();
                                                 it != d->coordinateTransformations.end();
                                                 ++it )
     {
@@ -345,6 +345,18 @@ const GridAttributes KDChart::PolarCoordinatePlane::gridAttributes(
     }else{
         return globalGridAttributes();
     }
+}
+
+QRectF KDChart::PolarCoordinatePlane::Private::contentsRect( const KDChart::PolarCoordinatePlane* plane )
+{
+    QRectF contentsRect;
+    QPointF referencePointAtTop = plane->translate( QPointF( 1, 0 ) );
+    QPointF temp = plane->translate( QPointF( 0, 0 ) ) - referencePointAtTop;
+    const qreal offset = temp.y();
+    referencePointAtTop.setX( referencePointAtTop.x() - offset );
+    contentsRect.setTopLeft( referencePointAtTop );
+    contentsRect.setBottomRight( referencePointAtTop + QPointF( 2.0 * offset, 2.0 * offset) );
+    return contentsRect;
 }
 
 void KDChart::PolarCoordinatePlane::setHasOwnGridAttributes(

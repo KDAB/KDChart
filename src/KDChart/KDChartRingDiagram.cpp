@@ -172,7 +172,7 @@ void RingDiagram::paint( PaintContext* ctx )
     const int rCount = rowCount();
     const int colCount = columnCount();
 
-    QRectF contentsRect( boundingRect( polarCoordinatePlane() ) );
+    QRectF contentsRect = PolarCoordinatePlane::Private::contentsRect( polarCoordinatePlane() );
     contentsRect = ctx->rectangle();
     if( contentsRect.isEmpty() )
         return;

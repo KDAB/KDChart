@@ -146,7 +146,7 @@ void PieDiagram::paintInternal( PaintContext* ctx, QRectF& textBoundingRect, boo
 
     const int colCount = columnCount();
 
-    QRectF contentsRect( boundingRect( polarCoordinatePlane() ) );
+    QRectF contentsRect = PolarCoordinatePlane::Private::contentsRect( polarCoordinatePlane() );
     contentsRect = ctx->rectangle();
 
     if( contentsRect.isEmpty() )

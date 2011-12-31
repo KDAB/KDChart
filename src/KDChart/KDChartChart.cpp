@@ -237,7 +237,8 @@ void Chart::Private::layoutLegends()
         legend->needSizeHint(); // we'll lay it out soon
 
         bool bOK = true;
-        int row, column;
+        int row = 0;
+        int column = 0;
         //qDebug() << legend->position().name();
         switch( legend->position().value() ) {
             case KDChartEnums::PositionNorthWest:  row = 0;  column = 0;
