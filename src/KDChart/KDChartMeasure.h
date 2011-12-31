@@ -44,7 +44,7 @@ namespace KDChart {
 
 /**
   * \class Measure KDChartMeasure.h KDChartMeasure
-  * \brief  Measure is used to specify all relative and/or absolute measures in KDChart, e.g. font sizes.
+  * \brief Measure is used to specify relative and absolute sizes in KDChart, e.g. font sizes.
   *
   */
 
@@ -66,8 +66,7 @@ public:
 
     /**
       * The reference area must either be derived from AbstractArea
-      * or be derived from QWidget, so e.g. it could be derived from
-      * AbstractAreaWidget too.
+      * or from QWidget, so it can also be derived from AbstractAreaWidget.
       */
     void setRelativeMode( const QObject * area,
                           KDChartEnums::MeasureOrientation orientation )
@@ -79,7 +78,7 @@ public:
 
     /**
      * \brief This is a convenience method for specifying a value,
-     * with implicitely setting the calculation mode to MeasureCalculationModeAbsolute
+     *  implicitly setting the calculation mode to MeasureCalculationModeAbsolute.
      *
      * Calling setAbsoluteValue( value ) is the same as calling
 \verbatim
@@ -95,13 +94,12 @@ public:
 
     /**
       * The reference area must either be derived from AbstractArea
-      * or be derived from QWidget, so e.g. it could be derived from
-      * AbstractAreaWidget too.
+      * or from QWidget, so it can also be derived from AbstractAreaWidget.
       */
     void setReferenceArea( const QObject * area ){ mArea = area; }
     /**
-      * The returned reference area will either be derived from AbstractArea
-      * or be derived from QWidget.
+      * The returned reference area will be derived from AbstractArea
+      * or QWidget or both.
       */
     const QObject * referenceArea() const { return mArea; }
 
@@ -110,8 +108,7 @@ public:
 
     /**
       * The reference area must either be derived from AbstractArea
-      * or be derived from QWidget, so e.g. it could be derived from
-      * AbstractAreaWidget too.
+      * or from QWidget, so it can also be derived from AbstractAreaWidget.
       */
     qreal calculatedValue( const QObject * autoArea, KDChartEnums::MeasureOrientation autoOrientation ) const;
     qreal calculatedValue( const QSizeF& autoSize, KDChartEnums::MeasureOrientation autoOrientation ) const;
@@ -151,30 +148,28 @@ public:
 public:
     /**
      * Set new factors to be used by all Measure objects from now on.
-     * Previous values will be stored.
+     * Previous values will be saved on a stack internally.
      */
     static void setFactors(qreal factorX, qreal factorY);
 
     /**
-     * Reset factors to the values active before the previous call of
-     * setFactors.
-     * This works on a stack, so recursive calls works fine, like:
-     * setFactors, setFactors, unserFactors, unsetFactors
+     * Restore factors to the values before the previous call to
+     * setFactors. The current values are popped off a stack internally.
      */
     static void resetFactors();
 
     /**
-     * Returns the currently active factors.
+     * Return the currently active factors.
      */
     static const QPair< qreal, qreal > currentFactors();
 
     /**
-     * Sets the paint device usable for calculating fort metrics.
+     * Set the paint device to use for calculating font metrics.
      */
     static void setPaintDevice( QPaintDevice* paintDevice );
 
     /**
-     * Returns the paint device usable for calculating fort metrics.
+     * Return the paint device to use for calculating font metrics.
      */
     static QPaintDevice* paintDevice();
 
