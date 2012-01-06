@@ -467,25 +467,9 @@ void PieDiagram::drawSliceSurface( QPainter* painter,
 
         const QPointF northEast = pointOnEllipse( drawPosition, startAngle );
         const QPointF northWest = pointOnEllipse( drawPosition, startAngle + angleLen );
-        QPointF center    = (south + north) / 2.0;
-        const QPointF east      = (south + northEast) / 2.0;
-        const QPointF west      = (south + northWest) / 2.0;
-
-        if ( !list->isEmpty() ) {
-            CartesianDiagramDataCompressor::DataValueAttributesList allAttrs =
-                d->aggregatedAttrs( this, index, 0 );
-            DataValueAttributes dva = allAttrs.value( index );
-            const QFontMetrics* fm = d->cachedFontMetrics( dva.textAttributes()
-                .calculatedFont( d->plane, KDChartEnums::MeasureOrientationMinimum ), this );
-
-            QRect textRect = fm->boundingRect( d->formatDataValueText( dva, index, list->last().value ) );
-            textRect.translated(center.toPoint());
-            QPoint textRectCenter = textRect.center();
-            qreal newX = center.x() - textRectCenter.x();
-            qreal newY = center.y() - textRectCenter.y();
-            center.setX( newX );
-            center.setY( newY );
-        }
+        QPointF center = ( south + north ) / 2.0;
+        const QPointF east = ( south + northEast ) / 2.0;
+        const QPointF west = ( south + northWest ) / 2.0;
 
         PositionPoints points( center, northWest, north, northEast, east, southEast, south, southWest, west );
         qreal topAngle = startAngle - 90;
