@@ -187,7 +187,6 @@ namespace KDChart {
 
     private:
         QString prevPaintedDataValueText;
-        qreal lastX;
         QFontMetrics   mCachedFontMetrics;
         QFont          mCachedFont;
         QPaintDevice * mCachedPaintDevice;

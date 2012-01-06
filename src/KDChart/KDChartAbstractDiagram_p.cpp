@@ -52,8 +52,7 @@ AbstractDiagram::Private::Private()
   , antiAliasing( true )
   , percent( false )
   , datasetDimension( 1 )
-  , databoundariesDirty(true)
-  , lastX( 0 )
+  , databoundariesDirty( true )
   , mCachedFontMetrics( QFontMetrics( qApp->font() ) )
 {
 }
@@ -340,13 +339,11 @@ void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
     const RelativePosition relPos( attrs.position( valueIsPositive ) );
     const QFont calculatedFont( ta.calculatedFont( plane, KDChartEnums::MeasureOrientationMinimum ) );
 
-    // ### what is the purpose of lastX?
-    if ( !attrs.showRepetitiveDataLabels() && prevPaintedDataValueText == text && pos.x() > lastX ) {
+    if ( !attrs.showRepetitiveDataLabels() && prevPaintedDataValueText == text ) {
         return;
     }
     prevPaintedDataValueText = text;
 
-    lastX = pos.x();
     const PainterSaver painterSaver( painter );
     painter->setPen( PrintingParameters::scalePen( ta.pen() ) );
 
