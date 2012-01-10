@@ -320,14 +320,14 @@ void GraphicsView::Private::slotHeaderContextMenuRequested( const QPoint& pt )
  *
  */
 
-/*! \signal void GraphicsView::activated( const QModelIndex & index ) */
-/*! \signal void GraphicsView::clicked( const QModelIndex & index ); */
-/*! \signal void GraphicsView::qrealClicked( const QModelIndex & index ); */
-/*! \signal void GraphicsView::entered( const QModelIndex & index ); */
-/*! \signal void GraphicsView::pressed( const QModelIndex & index ); */
-/*! \signal void GraphicsView::headerContextMenuRequested( const QPoint& pt )
+/*! \fn void GraphicsView::activated( const QModelIndex & index ) */
+/*! \fn void GraphicsView::clicked( const QModelIndex & index ); */
+/*! \fn void GraphicsView::qrealClicked( const QModelIndex & index ); */
+/*! \fn void GraphicsView::entered( const QModelIndex & index ); */
+/*! \fn void GraphicsView::pressed( const QModelIndex & index ); */
+/*! \fn void GraphicsView::headerContextMenuRequested( const QPoint& pt )
  * This signal is emitted when the header has contextMenuPolicy Qt::CustomContextMenu
- * and the widget wants to show a contextmenu for the header. Unlike in
+ * and the widget wants to show a context menu for the header. Unlike in
  * QWidget::customContextMenuRequested() signal, \a pt is here in global coordinates.
  */
 
