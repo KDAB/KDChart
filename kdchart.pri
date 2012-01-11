@@ -1,4 +1,7 @@
-:  # copy from environment:
+# Not used by KDChart itself. This is for use in other projects.
+# Include this file directly, or copy the file into your project.
+
+# copy from environment:
   isEmpty( KDCHARTDIR ):KDCHARTDIR=$$(KDCHARTDIR)
   !isEmpty( KDCHARTDIR ) {
     unix:isEmpty(QMAKE_EXTENSION_SHLIB) {
