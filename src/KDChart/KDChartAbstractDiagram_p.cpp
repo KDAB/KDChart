@@ -323,6 +323,11 @@ void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
     if ( !ta.isVisible() ) {
         return;
     }
+    if ( !attrs.showRepetitiveDataLabels() && prevPaintedDataValueText == text ) {
+        return;
+    }
+    prevPaintedDataValueText = text;
+
     /* for debugging:
     PainterSaver painterSaver( painter );
     painter->setPen( Qt::black );
@@ -339,11 +344,6 @@ void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
 
     const RelativePosition relPos( attrs.position( valueIsPositive ) );
     const QFont calculatedFont( ta.calculatedFont( plane, KDChartEnums::MeasureOrientationMinimum ) );
-
-    if ( !attrs.showRepetitiveDataLabels() && prevPaintedDataValueText == text ) {
-        return;
-    }
-    prevPaintedDataValueText = text;
 
     const PainterSaver painterSaver( painter );
     painter->setPen( PrintingParameters::scalePen( ta.pen() ) );
