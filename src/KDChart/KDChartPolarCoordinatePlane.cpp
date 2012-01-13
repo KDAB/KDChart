@@ -74,61 +74,62 @@ void PolarCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
 void PolarCoordinatePlane::paint ( QPainter* painter )
 {
     AbstractDiagramList diags = diagrams();
-    if ( d->coordinateTransformations.size() == diags.size() )
-    {
-        PaintContext ctx;
-        ctx.setPainter ( painter );
-        ctx.setCoordinatePlane ( this );
-        ctx.setRectangle ( geometry() /*d->contentRect*/ );
+    if ( d->coordinateTransformations.size() != diags.size() ) {
+        // diagrams have not been set up yet
+        return;
+    }
+     // need at least one so d->currentTransformation can be a valid pointer
+    Q_ASSERT( !d->coordinateTransformations.isEmpty() );
 
-        // 1. ask the diagrams if they need additional space for data labels / data comments
-        const qreal oldZoomX = zoomFactorX();
-        const qreal oldZoomY = zoomFactorY();
-        d->newZoomX = oldZoomX;
-        d->newZoomY = oldZoomY;
-        for ( int i = 0; i < diags.size(); i++ )
-        {
-            d->currentTransformation = & ( d->coordinateTransformations[i] );
-            qreal zoomX;
-            qreal zoomY;
-            PolarDiagram* polarDia = dynamic_cast<PolarDiagram*> ( diags[i] );
-            if( polarDia ){
-                polarDia->paint ( &ctx, true, zoomX, zoomY );
-                d->newZoomX = qMin(d->newZoomX, zoomX);
-                d->newZoomY = qMin(d->newZoomY, zoomY);
-            }
+    PaintContext ctx;
+    ctx.setPainter ( painter );
+    ctx.setCoordinatePlane ( this );
+    ctx.setRectangle ( geometry() /*d->contentRect*/ );
+
+    // 1. ask (only!) PolarDiagrams if they need additional space for data labels / data comments
+
+    const qreal oldZoomX = zoomFactorX();
+    const qreal oldZoomY = zoomFactorY();
+    d->newZoomX = oldZoomX;
+    d->newZoomY = oldZoomY;
+    for ( int i = 0; i < diags.size(); i++ ) {
+        d->currentTransformation = & ( d->coordinateTransformations[i] );
+        qreal zoomX;
+        qreal zoomY;
+        PolarDiagram* polarDia = dynamic_cast<PolarDiagram*> ( diags[i] );
+        if ( polarDia ) {
+            polarDia->paint( &ctx, true, zoomX, zoomY );
+            d->newZoomX = qMin( d->newZoomX, zoomX );
+            d->newZoomY = qMin( d->newZoomY, zoomY );
         }
-        d->currentTransformation = 0;
+    }
 
-        // if re-scaling is needed start the timer and bail out
-        if( d->newZoomX != oldZoomX || d->newZoomY != oldZoomY ){
-            //qDebug()<<"new zoom:"<<d->newZoomY<<"  old zoom"<<oldZoomY;
-            QTimer::singleShot(10, this, SLOT(adjustZoomAndRepaint()));
-            return;
+    if ( d->newZoomX != oldZoomX || d->newZoomY != oldZoomY ) {
+        //qDebug() << "new zoom:" << d->newZoomY << " old zoom:" << oldZoomY;
+        d->currentTransformation = 0; // not painting anymore until we get called again
+        QMetaObject::invokeMethod( this, "adjustZoomAndRepaint", Qt::QueuedConnection );
+        return;
+    }
+
+    // 2. there was room enough for the labels, so start drawing
+
+    // paint the coordinate system rulers:
+    d->currentTransformation = &d->coordinateTransformations.first();
+    d->grid->drawGrid( &ctx );
+
+    // paint the diagrams which will re-use their DataValueTextInfoList(s) filled in step 1:
+    for ( int i = 0; i < diags.size(); i++ ) {
+        d->currentTransformation = & ( d->coordinateTransformations[i] );
+        PainterSaver painterSaver( painter );
+        PolarDiagram* polarDia = dynamic_cast<PolarDiagram*>( diags[i] );
+        if ( polarDia ) {
+            qreal dummy1, dummy2;
+            polarDia->paint( &ctx, false, dummy1, dummy2 );
+        } else {
+            diags[i]->paint( &ctx );
         }
-
-        // 2. there was room enough for the labels, so we start drawing
-
-        // paint the coordinate system rulers:
-        d->currentTransformation = & ( d->coordinateTransformations.first() );
-
-        d->grid->drawGrid( &ctx );
-
-        // paint the diagrams which will re-use their DataValueTextInfoList(s) filled in step 1:
-        for ( int i = 0; i < diags.size(); i++ )
-        {
-            d->currentTransformation = & ( d->coordinateTransformations[i] );
-            PainterSaver painterSaver( painter );
-            PolarDiagram* polarDia = dynamic_cast<PolarDiagram*> ( diags[i] );
-            if( polarDia ){
-                qreal dummy1, dummy2;
-                polarDia->paint ( &ctx, false, dummy1, dummy2 );
-            }else{
-                diags[i]->paint ( &ctx );
-            }
-        }
-        d->currentTransformation = 0;
-    } // else: diagrams have not been set up yet
+    }
+    d->currentTransformation = 0;
 }
 
 
