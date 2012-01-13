@@ -79,7 +79,6 @@ DataValueAttributes::Private::Private() :
     me.setValue( 8.0 );
     me.setCalculationMode( KDChartEnums::MeasureCalculationModeAbsolute );
     textAttributes.setMinimalFontSize( me );
-    textAttributes.setRotation( -45 );
 
     // we set the Position to unknown: so the diagrams can take their own decisions
     positiveRelPos.setReferencePosition( Position::Unknown ); // a bar diagram will use: Position::NorthWest
