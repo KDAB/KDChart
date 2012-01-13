@@ -27,8 +27,7 @@
 
 namespace KDChart {
 
-    class DataValueTextInfo;
-    typedef class QVector<DataValueTextInfo> DataValueTextInfoList;
+    class LabelPaintCache;
 
 /**
   * @brief PieDiagram defines a common pie diagram
@@ -75,11 +74,11 @@ protected:
 private:
     void drawSlice( QPainter* painter,
         const QRectF &drawPosition,
-        DataValueTextInfoList* list,
+        LabelPaintCache* lpc,
         uint slice );
     void drawSliceSurface( QPainter* painter,
         const QRectF &drawPosition,
-        DataValueTextInfoList* list,
+        LabelPaintCache* lpc,
         uint slice );
     void draw3DEffect( QPainter* painter,
         const QRectF& drawPosition,

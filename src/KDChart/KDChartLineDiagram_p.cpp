@@ -107,7 +107,7 @@ void LineDiagram::LineDiagramType::paintThreeDLines(
 // chart types in one
 void LineDiagram::LineDiagramType::paintElements(
     PaintContext* ctx,
-    DataValueTextInfoList& list,
+    const LabelPaintCache& lpc,
     LineAttributesInfoList& lineList,
     LineAttributes::MissingValuesPolicy policy )
 {
@@ -161,7 +161,7 @@ void LineDiagram::LineDiagramType::paintElements(
     }
 
     // paint all data value texts and the point markers
-    paintDataValueTextsAndMarkers( diagram(), ctx, list, true );
+    paintDataValueTextsAndMarkers( diagram(), ctx, lpc, true );
 }
 
 AttributesModel* LineDiagram::LineDiagramType::attributesModel() const
@@ -241,24 +241,20 @@ void LineDiagram::LineDiagramType::paintAreas(
     ctx->painter()->drawPath( path );
 }
 
-qreal LineDiagram::LineDiagramType::valueForCell( int row, int column )
+qreal LineDiagram::LineDiagramType::valueForCell( int row, int column ) const
 {
     return diagram()->valueForCell( row, column );
 }
 
-void LineDiagram::LineDiagramType::appendDataValueTextInfoToList(
-            AbstractDiagram * diagram,
-            DataValueTextInfoList & list,
-            const QModelIndex & index,
-            const CartesianDiagramDataCompressor::CachePosition * position,
-            const PositionPoints& points,
-            const Position& autoPositionPositive,
-            const Position& autoPositionNegative,
-            const qreal value )
+void LineDiagram::LineDiagramType::addLabel( LabelPaintCache* lpc, const AbstractDiagram* diagram,
+                                             const QModelIndex & index,
+                                             const CartesianDiagramDataCompressor::CachePosition* position,
+                                             const PositionPoints& points,
+                                             const Position& autoPositionPositive,
+                                             const Position& autoPositionNegative, qreal value )
 {
-    Q_UNUSED( autoPositionNegative );
-    m_private->appendDataValueTextInfoToList( diagram, list, index, position, points,
-                                              autoPositionPositive, autoPositionPositive, value );
+    m_private->addLabel( lpc, diagram, index, position, points,
+                         autoPositionPositive, autoPositionNegative, value );
 }
 
 void LineDiagram::LineDiagramType::paintValueTracker( PaintContext* ctx, const ValueTrackerAttributes& vt, const QPointF& at )

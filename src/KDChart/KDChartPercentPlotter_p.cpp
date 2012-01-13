@@ -110,7 +110,7 @@ void PercentPlotter::paint( PaintContext* ctx )
     if( colCount == 0 || rowCount == 0 )
         return;
 
-    DataValueTextInfoList textInfoList;
+    LabelPaintCache lpc;
     LineAttributes::MissingValuesPolicy policy = LineAttributes::MissingValuesAreBridged; // ???
 
     // this map contains the y-values to each x-value
@@ -248,9 +248,8 @@ void PercentPlotter::paint( PaintContext* ctx )
             }
             // add the pieces to painting if this is not hidden:
             if ( !point.hidden /*&& !ISNAN( lastPoint.key ) && !ISNAN( lastPoint.value ) */) {
-                appendDataValueTextInfoToList( diagram(), textInfoList, sourceIndex, pts,
-                                               Position::NorthWest, Position::SouthWest,
-                                               value );
+                addLabel( &lpc, diagram(), sourceIndex, pts, Position::NorthWest,
+                          Position::SouthWest, value );
                 if( !ISNAN( lastPoint.key ) && !ISNAN( lastPoint.value ) )
                 {
                     paintAreas( ctx, attributesModel()->mapToSource( lastPoint.index ), areas, laCell.transparency() );
@@ -264,6 +263,6 @@ void PercentPlotter::paint( PaintContext* ctx )
             lastExtraY = extraY;
             lastValue = value;
         }
-        paintElements( ctx, textInfoList, lineList, policy );
+        paintElements( ctx, lpc, lineList, policy );
     }
 }

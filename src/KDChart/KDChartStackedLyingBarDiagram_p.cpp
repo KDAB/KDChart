@@ -145,7 +145,7 @@ void StackedLyingBarDiagram::paint(  PaintContext* ctx )
     calculateValueAndGapWidths( rowCount, colCount,groupWidth,
                                 barWidth, spaceBetweenBars, spaceBetweenGroups );
 
-    DataValueTextInfoList list;
+    LabelPaintCache lpc;
     for( int row = rowCount - 1; row >= 0; --row )
     {
         qreal offset = spaceBetweenGroups;
@@ -195,11 +195,10 @@ void StackedLyingBarDiagram::paint(  PaintContext* ctx )
             point.rx() -= barHeight;
 
             const QRectF rect( point, QSizeF( barHeight , barWidth ) );
-            appendDataValueTextInfoToList( diagram(), list, index, PositionPoints( rect ),
-                                              Position::North, Position::South,
-                                              value );
+            addLabel( &lpc, diagram(), index, PositionPoints( rect ), Position::North,
+                      Position::South, value );
             paintBars( ctx, index, rect, maxDepth );
         }
     }
-    paintDataValueTextsAndMarkers( diagram(), ctx, list, false );
+    paintDataValueTextsAndMarkers( diagram(), ctx, lpc, false );
 }

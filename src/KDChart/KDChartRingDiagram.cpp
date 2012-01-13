@@ -177,8 +177,6 @@ void RingDiagram::paint( PaintContext* ctx )
     if( contentsRect.isEmpty() )
         return;
 
-    DataValueTextInfoList list;
-
     d->startAngles = QVector< QVector<qreal> >( rCount, QVector<qreal>( colCount ) );
     d->angleLens = QVector< QVector<qreal> >( rCount, QVector<qreal>( colCount ) );
 

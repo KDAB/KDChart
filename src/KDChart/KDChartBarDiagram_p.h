@@ -123,19 +123,11 @@ KDCHART_IMPL_DERIVED_DIAGRAM( BarDiagram, AbstractCartesianDiagram, CartesianCoo
         ReverseMapper& reverseMapper();
         CartesianDiagramDataCompressor& compressor() const;
 
-        void appendDataValueTextInfoToList(
-            AbstractDiagram * diagram,
-            DataValueTextInfoList & list,
-            const QModelIndex & index,
-            const PositionPoints& points,
-            const Position& autoPositionPositive,
-            const Position& autoPositionNegative,
-            const qreal value );
-        void paintDataValueTextsAndMarkers(
-            AbstractDiagram* diag,
-            PaintContext* ctx,
-            const DataValueTextInfoList & list,
-            bool paintMarkers );
+        void addLabel( LabelPaintCache* lpc, const AbstractDiagram* diagram, const QModelIndex & index,
+                       const PositionPoints& points, const Position& autoPositionPositive,
+                       const Position& autoPositionNegative, qreal value );
+        void paintDataValueTextsAndMarkers( AbstractDiagram* diag, PaintContext* ctx,
+                                            const LabelPaintCache& lpc, bool paintMarkers );
 
         void paintBars( PaintContext* ctx, const QModelIndex& index,
             const QRectF& bar, qreal& maxDepth );

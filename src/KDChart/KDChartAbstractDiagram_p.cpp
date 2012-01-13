@@ -22,12 +22,12 @@
 
 using namespace KDChart;
 
-DataValueTextInfo::DataValueTextInfo()
+LabelPaintInfo::LabelPaintInfo()
 {
 }
 
-DataValueTextInfo::DataValueTextInfo( const QModelIndex& _index, const DataValueAttributes& _attrs,
-                                      const QPointF& _pos, const QPointF& _markerPos, qreal _value )
+LabelPaintInfo::LabelPaintInfo( const QModelIndex& _index, const DataValueAttributes& _attrs,
+                              const QPointF& _pos, const QPointF& _markerPos, qreal _value )
     : index( _index )
     , attrs( _attrs )
     , pos( _pos )
@@ -36,7 +36,7 @@ DataValueTextInfo::DataValueTextInfo( const QModelIndex& _index, const DataValue
 {
 }
 
-DataValueTextInfo::DataValueTextInfo( const DataValueTextInfo& other )
+LabelPaintInfo::LabelPaintInfo( const LabelPaintInfo& other )
     : index( other.index )
     , attrs( other.attrs )
     , pos( other.pos )
@@ -113,16 +113,13 @@ qreal AbstractDiagram::Private::calcPercentValue( const QModelIndex & index ) co
     return attributesModel->data( attributesModel->mapFromSource( index ) ).toDouble() / sum * 100.0;
 }
 
-void AbstractDiagram::Private::appendDataValueTextInfoToList(
-    AbstractDiagram * diagram,
-    DataValueTextInfoList & list,
-    const QModelIndex & index,
-    const CartesianDiagramDataCompressor::CachePosition * position,
+void AbstractDiagram::Private::addLabel(
+    LabelPaintCache* cache, const AbstractDiagram* diagram,
+    const QModelIndex& index,
+    const CartesianDiagramDataCompressor::CachePosition* position,
     const PositionPoints& points,
-    const Position& autoPositionPositive,
-    const Position& autoPositionNegative,
-    const qreal value,
-    qreal favoriteAngle /* = 0.0 */ )
+    const Position& autoPositionPositive, const Position& autoPositionNegative,
+    const qreal value, qreal favoriteAngle /* = 0.0 */ )
 {
     CartesianDiagramDataCompressor::DataValueAttributesList allAttrs(
         aggregatedAttrs( diagram, index, position ) );
@@ -159,17 +156,21 @@ void AbstractDiagram::Private::appendDataValueTextInfoToList(
             ta.setRotation( favoriteAngle );
             dva.setTextAttributes( ta );
         }
-        // Store the anchor point, that's already shifted according to horiz./vert. padding:
-        list.append( DataValueTextInfo( it.key(), dva, relPos.calculatedPoint( relativeMeasureSize ),
-                                        referencePoint, value ) );
+        // Store the anchor point, already shifted according to padding
+        cache->paintReplay.append( LabelPaintInfo( it.key(), dva,
+                                                  relPos.calculatedPoint( relativeMeasureSize ),
+                                                  referencePoint, value ) );
     }
 }
 
-const QFontMetrics * AbstractDiagram::Private::cachedFontMetrics( const QFont& font, QPaintDevice * paintDevice)
+const QFontMetrics* AbstractDiagram::Private::cachedFontMetrics( const QFont& font,
+                                                                 const QPaintDevice* paintDevice) const
 {
-    if( (font != mCachedFont) || (paintDevice != mCachedPaintDevice) )
-        mCachedFontMetrics = QFontMetrics( font, paintDevice );
-    return & mCachedFontMetrics;
+    if ( ( font != mCachedFont ) || ( paintDevice != mCachedPaintDevice ) ) {
+        mCachedFontMetrics = QFontMetrics( font, const_cast<QPaintDevice *>( paintDevice ) );
+        // TODO what about setting mCachedFont and mCachedPaintDevice?
+    }
+    return &mCachedFontMetrics;
 }
 
 const QFontMetrics AbstractDiagram::Private::cachedFontMetrics() const
@@ -210,7 +211,7 @@ void AbstractDiagram::Private::forgetAlreadyPaintedDataValues()
 void AbstractDiagram::Private::paintDataValueTextsAndMarkers(
     AbstractDiagram* diag,
     PaintContext* ctx,
-    const DataValueTextInfoList & list,
+    const LabelPaintCache &cache,
     bool paintMarkers,
     bool justCalculateRect /* = false */,
     QRectF* cumulatedBoundingRect /* = 0 */ )
@@ -223,7 +224,7 @@ void AbstractDiagram::Private::paintDataValueTextsAndMarkers(
     ctx->painter()->setClipping( false );
 
     if ( paintMarkers && !justCalculateRect ) {
-        KDAB_FOREACH ( const DataValueTextInfo& info, list ) {
+        KDAB_FOREACH ( const LabelPaintInfo& info, cache.paintReplay ) {
             diag->paintMarker( ctx->painter(), info.index, info.markerPos );
         }
     }
@@ -238,7 +239,7 @@ void AbstractDiagram::Private::paintDataValueTextsAndMarkers(
 
     forgetAlreadyPaintedDataValues();
 
-    KDAB_FOREACH ( const DataValueTextInfo& info, list ) {
+    KDAB_FOREACH ( const LabelPaintInfo& info, cache.paintReplay ) {
         const PainterSaver ps( ctx->painter() );
 
         if ( !diag->dataValueAttributes( info.index ).textAttributes().hasRotation() ) {
@@ -350,10 +351,10 @@ void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
     doc.setDefaultFont( calculatedFont );
     QAbstractTextDocumentLayout::PaintContext context;
     context.palette = diag->palette();
-    context.palette.setColor(QPalette::Text, ta.pen().color() );
+    context.palette.setColor( QPalette::Text, ta.pen().color() );
 
     // set text background
-    BackgroundAttributes back(attrs.backgroundAttributes());
+    BackgroundAttributes back( attrs.backgroundAttributes() );
     if ( back.isVisible() ) {
         QTextBlockFormat fmt;
         fmt.setBackground( back.brush() );
@@ -501,7 +502,7 @@ QModelIndexList AbstractDiagram::Private::indexesIn( const QRect& rect ) const
 }
 
 CartesianDiagramDataCompressor::DataValueAttributesList AbstractDiagram::Private::aggregatedAttrs(
-    AbstractDiagram * diagram,
+    const AbstractDiagram * diagram,
     const QModelIndex & index,
     const CartesianDiagramDataCompressor::CachePosition * position ) const
 {

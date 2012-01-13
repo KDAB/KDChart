@@ -159,7 +159,7 @@ void PolarDiagram::paint( PaintContext* ctx,
 
     if( calculateListAndReturnScale ){
         // Check if all of the data value texts / data comments fit into the available space...
-        d->dataValueInfoList.clear();
+        d->labelPaintCache.clear();
 
         for ( int iCol = 0; iCol < colCount; ++iCol ) {
             for ( int iRow=0; iRow < rowCount; ++iRow ) {
@@ -168,23 +168,21 @@ void PolarDiagram::paint( PaintContext* ctx,
                 QPointF point = coordinatePlane()->translate(
                         QPointF( value, iRow ) ) + ctx->rectangle().topLeft();
                 //qDebug() << point;
-                d->appendDataValueTextInfoToList(
-                        this, d->dataValueInfoList, index, 0,
-                        PositionPoints( point ), Position::Center, Position::Center,
-                        value );
+                d->addLabel( &d->labelPaintCache, this, index, 0, PositionPoints( point ),
+                             Position::Center, Position::Center, value );
             }
         }
 
         newZoomX = coordinatePlane()->zoomFactorX();
         newZoomY = coordinatePlane()->zoomFactorY();
 
-        if ( d->dataValueInfoList.count() ) {
+        if ( d->labelPaintCache.paintReplay.count() ) {
             // ...and zoom out if necessary
             const qreal oldZoomX = newZoomX;
             const qreal oldZoomY = newZoomY;
 
             QRectF txtRectF;
-            d->paintDataValueTextsAndMarkers( this, ctx, d->dataValueInfoList, true, true, &txtRectF );
+            d->paintDataValueTextsAndMarkers( this, ctx, d->labelPaintCache, true, true, &txtRectF );
             const QRect txtRect = txtRectF.toRect();
             const QRect curRect = coordinatePlane()->geometry();
             const qreal gapX = qMin( txtRect.left() - curRect.left(), curRect.right()  - txtRect.right() );
@@ -228,7 +226,7 @@ void PolarDiagram::paint( PaintContext* ctx,
                 ctx->painter()->drawPolyline( polygon );
             }
         }
-        d->paintDataValueTextsAndMarkers( this, ctx, d->dataValueInfoList, true );
+        d->paintDataValueTextsAndMarkers( this, ctx, d->labelPaintCache, true );
     }
 }
 

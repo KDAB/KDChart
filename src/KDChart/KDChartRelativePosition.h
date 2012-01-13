@@ -39,7 +39,7 @@ namespace KDChart {
 /**
   \class RelativePosition KDChartRelativePosition.h
   \brief Defines relative position information: reference area, position
-  in this area (reference position), horizontal / vertical padding, and rotating.
+  in this area (reference position), horizontal / vertical padding, and rotation.
 
   See detailed description of \a KDChart::Position for an illustration of the
   different possible reference positions.

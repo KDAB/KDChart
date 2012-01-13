@@ -105,7 +105,7 @@ void NormalLineDiagram::paint( PaintContext* ctx )
 
     // Reverse order of data sets?
     bool rev = diagram()->reverseDatasetOrder();
-    DataValueTextInfoList textInfoList;
+    LabelPaintCache lpc;
     LineAttributesInfoList lineList;
     for( int column = rev ? columnCount - 1 : 0;
          rev ? (column >= 0) : (column < columnCount);
@@ -173,9 +173,8 @@ void NormalLineDiagram::paint( PaintContext* ctx )
             // add the pieces to painting if this is not hidden:
             if ( ! point.hidden && !ISNAN( point.value ) )
             {
-                appendDataValueTextInfoToList( diagram(), textInfoList, sourceIndex, &position,
-                                               pts, Position::NorthWest, Position::SouthWest,
-                                               point.value );
+                addLabel( &lpc, diagram(), sourceIndex, &position, pts, Position::NorthWest,
+                          Position::SouthWest, point.value );
                 paintAreas( ctx, attributesModel()->mapToSource( lastPoint.index ), areas, laCell.transparency() );
                 // position 0 is not really painted, since it takes two points to make a line :-)
                 if( row > 0 && !ISNAN( lastPoint.value ) )
@@ -192,5 +191,5 @@ void NormalLineDiagram::paint( PaintContext* ctx )
     }
 
     LineAttributes::MissingValuesPolicy policy = LineAttributes::MissingValuesAreBridged; //unused
-    paintElements( ctx, textInfoList, lineList, policy );
+    paintElements( ctx, lpc, lineList, policy );
 }

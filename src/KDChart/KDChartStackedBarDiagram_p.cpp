@@ -146,7 +146,7 @@ void StackedBarDiagram::paint(  PaintContext* ctx )
     calculateValueAndGapWidths( rowCount, colCount,groupWidth,
                                 barWidth, spaceBetweenBars, spaceBetweenGroups );
 
-    DataValueTextInfoList list;
+    LabelPaintCache lpc;
     for( int col = 0; col < colCount; ++col )
     {
         qreal offset = spaceBetweenGroups;
@@ -204,12 +204,11 @@ void StackedBarDiagram::paint(  PaintContext* ctx )
                 const qreal barHeight = previousPoint.y() - point.y();
 
                 const QRectF rect( point, QSizeF( barWidth , barHeight ) );
-                appendDataValueTextInfoToList( diagram(), list, index, PositionPoints( rect ),
-                                                Position::North, Position::South,
-                                                value );
+                addLabel( &lpc, diagram(), index, PositionPoints( rect ), Position::North,
+                          Position::South, value );
                 paintBars( ctx, index, rect, maxDepth );
             }
         }
     }
-    paintDataValueTextsAndMarkers( diagram(), ctx, list, false );
+    paintDataValueTextsAndMarkers( diagram(), ctx, lpc, false );
 }

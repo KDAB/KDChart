@@ -109,7 +109,7 @@ void StackedLineDiagram::paint(  PaintContext* ctx )
     //maxFound = columnCount;
     // ^^^ temp
 
-    DataValueTextInfoList list;
+    LabelPaintCache lpc;
     LineAttributesInfoList lineList;
     LineAttributes::MissingValuesPolicy policy = LineAttributes::MissingValuesAreBridged;
 
@@ -223,9 +223,8 @@ void StackedLineDiagram::paint(  PaintContext* ctx )
 
             const PositionPoints pts( ptNorthWest, ptNorthEast, ptSouthEast, ptSouthWest );
             if( !ISNAN( point.value ) )
-                appendDataValueTextInfoToList( diagram(), list, sourceIndex, &position,
-                                               pts, Position::NorthWest, Position::SouthWest,
-                                               point.value );
+                addLabel( &lpc, diagram(), sourceIndex, &position, pts, Position::NorthWest,
+                          Position::SouthWest, point.value );
         }
         if( areas.count() ){
             paintAreas( ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
@@ -234,5 +233,5 @@ void StackedLineDiagram::paint(  PaintContext* ctx )
         bottomPoints = points;
         bFirstDataset = false;
     }
-    paintElements( ctx, list, lineList, policy );
+    paintElements( ctx, lpc, lineList, policy );
 }

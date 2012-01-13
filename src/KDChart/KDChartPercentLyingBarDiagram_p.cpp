@@ -127,7 +127,7 @@ void PercentLyingBarDiagram::paint( PaintContext* ctx )
     calculateValueAndGapWidths( rowCount, colCount,groupWidth,
                                 barWidth, spaceBetweenBars, spaceBetweenGroups );
     
-    DataValueTextInfoList list;
+    LabelPaintCache lpc;
     const qreal maxValue = 100.0; // always 100 %
     qreal sumValues = 0;
     QVector <qreal > sumValuesVector;
@@ -160,7 +160,7 @@ void PercentLyingBarDiagram::paint( PaintContext* ctx )
 
         for( int col = 0; col < colCount ; ++col )
         {
-        	qreal threeDOffset = 0.0;
+            qreal threeDOffset = 0.0;
             const CartesianDiagramDataCompressor::CachePosition position( curRow, col );
             const CartesianDiagramDataCompressor::DataPoint p = compressor().data( position );
             QModelIndex sourceIndex = attributesModel()->mapToSource( p.index );
@@ -194,8 +194,8 @@ void PercentLyingBarDiagram::paint( PaintContext* ctx )
             }
 
             QPointF point, previousPoint;
-            if(  sumValuesVector.at( curRow ) != 0 && value > 0 ) {
-            	QPointF dataPoint( ( stackedValues / sumValuesVector.at( curRow ) * maxValue ), rowCount - key );
+            if ( sumValuesVector.at( curRow ) != 0 && value > 0 ) {
+                QPointF dataPoint( ( stackedValues / sumValuesVector.at( curRow ) * maxValue ), rowCount - key );
                 point = ctx->coordinatePlane()->translate( dataPoint );
                 point.ry() += offset / 2 + threeDOffset;
 
@@ -204,14 +204,13 @@ void PercentLyingBarDiagram::paint( PaintContext* ctx )
             
             const qreal barHeight = point.x() - previousPoint.x();
             
-            point.setX ( point.x() - barHeight );
+            point.setX( point.x() - barHeight );
 
             const QRectF rect( point, QSizeF( barHeight, barWidth ) );
-            appendDataValueTextInfoToList( diagram(), list, sourceIndex, PositionPoints( rect ),
-                                              Position::North, Position::South,
-                                              value );
+            addLabel( &lpc, diagram(), sourceIndex, PositionPoints( rect ), Position::North,
+                      Position::South, value );
             paintBars( ctx, sourceIndex, rect, maxDepth );
         }
     }
-    paintDataValueTextsAndMarkers(  diagram(),  ctx,  list,  false );
+    paintDataValueTextsAndMarkers( diagram(), ctx, lpc, false );
 }

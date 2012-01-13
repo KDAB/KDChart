@@ -159,8 +159,7 @@ namespace KDChart {
         void adjustZoomAndRepaint();
 
     private:
-        void setHasOwnGridAttributes(
-            bool circular, bool on );
+        void setHasOwnGridAttributes( bool circular, bool on );
     };
 
 }

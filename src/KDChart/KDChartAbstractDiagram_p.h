@@ -57,28 +57,53 @@
 
 
 namespace KDChart {
-    class AttributesModel;
-
-    class DataValueTextInfo {
+    class LabelPaintInfo {
     public:
-        DataValueTextInfo();
-        DataValueTextInfo( const QModelIndex& _index, const DataValueAttributes& _attrs,
-                           const QPointF& _pos, const QPointF& _markerPos, qreal _value );
-        DataValueTextInfo( const DataValueTextInfo& other );
+        LabelPaintInfo();
+        LabelPaintInfo( const QModelIndex& _index, const DataValueAttributes& _attrs,
+                       const QPointF& _pos, const QPointF& _markerPos, qreal _value );
+        LabelPaintInfo( const LabelPaintInfo& other );
         QModelIndex index;
         DataValueAttributes attrs;
         QPointF pos;
         QPointF markerPos;
         qreal value;
+        // QString value; TODO
     };
 
-    typedef QVector<DataValueTextInfo> DataValueTextInfoList;
-    typedef QVectorIterator<DataValueTextInfo> DataValueTextInfoListIterator;
+    class LabelPaintExtraInfo
+    {
+    public:
+        virtual ~LabelPaintExtraInfo() {}
+        virtual void clear() = 0;
+    };
+
+    struct LabelPaintCache
+    {
+        LabelPaintCache() : extra( 0 ) {}
+        ~LabelPaintCache()
+        {
+            delete extra;
+            extra = 0;
+        }
+
+        void clear()
+        {
+            // TODO - clear both paintReplay and extra...
+        }
+
+        QVector<LabelPaintInfo> paintReplay;
+        LabelPaintExtraInfo *extra;
+    private:
+        LabelPaintCache( LabelPaintCache& other ); // no copies
+    };
 
 
 /**
  * \internal
  */
+    class AttributesModel;
+
     class KDChart::AbstractDiagram::Private
     {
         friend class AbstractDiagram;
@@ -95,29 +120,26 @@ namespace KDChart {
         // FIXME: Optimize if necessary
         virtual qreal calcPercentValue( const QModelIndex & index ) const;
 
-        void appendDataValueTextInfoToList(
-            AbstractDiagram * diagram,
-            DataValueTextInfoList & list,
-            const QModelIndex & index,
-            const CartesianDiagramDataCompressor::CachePosition * position,
-            const PositionPoints& points,
-            const Position& autoPositionPositive,
-            const Position& autoPositionNegative,
-            const qreal value,
-            qreal favoriteAngle = 0.0 );
+        // this should possibly be virtual so it can be overridden (cf. LabelPaintCache::extra)
+        void addLabel( LabelPaintCache* cache, const AbstractDiagram* diagram,
+                       const QModelIndex& index,
+                       const CartesianDiagramDataCompressor::CachePosition* position,
+                       const PositionPoints& points, const Position& autoPositionPositive,
+                       const Position& autoPositionNegative, const qreal value,
+                       qreal favoriteAngle = 0.0 );
 
-        const QFontMetrics * cachedFontMetrics( const QFont& font, QPaintDevice * paintDevice);
+        const QFontMetrics* cachedFontMetrics( const QFont& font, const QPaintDevice* paintDevice) const;
         const QFontMetrics cachedFontMetrics() const;
 
         QString formatNumber( qreal value, int decimalDigits ) const;
         QString formatDataValueText( const DataValueAttributes &dva,
                                      const QModelIndex& index, qreal value ) const;
 
-        void forgetAlreadyPaintedDataValues();
+        void forgetAlreadyPaintedDataValues(); // TODO restructure (cf. LabelPaintCache::extra)
 
         void paintDataValueTextsAndMarkers( AbstractDiagram* diag,
                                             PaintContext* ctx,
-                                            const DataValueTextInfoList & list,
+                                            const LabelPaintCache& cache,
                                             bool paintMarkers,
                                             bool justCalculateRect=false,
                                             QRectF* cumulatedBoundingRect=0 );
@@ -146,7 +168,7 @@ namespace KDChart {
         QModelIndexList indexesIn( const QRect& rect ) const;
 
         virtual CartesianDiagramDataCompressor::DataValueAttributesList aggregatedAttrs(
-                AbstractDiagram * diagram,
+                const AbstractDiagram* diagram,
                 const QModelIndex & index,
                 const CartesianDiagramDataCompressor::CachePosition * position ) const;
 
@@ -187,9 +209,9 @@ namespace KDChart {
 
     private:
         QString prevPaintedDataValueText;
-        QFontMetrics   mCachedFontMetrics;
-        QFont          mCachedFont;
-        QPaintDevice * mCachedPaintDevice;
+        mutable QFontMetrics mCachedFontMetrics;
+        mutable QFont mCachedFont;
+        mutable QPaintDevice* mCachedPaintDevice;
     };
 
     inline AbstractDiagram::AbstractDiagram( Private * p ) : _d( p )

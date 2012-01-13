@@ -310,20 +310,24 @@ void StockDiagram::Private::drawOHLCBar( int dataset, const CartesianDiagramData
             drawLine( dataset, col, leftOpenPoint, rightOpenPoint, context ); // Open marker
     }
 
-    DataValueTextInfoList list;
-    if ( !open.hidden )
-        appendDataValueTextInfoToList( diagram, list, diagram->attributesModel()->mapToSource( open.index ), 0,
-                                       PositionPoints( leftOpenPoint ), Position::South, Position::South, open.value );
-    if ( !high.hidden )
-        appendDataValueTextInfoToList( diagram, list, diagram->attributesModel()->mapToSource( high.index ), 0,
-                                       PositionPoints( highPoint ), Position::South, Position::South, high.value );
-    if ( !low.hidden )
-        appendDataValueTextInfoToList( diagram, list, diagram->attributesModel()->mapToSource( low.index ), 0,
-                                       PositionPoints( lowPoint ), Position::South, Position::South, low.value );
-    if ( !close.hidden )
-        appendDataValueTextInfoToList( diagram, list, diagram->attributesModel()->mapToSource( close.index ), 0,
-                                       PositionPoints( rightClosePoint ), Position::South, Position::South, close.value );
-    paintDataValueTextsAndMarkers( diagram, context, list, false );
+    LabelPaintCache lpc;
+    if ( !open.hidden ) {
+        addLabel( &lpc, diagram, diagram->attributesModel()->mapToSource( open.index ), 0,
+                            PositionPoints( leftOpenPoint ), Position::South, Position::South, open.value );
+    }
+    if ( !high.hidden ) {
+        addLabel( &lpc, diagram, diagram->attributesModel()->mapToSource( high.index ), 0,
+                            PositionPoints( highPoint ), Position::South, Position::South, high.value );
+    }
+    if ( !low.hidden ) {
+        addLabel( &lpc, diagram, diagram->attributesModel()->mapToSource( low.index ), 0,
+                            PositionPoints( lowPoint ), Position::South, Position::South, low.value );
+    }
+    if ( !close.hidden ) {
+        addLabel( &lpc, diagram, diagram->attributesModel()->mapToSource( close.index ), 0,
+                            PositionPoints( rightClosePoint ), Position::South, Position::South, close.value );
+    }
+    paintDataValueTextsAndMarkers( diagram, context, lpc, false );
 }
 
 /**
@@ -430,26 +434,25 @@ void StockDiagram::Private::drawCandlestick( int /*dataset*/, const CartesianDia
         // FIXME: Add lower and upper line to reverse mapper
     }
 
-    DataValueTextInfoList list;
-
+    LabelPaintCache lpc;
     if ( !low.hidden )
-        appendDataValueTextInfoToList( diagram, list, diagram->attributesModel()->mapToSource( low.index ), 0,
-                                       PositionPoints( lowPoint ), Position::South, Position::South, low.value );
+        addLabel( &lpc, diagram, diagram->attributesModel()->mapToSource( low.index ), 0,
+                            PositionPoints( lowPoint ), Position::South, Position::South, low.value );
     if ( drawCandlestick ) {
         // Both, the open as well as the close value are represented by this candlestick
         reverseMapper.addPolygon( row, openValueColumn(), drawnPolygon );
         reverseMapper.addPolygon( row, closeValueColumn(), drawnPolygon );
 
-        appendDataValueTextInfoToList( diagram, list, diagram->attributesModel()->mapToSource( open.index ), 0,
-                                       PositionPoints( candlestick.bottomRight() ), Position::South, Position::South, open.value );
-        appendDataValueTextInfoToList( diagram, list, diagram->attributesModel()->mapToSource( close.index ), 0,
-                                       PositionPoints( candlestick.topRight() ), Position::South, Position::South, close.value );
+        addLabel( &lpc, diagram, diagram->attributesModel()->mapToSource( open.index ), 0,
+                  PositionPoints( candlestick.bottomRight() ), Position::South, Position::South, open.value );
+        addLabel( &lpc, diagram, diagram->attributesModel()->mapToSource( close.index ), 0,
+                  PositionPoints( candlestick.topRight() ), Position::South, Position::South, close.value );
     }
     if ( !high.hidden )
-        appendDataValueTextInfoToList( diagram, list, diagram->attributesModel()->mapToSource( high.index ), 0,
-                                       PositionPoints( highPoint ), Position::South, Position::South, high.value );
+        addLabel( &lpc, diagram, diagram->attributesModel()->mapToSource( high.index ), 0,
+                  PositionPoints( highPoint ), Position::South, Position::South, high.value );
 
-    paintDataValueTextsAndMarkers( diagram, context, list, false );
+    paintDataValueTextsAndMarkers( diagram, context, lpc, false );
 }
 
 /**

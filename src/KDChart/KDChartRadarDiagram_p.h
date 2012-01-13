@@ -64,7 +64,7 @@ private:
     bool closeDatasets;
     bool reverseData;
     qreal fillAlpha;
-    DataValueTextInfoList dataValueInfoList;
+    LabelPaintCache labelPaintCache;
 };
 
 KDCHART_IMPL_DERIVED_DIAGRAM( RadarDiagram, AbstractPolarDiagram, RadarCoordinatePlane )

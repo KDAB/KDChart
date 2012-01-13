@@ -119,24 +119,13 @@ namespace KDChart {
         CartesianDiagramDataCompressor& compressor() const;        
 
         int datasetDimension() const;
-/*        LineAttributes::MissingValuesPolicy getCellValues(
-            int row, int column,
-            bool shiftCountedXValuesByHalfSection,
-            qreal& valueX, qreal& valueY ) const;
-        qreal valueForCellTesting( int row, int column,
-                                    bool& bOK,
-                                    bool showHiddenCellsAsInvalid = false ) const;*/
+
         void paintAreas( PaintContext* ctx, const QModelIndex& index,
                          const QList<QPolygonF>& areas, const uint transparency );
-/*        qreal valueForCell( int row, int column );*/
-        void appendDataValueTextInfoToList(
-            AbstractDiagram * diagram,
-            DataValueTextInfoList & list,
-            const QModelIndex & index,
-            const PositionPoints& points,
-            const Position& autoPositionPositive,
-            const Position& autoPositionNegative,
-            const qreal value );
+
+        void addLabel( LabelPaintCache* lpc, const AbstractDiagram* diagram, const QModelIndex& index,
+                       const PositionPoints& points, const Position& autoPositionPositive,
+                       const Position& autoPositionNegative, qreal value );
 
 
         const QPointF project( QPointF point, QPointF maxLimits,
@@ -147,7 +136,7 @@ namespace KDChart {
             const QPointF& from, const QPointF& to, const qreal depth  );
 
         void paintElements( PaintContext* ctx,
-                            DataValueTextInfoList&,
+                            const LabelPaintCache&,
                             LineAttributesInfoList&,
                             LineAttributes::MissingValuesPolicy );
 

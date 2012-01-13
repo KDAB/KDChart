@@ -152,7 +152,7 @@ void PieDiagram::paintInternal( PaintContext* ctx, QRectF& textBoundingRect, boo
     if( contentsRect.isEmpty() )
         return;
 
-    DataValueTextInfoList list;
+    LabelPaintCache lpc;
     const qreal sum = valueTotals();
 
     if( sum == 0.0 ) //nothing to draw
@@ -302,7 +302,7 @@ void PieDiagram::paintInternal( PaintContext* ctx, QRectF& textBoundingRect, boo
 
     d->forgetAlreadyPaintedDataValues();
 
-    drawSlice( ctx->painter(), slicePosition, &list, backmostSlice );
+    drawSlice( ctx->painter(), slicePosition, &lpc, backmostSlice );
 
     if ( backmostSlice == frontmostSlice ) {
         const int rightmostSlice = findSliceAt( 0, colCount );
@@ -316,22 +316,22 @@ void PieDiagram::paintInternal( PaintContext* ctx, QRectF& textBoundingRect, boo
 
     while ( currentLeftSlice != frontmostSlice ) {
         if( currentLeftSlice != backmostSlice )
-            drawSlice( ctx->painter(), slicePosition, &list, currentLeftSlice );
+            drawSlice( ctx->painter(), slicePosition, &lpc, currentLeftSlice );
         currentLeftSlice = findLeftSlice( currentLeftSlice, colCount );
     }
 
     while ( currentRightSlice != frontmostSlice ) {
         if( currentRightSlice != backmostSlice )
-            drawSlice( ctx->painter(), slicePosition, &list, currentRightSlice );
+            drawSlice( ctx->painter(), slicePosition, &lpc, currentRightSlice );
         currentRightSlice = findRightSlice( currentRightSlice, colCount );
     }
 
     // if the backmost slice is not the frontmost slice, we draw the frontmost one last
     if ( backmostSlice != frontmostSlice || ! threeDPieAttributes().isEnabled() ) {
-        drawSlice( ctx->painter(), slicePosition, &list, frontmostSlice );
+        drawSlice( ctx->painter(), slicePosition, &lpc, frontmostSlice );
     }
 
-    d->paintDataValueTextsAndMarkers(  this,  ctx,  list,  false, justCalculateSpace, &textBoundingRect );
+    d->paintDataValueTextsAndMarkers( this, ctx, lpc, false, justCalculateSpace, &textBoundingRect );
 }
 
 #if defined ( Q_WS_WIN)
@@ -346,10 +346,8 @@ void PieDiagram::paintInternal( PaintContext* ctx, QRectF& textBoundingRect, boo
   \param slice the slice to draw
   \param threeDPieHeight the height of the three dimensional effect
   */
-void PieDiagram::drawSlice( QPainter* painter,
-        const QRectF &drawPosition,
-        DataValueTextInfoList* list,
-        uint slice )
+void PieDiagram::drawSlice( QPainter* painter, const QRectF& drawPosition, LabelPaintCache* lpc,
+                            uint slice )
 {
     // Is there anything to draw at all?
     const qreal angleLen = d->angleLens[ slice ];
@@ -372,7 +370,7 @@ void PieDiagram::drawSlice( QPainter* painter,
     }
 
     draw3DEffect( painter, adjustedDrawPosition, slice, threeDAttrs );
-    drawSliceSurface( painter, adjustedDrawPosition, list, slice );
+    drawSliceSurface( painter, adjustedDrawPosition, lpc, slice );
 }
 
 /**
@@ -382,10 +380,8 @@ void PieDiagram::drawSlice( QPainter* painter,
   \param dataset the dataset to draw the slice for
   \param slice the slice to draw
   */
-void PieDiagram::drawSliceSurface( QPainter* painter,
-        const QRectF &drawPosition,
-        DataValueTextInfoList* list,
-        uint slice )
+void PieDiagram::drawSliceSurface( QPainter* painter, const QRectF& drawPosition,
+                                   LabelPaintCache* lpc, uint slice )
 {
     // Is there anything to draw at all?
     qreal angleLen = d->angleLens[ slice ];
@@ -483,12 +479,25 @@ void PieDiagram::drawSliceSurface( QPainter* painter,
         points.setDegrees(KDChartEnums::PositionCenter,    topAngle + angleLen/2.0);
         points.setDegrees(KDChartEnums::PositionNorth,     topAngle + angleLen/2.0);
 
-        //painter->drawText(points.mPositionCenter,QLatin1String("P"));
+        // H4X
+        {
+            QString sn = QString::number( slice );
+            painter->save();
+            painter->setPen( Qt::black );
+            painter->drawText( points.mPositionCenter, QLatin1String( "C" ) + sn );
+            painter->drawText( points.mPositionNorth, QLatin1String( "N" ) + sn );
+            painter->drawText( points.mPositionSouth, QLatin1String( "S" ) + sn );
+            painter->drawText( points.mPositionEast, QLatin1String( "E" ) + sn );
+            painter->drawText( points.mPositionWest, QLatin1String( "W" ) + sn );
+            painter->restore();
+        }
 
-        d->appendDataValueTextInfoToList(
-                this, *list, index, 0,
-                points, Position::Center, Position::Center,
-                angleLen*sum / 360, favoriteTextAngle );
+        const int prevLabelCount = lpc->paintReplay.size();
+        d->addLabel( lpc, this, index, 0, points, Position::Center, Position::Center,
+                     angleLen * sum / 360, favoriteTextAngle );
+        if ( lpc->paintReplay.size() == prevLabelCount ) {
+            qDebug() << "hm, it seems that the label collided with another one";
+        }
     }
 }
 

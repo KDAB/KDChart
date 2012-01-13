@@ -55,8 +55,8 @@ void NormalPlotter::paint( PaintContext* ctx )
     const int colCount = compressor().modelDataColumns();
     const int rowCount = compressor().modelDataRows();    
 
-    DataValueTextInfoList textInfoList;
-    //int counter = 0;
+    LabelPaintCache lpc;
+    
     if ( diagram()->useDataCompression() != Plotter::NONE )
     {
         for ( int dataset = 0; dataset < plotterCompressor().datasetCount(); ++dataset )
@@ -107,9 +107,8 @@ void NormalPlotter::paint( PaintContext* ctx )
                         polygon << a << b << d << c;
                         areas << polygon;
                     }
-                    appendDataValueTextInfoToList( diagram(), textInfoList, sourceIndex, pts,
-                                                   Position::NorthWest, Position::SouthWest,
-                                                   point.value );
+                    addLabel( &lpc, diagram(), sourceIndex, pts, Position::NorthWest,
+                              Position::SouthWest, point.value );
                     if( !ISNAN( lastPoint.key ) && !ISNAN( lastPoint.value ) )
                     {
                         paintAreas( ctx, attributesModel()->mapToSource( lastPoint.index ), areas, laCell.transparency() );
@@ -122,9 +121,8 @@ void NormalPlotter::paint( PaintContext* ctx )
                 lastPoint = point;
             }
             LineAttributes::MissingValuesPolicy policy = LineAttributes::MissingValuesAreBridged; //unused
-            paintElements( ctx, textInfoList, lineList, policy );
+            paintElements( ctx, lpc, lineList, policy );
         }
-        //qDebug() << counter;
     }
     else
     {
@@ -181,9 +179,8 @@ void NormalPlotter::paint( PaintContext* ctx )
                         polygon << a << b << d << c;
                         areas << polygon;
                     }
-                    appendDataValueTextInfoToList( diagram(), textInfoList, sourceIndex, pts,
-                                                   Position::NorthWest, Position::SouthWest,
-                                                   point.value );
+                    addLabel( &lpc, diagram(), sourceIndex, pts, Position::NorthWest,
+                              Position::SouthWest, point.value );
                     if( !ISNAN( lastPoint.key ) && !ISNAN( lastPoint.value ) )
                     {
                         paintAreas( ctx, attributesModel()->mapToSource( lastPoint.index ), areas, laCell.transparency() );
@@ -197,7 +194,7 @@ void NormalPlotter::paint( PaintContext* ctx )
                 lastPoint = point;
             }
             LineAttributes::MissingValuesPolicy policy = LineAttributes::MissingValuesAreBridged; //unused
-            paintElements( ctx, textInfoList, lineList, policy );
+            paintElements( ctx, lpc, lineList, policy );
         }
     }
 }

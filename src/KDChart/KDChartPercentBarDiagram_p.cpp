@@ -127,7 +127,7 @@ void PercentBarDiagram::paint( PaintContext* ctx )
     calculateValueAndGapWidths( rowCount, colCount,groupWidth,
                                 barWidth, spaceBetweenBars, spaceBetweenGroups );
 
-    DataValueTextInfoList list;
+    LabelPaintCache lpc;
     const qreal maxValue = 100; // always 100 %
     qreal sumValues = 0;
     QVector <qreal > sumValuesVector;
@@ -200,11 +200,10 @@ void PercentBarDiagram::paint( PaintContext* ctx )
             const qreal barHeight = previousPoint.y() - point.y();
 
             const QRectF rect( point, QSizeF( barWidth, barHeight ) );
-            appendDataValueTextInfoToList( diagram(), list, sourceIndex, PositionPoints( rect ),
-                                              Position::North, Position::South,
-                                              value );
+            addLabel( &lpc, diagram(), sourceIndex, PositionPoints( rect ), Position::North,
+                      Position::South, value );
             paintBars( ctx, sourceIndex, rect, maxDepth );
         }
     }
-    paintDataValueTextsAndMarkers(  diagram(),  ctx,  list,  false );
+    paintDataValueTextsAndMarkers( diagram(), ctx, lpc, false );
 }

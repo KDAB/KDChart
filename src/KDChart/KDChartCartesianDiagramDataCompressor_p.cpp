@@ -87,7 +87,7 @@ QModelIndexList CartesianDiagramDataCompressor::indexesAt( const CachePosition& 
 
 
 CartesianDiagramDataCompressor::DataValueAttributesList CartesianDiagramDataCompressor::aggregatedAttrs(
-        AbstractDiagram * diagram,
+        const AbstractDiagram* diagram,
         const QModelIndex & index,
         const CachePosition& position ) const
 {
@@ -571,7 +571,7 @@ const CartesianDiagramDataCompressor::DataPoint& CartesianDiagramDataCompressor:
     if ( ! isCached( position ) ) retrieveModelData( position );
     return m_data[ position.second ][ position.first ];
 }
-        
+
 QPair< QPointF, QPointF > CartesianDiagramDataCompressor::dataBoundaries() const
 {
     const int colCount = modelDataColumns();
@@ -616,7 +616,7 @@ QPair< QPointF, QPointF > CartesianDiagramDataCompressor::dataBoundaries() const
     const QPointF topRight( xMax, yMax );
     return QPair< QPointF, QPointF >( bottomLeft, topRight );
 }
-        
+
 void CartesianDiagramDataCompressor::retrieveModelData( const CachePosition& position ) const
 {
     Q_ASSERT( isValidCachePosition( position ) );
@@ -631,7 +631,7 @@ void CartesianDiagramDataCompressor::retrieveModelData( const CachePosition& pos
         if( m_datasetDimension == 2 )
         {
             Q_ASSERT( indexes.count() == 2 );
-            
+
             // try the ColumnDataRole approach first
             const int xColumn = indexes.first().column();
             const int yColumn = indexes.last().column();

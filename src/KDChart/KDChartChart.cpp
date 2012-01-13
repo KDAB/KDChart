@@ -470,12 +470,12 @@ void Chart::Private::slotLayoutPlanes()
         planesLayout ? planesLayout->direction() : QBoxLayout::TopToBottom;
     if ( planesLayout && dataAndLegendLayout )
         dataAndLegendLayout->removeItem( planesLayout );
-    
+
     const bool hadPlanesLayout = planesLayout != 0;
     int left, top, right, bottom;
     if(hadPlanesLayout)
         planesLayout->getContentsMargins(&left, &top, &right, &bottom);
-        
+
     KDAB_FOREACH( KDChart::AbstractLayoutItem* plane, planeLayoutItems ) {
         plane->removeFromParentLayout();
     }
@@ -589,7 +589,7 @@ void Chart::Private::slotLayoutPlanes()
                 planeInfos[ pi.referencePlane ].leftAxesLayout = pi.leftAxesLayout;
                 planeInfos[ pi.referencePlane ].rightAxesLayout = pi.rightAxesLayout;
             }
- 
+
             //pi.leftAxesLayout->setSizeConstraint( QLayout::SetFixedSize );
             KDAB_FOREACH( CartesianAxis* axis, diagram->axes() ) {
                 if ( axisInfos.contains( axis ) ) continue; // already laid this one out
@@ -1078,7 +1078,7 @@ void Chart::paint( QPainter* painter, const QRect& target )
                 static_cast< qreal >( target.height() ) /
                 static_cast< qreal >( geometry().size().height() ) );
     }
-    // Output onto a QPixmap 
+    // Output onto a QPixmap
     else
     {
         PrintingParameters::setScaleFactor( static_cast< qreal >( painter->device()->logicalDpiX() ) / static_cast< qreal >( logicalDpiX() ) );
@@ -1190,7 +1190,7 @@ void Chart::addHeaderFooter( HeaderFooter* headerFooter )
     measure.setValue( 20 );
     textAttrs.setFontSize( measure );
     headerFooter->setTextAttributes( textAttrs );
-    
+
     d->headerFooters.append( headerFooter );
     headerFooter->setParent( this );
     connect( headerFooter, SIGNAL( destroyedHeaderFooter( HeaderFooter* ) ),

@@ -77,7 +77,7 @@ void PercentLineDiagram::paint(  PaintContext* ctx )
     // ^^^ temp
     const int lastVisibleColumn = maxFound - 1;
 
-    DataValueTextInfoList list;
+    LabelPaintCache lpc;
     LineAttributesInfoList lineList;
     LineAttributes::MissingValuesPolicy policy = LineAttributes::MissingValuesAreBridged;
 
@@ -215,9 +215,8 @@ void PercentLineDiagram::paint(  PaintContext* ctx )
             if( !ISNAN( point.value ) )
             {
                 const PositionPoints pts( ptNorthWest, ptNorthEast, ptSouthEast, ptSouthWest );
-                appendDataValueTextInfoToList( diagram(), list, sourceIndex, &position,
-                                               pts, Position::NorthWest, Position::SouthWest,
-                                               point.value );
+                addLabel( &lpc, diagram(), sourceIndex, &position, pts, Position::NorthWest,
+                          Position::SouthWest, point.value );
             }
         }
         if( areas.count() ){
@@ -227,5 +226,5 @@ void PercentLineDiagram::paint(  PaintContext* ctx )
         bottomPoints = points;
         bFirstDataset = false;
     }
-    paintElements( ctx, list, lineList, policy );
+    paintElements( ctx, lpc, lineList, policy );
 }

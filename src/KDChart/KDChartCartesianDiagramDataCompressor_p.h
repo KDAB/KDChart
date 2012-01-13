@@ -147,7 +147,7 @@ namespace KDChart {
 
         QModelIndexList indexesAt( const CachePosition& position ) const;
         DataValueAttributesList aggregatedAttrs(
-                AbstractDiagram * diagram,
+                const AbstractDiagram* diagram,
                 const QModelIndex & index,
                 const CachePosition& position ) const;
 

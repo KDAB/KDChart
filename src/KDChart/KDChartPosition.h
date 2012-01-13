@@ -82,7 +82,7 @@ public:
 
     KDChartEnums::PositionValue value() const;
 
-    const char * name() const;
+    const char *name() const;
     QString printableName() const;
 
     bool isUnknown() const;

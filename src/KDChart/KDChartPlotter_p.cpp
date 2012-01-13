@@ -133,7 +133,7 @@ void Plotter::PlotterType::paintThreeDLines(
 // chart types in one
 void Plotter::PlotterType::paintElements(
     PaintContext* ctx,
-    DataValueTextInfoList& list,
+    const LabelPaintCache& lpc,
     LineAttributesInfoList& lineList,
     LineAttributes::MissingValuesPolicy policy )
 {
@@ -187,7 +187,7 @@ void Plotter::PlotterType::paintElements(
     }
 
     // paint all data value texts and the point markers
-    paintDataValueTextsAndMarkers( diagram(), ctx, list, true );
+    paintDataValueTextsAndMarkers( diagram(), ctx, lpc, true );
 }
 
 AttributesModel* Plotter::PlotterType::attributesModel() const
@@ -195,41 +195,10 @@ AttributesModel* Plotter::PlotterType::attributesModel() const
     return m_private->attributesModel;
 }
 
-#if 0
-QModelIndex LineDiagram::LineDiagramType::attributesModelRootIndex() const
-{
-    return m_private->diagram->attributesModelRootIndex();
-}
-
-int LineDiagram::LineDiagramType::datasetDimension() const
-{
-    return m_private->datasetDimension;
-}
-#endif
-
 ReverseMapper& Plotter::PlotterType::reverseMapper()
 {
     return m_private->reverseMapper;
 }
-
-#if 0
-LineAttributes::MissingValuesPolicy LineDiagram::LineDiagramType::getCellValues(
-    int row, int column,
-    bool shiftCountedXValuesByHalfSection,
-    qreal& valueX, qreal& valueY ) const
-{
-    return m_private->diagram->getCellValues( row, column, shiftCountedXValuesByHalfSection,
-                                              valueX, valueY );
-}
-
-qreal LineDiagram::LineDiagramType::valueForCellTesting(
-    int row, int column,
-    bool& bOK,
-    bool showHiddenCellsAsInvalid) const
-{
-    return m_private->diagram->valueForCellTesting( row, column, bOK, showHiddenCellsAsInvalid );
-}
-#endif
 
 Plotter* Plotter::PlotterType::diagram() const
 {
@@ -264,26 +233,12 @@ void Plotter::PlotterType::paintAreas(
     ctx->painter()->drawPath( path );
 }
 
-#if 0
-qreal LineDiagram::LineDiagramType::valueForCell( int row, int column )
+void Plotter::PlotterType::addLabel( LabelPaintCache *lpc, const AbstractDiagram* diagram,
+                                     const QModelIndex& index, const PositionPoints& points,
+                                     const Position& autoPositionPositive,
+                                     const Position& autoPositionNegative, qreal value )
 {
-    return diagram()->valueForCell( row, column );
-}
-#endif
-
-void Plotter::PlotterType::appendDataValueTextInfoToList(
-            AbstractDiagram * diagram,
-            DataValueTextInfoList & list,
-            const QModelIndex & index,
-            const PositionPoints& points,
-            const Position& autoPositionPositive,
-            const Position& autoPositionNegative,
-            const qreal value )
-{
-    Q_UNUSED( autoPositionNegative );
-    m_private->appendDataValueTextInfoToList(
-                    diagram, list, index, 0,
-                    points, autoPositionPositive, autoPositionPositive, value );
+    m_private->addLabel( lpc, diagram, index, 0, points, autoPositionPositive, autoPositionNegative, value );
 }
 
 void Plotter::PlotterType::paintValueTracker( PaintContext* ctx, const ValueTrackerAttributes& vt, const QPointF& at )

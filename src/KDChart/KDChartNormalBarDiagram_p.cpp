@@ -157,7 +157,7 @@ void NormalBarDiagram::paint(  PaintContext* ctx )
     calculateValueAndGapWidths( rowCount, colCount,groupWidth,
                                 barWidth, spaceBetweenBars, spaceBetweenGroups );
 
-    DataValueTextInfoList list;
+    LabelPaintCache lpc;
 
     for( int row = 0; row < rowCount; ++row )
     {
@@ -198,13 +198,12 @@ void NormalBarDiagram::paint(  PaintContext* ctx )
                 const qreal barHeight = bottomPoint.y() - topPoint.y();
                 topPoint.setX( topPoint.x() + offset );
                 const QRectF rect( topPoint, QSizeF( barWidth, barHeight ) );
-                appendDataValueTextInfoToList( diagram(), list, sourceIndex, PositionPoints( rect ),
-                                               Position::North, Position::South,
-                                               point.value );
+                addLabel( &lpc, diagram(), sourceIndex, PositionPoints( rect ), Position::North,
+                          Position::South, point.value );
                 paintBars( ctx, sourceIndex, rect, maxDepth );
             }
             offset += barWidth + spaceBetweenBars;
         }
     }
-    paintDataValueTextsAndMarkers(  diagram(),  ctx,  list,  false );
+    paintDataValueTextsAndMarkers( diagram(), ctx, lpc, false );
 }

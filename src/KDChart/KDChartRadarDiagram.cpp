@@ -203,17 +203,15 @@ void RadarDiagram::paint( PaintContext* ctx,
         ctx->painter()->save();
         // Check if all of the data value texts / data comments will fit
         // into the available space:
-        d->dataValueInfoList.clear();
+        d->labelPaintCache.clear();
         ctx->painter()->save();
         for ( iCol=0; iCol < colCount; ++iCol ) {
             for ( iRow=0; iRow < rowCount; ++iRow ) {
                 QModelIndex index = model()->index( iRow, iCol, rootIndex() ); // checked
                 const qreal value = model()->data( index ).toDouble();
                 QPointF point = scaleToRealPosition( QPointF( value, iRow ), ctx->rectangle(), destRect, *ctx->coordinatePlane() );
-                d->appendDataValueTextInfoToList(
-                        this, d->dataValueInfoList, index, 0,
-                        PositionPoints( point ), Position::Center, Position::Center,
-                        value );
+                d->addLabel( &d->labelPaintCache, this, index, 0, PositionPoints( point ),
+                             Position::Center, Position::Center, value );
             }
         }
         ctx->painter()->restore();
@@ -221,9 +219,9 @@ void RadarDiagram::paint( PaintContext* ctx,
         const qreal oldZoomY = coordinatePlane()->zoomFactorY();
         newZoomX = oldZoomX;
         newZoomY = oldZoomY;
-        if( d->dataValueInfoList.count() ){
+        if( d->labelPaintCache.paintReplay.count() ) {
             QRectF txtRectF;
-            d->paintDataValueTextsAndMarkers( this, ctx, d->dataValueInfoList, true, true, &txtRectF );
+            d->paintDataValueTextsAndMarkers( this, ctx, d->labelPaintCache, true, true, &txtRectF );
             const QRect txtRect = txtRectF.toRect();
             const QRect curRect = coordinatePlane()->geometry();
             const qreal gapX = qMin( txtRect.left() - curRect.left(), curRect.right()  - txtRect.right() );
@@ -290,7 +288,7 @@ void RadarDiagram::paint( PaintContext* ctx,
             ctx->painter()->drawPolyline( p.polygon );
         }
 
-        d->paintDataValueTextsAndMarkers( this, ctx, d->dataValueInfoList, true );
+        d->paintDataValueTextsAndMarkers( this, ctx, d->labelPaintCache, true );
     }
 }
 

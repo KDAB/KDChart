@@ -65,7 +65,7 @@ private:
     QMap<int,bool> showLabelsAtPosition;
     bool rotateCircularLabels;
     bool closeDatasets;
-    DataValueTextInfoList dataValueInfoList;
+    LabelPaintCache labelPaintCache;
 };
 
 KDCHART_IMPL_DERIVED_DIAGRAM( PolarDiagram, AbstractPolarDiagram, PolarCoordinatePlane )
