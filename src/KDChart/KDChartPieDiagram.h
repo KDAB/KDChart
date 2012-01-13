@@ -73,8 +73,7 @@ private:
     // ### move to private class?
     void placeLabels( PaintContext* paintContext );
     void paintInternal( PaintContext* paintContext );
-    void drawSlice( QPainter* painter, const QRectF& drawPosition, LabelPaintCache* lpc,
-                    uint slice, int step );
+    void drawSlice( QPainter* painter, const QRectF& drawPosition, uint slice );
     void drawSliceSurface( QPainter* painter, const QRectF& drawPosition, uint slice );
     void addSliceLabel( LabelPaintCache* lpc, const QRectF& drawPosition, uint slice );
     void draw3DEffect( QPainter* painter, const QRectF& drawPosition, uint slice );

@@ -238,9 +238,10 @@ void PieDiagram::placeLabels( PaintContext* paintContext )
         PieExtras* pe = new PieExtras();
         d->labelPaintCache.extra = pe;
 
-        for ( int i = 0; i < colCount; i++ ) {
-            if ( d->angleLens[ i ] != 0.0 ) {
-                drawSlice( paintContext->painter(), pieRect, &d->labelPaintCache, i, 0 );
+        for ( int slice = 0; slice < colCount; slice++ ) {
+            if ( d->angleLens[ slice ] != 0.0 ) {
+                const QRectF explodedPieRect = explodedDrawPosition( pieRect, slice );
+                addSliceLabel( &d->labelPaintCache, explodedPieRect, slice );
             }
         }
 
@@ -290,7 +291,7 @@ void PieDiagram::paintInternal( PaintContext* paintContext )
     int currentLeftSlice = backmostSlice;
     int currentRightSlice = backmostSlice;
 
-    drawSlice( paintContext->painter(), pieRect, &d->labelPaintCache, backmostSlice, 1 );
+    drawSlice( paintContext->painter(), pieRect, backmostSlice );
 
     if ( backmostSlice == frontmostSlice ) {
         const int rightmostSlice = findSliceAt( 0, colCount );
@@ -306,21 +307,21 @@ void PieDiagram::paintInternal( PaintContext* paintContext )
 
     while ( currentLeftSlice != frontmostSlice ) {
         if ( currentLeftSlice != backmostSlice ) {
-            drawSlice( paintContext->painter(), pieRect, &d->labelPaintCache, currentLeftSlice, 1 );
+            drawSlice( paintContext->painter(), pieRect, currentLeftSlice );
         }
         currentLeftSlice = findLeftSlice( currentLeftSlice, colCount );
     }
 
     while ( currentRightSlice != frontmostSlice ) {
         if ( currentRightSlice != backmostSlice ) {
-            drawSlice( paintContext->painter(), pieRect, &d->labelPaintCache, currentRightSlice, 1 );
+            drawSlice( paintContext->painter(), pieRect, currentRightSlice );
         }
         currentRightSlice = findRightSlice( currentRightSlice, colCount );
     }
 
     // if the backmost slice is not the frontmost slice, we draw the frontmost one last
     if ( backmostSlice != frontmostSlice || ! threeDPieAttributes().isEnabled() ) {
-        drawSlice( paintContext->painter(), pieRect, &d->labelPaintCache, frontmostSlice, 1 );
+        drawSlice( paintContext->painter(), pieRect, frontmostSlice );
     }
 
     d->paintDataValueTextsAndMarkers( this, paintContext, d->labelPaintCache, false, false );
@@ -362,22 +363,15 @@ QRectF PieDiagram::explodedDrawPosition( const QRectF& drawPosition, uint slice 
   \param slice the slice to draw
   \param threeDPieHeight the height of the three dimensional effect
   */
-void PieDiagram::drawSlice( QPainter* painter, const QRectF& drawPosition, LabelPaintCache* lpc,
-                            uint slice, int step )
+void PieDiagram::drawSlice( QPainter* painter, const QRectF& drawPosition, uint slice)
 {
     // Is there anything to draw at all?
     if ( d->angleLens[ slice ] == 0.0 ) {
         return;
     }
-
     const QRectF adjustedDrawPosition = explodedDrawPosition( drawPosition, slice );
-
-    if ( step == 0 ) {
-        addSliceLabel( lpc, adjustedDrawPosition, slice );
-    } else {
-        draw3DEffect( painter, adjustedDrawPosition, slice );
-        drawSliceSurface( painter, adjustedDrawPosition, slice );
-    }
+    draw3DEffect( painter, adjustedDrawPosition, slice );
+    drawSliceSurface( painter, adjustedDrawPosition, slice );
 }
 
 /**
