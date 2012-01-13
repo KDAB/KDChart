@@ -48,8 +48,6 @@ protected:
     // Implement AbstractDiagram
     /** \reimpl */
     virtual void paint( PaintContext* paintContext );
-    void paintInternal( PaintContext* paintContext, QRectF& textBoundingRect,
-                        bool justCalculateSpace );
 
 public:
     /** \reimpl */
@@ -65,6 +63,9 @@ public:
 
     virtual PieDiagram * clone() const;
 
+    // ### this one is new and BIC!
+    virtual void paint( PaintContext* paintContext, int step );
+
 protected:
     /** \reimpl */
     virtual const QPair<QPointF, QPointF> calculateDataBoundaries() const;
@@ -72,14 +73,13 @@ protected:
     void resizeEvent( QResizeEvent* );
 
 private:
+    // ### move to private class?
     void drawSlice( QPainter* painter,
         const QRectF &drawPosition,
         LabelPaintCache* lpc,
-        uint slice );
-    void drawSliceSurface( QPainter* painter,
-        const QRectF &drawPosition,
-        LabelPaintCache* lpc,
-        uint slice );
+        uint slice, int step );
+    void drawSliceSurface( QPainter* painter, const QRectF& drawPosition, uint slice );
+    void addSliceLabel( LabelPaintCache* lpc, const QRectF& drawPosition, uint slice );
     void draw3DEffect( QPainter* painter,
         const QRectF& drawPosition,
         uint slice,
@@ -93,6 +93,9 @@ private:
         qreal threeDHeight,
         qreal startAngle,
         qreal endAngle );
+    void calcSliceAngles();
+    void calcPieSize( const QRectF &contentsRect );
+    QRectF twoDPieRect( const QRectF &contentsRect, const ThreeDPieAttributes& threeDAttrs ) const;
     uint findSliceAt( qreal angle, int columnCount );
     uint findLeftSlice( uint slice, int columnCount );
     uint findRightSlice( uint slice, int columnCount );

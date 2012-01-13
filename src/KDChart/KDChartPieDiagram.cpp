@@ -120,6 +120,7 @@ void PieDiagram::paint(PaintContext* ctx)
     // In the second stage, we make use of that information and
     // perform the actual painting.
     QPainter* actualPainter = ctx->painter();
+#if 0
     QRectF textBoundingRect;
 
     // Use a null paint device and perform "phantom" painting, which determines how much space is required.
@@ -131,109 +132,75 @@ void PieDiagram::paint(PaintContext* ctx)
     // Now perform the real painting
     ctx->setPainter(actualPainter);
     paintInternal( ctx, textBoundingRect, false );
+#endif
+    KDChart::NullPaintDevice nullPd( ctx->rectangle().size().toSize() );
+    QPainter nullPainter( &nullPd );
+    ctx->setPainter( &nullPainter );
+    paint( ctx, 0 );
+    ctx->setPainter( actualPainter );
+
+    paint( ctx, 1 );
 }
 
-void PieDiagram::paintInternal( PaintContext* ctx, QRectF& textBoundingRect, bool justCalculateSpace )
+void PieDiagram::calcSliceAngles()
 {
-    // note: Not having any data model assigned is no bug
-    //       but we can not draw a diagram then either.
-    if ( !checkInvariants(true) || model()->rowCount() < 1 )
-        return;
-
-    d->reverseMapper.clear();
-
-    const ThreeDPieAttributes threeDAttrs( threeDPieAttributes() );
+    // determine slice positions and sizes
+    const qreal sum = valueTotals();
+    const qreal sectorsPerValue = 360.0 / sum;
+    const PolarCoordinatePlane* plane = polarCoordinatePlane();
+    qreal currentValue = plane ? plane->startPosition() : 0.0;
 
     const int colCount = columnCount();
-
-    QRectF contentsRect = PolarCoordinatePlane::Private::contentsRect( polarCoordinatePlane() );
-    contentsRect = ctx->rectangle();
-
-    if( contentsRect.isEmpty() )
-        return;
-
-    LabelPaintCache lpc;
-    const qreal sum = valueTotals();
-
-    if( sum == 0.0 ) //nothing to draw
-        return;
-
     d->startAngles.resize( colCount );
     d->angleLens.resize( colCount );
 
-    // compute position
-    d->size = qMin( contentsRect.width(), contentsRect.height() ); // initial size
+    bool atLeastOneValue = false; // guard against completely empty tables
+    for ( int iColumn = 0; iColumn < colCount; ++iColumn ) {
+        bool isOk;
+        const qreal cellValue = qAbs( model()->data( model()->index( 0, iColumn, rootIndex() ) ) // checked
+            .toDouble( &isOk ) );
+        // toDouble() returns 0.0 if there was no value or a non-numeric value
+        atLeastOneValue = atLeastOneValue || isOk;
 
-    // if the pies explode, we need to give them additional space =>
-    // make the basic size smaller
-    // TODO this can be cached
+        d->startAngles[ iColumn ] = currentValue;
+        d->angleLens[ iColumn ] = cellValue * sectorsPerValue;
+
+        currentValue = d->startAngles[ iColumn ] + d->angleLens[ iColumn ];
+    }
+
+    // If there was no value at all, this is the sign for other code to bail out
+    if ( !atLeastOneValue ) {
+        d->startAngles.clear();
+        d->angleLens.clear();
+    }
+}
+
+void PieDiagram::calcPieSize( const QRectF &contentsRect )
+{
+    d->size = qMin( contentsRect.width(), contentsRect.height() );
+
+    // if any slice explodes, the whole pie needs additional space so we make the basic size smaller
     qreal maxExplode = 0.0;
-    for( int j = 0; j < colCount; ++j ){
+    const int colCount = columnCount();
+    for ( int j = 0; j < colCount; ++j ) {
         const PieAttributes columnAttrs( pieAttributes( model()->index( 0, j, rootIndex() ) ) ); // checked
         maxExplode = qMax( maxExplode, columnAttrs.explodeFactor() );
     }
     d->size /= ( 1.0 + 1.0 * maxExplode );
 
-    if(d->size < 0.0)
+    if ( d->size < 0.0 ) {
         d->size = 0;
-
-    if(!textBoundingRect.isEmpty() && d->size > 0.0)
-    {
-        // Find out the distances from every corner of the rectangle with
-        // the center.
-        QPointF center = ctx->rectangle().center();
-        qreal left = qMax(qreal(0.0), center.x() - textBoundingRect.left());
-        qreal right = qMax(qreal(0.0), textBoundingRect.right() - center.x());
-        qreal top = qMax(qreal(0.0), center.y() - textBoundingRect.top());
-        qreal bottom = qMax(qreal(0.0), textBoundingRect.bottom() - center.y());
-        // Compute the minimal and maximal distances for horizontal vs vertical
-        // the text has.
-        qreal xDistanceMax, xDistanceMin, yDistanceMax, yDistanceMin;
-        if ( left > right ) {
-            xDistanceMax = left;
-            xDistanceMin = right;
-        } else {
-            xDistanceMax = right;
-            xDistanceMin = left;
-        }
-        if ( top > bottom ) {
-            yDistanceMax = top;
-            yDistanceMin = bottom;
-        } else {
-            yDistanceMax = bottom;
-            yDistanceMin = top;
-        }
-        // Above we are dealing with the distance from the center what means
-        // below we need to make sure to use the half d->size while working
-        // with those values.
-        qreal availableDistance = d->size/2.0;
-        // Now first check what size (if any) the text needs more in any
-        // of the corners then what is available for the pie-chart.
-        // The resulting diff value is not any longer only related to the
-        // distance (d->size/2 cause of calculation from the center) but
-        // is now in relation to the whole d->size.
-        qreal diff;
-        if ( xDistanceMax + xDistanceMin > yDistanceMax + yDistanceMin ) {
-            diff = qMax(qreal(0.0), xDistanceMax - availableDistance) + qMax(0.0, xDistanceMin - availableDistance);
-        } else {
-            diff = qMax(qreal(0.0), yDistanceMax - availableDistance) + qMax(0.0, yDistanceMin - availableDistance);
-        }
-        if(diff > 0.0) {
-            // If that is the case then we need to shrink the size available for the
-            // pie-chart by the additional space needed for the text. Those space
-            // removed from the pie-chart will then be used by the text and makes
-            // sure that the text fits into the contentsRect and is not drawn outside.
-            d->size -= qMin(d->size, diff);
-        }
     }
+}
 
-    QRectF slicePosition;
-
+QRectF PieDiagram::twoDPieRect( const QRectF &contentsRect, const ThreeDPieAttributes& threeDAttrs ) const
+{
+    QRectF pieRect;
     if ( ! threeDAttrs.isEnabled() ) {
         qreal x = ( contentsRect.width() == d->size ) ? 0.0 : ( ( contentsRect.width() - d->size ) / 2.0 );
         qreal y = ( contentsRect.height() == d->size ) ? 0.0 : ( ( contentsRect.height() - d->size ) / 2.0 );
-        slicePosition = QRectF( x, y, d->size, d->size );
-        slicePosition.translate( contentsRect.left(), contentsRect.top() );
+        pieRect = QRectF( x, y, d->size, d->size );
+        pieRect.translate( contentsRect.left(), contentsRect.top() );
     } else {
         // threeD: width is the maximum possible width; height is 1/2 of that
         qreal sizeFor3DEffect = 0.0;
@@ -253,56 +220,57 @@ void PieDiagram::paintInternal( PaintContext* ctx, QRectF& textBoundingRect, boo
         }
         qreal y = ( contentsRect.height() == height ) ? 0.0 : ( ( contentsRect.height() - height - sizeFor3DEffect ) / 2.0 );
 
-        slicePosition = QRectF( contentsRect.left() + x, contentsRect.top() + y, d->size, height );
+        pieRect = QRectF( contentsRect.left() + x, contentsRect.top() + y, d->size, height );
     }
+    return pieRect;
+}
 
-    const PolarCoordinatePlane * plane = polarCoordinatePlane();
-    const qreal sectorsPerValue = 360.0 / sum;
-    qreal currentValue = plane ? plane->startPosition() : 0.0;
-
-    bool atLeastOneValue = false; // guard against completely empty tables
-    QVariant vValY;
-    for ( int iColumn = 0; iColumn < colCount; ++iColumn ) {
-        // is there anything at all at this column?
-        bool bOK;
-        const qreal cellValue = qAbs( model()->data( model()->index( 0, iColumn, rootIndex() ) ) // checked
-            .toDouble( &bOK ) );
-
-        if( bOK ){
-            d->startAngles[ iColumn ] = currentValue;
-            d->angleLens[ iColumn ] = cellValue * sectorsPerValue;
-            atLeastOneValue = true;
-        } else { // mark as non-existent
-            d->angleLens[ iColumn ] = 0.0;
-            if ( iColumn > 0.0 )
-                d->startAngles[ iColumn ] = d->startAngles[ iColumn - 1 ];
-            else
-                d->startAngles[ iColumn ] = currentValue;
-        }
-        //qDebug() << "d->startAngles["<<iColumn<<"] == " << d->startAngles[ iColumn ]
-        //         << " +  d->angleLens["<<iColumn<<"]" << d->angleLens[ iColumn ]
-        //         << " = " << d->startAngles[ iColumn ]+d->angleLens[ iColumn ];
-
-        currentValue = d->startAngles[ iColumn ] + d->angleLens[ iColumn ];
-    }
-
-    // If there was no value at all, bail out, to avoid endless loops
-    // later on (e.g. in findSliceAt()).
-    if( ! atLeastOneValue )
+void PieDiagram::paint( PaintContext* paintContext, int step )
+{
+    // note: Not having any data model assigned is no bug
+    //       but we can not draw a diagram then either.
+    if ( !checkInvariants(true) || model()->rowCount() < 1 )
         return;
+    if ( paintContext->rectangle().isEmpty() || valueTotals() == 0.0 ) {
+        return;
+    }
+
+    PieExtras* pe = static_cast<PieExtras *>( d->labelPaintCache.extra );
+    if ( step == 0 ) {
+        d->reverseMapper.clear(); // on first call, this sets up the internals of the ReverseMapper.
+
+        calcSliceAngles();
+        if ( d->startAngles.isEmpty() ) {
+            return;
+        }
+
+        pe = new PieExtras();
+        d->labelPaintCache.extra = pe;
+
+        calcPieSize( paintContext->rectangle() );
+    } else {
+        if ( d->startAngles.isEmpty() ) {
+            // step 0 found no non-empty slices
+            return;
+        }
+    }
+
+    const ThreeDPieAttributes threeDAttrs( threeDPieAttributes() );
+
+    // this is the rect for the top surface of the pie, i.e. not including 3D decoration around it
+    QRectF pieRect = twoDPieRect( paintContext->rectangle(), threeDAttrs );
 
     // Paint from back to front ("painter's algorithm") - first draw the backmost slice,
     // then the slices on the left and right from back to front, then the frontmost one.
 
+    const int colCount = columnCount();
+
     const int backmostSlice = findSliceAt( 90, colCount );
     const int frontmostSlice = findSliceAt( 270, colCount );
-
     int currentLeftSlice = backmostSlice;
     int currentRightSlice = backmostSlice;
 
-    d->forgetAlreadyPaintedDataValues();
-
-    drawSlice( ctx->painter(), slicePosition, &lpc, backmostSlice );
+    drawSlice( paintContext->painter(), pieRect, &d->labelPaintCache, backmostSlice, step );
 
     if ( backmostSlice == frontmostSlice ) {
         const int rightmostSlice = findSliceAt( 0, colCount );
@@ -315,23 +283,65 @@ void PieDiagram::paintInternal( PaintContext* ctx, QRectF& textBoundingRect, boo
     }
 
     while ( currentLeftSlice != frontmostSlice ) {
-        if( currentLeftSlice != backmostSlice )
-            drawSlice( ctx->painter(), slicePosition, &lpc, currentLeftSlice );
+        if ( currentLeftSlice != backmostSlice ) {
+            drawSlice( paintContext->painter(), pieRect, &d->labelPaintCache, currentLeftSlice, step );
+        }
         currentLeftSlice = findLeftSlice( currentLeftSlice, colCount );
     }
 
     while ( currentRightSlice != frontmostSlice ) {
-        if( currentRightSlice != backmostSlice )
-            drawSlice( ctx->painter(), slicePosition, &lpc, currentRightSlice );
+        if ( currentRightSlice != backmostSlice ) {
+            drawSlice( paintContext->painter(), pieRect, &d->labelPaintCache, currentRightSlice, step );
+        }
         currentRightSlice = findRightSlice( currentRightSlice, colCount );
     }
 
     // if the backmost slice is not the frontmost slice, we draw the frontmost one last
     if ( backmostSlice != frontmostSlice || ! threeDPieAttributes().isEnabled() ) {
-        drawSlice( ctx->painter(), slicePosition, &lpc, frontmostSlice );
+        drawSlice( paintContext->painter(), pieRect, &d->labelPaintCache, frontmostSlice, step );
     }
 
-    d->paintDataValueTextsAndMarkers( this, ctx, lpc, false, justCalculateSpace, &textBoundingRect );
+    if ( step == 0 ) {
+        // TODO: rearrange labels!
+        QRectF textBoundingRect;
+        d->paintDataValueTextsAndMarkers( this, paintContext, d->labelPaintCache, false, true,
+                                          &textBoundingRect );
+
+        if ( !textBoundingRect.isEmpty() && d->size > 0.0 ) {
+            // Find out the distances from every corner of the rectangle with
+            // the center.
+            QRectF rect = paintContext->rectangle();
+            qreal left = qMax( qreal( 0.0 ), rect.left() - textBoundingRect.left() );
+            qreal right = qMax( qreal( 0.0 ), textBoundingRect.right() - rect.right() );
+            qreal top = qMax( qreal( 0.0 ), rect.top() - textBoundingRect.top());
+            qreal bottom = qMax( qreal( 0.0 ), textBoundingRect.bottom() - rect.bottom() );
+            // Compute the minimal and maximal distances for horizontal vs vertical
+            // the text has.
+
+            qreal xDiff = left + right;
+            qreal yDiff = top + bottom;
+            qreal diff = qMax( xDiff, yDiff );
+
+            if ( diff > 0.0 ) {
+                // If that is the case then we need to shrink the size available for the
+                // pie-chart by the additional space needed for the text. Those space
+                // removed from the pie-chart will then be used by the text and makes
+                // sure that the text fits into the contentsRect and is not drawn outside.
+                qDebug() << "resizing from" << d->size << "to" << ( d->size - qMin( d->size, diff ) );
+                d->size -= qMin(d->size, diff);
+            }
+        }
+
+    } else {
+        Q_ASSERT( step == 1 );
+        d->paintDataValueTextsAndMarkers( this, paintContext, d->labelPaintCache, false, false );
+        // it's safer to do this before step 0, but clearing them here uses less memory on average.
+        d->forgetAlreadyPaintedDataValues(); // TODO rename to resetLabelSpaceAllocation?
+        d->reverseMapper.clear();
+        d->labelPaintCache.clear();
+        d->startAngles.clear();
+        d->angleLens.clear();
+    }
 }
 
 #if defined ( Q_WS_WIN)
@@ -347,7 +357,7 @@ void PieDiagram::paintInternal( PaintContext* ctx, QRectF& textBoundingRect, boo
   \param threeDPieHeight the height of the three dimensional effect
   */
 void PieDiagram::drawSlice( QPainter* painter, const QRectF& drawPosition, LabelPaintCache* lpc,
-                            uint slice )
+                            uint slice, int step )
 {
     // Is there anything to draw at all?
     const qreal angleLen = d->angleLens[ slice ];
@@ -369,8 +379,12 @@ void PieDiagram::drawSlice( QPainter* painter, const QRectF& drawPosition, Label
                                         explodeDistance * - sin( explodeAngle ) );
     }
 
-    draw3DEffect( painter, adjustedDrawPosition, slice, threeDAttrs );
-    drawSliceSurface( painter, adjustedDrawPosition, lpc, slice );
+    if ( step == 0 ) {
+        addSliceLabel( lpc, adjustedDrawPosition, slice );
+    } else {
+        draw3DEffect( painter, adjustedDrawPosition, slice, threeDAttrs );
+        drawSliceSurface( painter, adjustedDrawPosition, slice );
+    }
 }
 
 /**
@@ -380,125 +394,122 @@ void PieDiagram::drawSlice( QPainter* painter, const QRectF& drawPosition, Label
   \param dataset the dataset to draw the slice for
   \param slice the slice to draw
   */
-void PieDiagram::drawSliceSurface( QPainter* painter, const QRectF& drawPosition,
-                                   LabelPaintCache* lpc, uint slice )
+void PieDiagram::drawSliceSurface( QPainter* painter, const QRectF& drawPosition, uint slice )
 {
     // Is there anything to draw at all?
-    qreal angleLen = d->angleLens[ slice ];
-    if ( angleLen ) {
-        qreal startAngle = d->startAngles[ slice ];
+    const qreal angleLen = d->angleLens[ slice ];
+    const qreal startAngle = d->startAngles[ slice ];
+    const QModelIndex index( model()->index( 0, slice, rootIndex() ) ); // checked
 
-        QModelIndex index( model()->index( 0, slice, rootIndex() ) ); // checked
-        const PieAttributes attrs( pieAttributes( index ) );
-        const ThreeDPieAttributes threeDAttrs( threeDPieAttributes( index ) );
-        painter->setRenderHint ( QPainter::Antialiasing );
+    const PieAttributes attrs( pieAttributes( index ) );
+    const ThreeDPieAttributes threeDAttrs( threeDPieAttributes( index ) );
 
-        QBrush br = brush( index );
-        if( threeDAttrs.isEnabled() ) {
-            br = threeDAttrs.threeDBrush( br, drawPosition );
+    painter->setRenderHint ( QPainter::Antialiasing );
+    QBrush br = brush( index );
+    if ( threeDAttrs.isEnabled() ) {
+        br = threeDAttrs.threeDBrush( br, drawPosition );
+    }
+    painter->setBrush( br );
+    
+    QPen pen = this->pen( index );
+    if ( threeDAttrs.isEnabled() ) {
+        pen.setColor( QColor( 0, 0, 0 ) );
+    }
+    painter->setPen( pen );
+
+    if ( angleLen == 360 ) {
+        // full circle, avoid nasty line in the middle
+        painter->drawEllipse( drawPosition );
+
+        //Add polygon to Reverse mapper for showing tool tips.
+        QPolygonF poly( drawPosition );
+        d->reverseMapper.addPolygon( index.row(), index.column(), poly );
+    } else {
+        // draw the top of this piece
+        // Start with getting the points for the arc.
+        const int arcPoints = static_cast<int>(trunc( angleLen / granularity() ));
+        QPolygonF poly( arcPoints+2 );
+        qreal degree=0.0;
+        int iPoint = 0;
+        bool perfectMatch = false;
+
+        while ( degree <= angleLen ){
+            poly[ iPoint ] = pointOnEllipse( drawPosition, startAngle + degree );
+            //qDebug() << degree << angleLen << poly[ iPoint ];
+            perfectMatch = (degree == angleLen);
+            degree += granularity();
+            ++iPoint;
         }
-        painter->setBrush( br );
+        // if necessary add one more point to fill the last small gap
+        if ( ! perfectMatch ) {
+            poly[ iPoint ] = pointOnEllipse( drawPosition, startAngle + angleLen );
 
-        QPen pen = this->pen( index );
-        if ( threeDAttrs.isEnabled() )
-            pen.setColor( QColor( 0, 0, 0 ) );
-        painter->setPen( pen );
-
-        qreal favoriteTextAngle = 0.0;
-
-        if ( angleLen == 360 ) {
-            // full circle, avoid nasty line in the middle
-            painter->drawEllipse( drawPosition );
-
-            //Add polygon to Reverse mapper for showing tool tips.
-            QPolygonF poly( drawPosition );
-            d->reverseMapper.addPolygon( index.row(), index.column(), poly );
+            // add the center point of the piece
+            poly.append( drawPosition.center() );
         } else {
-            // draw the top of this piece
-            // Start with getting the points for the arc.
-            const int arcPoints = static_cast<int>(trunc( angleLen / granularity() ));
-            QPolygonF poly( arcPoints+2 );
-            qreal degree=0.0;
-            int iPoint = 0;
-            bool perfectMatch = false;
-
-            while ( degree <= angleLen ){
-                poly[ iPoint ] = pointOnEllipse( drawPosition, startAngle + degree );
-                //qDebug() << degree << angleLen << poly[ iPoint ];
-                perfectMatch = (degree == angleLen);
-                degree += granularity();
-                ++iPoint;
-            }
-            // if necessary add one more point to fill the last small gap
-            if( ! perfectMatch ){
-                poly[ iPoint ] = pointOnEllipse( drawPosition, startAngle + angleLen );
-
-                // add the center point of the piece
-                poly.append( drawPosition.center() );
-            }else{
-                poly[ iPoint ] = drawPosition.center();
-            }
-            //find the value and paint it
-            //fix value position
-            d->reverseMapper.addPolygon( index.row(), index.column(), poly );
-
-            painter->drawPolygon( poly );
-
-            if ( autoRotateLabels() ) {
-                const QLineF line( poly.first(), poly[ poly.count() - 2 ] );
-                favoriteTextAngle = line.dx() == 0 ? 0.0 : atan( line.dy() / line.dx() );
-                favoriteTextAngle = favoriteTextAngle / 2.0 / 3.141592653589793 * 360.0;
-            }
+            poly[ iPoint ] = drawPosition.center();
         }
+        //find the value and paint it
+        //fix value position
+        d->reverseMapper.addPolygon( index.row(), index.column(), poly );
 
-        // Position points are calculated relative to the slice.
-        // They are calculated as if the slice was 'standing' on its tip and the rim was up,
-        // so North is the middle (also highest part) of the rim and South is the tip of the slice.
+        painter->drawPolygon( poly );
+    }
+}
 
-        const qreal sum = valueTotals();
-        const QPointF south = drawPosition.center();
-        const QPointF southEast = south;
-        const QPointF southWest = south;
-        const QPointF north = pointOnEllipse( drawPosition, startAngle + angleLen/2.0 );
+void PieDiagram::addSliceLabel( LabelPaintCache* lpc, const QRectF& drawPosition, uint slice )
+{
+    const qreal angleLen = d->angleLens[ slice ];
+    const qreal startAngle = d->startAngles[ slice ];
+    const QModelIndex index( model()->index( 0, slice, rootIndex() ) ); // checked
+    const qreal sum = valueTotals();
 
-        const QPointF northEast = pointOnEllipse( drawPosition, startAngle );
-        const QPointF northWest = pointOnEllipse( drawPosition, startAngle + angleLen );
-        QPointF center = ( south + north ) / 2.0;
-        const QPointF east = ( south + northEast ) / 2.0;
-        const QPointF west = ( south + northWest ) / 2.0;
+    // Position points are calculated relative to the slice.
+    // They are calculated as if the slice was 'standing' on its tip and the rim was up,
+    // so North is the middle (also highest part) of the rim and South is the tip of the slice.
 
-        PositionPoints points( center, northWest, north, northEast, east, southEast, south, southWest, west );
-        qreal topAngle = startAngle - 90;
-        if( topAngle < 0.0 )
-            topAngle += 360;
+    const QPointF south = drawPosition.center();
+    const QPointF southEast = south;
+    const QPointF southWest = south;
+    const QPointF north = pointOnEllipse( drawPosition, startAngle + angleLen / 2.0 );
 
-        points.setDegrees(KDChartEnums::PositionEast,      topAngle);
-        points.setDegrees(KDChartEnums::PositionNorthEast, topAngle);
-        points.setDegrees(KDChartEnums::PositionWest,      topAngle + angleLen);
-        points.setDegrees(KDChartEnums::PositionNorthWest, topAngle + angleLen);
-        points.setDegrees(KDChartEnums::PositionCenter,    topAngle + angleLen/2.0);
-        points.setDegrees(KDChartEnums::PositionNorth,     topAngle + angleLen/2.0);
+    const QPointF northEast = pointOnEllipse( drawPosition, startAngle );
+    const QPointF northWest = pointOnEllipse( drawPosition, startAngle + angleLen );
+    QPointF center = ( south + north ) / 2.0;
+    const QPointF east = ( south + northEast ) / 2.0;
+    const QPointF west = ( south + northWest ) / 2.0;
 
-        // H4X
-        {
-            QString sn = QString::number( slice );
-            painter->save();
-            painter->setPen( Qt::black );
-            painter->drawText( points.mPositionCenter, QLatin1String( "C" ) + sn );
-            painter->drawText( points.mPositionNorth, QLatin1String( "N" ) + sn );
-            painter->drawText( points.mPositionSouth, QLatin1String( "S" ) + sn );
-            painter->drawText( points.mPositionEast, QLatin1String( "E" ) + sn );
-            painter->drawText( points.mPositionWest, QLatin1String( "W" ) + sn );
-            painter->restore();
+    PositionPoints points( center, northWest, north, northEast, east, southEast, south, southWest, west );
+    qreal topAngle = startAngle - 90;
+    if ( topAngle < 0.0 ) {
+        topAngle += 360.0;
+    }
+
+    points.setDegrees( KDChartEnums::PositionEast, topAngle );
+    points.setDegrees( KDChartEnums::PositionNorthEast, topAngle );
+    points.setDegrees( KDChartEnums::PositionWest, topAngle + angleLen );
+    points.setDegrees( KDChartEnums::PositionNorthWest, topAngle + angleLen );
+    points.setDegrees( KDChartEnums::PositionCenter, topAngle + angleLen / 2.0 );
+    points.setDegrees( KDChartEnums::PositionNorth, topAngle + angleLen / 2.0 );
+
+    qreal favoriteTextAngle = 0.0;
+    if ( autoRotateLabels() ) {
+        favoriteTextAngle = - ( startAngle + angleLen / 2 ) + 90.0;
+        while ( favoriteTextAngle <= 0.0 ) {
+            favoriteTextAngle += 360.0;
         }
-
-        const int prevLabelCount = lpc->paintReplay.size();
-        d->addLabel( lpc, this, index, 0, points, Position::Center, Position::Center,
-                     angleLen * sum / 360, favoriteTextAngle );
-        if ( lpc->paintReplay.size() == prevLabelCount ) {
-            qDebug() << "hm, it seems that the label collided with another one";
+        // flip the label when upside down
+        if ( favoriteTextAngle > 90.0 && favoriteTextAngle < 270.0 ) {
+            favoriteTextAngle = favoriteTextAngle - 180.0;
+        }
+        // negative angles can have special meaning in addLabel; otherwise they work fine
+        if ( favoriteTextAngle <= 0.0 ) {
+            favoriteTextAngle += 360.0;
         }
     }
+
+    d->addLabel( lpc, this, index, 0, points, Position::Center, Position::Center,
+                 angleLen * sum / 360, favoriteTextAngle );
 }
 
 static bool doSpansOverlap( qreal s1Start, qreal s1End, qreal s2Start, qreal s2End )
