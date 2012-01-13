@@ -57,20 +57,20 @@ private:
 };
 
 TextAttributes::Private::Private()
+    : visible( false ),
+      font( QApplication::font() ),
+      cachedFontSize( -1.0 ),
+      autoRotate( false ),
+      autoShrink( false ),
+      hasRotation( false ),
+      rotation( 0 ),
+      pen( Qt::black )
 {
-    cachedFontSize = -1.0;
 }
 
 TextAttributes::TextAttributes()
     : _d( new Private() )
 {
-    setVisible( true );
-    setFont( QApplication::font() );
-    setAutoRotate( false );
-    setAutoShrink( false );
-    setRotation( 0 );
-    resetRotation();
-    setPen( QPen( Qt::black ) );
 }
 
 TextAttributes::TextAttributes( const TextAttributes& r )
