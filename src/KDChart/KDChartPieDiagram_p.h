@@ -62,9 +62,18 @@ protected:
     QVector < qreal > startAngles;
     QVector < qreal > angleLens;
     qreal size;
+    LabelPaintCache labelPaintCache;
 };
 
 KDCHART_IMPL_DERIVED_DIAGRAM( PieDiagram, AbstractPieDiagram, PolarCoordinatePlane )
+
+class PieExtras : public LabelPaintExtraInfo
+{
+public:
+    // virtuals from LabelPaintExtraInfo
+    ~PieExtras() {}
+    void clear() {}
+};
 
 }
 
