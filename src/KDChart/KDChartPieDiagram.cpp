@@ -34,7 +34,6 @@
 #include "KDChartThreeDPieAttributes.h"
 #include "KDChartPainterSaver_p.h"
 #include "KDChartDataValueAttributes.h"
-#include "KDChartNullPaintDevice.h"
 
 #include <KDABLibFakes>
 
@@ -119,27 +118,8 @@ void PieDiagram::paint(PaintContext* ctx)
     // for text labels.
     // In the second stage, we make use of that information and
     // perform the actual painting.
-    QPainter* actualPainter = ctx->painter();
-#if 0
-    QRectF textBoundingRect;
-
-    // Use a null paint device and perform "phantom" painting, which determines how much space is required.
-    KDChart::NullPaintDevice nullPd(ctx->rectangle().size().toSize());
-    QPainter nullPainter(&nullPd);
-    ctx->setPainter(&nullPainter);
-    paintInternal( ctx, textBoundingRect, true );
-
-    // Now perform the real painting
-    ctx->setPainter(actualPainter);
-    paintInternal( ctx, textBoundingRect, false );
-#endif
-    KDChart::NullPaintDevice nullPd( ctx->rectangle().size().toSize() );
-    QPainter nullPainter( &nullPd );
-    ctx->setPainter( &nullPainter );
-    paint( ctx, 0 );
-    ctx->setPainter( actualPainter );
-
-    paint( ctx, 1 );
+    placeLabels( ctx );
+    paintInternal( ctx );
 }
 
 void PieDiagram::calcSliceAngles()
@@ -193,19 +173,19 @@ void PieDiagram::calcPieSize( const QRectF &contentsRect )
     }
 }
 
+// this is the rect of the top surface of the pie, i.e. excluding the "3D" rim effect.
 QRectF PieDiagram::twoDPieRect( const QRectF &contentsRect, const ThreeDPieAttributes& threeDAttrs ) const
 {
     QRectF pieRect;
-    if ( ! threeDAttrs.isEnabled() ) {
-        qreal x = ( contentsRect.width() == d->size ) ? 0.0 : ( ( contentsRect.width() - d->size ) / 2.0 );
-        qreal y = ( contentsRect.height() == d->size ) ? 0.0 : ( ( contentsRect.height() - d->size ) / 2.0 );
-        pieRect = QRectF( x, y, d->size, d->size );
-        pieRect.translate( contentsRect.left(), contentsRect.top() );
+    if ( !threeDAttrs.isEnabled() ) {
+        qreal x = ( contentsRect.width() - d->size ) / 2.0;
+        qreal y = ( contentsRect.height() - d->size ) / 2.0;
+        pieRect = QRectF( contentsRect.left() + x, contentsRect.top() + y, d->size, d->size );
     } else {
         // threeD: width is the maximum possible width; height is 1/2 of that
         qreal sizeFor3DEffect = 0.0;
 
-        qreal x = ( contentsRect.width() == d->size ) ? 0.0 : ( ( contentsRect.width() - d->size ) / 2.0 );
+        qreal x = ( contentsRect.width() - d->size ) / 2.0;
         qreal height = d->size;
         // make sure that the height plus the threeDheight is not more than the
         // available size
@@ -218,59 +198,99 @@ QRectF PieDiagram::twoDPieRect( const QRectF &contentsRect, const ThreeDPieAttri
             sizeFor3DEffect = - threeDAttrs.depth() / 100.0 * height;
             height = d->size - sizeFor3DEffect;
         }
-        qreal y = ( contentsRect.height() == height ) ? 0.0 : ( ( contentsRect.height() - height - sizeFor3DEffect ) / 2.0 );
+        qreal y = ( contentsRect.height() - height - sizeFor3DEffect ) / 2.0;
 
         pieRect = QRectF( contentsRect.left() + x, contentsRect.top() + y, d->size, height );
     }
     return pieRect;
 }
 
-void PieDiagram::paint( PaintContext* paintContext, int step )
+void PieDiagram::placeLabels( PaintContext* paintContext )
 {
-    // note: Not having any data model assigned is no bug
-    //       but we can not draw a diagram then either.
-    if ( !checkInvariants(true) || model()->rowCount() < 1 )
+    if ( !checkInvariants(true) || model()->rowCount() < 1 ) {
         return;
+    }
     if ( paintContext->rectangle().isEmpty() || valueTotals() == 0.0 ) {
         return;
     }
 
-    PieExtras* pe = static_cast<PieExtras *>( d->labelPaintCache.extra );
-    if ( step == 0 ) {
-        d->reverseMapper.clear(); // on first call, this sets up the internals of the ReverseMapper.
+    const ThreeDPieAttributes threeDAttrs( threeDPieAttributes() );
+    const int colCount = columnCount();
 
-        calcSliceAngles();
-        if ( d->startAngles.isEmpty() ) {
-            return;
-        }
+    d->reverseMapper.clear(); // on first call, this sets up the internals of the ReverseMapper.
 
-        pe = new PieExtras();
+    calcSliceAngles();
+    if ( d->startAngles.isEmpty() ) {
+        return;
+    }
+
+    calcPieSize( paintContext->rectangle() );
+    QRectF pieRect = twoDPieRect( paintContext->rectangle(), threeDAttrs );
+
+    // keep resizing the pie until the labels and the pie fit into paintContext->rectangle()
+
+    bool tryAgain = true;
+    while ( tryAgain ) {
+        tryAgain = false;
+
+        d->forgetAlreadyPaintedDataValues();
+        d->labelPaintCache.clear();
+        PieExtras* pe = new PieExtras();
         d->labelPaintCache.extra = pe;
 
-        calcPieSize( paintContext->rectangle() );
-    } else {
-        if ( d->startAngles.isEmpty() ) {
-            // step 0 found no non-empty slices
-            return;
+        for ( int i = 0; i < colCount; i++ ) {
+            if ( d->angleLens[ i ] != 0.0 ) {
+                drawSlice( paintContext->painter(), pieRect, &d->labelPaintCache, i, 0 );
+            }
         }
+
+        QRectF textBoundingRect;
+        d->paintDataValueTextsAndMarkers( this, paintContext, d->labelPaintCache, false, true,
+                                          &textBoundingRect );
+
+        if ( !textBoundingRect.isEmpty() && d->size > 0.0 ) {
+            // TODO: sebastian's code here was probably more correct. check that.
+            QRectF rect = paintContext->rectangle();
+            qreal xDiff = textBoundingRect.width() - rect.width();
+            qreal yDiff = textBoundingRect.height() - rect.height();
+            qreal diff = qMax( xDiff, yDiff );
+
+            if ( diff > 1.0 ) {
+                // Here, to fit everything into the available space, we shrink the pie to make
+                // room for the text around it. Then we place the labels again until they fit.
+                //qDebug() << "resizing from" << d->size << "to" << ( d->size - qMin( d->size, diff ) );
+                d->size -= qMin(d->size, diff);
+                pieRect = twoDPieRect( rect, threeDAttrs ); // twoDPieRect uses d->size
+                tryAgain = true;
+            }
+        }
+    }
+}
+
+void PieDiagram::paintInternal( PaintContext* paintContext )
+{
+    // note: Not having any data model assigned is no bug
+    //       but we can not draw a diagram then either.
+    if ( !checkInvariants(true) || model()->rowCount() < 1 ) {
+        return;
+    }
+    if ( d->startAngles.isEmpty() || paintContext->rectangle().isEmpty() || valueTotals() == 0.0 ) {
+        return;
     }
 
     const ThreeDPieAttributes threeDAttrs( threeDPieAttributes() );
-
-    // this is the rect for the top surface of the pie, i.e. not including 3D decoration around it
-    QRectF pieRect = twoDPieRect( paintContext->rectangle(), threeDAttrs );
+    const int colCount = columnCount();
 
     // Paint from back to front ("painter's algorithm") - first draw the backmost slice,
     // then the slices on the left and right from back to front, then the frontmost one.
 
-    const int colCount = columnCount();
-
+    QRectF pieRect = twoDPieRect( paintContext->rectangle(), threeDAttrs );
     const int backmostSlice = findSliceAt( 90, colCount );
     const int frontmostSlice = findSliceAt( 270, colCount );
     int currentLeftSlice = backmostSlice;
     int currentRightSlice = backmostSlice;
 
-    drawSlice( paintContext->painter(), pieRect, &d->labelPaintCache, backmostSlice, step );
+    drawSlice( paintContext->painter(), pieRect, &d->labelPaintCache, backmostSlice, 1 );
 
     if ( backmostSlice == frontmostSlice ) {
         const int rightmostSlice = findSliceAt( 0, colCount );
@@ -284,69 +304,53 @@ void PieDiagram::paint( PaintContext* paintContext, int step )
 
     while ( currentLeftSlice != frontmostSlice ) {
         if ( currentLeftSlice != backmostSlice ) {
-            drawSlice( paintContext->painter(), pieRect, &d->labelPaintCache, currentLeftSlice, step );
+            drawSlice( paintContext->painter(), pieRect, &d->labelPaintCache, currentLeftSlice, 1 );
         }
         currentLeftSlice = findLeftSlice( currentLeftSlice, colCount );
     }
 
     while ( currentRightSlice != frontmostSlice ) {
         if ( currentRightSlice != backmostSlice ) {
-            drawSlice( paintContext->painter(), pieRect, &d->labelPaintCache, currentRightSlice, step );
+            drawSlice( paintContext->painter(), pieRect, &d->labelPaintCache, currentRightSlice, 1 );
         }
         currentRightSlice = findRightSlice( currentRightSlice, colCount );
     }
 
     // if the backmost slice is not the frontmost slice, we draw the frontmost one last
     if ( backmostSlice != frontmostSlice || ! threeDPieAttributes().isEnabled() ) {
-        drawSlice( paintContext->painter(), pieRect, &d->labelPaintCache, frontmostSlice, step );
+        drawSlice( paintContext->painter(), pieRect, &d->labelPaintCache, frontmostSlice, 1 );
     }
 
-    if ( step == 0 ) {
-        // TODO: rearrange labels!
-        QRectF textBoundingRect;
-        d->paintDataValueTextsAndMarkers( this, paintContext, d->labelPaintCache, false, true,
-                                          &textBoundingRect );
-
-        if ( !textBoundingRect.isEmpty() && d->size > 0.0 ) {
-            // Find out the distances from every corner of the rectangle with
-            // the center.
-            QRectF rect = paintContext->rectangle();
-            qreal left = qMax( qreal( 0.0 ), rect.left() - textBoundingRect.left() );
-            qreal right = qMax( qreal( 0.0 ), textBoundingRect.right() - rect.right() );
-            qreal top = qMax( qreal( 0.0 ), rect.top() - textBoundingRect.top());
-            qreal bottom = qMax( qreal( 0.0 ), textBoundingRect.bottom() - rect.bottom() );
-            // Compute the minimal and maximal distances for horizontal vs vertical
-            // the text has.
-
-            qreal xDiff = left + right;
-            qreal yDiff = top + bottom;
-            qreal diff = qMax( xDiff, yDiff );
-
-            if ( diff > 0.0 ) {
-                // If that is the case then we need to shrink the size available for the
-                // pie-chart by the additional space needed for the text. Those space
-                // removed from the pie-chart will then be used by the text and makes
-                // sure that the text fits into the contentsRect and is not drawn outside.
-                qDebug() << "resizing from" << d->size << "to" << ( d->size - qMin( d->size, diff ) );
-                d->size -= qMin(d->size, diff);
-            }
-        }
-
-    } else {
-        Q_ASSERT( step == 1 );
-        d->paintDataValueTextsAndMarkers( this, paintContext, d->labelPaintCache, false, false );
-        // it's safer to do this before step 0, but clearing them here uses less memory on average.
-        d->forgetAlreadyPaintedDataValues(); // TODO rename to resetLabelSpaceAllocation?
-        d->reverseMapper.clear();
-        d->labelPaintCache.clear();
-        d->startAngles.clear();
-        d->angleLens.clear();
-    }
+    d->paintDataValueTextsAndMarkers( this, paintContext, d->labelPaintCache, false, false );
+    // it's safer to do this at the beginning of placeLabels, but we can save some memory here.
+    d->forgetAlreadyPaintedDataValues(); // TODO rename to resetLabelSpaceAllocation?
+    d->reverseMapper.clear();
+    d->labelPaintCache.clear();
+    d->startAngles.clear();
+    d->angleLens.clear();
 }
 
 #if defined ( Q_WS_WIN)
 #define trunc(x) ((int)(x))
 #endif
+
+QRectF PieDiagram::explodedDrawPosition( const QRectF& drawPosition, uint slice ) const
+{
+    const QModelIndex index( model()->index( 0, slice, rootIndex() ) ); // checked
+    const PieAttributes attrs( pieAttributes( index ) );
+
+    QRectF adjustedDrawPosition = drawPosition;
+    if ( attrs.explode() ) {
+        qreal startAngle = d->startAngles[ slice ];
+        qreal angleLen = d->angleLens[ slice ];
+        qreal explodeAngle = ( DEGTORAD( startAngle + angleLen / 2.0 ) );
+        qreal explodeDistance = attrs.explodeFactor() * d->size / 2.0;
+
+        adjustedDrawPosition.translate( explodeDistance * cos( explodeAngle ),
+                                        explodeDistance * - sin( explodeAngle ) );
+    }
+    return adjustedDrawPosition;
+}
 
 /**
   Internal method that draws one of the slices in a pie chart.
@@ -360,29 +364,16 @@ void PieDiagram::drawSlice( QPainter* painter, const QRectF& drawPosition, Label
                             uint slice, int step )
 {
     // Is there anything to draw at all?
-    const qreal angleLen = d->angleLens[ slice ];
-    if ( !angleLen ) {
+    if ( d->angleLens[ slice ] == 0.0 ) {
         return;
     }
 
-    const QModelIndex index( model()->index( 0, slice, rootIndex() ) ); // checked
-    const PieAttributes attrs( pieAttributes( index ) );
-    const ThreeDPieAttributes threeDAttrs( threeDPieAttributes( index ) );
-
-    QRectF adjustedDrawPosition = drawPosition;
-    if ( attrs.explode() ) {
-        qreal startAngle = d->startAngles[ slice ];
-        qreal explodeAngle = ( DEGTORAD( startAngle + angleLen / 2.0 ) );
-        qreal explodeDistance = attrs.explodeFactor() * d->size / 2.0;
-
-        adjustedDrawPosition.translate( explodeDistance * cos( explodeAngle ),
-                                        explodeDistance * - sin( explodeAngle ) );
-    }
+    const QRectF adjustedDrawPosition = explodedDrawPosition( drawPosition, slice );
 
     if ( step == 0 ) {
         addSliceLabel( lpc, adjustedDrawPosition, slice );
     } else {
-        draw3DEffect( painter, adjustedDrawPosition, slice, threeDAttrs );
+        draw3DEffect( painter, adjustedDrawPosition, slice );
         drawSliceSurface( painter, adjustedDrawPosition, slice );
     }
 }
@@ -457,6 +448,7 @@ void PieDiagram::drawSliceSurface( QPainter* painter, const QRectF& drawPosition
     }
 }
 
+// calculate the position points for the label and pass them to addLabel()
 void PieDiagram::addSliceLabel( LabelPaintCache* lpc, const QRectF& drawPosition, uint slice )
 {
     const qreal angleLen = d->angleLens[ slice ];
@@ -550,13 +542,13 @@ static bool doArcsOverlap( qreal a1Start, qreal a1End, qreal a2Start, qreal a2En
   \param drawPosition the position to draw at
   \param slice the slice to draw the shadow for
   */
-void PieDiagram::draw3DEffect( QPainter* painter,
-        const QRectF& drawPosition,
-        uint slice,
-        const ThreeDPieAttributes& threeDAttrs )
+void PieDiagram::draw3DEffect( QPainter* painter, const QRectF& drawPosition, uint slice )
 {
-    if( ! threeDAttrs.isEnabled() )
+    const QModelIndex index( model()->index( 0, slice, rootIndex() ) ); // checked
+    const ThreeDPieAttributes threeDAttrs( threeDPieAttributes( index ) );
+    if ( ! threeDAttrs.isEnabled() ) {
         return;
+    }
 
     // NOTE: We cannot optimize away drawing some of the effects (even
     // when not exploding), because some of the pies might be left out
