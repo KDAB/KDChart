@@ -76,18 +76,18 @@ const QPair<QPointF, QPointF> PieDiagram::calculateDataBoundaries () const
 
     const PieAttributes attrs( pieAttributes() );
 
-    QPointF bottomLeft ( QPointF( 0, 0 ) );
+    QPointF bottomLeft( QPointF( 0, 0 ) );
     QPointF topRight;
     // If we explode, we need extra space for the slice that has the largest explosion distance.
     if ( attrs.explode() ) {
         const int colCount = columnCount();
         qreal maxExplode = 0.0;
-        for( int j = 0; j < colCount; ++j ){
+        for ( int j = 0; j < colCount; ++j ) {
             const PieAttributes columnAttrs( pieAttributes( model()->index( 0, j, rootIndex() ) ) ); // checked
             maxExplode = qMax( maxExplode, columnAttrs.explodeFactor() );
         }
-        topRight = QPointF( 1.0+maxExplode, 1.0+maxExplode );
-    }else{
+        topRight = QPointF( 1.0+maxExplode, 1.0 + maxExplode );
+    } else {
         topRight = QPointF( 1.0, 1.0 );
     }
     return QPair<QPointF, QPointF> ( bottomLeft,  topRight );
@@ -103,15 +103,15 @@ void PieDiagram::paintEvent( QPaintEvent* )
     paint ( &ctx );
 }
 
-void PieDiagram::resizeEvent ( QResizeEvent*)
+void PieDiagram::resizeEvent( QResizeEvent* )
 {
 }
 
-void PieDiagram::resize ( const QSizeF& )
+void PieDiagram::resize( const QSizeF& )
 {
 }
 
-void PieDiagram::paint(PaintContext* ctx)
+void PieDiagram::paint( PaintContext* ctx )
 {
     // Painting is a two stage process
     // In the first stage we figure out how much space is needed
@@ -271,7 +271,7 @@ void PieDiagram::paintInternal( PaintContext* paintContext )
 {
     // note: Not having any data model assigned is no bug
     //       but we can not draw a diagram then either.
-    if ( !checkInvariants(true) || model()->rowCount() < 1 ) {
+    if ( !checkInvariants( true ) || model()->rowCount() < 1 ) {
         return;
     }
     if ( d->startAngles.isEmpty() || paintContext->rectangle().isEmpty() || valueTotals() == 0.0 ) {
@@ -296,10 +296,12 @@ void PieDiagram::paintInternal( PaintContext* paintContext )
         const int rightmostSlice = findSliceAt( 0, colCount );
         const int leftmostSlice = findSliceAt( 180, colCount );
 
-        if( backmostSlice == leftmostSlice )
+        if ( backmostSlice == leftmostSlice ) {
             currentLeftSlice = findLeftSlice( currentLeftSlice, colCount );
-        if( backmostSlice == rightmostSlice )
+        }
+        if ( backmostSlice == rightmostSlice ) {
             currentRightSlice = findRightSlice( currentRightSlice, colCount );
+        }
     }
 
     while ( currentLeftSlice != frontmostSlice ) {
@@ -424,15 +426,15 @@ void PieDiagram::drawSliceSurface( QPainter* painter, const QRectF& drawPosition
         int iPoint = 0;
         bool perfectMatch = false;
 
-        while ( degree <= angleLen ){
+        while ( degree <= angleLen ) {
             poly[ iPoint ] = pointOnEllipse( drawPosition, startAngle + degree );
             //qDebug() << degree << angleLen << poly[ iPoint ];
-            perfectMatch = (degree == angleLen);
+            perfectMatch = ( degree == angleLen );
             degree += granularity();
             ++iPoint;
         }
         // if necessary add one more point to fill the last small gap
-        if ( ! perfectMatch ) {
+        if ( !perfectMatch ) {
             poly[ iPoint ] = pointOnEllipse( drawPosition, startAngle + angleLen );
 
             // add the center point of the piece
@@ -559,10 +561,9 @@ void PieDiagram::draw3DEffect( QPainter* painter, const QRectF& drawPosition, ui
     // No need to save the brush, will be changed on return from this
     // method anyway.
     const QBrush brush = this->brush( model()->index( 0, slice, rootIndex() ) ); // checked
-    if( threeDAttrs.useShadowColors() ){
+    if ( threeDAttrs.useShadowColors() ) {
         painter->setBrush( QBrush( brush.color().darker() ) );
-    }
-    else{
+    } else {
         painter->setBrush( brush );
     }
 
@@ -654,7 +655,7 @@ void PieDiagram::draw3dOuterRim( QPainter* painter,
     qreal degree = endAngle;
     int iPoint = 0;
     bool perfectMatch = false;
-    while ( degree >= startAngle  ){
+    while ( degree >= startAngle ) {
         poly[ numHalfPoints - iPoint - 1 ] = pointOnEllipse( rect, degree );
 
         perfectMatch = (degree == startAngle);
@@ -662,7 +663,7 @@ void PieDiagram::draw3dOuterRim( QPainter* painter,
         ++iPoint;
     }
     // if necessary add one more point to fill the last small gap
-    if( ! perfectMatch ){
+    if ( !perfectMatch ) {
         poly.prepend( pointOnEllipse( rect, startAngle ) );
         ++numHalfPoints;
     }
@@ -732,7 +733,7 @@ uint PieDiagram::findLeftSlice( uint slice, int colCount )
   \param slice the slice to start the search from
   \return the number of the slice to the right of \c slice
   */
-uint PieDiagram::findRightSlice( uint slice, int colCount  )
+uint PieDiagram::findRightSlice( uint slice, int colCount )
 {
     int rightSlice = slice + 1;
     if ( rightSlice == colCount ) {
