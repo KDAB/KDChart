@@ -405,24 +405,36 @@ void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
      * to an alignment of the text frame relative to this position.
      */
 
-    int rotation = ta.rotation();
-    if ( !valueIsPositive && attrs.mirrorNegativeValueTextRotation() ) {
-        rotation *= -1;
-    }
-    qreal dx = - 0.5 * plainSize.width();
-    qreal dy = - 0.5 * plainSize.height();
+    {
+        int rotation = ta.rotation();
+        if ( !valueIsPositive && attrs.mirrorNegativeValueTextRotation() ) {
+            rotation *= -1;
+        }
+        qreal dx = - 0.5 * plainSize.width();
+        qreal dy = - 0.5 * plainSize.height();
 
-    if ( relPos.alignment() & Qt::AlignLeft ) {
-        dx -= 0.5 * plainSize.width();
-    } else if ( relPos.alignment() & Qt::AlignRight ) {
-        dx += 0.5 * plainSize.width();
-    }
+        if ( relPos.alignment() & Qt::AlignLeft ) {
+            dx -= 0.5 * plainSize.width();
+        } else if ( relPos.alignment() & Qt::AlignRight ) {
+            dx += 0.5 * plainSize.width();
+        }
 
-    if ( relPos.alignment() & Qt::AlignTop ) {
-        dy -= 0.5 * plainSize.height();
-    } else if ( relPos.alignment() & Qt::AlignBottom ) {
-        dy += 0.5 * plainSize.height();
+        if ( relPos.alignment() & Qt::AlignTop ) {
+            dy -= 0.5 * plainSize.height();
+        } else if ( relPos.alignment() & Qt::AlignBottom ) {
+            dy += 0.5 * plainSize.height();
+        }
+
+        QTransform t;
+        t.translate( dx, dy );
+        t.translate( plainRect.center().x(), plainRect.center().y() );
+        t.rotate( rotation );
+        t.translate( - plainRect.center().x(), - plainRect.center().y() );
+        painter->setWorldTransform( t, /* combine */ true );
     }
+    // using the full transformation allows us to do collision detection in screen coordinate space,
+    // i.e. as seen by the painter
+    QTransform transform = painter->worldTransform();
 
     bool drawIt = true;
     // note: This flag can be set differently for every label text!
@@ -431,28 +443,12 @@ void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
     // do not test if such texts would cover some of the others.
     if ( !attrs.showOverlappingDataLabels() ) {
         const QRectF br( layout->blockBoundingRect( doc.begin() ) );
-        qreal radRot = DEGTORAD( - ( ( ta.rotation() < 0 ) ? ta.rotation() + 360 : ta.rotation() ) );
-        // qDebug() << Q_FUNC_INFO << radRot;
-        qreal cosRot = cos( radRot );
-        qreal sinRot = sin( radRot );
-        QPolygon pr( br.toRect(), true );
-        // YES, people, the following stuff NEEDS to be done that way!
-        // Otherwise we will not get the texts' individual rotation
-        // and/or the shifting of the texts correctly.
-        // Just believe me - I did tests ..   :-)    (khz, 2008-02-19)
-        for ( int i = 0; i < pr.count(); i++ ) {
-            const QPoint p( pr.point( i ) );
-            const qreal x = p.x() + dx;
-            const qreal y = p.y() + dy;
-            pr.setPoint( i, int( pos.x() + x * cosRot + y * sinRot ),
-                            int( pos.y() - x * sinRot + y * cosRot ) );
-        }
+        QPolygon pr = transform.mapToPolygon( br.toRect() );
         // Using QPainterPath allows us to use intersects() (which has many early-exits)
         // instead of QPolygon::intersected (which calculates a slow and precise intersection polygon)
         QPainterPath path;
         path.addPolygon( pr );
-        // qDebug() << "Comparing new poly" << br << "(rotated" << radRot << ") with"
-        //          << alreadyDrawnDataValueTexts.count() << "already drawn data value texts";
+
         KDAB_FOREACH( const QPainterPath& oldPoly, alreadyDrawnDataValueTexts ) {
             if ( oldPoly.intersects( path ) ) {
                 // qDebug() << "not painting this label due to overlap";
@@ -460,22 +456,17 @@ void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
                 break;
             }
         }
-        if( drawIt ) {
+        if ( drawIt ) {
             alreadyDrawnDataValueTexts << path;
         }
     }
-    if ( drawIt ) {
-        QRectF rect = layout->frameBoundingRect( doc.rootFrame() );
-        rect.moveTo( pos.x() + dx, pos.y() + dy );
 
+    if ( drawIt ) {
         if ( cumulatedBoundingRect ) {
-            (*cumulatedBoundingRect) |= rect;
+            QRectF rect = layout->frameBoundingRect( doc.rootFrame() );
+            (*cumulatedBoundingRect) |= transform.mapRect( rect );
         }
         if ( !justCalculateRect ) {
-            painter->translate( QPointF( dx, dy ) );
-            painter->translate( plainRect.center() );
-            painter->rotate( rotation );
-            painter->translate( - plainRect.center() );
             layout->draw( painter, context );
         }
     }
