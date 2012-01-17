@@ -101,10 +101,10 @@ namespace KDGantt {
         GraphicsItem* dragSource() const;
 
         /* Printing */
-        void print( QPrinter* printer, bool drawRowLabels = true );
-        void print( QPrinter* printer, qreal start, qreal end, bool drawRowLabels = true );
-        void print( QPainter* painter, const QRectF& target = QRectF(), bool drawRowLabels=true );
-        void print( QPainter* painter, qreal start, qreal end, const QRectF& target = QRectF(), bool drawRowLabels=true );
+        void print( QPrinter* printer, bool drawRowLabels = true, bool drawColumnLabels = true );
+        void print( QPrinter* printer, qreal start, qreal end, bool drawRowLabels = true, bool drawColumnLabels = true );
+        void print( QPainter* painter, const QRectF& target = QRectF(), bool drawRowLabels=true, bool drawColumnLabels = true );
+        void print( QPainter* painter, qreal start, qreal end, const QRectF& target = QRectF(), bool drawRowLabels=true, bool drawColumnLabels = true );
 
     Q_SIGNALS:
         void gridChanged();
@@ -135,7 +135,7 @@ namespace KDGantt {
     private:
         void doPrint( QPainter* painter, const QRectF& targetRect,
                       qreal start, qreal end,
-                      QPrinter* printer, bool drawRowLabels );
+                      QPrinter* printer, bool drawRowLabels, bool drawColumnLabels );
     };
 }
 

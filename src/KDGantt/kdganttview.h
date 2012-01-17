@@ -86,11 +86,11 @@ namespace KDGantt {
 
         void ensureVisible(const QModelIndex& index);
 
-        void print( QPrinter* printer, bool drawRowLabels=true );
-        void print( QPrinter* printer, qreal start, qreal end, bool drawRowLabels=true );
-        void print( QPainter* painter, const QRectF& target = QRectF(), bool drawRowLabels=true);
+        void print( QPrinter* printer, bool drawRowLabels=true, bool drawColumnLabels=true );
+        void print( QPrinter* printer, qreal start, qreal end, bool drawRowLabels=true, bool drawColumnLabels=true );
+        void print( QPainter* painter, const QRectF& target = QRectF(), bool drawRowLabels=true, bool drawColumnLabels=true);
         void print( QPainter* painter, qreal start, qreal end,
-                    const QRectF& target = QRectF(), bool drawRowLabels=true);
+                    const QRectF& target = QRectF(), bool drawRowLabels=true, bool drawColumnLabels=true);
 
     public Q_SLOTS:
         void setModel(QAbstractItemModel* model);

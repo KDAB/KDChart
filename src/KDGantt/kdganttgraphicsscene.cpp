@@ -72,6 +72,8 @@ GraphicsScene::Private::Private( GraphicsScene* _q )
       grid( &default_grid ),
       readOnly( false ),
       isPrinting( false ),
+      drawColumnLabels( true ),
+      labelsWidth( 0.0 ),
       summaryHandlingModel( new SummaryHandlingProxyModel( _q ) ),
       selectionModel( 0 )
 {
@@ -570,14 +572,16 @@ void GraphicsScene::drawBackground( QPainter* painter, const QRectF& _rect )
 {
     QRectF scn( sceneRect() );
     QRectF rect( _rect );
-    if ( d->isPrinting ) {
+    if ( d->isPrinting && d->drawColumnLabels ) {
         QRectF headerRect( scn.topLeft()+QPointF( d->labelsWidth, 0 ),
                            QSizeF( scn.width()-d->labelsWidth, d->rowController->headerHeight() ));
+
         d->grid->paintHeader( painter, headerRect, rect, 0, 0 );
 
+#if 0
         /* We have to blank out the part of the header that is invisible during
-     * normal rendering when we are printing.
-     */
+        * normal rendering when we are printing.
+        */
         QRectF labelsTabRect( scn.topLeft(), QSizeF( d->labelsWidth, headerRect.height() ) );
 
         QStyleOptionHeader opt;
@@ -589,6 +593,8 @@ void GraphicsScene::drawBackground( QPainter* painter, const QRectF& _rect )
 #else
         QApplication::style()->drawControl(QStyle::CE_Header, &opt, painter, 0);
 #endif
+#endif        
+        
         scn.setTop( headerRect.bottom() );
         scn.setLeft( headerRect.left() );
         rect = rect.intersected( scn );
@@ -635,24 +641,29 @@ GraphicsItem* GraphicsScene::dragSource() const
 
 /*! Print the Gantt chart using \a printer. If \a drawRowLabels
  * is true (the default), each row will have it's label printed
- * on the left side.
+ * on the left side. If \a drawColumnLabels is true (the
+ * default), each column will have it's label printed at the
+ * top side.
  *
  * This version of print() will print multiple pages.
  */
-void GraphicsScene::print( QPrinter* printer, bool drawRowLabels )
+void GraphicsScene::print( QPrinter* printer, bool drawRowLabels, bool drawColumnLabels )
 {
 #ifndef HAVE_PRINTER
     Q_UNUSED( printer );
     Q_UNUSED( drawRowLabels );
+    Q_UNUSED( drawColumnLabels );
 #else
     QPainter painter( printer );
-    doPrint( &painter, printer->pageRect(), sceneRect().left(), sceneRect().right(), printer, drawRowLabels );
+    doPrint( &painter, printer->pageRect(), sceneRect().left(), sceneRect().right(), printer, drawRowLabels, drawColumnLabels );
 #endif
 }
 
 /*! Print part of the Gantt chart from \a start to \a end using \a printer.
  * If \a drawRowLabels is true (the default), each row will have it's
- * label printed on the left side.
+ * label printed on the left side. If \a drawColumnLabels is true (the
+ * default), each column will have it's label printed at the
+ * top side.
  *
  * This version of print() will print multiple pages.
  *
@@ -660,61 +671,67 @@ void GraphicsScene::print( QPrinter* printer, bool drawRowLabels )
  * qreal DateTimeGrid::mapFromDateTime( const QDateTime& dt) const
  * to figure out the values for \a start and \a end.
  */
-void GraphicsScene::print( QPrinter* printer, qreal start, qreal end, bool drawRowLabels )
+void GraphicsScene::print( QPrinter* printer, qreal start, qreal end, bool drawRowLabels, bool drawColumnLabels )
 {
 #ifndef HAVE_PRINTER
     Q_UNUSED( printer );
     Q_UNUSED( start );
     Q_UNUSED( end );
     Q_UNUSED( drawRowLabels );
+    Q_UNUSED( drawColumnLabels );
 #else
     QPainter painter( printer );
-    doPrint( &painter, printer->pageRect(), start, end, printer, drawRowLabels );
+    doPrint( &painter, printer->pageRect(), start, end, printer, drawRowLabels, drawColumnLabels );
 #endif
 }
 
 /*! Render the GanttView inside the rectangle \a target using the painter \a painter.
  * If \a drawRowLabels is true (the default), each row will have it's
- * label printed on the left side.
+ * label printed on the left side. If \a drawColumnLabels is true (the
+ * default), each column will have it's label printed at the
+ * top side.
  */
-void GraphicsScene::print( QPainter* painter, const QRectF& _targetRect, bool drawRowLabels )
+void GraphicsScene::print( QPainter* painter, const QRectF& _targetRect, bool drawRowLabels, bool drawColumnLabels )
 {
     QRectF targetRect( _targetRect );
     if ( targetRect.isNull() ) {
         targetRect = sceneRect();
     }
 
-    doPrint( painter, targetRect, sceneRect().left(), sceneRect().right(), 0, drawRowLabels );
+    doPrint( painter, targetRect, sceneRect().left(), sceneRect().right(), 0, drawRowLabels, drawColumnLabels );
 }
 
 /*! Render the GanttView inside the rectangle \a target using the painter \a painter.
  * If \a drawRowLabels is true (the default), each row will have it's
- * label printed on the left side.
+ * label printed on the left side. If \a drawColumnLabels is true (the
+ * default), each column will have it's label printed at the
+ * top side.
  *
  * To print a certain range of a chart with a DateTimeGrid, use
  * qreal DateTimeGrid::mapFromDateTime( const QDateTime& dt) const
  * to figure out the values for \a start and \a end.
  */
 void GraphicsScene::print( QPainter* painter, qreal start, qreal end,
-                           const QRectF& _targetRect, bool drawRowLabels )
+                           const QRectF& _targetRect, bool drawRowLabels, bool drawColumnLabels )
 {
     QRectF targetRect( _targetRect );
     if ( targetRect.isNull() ) {
         targetRect = sceneRect();
     }
 
-    doPrint( painter, targetRect, start, end, 0, drawRowLabels );
+    doPrint( painter, targetRect, start, end, 0, drawRowLabels, drawColumnLabels );
 }
 
 /*!\internal
  */
 void GraphicsScene::doPrint( QPainter* painter, const QRectF& targetRect,
                              qreal start, qreal end,
-                             QPrinter* printer, bool drawRowLabels )
+                             QPrinter* printer, bool drawRowLabels, bool drawColumnLabels )
 {
-
     assert( painter );
     d->isPrinting = true;
+    d->drawColumnLabels = drawColumnLabels;
+    d->labelsWidth = 0.0;
 #if QT_VERSION >= QT_VERSION_CHECK(4, 4, 0)
     QFont sceneFont( font() );
 #ifdef HAVE_PRINTER
@@ -743,13 +760,24 @@ void GraphicsScene::doPrint( QPainter* painter, const QRectF& targetRect,
 #endif
 #endif
 
+    QGraphicsTextItem dummyTextItem( QLatin1String("X") );
+    dummyTextItem.adjustSize();
+    QFontMetrics fm(dummyTextItem.font());
+    sceneFont.setPixelSize( fm.height() );
+
     const QRectF oldScnRect( sceneRect() );
     QRectF scnRect( oldScnRect );
     scnRect.setLeft( start );
     scnRect.setRight( end );
-    scnRect.setTop( -d->rowController->headerHeight() );
     bool b = blockSignals( true );
 
+    /* column labels */
+    if ( d->drawColumnLabels ) {
+        QRectF headerRect( scnRect );
+        headerRect.setHeight( - d->rowController->headerHeight() );
+        scnRect.setTop(scnRect.top() - d->rowController->headerHeight());
+    }
+    
     /* row labels */
     QVector<QGraphicsTextItem*> textLabels;
     if ( drawRowLabels ) {
@@ -807,6 +835,8 @@ void GraphicsScene::doPrint( QPainter* painter, const QRectF& targetRect,
     }
 
     d->isPrinting = false;
+    d->drawColumnLabels = true;
+    d->labelsWidth = 0.0;
     qDeleteAll( textLabels );
     blockSignals( b );
     setSceneRect( oldScnRect );

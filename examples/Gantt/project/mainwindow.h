@@ -24,6 +24,10 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QDialog>
+
+class QLineEdit;
+class QCheckBox;
 
 namespace KDGantt {
     class View;
@@ -31,12 +35,26 @@ namespace KDGantt {
 
 class ProjectModel;
 
+class SavePdfDialog : public QDialog
+{
+    Q_OBJECT
+public:
+    QLineEdit *m_fileEdit;
+    QCheckBox *m_rowLabels;
+    QCheckBox *m_columnLabels;
+    SavePdfDialog(QWidget *parent = 0);
+private slots:
+    void fileButtonClicked();
+};
+        
 class MainWindow : public QMainWindow {
     Q_OBJECT
 public:
     explicit MainWindow( QWidget* parent = 0 );
 
 private slots:
+    void slotFileSavePdf();
+    void slotFilePrint();
     void slotFileQuit();
     void slotToolsNewItem();
     void slotToolsAppendItem();

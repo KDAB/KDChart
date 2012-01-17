@@ -58,9 +58,10 @@ namespace KDGantt {
         QPointer<AbstractGrid> grid;
         bool readOnly;
 
-	/* printing related members */
-	bool isPrinting;
-	qreal labelsWidth;
+        /* printing related members */
+        bool isPrinting;
+        bool drawColumnLabels;
+        qreal labelsWidth;
 
         QPointer<QAbstractProxyModel> summaryHandlingModel;
 

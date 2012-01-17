@@ -34,6 +34,18 @@
 #include <QDebug>
 #include <QBrush>
 #include <QPainter>
+#include <QPrinter>
+#include <QPrintDialog>
+#include <QFileDialog>
+#include <QLabel>
+#include <QGridLayout>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QFileInfo>
+#include <QLineEdit>
+#include <QCheckBox>
+#include <QPushButton>
+#include <QDialogButtonBox>
 
 #include <KDGanttGlobal>
 #include <KDGanttView>
@@ -263,23 +275,29 @@ MainWindow::MainWindow( QWidget* parent )
 
     QMenu* fileMenu = new QMenu( tr( "&File" ) );
 
-    /*QAction* fileQuit =*/ fileMenu->addAction( tr( "&Quit" ), this, SLOT( slotFileQuit() ) );
+#ifndef QT_NO_PRINTER
+    fileMenu->addAction( tr( "&Save as PDF..." ), this, SLOT( slotFileSavePdf() ) );
+    fileMenu->addAction( tr( "&Print..." ), this, SLOT( slotFilePrint() ) );
+#endif
+
+    fileMenu->addSeparator();
+    fileMenu->addAction( tr( "&Quit" ), this, SLOT( slotFileQuit() ) );
 
     mb->addMenu( fileMenu );
 
-    QMenu* toolsMenu = new QMenu( tr( "Tools" ) );
+    QMenu* toolsMenu = new QMenu( tr( "&Tools" ) );
 
-    toolsMenu->addAction( tr( "New Item" ), this, SLOT( slotToolsNewItem() ) );
-    toolsMenu->addAction( tr( "Add Item" ), this, SLOT( slotToolsAppendItem() ) );
+    toolsMenu->addAction( tr( "&New Item" ), this, SLOT( slotToolsNewItem() ) );
+    toolsMenu->addAction( tr( "&Add Item" ), this, SLOT( slotToolsAppendItem() ) );
     toolsMenu->addSeparator();
-    QMenu *alignMenu = toolsMenu->addMenu( tr( "Align" ) );
-    alignMenu->addAction( tr( "Left" ), this, SLOT( slotAlignLeft() ) );
-    alignMenu->addAction( tr( "Center" ), this, SLOT( slotAlignCenter() ) );
-    alignMenu->addAction( tr( "Right" ), this, SLOT( slotAlignRight() ) );
-    alignMenu->addAction( tr( "Hidden" ), this, SLOT( slotAlignHidden() ) );
+    QMenu *alignMenu = toolsMenu->addMenu( tr( "Ali&gn" ) );
+    alignMenu->addAction( tr( "&Left" ), this, SLOT( slotAlignLeft() ) );
+    alignMenu->addAction( tr( "&Center" ), this, SLOT( slotAlignCenter() ) );
+    alignMenu->addAction( tr( "&Right" ), this, SLOT( slotAlignRight() ) );
+    alignMenu->addAction( tr( "&Hidden" ), this, SLOT( slotAlignHidden() ) );
     toolsMenu->addSeparator();
-    toolsMenu->addAction( tr( "Collapse All" ), this, SLOT( slotCollapseAll() ) );
-    toolsMenu->addAction( tr( "Expand All" ), this, SLOT( slotExpandAll() ) );
+    toolsMenu->addAction( tr( "&Collapse All" ), this, SLOT( slotCollapseAll() ) );
+    toolsMenu->addAction( tr( "&Expand All" ), this, SLOT( slotExpandAll() ) );
     
     mb->addMenu( toolsMenu );
     
@@ -295,6 +313,87 @@ MainWindow::MainWindow( QWidget* parent )
     m_view->constraintModel()->addConstraint(KDGantt::Constraint(m_model->index(0,0,QModelIndex()),m_model->index(1,0,QModelIndex())));
     m_view->constraintModel()->addConstraint(KDGantt::Constraint(m_model->index(1,0,QModelIndex()),m_model->index(2,0,QModelIndex())));
     */
+}
+
+SavePdfDialog::SavePdfDialog(QWidget *parent)
+    : QDialog(parent)
+{
+    setModal(true);
+    setWindowTitle(tr("Save as PDF"));
+    QVBoxLayout *l = new QVBoxLayout(this);
+    setLayout(l);
+
+    QHBoxLayout *fileLayout = new QHBoxLayout(this);
+    l->addLayout(fileLayout);
+    QLabel *fileLabel = new QLabel(tr("File:"), this);
+    fileLayout->addWidget(fileLabel);
+    m_fileEdit = new QLineEdit(this);
+    fileLabel->setBuddy(m_fileEdit);
+    m_fileEdit->setText(QFileInfo(QDir::homePath(), "gantt.pdf").absoluteFilePath());
+    fileLayout->addWidget(m_fileEdit);
+    QPushButton *m_fileButton = new QPushButton("...", this);
+    connect(m_fileButton, SIGNAL(clicked()), this, SLOT(fileButtonClicked()));
+    fileLayout->addWidget(m_fileButton);
+
+    m_rowLabels = new QCheckBox(tr("Row Header"), this);
+    m_rowLabels->setChecked(true);
+    l->addWidget(m_rowLabels);
+
+    m_columnLabels = new QCheckBox(tr("Column Header"), this);
+    m_columnLabels->setChecked(true);
+    l->addWidget(m_columnLabels);
+
+    QDialogButtonBox *btnBox = new QDialogButtonBox(this);
+    btnBox->setStandardButtons(QDialogButtonBox::Save | QDialogButtonBox::Cancel);
+    connect(btnBox, SIGNAL(accepted()), this, SLOT(accept()));
+    connect(btnBox, SIGNAL(rejected()), this, SLOT(reject()));
+    l->addWidget(btnBox);
+
+    resize(QSize(400, 100).expandedTo(minimumSizeHint()));
+}
+
+void SavePdfDialog::fileButtonClicked()
+{
+    const QString file = QFileDialog::getSaveFileName(this, tr("Choose PDF File..."), QString(), tr("PDF files (*.pdf)"));
+    if (!file.isEmpty())
+        m_fileEdit->setText(file);
+}
+
+void MainWindow::slotFileSavePdf()
+{
+#ifndef QT_NO_PRINTER
+    SavePdfDialog dialog(this);
+    if (dialog.exec() != QDialog::Accepted)
+        return;
+    
+    const QString file = dialog.m_fileEdit->text();
+    if (file.isEmpty())
+        return;
+
+    const bool drawRowLabels = dialog.m_rowLabels->isChecked();
+    const bool drawColumnLabels = dialog.m_columnLabels->isChecked();
+
+    QPrinter printer(QPrinter::HighResolution);
+    printer.setOrientation(QPrinter::Landscape);
+    printer.setColorMode(QPrinter::Color);
+    printer.setPageMargins(0.2, 0.2, 0.2, 0.2, QPrinter::Point);
+    printer.setOutputFormat(QPrinter::PdfFormat);
+    printer.setOutputFileName(file);
+    m_view->print(&printer, drawRowLabels, drawColumnLabels); 
+#endif
+}
+
+void MainWindow::slotFilePrint()
+{
+#ifndef QT_NO_PRINTER
+    QPrinter printer(QPrinter::HighResolution);
+    printer.setOrientation(QPrinter::Landscape);
+    printer.setColorMode(QPrinter::Color);
+    QPrintDialog dialog(&printer, this);
+    if (dialog.exec() != QDialog::Accepted)
+        return;
+    m_view->print(&printer); 
+#endif
 }
 
 void MainWindow::slotFileQuit()
