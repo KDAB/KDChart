@@ -43,6 +43,7 @@ LabelPaintInfo::LabelPaintInfo( const LabelPaintInfo& other )
     , attrs( other.attrs )
     , pos( other.pos )
     , markerPos( other.markerPos )
+    , isValuePositive( other.isValuePositive )
     , value( other.value )
 {
 }
