@@ -61,14 +61,15 @@ namespace KDChart {
     public:
         LabelPaintInfo();
         LabelPaintInfo( const QModelIndex& _index, const DataValueAttributes& _attrs,
-                       const QPointF& _pos, const QPointF& _markerPos, qreal _value );
+                        const QPointF& _pos, const QPointF& _markerPos,
+                        bool _isValuePositive, const QString& _value );
         LabelPaintInfo( const LabelPaintInfo& other );
         QModelIndex index;
         DataValueAttributes attrs;
         QPointF pos;
         QPointF markerPos;
-        qreal value;
-        // QString value; TODO
+        bool isValuePositive;
+        QString value;
     };
 
     class LabelPaintExtraInfo
@@ -156,8 +157,8 @@ namespace KDChart {
                                  QPainter* painter,
                                  const DataValueAttributes& attrs,
                                  const QPointF& pos,
-                                 QString text,
                                  bool valueIsPositive,
+                                 const QString& text,
                                  bool justCalculateRect=false,
                                  QRectF* cumulatedBoundingRect=0 );
 

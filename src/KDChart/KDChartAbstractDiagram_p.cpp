@@ -27,11 +27,13 @@ LabelPaintInfo::LabelPaintInfo()
 }
 
 LabelPaintInfo::LabelPaintInfo( const QModelIndex& _index, const DataValueAttributes& _attrs,
-                              const QPointF& _pos, const QPointF& _markerPos, qreal _value )
+                                const QPointF& _pos, const QPointF& _markerPos,
+                                bool _isValuePositive, const QString& _value )
     : index( _index )
     , attrs( _attrs )
     , pos( _pos )
     , markerPos( _markerPos )
+    , isValuePositive( _isValuePositive )
     , value( _value )
 {
 }
@@ -145,21 +147,22 @@ void AbstractDiagram::Private::addLabel(
 
         const qreal fontHeight = cachedFontMetrics( dva.textAttributes().
                 calculatedFont( plane, KDChartEnums::MeasureOrientationMinimum ), diagram )->height();
-        // Note: When printing data value texts the font height is used as reference size for both,
-        //       horizontal and vertical padding, if the respective padding's Measure is using
-        //       automatic reference area detection.
+        // Note: When printing data value texts and padding's Measure is using automatic reference area
+        //       detection, the font height is used as reference size for both horizontal and vertical
+        //       padding.
         QSizeF relativeMeasureSize( fontHeight, fontHeight );
-        //qDebug()<<"fontHeight"<<fontHeight;
 
         if ( !dva.textAttributes().hasRotation() ) {
             TextAttributes ta = dva.textAttributes();
             ta.setRotation( favoriteAngle );
             dva.setTextAttributes( ta );
         }
+
+        const QString text = formatDataValueText( dva, index, value );
         // Store the anchor point, already shifted according to padding
         cache->paintReplay.append( LabelPaintInfo( it.key(), dva,
-                                                  relPos.calculatedPoint( relativeMeasureSize ),
-                                                  referencePoint, value ) );
+                                                   relPos.calculatedPoint( relativeMeasureSize ),
+                                                   referencePoint, value >= 0.0, text ) );
     }
 }
 
@@ -248,9 +251,8 @@ void AbstractDiagram::Private::paintDataValueTextsAndMarkers(
             ctx->painter()->translate( -info.pos );
         }
 
-        paintDataValueText( diag, ctx->painter(), info.index, info.pos, info.value,
-                            justCalculateRect,
-                            cumulatedBoundingRect );
+        paintDataValueText( diag, ctx->painter(), info.attrs, info.pos, info.isValuePositive,
+                            info.value, justCalculateRect, cumulatedBoundingRect );
 
         const QString comment = info.index.data( KDChart::CommentRole ).toString();
         if ( comment.isEmpty() ) {
@@ -303,8 +305,8 @@ void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
     QRectF* cumulatedBoundingRect /* = 0 */ )
 {
     const DataValueAttributes dva( diag->dataValueAttributes( index ) );
-    QString text = formatDataValueText( dva, index, value );
-    paintDataValueText( diag, painter, dva, pos, text, value >= 0.0,
+    const QString text = formatDataValueText( dva, index, value );
+    paintDataValueText( diag, painter, dva, pos, value >= 0.0, text,
                         justCalculateRect, cumulatedBoundingRect );
 }
 
@@ -312,8 +314,8 @@ void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
     QPainter* painter,
     const DataValueAttributes& attrs,
     const QPointF& pos,
-    QString text,
     bool valueIsPositive,
+    const QString& text,
     bool justCalculateRect /* = false */,
     QRectF* cumulatedBoundingRect /* = 0 */ )
 {

@@ -120,7 +120,7 @@ void  TernaryPointDiagram::paint (PaintContext *paintContext)
                                    .arg( x * 100, 0, 'f', 0 )
                                    .arg( y * 100, 0, 'f', 0 )
                                    .arg( z * 100, 0, 'f', 0 );
-                    d->paintDataValueText( this, p, attrs, widgetLocation, text, true );
+                    d->paintDataValueText( this, p, attrs, widgetLocation, true, text, true );
                 } else {
                     // ignore and do not paint this point, garbage data
                     qDebug() << "TernaryPointDiagram::paint: data point x/y/z:"
