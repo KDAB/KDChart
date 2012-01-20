@@ -772,28 +772,21 @@ void CartesianAxis::paintCtx( PaintContext* context )
         const int headerLabelsCount = headerLabels.count();
         //qDebug() << "headerLabelsCount" << headerLabelsCount;
 
-        TextLayoutItem* labelItem =
-            drawLabels
-            ? new TextLayoutItem( QString::number( minValueY ),
-                                  labelTA,
-                                  referenceArea,
-                                  KDChartEnums::MeasureOrientationMinimum,
-                                  Qt::AlignLeft )
-            : 0;
-        labelItem->setTextAttributes( textAttributes() );
-        TextLayoutItem* labelItem2 =
-            drawLabels
-            ? new TextLayoutItem( QString::number( minValueY ),
-                                  labelTA,
-                                  referenceArea,
-                                  KDChartEnums::MeasureOrientationMinimum,
-                                  Qt::AlignLeft )
-            : 0;
-        labelItem2->setTextAttributes( textAttributes() );
-        const QFontMetricsF met(
-            drawLabels
-            ? labelItem->realFont()
-            : QFontMetricsF( QApplication::font(), GlobalMeasureScaling::paintDevice() ) );
+        TextLayoutItem* labelItem = 0;
+        TextLayoutItem* labelItem2 = 0;
+        if ( drawLabels ) {
+            labelItem = new TextLayoutItem( QString::number( minValueY ), labelTA, referenceArea,
+                                            KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft );
+            labelItem->setTextAttributes( textAttributes() );
+
+            labelItem2 = new TextLayoutItem( QString::number( minValueY ), labelTA, referenceArea,
+                                             KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft );
+            labelItem2->setTextAttributes( textAttributes() );
+        }
+
+        const QFontMetricsF met( drawLabels ? labelItem->realFont() :
+                                 QFontMetricsF( QApplication::font(),
+                                                GlobalMeasureScaling::paintDevice() ) );
         const qreal halfFontHeight = rulerAttr.labelMargin() >= 0 ? rulerAttr.labelMargin() : met.height() * 0.5;
         const qreal halfFontWidth = rulerAttr.labelMargin() >= 0 ? rulerAttr.labelMargin() : met.averageCharWidth() * 0.5;
 
