@@ -7,8 +7,6 @@ KD Chart 2.x requires a Qt version >= 4 with XML support enabled.
    Use depending on the kind of build on one of the following;
      ./configure.sh -shared -debug
      ./configure.sh -shared -release
-     ./configure.sh -static -debug
-     ./configure.sh -static -release
 
    To define the install-location use for example;
      ./configure.sh -shared -debug -prefix /opt/kdchart
@@ -81,8 +79,6 @@ b) manual installation
     Use depending on the kind of build on one of the following;
      configure.bat -shared -debug
      configure.bat -shared -release
-     configure.bat -static -debug
-     configure.bat -static -release
      
     To define the install-location use for example;
      configure.bat -shared -debug -prefix c:/kdchart
@@ -153,8 +149,6 @@ b) manual installation
    Use depending on the kind of build on one of the following;
      ./configure.sh -shared -debug
      ./configure.sh -shared -release
-     ./configure.sh -static -debug
-     ./configure.sh -static -release
 
    To define the install-location use for example;
      ./configure.sh -shared -debug -prefix /opt/kdchart
