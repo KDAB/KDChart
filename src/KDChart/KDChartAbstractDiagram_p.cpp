@@ -244,14 +244,6 @@ void AbstractDiagram::Private::paintDataValueTextsAndMarkers(
     forgetAlreadyPaintedDataValues();
 
     KDAB_FOREACH ( const LabelPaintInfo& info, cache.paintReplay ) {
-        const PainterSaver ps( ctx->painter() );
-
-        if ( !diag->dataValueAttributes( info.index ).textAttributes().hasRotation() ) {
-            ctx->painter()->translate( info.pos );
-            ctx->painter()->rotate( info.attrs.textAttributes().rotation() );
-            ctx->painter()->translate( -info.pos );
-        }
-
         paintDataValueText( diag, ctx->painter(), info.attrs, info.pos, info.isValuePositive,
                             info.value, justCalculateRect, cumulatedBoundingRect );
 
