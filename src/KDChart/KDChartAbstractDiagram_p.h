@@ -61,14 +61,15 @@ namespace KDChart {
     public:
         LabelPaintInfo();
         LabelPaintInfo( const QModelIndex& _index, const DataValueAttributes& _attrs,
-                        const QPointF& _pos, const QPointF& _markerPos,
+                        const QPainterPath& _labelArea, const QPointF& _markerPos,
                         bool _isValuePositive, const QString& _value );
         LabelPaintInfo( const LabelPaintInfo& other );
         QModelIndex index;
         DataValueAttributes attrs;
-        QPointF pos;
+        QPainterPath labelArea;
         QPointF markerPos;
         bool isValuePositive;
+        // could (ab)use attrs.dataLabel() instead
         QString value;
     };
 

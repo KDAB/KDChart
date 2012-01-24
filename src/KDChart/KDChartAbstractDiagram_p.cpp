@@ -27,11 +27,11 @@ LabelPaintInfo::LabelPaintInfo()
 }
 
 LabelPaintInfo::LabelPaintInfo( const QModelIndex& _index, const DataValueAttributes& _attrs,
-                                const QPointF& _pos, const QPointF& _markerPos,
+                                const QPainterPath& _labelArea, const QPointF& _markerPos,
                                 bool _isValuePositive, const QString& _value )
     : index( _index )
     , attrs( _attrs )
-    , pos( _pos )
+    , labelArea( _labelArea )
     , markerPos( _markerPos )
     , isValuePositive( _isValuePositive )
     , value( _value )
@@ -41,7 +41,7 @@ LabelPaintInfo::LabelPaintInfo( const QModelIndex& _index, const DataValueAttrib
 LabelPaintInfo::LabelPaintInfo( const LabelPaintInfo& other )
     : index( other.index )
     , attrs( other.attrs )
-    , pos( other.pos )
+    , labelArea( other.labelArea )
     , markerPos( other.markerPos )
     , isValuePositive( other.isValuePositive )
     , value( other.value )
@@ -128,19 +128,19 @@ void AbstractDiagram::Private::addLabel(
         aggregatedAttrs( diagram, index, position ) );
 
     QMap<QModelIndex, DataValueAttributes>::const_iterator it;
-    for (it = allAttrs.constBegin(); it != allAttrs.constEnd(); ++it) {
+    for ( it = allAttrs.constBegin(); it != allAttrs.constEnd(); ++it ) {
         DataValueAttributes dva = it.value();
         if ( !dva.isVisible() ) {
             continue;
         }
 
         const bool isPositive = (value >= 0.0);
+
         RelativePosition relPos( dva.position( isPositive ) );
         relPos.setReferencePoints( points );
         if ( relPos.referencePosition().isUnknown() ) {
             relPos.setReferencePosition( isPositive ? autoPositionPositive : autoPositionNegative );
         }
-
         const QPointF referencePoint = relPos.referencePoint();
         if ( !diagram->coordinatePlane()->isVisiblePoint( referencePoint ) ) {
             continue;
@@ -159,10 +159,93 @@ void AbstractDiagram::Private::addLabel(
             dva.setTextAttributes( ta );
         }
 
+        // get the size of the label text using a subset of the information going into the final layout
         const QString text = formatDataValueText( dva, index, value );
-        // Store the anchor point, already shifted according to padding
-        cache->paintReplay.append( LabelPaintInfo( it.key(), dva,
-                                                   relPos.calculatedPoint( relativeMeasureSize ),
+        QTextDocument doc;
+        if ( Qt::mightBeRichText( text ) ) {
+            doc.setHtml( text );
+        } else {
+            doc.setPlainText( text );
+        }
+        const QFont calculatedFont( dva.textAttributes()
+                                    .calculatedFont( plane, KDChartEnums::MeasureOrientationMinimum ) );
+        doc.setDefaultFont( calculatedFont );
+
+        const QRectF plainRect = doc.documentLayout()->frameBoundingRect( doc.rootFrame() );
+
+        /**
+        * A few hints on how the positioning of the text frame is done:
+        *
+        * Let's assume we have a bar chart, a text for a positive value
+        * to be drawn, and "North" as attrs.positivePosition().
+        *
+        * The reference point (pos) is then set to the top center point
+        * of a bar. The offset now depends on the alignment:
+        *
+        *    Top: text is centered horizontally to the bar, bottom of
+        *         text frame starts at top of bar
+        *
+        *    Bottom: text is centered horizontally to the bar, top of
+        *            text frame starts at top of bar
+        *
+        *    Center: text is centered horizontally to the bar, center
+        *            line of text frame is same as top of bar
+        *
+        *    TopLeft: right edge of text frame is horizontal center of
+        *             bar, bottom of text frame is top of bar.
+        *
+        *    ...
+        *
+        * Positive and negative value labels are treated equally, "North"
+        * also refers to the top of a negative bar, and *not* to the bottom.
+        *
+        *
+        * "NorthEast" likewise refers to the top right edge of the bar,
+        * "NorthWest" to the top left edge of the bar, and so on.
+        *
+        * In other words, attrs.positivePosition() always refers to a
+        * position of the *bar*, and relPos.alignment() always refers
+        * to an alignment of the text frame relative to this position.
+        */
+
+        QTransform transform;
+        {
+            // move to the general area where the label should be
+            QPointF calcPoint = relPos.calculatedPoint( relativeMeasureSize );
+            transform.translate( calcPoint.x(), calcPoint.y() );
+
+            // align the text rect; find out by how many half-widths / half-heights to move.
+            int dx = -1;
+            if ( relPos.alignment() & Qt::AlignLeft ) {
+                dx -= 1;
+            } else if ( relPos.alignment() & Qt::AlignRight ) {
+                 dx += 1;
+            }
+
+            int dy = -1;
+            if ( relPos.alignment() & Qt::AlignTop ) {
+                dy -= 1;
+            } else if ( relPos.alignment() & Qt::AlignBottom ) {
+                dy += 1;
+            }
+            transform.translate( qreal( dx ) * plainRect.width() * 0.5,
+                                 qreal( dy ) * plainRect.height() * 0.5 );
+
+            // rotate the text rect around its center
+            transform.translate( plainRect.center().x(), plainRect.center().y() );
+            int rotation = dva.textAttributes().rotation();
+            if ( !isPositive && dva.mirrorNegativeValueTextRotation() ) {
+                rotation *= -1;
+            }
+            transform.rotate( rotation );
+            transform.translate( -plainRect.center().x(), -plainRect.center().y() );
+        }
+
+        QPainterPath labelArea;
+        labelArea.addPolygon( transform.mapToPolygon( plainRect.toRect() ) );
+
+        // store the label geometry and auxiliary data
+        cache->paintReplay.append( LabelPaintInfo( it.key(), dva, labelArea,
                                                    referencePoint, value >= 0.0, text ) );
     }
 }
@@ -184,6 +267,7 @@ const QFontMetrics AbstractDiagram::Private::cachedFontMetrics() const
 
 QString AbstractDiagram::Private::formatNumber( qreal value, int decimalDigits ) const
 {
+    // TODO add stepUp right away without looking at the last digit!!
     QString asString = QString::number( value, 'f' );
     int decimalPos = asString.indexOf( QLatin1Char( '.' ) );
     QString digits( asString.mid( decimalPos + 1, decimalDigits + 1 ) ); // keep one more for rounding
@@ -244,7 +328,8 @@ void AbstractDiagram::Private::paintDataValueTextsAndMarkers(
     forgetAlreadyPaintedDataValues();
 
     KDAB_FOREACH ( const LabelPaintInfo& info, cache.paintReplay ) {
-        paintDataValueText( diag, ctx->painter(), info.attrs, info.pos, info.isValuePositive,
+        const QPointF pos = info.labelArea.elementAt( 0 );
+        paintDataValueText( diag, ctx->painter(), info.attrs, pos, info.isValuePositive,
                             info.value, justCalculateRect, cumulatedBoundingRect );
 
         const QString comment = info.index.data( KDChart::CommentRole ).toString();
@@ -254,7 +339,7 @@ void AbstractDiagram::Private::paintDataValueTextsAndMarkers(
         TextBubbleLayoutItem item( comment, ta, ctx->coordinatePlane()->parent(),
                                    KDChartEnums::MeasureOrientationMinimum,
                                    Qt::AlignHCenter | Qt::AlignVCenter );
-        const QRect rect( info.pos.toPoint(), item.sizeHint() );
+        const QRect rect( pos.toPoint(), item.sizeHint() );
 
         if (cumulatedBoundingRect) {
             (*cumulatedBoundingRect) |= rect;
@@ -323,13 +408,6 @@ void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
     }
     prevPaintedDataValueText = text;
 
-    /* for debugging:
-    PainterSaver painterSaver( painter );
-    painter->setPen( Qt::black );
-    painter->drawLine( pos - QPointF( 2,2), pos + QPointF( 2,2) );
-    painter->drawLine( pos - QPointF(-2,2), pos + QPointF(-2,2) );
-    */
-
     QTextDocument doc;
     if ( Qt::mightBeRichText( text ) ) {
         doc.setHtml( text );
@@ -361,74 +439,15 @@ void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
 
     QAbstractTextDocumentLayout* const layout = doc.documentLayout();
     layout->setPaintDevice( painter->device() );
-    const QRectF plainRect = layout->frameBoundingRect( doc.rootFrame() );
-    const QSizeF plainSize = layout->frameBoundingRect( doc.rootFrame() ).size();
-    painter->translate( pos );
 
-    /**
-     * A few hints on how the positioning of the text frame is done:
-     *
-     * Let's assume we have a bar chart, a text for a positive value
-     * to be drawn, and "North" as attrs.positivePosition().
-     *
-     * The reference point (pos) is then set to the top center point
-     * of a bar. The offset now depends on the alignment:
-     *
-     *    Top: text is centered horizontally to the bar, bottom of
-     *         text frame starts at top of bar
-     *
-     *    Bottom: text is centered horizontally to the bar, top of
-     *            text frame starts at top of bar
-     *
-     *    Center: text is centered horizontally to the bar, center
-     *            line of text frame is same as top of bar
-     *
-     *    TopLeft: right edge of text frame is horizontal center of
-     *             bar, bottom of text frame is top of bar.
-     *
-     *    ...
-     *
-     * Positive and negative value labels are treated equally, "North"
-     * also refers to the top of a negative bar, and *not* to the bottom.
-     *
-     *
-     * "NorthEast" likewise refers to the top right edge of the bar,
-     * "NorthWest" to the top left edge of the bar, and so on.
-     *
-     * In other words, attrs.positivePosition() always refers to a
-     * position of the *bar*, and relPos.alignment() always refers
-     * to an alignment of the text frame relative to this position.
-     */
-
-    {
-        int rotation = ta.rotation();
-        if ( !valueIsPositive && attrs.mirrorNegativeValueTextRotation() ) {
-            rotation *= -1;
-        }
-        qreal dx = - 0.5 * plainSize.width();
-        qreal dy = - 0.5 * plainSize.height();
-
-        if ( relPos.alignment() & Qt::AlignLeft ) {
-            dx -= 0.5 * plainSize.width();
-        } else if ( relPos.alignment() & Qt::AlignRight ) {
-            dx += 0.5 * plainSize.width();
-        }
-
-        if ( relPos.alignment() & Qt::AlignTop ) {
-            dy -= 0.5 * plainSize.height();
-        } else if ( relPos.alignment() & Qt::AlignBottom ) {
-            dy += 0.5 * plainSize.height();
-        }
-
-        QTransform t;
-        t.translate( dx, dy );
-        t.translate( plainRect.center().x(), plainRect.center().y() );
-        t.rotate( rotation );
-        t.translate( - plainRect.center().x(), - plainRect.center().y() );
-        painter->setWorldTransform( t, /* combine */ true );
+    painter->translate( pos.x(), pos.y() );
+    int rotation = ta.rotation();
+    if ( !valueIsPositive && attrs.mirrorNegativeValueTextRotation() ) {
+        rotation *= -1;
     }
-    // using the full transformation allows us to do collision detection in screen coordinate space,
-    // i.e. as seen by the painter
+    painter->rotate( rotation );
+
+    // do overlap detection "as seen by the painter"
     QTransform transform = painter->worldTransform();
 
     bool drawIt = true;
