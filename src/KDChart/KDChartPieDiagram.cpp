@@ -327,7 +327,6 @@ void PieDiagram::paintInternal( PaintContext* paintContext )
     d->paintDataValueTextsAndMarkers( this, paintContext, d->labelPaintCache, false, false );
     // it's safer to do this at the beginning of placeLabels, but we can save some memory here.
     d->forgetAlreadyPaintedDataValues(); // TODO rename to resetLabelSpaceAllocation?
-    d->reverseMapper.clear();
     d->labelPaintCache.clear();
     d->startAngles.clear();
     d->angleLens.clear();
