@@ -20,7 +20,16 @@ INCLUDEPATH += \
 DEPENDPATH += \
             $$KDCHART_PATH/include \
             $$KDCHART_PATH/examples/tools
-LIBS        += -L$$KDCHART_PATH/lib -l$$KDCHARTLIB -l$$TESTTOOLSLIB
+
+unix: {
+  !macx: SHLIBEXT = so
+  macx: SHLIBEXT = dylib
+}
+win32: SHLIBEXT = dll
+
+# qmake insists on passing Qt's -L path first, where there could be a different version of our own
+# libraries. Therefore we pass our own libraries like object files (without -l!) and with full path.
+LIBS += $${KDCHART_PATH}/lib/lib$${KDCHARTLIB}.$${SHLIBEXT}  $${KDCHART_PATH}/lib/lib$${TESTTOOLSLIB}.$${SHLIBEXT}
 
 
 # 4. Miscellaneous settings:

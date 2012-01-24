@@ -25,5 +25,3 @@ SOURCES += main.cpp
 INCLUDEPATH +=  ../IMS_UserInterface/KDChart/include
 
 LIBS += -L../IMS_UserInterface/lib
-
-LIBS += -l$$KDCHARTLIB
