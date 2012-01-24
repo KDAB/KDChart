@@ -84,13 +84,14 @@ namespace KDChart {
         LabelPaintCache() : extra( 0 ) {}
         ~LabelPaintCache()
         {
-            delete extra;
-            extra = 0;
+            clear();
         }
 
         void clear()
         {
-            // TODO - clear both paintReplay and extra...
+            delete extra;
+            extra = 0;
+            paintReplay.clear();
         }
 
         QVector<LabelPaintInfo> paintReplay;
