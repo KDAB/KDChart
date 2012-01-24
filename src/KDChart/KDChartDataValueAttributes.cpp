@@ -47,23 +47,23 @@ class DataValueAttributes::Private
 public:
     Private();
 private:
-    bool visible;
     TextAttributes textAttributes;
     FrameAttributes frameAttributes;
     BackgroundAttributes backgroundAttributes;
     MarkerAttributes markerAttributes;
-    int decimalDigits;
     QString prefix;
     QString suffix;
     QString dataLabel;
-    int powerOfTenDivisor;
-    bool showInfinite;
     RelativePosition negativeRelPos;
     RelativePosition positiveRelPos;
-    bool showRepetitiveDataLabels;
-    bool showOverlappingDataLabels;
-    bool usePercentage;
-    bool mirrorNegativeValueTextRotation;
+    qint16 decimalDigits;
+    qint16 powerOfTenDivisor;
+    bool visible : 1;
+    bool showInfinite : 1;
+    bool showRepetitiveDataLabels : 1;
+    bool showOverlappingDataLabels : 1;
+    bool usePercentage : 1;
+    bool mirrorNegativeValueTextRotation : 1;
 };
 
 DataValueAttributes::Private::Private() :
