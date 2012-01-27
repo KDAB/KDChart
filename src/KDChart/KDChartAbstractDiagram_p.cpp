@@ -267,27 +267,24 @@ const QFontMetrics AbstractDiagram::Private::cachedFontMetrics() const
 
 QString AbstractDiagram::Private::formatNumber( qreal value, int decimalDigits ) const
 {
-    // TODO add stepUp right away without looking at the last digit!!
-    QString asString = QString::number( value, 'f' );
-    int decimalPos = asString.indexOf( QLatin1Char( '.' ) );
-    QString digits( asString.mid( decimalPos + 1, decimalDigits + 1 ) ); // keep one more for rounding
-
-    if ( digits.count() > decimalDigits && digits.at( decimalDigits ) >= QLatin1Char( '5' ) ) {
-        const qreal stepUp = pow( 0.1, decimalDigits ) * 0.5;
-        value += stepUp;
-        asString = QString::number( value, 'f' );
-        decimalPos = asString.indexOf( QLatin1Char( '.' ) );
-        digits = asString.mid( decimalPos + 1, decimalDigits );
-    } else {
-        digits.chop( 1 );
+    const int digits = qMax(decimalDigits, 0);
+    const qreal roundingEpsilon = pow( 0.1, digits ) * 0.5;
+    QString asString = QString::number( value + roundingEpsilon, 'f' );
+    const int decimalPos = asString.indexOf( QLatin1Char( '.' ) );
+    if ( decimalPos < 0 ) {
+        return asString;
     }
 
-    QString ret( asString.left( decimalPos ) );
-    if ( decimalDigits > 0 ) {
-        ret.append( QLatin1Char( '.' ) + digits );
+    int last = qMin( decimalPos + digits, asString.length() - 1 );
+    // remove trailing zeros (and maybe decimal dot)
+    while ( last > decimalPos && asString[ last ] == QLatin1Char( '0' ) ) {
+        last--;
     }
-
-    return ret;
+    if ( last == decimalPos ) {
+         last--;
+    }
+    asString.chop( asString.length() - last - 1 );
+    return asString;
 }
 
 void AbstractDiagram::Private::forgetAlreadyPaintedDataValues()
