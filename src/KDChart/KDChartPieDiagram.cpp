@@ -287,9 +287,7 @@ void PieDiagram::shuffleLabels( QRectF* textBoundingRect )
     // things that could be improved here:
     // - use a variable number (chosen using angle information) of neighbors to check
     // - try harder to arrange the labels to look nice
-
-    // TODO:
-    // - add connecting line between label and its slice when label was moved
+    // - option to draw line from slice to label or not, or only do it when the slice was shuffled
 
     LabelPaintCache& lpc = d->labelPaintCache;
     const int n = lpc.paintReplay.size();
@@ -350,6 +348,19 @@ static QPolygonF polygonFromPainterPath( const QPainterPath &pp )
         Q_ASSERT( el.type == QPainterPath::MoveToElement || el.type == QPainterPath::LineToElement );
         ret.append( el );
     }
+    return ret;
+}
+
+static QLineF labelAttachmentLine( const QPointF &start, const QPainterPath &label  )
+{
+    Q_ASSERT ( label.elementCount() == 5 );
+    QPointF end = ( label.elementAt( 0 ) + label.elementAt( 2 ) ) / 2.0;
+    QLineF ret( start, end );
+    // we can't easily avoid setLength by using only addition and subtraction of points because
+    // the winding order of the rectangle is not always the same(?).
+    const QPointF lh = label.elementAt( 2 ) - label.elementAt( 1 ); // label height vector
+    const qreal labelHeight = sqrt( lh.x() * lh.x() + lh.y() * lh.y() );
+    ret.setLength( ret.length() - labelHeight / 2.0 );
     return ret;
 }
 
@@ -417,7 +428,12 @@ void PieDiagram::paintInternal( PaintContext* paintContext )
     const PainterSaver painterSaver( paintContext->painter() );
     paintContext->painter()->setBrush( Qt::NoBrush );
     KDAB_FOREACH( const LabelPaintInfo &pi, d->labelPaintCache.paintReplay ) {
+        // we expect the PainterPath to be a rectangle
+        if ( pi.labelArea.elementCount() != 5 ) {
+            continue;
+        }
         paintContext->painter()->setPen( pen( pi.index ) );
+        paintContext->painter()->drawLine( labelAttachmentLine( pi.markerPos, pi.labelArea ) );
         paintContext->painter()->drawPath( pi.labelArea );
         d->reverseMapper.addPolygon( pi.index.row(), pi.index.column(),
                                      polygonFromPainterPath( pi.labelArea ) );
