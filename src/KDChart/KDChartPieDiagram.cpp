@@ -414,7 +414,11 @@ void PieDiagram::paintInternal( PaintContext* paintContext )
     d->forgetAlreadyPaintedDataValues(); // TODO rename to resetLabelSpaceAllocation?
     // ### maybe move this into AbstractDiagram, also make ReverseMapper deal better with multiple
     // polygons
+    const PainterSaver painterSaver( paintContext->painter() );
+    paintContext->painter()->setBrush( Qt::NoBrush );
     KDAB_FOREACH( const LabelPaintInfo &pi, d->labelPaintCache.paintReplay ) {
+        paintContext->painter()->setPen( pen( pi.index ) );
+        paintContext->painter()->drawPath( pi.labelArea );
         d->reverseMapper.addPolygon( pi.index.row(), pi.index.column(),
                                      polygonFromPainterPath( pi.labelArea ) );
     }
@@ -487,10 +491,10 @@ void PieDiagram::drawSliceSurface( QPainter* painter, const QRectF& drawPosition
         br = threeDAttrs.threeDBrush( br, drawPosition );
     }
     painter->setBrush( br );
-    
+
     QPen pen = this->pen( index );
     if ( threeDAttrs.isEnabled() ) {
-        pen.setColor( QColor( 0, 0, 0 ) );
+        pen.setColor( Qt::black );
     }
     painter->setPen( pen );
 
