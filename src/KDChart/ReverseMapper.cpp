@@ -60,6 +60,7 @@ void ReverseMapper::setDiagram( AbstractDiagram* diagram )
 
 void ReverseMapper::clear()
 {
+    m_itemMap.clear();
     delete m_scene;
     m_scene = new QGraphicsScene();
 }
