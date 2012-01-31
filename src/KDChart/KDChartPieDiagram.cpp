@@ -248,6 +248,7 @@ void PieDiagram::placeLabels( PaintContext* paintContext )
         QRectF textBoundingRect;
         d->paintDataValueTextsAndMarkers( this, paintContext, d->labelPaintCache, false, true,
                                           &textBoundingRect );
+        shuffleLabels( &textBoundingRect );
 
         if ( !textBoundingRect.isEmpty() && d->size > 0.0 ) {
             // TODO: sebastian's code here was probably more correct. check that.
@@ -267,6 +268,81 @@ void PieDiagram::placeLabels( PaintContext* paintContext )
         }
     }
 }
+
+static int wraparound( int i, int size )
+{
+    while ( i < 0 ) {
+        i += size;
+    }
+    while ( i >= size ) {
+        i -= size;
+    }
+    return i;
+}
+
+//#define SHUFFLE_DEBUG
+
+void PieDiagram::shuffleLabels( QRectF* textBoundingRect )
+{
+    // things that could be improved here:
+    // - use a variable number (chosen using angle information) of neighbors to check
+    // - try harder to arrange the labels to look nice
+
+    // TODO:
+    // - add connecting line between label and its slice when label was moved
+    // - add label to reverseMapper
+
+    LabelPaintCache& lpc = d->labelPaintCache;
+    const int n = lpc.paintReplay.size();
+    bool modified = false;
+    qreal direction = 5.0;
+    QVector< qreal > offsets;
+    offsets.fill( 0.0, n );
+
+    for ( bool lastRoundModified = true; lastRoundModified; ) {
+        lastRoundModified = false;
+
+        for ( int i = 0; i < n; i++ ) {
+            const int neighborsToCheck = qMax( 10, lpc.paintReplay.size() - 1 );
+            const int minComp = wraparound( i - neighborsToCheck / 2, n );
+            const int maxComp = wraparound( i + ( neighborsToCheck + 1 ) / 2, n );
+
+            QPainterPath& path = lpc.paintReplay[ i ].labelArea;
+
+            for ( int j = minComp; j != maxComp; j = wraparound( j + 1, n ) ) {
+                if ( i == j ) {
+                    continue;
+                }
+                QPainterPath& otherPath = lpc.paintReplay[ j ].labelArea;
+
+                while ( ( offsets[ i ] + direction > 0 ) && otherPath.intersects( path ) ) {
+#ifdef SHUFFLE_DEBUG
+                    qDebug() << "collision involving" << j << "and" << i << " -- n =" << n;
+                    TextAttributes ta = lpc.paintReplay[ i ].attrs.textAttributes();
+                    ta.setPen( QPen( Qt::white ) );
+                    lpc.paintReplay[ i ].attrs.setTextAttributes( ta );
+#endif
+                    uint slice = lpc.paintReplay[ i ].index.column();
+                    qreal angle = DEGTORAD( d->startAngles[ slice ] + d->angleLens[ slice ] / 2.0 );
+                    qreal dx = cos( angle ) * direction;
+                    qreal dy = -sin( angle ) * direction;
+                    offsets[ i ] += direction;
+                    path.translate( dx, dy );
+                    lastRoundModified = true;
+                }
+            }
+        }
+        direction *= -1.07; // simulated annealing, the wrong way around :)
+        modified = modified || lastRoundModified;
+    }
+
+    if ( modified ) {
+        for ( int i = 0; i < lpc.paintReplay.size(); i++ ) {
+            *textBoundingRect |= lpc.paintReplay[ i ].labelArea.boundingRect();
+        }
+    }
+}
+
 
 void PieDiagram::paintInternal( PaintContext* paintContext )
 {

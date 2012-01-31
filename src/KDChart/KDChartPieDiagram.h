@@ -72,6 +72,8 @@ protected:
 private:
     // ### move to private class?
     void placeLabels( PaintContext* paintContext );
+    // Solve problems with label overlap by changing label positions inside d->labelPaintCache.
+    void shuffleLabels( QRectF* textBoundingRect );
     void paintInternal( PaintContext* paintContext );
     void drawSlice( QPainter* painter, const QRectF& drawPosition, uint slice );
     void drawSliceSurface( QPainter* painter, const QRectF& drawPosition, uint slice );
