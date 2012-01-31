@@ -290,7 +290,6 @@ void PieDiagram::shuffleLabels( QRectF* textBoundingRect )
 
     // TODO:
     // - add connecting line between label and its slice when label was moved
-    // - add label to reverseMapper
 
     LabelPaintCache& lpc = d->labelPaintCache;
     const int n = lpc.paintReplay.size();
@@ -343,6 +342,16 @@ void PieDiagram::shuffleLabels( QRectF* textBoundingRect )
     }
 }
 
+static QPolygonF polygonFromPainterPath( const QPainterPath &pp )
+{
+    QPolygonF ret;
+    for ( int i = 0; i < pp.elementCount(); i++ ) {
+        const QPainterPath::Element& el = pp.elementAt( i );
+        Q_ASSERT( el.type == QPainterPath::MoveToElement || el.type == QPainterPath::LineToElement );
+        ret.append( el );
+    }
+    return ret;
+}
 
 void PieDiagram::paintInternal( PaintContext* paintContext )
 {
@@ -403,6 +412,12 @@ void PieDiagram::paintInternal( PaintContext* paintContext )
     d->paintDataValueTextsAndMarkers( this, paintContext, d->labelPaintCache, false, false );
     // it's safer to do this at the beginning of placeLabels, but we can save some memory here.
     d->forgetAlreadyPaintedDataValues(); // TODO rename to resetLabelSpaceAllocation?
+    // ### maybe move this into AbstractDiagram, also make ReverseMapper deal better with multiple
+    // polygons
+    KDAB_FOREACH( const LabelPaintInfo &pi, d->labelPaintCache.paintReplay ) {
+        d->reverseMapper.addPolygon( pi.index.row(), pi.index.column(),
+                                     polygonFromPainterPath( pi.labelArea ) );
+    }
     d->labelPaintCache.clear();
     d->startAngles.clear();
     d->angleLens.clear();

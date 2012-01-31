@@ -243,6 +243,7 @@ void AbstractDiagram::Private::addLabel(
 
         QPainterPath labelArea;
         labelArea.addPolygon( transform.mapToPolygon( plainRect.toRect() ) );
+        labelArea.closeSubpath();
 
         // store the label geometry and auxiliary data
         cache->paintReplay.append( LabelPaintInfo( it.key(), dva, labelArea,
