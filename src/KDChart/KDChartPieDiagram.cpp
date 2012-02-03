@@ -225,7 +225,6 @@ void PieDiagram::placeLabels( PaintContext* paintContext )
     }
 
     calcPieSize( paintContext->rectangle() );
-    QRectF pieRect = twoDPieRect( paintContext->rectangle(), threeDAttrs );
 
     // keep resizing the pie until the labels and the pie fit into paintContext->rectangle()
 
@@ -233,6 +232,7 @@ void PieDiagram::placeLabels( PaintContext* paintContext )
     while ( tryAgain ) {
         tryAgain = false;
 
+        QRectF pieRect = twoDPieRect( paintContext->rectangle(), threeDAttrs );
         d->forgetAlreadyPaintedDataValues();
         d->labelPaintCache.clear();
         PieExtras* pe = new PieExtras();
@@ -251,18 +251,19 @@ void PieDiagram::placeLabels( PaintContext* paintContext )
         shuffleLabels( &textBoundingRect );
 
         if ( !textBoundingRect.isEmpty() && d->size > 0.0 ) {
-            // TODO: sebastian's code here was probably more correct. check that.
-            QRectF rect = paintContext->rectangle();
-            qreal xDiff = textBoundingRect.width() - rect.width();
-            qreal yDiff = textBoundingRect.height() - rect.height();
-            qreal diff = qMax( xDiff, yDiff );
+            const QRectF &clipRect = paintContext->rectangle();
+            // see by how many pixels the text is clipped on each side
+            qreal right = qMax( qreal( 0.0 ), textBoundingRect.right() - clipRect.right() );
+            qreal left = qMax( qreal( 0.0 ), clipRect.left() - textBoundingRect.left() );
+            // attention here - y coordinates in Qt are inverted compared to the convention in maths
+            qreal top = qMax( qreal( 0.0 ), clipRect.top() - textBoundingRect.top() );
+            qreal bottom = qMax( qreal( 0.0 ), textBoundingRect.bottom() - clipRect.bottom() );
+            qreal maxOverhang = qMax( qMax( right, left ), qMax( top, bottom ) );
 
-            if ( diff > 1.0 ) {
-                // Here, to fit everything into the available space, we shrink the pie to make
-                // room for the text around it. Then we place the labels again until they fit.
-                //qDebug() << "resizing from" << d->size << "to" << ( d->size - qMin( d->size, diff ) );
-                d->size -= qMin(d->size, diff);
-                pieRect = twoDPieRect( rect, threeDAttrs ); // twoDPieRect uses d->size
+            if ( maxOverhang > 0.0 ) {
+                // subtract 2x as much because every side only gets half of the total diameter reduction
+                // and we have to make up for the overhang on one particular side.
+                d->size -= qMin( d->size, maxOverhang * 2.0 );
                 tryAgain = true;
             }
         }
@@ -329,7 +330,7 @@ void PieDiagram::shuffleLabels( QRectF* textBoundingRect )
                 }
             }
         }
-        direction *= -1.07; // simulated annealing, the wrong way around :)
+        direction *= -1.07; // this can "overshoot", but avoids getting trapped in local minimums
         modified = modified || lastRoundModified;
     }
 
