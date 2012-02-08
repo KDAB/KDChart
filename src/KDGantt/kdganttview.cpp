@@ -623,14 +623,6 @@ void View::print( QPainter* painter, qreal start, qreal end, const QRectF& targe
 #include <QPixmap>
 #include <QListView>
 
-namespace {
-    std::ostream& operator<<( std::ostream& os, const QImage& img )
-    {
-        os << "QImage[ size=("<<img.width()<<", "<<img.height()<<")]";
-        return os;
-    }
-}
-
 KDAB_SCOPED_UNITTEST_SIMPLE( KDGantt, View, "test" ) {
     View view( 0 );
 #if 0 // GUI tests do not work well on the server

@@ -67,9 +67,9 @@ private:
 };
 
 DataValueAttributes::Private::Private() :
-    visible( false ),
     decimalDigits( KDCHART_DATA_VALUE_AUTO_DIGITS ),
     powerOfTenDivisor( 0 ),
+    visible( false ),
     showInfinite( true )
 {
     Measure me( 25.0,
