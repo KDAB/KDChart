@@ -159,26 +159,28 @@ QDebug operator<<( QDebug dbg, const KDGantt::DateTimeSpan& s )
 #endif /* QT_NO_DEBUG_STREAM */
 
 #ifndef KDAB_NO_UNIT_TESTS
-#include "unittest/test.h"
 
-namespace {
-    std::ostream& operator<<( std::ostream& os, const Span& span )
-    {
-        os << "Span[ start="<<span.start()<<", length="<<span.length()<<"]";
-        return os;
-    }
-    std::ostream& operator<<( std::ostream& os, const DateTimeSpan& span )
-    {
-#ifdef QT_NO_STL
-        os << "DateTimeSpan[ start="<<span.start().toString().toLatin1().constData()
-           << ", end="<<span.end().toString().toLatin1().constData() << "]";
-#else
-        os << "DateTimeSpan[ start="<<span.start().toString().toStdString()
-           << ", end="<<span.end().toString().toStdString() << "]";
-#endif
-        return os;
-    }
+#include <ostream>
+
+static std::ostream& operator<<( std::ostream& os, const Span& span )
+{
+    os << "Span[ start="<<span.start()<<", length="<<span.length()<<"]";
+    return os;
 }
+
+static std::ostream& operator<<( std::ostream& os, const DateTimeSpan& span )
+{
+#ifdef QT_NO_STL
+    os << "DateTimeSpan[ start="<<span.start().toString().toLatin1().constData()
+       << ", end="<<span.end().toString().toLatin1().constData() << "]";
+#else
+    os << "DateTimeSpan[ start="<<span.start().toString().toStdString()
+       << ", end="<<span.end().toString().toStdString() << "]";
+#endif
+    return os;
+}
+
+#include "unittest/test.h"
 
 KDAB_SCOPED_UNITTEST_SIMPLE( KDGantt, Span, "test" ) {
     Span s1;

@@ -1297,16 +1297,14 @@ void DateTimeGrid::drawForeground(QPainter* paint, const QRectF& rect)
 #include <QStandardItemModel>
 #include "unittest/test.h"
 
-namespace {
-    std::ostream& operator<<( std::ostream& os, const QDateTime& dt )
-    {
+static std::ostream& operator<<( std::ostream& os, const QDateTime& dt )
+{
 #ifdef QT_NO_STL
-        os << dt.toString().toLatin1().constData();
+    os << dt.toString().toLatin1().constData();
 #else
-        os << dt.toString().toStdString();
+    os << dt.toString().toStdString();
 #endif
-        return os;
-    }
+    return os;
 }
 
 KDAB_SCOPED_UNITTEST_SIMPLE( KDGantt, DateTimeGrid, "test" ) {
