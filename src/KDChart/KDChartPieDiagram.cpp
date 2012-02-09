@@ -530,8 +530,8 @@ void PieDiagram::drawSliceSurface( QPainter* painter, const QRectF& drawPosition
         // draw the top of this piece
         // Start with getting the points for the arc.
         const int arcPoints = static_cast<int>(trunc( angleLen / granularity() ));
-        QPolygonF poly( arcPoints+2 );
-        qreal degree=0.0;
+        QPolygonF poly( arcPoints + 2 );
+        qreal degree = 0.0;
         int iPoint = 0;
         bool perfectMatch = false;
 
