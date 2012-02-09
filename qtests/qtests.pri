@@ -32,12 +32,15 @@ LIB_PATH=../../lib:\$\$LD_LIBRARY_PATH
 }
 
 unix {
-  !macx: SHLIBEXT = so
-  macx: SHLIBEXT = dylib
+  !macx: LIBEXT = so
+  macx: LIBEXT = dylib
+  CONFIG( static ) {
+    LIBEXT = a        
+  }
   # qmake insists on passing Qt's -L path first, where there could be a different version of our own
   # libraries. Therefore we pass our own libraries like object files (without -l!) and with full path.
-  LIBS += ../../lib/lib$${KDCHARTSERIALIZERLIB}.$${SHLIBEXT}
-  LIBS += ../../lib/lib$${KDCHARTLIB}.$${SHLIBEXT}  ../../lib/lib$${TESTTOOLSLIB}.$${SHLIBEXT}
+  LIBS += ../../lib/lib$${KDCHARTSERIALIZERLIB}.$${LIBEXT}
+  LIBS += ../../lib/lib$${KDCHARTLIB}.$${LIBEXT}  ../../lib/lib$${TESTTOOLSLIB}.$${LIBEXT}
 }
 # The problem is less important on Windows and also harder to fix, so do it the usual way
 win32: LIBS += -L../../lib -l$$KDCHARTSERIALIZERLIB -l$$KDCHARTLIB -l$$TESTTOOLSLIB

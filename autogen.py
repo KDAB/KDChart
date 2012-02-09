@@ -6,4 +6,4 @@ version = "2.5.0"
 subprojects = ["KDChart", "KDGantt"]
 prefixed = True
 
-autogen(project, version, subprojects, prefixed)
+autogen(project, version, subprojects, prefixed, policyVersion = 2)
