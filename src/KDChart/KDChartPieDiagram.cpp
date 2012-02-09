@@ -356,16 +356,55 @@ static QPolygonF polygonFromPainterPath( const QPainterPath &pp )
     return ret;
 }
 
-static QLineF labelAttachmentLine( const QPointF &start, const QPainterPath &label  )
+// you can call it "normalizedProjectionLength" if you like
+static qreal normProjection( const QLineF &l1, const QLineF &l2 )
+{
+    const qreal dotProduct = l1.dx() * l2.dx() + l1.dy() * l2.dy();
+    return qAbs( dotProduct / ( l1.length() * l2.length() ) );
+}
+
+static QLineF labelAttachmentLine( const QPointF &center, const QPointF &start, const QPainterPath &label  )
 {
     Q_ASSERT ( label.elementCount() == 5 );
-    QPointF end = ( label.elementAt( 0 ) + label.elementAt( 2 ) ) / 2.0;
-    QLineF ret( start, end );
-    // we can't easily avoid setLength by using only addition and subtraction of points because
-    // the winding order of the rectangle is not always the same(?).
-    const QPointF lh = label.elementAt( 2 ) - label.elementAt( 1 ); // label height vector
-    const qreal labelHeight = sqrt( lh.x() * lh.x() + lh.y() * lh.y() );
-    ret.setLength( ret.length() - labelHeight / 2.0 );
+    QPointF labelCenter = ( label.elementAt( 0 ) + label.elementAt( 2 ) ) / 2.0;
+
+    QPointF closeCorners[3];
+    {
+        // get the three closest edges in their "natural" winding order
+        QPointF closest = QPointF( 1000000, 1000000 );
+        int closestIndex = 0; // better misbehave than crash
+        for ( int i = 0; i < 4; i++ ) { // point 4 is just a duplicate of point 0
+            QPointF p = label.elementAt( i );
+            qDebug() << p << distance( p, center );
+            if ( QLineF( p, center ).length() < QLineF( closest, center ).length() ) {
+                closest = p;
+                closestIndex = i;
+            }
+        }
+
+        closeCorners[ 0 ] = label.elementAt( wraparound( closestIndex - 1, 4 ) );
+        closeCorners[ 1 ] = closest;
+        closeCorners[ 2 ] = label.elementAt( wraparound( closestIndex + 1, 4 ) );
+    }
+
+    QLineF edge1 = QLineF( closeCorners[ 0 ], closeCorners[ 1 ] );
+    QLineF edge2 = QLineF( closeCorners[ 1 ], closeCorners[ 2 ] );
+    QLineF radial1 = QLineF( center, ( closeCorners[ 0 ] + closeCorners[ 1 ] ) / 2.0 );
+    QLineF radial2 = QLineF( center, ( closeCorners[ 1 ] + closeCorners[ 2 ] ) / 2.0 );
+    QLineF ret;
+    // prefer the connecting line meeting its edge at a more perpendicular angle
+    if ( normProjection( edge1, radial1 ) < normProjection( edge2, radial2 ) ) {
+        ret = radial1;
+    } else {
+        ret = radial2;
+    }
+    if ( QLineF( center, closeCorners[ 1 ] ).length() > QLineF( center, start ).length() ) {
+        // This tends to look good, but only when the label is outside of the slice.
+        // When the label is very far inside (achievable with negative padding),
+        // the connecting line could otherwise go from the middle of the slice over
+        // the label text to a far edge.
+        ret.setP1( ( start + center ) / 2.0 );
+    }
     return ret;
 }
 
@@ -430,6 +469,7 @@ void PieDiagram::paintInternal( PaintContext* paintContext )
     d->forgetAlreadyPaintedDataValues(); // TODO rename to resetLabelSpaceAllocation?
     // ### maybe move this into AbstractDiagram, also make ReverseMapper deal better with multiple
     // polygons
+    const QPointF center = paintContext->rectangle().center();
     const PainterSaver painterSaver( paintContext->painter() );
     paintContext->painter()->setBrush( Qt::NoBrush );
     KDAB_FOREACH( const LabelPaintInfo &pi, d->labelPaintCache.paintReplay ) {
@@ -438,7 +478,7 @@ void PieDiagram::paintInternal( PaintContext* paintContext )
             continue;
         }
         paintContext->painter()->setPen( pen( pi.index ) );
-        paintContext->painter()->drawLine( labelAttachmentLine( pi.markerPos, pi.labelArea ) );
+        paintContext->painter()->drawLine( labelAttachmentLine( center, pi.markerPos, pi.labelArea ) );
         paintContext->painter()->drawPath( pi.labelArea );
         d->reverseMapper.addPolygon( pi.index.row(), pi.index.column(),
                                      polygonFromPainterPath( pi.labelArea ) );
