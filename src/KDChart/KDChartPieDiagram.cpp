@@ -290,6 +290,10 @@ void PieDiagram::shuffleLabels( QRectF* textBoundingRect )
     // - try harder to arrange the labels to look nice
     // - option to draw line from slice to label or not, or only do it when the slice was shuffled
 
+    // ideas:
+    // - leave labels that don't collide alone (only if they their offset is zero)
+    // - use a graphics view for collision detection
+
     LabelPaintCache& lpc = d->labelPaintCache;
     const int n = lpc.paintReplay.size();
     bool modified = false;
