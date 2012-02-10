@@ -1,4 +1,4 @@
-include( ../qtests.pri )
+include( $${TOP_SOURCE_DIR}/qtests/qtests.pri )
 
-INCLUDEPATH	+= ../../src
+INCLUDEPATH	+= $${TOP_SOURCE_DIR}/src
 SOURCES += main.cpp

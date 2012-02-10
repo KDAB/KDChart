@@ -1,8 +1,6 @@
-KDCHART_PATH = ../../..
-
 TARGET = ZoomKeyboard
 
-include( $$KDCHART_PATH/examples/examples.pri )
+include( $${TOP_SOURCE_DIR}/examples/examples.pri )
 
 FORMS   = mainwindow.ui
 SOURCES = main.cpp mainwindow.cpp zoomwidget.cpp

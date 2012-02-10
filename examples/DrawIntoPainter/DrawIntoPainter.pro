@@ -1,8 +1,6 @@
-KDCHART_PATH = ../..
+include( $${TOP_SOURCE_DIR}/g++.pri )
 
-include( $$KDCHART_PATH/g++.pri )
-
-include( $$KDCHART_PATH/examples/examples.pri )
+include( $${TOP_SOURCE_DIR}/examples/examples.pri )
 
 HEADERS= mainwindow.h framewidget.h
 SOURCES= main.cpp mainwindow.cpp framewidget.cpp

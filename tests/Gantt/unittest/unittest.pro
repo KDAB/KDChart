@@ -1,11 +1,9 @@
-KDCHART_PATH = ../../..
-
 TARGET = TestUnittests
 
-include( $$KDCHART_PATH/examples/examples.pri )
+include( $${TOP_SOURCE_DIR}/examples/examples.pri )
 
-DEPENDPATH += . ../../../include
-INCLUDEPATH += . ../../../include
+DEPENDPATH += . $${TOP_SOURCE_DIR}/include
+INCLUDEPATH += . $${TOP_SOURCE_DIR}/include
 CONFIG += console
 QT += svg
 macx:CONFIG -= app_bundle

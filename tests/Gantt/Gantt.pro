@@ -1,4 +1,4 @@
-include(../../variables.pri)
+include($${TOP_SOURCE_DIR}/variables.pri)
 
 TEMPLATE=subdirs
 SUBDIRS=gfxview view listview apireview headers customconstraints

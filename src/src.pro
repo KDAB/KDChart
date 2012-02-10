@@ -10,7 +10,7 @@ CONFIG(debug, debug|release) {
     !unix: TARGET = kdchartd
 }
 
-include( ../variables.pri )
+include( $${TOP_SOURCE_DIR}/variables.pri )
 
 DEFINES += KDCHART_BUILD_KDCHART_LIB
 
@@ -512,16 +512,16 @@ CONFIG += warn-on
 DEFINES += QT_NO_KEYWORDS
 DEFINES += emit=""
 
-LIBFAKES_PATH = ../kdablibfakes
+LIBFAKES_PATH = $${TOP_SOURCE_DIR}/kdablibfakes
 
-DEPENDPATH = ../include \
+DEPENDPATH = $${TOP_SOURCE_DIR}/include \
             $$LIBFAKES_PATH/include \
-            .
+            $${TOP_SOURCE_DIR}/src
 INCLUDEPATH = $$LIBFAKES_PATH/include \
               KDGantt \
               KDChart \
-              . \
-              ../include
+              $${TOP_SOURCE_DIR}/src \
+              $${TOP_SOURCE_DIR}/include
 
 linux-*{
   version_script{

@@ -1,12 +1,10 @@
-KDCHART_PATH = ../../..
-
 TARGET = TernaryChartsAdvanced
 
-include( $$KDCHART_PATH/examples/examples.pri )
+include( $${TOP_SOURCE_DIR}/examples/examples.pri )
 
-unix:static:POST_TARGETDEPS += ../../../lib/*.a
+unix:static:POST_TARGETDEPS += $${TOP_BUILD_DIR}/lib/*.a
 
-LIBS        += -L$$KDCHART_PATH/lib -l$$KDCHARTLIB -l$$TESTTOOLSLIB
+LIBS        += -L$${TOP_BUILD_DIR}/lib -l$$KDCHARTLIB -l$$TESTTOOLSLIB
 
 HEADERS += mainwindow.h
 FORMS   += mainwindow.ui

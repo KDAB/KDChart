@@ -7,8 +7,6 @@ CONFIG(debug, debug|release) {
     !unix:TARGET = kdchart_plugind
 }
 
-# KDCHARTDIR = ../
-
 INCLUDEPATH += $${TOP_SOURCE_DIR}/include $${TOP_SOURCE_DIR}/include/KDChart
 DEFINES += PLUGINS_PLUGIN_DLL
 

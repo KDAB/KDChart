@@ -1,8 +1,6 @@
-KDCHART_PATH = ../../..
-
 TARGET = customAxisClass
 
-include( $$KDCHART_PATH/kdchartserializer/examples/examples.pri )
+include( $${TOP_SOURCE_DIR}/kdchartserializer/examples/examples.pri )
 
 HEADERS= mainwindow.h \
          AdjustedCartesianAxis.h \

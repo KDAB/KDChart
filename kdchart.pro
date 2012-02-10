@@ -87,12 +87,14 @@ exists( $${CONFQMAKE_CACHE} ) {
 }
 system('echo $${MESSAGE} >> $${QMAKE_CACHE}')
 # store PREFIX:
-TPD = $${OUT_PWD}
-#!unix{
-	#TPD=$$replace( TPD, "/", "\\\" )
+TMP_SOURCE_DIR = $${IN_PWD}
+TMP_BUILD_DIR = $${OUT_PWD}
+#windows {
+#  TMP_BUILD_DIR=$$replace( TMP_BUILD_DIR, "/", "\\\" )
+#  TMP_SOURCE_DIR=$$replace( TMP_SOURCE_DIR, "/", "\\\" )
 #}
-unix:system('echo TOP_SOURCE_DIR=$${IN_PWD} >> $${QMAKE_CACHE}')
-system('echo TOP_BUILD_DIR=$${TPD} >> $${QMAKE_CACHE}')
+system('echo TOP_SOURCE_DIR=$${TMP_SOURCE_DIR} >> $${QMAKE_CACHE}')
+system('echo TOP_BUILD_DIR=$${TMP_BUILD_DIR} >> $${QMAKE_CACHE}')
 windows:INSTALL_PREFIX=$$replace(INSTALL_PREFIX, \\\\, /)
 system('echo INSTALL_PREFIX=$$INSTALL_PREFIX >> $${QMAKE_CACHE}')
 system('echo VERSION=$$VERSION >> $${QMAKE_CACHE}')

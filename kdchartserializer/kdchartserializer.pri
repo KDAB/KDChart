@@ -1,4 +1,4 @@
-include (../variables.pri)
+include (${TOP_SOURCE_DIR}/variables.pri)
 
 QT += svg
 QT += xml

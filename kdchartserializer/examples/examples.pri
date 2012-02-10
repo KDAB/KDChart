@@ -1,11 +1,6 @@
 
 # This file is included by all of the examples' *.pro files.
 
-# Note: KDCHART_PATH is set in the calling .pro file,
-#       before examples.pri is included
-
-
-
 # 0. Make sure to use the XML option:
 #
 QT += xml
@@ -21,17 +16,14 @@ CONFIG( static ) {
   DEFINES += KDCHARTSERIALIZER_STATICLIB
 }
 
-# 3. Adjust the paths and LIBS according to KDCHART_PATH.
-#    Note: KDCHART_PATH is set in the calling .pro file,
-#          before examples.pri is included
 INCLUDEPATH += \
-            $$KDCHART_PATH/include \
-            $$KDCHART_PATH/include/KDChart \
-            $$KDCHART_PATH/kdchartserializer/include
+            $${TOP_SOURCE_DIR}/include \
+            $${TOP_SOURCE_DIR}/include/KDChart \
+            $${TOP_SOURCE_DIR}/kdchartserializer/include
 DEPENDPATH += \
-            $$KDCHART_PATH/include \
-            $$KDCHART_PATH/kdchartserializer/include
-LIBS        += -L$$KDCHART_PATH/lib -l$$KDCHARTSERIALIZERLIB -l$$KDCHARTLIB 
+            $${TOP_SOURCE_DIR}/include \
+            $${TOP_SOURCE_DIR}/kdchartserializer/include
+LIBS        += -L$${TOP_BUILD_DIR}/lib -l$$KDCHARTSERIALIZERLIB -l$$KDCHARTLIB
 
 
 # 4. Miscellaneous settings:

@@ -1,8 +1,6 @@
-KDCHART_PATH = ../../..
-
 TARGET = HeadersFootersAdvanced
 
-include( $$KDCHART_PATH/examples/examples.pri )
+include( $${TOP_SOURCE_DIR}/examples/examples.pri )
 
 HEADERS= mainwindow.h
 SOURCES= main.cpp \

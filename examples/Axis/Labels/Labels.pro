@@ -1,8 +1,6 @@
-KDCHART_PATH = ../../..
-
 TARGET = AxisLabels
 
-include( $$KDCHART_PATH/examples/examples.pri )
+include( $${TOP_SOURCE_DIR}/examples/examples.pri )
 
 HEADERS= mainwindow.h AdjustedCartesianAxis.h
 SOURCES= main.cpp mainwindow.cpp AdjustedCartesianAxis.cpp

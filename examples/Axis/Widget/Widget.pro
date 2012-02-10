@@ -1,6 +1,4 @@
-KDCHART_PATH = ../../..
-
-include( $$KDCHART_PATH/examples/examples.pri )
+include( $${TOP_SOURCE_DIR}/examples/examples.pri )
 
 TARGET = AxisWidget
 

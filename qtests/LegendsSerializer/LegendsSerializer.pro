@@ -1,4 +1,4 @@
-include( ../qtests.pri )
+include( $${TOP_SOURCE_DIR}/qtests/qtests.pri )
 
 SOURCES += main.cpp
 QT += xml 

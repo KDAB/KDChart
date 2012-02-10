@@ -1,8 +1,8 @@
-include( ../kdchartserializer.pri )
+include( $${TOP_SOURCE_DIR}/kdchartserializer/kdchartserializer.pri )
 
 TEMPLATE = lib
 TARGET = kdchartserializer
-DESTDIR	= ../../lib
+DESTDIR	= $${TOP_BUILD_DIR}/lib
 
 # Use the filename "kdchartserializerd.dll" (or "kdchartserializerd.lib") on Windows
 # to avoid name clashes between debug/non-debug versions of the
@@ -19,21 +19,20 @@ QT += xml
 dll {
 	DEFINES += KDCHARTSERIALIZER_DLL
 }
-DLLDESTDIR = ../../bin
+DLLDESTDIR = $${TOP_BUILD_DIR}/bin
 
 DEFINES += KDCHART_BUILD_KDCHARTSERIALIZER_LIB
 
-KDCHART_PATH = ../..
-INCLUDEPATH+= ../include \
-            $$KDCHART_PATH/include \
-            $$KDCHART_PATH/include/KDChart \
-            $$KDCHART_PATH/src \
-            $$KDCHART_PATH/KDChart/src \
+INCLUDEPATH+= $${TOP_SOURCE_DIR}/kdchartserializer/include \
+            $${TOP_SOURCE_DIR}/include \
+            $${TOP_SOURCE_DIR}/include/KDChart \
+            $${TOP_SOURCE_DIR}/src \
+            $${TOP_SOURCE_DIR}/KDChart/src \
             .
-DEPENDPATH += ../include \
-            $$KDCHART_PATH/include \
+DEPENDPATH += $${TOP_SOURCE_DIR}/kdchartserializer/include \
+           $${TOP_SOURCE_DIR}/include \
             .
-LIBS        += -L$$KDCHART_PATH/lib -l$$KDCHARTLIB
+LIBS        += -L$${TOP_BUILD_DIR}/lib -l$$KDCHARTLIB
 
 
 SOURCES= \

@@ -3,7 +3,7 @@ include( $${TOP_SOURCE_DIR}/features/kdchart.prf )
 
 TEMPLATE = lib
 TARGET = kdchartpluginlib
-DESTDIR = ../lib
+DESTDIR =$${TOP_BUILD_DIR}/lib
 CONFIG(debug, debug|release) {
   !unix:TARGET = kdchartpluginlibd
 }
@@ -16,19 +16,16 @@ DEFINES -= QT_NO_CAST_FROM_ASCII
 
 # load(kdchart)
 
-# KDCHARTDIR = ../
-KDCHARTBASE = ../
-
-LIBS += -L$$KDCHARTBASE/lib -l$$KDCHARTLIB -l$$KDCHARTUITOOLSLIB
+LIBS += -L$${TOP_BUILD_DIR}/lib -l$$KDCHARTLIB -l$$KDCHARTUITOOLSLIB
 
 INCLUDEPATH +=  $${TOP_SOURCE_DIR}/uitools \
                 $${TOP_BUILD_DIR}/uitools \
-                $$KDCHARTBASE/include \
-                $$KDCHARTBASE/include/KDChart \
-                $$KDCHARTBASE/src \
-                $$KDCHARTBASE/extra_include
+                $${TOP_SOURCE_DIR}/include \
+                $${TOP_SOURCE_DIR}/include/KDChart \
+                $${TOP_SOURCE_DIR}/src \
+                $${TOP_SOURCE_DIR}/extra_include
 
-DEPENDPATH += $$KDCHARTBASE/uitools
+DEPENDPATH += $${TOP_SOURCE_DIR}/uitools
 
 HEADERS = \
 	kdchartdesignerextension.h \

@@ -1,8 +1,6 @@
-KDCHART_PATH = ../../..
-
 TARGET = PieSimple
 
-include( $$KDCHART_PATH/examples/examples.pri )
+include( $${TOP_SOURCE_DIR}/examples/examples.pri )
 
 SOURCES= main.cpp
 

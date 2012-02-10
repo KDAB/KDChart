@@ -1,13 +1,11 @@
-KDCHART_PATH = ../../..
-
 TARGET = TestCustomConstraints
 
-include( $$KDCHART_PATH/examples/examples.pri )
+include( $${TOP_SOURCE_DIR}/examples/examples.pri )
 
-DEPENDPATH += . ../../../include ../../../src ../../../src/Gantt
-INCLUDEPATH += . ../../../include
+DEPENDPATH += . $${TOP_SOURCE_DIR}/include $${TOP_SOURCE_DIR}/src $${TOP_SOURCE_DIR}/src/Gantt
+INCLUDEPATH += . $${TOP_SOURCE_DIR}/include
 
-LIBS+= -L$$KDCHART_PATH/lib -l$$KDCHARTLIB
+LIBS+= -L$${TOP_BUILD_DIR}/lib -l$$KDCHARTLIB
 
 # Input
 SOURCES += main.cpp

@@ -4,7 +4,7 @@ CONFIG(debug, debug|release) {
   !unix:TARGET = kdchartuitoolsd
 }
 
-include( ../variables.pri )
+include( $${TOP_SOURCE_DIR}/variables.pri )
 
 LIBS += -L$${TOP_BUILD_DIR}/lib -l$$KDCHARTLIB
 
