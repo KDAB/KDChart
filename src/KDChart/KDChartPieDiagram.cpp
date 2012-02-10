@@ -235,8 +235,6 @@ void PieDiagram::placeLabels( PaintContext* paintContext )
         QRectF pieRect = twoDPieRect( paintContext->rectangle(), threeDAttrs );
         d->forgetAlreadyPaintedDataValues();
         d->labelPaintCache.clear();
-        PieExtras* pe = new PieExtras();
-        d->labelPaintCache.extra = pe;
 
         for ( int slice = 0; slice < colCount; slice++ ) {
             if ( d->angleLens[ slice ] != 0.0 ) {

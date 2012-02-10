@@ -67,14 +67,6 @@ protected:
 
 KDCHART_IMPL_DERIVED_DIAGRAM( PieDiagram, AbstractPieDiagram, PolarCoordinatePlane )
 
-class PieExtras : public LabelPaintExtraInfo
-{
-public:
-    // virtuals from LabelPaintExtraInfo
-    ~PieExtras() {}
-    void clear() {}
-};
-
 }
 
 #endif /* KDCHARTPIEDIAGRAM_P_H */

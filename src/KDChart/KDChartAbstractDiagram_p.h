@@ -73,16 +73,9 @@ namespace KDChart {
         QString value;
     };
 
-    class LabelPaintExtraInfo
-    {
-    public:
-        virtual ~LabelPaintExtraInfo() {}
-        virtual void clear() = 0;
-    };
-
     struct LabelPaintCache
     {
-        LabelPaintCache() : extra( 0 ) {}
+        LabelPaintCache() {}
         ~LabelPaintCache()
         {
             clear();
@@ -90,13 +83,10 @@ namespace KDChart {
 
         void clear()
         {
-            delete extra;
-            extra = 0;
             paintReplay.clear();
         }
 
         QVector<LabelPaintInfo> paintReplay;
-        LabelPaintExtraInfo *extra;
     private:
         LabelPaintCache( LabelPaintCache& other ); // no copies
     };
