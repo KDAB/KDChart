@@ -375,7 +375,6 @@ static QLineF labelAttachmentLine( const QPointF &center, const QPointF &start, 
         int closestIndex = 0; // better misbehave than crash
         for ( int i = 0; i < 4; i++ ) { // point 4 is just a duplicate of point 0
             QPointF p = label.elementAt( i );
-            qDebug() << p << distance( p, center );
             if ( QLineF( p, center ).length() < QLineF( closest, center ).length() ) {
                 closest = p;
                 closestIndex = i;
