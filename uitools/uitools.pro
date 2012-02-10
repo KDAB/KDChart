@@ -6,11 +6,7 @@ CONFIG(debug, debug|release) {
 
 include( ../variables.pri )
 
-# can't do that, man:
-# KDCHARTDIR = ..
-KDCHARTBASE = ..
-
-LIBS += -L$$KDCHARTBASE/lib -l$$KDCHARTLIB
+LIBS += -L$${TOP_BUILD_DIR}/lib -l$$KDCHARTLIB
 
 
 DEFINES += UITOOLS_BUILD_UITOOLS_LIB
@@ -18,10 +14,10 @@ DEFINES += UITOOLS_BUILD_UITOOLS_LIB
 QT += xml 
 CONFIG += designer
 
-INCLUDEPATH+= $$KDCHARTBASE/extra_include \
-              $$KDCHARTBASE/src \
-              $$KDCHARTBASE/src/KDChart \
-              $$KDCHARTBASE/uitools \
+INCLUDEPATH+= $${TOP_SOURCE_DIR}/extra_include \
+              $${TOP_SOURCE_DIR}/src \
+              $${TOP_SOURCE_DIR}/src/KDChart \
+              $${TOP_SOURCE_DIR}/uitools \
               $${OUT_PWD}
 DEPENDPATH += $${OUT_PWD}
 

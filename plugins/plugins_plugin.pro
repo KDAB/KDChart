@@ -1,4 +1,4 @@
-include( $$KDCHARTBASE/variables.pri )
+include( $${TOP_SOURCE_DIR}/variables.pri )
 
 TEMPLATE = lib
 CONFIG += plugin
@@ -8,9 +8,8 @@ CONFIG(debug, debug|release) {
 }
 
 # KDCHARTDIR = ../
-KDCHARTBASE = ..
 
-INCLUDEPATH += $$KDCHARTBASE/include $$KDCHARTBASE/include/KDChart
+INCLUDEPATH += $${TOP_SOURCE_DIR}/include $${TOP_SOURCE_DIR}/include/KDChart
 DEFINES += PLUGINS_PLUGIN_DLL
 
 CONFIG += designer debug_and_release
@@ -23,12 +22,12 @@ CONFIG( static ) {
 HEADERS += plugins.h
 SOURCES += plugins.cpp
 
-LIBS += -L$$KDCHARTBASE/lib -l$$KDCHARTPLUGINLIBLIB -l$$KDCHARTLIB -l$$KDCHARTUITOOLSLIB
+LIBS += -L$${TOP_BUILD_DIR}/lib -l$$KDCHARTPLUGINLIBLIB -l$$KDCHARTLIB -l$$KDCHARTUITOOLSLIB
 kdchart_static: LIBS += -l$$KDCHARTUITOOLSLIB
 
-INCLUDEPATH += $$KDCHARTBASE/src \
-               $$KDCHARTBASE/extra_include
-DEPENDPATH +=  $$KDCHARTBASE/src
+INCLUDEPATH += $${TOP_SOURCE_DIR}/src \
+               $${TOP_SOURCE_DIR}/extra_include
+DEPENDPATH +=  $${TOP_SOURCE_DIR}/src
 
 CONFIG(install-qt){
   target.path = $$[QT_INSTALL_PLUGINS]/designer
