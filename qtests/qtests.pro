@@ -47,13 +47,12 @@ unix:macx {
 
 win32 {
     WIN_BINDIR=
-    CONFIG(debug, debug|release) {
-        WIN_BINDIR=debug
-    }
-    CONFIG(release, debug|release) {
+    debug_and_release {
         WIN_BINDIR=release
     }
-    test.commands=for %d in ($${SUBDIRS}); do runTest.bat "%d" $$WIN_BINDIR || exit -1; done
+    RUNTEST=$${TOP_SOURCE_DIR}/qtests/runTest.bat
+    RUNTEST=$$replace(RUNTEST, /, \\)
+    test.commands=for %d in ($${SUBDIRS}); do $$RUNTEST "%d" $$WIN_BINDIR || exit -1; done
 }
 
 test.depends = $(TARGET)
