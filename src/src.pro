@@ -549,11 +549,7 @@ qsa{
   factories/QtFactory.h \
   factories/QFontFactory.h
 }
-KDAB_EVAL{
-  HEADERS += ../evaldialog/evaldialog.h
-  SOURCES += ../evaldialog/evaldialog.cpp
-  DEFINES += KDAB_EVAL
-}
+
 #*g++*{
 #  QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 #}

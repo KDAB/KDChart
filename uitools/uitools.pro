@@ -27,13 +27,6 @@ DEPENDPATH += $${TOP_SOURCE_DIR}/extra_include \
 
 UI_DIR = $${OUT_PWD}
 
-KDAB_EVAL{
-  HEADERS += ../evaldialog/evaldialog.h
-  SOURCES += ../evaldialog/evaldialog.cpp
-  DEFINES += KDAB_EVAL
-}
-
-
 FORMS += KDChartLegendPropertiesWidget.ui \
          KDChartHeaderFooterPropertiesWidget.ui \
          KDChartAxisPropertiesWidget.ui \
