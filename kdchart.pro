@@ -3,7 +3,7 @@ include( variables.pri )
 CONFIG += ordered
 
 TEMPLATE=subdirs
-SUBDIRS = src include/KDChart.pro
+SUBDIRS = src include
 
 !win32:SUBDIRS += uitools plugins
 win32 {
