@@ -52,7 +52,7 @@ win32 {
     }
     RUNTEST=$${TOP_SOURCE_DIR}/qtests/runTest.bat
     RUNTEST=$$replace(RUNTEST, /, \\)
-    test.commands=for %d in ($${SUBDIRS}); do $$RUNTEST "%d" $$WIN_BINDIR || exit -1; done
+    test.commands=for %d in ($${SUBDIRS}); do $$RUNTEST "%d" $$WIN_BINDIR || exit 1; done
 }
 
 test.depends = $(TARGET)
