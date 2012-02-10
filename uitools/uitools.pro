@@ -19,7 +19,11 @@ INCLUDEPATH+= $${TOP_SOURCE_DIR}/extra_include \
               $${TOP_SOURCE_DIR}/src/KDChart \
               $${TOP_SOURCE_DIR}/uitools \
               $${OUT_PWD}
-DEPENDPATH += $${OUT_PWD}
+DEPENDPATH += $${TOP_SOURCE_DIR}/extra_include \
+              $${TOP_SOURCE_DIR}/src \
+              $${TOP_SOURCE_DIR}/src/KDChart \
+              $${TOP_SOURCE_DIR}/uitools \
+              $${OUT_PWD}
 
 UI_DIR = $${OUT_PWD}
 
