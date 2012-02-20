@@ -1092,7 +1092,6 @@ void CartesianAxis::paintCtx( PaintContext* context )
                             const QSize size(
                                     labelItem->sizeHintAndRotatedCorners(
                                             topLeft, topRight, bottomRight, bottomLeft) );
-                            const QSize sizeUnrotated( labelItem->sizeHintUnrotated() );
                             const int rotation = labelTA.rotation();
                             const bool rotPositive = (rotation > 0 && rotation < 180);
                             QPoint midOfSide(0,0);
