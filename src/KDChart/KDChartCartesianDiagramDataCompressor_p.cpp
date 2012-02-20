@@ -704,9 +704,6 @@ void CartesianDiagramDataCompressor::retrieveModelData( const CachePosition& pos
     }
     break;
     case SamplingSeven:
-    default:
-    {
-    }
     break;
     };
 

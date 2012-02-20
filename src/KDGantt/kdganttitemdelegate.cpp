@@ -413,8 +413,6 @@ QRectF ItemDelegate::constraintBoundingRect( const QPointF& start, const QPointF
         case Constraint::StartFinish:
             poly = startFinishLine( start, end ) + startFinishArrow( start, end );
             break;
-        default:
-            break;
     }
     return poly.boundingRect().adjusted( -PW, -PW, PW, PW );
 }
@@ -441,8 +439,6 @@ void ItemDelegate::paintConstraintItem( QPainter* painter, const QStyleOptionGra
             break;
         case Constraint::StartFinish:
             paintStartFinishConstraint( painter, opt, start, end, constraint );
-            break;
-        default:
             break;
     }
 }

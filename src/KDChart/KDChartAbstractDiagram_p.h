@@ -73,8 +73,9 @@ namespace KDChart {
         QString value;
     };
 
-    struct LabelPaintCache
+    class LabelPaintCache
     {
+    public:
         LabelPaintCache() {}
         ~LabelPaintCache()
         {

@@ -318,7 +318,8 @@ QPointF PrerenderedLabel::referencePointLocation( KDChartEnums::PositionValue po
 
     case KDChartEnums::PositionUnknown: // intentional fall-through
     case KDChartEnums::PositionFloating: // intentional fall-through
-    default:
-        return QPointF();
+        return QPointF(); 
     }
+    
+    return QPointF();
 }

@@ -511,8 +511,6 @@ DataDimension CartesianGrid::calculateGridXY(
                     case KDChartEnums::GranularitySequenceIrregular:
                         granularities << 1.0 << 1.25 << 2.0 << 2.5 << 5.0;
                         break;
-                    default:
-                        break;
                 }
                 //qDebug("CartesianGrid::calculateGridXY()   dim.start: %f   dim.end: %f", dim.start, dim.end);
                 calculateStepWidth(
