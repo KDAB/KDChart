@@ -118,10 +118,9 @@ public:
                 return QString::fromLatin1("GranularitySequence_125_25");
             case GranularitySequenceIrregular:
                 return QString::fromLatin1("GranularitySequenceIrregular");
-            default: // should not happen
-        qDebug( "Unknown granularity sequence" );
-        return QString::fromLatin1("GranularitySequence_10_20");
         }
+        Q_ASSERT( !"Unknown GranularitySequenceValue" );
+        return QString::fromLatin1("GranularitySequence_10_20");
     }
 
 
@@ -245,10 +244,9 @@ public:
                 return QString::fromLatin1("MeasureCalculationModeAutoOrientation");
             case MeasureCalculationModeRelative:
                 return QString::fromLatin1("MeasureCalculationModeRelative");
-            default: // should not happen
-        qDebug( "Unknown measure calculation mode" );
-        return QString::fromLatin1("MeasureCalculationModeAuto");
         }
+        Q_ASSERT( !"unhandled MeasureCalculationMode" );
+        return QString::fromLatin1("MeasureCalculationModeAuto");
     }
 
 
@@ -314,10 +312,9 @@ public:
                 return QString::fromLatin1("MeasureOrientationMinimum");
             case MeasureOrientationMaximum:
                 return QString::fromLatin1("MeasureOrientationMaximum");
-            default: // should not happen
-        qDebug( "Unknown measure orientation mode" );
-        return QString::fromLatin1("MeasureOrientationAuto");
         }
+        Q_ASSERT( !"Unknown MeasureOrientation value" );
+        return QString::fromLatin1("MeasureOrientationAuto");
     }
 
 
