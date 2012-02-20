@@ -153,10 +153,10 @@ void KDChart::AbstractCartesianDiagram::setCoordinatePlane( AbstractCoordinatePl
                  plane, SLOT( relayout() ), Qt::QueuedConnection );
         Q_ASSERT( plane );
         bool con = connect( plane, SIGNAL( viewportCoordinateSystemChanged() ), this, SIGNAL( viewportCoordinateSystemChanged() ) );
-        Q_UNUSED( con ) //not read in release builds
         Q_ASSERT( con );
         con = connect( plane, SIGNAL( viewportCoordinateSystemChanged() ), this, SLOT( update() ) );
         Q_ASSERT( con );
+        Q_UNUSED( con ) //not read in release builds
     }
     // show the axes, after all have been layoutPlanes
     // (because they might depend on each other)
