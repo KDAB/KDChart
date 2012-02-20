@@ -364,7 +364,6 @@ static qreal normProjection( const QLineF &l1, const QLineF &l2 )
 static QLineF labelAttachmentLine( const QPointF &center, const QPointF &start, const QPainterPath &label  )
 {
     Q_ASSERT ( label.elementCount() == 5 );
-    QPointF labelCenter = ( label.elementAt( 0 ) + label.elementAt( 2 ) ) / 2.0;
 
     QPointF closeCorners[3];
     {
