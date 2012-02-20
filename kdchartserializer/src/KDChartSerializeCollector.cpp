@@ -142,7 +142,7 @@ bool SerializeCollector::initializeGlobalPointers(
 {
     instance()->initializedPointersMap().clear();
 
-    bool globalObjectsNodeFound;
+    bool globalObjectsNodeFound = false;
     QDomElement globalObjectsNode;
     QDomNode n = rootNode.firstChild();
     while(!n.isNull()) {
