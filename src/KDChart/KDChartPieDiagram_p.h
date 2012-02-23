@@ -59,10 +59,12 @@ public:
 
 protected:
     // this information needed temporarily at drawing time
-    QVector < qreal > startAngles;
-    QVector < qreal > angleLens;
+    QVector< qreal > startAngles;
+    QVector< qreal > angleLens;
     qreal size;
     LabelPaintCache labelPaintCache;
+    PieDiagram::LabelDecorations labelDecorations;
+    bool isCollisionAvoidanceEnabled;
 };
 
 KDCHART_IMPL_DERIVED_DIAGRAM( PieDiagram, AbstractPieDiagram, PolarCoordinatePlane )

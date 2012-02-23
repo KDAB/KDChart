@@ -41,6 +41,8 @@
 using namespace KDChart;
 
 PieDiagram::Private::Private()
+  : labelDecorations( PieDiagram::NoDecoration ),
+    isCollisionAvoidanceEnabled( false )
 {
 }
 
@@ -68,6 +70,26 @@ void PieDiagram::init()
 PieDiagram * PieDiagram::clone() const
 {
     return new PieDiagram( new Private( *d ) );
+}
+
+void PieDiagram::setLabelDecorations( LabelDecorations decorations )
+{
+    d->labelDecorations = decorations;
+}
+
+PieDiagram::LabelDecorations PieDiagram::labelDecorations() const
+{
+    return d->labelDecorations;
+}
+
+void PieDiagram::setLabelCollisionAvoidanceEnabled( bool enabled )
+{
+    d->isCollisionAvoidanceEnabled = enabled;
+}
+
+bool PieDiagram::isLabelCollisionAvoidanceEnabled() const
+{
+    return d->isCollisionAvoidanceEnabled;
 }
 
 const QPair<QPointF, QPointF> PieDiagram::calculateDataBoundaries () const
@@ -246,7 +268,9 @@ void PieDiagram::placeLabels( PaintContext* paintContext )
         QRectF textBoundingRect;
         d->paintDataValueTextsAndMarkers( this, paintContext, d->labelPaintCache, false, true,
                                           &textBoundingRect );
-        shuffleLabels( &textBoundingRect );
+        if ( d->isCollisionAvoidanceEnabled ) {
+            shuffleLabels( &textBoundingRect );
+        }
 
         if ( !textBoundingRect.isEmpty() && d->size > 0.0 ) {
             const QRectF &clipRect = paintContext->rectangle();
@@ -363,6 +387,7 @@ static qreal normProjection( const QLineF &l1, const QLineF &l2 )
 
 static QLineF labelAttachmentLine( const QPointF &center, const QPointF &start, const QPainterPath &label  )
 {
+    // TODO cut off at slice border, visible when slice is selected
     Q_ASSERT ( label.elementCount() == 5 );
 
     QPointF closeCorners[3];
@@ -474,8 +499,12 @@ void PieDiagram::paintInternal( PaintContext* paintContext )
             continue;
         }
         paintContext->painter()->setPen( pen( pi.index ) );
-        paintContext->painter()->drawLine( labelAttachmentLine( center, pi.markerPos, pi.labelArea ) );
-        paintContext->painter()->drawPath( pi.labelArea );
+        if ( d->labelDecorations & LineFromSliceDecoration ) {
+            paintContext->painter()->drawLine( labelAttachmentLine( center, pi.markerPos, pi.labelArea ) );
+        }
+        if ( d->labelDecorations & FrameDecoration ) {
+            paintContext->painter()->drawPath( pi.labelArea );
+        }
         d->reverseMapper.addPolygon( pi.index.row(), pi.index.column(),
                                      polygonFromPainterPath( pi.labelArea ) );
     }

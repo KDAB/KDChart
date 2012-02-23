@@ -50,6 +50,25 @@ protected:
     virtual void paint( PaintContext* paintContext );
 
 public:
+    /**
+     * Describes which decorations are painted around data labels.
+     */
+    enum LabelDecoration {
+        NoDecoration = 0, ///< No decoration
+        FrameDecoration = 1, ///< A rectangular frame is painted around the label text
+        LineFromSliceDecoration = 2 ///< A line is drawn from the pie slice to its label
+    };
+    Q_DECLARE_FLAGS( LabelDecorations, LabelDecoration );
+    /// Set the decorations to be painted around data labels according to @p decorations.
+    void setLabelDecorations( LabelDecorations decorations );
+    /// Return the decorations to be painted around data labels.
+    LabelDecorations labelDecorations() const;
+
+    /// If @p enabled is set to true, labels that would overlap will be moved to avoid overlap.
+    void setLabelCollisionAvoidanceEnabled( bool enabled );
+    /// Return whether overlapping labels will be moved to until they don't overlap anymore.
+    bool isLabelCollisionAvoidanceEnabled() const;
+
     /** \reimpl */
     virtual void resize ( const QSizeF& area );
 
@@ -97,6 +116,8 @@ private:
     uint findRightSlice( uint slice, int columnCount );
     QPointF pointOnEllipse( const QRectF& boundingBox, qreal angle );
 }; // End of class KDChartPieDiagram
+
+Q_DECLARE_OPERATORS_FOR_FLAGS( PieDiagram::LabelDecorations );
 
 }
 #endif // KDCHARTPIEDIAGRAM_H
