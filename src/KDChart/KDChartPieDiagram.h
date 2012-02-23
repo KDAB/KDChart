@@ -58,7 +58,7 @@ public:
         FrameDecoration = 1, ///< A rectangular frame is painted around the label text
         LineFromSliceDecoration = 2 ///< A line is drawn from the pie slice to its label
     };
-    Q_DECLARE_FLAGS( LabelDecorations, LabelDecoration );
+    Q_DECLARE_FLAGS( LabelDecorations, LabelDecoration )
     /// Set the decorations to be painted around data labels according to @p decorations.
     void setLabelDecorations( LabelDecorations decorations );
     /// Return the decorations to be painted around data labels.
@@ -117,7 +117,7 @@ private:
     QPointF pointOnEllipse( const QRectF& boundingBox, qreal angle );
 }; // End of class KDChartPieDiagram
 
-Q_DECLARE_OPERATORS_FOR_FLAGS( PieDiagram::LabelDecorations );
+Q_DECLARE_OPERATORS_FOR_FLAGS( PieDiagram::LabelDecorations )
 
 }
 #endif // KDCHARTPIEDIAGRAM_H
