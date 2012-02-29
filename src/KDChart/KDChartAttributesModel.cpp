@@ -311,10 +311,12 @@ QVariant AttributesModel::headerData ( int section,
 
   // the source model didn't have data set, let's use our stored values
   const QMap<int, QMap<int, QVariant> >& map = orientation == Qt::Horizontal ? mHorizontalHeaderDataMap : mVerticalHeaderDataMap;
-  if ( map.contains( section ) ) {
-      const QMap<int, QVariant> &dataMap = map[ section ];
-      if ( dataMap.contains( role ) ) {
-          return dataMap[ role ];
+  QMap<int, QMap<int, QVariant> >::const_iterator mapIt = map.find( section );
+  if ( mapIt != map.constEnd() ) {
+      const QMap<int, QVariant> &dataMap = *mapIt;
+      QMap<int, QVariant>::const_iterator dataMapIt = dataMap.find( role );
+      if ( dataMapIt != dataMap.constEnd() ) {
+          return *dataMapIt;
       }
   }
 
