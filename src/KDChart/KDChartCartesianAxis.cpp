@@ -635,10 +635,6 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
     // set up a reference point,  a step vector and a unit vector for the drawing:
 
-    const qreal minValueY = dimY.start;
-    const qreal maxValueY = dimY.end;
-    const qreal minValueX = dimX.start;
-    const qreal maxValueX = dimX.end;
     const bool isLogarithmicX = ( dimX.calcMode == AbstractCoordinatePlane::Logarithmic );
     const bool isLogarithmicY = ( dimY.calcMode == AbstractCoordinatePlane::Logarithmic );
 //#define AXES_PAINTING_DEBUG 1
@@ -651,8 +647,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
              << "-- drawUnitRulers: " << drawUnitRulers << endl
              << "-- drawLabels: " << drawLabels << endl
              << "-- ruler reference point:: " << rulerRef << endl
-             << "-- minValueX: " << minValueX << "   maxValueX: " << maxValueX << endl
-             << "-- minValueY: " << minValueY << "   maxValueY: " << maxValueY << endl
+             << "-- dimX.start: " << dimX.start << "   dimX.end: " << dimX.end << endl
+             << "-- dimY.start: " << dimY.start << "   dimY.end: " << dimY.end << endl
         ;
 #endif
 
@@ -759,11 +755,11 @@ void CartesianAxis::paintCtx( PaintContext* context )
         TextLayoutItem* labelItem = 0;
         TextLayoutItem* labelItem2 = 0;
         if ( drawLabels ) {
-            labelItem = new TextLayoutItem( QString::number( minValueY ), labelTA, referenceArea,
+            labelItem = new TextLayoutItem( QString::number( dimY.start ), labelTA, referenceArea,
                                             KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft );
             labelItem->setTextAttributes( textAttributes() );
 
-            labelItem2 = new TextLayoutItem( QString::number( minValueY ), labelTA, referenceArea,
+            labelItem2 = new TextLayoutItem( QString::number( dimY.start ), labelTA, referenceArea,
                                              KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft );
             labelItem2->setTextAttributes( textAttributes() );
         }
@@ -859,8 +855,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
             if ( drawLabels && hardLabelsCount > 0 && shortLabelsCount > 0 && d->annotations.isEmpty() ) {
                 bool labelsAreOverlapping = false;
                 int iLabel = 0;
-                qreal i = minValueX;
-                while ( i < maxValueX-1 && !labelsAreOverlapping ) {
+                qreal i = dimX.start;
+                while ( i < dimX.end-1 && !labelsAreOverlapping ) {
                     const int idx = ( iLabel < hardLabelsCount ) ? iLabel : 0;
                     const int idx2 = ( iLabel < hardLabelsCount - 1 ) ? iLabel + 1 : 0;
                     if ( dimX.stepWidth != 1.0 && ! dim.isCalculated ) {
@@ -915,10 +911,10 @@ void CartesianAxis::paintCtx( PaintContext* context )
             //      qDebug() << "initial labelDiff " << labelDiff;
             if ( drawLabels && d->annotations.isEmpty() )
             {
-                qreal i = minValueX;
+                qreal i = dimX.start;
                 int iLabel = 0;
 
-                while ( i + labelDiff < maxValueX )
+                while ( i + labelDiff < dimX.end )
                 {
                     const int idx = ( iLabel < hardLabelsCount ) ? iLabel : 0;
                     const int idx2 = ( iLabel < hardLabelsCount - 1 ) ? iLabel + 1 : 0;
@@ -961,7 +957,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
                     if ( labelItem->intersects( *labelItem2, firstPos, secondPos ) )
                     {
-                        i = minValueX;
+                        i = dimX.start;
                         labelDiff += labelDiff;
                         iLabel = 0;
                         //qDebug() << firstPos << secondPos.x()-firstPos .x() << labelItem->text() << labelItem2->text() << labelDiff;
@@ -977,19 +973,19 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     }
                 }
                 // fixing bugz issue #5018 without breaking issue #4179:
-                if ( minValueX + labelDiff > maxValueX )
-                    labelDiff = maxValueX - minValueX;
+                if ( dimX.start + labelDiff > dimX.end )
+                    labelDiff = dimX.end - dimX.start;
                 // This makes sure the first and the last X label are drawn
                 // if there is not enouth place to draw some more of them
                 // according to labelDiff calculation performed above.
             }
 
             int idxLabel = 0;
-            qreal iLabelF = minValueX;
-            qreal i = minValueX;
+            qreal iLabelF = dimX.start;
+            qreal i = dimX.start;
             qreal labelStep = 0.0;
 
-            while ( i <= maxValueX && d->annotations.isEmpty() ) {
+            while ( i <= dimX.end && d->annotations.isEmpty() ) {
                 // Line charts: we want the first tick to begin at 0.0 not at 0.5 or labels and
                 // values won't line up
                 QPointF topPoint = diagramIsVertical ? QPointF( i + ( centerAbscissaTicks ? 0.5 : 0.0 ), 0.0 ) : QPointF( 0.0, i + ( centerAbscissaTicks ? 0.5 : 0.0 ) );
@@ -1015,7 +1011,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
                 //Dont paint more ticks than we need
                 //when diagram type is Bar
-                if ( centerAbscissaTicks && i == maxValueX ) {
+                if ( centerAbscissaTicks && i == dimX.end ) {
                     painttick = false;
                 }
 
@@ -1045,7 +1041,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                         }
                         */
                         else {
-                            int idx = idxLabel + int( minValueX );
+                            int idx = idxLabel + int( dimX.start );
                             if ( hardLabelsCount ) {
                                 if ( useShortLabels ) {
                                     if ( idx >= shortLabelsList.count() )
@@ -1181,7 +1177,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
             }
         } else {
             const PainterSaver p( ptr );
-            const qreal maxLimit = maxValueY;
+            const qreal maxLimit = dimY.end;
             const qreal steg = dimY.stepWidth;
             int maxLabelsWidth = 0;
             qreal labelValue;
@@ -1189,7 +1185,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
             if ( drawLabels && position() == Right ) {
                 // Find the widest label, so we to know how much we need to right-shift
                 // our labels, to get them drawn right aligned:
-                labelValue = minValueY;
+                labelValue = dimY.start;
                 while ( labelValue <= maxLimit ) {
                     const QString labelText = diagram()->unitPrefix( int( labelValue ), diagramOrientation, true ) +
                                               QString::number( labelValue ) +
@@ -1198,12 +1194,12 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     maxLabelsWidth = qMax( maxLabelsWidth, diagramIsVertical ? labelItem->sizeHint().width() : labelItem->sizeHint().height() );
                     calculateNextLabel( labelValue, steg, isLogarithmicY, dimensions.last().start );
 
-                    if ( maxValueY == 0 && minValueY == 0 )
+                    if ( dimY.end == 0 && dimY.start == 0 )
                        break;
                 }
             }
 
-            labelValue = minValueY;
+            labelValue = dimY.start;
             qreal step = steg;
             bool nextLabel = false;
 
@@ -1262,11 +1258,11 @@ void CartesianAxis::paintCtx( PaintContext* context )
                     if ( nextLabel || isLogarithmicY )
                         calculateNextLabel( labelValue, step, isLogarithmicY, dimensions.last().start );
                     else
-                        labelValue = minValueY;
+                        labelValue = dimY.start;
                 }
 
                 // Second - Paint the labels
-                labelValue = minValueY;
+                labelValue = dimY.start;
                 //qDebug() << "axis labels starting at" << labelValue << "step width" << step;
                 if ( !d->annotations.isEmpty() )
                 {
