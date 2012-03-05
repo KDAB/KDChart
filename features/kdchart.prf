@@ -42,9 +42,8 @@ KDCHART_MAJOR_VERSION = 2
       !isEmpty(QMAKE_LFLAGS_RPATH):LIBS += $$QMAKE_LFLAGS_RPATH$${KDCHARTDIR}/lib
     }
 
-    INCLUDEPATH += $$KDCHARTDIR/include $$KDCHARTDIR/include/KDChart/ $$KDCHARTDIR/include/KDGantt
-# What dependencies are in /include ?
-    DEPENDPATH += $$KDCHARTDIR/include
+    INCLUDEPATH += $$KDCHARTDIR/include $$KDCHARTDIR/include/KDChart $$KDCHARTDIR/include/KDGantt
+    DEPENDPATH += $$KDCHARTDIR/include $$KDCHARTDIR/include/KDChart $$KDCHARTDIR/include/KDGantt
 
     CONFIG += have_kdchart
     DEFINES += HAVE_KDCHART
