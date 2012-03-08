@@ -770,11 +770,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
         if ( isAbscissa() ) {
             //Draw ticks at custom postions on x-axis
-            if ( !d->customTicksPositions.isEmpty() )
-            {
-                const QList< qreal > values = d->customTicksPositions;
-                KDAB_FOREACH( const qreal v, values )
-                {
+            if ( !d->customTicksPositions.isEmpty() ) {
+                KDAB_FOREACH( qreal v, d->customTicksPositions ) {
                    QPointF topPoint = diagramIsVertical ? QPointF( v, 0.0 ) : QPointF( 0.0, v );
                    QPointF bottomPoint = topPoint;
                    topPoint = plane->translate( topPoint );
@@ -793,9 +790,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
             if ( !d->annotations.isEmpty() )
             {
-                const QList< qreal > values = d->annotations.keys();
-                KDAB_FOREACH( const qreal v, values )
-                {
+                KDAB_FOREACH( qreal v, d->annotations.keys() ) {
                    QPointF topPoint = diagramIsVertical ? QPointF( v, 0.0 ) : QPointF( 0.0, v );
                    QPointF bottomPoint = topPoint;
                    topPoint = plane->translate( topPoint );
@@ -1204,9 +1199,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
             //Draws custom tick marks in the y-axis
             if ( !d->customTicksPositions.isEmpty() )
             {
-                const QList< qreal > values = d->customTicksPositions;
-                KDAB_FOREACH( const qreal value, values )
-                {
+                KDAB_FOREACH( qreal value, d->customTicksPositions ) {
                     QPointF annoPoint = diagramIsVertical ? QPointF( 0.0, value ) : QPointF( value, 0.0 );
                     QPointF leftPoint = plane->translate( annoPoint );
                     QPointF rightPoint = plane->translate( annoPoint );
@@ -1262,11 +1255,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 // Second - Paint the labels
                 labelValue = dimY.start;
                 //qDebug() << "axis labels starting at" << labelValue << "step width" << step;
-                if ( !d->annotations.isEmpty() )
-                {
-                    const QList< qreal > annotations = d->annotations.keys();
-                    KDAB_FOREACH( const qreal annotation, annotations )
-                    {
+                if ( !d->annotations.isEmpty() ) {
+                    KDAB_FOREACH( qreal annotation, d->annotations.keys() ) {
                         QPointF annoPoint = diagramIsVertical ? QPointF( 0.0, annotation ) : QPointF( annotation, 0.0 );
                         QPointF leftPoint = plane->translate( annoPoint );
                         QPointF rightPoint = plane->translate( annoPoint );
@@ -1528,11 +1518,8 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
         qreal h = diagramIsVertical ? 0.0 : 10.0;
         if ( drawLabels ) {
             // if there're no label strings, we take the biggest needed number as height
-            if ( !annotations.isEmpty() )
-            {
-                const QStringList strings = annotations.values();
-                KDAB_FOREACH( const QString& string, strings )
-                {
+            if ( !annotations.isEmpty() ) {
+                KDAB_FOREACH( const QString& string, annotations.values() ) {
                     labelItem.setText( string );
                     const QSize siz = labelItem.sizeHint();
                     if ( diagramIsVertical )
@@ -1652,11 +1639,8 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
         if ( drawLabels ) {
             // if there're no label strings, we loop through the values
             // taking the longest (not largest) number - e.g. 0.00001 is longer than 100
-            if ( !annotations.isEmpty() )
-            {
-                const QStringList strings = annotations.values();
-                KDAB_FOREACH( const QString& string, strings )
-                {
+            if ( !annotations.isEmpty() ) {
+                KDAB_FOREACH( const QString& string, annotations.values() ) {
                     labelItem.setText( string );
                     const QSize siz = labelItem.sizeHint();
                     if ( diagramIsVertical )
@@ -1664,9 +1648,7 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
                     else
                         h = qMax( h, qreal( siz.height() ) );
                 }
-            }
-            else if ( axis()->labels().isEmpty() )
-            {
+            } else if ( axis()->labels().isEmpty() ) {
                 const DataDimension dimY = AbstractGrid::adjustedLowerUpperRange(
                         diagramIsVertical ? plane->gridDimensionsList().last()
                                           : plane->gridDimensionsList().first(), true, true );
