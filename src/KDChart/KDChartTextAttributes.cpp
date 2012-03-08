@@ -57,7 +57,7 @@ private:
 };
 
 TextAttributes::Private::Private()
-    : visible( false ),
+    : visible( true ),
       font( QApplication::font() ),
       cachedFontSize( -1.0 ),
       autoRotate( false ),
