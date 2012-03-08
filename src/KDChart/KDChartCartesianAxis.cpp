@@ -633,8 +633,6 @@ void CartesianAxis::paintCtx( PaintContext* context )
     // this will override all halfs and fourth that hit a higher-order ruler
     // MAKE SURE TO START AT (0, 0)!
 
-    // set up a reference point,  a step vector and a unit vector for the drawing:
-
     const bool isLogarithmicX = ( dimX.calcMode == AbstractCoordinatePlane::Logarithmic );
     const bool isLogarithmicY = ( dimY.calcMode == AbstractCoordinatePlane::Logarithmic );
 //#define AXES_PAINTING_DEBUG 1
@@ -856,7 +854,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 bool labelsAreOverlapping = false;
                 int iLabel = 0;
                 qreal i = dimX.start;
-                while ( i < dimX.end-1 && !labelsAreOverlapping ) {
+                while ( i < dimX.end - 1 && !labelsAreOverlapping ) {
                     const int idx = ( iLabel < hardLabelsCount ) ? iLabel : 0;
                     const int idx2 = ( iLabel < hardLabelsCount - 1 ) ? iLabel + 1 : 0;
                     if ( dimX.stepWidth != 1.0 && ! dim.isCalculated ) {
@@ -1546,8 +1544,8 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
             else if ( !axis()->labels().isEmpty() )
             {
                 // find the longest label text:
-                const int first=0;
-                const int last=axis()->labels().count()-1;
+                const int first = 0;
+                const int last = axis()->labels().count() - 1;
                 const QStringList labelsList( axis()->labels() );
                 for ( int i = first; i <= last; ++i )
                 {
@@ -1585,8 +1583,8 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
                             cachedFontHeight = fm.height();
                         const bool useFastCalcAlgorithm
                             = ( strcmp( axis()->metaObject()->className(), "KDChart::CartesianAxis" ) == 0 );
-                        const int first=0;
-                        const int last=headerLabelsCount-1;
+                        const int first = 0;
+                        const int last = headerLabelsCount - 1;
                         for ( int i = first;
                             i <= last;
                             i = ( useFastCalcAlgorithm && i < last ) ? last : ( i + 1 ) )
@@ -1704,8 +1702,8 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
                 }
             } else {
                 // find the longest label text:
-                const int first=0;
-                const int last=axis()->labels().count() - 1;
+                const int first = 0;
+                const int last = axis()->labels().count() - 1;
                 const QStringList labelsList( axis()->labels() );
                 for ( int i = first; i <= last; ++i )
                 {
