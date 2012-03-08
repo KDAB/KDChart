@@ -169,26 +169,6 @@ void CartesianAxis::layoutPlanes()
     }
 }
 
-/*
-  void CartesianAxis::paintEvent( QPaintEvent* event )
-  {
-  Q_UNUSED( event );
-
-  if ( ! d->diagram() || ! d->diagram()->coordinatePlane() ) return;
-
-  PaintContext context;
-  QPainter painter( this );
-  context.setPainter( &painter );
-  AbstractCoordinatePlane* plane = d->diagram()->coordinatePlane();
-  context.setCoordinatePlane( plane );
-  QRectF rect = QRectF ( 1, 1, plane->width() - 3, plane->height() - 3 );
-  context.setRectangle( rect );
-  d->geometry.setSize( size() );
-  paintCtx( &context );
-  }
-*/
-
-
 static bool referenceDiagramIsBarDiagram( const AbstractDiagram * diagram )
 {
     const AbstractCartesianDiagram * dia =
