@@ -79,7 +79,7 @@ void CartesianAxis::init ()
 }
 
 
-bool CartesianAxis::compare( const CartesianAxis* other )const
+bool CartesianAxis::compare( const CartesianAxis* other ) const
 {
     if ( other == this ) {
         return true;

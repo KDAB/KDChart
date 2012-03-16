@@ -118,7 +118,7 @@ void LeveyJenningsAxis::setDateFormat(Qt::DateFormat format)
     d->format = format;
 }
 
-bool LeveyJenningsAxis::compare( const LeveyJenningsAxis* other )const
+bool LeveyJenningsAxis::compare( const LeveyJenningsAxis* other ) const
 {
     if( other == this ) return true;
     if( ! other ){

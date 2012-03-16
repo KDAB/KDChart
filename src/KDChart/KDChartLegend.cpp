@@ -215,7 +215,7 @@ Legend* Legend::clone() const
 }
 
 
-bool Legend::compare( const Legend* other )const
+bool Legend::compare( const Legend* other ) const
 {
     if( other == this ) return true;
     if( ! other ){

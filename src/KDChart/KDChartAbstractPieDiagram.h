@@ -47,7 +47,7 @@ public:
     /**
      * Returns true if both diagrams have the same settings.
      */
-    bool compare( const AbstractPieDiagram* other )const;
+    bool compare( const AbstractPieDiagram* other ) const;
 
     /** Set the granularity: the smaller the granularity the more your diagram
      * segments will show facettes instead of rounded segments.

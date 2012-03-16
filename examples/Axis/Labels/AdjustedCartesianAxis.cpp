@@ -31,7 +31,7 @@ AdjustedCartesianAxis::AdjustedCartesianAxis ( KDChart::AbstractCartesianDiagram
     // this bloc left empty intentionally
 }
 
-const QString AdjustedCartesianAxis::customizedLabel( const QString& label )const
+const QString AdjustedCartesianAxis::customizedLabel( const QString& label ) const
 {
     bool bOK;
     qreal val = label.toDouble( & bOK );

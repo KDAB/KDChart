@@ -69,7 +69,7 @@ namespace KDChart {
         /**
          * Returns true if both diagrams have the same settings.
          */
-        bool compare( const AbstractDiagram* other )const;
+        bool compare( const AbstractDiagram* other ) const;
 
 
         /**
@@ -147,7 +147,7 @@ namespace KDChart {
          *
          * @see setAttributesModel
          */
-        virtual bool usesExternalAttributesModel()const;
+        virtual bool usesExternalAttributesModel() const;
 
         /**
          * Returns the AttributesModel, that is used by this diagram.

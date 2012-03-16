@@ -70,7 +70,7 @@ void AbstractAreaBase::init()
 
 #define d d_func()
 
-bool AbstractAreaBase::compare( const AbstractAreaBase* other )const
+bool AbstractAreaBase::compare( const AbstractAreaBase* other ) const
 {
     if( other == this ) return true;
     if( ! other ){

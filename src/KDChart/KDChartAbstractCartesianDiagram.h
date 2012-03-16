@@ -53,7 +53,7 @@ namespace KDChart {
         /**
          * Returns true if both diagrams have the same settings.
          */
-        bool compare( const AbstractCartesianDiagram* other )const;
+        bool compare( const AbstractCartesianDiagram* other ) const;
 
 #if QT_VERSION < 0x040400 || defined(Q_COMPILER_MANGLES_RETURN_TYPE)
         virtual const int numberOfAbscissaSegments () const = 0;

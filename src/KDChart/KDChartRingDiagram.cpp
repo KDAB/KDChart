@@ -69,7 +69,7 @@ RingDiagram * RingDiagram::clone() const
     return new RingDiagram( new Private( *d ) );
 }
 
-bool RingDiagram::compare( const RingDiagram* other )const
+bool RingDiagram::compare( const RingDiagram* other ) const
 {
     if( other == this ) return true;
     if( ! other ){

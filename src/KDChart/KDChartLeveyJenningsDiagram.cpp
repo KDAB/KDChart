@@ -90,7 +90,7 @@ LineDiagram * LeveyJenningsDiagram::clone() const
     return newDiagram;
 }
 
-bool LeveyJenningsDiagram::compare( const LeveyJenningsDiagram* other )const
+bool LeveyJenningsDiagram::compare( const LeveyJenningsDiagram* other ) const
 {
     if( other == this ) return true;
     if( ! other ){

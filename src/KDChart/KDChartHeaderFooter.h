@@ -47,7 +47,7 @@ public:
 
     virtual HeaderFooter * clone() const;
 
-    bool compare( const HeaderFooter& other )const;
+    bool compare( const HeaderFooter& other ) const;
 
     enum HeaderFooterType{ Header,
                            Footer };

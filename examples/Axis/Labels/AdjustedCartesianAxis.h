@@ -36,14 +36,14 @@ class AdjustedCartesianAxis: public KDChart::CartesianAxis
 public:
     explicit AdjustedCartesianAxis( KDChart::AbstractCartesianDiagram* diagram = 0 );
 
-    virtual const QString customizedLabel( const QString& label )const;
+    virtual const QString customizedLabel( const QString& label ) const;
 
     void setBounds( qreal lower, qreal upper ){
         m_lowerBound = lower;
         m_upperBound = upper;
     }
-    qreal lowerBound()const { return m_lowerBound; }
-    qreal upperBound()const { return m_upperBound; }
+    qreal lowerBound() const { return m_lowerBound; }
+    qreal upperBound() const { return m_upperBound; }
 
 private:
     qreal m_lowerBound;

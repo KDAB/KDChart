@@ -109,7 +109,7 @@ namespace KDChart {
 
         void setAttributesModel( AttributesModel* );
 
-        bool usesExternalAttributesModel()const;
+        bool usesExternalAttributesModel() const;
 
         // FIXME: Optimize if necessary
         virtual qreal calcPercentValue( const QModelIndex & index ) const;

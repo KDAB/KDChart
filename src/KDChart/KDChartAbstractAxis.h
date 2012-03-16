@@ -89,12 +89,12 @@ namespace KDChart {
          *
          * \return The text to be drawn. By default this is the same as \c label.
          */
-        virtual const QString customizedLabel( const QString& label )const;
+        virtual const QString customizedLabel( const QString& label ) const;
 
         /**
          * Returns true if both axes have the same settings.
          */
-        bool compare( const AbstractAxis* other )const;
+        bool compare( const AbstractAxis* other ) const;
 
         /**
           * \internal

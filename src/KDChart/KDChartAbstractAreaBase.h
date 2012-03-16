@@ -77,7 +77,7 @@ public:
     /**
      * Returns true if both areas have the same settings.
      */
-    bool compare( const AbstractAreaBase* other )const;
+    bool compare( const AbstractAreaBase* other ) const;
 
     void alignToReferencePoint( const RelativePosition& position );
 

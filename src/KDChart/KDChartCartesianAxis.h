@@ -70,7 +70,7 @@ namespace KDChart {
         /**
          * Returns true if both axes have the same settings.
          */
-        bool compare( const CartesianAxis* other )const;
+        bool compare( const CartesianAxis* other ) const;
 
         /** reimpl */
         virtual void paint( QPainter* );

@@ -81,7 +81,7 @@ void KDChart::AbstractLayoutItem::paintCtx( PaintContext* context )
 /**
     Report changed size hint: ask the parent widget to recalculate the layout.
   */
-void KDChart::AbstractLayoutItem::sizeHintChanged()const
+void KDChart::AbstractLayoutItem::sizeHintChanged() const
 {
     // This is exactly like what QWidget::updateGeometry does.
 //  qDebug("KDChart::AbstractLayoutItem::sizeHintChanged() called");

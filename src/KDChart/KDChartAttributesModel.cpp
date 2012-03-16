@@ -75,7 +75,7 @@ void AttributesModel::initFrom( const AttributesModel* other )
     setPaletteType( other->paletteType() );
 }
 
-bool AttributesModel::compare( const AttributesModel* other )const
+bool AttributesModel::compare( const AttributesModel* other ) const
 {
     if( other == this ) return true;
     if( ! other ){
@@ -224,7 +224,7 @@ bool AttributesModel::compare( const AttributesModel* other )const
 }
 
 bool AttributesModel::compareAttributes(
-        int role, const QVariant& a, const QVariant& b )const
+        int role, const QVariant& a, const QVariant& b ) const
 {
     if( isKnownAttributesRole( role ) ){
         switch( role ) {
@@ -746,22 +746,22 @@ void AttributesModel::slotDataChanged( const QModelIndex& topLeft, const QModelI
 }
 
 /** needed for serialization */
-const QMap<int, QMap<int, QMap<int, QVariant> > > AttributesModel::dataMap()const
+const QMap<int, QMap<int, QMap<int, QVariant> > > AttributesModel::dataMap() const
 {
     return mDataMap;
 }
 /** needed for serialization */
-const QMap<int, QMap<int, QVariant> > AttributesModel::horizontalHeaderDataMap()const
+const QMap<int, QMap<int, QVariant> > AttributesModel::horizontalHeaderDataMap() const
 {
     return mHorizontalHeaderDataMap;
 }
 /** needed for serialization */
-const QMap<int, QMap<int, QVariant> > AttributesModel::verticalHeaderDataMap()const
+const QMap<int, QMap<int, QVariant> > AttributesModel::verticalHeaderDataMap() const
 {
     return mVerticalHeaderDataMap;
 }
 /** needed for serialization */
-const QMap<int, QVariant> AttributesModel::modelDataMap()const
+const QMap<int, QVariant> AttributesModel::modelDataMap() const
 {
     return mModelDataMap;
 }

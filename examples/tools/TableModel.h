@@ -95,7 +95,7 @@ public:
      *
      * @sa loadFromCSV
      */
-    const QString titleText()const {
+    const QString titleText() const {
         return m_titleText;
     }
 

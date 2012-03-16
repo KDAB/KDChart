@@ -84,7 +84,7 @@ Plotter* Plotter::clone() const
     return newDiagram;
 }
 
-bool Plotter::compare( const Plotter* other )const
+bool Plotter::compare( const Plotter* other ) const
 {
     if( other == this )
         return true;

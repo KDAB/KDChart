@@ -66,7 +66,7 @@ MainWindow::MainWindow( QWidget* parent ) :
 
 
 void MainWindow::setupAddHeaderDialog( QDialog* dlg,
-                                       Ui::AddHeaderDialog& conf )const
+                                       Ui::AddHeaderDialog& conf ) const
 {
     conf.setupUi( dlg );
     conf.textED->setFocus();

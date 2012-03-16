@@ -69,7 +69,7 @@ void AbstractDiagram::init()
 }
 
 
-bool AbstractDiagram::compare( const AbstractDiagram* other )const
+bool AbstractDiagram::compare( const AbstractDiagram* other ) const
 {
     if( other == this ) return true;
     if( ! other ){
@@ -251,7 +251,7 @@ void AbstractDiagram::setAttributesModel( AttributesModel* amodel )
     emit modelsChanged();
 }
 
-bool AbstractDiagram::usesExternalAttributesModel()const
+bool AbstractDiagram::usesExternalAttributesModel() const
 {
     return d->usesExternalAttributesModel();
 }

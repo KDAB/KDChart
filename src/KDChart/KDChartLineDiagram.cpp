@@ -91,7 +91,7 @@ LineDiagram * LineDiagram::clone() const
 }
 
 
-bool LineDiagram::compare( const LineDiagram* other )const
+bool LineDiagram::compare( const LineDiagram* other ) const
 {
     if( other == this ) return true;
     if( ! other ){

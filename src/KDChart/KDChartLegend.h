@@ -79,7 +79,7 @@ public:
     /**
      * Returns true if both legends have the same settings.
      */
-    bool compare( const Legend* other )const;
+    bool compare( const Legend* other ) const;
 
     //QSize calcSizeHint() const;
     virtual void resizeEvent( QResizeEvent * event ); // TODO: should be protected

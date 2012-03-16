@@ -103,7 +103,7 @@ BarDiagram * BarDiagram::clone() const
     return newDiagram;
 }
 
-bool BarDiagram::compare( const BarDiagram* other )const
+bool BarDiagram::compare( const BarDiagram* other ) const
 {
     if( other == this ) return true;
     if( ! other ){

@@ -58,9 +58,9 @@ public:
     /** Returns true if both, all of the attributes set, and
      * the palette set is equal in both of the AttributeModels.
      */
-    bool compare( const AttributesModel* other )const;
+    bool compare( const AttributesModel* other ) const;
 
-    bool compareAttributes( int role, const QVariant& a, const QVariant& b )const;
+    bool compareAttributes( int role, const QVariant& a, const QVariant& b ) const;
 
     /* Attributes Model specific API */
     bool setModelData( const QVariant value, int role );
@@ -115,13 +115,13 @@ Q_SIGNALS:
 
 protected:
     /** needed for serialization */
-    const QMap<int, QMap<int, QMap<int, QVariant> > > dataMap()const;
+    const QMap<int, QMap<int, QMap<int, QVariant> > > dataMap() const;
     /** needed for serialization */
-    const QMap<int, QMap<int, QVariant> > horizontalHeaderDataMap()const;
+    const QMap<int, QMap<int, QVariant> > horizontalHeaderDataMap() const;
     /** needed for serialization */
-    const QMap<int, QMap<int, QVariant> > verticalHeaderDataMap()const;
+    const QMap<int, QMap<int, QVariant> > verticalHeaderDataMap() const;
     /** needed for serialization */
-    const QMap<int, QVariant> modelDataMap()const;
+    const QMap<int, QVariant> modelDataMap() const;
     /** needed for serialization */
     void setDataMap( const QMap<int, QMap<int, QMap<int, QVariant> > > map );
     /** needed for serialization */

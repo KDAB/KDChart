@@ -75,7 +75,7 @@ void AbstractDiagram::Private::init( AbstractCoordinatePlane* newPlane )
     plane = newPlane;
 }
 
-bool AbstractDiagram::Private::usesExternalAttributesModel()const
+bool AbstractDiagram::Private::usesExternalAttributesModel() const
 {
     return ( ! attributesModel.isNull() ) &&
            ( ! qobject_cast<PrivateAttributesModel*>(attributesModel) );

@@ -142,7 +142,7 @@ void AbstractAxis::delayedInit()
         d->setDiagram( 0, true /* delayedInit */ );
 }
 
-bool AbstractAxis::compare( const AbstractAxis* other )const
+bool AbstractAxis::compare( const AbstractAxis* other ) const
 {
     if( other == this ) return true;
     if( ! other ){
@@ -161,7 +161,7 @@ bool AbstractAxis::compare( const AbstractAxis* other )const
 }
 
 
-const QString AbstractAxis::customizedLabel( const QString& label )const
+const QString AbstractAxis::customizedLabel( const QString& label ) const
 {
     return label;
 }

@@ -41,7 +41,7 @@ AbstractCartesianDiagram::Private::~Private()
 {
 }
 
-bool AbstractCartesianDiagram::compare( const AbstractCartesianDiagram* other )const
+bool AbstractCartesianDiagram::compare( const AbstractCartesianDiagram* other ) const
 {
     if( other == this ) return true;
     if( ! other ){

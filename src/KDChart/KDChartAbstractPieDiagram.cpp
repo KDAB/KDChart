@@ -58,7 +58,7 @@ void AbstractPieDiagram::init()
 }
 
 
-bool AbstractPieDiagram::compare( const AbstractPieDiagram* other )const
+bool AbstractPieDiagram::compare( const AbstractPieDiagram* other ) const
 {
     if( other == this ) return true;
     if( ! other ){
