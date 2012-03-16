@@ -114,8 +114,8 @@ public:
     bool minorTickMarkLengthIsSet() const;
 
     /**
-     * Set margin that should be used between the labals and the ticks. Per
-     * default the value is -1 what means, that half of the label's font
+     * Set margin that should be used between the labels and the ticks. By
+     * default the value is -1, which means that half of the label's font
      * height/width should be used as margin.
      */
     void setLabelMargin(int margin);

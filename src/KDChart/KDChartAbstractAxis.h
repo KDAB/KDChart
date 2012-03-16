@@ -181,9 +181,8 @@ namespace KDChart {
           If a non-empty list is passed, KD Chart will use these strings as axis labels,
           instead of calculating them.
 
-          If you a smaller number of strings than the number of labels drawn at this
-          axis, KD Chart will iterate over the list, repeating the strings, until all
-          labels are drawn. This only works on horizontal axis
+          If you pass a smaller number of strings than the number of labels drawn at this
+          axis, KD Chart will repeat the strings until all labels are drawn.
           As an example you could specify the seven days of the week as abscissa labels,
           which would be repeatedly used then.
 
