@@ -62,15 +62,12 @@ public:
     {}
     ~Private() {}
 
-    const CartesianAxis* axis() const { return static_cast<CartesianAxis *>( mAxis ); }
-
+    CartesianAxis* axis() const { return static_cast<CartesianAxis *>( mAxis ); }
     void drawTitleText( QPainter*, CartesianCoordinatePlane* plane, const QRect& areaGeoRect ) const;
-
     const TextAttributes titleTextAttributesWithAdjustedRotation() const;
-
     QSize calculateMaximumSize() const;
-
     QString customizedLabelText( const QString& text, Qt::Orientation orientation, qreal value ) const;
+    bool isVertical() const;
 
 private:
     friend class TickIterator;
