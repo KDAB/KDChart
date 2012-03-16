@@ -82,7 +82,7 @@ void HeaderFooter::init()
 
     m.setValue( 8.0 );
     m.setCalculationMode( KDChartEnums::MeasureCalculationModeAbsolute );
-    ta.setMinimalFontSize( m  );
+    ta.setMinimalFontSize( m );
 
     setTextAttributes( ta );
 }

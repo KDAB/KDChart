@@ -64,11 +64,11 @@ Legend::Private::Private() :
 {
     // By default we specify a simple, hard point as the 'relative' position's ref. point,
     // since we can not be sure that there will be any parent specified for the legend.
-    relativePosition.setReferencePoints(   PositionPoints( QPointF( 0.0, 0.0 ) ) );
+    relativePosition.setReferencePoints( PositionPoints( QPointF( 0.0, 0.0 ) ) );
     relativePosition.setReferencePosition( Position::NorthWest );
     relativePosition.setAlignment( Qt::AlignTop | Qt::AlignLeft );
     relativePosition.setHorizontalPadding( KDChart::Measure( 4.0, KDChartEnums::MeasureCalculationModeAbsolute ) );
-    relativePosition.setVerticalPadding(   KDChart::Measure( 4.0, KDChartEnums::MeasureCalculationModeAbsolute ) );
+    relativePosition.setVerticalPadding( KDChart::Measure( 4.0, KDChartEnums::MeasureCalculationModeAbsolute ) );
 }
 
 Legend::Private::~Private()
@@ -110,21 +110,21 @@ void Legend::init()
     d->layout->setSpacing( d->spacing );
     //setLayout( d->layout );
 
-    const Measure normalFontSizeTitle(  12, KDChartEnums::MeasureCalculationModeAbsolute );
+    const Measure normalFontSizeTitle( 12, KDChartEnums::MeasureCalculationModeAbsolute );
     const Measure normalFontSizeLabels( 10, KDChartEnums::MeasureCalculationModeAbsolute );
-    const Measure minimalFontSize(       4, KDChartEnums::MeasureCalculationModeAbsolute );
+    const Measure minimalFontSize( 4, KDChartEnums::MeasureCalculationModeAbsolute );
 
     TextAttributes textAttrs;
     textAttrs.setPen( QPen( Qt::black ) );
     textAttrs.setFont( QFont( QLatin1String( "helvetica" ), 10, QFont::Normal, false ) );
-    textAttrs.setFontSize(        normalFontSizeLabels );
+    textAttrs.setFontSize( normalFontSizeLabels );
     textAttrs.setMinimalFontSize( minimalFontSize );
     setTextAttributes( textAttrs );
 
     TextAttributes titleTextAttrs;
     titleTextAttrs.setPen( QPen( Qt::black ) );
     titleTextAttrs.setFont( QFont( QLatin1String( "helvetica" ), 12, QFont::Bold, false ) );
-    titleTextAttrs.setFontSize(        normalFontSizeTitle );
+    titleTextAttrs.setFontSize( normalFontSizeTitle );
     titleTextAttrs.setMinimalFontSize( minimalFontSize );
     setTitleTextAttributes( titleTextAttrs );
 
@@ -779,30 +779,30 @@ uint Legend::spacing() const
 
 void Legend::setDefaultColors()
 {
-    setColor(  0, Qt::red );
-    setColor(  1, Qt::green );
-    setColor(  2, Qt::blue );
-    setColor(  3, Qt::cyan );
-    setColor(  4, Qt::magenta );
-    setColor(  5, Qt::yellow );
-    setColor(  6, Qt::darkRed );
-    setColor(  7, Qt::darkGreen );
-    setColor(  8, Qt::darkBlue );
-    setColor(  9, Qt::darkCyan );
+    setColor( 0, Qt::red );
+    setColor( 1, Qt::green );
+    setColor( 2, Qt::blue );
+    setColor( 3, Qt::cyan );
+    setColor( 4, Qt::magenta );
+    setColor( 5, Qt::yellow );
+    setColor( 6, Qt::darkRed );
+    setColor( 7, Qt::darkGreen );
+    setColor( 8, Qt::darkBlue );
+    setColor( 9, Qt::darkCyan );
     setColor( 10, Qt::darkMagenta );
     setColor( 11, Qt::darkYellow );
 }
 
 void Legend::setRainbowColors()
 {
-    setColor(  0, QColor(255,  0,196) );
-    setColor(  1, QColor(255,  0, 96) );
-    setColor(  2, QColor(255, 128,64) );
-    setColor(  3, Qt::yellow );
-    setColor(  4, Qt::green );
-    setColor(  5, Qt::cyan );
-    setColor(  6, QColor( 96, 96,255) );
-    setColor(  7, QColor(160,  0,255) );
+    setColor( 0, QColor(255,  0,196) );
+    setColor( 1, QColor(255,  0, 96) );
+    setColor( 2, QColor(255, 128,64) );
+    setColor( 3, Qt::yellow );
+    setColor( 4, Qt::green );
+    setColor( 5, Qt::cyan );
+    setColor( 6, QColor( 96, 96,255) );
+    setColor( 7, QColor(160,  0,255) );
     for( int i = 8; i < 16; ++i )
         setColor( i, brush( i - 8 ).color().light() );
 }
@@ -905,9 +905,9 @@ void Legend::buildLegend()
         const AbstractDiagram* diagram = d->observers.at(i)->diagram();
         if( diagram ){
             //qDebug() << "accessing" << diagram;
-            const QStringList             diagramLabels(  diagram->datasetLabels()  );
+            const QStringList             diagramLabels( diagram->datasetLabels() );
             const QList<QBrush>           diagramBrushes( diagram->datasetBrushes() );
-            const QList<QPen>             diagramPens(    diagram->datasetPens()    );
+            const QList<QPen>             diagramPens( diagram->datasetPens() );
             const QList<MarkerAttributes> diagramMarkers( diagram->datasetMarkers() );
             const int begin = sortOrder() == Qt::AscendingOrder ? 0 : diagramLabels.count() - 1;
             const int end = sortOrder() == Qt::AscendingOrder ? diagramLabels.count() : -1;

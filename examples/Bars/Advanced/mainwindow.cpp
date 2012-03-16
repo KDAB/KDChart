@@ -199,7 +199,7 @@ void MainWindow::on_widthSB_valueChanged( int value )
         BarAttributes ba( m_bars->barAttributes() );
         ba.setFixedBarWidth( value );
         ba.setUseFixedBarWidth( true );
-        m_bars->setBarAttributes( ba  );
+        m_bars->setBarAttributes( ba );
     }
     m_chart->update();
 }
@@ -211,7 +211,7 @@ void MainWindow::on_widthCB_toggled( bool checked )
     }else{
         BarAttributes ba( m_bars->barAttributes() );
         ba.setUseFixedBarWidth( false );
-        m_bars->setBarAttributes( ba  );
+        m_bars->setBarAttributes( ba );
         m_chart->update();
     }
 }

@@ -154,7 +154,7 @@ void MainWindow::on_paintMarkersCB_toggled( bool checked )
     map.insert( 3, MarkerAttributes::MarkerCross );
     map.insert( 4, MarkerAttributes::MarkerDiamond );
 
-    DataValueAttributes attrs( m_lines->dataValueAttributes()  );
+    DataValueAttributes attrs( m_lines->dataValueAttributes() );
     TextAttributes ta( attrs.textAttributes() );
     MarkerAttributes ma( attrs.markerAttributes() );
     ma.setMarkerStylesMap( map );

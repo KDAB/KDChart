@@ -138,7 +138,7 @@ bool TableModel::loadFromCSV ( const QString& filename )
     QFile file ( filename );
     QStringList data;
 
-    if ( file.exists() && file.open ( QIODevice::ReadOnly )  )
+    if ( file.exists() && file.open ( QIODevice::ReadOnly ) )
     {
         while ( !file.atEnd() )
         {

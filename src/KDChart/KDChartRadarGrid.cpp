@@ -134,7 +134,7 @@ void RadarGrid::drawGrid( PaintContext* context )
     Q_ASSERT( plane->diagram()->model() );
     TextAttributes ta = plane->textAttributes();
     const int numberOfSpokes = ( int ) ( 360 / plane->angleUnit() );
-    const qreal stepWidth = boundaries.second.y() / ( dgr->numberOfGridRings()  );
+    const qreal stepWidth = boundaries.second.y() / ( dgr->numberOfGridRings() );
     QRectF destRect = context->rectangle();
     if (ta.isVisible() )
     {

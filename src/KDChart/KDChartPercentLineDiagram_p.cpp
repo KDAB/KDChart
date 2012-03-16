@@ -57,7 +57,7 @@ const QPair<QPointF, QPointF> PercentLineDiagram::calculateDataBoundaries() cons
     return QPair<QPointF, QPointF> ( bottomLeft, topRight );
 }
 
-void PercentLineDiagram::paint(  PaintContext* ctx )
+void PercentLineDiagram::paint( PaintContext* ctx )
 {
     reverseMapper().clear();
 
@@ -160,7 +160,7 @@ void PercentLineDiagram::paint(  PaintContext* ctx )
                     nextKey = point.key;
                 }
             }
-            if ( percentSumValues.at( row ) != 0  )
+            if ( percentSumValues.at( row ) != 0 )
                 stackedValues = stackedValues / percentSumValues.at( row ) * maxValue;
             else
                 stackedValues = 0.0;
@@ -180,7 +180,7 @@ void PercentLineDiagram::paint(  PaintContext* ctx )
             QPointF ptSouthEast;
 
             if ( row + 1 < rowCount ){
-                 if ( percentSumValues.at( row + 1 ) != 0  )
+                 if ( percentSumValues.at( row + 1 ) != 0 )
                      nextValues = nextValues / percentSumValues.at( row + 1 ) * maxValue;
                  else
                      nextValues = 0.0;

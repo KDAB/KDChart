@@ -182,9 +182,9 @@ void AbstractAreaBase::paintFrameAttributes( QPainter& painter, const QRect& rec
     //       Otherwise we might get a filled rectangle, so any
     //       previously drawn background would be overwritten by that area.
 
-    const QPen   oldPen(   painter.pen() );
+    const QPen   oldPen( painter.pen() );
     const QBrush oldBrush( painter.brush() );
-    painter.setPen(  PrintingParameters::scalePen( attributes.pen() ) );
+    painter.setPen( PrintingParameters::scalePen( attributes.pen() ) );
     painter.setBrush( Qt::NoBrush );
     painter.drawRect( rect.adjusted( 0, 0, -1, -1 ) );
     painter.setBrush( oldBrush );

@@ -57,7 +57,7 @@ CartesianCoordinatePlane::Private::Private()
     , verticalMin(0)
     , verticalMax(0)
     , autoAdjustHorizontalRangeToData(67)
-    , autoAdjustVerticalRangeToData(  67)
+    , autoAdjustVerticalRangeToData( 67)
     , autoAdjustGridToZoom( true )
     , fixedDataCoordinateSpaceRelation( false )
     , xAxisStartAtZero(true)
@@ -175,7 +175,7 @@ QRectF CartesianCoordinatePlane::getRawDataBoundingRectFromDiagrams() const
     //qDebug() << "CartesianCoordinatePlane::getRawDataBoundingRectFromDiagrams()\nreturns data boundaries: " << QRectF( QPointF(minX, minY), QSizeF(maxX - minX, maxY - minY) );
     QRectF dataBoundingRect;
     dataBoundingRect.setBottomLeft( QPointF(minX, minY) );
-    dataBoundingRect.setTopRight(   QPointF(maxX, maxY) );
+    dataBoundingRect.setTopRight( QPointF(maxX, maxY) );
     return dataBoundingRect;
 }
 
@@ -238,20 +238,20 @@ QRectF CartesianCoordinatePlane::calculateRawDataBoundingRect() const
 
     // if custom boundaries are set on the plane, use them
     if ( bHardHorizontalRange && bHardVerticalRange ) {
-        dataBoundingRect.setLeft(   d->horizontalMin );
-        dataBoundingRect.setRight(  d->horizontalMax );
+        dataBoundingRect.setLeft( d->horizontalMin );
+        dataBoundingRect.setRight( d->horizontalMax );
         dataBoundingRect.setBottom( d->verticalMin );
-        dataBoundingRect.setTop(    d->verticalMax );
+        dataBoundingRect.setTop( d->verticalMax );
     }else{
         // determine unit of the rectangles of all involved diagrams:
         dataBoundingRect = getRawDataBoundingRectFromDiagrams();
         if ( bHardHorizontalRange ) {
-            dataBoundingRect.setLeft(  d->horizontalMin );
+            dataBoundingRect.setLeft( d->horizontalMin );
             dataBoundingRect.setRight( d->horizontalMax );
         }
         if ( bHardVerticalRange ) {
             dataBoundingRect.setBottom( d->verticalMin );
-            dataBoundingRect.setTop(    d->verticalMax );
+            dataBoundingRect.setTop( d->verticalMax );
         }
     }
     // recalculate the bounds, if automatic adjusting of ranges is desired AND

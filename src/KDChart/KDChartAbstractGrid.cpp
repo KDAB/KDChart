@@ -34,7 +34,7 @@ using namespace std;
 
 static qreal _trunc( qreal v )
 {
-    return (( v > 0.0 ) ? floor( v ) : ceil(  v ));
+    return (( v > 0.0 ) ? floor( v ) : ceil( v ));
 }
 
 

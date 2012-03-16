@@ -102,7 +102,7 @@ namespace KDChart {
         virtual ~PlotterType() {}
         virtual Plotter::PlotType type() const = 0;
         virtual const QPair<QPointF,  QPointF> calculateDataBoundaries() const = 0;
-        virtual void paint(  PaintContext* ctx ) = 0;
+        virtual void paint( PaintContext* ctx ) = 0;
         Plotter* diagram() const;
         Plotter::CompressionMode useCompression() const;
         void setUseCompression( Plotter::CompressionMode value );
@@ -133,7 +133,7 @@ namespace KDChart {
 
         void paintThreeDLines(
             PaintContext* ctx, const QModelIndex& index,
-            const QPointF& from, const QPointF& to, const qreal depth  );
+            const QPointF& from, const QPointF& to, const qreal depth );
 
         void paintElements( PaintContext* ctx,
                             const LabelPaintCache&,

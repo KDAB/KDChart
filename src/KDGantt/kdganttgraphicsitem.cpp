@@ -375,7 +375,7 @@ void GraphicsItem::updateModel()
 
 void GraphicsItem::hoverMoveEvent( QGraphicsSceneHoverEvent* event )
 {
-    if (  !isEditable() ) return;
+    if ( !isEditable() ) return;
     StyleOptionGanttItem opt = getStyleOption();
     ItemDelegate::InteractionState istate = scene()->itemDelegate()->interactionStateFor( event->pos(), opt, index() );
     switch( istate ) {
@@ -542,7 +542,7 @@ void GraphicsItem::updateItemFromMouse( const QPointF& scenepos )
 
 void GraphicsItem::mouseMoveEvent( QGraphicsSceneMouseEvent* event )
 {
-    if (  !isEditable() ) return;
+    if ( !isEditable() ) return;
     if ( m_presspos.isNull() ) return;
 
     //qDebug() << "GraphicsItem::mouseMoveEvent("<<event<<"), m_istate="<< static_cast<ItemDelegate::InteractionState>( m_istate );

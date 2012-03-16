@@ -82,12 +82,12 @@ void BarDiagram::BarDiagramType::paintBars( PaintContext* ctx, const QModelIndex
         // we need to find out if the height is negative
         // and in this case paint it up and down
         //qDebug() << isoRect.height();
-        if (  isoRect.height() < 0 ) {
+        if ( isoRect.height() < 0 ) {
           topPoints << isoRect.bottomLeft() << isoRect.bottomRight()
                     << bar.bottomRight() << bar.bottomLeft();
           if ( stackedMode ) {
               // fix it when several negative stacked values
-              if (  index.column() == 0 ) {
+              if ( index.column() == 0 ) {
                   paintTop = true;
               }
               else
@@ -129,7 +129,7 @@ void BarDiagram::BarDiagramType::paintBars( PaintContext* ctx, const QModelIndex
 
 
         sidePoints << bar.topRight() << isoRect.topRight() << isoRect.bottomRight() << bar.bottomRight();
-        if (  bar.height() != 0 ){
+        if ( bar.height() != 0 ){
             const PainterSaver p( ctx->painter() );
             if( needToSetClippingOffForTop )
                 ctx->painter()->setClipping( false );

@@ -51,7 +51,7 @@ QPen PrintingParameters::scalePen( const QPen& pen )
         return pen;
 
     QPen resultPen = pen;
-    resultPen.setWidthF( resultPen.widthF() * instance()->scaleFactor  );
+    resultPen.setWidthF( resultPen.widthF() * instance()->scaleFactor );
     if( resultPen.widthF() == 0.0 )
         resultPen.setWidthF( instance()->scaleFactor );
 

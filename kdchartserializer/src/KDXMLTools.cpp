@@ -426,7 +426,7 @@ namespace KDXML {
         setBoolAttribute( element, "Valid", idx.isValid() );
         if( idx.isValid() ){
             element.setAttribute( "Column", QString::number( idx.column() ) );
-            element.setAttribute( "Row",    QString::number( idx.row()    ) );
+            element.setAttribute( "Row",    QString::number( idx.row() ) );
         }
     }
 

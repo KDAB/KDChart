@@ -181,7 +181,7 @@ qreal TextAttributes::calculatedFontSize(
         const QObject*                   autoReferenceArea,
         KDChartEnums::MeasureOrientation autoReferenceOrientation ) const
 {
-    const qreal normalSize  = fontSize().calculatedValue(        autoReferenceArea, autoReferenceOrientation );
+    const qreal normalSize  = fontSize().calculatedValue( autoReferenceArea, autoReferenceOrientation );
     const qreal minimalSize = minimalFontSize().calculatedValue( autoReferenceArea, autoReferenceOrientation );
     //qDebug() << "TextAttributes::calculatedFontSize() finds" << normalSize << "and" << minimalSize;
     return qMax( normalSize, minimalSize );

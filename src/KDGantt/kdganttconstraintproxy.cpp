@@ -69,7 +69,7 @@ void ConstraintProxy::setDestinationModel( ConstraintModel* dest )
 void ConstraintProxy::setProxyModel( QAbstractProxyModel* proxy )
 {
     if ( m_proxy == proxy ) return;
-    if ( m_proxy  ) m_proxy->disconnect( this );
+    if ( m_proxy ) m_proxy->disconnect( this );
     m_proxy = proxy;
     if ( m_proxy ) {
         connect( m_proxy, SIGNAL( layoutChanged() ), this, SLOT( slotLayoutChanged() ) );

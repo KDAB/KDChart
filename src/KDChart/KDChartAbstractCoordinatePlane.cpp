@@ -67,7 +67,7 @@ void AbstractCoordinatePlane::init()
 {
     d->initialize();  // virtual method to init the correct grid: cartesian, polar, ...
     connect( this, SIGNAL(internal_geometryChanged( QRect, QRect )),
-             this, SIGNAL(geometryChanged(          QRect, QRect )),
+             this, SIGNAL(geometryChanged( QRect, QRect )),
              Qt::QueuedConnection );
 }
 

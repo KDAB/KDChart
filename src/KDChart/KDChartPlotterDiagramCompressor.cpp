@@ -529,7 +529,7 @@ bool PlotterDiagramCompressor::Private::inBoundaries( Qt::Orientation orient, co
 //                break;
 //            case( PlotterDiagramCompressor::SLOPE ):
 //                {
-//                    if ( check && qAbs( newSlope - oldSlope ) >= m_maxSlopeRadius  )
+//                    if ( check && qAbs( newSlope - oldSlope ) >= m_maxSlopeRadius )
 //                    {
 //                        if ( start > m_bufferlist[ dataset ].count() && !m_bufferlist[ dataset ].isEmpty() )
 //                        {
@@ -573,7 +573,7 @@ void PlotterDiagramCompressor::Private::rowsInserted( const QModelIndex& /*paren
 
     //Q_ASSERT( std::numeric_limits<qreal>::quiet_NaN() < 5 || std::numeric_limits<qreal>::quiet_NaN() > 5 );
     //Q_ASSERT( 5 == qMin( std::numeric_limits<qreal>::quiet_NaN(),  5.0 ) );
-    //Q_ASSERT( 5 == qMax( 5.0, std::numeric_limits<qreal>::quiet_NaN()  ) );
+    //Q_ASSERT( 5 == qMax( 5.0, std::numeric_limits<qreal>::quiet_NaN() ) );
     if( m_bufferlist.count() > 0 && !m_bufferlist[ 0 ].isEmpty() && start < m_bufferlist[ 0 ].count() )
     {
         calculateDataBoundaries();

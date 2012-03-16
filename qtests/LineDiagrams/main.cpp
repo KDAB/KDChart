@@ -72,7 +72,7 @@ private slots:
         // modify at different level and compare
         laCol.setMissingValuesPolicy ( LineAttributes::MissingValuesHideSegments );
         laIndex.setMissingValuesPolicy ( LineAttributes::MissingValuesShownAsZero );
-        m_lines->setLineAttributes( la  );
+        m_lines->setLineAttributes( la );
         m_lines->setLineAttributes( cols-2,  laCol );
         m_lines->setLineAttributes( idx,  laIndex );
         QVERIFY( m_lines->lineAttributes() != m_lines->lineAttributes(cols-2) );

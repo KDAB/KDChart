@@ -191,7 +191,7 @@ void PercentBarDiagram::paint( PaintContext* ctx )
             }
 
             QPointF point, previousPoint;
-            if(  sumValuesVector.at( row ) != 0 && value > 0 ) {
+            if( sumValuesVector.at( row ) != 0 && value > 0 ) {
                 point = ctx->coordinatePlane()->translate( QPointF( key,  stackedValues / sumValuesVector.at( row ) * maxValue ) );
                 point.rx() += offset / 2;
 

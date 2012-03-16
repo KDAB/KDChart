@@ -44,7 +44,7 @@ namespace KDChart {
         virtual ~NormalLyingBarDiagram() {}
         virtual BarDiagram::BarType type() const;
         virtual const QPair<QPointF,  QPointF> calculateDataBoundaries() const;
-        virtual void paint(  PaintContext* ctx );
+        virtual void paint( PaintContext* ctx );
 /*
         virtual void calculateValueAndGapWidths( int rowCount,int colCount,
 				    qreal groupWidth,

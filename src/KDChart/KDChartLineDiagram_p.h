@@ -92,7 +92,7 @@ namespace KDChart {
         virtual ~LineDiagramType() {}
         virtual LineDiagram::LineType type() const = 0;
         virtual const QPair<QPointF,  QPointF> calculateDataBoundaries() const = 0;
-        virtual void paint(  PaintContext* ctx ) = 0;
+        virtual void paint( PaintContext* ctx ) = 0;
         LineDiagram* diagram() const;
 
     protected:
@@ -129,7 +129,7 @@ namespace KDChart {
 
         void paintThreeDLines(
             PaintContext* ctx, const QModelIndex& index,
-            const QPointF& from, const QPointF& to, const qreal depth  );
+            const QPointF& from, const QPointF& to, const qreal depth );
 
         void paintElements( PaintContext* ctx,
                             const LabelPaintCache&,

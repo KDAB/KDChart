@@ -623,12 +623,12 @@ void AbstractDiagram::paintMarker( QPainter* painter,
                     QVector <QPointF > crossPoints;
                     QPointF p[12];
                     p[ 0] = QPointF( -w02, -h05 );
-                    p[ 1] = QPointF(  w02, -h05 );
-                    p[ 2] = QPointF(  w02, -h02 );
-                    p[ 3] = QPointF(  w05, -h02 );
-                    p[ 4] = QPointF(  w05,  h02 );
-                    p[ 5] = QPointF(  w02,  h02 );
-                    p[ 6] = QPointF(  w02,  h05 );
+                    p[ 1] = QPointF( w02, -h05 );
+                    p[ 2] = QPointF( w02, -h02 );
+                    p[ 3] = QPointF( w05, -h02 );
+                    p[ 4] = QPointF( w05,  h02 );
+                    p[ 5] = QPointF( w02,  h02 );
+                    p[ 6] = QPointF( w02,  h05 );
                     p[ 7] = QPointF( -w02,  h05 );
                     p[ 8] = QPointF( -w02,  h02 );
                     p[ 9] = QPointF( -w05,  h02 );
@@ -649,7 +649,7 @@ void AbstractDiagram::paintMarker( QPainter* painter,
                     bottom= QPointF( 0, maSize.height()/2 );
                     painter->setPen( PrintingParameters::scalePen( QPen( brush.color() ) ) );
                     painter->drawLine( left, right );
-                    painter->drawLine(  top, bottom );
+                    painter->drawLine( top, bottom );
                     break;
                 }
             case MarkerAttributes::NoMarker:

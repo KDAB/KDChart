@@ -124,7 +124,7 @@ private:                                                \
 #define KDCHART_IMPL_DERIVED_DIAGRAM( CLASS, PARENT, PLANE ) \
 inline CLASS::CLASS( Private * p )                           \
     : PARENT( p ) { init(); }                                \
-inline CLASS::CLASS(                                         \
+inline CLASS::CLASS(                            \
     Private * p, QWidget* parent, PLANE * plane )            \
     : PARENT( p, parent, plane ) { init(); }                 \
 inline CLASS::Private * CLASS::d_func()                      \

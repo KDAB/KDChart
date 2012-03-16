@@ -238,7 +238,7 @@ namespace KDChart {
          * \sa setHorizontalRange, setVerticalRange
          * \sa setAutoAdjustHorizontalRangeToData
          */
-        void setAutoAdjustVerticalRangeToData( unsigned int percentEmpty = 67  );
+        void setAutoAdjustVerticalRangeToData( unsigned int percentEmpty = 67 );
 
         /**
          * \brief Returns the maximal allowed percent of the horizontal

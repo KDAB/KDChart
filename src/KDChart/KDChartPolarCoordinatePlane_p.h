@@ -61,7 +61,7 @@ struct PolarCoordinatePlane::CoordinateTransformation
     static QPointF polarToCartesian( qreal R, qreal theta )
     {
         // de-inline me
-        return QPointF( R * cos( DEGTORAD( theta  ) ), R * sin( DEGTORAD( theta ) ) );
+        return QPointF( R * cos( DEGTORAD( theta ) ), R * sin( DEGTORAD( theta ) ) );
     }
 
     inline const QPointF translate( const QPointF& diagramPoint ) const

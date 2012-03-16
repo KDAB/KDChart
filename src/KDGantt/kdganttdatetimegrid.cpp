@@ -232,7 +232,7 @@ QDateTime DateTimeScaleFormatter::nextRangeBegin( const QDateTime& datetime ) co
         break;
     }
     //result = result.toLocalTime();
-    assert(  result != datetime );
+    assert( result != datetime );
     //qDebug() << "DateTimeScaleFormatter::nextRangeBegin("<<datetime<<")="<<d->range<<result;
     return result;
 }

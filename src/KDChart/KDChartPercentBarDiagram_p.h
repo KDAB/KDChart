@@ -35,7 +35,7 @@ namespace KDChart {
         virtual ~PercentBarDiagram() {}
         virtual BarDiagram::BarType type() const;
         virtual const QPair<QPointF,  QPointF> calculateDataBoundaries() const;
-        virtual void paint(  PaintContext* ctx );
+        virtual void paint( PaintContext* ctx );
     };
 
 }

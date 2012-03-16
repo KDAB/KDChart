@@ -59,7 +59,7 @@ public:
     Private( AbstractDiagram* diagram, AbstractAxis* axis );
     ~Private();
 
-    bool setDiagram(   AbstractDiagram* diagram, bool delayedInit = false );
+    bool setDiagram( AbstractDiagram* diagram, bool delayedInit = false );
     void unsetDiagram( AbstractDiagram* diagram );
     AbstractDiagram* diagram() const
     {

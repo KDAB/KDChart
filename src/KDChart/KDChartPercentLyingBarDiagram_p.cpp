@@ -62,7 +62,7 @@ const QPair<QPointF, QPointF> PercentLyingBarDiagram::calculateDataBoundaries() 
         }
     }*/
     // special cases
-    if (  yMax == yMin ) {
+    if ( yMax == yMin ) {
         if ( yMin == 0.0 )
             yMax = 0.1; //we need at least a range
         else

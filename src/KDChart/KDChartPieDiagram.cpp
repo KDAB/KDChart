@@ -384,7 +384,7 @@ static qreal normProjection( const QLineF &l1, const QLineF &l2 )
     return qAbs( dotProduct / ( l1.length() * l2.length() ) );
 }
 
-static QLineF labelAttachmentLine( const QPointF &center, const QPointF &start, const QPainterPath &label  )
+static QLineF labelAttachmentLine( const QPointF &center, const QPointF &start, const QPainterPath &label )
 {
     // TODO cut off at slice border, visible when slice is selected
     Q_ASSERT ( label.elementCount() == 5 );

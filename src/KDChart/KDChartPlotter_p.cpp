@@ -106,13 +106,13 @@ const QPointF Plotter::PlotterType::project(
 
 void Plotter::PlotterType::paintThreeDLines(
     PaintContext* ctx, const QModelIndex& index,
-    const QPointF& from, const QPointF& to, const qreal depth  )
+    const QPointF& from, const QPointF& to, const qreal depth )
 {
     // retrieve the boundaries
     const QPair< QPointF, QPointF > boundaries = diagram()->dataBoundaries();
     const QPointF& maxLimits = boundaries.second;
-    const QPointF topLeft = project( from, maxLimits, depth, index  );
-    const QPointF topRight = project ( to, maxLimits, depth, index  );
+    const QPointF topLeft = project( from, maxLimits, depth, index );
+    const QPointF topRight = project ( to, maxLimits, depth, index );
 
     const QPolygonF segment = QPolygonF() << from << topLeft << topRight << to;
     const QBrush indexBrush ( diagram()->brush( index ) );
@@ -122,7 +122,7 @@ void Plotter::PlotterType::paintThreeDLines(
         ctx->painter()->setRenderHint( QPainter::Antialiasing );
 
     ctx->painter()->setBrush( indexBrush );
-    ctx->painter()->setPen( PrintingParameters::scalePen( diagram()->pen( index ) )  );
+    ctx->painter()->setPen( PrintingParameters::scalePen( diagram()->pen( index ) ) );
 
     reverseMapper().addPolygon( index.row(), index.column(), segment );
     ctx->painter()->drawPolygon( segment );

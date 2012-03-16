@@ -39,8 +39,8 @@ namespace KDChart {
 
 Measure::Measure()
   : mValue( 0.0 ),
-    mMode(  KDChartEnums::MeasureCalculationModeAuto ),
-    mArea(  0 ),
+    mMode( KDChartEnums::MeasureCalculationModeAuto ),
+    mArea( 0 ),
     mOrientation( KDChartEnums::MeasureOrientationAuto )
 {
     // this bloc left empty intentionally
@@ -50,8 +50,8 @@ Measure::Measure( qreal value,
     KDChartEnums::MeasureCalculationMode mode,
     KDChartEnums::MeasureOrientation orientation )
   : mValue( value ),
-    mMode(  mode ),
-    mArea(  0 ),
+    mMode( mode ),
+    mArea( 0 ),
     mOrientation( orientation )
 {
     // this bloc left empty intentionally
@@ -59,8 +59,8 @@ Measure::Measure( qreal value,
 
 Measure::Measure( const Measure& r )
   : mValue( r.value() ),
-    mMode(  r.calculationMode() ),
-    mArea(  r.referenceArea() ),
+    mMode( r.calculationMode() ),
+    mArea( r.referenceArea() ),
     mOrientation( r.referenceOrientation() )
 {
     // this bloc left empty intentionally

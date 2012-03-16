@@ -81,11 +81,11 @@ void TextArea::paintAll( QPainter& painter )
 {
     // Paint the background and frame
     paintBackground( painter, geometry() );
-    paintFrame(      painter, geometry() );
+    paintFrame( painter, geometry() );
 
     // temporarily adjust the widget size, to be sure all content gets calculated
     // to fit into the inner rectangle
-    const QRect oldGeometry( areaGeometry()  );
+    const QRect oldGeometry( areaGeometry() );
     QRect inner( innerRect() );
     inner.moveTo(
         oldGeometry.left() + inner.left(),

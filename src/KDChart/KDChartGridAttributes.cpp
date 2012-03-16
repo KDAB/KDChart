@@ -63,8 +63,8 @@ GridAttributes::Private::Private()
       outerVisible( true ),
       zeroPen( QColor( 0x00, 0x00, 0x80 ) )
 {
-    pen.setCapStyle(     Qt::FlatCap );
-    subPen.setCapStyle(  Qt::FlatCap );
+    pen.setCapStyle( Qt::FlatCap );
+    subPen.setCapStyle( Qt::FlatCap );
     zeroPen.setCapStyle( Qt::FlatCap );
 }
 

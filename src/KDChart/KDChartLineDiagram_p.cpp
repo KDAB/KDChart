@@ -77,13 +77,13 @@ const QPointF LineDiagram::LineDiagramType::project(
 
 void LineDiagram::LineDiagramType::paintThreeDLines(
     PaintContext* ctx, const QModelIndex& index,
-    const QPointF& from, const QPointF& to, const qreal depth  )
+    const QPointF& from, const QPointF& to, const qreal depth )
 {
     // retrieve the boundaries
     const QPair< QPointF, QPointF > boundaries = diagram()->dataBoundaries();
     const QPointF& maxLimits = boundaries.second;
-    const QPointF topLeft = project( from, maxLimits, depth, index  );
-    const QPointF topRight = project ( to, maxLimits, depth, index  );
+    const QPointF topLeft = project( from, maxLimits, depth, index );
+    const QPointF topRight = project ( to, maxLimits, depth, index );
     const QPolygonF segment = QPolygonF() << from << topLeft << topRight << to;
 
     ThreeDLineAttributes threeDAttrs = diagram()->threeDLineAttributes( index );

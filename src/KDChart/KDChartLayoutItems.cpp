@@ -472,7 +472,7 @@ bool KDChart::TextLayoutItem::intersects( const TextLayoutItem& other, const QPo
     if ( mAttributes.rotation() != other.mAttributes.rotation() )
     {
         // that's the code for the common case: the rotation angles don't need to match here
-        QPolygon myPolygon(          rotatedCorners() );
+        QPolygon myPolygon( rotatedCorners() );
         QPolygon otherPolygon( other.rotatedCorners() );
 
         // move the polygons to their positions
@@ -490,7 +490,7 @@ bool KDChart::TextLayoutItem::intersects( const TextLayoutItem& other, const QPo
         // and that's the code for the special case: the rotation angles match, which is less time consuming in calculation
         const qreal angle = mAttributes.rotation() * PI / 180.0;
         // both sizes
-        const QSizeF mySize(          unrotatedSizeHint() );
+        const QSizeF mySize( unrotatedSizeHint() );
         const QSizeF otherSize( other.unrotatedSizeHint() );
 
         // that's myP1 relative to myPos
@@ -970,13 +970,13 @@ KDChart::LineWithMarkerLayoutItem::LineWithMarkerLayoutItem(
         const QPen& markerPen,
         Qt::Alignment alignment )
     : AbstractLayoutItem( alignment )
-    , mDiagram(     diagram )
-    , mLineLength(  lineLength )
-    , mLinePen(     linePen )
-    , mMarkerOffs(  markerOffs )
-    , mMarker(      marker )
+    , mDiagram( diagram )
+    , mLineLength( lineLength )
+    , mLinePen( linePen )
+    , mMarkerOffs( markerOffs )
+    , mMarker( marker )
     , mMarkerBrush( markerBrush )
-    , mMarkerPen(   markerPen )
+    , mMarkerPen( markerPen )
 {
 }
 
@@ -1035,7 +1035,7 @@ KDChart::AutoSpacerLayoutItem::AutoSpacerLayoutItem(
         bool layoutIsAtTopPosition, QHBoxLayout *rightLeftLayout,
         bool layoutIsAtLeftPosition, QVBoxLayout *topBottomLayout )
     : AbstractLayoutItem( Qt::AlignCenter )
-    , mLayoutIsAtTopPosition(  layoutIsAtTopPosition )
+    , mLayoutIsAtTopPosition( layoutIsAtTopPosition )
     , mRightLeftLayout( rightLeftLayout )
     , mLayoutIsAtLeftPosition( layoutIsAtLeftPosition )
     , mTopBottomLayout( topBottomLayout )
@@ -1158,7 +1158,7 @@ void KDChart::AutoSpacerLayoutItem::paint( QPainter* painter )
         //qDebug() << QRect( p1, p2 );
         const QPoint oldBrushOrigin( painter->brushOrigin() );
         const QBrush oldBrush( painter->brush() );
-        const QPen   oldPen(   painter->pen() );
+        const QPen   oldPen( painter->pen() );
         const QPointF newTopLeft( painter->deviceMatrix().map( p1 ) );
         painter->setBrushOrigin( newTopLeft );
         painter->setBrush( mCommonBrush );

@@ -173,7 +173,7 @@ int DatasetProxyModel::mapProxyRowToSource ( const int& proxyRow ) const
 
 int DatasetProxyModel::mapProxyColumnToSource ( const int& proxyColumn ) const
 {
-    if ( mColProxyToSrcMap.isEmpty()  )
+    if ( mColProxyToSrcMap.isEmpty() )
     {   // if no column mapping is set, we pass down the column:
         return proxyColumn;
     } else {

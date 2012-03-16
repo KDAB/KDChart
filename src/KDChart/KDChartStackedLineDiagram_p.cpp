@@ -89,7 +89,7 @@ const QPair<QPointF, QPointF> StackedLineDiagram::calculateDataBoundaries() cons
     return QPair<QPointF, QPointF> ( bottomLeft, topRight );
 }
 
-void StackedLineDiagram::paint(  PaintContext* ctx )
+void StackedLineDiagram::paint( PaintContext* ctx )
 {
     reverseMapper().clear();
 

@@ -88,7 +88,7 @@ public:
             TextAttributes ta( dva.textAttributes() );
             ta.setRotation( 0 );
             ta.setFont( font );
-            ta .setPen( QPen( Qt::gray  ) );
+            ta .setPen( QPen( Qt::gray ) );
             ta.setVisible( true );
             dva.setTextAttributes( ta );
             dva.setVisible( true );

@@ -384,12 +384,12 @@ namespace KDChart {
     class DataDimension{
     public:
         DataDimension()
-            : start(         1.0 )
-            , end(          10.0 )
+            : start( 1.0 )
+            , end( 10.0 )
             , isCalculated( false )
             , calcMode( AbstractCoordinatePlane::Linear )
             , sequence( KDChartEnums::GranularitySequence_10_20 )
-            , stepWidth(    1.0 )
+            , stepWidth( 1.0 )
             , subStepWidth( 0.0 )
         {}
         DataDimension( qreal start_,
@@ -399,12 +399,12 @@ namespace KDChart {
                        KDChartEnums::GranularitySequence sequence_,
                        qreal stepWidth_=0.0,
                        qreal subStepWidth_=0.0 )
-            : start(        start_ )
-            , end(          end_ )
+            : start( start_ )
+            , end( end_ )
             , isCalculated( isCalculated_ )
-            , calcMode(     calcMode_ )
-            , sequence(     sequence_ )
-            , stepWidth(    stepWidth_ )
+            , calcMode( calcMode_ )
+            , sequence( sequence_ )
+            , stepWidth( stepWidth_ )
             , subStepWidth( subStepWidth_ )
         {}
         /**

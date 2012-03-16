@@ -140,7 +140,7 @@ ConstraintGraphicsItem* GraphicsScene::Private::findConstraintItem( const Constr
             if ( c.compareIndexes((*it)->constraint()) )
                 break;
         }
-        if (  it != clst.end() ) {
+        if ( it != clst.end() ) {
             return *it;
         }
     }
@@ -152,7 +152,7 @@ ConstraintGraphicsItem* GraphicsScene::Private::findConstraintItem( const Constr
             if ( c.compareIndexes( (*it)->constraint() ) )
                 break;
         }
-        if (  it != clst.end() ) {
+        if ( it != clst.end() ) {
             return *it;
         }
     }

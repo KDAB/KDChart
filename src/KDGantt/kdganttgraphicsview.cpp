@@ -398,7 +398,7 @@ void GraphicsView::setModel( QAbstractItemModel* model )
     }
 
     d->scene.setModel( model );
-    connect( model, SIGNAL( dataChanged(  const QModelIndex&, const QModelIndex& ) ),
+    connect( model, SIGNAL( dataChanged( const QModelIndex&, const QModelIndex& ) ),
              this, SLOT( updateSceneRect() ) );
     updateScene();
 }

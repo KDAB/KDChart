@@ -320,8 +320,8 @@ void CartesianGrid::drawGrid( PaintContext* context )
         // draw the last line if not logarithmic calculation
         // we need the in order to get the right grid line painted
         // when f + dimX.stepWidth jump over maxValueX
-        if (  ! isLogarithmicX && drawOuterX )
-        context->painter()->drawLine( plane->translate( QPointF(  maxValueX, maxValueY ) ),
+        if ( ! isLogarithmicX && drawOuterX )
+        context->painter()->drawLine( plane->translate( QPointF( maxValueX, maxValueY ) ),
                                       plane->translate( QPointF( maxValueX, minValueY ) ) );
 
     }
@@ -338,7 +338,7 @@ void CartesianGrid::drawGrid( PaintContext* context )
             //qDebug("main grid line Y at: %f",f);
             const bool zeroLineHere = (f == 0.0);
             if ( drawUnitLinesY || zeroLineHere ){
-                QPointF leftPoint(  minValueX, f );
+                QPointF leftPoint( minValueX, f );
                 QPointF rightPoint( maxValueX, f );
                 leftPoint  = plane->translate( leftPoint );
                 rightPoint = plane->translate( rightPoint );
@@ -381,7 +381,7 @@ DataDimensionsList CartesianGrid::calculateGrid(
     //        valid dimensions, complete with two non-Zero step widths.
     if( isBoundariesValid( l ) ) {
         const QPointF translatedBottomLeft( plane->translateBack( plane->geometry().bottomLeft() ) );
-        const QPointF translatedTopRight(   plane->translateBack( plane->geometry().topRight() ) );
+        const QPointF translatedTopRight( plane->translateBack( plane->geometry().topRight() ) );
         //qDebug() << "CartesianGrid::calculateGrid()         first:" << l.first().start << l.first().end <<                   "   last:" << l.last().start << l.last().end;
         //qDebug() << "CartesianGrid::calculateGrid()  translated x:" << translatedBottomLeft.x() << translatedTopRight.x() << "      y:" << translatedBottomLeft.y() << translatedTopRight.y();
         //qDebug() << "CartesianGrid::calculateGrid()  raw data y-range  :" << l.last().end - l.last().start;
@@ -482,7 +482,7 @@ DataDimension CartesianGrid::calculateGridXY(
     bool adjustLower, bool adjustUpper ) const
 {
     CartesianCoordinatePlane* const plane = dynamic_cast<CartesianCoordinatePlane*>( mPlane );
-    if(    ((orientation == Qt::Vertical)   && (plane->autoAdjustVerticalRangeToData()   >= 100))
+    if( ((orientation == Qt::Vertical)   && (plane->autoAdjustVerticalRangeToData()   >= 100))
         || ((orientation == Qt::Horizontal) && (plane->autoAdjustHorizontalRangeToData() >= 100)) )
     {
         adjustLower = false;
@@ -679,7 +679,7 @@ void CartesianGrid::calculateStepWidth(
     // find the matching sub-grid line width in case it is
     // not set by the user
 
-    if (  subStepWidth == 0.0 ) {
+    if ( subStepWidth == 0.0 ) {
         if( stepWidth == list.first() * fastPow10( power ) ){
             subStepWidth = list.last() * fastPow10( power-1 );
             //qDebug("A");

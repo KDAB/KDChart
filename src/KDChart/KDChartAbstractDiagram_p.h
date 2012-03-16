@@ -157,7 +157,7 @@ namespace KDChart {
 
         virtual QModelIndex indexAt( const QPoint& point ) const;
 
-        QModelIndexList indexesAt(  const QPoint& point ) const;
+        QModelIndexList indexesAt( const QPoint& point ) const;
 
         QModelIndexList indexesIn( const QRect& rect ) const;
 

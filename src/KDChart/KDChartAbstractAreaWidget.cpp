@@ -145,7 +145,7 @@ void AbstractAreaWidget::paintAll( QPainter& painter )
 
     // Paint the background and frame
     paintBackground( painter, QRect(QPoint(0, 0), size() ) );
-    paintFrame(      painter, QRect(QPoint(0, 0), size() ) );
+    paintFrame( painter, QRect(QPoint(0, 0), size() ) );
 
 /*
     we do not call setContentsMargins() now,
@@ -154,7 +154,7 @@ void AbstractAreaWidget::paintAll( QPainter& painter )
     // adjust the widget's content margins,
     // to be sure all content gets calculated
     // to fit into the inner rectangle
-    const QRect oldGeometry( areaGeometry()  );
+    const QRect oldGeometry( areaGeometry() );
     const QRect inner( innerRect() );
     //qDebug() << "areaGeometry():" << oldGeometry
     //         << "  contentsRect():" << contentsRect() << "  inner:" << inner;

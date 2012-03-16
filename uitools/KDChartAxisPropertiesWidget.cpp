@@ -81,7 +81,7 @@ void AxisPropertiesWidget::setInstantApply( bool value )
     d->instantApply = value;
 }
 
-void AxisPropertiesWidget::readFromAxis( const CartesianAxis * a  )
+void AxisPropertiesWidget::readFromAxis( const CartesianAxis * a )
 {
     mPositionCombo->setCurrentIndex( a->position() );
     titleED->setText( a->titleText() );

@@ -112,7 +112,7 @@ KDCHART_IMPL_DERIVED_DIAGRAM( BarDiagram, AbstractCartesianDiagram, CartesianCoo
         virtual ~BarDiagramType() {}
         virtual BarDiagram::BarType type() const = 0;
         virtual const QPair<QPointF,  QPointF> calculateDataBoundaries() const = 0;
-        virtual void paint(  PaintContext* ctx ) = 0;
+        virtual void paint( PaintContext* ctx ) = 0;
         BarDiagram* diagram() const;
 
     protected:

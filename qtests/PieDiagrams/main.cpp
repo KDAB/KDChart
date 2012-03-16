@@ -67,7 +67,7 @@ private slots:
 
         // modify at different level and compare
         paCol.setExplode ( true );
-        m_pie->setPieAttributes( pa  );
+        m_pie->setPieAttributes( pa );
         m_pie->setPieAttributes( cols-2,  paCol );
 
         QVERIFY( m_pie->pieAttributes() != m_pie->pieAttributes(cols-2) );

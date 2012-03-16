@@ -75,7 +75,7 @@ private slots:
         // modify at different level and compare
         baCol.setBarGapFactor(2 );
         baIndex.setBarGapFactor( 3 );
-        m_bars->setBarAttributes( ba  );
+        m_bars->setBarAttributes( ba );
         m_bars->setBarAttributes( cols-2,  baCol );
         m_bars->setBarAttributes( idx,  baIndex );
         QVERIFY( m_bars->barAttributes() != m_bars->barAttributes(cols-2) );

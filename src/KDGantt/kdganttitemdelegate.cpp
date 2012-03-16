@@ -207,7 +207,7 @@ Span ItemDelegate::itemBoundingSpan( const StyleOptionGanttItem& opt,
     QRectF itemRect = opt.itemRect;
 
 
-    if (  typ == TypeEvent ) {
+    if ( typ == TypeEvent ) {
         itemRect = QRectF( itemRect.left()-itemRect.height()/2.,
                            itemRect.top(),
                            itemRect.height(),

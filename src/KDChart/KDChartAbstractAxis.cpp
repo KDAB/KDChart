@@ -38,7 +38,7 @@ using namespace KDChart;
 AbstractAxis::Private::Private( AbstractDiagram* diagram, AbstractAxis* axis )
     : observer( 0 )
     , mDiagram( diagram )
-    , mAxis(    axis )
+    , mAxis( axis )
 {
     // Note: We do NOT call setDiagram( diagram, axis );
     //       but it is called in AbstractAxis::delayedInit() instead!
@@ -60,7 +60,7 @@ bool AbstractAxis::Private::setDiagram(
     }
 
     // do not set a diagram again that was already set
-    if (  diagram &&
+    if ( diagram &&
         ((diagram == mDiagram) || secondaryDiagrams.contains( diagram )) )
         return false;
 
@@ -126,10 +126,10 @@ void AbstractAxis::init()
         12.5,
         KDChartEnums::MeasureCalculationModeAuto,
         KDChartEnums::MeasureOrientationAuto );
-    d->textAttributes.setFontSize( m  );
+    d->textAttributes.setFontSize( m );
     m.setValue( 5 );
     m.setCalculationMode( KDChartEnums::MeasureCalculationModeAbsolute );
-    d->textAttributes.setMinimalFontSize( m  );
+    d->textAttributes.setMinimalFontSize( m );
     if ( d->diagram() )
         createObserver( d->diagram() );
 }

@@ -402,7 +402,7 @@ void Widget::setType( ChartType chartType, SubType chartSubType )
             {
                 if( coordinatePlane() == &d->m_polPlane ){
                     d->m_chart.takeCoordinatePlane( &d->m_polPlane );
-                    d->m_chart.addCoordinatePlane(  &d->m_cartPlane );
+                    d->m_chart.addCoordinatePlane( &d->m_cartPlane );
                 }else{
                     d->m_chart.replaceCoordinatePlane( &d->m_cartPlane );
                 }
@@ -411,7 +411,7 @@ void Widget::setType( ChartType chartType, SubType chartSubType )
             {
                 if( coordinatePlane() == &d->m_cartPlane ){
                     d->m_chart.takeCoordinatePlane( &d->m_cartPlane );
-                    d->m_chart.addCoordinatePlane(  &d->m_polPlane );
+                    d->m_chart.addCoordinatePlane( &d->m_polPlane );
                 }else{
                     d->m_chart.replaceCoordinatePlane( &d->m_polPlane );
                 }
@@ -470,14 +470,14 @@ void Widget::setType( ChartType chartType, SubType chartSubType )
 
 void Widget::setSubType( SubType subType )
 {
-    BarDiagram*  barDia     = qobject_cast< BarDiagram* >(   diagram() );
-    LineDiagram* lineDia    = qobject_cast< LineDiagram* >(  diagram() );
-    Plotter*     plotterDia = qobject_cast< Plotter* >(      diagram() );
+    BarDiagram*  barDia     = qobject_cast< BarDiagram* >( diagram() );
+    LineDiagram* lineDia    = qobject_cast< LineDiagram* >( diagram() );
+    Plotter*     plotterDia = qobject_cast< Plotter* >( diagram() );
 
 //FIXME(khz): Add the impl for these chart types - or remove them from here:
-//    PieDiagram*   pieDia   = qobject_cast< PieDiagram* >(   diagram() );
+//    PieDiagram*   pieDia   = qobject_cast< PieDiagram* >( diagram() );
 //    PolarDiagram* polarDia = qobject_cast< PolarDiagram* >( diagram() );
-//    RingDiagram*  ringDia  = qobject_cast< RingDiagram* >(  diagram() );
+//    RingDiagram*  ringDia  = qobject_cast< RingDiagram* >( diagram() );
 
 #define SET_SUB_TYPE(DIAGRAM, SUBTYPE) \
 { \
@@ -541,14 +541,14 @@ Widget::SubType Widget::subType() const
     Widget::SubType retVal = Normal;
 
     AbstractDiagram * const dia = const_cast<Widget*>( this )->diagram();
-    BarDiagram*  barDia     = qobject_cast< BarDiagram* >(   dia );
-    LineDiagram* lineDia    = qobject_cast< LineDiagram* >(  dia );
-    Plotter*     plotterDia = qobject_cast< Plotter* >(  dia );
+    BarDiagram*  barDia     = qobject_cast< BarDiagram* >( dia );
+    LineDiagram* lineDia    = qobject_cast< LineDiagram* >( dia );
+    Plotter*     plotterDia = qobject_cast< Plotter* >( dia );
 
 //FIXME(khz): Add the impl for these chart types - or remove them from here:
-//    PieDiagram*   pieDia   = qobject_cast< PieDiagram* >(   diagram() );
+//    PieDiagram*   pieDia   = qobject_cast< PieDiagram* >( diagram() );
 //    PolarDiagram* polarDia = qobject_cast< PolarDiagram* >( diagram() );
-//    RingDiagram*  ringDia  = qobject_cast< RingDiagram* >(  diagram() );
+//    RingDiagram*  ringDia  = qobject_cast< RingDiagram* >( diagram() );
 
 #define TEST_SUB_TYPE(DIAGRAM, INTERNALSUBTYPE, SUBTYPE) \
 { \

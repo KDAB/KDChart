@@ -101,7 +101,7 @@ public:
     diagram->setPen( m_model.index( 1, 1, QModelIndex() ), linePen );
     // 3 - Assign to the chart
     m_chart.coordinatePlane()->replaceDiagram(diagram);
-    m_chart.setGlobalLeadingRight(  50  );
+    m_chart.setGlobalLeadingRight(  50 );
 
     QVBoxLayout* l = new QVBoxLayout(this);
     l->addWidget(&m_chart);

@@ -70,7 +70,7 @@ public:
     // min font size
     m.setValue( 3.0 );
     m.setCalculationMode( KDChartEnums::MeasureCalculationModeAbsolute );
-    hta.setMinimalFontSize( m  );
+    hta.setMinimalFontSize( m );
     header->setTextAttributes( hta );
 
     // Configure the header Background attributes

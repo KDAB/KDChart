@@ -80,7 +80,7 @@ const QPair<QPointF, QPointF> StackedBarDiagram::calculateDataBoundaries() const
         }
     }
     // special cases
-    if (  yMax == yMin ) {
+    if ( yMax == yMin ) {
         if ( yMin == 0.0 )
             yMax = 0.1; //we need at least a range
         else if( yMax < 0.0 )
@@ -94,7 +94,7 @@ const QPair<QPointF, QPointF> StackedBarDiagram::calculateDataBoundaries() const
     return QPair< QPointF, QPointF >( bottomLeft,  topRight );
 }
 
-void StackedBarDiagram::paint(  PaintContext* ctx )
+void StackedBarDiagram::paint( PaintContext* ctx )
 {
     reverseMapper().clear();
 

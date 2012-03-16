@@ -333,7 +333,7 @@ void Chart::Private::layoutLegends()
         if( legend->alignment() == ( align ) ) \
             innerLayout->addItem( new MyWidgetItem(legend, Qt::AlignLeft) ); \
     } \
-    gridLayout->addLayout( innerLayout, row, column, ( align  ) ); \
+    gridLayout->addLayout( innerLayout, row, column, ( align ) ); \
 }
                         ADD_VBOX_WITH_LEGENDS( 0, 0, Qt::AlignTop     | Qt::AlignLeft )
                         ADD_VBOX_WITH_LEGENDS( 0, 1, Qt::AlignTop     | Qt::AlignHCenter )
@@ -413,7 +413,7 @@ QHash<AbstractCoordinatePlane*, PlaneInfo> Chart::Private::buildPlaneLayoutInfos
 
                         pi = planeInfos[i.plane];
                         if ( axis->position() == CartesianAxis::Top
-                                || axis->position() == CartesianAxis::Bottom  )
+                                || axis->position() == CartesianAxis::Bottom )
                             pi.verticalOffset += 1;
 
                         planeInfos[i.plane] = pi;
@@ -530,7 +530,7 @@ void Chart::Private::slotLayoutPlanes()
         plane->setParentLayout( planeLayout );
         planeLayout->addItem( plane, row, column, 1, 1, 0 );
         //qDebug() << "Chart slotLayoutPlanes() calls planeLayout->addItem("<< row << column << ")";
-        planeLayout->setRowStretch(    row,    2 );
+        planeLayout->setRowStretch( row,    2 );
         planeLayout->setColumnStretch( column, 2 );
         KDAB_FOREACH( AbstractDiagram* abstractDiagram, plane->diagrams() )
         {
@@ -645,7 +645,7 @@ void Chart::Private::slotLayoutPlanes()
                 planeLayout->addLayout( pi.bottomAxesLayout, row + 1, column );
             if ( !pi.leftAxesLayout->parent() ){
                 planeLayout->addLayout( pi.leftAxesLayout,   row,     column - 1);
-                //planeLayout->setRowStretch(    row, 0 );
+                //planeLayout->setRowStretch( row, 0 );
                 //planeLayout->setColumnStretch( 0,   0 );
             }
             if ( !pi.rightAxesLayout->parent() )
@@ -675,7 +675,7 @@ void Chart::Private::slotLayoutPlanes()
     // re-add our grid(s) to the chart's layout
     if ( dataAndLegendLayout ){
         dataAndLegendLayout->addLayout( planesLayout, 1, 1 );
-        dataAndLegendLayout->setRowStretch(    1, 1000 );
+        dataAndLegendLayout->setRowStretch( 1, 1000 );
         dataAndLegendLayout->setColumnStretch( 1, 1000 );
     }
 
@@ -787,7 +787,7 @@ void Chart::Private::createLayouts( QWidget* w )
 
     // the data+axes area
     dataAndLegendLayout->addLayout( planesLayout, 1, 1 );
-    dataAndLegendLayout->setRowStretch(    1, 1 );
+    dataAndLegendLayout->setRowStretch( 1, 1 );
     dataAndLegendLayout->setColumnStretch( 1, 1 );
 
     //qDebug() << "w->rect()" << w->rect();

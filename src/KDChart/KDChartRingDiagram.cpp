@@ -430,7 +430,7 @@ void RingDiagram::drawPieSurface( QPainter* painter,
                 painter->translate( -centerPoint );
             }
 
-            paintDataValueText( painter, index, centerPoint, angleLen*sum / 360  );
+            paintDataValueText( painter, index, centerPoint, angleLen*sum / 360 );
 
         }
     }

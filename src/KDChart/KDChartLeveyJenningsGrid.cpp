@@ -49,7 +49,7 @@ DataDimensionsList LeveyJenningsGrid::calculateGrid( const DataDimensionsList& r
     //        valid dimensions, complete with two non-Zero step widths.
     if( isBoundariesValid( l ) ) {
         const QPointF translatedBottomLeft( plane->translateBack( plane->geometry().bottomLeft() ) );
-        const QPointF translatedTopRight(   plane->translateBack( plane->geometry().topRight() ) );
+        const QPointF translatedTopRight( plane->translateBack( plane->geometry().topRight() ) );
 
         if( l.first().isCalculated
             && plane->autoAdjustGridToZoom()
@@ -232,7 +232,7 @@ void LeveyJenningsGrid::calculateStepWidth(
     // find the matching sub-grid line width in case it is
     // not set by the user
 
-    if (  subStepWidth == 0.0 ) {
+    if ( subStepWidth == 0.0 ) {
         if( stepWidth == list.first() * fastPow10( power ) ){
             subStepWidth = list.last() * fastPow10( power-1 );
             //qDebug("A");

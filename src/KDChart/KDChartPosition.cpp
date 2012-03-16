@@ -203,7 +203,7 @@ QString Position::printableName() const
 QList<QByteArray> Position::names( Options options )
 {
     QList<QByteArray> list;
-    const int start = ( options & IncludeCenter   ) ? 1 : 2;
+    const int start = ( options & IncludeCenter ) ? 1 : 2;
     const int end   = ( options & IncludeFloating ) ? maxPositionValue : maxPositionValue-1;
     for( int i=start; i<=end; ++i)
         list.append( staticPositionNames[i] );
@@ -220,7 +220,7 @@ QList<QByteArray> Position::names( Options options )
 QStringList Position::printableNames( Options options )
 {
     QStringList list;
-    const int start = ( options & IncludeCenter   ) ? 1 : 2;
+    const int start = ( options & IncludeCenter ) ? 1 : 2;
     const int end   = ( options & IncludeFloating ) ? maxPositionValue : maxPositionValue-1;
     for( int i=start; i<=end; ++i)
         list.append( Position(i).printableName() );
