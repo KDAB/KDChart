@@ -108,7 +108,7 @@ const QPair<QPointF, QPointF> PieDiagram::calculateDataBoundaries () const
             const PieAttributes columnAttrs( pieAttributes( model()->index( 0, j, rootIndex() ) ) ); // checked
             maxExplode = qMax( maxExplode, columnAttrs.explodeFactor() );
         }
-        topRight = QPointF( 1.0+maxExplode, 1.0 + maxExplode );
+        topRight = QPointF( 1.0 + maxExplode, 1.0 + maxExplode );
     } else {
         topRight = QPointF( 1.0, 1.0 );
     }
@@ -310,7 +310,6 @@ void PieDiagram::shuffleLabels( QRectF* textBoundingRect )
     // things that could be improved here:
     // - use a variable number (chosen using angle information) of neighbors to check
     // - try harder to arrange the labels to look nice
-    // - option to draw line from slice to label or not, or only do it when the slice was shuffled
 
     // ideas:
     // - leave labels that don't collide alone (only if they their offset is zero)
@@ -866,10 +865,9 @@ uint PieDiagram::findSliceAt( qreal angle, int colCount )
 {
     for ( int i = 0; i < colCount; ++i ) {
         qreal endseg = d->startAngles[ i ] + d->angleLens[ i ];
-        if ( ( d->startAngles[ i ] <= angle ) &&
-                ( endseg >= angle ) )
-            // found!
+        if ( d->startAngles[ i ] <= angle &&  endseg >= angle ) {
             return i;
+        }
     }
 
     // If we have not found it, try wrap around
