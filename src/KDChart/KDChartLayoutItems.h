@@ -38,8 +38,8 @@ class QPainter;
 class KDTextDocument;
 QT_END_NAMESPACE
 
-QPointF rotatedPoint( const QPointF& pt, qreal rotation, const QPointF& center = QPointF() );
-QRectF rotatedRect( const QRectF& pt, qreal rotation, const QPointF& center = QPointF() );
+// TODO remove
+QRectF rotatedRect( const QRectF& pt, qreal rotation );
 
 namespace KDChart {
     class AbstractDiagram;
@@ -69,7 +69,7 @@ namespace KDChart {
 
         virtual void paintCtx( PaintContext* context );
         virtual void setParentWidget( QWidget* widget );
-        virtual void sizeHintChanged()const;
+        virtual void sizeHintChanged() const;
 
         void setParentLayout( QLayout* lay )
         {
@@ -134,8 +134,9 @@ namespace KDChart {
         /** pure virtual in QLayoutItem */
         virtual QRect geometry() const;
 
-        virtual QSize sizeHintAndRotatedCorners(
-                    QPoint& topLeftPt, QPoint& topRightPt, QPoint& bottomRightPt, QPoint& bottomLeftPt) const;
+        // do not call this with any out-parameters referencing the same memory location
+        virtual QSize sizeHintAndRotatedCorners( QPoint& topLeft, QPoint& topRight,
+                                                 QPoint& bottomRight, QPoint& bottomLeft ) const;
         virtual QSize sizeHintUnrotated() const;
 
         virtual bool intersects( const TextLayoutItem& other, const QPointF& myPos, const QPointF& otherPos ) const;
@@ -146,12 +147,13 @@ namespace KDChart {
 
         virtual void paint( QPainter* );
 
-    private:
         QPolygon rotatedCorners() const;
-        bool realFontWasRecalculated() const;
-        QSize unrotatedSizeHint( QFont fnt = QFont() ) const;
-        QSize calcSizeHint( QFont fnt,
-                            QPoint& topLeftPt, QPoint& topRightPt, QPoint& bottomRightPt, QPoint& bottomLeftPt ) const;
+    private:
+        bool maybeUpdateRealFont() const;
+        QSize unrotatedSizeHint( const QFont& fnt = QFont() ) const;
+        QSize unrotatedTextSize( QFont fnt = QFont() ) const;
+        QSize calcSizeHint( const QFont& font,
+                            QPoint& topLeft, QPoint& topRight, QPoint& bottomRight, QPoint& bottomLeft ) const;
 
         qreal fitFontSizeToGeometry() const;
 

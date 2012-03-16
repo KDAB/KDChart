@@ -45,9 +45,6 @@
 
 #include <math.h>
 
-#define PI 3.141592653589793
-
-
 
 //#define DEBUG_ITEMS_PAINT
 
@@ -328,67 +325,16 @@ void KDChart::TextLayoutItem::setGeometry( const QRect& r )
     mRect = r;
 }
 
-QPointF rotatedPoint( const QPointF& pt, qreal rotation, const QPointF& center )
+// returns the bounding box of rect rotated around its center
+QRectF rotatedRect( const QRectF& rect, qreal rotation )
 {
-    const qreal angle = PI * rotation / 180.0;
-    const qreal cosAngle = cos( angle );
-    const qreal sinAngle = -sin( angle );
-    return QPointF(
-            (cosAngle * ( pt.x() - center.x() ) + sinAngle * ( pt.y() - center.y() ) ),
-            (cosAngle * ( pt.y() - center.y() ) - sinAngle * ( pt.x() - center.x() ) ) ) + center;
+    QTransform t;
+    QPointF center = rect.center();
+    t.translate( center.x(), center.y() );
+    t.rotate( rotation );
+    t.translate( -center.x(), -center.y() );
+    return t.mapRect( rect );
 }
-
-
-QRectF rotatedRect( const QRectF& oldRect, qreal angleInt, const QPointF& center )
-{
-    const QRect rect( oldRect.translated( center ).toRect() );
-    const qreal angle = PI * angleInt / 180.0;
-    const qreal cosAngle = cos( angle );
-    const qreal sinAngle = sin( angle );
-    QMatrix rotationMatrix(cosAngle, sinAngle, -sinAngle, cosAngle, 0, 0);
-    QPolygon rotPts;
-    rotPts <<  rotationMatrix.map(rect.topLeft()) //QPoint(0,0)
-            << rotationMatrix.map(rect.topRight())
-            << rotationMatrix.map(rect.bottomRight())
-            << rotationMatrix.map(rect.bottomLeft());
-            //<< rotatedPoint(rect.topRight(), angleInt, center).toPoint()
-            //<< rotatedPoint(rect.bottomRight(), angleInt, center).toPoint()
-            //<< rotatedPoint(rect.bottomLeft(), angleInt, center).toPoint();
-    return rotPts.boundingRect();
-/*
-    const QPointF topLeft( rotatedPoint( oldRect.topLeft(), angle, center ) );
-    const QPointF topRight( rotatedPoint( oldRect.topRight(), angle, center ) );
-    const QPointF bottomLeft( rotatedPoint( oldRect.bottomLeft(), angle, center ) );
-    const QPointF bottomRight( rotatedPoint( oldRect.bottomRight(), angle, center ) );
-
-    const qreal x = qMin( qMin( topLeft.x(), topRight.x() ), qMin( bottomLeft.x(), topLeft.x() ) );
-    const qreal y = qMin( qMin( topLeft.y(), topRight.y() ), qMin( bottomLeft.y(), topLeft.y() ) );
-    const qreal width = qMax( qMax( topLeft.x(), topRight.x() ), qMax( bottomLeft.x(), topLeft.x() ) ) - x;
-    const qreal height = qMax( qMax( topLeft.y(), topRight.y() ), qMax( bottomLeft.y(), topLeft.y() ) ) - y;
-
-    return QRectF( x, y, width, height );
-*/
-}
-
-/*
-QRectF rotatedRect( const QRectF& rect, qreal angle )
-{
-    const QPointF topLeft(  rotatedPoint( rect.topLeft(),  angle ) );
-    //const QPointF topRight( rotatedPoint( rect.topRight(), angle ) );
-    //const QPointF bottomLeft(  rotatedPoint( rect.bottomLeft(),  angle ) );
-#if 1
-    const QPointF bottomRight( rotatedPoint( rect.bottomRight(), angle ) );
-    const QRectF result( topLeft, QSizeF( bottomRight.x() - topLeft.x(), bottomRight.y() - topLeft.y() ) );
-#else
-    const QPointF siz( rotatedPoint( QPointF( rect.size().width(), rect.size().height() ), angle ) );
-    const QRectF result(
-            topLeft,
-            QSizeF( siz.x(), //bottomRight.x() - topLeft.x(),
-                    siz.y() ) ); //bottomRight.y() - topLeft.y() ) );
-    //qDebug() << "angle" << angle << "\nbefore:" << rect << "\n after:" << result;
-#endif
-    return result;
-}*/
 
 qreal KDChart::TextLayoutItem::fitFontSizeToGeometry() const
 {
@@ -397,23 +343,24 @@ qreal KDChart::TextLayoutItem::fitFontSizeToGeometry() const
     qreal result = origResult;
     const qreal minSize = mAttributes.minimalFontSize().value();
     const QSize mySize = geometry().size();
-    if( mySize.isNull() )
+    if ( mySize.isNull() ) {
         return result;
+    }
 
-    const QString t = text();
     QFontMetrics fm( f );
-    while( true )
-    {
-        const QSizeF textSize = rotatedRect( fm.boundingRect( t ), mAttributes.rotation() ).normalized().size();
+    while ( true ) {
+        const QSizeF textSize = rotatedRect( fm.boundingRect( mText ), mAttributes.rotation() ).normalized().size();
 
-        if( textSize.height() <= mySize.height() && textSize.width() <= mySize.width() )
+        if ( textSize.height() <= mySize.height() && textSize.width() <= mySize.width() ){
             return result;
+        }
 
         result -= 0.5;
-        if ( minSize > 0 && result < minSize )
-            return result += 0.5;
-        if( result <= 0.0 )
+        if ( minSize > 0 && result < minSize ) {
+            return result + 0.5;
+        } else if ( result <= 0.0 ) {
             return origResult;
+        }
         f.setPointSizeF( result );
         fm = QFontMetrics( f );
     }
@@ -424,42 +371,31 @@ qreal KDChart::TextLayoutItem::realFontSize() const
     return mAttributes.calculatedFontSize( mAutoReferenceArea, mAutoReferenceOrientation );
 }
 
-
-bool KDChart::TextLayoutItem::realFontWasRecalculated() const
+bool KDChart::TextLayoutItem::maybeUpdateRealFont() const
 {
     const qreal fntSiz = realFontSize();
-    const bool bRecalcDone =
-        ( ( ! cachedSizeHint.isValid() ) || ( cachedFontSize != fntSiz   ) );
+    const bool doUpdate = !cachedSizeHint.isValid() || cachedFontSize != fntSiz;
 
-    if( bRecalcDone && fntSiz > 0.0 ){
+    if ( doUpdate && fntSiz > 0.0 ) {
         cachedFontSize = fntSiz;
         cachedFont.setPointSizeF( fntSiz );
     }
-    return bRecalcDone;
+    return doUpdate; // "didUpdate" by now
 }
-
 
 QFont KDChart::TextLayoutItem::realFont() const
 {
-    realFontWasRecalculated(); // we can safely ignore the boolean return value
+    maybeUpdateRealFont();
     return cachedFont;
 }
 
 QPolygon KDChart::TextLayoutItem::rotatedCorners() const
 {
-    // the angle in rad
-    const qreal angle = mAttributes.rotation() * PI / 180.0;
-    QSize size = unrotatedSizeHint();
-
-    // my P1 - P4 (the four points of the rotated area)
-    QPointF P1( size.height() * sin( angle ), 0 );
-    QPointF P2( size.height() * sin( angle ) + size.width() * cos( angle ), size.width() * sin( angle ) );
-    QPointF P3( size.width() * cos( angle ), size.width() * sin( angle ) + size.height() * cos( angle ) );
-    QPointF P4( 0, size.height() * cos( angle ) );
-
-    QPolygon result;
-    result << P1.toPoint() << P2.toPoint() << P3.toPoint() << P4.toPoint();
-    return result;
+    QPoint p1, p2, p3, p4;
+    sizeHintAndRotatedCorners( p1, p2, p3, p4 );
+    QPolygon ret;
+    ret << p1 << p2 << p3 << p4;
+    return ret;
 }
 
 bool KDChart::TextLayoutItem::intersects( const TextLayoutItem& other, const QPointF& myPos, const QPointF& otherPos ) const
@@ -487,8 +423,8 @@ bool KDChart::TextLayoutItem::intersects( const TextLayoutItem& other, const QPo
         return ! myRegion.intersect( otherRegion ).isEmpty();
 
     } else {
-        // and that's the code for the special case: the rotation angles match, which is less time consuming in calculation
-        const qreal angle = mAttributes.rotation() * PI / 180.0;
+        // the rotation angles match so we can use a faster algorithm
+        const qreal angle = DEGTORAD( mAttributes.rotation() );
         // both sizes
         const QSizeF mySize( unrotatedSizeHint() );
         const QSizeF otherSize( other.unrotatedSizeHint() );
@@ -501,52 +437,50 @@ bool KDChart::TextLayoutItem::intersects( const TextLayoutItem& other, const QPo
         // now rotate both points the negative angle around myPos
         myP1 = QPointF( myP1.x() * cos( -angle ), myP1.x() * sin( -angle ) );
         qreal r = sqrt( otherP1.x() * otherP1.x() + otherP1.y() * otherP1.y() );
-        if (myP1.x() == otherP1.x()) // vertical
+        if ( myP1.x() == otherP1.x() ) { // vertical
             otherP1 = QPointF( r * sin( -angle ), r * cos( -angle ) );
-        else if (myP1.y() == otherP1.y()) // horizontal
+        } else if ( myP1.y() == otherP1.y() ) { // horizontal
             otherP1 = QPointF( r * cos( -angle ), r * sin( -angle ) );
+        }
 
-        // finally we look, whether both rectangles intersect or even not
-        const bool res = QRectF( myP1, mySize ).intersects( QRectF( otherP1, otherSize ) );
-        //qDebug() << res << QRectF( myP1, mySize ) << QRectF( otherP1, otherSize );
-        return res;
+        return QRectF( myP1, mySize ).intersects( QRectF( otherP1, otherSize ) );
     }
 }
 
 QSize KDChart::TextLayoutItem::sizeHint() const
 {
-    QPoint dummy;
-    return sizeHintAndRotatedCorners(dummy,dummy,dummy,dummy);
+    QPoint p1, p2, p3, p4; // use different dummy points to avoid reference aliasing problems
+    return sizeHintAndRotatedCorners( p1, p2, p3, p4 );
 }
 
 QSize KDChart::TextLayoutItem::sizeHintAndRotatedCorners(
-        QPoint& topLeftPt, QPoint& topRightPt, QPoint& bottomRightPt, QPoint& bottomLeftPt) const
+        QPoint& topLeft, QPoint& topRight, QPoint& bottomRight, QPoint& bottomLeft ) const
 {
-    if( realFontWasRecalculated() || mAttributes.rotation() )
-    {
+    // ### we only really need to recalculate the size hint when mAttributes.rotation has *changed*
+    if ( maybeUpdateRealFont() || mAttributes.rotation() ) {
         const QSize newSizeHint( calcSizeHint( cachedFont,
-                                               topLeftPt, topRightPt, bottomRightPt, bottomLeftPt ) );
-        if( newSizeHint != cachedSizeHint ){
+                                               topLeft, topRight, bottomRight, bottomLeft ) );
+        Q_ASSERT( newSizeHint.isValid() );
+        if ( newSizeHint != cachedSizeHint ) {
             cachedSizeHint = newSizeHint;
             sizeHintChanged();
         }
-        cachedTopLeft     = topLeftPt;
-        cachedTopRight    = topRightPt;
-        cachedBottomRight = bottomRightPt;
-        cachedBottomLeft  = bottomLeftPt;
-    }else{
-        topLeftPt     = cachedTopLeft;
-        topRightPt    = cachedTopRight;
-        bottomRightPt = cachedBottomRight;
-        bottomLeftPt  = cachedBottomLeft;
+        cachedTopLeft = topLeft;
+        cachedTopRight = topRight;
+        cachedBottomRight = bottomRight;
+        cachedBottomLeft = bottomLeft;
+    } else {
+        topLeft = cachedTopLeft;
+        topRight = cachedTopRight;
+        bottomRight = cachedBottomRight;
+        bottomLeft = cachedBottomLeft;
     }
-    //qDebug() << "-------- KDChart::TextLayoutItem::sizeHint() returns:"<<cachedSizeHint<<" ----------";
     return cachedSizeHint;
 }
 
 QSize KDChart::TextLayoutItem::sizeHintUnrotated() const
 {
-    realFontWasRecalculated(); // make sure the cached font is updated if needed
+    maybeUpdateRealFont(); // make sure the cached font is up to date
     return unrotatedSizeHint( cachedFont );
 }
 
@@ -554,121 +488,87 @@ QSize KDChart::TextLayoutItem::sizeHintUnrotated() const
 // PENDING(kalle) Support auto shrink
 
 
-QSize KDChart::TextLayoutItem::unrotatedSizeHint( QFont fnt ) const
+QSize KDChart::TextLayoutItem::unrotatedTextSize( QFont fnt ) const
 {
-    if ( fnt == QFont() )
-        fnt = realFont(); // this *is* the chached font in most of the time
-
-    const QFontMetricsF met( fnt, GlobalMeasureScaling::paintDevice() );
-    QSize ret(0, 0);
-    // note: boundingRect() does NOT take any newlines into account
-    //       so we need to calculate the size by combining several
-    //       rectangles: one per line.  This fixes bugz issue #3720.
-    //       (khz, 2007 04 14)
-    QStringList lines = mText.split(QString::fromAscii("\n"));
-    for (int i = 0; i < lines.size(); ++i) {
-        const QSize lSize = met.boundingRect(lines.at(i) ).toRect().size();
-        ret.setWidth(qMax( ret.width(), lSize.width() ));
-        ret.rheight() += lSize.height();
+    if ( fnt == QFont() ) {
+        fnt = realFont(); // this is the cached font in most cases
     }
 
+    const QFontMetricsF fm( fnt, GlobalMeasureScaling::paintDevice() );
+    QRect veryLarge( 0, 0, 100000, 100000 );
+    // this overload of boundingRect() interprets \n as line breaks, not as regular characters.
+    return fm.boundingRect( veryLarge, Qt::AlignLeft | Qt::AlignTop, mText ).size().toSize();
+}
+
+QSize KDChart::TextLayoutItem::unrotatedSizeHint( const QFont& fnt ) const
+{
+    QSize ret = unrotatedTextSize( fnt );
     int frame = QApplication::style()->pixelMetric( QStyle::PM_ButtonMargin, 0, 0 );
     // fine-tuning for small font sizes: the frame must not be so big, if the font is tiny
     frame = qMin( frame, ret.height() * 2 / 3 );
-    //qDebug() << "frame:"<< frame;
     ret += QSize( frame, frame );
     return ret;
-    //const QFontMetricsF met( fnt, GlobalMeasureScaling::paintDevice() );
-    //const int frame = QApplication::style()->pixelMetric( QStyle::PM_ButtonMargin, 0, 0 );
-    //return
-    //    met.boundingRect( mText ).size().toSize() + QSize( frame, frame );
 }
 
-
-QSize KDChart::TextLayoutItem::calcSizeHint(
-        QFont fnt, QPoint& topLeftPt, QPoint& topRightPt, QPoint& bottomRightPt, QPoint& bottomLeftPt ) const
+QSize KDChart::TextLayoutItem::calcSizeHint( const QFont& font, QPoint& topLeft, QPoint& topRight,
+                                             QPoint& bottomRight, QPoint& bottomLeft ) const
 {
-    const QSize siz( unrotatedSizeHint( fnt ));
-    //qDebug() << "-------- siz: "<<siz;
-    if( ! mAttributes.rotation() ){
-        topLeftPt     = QPoint(0,0);
-        topRightPt    = QPoint(siz.width(),0);
-        bottomRightPt = QPoint(siz.width(),siz.height());
-        bottomLeftPt  = QPoint(0,siz.height());
-        return siz;
+    const QSize size = unrotatedSizeHint( font );
+    topLeft = QPoint( -size.width() * 0.5, -size.height() * 0.5 );
+    if ( !mAttributes.rotation() ) {
+        topRight = topLeft + QPoint( size.width(), 0 );
+        bottomRight = topLeft + QPoint( size.width(), size.height() );
+        bottomLeft = topLeft + QPoint( 0, size.height() );
+        return size;
     }
 
-    const QRect rect(QPoint(0, 0), siz + QSize(4,4));
-    const qreal angle = PI * mAttributes.rotation() / 180.0;
-    const qreal cosAngle = cos( angle );
-    const qreal sinAngle = sin( angle );
-    QMatrix rotationMatrix(cosAngle, sinAngle, -sinAngle, cosAngle, 0, 0);
-    QPolygon rotPts;
-    rotPts << rotationMatrix.map(rect.topLeft())
-           << rotationMatrix.map(rect.topRight())
-           << rotationMatrix.map(rect.bottomRight())
-           << rotationMatrix.map(rect.bottomLeft());
-    QSize rotSiz( rotPts.boundingRect().size() );
-    //qDebug() << "-------- KDChart::TextLayoutItem::calcSizeHint() returns:"<<rotSiz<<rotPts;
-    topLeftPt     = rotPts[0];
-    topRightPt    = rotPts[1];
-    bottomRightPt = rotPts[2];
-    bottomLeftPt  = rotPts[3];
-    return rotSiz;
+    const QRect rect( topLeft, size );
+    QTransform t;
+    t.rotate( mAttributes.rotation() );
+    const QPolygon rotated = t.mapToPolygon( rect );
+
+    topLeft = rotated[ 0 ];
+    topRight = rotated[ 1 ];
+    bottomRight = rotated[ 2 ];
+    bottomLeft = rotated[ 3 ];
+    return rotated.boundingRect().size();
 }
 
 void KDChart::TextLayoutItem::paint( QPainter* painter )
 {
-    // make sure, cached font is updated, if needed:
-    // sizeHint();
-
-    if( !mRect.isValid() )
+    if ( !mRect.isValid() ) {
         return;
-
+    }
     const PainterSaver painterSaver( painter );
     QFont f = realFont();
-    if ( mAttributes.autoShrink() )
+    if ( mAttributes.autoShrink() ) {
         f.setPointSizeF( fitFontSizeToGeometry() );
+    }
     painter->setFont( f );
-    QRectF rect( geometry() );
 
-// #ifdef DEBUG_ITEMS_PAINT
-//     painter->setPen( Qt::black );
-//     painter->drawRect( rect );
-// #endif
-    painter->translate( rect.center() );
-    rect.moveTopLeft( QPointF( - rect.width() / 2, - rect.height() / 2 ) );
-#ifdef DEBUG_ITEMS_PAINT
-    painter->setPen( Qt::blue );
-    painter->drawRect( rect );
-    painter->drawRect( QRect(QPoint((rect.topLeft().toPoint()  + rect.bottomLeft().toPoint())  / 2 - QPoint(2,2)), QSize(3,3)) );
-    //painter->drawRect( QRect(QPoint((rect.topRight().toPoint() + rect.bottomRight().toPoint()) / 2 - QPoint(2,2)), QSize(3,3)) );
-#endif
+    QSize innerSize = unrotatedTextSize();
+    QRectF rect = QRectF( QPointF( 0, 0 ), innerSize );
+    rect.translate( -rect.center() );
+    painter->translate( mRect.center() );
     painter->rotate( mAttributes.rotation() );
-    rect = rotatedRect( rect, mAttributes.rotation() );
 #ifdef DEBUG_ITEMS_PAINT
     painter->setPen( Qt::red );
     painter->drawRect( rect );
-    painter->drawRect( QRect(QPoint((rect.topLeft().toPoint()  + rect.bottomLeft().toPoint())  / 2 - QPoint(2,2)), QSize(3,3)) );
-    //painter->drawRect( QRect(QPoint((rect.topRight().toPoint() + rect.bottomRight().toPoint()) / 2 - QPoint(2,2)), QSize(3,3)) );
 #endif
-    painter->setPen( PrintingParameters::scalePen( mAttributes.pen() ) );
 
+    painter->setPen( PrintingParameters::scalePen( mAttributes.pen() ) );
     QTextDocument* document = mAttributes.textDocument();
     if ( document ) {
-        document->setPageSize(QSize(rect.width(), rect.height()));
-        document->setHtml(mText);
+        document->setPageSize( rect.size() );
+        document->setHtml( mText );
         QAbstractTextDocumentLayout::PaintContext paintcontext;
+        // ### this doesn't work for rotated painting because clip does not translate the painting
+        // TODO translate the painting either using a QTransform or one of QPainter's transform stages
         paintcontext.clip = rect;
-        document->documentLayout()->draw(painter, paintcontext);
+        document->documentLayout()->draw( painter, paintcontext );
     } else {
         painter->drawText( rect, mTextAlignment, mText );
     }
-
-//    if (  calcSizeHint( realFont() ).width() > rect.width() )
-//        qDebug() << "rect.width()" << rect.width() << "text.width()" << calcSizeHint( realFont() ).width();
-//
-//    //painter->drawText( rect, Qt::AlignHCenter | Qt::AlignVCenter, mText );
 }
 
 KDChart::HorizontalLineLayoutItem::HorizontalLineLayoutItem()

@@ -180,6 +180,8 @@ namespace KDChart {
         virtual int tickLength( bool subUnitTicks = false ) const;
     private Q_SLOTS:
         void coordinateSystemChanged();
+    private:
+        friend class TickIterator;
     };
 
     typedef QList<CartesianAxis*> CartesianAxisList;
