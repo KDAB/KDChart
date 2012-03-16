@@ -126,6 +126,7 @@ TickIterator::TickIterator( CartesianAxis* a, CartesianCoordinatePlane* plane, u
      m_majorLabelCount( 0 ),
      m_type( NoTick )
 {
+    Q_ASSERT( std::numeric_limits< qreal >::has_infinity );
     XySwitch xy( m_axis->isOrdinate() );
 
     m_dimension = xy( plane->gridDimensionsList().first(), plane->gridDimensionsList().last() );
@@ -138,9 +139,6 @@ TickIterator::TickIterator( CartesianAxis* a, CartesianCoordinatePlane* plane, u
 
     const bool hasMajorTicks = m_axis->rulerAttributes().showMajorTickMarks() && m_dimension.stepWidth > 0;
     const bool hasMinorTicks = m_axis->rulerAttributes().showMinorTickMarks() && m_dimension.subStepWidth > 0;
-    Q_ASSERT( std::numeric_limits< qreal >::has_infinity );
-    m_majorTick = hasMajorTicks ? m_dimension.start : std::numeric_limits< qreal >::infinity();
-    m_minorTick = hasMinorTicks ? m_dimension.start : std::numeric_limits< qreal >::infinity();
     m_isLogarithmic = m_dimension.calcMode == AbstractCoordinatePlane::Logarithmic;
 
     KDAB_FOREACH( qreal r, m_axis->d_func()->customTicksPositions ) {
@@ -159,20 +157,36 @@ TickIterator::TickIterator( CartesianAxis* a, CartesianCoordinatePlane* plane, u
         }
     }
 
+    const qreal inf = std::numeric_limits< qreal >::infinity();
+
     // TODO compare shortLabels().count() and labels().count() as documented
     m_manualLabelTexts = m_majorThinningFactor > 1 ? m_axis->shortLabels() : m_axis->labels();
     m_manualLabelIndex = m_manualLabelTexts.isEmpty() ? -1 : 0;
 
-    // position the iterator just below the first element so the logic from operator++() can be reused
-    // to find the first tick
-    // FIXME this is unlikely to work for logarithmic axes starting at 0-ish
-    m_position = slightlyLessThan( m_dimension.start );
+    // position the iterator just in front of the first tick to be drawn so that the logic from
+    // operator++() can be reused to find the first tick
+
+    if ( m_isLogarithmic ) {
+        if ( m_dimension.start >= 0 ) {
+            m_position = m_dimension.start ? pow( 10.0, floor( log10( m_dimension.start ) ) - 1.0 )
+                                           : 1e-6;
+            m_majorTick = hasMajorTicks ? m_position : inf;
+            m_minorTick = hasMinorTicks ? m_position * 20.0 : inf;
+        } else {
+            m_position = -pow( 10.0, ceil( log10( -m_dimension.start ) ) + 1.0 );
+            m_majorTick = hasMajorTicks ? m_position : inf;
+            m_minorTick = hasMinorTicks ? m_position * 0.09 : inf;
+        }
+    } else {
+        m_majorTick = hasMajorTicks ? m_dimension.start : inf;
+        m_minorTick = hasMinorTicks ? m_dimension.start : inf;
+        m_position = slightlyLessThan( m_dimension.start );
+    }
     ++( *this );
 }
 
 void TickIterator::operator++()
 {
-    //qDebug() << Q_FUNC_INFO << m_majorTick << m_dimension.stepWidth << m_minorTick << m_dimension.subStepWidth;
     // with all three kinds of ticks, make sure to advance from the current position if the tick is
     // exactly on the current position. that means that we had a tick at that position last time.
     if ( isAtEnd() ) {
@@ -194,12 +208,21 @@ void TickIterator::operator++()
             m_position = inf;
         }
     } else {
-        // TODO corresponding logic for logarithmic axes
-        while ( m_majorTick <= m_position ) {
-            m_majorTick += m_dimension.stepWidth;
-        }
-        while ( m_minorTick <= m_position ) {
-            m_minorTick += m_dimension.subStepWidth;
+        if ( m_isLogarithmic ) {
+            while ( m_majorTick <= m_position ) {
+                m_majorTick *= m_position >= 0 ? 10 : 0.1;
+            }
+            while ( m_minorTick <= m_position ) {
+                // the next major tick position should be greater than this
+                m_minorTick += m_majorTick * ( m_position >= 0 ? 0.1 : 1.0 );
+            }
+        } else {
+            while ( m_majorTick <= m_position ) {
+                m_majorTick += m_dimension.stepWidth;
+            }
+            while ( m_minorTick <= m_position ) {
+                m_minorTick += m_dimension.subStepWidth;
+            }
         }
 
         if ( m_majorTick != inf && m_majorTick <= m_minorTick ) {
