@@ -186,13 +186,12 @@ TickIterator::TickIterator( CartesianAxis* a, CartesianCoordinatePlane* plane, u
 
 void TickIterator::operator++()
 {
-    // with all three kinds of ticks, make sure to advance from the current position if the tick is
-    // exactly on the current position. that means that we had a tick at that position last time.
     if ( isAtEnd() ) {
         return;
     }
-
     const qreal inf = std::numeric_limits< qreal >::infinity();
+
+    // in all branches, make sure to find the next tick at a value strictly greater than m_position
 
     // TODO: a robust way to avoid duplicate ticks due to inaccuracies of floating-point math:
     //       e.g. avoid painting ticks closer than some epsilon (also see the old code)
@@ -253,8 +252,6 @@ void TickIterator::operator++()
             m_position = inf;
         }
     }
-
-    //qDebug() << m_position << m_majorTick << m_minorTick << (m_minorTick > m_position);
 
     if ( m_position > m_dimension.end ) {
         // make isAtEnd() return true
@@ -433,25 +430,16 @@ void CartesianAxis::paint( QPainter* painter )
 const TextAttributes CartesianAxis::Private::titleTextAttributesWithAdjustedRotation() const
 {
     TextAttributes titleTA( titleTextAttributes );
-    if ( ( position == Left || position == Right ) ) {
-        int rotation = titleTA.rotation() + 270;
-        if ( rotation >= 360 )
-            rotation -= 360;
-
-        // limit the allowed values to 0, 90, 180, 270:
-        if ( rotation  < 90 )
-            rotation = 0;
-        else if ( rotation  < 180 )
-            rotation = 90;
-        else if ( rotation  < 270 )
-            rotation = 180;
-        else if ( rotation  < 360 )
-            rotation = 270;
-        else
-            rotation = 0;
-
-        titleTA.setRotation( rotation );
+    int rotation = titleTA.rotation()
+    if ( position == Left || position == Right ) {
+        rotation += 270;
     }
+    if ( rotation >= 360 ) {
+        rotation -= 360;
+    }
+    // limit the allowed values to 0, 90, 180, 270
+    rotation = ( rotation / 90 ) * 90;
+    titleTA.setRotation( rotation );
     return titleTA;
 }
 
@@ -577,8 +565,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
     {
         DataDimension dimX = plane->gridDimensionsList().first();
         DataDimension dimY = plane->gridDimensionsList().last();
-        QPointF start = QPointF( dimX.start, dimY.start );
-        QPointF end = QPointF( dimX.end, dimY.end );
+        QPointF start( dimX.start, dimY.start );
+        QPointF end( dimX.end, dimY.end );
         // consider this: you can turn a diagonal line into a horizontal or vertical line on any
         // edge by changing just one of its four coordinates.
         switch ( position() ) {
@@ -696,8 +684,9 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
             // collision check the current label against the previous one
 
-            // we don't shorten or decimate labels if they are already the manual short type,
-            // or if they are the manual long type and on the vertical axis
+            // like in the old code, we don't shorten or decimate labels if they are already the
+            // manual short type, or if they are the manual long type and on the vertical axis
+            // ### they can still collide though, especially when they're rotated!
             if ( step == Layout && ( it.type() == TickIterator::MajorTick ||
                  ( it.type() == TickIterator::MajorTickManualLong && !geoXy.isY ) ) ) {
                 if ( !prevTickLabel ) {
@@ -812,7 +801,7 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
     }
 
     // the size parallel to the axis direction is not determined by us, so we just return 1
-    return QSize( geoXy( 1.0, size ), geoXy( size, 1.0 ) );
+    return QSize( geoXy( 1, size ), geoXy( size, 1 ) );
 }
 
 /* pure virtual in QLayoutItem */
