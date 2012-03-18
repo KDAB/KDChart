@@ -102,25 +102,15 @@ bool TextAttributes::operator==( const TextAttributes& r ) const
     const QFont myFont( font() );
     QFont r_font( r.font() );
     r_font.setStyleHint( myFont.styleHint(), myFont.styleStrategy() );
-    /*
-    qDebug() << "\nTextAttributes::operator== :" << ( isVisible() == r.isVisible())
-            << " font:"<<(myFont == r_font)
-            << " fontSize:"<<(fontSize() == r.fontSize())
-            << " minimalFontSize:"<<(minimalFontSize() == r.minimalFontSize())
-            << (autoRotate() == r.autoRotate())
-            << (autoShrink() == r.autoShrink())
-            << (rotation() == rotation())
-            << (pen() == r.pen());
-    */
     return ( isVisible() == r.isVisible() &&
-            myFont == r_font &&
-            fontSize() == r.fontSize() &&
-            minimalFontSize() == r.minimalFontSize() &&
-            autoRotate() == r.autoRotate() &&
-            autoShrink() == r.autoShrink() &&
-            rotation() == r.rotation() &&
-            pen() == r.pen() &&
-            textDocument() == r.textDocument() );
+             myFont == r_font &&
+             fontSize() == r.fontSize() &&
+             minimalFontSize() == r.minimalFontSize() &&
+             autoRotate() == r.autoRotate() &&
+             autoShrink() == r.autoShrink() &&
+             rotation() == r.rotation() &&
+             pen() == r.pen() &&
+             textDocument() == r.textDocument() );
 }
 
 
@@ -279,14 +269,14 @@ void TextAttributes::setTextDocument(QTextDocument* document)
 QDebug operator<<(QDebug dbg, const KDChart::TextAttributes& ta)
 {
     dbg << "KDChart::TextAttributes("
-    << "visible="<<ta.isVisible()
-    << "font="<<ta.font().toString() /* What? No QDebug for QFont? */
-    << "fontsize="<<ta.fontSize()
-    << "minimalfontsize="<<ta.minimalFontSize()
-    << "autorotate="<<ta.autoRotate()
-    << "autoshrink="<<ta.autoShrink()
-    << "rotation="<<ta.rotation()
-    << "pen="<<ta.pen()
+    << "visible=" << ta.isVisible()
+    << "font=" << ta.font().toString() /* What? No QDebug for QFont? */
+    << "fontsize=" << ta.fontSize()
+    << "minimalfontsize=" << ta.minimalFontSize()
+    << "autorotate=" << ta.autoRotate()
+    << "autoshrink=" << ta.autoShrink()
+    << "rotation=" << ta.rotation()
+    << "pen=" << ta.pen()
     << ")";
     return dbg;
 }
