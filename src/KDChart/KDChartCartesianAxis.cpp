@@ -541,7 +541,6 @@ static bool yLessThan( const QPoint& p1, const QPoint& p2 )
 
 void CartesianAxis::paintCtx( PaintContext* context )
 {
-    qDebug() << Q_FUNC_INFO << isAbscissa();
     Q_ASSERT_X ( d->diagram(), "CartesianAxis::paint",
                  "Function call not allowed: The axis is not assigned to any diagram." );
 
