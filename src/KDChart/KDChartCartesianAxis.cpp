@@ -158,8 +158,11 @@ TickIterator::TickIterator( CartesianAxis* a, CartesianCoordinatePlane* plane, u
 
     const qreal inf = std::numeric_limits< qreal >::infinity();
 
-    // TODO compare shortLabels().count() and labels().count() as documented
-    m_manualLabelTexts = m_majorThinningFactor > 1 ? m_axis->shortLabels() : m_axis->labels();
+    if ( m_majorThinningFactor > 1 && m_axis->shortLabels().count() == m_axis->labels().count() ) {
+        m_manualLabelTexts = m_axis->shortLabels();
+    } else {
+        m_manualLabelTexts = m_axis->labels();
+    }
     m_manualLabelIndex = m_manualLabelTexts.isEmpty() ? -1 : 0;
 
     // position the iterator just in front of the first tick to be drawn so that the logic from
