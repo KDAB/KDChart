@@ -193,7 +193,9 @@ void TickIterator::operator++()
 
     // in all branches, make sure to find the next tick at a value strictly greater than m_position
 
-    // TODO: a robust way to avoid duplicate ticks due to inaccuracies of floating-point math:
+    // TODO: a robust way to avoid painting a minor tick before a major tick because the minor tick
+    //       is at a position before the major tick when it should be at the same position. this can
+    //       easily happen due to rounding errors.
     //       e.g. avoid painting ticks closer than some epsilon (also see the old code)
 
     if ( !m_customTicks.isEmpty() ) {
@@ -241,7 +243,7 @@ void TickIterator::operator++()
 
             if ( m_minorTick != inf ) {
                 // align; also an easy way to avoid duplicate ticks when major and minor almost but not
-                // exactly share position due to rounding errors
+                // exactly share position due to rounding errors, and major comes first
                 m_minorTick = m_majorTick;
             }
         } else if ( m_minorTick != inf ) {
