@@ -432,7 +432,7 @@ void CartesianAxis::paint( QPainter* painter )
 const TextAttributes CartesianAxis::Private::titleTextAttributesWithAdjustedRotation() const
 {
     TextAttributes titleTA( titleTextAttributes );
-    int rotation = titleTA.rotation()
+    int rotation = titleTA.rotation();
     if ( position == Left || position == Right ) {
         rotation += 270;
     }
@@ -765,7 +765,7 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
     }
 
     CartesianCoordinatePlane* plane = dynamic_cast< CartesianCoordinatePlane* >( diagram()->coordinatePlane() );
-    Q_ASSERT( plane );  
+    Q_ASSERT( plane );
     QObject* refArea = plane->parent();
 
     // we ignore:
@@ -803,7 +803,7 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
     }
 
     // the size parallel to the axis direction is not determined by us, so we just return 1
-    return QSize( geoXy( 1, size ), geoXy( size, 1 ) );
+    return QSize( geoXy( 1, int( size ) ), geoXy( int ( size ), 1 ) );
 }
 
 /* pure virtual in QLayoutItem */
