@@ -90,7 +90,7 @@ public:
     bool areAlmostEqual( qreal r1, qreal r2 ) const;
 
 private:
-    // these are generally set once in the constructor or by callers
+    // these are generally set once in the constructor
     CartesianAxis* m_axis;
     DataDimension m_dimension; // upper and lower bounds
     bool m_isLogarithmic;

@@ -386,7 +386,8 @@ static qreal normProjection( const QLineF &l1, const QLineF &l2 )
 
 static QLineF labelAttachmentLine( const QPointF &center, const QPointF &start, const QPainterPath &label )
 {
-    // TODO cut off at slice border, visible when slice is selected
+    // TODO cut off at slice border because the attachment line is visible inside the slice when
+    //      the slice is selected
     Q_ASSERT ( label.elementCount() == 5 );
 
     QPointF closeCorners[3];
