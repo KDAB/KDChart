@@ -44,8 +44,6 @@
 
 #include <limits>
 
-#define PI 3.141592653589793
-
 using namespace KDChart;
 
 #define d d_func()
@@ -1060,4 +1058,3 @@ QModelIndexList AbstractDiagram::indexesIn( const QRect& rect ) const
 {
     return d->indexesIn( rect );
 }
-
