@@ -134,9 +134,6 @@ namespace KDChart {
         /** pure virtual in QLayoutItem */
         virtual QRect geometry() const;
 
-        // do not call this with any out-parameters referencing the same memory location
-        virtual QSize sizeHintAndRotatedCorners( QPoint& topLeft, QPoint& topRight,
-                                                 QPoint& bottomRight, QPoint& bottomLeft ) const;
         virtual QSize sizeHintUnrotated() const;
 
         virtual bool intersects( const TextLayoutItem& other, const QPointF& myPos, const QPointF& otherPos ) const;
@@ -147,13 +144,12 @@ namespace KDChart {
 
         virtual void paint( QPainter* );
 
-        QPolygon rotatedCorners() const;
+        QPolygon boundingPolygon() const;
     private:
         bool maybeUpdateRealFont() const;
         QSize unrotatedSizeHint( const QFont& fnt = QFont() ) const;
         QSize unrotatedTextSize( QFont fnt = QFont() ) const;
-        QSize calcSizeHint( const QFont& font,
-                            QPoint& topLeft, QPoint& topRight, QPoint& bottomRight, QPoint& bottomLeft ) const;
+        QSize calcSizeHint( const QFont& font ) const;
 
         qreal fitFontSizeToGeometry() const;
 
@@ -164,10 +160,7 @@ namespace KDChart {
         const QObject* mAutoReferenceArea;
         KDChartEnums::MeasureOrientation mAutoReferenceOrientation;
         mutable QSize cachedSizeHint;
-        mutable QPoint cachedTopLeft;
-        mutable QPoint cachedTopRight;
-        mutable QPoint cachedBottomRight;
-        mutable QPoint cachedBottomLeft;
+        mutable QPolygon mCachedBoundingPolygon;
         mutable qreal cachedFontSize;
         mutable QFont cachedFont;
     };

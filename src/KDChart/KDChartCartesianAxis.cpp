@@ -536,16 +536,6 @@ bool CartesianAxis::Private::isVertical() const
     return ( axis()->isOrdinate() && isDiagramVertical ) || ( axis()->isAbscissa() && !isDiagramVertical );
 }
 
-static bool xLessThan( const QPoint& p1, const QPoint& p2 )
-{
-    return p1.x() < p2.x();
-}
-
-static bool yLessThan( const QPoint& p1, const QPoint& p2 )
-{
-    return p1.y() < p2.y();
-}
-
 void CartesianAxis::paintCtx( PaintContext* context )
 {
     Q_ASSERT_X ( d->diagram(), "CartesianAxis::paint",
@@ -652,36 +642,44 @@ void CartesianAxis::paintCtx( PaintContext* context )
             }
             tickLabel->setText( text );
             QSizeF size = QSizeF( tickLabel->sizeHint() );
-            QPolygon labelPoly = tickLabel->rotatedCorners();
+            QPolygon labelPoly = tickLabel->boundingPolygon();
+
             Q_ASSERT( labelPoly.count() == 4 );
+            Q_ASSERT( position() >= Bottom && position() <= Left );
+
+            // for alignment, find the label polygon edge "most parallel" and closest to the axis
+
+            static const int directionFor[ 4 ] = { 0 /*Bottom*/, 180 /*Top*/, 270 /*Right*/, 90 /*Left*/ };
+            // the left axis is not actually pointing down and the top axis not actually pointing
+            // left, but their corresponding closest edges of a rectangular unrotated label polygon are.
+            int axisRot = directionFor[ position() ];
+            int relAngle = axisRot - labelTA.rotation() + 45;
+            if ( relAngle < 0 ) {
+                relAngle += 360;
+            }
+            int polyCorner1 = relAngle / 90;
+            int polyCorner2 = polyCorner1 == 3 ? 0 : ( polyCorner1 + 1 );
+            QPoint p1 = labelPoly.at( polyCorner1 );
+            QPoint p2 = labelPoly.at( polyCorner2 );
+
+             // TODO: non-hardcoded tick-label spacing depending on font size and such
+            //        we should use geoXy here when we switch to doing the spacing correctly
             QPointF labelPos = tickEnd;
-            // TODO: non-hardcoded tick-label spacing depending on font size and such
             switch ( position() ) {
             case Left:
-                labelPos += QPointF( -size.width(), 0. );
+                labelPos += QPointF( -size.width(), 1. );
                 // fall through
-            case Right: {
-                // find the two points with x-coordinates closest to the axis and adjust height
-                // according to their average height (in addition to label height)
-                // ### the algorithm fails when at certain angles (that don't look very good anyway)
-                //     the two x-closest points are on a long label side, but the fix is somewhat nontrivial
-                qSort( labelPoly.begin(), labelPoly.end(), xLessThan );
-                QPoint p1 = labelPoly[ position() == Right ? 0 : 3 ];
-                QPoint p2 = labelPoly[ position() == Right ? 1 : 2 ];
+            case Right:
                 // ### the 0.6 is a bit of a fudge factor and depends on the distance between label
                 //     and axis. it might become necessary to properly calculate a good value there.
                 labelPos += QPointF( 1., -0.5 * size.height() - 0.6 * ( p1.y() + p2.y() ) );
-                break; }
+                break;
             case Top:
-                labelPos += QPointF( 0., -size.height() );
+                labelPos += QPointF( 1., -size.height() );
                 // fall through
-            case Bottom: {
-                // same as Right:, but with coordinates swapped
-                qSort( labelPoly.begin(), labelPoly.end(), yLessThan );
-                QPoint p1 = labelPoly[ position() == Bottom ? 0 : 3 ];
-                QPoint p2 = labelPoly[ position() == Bottom ? 1 : 2 ];
+            case Bottom:
                 labelPos += QPointF( -0.5 * size.width() - 0.6 * ( p1.x() + p2.x() ), 0. );
-                break; }
+                break;
             }
 
             tickLabel->setGeometry( QRect( labelPos.toPoint(), size.toSize() ) );

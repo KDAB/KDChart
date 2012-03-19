@@ -389,13 +389,10 @@ QFont KDChart::TextLayoutItem::realFont() const
     return cachedFont;
 }
 
-QPolygon KDChart::TextLayoutItem::rotatedCorners() const
+QPolygon KDChart::TextLayoutItem::boundingPolygon() const
 {
-    QPoint p1, p2, p3, p4;
-    sizeHintAndRotatedCorners( p1, p2, p3, p4 );
-    QPolygon ret;
-    ret << p1 << p2 << p3 << p4;
-    return ret;
+    // should probably call sizeHint() here, but that one is expensive (see TODO there)
+    return mCachedBoundingPolygon;
 }
 
 bool KDChart::TextLayoutItem::intersects( const TextLayoutItem& other, const QPointF& myPos, const QPointF& otherPos ) const
@@ -408,12 +405,8 @@ bool KDChart::TextLayoutItem::intersects( const TextLayoutItem& other, const QPo
     if ( mAttributes.rotation() != other.mAttributes.rotation() )
     {
         // that's the code for the common case: the rotation angles don't need to match here
-        QPolygon myPolygon( rotatedCorners() );
-        QPolygon otherPolygon( other.rotatedCorners() );
-
-        // move the polygons to their positions
-        myPolygon.translate( myPos );
-        otherPolygon.translate( otherPos );
+        QPolygon myPolygon = boundingPolygon().translated( myPos );
+        QPolygon otherPolygon = other.boundingPolygon().translated( otherPos );
 
         // create regions out of it
         QRegion myRegion( myPolygon );
@@ -449,31 +442,14 @@ bool KDChart::TextLayoutItem::intersects( const TextLayoutItem& other, const QPo
 
 QSize KDChart::TextLayoutItem::sizeHint() const
 {
-    QPoint p1, p2, p3, p4; // use different dummy points to avoid reference aliasing problems
-    return sizeHintAndRotatedCorners( p1, p2, p3, p4 );
-}
-
-QSize KDChart::TextLayoutItem::sizeHintAndRotatedCorners(
-        QPoint& topLeft, QPoint& topRight, QPoint& bottomRight, QPoint& bottomLeft ) const
-{
     // ### we only really need to recalculate the size hint when mAttributes.rotation has *changed*
-    if ( maybeUpdateRealFont() || mAttributes.rotation() ) {
-        const QSize newSizeHint( calcSizeHint( cachedFont,
-                                               topLeft, topRight, bottomRight, bottomLeft ) );
+    if ( maybeUpdateRealFont() || mAttributes.rotation() || !cachedSizeHint.isValid() ) {
+        const QSize newSizeHint( calcSizeHint( cachedFont ) );
         Q_ASSERT( newSizeHint.isValid() );
         if ( newSizeHint != cachedSizeHint ) {
             cachedSizeHint = newSizeHint;
             sizeHintChanged();
         }
-        cachedTopLeft = topLeft;
-        cachedTopRight = topRight;
-        cachedBottomRight = bottomRight;
-        cachedBottomLeft = bottomLeft;
-    } else {
-        topLeft = cachedTopLeft;
-        topRight = cachedTopRight;
-        bottomRight = cachedBottomRight;
-        bottomLeft = cachedBottomLeft;
     }
     return cachedSizeHint;
 }
@@ -510,28 +486,27 @@ QSize KDChart::TextLayoutItem::unrotatedSizeHint( const QFont& fnt ) const
     return ret;
 }
 
-QSize KDChart::TextLayoutItem::calcSizeHint( const QFont& font, QPoint& topLeft, QPoint& topRight,
-                                             QPoint& bottomRight, QPoint& bottomLeft ) const
+QSize KDChart::TextLayoutItem::calcSizeHint( const QFont& font ) const
 {
     const QSize size = unrotatedSizeHint( font );
-    topLeft = QPoint( -size.width() * 0.5, -size.height() * 0.5 );
+    QPoint topLeft( -size.width() * 0.5, -size.height() * 0.5 );
     if ( !mAttributes.rotation() ) {
-        topRight = topLeft + QPoint( size.width(), 0 );
-        bottomRight = topLeft + QPoint( size.width(), size.height() );
-        bottomLeft = topLeft + QPoint( 0, size.height() );
+        mCachedBoundingPolygon.resize( 4 );
+        // using the same winding order as returned by QPolygon QTransform::mapToPolygon(const QRect&),
+        // which is: 0-1: top edge, 1-2: right edge, 2-3: bottom edge, 3-0: left edge (of input rect)
+        mCachedBoundingPolygon[ 0 ] = topLeft;
+        mCachedBoundingPolygon[ 1 ] = topLeft + QPoint( size.width(), 0 ); // top right
+        mCachedBoundingPolygon[ 2 ] = topLeft + QPoint( size.width(), size.height() ); // bottom right
+        mCachedBoundingPolygon[ 3 ] = topLeft + QPoint( 0, size.height() ); // bottom left
         return size;
     }
 
     const QRect rect( topLeft, size );
     QTransform t;
     t.rotate( mAttributes.rotation() );
-    const QPolygon rotated = t.mapToPolygon( rect );
+    mCachedBoundingPolygon = t.mapToPolygon( rect );
 
-    topLeft = rotated[ 0 ];
-    topRight = rotated[ 1 ];
-    bottomRight = rotated[ 2 ];
-    bottomLeft = rotated[ 3 ];
-    return rotated.boundingRect().size();
+    return mCachedBoundingPolygon.boundingRect().size();
 }
 
 void KDChart::TextLayoutItem::paint( QPainter* painter )
