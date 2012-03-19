@@ -57,10 +57,10 @@ namespace KDChart {
         /**
           * C'tor of the class for cartesian axes.
           *
-          * \note If using a zero parent for the constructor, you need to call
+          * \note If you pass a null parent to the constructor, you need to call
           * your diagram's addAxis function to add your axis to the diagram.
-          * Otherwise, there is no need to call addAxis, since the constructor
-          * does that automatically for you, if you pass a diagram as parameter.
+          * Otherwise there is no need to call addAxis, since the constructor
+          * does it already.
           *
           * \sa AbstractCartesianDiagram::addAxis
           */
