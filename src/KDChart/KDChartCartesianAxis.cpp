@@ -87,6 +87,8 @@ public:
     bool isAtEnd() const { return m_position == std::numeric_limits< qreal >::infinity(); }
     void operator++();
 
+    bool areAlmostEqual( qreal r1, qreal r2 ) const;
+
 private:
     // these are generally set once in the constructor or by callers
     CartesianAxis* m_axis;
@@ -187,6 +189,11 @@ TickIterator::TickIterator( CartesianAxis* a, CartesianCoordinatePlane* plane, u
     ++( *this );
 }
 
+bool TickIterator::areAlmostEqual( qreal r1, qreal r2 ) const
+{
+    return qAbs( r2 - r1 ) < ( m_dimension.end - m_dimension.start ) * 1e-6;
+}
+
 void TickIterator::operator++()
 {
     if ( isAtEnd() ) {
@@ -194,12 +201,7 @@ void TickIterator::operator++()
     }
     const qreal inf = std::numeric_limits< qreal >::infinity();
 
-    // in all branches, make sure to find the next tick at a value strictly greater than m_position
-
-    // TODO: a robust way to avoid painting a minor tick before a major tick because the minor tick
-    //       is at a position before the major tick when it should be at the same position. this can
-    //       easily happen due to rounding errors.
-    //       e.g. avoid painting ticks closer than some epsilon (also see the old code)
+    // make sure to find the next tick at a value strictly greater than m_position
 
     if ( !m_customTicks.isEmpty() ) {
         QMap< qreal, QString >::ConstIterator it = m_customTicks.upperBound( m_position );
@@ -211,6 +213,7 @@ void TickIterator::operator++()
             m_position = inf;
         }
     } else {
+        // advance the calculated ticks
         if ( m_isLogarithmic ) {
             while ( m_majorTick <= m_position ) {
                 m_majorTick *= m_position >= 0 ? 10 : 0.1;
@@ -228,8 +231,15 @@ void TickIterator::operator++()
             }
         }
 
-        if ( m_majorTick != inf && m_majorTick <= m_minorTick ) {
+        // now see which kind of tick we'll have
+        if ( m_majorTick != inf && ( m_majorTick <= m_minorTick ||
+                                     areAlmostEqual( m_majorTick, m_minorTick ) ) ) {
             m_position = m_majorTick;
+            if ( m_minorTick != inf ) {
+                // realign minor to major
+                m_minorTick = m_majorTick;
+            }
+
             if ( m_manualLabelIndex >= 0 ) {
                 m_text = m_manualLabelTexts[ m_manualLabelIndex++ ];
                 if ( m_manualLabelIndex >= m_manualLabelTexts.count() ) {
@@ -242,12 +252,6 @@ void TickIterator::operator++()
                 if ( ( m_majorLabelCount++ % m_majorThinningFactor ) != 0 ) {
                     m_text.clear();
                 }
-            }
-
-            if ( m_minorTick != inf ) {
-                // align; also an easy way to avoid duplicate ticks when major and minor almost but not
-                // exactly share position due to rounding errors, and major comes first
-                m_minorTick = m_majorTick;
             }
         } else if ( m_minorTick != inf ) {
             m_position = m_minorTick;
@@ -612,7 +616,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
     };
     for ( int step = labelTA.isVisible() ? Layout : Painting; step < Done; step++ ) {
         for ( TickIterator it( this, plane, labelThinningFactor ); !it.isAtEnd(); ++it ) {
-            if ( it.position() == 0.0 && !rulerAttributes().showZeroLabel() ) { // TODO fuzzy compare?
+            if ( !rulerAttributes().showZeroLabel() && it.areAlmostEqual( it.position(), 0.0 ) ) {
                 continue;
             }
             const qreal drawPos = it.position() + ( centerTicks ? 0.5 : 0. );
