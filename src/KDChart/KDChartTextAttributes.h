@@ -140,27 +140,27 @@ public:
 
   /**
    * Set whether the text should be automatically rotated as
-   * needed when space is constraint.
+   * needed when space is tight.
    * \param autoRotate Whether text should be automatically rotated.
    */
   void setAutoRotate( bool autoRotate );
 
   /**
    * \return Whether text is automatically rotated when space is
-   * constrained.
+   * tight.
    */
   bool autoRotate() const;
 
   /**
-   * Set whether the text should automatically be shrunk, if
-   * space is constraint.
+   * Set whether the text should automatically be shrunk if
+   * space is tight.
    * \param autoShrink Whether text should be auto-shrunk.
    */
   void setAutoShrink( bool autoShrink );
 
   /**
    * \return Whether text is automatically shrunk if space is
-   * constraint.
+   * tight.
    */
   bool autoShrink() const;
 
