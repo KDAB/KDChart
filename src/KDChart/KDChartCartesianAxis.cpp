@@ -193,7 +193,11 @@ TickIterator::TickIterator( CartesianAxis* a, CartesianCoordinatePlane* plane, u
 
 bool TickIterator::areAlmostEqual( qreal r1, qreal r2 ) const
 {
-    return qAbs( r2 - r1 ) < ( m_dimension.end - m_dimension.start ) * 1e-6;
+    if ( !m_isLogarithmic ) {
+        return qAbs( r2 - r1 ) < ( m_dimension.end - m_dimension.start ) * 1e-6;
+    } else {
+        return qAbs( r2 - r1 ) < qMax( qAbs( r1 ), qAbs( r2 ) ) * 0.01;
+    }
 }
 
 void TickIterator::operator++()
