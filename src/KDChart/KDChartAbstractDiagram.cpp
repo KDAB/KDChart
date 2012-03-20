@@ -961,10 +961,10 @@ QList<QBrush> AbstractDiagram::datasetBrushes() const
     if( model() == 0 )
         return ret;
 
-    const int datasetCount = attributesModel()->columnCount(attributesModelRootIndex()) / datasetDimension();
-    for ( int dataset = 0; dataset < datasetCount; dataset++ )
+    const int datasetCount = attributesModel()->columnCount( attributesModelRootIndex() );
+    for ( int dataset = 0; dataset < datasetCount; dataset += datasetDimension() ) {
         ret << brush( dataset );
-
+    }
     return ret;
 }
 
@@ -974,10 +974,10 @@ QList<QPen> AbstractDiagram::datasetPens() const
     if( model() == 0 )
         return ret;
 
-    const int datasetCount = attributesModel()->columnCount(attributesModelRootIndex()) / datasetDimension();
-    for ( int dataset = 0; dataset < datasetCount; dataset++ )
+    const int datasetCount = attributesModel()->columnCount( attributesModelRootIndex() );
+    for ( int dataset = 0; dataset < datasetCount; dataset += datasetDimension() ) {
         ret << pen( dataset );
-
+    }
     return ret;
 }
 
@@ -987,10 +987,10 @@ QList<MarkerAttributes> AbstractDiagram::datasetMarkers() const
     if( model() == 0 )
         return ret;
 
-    const int datasetCount = attributesModel()->columnCount(attributesModelRootIndex()) / datasetDimension();
-    for ( int dataset = 0; dataset < datasetCount; dataset++ )
+    const int datasetCount = attributesModel()->columnCount( attributesModelRootIndex() );
+    for ( int dataset = 0; dataset < datasetCount; dataset += datasetDimension() ) {
         ret << dataValueAttributes( dataset ).markerAttributes();
-
+    }
     return ret;
 }
 
