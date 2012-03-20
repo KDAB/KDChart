@@ -84,6 +84,8 @@ public:
     qreal position() const { return m_position; }
     QString text() const { return m_text; }
     TickType type() const { return m_type; }
+    bool hasShorterLabels() const { return m_axis->shortLabels().count() == m_axis->labels().count() &&
+                                           !m_axis->labels().isEmpty(); }
     bool isAtEnd() const { return m_position == std::numeric_limits< qreal >::infinity(); }
     void operator++();
 
@@ -160,7 +162,7 @@ TickIterator::TickIterator( CartesianAxis* a, CartesianCoordinatePlane* plane, u
 
     const qreal inf = std::numeric_limits< qreal >::infinity();
 
-    if ( m_majorThinningFactor > 1 && m_axis->shortLabels().count() == m_axis->labels().count() ) {
+    if ( m_majorThinningFactor > 1 && hasShorterLabels() ) {
         m_manualLabelTexts = m_axis->shortLabels();
     } else {
         m_manualLabelTexts = m_axis->labels();
@@ -592,7 +594,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
     // paint ticks and labels
 
-    const TextAttributes labelTA = textAttributes();
+    TextAttributes labelTA = textAttributes();
 
     int labelThinningFactor = 1;
     TextLayoutItem *tickLabel = new TextLayoutItem( QString(), labelTA, plane->parent(),
@@ -605,6 +607,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
         Done
     };
     for ( int step = labelTA.isVisible() ? Layout : Painting; step < Done; step++ ) {
+        delete prevTickLabel;
+        prevTickLabel = 0;
         for ( TickIterator it( this, plane, labelThinningFactor ); !it.isAtEnd(); ++it ) {
             if ( !rulerAttributes().showZeroLabel() && it.areAlmostEqual( it.position(), 0.0 ) ) {
                 continue;
@@ -702,25 +706,38 @@ void CartesianAxis::paintCtx( PaintContext* context )
             // like in the old code, we don't shorten or decimate labels if they are already the
             // manual short type, or if they are the manual long type and on the vertical axis
             // ### they can still collide though, especially when they're rotated!
-            if ( step == Layout && ( it.type() == TickIterator::MajorTick ||
-                 ( it.type() == TickIterator::MajorTickManualLong && !geoXy.isY ) ) ) {
-                if ( !prevTickLabel ) {
-                    prevTickLabel = tickLabel;
-                    tickLabel = new TextLayoutItem( QString(), labelTA, plane->parent(),
-                                                    KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft );
-                } else {
-                    if ( tickLabel->intersects( *prevTickLabel, labelPos, prevTickLabelPos ) ) {
-                        labelThinningFactor++;
-                        step--; // relayout
-                        break;
+            if ( step == Layout ) {
+                int spaceSavingRotation = geoXy( 270, 0 );
+                bool canRotate = labelTA.autoRotate() && labelTA.rotation() != spaceSavingRotation;
+                const bool canShortenLabels = !geoXy.isY && it.type() == TickIterator::MajorTickManualLong &&
+                                              it.hasShorterLabels();
+                bool collides = false;
+                if ( it.type() == TickIterator::MajorTick || canShortenLabels || canRotate ) {
+                    if ( !prevTickLabel ) {
+                        // this is the first label of the axis, so just instantiate the second
+                        prevTickLabel = tickLabel;
+                        tickLabel = new TextLayoutItem( QString(), labelTA, plane->parent(),
+                                                        KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft );
+                    } else {
+                        collides = tickLabel->intersects( *prevTickLabel, labelPos, prevTickLabelPos );
+                        qSwap( prevTickLabel, tickLabel );
                     }
-                    qSwap( prevTickLabel, tickLabel );
+                    prevTickLabelPos = labelPos;
                 }
-                prevTickLabelPos = labelPos;
+                if ( collides ) {
+                    // to make room, we try in order: shorten, rotate, decimate
+                    if ( canRotate && !canShortenLabels ) {
+                        labelTA.setRotation( spaceSavingRotation );
+                        // tickLabel will be reused in the next round
+                        tickLabel->setTextAttributes( labelTA );
+                    } else {
+                        labelThinningFactor++;
+                    }
+                    step--; // relayout
+                    break;
+                }
             }
         }
-        delete prevTickLabel;
-        prevTickLabel = 0;
     }
     delete tickLabel;
     tickLabel = 0;
