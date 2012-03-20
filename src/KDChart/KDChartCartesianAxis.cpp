@@ -643,24 +643,33 @@ void CartesianAxis::paintCtx( PaintContext* context )
             tickLabel->setText( text );
             QSizeF size = QSizeF( tickLabel->sizeHint() );
             QPolygon labelPoly = tickLabel->boundingPolygon();
-
             Q_ASSERT( labelPoly.count() == 4 );
-            Q_ASSERT( position() >= Bottom && position() <= Left );
 
             // for alignment, find the label polygon edge "most parallel" and closest to the axis
 
-            static const int directionFor[ 4 ] = { 0 /*Bottom*/, 180 /*Top*/, 270 /*Right*/, 90 /*Left*/ };
+            int axisAngle = 0;
+            switch ( position() ) {
+            case Bottom:
+                axisAngle = 0; break;
+            case Top:
+                axisAngle = 180; break;
+            case Right:
+                axisAngle = 270; break;
+            case Left:
+                axisAngle = 90; break;
+            default:
+                Q_ASSERT( false );
+            }
             // the left axis is not actually pointing down and the top axis not actually pointing
             // left, but their corresponding closest edges of a rectangular unrotated label polygon are.
-            int axisRot = directionFor[ position() ];
-            int relAngle = axisRot - labelTA.rotation() + 45;
+
+            int relAngle = axisAngle - labelTA.rotation() + 45;
             if ( relAngle < 0 ) {
                 relAngle += 360;
             }
             int polyCorner1 = relAngle / 90;
-            int polyCorner2 = polyCorner1 == 3 ? 0 : ( polyCorner1 + 1 );
             QPoint p1 = labelPoly.at( polyCorner1 );
-            QPoint p2 = labelPoly.at( polyCorner2 );
+            QPoint p2 = labelPoly.at( polyCorner1 == 3 ? 0 : ( polyCorner1 + 1 ) );
 
              // TODO: non-hardcoded tick-label spacing depending on font size and such
             //        we should use geoXy here when we switch to doing the spacing correctly
