@@ -157,7 +157,7 @@ void LineDiagram::LineDiagramType::paintElements(
         const QModelIndex& index = lineInfo.index;
         const ValueTrackerAttributes vt = diagram()->valueTrackerAttributes( index );
         if( vt.isEnabled() )
-            paintValueTracker( ctx, vt, lineInfo.value );
+            paintValueTracker( ctx, vt, lineInfo.nextValue );
     }
 
     // paint all data value texts and the point markers
