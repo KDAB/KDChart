@@ -72,6 +72,7 @@ void Plotter::init()
 
 Plotter::~Plotter()
 {
+    delete d;
 }
 
 /**
