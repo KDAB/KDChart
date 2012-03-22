@@ -804,7 +804,9 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
 
     // we ignore:
     // - label thinning (expensive, not worst case and we want worst case)
+    // - label autorotation (expensive, obscure feature(?))
     // - axis length (it is determined by the plane / diagram / chart anyway)
+    // - the title's influence on axis length; this one might be TODO. See KDCH-863.
 
     XySwitch geoXy( isVertical() );
     qreal size = 0; // this is the size transverse to the axis direction
