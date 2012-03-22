@@ -105,8 +105,6 @@ void AbstractAreaWidget::paintEvent( QPaintEvent* event )
 
 void AbstractAreaWidget::paintIntoRect( QPainter& painter, const QRect& rect )
 {
-    //qDebug() << "AbstractAreaWidget::paintIntoRect() called rect=" << rect;
-
     if( rect.isEmpty() ) return;
 
     d->resizeLayout( this, rect.size() );
@@ -141,8 +139,6 @@ void AbstractAreaWidget::forceRebuild()
 
 void AbstractAreaWidget::paintAll( QPainter& painter )
 {
-    //qDebug() << "AbstractAreaWidget::paintAll() called";
-
     // Paint the background and frame
     paintBackground( painter, QRect(QPoint(0, 0), size() ) );
     paintFrame( painter, QRect(QPoint(0, 0), size() ) );
@@ -177,7 +173,6 @@ void AbstractAreaWidget::paintAll( QPainter& painter )
     painter.translate( translation );
     paint( &painter );
     painter.translate( -translation.x(), -translation.y() );
-     //qDebug() << "AbstractAreaWidget::paintAll() done.";
 }
 
 QRect AbstractAreaWidget::areaGeometry() const
@@ -189,13 +184,3 @@ void AbstractAreaWidget::positionHasChanged()
 {
     emit positionChanged( this );
 }
-/*
-void AbstractAreaWidget::setGeometry( const QRect & rect )
-{
-    qDebug() << "AbstractAreaWidget::setGeometry("<< rect << ") called";
-    const bool bChanged = rect != geometry();
-    QWidget::setGeometry( rect );
-    if( bChanged )
-        forceRebuild();
-}
-*/

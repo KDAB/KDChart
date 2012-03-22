@@ -65,8 +65,6 @@ void CartesianGrid::setMaximalSteps(int maxsteps)
 
 void CartesianGrid::drawGrid( PaintContext* context )
 {
-    //qDebug() << "KDChart::CartesianGrid::drawGrid( PaintContext* context ) called";
-
     CartesianCoordinatePlane* plane = dynamic_cast<CartesianCoordinatePlane*>(context->coordinatePlane());
 
     const GridAttributes gridAttrsX( plane->gridAttributes( Qt::Horizontal ) );
@@ -80,7 +78,6 @@ void CartesianGrid::drawGrid( PaintContext* context )
 
     Q_ASSERT_X ( plane, "CartesianGrid::drawGrid",
                  "Bad function call: PaintContext::coodinatePlane() NOT a cartesian plane." );
-    //qDebug() << "A";
 
     // important: Need to update the calculated mData,
     //            before we may use it!
@@ -97,7 +94,6 @@ void CartesianGrid::drawGrid( PaintContext* context )
 
     // test for invalid boundaries: non-critical
     if( !isBoundariesValid( mData ) ) return;
-    //qDebug() << "B";
 
     DataDimension dimX = mData.first();
     const DataDimension& dimY = mData.last();
@@ -114,18 +110,12 @@ void CartesianGrid::drawGrid( PaintContext* context )
     qreal numberOfUnitLinesY =
         qAbs( dimY.distance() / dimY.stepWidth )
         + (dimY.isCalculated ? 1.0 : 0.0);
-    //qDebug("numberOfUnitLinesX: %f    numberOfUnitLinesY: %f",numberOfUnitLinesX,numberOfUnitLinesY);
 
     // do not draw a Zero size grid (and do not divide by Zero)
     if( numberOfUnitLinesX <= 0.0 || numberOfUnitLinesY <= 0.0 ) return;
-    //qDebug() << "C";
 
     const QPointF p1 = plane->translate( QPointF(dimX.start, dimY.start) );
     const QPointF p2 = plane->translate( QPointF(dimX.end, dimY.end) );
-//qDebug() << "dimX.isCalculated:" << dimX.isCalculated << "dimY.isCalculated:" << dimY.isCalculated;
-//qDebug() << "dimX.start: " << dimX.start << "dimX.end: " << dimX.end;
-//qDebug() << "dimY.start: " << dimY.start << "dimY.end: " << dimY.end;
-//qDebug() << "p1:" << p1 << "  p2:" << p2;
 
     const qreal screenRangeX = qAbs ( p1.x() - p2.x() );
     const qreal screenRangeY = qAbs ( p1.y() - p2.y() );
@@ -139,10 +129,6 @@ void CartesianGrid::drawGrid( PaintContext* context )
     static const qreal GridLineDistanceTreshold = 4.0; // <Treshold> pixels between each grid line
     const qreal MinimumPixelsBetweenLines =
             GridLineDistanceTreshold;
-    //qDebug() << "x step " << dimX.stepWidth << "  y step " << dimY.stepWidth;
-
-    //qreal unitFactorX = 1.0;
-//    qreal unitFactorY = 1.0;
 
     //FIXME(khz): Remove this code, and do the calculation in the grid calc function
     if( ! dimX.isCalculated ){
@@ -154,8 +140,8 @@ void CartesianGrid::drawGrid( PaintContext* context )
         }
     }
     if( dimX.subStepWidth && (screenRangeX / (dimX.distance() / dimX.subStepWidth) <= MinimumPixelsBetweenLines) ){
+        // de-activating grid sub steps: not enough space
         dimX.subStepWidth = 0.0;
-        //qDebug() << "de-activating grid sub steps: not enough space";
     }
 
     const bool drawUnitLinesX = gridAttrsX.isGridVisible() &&
@@ -165,16 +151,6 @@ void CartesianGrid::drawGrid( PaintContext* context )
 
     const bool isLogarithmicX = dimX.isCalculated && (dimX.calcMode == AbstractCoordinatePlane::Logarithmic );
     const bool isLogarithmicY = (dimY.calcMode == AbstractCoordinatePlane::Logarithmic );
-/*
-    while ( !drawUnitLinesX ) {
-        unitFactorX *= 10.0;
-        drawUnitLinesX = screenRangeX / (numberOfUnitLinesX / unitFactorX) > MinimumPixelsBetweenLines;
-    }
-    while ( !drawUnitLinesY ) {
-        unitFactorY *= 10.0;
-        drawUnitLinesY = screenRangeY / (numberOfUnitLinesY / unitFactorY) > MinimumPixelsBetweenLines;
-    }
-*/
 
     const bool drawSubGridLinesX = isLogarithmicX ||
         ((dimX.subStepWidth != 0.0) &&
@@ -239,7 +215,6 @@ void CartesianGrid::drawGrid( PaintContext* context )
 
         int logSubstep = 0;
         while ( f <= maxValueY ) {
-            //qDebug() << "sub grid line Y at" << f;
             QPointF leftPoint( minValueX, f );
             QPointF rightPoint( maxValueX, f );
             leftPoint = plane->translate( leftPoint );
@@ -281,10 +256,8 @@ void CartesianGrid::drawGrid( PaintContext* context )
     const QPointF bottomRightPoint = plane->translate( QPointF( maxValueX, minValueY ) );
 
     if ( drawUnitLinesX || drawXZeroLineX ) {
-        //qDebug() << "E";
         if ( drawUnitLinesX )
             context->painter()->setPen( PrintingParameters::scalePen( gridAttrsX.gridPen() ) );
-//        const qreal minX = dimX.start;
 
         qreal f = minValueX;
         
@@ -326,11 +299,8 @@ void CartesianGrid::drawGrid( PaintContext* context )
 
     }
     if ( drawUnitLinesY || drawZeroLineY ) {
-        //qDebug() << "F";
         if ( drawUnitLinesY )
             context->painter()->setPen( PrintingParameters::scalePen( gridAttrsY.gridPen() ) );
-        //const qreal minY = dimY.start;
-        //qDebug("minY: %f   maxValueY: %f   dimY.stepWidth: %f",minY,maxValueY,dimY.stepWidth);
         qreal f = minValueY;
 
         while ( f <= maxValueY ) {
@@ -362,7 +332,8 @@ void CartesianGrid::drawGrid( PaintContext* context )
                 break;
         }
     }
-    //qDebug() << "Z";
+
+    context->painter()->restore();
 }
 
 
@@ -382,21 +353,6 @@ DataDimensionsList CartesianGrid::calculateGrid(
     if( isBoundariesValid( l ) ) {
         const QPointF translatedBottomLeft( plane->translateBack( plane->geometry().bottomLeft() ) );
         const QPointF translatedTopRight( plane->translateBack( plane->geometry().topRight() ) );
-        //qDebug() << "CartesianGrid::calculateGrid()         first:" << l.first().start << l.first().end <<                   "   last:" << l.last().start << l.last().end;
-        //qDebug() << "CartesianGrid::calculateGrid()  translated x:" << translatedBottomLeft.x() << translatedTopRight.x() << "      y:" << translatedBottomLeft.y() << translatedTopRight.y();
-        //qDebug() << "CartesianGrid::calculateGrid()  raw data y-range  :" << l.last().end - l.last().start;
-        //qDebug() << "CartesianGrid::calculateGrid()  translated y-range:" << translatedTopRight.y() - translatedBottomLeft.y();
-
-        /* Code is obsolete. The dataset dimension of the diagram should *never* be > 1.
-        if( l.first().isCalculated
-            && plane->autoAdjustGridToZoom()
-            && plane->axesCalcModeX() == CartesianCoordinatePlane::Linear
-            && plane->zoomFactorX() > 1.0 )
-        {
-            l.first().start = translatedBottomLeft.x();
-            l.first().end   = translatedTopRight.x();
-        }
-        */
 
         const GridAttributes gridAttrsX( plane->gridAttributes( Qt::Horizontal ) );
         const GridAttributes gridAttrsY( plane->gridAttributes( Qt::Vertical ) );
@@ -665,14 +621,12 @@ void CartesianGrid::calculateStepWidth(
 
     testList << list;
 
-    do{
-        //qDebug() << "list:" << testList;
-        //qDebug( "calculating steps: power: %i", power);
+    do {
         calculateSteps( start, end, testList, m_minsteps, m_maxsteps, power,
                         steps, stepWidth,
                         adjustLower, adjustUpper );
         --power;
-    }while( steps == 0.0 );
+    } while ( steps == 0.0 );
     ++power;
     //qDebug( "steps calculated:  stepWidth: %f   steps: %f", stepWidth, steps);
 
@@ -699,8 +653,6 @@ void CartesianGrid::calculateStepWidth(
                 }
                 smallerStepWidth = list.at( i );
             }
-
-            //qDebug("C");
         }
     }
     //qDebug("CartesianGrid::calculateStepWidth() found stepWidth %f (%f steps) and sub-stepWidth %f", stepWidth, steps, subStepWidth);

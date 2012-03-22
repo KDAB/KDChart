@@ -73,14 +73,9 @@ void AbstractAreaBase::init()
 bool AbstractAreaBase::compare( const AbstractAreaBase* other ) const
 {
     if( other == this ) return true;
-    if( ! other ){
-        //qDebug() << "CartesianAxis::compare() cannot compare to Null pointer";
+    if ( !other ) {
         return false;
     }
-    /*
-    qDebug() << "AbstractAreaBase:" << (frameAttributes() == other->frameAttributes())
-        << (backgroundAttributes() == other->backgroundAttributes()) << "\n";
-    */
     return  (frameAttributes()      == other->frameAttributes()) &&
             (backgroundAttributes() == other->backgroundAttributes());
 }
@@ -239,4 +234,3 @@ void AbstractAreaBase::positionHasChanged()
 {
     // this bloc left empty intentionally
 }
-

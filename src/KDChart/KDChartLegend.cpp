@@ -218,29 +218,9 @@ Legend* Legend::clone() const
 bool Legend::compare( const Legend* other ) const
 {
     if( other == this ) return true;
-    if( ! other ){
-        //qDebug() << "Legend::compare() cannot compare to Null pointer";
+    if ( !other ) {
         return false;
     }
-
-    qDebug() << ( static_cast<const AbstractAreaBase*>(this)->compare( other ) );
-    qDebug() << (isVisible()              == other->isVisible());
-    qDebug() << (position()               == other->position());
-    qDebug() << (alignment()              == other->alignment());
-    qDebug() << (textAlignment()          == other->textAlignment());
-    qDebug() << (floatingPosition()       == other->floatingPosition());
-    qDebug() << (orientation()            == other->orientation());
-    qDebug() << (showLines()              == other->showLines());
-    qDebug() << (texts()                  == other->texts());
-    qDebug() << (brushes()                == other->brushes());
-    qDebug() << (pens()                   == other->pens());
-    qDebug() << (markerAttributes()       == other->markerAttributes());
-    qDebug() << (useAutomaticMarkerSize() == other->useAutomaticMarkerSize());
-    qDebug() << (textAttributes()         == other->textAttributes());
-    qDebug() << (titleText()              == other->titleText());
-    qDebug() << (titleTextAttributes()    == other->titleTextAttributes());
-    qDebug() << (spacing()                == other->spacing());
-    qDebug() << (legendStyle()            == other->legendStyle());
 
     return  ( static_cast<const AbstractAreaBase*>(this)->compare( other ) ) &&
             (isVisible()              == other->isVisible()) &&
@@ -308,7 +288,6 @@ void Legend::setReferenceArea( const QWidget* area )
 
 const QWidget* Legend::referenceArea() const
 {
-    //qDebug() << d->referenceArea;
     return (d->referenceArea ? d->referenceArea : static_cast<const QWidget*>(parent()));
 }
 
@@ -384,11 +363,8 @@ void Legend::removeDiagram( AbstractDiagram* oldDiagram )
     if( oldDiagram ){
         DiagramObserver* oldObs = d->findObserverForDiagram( oldDiagram );
         if( oldObs ){
-            //qDebug() << "before delete oldObs;";
             delete oldObs;
-            //qDebug() << "after delete oldObs;";
             d->observers.removeAt( d->observers.indexOf( oldObs ) );
-            //qDebug() << "after d->observers.removeAt()";
         }
         setNeedRebuild();
     }
@@ -446,7 +422,6 @@ void Legend::setDiagram( KDChart::AbstractDiagram* newDiagram )
 
 void Legend::resetDiagram( AbstractDiagram* oldDiagram )
 {
-    //qDebug() << oldDiagram;
     removeDiagram( oldDiagram );
 }
 
@@ -460,7 +435,6 @@ void Legend::setVisible( bool visible )
 
 void Legend::setNeedRebuild()
 {
-    //qDebug() << "setNeedRebuild()";
     buildLegend();
     sizeHint();
 }
@@ -868,22 +842,6 @@ void Legend::resizeEvent ( QResizeEvent * event )
 
 void Legend::buildLegend()
 {
-    /*
-    if( !d->needRebuild ) {
-#ifdef DEBUG_LEGEND_PAINT
-        qDebug() << "leaving Legend::buildLegend() with NO action (was already build)";
-#endif
-        // Note: We do *not* need to send positionChanged here,
-        //       because we send it in the resizeEvent, so layouting
-        //       is done at the right time.
-        return;
-    }
-#ifdef DEBUG_LEGEND_PAINT
-    qDebug() << "entering Legend::buildLegend() **********************************";
-#endif
-    d->needRebuild = false;
-    */
-
     Q_FOREACH( QLayoutItem* layoutItem, d->layoutItems ) {
         d->layout->removeItem( layoutItem );
     }
@@ -904,7 +862,6 @@ void Legend::buildLegend()
     for (int i = 0; i < d->observers.size(); ++i){
         const AbstractDiagram* diagram = d->observers.at(i)->diagram();
         if( diagram ){
-            //qDebug() << "accessing" << diagram;
             const QStringList             diagramLabels( diagram->datasetLabels() );
             const QList<QBrush>           diagramBrushes( diagram->datasetBrushes() );
             const QList<QPen>             diagramPens( diagram->datasetPens() );

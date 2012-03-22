@@ -97,11 +97,6 @@ bool LineDiagram::compare( const LineDiagram* other ) const
     if( ! other ){
         return false;
     }
-    /*
-    qDebug() <<"\n             LineDiagram::compare():";
-            // compare own properties
-    qDebug() << (type() == other->type());
-    */
     return  // compare the base class
             ( static_cast<const AbstractCartesianDiagram*>(this)->compare( other ) ) &&
             // compare own properties
@@ -388,13 +383,11 @@ const QPair<QPointF, QPointF> LineDiagram::calculateDataBoundaries() const
 
 void LineDiagram::paintEvent ( QPaintEvent*)
 {
-//qDebug() << "starting LineDiagram::paintEvent ( QPaintEvent*)";
     QPainter painter ( viewport() );
     PaintContext ctx;
     ctx.setPainter ( &painter );
     ctx.setRectangle ( QRectF ( 0, 0, width(), height() ) );
     paint ( &ctx );
-//qDebug() << "         LineDiagram::paintEvent ( QPaintEvent*) ended.";
 }
 
 

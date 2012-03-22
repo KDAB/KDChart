@@ -128,7 +128,6 @@ void TextAttributes::setFont( const QFont& font )
 {
     d->font       = font;
     d->cachedFont = font; // note: we do not set the font's size here, but in calculatedFont()
-    //qDebug() << "resetting cached font size";
     d->cachedFontSize = -1.0;
 }
 
@@ -173,7 +172,6 @@ qreal TextAttributes::calculatedFontSize(
 {
     const qreal normalSize  = fontSize().calculatedValue( autoReferenceArea, autoReferenceOrientation );
     const qreal minimalSize = minimalFontSize().calculatedValue( autoReferenceArea, autoReferenceOrientation );
-    //qDebug() << "TextAttributes::calculatedFontSize() finds" << normalSize << "and" << minimalSize;
     return qMax( normalSize, minimalSize );
 }
 

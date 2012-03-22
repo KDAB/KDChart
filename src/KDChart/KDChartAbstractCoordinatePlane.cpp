@@ -179,9 +179,6 @@ GridAttributes KDChart::AbstractCoordinatePlane::globalGridAttributes() const
 
 KDChart::DataDimensionsList KDChart::AbstractCoordinatePlane::gridDimensionsList()
 {
-    //KDChart::DataDimensionsList l( d->grid->updateData( this ) );
-    //qDebug() << "AbstractCoordinatePlane::gridDimensionsList() Y-range:" << l.last().end - l.last().start << "   step width:" << l.last().stepWidth;
-    //qDebug() << "AbstractCoordinatePlane::gridDimensionsList() X-range:" << l.first().end - l.first().start << "   step width:" << l.first().stepWidth;
     return d->grid->updateData( this );
 }
 
@@ -249,9 +246,7 @@ QSize KDChart::AbstractCoordinatePlane::sizeHint() const
 /* pure virtual in QLayoutItem */
 void KDChart::AbstractCoordinatePlane::setGeometry( const QRect& r )
 {
-    //qDebug() << "KDChart::AbstractCoordinatePlane::setGeometry(" << r << ") called";
-    if( d->geometry != r ){
-        //qDebug() << "entering KDChart::AbstractCoordinatePlane::setGeometry(" << r << ")";
+    if ( d->geometry != r ) {
         // inform the outside word by Signal geometryChanged()
         // via a queued connection to internal_geometryChanged()
         emit internal_geometryChanged( d->geometry, r );
@@ -259,7 +254,6 @@ void KDChart::AbstractCoordinatePlane::setGeometry( const QRect& r )
         d->geometry = r;
         // Note: We do *not* call update() here
         //       because it would invoke KDChart::update() recursively.
-        //qDebug() << "leaving  KDChart::AbstractCoordinatePlane::setGeometry(" << r << ")";
     }
 }
 /* pure virtual in QLayoutItem */

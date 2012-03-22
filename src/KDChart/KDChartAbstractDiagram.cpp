@@ -70,56 +70,9 @@ void AbstractDiagram::init()
 bool AbstractDiagram::compare( const AbstractDiagram* other ) const
 {
     if( other == this ) return true;
-    if( ! other ){
-        //qDebug() << "AbstractDiagram::compare() cannot compare to Null pointer";
+    if ( !other ) {
         return false;
     }
-    /*
-    qDebug() << "\n             AbstractDiagram::compare() QAbstractScrollArea:";
-            // compare QAbstractScrollArea properties
-    qDebug() <<
-            ((horizontalScrollBarPolicy() == other->horizontalScrollBarPolicy()) &&
-            (verticalScrollBarPolicy()    == other->verticalScrollBarPolicy()));
-    qDebug() << "AbstractDiagram::compare() QFrame:";
-            // compare QFrame properties
-    qDebug() <<
-            ((frameShadow() == other->frameShadow()) &&
-            (frameShape()   == other->frameShape()) &&
-            (frameWidth()   == other->frameWidth()) &&
-            (lineWidth()    == other->lineWidth()) &&
-            (midLineWidth() == other->midLineWidth()));
-    qDebug() << "AbstractDiagram::compare() QAbstractItemView:";
-            // compare QAbstractItemView properties
-    qDebug() <<
-            ((alternatingRowColors() == other->alternatingRowColors()) &&
-            (hasAutoScroll()         == other->hasAutoScroll()) &&
-#if QT_VERSION > 0x040199
-            (dragDropMode()          == other->dragDropMode()) &&
-            (dragDropOverwriteMode() == other->dragDropOverwriteMode()) &&
-            (horizontalScrollMode()  == other->horizontalScrollMode ()) &&
-            (verticalScrollMode()    == other->verticalScrollMode()) &&
-#endif
-            (dragEnabled()           == other->dragEnabled()) &&
-            (editTriggers()          == other->editTriggers()) &&
-            (iconSize()              == other->iconSize()) &&
-            (selectionBehavior()     == other->selectionBehavior()) &&
-            (selectionMode()         == other->selectionMode()) &&
-            (showDropIndicator()     == other->showDropIndicator()) &&
-            (tabKeyNavigation()      == other->tabKeyNavigation()) &&
-            (textElideMode()         == other->textElideMode()));
-    qDebug() << "AbstractDiagram::compare() AttributesModel: ";
-            // compare all of the properties stored in the attributes model
-    qDebug() << attributesModel()->compare( other->attributesModel() );
-    qDebug() << "AbstractDiagram::compare() own:";
-            // compare own properties
-    qDebug() <<
-            ((rootIndex().column()            == other->rootIndex().column()) &&
-            (rootIndex().row()                == other->rootIndex().row()) &&
-            (allowOverlappingDataValueTexts() == other->allowOverlappingDataValueTexts()) &&
-            (antiAliasing()                   == other->antiAliasing()) &&
-            (percentMode()                    == other->percentMode()) &&
-            (datasetDimension()               == other->datasetDimension()));
-    */
     return  // compare QAbstractScrollArea properties
             (horizontalScrollBarPolicy() == other->horizontalScrollBarPolicy()) &&
             (verticalScrollBarPolicy()   == other->verticalScrollBarPolicy()) &&
@@ -1039,7 +992,6 @@ qreal AbstractDiagram::valueForCell( int row, int column ) const
 
 void AbstractDiagram::update() const
 {
-    //qDebug("KDChart::AbstractDiagram::update() called");
     if( d->plane )
         d->plane->update();
 }

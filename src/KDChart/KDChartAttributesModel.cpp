@@ -78,43 +78,33 @@ void AttributesModel::initFrom( const AttributesModel* other )
 bool AttributesModel::compare( const AttributesModel* other ) const
 {
     if( other == this ) return true;
-    if( ! other ){
-        //qDebug() << "AttributesModel::compare() cannot compare to Null pointer";
+    if ( ! other ) {
         return false;
     }
 
     {
         if (mDataMap.count() != other->mDataMap.count()){
-            //qDebug() << "AttributesModel::compare() dataMap have different sizes";
             return false;
         }
         QMap<int, QMap<int, QMap<int, QVariant> > >::const_iterator itA = mDataMap.constBegin();
         QMap<int, QMap<int, QMap<int, QVariant> > >::const_iterator itB = other->mDataMap.constBegin();
         while (itA != mDataMap.constEnd()) {
             if ((*itA).count() != (*itB).count()){
-                //qDebug() << "AttributesModel::compare() dataMap/map have different sizes";
                 return false;
             }
             QMap<int, QMap<int, QVariant> >::const_iterator it2A = (*itA).constBegin();
             QMap<int, QMap<int, QVariant> >::const_iterator it2B = (*itB).constBegin();
             while (it2A != itA->constEnd()) {
                 if ((*it2A).count() != (*it2B).count()){
-                    //qDebug() << "AttributesModel::compare() dataMap/map/map have different sizes:"
-                    //        << (*it2A).count() << (*it2B).count();
                     return false;
                 }
                 QMap<int, QVariant>::const_iterator it3A = (*it2A).constBegin();
                 QMap<int, QVariant>::const_iterator it3B = (*it2B).constBegin();
                 while (it3A != it2A->constEnd()) {
                     if ( it3A.key() != it3B.key() ){
-                        //qDebug( "AttributesModel::compare()\n"
-                        //        "   dataMap[%i, %i] values have different types.  A: %x  B: %x",
-                        //        itA.key(), it2A.key(), it3A.key(), it3B.key());
                         return false;
                     }
                     if ( ! compareAttributes( it3A.key(), it3A.value(), it3B.value() ) ){
-                        //qDebug( "AttributesModel::compare()\n"
-                        //        "   dataMap[%i, %i] values are different. Role: %x", itA.key(), it2A.key(), it3A.key());
                         return false;
                     }
                     ++it3A;
@@ -129,28 +119,21 @@ bool AttributesModel::compare( const AttributesModel* other ) const
     }
     {
         if (mHorizontalHeaderDataMap.count() != other->mHorizontalHeaderDataMap.count()){
-            //qDebug() << "AttributesModel::compare() horizontalHeaderDataMap have different sizes";
             return false;
         }
         QMap<int, QMap<int, QVariant> >::const_iterator itA = mHorizontalHeaderDataMap.constBegin();
         QMap<int, QMap<int, QVariant> >::const_iterator itB = other->mHorizontalHeaderDataMap.constBegin();
         while (itA != mHorizontalHeaderDataMap.constEnd()) {
             if ((*itA).count() != (*itB).count()){
-                //qDebug() << "AttributesModel::compare() horizontalHeaderDataMap/map have different sizes";
                 return false;
             }
             QMap<int, QVariant>::const_iterator it2A = (*itA).constBegin();
             QMap<int, QVariant>::const_iterator it2B = (*itB).constBegin();
             while (it2A != itA->constEnd()) {
                 if ( it2A.key() != it2B.key() ){
-                    //qDebug( "AttributesModel::compare()\n"
-                    //        "   horizontalHeaderDataMap[ %i ] values have different types.  A: %x  B: %x",
-                    //        itA.key(), it2A.key(), it2B.key());
                     return false;
                 }
                 if ( ! compareAttributes( it2A.key(), it2A.value(), it2B.value() ) ){
-                    //qDebug( "AttributesModel::compare()\n"
-                    //        "   horizontalHeaderDataMap[ %i ] values are different. Role: %x", itA.key(), it2A.key() );
                     return false;
                 }
                 ++it2A;
@@ -161,29 +144,22 @@ bool AttributesModel::compare( const AttributesModel* other ) const
         }
     }
     {
-        if (mVerticalHeaderDataMap.count() != other->mVerticalHeaderDataMap.count()){
-            //qDebug() << "AttributesModel::compare() verticalHeaderDataMap have different sizes";
+        if (mVerticalHeaderDataMap.count() != other->mVerticalHeaderDataMap.count() ) {
             return false;
         }
         QMap<int, QMap<int, QVariant> >::const_iterator itA = mVerticalHeaderDataMap.constBegin();
         QMap<int, QMap<int, QVariant> >::const_iterator itB = other->mVerticalHeaderDataMap.constBegin();
         while (itA != mVerticalHeaderDataMap.constEnd()) {
             if ((*itA).count() != (*itB).count()){
-                //qDebug() << "AttributesModel::compare() verticalHeaderDataMap/map have different sizes";
                 return false;
             }
             QMap<int, QVariant>::const_iterator it2A = (*itA).constBegin();
             QMap<int, QVariant>::const_iterator it2B = (*itB).constBegin();
             while (it2A != itA->constEnd()) {
                 if ( it2A.key() != it2B.key() ){
-                    //qDebug( "AttributesModel::compare()\n"
-                    //        "   verticalHeaderDataMap[ %i ] values have different types.  A: %x  B: %x",
-                    //        itA.key(), it2A.key(), it2B.key());
                     return false;
                 }
                 if ( ! compareAttributes( it2A.key(), it2A.value(), it2B.value() ) ){
-                    //qDebug( "AttributesModel::compare()\n"
-                    //        "   verticalHeaderDataMap[ %i ] values are different. Role: %x", itA.key(), it2A.key() );
                     return false;
                 }
                 ++it2A;
@@ -195,21 +171,15 @@ bool AttributesModel::compare( const AttributesModel* other ) const
     }
     {
         if (mModelDataMap.count() != other->mModelDataMap.count()){
-            //qDebug() << "AttributesModel::compare() modelDataMap have different sizes:" << mModelDataMap.count() << other->mModelDataMap.count();
             return false;
         }
         QMap<int, QVariant>::const_iterator itA = mModelDataMap.constBegin();
         QMap<int, QVariant>::const_iterator itB = other->mModelDataMap.constBegin();
         while (itA != mModelDataMap.constEnd()) {
             if ( itA.key() != itB.key() ){
-                //qDebug( "AttributesModel::compare()\n"
-                //        "   modelDataMap values have different types.  A: %x  B: %x",
-                //        itA.key(), itB.key());
                 return false;
             }
             if ( ! compareAttributes( itA.key(), itA.value(), itB.value() ) ){
-                //qDebug( "AttributesModel::compare()\n"
-                //        "   modelDataMap values are different. Role: %x", itA.key() );
                 return false;
             }
             ++itA;
@@ -217,7 +187,6 @@ bool AttributesModel::compare( const AttributesModel* other ) const
         }
     }
     if (paletteType() != other->paletteType()){
-        //qDebug() << "AttributesModel::compare() palette types are different";
         return false;
     }
     return true;
@@ -396,7 +365,6 @@ QVariant AttributesModel::data( int column, int role ) const
 
 QVariant AttributesModel::data( const QModelIndex& index, int role ) const
 {
-    //qDebug() << "AttributesModel::data(" << index << role << ")";
     if( index.isValid() ) {
         Q_ASSERT( index.model() == this );
     }
@@ -472,7 +440,6 @@ bool AttributesModel::setData ( const QModelIndex & index, const QVariant & valu
     } else {
         QMap< int,  QMap< int, QVariant> > &colDataMap = mDataMap[ index.column() ];
         QMap<int, QVariant> &dataMap = colDataMap[ index.row() ];
-        //qDebug() <<  "AttributesModel::setData" <<"role" << role << "value" << value;
         dataMap.insert( role, value );
         emit attributesChanged( index, index );
         return true;

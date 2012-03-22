@@ -27,8 +27,6 @@
 #include "KDChartEnums.h"
 #include "KDChartMeasure.h"
 
-#include <QDebug>
-
 #include <KDABLibFakes>
 
 using namespace KDChart;
@@ -69,7 +67,6 @@ bool AbstractAxis::Private::setDiagram(
         mDiagram = diagram;
         delete observer;
         if ( mDiagram ) {
-//qDebug() << "axis" << (axis != 0);
             observer = new DiagramObserver( mDiagram, mAxis );
             const bool con = connect( observer, SIGNAL( diagramDataChanged( AbstractDiagram *) ),
                     mAxis, SIGNAL( coordinateSystemChanged() ) );
@@ -144,16 +141,13 @@ void AbstractAxis::delayedInit()
 
 bool AbstractAxis::compare( const AbstractAxis* other ) const
 {
-    if( other == this ) return true;
-    if( ! other ){
-        //qDebug() << "CartesianAxis::compare() cannot compare to Null pointer";
+    if ( other == this ) {
+        return true;
+    }
+    if ( !other ) {
         return false;
     }
-    /*
-    qDebug() << (textAttributes() == other->textAttributes());
-    qDebug() << (labels()         == other->labels());
-    qDebug() << (shortLabels()    == other->shortLabels());
-    */
+
     return  ( static_cast<const AbstractAreaBase*>(this)->compare( other ) ) &&
             (textAttributes() == other->textAttributes()) &&
             (labels()         == other->labels()) &&

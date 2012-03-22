@@ -139,24 +139,6 @@ DataValueAttributes::~DataValueAttributes()
 
 bool DataValueAttributes::operator==( const DataValueAttributes& r ) const
 {
-    /*
-    qDebug() << "DataValueAttributes::operator== finds"
-            << "b" << (isVisible() == r.isVisible())
-            << "c" << (textAttributes() == r.textAttributes())
-            << "d" << (frameAttributes() == r.frameAttributes())
-            << "e" << (backgroundAttributes() == r.backgroundAttributes())
-            << "f" << (markerAttributes() == r.markerAttributes())
-            << "g" << (decimalDigits() == r.decimalDigits())
-            << "h" << (prefix() == r.prefix())
-            << "i" << (suffix() == r.suffix())
-            << "j" << (dataLabel() == r.dataLabel())
-            << "k" << (powerOfTenDivisor() == r.powerOfTenDivisor())
-            << "l" << (showInfinite() == r.showInfinite())
-            << "m" << (negativePosition() == r.negativePosition())
-            << "n" << (positivePosition() == r.positivePosition())
-            << "o" << (showRepetitiveDataLabels() == r.showRepetitiveDataLabels())
-            << "p" << (showOverlappingDataLabels() == r.showOverlappingDataLabels());
-    */
     return ( isVisible() == r.isVisible() &&
             textAttributes() == r.textAttributes() &&
             frameAttributes() == r.frameAttributes() &&
