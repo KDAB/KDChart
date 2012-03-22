@@ -36,11 +36,13 @@ public:
 private:
     bool visible;
     QPen pen;
+    qreal cornerRadius;
     int padding;
 };
 
 FrameAttributes::Private::Private() :
     visible( false ),
+    cornerRadius( 0 ),
     padding( 0 )
 {
 }
@@ -74,13 +76,9 @@ FrameAttributes::~FrameAttributes()
 
 bool FrameAttributes::operator==( const FrameAttributes& r ) const
 {
-    /*
-    qDebug() << "FrameAttributes:" << (isVisible() == r.isVisible())
-        << (pen() == r.pen())
-        << (padding() == r.padding()) << "\n";
-    */
     return ( isVisible() == r.isVisible() &&
             pen() == r.pen() &&
+            cornerRadius() == r.cornerRadius() &&
             padding() == r.padding() );
 }
 
@@ -107,6 +105,16 @@ QPen FrameAttributes::pen() const
     return d->pen;
 }
 
+void FrameAttributes::setCornerRadius(qreal radius)
+{
+    d->cornerRadius = radius;
+}
+
+qreal FrameAttributes::cornerRadius() const
+{
+    return d->cornerRadius;
+}
+
 void FrameAttributes::setPadding( int padding )
 {
     d->padding = padding;
@@ -123,7 +131,8 @@ QDebug operator<<(QDebug dbg, const KDChart::FrameAttributes& fa)
     dbg << "KDChart::FrameAttributes("
 	<< "visible="<<fa.isVisible()
 	<< "pen="<<fa.pen()
-	<< "padding="<<fa.padding()
+        << "cornerRadius="<<fa.cornerRadius()
+        << "padding="<<fa.padding()
 	<< ")";
     return dbg;
 }

@@ -50,8 +50,6 @@ void AbstractAreaBase::Private::init()
 }
 
 
-
-
 AbstractAreaBase::AbstractAreaBase() :
     _d( new Private() )
 {
@@ -177,11 +175,17 @@ void AbstractAreaBase::paintFrameAttributes( QPainter& painter, const QRect& rec
     //       Otherwise we might get a filled rectangle, so any
     //       previously drawn background would be overwritten by that area.
 
-    const QPen   oldPen( painter.pen() );
+    const QPen oldPen( painter.pen() );
     const QBrush oldBrush( painter.brush() );
-    painter.setPen( PrintingParameters::scalePen( attributes.pen() ) );
+
+    const QPen scaledPen = PrintingParameters::scalePen( attributes.pen() );
+    const int adjust = scaledPen.width() / 2;
+    const QRect adjustedRect = rect.adjusted( adjust, adjust, -adjust, -adjust );
+
+    painter.setPen( scaledPen );
     painter.setBrush( Qt::NoBrush );
-    painter.drawRect( rect.adjusted( 0, 0, -1, -1 ) );
+    painter.drawRoundedRect( adjustedRect, attributes.cornerRadius(), attributes.cornerRadius() );
+
     painter.setBrush( oldBrush );
     painter.setPen( oldPen );
 }
@@ -190,6 +194,18 @@ void AbstractAreaBase::paintBackground( QPainter& painter, const QRect& rect )
 {
     Q_ASSERT_X ( d != 0, "AbstractAreaBase::paintBackground()",
                 "Private class was not initialized!" );
+
+    const QPen scaledPen = PrintingParameters::scalePen( d->frameAttributes.pen() );
+    const int adjust = scaledPen.width() / 2;
+    const QRect adjustedRect = rect.adjusted( adjust, adjust, -adjust, -adjust );
+
+    PainterSaver painterSaver( &painter );
+
+    const qreal radius = d->frameAttributes.cornerRadius();
+    QPainterPath path;
+    path.addRoundedRect( adjustedRect, radius, radius );
+    painter.setClipPath(path);
+
     paintBackgroundAttributes( painter, rect, d->backgroundAttributes );
 }
 
@@ -225,9 +241,12 @@ QRect AbstractAreaBase::innerRect() const
     int right;
     int bottom;
     getFrameLeadings( left, top, right, bottom );
-    return
-        QRect( QPoint(0,0), areaGeometry().size() )
-            .adjusted( left, top, -right, -bottom );
+    QRect rect( QPoint( 0, 0 ), areaGeometry().size() );
+    rect.adjust( left, top, -right, -bottom );
+
+    const QPen scaledPen = PrintingParameters::scalePen( d->frameAttributes.pen() );
+    const int adjust = scaledPen.width();
+    return rect.adjusted( adjust, adjust, -adjust, -adjust );
 }
 
 void AbstractAreaBase::positionHasChanged()

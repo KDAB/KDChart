@@ -25,6 +25,7 @@
 #include "KDChartPaintContext.h"
 #include "KDChartPainterSaver_p.h"
 #include "KDChartPrintingParameters.h"
+#include "KDChartFrameAttributes.h"
 
 #include <QPainter>
 
@@ -172,6 +173,16 @@ void CartesianGrid::drawGrid( PaintContext* context )
     bool adjustYUpper = gridAttrsY.adjustUpperBoundToGrid();
     AbstractGrid::adjustLowerUpperRange( minValueX, maxValueX, dimX.stepWidth, adjustXLower, adjustXUpper );
     AbstractGrid::adjustLowerUpperRange( minValueY, maxValueY, dimY.stepWidth, adjustYLower, adjustYUpper );
+
+    context->painter()->save();
+
+    const FrameAttributes frameAttrs( plane->frameAttributes() );
+    if ( frameAttrs.isVisible() ) {
+        const qreal radius = frameAttrs.cornerRadius();
+        QPainterPath path;
+        path.addRoundedRect( QRectF( p1, p2 ), radius, radius );
+        context->painter()->setClipPath( path );
+    }
 
     if ( drawSubGridLinesX ) {
         context->painter()->setPen( PrintingParameters::scalePen( gridAttrsX.subGridPen() ) );

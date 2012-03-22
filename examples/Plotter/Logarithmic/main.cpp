@@ -24,9 +24,9 @@
 #include <KDChartChart>
 #include <KDChartLineDiagram>
 #include <KDChartDataValueAttributes>
+#include <KDChartFrameAttributes>
 
 #include <KDChartPlotter>
-#include <KDChartLineDiagram>
 #include <KDChartCartesianAxis>
 #include <KDChartCartesianCoordinatePlane>
 #include <KDChartLegend>
@@ -75,6 +75,9 @@ int main( int argc, char** argv )
     diagram->addAxis( yAxis );
 
     KDChart::Legend* legend = new KDChart::Legend( diagram, chart );
+    KDChart::FrameAttributes legendAtt = legend->frameAttributes();
+    legendAtt.setCornerRadius( 9 );
+    legend->setFrameAttributes( legendAtt );
     legend->setPosition( KDChart::Position::East );
     legend->setAlignment( Qt::AlignCenter );
     legend->setTitleText( "Legend" );

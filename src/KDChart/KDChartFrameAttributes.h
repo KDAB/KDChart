@@ -48,6 +48,9 @@ public:
     void setPen( const QPen & pen );
     QPen pen() const;
 
+    void setCornerRadius( qreal radius );
+    qreal cornerRadius() const;
+
     void setPadding( int padding );
     int padding() const;
 

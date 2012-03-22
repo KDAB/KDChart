@@ -11,7 +11,7 @@
 
 #include "KDChartAbstractDiagram_p.h"
 
-#include "KDChartThreeDPieAttributes.h"
+#include "KDChartFrameAttributes.h"
 
 #include <QAbstractTextDocumentLayout>
 #include <QTextBlock>
@@ -424,17 +424,6 @@ void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
     context.palette = diag->palette();
     context.palette.setColor( QPalette::Text, ta.pen().color() );
 
-    // set text background
-    BackgroundAttributes back( attrs.backgroundAttributes() );
-    if ( back.isVisible() ) {
-        QTextBlockFormat fmt;
-        fmt.setBackground( back.brush() );
-        QTextCursor cursor( &doc );
-        cursor.setPosition( 0 );
-        cursor.movePosition( QTextCursor::End, QTextCursor::KeepAnchor, 1 );
-        cursor.mergeBlockFormat( fmt );
-    }
-
     QAbstractTextDocumentLayout* const layout = doc.documentLayout();
     layout->setPaintDevice( painter->device() );
 
@@ -474,11 +463,32 @@ void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
     }
 
     if ( drawIt ) {
+        QRectF rect = layout->frameBoundingRect( doc.rootFrame() );
         if ( cumulatedBoundingRect ) {
-            QRectF rect = layout->frameBoundingRect( doc.rootFrame() );
             (*cumulatedBoundingRect) |= transform.mapRect( rect );
         }
         if ( !justCalculateRect ) {
+            bool paintBack = false;
+            BackgroundAttributes back( attrs.backgroundAttributes() );
+            if ( back.isVisible() ) {
+                paintBack = true;
+                painter->setBrush( back.brush() );
+            } else {
+                painter->setBrush( QBrush() );
+            }
+
+            qreal radius = 0.0;
+            FrameAttributes frame( attrs.frameAttributes() );
+            if ( frame.isVisible() ) {
+                paintBack = true;
+                painter->setPen( frame.pen() );
+                radius = frame.cornerRadius();
+            }
+
+            if ( paintBack ) {
+                QRectF borderRect( QPointF( 0, 0 ), rect.size() );
+                painter->drawRoundedRect( borderRect, radius, radius );
+            }
             layout->draw( painter, context );
         }
     }
