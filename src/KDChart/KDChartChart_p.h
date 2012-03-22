@@ -50,6 +50,8 @@
 
 namespace KDChart {
 
+class CartesianAxis;
+
 /*
   struct PlaneInfo can't be declared inside Chart::Private, otherwise MSVC.net says:
   qhash.h(195) : error C2248: 'KDChart::Chart::Private' : cannot access protected class declared in class 'KDChart::Chart'
@@ -83,6 +85,36 @@ struct PlaneInfo {
     QHBoxLayout* rightAxesLayout;
 };
 
+struct LayoutGraphNode
+{
+    LayoutGraphNode()
+        : diagramPlane( 0 )
+        , leftSuccesor( 0 )
+        , bottomSuccesor( 0 )
+        , sharedSuccesor( 0 )
+        , gridLayout( 0 )
+        , topAxesLayout( false )
+        , bottomAxesLayout( false )
+        , leftAxesLayout( false )
+        , rightAxesLayout( false )
+        , priority( -1 )
+    {}
+    AbstractCoordinatePlane* diagramPlane;
+    LayoutGraphNode* leftSuccesor;
+    LayoutGraphNode* bottomSuccesor;
+    LayoutGraphNode* sharedSuccesor;
+    QGridLayout* gridLayout;
+    bool topAxesLayout;
+    bool bottomAxesLayout;
+    bool leftAxesLayout;
+    bool rightAxesLayout;
+    int priority;
+    bool operator<( const LayoutGraphNode &other ) const
+    {
+        return priority < other.priority;
+    }
+};
+
 
 /**
  * \internal
@@ -91,6 +123,7 @@ class Chart::Private : public QObject
 {
     Q_OBJECT
     public:
+        enum AxisType{ Abscissa, Ordinate };
         CoordinatePlaneList coordinatePlanes;
         HeaderFooterList headerFooters;
         LegendList legends;
@@ -99,6 +132,7 @@ class Chart::Private : public QObject
         QHBoxLayout* layout;
         QVBoxLayout* vLayout;
         QBoxLayout*  planesLayout;
+        QGridLayout* gridPlaneLayout;
         QGridLayout* headerLayout;
         QGridLayout* footerLayout;
         QGridLayout* dataAndLegendLayout;
@@ -117,13 +151,15 @@ class Chart::Private : public QObject
 
         // since we do not want to derive Chart from AbstractAreaBase,
         // we store the attributes here, and then we call two static painting
-        // methods to drawn the background (or frame, resp.).
+        // methods to draw the background (or frame, resp.).
         KDChart::FrameAttributes frameAttributes;
         KDChart::BackgroundAttributes backgroundAttributes;
 
         int globalLeadingLeft, globalLeadingRight, globalLeadingTop, globalLeadingBottom;
 
         QList< AbstractCoordinatePlane* > mouseClickedPlanes;
+
+        Qt::LayoutDirection layoutDirection;
 
         Private ( Chart* );
 
@@ -143,8 +179,10 @@ class Chart::Private : public QObject
             {}
             AbstractCoordinatePlane *plane;
         };
-
         QHash<AbstractCoordinatePlane*, PlaneInfo> buildPlaneLayoutInfos();
+        QVector< LayoutGraphNode* > buildPlaneLayoutGraph();
+        static CoordinatePlaneList findSharingAxisDiagrams( AbstractCoordinatePlane* plane, CoordinatePlaneList list, AxisType type, QVector< CartesianAxis* > &sharedAxes );
+        QList< QWidget* > m_Widget;
 
     public Q_SLOTS:
         void slotLayoutPlanes();
