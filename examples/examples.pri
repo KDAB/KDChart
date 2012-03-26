@@ -15,7 +15,7 @@ DEPENDPATH += \
             $${TOP_SOURCE_DIR}/include \
             $${TOP_SOURCE_DIR}/examples/tools
 
-unix: {
+unix {
   !macx: LIBEXT = so
   macx: LIBEXT = dylib
   CONFIG( static ) {

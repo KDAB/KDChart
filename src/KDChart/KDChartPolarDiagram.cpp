@@ -206,8 +206,8 @@ void PolarDiagram::paint( PaintContext* ctx,
             for ( int iRow = 0; iRow < rowCount; ++iRow ) {
                 QModelIndex index = model()->index( iRow, iCol, rootIndex() ); // checked
                 const qreal value = model()->data( index ).toDouble();
-                QPointF point = coordinatePlane()->translate(
-                        QPointF( value, iRow ) ) + ctx->rectangle().topLeft();
+                QPointF point = coordinatePlane()->translate( QPointF( value, iRow ) )
+                                + ctx->rectangle().topLeft();
                 polygon.append( point );
                 //qDebug() << point;
             }

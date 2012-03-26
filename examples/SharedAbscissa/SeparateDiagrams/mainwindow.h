@@ -1,5 +1,5 @@
 /****************************************************************************
-** Copyright (C) 2001-2011 Klaralvdalens Datakonsult AB.  All rights reserved.
+** Copyright (C) 2001-2012 Klaralvdalens Datakonsult AB.  All rights reserved.
 **
 ** This file is part of the KD Chart library.
 **
@@ -47,8 +47,9 @@ private:
     TableModel m_model;
     TableModel m_model2;
     KDChart::DatasetProxyModel* m_datasetProxy;
-    QVector<KDChart::LineDiagram*> m_diagrams;
-    QVector<KDChart::CartesianCoordinatePlane*> m_planes;
+    KDChart::LineDiagram* m_lines;
+    KDChart::LineDiagram* m_lines2;
+    KDChart::CartesianCoordinatePlane* plane2;
     // mutable KDChart::CartesianAxis xAxis;
     //mutable KDChart::CartesianAxis yAxis;
 
