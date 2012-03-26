@@ -386,13 +386,23 @@ static qreal normProjection( const QLineF &l1, const QLineF &l2 )
 
 static QLineF labelAttachmentLine( const QPointF &center, const QPointF &start, const QPainterPath &label )
 {
-    // TODO cut off at slice border because the attachment line is visible inside the slice when
-    //      the slice is selected
     Q_ASSERT ( label.elementCount() == 5 );
 
+    // start is assumed to lie on the outer rim of the slice(!), making it possible to derive the
+    // radius of the pie
+    const qreal pieRadius = QLineF( center, start ).length();
+
+    // don't draw a line at all when the label is connected to its slice due to at least one of its
+    // corners falling inside the slice.
+    for ( int i = 0; i < 4; i++ ) { // point 4 is just a duplicate of point 0
+        if ( QLineF( label.elementAt( i ), center ).length() < pieRadius ) {
+            return QLineF();
+        }
+    }
+
+    // find the closest edge in the polygon, and its two neighbors
     QPointF closeCorners[3];
     {
-        // get the three closest edges in their "natural" winding order
         QPointF closest = QPointF( 1000000, 1000000 );
         int closestIndex = 0; // better misbehave than crash
         for ( int i = 0; i < 4; i++ ) { // point 4 is just a duplicate of point 0
@@ -410,22 +420,23 @@ static QLineF labelAttachmentLine( const QPointF &center, const QPointF &start, 
 
     QLineF edge1 = QLineF( closeCorners[ 0 ], closeCorners[ 1 ] );
     QLineF edge2 = QLineF( closeCorners[ 1 ], closeCorners[ 2 ] );
-    QLineF radial1 = QLineF( center, ( closeCorners[ 0 ] + closeCorners[ 1 ] ) / 2.0 );
-    QLineF radial2 = QLineF( center, ( closeCorners[ 1 ] + closeCorners[ 2 ] ) / 2.0 );
+    QLineF connection1 = QLineF( ( closeCorners[ 0 ] + closeCorners[ 1 ] ) / 2.0, center );
+    QLineF connection2 = QLineF( ( closeCorners[ 1 ] + closeCorners[ 2 ] ) / 2.0, center );
     QLineF ret;
     // prefer the connecting line meeting its edge at a more perpendicular angle
-    if ( normProjection( edge1, radial1 ) < normProjection( edge2, radial2 ) ) {
-        ret = radial1;
+    if ( normProjection( edge1, connection1 ) < normProjection( edge2, connection2 ) ) {
+        ret = connection1;
     } else {
-        ret = radial2;
+        ret = connection2;
     }
-    if ( QLineF( center, closeCorners[ 1 ] ).length() > QLineF( center, start ).length() ) {
-        // This tends to look good, but only when the label is outside of the slice.
-        // When the label is very far inside (achievable with negative padding),
-        // the connecting line could otherwise go from the middle of the slice over
-        // the label text to a far edge.
-        ret.setP1( ( start + center ) / 2.0 );
-    }
+
+    // This tends to look a bit better than not doing it *shrug*
+    ret.setP2( ( start + center ) / 2.0 );
+
+    // make the line end at the rim of the slice (not 100% accurate because the line is not precisely radial)
+    qreal p1Radius = QLineF( ret.p1(), center ).length();
+    ret.setLength( p1Radius - pieRadius );
+
     return ret;
 }
 
@@ -487,9 +498,8 @@ void PieDiagram::paintInternal( PaintContext* paintContext )
 
     d->paintDataValueTextsAndMarkers( this, paintContext, d->labelPaintCache, false, false );
     // it's safer to do this at the beginning of placeLabels, but we can save some memory here.
-    d->forgetAlreadyPaintedDataValues(); // TODO rename to resetLabelSpaceAllocation?
-    // ### maybe move this into AbstractDiagram, also make ReverseMapper deal better with multiple
-    // polygons
+    d->forgetAlreadyPaintedDataValues();
+    // ### maybe move this into AbstractDiagram, also make ReverseMapper deal better with multiple polygons
     const QPointF center = paintContext->rectangle().center();
     const PainterSaver painterSaver( paintContext->painter() );
     paintContext->painter()->setBrush( Qt::NoBrush );
@@ -498,6 +508,7 @@ void PieDiagram::paintInternal( PaintContext* paintContext )
         if ( pi.labelArea.elementCount() != 5 ) {
             continue;
         }
+
         paintContext->painter()->setPen( pen( pi.index ) );
         if ( d->labelDecorations & LineFromSliceDecoration ) {
             paintContext->painter()->drawLine( labelAttachmentLine( center, pi.markerPos, pi.labelArea ) );
