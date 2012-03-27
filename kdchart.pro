@@ -5,21 +5,6 @@ CONFIG += ordered
 TEMPLATE=subdirs
 SUBDIRS = src include
 
-!win32:SUBDIRS += uitools plugins
-win32 {
-    CONFIG(debug, debug|release) {
-        designer_plugins_in_debug {
-            SUBDIRS += uitools plugins
-        } else {
-            message( "Disabling designer plugins. Pass -release to re-enable them, or -designer-plugins-in-debug" )
-        }
-    } else {
-        SUBDIRS += uitools plugins
-    }
-}
-
-contains($$list($$[QT_VERSION]), 4.[2-9].*) { SUBDIRS += kdchartserializer }
-
 SUBDIRS += examples
 
 unittests: SUBDIRS +=qtests
@@ -64,9 +49,6 @@ CONFIG(debug, debug|release) {
 
 KDCHARTLIB = kdchart$$DEBUG_SUFFIX$$VERSION_SUFFIX
 TESTTOOLSLIB = testtools$$VERSION_SUFFIX
-KDCHARTSERIALIZERLIB = kdchartserializer$$DEBUG_SUFFIX$$VERSION_SUFFIX
-KDCHARTUITOOLSLIB = kdchartuitools$$DEBUG_SUFFIX$$VERSION_SUFFIX
-KDCHARTPLUGINLIBLIB = kdchartpluginlib$$DEBUG_SUFFIX$$VERSION_SUFFIX
 
 message(Install prefix is $$INSTALL_PREFIX)
 message(This is KD Chart version $$VERSION)
@@ -97,7 +79,6 @@ system('echo INSTALL_PREFIX=$$INSTALL_PREFIX >> $${QMAKE_CACHE}')
 system('echo VERSION=$$VERSION >> $${QMAKE_CACHE}')
 system('echo KDCHARTLIB=$$KDCHARTLIB >> $${QMAKE_CACHE}')
 system('echo TESTTOOLSLIB=$$TESTTOOLSLIB >> $${QMAKE_CACHE}')
-system('echo KDCHARTSERIALIZERLIB=$$KDCHARTSERIALIZERLIB >> $${QMAKE_CACHE}')
 system('echo KDCHARTUITOOLSLIB=$$KDCHARTUITOOLSLIB >> $${QMAKE_CACHE}')
 system('echo KDCHARTPLUGINLIBLIB=$$KDCHARTPLUGINLIBLIB >> $${QMAKE_CACHE}')
 

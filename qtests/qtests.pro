@@ -15,24 +15,9 @@ SUBDIRS +=  ChartElementOwnership \
             LineDiagrams \
             CartesianDiagramDataCompressor \
             PieDiagrams \
-            PolarDiagrams 
+            PolarDiagrams
 #           ParamVsParam \
 #           DrawIntoPainter \
-###################################
-#  adding the serializer tests here
-# depending on the Qt versions             
-###################################
-contains($$list($$[QT_VERSION]), 4.[2-9].*) { 
-SUBDIRS +=  AttributesSerializer \
-            AttributesModelSerializer \
-            TextAreaSerializer \
-            AxesSerializer \
-            LegendsSerializer \
-            DiagramsSerializer \
-	    XmlToolsTests \
-#           CoordPlanesSerializer \
-#           Serializer
-}
 
 unix:SUBDIRS += AxisOwnership
 test.target=test

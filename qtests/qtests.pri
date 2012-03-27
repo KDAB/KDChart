@@ -1,7 +1,6 @@
 # # needed for the export macros.
 CONFIG( static ) {
   DEFINES += KDCHART_STATICLIB
-  DEFINES += KDCHARTSERIALIZER_STATICLIB
 }
 
 QT += xml svg
@@ -9,14 +8,10 @@ QT += xml svg
 CONFIG+=qtestlib
 TEMPLATE = app
 INCLUDEPATH +=  $${TOP_SOURCE_DIR}/examples/tools $${TOP_SOURCE_DIR}/include \
-        $${TOP_SOURCE_DIR}/kdchartserializer/include \
         $${TOP_SOURCE_DIR}/src/KDChart \
         $${TOP_SOURCE_DIR}/include/KDChart
 
-DEPENDPATH += . $${TOP_SOURCE_DIR}/src $${TOP_SOURCE_DIR}/lib $${TOP_SOURCE_DIR}/examples/tools $${TOP_SOURCE_DIR}/include \
-        $${TOP_SOURCE_DIR}/kdchartserializer/include \
-        $${TOP_SOURCE_DIR}/kdchartserializer/src
-
+DEPENDPATH += . $${TOP_SOURCE_DIR}/src $${TOP_SOURCE_DIR}/lib $${TOP_SOURCE_DIR}/examples/tools $${TOP_SOURCE_DIR}/include
 
 test.target = test
 test.commands = ./$(TARGET)
@@ -39,11 +34,10 @@ unix {
   }
   # qmake insists on passing Qt's -L path first, where there could be a different version of our own
   # libraries. Therefore we pass our own libraries like object files (without -l!) and with full path.
-  LIBS += $${TOP_BUILD_DIR}/lib/lib$${KDCHARTSERIALIZERLIB}.$${LIBEXT}
   LIBS += $${TOP_BUILD_DIR}/lib/lib$${KDCHARTLIB}.$${LIBEXT}  $${TOP_BUILD_DIR}/lib/lib$${TESTTOOLSLIB}.$${LIBEXT}
 }
 # The problem is less important on Windows and also harder to fix, so do it the usual way
-win32: LIBS += -L$${TOP_BUILD_DIR}/lib -l$$KDCHARTSERIALIZERLIB -l$$KDCHARTLIB -l$$TESTTOOLSLIB
+win32: LIBS += -L$${TOP_BUILD_DIR}/lib -l$$KDCHARTLIB -l$$TESTTOOLSLIB
 
 
 unix {

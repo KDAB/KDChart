@@ -27,7 +27,7 @@ def ignoredFiles():
 				ret.append( pathname + '.app/' )
 
 	# The only executables in those paths are binaries and we're making a SOURCE package.
-	for path in [ 'examples', 'kdchartserializer/examples', 'tests', 'qtests' ]:
+	for path in [ 'examples', 'tests', 'qtests' ]:
 		findExecutables( os.path.join( sourceDirectory, path ) )
 
 	return sorted( ret )
