@@ -22,22 +22,12 @@ FORMS += KDChart/KDChartDatasetSelector.ui
 
 INSTALLHEADERS_INCLUDE = \
     KDChart/KDChartAbstractAxis \
-    KDChart/KDChartAbstractCartesianDiagram \
     KDChart/KDChartAbstractCoordinatePlane \
     KDChart/KDChartAbstractDiagram \
-    KDChart/KDChartAbstractPieDiagram \
-    KDChart/KDChartAbstractPolarDiagram \
     KDChart/KDChartAbstractProxyModel \
-    KDChart/KDChartAbstractTernaryDiagram \
     KDChart/KDChartAbstractThreeDAttributes \
     KDChart/KDChartAttributesModel \
     KDChart/KDChartBackgroundAttributes \
-    KDChart/KDChartBarAttributes \
-    KDChart/KDChartStockBarAttributes \
-    KDChart/KDChartStockDiagram \
-    KDChart/KDChartBarDiagram \
-    KDChart/KDChartCartesianAxis \
-    KDChart/KDChartCartesianCoordinatePlane \
     KDChart/KDChartChart \
     KDChart/KDChartDatasetProxyModel \
     KDChart/KDChartDatasetSelector \
@@ -49,41 +39,51 @@ INSTALLHEADERS_INCLUDE = \
     KDChart/KDChartGridAttributes \
     KDChart/KDChartHeaderFooter \
     KDChart/KDChartLegend \
+    KDChart/KDChartLineAttributes \
+    KDChart/KDChartMarkerAttributes \
+    KDChart/KDChartMeasure \
+    KDChart/KDChartPaintContext \
+    KDChart/KDChartPalette \
+    KDChart/KDChartPosition \
+    KDChart/KDChartRelativePosition \
+    KDChart/KDChartTextAttributes \
+    KDChart/KDChartThreeDLineAttributes \
+    KDChart/KDChartValueTrackerAttributes \
+    KDChart/KDChartWidget \
+    KDChart/KDChartZoomParameters \
+    KDChart/KDTextDocument \
+    KDChart/KDChartAbstractCartesianDiagram \
+    KDChart/KDChartAbstractTernaryDiagram \
+    KDChart/KDChartBarAttributes \
+    KDChart/KDChartStockBarAttributes \
+    KDChart/KDChartStockDiagram \
+    KDChart/KDChartLineDiagram \
+    KDChart/KDChartBarDiagram \
+    KDChart/KDChartThreeDBarAttributes \
+    KDChart/KDChartCartesianAxis \
+    KDChart/KDChartCartesianCoordinatePlane \
+    KDChart/KDChartPlotter \
     KDChart/KDChartLeveyJenningsAxis \
     KDChart/KDChartLeveyJenningsCoordinatePlane \
     KDChart/KDChartLeveyJenningsDiagram \
     KDChart/KDChartLeveyJenningsGrid \
     KDChart/KDChartLeveyJenningsGridAttributes \
-    KDChart/KDChartLineAttributes \
-    KDChart/KDChartLineDiagram \
-    KDChart/KDChartMarkerAttributes \
-    KDChart/KDChartMeasure \
-    KDChart/KDChartPaintContext \
-    KDChart/KDChartPalette \
-    KDChart/KDChartPieAttributes \
-    KDChart/KDChartPieDiagram \
-    KDChart/KDChartPlotter \
+    KDChart/KDChartAbstractPolarDiagram \
+    KDChart/KDChartAbstractPieDiagram \
     KDChart/KDChartPolarCoordinatePlane \
     KDChart/KDChartPolarDiagram \
+    KDChart/KDChartPieDiagram \
+    KDChart/KDChartPieAttributes \
+    KDChart/KDChartThreeDPieAttributes \
+    KDChart/KDChartRingDiagram \
     KDChart/KDChartRadarCoordinatePlane \
     KDChart/KDChartRadarDiagram \
-    KDChart/KDChartPosition \
-    KDChart/KDChartRelativePosition \
-    KDChart/KDChartRingDiagram \
     KDChart/KDChartTernaryAxis \
     KDChart/KDChartTernaryCoordinatePlane \
     KDChart/KDChartTernaryLineDiagram \
     KDChart/KDChartTernaryPointDiagram \
-    KDChart/KDChartTextAttributes \
-    KDChart/KDChartThreeDBarAttributes \
-    KDChart/KDChartThreeDLineAttributes \
-    KDChart/KDChartThreeDPieAttributes \
-    KDChart/KDChartValueTrackerAttributes \
-    KDChart/KDChartWidget \
-    KDChart/KDChartZoomParameters \
-    KDChart/KDTextDocument \
-    KDChart/KDGanttAbstractGrid \
-    KDChart/KDGanttAbstractRowController \
+    KDGanttAbstractGrid \
+    KDGanttAbstractRowController \
     KDGanttConstraint \
     KDGanttConstraintGraphicsItem \
     KDGanttConstraintModel \
@@ -103,19 +103,13 @@ INSTALLHEADERS_INCLUDE = \
     KDGanttProxyModel \
 
 INSTALLHEADERS_SRC = \
-	   kdchart_export.h \
+           kdchart_export.h \
            KDChartGlobal.h \
            KDChartMeasure.h \
-           CartesianCoordinateTransformation.h \
-           KDChartAbstractCartesianDiagram.h \
            KDChartAbstractCoordinatePlane.h \
-           KDChartCartesianCoordinatePlane.h \
-           KDChartPolarCoordinatePlane.h \
            KDChartChart.h \
            KDChartWidget.h \
            KDChartAbstractDiagram.h \
-           KDChartAbstractPieDiagram.h \
-           KDChartAbstractPolarDiagram.h \
            KDChartAbstractAreaBase.h \
            KDChartAbstractArea.h \
            KDChartTextArea.h \
@@ -123,15 +117,8 @@ INSTALLHEADERS_SRC = \
            KDChartAbstractAxis.h \
            KDChartAbstractProxyModel.h \
            KDChartAbstractGrid.h \
-           KDChartCartesianGrid.h \
-           KDChartPolarGrid.h \
            KDChartAttributesModel.h \
            KDChartBackgroundAttributes.h \
-           KDChartBarAttributes.h \
-           KDChartStockBarAttributes.h \
-           KDChartStockDiagram.h \
-           KDChartBarDiagram.h \
-           KDChartCartesianAxis.h \
            KDChartDatasetProxyModel.h \
            KDChartDatasetSelector.h \
            KDChartDataValueAttributes.h \
@@ -144,42 +131,55 @@ INSTALLHEADERS_SRC = \
            KDChartLayoutItems.h \
            KDChartLegend.h \
            KDChartLineAttributes.h \
-           KDChartLineDiagram.h \
-           KDChartCartesianDiagramDataCompressor.h \
            KDChartMarkerAttributes.h \
            KDChartPaintContext.h \
            KDChartPalette.h \
-           KDChartPieDiagram.h \
-           KDChartPolarDiagram.h \
-           KDChartRadarDiagram.h \
            KDChartPosition.h \
            KDChartRelativePosition.h \
-           KDChartRingDiagram.h \
            KDChartTextAttributes.h \
            KDTextDocument.h \
-           KDChartPieAttributes.h \
            KDChartAbstractThreeDAttributes.h \
-           KDChartThreeDBarAttributes.h \
            KDChartThreeDLineAttributes.h \
-           KDChartThreeDPieAttributes.h \
-           PrerenderedElements/KDChartTextLabelCache.h \
+           KDChartTextLabelCache.h \
+           KDChartValueTrackerAttributes.h \
+           KDChartPrintingParameters.h \
 # unused so far: KDChartSignalCompressor.h \
+           Cartesian/CartesianCoordinateTransformation.h \
+           Cartesian/KDChartAbstractCartesianDiagram.h \
+           Cartesian/KDChartCartesianCoordinatePlane.h \
+           Cartesian/KDChartCartesianGrid.h \
+           Cartesian/KDChartCartesianAxis.h \
+           Cartesian/KDChartCartesianDiagramDataCompressor.h \
+           Cartesian/KDChartBarDiagram.h \
+           Cartesian/KDChartBarAttributes.h \
+           Cartesian/KDChartStockBarAttributes.h \
+           Cartesian/KDChartStockDiagram.h \
+           Cartesian/KDChartThreeDBarAttributes.h \
+           Cartesian/KDChartLeveyJenningsCoordinatePlane.h \
+           Cartesian/KDChartLeveyJenningsDiagram.h \
+           Cartesian/KDChartLeveyJenningsGrid.h \
+           Cartesian/KDChartLeveyJenningsGridAttributes.h \
+           Cartesian/KDChartLeveyJenningsAxis.h \
+           Cartesian/KDChartLineDiagram.h \
+           Cartesian/KDChartPlotter.h \
            Ternary/TernaryPoint.h \
            Ternary/TernaryConstants.h \
-           Ternary/KDChartTernaryGrid.h \
            Ternary/KDChartTernaryCoordinatePlane.h \
+           Ternary/KDChartTernaryGrid.h \
            Ternary/KDChartTernaryAxis.h \
            Ternary/KDChartAbstractTernaryDiagram.h \
            Ternary/KDChartTernaryPointDiagram.h \
            Ternary/KDChartTernaryLineDiagram.h \
-           KDChartValueTrackerAttributes.h \
-           KDChartPlotter.h \
-           KDChartPrintingParameters.h \
-           LeveyJennings/KDChartLeveyJenningsCoordinatePlane.h \
-           LeveyJennings/KDChartLeveyJenningsDiagram.h \
-           LeveyJennings/KDChartLeveyJenningsGrid.h \
-           LeveyJennings/KDChartLeveyJenningsGridAttributes.h \
-           LeveyJennings/KDChartLeveyJenningsAxis.h \
+           Polar/KDChartPolarCoordinatePlane.h \
+           Polar/KDChartPolarGrid.h \
+           Polar/KDChartAbstractPolarDiagram.h \
+           Polar/KDChartPolarDiagram.h \
+           Polar/KDChartAbstractPieDiagram.h \
+           Polar/KDChartPieDiagram.h \
+           Polar/KDChartPieAttributes.h \
+           Polar/KDChartThreeDPieAttributes.h \
+           Polar/KDChartRadarDiagram.h \
+           Polar/KDChartRingDiagram.h \
 
 INSTALLHEADERS_GANTT_SRC = \
            KDGantt/kdgantt_export.h \
@@ -222,27 +222,14 @@ INSTALLS += lib
 
 HEADERS += KDChart/KDChartGlobal.h \
            KDChart/KDChartMeasure.h \
-           KDChart/CartesianCoordinateTransformation.h \
-           KDChart/KDChartAbstractCartesianDiagram.h \
-           KDChart/KDChartAbstractCartesianDiagram_p.h \
            KDChart/KDChartAbstractCoordinatePlane.h \
            KDChart/KDChartAbstractCoordinatePlane_p.h \
-           KDChart/KDChartCartesianCoordinatePlane.h \
-           KDChart/KDChartCartesianCoordinatePlane_p.h \
-           KDChart/KDChartPolarCoordinatePlane.h \
-           KDChart/KDChartPolarCoordinatePlane_p.h \
-           KDChart/KDChartRadarCoordinatePlane.h \
-           KDChart/KDChartRadarCoordinatePlane_p.h \
            KDChart/KDChartChart.h \
            KDChart/KDChartChart_p.h \
            KDChart/KDChartWidget.h \
            KDChart/KDChartWidget_p.h \
            KDChart/KDChartAbstractDiagram.h \
            KDChart/KDChartAbstractDiagram_p.h \
-           KDChart/KDChartAbstractPieDiagram.h \
-           KDChart/KDChartAbstractPieDiagram_p.h \
-           KDChart/KDChartAbstractPolarDiagram.h \
-           KDChart/KDChartAbstractPolarDiagram_p.h \
            KDChart/KDChartAbstractAreaBase.h \
            KDChart/KDChartAbstractAreaBase_p.h \
            KDChart/KDChartAbstractArea.h \
@@ -254,19 +241,8 @@ HEADERS += KDChart/KDChartGlobal.h \
            KDChart/KDChartAbstractAxis.h \
            KDChart/KDChartAbstractProxyModel.h \
            KDChart/KDChartAbstractGrid.h \
-           KDChart/KDChartCartesianGrid.h \
-           KDChart/KDChartPolarGrid.h \
-           KDChart/KDChartRadarGrid.h \
            KDChart/KDChartAttributesModel.h \
            KDChart/KDChartBackgroundAttributes.h \
-           KDChart/KDChartBarAttributes.h \
-           KDChart/KDChartStockBarAttributes.h \
-           KDChart/KDChartStockDiagram.h \
-           KDChart/KDChartStockDiagram_p.h \
-           KDChart/KDChartBarDiagram.h \
-           KDChart/KDChartBarDiagram_p.h \
-           KDChart/KDChartCartesianAxis.h \
-           KDChart/KDChartCartesianAxis_p.h \
            KDChart/KDChartDatasetProxyModel.h \
            KDChart/KDChartDatasetSelector.h \
            KDChart/KDChartDataValueAttributes.h \
@@ -281,74 +257,98 @@ HEADERS += KDChart/KDChartGlobal.h \
            KDChart/KDChartLegend.h \
            KDChart/KDChartLegend_p.h \
            KDChart/KDChartLineAttributes.h \
-           KDChart/KDChartLineDiagram.h \
-           KDChart/KDChartLineDiagram_p.h \
-           KDChart/KDChartCartesianDiagramDataCompressor_p.h \
-           KDChart/KDChartNormalBarDiagram_p.h \
-           KDChart/KDChartNormalLyingBarDiagram_p.h \
-           KDChart/KDChartNormalLineDiagram_p.h \
-           KDChart/KDChartStackedBarDiagram_p.h \
-           KDChart/KDChartStackedLyingBarDiagram_p.h \
-           KDChart/KDChartStackedLineDiagram_p.h \
-           KDChart/KDChartPercentBarDiagram_p.h \
-           KDChart/KDChartPercentLyingBarDiagram_p.h \
-           KDChart/KDChartPercentLineDiagram_p.h \
            KDChart/KDChartMarkerAttributes.h \
            KDChart/KDChartPaintContext.h \
            KDChart/KDChartPalette.h \
-           KDChart/KDChartPieDiagram.h \
-           KDChart/KDChartPieDiagram_p.h \
-           KDChart/KDChartPolarDiagram.h \
-           KDChart/KDChartPolarDiagram_p.h \
-           KDChart/KDChartRadarDiagram.h \
-           KDChart/KDChartRadarDiagram_p.h \
            KDChart/KDChartPosition.h \
            KDChart/KDChartRelativePosition.h \
-           KDChart/KDChartRingDiagram.h \
-           KDChart/KDChartRingDiagram_p.h \
            KDChart/KDChartTextAttributes.h \
            KDChart/KDTextDocument.h \
-           KDChart/KDChartPieAttributes.h \
-           KDChart/KDChartPieAttributes_p.h \
            KDChart/KDChartAbstractThreeDAttributes.h \
            KDChart/KDChartAbstractThreeDAttributes_p.h \
-           KDChart/KDChartThreeDBarAttributes.h \
-           KDChart/KDChartThreeDBarAttributes_p.h \
            KDChart/KDChartThreeDLineAttributes.h \
            KDChart/KDChartThreeDLineAttributes_p.h \
-           KDChart/KDChartThreeDPieAttributes.h \
-           KDChart/KDChartThreeDPieAttributes_p.h \ 
            KDChart/KDChartTextLabelCache.h \
            # unused so far: KDChartSignalCompressor.h \
-           KDChart/TernaryPoint.h \
-           KDChart/TernaryConstants.h \
-           KDChart/KDChartTernaryGrid.h \
-           KDChart/KDChartTernaryCoordinatePlane.h \
-           KDChart/KDChartTernaryCoordinatePlane_p.h \
-           KDChart/KDChartTernaryAxis.h \
-           KDChart/KDChartAbstractTernaryDiagram.h \
-           KDChart/KDChartAbstractTernaryDiagram_p.h \
-           KDChart/KDChartTernaryPointDiagram.h \
-           KDChart/KDChartTernaryLineDiagram.h \
            KDChart/ChartGraphicsItem.h \
            KDChart/ReverseMapper.h \
            KDChart/KDChartValueTrackerAttributes.h \
-           KDChart/KDChartPlotter.h \
-           KDChart/KDChartPlotter_p.h \
-           KDChart/KDChartNormalPlotter_p.h \
-           KDChart/KDChartPercentPlotter_p.h \
            KDChart/KDChartPrintingParameters.h \
            KDChart/KDChartModelDataCache_p.h \
-           KDChart/KDChartPlotterDiagramCompressor.h \
-           KDChart/KDChartPlotterDiagramCompressor_p.h \
-           KDChart/KDChartLeveyJenningsCoordinatePlane.h \
-           KDChart/KDChartLeveyJenningsCoordinatePlane_p.h \
-           KDChart/KDChartLeveyJenningsDiagram.h \
-           KDChart/KDChartLeveyJenningsDiagram_p.h \
-           KDChart/KDChartLeveyJenningsGrid.h \
-           KDChart/KDChartLeveyJenningsGridAttributes.h \
-           KDChart/KDChartLeveyJenningsAxis.h \
-           KDChart/KDChartLeveyJenningsAxis_p.h \
+           KDChart/Cartesian/CartesianCoordinateTransformation.h \
+           KDChart/Cartesian/KDChartAbstractCartesianDiagram.h \
+           KDChart/Cartesian/KDChartAbstractCartesianDiagram_p.h \
+           KDChart/Cartesian/KDChartCartesianCoordinatePlane.h \
+           KDChart/Cartesian/KDChartCartesianCoordinatePlane_p.h \
+           KDChart/Cartesian/KDChartCartesianGrid.h \
+           KDChart/Cartesian/KDChartBarAttributes.h \
+           KDChart/Cartesian/KDChartStockBarAttributes.h \
+           KDChart/Cartesian/KDChartStockDiagram.h \
+           KDChart/Cartesian/KDChartStockDiagram_p.h \
+           KDChart/Cartesian/KDChartBarDiagram.h \
+           KDChart/Cartesian/KDChartBarDiagram_p.h \
+           KDChart/Cartesian/KDChartCartesianAxis.h \
+           KDChart/Cartesian/KDChartCartesianAxis_p.h \
+           KDChart/Cartesian/KDChartLineDiagram.h \
+           KDChart/Cartesian/KDChartLineDiagram_p.h \
+           KDChart/Cartesian/KDChartCartesianDiagramDataCompressor_p.h \
+           KDChart/Cartesian/KDChartThreeDBarAttributes.h \
+           KDChart/Cartesian/KDChartThreeDBarAttributes_p.h \
+           KDChart/Cartesian/KDChartPlotterDiagramCompressor.h \
+           KDChart/Cartesian/KDChartPlotterDiagramCompressor_p.h \
+           KDChart/Cartesian/KDChartLeveyJenningsCoordinatePlane.h \
+           KDChart/Cartesian/KDChartLeveyJenningsCoordinatePlane_p.h \
+           KDChart/Cartesian/KDChartLeveyJenningsDiagram.h \
+           KDChart/Cartesian/KDChartLeveyJenningsDiagram_p.h \
+           KDChart/Cartesian/KDChartLeveyJenningsGrid.h \
+           KDChart/Cartesian/KDChartLeveyJenningsGridAttributes.h \
+           KDChart/Cartesian/KDChartLeveyJenningsAxis.h \
+           KDChart/Cartesian/KDChartLeveyJenningsAxis_p.h \
+           KDChart/Cartesian/KDChartPlotter.h \
+           KDChart/Cartesian/KDChartPlotter_p.h \
+           KDChart/Cartesian/DiagramFlavors/KDChartNormalBarDiagram_p.h \
+           KDChart/Cartesian/DiagramFlavors/KDChartNormalLyingBarDiagram_p.h \
+           KDChart/Cartesian/DiagramFlavors/KDChartNormalLineDiagram_p.h \
+           KDChart/Cartesian/DiagramFlavors/KDChartStackedBarDiagram_p.h \
+           KDChart/Cartesian/DiagramFlavors/KDChartStackedLyingBarDiagram_p.h \
+           KDChart/Cartesian/DiagramFlavors/KDChartStackedLineDiagram_p.h \
+           KDChart/Cartesian/DiagramFlavors/KDChartPercentBarDiagram_p.h \
+           KDChart/Cartesian/DiagramFlavors/KDChartPercentLyingBarDiagram_p.h \
+           KDChart/Cartesian/DiagramFlavors/KDChartPercentLineDiagram_p.h \
+           KDChart/Cartesian/DiagramFlavors/KDChartNormalPlotter_p.h \
+           KDChart/Cartesian/DiagramFlavors/KDChartPercentPlotter_p.h \
+           KDChart/Polar/KDChartPolarCoordinatePlane.h \
+           KDChart/Polar/KDChartPolarCoordinatePlane_p.h \
+           KDChart/Polar/KDChartRadarCoordinatePlane.h \
+           KDChart/Polar/KDChartRadarCoordinatePlane_p.h \
+           KDChart/Polar/KDChartPolarGrid.h \
+           KDChart/Polar/KDChartRadarGrid.h \
+           KDChart/Polar/KDChartAbstractPieDiagram.h \
+           KDChart/Polar/KDChartAbstractPieDiagram_p.h \
+           KDChart/Polar/KDChartAbstractPolarDiagram.h \
+           KDChart/Polar/KDChartAbstractPolarDiagram_p.h \
+           KDChart/Polar/KDChartPieDiagram.h \
+           KDChart/Polar/KDChartPieDiagram_p.h \
+           KDChart/Polar/KDChartPieAttributes.h \
+           KDChart/Polar/KDChartPieAttributes_p.h \
+           KDChart/Polar/KDChartPolarDiagram.h \
+           KDChart/Polar/KDChartPolarDiagram_p.h \
+           KDChart/Polar/KDChartRadarDiagram.h \
+           KDChart/Polar/KDChartRadarDiagram_p.h \
+           KDChart/Polar/KDChartRingDiagram.h \
+           KDChart/Polar/KDChartRingDiagram_p.h \
+           KDChart/Polar/KDChartThreeDPieAttributes.h \
+           KDChart/Polar/KDChartThreeDPieAttributes_p.h \
+           KDChart/Ternary/TernaryPoint.h \
+           KDChart/Ternary/TernaryConstants.h \
+           KDChart/Ternary/KDChartTernaryGrid.h \
+           KDChart/Ternary/KDChartTernaryCoordinatePlane.h \
+           KDChart/Ternary/KDChartTernaryCoordinatePlane_p.h \
+           KDChart/Ternary/KDChartTernaryAxis.h \
+           KDChart/Ternary/KDChartAbstractTernaryDiagram.h \
+           KDChart/Ternary/KDChartAbstractTernaryDiagram_p.h \
+           KDChart/Ternary/KDChartTernaryPointDiagram.h \
+           KDChart/Ternary/KDChartTernaryLineDiagram.h \
            KDGantt/kdganttglobal.h \
            KDGantt/kdganttview.h \
            KDGantt/kdganttstyleoptionganttitem.h \
@@ -388,17 +388,11 @@ HEADERS += KDChart/KDChartGlobal.h \
 
 SOURCES += \
            KDChart/KDChartMeasure.cpp \
-           KDChart/KDChartAbstractCartesianDiagram.cpp \
            KDChart/KDChartAbstractCoordinatePlane.cpp \
-           KDChart/KDChartCartesianCoordinatePlane.cpp \
-           KDChart/KDChartPolarCoordinatePlane.cpp \
-           KDChart/KDChartRadarCoordinatePlane.cpp \
            KDChart/KDChartChart.cpp \
            KDChart/KDChartWidget.cpp \
            KDChart/KDChartAbstractDiagram.cpp \
            KDChart/KDChartAbstractDiagram_p.cpp \
-           KDChart/KDChartAbstractPieDiagram.cpp \
-           KDChart/KDChartAbstractPolarDiagram.cpp \
            KDChart/KDChartAbstractAreaBase.cpp \
            KDChart/KDChartAbstractArea.cpp \
            KDChart/KDChartTextArea.cpp \
@@ -406,18 +400,8 @@ SOURCES += \
            KDChart/KDChartAbstractAxis.cpp \
            KDChart/KDChartAbstractProxyModel.cpp \
            KDChart/KDChartAbstractGrid.cpp \
-           KDChart/KDChartCartesianGrid.cpp \
-           KDChart/KDChartPolarGrid.cpp \
-           KDChart/KDChartRadarGrid.cpp \
            KDChart/KDChartAttributesModel.cpp \
            KDChart/KDChartBackgroundAttributes.cpp \
-           KDChart/KDChartBarAttributes.cpp \
-           KDChart/KDChartStockBarAttributes.cpp \
-           KDChart/KDChartStockDiagram.cpp \
-           KDChart/KDChartStockDiagram_p.cpp \
-           KDChart/KDChartBarDiagram.cpp \
-           KDChart/KDChartBarDiagram_p.cpp \
-           KDChart/KDChartCartesianAxis.cpp \
            KDChart/KDChartDatasetProxyModel.cpp \
            KDChart/KDChartDatasetSelector.cpp \
            KDChart/KDChartDataValueAttributes.cpp \
@@ -429,60 +413,76 @@ SOURCES += \
            KDChart/KDChartLayoutItems.cpp \
            KDChart/KDChartLegend.cpp \
            KDChart/KDChartLineAttributes.cpp \
-           KDChart/KDChartLineDiagram.cpp \
-           KDChart/KDChartLineDiagram_p.cpp \
-           KDChart/KDChartCartesianDiagramDataCompressor_p.cpp \
-           KDChart/KDChartNormalBarDiagram_p.cpp \
-           KDChart/KDChartNormalLyingBarDiagram_p.cpp \
-           KDChart/KDChartNormalLineDiagram_p.cpp \
-           KDChart/KDChartStackedBarDiagram_p.cpp \
-           KDChart/KDChartStackedLyingBarDiagram_p.cpp \
-           KDChart/KDChartStackedLineDiagram_p.cpp \
-           KDChart/KDChartPercentBarDiagram_p.cpp \
-           KDChart/KDChartPercentLyingBarDiagram_p.cpp \
-           KDChart/KDChartPercentLineDiagram_p.cpp \
            KDChart/KDChartMarkerAttributes.cpp \
            KDChart/KDChartPaintContext.cpp \
            KDChart/KDChartPalette.cpp \
-           KDChart/KDChartPieDiagram.cpp \
-           KDChart/KDChartPolarDiagram.cpp \
-           KDChart/KDChartRadarDiagram.cpp \
            KDChart/KDChartPosition.cpp \
            KDChart/KDChartRelativePosition.cpp \
-           KDChart/KDChartRingDiagram.cpp \
            KDChart/KDTextDocument.cpp \
            KDChart/KDChartTextAttributes.cpp \
-           KDChart/KDChartPieAttributes.cpp \
            KDChart/KDChartAbstractThreeDAttributes.cpp \
-           KDChart/KDChartThreeDBarAttributes.cpp \
            KDChart/KDChartThreeDLineAttributes.cpp \
-           KDChart/KDChartThreeDPieAttributes.cpp \
            KDChart/KDChartTextLabelCache.cpp \
            # unused so far: KDChart/KDChartSignalCompressor.cpp \
-           KDChart/KDChartTernaryAxis.cpp \
-           KDChart/KDChartTernaryGrid.cpp \
-           KDChart/TernaryPoint.cpp \
-           KDChart/TernaryConstants.cpp \
-           KDChart/KDChartTernaryCoordinatePlane.cpp \
-           KDChart/KDChartAbstractTernaryDiagram.cpp \
-           KDChart/KDChartTernaryPointDiagram.cpp \
-           KDChart/KDChartTernaryLineDiagram.cpp \
            KDChart/ChartGraphicsItem.cpp \
            KDChart/ReverseMapper.cpp \
            KDChart/KDChartValueTrackerAttributes.cpp \
-           KDChart/KDChartPlotter.cpp \
-           KDChart/KDChartPlotter_p.cpp \
-           KDChart/KDChartNormalPlotter_p.cpp \
-           KDChart/KDChartPercentPlotter_p.cpp \
            KDChart/KDChartPrintingParameters.cpp \
            KDChart/KDChartModelDataCache_p.cpp \
-           KDChart/KDChartPlotterDiagramCompressor.cpp \
-           KDChart/KDChartLeveyJenningsCoordinatePlane.cpp \
-           KDChart/KDChartLeveyJenningsDiagram.cpp \
-           KDChart/KDChartLeveyJenningsDiagram_p.cpp \
-           KDChart/KDChartLeveyJenningsGrid.cpp \
-           KDChart/KDChartLeveyJenningsGridAttributes.cpp \
-           KDChart/KDChartLeveyJenningsAxis.cpp \
+           KDChart/Cartesian/KDChartAbstractCartesianDiagram.cpp \
+           KDChart/Cartesian/KDChartCartesianCoordinatePlane.cpp \
+           KDChart/Cartesian/KDChartCartesianAxis.cpp \
+           KDChart/Cartesian/KDChartCartesianGrid.cpp \
+           KDChart/Cartesian/KDChartBarDiagram.cpp \
+           KDChart/Cartesian/KDChartBarDiagram_p.cpp \
+           KDChart/Cartesian/KDChartThreeDBarAttributes.cpp \
+           KDChart/Cartesian/KDChartBarAttributes.cpp \
+           KDChart/Cartesian/KDChartStockBarAttributes.cpp \
+           KDChart/Cartesian/KDChartStockDiagram.cpp \
+           KDChart/Cartesian/KDChartStockDiagram_p.cpp \
+           KDChart/Cartesian/KDChartLineDiagram.cpp \
+           KDChart/Cartesian/KDChartLineDiagram_p.cpp \
+           KDChart/Cartesian/KDChartCartesianDiagramDataCompressor_p.cpp \
+           KDChart/Cartesian/KDChartPlotter.cpp \
+           KDChart/Cartesian/KDChartPlotter_p.cpp \
+           KDChart/Cartesian/KDChartPlotterDiagramCompressor.cpp \
+           KDChart/Cartesian/KDChartLeveyJenningsCoordinatePlane.cpp \
+           KDChart/Cartesian/KDChartLeveyJenningsDiagram.cpp \
+           KDChart/Cartesian/KDChartLeveyJenningsDiagram_p.cpp \
+           KDChart/Cartesian/KDChartLeveyJenningsGrid.cpp \
+           KDChart/Cartesian/KDChartLeveyJenningsGridAttributes.cpp \
+           KDChart/Cartesian/KDChartLeveyJenningsAxis.cpp \
+           KDChart/Cartesian/DiagramFlavors/KDChartNormalPlotter_p.cpp \
+           KDChart/Cartesian/DiagramFlavors/KDChartPercentPlotter_p.cpp \
+           KDChart/Cartesian/DiagramFlavors/KDChartStackedLyingBarDiagram_p.cpp \
+           KDChart/Cartesian/DiagramFlavors/KDChartStackedLineDiagram_p.cpp \
+           KDChart/Cartesian/DiagramFlavors/KDChartStackedBarDiagram_p.cpp \
+           KDChart/Cartesian/DiagramFlavors/KDChartPercentBarDiagram_p.cpp \
+           KDChart/Cartesian/DiagramFlavors/KDChartPercentLyingBarDiagram_p.cpp \
+           KDChart/Cartesian/DiagramFlavors/KDChartPercentLineDiagram_p.cpp \
+           KDChart/Cartesian/DiagramFlavors/KDChartNormalBarDiagram_p.cpp \
+           KDChart/Cartesian/DiagramFlavors/KDChartNormalLyingBarDiagram_p.cpp \
+           KDChart/Cartesian/DiagramFlavors/KDChartNormalLineDiagram_p.cpp \
+           KDChart/Polar/KDChartPolarCoordinatePlane.cpp \
+           KDChart/Polar/KDChartRadarCoordinatePlane.cpp \
+           KDChart/Polar/KDChartAbstractPieDiagram.cpp \
+           KDChart/Polar/KDChartAbstractPolarDiagram.cpp \
+           KDChart/Polar/KDChartPolarGrid.cpp \
+           KDChart/Polar/KDChartRadarGrid.cpp \
+           KDChart/Polar/KDChartPieDiagram.cpp \
+           KDChart/Polar/KDChartPolarDiagram.cpp \
+           KDChart/Polar/KDChartRadarDiagram.cpp \
+           KDChart/Polar/KDChartRingDiagram.cpp \
+           KDChart/Polar/KDChartPieAttributes.cpp \
+           KDChart/Polar/KDChartThreeDPieAttributes.cpp \
+           KDChart/Ternary/KDChartTernaryAxis.cpp \
+           KDChart/Ternary/KDChartTernaryGrid.cpp \
+           KDChart/Ternary/TernaryPoint.cpp \
+           KDChart/Ternary/TernaryConstants.cpp \
+           KDChart/Ternary/KDChartTernaryCoordinatePlane.cpp \
+           KDChart/Ternary/KDChartAbstractTernaryDiagram.cpp \
+           KDChart/Ternary/KDChartTernaryPointDiagram.cpp \
+           KDChart/Ternary/KDChartTernaryLineDiagram.cpp \
            KDGantt/kdganttglobal.cpp \
            KDGantt/kdganttview.cpp \
            KDGantt/kdganttstyleoptionganttitem.cpp \
@@ -520,6 +520,10 @@ DEPENDPATH = $${TOP_SOURCE_DIR}/include \
 INCLUDEPATH = $$LIBFAKES_PATH/include \
               KDGantt \
               KDChart \
+              KDChart/Cartesian \
+              KDChart/Cartesian/DiagramFlavors \
+              KDChart/Polar \
+              KDChart/Ternary \
               $${TOP_SOURCE_DIR}/src \
               $${TOP_SOURCE_DIR}/include
 
