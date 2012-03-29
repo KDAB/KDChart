@@ -96,8 +96,7 @@ namespace KDChart {
         LineDiagram* diagram() const;
 
     protected:
-        // method that make elements of m_private available to derived
-        // classes:
+        // make some elements of m_private available to derived classes:
         AttributesModel* attributesModel() const;
         QModelIndex attributesModelRootIndex() const;
         ReverseMapper& reverseMapper();
@@ -141,16 +140,6 @@ namespace KDChart {
 
         LineDiagram::Private* m_private;
     };
-
-/*
-  inline LineDiagram::LineDiagram( Private * p, CartesianCoordinatePlane* plane )
-  : AbstractCartesianDiagram( p, plane ) { init(); }
-  inline LineDiagram::Private * LineDiagram::d_func()
-  { return static_cast<Private*>( AbstractCartesianDiagram::d_func() ); }
-  inline const LineDiagram::Private * LineDiagram::d_func() const
-  { return static_cast<const Private*>( AbstractCartesianDiagram::d_func() ); }
-*/
-
 }
 
 #endif /* KDCHARTLINEDIAGRAM_P_H */

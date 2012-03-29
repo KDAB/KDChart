@@ -116,8 +116,7 @@ KDCHART_IMPL_DERIVED_DIAGRAM( BarDiagram, AbstractCartesianDiagram, CartesianCoo
         BarDiagram* diagram() const;
 
     protected:
-        // method that make elements of m_private available to derived
-        // classes:
+        // make some elements of m_private available to derived classes:
         AttributesModel* attributesModel() const;
         QModelIndex attributesModelRootIndex() const;
         ReverseMapper& reverseMapper();
