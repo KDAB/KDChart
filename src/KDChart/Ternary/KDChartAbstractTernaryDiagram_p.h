@@ -48,9 +48,6 @@
 
 namespace KDChart {
 
-    class CartesianCoordinatePlane;
-    class AbstractTernaryDiagram;
-
 /**
  * \internal
  */
@@ -102,18 +99,6 @@ namespace KDChart {
     };
 
     KDCHART_IMPL_DERIVED_DIAGRAM( AbstractTernaryDiagram, AbstractDiagram, TernaryCoordinatePlane )
-/*
-inline AbstractTernaryDiagram::AbstractTernaryDiagram( Private * p )
-    : AbstractDiagram( p ) { init(); }
-inline AbstractTernaryDiagram::AbstractTernaryDiagram(
-    Private * p, QWidget* parent, CartesianCoordinatePlane* plane )
-    : AbstractDiagram( p, parent, plane ) { init(); }
-inline AbstractTernaryDiagram::Private * AbstractTernaryDiagram::d_func()
-{ return static_cast<Private*>( AbstractDiagram::d_func() ); }
-inline const AbstractTernaryDiagram::Private * AbstractTernaryDiagram::d_func() const
-{ return static_cast<const Private*>( AbstractDiagram::d_func() ); }
-*/
-
 }
 
 #endif /* KDCHARTABSTRACTTERNARYDIAGRAM_P_H */
