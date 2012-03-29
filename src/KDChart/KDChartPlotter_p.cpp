@@ -209,10 +209,10 @@ Plotter* Plotter::PlotterType::diagram() const
 void Plotter::PlotterType::paintAreas(
     PaintContext* ctx,
     const QModelIndex& index, const QList< QPolygonF >& areas,
-    const uint transparency )
+    uint opacity )
 {
     QColor trans = diagram()->brush( index ).color();
-    trans.setAlpha( transparency );
+    trans.setAlpha( opacity );
     QPen indexPen = diagram()->pen(index);
     indexPen.setColor( trans );
     const PainterSaver painterSaver( ctx->painter() );
