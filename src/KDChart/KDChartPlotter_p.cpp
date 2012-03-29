@@ -163,8 +163,9 @@ void Plotter::PlotterType::paintElements(
                 reverseMapper().addLine( lineInfo.index.row(), lineInfo.index.column(), points.last(), lineInfo.nextValue );
                 points << lineInfo.nextValue;
             } else {
-                if( points.count() )
-                    paintPolyline( ctx, curBrush, curPen, points );
+                if ( points.count() ) {
+                    m_private->paintPolyline( ctx, curBrush, curPen, points );
+                }
                 curBrush = br;
                 curPen   = pn;
                 points.clear();
@@ -174,9 +175,9 @@ void Plotter::PlotterType::paintElements(
             }
         }
     }
-    if ( points.count() )
-        paintPolyline( ctx, curBrush, curPen, points );
-
+    if ( points.count() ) {
+        m_private->paintPolyline( ctx, curBrush, curPen, points );
+    }
     itline.toFront();
     while ( itline.hasNext() ) {
         const LineAttributesInfo& lineInfo = itline.next();
@@ -187,7 +188,7 @@ void Plotter::PlotterType::paintElements(
     }
 
     // paint all data value texts and the point markers
-    paintDataValueTextsAndMarkers( diagram(), ctx, lpc, true );
+    m_private->paintDataValueTextsAndMarkers( diagram(), ctx, lpc, true );
 }
 
 AttributesModel* Plotter::PlotterType::attributesModel() const

@@ -87,15 +87,11 @@ namespace KDChart {
 
     KDCHART_IMPL_DERIVED_DIAGRAM( Plotter, AbstractCartesianDiagram, CartesianCoordinatePlane )
 
-    // we inherit privately, so that derived classes cannot call the
-    // base class functions - those reference the wrong (unattached to
-    // a diagram) d
-    class Plotter::PlotterType : private Plotter::Private
+    class Plotter::PlotterType
     {
     public:
         explicit PlotterType( Plotter* d )
-            : Plotter::Private()
-            , m_private( d->d_func() )            
+            : m_private( d->d_func() )
         {
             m_private->init();
         }
