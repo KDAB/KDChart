@@ -186,13 +186,11 @@ void paintElements( AbstractDiagram::Private *diagramPrivate, PaintContext* ctx,
     // paint all lines and their attributes
     const PainterSaver painterSaver( ctx->painter() );
     ctx->painter()->setRenderHint( QPainter::Antialiasing, diagram->antiAliasing() );
-    LineAttributesInfoListIterator itline ( lineList );
 
     QBrush curBrush;
     QPen curPen;
     QPolygonF points;
     KDAB_FOREACH ( const LineAttributesInfo& lineInfo, lineList ) {
-        const LineAttributesInfo& lineInfo = itline.next();
         const QModelIndex& index = lineInfo.index;
         const ThreeDLineAttributes td = threeDLineAttributes( diagram, index );
         const ValueTrackerAttributes vt = valueTrackerAttributes( diagram, index );
