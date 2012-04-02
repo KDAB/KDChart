@@ -2,34 +2,71 @@
 
 #include "KDChartGlobal.h"
 
+#include "KDChartAbstractDiagram.h"
+#include "KDChartAbstractDiagram_p.h"
 #include "KDChartCartesianCoordinatePlane.h"
+#include "KDChartLineDiagram.h"
 #include "KDChartValueTrackerAttributes.h"
 #include "KDChartPaintContext.h"
 #include "KDChartPainterSaver_p.h"
+#include "KDChartPlotter.h"
 #include "KDChartPrintingParameters.h"
-
+#include "KDChartThreeDLineAttributes.h"
+#include "ReverseMapper.h"
 
 namespace KDChart {
 namespace PaintingHelpers {
+
+/*!
+  Projects a point in a space defined by its x, y, and z coordinates
+  into a point on a plane, given two rotation angles around the x
+  resp. y axis.
+*/
+const QPointF project( const QPointF& point, const ThreeDLineAttributes& tdAttributes )
+{
+    //Pending Michel FIXME - the rotation does not work as expected atm
+    qreal xrad = DEGTORAD( tdAttributes.lineXRotation() );
+    qreal yrad = DEGTORAD( tdAttributes.lineYRotation() );
+    return QPointF( point.x() * cos( yrad ) + tdAttributes.depth() * sin( yrad ),
+                    point.y() * cos( xrad ) - tdAttributes.depth() * sin( xrad ) );
+}
 
 void paintPolyline( PaintContext* ctx, const QBrush& brush, const QPen& pen, const QPolygonF& points )
 {
     ctx->painter()->setBrush( brush );
     ctx->painter()->setPen( PrintingParameters::scalePen(
-        QPen( pen.color(),
-              pen.width(),
-              pen.style(),
-              Qt::FlatCap,
-              Qt::MiterJoin ) ) );
+        QPen( pen.color(), pen.width(), pen.style(), Qt::FlatCap, Qt::MiterJoin ) ) );
 #if QT_VERSION > 0x040299
     ctx->painter()->drawPolyline( points );
 #else
     // FIXME (Mirko) verify, this sounds reverse-logical
     // For Qt versions older than 4.3 drawPolyline is VERY slow
     // so we use traditional line segments drawing instead then.
-    for (int i = 0; i < points.size()-1; ++i)
-        ctx->painter()->drawLine( points.at(i), points.at(i+1) );
+    for ( int i = 0; i < points.size()-1; ++i ) {
+        ctx->painter()->drawLine( points.at( i ), points.at( i + 1 ) );
+    }
 #endif
+}
+
+void paintThreeDLines( PaintContext* ctx, AbstractDiagram *diagram, const QModelIndex& index,
+                       const QPointF& from, const QPointF& to, const ThreeDLineAttributes& tdAttributes,
+                       ReverseMapper* reverseMapper )
+{
+    const QPointF topLeft = project( from, tdAttributes );
+    const QPointF topRight = project ( to, tdAttributes );
+    const QPolygonF segment = QPolygonF() << from << topLeft << topRight << to;
+
+    QBrush indexBrush( diagram->brush( index ) );
+    indexBrush = tdAttributes.threeDBrush( indexBrush, QRectF(topLeft, topRight) );
+
+    const PainterSaver painterSaver( ctx->painter() );
+
+    ctx->painter()->setRenderHint( QPainter::Antialiasing, diagram->antiAliasing() );
+    ctx->painter()->setBrush( indexBrush );
+    ctx->painter()->setPen( PrintingParameters::scalePen( diagram->pen( index ) ) );
+
+    reverseMapper->addPolygon( index.row(), index.column(), segment );
+    ctx->painter()->drawPolygon( segment );
 }
 
 void paintValueTracker( PaintContext* ctx, const ValueTrackerAttributes& vt, const QPointF& at )
@@ -118,6 +155,87 @@ void paintValueTracker( PaintContext* ctx, const ValueTrackerAttributes& vt, con
     ctx->painter()->setBrush( vt.arrowBrush() );
     ctx->painter()->drawPolygon( startMarker, 3 );
     ctx->painter()->drawPolygon( endMarker, 3 );
+}
+
+// ### for BC reasons we cannot insert a common interface for LineDiagram and Plotter into the class
+//     hierarchy, so we have to use hacks to use their common methods
+static ThreeDLineAttributes threeDLineAttributes( AbstractDiagram* diagram, const QModelIndex& index )
+{
+    if ( Plotter *plotter = qobject_cast< Plotter* >( diagram ) ) {
+        return plotter->threeDLineAttributes( index );
+    } else if ( LineDiagram *lineDiagram = qobject_cast< LineDiagram* >( diagram ) ) {
+        return lineDiagram->threeDLineAttributes( index );
+    }
+    Q_ASSERT( false );
+}
+
+static ValueTrackerAttributes valueTrackerAttributes( AbstractDiagram* diagram, const QModelIndex& index )
+{
+    if ( Plotter *plotter = qobject_cast< Plotter* >( diagram ) ) {
+        return plotter->valueTrackerAttributes( index );
+    } else if ( LineDiagram *lineDiagram = qobject_cast< LineDiagram* >( diagram ) ) {
+        return lineDiagram->valueTrackerAttributes( index );
+    }
+    Q_ASSERT( false );
+}
+
+void paintElements( AbstractDiagram::Private *diagramPrivate, PaintContext* ctx,
+                    const LabelPaintCache& lpc, const LineAttributesInfoList& lineList )
+{
+    AbstractDiagram* diagram = diagramPrivate->diagram;
+    // paint all lines and their attributes
+    const PainterSaver painterSaver( ctx->painter() );
+    ctx->painter()->setRenderHint( QPainter::Antialiasing, diagram->antiAliasing() );
+    LineAttributesInfoListIterator itline ( lineList );
+
+    QBrush curBrush;
+    QPen curPen;
+    QPolygonF points;
+    KDAB_FOREACH ( const LineAttributesInfo& lineInfo, lineList ) {
+        const LineAttributesInfo& lineInfo = itline.next();
+        const QModelIndex& index = lineInfo.index;
+        const ThreeDLineAttributes td = threeDLineAttributes( diagram, index );
+        const ValueTrackerAttributes vt = valueTrackerAttributes( diagram, index );
+
+        if ( td.isEnabled() ) {
+            PaintingHelpers::paintThreeDLines( ctx, diagram, index, lineInfo.value,
+                                               lineInfo.nextValue, td, &diagramPrivate->reverseMapper );
+        } else {
+            const QBrush br( diagram->brush( index ) );
+            const QPen pn( diagram->pen( index ) );
+            if( points.count() && points.last() == lineInfo.value && curBrush == br && curPen == pn ) {
+                // line goes from last value in points to lineInfo.nextValue
+                diagramPrivate->reverseMapper.addLine( lineInfo.index.row(), lineInfo.index.column(),
+                                                       points.last(), lineInfo.nextValue );
+                points << lineInfo.nextValue;
+            } else {
+                if ( points.count() ) {
+                    PaintingHelpers::paintPolyline( ctx, curBrush, curPen, points );
+                }
+                curBrush = br;
+                curPen = pn;
+                points.clear();
+                // line goes from lineInfo.value to lineInfo,nextValue
+                diagramPrivate->reverseMapper.addLine( lineInfo.index.row(), lineInfo.index.column(),
+                                                       lineInfo.value, lineInfo.nextValue );
+                points << lineInfo.value << lineInfo.nextValue;
+            }
+        }
+    }
+    if ( points.count() ) {
+        PaintingHelpers::paintPolyline( ctx, curBrush, curPen, points );
+    }
+
+    KDAB_FOREACH ( const LineAttributesInfo& lineInfo, lineList ) {
+        const QModelIndex& index = lineInfo.index;
+        const ValueTrackerAttributes vt = valueTrackerAttributes( diagram, index );
+        if ( vt.isEnabled() ) {
+            PaintingHelpers::paintValueTracker( ctx, vt, lineInfo.nextValue );
+        }
+    }
+
+    // paint all data value texts and the point markers
+    diagramPrivate->paintDataValueTextsAndMarkers( ctx, lpc, true );
 }
 
 } // namespace PaintingHelpers

@@ -68,7 +68,6 @@ public:
 
     /** \reimpl */
     virtual CartesianDiagramDataCompressor::DataValueAttributesList aggregatedAttrs(
-            const AbstractDiagram* diagram,
             const QModelIndex & index,
             const CartesianDiagramDataCompressor::CachePosition * position ) const
     {

@@ -97,26 +97,13 @@ namespace KDChart {
 
         int datasetDimension() const;
 
-		void paintAreas( PaintContext* ctx, const QModelIndex& index,
-                         const QList<QPolygonF>& areas, const uint transparency );
+        void paintAreas( PaintContext* ctx, const QModelIndex& index,
+                         const QList<QPolygonF>& areas, uint opacity );
         qreal valueForCell( int row, int column ) const;
-        void addLabel( LabelPaintCache* lpc, const AbstractDiagram* diagram, const QModelIndex& index,
+        void addLabel( LabelPaintCache* lpc, const QModelIndex& index,
                        const CartesianDiagramDataCompressor::CachePosition* position,
                        const PositionPoints& points, const Position& autoPositionPositive,
                        const Position& autoPositionNegative, qreal value );
-
-
-        const QPointF project( QPointF point, QPointF maxLimits,
-                               qreal z, const QModelIndex& index ) const;
-
-        void paintThreeDLines(
-            PaintContext* ctx, const QModelIndex& index,
-            const QPointF& from, const QPointF& to, const qreal depth );
-
-        void paintElements( PaintContext* ctx,
-                            const LabelPaintCache&,
-                            LineAttributesInfoList&,
-                            LineAttributes::MissingValuesPolicy );
 
         LineDiagram::Private* m_private;
     };

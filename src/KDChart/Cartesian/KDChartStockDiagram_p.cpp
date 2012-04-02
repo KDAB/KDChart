@@ -271,8 +271,8 @@ void StockDiagram::Private::drawOHLCBar( int dataset, const CartesianDiagramData
     // Note: A row in the model is a column in a StockDiagram
     const int col = low.index.row();
 
-    StockBarAttributes attr = diagram->stockBarAttributes( col );
-    ThreeDBarAttributes threeDAttr = diagram->threeDBarAttributes( col );
+    StockBarAttributes attr = stockDiagram()->stockBarAttributes( col );
+    ThreeDBarAttributes threeDAttr = stockDiagram()->threeDBarAttributes( col );
     const qreal tickLength = attr.tickLength();
 
     const QPointF leftOpenPoint( open.key + 0.5 - tickLength, open.value );
@@ -312,22 +312,22 @@ void StockDiagram::Private::drawOHLCBar( int dataset, const CartesianDiagramData
 
     LabelPaintCache lpc;
     if ( !open.hidden ) {
-        addLabel( &lpc, diagram, diagram->attributesModel()->mapToSource( open.index ), 0,
+        addLabel( &lpc, diagram->attributesModel()->mapToSource( open.index ), 0,
                             PositionPoints( leftOpenPoint ), Position::South, Position::South, open.value );
     }
     if ( !high.hidden ) {
-        addLabel( &lpc, diagram, diagram->attributesModel()->mapToSource( high.index ), 0,
+        addLabel( &lpc, diagram->attributesModel()->mapToSource( high.index ), 0,
                             PositionPoints( highPoint ), Position::South, Position::South, high.value );
     }
     if ( !low.hidden ) {
-        addLabel( &lpc, diagram, diagram->attributesModel()->mapToSource( low.index ), 0,
+        addLabel( &lpc, diagram->attributesModel()->mapToSource( low.index ), 0,
                             PositionPoints( lowPoint ), Position::South, Position::South, low.value );
     }
     if ( !close.hidden ) {
-        addLabel( &lpc, diagram, diagram->attributesModel()->mapToSource( close.index ), 0,
+        addLabel( &lpc, diagram->attributesModel()->mapToSource( close.index ), 0,
                             PositionPoints( rightClosePoint ), Position::South, Position::South, close.value );
     }
-    paintDataValueTextsAndMarkers( diagram, context, lpc, false );
+    paintDataValueTextsAndMarkers( context, lpc, false );
 }
 
 /**
@@ -361,23 +361,23 @@ void StockDiagram::Private::drawCandlestick( int /*dataset*/, const CartesianDia
     // and set brush and pen accordingly
     // Also, determine what the top and bottom points of the candlestick are
     if ( open.value <= close.value ) {
-        pen = diagram->upTrendCandlestickPen( row );
-        brush = diagram->upTrendCandlestickBrush( row );
+        pen = stockDiagram()->upTrendCandlestickPen( row );
+        brush = stockDiagram()->upTrendCandlestickBrush( row );
         bottomCandlestickPoint = QPointF( open.key, open.value );
         topCandlestickPoint = QPointF( close.key, close.value );
         drawLowerLine = !low.hidden && !open.hidden;
         drawUpperLine = !low.hidden && !close.hidden;
     } else {
-        pen = diagram->downTrendCandlestickPen( row );
-        brush = diagram->downTrendCandlestickBrush( row );
+        pen = stockDiagram()->downTrendCandlestickPen( row );
+        brush = stockDiagram()->downTrendCandlestickBrush( row );
         bottomCandlestickPoint = QPointF( close.key, close.value );
         topCandlestickPoint = QPointF( open.key, open.value );
         drawLowerLine = !low.hidden && !close.hidden;
         drawUpperLine = !low.hidden && !open.hidden;
     }
 
-    StockBarAttributes attr = diagram->stockBarAttributes( col );
-    ThreeDBarAttributes threeDAttr = diagram->threeDBarAttributes( col );
+    StockBarAttributes attr = stockDiagram()->stockBarAttributes( col );
+    ThreeDBarAttributes threeDAttr = stockDiagram()->threeDBarAttributes( col );
 
     const QPointF lowPoint = projectPoint( context, QPointF( low.key, low.value ) );
     const QPointF highPoint = projectPoint( context, QPointF( high.key, high.value ) );
@@ -436,23 +436,23 @@ void StockDiagram::Private::drawCandlestick( int /*dataset*/, const CartesianDia
 
     LabelPaintCache lpc;
     if ( !low.hidden )
-        addLabel( &lpc, diagram, diagram->attributesModel()->mapToSource( low.index ), 0,
-                            PositionPoints( lowPoint ), Position::South, Position::South, low.value );
+        addLabel( &lpc, diagram->attributesModel()->mapToSource( low.index ), 0,
+                  PositionPoints( lowPoint ), Position::South, Position::South, low.value );
     if ( drawCandlestick ) {
         // Both, the open as well as the close value are represented by this candlestick
         reverseMapper.addPolygon( row, openValueColumn(), drawnPolygon );
         reverseMapper.addPolygon( row, closeValueColumn(), drawnPolygon );
 
-        addLabel( &lpc, diagram, diagram->attributesModel()->mapToSource( open.index ), 0,
+        addLabel( &lpc, diagram->attributesModel()->mapToSource( open.index ), 0,
                   PositionPoints( candlestick.bottomRight() ), Position::South, Position::South, open.value );
-        addLabel( &lpc, diagram, diagram->attributesModel()->mapToSource( close.index ), 0,
+        addLabel( &lpc, diagram->attributesModel()->mapToSource( close.index ), 0,
                   PositionPoints( candlestick.topRight() ), Position::South, Position::South, close.value );
     }
     if ( !high.hidden )
-        addLabel( &lpc, diagram, diagram->attributesModel()->mapToSource( high.index ), 0,
+        addLabel( &lpc, diagram->attributesModel()->mapToSource( high.index ), 0,
                   PositionPoints( highPoint ), Position::South, Position::South, high.value );
 
-    paintDataValueTextsAndMarkers( diagram, context, lpc, false );
+    paintDataValueTextsAndMarkers( context, lpc, false );
 }
 
 /**
@@ -473,7 +473,7 @@ void StockDiagram::Private::drawLine( int dataset, int col, const QPointF &point
 
     const QPen pen = diagram->pen( dataset );
     const QBrush brush = diagram->brush( dataset );
-    const ThreeDBarAttributes threeDBarAttr = diagram->threeDBarAttributes( col );
+    const ThreeDBarAttributes threeDBarAttr = stockDiagram()->threeDBarAttributes( col );
 
     QPointF transP1 = context->coordinatePlane()->translate( point1 );
     QPointF transP2 = context->coordinatePlane()->translate( point2 );

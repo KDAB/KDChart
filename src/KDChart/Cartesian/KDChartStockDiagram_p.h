@@ -40,7 +40,7 @@ public:
     ~Private();
 
     Type type;
-    StockDiagram *diagram;
+    StockDiagram* stockDiagram() { return static_cast< StockDiagram* >( diagram ); }
 
     QBrush upTrendCandlestickBrush;
     QBrush downTrendCandlestickBrush;

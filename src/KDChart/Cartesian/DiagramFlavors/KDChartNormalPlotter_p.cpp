@@ -22,6 +22,7 @@
 
 #include "KDChartNormalPlotter_p.h"
 #include "KDChartPlotter.h"
+#include "PaintingHelpers_p.h"
 
 #include <limits>
 
@@ -107,7 +108,7 @@ void NormalPlotter::paint( PaintContext* ctx )
                         polygon << a << b << d << c;
                         areas << polygon;
                     }
-                    addLabel( &lpc, diagram(), sourceIndex, pts, Position::NorthWest,
+                    addLabel( &lpc, sourceIndex, pts, Position::NorthWest,
                               Position::SouthWest, point.value );
                     if( !ISNAN( lastPoint.key ) && !ISNAN( lastPoint.value ) )
                     {
@@ -120,8 +121,7 @@ void NormalPlotter::paint( PaintContext* ctx )
                 laPreviousCell = laCell;
                 lastPoint = point;
             }
-            LineAttributes::MissingValuesPolicy policy = LineAttributes::MissingValuesAreBridged; //unused
-            paintElements( ctx, lpc, lineList, policy );
+            PaintingHelpers::paintElements( m_private, ctx, lpc, lineList );
         }
     }
     else
@@ -179,7 +179,7 @@ void NormalPlotter::paint( PaintContext* ctx )
                         polygon << a << b << d << c;
                         areas << polygon;
                     }
-                    addLabel( &lpc, diagram(), sourceIndex, pts, Position::NorthWest,
+                    addLabel( &lpc, sourceIndex, pts, Position::NorthWest,
                               Position::SouthWest, point.value );
                     if( !ISNAN( lastPoint.key ) && !ISNAN( lastPoint.value ) )
                     {
@@ -193,8 +193,7 @@ void NormalPlotter::paint( PaintContext* ctx )
                 laPreviousCell = laCell;
                 lastPoint = point;
             }
-            LineAttributes::MissingValuesPolicy policy = LineAttributes::MissingValuesAreBridged; //unused
-            paintElements( ctx, lpc, lineList, policy );
+            PaintingHelpers::paintElements( m_private, ctx, lpc, lineList );
         }
     }
 }

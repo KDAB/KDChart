@@ -198,12 +198,12 @@ void NormalBarDiagram::paint( PaintContext* ctx )
                 const qreal barHeight = bottomPoint.y() - topPoint.y();
                 topPoint.setX( topPoint.x() + offset );
                 const QRectF rect( topPoint, QSizeF( barWidth, barHeight ) );
-                addLabel( &lpc, diagram(), sourceIndex, PositionPoints( rect ), Position::North,
+                addLabel( &lpc, sourceIndex, PositionPoints( rect ), Position::North,
                           Position::South, point.value );
                 paintBars( ctx, sourceIndex, rect, maxDepth );
             }
             offset += barWidth + spaceBetweenBars;
         }
     }
-    paintDataValueTextsAndMarkers( diagram(), ctx, lpc, false );
+    paintDataValueTextsAndMarkers( ctx, lpc, false );
 }

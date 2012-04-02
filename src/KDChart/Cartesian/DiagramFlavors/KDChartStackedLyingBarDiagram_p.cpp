@@ -195,10 +195,10 @@ void StackedLyingBarDiagram::paint( PaintContext* ctx )
             point.rx() -= barHeight;
 
             const QRectF rect( point, QSizeF( barHeight , barWidth ) );
-            addLabel( &lpc, diagram(), index, PositionPoints( rect ), Position::North,
+            addLabel( &lpc, index, PositionPoints( rect ), Position::North,
                       Position::South, value );
             paintBars( ctx, index, rect, maxDepth );
         }
     }
-    paintDataValueTextsAndMarkers( diagram(), ctx, lpc, false );
+    paintDataValueTextsAndMarkers( ctx, lpc, false );
 }

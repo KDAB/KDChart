@@ -49,7 +49,8 @@ LabelPaintInfo::LabelPaintInfo( const LabelPaintInfo& other )
 }
 
 AbstractDiagram::Private::Private()
-  : plane( 0 )
+  : diagram( 0 )
+  ,  plane( 0 )
   , attributesModel( new PrivateAttributesModel(0,0) )
   , allowOverlappingDataValueTexts( false )
   , antiAliasing( true )
@@ -117,7 +118,7 @@ qreal AbstractDiagram::Private::calcPercentValue( const QModelIndex & index ) co
 }
 
 void AbstractDiagram::Private::addLabel(
-    LabelPaintCache* cache, const AbstractDiagram* diagram,
+    LabelPaintCache* cache,
     const QModelIndex& index,
     const CartesianDiagramDataCompressor::CachePosition* position,
     const PositionPoints& points,
@@ -125,7 +126,7 @@ void AbstractDiagram::Private::addLabel(
     const qreal value, qreal favoriteAngle /* = 0.0 */ )
 {
     CartesianDiagramDataCompressor::DataValueAttributesList allAttrs(
-        aggregatedAttrs( diagram, index, position ) );
+        aggregatedAttrs( index, position ) );
 
     QMap<QModelIndex, DataValueAttributes>::const_iterator it;
     for ( it = allAttrs.constBegin(); it != allAttrs.constEnd(); ++it ) {
@@ -295,7 +296,6 @@ void AbstractDiagram::Private::forgetAlreadyPaintedDataValues()
 }
 
 void AbstractDiagram::Private::paintDataValueTextsAndMarkers(
-    AbstractDiagram* diag,
     PaintContext* ctx,
     const LabelPaintCache &cache,
     bool paintMarkers,
@@ -311,7 +311,7 @@ void AbstractDiagram::Private::paintDataValueTextsAndMarkers(
 
     if ( paintMarkers && !justCalculateRect ) {
         KDAB_FOREACH ( const LabelPaintInfo& info, cache.paintReplay ) {
-            diag->paintMarker( ctx->painter(), info.index, info.markerPos );
+            diagram->paintMarker( ctx->painter(), info.index, info.markerPos );
         }
     }
 
@@ -327,7 +327,7 @@ void AbstractDiagram::Private::paintDataValueTextsAndMarkers(
 
     KDAB_FOREACH ( const LabelPaintInfo& info, cache.paintReplay ) {
         const QPointF pos = info.labelArea.elementAt( 0 );
-        paintDataValueText( diag, ctx->painter(), info.attrs, pos, info.isValuePositive,
+        paintDataValueText( ctx->painter(), info.attrs, pos, info.isValuePositive,
                             info.value, justCalculateRect, cumulatedBoundingRect );
 
         const QString comment = info.index.data( KDChart::CommentRole ).toString();
@@ -372,7 +372,7 @@ QString AbstractDiagram::Private::formatDataValueText( const DataValueAttributes
     return ret;
 }
 
-void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
+void AbstractDiagram::Private::paintDataValueText(
     QPainter* painter,
     const QModelIndex& index,
     const QPointF& pos,
@@ -380,13 +380,13 @@ void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
     bool justCalculateRect /* = false */,
     QRectF* cumulatedBoundingRect /* = 0 */ )
 {
-    const DataValueAttributes dva( diag->dataValueAttributes( index ) );
+    const DataValueAttributes dva( diagram->dataValueAttributes( index ) );
     const QString text = formatDataValueText( dva, index, value );
-    paintDataValueText( diag, painter, dva, pos, value >= 0.0, text,
+    paintDataValueText( painter, dva, pos, value >= 0.0, text,
                         justCalculateRect, cumulatedBoundingRect );
 }
 
-void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
+void AbstractDiagram::Private::paintDataValueText(
     QPainter* painter,
     const DataValueAttributes& attrs,
     const QPointF& pos,
@@ -421,7 +421,7 @@ void AbstractDiagram::Private::paintDataValueText( const AbstractDiagram* diag,
 
     doc.setDefaultFont( calculatedFont );
     QAbstractTextDocumentLayout::PaintContext context;
-    context.palette = diag->palette();
+    context.palette = diagram->palette();
     context.palette.setColor( QPalette::Text, ta.pen().color() );
 
     QAbstractTextDocumentLayout* const layout = doc.documentLayout();
@@ -515,9 +515,8 @@ QModelIndexList AbstractDiagram::Private::indexesIn( const QRect& rect ) const
 }
 
 CartesianDiagramDataCompressor::DataValueAttributesList AbstractDiagram::Private::aggregatedAttrs(
-    const AbstractDiagram * diagram,
-    const QModelIndex & index,
-    const CartesianDiagramDataCompressor::CachePosition * position ) const
+    const QModelIndex& index,
+    const CartesianDiagramDataCompressor::CachePosition* position ) const
 {
     Q_UNUSED( position ); // used by cartesian diagrams only
     CartesianDiagramDataCompressor::DataValueAttributesList allAttrs;

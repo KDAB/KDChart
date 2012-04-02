@@ -34,7 +34,6 @@ using namespace KDChart;
 AbstractCartesianDiagram::Private::Private()
     : referenceDiagram( 0 )
 {
-    qRegisterMetaType< QModelIndex >( "QModelIndex" );
 }
 
 AbstractCartesianDiagram::Private::~Private()
@@ -45,16 +44,8 @@ bool AbstractCartesianDiagram::compare( const AbstractCartesianDiagram* other ) 
 {
     if( other == this ) return true;
     if( ! other ){
-        //qDebug() << "AbstractCartesianDiagram::compare() cannot compare to Null pointer";
         return false;
     }
-    /*
-    qDebug() << "\n             AbstractCartesianDiagram::compare():";
-            // compare own properties
-    qDebug() <<
-            ((referenceDiagram() == other->referenceDiagram()) &&
-            ((! referenceDiagram()) || (referenceDiagramOffset() == other->referenceDiagramOffset())));
-    */
     return  // compare the base class
             ( static_cast<const AbstractDiagram*>(this)->compare( other ) ) &&
             // compare own properties
@@ -118,11 +109,9 @@ KDChart::CartesianAxisList AbstractCartesianDiagram::axes( ) const
 
 void KDChart::AbstractCartesianDiagram::layoutPlanes()
 {
-    //qDebug() << "KDChart::AbstractCartesianDiagram::layoutPlanes()";
     AbstractCoordinatePlane* plane = coordinatePlane();
-    if( plane ){
+    if ( plane ) {
         plane->layoutPlanes();
-        //qDebug() << "KDChart::AbstractCartesianDiagram::layoutPlanes() OK";
     }
 }
 

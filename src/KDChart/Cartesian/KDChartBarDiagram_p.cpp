@@ -162,22 +162,21 @@ BarDiagram* BarDiagram::BarDiagramType::diagram() const
     return m_private->diagram;
 }
 
-void BarDiagram::BarDiagramType::addLabel( LabelPaintCache* lpc, const AbstractDiagram* diagram,
+void BarDiagram::BarDiagramType::addLabel( LabelPaintCache* lpc,
                                            const QModelIndex& index, const PositionPoints& points,
                                            const Position& autoPositionPositive,
                                            const Position& autoPositionNegative, qreal value )
 {
-    m_private->addLabel( lpc, diagram, index, 0, points,
+    m_private->addLabel( lpc, index, 0, points,
                          autoPositionPositive, autoPositionNegative, value, -45 );
 }
 
 void BarDiagram::BarDiagramType::paintDataValueTextsAndMarkers(
-    AbstractDiagram* diagram,
     PaintContext* ctx,
     const LabelPaintCache& lpc,
     bool paintMarkers )
 {
-    m_private->paintDataValueTextsAndMarkers( diagram, ctx, lpc, paintMarkers );
+    m_private->paintDataValueTextsAndMarkers( ctx, lpc, paintMarkers );
 }
 
 

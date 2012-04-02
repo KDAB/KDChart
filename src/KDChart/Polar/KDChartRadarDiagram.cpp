@@ -210,7 +210,7 @@ void RadarDiagram::paint( PaintContext* ctx,
                 QModelIndex index = model()->index( iRow, iCol, rootIndex() ); // checked
                 const qreal value = model()->data( index ).toDouble();
                 QPointF point = scaleToRealPosition( QPointF( value, iRow ), ctx->rectangle(), destRect, *ctx->coordinatePlane() );
-                d->addLabel( &d->labelPaintCache, this, index, 0, PositionPoints( point ),
+                d->addLabel( &d->labelPaintCache, index, 0, PositionPoints( point ),
                              Position::Center, Position::Center, value );
             }
         }
@@ -221,7 +221,7 @@ void RadarDiagram::paint( PaintContext* ctx,
         newZoomY = oldZoomY;
         if( d->labelPaintCache.paintReplay.count() ) {
             QRectF txtRectF;
-            d->paintDataValueTextsAndMarkers( this, ctx, d->labelPaintCache, true, true, &txtRectF );
+            d->paintDataValueTextsAndMarkers( ctx, d->labelPaintCache, true, true, &txtRectF );
             const QRect txtRect = txtRectF.toRect();
             const QRect curRect = coordinatePlane()->geometry();
             const qreal gapX = qMin( txtRect.left() - curRect.left(), curRect.right()  - txtRect.right() );
@@ -288,7 +288,7 @@ void RadarDiagram::paint( PaintContext* ctx,
             ctx->painter()->drawPolyline( p.polygon );
         }
 
-        d->paintDataValueTextsAndMarkers( this, ctx, d->labelPaintCache, true );
+        d->paintDataValueTextsAndMarkers( ctx, d->labelPaintCache, true );
     }
 }
 

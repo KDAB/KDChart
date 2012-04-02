@@ -30,6 +30,7 @@
 #include "KDChartAttributesModel.h"
 #include "KDChartAbstractCartesianDiagram.h"
 #include "KDChartNormalLineDiagram_p.h"
+#include "PaintingHelpers_p.h"
 
 using namespace KDChart;
 using namespace std;
@@ -173,7 +174,7 @@ void NormalLineDiagram::paint( PaintContext* ctx )
             // add the pieces to painting if this is not hidden:
             if ( ! point.hidden && !ISNAN( point.value ) )
             {
-                addLabel( &lpc, diagram(), sourceIndex, &position, pts, Position::NorthWest,
+                addLabel( &lpc, sourceIndex, &position, pts, Position::NorthWest,
                           Position::SouthWest, point.value );
                 paintAreas( ctx, attributesModel()->mapToSource( lastPoint.index ), areas, laCell.transparency() );
                 // position 0 is not really painted, since it takes two points to make a line :-)
@@ -190,6 +191,5 @@ void NormalLineDiagram::paint( PaintContext* ctx )
 
     }
 
-    LineAttributes::MissingValuesPolicy policy = LineAttributes::MissingValuesAreBridged; //unused
-    paintElements( ctx, lpc, lineList, policy );
+    PaintingHelpers::paintElements( m_private, ctx, lpc, lineList );
 }

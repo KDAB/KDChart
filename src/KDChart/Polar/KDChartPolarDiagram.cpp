@@ -168,7 +168,7 @@ void PolarDiagram::paint( PaintContext* ctx,
                 QPointF point = coordinatePlane()->translate(
                         QPointF( value, iRow ) ) + ctx->rectangle().topLeft();
                 //qDebug() << point;
-                d->addLabel( &d->labelPaintCache, this, index, 0, PositionPoints( point ),
+                d->addLabel( &d->labelPaintCache, index, 0, PositionPoints( point ),
                              Position::Center, Position::Center, value );
             }
         }
@@ -182,7 +182,7 @@ void PolarDiagram::paint( PaintContext* ctx,
             const qreal oldZoomY = newZoomY;
 
             QRectF txtRectF;
-            d->paintDataValueTextsAndMarkers( this, ctx, d->labelPaintCache, true, true, &txtRectF );
+            d->paintDataValueTextsAndMarkers( ctx, d->labelPaintCache, true, true, &txtRectF );
             const QRect txtRect = txtRectF.toRect();
             const QRect curRect = coordinatePlane()->geometry();
             const qreal gapX = qMin( txtRect.left() - curRect.left(), curRect.right()  - txtRect.right() );
@@ -226,7 +226,7 @@ void PolarDiagram::paint( PaintContext* ctx,
                 ctx->painter()->drawPolyline( polygon );
             }
         }
-        d->paintDataValueTextsAndMarkers( this, ctx, d->labelPaintCache, true );
+        d->paintDataValueTextsAndMarkers( ctx, d->labelPaintCache, true );
     }
 }
 

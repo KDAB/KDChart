@@ -33,8 +33,7 @@
 using namespace KDChart;
 
 Plotter::Private::Private()
-    : diagram( 0 )
-    , implementor( 0 )
+    : implementor( 0 )
     , normalPlotter( 0 )
     , percentPlotter( 0 )
 {

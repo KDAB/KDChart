@@ -266,7 +266,7 @@ void PieDiagram::placeLabels( PaintContext* paintContext )
         }
 
         QRectF textBoundingRect;
-        d->paintDataValueTextsAndMarkers( this, paintContext, d->labelPaintCache, false, true,
+        d->paintDataValueTextsAndMarkers( paintContext, d->labelPaintCache, false, true,
                                           &textBoundingRect );
         if ( d->isCollisionAvoidanceEnabled ) {
             shuffleLabels( &textBoundingRect );
@@ -496,7 +496,7 @@ void PieDiagram::paintInternal( PaintContext* paintContext )
         drawSlice( paintContext->painter(), pieRect, frontmostSlice );
     }
 
-    d->paintDataValueTextsAndMarkers( this, paintContext, d->labelPaintCache, false, false );
+    d->paintDataValueTextsAndMarkers( paintContext, d->labelPaintCache, false, false );
     // it's safer to do this at the beginning of placeLabels, but we can save some memory here.
     d->forgetAlreadyPaintedDataValues();
     // ### maybe move this into AbstractDiagram, also make ReverseMapper deal better with multiple polygons
@@ -687,7 +687,7 @@ void PieDiagram::addSliceLabel( LabelPaintCache* lpc, const QRectF& drawPosition
         }
     }
 
-    d->addLabel( lpc, this, index, 0, points, Position::Center, Position::Center,
+    d->addLabel( lpc, index, 0, points, Position::Center, Position::Center,
                  angleLen * sum / 360, favoriteTextAngle );
 }
 

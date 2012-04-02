@@ -178,10 +178,10 @@ void NormalLyingBarDiagram::paint( PaintContext* ctx )
             topPoint.ry() += offset;
             topPoint.rx() -= barHeight;
             const QRectF rect( topPoint, QSizeF( barHeight, barWidth ) );
-            addLabel( &lpc, diagram(), sourceIndex, PositionPoints( rect ), Position::North,
+            addLabel( &lpc, sourceIndex, PositionPoints( rect ), Position::North,
                       Position::South, point.value );
             paintBars( ctx, sourceIndex, rect, maxDepth );
         }
     }
-    paintDataValueTextsAndMarkers( diagram(), ctx, lpc, false );
+    paintDataValueTextsAndMarkers( ctx, lpc, false );
 }

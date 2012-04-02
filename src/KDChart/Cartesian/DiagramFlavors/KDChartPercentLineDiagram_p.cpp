@@ -29,6 +29,7 @@
 #include "KDChartTextAttributes.h"
 #include "KDChartAttributesModel.h"
 #include "KDChartAbstractCartesianDiagram.h"
+#include "PaintingHelpers_p.h"
 
 using namespace KDChart;
 using namespace std;
@@ -79,7 +80,6 @@ void PercentLineDiagram::paint( PaintContext* ctx )
 
     LabelPaintCache lpc;
     LineAttributesInfoList lineList;
-    LineAttributes::MissingValuesPolicy policy = LineAttributes::MissingValuesAreBridged;
 
     //FIXME(khz): add LineAttributes::MissingValuesPolicy support for LineDiagram::Stacked and ::Percent
 
@@ -215,7 +215,7 @@ void PercentLineDiagram::paint( PaintContext* ctx )
             if( !ISNAN( point.value ) )
             {
                 const PositionPoints pts( ptNorthWest, ptNorthEast, ptSouthEast, ptSouthWest );
-                addLabel( &lpc, diagram(), sourceIndex, &position, pts, Position::NorthWest,
+                addLabel( &lpc, sourceIndex, &position, pts, Position::NorthWest,
                           Position::SouthWest, point.value );
             }
         }
@@ -226,5 +226,5 @@ void PercentLineDiagram::paint( PaintContext* ctx )
         bottomPoints = points;
         bFirstDataset = false;
     }
-    paintElements( ctx, lpc, lineList, policy );
+    PaintingHelpers::paintElements( m_private, ctx, lpc, lineList );
 }

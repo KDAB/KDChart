@@ -22,6 +22,7 @@
 
 #include "KDChartPercentPlotter_p.h"
 #include "KDChartPlotter.h"
+#include "PaintingHelpers_p.h"
 
 #include <limits>
 
@@ -111,7 +112,6 @@ void PercentPlotter::paint( PaintContext* ctx )
         return;
 
     LabelPaintCache lpc;
-    LineAttributes::MissingValuesPolicy policy = LineAttributes::MissingValuesAreBridged; // ???
 
     // this map contains the y-values to each x-value
     QMap< qreal, QVector< QPair< Value, QModelIndex > > > diagramValues;
@@ -248,7 +248,7 @@ void PercentPlotter::paint( PaintContext* ctx )
             }
             // add the pieces to painting if this is not hidden:
             if ( !point.hidden /*&& !ISNAN( lastPoint.key ) && !ISNAN( lastPoint.value ) */) {
-                addLabel( &lpc, diagram(), sourceIndex, pts, Position::NorthWest,
+                addLabel( &lpc, sourceIndex, pts, Position::NorthWest,
                           Position::SouthWest, value );
                 if( !ISNAN( lastPoint.key ) && !ISNAN( lastPoint.value ) )
                 {
@@ -263,6 +263,6 @@ void PercentPlotter::paint( PaintContext* ctx )
             lastExtraY = extraY;
             lastValue = value;
         }
-        paintElements( ctx, lpc, lineList, policy );
+        PaintingHelpers::paintElements( m_private, ctx, lpc, lineList );
     }
 }

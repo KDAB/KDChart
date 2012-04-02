@@ -115,7 +115,7 @@ namespace KDChart {
         virtual qreal calcPercentValue( const QModelIndex & index ) const;
 
         // this should possibly be virtual so it can be overridden (cf. LabelPaintCache::extra)
-        void addLabel( LabelPaintCache* cache, const AbstractDiagram* diagram,
+        void addLabel( LabelPaintCache* cache,
                        const QModelIndex& index,
                        const CartesianDiagramDataCompressor::CachePosition* position,
                        const PositionPoints& points, const Position& autoPositionPositive,
@@ -129,25 +129,22 @@ namespace KDChart {
         QString formatDataValueText( const DataValueAttributes &dva,
                                      const QModelIndex& index, qreal value ) const;
 
-        void forgetAlreadyPaintedDataValues(); // TODO restructure (cf. LabelPaintCache::extra)
+        void forgetAlreadyPaintedDataValues();
 
-        void paintDataValueTextsAndMarkers( AbstractDiagram* diag,
-                                            PaintContext* ctx,
+        void paintDataValueTextsAndMarkers( PaintContext* ctx,
                                             const LabelPaintCache& cache,
                                             bool paintMarkers,
                                             bool justCalculateRect=false,
                                             QRectF* cumulatedBoundingRect=0 );
 
-        void paintDataValueText( const AbstractDiagram* diag,
-                                 QPainter* painter,
+        void paintDataValueText( QPainter* painter,
                                  const QModelIndex& index,
                                  const QPointF& pos,
                                  qreal value,
                                  bool justCalculateRect=false,
                                  QRectF* cumulatedBoundingRect=0 );
 
-        void paintDataValueText( const AbstractDiagram* diag,
-                                 QPainter* painter,
+        void paintDataValueText( QPainter* painter,
                                  const DataValueAttributes& attrs,
                                  const QPointF& pos,
                                  bool valueIsPositive,
@@ -162,7 +159,6 @@ namespace KDChart {
         QModelIndexList indexesIn( const QRect& rect ) const;
 
         virtual CartesianDiagramDataCompressor::DataValueAttributesList aggregatedAttrs(
-                const AbstractDiagram* diagram,
                 const QModelIndex & index,
                 const CartesianDiagramDataCompressor::CachePosition * position ) const;
 
@@ -181,9 +177,13 @@ namespace KDChart {
          */
         void resetDatasetAttrs( int dataset, int role );
 
+        AbstractDiagram* diagram;
+        ReverseMapper reverseMapper;
+
     protected:
         void init();
         void init( AbstractCoordinatePlane* plane );
+
         QPointer<AbstractCoordinatePlane> plane;
         mutable QModelIndex attributesModelRootIndex;
         QPointer<AttributesModel> attributesModel;
@@ -193,7 +193,6 @@ namespace KDChart {
         int datasetDimension;
         mutable QPair<QPointF,QPointF> databoundaries;
         mutable bool databoundariesDirty;
-        ReverseMapper reverseMapper;
 
         QMap< Qt::Orientation, QString > unitSuffix;
         QMap< Qt::Orientation, QString > unitPrefix;

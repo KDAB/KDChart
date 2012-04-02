@@ -207,10 +207,10 @@ void PercentLyingBarDiagram::paint( PaintContext* ctx )
             point.setX( point.x() - barHeight );
 
             const QRectF rect( point, QSizeF( barHeight, barWidth ) );
-            addLabel( &lpc, diagram(), sourceIndex, PositionPoints( rect ), Position::North,
+            addLabel( &lpc, sourceIndex, PositionPoints( rect ), Position::North,
                       Position::South, value );
             paintBars( ctx, sourceIndex, rect, maxDepth );
         }
     }
-    paintDataValueTextsAndMarkers( diagram(), ctx, lpc, false );
+    paintDataValueTextsAndMarkers( ctx, lpc, false );
 }

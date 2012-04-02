@@ -68,7 +68,6 @@ namespace KDChart {
             const QSizeF& size,
             const AbstractCoordinatePlane* plane );
 
-        Plotter* diagram;
         PlotterType* implementor; // the current type
         PlotterType* normalPlotter;
         PlotterType* percentPlotter;
@@ -115,22 +114,9 @@ namespace KDChart {
         void paintAreas( PaintContext* ctx, const QModelIndex& index,
                          const QList<QPolygonF>& areas, uint opacity );
 
-        void addLabel( LabelPaintCache* lpc, const AbstractDiagram* diagram, const QModelIndex& index,
+        void addLabel( LabelPaintCache* lpc, const QModelIndex& index,
                        const PositionPoints& points, const Position& autoPositionPositive,
                        const Position& autoPositionNegative, qreal value );
-
-
-        const QPointF project( QPointF point, QPointF maxLimits,
-                               qreal z, const QModelIndex& index ) const;
-
-        void paintThreeDLines(
-            PaintContext* ctx, const QModelIndex& index,
-            const QPointF& from, const QPointF& to, const qreal depth );
-
-        void paintElements( PaintContext* ctx,
-                            const LabelPaintCache&,
-                            LineAttributesInfoList&,
-                            LineAttributes::MissingValuesPolicy );
 
         Plotter::Private* m_private;
         // TODO: do we need them or not? (currently unused, but maybe there are supposed to be several

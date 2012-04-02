@@ -51,6 +51,7 @@ using namespace KDChart;
 AbstractDiagram::AbstractDiagram ( QWidget* parent, AbstractCoordinatePlane* plane )
     : QAbstractItemView ( parent ), _d( new Private() )
 {
+    _d->diagram = this;
     _d->init( plane );
     init();
 }
@@ -420,7 +421,7 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
                                           const QPointF& pos,
                                           qreal value )
 {
-    d->paintDataValueText( this, painter, index, pos, value );
+    d->paintDataValueText( painter, index, pos, value );
 }
 
 
