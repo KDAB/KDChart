@@ -24,6 +24,7 @@
 #include "KDChartDataValueAttributes.h"
 
 #include "KDChartLineDiagram_p.h"
+#include "KDChartPainterSaver_p.h"
 #include "PaintingHelpers_p.h"
 
 using namespace KDChart;

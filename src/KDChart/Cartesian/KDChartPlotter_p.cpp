@@ -23,6 +23,7 @@
 #include "KDChartPlotter_p.h"
 #include "KDChartPlotter.h"
 
+#include "KDChartPainterSaver_p.h"
 #include "KDChartValueTrackerAttributes.h"
 #include "PaintingHelpers_p.h"
 

@@ -12,6 +12,7 @@
 #include "KDChartAbstractDiagram_p.h"
 
 #include "KDChartFrameAttributes.h"
+#include "KDChartPainterSaver_p.h"
 
 #include <QAbstractTextDocumentLayout>
 #include <QTextBlock>
@@ -50,7 +51,8 @@ LabelPaintInfo::LabelPaintInfo( const LabelPaintInfo& other )
 
 AbstractDiagram::Private::Private()
   : diagram( 0 )
-  ,  plane( 0 )
+  , doDumpPaintTime( false )
+  , plane( 0 )
   , attributesModel( new PrivateAttributesModel(0,0) )
   , allowOverlappingDataValueTexts( false )
   , antiAliasing( true )
@@ -93,6 +95,7 @@ void AbstractDiagram::Private::setAttributesModel( AttributesModel* amodel )
 
 AbstractDiagram::Private::Private( const AbstractDiagram::Private& rhs ) :
     diagram( 0 ),
+    doDumpPaintTime( rhs.doDumpPaintTime ),
     // Do not copy the plane
     plane( 0 ),
     attributesModelRootIndex( QModelIndex() ),

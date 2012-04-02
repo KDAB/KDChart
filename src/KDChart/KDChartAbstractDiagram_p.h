@@ -45,7 +45,6 @@
 #include "KDChartChart.h"
 #include <KDChartCartesianDiagramDataCompressor_p.h>
 #include "ReverseMapper.h"
-#include "KDChartPainterSaver_p.h"
 
 #include <QMap>
 #include <QPoint>
@@ -177,8 +176,11 @@ namespace KDChart {
          */
         void resetDatasetAttrs( int dataset, int role );
 
+        static Private* get( AbstractDiagram *diagram ) { return diagram->_d; }
+
         AbstractDiagram* diagram;
         ReverseMapper reverseMapper;
+        bool doDumpPaintTime; // for use in performance testing code
 
     protected:
         void init();

@@ -23,13 +23,8 @@
 #include "KDChartCartesianCoordinatePlane.h"
 #include "KDChartCartesianCoordinatePlane_p.h"
 
-#include <QFont>
-#include <QList>
-#include <QtDebug>
-#include <QPainter>
-#include <QApplication>
-
 #include "KDChartAbstractDiagram.h"
+#include "KDChartAbstractDiagram_p.h"
 #include "KDChartAbstractCartesianDiagram.h"
 #include "CartesianCoordinateTransformation.h"
 #include "KDChartGridAttributes.h"
@@ -39,6 +34,13 @@
 #include "KDChartStockDiagram.h"
 
 #include <KDABLibFakes>
+
+#include <QApplication>
+#include <QFont>
+#include <QList>
+#include <QtDebug>
+#include <QPainter>
+#include <QTime>
 
 
 using namespace KDChart;
@@ -99,13 +101,10 @@ void CartesianCoordinatePlane::addDiagram ( AbstractDiagram* diagram )
 void CartesianCoordinatePlane::paint ( QPainter* painter )
 {
     // prevent recursive call:
-    //qDebug("attempt plane::paint()");
     if( d->bPaintIsRunning ){
         return;
     }
     d->bPaintIsRunning = true;
-
-    //qDebug() << "start plane::paint()";
 
     AbstractDiagramList diags = diagrams();
     if ( !diags.isEmpty() )
@@ -131,19 +130,22 @@ void CartesianCoordinatePlane::paint ( QPainter* painter )
             if ( diags[i]->isHidden() ) {
                 continue;
             }
-//qDebug("  start diags[i]->paint ( &ctx );");
+            bool doDumpPaintTime = AbstractDiagram::Private::get( diags[ i ] )->doDumpPaintTime;
+            QTime stopWatch;
+            if ( doDumpPaintTime ) {
+                stopWatch.start();
+            }
+
             PainterSaver diagramPainterSaver( painter );
             diags[i]->paint ( &ctx );
-//qDebug("  done: diags[i]->paint ( &ctx );");
+
+            if ( doDumpPaintTime ) {
+                qDebug() << "Painting diagram" << i << "took" << stopWatch.elapsed() << "milliseconds";
+            }
         }
 
-        //for debugging:
-        //    painter->drawRect( drawArea.adjusted(4,4,-4,-4) );
-        //    painter->drawRect( drawArea.adjusted(2,2,-2,-2) );
-        //    painter->drawRect( drawArea );
     }
     d->bPaintIsRunning = false;
-    //qDebug("done: plane::paint()");
 }
 
 

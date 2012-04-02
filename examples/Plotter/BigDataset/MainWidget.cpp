@@ -1,5 +1,6 @@
 #include "MainWidget.h"
 
+#include "KDChartAbstractDiagram_p.h"
 #include "KDChartChart.h"
 #include "KDChartPlotter.h"
 
@@ -21,6 +22,7 @@ MainWidget::MainWidget()
 
     m_plotter = new KDChart::Plotter;
     m_plotter->setModel( &m_model );
+    KDChart::AbstractDiagram::Private::get( m_plotter )->doDumpPaintTime = true;
     chart->coordinatePlane()->replaceDiagram( m_plotter );
 
     KDChart::CartesianCoordinatePlane* cPlane

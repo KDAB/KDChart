@@ -30,6 +30,7 @@
 #include "KDChartAttributesModel.h"
 #include "KDChartAbstractGrid.h"
 #include "KDChartDataValueAttributes.h"
+#include "KDChartPainterSaver_p.h"
 
 #include <KDABLibFakes>
 

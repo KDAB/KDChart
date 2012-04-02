@@ -24,6 +24,7 @@
 #include "KDChartPlotter_p.h"
 
 #include "KDChartAbstractGrid.h"
+#include "KDChartPainterSaver_p.h"
 
 #include <KDABLibFakes>
 

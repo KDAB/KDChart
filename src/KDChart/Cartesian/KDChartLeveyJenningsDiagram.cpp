@@ -23,15 +23,16 @@
 #include "KDChartLeveyJenningsDiagram.h"
 #include "KDChartLeveyJenningsDiagram_p.h"
 
+#include "KDChartChart.h"
+#include "KDChartTextAttributes.h"
+#include "KDChartAbstractGrid.h"
+#include "KDChartPainterSaver_p.h"
+
 #include <QDateTime>
 #include <QFontMetrics>
 #include <QPainter>
 #include <QSvgRenderer>
 #include <QVector>
-
-#include "KDChartChart.h"
-#include "KDChartTextAttributes.h"
-#include "KDChartAbstractGrid.h"
 
 #include <KDABLibFakes>
 

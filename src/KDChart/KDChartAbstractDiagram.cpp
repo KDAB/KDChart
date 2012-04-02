@@ -39,6 +39,7 @@
 #include "KDChartMarkerAttributes.h"
 #include "KDChartAbstractThreeDAttributes.h"
 #include "KDChartThreeDLineAttributes.h"
+#include "KDChartPainterSaver_p.h"
 
 #include <KDABLibFakes>
 

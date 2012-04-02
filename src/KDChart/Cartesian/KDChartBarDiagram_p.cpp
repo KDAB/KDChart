@@ -21,9 +21,10 @@
 **********************************************************************/
 
 #include "KDChartBarDiagram.h"
-#include "KDChartDataValueAttributes.h"
-
 #include "KDChartBarDiagram_p.h"
+
+#include "KDChartDataValueAttributes.h"
+#include "KDChartPainterSaver_p.h"
 
 using namespace KDChart;
 

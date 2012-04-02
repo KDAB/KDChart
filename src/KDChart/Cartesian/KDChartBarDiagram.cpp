@@ -27,6 +27,7 @@
 #include "KDChartPosition.h"
 #include "KDChartAttributesModel.h"
 #include "KDChartAbstractGrid.h"
+#include "KDChartPainterSaver_p.h"
 
 #include <QPainter>
 #include <QDebug>

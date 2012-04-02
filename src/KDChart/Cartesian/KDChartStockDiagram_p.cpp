@@ -22,6 +22,8 @@
 
 #include "KDChartStockDiagram_p.h"
 
+#include "KDChartPainterSaver_p.h"
+
 using namespace KDChart;
 
 
