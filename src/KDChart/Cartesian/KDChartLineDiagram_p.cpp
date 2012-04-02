@@ -134,8 +134,9 @@ void LineDiagram::LineDiagramType::paintElements(
                 reverseMapper().addLine( lineInfo.index.row(), lineInfo.index.column(), points.last(), lineInfo.nextValue );
                 points << lineInfo.nextValue;
             } else {
-                if( points.count() )
-                    paintPolyline( ctx, curBrush, curPen, points );
+                if ( points.count() ) {
+                    m_private->paintPolyline( ctx, curBrush, curPen, points );
+                }
                 curBrush = br;
                 curPen   = pn;
                 points.clear();
@@ -145,8 +146,9 @@ void LineDiagram::LineDiagramType::paintElements(
             }
         }
     }
-    if( points.count() )
-        paintPolyline( ctx, curBrush, curPen, points );
+    if ( points.count() ) {
+        m_private->paintPolyline( ctx, curBrush, curPen, points );
+    }
 
     itline.toFront();
     while ( itline.hasNext() ) {
@@ -159,7 +161,7 @@ void LineDiagram::LineDiagramType::paintElements(
     }
 
     // paint all data value texts and the point markers
-    paintDataValueTextsAndMarkers( diagram(), ctx, lpc, true );
+    m_private->paintDataValueTextsAndMarkers( diagram(), ctx, lpc, true );
 }
 
 AttributesModel* LineDiagram::LineDiagramType::attributesModel() const

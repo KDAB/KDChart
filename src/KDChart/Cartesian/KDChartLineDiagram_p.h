@@ -78,15 +78,11 @@ namespace KDChart {
 
     KDCHART_IMPL_DERIVED_DIAGRAM( LineDiagram, AbstractCartesianDiagram, CartesianCoordinatePlane )
 
-    // we inherit privately, so that derived classes cannot call the
-    // base class functions - those reference the wrong (unattached to
-    // a diagram) d
-    class LineDiagram::LineDiagramType : private LineDiagram::Private
+    class LineDiagram::LineDiagramType
     {
     public:
         explicit LineDiagramType( LineDiagram* d )
-            : LineDiagram::Private()
-            , m_private( d->d_func() )
+            : m_private( d->d_func() )
         {
         }
         virtual ~LineDiagramType() {}
@@ -105,16 +101,8 @@ namespace KDChart {
         qreal interpolateMissingValue( const CartesianDiagramDataCompressor::CachePosition& pos ) const;
 
         int datasetDimension() const;
-        /*
-        LineAttributes::MissingValuesPolicy getCellValues(
-            int row, int column,
-            bool shiftCountedXValuesByHalfSection,
-            qreal& valueX, qreal& valueY ) const;
-        qreal valueForCellTesting( int row, int column,
-                                    bool& bOK,
-                                    bool showHiddenCellsAsInvalid = false ) const;
-                                    */
-        void paintAreas( PaintContext* ctx, const QModelIndex& index,
+
+		void paintAreas( PaintContext* ctx, const QModelIndex& index,
                          const QList<QPolygonF>& areas, const uint transparency );
         qreal valueForCell( int row, int column ) const;
         void addLabel( LabelPaintCache* lpc, const AbstractDiagram* diagram, const QModelIndex& index,

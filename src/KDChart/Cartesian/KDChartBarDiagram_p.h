@@ -61,22 +61,6 @@ public:
     Private( const Private& rhs );
     ~Private();
 
-/* refactoring */
-/*
-    Private( const Private& rhs ) :
-        AbstractCartesianDiagram::Private( rhs ),
-        barType( rhs.barType ),
-        maxDepth( rhs.maxDepth )
-        {
-        }
-
-    void calculateValueAndGapWidths( int rowCount, int colCount,
-                                     qreal groupWidth,
-                                     qreal& barWidth,
-                                     qreal& spaceBetweenBars,
-                                     qreal& spaceBetweenGroups );
-*/
-
     Qt::Orientation orientation;
 
     BarDiagram* diagram;
@@ -87,26 +71,15 @@ public:
     BarDiagramType* normalLyingDiagram;
     BarDiagramType* stackedLyingDiagram;
     BarDiagramType* percentLyingDiagram;
-
-/* refactoring */
-/*
-    BarType barType;
-private:
-    qreal maxDepth;
-*/
 };
 
 KDCHART_IMPL_DERIVED_DIAGRAM( BarDiagram, AbstractCartesianDiagram, CartesianCoordinatePlane )
 
-   // we inherit privately, so that derived classes cannot call the
-    // base class functions - those reference the wrong (unattached to
-    // a diagram) d
-    class BarDiagram::BarDiagramType : private BarDiagram::Private
+    class BarDiagram::BarDiagramType
     {
     public:
         explicit BarDiagramType( BarDiagram* d )
-            : BarDiagram::Private()
-            , m_private( d->d_func() )
+            : m_private( d->d_func() )
         {
         }
         virtual ~BarDiagramType() {}
