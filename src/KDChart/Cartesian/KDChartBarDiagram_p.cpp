@@ -43,8 +43,8 @@ void BarDiagram::BarDiagramType::paintBars( PaintContext* ctx, const QModelIndex
     QBrush indexBrush( diagram()->brush( index ) );
     QPen indexPen( diagram()->pen( index ) );
     PainterSaver painterSaver( ctx->painter() );
-    if ( diagram()->antiAliasing() )
-        ctx->painter()->setRenderHint ( QPainter::Antialiasing );
+
+    ctx->painter()->setRenderHint( QPainter::Antialiasing, diagram()->antiAliasing() );
     if( threeDAttrs.isEnabled() )
         indexBrush = threeDAttrs.threeDBrush( indexBrush, bar );
     ctx->painter()->setBrush( indexBrush );

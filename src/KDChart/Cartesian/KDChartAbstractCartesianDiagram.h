@@ -30,7 +30,6 @@
 namespace KDChart {
 
     class GridAttributes;
-//    class PaintContext;
 
     /**
      * @brief Base class for diagrams based on a cartesian coordianate system.
@@ -43,7 +42,6 @@ namespace KDChart {
     {
         Q_OBJECT
         Q_DISABLE_COPY( AbstractCartesianDiagram )
-//        KDCHART_DECLARE_PRIVATE_DERIVED( AbstractCartesianDiagram )
         KDCHART_DECLARE_DERIVED_DIAGRAM( AbstractCartesianDiagram, CartesianCoordinatePlane )
 
     public:

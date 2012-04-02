@@ -45,14 +45,14 @@ public:
 protected:
     // Implement AbstractDiagram
     /** \reimpl */
-    virtual void paint ( PaintContext* paintContext );
+    virtual void paint( PaintContext* paintContext );
 public:
     /** \reimpl */
-    virtual void resize ( const QSizeF& area );
+    virtual void resize( const QSizeF& area );
 
     // Implement AbstractPolarDiagram
     /** \reimpl */
-    virtual qreal valueTotals () const;
+    virtual qreal valueTotals() const;
     /** \reimpl */
     virtual qreal numberOfValuesPerDataset() const;
     virtual qreal numberOfDatasets() const;
@@ -81,15 +81,10 @@ protected:
     void resizeEvent( QResizeEvent* );
 
 private:
-    //QRectF piePosition( uint dataset, uint pie ) const;
-    void drawOnePie( QPainter* painter,
-        uint dataset, uint pie,
-        qreal granularity );
-    void drawPieSurface( QPainter* painter,
-        uint dataset, uint pie,
-        qreal granularity );
-    QPointF pointOnCircle( const QRectF& rect, int dataset, int pie, bool outer, qreal angle, qreal totalGapFactor, qreal totalExplodeFactor );
-    //qreal radiusOf( const QRectF& rect, int dataset, int pie, bool outer );
+    void drawOneSlice( QPainter* painter, uint dataset, uint slice, qreal granularity );
+    void drawPieSurface( QPainter* painter, uint dataset, uint slice, qreal granularity );
+    QPointF pointOnEllipse( const QRectF& rect, int dataset, int slice, bool outer, qreal angle,
+                            qreal totalGapFactor, qreal totalExplodeFactor );
 }; // End of class RingDiagram
 
 }

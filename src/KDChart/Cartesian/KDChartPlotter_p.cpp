@@ -118,9 +118,7 @@ void Plotter::PlotterType::paintThreeDLines(
     const QBrush indexBrush ( diagram()->brush( index ) );
     const PainterSaver painterSaver( ctx->painter() );
 
-    if( diagram()->antiAliasing() )
-        ctx->painter()->setRenderHint( QPainter::Antialiasing );
-
+    ctx->painter()->setRenderHint( QPainter::Antialiasing, diagram()->antiAliasing() );
     ctx->painter()->setBrush( indexBrush );
     ctx->painter()->setPen( PrintingParameters::scalePen( diagram()->pen( index ) ) );
 
@@ -140,8 +138,7 @@ void Plotter::PlotterType::paintElements(
     Q_UNUSED( policy );
     // paint all lines and their attributes
     PainterSaver painterSaver( ctx->painter() );
-    if ( diagram()->antiAliasing() )
-        ctx->painter()->setRenderHint ( QPainter::Antialiasing );
+    ctx->painter()->setRenderHint( QPainter::Antialiasing, diagram()->antiAliasing() );
     LineAttributesInfoListIterator itline ( lineList );
 
     QBrush curBrush;
@@ -183,8 +180,9 @@ void Plotter::PlotterType::paintElements(
         const LineAttributesInfo& lineInfo = itline.next();
         const QModelIndex& index = lineInfo.index;
         const ValueTrackerAttributes vt = diagram()->valueTrackerAttributes( index );
-        if( vt.isEnabled() )
-            paintValueTracker( ctx, vt, lineInfo.value );
+        if ( vt.isEnabled() ) {
+            paintValueTracker( ctx, vt, lineInfo.nextValue );
+        }
     }
 
     // paint all data value texts and the point markers
@@ -217,9 +215,7 @@ void Plotter::PlotterType::paintAreas(
     indexPen.setColor( trans );
     const PainterSaver painterSaver( ctx->painter() );
 
-    if( diagram()->antiAliasing() )
-        ctx->painter()->setRenderHint( QPainter::Antialiasing );
-
+    ctx->painter()->setRenderHint( QPainter::Antialiasing, diagram()->antiAliasing() );
     ctx->painter()->setPen( PrintingParameters::scalePen( indexPen ) );
     ctx->painter()->setBrush( trans );
 

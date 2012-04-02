@@ -61,9 +61,6 @@ void TernaryCoordinatePlane::addDiagram( AbstractDiagram* diagram )
                  "TernaryCoordinatePlane::addDiagram", "Only ternary "
                  "diagrams can be added to a ternary coordinate plane!" );
     AbstractCoordinatePlane::addDiagram ( diagram );
-//     connect ( diagram,  SIGNAL ( layoutChanged ( AbstractDiagram* ) ),
-//               SLOT ( slotLayoutChanged ( AbstractDiagram* ) ) );
-//     connect( diagram, SIGNAL( propertiesChanged() ),this, SIGNAL( propertiesChanged() ) );
 }
 
 void TernaryCoordinatePlane::layoutDiagrams()
@@ -159,10 +156,6 @@ void TernaryCoordinatePlane::paint( QPainter* painter )
     // FIXME: this is not a good location for that:
     painter->setRenderHint(QPainter::Antialiasing, true );
 
-//     painter->setPen( QColor( "gold" ) );
-//     painter->setBrush( QColor( "gold" ) );
-//     painter->drawRect( d->diagramRectContainer );
-
     AbstractDiagramList diags = diagrams();
     if ( !diags.isEmpty() )
     {
@@ -171,11 +164,6 @@ void TernaryCoordinatePlane::paint( QPainter* painter )
         ctx.setCoordinatePlane ( this );
         const QRectF drawArea( areaGeometry() );
         ctx.setRectangle ( drawArea );
-
-        // enabling clipping so that we're not drawing outside
-//         QRect clipRect = drawArea.toRect().adjusted( -1, -1, 1, 1 );
-//         QRegion clipRegion( clipRect );
-//         painter->setClipRegion( clipRegion );
 
         // paint the coordinate system rulers:
         Q_ASSERT( d->grid != 0 );

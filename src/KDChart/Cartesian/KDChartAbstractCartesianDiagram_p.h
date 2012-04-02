@@ -56,7 +56,7 @@ class AbstractCartesianDiagram::Private : public AbstractDiagram::Private
     friend class AbstractCartesianDiagram;
 public:
     Private();
-   virtual ~Private();
+    virtual ~Private();
 
     Private( const Private& rhs ) :
         AbstractDiagram::Private( rhs ),
@@ -88,17 +88,6 @@ public:
 };
 
 KDCHART_IMPL_DERIVED_DIAGRAM( AbstractCartesianDiagram, AbstractDiagram, CartesianCoordinatePlane )
-/*
-inline AbstractCartesianDiagram::AbstractCartesianDiagram( Private * p )
-    : AbstractDiagram( p ) { init(); }
-inline AbstractCartesianDiagram::AbstractCartesianDiagram(
-    Private * p, QWidget* parent, CartesianCoordinatePlane* plane )
-    : AbstractDiagram( p, parent, plane ) { init(); }
-inline AbstractCartesianDiagram::Private * AbstractCartesianDiagram::d_func()
-{ return static_cast<Private*>( AbstractDiagram::d_func() ); }
-inline const AbstractCartesianDiagram::Private * AbstractCartesianDiagram::d_func() const
-{ return static_cast<const Private*>( AbstractDiagram::d_func() ); }
-*/
 
 }
 #endif /* KDCHARTABSTRACTCARTESIANDIAGRAM_P_H */

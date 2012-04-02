@@ -75,13 +75,6 @@ bool RingDiagram::compare( const RingDiagram* other ) const
     if( ! other ){
         return false;
     }
-    /*
-    qDebug() <<"\n             RingDiagram::compare():";
-            // compare own properties
-    qDebug() << (type() == other->type());
-    qDebug() << (relativeThickness()  == other->relativeThickness());
-    qDebug() << (expandWhenExploded() == other->expandWhenExploded());
-    */
     return  // compare the base class
             ( static_cast<const AbstractPieDiagram*>(this)->compare( other ) ) &&
             // compare own properties
@@ -115,34 +108,33 @@ const QPair<QPointF, QPointF> RingDiagram::calculateDataBoundaries () const
 
     const PieAttributes attrs( pieAttributes() );
 
-    QPointF bottomLeft ( QPointF( 0, 0 ) );
+    QPointF bottomLeft( 0, 0 );
     QPointF topRight;
-    // If we explode, we need extra space for the pie slice that has
-    // the largest explosion distance.
+    // If we explode, we need extra space for the pie slice that has the largest explosion distance.
     if ( attrs.explode() ) {
-    	const int rCount = rowCount();
+        const int rCount = rowCount();
         const int colCount = columnCount();
         qreal maxExplode = 0.0;
-        for( int i = 0; i < rCount; ++i ){
-        	qreal maxExplodeInThisRow = 0.0;
-        	for( int j = 0; j < colCount; ++j ){
+        for ( int i = 0; i < rCount; ++i ) {
+            qreal maxExplodeInThisRow = 0.0;
+            for ( int j = 0; j < colCount; ++j ) {
                 const PieAttributes columnAttrs( pieAttributes( model()->index( i, j, rootIndex() ) ) ); // checked
-        		//qDebug() << columnAttrs.explodeFactor();
-        		maxExplodeInThisRow = qMax( maxExplodeInThisRow, columnAttrs.explodeFactor() );
-        	}
-        	maxExplode += maxExplodeInThisRow;
+                maxExplodeInThisRow = qMax( maxExplodeInThisRow, columnAttrs.explodeFactor() );
+            }
+            maxExplode += maxExplodeInThisRow;
 
-        	// FIXME: What if explode factor of inner ring is > 1.0 ?
-        	if ( !d->expandWhenExploded )
-        		break;
+            // FIXME: What if explode factor of inner ring is > 1.0 ?
+            if ( !d->expandWhenExploded ) {
+                break;
+            }
         }
         // explode factor is relative to width (outer r - inner r) of one ring
         maxExplode /= ( rCount + 1);
-        topRight = QPointF( 1.0+maxExplode, 1.0+maxExplode );
-    }else{
+        topRight = QPointF( 1.0 + maxExplode, 1.0 + maxExplode );
+    } else {
         topRight = QPointF( 1.0, 1.0 );
     }
-    return QPair<QPointF, QPointF> ( bottomLeft,  topRight );
+    return QPair<QPointF, QPointF>( bottomLeft, topRight );
 }
 
 void RingDiagram::paintEvent( QPaintEvent* )
@@ -183,25 +175,24 @@ void RingDiagram::paint( PaintContext* ctx )
     // compute position
     d->size = qMin( contentsRect.width(), contentsRect.height() ); // initial size
 
-    // if the pies explode, we need to give them additional space =>
+    // if the slices explode, we need to give them additional space =>
     // make the basic size smaller
     qreal totalOffset = 0.0;
-    for( int i = 0; i < rCount; ++i ){
+    for ( int i = 0; i < rCount; ++i ) {
         qreal maxOffsetInThisRow = 0.0;
-    	for( int j = 0; j < colCount; ++j ){
+        for ( int j = 0; j < colCount; ++j ) {
             const PieAttributes cellAttrs( pieAttributes( model()->index( i, j, rootIndex() ) ) ); // checked
-    		//qDebug() << cellAttrs.explodeFactor();
-    		const qreal explode = cellAttrs.explode() ? cellAttrs.explodeFactor() : 0.0;
-    		maxOffsetInThisRow = qMax( maxOffsetInThisRow, cellAttrs.gapFactor( false ) + explode );
-    	}
-		if ( !d->expandWhenExploded )
-			maxOffsetInThisRow -= (qreal)i;
-		if ( maxOffsetInThisRow > 0.0 )
-			totalOffset += maxOffsetInThisRow;
-
-    	// FIXME: What if explode factor of inner ring is > 1.0 ?
-    	//if ( !d->expandWhenExploded )
-    	//	break;
+            //qDebug() << cellAttrs.explodeFactor();
+            const qreal explode = cellAttrs.explode() ? cellAttrs.explodeFactor() : 0.0;
+            maxOffsetInThisRow = qMax( maxOffsetInThisRow, cellAttrs.gapFactor( false ) + explode );
+        }
+        if ( !d->expandWhenExploded ) {
+            maxOffsetInThisRow -= qreal( i );
+        }
+        totalOffset += qMax( maxOffsetInThisRow, 0.0 );
+        // FIXME: What if explode factor of inner ring is > 1.0 ?
+        //if ( !d->expandWhenExploded )
+        //	break;
     }
 
     // explode factor is relative to width (outer r - inner r) of one ring
@@ -221,37 +212,35 @@ void RingDiagram::paint( PaintContext* ctx )
 
     d->forgetAlreadyPaintedDataValues();
     for ( int iRow = 0; iRow < rCount; ++iRow ) {
-            const qreal sum = valueTotals( iRow );
-            if( sum == 0.0 ) //nothing to draw
-                continue;
-            qreal currentValue = plane ? plane->startPosition() : 0.0;
-            const qreal sectorsPerValue = 360.0 / sum;
+        const qreal sum = valueTotals( iRow );
+        if( sum == 0.0 ) //nothing to draw
+            continue;
+        qreal currentValue = plane ? plane->startPosition() : 0.0;
+        const qreal sectorsPerValue = 360.0 / sum;
 
-            for ( int iColumn = 0; iColumn < colCount; ++iColumn ) {
-    	        // is there anything at all at this column?
-    	        bool bOK;
-                const qreal cellValue = qAbs( model()->data( model()->index( iRow, iColumn, rootIndex() ) ) // checked
-    	            .toDouble( &bOK ) );
+        for ( int iColumn = 0; iColumn < colCount; ++iColumn ) {
+            // is there anything at all at this column?
+            bool bOK;
+            const qreal cellValue = qAbs( model()->data( model()->index( iRow, iColumn, rootIndex() ) ) // checked
+                                    .toDouble( &bOK ) );
 
-    	        if( bOK ){
-    	            d->startAngles[ iRow ][ iColumn ] = currentValue;
-    	            d->angleLens[ iRow ][ iColumn ] = cellValue * sectorsPerValue;
-    	        } else { // mark as non-existent
-    	            d->angleLens[ iRow ][ iColumn ] = 0.0;
-    	            if ( iColumn > 0.0 )
-    	                d->startAngles[ iRow ][ iColumn ] = d->startAngles[ iRow ][ iColumn - 1 ];
-    	            else
-    	                d->startAngles[ iRow ][ iColumn ] = currentValue;
-    	        }
-    	        //qDebug() << "d->startAngles["<<iColumn<<"] == " << d->startAngles[ iColumn ]
-    	        //         << " +  d->angleLens["<<iColumn<<"]" << d->angleLens[ iColumn ]
-    	        //         << " = " << d->startAngles[ iColumn ]+d->angleLens[ iColumn ];
+            if( bOK ){
+                d->startAngles[ iRow ][ iColumn ] = currentValue;
+                d->angleLens[ iRow ][ iColumn ] = cellValue * sectorsPerValue;
+            } else { // mark as non-existent
+                d->angleLens[ iRow ][ iColumn ] = 0.0;
+                if ( iColumn > 0.0 ) {
+                    d->startAngles[ iRow ][ iColumn ] = d->startAngles[ iRow ][ iColumn - 1 ];
+                } else {
+                    d->startAngles[ iRow ][ iColumn ] = currentValue;
+                }
+            }
 
-    	        currentValue = d->startAngles[ iRow ][ iColumn ] + d->angleLens[ iRow ][ iColumn ];
+            currentValue = d->startAngles[ iRow ][ iColumn ] + d->angleLens[ iRow ][ iColumn ];
 
-    	        drawOnePie( ctx->painter(), iRow, iColumn, granularity() );
-    	    }
+            drawOneSlice( ctx->painter(), iRow, iColumn, granularity() );
         }
+    }
 }
 
 #if defined ( Q_WS_WIN)
@@ -259,22 +248,17 @@ void RingDiagram::paint( PaintContext* ctx )
 #endif
 
 /**
-  Internal method that draws one of the pies in a pie chart.
-
   \param painter the QPainter to draw in
-  \param dataset the dataset to draw the pie for
-  \param pie the pie to draw
+  \param dataset the dataset to draw the slice for
+  \param slice the slice to draw
   */
-void RingDiagram::drawOnePie( QPainter* painter,
-        uint dataset, uint pie,
-        qreal granularity )
+void RingDiagram::drawOneSlice( QPainter* painter, uint dataset, uint slice, qreal granularity )
 {
     // Is there anything to draw at all?
-    const qreal angleLen = d->angleLens[ dataset ][ pie ];
+    const qreal angleLen = d->angleLens[ dataset ][ slice ];
     if ( angleLen ) {
-        const QModelIndex index( model()->index( dataset, pie, rootIndex() ) ); // checked
-
-        drawPieSurface( painter, dataset, pie, granularity );
+        const QModelIndex index( model()->index( dataset, slice, rootIndex() ) ); // checked
+        drawPieSurface( painter, dataset, slice, granularity );
     }
 }
 
@@ -283,31 +267,29 @@ void RingDiagram::resize( const QSizeF& )
 }
 
 /**
-  Internal method that draws the surface of one of the pies in a pie chart.
+  Internal method that draws the top surface of one of the slices in a ring chart.
 
   \param painter the QPainter to draw in
-  \param dataset the dataset to draw the pie for
-  \param pie the pie to draw
+  \param dataset the dataset to draw the slice for
+  \param slice the slice to draw
   */
-void RingDiagram::drawPieSurface( QPainter* painter,
-        uint dataset, uint pie,
-        qreal granularity )
+void RingDiagram::drawPieSurface( QPainter* painter, uint dataset, uint slice, qreal granularity )
 {
     // Is there anything to draw at all?
-    qreal angleLen = d->angleLens[ dataset ][ pie ];
+    qreal angleLen = d->angleLens[ dataset ][ slice ];
     if ( angleLen ) {
-        qreal startAngle = d->startAngles[ dataset ][ pie ];
+        qreal startAngle = d->startAngles[ dataset ][ slice ];
 
-        QModelIndex index( model()->index( dataset, pie, rootIndex() ) ); // checked
+        QModelIndex index( model()->index( dataset, slice, rootIndex() ) ); // checked
         const PieAttributes attrs( pieAttributes( index ) );
         const ThreeDPieAttributes threeDAttrs( threeDPieAttributes( index ) );
 
-    	const int rCount = rowCount();
-    	const int colCount = columnCount();
+        const int rCount = rowCount();
+        const int colCount = columnCount();
 
-    	int iPoint = 0;
+        int iPoint = 0;
 
-        QRectF drawPosition = d->position;//piePosition( dataset, pie );
+        QRectF drawPosition = d->position;
 
         painter->setRenderHint ( QPainter::Antialiasing );
 
@@ -318,8 +300,7 @@ void RingDiagram::drawPieSurface( QPainter* painter,
         painter->setBrush( br );
 
         painter->setPen( pen( index ) );
-//        painter->setPen( pen );
-        //painter->setPen( Qt::red );
+
         if ( angleLen == 360 ) {
             // full circle, avoid nasty line in the middle
             // FIXME: Draw a complete ring here
@@ -329,11 +310,9 @@ void RingDiagram::drawPieSurface( QPainter* painter,
 
             qreal circularGap = 0.0;
 
-            if ( attrs.gapFactor( true ) > 0.0 )
-            {
-	            // FIXME: Measure in degrees!
-	            circularGap = attrs.gapFactor( true );
-	            //qDebug() << "gapFactor=" << attrs.gapFactor( false );
+            if ( attrs.gapFactor( true ) > 0.0 ) {
+                // FIXME: Measure in degrees!
+                circularGap = attrs.gapFactor( true );
             }
 
             QPolygonF poly;
@@ -348,39 +327,40 @@ void RingDiagram::drawPieSurface( QPainter* painter,
 
             qreal totalRadialGap = 0.0;
             qreal maxRadialGap = 0.0;
-            for( uint i = rCount - 1; i > dataset; --i ){
-            	qreal maxRadialExplodeInThisRow = 0.0;
-            	qreal maxRadialGapInThisRow = 0.0;
-            	for( int j = 0; j < colCount; ++j ){
+            for ( uint i = rCount - 1; i > dataset; --i ) {
+                qreal maxRadialExplodeInThisRow = 0.0;
+                qreal maxRadialGapInThisRow = 0.0;
+                for ( int j = 0; j < colCount; ++j ) {
                     const PieAttributes cellAttrs( pieAttributes( model()->index( i, j, rootIndex() ) ) ); // checked
-            		//qDebug() << cellAttrs.explodeFactor();
-            		if ( d->expandWhenExploded )
-            			maxRadialGapInThisRow = qMax( maxRadialGapInThisRow, cellAttrs.gapFactor( false ) );
-            		if ( !cellAttrs.explode() )
-            			continue;
-            		// Don't use a gap for the very inner circle
-                	if ( d->expandWhenExploded )
-                		maxRadialExplodeInThisRow = qMax( maxRadialExplodeInThisRow, cellAttrs.explodeFactor() );
-            	}
-            	maxRadialExplode += maxRadialExplodeInThisRow;
-            	maxRadialGap += maxRadialGapInThisRow;
+                    if ( d->expandWhenExploded ) {
+                        maxRadialGapInThisRow = qMax( maxRadialGapInThisRow, cellAttrs.gapFactor( false ) );
+                    }
 
-            	// FIXME: What if explode factor of inner ring is > 1.0 ?
-            	//if ( !d->expandWhenExploded )
-            	//	break;
+                    // Don't use a gap for the very inner circle
+                    if ( cellAttrs.explode() && d->expandWhenExploded ) {
+                        maxRadialExplodeInThisRow = qMax( maxRadialExplodeInThisRow, cellAttrs.explodeFactor() );
+                    }
+                }
+                maxRadialExplode += maxRadialExplodeInThisRow;
+                maxRadialGap += maxRadialGapInThisRow;
+
+                // FIXME: What if explode factor of inner ring is > 1.0 ?
+                //if ( !d->expandWhenExploded )
+                //    break;
             }
-
             totalRadialGap = maxRadialGap + attrs.gapFactor( false );
             totalRadialExplode = attrs.explode() ? maxRadialExplode + attrs.explodeFactor() : maxRadialExplode;
 
             while ( degree <= actualAngleLen ) {
-            	const QPointF p = pointOnCircle( drawPosition, dataset, pie, false, actualStartAngle + degree, totalRadialGap, totalRadialExplode );
+            const QPointF p = pointOnEllipse( drawPosition, dataset, slice, false, actualStartAngle + degree,
+                                              totalRadialGap, totalRadialExplode );
                 poly.append( p );
                 degree += granularity;
                 iPoint++;
             }
             if( ! perfectMatch ){
-                poly.append( pointOnCircle( drawPosition, dataset, pie, false, actualStartAngle + actualAngleLen, totalRadialGap, totalRadialExplode ) );
+                poly.append( pointOnEllipse( drawPosition, dataset, slice, false, actualStartAngle + actualAngleLen,
+                                             totalRadialGap, totalRadialExplode ) );
                 iPoint++;
             }
 
@@ -393,15 +373,17 @@ void RingDiagram::drawPieSurface( QPainter* painter,
             degree = actualAngleLen;
 
             const int lastInnerBrinkPoint = iPoint;
-            while ( degree >= 0 ){
-                poly.append( pointOnCircle( drawPosition, dataset, pie, true, actualStartAngle + degree, totalRadialGap, totalRadialExplode ) );
+            while ( degree >= 0 ) {
+                poly.append( pointOnEllipse( drawPosition, dataset, slice, true, actualStartAngle + degree,
+                                             totalRadialGap, totalRadialExplode ) );
                 perfectMatch = (degree == 0);
                 degree -= granularity;
                 iPoint++;
             }
             // if necessary add one more point to fill the last small gap
-            if( ! perfectMatch ){
-                poly.append( pointOnCircle( drawPosition, dataset, pie, true, actualStartAngle, totalRadialGap, totalRadialExplode ) );
+            if ( ! perfectMatch ) {
+                poly.append( pointOnEllipse( drawPosition, dataset, slice, true, actualStartAngle,
+                                             totalRadialGap, totalRadialExplode ) );
                 iPoint++;
             }
 
@@ -424,6 +406,7 @@ void RingDiagram::drawPieSurface( QPainter* painter,
                 const QPointF& p1 = poly.last();
                 const QPointF& p2 = poly[ lastInnerBrinkPoint ];
                 const QLineF line( p1, p2 );
+                // TODO: do the label rotation like in PieDiagram
                 const qreal angle = line.dx() == 0 ? 0.0 : atan( line.dy() / line.dx() );
                 painter->translate( centerPoint );
                 painter->rotate( angle / 2.0 / 3.141592653589793 * 360.0 );
@@ -431,7 +414,6 @@ void RingDiagram::drawPieSurface( QPainter* painter,
             }
 
             paintDataValueText( painter, index, centerPoint, angleLen*sum / 360 );
-
         }
     }
 }
@@ -441,36 +423,23 @@ void RingDiagram::drawPieSurface( QPainter* painter,
   * Auxiliary method returning a point to a given boundary
   * rectangle of the enclosed ellipse and an angle.
   */
-QPointF RingDiagram::pointOnCircle( const QRectF& rect, int dataset, int pie, bool outer, qreal angle, qreal totalGapFactor, qreal totalExplodeFactor )
+QPointF RingDiagram::pointOnEllipse( const QRectF& rect, int dataset, int slice, bool outer, qreal angle,
+                                     qreal totalGapFactor, qreal totalExplodeFactor )
 {
-    qreal angleLen = d->angleLens[ dataset ][ pie ];
-    qreal startAngle = d->startAngles[ dataset ][ pie ];
-    QModelIndex index( model()->index( dataset, pie, rootIndex() ) ); // checked
+    qreal angleLen = d->angleLens[ dataset ][ slice ];
+    qreal startAngle = d->startAngles[ dataset ][ slice ];
+    QModelIndex index( model()->index( dataset, slice, rootIndex() ) ); // checked
 
-	const int rCount = rowCount() * 2;
+    const int rCount = rowCount() * 2;
 
-    //const qreal gapFactor = attrs.gapFactor( false );
+    qreal level = outer ? ( rCount - dataset - 1 ) + 2 : ( rCount - dataset - 1 ) + 1;
 
-    //qDebug() << "##" << attrs.explode();
-    //if ( attrs.explodeFactor() != 0.0 )
-    //	qDebug() << attrs.explodeFactor();
-
-
-    qreal level = outer ? (rCount - dataset - 1) + 2 : (rCount - dataset - 1) + 1;
-
-
-    //maxExplode /= rCount;
-
-    //qDebug() << "dataset=" << dataset << "maxExplode=" << maxExplode;
-
-    //level += maxExplode;
-
-	const qreal offsetX = rCount > 0 ? level * rect.width() / ( ( rCount + 1 ) * 2 ) : 0.0;
-	const qreal offsetY = rCount > 0 ? level * rect.height() / ( ( rCount + 1 ) * 2 ): 0.0;
-	const qreal centerOffsetX = rCount > 0 ? totalExplodeFactor * rect.width() / ( ( rCount + 1 ) * 2 ) : 0.0;
-	const qreal centerOffsetY = rCount > 0 ? totalExplodeFactor * rect.height() / ( ( rCount + 1 ) * 2 ): 0.0;
-	const qreal gapOffsetX = rCount > 0 ? totalGapFactor * rect.width() / ( ( rCount + 1 ) * 2 ) : 0.0;
-	const qreal gapOffsetY = rCount > 0 ? totalGapFactor * rect.height() / ( ( rCount + 1 ) * 2 ): 0.0;
+    const qreal offsetX = rCount > 0 ? level * rect.width() / ( ( rCount + 1 ) * 2 ) : 0.0;
+    const qreal offsetY = rCount > 0 ? level * rect.height() / ( ( rCount + 1 ) * 2 ) : 0.0;
+    const qreal centerOffsetX = rCount > 0 ? totalExplodeFactor * rect.width() / ( ( rCount + 1 ) * 2 ) : 0.0;
+    const qreal centerOffsetY = rCount > 0 ? totalExplodeFactor * rect.height() / ( ( rCount + 1 ) * 2 ) : 0.0;
+    const qreal gapOffsetX = rCount > 0 ? totalGapFactor * rect.width() / ( ( rCount + 1 ) * 2 ) : 0.0;
+    const qreal gapOffsetY = rCount > 0 ? totalGapFactor * rect.height() / ( ( rCount + 1 ) * 2 ) : 0.0;
 
     qreal explodeAngleRad = DEGTORAD( angle );
     qreal cosAngle = cos( explodeAngleRad );
@@ -479,19 +448,19 @@ QPointF RingDiagram::pointOnCircle( const QRectF& rect, int dataset, int pie, bo
     qreal cosAngleCenter = cos( explodeAngleCenterRad );
     qreal sinAngleCenter = -sin( explodeAngleCenterRad );
     return QPointF( ( offsetX + gapOffsetX ) * cosAngle + centerOffsetX * cosAngleCenter + rect.center().x(),
-    				( offsetY + gapOffsetY ) * sinAngle + centerOffsetY * sinAngleCenter + rect.center().y() );
+                    ( offsetY + gapOffsetY ) * sinAngle + centerOffsetY * sinAngleCenter + rect.center().y() );
 }
 
 /*virtual*/
 qreal RingDiagram::valueTotals() const
 {
-	const int rCount = rowCount();
+    const int rCount = rowCount();
     const int colCount = columnCount();
     qreal total = 0.0;
     for ( int i = 0; i < rCount; ++i ) {
-    	for ( int j = 0; j < colCount; ++j ) {
-            total += qAbs(model()->data( model()->index( i, j, rootIndex() ) ).toDouble()); // checked
-    	}
+        for ( int j = 0; j < colCount; ++j ) {
+            total += qAbs( model()->data( model()->index( i, j, rootIndex() ) ).toDouble() ); // checked
+        }
     }
     return total;
 }
@@ -502,7 +471,7 @@ qreal RingDiagram::valueTotals( int dataset ) const
     const int colCount = columnCount();
     qreal total = 0.0;
     for ( int j = 0; j < colCount; ++j ) {
-      total += qAbs(model()->data( model()->index( dataset, j, rootIndex() ) ).toDouble()); // checked
+      total += qAbs( model()->data( model()->index( dataset, j, rootIndex() ) ).toDouble() ); // checked
     }
     return total;
 }

@@ -92,9 +92,7 @@ void LineDiagram::LineDiagramType::paintThreeDLines(
 
     const PainterSaver painterSaver( ctx->painter() );
 
-    if( diagram()->antiAliasing() )
-        ctx->painter()->setRenderHint( QPainter::Antialiasing );
-
+    ctx->painter()->setRenderHint( QPainter::Antialiasing, diagram()->antiAliasing() );
     ctx->painter()->setBrush( indexBrush );
     ctx->painter()->setPen( PrintingParameters::scalePen( diagram()->pen( index ) ) );
 
@@ -114,8 +112,7 @@ void LineDiagram::LineDiagramType::paintElements(
     Q_UNUSED( policy );
     // paint all lines and their attributes
     const PainterSaver painterSaver( ctx->painter() );
-    if ( diagram()->antiAliasing() )
-        ctx->painter()->setRenderHint ( QPainter::Antialiasing );
+    ctx->painter()->setRenderHint( QPainter::Antialiasing, diagram()->antiAliasing() );
     LineAttributesInfoListIterator itline ( lineList );
 
     QBrush curBrush;
@@ -156,8 +153,9 @@ void LineDiagram::LineDiagramType::paintElements(
         const LineAttributesInfo& lineInfo = itline.next();
         const QModelIndex& index = lineInfo.index;
         const ValueTrackerAttributes vt = diagram()->valueTrackerAttributes( index );
-        if( vt.isEnabled() )
+        if ( vt.isEnabled() ) {
             paintValueTracker( ctx, vt, lineInfo.nextValue );
+        }
     }
 
     // paint all data value texts and the point markers
@@ -183,23 +181,6 @@ ReverseMapper& LineDiagram::LineDiagramType::reverseMapper()
 {
     return m_private->reverseMapper;
 }
-/*
-LineAttributes::MissingValuesPolicy LineDiagram::LineDiagramType::getCellValues(
-    int row, int column,
-    bool shiftCountedXValuesByHalfSection,
-    qreal& valueX, qreal& valueY ) const
-{
-    return m_private->diagram->getCellValues( row, column, shiftCountedXValuesByHalfSection,
-                                              valueX, valueY );
-}
-
-qreal LineDiagram::LineDiagramType::valueForCellTesting(
-    int row, int column,
-    bool& bOK,
-    bool showHiddenCellsAsInvalid) const
-{
-    return m_private->diagram->valueForCellTesting( row, column, bOK, showHiddenCellsAsInvalid );
-}*/
 
 LineDiagram* LineDiagram::LineDiagramType::diagram() const
 {
@@ -232,9 +213,7 @@ void LineDiagram::LineDiagramType::paintAreas(
     indexPen.setBrush( trans );
     const PainterSaver painterSaver( ctx->painter() );
 
-    if( diagram()->antiAliasing() )
-        ctx->painter()->setRenderHint( QPainter::Antialiasing );
-
+    ctx->painter()->setRenderHint( QPainter::Antialiasing, diagram()->antiAliasing() );
     ctx->painter()->setPen( PrintingParameters::scalePen( indexPen ) );
     ctx->painter()->setBrush( trans );
 
