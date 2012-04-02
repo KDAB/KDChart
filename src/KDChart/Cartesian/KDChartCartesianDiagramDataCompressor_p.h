@@ -186,6 +186,10 @@ namespace KDChart {
         QModelIndexList mapToModel( const CachePosition& ) const;
         qreal indexesPerPixel() const;
 
+        // common logic for slot{Rows,Columns}[AboutToBe]{Inserted,Removed}
+        bool prepareDataChange( const QModelIndex& parent, int* start, int* end,
+                                bool isRows /* columns otherwise */ );
+
         // retrieve data from the model, put it into the cache
         void retrieveModelData( const CachePosition& ) const;
         // check if a data point is in the cache:
