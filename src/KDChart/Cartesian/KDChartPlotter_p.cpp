@@ -49,30 +49,6 @@ void Plotter::Private::setCompressorResolution(
                               static_cast<int>( size.height() * plane->zoomFactorY() ) );
 }
 
-
-void Plotter::Private::paintPolyline(
-    PaintContext* ctx,
-    const QBrush& brush, const QPen& pen,
-    const QPolygonF& points ) const
-{
-    ctx->painter()->setBrush( brush );
-    ctx->painter()->setPen( PrintingParameters::scalePen(
-        QPen( pen.color(),
-              pen.width(),
-              pen.style(),
-              Qt::FlatCap,
-              Qt::MiterJoin ) ) );
-#if QT_VERSION > 0x040299
-    ctx->painter()->drawPolyline( points );
-#else
-    // FIXME (Mirko) verify, this sounds reverse-logical
-    // For Qt versions older than 4.3 drawPolyline is VERY slow
-    // so we use traditional line segments drawing instead then.
-    for (int i = 0; i < points.size()-1; ++i)
-        ctx->painter()->drawLine( points.at(i), points.at(i+1) );
-#endif
-}
-
 void Plotter::Private::changedProperties()
 {
     if ( CartesianCoordinatePlane* plane = dynamic_cast< CartesianCoordinatePlane* > ( diagram->coordinatePlane() ) )
@@ -162,7 +138,7 @@ void Plotter::PlotterType::paintElements(
                 points << lineInfo.nextValue;
             } else {
                 if ( points.count() ) {
-                    m_private->paintPolyline( ctx, curBrush, curPen, points );
+                    PaintingHelpers::paintPolyline( ctx, curBrush, curPen, points );
                 }
                 curBrush = br;
                 curPen   = pn;
@@ -174,7 +150,7 @@ void Plotter::PlotterType::paintElements(
         }
     }
     if ( points.count() ) {
-        m_private->paintPolyline( ctx, curBrush, curPen, points );
+        PaintingHelpers::paintPolyline( ctx, curBrush, curPen, points );
     }
     itline.toFront();
     while ( itline.hasNext() ) {

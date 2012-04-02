@@ -12,6 +12,26 @@
 namespace KDChart {
 namespace PaintingHelpers {
 
+void paintPolyline( PaintContext* ctx, const QBrush& brush, const QPen& pen, const QPolygonF& points )
+{
+    ctx->painter()->setBrush( brush );
+    ctx->painter()->setPen( PrintingParameters::scalePen(
+        QPen( pen.color(),
+              pen.width(),
+              pen.style(),
+              Qt::FlatCap,
+              Qt::MiterJoin ) ) );
+#if QT_VERSION > 0x040299
+    ctx->painter()->drawPolyline( points );
+#else
+    // FIXME (Mirko) verify, this sounds reverse-logical
+    // For Qt versions older than 4.3 drawPolyline is VERY slow
+    // so we use traditional line segments drawing instead then.
+    for (int i = 0; i < points.size()-1; ++i)
+        ctx->painter()->drawLine( points.at(i), points.at(i+1) );
+#endif
+}
+
 void paintValueTracker( PaintContext* ctx, const ValueTrackerAttributes& vt, const QPointF& at )
 {
     CartesianCoordinatePlane* plane = qobject_cast<CartesianCoordinatePlane*>( ctx->coordinatePlane() );

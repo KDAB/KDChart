@@ -62,11 +62,6 @@ namespace KDChart {
         Private( const Private& rhs );
         ~Private();
 
-        void paintPolyline(
-            PaintContext* ctx,
-            const QBrush& brush, const QPen& pen,
-            const QPolygonF& points ) const;
-
         LineDiagram* diagram;
         LineDiagramType* implementor; // the current type
         LineDiagramType* normalDiagram;

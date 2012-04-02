@@ -67,10 +67,6 @@ namespace KDChart {
         void setCompressorResolution(
             const QSizeF& size,
             const AbstractCoordinatePlane* plane );
-        void paintPolyline(
-            PaintContext* ctx,
-            const QBrush& brush, const QPen& pen,
-            const QPolygonF& points ) const;
 
         Plotter* diagram;
         PlotterType* implementor; // the current type
