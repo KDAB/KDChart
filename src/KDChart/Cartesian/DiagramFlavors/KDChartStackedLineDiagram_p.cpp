@@ -200,8 +200,8 @@ void StackedLineDiagram::paint( PaintContext* ctx )
                         : bottomPoints.at( row + 1 )
                         )
                     : toPoint;
-                if( areas.count() && laCell != laPreviousCell ){
-                    paintAreas( ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
+                if ( areas.count() && laCell != laPreviousCell ) {
+                    PaintingHelpers::paintAreas( m_private, ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
                     areas.clear();
                 }
                 if( bDisplayCellArea ){
@@ -223,8 +223,8 @@ void StackedLineDiagram::paint( PaintContext* ctx )
                 addLabel( &lpc, sourceIndex, &position, pts, Position::NorthWest,
                           Position::SouthWest, point.value );
         }
-        if( areas.count() ){
-            paintAreas( ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
+        if ( areas.count() ) {
+            PaintingHelpers::paintAreas( m_private, ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
             areas.clear();
         }
         bottomPoints = points;

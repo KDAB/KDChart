@@ -28,6 +28,8 @@ void paintThreeDLines( PaintContext* ctx, AbstractDiagram *diagram, const QModel
 void paintValueTracker( PaintContext* ctx, const ValueTrackerAttributes& vt, const QPointF& at );
 void paintElements( AbstractDiagram::Private *diagramPrivate, PaintContext* ctx,
                     const LabelPaintCache& lpc, const LineAttributesInfoList& lineList );
+void paintAreas( AbstractDiagram::Private* diagramPrivate, PaintContext* ctx, const QModelIndex& index,
+                 const QList< QPolygonF >& areas, uint opacity );
 
 }
 }

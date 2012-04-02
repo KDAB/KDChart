@@ -97,8 +97,6 @@ namespace KDChart {
 
         int datasetDimension() const;
 
-        void paintAreas( PaintContext* ctx, const QModelIndex& index,
-                         const QList<QPolygonF>& areas, uint opacity );
         qreal valueForCell( int row, int column ) const;
         void addLabel( LabelPaintCache* lpc, const QModelIndex& index,
                        const CartesianDiagramDataCompressor::CachePosition* position,

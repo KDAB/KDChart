@@ -176,7 +176,8 @@ void NormalLineDiagram::paint( PaintContext* ctx )
             {
                 addLabel( &lpc, sourceIndex, &position, pts, Position::NorthWest,
                           Position::SouthWest, point.value );
-                paintAreas( ctx, attributesModel()->mapToSource( lastPoint.index ), areas, laCell.transparency() );
+                PaintingHelpers::paintAreas( m_private, ctx, attributesModel()->mapToSource( lastPoint.index ),
+                                             areas, laCell.transparency() );
                 // position 0 is not really painted, since it takes two points to make a line :-)
                 if( row > 0 && !ISNAN( lastPoint.value ) )
                     lineList.append( LineAttributesInfo( sourceIndex, a, b ) );

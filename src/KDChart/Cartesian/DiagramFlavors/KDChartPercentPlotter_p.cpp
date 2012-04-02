@@ -252,7 +252,9 @@ void PercentPlotter::paint( PaintContext* ctx )
                           Position::SouthWest, value );
                 if( !ISNAN( lastPoint.key ) && !ISNAN( lastPoint.value ) )
                 {
-                    paintAreas( ctx, attributesModel()->mapToSource( lastPoint.index ), areas, laCell.transparency() );
+                    PaintingHelpers::paintAreas( m_private, ctx,
+                                                 attributesModel()->mapToSource( lastPoint.index ),
+                                                 areas, laCell.transparency() );
                     lineList.append( LineAttributesInfo( sourceIndex, a, b ) );
                 }
             }

@@ -78,32 +78,6 @@ Plotter* Plotter::PlotterType::diagram() const
     return static_cast< Plotter* >( m_private->diagram );
 }
 
-void Plotter::PlotterType::paintAreas(
-    PaintContext* ctx,
-    const QModelIndex& index, const QList< QPolygonF >& areas,
-    uint opacity )
-{
-    QColor trans = diagram()->brush( index ).color();
-    trans.setAlpha( opacity );
-    QPen indexPen = diagram()->pen(index);
-    indexPen.setColor( trans );
-    const PainterSaver painterSaver( ctx->painter() );
-
-    ctx->painter()->setRenderHint( QPainter::Antialiasing, diagram()->antiAliasing() );
-    ctx->painter()->setPen( PrintingParameters::scalePen( indexPen ) );
-    ctx->painter()->setBrush( trans );
-
-    QPainterPath path;
-    for( int i = 0; i < areas.count(); ++i )
-    {
-        const QPolygonF& p = areas[ i ];
-        path.addPolygon( p );
-        reverseMapper().addPolygon( index.row(), index.column(), p );
-        path.closeSubpath();
-    }
-    ctx->painter()->drawPath( path );
-}
-
 void Plotter::PlotterType::addLabel( LabelPaintCache *lpc,
                                      const QModelIndex& index, const PositionPoints& points,
                                      const Position& autoPositionPositive,

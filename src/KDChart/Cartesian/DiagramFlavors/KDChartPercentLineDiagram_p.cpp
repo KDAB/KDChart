@@ -195,7 +195,7 @@ void PercentLineDiagram::paint( PaintContext* ctx )
                         )
                     : toPoint;
                 if( areas.count() && laCell != laPreviousCell ){
-                    paintAreas( ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
+                    PaintingHelpers::paintAreas( m_private, ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
                     areas.clear();
                 }
                 if( bDisplayCellArea ){
@@ -220,7 +220,7 @@ void PercentLineDiagram::paint( PaintContext* ctx )
             }
         }
         if( areas.count() ){
-            paintAreas( ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
+            PaintingHelpers::paintAreas( m_private, ctx, indexPreviousCell, areas, laPreviousCell.transparency() );
             areas.clear();
         }
         bottomPoints = points;

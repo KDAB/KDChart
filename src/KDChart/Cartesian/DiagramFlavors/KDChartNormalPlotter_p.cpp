@@ -112,7 +112,9 @@ void NormalPlotter::paint( PaintContext* ctx )
                               Position::SouthWest, point.value );
                     if( !ISNAN( lastPoint.key ) && !ISNAN( lastPoint.value ) )
                     {
-                        paintAreas( ctx, attributesModel()->mapToSource( lastPoint.index ), areas, laCell.transparency() );
+                        PaintingHelpers::paintAreas( m_private, ctx,
+                                                     attributesModel()->mapToSource( lastPoint.index ),
+                                                     areas, laCell.transparency() );
                         lineList.append( LineAttributesInfo( sourceIndex, a, b ) );
                     }
                 }
@@ -183,7 +185,9 @@ void NormalPlotter::paint( PaintContext* ctx )
                               Position::SouthWest, point.value );
                     if( !ISNAN( lastPoint.key ) && !ISNAN( lastPoint.value ) )
                     {
-                        paintAreas( ctx, attributesModel()->mapToSource( lastPoint.index ), areas, laCell.transparency() );
+                        PaintingHelpers::paintAreas( m_private, ctx,
+                                                     attributesModel()->mapToSource( lastPoint.index ),
+                                                     areas, laCell.transparency() );
                         lineList.append( LineAttributesInfo( sourceIndex, a, b ) );
                     }
                 }

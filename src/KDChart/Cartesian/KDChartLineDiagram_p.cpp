@@ -60,39 +60,6 @@ LineDiagram* LineDiagram::LineDiagramType::diagram() const
     return static_cast< LineDiagram* >( m_private->diagram );
 }
 
-void LineDiagram::LineDiagramType::paintAreas(
-    PaintContext* ctx,
-    const QModelIndex& index, const QList< QPolygonF >& areas,
-    uint opacity )
-{
-    QPainterPath path;
-    for( int i = 0; i < areas.count(); ++i )
-    {
-        const QPolygonF& p = areas[ i ];
-        path.addPolygon( p );
-        reverseMapper().addPolygon( index.row(), index.column(), p );
-        path.closeSubpath();
-    }
-
-    ThreeDLineAttributes threeDAttrs = m_private->diagram->threeDLineAttributes( index );
-    QBrush trans = diagram()->brush( index );
-    if( threeDAttrs.isEnabled() ) {
-        trans = threeDAttrs.threeDBrush( trans, path.boundingRect() );
-    }
-    QColor transColor = trans.color();
-    transColor.setAlpha( opacity );
-    trans.setColor(transColor);
-    QPen indexPen = diagram()->pen(index);
-    indexPen.setBrush( trans );
-    const PainterSaver painterSaver( ctx->painter() );
-
-    ctx->painter()->setRenderHint( QPainter::Antialiasing, diagram()->antiAliasing() );
-    ctx->painter()->setPen( PrintingParameters::scalePen( indexPen ) );
-    ctx->painter()->setBrush( trans );
-
-    ctx->painter()->drawPath( path );
-}
-
 qreal LineDiagram::LineDiagramType::valueForCell( int row, int column ) const
 {
     return diagram()->valueForCell( row, column );

@@ -236,5 +236,37 @@ void paintElements( AbstractDiagram::Private *diagramPrivate, PaintContext* ctx,
     diagramPrivate->paintDataValueTextsAndMarkers( ctx, lpc, true );
 }
 
+void paintAreas( AbstractDiagram::Private* diagramPrivate, PaintContext* ctx, const QModelIndex& index,
+                 const QList< QPolygonF >& areas, uint opacity )
+{
+    AbstractDiagram* diagram = diagramPrivate->diagram;
+    QPainterPath path;
+    for( int i = 0; i < areas.count(); ++i )
+    {
+        const QPolygonF& p = areas[ i ];
+        path.addPolygon( p );
+        diagramPrivate->reverseMapper.addPolygon( index.row(), index.column(), p );
+        path.closeSubpath();
+    }
+
+    ThreeDLineAttributes threeDAttrs = threeDLineAttributes( diagram, index );
+    QBrush trans = diagram->brush( index );
+    if( threeDAttrs.isEnabled() ) {
+        trans = threeDAttrs.threeDBrush( trans, path.boundingRect() );
+    }
+    QColor transColor = trans.color();
+    transColor.setAlpha( opacity );
+    trans.setColor(transColor);
+    QPen indexPen = diagram->pen(index);
+    indexPen.setBrush( trans );
+    const PainterSaver painterSaver( ctx->painter() );
+
+    ctx->painter()->setRenderHint( QPainter::Antialiasing, diagram->antiAliasing() );
+    ctx->painter()->setPen( PrintingParameters::scalePen( indexPen ) );
+    ctx->painter()->setBrush( trans );
+
+    ctx->painter()->drawPath( path );
+}
+
 } // namespace PaintingHelpers
 } // namespace KDChart

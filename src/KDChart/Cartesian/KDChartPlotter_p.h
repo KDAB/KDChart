@@ -111,9 +111,6 @@ namespace KDChart {
 
         int datasetDimension() const;
 
-        void paintAreas( PaintContext* ctx, const QModelIndex& index,
-                         const QList<QPolygonF>& areas, uint opacity );
-
         void addLabel( LabelPaintCache* lpc, const QModelIndex& index,
                        const PositionPoints& points, const Position& autoPositionPositive,
                        const Position& autoPositionNegative, qreal value );
