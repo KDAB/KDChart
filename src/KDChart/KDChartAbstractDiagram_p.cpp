@@ -92,6 +92,7 @@ void AbstractDiagram::Private::setAttributesModel( AttributesModel* amodel )
 }
 
 AbstractDiagram::Private::Private( const AbstractDiagram::Private& rhs ) :
+    diagram( 0 ),
     // Do not copy the plane
     plane( 0 ),
     attributesModelRootIndex( QModelIndex() ),
