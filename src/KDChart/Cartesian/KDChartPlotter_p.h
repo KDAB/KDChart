@@ -100,6 +100,7 @@ namespace KDChart {
         virtual const QPair<QPointF,  QPointF> calculateDataBoundaries() const = 0;
         virtual void paint( PaintContext* ctx ) = 0;
         Plotter* diagram() const;
+
         Plotter::CompressionMode useCompression() const;
         void setUseCompression( Plotter::CompressionMode value );
         PlotterDiagramCompressor& plotterCompressor() const;
@@ -135,10 +136,11 @@ namespace KDChart {
                             LineAttributesInfoList&,
                             LineAttributes::MissingValuesPolicy );
 
-        void paintValueTracker( PaintContext* ctx, const ValueTrackerAttributes& vt,
-                                const QPointF& at );
-
         Plotter::Private* m_private;
+        // TODO: do we need them or not? (currently unused, but maybe there are supposed to be several
+        //       compressors
+        PlotterDiagramCompressor m_plotterCompressor;
+        Plotter::CompressionMode m_useCompression;
     };
 }
 

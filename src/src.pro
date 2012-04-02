@@ -306,6 +306,7 @@ HEADERS += KDChart/KDChartGlobal.h \
            KDChart/Cartesian/KDChartLeveyJenningsAxis_p.h \
            KDChart/Cartesian/KDChartPlotter.h \
            KDChart/Cartesian/KDChartPlotter_p.h \
+           KDChart/Cartesian/PaintingHelpers_p.h \
            KDChart/Cartesian/DiagramFlavors/KDChartNormalBarDiagram_p.h \
            KDChart/Cartesian/DiagramFlavors/KDChartNormalLyingBarDiagram_p.h \
            KDChart/Cartesian/DiagramFlavors/KDChartNormalLineDiagram_p.h \
@@ -452,6 +453,7 @@ SOURCES += \
            KDChart/Cartesian/KDChartLeveyJenningsGrid.cpp \
            KDChart/Cartesian/KDChartLeveyJenningsGridAttributes.cpp \
            KDChart/Cartesian/KDChartLeveyJenningsAxis.cpp \
+           KDChart/Cartesian/PaintingHelpers_p.cpp \
            KDChart/Cartesian/DiagramFlavors/KDChartNormalPlotter_p.cpp \
            KDChart/Cartesian/DiagramFlavors/KDChartPercentPlotter_p.cpp \
            KDChart/Cartesian/DiagramFlavors/KDChartStackedLyingBarDiagram_p.cpp \

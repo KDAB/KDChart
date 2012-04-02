@@ -73,6 +73,7 @@ void Plotter::init()
 Plotter::~Plotter()
 {
     delete d;
+    d = 0;
 }
 
 /**
@@ -122,6 +123,7 @@ Plotter::CompressionMode Plotter::useDataCompression() const
 {    
     return d->implementor->useCompression();
 }
+
 void Plotter::setUseDataCompression( Plotter::CompressionMode value )
 {
     if ( useDataCompression() != value )
