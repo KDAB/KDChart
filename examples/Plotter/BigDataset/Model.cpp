@@ -5,7 +5,6 @@
 
 #define _USE_MATH_DEFINES // this gives us the M_PI constant
 #include <cmath>
-#undef _USE_MATH_DEFINES
 
 static const qreal s_stepWidth = 0.1;
 
