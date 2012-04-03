@@ -3,8 +3,12 @@
 #include <QDebug>
 #include <QTime>
 
-#define _USE_MATH_DEFINES // this gives us the M_PI constant
+#define _USE_MATH_DEFINES // this should give us the M_PI constant
 #include <cmath>
+// MSVC...
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
 
 static const qreal s_stepWidth = 0.1;
 
