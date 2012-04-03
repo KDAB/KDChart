@@ -76,5 +76,5 @@ void MainWidget::addPointsButtonClicked()
 {
     int idx = m_addPointsButtons.indexOf( qobject_cast< QPushButton* >( sender() ) );
     Q_ASSERT( idx >= 0 );
-    m_model.appendPoints( pow( 10, idx + 3 ) );
+    m_model.appendPoints( pow( qreal( 10 ), qreal( idx + 3 ) ) );
 }
