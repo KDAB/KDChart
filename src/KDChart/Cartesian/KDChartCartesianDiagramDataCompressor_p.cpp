@@ -127,8 +127,8 @@ CartesianDiagramDataCompressor::DataValueAttributesList CartesianDiagramDataComp
     return allAttrs;
 }
 
-bool CartesianDiagramDataCompressor::prepareDataChange( const QModelIndex& parent,
-                                                        int* start, int* end, bool isRows )
+bool CartesianDiagramDataCompressor::prepareDataChange( const QModelIndex& parent, bool isRows,
+                                                        int* start, int* end )
 {
     if ( parent != m_rootIndex ) {
         return false;
@@ -157,7 +157,7 @@ bool CartesianDiagramDataCompressor::prepareDataChange( const QModelIndex& paren
 
 void CartesianDiagramDataCompressor::slotRowsAboutToBeInserted( const QModelIndex& parent, int start, int end )
 {
-    if ( !prepareDataChange( parent, &start, &end, true ) ) {
+    if ( !prepareDataChange( parent, true, &start, &end ) ) {
         return;
     }
     for( int i = 0; i < m_data.size(); ++i )
@@ -169,7 +169,7 @@ void CartesianDiagramDataCompressor::slotRowsAboutToBeInserted( const QModelInde
 
 void CartesianDiagramDataCompressor::slotRowsInserted( const QModelIndex& parent, int start, int end )
 {
-    if ( !prepareDataChange( parent, &start, &end, true ) ) {
+    if ( !prepareDataChange( parent, true, &start, &end ) ) {
         return;
     }
     for( int i = 0; i < m_data.size(); ++i )
@@ -182,7 +182,7 @@ void CartesianDiagramDataCompressor::slotRowsInserted( const QModelIndex& parent
 
 void CartesianDiagramDataCompressor::slotColumnsAboutToBeInserted( const QModelIndex& parent, int start, int end )
 {
-    if ( !prepareDataChange( parent, &start, &end, false ) ) {
+    if ( !prepareDataChange( parent, false, &start, &end ) ) {
         return;
     }
     const int rowCount = qMin( m_model ? m_model->rowCount( m_rootIndex ) : 0, m_xResolution );
@@ -192,7 +192,7 @@ void CartesianDiagramDataCompressor::slotColumnsAboutToBeInserted( const QModelI
 
 void CartesianDiagramDataCompressor::slotColumnsInserted( const QModelIndex& parent, int start, int end )
 {
-    if ( !prepareDataChange( parent, &start, &end, false ) ) {
+    if ( !prepareDataChange( parent, false, &start, &end ) ) {
         return;
     }
     for( int i = start; i < m_data.size(); ++i )
@@ -205,7 +205,7 @@ void CartesianDiagramDataCompressor::slotColumnsInserted( const QModelIndex& par
 
 void CartesianDiagramDataCompressor::slotRowsAboutToBeRemoved( const QModelIndex& parent, int start, int end )
 {
-    if ( !prepareDataChange( parent, &start, &end, true ) ) {
+    if ( !prepareDataChange( parent, true, &start, &end ) ) {
         return;
     }
     for ( int i = 0; i < m_data.size(); ++i ) {
@@ -236,7 +236,7 @@ void CartesianDiagramDataCompressor::slotRowsRemoved( const QModelIndex& parent,
 
 void CartesianDiagramDataCompressor::slotColumnsAboutToBeRemoved( const QModelIndex& parent, int start, int end )
 {
-    if ( !prepareDataChange( parent, &start, &end, false ) ) {
+    if ( !prepareDataChange( parent, false, &start, &end ) ) {
         return;
     }
     m_data.remove( start, end - start + 1 );

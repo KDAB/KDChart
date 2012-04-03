@@ -187,8 +187,9 @@ namespace KDChart {
         qreal indexesPerPixel() const;
 
         // common logic for slot{Rows,Columns}[AboutToBe]{Inserted,Removed}
-        bool prepareDataChange( const QModelIndex& parent, int* start, int* end,
-                                bool isRows /* columns otherwise */ );
+        bool prepareDataChange( const QModelIndex& parent,
+                                bool isRows, /* columns otherwise */
+                                int* start, int* end);
 
         // retrieve data from the model, put it into the cache
         void retrieveModelData( const CachePosition& ) const;
