@@ -97,5 +97,11 @@ int main( int argc, char** argv )
 
     chart->show();
 
-    return app.exec();
+    int ret = app.exec();
+
+    delete diagram;
+    delete yAxis;
+    delete xAxis;
+
+    return ret;
 }
