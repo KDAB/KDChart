@@ -138,14 +138,14 @@ bool CartesianDiagramDataCompressor::prepareDataChange( const QModelIndex& paren
     CachePosition startPos = isRows ? mapToCache( *start, 0  ) : mapToCache( 0, *start );
     CachePosition endPos = isRows ? mapToCache( *end, 0  ) : mapToCache( 0, *end );
 
-    static const CachePosition NullPosition( -1, -1 );
-    if ( startPos == NullPosition ) {
+    static const CachePosition nullPosition;
+    if ( startPos == nullPosition ) {
         rebuildCache();
         startPos = isRows ? mapToCache( *start, 0  ) : mapToCache( 0, *start );
         endPos = isRows ? mapToCache( *end, 0  ) : mapToCache( 0, *end );
         // The start position still isn't valid,
         // means that no resolution was set yet or we're about to add the first rows
-        if( startPos == NullPosition ) {
+        if ( startPos == nullPosition ) {
             return false;
         }
     }
@@ -220,8 +220,8 @@ void CartesianDiagramDataCompressor::slotRowsRemoved( const QModelIndex& parent,
     Q_ASSERT( start <= end );
 
     CachePosition startPos = mapToCache( start, 0 );
-    static const CachePosition NullPosition( -1, -1 );
-    if ( startPos == NullPosition ) {
+    static const CachePosition nullPosition;
+    if ( startPos == nullPosition ) {
         // Since we should already have rebuilt the cache, it won't help to rebuild it again.
         // Do not Q_ASSERT() though, since the resolution might simply not be set or we might now have 0 rows
         return;
@@ -250,9 +250,8 @@ void CartesianDiagramDataCompressor::slotColumnsRemoved( const QModelIndex& pare
 
     const CachePosition startPos = mapToCache( 0, start );
 
-    static const CachePosition NullPosition( -1, -1 );
-    if( startPos == NullPosition )
-    {
+    static const CachePosition nullPosition;
+    if ( startPos == nullPosition ) {
         // Since we should already have rebuilt the cache, it won't help to rebuild it again.
         // Do not Q_ASSERT() though, since the resolution might simply not be set or we might now have 0 columns
         return;
@@ -599,8 +598,10 @@ CartesianDiagramDataCompressor::CachePosition CartesianDiagramDataCompressor::ma
 {
     Q_ASSERT( m_datasetDimension != 0 );
 
-    static const CachePosition NullPosition( -1, -1 );
-    if ( ! index.isValid() ) return NullPosition;
+    static const CachePosition nullPosition;
+    if ( !index.isValid() ) {
+        return nullPosition;
+    }
     return mapToCache( index.row(), index.column() );
 }
 
@@ -628,7 +629,7 @@ QModelIndexList CartesianDiagramDataCompressor::mapToModel( const CachePosition&
         }
         else
         {
-        // assumption: indexes per column == 1
+            // assumption: indexes per column == 1
             const qreal ipp = indexesPerPixel();
             for ( int i = 0; i < ipp; ++i ) {
                 int row = qRound( position.first * ipp ) + i;
