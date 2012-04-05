@@ -93,7 +93,7 @@ namespace KDChart
         }
     }
 
-    template< class T, int ROLE = Qt::DisplayRole >
+    template< class T, int ROLE >
     class ModelDataCache : public ModelDataCachePrivate::ModelSignalMapper
     {
     public:
@@ -114,7 +114,7 @@ namespace KDChart
 
             if( index.row() >= m_data.count() )
             {
-                qWarning( "KDChart didn't got signal rowsInserted, resetModel or layoutChanged, "
+                qWarning( "KDChart didn't receive signal rowsInserted, resetModel or layoutChanged, "
                           "but an index with a row outside of the known bounds." );
 
                 // apparently, data were added behind our back (w/o signals)

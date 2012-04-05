@@ -117,8 +117,8 @@ namespace KDChart {
             }
         };
 
-        typedef QMap<QModelIndex, DataValueAttributes > AggregatedDataValueAttributes;
-        typedef QMap<CartesianDiagramDataCompressor::CachePosition, AggregatedDataValueAttributes > DataValueAttributesCache;
+        typedef QMap< QModelIndex, DataValueAttributes > AggregatedDataValueAttributes;
+        typedef QMap< CartesianDiagramDataCompressor::CachePosition, AggregatedDataValueAttributes > DataValueAttributesCache;
 
         enum ApproximationMode {
             // do not approximate, interpolate by averaging all
@@ -175,7 +175,7 @@ namespace KDChart {
         void clearCache();
 
     private:
-        // mark a cache position as invalid
+        // forget cached data at the position
         void invalidate( const CachePosition& );
         // check if position is inside the dataset's index range
         bool mapsToModelIndex( const CachePosition& ) const;
@@ -198,15 +198,17 @@ namespace KDChart {
         // set sample step width according to settings:
         void calculateSampleStepWidth();
 
-        // one per dataset
-        mutable QVector<DataPointVector> m_data;
+
+        QPointer<QAbstractItemModel> m_model;
+        QModelIndex m_rootIndex;
+
         ApproximationMode m_mode;
         int m_xResolution;
         int m_yResolution;
-        QPointer<QAbstractItemModel> m_model;
         unsigned int m_sampleStep;
-        QModelIndex m_rootIndex;
-        ModelDataCache< qreal > m_modelCache;
+
+        mutable QVector<DataPointVector> m_data; // one per dataset
+        ModelDataCache< qreal, Qt::DisplayRole > m_modelCache;
         mutable DataValueAttributesCache m_dataValueAttributesCache;
         int m_datasetDimension;
     };
