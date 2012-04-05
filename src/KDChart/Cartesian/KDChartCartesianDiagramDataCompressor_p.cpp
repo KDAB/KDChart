@@ -516,10 +516,9 @@ void CartesianDiagramDataCompressor::retrieveModelData( const CachePosition& pos
     Q_ASSERT( isValidCachePosition( position ) );
     DataPoint result;
 
-    switch(m_mode ) {
+    switch ( m_mode ) {
     case Precise:
     {
-        bool forceHidden = false;
         result.hidden = true;
         const QModelIndexList indexes = mapToModel( position );
         if( m_datasetDimension == 2 )
@@ -585,21 +584,11 @@ void CartesianDiagramDataCompressor::retrieveModelData( const CachePosition& pos
                 result.value /= indexes.size();
             }
         }
-        if( !forceHidden )
-        {
-        Q_FOREACH( const QModelIndex& index, indexes )
-        {
-            // the point is visible if any of the points at this pixel position is visible
-            if ( qVariantValue<bool>( m_model->data( index, DataHiddenRole ) ) == false ) {
-                result.hidden = false;
-            }
-        }
-        }
+        break;
     }
-    break;
     case SamplingSeven:
-    break;
-    };
+        break;
+    }
 
     m_data[position.second][position.first] = result;
     Q_ASSERT( isCached( position ) );
