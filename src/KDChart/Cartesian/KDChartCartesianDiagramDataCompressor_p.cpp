@@ -86,7 +86,7 @@ QModelIndexList CartesianDiagramDataCompressor::indexesAt( const CachePosition& 
 }
 
 
-CartesianDiagramDataCompressor::DataValueAttributesList CartesianDiagramDataCompressor::aggregatedAttrs(
+CartesianDiagramDataCompressor::AggregatedDataValueAttributes CartesianDiagramDataCompressor::aggregatedAttrs(
         const AbstractDiagram* diagram,
         const QModelIndex & index,
         const CachePosition& position ) const
@@ -96,14 +96,14 @@ CartesianDiagramDataCompressor::DataValueAttributesList CartesianDiagramDataComp
     if( i != m_dataValueAttributesCache.constEnd() )
         return i.value();
     // retrieve attrs from all cells between the prev. cell and the current one
-    CartesianDiagramDataCompressor::DataValueAttributesList allAttrs;
+    CartesianDiagramDataCompressor::AggregatedDataValueAttributes allAttrs;
     const QModelIndexList indexes( indexesAt( position ) );
     KDAB_FOREACH( QModelIndex idx, indexes ) {
         DataValueAttributes attrs( diagram->dataValueAttributes( idx ) );
         if( attrs.isVisible() ){
             // make sure no duplicate attrs are stored
             bool isDuplicate = false;
-            CartesianDiagramDataCompressor::DataValueAttributesList::const_iterator i = allAttrs.constBegin();
+            CartesianDiagramDataCompressor::AggregatedDataValueAttributes::const_iterator i = allAttrs.constBegin();
             while (i != allAttrs.constEnd()) {
                 if( i.value() == attrs ){
                     isDuplicate = true;

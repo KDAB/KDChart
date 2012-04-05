@@ -117,8 +117,8 @@ namespace KDChart {
             }
         };
 
-        typedef QMap<QModelIndex, DataValueAttributes > DataValueAttributesList;
-        typedef QMap<CartesianDiagramDataCompressor::CachePosition, DataValueAttributesList > DataValueAttributesCache;
+        typedef QMap<QModelIndex, DataValueAttributes > AggregatedDataValueAttributes;
+        typedef QMap<CartesianDiagramDataCompressor::CachePosition, AggregatedDataValueAttributes > DataValueAttributesCache;
 
         enum ApproximationMode {
             // do not approximate, interpolate by averaging all
@@ -146,7 +146,7 @@ namespace KDChart {
         QPair< QPointF, QPointF > dataBoundaries() const;
 
         QModelIndexList indexesAt( const CachePosition& position ) const;
-        DataValueAttributesList aggregatedAttrs(
+        AggregatedDataValueAttributes aggregatedAttrs(
                 const AbstractDiagram* diagram,
                 const QModelIndex & index,
                 const CachePosition& position ) const;

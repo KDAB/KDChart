@@ -67,13 +67,13 @@ public:
         }
 
     /** \reimpl */
-    virtual CartesianDiagramDataCompressor::DataValueAttributesList aggregatedAttrs(
+    virtual CartesianDiagramDataCompressor::AggregatedDataValueAttributes aggregatedAttrs(
             const QModelIndex & index,
             const CartesianDiagramDataCompressor::CachePosition * position ) const
     {
         if( position )
             return compressor.aggregatedAttrs( diagram, index, *position );
-        CartesianDiagramDataCompressor::DataValueAttributesList allAttrs;
+        CartesianDiagramDataCompressor::AggregatedDataValueAttributes allAttrs;
         allAttrs[index] = diagram->dataValueAttributes( index );
         return allAttrs;
     }

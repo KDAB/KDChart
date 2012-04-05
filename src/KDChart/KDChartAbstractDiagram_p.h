@@ -157,7 +157,7 @@ namespace KDChart {
 
         QModelIndexList indexesIn( const QRect& rect ) const;
 
-        virtual CartesianDiagramDataCompressor::DataValueAttributesList aggregatedAttrs(
+        virtual CartesianDiagramDataCompressor::AggregatedDataValueAttributes aggregatedAttrs(
                 const QModelIndex & index,
                 const CartesianDiagramDataCompressor::CachePosition * position ) const;
 

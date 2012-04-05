@@ -129,7 +129,7 @@ void AbstractDiagram::Private::addLabel(
     const Position& autoPositionPositive, const Position& autoPositionNegative,
     const qreal value, qreal favoriteAngle /* = 0.0 */ )
 {
-    CartesianDiagramDataCompressor::DataValueAttributesList allAttrs(
+    CartesianDiagramDataCompressor::AggregatedDataValueAttributes allAttrs(
         aggregatedAttrs( index, position ) );
 
     QMap<QModelIndex, DataValueAttributes>::const_iterator it;
@@ -518,12 +518,12 @@ QModelIndexList AbstractDiagram::Private::indexesIn( const QRect& rect ) const
     return reverseMapper.indexesIn( rect );
 }
 
-CartesianDiagramDataCompressor::DataValueAttributesList AbstractDiagram::Private::aggregatedAttrs(
+CartesianDiagramDataCompressor::AggregatedDataValueAttributes AbstractDiagram::Private::aggregatedAttrs(
     const QModelIndex& index,
     const CartesianDiagramDataCompressor::CachePosition* position ) const
 {
     Q_UNUSED( position ); // used by cartesian diagrams only
-    CartesianDiagramDataCompressor::DataValueAttributesList allAttrs;
+    CartesianDiagramDataCompressor::AggregatedDataValueAttributes allAttrs;
     allAttrs[index] = diagram->dataValueAttributes( index );
     return allAttrs;
 }
