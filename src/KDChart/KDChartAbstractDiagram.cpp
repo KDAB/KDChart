@@ -428,17 +428,27 @@ void AbstractDiagram::paintDataValueText( QPainter* painter,
 
 void AbstractDiagram::paintDataValueTexts( QPainter* painter )
 {
-    if ( !checkInvariants() ) return;
-    const int rowCount = model()->rowCount(rootIndex());
-    const int columnCount = model()->columnCount(rootIndex());
+    if ( !checkInvariants() ) {
+        return;
+    }
+
     d->forgetAlreadyPaintedDataValues();
-    for ( int i=datasetDimension()-1; i<columnCount; i += datasetDimension() ) {
-       for ( int j=0; j< rowCount; ++j ) {
-           const QModelIndex index = model()->index( j, i, rootIndex() ); // checked
-           qreal value = model()->data( index ).toDouble();
-           const QPointF pos = coordinatePlane()->translate( QPointF( j, value ) );
-           paintDataValueText( painter, index, pos, value );
-       }
+    const int rowCount = model()->rowCount( rootIndex() );
+    const int columnCount = model()->columnCount( rootIndex() );
+    for ( int column = 0; column < columnCount; column += datasetDimension() ) {
+        for ( int row = 0; row < rowCount; ++row ) {
+            QModelIndex index = model()->index( row, column, rootIndex() ); // checked
+            qreal x;
+            qreal y;
+            if ( datasetDimension() == 1 ) {
+                x = row;
+                y = index.data().toDouble();
+            } else {
+                x = index.data().toDouble();
+                y = model()->index( row, column + 1, rootIndex() ).data().toDouble();
+            }
+            paintDataValueText( painter, index, coordinatePlane()->translate( QPointF( x, y ) ), y );
+        }
     }
 }
 
@@ -626,16 +636,26 @@ void AbstractDiagram::paintMarker( QPainter* painter,
 
 void AbstractDiagram::paintMarkers( QPainter* painter )
 {
-    if ( !checkInvariants() ) return;
-    const int rowCount = model()->rowCount(rootIndex());
-    const int columnCount = model()->columnCount(rootIndex());
-    for ( int i=datasetDimension()-1; i<columnCount; i += datasetDimension() ) {
-       for ( int j=0; j< rowCount; ++j ) {
-           const QModelIndex index = model()->index( j, i, rootIndex() ); // checked
-           qreal value = model()->data( index ).toDouble();
-           const QPointF pos = coordinatePlane()->translate( QPointF( j, value ) );
-           paintMarker( painter, index, pos );
-       }
+    if ( !checkInvariants() ) {
+        return;
+    }
+
+    const int rowCount = model()->rowCount( rootIndex() );
+    const int columnCount = model()->columnCount( rootIndex() );
+    for ( int column = 0; column < columnCount; column += datasetDimension() ) {
+        for ( int row = 0; row < rowCount; ++row ) {
+            QModelIndex index = model()->index( row, column, rootIndex() ); // checked
+            qreal x;
+            qreal y;
+            if ( datasetDimension() == 1 ) {
+                x = row;
+                y = index.data().toDouble();
+            } else {
+                x = index.data().toDouble();
+                y = model()->index( row, column + 1, rootIndex() ).data().toDouble();
+            }
+            paintMarker( painter, index, coordinatePlane()->translate( QPointF( x, y ) ) );
+        }
     }
 }
 
