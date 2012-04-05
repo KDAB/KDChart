@@ -78,46 +78,52 @@ QModelIndexList CartesianDiagramDataCompressor::indexesAt( const CachePosition& 
     return indexes;
 }
 
+static bool contains( const CartesianDiagramDataCompressor::AggregatedDataValueAttributes& aggregated,
+                      const DataValueAttributes& attributes )
+{
+    CartesianDiagramDataCompressor::AggregatedDataValueAttributes::const_iterator it = aggregated.constBegin();
+    for ( ; it != aggregated.constEnd(); ++it ) {
+        if ( it.value() == attributes ) {
+            return true;
+        }
+    }
+    return false;
+}
 
 CartesianDiagramDataCompressor::AggregatedDataValueAttributes CartesianDiagramDataCompressor::aggregatedAttrs(
         const AbstractDiagram* diagram,
         const QModelIndex & index,
         const CachePosition& position ) const
 {
+    Q_ASSERT( indexesAt( position ).contains( index ) );
+
     // return cached attrs, if any
-    DataValueAttributesCache::const_iterator i = m_dataValueAttributesCache.constFind(position);
-    if( i != m_dataValueAttributesCache.constEnd() )
+    DataValueAttributesCache::const_iterator i = m_dataValueAttributesCache.constFind( position );
+    if ( i != m_dataValueAttributesCache.constEnd() ) {
         return i.value();
-    // retrieve attrs from all cells between the prev. cell and the current one
-    CartesianDiagramDataCompressor::AggregatedDataValueAttributes allAttrs;
-    const QModelIndexList indexes( indexesAt( position ) );
-    KDAB_FOREACH( QModelIndex idx, indexes ) {
-        DataValueAttributes attrs( diagram->dataValueAttributes( idx ) );
-        if( attrs.isVisible() ){
-            // make sure no duplicate attrs are stored
-            bool isDuplicate = false;
-            CartesianDiagramDataCompressor::AggregatedDataValueAttributes::const_iterator i = allAttrs.constBegin();
-            while (i != allAttrs.constEnd()) {
-                if( i.value() == attrs ){
-                    isDuplicate = true;
-                    continue;
-                }
-                ++i;
-            }
-            if( !isDuplicate ){
-                //qDebug()<<idx.row();
-                allAttrs[idx] = attrs;
-            }
+    }
+
+    // aggregate attributes from all indices in the same CachePosition as index
+    CartesianDiagramDataCompressor::AggregatedDataValueAttributes aggregated;
+
+    KDAB_FOREACH( const QModelIndex& neighborIndex, indexesAt( position ) ) {
+        DataValueAttributes attrs = diagram->dataValueAttributes( neighborIndex );
+        // only store visible and unique attributes
+        if ( !attrs.isVisible() ) {
+            continue;
+        }
+        if ( !contains( aggregated, attrs ) ) {
+            aggregated[ neighborIndex ] = attrs;
         }
     }
-    // if none of the attrs had the visible flag set
-    // we just take the one set for the index to not return an empty list
-    if( allAttrs.empty() ){
-        allAttrs[index] = diagram->dataValueAttributes( index );
+    // if none of the attributes had the visible flag set, we just take the one set for the index
+    // to avoid returning an empty list (### why not return an empty list?)
+    if ( aggregated.isEmpty() ) {
+        aggregated[index] = diagram->dataValueAttributes( index );
     }
-    // cache the attrs
-    m_dataValueAttributesCache[position] = allAttrs;
-    return allAttrs;
+
+    m_dataValueAttributesCache[position] = aggregated;
+    return aggregated;
 }
 
 bool CartesianDiagramDataCompressor::prepareDataChange( const QModelIndex& parent, bool isRows,
