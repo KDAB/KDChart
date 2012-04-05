@@ -45,44 +45,37 @@ CartesianDiagramDataCompressor::CartesianDiagramDataCompressor( QObject* parent 
 
 QModelIndexList CartesianDiagramDataCompressor::indexesAt( const CachePosition& position ) const
 {
-    if ( mapsToModelIndex( position ) ) {
-        CachePosition posPrev( position );
-        if( m_datasetDimension == 2 ){
-            if(posPrev.second)
-                --posPrev.second;
-        }else{
-            if(posPrev.first)
-                --posPrev.first;
-        }
-        const QModelIndexList indPrev = mapToModel( posPrev );
-        const QModelIndexList indCur  = mapToModel( position );
-
-        QModelIndexList indexes;
-        if( m_datasetDimension == 2 )
-        {
-            const int iStart = (indPrev.empty() || indPrev==indCur) ? indCur.first().column()
-                             : indPrev.first().column() + 1;
-            const int iEnd   = indCur.last().column();
-            for( int i=iStart; i<=iEnd; ++i){
-                Q_ASSERT( m_model->hasIndex( position.first, i, m_rootIndex ) );
-                indexes << m_model->index( position.first, i, m_rootIndex ); // checked
-            }
-        }
-        else
-        {
-            const int iStart = (indPrev.empty() || indPrev==indCur)  ? indCur.first().row()
-                             : indPrev.first().row() + 1;
-            const int iEnd   = (indCur.isEmpty()) ? iStart : indCur.first().row();
-            //qDebug()<<iStart<<iEnd << iEnd-iStart;
-            for( int i=iStart; i<=iEnd; ++i){
-                Q_ASSERT( m_model->hasIndex( i, position.second, m_rootIndex ) );
-                indexes << m_model->index( i, position.second, m_rootIndex ); // checked
-            }
-        }
+    QModelIndexList indexes;
+    if ( !mapsToModelIndex( position ) ) {
         return indexes;
-    } else {
-        return QModelIndexList();
     }
+
+    CachePosition prevPosition( position );
+    if ( m_datasetDimension == 2 ) {
+        prevPosition.second = qMax( prevPosition.second - 1, 0);
+    } else {
+        prevPosition.first = qMax( prevPosition.first - 1, 0);
+    }
+
+    const QModelIndexList prevIndex = mapToModel( prevPosition );
+    const QModelIndexList currentIndex = mapToModel( position );
+
+    if ( m_datasetDimension == 2 ) {
+        int i = prevIndex.first().column() + ( prevIndex.empty() || prevIndex == currentIndex ) ? 0 : 1;
+        const int iEnd = currentIndex.last().column();
+        for ( ; i <= iEnd; ++i ) {
+            Q_ASSERT( m_model->hasIndex( position.first, i, m_rootIndex ) );
+            indexes << m_model->index( position.first, i, m_rootIndex ); // checked
+        }
+    } else {
+        int i = currentIndex.first().row() + ( prevIndex.empty() || prevIndex == currentIndex ) ? 0 : 1;
+        const int iEnd = currentIndex.isEmpty() ? i : currentIndex.first().row();
+        for ( ; i <= iEnd; ++i ) {
+            Q_ASSERT( m_model->hasIndex( i, position.second, m_rootIndex ) );
+            indexes << m_model->index( i, position.second, m_rootIndex ); // checked
+        }
+    }
+    return indexes;
 }
 
 
