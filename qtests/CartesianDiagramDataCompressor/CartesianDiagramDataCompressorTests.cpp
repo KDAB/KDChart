@@ -159,7 +159,7 @@ private slots:
     {
         CachePosition position( 0, 0 );
         // KDChart::CartesianDiagramDataCompressor::DataPoint point;
-        QVERIFY( compressor.isValidCachePosition( position ) );
+        QVERIFY( compressor.mapsToModelIndex( position ) );
         compressor.retrieveModelData( position );
         QVERIFY2( compressor.isCached( position ),
                   "datapoint should be valid after retrieveModelData( position )" );

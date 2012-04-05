@@ -177,8 +177,8 @@ namespace KDChart {
     private:
         // mark a cache position as invalid
         void invalidate( const CachePosition& );
-        // verify it is within the range
-        bool isValidCachePosition( const CachePosition& ) const;
+        // check if position is inside the dataset's index range
+        bool mapsToModelIndex( const CachePosition& ) const;
 
         CachePosition mapToCache( const QModelIndex& ) const;
         CachePosition mapToCache( int row, int column ) const;
