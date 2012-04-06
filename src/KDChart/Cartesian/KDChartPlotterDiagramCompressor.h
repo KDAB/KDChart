@@ -52,7 +52,9 @@ public:
               {}
         inline qreal distance( const DataPoint &other )
         {
-            return std::sqrt( std::pow( key - other.key, 2 ) + std::pow( value - other.value, 2 ) );
+            const qreal dx = key - other.key;
+            const qreal dy = value - other.value;
+            return std::sqrt( dx * dx + dy * dy );
         }
 
         inline bool operator==( const DataPoint &other )
