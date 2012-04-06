@@ -155,12 +155,12 @@ AttributesModel* BarDiagram::BarDiagramType::attributesModel() const
 
 QModelIndex BarDiagram::BarDiagramType::attributesModelRootIndex() const
 {
-    return m_private->diagram->attributesModelRootIndex();
+    return diagram()->attributesModelRootIndex();
 }
 
 BarDiagram* BarDiagram::BarDiagramType::diagram() const
 {
-    return m_private->diagram;
+    return static_cast< BarDiagram* >( m_private->diagram );
 }
 
 void BarDiagram::BarDiagramType::addLabel( LabelPaintCache* lpc,

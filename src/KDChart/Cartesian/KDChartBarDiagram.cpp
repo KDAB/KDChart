@@ -46,7 +46,6 @@ using namespace KDChart;
 
 BarDiagram::Private::Private()
     : orientation( Qt::Vertical )
-    , diagram( 0 )
     , implementor( 0 )
     , normalDiagram( 0 )
     , stackedDiagram( 0 )
@@ -78,7 +77,6 @@ BarDiagram::BarDiagram( QWidget* parent, CartesianCoordinatePlane* plane ) :
 
 void BarDiagram::init()
 {
-    d->diagram = this;
     d->normalDiagram = new NormalBarDiagram( this );
     d->stackedDiagram = new StackedBarDiagram( this );
     d->percentDiagram = new PercentBarDiagram( this );

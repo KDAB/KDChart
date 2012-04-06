@@ -62,7 +62,6 @@ namespace KDChart {
         Private( const Private& rhs );
         ~Private();
 
-        LineDiagram* diagram;
         LineDiagramType* implementor; // the current type
         LineDiagramType* normalDiagram;
         LineDiagramType* stackedDiagram;

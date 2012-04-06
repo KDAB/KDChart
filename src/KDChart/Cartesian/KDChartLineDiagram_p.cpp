@@ -42,7 +42,7 @@ AttributesModel* LineDiagram::LineDiagramType::attributesModel() const
 
 QModelIndex LineDiagram::LineDiagramType::attributesModelRootIndex() const
 {
-    return m_private->diagram->attributesModelRootIndex();
+    return diagram()->attributesModelRootIndex();
 }
 
 int LineDiagram::LineDiagramType::datasetDimension() const

@@ -52,7 +52,6 @@ using namespace KDChart;
 AbstractDiagram::AbstractDiagram ( QWidget* parent, AbstractCoordinatePlane* plane )
     : QAbstractItemView ( parent ), _d( new Private() )
 {
-    _d->diagram = this;
     _d->init( plane );
     init();
 }
@@ -65,6 +64,7 @@ AbstractDiagram::~AbstractDiagram()
 
 void AbstractDiagram::init()
 {
+    _d->diagram = this;
     d->reverseMapper.setDiagram( this );
 }
 

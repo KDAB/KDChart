@@ -63,7 +63,6 @@ public:
 
     Qt::Orientation orientation;
 
-    BarDiagram* diagram;
     BarDiagramType* implementor; // the current type
     BarDiagramType* normalDiagram;
     BarDiagramType* stackedDiagram;

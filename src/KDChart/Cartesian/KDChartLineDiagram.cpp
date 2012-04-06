@@ -65,7 +65,6 @@ LineDiagram::LineDiagram( QWidget* parent, CartesianCoordinatePlane* plane ) :
 
 void LineDiagram::init()
 {
-    d->diagram = this;
     d->normalDiagram = new NormalLineDiagram( this );
     d->stackedDiagram = new StackedLineDiagram( this );
     d->percentDiagram = new PercentLineDiagram( this );
