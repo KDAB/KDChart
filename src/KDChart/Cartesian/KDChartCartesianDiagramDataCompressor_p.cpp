@@ -625,32 +625,30 @@ CartesianDiagramDataCompressor::CachePosition CartesianDiagramDataCompressor::ma
 
 QModelIndexList CartesianDiagramDataCompressor::mapToModel( const CachePosition& position ) const
 {
-    if ( mapsToModelIndex( position ) ) {
-        QModelIndexList indexes;
-        if( m_datasetDimension == 2 )
-        {
-            // check consistency with data dimension of 2
-            Q_ASSERT( m_model->columnCount() > position.second * 2 + 1 );
-            indexes << m_model->index( position.first, position.second * 2, m_rootIndex ); // checked
-            indexes << m_model->index( position.first, position.second * 2 + 1, m_rootIndex ); // checked
-        }
-        else
-        {
-            // assumption: indexes per column == 1
-            const qreal ipp = indexesPerPixel();
-            for ( int i = 0; i < ipp; ++i ) {
-                int row = qRound( position.first * ipp ) + i;
-                int col = position.second;
-                Q_ASSERT( row < m_model->rowCount() && col < m_model->columnCount() );
-                const QModelIndex index = m_model->index( row, col, m_rootIndex ); // checked
-                if( index.isValid() )
-                    indexes << index;
+    QModelIndexList indexes;
+    if ( !mapsToModelIndex( position ) ) {
+        return indexes;
+    }
+
+    if ( m_datasetDimension == 2 ) {
+        // check consistency with data dimension of 2
+        Q_ASSERT( m_model->columnCount() > position.second * 2 + 1 );
+        indexes << m_model->index( position.first, position.second * 2, m_rootIndex ); // checked
+        indexes << m_model->index( position.first, position.second * 2 + 1, m_rootIndex ); // checked
+    } else {
+        // assumption: indexes per column == 1
+        const qreal ipp = indexesPerPixel();
+        for ( int i = 0; i < ipp; ++i ) {
+            int row = qRound( position.first * ipp ) + i;
+            int col = position.second;
+            Q_ASSERT( row < m_model->rowCount() && col < m_model->columnCount() );
+            const QModelIndex index = m_model->index( row, col, m_rootIndex ); // checked
+            if ( index.isValid() ) {
+                indexes << index;
             }
         }
-        return indexes;
-    } else {
-        return QModelIndexList();
     }
+    return indexes;
 }
 
 qreal CartesianDiagramDataCompressor::indexesPerPixel() const
