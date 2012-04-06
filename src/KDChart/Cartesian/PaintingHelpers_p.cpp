@@ -167,6 +167,7 @@ static ThreeDLineAttributes threeDLineAttributes( AbstractDiagram* diagram, cons
         return lineDiagram->threeDLineAttributes( index );
     }
     Q_ASSERT( false );
+    return ThreeDLineAttributes();
 }
 
 static ValueTrackerAttributes valueTrackerAttributes( AbstractDiagram* diagram, const QModelIndex& index )
@@ -177,6 +178,7 @@ static ValueTrackerAttributes valueTrackerAttributes( AbstractDiagram* diagram, 
         return lineDiagram->valueTrackerAttributes( index );
     }
     Q_ASSERT( false );
+    return ValueTrackerAttributes();
 }
 
 void paintElements( AbstractDiagram::Private *diagramPrivate, PaintContext* ctx,
