@@ -113,7 +113,7 @@ namespace KDChart {
         // FIXME: Optimize if necessary
         virtual qreal calcPercentValue( const QModelIndex & index ) const;
 
-        // this should possibly be virtual so it can be overridden (cf. LabelPaintCache::extra)
+        // this should possibly be virtual so it can be overridden
         void addLabel( LabelPaintCache* cache,
                        const QModelIndex& index,
                        const CartesianDiagramDataCompressor::CachePosition* position,
