@@ -483,70 +483,30 @@ void CartesianDiagramDataCompressor::retrieveModelData( const CachePosition& pos
     switch ( m_mode ) {
     case Precise:
     {
-        result.hidden = true;
         const QModelIndexList indexes = mapToModel( position );
-        if( m_datasetDimension == 2 )
-        {
+
+        if ( m_datasetDimension == 2 ) {
             Q_ASSERT( indexes.count() == 2 );
-
-            // try the ColumnDataRole approach first
-            const int xColumn = indexes.first().column();
-            const int yColumn = indexes.last().column();
-            const QVariantList xValues = m_model->headerData( xColumn, Qt::Horizontal, ColumnDataRole ).toList();
-            const QVariantList yValues = m_model->headerData( yColumn, Qt::Horizontal, ColumnDataRole ).toList();
-
-            if( !xValues.isEmpty() && !yValues.isEmpty() )
-            {
-                Q_ASSERT( xValues.count() == yValues.count() );
-                Q_ASSERT( xValues.count() == m_model->rowCount() );
-                int row = 0;
-                QVariantList::const_iterator itX = xValues.begin();
-                QVariantList::const_iterator itY = yValues.begin();
-                for( ; itX != xValues.end(); ++itX, ++itY, ++row )
-                {
-                    DataPoint result;
-                    result.index = m_model->index( row, xColumn, m_rootIndex ); // checked
-                    if( !itX->isNull() )
-                    {
-                        result.key = itX->toDouble();
-                        if ( itY->value<QVariant>() == QVariant() )
-                            result.value = std::numeric_limits< qreal >::quiet_NaN();
-                        else
-                            result.value = itY->toDouble();
-                    }
-                    m_data[ position.column ][ row ] = result;
-                }
-                // FIXME (christoph): We can't return here as we haven't
-                // determined yet if the data point is hidden or not. Does
-                // this optimization (r31276) still work this way?
-                //return;
-            }
-
-            const QModelIndex& xIndex = indexes.first();
-            const QModelIndex& yIndex = indexes.last();
-            const qreal xData = m_modelCache.data( xIndex );
-            const qreal yData = m_modelCache.data( yIndex );
+            const QModelIndex& xIndex = indexes.at( 0 );
             result.index = xIndex;
-            result.key   = xData;
-            result.value = yData;
-        }
-        else
-        {
-            if ( ! indexes.isEmpty() ) {
-                result.value = std::numeric_limits< qreal >::quiet_NaN();
-                result.key = 0.0;
-                Q_FOREACH( const QModelIndex& index, indexes ) {
-                    const qreal value = m_modelCache.data( index );
-                    if( !ISNAN( value ) )
-                    {
-                        result.value = ISNAN( result.value ) ? value : result.value + value;
-                    }
-                    result.key += index.row();
-                }
-                result.index = indexes.at( 0 );
-                result.key /= indexes.size();
-                result.value /= indexes.size();
+            result.key = m_modelCache.data( xIndex );
+            result.value = m_modelCache.data( indexes.at( 1 ) );
+        } else {
+            if ( indexes.isEmpty() ) {
+                break;
             }
+            result.value = std::numeric_limits< qreal >::quiet_NaN();
+            result.key = 0.0;
+            Q_FOREACH( const QModelIndex& index, indexes ) {
+                const qreal value = m_modelCache.data( index );
+                if ( !ISNAN( value ) ) {
+                    result.value = ISNAN( result.value ) ? value : result.value + value;
+                }
+                result.key += index.row();
+            }
+            result.index = indexes.at( 0 );
+            result.key /= indexes.size();
+            result.value /= indexes.size();
         }
         break;
     }

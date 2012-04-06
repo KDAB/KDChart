@@ -258,38 +258,26 @@ QVariant AttributesModel::headerData ( int section,
                                        Qt::Orientation orientation,
                                        int role/* = Qt::DisplayRole */ ) const
 {
-  if( sourceModel() ) {
-      const QVariant sourceData = sourceModel()->headerData( section, orientation, role );
-      if ( sourceData.isValid() ) return sourceData;
-  }
-
-  if( orientation == Qt::Horizontal && role == ColumnDataRole )
-  {
-    // it seems the source model doesn't like the idea of handing out all the column data at once...
-    // so we have to do it manually.
-    QVariantList result;
-    if ( section < sourceModel()->columnCount() ) {
-        const int rows = sourceModel()->rowCount();
-        for( int row = 0; row < rows; ++row )
-            result.push_back( sourceModel()->index( row, section ).data() ); // checked
+    if ( sourceModel() ) {
+        const QVariant sourceData = sourceModel()->headerData( section, orientation, role );
+        if ( sourceData.isValid() ) {
+            return sourceData;
+        }
     }
 
-    return result;
-  }
+    // the source model didn't have data set, let's use our stored values
+    const QMap< int, QMap< int, QVariant> >& map
+        = orientation == Qt::Horizontal ? mHorizontalHeaderDataMap : mVerticalHeaderDataMap;
+    QMap< int, QMap< int, QVariant > >::const_iterator mapIt = map.find( section );
+    if ( mapIt != map.constEnd() ) {
+        const QMap< int, QVariant >& dataMap = mapIt.value();
+        QMap< int, QVariant >::const_iterator dataMapIt = dataMap.find( role );
+        if ( dataMapIt != dataMap.constEnd() ) {
+            return dataMapIt.value();
+        }
+    }
 
-
-  // the source model didn't have data set, let's use our stored values
-  const QMap<int, QMap<int, QVariant> >& map = orientation == Qt::Horizontal ? mHorizontalHeaderDataMap : mVerticalHeaderDataMap;
-  QMap<int, QMap<int, QVariant> >::const_iterator mapIt = map.find( section );
-  if ( mapIt != map.constEnd() ) {
-      const QMap<int, QVariant> &dataMap = *mapIt;
-      QMap<int, QVariant>::const_iterator dataMapIt = dataMap.find( role );
-      if ( dataMapIt != dataMap.constEnd() ) {
-          return *dataMapIt;
-      }
-  }
-
-  return defaultHeaderData( section, orientation, role );
+    return defaultHeaderData( section, orientation, role );
 }
 
 
