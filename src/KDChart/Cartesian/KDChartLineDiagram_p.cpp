@@ -87,8 +87,8 @@ qreal LineDiagram::LineDiagramType::interpolateMissingValue( const CartesianDiag
     qreal rightValue = std::numeric_limits< qreal >::quiet_NaN();
     int missingCount = 1;
 
-    const int column = pos.second;
-    const int row = pos.first;
+    const int column = pos.column;
+    const int row = pos.row;
     const int rowCount = compressor().modelDataRows();
 
     // iterate back and forth to find valid values

@@ -91,20 +91,20 @@ namespace KDChart {
         class CachePosition {
         public:
             CachePosition()
-                : first( -1 ),
-                  second( -1 )
+                : row( -1 ),
+                  column( -1 )
                   {}
-            CachePosition( int first, int second )
-                : first( first ),
-                  second( second )
+            CachePosition( int row, int column )
+                : row( row ),
+                  column( column )
                   {}
-            int first;
-            int second;
+            int row;
+            int column;
 
             bool operator==( const CachePosition& rhs ) const
             {
-                return first == rhs.first &&
-                       second == rhs.second;
+                return row == rhs.row &&
+                       column == rhs.column;
             }
             bool operator<( const CachePosition& rhs ) const
             {
@@ -113,7 +113,7 @@ namespace KDChart {
                 // Think of them as entries in a matrix or table:
                 // An entry comes before another entry if it is either above the other
                 // entry, or in the same row and to the left of the other entry.
-                return first < rhs.first || ( first == rhs.first && second < rhs.second );
+                return row < rhs.row || ( row == rhs.row && column < rhs.column );
             }
         };
 
@@ -145,7 +145,6 @@ namespace KDChart {
 
         QPair< QPointF, QPointF > dataBoundaries() const;
 
-        QModelIndexList indexesAt( const CachePosition& position ) const;
         AggregatedDataValueAttributes aggregatedAttrs(
                 const AbstractDiagram* diagram,
                 const QModelIndex & index,

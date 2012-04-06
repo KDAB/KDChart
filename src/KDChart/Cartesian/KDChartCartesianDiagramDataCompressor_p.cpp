@@ -43,41 +43,6 @@ CartesianDiagramDataCompressor::CartesianDiagramDataCompressor( QObject* parent 
     calculateSampleStepWidth();
 }
 
-QModelIndexList CartesianDiagramDataCompressor::indexesAt( const CachePosition& position ) const
-{
-    QModelIndexList indexes;
-    if ( !mapsToModelIndex( position ) ) {
-        return indexes;
-    }
-
-    CachePosition prevPosition( position );
-    if ( m_datasetDimension == 2 ) {
-        prevPosition.second = qMax( prevPosition.second - 1, 0);
-    } else {
-        prevPosition.first = qMax( prevPosition.first - 1, 0);
-    }
-
-    const QModelIndexList prevIndex = mapToModel( prevPosition );
-    const QModelIndexList currentIndex = mapToModel( position );
-
-    if ( m_datasetDimension == 2 ) {
-        int i = prevIndex.first().column() + ( prevIndex.empty() || prevIndex == currentIndex ) ? 0 : 1;
-        const int iEnd = currentIndex.last().column();
-        for ( ; i <= iEnd; ++i ) {
-            Q_ASSERT( m_model->hasIndex( position.first, i, m_rootIndex ) );
-            indexes << m_model->index( position.first, i, m_rootIndex ); // checked
-        }
-    } else {
-        int i = currentIndex.first().row() + ( prevIndex.empty() || prevIndex == currentIndex ) ? 0 : 1;
-        const int iEnd = currentIndex.isEmpty() ? i : currentIndex.first().row();
-        for ( ; i <= iEnd; ++i ) {
-            Q_ASSERT( m_model->hasIndex( i, position.second, m_rootIndex ) );
-            indexes << m_model->index( i, position.second, m_rootIndex ); // checked
-        }
-    }
-    return indexes;
-}
-
 static bool contains( const CartesianDiagramDataCompressor::AggregatedDataValueAttributes& aggregated,
                       const DataValueAttributes& attributes )
 {
@@ -95,8 +60,6 @@ CartesianDiagramDataCompressor::AggregatedDataValueAttributes CartesianDiagramDa
         const QModelIndex & index,
         const CachePosition& position ) const
 {
-    Q_ASSERT( indexesAt( position ).contains( index ) );
-
     // return cached attrs, if any
     DataValueAttributesCache::const_iterator i = m_dataValueAttributesCache.constFind( position );
     if ( i != m_dataValueAttributesCache.constEnd() ) {
@@ -105,8 +68,7 @@ CartesianDiagramDataCompressor::AggregatedDataValueAttributes CartesianDiagramDa
 
     // aggregate attributes from all indices in the same CachePosition as index
     CartesianDiagramDataCompressor::AggregatedDataValueAttributes aggregated;
-
-    KDAB_FOREACH( const QModelIndex& neighborIndex, indexesAt( position ) ) {
+    KDAB_FOREACH( const QModelIndex& neighborIndex, mapToModel( position ) ) {
         DataValueAttributes attrs = diagram->dataValueAttributes( neighborIndex );
         // only store visible and unique attributes
         if ( !attrs.isVisible() ) {
@@ -149,8 +111,8 @@ bool CartesianDiagramDataCompressor::prepareDataChange( const QModelIndex& paren
         }
     }
 
-    *start = isRows ? startPos.first : startPos.second;
-    *end = isRows ? endPos.first : endPos.second;
+    *start = isRows ? startPos.row : startPos.column;
+    *end = isRows ? endPos.row : endPos.column;
     return true;
 }
 
@@ -227,7 +189,7 @@ void CartesianDiagramDataCompressor::slotRowsRemoved( const QModelIndex& parent,
     }
 
     for ( int i = 0; i < m_data.size(); ++i ) {
-        for (int j = startPos.first; j < m_data[i].size(); ++j ) {
+        for (int j = startPos.row; j < m_data[i].size(); ++j ) {
             retrieveModelData( CachePosition( j, i ) );
         }
     }
@@ -256,7 +218,7 @@ void CartesianDiagramDataCompressor::slotColumnsRemoved( const QModelIndex& pare
         return;
     }
 
-    for ( int i = startPos.second; i < m_data.size(); ++i ) {
+    for ( int i = startPos.column; i < m_data.size(); ++i ) {
         for ( int j = 0; j < m_data[i].size(); ++j ) {
             retrieveModelData( CachePosition( j, i ) );
         }
@@ -287,8 +249,8 @@ void CartesianDiagramDataCompressor::slotModelDataChanged(
     Q_ASSERT( topLeftIndex.column() <= bottomRightIndex.column() );
     CachePosition topleft = mapToCache( topLeftIndex );
     CachePosition bottomright = mapToCache( bottomRightIndex );
-    for ( int row = topleft.first; row <= bottomright.first; ++row )
-        for ( int column = topleft.second; column <= bottomright.second; ++column )
+    for ( int row = topleft.row; row <= bottomright.row; ++row )
+        for ( int column = topleft.column; column <= bottomright.column; ++column )
             invalidate( CachePosition( row, column ) );
 }
 
@@ -465,7 +427,7 @@ const CartesianDiagramDataCompressor::DataPoint& CartesianDiagramDataCompressor:
     if ( ! isCached( position ) ) {
         retrieveModelData( position );
     }
-    return m_data[ position.second ][ position.first ];
+    return m_data[ position.column ][ position.row ];
 }
 
 QPair< QPointF, QPointF > CartesianDiagramDataCompressor::dataBoundaries() const
@@ -552,7 +514,7 @@ void CartesianDiagramDataCompressor::retrieveModelData( const CachePosition& pos
                         else
                             result.value = itY->toDouble();
                     }
-                    m_data[ position.second ][ row ] = result;
+                    m_data[ position.column ][ row ] = result;
                 }
                 // FIXME (christoph): We can't return here as we haven't
                 // determined yet if the data point is hidden or not. Does
@@ -592,7 +554,7 @@ void CartesianDiagramDataCompressor::retrieveModelData( const CachePosition& pos
         break;
     }
 
-    m_data[position.second][position.first] = result;
+    m_data[ position.column ][ position.row ] = result;
     Q_ASSERT( isCached( position ) );
 }
 
@@ -632,15 +594,15 @@ QModelIndexList CartesianDiagramDataCompressor::mapToModel( const CachePosition&
 
     if ( m_datasetDimension == 2 ) {
         // check consistency with data dimension of 2
-        Q_ASSERT( m_model->columnCount() > position.second * 2 + 1 );
-        indexes << m_model->index( position.first, position.second * 2, m_rootIndex ); // checked
-        indexes << m_model->index( position.first, position.second * 2 + 1, m_rootIndex ); // checked
+        Q_ASSERT( m_model->columnCount() > position.column * 2 + 1 );
+        indexes << m_model->index( position.row, position.column * 2, m_rootIndex ); // checked
+        indexes << m_model->index( position.row, position.column * 2 + 1, m_rootIndex ); // checked
     } else {
         // assumption: indexes per column == 1
         const qreal ipp = indexesPerPixel();
         for ( int i = 0; i < ipp; ++i ) {
-            int row = qRound( position.first * ipp ) + i;
-            int col = position.second;
+            int row = qRound( position.row * ipp ) + i;
+            int col = position.column;
             Q_ASSERT( row < m_model->rowCount() && col < m_model->columnCount() );
             const QModelIndex index = m_model->index( row, col, m_rootIndex ); // checked
             if ( index.isValid() ) {
@@ -662,14 +624,14 @@ qreal CartesianDiagramDataCompressor::indexesPerPixel() const
 bool CartesianDiagramDataCompressor::mapsToModelIndex( const CachePosition& position ) const
 {
     return m_model && m_data.size() > 0 && m_data[ 0 ].size() > 0 &&
-           position.second >= 0 && position.second < m_data.size() &&
-           position.first >=0 && position.first < m_data[ 0 ].size();
+           position.column >= 0 && position.column < m_data.size() &&
+           position.row >=0 && position.row < m_data[ 0 ].size();
 }
 
 void CartesianDiagramDataCompressor::invalidate( const CachePosition& position )
 {
     if ( mapsToModelIndex( position ) ) {
-        m_data[position.second][position.first] = DataPoint();
+        m_data[ position.column ][ position.row ] = DataPoint();
         // Also invalidate the data value attributes at "position".
         // Otherwise the user overwrites the attributes without us noticing
         // it because we keep reading what's in the cache.
@@ -680,7 +642,7 @@ void CartesianDiagramDataCompressor::invalidate( const CachePosition& position )
 bool CartesianDiagramDataCompressor::isCached( const CachePosition& position ) const
 {
     Q_ASSERT( mapsToModelIndex( position ) );
-    const DataPoint& p = m_data[ position.second ][ position.first ];
+    const DataPoint& p = m_data[ position.column ][ position.row ];
     return p.index.isValid();
 }
 
