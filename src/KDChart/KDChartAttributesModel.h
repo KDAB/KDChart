@@ -32,7 +32,16 @@
 namespace KDChart {
 
 /**
-  * @brief A proxy model used for storing attributes
+  * @brief A proxy model used for decorating data with attributes.
+  *
+  *        An AttributesModel forwards data from and to the source model and adds attributes,
+  *        data that influences the graphical rendering of the source model data.
+  *        The attributes are distinguished from the source model's data by their @p role values.
+  *        Therefore this class does not need to, and does not, change the data layout from the
+  *        source model's; indexes that refer to the same data have the same row and column
+  *        values in both models.
+  *        Attribute changes via the interface of this class (including setData()) are stored
+  *        internally and not forwarded to the source model.
   */
 class KDCHART_EXPORT AttributesModel : public AbstractProxyModel
 {
