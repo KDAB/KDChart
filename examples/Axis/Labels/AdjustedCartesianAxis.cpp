@@ -34,7 +34,7 @@ AdjustedCartesianAxis::AdjustedCartesianAxis ( KDChart::AbstractCartesianDiagram
 const QString AdjustedCartesianAxis::customizedLabel( const QString& label ) const
 {
     bool bOK;
-    qreal val = label.toReal( & bOK );
+    qreal val = label.toDouble( & bOK );
     if( bOK ){
         if( val < m_lowerBound )
             return tr("LOW");
