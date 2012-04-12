@@ -105,7 +105,7 @@ const QPair<QPointF, QPointF> PolarDiagram::calculateDataBoundaries () const
     qreal yMin = 0, yMax = 0;
     for ( int iCol=0; iCol<colCount; ++iCol ) {
         for ( int iRow=0; iRow< rowCount; ++iRow ) {
-            qreal value = model()->data( model()->index( iRow, iCol, rootIndex() ) ).toDouble(); // checked
+            qreal value = model()->data( model()->index( iRow, iCol, rootIndex() ) ).toReal(); // checked
             yMax = qMax( yMax, value );
             yMin = qMin( yMin, value );
         }
@@ -164,7 +164,7 @@ void PolarDiagram::paint( PaintContext* ctx,
         for ( int iCol = 0; iCol < colCount; ++iCol ) {
             for ( int iRow=0; iRow < rowCount; ++iRow ) {
                 QModelIndex index = model()->index( iRow, iCol, rootIndex() ); // checked
-                const qreal value = model()->data( index ).toDouble();
+                const qreal value = model()->data( index ).toReal();
                 QPointF point = coordinatePlane()->translate(
                         QPointF( value, iRow ) ) + ctx->rectangle().topLeft();
                 //qDebug() << point;
@@ -205,7 +205,7 @@ void PolarDiagram::paint( PaintContext* ctx,
             QPolygonF polygon;
             for ( int iRow = 0; iRow < rowCount; ++iRow ) {
                 QModelIndex index = model()->index( iRow, iCol, rootIndex() ); // checked
-                const qreal value = model()->data( index ).toDouble();
+                const qreal value = model()->data( index ).toReal();
                 QPointF point = coordinatePlane()->translate( QPointF( value, iRow ) )
                                 + ctx->rectangle().topLeft();
                 polygon.append( point );

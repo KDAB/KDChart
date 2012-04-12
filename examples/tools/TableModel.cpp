@@ -191,7 +191,7 @@ bool TableModel::loadFromCSV ( const QString& filename )
                         } else {
                             // interpret cell values as floating point:
                             bool convertedOk = false;
-                            qreal value = cell.toDouble ( &convertedOk );
+                            qreal value = cell.toReal( &convertedOk );
                             //qDebug() << convertedOk;
                             const int destColumn = m_dataHasVerticalHeaders ? column - 1 : column;
                             values[destColumn] = convertedOk

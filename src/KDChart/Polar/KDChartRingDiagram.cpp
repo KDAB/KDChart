@@ -222,7 +222,7 @@ void RingDiagram::paint( PaintContext* ctx )
             // is there anything at all at this column?
             bool bOK;
             const qreal cellValue = qAbs( model()->data( model()->index( iRow, iColumn, rootIndex() ) ) // checked
-                                    .toDouble( &bOK ) );
+                                    .toReal( &bOK ) );
 
             if( bOK ){
                 d->startAngles[ iRow ][ iColumn ] = currentValue;
@@ -459,7 +459,7 @@ qreal RingDiagram::valueTotals() const
     qreal total = 0.0;
     for ( int i = 0; i < rCount; ++i ) {
         for ( int j = 0; j < colCount; ++j ) {
-            total += qAbs( model()->data( model()->index( i, j, rootIndex() ) ).toDouble() ); // checked
+            total += qAbs( model()->data( model()->index( i, j, rootIndex() ) ).toReal() ); // checked
         }
     }
     return total;
@@ -471,7 +471,7 @@ qreal RingDiagram::valueTotals( int dataset ) const
     const int colCount = columnCount();
     qreal total = 0.0;
     for ( int j = 0; j < colCount; ++j ) {
-      total += qAbs( model()->data( model()->index( dataset, j, rootIndex() ) ).toDouble() ); // checked
+      total += qAbs( model()->data( model()->index( dataset, j, rootIndex() ) ).toReal() ); // checked
     }
     return total;
 }

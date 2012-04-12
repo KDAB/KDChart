@@ -141,7 +141,7 @@ void MainWindow::setMarkerAttributes()
         ma.setThreeD( threeDEnabled->isChecked() );
 
         // set the size
-        const qreal d = m_model->data( indexY, ROLE_SIZE ).toDouble();
+        const qreal d = m_model->data( indexY, ROLE_SIZE ).toReal();
         ma.setMarkerSize( QSizeF(d,d) );
 
         RelativePosition pos( dva.positivePosition() );

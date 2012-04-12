@@ -67,10 +67,10 @@ public:
         Q_ASSERT( index.isValid() );
         qreal sum = 0.0;
         for ( int row = 0; row < attributesModel->rowCount( QModelIndex() ); row++ )
-            sum += attributesModel->data( attributesModel->index( row, index.column(), QModelIndex() ) ).toDouble(); // checked
+            sum += attributesModel->data( attributesModel->index( row, index.column(), QModelIndex() ) ).toReal(); // checked
         if ( sum == 0.0 )
             return 0.0;
-        return attributesModel->data( attributesModel->mapFromSource( index ) ).toDouble() / sum * 100.0;
+        return attributesModel->data( attributesModel->mapFromSource( index ) ).toReal() / sum * 100.0;
     }
 
 private:

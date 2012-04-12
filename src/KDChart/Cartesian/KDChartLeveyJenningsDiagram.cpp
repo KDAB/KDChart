@@ -366,7 +366,7 @@ void LeveyJenningsDiagram::calculateMeanAndStandardDeviation() const
         const QVariant var = m.data( m.index( row, 1, rootIndex() ) );
         if( !var.isValid() )
             continue;
-        const qreal value = var.toDouble();
+        const qreal value = var.toReal();
         if( ISNAN( value ) )
             continue;
         values << value;
@@ -551,16 +551,16 @@ void LeveyJenningsDiagram::paint( PaintContext* ctx )
         painter->setPen( pen( lotIndex ) );
 
         QVariant vValue = m.data( valueIndex );
-        qreal value = vValue.toDouble();
+        qreal value = vValue.toReal();
         const int lot = m.data( lotIndex ).toInt();
         const bool ok = m.data( okIndex ).toBool();
         const QDateTime time = m.data( timeIndex ).toDateTime();
         const qreal xValue = ( time.toTime_t() - minTime ) / static_cast< qreal >( 24 * 60 * 60 );
 
         QVariant vExpectedMean = m.data( expectedMeanIndex );
-        const qreal expectedMean = vExpectedMean.toDouble();
+        const qreal expectedMean = vExpectedMean.toReal();
         QVariant vExpectedSD = m.data( expectedSDIndex );
-        const qreal expectedSD = vExpectedSD.toDouble();
+        const qreal expectedSD = vExpectedSD.toReal();
 
         QPointF point = ctx->coordinatePlane()->translate( QPointF( xValue, value ) );
 

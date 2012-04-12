@@ -101,11 +101,11 @@ void  TernaryPointDiagram::paint (PaintContext *paintContext)
                 p->setBrush( brush( base ) );
 
                 // retrieve data
-                x = qMax( model()->data( model()->index( row, column+0, rootIndex() ) ).toDouble(), // checked
+                x = qMax( model()->data( model()->index( row, column+0, rootIndex() ) ).toReal(), // checked
                           0.0 );
-                y = qMax( model()->data( model()->index( row, column+1, rootIndex() ) ).toDouble(), // checked
+                y = qMax( model()->data( model()->index( row, column+1, rootIndex() ) ).toReal(), // checked
                           0.0 );
-                z = qMax( model()->data( model()->index( row, column+2, rootIndex() ) ).toDouble(), // checked
+                z = qMax( model()->data( model()->index( row, column+2, rootIndex() ) ).toReal(), // checked
                           0.0 );
 
                 // fix messed up data values (paint as much as possible)

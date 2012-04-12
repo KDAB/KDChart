@@ -308,7 +308,7 @@ void ItemDelegate::paintGanttItem( QPainter* painter,
             painter->translate( 0.5, 0.5 );
             painter->drawRect( r );
             bool ok;
-            qreal completion = idx.model()->data( idx, KDGantt::TaskCompletionRole ).toDouble( &ok );
+            qreal completion = idx.model()->data( idx, KDGantt::TaskCompletionRole ).toReal( &ok );
             if ( ok ) {
                 qreal h = r.height();
                 QRectF cr( r.x(), r.y()+h/4.,

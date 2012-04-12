@@ -842,10 +842,10 @@ PlotterDiagramCompressor::DataPoint PlotterDiagramCompressor::data( const CacheP
     Q_ASSERT( xValue.isValid() );
     Q_ASSERT( yValue.isValid() );
     bool ok = false;
-    point.key = xValue.toDouble( &ok );
+    point.key = xValue.toReal( &ok );
     Q_ASSERT( ok );
     ok = false;
-    point.value = yValue.toDouble( &ok );    
+    point.value = yValue.toReal( &ok );
     Q_ASSERT( ok );
     point.index = indexes.first();
     return point;

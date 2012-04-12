@@ -56,7 +56,7 @@ const QPair<QPointF, QPointF> PercentLyingBarDiagram::calculateDataBoundaries() 
             // Ordinate should begin at 0 the max value being the 100% pos
             const QModelIndex idx = diagram()->model()->index( row, col, diagram()->rootIndex() );
             // only positive values are handled
-            qreal value = diagram()->model()->data( idx ).toDouble();
+            qreal value = diagram()->model()->data( idx ).toReal();
             if ( value > 0 )
                 yMax = qMax( yMax, value );
         }

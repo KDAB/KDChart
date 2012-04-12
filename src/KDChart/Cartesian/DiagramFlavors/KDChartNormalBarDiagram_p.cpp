@@ -185,7 +185,7 @@ void NormalBarDiagram::paint( PaintContext* ctx )
             const CartesianDiagramDataCompressor::CachePosition position( row,  column );
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
             const QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );
-            const qreal value = point.value;//attributesModel()->data( sourceIndex ).toDouble();
+            const qreal value = point.value;//attributesModel()->data( sourceIndex ).toReal();
             if ( ! point.hidden && !ISNAN( value ) ) {
                 QPointF topPoint = ctx->coordinatePlane()->translate( QPointF( point.key + 0.5, value ) );
                 QPointF bottomPoint =  ctx->coordinatePlane()->translate( QPointF( point.key, 0 ) );

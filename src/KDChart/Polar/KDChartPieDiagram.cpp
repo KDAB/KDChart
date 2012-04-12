@@ -160,8 +160,8 @@ void PieDiagram::calcSliceAngles()
     for ( int iColumn = 0; iColumn < colCount; ++iColumn ) {
         bool isOk;
         const qreal cellValue = qAbs( model()->data( model()->index( 0, iColumn, rootIndex() ) ) // checked
-            .toDouble( &isOk ) );
-        // toDouble() returns 0.0 if there was no value or a non-numeric value
+            .toReal( &isOk ) );
+        // toReal() returns 0.0 if there was no value or a non-numeric value
         atLeastOneValue = atLeastOneValue || isOk;
 
         d->startAngles[ iColumn ] = currentValue;
@@ -950,7 +950,7 @@ qreal PieDiagram::valueTotals() const
     qreal total = 0.0;
     Q_ASSERT( model()->rowCount() >= 1 );
     for ( int j = 0; j < colCount; ++j ) {
-      total += qAbs(model()->data( model()->index( 0, j, rootIndex() ) ).toDouble()); // checked
+      total += qAbs(model()->data( model()->index( 0, j, rootIndex() ) ).toReal()); // checked
     }
     return total;
 }

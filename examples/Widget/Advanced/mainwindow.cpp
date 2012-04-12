@@ -74,7 +74,7 @@ void MainWindow::addDataset()
     bool ok;
     QVector< qreal > vec;
     foreach ( const QString &str, parts ) {
-        const qreal val = str.toDouble(&ok);
+        const qreal val = str.toReal(&ok);
         if(ok)
             vec.append( val );
     }

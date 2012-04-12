@@ -171,7 +171,7 @@ void NormalLyingBarDiagram::paint( PaintContext* ctx )
             const CartesianDiagramDataCompressor::CachePosition position( row,  column );
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
             const QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );
-            const qreal value = point.value;//attributesModel()->data( sourceIndex ).toDouble();
+            const qreal value = point.value;//attributesModel()->data( sourceIndex ).toReal();
             QPointF topPoint = ctx->coordinatePlane()->translate( QPointF( value, rowCount - (point.key + 0.5) ) );
             QPointF bottomPoint =  ctx->coordinatePlane()->translate( QPointF( 0, rowCount - point.key ) );
             const qreal barHeight = topPoint.x() - bottomPoint.x();

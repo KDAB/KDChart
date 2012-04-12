@@ -442,10 +442,10 @@ void AbstractDiagram::paintDataValueTexts( QPainter* painter )
             qreal y;
             if ( datasetDimension() == 1 ) {
                 x = row;
-                y = index.data().toDouble();
+                y = index.data().toReal();
             } else {
-                x = index.data().toDouble();
-                y = model()->index( row, column + 1, rootIndex() ).data().toDouble();
+                x = index.data().toReal();
+                y = model()->index( row, column + 1, rootIndex() ).data().toReal();
             }
             paintDataValueText( painter, index, coordinatePlane()->translate( QPointF( x, y ) ), y );
         }
@@ -649,10 +649,10 @@ void AbstractDiagram::paintMarkers( QPainter* painter )
             qreal y;
             if ( datasetDimension() == 1 ) {
                 x = row;
-                y = index.data().toDouble();
+                y = index.data().toReal();
             } else {
-                x = index.data().toDouble();
-                y = model()->index( row, column + 1, rootIndex() ).data().toDouble();
+                x = index.data().toReal();
+                y = model()->index( row, column + 1, rootIndex() ).data().toReal();
             }
             paintMarker( painter, index, coordinatePlane()->translate( QPointF( x, y ) ) );
         }
@@ -1009,7 +1009,7 @@ qreal AbstractDiagram::valueForCell( int row, int column ) const
         return std::numeric_limits<qreal>::quiet_NaN();
     }
     return d->attributesModel->data(
-            d->attributesModel->index( row, column, attributesModelRootIndex() ) ).toDouble(); // checked
+            d->attributesModel->index( row, column, attributesModelRootIndex() ) ).toReal(); // checked
 }
 
 void AbstractDiagram::update() const

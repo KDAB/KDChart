@@ -405,7 +405,7 @@ qreal LineDiagram::valueForCellTesting( int row, int column,
     else
         value = d->attributesModel->data(
                     d->attributesModel->index( row, column, attributesModelRootIndex() ) // checked
-                ).toDouble( &bOK );
+                ).toReal( &bOK );
     return bOK ? value : 0.0;
 }
 

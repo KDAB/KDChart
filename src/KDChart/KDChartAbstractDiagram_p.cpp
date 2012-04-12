@@ -115,10 +115,10 @@ qreal AbstractDiagram::Private::calcPercentValue( const QModelIndex & index ) co
 {
     qreal sum = 0.0;
     for ( int col = 0; col < attributesModel->columnCount( QModelIndex() ); col++ )
-        sum += attributesModel->data( attributesModel->index( index.row(), col, QModelIndex() ) ).toDouble(); // checked
+        sum += attributesModel->data( attributesModel->index( index.row(), col, QModelIndex() ) ).toReal(); // checked
     if ( sum == 0.0 )
         return 0.0;
-    return attributesModel->data( attributesModel->mapFromSource( index ) ).toDouble() / sum * 100.0;
+    return attributesModel->data( attributesModel->mapFromSource( index ) ).toReal() / sum * 100.0;
 }
 
 void AbstractDiagram::Private::addLabel(

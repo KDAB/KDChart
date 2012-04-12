@@ -323,7 +323,7 @@ void MainWindow::on_paintMarkersCB_toggled( bool checked )
         for ( int j=0; j< rowCount; ++j ) {
             QModelIndex index = m_lines->model()->index( j, iColumn, QModelIndex() );
             QBrush brush = qVariantValue<QBrush>( m_lines->model()->headerData( iColumn, Qt::Vertical, DatasetBrushRole ) );
-            qreal value = m_lines->model()->data( index ).toDouble();
+            qreal value = m_lines->model()->data( index ).toReal();
             /* Set a specific color - marker for a specific value */
             if ( value == 8 ) {
                 m_lines->setDataValueAttributes( index, yellowAttributes );
