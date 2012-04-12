@@ -46,8 +46,10 @@ unix {
   UI_DIR = .ui
 }
 !unix {
-  MOC_DIR = _moc
-  OBJECTS_DIR = _obj
-  UI_DIR = _ui
+  debug:MODE=debug
+  release:MODE=release
+  MOC_DIR = $${MODE}/_moc
+  OBJECTS_DIR = $${MODE}/_obj
+  UI_DIR = $${MODE}/_ui
 }
 
