@@ -79,7 +79,8 @@ public:
         MinorTick,
         CustomTick
     };
-    TickIterator( CartesianAxis *a, CartesianCoordinatePlane* plane, uint majorThinningFactor );
+    TickIterator( CartesianAxis *a, CartesianCoordinatePlane* plane, uint majorThinningFactor,
+                  bool isBarChartAbscissa /* sorry about that */ );
 
     qreal position() const { return m_position; }
     QString text() const { return m_text; }
@@ -123,7 +124,8 @@ static qreal slightlyLessThan( qreal r )
     return r - diff;
 }
 
-TickIterator::TickIterator( CartesianAxis* a, CartesianCoordinatePlane* plane, uint majorThinningFactor )
+TickIterator::TickIterator( CartesianAxis* a, CartesianCoordinatePlane* plane, uint majorThinningFactor,
+                            bool isBarChartAbscissa )
    : m_axis( a ),
      m_majorThinningFactor( majorThinningFactor ),
      m_majorLabelCount( 0 ),
@@ -133,8 +135,12 @@ TickIterator::TickIterator( CartesianAxis* a, CartesianCoordinatePlane* plane, u
     XySwitch xy( m_axis->isOrdinate() );
 
     m_dimension = xy( plane->gridDimensionsList().first(), plane->gridDimensionsList().last() );
+    if ( isBarChartAbscissa ) {
+        // In bar charts the last x tick is a fencepost with no associated value, which is convenient
+        // for grid painting. Here we have to manually exclude it to avoid overpainting.
+        m_dimension.end -= m_dimension.stepWidth;
+    }
     GridAttributes gridAttributes = plane->gridAttributes( xy( Qt::Horizontal, Qt::Vertical ) );
-
 
     m_dimension = AbstractGrid::adjustedLowerUpperRange( m_dimension,
                                                          gridAttributes.adjustLowerBoundToGrid(),
@@ -600,6 +606,13 @@ void CartesianAxis::paintCtx( PaintContext* context )
     // paint ticks and labels
 
     TextAttributes labelTA = textAttributes();
+    RulerAttributes rulerAttr = rulerAttributes();
+    const bool isBarChartAbscissa = referenceDiagramIsBarDiagram( d->diagram() ) && isAbscissa();
+    if ( isBarChartAbscissa ) {
+        // in the abscissa of a bar diagram the x values are not usually displayed as numbers,
+        // so the number zero has no special meaning
+        rulerAttr.setShowZeroLabel( true );
+    }
 
     int labelThinningFactor = 1;
     TextLayoutItem *tickLabel = new TextLayoutItem( QString(), labelTA, plane->parent(),
@@ -614,8 +627,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
     for ( int step = labelTA.isVisible() ? Layout : Painting; step < Done; step++ ) {
         delete prevTickLabel;
         prevTickLabel = 0;
-        for ( TickIterator it( this, plane, labelThinningFactor ); !it.isAtEnd(); ++it ) {
-            if ( !rulerAttributes().showZeroLabel() && it.areAlmostEqual( it.position(), 0.0 ) ) {
+        for ( TickIterator it( this, plane, labelThinningFactor, isBarChartAbscissa ); !it.isAtEnd(); ++it ) {
+            if ( !rulerAttr.showZeroLabel() && it.areAlmostEqual( it.position(), 0.0 ) ) {
                 continue;
             }
             const qreal drawPos = it.position() + ( centerTicks ? 0.5 : 0. );
@@ -630,10 +643,10 @@ void CartesianAxis::paintCtx( PaintContext* context )
             geoXy.lvalue( tickEnd.ry(), tickEnd.rx() ) += isOutwardsPositive ? tickLen : -tickLen;
             if ( step == Painting ) {
                 painter->save();
-                if ( rulerAttributes().hasTickMarkPenAt( it.position() ) ) {
-                    painter->setPen( rulerAttributes().tickMarkPen( it.position() ) );
+                if ( rulerAttr.hasTickMarkPenAt( it.position() ) ) {
+                    painter->setPen( rulerAttr.tickMarkPen( it.position() ) );
                 } else {
-                    painter->setPen( rulerAttributes().majorTickMarkPen() );
+                    painter->setPen( rulerAttr.majorTickMarkPen() );
                 }
                 painter->drawLine( onAxis, tickEnd );
                 painter->restore();
@@ -683,7 +696,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
             QPointF labelPos = tickEnd;
 
-            qreal labelMargin = rulerAttributes().labelMargin();
+            qreal labelMargin = rulerAttr.labelMargin();
             if ( labelMargin < 0 ) {
                 labelMargin = QFontMetricsF( tickLabel->realFont() ).height() * 0.5;
             }
@@ -810,6 +823,7 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
     CartesianCoordinatePlane* plane = dynamic_cast< CartesianCoordinatePlane* >( diagram()->coordinatePlane() );
     Q_ASSERT( plane );
     QObject* refArea = plane->parent();
+    const bool isBarChartAbscissa = referenceDiagramIsBarDiagram( diagram() ) && axis()->isAbscissa();
 
     // we ignore:
     // - label thinning (expensive, not worst case and we want worst case)
@@ -825,7 +839,7 @@ QSize CartesianAxis::Private::calculateMaximumSize() const
                                   KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft );
         const qreal tickLabelSpacing = 1; // this is implicitly defined in paintCtx()
 
-        for ( TickIterator it( axis(), plane, 1 ); !it.isAtEnd(); ++it ) {
+        for ( TickIterator it( axis(), plane, 1, isBarChartAbscissa ); !it.isAtEnd(); ++it ) {
             qreal labelSize = 0.0;
             if ( !it.text().isEmpty() ) {
                 tickLabel.setText( it.text() );

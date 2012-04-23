@@ -375,7 +375,9 @@ const QPair<QPointF, QPointF> BarDiagram::calculateDataBoundaries() const
     d->compressor.setResolution( static_cast<int>( this->size().width() * coordinatePlane()->zoomFactorX() ),
                                  static_cast<int>( this->size().height() * coordinatePlane()->zoomFactorY() ) );
 
-    if ( !checkInvariants(true) ) return QPair<QPointF, QPointF>( QPointF( 0, 0 ), QPointF( 0, 0 ) );
+    if ( !checkInvariants( true ) ) {
+        return QPair< QPointF, QPointF >( QPointF( 0, 0 ), QPointF( 0, 0 ) );
+    }
 
     // note: calculateDataBoundaries() is ignoring the hidden flags.
     // That's not a bug but a feature: Hiding data does not mean removing them.
