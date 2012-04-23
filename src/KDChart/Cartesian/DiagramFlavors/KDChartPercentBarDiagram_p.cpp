@@ -43,36 +43,30 @@ BarDiagram::BarType PercentBarDiagram::type() const
 
 const QPair<QPointF, QPointF> PercentBarDiagram::calculateDataBoundaries() const
 {
+    const int rowCount = diagram()->model() ? diagram()->model()->rowCount( diagram()->rootIndex() ) : 0;
+    const int colCount = diagram()->model() ? diagram()->model()->columnCount( diagram()->rootIndex() ) : 0;
+
     const qreal xMin = 0.0;
-    const qreal xMax = diagram()->model() ? diagram()->model()->rowCount( diagram()->rootIndex() ) : 0;
+    const qreal xMax = rowCount;
     const qreal yMin = 0.0;
     const qreal yMax = 100.0;
 
-    const int rowCount = xMax;
-    const int colCount = diagram()->model() ? diagram()->model()->columnCount( diagram()->rootIndex() ) : 0;
-
     qreal usedDepth = 0;
 
-    for( int row = 0; row < rowCount ; ++row )
-    {
+    for( int row = 0; row < rowCount ; ++row ) {
         for( int col = 0; col < colCount; ++col ) {
             const CartesianDiagramDataCompressor::CachePosition position( row, col );
             const CartesianDiagramDataCompressor::DataPoint p = compressor().data( position );
             QModelIndex sourceIndex = attributesModel()->mapToSource( p.index );
             ThreeDBarAttributes threeDAttrs = diagram()->threeDBarAttributes( sourceIndex );
 
-            if( threeDAttrs.isEnabled() )
-                if( threeDAttrs.depth() > usedDepth )
-                    usedDepth = threeDAttrs.depth();
+            if ( threeDAttrs.isEnabled() && threeDAttrs.depth() > usedDepth ) {
+                usedDepth = threeDAttrs.depth();
+            }
         }
-
     }
 
-    const QPointF bottomLeft( QPointF( xMin, yMin ) );
-    const QPointF topRight( QPointF( xMax, yMax + usedDepth * 0.3 ) );
-
-    //qDebug() << "BarDiagram::calculateDataBoundaries () returns ( " << bottomLeft << topRight <<")";
-    return QPair< QPointF, QPointF >( bottomLeft,  topRight );
+    return QPair< QPointF, QPointF >( QPointF( xMin, yMin ), QPointF( xMax, yMax + usedDepth * 0.3 ) );
 }
 
 void PercentBarDiagram::paint( PaintContext* ctx )

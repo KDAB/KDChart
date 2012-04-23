@@ -47,17 +47,16 @@ const QPair<QPointF, QPointF> NormalBarDiagram::calculateDataBoundaries() const
     const int rowCount = compressor().modelDataRows();
     const int colCount = compressor().modelDataColumns();
 
-    qreal xMin = 0.0;
-    qreal xMax = diagram()->model() ? diagram()->model()->rowCount( diagram()->rootIndex() ) : 0;
-    qreal yMin = 0.0, yMax = 0.0;
+    const qreal xMin = 0.0;
+    const qreal xMax = rowCount;
+    qreal yMin = 0.0;
+    qreal yMax = 0.0;
 
     qreal usedDepth = 0;
 
-    bool bStarting = true;
-    for ( int column = 0; column < colCount; ++column )
-    {
-        for ( int row = 0; row < rowCount; ++row )
-        {
+    bool isFirst = true;
+    for ( int column = 0; column < colCount; ++column ) {
+        for ( int row = 0; row < rowCount; ++row ) {
             const CartesianDiagramDataCompressor::CachePosition position( row, column );
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
             const qreal value = ISNAN( point.value ) ? 0.0 : point.value;
@@ -71,11 +70,11 @@ const QPair<QPointF, QPointF> NormalBarDiagram::calculateDataBoundaries() const
             // this is always true yMin can be 0 in case all values
             // are the same
             // same for yMax it can be zero if all values are negative
-            if( bStarting ){
+            if ( isFirst ) {
                 yMin = value;
                 yMax = value;
-                bStarting = false;
-            }else{
+                isFirst = false;
+            } else {
                 yMin = qMin( yMin, value );
                 yMax = qMax( yMax, value );
             }
@@ -84,19 +83,16 @@ const QPair<QPointF, QPointF> NormalBarDiagram::calculateDataBoundaries() const
 
     // special cases
     if ( yMax == yMin ) {
-        if ( yMin == 0.0 )
-            yMax = 0.1; //we need at least a range
-        else if( yMax < 0.0 )
-            yMax = 0.0; // they are the same and negative
-        else if( yMin > 0.0 )
-            yMin = 0.0; // they are the same but positive
+        if ( yMin == 0.0 ) {
+            yMax = 0.1; // we need at least a range
+        } else if ( yMax < 0.0 ) {
+            yMax = 0.0; // extend the range to zero
+        } else if ( yMin > 0.0 ) {
+            yMin = 0.0; // dito
+        }
     }
-    const QPointF bottomLeft ( QPointF( xMin, yMin ) );
-    const QPointF topRight ( QPointF( xMax, yMax ) );
 
-    //qDebug() << "KDChart::NormalBarDiagram::calculateDataBoundaries() returns " << bottomLeft << topRight;
-
-    return QPair< QPointF, QPointF >( bottomLeft,  topRight );
+    return QPair< QPointF, QPointF >( QPointF( xMin, yMin ), QPointF( xMax, yMax ) );
 }
 
 void NormalBarDiagram::paint( PaintContext* ctx )
@@ -144,10 +140,11 @@ void NormalBarDiagram::paint( PaintContext* ctx )
 
     //Pending Michel: FixMe
     if ( ba.useFixedDataValueGap() ) {
-        if ( width > maxLimit )
+        if ( width > maxLimit ) {
             spaceBetweenBars += ba.fixedDataValueGap();
-        else
-            spaceBetweenBars = ((width/rowCount) - groupWidth)/(colCount-1);
+        } else {
+            spaceBetweenBars = ( ( width / rowCount ) - groupWidth ) / ( colCount - 1 );
+        }
     }
 
     if ( ba.useFixedValueBlockGap() ) {
@@ -159,28 +156,22 @@ void NormalBarDiagram::paint( PaintContext* ctx )
 
     LabelPaintCache lpc;
 
-    for( int row = 0; row < rowCount; ++row )
-    {
-        qreal offset = -groupWidth/2 + spaceBetweenGroups/2;
+    for ( int row = 0; row < rowCount; ++row ) {
+        qreal offset = -groupWidth / 2 + spaceBetweenGroups / 2;
 
-        if ( ba.useFixedDataValueGap() )
-        {
-            if ( spaceBetweenBars > 0 )
-            {
-                if ( width > maxLimit )
+        if ( ba.useFixedDataValueGap() ) {
+            if ( spaceBetweenBars > 0 ) {
+                if ( width > maxLimit ) {
                     offset -= ba.fixedDataValueGap();
-                else
-                    offset -= ((width/rowCount) - groupWidth)/(colCount-1);
-
-            }
-            else
-            {
-                offset += barWidth/2;
+                } else {
+                    offset -= ( ( width / rowCount ) - groupWidth ) / ( colCount - 1 );
+                }
+            } else {
+                offset += barWidth / 2;
             }
         }
 
-        for( int column=0; column< colCount; ++column )
-        {
+        for ( int column = 0; column < colCount; ++column ) {
             // paint one group
             const CartesianDiagramDataCompressor::CachePosition position( row,  column );
             const CartesianDiagramDataCompressor::DataPoint point = compressor().data( position );
