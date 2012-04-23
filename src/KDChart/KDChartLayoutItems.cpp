@@ -476,13 +476,23 @@ QSize KDChart::TextLayoutItem::unrotatedTextSize( QFont fnt ) const
     return fm.boundingRect( veryLarge, Qt::AlignLeft | Qt::AlignTop, mText ).size().toSize();
 }
 
+int KDChart::TextLayoutItem::marginWidth() const
+{
+    return marginWidth( unrotatedTextSize() );
+}
+
+int KDChart::TextLayoutItem::marginWidth( const QSize& textSize ) const
+{
+    return qMin ( QApplication::style()->pixelMetric( QStyle::PM_ButtonMargin, 0, 0 ),
+                  // decrease frame size if the text is small
+                  textSize.height() * 2 / 3 );
+}
+
 QSize KDChart::TextLayoutItem::unrotatedSizeHint( const QFont& fnt ) const
 {
     QSize ret = unrotatedTextSize( fnt );
-    int frame = QApplication::style()->pixelMetric( QStyle::PM_ButtonMargin, 0, 0 );
-    // fine-tuning for small font sizes: the frame must not be so big, if the font is tiny
-    frame = qMin( frame, ret.height() * 2 / 3 );
-    ret += QSize( frame, frame );
+    const int margin = marginWidth( ret );
+    ret += QSize( margin, margin );
     return ret;
 }
 

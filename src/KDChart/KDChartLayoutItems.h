@@ -134,6 +134,8 @@ namespace KDChart {
         /** pure virtual in QLayoutItem */
         virtual QRect geometry() const;
 
+        virtual int marginWidth() const;
+
         virtual QSize sizeHintUnrotated() const;
 
         virtual bool intersects( const TextLayoutItem& other, const QPointF& myPos, const QPointF& otherPos ) const;
@@ -150,6 +152,7 @@ namespace KDChart {
         QSize unrotatedSizeHint( const QFont& fnt = QFont() ) const;
         QSize unrotatedTextSize( QFont fnt = QFont() ) const;
         QSize calcSizeHint( const QFont& font ) const;
+        int marginWidth( const QSize& textSize ) const;
 
         qreal fitFontSizeToGeometry() const;
 

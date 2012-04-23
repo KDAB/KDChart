@@ -639,13 +639,14 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 painter->restore();
             }
 
-            // paint the label
-
             if ( it.text().isEmpty() || !labelTA.isVisible() ) {
+                // the following code in the loop is only label painting, so skip it
                 continue;
             }
 
-            QString text = it.text();
+            // paint the label
+
+             QString text = it.text();
             if ( it.type() == TickIterator::MajorTick ) {
                 text = d->customizedLabelText( text, geoXy( Qt::Horizontal, Qt::Vertical ), it.position() );
             }
@@ -680,23 +681,30 @@ void CartesianAxis::paintCtx( PaintContext* context )
             QPoint p1 = labelPoly.at( polyCorner1 );
             QPoint p2 = labelPoly.at( polyCorner1 == 3 ? 0 : ( polyCorner1 + 1 ) );
 
-             // TODO: non-hardcoded tick-label spacing depending on font size and such
-            //        we should use geoXy here when we switch to doing the spacing correctly
             QPointF labelPos = tickEnd;
+
+            qreal labelMargin = rulerAttributes().labelMargin();
+            if ( labelMargin < 0 ) {
+                labelMargin = QFontMetricsF( tickLabel->realFont() ).height() * 0.5;
+            }
+            labelMargin -= tickLabel->marginWidth(); // make up for the margin that's already there
+
             switch ( position() ) {
             case Left:
-                labelPos += QPointF( -size.width(), 1. );
-                // fall through
+                labelPos += QPointF( -size.width() - labelMargin,
+                                     -0.45 * size.height() - 0.5 * ( p1.y() + p2.y() ) );
+                break;
             case Right:
-                // ### the 0.6 is a bit of a fudge factor and depends on the distance between label
-                //     and axis. it might become necessary to properly calculate a good value there.
-                labelPos += QPointF( 1., -0.5 * size.height() - 0.6 * ( p1.y() + p2.y() ) );
+                labelPos += QPointF( labelMargin,
+                                     -0.45 * size.height() - 0.5 * ( p1.y() + p2.y() ) );
                 break;
             case Top:
-                labelPos += QPointF( 1., -size.height() );
-                // fall through
+                labelPos += QPointF( -0.45 * size.width() - 0.5 * ( p1.x() + p2.x() ),
+                                     -size.height() - labelMargin );
+                break;
             case Bottom:
-                labelPos += QPointF( -0.5 * size.width() - 0.6 * ( p1.x() + p2.x() ), 0. );
+                labelPos += QPointF( -0.45 * size.width() - 0.5 * ( p1.x() + p2.x() ),
+                                     labelMargin );
                 break;
             }
 
