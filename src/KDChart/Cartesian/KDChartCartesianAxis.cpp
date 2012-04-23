@@ -253,11 +253,12 @@ void TickIterator::operator++()
                 }
                 m_type = m_majorThinningFactor > 1 ? MajorTickManualShort : MajorTickManualLong;
             } else {
-                m_text = QString::number( m_position ); // TODO proper number formatting
-                m_type = MajorTick;
-                if ( ( m_majorLabelCount++ % m_majorThinningFactor ) != 0 ) {
+               if ( ( m_majorLabelCount++ % m_majorThinningFactor ) == 0 ) {
+                    m_text = QString::number( m_position ); // TODO proper number formatting
+                } else {
                     m_text.clear();
                 }
+                m_type = MajorTick;
             }
         } else if ( m_minorTick != inf ) {
             m_position = m_minorTick;
