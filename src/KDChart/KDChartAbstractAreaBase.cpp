@@ -220,18 +220,14 @@ void AbstractAreaBase::paintFrame( QPainter& painter, const QRect& rect )
 
 void AbstractAreaBase::getFrameLeadings(int& left, int& top, int& right, int& bottom ) const
 {
-    if( d && d->frameAttributes.isVisible() ){
-        const int padding = qMax( d->frameAttributes.padding(), 0 );
-        left   = padding;
-        top    = padding;
-        right  = padding;
-        bottom = padding;
-    }else{
-        left   = 0;
-        top    = 0;
-        right  = 0;
-        bottom = 0;
+    int padding = 0;
+    if ( d && d->frameAttributes.isVisible() ) {
+        padding = qMax( d->frameAttributes.padding(), 0 );
     }
+    left = padding;
+    top = padding;
+    right = padding;
+    bottom = padding;
 }
 
 QRect AbstractAreaBase::innerRect() const
