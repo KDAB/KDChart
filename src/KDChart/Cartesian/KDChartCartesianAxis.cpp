@@ -93,19 +93,25 @@ public:
     bool areAlmostEqual( qreal r1, qreal r2 ) const;
 
 private:
+    bool isHigherPrecedence( qreal importantLabelValue, qreal unimportantLabelValue ) const;
+    void computeMajorTickLabel();
+
     // these are generally set once in the constructor
     CartesianAxis* m_axis;
     DataDimension m_dimension; // upper and lower bounds
     bool m_isLogarithmic;
-    QMap< qreal, QString > m_customTicks; // custom ticks and "annotations" merged
+    QMap< qreal, QString > m_annotations;
+    QList< qreal > m_customTicks;
     QStringList m_manualLabelTexts;
     uint m_majorThinningFactor;
     uint m_majorLabelCount;
 
     // these generally change in operator++(), i.e. from one label to the next
+    int m_customTickIndex;
     int m_manualLabelIndex;
     TickType m_type;
     qreal m_position;
+    qreal m_customTick;
     qreal m_majorTick;
     qreal m_minorTick;
     QString m_text;
@@ -150,23 +156,19 @@ TickIterator::TickIterator( CartesianAxis* a, CartesianCoordinatePlane* plane, u
     const bool hasMinorTicks = m_axis->rulerAttributes().showMinorTickMarks() && m_dimension.subStepWidth > 0;
     m_isLogarithmic = m_dimension.calcMode == AbstractCoordinatePlane::Logarithmic;
 
-    KDAB_FOREACH( qreal r, m_axis->d_func()->customTicksPositions ) {
-        m_customTicks.insert( r, QString() );
-    }
-    if ( m_customTicks.isEmpty() ) {
-        // this keeps duplicates from annotations - they are considered a user error for now
-        m_customTicks = m_axis->d_func()->annotations;
-    } else {
-        // not using QMap::unite() because we don't want duplicate entries if the same key is in
-        // both custom ticks and annotations
-        QMap< qreal, QString >::ConstIterator it = m_axis->d_func()->annotations.constBegin();
-        QMap< qreal, QString >::ConstIterator end = m_axis->d_func()->annotations.constEnd();
-        for ( ; it != end; ++it ) {
-            m_customTicks.insert( it.key(), it.value() );
-        }
-    }
+    m_annotations = m_axis->d_func()->annotations;
+    m_customTicks = m_axis->d_func()->customTicksPositions;
+    qSort( m_customTicks.begin(), m_customTicks.end() );
 
     const qreal inf = std::numeric_limits< qreal >::infinity();
+
+    if ( m_customTicks.count() ) {
+        m_customTickIndex = 0;
+        m_customTick = m_customTicks.at( m_customTickIndex );
+    } else {
+        m_customTickIndex = -1;
+        m_customTick = inf;
+    }
 
     if ( m_majorThinningFactor > 1 && hasShorterLabels() ) {
         m_manualLabelTexts = m_axis->shortLabels();
@@ -206,6 +208,30 @@ bool TickIterator::areAlmostEqual( qreal r1, qreal r2 ) const
     }
 }
 
+bool TickIterator::isHigherPrecedence( qreal importantTick, qreal unimportantTick ) const
+{
+    return importantTick != std::numeric_limits< qreal >::infinity() &&
+           ( importantTick <= unimportantTick || areAlmostEqual( importantTick, unimportantTick ) );
+}
+
+void TickIterator::computeMajorTickLabel()
+{
+    if ( m_manualLabelIndex >= 0 ) {
+        m_text = m_manualLabelTexts[ m_manualLabelIndex++ ];
+        if ( m_manualLabelIndex >= m_manualLabelTexts.count() ) {
+               m_manualLabelIndex = 0;
+        }
+        m_type = m_majorThinningFactor > 1 ? MajorTickManualShort : MajorTickManualLong;
+    } else {
+        if ( ( m_majorLabelCount++ % m_majorThinningFactor ) == 0 ) {
+            m_text = QString::number( m_position ); // TODO proper number formatting
+        } else {
+            m_text.clear();
+        }
+        m_type = MajorTick;
+    }
+}
+
 void TickIterator::operator++()
 {
     if ( isAtEnd() ) {
@@ -215,9 +241,9 @@ void TickIterator::operator++()
 
     // make sure to find the next tick at a value strictly greater than m_position
 
-    if ( !m_customTicks.isEmpty() ) {
-        QMap< qreal, QString >::ConstIterator it = m_customTicks.upperBound( m_position );
-        if ( it != m_customTicks.constEnd() ) {
+    if ( !m_annotations.isEmpty() ) {
+        QMap< qreal, QString >::ConstIterator it = m_annotations.upperBound( m_position );
+        if ( it != m_annotations.constEnd() ) {
             m_position = it.key();
             m_text = it.value();
             m_type = CustomTick;
@@ -243,30 +269,30 @@ void TickIterator::operator++()
             }
         }
 
+        while ( m_customTickIndex >= 0 && m_customTick <= m_position ) {
+            if ( ++m_customTickIndex >= m_customTicks.count() ) {
+                m_customTickIndex = -1;
+                m_customTick = inf;
+                break;
+            }
+            m_customTick = m_customTicks.at( m_customTickIndex );
+        }
+
         // now see which kind of tick we'll have
-        if ( m_majorTick != inf && ( m_majorTick <= m_minorTick ||
-                                     areAlmostEqual( m_majorTick, m_minorTick ) ) ) {
+        if ( isHigherPrecedence( m_customTick, m_majorTick ) && isHigherPrecedence( m_customTick, m_minorTick )  ) {
+            m_position = m_customTick;
+            computeMajorTickLabel();
+            if ( m_type == MajorTick ) { // override only that one
+                m_type = CustomTick;
+            }
+        } else if ( isHigherPrecedence( m_majorTick, m_minorTick ) ) {
             m_position = m_majorTick;
             if ( m_minorTick != inf ) {
                 // realign minor to major
                 m_minorTick = m_majorTick;
             }
-
-            if ( m_manualLabelIndex >= 0 ) {
-                m_text = m_manualLabelTexts[ m_manualLabelIndex++ ];
-                if ( m_manualLabelIndex >= m_manualLabelTexts.count() ) {
-                    m_manualLabelIndex = 0;
-                }
-                m_type = m_majorThinningFactor > 1 ? MajorTickManualShort : MajorTickManualLong;
-            } else {
-               if ( ( m_majorLabelCount++ % m_majorThinningFactor ) == 0 ) {
-                    m_text = QString::number( m_position ); // TODO proper number formatting
-                } else {
-                    m_text.clear();
-                }
-                m_type = MajorTick;
-            }
-        } else if ( m_minorTick != inf ) {
+            computeMajorTickLabel();
+       } else if ( m_minorTick != inf ) {
             m_position = m_minorTick;
             m_text.clear();
             m_type = MinorTick;
