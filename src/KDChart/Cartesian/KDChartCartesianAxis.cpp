@@ -641,6 +641,15 @@ void CartesianAxis::paintCtx( PaintContext* context )
             QPointF tickEnd = onAxis;
             qreal tickLen = tickLength( it.type() == TickIterator::MinorTick );
             geoXy.lvalue( tickEnd.ry(), tickEnd.rx() ) += isOutwardsPositive ? tickLen : -tickLen;
+
+            // those adjustments are required to paint the ticks exactly on the axis and of the right length
+            if ( position() == Top ) {
+                onAxis.ry() += 1;
+                tickEnd.ry() += 1;
+            } else if ( position() == Left ) {
+                tickEnd.rx() += 1;
+            }
+
             if ( step == Painting ) {
                 painter->save();
                 if ( rulerAttr.hasTickMarkPenAt( it.position() ) ) {
