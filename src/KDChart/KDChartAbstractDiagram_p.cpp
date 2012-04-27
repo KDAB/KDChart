@@ -528,7 +528,7 @@ CartesianDiagramDataCompressor::AggregatedDataValueAttributes AbstractDiagram::P
     return allAttrs;
 }
 
-void AbstractDiagram::Private::setDatasetAttrs( int dataset, QVariant data, int role )
+void AbstractDiagram::Private::setDatasetAttrs( int dataset, const QVariant& data, int role )
 {
     // To store attributes for a dataset, we use the first column
     // that's associated with it. (i.e., with a dataset dimension
@@ -567,7 +567,7 @@ LineAttributesInfo::LineAttributesInfo()
 {
 }
 
-LineAttributesInfo::LineAttributesInfo( const QModelIndex _index, const QPointF& _value, const QPointF& _nextValue )
+LineAttributesInfo::LineAttributesInfo( const QModelIndex& _index, const QPointF& _value, const QPointF& _nextValue )
     : index( _index )
     , value ( _value )
     , nextValue ( _nextValue )

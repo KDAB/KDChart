@@ -164,7 +164,7 @@ namespace KDChart {
         /**
          * Sets arbitrary attributes of a data set.
          */
-        void setDatasetAttrs( int dataset, QVariant data, int role );
+        void setDatasetAttrs( int dataset, const QVariant& data, int role );
 
         /**
          * Retrieves arbitrary attributes of a data set.
@@ -225,7 +225,7 @@ namespace KDChart {
     class LineAttributesInfo {
         public :
         LineAttributesInfo();
-        LineAttributesInfo( const QModelIndex _index, const QPointF& _value, const QPointF& _nextValue );
+        LineAttributesInfo( const QModelIndex& _index, const QPointF& _value, const QPointF& _nextValue );
 
         QModelIndex index;
         QPointF value;
