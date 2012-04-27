@@ -319,13 +319,15 @@ void AbstractDiagram::Private::paintDataValueTextsAndMarkers(
         }
     }
 
-    Measure m( 18.0, KDChartEnums::MeasureCalculationModeRelative,
-               KDChartEnums::MeasureOrientationMinimum );
-    m.setReferenceArea( ctx->coordinatePlane() );
     TextAttributes ta;
-    ta.setFontSize( m );
-    m.setAbsoluteValue( 6.0 );
-    ta.setMinimalFontSize( m );
+    {
+        Measure m( 18.0, KDChartEnums::MeasureCalculationModeRelative,
+                   KDChartEnums::MeasureOrientationMinimum );
+        m.setReferenceArea( ctx->coordinatePlane() );
+        ta.setFontSize( m );
+        m.setAbsoluteValue( 6.0 );
+        ta.setMinimalFontSize( m );
+    }
 
     forgetAlreadyPaintedDataValues();
 
