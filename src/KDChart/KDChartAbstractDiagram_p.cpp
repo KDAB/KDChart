@@ -456,8 +456,10 @@ void AbstractDiagram::Private::paintDataValueText(
         QPainterPath path;
         path.addPolygon( pr );
 
-        KDAB_FOREACH( const QPainterPath& oldPoly, alreadyDrawnDataValueTexts ) {
-            if ( oldPoly.intersects( path ) ) {
+        // iterate backwards because recently added items are more likely to overlap, so we spend
+        // less time checking irrelevant items when there is overlap
+        for ( int i = alreadyDrawnDataValueTexts.count() - 1; i >= 0; i-- ) {
+            if ( alreadyDrawnDataValueTexts.at( i ).intersects( path ) ) {
                 // qDebug() << "not painting this label due to overlap";
                 drawIt = false;
                 break;
