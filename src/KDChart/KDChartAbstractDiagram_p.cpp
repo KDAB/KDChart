@@ -139,7 +139,7 @@ void AbstractDiagram::Private::addLabel(
             continue;
         }
 
-        const bool isPositive = (value >= 0.0);
+        const bool isPositive = ( value >= 0.0 );
 
         RelativePosition relPos( dva.position( isPositive ) );
         relPos.setReferencePoints( points );
@@ -167,6 +167,7 @@ void AbstractDiagram::Private::addLabel(
         // get the size of the label text using a subset of the information going into the final layout
         const QString text = formatDataValueText( dva, index, value );
         QTextDocument doc;
+        doc.setDocumentMargin( 0 );
         if ( Qt::mightBeRichText( text ) ) {
             doc.setHtml( text );
         } else {
@@ -218,7 +219,6 @@ void AbstractDiagram::Private::addLabel(
             // move to the general area where the label should be
             QPointF calcPoint = relPos.calculatedPoint( relativeMeasureSize );
             transform.translate( calcPoint.x(), calcPoint.y() );
-
             // align the text rect; find out by how many half-widths / half-heights to move.
             int dx = -1;
             if ( relPos.alignment() & Qt::AlignLeft ) {
@@ -401,18 +401,18 @@ void AbstractDiagram::Private::paintDataValueText(
     bool justCalculateRect /* = false */,
     QRectF* cumulatedBoundingRect /* = 0 */ )
 {
-    if ( !attrs.isVisible() ) return;
-
-    const TextAttributes ta( attrs.textAttributes() );
-    if ( !ta.isVisible() ) {
+    if ( !attrs.isVisible() ) {
         return;
     }
-    if ( !attrs.showRepetitiveDataLabels() && prevPaintedDataValueText == text ) {
+
+    const TextAttributes ta( attrs.textAttributes() );
+    if ( !ta.isVisible() || ( !attrs.showRepetitiveDataLabels() && prevPaintedDataValueText == text ) ) {
         return;
     }
     prevPaintedDataValueText = text;
 
     QTextDocument doc;
+    doc.setDocumentMargin( 0.0 );
     if ( Qt::mightBeRichText( text ) ) {
         doc.setHtml( text );
     } else {
@@ -449,7 +449,7 @@ void AbstractDiagram::Private::paintDataValueText(
     // values that she wants to have written in any case - so we just
     // do not test if such texts would cover some of the others.
     if ( !attrs.showOverlappingDataLabels() ) {
-        const QRectF br( layout->blockBoundingRect( doc.begin() ) );
+        const QRectF br( layout->frameBoundingRect( doc.rootFrame() ) );
         QPolygon pr = transform.mapToPolygon( br.toRect() );
         // Using QPainterPath allows us to use intersects() (which has many early-exits)
         // instead of QPolygon::intersected (which calculates a slow and precise intersection polygon)
