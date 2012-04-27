@@ -70,7 +70,7 @@ static Position staticPositionSouthWest = Position( KDChartEnums::PositionSouthW
 static Position staticPositionWest      = Position( KDChartEnums::PositionWest );
 static Position staticPositionFloating  = Position( KDChartEnums::PositionFloating );
 
-static int maxPositionValue = 10;
+static const int maxPositionValue = 10;
 
 } // anon namespace
 
