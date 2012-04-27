@@ -282,7 +282,9 @@ void TickIterator::operator++()
         if ( isHigherPrecedence( m_customTick, m_majorTick ) && isHigherPrecedence( m_customTick, m_minorTick )  ) {
             m_position = m_customTick;
             computeMajorTickLabel();
-            if ( m_type == MajorTick ) { // override only that one
+            // override the MajorTick type here because those tick's labels are collision-tested, which we don't want
+            // for custom ticks. they may be arbitrarily close to other ticks, causing excessive label thinning.
+            if ( m_type == MajorTick ) {
                 m_type = CustomTick;
             }
         } else if ( isHigherPrecedence( m_majorTick, m_minorTick ) ) {
