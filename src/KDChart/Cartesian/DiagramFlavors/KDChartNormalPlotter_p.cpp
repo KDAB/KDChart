@@ -57,7 +57,7 @@ void NormalPlotter::paint( PaintContext* ctx )
     const int rowCount = compressor().modelDataRows();    
 
     LabelPaintCache lpc;
-    
+
     if ( diagram()->useDataCompression() != Plotter::NONE )
     {
         for ( int dataset = 0; dataset < plotterCompressor().datasetCount(); ++dataset )
