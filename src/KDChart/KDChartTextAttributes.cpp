@@ -176,23 +176,18 @@ qreal TextAttributes::calculatedFontSize(
 }
 
 
-const QFont TextAttributes::calculatedFont(
-    const QObject*                   autoReferenceArea,
-    KDChartEnums::MeasureOrientation autoReferenceOrientation ) const
+const QFont TextAttributes::calculatedFont( const QObject* autoReferenceArea,
+                                            KDChartEnums::MeasureOrientation autoReferenceOrientation ) const
 {
-    const CartesianCoordinatePlane* plane = dynamic_cast<const CartesianCoordinatePlane*>( autoReferenceArea );
+    qreal size = calculatedFontSize( autoReferenceArea, autoReferenceOrientation );
 
-    static qreal size = calculatedFontSize( autoReferenceArea, autoReferenceOrientation );
-    if ( plane )
-    {
-        if(!plane->hasFixedDataCoordinateSpaceRelation())
-            size = calculatedFontSize( autoReferenceArea, autoReferenceOrientation );
+    const CartesianCoordinatePlane* plane = qobject_cast< const CartesianCoordinatePlane* >( autoReferenceArea );
+    if ( plane  && plane->hasFixedDataCoordinateSpaceRelation() ) {
+        // FIXME (KDCH-514) make sure to return the same size as last time for this plane
+        //       note that a proper fix might have to be implemented somewhere else, not here
     }
-    else
-        size = calculatedFontSize( autoReferenceArea, autoReferenceOrientation );
 
-    if( size > 0.0 && d->cachedFontSize != size ){
-        //qDebug() << "new into the cache:" << size;
+    if ( size > 0.0 && d->cachedFontSize != size ) {
         d->cachedFontSize = size;
         d->cachedFont.setPointSizeF( d->cachedFontSize );
     }
