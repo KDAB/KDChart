@@ -683,7 +683,8 @@ void CartesianAxis::paintCtx( PaintContext* context )
                 if ( rulerAttr.hasTickMarkPenAt( it.position() ) ) {
                     painter->setPen( rulerAttr.tickMarkPen( it.position() ) );
                 } else {
-                    painter->setPen( rulerAttr.majorTickMarkPen() );
+                    painter->setPen( it.type() == TickIterator::MinorTick ? rulerAttr.minorTickMarkPen()
+                                                                          : rulerAttr.majorTickMarkPen() );
                 }
                 painter->drawLine( onAxis, tickEnd );
                 painter->restore();
@@ -696,7 +697,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
 
             // paint the label
 
-             QString text = it.text();
+            QString text = it.text();
             if ( it.type() == TickIterator::MajorTick ) {
                 text = d->customizedLabelText( text, geoXy( Qt::Horizontal, Qt::Vertical ), it.position() );
             }
