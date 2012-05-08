@@ -11,9 +11,8 @@ programmers manual with examples:   doc/manual/kdchart.pdf
 our sorted example programs:        examples/
 
 In case of additional questions during evaluation or use of
-KD Chart please contact our technical support by mail:
+KD Chart please contact our technical support via customers.kdab.com.
 
-         kdchart-support@kdab.com
 
 We thank you for your interest in KD Chart and we are here
 to assist you if the documentation leaves open questions or
