@@ -132,6 +132,8 @@ class Chart::Private : public QObject
         void removeDummyHeaderFooters();
 
         void createLayouts( QWidget * parent );
+        void addVBoxWithLegends( const QList< Legend* >& legends, QGridLayout* gridLayout,
+                                 int row, int column, Qt::Alignment align );
         void layoutLegends();
         void layoutHeadersAndFooters();
         void resizeLayout( const QSize& sz );
@@ -152,15 +154,6 @@ class Chart::Private : public QObject
         void slotUnregisterDestroyedLegend( Legend * legend );
         void slotUnregisterDestroyedHeaderFooter( HeaderFooter* headerFooter );
         void slotUnregisterDestroyedPlane( AbstractCoordinatePlane* plane );
-        /*
-        // Unused code trying to use a push-model: This did not work
-        // since we can not re-layout the planes each time when
-        // Qt layouting is calling sizeHint()
-        void slotAdjustLeftRightColumnsForOverlappingLabels(
-                CartesianAxis* axis, int left, int right);
-        void slotAdjustTopBottomRowsForOverlappingLabels(
-                CartesianAxis* axis, int top, int bottom);
-        */
 };
 
 }
