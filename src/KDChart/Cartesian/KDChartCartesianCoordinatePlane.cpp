@@ -399,63 +399,43 @@ void CartesianCoordinatePlane::layoutDiagrams()
     // .. in contrast to the logical area
     const QRectF logArea( logicalArea() );
 
-    d->coordinateTransformation.unitVectorX = logArea.width()  != 0 ? physicalArea.width()  / logArea.width()  : 1.0;
-    d->coordinateTransformation.unitVectorY = logArea.height() != 0 ? physicalArea.height() / logArea.height() : 1.0;
+    qreal xUnitVector = logArea.width() != 0 ? physicalArea.width() / logArea.width()  : 1.0;
+    qreal yUnitVector = logArea.height() != 0 ? physicalArea.height() / logArea.height() : 1.0;
 
-    const qreal diagramXUnitInCoordinatePlane = d->coordinateTransformation.unitVectorX;
-    const qreal diagramYUnitInCoordinatePlane = d->coordinateTransformation.unitVectorY;
-
-    qreal scaleX;
-    qreal scaleY;
-
-    // calculate isometric scaling factor to maxscale the diagram into
-    // the coordinate system:
-    if ( d->isometricScaling )
-    {
-        qreal scale = qMin ( qAbs ( diagramXUnitInCoordinatePlane ),
-                              qAbs ( diagramYUnitInCoordinatePlane ) );
-
-        scaleX = qAbs( scale / diagramXUnitInCoordinatePlane );
-        scaleY = qAbs( scale / diagramYUnitInCoordinatePlane );
-    } else {
-        scaleX = 1.0;
-        scaleY = 1.0;
-    }
+    qreal scaleX = 1.0;
+    qreal scaleY = 1.0;
 
     const QPointF logicalTopLeft = logArea.topLeft();
-    if ( d->isometricScaling )
-    {
+    if ( d->isometricScaling ) {
+        // calculate isometric scaling factor to maxscale the diagram into the coordinate system
+        qreal scale = qMin( qAbs( xUnitVector ), qAbs( yUnitVector ) );
+        scaleX = qAbs( scale / xUnitVector );
+        scaleY = qAbs( scale / yUnitVector );
+
         QRectF physicalArea( drawingArea() );
         QSizeF size = physicalArea.size();
         size.rheight() *= scaleY;
         size.rwidth() *= scaleX;
         physicalArea.setSize( size );
 
-        d->coordinateTransformation.unitVectorX = logArea.width()  != 0 ? physicalArea.width()  / logArea.width()  : 1.0;
-        d->coordinateTransformation.unitVectorY = logArea.height() != 0 ? physicalArea.height() / logArea.height() : 1.0;
-
-        // calculate diagram origin in plane coordinates:
-        QPointF coordinateOrigin = QPointF ( logicalTopLeft.x() * -d->coordinateTransformation.unitVectorX,
-                                             logicalTopLeft.y() * -d->coordinateTransformation.unitVectorY );
-        coordinateOrigin += physicalArea.topLeft();
-
-        d->coordinateTransformation.originTranslation = coordinateOrigin;
-    }
-    else
-    {
-        // calculate diagram origin in plane coordinates:
-        QPointF coordinateOrigin = QPointF ( logicalTopLeft.x() * -diagramXUnitInCoordinatePlane,
-                                             logicalTopLeft.y() * -diagramYUnitInCoordinatePlane );
-        coordinateOrigin += physicalArea.topLeft();
-
-        d->coordinateTransformation.originTranslation = coordinateOrigin;
+        xUnitVector = logArea.width() != 0 ? physicalArea.width() / logArea.width()  : 1.0;
+        yUnitVector = logArea.height() != 0 ? physicalArea.height() / logArea.height() : 1.0;
     }
 
+    // calculate diagram origin in plane coordinates:
+    QPointF coordinateOrigin = QPointF( logicalTopLeft.x() * -xUnitVector,
+                                        logicalTopLeft.y() * -yUnitVector );
+    coordinateOrigin += physicalArea.topLeft();
+    d->coordinateTransformation.originTranslation = coordinateOrigin;
+
+    d->coordinateTransformation.unitVectorX = xUnitVector;
+    d->coordinateTransformation.unitVectorY = yUnitVector;
 
     // As in the first quadrant of the coordinate system, the origin is the bottom left, not top left.
     // This origin is then the top left point of the resulting diagramRect for our coordinateTransformation.
     const QRectF normalizedLogArea = logArea.normalized();
-    d->coordinateTransformation.diagramRect = QRectF( normalizedLogArea.bottomLeft(), normalizedLogArea.topRight() );
+    d->coordinateTransformation.diagramRect = QRectF( normalizedLogArea.bottomLeft(),
+                                                      normalizedLogArea.topRight() );
 
     d->coordinateTransformation.isoScaleX = scaleX;
     d->coordinateTransformation.isoScaleY = scaleY;
