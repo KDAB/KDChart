@@ -464,6 +464,7 @@ namespace KDChart {
     protected:
         void paintEvent ( QPaintEvent* );
         void layoutDiagrams();
+        // the following three return true if the new value is different from the old
         bool doneSetZoomFactorX( qreal factor );
         bool doneSetZoomFactorY( qreal factor );
         bool doneSetZoomCenter( const QPointF& center );

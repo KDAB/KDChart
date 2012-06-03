@@ -573,35 +573,38 @@ bool CartesianCoordinatePlane::doesIsometricScaling () const
 
 bool CartesianCoordinatePlane::doneSetZoomFactorX( qreal factor )
 {
-    const bool done = ( d->coordinateTransformation.zoom.xFactor != factor );
-    if( done ){
-        d->coordinateTransformation.zoom.xFactor = factor;
-        if( d->autoAdjustGridToZoom )
-            d->grid->setNeedRecalculate();
+    if ( d->coordinateTransformation.zoom.xFactor == factor ) {
+        return false;
     }
-    return done;
+    d->coordinateTransformation.zoom.xFactor = factor;
+    if ( d->autoAdjustGridToZoom ) {
+        d->grid->setNeedRecalculate();
+    }
+    return true;
 }
 
 bool CartesianCoordinatePlane::doneSetZoomFactorY( qreal factor )
 {
-    const bool done = ( d->coordinateTransformation.zoom.yFactor != factor );
-    if( done ){
-        d->coordinateTransformation.zoom.yFactor = factor;
-        if( d->autoAdjustGridToZoom )
-            d->grid->setNeedRecalculate();
+    if ( d->coordinateTransformation.zoom.yFactor == factor ) {
+        return false;
     }
-    return done;
+    d->coordinateTransformation.zoom.yFactor = factor;
+    if ( d->autoAdjustGridToZoom ) {
+        d->grid->setNeedRecalculate();
+    }
+    return true;
 }
 
 bool CartesianCoordinatePlane::doneSetZoomCenter( const QPointF& point )
 {
-    const bool done = ( d->coordinateTransformation.zoom.center() != point );
-    if( done ){
-        d->coordinateTransformation.zoom.setCenter( point );
-        if( d->autoAdjustGridToZoom )
-            d->grid->setNeedRecalculate();
+    if ( d->coordinateTransformation.zoom.center() == point ) {
+        return false;
     }
-    return done;
+    d->coordinateTransformation.zoom.setCenter( point );
+    if ( d->autoAdjustGridToZoom ) {
+        d->grid->setNeedRecalculate();
+    }
+    return true;
 }
 
 void CartesianCoordinatePlane::setZoomFactors( qreal factorX, qreal factorY )
