@@ -523,7 +523,8 @@ qreal CartesianAxis::titleSize() const
     return d->axisSize;
 }
 
-void CartesianAxis::Private::drawTitleText( QPainter* painter, CartesianCoordinatePlane* plane, const QRect& geoRect ) const
+void CartesianAxis::Private::drawTitleText( QPainter* painter, CartesianCoordinatePlane* plane,
+                                            const QRect& geoRect ) const
 {
     const TextAttributes titleTA( titleTextAttributesWithAdjustedRotation() );
     if ( titleTA.isVisible() ) {
