@@ -1417,28 +1417,20 @@ void Chart::mouseReleaseEvent( QMouseEvent* event )
 
 bool Chart::event( QEvent* event )
 {
-    switch ( event->type() )
-    {
-    case QEvent::ToolTip:
-    {
+    if ( event->type() == QEvent::ToolTip ) {
         const QHelpEvent* const helpEvent = static_cast< QHelpEvent* >( event );
-        KDAB_FOREACH( const AbstractCoordinatePlane* const plane, d->coordinatePlanes )
-        {
-            for (int i = plane->diagrams().count() - 1; i >= 0; --i) {
-                const QModelIndex index = plane->diagrams().at(i)->indexAt( helpEvent->pos() );
+        KDAB_FOREACH( const AbstractCoordinatePlane* const plane, d->coordinatePlanes ) {
+            KDAB_FOREACH( const AbstractDiagram* diagram, plane->diagrams() ) {
+                const QModelIndex index = diagram->indexAt( helpEvent->pos() );
                 const QVariant toolTip = index.data( Qt::ToolTipRole );
-                if ( toolTip.isValid() )
-                {
-                    QPoint pos = mapFromGlobal(helpEvent->pos());
-                    QRect rect(pos-QPoint(1,1), QSize(3,3));
+                if ( toolTip.isValid() ) {
+                    QPoint pos = mapFromGlobal( helpEvent->pos() );
+                    QRect rect( pos - QPoint( 1, 1 ), QSize( 3, 3 ) );
                     QToolTip::showText( QCursor::pos(), toolTip.toString(), this, rect );
                     return true;
                 }
             }
         }
-        // fall-through intended
     }
-    default:
-        return QWidget::event( event );
-    }
+    return QWidget::event( event );
 }
