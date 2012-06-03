@@ -432,22 +432,6 @@ QHash<AbstractCoordinatePlane*, PlaneInfo> Chart::Private::buildPlaneLayoutInfos
     return planeInfos;
 }
 
-template <typename T>
-static T* findOrCreateLayoutByObjectName( QLayout * parentLayout, const char* name )
-{
-    T *box = qFindChild<T*>( parentLayout, QString::fromLatin1( name ) );
-    if ( !box ) {
-        box = new T();
-        // TESTING(khz): set the margin of all of the layouts to Zero
-#if defined SET_ALL_MARGINS_TO_ZERO
-        box->setMargin( 0 );
-#endif
-        box->setObjectName( QString::fromLatin1( name ) );
-        box->setSizeConstraint( QLayout::SetFixedSize );
-    }
-    return box;
-}
-
 void Chart::Private::slotLayoutPlanes()
 {
     //qDebug() << Q_FUNC_INFO;
