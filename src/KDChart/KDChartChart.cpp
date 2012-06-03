@@ -490,8 +490,8 @@ void Chart::Private::slotLayoutPlanes()
     KDAB_FOREACH( AbstractCoordinatePlane* plane, coordinatePlanes ) {
         Q_ASSERT( planeInfos.contains(plane) );
         PlaneInfo& pi = planeInfos[ plane ];
-        int column = pi.horizontalOffset;
-        int row = pi.verticalOffset;
+        const int column = pi.horizontalOffset;
+        const int row = pi.verticalOffset;
         //qDebug() << "processing plane at column" << column << "and row" << row;
         QGridLayout *planeLayout = pi.gridLayout;
 
