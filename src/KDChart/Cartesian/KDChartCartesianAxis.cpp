@@ -187,7 +187,15 @@ TickIterator::TickIterator( CartesianAxis* a, CartesianCoordinatePlane* plane, u
     // operator++() can be reused to find the first tick
 
     if ( m_isLogarithmic ) {
-        if ( m_dimension.start >= 0 ) {
+        if ( ISNAN( m_dimension.start ) || ISNAN( m_dimension.end ) ) {
+            // this can happen in a spurious paint operation before everything is set up;
+            // just bail out to avoid an infinite loop in that case.
+            m_dimension.start = 0.0;
+            m_dimension.end = 0.0;
+            m_position = inf;
+            m_majorTick = inf;
+            m_minorTick = inf;
+        } else if ( m_dimension.start >= 0 ) {
             m_position = m_dimension.start ? pow( 10.0, floor( log10( m_dimension.start ) ) - 1.0 )
                                            : 1e-6;
             m_majorTick = hasMajorTicks ? m_position : inf;
