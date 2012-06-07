@@ -148,13 +148,19 @@ TickIterator::TickIterator( CartesianAxis* a, CartesianCoordinatePlane* plane, u
     }
     GridAttributes gridAttributes = plane->gridAttributes( xy( Qt::Horizontal, Qt::Vertical ) );
 
-    m_dimension = AbstractGrid::adjustedLowerUpperRange( m_dimension,
-                                                         gridAttributes.adjustLowerBoundToGrid(),
-                                                         gridAttributes.adjustUpperBoundToGrid() );
-
-    const bool hasMajorTicks = m_axis->rulerAttributes().showMajorTickMarks() && m_dimension.stepWidth > 0;
-    const bool hasMinorTicks = m_axis->rulerAttributes().showMinorTickMarks() && m_dimension.subStepWidth > 0;
     m_isLogarithmic = m_dimension.calcMode == AbstractCoordinatePlane::Logarithmic;
+    if ( !m_isLogarithmic ) {
+        // adjustedLowerUpperRange() is intended for use with linear scaling; specifically it would
+        // round lower bounds < 1 to 0.
+        m_dimension = AbstractGrid::adjustedLowerUpperRange( m_dimension,
+                                                             gridAttributes.adjustLowerBoundToGrid(),
+                                                             gridAttributes.adjustUpperBoundToGrid() );
+    }
+
+    const bool hasMajorTicks = m_axis->rulerAttributes().showMajorTickMarks() &&
+                               ( m_dimension.stepWidth > 0 || m_isLogarithmic );
+    const bool hasMinorTicks = m_axis->rulerAttributes().showMinorTickMarks() &&
+                               ( m_dimension.subStepWidth > 0 || m_isLogarithmic );
 
     m_annotations = m_axis->d_func()->annotations;
     m_customTicks = m_axis->d_func()->customTicksPositions;
