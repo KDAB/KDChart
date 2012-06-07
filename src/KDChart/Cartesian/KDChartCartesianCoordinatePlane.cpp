@@ -161,8 +161,7 @@ QRectF CartesianCoordinatePlane::getRawDataBoundingRectFromDiagrams() const
     qreal minX = 0;
     qreal maxX = 0;
     qreal minY = 0;
-    qreal maxY = 0
-                 ;
+    qreal maxY = 0;
     bool bStarting = true;
     Q_FOREACH( const AbstractDiagram* diagram, diagrams() )
     {
@@ -275,25 +274,23 @@ QRectF CartesianCoordinatePlane::calculateRawDataBoundingRect() const
 
 DataDimensionsList CartesianCoordinatePlane::getDataDimensionsList() const
 {
+    const AbstractCartesianDiagram* dgr = diagrams().isEmpty() ? 0 :
+                   qobject_cast< const AbstractCartesianDiagram* >( diagrams().first() );
+    if ( dgr && dgr->referenceDiagram() ) {
+        dgr = dgr->referenceDiagram();
+    }
+    const BarDiagram *barDiagram = qobject_cast< const BarDiagram* >( dgr );
+    const StockDiagram *stockDiagram = qobject_cast< const StockDiagram* >( dgr );
 
-    DataDimensionsList l;
-    const AbstractCartesianDiagram* dgr
-        = diagrams().isEmpty() ? 0 : dynamic_cast<const AbstractCartesianDiagram*> (diagrams().first() );
-    if( dgr && dgr->referenceDiagram() )
-    	dgr = dgr->referenceDiagram();
-	const BarDiagram *barDiagram = qobject_cast< const BarDiagram* >( dgr );
-        const StockDiagram *stockDiagram = qobject_cast< const StockDiagram* >( dgr );
-
-	// note:
-	// It does make sense to retrieve the orientation from the first diagram. This is because
-	// a coordinate plane can either be for horizontal *or* for vertical diagrams. Both at the
-	// same time won't work, and thus the orientation for all diagrams is the same as for the first one.
-	const Qt::Orientation diagramOrientation = barDiagram != 0 ? barDiagram->orientation() : Qt::Vertical;
-
+    // note:
+    // It does make sense to retrieve the orientation from the first diagram. This is because
+    // a coordinate plane can either be for horizontal *or* for vertical diagrams. Both at the
+    // same time won't work, and thus the orientation for all diagrams is the same as for the first one.
+    const Qt::Orientation diagramOrientation = barDiagram != 0 ? barDiagram->orientation() : Qt::Vertical;
     const bool diagramIsVertical = diagramOrientation == Qt::Vertical;
 
-
-    if( dgr ){
+    DataDimensionsList l;
+    if ( dgr ) {
         const QRectF r( calculateRawDataBoundingRect() );
         // note:
         // We do *not* access d->gridAttributesHorizontal here, but
@@ -319,7 +316,7 @@ DataDimensionsList CartesianCoordinatePlane::getDataDimensionsList() const
                 gaV.gridGranularitySequence(),
                 gaV.gridStepWidth(),
                 gaV.gridSubStepWidth() ) );
-    }else{
+    } else {
         l.append( DataDimension() ); // This gets us the default 1..0 / 1..0 grid
         l.append( DataDimension() ); // shown, if there is no diagram on this plane.
     }
@@ -528,12 +525,12 @@ const QPointF CartesianCoordinatePlane::translate( const QPointF& diagramPoint )
     //       but we just apply the transformation calculations to the point.
     //       This allows for basic calculations done by the user, see e.g.
     //       the file  examples/Lines/BubbleChart/mainwindow.cpp
-    return  d->coordinateTransformation.translate ( diagramPoint );
+    return d->coordinateTransformation.translate( diagramPoint );
 }
 
 const QPointF CartesianCoordinatePlane::translateBack( const QPointF& screenPoint ) const
 {
-    return  d->coordinateTransformation.translateBack ( screenPoint );
+    return d->coordinateTransformation.translateBack( screenPoint );
 }
 
 void CartesianCoordinatePlane::setIsometricScaling ( bool onOff )
