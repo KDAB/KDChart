@@ -80,24 +80,29 @@ void CartesianGrid::drawGrid( PaintContext* context )
     Q_ASSERT_X ( plane, "CartesianGrid::drawGrid",
                  "Bad function call: PaintContext::coodinatePlane() NOT a cartesian plane." );
 
-    // important: Need to update the calculated mData,
-    //            before we may use it!
+    // update the calculated mDataDimensions before using them
     updateData( context->coordinatePlane() );
 
-    if( plane->axesCalcModeX() == KDChart::AbstractCoordinatePlane::Logarithmic && mData.first().stepWidth == 0.0 )
-            mData.first().stepWidth = 1.0;
-    if( plane->axesCalcModeY() == KDChart::AbstractCoordinatePlane::Logarithmic && mData.last().stepWidth == 0.0 )
-            mData.last().stepWidth = 1.0;
+    if ( plane->axesCalcModeX() == KDChart::AbstractCoordinatePlane::Logarithmic 
+         && mDataDimensions.first().stepWidth == 0.0 ) {
+        mDataDimensions.first().stepWidth = 1.0;
+    }
+    if ( plane->axesCalcModeY() == KDChart::AbstractCoordinatePlane::Logarithmic
+         && mDataDimensions.last().stepWidth == 0.0 ) {
+        mDataDimensions.last().stepWidth = 1.0;
+    }
 
     // test for programming errors: critical
-    Q_ASSERT_X ( mData.count() == 2, "CartesianGrid::drawGrid",
+    Q_ASSERT_X ( mDataDimensions.count() == 2, "CartesianGrid::drawGrid",
                  "Error: updateData did not return exactly two dimensions." );
 
     // test for invalid boundaries: non-critical
-    if( !isBoundariesValid( mData ) ) return;
+    if ( !isBoundariesValid( mDataDimensions ) ) {
+        return;
+    }
 
-    DataDimension dimX = mData.first();
-    const DataDimension& dimY = mData.last();
+    DataDimension dimX = mDataDimensions.first();
+    const DataDimension& dimY = mDataDimensions.last();
     // test for other programming errors: critical
     Q_ASSERT_X ( dimX.stepWidth, "CartesianGrid::drawGrid",
                  "Error: updateData returned a Zero step width for the X grid." );

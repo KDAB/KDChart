@@ -132,7 +132,7 @@ namespace KDChart {
         GridAttributes gridAttributes;
 
     protected:
-        DataDimensionsList mData;
+        DataDimensionsList mDataDimensions;
         AbstractCoordinatePlane* mPlane;
 
     private:

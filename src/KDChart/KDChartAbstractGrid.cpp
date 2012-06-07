@@ -56,23 +56,20 @@ void AbstractGrid::setNeedRecalculate()
 
 DataDimensionsList AbstractGrid::updateData( AbstractCoordinatePlane* plane )
 {
-
-    if( plane ){
+    if ( plane ) {
         const DataDimensionsList rawDataDimensions( plane->getDataDimensionsList() );
-        if( mCachedRawDataDimensions.empty() || (rawDataDimensions != mCachedRawDataDimensions) ){
+        if ( mCachedRawDataDimensions.empty() || ( rawDataDimensions != mCachedRawDataDimensions ) ) {
             mCachedRawDataDimensions = rawDataDimensions;
             mPlane = plane;
-            mData = calculateGrid( rawDataDimensions );
-            //qDebug("AbstractGrid::updateData() returns  mData.first().start: %f   mData.first().end: %f   mData.first().stepWidth: %f", mData.first().start, mData.first().end, mData.first().stepWidth);
+            mDataDimensions = calculateGrid( rawDataDimensions );
         }
     }
-    return mData;
+    return mDataDimensions;
 }
 
 bool AbstractGrid::isBoundariesValid(const QRectF& r )
 {
-  return isBoundariesValid(
-      QPair<QPointF,QPointF>(r.topLeft(), r.bottomRight()) );
+    return isBoundariesValid( qMakePair( r.topLeft(), r.bottomRight() ) );
 }
 
 bool AbstractGrid::isBoundariesValid(const QPair<QPointF,QPointF>& b )

@@ -261,35 +261,34 @@ void LeveyJenningsGrid::calculateStepWidth(
 
 void LeveyJenningsGrid::drawGrid( PaintContext* context )
 {
-    LeveyJenningsCoordinatePlane* plane = dynamic_cast<LeveyJenningsCoordinatePlane*>(context->coordinatePlane());
-   
     // This plane is used for tranlating the coordinates - not for the data boundaries
     PainterSaver p( context->painter() );
-    plane = dynamic_cast< LeveyJenningsCoordinatePlane* >( plane->sharedAxisMasterPlane( context->painter() ) );
-
+    LeveyJenningsCoordinatePlane* plane = qobject_cast< LeveyJenningsCoordinatePlane* >(
+                                              plane->sharedAxisMasterPlane( context->painter() ) );
     Q_ASSERT_X ( plane, "LeveyJenningsGrid::drawGrid",
                  "Bad function call: PaintContext::coodinatePlane() NOT a Levey Jennings plane." );
 
-    LeveyJenningsDiagram* diag = dynamic_cast<LeveyJenningsDiagram*>( plane->diagram() );
-
-    if( diag == 0 )
+    LeveyJenningsDiagram* diag = qobject_cast< LeveyJenningsDiagram* >( plane->diagram() );
+    if ( !diag ) {
         return;
+    }
     
     const LeveyJenningsGridAttributes gridAttrs( plane->gridAttributes() );
 
-    // important: Need to update the calculated mData,
-    //            before we may use it!
+    // update the calculated mDataDimensions before using them
     updateData( context->coordinatePlane() );
 
     // test for programming errors: critical
-    Q_ASSERT_X ( mData.count() == 2, "CartesianGrid::drawGrid",
+    Q_ASSERT_X ( mDataDimensions.count() == 2, "CartesianGrid::drawGrid",
                  "Error: updateData did not return exactly two dimensions." );
 
     // test for invalid boundaries: non-critical
-    if( !isBoundariesValid( mData ) ) return;
+    if ( !isBoundariesValid( mDataDimensions ) ) {
+        return;
+    }
     //qDebug() << "B";
 
-    DataDimension dimX = mData.first();
+    DataDimension dimX = mDataDimensions.first();
     // this happens if there's only one data point
     if( dimX.start == 0.0 && dimX.end == 0.0 )
         dimX.end += plane->geometry().width();
