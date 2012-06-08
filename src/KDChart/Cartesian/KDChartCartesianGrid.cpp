@@ -71,10 +71,13 @@ void CartesianGrid::drawGrid( PaintContext* context )
     const GridAttributes gridAttrsX( plane->gridAttributes( Qt::Horizontal ) );
     const GridAttributes gridAttrsY( plane->gridAttributes( Qt::Vertical ) );
 
-    if ( !gridAttrsX.isGridVisible() && !gridAttrsY.isGridVisible() ) return;
+    if ( !gridAttrsX.isGridVisible() && !gridAttrsY.isGridVisible() ) {
+        return;
+    }
    
-    // This plane is used for tranlating the coordinates - not for the data boundaries
     PainterSaver p( context->painter() );
+
+     // This plane is used for translating the coordinates - not for the data boundaries
     plane = dynamic_cast< CartesianCoordinatePlane* >( plane->sharedAxisMasterPlane( context->painter() ) );
 
     Q_ASSERT_X ( plane, "CartesianGrid::drawGrid",
@@ -178,8 +181,6 @@ void CartesianGrid::drawGrid( PaintContext* context )
     bool adjustYUpper = gridAttrsY.adjustUpperBoundToGrid();
     AbstractGrid::adjustLowerUpperRange( minValueX, maxValueX, dimX.stepWidth, adjustXLower, adjustXUpper );
     AbstractGrid::adjustLowerUpperRange( minValueY, maxValueY, dimY.stepWidth, adjustYLower, adjustYUpper );
-
-    context->painter()->save();
 
     const FrameAttributes frameAttrs( plane->frameAttributes() );
     if ( frameAttrs.isVisible() ) {
@@ -348,8 +349,6 @@ void CartesianGrid::drawGrid( PaintContext* context )
                 break;
         }
     }
-
-    context->painter()->restore();
 }
 
 
