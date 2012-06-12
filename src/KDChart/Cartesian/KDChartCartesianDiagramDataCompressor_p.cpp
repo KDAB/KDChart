@@ -37,10 +37,13 @@ CartesianDiagramDataCompressor::CartesianDiagramDataCompressor( QObject* parent 
     , m_mode( Precise )
     , m_xResolution( 0 )
     , m_yResolution( 0 )
+    , m_oldSizeX( 0 )
+    , m_oldSizeY( 0 )
     , m_sampleStep( 0 )
     , m_datasetDimension( 1 )
 {
     calculateSampleStepWidth();
+    m_data.resize( 0 );
 }
 
 static bool contains( const CartesianDiagramDataCompressor::AggregatedDataValueAttributes& aggregated,
@@ -276,10 +279,10 @@ int CartesianDiagramDataCompressor::modelDataColumns() const
     if ( m_model ) {
         const int columns = m_model->columnCount( m_rootIndex ) / m_datasetDimension;
 
-        if( columns != m_data.size() )
-        {
-            rebuildCache();
-        }
+//        if( columns != m_data.size() )
+//        {
+//            rebuildCache();
+//        }
 
         Q_ASSERT( columns == m_data.size() );
         return columns;
@@ -371,10 +374,18 @@ void CartesianDiagramDataCompressor::setRootIndex( const QModelIndex& root )
         calculateSampleStepWidth();
     }
 }
+
+void CartesianDiagramDataCompressor::recalcResolution()
+{
+    setResolution( m_oldSizeX, m_oldSizeY );
+}
+
 void CartesianDiagramDataCompressor::setResolution( int x, int y )
 {
     const int oldX = m_xResolution;
     const int oldY = m_yResolution;
+    m_oldSizeX = x;
+    m_oldSizeY = y;
 
     if( m_datasetDimension != 1 )
     {
@@ -389,7 +400,7 @@ void CartesianDiagramDataCompressor::setResolution( int x, int y )
         calculateSampleStepWidth();
     }
 
-    if( oldX != m_xResolution || ( oldY != m_yResolution && m_datasetDimension == 1 ) )
+    if( oldX != m_xResolution || oldY != m_yResolution || ( oldY != m_yResolution && m_datasetDimension == 1 ) )
     {
         rebuildCache();
         calculateSampleStepWidth();
@@ -402,11 +413,12 @@ void CartesianDiagramDataCompressor::clearCache()
         m_data[column].fill( DataPoint() );
 }
 
-void CartesianDiagramDataCompressor::rebuildCache() const
+void CartesianDiagramDataCompressor::rebuildCache()
 {
     Q_ASSERT( m_datasetDimension != 0 );
 
     m_data.clear();
+    recalcResolution();
     const int columnDivisor = m_datasetDimension != 2 ? 1 : m_datasetDimension;
     const int columnCount = m_model ? m_model->columnCount( m_rootIndex ) / columnDivisor : 0;
     const int rowCount = qMin( m_model ? m_model->rowCount( m_rootIndex ) : 0, m_xResolution );

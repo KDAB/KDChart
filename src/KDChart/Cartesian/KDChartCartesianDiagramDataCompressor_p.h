@@ -134,6 +134,7 @@ namespace KDChart {
         void setModel( QAbstractItemModel* );
         void setRootIndex( const QModelIndex& root );
         void setResolution( int x, int y );
+        void recalcResolution();
         void setApproximationMode( ApproximationMode mode );
         void setDatasetDimension( int dimension );
 
@@ -169,7 +170,7 @@ namespace KDChart {
         void slotDiagramLayoutChanged( AbstractDiagram* );
 
         // geometry has changed
-        void rebuildCache() const;
+        void rebuildCache();
         // reset all cached values, without changing the cache geometry
         void clearCache();
 
@@ -204,6 +205,8 @@ namespace KDChart {
         ApproximationMode m_mode;
         int m_xResolution;
         int m_yResolution;
+        int m_oldSizeX;
+        int m_oldSizeY;
         unsigned int m_sampleStep;
 
         mutable QVector<DataPointVector> m_data; // one per dataset
