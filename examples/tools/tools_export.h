@@ -50,10 +50,15 @@
 
 #ifndef TESTTOOLS_EXPORT
 # ifdef QT_SHARED
-#  define TESTTOOLS_EXPORT Q_DECL_EXPORT
+#  ifdef KDCHART_BUILD_TESTTOOLS_LIB
+#   define TESTTOOLS_EXPORT Q_DECL_EXPORT
+#  else
+#   define TESTTOOLS_EXPORT Q_DECL_IMPORT
+#  endif
 # else
 #  define TESTTOOLS_EXPORT
 # endif
 #endif
 
 #endif // TESTTOOLS_EXPORT_H
+

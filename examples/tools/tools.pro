@@ -15,6 +15,8 @@ INCLUDEPATH += .
 HEADERS += TableModel.h
 SOURCES += TableModel.cpp
 
+!static:DEFINES+=QT_SHARED
+
 unix {
   MOC_DIR = .moc
   OBJECTS_DIR = .obj
