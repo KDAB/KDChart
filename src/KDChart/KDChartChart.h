@@ -73,12 +73,24 @@ namespace KDChart {
         Q_PROPERTY( int globalLeadingBottom READ globalLeadingBottom WRITE setGlobalLeadingBottom )
         Q_PROPERTY( int globalLeadingLeft READ globalLeadingLeft WRITE setGlobalLeadingLeft )
         Q_PROPERTY( int globalLeadingRight READ globalLeadingRight WRITE setGlobalLeadingRight )
+        Q_PROPERTY( bool useNewLayoutSystem READ useNewLayoutSystem WRITE setUseNewLayoutSystem )
 
         KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC_QWIDGET( Chart )
 
     public:
         explicit Chart ( QWidget* parent = 0 );
         ~Chart();
+
+        /**
+         * @brief useNewLayoutSystem
+         * Be very careful activating the new layout system,
+         * its still experimental and works only if the user knows
+         * what he is doing. The reason is that the system does not prevent
+         * the user from creating sharing graphs that are not layoutable in a
+         * plane and still needs assistance from the user.
+         */
+        bool useNewLayoutSystem() const;
+        void setUseNewLayoutSystem( bool value );
 
         /**
           \brief Specify the frame attributes to be used, by default is it a thin black line.
