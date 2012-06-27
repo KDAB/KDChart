@@ -184,46 +184,41 @@ QRectF CartesianCoordinatePlane::getRawDataBoundingRectFromDiagrams() const
 QRectF CartesianCoordinatePlane::adjustedToMaxEmptyInnerPercentage(
         const QRectF& r, unsigned int percentX, unsigned int percentY ) const
 {
-    QRectF erg( r );
-    if( ( axesCalcModeX() != Logarithmic || r.left() < 0.0 ) && (percentX > 0) && (percentX != 100) ) {
-        const bool isPositive = (r.left() >= 0);
-        if( (r.right() >= 0) == isPositive ){
-            const qreal innerBound =
-                    isPositive ? qMin(r.left(), r.right()) : qMax(r.left(), r.right());
-            const qreal outerBound =
-                    isPositive ? qMax(r.left(), r.right()) : qMin(r.left(), r.right());
-            if( innerBound / outerBound * 100 <= percentX )
-            {
-                if(d->xAxisStartAtZero)
-                {
-                    if( isPositive )
-                        erg.setLeft( 0.0 );
-                    else
-                        erg.setRight( 0.0 );
+    QRectF ret = r;
+    if ( ( axesCalcModeX() != Logarithmic || r.left() < 0.0 ) && percentX > 0 && percentX != 100 ) {
+        const bool isPositive = r.left() >= 0;
+        if ( ( r.right() >= 0 ) == isPositive ) {
+            qreal upperBound = qMax( r.left(), r.right() );
+            qreal lowerBound = qMin( r.left(), r.right() );
+            qreal innerBound = isPositive ? lowerBound : upperBound;
+            qreal outerBound = isPositive ? upperBound : lowerBound;
+            if ( innerBound / outerBound * 100 <= percentX && d->xAxisStartAtZero ) {
+                if ( isPositive ) {
+                    ret.setLeft( 0.0 );
+                } else {
+                    ret.setRight( 0.0 );
                 }
             }
         }
     }
-    if( ( axesCalcModeY() != Logarithmic || r.bottom() < 0.0 ) && (percentY > 0) && (percentY != 100) ) {
-        //qDebug() << erg.bottom() << erg.top();
-        const bool isPositive = (r.bottom() >= 0);
-        if( (r.top() >= 0) == isPositive ){
-            const qreal innerBound =
-                    isPositive ? qMin(r.top(), r.bottom()) : qMax(r.top(), r.bottom());
-            const qreal outerBound =
-                    isPositive ? qMax(r.top(), r.bottom()) : qMin(r.top(), r.bottom());
-            //qDebug() << innerBound << outerBound;
-            if( innerBound / outerBound * 100 <= percentY )
-            {
-                if( isPositive )
-                    erg.setBottom( 0.0 );
-                else
-                    erg.setTop( 0.0 );
+    // ### this doesn't seem to take into account that Qt's y coordinate is inverted
+    if ( ( axesCalcModeY() != Logarithmic || r.bottom() < 0.0 ) && percentY > 0 && percentY != 100 ) {
+        const bool isPositive = r.bottom() >= 0;
+        if ( ( r.top() >= 0 ) == isPositive ) {
+            qreal upperBound = qMax( r.top(), r.bottom() );
+            qreal lowerBound = qMin( r.top(), r.bottom() );
+            const qreal innerBound = isPositive ? lowerBound : upperBound;
+            const qreal outerBound = isPositive ? upperBound : lowerBound;
+            if( innerBound / outerBound * 100 <= percentY ) {
+                if ( isPositive ) {
+                    ret.setBottom( 0.0 );
+                } else {
+                    ret.setTop( 0.0 );
+                }
             }
         }
-        //qDebug() << erg.bottom() << erg.top() << "!!";
     }
-    return erg;
+    return ret;
 }
 
 
