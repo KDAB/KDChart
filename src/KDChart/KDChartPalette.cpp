@@ -85,9 +85,9 @@ namespace {
         p.addBrush( Qt::cyan );
         p.addBrush( QColor( 96, 96,255) );
         p.addBrush( QColor(160,  0,255) );
-        for( int i = 8 ; i < 16 ; ++i )
-            p.addBrush( p.getBrush(i-8).color().light(), i );
-
+        for ( int i = 8 ; i < 16 ; ++i ) {
+            p.addBrush( p.getBrush( i - 8 ).color().light(), i );
+        }
         return p;
     }
 

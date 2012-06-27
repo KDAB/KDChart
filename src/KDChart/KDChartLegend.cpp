@@ -756,79 +756,37 @@ uint Legend::spacing() const
 
 void Legend::setDefaultColors()
 {
-    setColor( 0, Qt::red );
-    setColor( 1, Qt::green );
-    setColor( 2, Qt::blue );
-    setColor( 3, Qt::cyan );
-    setColor( 4, Qt::magenta );
-    setColor( 5, Qt::yellow );
-    setColor( 6, Qt::darkRed );
-    setColor( 7, Qt::darkGreen );
-    setColor( 8, Qt::darkBlue );
-    setColor( 9, Qt::darkCyan );
-    setColor( 10, Qt::darkMagenta );
-    setColor( 11, Qt::darkYellow );
+    Palette pal = Palette::defaultPalette();
+    for ( int i = 0; i < pal.size(); i++ ) {
+        setColor( i, pal.getBrush( i ) );
+    }
 }
 
 void Legend::setRainbowColors()
 {
-    setColor( 0, QColor(255,  0,196) );
-    setColor( 1, QColor(255,  0, 96) );
-    setColor( 2, QColor(255, 128,64) );
-    setColor( 3, Qt::yellow );
-    setColor( 4, Qt::green );
-    setColor( 5, Qt::cyan );
-    setColor( 6, QColor( 96, 96,255) );
-    setColor( 7, QColor(160,  0,255) );
-    for( int i = 8; i < 16; ++i )
-        setColor( i, brush( i - 8 ).color().light() );
+    Palette pal = Palette::rainbowPalette();
+    for ( int i = 0; i < pal.size(); i++ ) {
+        setColor( i, pal.getBrush( i ) );
+    }
 }
 
 void Legend::setSubduedColors( bool ordered )
 {
-static const int NUM_SUBDUEDCOLORS = 18;
-static const QColor SUBDUEDCOLORS[ NUM_SUBDUEDCOLORS ] = {
-    QColor( 0xe0,0x7f,0x70 ),
-    QColor( 0xe2,0xa5,0x6f ),
-    QColor( 0xe0,0xc9,0x70 ),
-    QColor( 0xd1,0xe0,0x70 ),
-    QColor( 0xac,0xe0,0x70 ),
-    QColor( 0x86,0xe0,0x70 ),
-    QColor( 0x70,0xe0,0x7f ),
-    QColor( 0x70,0xe0,0xa4 ),
-    QColor( 0x70,0xe0,0xc9 ),
-    QColor( 0x70,0xd1,0xe0 ),
-    QColor( 0x70,0xac,0xe0 ),
-    QColor( 0x70,0x86,0xe0 ),
-    QColor( 0x7f,0x70,0xe0 ),
-    QColor( 0xa4,0x70,0xe0 ),
-    QColor( 0xc9,0x70,0xe0 ),
-    QColor( 0xe0,0x70,0xd1 ),
-    QColor( 0xe0,0x70,0xac ),
-    QColor( 0xe0,0x70,0x86 ),
-};
-    if( ordered )
-        for(int i=0; i<NUM_SUBDUEDCOLORS; ++i)
-            setColor( i, SUBDUEDCOLORS[i] );
-    else{
-        setColor( 0, SUBDUEDCOLORS[ 0] );
-        setColor( 1, SUBDUEDCOLORS[ 5] );
-        setColor( 2, SUBDUEDCOLORS[10] );
-        setColor( 3, SUBDUEDCOLORS[15] );
-        setColor( 4, SUBDUEDCOLORS[ 2] );
-        setColor( 5, SUBDUEDCOLORS[ 7] );
-        setColor( 6, SUBDUEDCOLORS[12] );
-        setColor( 7, SUBDUEDCOLORS[17] );
-        setColor( 8, SUBDUEDCOLORS[ 4] );
-        setColor( 9, SUBDUEDCOLORS[ 9] );
-        setColor(10, SUBDUEDCOLORS[14] );
-        setColor(11, SUBDUEDCOLORS[ 1] );
-        setColor(12, SUBDUEDCOLORS[ 6] );
-        setColor(13, SUBDUEDCOLORS[11] );
-        setColor(14, SUBDUEDCOLORS[16] );
-        setColor(15, SUBDUEDCOLORS[ 3] );
-        setColor(16, SUBDUEDCOLORS[ 8] );
-        setColor(17, SUBDUEDCOLORS[13] );
+    Palette pal = Palette::subduedPalette();
+    if ( ordered ) {
+        for ( int i = 0; i < pal.size(); i++ ) {
+            setColor( i, pal.getBrush( i ) );
+        }
+    } else {
+        static const int s_subduedColorsCount;
+        Q_ASSERT( pal.size() >= s_subduedColorsCount );
+        static const int order[ s_subduedColorsCount ] = {
+            0, 5, 10, 15, 2, 7, 12, 17, 4,
+            9, 14, 1, 6, 11, 16, 3, 8, 13
+        };
+        for ( int i = 0; i < s_subduedColorsCount; i++ ) {
+            setColor( i, pal.getBrush( order[i] ) );
+        }
     }
 }
 
