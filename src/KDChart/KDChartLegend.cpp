@@ -758,7 +758,7 @@ void Legend::setDefaultColors()
 {
     Palette pal = Palette::defaultPalette();
     for ( int i = 0; i < pal.size(); i++ ) {
-        setColor( i, pal.getBrush( i ) );
+        setBrush( i, pal.getBrush( i ) );
     }
 }
 
@@ -766,7 +766,7 @@ void Legend::setRainbowColors()
 {
     Palette pal = Palette::rainbowPalette();
     for ( int i = 0; i < pal.size(); i++ ) {
-        setColor( i, pal.getBrush( i ) );
+        setBrush( i, pal.getBrush( i ) );
     }
 }
 
@@ -775,17 +775,17 @@ void Legend::setSubduedColors( bool ordered )
     Palette pal = Palette::subduedPalette();
     if ( ordered ) {
         for ( int i = 0; i < pal.size(); i++ ) {
-            setColor( i, pal.getBrush( i ) );
+            setBrush( i, pal.getBrush( i ) );
         }
     } else {
-        static const int s_subduedColorsCount;
+        static const int s_subduedColorsCount = 18;
         Q_ASSERT( pal.size() >= s_subduedColorsCount );
         static const int order[ s_subduedColorsCount ] = {
             0, 5, 10, 15, 2, 7, 12, 17, 4,
             9, 14, 1, 6, 11, 16, 3, 8, 13
         };
         for ( int i = 0; i < s_subduedColorsCount; i++ ) {
-            setColor( i, pal.getBrush( order[i] ) );
+            setBrush( i, pal.getBrush( order[i] ) );
         }
     }
 }
