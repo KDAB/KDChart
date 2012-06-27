@@ -24,7 +24,14 @@
 #include "KDChartLegend_p.h"
 #include <KDChartTextAttributes.h>
 #include <KDChartMarkerAttributes.h>
+#include <KDChartPalette.h>
+#include <KDChartAbstractDiagram.h>
+#include "KDTextDocument.h"
+#include <KDChartDiagramObserver.h>
+#include "KDChartLayoutItems.h"
+
 #include <QFont>
+#include <QGridLayout>
 #include <QPainter>
 #include <QTextTableCell>
 #include <QTextCursor>
@@ -34,11 +41,7 @@
 #include <QAbstractTextDocumentLayout>
 #include <QtDebug>
 #include <QLabel>
-#include <KDChartAbstractDiagram.h>
-#include "KDTextDocument.h"
-#include <KDChartDiagramObserver.h>
-#include <QGridLayout>
-#include "KDChartLayoutItems.h"
+
 
 #include <KDABLibFakes>
 
