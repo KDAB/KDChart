@@ -43,23 +43,29 @@ int main( int argc, char** argv )
     const double xMax = 20;
     const double step = ( xMax - xMin ) / ( points - 1 );
 
-    QStandardItemModel model( points, 4 );
+    QStandardItemModel model( points, 6 );
 
     double x = xMin;
     for( int n = 0; n < points; ++n, x += step) {
         QModelIndex index = model.index( n, 0 );
-        model.setData( index, QVariant( x ) );
+        model.setData( index, x );
         index = model.index( n, 1 );
-        model.setData( index, QVariant( sin( x ) * 100 ) );
+        model.setData( index, sin( x ) * 100.0 );
 
         index = model.index( n, 2 );
-        model.setData( index, QVariant( x ) );
+        model.setData( index, x );
         index = model.index( n, 3 );
-        model.setData( index, QVariant( x*x*x ) );
+        model.setData( index, x );
+
+        index = model.index( n, 4 );
+        model.setData( index, x );
+        index = model.index( n, 5 );
+        model.setData( index, x * x * x );
     }
 
     model.setHeaderData( 0, Qt::Horizontal, QString::fromLatin1( "100 * sin(x)" ) );
-    model.setHeaderData( 1, Qt::Horizontal, QString::fromLatin1( "x^3" ) );
+    model.setHeaderData( 2, Qt::Horizontal, QString::fromLatin1( "x" ) );
+    model.setHeaderData( 4, Qt::Horizontal, QString::fromLatin1( "x^3" ) );
 
     KDChart::Chart* chart = new KDChart::Chart();
 
