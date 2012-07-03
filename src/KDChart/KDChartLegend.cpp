@@ -42,7 +42,6 @@
 #include <QtDebug>
 #include <QLabel>
 
-
 #include <KDABLibFakes>
 
 using namespace KDChart;
@@ -78,7 +77,6 @@ Legend::Private::~Private()
 {
     // this bloc left empty intentionally
 }
-
 
 
 #define d d_func()
@@ -946,16 +944,10 @@ void Legend::buildLegend()
                     static_cast<int>(maxMarkersSize.width());
     }
 
-#define ADD_MARKER_SPACER_FOR_HORIZONTAL_MODE( column ) \
-{ \
-    if( orientation() != Qt::Vertical ) \
-        d->layout->addItem( new QSpacerItem( spacing(), 1 ), \
-                            2, \
-                            column ); \
-}
-
     // Horizontal needs a leading spacer
-    ADD_MARKER_SPACER_FOR_HORIZONTAL_MODE( 0 )
+    if ( orientation() != Qt::Vertical ) {
+        d->layout->addItem( new QSpacerItem( spacing(), 1 ), 2, 0 );
+    }
 
     // for all datasets: add (line)marker items and text items to the layout
     for ( int dataset = 0; dataset < d->modelLabels.count(); ++dataset ) {
@@ -1048,7 +1040,9 @@ void Legend::buildLegend()
         }
 
         // Horizontal needs a spacer
-        ADD_MARKER_SPACER_FOR_HORIZONTAL_MODE( dataset*4+4 )
+        if ( orientation() != Qt::Vertical ) {
+            d->layout->addItem( new QSpacerItem( spacing(), 1 ), 2, dataset * 4 + 4 );
+        }
     }
 
     // vertical line (only in vertical mode)
