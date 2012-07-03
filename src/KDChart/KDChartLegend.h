@@ -45,7 +45,7 @@ namespace KDChart {
   *
   * \note Legend is different from all other classes ofd KD Chart, since it can be
   * displayed outside of the Chart's area.  If you want to, you can embedd the legend
-  * into your own widget, or into another part of a bigger grid, into which you might
+  * into your own widget, or into another part of a bigger layout, into which you might
   * have inserted the Chart.
   *
   * On the other hand, please note that you MUST call Chart::addLegend to get your
@@ -81,7 +81,6 @@ public:
      */
     bool compare( const Legend* other ) const;
 
-    //QSize calcSizeHint() const;
     virtual void resizeEvent( QResizeEvent * event ); // TODO: should be protected
 
     virtual void paint( QPainter* painter );
@@ -129,7 +128,7 @@ public:
     DiagramList diagrams() const;
 
     /**
-     * @return The list of diagrams associated with this coordinate plane.
+     * @return The list of diagrams associated with this legend.
      */
     ConstDiagramList constDiagrams() const;
 
@@ -149,7 +148,7 @@ public:
     void removeDiagram( KDChart::AbstractDiagram* oldDiagram );
 
     /**
-      * Removes all of the diagram from the legend's list of diagrams.
+      * Removes all diagrams from the legend's list of diagrams.
       *
       * \sa diagram, diagrams, addDiagram, removeDiagram, replaceDiagram, setDiagram
       */
@@ -321,8 +320,8 @@ m_legend->setFloatingPosition( relativePosition );
      * Sets a list of datasets that are to be hidden in the legend.
      *
      * By passing an empty list, you show all datasets.
-     * Note that by default, all datasets are shown, which means
-     * that hiddenDatasets() == QList<uint>()
+     * All datasets are shown by default, which means
+     * that hiddenDatasets() returns an empty list.
      */
     void setHiddenDatasets( const QList<uint> hiddenDatasets );
     const QList<uint> hiddenDatasets() const;
@@ -380,7 +379,6 @@ m_legend->setFloatingPosition( relativePosition );
     void setTitleTextAttributes( const TextAttributes &a );
     TextAttributes titleTextAttributes() const;
 
-    // FIXME same as frameSettings()->padding()?
     void setSpacing( uint space );
     uint spacing() const;
 
@@ -391,9 +389,6 @@ m_legend->setFloatingPosition( relativePosition );
     virtual QSize sizeHint() const;
     virtual void needSizeHint();
     virtual void resizeLayout( const QSize& size );
-
-/*public static*/
-//    static LegendPosition stringToPosition( QString name, bool* ok=0 );
 
 Q_SIGNALS:
     void destroyedLegend( Legend* );

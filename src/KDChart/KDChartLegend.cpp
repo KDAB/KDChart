@@ -249,8 +249,9 @@ void Legend::paint( QPainter* painter )
 #ifdef DEBUG_LEGEND_PAINT
     qDebug() << "entering Legend::paint( QPainter* painter )";
 #endif
-    // rule: We do not show a legend, if there is no diagram.
-    if( ! diagram() ) return;
+    if ( ! diagram() ) {
+        return;
+    }
 
     // re-calculate/adjust the Legend's internal layout and contents, if needed:
     //buildLegend();
@@ -270,12 +271,11 @@ uint Legend::datasetCount() const
 {
     int modelLabelsCount = 0;
     int modelBrushesCount = 0;
-    for (int i = 0; i < d->observers.size(); ++i) {
-        DiagramObserver * obs = d->observers.at(i);
-        modelLabelsCount  += obs->diagram()->datasetLabels().count();
-        modelBrushesCount += obs->diagram()->datasetBrushes().count();
+    KDAB_FOREACH ( DiagramObserver* observer, d->observers ) {
+        AbstractDiagram* diagram = observer->diagram();
+        Q_ASSERT( diagram->datasetLabels().count() == diagram->datasetBrushes().count() );
+        modelLabelsCount += diagram->datasetLabels().count();
     }
-    Q_ASSERT( modelLabelsCount == modelBrushesCount );
     return modelLabelsCount;
 }
 
@@ -289,7 +289,7 @@ void Legend::setReferenceArea( const QWidget* area )
 
 const QWidget* Legend::referenceArea() const
 {
-    return (d->referenceArea ? d->referenceArea : static_cast<const QWidget*>(parent()));
+    return d->referenceArea ? d->referenceArea : qobject_cast< const QWidget* >( parent() );
 }
 
 
@@ -601,26 +601,29 @@ const QMap<uint,QString> Legend::texts() const
 
 void Legend::setColor( uint dataset, const QColor& color )
 {
-    if( d->brushes[ dataset ] == color ) return;
-    d->brushes[ dataset ] = color;
-    setNeedRebuild();
-    update();
+    if ( d->brushes[ dataset ] != color ) {
+        d->brushes[ dataset ] = color;
+        setNeedRebuild();
+        update();
+    }
 }
 
 void Legend::setBrush( uint dataset, const QBrush& brush )
 {
-    if( d->brushes[ dataset ] == brush ) return;
-    d->brushes[ dataset ] = brush;
-    setNeedRebuild();
-    update();
+    if ( d->brushes[ dataset ] != brush ) {
+        d->brushes[ dataset ] = brush;
+        setNeedRebuild();
+        update();
+    }
 }
 
 QBrush Legend::brush( uint dataset ) const
 {
-    if( d->brushes.find( dataset ) != d->brushes.end() )
+    if( d->brushes.contains( dataset ) ) {
         return d->brushes[ dataset ];
-    else
+    } else {
         return d->modelBrushes[ dataset ];
+    }
 }
 
 const QMap<uint,QBrush> Legend::brushes() const
@@ -818,20 +821,19 @@ void Legend::buildLegend()
     d->modelPens.clear();
     d->modelMarkers.clear();
     // retrieve the diagrams' settings for all non-hidden datasets
-    for (int i = 0; i < d->observers.size(); ++i){
-        const AbstractDiagram* diagram = d->observers.at(i)->diagram();
-        if( diagram ){
+    for ( int i = 0; i < d->observers.size(); ++i ) {
+        const AbstractDiagram* diagram = d->observers.at( i )->diagram();
+        if ( diagram ) {
             const QStringList             diagramLabels( diagram->datasetLabels() );
             const QList<QBrush>           diagramBrushes( diagram->datasetBrushes() );
             const QList<QPen>             diagramPens( diagram->datasetPens() );
             const QList<MarkerAttributes> diagramMarkers( diagram->datasetMarkers() );
             const int begin = sortOrder() == Qt::AscendingOrder ? 0 : diagramLabels.count() - 1;
             const int end = sortOrder() == Qt::AscendingOrder ? diagramLabels.count() : -1;
-            for ( int dataset = begin; dataset != end; dataset += begin < end ? 1 : -1 )
-            {
+            for ( int dataset = begin; dataset != end; dataset += begin < end ? 1 : -1 ) {
                 // only show the label if the diagrams is NOT having the dataset set to hidden
                 // and the dataset is not hidden in this legend either
-                if( !diagram->isHidden( dataset ) && !datasetIsHidden( dataset ) ){
+                if ( !diagram->isHidden( dataset ) && !datasetIsHidden( dataset ) ) {
                     d->modelLabels  += diagramLabels[   dataset ];
                     d->modelBrushes += diagramBrushes[  dataset ];
                     d->modelPens    += diagramPens[     dataset ];
@@ -875,12 +877,11 @@ void Legend::buildLegend()
         }
     }
 
-    const KDChartEnums::MeasureOrientation orient =
-            (orientation() == Qt::Vertical)
-            ? KDChartEnums::MeasureOrientationMinimum
-            : KDChartEnums::MeasureOrientationHorizontal;
+    const KDChartEnums::MeasureOrientation orient = orientation() == Qt::Vertical ?
+                                                    KDChartEnums::MeasureOrientationMinimum :
+                                                    KDChartEnums::MeasureOrientationHorizontal;
     const TextAttributes labelAttrs( textAttributes() );
-    /*const*/ qreal fontHeight = labelAttrs.calculatedFontSize( referenceArea(), orient );
+    qreal fontHeight = labelAttrs.calculatedFontSize( referenceArea(), orient );
     const LegendStyle style = legendStyle();
     QFont tmpFont = labelAttrs.font();
     tmpFont.setPointSizeF( fontHeight );
@@ -957,7 +958,7 @@ void Legend::buildLegend()
         // MarkerAttributes are preferred.
         const QBrush markerBrush = markerAttrs[dataset].markerColor().isValid() ?
                                    QBrush(markerAttrs[dataset].markerColor()) : brush( dataset );
-        switch( style ){
+        switch( style ) {
             case( MarkersOnly ):
                 markerLineItem = new KDChart::MarkerLayoutItem(
                         diagram(),
