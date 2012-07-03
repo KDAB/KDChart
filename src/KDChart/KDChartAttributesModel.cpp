@@ -700,48 +700,6 @@ void AttributesModel::slotDataChanged( const QModelIndex& topLeft, const QModelI
     emit dataChanged( mapFromSource( topLeft ), mapFromSource( bottomRight ) );
 }
 
-/** needed for serialization */
-const QMap<int, QMap<int, QMap<int, QVariant> > > AttributesModel::dataMap() const
-{
-    return mDataMap;
-}
-/** needed for serialization */
-const QMap<int, QMap<int, QVariant> > AttributesModel::horizontalHeaderDataMap() const
-{
-    return mHorizontalHeaderDataMap;
-}
-/** needed for serialization */
-const QMap<int, QMap<int, QVariant> > AttributesModel::verticalHeaderDataMap() const
-{
-    return mVerticalHeaderDataMap;
-}
-/** needed for serialization */
-const QMap<int, QVariant> AttributesModel::modelDataMap() const
-{
-    return mModelDataMap;
-}
-
-/** needed for serialization */
-void AttributesModel::setDataMap( const QMap<int, QMap<int, QMap<int, QVariant> > > map )
-{
-    mDataMap = map;
-}
-/** needed for serialization */
-void AttributesModel::setHorizontalHeaderDataMap( const QMap<int, QMap<int, QVariant> > map )
-{
-    mHorizontalHeaderDataMap = map;
-}
-/** needed for serialization */
-void AttributesModel::setVerticalHeaderDataMap( const QMap<int, QMap<int, QVariant> > map )
-{
-    mVerticalHeaderDataMap = map;
-}
-/** needed for serialization */
-void AttributesModel::setModelDataMap( const QMap<int, QVariant> map )
-{
-    mModelDataMap = map;
-}
-
 void AttributesModel::setDefaultForRole( int role, const QVariant& value )
 {
     if ( value.isValid() ) {

@@ -122,24 +122,6 @@ public:
 Q_SIGNALS:
     void attributesChanged( const QModelIndex&, const QModelIndex& );
 
-protected:
-    /** needed for serialization */
-    const QMap<int, QMap<int, QMap<int, QVariant> > > dataMap() const;
-    /** needed for serialization */
-    const QMap<int, QMap<int, QVariant> > horizontalHeaderDataMap() const;
-    /** needed for serialization */
-    const QMap<int, QMap<int, QVariant> > verticalHeaderDataMap() const;
-    /** needed for serialization */
-    const QMap<int, QVariant> modelDataMap() const;
-    /** needed for serialization */
-    void setDataMap( const QMap<int, QMap<int, QMap<int, QVariant> > > map );
-    /** needed for serialization */
-    void setHorizontalHeaderDataMap( const QMap<int, QMap<int, QVariant> > map );
-    /** needed for serialization */
-    void setVerticalHeaderDataMap( const QMap<int, QMap<int, QVariant> > map );
-    /** needed for serialization */
-    void setModelDataMap( const QMap<int, QVariant> map );
-
 private Q_SLOTS:
     void slotRowsAboutToBeInserted( const QModelIndex& parent, int start, int end );
     void slotColumnsAboutToBeInserted( const QModelIndex& parent, int start, int end );
