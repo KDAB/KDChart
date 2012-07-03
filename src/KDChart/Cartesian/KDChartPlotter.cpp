@@ -140,6 +140,7 @@ qreal Plotter::maxSlopeChange() const
 {
     return d->plotterCompressor.maxSlopeChange();
 }
+
 void Plotter::setMaxSlopeChange( qreal value )
 {
     d->plotterCompressor.setMaxSlopeChange( value );
@@ -149,6 +150,7 @@ qreal Plotter::mergeRadiusPercentage() const
 {
     return d->mergeRadiusPercentage;
 }
+
 void Plotter::setMergeRadiusPercentage( qreal value )
 {
     if ( d->mergeRadiusPercentage != value )
@@ -164,15 +166,15 @@ void Plotter::setMergeRadiusPercentage( qreal value )
   */
 void Plotter::setType( const PlotType type )
 {
-    if( d->implementor->type() == type )
+    if ( d->implementor->type() == type ) {
         return;
-    if( datasetDimension() != 2 )
-    {
-       Q_ASSERT_X ( false, "setType()",
-                    "This line chart type can only be used with two-dimensional data." );
-       return;
     }
-    switch( type ) {
+    if ( datasetDimension() != 2 )  {
+        Q_ASSERT_X ( false, "setType()",
+                     "This line chart type can only be used with two-dimensional data." );
+        return;
+    }
+    switch ( type ) {
     case Normal:
         d->implementor = d->normalPlotter;
         break;
@@ -181,8 +183,9 @@ void Plotter::setType( const PlotType type )
         break;
     default:
         Q_ASSERT_X( false, "Plotter::setType", "unknown plotter subtype" );
-    };
-    bool connection = connect( this, SIGNAL( boundariesChanged() ), d->implementor->plotterPrivate(), SLOT( changedProperties() ) );
+    }
+    bool connection = connect( this, SIGNAL( boundariesChanged() ),
+                               d->implementor->plotterPrivate(), SLOT( changedProperties() ) );
     Q_ASSERT( connection );
     Q_UNUSED( connection );
 
@@ -207,21 +210,16 @@ Plotter::PlotType Plotter::type() const
   */
 void Plotter::setLineAttributes( const LineAttributes& la )
 {
-    d->attributesModel->setModelData(
-        qVariantFromValue( la ),
-        LineAttributesRole );
+    d->attributesModel->setModelData( qVariantFromValue( la ), LineAttributesRole );
     emit propertiesChanged();
 }
 
 /**
   * Sets the line attributes of data set \a column to \a la
   */
-void Plotter::setLineAttributes(
-        int column,
-    const LineAttributes& la )
+void Plotter::setLineAttributes( int column, const LineAttributes& la )
 {
-    d->setDatasetAttrs( column, qVariantFromValue( la ),
-            LineAttributesRole );
+    d->setDatasetAttrs( column, qVariantFromValue( la ), LineAttributesRole );
     emit propertiesChanged();
 }
 
@@ -237,14 +235,10 @@ void Plotter::resetLineAttributes( int column )
 /**
   * Sets the line attributes for the model index \a index to \a la
   */
-void Plotter::setLineAttributes(
-        const QModelIndex & index,
-    const LineAttributes& la )
+void Plotter::setLineAttributes( const QModelIndex & index, const LineAttributes& la )
 {
-    d->attributesModel->setData(
-            d->attributesModel->mapFromSource(index),
-    qVariantFromValue( la ),
-    LineAttributesRole );
+    d->attributesModel->setData( d->attributesModel->mapFromSource( index ),
+                                 qVariantFromValue( la ), LineAttributesRole );
     emit propertiesChanged();
 }
 
@@ -263,8 +257,7 @@ void Plotter::resetLineAttributes( const QModelIndex & index )
   */
 LineAttributes Plotter::lineAttributes() const
 {
-    return qVariantValue<LineAttributes>(
-        d->attributesModel->data( KDChart::LineAttributesRole ) );
+    return qVariantValue<LineAttributes>( d->attributesModel->data( KDChart::LineAttributesRole ) );
 }
 
 /**
@@ -281,53 +274,41 @@ LineAttributes Plotter::lineAttributes( int column ) const
 /**
   * @return the line attribute set of the model index \a index
   */
-LineAttributes Plotter::lineAttributes(
-    const QModelIndex& index ) const
+LineAttributes Plotter::lineAttributes( const QModelIndex& index ) const
 {
-    return qVariantValue<LineAttributes>(
-        d->attributesModel->data(
-            d->attributesModel->mapFromSource(index),
-            KDChart::LineAttributesRole ) );
+    return qVariantValue< LineAttributes >( d->attributesModel->data(
+        d->attributesModel->mapFromSource( index ), KDChart::LineAttributesRole ) );
 }
 
 /**
   * Sets the global 3D line attributes to \a la
   */
-void Plotter::setThreeDLineAttributes(
-    const ThreeDLineAttributes& la )
+void Plotter::setThreeDLineAttributes( const ThreeDLineAttributes& la )
 {
     setDataBoundariesDirty();
-    d->attributesModel->setModelData(
-        qVariantFromValue( la ),
-        ThreeDLineAttributesRole );
-   emit propertiesChanged();
+    d->attributesModel->setModelData( qVariantFromValue( la ), ThreeDLineAttributesRole );
+    emit propertiesChanged();
 }
 
 /**
   * Sets the 3D line attributes of data set \a column to \a la
   */
-void Plotter::setThreeDLineAttributes(
-    int column,
-    const ThreeDLineAttributes& la )
+void Plotter::setThreeDLineAttributes( int column, const ThreeDLineAttributes& la )
 {
     setDataBoundariesDirty();
     d->setDatasetAttrs( column, qVariantFromValue( la ), ThreeDLineAttributesRole );
-   emit propertiesChanged();
+    emit propertiesChanged();
 }
 
 /**
   * Sets the 3D line attributes of model index \a index to \a la
   */
-void Plotter::setThreeDLineAttributes(
-    const QModelIndex& index,
-    const ThreeDLineAttributes& la )
+void Plotter::setThreeDLineAttributes( const QModelIndex& index, const ThreeDLineAttributes& la )
 {
     setDataBoundariesDirty();
-    d->attributesModel->setData(
-        d->attributesModel->mapFromSource(index),
-        qVariantFromValue( la ),
-        ThreeDLineAttributesRole );
-   emit propertiesChanged();
+    d->attributesModel->setData( d->attributesModel->mapFromSource( index ), qVariantFromValue( la ),
+                                 ThreeDLineAttributesRole );
+    emit propertiesChanged();
 }
 
 /**
@@ -345,21 +326,19 @@ ThreeDLineAttributes Plotter::threeDLineAttributes() const
 ThreeDLineAttributes Plotter::threeDLineAttributes( int column ) const
 {
     const QVariant attrs( d->datasetAttrs( column, ThreeDLineAttributesRole ) );
-    if( attrs.isValid() )
+    if( attrs.isValid() ) {
         return qVariantValue< ThreeDLineAttributes >( attrs );
+    }
     return threeDLineAttributes();
 }
 
 /**
   * @return the 3D line attributes of the model index \a index
   */
-ThreeDLineAttributes Plotter::threeDLineAttributes(
-    const QModelIndex& index ) const
+ThreeDLineAttributes Plotter::threeDLineAttributes( const QModelIndex& index ) const
 {
-    return qVariantValue<ThreeDLineAttributes>(
-        d->attributesModel->data(
-            d->attributesModel->mapFromSource( index ),
-            KDChart::ThreeDLineAttributesRole ) );
+    return qVariantValue< ThreeDLineAttributes >( d->attributesModel->data(
+        d->attributesModel->mapFromSource( index ), KDChart::ThreeDLineAttributesRole ) );
 }
 
 qreal Plotter::threeDItemDepth( const QModelIndex & index ) const
@@ -375,24 +354,20 @@ qreal Plotter::threeDItemDepth( int column ) const
 /**
   * Sets the value tracker attributes of the model index \a index to \a va
   */
-void Plotter::setValueTrackerAttributes( const QModelIndex & index,
-                                             const ValueTrackerAttributes & va )
+void Plotter::setValueTrackerAttributes( const QModelIndex & index, const ValueTrackerAttributes & va )
 {
-    d->attributesModel->setData( d->attributesModel->mapFromSource(index),
-                                 qVariantFromValue( va ),
-                                 KDChart::ValueTrackerAttributesRole );
+    d->attributesModel->setData( d->attributesModel->mapFromSource( index ),
+                                 qVariantFromValue( va ), KDChart::ValueTrackerAttributesRole );
     emit propertiesChanged();
 }
 
 /**
   * Returns the value tracker attributes of the model index \a index
   */
-ValueTrackerAttributes Plotter::valueTrackerAttributes(
-        const QModelIndex & index ) const
+ValueTrackerAttributes Plotter::valueTrackerAttributes( const QModelIndex & index ) const
 {
     return qVariantValue<ValueTrackerAttributes>( d->attributesModel->data(
-            d->attributesModel->mapFromSource( index ),
-            KDChart::ValueTrackerAttributesRole ) );
+        d->attributesModel->mapFromSource( index ), KDChart::ValueTrackerAttributesRole ) );
 }
 
 void Plotter::resizeEvent ( QResizeEvent* )

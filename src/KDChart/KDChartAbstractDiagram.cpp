@@ -217,22 +217,20 @@ AttributesModel* AbstractDiagram::attributesModel() const
 QModelIndex AbstractDiagram::conditionallyMapFromSource( const QModelIndex & index ) const
 {
     Q_ASSERT( !index.isValid() || index.model() == attributesModel() || index.model() == attributesModel()->sourceModel() );
-    return index.model() == attributesModel()
-            ? index
-            : attributesModel()->mapFromSource( index );
+    return index.model() == attributesModel() ? index : attributesModel()->mapFromSource( index );
 }
 
 /*! \reimpl */
 void AbstractDiagram::setRootIndex ( const QModelIndex& idx )
 {
-    QAbstractItemView::setRootIndex(idx);
-    setAttributesModelRootIndex( d->attributesModel->mapFromSource(idx) );
+    QAbstractItemView::setRootIndex( idx );
+    setAttributesModelRootIndex( d->attributesModel->mapFromSource( idx ) );
 }
 
 /*! \internal */
 void AbstractDiagram::setAttributesModelRootIndex( const QModelIndex& idx )
 {
-    d->attributesModelRootIndex=idx;
+    d->attributesModelRootIndex = idx;
     setDataBoundariesDirty();
     scheduleDelayedItemsLayout();
 }
@@ -282,25 +280,19 @@ void AbstractDiagram::setHidden( const QModelIndex & index, bool hidden )
 
 void AbstractDiagram::setHidden( int dataset, bool hidden )
 {
-    // To store the flag for a dataset, we use the first column
-    // that's associated with it. (i.e., with a dataset dimension
-    // of two, the column of the keys)
     d->setDatasetAttrs( dataset, qVariantFromValue( hidden ), DataHiddenRole );
     emit dataHidden();
 }
 
 void AbstractDiagram::setHidden( bool hidden )
 {
-    d->attributesModel->setModelData(
-        qVariantFromValue( hidden ),
-        DataHiddenRole );
+    d->attributesModel->setModelData( qVariantFromValue( hidden ), DataHiddenRole );
     emit dataHidden();
 }
 
 bool AbstractDiagram::isHidden() const
 {
-    return qVariantValue<bool>(
-        attributesModel()->modelData( DataHiddenRole ) );
+    return qVariantValue< bool >( attributesModel()->modelData( DataHiddenRole ) );
 }
 
 bool AbstractDiagram::isHidden( int dataset ) const
@@ -313,11 +305,11 @@ bool AbstractDiagram::isHidden( int dataset ) const
 
 bool AbstractDiagram::isHidden( const QModelIndex & index ) const
 {
-    const QVariant boolFlag( attributesModel()->data(
-                                conditionallyMapFromSource( index ),
-                                DataHiddenRole ) );
-    if ( boolFlag.isValid() )
-        return qVariantValue<bool>( boolFlag );
+    const QVariant boolFlag( attributesModel()->data( conditionallyMapFromSource( index ),
+                                                      DataHiddenRole ) );
+    if ( boolFlag.isValid() ) {
+        return qVariantValue< bool >( boolFlag );
+    }
     int dataset = index.column() / d->datasetDimension;
     return isHidden( dataset );
 }
@@ -326,10 +318,8 @@ bool AbstractDiagram::isHidden( const QModelIndex & index ) const
 void AbstractDiagram::setDataValueAttributes( const QModelIndex & index,
                                               const DataValueAttributes & a )
 {
-    d->attributesModel->setData(
-        conditionallyMapFromSource( index ),
-        qVariantFromValue( a ),
-        DataValueLabelAttributesRole );
+    d->attributesModel->setData( conditionallyMapFromSource( index ), qVariantFromValue( a ),
+                                 DataValueLabelAttributesRole );
     emit propertiesChanged();
 }
 
@@ -985,14 +975,16 @@ int AbstractDiagram::datasetDimension( ) const
 void AbstractDiagram::setDatasetDimension( int dimension )
 {
     Q_UNUSED( dimension );
-    qDebug() << "Setting the dataset dimension using AbstractDiagram::setDatasetDimension is obsolete. Use the specific diagram types instead.";
+    qDebug() << "Setting the dataset dimension using AbstractDiagram::setDatasetDimension is "
+                "obsolete. Use the specific diagram types instead.";
 }
 
 void AbstractDiagram::setDatasetDimensionInternal( int dimension )
 {
     Q_ASSERT( dimension != 0 );
-
-    if ( d->datasetDimension == dimension ) return;
+    if ( d->datasetDimension == dimension ) {
+        return;
+    }
     d->datasetDimension = dimension;
     setDataBoundariesDirty();
     emit layoutChanged( this );
@@ -1010,8 +1002,9 @@ qreal AbstractDiagram::valueForCell( int row, int column ) const
 
 void AbstractDiagram::update() const
 {
-    if( d->plane )
+    if ( d->plane ) {
         d->plane->update();
+    }
 }
 
 QModelIndex AbstractDiagram::indexAt( const QPoint& point ) const
