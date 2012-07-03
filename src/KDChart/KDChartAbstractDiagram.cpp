@@ -916,29 +916,25 @@ QStringList AbstractDiagram::itemRowLabels() const
 QStringList AbstractDiagram::datasetLabels() const
 {
     QStringList ret;
-    if( model() == 0 )
+    if ( !model() ) {
         return ret;
-
-    const int columnCount = attributesModel()->columnCount(attributesModelRootIndex());
-    const int dataSetCount =  datasetDimension();
-    const int loopEnd = columnCount / dataSetCount;
-    for( int i = 0; i < loopEnd; ++i )
-    {
+    }
+    const int datasetCount = d->datasetCount();
+    for ( int i = 0; i < datasetCount; ++i ) {
         ret << d->datasetAttrs( i, Qt::DisplayRole ).toString();
     }
-
     return ret;
 }
 
 QList<QBrush> AbstractDiagram::datasetBrushes() const
 {
     QList<QBrush> ret;
-    if( model() == 0 )
+    if ( !model() ) {
         return ret;
-
-    const int datasetCount = attributesModel()->columnCount( attributesModelRootIndex() );
-    for ( int dataset = 0; dataset < datasetCount; dataset += datasetDimension() ) {
-        ret << brush( dataset );
+    }
+    const int datasetCount = d->datasetCount();
+    for ( int i = 0; i < datasetCount; ++i ) {
+        ret << brush( i );
     }
     return ret;
 }
@@ -946,12 +942,12 @@ QList<QBrush> AbstractDiagram::datasetBrushes() const
 QList<QPen> AbstractDiagram::datasetPens() const
 {
     QList<QPen> ret;
-    if( model() == 0 )
+    if ( !model() ) {
         return ret;
-
-    const int datasetCount = attributesModel()->columnCount( attributesModelRootIndex() );
-    for ( int dataset = 0; dataset < datasetCount; dataset += datasetDimension() ) {
-        ret << pen( dataset );
+    }
+    const int datasetCount = d->datasetCount();
+    for ( int i = 0; i < datasetCount; ++i ) {
+        ret << pen( i );
     }
     return ret;
 }
@@ -959,12 +955,12 @@ QList<QPen> AbstractDiagram::datasetPens() const
 QList<MarkerAttributes> AbstractDiagram::datasetMarkers() const
 {
     QList<MarkerAttributes> ret;
-    if( model() == 0 )
+    if ( !model() ) {
         return ret;
-
-    const int datasetCount = attributesModel()->columnCount( attributesModelRootIndex() );
-    for ( int dataset = 0; dataset < datasetCount; dataset += datasetDimension() ) {
-        ret << dataValueAttributes( dataset ).markerAttributes();
+    }
+    const int datasetCount = d->datasetCount();
+    for ( int i = 0; i < datasetCount; ++i ) {
+        ret << dataValueAttributes( i ).markerAttributes();
     }
     return ret;
 }

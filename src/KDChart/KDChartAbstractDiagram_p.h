@@ -151,6 +151,11 @@ namespace KDChart {
                                  bool justCalculateRect=false,
                                  QRectF* cumulatedBoundingRect=0 );
 
+        inline int datasetCount() const
+        {
+            return attributesModel->columnCount( attributesModelRootIndex ) / datasetDimension;
+        }
+
         virtual QModelIndex indexAt( const QPoint& point ) const;
 
         QModelIndexList indexesAt( const QPoint& point ) const;
@@ -223,7 +228,7 @@ namespace KDChart {
 
 
     class LineAttributesInfo {
-        public :
+    public:
         LineAttributesInfo();
         LineAttributesInfo( const QModelIndex& _index, const QPointF& _value, const QPointF& _nextValue );
 
