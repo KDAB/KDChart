@@ -986,6 +986,7 @@ void AbstractDiagram::setDatasetDimensionInternal( int dimension )
         return;
     }
     d->datasetDimension = dimension;
+    d->attributesModel->setDatasetDimension( dimension );
     setDataBoundariesDirty();
     emit layoutChanged( this );
 }

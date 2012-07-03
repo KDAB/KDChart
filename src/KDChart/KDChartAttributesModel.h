@@ -40,15 +40,13 @@ namespace KDChart {
   *        Therefore this class does not need to, and does not, change the data layout from the
   *        source model's; indexes that refer to the same data have the same row and column
   *        values in both models.
-  *        Attribute changes via the interface of this class (including setData()) are stored
-  *        internally and not forwarded to the source model.
+  *        Attribute changes, that is changes to data with the attribute role, via the interface
+  *        of this class (including setData()) are stored internally and not forwarded to the source model.
   */
 class KDCHART_EXPORT AttributesModel : public AbstractProxyModel
 {
     Q_OBJECT
-
-    friend class AttributesModelSerializer;
-
+    KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC( AttributesModel );
 public:
     enum PaletteType {
         PaletteTypeDefault = 0,
@@ -119,6 +117,10 @@ public:
         Passing a default-constructed QVariant is equivalent to removing the default. */
     void setDefaultForRole( int role, const QVariant& value );
 
+    /** Set the dimension of the dataset in the source model. \sa AbstractDiagram::setDatasetDimension */
+    void setDatasetDimension( int dimension );
+    int datasetDimension() const;
+
 Q_SIGNALS:
     void attributesChanged( const QModelIndex&, const QModelIndex& );
 
@@ -138,15 +140,11 @@ private Q_SLOTS:
 private:
     // helper
     QVariant defaultsForRole( int role ) const;
+    bool compareHeaderDataMaps( const QMap< int, QMap< int, QVariant > >& mapA,
+                                const QMap< int, QMap< int, QVariant > >& mapB ) const;
 
     void removeEntriesFromDataMap( int start, int end );
     void removeEntriesFromDirectionDataMaps( Qt::Orientation dir, int start, int end );
-    QMap<int, QMap<int, QMap<int, QVariant> > > mDataMap;
-    QMap<int, QMap<int, QVariant> > mHorizontalHeaderDataMap;
-    QMap<int, QMap<int, QVariant> > mVerticalHeaderDataMap;
-    QMap<int, QVariant> mModelDataMap;
-    QMap<int, QVariant> mDefaultsMap;
-    PaletteType mPaletteType;
 };
 
 }

@@ -49,145 +49,135 @@
 
 using namespace KDChart;
 
+
+class AttributesModel::Private
+{
+public:
+    Private();
+
+    QMap< int, QMap< int, QMap< int, QVariant > > > dataMap;
+    QMap< int, QMap< int, QVariant > > horizontalHeaderDataMap;
+    QMap< int, QMap< int, QVariant > > verticalHeaderDataMap;
+    QMap< int, QVariant > modelDataMap;
+    QMap< int, QVariant > defaultsMap;
+    AttributesModel::PaletteType paletteType;
+    Palette palette;
+    int dataDimension;
+};
+
+AttributesModel::Private::Private()
+  : dataDimension( 1 ),
+    paletteType( AttributesModel::PaletteTypeDefault ),
+    palette( Palette::defaultPalette() )
+{
+}
+
+#define d d_func()
+
 AttributesModel::AttributesModel( QAbstractItemModel* model, QObject * parent/* = 0 */ )
   : AbstractProxyModel( parent ),
-    mPaletteType( PaletteTypeDefault )
+    _d( new Private )
 {
-    setSourceModel(model);
+    setSourceModel( model );
     setDefaultForRole( KDChart::DataValueLabelAttributesRole,
                        DataValueAttributes::defaultAttributesAsVariant() );
 }
 
 AttributesModel::~AttributesModel()
 {
+    delete _d;
+    _d = 0;
 }
 
 void AttributesModel::initFrom( const AttributesModel* other )
 {
-    if( other == this || ! other ) return;
+    *d = *other->d;
+}
 
-    mDataMap = other->mDataMap;
-    mHorizontalHeaderDataMap = other->mHorizontalHeaderDataMap;
-    mVerticalHeaderDataMap = other->mVerticalHeaderDataMap;
-    mModelDataMap = other->mModelDataMap;
-    mDefaultsMap =  other->mDefaultsMap;
-
-    setPaletteType( other->paletteType() );
+bool AttributesModel::compareHeaderDataMaps( const QMap< int, QMap< int, QVariant > >& mapA,
+                                             const QMap< int, QMap< int, QVariant > >& mapB ) const
+{
+    if ( mapA.count() != mapB.count() ) {
+        return false;
+    }
+    QMap< int, QMap< int, QVariant > >::const_iterator itA = mapA.constBegin();
+    QMap< int, QMap< int, QVariant > >::const_iterator itB = mapB.constBegin();
+    for ( ; itA != mapA.constEnd(); ++itA, ++itB ) {
+        if ( itA->count() != itB->count() ) {
+            return false;
+        }
+        QMap< int, QVariant >::const_iterator it2A = itA->constBegin();
+        QMap< int, QVariant >::const_iterator it2B = itB->constBegin();
+        for ( ; it2A != itA->constEnd(); ++it2A, ++it2B ) {
+            if ( it2A.key() != it2B.key() ) {
+                return false;
+            }
+            if ( !compareAttributes( it2A.key(), it2A.value(), it2B.value() ) ) {
+                return false;
+            }
+        }
+    }
+    return true;
 }
 
 bool AttributesModel::compare( const AttributesModel* other ) const
 {
-    if( other == this ) return true;
-    if ( ! other ) {
+    if ( other == this ) {
+        return true;
+    }
+    if ( !other || d->paletteType != other->d->paletteType ) {
         return false;
     }
 
     {
-        if (mDataMap.count() != other->mDataMap.count()){
+        if ( d->dataMap.count() != other->d->dataMap.count() ) {
             return false;
         }
-        QMap<int, QMap<int, QMap<int, QVariant> > >::const_iterator itA = mDataMap.constBegin();
-        QMap<int, QMap<int, QMap<int, QVariant> > >::const_iterator itB = other->mDataMap.constBegin();
-        while (itA != mDataMap.constEnd()) {
-            if ((*itA).count() != (*itB).count()){
+        QMap< int, QMap< int, QMap<int, QVariant > > >::const_iterator itA = d->dataMap.constBegin();
+        QMap< int, QMap< int, QMap<int, QVariant > > >::const_iterator itB = other->d->dataMap.constBegin();
+        for ( ; itA != d->dataMap.constEnd(); ++itA, ++itB ) {
+            if ( itA->count() != itB->count() ) {
                 return false;
             }
-            QMap<int, QMap<int, QVariant> >::const_iterator it2A = (*itA).constBegin();
-            QMap<int, QMap<int, QVariant> >::const_iterator it2B = (*itB).constBegin();
-            while (it2A != itA->constEnd()) {
-                if ((*it2A).count() != (*it2B).count()){
+            QMap< int, QMap< int, QVariant > >::const_iterator it2A = itA->constBegin();
+            QMap< int, QMap< int, QVariant > >::const_iterator it2B = itB->constBegin();
+            for ( ; it2A != itA->constEnd(); ++it2A, ++it2B ) {
+                if ( it2A->count() != it2B->count() ) {
                     return false;
                 }
-                QMap<int, QVariant>::const_iterator it3A = (*it2A).constBegin();
-                QMap<int, QVariant>::const_iterator it3B = (*it2B).constBegin();
-                while (it3A != it2A->constEnd()) {
-                    if ( it3A.key() != it3B.key() ){
+                QMap< int, QVariant >::const_iterator it3A = it2A->constBegin();
+                QMap< int, QVariant >::const_iterator it3B = it2B->constBegin();
+                for ( ; it3A != it2A->constEnd(); ++it3A, ++it3B ) {
+                    if ( it3A.key() != it3B.key() ) {
                         return false;
                     }
-                    if ( ! compareAttributes( it3A.key(), it3A.value(), it3B.value() ) ){
+                    if ( !compareAttributes( it3A.key(), it3A.value(), it3B.value() ) ) {
                         return false;
                     }
-                    ++it3A;
-                    ++it3B;
                 }
-                ++it2A;
-                ++it2B;
             }
-            ++itA;
-            ++itB;
         }
     }
-    {
-        if (mHorizontalHeaderDataMap.count() != other->mHorizontalHeaderDataMap.count()){
-            return false;
-        }
-        QMap<int, QMap<int, QVariant> >::const_iterator itA = mHorizontalHeaderDataMap.constBegin();
-        QMap<int, QMap<int, QVariant> >::const_iterator itB = other->mHorizontalHeaderDataMap.constBegin();
-        while (itA != mHorizontalHeaderDataMap.constEnd()) {
-            if ((*itA).count() != (*itB).count()){
-                return false;
-            }
-            QMap<int, QVariant>::const_iterator it2A = (*itA).constBegin();
-            QMap<int, QVariant>::const_iterator it2B = (*itB).constBegin();
-            while (it2A != itA->constEnd()) {
-                if ( it2A.key() != it2B.key() ){
-                    return false;
-                }
-                if ( ! compareAttributes( it2A.key(), it2A.value(), it2B.value() ) ){
-                    return false;
-                }
-                ++it2A;
-                ++it2B;
-            }
-            ++itA;
-            ++itB;
-        }
-    }
-    {
-        if (mVerticalHeaderDataMap.count() != other->mVerticalHeaderDataMap.count() ) {
-            return false;
-        }
-        QMap<int, QMap<int, QVariant> >::const_iterator itA = mVerticalHeaderDataMap.constBegin();
-        QMap<int, QMap<int, QVariant> >::const_iterator itB = other->mVerticalHeaderDataMap.constBegin();
-        while (itA != mVerticalHeaderDataMap.constEnd()) {
-            if ((*itA).count() != (*itB).count()){
-                return false;
-            }
-            QMap<int, QVariant>::const_iterator it2A = (*itA).constBegin();
-            QMap<int, QVariant>::const_iterator it2B = (*itB).constBegin();
-            while (it2A != itA->constEnd()) {
-                if ( it2A.key() != it2B.key() ){
-                    return false;
-                }
-                if ( ! compareAttributes( it2A.key(), it2A.value(), it2B.value() ) ){
-                    return false;
-                }
-                ++it2A;
-                ++it2B;
-            }
-            ++itA;
-            ++itB;
-        }
-    }
-    {
-        if (mModelDataMap.count() != other->mModelDataMap.count()){
-            return false;
-        }
-        QMap<int, QVariant>::const_iterator itA = mModelDataMap.constBegin();
-        QMap<int, QVariant>::const_iterator itB = other->mModelDataMap.constBegin();
-        while (itA != mModelDataMap.constEnd()) {
-            if ( itA.key() != itB.key() ){
-                return false;
-            }
-            if ( ! compareAttributes( itA.key(), itA.value(), itB.value() ) ){
-                return false;
-            }
-            ++itA;
-            ++itB;
-        }
-    }
-    if (paletteType() != other->paletteType()){
+
+    if ( !compareHeaderDataMaps( d->horizontalHeaderDataMap, other->d->horizontalHeaderDataMap ) ||
+         !compareHeaderDataMaps( d->verticalHeaderDataMap, other->d->verticalHeaderDataMap ) ) {
         return false;
+    }
+
+    {
+        if ( d->modelDataMap.count() != other->d->modelDataMap.count() ) {
+            return false;
+        }
+        QMap< int, QVariant >::const_iterator itA = d->modelDataMap.constBegin();
+        QMap< int, QVariant >::const_iterator itB = other->d->modelDataMap.constBegin();
+        for ( ; itA != d->modelDataMap.constEnd(); ++itA, ++itB ) {
+            if ( itA.key() != itB.key() ) {
+                return false;
+            }
+            if ( !compareAttributes( itA.key(), itA.value(), itB.value() ) ) {
+                return false;
+            }
+        }
     }
     return true;
 }
@@ -254,9 +244,8 @@ bool AttributesModel::compareAttributes(
 }
 
 
-QVariant AttributesModel::headerData ( int section,
-                                       Qt::Orientation orientation,
-                                       int role/* = Qt::DisplayRole */ ) const
+QVariant AttributesModel::headerData( int section, Qt::Orientation orientation,
+                                      int role/* = Qt::DisplayRole */ ) const
 {
     if ( sourceModel() ) {
         const QVariant sourceData = sourceModel()->headerData( section, orientation, role );
@@ -266,8 +255,8 @@ QVariant AttributesModel::headerData ( int section,
     }
 
     // the source model didn't have data set, let's use our stored values
-    const QMap< int, QMap< int, QVariant> >& map
-        = orientation == Qt::Horizontal ? mHorizontalHeaderDataMap : mVerticalHeaderDataMap;
+    const QMap< int, QMap< int, QVariant> >& map = orientation == Qt::Horizontal ?
+                                                   d->horizontalHeaderDataMap : d->verticalHeaderDataMap;
     QMap< int, QMap< int, QVariant > >::const_iterator mapIt = map.find( section );
     if ( mapIt != map.constEnd() ) {
         const QMap< int, QVariant >& dataMap = mapIt.value();
@@ -281,37 +270,29 @@ QVariant AttributesModel::headerData ( int section,
 }
 
 
-QVariant AttributesModel::defaultHeaderData ( int section, Qt::Orientation orientation, int role ) const
+QVariant AttributesModel::defaultHeaderData( int section, Qt::Orientation orientation, int role ) const
 {
-  // Default values if nothing else matches
-  switch ( role ) {
-  case Qt::DisplayRole:
-      //TODO for KDChart 3.0: Change to "return QString::number( section+1 );"
-      return QLatin1String( orientation == Qt::Vertical ?  "Series " : "Item " ) + QString::number( section ) ;
+    // Default values if nothing else matches
 
-  case KDChart::DatasetBrushRole: {
-      if ( paletteType() == PaletteTypeSubdued )
-          return Palette::subduedPalette().getBrush( section );
-      else if ( paletteType() == PaletteTypeRainbow )
-          return Palette::rainbowPalette().getBrush( section );
-      else if ( paletteType() == PaletteTypeDefault )
-          return Palette::defaultPalette().getBrush( section );
-      else
-          qWarning("Unknown type of fallback palette!");
-  } break;
-  case KDChart::DatasetPenRole: {
-      // default to the color set for the brush (or it's defaults)
-      // but only if no per model override was set
-      if ( !modelData( role ).isValid() ) {
-          QBrush brush = qVariantValue<QBrush>( headerData( section, orientation, DatasetBrushRole ) );
-          return QPen( brush.color() );
-      }
-  } break;
-  default:
-      break;
-  }
+    const int dataset = section / d->dataDimension;
 
-  return QVariant();
+    switch ( role ) {
+    case Qt::DisplayRole:
+        //TODO for KDChart 3.0: return QString::number( dataset + 1 );
+        return QLatin1String( orientation == Qt::Vertical ?  "Series " : "Item " ) + QString::number( dataset ) ;
+    case KDChart::DatasetBrushRole:
+        return d->palette.getBrush( dataset );
+    case KDChart::DatasetPenRole:
+        // if no per model override was set, use the (possibly default) color set for the brush
+        if ( !modelData( role ).isValid() ) {
+            QBrush brush = qVariantValue< QBrush >( headerData( section, orientation, DatasetBrushRole ) );
+            return QPen( brush.color() );
+        }
+    default:
+        break;
+    }
+
+    return QVariant();
 }
 
 // Note: Our users NEED this method - even if
@@ -356,35 +337,34 @@ QVariant AttributesModel::data( const QModelIndex& index, int role ) const
     if( index.isValid() ) {
         Q_ASSERT( index.model() == this );
     }
-
-    if( sourceModel() == 0 )
+    if ( !sourceModel() ) {
         return QVariant();
+    }
 
-    if( index.isValid() )
-    {
-        const QVariant sourceData = sourceModel()->data( mapToSource(index), role );
-        if( sourceData.isValid() )
+    if ( index.isValid() ) {
+        const QVariant sourceData = sourceModel()->data( mapToSource( index ), role );
+        if ( sourceData.isValid() ) {
             return sourceData;
+        }
     }
 
     // check if we are storing a value for this role at this cell index
-    if( mDataMap.contains( index.column() ) )
-    {
-        const QMap< int,  QMap< int, QVariant > >& colDataMap = mDataMap[ index.column() ];
-        if( colDataMap.contains( index.row() ) )
-        {
+    if ( d->dataMap.contains( index.column() ) ) {
+        const QMap< int,  QMap< int, QVariant > >& colDataMap = d->dataMap[ index.column() ];
+        if ( colDataMap.contains( index.row() ) ) {
             const QMap< int, QVariant >& dataMap = colDataMap[ index.row() ];
-            if( dataMap.contains( role ) )
-            {
-              const QVariant v = dataMap[ role ];
-              if( v.isValid() )
-                  return v;
+            if ( dataMap.contains( role ) ) {
+                const QVariant v = dataMap[ role ];
+                if ( v.isValid() ) {
+                    return v;
+                }
             }
         }
     }
     // check if there is something set for the column (dataset), or at global level
-    if( index.isValid() )
+    if ( index.isValid() ) {
         return data( index.column(), role ); // includes automatic fallback to default
+    }
 
     return QVariant();
 }
@@ -392,8 +372,7 @@ QVariant AttributesModel::data( const QModelIndex& index, int role ) const
 
 bool AttributesModel::isKnownAttributesRole( int role ) const
 {
-    bool oneOfOurs = false;
-    switch( role ) {
+    switch ( role ) {
         // fallthrough intended
     case DataValueLabelAttributesRole:
     case DatasetBrushRole:
@@ -408,17 +387,16 @@ bool AttributesModel::isKnownAttributesRole( int role ) const
     case ThreeDPieAttributesRole:
     case ValueTrackerAttributesRole:
     case DataHiddenRole:
-        oneOfOurs = true;
+        return true;
     default:
-        break;
+        return false;
     }
-    return oneOfOurs;
 }
 
 QVariant AttributesModel::defaultsForRole( int role ) const
 {
     // returns default-constructed QVariant if not found
-    return mDefaultsMap.value( role );
+    return d->defaultsMap.value( role );
 }
 
 bool AttributesModel::setData ( const QModelIndex & index, const QVariant & value, int role )
@@ -426,8 +404,8 @@ bool AttributesModel::setData ( const QModelIndex & index, const QVariant & valu
     if ( !isKnownAttributesRole( role ) ) {
         return sourceModel()->setData( mapToSource(index), value, role );
     } else {
-        QMap< int,  QMap< int, QVariant> > &colDataMap = mDataMap[ index.column() ];
-        QMap<int, QVariant> &dataMap = colDataMap[ index.row() ];
+        QMap< int,  QMap< int, QVariant> > &colDataMap = d->dataMap[ index.column() ];
+        QMap< int, QVariant > &dataMap = colDataMap[ index.row() ];
         dataMap.insert( role, value );
         emit attributesChanged( index, index );
         return true;
@@ -436,22 +414,25 @@ bool AttributesModel::setData ( const QModelIndex & index, const QVariant & valu
 
 bool AttributesModel::resetData ( const QModelIndex & index, int role )
 {
-    return setData ( index, QVariant(), role );
+    return setData( index, QVariant(), role );
 }
 
 bool AttributesModel::setHeaderData ( int section, Qt::Orientation orientation,
                                       const QVariant & value, int role )
 {
-    if( sourceModel() != 0 && headerData( section, orientation, role ) == value )
+    if( sourceModel() && headerData( section, orientation, role ) == value ) {
         return true;
+    }
+
     if ( !isKnownAttributesRole( role ) ) {
         return sourceModel()->setHeaderData( section, orientation, value, role );
     } else {
-        QMap<int,  QMap<int, QVariant> > &sectionDataMap
-            = orientation == Qt::Horizontal ? mHorizontalHeaderDataMap : mVerticalHeaderDataMap;
-        QMap<int, QVariant> &dataMap = sectionDataMap[ section ];
+        QMap< int,  QMap<int, QVariant > > &sectionDataMap
+            = orientation == Qt::Horizontal ? d->horizontalHeaderDataMap : d->verticalHeaderDataMap;
+
+        QMap< int, QVariant > &dataMap = sectionDataMap[ section ];
         dataMap.insert( role, value );
-        if( sourceModel() ){
+        if ( sourceModel() ) {
             int numRows = rowCount( QModelIndex() );
             int numCols = columnCount( QModelIndex() );
             if ( orientation == Qt::Horizontal && numRows > 0 )
@@ -479,20 +460,36 @@ bool AttributesModel::resetHeaderData ( int section, Qt::Orientation orientation
 
 void AttributesModel::setPaletteType( AttributesModel::PaletteType type )
 {
-    mPaletteType = type;
+    if ( d->paletteType == type ) {
+        return;
+    }
+    d->paletteType = type;
+    switch ( type ) {
+    case PaletteTypeDefault:
+        d->palette = Palette::defaultPalette();
+        break;
+    case PaletteTypeSubdued:
+        d->palette = Palette::subduedPalette();
+        break;
+    case PaletteTypeRainbow:
+        d->palette = Palette::rainbowPalette();
+        break;
+    default:
+        qWarning( "Unknown palette type!" );
+    }
 }
 
 AttributesModel::PaletteType AttributesModel::paletteType() const
 {
-    return mPaletteType;
+    return d->paletteType;
 }
 
 bool KDChart::AttributesModel::setModelData( const QVariant value, int role )
 {
-    mModelDataMap.insert( role, value );
+    d->modelDataMap.insert( role, value );
     int numRows = rowCount( QModelIndex() );
     int numCols = columnCount( QModelIndex() );
-    if( sourceModel() && numRows > 0 && numCols > 0 ) {
+    if ( sourceModel() && numRows > 0 && numCols > 0 ) {
         emit attributesChanged( index( 0, 0, QModelIndex() ),
                                 index( numRows - 1, numCols - 1, QModelIndex() ) );
     }
@@ -501,7 +498,7 @@ bool KDChart::AttributesModel::setModelData( const QVariant value, int role )
 
 QVariant KDChart::AttributesModel::modelData( int role ) const
 {
-    return mModelDataMap.value( role, QVariant() );
+    return d->modelDataMap.value( role, QVariant() );
 }
 
 int AttributesModel::rowCount( const QModelIndex& index ) const
@@ -623,28 +620,23 @@ void AttributesModel::slotRowsRemoved( const QModelIndex& parent, int start, int
 
 void AttributesModel::removeEntriesFromDataMap( int start, int end )
 {
-    QMap<int, QMap<int, QMap<int, QVariant> > >::iterator it = mDataMap.find( end );
+    QMap< int, QMap< int, QMap< int, QVariant > > >::iterator it = d->dataMap.find( end );
     // check that the element was found
-    if ( it != mDataMap.end() )
-    {
+    if ( it != d->dataMap.end() ) {
         ++it;
         QVector< int > indexesToDel;
-        for ( int i = start; i < end && it != mDataMap.end(); ++i )
-        {
-            mDataMap[ i ] = it.value();
+        for ( int i = start; i < end && it != d->dataMap.end(); ++i ) {
+            d->dataMap[ i ] = it.value();
             indexesToDel << it.key();
             ++it;
         }
-        if ( indexesToDel.isEmpty() )
-        {
-            for ( int i = start; i < end; ++i )
-            {
+        if ( indexesToDel.isEmpty() ) {
+            for ( int i = start; i < end; ++i ) {
                 indexesToDel << i;
             }
         }
-        for ( int i  = 0; i < indexesToDel.count(); ++i )
-        {
-            mDataMap.remove( indexesToDel[ i ] );
+        for ( int i  = 0; i < indexesToDel.count(); ++i ) {
+            d->dataMap.remove( indexesToDel[ i ] );
         }
     }
 }
@@ -652,7 +644,7 @@ void AttributesModel::removeEntriesFromDataMap( int start, int end )
 void AttributesModel::removeEntriesFromDirectionDataMaps( Qt::Orientation dir, int start, int end )
 {
     QMap<int,  QMap<int, QVariant> > &sectionDataMap
-        = dir == Qt::Horizontal ? mHorizontalHeaderDataMap : mVerticalHeaderDataMap;
+        = dir == Qt::Horizontal ? d->horizontalHeaderDataMap : d->verticalHeaderDataMap;
     QMap<int, QMap<int, QVariant> >::iterator it = sectionDataMap.upperBound( end );
     // check that the element was found
     if ( it != sectionDataMap.end() )
@@ -683,10 +675,9 @@ void AttributesModel::slotColumnsRemoved( const QModelIndex& parent, int start, 
     Q_UNUSED( parent );
     Q_UNUSED( start );
     Q_UNUSED( end );
-    Q_ASSERT_X( sourceModel(), "removeColumn", "This should only be triggered if a valid source Model exists! " );
-    for ( int i = start; i <= end; ++i )
-    {
-        mVerticalHeaderDataMap.remove( start );
+    Q_ASSERT_X( sourceModel(), "removeColumn", "This should only be triggered if a valid source Model exists!" );
+    for ( int i = start; i <= end; ++i ) {
+        d->verticalHeaderDataMap.remove( start );
     }
     removeEntriesFromDataMap( start, end );
     removeEntriesFromDirectionDataMaps( Qt::Horizontal, start, end );
@@ -703,14 +694,25 @@ void AttributesModel::slotDataChanged( const QModelIndex& topLeft, const QModelI
 void AttributesModel::setDefaultForRole( int role, const QVariant& value )
 {
     if ( value.isValid() ) {
-        mDefaultsMap.insert( role, value );
+        d->defaultsMap.insert( role, value );
     } else {
         // erase the possibily existing value to not let the map grow:
-        QMap<int, QVariant>::iterator it = mDefaultsMap.find( role );
-        if ( it != mDefaultsMap.end() ) {
-            mDefaultsMap.erase( it );
+        QMap<int, QVariant>::iterator it = d->defaultsMap.find( role );
+        if ( it != d->defaultsMap.end() ) {
+            d->defaultsMap.erase( it );
         }
     }
 
     Q_ASSERT( defaultsForRole( role ) == value );
+}
+
+void AttributesModel::setDatasetDimension( int dimension )
+{
+    //### need to "reformat" or throw away internal data?
+    d->dataDimension = dimension;
+}
+
+int AttributesModel::datasetDimension() const
+{
+    return d->dataDimension;
 }
