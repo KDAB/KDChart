@@ -46,7 +46,7 @@ namespace KDChart {
 class KDCHART_EXPORT AttributesModel : public AbstractProxyModel
 {
     Q_OBJECT
-    KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC( AttributesModel );
+    KDCHART_DECLARE_PRIVATE_BASE_POLYMORPHIC( AttributesModel )
 public:
     enum PaletteType {
         PaletteTypeDefault = 0,
