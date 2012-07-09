@@ -735,8 +735,6 @@ void Chart::Private::slotLayoutPlanes()
         int row = 0;
         int col = 0;
         QHash< CartesianAxis*, bool > layoutedAxes;
-        qDeleteAll( m_Widget );
-        m_Widget.clear();
         for ( int i = 0; i < connectedComponents.size(); ++i )
         {
             LayoutGraphNode *curComponent = connectedComponents[ i ];

@@ -185,7 +185,6 @@ class Chart::Private : public QObject
         QHash<AbstractCoordinatePlane*, PlaneInfo> buildPlaneLayoutInfos();
         QVector< LayoutGraphNode* > buildPlaneLayoutGraph();
         static CoordinatePlaneList findSharingAxisDiagrams( AbstractCoordinatePlane* plane, CoordinatePlaneList list, AxisType type, QVector< CartesianAxis* > &sharedAxes );
-        QList< QWidget* > m_Widget;
 
     public Q_SLOTS:
         void slotLayoutPlanes();
