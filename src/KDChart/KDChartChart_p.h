@@ -123,7 +123,7 @@ class Chart::Private : public QObject
 {
     Q_OBJECT
     public:
-        enum AxisType{ Abscissa, Ordinate };
+        enum AxisType { Abscissa, Ordinate };
         bool useNewLayoutSystem;
         CoordinatePlaneList coordinatePlanes;
         HeaderFooterList headerFooters;

@@ -714,7 +714,7 @@ void Chart::Private::slotLayoutPlanes()
         delete planesLayout;
         //hint: The direction is configurable by the user now, as
         //      we are using a QBoxLayout rather than a QVBoxLayout.  (khz, 2007/04/25)
-        planesLayout = new QBoxLayout( oldPlanesDirection );// TODO optimize storage of layoutDirection
+        planesLayout = new QBoxLayout( oldPlanesDirection );
 
         gridPlaneLayout = new QGridLayout;
         planesLayout->addLayout( gridPlaneLayout );
@@ -1486,12 +1486,10 @@ void Chart::paint( QPainter* painter, const QRect& target )
     //painter->drawRect(target.adjusted(12,12,-12,-12));
 
     KDAB_FOREACH( Legend *legend, d->legends ) {
-        const bool hidden = legend->isHidden() && legend->testAttribute(Qt::WA_WState_ExplicitShowHide);
+        const bool hidden = legend->isHidden() && legend->testAttribute( Qt::WA_WState_ExplicitShowHide );
         if ( !hidden ) {
             //qDebug() << "painting legend at " << legend->geometry();
             legend->paintIntoRect( *painter, legend->geometry() );
-            //testing:
-            //legend->paintIntoRect( *painter, legend->geometry().adjusted(-100,0,-100,0) );
         }
     }
 
@@ -1500,8 +1498,6 @@ void Chart::paint( QPainter* painter, const QRect& target )
     GlobalMeasureScaling::instance()->resetFactors();
     PrintingParameters::resetScaleFactor();
     GlobalMeasureScaling::setPaintDevice( prevDevice );
-
-    //qDebug() << "KDChart::Chart::paint() done.\n";
 }
 
 void Chart::resizeEvent ( QResizeEvent * )
