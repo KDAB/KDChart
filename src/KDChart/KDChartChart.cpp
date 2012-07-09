@@ -393,52 +393,6 @@ static QVector< LayoutGraphNode* > getPrioritySortedConnectedComponents( QVector
     return connectedComponents;
 }
 
-CoordinatePlaneList Chart::Private::findSharingAxisDiagrams( AbstractCoordinatePlane* plane, CoordinatePlaneList list, AxisType type, QVector< CartesianAxis* > &sharedAxes )
-{
-    if ( !plane || !plane->diagram() )
-        return CoordinatePlaneList();
-    Q_ASSERT( plane );
-    Q_ASSERT( plane->diagram() );
-    CoordinatePlaneList result;
-    AbstractCartesianDiagram* diagram =
-            dynamic_cast< AbstractCartesianDiagram* > ( plane->diagram() );
-    if ( !diagram )
-        return CoordinatePlaneList();
-    QList< CartesianAxis* > axes;
-    Q_FOREACH( CartesianAxis* axis, diagram->axes() )
-    {
-        if ( type == Ordinate && ( axis->position() == CartesianAxis::Left || axis->position() == CartesianAxis::Right ) )
-        {
-            axes.append( axis );
-        }
-        else if ( type == Abscissa && ( axis->position() == CartesianAxis::Top || axis->position() == CartesianAxis::Bottom ) )
-        {
-            axes.append( axis );
-        }
-    }
-    Q_FOREACH( AbstractCoordinatePlane *curPlane, list )
-    {
-        AbstractCartesianDiagram* diagram =
-                dynamic_cast< AbstractCartesianDiagram* > ( curPlane->diagram() );
-        if ( !diagram )
-            continue;
-        Q_FOREACH( CartesianAxis* curSearchedAxis, axes )
-        {
-            Q_FOREACH( CartesianAxis* curAxis, diagram->axes() )
-            {
-                if ( curSearchedAxis == curAxis )
-                {
-                    result.append( curPlane );
-                    if ( !sharedAxes.contains( curSearchedAxis ) )
-                        sharedAxes.append( curSearchedAxis );
-                }
-            }
-        }
-    }
-
-    return result;
-}
-
 struct PriorityComparator{
 public:
     PriorityComparator( QHash< AbstractCoordinatePlane*, LayoutGraphNode* > mapping )
@@ -485,7 +439,7 @@ void checkExistingAxes( LayoutGraphNode* node )
     }
 }
 
-void mergeNodeAxisInformation( LayoutGraphNode* lhs, LayoutGraphNode* rhs )
+static void mergeNodeAxisInformation( LayoutGraphNode* lhs, LayoutGraphNode* rhs )
 {
     lhs->topAxesLayout |= rhs->topAxesLayout;
     rhs->topAxesLayout = lhs->topAxesLayout;
@@ -498,6 +452,53 @@ void mergeNodeAxisInformation( LayoutGraphNode* lhs, LayoutGraphNode* rhs )
 
     lhs->rightAxesLayout |= rhs->rightAxesLayout;
     rhs->rightAxesLayout = lhs->rightAxesLayout;
+}
+
+static CoordinatePlaneList findSharingAxisDiagrams( AbstractCoordinatePlane* plane,
+                                                    const CoordinatePlaneList& list,
+                                                    Chart::Private::AxisType type,
+                                                    QVector< CartesianAxis* >* sharedAxes )
+{
+    if ( !plane || !plane->diagram() )
+        return CoordinatePlaneList();
+    Q_ASSERT( plane );
+    Q_ASSERT( plane->diagram() );
+    CoordinatePlaneList result;
+    AbstractCartesianDiagram* diagram = qobject_cast< AbstractCartesianDiagram* >( plane->diagram() );
+    if ( !diagram )
+        return CoordinatePlaneList();
+
+    QList< CartesianAxis* > axes;
+    KDAB_FOREACH( CartesianAxis* axis, diagram->axes() ) {
+        if ( ( type == Chart::Private::Ordinate &&
+              ( axis->position() == CartesianAxis::Left || axis->position() == CartesianAxis::Right ) )
+            ||
+             ( type == Chart::Private::Abscissa &&
+              ( axis->position() == CartesianAxis::Top || axis->position() == CartesianAxis::Bottom ) ) ) {
+            axes.append( axis );
+        }
+    }
+    Q_FOREACH( AbstractCoordinatePlane *curPlane, list )
+    {
+        AbstractCartesianDiagram* diagram =
+                qobject_cast< AbstractCartesianDiagram* > ( curPlane->diagram() );
+        if ( !diagram )
+            continue;
+        Q_FOREACH( CartesianAxis* curSearchedAxis, axes )
+        {
+            Q_FOREACH( CartesianAxis* curAxis, diagram->axes() )
+            {
+                if ( curSearchedAxis == curAxis )
+                {
+                    result.append( curPlane );
+                    if ( !sharedAxes->contains( curSearchedAxis ) )
+                        sharedAxes->append( curSearchedAxis );
+                }
+            }
+        }
+    }
+
+    return result;
 }
 
 /**
@@ -526,7 +527,7 @@ QVector< LayoutGraphNode* > Chart::Private::buildPlaneLayoutGraph()
     Q_FOREACH( LayoutGraphNode* curNode, allNodes )
     {
         QVector< CartesianAxis* > sharedAxes;
-        CoordinatePlaneList xSharedPlanes = findSharingAxisDiagrams( curNode->diagramPlane, coordinatePlanes, Abscissa, sharedAxes );
+        CoordinatePlaneList xSharedPlanes = findSharingAxisDiagrams( curNode->diagramPlane, coordinatePlanes, Abscissa, &sharedAxes );
         Q_ASSERT( sharedAxes.size() < 2 );
         // TODO duplicated code make a method out of it
         if ( sharedAxes.size() == 1 && xSharedPlanes.size() > 1 )
@@ -561,7 +562,7 @@ QVector< LayoutGraphNode* > Chart::Private::buildPlaneLayoutGraph()
             }
         }
         sharedAxes.clear();
-        CoordinatePlaneList ySharedPlanes = findSharingAxisDiagrams( curNode->diagramPlane, coordinatePlanes, Ordinate, sharedAxes );
+        CoordinatePlaneList ySharedPlanes = findSharingAxisDiagrams( curNode->diagramPlane, coordinatePlanes, Ordinate, &sharedAxes );
         Q_ASSERT( sharedAxes.size() < 2 );
         if ( sharedAxes.size() == 1 && ySharedPlanes.size() > 1 )
         {
