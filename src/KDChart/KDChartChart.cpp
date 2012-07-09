@@ -414,7 +414,7 @@ void checkExistingAxes( LayoutGraphNode* node )
 {
     if ( node && node->diagramPlane && node->diagramPlane->diagram() )
     {
-        AbstractCartesianDiagram *diag = dynamic_cast< AbstractCartesianDiagram* >(node->diagramPlane->diagram() );
+        AbstractCartesianDiagram *diag = qobject_cast< AbstractCartesianDiagram* >( node->diagramPlane->diagram() );
         if ( diag )
         {
             Q_FOREACH( const CartesianAxis* axis, diag->axes() )
@@ -753,7 +753,7 @@ void Chart::Private::slotLayoutPlanes()
 
                         //qDebug() << Q_FUNC_INFO << row + planeRowOffset << col + planeColOffset;
                         planeLayoutItems << curColComponent->diagramPlane;
-                        AbstractCartesianDiagram *cartDiag = dynamic_cast< AbstractCartesianDiagram* >( diagram );
+                        AbstractCartesianDiagram *cartDiag = qobject_cast< AbstractCartesianDiagram* >( diagram );
                         if ( cartDiag )
                         {
                             gridPlaneLayout->addItem( curColComponent->diagramPlane, row + planeRowOffset, col + planeColOffset, 2, 2 );
@@ -1313,7 +1313,7 @@ BackgroundAttributes Chart::backgroundAttributes() const
 void Chart::setCoordinatePlaneLayout( QLayout * layout )
 {
     delete d->planesLayout;
-    d->planesLayout = dynamic_cast<QBoxLayout*>( layout );
+    d->planesLayout = qobject_cast<QBoxLayout*>( layout );
     d->slotLayoutPlanes();
 }
 
@@ -1450,34 +1450,26 @@ int Chart::globalLeadingBottom() const
 
 void Chart::paint( QPainter* painter, const QRect& target )
 {
-    if ( target.isEmpty() || !painter ) return;
-    //qDebug() << "Chart::paint( ..," << target << ")";
+    if ( target.isEmpty() || !painter ) {
+        return;
+    }
 
     QPaintDevice* prevDevice = GlobalMeasureScaling::paintDevice();
     GlobalMeasureScaling::setPaintDevice( painter->device() );
 
     // Output on a widget
-    if ( dynamic_cast< QWidget* >( painter->device() ) != 0 )
-    {
-        GlobalMeasureScaling::setFactors(
-                static_cast< qreal >( target.width() ) /
-                static_cast< qreal >( geometry().size().width() ),
-                static_cast< qreal >( target.height() ) /
-                static_cast< qreal >( geometry().size().height() ) );
-    }
-    // Output onto a QPixmap
-    else
-    {
-        PrintingParameters::setScaleFactor( static_cast< qreal >( painter->device()->logicalDpiX() ) / static_cast< qreal >( logicalDpiX() ) );
+    if ( dynamic_cast< QWidget* >( painter->device() ) != 0 ) {
+        GlobalMeasureScaling::setFactors( qreal( target.width() ) / qreal( geometry().size().width() ),
+                                          qreal( target.height() ) / qreal( geometry().size().height() ) );
+    } else {
+        // Output onto a QPixmap
+        PrintingParameters::setScaleFactor( qreal( painter->device()->logicalDpiX() ) / qreal( logicalDpiX() ) );
 
-        const qreal resX = static_cast< qreal >( logicalDpiX() ) / static_cast< qreal >( painter->device()->logicalDpiX() );
-        const qreal resY = static_cast< qreal >( logicalDpiY() ) / static_cast< qreal >( painter->device()->logicalDpiY() );
+        const qreal resX = qreal( logicalDpiX() ) / qreal( painter->device()->logicalDpiX() );
+        const qreal resY = qreal( logicalDpiY() ) / qreal( painter->device()->logicalDpiY() );
 
-        GlobalMeasureScaling::setFactors(
-                static_cast< qreal >( target.width() ) /
-                static_cast< qreal >( geometry().size().width() ) * resX,
-                static_cast< qreal >( target.height() ) /
-                static_cast< qreal >( geometry().size().height() ) * resY );
+        GlobalMeasureScaling::setFactors( qreal( target.width() ) / qreal( geometry().size().width() ) * resX,
+                                          qreal( target.height() ) / qreal( geometry().size().height() ) * resY );
     }
 
 
