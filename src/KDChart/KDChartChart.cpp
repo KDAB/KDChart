@@ -55,8 +55,6 @@
 
 #include <KDABLibFakes>
 
-#define SET_ALL_MARGINS_TO_ZERO
-
 // Layout widgets even if they are not visible
 class MyWidgetItem : public QWidgetItem
 {
@@ -317,18 +315,14 @@ void Chart::Private::layoutLegends()
                 }
                 if ( haveSameAlign ) {
                     QVBoxLayout* vLayout = new QVBoxLayout();
-#if defined SET_ALL_MARGINS_TO_ZERO
                     vLayout->setMargin( 0 );
-#endif
                     Q_FOREACH( Legend* legend, list) {
                         vLayout->addItem( new MyWidgetItem( legend, Qt::AlignLeft ) );
                     }
                     dataAndLegendLayout->addLayout( vLayout, row, column, 1, 1, alignment );
                 } else {
                     QGridLayout* grid = new QGridLayout();
-#if defined SET_ALL_MARGINS_TO_ZERO
                     grid->setMargin( 0 );
-#endif
 
                     addVBoxWithLegends( list, grid, 0, 0, Qt::AlignTop | Qt::AlignLeft );
                     addVBoxWithLegends( list, grid, 0, 1, Qt::AlignTop | Qt::AlignHCenter );
@@ -604,7 +598,7 @@ QVector< LayoutGraphNode* > Chart::Private::buildPlaneLayoutGraph()
 }
 
 QHash<AbstractCoordinatePlane*, PlaneInfo> Chart::Private::buildPlaneLayoutInfos()
-{    
+{
     /* There are two ways in which planes can be caused to interact in
      * where they are put layouting wise: The first is the reference plane. If
      * such a reference plane is set, on a plane, it will use the same cell in the
@@ -676,10 +670,7 @@ QHash<AbstractCoordinatePlane*, PlaneInfo> Chart::Private::buildPlaneLayoutInfos
         p = planeInfos[plane];
         if ( p.referencePlane == 0 ) {
             p.gridLayout = new QGridLayout();
-            // TESTING(khz): set the margin of all of the layouts to Zero
-#if defined SET_ALL_MARGINS_TO_ZERO
             p.gridLayout->setMargin( 0 );
-#endif
             planeInfos[plane] = p;
         }
     }
@@ -886,11 +877,8 @@ void Chart::Private::slotLayoutPlanes()
             planesLayout->setContentsMargins( left, top, right, bottom );
         }
 
-        // TESTING(khz): set the margin of all of the layouts to Zero
-    #if defined SET_ALL_MARGINS_TO_ZERO
         planesLayout->setMargin( 0 );
         planesLayout->setSpacing( 0 );
-    #endif
         planesLayout->setObjectName( QString::fromLatin1( "planesLayout" ) );
 
         /* First go through all planes and all axes and figure out whether the planes
@@ -952,33 +940,25 @@ void Chart::Private::slotLayoutPlanes()
                 if ( pi.topAxesLayout == 0 )
                 {
                     pi.topAxesLayout = new QVBoxLayout;
-    #if defined SET_ALL_MARGINS_TO_ZERO
                     pi.topAxesLayout->setMargin( 0 );
-    #endif
                     pi.topAxesLayout->setObjectName( QString::fromLatin1( "topAxesLayout" ) );
                 }
                 if ( pi.bottomAxesLayout == 0 )
                 {
                     pi.bottomAxesLayout = new QVBoxLayout;
-    #if defined SET_ALL_MARGINS_TO_ZERO
                     pi.bottomAxesLayout->setMargin( 0 );
-    #endif
                     pi.bottomAxesLayout->setObjectName( QString::fromLatin1( "bottomAxesLayout" ) );
                 }
                 if ( pi.leftAxesLayout == 0 )
                 {
                     pi.leftAxesLayout = new QHBoxLayout;
-    #if defined SET_ALL_MARGINS_TO_ZERO
                     pi.leftAxesLayout->setMargin( 0 );
-    #endif
                     pi.leftAxesLayout->setObjectName( QString::fromLatin1( "leftAxesLayout" ) );
                 }
                 if ( pi.rightAxesLayout == 0 )
                 {
                     pi.rightAxesLayout = new QHBoxLayout;
-    #if defined SET_ALL_MARGINS_TO_ZERO
                     pi.rightAxesLayout->setMargin( 0 );
-    #endif
                     pi.rightAxesLayout->setObjectName( QString::fromLatin1( "rightAxesLayout" ) );
                 }
 
@@ -1098,20 +1078,14 @@ void Chart::Private::createLayouts( QWidget* w )
 
     // The HBox d->layout provides the left and right global leadings
     layout = new QHBoxLayout( w );
-    // TESTING(khz): set the margin of all of the layouts to Zero
-#if defined SET_ALL_MARGINS_TO_ZERO
     layout->setMargin( 0 );
-#endif
     layout->setObjectName( QString::fromLatin1( "Chart::Private::layout" ) );
     layout->addSpacing( globalLeadingLeft );
 
     // The vLayout provides top and bottom global leadings and lays
     // out headers/footers and the data area.
     vLayout = new QVBoxLayout();
-    // TESTING(khz): set the margin of all of the layouts to Zero
-#if defined SET_ALL_MARGINS_TO_ZERO
     vLayout->setMargin( 0 );
-#endif
     vLayout->setObjectName( QString::fromLatin1( "vLayout" ) );
     layout->addLayout( vLayout, 1000 );
     layout->addSpacing( globalLeadingRight );
@@ -1122,25 +1096,16 @@ void Chart::Private::createLayouts( QWidget* w )
     vLayout->addSpacing( globalLeadingTop );
     // 2. the header(s) area
     headerLayout = new QGridLayout();
-    // TESTING(khz): set the margin of all of the layouts to Zero
-#if defined SET_ALL_MARGINS_TO_ZERO
     headerLayout->setMargin( 0 );
-#endif
     vLayout->addLayout( headerLayout );
     // 3. the area containing coordinate plane(s), axes, legend(s)
     dataAndLegendLayout = new QGridLayout();
-    // TESTING(khz): set the margin of all of the layouts to Zero
-#if defined SET_ALL_MARGINS_TO_ZERO
     dataAndLegendLayout->setMargin( 0 );
-#endif
     dataAndLegendLayout->setObjectName( QString::fromLatin1( "dataAndLegendLayout" ) );
     vLayout->addLayout( dataAndLegendLayout, 1000 );
     // 4. the footer(s) area
     footerLayout = new QGridLayout();
-    // TESTING(khz): set the margin of all of the layouts to Zero
-#if defined SET_ALL_MARGINS_TO_ZERO
     footerLayout->setMargin( 0 );
-#endif
     footerLayout->setObjectName( QString::fromLatin1( "footerLayout" ) );
     vLayout->addLayout( footerLayout );
 
@@ -1159,10 +1124,8 @@ void Chart::Private::createLayouts( QWidget* w )
             QVBoxLayout* innerFtLayout = new QVBoxLayout();
             innerHdFtLayouts[0][row][column] = innerHdLayout;
             innerHdFtLayouts[1][row][column] = innerFtLayout;
-#if defined SET_ALL_MARGINS_TO_ZERO
             innerHdLayout->setMargin( 0 );
             innerFtLayout->setMargin( 0 );
-#endif
             const Qt::Alignment align = hdFtAlignments[row][column];
             innerHdLayout->setAlignment( align );
             innerFtLayout->setAlignment( align );
