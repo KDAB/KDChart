@@ -44,80 +44,9 @@
 
 #include <KDABLibFakes>
 
-#include <limits>
-
 using namespace KDChart;
 
 #define d (d_func())
-
-namespace KDChart {
-
-class XySwitch
-{
-public:
-    explicit XySwitch( bool _isY ) : isY( _isY ) {}
-
-    // for rvalues
-    template< class T >
-    T operator()( T x, T y ) const { return isY ? y : x; }
-
-    // lvalues
-    template< class T >
-    T& lvalue( T& x, T& y ) const { return isY ? y : x; }
-
-    bool isY;
-};
-
-class TickIterator
-{
-public:
-    enum TickType {
-        NoTick = 0,
-        MajorTick,
-        MajorTickManualShort,
-        MajorTickManualLong,
-        MinorTick,
-        CustomTick
-    };
-    TickIterator( CartesianAxis *a, CartesianCoordinatePlane* plane, uint majorThinningFactor,
-                  bool isBarChartAbscissa /* sorry about that */ );
-
-    qreal position() const { return m_position; }
-    QString text() const { return m_text; }
-    TickType type() const { return m_type; }
-    bool hasShorterLabels() const { return m_axis->shortLabels().count() == m_axis->labels().count() &&
-                                           !m_axis->labels().isEmpty(); }
-    bool isAtEnd() const { return m_position == std::numeric_limits< qreal >::infinity(); }
-    void operator++();
-
-    bool areAlmostEqual( qreal r1, qreal r2 ) const;
-
-private:
-    bool isHigherPrecedence( qreal importantLabelValue, qreal unimportantLabelValue ) const;
-    void computeMajorTickLabel();
-
-    // these are generally set once in the constructor
-    CartesianAxis* m_axis;
-    DataDimension m_dimension; // upper and lower bounds
-    bool m_isLogarithmic;
-    QMap< qreal, QString > m_annotations;
-    QList< qreal > m_customTicks;
-    QStringList m_manualLabelTexts;
-    uint m_majorThinningFactor;
-    uint m_majorLabelCount;
-
-    // these generally change in operator++(), i.e. from one label to the next
-    int m_customTickIndex;
-    int m_manualLabelIndex;
-    TickType m_type;
-    qreal m_position;
-    qreal m_customTick;
-    qreal m_majorTick;
-    qreal m_minorTick;
-    QString m_text;
-};
-
-} // namespace KDChart
 
 static qreal slightlyLessThan( qreal r )
 {
@@ -137,38 +66,17 @@ TickIterator::TickIterator( CartesianAxis* a, CartesianCoordinatePlane* plane, u
      m_majorLabelCount( 0 ),
      m_type( NoTick )
 {
-    Q_ASSERT( std::numeric_limits< qreal >::has_infinity );
+    // deal with the things that are specfic to axes (like annotations), before the generic init().
     XySwitch xy( m_axis->isOrdinate() );
-
     m_dimension = xy( plane->gridDimensionsList().first(), plane->gridDimensionsList().last() );
-    if ( isBarChartAbscissa ) {
-        // In bar charts the last x tick is a fencepost with no associated value, which is convenient
-        // for grid painting. Here we have to manually exclude it to avoid overpainting.
-        m_dimension.end -= m_dimension.stepWidth;
-    }
-    GridAttributes gridAttributes = plane->gridAttributes( xy( Qt::Horizontal, Qt::Vertical ) );
-
-    m_isLogarithmic = m_dimension.calcMode == AbstractCoordinatePlane::Logarithmic;
-    if ( !m_isLogarithmic ) {
-        // adjustedLowerUpperRange() is intended for use with linear scaling; specifically it would
-        // round lower bounds < 1 to 0.
-        m_dimension = AbstractGrid::adjustedLowerUpperRange( m_dimension,
-                                                             gridAttributes.adjustLowerBoundToGrid(),
-                                                             gridAttributes.adjustUpperBoundToGrid() );
-    }
-
-    const bool hasMajorTicks = m_axis->rulerAttributes().showMajorTickMarks() &&
-                               ( m_dimension.stepWidth > 0 || m_isLogarithmic );
-    const bool hasMinorTicks = m_axis->rulerAttributes().showMinorTickMarks() &&
-                               ( m_dimension.subStepWidth > 0 || m_isLogarithmic );
 
     m_annotations = m_axis->d_func()->annotations;
     m_customTicks = m_axis->d_func()->customTicksPositions;
-    qSort( m_customTicks.begin(), m_customTicks.end() );
 
     const qreal inf = std::numeric_limits< qreal >::infinity();
 
     if ( m_customTicks.count() ) {
+        qSort( m_customTicks.begin(), m_customTicks.end() );
         m_customTickIndex = 0;
         m_customTick = m_customTicks.at( m_customTickIndex );
     } else {
@@ -183,9 +91,58 @@ TickIterator::TickIterator( CartesianAxis* a, CartesianCoordinatePlane* plane, u
     }
     m_manualLabelIndex = m_manualLabelTexts.isEmpty() ? -1 : 0;
 
-    // position the iterator just in front of the first tick to be drawn so that the logic from
-    // operator++() can be reused to find the first tick
+    bool hasMajorTicks = m_axis->rulerAttributes().showMajorTickMarks();
+    bool hasMinorTicks = m_axis->rulerAttributes().showMinorTickMarks();
 
+    init( xy.isY, hasMajorTicks, hasMinorTicks, plane, isBarChartAbscissa );
+}
+
+TickIterator::TickIterator( bool isY, const DataDimension& dimension, bool hasMajorTicks, bool hasMinorTicks,
+                            CartesianCoordinatePlane* plane, uint majorThinningFactor )
+   : m_axis( 0 ),
+     m_dimension( dimension ),
+     m_majorThinningFactor( majorThinningFactor ),
+     m_majorLabelCount( 0 ),
+     m_customTickIndex( -1 ),
+     m_manualLabelIndex( -1 ),
+     m_type( NoTick ),
+     m_customTick( std::numeric_limits< qreal >::infinity() )
+{
+    init( isY, hasMajorTicks, hasMinorTicks, plane, false );
+}
+
+void TickIterator::init( bool isY, bool hasMajorTicks, bool hasMinorTicks,
+                         CartesianCoordinatePlane* plane, bool isBarChartAbscissa )
+{
+    Q_ASSERT( std::numeric_limits< qreal >::has_infinity );
+
+    m_isLogarithmic = m_dimension.calcMode == AbstractCoordinatePlane::Logarithmic;
+    // sanity check against infinite loops
+    hasMajorTicks = hasMajorTicks && ( m_dimension.stepWidth > 0 || m_isLogarithmic );
+    hasMinorTicks = hasMinorTicks && ( m_dimension.subStepWidth > 0 || m_isLogarithmic );
+
+    if ( isBarChartAbscissa ) {
+        // In bar charts the last x tick is a fencepost with no associated value, which is convenient
+        // for grid painting. Here we have to manually exclude it to avoid overpainting.
+        m_dimension.end -= m_dimension.stepWidth;
+    }
+
+    XySwitch xy( isY );
+
+    GridAttributes gridAttributes = plane->gridAttributes( xy( Qt::Horizontal, Qt::Vertical ) );
+    m_isLogarithmic = m_dimension.calcMode == AbstractCoordinatePlane::Logarithmic;
+    if ( !m_isLogarithmic ) {
+        // adjustedLowerUpperRange() is intended for use with linear scaling; specifically it would
+        // round lower bounds < 1 to 0.
+        m_dimension = AbstractGrid::adjustedLowerUpperRange( m_dimension,
+                                                             gridAttributes.adjustLowerBoundToGrid(),
+                                                             gridAttributes.adjustUpperBoundToGrid() );
+    }
+
+    const qreal inf = std::numeric_limits< qreal >::infinity();
+
+    // try to place m_position just in front of the first tick to be drawn so that operator++()
+    // can be used to find the first tick
     if ( m_isLogarithmic ) {
         if ( ISNAN( m_dimension.start ) || ISNAN( m_dimension.end ) ) {
             // this can happen in a spurious paint operation before everything is set up;
@@ -210,6 +167,7 @@ TickIterator::TickIterator( CartesianAxis* a, CartesianCoordinatePlane* plane, u
         m_minorTick = hasMinorTicks ? m_dimension.start : inf;
         m_position = slightlyLessThan( m_dimension.start );
     }
+
     ++( *this );
 }
 
@@ -233,11 +191,13 @@ void TickIterator::computeMajorTickLabel()
     if ( m_manualLabelIndex >= 0 ) {
         m_text = m_manualLabelTexts[ m_manualLabelIndex++ ];
         if ( m_manualLabelIndex >= m_manualLabelTexts.count() ) {
-               m_manualLabelIndex = 0;
+            // manual label texts repeat if there are less label texts than ticks on an axis
+            m_manualLabelIndex = 0;
         }
         m_type = m_majorThinningFactor > 1 ? MajorTickManualShort : MajorTickManualLong;
     } else {
-        if ( ( m_majorLabelCount++ % m_majorThinningFactor ) == 0 ) {
+        // if m_axis is null, we are dealing with grid lines. grid lines never need labels.
+        if ( m_axis && ( m_majorLabelCount++ % m_majorThinningFactor ) == 0 ) {
             m_text = QString::number( m_position ); // TODO proper number formatting
         } else {
             m_text.clear();
@@ -318,8 +278,7 @@ void TickIterator::operator++()
     }
 
     if ( m_position > m_dimension.end ) {
-        // make isAtEnd() return true
-        m_position = inf;
+        m_position = inf; // make isAtEnd() return true
         m_text.clear();
         m_type = NoTick;
     }
@@ -658,6 +617,7 @@ void CartesianAxis::paintCtx( PaintContext* context )
     }
 
     int labelThinningFactor = 1;
+    // TODO: label thinning also when grid line distance < 4 pixels, not only when labels collide
     TextLayoutItem *tickLabel = new TextLayoutItem( QString(), labelTA, plane->parent(),
                                                     KDChartEnums::MeasureOrientationMinimum, Qt::AlignLeft );
     TextLayoutItem *prevTickLabel = 0;

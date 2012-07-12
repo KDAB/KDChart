@@ -40,6 +40,7 @@
 
 #include <KDABLibFakes>
 
+#include <limits>
 
 namespace KDChart {
 
@@ -99,6 +100,77 @@ inline CartesianAxis::Private * CartesianAxis::d_func()
 { return static_cast<Private*>( AbstractAxis::d_func() ); }
 inline const CartesianAxis::Private * CartesianAxis::d_func() const
 { return static_cast<const Private*>( AbstractAxis::d_func() ); }
+
+
+class XySwitch
+{
+public:
+    explicit XySwitch( bool _isY ) : isY( _isY ) {}
+
+    // for rvalues
+    template< class T >
+    T operator()( T x, T y ) const { return isY ? y : x; }
+
+    // lvalues
+    template< class T >
+    T& lvalue( T& x, T& y ) const { return isY ? y : x; }
+
+    bool isY;
+};
+
+class TickIterator
+{
+public:
+    enum TickType {
+        NoTick = 0,
+        MajorTick,
+        MajorTickManualShort,
+        MajorTickManualLong,
+        MinorTick,
+        CustomTick
+    };
+    TickIterator( CartesianAxis *a, CartesianCoordinatePlane* plane, uint majorThinningFactor,
+                  bool isBarChartAbscissa /* sorry about that */ );
+    TickIterator( bool isY, const DataDimension& dimension, bool hasMajorTicks, bool hasMinorTicks,
+                  CartesianCoordinatePlane* plane, uint majorThinningFactor );
+
+    qreal position() const { return m_position; }
+    QString text() const { return m_text; }
+    TickType type() const { return m_type; }
+    bool hasShorterLabels() const { return m_axis && !m_axis->labels().isEmpty() &&
+                                    m_axis->shortLabels().count() == m_axis->labels().count(); }
+    bool isAtEnd() const { return m_position == std::numeric_limits< qreal >::infinity(); }
+    void operator++();
+
+    bool areAlmostEqual( qreal r1, qreal r2 ) const;
+
+private:
+    void init( bool isY, bool hasMajorTicks, bool hasMinorTicks, CartesianCoordinatePlane* plane,
+               bool isBarChartAbscissa ); // code shared by the two constructors
+
+    bool isHigherPrecedence( qreal importantLabelValue, qreal unimportantLabelValue ) const;
+    void computeMajorTickLabel();
+
+    // these are generally set once in the constructor
+    CartesianAxis* m_axis;
+    DataDimension m_dimension; // upper and lower bounds
+    bool m_isLogarithmic;
+    QMap< qreal, QString > m_annotations;
+    QList< qreal > m_customTicks;
+    QStringList m_manualLabelTexts;
+    uint m_majorThinningFactor;
+    uint m_majorLabelCount;
+
+    // these generally change in operator++(), i.e. from one label to the next
+    int m_customTickIndex;
+    int m_manualLabelIndex;
+    TickType m_type;
+    qreal m_position;
+    qreal m_customTick;
+    qreal m_majorTick;
+    qreal m_minorTick;
+    QString m_text;
+};
 
 }
 
