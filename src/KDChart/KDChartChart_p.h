@@ -169,8 +169,6 @@ class Chart::Private : public QObject
         void removeDummyHeaderFooters();
 
         void createLayouts( QWidget * parent );
-        void addVBoxWithLegends( const QList< Legend* >& legends, QGridLayout* gridLayout,
-                                 int row, int column, Qt::Alignment align );
         void layoutLegends();
         void layoutHeadersAndFooters();
         void resizeLayout( const QSize& sz );

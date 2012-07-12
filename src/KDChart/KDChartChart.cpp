@@ -220,8 +220,8 @@ void Chart::Private::layoutHeadersAndFooters()
     }
 }
 
-void Chart::Private::addVBoxWithLegends( const QList< Legend* >& legends, QGridLayout* gridLayout,
-                                         int row, int column, Qt::Alignment align )
+static void addVBoxWithLegends( const QList< Legend* >& legends, QGridLayout* gridLayout,
+                                int row, int column, Qt::Alignment align )
 {
     QVBoxLayout* innerLayout = new QVBoxLayout();
     Q_FOREACH( Legend* legend, legends ) {
