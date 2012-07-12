@@ -53,7 +53,6 @@ class KDCHART_EXPORT AbstractArea : public QObject,
     Q_DISABLE_COPY( AbstractArea )
     KDCHART_DECLARE_PRIVATE_DERIVED( AbstractArea )
 
-
 public:
     virtual ~AbstractArea() ;
 

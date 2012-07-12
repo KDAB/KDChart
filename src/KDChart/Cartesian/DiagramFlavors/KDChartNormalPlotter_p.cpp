@@ -67,7 +67,6 @@ void NormalPlotter::paint( PaintContext* ctx )
             PlotterDiagramCompressor::DataPoint lastPoint;
             for ( PlotterDiagramCompressor::Iterator it = plotterCompressor().begin( dataset ); it != plotterCompressor().end( dataset ); ++ it )
             {
-                //++counter;
                 const PlotterDiagramCompressor::DataPoint point = *it;
 
                 const QModelIndex sourceIndex = attributesModel()->mapToSource( point.index );

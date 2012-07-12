@@ -138,7 +138,7 @@ class Chart::Private : public QObject
         QGridLayout* footerLayout;
         QGridLayout* dataAndLegendLayout;
 
-        QVBoxLayout* innerHdFtLayouts[2][3][3]; // auxiliary pointers
+        QVBoxLayout* innerHdFtLayouts[2][3][3];
 
         QMap< int, QMap< int, HorizontalLineLayoutItem > > dummyHeaders;
         QMap< int, QMap< int, HorizontalLineLayoutItem > > dummyFooters;
@@ -150,25 +150,25 @@ class Chart::Private : public QObject
 
         QSize currentLayoutSize;
 
-        // since we do not want to derive Chart from AbstractAreaBase,
-        // we store the attributes here, and then we call two static painting
-        // methods to draw the background (or frame, resp.).
+        // since we do not want to derive Chart from AbstractAreaBase, we store the attributes
+        // here and call two static painting methods to draw the background and frame.
         KDChart::FrameAttributes frameAttributes;
         KDChart::BackgroundAttributes backgroundAttributes;
 
+        // ### wrong word, leading means inter-line distance of text. spacing? margin?
         int globalLeadingLeft, globalLeadingRight, globalLeadingTop, globalLeadingBottom;
 
         QList< AbstractCoordinatePlane* > mouseClickedPlanes;
 
         Qt::LayoutDirection layoutDirection;
 
-        Private ( Chart* );
+        Private( Chart* );
 
         virtual ~Private();
 
         void removeDummyHeaderFooters();
 
-        void createLayouts( QWidget * parent );
+        void createLayouts();
         void layoutLegends();
         void layoutHeadersAndFooters();
         void resizeLayout( const QSize& sz );

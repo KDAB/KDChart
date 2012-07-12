@@ -63,12 +63,10 @@ namespace KDChart {
             const DataDimensionsList& rawDataDimensions ) const;
 
         /**
-         * Helper function called by calculateGrid().
+         * Helper function called by calculateGrid() to calculate the grid of one dimension.
          *
          * Classes derived from CartesianGrid can overwrite calculateGridXY() if they need
-         * a way of calculating the start/end/step width of their horizontal grid
-         * lines (or of their vertical grid lines, resp.), that is different from the
-         * default implementation of this method.
+         * a special way of calculating the start or end or step width of their grid lines.
          * 
          * \param adjustLower If true, the function adjusts the start value
          * so it matches the position of a grid line, if false the start value is
@@ -87,13 +85,13 @@ namespace KDChart {
           *
           * Classes derived from CartesianGrid can overwrite calculateStepWidth() if they need
           * a way of calculating the step width, based upon given start/end values
-          * for their horizontal grid lines (or for their vertical grid lines, resp.),
-          * that is different from the default implementation of this method.
+          * for their horizontal or vertical grid lines which is different from the default
+          * implementation.
           *
-          * \note The CartesianGrid class tries to keep the displayed range as near to
+          * \note The CartesianGrid class tries to keep the displayed range as close to
           * the raw data range as possible, so in most cases there should be no reason
-          * to change the default implementation:  Adjusting
-          * KDChart::GridAttributes::setGridGranularitySequence should be sufficient.
+          * to change the default implementation: Using
+          * KDChart::GridAttributes::setGridGranularitySequence() should be sufficient.
           *
           * \param start The raw start value of the data range.
           * \param end The raw end value of the data range.

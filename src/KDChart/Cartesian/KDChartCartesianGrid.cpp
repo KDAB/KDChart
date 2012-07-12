@@ -358,11 +358,17 @@ DataDimensionsList CartesianGrid::calculateGrid(
     Q_ASSERT_X ( rawDataDimensions.count() == 2, "CartesianGrid::calculateGrid",
                  "Error: calculateGrid() expects a list with exactly two entries." );
 
-    CartesianCoordinatePlane* plane = dynamic_cast<CartesianCoordinatePlane*>( mPlane );
+    CartesianCoordinatePlane* plane = qobject_cast< CartesianCoordinatePlane* >( mPlane );
     Q_ASSERT_X ( plane, "CartesianGrid::calculateGrid",
                  "Error: PaintContext::calculatePlane() called, but no cartesian plane set." );
 
     DataDimensionsList l( rawDataDimensions );
+#if 0
+    qDebug() << Q_FUNC_INFO << "initial grid X-range:" << l.first().start << "->" << l.first().end
+             << "   substep width:" << l.first().subStepWidth;
+    qDebug() << Q_FUNC_INFO << "initial grid Y-range:" << l.last().start << "->" << l.last().end
+             << "   substep width:" << l.last().subStepWidth;
+#endif
     // rule:  Returned list is either empty, or it is providing two
     //        valid dimensions, complete with two non-Zero step widths.
     if( isBoundariesValid( l ) ) {
@@ -423,9 +429,12 @@ DataDimensionsList CartesianGrid::calculateGrid(
             }
         }
     }
-    //qDebug() << "CartesianGrid::calculateGrid()  final grid Y-range:" << l.last().end - l.last().start << "   substep width:" << l.last().subStepWidth;
-    //qDebug() << "CartesianGrid::calculateGrid()  final grid X-range:" << l.first().end - l.first().start << "   substep width:" << l.first().subStepWidth;
-
+#if 0
+    qDebug() << Q_FUNC_INFO << "final grid X-range:" << l.first().start << "->" << l.first().end
+             << "   substep width:" << l.first().subStepWidth;
+    qDebug() << Q_FUNC_INFO << "final grid Y-range:" << l.last().start << "->" << l.last().end
+             << "   substep width:" << l.last().subStepWidth;
+#endif
     return l;
 }
 

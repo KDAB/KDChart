@@ -52,7 +52,6 @@ CartesianCoordinatePlane::Private::Private()
     , bPaintIsRunning( false )
     , hasOwnGridAttributesHorizontal ( false )
     , hasOwnGridAttributesVertical ( false )
-    // old: , initialResizeEventReceived ( false )
     , isometricScaling ( false )
     , horizontalMin(0)
     , horizontalMax(0)
@@ -151,7 +150,6 @@ void CartesianCoordinatePlane::paint ( QPainter* painter )
 
 void CartesianCoordinatePlane::slotLayoutChanged ( AbstractDiagram* )
 {
-    // old: if ( d->initialResizeEventReceived )
     layoutDiagrams();
 }
 
@@ -528,11 +526,10 @@ const QPointF CartesianCoordinatePlane::translateBack( const QPointF& screenPoin
     return d->coordinateTransformation.translateBack( screenPoint );
 }
 
-void CartesianCoordinatePlane::setIsometricScaling ( bool onOff )
+void CartesianCoordinatePlane::setIsometricScaling ( bool isOn )
 {
-    if ( d->isometricScaling != onOff )
-    {
-        d->isometricScaling = onOff;
+    if ( d->isometricScaling != isOn ) {
+        d->isometricScaling = isOn;
         layoutDiagrams();
         emit propertiesChanged();
     }

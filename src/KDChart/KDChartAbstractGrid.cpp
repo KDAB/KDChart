@@ -58,6 +58,8 @@ DataDimensionsList AbstractGrid::updateData( AbstractCoordinatePlane* plane )
 {
     if ( plane ) {
         const DataDimensionsList rawDataDimensions( plane->getDataDimensionsList() );
+        // ### this could be dangerous becaus calculateGrid() looks at some data we are not checking
+        //     for changes here.
         if ( mCachedRawDataDimensions.empty() || ( rawDataDimensions != mCachedRawDataDimensions ) ) {
             mCachedRawDataDimensions = rawDataDimensions;
             mPlane = plane;

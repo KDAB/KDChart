@@ -709,8 +709,6 @@ void Chart::Private::slotLayoutPlanes()
 
         gridPlaneLayout = new QGridLayout;
         planesLayout->addLayout( gridPlaneLayout );
-    //    if(hadPlanesLayout)
-    //        gridLayout->setContentsMargins(left, top, right, bottom);
 
         if(hadPlanesLayout)
             planesLayout->setContentsMargins(left, top, right, bottom);
@@ -721,9 +719,9 @@ void Chart::Private::slotLayoutPlanes()
          * get their own. See buildPlaneLayoutInfos() for more details. */
 
         QVector< LayoutGraphNode* > vals = buildPlaneLayoutGraph();
-        qDebug() << Q_FUNC_INFO << "GraphNodes" << vals.size();
+        //qDebug() << Q_FUNC_INFO << "GraphNodes" << vals.size();
         QVector< LayoutGraphNode* > connectedComponents = getPrioritySortedConnectedComponents( vals );
-        qDebug() << Q_FUNC_INFO << "SubGraphs" << connectedComponents.size();
+        //qDebug() << Q_FUNC_INFO << "SubGraphs" << connectedComponents.size();
         int row = 0;
         int col = 0;
         QHash< CartesianAxis*, bool > layoutedAxes;
@@ -833,9 +831,9 @@ void Chart::Private::slotLayoutPlanes()
 
         qDeleteAll( vals );
         // re-add our grid(s) to the chart's layout
-        if ( dataAndLegendLayout ){
+        if ( dataAndLegendLayout ) {
             dataAndLegendLayout->addLayout( planesLayout, 1, 1 );
-            dataAndLegendLayout->setRowStretch(    1, 1000 );
+            dataAndLegendLayout->setRowStretch( 1, 1000 );
             dataAndLegendLayout->setColumnStretch( 1, 1000 );
         }
         slotRelayout();
@@ -904,7 +902,7 @@ void Chart::Private::slotLayoutPlanes()
                 }
                 Q_ASSERT_X( planeLayout,
                             "Chart::Private::slotLayoutPlanes()",
-                            "Invalid reference plane. Please Check whether the reference plane is added to the Chart or not" );
+                            "Invalid reference plane. Please check that the reference plane has been added to the Chart." );
             } else {
                 planesLayout->addLayout( planeLayout );
             }
@@ -922,11 +920,9 @@ void Chart::Private::slotLayoutPlanes()
             {
                 AbstractCartesianDiagram* diagram =
                     qobject_cast< AbstractCartesianDiagram* >( abstractDiagram );
-                //qDebug() << "--------------- diagram ???????????????????? -----------------";
                 if ( !diagram ) {
-                    continue;  // FIXME polar ?
+                    continue;  // FIXME what about polar ?
                 }
-                //qDebug() << "--------------- diagram ! ! ! ! ! ! ! ! ! !  -----------------";
 
                 if ( pi.referencePlane != 0 )
                 {
@@ -1007,6 +1003,7 @@ void Chart::Private::slotLayoutPlanes()
                  * associated plane. We are laying out in the oder the planes
                  * were added, and the first one gets to lay out shared axes.
                  * Private axes go here as well, of course. */
+
                 if ( !pi.topAxesLayout->parent() ) {
                     planeLayout->addLayout( pi.topAxesLayout, row - 1, column );
                 }
@@ -1015,8 +1012,6 @@ void Chart::Private::slotLayoutPlanes()
                 }
                 if ( !pi.leftAxesLayout->parent() ) {
                     planeLayout->addLayout( pi.leftAxesLayout, row, column - 1 );
-                    //planeLayout->setRowStretch( row, 0 );
-                    //planeLayout->setColumnStretch( 0,   0 );
                 }
                 if ( !pi.rightAxesLayout->parent() ) {
                     planeLayout->addLayout( pi.rightAxesLayout,row, column + 1 );
@@ -1054,7 +1049,7 @@ void Chart::Private::slotLayoutPlanes()
     }
 }
 
-void Chart::Private::createLayouts( QWidget* w )
+void Chart::Private::createLayouts()
 {
     KDAB_FOREACH( KDChart::TextArea* textLayoutItem, textLayoutItems ) {
         textLayoutItem->removeFromParentLayout();
@@ -1073,24 +1068,23 @@ void Chart::Private::createLayouts( QWidget* w )
         dataAndLegendLayout->removeItem( planesLayout );
         planesLayout->setParent( 0 );
     }
-    // nuke the old bunch
+    // start from scratch
     delete layout;
 
-    // The HBox d->layout provides the left and right global leadings
-    layout = new QHBoxLayout( w );
+    // The toplevel layout provides the left and right global margins
+    layout = new QHBoxLayout( chart );
     layout->setMargin( 0 );
     layout->setObjectName( QString::fromLatin1( "Chart::Private::layout" ) );
     layout->addSpacing( globalLeadingLeft );
 
-    // The vLayout provides top and bottom global leadings and lays
-    // out headers/footers and the data area.
+    // The vLayout provides top and bottom global margins and lays
+    // out headers, footers and the diagram area.
     vLayout = new QVBoxLayout();
     vLayout->setMargin( 0 );
     vLayout->setObjectName( QString::fromLatin1( "vLayout" ) );
+
     layout->addLayout( vLayout, 1000 );
     layout->addSpacing( globalLeadingRight );
-
-
 
     // 1. the gap above the top edge of the headers area
     vLayout->addSpacing( globalLeadingTop );
@@ -1141,14 +1135,12 @@ void Chart::Private::createLayouts( QWidget* w )
     dataAndLegendLayout->addLayout( planesLayout, 1, 1 );
     dataAndLegendLayout->setRowStretch( 1, 1 );
     dataAndLegendLayout->setColumnStretch( 1, 1 );
-
-    //qDebug() << "w->rect()" << w->rect();
 }
 
 void Chart::Private::slotRelayout()
 {
     //qDebug() << "Chart relayouting started.";
-    createLayouts( chart );
+    createLayouts();
 
     layoutHeadersAndFooters();
     layoutLegends();
@@ -1514,8 +1506,6 @@ void Chart::paintEvent( QPaintEvent* )
         reLayoutFloatingLegends();
     }
 
-    //FIXME(khz): Paint the background/frame too!
-    //            (can we derive Chart from AreaWidget ??)
     d->paintAll( &painter );
     emit finishedDrawing();
 }

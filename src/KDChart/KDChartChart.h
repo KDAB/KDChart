@@ -69,6 +69,7 @@ namespace KDChart {
     class KDCHART_EXPORT Chart : public QWidget
     {
         Q_OBJECT
+         // KD Chart 3.0: leading is inter-line distance of text. this here is MARGIN or SPACING.
         Q_PROPERTY( int globalLeadingTop READ globalLeadingTop WRITE setGlobalLeadingTop )
         Q_PROPERTY( int globalLeadingBottom READ globalLeadingBottom WRITE setGlobalLeadingBottom )
         Q_PROPERTY( int globalLeadingLeft READ globalLeadingLeft WRITE setGlobalLeadingLeft )

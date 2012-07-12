@@ -256,7 +256,7 @@ namespace KDChart {
          */
         void setCornerSpacersEnabled( bool enable );
 
-        virtual AbstractCoordinatePlane* sharedAxisMasterPlane( QPainter* p = 0 );
+        virtual AbstractCoordinatePlane* sharedAxisMasterPlane( QPainter* p = 0 ); // KDChart 3: const method?
 
 
         /** pure virtual in QLayoutItem */
