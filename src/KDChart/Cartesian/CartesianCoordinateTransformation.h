@@ -43,145 +43,103 @@ namespace KDChart {
     struct CoordinateTransformation {
 
         CoordinateTransformation()
-            : unitVectorX( 1.0 )
-            , unitVectorY( 1.0 )
-            , isoScaleX( 1.0 )
-            , isoScaleY( 1.0 )
-            , axesCalcModeY( CartesianCoordinatePlane::Linear )
-            , axesCalcModeX( CartesianCoordinatePlane::Linear )
+            : axesCalcModeY( CartesianCoordinatePlane::Linear ),
+              axesCalcModeX( CartesianCoordinatePlane::Linear ),
+              isPositiveX( true ),
+              isPositiveY( true )
         {}
-
-        QRectF diagramRect;
-        // represents the distance of the diagram coordinate origin to the
-        // origin of the coordinate plane space:
-        QPointF originTranslation;
-        // make a vector base for R2:
-        qreal unitVectorX;
-        qreal unitVectorY;
-        // implement isometric scaling:
-        qreal isoScaleX;
-        qreal isoScaleY;
 
         CartesianCoordinatePlane::AxesCalcMode axesCalcModeY;
         CartesianCoordinatePlane::AxesCalcMode axesCalcModeX;
 
         ZoomParameters zoom;
 
-        typedef QPair< qreal, qreal > qrealPair;
+        QTransform transform;
+        QTransform backTransform;
+        // a logarithmic scale cannot cross zero, so we have to know which side we are on.
+        bool isPositiveX;
+        bool isPositiveY;
 
-        inline qreal makeLogarithmic( qrealPair reference, qreal value ) const
+        qreal logTransform( qreal value, bool isPositiveRange ) const
         {
-            qreal result = value;
-
-            qreal relation;
-            if( reference.second == -1.0 )
-                relation = 1.0;
-            else if( reference.second == 1.0 )
-                relation = 1.0;
-            else if( reference.second > 0.0 )
-                relation = reference.second / log10( reference.second );
-            else if( result < 0.0 )
-                relation = reference.second / log10( -reference.second );
-            else
-                relation = 10.0;
-
-            if( value == 0.0 )
-                result = 0.0;//std::numeric_limits< qreal >::quiet_NaN();
-            else if( value > 0.0 )
-                result = log10( result ) * relation;
-            else if( value < 0.0 )
-                result = -log10( -result ) * relation;
-
-            if( value == 0.0 )
-                return result;
-
-            result -= log10( qAbs( reference.first ) ) * relation;
-            result *= ( reference.second - reference.first ) / relation / (log10(qAbs(reference.second))-log10(qAbs(reference.first)));
-            result += reference.first;
-           
-            if( reference.first < 0.0 )
-            {
-                result += reference.first;
-                result -= reference.second;
-                result = reference.first - result + reference.second;
-
+            if ( value > 0.0 && isPositiveRange ) {
+                return log10( value );
+            } else if ( value < 0.0 && !isPositiveRange ) {
+                return -log10( -value );
+            } else {
+                return std::numeric_limits< qreal >::quiet_NaN();
             }
-           
-            return result;
         }
 
-        inline QPointF translate( const QPointF& diagramPoint ) const
+        qreal logTransformBack( qreal value, bool wasPositive ) const
         {
-            // ### de-inline me
-            QPointF result = originTranslation;
-            QPointF tempPoint = diagramPoint;
-
-            const QRectF& diagRect = diagramRect;
-            
-            if( axesCalcModeY == CartesianCoordinatePlane::Logarithmic )
-            {
-                tempPoint.setY( makeLogarithmic( qrealPair( diagRect.bottom(), diagRect.y() ), tempPoint.y() ) );
+            if ( wasPositive ) {
+                return pow( 10.0, value );
+            } else {
+                return -pow( 10.0, -value );
             }
-            if( axesCalcModeX == CartesianCoordinatePlane::Logarithmic )
-            {
-                tempPoint.setX( makeLogarithmic( qrealPair( diagRect.x(), diagRect.right() ), tempPoint.x() ) );
-            }
-
-            tempPoint.rx() += diagRect.width() / (2.0 * zoom.xFactor);
-            tempPoint.ry() += diagRect.height() / (2.0 * zoom.yFactor);
-
-            tempPoint.rx() -= diagRect.width() * zoom.xCenter;
-            tempPoint.ry() -= diagRect.height() * zoom.yCenter;
-
-            // translate:      xNew = (xOld - diaX) * zoomX + diaX
-            tempPoint.setX( ( tempPoint.x() - diagRect.x() ) * zoom.xFactor + diagRect.x() );
-            tempPoint.setY( ( tempPoint.y() - diagRect.y() ) * zoom.yFactor + diagRect.y() );
-
-            result.rx() += unitVectorX * tempPoint.x();
-            result.ry() += unitVectorY * tempPoint.y();
-
-            return result;
         }
 
-        // convert screen points to value space points
+        void updateTransform( const QRectF& constDataRect, const QRectF& screenRect )
+        {
+            QRectF dataRect = constDataRect;
+            if ( axesCalcModeX == CartesianCoordinatePlane::Logarithmic ) {
+                // the data will be scaled by logTransform() later, so scale its bounds as well
+                isPositiveX = dataRect.left() >= 0.0;
+                dataRect.setLeft( logTransform( dataRect.left(), isPositiveX ) );
+                dataRect.setRight( logTransform( dataRect.right(), isPositiveX ) );
+            }
+            if ( axesCalcModeY == CartesianCoordinatePlane::Logarithmic ) {
+                isPositiveY = dataRect.top() >= 0.0;
+                dataRect.setTop( logTransform( dataRect.top(), isPositiveY  ) );
+                dataRect.setBottom( logTransform( dataRect.bottom(), isPositiveY ) );
+            }
+
+            transform.reset();
+            // read the following transformation sequence from bottom to top(!)
+            transform.translate( screenRect.left(), screenRect.bottom() );
+            transform.scale( screenRect.width(), screenRect.height() );
+
+            // TODO: mirror in case of "reverse" axes?
+
+            // transform into screen space
+            transform.translate( 0.5, -0.5 );
+            transform.scale( zoom.xFactor, zoom.yFactor );
+            transform.translate( -zoom.xCenter, 1.0 - zoom.yCenter );
+            // zoom
+            transform.scale( 1.0 / dataRect.width(), 1.0 / dataRect.height() );
+            transform.translate( -dataRect.left(), -dataRect.bottom() );
+            // transform into the unit square
+
+            backTransform = transform.inverted();
+        }
+
+        // convert data space point to screen point
+        inline QPointF translate( const QPointF& dataPoint ) const
+        {
+            QPointF data = dataPoint;
+            if ( axesCalcModeX == CartesianCoordinatePlane::Logarithmic ) {
+                data.setX( logTransform( data.x(), isPositiveX  ) );
+            }
+            if ( axesCalcModeY == CartesianCoordinatePlane::Logarithmic ) {
+                data.setY( logTransform( data.y(), isPositiveY ) );
+            }
+
+            return transform.map( data );
+        }
+
+        // convert screen point to data space point
         inline const QPointF translateBack( const QPointF& screenPoint ) const
         {
-            qreal x, y;
-
-            x = screenPoint.x() - originTranslation.x();
-            y = screenPoint.y() - originTranslation.y();
-
-            x /= isoScaleX * unitVectorX;
-            y /= isoScaleY * unitVectorY;
-
-            // translate back: xOld = DiaX + (xNew - DiaX) / zoomX
-            x = diagramRect.x() + (x - diagramRect.x()) / zoom.xFactor;
-            y = diagramRect.y() + (y - diagramRect.y()) / zoom.yFactor;
-
-            x += diagramRect.width()  * zoom.xCenter;
-            y += diagramRect.height() * zoom.yCenter;
-
-            x -= diagramRect.width()  / (2.0 * zoom.xFactor);
-            y -= diagramRect.height() / (2.0 * zoom.yFactor);
-
-            /*
-            if ( axesCalcModeY == CartesianCoordinatePlane::Logarithmic ){
-                tempPoint.setY( makeLogarithmic( diagramRect.y(), tempPoint.y() ) );
-                //qDebug() << "Y: " << tempPoint.y();
+            QPointF ret = backTransform.map( screenPoint );
+            if ( axesCalcModeX == CartesianCoordinatePlane::Logarithmic ) {
+                ret.setX( logTransformBack( ret.x(), isPositiveX ) );
             }
-            if ( axesCalcModeX == CartesianCoordinatePlane::Logarithmic ){
-                //qDebug() << "X diagramRect.x(): " << diagramRect.x();
-                //qDebug() << "X tempPoint old: " << tempPoint;
-                tempPoint.setX( makeLogarithmic( diagramRect.width(), tempPoint.x() ) );
-                //qDebug() << "X tempPoint new: " << tempPoint;
+            if ( axesCalcModeY == CartesianCoordinatePlane::Logarithmic ) {
+                ret.setY( logTransformBack( ret.y(), isPositiveY ) );
             }
-//            qDebug() << "CoordinateTransformation::translate() using diagramRect: "
-//                     << diagramRect.x() << diagramRect.y() << diagramRect.width() << diagramRect.height();
-            */
-
-            return QPointF(x, y);
+            return ret;
         }
-
     };
 
     typedef QList<CoordinateTransformation> CoordinateTransformationList;
@@ -189,4 +147,3 @@ namespace KDChart {
 }
 
 #endif
-

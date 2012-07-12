@@ -52,6 +52,11 @@ namespace KDChart {
 
         void addDiagram ( AbstractDiagram* diagram );
 
+        /**
+         * If @p onOff is true, enforce that X and Y distances are scaled by the same factor.
+         * This makes the plane's height a function of its width, and hasHeightForWidth()
+         * will return true.
+         */
         void setIsometricScaling ( bool onOff );
 
         bool doesIsometricScaling() const;
@@ -422,9 +427,14 @@ namespace KDChart {
         bool isVerticalRangeReversed() const;
 
         /**
-         * reimplement from AbstractCoordinatePlane
+         * reimplemented from AbstractCoordinatePlane
          */
         void setGeometry( const QRect& r );
+
+        // reimp
+        QSize minimumSize() const;
+        // reimp
+        Qt::Orientations expandingDirections() const;
 
     public Q_SLOTS:
         /**
@@ -470,6 +480,10 @@ namespace KDChart {
         bool doneSetZoomCenter( const QPointF& center );
 
         void handleFixedDataCoordinateSpaceRelation( const QRectF& geometry );
+
+        // reimplemented from QLayoutItem, via AbstractLayoutItem, AbstractArea, AbstractCoordinatePlane
+        bool hasHeightForWidth() const;
+        int heightForWidth( int w ) const;
 
     protected Q_SLOTS:
         void slotLayoutChanged( AbstractDiagram* );

@@ -163,14 +163,17 @@ void NormalPlotter::paint( PaintContext* ctx )
                 // area corners, a + b are the line ends:
                 const QPointF a( plane->translate( QPointF( lastPoint.key, lastPoint.value ) ) );
                 const QPointF b( plane->translate( QPointF( point.key, point.value ) ) );
-                if( a.toPoint() == b.toPoint() )
+                if ( a.toPoint() == b.toPoint() || ISNAN( a.x() ) || ISNAN( a.y() )
+                                                || ISNAN( b.x() ) || ISNAN( b.y() ) ) {
+                    lastPoint = point;
                     continue;
+                }
 
                 const QPointF c( plane->translate( QPointF( lastPoint.key, 0.0 ) ) );
                 const QPointF d( plane->translate( QPointF( point.key, 0.0 ) ) );
 
                 // add the pieces to painting if this is not hidden:
-                if ( !point.hidden /*&& !ISNAN( lastPoint.key ) && !ISNAN( lastPoint.value ) */) {
+                if ( !point.hidden ) {
                     // add data point labels:
                     const PositionPoints pts = PositionPoints( b, a, d, c );
                     // if necessary, add the area to the area list:
@@ -182,13 +185,10 @@ void NormalPlotter::paint( PaintContext* ctx )
                     }
                     addLabel( &lpc, sourceIndex, pts, Position::NorthWest,
                               Position::SouthWest, point.value );
-                    if( !ISNAN( lastPoint.key ) && !ISNAN( lastPoint.value ) )
-                    {
-                        PaintingHelpers::paintAreas( m_private, ctx,
-                                                     attributesModel()->mapToSource( lastPoint.index ),
-                                                     areas, laCell.transparency() );
-                        lineList.append( LineAttributesInfo( sourceIndex, a, b ) );
-                    }
+                    PaintingHelpers::paintAreas( m_private, ctx,
+                                                 attributesModel()->mapToSource( lastPoint.index ),
+                                                 areas, laCell.transparency() );
+                    lineList.append( LineAttributesInfo( sourceIndex, a, b ) );
                 }
 
                 // wrap it up:

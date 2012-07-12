@@ -26,6 +26,7 @@
 #include "KDChartPainterSaver_p.h"
 #include "KDChartPrintingParameters.h"
 #include "KDChartFrameAttributes.h"
+#include "KDChartCartesianAxis_p.h"
 
 #include <QPainter>
 
@@ -66,287 +67,109 @@ void CartesianGrid::setMaximalSteps(int maxsteps)
 
 void CartesianGrid::drawGrid( PaintContext* context )
 {
-    CartesianCoordinatePlane* plane = dynamic_cast<CartesianCoordinatePlane*>(context->coordinatePlane());
-
+    CartesianCoordinatePlane* plane = qobject_cast< CartesianCoordinatePlane* >( context->coordinatePlane() );
     const GridAttributes gridAttrsX( plane->gridAttributes( Qt::Horizontal ) );
     const GridAttributes gridAttrsY( plane->gridAttributes( Qt::Vertical ) );
-
-    if ( !gridAttrsX.isGridVisible() && !gridAttrsY.isGridVisible() ) {
+    if ( !gridAttrsX.isGridVisible() && !gridAttrsX.isSubGridVisible() &&
+         !gridAttrsY.isGridVisible() && !gridAttrsY.isSubGridVisible() ) {
         return;
     }
-   
-    PainterSaver p( context->painter() );
-
-     // This plane is used for translating the coordinates - not for the data boundaries
-    plane = dynamic_cast< CartesianCoordinatePlane* >( plane->sharedAxisMasterPlane( context->painter() ) );
-
+    // This plane is used for translating the coordinates - not for the data boundaries
+    plane = qobject_cast< CartesianCoordinatePlane* >( plane->sharedAxisMasterPlane( context->painter() ) );
     Q_ASSERT_X ( plane, "CartesianGrid::drawGrid",
                  "Bad function call: PaintContext::coodinatePlane() NOT a cartesian plane." );
 
+    QPainter *const p = context->painter();
+    PainterSaver painterSaver( p );
+
     // update the calculated mDataDimensions before using them
-    updateData( context->coordinatePlane() );
-
-    if ( plane->axesCalcModeX() == KDChart::AbstractCoordinatePlane::Logarithmic 
-         && mDataDimensions.first().stepWidth == 0.0 ) {
-        mDataDimensions.first().stepWidth = 1.0;
-    }
-    if ( plane->axesCalcModeY() == KDChart::AbstractCoordinatePlane::Logarithmic
-         && mDataDimensions.last().stepWidth == 0.0 ) {
-        mDataDimensions.last().stepWidth = 1.0;
-    }
-
-    // test for programming errors: critical
+    updateData( context->coordinatePlane() ); // this, in turn, calls our calculateGrid().
     Q_ASSERT_X ( mDataDimensions.count() == 2, "CartesianGrid::drawGrid",
                  "Error: updateData did not return exactly two dimensions." );
-
-    // test for invalid boundaries: non-critical
     if ( !isBoundariesValid( mDataDimensions ) ) {
         return;
     }
 
-    DataDimension dimX = mDataDimensions.first();
-    const DataDimension& dimY = mDataDimensions.last();
-    // test for other programming errors: critical
-    Q_ASSERT_X ( dimX.stepWidth, "CartesianGrid::drawGrid",
-                 "Error: updateData returned a Zero step width for the X grid." );
-    Q_ASSERT_X ( dimY.stepWidth, "CartesianGrid::drawGrid",
-                 "Error: updateData returned a Zero step width for the Y grid." );
-
-
-    qreal numberOfUnitLinesX =
-        qAbs( dimX.distance() / dimX.stepWidth )
-        + (dimX.isCalculated ? 1.0 : 0.0);
-    qreal numberOfUnitLinesY =
-        qAbs( dimY.distance() / dimY.stepWidth )
-        + (dimY.isCalculated ? 1.0 : 0.0);
-
-    // do not draw a Zero size grid (and do not divide by Zero)
-    if( numberOfUnitLinesX <= 0.0 || numberOfUnitLinesY <= 0.0 ) return;
-
-    const QPointF p1 = plane->translate( QPointF(dimX.start, dimY.start) );
-    const QPointF p2 = plane->translate( QPointF(dimX.end, dimY.end) );
-
-    const qreal screenRangeX = qAbs ( p1.x() - p2.x() );
-    const qreal screenRangeY = qAbs ( p1.y() - p2.y() );
-
-    /*
-     * let us paint the grid at a smaller resolution
-     * the user can disable at any time
-     * by setting the grid attribute to false
-     * Same Value as for Cartesian Axis
-     */
-    static const qreal GridLineDistanceTreshold = 4.0; // <Treshold> pixels between each grid line
-    const qreal MinimumPixelsBetweenLines =
-            GridLineDistanceTreshold;
-
-    //FIXME(khz): Remove this code, and do the calculation in the grid calc function
-    if( ! dimX.isCalculated ){
-
-        while( screenRangeX / numberOfUnitLinesX <= MinimumPixelsBetweenLines ){
-            dimX.stepWidth *= 10.0;
-            dimX.subStepWidth *= 10.0;
-            numberOfUnitLinesX = qAbs( dimX.distance() / dimX.stepWidth );
-        }
-    }
-    if( dimX.subStepWidth && (screenRangeX / (dimX.distance() / dimX.subStepWidth) <= MinimumPixelsBetweenLines) ){
-        // de-activating grid sub steps: not enough space
-        dimX.subStepWidth = 0.0;
-    }
-
-    const bool drawUnitLinesX = gridAttrsX.isGridVisible() &&
-            (screenRangeX / numberOfUnitLinesX > MinimumPixelsBetweenLines);
-    const bool drawUnitLinesY = gridAttrsY.isGridVisible() &&
-            (screenRangeY / numberOfUnitLinesY > MinimumPixelsBetweenLines);
-
-    const bool isLogarithmicX = dimX.isCalculated && (dimX.calcMode == AbstractCoordinatePlane::Logarithmic );
-    const bool isLogarithmicY = (dimY.calcMode == AbstractCoordinatePlane::Logarithmic );
-
-    const bool drawSubGridLinesX = isLogarithmicX ||
-        ((dimX.subStepWidth != 0.0) &&
-        (screenRangeX / (numberOfUnitLinesX / dimX.stepWidth * dimX.subStepWidth) > MinimumPixelsBetweenLines) &&
-        gridAttrsX.isSubGridVisible());
-
-    const bool drawSubGridLinesY = isLogarithmicY ||
-        ((dimY.subStepWidth != 0.0) &&
-        (screenRangeY / (numberOfUnitLinesY / dimY.stepWidth * dimY.subStepWidth) > MinimumPixelsBetweenLines) &&
-        gridAttrsY.isSubGridVisible());
+    const DataDimension dimX = mDataDimensions.first();
+    const DataDimension dimY = mDataDimensions.last();
+    const bool isLogarithmicX = dimX.calcMode == AbstractCoordinatePlane::Logarithmic;
+    const bool isLogarithmicY = dimY.calcMode == AbstractCoordinatePlane::Logarithmic;
 
     qreal minValueX = qMin( dimX.start, dimX.end );
     qreal maxValueX = qMax( dimX.start, dimX.end );
     qreal minValueY = qMin( dimY.start, dimY.end );
     qreal maxValueY = qMax( dimY.start, dimY.end );
-    bool adjustXLower = gridAttrsX.adjustLowerBoundToGrid();
-    bool adjustXUpper = gridAttrsX.adjustUpperBoundToGrid();
-    bool adjustYLower = gridAttrsY.adjustLowerBoundToGrid();
-    bool adjustYUpper = gridAttrsY.adjustUpperBoundToGrid();
-    AbstractGrid::adjustLowerUpperRange( minValueX, maxValueX, dimX.stepWidth, adjustXLower, adjustXUpper );
-    AbstractGrid::adjustLowerUpperRange( minValueY, maxValueY, dimY.stepWidth, adjustYLower, adjustYUpper );
+    {
+        bool adjustXLower = !isLogarithmicX && gridAttrsX.adjustLowerBoundToGrid();
+        bool adjustXUpper = !isLogarithmicX && gridAttrsX.adjustUpperBoundToGrid();
+        bool adjustYLower = !isLogarithmicY && gridAttrsY.adjustLowerBoundToGrid();
+        bool adjustYUpper = !isLogarithmicY && gridAttrsY.adjustUpperBoundToGrid();
+        AbstractGrid::adjustLowerUpperRange( minValueX, maxValueX, dimX.stepWidth, adjustXLower, adjustXUpper );
+        AbstractGrid::adjustLowerUpperRange( minValueY, maxValueY, dimY.stepWidth, adjustYLower, adjustYUpper );
+    }
 
-    const FrameAttributes frameAttrs( plane->frameAttributes() );
-    if ( frameAttrs.isVisible() ) {
-        const qreal radius = frameAttrs.cornerRadius();
+   if ( plane->frameAttributes().isVisible() ) {
+        const qreal radius = plane->frameAttributes().cornerRadius();
         QPainterPath path;
-        path.addRoundedRect( QRectF( p1, p2 ), radius, radius );
+        path.addRoundedRect( QRectF( plane->translate( QPointF( minValueX, minValueY ) ),
+                                     plane->translate( QPointF( maxValueX, maxValueY ) ) ),
+                             radius, radius );
         context->painter()->setClipPath( path );
     }
 
-    if ( drawSubGridLinesX ) {
-        context->painter()->setPen( PrintingParameters::scalePen( gridAttrsX.subGridPen() ) );
-        qreal f = minValueX;
-        qreal fLogSubstep = minValueX;
 
-        int logSubstep = 0;
-        while ( f <= maxValueX ) {
-            QPointF topPoint( f, maxValueY );
-            QPointF bottomPoint( f, minValueY );
-            topPoint = plane->translate( topPoint );
-            bottomPoint = plane->translate( bottomPoint );
-            context->painter()->drawLine( topPoint, bottomPoint );
-            if ( isLogarithmicX ){
-                if( logSubstep == 9 ){
-                    fLogSubstep *= ( fLogSubstep > 0.0 ) ? 10.0 : 0.1;
-                    if( fLogSubstep == 0.0 )
-                        fLogSubstep = pow( 10.0, floor( log10( dimX.start ) ) );
-
-                    logSubstep = 0;
-                    f = fLogSubstep;
-                }
-                else
-                {
-                    f += fLogSubstep;
-                }
-                ++logSubstep;
-            }else{
-                f += dimX.subStepWidth;
+    /* TODO features from old code:
+       - honor gridAttrsY.isOuterLinesVisible()
+       - MAYBE coarsen the main grid when it gets crowded (do it in calculateGrid or here?)
+        if( ! dimX.isCalculated ){
+            while ( screenRangeX / numberOfUnitLinesX <= MinimumPixelsBetweenLines ) {
+                dimX.stepWidth *= 10.0;
+                dimX.subStepWidth *= 10.0;
+                numberOfUnitLinesX = qAbs( dimX.distance() / dimX.stepWidth );
             }
-
-            if(maxValueX == 0 && minValueX == 0)
-                break;
         }
-    }
-
-    if ( drawSubGridLinesY ) {
-        context->painter()->setPen( PrintingParameters::scalePen( gridAttrsY.subGridPen() ) );
-        qreal f = minValueY;
-        qreal fLogSubstep = minValueY;
-
-        int logSubstep = 0;
-        while ( f <= maxValueY ) {
-            QPointF leftPoint( minValueX, f );
-            QPointF rightPoint( maxValueX, f );
-            leftPoint = plane->translate( leftPoint );
-            rightPoint = plane->translate( rightPoint );
-            context->painter()->drawLine( leftPoint, rightPoint );
-            if ( isLogarithmicY ){
-                if( logSubstep == 9 ){
-                    fLogSubstep *= ( fLogSubstep > 0.0 ) ? 10.0 : 0.1;
-                    if( fLogSubstep == 0.0 )
-                        fLogSubstep = pow( 10.0, floor( log10( dimY.start ) ) );
-
-                    logSubstep = 0;
-                    f = fLogSubstep;
-                }
-                else
-                {
-                    f += fLogSubstep;
-                }
-                ++logSubstep;
-            }else{
-                f += dimY.subStepWidth;
-            }
-
-            if(maxValueY == 0 && minValueY == 0)
-                break;
+       - MAYBE deactivate the sub-grid when it gets crowded
+        if ( dimX.subStepWidth && (screenRangeX / (dimX.distance() / dimX.subStepWidth)
+             <= MinimumPixelsBetweenLines) ) {
+            // de-activating grid sub steps: not enough space
+            dimX.subStepWidth = 0.0;
         }
-    }
+    */
 
-    const bool drawXZeroLineX
-        = dimX.isCalculated &&
-        gridAttrsX.zeroLinePen().style() != Qt::NoPen;
+    const int labelThinningFactor = 1; // TODO: do we need this here?
 
-    const bool drawZeroLineY
-        = gridAttrsY.zeroLinePen().style() != Qt::NoPen;
-
-    const bool drawOuterX = gridAttrsX.isOuterLinesVisible();
-    const bool drawOuterY = gridAttrsY.isOuterLinesVisible();
-
-    const QPointF bottomRightPoint = plane->translate( QPointF( maxValueX, minValueY ) );
-
-    if ( drawUnitLinesX || drawXZeroLineX ) {
-        if ( drawUnitLinesX )
-            context->painter()->setPen( PrintingParameters::scalePen( gridAttrsX.gridPen() ) );
-
-        qreal f = minValueX;
-        
-        while ( f <= maxValueX ) {
-            // PENDING(khz) FIXME: make draving/not drawing of Zero line more sophisticated?:
-            const bool zeroLineHere = drawXZeroLineX && (f == 0.0);
-            if ( drawUnitLinesX || zeroLineHere ){
-                //qDebug("main grid line X at: %f --------------------------",f);
-                QPointF topPoint( f, maxValueY );
-                QPointF bottomPoint( f, minValueY );
-                topPoint = plane->translate( topPoint );
-                bottomPoint = plane->translate( bottomPoint );
-
-                const qreal penWidth = context->painter()->pen().widthF();
-                if ( zeroLineHere )
-                    context->painter()->setPen( PrintingParameters::scalePen( gridAttrsX.zeroLinePen() ) );
-                if ( drawOuterX || (topPoint.x()>2.0 * penWidth && topPoint.x()<bottomRightPoint.x()-2.0 * penWidth) )
-                    context->painter()->drawLine( topPoint, bottomPoint );
-                if ( zeroLineHere )
-                    context->painter()->setPen( PrintingParameters::scalePen( gridAttrsX.gridPen() ) );
-            }
-            if ( isLogarithmicX ) {
-                f *= ( f > 0.0 ) ? 10.0 : 0.1;
-                if( f == 0.0 )
-                    f = pow( 10.0, floor( log10( dimX.start ) ) );
-            }
-            else
-                f += dimX.stepWidth;
-
-            if(maxValueX == 0 && minValueX == 0)
-                break;
+    for ( int i = 0; i < 2; i++ ) {
+        XySwitch xy( i == 1 ); // first iteration paints the X grid lines, second paints the Y grid lines
+        const GridAttributes& gridAttrs = xy( gridAttrsX, gridAttrsY );
+        bool hasMajorLines = gridAttrs.isGridVisible();
+        bool hasMinorLines = gridAttrs.isSubGridVisible();
+        if ( !hasMajorLines && !hasMinorLines ) {
+            continue;
         }
-        // draw the last line if not logarithmic calculation
-        // we need the in order to get the right grid line painted
-        // when f + dimX.stepWidth jump over maxValueX
-        if ( ! isLogarithmicX && drawOuterX )
-        context->painter()->drawLine( plane->translate( QPointF( maxValueX, maxValueY ) ),
-                                      plane->translate( QPointF( maxValueX, minValueY ) ) );
 
-    }
-    if ( drawUnitLinesY || drawZeroLineY ) {
-        if ( drawUnitLinesY )
-            context->painter()->setPen( PrintingParameters::scalePen( gridAttrsY.gridPen() ) );
-        qreal f = minValueY;
+        const DataDimension& dimension = xy( dimX, dimY );
+        const bool drawZeroLine = dimension.isCalculated && gridAttrs.zeroLinePen().style() != Qt::NoPen;
 
-        while ( f <= maxValueY ) {
-            // PENDING(khz) FIXME: make draving/not drawing of Zero line more sophisticated?:
-            //qDebug("main grid line Y at: %f",f);
-            const bool zeroLineHere = (f == 0.0);
-            if ( drawUnitLinesY || zeroLineHere ){
-                QPointF leftPoint( minValueX, f );
-                QPointF rightPoint( maxValueX, f );
-                leftPoint  = plane->translate( leftPoint );
-                rightPoint = plane->translate( rightPoint );
+        QPointF lineStart = QPointF( minValueX, minValueY ); // still need transformation to screen space
+        QPointF lineEnd = QPointF( maxValueX, maxValueY );
 
-                if ( zeroLineHere )
-                    context->painter()->setPen( PrintingParameters::scalePen( gridAttrsY.zeroLinePen() ) );
-                if ( drawOuterY || (leftPoint.y()>2.0 && leftPoint.y()<bottomRightPoint.y()-2.0) )
-                    context->painter()->drawLine( leftPoint, rightPoint );
-                if ( zeroLineHere )
-                    context->painter()->setPen( PrintingParameters::scalePen( gridAttrsY.gridPen() ) );
+        TickIterator it( xy.isY, dimension, hasMajorLines, hasMinorLines, plane, labelThinningFactor );
+        for ( ; !it.isAtEnd(); ++it ) {
+            xy.lvalue( lineStart.rx(), lineStart.ry() ) = it.position();
+            xy.lvalue( lineEnd.rx(), lineEnd.ry() ) = it.position();
+            if ( ISNAN( lineStart.x() ) || ISNAN( lineStart.y() ) ||
+                 ISNAN( lineEnd.x() ) || ISNAN( lineEnd.y() ) ) {
+                // ### can we catch NaN problems earlier, wasting fewer cycles?
+                continue;
             }
-            if ( isLogarithmicY ) {
-                f *= ( f > 0.0 ) ? 10.0 : 0.1;
-                if( f == 0.0 )
-                    f = pow( 10.0, floor( log10( dimY.start ) ) );
+            if ( it.position() == 0.0 && drawZeroLine ) {
+                p->setPen( PrintingParameters::scalePen( gridAttrsX.zeroLinePen() ) );
+            } else if ( it.type() == TickIterator::MinorTick ) {
+                p->setPen( PrintingParameters::scalePen( gridAttrs.subGridPen() ) );
+            } else {
+                p->setPen( PrintingParameters::scalePen( gridAttrs.gridPen() ) );
             }
-            else
-                f += dimY.stepWidth;
-
-            if(maxValueY == 0 && minValueY == 0)
-                break;
+            p->drawLine( plane->translate( lineStart ), plane->translate( lineEnd ) );
         }
     }
 }

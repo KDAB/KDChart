@@ -389,49 +389,12 @@ void CartesianCoordinatePlane::layoutDiagrams()
     // .. in contrast to the logical area
     const QRectF logArea( logicalArea() );
 
-    qreal xUnitVector = logArea.width() != 0 ? physicalArea.width() / logArea.width()  : 1.0;
-    qreal yUnitVector = logArea.height() != 0 ? physicalArea.height() / logArea.height() : 1.0;
-
-    qreal scaleX = 1.0;
-    qreal scaleY = 1.0;
-
-    const QPointF logicalTopLeft = logArea.topLeft();
-    if ( d->isometricScaling ) {
-        // calculate isometric scaling factor to maxscale the diagram into the coordinate system
-        qreal scale = qMin( qAbs( xUnitVector ), qAbs( yUnitVector ) );
-        scaleX = qAbs( scale / xUnitVector );
-        scaleY = qAbs( scale / yUnitVector );
-
-        QRectF physicalArea( drawingArea() );
-        QSizeF size = physicalArea.size();
-        size.rheight() *= scaleY;
-        size.rwidth() *= scaleX;
-        physicalArea.setSize( size );
-
-        xUnitVector = logArea.width() != 0 ? physicalArea.width() / logArea.width()  : 1.0;
-        yUnitVector = logArea.height() != 0 ? physicalArea.height() / logArea.height() : 1.0;
-    }
-
-    // calculate diagram origin in plane coordinates:
-    QPointF coordinateOrigin = QPointF( logicalTopLeft.x() * -xUnitVector,
-                                        logicalTopLeft.y() * -yUnitVector );
-    coordinateOrigin += physicalArea.topLeft();
-    d->coordinateTransformation.originTranslation = coordinateOrigin;
-
-    d->coordinateTransformation.unitVectorX = xUnitVector;
-    d->coordinateTransformation.unitVectorY = yUnitVector;
-
-    // As in the first quadrant of the coordinate system, the origin is the bottom left, not top left.
-    // This origin is then the top left point of the resulting diagramRect for our coordinateTransformation.
-    const QRectF normalizedLogArea = logArea.normalized();
-    d->coordinateTransformation.diagramRect = QRectF( normalizedLogArea.bottomLeft(),
-                                                      normalizedLogArea.topRight() );
-
-    d->coordinateTransformation.isoScaleX = scaleX;
-    d->coordinateTransformation.isoScaleY = scaleY;
+    // TODO: isometric scaling for zooming?
 
     // the plane area might have changed, so the zoom values might also be changed
     handleFixedDataCoordinateSpaceRelation( physicalArea );
+
+    d->coordinateTransformation.updateTransform( logArea, physicalArea );
 
     update();
 }
@@ -578,28 +541,32 @@ bool CartesianCoordinatePlane::doneSetZoomCenter( const QPointF& point )
 
 void CartesianCoordinatePlane::setZoomFactors( qreal factorX, qreal factorY )
 {
-    if( doneSetZoomFactorX( factorX ) || doneSetZoomFactorY( factorY ) ){
+    if ( doneSetZoomFactorX( factorX ) || doneSetZoomFactorY( factorY ) ) {
+        d->coordinateTransformation.updateTransform( logicalArea(), drawingArea() );
         emit propertiesChanged();
     }
 }
 
 void CartesianCoordinatePlane::setZoomFactorX( qreal factor )
 {
-    if( doneSetZoomFactorX( factor ) ){
+    if ( doneSetZoomFactorX( factor ) ) {
+        d->coordinateTransformation.updateTransform( logicalArea(), drawingArea() );
         emit propertiesChanged();
     }
 }
 
 void CartesianCoordinatePlane::setZoomFactorY( qreal factor )
 {
-    if( doneSetZoomFactorY( factor ) ){
+    if ( doneSetZoomFactorY( factor ) ) {
+        d->coordinateTransformation.updateTransform( logicalArea(), drawingArea() );
         emit propertiesChanged();
     }
 }
 
 void CartesianCoordinatePlane::setZoomCenter( const QPointF& point )
 {
-    if( doneSetZoomCenter( point ) ){
+    if ( doneSetZoomCenter( point ) ) {
+        d->coordinateTransformation.updateTransform( logicalArea(), drawingArea() );
         emit propertiesChanged();
     }
 }
@@ -922,11 +889,45 @@ QRectF CartesianCoordinatePlane::visibleDataRange() const
 
 void CartesianCoordinatePlane::setGeometry( const QRect& rectangle )
 {
-    if( rectangle == geometry() )
+    if ( rectangle == geometry() ) {
         return;
-
-    AbstractCoordinatePlane::setGeometry( rectangle );
-    Q_FOREACH( AbstractDiagram* diagram, diagrams() ) {
-        diagram->resize( drawingArea().size() );
     }
+
+    int width = rectangle.width();
+    int height = heightForWidth( width );
+    d->geometry = QRect( rectangle.left(), rectangle.top(), width, height );
+    AbstractCoordinatePlane::setGeometry( d->geometry );
+
+    Q_FOREACH( AbstractDiagram* diagram, diagrams() ) {
+        diagram->resize( d->geometry.size() );
+    }
+}
+
+QSize CartesianCoordinatePlane::minimumSize() const
+{
+    if ( d->isometricScaling ) {
+        // HACK(?): we use the fact that minimumSize() is considered quite late in
+        // the layout process (cf. "Layout Management" documentation) to enforce our
+        // height-for-width requirement without interference from other constraints.
+        return QSize( AbstractCoordinatePlane::minimumSize().width(), geometry().height() );
+    } else {
+        return AbstractCoordinatePlane::minimumSize();
+    }
+}
+
+Qt::Orientations CartesianCoordinatePlane::expandingDirections() const
+{
+    // this works together with the hack in minimumSize()
+    return d->isometricScaling ? Qt::Horizontal : ( Qt::Horizontal | Qt::Vertical );
+}
+
+bool CartesianCoordinatePlane::hasHeightForWidth() const
+{
+    return d->isometricScaling;
+}
+
+int CartesianCoordinatePlane::heightForWidth( int w ) const
+{
+    QRectF dataRect = visibleDataRange();
+    return qRound( qreal( w ) * qAbs( dataRect.height() / dataRect.width() ) );
 }
