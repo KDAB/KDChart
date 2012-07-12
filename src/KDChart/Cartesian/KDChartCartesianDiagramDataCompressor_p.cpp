@@ -37,8 +37,6 @@ CartesianDiagramDataCompressor::CartesianDiagramDataCompressor( QObject* parent 
     , m_mode( Precise )
     , m_xResolution( 0 )
     , m_yResolution( 0 )
-    , m_oldSizeX( 0 )
-    , m_oldSizeY( 0 )
     , m_sampleStep( 0 )
     , m_datasetDimension( 1 )
 {
@@ -377,15 +375,13 @@ void CartesianDiagramDataCompressor::setRootIndex( const QModelIndex& root )
 
 void CartesianDiagramDataCompressor::recalcResolution()
 {
-    setResolution( m_oldSizeX, m_oldSizeY );
+    setResolution( m_xResolution, m_yResolution );
 }
 
 void CartesianDiagramDataCompressor::setResolution( int x, int y )
 {
     const int oldX = m_xResolution;
     const int oldY = m_yResolution;
-    m_oldSizeX = x;
-    m_oldSizeY = y;
 
     if( m_datasetDimension != 1 )
     {

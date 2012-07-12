@@ -205,8 +205,6 @@ namespace KDChart {
         ApproximationMode m_mode;
         int m_xResolution;
         int m_yResolution;
-        int m_oldSizeX;
-        int m_oldSizeY;
         unsigned int m_sampleStep;
 
         mutable QVector<DataPointVector> m_data; // one per dataset
