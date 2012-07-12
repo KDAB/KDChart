@@ -124,11 +124,6 @@ namespace KDChart {
          */
         virtual const QPointF translate ( const QPointF& diagramPoint ) const = 0;
 
-        /** \reimpl */
-        virtual QSize minimumSizeHint() const;
-        /** \reimpl */
-        virtual QSizePolicy sizePolicy() const;
-
         /**
          * @return Whether zooming with a rubber band using the mouse is enabled.
          */

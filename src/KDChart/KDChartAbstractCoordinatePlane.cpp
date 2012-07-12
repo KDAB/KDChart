@@ -154,17 +154,6 @@ ConstAbstractDiagramList AbstractCoordinatePlane::diagrams() const
     return list;
 }
 
-QSize KDChart::AbstractCoordinatePlane::minimumSizeHint() const
-{
-    return QSize( 200, 200 );
-}
-
-
-QSizePolicy KDChart::AbstractCoordinatePlane::sizePolicy() const
-{
-    return QSizePolicy( QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding );
-}
-
 void KDChart::AbstractCoordinatePlane::setGlobalGridAttributes( const GridAttributes& a )
 {
     d->gridAttributes = a;
