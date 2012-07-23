@@ -60,9 +60,9 @@ public:
     QMap< int, QMap< int, QVariant > > verticalHeaderDataMap;
     QMap< int, QVariant > modelDataMap;
     QMap< int, QVariant > defaultsMap;
+    int dataDimension;
     AttributesModel::PaletteType paletteType;
     Palette palette;
-    int dataDimension;
 };
 
 AttributesModel::Private::Private()

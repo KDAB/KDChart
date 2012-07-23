@@ -264,7 +264,7 @@ void LeveyJenningsGrid::drawGrid( PaintContext* context )
     // This plane is used for tranlating the coordinates - not for the data boundaries
     PainterSaver p( context->painter() );
     LeveyJenningsCoordinatePlane* plane = qobject_cast< LeveyJenningsCoordinatePlane* >(
-                                              plane->sharedAxisMasterPlane( context->painter() ) );
+                                              mPlane->sharedAxisMasterPlane( context->painter() ) );
     Q_ASSERT_X ( plane, "LeveyJenningsGrid::drawGrid",
                  "Bad function call: PaintContext::coodinatePlane() NOT a Levey Jennings plane." );
 

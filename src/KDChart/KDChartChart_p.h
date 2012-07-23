@@ -123,13 +123,14 @@ class Chart::Private : public QObject
 {
     Q_OBJECT
     public:
+        Chart* chart;
+
         enum AxisType { Abscissa, Ordinate };
         bool useNewLayoutSystem;
         CoordinatePlaneList coordinatePlanes;
         HeaderFooterList headerFooters;
         LegendList legends;
 
-        Chart* chart;
         QHBoxLayout* layout;
         QVBoxLayout* vLayout;
         QBoxLayout*  planesLayout;
