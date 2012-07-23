@@ -893,9 +893,11 @@ void CartesianCoordinatePlane::setGeometry( const QRect& rectangle )
         return;
     }
 
-    int width = rectangle.width();
-    int height = heightForWidth( width );
-    d->geometry = QRect( rectangle.left(), rectangle.top(), width, height );
+    d->geometry = rectangle;
+    if ( d->isometricScaling ) {
+        // same scaling for x and y means a fixed aspect ratio, which is enforced here
+        d->geometry.setHeight( heightForWidth( rectangle.width() ) );
+    }
     AbstractCoordinatePlane::setGeometry( d->geometry );
 
     Q_FOREACH( AbstractDiagram* diagram, diagrams() ) {
