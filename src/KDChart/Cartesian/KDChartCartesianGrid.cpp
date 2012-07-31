@@ -119,7 +119,6 @@ void CartesianGrid::drawGrid( PaintContext* context )
 
 
     /* TODO features from old code:
-       - honor gridAttrsY.isOuterLinesVisible()
        - MAYBE coarsen the main grid when it gets crowded (do it in calculateGrid or here?)
         if( ! dimX.isCalculated ){
             while ( screenRangeX / numberOfUnitLinesX <= MinimumPixelsBetweenLines ) {
@@ -155,6 +154,11 @@ void CartesianGrid::drawGrid( PaintContext* context )
 
         TickIterator it( xy.isY, dimension, hasMajorLines, hasMinorLines, plane, labelThinningFactor );
         for ( ; !it.isAtEnd(); ++it ) {
+            if ( !gridAttrs.isOuterLinesVisible() &&
+                 ( it.areAlmostEqual( it.position(), xy( minValueX, minValueY ) ) ||
+                   it.areAlmostEqual( it.position(), xy( maxValueX, maxValueY ) ) ) ) {
+                continue;
+            }
             xy.lvalue( lineStart.rx(), lineStart.ry() ) = it.position();
             xy.lvalue( lineEnd.rx(), lineEnd.ry() ) = it.position();
             if ( ISNAN( lineStart.x() ) || ISNAN( lineStart.y() ) ||
