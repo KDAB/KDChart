@@ -946,6 +946,8 @@ QPointF PieDiagram::pointOnEllipse( const QRectF& boundingBox, qreal angle )
 /*virtual*/
 qreal PieDiagram::valueTotals() const
 {
+    if ( !model() )
+        return 0;
     const int colCount = columnCount();
     qreal total = 0.0;
     Q_ASSERT( model()->rowCount() >= 1 );
