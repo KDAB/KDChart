@@ -1,0 +1,124 @@
+#include "mainwindow.h"
+
+#include <KDChart/KDChartChart>
+#include <KDChart/KDChartCartesianCoordinatePlane>
+#include <KDChart/KDChartAbstractCoordinatePlane>
+#include <KDChart/KDChartCartesianAxis>
+#include <KDChart/KDChartCartesianGrid>
+#include <KDChart/KDChartAbstractDiagram>
+#include <KDChart/KDChartBarDiagram>
+#include <KDChart/KDChartLineDiagram>
+#include <KDChart/KDChartPlotter>
+#include <KDChart/KDChartPieDiagram>
+#include <KDChart/KDChartPolarCoordinatePlane>
+#include <KDChart/KDChartLegend>
+#include <KDChart/KDChartDataValueAttributes>
+#include <KDChart/KDChartMarkerAttributes>
+#include <KDChart/KDChartTextAttributes>
+#include <KDChart/KDChartGridAttributes>
+#include <KDChart/KDChartRulerAttributes>
+#include <KDChart/KDChartPieAttributes>
+
+#include <TableModel.h>
+
+#include <QtGui/QDockWidget>
+
+#include "datasetsettings.h"
+#include "diagramsettings.h"
+#include "datavaluesettings.h"
+#include "diagramtypedialog.h"
+
+using namespace KDChart;
+
+class MainWindow::Private : public QObject
+{
+    Q_OBJECT
+    Q_PROPERTY( int datasetCount READ datasetCount NOTIFY datasetCountChanged )
+public:
+    int datasetCount() const;
+    enum ChartType{ Bar, Line, Plotter, Polar, Pie };
+    Private( MainWindow *q = 0 );
+    Chart *m_chartWin;
+    CartesianCoordinatePlane *m_cartPlane;
+    TableModel *m_model;
+    AbstractDiagram *m_curDiagram;
+    ChartType m_type;
+    QHash< DiagramTypeDialog::DiagramType, QAbstractItemModel* > m_modelTable;
+    MainWindow *qq;
+Q_SIGNALS:
+    void datasetCountChanged( int );
+};
+
+MainWindow::Private::Private( MainWindow *q )
+    : m_chartWin( new Chart( q ) )
+    , m_cartPlane( new CartesianCoordinatePlane )
+    , m_model( new TableModel( q ) )
+    , m_curDiagram( new BarDiagram( q, m_cartPlane ) )
+    , m_type( Bar )
+    , qq( q )
+{
+    m_chartWin->replaceCoordinatePlane( m_cartPlane );
+    m_model->loadFromCSV( ":/data/barSimple.csv" );
+    m_cartPlane->replaceDiagram( m_curDiagram );
+    m_curDiagram->setModel( m_model );
+    m_modelTable[ DiagramTypeDialog::Bar ] = m_model;
+    TableModel *lineModel = new TableModel( q );
+    lineModel->loadFromCSV( ":/data/lineSimple.csv" );
+    m_modelTable[ DiagramTypeDialog::Line ] = lineModel;
+    TableModel *pieModel = new TableModel( q );
+    pieModel->loadFromCSV( ":/data/pieSimple.csv" );
+    m_modelTable[ DiagramTypeDialog::Pie ] = pieModel;
+
+    DiagramTypeDialog *diagramTypeSettings = new DiagramTypeDialog( m_chartWin, qq );
+    diagramTypeSettings->setDefaultModels( m_modelTable );
+    QDockWidget *diagramTypeSettingsDock = new QDockWidget( tr( "DiagramType" ), qq );
+    diagramTypeSettingsDock->setWidget( diagramTypeSettings );
+    diagramTypeSettingsDock->setFloating( false );
+    q->addDockWidget( Qt::LeftDockWidgetArea, diagramTypeSettingsDock );
+
+    DatasetSettings *setSettings = new DatasetSettings( m_chartWin, qq );
+    QDockWidget *setSettingsDock = new QDockWidget( tr( "DatasetSettings" ), qq );
+    setSettingsDock->setWidget( setSettings );
+    setSettingsDock->setFloating( false );
+    q->addDockWidget( Qt::LeftDockWidgetArea, setSettingsDock );
+    connect( this, SIGNAL( datasetCountChanged( int ) ), setSettings, SLOT( setDatasetCount( int ) ) );
+    setSettings->setDatasetCount( m_model->columnCount() );
+    //Q_EMIT datasetCountChanged( m_model)
+    DiagramSettings *diagSettings = new DiagramSettings( m_chartWin, qq );
+    QDockWidget *diagSettingsDock = new QDockWidget( tr( "DiagramSettings" ), qq );
+    diagSettingsDock->setWidget( diagSettings );
+    diagSettingsDock->setFloating( false );
+    q->addDockWidget( Qt::LeftDockWidgetArea, diagSettingsDock );
+
+    DataValueSettings *dataValueSettings = new DataValueSettings( m_chartWin, qq );
+    QDockWidget *dataValueSettingsDock = new QDockWidget( tr( "DataValueSettings" ), qq );
+    dataValueSettingsDock->setWidget( dataValueSettings );
+    dataValueSettingsDock->setFloating( false );
+    q->addDockWidget( Qt::RightDockWidgetArea, dataValueSettingsDock );
+
+}
+
+int MainWindow::Private::datasetCount() const
+{
+    switch ( m_type )
+    {
+    case( Bar ):
+        return m_model->columnCount();
+    default:
+        return 0;
+    }
+}
+
+MainWindow::MainWindow( QWidget *parent )
+    : QMainWindow( parent )
+    , d( new Private( this ) )
+{
+    setCentralWidget( d->m_chartWin );
+}
+
+MainWindow::~MainWindow()
+{
+    delete d;
+}
+
+#include "mainwindow.moc"

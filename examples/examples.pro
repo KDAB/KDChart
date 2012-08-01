@@ -24,4 +24,5 @@ SUBDIRS		= tools \
                   Plotter \
                   LeveyJennings \
                   DataValueTexts \
-                  Gantt
+                  Gantt \
+		  demo

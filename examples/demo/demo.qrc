@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/data">
+        <file>barSimple.csv</file>
+        <file alias="lineSimple.csv">lineAnimate.csv</file>
+        <file alias="pieSimple.csv">KDChart-Test-Pie.csv</file>
+    </qresource>
+</RCC>
