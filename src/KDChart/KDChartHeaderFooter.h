@@ -32,13 +32,12 @@ namespace KDChart {
     class TextAttributes;
 
 /**
-  * @brief A header or even footer displaying text above or below charts
+  * @brief A header or footer displaying text above or below charts
   */
 class KDCHART_EXPORT HeaderFooter : public TextArea
 {
     Q_OBJECT
 
-    Q_DISABLE_COPY( HeaderFooter )
     KDCHART_DECLARE_PRIVATE_DERIVED_PARENT( HeaderFooter, Chart* )
 
 public:
